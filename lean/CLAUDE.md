@@ -148,6 +148,12 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   content there (no spectral term in sight), then `theDef := theDefAux (…eigenvalues) (…eigenvectorUnitary)
   …` and instantiate. The heavy terms become bound arguments, never re-elaborated. Any front-first
   spectral assembly (both DLN lanes' `twoBlock` consumption) needs the abstract-`Aux` form — do it once.
+  Two finer points (confirmed, `RouteMSJFrontFirst` reshape, 2026-07-11): (1') the timeout hits even with
+  the abstract binding when a proof step is a multi-step `calc` whose endpoint-matching is defeq-heavy (e.g.
+  over `Set.indicator` of a big integrand) — a direct `rw` chain fixes it instantly; **prefer `rw` over
+  `calc` when steps are defeq-heavy**, not just `rw` over `unfold`. (2') `set U := …eigenvectorUnitary`
+  does NOT help — `set` inlines the heavy term into every downstream defeq; the `…Aux`-over-abstract-`U`
+  factoring is NECESSARY (a thin instantiation lemma at the end), not merely tidy.
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
