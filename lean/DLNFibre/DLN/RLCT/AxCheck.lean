@@ -120,6 +120,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJSigMin
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh
 import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
 
 /-!
 # Axiom-hygiene check
@@ -1014,3 +1015,10 @@ open DLNFibre.DLN.RLCT
 -- σ-independent C on 0<σ≤B; + sharp form). Reviewer SURVIVED (σ-uniformity fix). The (a) analytic core.
 #print axioms twoBlock_radial_le
 #print axioms twoBlock_radial_scale_le
+-- vslice (a) TOP-stratum spectral (RouteMSJFrontSpectral, genm-secinfra): Frobenius–Gram identity +
+-- sigMin²=⨅λ + the two-block bridge (sector = input hyp, RED-FLAG-2 respected) + orthogonal CoV.
+-- fsreview PASS + Codex xhigh. Feeds the crux on the top stratum.
+#print axioms frobSq_mul_eq_sum_eigenvalues
+#print axioms sigMin_sq_eq_iInf_eigenvalues
+#print axioms frobSq_ge_twoBlock_of_sector
+#print axioms lintegral_comp_rmatMul_orth

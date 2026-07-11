@@ -1254,3 +1254,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
 -- Route: Haar dilation + JapaneseBracket + banked radial leaf. Reviewer SURVIVED (σ-uniformity fix on B).
 -- The genuinely-new custom analytic piece of (a); the front-first majorant's core. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
+-- `RouteMSJFrontSpectral` — vslice (a) TOP-stratum spectral pieces (thread `genm-secinfra`): the
+-- Frobenius–Gram diagonalisation feeding the crux. `frobSq_mul_eq_sum_eigenvalues` (frobSq(A₀·P) =
+-- ∑_j λ_j·‖(A₀·Q)_{·j}‖², λ/Q = Gram spectral data, no SVD of P) + `sigMin_sq_eq_iInf_eigenvalues`
+-- (collapse weight = sigMin²) + `sjSector`/`frobSq_ge_twoBlock_of_sector` (the two-block bridge; sector
+-- is an INPUT hypothesis — RED-FLAG-2 respected, Codex counterexample-confirmed) + `lintegral_comp_rmatMul_orth`
+-- (orthogonal CoV, |det Q|=1). fsreview PASS + Codex xhigh. clean-three. ((3ii)/(3iii) HELD for vsastruct.)
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
