@@ -123,6 +123,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
 
 /-!
 # Axiom-hygiene check
@@ -1034,3 +1035,6 @@ open DLNFibre.DLN.RLCT
 -- Clean-coords model (literal-A₂ casting = a det-M≠0 CoV, follow-on).
 #print axioms onePeel334_cleanCoords_lt_top
 #print axioms onePeelIntegral_lt_top
+-- (□)-core native-route CoV scaffold, gap (1a) (RouteMSJRowSplitCompose, genm-mountain): the row-split
+-- identity gammaPeelIntegral = the leading-layer-row-split nested integral (unconditional, MP transport).
+#print axioms gammaPeelIntegral_rowSplit_eq

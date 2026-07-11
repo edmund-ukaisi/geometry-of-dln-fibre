@@ -1278,3 +1278,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334
 -- (cert §2-faithful); the literal-A₂ casting (a det-M≠0 constant-Jacobian CoV — LOAD-BEARING, not
 -- benign) is a follow-on. vsastruct A₂-audit PASS + formaliser-reviewer + controller. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334
+-- `RouteMSJRowSplitCompose` — the (□)-core NATIVE-route CoV scaffold, gap (1a) (thread `genm-mountain`):
+-- `gammaPeelIntegral_rowSplit_eq` composes the banked entry `gammaPeelIntegral_piSplit_eq` (step a) with
+-- the measure-preserving `rowSplitEquiv κ` (step b) → the nested integral with the leading tail layer
+-- row-split into κ-pivot rows + corank rows. UNCONDITIONAL (measure-preserving transport, no side-conditions).
+-- Fixes the C3 stale docstring. The v-exposure (step c) is a SEPARATE measurability rung (follow-on). clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
