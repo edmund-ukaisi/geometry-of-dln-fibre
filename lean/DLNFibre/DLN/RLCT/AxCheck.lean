@@ -130,6 +130,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh
+import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
 
 /-!
 # Axiom-hygiene check
@@ -1093,3 +1094,8 @@ open DLNFibre.DLN.RLCT
 -- (the value majorant) — reduces the leaf to the free-Γ Morse, bypassing sjLoss_terminal + the (P)/(T) gap.
 #print axioms frobSq_mul_ge
 #print axioms frobSq_mul_rpow_le
+-- route-A LEAF FINITENESS (RouteMSJLeafFinite, genm-sj5-descent; DecoratedBaseHyp loss part): the corank leaf
+-- `∫_{matBox}(frobSq(Γ·Z))^{−c'} < ⊤` for c'<½minAdm(base) given `Z·Zᵀ≽c·I` (#144 units interface) — Rayleigh
+-- majorant → free-Γ Morse. Route (A) by proof; no sjLoss_terminal / (P)/(T) gap.
+#print axioms frobSq_matBox_rpow_lt_top
+#print axioms corankLeaf_rpow_lt_top

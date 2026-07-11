@@ -1321,3 +1321,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
 -- c^{−c'}(frobSq Γ)^{−c'}` a.e.). Reduces the width-2 leaf to the free-Γ Morse (finite < ½minAdm(base)),
 -- BYPASSING sjLoss_terminal + the (P)/(T) gap; LOCAL (Z fixed, Loewner-exact), distinct from the #140-killed route.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh
+-- `RouteMSJLeafFinite` — the route-A LEAF FINITENESS (genm-sj5-descent; DecoratedBaseHyp's loss part, DONE):
+-- `corankLeaf_rpow_lt_top` — `∫_{matBox a n T}(frobSq(Γ·Z))^{−c'} < ⊤` for c'<(a·n)/2=½minAdm(base), GIVEN the
+-- units interface `Z·Zᵀ ≽ c·I` (c>0, #144-supplied) — via the everywhere Rayleigh majorant (`_rpow_le_everywhere`)
+-- → c^{−c'}·(free-Γ Morse `frobSq_matBox_rpow_lt_top`, banked eMatFlat + sumSqND_box_lt_top). Route (A) by PROOF:
+-- no sjLoss_terminal, no (P)/(T) gap, local Loewner (distinct from #140-killed). Conditional only on the units interface.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
