@@ -1228,3 +1228,17 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFreeBilinear
 -- saturation exists_binding_cut); one new lemma `frontPeel_binding_cut` (∃q≤tailMin M, minAdm M =
 -- frontCharge M q — the front-peel binding cut B5b selects). Anti-trap: tailMin−b+1 ≠ minAdm (documented).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDescNat
+-- `RouteMSJDominantCover` — the dominant-minor cover-assembly (thread `genm-covasm`): the §SEAM cover
+-- skeleton `setLIntegral_lt_top_of_dominanceCell`/`_detMinorCover` (per-chart finiteness over arbitrary μ
+-- ⟹ box finiteness via the exact least-index-argmax partition, no seam term). Network-free. clean-three.
+-- (Aggregator/AxCheck wiring was dropped at commit 13733fcc — file was banked orphan; re-wired here.)
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDominantCover
+-- `RouteMSJSigMin` — smallest-singular-value (min-stretch) submultiplicativity (thread `genm-vsdeep`, (b)
+-- crux): `minStretch T := ⨅_{‖x‖=1}‖T x‖` + `minStretch_comp_ge` (σ_r(A₁A₂)≥σ_r(A₁)σ_r(A₂), elementary
+-- pointwise — no spectral theorem). Network-free reusable. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSigMin
+-- `RouteMSJRayleigh` — matrix Rayleigh lower bound + PSD det bound (thread `genm-vsdeep`, shared spectral
+-- bedrock for (b)+(a)): `gram_rayleigh_lb` (⟪Gy,y⟫≥(⨅ᵢ eigenvalues i)‖y‖² via spectral_theorem) +
+-- `posSemidef_det_le_iInf_mul_trace_pow` (det G ≤ ⨅eigenvalues·trace^{r−1}). ⟹ det(gram M)≤σ_min²·trace^{r−1}
+-- = the box comparison reducing ∫σ_min^{−α} to qbox. Network-free reusable. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh

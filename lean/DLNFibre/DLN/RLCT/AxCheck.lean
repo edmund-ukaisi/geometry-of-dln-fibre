@@ -115,6 +115,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGramResidual
 import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreeBilinear
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDescNat
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDominantCover
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSigMin
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh
 
 /-!
 # Axiom-hygiene check
@@ -993,3 +996,12 @@ open DLNFibre.DLN.RLCT
 -- Atom brick B5-desc-ℕ (RouteMSJDescNat, genm-b5desc-nat): the front-peel binding cut (min-tail-width
 -- form) the (S,J) descent's additive accounting selects; the rest of the descent arithmetic is banked.
 #print axioms frontPeel_binding_cut
+-- Dominant-minor cover-assembly (RouteMSJDominantCover, genm-covasm): the §SEAM cover skeleton reducing
+-- box-finiteness to per-chart finiteness via the exact least-index-argmax partition, over arbitrary μ.
+#print axioms setLIntegral_lt_top_of_dominanceCell
+#print axioms setLIntegral_lt_top_of_detMinorCover
+-- vslice (b) spectral core (RouteMSJSigMin + RouteMSJRayleigh, genm-vsdeep): σ_min submultiplicativity +
+-- the matrix Rayleigh lower bound + PSD det bound (the reusable spectral bedrock for (b)+(a)).
+#print axioms minStretch_comp_ge
+#print axioms gram_rayleigh_lb
+#print axioms posSemidef_det_le_iInf_mul_trace_pow
