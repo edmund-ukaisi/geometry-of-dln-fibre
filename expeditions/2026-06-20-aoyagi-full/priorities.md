@@ -37,11 +37,15 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
    - **(3) explicit A₂-rank-drop STRATIFICATION** (generic-minor sector {U_k≥a>0}; complement→deeper; NOT
      a.e.-drop — the RLCT-collapse trap: independent split=min=3/2, coupled=add=7/2).
    - **(4) T2 a′:** rowMix at analytic support (`hsh` for `R=P⁻¹B`).
-   GATED on vsastruct's TERMINAL merge de-risk (`t4-merge-derisk.md`: realise ONE merge on (3,3,3,4) t=1
-   through sharedDivisorExp → CARRIER-FIT VERDICT: fits [→ assembly] or needs a new constructor [→ its exact
-   signature]). Then the formaliser (no 6th design pass) → `DecoratedPeelStep` proved → `(□)` ∀M → mint
-   unsuffixed `aoyagi_learning_coefficient` (#108). Guards: `exists_binding_cut` (Q3 borderline). Certs:
-   `threads/genm-vsastruct/` (verdict, corank2-cert, dps-instance-cert, t4-design-cert), recon-map:
+   **★ DESIGN PHASE CLOSED (UPDATE-877) — CARRIER FITS, no new constructor.** The additive coupled-corner
+   at 7/2 is BANKED (`sjSlice_corner_two_block_lt_top`, VERIFIED, weighted AM-GM = codims ADD); the "merge"
+   = banked `prependColumn` with INDICATOR columns (NOT `radialAttach` = the 3/2 product). **NOW BUILDING**
+   (execution): the first T4 formaliser [ab1a79a7] — the (3,3,3,4) t=1 corner-slice finiteness at 7/2 through
+   the banked endpoint (smallest-settling in Lean; validates min→sum), with the A₂-rank-drop complement
+   EXPLICITLY stratified (soundness gate: charges ADD not min; complement routed not a.e.-dropped). Follow-on
+   after it lands: the ADMISSIBLE class + decorated arity driver + m>2 wrapper → `DecoratedPeelStep` proved →
+   `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient` (#108). Guards: `exists_binding_cut` (Q3). Certs:
+   `threads/genm-vsastruct/` (verdict, corank2, dps-instance, t4-design, t4-merge-derisk), recon-map:
    `threads/genm-sjendpoint-recon/`. Live read: synthesis
    UPDATE-874. **NOTE:** the Route-V front-majorant/cover Architecture (vsastruct corank2-cert; crux
    `twoBlock_radial_le` + `FrontSpectral` banked) is a PARALLEL route — banked pieces stay (reusable) but
