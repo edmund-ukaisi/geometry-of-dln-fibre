@@ -340,3 +340,81 @@ genm-sj5-desc2 landed piece #1 GREEN, with a POSITIVE recalibration: `minAdm_eq_
   rank on each" — the instant #2 reaches for components/generic-rank-on-a-component it re-imports the AG the
   native route avoids. **VERDICT: #1 PASSES; integrate it. #2 is the fidelity-critical bridge — sound, native,
   bounded, but substantive; audit it hardest when it lands.**
+
+---
+
+## 10. `adm` DEF FORK — **(B) the valuation-predicate** (#144 peel-closes it; decouples #3 from #5)
+
+**Charge:** (A) inductive-reachable [`adm := {trivial; adm D ⟹ adm(peelOp u D)}`, peel-closure free but
+references `peelOp` ⟹ #3↔#5 coupled] vs (B) valuation-predicate [`adm D := a=0 ∨ b=0 ∨ (∀η∈Crit(D),
+min_j ν_η(gen_j)=0)`, peel-closure a THEOREM = #144, decoupled]. **VERDICT: (B).** [decorrelated: my §8/§9 +
+the banked `admenc` Codex; verified `/tmp/prodD/adm_fork.py`.]
+
+**THE CRUX — does #144 peel-close the VALUATION predicate (B), or only the reachable set (A)? → (B).** For
+`peelOp u D` on `redChain u M`: `Crit(peelOp D) = (old divisors, retained) ∪ (the one new peel divisor)`. The
+old divisors keep `p=0` (inherited from `adm D`); **the new divisor gets `p=0` from #144** — and #144's
+`rank(Zdeep)≥b` is a CHAIN-GEOMETRIC fact about `redChain`'s zero-product locus (via the deeper `Z`/`ctx`
+carried in the `SJDecoration`), INDEPENDENT of `D`'s peel-history. So `adm D ⟹ adm(peelOp D)` is exactly the
+#144 theorem applied once — no reachability structure needed. (Codex `admenc` Q2 "Reachable ⟹ Transverse" is
+the iterated form; the single-step peel-closure of (B) is #144 applied once.)
+
+**The condition that makes (B) sound (and the only place reachability-flavour enters):** #144 applies to
+`peelOp D` iff `D`'s carrier is GENUINE — it carries the real deeper `Z`/`ctx`, not a syntactic support matrix
+(Codex `admenc` caveat). §10 defines `SJDecoration` = carrier `supp`/`coeff` + deeper `Z`/`ctx`, so it IS
+genuine ⟹ (B) works. **If `SJDecoration` admits arbitrary carriers, add a well-formedness invariant** (the
+`ctx` is a real reduced product); otherwise (B) is clean.
+
+**`Crit(D)` MUST include intersection/combined divisors (the C1 requirement — non-negotiable for the base).**
+`adm D := a=0 ∨ b=0 ∨ (∀η∈Crit(D), min_j ν_η(gen_j)=0)` with `Crit(D)` = ALL critical (pivot-vanishing)
+divisorial valuations INCLUDING combined/intersection rays — NOT just component-dominating divisors. Else the
+base is TOO LOOSE (regression test 2 fails: `x²+y²` has `p=0` on each component divisor `{x=0},{y=0}` but the
+intersection blow-up `E` has `p_E=1` — with intersection divisors in `Crit`, `adm` correctly REJECTS `x²+y²`
+as terminal until refined; the `x`-chart residual `1` then supplies (T)). This is the base's `(P)⇏(T)`
+refinement, reusing banked `RouteMSJAdmEncoding` (`pDivisorwise`/`pSimultaneous`/`sharedDivisorExp`).
+
+**Regression tests — both pass under (B):** (1) `(3,3,2,2)→(2,2,2)` rank-1 (`p=0`, `ρ=b=1`) — ADMITTED
+(component divisor has `p=0`); (2) `x²+y²` — REJECTED-as-terminal until the intersection is refined
+(`p_E=1`), then admitted on the refined chart. [Verified.]
+
+**adm def statement (B):**
+```
+adm (M) (D : SJDecoration M) : Prop :=
+  a = 0  ∨  b = 0  ∨  (∀ η ∈ Crit D, (⨅ j, ν_η (corankGen D j)) = 0)
+  -- Crit D = all critical (pivot-vanishing) divisorial valuations of D, INCLUDING intersection/combined rays
+```
+- **peel-closure THEOREM** `adm D → adm (peelOp u D)`: old divisors `p=0` inherited; new divisor `p=0` by #144
+  (`RouteMSJTransversality`: rank ≥ b via `minAdm_eq_backPeel` #1 + banked convexity, on `redChain` via
+  `D.ctx`). Needs `D.ctx` genuine (`SJDecoration` well-formedness). [= #144; DECOUPLED from `peelOp`/#5's
+  sector construction — (B)'s win over (A).]
+- **base** `adm D → D terminal → (T)` (the simultaneous unit generator) via the intersection refinement
+  (the `{v=0}` recursion; `Crit` incl. intersections forces it).
+
+**Why (B) over (A):** (B) makes peel-closure the #144 theorem (already my §8/§9 + landed
+`RouteMSJTransversality`), DECOUPLES the `adm` def (#3) from the `peelOp`/sector build (#5) — (A) can't even
+STATE `adm` until `peelOp` is built — and reuses the banked `RouteMSJAdmEncoding`. Faithful to B1 (the
+valuation clause) and B2 (peel-closure = #144). The controller's lean is confirmed. **(A) would only be forced
+if the valuation `p=0` did NOT propagate without the reachability structure — but it DOES (the new divisor's
+`p=0` is chain-geometric, history-independent), so (A)'s #3↔#5 coupling is unnecessary.**
+
+### 10.1 `genuineCarrier` as an `adm` CLAUSE — MUST pin the EXACT deeper chain
+
+`SJDecoration` is NOT definitionally genuine (`RouteMSJDecorated.lean:89–123`: `Z`/`mZ`/`ctx`/`dom` arbitrary,
+only `residualMeas` recorded) — my "genuine from §10" expectation was WRONG; the wf invariant is required.
+Encode as an `adm` CLAUSE (controller's call, correct): `adm M D := genuineCarrier D ∧ (a=0 ∨ b=0 ∨
+∀η∈Crit D, ⨅_j ν_η(corankGen D j)=0)`. Stateable from banked `redChain`/`prod` (NO `peelOp`) ⟹ #3↔#5
+decoupling intact; untouched banked clean-three; live where #144 needs it; `trivial` discharges in `htriv`.
+
+**Ask (a) — MUST pin the EXACT deeper chain, NOT "∃ reduced product" [VERIFIED `/tmp/prodD/genuine.py`].** #144
+reads `a=M₀−t`, `b=M₁−t`, the rank strata `δ_r = cCodim(deeperChain;r)`, and `minAdm(redChain)` off the
+SPECIFIC deeper chain `(M₂,…,M_L)`. A free `M₂×M_L` matrix (or a generic "∃ reduced product") has the WRONG
+rank-strata codim wherever an intermediate dim bottlenecks: `redChain=(3,5,2,5)` → `minAdm=6` (chain; `M₃=2`
+caps `rank Zdeep ≤ 2`) vs `13` (free `5×5`); `(2,4,2,5)` → `4` vs `8`; `(2,4,4,5)` → `7` vs `8`. A carrier
+realizing only "some reduced product" lets #144 read the wrong `δ_r`/`minAdm` ⟹ wrong `ρ*`/threshold.
+**Minimal `genuineCarrier`:** `D`'s deeper carrier structurally EQUALS the banked `prod (deeperChain M)` map
+(`D.Z = paramsBox (deeperChain M)`, `D.ctx`/`D.dom` = the induced `prod (deeperChain M) ·`), `deeperChain M =
+(M₂,…,M_L)` — so `rank D.Z(A')`, `δ_r`, `minAdm(redChain)`, `a`, `b`, `ρ*` all read off the specific chain.
+Uses banked `redChain`/`prod`/`paramsBox`, no `peelOp`. Requirements met: (1) `trivial` = un-peeled full-chain
+product ⟹ genuine (`htriv`); (2) `peelOp` (real) maps `prod(deeperChain M)`→`prod(deeperChain redChain)` ⟹
+preserved (proved in the STEP, uses `peelOp` realness — NOT in the `adm` def, so #3 stays decoupled); (3) #144
+consumes it (specific-chain `δ_r`/`minAdm`/`a`/`b`). NOT "∃ reduced product" — that under-pins and breaks the
+codim read.
