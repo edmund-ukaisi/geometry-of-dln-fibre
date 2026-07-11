@@ -26,17 +26,23 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
    `corankBlock_morsePeel_lt_top` (`RouteMSJCorankPeel:114`), terminal `sjLoss_terminal_lintegral_lt_top`
    / `monomialIntegrand_integrable_of_lt`, `radialAttach` (T3), charge bookkeeping (`Mval_decompose`,
    `sjChargeBudget_le`, `peelCharge`), Schur-split `frobSq_schur_block_split` + shear
-   `measurePreserving_shearSub`. Coupling→7/2 = `radialAttach`-across-levels + charge-shift (NOT a bespoke
-   2-scale brick). **THE GAP (priority):**
-   - **T4 (genuinely-new HEART):** assemble FreedPeel regime A/B (`freedSchurLoss_inner_peel_lt_top:114` /
-     `_bounded_lt_top:156`) into ONE decorated peel — PRODUCE `hG`(PosDef)/`hpiv`(pivot energy>0)/`hs`
-     through the resolution a.e. in `A'` (they FAIL POINTWISE), regime by `c'` vs `peelCharge/2`, EXCLUDE
-     `c'=pq/2` log-borderline by strict `c'<½minAdm`. ★ SOUNDNESS: split A₂-rank-drop to higher-Mval.
-   - **T2 a′:** rowMix sync (`hsh` for `R=P⁻¹B` at a non-fresh block); wire `rowMix_decLoss`.
-   - **T5:** wire resolved leaf `SJDecoration.integral` → `sjLoss_terminal_lintegral_lt_top` (small).
-   GATED on vsastruct's `decoratedpeelstep-instance-cert` (T4 well-posedness on (3,3,4)/(1,2,2)) → then
-   the T4 formaliser → `DecoratedPeelStep` proved → `(□)` ∀M → mint unsuffixed `aoyagi_learning_
-   coefficient` (#108). Recon-map: `threads/genm-sjendpoint-recon/recon-map.md`. Live read: synthesis
+   `measurePreserving_shearSub`. **★ CORRECTION (UPDATE-876): the recon's "coupling→7/2 = radialAttach
+   across levels" is REFUTED — `radialAttach` is MULTIPLICATIVE (∏|u_k| → threshold min = 3/2 UNDERSHOOT);
+   the 7/2 needs the ADDITIVE coupled-corner MERGE (∑u_k²U_k → one divisor H=6 → ½·Σp_k=7/2), which is NOT
+   banked = the genuinely-new HEART.** **THE GAP — 4 genuinely-new pieces (UPDATE-876):**
+   - **(1) ★ the coupled-corner MERGE op** (additive corner → single divisor, sum-threshold — the min→sum
+     fix; radialAttach/corankBlock_morsePeel can't express it). THE HEART.
+   - **(2) the ADMISSIBLE decoration class + decorated arity driver** (∀-decoration is FALSE — Codex
+     counterexample; need jac=true-valuation + units-bounded-below-on-sector + rank-drop→deeper + budget).
+   - **(3) explicit A₂-rank-drop STRATIFICATION** (generic-minor sector {U_k≥a>0}; complement→deeper; NOT
+     a.e.-drop — the RLCT-collapse trap: independent split=min=3/2, coupled=add=7/2).
+   - **(4) T2 a′:** rowMix at analytic support (`hsh` for `R=P⁻¹B`).
+   GATED on vsastruct's TERMINAL merge de-risk (`t4-merge-derisk.md`: realise ONE merge on (3,3,3,4) t=1
+   through sharedDivisorExp → CARRIER-FIT VERDICT: fits [→ assembly] or needs a new constructor [→ its exact
+   signature]). Then the formaliser (no 6th design pass) → `DecoratedPeelStep` proved → `(□)` ∀M → mint
+   unsuffixed `aoyagi_learning_coefficient` (#108). Guards: `exists_binding_cut` (Q3 borderline). Certs:
+   `threads/genm-vsastruct/` (verdict, corank2-cert, dps-instance-cert, t4-design-cert), recon-map:
+   `threads/genm-sjendpoint-recon/`. Live read: synthesis
    UPDATE-874. **NOTE:** the Route-V front-majorant/cover Architecture (vsastruct corank2-cert; crux
    `twoBlock_radial_le` + `FrontSpectral` banked) is a PARALLEL route — banked pieces stay (reusable) but
    are OFF this native critical path; the cert's MATH (7/2 three ways, coupling load-bearing) informs T4.
