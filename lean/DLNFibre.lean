@@ -1242,3 +1242,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJSigMin
 -- `posSemidef_det_le_iInf_mul_trace_pow` (det G ≤ ⨅eigenvalues·trace^{r−1}). ⟹ det(gram M)≤σ_min²·trace^{r−1}
 -- = the box comparison reducing ∫σ_min^{−α} to qbox. Network-free reusable. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh
+-- `RouteMSJProductTube` — vslice LAYER 2, the (b)-integrability core (thread `genm-vsdeep`/`genm-vswire`):
+-- `sjProductTube_params_lintegral_lt_top` (∫⁻ σ_min(A₀·A₁)^{−α} < ⊤ for 0≤α<1 = c'<½·minAdm(3,3,3,4)) —
+-- the (3,3,3,4) deeper-strata σ-min product-tube majorant, via the banked Rayleigh/PSD-det/qbox core +
+-- Tonelli-factorize on P=A₀·A₁ (both free). Reviewer SURVIVED + Codex. clean-three. ((a) front-first is a
+-- separate sub-tide; wire-in via setLIntegral_lt_top_of_detMinorCover once (a) lands.)
+import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube

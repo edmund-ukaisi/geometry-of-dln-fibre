@@ -118,6 +118,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDescNat
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDominantCover
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSigMin
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh
+import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
 
 /-!
 # Axiom-hygiene check
@@ -1005,3 +1006,6 @@ open DLNFibre.DLN.RLCT
 #print axioms minStretch_comp_ge
 #print axioms gram_rayleigh_lb
 #print axioms posSemidef_det_le_iInf_mul_trace_pow
+-- vslice LAYER 2 (RouteMSJProductTube, genm-vsdeep/vswire): the (b)-integrability core — the (3,3,3,4)
+-- deeper-strata σ-min product-tube majorant ∫⁻ σ_min(A₀·A₁)^{−α} < ⊤ (0≤α<1). Reviewer SURVIVED + Codex.
+#print axioms sjProductTube_params_lintegral_lt_top
