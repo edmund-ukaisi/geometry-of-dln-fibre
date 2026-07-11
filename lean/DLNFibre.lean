@@ -1334,3 +1334,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
 -- NO Core.CTheta build. Incidence (frontCharge bump +ρ) squeezed against banked convexity (RouteMSJTransversality).
 -- The COMBINATORIAL ρ≥b; the geometric bridge (ρ = codim-realizing rank stratum → rank(Zdeep)≥b) is piece #2. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
+-- AG-free free-matrix corank survival (RouteMSJCorankSurvival, genm-sj5-desc2, #2 part-b): for a FIXED Zdeep of
+-- rank ≥ b, a.e. free A has rank (Matrix.of A * Zdeep) = b — the b corank rows survive full-row-rank b through
+-- the rank-≥b deeper product (p=0). AG-FREE: genericity in the free var A, minor-cut null set (Zdeep.rank a
+-- hypothesis, from #1's ρ≥b), NO component decomposition / NO generic-rank-on-a-component. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival

@@ -132,6 +132,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
 
 /-!
 # Axiom-hygiene check
@@ -1106,3 +1107,9 @@ open DLNFibre.DLN.RLCT
 #print axioms minAdm_backPeel_cominimizer_ge
 #print axioms minAdm_backPeel_cominimizer_ge_corankWidth
 #print axioms exists_minAdm_backPeel_cominimizer_corankWidth
+-- A2 corank SURVIVAL (RouteMSJCorankSurvival, genm-sj5-desc2, #2 part-b; bedrock PASS + cover fidelity audit):
+-- for a FIXED Zdeep of rank ≥ b, a.e. free A has rank (Matrix.of A * Zdeep) = b (`corank_survival_ae`), via the
+-- a.e.-nonzero minor `ae_matrix_eval_ne_zero`. AG-FREE: free-var-A genericity, minor-cut null set, Zdeep.rank a
+-- hypothesis — NO component decomposition. The geometric bridge #1's ρ≥b → rank(Zdeep)≥b feeds hb.
+#print axioms corank_survival_ae
+#print axioms ae_matrix_eval_ne_zero
