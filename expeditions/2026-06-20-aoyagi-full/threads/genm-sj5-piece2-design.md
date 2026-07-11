@@ -83,3 +83,25 @@ New module `RouteMSJCorankSurvival.lean` importing `Core.RankLocusClosed` +
 `Core.MeasureTheory.PolynomialZeroSet` (+ mirror `DeepestCoreNonvanishing`'s poly-encoding).
 Deliverables: `corank_survival_ae` + (if route-A) the units bridge
 `full-row-rank ⟹ ∃c>0, Z·Zᵀ≽c·I`. Pre-stage the banked lemma names/types as `example` contracts first.
+
+## Units bridge (#2 b→units) — scoping (for fresh-budget pickup)
+
+> **Target.** `Z : Matrix (Fin n) (Fin D) ℝ`, `Z.rank = n` (full ROW rank) ⟹
+> `∃ c > 0, (Z * Zᵀ - c • (1 : Matrix (Fin n) (Fin n) ℝ)).PosSemidef`. Feeds route-A
+> `corankLeaf_rpow_lt_top`'s `hZ` (and via `corank_survival_ae`, `Z := A·Zdeep` is full-row-rank a.e.).
+
+Two sub-facts:
+- **(1) `Z.rank = n ⟹ (Z * Zᵀ).PosDef`.** `Z*Zᵀ` is always PosSemidef (`Matrix.posSemidef_self_mul_conjTranspose`,
+  over ℝ `conjTranspose = transpose`). Full row rank ⟹ `Zᵀ *ᵥ x ≠ 0` for `x ≠ 0` (left-nullspace of `Z`
+  is `0`), so `xᵀ(ZZᵀ)x = ‖Zᵀ *ᵥ x‖² > 0` — PosDef via `posDef_iff_dotProduct_mulVec`. The
+  invertibility half is banked-adjacent in `Core.Matrix.GramFullRank` (`gram_det_ne_zero_of_submatrix_det_ne`,
+  `right_factor_det_ne_of_rank_eq`); the `≠0`-dotProduct is the elementary bit.
+- **(2) `A.PosDef ⟹ ∃ c > 0, (A - c • 1).PosSemidef`.** NOT banked. Cleanest is the min over the unit
+  sphere: `m := min_{‖x‖=1} xᵀAx` (compact sphere, continuous form, `IsCompact.exists_isMinOn`), `m > 0`
+  (PosDef, minimiser `≠ 0`), then homogeneity gives `xᵀAx ≥ m‖x‖²` ∀x, i.e. `(A - m•1) ≽ 0`. AVOID the
+  eigenvalue/eigenvector route (lean/CLAUDE.md spectral-isDefEq-timeout hazard). ~60–100 lines; a
+  fresh-budget spectral build.
+
+**Status:** #2-core `corank_survival_ae` DONE (green, `RouteMSJCorankSurvival.lean`). Units bridge is
+the clean next piece — deferred to fresh budget (DON'T-DEGRADE) so the spectral sub-fact (2) is built
+carefully, not near a context boundary.
