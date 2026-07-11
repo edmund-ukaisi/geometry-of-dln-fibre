@@ -1064,3 +1064,8 @@ open DLNFibre.DLN.RLCT
 #print axioms measure_shearbox_lt_top
 #print axioms freedSchurLoss_inner_bounded_le
 #print axioms freedSchurLoss_inner_bounded_shear_lt_top
+-- + `pivotEnergy_inverse_free` (w = frobSq([P|B₁₂]·Q) is INVERSE-FREE ⟹ {w=0} a clean bilinear locus) and
+-- `freedSchurLoss_inner_peel_le` (the good-cell atom-branch VALUE ≤ det(Q_bQ_bᵀ)^{−a/2}·Cresid·(core)^{−(c'−ab/2)}
+-- the outer descent integrates on c'>ab/2 cells). Design-INDEPENDENT (Route A consumes both).
+#print axioms pivotEnergy_inverse_free
+#print axioms freedSchurLoss_inner_peel_le
