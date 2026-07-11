@@ -1261,3 +1261,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
 -- is an INPUT hypothesis — RED-FLAG-2 respected, Codex counterexample-confirmed) + `lintegral_comp_rmatMul_orth`
 -- (orthogonal CoV, |det Q|=1). fsreview PASS + Codex xhigh. clean-three. ((3ii)/(3iii) HELD for vsastruct.)
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
+-- `RouteMSJCorner334` — the (□)-core FIRST T4 build (thread `genm-corner334`): the (3,3,3,4) t=1
+-- decorated corner-SLICE, validating the min→sum mechanism IN LEAN. `sjLoss_indicator_two_block`
+-- (indicator-prependColumn ⟹ ADDITIVE corner, vs radialAttach's multiplicative 3/2) +
+-- `sjCorner334_sector_slice_lt_top` (full-row-rank sector → slice < ⊤ at 7/2 = ½minAdm(3,3,3,4), via
+-- the banked additive endpoint) + the SHARP boundary `cornerSlice334_eq_top_of_unit{0,1}_zero` (a
+-- one-sided A₂-rank-drop → +∞ below 7/2). Complement = a JOINT/Tonelli obligation (deferred, NOT a
+-- fixed-slice hypothesis — an earlier false-premise "cover" was dropped). corner334-review PASS +
+-- controller-review. clean-three. (The Tonelli assembly + deeper stratum + admissible driver follow.)
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334

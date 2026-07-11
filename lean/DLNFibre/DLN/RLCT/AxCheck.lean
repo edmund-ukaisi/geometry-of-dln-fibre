@@ -121,6 +121,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh
 import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334
 
 /-!
 # Axiom-hygiene check
@@ -1022,3 +1023,8 @@ open DLNFibre.DLN.RLCT
 #print axioms sigMin_sq_eq_iInf_eigenvalues
 #print axioms frobSq_ge_twoBlock_of_sector
 #print axioms lintegral_comp_rmatMul_orth
+-- (□)-core FIRST T4 build (RouteMSJCorner334, genm-corner334): the (3,3,3,4) corner-slice —
+-- min→sum validated (sector at 7/2 via the additive endpoint) + the sharp divergence boundary.
+-- corner334-review PASS + controller-review. Complement = joint/Tonelli obligation (deferred).
+#print axioms sjCorner334_sector_slice_lt_top
+#print axioms cornerSlice334_eq_top_of_unit1_zero
