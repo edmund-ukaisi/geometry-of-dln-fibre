@@ -17,28 +17,29 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
 
 ## Now (ranked)
 
-1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` via the native (S,J) recursion — building the `(3,3,3,4)`
-   VALIDATION vslice, then lift to opaque width.** ESTABLISHED math (Aoyagi §5: radial blow-ups + det-1
-   unit clears + absorption-by-renaming + diag(b) ledger) ⇒ build. The vslice reduces `(□)` to the
-   `sjJointResolution` analytic endpoint at these arities; closing it validates the machine.
-   **★ FRONTIER (2026-07-11) — vsastruct (decorrelated) revealed the vslice step (a) is a genuine
-   CORANK-STRATUM RECURSION** (codim-2 binds at exactly 7/2 = codim-1; no single global
-   `σ_min^{−a}`/`det^{−a/2}` a<1 majorant — a stratified cover is FORCED; BUILDABLE, not a wall; 7/2
-   proven 3 ways). Cells:
-   - **TOP stratum (q=1):** crux `twoBlock_radial_le` BANKED @56125ea9 + spectral `RouteMSJFrontSpectral`
-     BANKED @cdd0b206 (Frobenius–Gram + sigMin²=⨅λ + the two-block bridge, sector=input hyp). Sector
-     step-a (F1 2×2-minor Borel sector + Cauchy–Binet + →LAYER 2) IN FLIGHT [tide aec2028d].
-   - **DEEP stratum (q=2) — the binding new content:** (i) coupled corank-2 majorant BRICK (asymmetric
-     `s₂^{−3}·s₃^{−(2c'−6)}`, "crux one dim up") IN FLIGHT [a224f9ba]; (ii) **ROUTE S = close
-     `sjJointResolution` for the corner monomial `u₀²U₀+u₁²U₁` → `monomialIntegrand_integrable_of_lt`**
-     (charge bookkeeping `Mval_decompose`/`sjChargeBudget_le` banked; the vslice-§5 geometric corner
-     resolution is the GAP, sits under the sorry). ★ my ∧²-compound-tube route REFUTED (asymmetry). The
-     (S,J)-endpoint self-recon scopes route S now [a53d75e]; commission the build on its return. **The
-     (□)-core.**
-   - **q=3:** DEFERRED, non-binding (threshold ½(8+0)=4, slack).
-   - **Then:** assemble `Σ_q ∫_cell_q < ∞` (cover-assembly, banked partition tool) → close the vslice →
-     lift to opaque width → `(□)` ∀M → mint the unsuffixed `aoyagi_learning_coefficient` (#108).
-   Live read: synthesis UPDATE-870..873.
+1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` via the native (S,J) recursion = prove `DecoratedPeelStep`.**
+   ESTABLISHED math (Aoyagi §5: radial blow-ups + det-1 unit clears + absorption-by-renaming + diag(b)
+   ledger) ⇒ build. **★ ROUTE (self-recon-VERIFIED vs live code, UPDATE-874):** the live (□)-gate is
+   `DecoratedPeelStep` (`RouteMSJDecoratedRec.lean:78`) — ONE unproven Prop whose driver proves
+   `→ (□)` (`:99`) AND `→` the exact `sjJointResolution:803` goal (`:111`) sorry-free ⟹ **`:803` is
+   OBSOLETE** (don't touch — circular-trap). BANKED, consume (do NOT rebuild): corner atom
+   `corankBlock_morsePeel_lt_top` (`RouteMSJCorankPeel:114`), terminal `sjLoss_terminal_lintegral_lt_top`
+   / `monomialIntegrand_integrable_of_lt`, `radialAttach` (T3), charge bookkeeping (`Mval_decompose`,
+   `sjChargeBudget_le`, `peelCharge`), Schur-split `frobSq_schur_block_split` + shear
+   `measurePreserving_shearSub`. Coupling→7/2 = `radialAttach`-across-levels + charge-shift (NOT a bespoke
+   2-scale brick). **THE GAP (priority):**
+   - **T4 (genuinely-new HEART):** assemble FreedPeel regime A/B (`freedSchurLoss_inner_peel_lt_top:114` /
+     `_bounded_lt_top:156`) into ONE decorated peel — PRODUCE `hG`(PosDef)/`hpiv`(pivot energy>0)/`hs`
+     through the resolution a.e. in `A'` (they FAIL POINTWISE), regime by `c'` vs `peelCharge/2`, EXCLUDE
+     `c'=pq/2` log-borderline by strict `c'<½minAdm`. ★ SOUNDNESS: split A₂-rank-drop to higher-Mval.
+   - **T2 a′:** rowMix sync (`hsh` for `R=P⁻¹B` at a non-fresh block); wire `rowMix_decLoss`.
+   - **T5:** wire resolved leaf `SJDecoration.integral` → `sjLoss_terminal_lintegral_lt_top` (small).
+   GATED on vsastruct's `decoratedpeelstep-instance-cert` (T4 well-posedness on (3,3,4)/(1,2,2)) → then
+   the T4 formaliser → `DecoratedPeelStep` proved → `(□)` ∀M → mint unsuffixed `aoyagi_learning_
+   coefficient` (#108). Recon-map: `threads/genm-sjendpoint-recon/recon-map.md`. Live read: synthesis
+   UPDATE-874. **NOTE:** the Route-V front-majorant/cover Architecture (vsastruct corank2-cert; crux
+   `twoBlock_radial_le` + `FrontSpectral` banked) is a PARALLEL route — banked pieces stay (reusable) but
+   are OFF this native critical path; the cert's MATH (7/2 three ways, coupling load-bearing) informs T4.
 2. **[RESOLVED 2026-07-09] Peel-stack naming — KEEP the unsuffixed `aoyagi_learning_coefficient`.**
    Operator decision: keep it. It stays a sorried placeholder until Stage 2 discharges `(□)`, then it is
    re-pointed to the honest unconditional fully-general result. No action now.
@@ -52,7 +53,7 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
 
 ## Watching (suspicion / risks)
 
-- **★ SOUNDNESS WATCH-POINT (route S, the (□)-core) — the A₂-units-bounded-below RLCT-collapse.** The
+- **★ SOUNDNESS WATCH-POINT (T4, the (□)-core) — the A₂-units-bounded-below RLCT-collapse.** The
   vslice-§5 corner resolution's load-bearing non-obvious brick is "the units `U₀,U₁ > 0` stay bounded
   below on the generic-A₂ chart" — this is what stops the DLN sum-form from RLCT-collapsing to the `min`
   caricature `z²(x²+y²)`. If the route-S build does NOT split the A₂-rank-drop off to the higher-Mval
