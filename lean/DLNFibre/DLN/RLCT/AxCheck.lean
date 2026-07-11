@@ -125,6 +125,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
 
 /-!
 # Axiom-hygiene check
@@ -1045,3 +1046,12 @@ open DLNFibre.DLN.RLCT
 #print axioms frontFirst_g_le_of_sector
 #print axioms frontBox_twoBlock_le
 #print axioms measurePreserving_colSplitReshape
+-- (□) g(Q) deeper-strata brick cell_{q≥2} (RouteMSJCorankQ, genm-sj5; route S): `qPeelIntegral_lt_top` (the
+-- corank-q coupled corner majorant, finite for c'<½Σ(h_i+1) under per-block gate h_i≤m_i) + `qCornerSliceAtUnits_le`
+-- (q-ary AM-GM min→sum = ADD-not-MIN). Statement soundness PASS (#133, decorrelated). Crux via banked fin_nat_prod.
+#print axioms qPeelIntegral_lt_top
+#print axioms qCornerSliceAtUnits_le
+-- obligation-1 ARTIFACT (per-block codim allocation, genm-sj5): qPeelIntegral 2 ![3,2] ![7,3] finite for
+-- c'<7/2 — each block its OWN product-rank codim (m=![7,3], NOT uniform/total), reproducing onePeel334's 7/2.
+-- The concrete product-vs-free (7/2-not-9/2) witness the reshape must reproduce (genm-sj5-cover audits).
+#print axioms qPeel_334_lt_top

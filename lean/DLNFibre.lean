@@ -1290,3 +1290,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
 -- `lintegral_frobBall_orthRightMul` (ball-restricted orth CoV), `frontBox_twoBlock_le` (→ banked `twoBlock_radial_le`).
 -- Review-PASS (du/dv fidelity Codex-confirmed). The `sjSector` hyp = step-6 (#130 (r−1)-minor). clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst
+-- `RouteMSJCorankQ` — the (□) g(Q) deeper-strata brick (cell_{q≥2}, route S): `qPeelIntegral_lt_top` — the
+-- corank-q coupled corner majorant finite for c'<½Σ(h_i+1) under the per-block codim gate h_i≤m_i. Soundness
+-- (statement-PASS #133): `qCornerSliceAtUnits_le` (q-ary AM-GM min→sum = ADD-not-MIN) + {U_i=0} JOINT (not
+-- deleted) with h_i≤m_i = #127's per-direction D_q. Crux dissolved via banked `Integrable.fin_nat_prod`.
+-- Fidelity of the per-block casting (obligation-1) lives in the cover/reshape (next), not this abstract. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
