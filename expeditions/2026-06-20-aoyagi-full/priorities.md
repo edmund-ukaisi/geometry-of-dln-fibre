@@ -1,9 +1,9 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
-Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 — STAGE 2 (A)-BUILD;
-`(3,3,3,4)` vslice = corank-stratum recursion; route S is the binding (□)-core.** Live integrative read:
-`synthesis.md` (UPDATE-873 newest); operator-review items: `discuss-at-close.md` (#97, #98).
+Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (pm) — STAGE 2 (A)-BUILD;
+(□)-core NATIVE sjGoodMap route (inner slice BANKED); remaining = the outer tail + (S,J) L-recursion.**
+Live integrative read: `synthesis.md` (UPDATE-883 newest); operator-review items: `discuss-at-close.md` (#97–#100).
 
 ## ★ STATE ANCHOR — Stage 1 COMPLETE (S2-free), Stage 2 = BUILD-discharge `(□)` via native (S,J)
 Stage 1 delivered the fully-general Aoyagi learning coefficient (honest Lean 4 + Mathlib, BEDROCK-OK,
@@ -17,39 +17,30 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
 
 ## Now (ranked)
 
-1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` via the native (S,J) recursion = prove `DecoratedPeelStep`.**
-   ESTABLISHED math (Aoyagi §5: radial blow-ups + det-1 unit clears + absorption-by-renaming + diag(b)
-   ledger) ⇒ build. **★ ROUTE (self-recon-VERIFIED vs live code, UPDATE-874):** the live (□)-gate is
-   `DecoratedPeelStep` (`RouteMSJDecoratedRec.lean:78`) — ONE unproven Prop whose driver proves
-   `→ (□)` (`:99`) AND `→` the exact `sjJointResolution:803` goal (`:111`) sorry-free ⟹ **`:803` is
-   OBSOLETE** (don't touch — circular-trap). BANKED, consume (do NOT rebuild): corner atom
-   `corankBlock_morsePeel_lt_top` (`RouteMSJCorankPeel:114`), terminal `sjLoss_terminal_lintegral_lt_top`
-   / `monomialIntegrand_integrable_of_lt`, `radialAttach` (T3), charge bookkeeping (`Mval_decompose`,
-   `sjChargeBudget_le`, `peelCharge`), Schur-split `frobSq_schur_block_split` + shear
-   `measurePreserving_shearSub`. **★ CORRECTION (UPDATE-876): the recon's "coupling→7/2 = radialAttach
-   across levels" is REFUTED — `radialAttach` is MULTIPLICATIVE (∏|u_k| → threshold min = 3/2 UNDERSHOOT);
-   the 7/2 needs the ADDITIVE coupled-corner MERGE (∑u_k²U_k → one divisor H=6 → ½·Σp_k=7/2), which is NOT
-   banked = the genuinely-new HEART.** **THE GAP — 4 genuinely-new pieces (UPDATE-876):**
-   - **(1) ★ the coupled-corner MERGE op** (additive corner → single divisor, sum-threshold — the min→sum
-     fix; radialAttach/corankBlock_morsePeel can't express it). THE HEART.
-   - **(2) the ADMISSIBLE decoration class + decorated arity driver** (∀-decoration is FALSE — Codex
-     counterexample; need jac=true-valuation + units-bounded-below-on-sector + rank-drop→deeper + budget).
-   - **(3) explicit A₂-rank-drop STRATIFICATION** (generic-minor sector {U_k≥a>0}; complement→deeper; NOT
-     a.e.-drop — the RLCT-collapse trap: independent split=min=3/2, coupled=add=7/2).
-   - **(4) T2 a′:** rowMix at analytic support (`hsh` for `R=P⁻¹B`).
-   **★ DESIGN PHASE CLOSED (UPDATE-877) — CARRIER FITS, no new constructor.** The additive coupled-corner
-   at 7/2 is BANKED (`sjSlice_corner_two_block_lt_top`, VERIFIED, weighted AM-GM = codims ADD); the "merge"
-   = banked `prependColumn` with INDICATOR columns (NOT `radialAttach` = the 3/2 product). **NOW BUILDING**
-   (execution): the first T4 formaliser [ab1a79a7] — the (3,3,3,4) t=1 corner-slice finiteness at 7/2 through
-   the banked endpoint (smallest-settling in Lean; validates min→sum), with the A₂-rank-drop complement
-   EXPLICITLY stratified (soundness gate: charges ADD not min; complement routed not a.e.-dropped). Follow-on
-   after it lands: the ADMISSIBLE class + decorated arity driver + m>2 wrapper → `DecoratedPeelStep` proved →
-   `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient` (#108). Guards: `exists_binding_cut` (Q3). Certs:
-   `threads/genm-vsastruct/` (verdict, corank2, dps-instance, t4-design, t4-merge-derisk), recon-map:
-   `threads/genm-sjendpoint-recon/`. Live read: synthesis
-   UPDATE-874. **NOTE:** the Route-V front-majorant/cover Architecture (vsastruct corank2-cert; crux
-   `twoBlock_radial_le` + `FrontSpectral` banked) is a PARALLEL route — banked pieces stay (reusable) but
-   are OFF this native critical path; the cert's MATH (7/2 three ways, coupling load-bearing) informs T4.
+1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` = prove `DecoratedPeelStep` via the NATIVE (S,J) sjGoodMap route.**
+   `(□)`-gate = `DecoratedPeelStep` (`RouteMSJDecoratedRec:78`, one unproven Prop; driver `→ (□)` AND `→`
+   the obsolete `sjJointResolution:803`, sorry-free). **★ ROUTE PIVOT (UPDATE-883, charter-vindicating,
+   VERIFIED vs live code):** the NATIVE sjGoodMap route WINS — the per-chart INNER slice is **ALREADY BANKED**
+   at 7/2, det-inverse-free: `gammaPeelIntegral_sjGoodMap_eq` (RouteMSJGoodCoords:95) ∘
+   `sjGoodChartLoss_endpoint_lt_top` (RouteMSJVExpose:74) ∘ `sjGoodMap_loss_matBox_lt_top`
+   (RouteMSJGoodChart:269), all 0-sorry, via `corner_block_cube` (isotropic, dim a·b+t·h=7 → 7/2=½minAdm,
+   codims-add). The `|det M|^{−4}` det-inverse of the casting route was a self-inflicted A₂-reparam artifact
+   (charter: re-express natively → done). **ABANDONED (off critical path, banked/reusable):** the casting
+   route — corner334 @96409822 (min→sum validated in Lean) + onePeel334 @a39a37e4 (clean-coords codim-rescue);
+   also the earlier Route-V crux `twoBlock_radial_le` + `FrontSpectral`. Do NOT consume/rebuild these on the
+   native path (BUT their anisotropic analysis may feed the outer-tail estimate — see the caveat).
+   **★ THE REMAINING MOUNTAIN (native, det-inverse-free):** the **OUTER tail integration** (`σ_min(L_θ)^{−2c'}`
+   on the good∪deeper cover) + the **(S,J) L-recursion** (the front `Ã₁`-rank descent = the T4 decorated
+   double induction; A₂ rescued per-level per onepeel-tonelli). `chartInner_eq_outerShearFree` flags it.
+   **★ CAVEAT (vsastruct prior, to adjudicate):** the crude coercive `∫ σ_min(L_θ)^{−2c'}` likely UNDERSHOOTS
+   below 7/2 (worst-direction σ_min collapses the coupled corner to the 3/2-min caricature) → the **sharper
+   ANISOTROPIC estimate** (the corank-recursion / `twoBlock_radial` per-singular-value structure — where the
+   "off-path" crux/corank2 analysis becomes reusable) is probably the deeper-rung crux; banked-adjacent
+   `RouteMSJProductTube` (LAYER-2 σ_min-integrability). **NOW:** mountain self-recon [ace21ecb] mapping
+   banked-vs-new → re-engage vsastruct on the σ_min-coarseness (crude vs sharper) with the recon-map →
+   commission the mountain formaliser on the native route. Then → `DecoratedPeelStep` proved → `(□)` ∀M →
+   mint unsuffixed `aoyagi_learning_coefficient` (#108). Certs: `threads/genm-vsastruct/` (…, onepeel-tonelli,
+   onepeel-tieback, onepeel-altroute); recon: `threads/genm-mountain-recon/`. Live read: synthesis UPDATE-883.
 2. **[RESOLVED 2026-07-09] Peel-stack naming — KEEP the unsuffixed `aoyagi_learning_coefficient`.**
    Operator decision: keep it. It stays a sorried placeholder until Stage 2 discharges `(□)`, then it is
    re-pointed to the honest unconditional fully-general result. No action now.
