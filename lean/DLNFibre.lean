@@ -1284,3 +1284,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334
 -- row-split into κ-pivot rows + corank rows. UNCONDITIONAL (measure-preserving transport, no side-conditions).
 -- Fixes the C3 stale docstring. The v-exposure (step c) is a SEPARATE measurability rung (follow-on). clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
+-- `RouteMSJFrontFirst` — the (□) front-first shared brick (§5 lane #125 = lane-1 #121, converged): the
+-- CONDITIONAL cell_1 bound `frontFirst_g_le_of_sector` (g(Q)=∫frobSq(A₀·P)^{−c'} ≤ C·sigMin P^{−α'} GIVEN
+-- `sjSector`) — the rank-stratified cover's top stratum (q=1). Reshape machinery: `measurePreserving_colSplitReshape`,
+-- `lintegral_frobBall_orthRightMul` (ball-restricted orth CoV), `frontBox_twoBlock_le` (→ banked `twoBlock_radial_le`).
+-- Review-PASS (du/dv fidelity Codex-confirmed). The `sjSector` hyp = step-6 (#130 (r−1)-minor). clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst

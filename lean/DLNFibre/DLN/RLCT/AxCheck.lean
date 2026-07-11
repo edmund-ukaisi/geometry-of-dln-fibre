@@ -124,6 +124,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst
 
 /-!
 # Axiom-hygiene check
@@ -1038,3 +1039,9 @@ open DLNFibre.DLN.RLCT
 -- (□)-core native-route CoV scaffold, gap (1a) (RouteMSJRowSplitCompose, genm-mountain): the row-split
 -- identity gammaPeelIntegral = the leading-layer-row-split nested integral (unconditional, MP transport).
 #print axioms gammaPeelIntegral_rowSplit_eq
+-- (□) front-first shared brick cell_1 (RouteMSJFrontFirst, genm-sj5; §5 #125 = lane-1 #121, converged):
+-- the CONDITIONAL g(Q) ≤ C·sigMin^{−α'} given sjSector (the rank-stratified cover's top stratum, q=1) +
+-- the reshape core. Review-PASS (du/dv fidelity Codex-confirmed). sjSector hyp = step-6 (#130 (r−1)-minor).
+#print axioms frontFirst_g_le_of_sector
+#print axioms frontBox_twoBlock_le
+#print axioms measurePreserving_colSplitReshape
