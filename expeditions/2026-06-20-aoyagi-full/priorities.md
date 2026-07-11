@@ -85,20 +85,19 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
 
 ## Watching (suspicion / risks)
 
-- **★ SOUNDNESS WATCH-POINT (T4, the (□)-core) — the A₂-units RLCT-collapse — now a CONCRETE CONTRACT
-  (UPDATE-937, cover's stephyp-intersection-cert @f98903f6, decorrelated Codex told to HUNT a collapse).**
-  VERDICT: NO collapse is intrinsic — the coupled sum's charges ADD to ½minAdm (zero set = the POINT
-  {u₀=u₁=0}, not a pre-existing divisor). Sound given TWO gates #5 must ESTABLISH: (T4) a QUANTITATIVE units
-  sector `σ_min(A₂)≥ε` (pointwise full-rank ≠ uniform bound — `diag(1,…,t)` accumulates on the rank-drop;
-  the rank-drop nbhd SPLITS to a recursive branch, is NOT deleted null) + (tube) the per-branch estimate
-  `λ=n₁/2+½min(n₀,D/m)`, full `½minAdm` **iff `D/m≥n₀`** (CODIM ALONE INSUFFICIENT — vanishing order m
-  matters). **Anchor (3,3,3,4) SECURED; general-width `D/m≥n₀` per-rank-drop-branch = the deepest #5
-  obligation.** NOT a wall (concrete criterion + cheap per-width check). D/m≥n₀ is FORCED by Aoyagi (faithful
-  branch ⟹ converges below ½minAdm), so the hunt for a counterexample is the FAITHFULNESS test. **De-risk
-  ACTIVE: `genm-sj5-dmcheck` (#146, pen-and-paper witness seat)** — a found collapse = unfaithfulness
-  (escalate); no-collapse = the forced-geometry proof #5 formalizes. Audit #5's coupled estimate hardest
-  against these 4 obligations (uniform coercivity on the sector / joint tube estimate / per-branch ≥½minAdm
-  with tube-density AND orders / uniform seam + σ_min-stratification termination).
+- **★ SOUNDNESS WATCH-POINT (T4, the (□)-core) — the A₂-units RLCT-collapse — RESOLVED: NO COLLAPSE
+  (UPDATE-939, dmcheck #146 @c7fe44dd + cover's stephyp cert @f98903f6, both decorrelated w/ Codex).**
+  dmcheck swept 23 chains (anchor + 4 bottlenecks + corank-2/3 + L=3,4,5): NO collapse; linchpin
+  `min_ρ(cCodim+M₀ρ)=minAdm` holds (0 violations, geometric cCodim) ⟹ our decomposition is FAITHFUL.
+  Forced by 3 pillars: (P1) tube codim=cCodim; (P2) m=1 via the reduced full-rank normal slice; (P3) binding
+  ⟹ D_q≤M₀q ⟹ charges ADD → ½minAdm. **★ FRAMING for #5 (dmcheck's decorrelated correction to cover's cert
+  — ADOPT):** state the soundness as the **QIP identity + m=1 + D_q≤M₀q**, per-cell threshold
+  `½(M₀ρ+min(M₀q,D_q))` — NOT bare `D/m≥n₀` (VIEW-DEPENDENT — inverts top-level vs decorated), NOT ½(D_q+d_q).
+  **3 misread-traps #5 must avoid** (T-a σ_min² per-direction not det≍t^{2q}; T-b no free-front-layer prepend —
+  transversality §1 licenses the deeper-product reading; T-c ½(D_q+d_q) over-claims on a narrow front but stays
+  ≥½minAdm). **Owed to Lean for #5:** (P2) the reduced full-rank normal slice (m=1), banked-adjacent to
+  `normalSlice_transfer` #109. cover to CONFIRM the framing correction; audit #5's estimate against the
+  invariant form + the 3 traps. No wall.
 - **`(□)` climbability (Stage-2 crux).** Aoyagi §5 is established ⇒ labour, not a wall; the corank-2 rung
   is decorrelated-confirmed finite at 7/2 (3 ways). The deepest grind is closing `sjJointResolution` at
   the corner monomial (the geometric corner resolution — the GAP). A genuinely-new obstruction here (not
