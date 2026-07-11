@@ -190,11 +190,122 @@ Sound entry point.
 §10.4 uses the corrected `H₁^{−3}(H₁+H₂)^{−1}` (drops the sloppy `H₁^{−3}H₂^{−1}`, matches toric §5); §10.5 has
 the nD-homogeneous corner `½Σ(p_i+1)=½Σ(block dims)=½minAdm`, both coupling charts. Matches the certs.
 
+### (units-interface) does #144 discharge the formaliser's leaf hypothesis "H₁,H₂ units"? — **YES, MATCHES**
+The formaliser builds part (c) (the b>1 terminal reduction) in Lean CONDITIONAL on "H₁,H₂ units on the chart."
+Seam-check: does #144's invariant supply it? **YES [V, `/tmp/prodD/units_interface.py`].**
+- #144 gives `rank(A_cor·Zdeep) = min(b, rank Zdeep) = b` (full ROW rank, since `rank Zdeep ≥ a+b−1 ≥ b`), so
+  the `b` corank rows are LINEARLY INDEPENDENT. Independent ⟹ `q₂≠0` (`H₂=|q₂|` a unit) AND `q₁+s q₂≠0` for
+  ALL `s` (`q₁∥q₂` is impossible for independent rows, so `q₁+s q₂` never vanishes) ⟹ `H₁=|q₁+s q₂|` a unit
+  uniformly in the angular `s`. So full-row-rank `b` ⟹ BOTH `H₁,H₂` units. The formaliser's hypothesis is
+  DISCHARGED. **The seam to make explicit in Lean: the bridge lemma `corank block full row rank b ⟹ H₁,H₂
+  units` (elementary — independent rows are nonzero, and `q₁+s q₂≠0 ∀s` for independent `q₁,q₂`).**
+- **Discharged with ROOM:** the terminal needs only `H₁` a unit (`H₁²+v²H₂² ≥ H₁² > 0` regardless of `H₂`), and
+  `= p=0`. So the minimal leaf hypothesis is "`H₁` unit"; "`H₁,H₂` units" is stronger but still supplied by
+  #144. Either statement is safe; "`H₁` unit" is the cleanest (exactly `p=0`).
+
+### (c)-soundness cross-check (not re-derived — the formaliser's green proof carries it) — **SOUND**
+`frobSq(Γ·Q_b) = u²·frobSq(M·Q_b)` (`Γ=u·M`), and on the units divisor `frobSq(M·Q_b) ≥ |q₁+s q₂|² = H₁² > 0`
+is a UNIT, so `frobSq(Γ·Q_b) = u²·(unit)` — a monomial; with `R²` (reduced) → `f = R² + u²·unit` →
+`sjLoss_terminal`. The `unit` conclusion needs ONLY `H₁>0 ∀s` (full-rank), not the row op. **Subtlety to flag:**
+§10.3's "row op `row₂↦row₂−t·row₁` ⟹ `H₁²+v²H₂²`" is a `|det|=1` SHEAR on the `a`-output rows — a bounded
+unit-Jacobian CoV of the residual, NOT a norm-preserving identity (`frobSq` is not shear-invariant). The
+formaliser must realise it as a CoV (harmless for the RLCT), or skip it (the `≥H₁²>0` unit bound is direct).
+Sound modulo C1's `{v=0}` intersection refinement (mine).
+
 ### Net + the two regression tests (bake into the build)
-The A2 architecture PASSES. The formaliser should build `adm := reachable-from-trivial by legal decorated
+The A2 architecture PASSES; the units-interface MATCHES (#144 discharges "H₁,H₂ units" via the full-rank →
+independent-rows bridge). The formaliser should build `adm := reachable-from-trivial by legal decorated
 peels AND chart refinements` (NOT a full-rank predicate, NOT a stored transverse flag), prove `adm ⟹ ∀η∈Crit
 p_η=0` (= #144, including intersection divisors), and prove the terminal via (T) supplied on the refined
 charts. **Regression tests:** (1) peel-closure — `(3,3,2,2) →_{t=2} (2,2,2)` rank-1 component (`p=0`, not
 full-rank) must be ADMITTED; (2) base-soundness — the support matrix `{(1,0),(0,1)}` (`x²+y²`, RLCT 1) must be
 REJECTED as terminal until the intersection is refined (catches the `∀η∃i ⇏ ∃i∀ℓ` step). On these two, a wrong
 encoding fails immediately.
+
+---
+
+## 7. BASE-ROUTE adjudication — Route (A) [local Rayleigh/Loewner Gram bound] vs (B) [angular CoV → sjLoss_terminal]
+
+**Charge (team-lead):** does Route (A) — `frobSq(Γ·Z) ≥ λ_min(ZZᵀ)·frobSq(Γ)` for `Z` full-ROW-rank, then
+`∫(frobSq ΓZ)^{−c'} ≤ λ_min^{−c'}·∫(frobSq Γ)^{−c'}` via banked free-block `sumSqND_box_lt_top` — discharge
+`DecoratedBaseHyp`, bypassing the C1 `(T)`-issue and the angular CoV? **VERDICT: PASS — build (A) for the
+base.** [V, `/tmp/prodD/routeA.py`; exact linear algebra, no Codex needed — Rayleigh/Loewner is standard.]
+
+- **Q1 SOUND + FULL threshold — YES.** `frobSq(ΓZ)=tr(Γ(ZZᵀ)Γᵀ)`, so `λ_min(ZZᵀ)·frobSq(Γ) ≤ frobSq(ΓZ) ≤
+  λ_max(ZZᵀ)·frobSq(Γ)` (two-sided, verified 50000/50000). With `Z` full-ROW-rank, `ZZᵀ ≻ 0`, `λ_min>0`. The
+  free-block `∫_{box⊂ℝ^{ab}}(‖Γ‖²)^{−c'}` is finite ⟺ `c'<ab/2`. So (A) gives `< ∞` for `c'<ab/2`, and the
+  `λ_max` side forces divergence at `c'≥ab/2` — RLCT is EXACTLY `ab/2 = ½·minAdm(base)` (`{Γ=0}` codim `ab`),
+  the FULL threshold, not a sub-threshold. The jac-monomial decoration `∏|u|^{jac}` factors out (separate
+  vars), `∫∏|u|^{jac}<∞` (`jac≥0`), and `λ_min(Z)^{−c'}` is bounded on the units chart — so the DECORATED
+  base is finite at `½minAdm`.
+- **Q2 BYPASSES C1 — YES (for the base's terminal (T)-issue).** (A) never forms a monomial / never calls
+  `sjLoss_terminal`, so the `(P)⇏(T)` quantifier gap does not arise. On the `x²+y²` countertest (§6-C1), (A)
+  reads it as a FREE 2-block `‖(x,y)‖²` and gives `c'<1` = the TRUE RLCT directly (radial free-block), no
+  dehomogenised generator, no intersection blow-up. **Caveat (honest):** (A) needs `λ_min(ZZᵀ)` bounded below
+  UNIFORMLY on the base chart (= `Z` full-row-rank quantitatively = the units-on-chart safeguard = my #144
+  invariant). Reaching that chart (excising `Z`-rank-drops = the `{v=0}` refinement) is still the COVER's job,
+  SHARED with (B). So (A) eliminates C1's terminal-`(T)`/monomial sub-problem, NOT the units-chart refinement
+  (which #144 supplies). No DIFFERENT unsoundness — the bound is an exact one-sided (upper) estimate, sound
+  wherever `λ_min≥c>0`.
+- **Q3 DISTINCT from the #140-killed global route — YES.** (A) is a LOCAL leaf bound: `Z` a FIXED fully-reduced
+  matrix, integrate `Γ` only; `Γ(ZZᵀ)Γᵀ ≥ λ_min ΓΓᵀ` is exact Loewner for fixed `Z`. It does NO
+  "independent-Wisharts-across-shared-`A₂`" decoupling (the global decomposition #140 killed). No conflict.
+- **Q4 step consumes base as FINITENESS — YES.** `DecoratedBoxThresholdFinite` is a `Prop` (`∫<⊤`); the step's
+  IH consumes the RESULT, route-agnostically. (A)'s finiteness IS a valid `DecoratedBoxThresholdFinite`. The
+  monomial/`sjLoss_terminal` form is a STEP-INTERNAL ledger matter (how the peel emits its reduced decoration),
+  NOT a base requirement. So (A) for the base is compatible with the decorated step.
+
+**Recommendation: build Route (A) for `DecoratedBaseHyp`** — cheaper, avoids the fiddly matrix-space angular
+CoV, and bypasses C1's terminal-`(T)` sub-problem. **Two conditions to honour (both supplied):** (i) the base
+chart is quantitatively units (`λ_min(ZZᵀ)≥c>0`, `Z` full-row-rank) — the #144 transversality + the `{v=0}`
+refinement reaching it; (ii) the banked `sumSqND_box_lt_top` delivers the FULL `c'<ab/2` at ambient dim `ab`
+(confirm the banked lemma's threshold is `ab/2`, not weaker). On these, (A) discharges the base at the full
+`½minAdm`. (Route (B)/`sjLoss_terminal` stays the STEP-internal ledger tool; C1's refinement remains the
+cover's, unchanged.) [Route (A) later ruled OUT by the formaliser for global ledger-monomial-uniformity;
+Route (B) chosen. This §7 stands as a sound-in-isolation rule-in of (A); the base build is (B).]
+
+---
+
+## 8. PROVED-vs-CITED for invariant piece (i) [`rank(Zdeep) ≥ b`] — NATIVE, bounded, NOT an AG wall (honors #97)
+
+**Charge (team-lead):** the formaliser flags piece (i) — "top-dim component + generic rank on it ≥ b" — as
+AG-hard (Mathlib frontier). Is there a NATIVE re-expression avoiding the AG infra, or a genuine formalization
+wall? (The Proved-vs-Cited fork, operator-gated #97.) **VERDICT: NATIVE — piece (i) is a BOUNDED build; NOT
+an AG wall. Build it (α), honoring #97.** [Decorrelated: own xhigh Codex `codex/native-{prompt,answer}.md`,
+conclusion withheld — it CONFIRMED AG-free + gave the clean proof + a sharp caveat; I re-verified
+(`/tmp/prodD/backpeel.py`, identity 12/12).]
+
+**The native route (avoids irreducible-component decomposition + generic-rank-on-a-component entirely):**
+- **[NEW LEMMA — the only fresh piece] `minAdm_eq_backPeel`:**
+  `minAdm(t, M₂,…,M_L) = min_ρ [ cCodim(M₂,…,M_L ; ρ) + t·ρ ]`, `cCodim(·;ρ) = codim{deeper product rank ≤ ρ}`
+  = the banked rank-shift `cCodim` (`= minAdm(M₂−ρ,…,M_L−ρ)`). **Proof is ELEMENTARY** (Codex Q1, verified):
+  with `δ_r = codim{rank Zdeep = r}`, `{A_piv·Zdeep=0}` over `S_r` imposes exactly `t·r` conditions (each of
+  `t` rows annihilates an `r`-dim image), so `codim Z_red = min_r(δ_r + t·r)`; and `cCodim(·;ρ)=min_{r≤ρ}δ_r`,
+  so `min_ρ(cCodim(·;ρ)+tρ) = min_r(δ_r+tr)` by rearranging finite minima (`t≥0` ⟹ cheapest `ρ=r`). NO
+  component decomposition — a finite-min identity, reindexing the banked QIP. [Identity verified 12/12.]
+- **Incidence, now ARITHMETIC:** for any co-minimizer `ρ` of `minAdm(t,·)`, `minAdm(t+1,·) ≤ cCodim(·;ρ)+(t+1)ρ
+  = minAdm(t,·)+ρ` (same minimizer). No geometry.
+- **Convexity (banked, RouteMSJTransversality @d315be07):** `minAdm(t+1,·)−minAdm(t,·) ≥ a+b−1`.
+- **⟹ every co-minimizer `ρ ≥ a+b−1 ≥ b`** — so every codimension-minimizing exact-rank stratum has deeper
+  rank `≥ b`, WITHOUT "generic rank on a component."
+- **Corank survival (elementary, Codex Q2):** on a rank-`r≥b` cell, for a.e. FREE `A_cor`,
+  `rank(A_cor·Zdeep) = min(b,r) = b` (factor `Zdeep=UV`, `rank(A_cor Zdeep)=rank(A_cor U)`, `A_cor↦A_cor U`
+  surjective onto `b×r`; the rank-deficient set is a proper minor-cut null set). This is genericity in the
+  FREE integration variable `A_cor`, NOT on a variety component. The rank-`r` cells are minor-cut (Mathlib has
+  rank + minors). [= the D1-lane (iii) machinery.]
+
+**So piece (i) needs NO AG:** the AG "top-dim component + generic rank" is replaced by `minAdm_eq_backPeel`
+(finite-min ℕ/codim identity) + banked convexity + the free-matrix generic-rank lemma + minor-cut cells. **The
+one new lemma is `minAdm_eq_backPeel`** — same family as the banked front-peel↔QIP bridge
+(`minadm-ccodim-cert`), bounded combinatorial labour, consuming banked `cCodim_rankShift`. **α (build) is the
+right call; no β-cite needed; #97 honored at bounded cost.**
+
+**Honest caveat (Codex Q3, sharpens C1 — NOT part of piece (i), but flag it):** the LOWER-rank cell recursion
+is NOT closed by "higher codim ⟹ recurse with more slack" alone — higher codim can carry a LOWER RLCT
+(counterexample `f=x²(x²+y^{2N})`: threshold `½` generic along `x=0`, but `(N+1)/(4N)<½` at the origin). So the
+deficient-rank / intersection neighbourhoods (my C1, the `{v=0}` refinement) require the QUANTITATIVE COUPLED
+recursive estimate — i.e. the DECORATED descent (charges ADD via the corner), NOT a codim triviality. This
+CORRECTS my earlier glib "higher codim → slack" (§5, §6-C1 phrasing): the intersection/deficient rays' ratio
+`≥ ½minAdm` is exactly what the decorated coupled resolution must establish (it is the descent's job, already
+planned), not a free consequence of codim. Piece (i)-the-transversality is elementary/native; the lower-rank
+descent is the (already-commissioned) decorated recursion.
