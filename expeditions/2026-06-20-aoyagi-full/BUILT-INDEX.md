@@ -162,9 +162,15 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
      on the seam, integrand `O(1)` there; the `|det A_S|^{−b}` det-inverse is exactly cancelled by the
      shrinking image `vol=2^{bm}|det A_S|^b` (the `s⁻¹` pole is a FULL-SPACE artifact the box never has).
    - **★ THE FILL ROUTE — Level-A finiteness needs NEITHER cover NOR seam (preferred, cheapest):** the
-     `m`-column **Cauchy–Binet Loewner majorant** `det(Q_bQ_bᵀ) ≥ det(Q_SQ_Sᵀ)` (`|S|=m`, #112 BANKED —
-     `det(MMᵀ)≥minor²`) → a square-middle `(b,m,m)` Wishart base, matched threshold `m−b+1`, NO
-     det-inverse/cover/seam/descent. This is a POINTWISE bound integrated once (NOT the `[core]∘[IH]`
+     `m`-column **Cauchy–Binet Loewner majorant** `det(Q_bQ_bᵀ) ≥ det(Q_SQ_Sᵀ)` (`|S|=m`, any FIXED `S`,
+     via `A·Aᵀ ≽ A_S·A_Sᵀ` [column-drop] + congruence + PSD det-monotone) → shrinking-image CoV →
+     the BANKED `detGram_lintegral_lt_top` (`RouteMSJProductTube:322`, `∫_{matBox r n} det(XXᵀ)^{−a/2}<⊤`,
+     `a<n−r+1`) → square-middle `(b,m,m)` base, matched threshold `m−b+1`, NO det-inverse/cover/seam/descent.
+     **★ INDEX CORRECTION (2026-07-11): #112 is NOT banked-in-canonical.** `det_le_det_of_posSemidef_le` +
+     `det_submatrix_sq_le_det_gram` were built on the `genm-cbmin` WORKTREE branch, NEVER integrated/pushed —
+     the branch is gone, irrecoverable via git, and not in Mathlib. The majorant STEP must REBUILD the
+     PSD-cone det-monotonicity + the m-column (NOT single-minor — that reaches only a<1) Loewner bound. Only
+     the ENDPOINT (`detGram_lintegral_lt_top`) is truly banked. (GAP-B, genm-sj5-schur building.) This is a POINTWISE bound integrated once (NOT the `[core]∘[IH]`
      factorisation Codex Q2 flagged invalid at a=0 — that trap is dodged). For a DEEPER-PRODUCT tail (general
      M, unlike (3,3,3,4)'s single A₂) the residual = confirm the product-rank tube codim `D` has leading
      power `= codim` (banked for (3,3,3,4); #116-style for general). Accounting sums to `7=minAdm` (charges
