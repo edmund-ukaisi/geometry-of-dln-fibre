@@ -161,16 +161,16 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
      the seam is Lebesgue-null, partition = indicator-mult (no boundary term), transition Jacobian `=1` exactly
      on the seam, integrand `O(1)` there; the `|det A_S|^{−b}` det-inverse is exactly cancelled by the
      shrinking image `vol=2^{bm}|det A_S|^b` (the `s⁻¹` pole is a FULL-SPACE artifact the box never has).
-   - **★ THE FILL ROUTE (CORRECTED 2026-07-11 by the bridge de-risk #128 — the Γ-first majorant is a TRAP).**
-     ❌ **OFF-ROUTE (do NOT use):** "integrate Γ first → det-Gram `I(a)=∫det(Q_bQ_bᵀ)^{−a/2}` → m-column
-     majorant → banked `detGram_lintegral_lt_top`". The bridge de-risk (`bridge-derisk.md`, exact SVD +
-     decorrelated Codex) proved this is **+∞ on the pivot-degenerate locus `{w=0}`** for `c'∈[p·b/2, ½minAdm)`
-     (`=[2,7/2)` for (3,3,3,4)): on `{w=0}` the inner Γ-integral is `∫‖ΓQ_b‖^{−2c'}`, finite only iff
-     `c'<p·b/2=2 < 7/2`. Any Γ-first-then-deeper route inherits it. `corankGram_box_lt_top` (I(a)) is
-     true-but-OFF-ROUTE — the hole does NOT reduce to it. The pivot `w` is LOAD-BEARING (sector bound
-     `min{w^{−c'},E^{−c'}}`). `corankBlock_morsePeel`/`freedSchurLoss_inner_peel` need PosDef+pivot>0+c'>ab/2
-     POINTWISE — hold only on `{w>0}`, fail on `{w=0}`.
-     ✅ **CORRECT — the FRONT-FIRST JOINT bound:** (1) RECOMBINE `(x,Γ)→A₀` (banked MP+reversible shear
+   - **★ THE FILL ROUTE (bridge de-risk #128, CORRECTED-then-RE-CORRECTED 2026-07-11 — read the reliability note).**
+     ⚠ **FALLBACK (validated by #128v2, but delicate):** "integrate Γ first, KEEP THE PIVOT COUPLED (do NOT
+     reduce to a w-independent standalone weight) → corank-Gram + shrinking-image CoV → banked
+     `detGram_lintegral_lt_top`". #128v1 called this a TRAP (+∞ on `{w=0}` for `c'∈[p·b/2,½minAdm)=[2,7/2)`);
+     #128v2 RETRACTED that — the `{w=0}` +∞ is a null-set integrable pivot charge, harmless IF the pivot residual
+     is kept coupled (the STANDALONE w-independent det-Gram reduction IS invalid — that was the real content).
+     genm-sj5-schur's built column-drop Loewner + det-majorant + the shrinking-image CoV serve this route.
+     **RELIABILITY NOTE:** genm-sj5-cover gave 3 verdicts on this route (cheap #123 → NO #128v1 → YES #128v2);
+     the underlying math is stable, the interpretation unstable — so this route is the FALLBACK, not primary.
+     ✅ **PRIMARY — the FRONT-FIRST JOINT bound (robust to the flip-flop; both v1 and v2 agree g(Q) finite):** (1) RECOMBINE `(x,Γ)→A₀` (banked MP+reversible shear
      `chartInner_schurShearFree_eq`/`measurePreserving_shearSub`) — integrate pivot+Γ TOGETHER; (2) ★ **the ONE
      new brick** — front-first box-exponent `g(Q)=∫_{A₀-chart}frobSq(A₀·Q)^{−c'} ≤ C·σ_q(Q)^{−α}`,
      `α=max{0,2c'−M₀(q−1)}` (covdesign §CONCESSION), CONSUMING banked spectral: `RouteMSJFrontSpectral`

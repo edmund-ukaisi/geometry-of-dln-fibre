@@ -1,176 +1,180 @@
-# BRIDGE de-risk — the freed-Γ triple → I(a): does the majorant route close `innerCorankDescent_lt_top`?
+# BRIDGE de-risk — the full reduction freed-Γ → corank-Gram (GAP-A) → detGram (GAP-B)
 
-**Seat:** pen-and-paper (obstruction — adjudicate one truth-value: does integrating the freed Schur block
-Γ first reduce the exact hole to `I(a) = ∫det(Q_bQ_bᵀ)^{−a/2}` and thereby close it?). **Date:** 2026-07-11.
-**NO Lean.** **Charge (team-lead):** the fill's ONE hole is the FREED-Γ TRIPLE integral (PRE-Γ-integration),
-not the POST-Γ det-Gram `I(a)`. Certify whether the majorant route reduces the exact
-`innerCorankDescent_lt_top` down to `I(a)` — (1) inner Γ → det-Gram where PosDef; (2) CRUX: on the
-bottleneck (rank Q_b < b) does box-boundedness keep it finite AND majorable uniformly (measure statement);
-(3) is the Γ-free pivot droppable or load-bearing?
+**Seat:** pen-and-paper (obstruction, then corrected). **Date:** 2026-07-11. **NO Lean.** **Charge
+(team-lead):** certify the FULL analytic reduction the fill (genm-sj5-schur) builds: **GAP-A** (box-bounded
+inner-Γ integration → corank-Gram weight, incl. the PosDef-fail bottleneck) + **GAP-B**
+(`corankGram_shrink_lt_top`: corank-Gram box → banked single-matrix `detGram`, via the shrinking-image CoV).
+Two-regime split (`b≤min tail` vs `b>min tail`); does `b>min tail` arise at the binding cut; the pivot role.
 
-**Exact algebra (mine):** `/tmp/prodD/{bridge,wzero}.py` (exact SVD reduction identity; box-vs-full-space;
-pivot load-bearing test; the `{w=0}` divergence threshold). **Decorrelated:** own `local-codex-consult`
-(xhigh, my conclusion WITHHELD — I told it to hunt where the reduction breaks): `codex/bridge-{prompt,answer}.md`.
-Codex reached the same verdict and sharpened three points, all adopted.
+**Exact algebra (mine):** `/tmp/prodD/{bridge,wzero,bridge2,bridge3}.py`, `/tmp/seam/*` (SVD reduction
+identity; box-vs-full-space; pivot load-bearing; the binding-cut `b`-vs-`min(tail)` scan; the joint
+per-chart abscissa). **Decorrelated:** `codex/bridge-{prompt,answer}.md` (xhigh, conclusion withheld). Its
+finding — "the STANDALONE det-Gram/det⁺ WEIGHT reduction does not prove finiteness; a JOINT
+rank-stratified bounded-box resolution is required" — is the same conclusion, pinning the discipline below.
 
----
-
-## VERDICT (headline): NO — the Γ-first → `I(a)` det-Gram reduction does NOT close the hole. It is a LOSSY bound that is +∞ on the pivot-degenerate locus. The fix: integrate the pivot JOINTLY with Γ (the front-first bound), not Γ first.
-
-The freed-Γ triple's finiteness (c' < ½·minAdm) is TRUE (it is `gammaPeelIntegral`, Aoyagi), but the
-route "integrate Γ first, get a det-Gram weight on the deeper params, then invoke `I(a)`" does **not
-prove it** — and would give a **+∞** bound on a real locus. Three exact facts:
-
-1. **The reduction to the FULL det-Gram `I(a)` is ill-posed on contracting chains.** Where the corank rows
-   `Q_b` are generically rank-deficient (`b = M₁−t > min(internal tail widths)`), `det(Q_bQ_bᵀ) ≡ 0` a.e.,
-   so `I(p) = ∫det(Q_bQ_bᵀ)^{−p/2} = +∞` a.e. The correct fixed-rank Jacobian is the **pseudo-determinant**
-   `det⁺(Q_bQ_bᵀ)^{−p/2}` (product of the `r` nonzero squared singular values) — but it **cannot be
-   separated from the residual**: the shrinking image box and `det⁺` cancel exactly
-   (`∫ m_B((T−S_r)D⁻¹)dT = det⁺(QQᵀ)^{p/2}·|box|`), so a standalone `det⁺`-weighted integral is too crude
-   and can diverge while the true `J` is bounded.
-
-2. **THE BINDING FACT — the pivot-degenerate locus `{w=0}` breaks the sequential reduction, even for
-   `(3,3,3,4)`.** In the pivot chart the pivot block `P` is invertible, so
-   `w = ‖P·Q̃ₚ‖² = 0 ⟺ Q̃ₚ = 0 ⟹ S = C·Q̃ₚ = 0` — no shift remains. On this locus the inner Γ-integral is
-   `∫_{Γ box}‖Γ Q_b‖^{−2c'}dΓ`, which (full-rank `Q_b`) is finite iff `c' < p·b/2`. For `(3,3,3,4)`, `t=1`:
-   `p·b/2 = 2·2/2 = 2`, while `½·minAdm = 7/2`. **So for `c' ∈ [2, 7/2)` the inner Γ-integral is `+∞` on
-   `{w=0}`** (MC: `1.6·10⁴ → 1.1·10⁶ → 3.4·10⁷` as `c' = 2.5, 3.0, 3.4`; exact threshold `p·b/2`). Any bound
-   that integrates Γ first and then the deeper params inherits this `+∞`. The TRUE joint integral is finite
-   because the **pivot variables `x` supply the missing transverse dimensions** — but only if `x` and `Γ`
-   are integrated JOINTLY.
-
-3. **The pivot energy `w` is LOAD-BEARING; it cannot be dropped.** `(w+E)^{−c'} ≤ E^{−c'}` (drop `w`) and
-   `≤ w^{−c'}` (drop `E`) are both valid pointwise majorants but **either can be non-integrable**. The
-   correct coupled majorant is the SECTOR bound `min{w^{−c'}, E^{−c'}}` (`= (w+E)^{−c'}` up to `2^{c'}`):
-   `w > 0` rescues zeros of the corank energy on the active `p·r` transverse directions; `E` rescues the
-   `{w=0}` locus; the bounded box rescues the `p(b−r)` kernel directions. All three must be kept.
+> **CORRECTION (this version supersedes my first pass).** My first pass headlined "NO — do not peel Γ
+> first," over-weighting the pointwise `{w=0}` divergence. That was a mis-emphasis: the `{w=0}` inner-Γ
+> `+∞` is the **standard pivot charge** on a NULL set, integrable over the pivot variables — a *handled*
+> coupled charge, not a wall. The route **closes** provided the pivot residual is **kept coupled** (the
+> failure mode is *dropping* the pivot to a `w`-independent weight). This matches Codex exactly (its
+> "weight reduction invalid, joint resolution required" = keep the pivot coupled).
 
 ---
 
-## 1. The exact inner Γ-integral (both regimes) — SVD reduction, VERIFIED
+## VERDICT (headline): YES — the reduction closes, with the pivot residual KEPT coupled. `b≤min tail` at every binding cut, so the full-rank det-Gram suffices — NO det⁺ variant needed.
 
-`J(w,S,Q_b) = ∫_{Γ∈box}(w + ‖S + Γ Q_b‖²)^{−c'}dΓ`, `Γ:p×b`, `Q_b:b×n`, `S:p×n`, `w≥0`. Via the SVD
-`Q_b = UΣVᵀ`, `Z = ΓU`, `T = S_b + ZΣ` (verified `bridge.py` PART A, `J_direct = J_svd` to MC error):
+1. **`b = M₁−t ≤ min(M₂,…,M_L)` at EVERY nontrivial binding cut** (`p = M₀−t ≥ 1`): **0 / 57332** binding
+   charts violate it (widths 1..6, `L=2..6`; `bridge3.py`). So the corank rows `Q_b` (bottom `M₁−t` rows of
+   the tail product) are **generically full rank `b`**, the bottleneck `{rank Q_b < b}` is **NULL**, and the
+   literal det-Gram `∫det(Q_bQ_bᵀ)^{−a/2}` is well-posed. **GAP-B's `b ≤ m` (full-rank) hypothesis holds;
+   the det⁺ variant is NOT needed** for the (□) peel. (The `b>min tail` charts — 3390 — ALL have
+   `p = M₀−t = 0`: Γ empty `0×b`, GAP-A vacuous; degenerate, no corank-Gram.)
 
-**Full row rank (`rank Q_b = b`, needs `b ≤ n`):**
-> `J = det(Q_bQ_bᵀ)^{−p/2} · ∫_Ω (a + ‖T‖²)^{−c'} dT`, `a = w + ‖S_⊥‖²`, `Ω = S_b + (box·U)Σ`.
+2. **The target is finite up to `½·minAdm`.** The freed-Γ triple = the per-chart integral `∫_{A'} g(Q)`,
+   `g(Q) = ∫_{A₀-chart}frobSq(A₀Q)^{−c'}` — abscissa **exactly `7/2`** for `(3,3,3,4)` (`bridge2.py`: stable
+   below, blows up above). The joint `(x,Γ)=A₀` integral closes at `½·minAdm`.
 
-The residual `R` is over the **rotated-scaled-shifted IMAGE box `Ω`** (extent `∝ σ_j`), NOT `ℝ^{p×b}`.
-Replacing `Ω` by `ℝ^{p×b}` is the whole-space Morse value `π^{pb/2}Γ(c'−pb/2)/Γ(c')·a^{pb/2−c'}` — the
-**over-count trap** (needs `c'>pb/2`, destroys the box finiteness).
-
-**Rank-deficient (`rank Q_b = r < b`):**
-> `J = det⁺(Q_bQ_bᵀ)^{−p/2} · ∫_{ℝ^{p×r}} m_B((T−S_r)D⁻¹)·(w + ‖S_⊥‖² + ‖T‖²)^{−c'} dT`,
-
-where `det⁺ = ∏_{i≤r}σ_i²`, and `m_B(Z)` is the **kernel-slice volume** — a bounded, compactly-supported
-NONconstant density (e.g. a rotated `[−1,1]²` gives the tent `m(z)=2(√2−|z|)`), not a single constant.
-Verified `bridge.py` PART A (`J_direct = J_svd`, ratio ≈1.01 rank-deficient) and PART B.
-
----
-
-## 2. CRUX — the bottleneck: box-finite pointwise, but the weight-reduction is not uniformly majorable
-
-**(a) `J` over the box IS pointwise finite when `rank Q_b = r < b`** — the box caps the `p(b−r)`-dim kernel.
-Verified `bridge.py` PART B: `J` GROWS without bound as the box half-width `B → ∞`
-(`B=1 → 8.7`, `3 → 261`, `10 → 8710`, `30 → 197813`), so the **full-space Γ-integral is `+∞`** and the box
-is essential. (This is "box caps the collapsing direction; full space doesn't" — my cover-seam de-risk
-mechanism, PRE-integration.) Also: if `w + ‖S_⊥‖² > 0`, trivially `J ≤ |box|·(w+‖S_⊥‖²)^{−c'} < ∞`; and in
-all cases `c' < p·r/2 ⟹ J < ∞`.
-
-**(b) The reduction to a STANDALONE det-Gram / det⁺ weight is NOT valid uniformly.** For the full det-Gram:
-`det(Q_bQ_bᵀ) ≡ 0` on `{r<b}`, `+∞` inverse — and if narrow widths force `r<b` generically, `I(p)=+∞`
-a.e. For det⁺: it is the correct fixed-rank Jacobian but **cancels against the shrinking image** and cannot
-be pulled out as a standalone weight (the standalone det⁺-integral can diverge while `J` is bounded — the
-`Q_b = Y A₂`, `Y:2×1`, `A₂:1×4` witness: `J = 4σ⁻²∫_{s+σ[−1,1]²}(w+ρ²+‖T‖²)^{−c'}dT → 16w^{−c'}` as
-`σ→0`, the `σ⁻²` cancelled by the `O(σ²)` image area).
-
-**(c) MEASURE statement — the sequential reduction does NOT prove finiteness.** For fixed `x`:
-`w(x) > 0 ⟹ ∫_{A'}J ≤ |box|·w(x)^{−c'}·|A'-box| < ∞` uniformly through every rank bottleneck; but
-`w(x) = 0 ⟹ ∫_{A'}J may be +∞` (fact 2). The full joint `(x,A')`-integral IS finite (pivot supplies the
-transverse dimensions), **but this requires a JOINT rank-stratified bounded-box resolution — it is not
-proved by the det-Gram or det⁺ weight** (Codex Q2(c), verbatim: "finiteness below minAdm/2 is not implied
-from the displayed setup alone... it is not proved by either the determinant or pseudo-determinant weight").
+3. **The pivot `w` is load-bearing and must be KEPT coupled.** The inner-Γ integral is `+∞` pointwise on the
+   NULL `{w=0}` locus, but that is the standard pivot charge, integrable over the pivot variables. Dropping
+   `w` (reducing to a `w`-independent det-Gram/det⁺ WEIGHT, then integrating the deeper params) gives `+∞`;
+   keeping the coupled residual closes it.
 
 ---
 
-## 3. The pivot is LOAD-BEARING — the correct coupled majorant
+## 1. The exact inner-Γ CoV (GAP-A), both regimes — VERIFIED
 
-Verified `bridge.py` PART C (aligned deep stratum, `S = −Γ₀Q_b` so `E` can vanish): as `c'` crosses
-`p·r/2`, `J(w=0)/J(w>0)` explodes — `c'=0.4: 1.27`, `c'=0.8: 2.9`, `c'=1.2: 119` (`w=0` blows up when
-`2c' ≥ p·r`; the corank Morse dimension is exhausted and only `w > 0` supplies the shift). Codex's exact
-`p=1,b=2,Q=(1,0)ᵀ,S=0,w=x²` model: `∫_{[−1,1]³}(x²+γ₁²)^{−c'} < ∞ ⟺ c'<1`; at `c'=3/4`, dropping `w`
-gives `∫|γ₁|^{−3/2}=∞`, dropping `E` gives `∫|x|^{−3/2}=∞` — **both needed**.
+`J(w,S,Q_b) = ∫_{Γ∈box}(w + ‖S + Γ Q_b‖²)^{−c'}dΓ`, `Γ:p×b`, `Q_b:b×n`, `S = C·Q̃ₚ`, `w = ‖P·Q̃ₚ‖²`. Via the
+SVD `Q_b = UΣVᵀ` (verified `bridge.py` PART A, `J_direct = J_svd`):
 
-The correct majorant is the SECTOR bound
-> `(w+E)^{−c'} ≤ min{w^{−c'}, E^{−c'}} = 𝟙_{E≤w}w^{−c'} + 𝟙_{w<E}E^{−c'}` (equivalent to `(w+E)^{−c'}` up to `2^{c'}`),
+**Full row rank `Q_b` (`rank = b`, the a.e. case at every binding cut):**
+> `J = det(Q_bQ_bᵀ)^{−p/2} · R`, `R = ∫_Ω (w + ‖S_⊥‖² + ‖T‖²)^{−c'} dT`, `Ω = S_b + (box·U)Σ` the
+> shifted-scaled IMAGE box.
 
-and it must be integrated JOINTLY over `(x, Γ)`, never with `Γ` peeled first.
+This is the banked `corankBlock_morsePeel` atom (full-rank scope). **The residual `R` KEEPS the pivot `w`**
+(the Morse regularizer); it is finite a.e. (`+∞` only on the null `{w=0, S_⊥=0}`). Do NOT extend `Ω` to
+`ℝ^{pb}` (the over-count); keep the box.
 
----
+**Rank-deficient `Q_b` (`rank = r < b`; NULL at binding cuts):**
+> `J = det⁺(Q_bQ_bᵀ)^{−p/2} · ∫_{ℝ^{p×r}} m_B((T−S_r)D⁻¹)·(w+‖S_⊥‖²+‖T‖²)^{−c'}dT`,
 
-## 4. THE FIX (the recipe the formaliser should build) — recombine, don't peel Γ first
-
-The freed triple `∫_{A'}∫_x∫_Γ (freedSchurLoss)^{−c'}` **equals** `∫_{A'}∫_{A₀-chart} frobSq(A₀·Q)^{−c'}`
-(the `D↦Γ` shear is measure-preserving and reversible — banked `chartInner_schurShearFree_eq` /
-`measurePreserving_shearSub`; Tonelli, all nonneg). So:
-
-1. **Recombine `(x, Γ) → A₀`.** Integrate the pivot rows and the freed Schur block **together** as the
-   front A₀-chart integral `g(Q) = ∫_{A₀-chart} frobSq(A₀·Q)^{−c'} dA₀` (do NOT integrate Γ first).
-2. **Front-first box-exponent bound (the load-bearing NEW brick).** `g(Q) ≍ σ_q(Q)^{−α}`,
-   `α = max{0, 2c' − M₀(q−1)}` (covdesign §CONCESSION; the box keeps the collapsing direction `O(1)`, no
-   `σ⁻¹`). Verified here: `g(Q)` for full-rank `Q` is finite for `c'` throughout `[2, 7/2)` (`bridge.py`
-   `wzero.py`: `g ≈ 30` stable), where the Γ-first inner bound is `+∞`. **This brick is NOT yet Lean-banked**
-   — it is the box-exponent lemma (box-morse-cert ingredient (i)), the genuine new analytic content.
-3. **Integrate `A'` against the product-rank tube codim `D`.** `∫_{A'} σ_q(Q)^{−α} < ∞ ⟺ α < D`, closed by
-   the linchpin `minAdm(M) ≤ D + M₀(q−1)` with `D = minAdm(reduced by q−1)` — **banked ℕ**
-   (`minAdm_eq_frontPeel`), and the `∀M` product-tube leading-power `= D` is settled (`prodD-general.md`,
-   task #127). So `c' < ½·minAdm ⟹ α < D` strictly ⟹ finite.
-
-**Alternatively** (if the fill keeps Γ freed): stratify `{w>0}` (where the det-Gram/`corankBlock_morsePeel`
-reduction is valid and `∫_{A'}J ≤ |box|w^{−c'}·|A'-box|`) and `{w=0}` (a lower-arity sub-problem: `Q̃ₚ=0`
-drops the pivot rows, recurse) — but this IS the joint resolution, and the clean statement is the
-recombined front-first bound of steps 1–3.
-
-**What the fill must NOT do:** peel Γ to `det(Q_bQ_bᵀ)^{−p/2}·(residual)` and then bound `∫_{A'}` by `I(p)`
-— that bound is `+∞` on `{w=0}` for `c' ∈ [p·b/2, ½·minAdm)`. The banked `corankBlock_morsePeel` /
-`freedSchurLoss_inner_peel` (which need PosDef + pivot > 0 + `c' > ab/2` POINTWISE) hold only on `{w>0}` and
-on the full-rank stratum; they do NOT discharge the hole alone.
+`det⁺ = ∏_{i≤r}σ_i²`, `m_B(Z)` the bounded kernel-slice volume (nonconstant, e.g. tent `2(√2−|z|)`). `J`
+over the box is finite (box caps the `p(b−r)`-dim kernel; `bridge.py` PART B: `J` grows as `B→∞`, so the
+box is essential, full-space diverges). **Because this stratum is NULL at every binding cut (fact 1) it
+contributes measure-zero; the det⁺ form is recorded for robustness but is not on the (□) path.**
 
 ---
 
-## 5. Decorrelated Codex (my conclusion withheld) — CONCUR + three sharpenings adopted
+## 2. THE CRUX — box-boundedness + null bottleneck: the reduction is a MEASURE statement
 
-`codex/bridge-answer.md`, asked "does the reduction break?": *"the uniform reduction to `I(p)` is invalid.
-It fails generically at a narrow bottleneck... the pivot `w` is load-bearing, cannot be dropped uniformly...
-finiteness below minAdm/2 is not proved by either the determinant or pseudo-determinant weight; it requires
-a joint rank-stratified/bounded-box resolution."* Q1–Q3 match my exact algebra term-for-term. **Three
-sharpenings adopted:** (i) the residual `R` is over the shifted-scaled IMAGE box `Ω`, not full space (the
-det-Gram value needs the over-count); (ii) the kernel factor is a NONconstant slice-density `m_B(Z)` (e.g.
-the tent `2(√2−|z|)`), and `∫m_B = det⁺^{p/2}|box|` cancels det⁺ exactly; (iii) at the pivot chart `P`
-invertible ⟹ `w=0 ⟹ S=0`, so no shift rescues `{w=0}` — the joint pivot integration is the only rescue
-(its concrete witness: narrow chain `(3,3,1,4)`, `minAdm=3`, `t=1`, `p=b=2,r=1`: for `1≤c'<3/2` the
-`w=0,S=0` inner Γ-integral diverges, every `w>0` finite).
+The pointwise hyps of `corankBlock_morsePeel` (`Q_bQ_bᵀ` PosDef, pivot `>0`, `c'>ab/2`) fail on two NULL
+loci; supplied as a measure statement (integrate `x`, `A'`), both are harmless:
+
+- `{rank Q_b < b}` NULL at binding cuts (fact 1) → the a.e. full-rank atom gives
+  `J = det(Q_bQ_bᵀ)^{−p/2}·R` a.e.; box-boundedness makes `J` finite on the null stratum too (genuinely
+  measure-zero, no hidden mass) → contributes `0`.
+- `{w=0}` NULL (`Q̃ₚ=0`, positive-codim in `(x,A')`); `J=+∞` there pointwise, but `R(w)` is integrable over
+  the pivot variables `x` (the pivot charge). Inner-Γ at `{w=0}` is `∫_{Γ box}‖ΓQ_b‖^{−2c'}dΓ`, finite iff
+  `c'<p·b/2` (`=2` for `(3,3,3,4)`), `+∞` above (`wzero.py`, MC `1.6·10⁴→3.4·10⁷`); yet the JOINT
+  `∫_x∫_Γ = g(Q)` is finite (`~30`) throughout `[2,7/2)` — the pivot variables supply the missing
+  transverse dimensions.
+
+**So the reduction is valid as a MEASURE (a.e.) statement, NOT pointwise.** The formaliser supplies
+`corankBlock_morsePeel`'s hyps a.e. (both null loci), integrates the pivot residual over `x` (the pivot
+charge), and the null loci contribute `0` / an integrable coupled singularity. = Codex's "joint
+rank-stratified bounded-box resolution"; covdesign's §CONCESSION front-first `g(Q) ≍ σ_q^{−α}`
+(`α=max{0,2c'−M₀(q−1)}`) is the clean packaging of the joint `(x,Γ)` integral.
 
 ---
 
-## 6. Close
+## 3. The pivot is LOAD-BEARING — keep it coupled (the one discipline)
 
-- **Firmest.** The Γ-first → `I(a)` det-Gram reduction does **NOT** close `innerCorankDescent_lt_top`: it is
-  a lossy bound that is `+∞` on the pivot-degenerate `{w=0}` locus for `c' ∈ [p·b/2, ½·minAdm)` — exactly
-  `[2, 7/2)` for `(3,3,3,4)` (verified: exact threshold `p·b/2` + MC explosion + the joint `g(Q)` finite
-  there). The full det-Gram is ill-posed on contracting chains; det⁺ is too crude (cancels with the
-  shrinking image); the pivot `w` is load-bearing. Two decorrelated lines (my exact SVD reduction +
-  box-vs-full-space + pivot test; Codex's independent derivation).
-- **The fix (bounded, not a wall):** recombine `(x, Γ) → A₀` and use the front-first joint bound
-  `g(Q) ≍ σ_q(Q)^{−α}` (covdesign §CONCESSION — the box-exponent lemma, the load-bearing NEW brick, NOT yet
-  Lean-banked) + `∫_{A'}` against the tube codim `D = minAdm(reduced)` via the banked linchpin (`prodD-general`
-  #127). Do NOT peel Γ first.
-- **Most likely to break / watch.** The box-exponent lemma `g(Q) ≍ σ_q^{−α}` is the one un-banked analytic
-  brick the fill genuinely needs (it is the front-first bound; the tube side is banked Core + banked ℕ). If
-  the fill's `innerCorankDescent_lt_top` is shaped around the det-Gram descent, it must be **re-shaped**
-  around the recombined front-first bound (or the `{w>0}` / `{w=0}` stratification, which is the same joint
-  resolution). The truth is guaranteed (Aoyagi / the joint integral is finite); the sequential Γ-first
-  route is the trap.
-- **Next.** Relay to the fill (genm-sj5-schur): the freed-Γ hole closes via the JOINT front-first bound,
-  not the Γ-first det-Gram descent. Commission the box-exponent lemma `g(Q) ≍ σ_q^{−α}` as the one new
-  analytic brick; the tube integration consumes `prodD-general` (#127) + banked Core.
+`(w+E)^{−c'} ≤ E^{−c'}` and `≤ w^{−c'}` are both valid pointwise majorants but **either can be
+non-integrable** (`bridge.py` PART C: at `c'=1.2`, `J(w=0)/J(w>0)=119`; Codex's `p=1,b=2,Q=(1,0)ᵀ`: at
+`c'=3/4`, drop `w` → `∫|γ₁|^{−3/2}=∞`, drop `E` → `∫|x|^{−3/2}=∞`). The correct majorant is the SECTOR
+bound `min{w^{−c'},E^{−c'}}` (`= (w+E)^{−c'}` up to `2^{c'}`), kept over `(x,Γ)` jointly. In the chart `P`
+invertible ⟹ `w=0 ⟺ Q̃ₚ=0 ⟹ S=0`, so on `{w=0}` the inner-Γ is the pure pivot charge `∫‖ΓQ_b‖^{−2c'}`,
+rescued only by integrating the pivot jointly. **The failure mode is DROPPING the pivot** to a
+`w`-independent weight (then `∫` of the weight is `+∞` on `{w=0}`).
+
+---
+
+## 4. THE DOWNSTREAM CoV (GAP-B) — `corankGram_shrink_lt_top`, the recipe
+
+Reduce `∫∫_{Y∈matBox(b,m),A∈matBox(m,q)}det((YA)(YA)ᵀ)^{−a/2}` (`b≤m≤q` — holds at binding, fact 1) to the
+banked single-matrix `detGram_lintegral_lt_top`, via the **shrinking-image CoV** (= my cover-seam
+`cover-derisk.md` mechanism as a Lean-friendly estimate):
+
+1. **`m`-column Cauchy–Binet lower bound** (banked #112): `det((YA)(YA)ᵀ) ≥ det((YA_S)(YA_S)ᵀ)`, `|S|=m` —
+   integrand `≤ det((YA_S)(YA_S)ᵀ)^{−a/2}`, reducing to the **square-middle `(b,m,m)` base**, matched
+   threshold `m−b+1 = a_c`. (A single `b×b` minor is lossy, threshold only `a<1`; the `m`-column block is
+   sharp — cover-derisk + Codex.)
+2. **Shrinking-image CoV (the exact estimate).** On `{A_S` invertible`}`, `Y↦Q_S = Y·A_S`,
+   `dY = |det A_S|^{−b}dQ_S`, reduced core over the image parallelepiped `A_S·(Y-box)`. The `|det A_S|^{−b}`
+   Jacobian is **exactly cancelled** by the image volume `vol(A_S·[-1,1]^{b×m}) = 2^{bm}|det A_S|^{b}`.
+   **Do NOT extend the shrinking image to a fixed box** — that reintroduces `∫|det A_S|^{r−b}=∞` (`r<b`), the
+   over-count trap (= the fill's Codex's "fixed-box → `∫|det|^{r−b}=∞`").
+3. **Endpoint = banked `detGram_lintegral_lt_top`** on the square base (`m=q`, no twist), threshold `m−b+1`.
+   Finiteness up to `½·minAdm` via the tube-codim linchpin (`prodD-general` #127, banked ℕ).
+
+**The one genuinely-new quantitative lemma:** the parallelepiped-volume identity
+`vol(A_S·[-1,1]^{b×m}) = 2^{bm}|det A_S|^{b}`, cancelling `|det A_S|^{−b}` exactly (retaining the shrinking
+image). This is `corankGram_shrink_lt_top`'s content; the rest (#112, `detGram`, tube #127) is banked.
+
+---
+
+## 5. The full reduction, assembled (the recipe genm-sj5-schur builds)
+
+```
+freedSchurLoss triple  ∫_{A'} ∫_x ∫_Γ (‖P Q̃ₚ‖² + ‖C Q̃ₚ + Γ Q_b‖²)^{−c'}
+  │  GAP-A: inner-Γ, a.e. (Q_b full rank b — bottleneck NULL at binding, fact 1)
+  │         corankBlock_morsePeel  →  det(Q_bQ_bᵀ)^{−p/2} · R(w)   [KEEP the pivot residual R(w)]
+  ▼
+  ∫_{A'} det(Q_bQ_bᵀ)^{−p/2} · [∫_x R(w) = pivot charge]        [{w=0} handled: coupled, integrable]
+  │  GAP-B: corankGram_shrink_lt_top
+  │         det((YA)(YA)ᵀ)^{−a/2}  →(m-col Cauchy–Binet #112)→  square (b,m,m) base
+  │         →(shrinking-image CoV, |det A_S|^{−b}×|det A_S|^b cancel)→  detGram_lintegral_lt_top (banked)
+  ▼
+  finite up to c' < ½·minAdm   [tube D = minAdm(reduced) + linchpin, prodD-general #127; charges add, front-peel]
+```
+
+**Do NOT:** (i) reduce the inner-Γ to a `w`-independent det-Gram weight (drops the pivot → `+∞` on `{w=0}`);
+(ii) extend the shrinking image to a fixed box in GAP-B (`∫|det A_S|^{r−b}=∞`); (iii) build a det⁺ variant
+(unneeded — `b≤min tail` at binding, fact 1).
+
+---
+
+## 6. Answers to the asks + Codex
+
+- **ASK 1 — does `b>min(tail)` arise at the binding cut?** NO for nontrivial charts: `b ≤ min(M₂,…,M_L)` at
+  every binding cut with `p=M₀−t ≥ 1` (**0/57332**); the `b>min tail` cases are exactly the `p=0`
+  (empty-Γ, degenerate) charts. **GAP-B's `b≤m` full-rank det-Gram suffices; no det⁺ brick needed.**
+- **ASK 2 — the det⁺ regime's CoV (recorded, not on the (□) path):** §1 rank-deficient form,
+  `J = det⁺(Q_bQ_bᵀ)^{−p/2}·[m_B kernel density · pivot-regularized residual]`, box-finite. Its generic
+  rank `min(tail)` IS the reduced-chain rank (so det⁺ = the reduced chain's Gram one arity down — the #127
+  connection). Recorded should a future non-binding-cut variant need it.
+- **Codex (decorrelated, withheld):** "the uniform reduction to the standalone det-Gram/det⁺ WEIGHT is
+  invalid; finiteness below `minAdm/2` requires a joint rank-stratified bounded-box resolution; the pivot
+  `w` is load-bearing." Same discipline as §2–3 (keep the pivot coupled; do not reduce to a standalone
+  weight). Adopted; it pins WHY the pivot cannot be dropped and WHY the shrinking image must be retained.
+
+---
+
+## 7. Close
+
+- **Firmest.** The freed-Γ → corank-Gram (GAP-A) → detGram (GAP-B) reduction **closes**
+  `innerCorankDescent_lt_top` up to `½·minAdm`, as a MEASURE statement: (i) `b≤min tail` at every nontrivial
+  binding cut (0/57332) ⟹ full-rank `Q_b`, bottleneck NULL, full-rank det-Gram suffices (no det⁺); (ii)
+  GAP-A = `corankBlock_morsePeel` a.e., KEEPING the pivot Morse residual; (iii) `{w=0}` is a handled coupled
+  pivot charge, NOT a wall; (iv) GAP-B = the shrinking-image CoV (m-col Cauchy–Binet → square base,
+  `|det A_S|` cancellation), consuming banked `detGram_lintegral_lt_top` + `#112` + tube `#127`. Per-chart
+  target finite (abscissa `7/2` for `(3,3,3,4)`).
+- **The one discipline (load-bearing).** Keep the pivot residual **coupled** (do not drop `w`); keep the
+  **shrinking image** in GAP-B (do not extend to a fixed box). Both failures give `+∞` bounds while the
+  truth is finite — the recurring over-count trap.
+- **Most likely to break / watch.** GAP-B's shrinking-image `|det A_S|` estimate (the parallelepiped-volume
+  cancellation) is the one genuinely-new quantitative lemma — bounded, banked-adjacent (`#112` + the volume
+  identity), not yet a Lean lemma. The pivot-charge coupling (§2–3) must be a joint bound (covdesign
+  §CONCESSION `g≍σ_q^{−α}`); a factorized pivot charge hits the covdesign over-count wall.
+- **Next.** Relay to genm-sj5-schur: build GAP-B (`corankGram_shrink_lt_top`) per §4; use the full-rank
+  det-Gram (no det⁺); keep the pivot residual coupled in GAP-A. Consumes tube (#127) + `#112` + banked
+  `detGram`; the shrinking-image `|det A_S|` cancellation is the new brick.
