@@ -170,16 +170,25 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
      genm-sj5-schur's built column-drop Loewner + det-majorant + the shrinking-image CoV serve this route.
      **RELIABILITY NOTE:** genm-sj5-cover gave 3 verdicts on this route (cheap #123 → NO #128v1 → YES #128v2);
      the underlying math is stable, the interpretation unstable — so this route is the FALLBACK, not primary.
-     ✅ **PRIMARY — the FRONT-FIRST JOINT bound (robust to the flip-flop; both v1 and v2 agree g(Q) finite):** (1) RECOMBINE `(x,Γ)→A₀` (banked MP+reversible shear
-     `chartInner_schurShearFree_eq`/`measurePreserving_shearSub`) — integrate pivot+Γ TOGETHER; (2) ★ **the ONE
-     new brick** — front-first box-exponent `g(Q)=∫_{A₀-chart}frobSq(A₀·Q)^{−c'} ≤ C·σ_q(Q)^{−α}`,
-     `α=max{0,2c'−M₀(q−1)}` (covdesign §CONCESSION), CONSUMING banked spectral: `RouteMSJFrontSpectral`
-     (`frobSq_mul_eq_sum_eigenvalues`, `sigMin_sq_eq_iInf_eigenvalues`, `collapseIndex_le`),
-     `RouteMSJProductTube` (`sigMin`, `det_gram_le_sigMin_sq_mul_trace_pow`, `sigMin_rpow_le_det_rpow_of_mem_box`),
-     `RouteMSJTwoBlockRadial.twoBlock_radial_le` — NOT yet banked as a single lemma (genm-sj5-schur build-scanning);
-     (3) `∫_{A'}σ_q^{−α}` against the tube codim `D=minAdm(reduced)`, BANKED: `minAdm_eq_frontPeel` + #127 + Core.
-     `c'<½minAdm ⟹ α<D` strict ⟹ finite. **★ THE TWO LANES CONVERGE on this one brick** — lane-1's banked
-     spectral machinery is now on the §5 critical path, but the §5 fill stays cheap (skeleton pre-banked the rest).
+     ✅ **PRIMARY — the FRONT-FIRST bound, as a RANK-STRATIFIED COVER (crux resolved by #130 sector-cert; g(Q) is NOT a single σ_q^{−α} brick — the single sjSector fails F2).** The reduction: (1) RECOMBINE `(x,Γ)→A₀`
+     (banked MP shear `chartInner_schurShearFree_eq`) — integrate pivot+Γ TOGETHER as `g(Q)=∫_{A₀}frobSq(A₀·Q)^{−c'}`;
+     (2) bound `g(Q)` by a RANK-STRATIFIED COVER `cell_q={M_{r−q}≥κ'}∩{M_{r−q+1}<κ''}` (Borel via minor cells,
+     Cauchy–Binet — reuse `RouteMSJDominantCover` det-keys, NO eigenvalue-sorting), corank exactly `q`:
+       • `cell_1` (top stratum): the single-sjSector conditional `frontFirst_g_le_of_sector`
+         (`RouteMSJFrontFirst`, genm-sj5-schur building; region = the `(r−1)`-minor sector, F2 DODGE) →
+         `σ_min^{−β_1}`, closed by LAYER 2. Consumes `frobSq_ge_twoBlock_of_sector`, `twoBlock_radial_le`
+         (banked). PERF: state `twoBlockLoss` over an abstract spectral triple (isDefEq-timeout gotcha).
+       • `cell_{q≥2}` (★ THE ONE NEW BRICK): the **corank-q COUPLED majorant** = route S (the (S,J) corner
+         monomial), BANKED-ADJACENT — generalize `corner334`/`onePeel334` (the banked (3,3,3,4) corank-2
+         instance at 7/2) to corank-q; coupled corner (charges ADD `|u₀|³|u₁|²…`, NOT min→3/2); consume
+         `monomialIntegrand_integrable_of_lt` (terminal), `Mval_decompose`/`sjChargeBudget_le` (charge),
+         `RouteMSJTwoBlockRadial` (radial layer per extra collapse). SOUNDNESS: units-bounded-below `U_i>0` →
+         where vanishing, recurse to `cell_{q+1}` (add-not-min, no RLCT-collapse — MUST be airtight; #131 designing).
+       (3) SUM: `∫_box g = Σ_q ∫_{cell_q} < ⊤` for `c'<7/2` via linchpin `min_q ½(D_q+d_q)=½·minAdm` (#117;
+       (D,d)=(8,6),(4,3),(1,0) → 7/2,7/2,4; q=1,2 bind, q=3 slack). Then §5: g(Q) + banked recombine + tube (#127) = (□).
+     **★ THE TWO LANES CONVERGE on this cover** — lane-1's #121 = exactly this g(Q). Build once, shared.
+     ❌ **FALLBACK now DEMOTED** (the Γ-first corank-Gram, #128v2): superseded — the front-first rank-stratified
+     cover is the resolved route (#130). corank-Gram bricks (RouteMSJCorankGram) stay untracked, off-route.
    - **det-monotone (`RouteMSJDetMono`, banked @1e806282 unwired):** the #112 rebuild (`det_le_det_of_posSemidef_sub`)
      — reusable/Mathlib-worthy, but NO LONGER on the §5 critical path (it was the OFF-ROUTE majorant's tool).
      Keep for reuse. (#112 was LOST — cbmin worktree gone — hence the rebuild.)

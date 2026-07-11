@@ -1,10 +1,11 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
-Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (late) — STAGE 2 (A)-BUILD;
-§5 LANE opened (operator directive); B5a′ found BANKED; SOLE remaining = B5-desc (the corank-Gram descent).
-Lane 1 (native sjGoodMap) HELD — re-scoped ~600–1000 LoC.**
-Live integrative read: `synthesis.md` (UPDATE-890 newest); operator-review items: `discuss-at-close.md` (#97–#101).
+Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (evening) — STAGE 2 (A)-BUILD;
+the (□) CRUX RESOLVED (#130): NOT a wall — (□) is BOUNDED LABOUR. The two lanes CONVERGED on ONE shared
+brick g(Q) (front-first, as a RANK-STRATIFIED COVER); its deeper-strata piece is banked-adjacent (route S,
+corner334/onePeel334). Remaining = corank-q coupled majorant + cell_1 (building) + cover/sum + minAdm=cCodim.**
+Live integrative read: `synthesis.md` (UPDATE-900 newest); operator-review items: `discuss-at-close.md` (#97–#105).
 
 ## ★ STATE ANCHOR — Stage 1 COMPLETE (S2-free), Stage 2 = BUILD-discharge `(□)` via native (S,J)
 Stage 1 delivered the fully-general Aoyagi learning coefficient (honest Lean 4 + Mathlib, BEDROCK-OK,
@@ -18,34 +19,32 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
 
 ## Now (ranked)
 
-1. **★ [STAGE 2 · ACTIVE GOAL · LANE 2] Discharge `(□)` = prove `DecoratedPeelStep` via the DIRECT Aoyagi §5
-   coupled diag(b) peel (operator directive 2026-07-11 — attack the heart, don't build around it).**
-   `(□)`-gate = `DecoratedPeelStep` (`RouteMSJDecoratedRec:78`, one unproven Prop; driver `:99 → (□)`, `:111`
-   retro-fills the obsolete `sjJointResolution:803`). Build-plan: `threads/genm-sj5/peel-buildplan.md` — TRUE +
-   BOUNDED, no wall (3 decorrelated lines). Shape: **DOUBLE induction** — OUTER chain arity (BANKED
-   `routeMBoxThresholdFinite_of_step`); INNER decorated resolution terminating by **chain-length descent
-   (subred), NOT Aoyagi's literal (S,J) loop** (measure `=L`; all six of the literal loop's prose repairs
-   evaporate). **★ SOLE REMAINING CONTENT = B5-desc** (the deeper-strata corank-Gram chain-length descent).
-   EVERYTHING else BANKED (index reconciled 2026-07-11, do NOT re-derive): front cover `sjBoundaryPeel`; the
-   opaque-width Schur split + Γ-freeing shear (B5a′, `RouteMSJChartWeld`/`ChartShear`/`BlockReindex` —
-   found banked, genm-sjcarrier6/7); B5-desc-ℕ (`RouteMSJDescNat`, `frontPeel_binding_cut`); cover-assembly
-   (`RouteMSJDominantCover`); pivot-charge (front-first box-bound, shell dropped); charge gate
-   (`exists_binding_cut`/`carrierThreshold_shift`); terminal (`sjLoss_terminal_lintegral_lt_top`); arity driver.
-   **ATOM ADJUDICATED:** `corankBlock_morsePeel` native on FULL-RANK strata only (B3/B4, needs `Q_bQ_bᵀ` PosDef);
-   deeper strata (B5, ~86%) use the in-box radial + diag(b) MONOMIAL ledger (`det(Q_bQ_bᵀ)` diverges there —
-   Lean-confirmed `corankBlock_morsePeel_setLE` PosDef fails on bottleneck charts).
-   **IN FLIGHT:** `genm-sj5-schur` = B5-desc SKELETON (#125, statements-first `decoratedPeelStep_proof`, wiring
-   the banked outer + isolating the inner-descent hole `innerCorankDescent_lt_top`); `genm-sj5-cover` = the
-   cover-seam DE-RISK (#123 — does a Beta-divergence survive the dominant-minor cover seam on `(3,3,3,4) q∈{1,2}`?
-   gates the hole's fill: dominant-minor cover vs pure radial). **THEN:** de-risk clear → fill the hole →
-   B5-desc complete → `DecoratedPeelStep` → `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient` (#108).
-   Certs: `threads/genm-sj5/`; `BUILT-INDEX.md`. Live read: synthesis UPDATE-889/890.
-1b. **[LANE 1 · HELD] Native cover/σ_min route (top-down) — HELD pending lane 2.** The per-chart inner slice
-   is banked at 7/2 (`gammaPeelIntegral_sjGoodMap_eq`), but the good-branch re-scoped BIG (UPDATE-888): the
-   Option-A v-exposure reorder is an unavoidable prerequisite (~400 LoC) + ≥4 unbanked native modules
-   (σ_min(L_θ)↔product-σ_min bridge, spectral ID, box→ball→twoBlock, cover-to-sector) → ~600–1000+ LoC.
-   gap-1a banked stays. First to `(□)` wins, both bank; revisit ONLY if lane 2 walls. Certs:
-   `threads/genm-vsastruct/`, `genm-mountain-recon/`; sharp estimate `twoBlock_radial_le`/`FrontSpectral`.
+1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` — the crux is RESOLVED (bounded labour); build the shared g(Q).**
+   `(□)`-gate = `DecoratedPeelStep` (`RouteMSJDecoratedRec:78`) → the skeleton `decoratedPeelStep_proof`
+   (green, one hole `innerCorankDescent_lt_top`) reduces it, via banked recombine (`chartInner_schurShearFree_eq`)
+   + tube (`minAdm_eq_frontPeel`+#127), to the SINGLE shared brick **g(Q)** = `∫_{A₀}frobSq(A₀·Q)^{−c'}`.
+   **★ THE TWO LANES CONVERGED on g(Q)** (= lane-1's #121); build once, shared. **★ CRUX RESOLVED (#130
+   sector-cert, exact+decorrelated Codex):** the single sjSector does NOT cover (F2 genuine — positive-measure
+   corank-2 tube), but NOT a wall — g(Q) closes via a **RANK-STRATIFIED COVER** (`cell_q` by corank, Borel via
+   minor cells, measurability clean) + a **corank-q COUPLED majorant** per cell, `∫_box=Σ_q∫_{cell_q}<⊤` for
+   `c'<7/2` (linchpin `min_q ½(D_q+d_q)`, #117). **THE FILL:**
+   - `cell_1` (top): single-sjSector conditional `frontFirst_g_le_of_sector` (`RouteMSJFrontFirst`, region =
+     `(r−1)`-minor, F2 dodge) — genm-sj5-schur BUILDING (#125); skeleton green, holes = reshape + 2 perf-trivial.
+   - `cell_{q≥2}` (★ the ONE new brick): the corank-q COUPLED majorant = route S (the (S,J) corner monomial),
+     BANKED-ADJACENT — generalize `corner334`/`onePeel334` (banked (3,3,3,4) corank-2 @7/2) + `monomialIntegrand`
+     + charge bookkeeping + `RouteMSJTwoBlockRadial`. genm-sj5-cover DESIGNING (#131, `corankq-cert.md`).
+   - SUM + the `minAdm=cCodim` Lean bookkeeping (WATCH item, #127-adjacent).
+   **★ THE SOUNDNESS GATE (audit hardest):** the corank-q corner needs units-bounded-below `U_i>0`; where
+   vanishing → recurse to `cell_{q+1}` (add-not-min, no RLCT-collapse). #131 must make this airtight; gate the
+   build's close on a decorrelated soundness check. **THEN:** g(Q) complete → `(□)` ∀M → mint unsuffixed
+   `aoyagi_learning_coefficient` (#108, on the FULL general (□) — precision guard). Certs: `threads/genm-sj5/`;
+   `BUILT-INDEX.md` fill-route. Live read: synthesis UPDATE-900.
+1b. **[banked-but-reusable, off critical path] det-monotone (`RouteMSJDetMono`, #112 rebuild, unwired);
+   corank-Gram Γ-first fallback (`RouteMSJCorankGram`, superseded by the front-first cover, untracked).**
+   Historical (superseded): the native cover/σ_min good-branch ~600 LoC (UPDATE-888) is now SUBSUMED into
+   the shared g(Q) (item 1) — its banked spectral machinery (`twoBlock_radial_le`/`FrontSpectral`/`ProductTube`)
+   is exactly what the front-first cover consumes. vsastruct/corank2-cert prior work feeds #131. No separate
+   lane-1 build remains — it IS g(Q).
 2. **[RESOLVED 2026-07-09] Peel-stack naming — KEEP the unsuffixed `aoyagi_learning_coefficient`.**
    Operator decision: keep it. It stays a sorried placeholder until Stage 2 discharges `(□)`, then it is
    re-pointed to the honest unconditional fully-general result. No action now.
