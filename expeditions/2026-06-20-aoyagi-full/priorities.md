@@ -1,9 +1,10 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
-Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (pm) — STAGE 2 (A)-BUILD;
-(□)-core NATIVE sjGoodMap route (inner slice BANKED); remaining = the outer tail + (S,J) L-recursion.**
-Live integrative read: `synthesis.md` (UPDATE-883 newest); operator-review items: `discuss-at-close.md` (#97–#100).
+Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (late) — STAGE 2 (A)-BUILD;
+§5 LANE opened (operator directive); B5a′ found BANKED; SOLE remaining = B5-desc (the corank-Gram descent).
+Lane 1 (native sjGoodMap) HELD — re-scoped ~600–1000 LoC.**
+Live integrative read: `synthesis.md` (UPDATE-890 newest); operator-review items: `discuss-at-close.md` (#97–#101).
 
 ## ★ STATE ANCHOR — Stage 1 COMPLETE (S2-free), Stage 2 = BUILD-discharge `(□)` via native (S,J)
 Stage 1 delivered the fully-general Aoyagi learning coefficient (honest Lean 4 + Mathlib, BEDROCK-OK,
@@ -17,30 +18,34 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
 
 ## Now (ranked)
 
-1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` = prove `DecoratedPeelStep` via the NATIVE (S,J) sjGoodMap route.**
-   `(□)`-gate = `DecoratedPeelStep` (`RouteMSJDecoratedRec:78`, one unproven Prop; driver `→ (□)` AND `→`
-   the obsolete `sjJointResolution:803`, sorry-free). **★ ROUTE PIVOT (UPDATE-883, charter-vindicating,
-   VERIFIED vs live code):** the NATIVE sjGoodMap route WINS — the per-chart INNER slice is **ALREADY BANKED**
-   at 7/2, det-inverse-free: `gammaPeelIntegral_sjGoodMap_eq` (RouteMSJGoodCoords:95) ∘
-   `sjGoodChartLoss_endpoint_lt_top` (RouteMSJVExpose:74) ∘ `sjGoodMap_loss_matBox_lt_top`
-   (RouteMSJGoodChart:269), all 0-sorry, via `corner_block_cube` (isotropic, dim a·b+t·h=7 → 7/2=½minAdm,
-   codims-add). The `|det M|^{−4}` det-inverse of the casting route was a self-inflicted A₂-reparam artifact
-   (charter: re-express natively → done). **ABANDONED (off critical path, banked/reusable):** the casting
-   route — corner334 @96409822 (min→sum validated in Lean) + onePeel334 @a39a37e4 (clean-coords codim-rescue);
-   also the earlier Route-V crux `twoBlock_radial_le` + `FrontSpectral`. Do NOT consume/rebuild these on the
-   native path (BUT their anisotropic analysis may feed the outer-tail estimate — see the caveat).
-   **★ THE REMAINING MOUNTAIN (native, det-inverse-free):** the **OUTER tail integration** (`σ_min(L_θ)^{−2c'}`
-   on the good∪deeper cover) + the **(S,J) L-recursion** (the front `Ã₁`-rank descent = the T4 decorated
-   double induction; A₂ rescued per-level per onepeel-tonelli). `chartInner_eq_outerShearFree` flags it.
-   **★ CAVEAT (vsastruct prior, to adjudicate):** the crude coercive `∫ σ_min(L_θ)^{−2c'}` likely UNDERSHOOTS
-   below 7/2 (worst-direction σ_min collapses the coupled corner to the 3/2-min caricature) → the **sharper
-   ANISOTROPIC estimate** (the corank-recursion / `twoBlock_radial` per-singular-value structure — where the
-   "off-path" crux/corank2 analysis becomes reusable) is probably the deeper-rung crux; banked-adjacent
-   `RouteMSJProductTube` (LAYER-2 σ_min-integrability). **NOW:** mountain self-recon [ace21ecb] mapping
-   banked-vs-new → re-engage vsastruct on the σ_min-coarseness (crude vs sharper) with the recon-map →
-   commission the mountain formaliser on the native route. Then → `DecoratedPeelStep` proved → `(□)` ∀M →
-   mint unsuffixed `aoyagi_learning_coefficient` (#108). Certs: `threads/genm-vsastruct/` (…, onepeel-tonelli,
-   onepeel-tieback, onepeel-altroute); recon: `threads/genm-mountain-recon/`. Live read: synthesis UPDATE-883.
+1. **★ [STAGE 2 · ACTIVE GOAL · LANE 2] Discharge `(□)` = prove `DecoratedPeelStep` via the DIRECT Aoyagi §5
+   coupled diag(b) peel (operator directive 2026-07-11 — attack the heart, don't build around it).**
+   `(□)`-gate = `DecoratedPeelStep` (`RouteMSJDecoratedRec:78`, one unproven Prop; driver `:99 → (□)`, `:111`
+   retro-fills the obsolete `sjJointResolution:803`). Build-plan: `threads/genm-sj5/peel-buildplan.md` — TRUE +
+   BOUNDED, no wall (3 decorrelated lines). Shape: **DOUBLE induction** — OUTER chain arity (BANKED
+   `routeMBoxThresholdFinite_of_step`); INNER decorated resolution terminating by **chain-length descent
+   (subred), NOT Aoyagi's literal (S,J) loop** (measure `=L`; all six of the literal loop's prose repairs
+   evaporate). **★ SOLE REMAINING CONTENT = B5-desc** (the deeper-strata corank-Gram chain-length descent).
+   EVERYTHING else BANKED (index reconciled 2026-07-11, do NOT re-derive): front cover `sjBoundaryPeel`; the
+   opaque-width Schur split + Γ-freeing shear (B5a′, `RouteMSJChartWeld`/`ChartShear`/`BlockReindex` —
+   found banked, genm-sjcarrier6/7); B5-desc-ℕ (`RouteMSJDescNat`, `frontPeel_binding_cut`); cover-assembly
+   (`RouteMSJDominantCover`); pivot-charge (front-first box-bound, shell dropped); charge gate
+   (`exists_binding_cut`/`carrierThreshold_shift`); terminal (`sjLoss_terminal_lintegral_lt_top`); arity driver.
+   **ATOM ADJUDICATED:** `corankBlock_morsePeel` native on FULL-RANK strata only (B3/B4, needs `Q_bQ_bᵀ` PosDef);
+   deeper strata (B5, ~86%) use the in-box radial + diag(b) MONOMIAL ledger (`det(Q_bQ_bᵀ)` diverges there —
+   Lean-confirmed `corankBlock_morsePeel_setLE` PosDef fails on bottleneck charts).
+   **IN FLIGHT:** `genm-sj5-schur` = B5-desc SKELETON (#125, statements-first `decoratedPeelStep_proof`, wiring
+   the banked outer + isolating the inner-descent hole `innerCorankDescent_lt_top`); `genm-sj5-cover` = the
+   cover-seam DE-RISK (#123 — does a Beta-divergence survive the dominant-minor cover seam on `(3,3,3,4) q∈{1,2}`?
+   gates the hole's fill: dominant-minor cover vs pure radial). **THEN:** de-risk clear → fill the hole →
+   B5-desc complete → `DecoratedPeelStep` → `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient` (#108).
+   Certs: `threads/genm-sj5/`; `BUILT-INDEX.md`. Live read: synthesis UPDATE-889/890.
+1b. **[LANE 1 · HELD] Native cover/σ_min route (top-down) — HELD pending lane 2.** The per-chart inner slice
+   is banked at 7/2 (`gammaPeelIntegral_sjGoodMap_eq`), but the good-branch re-scoped BIG (UPDATE-888): the
+   Option-A v-exposure reorder is an unavoidable prerequisite (~400 LoC) + ≥4 unbanked native modules
+   (σ_min(L_θ)↔product-σ_min bridge, spectral ID, box→ball→twoBlock, cover-to-sector) → ~600–1000+ LoC.
+   gap-1a banked stays. First to `(□)` wins, both bank; revisit ONLY if lane 2 walls. Certs:
+   `threads/genm-vsastruct/`, `genm-mountain-recon/`; sharp estimate `twoBlock_radial_le`/`FrontSpectral`.
 2. **[RESOLVED 2026-07-09] Peel-stack naming — KEEP the unsuffixed `aoyagi_learning_coefficient`.**
    Operator decision: keep it. It stays a sorried placeholder until Stage 2 discharges `(□)`, then it is
    re-pointed to the honest unconditional fully-general result. No action now.
@@ -61,6 +66,9 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
   branch (lets A₂ degenerate inside cell₂), a subtle RLCT-collapse hides there — textbook conceptual
   slop (bedrock.md: technically-correct-but-subtly-wrong; the base is audited hardest). GATE route S's
   close on a decorrelated A₂-rank-drop-split check (re-engage vsastruct). (synthesis UPDATE-873.)
+  **★ NOW CONCRETE as B5-desc leg (iii)/B5d — the `w>0` unit supply** (deeper cores bounded below a.e. →
+  uniform on the compact box; technique banked). When genm-sj5-schur fills the inner-descent hole, this leg
+  is where the RLCT-collapse would hide — audit it hardest at B5-desc review, decorrelated.
 - **`(□)` climbability (Stage-2 crux).** Aoyagi §5 is established ⇒ labour, not a wall; the corank-2 rung
   is decorrelated-confirmed finite at 7/2 (3 ways). The deepest grind is closing `sjJointResolution` at
   the corner monomial (the geometric corner resolution — the GAP). A genuinely-new obstruction here (not
