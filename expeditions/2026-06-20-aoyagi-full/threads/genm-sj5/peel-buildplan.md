@@ -14,6 +14,16 @@ This plan does NOT re-derive lane 1 (native cover/σ_min); it is the DIRECT §5 
 det-1 unit clears + absorption-by-renaming + `diag(b)` ledger). Where it reuses machinery shared with lane 1
 (the dominant-minor cover), the WEIGHT handling is the §5 one (radial/`diag(b)` monomial ledger), flagged.
 
+> **★ CONTROLLER CORRECTION (2026-07-11).** This plan's "opaque-width lift owed (B2/B5a′)" (§2.2 row, §4.2
+> DAG "SECOND BUILDABLE") is **STALE — B5a′ is already BANKED sorry-free.** The opaque-width Schur split +
+> the Γ-freeing shear landed in genm-sjcarrier6/7 (post-dating this plan's tree read): `frobSq_schur_split_inv`
+> (`RouteMSJChartWeld:83`), `chartInner_schurWeld_eq_of_emb` (`:149`), `chartInner_schurShearFree_eq`
+> (`RouteMSJChartShear:253`), `frobSq_rmatMul_reindex`/`chartInner_blockReindex_eq_of_emb`
+> (`RouteMSJBlockReindex:71/256`) — all clean-three, wired `DLNFibre.lean:798/805/820`. **The §5 lane's SOLE
+> remaining content is B5-desc** (the corank-Gram chain-length descent + legs (i)/(ii)/(iii); see BUILT-INDEX).
+> Also: `corankBlock_morsePeel_setLE`'s PosDef hyp FAILS on bottleneck charts (Lean-confirmed the §2.1 atom
+> adjudication). See synthesis UPDATE-890.
+
 ---
 
 ## 0. The target, exactly (re-verified against the live tree)

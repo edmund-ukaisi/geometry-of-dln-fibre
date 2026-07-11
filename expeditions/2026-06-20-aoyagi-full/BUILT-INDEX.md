@@ -53,7 +53,20 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
 
 ### Chart algebra + blow-up CoV (§5's Step-3 + the radial peel)
 - `RouteMSJChartAlgebra` (0-sorry): `frobSq_schur_block_split` (`:107`) — the exact block-elimination
-  identity `frobSq(A₀·Q)` → `‖A·Q̃ₚ‖² + ‖C·Q̃ₚ+Γ·Q_b‖²` (§5 Step-3).
+  identity `frobSq(A₀·Q)` → `‖A·Q̃ₚ‖² + ‖C·Q̃ₚ+Γ·Q_b‖²` (§5 Step-3), the `L=2` seed.
+- **★ OPAQUE-WIDTH Schur split + Γ-freeing shear — BANKED (B2/B5a′ LANDED, genm-sjcarrier6/7; verified
+  2026-07-11, supersedes the stale "opaque-width lift owed" in peel-buildplan §2.2/§4.2):**
+  - `frobSq_rmatMul_reindex` (`RouteMSJBlockReindex:71`) — raw loss = block-matrix loss (flat→block coords).
+  - `chartInner_blockReindex_eq_of_emb` (`RouteMSJBlockReindex:256`) — raw opaque-width chart integral →
+    block coords, `blockSplitEquiv`-instantiated ∀`(ρ,κ)`.
+  - `frobSq_schur_split_inv` (`RouteMSJChartWeld:83`) — POINTWISE opaque-width Schur split (`⁻¹` form,
+    integrand-usable; hyp `IsUnit M'.toBlocks₁₁`). Aoyagi Lemma-2, exact.
+  - `chartInner_schurWeld_eq_of_emb` (`RouteMSJChartWeld:149`) — the composed weld = B2/B5a′ verbatim:
+    `∫ frobSq(rmatMul A₀ Q)^{−c'}` over `matBox ∩ pivotChart ρ κ` → the Schur cross-coupled block integral
+    with Γ exposed (= `gammaPeelIntegral`'s inner integral, p=M₀,n=M₁,T=1).
+  - `chartInner_schurShearFree_eq` (`RouteMSJChartShear:253`) — the block-shear (B5a′ proper): the `D↦Γ`
+    MP shear frees Γ as an INDEPENDENT variable over the shear-image box; `freedSchurLoss` = Γ-free pivot
+    `frobSq(P·Q̃ₚ)` + corank `frobSq(C·Q̃ₚ+Γ·Q_b)`. All three: clean-three, wired `DLNFibre.lean:798/805/820`.
 - `RouteMSJSphereBlowup` (0-sorry) — the polar blow-up CoV.
 - `RouteMSJPivotChart` (0-sorry): `measurePreserving_shearSub` (`:337`) — the MP shear `D↦Γ=D−CA⁻¹B`.
 - `RouteMSJCorankPeel` (0-sorry): `corankBlock_morsePeel_lt_top` (`:114`) — the corank-block radial Morse
@@ -137,9 +150,18 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
      the decorated resolution within one peel, terminating by **chain-length descent (subred)**, NOT Aoyagi's
      literal two-index `(S,J)` loop — a deliberate design call: the descent has measure `= L` (banked) and
      **all six of the literal loop's prose repairs evaporate**.
-   - **DAG + commission order (§4.2):** B4 (CERTIFIED, banked) → **B5a′** opaque-width Schur split lift
-     (owed; IN FLIGHT `genm-sj5-schur`) → **B5-desc** the deeper-strata chain-length descent (THE HEART;
-     gated on the cover-seam de-risk `genm-sj5-cover` IN FLIGHT) → B5b/B5c/B5d/B6/B7.
+   - **DAG + commission order (§4.2), UPDATED 2026-07-11:** B4 (CERTIFIED, banked) → **B5a′ LANDED** (the
+     opaque-width Schur split + Γ-freeing shear are BANKED, genm-sjcarrier6/7 — see the OPAQUE-WIDTH row
+     above; genm-sj5-schur STOPPED report-only, #124 done) → **B5-desc — THE SOLE REMAINING CONTENT** (the
+     deeper-strata corank-Gram chain-length descent; gated on the cover-seam de-risk `genm-sj5-cover` IN
+     FLIGHT). The three legs B5-desc still owes (genm-sj5-schur's Lean-side read): (i) full-space enlargement
+     (≤, integrand ≥0) + the anisotropic corank atom `corankBlock_morsePeel_setLE` — needs deeper core `w>0`
+     (NOT pointwise) + `Q_bQ_bᵀ` PosDef (FAILS on bottleneck charts `M₁−t >` min deeper widths → radial
+     route, per the atom adjudication); (ii) the separate `c'≤a/2` bounded-integrand branch; (iii) the (S,J)
+     OUTER A'-descent supplying `w>0` + carrying the accumulated Gram residual to the monomial terminal
+     (`sjLoss_terminal_lintegral_lt_top`) + the strong IH on `redChain t M`. B5b/B5c/B5d fold into these.
+     (Correction: `mulLeftₚ`/`lintegral_comp_mulLeftₚ` are for the DOWNSTREAM absorption Jacobian (B5,
+     genm-decbuild), NOT the shear — which uses `measurePreserving_add_right` directly.)
    - **Most likely to break (§4.4):** the det-inverse dominant-minor cover SEAM — the per-chart bound the
      banked `RouteMSJDominantCover` assembly consumes as a hypothesis (Beta-divergence on a cell boundary,
      the atom-route failure mode). Being de-risked on the `(3,3,3,4) q∈{1,2}` slice before B5-desc.
