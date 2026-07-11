@@ -8,7 +8,69 @@ re-deriving, (b) nothing built is lost, (c) the map stays honest. Verified again
 
 ---
 
-## THE ONE OPEN OBLIGATION (the (□)-atom, the whole content of the §5 lane)
+## ★★ CURRENT FRAMING (2026-07-11, UPDATE-931→936) — the DECORATED (S,J) DESCENT (Route A)
+
+**The (□)-gate is now `DecoratedDescent`, NOT `sjJointResolution:803`/`DecoratedPeelStep`.** The spine was
+re-pointed: the plain-IH `DecoratedPeelStep` is **DEAD** (Q2 — the peel emits `[reduced integrand]·[H⁻⁴]`,
+a plain 3-node IH cannot carry the Gram weight). The live driver is
+`routeMBoxThresholdFinite_of_decoratedDescent : DecoratedDescent → ∀M (□)` (clean-three @b142a966), where
+`DecoratedDescent = ∃ adm, (∀ n M, adm (trivial M)) ∧ DecoratedStepHyp adm ∧ DecoratedBaseHyp adm`.
+Discharging (□) = proving `DecoratedDescent`. **The §5 scaffold below stays valid as a LIBRARY; the
+"ONE OPEN OBLIGATION" + "TWO LANES" sections are the SUPERSEDED top-down framing — consume their modules,
+ignore their target/route.**
+
+### The decorated-descent spine — banked clean-three (the CURRENT route's core)
+- **`RouteMSJDecoratedRec`** — the driver `routeMBoxThresholdFinite_of_decoratedDescent` + the mechanical
+  arity strong-induction `decoratedBoxThresholdFinite_of_decoratedStep` (n=0 vacuous via minAdm=0; n=1 leaf;
+  n≥2 step + one-lower decorated IH). `DecoratedStepHyp adm` (`:144`), `DecoratedBaseHyp adm` (`:154`),
+  `DecoratedDescent` (`:207`). (The IH is a Prop `∀M'D', adm→DecoratedBoxThresholdFinite D'`.)
+- **`RouteMSJDecorated`** — the `SJDecoration` structure (`:89`), `carrierThreshold` (`:64`, `=½minAdm`),
+  `carrierThreshold_shift` (`:71`), `.trivial` (`:157`), `radialAttach` (`:242`), `DecoratedBoxThresholdFinite`
+  (`:148`), π=∅ recovery `decoratedBoxThresholdFinite_trivial_iff` (`:217`). **★ FIDELITY (UPDATE-936):
+  `SJDecoration` is NOT definitionally genuine** — `Z`/`mZ`/`ctx`/`dom` are ARBITRARY (only `residualMeas`
+  recorded); genuineness is asserted by the `genuineCarrier` clause in `adm` (must pin the EXACT deeper chain
+  `D.Z = paramsBox(deeperChain M)`, cert §10.1).
+- **`RouteMSJInnerDescent`** — measure bedrock (the decorated box-integral measure plumbing).
+- **`RouteMSJTransversality`** — invariant-(ii) arith (#144, pure ℕ): `minAdm_binding_convexity_le`,
+  `minAdm_redChain_succ_ge`, `minAdm_redChain_succ_ge_corankWidth`.
+- **`RouteMSJAdmEncoding`** — (P)/(T) guard: `pDivisorwise`/`pSimultaneous`/`pDivisorwise_of_pSimultaneous`
+  + `suppFreshTwo_not_pSimultaneous` + regression-test-2 `pDivisorwise_not_imp_pSimultaneous` (x²+y²).
+- **`RouteMSJLeafRayleigh`** — `frobSq_mul_ge` (exact Loewner `c·frobSq Γ ≤ frobSq(Γ·Z)` given `Z·Zᵀ≽c·I`)
+  + `frobSq_mul_rpow_le`.
+- **`RouteMSJLeafFinite`** — `DecoratedBaseHyp` LOSS part: `frobSq_matBox_rpow_lt_top`,
+  `corankLeaf_rpow_lt_top` (`∫(frobSq(rmatMul Γ Z))^{−c'}<⊤` for `c'<½minAdm(base)`, given the `Z·Zᵀ≽c·I`
+  units interface).
+- **`RouteMSJBackPeel`** (@c90dcab5, cover PASS) — the A₂ α-unlock: `minAdm_backPeel_cominimizer_ge` (co-min
+  `ρ≥a+b−1`), `_corankWidth` (`ρ≥b`), `exists_minAdm_backPeel_cominimizer_corankWidth`. `minAdm_eq_backPeel`
+  re-expressed as banked front-peel #117 + convexity — NATIVE (#97 honored, no cite).
+
+### The three remaining legs of `DecoratedDescent` (the build; genm-sj5-desc2 + genm-sj5-cover)
+- **#2 `adm ⟹ ∀η∈Crit p_η=0`** — `corank_survival_ae` (AG-free: banked D1JointDiffRankExact factor →
+  RankLocusClosed minor-cut → DeepestCoreNonvanishing null-set; free-A genericity, NOT component-decomp) +
+  the units bridge (full-row-rank ⟹ ∃c>0 `Z·Zᵀ≽c·I`). **`RouteMSJCorankSurvival.lean` sorry-free but STAGED
+  UNTRACKED** — NOT integrated (awaiting desc2 green report + green-gate + AxCheck; canonical-clean discipline).
+- **#3 the `adm` DEF (B, valuation-predicate; fork RESOLVED UPDATE-936, cert §10/§10.1):**
+  `adm M D := genuineCarrier D ∧ (a=0 ∨ b=0 ∨ ∀η∈Crit D, ⨅_j ν_η(corankGen D j)=0)`, `genuineCarrier D :=
+  D.Z = paramsBox(deeperChain M)` (EXACT chain), Crit incl. intersection rays (C1). Decoupled from #5 (#144
+  peel-closes the valuation predicate). desc2 to build; cover audits.
+- **#4** wire `corankLeaf_rpow_lt_top` into `DecoratedBaseHyp` (jac via Tonelli) — desc2.
+- **★ #5 `DecoratedStepHyp` — THE remaining substantial analytic core** (the decorated peel: coupled corner
+  blow-up, corrected residual `H₁⁻³(H₁+H₂)⁻¹`, charges-ADD to `sjLoss_terminal`, closing on the reduced-chain
+  IH at the ½peelCharge-shifted threshold). SOUNDNESS: the intersection/deficient-rank rays' `≥½minAdm` via
+  the QUANTITATIVE COUPLED estimate (NOT "higher codim ⟹ slack"). cover FORWARD-SCOPING (#145, decorrelated).
+
+### Staged / off-route
+- `RouteMSJCorankSurvival` (untracked, sorry-free, #2-core — see #2 above).
+- `RouteMSJCorankGram` (untracked, 4 sorries) — the det-Gram-weight TOOL usable INSIDE Route A (#140), off the
+  critical path; do NOT wire.
+
+---
+
+## [SUPERSEDED FRAMING — kept for the scaffold library only] THE ONE OPEN OBLIGATION (top-down §5 lane)
+
+> ⚠ **SUPERSEDED (see CURRENT FRAMING above).** `sjJointResolution:803`/`DecoratedPeelStep` are NO LONGER the
+> target; the live gate is `DecoratedDescent`. The modules catalogued below remain banked 0-sorry LIBRARIES —
+> consume them; ignore the "target"/"lane"/"front-first route" narrative.
 
 **`sjJointResolution` (`RouteMSJResolution.lean:797`, the SINGLE live analytic `sorry` at `:803`).**
 Given the one-shorter IH, `1≤t≤min(M₀,M₁)`, `c'<½·minAdm M`: `gammaPeelIntegral M t ρ κ c' < ⊤`. This is
