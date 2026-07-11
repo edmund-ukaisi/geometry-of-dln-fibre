@@ -134,6 +134,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
 import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
+import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
 
 /-!
 # Axiom-hygiene check
@@ -1121,3 +1122,11 @@ open DLNFibre.DLN.RLCT
 #print axioms exists_gram_sub_smul_one_posSemidef_of_rank_eq
 #print axioms posDef_gram_of_rank_eq
 #print axioms exists_pos_smul_one_le_of_posDef
+-- A2 admissibility predicate `adm` (RouteMSJAdm, genm-sj5-desc3, #3 fork-(B); bedrock PASS + cover audit):
+-- htriv `adm_trivial` (trivial admissible ∀ n M, genuineCarrier form (i) + d=0 vacuity), the (P)/(T) bridge
+-- `admValuation_iff_pSimultaneous`, and the two regression tests (rank-1 ADMITTED / fresh-disjoint x²+y²
+-- REJECTED = banked suppFreshTwo_not_pSimultaneous). genuineCarrier=(i): D.Z ≃ᵐ Params M, tail derived.
+#print axioms adm_trivial
+#print axioms admValuation_iff_pSimultaneous
+#print axioms regression_rank1_admitted
+#print axioms regression_freshTwo_rejected

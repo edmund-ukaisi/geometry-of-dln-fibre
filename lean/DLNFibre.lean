@@ -1344,3 +1344,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
 -- Gram-PosDef-from-full-rank + an EIGENVALUE-FREE min-over-unit-sphere Loewner bound (dodges the
 -- spectral-isDefEq hazard). Mathlib-only imports. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
+-- A2 admissibility predicate `adm` (RouteMSJAdm, genm-sj5-desc3, #3 fork-(B) valuation-predicate):
+-- adm n M D := genuineCarrier D ∧ (a=0 ∨ b=0 ∨ admValuation D); genuineCarrier = form (i) (D.Z ≃ᵐ Params M,
+-- ctx traces prod M, tail derived); admValuation = d=0 (empty-Crit vacuity) ∨ pSimultaneous; a,b = M's
+-- binding-cut widths. htriv (adm_trivial) PROVED ∀ n M; both regression tests pass. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
