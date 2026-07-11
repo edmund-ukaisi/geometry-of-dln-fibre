@@ -324,3 +324,82 @@ hard/false base); (A2) admissible-family recursion (base = `sjLoss_terminal` + M
 peel-closure) — RECOMMENDED; (B) simultaneous multi-level discharge (cover's alternative; no per-level IH).
 **This changes the `(□)`-gating spine (`DecoratedPeelStep` + driver), which I authored — flagged for controller
 steer before the spine rewrite.**
+
+---
+
+## 10. A2 DESIGN (POST-ACK) — the admissible-decoration family + the decorated base
+
+**A2 ACK'd (controller); Q_D CERTIFIED (toric-ray-cert, both anchors, binding ray exactly ½minAdm — NOT a
+wall, a construction gap); spine LANDED** (`RouteMSJDecoratedRec`: `DecoratedStepHyp`/`DecoratedBaseHyp`
+`adm`-abstract + `decoratedBoxThresholdFinite_of_decoratedStep` + `DecoratedDescent` +
+`routeMBoxThresholdFinite_of_decoratedDescent`, green + clean-three, aggregator 8835). This section designs the
+SPECIFIC `adm` the landed abstract driver consumes. TWO CORRECTIONS folded in from the toric-ray cert.
+
+### 10.1 The invariant = `p=0` TRANSVERSALITY (correction 1, load-bearing)
+
+The decorated IH carries the corank-row valuation `p = ν_η(H₁)` (`H₁ = |q₁ + s·q₂|`, the mixed corank
+direction) and maintains `p = 0` on the CRITICAL reduced divisor. Geometrically: **the corank block is
+transverse to the deeper-pivot degeneration** — the critical divisor is the pivot-block-vanishing locus with
+the shared deeper product `Z` generic full-rank, on which the corank rows `q₁,q₂` are generic units (`p=0`).
+`q = ν_η(H₂)` is HARMLESS — NOT tracked (toric §2: `p=0,q=1` still certifies `7/2`; only `p>0` obstructs). This
+is SHARPER than the #141 "carry `H⁻⁴`": the load-bearing datum is `p`, target `p=0`.
+
+So the admissible predicate `adm n M D` is (informally): `D` is reachable-from-`trivial`-by-peels AND its
+carrier realises `p=0` transversality on the critical reduced divisor of `M`'s deeper product — i.e. the
+corank generators of the carrier are NOT divisible by the critical (pivot-vanishing) divisor (the shared
+deeper `Z` enters them at full rank). The EXACT Lean encoding on `SJDecoration` (carrier `supp`/`coeff` +
+deeper `Z`/`ctx`) is being co-scoped with cover's width-general `p=0`-transversality RECURSION (#144) — that
+recursion IS invariant (ii) peel-closure.
+
+### 10.2 The three invariants
+- **(i) trivial ∈ family.** `SJDecoration.trivial M` has carrier `ofMatrix` (support ≡ 0, residual = product
+  entries) — no exceptional divisors, so `p=0` vacuously (no critical divisor resolved yet). `adm n M (trivial
+  M)` holds. [reachability base + vacuous transversality]
+- **(ii) PEEL-CLOSED = `p=0` transversality preserved.** One decorated peel (radialAttach + the chart step, §5
+  sectors) maps an admissible `M`-decoration to an admissible reduced-chain decoration, MAINTAINING `p=0` on
+  the new critical divisor (current corank block transverse to the deeper pivot degeneration). This is cover's
+  #144 width-general recursion — the substantive invariant. Feeds `DecoratedStepHyp adm`.
+- **(iii) PROVABLE BASE.** The fully-resolved admissible members bottom at the banked monomial terminal
+  `sjLoss_terminal_lintegral_lt_top` (d,k,h arbitrary); the arity-leaf (single free matrix) is the decorated
+  Morse. See 10.3.
+
+### 10.3 The decorated base / b>1 terminal reduction (subsumes gap (3)) — DOES reduce to `sjLoss_terminal`
+
+**Controller's key question — answered YES (from the toric local model + `p=0`).** Via the §5 Γ=u·M sector
+chart (`M=[[1,s],[t,st+v]]`, `|dΓ|=u³dudsdt dv`, `v`=det-normal RETAINED, NO inverse-det), the leaf loss pulls
+back (after the bounded row op `row₂ ↦ row₂ − t·row₁`) to
+
+    f = R² + u²(H₁² + v²H₂²),   H₁=|q₁+s q₂|,  H₂=|q₂|,  R=|P·Q_tp|.
+
+On the transverse (`p=0`) critical divisor `H₁,H₂` are UNITS, so `f ≍ R² + u²·(unit)` — a MONOMIAL-times-unit
+in the exceptional coords `(u, v, and the R-resolving reduced coords)`. Hence it bottoms at the banked
+`sjLoss_terminal_lintegral_lt_top`: the generators are `∏|u_ℓ|^{e(i,ℓ)}` monomials, and the dehomogenised-
+generator hypothesis `∃ i₀, e i₀ = sharedDivisorExp` is supplied by the `p=0` transversality (the corank
+generator `H₁` is a unit = its residual support equals the shared-divisor min, so `i₀` = that generator). The
+`a>1` rank-deficient directions are handled by the finite entrywise reciprocal charts (§5) + the `{v=0}`
+rank-drop sub-chart (recurse — the deeper pivot-vanishing critical divisor, again `p=0`). **NOT a genuine new
+terminal — a `sjLoss_terminal` instance** (given `p=0`). [The `b=1` case is banked B4 `RouteMSJFreeBilinear`.]
+
+### 10.4 The corrected residual (correction 2, load-bearing)
+
+The exact `v`-integral is `∫₀¹(H₁²+v²H₂²)^{−2}dv ≍ H₁^{−3}(H₁+H₂)^{−1}` (→ `H₁^{−4}` when `H₂≤H₁`), NOT
+`H₁^{−3}H₂^{−1}` (#141/§9 — that blows up as `H₂→0` with `H₁` a unit = ARTIFICIAL divergence, over-constrains
+to `3p+q=0`). The correct form needs ONLY `p=0` — exactly what transversality gives. The decoration the peel
+emits + carries is thus governed by `H₁` (the `p`-tracked direction), `H₂` untracked.
+
+### 10.5 Charges ADD (toric §5, confirms §3 Q1 — now with the correct per-divisor account)
+
+On the coupled corner, `∫∏|u_i|^{p_i}(∑u_i²U_i)^{−c'}` converges ⟺ `c' < ½Σ(p_i+1)`, `Σ(p_i+1)=Σ(block dims)
+=minAdm` (nD-homogeneous corner). BOTH coupling charts (`u₁=u₀τ` and reciprocal `u₀=u₁σ`) are needed (each
+covers half, same threshold, toric §5). This is the correct PER-DIVISOR account Codex's Q1 demanded (§7):
+NOT "one `u₀^{minAdm−1}`" but the homogeneous corner `½Σ(p_i+1)`, units `U_i>0` bounded below on the generic
+chart (recurse where a unit vanishes = the deeper `p=0` critical divisor).
+
+### 10.6 Status / what cover base-audits
+The A2 design rests on: the LANDED abstract spine; Q_D CERTIFIED (toric); the `p=0` invariant + corrected
+residual + §5 sectors (toric, decorrelated). cover base-audits: the admissible-family DEF (10.1) + its base
+(10.3, does it reduce to `sjLoss_terminal`) + peel-closure (10.2 = its own #144 recursion). On PASS I build:
+the specific `adm` Lean def (synced with #144) + `DecoratedBaseHyp adm` (10.3) + `DecoratedStepHyp adm` (the
+decorated peel, §5 sectors + corrected residual). **[OPEN, honest]** the exact `SJDecoration`-level encoding of
+`p=0` transversality (10.1) is the fidelity crux — co-scoped with #144; a wrong encoding (too loose→false base,
+too tight→misses peels) is the conceptual slop the base-audit catches.

@@ -116,4 +116,106 @@ theorem gammaPeelIntegral_lt_top_of_decoratedPeel (h : DecoratedPeelStep)
   sjJointResolution_of_boxThresholdFinite M
     (routeMBoxThresholdFinite_of_decoratedPeel h M) t ρ κ c' hc'
 
+/-! ## The Q2-CORRECTED DECORATED recursion — `DecoratedDescent` (the plain-IH `DecoratedPeelStep`
+above is now DEAD)
+
+**genm-sj5-descent, cover §7.5 audit Q2 (task #141).** The plain-IH `DecoratedPeelStep` above is a
+sound-but-DEAD conditional: its antecedent `∀M', RouteMBoxThresholdFinite M'` (a PLAIN, undecorated IH)
+is UNPROVABLE for the peel. cover's Q2 finding: the peel emits `[reduced integrand]·[truncated H⁻⁴]`,
+and at the zero-slack binding cut (`c'−½peelCharge ↗ ½·minAdm(redChain)`) a plain reduced-chain IH has
+NO budget for the extra Gram weight `H⁻⁴`. So the induction hypothesis must be DECORATED — carrying the
+truncated Gram weight through the `SJDecoration` carrier (jac monomial + shared-divisor structure). This
+is exactly what `SJDecoration`/`DecoratedBoxThresholdFinite` (`RouteMSJDecorated`) were built for; the
+plain-IH `DecoratedPeelStep` under-used them.
+
+This section re-states the contract as a DECORATED recursion, ABSTRACTING the admissibility predicate
+`adm` so the driver is fully mechanical (def-independent). The SPECIFIC admissible family — the
+base-audit fidelity core (`genm-sj5-cover` audits its def + base before the full spine proof is trusted)
+— is supplied separately (untracked until audited); it must (i) contain `SJDecoration.trivial`, (ii) be
+peel-closed, (iii) have a provable leaf base (`sjLoss_terminal` + free-matrix Morse). `DecoratedDescent`
+bundles the three; `routeMBoxThresholdFinite_of_decoratedDescent` discharges `(□)` modulo it.
+S2-FREE: definitions + mechanical arity strong-induction + the banked π=∅ recovery. -/
+
+/-- **The DECORATED inductive STEP contract, parameterised by an admissibility predicate `adm`.** For a
+`≥ 3`-width chain `M`, GIVEN the DECORATED strong IH — box-finiteness for every `adm`-admissible
+decoration of every one-shorter chain — every `adm`-admissible decoration of `M` is finite below its
+carrier threshold. The decorated replacement for the plain `SJStepHyp`: the IH carries the truncated
+Gram weight `H⁻⁴` inside the `SJDecoration` (jac + carrier), which the plain IH could not (Q2). -/
+def DecoratedStepHyp (adm : ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), SJDecoration M → Prop) : Prop :=
+  ∀ (L : ℕ) (M : Fin (L + 1 + 1 + 1) → ℕ),
+    (∀ (M' : Fin (L + 1 + 1) → ℕ) (D' : SJDecoration M'),
+        adm (L + 1) M' D' → DecoratedBoxThresholdFinite D') →
+    ∀ (D : SJDecoration M), adm (L + 1 + 1) M D → DecoratedBoxThresholdFinite D
+
+/-- **The DECORATED leaf base contract (`L = 1`, single free matrix).** Every `adm`-admissible
+decoration of every two-width chain is finite below its carrier threshold. The decorated replacement for
+`SJBaseHyp`: stronger than the plain free-matrix Morse base — the fully-resolved admissible members are
+the banked monomial terminal `sjLoss_terminal_lintegral_lt_top`. -/
+def DecoratedBaseHyp (adm : ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), SJDecoration M → Prop) : Prop :=
+  ∀ (M : Fin (1 + 1) → ℕ) (D : SJDecoration M), adm 1 M D → DecoratedBoxThresholdFinite D
+
+/-- **The DECORATED-recursion driver (mechanical, `adm`-abstract).** Strong induction on chain arity:
+`n = 0` vacuous (`carrierThreshold = ½·minAdm = 0`, decoration-independent), `n = 1` the decorated leaf
+base, `n ≥ 2` the decorated step (its decorated strong IH is the induction hypothesis one arity lower).
+Carries NO analytic content — mirrors `routeMBoxThresholdFinite_of_step`, one level up (decorated). -/
+theorem decoratedBoxThresholdFinite_of_decoratedStep
+    {adm : ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), SJDecoration M → Prop}
+    (hstep : DecoratedStepHyp adm) (hbase : DecoratedBaseHyp adm) :
+    ∀ (n : ℕ) (M : Fin (n + 1) → ℕ) (D : SJDecoration M),
+      adm n M D → DecoratedBoxThresholdFinite D := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    rcases n with _ | _ | k
+    · -- `n = 0`: threshold `½·minAdm M = 0`, so `c' < 0` is unsatisfiable (vacuous).
+      intro M D _hD c' hc'
+      exfalso
+      have h0 : minAdm M = 0 := by
+        have hz : ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat = 0 := by
+          obtain ⟨T, _, hT⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+          rw [hT]; simp [Mval]
+        unfold minAdm; exact hz
+      rw [carrierThreshold, h0] at hc'
+      simp only [Nat.cast_zero, zero_div] at hc'
+      exact absurd hc' (not_lt.mpr c'.coe_nonneg)
+    · -- `n = 1`: the decorated leaf base.
+      intro M D hD; exact hbase M D hD
+    · -- `n = k + 2`: the decorated step, fed the one-arity-lower decorated IH.
+      intro M D hD
+      exact hstep k M (fun M' D' hD' => ih (k + 1) (by omega) M' D' hD') D hD
+
+/-- **`(□)` from the decorated step + base + trivial-admissibility (mechanical).** Specialises the
+decorated driver to the trivial decoration (admissible by `htriv`) and recovers the plain box-finiteness
+via the banked π=∅ recovery `decoratedBoxThresholdFinite_trivial_iff`. -/
+theorem routeMBoxThresholdFinite_of_decoratedStep
+    {adm : ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), SJDecoration M → Prop}
+    (htriv : ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), adm n M (SJDecoration.trivial M))
+    (hstep : DecoratedStepHyp adm) (hbase : DecoratedBaseHyp adm) :
+    ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), RouteMBoxThresholdFinite M := by
+  intro n M
+  exact (decoratedBoxThresholdFinite_trivial_iff M).mp
+    (decoratedBoxThresholdFinite_of_decoratedStep hstep hbase n M
+      (SJDecoration.trivial M) (htriv n M))
+
+/-- **The Q2-corrected sole analytic contract `DecoratedDescent`.** There EXISTS an admissibility
+predicate `adm` that (i) contains the trivial decoration, (ii) supports the decorated step, and (iii)
+supports the decorated leaf base. The `SJDecoration`-faithful replacement for the (now-dead) plain
+`DecoratedPeelStep` — the truncated Gram weight `H⁻⁴` rides in `adm`'s carrier/jac. The remaining
+analytic mountain is EXHIBITING such an `adm` (the base-audit fidelity core + the decorated peel proof
+`DecoratedStepHyp`). -/
+def DecoratedDescent : Prop :=
+  ∃ adm : ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), SJDecoration M → Prop,
+    (∀ (n : ℕ) (M : Fin (n + 1) → ℕ), adm n M (SJDecoration.trivial M)) ∧
+      DecoratedStepHyp adm ∧ DecoratedBaseHyp adm
+
+/-- **The DECORATED-recursion driver — `(□)` MODULO `DecoratedDescent`.** Given the Q2-corrected
+decorated contract, `RouteMBoxThresholdFinite M` holds for every width vector `M`. This RE-POINTS the
+`(□)` chain off the dead plain `routeMBoxThresholdFinite_of_decoratedPeel` (whose `DecoratedPeelStep`
+antecedent is unprovable, Q2) onto the decorated recursion. Mechanical — the analytic content is entirely
+in `DecoratedDescent`. -/
+theorem routeMBoxThresholdFinite_of_decoratedDescent (h : DecoratedDescent) :
+    ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), RouteMBoxThresholdFinite M := by
+  obtain ⟨adm, htriv, hstep, hbase⟩ := h
+  exact routeMBoxThresholdFinite_of_decoratedStep htriv hstep hbase
+
 end DLNFibre.DLN.RLCT

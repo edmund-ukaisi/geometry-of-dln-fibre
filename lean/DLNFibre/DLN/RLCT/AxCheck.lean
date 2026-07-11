@@ -969,11 +969,18 @@ open DLNFibre.DLN.RLCT
 -- Pi-split form, deep factor A'0-independent). Plumbing, not analytic content.
 #print axioms rowSplit_lintegral_eq
 #print axioms gammaPeelIntegral_piSplit_eq
--- ★ DECORATED RECURSION tile T0 (RouteMSJDecoratedRec, genm-decbuild): (□) PROVED MODULO the single
--- Prop `DecoratedPeelStep`. `routeMBoxThresholdFinite_of_decoratedPeel` (DecoratedPeelStep → ∀M
--- RouteMBoxThresholdFinite M = (□)) + `gammaPeelIntegral_lt_top_of_decoratedPeel` (discharges 803).
--- Clean-three: these are conditional on the DecoratedPeelStep HYPOTHESIS (a real Prop arg, not sorryAx);
--- the sole remaining analytic gap is proving DecoratedPeelStep (T2/T3/T4).
+-- ★ DECORATED RECURSION (RouteMSJDecoratedRec, genm-sj5-descent): (□) PROVED MODULO the single Prop
+-- `DecoratedDescent`. `routeMBoxThresholdFinite_of_decoratedDescent` (DecoratedDescent → ∀M
+-- RouteMBoxThresholdFinite M = (□)) via the mechanical `adm`-abstract decorated driver
+-- `decoratedBoxThresholdFinite_of_decoratedStep`. Clean-three: conditional on the `DecoratedDescent`
+-- HYPOTHESIS (∃ an admissible decoration family; a real Prop arg, not sorryAx). The remaining analytic
+-- gap is EXHIBITING that `adm` — the base-audit fidelity core + the decorated peel `DecoratedStepHyp`.
+-- NOTE (cover §7.5 audit Q2, task #141): the OLD plain-IH `DecoratedPeelStep` +
+-- `routeMBoxThresholdFinite_of_decoratedPeel` are SOUND-BUT-DEAD conditionals — the plain undecorated IH
+-- antecedent is UNPROVABLE (the peel emits an extra truncated Gram weight `H⁻⁴` no plain reduced-chain
+-- IH can carry at the zero-slack binding cut). The `(□)` chain is RE-POINTED onto the decorated route.
+#print axioms decoratedBoxThresholdFinite_of_decoratedStep
+#print axioms routeMBoxThresholdFinite_of_decoratedDescent
 #print axioms routeMBoxThresholdFinite_of_decoratedPeel
 #print axioms gammaPeelIntegral_lt_top_of_decoratedPeel
 -- Decorated peel tile T3 (RouteMSJDecoratedRadialFin, genm-decbuild): the radial peel preserves
