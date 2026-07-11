@@ -133,6 +133,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
+import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
 
 /-!
 # Axiom-hygiene check
@@ -1113,3 +1114,10 @@ open DLNFibre.DLN.RLCT
 -- hypothesis — NO component decomposition. The geometric bridge #1's ρ≥b → rank(Zdeep)≥b feeds hb.
 #print axioms corank_survival_ae
 #print axioms ae_matrix_eval_ne_zero
+-- A2 units-on-chart interface (RouteMSJUnitsBridge, genm-sj5-desc3, #2 units bridge; bedrock PASS): full ROW
+-- rank ⟹ ∃c>0, (Z·Zᵀ−c·1)≽0 (`exists_gram_sub_smul_one_posSemidef_of_rank_eq`), via Gram-PosDef-from-rank
+-- (`posDef_gram_of_rank_eq`) + an EIGENVALUE-FREE min-over-unit-sphere Loewner bound
+-- (`exists_pos_smul_one_le_of_posDef`, dodges the spectral-isDefEq hazard). Feeds LeafFinite's hZ.
+#print axioms exists_gram_sub_smul_one_posSemidef_of_rank_eq
+#print axioms posDef_gram_of_rank_eq
+#print axioms exists_pos_smul_one_le_of_posDef

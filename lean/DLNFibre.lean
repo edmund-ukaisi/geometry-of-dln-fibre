@@ -1339,3 +1339,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
 -- the rank-≥b deeper product (p=0). AG-FREE: genericity in the free var A, minor-cut null set (Zdeep.rank a
 -- hypothesis, from #1's ρ≥b), NO component decomposition / NO generic-rank-on-a-component. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
+-- Units-on-chart interface (RouteMSJUnitsBridge, genm-sj5-desc3, #2 units bridge): full ROW rank ⟹
+-- ∃ c>0, (Z·Zᵀ − c·1) ≽ 0 (the hZ shape RouteMSJLeafFinite.corankLeaf_rpow_lt_top consumes), via
+-- Gram-PosDef-from-full-rank + an EIGENVALUE-FREE min-over-unit-sphere Loewner bound (dodges the
+-- spectral-isDefEq hazard). Mathlib-only imports. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
