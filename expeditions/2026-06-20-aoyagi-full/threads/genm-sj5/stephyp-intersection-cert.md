@@ -106,3 +106,37 @@ A deeper branch CAN genuinely undershoot. Exact local model (Codex, re-derived +
   rank-drop split uses the quantitative `σ_min(A₂)≥ε` sector (not generic full rank) and the deeper-branch
   threshold is the joint tube estimate / `D/m≥n₀` (not codim-slack). For the general-width descent, the
   per-branch `D/m≥n₀` check is the concrete verification; if any width fails it, that is the genuine obstruction.
+
+---
+
+## 8. CORRECTION (2026-07-11, from dmcheck #146 — CONFIRMED, independently re-verified)
+
+dmcheck's general-width collapse hunt CORROBORATES this cert's headline (no intrinsic collapse; anchor
+secured) AND corrects the FRAMING of the Q3 criterion. **I confirm dmcheck's correction — no pushback**
+(independently verified, `/tmp/prodD/dmcheck_confirm.py`):
+
+- **`D/m ≥ n₀ (n₀=ab)` is VIEW-DEPENDENT — do NOT state it as the criterion.** On the anchor the inequality
+  INVERTS between views yet both give 7/2: top-level (deeper `(3,3,4)`, `q=2`, `ρ=1`) has `D_q=4 < M₀q=6` so
+  the min picks the TUBE → `½(3+4)=7/2`; decorated (Γ-block `ab=4`, deeper `A₂`) has `D=6 ≥ ab=4` so the
+  corner ADDS → `½(4+3)=7/2`. The threshold `7/2` is invariant; the number `n₀` and the direction of
+  `D/m ⋛ n₀` are view-specific bookkeeping. [Verified.]
+- **The VIEW-FREE invariant (the StepHyp soundness statement):** the per-cell threshold is
+  **`½(M₀ρ + min(M₀q, D_q))`** (`ρ=r−q` survive, `D_q=cCodim(deeper;ρ)` the geometric product-tube codim),
+  and `min_q [½(M₀ρ + min(M₀q,D_q))] = ½minAdm` — the QIP identity `min_ρ(cCodim(deeper;ρ)+M₀ρ)=minAdm`.
+  [Verified 7 chains incl. bottlenecks, 0 violations.] At a BINDING cell, `D_q ≤ M₀q` (P3, verified), so
+  `min` keeps the full tube codim and the charges ADD to `½minAdm`.
+- **`m=1` per direction, NOT the aggregate (T-a).** This cert's Q3 local model `F=u₀²|z|^{2m}+u₁²` left `m`
+  general — the geometric `m` is `1` PER collapsing direction (`σ_min² ≍ dist²`), and the corank-`q` case is
+  the per-direction iterated corner (the `corank2-cert §2` joint density I DID use for the anchor), NOT a
+  single aggregate `U₀`. **Trap:** reading `U₀ = det(PPᵀ) ≍ t^{2q}` as `σ_min²` gives a spurious `m=q`
+  collapse. My anchor conclusion used the joint density (= per-direction `m=1`) so was RIGHT; but the abstract
+  `D/m` criterion with general `m` left the trap door open — use `D_q=cCodim` (geometric, `m=1` built in).
+- **T-b/T-c (dmcheck):** the tube is the DEEPER PRODUCT `Zdeep`'s rank drop, NOT the corank block
+  `A₁,cor·Zdeep` (which prepends the free front layer — spurious low codim; `transversality §1` licenses the
+  deeper-product reading); and `½(D_q+d_q)` is NOT the per-cell VALUE on a narrow front (`M₀q<D_q`) — the true
+  cell is `½(M₀ρ+min(M₀q,D_q))`, still `≥½minAdm` (so (□) survives, but don't over-assert per-cell).
+
+**Net:** the StepHyp soundness statement is dmcheck's invariant `½(M₀ρ+min(M₀q,D_q))` / QIP identity + `m=1`
++ `D_q≤M₀q`-at-binding — NOT the view-dependent `D/m≥n₀` of §7-Q3, and NOT the `½(D_q+d_q)` per-cell value.
+This cert's HEADLINE (no intrinsic collapse; anchor `(3,3,3,4)` secured; the two gates T4 + per-branch tube)
+STANDS and is corroborated; only the Q3 criterion's framing is corrected.
