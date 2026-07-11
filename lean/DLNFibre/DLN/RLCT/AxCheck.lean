@@ -127,6 +127,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
 import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
 
 /-!
 # Axiom-hygiene check
@@ -1076,3 +1077,8 @@ open DLNFibre.DLN.RLCT
 -- the outer descent integrates on c'>ab/2 cells). Design-INDEPENDENT (Route A consumes both).
 #print axioms pivotEnergy_inverse_free
 #print axioms freedSchurLoss_inner_peel_le
+-- A2 peel-closure invariant arithmetic core (RouteMSJTransversality, genm-sj5-descent; #144 (ii)): the binding-cut
+-- minAdm convexity `minAdm(redChain t M)+((M₀−t)+(M₁−t)−1) ≤ minAdm(redChain (t+1) M)` (`_succ_ge`) + the `≥ b`
+-- corank-width corollary (`_corankWidth`) — the minAdm-arithmetic half of `adm ⟹ ∀η∈Crit p_η=0`. Pure ℕ.
+#print axioms minAdm_redChain_succ_ge
+#print axioms minAdm_redChain_succ_ge_corankWidth

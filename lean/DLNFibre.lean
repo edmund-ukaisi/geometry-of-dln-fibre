@@ -1303,3 +1303,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
 -- `freedSchurLoss_inner_bounded_shear_lt_top`. Consumed by ANY route to the outer integral; the OUTER (A',x)
 -- integral (the (S,J) monomial double induction) stays the isolated skeleton sorry. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
+-- `RouteMSJTransversality` — the A2 peel-closure invariant's ARITHMETIC CORE (genm-sj5-descent, #144 (ii)):
+-- at a nondegenerate binding cut, `minAdm(redChain t M) + ((M₀−t)+(M₁−t)−1) ≤ minAdm(redChain (t+1) M)`
+-- (`minAdm_redChain_succ_ge`) + the `≥ b` corollary (`_corankWidth`) the p=0 transversality reads off. Pure ℕ
+-- convexity from the banked charge soundness `minAdm_le_peelCharge_add_redChain`. The minAdm-arithmetic half of
+-- the invariant (`adm ⟹ ∀η∈Crit p_η=0`); the geometric incidence (i) + rank (iii) are follow-ons. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
