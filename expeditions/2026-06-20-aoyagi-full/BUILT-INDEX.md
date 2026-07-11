@@ -57,9 +57,18 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
 - `RouteMSJSphereBlowup` (0-sorry) — the polar blow-up CoV.
 - `RouteMSJPivotChart` (0-sorry): `measurePreserving_shearSub` (`:337`) — the MP shear `D↦Γ=D−CA⁻¹B`.
 - `RouteMSJCorankPeel` (0-sorry): `corankBlock_morsePeel_lt_top` (`:114`) — the corank-block radial Morse
-  peel (the det-Jacobian atom `u₀²U₀+u₁²U₁ → det(Q_bQ_bᵀ)^{−a/2}·…`). CAVEAT: emits a det-inverse coupling;
-  the NATIVE cover lane replaces it with the σ_min coercivity weight — but for the §5 diag(b) peel it may be
-  the native atom (§5 uses diag(b), the det ledger). §5 lane: assess whether to consume it.
+  peel (the det-Jacobian atom `u₀²U₀+u₁²U₁ → det(Q_bQ_bᵀ)^{−a/2}·…`).
+  **★ ATOM ADJUDICATION (ADJUDICATED 2026-07-11, peel-buildplan §2.1; three decorrelated lines — exact read,
+  pure-vs-atom-adj, Codex xhigh):** `corankBlock_morsePeel` is the native §5 atom **ONLY on the FULL-RANK
+  `Q_b` strata (good `rank=q` / top `rank=q−1`)** — it needs `hG : (Q_bQ_bᵀ).PosDef`, delivering the exact
+  shift `c'↦c'−pq/2` with a FINITE weight there. **CONSUME for B3/B4.** On the deeper stratum
+  `rank Q_b = r < q` the map `Γ↦Γ·Q_b` has a `p(q−r)>0`-dim kernel, so the enlarged full-space integral is
+  `+∞` throughout the ENTIRE true box-finite range (exact witness: `∫_ℝ(x²+y²γ²)^{−c}dγ = K_c|y|^{−1}|x|^{1−2c}`,
+  outer `y`-integral diverges). **Do NOT consume `corankBlock_morsePeel` on B5 (the deeper strata, ~86%).**
+  The "det ledger" the operator brief names is §5's **det-1 UNIT clears (`frobSq_schur_block_split` /
+  `block_elimination`) + the `diag(b)` MONOMIAL ledger — NOT `det(Q_bQ_bᵀ)`.** The native deeper-stratum atom
+  is the **in-box radial blow-up + shared monomial ledger** (≡ subred's chain-length descent on the shorter
+  chain). (Supersedes the earlier "assess whether to consume" caveat — now adjudicated: full-rank only.)
 
 ### Charge / termination gate (§5's diag(b) ledger + descent)
 - `RouteMSJDecoratedCharge` (0-sorry): `peelCharge` (`:45`, `(M₀−u)(M₁−u)`); `minAdm_le_peelCharge_add_redChain`
@@ -116,9 +125,30 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
    outer-tail integration on the good∪deeper cover (split on s_{r−1}) + `twoBlock_radial` → ProductTube +
    the front-rank descent. Gaps: (1a banked) → (1c v-exposure, in flight) → (2 cover) → (3 good-branch) →
    (4 deeper descent). Certs: `threads/genm-mountain-recon/`, `threads/genm-vsastruct/` (onepeel-*, sigmin-*).
-2. **DIRECT Aoyagi §5 coupled diag(b) peel** (the paper's method, operator-opened 2026-07-11): prove 803
-   directly via §5's recursion (radial blow-ups + det-1 unit clears + absorption-by-renaming + diag(b)
-   ledger), consuming the scaffold above. Whole content = the ONE open obligation. Thread: `threads/genm-sj5/`.
+2. **DIRECT Aoyagi §5 coupled diag(b) peel** (the paper's method, operator-opened 2026-07-11): prove the
+   coupled peel directly via §5's recursion, consuming the scaffold above. Thread: `threads/genm-sj5/`.
+   **BUILD-PLAN (2026-07-11): `threads/genm-sj5/peel-buildplan.md`** — TRUE + BOUNDED, no wall (3
+   decorrelated lines). Key results:
+   - **Target reframe: prove `DecoratedPeelStep` (`RouteMSJDecoratedRec:78`), NOT `803` directly.** The
+     banked driver `:99` closes `(□)` from it AND `:111` retro-fills `803` — so `803` is obsolete once
+     `DecoratedPeelStep` lands. It is provable via the DOUBLE induction (the earlier "DecoratedPeelStep
+     unprovable" was the plain-IH SINGLE peel; the double induction proves it).
+   - **Shape: double induction.** OUTER = chain arity (BANKED, `routeMBoxThresholdFinite_of_step`). INNER =
+     the decorated resolution within one peel, terminating by **chain-length descent (subred)**, NOT Aoyagi's
+     literal two-index `(S,J)` loop — a deliberate design call: the descent has measure `= L` (banked) and
+     **all six of the literal loop's prose repairs evaporate**.
+   - **DAG + commission order (§4.2):** B4 (CERTIFIED, banked) → **B5a′** opaque-width Schur split lift
+     (owed; IN FLIGHT `genm-sj5-schur`) → **B5-desc** the deeper-strata chain-length descent (THE HEART;
+     gated on the cover-seam de-risk `genm-sj5-cover` IN FLIGHT) → B5b/B5c/B5d/B6/B7.
+   - **Most likely to break (§4.4):** the det-inverse dominant-minor cover SEAM — the per-chart bound the
+     banked `RouteMSJDominantCover` assembly consumes as a hypothesis (Beta-divergence on a cell boundary,
+     the atom-route failure mode). Being de-risked on the `(3,3,3,4) q∈{1,2}` slice before B5-desc.
+   - **Already banked (index reconciliation, do NOT re-derive):** B5-desc-ℕ descent arithmetic
+     (`RouteMSJDescNat.lean`, `frontPeel_binding_cut : ∃q≤tailMin M, minAdm M = frontCharge M q`, #117 —
+     anti-trap `tailMin−b+1 ≠ minAdm`, composition IS the front-peel); the cover-ASSEMBLY
+     (`RouteMSJDominantCover`, #118, reviewed); the pivot-charge finiteness (front-first box-bound, α =
+     max{0,2c'−m₀(q−1)}, linchpin `minAdm ≤ D+m₀(q−1)`, #115 — the dyadic shell is DROPPED, owes no shell
+     lemma). The genuinely-owed content = B5a′ (identity lift) + B5-desc (the inner induction + deeper descent).
 
 ## HOUSEKEEPING TODO
 - [ ] (1) Fix the stale `RouteMSJResolution.lean` docstrings (`:54/:58/:92/:946`): "two remaining sorries" →
