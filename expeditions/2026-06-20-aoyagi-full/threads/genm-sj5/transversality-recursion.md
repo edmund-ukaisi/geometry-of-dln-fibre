@@ -410,11 +410,29 @@ SPECIFIC deeper chain `(M₂,…,M_L)`. A free `M₂×M_L` matrix (or a generic 
 rank-strata codim wherever an intermediate dim bottlenecks: `redChain=(3,5,2,5)` → `minAdm=6` (chain; `M₃=2`
 caps `rank Zdeep ≤ 2`) vs `13` (free `5×5`); `(2,4,2,5)` → `4` vs `8`; `(2,4,4,5)` → `7` vs `8`. A carrier
 realizing only "some reduced product" lets #144 read the wrong `δ_r`/`minAdm` ⟹ wrong `ρ*`/threshold.
-**Minimal `genuineCarrier`:** `D`'s deeper carrier structurally EQUALS the banked `prod (deeperChain M)` map
-(`D.Z = paramsBox (deeperChain M)`, `D.ctx`/`D.dom` = the induced `prod (deeperChain M) ·`), `deeperChain M =
-(M₂,…,M_L)` — so `rank D.Z(A')`, `δ_r`, `minAdm(redChain)`, `a`, `b`, `ρ*` all read off the specific chain.
-Uses banked `redChain`/`prod`/`paramsBox`, no `peelOp`. Requirements met: (1) `trivial` = un-peeled full-chain
-product ⟹ genuine (`htriv`); (2) `peelOp` (real) maps `prod(deeperChain M)`→`prod(deeperChain redChain)` ⟹
-preserved (proved in the STEP, uses `peelOp` realness — NOT in the `adm` def, so #3 stays decoupled); (3) #144
-consumes it (specific-chain `δ_r`/`minAdm`/`a`/`b`). NOT "∃ reduced product" — that under-pins and breaks the
-codim read.
+**LOCKED `genuineCarrier` form (i) — CORRECTED 2026-07-11, signature-grounded (was a wrong 2-drop below).**
+The struct forces it: `SJDecoration.trivial M` has `D.Z = Params M` (the FULL chain-`M` parameter TUPLE),
+`ctx = read prod M`, `dom = paramsBoxM M 1` (`RouteMSJDecorated:157–169`), and `radialAttach` keeps `Z := D.Z`
+UNCHANGED (`:251`); since `htriv` REQUIRES `genuineCarrier(trivial)`, genuineCarrier MUST accept the FULL
+`Params M` (0-drop). And the leaf `corankLeaf_rpow_lt_top`/`corank_survival_ae` consume the TAIL product as a
+MATRIX (`Z·Zᵀ≽c·I`), which is a FUNCTION of `D.Z`, DERIVED (multiply the tail factors of `A ∈ Params M`) — NOT
+stored as `D.Z`. So the earlier "`D.Z = paramsBox(deeperChain)`" (2-drop) was WRONG (it conflated the derived
+tail-matrix with stored `Z` and fails `trivial`). The locked form:
+
+    genuineCarrier (D : SJDecoration M) : Prop :=
+      ∃ e : D.Z ≃ᵐ Params M,
+        (∀ z, D.ctx z = ((), fun ik ↦ prod M (e z) ik.1 ik.2))   -- active vars trace to the FULL product of M
+        ∧ D.dom = e ⁻¹' (paramsBoxM M 1)
+
+so `D.Z` is measure-equiv (`≃ᵐ`, NOT type-equality — avoids the HEq transport) to the FULL tuple of the
+decoration's OWN chain `M`; the tail `(M₁,…,M_{L−1})` product #144/#2 read is DERIVED from it. **Requirements:**
+(1) `trivial` (`e=id`, `D.Z=Params M`) discharges `htriv`; (2) pins `M`'s EXACT chain — `Params M` is over `M`'s
+exact dims (intermediates = `M`'s values), so the derived tail's rank strata `δ_r = cCodim(tailChain;r)` and
+`minAdm` read off the specific chain (a free `M₂×M_L` matrix / generic "∃ reduced product" gives the WRONG
+codim at bottlenecks — `(3,5,2,5)` `minAdm=6` vs free `13`; `(2,4,2,5)` `4` vs `8`; verified
+`/tmp/prodD/genuine.py`); (3) `#144` consumes the derived tail. Peel-preservation re-types to
+`SJDecoration (redChain M)` with `genuineCarrier D' := D'.Z ≃ᵐ Params(redChain M)` — (i) relative to `redChain`
+— proved in the STEP (`peelOp` realness), NOT in the `adm` def, so #3 stays decoupled. **Caveat:** if a
+`rowMix`/chart step transforms `ctx` mid-descent, relax the `ctx` clause to `(unit-Jacobian CoV)∘(read prod M)`
+— the load-bearing core is `D.Z ≃ᵐ Params M` + the tail derivable. NOT candidate (ii)'s `∃ N`-suffix (vacuous
+— `radialAttach` keeps `Z=Params M`, so no proper suffix arises within a fixed `SJDecoration M`).
