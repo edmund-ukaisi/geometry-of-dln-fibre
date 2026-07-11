@@ -48,11 +48,15 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
      `adm M D := genuineCarrier D ∧ (a=0 ∨ b=0 ∨ ∀η∈Crit D, ⨅_j ν_η(corankGen D j)=0)`, Crit incl. intersection rays (C1).
      `genuineCarrier D := D.Z = paramsBox(deeperChain M)` (pins the EXACT deeper chain — controller SPINE check: SJDecoration
      is NOT definitionally genuine, so this clause is LOAD-BEARING; an unpinned/free carrier gives the wrong rank-strata codim).
-   - **NEXT (the build, genm-sj5-desc2):** (α native, #97 honored, NO cite) #2-core `corank_survival_ae` (AG-free: banked
-     D1JointDiffRankExact factor → RankLocusClosed minor-cut → DeepestCoreNonvanishing null-set; free-A genericity, NOT
-     component-decomposition) + the units bridge (full-row-rank ⟹ ∃c>0 `Z·Zᵀ≽c·I`) — **`RouteMSJCorankSurvival.lean`
-     sorry-free but STAGED untracked, awaiting desc2 green report + green-gate + AxCheck (canonical-clean discipline)** →
-     #3 (adm def (B), spec'd above) → #4 wire corankLeaf into `DecoratedBaseHyp` (jac via Tonelli). [Bounded, native.]
+   - **#2-core `corank_survival_ae` LANDED @ef8a1528 (clean-three; controller bedrock + cover DECORRELATED fidelity PASS).**
+     AG-free (free-var-A genericity, single b×b minor-cut null set, Zdeep.rank a hypothesis — NO component-decomposition;
+     Codex "AG wall avoided: YES", #114 does not recur). `RouteMSJCorankSurvival` (corank_survival_ae + ae_matrix_eval_ne_zero,
+     both `[propext,Classical.choice,Quot.sound]`), wired into aggregator+AxCheck.
+   - **NEXT (the build, genm-sj5-desc3 — fresh):** (1) the units bridge #147 (full-row-rank ⟹ ∃c>0 `Z·Zᵀ≽c·I`: GramFullRank
+     PosDef → min-over-unit-sphere Loewner, eigenvalue-AVOIDING per isDefEq hazard) → (2) #3 adm def (B) #148 (spec'd above:
+     genuineCarrier pins EXACT chain + valuation clause, Crit incl. intersection rays) → (3) #4 #149 wire corankLeaf into
+     `DecoratedBaseHyp` (jac via Tonelli). The **(a)/(c) wiring (rank=b → p_η=0 on Crit) is the DEFERRED #2 rest** (needs #3;
+     cover flagged it correctly as remaining, not a hidden gap). [Bounded, native, design-locked in genm-sj5-piece2-design.md.]
    - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` (the decorated peel):** the coupled corner blow-up (route-S
      §5 sectors, corrected residual `H₁⁻³(H₁+H₂)⁻¹`) → charges-ADD to `sjLoss_terminal`, closing on the reduced-chain IH at
      the ½peelCharge-shifted threshold. ★ SOUNDNESS: the intersection/deficient-rank rays' `≥½minAdm` must be ESTABLISHED
