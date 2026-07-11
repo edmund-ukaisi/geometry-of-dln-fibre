@@ -161,34 +161,35 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
      the seam is Lebesgue-null, partition = indicator-mult (no boundary term), transition Jacobian `=1` exactly
      on the seam, integrand `O(1)` there; the `|det A_S|^{−b}` det-inverse is exactly cancelled by the
      shrinking image `vol=2^{bm}|det A_S|^b` (the `s⁻¹` pole is a FULL-SPACE artifact the box never has).
-   - **★ THE FILL ROUTE — Level-A finiteness needs NEITHER cover NOR seam (preferred, cheapest):** the
-     `m`-column **Cauchy–Binet Loewner majorant** `det(Q_bQ_bᵀ) ≥ det(Q_SQ_Sᵀ)` (`|S|=m`, any FIXED `S`,
-     via `A·Aᵀ ≽ A_S·A_Sᵀ` [column-drop] + congruence + PSD det-monotone) → shrinking-image CoV →
-     the BANKED `detGram_lintegral_lt_top` (`RouteMSJProductTube:322`, `∫_{matBox r n} det(XXᵀ)^{−a/2}<⊤`,
-     `a<n−r+1`) → square-middle `(b,m,m)` base, matched threshold `m−b+1`, NO det-inverse/cover/seam/descent.
-     **★ INDEX CORRECTION (2026-07-11): #112 is NOT banked-in-canonical.** `det_le_det_of_posSemidef_le` +
-     `det_submatrix_sq_le_det_gram` were built on the `genm-cbmin` WORKTREE branch, NEVER integrated/pushed —
-     the branch is gone, irrecoverable via git, and not in Mathlib. The majorant STEP must REBUILD the
-     PSD-cone det-monotonicity + the m-column (NOT single-minor — that reaches only a<1) Loewner bound. Only
-     the ENDPOINT (`detGram_lintegral_lt_top`) is truly banked. (GAP-B, genm-sj5-schur building.) This is a POINTWISE bound integrated once (NOT the `[core]∘[IH]`
-     factorisation Codex Q2 flagged invalid at a=0 — that trap is dodged). For a DEEPER-PRODUCT tail (general
-     M, unlike (3,3,3,4)'s single A₂) the product-rank tube codim `D` = **CLEARED ∀M (#127, 2026-07-11):**
-     `D = C(reduced) = minAdm(reduced)` (via the paper's add-longest thm + rank-shift Lemma 4.5 + QIP,
-     CONSUMING banked Core `cCodim_rankShift`/`productRankLocusLE_eq_iUnion_orbitRankLocus`/`cCodim_eq_qipMin`);
-     leading power `= codim` (affine-on-β-simplex → vertex minimizer = front-peel competitor; + banked
-     `normalSlice_transfer` #109 straightens the pushforward tube to the reduced chain's Lebesgue Σ⁰-tube).
-     ★ KEY: `L=D` is NOT an independent lemma — it's the reduced chain's box-finiteness ONE ARITY DOWN, closed
-     by the SAME arity recursion `decoratedPeelStep_proof` uses. So the ∀M product-lift FOLDS INTO the
-     recursion + banked Core — NOT a new analytic build. WATCH (Lean bookkeeping): the `minAdm=cCodim` bridge
-     (both `=C`; explicit lemma or ℕ `minAdm_rrp_subadd`) + the real-vs-complex codim seam (state it).
-     Accounting sums to `7=minAdm` (charges ADD via the shared corner, `7/2`; MIN→3/2 rejected); strict `<`
-     preserved (endpoint-only log-borderline).
-   - **★ THE ONE REAL TRAP (a BOUND, not the integral):** extending the shrinking image `D_M` to a FIXED box
-     reintroduces `∫|det A_S|^{r−b}=∞` for `r<b` (inside the dominant chart, NOT the seam). AVOID: use the
-     majorant route, or (if the cover route) KEEP the coupled shrinking image `D_M`.
-   - **CENTER-LIST level-separated:** the proportionality center `(x₂,p₂)∥(x₃,p₃)` (cornrev FOLLOW-UP-2) is a
-     Level-B (θ-count / explicit-resolution) object — NOT needed for the majorant FINITENESS route (majorants
-     don't resolve). Reserve it for a Level-B resolution.
+   - **★ THE FILL ROUTE (CORRECTED 2026-07-11 by the bridge de-risk #128 — the Γ-first majorant is a TRAP).**
+     ❌ **OFF-ROUTE (do NOT use):** "integrate Γ first → det-Gram `I(a)=∫det(Q_bQ_bᵀ)^{−a/2}` → m-column
+     majorant → banked `detGram_lintegral_lt_top`". The bridge de-risk (`bridge-derisk.md`, exact SVD +
+     decorrelated Codex) proved this is **+∞ on the pivot-degenerate locus `{w=0}`** for `c'∈[p·b/2, ½minAdm)`
+     (`=[2,7/2)` for (3,3,3,4)): on `{w=0}` the inner Γ-integral is `∫‖ΓQ_b‖^{−2c'}`, finite only iff
+     `c'<p·b/2=2 < 7/2`. Any Γ-first-then-deeper route inherits it. `corankGram_box_lt_top` (I(a)) is
+     true-but-OFF-ROUTE — the hole does NOT reduce to it. The pivot `w` is LOAD-BEARING (sector bound
+     `min{w^{−c'},E^{−c'}}`). `corankBlock_morsePeel`/`freedSchurLoss_inner_peel` need PosDef+pivot>0+c'>ab/2
+     POINTWISE — hold only on `{w>0}`, fail on `{w=0}`.
+     ✅ **CORRECT — the FRONT-FIRST JOINT bound:** (1) RECOMBINE `(x,Γ)→A₀` (banked MP+reversible shear
+     `chartInner_schurShearFree_eq`/`measurePreserving_shearSub`) — integrate pivot+Γ TOGETHER; (2) ★ **the ONE
+     new brick** — front-first box-exponent `g(Q)=∫_{A₀-chart}frobSq(A₀·Q)^{−c'} ≤ C·σ_q(Q)^{−α}`,
+     `α=max{0,2c'−M₀(q−1)}` (covdesign §CONCESSION), CONSUMING banked spectral: `RouteMSJFrontSpectral`
+     (`frobSq_mul_eq_sum_eigenvalues`, `sigMin_sq_eq_iInf_eigenvalues`, `collapseIndex_le`),
+     `RouteMSJProductTube` (`sigMin`, `det_gram_le_sigMin_sq_mul_trace_pow`, `sigMin_rpow_le_det_rpow_of_mem_box`),
+     `RouteMSJTwoBlockRadial.twoBlock_radial_le` — NOT yet banked as a single lemma (genm-sj5-schur build-scanning);
+     (3) `∫_{A'}σ_q^{−α}` against the tube codim `D=minAdm(reduced)`, BANKED: `minAdm_eq_frontPeel` + #127 + Core.
+     `c'<½minAdm ⟹ α<D` strict ⟹ finite. **★ THE TWO LANES CONVERGE on this one brick** — lane-1's banked
+     spectral machinery is now on the §5 critical path, but the §5 fill stays cheap (skeleton pre-banked the rest).
+   - **det-monotone (`RouteMSJDetMono`, banked @1e806282 unwired):** the #112 rebuild (`det_le_det_of_posSemidef_sub`)
+     — reusable/Mathlib-worthy, but NO LONGER on the §5 critical path (it was the OFF-ROUTE majorant's tool).
+     Keep for reuse. (#112 was LOST — cbmin worktree gone — hence the rebuild.)
+   - **∀M product-tube codim `D` CLEARED (#127, `prodD-general.md`):** `D=C(reduced)=minAdm(reduced)` via the
+     paper's add-longest thm + rank-shift + QIP, CONSUMING banked Core (`cCodim_rankShift`,
+     `productRankLocusLE_eq_iUnion_orbitRankLocus`, `cCodim_eq_qipMin`); leading power `=codim` (affine-on-β-simplex
+     vertex + `normalSlice_transfer` #109). `L=D` is the reduced chain's box-finiteness one arity down — FOLDS
+     INTO the recursion, not a new build. WATCH (Lean bookkeeping): `minAdm=cCodim` bridge + real-vs-complex seam.
+   - **CENTER-LIST level-separated:** the proportionality center `(x₂,p₂)∥(x₃,p₃)` is Level-B (θ-count) — not
+     needed for the front-first FINITENESS route. Reserve for a Level-B resolution.
    - **Atom note:** `corankBlock_morsePeel_setLE` (the det-Gram atom) is native on full-rank strata only; on
      bottleneck charts (`Q_bQ_bᵀ` PosDef fails) the majorant route replaces it. (Correction: `mulLeftₚ`/
      `lintegral_comp_mulLeftₚ` are for the DOWNSTREAM absorption Jacobian, NOT the shear.)
