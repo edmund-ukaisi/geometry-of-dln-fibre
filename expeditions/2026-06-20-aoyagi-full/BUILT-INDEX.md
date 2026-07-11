@@ -153,15 +153,31 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
    - **DAG + commission order (§4.2), UPDATED 2026-07-11:** B4 (CERTIFIED, banked) → **B5a′ LANDED** (the
      opaque-width Schur split + Γ-freeing shear are BANKED, genm-sjcarrier6/7 — see the OPAQUE-WIDTH row
      above; genm-sj5-schur STOPPED report-only, #124 done) → **B5-desc — THE SOLE REMAINING CONTENT** (the
-     deeper-strata corank-Gram chain-length descent; gated on the cover-seam de-risk `genm-sj5-cover` IN
-     FLIGHT). The three legs B5-desc still owes (genm-sj5-schur's Lean-side read): (i) full-space enlargement
-     (≤, integrand ≥0) + the anisotropic corank atom `corankBlock_morsePeel_setLE` — needs deeper core `w>0`
-     (NOT pointwise) + `Q_bQ_bᵀ` PosDef (FAILS on bottleneck charts `M₁−t >` min deeper widths → radial
-     route, per the atom adjudication); (ii) the separate `c'≤a/2` bounded-integrand branch; (iii) the (S,J)
-     OUTER A'-descent supplying `w>0` + carrying the accumulated Gram residual to the monomial terminal
-     (`sjLoss_terminal_lintegral_lt_top`) + the strong IH on `redChain t M`. B5b/B5c/B5d fold into these.
-     (Correction: `mulLeftₚ`/`lintegral_comp_mulLeftₚ` are for the DOWNSTREAM absorption Jacobian (B5,
-     genm-decbuild), NOT the shear — which uses `measurePreserving_add_right` directly.)
+     deeper-strata corank-Gram integral finiteness). Skeleton IN FLIGHT (`genm-sj5-schur`, #125/#126,
+     statements-first, isolating the hole `innerCorankDescent_lt_top`).
+   - **★ COVER-SEAM DE-RISK COMPLETE (2026-07-11, `genm-sj5-cover`, `threads/genm-sj5/cover-derisk.md`) —
+     NO WALL; the flagged risk (§4.4) is CLEARED, twice over.** Exact algebra (sympy CoV identity
+     `QQᵀ=Q_S W Q_Sᵀ` + Cauchy–Binet dominance, 0/20k violations) + decorrelated Codex concurring term-for-term:
+     the seam is Lebesgue-null, partition = indicator-mult (no boundary term), transition Jacobian `=1` exactly
+     on the seam, integrand `O(1)` there; the `|det A_S|^{−b}` det-inverse is exactly cancelled by the
+     shrinking image `vol=2^{bm}|det A_S|^b` (the `s⁻¹` pole is a FULL-SPACE artifact the box never has).
+   - **★ THE FILL ROUTE — Level-A finiteness needs NEITHER cover NOR seam (preferred, cheapest):** the
+     `m`-column **Cauchy–Binet Loewner majorant** `det(Q_bQ_bᵀ) ≥ det(Q_SQ_Sᵀ)` (`|S|=m`, #112 BANKED —
+     `det(MMᵀ)≥minor²`) → a square-middle `(b,m,m)` Wishart base, matched threshold `m−b+1`, NO
+     det-inverse/cover/seam/descent. This is a POINTWISE bound integrated once (NOT the `[core]∘[IH]`
+     factorisation Codex Q2 flagged invalid at a=0 — that trap is dodged). For a DEEPER-PRODUCT tail (general
+     M, unlike (3,3,3,4)'s single A₂) the residual = confirm the product-rank tube codim `D` has leading
+     power `= codim` (banked for (3,3,3,4); #116-style for general). Accounting sums to `7=minAdm` (charges
+     ADD via the shared corner, `7/2`; MIN→3/2 rejected); strict `<` preserved (endpoint-only log-borderline).
+   - **★ THE ONE REAL TRAP (a BOUND, not the integral):** extending the shrinking image `D_M` to a FIXED box
+     reintroduces `∫|det A_S|^{r−b}=∞` for `r<b` (inside the dominant chart, NOT the seam). AVOID: use the
+     majorant route, or (if the cover route) KEEP the coupled shrinking image `D_M`.
+   - **CENTER-LIST level-separated:** the proportionality center `(x₂,p₂)∥(x₃,p₃)` (cornrev FOLLOW-UP-2) is a
+     Level-B (θ-count / explicit-resolution) object — NOT needed for the majorant FINITENESS route (majorants
+     don't resolve). Reserve it for a Level-B resolution.
+   - **Atom note:** `corankBlock_morsePeel_setLE` (the det-Gram atom) is native on full-rank strata only; on
+     bottleneck charts (`Q_bQ_bᵀ` PosDef fails) the majorant route replaces it. (Correction: `mulLeftₚ`/
+     `lintegral_comp_mulLeftₚ` are for the DOWNSTREAM absorption Jacobian, NOT the shear.)
    - **Most likely to break (§4.4):** the det-inverse dominant-minor cover SEAM — the per-chart bound the
      banked `RouteMSJDominantCover` assembly consumes as a hypothesis (Beta-divergence on a cell boundary,
      the atom-route failure mode). Being de-risked on the `(3,3,3,4) q∈{1,2}` slice before B5-desc.
