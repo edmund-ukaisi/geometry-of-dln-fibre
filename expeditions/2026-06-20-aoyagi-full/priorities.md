@@ -1,11 +1,13 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
-Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (evening) — STAGE 2 (A)-BUILD;
+Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (late) — STAGE 2 (A)-BUILD;
 the (□) CRUX RESOLVED (#130): NOT a wall — (□) is BOUNDED LABOUR. The two lanes CONVERGED on ONE shared
-brick g(Q) (front-first, as a RANK-STRATIFIED COVER); its deeper-strata piece is banked-adjacent (route S,
-corner334/onePeel334). Remaining = corank-q coupled majorant + cell_1 (building) + cover/sum + minAdm=cCodim.**
-Live integrative read: `synthesis.md` (UPDATE-900 newest); operator-review items: `discuss-at-close.md` (#97–#105).
+brick g(Q) (front-first, RANK-STRATIFIED COVER). ★ BOTH g(Q) PER-CELL BRICKS NOW BANKED (clean-three):
+cell_1 `frontFirst_g_le_of_sector` @3885d8d2, cell_{q≥2} `qPeelIntegral_lt_top`+`qPeel_334` @c807c465.
+Remaining = the RESHAPE (b) [b1 `frobSq_ge_qBlock_of_qSector` landed; b2 casting = genm-sj5-schur's active
+build, #134] + cover/Σ_q assembly (BANKED infra) + sjSector discharge. Only the reshape is a substantial build.**
+Live integrative read: `synthesis.md` (UPDATE-905 newest); operator-review items: `discuss-at-close.md` (#97–#106).
 
 ## ★ STATE ANCHOR — Stage 1 COMPLETE (S2-free), Stage 2 = BUILD-discharge `(□)` via native (S,J)
 Stage 1 delivered the fully-general Aoyagi learning coefficient (honest Lean 4 + Mathlib, BEDROCK-OK,
