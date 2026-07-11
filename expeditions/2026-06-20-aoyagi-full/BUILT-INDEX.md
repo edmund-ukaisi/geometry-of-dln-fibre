@@ -56,8 +56,14 @@ ignore their target/route.**
 - **#4** wire `corankLeaf_rpow_lt_top` into `DecoratedBaseHyp` (jac via Tonelli) — desc2.
 - **★ #5 `DecoratedStepHyp` — THE remaining substantial analytic core** (the decorated peel: coupled corner
   blow-up, corrected residual `H₁⁻³(H₁+H₂)⁻¹`, charges-ADD to `sjLoss_terminal`, closing on the reduced-chain
-  IH at the ½peelCharge-shifted threshold). SOUNDNESS: the intersection/deficient-rank rays' `≥½minAdm` via
-  the QUANTITATIVE COUPLED estimate (NOT "higher codim ⟹ slack"). cover FORWARD-SCOPING (#145, decorrelated).
+  IH at the ½peelCharge-shifted threshold). **SOUNDNESS CERT LANDED** (`stephyp-intersection-cert.md`,
+  @f98903f6, cover + decorrelated Codex): NO intrinsic collapse (coupled sum RLCT=½minAdm, charges add);
+  **anchor (3,3,3,4) secured; general-width `D/m≥n₀` per-rank-drop-branch is the deepest obligation.** #5's
+  4 obligations: (1) uniform coercivity + bounded Jacobians on `σ_min(A₂)≥ε`; (2) per-branch tube estimate
+  `λ=n₁/2+½min(n₀,D/m)`, full iff `D/m≥n₀` (codim insufficient — vanishing order m matters); (3) every
+  recursive branch ≥½minAdm (tube density AND orders); (4) uniform seam + σ_min(A₂)-stratification
+  termination. De-risk ACTIVE: `genm-sj5-dmcheck` (#146, adversarial witness hunt for a D/m<n₀ collapse =
+  the faithfulness test).
 
 ### Staged / off-route
 - `RouteMSJCorankSurvival` (untracked, sorry-free, #2-core — see #2 above).
