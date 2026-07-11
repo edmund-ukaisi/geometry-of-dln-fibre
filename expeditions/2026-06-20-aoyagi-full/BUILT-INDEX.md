@@ -173,7 +173,6 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
      lemma). The genuinely-owed content = B5a′ (identity lift) + B5-desc (the inner induction + deeper descent).
 
 ## HOUSEKEEPING TODO
-- [ ] (1) Fix the stale `RouteMSJResolution.lean` docstrings (`:54/:58/:92/:946`): "two remaining sorries" →
-  "one remaining sorry (`sjJointResolution:803`)"; "sjBoundaryPeel (3, … WALL)" → "sjBoundaryPeel (CLOSED,
-  sorry-free)". DEFERRED to the next RouteMSJResolution green-gate (avoid contending with the in-flight 1c
-  in-place build).
+- [x] (1) DONE @02323c4d — the stale `RouteMSJResolution.lean` docstrings (`:57/:69/:92/:674/:946`,
+  "two sorries"/"WALL"/"this named sorry") corrected to "one remaining sorry (`sjJointResolution:803`);
+  `sjBoundaryPeel` CLOSED sorry-free". Green-gated (8304 jobs), sorry count unchanged (only `:803`).
