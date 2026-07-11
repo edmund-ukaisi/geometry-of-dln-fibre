@@ -288,3 +288,39 @@ finite (the `(2,2,1,2)` bounded integral converges at `c'=3/4`); it is the ROUTE
 
 **If Q1/Q2 surface a genuine analytic obstruction (not labour), I isolate the minimal gap and flag it
 decorrelated-confirmed (per the gate). Else it is the bounded build the buildplan predicts.**
+
+---
+
+## 9. POST-AUDIT (cover §7.5 PASS + Q1/Q2 resolved) — the DECORATED-IH structural lift
+
+cover's audit (task #141): ROUTE CORRECT + WIDTH-GENERAL (Q1 POSITIVE — joint flag-tube PASS, charges-ADD
+verified at 7 anchors incl `(4,4,4,4)=11 [4,3,4]`); and **Q2 RESOLVED NEGATIVE for plain-hIH — a DECORATED IH
+is REQUIRED.** The front-`t=2` chart radial integration gives `∫u³(R²+u²H²)^{−c'}du ≍ R^{4−2c'}·H^{−4}`: the
+peel emits `[plain reduced integrand]·[EXTRA truncated H^{−4}]`, and plain `hIH(redChain)` at the zero-slack
+binding cut (`c'−ab/2 ↗ ½minAdm(redChain)`) CANNOT carry the `H^{−4}`. NOT a finiteness obstruction (`v=0` is
+the equally-binding `t=3` cut, same threshold, excluded-endpoint log — the log absorbs into strict slack); a
+CONSTRUCTION gap. This VINDICATES the #137 decorated-descent plan and confirms my §8 Q2 deepest-risk call.
+
+**⇒ STRUCTURAL LIFT (flagged): the skeleton's plain IH must become the DECORATED IH the `SJDecoration`
+infrastructure was built for.** The current spine (`RouteMSJResolution`/`RouteMSJDecoratedRec`):
+`SJStepHyp`/`DecoratedPeelStep` take a PLAIN IH `∀M', RouteMBoxThresholdFinite M'`, base `sjBase1_freeMatrix`
+(free-matrix Morse), driver `routeMBoxThresholdFinite_of_step` (arity strong-induction, PLAIN predicate). The
+lift:
+- **step:** `DecoratedStepHyp : ∀ M(≥3), (∀ M' one-shorter, ∀ D' : SJDecoration M', DecoratedBoxThresholdFinite D')
+  → ∀ D : SJDecoration M, DecoratedBoxThresholdFinite D` — the IH is DECORATED (carries the truncated `H^{−4}`
+  as the `jac` monomial + the carrier's shared-divisor structure; `DecoratedBoxThresholdFinite` already carries
+  `∏|u_ℓ|^{jac_ℓ}·carrier.loss^{−c'}`).
+- **base:** the DECORATED leaf — stronger than `sjBase1_freeMatrix` (trivial only); the fully-resolved members
+  are `sjLoss_terminal_lintegral_lt_top` (banked).
+- **driver:** replicate the arity strong-induction wrapper for the decorated `∀D` predicate, then specialise to
+  `SJDecoration.trivial M` (via `decoratedBoxThresholdFinite_trivial_iff`) to recover `RouteMBoxThresholdFinite M`.
+  The `L=0` vacuous base lifts cleanly (threshold `½minAdm` is decoration-INDEPENDENT).
+
+**The subtlety to nail (the design fork):** the `∀ D : SJDecoration M` quantifier is likely TOO STRONG for a
+provable base (a pathological carrier could over-charge). The faithful design restricts to the ADMISSIBLE
+decorated family the peels actually produce (bounded/truncated weight, monomial carrier) — matching the
+`SJDecoration` design intent (`genm-r1predicate/cert.md`, "FULLY PINNED"). Options: (A1) `∀D` (clean statement,
+hard/false base); (A2) admissible-family recursion (base = `sjLoss_terminal` + Morse, needs the family def +
+peel-closure) — RECOMMENDED; (B) simultaneous multi-level discharge (cover's alternative; no per-level IH).
+**This changes the `(□)`-gating spine (`DecoratedPeelStep` + driver), which I authored — flagged for controller
+steer before the spine rewrite.**
