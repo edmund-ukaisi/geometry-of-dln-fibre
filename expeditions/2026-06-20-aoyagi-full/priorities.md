@@ -1,16 +1,22 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
-Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (evening) — STAGE 2 (A)-BUILD;
-(□) discharged via the DECORATED (S,J) DESCENT (Route A, the coupled diag(b) ledger) — the ROUTE CONFIRMED
-after a decorrelated route-reconcile (#140): the front-first g(Q)/qPeelIntegral route is FAITHFULNESS-CONTESTED
-(shared-A₂ coupling — QQᵀ=A₁(A₂A₂ᵀ)A₁ᵀ; disjoint-A₂ FALSE, |det M|⁻⁴ non-integrable across corank cells; the
-deep tube is a JOINT flag estimate, not independent Wisharts). The hole = `innerCorankDescent_lt_top`
-(RouteMSJDecoratedPeelStep skeleton). ★ (b) MEASURE BEDROCK LANDED clean-three @e807f327 (RouteMSJInnerDescent,
-6 lemmas — `measure_shearbox_lt_top` discharges the assumed `hs`). Remaining = the CoV/ledger DESIGN (#138, ★
-the {w=0}/corank-2 = JOINT two-scale flag-tube density route J, NOT scalar codim; cover audits) → the ledger
-threading (THE deepest build, multi-tide) → close the hole → mint #108. BUILD-TO-THE-END; bounded labour.**
-Live integrative read: `synthesis.md` (UPDATE-915 newest); operator-review items: `discuss-at-close.md` (#97–#110).
+Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (late) — STAGE 2 (A)-BUILD;
+(□) via the DECORATED (S,J) DESCENT (Route A, coupled diag(b) ledger). ★ The spine RE-POINTED (□) onto the new
+sole contract `DecoratedDescent = ∃ adm, (trivial admissible) ∧ DecoratedStepHyp adm ∧ DecoratedBaseHyp adm`
+(the plain-IH `DecoratedPeelStep` was UNPROVABLE/Q2 → marked dead; `routeMBoxThresholdFinite_of_decoratedDescent`
+is the live driver, clean-three @b142a966). Q_D CERTIFIED no-obstruction (#142, both anchors, exact toric-ray);
+the peel-closure invariant + the (i) incidence are NATIVE/α (`minAdm_eq_backPeel` re-expression — #97 HONORED,
+NO cite; the last Proved-vs-Cited fork RESOLVED to Prove, #114). **6 clean-three modules banked** (spine +
+measure bedrock RouteMSJInnerDescent + invariant-(ii) RouteMSJTransversality + (P)/(T)-guard RouteMSJAdmEncoding
++ Rayleigh core RouteMSJLeafRayleigh + leaf finiteness RouteMSJLeafFinite). DecoratedBaseHyp's LOSS part DONE by
+proof (`corankLeaf_rpow_lt_top`, route A, bypasses sjLoss_terminal + (P)/(T)). **REMAINING:** the invariant α-build
+(`minAdm_eq_backPeel` + chain → rank≥b) + adm def + wire corankLeaf into DecoratedBaseHyp [mostly landing] →
+**`DecoratedStepHyp` — THE remaining substantial analytic core** (the decorated peel + the intersection COUPLED
+estimate = deepest soundness; NOT a codim freebie per cover's x²(x²+y^{2N}) correction) → `DecoratedDescent` →
+(□) → mint #108. BUILD-TO-THE-END; bounded labour, no wall. Decorrelated adversarial hunts caught 5 errors on
+paper (atom-first / plain-hIH / decoration / full-rank / higher-codim-slack).**
+Live integrative read: `synthesis.md` (UPDATE-931 newest); operator-review items: `discuss-at-close.md` (#97–#114).
 
 ## ★ STATE ANCHOR — Stage 1 COMPLETE (S2-free), Stage 2 = BUILD-discharge `(□)` via native (S,J)
 Stage 1 delivered the fully-general Aoyagi learning coefficient (honest Lean 4 + Mathlib, BEDROCK-OK,
@@ -24,35 +30,36 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
 
 ## Now (ranked)
 
-1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` via the DECORATED (S,J) DESCENT (Route A) — fill `innerCorankDescent_lt_top`.**
-   `(□)`-gate = `decoratedPeelStep_proof` (`RouteMSJDecoratedPeelStep` skeleton, green, ONE hole) → the driver
-   `routeMBoxThresholdFinite_of_decoratedPeel`. The hole `innerCorankDescent_lt_top` = the freed-Γ triple
-   `∫_{A'}∫_x∫_Γ freedSchurLoss(x,Γ,prod(tailChain M)A')^{−c'}`, filled by the **decorated (S,J) monomial descent**
-   (the coupled diag(b) ledger → the banked terminal `sjLoss_terminal`, closing on the reduced-chain IH
-   `hIH(redChain t M)` at the ½·peelCharge-shifted threshold). **★ ROUTE CONFIRMED (#140 decorrelated reconcile):**
-   the front-first g(Q)/qPeelIntegral route is FAITHFULNESS-CONTESTED — `QQᵀ=A₁(A₂A₂ᵀ)A₁ᵀ` shares A₂; the
-   disjoint-A₂/independent-Wishart step is FALSE (onePeel334's 8+4 split → `|det M|⁻⁴` non-integrable across the
-   corank cells); the deep tube is a JOINT flag estimate. `#123`/Cauchy–Binet→square-Wishart stays a det-Gram-weight
-   TOOL INSIDE Route A, not the closer.
-   - **BANKED (consume):** (b) measure bedrock `RouteMSJInnerDescent` (6 lemmas clean-three @e807f327 — `measure_shearbox_lt_top`
-     discharges the assumed `hs`, the 2 branch value bounds `_bounded_le`/`_peel_le`, `pivotEnergy_inverse_free`);
-     the terminal `sjLoss_terminal_lintegral_lt_top` + carrier steps (`gen_rowMix_const`, `loss_radialStep`); the
-     driver + charge shift `half_minAdm_sub_half_peelCharge_le`; the ℕ charges (`Mval_decompose`, `minAdm_eq_frontPeel`);
-     the det-Gram weight `corankGram_box_lt_top` (RouteMSJCorankGram, one isolated sorry reducing to Loewner #112 + Wishart).
-   - **NEXT (the build, genm-sj5-descent):** (1) **#138 CoV/ledger DESIGN cert** (pen-and-paper + Codex, cover AUDITS = GATE) —
-     the iterated-blowup chart maps + per-chart Jacobian monomials + finite chart cover + charges-ADD-to-minAdm + ★ the
-     JOINT two-scale flag-tube density `μ{s₂≤t₂,s₃≤t₃}≍t₂³t₃log` (route J, corank2-cert §2) for the {w=0}/corank-2
-     resolution — NOT a scalar-codim shortcut (closes only for η<1/4). (2) On cover PASS → formalise the ledger threading
-     + rank-flag cover + the 3-hyp measure glue. THE deepest build, multi-tide, base-audited-hardest.
-   **THEN:** hole closed → `decoratedPeelStep_proof` green → `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient`
-   (#108, on the FULL general (□) — precision guard). Certs: `threads/genm-sj5/` (descent-buildplan, route-reconcile,
-   obligation1-spec); live read: synthesis UPDATE-915.
+1. **★ [STAGE 2 · ACTIVE GOAL] Discharge `(□)` via the DECORATED (S,J) DESCENT (Route A) — prove `DecoratedDescent`.**
+   `(□)`-gate = `routeMBoxThresholdFinite_of_decoratedDescent : DecoratedDescent → ∀M (□)` (clean-three @b142a966,
+   RouteMSJDecoratedRec). `DecoratedDescent = ∃ adm, (trivial admissible) ∧ DecoratedStepHyp adm ∧ DecoratedBaseHyp adm`
+   (adm-abstract decorated recursion; the plain-IH `DecoratedPeelStep` is DEAD — Q2: peel emits `[reduced]·[H⁻⁴]`, plain
+   IH can't carry it). Controller bedrock/vacuity review PASS (non-vacuous: ∀D→false base, trivial-only→unprovable step;
+   forces the peel-closed p=0-transversality family). **ROUTE CONFIRMED (#140):** front-first g(Q)/qPeelIntegral is
+   FAITHFULNESS-CONTESTED (shared-A₂, disjoint-A₂ FALSE); `#123`/Cauchy–Binet a TOOL not the closer.
+   - **DONE / banked (clean-three):** the spine (`DecoratedDescent` + driver); measure bedrock `RouteMSJInnerDescent`;
+     `DecoratedBaseHyp` LOSS part = `corankLeaf_rpow_lt_top` (route A, `RouteMSJLeafFinite`+`_Rayleigh`, `∫(frobSq ΓZ)^{−c'}<⊤`
+     at ½minAdm(base) given the `Z·Zᵀ≽c·I` units interface); invariant-(ii) `RouteMSJTransversality`; (P)/(T)-guard +
+     regression-test-2 `RouteMSJAdmEncoding`. Q_D no-obstruction CERTIFIED (#142); the invariant width-general CERTIFIED (#144).
+   - **NEXT (the build, genm-sj5-descent):** (α, native — #97 honored, NO cite): `minAdm_eq_backPeel` (`minAdm(t,·)=min_ρ[cCodim(·;ρ)+t·ρ]`,
+     finite-min reindex of the banked QIP) + incidence-arithmetic + banked convexity ⟹ `rank(Zdeep)≥b` + free-matrix corank
+     survival ⟹ `adm ⟹ ∀η∈Crit p_η=0` (unconditional) + the `adm` def (B1 valuation-clause / B2 reachable / 2 regression
+     tests) + wire corankLeaf into `DecoratedBaseHyp` (jac via Tonelli). [Mostly LANDING — bounded, native.]
+   - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` (the decorated peel):** the coupled corner blow-up (route-S
+     §5 sectors, corrected residual `H₁⁻³(H₁+H₂)⁻¹`) → charges-ADD to `sjLoss_terminal`, closing on the reduced-chain IH at
+     the ½peelCharge-shifted threshold. ★ SOUNDNESS: the intersection/deficient-rank rays' `≥½minAdm` must be ESTABLISHED
+     by the QUANTITATIVE COUPLED estimate (NOT "higher codim ⟹ slack" — cover's x²(x²+y^{2N}) correction, #114); cover's
+     deepest audit focus.
+   **THEN:** `DecoratedDescent` proved → `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient` (#108, on the FULL general
+   (□) — precision guard). Certs: `threads/genm-sj5/` (descent-buildplan, route-reconcile, toric-ray-cert, transversality-recursion,
+   cov-ledger-design, obligation1-spec); live read: synthesis UPDATE-931.
 1b. **[banked-but-reusable, off critical path] det-monotone (`RouteMSJDetMono`, #112 rebuild, unwired);
-   corank-Gram Γ-first fallback (`RouteMSJCorankGram`, superseded by the front-first cover, untracked).**
-   Historical (superseded): the native cover/σ_min good-branch ~600 LoC (UPDATE-888) is now SUBSUMED into
-   the shared g(Q) (item 1) — its banked spectral machinery (`twoBlock_radial_le`/`FrontSpectral`/`ProductTube`)
-   is exactly what the front-first cover consumes. vsastruct/corank2-cert prior work feeds #131. No separate
-   lane-1 build remains — it IS g(Q).
+   corank-Gram (`RouteMSJCorankGram`, one isolated sorry, untracked) = the det-Gram-weight TOOL usable INSIDE
+   Route A (#140), not the closer.** Historical (superseded framings): the front-first g(Q)/qPeelIntegral route
+   (faithfulness-contested #140 — shared-A₂) and the earlier front-first cover are BOTH superseded by the
+   decorated (S,J) descent (item 1). Their banked spectral machinery (`twoBlock_radial_le`/`FrontSpectral`/
+   `ProductTube`/RadialPolar) + the corank-q `qPeelIntegral_lt_top` (sound abstract lemma, (□)-application
+   contested) remain reusable tools, not the (□) route. No separate lane remains — the route IS the decorated descent.
 2. **[RESOLVED 2026-07-09] Peel-stack naming — KEEP the unsuffixed `aoyagi_learning_coefficient`.**
    Operator decision: keep it. It stays a sorried placeholder until Stage 2 discharges `(□)`, then it is
    re-pointed to the honest unconditional fully-general result. No action now.
