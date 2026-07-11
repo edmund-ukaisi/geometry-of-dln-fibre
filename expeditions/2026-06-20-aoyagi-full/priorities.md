@@ -46,22 +46,30 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
    - **★ adm-FORK RESOLVED → (B) valuation-predicate (UPDATE-936, cert §10/§10.1).** #144 peel-closes the VALUATION predicate
      (not just the reachable set), so #3 (adm def) DECOUPLES from #5 (peelOp). **FINAL #3 adm def:**
      `adm M D := genuineCarrier D ∧ (a=0 ∨ b=0 ∨ ∀η∈Crit D, ⨅_j ν_η(corankGen D j)=0)`, Crit incl. intersection rays (C1).
-     `genuineCarrier D := D.Z = paramsBox(deeperChain M)` (pins the EXACT deeper chain — controller SPINE check: SJDecoration
-     is NOT definitionally genuine, so this clause is LOAD-BEARING; an unpinned/free carrier gives the wrong rank-strata codim).
+     **genuineCarrier LOCKED (i)** (cover-decided, corrected the earlier 2-drop + my (ii)): `∃ e : D.Z ≃ᵐ Params M, ctx traces
+     prod M ∧ dom = e⁻¹box` — stores the FULL Params M; the deeper TAIL (#144/#2/leaf consume it) is DERIVED from A=e z, not
+     stored (dissolves the trivial-0-drop tension). Pins M's EXACT chain (LOAD-BEARING; ν/ζ aligned via hν▸, HEq-free). LANDED @0ba81dcb.
    - **#2-core `corank_survival_ae` LANDED @ef8a1528 (clean-three; controller bedrock + cover DECORRELATED fidelity PASS).**
      AG-free (free-var-A genericity, single b×b minor-cut null set, Zdeep.rank a hypothesis — NO component-decomposition;
      Codex "AG wall avoided: YES", #114 does not recur). `RouteMSJCorankSurvival` (corank_survival_ae + ae_matrix_eval_ne_zero,
      both `[propext,Classical.choice,Quot.sound]`), wired into aggregator+AxCheck.
-   - **NEXT (the build, genm-sj5-desc3 — fresh):** (1) the units bridge #147 (full-row-rank ⟹ ∃c>0 `Z·Zᵀ≽c·I`: GramFullRank
-     PosDef → min-over-unit-sphere Loewner, eigenvalue-AVOIDING per isDefEq hazard) → (2) #3 adm def (B) #148 (spec'd above:
-     genuineCarrier pins EXACT chain + valuation clause, Crit incl. intersection rays) → (3) #4 #149 wire corankLeaf into
-     `DecoratedBaseHyp` (jac via Tonelli). The **(a)/(c) wiring (rank=b → p_η=0 on Crit) is the DEFERRED #2 rest** (needs #3;
-     cover flagged it correctly as remaining, not a hidden gap). [Bounded, native, design-locked in genm-sj5-piece2-design.md.]
-   - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` (the decorated peel):** the coupled corner blow-up (route-S
-     §5 sectors, corrected residual `H₁⁻³(H₁+H₂)⁻¹`) → charges-ADD to `sjLoss_terminal`, closing on the reduced-chain IH at
-     the ½peelCharge-shifted threshold. ★ SOUNDNESS: the intersection/deficient-rank rays' `≥½minAdm` must be ESTABLISHED
-     by the QUANTITATIVE COUPLED estimate (NOT "higher codim ⟹ slack" — cover's x²(x²+y^{2N}) correction, #114); cover's
-     deepest audit focus.
+   - **LANDED clean-three (genm-sj5-desc3):** units bridge #147 (`RouteMSJUnitsBridge` @cab04ba5, eigenvalue-free Loewner) +
+     #3 adm def (B) #148 (`RouteMSJAdm` @0ba81dcb: genuineCarrier (i) + admValuation=`d=0 ∨ pSimultaneous` + htriv PROVED;
+     cover DECORRELATED fidelity-PASS). DecoratedDescent witness typechecks; only #4 (hbase) + #5 (hstep) OPEN.
+   - **NEXT: #4 #149 `DecoratedBaseHyp`** — base ROUTE fork A/B ROUTED TO COVER (my lean **B**: free-matrix Morse (d=0) +
+     `sjLoss_terminal` via the LOCKED pSimultaneous (d≥1) on the GENERAL (S,J) carrier; Route A's carrier-frobSq pin is
+     UNFAITHFUL to the (S,J) form + re-couples #3↔#5). desc3 building the shared route-independent d=0 Morse; holding d≥1 for cover.
+     **★ FLAG-1 (BEDROCK-CRITICAL, cover):** adm admits DEGENERATE-coeff d=0 decorations (genuineCarrier+d=0 doesn't constrain
+     the loss) that CAN diverge — the base must genuinely PROVE finiteness for ALL admitted d=0 (incl. degenerate) OR the d=0
+     disjunct must be TIGHTENED; NEVER POSTULATE DecoratedBaseHyp (false-hypothesis gap = UNSOUND). The A/B decision must address it.
+   - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` #5 (the decorated peel):** the coupled corner blow-up → charges-ADD
+     to `sjLoss_terminal`, closing on the reduced-chain IH at the ½peelCharge-shifted threshold. **SOUNDNESS RESOLVED (dmcheck #146
+     + cover, decorrelated): NO COLLAPSE** — the invariant form is the QIP identity + m=1 + D_q≤M₀q, per-cell `½(M₀ρ+min(M₀q,D_q))`
+     (NOT bare D/m≥n₀ [view-dependent], NOT codim-slack). **Build-plan BANKED** (`stephyp-buildplan.md`, 6-node DAG, mostly-banked):
+     owed = N1 (m=1 reduced full-rank normal slice, banked-adjacent to `normalSlice_transfer` #109) + N4 (peelOp centerpiece);
+     driver/shift/QIP/units-bridge/terminal/corank-survival/peel-preservation all BANKED. **★ FLAG-2 (cover): the peel MUST keep
+     ν = product-type FIXED** (record row-elimination in coeff/supp), else genuineCarrier preservation fails — or reformulate
+     genuineCarrier with an equivalence (ν ≃ product). 3 misread-traps (T-a/T-b/T-c) baked in as "do NOT" guards.
    **THEN:** `DecoratedDescent` proved → `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient` (#108, on the FULL general
    (□) — precision guard). Certs: `threads/genm-sj5/` (descent-buildplan, route-reconcile, toric-ray-cert, transversality-recursion,
    cov-ledger-design, obligation1-spec); live read: synthesis UPDATE-931.
