@@ -5,6 +5,14 @@
 toric-ray principalization of the rank-one angular chart ideal `(P·Q_tp, u(q₁+sq₂), uvq₂)` + the two binding
 reduced charts, on `(3,3,3,4)` and `(4,4,4,4)`; emit the quantitative sectors + Jacobians for gap (iii).
 
+**CORRECTION (2026-07-11, from `transversality-recursion.md` #144):** below I say the critical divisor is
+"pivot-vanishing with the shared deeper product generic FULL-RANK" (§2, §4, §5). The literal full-rank form
+is an OVER-CLAIM and is FALSE in general (reduced `(2,2,2)` has its top component at `rank Zdeep=1<2`). The
+correct, width-general invariant is the WEAKER `rank_{gen,X}(Zdeep) ≥ a+b−1 ≥ b` on every top-dim component
+(proven by `minAdm` binding-cut convexity) — exactly enough for the `b` corank rows to survive → `p=0`. The
+`p=0` conclusion and the Q_D no-obstruction verdict here are UNCHANGED; only the geometric reason is
+corrected. See `transversality-recursion.md`.
+
 **Exact algebra (mine):** `/tmp/prodD/{toric_verify,verify_fast,corner75,audit75}.py` (the combined-ray formula
 + offending-ray + the corrected `v`-integral + the anchor transversality). **Decorrelated:** own xhigh
 `local-codex-consult`, conclusion WITHHELD, told to compute the rays and hunt an offending one:
