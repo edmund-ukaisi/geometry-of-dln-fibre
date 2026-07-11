@@ -86,6 +86,43 @@ pushforward-density module, `corank2-cert`'s "route J"), NOT the Cauchy–Binet/
 So {w=0} closes via front-first joint integration + strict threshold + the SHARP flag-tube theorem;
 strictness + scalar codim `D` alone does NOT.
 
+### 3′. The controller's q3 input — the `pivotEnergy_inverse_free` / bilinear-{w=0} claim, adjudicated (CLAIM TESTED, not accepted)
+
+The descent-formaliser (Route-B advocate) offers: `w = frobSq([P|B₁₂]·Q)` is **inverse-free** (no `P⁻¹`), so
+`{w=0}` is a clean bilinear locus, AND `{w=0}` is resolved **route-independently** because the corank term
+`frobSq(C·Q̃ₚ + Γ·Q_b)` keeps the freed loss positive off `{both blocks vanish}` — i.e. by NOT dropping the
+corank contribution, not by deletion. Treated as a claim to REFUTE (burden on Route B). Exact local model
+(freed, post-shear: `loss = ‖P·Q̃ₚ‖² + ‖Γ(A')·Q_b‖²`, `P` the invertible pivot; `p = dim Q̃ₚ`):
+
+- **HALF TRUE, and USEFUL — inverse-free kills ONE feared divergence.** `P` invertible ⟹ the sub `u=P·Q̃ₚ`
+  in `∫_{ℝ^p}(‖P·Q̃ₚ‖²+m)^{−c'}dQ̃ₚ` has **constant** Jacobian `|det P|^{−1}` (NOT `det`-dependent). So there
+  is NO `P⁻¹` det-inverse blow-up over `{w=0}` — the `#128v1` fear (a `det`-inverse singularity on the pivot
+  vanishing-locus) is genuinely absent, and the shrinking-image CoV is clean here. This is a real
+  simplification; concede it.
+- **BUT "resolved route-independently" is an OVERCLAIM — positivity ≠ integrability; the pivot peel HANDS OFF
+  to the reduced recursion, it does not self-resolve.** Exact Beta reduction (by hand, polar `r=√m·ρ`):
+  `∫_{ℝ^p}(‖P·Q̃ₚ‖²+m)^{−c'}dQ̃ₚ = |det P|^{−1}·S_{p−1}·(∫_0^∞ρ^{p−1}(1+ρ²)^{−c'}dρ)·m^{p/2−c'}`, the `ρ`-integral
+  a finite constant iff `2c'>p`. So integrating the pivot does NOT dispatch `{w=0}` — it **shifts the
+  exponent** `c' ↦ c'−p/2` (this IS `half_minAdm_sub_half_peelCharge_le`, the threshold shift) and emits
+  `m^{p/2−c'} = ‖Γ(A')·Q_b‖^{2(p/2−c')}`, i.e. **exactly the reduced corank-Gram integral over `(A',Q_b)` at
+  the peeled exponent** — the `redChain` recursion, one peel lighter, NOT a closed sub-locus.
+- **Does the OUTER (A',Q_b) integral blow up on a positive-measure neighbourhood of `{w=0}`? YES unless the
+  peeled exponent clears the corank threshold.** The handed-off `∫∫‖Γ(A')·Q_b‖^{−2(c'−p/2)}` is finite ⟺
+  `c'−p/2 < ` (corank-Gram threshold `min(tail)−b+1`), which is precisely the `minAdm` bookkeeping the ledger
+  tracks. The corank term keeps the loss **pointwise positive** off `{both vanish}`, but the neighbourhood is
+  controlled by the reduced-exponent recursion's threshold, not automatically. For `3<c'<7/2` at corank-2 the
+  reduced integral still diverges under the scalar/marginal bound and needs the SHARP joint flag-tube
+  `μ≍t₂³t₃log` (§3) — the same JOINT (w, corank, rank-degeneration) resolution, NOT a route-independent free
+  lunch.
+
+**Net.** The bilinear-`{w=0}` / inverse-free structure is a genuine handle (no `det`-inverse on the pivot
+locus — concede this to Route B), but it does **not** make `{w=0}` self-resolving or Route B cheaper: the
+pivot peel is a threshold-shift that FEEDS the reduced corank recursion (`redChain`), which is exactly the
+decorated-ledger machinery of Route A. So the input SUPPORTS "pivot peel is inverse-free" (useful, banked)
+and REFUTES "{w=0} resolved route-independently" (it relocates to the reduced joint threshold). This is
+consistent with §3's verdict — no flip: the mechanism (shared-`A₂` / joint corank threshold) is unchanged;
+the inverse-free handle removes a spurious `det`-inverse worry but not the joint-finiteness obligation.
+
 ---
 
 ## 4. VERDICT + recommendation (Q4)
