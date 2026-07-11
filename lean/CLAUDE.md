@@ -138,6 +138,16 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   block-diagonal, so `LinearMap.det` factors via `det_pi` to `(det K)^c` directly, and the Haar CoV
   fires on the pi instance with no diamond. (Pattern: `RouteMSJDecoratedPeelMeas.mulLeftₚ` /
   `lintegral_comp_mulLeftₚ`, transcribing `RouteMSJGammaAtom.rightMulₚ`; `genm-decbuild`, 2026-07-10.)
+- **A `def` inlining a heavy spectral term (`(posSemidef_mul_transpose P).isHermitian.eigenvalues` /
+  `.eigenvectorUnitary`) makes any lemma manipulating it hit a `(deterministic) timeout at isDefEq/whnf`
+  (even @800k heartbeats)** — unification re-elaborates the spectral term each time. TWO-PART fix
+  (confirmed, `RouteMSJFrontFirst`, `genm-sj5`, 2026-07-11): (1) for an EQUALITY matching the def against a
+  banked lemma, use `rw [theDef]` (the auto equation lemma is a *syntactic* rewrite) NOT `unfold theDef`
+  (which triggers the expensive isDefEq); (2) for a PROOF that manipulates the term, state the def over an
+  ABSTRACT binding — a plain `(lam : Fin r → ℝ) (U : Matrix …) (c : Fin r)` triple (`…Aux`), prove the
+  content there (no spectral term in sight), then `theDef := theDefAux (…eigenvalues) (…eigenvectorUnitary)
+  …` and instantiate. The heavy terms become bound arguments, never re-elaborated. Any front-first
+  spectral assembly (both DLN lanes' `twoBlock` consumption) needs the abstract-`Aux` form — do it once.
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
