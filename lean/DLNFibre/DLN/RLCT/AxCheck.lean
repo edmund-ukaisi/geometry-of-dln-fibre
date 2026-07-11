@@ -126,6 +126,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplitCompose
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
+import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
 
 /-!
 # Axiom-hygiene check
@@ -1055,3 +1056,11 @@ open DLNFibre.DLN.RLCT
 -- c'<7/2 — each block its OWN product-rank codim (m=![7,3], NOT uniform/total), reproducing onePeel334's 7/2.
 -- The concrete product-vs-free (7/2-not-9/2) witness the reshape must reproduce (genm-sj5-cover audits).
 #print axioms qPeel_334_lt_top
+-- (□) freed-Γ (S,J) descent — reachable measure bedrock (RouteMSJInnerDescent, genm-sj5-descent; buildplan §6
+-- piece (b), design-INDEPENDENT): `measure_shearbox_lt_top` DISCHARGES the previously-ASSUMED `hs` of the banked
+-- bounded branch on the actual x-dependent shear domain; `freedSchurLoss_inner_bounded_le` = the value the outer
+-- descent integrates. The OUTER (A',x) integral (the (S,J) double induction) stays the isolated skeleton sorry.
+#print axioms volume_genBox_lt_top
+#print axioms measure_shearbox_lt_top
+#print axioms freedSchurLoss_inner_bounded_le
+#print axioms freedSchurLoss_inner_bounded_shear_lt_top

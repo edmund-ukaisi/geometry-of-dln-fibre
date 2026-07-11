@@ -1296,3 +1296,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst
 -- deleted) with h_i≤m_i = #127's per-direction D_q. Crux dissolved via banked `Integrable.fin_nat_prod`.
 -- Fidelity of the per-block casting (obligation-1) lives in the cover/reshape (next), not this abstract. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
+-- `RouteMSJInnerDescent` — reachable measure bedrock for the freed-Γ (S,J) descent (genm-sj5-descent,
+-- buildplan §6 piece (b), design-INDEPENDENT): `volume_genBox_lt_top` + `measure_shearbox_lt_top` (★ discharges
+-- the previously-ASSUMED `hs` of `freedSchurLoss_inner_bounded_lt_top` on the actual x-dependent shear domain)
+-- + `freedSchurLoss_inner_bounded_le` (the bounded-branch VALUE the outer descent integrates) +
+-- `freedSchurLoss_inner_bounded_shear_lt_top`. Consumed by ANY route to the outer integral; the OUTER (A',x)
+-- integral (the (S,J) monomial double induction) stays the isolated skeleton sorry. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
