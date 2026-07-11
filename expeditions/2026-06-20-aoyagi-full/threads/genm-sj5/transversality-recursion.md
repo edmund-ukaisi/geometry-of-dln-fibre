@@ -127,3 +127,74 @@ component contributions (higher `K`), so its ratio stays `≥ ½minAdm` (log-mul
   (iii) `rank(A_cor·Zdeep)=min(b,r_X)=b`. Hand to genm-sj5-descent as the A2 admissible-family peel-closure
   lemma; I fidelity-audit the A2 Lean against this (the invariant, the corrected decoration
   `H₁^{−3}(H₁+H₂)^{−1}`, charges ADD, the terminal) once posted.
+
+---
+
+## 6. BASE-AUDIT of the §10 `adm` encoding (`cov-ledger-design §10`) — the (□)-gating fidelity check
+
+**Charge (team-lead):** base-audit the formaliser's §10 `SJDecoration adm`-predicate encoding of this `p=0`
+transversality against the certified math — is `adm` (a) contains trivial, (b) peel-closed = #144, (c)
+provable base = terminal reduction, (d) charges ADD + corrected residual. Decorrelated adversarial Codex on
+the ENCODING (`codex/admenc-{prompt,answer}.md`, conclusion withheld); every claim re-verified by me
+(`/tmp/prodD/quantgap.py`).
+
+**VERDICT: PASS — the A2 architecture is SOUND — conditional on ONE encoding correction (B1, definite) and
+closing ONE base gap (C1, the quantifier gap). Two regression tests to bake in.**
+
+### (a) trivial ∈ adm + specialisation — **PASS**
+`SJDecoration.trivial M` (carrier `ofMatrix`, no exceptional divisors) is reachable (0 peels) and `p=0`
+vacuously, so `adm(trivial)` holds; the threshold in `DecoratedBoxThresholdFinite` is `½minAdm`
+decoration-independently, so `decoratedBoxThresholdFinite_trivial_iff` recovers plain `RouteMBoxThresholdFinite M`.
+Sound entry point.
+
+### (b) peel-closed = #144 — **PASS on the corrected encoding; §10.1's "full rank" gloss is TOO TIGHT (B1, definite)**
+- **[B1, TOO-TIGHT — the one definite error, drop it].** §10.1 encodes the invariant as "the corank
+  generators are NOT divisible by the critical divisor **(the shared deeper `Z` enters them at full rank)**."
+  The parenthetical is the stale over-claim §1/§2 refuted and is **NOT equivalent** to `p=0`: a literal
+  "`Z` full-rank" predicate **breaks peel-closure**. Regression test [V, `/tmp/prodD/quantgap.py`]: the peel
+  of `M=(3,3,2,2)` at `t=2` (values `9,6,4,4`) produces the reduced `(2,2,2)` whose unique top component has
+  `rank Zdeep = 1 < 2`, yet `b=1=rank`, so `p=0` (the corank row survives) — the peel GENUINELY produces this
+  decoration, and a full-rank predicate REJECTS it. **Encode ONLY the valuation clause**
+  `a=0 ∨ b=0 ∨ (∀η∈Crit(D), min_j ν_η((q₁+s q₂)_j) = 0)` — "some corank generator is a unit at each critical
+  divisor" (`p=0`). NO `q=ν(H₂)` condition (harmless, must not appear).
+- **[B2, cleaner form — transversality is a THEOREM, not carried].** `adm = Reachable ∧ Transverse` is
+  redundant: reachability via legal binding-cut peels ALREADY implies `p=0` (induction on the peel history:
+  trivial→no critical divisor; `a=0/b=0`→vacuous; `a,b≥1`→#144/F2 gives `p=0`; earlier divisors retained).
+  So the cleanest `adm := "D reachable from trivial by legal decorated peels AND required chart refinements"`,
+  and one PROVES `adm(D) ⟹ ∀η∈Crit(D), p_η=0` (this lemma = #144) rather than storing transversality as data.
+  **Caveat (Codex):** "reachable" must mean produced by the GENUINE algebraic peel (carrier + context), not a
+  syntactically plausible support matrix.
+
+### (c) provable base / terminal reduction — **PASS with a GAP to close (C1, the sharp base-soundness finding)**
+- **[C1, the quantifier gap — close it].** `sjLoss_terminal` needs (T) `∃ i₀ ∀ℓ, e(i₀,ℓ)=k_ℓ` (`k_ℓ=min_i
+  e(i,ℓ)`) — ONE simultaneous unit generator. Divisorwise `p=0` gives only (P) `∀ℓ ∃ i_ℓ, e(i_ℓ,ℓ)=k_ℓ` — for
+  EACH divisor SOME generator is a unit. **(P) ⇏ (T); the quantifier swap is INVALID.** Countertest [V]:
+  generators `g₁=x, g₂=y` (supports `(1,0),(0,1)`) satisfy (P) but there is no single support-`(0,0)`
+  generator; `∫_{[0,1]²}(x²+y²)^{−c'}` DIVERGES for `c'≥1` (RLCT `=1`), and the intersection `{x=y=0}` blows
+  up to a divisor `E` with `ν_E(x)=ν_E(y)=1` (so `p_E=1` — an INTERSECTION divisor carries `p>0`). On the
+  `x`-chart `x²+y²=x²(1+v²)` the residual generator `1` supplies (T). **So the base is sound ONLY IF `Crit(D)`
+  includes the intersection/combined exceptional divisors AND the chart refinements that resolve them** (each
+  refined chart then supplies (T)); checking only the original component divisors is TOO LOOSE (false base,
+  the `x²+y²` countertest). This is #144 §5's intersection residual, now at Lean precision: §10.3's `{v=0}`
+  rank-drop recursion is NOT optional — it IS the intersection refinement that supplies (T), and it must be
+  part of "reachable + refinements."
+- **[no b>2 obstruction].** `p = min_j ν_η(g_j)` is width-independent (Codex Q3); wide `b` needs only a finite
+  entry/minor chart cover to select a uniformly nonvanishing generator — my earlier "b>2 chart" flag is
+  DOWNGRADED to a routine finite cover, not a soundness gap. And `p=0` does NOT need `H₂` a unit (a unit `H₁`
+  already makes `H₁²+v²H₂²` bounded below) — consistent with §10.4/B1 (no `q` condition).
+- Modulo C1, §10.3's terminal reduction (`f ≍ R²+u²·unit` on the `p=0` divisor → `sjLoss_terminal`, with `p=0`
+  = the dehomogenised generator) is SOUND: `p=0 ⟺` the corank generator surviving `⟺` the (T) hypothesis on
+  the refined chart. The `p=0 ⟺ dehomogenisation` connection is the correct, load-bearing insight.
+
+### (d) charges ADD + corrected residual — **PASS**
+§10.4 uses the corrected `H₁^{−3}(H₁+H₂)^{−1}` (drops the sloppy `H₁^{−3}H₂^{−1}`, matches toric §5); §10.5 has
+the nD-homogeneous corner `½Σ(p_i+1)=½Σ(block dims)=½minAdm`, both coupling charts. Matches the certs.
+
+### Net + the two regression tests (bake into the build)
+The A2 architecture PASSES. The formaliser should build `adm := reachable-from-trivial by legal decorated
+peels AND chart refinements` (NOT a full-rank predicate, NOT a stored transverse flag), prove `adm ⟹ ∀η∈Crit
+p_η=0` (= #144, including intersection divisors), and prove the terminal via (T) supplied on the refined
+charts. **Regression tests:** (1) peel-closure — `(3,3,2,2) →_{t=2} (2,2,2)` rank-1 component (`p=0`, not
+full-rank) must be ADMITTED; (2) base-soundness — the support matrix `{(1,0),(0,1)}` (`x²+y²`, RLCT 1) must be
+REJECTED as terminal until the intersection is refined (catches the `∀η∃i ⇏ ∃i∀ℓ` step). On these two, a wrong
+encoding fails immediately.
