@@ -1309,3 +1309,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
 -- convexity from the banked charge soundness `minAdm_le_peelCharge_add_redChain`. The minAdm-arithmetic half of
 -- the invariant (`adm ⟹ ∀η∈Crit p_η=0`); the geometric incidence (i) + rank (iii) are follow-ons. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
+-- `RouteMSJAdmEncoding` — the A2 base-soundness (P)/(T) quantifier guard (genm-sj5-descent, cover §6 C1):
+-- `pDivisorwise` (P: ∀ℓ∃i unit) vs `pSimultaneous` (T: ∃i₀∀ℓ unit = sjLoss_terminal's hyp), `(T)⟹(P)`, and the
+-- ★ regression test `suppFreshTwo_not_pSimultaneous` — the fresh-disjoint {(1,0),(0,1)} (=x²+y², RLCT 1) is (P)
+-- but NOT (T), so `pDivisorwise_not_imp_pSimultaneous` makes C1's (P)⇏(T) a THEOREM: applying the monomial
+-- terminal on divisorwise p=0 alone would wrongly accept the divergent x²+y² — forcing the intersection refinement.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding

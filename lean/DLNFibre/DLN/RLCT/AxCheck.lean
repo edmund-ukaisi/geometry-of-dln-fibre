@@ -128,6 +128,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontFirst
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
 import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
+import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
 
 /-!
 # Axiom-hygiene check
@@ -1082,3 +1083,7 @@ open DLNFibre.DLN.RLCT
 -- corank-width corollary (`_corankWidth`) — the minAdm-arithmetic half of `adm ⟹ ∀η∈Crit p_η=0`. Pure ℕ.
 #print axioms minAdm_redChain_succ_ge
 #print axioms minAdm_redChain_succ_ge_corankWidth
+-- A2 base-soundness (P)/(T) guard (RouteMSJAdmEncoding, genm-sj5-descent; cover C1): `pDivisorwise_of_pSimultaneous`
+-- (T⟹P) + the regression test `pDivisorwise_not_imp_pSimultaneous` (∃e, (P) ∧ ¬(T) — the x²+y² fresh-disjoint
+-- witness), making C1's (P)⇏(T) a theorem (guards the monomial terminal against divisorwise-p=0-alone acceptance).
+#print axioms pDivisorwise_not_imp_pSimultaneous
