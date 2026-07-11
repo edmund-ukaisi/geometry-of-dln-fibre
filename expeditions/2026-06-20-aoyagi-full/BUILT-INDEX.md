@@ -172,9 +172,17 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
      PSD-cone det-monotonicity + the m-column (NOT single-minor — that reaches only a<1) Loewner bound. Only
      the ENDPOINT (`detGram_lintegral_lt_top`) is truly banked. (GAP-B, genm-sj5-schur building.) This is a POINTWISE bound integrated once (NOT the `[core]∘[IH]`
      factorisation Codex Q2 flagged invalid at a=0 — that trap is dodged). For a DEEPER-PRODUCT tail (general
-     M, unlike (3,3,3,4)'s single A₂) the residual = confirm the product-rank tube codim `D` has leading
-     power `= codim` (banked for (3,3,3,4); #116-style for general). Accounting sums to `7=minAdm` (charges
-     ADD via the shared corner, `7/2`; MIN→3/2 rejected); strict `<` preserved (endpoint-only log-borderline).
+     M, unlike (3,3,3,4)'s single A₂) the product-rank tube codim `D` = **CLEARED ∀M (#127, 2026-07-11):**
+     `D = C(reduced) = minAdm(reduced)` (via the paper's add-longest thm + rank-shift Lemma 4.5 + QIP,
+     CONSUMING banked Core `cCodim_rankShift`/`productRankLocusLE_eq_iUnion_orbitRankLocus`/`cCodim_eq_qipMin`);
+     leading power `= codim` (affine-on-β-simplex → vertex minimizer = front-peel competitor; + banked
+     `normalSlice_transfer` #109 straightens the pushforward tube to the reduced chain's Lebesgue Σ⁰-tube).
+     ★ KEY: `L=D` is NOT an independent lemma — it's the reduced chain's box-finiteness ONE ARITY DOWN, closed
+     by the SAME arity recursion `decoratedPeelStep_proof` uses. So the ∀M product-lift FOLDS INTO the
+     recursion + banked Core — NOT a new analytic build. WATCH (Lean bookkeeping): the `minAdm=cCodim` bridge
+     (both `=C`; explicit lemma or ℕ `minAdm_rrp_subadd`) + the real-vs-complex codim seam (state it).
+     Accounting sums to `7=minAdm` (charges ADD via the shared corner, `7/2`; MIN→3/2 rejected); strict `<`
+     preserved (endpoint-only log-borderline).
    - **★ THE ONE REAL TRAP (a BOUND, not the integral):** extending the shrinking image `D_M` to a FIXED box
      reintroduces `∫|det A_S|^{r−b}=∞` for `r<b` (inside the dominant chart, NOT the seam). AVOID: use the
      majorant route, or (if the cover route) KEEP the coupled shrinking image `D_M`.
