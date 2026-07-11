@@ -54,10 +54,10 @@ dropped term, no clean-box distortion, `t = 0` excluded (killing the circularity
 `sjBoundaryPeel` a PURE cover inequality (`front_split` + `pivotLocus_eq_iUnion` at `t=1`; `{A₀=0}` null),
 constant `1`. The faithful cross-coupled Schur form `(‖A·Q̃_p‖² + ‖C·Q̃_p + Γ·Q_b‖²)^{−c'}` is the banked
 EXACT identity `frobSq_schur_block_split` (`RouteMSJChartAlgebra`), which — with the MP shear `D ↦ Γ` —
-is the honest bridge `sjJointResolution` (finiteness) consumes, NOT baked into the def. So the two sorries
-feeding `routeMBoxThresholdFinite_sjResolution` are `sjBoundaryPeel` (3, the cover+shear plumbing WALL)
-and `sjJointResolution` (4/5/7, per-chart finiteness); the `L = 1` Morse base (`sjBase1_freeMatrix`), the
-recursion spine, and the pivot-chart cover are CLOSED.
+is the honest bridge `sjJointResolution` (finiteness) consumes, NOT baked into the def. So the SOLE
+remaining sorry feeding `routeMBoxThresholdFinite_sjResolution` is `sjJointResolution` (4/5/7, per-chart
+finiteness); `sjBoundaryPeel` (3, the cover) is now CLOSED sorry-free, as are the `L = 1` Morse base
+(`sjBase1_freeMatrix`), the recursion spine, and the pivot-chart cover.
 
 ## The 7 pieces (dependency order; CLOSED vs named-sorry)
 
@@ -66,13 +66,13 @@ recursion spine, and the pivot-chart cover are CLOSED.
 2. **Pivot–Schur chart** — `sjPivotSchurChart_rrp` (the L=2 `(r,r,p)` instance, CLOSED via the banked
    `routeMBoxThresholdFinite_rrp`). The general-`L` chart is the internal change of variables of piece 3
    (`sjBoundaryPeel`), stated there — not duplicated as a standalone claim.
-3. **Boundary peel** (`sjBoundaryPeel`, named sorry — the cover+shear measure-plumbing WALL). Re-scoped
-   to the PURE cover inequality `box ≤ ∑_{t=1..min} ∑_{ρ,κ} gammaPeelIntegral M t ρ κ c'` (constant `1`).
-   The pieces are banked/closable: `routeMLayerBoxIntegral_front_split` (+ `eFront` + `frobSq_prod_front`,
+3. **Boundary peel** (`sjBoundaryPeel`, CLOSED sorry-free 2026-07-07). The PURE cover inequality
+   `box ≤ ∑_{t=1..min} ∑_{ρ,κ} gammaPeelIntegral M t ρ κ c'` (constant `1`), assembled from:
+   `routeMLayerBoxIntegral_front_split` (+ `eFront` + `frobSq_prod_front`,
    clean-three) reduces the `M` box integral to the tail-outer front-factor fibre integral;
    `pivotLocus_eq_iUnion` (`{1 ≤ rank} = ⋃_{ρ,κ} pivotChart ρ κ`) + `lintegral_iUnion_le` cover the inner
-   `A₀`-box (the `{A₀=0}` rank-0 point is null). The residual is the block-reindex of `matBox` through
-   arbitrary `(ρ,κ)` embeddings + complements measure-preservingly (a multi-hundred-line plumbing wall).
+   `A₀`-box (the `{A₀=0}` rank-0 point is null); the block-reindex of `matBox` through
+   arbitrary `(ρ,κ)` embeddings + complements measure-preservingly is discharged.
 4. **`(S,J)` normal-form invariant** — the block-dimension consequence `sjRunMin_antitone` (running-min
    corank `M(S)` monotone) is CLOSED; the full matrix-valued invariant needs the `[E_J|D_J]` carrier
    (`SJState`/`sjRunMin` stubs), folded into `sjJointResolution`, deferred to the mountain build.
@@ -89,11 +89,11 @@ recursion spine, and the pivot-chart cover are CLOSED.
 ## S2 / axiom hygiene
 The wrapper introduces NO measure-theoretic content of its own and NO new axiom. The deferred content
 sits in the named contracts; `#print axioms routeMBoxThresholdFinite_of_step` is clean-three. The final
-`routeMBoxThresholdFinite_sjResolution` carries exactly the two remaining LOAD-BEARING analytic sorries
-(`sjBoundaryPeel`, `sjJointResolution`). The outer front-split plumbing
-(`routeMLayerBoxIntegral_front_split`, `eFront`, `frobSq_prod_front`, `measurable_frontIntegrand`) and the
-finite pivot-chart cover (`pivotChartCover_lintegral_le_sum`) are CLOSED clean-three
-`[propext, Classical.choice, Quot.sound]` and reusable for the eventual `sjBoundaryPeel` discharge.
+`routeMBoxThresholdFinite_sjResolution` carries exactly the ONE remaining LOAD-BEARING analytic sorry
+(`sjJointResolution`; `sjBoundaryPeel` is now CLOSED). The outer front-split plumbing
+(`routeMLayerBoxIntegral_front_split`, `eFront`, `frobSq_prod_front`, `measurable_frontIntegrand`), the
+finite pivot-chart cover (`pivotChartCover_lintegral_le_sum`), and `sjBoundaryPeel` are CLOSED clean-three
+`[propext, Classical.choice, Quot.sound]`.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -671,7 +671,7 @@ is the fix for the circularity (its `sjJointResolution` instance was the inducti
 cross-coupled Schur form (`frobSq_schur_block_split`) and the shear are NOT needed here — they live in
 `sjJointResolution` (finiteness), which the raw chart integrand feeds.
 
-**RESIDUAL (this named sorry) — the measure-plumbing assembly.** The two mathematical hearts are BANKED:
+**RESIDUAL (CLOSED 2026-07-07) — the measure-plumbing assembly.** The two mathematical hearts are BANKED:
 `pivotChartCover_matBox_le_sum` (the `t = 1` cover of the inner `A₀`-box, above) and `minAdm_cons_zero`
 (the `min(M₀,M₁) = 0` edge: there `minAdm M ≤ minAdm (redChain 0 M) = minAdm (Fin.cons 0 _) = 0`, so `hc'`
 is unsatisfiable). What remains is standard measure plumbing, cleanest via the PRODUCT route (avoids
@@ -943,10 +943,10 @@ theorem sjBase1_freeMatrix : SJBaseHyp := by
 7-piece `(S,J)` resolution discharges: the layer-product box integral is finite below the geometric
 threshold `½·minAdm M`, for an arbitrary width vector `M`. Assembled from the sorry-free wrapper applied
 to the step (`sjResolutionStep_proof`, = piece 3 ∘ pieces 4/5/7) and the `L = 1` base
-(`sjBase1_freeMatrix`, CLOSED). Carries exactly the two remaining genuinely-new analytic sorries:
-`sjBoundaryPeel` (3, whose CLOSED outer front-split `routeMLayerBoxIntegral_front_split` leaves only the
-per-tail-parameter fibre bound) and `sjJointResolution` (4/5/7). Once these land, this discharges the
-bare sorry `routeMCore_threshold_lt_top` (`RouteMSchur.lean`) via `routeMCore_threshold_lt_top_of_box`. -/
+(`sjBase1_freeMatrix`, CLOSED). Carries exactly the ONE remaining genuinely-new analytic sorry:
+`sjJointResolution` (4/5/7, per-chart finiteness); `sjBoundaryPeel` (3) is now CLOSED
+sorry-free. Once `sjJointResolution` lands, this discharges the bare sorry
+`routeMCore_threshold_lt_top` (`RouteMSchur.lean`) via `routeMCore_threshold_lt_top_of_box`. -/
 theorem routeMBoxThresholdFinite_sjResolution (M : Fin (L + 1) → ℕ) :
     RouteMBoxThresholdFinite M :=
   routeMBoxThresholdFinite_of_step sjResolutionStep_proof sjBase1_freeMatrix M
