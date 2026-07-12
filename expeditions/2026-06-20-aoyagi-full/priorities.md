@@ -16,7 +16,16 @@ proof (`corankLeaf_rpow_lt_top`, route A, bypasses sjLoss_terminal + (P)/(T)). *
 estimate = deepest soundness; NOT a codim freebie per cover's x²(x²+y^{2N}) correction) → `DecoratedDescent` →
 (□) → mint #108. BUILD-TO-THE-END; bounded labour, no wall. Decorrelated adversarial hunts caught 5 errors on
 paper (atom-first / plain-hIH / decoration / full-rank / higher-codim-slack).**
-Live integrative read: `synthesis.md` (UPDATE-931 newest); operator-review items: `discuss-at-close.md` (#97–#114).
+**★ ROUTE-I SOUNDNESS FULLY FORMALISED (2026-07-12) — NON-critical-path but banked.** The codim SOUNDNESS
+is now machine-checked, native: Part 1 `minAdm` PERMUTATION-INVARIANCE (`minAdm_comp_perm`/`_comp_sort`,
+@da4d264f) + Part 2 `minAdm = cCodim` ∀ width (`minAdm_eq_cCodim`, @c25b0b73) — both clean-three
+(`[propext, Classical.choice, Quot.sound]`) + cover decorrelated fidelity-PASS (Codex-concurred). The
+route-i (□)-soundness is now a theorem MODULO cited Aoyagi (RLCT=½·cCodim). This is route-i cite-completion,
+NOT the #97 mandate. **THE CRITICAL PATH is unchanged:** the route-ii NATIVE (□) discharge = `DecoratedDescent`
+(#4 `DecoratedBaseHyp` base → #5 `DecoratedStepHyp` step). **#4 awaits a fresh engagement** (desc4 preferred;
+a fresh tide is a poor substitute for the fidelity-critical base invariant — held fixed-Z checkpoint uncommitted);
+#5 gated on #4; then `DecoratedDescent` → (□) → mint #108.
+Live integrative read: `synthesis.md` (UPDATE-971 newest); operator-review items: `discuss-at-close.md` (#97–#122).
 
 ## ★★★ RECALIBRATION 2026-07-12 (post-independent-hunt, UPDATE-961 / discuss #120) — newest state
 The (□) discharge splits into **#4 (base leg, DecoratedBaseHyp)** + **#5 (step, DecoratedStepHyp = off-sector)**.
