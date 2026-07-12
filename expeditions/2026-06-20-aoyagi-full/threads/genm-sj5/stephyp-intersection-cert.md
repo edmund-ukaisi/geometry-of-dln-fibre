@@ -140,3 +140,17 @@ secured) AND corrects the FRAMING of the Q3 criterion. **I confirm dmcheck's cor
 + `D_q≤M₀q`-at-binding — NOT the view-dependent `D/m≥n₀` of §7-Q3, and NOT the `½(D_q+d_q)` per-cell value.
 This cert's HEADLINE (no intrinsic collapse; anchor `(3,3,3,4)` secured; the two gates T4 + per-branch tube)
 STANDS and is corroborated; only the Q3 criterion's framing is corrected.
+
+---
+
+## 9. CORRECTION (2026-07-12, γ-lock) — the units sector is on the WHOLE tail product Z, not just A₂
+
+The T4 units gate written throughout as `σ_min(A₂) ≥ ε` is CORRECTED to `σ_min(Z) ≥ ε` on the WHOLE deeper
+tail product `Z = A₂·A₃···A_L` (equivalently `Z·Zᵀ ≽ c·I`). `σ_min(A₂) ≥ ε` alone is INSUFFICIENT — a later
+factor can kill the product (`A₂=I, A₃=0 ⟹ Z=0`, `σ_min(A₂)=1` but `σ_min(Z)=0`). The coercive-residual /
+no-collapse T4 needs the whole `Z` bounded below (`ZZᵀ≽cI`), which is what the Rayleigh leaf
+(`frobSq(ΓZ) ≥ c·frobSq(Γ)`, `corankLeaf`) actually consumes; the small-`σ_min(Z)` complement recurses
+(rank-drop branch, P3). Decorrelated-confirmed (`codex/gammalock-answer.md`). The cert's HEADLINE (no intrinsic
+collapse; anchor secured; T4 + per-branch tube) STANDS — only the sector object `A₂ → Z` (the whole tail) is
+corrected. This is the γ-clause `#4`/`#5` consume (`ZZᵀ≽cI` on `Z`, route-A corankLeaf; MIN-of-full-budgets,
+leaf identity `dim Γ = minAdm`).

@@ -24,10 +24,18 @@ decorrelated-confirmed). **Formalizability co-design with desc3** flagged at the
 > **or** ( 1 ≤ D.d ∧
 >   **(α)** `∃ i₀ : ι, ∀ (j:ι) (ℓ:Fin d), supp i₀ ℓ ≤ supp j ℓ`   [= pSimultaneous — the DEHOMOGENISED gen i₀]
 >   **(β)** `(½·minAdm M : ℝ≥0∞) ≤ monomialThreshold D.d (sharedDivisorExp D.carrier.supp) D.jac`   [THRESHOLD]
->   **(γ)** `∃ c > 0, ∀ z ∈ D.dom, c ≤ ‖residualBlock D z‖`   [RESIDUAL-COERCIVITY, quantitative] ).
+>   **(γ)** `∃ c > 0, (Z·Zᵀ − c•(1:Matrix)).PosSemidef`  on the WHOLE deeper tail `Z = A₂·A₃···A_L`
+>          [BLOCK-LEVEL Z-UNITS-BOUND — the LOCKED form, see ★CORRECTION below] ).
 
 The `d=0∧ofMatrix` disjunct SUBSUMES the FLAG-1 fix. `htriv`: `FaithfulSJAt (trivial M)` is the left disjunct
 (`trivial.d=0`, `trivial.carrier = ofMatrix` by def) — discharges immediately (`rfl`-level). ✓.
+
+> **★ LOCKED (2026-07-12, γ-lock — read the ★CORRECTION section at the bottom for the binding spec).** The
+> (γ) clause above is the block-level Z-units-bound `Z·Zᵀ ≽ c·I` on the WHOLE tail `Z` — NOT the i₀-component
+> and NOT `‖residualBlock‖`. #4 (base) closes via route-A `corankLeaf_rpow_lt_top` at threshold
+> `min(T_u, D_Γ/2)` (MIN-of-two-full-budgets, NOT ADD). The §1–§4 inline prose below predates the lock; where
+> it says `σ_min(A₂)` read `σ_min(Z)` (whole tail) and where it says `‖residualBlock‖`/i₀-component read
+> `Z·Zᵀ≽c·I`. The 4 LOCK conditions are enumerated in the ★CORRECTION.
 
 ## 1. The three clauses, each tied to a banked cert
 
@@ -40,11 +48,12 @@ The `d=0∧ofMatrix` disjunct SUBSUMES the FLAG-1 fix. `htriv`: `FaithfulSJAt (t
   (dmcheck's `½(M₀ρ+min(M₀q,D_q))`, the QIP identity, `minAdm_eq_backPeel` #144). **TIED**: `#144`
   (`RouteMSJTransversality`/`RouteMSJBackPeel`) + dmcheck's no-collapse (β is exactly "no cell undershoots
   ½minAdm"). #5 MAINTAINS it across the peel.
-- **(γ) RESIDUAL-COERCIVITY (quantitative, ∃c>0 — NOT null-zero-set)** — the residual block is bounded away
-  from 0 on `dom` (after the smooth/Morse coordinates). **TIED**: the `#147` units bridge
-  (`RouteMSJUnitsBridge`: full-row-rank ⟹ `Z·Zᵀ ≽ c·I`) + my `stephyp-cert` T4 (`σ_min(A₂)≥ε` quantitative
-  sector). This is Codex's γ-catch: `res(z)=z^N` has a NULL zero-set but a divergent negative moment — the
-  base needs `res` bounded below (a unit), NOT merely a.e.-nonzero.
+- **(γ) BLOCK-LEVEL Z-UNITS-BOUND (quantitative, ∃c>0 — `Z·Zᵀ ≽ c·I` on the WHOLE tail `Z`)** — the deeper
+  tail product is uniformly nondegenerate on `dom` (after the smooth/Morse coordinates). **TIED**: the `#147`
+  units bridge (`RouteMSJUnitsBridge`: full-row-rank `Z` ⟹ `Z·Zᵀ ≽ c·I` — already WHOLE-`Z`) + my
+  `stephyp-cert` T4 (`σ_min(Z)≥ε` on the WHOLE deeper product, NOT just `A₂` — γ-lock). This is Codex's
+  γ-catch: `res(z)=z^N` has a NULL zero-set but a divergent negative moment — the base needs the tail bounded
+  below (a unit), NOT merely a.e.-nonzero. [The i₀-component version is UNSATISFIABLE for free `Γ`; ★CORRECTION.]
 
 ## 2. #4 — the base `FaithfulSJAt ⟹ DecoratedBoxThresholdFinite` (consume)
 
@@ -52,11 +61,13 @@ Two cases, for `c' < ½minAdm M`:
 - **`d=0` (ofMatrix):** `commonDivisor≡1`, `decLoss = Σ_i res_i² = frobSq(prod M z)` (the smooth width-2
   free-block, `M` a 2-node = single matrix, `{prod=0}` smooth). `∫_{dom} frobSq(prod M z)^{−c'} < ⊤` for
   `c' < ½·(M₀·M₁) = ½minAdm` — the free-Morse / `baseBoxCoV` (banked, `RouteMSJBaseFinite`). ✓.
-- **`d≥1`:** the coupled corner `u`-monomial × residual. The dehomogenised `i₀` term gives
-  `decLoss ≥ commonDivisor(u)²·res_{i₀}(z)²`; **(γ)** makes `res_{i₀}` coercive, so on the smooth Morse
-  coordinates `decLoss ≍ commonDivisor(u)²·(nondegenerate free-block)`; the corner estimate (stephyp
-  `½Σ(block dims)`, charges-ADD) closes `∫ (∏|u|^{jac})·decLoss^{−c'} < ⊤` for `c' < ½minAdm` — the `u`-charge
-  (**β** via `monomialThreshold`) and the residual free-block charge ADD to `minAdm`. `vol(dom) < ⊤` banked.
+- **`d≥1`:** the coupled `u`-monomial × free corank block `Γ`. Route-A `corankLeaf_rpow_lt_top`
+  (`RouteMSJLeafRayleigh`/`LeafFinite`): the uniform block lower comparison `decLoss ≳ commonDivisor(u)²·‖Γ·Z‖²`,
+  then Rayleigh `frobSq(ΓZ) ≥ c·frobSq(Γ)` (consuming **(γ)** `Z·Zᵀ≽c·I` on the WHOLE `Z`) integrates `Γ` as a
+  FREE BLOCK. Threshold `= min(T_u, D_Γ/2)` — **MIN-of-two-full-budgets, NOT ADD** (the base is separable; charges
+  ADD only at the #5 STEP corner, not here — do not conflate). Reaches `½minAdm` because **(β)** `T_u ≥ ½minAdm`
+  AND the **LEAF IDENTITY** `dim Γ = minAdm(M)` at the width-2 leaf (`M=(b,M₂)`: `minAdm = b·M₂ = D_Γ`), giving
+  `D_Γ/2 = ½minAdm`. Closes `∫ (∏|u|^{jac})·decLoss^{−c'} < ⊤` for `c' < ½minAdm`. `vol(dom) < ⊤` banked.
 
 ## 3. #5 — the step PRESERVES `FaithfulSJAt` (the substantial content, = my certs)
 
@@ -66,16 +77,22 @@ FaithfulSJAt reduced decoration, MAINTAINING α/β/γ:
   `peelCharge` (`minAdm = peelCharge + minAdm(redChain)`, `#144`); `monomialThreshold` stays `≥ ½minAdm(redChain)`
   after the `½peelCharge` shift (`carrierThreshold_shift`, banked). The nD-homogeneous corner `½Σ(block dims)`
   (dmcheck) is the per-peel realisation.
-- **(γ preserved) = the units sector:** the peel's coercive residual comes from the `σ_min(A₂) ≥ ε`
-  quantitative sector (T4, my stephyp cert; `#147`). The rank-drop `{σ_min(A₂)<ε}` splits to a higher-`Mval`
-  recursive branch (dmcheck P3, threshold `≥½minAdm`). **This is the coupled estimate I certified** (NOT a
-  codim freebie — the `x²(x²+y^{2N})` correction; the joint tube `D_q ≤ M₀q` per-branch).
+- **(γ preserved) = the units sector on the WHOLE `Z`:** the peel's coercive tail comes from the `σ_min(Z) ≥ ε`
+  quantitative sector (`Z·Zᵀ ≽ c·I` on the WHOLE deeper product `Z = A₂···A_L`, NOT just `A₂` — γ-lock; T4, my
+  stephyp cert; `#147`). The rank-drop-of-`Z` complement `{σ_min(Z)<ε}` splits to a higher-`Mval` recursive
+  branch (dmcheck P3, threshold `≥½minAdm`). **This is the coupled estimate I certified** (NOT a codim freebie
+  — the `x²(x²+y^{2N})` correction; the joint tube `D_q ≤ M₀q` per-branch).
 - **(α preserved):** the peel keeps the dehomogenised generator (`radialStep`'s shared-divisor structure;
   `sharedDivisorExp_prependColumn` banked) — the fresh divisor is shared by all generators, so `i₀` persists.
 - **FLAG-2 (peel keeps `ν` fixed):** the `genuineCarrier` `ν=product-type` pinning must be preserved (record
   row-elimination in coeff/supp, not shrink `ν`) — else genuineCarrier fails (cover #3-audit).
 
-## 4. ★ The one formalizability point to co-settle with desc3 (base-derivation, `d≥1`)
+## 4. ★ The one formalizability point to co-settle with desc3 (base-derivation, `d≥1`) — RESOLVED (γ-lock)
+
+> **RESOLVED (2026-07-12, γ-lock).** The fork below is decided: **SEPARABLE** — route-A `corankLeaf_rpow_lt_top`
+> gives the base threshold `min(T_u, D_Γ/2)` (MIN-of-two-full-budgets, not the coupled ADD). Both budgets are
+> full: `T_u ≥ ½minAdm` (β) and `D_Γ/2 = ½minAdm` (leaf identity `dim Γ = minAdm`). The prose below is retained
+> as the record of how the fork was posed; read §2's corrected `d≥1` line + the ★CORRECTION for the binding form.
 
 The `d≥1` base (§2) — is the `u`-monomial × residual **SEPARABLE** (the smooth width-2 residual decouples
 from the `u`'s ⟹ a clean product `(∫commonDivisor^{−2c'}∏|u|^{jac})·(∫frobSq(residual)^{−c'})`, each threshold
@@ -102,3 +119,34 @@ coercivity; if coupled, (γ) feeds the corner estimate. desc3 pins it on formali
 - **Next.** desc3 formalises `adm := genuineCarrier ∧ (a=0∨b=0∨ FaithfulSJAt D)` (FaithfulSJAt replacing/
   strengthening admValuation), `htriv`, and #4 (`FaithfulSJAt ⟹ finite`); I audit the #5 (β)+(γ) preservation
   against `stephyp-intersection-cert` + `dmcheck cert` + `#147`, and co-settle §4.
+
+---
+
+## ★ CORRECTION (2026-07-12, γ-lock, decorrelated-confirmed — `codex/gammalock-answer.md`) — γ is the BLOCK-level Z-units-bound; #4 via route-A corankLeaf
+
+The γ-clause above (`‖residualBlock‖ ≥ c`) and the intermediate desc3 sharpening (the i₀-COMPONENT
+`|res_{i₀}| ≥ c`) are BOTH superseded. The locked form (γ-lock, decorrelated Codex + cover, no third flip):
+
+- **γ = the BLOCK-level Z-units-bound `∃ c>0, Z·Zᵀ ≽ c·I`** on the DEEPER TAIL product `Z = A₂·A₃···A_L`.
+  NOT the i₀-component (`|res_{i₀}|≥c` is **UNSATISFIABLE** for a free corank block `Γ`: `Γ=tΓ₀ → res_{i₀}→0`;
+  verified `/tmp/prodD/gamma_component.py`). NOT the block-norm `‖residualBlock‖` (too weak / wrong object).
+  The block-level `ZZᵀ≽cI` concerns ONLY `Z`, so the free `Γ`'s rank-deficiency does NOT break it.
+- **★ on the WHOLE `Z`, not just the factor `A₂`.** `σ_min(A₂)≥ε` alone is INSUFFICIENT (counterexample
+  `A₂=I, A₃=0 → Z=0`). The units sector must control `σ_min(Z) ≥ ε` (the whole deeper product); the
+  small-`σ_min(Z)` complement recurses (rank-drop branch, dmcheck P3). **This corrects "σ_min(A₂)" in this
+  cert AND in `stephyp-intersection-cert` (see its correction note).**
+- **#4 (base) = route-A `corankLeaf_rpow_lt_top`** (banked LOSS part, `RouteMSJLeafRayleigh`/`LeafFinite`):
+  `decLoss ≍ commonDivisor(u)²·frobSq(Γ·Z)`, Rayleigh `frobSq(ΓZ) ≥ c·frobSq(Γ)`, integrate `Γ` as a FREE
+  BLOCK. The threshold is **`min(T_u, D_Γ/2)`** (`T_u=monomialThreshold`, `D_Γ=dim Γ=b·M₂`) — **MIN-of-two-
+  full-budgets, NOT ADD** (charges do NOT add at the base; the base is separable). Reaches `½minAdm` because
+  (β) `T_u ≥ ½minAdm` AND the **LEAF IDENTITY `dim Γ = minAdm(M)`** (width-2 leaf `M=(b,M₂)`:
+  `minAdm=b·M₂=D_Γ`), so `D_Γ/2 = ½minAdm`. [The #5 STEP corner is ADD (`½Σ block dims`); the #4 base is MIN.
+  Distinct — do not conflate.]
+- **The 4 lock conditions (Codex):** (1) β `T_u≥½minAdm`; (2) leaf identity `dim Γ = minAdm(M)`; (3) the
+  uniform block lower comparison `decLoss ≳ commonDivisor²·‖ΓZ‖²`; (4) the units sector controls the WHOLE `Z`
+  (`ZZᵀ≽cI`), rank-drop complement recursive.
+- **Honest correction to §2/§4 above:** my §4 "separable / i₀-component" framing was on the right track (MIN,
+  both full) but (a) the i₀-component version desc3 built is unsatisfiable (drop it); (b) my closed-form
+  `min_s|q₁+sq₂| = σ_min(block)` was WRONG (it is `dist(q₁, span q₂)`) — the conclusion (i₀ unsatisfiable)
+  holds; (c) γ is `ZZᵀ≽cI` on the WHOLE `Z`, route-A `corankLeaf` consumes it, MIN-of-full-budgets. **#5's
+  γ-preservation = `ZZᵀ≽cI` on the WHOLE `Z` via the units sector (my updated audit focus).**
