@@ -5,6 +5,10 @@ Lean.** **Charge (team-lead):** establish that on the intersection/deficient-ran
 the RLCT exponent is `≥ ½·minAdm` via the QUANTITATIVE COUPLED estimate — NOT "higher codim ⟹ slack" (my own
 `x²(x²+y^{2N})` correction rules that out). Land the math BEFORE #5 formalises.
 
+> **★ γ-lock (2026-07-12) — read §9 before the inline prose.** Every `σ_min(A₂) ≥ ε` / `A₂`-units sector
+> below is GLOBALLY corrected to `σ_min(Z) ≥ ε` on the WHOLE deeper tail product `Z = A₂·A₃···A_L`
+> (equivalently `Z·Zᵀ ≽ c·I`). `σ_min(A₂)` alone is insufficient (`A₂=I, A₃=0 ⟹ Z=0`). See §9.
+
 **Exact algebra (mine):** `/tmp/prodD/{stephyp,collapse,deeperbranch,db2}.py` (the sum-vs-product RLCT contrast;
 the joint-density intersection integral; the exact deeper-branch model). **Decorrelated:** own xhigh
 adversarial `local-codex-consult`, conclusion WITHHELD, told to HUNT a hidden collapse:
