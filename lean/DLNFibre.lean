@@ -1371,3 +1371,10 @@ import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTailProd
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseFinite
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
+-- #5 DecoratedStepHyp S1 (genm-sj5-n4tide, route-ii (□) discharge STEP-leg foundation): the reduced
+-- comparator the domination hands the decorated IH. `RouteMSJHeadSplit` (paramsHeadSplit MP-equiv +
+-- prod_headSplit + minAdm_le_mul_head) + `RouteMSJCornerComparator` (`cornerComparator_adm` — the clean
+-- γ' reduced decoration D', loss commonDivisor²·frobSq(prod(redChain)), genuineCarrier via e=id).
+-- cover PASS'd; the S2′–S6 domination (parent → const·D'.integral, pointwise ≤) builds on this.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator

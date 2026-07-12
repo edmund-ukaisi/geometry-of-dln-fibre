@@ -138,6 +138,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
 import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
 
 /-!
 # Axiom-hygiene check
@@ -1152,3 +1153,9 @@ open DLNFibre.DLN.RLCT
 -- `witnessDecoration222_faithful` (d≥1 γ' inhabited at width-3, genuine non-identity tail — anti-vacuity).
 #print axioms decoratedBaseHyp_faithful
 #print axioms witnessDecoration222_faithful
+-- #5 DecoratedStepHyp S1 (genm-sj5-n4tide): the reduced comparator D' the domination hands the
+-- decorated IH. `cornerComparator_adm : adm (L+1) M' (cornerComparator …)` — clean γ' reduced (loss
+-- commonDivisor²·frobSq(prod(redChain)), genuineCarrier via e=id); `exists_cornerComparator_adm`
+-- non-vacuity (β binding at d=1). cover PASS'd; S2′–S6 domination builds on this.
+#print axioms cornerComparator_adm
+#print axioms exists_cornerComparator_adm
