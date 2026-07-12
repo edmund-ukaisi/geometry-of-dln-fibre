@@ -139,6 +139,7 @@ import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1
 
 /-!
 # Axiom-hygiene check
@@ -1159,3 +1160,8 @@ open DLNFibre.DLN.RLCT
 -- non-vacuity (β binding at d=1). cover PASS'd; S2′–S6 domination builds on this.
 #print axioms cornerComparator_adm
 #print axioms exists_cornerComparator_adm
+-- #5 off-sector Obl-1 (genm-sj5-offsector-obl1): the b=1 corank-integrability estimate. Two-regime split
+-- (atom where Q_bQ_bᵀ PosDef + BOUNDED brick where not) + box-clip; hyp FULL σ_min(Z)≥c₀. Foundational
+-- off-sector estimate; a<M₂ clean (a=M₂ borderline-log tracked); Obl-2/Obl-3 build on it.
+#print axioms corankOffSector_b1_le
+#print axioms corankWeight_lt_top

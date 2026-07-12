@@ -1378,3 +1378,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
 -- cover PASS'd; the S2′–S6 domination (parent → const·D'.integral, pointwise ≤) builds on this.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
+-- #5 off-sector Obl-1 (genm-sj5-offsector-obl1): the b=1 corank-integrability estimate `corankOffSector_b1_le`
+-- (∫∫ (w+frobSq(Ccross+Γ·(A_cor·Z)))^{−c'} ≤ C₁·w^{−(c'−a/2)}+C₂·w^{−(c'−M₂/2)}), the two-regime split (atom
+-- where Q_bQ_bᵀ PosDef + BOUNDED brick where not) + box-clip; hyp FULL σ_min(Z)≥c₀ (cert §2a corrected from
+-- "top M₂−1", which was false). The foundational off-sector estimate; Obl-2 (b>1 flag) + Obl-3 build on it.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1

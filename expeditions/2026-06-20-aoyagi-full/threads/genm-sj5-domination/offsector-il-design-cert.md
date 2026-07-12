@@ -87,7 +87,14 @@ of small singular values of `Q_b` (`Core.RankLocusClosed`: finitely many closed 
 
 For `b = 1` the flag has a single level. The corank-block integral on the full-rank-tail chart is
 `G(w,Z_deep) = ∫_{A_cor∈box} [freed-corner integral] dA_cor`, and **`G ≤ C·w^{−(c'−ab/2)}` with `C` UNIFORM
-in `Z_deep`** on `{Z_deep: top M₂−1 singular values ≥ c₀ > 0}` — the box on `A_cor` CLIPS the anisotropic
+in `Z_deep`** on `{Z_deep: FULL σ_min(Z_deep) ≥ c₀ > 0}` (i.e. ALL M₂ singular values ≥ c₀, stated in Lean as
+`∀A, c₀²·frobSq A ≤ frobSq(A·Z)` = `ZZᵀ ⪰ c₀²·I`)
+[★ CORRECTED 2026-07-12, `corankOffSector_b1_le` + cover + Codex: the original "top M₂−1 singular values ≥ c₀"
+here was **FALSE**, not merely under-scoped — with only the top M₂−1 bounded and `σ_min→0` a log appears at
+`a=M₂−1` and the small-τ volume scales `w^{(M₂−1)/2}`, so no w-free `C` dominates; a literal formalisation
+would be unprovable. The tail-rank-drop transition `{full rank, σ_min < c₀}` is NOT an Obl-1 constant
+degradation but a DEEPER FLAG LEVEL = Obl-3 (OWED-3, the §Close "constant degrades if tail collapses"
+residual).] — the box on `A_cor` CLIPS the anisotropic
 `det^{−a/2}` singularity so no `1/∏σ` divisor appears (deterministic-quadrature verified: `G·w^{c'−ab/2}` is
 BOUNDED and even decreasing as the tail singular value `σ → 0`, `scripts/G_exact.py`, `G_general.py`,
 `G_mc.py`). Then `I_off ≤ C·D'.integral(c'−ab/2) < ⊤` by the arity-`(L+1)` IH for `c'−ab/2 <
