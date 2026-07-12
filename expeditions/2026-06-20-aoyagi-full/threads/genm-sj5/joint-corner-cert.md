@@ -204,3 +204,64 @@ Jacobian lower bound on the good tube [OWED, geometric — the `m=1` gate must b
 intersection-ray iterated corner = `stephyp-intersection-cert` Q1 [certified, banked-adjacent]; (3) the ARITY
 recursion well-foundedness + per-level uniform-constant re-verification + finite subcover [OWED, measure
 assembly]. dmcheck's no-collapse (threshold) is necessary but the measure-cover (1)+(3) is the residual work.
+
+---
+
+## 7. ★★★ The ARITY recursion, AIRTIGHT (the exhaustiveness PROOF) — well-founded on the product structure, bottoms out at width-2 (Eckart–Young)
+
+**Charge (team-lead): design the off-sector arity recursion airtight — an EXHAUSTIVENESS claim, the gate is a
+PROOF (does each peel STRICTLY reduce? does the base close? is the bad locus GENUINELY the intersection rays?).**
+Exact: `scripts/wellfounded.py`. (Controller will run an INDEPENDENT hunt on this before formalisation.)
+
+**The recursion (one off-sector level).** On `{σ_min(Z) < ε}` (`Z = A₂···A_L` the deeper tail), stratify by
+`rank Z = ρ` (`ρ < r`; finitely many; `Core.RankLocusClosed`). Split each stratum into GOOD (transverse,
+`m=1`) and BAD (non-transverse, `m>1`):
+- **GOOD tube** → the iterated coupled corner + joint two-scale density, finite at `½(M₀ρ+min(M₀q,D_q)) ≥
+  ½minAdm`, UNIFORM constants (compact chart + the uniform Jacobian bound, piece A).
+- **BAD locus** (`m>1`) → recurse.
+
+**★ (A) N1-STRENGTHENED — the geometric owed lemma (uniform transversality).** On the GOOD tube (the generic
+part of `{rank Z=ρ}`), the `(ρ+1)`-minor map is a submersion with a UNIFORM Jacobian lower bound on each
+compact sub-chart, so `σ_{ρ+1}(Z)² ≍ dist(·,{rank≤ρ})²` UNIFORMLY (`m=1`, not merely generic). `#109
+normalSlice_transfer` gives the straightening CoV; this ADDS the uniform order-1 bound. [OWED, geometric — the
+one concrete geometric lemma; feeds the good-tube uniform constants.]
+
+**★ (C) WELL-FOUNDEDNESS (the exhaustiveness core — VERIFIED `wellfounded.py`).** The `m>1` bad loci arise
+**ONLY from the PRODUCT structure**: a SINGLE matrix has `σ_{ρ+1}² ≍ dist²` (`m=1`) ALWAYS (Eckart–Young:
+`σ_{ρ+1}` IS the distance to `{rank≤ρ}`; verified `σ₂/t ∈ [0.85, 3.8]`, order 1). `m>1` requires `≥ 2`
+factors degenerating COINCIDENTALLY (`Z=ab`: `σ₂(Z) ≍ t²`, order 2 at `a=b=0`; verified). So:
+- each recursion step PEELS a coincidentally-degenerating factor (arity `L → L−1`, STRICTLY ↓) or restricts to
+  a factor's rank-drop stratum (Noetherian dimension STRICTLY ↓);
+- it **BOTTOMS OUT at width-2** — a single matrix (no product), where Eckart–Young gives `m=1` EVERYWHERE, so
+  **there is NO bad locus at the base**; the base closes (= #4, S2-uniform). **NO infinite regress.** [This is
+  the clean well-foundedness: `m>1` is a product-only phenomenon that the arity descent exhausts.]
+
+**★ (D) The BAD locus IS the intersection rays ⟹ Q1 applies (GENUINELY).** At the `m>1` crossing, `σ_min(Z)`
+factors as the PRODUCT of the coincidentally-degenerating factors' contributions (`Z=ab`: `σ_min=|ab|`), i.e.
+the COUPLED-CORNER monomial. Blow up the crossing (`a=u, b=uτ ⟹ ab=u²τ`): the `u₀²·unit` form, charges ADD
+(`stephyp-intersection-cert` Q1, exact `coupled_add.py`). So the bad-locus estimate is EXACTLY the iterated
+corner Q1 — banked-adjacent — and `dmcheck` P3 gives the per-branch `≥ ½minAdm`.
+
+**★ (E) FINITE subcover + UNIFORM constants (Codex Q3).** `{σ_min(Z)<ε}` is covered by FINITELY many adapted
+charts: the parameter box is compact, the rank/transversality stratification is Noetherian (finitely many
+strata, dimension ↓), and each stratum's good tube is covered by finitely many compact sub-charts on which the
+estimate constants are uniform. Subadditivity over the finite measurable cover: `∫_{σ_min<ε} H^{−c'} ≤
+Σ_charts ∫_chart H^{−c'} < ∞`. Overlaps/seams are harmless (nonnegativity + measurable cover). Each recursion
+level RE-VERIFIES the same four (loss lower bound, joint density, uniform constants, bad-region containment).
+
+**Net (the airtight exhaustiveness).** The off-sector arity recursion is well-founded (product-structure
+descent, VERIFIED bottoms out at width-2 via Eckart–Young), the bad locus is genuinely the intersection rays
+(Q1 applies), and the cover is finite with uniform constants (compact + Noetherian). The exhaustiveness holds
+as a PROOF, modulo the TWO owed builds: **(A) N1-strengthened** (uniform transversality on the good tube —
+geometric) and **(E) the finite-subcover / uniform-constant / Noetherian-termination measure assembly**. The
+Q1 iterated corner (D) + dmcheck per-branch are banked-adjacent; the well-foundedness (C) is verified
+(product-only `m>1`, Eckart–Young base). This is LABOUR (A + E), not a wall.
+
+**Owed for `innerCorankDescent_lt_top` off-sector (final list):**
+1. **[OWED, geometric] N1-strengthened uniform transversality** `σ_{ρ+1}(Z)² ≍ dist²` uniform on the good-tube
+   compact charts (order-1, banked-adjacent `normalSlice_transfer` #109).
+2. **[OWED, measure] the Noetherian/arity recursion assembly** — well-foundedness (banked via Eckart–Young
+   base + product-only `m>1`), finite subcover (compactness), uniform constants per chart, measurable
+   good/bad split.
+3. **[BANKED-ADJACENT] the bad-locus iterated corner** = Q1 (`stephyp-intersection-cert`) + dmcheck P3
+   per-branch `≥½minAdm`; the good-tube joint density = `corank2 §2` generalized (`offsector.py`).
