@@ -1,0 +1,224 @@
+{
+  "_meta": {
+    "corpus": "expeditions/2026-06-20-aoyagi-full",
+    "repo": "/home/ubuntu/workspace/geometry-of-dln-fibre",
+    "git_range_head": "339811e8",
+    "compiled_by": "log-combing agent (decorrelation + confidence axis)",
+    "note": "Mid-flight snapshot of the aoyagi-full hero expedition (from-scratch, cite-only-S2 proof of the general Aoyagi DLN learning-coefficient rlct = 1/2 minAdm), through ~UPDATE-975/977 (2026-07-12). Compiled from synthesis.md (UPDATE- ticks) + discuss-at-close.md on origin/expedition/aoyagi-full. Catch iso_time is the UPDATE date (time-of-day is not recorded in the synthesis; intra-day ordering follows ascending UPDATE-number). commit_sha is the canonical/branch sha embedded in the tick where the synthesis names one, else blank for design/scoping ticks that only produced a verdict/cert. confidence iso_time_or_commit uses the exact times the arc-markers carry. The load-bearing pattern: a design-first / build-to-bedrock discipline meant the overwhelming majority of catches were CHEAP (caught at design/scoping/pre-formaliser stage, or on a green-but-held checkpoint before integration) so essentially NO wrong load-bearing code reached canonical; the fidelity/soundness HOLDS (base audited hardest) are what repeatedly stopped a green-but-subtly-wrong object from shipping. Decorrelation instruments: fresh-seat pen-and-paper witness/obstruction seats, decorrelated Codex run conclusion-withheld, controller-spawned INDEPENDENT hunts (not the thread's own Codex) for exhaustiveness claims, and reviewer nets."
+  },
+
+  "catches": [
+    {
+      "claim_caught": "R1-UPPER corank->=2 shared-product-tail regime is 'research-grade' (r1carrier: needs a from-scratch product-Plucker principalisation of det(Q_b Q_b^T), or CITE Aoyagi) — escalated to the operator as a genuine build-vs-cite research wall (#59).",
+      "channel": "pen-and-paper",
+      "cheap_or_costly": "design-stage (pre-build)",
+      "thread": "genm-r1flip",
+      "commit_sha": "4a230c2b",
+      "iso_time": "2026-07-08",
+      "detail": "A fresh un-anchored pen-and-paper seat + exact Groebner + a fresh un-anchored Codex DECISIVELY refuted r1carrier's escalation. ROOT CAUSE (lesson banked): r1carrier's Codex was PROMPT-ANCHORED by its brief ('map to the shape required by the regime atoms = the Gram CoV') — partly the controller's own framing — so it certified the KNOWN-dead measure-atom route (integrate Gamma out via the Gram CoV, Jacobian det(Q_b Q_b^T)^{-p/2}). r1flip's un-anchored Codex returned the OPPOSITE ('coordinate centers suffice'). The pure R-blowup route (coordinate radial + det-1 unit Schur-clear = the banked S2-free corankStep) NEVER forms the Gram determinant; r1carrier's decisive 'obstruction' witness is a positive-loss point the resolution never touches. FOUR+ decorrelated lines flipped it back to LARGE-but-BOUNDED build. Caught the controller's brief-framing biasing a decorrelated channel before a from-scratch principalisation build (or an unnecessary second citation) was committed."
+    },
+    {
+      "claim_caught": "R1-UPPER route CORRECTION: the FrontPeelStep analytic descent is buildable (UPDATE-728 'no research wall outstanding').",
+      "channel": "pen-and-paper",
+      "cheap_or_costly": "design-stage (pre-build)",
+      "thread": "genm-r1transfer / r1layerpeel / r1subgenwall",
+      "commit_sha": "",
+      "iso_time": "2026-07-08",
+      "detail": "Three-catch addlongest-era chain. (1) r1transfer (read-only + Codex xhigh, neutral) caught that the FrontPeelStep CoV A0->A0.U emits a single ANISOTROPIC Gram term (no additive core) and recursing the tail-product-rank locus needs the abstract 'addlongest' product-rank normal-slice iso, which Mathlib LACKS — RETRACTED the FrontPeelStep build plan before a heavy build was sunk (the gate paid off). (2) r1layerpeel then CORRECTED r1transfer's own stale read: it had read schurRecStep4_stub and missed that SchurRecStep general-corank was in fact CLOSED (schurRecStep_p sorry-free). (3) r1subgenwall was charged to dissolve-or-confirm the residual sub-generic addlongest wall (L>=3) and, unlike the D1 >=-leg 'wall' that dissolved under Gauss-Newton, CONFIRMED it decisively (5-line convergence) -> #71/#72 finalized as the SINGLE genuine research wall (BUILD addlongest vs CITE it). The honest-correction discipline: UPDATE-728's 'no wall outstanding' was walked back the same day."
+    },
+    {
+      "claim_caught": "covdesign's 'TRIPLE-decorrelated' Codex passes (UPDATE-796) confirming the front-peel no-go — a primed confirmation the controller had relaxed the reviewer-gate on.",
+      "channel": "reviewer",
+      "cheap_or_costly": "design-stage (pre-build)",
+      "thread": "genm-forkreview",
+      "commit_sha": "",
+      "iso_time": "2026-07-10",
+      "detail": "THE DECORRELATION TRAP (lesson). covdesign's 3x 'decorrelated' Codex 'failures' were CORRELATED through covdesign's own lossy framing (and the 3x Codex 'failure' was a stdin-flow --output-last-message bug, not a service outage). Run healthy WITH both conclusions withheld, Codex REFUTED covdesign's no-go: the front-peel is NOT blocked. The controller had nearly acted on the primed confirmation (had relaxed the no-go gate at 796); the decorrelated reviewer-gate (bedrock: an adversarial decorrelated check for a consequential no-go) is what caught it. Vindicated gating the no-go — 'N channels converged' is only as strong as the independence of the framing they share."
+    },
+    {
+      "claim_caught": "Closing sjJointResolution:803 is quick env+cover+charge labour — the deeper/rank-deficient branch is 'non-binding by sjChargeBudget_le' (UPDATE-818, propagated from covmount's handoff).",
+      "channel": "pen-and-paper",
+      "cheap_or_costly": "design-stage (pre-build)",
+      "thread": "genm-covfinish",
+      "commit_sha": "2a23b5b9",
+      "iso_time": "2026-07-10",
+      "detail": "A fresh decorrelated tide (clean context + its own Codex xhigh) returned a scope correction the controller verified and accepted. sjChargeBudget_le is a COMBINATORIAL threshold inequality, NOT the analytic reduction of the rank-deficient decorated Gamma-integral to a shorter-chain box integral; and the endpoint route closes only the cooperative 'good' branch (needs W and A2 both right-invertible, dimensionally impossible for fat blocks). So the deeper-branch analytic reduction is genuinely UNBANKED = the (S,J) double-induction recursion. covmount's 'no wall - labour' Codex verdict was about the TRANSPORT (correct, landed clean), NOT the recursion. Lesson banked: a downstream over-optimistic handoff estimate must be decorrelated-checked before the controller propagates it as scope. No wrong code — a fresh tide re-scoped before the big build."
+    },
+    {
+      "claim_caught": "The emitted outer weight det(Q_b Q_b^T)^{-a/2} is 'absorbed' by the reduced-chain IH (the corner cert's Cat-I mechanism).",
+      "channel": "pen-and-paper",
+      "cheap_or_costly": "design-stage (pre-formaliser)",
+      "thread": "genm-wtint",
+      "commit_sha": "",
+      "iso_time": "2026-07-10",
+      "detail": "An adversarial pen-and-paper seat dispatched TOWARD the wall with the controller's 'absorbed' lean withheld from its Codex. VERDICT: WALL. Exact mechanism: frobSq(B0)=frobSq(B.A_>=2) is IDENTICALLY independent of Y (d/dY == 0), while the Gram singularity lives entirely in Y (Q_b=Y.A_>=2); along a good-stratum sequence Y_n -> {rank=b-1} the weight blows up while the 'dominating' factor is pinned constant — the IH controls int dB, says nothing about the int dY blow-up. 'Absorbed by the IH' is the analytic analogue of the codim-accounting shortcut and fails for the same reason. A decorrelated Codex (conclusion withheld, open-ended) reached WALL INDEPENDENTLY — same (B,T)-vs-(Y,T) domination failure, same sharp boundary a<q-b+1. The fix is a bounded elementary single-minor Cauchy-Binet lower bound via the Loewner order (VALIDATES the cert's B=2 cover; the three-way category routing is necessary). Caught before a formaliser sank a session on the 'absorbed' route."
+    },
+    {
+      "claim_caught": "The single-minor Gram bound (det >= minor^2) closes Cat-I integrability for all a<=q-b — wtint and its Codex both called it 'sufficient AND sharp'.",
+      "channel": "controller",
+      "cheap_or_costly": "design-stage (pre-formaliser)",
+      "thread": "genm-catint (controller flag at gmbrev)",
+      "commit_sha": "",
+      "iso_time": "2026-07-10",
+      "detail": "The controller, re-deriving Cat I before committing a formaliser, spotted the sufficiency hole the reviewer (gmbrev) had correctly scoped OUT of its lemma-PASS: {minor_S0 = 0} is a codim-1 hypersurface, strictly larger than {det=0} codim q-b+1, so int|minor|^{-a} ~ int|z1|^{-a} over the transverse converges only for a<1, with an explicit apparent failure at a=1,q-b+1=2 (int|z1|^{-1} over R^2 diverges log while the TRUE int|z|^{-1} converges). Then genm-catint (pen-and-paper, decorrelated, both claims presented with the controller's lean withheld) PROVED verdict B: single-minor is INSUFFICIENT for a>=1; Cat I closes via the exact Gram-Schur radial model int||z||^{-a} over R^{q-b+1} (finite iff a<q-b+1) — elementary, does NOT enlarge the operator-gated atom. cbmin's bound stays a correct reusable leaf but is off the Cat-I critical path. Gated the Cat-I formaliser; spawning it on cbmin's bound would have sunk a session."
+    },
+    {
+      "claim_caught": "'The corner closes it' — the Cat II/III corner/Regime-B route is fully buildable above the operator-gated atom (the corner cert as taken).",
+      "channel": "pen-and-paper",
+      "cheap_or_costly": "design-stage (pre-formaliser)",
+      "thread": "genm-crnrt",
+      "commit_sha": "",
+      "iso_time": "2026-07-10",
+      "detail": "Adversarial decorrelated pre-verify (commissioned specifically because catint had just caught the cert's Cat-I over-claim). VERDICT SPLIT: the corner does NOT over-claim on three points (avoids the divergent det^{-a/2}; needs no full Cauchy-Binet; no a<1 gap), but on the CRUX the (a,1,D) leaf closes elementarily ONLY at the 3-width base — in general it REGENERATES the (S,J) product-rank-flag atom (the deeper tail Q_b=Y.A_>=2 TWISTS the leaf min(a,D)->min(a,m,D); Codex independently reached the same power-regime twist). CENSUS: of 294 corner charts, ~15 fully elementary + 27 top-only; 252 (86%) deeper-tail = the atom. So 'corner closes it' was over-optimistic — buildable-above-the-atom is the small descent base, not the bulk. Banked TWO build traps for the descent-base formaliser (W1: the banked freedSchurLoss_inner_bounded is LOSSY, caps at minAdm(redChain) not minAdm(M), and the atom's PosDef hyp FAILS on the corner -> needs a new unit-Gram sub-block variant; W2: the free-z leaf overestimates for deeper tails, must not be used for L>=1). Quantified the build-vs-cite (#97) precisely; operator boundary unchanged."
+    },
+    {
+      "claim_caught": "The Cat II/III corner is closeable by an elementary reduced-chain induction (no citation needed) — the build-vs-cite could be avoided by peeling the shared tail.",
+      "channel": "reviewer",
+      "cheap_or_costly": "design-stage (pre-build)",
+      "thread": "genm-cornrev",
+      "commit_sha": "",
+      "iso_time": "2026-07-10",
+      "detail": "Third decorrelated pass, its Codex deliberately biased TOWARD finding an elementary route — still found none. (a) The twist lemma is SOUND across the three regimes (balanced log; power pinned at b-a+1, does not rise to q); peelcert's retraction of 'always-log' was the correct self-correction. (c) The elementary route GENUINELY FAILS: recursively peeling the corner's shared tail regenerates the SAME bilinear-image constraint on a comparable rank stratum with no monotone invariant dropping; corner-mildness (RLCT=1/2 codim on determinantal strata) is LOGICALLY EQUIVALENT to the main DLN RLCT theorem. KEY REFINEMENT: the peel is NOT circular — it reduces DLN-RLCT to elementary width-bookkeeping + an ATOMIC determinantal-locus RLCT=1/2 codim composed across the rank flag, so the honest cite boundary is the ATOM (+ flag composition), NOT the full DLN theorem. Surfaced the build-vs-cite fork to the operator with the narrowed boundary and the precision.md naming consequence (unsuffixed if built / _via_aoyagi5 carried-hypothesis interface if cited)."
+    },
+    {
+      "claim_caught": "A single sjSector covers the box (the sector-from-region bridge is a clean derivation) — the crux g(Q) closes without a stratified cover.",
+      "channel": "reviewer",
+      "cheap_or_costly": "design-stage (pre-formaliser)",
+      "thread": "genm-sj5-cover / secinfra",
+      "commit_sha": "",
+      "iso_time": "2026-07-11",
+      "detail": "secinfra's long-standing F2 red flag (sector does NOT imply dominance: P=diag(1,2), A0=(0 1), kappa=3 gives 9<=4) made concrete: a single sjSector does NOT cover the box — any fixed-kappa cover MISSES the positive-measure corank-2 tube {0<sigma_{r-1}<kappa_*}, and varying kappa destroys the estimate (sigma_{r-1}^{-6} vs true sigma_{r-1}^{-3}). This is a GENUINE obstruction, F2, but NOT a hard wall. Fix (cover's exact-algebra + decorrelated Codex cert #130): a finite RANK-STRATIFIED cover (Borel via minor cells, reusing banked det-keys, no eigenvalue-sorting infra) + a corank-q COUPLED majorant per cell (route S, banked-adjacent via corner334/onePeel334). The one soundness gate — the corank-q corner needs units-bounded-below, else recurse to cell_{q+1} (the add-not-min / no-RLCT-collapse discipline) — flagged as must-be-airtight. Turned the crux from 'the one wall' into bounded labour."
+    },
+    {
+      "claim_caught": "The front-first g(Q) (b1 + front-only block_radial_blowup, no IH) is a self-contained (□) brick reaching threshold 7/2.",
+      "channel": "self",
+      "cheap_or_costly": "post-build (mid-build trace)",
+      "thread": "genm-sj5-schur",
+      "commit_sha": "babbec8e",
+      "iso_time": "2026-07-11",
+      "detail": "schur's own fidelity-critical trace of the (b2) q=2 green found the front-first g(Q) gives h=[2,2] -> Sum(h+1)=6 -> threshold 3 < 7/2: it UNDERSHOOTS. The correct h=[3,2] (->7/2) has extra Jacobian from the DEEP layer (A2), i.e. the multi-layer frobSq(A0.Q)->sjLoss reduction that is NOT banked. Controller reframe (reading RouteMSJDecoratedPeelStep): decoratedPeelStep does NOT reduce (□) to a self-contained g(Q)=7/2 — it peels the front (charge 1/2 peelCharge) and closes the freed-Gamma triple integral on the reduced-chain IH at the shifted threshold; the deep-layer contribution comes from the IH recursion + charges-ADD. The front-first shortcut undershoots PRECISELY because it bypasses the IH. VINDICATES seam #135; the built g(Q) machinery is the descent's TERMINAL, not the full fill. schur INDEPENDENTLY confirmed the reframe (its follow-up crossed the controller's message) — builder-confirmed diagnosis, not only a skeleton reading."
+    },
+    {
+      "claim_caught": "qPeelIntegral_lt_top is 'the g(Q) (□) brick' — integrated @c807c465 as the corank-q close on the current route.",
+      "channel": "self",
+      "cheap_or_costly": "post-build (no soundness pollution)",
+      "thread": "genm-sj5-cover (controller integration)",
+      "commit_sha": "",
+      "iso_time": "2026-07-11",
+      "detail": "A #103-repeat, self-caught. qPeelIntegral_lt_top is a TRUE, sound, clean-three ABSTRACT lemma, but its weighted-AM-GM decoupling needs INDEPENDENT deep blocks U_i=||X_i||^2; the freed-Gamma deep product SHARES A2 (w=||P.v.A2||^2 and Q_b=Y.A2 both carry A2, an irreducible coupling a unit shear cannot decouple), so applying it is the obligation-1 'wrong-geometry' trap made concrete — a sound theorem applied where its independence hypothesis is not met = conceptual slop. cover HONESTLY RETRACTED its own #128v2/#131 'CoV straightens the coupling -> qPeelIntegral suffices' leaning; the controller acknowledged integrating the brick as 'the (□) brick' before route-validity was confirmed (the #103 lesson under-applied at the INTEGRATION step). Not a soundness pollution (the lemma is true, canonical stays clean-three) — a framing/scoping overclaim, corrected by commissioning the faithful DECORATED (S,J) descent (risk-asymmetry: decorated is faithful whether or not the geometry decouples; qPeelIntegral only if disjoint)."
+    },
+    {
+      "claim_caught": "The general-width QIP has no shared-divisor collapse (the (□) faithfulness / no-RLCT-collapse premise) — assumed on cover's StepHyp D/m >= n0 framing.",
+      "channel": "pen-and-paper",
+      "cheap_or_costly": "design-stage (de-risk)",
+      "thread": "genm-sj5-dmcheck",
+      "commit_sha": "c7fe44dd",
+      "iso_time": "2026-07-11",
+      "detail": "dmcheck (pen-and-paper witness seat, #146) swept 23 chains (anchor + all 4 bottlenecks + corank-2/3 + L=3,4,5) while a decorrelated Codex hunted independently: NO COLLAPSE (the linchpin min_rho(cCodim + M0.rho)=minAdm holds with GEOMETRIC cCodim, 0 violations). But it also caught a FRAMING error in cover's StepHyp cert: cover's 'D/m >= n0 (n0=ab)' is VIEW-DEPENDENT — the inequality INVERTS between the top-level view (D/m=4 < M0q=6) and the decorated view (D/m=6 >= ab=4); the invariant #5-soundness statement is the QIP identity + m=1 + D_q<=M0q, per-cell threshold 1/2(M0.rho + min(M0q,D_q)), NOT bare D/m>=n0. Banked THREE misread-traps that FAKE a collapse (the #5 formalization pitfalls): (T-a) U0=det(PP^T) ~ t^{2q} misread as sigma_min^2 ~ t^2 -> spurious m=q; (T-b) tube misread as a corank-block prepending a FREE front layer -> spurious low codim; (T-c) 1/2(D_q+d_q) asserted as cell VALUE on a narrow front. A decorrelated no-collapse verification that also sharpened the soundness statement the formalisation adopts."
+    },
+    {
+      "claim_caught": "The fixed-Z gamma' invariant closes #4 (base leg) and is #5-preservable — committed green at a checkpoint, staged for integration.",
+      "channel": "reviewer",
+      "cheap_or_costly": "post-build (pre-integration, held at checkpoint)",
+      "thread": "genm-sj5-desc4 / cover",
+      "commit_sha": "da1ed775",
+      "iso_time": "2026-07-12",
+      "detail": "cover's #4 Q1 audit (decorrelated: conclusion-withheld Codex + grounded in the committed RouteMSJAdm.lean:136-159 + the controller's read, all converging) REFUTED fixed-Z as #5-preservable for two independent reasons: (1) Gamma(z).Z with Z FIXED is linear in Gamma, but at intermediate arity prod(redChain)=B.A2...A_L is MULTILINEAR — one fixed Z can't equal a varying deeper product; (2) the measure iso maps D.Z to a SINGLE free block, but genuineCarrier pins D.Z ~ Params(redChain) (retains all tail params), so single-block FORGETS the remainder. So the committed form is satisfiable at the base (width-2, prod=single matrix) but UNSATISFIABLE at intermediate arity -> a TRUE #4 lemma about a base-only (useless) invariant = the green-but-subtly-wrong trap. The base-audited-hardest HOLD (desc4 CHECKPOINTED the z-dependent generalization rather than rush it in a deep session; the controller declined to integrate a green-but-un-confirmed base invariant) CAUGHT IT before integration — the 2nd validated base-hold of the arc. Fix: split D.Z ~ Gamma x R with z-dependent Z_tail(r); base R trivial recovers the committed form. A BEDROCK non-vacuity requirement was added: commit an in-file witness that the generalized d>=1 clause is inhabited at an INTERMEDIATE arity."
+    },
+    {
+      "claim_caught": "The #5 off-sector first-pass cover (generic S_q with m=1, recurse on {corank>=q+1}) is complete — corank-of-Z captures the measure cover.",
+      "channel": "codex",
+      "cheap_or_costly": "design-stage (pre-formaliser)",
+      "thread": "genm-sj5-cover",
+      "commit_sha": "96441e6e",
+      "iso_time": "2026-07-12",
+      "detail": "cover's own decorrelated skeptical Codex (conclusion-withheld, told to HUNT the gap) CAUGHT A REAL GAP, recorded honestly in joint-corner-cert.md §6. Exact-verified counterexample (mgt1.py): Z=ab (scalar product) at a=b=0 has corank(Z)=1 but sigma_min=|ab| ~ t^2 (sigma_min^2=t^4 != dist^2=t^2), so first-order vanishing FAILS and there is NO higher-corank stratum to catch it — the m>1 locus is a SAME-corank critical locus. So dmcheck's QIP >=1/2 minAdm is NECESSARY but NOT SUFFICIENT for the measure-theoretic neighbourhood cover (the 'empty hunt != proof / verify the instrument measures the right object' bedrock hold paying off). Fix: the m>1 loci are the intersection rays (blow up the coupled corner) handled by an iterated coupled corner, so the airtight off-sector cover is a TRANSVERSALITY-augmented recursion on ARITY (arity, not corank-of-Z, is the well-founded variable). A genuine additional obligation beyond the threshold-arithmetic, surfaced before formalisation."
+    },
+    {
+      "claim_caught": "The off-sector §7 proof is 'airtight' (UPDATE-956/958/960 headline) — the recursion bottoms at a width-2 single matrix with sigma_min order-1 by Eckart-Young.",
+      "channel": "controller",
+      "cheap_or_costly": "design-stage (pre-formaliser)",
+      "thread": "genm-offsector-independent-hunt (controller-spawned fresh seat)",
+      "commit_sha": "8a7efe91",
+      "iso_time": "2026-07-12",
+      "detail": "A controller-spawned FRESH obstruction seat (deliberately NOT cover's Codex — the bedrock bar for a foundation exhaustiveness claim) returned GAP FOUND, three converging lines (its Newton-polygon algebra self-validated on 5 cases + a conclusion-withheld Codex + the banked sibling R1 thread). Findings (controller-verified): (3) dichotomy (C) FALSE — Eckart-Young is a matrix-space distance equality, does NOT give the PARAMETER-order the integral needs; [[1,t],[t,0]] has det(MM^T)=t^4 so sigma_min ~ t^2 (order 2), a single matrix with order-2 vanishing. (1) charges-ADD is UNITS-SECTOR-only — off-units the threshold is the MIN; the corank->=2 shared-divisor collapse (d^2(x^2+y^2) lct=1/2 vs (d1x)^2+(d2y)^2 lct=1) BINDS at the DLN branch (3,3,4) and §7 MISSES it. (2) uniformity CONTINGENT — the corner constant blows up as units->0. The 'airtight' headline (956/958/960) was PREMATURE, corrected here; the VALUE 1/2 minAdm survives (defended by the QIP min-identity + Aoyagi + the R1 coupled diag(b) recursion), and the proof route must pivot to Aoyagi's coupled diag(b) (task #122). The one residual (□)-risk the hunt could not close nor counterexample: the general-width QIP no-collapse (verified only on dmcheck's sweep, not proved) = the top soundness de-risk. The disposition working: an exhaustiveness claim's gate is a PROOF, and a decorrelated hunt must attack it and fail before trust — caught before formalisation was built on §7."
+    }
+  ],
+
+  "codex_outage": {
+    "broke_iso": "2026-07-06",
+    "broke_iso_note": "UPDATE-623 (2026-07-06): 'the Codex CLI is unavailable (Not logged in, operator-gated) — the decorrelation discipline is impaired until re-login.' Surfaced during the endgame-monument scoping (UPDATE-618..624: the D1 chart-cert bounded-vs-monument de-risk + the two-monuments re-scope). UPDATE-624 explicitly runs d1chartderisk with 'Codex-down so exact source cross-verification'.",
+    "restored_iso": "2026-07-06",
+    "restored_iso_note": "UPDATE-626 (2026-07-06): 'Codex restored' (operator re-grounding after a post-interruption drift correction). A SECONDARY intermittent auth flap followed on 2026-07-08: UPDATE-712 'Codex-auth flag (#61)' -> UPDATE-713 'Codex-auth restored (r1flip/r1carrier reached it; #61 intermittent)' — threads still reached Codex through it.",
+    "outage_duration_hours_approx": 6.0,
+    "error_message": "codex CLI: 'Not logged in' (operator-gated login); decorrelation discipline impaired until operator re-login (synthesis UPDATE-623). Distinct from the earlier stdin-flow --output-last-message bug (UPDATE-647) that faked a 3x Codex 'failure' without a real service outage.",
+    "threads_with_real_codex_before": ["modelidwit (2026-07-06, SVD Gram-vs-blowup adjudication, Codex-corroborating)", "linfdesign (UPDATE-618, the endgame map, Codex-matched)", "sjjointdesign (UPDATE-654/655, outer (S,J) construction, decorrelated Codex xhigh)"],
+    "claims_relying_on_claude_only_after": [
+      "d1chartderisk (UPDATE-624) — D1 chart-cert bounded-multi-tide verdict via EXACT SOURCE cross-verification substituting for Codex (Claude + primary sources)",
+      "splitwit (UPDATE-624) — the explicit e/u/Jacobian witness at (4,4,4)/r=1, an in-repo pen-and-paper decorrelation given Codex-down",
+      "the 07-08 auth-flap (#61) had minimal Claude-only reliance: r1flip / r1carrier still reached Codex (UPDATE-713)"
+    ],
+    "degradation_assessment": "Materially milder than the QS whole-design-phase outage. The aoyagi Codex gap was BRIEF (a same-day operator-gated 'Not logged in' on 2026-07-06 during the endgame-monument scoping, plus an intermittent #61 auth flap on 2026-07-08 that threads still reached through). During the 07-06 gap the decorrelation net shifted channels cleanly — an in-repo pen-and-paper witness (splitwit) + EXACT primary-source cross-verification (d1chartderisk) + repo-docstring corroboration carried the load, and the controller flagged the impairment honestly to discuss-at-close. Across the rest of the expedition Codex was available and heavily used, but it was NEVER the primary decorrelation instrument: the load was carried throughout by fresh-seat pen-and-paper witness/obstruction seats, controller-spawned INDEPENDENT hunts (not the thread's own Codex) for exhaustiveness claims, decorrelated Codex run conclusion-withheld, and reviewer nets. The one decorrelation FAILURE recorded (UPDATE-647, the 'decorrelation trap') was not an outage at all — it was Codex passes CORRELATED through covdesign's own lossy framing, caught by the reviewer-gate. So the net did not collapse; where a channel degraded, another (fresh seat / primary source / reviewer) covered it."
+  },
+
+  "confidence": [
+    {"iso_time_or_commit": "2026-06-20 / launch", "note": "LAUNCH. The aoyagi-full hero expedition: from-scratch, cite-only-S2 proof of the GENERAL Aoyagi DLN learning-coefficient (rlct = 1/2 minAdm), the missing library IS the comparative advantage. Feasibility unknown; the general resolution (not just RRR / L=2) is the mission. Operator DECIDED (A) 'go the distance' 2026-06-26."},
+    {"iso_time_or_commit": "2026-06-28 / carve done", "note": "MIXED-UP. The R1-UPPER firing carve is CLOSED + TRIPLY-CERTIFIED (schurRatioResidGen_mid sorry-free). But scope corrected same-arc: the carve is the BINDING p=4 subcase, NOT the forall-M R1-UPPER engine, and even the binding-family hbox needs a front-peel-bridge beyond the carve (UPDATE-252's 'near-assembled' walked back at 253). A banked rung, honestly re-scoped."},
+    {"iso_time_or_commit": "2026-07-08 / L=2 done", "note": "STRONG UP. The L=2 HEADLINE is DONE, unconditional, cite-only-S2, from scratch and independently. The D1 >=-leg confirmed BOUNDED (its converged 'wall' dissolved under Gauss-Newton). Both R1-UPPER dead-ends (the r1carrier 'research-grade' artifact, the FrontPeelStep addlongest route) caught and re-routed; the SINGLE genuine research wall (sub-generic addlongest, L>=3) confirmed and escalated."},
+    {"iso_time_or_commit": "2026-07-09 / S2-free stage-1", "note": "MAJOR UP. The S2-free milestone banked (the monomial_rlct axiom RETIRED); the FULLY-GENERAL headline aoyagi_learning_coefficient_gen PROVEN + integrated, axiom-clean, CONDITIONAL on the single named box-finiteness obligation (□). The endgame narrows to (□) — but that gate now opens as the dominant remaining content."},
+    {"iso_time_or_commit": "2026-07-10T15:18 / UPDATE-819", "note": "CAUTION (honest recalibration). Closing (□)/sjJointResolution:803 is NOT quick env+cover+charge labour: a fresh decorrelated tide caught that sjChargeBudget_le is a combinatorial inequality, NOT the analytic reduction, and the deeper/rank-deficient branch is the genuine unbuilt (S,J) double-induction. Corrected the UPDATE-818 over-optimism. Anticipated Aoyagi-§5 labour, not a research wall — but substantial."},
+    {"iso_time_or_commit": "2026-07-10T19:16 / atom fork", "note": "MIXED (boundary made concrete). OPERATOR DECISION #97 -> (A) BUILD the determinantal atom; the route-search is CLOSED. The wtint/catint/crnrt/cornrev adversarial era resolved the corner build-vs-cite: wtint's 'absorbed' = WALL, catint's 'single-minor sharp' = over-claim, 'corner closes it' = 86%-to-the-atom, cornrev's cite boundary NARROWED to the atomic determinantal-locus RLCT (not the full theorem). The boundary is now concrete."},
+    {"iso_time_or_commit": "2026-07-11T10:13 / §5 lane", "note": "UP. OPERATOR DIRECTIVE — OPEN THE §5 LANE (attack the coupled diag(b) peel HEAD-ON); two lanes parallel, first to (□) wins. The mountain-recon's 'mostly banked, gap=4 pieces' optimism was corrected by the empirical build-scan (native good-branch ~600-1000+ LoC + an Option-A reorder prerequisite) — VINDICATING the operator's 'you've been building around the heart'. Attacking the heart directly now."},
+    {"iso_time_or_commit": "2026-07-11T19:16 / DecoratedDescent", "note": "UP (faithful route decided). The (□) fill is the DECORATED (S,J) descent (the coupled diag(b) ledger), decided after the qPeelIntegral wrong-geometry retraction (the coupling is irreducible; decorated is faithful whether or not the geometry decouples). The Q2-corrected DecoratedDescent spine LANDED clean-three; the F2 sector-from-region obstruction turned from 'the one wall' into a bounded rank-stratified cover + corank-q majorant."},
+    {"iso_time_or_commit": "2026-07-12T04:32 / soundness settled", "note": "STRONG UP. (□)-SOUNDNESS RESOLVED POSITIVELY (modulo Aoyagi, all width): cover PROVED minAdm PERMUTATION-INVARIANCE, and the decorrelated hunt CONFIRMS NO COLLAPSE (scoped) — the Lakatos dialectic converged, resolving the top soundness de-risk (the general-width QIP no-collapse). The §7 'airtight' premature headline had been caught and the route pivoted to the coupled diag(b) recursion just before this."},
+    {"iso_time_or_commit": "2026-07-12 / now (~UPDATE-975)", "note": "STEADY, NO WALLS. route-i landed clean-three (minAdm=cCodim ALL-WIDTH, the paper's CENTRAL codim identity, machine-checked) + minAdm permutation-invariance. #4->#5->#108 is the SOLE charter-advancing path: the #4 tide is active (units-drop certified), #5 recon settled (a substantial but wall-free build front-loaded on the N4' peelOp/weld). Remaining is bounded labour on the critical path — #4 base + #5 step + the (□) assembly + the mint."}
+  ],
+
+  "overclaim_gaps": [
+    {
+      "what": "UPDATE-818 propagated covmount's handoff 'the deeper/rank-deficient branch is non-binding by sjChargeBudget_le' as if the (□) cover+recursion were quick banked labour.",
+      "when": "2026-07-10 (UPDATE-818) — corrected same day (UPDATE-819, covfinish @2a23b5b9)",
+      "reality": "sjChargeBudget_le is a COMBINATORIAL threshold inequality, NOT the analytic reduction of the rank-deficient decorated Gamma-integral to a shorter-chain box integral; that reduction is genuinely UNBANKED = the (S,J) double-induction recursion. covmount's 'no wall - labour' Codex verdict was about the TRANSPORT (which landed clean), not the recursion. No wrong code — the overclaim was in controller-propagated SCOPE; a fresh decorrelated tide re-scoped before the big build. Lesson banked: a downstream over-optimistic handoff estimate must be decorrelated-checked before the controller adopts it as scope."
+    },
+    {
+      "what": "'The corner closes it' — the Cat II/III corner/Regime-B route buildable above the operator-gated atom as the cert was taken.",
+      "when": "pre-UPDATE-846 framing — corrected 2026-07-11 (UPDATE-846, crnrt)",
+      "reality": "The census: of 294 corner charts, ~15 fully elementary + 27 top-only; 252 (86%) deeper-tail REGENERATE the (S,J) product-rank-flag atom via the power-regime twist. Buildable-above-the-atom is the small 3-width descent base, not the bulk — the 'corner closes it' headline was over-optimistic. No new hidden wall (same atom), but two build traps (W1 lossy inner bound / PosDef fails on the corner; W2 free-z leaf overestimates) were banked for the descent-base formaliser. The operator build-vs-cite boundary was unchanged, its magnitude just made concrete."
+    },
+    {
+      "what": "The mountain-recon's '(□)-core is FAR more banked than inner slice; the gap is 4 narrow pieces' (UPDATE-884).",
+      "when": "2026-07-11 (UPDATE-884, recon @ace21ecb) — corrected 2026-07-11 (UPDATE-888, empirical build-scan @a614891)",
+      "reality": "The empirical formaliser build-scan (Option B on a614891, correct STOP-condition, zero git ops) found the native good-branch is ~600-1000+ LoC + an Option-A Tonelli-reorder PREREQUISITE (Option B does NOT avoid it) + >=4 new unbanked modules. Lesson: the empirical build-scan is ground truth; the recon under-estimated the native good-branch by ~600-1000 LoC + the reorder it assumed away. This directly VINDICATED the operator's 'you've been building around the mathematical heart' and re-weighted onto the direct §5 lane — held the heavy lane-1 build rather than sink the LoC eagerly."
+    },
+    {
+      "what": "The L=2 close's last piece (step-5 chart cert) is 'ONE bounded chart-certification from DONE, one tide' (UPDATE-622); and earlier framing 'the sea is rising fast, one tide from the end'.",
+      "when": "2026-07-06 (UPDATE-622 @dc1fa75a) — corrected 2026-07-06 (UPDATE-623 @e7faf069, '3rd time over-optimistic'), scope re-settled by UPDATE-624",
+      "reality": "hchart_explicit (step 5) is a FRESH multi-file analytic build, NOT one tide — corroborated 3x (the hAtV Codex named step 5 'the most likely hidden wall'; repo Item-81; the deepest analog is itself still a bare sorry). The controller explicitly logged 'I over-claimed sea rising fast' and re-scoped the honest endgame as TWO big remaining costs (the hbox/R1-UPPER monument + the D1 general-v chart cert, possibly a 2nd monument). UPDATE-624 then de-risked the chart cert to BOUNDED (chargeable, not a 2nd monument) — so the correction was itself corrected favourably, but the 'one tide' had run ahead three times."
+    },
+    {
+      "what": "'Binding-family R1 near-assembled' — the carve closes the R1-UPPER firing math (UPDATE-252).",
+      "when": "2026-07-08 (UPDATE-252) — corrected same day (UPDATE-253, genm-n4 scoping refinement)",
+      "reality": "Even the binding-family hbox discharge needs a front-peel-bridge (routeMLayerBoxIntegral -> SchurCore 4 r, the iterated-fibre front-peel + rank-stratification) — genuine new math distinct from the carve (which only gives SchurCore < top). A 3rd honest pre-build catch (genm-n4). The carve was closed and real; 'near-assembled' ran ahead of the remaining binding-family piece."
+    },
+    {
+      "what": "DecoratedPeelStep is provable as a plain-IH SINGLE peel — the (□) target (a53d75e's 'don't close 803, target DecoratedPeelStep').",
+      "when": "prior framing (UPDATE-874) — corrected 2026-07-11 (UPDATE-884 C2, recon @ace21ecb)",
+      "reality": "DecoratedPeelStep is equivalent to SJStepHyp, but its plain-IH single-peel proof is a MISMATCH (a det-weighted 3-node on the plain 3-node IH — the dps-instance-cert). The native cover route SIDESTEPS it (the IH is used only on the deeper CHAIN), and its natural conclusion is LITERALLY sjJointResolution:803 (stated t>=1, non-circular by construction, with 803->(□) banked). So the target was re-pointed to 803-via-the-cover, not the decorated-single-peel. (This is the DecoratedPeelStep-provable premise the C2 fibre-smoothness memory note flags.)"
+    },
+    {
+      "what": "The off-sector §7 proof is 'airtight' (UPDATE-956/958/960).",
+      "when": "2026-07-12 (UPDATE-956/958/960) — corrected 2026-07-12 (UPDATE-961, independent §7 hunt @8a7efe91)",
+      "reality": "A controller-spawned INDEPENDENT obstruction seat (not cover's Codex) found the §7 PROOF has a gap (three converging lines): Eckart-Young gives a matrix-space distance, not the parameter-order the integral needs ([[1,t],[t,0]] -> sigma_min ~ t^2); charges-ADD is units-only, and the corank->=2 shared-divisor collapse BINDS at (3,3,4) which §7 misses; uniformity is contingent. The VALUE 1/2 minAdm survives (defended independently by the QIP min-identity + Aoyagi + the R1 coupled diag(b)); the proof route pivots to Aoyagi's coupled diag(b) recursion (#122). The one residual (□)-risk (general-width QIP no-collapse) remains verified-not-proved. Caught before formalisation was built on §7 — the exhaustiveness-gate-is-a-PROOF discipline."
+    },
+    {
+      "what": "The fixed-Z gamma' invariant is #5-preservable (committed green at a checkpoint, staged for one-shot integration).",
+      "when": "2026-07-12 committed-and-held (RouteMSJAdm.lean) — corrected 2026-07-12 (UPDATE-959, cover Q1 audit @da1ed775)",
+      "reality": "The committed fixed-Z form is a TRUE #4 lemma about a base-only (useless) invariant — satisfiable at width-2 but UNSATISFIABLE at intermediate arity (fixed-Z linear vs multilinear deeper product; single-block iso forgets the tail Params) so #5 cannot preserve it. The green-but-subtly-wrong trap. The base-audited-hardest HOLD (desc4 checkpointed the generalization rather than rush it deep in context; the controller declined to integrate an un-confirmed base invariant) CAUGHT IT before integration — the 2nd validated base-hold of the arc. Fix: the z-dependent Gamma x R / Z_tail(r) split, with a bedrock in-file non-vacuity witness at an intermediate arity required."
+    },
+    {
+      "what": "The single-minor Gram bound is 'sufficient AND sharp' for Cat-I integrability (wtint + its Codex).",
+      "when": "2026-07-10 (UPDATE-837 wtint framing) — corrected 2026-07-10 (UPDATE-841 controller flag -> UPDATE-842 catint PROVEN)",
+      "reality": "Single-minor closes int det^{-a/2} only for a<1 ({minor=0} codim-1 controls one transverse coord; the true a<q-b+1 belongs to det^{1/2} ~ ||z|| over the full R^{q-b+1}). Explicit in-Cat-I failure at b=1,q=2,a=1 (single-minor bound diverges log, true integral = 2pi finite). Only wtint's 'sufficient AND sharp' step over-claimed; its WALL verdict (Cauchy-Binet load-bearing) STANDS. FAVORABLE: Cat I closes via the exact Gram-Schur radial model and does NOT enlarge the operator-gated atom, so the buildable boundary (#97) was unchanged. Caught the over-claim before a formaliser sank a session on the insufficient bound."
+    }
+  ]
+}

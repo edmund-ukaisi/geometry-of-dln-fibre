@@ -1,0 +1,1791 @@
+{
+  "threads": [
+    {
+      "thread": "core-quiver-engine",
+      "title": "Core quiver engine — Gabriel / barcode / Kostant (rung-4 foundation)",
+      "role": "formaliser",
+      "first_iso": "2026-06-12T17:55:48+00:00",
+      "last_iso": "2026-06-13T23:06:16+00:00",
+      "pillar_fed": "Recon"
+    },
+    {
+      "thread": "rung0-definitions",
+      "title": "Rung-0 goal skeleton + DLN / orbit definitions",
+      "role": "pen-and-paper",
+      "first_iso": "2026-06-20T14:38:49+00:00",
+      "last_iso": "2026-06-21T05:36:02+00:00",
+      "pillar_fed": "Recon"
+    },
+    {
+      "thread": "rung0b-encode",
+      "title": "Rung-0b orbit ↔ Kostant-partition encoding",
+      "role": "scout",
+      "first_iso": "2026-06-20T15:00:00+00:00",
+      "last_iso": "2026-06-22T00:00:00+00:00",
+      "pillar_fed": "Recon"
+    },
+    {
+      "thread": "mountain-recon",
+      "title": "Critical-path / mountain recon (route-decision maps)",
+      "role": "scout",
+      "first_iso": "2026-07-08T15:40:59+00:00",
+      "last_iso": "2026-07-11T09:12:31+00:00",
+      "pillar_fed": "Recon"
+    },
+    {
+      "thread": "voigt-discharge",
+      "title": "Voigt / orbit-codimension value lane (Abeasis–Del Fra L4/L6)",
+      "role": "formaliser",
+      "first_iso": "2026-06-18T23:41:12+00:00",
+      "last_iso": "2026-06-20T21:36:08+00:00",
+      "pillar_fed": "Value"
+    },
+    {
+      "thread": "rlct-payoff",
+      "title": "rlct(K₀)=C/2 + θ destination (L=2 / general-r)",
+      "role": "formaliser",
+      "first_iso": "2026-06-20T22:42:26+00:00",
+      "last_iso": "2026-06-21T23:12:41+00:00",
+      "pillar_fed": "Value"
+    },
+    {
+      "thread": "fibre-codim",
+      "title": "Fibre codimension core (C, ext-codim, c-theta)",
+      "role": "formaliser",
+      "first_iso": "2026-06-18T17:33:26+00:00",
+      "last_iso": "2026-07-07T03:46:40+00:00",
+      "pillar_fed": "Value"
+    },
+    {
+      "thread": "l2-scope",
+      "title": "L2 integration-map scope + design (L1L2, pin-1)",
+      "role": "pen-and-paper",
+      "first_iso": "2026-06-24T00:00:00+00:00",
+      "last_iso": "2026-06-26T02:02:52+00:00",
+      "pillar_fed": "L2"
+    },
+    {
+      "thread": "l2-bridge",
+      "title": "L2 deepest-diffeo bridge build (psi-conj, wire, tie, close)",
+      "role": "formaliser",
+      "first_iso": "2026-06-22T13:09:49+00:00",
+      "last_iso": "2026-06-29T12:18:34+00:00",
+      "pillar_fed": "L2"
+    },
+    {
+      "thread": "l2-pin2-comparability",
+      "title": "L2 pin-2 comparability (Watanabe two-sided)",
+      "role": "pen-and-paper",
+      "first_iso": "2026-06-25T00:00:00+00:00",
+      "last_iso": "2026-06-26T00:00:00+00:00",
+      "pillar_fed": "L2"
+    },
+    {
+      "thread": "genm-l2fin",
+      "title": "L2 rung 1/5 close — deepest_gauge_construction_L2 clean-three",
+      "role": "formaliser",
+      "first_iso": "2026-06-28T14:55:57+00:00",
+      "last_iso": "2026-06-29T12:31:13+00:00",
+      "pillar_fed": "L2"
+    },
+    {
+      "thread": "genm-l2scope",
+      "title": "General-L L2 (44l2, d1l2prod, l2scope)",
+      "role": "formaliser",
+      "first_iso": "2026-06-28T02:09:56+00:00",
+      "last_iso": "2026-07-10T11:37:10+00:00",
+      "pillar_fed": "L2"
+    },
+    {
+      "thread": "r1-design",
+      "title": "R1 upper-leg design (wedge, hfin, recStep spec)",
+      "role": "pen-and-paper",
+      "first_iso": "2026-06-23T00:00:00+00:00",
+      "last_iso": "2026-06-26T00:00:00+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "fm3-bridge",
+      "title": "fm3 coordinate-bridge build era",
+      "role": "formaliser",
+      "first_iso": "2026-06-22T10:10:14+00:00",
+      "last_iso": "2026-06-24T00:13:11+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "route-c",
+      "title": "R1 route-c build",
+      "role": "formaliser",
+      "first_iso": "2026-06-24T17:51:13+00:00",
+      "last_iso": "2026-06-25T05:35:03+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "rect-hfin",
+      "title": "Rectangular hfin build (4422 / 3333, recStep fill)",
+      "role": "formaliser",
+      "first_iso": "2026-06-27T00:00:00+00:00",
+      "last_iso": "2026-06-30T09:29:37+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "interior-det",
+      "title": "Interior-det Jacobian route-M (detfderiv / detbridge)",
+      "role": "formaliser",
+      "first_iso": "2026-06-26T23:06:59+00:00",
+      "last_iso": "2026-06-29T17:48:46+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "genm-detradj",
+      "title": "Radial-model adjudication (interior-det pins)",
+      "role": "pen-and-paper",
+      "first_iso": "2026-06-28T00:00:00+00:00",
+      "last_iso": "2026-06-29T00:00:00+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "smeared",
+      "title": "Smeared L=2 square stratum (smeared4 / smearedfin)",
+      "role": "formaliser",
+      "first_iso": "2026-06-28T04:38:15+00:00",
+      "last_iso": "2026-07-02T00:00:00+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "genm-r1lower",
+      "title": "R1-lower interior atom (hdiv achiever ∀L)",
+      "role": "formaliser",
+      "first_iso": "2026-06-30T11:22:39+00:00",
+      "last_iso": "2026-07-03T00:18:33+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "genm-glift",
+      "title": "General-L R1-lower interior lift (injOn ∀L)",
+      "role": "formaliser",
+      "first_iso": "2026-07-01T00:00:00+00:00",
+      "last_iso": "2026-07-02T07:59:56+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "r1upper-strata",
+      "title": "R1-upper sub-generic strata (rankcharge / substratum / subgenwall)",
+      "role": "formaliser",
+      "first_iso": "2026-07-08T00:00:00+00:00",
+      "last_iso": "2026-07-08T15:33:27+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "genm-phiexpl",
+      "title": "Φ_expl global peel chart (change-of-variables)",
+      "role": "formaliser",
+      "first_iso": "2026-07-06T15:14:22+00:00",
+      "last_iso": "2026-07-07T04:34:54+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "genm-cornrev",
+      "title": "Corner-reversal / sub-box front-peel bricks",
+      "role": "formaliser",
+      "first_iso": "2026-06-26T12:43:27+00:00",
+      "last_iso": "2026-07-11T05:19:02+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "genm-dr0det",
+      "title": "det r=0 / dr0 leg",
+      "role": "formaliser",
+      "first_iso": "2026-06-30T23:54:53+00:00",
+      "last_iso": "2026-07-02T14:19:33+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "genm-rblowup",
+      "title": "R-blowup product-Gram R1-upper route",
+      "role": "formaliser",
+      "first_iso": "2026-07-07T13:11:06+00:00",
+      "last_iso": "2026-07-07T15:36:54+00:00",
+      "pillar_fed": "R1-Upper"
+    },
+    {
+      "thread": "d1-scope",
+      "title": "D1 analytic-chart scope (Morse-Bott / general-v)",
+      "role": "scout",
+      "first_iso": "2026-06-29T00:00:00+00:00",
+      "last_iso": "2026-07-03T00:00:00+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "d1-chart-producer",
+      "title": "D1 IFT chart-producer (selected-minor → hcmp)",
+      "role": "formaliser",
+      "first_iso": "2026-06-29T13:34:14+00:00",
+      "last_iso": "2026-06-30T00:00:00+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "genm-d1asm",
+      "title": "D1 ≥-leg L=2 de-risk (d1asm / d1frames / d1gates)",
+      "role": "formaliser",
+      "first_iso": "2026-06-30T00:00:00+00:00",
+      "last_iso": "2026-06-30T20:00:00+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "genm-b3closer",
+      "title": "D1 LEAF-2 hrank₂ discharge (b3 joint-rank)",
+      "role": "formaliser",
+      "first_iso": "2026-07-03T09:08:34+00:00",
+      "last_iso": "2026-07-03T09:57:49+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "hstep2-germs",
+      "title": "D1-close hstep2 germ machinery (germs / triple / hc / hderiv / hcd)",
+      "role": "formaliser",
+      "first_iso": "2026-06-30T12:32:16+00:00",
+      "last_iso": "2026-07-08T20:27:45+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "genm-geleg",
+      "title": "D1 ≥-leg (geleg1 / 8 / iv / fgh)",
+      "role": "formaliser",
+      "first_iso": "2026-07-08T19:26:48+00:00",
+      "last_iso": "2026-07-09T05:58:26+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "genm-d1close",
+      "title": "D1 '=' capstone + general Aoyagi reduction (d1close / revd1eq / uniform)",
+      "role": "formaliser",
+      "first_iso": "2026-07-06T00:00:00+00:00",
+      "last_iso": "2026-07-09T00:00:00+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "genm-gatesclose2",
+      "title": "D1 ∀-q gates close",
+      "role": "formaliser",
+      "first_iso": "2026-07-06T08:57:55+00:00",
+      "last_iso": "2026-07-07T00:00:00+00:00",
+      "pillar_fed": "D1"
+    },
+    {
+      "thread": "genm-sjrecon",
+      "title": "SJ descent recon (sj4 / sj5 / carrier recon)",
+      "role": "scout",
+      "first_iso": "2026-07-06T00:00:00+00:00",
+      "last_iso": "2026-07-07T00:00:00+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-sjcarrier",
+      "title": "SJ carrier build (carrier2-8)",
+      "role": "formaliser",
+      "first_iso": "2026-07-07T16:00:30+00:00",
+      "last_iso": "2026-07-08T02:03:55+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-sjpeel",
+      "title": "SJ peel step (peelstep / p3)",
+      "role": "formaliser",
+      "first_iso": "2026-07-06T20:28:53+00:00",
+      "last_iso": "2026-07-08T10:04:08+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-sjjoint",
+      "title": "SJ joint-corner estimate (joint-design)",
+      "role": "pen-and-paper",
+      "first_iso": "2026-07-07T07:53:26+00:00",
+      "last_iso": "2026-07-11T05:17:50+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-sjbuild",
+      "title": "SJ build (build2-4)",
+      "role": "formaliser",
+      "first_iso": "2026-07-08T04:50:20+00:00",
+      "last_iso": "2026-07-08T07:26:35+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-sjassembly",
+      "title": "SJ assembly",
+      "role": "formaliser",
+      "first_iso": "2026-07-08T11:05:16+00:00",
+      "last_iso": "2026-07-08T12:06:45+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-sjresolution",
+      "title": "SJ resolution family (rescope / decomp / slice / ldu / native / bpeel / close)",
+      "role": "formaliser",
+      "first_iso": "2026-07-06T15:49:17+00:00",
+      "last_iso": "2026-07-10T22:56:31+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-sj5",
+      "title": "SJ5 descent + measure-check (dmcheck)",
+      "role": "formaliser",
+      "first_iso": "2026-07-11T10:52:11+00:00",
+      "last_iso": "2026-07-12T10:14:22+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-vslice",
+      "title": "Vertical-slice stage-2 recon (vsrecon / vsdeep / vsastruct)",
+      "role": "scout",
+      "first_iso": "2026-07-09T23:38:53+00:00",
+      "last_iso": "2026-07-11T08:37:52+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-excise",
+      "title": "Excise tide (S2-free descent)",
+      "role": "formaliser",
+      "first_iso": "2026-07-09T00:00:00+00:00",
+      "last_iso": "2026-07-09T17:15:20+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-decbuild",
+      "title": "Decorated-descent build (decbuild / decrecon)",
+      "role": "formaliser",
+      "first_iso": "2026-07-09T12:49:24+00:00",
+      "last_iso": "2026-07-10T20:00:50+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "cover",
+      "title": "(□)-soundness cover — perm-invariance no-collapse adjudicator",
+      "role": "pen-and-paper",
+      "first_iso": "2026-07-06T22:57:08+00:00",
+      "last_iso": "2026-07-12T05:09:58+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "desc3",
+      "title": "SJ decorated-descent adm builder (#3, FaithfulSJAt)",
+      "role": "formaliser",
+      "first_iso": "2026-07-11T00:00:00+00:00",
+      "last_iso": "2026-07-12T00:00:00+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "desc4",
+      "title": "SJ #4 base-hyp builder (DecoratedBaseHyp)",
+      "role": "formaliser",
+      "first_iso": "2026-07-11T22:39:15+00:00",
+      "last_iso": "2026-07-12T05:09:58+00:00",
+      "pillar_fed": "SJ-Descent"
+    },
+    {
+      "thread": "genm-headline-gen",
+      "title": "Fully-general headline integration (aoyagi_learning_coefficient)",
+      "role": "formaliser",
+      "first_iso": "2026-07-08T00:00:00+00:00",
+      "last_iso": "2026-07-09T05:51:50+00:00",
+      "pillar_fed": "Headline"
+    },
+    {
+      "thread": "perm-invariance",
+      "title": "(C,θ) permutation-invariance + minAdm=cCodim (route-i)",
+      "role": "formaliser",
+      "first_iso": "2026-07-11T00:00:00+00:00",
+      "last_iso": "2026-07-12T08:42:21+00:00",
+      "pillar_fed": "Headline"
+    },
+    {
+      "thread": "genm-eqassembly",
+      "title": "Headline equality assembly (eqassembly / jbassembly / seam)",
+      "role": "formaliser",
+      "first_iso": "2026-07-08T20:16:26+00:00",
+      "last_iso": "2026-07-10T10:24:53+00:00",
+      "pillar_fed": "Headline"
+    },
+    {
+      "thread": "genm-indepaudit",
+      "title": "Independence audit (capstone content-independent)",
+      "role": "reviewer",
+      "first_iso": "2026-07-09T08:44:57+00:00",
+      "last_iso": "2026-07-09T08:44:57+00:00",
+      "pillar_fed": "ops"
+    },
+    {
+      "thread": "reviews",
+      "title": "Independent reviews (headlines / hcd / hderiv0 / r1upper-wall)",
+      "role": "reviewer",
+      "first_iso": "2026-06-30T00:00:00+00:00",
+      "last_iso": "2026-07-12T00:00:00+00:00",
+      "pillar_fed": "ops"
+    },
+    {
+      "thread": "genm-critpathmap",
+      "title": "Critical-path sorry-map scout",
+      "role": "scout",
+      "first_iso": "2026-07-08T15:40:59+00:00",
+      "last_iso": "2026-07-08T15:40:59+00:00",
+      "pillar_fed": "ops"
+    }
+  ],
+  "edges": [
+    {
+      "from": "core-quiver-engine",
+      "to": "fibre-codim",
+      "relation": "feeds"
+    },
+    {
+      "from": "core-quiver-engine",
+      "to": "rung0-definitions",
+      "relation": "feeds"
+    },
+    {
+      "from": "rung0-definitions",
+      "to": "rung0b-encode",
+      "relation": "feeds"
+    },
+    {
+      "from": "rung0b-encode",
+      "to": "r1-design",
+      "relation": "feeds"
+    },
+    {
+      "from": "rung0-definitions",
+      "to": "l2-scope",
+      "relation": "feeds"
+    },
+    {
+      "from": "rung0-definitions",
+      "to": "d1-scope",
+      "relation": "feeds"
+    },
+    {
+      "from": "voigt-discharge",
+      "to": "fibre-codim",
+      "relation": "feeds"
+    },
+    {
+      "from": "fibre-codim",
+      "to": "rlct-payoff",
+      "relation": "feeds"
+    },
+    {
+      "from": "fibre-codim",
+      "to": "perm-invariance",
+      "relation": "feeds"
+    },
+    {
+      "from": "rlct-payoff",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "l2-scope",
+      "to": "l2-bridge",
+      "relation": "feeds"
+    },
+    {
+      "from": "l2-pin2-comparability",
+      "to": "l2-bridge",
+      "relation": "feeds"
+    },
+    {
+      "from": "l2-bridge",
+      "to": "genm-l2fin",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-l2fin",
+      "to": "genm-l2scope",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-l2fin",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-l2scope",
+      "to": "genm-d1close",
+      "relation": "feeds"
+    },
+    {
+      "from": "r1-design",
+      "to": "fm3-bridge",
+      "relation": "feeds"
+    },
+    {
+      "from": "fm3-bridge",
+      "to": "route-c",
+      "relation": "feeds"
+    },
+    {
+      "from": "route-c",
+      "to": "rect-hfin",
+      "relation": "supersedes"
+    },
+    {
+      "from": "r1-design",
+      "to": "rect-hfin",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-cornrev",
+      "to": "rect-hfin",
+      "relation": "feeds"
+    },
+    {
+      "from": "rect-hfin",
+      "to": "r1upper-strata",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-rblowup",
+      "to": "r1upper-strata",
+      "relation": "feeds"
+    },
+    {
+      "from": "r1upper-strata",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-detradj",
+      "to": "interior-det",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-detradj",
+      "to": "interior-det",
+      "relation": "corrects"
+    },
+    {
+      "from": "interior-det",
+      "to": "genm-r1lower",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-phiexpl",
+      "to": "genm-r1lower",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-dr0det",
+      "to": "genm-r1lower",
+      "relation": "feeds"
+    },
+    {
+      "from": "smeared",
+      "to": "genm-r1lower",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-r1lower",
+      "to": "genm-glift",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-glift",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "d1-scope",
+      "to": "d1-chart-producer",
+      "relation": "feeds"
+    },
+    {
+      "from": "d1-chart-producer",
+      "to": "genm-d1asm",
+      "relation": "feeds"
+    },
+    {
+      "from": "d1-scope",
+      "to": "d1-chart-producer",
+      "relation": "corrects"
+    },
+    {
+      "from": "genm-d1asm",
+      "to": "genm-b3closer",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-b3closer",
+      "to": "genm-d1close",
+      "relation": "feeds"
+    },
+    {
+      "from": "hstep2-germs",
+      "to": "genm-d1close",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-geleg",
+      "to": "genm-d1close",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-gatesclose2",
+      "to": "genm-d1close",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-d1close",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "reviews",
+      "to": "genm-d1close",
+      "relation": "audits"
+    },
+    {
+      "from": "genm-sjrecon",
+      "to": "genm-sjcarrier",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-sjrecon",
+      "to": "genm-sjpeel",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-sjcarrier",
+      "to": "genm-sjbuild",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-sjpeel",
+      "to": "genm-sjbuild",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-sjbuild",
+      "to": "genm-sjassembly",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-sjcarrier",
+      "to": "genm-sjresolution",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-sjjoint",
+      "to": "genm-sj5",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-sjresolution",
+      "to": "genm-sj5",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-vslice",
+      "to": "cover",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-excise",
+      "to": "genm-decbuild",
+      "relation": "supersedes"
+    },
+    {
+      "from": "genm-decbuild",
+      "to": "desc3",
+      "relation": "feeds"
+    },
+    {
+      "from": "desc3",
+      "to": "desc4",
+      "relation": "feeds"
+    },
+    {
+      "from": "desc3",
+      "to": "cover",
+      "relation": "feeds"
+    },
+    {
+      "from": "desc4",
+      "to": "cover",
+      "relation": "feeds"
+    },
+    {
+      "from": "cover",
+      "to": "desc4",
+      "relation": "corrects"
+    },
+    {
+      "from": "genm-sj5",
+      "to": "cover",
+      "relation": "feeds"
+    },
+    {
+      "from": "cover",
+      "to": "perm-invariance",
+      "relation": "feeds"
+    },
+    {
+      "from": "reviews",
+      "to": "cover",
+      "relation": "refutes"
+    },
+    {
+      "from": "genm-sjassembly",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "perm-invariance",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-eqassembly",
+      "to": "genm-headline-gen",
+      "relation": "feeds"
+    },
+    {
+      "from": "genm-indepaudit",
+      "to": "genm-headline-gen",
+      "relation": "audits"
+    },
+    {
+      "from": "reviews",
+      "to": "genm-headline-gen",
+      "relation": "audits"
+    },
+    {
+      "from": "genm-critpathmap",
+      "to": "mountain-recon",
+      "relation": "feeds"
+    },
+    {
+      "from": "mountain-recon",
+      "to": "genm-sjrecon",
+      "relation": "feeds"
+    }
+  ],
+  "coordination_events": [
+    {
+      "iso_time": "2026-06-26T10:52:36+00:00",
+      "type": "pause",
+      "description": "Consolidation pause-point: after 4 pause-ticks awaiting the operator, the (A)/(B) fork closed — operator chose GO THE DISTANCE (fully-general headline as the mission).",
+      "commit_sha": "b9616592"
+    },
+    {
+      "iso_time": "2026-06-29T08:36:31+00:00",
+      "type": "incident",
+      "description": "Main-checkout branch-leak recurred (a pen-and-paper artifact landed on the main checkout expedition/aoyagi-full); recovered, mitigation banked.",
+      "commit_sha": "9522fcc4"
+    },
+    {
+      "iso_time": "2026-06-29T21:40:25+00:00",
+      "type": "incident",
+      "description": "(2,2,2) interior-det cone-merge blocked by a cross-lineage seam; genm-detfderiv's branch had built green only because it forked an OLDER canonical (stale base).",
+      "commit_sha": "204da2f9"
+    },
+    {
+      "iso_time": "2026-06-30T02:45:22+00:00",
+      "type": "contention",
+      "description": "D1 hchart crossed-handoff: controller misread genm-d1prod's budget-stop as permanent + spawned a duplicate; genm-d1hfin stood down at a clean boundary.",
+      "commit_sha": "2e2dd2d6"
+    },
+    {
+      "iso_time": "2026-06-30T07:53:29+00:00",
+      "type": "contention",
+      "description": "R1-LOWER eIn_projV0 thrash (mechanical combinator-apply, not new math) + rect-Schur pos/peel shard-division collision; fresh hand + Codex commissioned.",
+      "commit_sha": "9c7b3c86"
+    },
+    {
+      "iso_time": "2026-06-30T19:06:18+00:00",
+      "type": "incident",
+      "description": "Background-agent worktree-spawn collision recurred ~3× on 06-30 (no work lost); root-caused with a recurrence fix + lesson (verify the main checkout after every isolation:worktree spawn).",
+      "commit_sha": "bfe45e78"
+    },
+    {
+      "iso_time": "2026-07-01T15:07:03+00:00",
+      "type": "incident",
+      "description": "Orchestrator crash mid-flight; clean controller pickup, zero work lost.",
+      "commit_sha": "e39b8da7"
+    },
+    {
+      "iso_time": "2026-07-03T10:01:59+00:00",
+      "type": "pause",
+      "description": "Operator PAUSE (rate-limiting): hands stood down, cron disarmed, work banked on branches.",
+      "commit_sha": "210873a8"
+    },
+    {
+      "iso_time": "2026-07-06T08:23:55+00:00",
+      "type": "pause",
+      "description": "RESUMED after the rate-limiting pause (idle days 07-04 / 07-05 had zero commits); disruption recorded, zero work lost.",
+      "commit_sha": "e7b0ac58"
+    },
+    {
+      "iso_time": "2026-07-06T18:05:25+00:00",
+      "type": "incident",
+      "description": "Teammate touched the main checkout (2nd main-checkout incident); cleanly recovered, standing rule re-banked.",
+      "commit_sha": "f73d4c7d"
+    },
+    {
+      "iso_time": "2026-07-08T18:02:27+00:00",
+      "type": "contention",
+      "description": "Build-contention lesson: scripts/lb global worker cap; hold to ≤2 heavy concurrent builds.",
+      "commit_sha": "387f944f"
+    },
+    {
+      "iso_time": "2026-07-08T22:27:52+00:00",
+      "type": "contention",
+      "description": "Crossed-handoff-duplicate lesson refined: base a fresh tide on the teammate's actual tip to avoid duplicate/racing work.",
+      "commit_sha": "70878c9d"
+    },
+    {
+      "iso_time": "2026-07-09T06:39:19+00:00",
+      "type": "incident",
+      "description": "Branch-name collision (genm-seam clash); redirected the seam build to a fresh branch.",
+      "commit_sha": "6898bc73"
+    },
+    {
+      "iso_time": "2026-07-11T10:03:05+00:00",
+      "type": "contention",
+      "description": "Concurrent-green-gate lesson: don't green-gate concurrently with an in-place teammate on the shared checkout.",
+      "commit_sha": "9c4bd55f"
+    }
+  ],
+  "activity": [
+    {
+      "iso_time": "2026-06-19T11:15:14+00:00",
+      "sha": "844c887d",
+      "subject": "expedition(voigt-discharge): operator decision BUILD IT (zero-cited) — L4★ sub-campaign plan; start L4d",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-06-19T12:26:23+00:00",
+      "sha": "15c6f45d",
+      "subject": "expedition(voigt-discharge): L4a re-sized BOUNDED (~3 modules, étale route) — expedition bounded again; build M1 next",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-19T15:03:31+00:00",
+      "sha": "12490f5f",
+      "subject": "expedition(voigt-discharge): L4★ COMPLETE (smooth⟹regular sub-library bedrock) — remaining = orbit geometry L6/L1/L3/...",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T00:28:24+00:00",
+      "sha": "ee0a49ea",
+      "subject": "L6.2 generation: telescope crux (★) + move-existence + box move + sub-fact 1",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T00:37:20+00:00",
+      "sha": "180e6847",
+      "subject": "expedition(voigt-discharge): synthesis — L6 nearly closed; geometry half sized (L2b★ submersion nugget, CharZero guar...",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T00:51:25+00:00",
+      "sha": "526564b5",
+      "subject": "thread 30: L2b★ submersion de-risk — SUB-EXPEDITION verdict (~4 modules)",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T01:57:55+00:00",
+      "sha": "259d0273",
+      "subject": "expedition(voigt-discharge): L6.1-general closed; L2b★ de-risked (AG half = sub-expedition + CharZero); plan: close L...",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T04:06:43+00:00",
+      "sha": "39ffcb72",
+      "subject": "expedition(voigt-discharge): ★ L6 FULLY CLOSED ★ (Abeasis–Del Fra orbitRankLocus=Ō_M + primeness, zero-cited); surfac...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-20T10:21:59+00:00",
+      "sha": "df60f4dc",
+      "subject": "scout(33-A1): Mathlib v4.29 API map for L2b★ route-c build",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T14:36:08+00:00",
+      "sha": "b92ce5a9",
+      "subject": "setup(aoyagi-full): launch hero expedition — full Aoyagi DLN learning-coefficient formalisation",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T18:20:46+00:00",
+      "sha": "750e76d2",
+      "subject": "expedition(voigt-discharge): ★ A4 COMPLETE ★ varietyDim ≤ finrank(range δ⁰) unconditional; A6 capstone dispatched",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T18:59:47+00:00",
+      "sha": "4605395b",
+      "subject": "A6.1 partial: gap-lemmas + R2★ (dirDeriv_orbitIdeal_eq_zero) landed",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T19:46:42+00:00",
+      "sha": "54955f05",
+      "subject": "thread-40: A6 statement card + R2★ Codex consult artefacts",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T20:14:44+00:00",
+      "sha": "0059c412",
+      "subject": "expedition(voigt-discharge): ★★★ COMPLETE ★★★ hVoigt discharged, audited (PASS), polished; cron deleted; signal operator",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-20T23:06:52+00:00",
+      "sha": "63021d82",
+      "subject": "expedition(rlct-payoff): sizing recon closed — G/θ/D bounded, R=Cited interface; θ≠multiplicity correction; brief re-...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-21T02:04:41+00:00",
+      "sha": "3ad23d85",
+      "subject": "tick(aoyagi-full): re-scope PINNED (resolution_charts core form + product_reduction wiring); climb = (1,1,1) gate (pl...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-21T03:42:21+00:00",
+      "sha": "044cdb23",
+      "subject": "R1(aoyagi-full): re-scope resolution_charts to CORE (14th-finding) + realign case111",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-21T08:33:22+00:00",
+      "sha": "583b99db",
+      "subject": "feat(aoyagi-full): (2,2,2) ≤-direction CLOSED — both halves of the cover→rlct spine bedrock",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-21T13:46:04+00:00",
+      "sha": "9b47a434",
+      "subject": "expedition(rlct-payoff): CORRECTION — θ strict step is hard-open (route retracted); land weak + named hyp; reviewer07...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-21T14:51:26+00:00",
+      "sha": "cdf392b9",
+      "subject": "expedition(rlct-payoff): ★ DESTINATION rlct(K^DLN_0)=C/2 delivered ★ (thread 10); close-pending + 2 roadmap items",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-21T17:02:11+00:00",
+      "sha": "cf26dc87",
+      "subject": "expedition(rlct-payoff): ★ general-r destination delivered ★ (thread 12); close-pending (only θ-strict open)",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-21T18:57:47+00:00",
+      "sha": "232fb0ad",
+      "subject": "feat(aoyagi-full): (2,2,2) ≥ headline wired downstream — only 3 non-p0 A-pivots remain",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-21T20:07:08+00:00",
+      "sha": "65bc8cc6",
+      "subject": "expedition(rlct-payoff): ★ θ PROVED — gap-free ★; exposition + final synthesis; close-ready (signal-and-wait PR)",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-22T09:11:33+00:00",
+      "sha": "5b2a8838",
+      "subject": "expedition(perm-invariance): ROUTE DECIDED — full zero-cited q-series; brief re-scoped to M1–M6 ladder",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-22T15:43:24+00:00",
+      "sha": "a340e01a",
+      "subject": "feat(perm-inv): codimForm split LANDED — codimForm(N+1)(extendℤ m) = codimForm N(extendℤ(peelPart m)) + Δ",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-23T18:14:44+00:00",
+      "sha": "5fe762df",
+      "subject": "feat(geometric-codim-bridge): close the Mval=codimForm collapse sorry (#146)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-24T09:21:50+00:00",
+      "sha": "46d9872b",
+      "subject": "docs(R1): #135 cover-design cert — completeness REACHABLE (not walled); routeStep READ is the bounded remainder",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-24T10:46:35+00:00",
+      "sha": "8afeedc0",
+      "subject": "feat(R1): wire RouteMLayerSplit into the aggregator — full build green (3707 jobs)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-24T12:08:02+00:00",
+      "sha": "5db401fa",
+      "subject": "feat(r1-cover): wire RouteMLayerCover (cover-assembly + residual pinned to 2 honest atoms)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-24T12:34:22+00:00",
+      "sha": "c508fc96",
+      "subject": "docs(fibre-codim): EXPEDITION OUTCOME — WALL at R2-3b-4; Lemma 4.6 geometry reduced to a certified residual",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-24T15:40:25+00:00",
+      "sha": "3b9341d1",
+      "subject": "feat(fibre-codim): H4 base closed-point height = δ (easy-direction brick 2)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-24T16:35:59+00:00",
+      "sha": "1dd0db03",
+      "subject": "feat(fibre-codim): H5 per-component→codim closer (FibreCodimMinPrimes)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-24T22:08:04+00:00",
+      "sha": "9c96786a",
+      "subject": "fix(l2,soundness): re-scope the headline + L2 chain to all-widths-positive",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-24T23:49:46+00:00",
+      "sha": "fd08d958",
+      "subject": "feat(r1): NodeAchieverChart bundle + M-agnostic assembly + (4,4,2,2) instance (wired)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-25T06:32:29+00:00",
+      "sha": "e7545a0e",
+      "subject": "docs(l2): PIN2 option-2 (comparability) REFUTED; safe repair = full-reg regStraighten",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-25T08:24:29+00:00",
+      "sha": "28b39948",
+      "subject": "feat(seam-d): close the Φ descent → chartPhiAeval (sorry-free)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-25T09:04:59+00:00",
+      "sha": "4a02398a",
+      "subject": "feat(l2): integrate hTilde — sorry-free wire + 437-LoC axiom-clean Schur-smoothness ladder",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-25T09:22:21+00:00",
+      "sha": "2a0e6bd9",
+      "subject": "feat(l2): close the Params-Pi assembler gap (DeepestSchurSmooth) — sorry-free, axiom-clean",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-25T12:37:23+00:00",
+      "sha": "bd37613c",
+      "subject": "feat(l2): S5c germ atom BUILT (axiom-clean) + hS1' closed; hproducer (d)/(e) false-mult → folded",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-25T16:48:22+00:00",
+      "sha": "8dd67a56",
+      "subject": "feat(l2): hproducer leak (c) CLOSED (eventually_leak + coupled-U); producer down to the core (d')/(e')",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-25T19:18:25+00:00",
+      "sha": "d95a074b",
+      "subject": "feat(r1): (3,3,4) hfin COMPLETE — ginnerZ_lt_top closed, S2-free axiom-clean",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-25T21:29:40+00:00",
+      "sha": "0c5b7764",
+      "subject": "docs(l2): UPDATE-83 + 10th catch — independent confirm REFUTED the additive bound (false on clean S5a); deepest_loss_...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-25T21:46:50+00:00",
+      "sha": "bf70226f",
+      "subject": "docs(l2): UPDATE-84 — repair spec (reachable via spectator reg coords, not frames); re-architecture (★+folded sandwic...",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-26T08:35:08+00:00",
+      "sha": "08ed70de",
+      "subject": "feat(r1-3333): land + integrate the (3,3,3,3) achiever box-divergence anchor (sorry-free, green-gate 8353)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-26T10:52:36+00:00",
+      "sha": "b9616592",
+      "subject": "decision(A): operator chose GO THE DISTANCE — the fully general headline is the mission (hero expedition)",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-06-27T00:27:55+00:00",
+      "sha": "e44feed0",
+      "subject": "feat(aoyagi-det): RATE ∀M closed for the achiever chart (no bridge) + the det bridge bricks",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-27T17:31:00+00:00",
+      "sha": "91aa5f22",
+      "subject": "docs(aoyagi-det): SMEARED residuals SETTLED — UNIFIED single-pivot rational chart (multi-axis RETRACTED), det exactly...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-27T23:14:24+00:00",
+      "sha": "e85e0eb7",
+      "subject": "feat(aoyagi-full): integrate (1,2,1) smeared atom — routeM121sm_box_diverges (S2-free) + reusable routeMCore_box_dive...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T02:28:39+00:00",
+      "sha": "f3920157",
+      "subject": "feat(aoyagi-full): R1-UPPER (3,3,4) depth-2 weld CLOSED — core_schur2_lt_top (corank-2 core finiteness, S2-free, the ...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T04:17:18+00:00",
+      "sha": "a07b44b3",
+      "subject": "docs(aoyagi-full): UPDATE-197 — genm-boundary rest at genuine wall; FRAMING CORRECTION (∀M-(1,1)-smeared needs Option...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-28T09:19:31+00:00",
+      "sha": "400582d2",
+      "subject": "docs(aoyagi-full): UPDATE-245 — PRECISION CORRECTION: carve does NOT auto-green R1-UPPER hfin; it also needs the gene...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-28T10:51:12+00:00",
+      "sha": "b0d8fc95",
+      "subject": "feat(l2-bridge): CLOSE S2 leaf (contDiffAt_psiSplitDeltaL2_of_mem_tsupport)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T15:02:43+00:00",
+      "sha": "14c52fa5",
+      "subject": "docs(aoyagi-full): UPDATE-290 + Item 60 correction — L2 kill-condition RETRACTED",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-28T16:44:15+00:00",
+      "sha": "7cf17dd9",
+      "subject": "feat(l2wire): R-A scaffold — DeepestL2Wiring.lean, thin deepest_diffeo_bridge_L2_wired = exact _impl",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T17:38:49+00:00",
+      "sha": "f39ee6fe",
+      "subject": "feat(l2wire): thread htop + switch to triangular bundle through the gauge chain (S2)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T18:25:32+00:00",
+      "sha": "71646d09",
+      "subject": "feat(l2wire): GERM-MEMBERSHIP cracked (the obstruction X) — hballgerm sorry-free",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T19:20:57+00:00",
+      "sha": "110df183",
+      "subject": "feat(l2wire): bundle strengthening — endpoint frames' reindexed (2,2)-block = 1 (DP=DQ=1)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T20:05:35+00:00",
+      "sha": "d58095ca",
+      "subject": "feat(l2wire): EXTRACT hLDUtie to standalone DeepestLDUReadback.lean (collision-free fill handoff)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T21:12:55+00:00",
+      "sha": "eb649db0",
+      "subject": "feat(l2conj): PRIMARY — prod_deepestM_eq_schur_ldu_readback CLOSED (W-a conjugated dict, clean-three)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-28T22:50:22+00:00",
+      "sha": "ee4164b9",
+      "subject": "feat(aoyagi-full): integrate R1-UPPER ∀p leg alongside R1-LOWER smeared",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T01:30:49+00:00",
+      "sha": "37322bc4",
+      "subject": "feat(l2tie): Step B (P00c=Mid₁₁) closed + readback spine for hLDUtieConj",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T01:32:58+00:00",
+      "sha": "ba366e41",
+      "subject": "feat(l2tie): hC0 closed (layer-0 schur-core via absorbedCoreConj_eq_schurCore)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T03:02:58+00:00",
+      "sha": "8576f861",
+      "subject": "feat(smeared-perfamily): #159 wired front-bottleneck bridge (general r) + docstring tighten",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T07:06:49+00:00",
+      "sha": "965b6627",
+      "subject": "feat(l2fin): LINK2 route = comparability; wire rlctAtOn_squeeze, isolate the ε-bound",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T09:22:24+00:00",
+      "sha": "1b70bfeb",
+      "subject": "feat(genm-smearedfin): wired headline — both named analytic hypotheses discharged",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T10:26:55+00:00",
+      "sha": "5333910b",
+      "subject": "feat(l2fin): L=2 hstep2 branch CLOSED — wire the assembled bridge; 4 sorries gone",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T10:58:49+00:00",
+      "sha": "2402b0bb",
+      "subject": "docs(aoyagi-full): UPDATE-369 — interior-det PIVOT to Route A (decorrelated Codex; det-level column factorization, sp...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-29T12:31:13+00:00",
+      "sha": "3eb438fe",
+      "subject": "docs(aoyagi-full): UPDATE-375 + Item 79 — ★ RUNG 1/5 CLOSED at L=2 ★ (deepest_gauge_construction_L2 clean-three in ca...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T13:27:58+00:00",
+      "sha": "73ed0b65",
+      "subject": "docs(aoyagi-full): UPDATE-380 + Item 81 — ★ both geometric legs BOUNDED (interior-det det via route (i) composeFold; ...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-29T13:34:14+00:00",
+      "sha": "e1a28093",
+      "subject": "feat(aoyagi-full): D1 (rung 2/5) — bank the one-sided (★) skeleton + verify-first splitting-lemma verdict",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T14:16:57+00:00",
+      "sha": "ec028d46",
+      "subject": "docs(aoyagi-full): UPDATE-384 — D1 splitting-lemma gate MUCH lighter (quasi-split, NOT full Morse; Mathlib pieces pre...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-29T14:45:01+00:00",
+      "sha": "950a20fe",
+      "subject": "merge(aoyagi-full): analytic splitting-lemma engine S1QuasiSplit (D1 (★)-deliverer)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T15:00:01+00:00",
+      "sha": "1038329f",
+      "subject": "docs(aoyagi-full): UPDATE-387 — D1 (★) IFT-chart producer commissioned (a6e7758f): mechanical skeleton (Ψ+hcmp+rlct_q...",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-06-29T15:47:40+00:00",
+      "sha": "ef1d4172",
+      "subject": "feat(d1): wire D1ChartProducer into canonical — the (★) chart-producer reductions banked clean-three",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T17:00:21+00:00",
+      "sha": "e732e9d1",
+      "subject": "feat(r1-lower): integrate smeared-achiever ASSEMBLY clean-three (hSmeared <= chart-builder)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T18:32:32+00:00",
+      "sha": "b5813cf4",
+      "subject": "feat(aoyagi-smeared): CLOSE hSmeared forall-M at L=2 via the square reduction",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-29T19:01:34+00:00",
+      "sha": "7d58b5a3",
+      "subject": "docs(aoyagi-full): UPDATE-404 — D1 hCore design-pass NO KILL/NO WALL (unifying rlctAtOn R 0 = extra/2 + lambdaCore(M'...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-29T19:58:58+00:00",
+      "sha": "e8c6d8cc",
+      "subject": "docs(aoyagi-full): UPDATE-406 + Item 90 — D1 producer reductions integrated clean-three (square-scope); the CHART is ...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-30T01:02:31+00:00",
+      "sha": "f6b58218",
+      "subject": "docs(aoyagi-full): UPDATE-432 — HONEST CORRECTION: ∀M-L2 headline is MODULO-hdet (3/4 legs), not unconditional",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-06-30T09:29:37+00:00",
+      "sha": "f73be997",
+      "subject": "docs(aoyagi-full): UPDATE-489 — ★ RECT L=2 UPPER LEG CLOSED (stub gone, clean-three); awaiting commit+push → cone-merge",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-30T11:45:19+00:00",
+      "sha": "b03643e6",
+      "subject": "feat(aoyagi-full): complete smeared cone-merge — wire hSmeared_L2 into DLNFibre + AxCheck pins (atom landed in 2edad9...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-30T17:01:07+00:00",
+      "sha": "8f13357f",
+      "subject": "feat(genm-r1lower): LIVE+kLDU interior contract skeleton — rate + kLDU_leafPivot closed",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-30T17:13:20+00:00",
+      "sha": "5fc2145d",
+      "subject": "feat(genm-r1lower): close H2 leafH + leafH_pivot (LIVE+kLDU)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-30T18:38:53+00:00",
+      "sha": "6ac480d2",
+      "subject": "feat(genm-r1lower): integrate genm-lduinj's lduCore_unique → kLens_injOn_qne (verified)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-30T20:23:42+00:00",
+      "sha": "fa3f6c8b",
+      "subject": "feat(genm-r1lower): Route-A — wire ubound trio in downstream RouteMInteriorLiveAtom",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-30T22:15:04+00:00",
+      "sha": "adc81cf9",
+      "subject": "feat(genm-r1lower): close kLDU_ambient_det_pbo (factor2, boundary-0 fold)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-06-30T23:08:42+00:00",
+      "sha": "937f8c33",
+      "subject": "feat(genm-r1lower): close #160 hNo-bridge at L=2 (boundaryClean_noInteriorBothDrop_L2)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-01T03:28:01+00:00",
+      "sha": "58f83645",
+      "subject": "feat(genm-r1wire): land R1 resolution interface at L=2 → hR1_L2 leaf closed",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-01T03:35:53+00:00",
+      "sha": "4211f1f9",
+      "subject": "docs(aoyagi-full): UPDATE-554 + Item 112 — CEILING REACHED: L=2 learning-coefficient rests on the sole Item-109 D1 wa...",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-01T08:18:46+00:00",
+      "sha": "8cb0b467",
+      "subject": "docs(aoyagi-full): Item 115 + UPDATE-560 — R1-UPPER general-L box-finiteness = WALL (genm-r1upper de-risk, exact-alge...",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-01T08:38:35+00:00",
+      "sha": "d97115b8",
+      "subject": "docs(aoyagi-full): UPDATE-561 — general-L R1-LOWER interior atom DE-RISKED TO PURE ASSEMBLY (injOnGen BOUNDED; founda...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-02T10:20:16+00:00",
+      "sha": "ba7ecaf5",
+      "subject": "docs(aoyagi-full): UPDATE-581 + Item 126 — dr0lift deepRank=0 WALL verdict rested on a FALSE premise (verified: inter...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-02T23:13:08+00:00",
+      "sha": "b721d3e6",
+      "subject": "docs(aoyagi-full): UPDATE-600 — ★ smeared branch CLOSED (hSmeared ∀L, smearclose @3eb6ed8c); all 3 achiever branches ...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-03T00:12:55+00:00",
+      "sha": "2988c6a4",
+      "subject": "feat(genm-smearint): integrate general-L smeared chain + assemble the achiever hdiv ∀L",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-03T00:18:33+00:00",
+      "sha": "272e49bb",
+      "subject": "docs(aoyagi-full): UPDATE-601 — ★ general-L R1-LOWER achiever hdiv COMPLETE ∀L in canonical @4a2d9c2c (routeMCore_box...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-03T01:06:15+00:00",
+      "sha": "8e34b5f6",
+      "subject": "docs(aoyagi-full): UPDATE-603 + Item 131 — RE-GROUNDING: R1 honest ceiling is wall-gated at R1-UPPER; headline DONE m...",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-03T03:02:04+00:00",
+      "sha": "14fee740",
+      "subject": "docs(aoyagi-full): UPDATE-604 — ★★ MILESTONE: general-L R1 resolution IN CANONICAL ∀L, hNo-FREE (@e0d82cf7)",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-07-03T04:10:50+00:00",
+      "sha": "e6fcd3cc",
+      "subject": "docs(aoyagi-full): UPDATE-606 — ★★★ D1 WALL DISSOLVED (all 3 de-risks bounded); charging d1build; capture d1kc2+d1red...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-03T04:31:30+00:00",
+      "sha": "95094354",
+      "subject": "docs(aoyagi-full): UPDATE-607 — CORRECTION: D1 is a re-architecture not a leaf-fill (d1build WALL); validate-small at...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-03T07:28:39+00:00",
+      "sha": "dd3fbe19",
+      "subject": "feat(genm-d1close): b2 residual-rank brick — rank(L) = rank T − nReg (network-free, axiom-clean)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-03T07:58:25+00:00",
+      "sha": "38b1b72e",
+      "subject": "docs(aoyagi-full): UPDATE-612 — ★★★ WALLS-UNIFY: fully-general headline = ONE unified Aoyagi-blow-up build; R1-UPPER ...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-03T08:07:26+00:00",
+      "sha": "f6f7c209",
+      "subject": "feat(genm-b1closer): b1 producer dln_hchart_residual_c2_deriv (derivative exposed)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-03T09:11:15+00:00",
+      "sha": "e059a8d0",
+      "subject": "feat(genm-b3closer): b3 matrix form — jacFlatL2.rank exact value",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-03T09:30:20+00:00",
+      "sha": "2b64103e",
+      "subject": "feat(genm-b3closer): hrank₂ count above b3 — jacFlatL2.rank − nReg = extraCountRect",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-06T09:05:52+00:00",
+      "sha": "42fe7751",
+      "subject": "docs(aoyagi-full): UPDATE-618 — ENDGAME MAP: 3 bounded ∀-L builds; R1-UPPER DE-WALLED (weighted arity-descent); charg...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-06T13:42:06+00:00",
+      "sha": "6cc12d08",
+      "subject": "feat(integrate-d1route): wire banked Core Schur bricks into aggregator (SchurProductFactor + SchurRankZero)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-06T16:14:27+00:00",
+      "sha": "0bb17641",
+      "subject": "feat(integrate-sj): wire (S,J) resolution skeleton + phiexpl bricks into aggregator",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-06T17:44:47+00:00",
+      "sha": "3cf8a514",
+      "subject": "feat(genm-phiexpl): blockFlatEquiv_L2 coordinate model — TIDE 3 piece 1 closed (axiom-clean)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-06T20:28:53+00:00",
+      "sha": "300fe28d",
+      "subject": "feat(genm-sjpeel): CLOSE sjBoundaryPeel OUTER front-split (clean-three, reusable); false pointwise residual caught + ...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-07T01:14:28+00:00",
+      "sha": "5d253e70",
+      "subject": "feat(genm-phiexpl-close): e_idx reindex core — roleEquiv + splitMP (MP) + readbacks, clean-three",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-07T02:26:06+00:00",
+      "sha": "b4027edc",
+      "subject": "feat(genm-phiexpl-close): splitHomeoL2 — Homeomorph splitMP + ContDiff inverse (crux runway piece 3)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-07T03:18:17+00:00",
+      "sha": "aef76d5a",
+      "subject": "feat(genm-phiexpl-close): schurReadout_germ_eq — the hchart germ (F =ᶠ ∑p²+∑qₑ² after split); WALL CLOSED",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-07T03:46:40+00:00",
+      "sha": "3f584b15",
+      "subject": "feat(genm-phiexpl-close): qResid_slice_value — slice residual = prod(H-r)(coreParams+coreShiftParam) (schur-zero)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-07T04:29:19+00:00",
+      "sha": "61e0044a",
+      "subject": "docs(aoyagi-full): UPDATE-645 + #47 — peel exact identity banked (sjp3b) + skeleton-contract flaw found (triple-confi...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-07T06:12:19+00:00",
+      "sha": "1b64c6f8",
+      "subject": "docs(aoyagi-full): integrate sjrescope — peel contract re-scoped sorry-free (2 lemmas proved, 3 skeleton flaws fixed)...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-07T09:17:07+00:00",
+      "sha": "cf32dde0",
+      "subject": "feat(genm-sjjoint): anisotropic Γ-atom crux + cov (det_rightMulₚ, lintegral_comp_rightMulₚ) + wire",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-07T16:00:30+00:00",
+      "sha": "17970751",
+      "subject": "infra+finding(genm-sjcarrier): wire RouteMSJCorankPure import; route finding — piece-1 Gram c.o.v. is the DEAD/walled...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-07T16:45:41+00:00",
+      "sha": "9c49b57f",
+      "subject": "feat(genm-sjclose): STEP-3 unit block-elimination at general widths (RouteMSJStep3) — banked, axiom-clean",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T00:50:19+00:00",
+      "sha": "124737ac",
+      "subject": "feat(genm-sjcarrier7): shear identity COMPLETE — chartInner_schurShearFree_eq frees Γ as free integration variable [c...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T05:46:47+00:00",
+      "sha": "a6d1ca12",
+      "subject": "feat(genm-sjbuild3): sjJointResolution monotonicity reduction — gammaPeelIntegral ≤ boxIntegral + conditional close (...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T11:25:08+00:00",
+      "sha": "41bfee10",
+      "subject": "feat(genm-hstep2triple): (★) two-sided-unit forcedDecode recovery — Producer 1 building block [#120 hstep2]",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T13:07:42+00:00",
+      "sha": "273948b2",
+      "subject": "feat(genm-hstep2): integrate hraw0 (psiSplitRawGen 0 = 0) — D1 Producer-1 leaf #1/3",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T14:24:25+00:00",
+      "sha": "a120f3cf",
+      "subject": "feat(genm-hstep2): integrate Item-3 piece(2) invertibility germs; keystone review CLEAN PASS",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T16:11:50+00:00",
+      "sha": "e7dea736",
+      "subject": "docs(aoyagi-full): UPDATE-726 — hcd re-scoped (full tide, not assembly); green-lit",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-08T17:44:08+00:00",
+      "sha": "21e21b68",
+      "subject": "docs(aoyagi-full): UPDATE-730 + #70 — R1-UPPER route correction (front-peel WALL, keep layer-peel)",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-08T20:16:26+00:00",
+      "sha": "fb7b2e80",
+      "subject": "feat(genm-eqassembly): close hstep2 — D1 #120 \"=\" side, general L≥3 gauge diffeo",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T21:17:56+00:00",
+      "sha": "c62acdb0",
+      "subject": "feat(genm-geleg): ≥-leg chart-data (iii) rungs 4-5 — chart map + validation integrated",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-08T22:24:31+00:00",
+      "sha": "fd0df6ac",
+      "subject": "feat(genm-geleg): ≥-leg chart-data (iii) rungs 1-7 COMPLETE + integrated (chart minus globalization)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-09T03:40:47+00:00",
+      "sha": "c5c9fbd1",
+      "subject": "feat(genm-seam): integrate ≥-leg seam schurReadout_germ_eq_gen (D1GeSeam)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-09T05:47:56+00:00",
+      "sha": "4687aed6",
+      "subject": "feat(genm-headline-gen): ★ INTEGRATE the FULLY-GENERAL HEADLINE aoyagi_learning_coefficient_gen (R1-conditional, clea...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-09T05:49:57+00:00",
+      "sha": "48a913e8",
+      "subject": "docs(aoyagi-full): synthesis UPDATE-763 + discuss-at-close #74 — ★ CAPSTONE: fully-general headline aoyagi_learning_c...",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-09T05:57:00+00:00",
+      "sha": "951ba0ea",
+      "subject": "docs(aoyagi-full): UPDATE-765 + capstone statement card — honest ceiling reached + consolidated; #72 is the operator ...",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-09T08:37:50+00:00",
+      "sha": "8e0d50b2",
+      "subject": "docs(aoyagi-full): #76 + lesson — operator steer: independence JUDICIOUS (light Voight reuse ok), #72 gate DROPPED (c...",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-09T08:42:22+00:00",
+      "sha": "c21692ad",
+      "subject": "docs(aoyagi-full): #77 — #72 de-walled (addlongscope): coupled-det borderline was a repo-route artifact; Aoyagi-nativ...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-09T09:04:34+00:00",
+      "sha": "f3328ad2",
+      "subject": "docs(aoyagi-full): UPDATE-769 + genm-seam spec + task #73 — OPERATOR GO: build the §2 seam chart (final brick), crux-...",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-09T22:40:25+00:00",
+      "sha": "d0969fcd",
+      "subject": "docs(aoyagi-full): refresh priorities.md to post-S2-free-milestone state (operator decision-queue)",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-10T09:57:20+00:00",
+      "sha": "e354cb8a",
+      "subject": "feat(genm-covprod): L3/L4 corner-finiteness ENDPOINT (Route C) integrated — 8 thms clean-three; UPDATE-809",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-10T12:48:57+00:00",
+      "sha": "9aa158e3",
+      "subject": "feat(genm-resmap): CoV measure-side entry + endpoint tail integrated (RouteMSJGoodChart)",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-10T16:15:08+00:00",
+      "sha": "9835fedf",
+      "subject": "feat(genm-covfinish): CoV transport step (b)+composition integrated + UPDATE-821 route adjudication",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-10T19:31:52+00:00",
+      "sha": "6cf8eb7e",
+      "subject": "doc: UPDATE-838 — decbuild piece-8 keystone landed (three-way routing scaffold, clean-three, WALL absorbed); critical...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-10T22:14:26+00:00",
+      "sha": "21b06a44",
+      "subject": "doc: OPERATOR DECISION #97 → (A) BUILD the atom (UPDATE-849) — commit to Aoyagi §5 (S,J) recursion; target unconditio...",
+      "kind": "directive"
+    },
+    {
+      "iso_time": "2026-07-10T23:12:29+00:00",
+      "sha": "93c93e33",
+      "subject": "feat(genm-b4): integrate atom brick B4 (b=1 free-bilinear leaf) to canonical",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-11T03:18:44+00:00",
+      "sha": "50d2a82b",
+      "subject": "feat(genm-vsdeep): integrate vslice LAYER 2 (the (b)-integrability core) to canonical",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-11T05:17:50+00:00",
+      "sha": "2eb9b2fe",
+      "subject": "docs: ROUTE PIVOT — the live (□)-gate is DecoratedPeelStep, not sjJointResolution (self-recon, verified)",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-11T12:20:22+00:00",
+      "sha": "1e806282",
+      "subject": "feat(genm-sj5): bank RouteMSJDetMono — PSD det-monotonicity rebuilt (the lost #112), UNWIRED",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-11T16:35:34+00:00",
+      "sha": "fd5bf534",
+      "subject": "docs: UPDATE-910 + discuss #108 — PIVOTAL REFRAME: front-first g(Q) undershoots; real fill = IH-based (S,J) descent",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-11T20:06:36+00:00",
+      "sha": "9c5df612",
+      "subject": "feat(genm-sj5-descent): integrate A2 base-soundness (P)/(T) guard + regression test 2 [clean-three]",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-11T20:41:53+00:00",
+      "sha": "f24906a6",
+      "subject": "feat(genm-sj5-descent): integrate route-A LEAF FINITENESS (DecoratedBaseHyp loss part) [clean-three]",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-11T23:04:59+00:00",
+      "sha": "cab04ba5",
+      "subject": "feat(genm-sj5-desc3): integrate #2 units bridge — full-row-rank ⟹ ∃c>0 ZZᵀ≽cI [clean-three]",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-12T00:36:08+00:00",
+      "sha": "cf1f19ea",
+      "subject": "docs(genm-sj5): UPDATE-944 — FaithfulSJAt-complete adm landed green + staged (htriv proved); γ sharpened to i₀-compon...",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-07-12T03:46:12+00:00",
+      "sha": "616496c5",
+      "subject": "docs(priorities): RECALIBRATION banner (post-independent-hunt) — section-7 refuted, pivot off-sector to coupled diag(...",
+      "kind": "pivot"
+    },
+    {
+      "iso_time": "2026-07-12T04:27:28+00:00",
+      "sha": "c969b628",
+      "subject": "docs(genm-sj5): UPDATE-964 — (box)-SOUNDNESS RESOLVED POSITIVELY (modulo Aoyagi, forall width): cover PROVED minAdm p...",
+      "kind": "docs"
+    },
+    {
+      "iso_time": "2026-07-12T06:48:27+00:00",
+      "sha": "da4d264f",
+      "subject": "feat(genm-sj5): route-i Part 1 — minAdm PERMUTATION-INVARIANCE (minAdm_comp_perm + minAdm_comp_sort), clean-three",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-12T08:39:35+00:00",
+      "sha": "c25b0b73",
+      "subject": "feat(genm-sj5): route-i Part 2 — minAdm = cCodim ALL WIDTHS (the paper's central codim identity), clean-three",
+      "kind": "lean"
+    },
+    {
+      "iso_time": "2026-07-12T08:42:21+00:00",
+      "sha": "cd11d759",
+      "subject": "docs(genm-sj5): route-i soundness FULLY FORMALISED — priorities banner + discuss-at-close #122 (minAdm=cCodim + perm-...",
+      "kind": "lean"
+    }
+  ]
+}

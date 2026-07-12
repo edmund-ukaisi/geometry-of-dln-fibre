@@ -1,0 +1,9 @@
+# generated artifacts — regenerate via the scripts
+aoyagi-*.png
+aoyagi-*.csv
+aoyagi-loc-summary.json
+aoyagi-thread-dag.dot
+EXPEDITION.md
+REPORT.md
+expedition.html
+native-token-blob-cache.json

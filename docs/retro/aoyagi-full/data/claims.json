@@ -1,0 +1,469 @@
+{
+  "_meta": {
+    "expedition": "2026-06-20-aoyagi-full",
+    "corpus": "synthesis.md (6590 lines, ~1046 '⚙ UPDATE-N' blocks, UPDATE-137..977) + discuss-at-close.md (2909 lines, 122 numbered items) + r1upper-derisk.md / r1upper-wall-review.md / smeared-derisk.md + lessons.md + threads/NN-*/{thread.md,cert.md,statement-card.md} + hundreds of codex/ consults",
+    "endpoint_commit": "339811e8 (UPDATE-977, 2026-07-12T11:00Z) — MID-FLIGHT snapshot; the native (□)/decorated-descent discharge is still OPEN",
+    "note": "status/resolution/witness fields are the run's own self-report from the synthesis ledger + discuss-at-close.md unless a commit_sha is given (those hashes exist on origin/expedition/aoyagi-full). approx_iso_time is the ledger date of the UPDATE/item that RECORDED the event (day-resolution where the ledger gives only a date); the underlying design event usually slightly precedes the record. This is a stress-and-refutation chronicle: the fully-general Aoyagi learning-coefficient headline is PROVEN clean-three modulo one finiteness hypothesis (□); the mission-core S2-free λ headlines are done; the native from-scratch discharge of (□) (the decorated (S,J) double induction) is the remaining open critical path.",
+    "generated": "2026-07-12"
+  },
+
+  "claims_lifecycle": [
+    {
+      "id": "A1-headline-degenerate-width",
+      "claim": "deepest_regular_core_normal_form / product_reduction / aoyagi_learning_coefficient / aoyagi_rrr hold for the paper's non-strict domain r ≤ min H (any positive-width rank-r B).",
+      "status": "corrected",
+      "killed_or_fixed_by": "The L=1 base tide (Codex-corroborated) found the split is FALSE at a degenerate zero-reduced-width layer: at r = H s (reduced width M s = 0) the reduced core has prod ≡ 0 so rlctAtOn = ⊤ while aoyagiLambda is finite. Hypothesis strengthened to strict hpos : ∀ s, r < H s across all four lemmas + call sites.",
+      "witness": "L≥2 core degeneracy at r = H s: dlnLoss M 0 with M s = 0 gives rlctAtOn = ⊤ vs finite aoyagiLambda. At r ≥ 1 hpos is automatic; it bites only the r = 0 zero-width corner, which is not a DLN.",
+      "resolution": "The deliverable's honest domain is r < H s (strict), a resolution_charts carve-out subsuming the paper's r ≤ min H on the realisable non-degenerate region. Over-claim closed before proofs locked in.",
+      "thread": "L=1 base tide",
+      "commit_sha": "15fc3913",
+      "approx_iso_time": "2026-06-24"
+    },
+    {
+      "id": "A2-r1-route-B-hnode",
+      "claim": "R1's upper bound (rlctAtOn ≥ ½·minAdm) can close via the per-node squeeze hnode (Route B): each cover node's reduced core is the width-chain smooth leaf.",
+      "status": "refuted",
+      "killed_or_fixed_by": "Decorrelated pen-and-paper + Codex gpt-5.5 xhigh adjudication: at RRR cores (n,n,p), n≥3 (≈22% of cases, e.g. (3,3,4)) the reduced core is a PRODUCT SINGULARITY, not the smooth leaf — rlct values coincide but the germs are not measure-preservingly homeomorphic, so a general-M hnode would force a forbidden value-only degenerate redEmbed. Corrected the controller's own earlier lean toward Route B.",
+      "witness": "(3,3,4) reduced core is a product singularity; hnode would need a value-only redEmbed the germ forbids.",
+      "resolution": "R1 closes via Route A (cover): hdiv_achiever (corank-immune lower bound) + hfin (upper bound / completeness). Flagged the open risk that hfin might ALSO need the coupled-diag(b) resolution — later CONFIRMED (Item 6 verdict).",
+      "thread": "20-r1-route-adjudication",
+      "commit_sha": "",
+      "approx_iso_time": "2026-06-24"
+    },
+    {
+      "id": "A3-hdiv-334-degenerate-chart",
+      "claim": "The (3,3,4) hdiv wedge (integrated as a reviewed milestone @c1bf8ba4) gives the R1 lower bound at L=2 via a single weighted radial blow-up.",
+      "status": "corrected",
+      "killed_or_fixed_by": "The next tide + Codex caught the chart phi334 dropped 2 coordinates ⟹ Jacobian det ≡ 0 ⟹ null image ⟹ the change-of-variables field asserted 0 = ⊤ (FALSE). The factorization/assembly were sound; only the measure c-o-v was broken. The honest fix (b free + Schur shear) hits the a=0 obstruction (achiever curve through the blow-up center) = genuine resolution geometry.",
+      "witness": "phi334 with det Dφ ≡ 0 on a null image asserting 0 = ⊤. Replaced by Codex's b = a·β genuine-diffeo chart: det Dφ = −u₀⁷·u₁² ≠ 0 (independently recomputed, matches the bundle weight).",
+      "resolution": "Honest genuine-diffeo (3,3,4) chart banked @172f16a8; established BOTH R1 legs need the coupled-diag(b) resolution (the dominant expedition difficulty). Reusable as the shared hfin per-node atom.",
+      "thread": "25-routeM334-cov",
+      "commit_sha": "172f16a8",
+      "approx_iso_time": "2026-06-24"
+    },
+    {
+      "id": "A4-pin2-exact-equality",
+      "claim": "L2 gauge-chart PIN2 asserts EXACT equalities for the regular blocks read off the T-core-zeroed framedParamsRegPivot (framedParams_split_eq_frame_raw + deepest_loss_squeeze's hSreg_eq).",
+      "status": "corrected",
+      "killed_or_fixed_by": "l2-pin2-final + reviewer + Codex numerical counterexample: the telescoped loss is full-T and the T-core leaks into the off-diagonal regular blocks. The follow-up comparability re-architecture (weaken to Sreg ≍ ∑deepestEPivot², fold leak into γ) was ITSELF refuted — the Y0·T1 leak is degree-2 (same order as kept terms, exact cancellation), so comparability fails both directions.",
+      "witness": "(C0·C1)₁₂ = (1+X0)Y1 + Y0·T1; counterexample L=2 H=[2,2,2] r=1 → y·t ≠ 0. The Y0·T1 leak is degree-2.",
+      "resolution": "Sound repair = full-reg regStraighten: the chart's regular output reads the FULL product core (E_pivot → E_full), so ∑(regStraighten·).1² = Sreg EXACTLY (no leak). PIN1 survives verbatim (leak is degree-2 ⟹ zero first-order core contribution). Closes the open rlct-risk gamble via dlnLoss ≍ Sreg+Score.",
+      "thread": "31-pin2-comparability",
+      "commit_sha": "",
+      "approx_iso_time": "2026-06-25"
+    },
+    {
+      "id": "A5-s5c-germ-vs-box",
+      "claim": "The matrix-core comparability ∑R² ≍ ∑(∏S)² = deepestCoreF (via the unit rescaling R = u·∏S) holds as a two-sided BOX bound for r≥2 / M>1 cores.",
+      "status": "corrected",
+      "killed_or_fixed_by": "Codex caught a real confound the first Monte-Carlo missed: the two-sided box ratio ∑‖R‖²≍∑‖∏S‖² is FALSE for M>1 off-germ (rank-deficient S0=εE12, S1=εE21 ⟹ R=0≠∏S; the rank-≤1 W gives no rank protection).",
+      "witness": "S0=εE12, S1=εE21 ⟹ R=0 while ∏S≠0 (box-ratio blows up). On a true germ R−∏S = O(ε⁴) vs ∏S = O(ε²), so the in-sum germ bound |∑‖R‖²−∑‖∏S‖²| ≤ C·∑E² HOLDS.",
+      "resolution": "The build atom MUST be the germ form schur_core_germ_comparability (rlctAt is a germ invariant), never a [m,M] box bound (which would be unsound). Verified r=1,M=2 symbolically; LDU general in L,M.",
+      "thread": "31-pin2-comparability",
+      "commit_sha": "",
+      "approx_iso_time": "2026-06-25"
+    },
+    {
+      "id": "A6-hproducer-front-pivot",
+      "claim": "The L2 gauge chart's reg-energy IDENTITY ∑ deepestEFull(split w)² = Sreg holds (hproducer conjunct (b)).",
+      "status": "corrected",
+      "killed_or_fixed_by": "l2-hproducer (triply confirmed: exact index algebra + numeric witness 17.98 ≠ 23.65 + 2 decorrelated Codex): the identity is FALSE for a non-front pivot J (the GENERIC headline case). deepestEFull reads the residual threshold-effectively via pivotThr J, while Sreg is pivot-aligned; the column permutation π_J moves the −1 deepest-corner between P00/P01/P11 blocks so the two residual energies genuinely differ.",
+      "witness": "Non-front-pivot J: ∑deepestEFull² = 17.98 ≠ 23.65 = Sreg. The gauge chart as built closes only for a front pivot.",
+      "resolution": "Option A (comparability): ∑deepestEFull² ≍ Sreg holds uniformly on a neighbourhood (both energies vanish at w0 ⟹ PD Gram forms differing by the invertible reindex π_J·QL; generalized eigenvalues [0.52,1.93]). Restate (b) from = to ≍, which deepest_loss_squeeze already folds. No PIN1 touch, no front-pivot WLOG (R2 fallback only).",
+      "thread": "23-l2-pin1-design",
+      "commit_sha": "",
+      "approx_iso_time": "2026-06-25"
+    },
+    {
+      "id": "A7-d1-ge-morse-bott",
+      "claim": "The D1 ≥-leg (⨅ = rlctAt deepestPoint) requires a Morse-Bott partial-splitting lemma Mathlib lacks — a candidate research wall.",
+      "status": "superseded",
+      "killed_or_fixed_by": "d1route (pen-and-paper) traced Aoyagi's ACTUAL ≥-leg method from the primary PDF: it is NOT Morse-Bott but a BOUNDED explicit-blow-up build (coordinate charts + monomial integrability), substantially DOWNGRADING the wall — the cite-only-S2 headline is reachable.",
+      "witness": "Aoyagi's published ≥-leg is an explicit coordinate blow-up, not a Morse-Bott normal form.",
+      "resolution": "D1 ≥-leg re-scoped to bounded labour; the D1 = capstone later landed bedrock-PASS (Item 73) and the general ≥-leg routes through the sorry-free d1ge_hAtV_explicit_close_gen. D1 side has no L≥3 research wall.",
+      "thread": "genm-d1route",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-03"
+    },
+    {
+      "id": "A8-r1-resolution-general",
+      "claim": "r1_resolution_general: the general-L R1 resolution is in canonical ∀L, hNo-free (both R1 pieces de-conditionalized).",
+      "status": "proven",
+      "killed_or_fixed_by": "r1integ assembled + de-conditionalized both R1 pieces; controller-verified + fast-forward-merged to canonical (8e34b5f6..e0d82cf7). The both-drop hNo hypothesis proven AUTOMATIC in-branch (bothdropadj pen-and-paper) — no headline residual.",
+      "witness": "hNo-automatic in-branch: both-drop resolves via a bounded combinatorial bridge.",
+      "resolution": "R1's honest ceiling reached ∀L. Later re-grounded (UPDATE-603) that the FULL headline is modulo the R1-UPPER sub-generic strata — which became the addlongest saga (B-family).",
+      "thread": "genm-r1integ",
+      "commit_sha": "e0d82cf7",
+      "approx_iso_time": "2026-07-03"
+    },
+    {
+      "id": "B1-front-peel-analytic-wall",
+      "claim": "The FrontPeelStep analytic route closes R1-UPPER: front-peeling gives a workable additive-core box bound.",
+      "status": "refuted",
+      "killed_or_fixed_by": "r1transfer (read-only scout + decorrelated Codex xhigh, neutral): front-peeling gives frobSq(A₀·P)=frobSq(Δ·V), a SINGLE ANISOTROPIC Gram term (no additive core); the banked corank bricks REQUIRE the isotropic-additive form. Removing the V-anisotropy needs a Δ↦Δ·L Jacobian det(VVᵀ)^{−M₀/2} that BLOWS UP as rank P drops, and recursing the product-rank locus needs the abstract normal-slice iso addlongest (Mathlib-missing).",
+      "witness": "frobSq(A₀·P) = frobSq(Δ·V) with anisotropic V·Vᵀ; the pointwise anisotropy-removal Jacobian det(VVᵀ)^{−M₀/2} → ∞ as rank P drops.",
+      "resolution": "RETRACTED the FrontPeelStep-build plan (gating saved a wasted heavy build). Keep the concrete layer-peel (redChain/Schur/Q_b). The front-peel identity stays combinatorics-only (minAdm_eq_frontPeel, banked sorry-free).",
+      "thread": "genm-r1transfer",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-08"
+    },
+    {
+      "id": "B2-addlongest-wall",
+      "claim": "R1-UPPER's sub-generic strata (L≥3, product-rank-deficient {rank(A₁···A_{L−1})≤q}) hit a GENUINE research wall — the product-rank normal-slice iso 'addlongest', Mathlib-missing; operator must decide BUILD vs CITE.",
+      "status": "retracted",
+      "killed_or_fixed_by": "Escalated to the operator (#71/#72) after a decisive zero-slack certificate; then WITHDRAWN — the operator flagged addlongest is a Lehalleur-Rimányi theorem (main.tex:687), OFF-LIMITS under the expedition's L&R-independence mandate. addlongscope's Aoyagi-native re-scope (#77) then showed the coupled-det borderline is MANUFACTURED by the repo's sjJointResolution lane (front-peel + integrate a block out); Aoyagi NEVER integrates a block out — he blows up the whole product ‖∏C‖² along coordinate submanifolds (Cases 1&2), no sub-generic branch, no coupled-det.",
+      "witness": "(3,3,3,4) binding cut t=1: det(Q_bQ_bᵀ)^{−a/2} exponent a/2 = 1 sits EXACTLY at its integrability threshold (n−p+1)/2 = 1, while the post-Γ residual exponent 3/2 saturates ½·minAdm(1,3,4) = 3/2 — both saturate ⟹ ZERO slack (the exact opposite of a dissolvable slack).",
+      "resolution": "The 'wall' was a repo-ROUTE ARTIFACT, not genuine missing math. Remaining = a LABOUR-BUDGET call: formalise Aoyagi's explicit coordinate-chart (S,J) recursion (~15-35 tides, cite-only-S2, no Mathlib-AG) vs source-cite Aoyagi Thm 2. Operator directive #97: (A) BUILD. Supersedes the build-vs-cite framing of #72.",
+      "thread": "genm-addlongscope",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-09"
+    },
+    {
+      "id": "B3-independence-import-leak",
+      "claim": "The capstone aoyagi_learning_coefficient_gen is clean cite-only-S2 and L&R-independent.",
+      "status": "corrected",
+      "killed_or_fixed_by": "The operator caught that aoyagiLambda's module DLN/Aoyagi/ClosedForm.lean imports Core.FibreCodimFinal + Core.CThetaArbitrary, so the capstone TRANSITIVELY imports L&R Core codimension. The independence audit (indepaudit, Codex-concurred) then found the leak is IMPORT-COSMETIC only.",
+      "witness": "Closure-wide grep: 0 uses of codimFormula/cCodim/cValue/cited_aoyagi_dln/addlongest/orbit identifiers by any non-Core file. ClosedForm.lean is an ORPHAN (imported by nothing); the capstone uses a fresh Mathlib-only aoyagiLambda in RLCT/Foundations/Lambda.lean.",
+      "resolution": "Content-independent in VALUE and PROOF; orbit content is imported (via one gateway Core.RankLocusClosed) but never USED. Optional ~4-file mechanical split makes it import-clean. Independence relaxed to JUDICIOUS by operator steer (#76).",
+      "thread": "genm-indepaudit",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-09"
+    },
+    {
+      "id": "B4-crude-sigmin-undershoot",
+      "claim": "The crude corner_block_lintegral_le bound (inner ≤ σ_min(L_θ)^{−2c'}, worst-direction) suffices for the R1-UPPER inner value.",
+      "status": "refuted",
+      "killed_or_fixed_by": "vsastruct sigmin-coarseness-cert (decorrelated, exact iterated-Beta + Gamma constants): the crude bound charges the FULL 2c' to the single smallest direction (all directions treated as if collapsing), UNDERSHOOTING the threshold (reaches c'<½, not ½·minAdm).",
+      "witness": "The worst-direction σ_min charge gives c'<½; the sharp anisotropic estimate twoBlock_radial closes at 7/2 for (3,3,3,4).",
+      "resolution": "The SHARP anisotropic estimate twoBlock_radial is REQUIRED and closes at 7/2 = ½·minAdm. Corrects the off-path call: twoBlock_radial + FrontSpectral + corank2-math are ON the critical path.",
+      "thread": "genm-vsastruct",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-11"
+    },
+    {
+      "id": "C1-plain-IH-decoratedPeelStep",
+      "claim": "DecoratedPeelStep (the native (□)-gate) is provable as a SINGLE PEEL onto the plain box IH — reducing a 4-node peel to the plain redChain integral.",
+      "status": "refuted",
+      "killed_or_fixed_by": "vsastruct dps-instance-cert (exact algebra + numeric + Codex xhigh, term-for-term): the banked corner atom emits a persistent det(Q_bQ_bᵀ)^{−a/2} coupling = genuine EXTRA WEIGHT the plain IH cannot absorb (a 4-node peel lands on a 3-node DECORATED integral). Q1 decisive scaling test: fix Q̃ₚ=Z≠0, scale Q_b=εR ⟹ det(Q_bQ_bᵀ)^{−a/2}=ε^{−ab}→∞ while the reduced core stays fixed ⟹ no domination / no equality with the plain redChain integral.",
+      "witness": "Scaling Q_b=εR: det(Q_bQ_bᵀ)^{−a/2}=ε^{−ab}·(…)→∞ while the plain reduced core is fixed.",
+      "resolution": "The honest object is the DECORATED double induction (carry the det/minor weight through a decorated IH). DecoratedPeelStep re-stated as DecoratedStepHyp and retired (the old 'sole contract' can't be closed). ~65-75% genuinely-new content; the decbuild carrier SJDecoration/DecoratedBoxThresholdFinite built to carry exactly this weight.",
+      "thread": "genm-vsastruct",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-11"
+    },
+    {
+      "id": "C2-casting-route-corner334",
+      "claim": "The (3,3,3,4) one-peel needs a |det M|^{−4} det-inverse casting change-of-variables (the casting route corner334/onePeel334).",
+      "status": "corrected",
+      "killed_or_fixed_by": "vsastruct onepeel-altroute-cert (decorrelated, Codex-confirmed, verified vs live code): the native sjGoodMap route WINS — the |det M|^{−4} det-inverse is a SELF-INFLICTED A₂-reparam artifact, and the native per-chart inner slice is ALREADY BANKED at 7/2 (0-sorry). The casting route was off-path.",
+      "witness": "The det-inverse |det M|^{−4} arises only from a self-inflicted A₂ reparametrization; the native inner slice (gammaPeelIntegral_sjGoodMap_eq) has no det-inverse.",
+      "resolution": "Casting route dropped from the critical path; corner334 (@96409822, the min→sum mechanism in Lean, additive corner → 7/2 via weighted-AM-GM) + onePeel334 (@a39a37e4, (3,3,3,4) one-peel finiteness at 7/2, A₂-rank-drop rescued by Morse codimension) later REDEEMED as banked clean-three pieces of the (□)-core.",
+      "thread": "genm-corner334",
+      "commit_sha": "96409822",
+      "approx_iso_time": "2026-07-11"
+    },
+    {
+      "id": "C3-front-first-gQ-undershoot",
+      "claim": "The front-first brick g(Q) = ∫frobSq(A₀·Q)^{−c'} ≤ C·σ_q^{−α} is a self-contained shortcut that closes (□) (fills the innerCorankDescent hole).",
+      "status": "refuted",
+      "killed_or_fixed_by": "genm-sj5-schur (fidelity-critical, verified vs skeleton): tracing (b2)'s q=2 target, the front-first g(Q) via front-only block_radial_blowup gives h=![2,2] → Σ(h+1)=6 → threshold 3, UNDERSHOOTING the required 7/2. The missing 7/2−3 is the DEEP-LAYER Jacobian charge (corner units are deep data ‖w·A₂‖²) that accumulates across peel layers, invisible to a front-only blow-up.",
+      "witness": "h=![2,2] (front-only) → Σ(h+1)=6 → threshold 3 < 7/2; the correct h=![3,2] (→7/2) needs the corner/deep charge.",
+      "resolution": "The proper fill is the IH-based (S,J) descent the skeleton already isolates — the local peel carries part of the charge, the recursion carries the rest, summing to 7/2. The banked g(Q) machinery is the descent's TERMINAL (innermost monomial-finiteness step), not the full fill. Vindicates the front-first route-validity seam-check.",
+      "thread": "genm-sj5-schur",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-11"
+    },
+    {
+      "id": "C4-gamma-first-corank-gram-trap",
+      "claim": "The Γ-first / corank-Gram majorant (qPeelIntegral, integrate Γ first → det-Gram → banked square-Wishart) closes (□) via a weighted-AM-GM decoupling of independent deep blocks.",
+      "status": "refuted",
+      "killed_or_fixed_by": "genm-sj5-cover bridge de-risk (#128, exact SVD + decorrelated Codex): the Γ-first route is +∞ on the pivot-degenerate locus {w=0} for c'∈[p·b/2, ½minAdm) — even for (3,3,3,4) — because peeling Γ first (before the pivot x) LOSES the transverse dimensions the pivot supplies. qPeelIntegral's weighted-AM-GM needs INDEPENDENT deep blocks U_i=‖X_i‖², but the freed-Γ deep blocks SHARE A₂, so they are not independent.",
+      "witness": "Γ-first integral is +∞ on {w=0} for c'∈[2, 7/2) at (3,3,3,4); the deep blocks all share the deep factor A₂, and the 'clean split' carries a non-integrable determinant-inverse Jacobian across the corank cells.",
+      "resolution": "qPeelIntegral is a sound axiom-clean abstract lemma but its APPLICATION to (□) was over-framed; downgraded to banked-but-not-relied-upon. The correct fill integrates pivot+Γ JOINTLY (recombine → front-first g(Q) → banked tube codim). Route A (the decorated coupled diag(b) ledger) stands.",
+      "thread": "genm-sj5-cover",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-11"
+    },
+    {
+      "id": "C5-box-Morse-vs-SJ",
+      "claim": "A local box-Morse front-peel brick (keep the collapsing eigendirection bounded) closes (□), avoiding the full (S,J) mountain — the front-peel obstruction (covdesign's 'front-peel dead in principle') was refuted.",
+      "status": "superseded",
+      "killed_or_fixed_by": "A three-pass proofs-and-refutations arc: covdesign concluded the front-peel is dead (a triple-'decorrelated' confirm that was PRIMED — its Codex prompts carried its own lossy framing); forkreview REFUTED it (a healthy conclusion-withheld Codex + Monte-Carlo slope ≈1 + shell exponent β≈D measured directly, contradicting covdesign's codim-1 shell). Then forkreview's Lean-tractability scoping recommended (S,J) after all — box-Morse's one hard brick (a codim-D sublevel-measure bound) has no Mathlib v4.29 support and structurally IS the rank flag at its boundary.",
+      "witness": "Shell exponent β measured β≈4.49 (D=4), β≈1.96 (D=2), decisively NOT 1 — refuting covdesign's codim-1 shell divergence; the true box exponent is 2m₀ smaller and converges for all c'<½minAdm.",
+      "resolution": "Converged to (S,J) — but ARMED: the covdesign↔reviewer arc pinned the exact exponent bookkeeping (θ=2c'−m₀(q−1), D=cCodim, minAdm≤D+m₀(q−1), log-borderline) as a genuine de-risk. box-Morse remains a math-valid fallback. Near-miss (one step from building the whole (S,J) mountain on a flawed no-go) caught by keeping the independent reviewer-gate.",
+      "thread": "genm-forkreview",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-10"
+    },
+    {
+      "id": "C6-sector-from-region-F2",
+      "claim": "The front-first bound g(Q) goes through a SINGLE dominance sector sjSector that covers the box (the naive sector-from-dominance shortcut).",
+      "status": "corrected",
+      "killed_or_fixed_by": "genm-sj5-cover sector-from-region cert (#130, exact algebra + decorrelated Codex): secinfra's F2 IS a genuine obstruction to the single sector — it misses a positive-measure corank-2 tube, so the naive single-sector proof genuinely fails. But it is NOT a hard wall.",
+      "witness": "F2: sector ⇍ dominance. P=diag(1,2), A₀=(0 1), κ=3 → 9 ≤ 4 (the dominance inequality fails on a positive-measure region the single sector claims).",
+      "resolution": "A rank-stratified cover (cell_q by corank, Borel via minor cells) with a corank-q COUPLED majorant per cell closes g(Q) for c'<7/2 = ½·minAdm (linchpin min_q ½(D_q+d_q)=7/2, banked). Much is banked-adjacent (corner334/onePeel334 = the corank-2 instance). (□) is bounded labour, not a wall.",
+      "thread": "genm-sj5-cover",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-11"
+    },
+    {
+      "id": "C7-rlct-collapse-soundness",
+      "claim": "The deeper-strata resolution silently min-splits (via a multiplicative radialAttach or an a.e.-delete of the degenerate locus) — the central RLCT-collapse soundness risk of the programme.",
+      "status": "corrected",
+      "killed_or_fixed_by": "genm-sj5-cover corank-q design cert (#131, exact Beta + a decorrelated Codex told to HUNT the collapse): the collapse is REAL — a decorrelated Codex exhibited it concretely (a vanishing resolved-unit without transverse charge genuinely drops the RLCT). So the naive shortcuts WOULD have been conceptual slop (the bedrock trap).",
+      "witness": "z²(x²+y²) collapse: U₀=U₁=|z|², D=1 → λ=1/2 (vs the true 7/2). corner334 already proves the fixed-slice divergence. Contrast (d₁x)²+(d₂y)² (charges ADD, lct=1) with d²(x²+y²) (shared divisor, lct=½) at identical widths/multiplicities.",
+      "resolution": "The airtight resolution needs BOTH (i) the additive/indicator loss (not radialAttach) and (ii) the {U_i=0} locus integrated JOINTLY with the proved transverse product-rank charge D_q — the true 7/2 recovers iff D_q ≥ 4 = the proved tube codim (#127). So #127 turns out LOAD-BEARING for soundness. Named build-time decorrelated gate at the corank-q close.",
+      "thread": "genm-sj5-cover",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-11"
+    },
+    {
+      "id": "C8-corner-mildness-cite-boundary",
+      "claim": "The deeper-corner strata {rank Q_b ≤ b−2} (b≥2) close ELEMENTARILY (flat shorter chain + arity-IH), via the codim linchpin minAdm ≤ corner-codim.",
+      "status": "refuted",
+      "killed_or_fixed_by": "cornrev caught the general-M closure rests on a TAUTOLOGICAL codim linchpin (minAdm ≤ corner-codim is min ≤ element), and a codim bound does NOT give finiteness to ½·codim. cornrev's 3rd decorrelated pass (Codex biased TOWARD an elementary route, still found none) CONFIRMED these strata are a determinantal variety of a product needing a genuine nested rank-flag resolution (Aoyagi §5), logically equivalent to the main DLN RLCT theorem.",
+      "witness": "x⁴+y⁶ (RLCT < ½·codim): a codimension bound does not pin the RLCT to ½·codim. The clean 'corner = flat shorter chain + arity-IH' reduction provably fails in the power regime (the twist lowers the RLCT).",
+      "resolution": "Operator directive #97: (A) BUILD the atom (formalise Aoyagi §5's (S,J) product-rank-flag resolution). Level-A = (□) = integrability half; Level-B upper bound = Watanabe universal (standing cite). Census (crnrt): 86% of corner charts regenerate the SAME (S,J) atom; ~14% elementary. cornrev's refinement: the honest cite is the ATOMIC determinantal-locus rlct=½codim, not the full DLN theorem.",
+      "thread": "genm-cornrev",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-10"
+    },
+    {
+      "id": "C9-corner-census-overclaim",
+      "claim": "The corner endpoint closes the deeper strata elementarily (Route C 'corner closes it') — the Cat II/III corner is buildable above the atom.",
+      "status": "corrected",
+      "killed_or_fixed_by": "crnrt adversarial decorrelated census: the corner SPLITS — of 294 corner charts (a≥1), ~14% (3-width b=1 + top-stratum-only) are elementary, but 252 (86%) are deeper-tail and regenerate into the SAME operator-gated (S,J) product-rank-flag atom via the power-regime twist (min(a,D)→min(a,m,D)).",
+      "witness": "Census: 15 fully-elementary + 27 top-stratum-only ≈ 14% buildable elementarily; 86% deeper-tail regenerating the (S,J) atom.",
+      "resolution": "No enlargement (same atom, matches cert §B2/§TWIST → Aoyagi §5). Two build traps banked (W1/W2). The buildable-above-the-atom part = Cat I (good stratum) + the 3-width corner descent base; the atom carries the corner BULK + all deeper strata. Sharpens the #97 build magnitude.",
+      "thread": "genm-crnrt",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-10"
+    },
+    {
+      "id": "C10-fixed-Z-base",
+      "claim": "The decorated base leg #4 (decoratedBaseHyp_faithful) built with a FIXED Z (Z-tail) is #5-preservable — the base invariant decouples from the step recursion.",
+      "status": "refuted",
+      "killed_or_fixed_by": "cover's #4 Q1 audit (decorrelated: conclusion-withheld Codex + grounded in the committed RouteMSJAdm.lean:136-159) REFUTED fixed-Z as #5-preservable for two independent reasons: (1) Γ(z)·Z with Z FIXED is linear in Γ, but at intermediate arity prod(redChain) is z-dependent; (2) the units bound clause is not preserved. The controller's HOLD (base audited hardest) caught a green-but-subtly-wrong invariant BEFORE integration.",
+      "witness": "The width-3 units-drop witness (P0 cert, Codex-concurred): the units bound 0<c ∧ (Z_tail(r)·Z_tail(r)ᵀ − c•1) PSD is the UNIQUE z-dependent clause — at intermediate arity Rbox∋r=0, Z_tail(0)=0 ⟹ −c•1 PSD only for c≤0 (unsatisfiable), so a fixed-Z carriage DROPS the units bound.",
+      "resolution": "A z-dependent Z_tail(r) is REQUIRED; the base predicate carries a bundled faithful (S,J) resolution-state invariant (normal-crossings + ½·codim threshold + QUANTITATIVE residual-coercivity — a mere null-zero-set is insufficient). Base and step re-couple around ONE coupled-corner core. fixed-Z checkpoint banked to origin/wip; z-dep design pinned (P0), formalisation tide spawned. (OPEN at snapshot.)",
+      "thread": "genm-sj4 / genm-sj5-cover",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-12"
+    },
+    {
+      "id": "C11-off-sector-airtight-refuted",
+      "claim": "The off-sector (rank-drop) recursion — the last soundness surface of the native (□) discharge — is airtight (well-founded via Eckart-Young; charges add on the rank-drop cover).",
+      "status": "refuted",
+      "killed_or_fixed_by": "A controller-spawned FRESH obstruction seat (NOT cover's own Codex — the bedrock bar for a foundation exhaustiveness claim) returned GAP FOUND (offsector-independent-hunt.md): three converging lines (exact Newton-polygon algebra self-validated on 5 cases + a conclusion-withheld Codex + a banked R1 sibling thread). cover accepted without defense (self-verified caterror.py; §6/§7 SUPERSEDED).",
+      "witness": "(C) Eckart-Young CATEGORY ERROR: it measures distance between matrices, not the order of vanishing in the parameters — a single 2×2 matrix can vanish to 2nd order in its params while the rank-drop stratum does NOT deepen, so a rank-drop recursion never reaches that point (a·b scalar-product counterexample). Plus the charges-ADD ignores a shared-divisor collapse that binds at (3,3,4).",
+      "resolution": "Value stands (½·codim separately supported); the off-sector PROOF pivots to the coupled recursion (recurse on network DEPTH, which strictly decreases, not on rank-drop). The naive §7 corner was a WRONG side-detour; the sound off-sector IS route B (the decorated coupled recursion). One genuine general-width soundness check remained (does no-collapse hold at every width) — resolved positively next (C12).",
+      "thread": "genm-offsector-hunt",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-12"
+    },
+    {
+      "id": "C12-no-collapse-soundness-resolved",
+      "claim": "The finiteness result is sound at every width — no shared-divisor RLCT-collapse below the threshold at any (possibly non-monotone / bottleneck-width) network.",
+      "status": "proven",
+      "killed_or_fixed_by": "Resolved from both sides: (d) the auditor PROVED the one closing fact — the combinatorial cost is invariant under permuting the layer widths (an elementary but non-obvious convex-min identity), reducing every non-monotone case to the monotone case where it is a theorem; and (e) a SECOND independent skeptic (run separately, not told the proof's result) hunted for a counterexample across the deepest coupled networks and found NONE, plus a positive structural reason (shared divisors can only RAISE the cost ratio, never lower it below threshold).",
+      "witness": "Proof + independent refutation-hunt converged: permutation-invariance reduces non-monotone → monotone; no collapse across the deepest-coupled battery.",
+      "resolution": "The soundness scare is closed (localized → proved → independently stress-tested). Remaining cited item = Aoyagi's resolution for the exact value; the native 'build it, don't cite' descent is the remaining labour, no longer a soundness question. Two combinatorial facts machine-checked next (D-family).",
+      "thread": "genm-sj5-cover / route-i",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-12"
+    },
+    {
+      "id": "D1-minAdm-perm-invariance",
+      "claim": "minAdm_comp_perm / minAdm_comp_sort: the QIP combinatorial cost minAdm is invariant under permuting the layer widths — the paper's 'surprising' permutation-invariance of (C, θ).",
+      "status": "proven",
+      "killed_or_fixed_by": "Machine-checked in Lean, clean-three [propext, Classical.choice, Quot.sound], independently fidelity-audited (decorrelated reviewer + second model). Proof: adjacent-transposition induction; the crux is a difference-of-squares.",
+      "witness": "The convex-minimum identity from #121(d); tight at four anchors.",
+      "resolution": "route-i Part 1 landed. The elementary-but-non-obvious identity that reduces every non-monotone codim case to the monotone case (closing C12).",
+      "thread": "genm-sj5 (route-i)",
+      "commit_sha": "da4d264f",
+      "approx_iso_time": "2026-07-12"
+    },
+    {
+      "id": "D2-minAdm-eq-cCodim",
+      "claim": "minAdm_eq_cCodim: the combinatorial QIP cost equals the true geometric (Ext/orbit) fibre codimension, (minAdm M : ℤ) = cCodim M 0 for every width M : Fin(L+1)→ℕ, 1≤L — the paper's central codimension identity.",
+      "status": "proven",
+      "killed_or_fixed_by": "Machine-checked in Lean (MinAdmCCodim.lean, 343 LoC), clean-three, native (NO citation for the codimension identity itself), independently fidelity-audited (Codex-concurred, 4 axes). Proof reduces the all-width case to the monotone case via permutation-invariance (non-circular), then matches the two descriptions through a value-preserving bijection.",
+      "witness": "The exact link C12 localized: our combinatorial cost = the true geometric codimension at all widths.",
+      "resolution": "route-i Part 2 landed clean-three (8850/8756 jobs). Banks the route-i soundness as a Lean theorem at all widths. With the cited Aoyagi analytic step (λ = ½·codim), the DLN learning coefficient = ½·cCodim is machine-checked modulo that single citation. NOT the native 'don't-cite' box-finiteness discharge (that is the separate decorated-descent path, OPEN).",
+      "thread": "genm-sj5 (route-i)",
+      "commit_sha": "c25b0b73",
+      "approx_iso_time": "2026-07-12"
+    },
+    {
+      "id": "D3-L2-headline-closed",
+      "claim": "aoyagi_learning_coefficient_L2: the L=2 Aoyagi learning coefficient (full RRR equality) is closed.",
+      "status": "proven",
+      "killed_or_fixed_by": "L=2 aoyagi learning-coefficient CLOSED (Item 112) after the sole gating leg (the Item-109 D1 general-v ≥-leg wall) was resolved bounded. Later confirmed unconditional (its R1 is done; the general ≥-leg routes through the sorry-free d1ge_hAtV_explicit_close_gen).",
+      "witness": "The L=2 case has NO sub-generic strata, so the addlongest saga does not bite it.",
+      "resolution": "aoyagi_learning_coefficient_L2 is unconditional full RRR equality, clean-three. The honest autonomous L=2 ceiling reached 2026-07-01.",
+      "thread": "genm-wire / D1 legs",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-01"
+    },
+    {
+      "id": "D4-capstone-gen-conditional",
+      "claim": "aoyagi_learning_coefficient_gen (general L≥2, all r, nondeg widths): ⨅ rlctAt = ENNReal.ofReal(aoyagiLambda H r), PROVEN in honest Lean clean-three, conditional on the single hypothesis hRValue = (□) (the reduced-core box-finiteness).",
+      "status": "proven",
+      "killed_or_fixed_by": "Landed in canonical @4687aed6; forced #print axioms = clean-three [propext, Classical.choice, Quot.sound] — NO sorryAx, NO monomial_rlct, NO cited_aoyagi_dln. Full-aggregate green-gate 8793 jobs. Controller decorrelated fidelity/vacuity check PASSED (hRValue is the genuine, true, non-vacuous, eventually-provable value).",
+      "witness": "hRValue IS exactly the (□) box-finiteness half. Everything else is closed clean-three: the engine, D1 = side (#120 gauge closed), D1 ≥-leg, the WLOG, the reg-core recombination.",
+      "resolution": "The entire fully-general Aoyagi headline is done in honest Lean modulo (□) alone. The sole remaining gate for the UNCONDITIONAL headline is the (□) discharge (the C-family decorated descent). Cleaner than the L2 headline.",
+      "thread": "genm-geleg (HeadlineGenAssembly)",
+      "commit_sha": "4687aed6",
+      "approx_iso_time": "2026-07-09"
+    },
+    {
+      "id": "D5-s2-free-milestone",
+      "claim": "The mission core: all four λ headlines (aoyagi_learning_coefficient_gen, _gen_le, aoyagi_deepest_reduction_gen, _L2) are clean-three and the monomial_rlct S2 axiom is RETIRED — the library has ZERO axiom declarations (stronger than the cite-only-S2 target).",
+      "status": "proven",
+      "killed_or_fixed_by": "Stage-B axiom-excise: migrate-to-primed (Option 1, PRESERVE all validation results) + excise the opaque monomialOrderAnalytic + aoyagiTheta_eq (bare-sorry placeholder, zero consumers). Bedrock audit (decitesrev + Codex) = BEDROCK-OK (axiom genuinely gone, sorry delta −1, deletions removed only superseded). Full lib green 8795 jobs, branch @~9f23d210.",
+      "witness": "#print axioms on all 4 headlines = [propext, Classical.choice, Quot.sound]; monomial_rlct retired.",
+      "resolution": "S2-FREE MILESTONE — mission core complete + audited. Honest scope correction: 'zero axiom DECLS' not 'opaque-free' (one pre-existing opaque rlctOrderAt survives off the headline closures, the deferred analytic-order/θ-multiplicity family). Opened as draft dev PR #26 (operator-gated).",
+      "thread": "genm-excise / decitesrev",
+      "commit_sha": "9f23d210",
+      "approx_iso_time": "2026-07-09"
+    },
+    {
+      "id": "D6-native-box-discharge-open",
+      "claim": "The native from-scratch discharge of (□) — the decorated (S,J) double induction (base leg #4 → recursive step #5) — makes aoyagi_learning_coefficient_gen unconditional without the Aoyagi analytic citation.",
+      "status": "open",
+      "killed_or_fixed_by": "Remains the critical path at snapshot. The base-invariant build (#4) is z-dependent-pinned and formaliser-active (P1 tailProd built, no wall; P2/P3 underway per UPDATE-977); the off-sector step soundness is resolved positively (C12) but the fidelity-critical base-invariant build is being paced (not forced at a degraded session-tail — a fresh generic hand is a poor substitute).",
+      "witness": "route-i (D2) banks the codimension soundness machine-checked and documents the exact target; the native descent would remove the Aoyagi citation entirely.",
+      "resolution": "OPEN. Everything above the coupled-corner double-induction is settled; the double-induction (base step → recursive step) is the remaining build. Not a wall (mechanism identified and partially banked); the honest remaining labour of turning the one cited analytic step into a built one.",
+      "thread": "genm-sj4 / genm-sj5",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-12"
+    },
+    {
+      "id": "D7-theta-analytic-seam",
+      "claim": "θ (the number of top-dimensional fibre components = pole multiplicity = a(ℓ−a)+1) — the analytic identity 'combinatorial count = pole multiplicity'.",
+      "status": "open",
+      "killed_or_fixed_by": "Standing-decision-6 deferral: the combinatorial θ = a(ℓ−a)+1 is landable from the same (ℓ,a) data, but the analytic=combinatorial multiplicity step needs meromorphic continuation / an order-tracking monomial rule Mathlib lacks. At the S2-free milestone the excised aoyagiTheta_eq (bare sorry) + monomialOrderAnalytic (opaque) were removed as not-honest-content.",
+      "witness": "The honest geometric θ lives in Core (C, θ); the RLCT-multiplicity θ is the deferred analytic seam.",
+      "resolution": "DEFERRED (analytic-order/θ-multiplicity seam, ROADMAP Bundle 4, card theta-analytic-multiplicity-seam.md). Not needed for the λ headlines. Land combinatorial θ + flag the analytic seam honestly (default (a)).",
+      "thread": "theta-analytic-multiplicity-seam",
+      "commit_sha": "",
+      "approx_iso_time": "2026-07-09"
+    },
+    {
+      "id": "D8-spec-first-decoder-catch",
+      "claim": "The R1-LOWER interior determinant decoder (the |det Dφ| change-of-variables field) generalizes from the built (2,2,2)/(4,4,2,2) instances to general M — a sorry-free 'landed' contract.",
+      "status": "corrected",
+      "killed_or_fixed_by": "A spec-first architecture catch: the contract typechecks (cov is a HYP) but that hypothesis CANNOT be satisfied for the general case — (2,2,2)=1×1 cores + (4,4,2,2)=pure-radial never exercised it. The (4,4,2,2)=clean composeFold vs (3,3,3,3)=the only t≥2 K-core instance use DIFFERENT det architectures. 'green/sorry-free ≠ right'.",
+      "witness": "(4,4,2,2)=pb4422 (pure-radial, single-block-carries-u³, the MISLEADING special case) vs (3,3,3,3) (the only t≥2 K-core). The det's u-content collapses per-layer.",
+      "resolution": "The correct route = affine-in-u common-column-factor (chart affine in u, deg ≤1, Cgen linear). Radial-separability WITNESS (genm-radsep): |det Dφ| = |u|^{minAdm−1}·(∂_u≡0) ∀ interior M. Route corrected before a wrong build.",
+      "thread": "genm-detradj / genm-radsep",
+      "commit_sha": "",
+      "approx_iso_time": "2026-06-29"
+    }
+  ],
+
+  "witnesses": [
+    {
+      "name": "Zero-slack (3,3,3,4) t=1 certificate",
+      "object": "At the binding cut t=1, after the front-boundary Schur+shear: the Γ-integral's Gram coupling det(Q_bQ_bᵀ)^{−a/2} has exponent a/2 = 1 sitting EXACTLY at its own free-matrix integrability threshold (n−p+1)/2 = 1 (verified 2 ways: SVD Jacobian + symbolic transverse Hessian, isotropic quadratic in 2 transverse dims near a rank-1 point), WHILE the post-Γ residual exponent 3/2 saturates ½·minAdm(1,3,4) = 3/2. Both saturate simultaneously ⟹ ZERO slack.",
+      "what_it_killed_or_showed": "Certified the R1-UPPER sub-generic 'addlongest wall' (#72): the two borderline factors share the deeper variables (Fubini-out ⟹ log divergence) ⟹ need JOINT principalisation. Decorrelated Codex (conclusion withheld) independently reconstructed the shifted chain. Later shown a repo-route artifact (Aoyagi never integrates a block out) — the 'wall' de-walled to a labour-budget call. (B2)"
+    },
+    {
+      "name": "F2 sector⇍dominance counterexample",
+      "object": "P = diag(1,2), A₀ = (0 1), κ = 3 → the dominance inequality reads 9 ≤ 4 (FALSE). frobSq_ge_twoBlock_of_sector's 'sector = input hyp' does not follow from the box bound on a positive-measure region.",
+      "what_it_killed_or_showed": "secinfra's F2: the single dominance sector sjSector does NOT cover the box (misses a positive-measure corank-2 tube). Killed the naive sector-from-dominance shortcut; forced the rank-stratified cover + corank-q coupled majorant. The irreducible analytic core of the whole (□). (C6)"
+    },
+    {
+      "name": "z²(x²+y²) RLCT-collapse witness",
+      "object": "U₀ = U₁ = |z|², D = 1 → λ = 1/2 (the exact z²(x²+y²) caricature; corner334 proves the fixed-slice divergence). Contrast: (d₁x)²+(d₂y)² charges ADD (lct=1) vs d²(x²+y²) shared divisor collapses (lct=½), at identical widths/multiplicities.",
+      "what_it_killed_or_showed": "Exhibited the central RLCT-collapse soundness risk CONCRETELY (a vanishing resolved-unit without transverse charge drops the RLCT). Showed a naive a.e.-delete or multiplicative radialAttach would min-split to 3/2 — conceptual slop. Rescued only by (i) additive loss + (ii) joint integration with the proved transverse charge D_q ≥ 4 (= #127). (C7)"
+    },
+    {
+      "name": "x⁴+y⁶ tautological-codim counterexample",
+      "object": "A codimension bound does NOT give finiteness to ½·codim: x⁴+y⁶ has RLCT < ½·codim. The 'corner = flat shorter chain + arity-IH' reduction provably fails in the power regime (the twist lowers the RLCT).",
+      "what_it_killed_or_showed": "Killed cornrev's elementary closure of the deeper-corner strata {rank≤b−2}: the codim linchpin minAdm ≤ corner-codim is a tautology (min ≤ element), not finiteness. Established these strata = Aoyagi §5's product-rank-flag resolution, logically equivalent to the main DLN RLCT theorem. (C8)"
+    },
+    {
+      "name": "Front-first h=![2,2] undershoot",
+      "object": "Front-only block_radial_blowup of A₀'s columns (M₀=3-dim, N=3) gives h=![2,2] → Σ(h+1) = 6 → threshold 3, which is < 7/2 = ½·minAdm(3,3,3,4). The correct h=![3,2] (→7/2) needs the corner/deep charge.",
+      "what_it_killed_or_showed": "Showed the front-first g(Q) shortcut UNDERSHOOTS by exactly the deep-layer Jacobian charge (corner units ‖w·A₂‖² accumulate across peel layers, invisible to a front-only blow-up). The proper fill is the IH-based (S,J) descent; the banked g(Q) is the descent's terminal, not the full fill. (C3)"
+    },
+    {
+      "name": "Eckart-Young category-error counterexample",
+      "object": "A single 2×2 matrix can vanish to SECOND order in its parameters while tangent to the degenerate locus, so the rank-drop stratum does NOT deepen there — a rank-drop recursion never reaches that point and never terminates on it. Plus a scalar product a·b where the conditioning degenerates to 2nd order at a point.",
+      "what_it_killed_or_showed": "Killed the off-sector recursion's termination argument (Eckart-Young measures distance BETWEEN matrices, not the order of vanishing in the PARAMETERS — a category error). Forced a recursion on network DEPTH (strictly decreases), not rank-drop. Caught by a controller-spawned fresh obstruction seat. (C11)"
+    },
+    {
+      "name": "Shared-divisor collapse at (3,3,4)",
+      "object": "Two configurations with IDENTICAL size/multiplicity data have DIFFERENT thresholds depending on whether a divisor is SHARED — a collapse the R1 sibling thread already proved load-bearing, binding at the genuine small network (3,3,4) that the off-sector design's mechanism cannot even reach.",
+      "what_it_killed_or_showed": "Killed the off-sector 'charges add up' naive-corner mechanism (it is only the good-sector value). The sound route is the coupled recursion the sibling thread settled. The one general-width no-collapse soundness question was then resolved positively (C12). (C11)"
+    },
+    {
+      "name": "Width-3 fixed-Z units-drop witness",
+      "object": "The units bound clause 0 < c ∧ (Z_tail(r)·Z_tail(r)ᵀ − c•1) PSD is the UNIQUE z-dependent clause: at intermediate arity Rbox ∋ r=0, Z_tail(0) = 0 ⟹ −c•1 PSD only for c ≤ 0 (unsatisfiable). Also: Γ(z)·Z with Z FIXED is linear in Γ, but at intermediate arity prod(redChain) is genuinely z-dependent.",
+      "what_it_killed_or_showed": "Killed the fixed-Z decorated base #4 as #5-preservable (cover Q1 audit, decorrelated-confirmed): a z-dependent Z_tail(r) is REQUIRED. Validated the controller's HOLD (base audited hardest) — caught a green-but-subtly-wrong invariant before integration. P0 pen-and-paper CERTIFIED the drop (Codex-concurred). (C10)"
+    },
+    {
+      "name": "(3,3,4) product-singularity germ",
+      "object": "At the RRR core (3,3,4) the reduced core is a PRODUCT singularity, not the width-chain smooth leaf: the rlct VALUES coincide but the GERMS are not measure-preservingly homeomorphic.",
+      "what_it_killed_or_showed": "Refuted the R1 Route-B per-node squeeze hnode for corank ≥2: a general-M hnode would force the forbidden value-only degenerate redEmbed. R1 closes via Route A (cover) instead. Corrected the controller's own earlier lean toward Route B. (A2)"
+    },
+    {
+      "name": "Degenerate phi334 chart (det ≡ 0)",
+      "object": "The (3,3,4) hdiv chart phi334 dropped 2 coordinates ⟹ Jacobian det Dφ ≡ 0 ⟹ null image ⟹ the change-of-variables field asserted 0 = ⊤ (FALSE). Replaced by Codex's b = a·β genuine-diffeo chart: det Dφ = −u₀⁷·u₁² ≠ 0.",
+      "what_it_killed_or_showed": "Killed the (3,3,4) hdiv 'milestone' chart (over-claimed on a factorization-only review). The honest fix (Schur shear back to flat) hits the a=0 obstruction = genuine resolution geometry, establishing BOTH R1 legs need the coupled-diag(b) resolution. (A3)"
+    },
+    {
+      "name": "T-core leak Y0·T1 (degree-2)",
+      "object": "The telescoped L2 loss is full-T and the T-core leaks into the off-diagonal regular blocks: (C0·C1)₁₂ = (1+X0)Y1 + Y0·T1; counterexample L=2 H=[2,2,2] r=1 → y·t ≠ 0. The Y0·T1 leak is DEGREE-2 (same order as kept terms, exact cancellation).",
+      "what_it_killed_or_showed": "Killed PIN2's exact-equality phrasing of the regular blocks AND the follow-up comparability re-architecture (the degree-2 leak makes both directions of ≍ fail). Forced the full-reg regStraighten repair (read the FULL product core, no leak). (A4)"
+    },
+    {
+      "name": "Tilted-kernel germ W=I+ηE₁₂",
+      "object": "W = I + ηE₁₂ ⟹ Rcore = 0 while ∏S ≠ 0 arbitrarily near the deepest point (same shape as the S5c germ-vs-box finding). The rank-≤1 W gives no rank protection.",
+      "what_it_killed_or_showed": "Refuted the hproducer core conjuncts' uniform two-sided ∑Rcore² ≍ coreΦ for M>1. Restated to the regular-energy-FOLDED form Sreg+‖Rcore‖² ≍ Sreg+coreΦ (public conclusion of deepest_loss_squeeze preserved); reduces to the germ atom schur_core_germ_comparability. (A5)"
+    },
+    {
+      "name": "x²+y² / suppFreshTwo terminal guard",
+      "object": "g₁=x, g₂=y satisfy the divisorwise predicate (P) but ∫(x²+y²)^{−c'} DIVERGES for c'≥1 (RLCT=1); the intersection {x=y=0} blows up to E with p_E=1 (the intersection divisor carries the weight). x²+y² is (P) not (T).",
+      "what_it_killed_or_showed": "Showed the admissible-decoration predicate must be pSimultaneous (the (T) form, ∃i₀∀j∀ℓ), NOT pDivisorwise (which would wrongly admit x²+y² and accept it as a monomial terminal). Guards the monomial terminal against a false RLCT-collapse; banked as regression tests pDivisorwise_not_imp_pSimultaneous / suppFreshTwo_not_pSimultaneous. (C10 base-soundness)"
+    },
+    {
+      "name": "(4,4,2,2) pure-radial vs (3,3,3,3) K-core decoder witness",
+      "object": "(4,4,2,2)=pb4422 is pure-radial (single block carries u³, the MISLEADING special case) built via clean composeFold; (3,3,3,3) is the ONLY t≥2 K-core instance and uses a DIFFERENT det architecture — the det's u-content collapses per-layer, so a chart affine in u (deg ≤1) is required, not the fold telescope.",
+      "what_it_killed_or_showed": "The spec-first architecture catch: the R1-LOWER interior det decoder's cov hypothesis is UNSATISFIABLE for general M ('green/sorry-free ≠ right' — the contract typechecks but the hyp can't be met). Corrected the route to affine-in-u common-column-factor; radial-separability |det Dφ| = |u|^{minAdm−1} then proven ∀ interior M. (D8)"
+    },
+    {
+      "name": "Dense-torus rank-drop witness [[1,1,2,1],[1,1,2,1]]",
+      "object": "A dense-torus rank-drop witness [[1,1,2,1],[1,1,2,1]] invisible to coordinate centers, against a 450-term irreducible det(pᵀGp) (gcd=1, not monomial×unit).",
+      "what_it_killed_or_showed": "Showed a NON-coordinate blow-up center is forced — the coordinate carriers cannot principalize the general-node determinantal blowup. Fed the general-node-blowup certificate (cert-104), sharpening why the naive coordinate-chart carrier fails on the general node. (R1 general-node design)"
+    }
+  ],
+
+  "sources": [
+    {
+      "ref": "Aoyagi (Miki Aoyagi), the exact real-log-canonical-threshold computation for deep linear networks (reduced-rank regression / DLN RLCT); §5 product-rank-flag blow-up resolution (four explicit steps: named blow-up centers, monomial charts, (S,J) double induction, exponent bookkeeping)",
+      "used_for": "The primary analytic target. UPDATE-605: d1route traced Aoyagi's ACTUAL ≥-leg method (explicit coordinate blow-up, NOT Morse-Bott). #77/#97: Aoyagi's native coordinate-chart (S,J) recursion is the discharge of (□) (cite-only-S2, no Mathlib-AG). The atomic determinantal-locus rlct=½codim (Aoyagi 2019 / reduced-rank-regression) is the narrow honest cite boundary (cornrev). Case-2 printed-typo documented; the L=2 lower bound is a completed from-scratch instance."
+    },
+    {
+      "ref": "Watanabe, Singular Learning Theory — the universal SLT bound rlct ≤ ½·codim",
+      "used_for": "The Level-B upper bound (#97-scope): rlct ≤ ½·codim is Watanabe's UNIVERSAL (not DLN-specific) theorem, the standing cite (cited_aoyagi_dln = Watanabe-universal + Aoyagi-DLN-exact). The (A) build discharges Level-A = (□) = the integrability/lower-bound half, narrowing the remaining cite from the Aoyagi DLN equality to Watanabe-universal."
+    },
+    {
+      "ref": "Lehalleur & Rimányi (2024), Geometry of the fibers of the multiplication map of deep linear networks — addlongest (main.tex:687, normal-slice/codim-equality of orbit closures under adding p·M_{0N}); Voight lemma (codim = dim Ext, lem:voight main.tex:632); Core codimForm / CTheta",
+      "used_for": "OFF-LIMITS heavy machinery under the expedition's L&R-independence mandate (brief.md:27-30). The operator caught (#75) that addlongest is an L&R theorem, WITHDRAWING the #72 build-vs-cite escalation. indepaudit (#78): the capstone is content-independent (Voight = light/isolated reuse is judicious). The forbidden orbit/quiver/codim subtree is imported (via Core.RankLocusClosed) but never USED on the headline path."
+    },
+    {
+      "ref": "monomial_rlct — the normal-crossing → RLCT endpoint axiom (the 'S2' cite)",
+      "used_for": "The ONLY permitted citation for most of the expedition (closing criterion: #print axioms = [propext, Classical.choice, Quot.sound, monomial_rlct]). RETIRED at the S2-free milestone (#88, Stage-B excise): the 4 λ headlines are clean-three, the library has zero axiom declarations. Its opaque .2 order-conjunct (monomialOrderAnalytic) + aoyagiTheta_eq were excised as the deferred θ-multiplicity seam."
+    },
+    {
+      "ref": "Mathlib measure/integration + linear algebra primitives (radial_ball_iff / lintegral_ball_radial_polar_factor, integrableOn_norm_rpow_neg_ball, Polynomial/Monic degree lemmas, Gram/Schur fromBlocks, det_gram_row_snoc, PSD-cone det-monotonicity)",
+      "used_for": "The S2-free engine: Euclidean Morse blocks (radial ∫‖x‖^{−a} finite for a<n), the polar/radial blow-up factor, block-shear and Schur complement algebra, the Gram-minor det bounds. NOTE: Mathlib v4.29 LACKS coarea / Łojasiewicz / semialgebraic sublevel-measure and irreducible-component/generic-rank AG — the box-Morse codim-D sublevel bound and the incidence AG step both hit this gap (routed native instead)."
+    },
+    {
+      "ref": "Internal certificates & pen-and-paper seats (r1upper-derisk.md, r1upper-wall-review.md, smeared-derisk.md; threads/genm-{vsastruct,cornrev,crnrt,addlongscope,indepaudit,sj5-cover,sj4-recon,offsector-hunt}/cert.md; codex/ consults)",
+      "used_for": "The decorrelated adversarial net that caught most refutations here BEFORE the formaliser built on them: the dgeflat-style dissolution stress-test (#72), the primed-vs-healthy Codex distinction (#94 whipsaw), the conclusion-withheld obstruction seats (fixed-Z Q1 #159, off-sector §7 hunt #161), the corner census (crnrt), and the route-i fidelity audits. Codex (gpt-5.x xhigh, decorrelated) is the standing second model."
+    }
+  ]
+}

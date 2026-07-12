@@ -1,0 +1,469 @@
+{
+  "meta": {
+    "expedition": "2026-06-20-aoyagi-full",
+    "headline": "Stage 1 COMPLETE — the fully-general Aoyagi learning coefficient landed in honest Lean (aoyagi_learning_coefficient_L2 clean-three + UNCONDITIONAL; _gen clean-three but gated on the single box-finiteness contract (□) = RouteMBoxThresholdFinite; _gen_le / aoyagi_deepest_reduction_gen UNCONDITIONAL clean-three). Route-i codim SOUNDNESS machine-checked 2026-07-12 (minAdm_comp_perm permutation-invariance + minAdm_eq_cCodim ∀ width, both [propext, Classical.choice, Quot.sound]). Stage 2 = discharge (□) via DecoratedDescent (IN FLIGHT: #4 DecoratedBaseHyp base leg + #5 DecoratedStepHyp decorated peel). Mid-flight snapshot ~UPDATE-977, HEAD 339811e8 (expedition/aoyagi-full, 2026-07-12).",
+    "anchor_note": "Routes traced from synthesis.md UPDATE trail + BUILT-INDEX.md + priorities.md + r1upper-derisk.md / r1upper-wall-review.md + the D1/L2/de-cite thread notes (genm-d1lower-aoyagi, genm-phiexpl/genm-hAtV, genm-excise) under expeditions/2026-06-20-aoyagi-full/. Concepts grep-verified against lean/DLNFibre/ at HEAD 339811e8 via `git grep -n`. RE-VERIFY file:line at build time — they drift (BUILT-INDEX's own warning)."
+  },
+  "routes": [
+    {
+      "pillar": "R1-UPPER / (□) box-finiteness — ∫ frobSq(prod M A)^{-c'} < ⊤ below ½·minAdm M, general L",
+      "one_line": "The dominant long-pole: at least seven analytic mechanisms were shed on the way from the two-matrix corank recursion (which walls at L≥3, min-vs-sum) to the decorated (S,J) descent + rank-stratified cover that now gates (□).",
+      "steps": [
+        {
+          "stage_thread": "R1 design (14/24) / RouteMSchurGeneral",
+          "mechanism": "CORANK RECURSION: the two-matrix SchurCore Δ·S object (Δ square r×r, S free r×p), WellFounded on the corank r of the single square factor via SchurRecStep; exponent-shift c''=c'−jp/2. Closes the box at L=2 (prod = A0·A1 IS SchurCore) for ALL (r,r,p).",
+          "status": "superseded",
+          "why_changed": "Intrinsically two-matrix with NO layer index — p is a fixed spectator, the measure is corank. For L≥3 the integrand is an L-fold product, not frobSq(Δ·S) for any free (Δ,S) box-equivalent, and the target ½·minAdm is a SUM over a multi-boundary rank path (≥2 active boundaries in 86/256 L=3 chains). r1upper-derisk / wall-review corroborated the WALL with exact algebra (minAdm re-derived, 0/3000 mismatches) and a factor-of-2 counterexample at (3,3,3,3)."
+        },
+        {
+          "stage_thread": "r1upper-derisk / MatMulFibre",
+          "mechanism": "FRONT-PEEL ARITY RECURSION: peel the outer layer with fibre_lintegral_mul_le (∫ frobSq(X·Y)^{-c'} ≤ C·frobSq(Y)^{-c'}, cap c'<p/2 the peeled row count), recurse on the tail, stop at any length-2 suffix via the closed SchurCore reach; allow either-end peel by transpose symmetry.",
+          "status": "refuted",
+          "why_changed": "Exponent-PRESERVING: it caps the total at the single most-binding layer (min over boundaries), not the sum. Closes 231/320 chains but UNDERSHOOTS ½·minAdm by exactly a factor of 2 at (3,3,3,3) (needs c'<3, best peel reaches c'<3/2). No repo mechanism converts budget spent at one boundary into a reduced exponent on the residual. The additive staircase [1,2,3] no exponent-preserving two-matrix step reaches."
+        },
+        {
+          "stage_thread": "peel-buildplan / RouteMSJCorankPeel",
+          "mechanism": "ATOM / GRAM-DET: corankBlock_morsePeel — the det-Jacobian atom Γ↦Γ·Q_b giving det(Q_bQ_bᵀ)^{-a/2}, the exact shift c'↦c'−pq/2 with a finite weight, as the native §5 corner brick.",
+          "status": "scoped",
+          "why_changed": "ADJUDICATED (3 decorrelated lines, 2026-07-11) native ONLY on the FULL-RANK Q_b strata (needs (Q_bQ_bᵀ).PosDef). On the deeper stratum rank Q_b = r<q the map has a p(q−r)>0-dim kernel, so the enlarged full-space integral is +∞ across the ENTIRE box-finite range (exact witness ∫(x²+y²γ²)^{-c}dγ diverges in the outer variable). CONSUME for the top strata (B3/B4); do NOT consume on the ~86% deeper strata."
+        },
+        {
+          "stage_thread": "RouteMFrontPeel",
+          "mechanism": "FRONT-PEEL ANALYTIC (algebraic-only): prod_front_peel, the pure matrix-algebra factorization prod = A₀·Q, hoping to supply an analytic per-boundary peel bound composing additively.",
+          "status": "refuted",
+          "why_changed": "prod_front_peel is pure matrix algebra with NO analytic peel bound attached; the only analytic engine (fibre_lintegral_mul_le) preserves the exponent. The one algebraic factorization frobSq(A₀·Y) ≤ frobSq(A₀)·frobSq(Y) gives the inverse-power inequality in the UNUSABLE direction for an upper bound. No exponent-shifting layer peel exists in repo or Mathlib — the named Gap R1U-∀L (new mathematics: an L-layer joint blow-up)."
+        },
+        {
+          "stage_thread": "genm-covdesign / RouteMSJDominantCover",
+          "mechanism": "MODULAR SEAM / SEAM CHART: reduce box finiteness to per-cell finiteness on an exact least-index-argmax dominant-minor partition (setLIntegral_lt_top_of_detMinorCover); split on the second-smallest singular value s_{r−1}, transition across cell seams carrying the |det A_S|^{-b} det-inverse Jacobian.",
+          "status": "superseded",
+          "why_changed": "The det-inverse dominant-minor cover SEAM was the 'most likely to break' risk (Beta-divergence on a cell boundary, the atom-route failure mode). DE-RISKED twice over (genm-sj5-cover: sympy CoV identity QQᵀ=Q_S W Q_Sᵀ + Cauchy–Binet, 0/20k violations, + decorrelated Codex): the seam is Lebesgue-null, partition = indicator-mult (no boundary term), transition Jacobian =1 exactly, integrand O(1); the s⁻¹ pole is a FULL-SPACE artifact the box never has. Survives as the cover ASSEMBLY (consumed as a hypothesis), but not the closer."
+        },
+        {
+          "stage_thread": "genm-corner334 / RouteMSJCorner334, OnePeel334, Slice334",
+          "mechanism": "BOX-MORSE → AM-GM CORNER → ROUTE-C CORNER → CASTING: the A₂-casting route — recast the corank block via a |det M|^{-4} det-inverse reparametrization, then an AM-GM / min→sum corner-monomial bound (corner334 sector slice, onePeel334 clean-coords codim-rescue) on the (3,3,3,4) corank-2 anchor at threshold 7/2.",
+          "status": "abandoned",
+          "why_changed": "The |det M|^{-4} det-inverse was a SELF-INFLICTED A₂-reparam artifact. The correct analytic content (min→sum validation, clean-coords codim-rescue) is real and reusable, but the native route uses the sjGoodMap / shear chain instead. Do NOT consume onto the critical path (BUILT-INDEX 'REUSABLE BUT OFF BOTH LANES')."
+        },
+        {
+          "stage_thread": "genm-mountain-recon / RouteMSJFrontFirst, RouteMSJCorankQ",
+          "mechanism": "FRONT-FIRST g(Q): recombine (x,Γ)→A₀ (banked MP shear), integrate pivot+Γ together as g(Q)=∫ frobSq(A₀·Q)^{-c'}, bound g(Q) by a SINGLE σ_q^{-α} brick via one sjSector, closing through LAYER-2 twoBlock_radial / ProductTube; the abstract corank-q lemma qPeelIntegral_lt_top.",
+          "status": "refuted",
+          "why_changed": "FAITHFULNESS-CONTESTED (#140): g(Q) is NOT a single σ_q^{-α} brick (the single sjSector fails F2 — #130 sector-cert), and the shared-A₂ / disjoint-A₂ readings are FALSE. #123 / Cauchy–Binet is a TOOL, not the closer. RE-CAST as a RANK-STRATIFIED COVER cell_q={M_{r−q}≥κ'}∩{M_{r−q+1}<κ''}: cell_1 via frontFirst_g_le_of_sector→σ_min^{-β}, cell_{q≥2} via the corank-q COUPLED corner monomial (charges ADD, not min→3/2)."
+        },
+        {
+          "stage_thread": "genm-decbuild / RouteMSJDecoratedRec (@b142a966)",
+          "mechanism": "DECORATED (S,J) DESCENT + RANK-STRATIFIED COVER: the (□)-gate is routeMBoxThresholdFinite_of_decoratedDescent : DecoratedDescent → ∀M (□), where DecoratedDescent = ∃ adm, (∀ trivial admissible) ∧ DecoratedStepHyp adm ∧ DecoratedBaseHyp adm. Double induction — OUTER on chain arity (banked), INNER the decorated resolution within one peel, terminating by chain-length descent (measure = L). The IH carries the decoration (Gram weight); the rank-stratified cover partitions by corank at each boundary.",
+          "status": "adopted",
+          "why_changed": "The plain-IH single peel is unprovable (the peel emits [reduced]·[H⁻⁴] no plain 3-node box IH can carry); the decorated double induction proves it. Soundness DE-RISKED positively (UPDATE-964/965): minAdm permutation-invariance closes minAdm=cCodim ∀ width (PROOF) + a decorrelated hunt found NO collapse constructible ('sharing RAISES never lowers the ratio', REFUTATION converged). (□)-soundness is now a THEOREM MODULO cited Aoyagi; the sole residual (resolution exhaustiveness) is exactly what the native descent builds. 6 clean-three spine modules banked; #4 base + #5 step remain."
+        }
+      ]
+    },
+    {
+      "pillar": "D1 lower bound — the RLCT ≥-leg (rlct ≥ ½·codim, the singular-side inequality)",
+      "one_line": "The route walked from a Mathlib-lacking general Morse-Bott IFT premise, through a primary-source read of Aoyagi §5's actual four-step method (which uses NO Morse-Bott), to an explicit gauge/chart blow-up build.",
+      "steps": [
+        {
+          "stage_thread": "genm-d1scope / d1-chart-producer",
+          "mechanism": "IFT / MORSE-BOTT PREMISE: close the ≥-leg via the general-v constant-rank / Morse-Bott IFT chart — the parametrized implicit-function splitting of the fibre into a regular block plus a degraded core.",
+          "status": "refuted",
+          "why_changed": "The general-v Morse-Bott / constant-rank / IFT-with-parameters chart is Mathlib-LACKING = WALL (about that route). Correct about the wired Lean plumbing, but mis-scoped as the mathematics: the operator's 'charge the Morse-Bott formalisation' option was based on machinery Aoyagi never uses."
+        },
+        {
+          "stage_thread": "genm-d1lower-aoyagi (pen-and-paper, primary source)",
+          "mechanism": "AOYAGI §5 FOUR-STEP TRACE (from the Neural Networks 2024 preprint): Step 0 the Gram sandwich (Aoyagi 2025 Thm 3 — loss K sandwiched by min/max Gram eigenvalues ⇒ rlct(K)=rlct(‖∏A−∏A*‖²)); Step 1 block-diagonal normal form (Lemma 2 + Thm 3) with ADDITIVE RLCT split λ = [−r²+r(H₁+H_{L+1})]/2 + λ⟨∏Cˢ⟩; Step 2 Theorem 4 — the homogeneity/deepest-point comparison rlct_origin ≤ rlct_nearby (deepest point is the WORST for a homogeneous sum-of-squares); Step 3 explicit recursive monomial blow-up along named submanifolds (Cases 1/1(1)/1(2)/2, the (S,J) induction with ordered T_{s,k}); Step 4 read RLCT off the normal-crossing exponents (= S2) + Lemma 3 arithmetic min.",
+          "status": "adopted",
+          "why_changed": "WALL SUBSTANTIALLY DOWNGRADED: the ≥-leg is a BOUNDED explicit-blow-up build, NOT general Morse-Bott. No non-constructive Hironaka, no constant-rank splitting, no parametrized IFT inside the §5 proof. The one genuinely-new analytic atom is Theorem 4 (homogeneity comparison, classical, Mathlib-feasible); the large bounded piece is the blow-up combinatorics (preprint pp.14–27)."
+        },
+        {
+          "stage_thread": "genm-hAtV / genm-phiexpl / DeepestL2Wiring, Skeleton",
+          "mechanism": "EXPLICIT GAUGE / CHART BUILD: deepestPoint machinery + deepest_gauge_construction_L2 (the diffeo bundle giving rlctAt = rlctAtOn(Sreg + coreΦ)), core_zero_le_of_params (the Params-domain Aoyagi Theorem 4, discharged by degree-2L homogeneity of dlnLoss M 0 — NOT a residual-value identity), and the deepest_regular_core_normal_form / deepest_point_reduction Skeleton rungs.",
+          "status": "adopted",
+          "why_changed": "At L=2 the geometry is fully banked clean-three; core_zero_le_of_params replaced the earlier BLOCKED hCore (proven via Theorem 4 on the explicit core, not the germ-discarded residual). The L≥3 gauge diffeo is the #120 wall (3 scoped sorries in the L≥3 arm), with the ∀-L runway sub-lemmas (schur_product_ldu_rec) banked."
+        }
+      ]
+    },
+    {
+      "pillar": "L=2 — the φ / hAtV explicit-core chart (making aoyagi_learning_coefficient_L2 sorry-free)",
+      "one_line": "The L=2 ≥-leg producer moved off a germ-discarding two-IFT peel onto an explicit homogeneous-core route through a Schur corner-elimination chart, closing to a clean-three unconditional headline.",
+      "steps": [
+        {
+          "stage_thread": "genm-d1l2close2 (prior)",
+          "mechanism": "TWO-IFT-PEEL PRODUCER: build the ≥-leg by two iterated implicit-function peels, discarding the germ residual and closing on an abstract Ψsymm residual value.",
+          "status": "superseded",
+          "why_changed": "The germ-discarding peel left hCore BLOCKED (it needed a residual-value identity that did not hold). Retired in favour of routing through the EXPLICIT homogeneous core dlnLoss(H−r) 0 (genm-hAtV corrected roadmap)."
+        },
+        {
+          "stage_thread": "genm-hAtV / genm-phiexpl / D1L2ExplicitCoreProducer",
+          "mechanism": "hAtV EXPLICIT-CORE ROUTE: d1ge_L2_hAtV_explicit — the explicit Schur corner-elimination chart transfer ∃P, nRegL2/2 + rlctAtOn(dlnLoss(H−r) 0)P ≤ rlctAt H (dlnLoss H B) v. Common invertible pivot via a shared row-set rank squeeze (NO rectangular Cauchy–Binet, which Mathlib lacks); invertible chart derivative read off the two germ identities Ψ∘Φ=id, Φ∘Ψ=id (NO block-Jacobian determinant). psiL2Conj supplies the deepest reg-swap conj-smooth diffeo (necessarily reads the core bilinearly — not reg-block-only).",
+          "status": "adopted",
+          "why_changed": "The crux was FALSE without hpos : ∀s, r<H s (counterexample H=(1,1,1),r=1 gives ⊤ ≤ 1/2); hpos was already carried by the headline and flowed down unused — the fix moved it into the crux (Codex xhigh independently flagged the falseness). core_zero_le_of_params proves the previously-blocked hCore clean via Theorem 4."
+        },
+        {
+          "stage_thread": "D1L2ExplChartClose2",
+          "mechanism": "CRUX CLOSED: d1ge_L2_hAtV_explicit_close lands the Schur corner-elimination chart, discharging the sole L=2 sorry.",
+          "status": "adopted",
+          "why_changed": "With the crux closed and the S2 monomial_rlct axiom retired (see the de-cite pillar), aoyagi_learning_coefficient_L2 is clean-three [propext, Classical.choice, Quot.sound] and UNCONDITIONAL at L=2 (no hbox — the deepest value rides the banked hbox-free r1_resolution_interface_L2_generic; the D1 leg dominates the core by Theorem 4, never computing an M'-degraded value)."
+        }
+      ]
+    },
+    {
+      "pillar": "The de-cite — retiring the S2 monomial_rlct axiom to a fully S2-free library",
+      "one_line": "The monomial-normal-form-to-RLCT axiom (S2) was first shown to be a downstream THEOREM on the λ-path, then physically excised (axiom + opaque + placeholder deleted) leaving the headlines byte-identical clean-three.",
+      "steps": [
+        {
+          "stage_thread": "02-rung0b-encode / Skeleton",
+          "mechanism": "S2 AXIOM: axiom monomial_rlct — .1 the threshold identity monomialThreshold d k h = ⨅ⱼ axisRatio(h j)(k j), and .2 the order/multiplicity conjunct (monomialOrderAnalytic = monomialOrder) — the black-box link from a monomial normal-crossing form to its RLCT threshold + order.",
+          "status": "superseded",
+          "why_changed": "The .1 threshold conjunct became PROVABLE downstream, and the .2 order conjunct + the aoyagiTheta_eq placeholder were an opaque θ-side that standing-decision-6 mandated excising. An axiom is a conceptual-slop surface a green build never defeats."
+        },
+        {
+          "stage_thread": "MonomialThresholdIdentity",
+          "mechanism": "AXIOM-TO-THEOREM: monomialThreshold_eq_iInf_axisRatio — the .1 conjunct proven as a downstream identity (importing Skeleton, hence the circular-reference wall Skeleton itself can't cross), so the four learning-coefficient headlines were ALREADY clean-three on the λ-path via the proven identity before the axiom was deleted.",
+          "status": "adopted",
+          "why_changed": "Demonstrated the axiom was eliminable end-to-end; the headlines' λ-value never depended on the black box, only two upstream Skeleton helpers + the θ side still referenced it."
+        },
+        {
+          "stage_thread": "genm-excise",
+          "mechanism": "EXCISION: relocate the two Skeleton helpers (monomialThreshold_ge_of_mult, _le_axis) downstream reproving them via the identity; rewire the four direct .1 users (Case222Cover, Case222CoverGE ×2, ResolutionAtlas); DELETE axiom monomial_rlct + the opaque monomialOrderAnalytic + the placeholder sorry aoyagiTheta_eq. The θ analytic-multiplicity CLAIM re-homed to ROADMAP as a deferred seam.",
+          "status": "adopted",
+          "why_changed": "FAIL-FAST delicate deletion: the four headline #print axioms stayed byte-identical clean-three [propext, Classical.choice, Quot.sound], `git grep 'axiom monomial_rlct'` empty, sorry count REDUCED (placeholder gone). Fully S2-FREE library — the geometric codim content stands on no cited monomial-RLCT axiom (the separate cited_aoyagi_dln rlct=½·codim equality remains the payoff citation)."
+        }
+      ]
+    },
+    {
+      "pillar": "The descent endgame — from sjJointResolution:803 / DecoratedPeelStep to the DecoratedDescent package",
+      "one_line": "The (□) target was re-pointed off a single live analytic sorry and a dead plain-IH conditional onto an admissible-decoration contract, after a cover audit + Codex proved the plain undecorated IH unprovable.",
+      "steps": [
+        {
+          "stage_thread": "genm-sjresolution / RouteMSJResolution (@:803)",
+          "mechanism": "sjJointResolution:803: the SINGLE live analytic sorry — Aoyagi §5's coupled diag(b) peel over the corank≥2 / L≥3 strata (radial blow-ups + det-1 unit clears + absorption-by-renaming + diag(b) ledger), delivering gammaPeelIntegral M t ρ κ c' < ⊤ from the one-shorter IH. Reached via the PROVED spine routeMBoxThresholdFinite_of_step + sjBoundaryPeel (closed sorry-free 2026-07-07).",
+          "status": "superseded",
+          "why_changed": "Identified as ONE object under three names (sjJointResolution:803 ≡ DecoratedPeelStep ≡ the WALL certs), all naming the same coupled diag(b) peel. Attacked directly via §5, but the target itself was obsoleted once the decorated route landed (the driver retro-fills 803)."
+        },
+        {
+          "stage_thread": "genm-decrecon / RouteMSJDecoratedRec:78 (cover §7.5 Q2)",
+          "mechanism": "DecoratedPeelStep (plain-IH): a Prop whose driver routeMBoxThresholdFinite_of_decoratedPeel proves both → (□) AND → :803 sorry-free — the hope that a plain undecorated reduced-chain IH single peel closes the corner.",
+          "status": "refuted",
+          "why_changed": "DEAD (Q2, cover + decorrelated Codex): the peel emits an extra truncated Gram weight [reduced integrand]·[H⁻⁴] that a plain 3-node box IH cannot carry at the zero-slack binding cut. SOUND-BUT-DEAD conditional (the antecedent is unprovable). The (□) chain re-points onto the decorated route."
+        },
+        {
+          "stage_thread": "genm-decbuild / RouteMSJDecoratedRec:206 (@b142a966)",
+          "mechanism": "DecoratedDescent PACKAGE: routeMBoxThresholdFinite_of_decoratedDescent : DecoratedDescent → ∀M (□), clean-three, driven by the mechanical arity strong-induction decoratedBoxThresholdFinite_of_decoratedStep. DecoratedDescent = ∃ adm, (∀n M, adm(trivial M)) ∧ DecoratedStepHyp adm ∧ DecoratedBaseHyp adm, where adm M D := genuineCarrier D ∧ (a=0 ∨ b=0 ∨ ∀η∈Crit D, ⨅ⱼ ν_η(corankGen D j)=0) (valuation-predicate fork, UPDATE-936). Banked clean-three: the spine + measure bedrock + invariant-(ii) transversality + (P)/(T) guard + Rayleigh leaf + leaf finiteness (corankLeaf_rpow_lt_top) + the A₂ α-unlock RouteMSJBackPeel (minAdm_backPeel_cominimizer_ge) + units bridge (posDef_gram_of_rank_eq) + #2-core corank_survival_ae.",
+          "status": "adopted",
+          "why_changed": "Makes the IH carry the decoration and the descent land a strictly-shorter chain, dissolving the H⁻⁴ obstruction. Non-vacuous (controller bedrock/vacuity PASS). REMAINING: #4 DecoratedBaseHyp base leg (fixed-Z decoratedBaseHyp_faithful green; needs the z-dependent Z_tail(r) generalization — desc4) + #5 DecoratedStepHyp — the decorated peel = THE remaining substantial analytic core (peelOp preserves FaithfulSJAt; the coupled corner + off-sector arity recursion; soundness resolved NO-collapse via the QIP identity + m=1 + D_q≤M₀q). Then DecoratedDescent → (□) → mint the unsuffixed aoyagi_learning_coefficient (#108)."
+        }
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "name": "aoyagi_learning_coefficient_L2",
+      "kind": "theorem",
+      "pillar": "Headline",
+      "one_line": "The L=2 headline: the DLN square-Frobenius RLCT equals aoyagiLambda at L=2 — clean-three and UNCONDITIONAL (no (□) hbox); crux closed via d1ge_L2_hAtV_explicit, S2-free after the excise.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/HeadlineL2Assembly.lean:88"
+    },
+    {
+      "name": "aoyagi_learning_coefficient_gen",
+      "kind": "theorem",
+      "pillar": "Headline",
+      "one_line": "The fully-general L≥2 headline equality — clean-three [propext, Classical.choice, Quot.sound], GATED on the single box-finiteness contract (□) = RouteMBoxThresholdFinite (H−r); Stage 2 discharges (□).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/HeadlineGenAssembly.lean:55"
+    },
+    {
+      "name": "aoyagi_learning_coefficient_gen_le",
+      "kind": "theorem",
+      "pillar": "Headline",
+      "one_line": "The UNCONDITIONAL general-L upper bound ⨅ ≤ ofReal(aoyagiLambda) — no analytic gate, rides the proven-∀L achiever divergence (hbox-free r1_resolution_general_le).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/HeadlineGenBounds.lean:143"
+    },
+    {
+      "name": "aoyagiLambda",
+      "kind": "def",
+      "pillar": "Value",
+      "one_line": "The paper's closed-form learning coefficient λ(H,r) as a ℚ — the target value the headlines equate the RLCT to.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Foundations/Lambda.lean:86"
+    },
+    {
+      "name": "r1_resolution_general",
+      "kind": "theorem",
+      "pillar": "Headline",
+      "one_line": "The general-L R1 resolution: the deepest-value ⨅ over the fibre equals nRegGen/2 + core, the value half of the headline (hL, hMid interior hypotheses).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/R1ResolutionGeneral.lean:120"
+    },
+    {
+      "name": "dlnLoss",
+      "kind": "def",
+      "pillar": "Recon",
+      "one_line": "The DLN square-Frobenius loss ‖prod H A − B‖² for a composable tuple A and target B — the analytic object whose RLCT is computed.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Foundations/Loss.lean:55"
+    },
+    {
+      "name": "frobSq",
+      "kind": "def",
+      "pillar": "Recon",
+      "one_line": "The squared Frobenius norm ∑ Mᵢⱼ² of a matrix — the integrand base of every box/peel integral (∫ frobSq(prod)^{-c'}).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/MatMulFibre.lean:33"
+    },
+    {
+      "name": "rlctAt",
+      "kind": "def",
+      "pillar": "Recon",
+      "one_line": "The real log-canonical threshold of F at wstar (as an ENNReal) — the singular-learning quantity the whole expedition targets.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Foundations/Rlct.lean:71"
+    },
+    {
+      "name": "minAdm",
+      "kind": "def",
+      "pillar": "Value",
+      "one_line": "The admissible-minimum ((Adm M).inf' Mval).toNat — the codim value; ½·minAdm is the (□) threshold and the achiever/binding-cut arithmetic runs off its layer-peeling recursion minAdmRec.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerSplit.lean:51"
+    },
+    {
+      "name": "minAdm_comp_perm",
+      "kind": "theorem",
+      "pillar": "Value",
+      "one_line": "Route-i soundness Part 1: minAdm(M) = minAdm(σ·M) — permutation-invariance of the codim value (induction via adjacent transpositions; crux g(a,b,c)=g(a,c,b)), machine-checked clean-three 2026-07-12.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/MinAdmPermInvariance.lean:394"
+    },
+    {
+      "name": "minAdm_eq_cCodim",
+      "kind": "theorem",
+      "pillar": "Value",
+      "one_line": "Route-i soundness Part 2: minAdm M = cCodim ∀ width — the arithmetic threshold equals the geometric quiver codimension; with perm-invariance this makes (□)-soundness a theorem modulo cited Aoyagi.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/MinAdmCCodim.lean:315"
+    },
+    {
+      "name": "monomialThreshold_eq_iInf_axisRatio",
+      "kind": "theorem",
+      "pillar": "Recon",
+      "one_line": "The de-cite axiom-to-theorem: the proven downstream identity monomialThreshold = ⨅ⱼ axisRatio(h j)(k j) that replaced the .1 conjunct of the retired monomial_rlct axiom on the λ-path.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/MonomialThresholdIdentity.lean:106"
+    },
+    {
+      "name": "RouteMBoxThresholdFinite",
+      "kind": "def",
+      "pillar": "R1-Upper",
+      "one_line": "The (□) contract: ∀ c'<½·minAdm M, ∫_{A∈paramsBoxM M 1} frobSq(prod M A)^{-c'} < ⊤ — the entire open content of the general-L R1 upper leg.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMBoxReduction.lean:165"
+    },
+    {
+      "name": "routeMLayerBoxIntegral",
+      "kind": "def",
+      "pillar": "R1-Upper",
+      "one_line": "The layer box integral bounding routeMCore (routeMCore_le_matBox); the ∀M measure-preserving plumbing that reduces the :426 sorry to RouteMBoxThresholdFinite.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMBoxReduction.lean:62"
+    },
+    {
+      "name": "block_elimination",
+      "kind": "theorem",
+      "pillar": "R1-Upper",
+      "one_line": "The regular r×r-corner row/col elimination (Aoyagi Lemma 2): P1·(prod)·P2 = diag(C1, ∏Cˢ) — the block-diagonal normal form feeding the additive RLCT split.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Skeleton.lean:242"
+    },
+    {
+      "name": "frobSq_schur_block_split",
+      "kind": "theorem",
+      "pillar": "R1-Upper",
+      "one_line": "The §5 Step-3 exact block-elimination identity frobSq(A₀·Q) → ‖A·Q̃ₚ‖² + ‖C·Q̃ₚ+Γ·Q_b‖² (det-1 unit clears), the L=2 Schur seed.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJChartAlgebra.lean:107"
+    },
+    {
+      "name": "chartInner_schurShearFree_eq",
+      "kind": "theorem",
+      "pillar": "R1-Upper",
+      "one_line": "The B5a′ block-shear (D↦Γ MP shear) freeing Γ as an independent variable: freedSchurLoss = Γ-free pivot frobSq(P·Q̃ₚ) + corank frobSq(C·Q̃ₚ+Γ·Q_b); opaque-width, banked clean-three.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJChartShear.lean:253"
+    },
+    {
+      "name": "freedSchurLoss",
+      "kind": "def",
+      "pillar": "R1-Upper",
+      "one_line": "The Γ-freed Schur loss (pivot + corank blocks) exposed by the block shear — the object the coranks are integrated out of peel-by-peel.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJChartShear.lean:146"
+    },
+    {
+      "name": "qPeelIntegral_lt_top",
+      "kind": "theorem",
+      "pillar": "R1-Upper",
+      "one_line": "The abstract corank-q peel finiteness (front-first g(Q) route): sound as a lemma, but its (□)-application is faithfulness-contested (#140) — a reusable tool, not the closer.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankQ.lean:183"
+    },
+    {
+      "name": "qCornerSliceAtUnits_le",
+      "kind": "theorem",
+      "pillar": "R1-Upper",
+      "one_line": "The corank-q corner-slice-at-units bound feeding qPeelIntegral_lt_top — the coupled corner monomial estimate on the units-bounded stratum.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankQ.lean:76"
+    },
+    {
+      "name": "frontFirst_g_le_of_sector",
+      "kind": "theorem",
+      "pillar": "R1-Upper",
+      "one_line": "The rank-stratified cover's cell_1 (top stratum) conditional: bounds g(Q) by σ_min^{-β} on the (r−1)-minor sector (the F2 dodge), closed downstream by LAYER 2 (twoBlock_radial).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJFrontFirst.lean:416"
+    },
+    {
+      "name": "det_le_det_of_posSemidef_sub",
+      "kind": "theorem",
+      "pillar": "R1-Upper",
+      "one_line": "The RouteMSJDetMono det-monotone lemma (#112 rebuild): A−B ≽ 0 ⇒ det B ≤ det A — reusable/Mathlib-worthy, was the off-route det-Gram majorant's tool, kept banked off the critical path.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDetMono.lean:72"
+    },
+    {
+      "name": "routeMBoxThresholdFinite_of_decoratedDescent",
+      "kind": "theorem",
+      "pillar": "SJ-Descent",
+      "one_line": "THE live (□)-gate driver: DecoratedDescent → ∀M RouteMBoxThresholdFinite M, clean-three (@b142a966) — discharging (□) now means proving DecoratedDescent.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedRec.lean:216"
+    },
+    {
+      "name": "DecoratedDescent",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "∃ adm, (∀ trivial admissible) ∧ DecoratedStepHyp adm ∧ DecoratedBaseHyp adm — the sole contract (□) is re-pointed onto; discharged by exhibiting the admissible-decoration family.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedRec.lean:206"
+    },
+    {
+      "name": "DecoratedStepHyp",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "#5 — THE remaining substantial analytic core: the decorated peel (coupled corner blow-up, residual saturating the reduced-chain IH at the ½peelCharge-shifted threshold; peelOp preserves FaithfulSJAt).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedRec.lean:144"
+    },
+    {
+      "name": "DecoratedBaseHyp",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "#4 — the base leg: the width-2 decorated leaf closes at c'<½M₀M₁=½minAdm (LOSS part = corankLeaf_rpow_lt_top, route A); fixed-Z green, needs the z-dependent Z_tail(r) generalization (desc4).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedRec.lean:154"
+    },
+    {
+      "name": "DecoratedPeelStep",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "The DEAD plain-IH conditional (Q2): its driver proves →(□) and →:803 sorry-free, but the plain undecorated IH is UNPROVABLE — the peel emits [reduced]·[H⁻⁴] no plain 3-node box IH can carry.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedRec.lean:78"
+    },
+    {
+      "name": "SJDecoration",
+      "kind": "structure",
+      "pillar": "SJ-Descent",
+      "one_line": "The carried (S,J) decoration (Z/mZ/ctx/dom/residualMeas); NOT definitionally genuine — genuineness is asserted by the genuineCarrier clause in adm pinning D.Z = paramsBox(deeperChain M).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecorated.lean:89"
+    },
+    {
+      "name": "sjJointResolution",
+      "kind": "theorem",
+      "pillar": "SJ-Descent",
+      "one_line": "The (formerly) single live analytic sorry at :803 — Aoyagi §5's coupled diag(b) peel over corank≥2/L≥3; obsoleted once the decorated route lands (the driver retro-fills it).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJResolution.lean:797"
+    },
+    {
+      "name": "routeMBoxThresholdFinite_of_step",
+      "kind": "theorem",
+      "pillar": "SJ-Descent",
+      "one_line": "The PROVED sorry-free arity strong-induction driver (L=0 vacuous, L=1 Morse base, L≥2 step) — the OUTER induction of the double descent, no analytic content.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJResolution.lean:863"
+    },
+    {
+      "name": "sjLoss",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "The (S,J) terminal loss ∑ᵢ (genMonomial e i u)² — the dehomogenised generator whose charges add to the terminal integrability bound.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJLedger.lean:102"
+    },
+    {
+      "name": "SJSupport",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "ι → Fin d → ℕ, the M_{s,k} exponent support — the combinatorial datum of the (S,J) blow-up ledger.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJLedger.lean:80"
+    },
+    {
+      "name": "sharedDivisorExp",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "The shared-divisor exponent T_{s,k} (Aoyagi Case-2 vector) extracted from an SJSupport — the corank-≥2 shared-divisor charge that binds at (3,3,4).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJLedger.lean:87"
+    },
+    {
+      "name": "peelCharge",
+      "kind": "def",
+      "pillar": "SJ-Descent",
+      "one_line": "(M₀−u)(M₁−u), the per-peel charge; the binding cut minAdm ≤ peelCharge + minAdm(redChain) and the ½peelCharge threshold shift run off it (RouteMSJDecoratedCharge).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedCharge.lean:45"
+    },
+    {
+      "name": "corankLeaf_rpow_lt_top",
+      "kind": "theorem",
+      "pillar": "SJ-Descent",
+      "one_line": "The DecoratedBaseHyp LOSS part (route A): ∫ (frobSq(Γ·Z))^{-c'} < ⊤ for c'<½minAdm(base), given the Z·Zᵀ≽c·I units interface — bypasses sjLoss_terminal + (P)/(T).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJLeafFinite.lean:76"
+    },
+    {
+      "name": "corank_survival_ae",
+      "kind": "theorem",
+      "pillar": "SJ-Descent",
+      "one_line": "The #2-core (AG-free, clean-three): a single b×b minor-cut null set gives corank survival a.e. — free-variable-A genericity, NO component-decomposition (the AG wall avoided, #114 does not recur).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankSurvival.lean:88"
+    },
+    {
+      "name": "minAdm_backPeel_cominimizer_ge",
+      "kind": "theorem",
+      "pillar": "SJ-Descent",
+      "one_line": "The A₂ α-unlock: the back-peel co-minimizer bound ρ≥a+b−1 (minAdm_eq_backPeel re-expressed as the banked front-peel #117 + convexity) — NATIVE, #97 honored, no cite.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJBackPeel.lean:86"
+    },
+    {
+      "name": "posDef_gram_of_rank_eq",
+      "kind": "theorem",
+      "pillar": "SJ-Descent",
+      "one_line": "The units bridge: full ROW rank ⟹ (Z·Zᵀ).PosDef — composed with a Loewner lower bound gives Z.rank=n ⇒ ∃c>0, Z·Zᵀ≽c·I, the units interface the leaf finiteness consumes.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/RouteMSJUnitsBridge.lean:52"
+    },
+    {
+      "name": "deepestPoint",
+      "kind": "def",
+      "pillar": "D1",
+      "one_line": "The constructed deepest singular point of the fibre (all reduced-core coords → 0) — the worst-RLCT point for the homogeneous core (Aoyagi Theorem 4), where the gauge chart is built.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Skeleton.lean:1003"
+    },
+    {
+      "name": "deepest_regular_core_normal_form",
+      "kind": "theorem",
+      "pillar": "D1",
+      "one_line": "The Skeleton rung: the regular-block + degraded-core normal form at the deepest point (Aoyagi Lemma 2 / Theorem 3), the additive RLCT split's structural statement.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Skeleton.lean:1087"
+    },
+    {
+      "name": "deepest_point_reduction",
+      "kind": "theorem",
+      "pillar": "D1",
+      "one_line": "The Skeleton rung reducing the deepest-point RLCT to nReg/2 + core RLCT — the D1 ≥-leg's value statement the gauge construction discharges.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Skeleton.lean:1150"
+    },
+    {
+      "name": "deepest_gauge_construction_L2_ofBundle",
+      "kind": "theorem",
+      "pillar": "L2",
+      "one_line": "The banked clean-three L=2 gauge bundle giving the RLCT-equality rlctAt = rlctAtOn(Sreg_E + coreΦ) via the diffeo bridge (deepest_diffeo_bridge_L2_assembled); the L≥3 arm carries the #120 sorries.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/DeepestL2Wiring.lean:142"
+    },
+    {
+      "name": "d1ge_L2_hAtV_explicit",
+      "kind": "theorem",
+      "pillar": "L2",
+      "one_line": "The L=2 D1 ≥-leg crux (now CLOSED via d1ge_L2_hAtV_explicit_close): the explicit Schur corner-elimination chart ∃P, nRegL2/2 + rlctAtOn(dlnLoss(H−r) 0)P ≤ rlctAt H (dlnLoss H B) v; needs hpos ∀s r<H s (false without it).",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/D1L2ExplicitCoreProducer.lean:219"
+    },
+    {
+      "name": "psiL2Conj",
+      "kind": "def",
+      "pillar": "L2",
+      "one_line": "The deepest reg-swap conjugation diffeo ρ (already 0-sorry): its ContDiff IS the conj-smooth stack — NOT a reg-block-only diffeo (deepestEFull reads the core bilinearly), necessary and already paid.",
+      "lean_file": "lean/DLNFibre/DLN/RLCT/Validate/DeepestDiffeoBridgeL2Conj.lean:1808"
+    }
+  ]
+}
