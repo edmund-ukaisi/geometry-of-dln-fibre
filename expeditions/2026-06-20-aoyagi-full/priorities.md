@@ -56,12 +56,15 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
    - **LANDED clean-three (genm-sj5-desc3):** units bridge #147 (`RouteMSJUnitsBridge` @cab04ba5, eigenvalue-free Loewner) +
      #3 adm def (B) #148 (`RouteMSJAdm` @0ba81dcb: genuineCarrier (i) + admValuation=`d=0 ∨ pSimultaneous` + htriv PROVED;
      cover DECORRELATED fidelity-PASS). DecoratedDescent witness typechecks; only #4 (hbase) + #5 (hstep) OPEN.
-   - **NEXT: #4 #149 `DecoratedBaseHyp`** — base ROUTE fork A/B ROUTED TO COVER (my lean **B**: free-matrix Morse (d=0) +
-     `sjLoss_terminal` via the LOCKED pSimultaneous (d≥1) on the GENERAL (S,J) carrier; Route A's carrier-frobSq pin is
-     UNFAITHFUL to the (S,J) form + re-couples #3↔#5). desc3 building the shared route-independent d=0 Morse; holding d≥1 for cover.
-     **★ FLAG-1 (BEDROCK-CRITICAL, cover):** adm admits DEGENERATE-coeff d=0 decorations (genuineCarrier+d=0 doesn't constrain
-     the loss) that CAN diverge — the base must genuinely PROVE finiteness for ALL admitted d=0 (incl. degenerate) OR the d=0
-     disjunct must be TIGHTENED; NEVER POSTULATE DecoratedBaseHyp (false-hypothesis gap = UNSOUND). The A/B decision must address it.
+   - **NEXT: #4 #149 `DecoratedBaseHyp` — ARCHITECTURE RE-OPENED (UPDATE-942 bedrock finding, desc3-verified).** The d=0
+     base is DONE (`RouteMSJBaseFinite.baseBoxCoV_lt_top`, free-Morse via MP CoV, staged). But the **d≥1 base is NOT "consume
+     pSimultaneous directly"** (my Route-B lean was over-optimistic): (a) sjLoss_terminal needs `c'<monomialThreshold(supp,jac)`
+     as a HYPOTHESIS adm doesn't supply (adversarial supp/jac diverge); (b) `decLoss=∑(genMonomial·resᵢ(z))²` is a COUPLED (u,z)
+     RLCT (vanishing residuals), not the u-only terminal. ⟹ **adm must CARRY base-invariants (monomialThreshold≥½minAdm +
+     residual-unit/coupled-coercivity = the fully-resolved (S,J) form) = #5's peel-closure OUTPUT ⟹ #3↔#5 RE-COUPLED** (the (B)
+     decoupling was incomplete). NOT a wall (labour). **ROUTED to cover** (+ decorrelated Codex): (A) strengthen adm w/ the
+     base-invariants [#5 preserves, #4 consumes] vs (B) fold d≥1 base into #5. FLAG-1 (d=0 degenerate) already FIXED by desc3's
+     `d=0 ∧ carrier=ofMatrix` tightening. **adm re-integration HELD** for cover's design (integrate the base-invariant-complete adm once).
    - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` #5 (the decorated peel):** the coupled corner blow-up → charges-ADD
      to `sjLoss_terminal`, closing on the reduced-chain IH at the ½peelCharge-shifted threshold. **SOUNDNESS RESOLVED (dmcheck #146
      + cover, decorrelated): NO COLLAPSE** — the invariant form is the QIP identity + m=1 + D_q≤M₀q, per-cell `½(M₀ρ+min(M₀q,D_q))`
