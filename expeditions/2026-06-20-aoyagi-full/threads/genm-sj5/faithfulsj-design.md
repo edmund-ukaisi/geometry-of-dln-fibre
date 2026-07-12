@@ -238,3 +238,57 @@ enters via the `rowMix R` (the deferred analytic half). Settling it = tracing wh
 needs the anisotropic coupled-corner leaf (harder, = the Q1 estimate in `stephyp-intersection-cert`). desc4
 should build the bundle in the [CARRY]/[DERIVE-AT-BASE]/[DROP] shape above and, at the base, attempt the
 spanning-zero-leftover route first — flagging the anisotropic-leaf fallback if the support isn't uniform.
+[**SUPERSEDED by ★★★ below — S2 is now SETTLED: the base IS uniform/spanning; corankLeaf closes #4.**]
+
+---
+
+## ★★★ S2 SETTLED (2026-07-12, decorrelated Codex `codex/s2-support-answer.md` + Lean `RouteMSJFreedPeel`) — the #4 base IS uniform/spanning; corankLeaf(Z=I) closes it; the anisotropy is a #5 phenomenon
+
+**Charge (team-lead): SETTLE — does #5's peel drive the width-2 base to spanning-zero-leftover (⟹ corankLeaf
+closes #4), or is the anisotropic coupled corner required? Name the deciding property.**
+
+**VERDICT (decisive): YES — the #4 base is UNIFORM/SPANNING; route-A `corankLeaf` (with `Z_tail = I` at
+width-2) closes #4 at `c' < ½·M₀M₁ = ½minAdm`. The anisotropic coupled corner is NOT needed for #4; it is a
+#5 (peel) phenomenon.** Grounded in the Lean support dynamics (`RouteMSJLinGen`) + the freed-peel
+architecture (`RouteMSJFreedPeel`) + `genuineCarrier`, decorrelated-Codex-confirmed (UNIFORM/SPANNING).
+
+**The deciding property (the load-bearing #5 invariant, NAMED):** the peel INTEGRATES each freed corank block
+`Γ_k` at its OWN peel level — `freedSchurLoss_inner_peel_lt_top` (`RouteMSJFreedPeel`) integrates the freed
+`Γ` (dim `a·b`) at that peel, on the units-sector interface (pivot energy `> 0`, `Q_b Q_bᵀ` PosDef,
+`c' > a·b/2`). So the coranks do NOT accumulate as anisotropic residual generators; each is discharged at its
+level, and the reduced decoration `D'` handed to the IH carries only the pivot-descendant residual. Hence the
+carrier support stays UNIFORM to the base, and the #4 width-2 base sees the clean final residual. Cross-check:
+`genuineCarrier` pins the base residual to read `prod M (e z)` = the single width-2 M₀×M₁ matrix, so the base
+residuals SPAN the M₀M₁-dim block (`ofMatrix`-like, uniform support) — no accumulated coranks.
+
+**Honest correction to Codex's mechanism (decorrelation earned its keep):** Codex's stated condition — "every
+later radial factors from the entire inherited summand, including `Γ·Z_tail`" (lock-step propagation) — is
+GEOMETRICALLY FALSE for the front-peel: the R-blowup radial scales the FRONT matrix (`A₀ = u·V₀`), not the
+deeper tail, so a PREVIOUSLY-FREED corank term `Γ_k·Z_tail` does NOT share a later peel's radial (`u_{k+1}`
+scales the reduced front `B = V^piv·A₁`, a different combination than `Γ_k·A₁`). A `radialStep` applied to a
+RETAINED corank would FALSELY multiply it by `u²` (unfaithful). So uniformity comes NOT from lock-step
+propagation but from **integrating the coranks OUT peel-by-peel** (the faithful architecture, present in
+`RouteMSJFreedPeel`). Codex's VERDICT (uniform base) stands; its mechanism is corrected.
+
+**Where the anisotropy / coupled corner actually lives — #5, not #4.** Integrating a freed corank coupled with
+the reduced-chain continuation, on the units sector, is the `innerCorankDescent_lt_top` hole
+(`RouteMSJDecoratedPeelStep`). The `RouteMSJFreedPeel` "what is NOT here" note pins the sharp #5 difficulty:
+at the binding cut `minAdm M = a + minAdm(redChain t★ M)` the residual exponent EXACTLY saturates the reduced
+IH threshold (Hölder-infeasible as a black box) — the "(S,J) double induction". That saturation/charges-ADD is
+the #5 coupled corner (my `stephyp-intersection-cert` Q1), NOT the #4 base.
+
+**Consequence for the d≥1 bundle.** Since the #4 base is uniform (δ=0), the WEIGHTED-with-leftover form is NOT
+needed AT #4 — the clean `decLoss = commonDivisor(u)²·frobSq(Γ)` (`Z_tail=I`) holds there, and corankLeaf
+closes it. The [DERIVE-AT-BASE] "spanning-zero-leftover block" item is thus DISCHARGED by the
+per-peel-integration invariant + `genuineCarrier` (not an unforced gap), PROVIDED #5 maintains it. So route-A
+`corankLeaf` is the correct #4 closer (the γ-lock's choice STANDS); route-B `sjLoss_terminal` would be the
+alternative only if #5 accumulated an anisotropic monomial terminal instead of integrating per-peel — which the
+freed-peel architecture does not. **The audit load shifts to #5: verify the peel integrates each freed corank at
+its level (units sector) so the support stays uniform to the base — now the #5 γ/coupled-corner audit focus
+(dmcheck P3, the units sector, the Hölder-saturated double induction).**
+
+**Refined bundle takeaway for desc4.** The d≥1 clause may carry the CLEAN identity
+`decLoss = commonDivisor(u)²·frobSq(Γ·Z_tail)` (uniform support, no `δ` leftovers) rather than the weighted
+form — the weighted `δ` form is only transiently needed WITHIN a peel (pivot vs corank), not in the stable
+carrier the invariant describes. `Z_tail` z-dependent (S1), `=I` at base; `dim Γ` derived-at-base; γ (PSD) is
+the units-sector interface consumed at each peel (`freedSchurLoss`), derived-trivial (`Z=I`) at #4.
