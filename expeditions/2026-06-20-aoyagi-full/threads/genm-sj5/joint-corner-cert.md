@@ -265,3 +265,66 @@ Q1 iterated corner (D) + dmcheck per-branch are banked-adjacent; the well-founde
    good/bad split.
 3. **[BANKED-ADJACENT] the bad-locus iterated corner** = Q1 (`stephyp-intersection-cert`) + dmcheck P3
    per-branch `≥½minAdm`; the good-tube joint density = `corank2 §2` generalized (`offsector.py`).
+
+---
+
+## 8. ★★★★ REFUTATION + PIVOT (2026-07-12) — §6/§7 naive corner SUPERSEDED; the off-sector PROOF is the coupled `diag(b)` (route B / the decorated descent), NOT the naive-corner charges-ADD
+
+**The controller's independent obstruction hunt (`offsector-independent-hunt.md`, fresh decorrelated seat)
+REFUTED §6/§7 as an airtight PROOF.** I reconcile HONESTLY (not defend). The `½·minAdm` VALUE survives; my
+§7 MECHANISM is wrong. Two errors, both verified (`scripts/caterror.py`, the R1 thread):
+
+1. **§7 (C) Eckart–Young is a CATEGORY ERROR.** `σ_min = dist(·,{rank≤ρ})` (Eckart–Young) is a MATRIX-space
+   distance, true for EVERY matrix (products included) — it is NOT the PARAMETER-order the integral needs. A
+   SINGLE matrix can have parameter-order `> 1`: `M(t)=[[1,t],[t,0]]` is affine+immersive yet `σ_min ≍ t²`
+   (tangent to `{det=0}`; verified). So "m>1 is product-only, base bottoms out at m=1" is FALSE. The real
+   hypothesis is UNIFORM TRANSVERSALITY / metric regularity (owed piece A), strictly stronger than immersion.
+2. **"charges ADD to ½Σ-dims" is a UNITS-SECTOR-ONLY value.** For the scalar chain `Z=a₂···a_L`,
+   `σ_min²=(∏aᵢ)²`, `∫∏|aᵢ|^{−2c}` factorizes → `lct = ½ = ½minAdm` (minAdm=1), NOT `(L−1)/2`. Each `aᵢ→0`
+   is a GENUINE singular direction (a shared deep factor vanishing), so the true threshold is the **MIN**
+   over binding directions, not the SUM. My `nested3.py` "½Σ = ½minAdm" is the outer-radial value UNDER the
+   units assumption — correct locally, FALSE globally. The corank-≥2 SHARED-DIVISOR collapse (R1-proven:
+   `d²(x²+y²)` shared → `lct=½` MIN vs `(d₁x)²+(d₂y)²` unshared → `lct=1` ADD, IDENTICAL widths) is exactly
+   what a threshold-only / charges-ADD corner cannot see, and it BINDS at `(3,3,4)`.
+
+**§6/§7 are SUPERSEDED as the off-sector proof.** Do not build from them. The reconciliation ↓ pivots to the
+coupled `diag(b)`.
+
+### §7 ↔ R1 reconciliation (`verify-r1-diagb-334.md`): where they AGREE / DISAGREE
+
+R1's PROVEN `(3,3,4)` resolution (the genuinely-binding corank-2 witness, RLCT `4 = ½·minAdm`): peel `C¹` at
+`t₁=1` → `F ∼ ‖T‖² + ‖Δ·S‖²`, `T` and `(Δ,S)` in DISJOINT variable sets ⟹ RLCTs **ADD** (Watanabe product
+rule): `2 + 2 = 4`. Within `‖Δ·S‖²`: radial `Δ = a·[…]` (Jac `|a|³`, dim 4), the shared shear `e = w−vu`
+couples row-2 to row-1, `‖ΔS‖²∘π ∼ a²(‖P‖² + e²‖Q‖²)`; the divisor `a` binds at `(3+1)/2 = 2`, the inner
+coupled corner at `5/2`, and the value is the **MIN** `min(2, 5/2) = 2`. Threshold-only (multiplicity,
+independent `δ₁,δ₂`) UNDER-counts → `3` (wrong).
+
+- **DISAGREE — §7's Q1 "bad locus = intersection rays ⟹ charges ADD (½Σ)".** R1 shows the corank-2 block is
+  **MIN** (the freed-block divisor `a` binds at `½·dim(Δ)`, BELOW the inner corner `5/2`), with DISJOINT
+  blocks ADDing (Watanabe) — governed by the SHARED-DIVISOR data (the shear `e`: which divisor/coefficient
+  couples which generator). A naive charges-ADD corner OVER-counts (would give `2 + 5/2 = 9/2` for `‖ΔS‖²`,
+  not `2`); threshold-only UNDER-counts (`3`). Neither naive mechanism is R1's `diag(b)`. **§7's Q1 is the
+  wrong mechanism.**
+- **AGREE — route B (integrate-Γ-first + black-box decorated IH, §1).** Route B integrates the freed block
+  `Γ=Δ` FIRST (freed Morse, threshold `½·dim(Δ) = 2`) then defers to the reduced/disjoint via the IH — which
+  is EXACTLY R1's `min(a-divisor 2, inner)` + disjoint-`T` Watanabe-ADD. Route B carries the shared-divisor
+  data in the DECORATION (`supp` = which exceptional divisor weights which generator; `coeff` = the shear
+  coupling) — so **route B / the decorated descent IS Aoyagi's coupled `diag(b)`** (the `diag(b)` symbolic
+  support = the carrier's `supp`+`coeff`). The threshold-only invariant (multiplicity only) is what R1
+  refuted; the DECORATED carrier (full `supp`) carries what `diag(b)` needs. So route B AGREES with R1.
+
+**PIVOT (the off-sector proof).** The off-sector is NOT a separate naive-corner cover (§6/§7) — it is the
+DECORATED DESCENT itself (route B: binding-cut peel + freed Morse + black-box decorated IH, the IH carrying
+`supp`+`coeff` = the `diag(b)` shared-divisor data). This is the R1 thread's decided route (task #122). The
+correct mechanism at each binding cut is `minAdm M = peelCharge + minAdm(redChain)` (the binding-cut
+identity, `exists_binding_cut`) — route B adds EXACTLY `peelCharge + minAdm(redChain) = minAdm(M)` (NOT the
+naive ½Σ), and the reduced IH resolves the reduced chain's own sharing (recursively). At the binding cut
+`peelCharge` can be a corank-≥2 coupled block (`(3,3,4)`: corank-2), which route B's freed Morse + the
+decorated `supp` handle; the naive corank-≤1 recursion of §7 does NOT reach it.
+
+**Net.** §6/§7 REFUTED as a proof (category error + units-only charges-ADD, missing the shared-divisor
+collapse). The off-sector proof PIVOTS to route B / the decorated descent = the coupled `diag(b)` (R1, #122),
+which carries the shared-divisor `supp`+`coeff` data. The `½minAdm` VALUE survives (QIP + Aoyagi + R1). Owed
+piece A (uniform transversality) is STILL owed (route B's units sector needs it); the naive-corner well-
+foundedness (§7-C) is DROPPED (replaced by the binding-cut arity recursion `minAdm = peelCharge + minAdm(redChain)`,
+which strictly decreases arity and is the driver's own recursion — well-founded, banked).
