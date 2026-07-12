@@ -58,19 +58,20 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
      cover DECORRELATED fidelity-PASS). DecoratedDescent witness typechecks; only #4 (hbase) + #5 (hstep) OPEN.
    - **#4 #149 `DecoratedBaseHyp` — SETTLED (S2 resolved UNIFORM, UPDATE-952); desc4 green-lit to COMMIT + wire the clean invariant.**
      OPT-A: adm carries `FaithfulSJAt` (the (S,J) resolution-state invariant, a **general-arity LOOP INVARIANT**; #4 closes it at width-2).
-     **★ S2 SETTLED (cover, decorrelated-EARNED, faithfulsj §★★★): #4's width-2 base is UNIFORM/SPANNING** — route-A `corankLeaf(Z_tail=I)`
-     closes #4 at c'<½M₀M₁=½minAdm, **#5-INDEPENDENT** (a BASE fact: Z_tail=I at width-2 + genuineCarrier pins the residual = prod M, the
-     single M₀×M₁ matrix → residuals span the block → δ≡0). The **anisotropic-leaf fallback is DISCHARGED** (not needed at #4). cover
-     CORRECTED Codex's false uniformity mechanism (radial scales the FRONT A₀=u·V₀, not the tail — so the "lock-step propagation" is wrong;
-     true mechanism = coranks integrated OUT peel-by-peel via `freedSchurLoss`, `RouteMSJFreedPeel`). **INVARIANT (converged, both threads):**
-     carry PROVENANCE-ONLY {genuineCarrier + `res_i=[Γ·Z_tail]_{ρ(i)}` (Γ free block, Z_tail(z) via prod) + α + β}; the WEIGHTED identity is
-     DERIVED (`decLoss_commonDivisor_factor`, banked axiom-clean, δ = the banked `residualSupport`); #4 DERIVES base-uniform (genuineCarrier
-     + Z_tail=I → residualSupport≡0 → clean frobSq(Γ)) → `decoratedBase_routeA_of_leafForm(Z=I)`. NO carried uniform/spanning clause; the
-     dim clause is `minAdm ≤ a·n` (INEQUALITY, width-general; #5-preservability = cover's Q1). **desc4 GREEN-LIT** (4th-flip guard LIFTED —
-     shape settled by cover's decorrelated verdict): COMMIT the invariant into RouteMSJAdm + wire #4; `RouteMSJBaseHyp.lean` (6 thms green,
-     axiom-clean) is the substrate. cover audits desc4's build (Q1 minAdm≤a·n / Q3 d=0 D.ι pin / Z_tail z-dependence) → I integrate one-shot.
-     Recalibration: discuss-at-close #115/#116/#117. Process lesson (UPDATE-945/948/950): accept only what's PROVEN, gate fidelity clauses on
-     the decorrelated verdict — the holds + the "verify vs actual peel" steer PROTECTED canonical (2 wrong-γ, the clean-frobSq GO, Codex's false mechanism).
+     **★ S2 SETTLED + VERIFIED (cover, NEUTRAL Codex + peel-buildplan:188, DERIVING forced-uniform; faithfulsj §★★★/§★★★★): #4's width-2
+     base is UNIFORM/SPANNING** — route-A `corankLeaf(Z_tail=I)` closes #4 at c'<½M₀M₁=½minAdm, **#5-INDEPENDENT AS A LEMMA** (given adm, closes).
+     **anisotropic-leaf fallback DISCHARGED.** cover CORRECTED Codex's false uniformity mechanism (radial scales the FRONT A₀=u·V₀, not the tail;
+     true mechanism = coranks integrated OUT peel-by-peel via `freedSchurLoss`). **★ PRECISION FIX (UPDATE-953, corrects my earlier conflation):**
+     `genuineCarrier` gives SPANNING (residuals read prod M); **δ≡0 (`residualSupport≡0`) is a SEPARATE SUPPORT property, NOT a genuineCarrier
+     consequence** (counterexample: residuals span with one δ>0, dropping it leaves rank 1) — so **δ≡0 MUST be a CARRIED clause** #4 consumes,
+     #5 establishes. **INVARIANT (converged):** carry {genuineCarrier + provenance `res_i=[Γ·Z_tail]_{ρ(i)}` (WeightedLeafForm) + α + β +
+     `minAdm≤a·n` + `residualSupport≡0`}; the WEIGHTED identity is DERIVED (`decLoss_commonDivisor_factor`, banked; δ = banked `residualSupport`).
+     #4 CONSUMES δ≡0 → δ=0 subfamily = all gens → spans → clean frobSq(Γ) → `decoratedBase_routeA_of_leafForm(Z=I)`. The honest chain:
+     genuineCarrier→spanning; carried δ≡0 [faithful #5]→δ=0 subfamily spans; together→clean bound. dim clause `minAdm≤a·n` (width-general, cover Q1
+     CONFIRMED: t=0 cut). **desc4 GREEN-LIT** (4th-flip guard LIFTED): COMMIT {WeightedLeafForm + residualSupport≡0 + d=0 observable} into RouteMSJAdm
+     + wire #4; `RouteMSJBaseHyp.lean` (6+ thms green, axiom-clean) substrate. cover audits committed build → I integrate one-shot.
+     Recalibration: discuss-at-close #115/#116/#117. Process lesson (UPDATE-945/948/950/953): accept only what's PROVEN, gate fidelity clauses on
+     the decorrelated verdict — the audit gate caught my genuineCarrier→δ≡0 conflation BEFORE desc4 committed (no wrong build; 2 wrong-γ, clean-frobSq GO, Codex's false mechanism all pre-empted).
    - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` #5 (the decorated peel) = THE MOUNTAIN (post-S2, UPDATE-952).** Now owns
      TWO things (both fold into `peelOp` preserves FaithfulSJAt): **(a) the STRUCTURAL half** — each reduced D' is uniform (residualSupport≡0,
      coranks integrated OUT per-peel via `freedSchurLoss`), the S2-mechanism cover established; **(b) THE MOUNTAIN** — the coupled corner at
