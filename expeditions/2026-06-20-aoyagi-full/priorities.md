@@ -18,6 +18,13 @@ estimate = deepest soundness; NOT a codim freebie per cover's x²(x²+y^{2N}) co
 paper (atom-first / plain-hIH / decoration / full-rank / higher-codim-slack).**
 Live integrative read: `synthesis.md` (UPDATE-931 newest); operator-review items: `discuss-at-close.md` (#97–#114).
 
+## ★★★ RECALIBRATION 2026-07-12 (post-independent-hunt, UPDATE-961 / discuss #120) — newest state
+The (□) discharge splits into **#4 (base leg, DecoratedBaseHyp)** + **#5 (step, DecoratedStepHyp = off-sector)**.
+- **#4 base leg** — fixed-Z `decoratedBaseHyp_faithful` GREEN/axiom-clean (base stepping-stone); the carried adm needs the z-dependent `Z_tail(r)` generalization (cover Q1: fixed-Z #5-unpreservable — decorrelated-confirmed). desc4-scoped 4-piece plan banked (UPDATE-960); desc4 executes paced (its timing). INDEPENDENT of the off-sector route. Held uncommitted (not in canonical build).
+- **#5 off-sector — ★ §7 "airtight" REFUTED by the independent hunt (UPDATE-961).** cover's naive-corner arity-recursion (§7) is NOT an airtight proof: dichotomy (C) is a category error (Eckart–Young = matrix-distance ≠ parameter-order; single matrix can be order-2); charges-ADD is units-only; corank-≥2 SHARED-DIVISOR COLLAPSE (R1-proven, binds at (3,3,4)) is missed. **PIVOT: the off-sector PROOF routes through Aoyagi's coupled `diag(b)`/symbolic-divisor-support recursion (= task #122)** — the R1 thread's decided route (banked-adjacent: `verify-r1-diagb-334.md`), NOT §7's corner. The saturation/integrate-Γ-first joint estimate (UPDATE-954) + the value ½minAdm are NOT refuted.
+- **★ TOP SOUNDNESS DE-RISK: the general-width QIP no-collapse.** (□)'s value rests on minAdm = the true (coupled) codim ∀ width; verified only on dmcheck's 7-chain SWEEP, not proved. A binding branch with a shared-divisor collapse driving lct<½minAdm would FALSIFY (□). Decorrelated hunt commissioned (hunt a shared deep factor C^{(s)} at a binding witness + reconcile §7's Q1 corner with R1's proven sharing data). LIKELY holds (QIP min-identity + Aoyagi + R1) but MUST be proven-not-swept — the one genuine open (□)-soundness question.
+- Disposition note: the "§7 airtight" headline (UPDATE-956/958/960) was PREMATURE; the bedrock independent-hunt (fresh seat attacking a foundation exhaustiveness claim) caught it before formalisation built on §7. Route-pivot (labour) + one soundness de-risk; NOT a decorrelated-confirmed wall.
+
 ## ★ STATE ANCHOR — Stage 1 COMPLETE (S2-free), Stage 2 = BUILD-discharge `(□)` via native (S,J)
 Stage 1 delivered the fully-general Aoyagi learning coefficient (honest Lean 4 + Mathlib, BEDROCK-OK,
 clean-three, **zero axiom declarations**), on `expedition/aoyagi-full` (draft PR #26 → dev):
