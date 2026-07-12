@@ -67,9 +67,14 @@ surface; the value `½·minAdm` was already defended by QIP+Aoyagi.**
 **Stratify the outer `Z`-domain by SINGULAR-VALUE SHELLS** (a FINITE, compact, exhaustive partition of the
 `Z`-box), `r := min(a,b)`, thresholds `ε_0 ≥ ε_1 ≥ … ≥ ε_r > 0`:
 
-- **Shell 0** `S₀ = {σ_min(Z) ≥ ε₀}` (all `M₂` singular values `≥ ε₀`; `Z` full-rank, coercive).
-- **Shell `j`** (`1 ≤ j ≤ r−1`) `S_j = {σ_{M₂−j}(Z) ≥ ε_j > σ_{M₂−j+1}(Z)}` (exactly `j` singular values
-  `< ε_j`; the surviving `M₂−j` bounded below).
+- [★ CORRECTED 2026-07-12 by the T-Obl3b pin (`tobl3b-pin-cert.md`, Codex Q4): the shells MUST use a
+  SINGLE threshold `ε` (NOT distinct decreasing `ε_j`). Distinct `ε_j` leave a REAL intermediate-band gap
+  `{σ_{M₂−j}∈(ε_{j+1},ε_j)}` — 76557/200000 `Z` uncovered in the sweep. With a single `ε`, `S_j = {exactly
+  j singular values < ε}` partitions `Z` by the count of small singulars — 0/200000 gaps, EXHAUSTIVE. Use
+  `ε_j := ε` throughout below.]
+- **Shell 0** `S₀ = {σ_min(Z) ≥ ε}` (all `M₂` singular values `≥ ε`; `Z` full-rank, coercive).
+- **Shell `j`** (`1 ≤ j ≤ r−1`) `S_j = {σ_{M₂−j}(Z) ≥ ε > σ_{M₂−j+1}(Z)}` (exactly `j` singular values
+  `< ε`; the surviving `M₂−j` bounded below).
 - **Saturated shell `S_r = {σ_{M₂−r+1}(Z) < ε_r}`** (`≥ r` small singular values — ALL remaining
   degeneracy, incl. genuine rank-drops). This is the ONE lumping shell; `j = r` has zero-width freed corner.
 
