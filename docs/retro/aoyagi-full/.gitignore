@@ -7,3 +7,7 @@ EXPEDITION.md
 REPORT.md
 expedition.html
 native-token-blob-cache.json
+substrate/commits.json
+substrate/events.json
+substrate/threads.json
+substrate/pool_summary.md
