@@ -137,6 +137,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
 import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
 
 /-!
 # Axiom-hygiene check
@@ -1145,3 +1146,9 @@ open DLNFibre.DLN.RLCT
 -- `minAdm_comp_sort`.
 #print axioms minAdm_eq_cCodim
 #print axioms minAdm_d222_eq_three
+-- #4 DecoratedBaseHyp z-DEPENDENT base leg (genm-sj4-tide, route-ii (□) discharge base): every
+-- adm-admissible width-2 decoration is box-threshold-finite below ½·minAdm. Units-FREE Γ×tail γ'
+-- (Z_tail TIED to the genuine tail product `prod (dropHead M)`, units derived at base). P4 witness
+-- `witnessDecoration222_faithful` (d≥1 γ' inhabited at width-3, genuine non-identity tail — anti-vacuity).
+#print axioms decoratedBaseHyp_faithful
+#print axioms witnessDecoration222_faithful

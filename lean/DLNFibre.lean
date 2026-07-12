@@ -1362,3 +1362,12 @@ import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 -- `minAdm_comp_sort` (Part 1) + `cCodim_comp_sort`. Completes route-i soundness (cited Aoyagi
 -- ⟹ RLCT = ½·cCodim).
 import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
+-- #4 DecoratedBaseHyp z-DEPENDENT base leg (genm-sj4-tide, route-ii (□) discharge base): the units-FREE
+-- Γ×tail γ' — `RouteMSJTailProd` (tailProd suffix product, = 1 at width-2) + `RouteMSJAdm` gammaPrimeClause
+-- ⟹ `decoratedBaseHyp_faithful : DecoratedBaseHyp adm` (`RouteMSJBaseHyp`, product-CoV base + width-3
+-- witness). Z_tail TIED to the genuine tail product `prod (dropHead M)` (the free-Z_tail shape was
+-- unsound — rank-deficient Z_tail diverges); units dropped from carried, DERIVED at base (Z_tail=1,
+-- c=1). #5 preserves.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTailProd
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseFinite
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
