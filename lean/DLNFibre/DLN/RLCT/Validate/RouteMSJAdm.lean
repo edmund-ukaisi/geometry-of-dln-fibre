@@ -1,41 +1,47 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
+import Mathlib.LinearAlgebra.Matrix.PosDef
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJAdm` — the A2 admissibility predicate `adm` (fork (B))
 
-**Thread `genm-sj5-desc3`, Piece #3 (the `adm` DEF).** The valuation-predicate admissibility (fork (B),
-cert §10/§10.1, controller UPDATE-936) the `DecoratedDescent` spine (`RouteMSJDecoratedRec`) quantifies over:
+**Threads `genm-sj5-desc3` (Piece #3) + `genm-sj5-desc4` (FaithfulSJAt strengthen).** The admissibility
+predicate (fork (B), OPT-A; `faithfulsj-design §★★★`) the `DecoratedDescent` spine
+(`RouteMSJDecoratedRec`) quantifies over:
 
-    adm n M D  :=  genuineCarrier D  ∧  (a = 0 ∨ b = 0 ∨ admValuation D)
+    adm n M D  :=  genuineCarrier D  ∧  (a = 0 ∨ b = 0 ∨ FaithfulSJAt D)
 
 with `a = M₀ − t★`, `b = M₁ − t★` the front-block corank widths at `M`'s binding cut `t★`, and
+`FaithfulSJAt` the `(S,J)` resolution-state base-invariant (below): either the smooth free-block leaf
+(`d = 0` and the carrier loss IS the Frobenius sum-of-squares — the HEq-free OBSERVABLE form) or a
+resolved corner (`1 ≤ d`) with a dehomogenised generator `i₀` carrying (α) `pSimultaneous`,
+(β) `½·minAdm M ≤ monomialThreshold`, (γ') the clean route-A LEAF FORM (`decLoss = commonDivisor(u)² ·
+frobSq (Γ·Z)`, `Z·Zᵀ ≽ c·1`, `minAdm M ≤ a·n`). `#4` (`DecoratedBaseHyp`) CONSUMES it
+(`RouteMSJBaseHyp.decoratedBaseHyp_faithful`, sorry-free); `#5` PRESERVES it.
 
-    admValuation D  :=  ∃ i₀, ∀ j ℓ, D.carrier.supp i₀ ℓ ≤ D.carrier.supp j ℓ
+## Fidelity status
 
-the **(T) simultaneous** condition (`pSimultaneous` on the carrier support): ONE generator is a unit at
-every critical divisor — the `p = 0` transversality condition, faithful to "`Crit(D)` incl. intersection
-rays ⟹ (T)" (cert §6-C1). It correctly REJECTS the fresh-disjoint `x²+y²` carrier (the `(P) ⇏ (T)` gap,
-banked `suppFreshTwo_not_pSimultaneous`); the weaker `pDivisorwise` would wrongly ADMIT it.
+* **Q3 (α / valuation) — LOCKED.** `admValuation` = `d = 0`-carrier vacuity OR `pSimultaneous` on
+  `D.carrier.supp` (= `FaithfulSJAt`'s α); the two regression tests exercise the `pSimultaneous` disjunct.
+* **Q2 (a, b) — LOCKED.** `a, b` are `M`'s binding-cut corank widths (`t★ = bindingCut M`, banked
+  `exists_binding_cut`).
+* **Q1 (`genuineCarrier`) — LOCKED, form (i) + `MeasurePreserving`.** Stores `Params M` via a
+  MEASURE-PRESERVING equiv `e : D.Z ≃ᵐ Params M` (MP needed for the base CoV), `ctx`/`dom` reading
+  `prod M (e z)`.
+* **FaithfulSJAt (OPT-A, S2-settled §★★★) — LANDED (def + htriv + `#4`).** The `d = 0` disjunct is the
+  HEq-free observable-loss form (extractable, `#4` reads it via `genuineCarrier` + `eqRec_fun_apply_eqRec`);
+  the `d ≥ 1` disjunct carries the clean route-A leaf-form γ' (the weighted-`δ` form is transient within a
+  peel, not in the stable carrier). The bare units bound alone is dropped (vacuous). `#5`-preservability of
+  γ' + `minAdm M ≤ a·n` = cover's Q1.
 
-## Fidelity status (per controller answers)
-
-* **Q3 (valuation clause) — LOCKED.** `admValuation` = empty-`Crit` vacuity (`d = 0`) OR `pSimultaneous` on
-  `D.carrier.supp`; the two regression tests exercise the `pSimultaneous` disjunct.
-* **Q2 (a, b) — LOCKED.** `a, b` are `M`'s binding-cut corank widths (`t★ = bindingCut M`, the least binding
-  cut, banked `exists_binding_cut`). Functions of `M` alone.
-* **Q1 (`genuineCarrier`) — LOCKED, form (i)** (cover-decided). Stores the FULL `Params M` via a measure-equiv
-  `e : D.Z ≃ᵐ Params M` (NOT type-equality — dodges `HEq`), with `ctx`/`dom` reading the layer product
-  `prod M (e z)`; the deeper TAIL that `#144`/`#2`/the leaf consume is DERIVED from `A = e z`, not stored.
-  `htriv` (`adm_trivial`) is proved (trivial: `e = id`, `d = 0`).
-
-`genm-sj5-cover` audits the fidelity. Axiom-clean `[propext, Classical.choice, Quot.sound]`.
+`htriv` (`adm_trivial`) proved (trivial = the `d = 0` observable disjunct, `loss_ofMatrix`). `genm-sj5-cover`
+audits `#5` preservation. Axiom-clean `[propext, Classical.choice, Quot.sound]`.
 -/
 
 namespace DLNFibre.DLN.RLCT
 
-open scoped BigOperators
+open scoped BigOperators ENNReal Matrix
 open MeasureTheory
 
 variable {L : ℕ}
@@ -54,28 +60,35 @@ def genuineCarrier {M : Fin (L + 1) → ℕ} (D : SJDecoration M) : Prop :=
   letI := D.mZ
   D.ζ = Unit ∧
   ∃ (hν : D.ν = (Fin (M 0) × Fin (M (Fin.last L)))) (e : D.Z ≃ᵐ Params M),
+    MeasurePreserving e ∧
     D.dom = e ⁻¹' (paramsBoxM M 1) ∧
     ∀ z : D.Z, (hν ▸ (D.ctx z).2) = fun ik => prod M (e z) ik.1 ik.2
 
 /-! ## Q3 — the valuation clause (`pSimultaneous`, LOCKED) -/
 
-/-- **The valuation clause (`p = 0`, the (T) simultaneous form).** Either there are NO exceptional
-divisors (`d = 0`, so `Crit D = ∅` and "`∀ η ∈ Crit`" is vacuously true), or some generator `i₀` attains
-the shared divisor minimum at EVERY exceptional divisor `ℓ` — i.e. `i₀` is a unit at every critical
-divisor. The second disjunct is `pSimultaneous` on the carrier support
-(`admValuation_iff_pSimultaneous`). It is the hypothesis the terminal `sjLoss_terminal_lintegral_lt_top`
-consumes, and the faithful encoding of "`Crit(D)` including intersection rays ⟹ (T)" (cert §6-C1); the
-`d = 0` disjunct is the empty-`Crit` vacuity (a free block carries no critical divisor). -/
+/-- **The valuation clause (`p = 0`, the (T) simultaneous form).** Either the decoration is the
+FULLY-UNRESOLVED free block (`d = 0` AND the carrier is the identity `ofMatrix` at the layer product —
+the only `d = 0` decoration the descent produces, `trivial`), or some generator `i₀` attains the shared
+divisor minimum at EVERY exceptional divisor `ℓ` — i.e. `i₀` is a unit at every critical divisor. The
+second disjunct is `pSimultaneous` on the carrier support (`admValuation_iff_pSimultaneous`), the
+hypothesis the terminal `sjLoss_terminal_lintegral_lt_top` consumes, and the faithful encoding of
+"`Crit(D)` including intersection rays ⟹ (T)" (cert §6-C1). The `d = 0 ∧ carrier = ofMatrix` disjunct
+(vs a bare `d = 0`) EXCLUDES the divergent degenerate-`coeff` `d = 0` carriers (FLAG-1 fix): the base
+must genuinely prove finiteness, so `d = 0` admissibility is pinned to the free-block `ofMatrix` form
+(whose loss is `frobSq (prod M)`). -/
 def admValuation {M : Fin (L + 1) → ℕ} (D : SJDecoration M) : Prop :=
-  D.d = 0 ∨ ∃ i₀ : D.ι, ∀ (j : D.ι) (ℓ : Fin D.d), D.carrier.supp i₀ ℓ ≤ D.carrier.supp j ℓ
+  (D.d = 0 ∧ HEq D.carrier (SJLinGenState.ofMatrix (M 0) (M (Fin.last L)))) ∨
+    ∃ i₀ : D.ι, ∀ (j : D.ι) (ℓ : Fin D.d), D.carrier.supp i₀ ℓ ≤ D.carrier.supp j ℓ
 
-/-- **`admValuation` is the empty-`Crit` vacuity OR `pSimultaneous` on the carrier support** (given
+/-- **`admValuation` is the free-block base OR `pSimultaneous` on the carrier support** (given
 `Nonempty D.ι`): the total `≤`-at-every-`ℓ` disjunct is equivalent to "`i₀` attains the shared min
 `sharedDivisorExp` everywhere". The bridge to the banked `RouteMSJAdmEncoding` (P)/(T) machinery. -/
 theorem admValuation_iff_pSimultaneous {M : Fin (L + 1) → ℕ} (D : SJDecoration M)
     [Nonempty D.ι] :
     letI := D.fι
-    admValuation D ↔ (D.d = 0 ∨ pSimultaneous D.carrier.supp) := by
+    admValuation D ↔
+      ((D.d = 0 ∧ HEq D.carrier (SJLinGenState.ofMatrix (M 0) (M (Fin.last L)))) ∨
+        pSimultaneous D.carrier.supp) := by
   letI := D.fι
   unfold admValuation pSimultaneous
   refine or_congr_right ?_
@@ -105,15 +118,57 @@ def admCorankA {n : ℕ} (M : Fin (n + 1) → ℕ) : ℕ := M 0 - bindingCut M
 /-- **The front-block column-rise `b = M₁ − t★`** at `M`'s binding cut. -/
 def admCorankB {n : ℕ} (M : Fin (n + 1) → ℕ) : ℕ := M 1 - bindingCut M
 
-/-! ## The admissibility predicate `adm` (fork (B)) -/
+/-! ## `FaithfulSJAt` — the `(S,J)` resolution-state base-invariant (OPT-A, cover `faithfulsj-design`) -/
 
-/-- **The A2 admissibility predicate (fork (B), the valuation-predicate).** `adm n M D` iff the carrier is
-genuine (`genuineCarrier`, form (i)) AND either the binding-cut front block is degenerate
-(`a = 0 ∨ b = 0`, the no-op peel) or the `p = 0` valuation holds (`admValuation`). This is the predicate
-`DecoratedDescent` (`RouteMSJDecoratedRec`) quantifies over: `htriv` (trivial admissible, `adm_trivial`),
-`DecoratedStepHyp` (peel-closure `= #144`), and `DecoratedBaseHyp` (leaf finiteness `= route A`). -/
+/-- **The `(S,J)` resolution-state base-invariant `FaithfulSJAt`** (OPT-A; cover `faithfulsj-design §★★★`,
+S2-settled, decorrelated-EARNED). Either the smooth free-block leaf (`d = 0`, and the carrier loss IS the
+Frobenius sum-of-squares of the active variables — the HEq-free OBSERVABLE form, so `#4` reads it without
+type-constructor injectivity), or a resolved corner (`1 ≤ D.d`) with a dehomogenised generator `i₀`
+satisfying: **(α)** `i₀` attains the shared-divisor minimum at every `ℓ` (`pSimultaneous`); **(β)** the
+monomial threshold dominates `½·minAdm M`; **(γ')** the ROUTE-A LEAF FORM (the stable CLEAN identity, S2
+uniform-support): a free active block via a measure iso `eΓ : D.Z ≃ᵐ (Fin a → Fin n → ℝ)` with
+`dom = eΓ ⁻¹' matBox a n 1`, a deeper tail `Z` with `Z·Zᵀ ≽ c·1` (`c > 0` — the units-sector interface,
+derived-trivial `Z = I` at width-2), the free-block dimension bound `minAdm M ≤ a·n` (width-general `≤`,
+NOT the width-2-only `=`), and the CLEAN loss decomposition `decLoss u z = commonDivisor(u)² ·
+frobSq ((eΓ z)·Z)`. The weighted-`δ` form is only transient within a peel; the STABLE carrier is clean
+(§★★★). `DecoratedBaseHyp` (#4) CONSUMES γ' via `decoratedBase_routeA_of_leafForm`; the peel (#5)
+PRESERVES it (`Z` z-dependence + preservability = cover's Q1). -/
+def FaithfulSJAt {M : Fin (L + 1) → ℕ} (D : SJDecoration M) : Prop :=
+  (D.d = 0 ∧ (letI := D.fν; letI := D.fι;
+      ∀ (z : D.ζ) (x : D.ν → ℝ) (u : Fin D.d → ℝ), D.carrier.loss u z x = ∑ v, (x v) ^ 2)) ∨
+    (1 ≤ D.d ∧ ∃ i₀ : D.ι,
+      -- (α) `pSimultaneous`: `i₀` attains the shared-divisor minimum everywhere.
+      (letI := D.fι; ∀ (j : D.ι) (ℓ : Fin D.d), D.carrier.supp i₀ ℓ ≤ D.carrier.supp j ℓ) ∧
+      -- (β) the monomial threshold dominates `½·minAdm M`.
+      (letI := D.fι; letI : Nonempty D.ι := ⟨i₀⟩;
+        (minAdm M : ℝ≥0∞) / 2 ≤ monomialThreshold D.d (sharedDivisorExp D.carrier.supp) D.jac) ∧
+      -- (δ≡0) UNIFORM support (`residualSupport ≡ 0`): a CARRIED support property (#5 establishes it via
+      -- per-peel corank integration; #4 consumes it). NOT a `genuineCarrier` consequence (that gives only
+      -- spanning; the δ=0 SUBFAMILY spanning needs `residualSupport ≡ 0`). §★★★ / UPDATE-953.
+      (letI := D.fι; letI : Nonempty D.ι := ⟨i₀⟩;
+        ∀ (i : D.ι) (ℓ : Fin D.d), D.carrier.supp i ℓ = sharedDivisorExp D.carrier.supp ℓ) ∧
+      -- (γ') route-A leaf form, PROVENANCE: the residuals ARE the `ρ`-indexed entries of the free block
+      -- `Γ(z) = eΓ z` times the deeper tail `Z`; units bound; `minAdm ≤ a·n`. #4 DERIVES the clean loss
+      -- `decLoss = commonDivisor² · frobSq (Γ·Z)` from this + δ≡0 (`decLoss_commonDivisor_factor`).
+      (letI := D.mZ; letI := D.fν; letI := D.fι; letI : Nonempty D.ι := ⟨i₀⟩;
+        ∃ (a n Dt : ℕ) (Z : Matrix (Fin n) (Fin Dt) ℝ) (c : ℝ)
+          (eΓ : D.Z ≃ᵐ (Fin a → Fin n → ℝ)) (ρ : D.ι ≃ (Fin a × Fin Dt)),
+          0 < c ∧ (Z * Zᵀ - c • (1 : Matrix (Fin n) (Fin n) ℝ)).PosSemidef ∧
+          MeasurePreserving eΓ ∧ D.dom = eΓ ⁻¹' matBox a n 1 ∧ minAdm M ≤ a * n ∧
+          ∀ (z : D.Z) (i : D.ι),
+            D.carrier.residual (D.ctx z).1 (D.ctx z).2 i = rmatMul (eΓ z) Z (ρ i).1 (ρ i).2))
+
+/-! ## The admissibility predicate `adm` (fork (B), OPT-A) -/
+
+/-- **The A2 admissibility predicate (fork (B), OPT-A).** `adm n M D` iff the carrier is genuine
+(`genuineCarrier`, form (i)) AND either the binding-cut front block is degenerate (`a = 0 ∨ b = 0`, the
+no-op peel) or the resolution-state base-invariant `FaithfulSJAt D` holds (which STRENGTHENS `admValuation`:
+its α clause IS `admValuation`'s `pSimultaneous`, plus the β threshold + γ residual-coercivity the coupled
+base RLCT needs). This is the predicate `DecoratedDescent` (`RouteMSJDecoratedRec`) quantifies over: `htriv`
+(trivial admissible, `adm_trivial`), `DecoratedStepHyp` (peel-closure PRESERVES `FaithfulSJAt`, `#5`), and
+`DecoratedBaseHyp` (leaf finiteness CONSUMES `FaithfulSJAt`, `#4`). -/
 def adm (n : ℕ) (M : Fin (n + 1) → ℕ) (D : SJDecoration M) : Prop :=
-  genuineCarrier D ∧ (admCorankA M = 0 ∨ admCorankB M = 0 ∨ admValuation D)
+  genuineCarrier D ∧ (admCorankA M = 0 ∨ admCorankB M = 0 ∨ FaithfulSJAt D)
 
 /-! ## `htriv` — the trivial decoration is admissible -/
 
@@ -121,14 +176,24 @@ def adm (n : ℕ) (M : Fin (n + 1) → ℕ) (D : SJDecoration M) : Prop :=
 literally, `ν` is the product index type, and `ctx` reads the layer product `prod M z`. -/
 theorem genuineCarrier_trivial (M : Fin (L + 1) → ℕ) :
     genuineCarrier (SJDecoration.trivial M) := by
-  refine ⟨rfl, rfl, MeasurableEquiv.refl (Params M), ?_, fun z => rfl⟩
-  ext x; rfl
+  refine ⟨rfl, rfl, MeasurableEquiv.refl (Params M), ?_, ?_, fun z => rfl⟩
+  · exact MeasurePreserving.id (volume : Measure (Params M))
+  · ext x; rfl
 
 /-- **`htriv` — the trivial decoration is admissible for every chain.** The genuine-carrier clause holds
-(`genuineCarrier_trivial`); the valuation clause holds vacuously (`d = 0`: no exceptional divisors, empty
-`Crit`). This is the `DecoratedDescent` leg `∀ n M, adm n M (SJDecoration.trivial M)`. -/
-theorem adm_trivial (n : ℕ) (M : Fin (n + 1) → ℕ) : adm n M (SJDecoration.trivial M) :=
-  ⟨genuineCarrier_trivial M, Or.inr (Or.inr (Or.inl rfl))⟩
+(`genuineCarrier_trivial`); `FaithfulSJAt` holds via the `d = 0` observable-loss disjunct — the trivial
+`ofMatrix` carrier's loss IS the Frobenius sum-of-squares of the active variables (`loss_ofMatrix` +
+`Fintype.sum_prod_type`). This is the `DecoratedDescent` leg `∀ n M, adm n M (trivial M)`. -/
+theorem adm_trivial (n : ℕ) (M : Fin (n + 1) → ℕ) : adm n M (SJDecoration.trivial M) := by
+  have key : ∀ (u : Fin 0 → ℝ) (Y : Fin (M 0) × Fin (M (Fin.last n)) → ℝ),
+      (SJLinGenState.ofMatrix (M 0) (M (Fin.last n))).loss u () Y = ∑ v, (Y v) ^ 2 := by
+    intro u Y
+    rw [SJLinGenState.loss_ofMatrix]
+    simp only [frobSq]
+    rw [Fintype.sum_prod_type]
+  refine ⟨genuineCarrier_trivial M, Or.inr (Or.inr (Or.inl ⟨rfl, fun z x u => ?_⟩))⟩
+  obtain ⟨⟩ := z
+  exact key u x
 
 /-! ## Regression test 1 — the rank-1 `(3,3,2,2) →_{t=2} (2,2,2)` carrier is ADMITTED (`p = 0`)
 
@@ -166,8 +231,9 @@ def suppRank1 : SJSupport (Fin 2) 1 := ![![0], ![1]]
 corank generator (`0`) is a unit at the exceptional divisor, so it attains the shared min everywhere. -/
 theorem regression_rank1_admitted :
     admValuation (suppDecoration (![2, 2, 2] : Fin 3 → ℕ) suppRank1 ![3]) := by
-  show (1 : ℕ) = 0 ∨ ∃ i₀ : Fin 2, ∀ (j : Fin 2) (ℓ : Fin 1), suppRank1 i₀ ℓ ≤ suppRank1 j ℓ
-  exact Or.inr ⟨0, by decide⟩
+  refine Or.inr ?_
+  change ∃ i₀ : Fin 2, ∀ (j : Fin 2) (ℓ : Fin 1), suppRank1 i₀ ℓ ≤ suppRank1 j ℓ
+  exact ⟨0, by decide⟩
 
 /-! ## Regression test 2 — the fresh-disjoint `x² + y²` carrier is REJECTED (`(P) ⇏ (T)`)
 
@@ -181,8 +247,10 @@ unit at BOTH divisors: this is `¬ pSimultaneous suppFreshTwo` (banked `suppFres
 transported to `¬ admValuation`. So the fresh-disjoint terminal is inadmissible until refined. -/
 theorem regression_freshTwo_rejected :
     ¬ admValuation (suppDecoration (![2, 2, 2] : Fin 3 → ℕ) suppFreshTwo ![0, 0]) := by
-  show ¬ ((2 : ℕ) = 0 ∨ ∃ i₀ : Fin 2, ∀ (j : Fin 2) (ℓ : Fin 2),
-    suppFreshTwo i₀ ℓ ≤ suppFreshTwo j ℓ)
-  decide
+  rintro (⟨h2, _⟩ | h)
+  · exact absurd h2 (by decide)
+  · revert h
+    change ¬ ∃ i₀ : Fin 2, ∀ (j : Fin 2) (ℓ : Fin 2), suppFreshTwo i₀ ℓ ≤ suppFreshTwo j ℓ
+    decide
 
 end DLNFibre.DLN.RLCT
