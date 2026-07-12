@@ -1388,3 +1388,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1
 -- flag, since `a≤M₂−b+1` at every genuine b>1 binding cut is a THEOREM (convexity + incidence, cover+Codex
 -- PASS). + `detGram_lintegral_box_lt_top` (general side-T, reusable). Borderline a=M₂−b+1 + Z-uniformity deferred.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
+-- #5 off-sector BORDERLINE (genm-sj5-borderline): the θ-interpolation closing BOTH borderlines (b=1 a=M₂ +
+-- b>1 a=M₂−b+1, the log-divergent cuts). `corankOffSector_borderline_atBorder_le` — F ≤ ATOM^θ·BOUNDED^{1−θ}
+-- (geom-mean), θ-scaled weight finite for θ<1, log absorbed by the strict c'<carrierThreshold margin. With
+-- Obl-1/Obl-2 (convergent), all corank regimes of the off-sector are now closed. (Obl-2 helper generalised
+-- nat→real, backward-compat cover-confirmed.)
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline

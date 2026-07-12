@@ -141,6 +141,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
 
 /-!
 # Axiom-hygiene check
@@ -1171,3 +1172,9 @@ open DLNFibre.DLN.RLCT
 #print axioms corankOffSector_bpos_le
 #print axioms corankWeight_bpos_lt_top
 #print axioms detGram_lintegral_box_lt_top
+-- #5 off-sector BORDERLINE (genm-sj5-borderline): the θ-interpolation closing BOTH borderlines (b=1 a=M₂
+-- + b>1 a=M₂−b+1). F ≤ ATOM^θ·BOUNDED^{1−θ}, log absorbed by the strict c'<carrierThreshold margin.
+-- With Obl-1/Obl-2, all corank regimes of the off-sector are closed.
+#print axioms corankOffSector_borderline_atBorder_le
+#print axioms corankOffSector_borderline_le
+#print axioms enn_geom_interp

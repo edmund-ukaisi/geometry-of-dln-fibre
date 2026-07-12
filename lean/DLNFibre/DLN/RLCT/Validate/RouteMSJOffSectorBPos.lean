@@ -110,16 +110,18 @@ theorem detGram_lintegral_box_lt_top {r n : ℕ} (hrn : r ≤ n) {a : ℝ}
 
 /-! ## The `b>1` corank weight is finite (convergent regime) -/
 
-/-- **The `b>1` corank weight is finite (box-clipped, convergent regime).** For a full-rank tail
-`Z.rank = M₂` (so `ZZᵀ` PosDef), `b ≤ M₂`, and the strict convergent bound `a < M₂ − b + 1`, the corank
-weight `∫_{matBox b M₂ 1} det((A·Z)(A·Z)ᵀ)^{−a/2}` is finite. Normalise `ZZᵀ = L Lᵀ`
-(`exists_gram_normalizer`, `L = (ZZᵀ)^{1/2}`), change variables `A ↦ A·L` (`lintegral_comp_rightMulₚ`,
-Jacobian `(det L)^{-b}`) so `det((A·Z)(A·Z)ᵀ) = det((A·L)(A·L)ᵀ)`, enclose the transformed box in
-`matBox b M₂ T`, and apply `detGram_lintegral_box_lt_top`. -/
-theorem corankWeight_bpos_lt_top {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin n) ℝ)
-    (hbM : b ≤ M₂) (haM : (a : ℝ) < (M₂ : ℝ) - b + 1) (hZrank : Z.rank = M₂) :
+/-- **The `b>1` corank weight is finite (box-clipped, convergent regime), REAL exponent.** For a
+full-rank tail `Z.rank = M₂` (so `ZZᵀ` PosDef), `b ≤ M₂`, and the strict convergent bound
+`s < M₂ − b + 1`, the corank weight `∫_{matBox b M₂ 1} det((A·Z)(A·Z)ᵀ)^{−s/2}` is finite (any REAL
+exponent `s`; the convergent Obl-2 instantiates the nat `s = a`, the borderline θ-interpolation the
+real `s = θ·a` with `θ < 1`). Normalise `ZZᵀ = L Lᵀ` (`exists_gram_normalizer`, `L = (ZZᵀ)^{1/2}`),
+change variables `A ↦ A·L` (`lintegral_comp_rightMulₚ`, Jacobian `(det L)^{-b}`) so
+`det((A·Z)(A·Z)ᵀ) = det((A·L)(A·L)ᵀ)`, enclose the transformed box in `matBox b M₂ T`, and apply
+`detGram_lintegral_box_lt_top`. -/
+theorem corankWeight_bpos_lt_top {b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin n) ℝ)
+    (hbM : b ≤ M₂) {s₀ : ℝ} (hsM : s₀ < (M₂ : ℝ) - b + 1) (hZrank : Z.rank = M₂) :
     ∫⁻ A in matBox b M₂ 1,
-      ENNReal.ofReal (((Matrix.of A * Z) * (Matrix.of A * Z)ᵀ).det ^ (-(a : ℝ) / 2)) < ⊤ := by
+      ENNReal.ofReal (((Matrix.of A * Z) * (Matrix.of A * Z)ᵀ).det ^ (-s₀ / 2)) < ⊤ := by
   classical
   -- `G = ZZᵀ` PosDef; its normaliser `Mn = G^{−1/2}`, `L = Mn⁻¹ = G^{1/2}`.
   have hG : (Z * Zᵀ).PosDef := posDef_gram_of_rank_eq Z hZrank
@@ -143,8 +145,8 @@ theorem corankWeight_bpos_lt_top {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin 
       _ = Mn⁻¹ * Mn⁻¹ := by rw [Matrix.mul_one]
   -- the transported integrand `f`
   set f : (Fin b → Fin M₂ → ℝ) → ℝ≥0∞ :=
-    fun Y => ENNReal.ofReal ((Matrix.of Y * (Matrix.of Y)ᵀ).det ^ (-(a : ℝ) / 2)) with hfdef
-  have hfmeas : Measurable f := measurable_detGram b M₂ (a : ℝ)
+    fun Y => ENNReal.ofReal ((Matrix.of Y * (Matrix.of Y)ᵀ).det ^ (-s₀ / 2)) with hfdef
+  have hfmeas : Measurable f := measurable_detGram b M₂ s₀
   -- `Matrix.of (fun i ↦ A i ᵥ* L) = Matrix.of A * L`
   have hof : ∀ A : Fin b → Fin M₂ → ℝ, (Matrix.of (fun i => A i ᵥ* L)) = Matrix.of A * L := by
     intro A; ext i j
@@ -162,7 +164,7 @@ theorem corankWeight_bpos_lt_top {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin 
     rw [lhs, rhs, hLLT]
   -- the integrand rewrite `weight A = f (fun i ↦ A i ᵥ* L)`
   have hint : ∀ A : Fin b → Fin M₂ → ℝ,
-      ENNReal.ofReal (((Matrix.of A * Z) * (Matrix.of A * Z)ᵀ).det ^ (-(a : ℝ) / 2))
+      ENNReal.ofReal (((Matrix.of A * Z) * (Matrix.of A * Z)ᵀ).det ^ (-s₀ / 2))
         = f (fun i => A i ᵥ* L) := by
     intro A
     rw [hfdef]; simp only [hof A, hGeq A]
@@ -212,7 +214,7 @@ theorem corankWeight_bpos_lt_top {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin 
     exact abs_le.mp habs
   -- assemble: rewrite integrand, indicator-CoV, box enclosure
   rw [show (∫⁻ A in matBox b M₂ 1,
-        ENNReal.ofReal (((Matrix.of A * Z) * (Matrix.of A * Z)ᵀ).det ^ (-(a : ℝ) / 2)))
+        ENNReal.ofReal (((Matrix.of A * Z) * (Matrix.of A * Z)ᵀ).det ^ (-s₀ / 2)))
       = ∫⁻ A in matBox b M₂ 1, f (fun i => A i ᵥ* L) from lintegral_congr (fun A => hint A)]
   rw [← lintegral_indicator (matBox_measurableSet b M₂ 1)]
   rw [show (∫⁻ A, (matBox b M₂ 1).indicator (fun A => f (fun i => A i ᵥ* L)) A)
@@ -225,7 +227,7 @@ theorem corankWeight_bpos_lt_top {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin 
     lintegral_indicator hsmeas]
   refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
   calc ∫⁻ A in s, f A ≤ ∫⁻ A in matBox b M₂ T, f A := lintegral_mono_set hsub
-    _ < ⊤ := detGram_lintegral_box_lt_top hbM haM T
+    _ < ⊤ := detGram_lintegral_box_lt_top hbM hsM T
 
 /-! ## The main lemma — the `b>1` corank-integrability bound (convergent regime) -/
 
