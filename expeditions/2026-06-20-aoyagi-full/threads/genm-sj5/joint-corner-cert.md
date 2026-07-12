@@ -149,3 +149,58 @@ correction); the per-branch threshold is the joint tube estimate `½(M₀ρ + mi
   cover; I audit the OFF-SECTOR recursion (adapted-chart neighbourhood control, per-branch `½minAdm`, finite
   stratification) hardest — that is the residual soundness surface. The #4 audit PREEMPTS this the moment desc4
   reports the committed #4 build.
+
+---
+
+## 6. ★★ OFF-SECTOR rank-drop cover (the last soundness surface) — a REAL GAP in the naive corank cover; the fix is a TRANSVERSALITY-augmented ARITY recursion
+
+**Charge (team-lead): design the off-sector `{σ_min(Z)<ε}` recursion airtight — no null-set deletion (Codex Q3).**
+Decorrelated skeptical Codex (`codex/offsector-{prompt,answer}.md`, conclusion withheld) + exact algebra
+(`/tmp/sj5corner/{offsector,mgt1}.py`). **Codex CAUGHT A REAL GAP** in my first-pass corank-of-`Z`
+stratification — recorded honestly, NOT papered over.
+
+**The exact-verified per-cell finiteness (the part that IS airtight).** On the GENERIC (transverse, `m=1`)
+part of corank cell `S_q`, the nested-simplex tube integral `∫_{0<s_q<…<s_1<κ} (∏s_j^{α_j})^{−c'} dμ`
+(`dμ ≍ ∏s_j^{(D_j−D_{j−1})−1}`) is finite over a POSITIVE-measure neighbourhood (not the locus) at the
+charges-ADD threshold `½(M₀ρ + min(M₀q, D_q))`; the inner integrals' `+1`s ADD (`offsector.py`: anchor q=2
+→ 7/2, generic q=3 → the accumulated `Σ(p_j−α_j)+(q−1)>−1`). Cells GLUE at the seams (`corank2 §1` sector
+boundary). `min_q = ½minAdm` (QIP, dmcheck). [FINE.]
+
+**★ THE GAP (Codex Q2, exact-verified `mgt1.py`): `m>1` does NOT imply higher corank.** Counterexample
+`Z = a·b` (scalar product): at `a=b=0`, `corank(Z)=1` but `σ_min = |ab| ≍ t²` on the diagonal (`σ_min² = t⁴
+≠ dist² = t²`) — first-order vanishing FAILS, yet there is NO higher-corank stratum to catch it. So the split
+"generic `S_q` (m=1) + recurse on `{corank≥q+1}`" is **INCOMPLETE**: the non-`m=1` part of `S_q` is a
+**SAME-corank critical locus** of the parameter→matrix map. A corank-of-`Z` recursion MISSES it.
+
+**The fix (honest resolution).** The `m>1` / non-transverse loci ARE the **INTERSECTION RAYS** (several product
+factors degenerate coincidentally — `a=b=0` in `Z=ab`). They are NOT caught by corank-of-`Z`; they are the
+**ITERATED coupled corner** (blow up the crossing: `a=u, b=uτ ⟹ ab=u²τ`, the `u₀²·unit` form — my
+`stephyp-intersection-cert` Q1). So the airtight off-sector cover is a **TRANSVERSALITY-augmented recursion on
+ARITY**, NOT on corank-of-`Z`:
+- **GOOD tube** `{corank Z=q, parameter→Z map TRANSVERSE (uniform Jacobian bound, m=1)}`: the joint density
+  gives finiteness `≥ ½minAdm`. **Requires N1 STRENGTHENED to a UNIFORM transversality bound on the tube**
+  (not merely generic `m=1`) — Codex Q2.
+- **BAD locus** `{corank Z=q, NON-transverse (m>1)}` = the intersection rays: handled by the iterated coupled
+  corner, recursing by **peeling a deeper factor (ARITY ↓)** — the well-founded variable is ARITY (each peel
+  reduces arity, bounded), NOT corank-of-`Z` (which does not decrease at the crossing). The intersection ray's
+  coupled corner charges-ADD (Q1, exact `coupled_add.py`); dmcheck's QIP gives `≥½minAdm` per branch.
+- **Total** (Codex Q3): finite measurable cover ⟹ subadditivity `∫_{σ_min<ε} ≤ Σ_cells ∫_{tube}`; the ARITY
+  recursion is well-founded (finite) AND each level RE-VERIFIES the same estimate (loss lower bound, density,
+  UNIFORM constants, bad-region containment) + a finite subcover / compact localization.
+
+**Net (honest).** The off-sector is the DEEPEST #5 content, as flagged — and Codex's catch sharpens WHY: a
+corank-of-`Z` cover alone is unsound (`m>1` gap, `Z=ab` verified). The airtight cover is the
+transversality-augmented ARITY recursion: GOOD tube (uniform transversality, N1-strengthened) + intersection
+rays (iterated corner, Q1) + arity well-foundedness + Codex-Q3 uniform-constant re-verification per level. This
+is a GENUINE ADDITIONAL obligation beyond dmcheck's threshold-arithmetic (which is necessary — the QIP
+`≥½minAdm` — but NOT sufficient for the measure-theoretic neighbourhood cover). LABOUR, not a
+decorrelated-confirmed wall (arity well-foundedness + the banked iterated corner + dmcheck per-branch give the
+route), but the UNIFORM transversality bound (N1-strengthened) + the finite-subcover/uniform-constant control
+are the concrete owed pieces. **This supersedes §3's "rank-drop recurses (dmcheck P3)" one-liner** — the recursion
+is on ARITY with a transversality gate, not a bare corank stratification.
+
+**Owed for `innerCorankDescent_lt_top` off-sector (updated):** (1) N1 strengthened to a UNIFORM transversality/
+Jacobian lower bound on the good tube [OWED, geometric — the `m=1` gate must be uniform, not generic]; (2) the
+intersection-ray iterated corner = `stephyp-intersection-cert` Q1 [certified, banked-adjacent]; (3) the ARITY
+recursion well-foundedness + per-level uniform-constant re-verification + finite subcover [OWED, measure
+assembly]. dmcheck's no-collapse (threshold) is necessary but the measure-cover (1)+(3) is the residual work.
