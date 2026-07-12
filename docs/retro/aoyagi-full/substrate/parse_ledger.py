@@ -17,10 +17,11 @@ BRANCH = "origin/expedition/aoyagi-full"
 LEDGER = "expeditions/2026-06-20-aoyagi-full/synthesis.md"
 OUT = Path(__file__).resolve().parent / "events.json"
 
-HEADER_RE = re.compile(r"^\*?\*?⚙ UPDATE-(\d+)\s*\((\d{4}-\d\d-\d\d)")
+HEADER_RE = re.compile(r"^\*{0,2}(?:[⚙★✅⚠]\uFE0F?\s*)*UPDATE-(\d+)\s*\((\d{4}-\d\d-\d\d)")
 SHAREF_RE = re.compile(r"@?\b([0-9a-f]{8})\b")
 SLUG_RE = re.compile(r"\b(genm-[a-z0-9-]+|fm3?/[a-z0-9-]+|fm-[a-z0-9-]+|crux2/[a-z0-9-]+|r1-[a-z0-9-]+|d1[a-z0-9]+|l2[a-z0-9]+)\b")
 ITEM_RE = re.compile(r"(?:#|Item[ -])(\d{2,3})\b")
+AGENT_RE = re.compile(r"[\[\(](a[0-9a-f]{7})[\],\)]")
 
 # keyword flags: (flag_name, regex, header_only)
 FLAGS = [
@@ -71,6 +72,7 @@ def main():
             "thread_slugs": sorted(set(SLUG_RE.findall(body)))[:12],
             "sha_refs": sorted(set(SHAREF_RE.findall(body)))[:12],
             "item_refs": sorted({int(n) for n in ITEM_RE.findall(body)})[:12],
+            "agent_ids": sorted(set(AGENT_RE.findall(body)))[:8],
             "flags": sorted(f for f, rx, honly in FLAGS if rx.search(header if honly else body)),
         }
         events.append(ev)

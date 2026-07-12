@@ -38,7 +38,7 @@ PILLARS = [
 KIND_RE = re.compile(r"^(feat|fix|docs?|wip|setup|tick|thread|merge|integrate|refactor|test|chore|perf)\b", re.I)
 SCOPE_RE = re.compile(r"^[a-z]+\(([^)]+)\)", re.I)
 TEAMMATE_RE = re.compile(r"\[teammate:\s*([\w-]+)\]")
-UPDATE_RE = re.compile(r"UPDATE-(\d+)")
+UPDATE_RE = re.compile(r"UPDATE-(\d+(?:/\d+)*)")
 SHAREF_RE = re.compile(r"@([0-9a-f]{8,10})\b")
 ITEM_RE = re.compile(r"(?:discuss(?:-at-close)?\s*)?#(\d{2,3})\b")
 SLUG_RE = re.compile(r"\b(genm-[a-z0-9-]+|fm3?/[a-z0-9-]+|fm-[a-z0-9-]+|crux2/[a-z0-9-]+|r1-[a-z0-9-]+|l2[a-z0-9-]*|d1[a-z0-9-]+|worktree-rung0[a-z0-9-]*)\b")
@@ -73,8 +73,13 @@ def main():
                          ("merge" if subj.lower().startswith("merge") else "other")),
                 "scope": scope.group(1) if scope else None,
                 "teammate_tag": (TEAMMATE_RE.search(subj) or [None] and None) if not TEAMMATE_RE.search(subj) else TEAMMATE_RE.search(subj).group(1),
-                "thread_slugs": sorted(set(SLUG_RE.findall(subj))),
-                "update_refs": sorted({int(n) for n in UPDATE_RE.findall(subj)}),
+                "thread_slugs": sorted({s for s in SLUG_RE.findall(subj) if "-" in s}
+                                        | ({scope.group(1)} if scope and re.fullmatch(r"[a-z0-9/-]{3,}", scope.group(1))
+                                           and scope.group(1) not in ("aoyagi-full", "retro", "priorities", "synthesis",
+                                                                       "charter", "threads", "lean", "docs", "genm-sj5",
+                                                                       ) or scope and scope.group(1).startswith(("genm-", "l2", "d1", "fm", "r1", "crux"))
+                                           and re.fullmatch(r"[a-z0-9/-]{2,}", scope.group(1)) else set())),
+                "update_refs": sorted({int(x) for n in UPDATE_RE.findall(subj) for x in n.split("/")}),
                 "sha_refs": SHAREF_RE.findall(subj),
                 "item_refs": sorted({int(n) for n in ITEM_RE.findall(subj)}),
                 "files": [], "adds_lean": 0, "dels_lean": 0, "adds_docs": 0, "dels_docs": 0,

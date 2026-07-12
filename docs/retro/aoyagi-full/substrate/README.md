@@ -21,17 +21,19 @@ Read-only against `origin/expedition/aoyagi-full`; safe to rerun as the branch m
   micro-tides are finer-grained than the combed campaign threads by design).
 - `pool_summary.md` — join-quality stats + first readouts.
 
-## Known data gaps (honest)
+## Known data notes (honest)
 
-1. The live ledger holds ~836 of ~995 UPDATE blocks — early blocks were compacted away during
-   the run. Recovery path (H⁻, planned): parse `synthesis.md` at *historical* commits and union
-   the blocks; the full ledger exists in git history even where the tip file doesn't have it.
-2. ~44% of ledger sha-refs don't resolve inside `fork..branch` — mostly banked-but-unmerged
-   work-branch artifacts (itself informative: references to work that never reached canonical);
-   resolving against `--all` refs is a planned upgrade.
-3. Flag counts are keyword-grade: `corrected` on a block ≠ one correction event (a block can
-   discuss corrections). Event-grade classification is the S pass, run over `line_start/end`
-   anchors.
+1. Ledger coverage: 991/995 blocks (range 5..999; missing 300, 615-617 = referenced numbers
+   that never existed as blocks). Two header formats live at tip (early `**★★ UPDATE-N`,
+   later `**⚙ UPDATE-N`); the parser handles both. The initial "compacted ledger" reading was
+   a parser artifact — corrected via the A1 metric.
+2. Early-era (N ≲ 136) `date` fields are format-migration backfill stamps; use `landed_iso`
+   (`date_quality` field: ok / midnight-straddle / early-backfill / no-landing).
+3. sha-ref classes: in_canonical / exists_unmerged (banked-on-work-branches volume — itself a
+   readout) / agent_id_like (harness tide-ids, a join key to threads) / unknown (2 refs, likely
+   never-pushed rebased objects).
+4. Flag counts are keyword-grade: `corrected` on a block ≠ one correction event. Event-grade
+   classification is the S pass, run over the `anchor_ref`+`line_start/end` drill-in anchors.
 
 ## Planned next extractors
 

@@ -85,7 +85,16 @@ tout = {s: {**t, "updates": sorted(t["updates"]), "kinds": dict(t["kinds"])}
 (D / "threads.json").write_text(json.dumps(tout, indent=1))
 
 # A1 + summary readouts
-date_agree = sum(1 for ev in events if ev["landed_iso"] and ev["landed_iso"][:10] == ev["date"])
+date_agree = 0
+for ev in events:
+    if not ev.get("landed_iso"):
+        ev["date_quality"] = "no-landing"
+    elif ev["landed_iso"][:10] == ev["date"]:
+        ev["date_quality"] = "ok"; date_agree += 1
+    elif ev["landed_iso"][11:16] < "03:00":
+        ev["date_quality"] = "midnight-straddle"
+    else:
+        ev["date_quality"] = "early-backfill"  # format-migration era: date=backfill, prefer landed_iso
 catches = [ev for ev in events if {"corrected", "retracted", "refuted", "wall"} & set(ev["flags"])]
 per_day_catch = Counter(ev["date"] for ev in catches)
 per_day_land = Counter(ev["date"] for ev in events if "landed" in ev["flags"])
@@ -104,6 +113,17 @@ S = ["# Pool summary (mechanical readouts + join quality)", "",
 S += [f"- {d}: {'▇' * min(n, 40)} {n}" for d, n in sorted(per_day_catch.items())]
 S += ["", "## Landing events per day", ""]
 S += [f"- {d}: {'▇' * min(n, 40)} {n}" for d, n in sorted(per_day_land.items())]
+agents = Counter(a for ev in events for a in ev.get("agent_ids", []))
+cls = Counter(r["cls"] for ev in events for r in ev.get("sha_refs_classified", []))
+rec = sum(1 for ev in events if ev.get("anchor_ref") not in ("tip", None))
+disagree = [ev for ev in events if ev.get("landed_iso") and ev["landed_iso"][:10] != ev["date"]]
+S += ["", "## Ledger completeness & references",
+      f"- blocks recovered from history (compacted away at tip): {rec}",
+      f"- sha-ref classes: {dict(cls)}  (exists_unmerged = banked-on-work-branches volume)",
+      f"- agent/tide ids referenced: {sum(agents.values())} mentions, {len(agents)} unique",
+      f"- A1 date disagreements (ledger date ≠ landing-commit date): "
+      + "; ".join(f"UPDATE-{ev['update_n']} ({ev['date']} vs {ev['landed_iso'][:10]})" for ev in disagree),
+      ""]
 S += ["", "## Top 15 threads by Lean LoC added", ""]
 top = sorted(tout.items(), key=lambda kv: -kv[1]["adds_lean"])[:15]
 S += [f"- `{s}`: +{t['adds_lean']:,} lean ({t['n_commits']} commits, "
