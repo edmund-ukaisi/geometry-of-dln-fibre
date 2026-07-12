@@ -223,3 +223,67 @@ FLAG-2 `ν`-fixed) + **N1′ `m=1` slice** (banked-adjacent #109). My audit of #
 invariant `½(M₀ρ+min(M₀q,D_q))`) + β against `#144`/`carrierThreshold_shift`. [Codex NOT fired — the
 preservation of α/β/γ is my already-certified content; the peelOp Lean CONSTRUCTION is desc3's formalization,
 audited on landing.]
+---
+
+## §6″ — POST-§7 REFRESH (2026-07-12, UPDATE-965): #5 = the ROUTE-B decorated descent / coupled `diag(b)`; §6/§7 naive corner SUPERSEDED
+
+The §7 independent-hunt refutation + the minAdm perm-invariance proof + (□)-soundness settling (theorem
+modulo Aoyagi ∀ width) re-shape the #5 plan. **This section is the CURRENT #5 plan; where it conflicts with
+§5′/N-nodes above, this wins.** (Refs: `joint-corner-cert.md §8` refutation+pivot, `minadm-perminv-cert.md`,
+`offsector-independent-hunt.md`, `verify-r1-diagb-334.md`, `scripts/deepshare.py`.)
+
+**1. The off-sector IS the decorated descent (route B), NOT a separate cover.** DROP §6/§7's naive-corner /
+corank-of-Z stratification (superseded — the Eckart–Young "single matrix m=1" was a category error;
+"charges ADD to ½Σ" was units-only). The #5 mechanism is **route B**: at the binding cut, integrate the freed
+corank block `Γ` FIRST (freed Morse, exponent shift `½·peelCharge`), then the BLACK-BOX decorated IH on the
+reduced chain at `c'−½peelCharge < ½minAdm(redChain)` (`carrierThreshold_shift`). This IS Aoyagi's coupled
+`diag(b)` (R1, task #122) — same mechanism, `min(freed-divisor Morse, inner) + disjoint Watanabe-ADD`.
+
+**2. ★ THE fidelity requirement: the carrier carries `supp`+`coeff` = the `diag(b)` symbolic support.** This
+is the precise difference between the SOUND route and the refuted ones: threshold-only (multiplicity) →
+R1-refuted (under-counts (3,3,4) as 3); the naive corner (my §7) → over-counts; the DECORATED carrier
+(`SJLinGenState.supp` = which exceptional divisor weights which generator, `coeff` = the shear/coupling e) →
+carries exactly the shared-divisor data, giving the correct `½minAdm`. **#5 must build peelOp so the reduced
+decoration's `supp`+`coeff` faithfully record the diag(b) support** (FLAG-2: keep `ν`=product-type fixed;
+record row-elimination in coeff/supp, don't shrink ν).
+
+**3. Well-foundedness = the DRIVER's arity recursion (`decoratedBoxThresholdFinite_of_decoratedStep`), NOT
+§7-C.** Each peel strictly reduces arity (`redChain`, one fewer layer), bottoms at width-2 (#4). No separate
+corank-of-Z well-foundedness. The value is a TRUE statement ∀ width (minAdm perm-invariance + minAdm=cCodim
++ Aoyagi ⟹ RLCT=½minAdm, NO collapse — de-risked, so route B targets a true target).
+
+**4. Owed pieces (the #5 checklist):**
+- **N4′ peelOp** [OWED centerpiece] — `SJDecoration → SJDecoration` on `redChain`, carrying `supp`+`coeff`
+  faithfully (the diag(b) support), measurability. Scaffold banked (`radialAttach`, `gen_rowMix_const`,
+  `freedSchurLoss`, `Corner*`).
+- **Owed piece A: UNIFORM transversality** [OWED, geometric] — route B's units sector needs
+  `σ_{ρ+1}(Z)² ≍ dist²` UNIFORM on compact charts (not merely generic m=1; the [[1,t],[t,0]] tangency shows
+  generic-immersion is insufficient). Banked-adjacent `normalSlice_transfer` #109.
+- **ρ-Equiv PRODUCTION obligation** [OWED, fidelity] — peelOp must produce the bijection `ι ≃ (Fin a × Fin
+  Dt)` (one generator per resolved-corner entry, `|ι|=a·Dt`, no spurious/omitted) — the fidelity requirement
+  the #4 consumes as a hypothesis.
+- **β (charges-ADD via the shift)** [BANKED] `carrierThreshold_shift` + `minAdm=peelCharge+minAdm(redChain)`.
+- **α / p=0 preservation** [BANKED #144], **corank survival** [BANKED #2b].
+
+**5. DEEP-SHARING de-risk (folded in, `scripts/deepshare.py`).** Through DEEP (≥2) peels the freed blocks
+SHARE the deeper product; the hunt's mechanism — the **shared peel-radial's Jacobian `r^{#shared}` ADDS the
+charges** (route B: the outer radial carries `peelCharge + minAdm(redChain)`) → the ratio is RAISED to
+`½minAdm`, STRICTLY ≥ the naive independent-MIN (the collapse). Verified: this persists through deep peels
+(nested radials pile onto the outer), and `minAdm` is perm-invariant on deep chains ((5,5,5,5)→17,
+(3,3,3,4)→7, (4,4,2,2)→4 — all `=minAdm(sort)`). **#5-mechanism check for the formaliser:** confirm the
+peelOp's `supp`+`coeff` record the shared peel-radial at each deep peel (so the Jacobian's `r^{#shared}` is
+present) — this is what realizes "sharing raises," NOT a naive per-peel disjoint-Watanabe assumption (the
+blocks are NOT disjoint in the deeper product; they share it, and the shared-radial Jacobian is the ADD).
+The precise per-block bookkeeping is R1's `diag(b)` (`verify-r1-diagb-334.md`: `min(a-divisor, inner) +
+disjoint T`); the carrier's `supp`+`coeff` carry it.
+
+**6. The remaining CITED-Aoyagi residual (what route ii, #97 build-don't-cite, turns into a built one).** The
+resolution-EXHAUSTIVENESS at arbitrary width (disjoint/shared block-elimination closes at every peel, no
+missed divisor, RLCT = ½minAdm) is the Aoyagi content the descent BUILDS. #5 = route B realizing it natively.
+Aoyagi stays the sole Cite for the payoff equality; the native descent replaces the opaque rlct=½codim axiom
+for (□).
+
+**Net #5 plan (current):** build peelOp (route B, carrying `supp`+`coeff` = diag(b)) + N1-uniform-transversality
++ the ρ-Equiv production; well-foundedness = the driver's arity recursion; β/α/#144/#2b banked. The soundness
+(no-collapse, ∀ width) is SETTLED (theorem modulo Aoyagi); #5 is the native DISCHARGE. Audit focus (mine):
+the peelOp `supp`+`coeff` fidelity (does it carry the diag(b) support faithfully) + the uniform transversality.
