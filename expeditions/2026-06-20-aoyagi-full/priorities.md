@@ -74,10 +74,16 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
      the decorrelated verdict — the audit gate caught my genuineCarrier→δ≡0 conflation BEFORE desc4 committed (no wrong build; 2 wrong-γ, clean-frobSq GO, Codex's false mechanism all pre-empted).
    - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` #5 (the decorated peel) = THE MOUNTAIN (post-S2, UPDATE-952).** Now owns
      TWO things (both fold into `peelOp` preserves FaithfulSJAt): **(a) the STRUCTURAL half** — each reduced D' is uniform (residualSupport≡0,
-     coranks integrated OUT per-peel via `freedSchurLoss`), the S2-mechanism cover established; **(b) THE MOUNTAIN** — the coupled corner at
-     the binding cut `minAdm M = a + minAdm(redChain)` where the residual exponent EXACTLY SATURATES the reduced-IH threshold (Hölder-infeasible
-     as a black box → the **(S,J) DOUBLE INDUCTION**), = `innerCorankDescent_lt_top` / cover's stephyp-cert Q1. This is the genuine remaining
-     analytic content (cover's next audit focus). Below: the coupled corner blow-up → charges-ADD
+     coranks integrated OUT per-peel via `freedSchurLoss`), the S2-mechanism cover established; **(b) THE COUPLED CORNER** — the binding cut
+     `minAdm M = a + minAdm(redChain)`, the residual exponent EXACTLY SATURATING the reduced-IH threshold. **★ SATURATION SOLVED (UPDATE-954,
+     `joint-corner-cert.md`, decorrelated-Codex-confirmed):** the coupling is ASYMMETRIC — integrate Γ FIRST (Route B, banked-heavy: `loss_blockSplit`
+     + `frobSq_mul_ge` + `freedSchurLoss_inner_peel_lt_top`), shifting the reduced threshold by ½peelCharge so the IH applies STRICTLY (not at
+     saturation), IH as a **BLACK BOX** (`DecoratedBoxThresholdFinite D'` — NO resolved-radial carry ⟹ invariant SIMPLIFICATION). Route A (projective
+     radialization, anchor (3,3,3,4)→7/2) cross-checks. **★ RESIDUAL = the OFF-SECTOR rank-drop recursion (the LAST genuine soundness surface,
+     cover's next design focus):** deleting {σ_min(Z)<ε} as null is ILLEGITIMATE (shrinking nbhds can carry ∞ integral) → needs ADAPTED CHARTS
+     stratifying the small-σ nbhds = the [OWED] N3 assembly (finite-stratum induction + per-branch ≥½minAdm via dmcheck P3 / D_q≤M₀q). dmcheck
+     de-risked no-collapse; general-width per-branch = the concrete verification (labour, not a wall). PRECISION (controller): sector-coercivity FAILS
+     POINTWISE on the rank-drop locus → PER-PEEL-SUPPLIED via the sector cover, NOT a carried adm clause (carried adm = the 6-clause set). Below: the coupled corner blow-up → charges-ADD
      to `sjLoss_terminal`, closing on the reduced-chain IH at the ½peelCharge-shifted threshold. **SOUNDNESS RESOLVED (dmcheck #146
      + cover, decorrelated): NO COLLAPSE** — the invariant form is the QIP identity + m=1 + D_q≤M₀q, per-cell `½(M₀ρ+min(M₀q,D_q))`
      (NOT bare D/m≥n₀ [view-dependent], NOT codim-slack). **Build-plan BANKED** (`stephyp-buildplan.md`, 6-node DAG, mostly-banked):
