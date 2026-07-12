@@ -142,6 +142,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
 
 /-!
 # Axiom-hygiene check
@@ -1178,3 +1180,7 @@ open DLNFibre.DLN.RLCT
 #print axioms corankOffSector_borderline_atBorder_le
 #print axioms corankOffSector_borderline_le
 #print axioms enn_geom_interp
+-- #5 off-sector shell-stratification tiles (genm-sj5-tobl3b-tile): T-Obl3a shell-0 Z-uniform corank weight
+-- + T-charge (flag charge C_j≥minAdm + the IH-fires shift). Consumed by the mountain (deeperFlag_shell_le).
+#print axioms uniformWenn_le
+#print axioms flagCharge_ge

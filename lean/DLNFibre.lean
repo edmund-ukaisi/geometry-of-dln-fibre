@@ -1394,3 +1394,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
 -- Obl-1/Obl-2 (convergent), all corank regimes of the off-sector are now closed. (Obl-2 helper generalised
 -- nat→real, backward-compat cover-confirmed.)
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
+-- #5 off-sector shell-stratification tiles (genm-sj5-tobl3b-tile): `RouteMSJShellUniform` (T-Obl3a —
+-- `uniformWenn_le`: shell-0 Z-UNIFORM corank weight `Wenn(Z)≤ε^{−ab}·Wenn(I)` via PSD-det monotonicity) +
+-- `RouteMSJShellCharge` (T-charge — `flagCharge_ge` C_j=(a−j)(b−j)+minAdm(redChain(t+j))≥minAdm, +
+-- `flagShift_lt_carrierThreshold` the IH-fires step). The mountain (deeperFlag_shell_le, the minor-CoV/
+-- iterated-spectral shell peel) is being re-formulated (Cauchy–Binet absent at the pin → iterated spectral).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
