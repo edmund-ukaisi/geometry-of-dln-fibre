@@ -165,4 +165,87 @@ conclusion WITHHELD). **Codex CONCURS on both faces:**
   weld-equality; Gram divisor bounded-on-sector, NOT jac'-threaded). Then verify the general-γ'-parent peel
   (`Γ_D` front block) reproduces the clean-`w` comparator + tied tail — a short follow-on pen-and-paper on
   a γ'-resolved `(3,3,2,2)` parent (e.g. the P0-cert width-3 witness lifted one layer up) before committing
-  the general step.
+  the general step. **[Done in §S0.5 below.]**
+
+---
+
+## S0.5 — general γ'-parent (the P0 witness lifted to `(3,3,2,2)`): domination CONFIRMED, tide-ready
+
+**Charge (continuation):** the #1 most-likely-to-break flagged above — verify the domination survives when
+the front is NOT the trivial single layer `A₁` but a γ'-RESOLVED parent's FREE front block `Γ_D` (`a_D ≥ 2`,
+tied tail `Z_tail,D = prod(dropHead M) = A₂·A₃`), with a shared radial `commonDivisor²` and an accumulated
+`jac`. Same exact-algebra + decorrelated-Codex discipline. **Verdict: CONFIRMED — no new obstruction; the
+general-parent peel is the trivial anchor modulo a shared radial (rides through as `m²`) and the `jac` carry
+(monomial, threshold-exact).**
+
+**The parent (landed tied γ', `RouteMSJAdm.lean:134-181`).** `D` over `M=(3,3,2,2)`, d≥1:
+`decLoss(u,z) = commonDivisor(u)²·frobSq(Γ_D·(A₂A₃))`, `Γ_D` a FREE `a_D×3` front block (`eΓ z .1`),
+`Z_tail,D = A₂A₃` (`= prod(dropHead M)`, tied), `commonDivisor = |u₀|^{k}` (`k = sharedDivisorExp`),
+`jac = ![jac₀]`. **`a_D = M₀ = 3` is forced** — `ρ : ι ≃ Fin a_D × Fin(M last)` and the residuals are the
+`a_D×(M last)=a_D×2` entries of `Γ_D·Z_tail`; faithfully carrying the full `M₀×M last = 3×2` DLN product
+(genuineCarrier `ν = Fin 3 × Fin 2`) forces `a_D = 3` (the dims clause `minAdm ≤ a_D·M₁` gives only the
+weaker `a_D ≥ 2`). Block-partition `Γ_D = [[P,B₁₂],[C,D_D]]` (P:2×2 invertible chart, B₁₂:2×1, C:1×2,
+D_D:1×1), tail `A₂A₃` row-split `[Q_p;Q_b]`, shear `Γ = D_D − C·P⁻¹·B₁₂` (Jacobian 1).
+
+### (1) clean-`w` comparator survives (CONFIRMED — `/tmp/s0_schur2.py`, Codex Q1 concurs)
+
+`w = frobSq(P·Q̃ₚ) = frobSq([P|B₁₂]·A₂·A₃) = frobSq(Γ'·A₃)`, `Γ' = [P|B₁₂]·A₂ = P·X + B₁₂·r`
+(writing `A₂ = [X;r]`), **polynomial, P⁻¹-free, exactly the tied-tail γ' form for `(2,2,2)`** (reduced tail
+`A₃ = prod(dropHead(2,2,2))`). The corank rows `C` occur ONLY in the nonneg rational residual. So
+`Base^{−(c'−ab/2)} ≤ w^{−(c'−ab/2)}` (drop residual, `c'>ab/2`, `w>0`), and the comparator handed to the IH
+is `D'.decLoss = commonDivisor(u)²·frobSq(Γ'·A₃)` (carrier indexed `Fin 2 × Fin 2`, residuals the entries
+of `Γ'·A₃`) — **NOT** the rational `Base`. Replacing the literal `A₁` by the free block `Γ_D` introduces NO
+new algebraic step: the block-partition + shear are identical, and `Γ_D` is a genuine independent Lebesgue
+coordinate block (the landed `eΓ : Z ≃ᵐ (matBox front) × Params(dropHead M)` is `MeasurePreserving` with
+product-box `dom` — this DISCHARGES Codex's one caveat, that "free block" be genuine coordinate freeness,
+not merely syntactic).
+
+### (2) absorption CoV with free `Γ_D`; `C` integrates out bounded (CONFIRMED chartwise — Codex Q2 concurs)
+
+For fixed `(P,B₁₂,r)` the absorption `X ↦ Γ' = P·X + B₁₂·r` is an AFFINE BIJECTION (`P` invertible),
+`X = P⁻¹(Γ' − B₁₂·r)`, Jacobian `dX = |det P|^{−2} dΓ'` (`X` has `M₂ = 2` columns). On a pivot chart
+`|det P| ≥ δ` this is a bounded spectator-dependent unit; after dropping the residual the integrand is
+independent of `C`, whose bounded-box integral is a constant. Likewise the Gram `det(Q_bQ_bᵀ)^{−a/2} ≤
+δ'^{−ab/2}` bounded on the units sector `Q_bQ_bᵀ ≽ δ'`. **Neither `|det P|^{−2}` nor the Gram divisor is
+inserted into the reduced `jac`** — both are bounded chart units, bounded EXTERNALLY (enlarging the
+transformed domain to a fixed box if needed). This yields an admissible comparator integral (NOT an exact
+measure-preserving identity with the banked output). **Sharp caveat (Codex, folded in):** `P` invertible +
+`Q_b ≠ 0` POINTWISE are INSUFFICIENT — the bounds must be UNIFORM (the finite-subcover / uniform-constant
+assembly, per-ε, no null-deletion — still the owed measure work, same as the anchor).
+
+### (3) shared radial + accumulated `jac` carry (CONFIRMED monomial + threshold-exact — `/tmp/s0p5_*.py`, Codex concurs)
+
+The radial `commonDivisor² = |u₀|^{2k}` factors through the freed-MATRIX-block integral as a constant
+multiplier (the freed `Γ` lives in `Z`, not in `u`): after integrating `Γ` the `u₀` power is
+`|u₀|^{jac₀ − 2kc'}`. Setting the reduced radial exponent `jac'₀ = jac₀ − k·peelCharge` gives
+`|u₀|^{jac'₀}·(|u₀|^{2k}·w)^{−(c'−ab/2)} = |u₀|^{jac₀−2kc'}·w^{−(c'−ab/2)}` — an EXACT match, and
+`(jac'₀+1)/(2k) = (jac₀+1)/(2k) − peelCharge/2`, i.e. `axisRatio(jac'₀,k) = carrierThreshold(redChain)`
+whenever `axisRatio(jac₀,k) = carrierThreshold(M)` (since `minAdm(redChain) = minAdm(M) − peelCharge`).
+Verified exact over `(3,3,2,2)→(2,2,2)` (`k=1,2`), `(2,2,2)→` peel, and deep-sharing widths (`→11/2`,
+`→17/2`); `jac'₀ = k·minAdm(redChain) − 1 ≥ 0` always. **The carry is purely a `u₀`-exponent shift — no
+non-monomial weight (Gram divisor, absorption Jacobian) sneaks into `jac'`.** This is `carrierThreshold_shift`
+realised at the decoration/monomial level.
+
+### S0.5 close
+
+- **Firmest.** The general γ'-parent peel is the trivial anchor UP TO (i) a shared radial `commonDivisor²`
+  (factors through as `m²`, Codex-confirmed via `(m²·Base)^{−c'} = m^{−2c'}·Base^{−c'}`) and (ii) the `jac`
+  carry `jac'₀ = jac₀ − k·peelCharge` (monomial, reproduces the reduced threshold exactly). The clean-`w`
+  comparator `D'.decLoss = commonDivisor²·frobSq(Γ'·A₃)` (`Γ' = [P|B₁₂]·A₂`, tail `A₃` tied) is genuinely
+  γ'-admissible; `C` integrates out bounded after dropping the residual. Decorrelated Codex concurs on all
+  three (Q1 survives, Q2 survives chartwise, radial+`jac` monomial+threshold-exact); its lone caveat
+  (coordinate-freeness of `Γ_D`) is DISCHARGED by the landed `eΓ` MP-split + product-box `dom`. **The
+  corrected N4′ spec (comparator/domination) is confirmed at full γ'-parent generality — tide-ready.**
+- **Most likely to break (residual, for the tide to green-gate).** (1) **Deeper chains `L > 1`** (peel not
+  adjacent to the width-2 leaf, e.g. `(3,3,3,2,2)`): the tail `prod(dropHead M)` is a longer product and the
+  absorption absorbs the next layer — structurally analogous but UNVERIFIED beyond `L=1`; the natural next
+  boundary. (2) The **uniform-lower-bound subcover** (`|det P| ≥ δ`, `Q_bQ_bᵀ ≽ δ'`) — Codex's "pointwise
+  invertible/nonzero is insufficient"; the finite-subcover uniform-constant assembly is the owed measure
+  work (shared with the anchor's §Most-likely (3)). (3) The **tide must green-gate that the landed `eΓ` is
+  genuinely `MeasurePreserving` with a product-box `dom`** — the discharge of Codex's coordinate-freeness
+  caveat rides on it (it holds by inspection of `RouteMSJAdm.lean:138-141`, but the peelOp must PRESERVE it,
+  the ρ-Equiv/split production obligation, `#4`-gated).
+- **Net.** No general-parent obstruction. The single genuinely-new construction (N4′) is: peelOp producing
+  the clean-`w` comparator `D'` + the domination `∫_Γ freedSchurLoss^{−c'} ≤ const · [D'.integral(c'−½peelCharge)]`
+  on the sector, with the radial/`jac` carry (monomial, banked `carrierThreshold_shift`). The math does NOT
+  wall at generality; the corrected spec (construct-comparator → IH → pointwise `≤`) stands.
