@@ -56,15 +56,16 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
    - **LANDED clean-three (genm-sj5-desc3):** units bridge #147 (`RouteMSJUnitsBridge` @cab04ba5, eigenvalue-free Loewner) +
      #3 adm def (B) #148 (`RouteMSJAdm` @0ba81dcb: genuineCarrier (i) + admValuation=`d=0 ∨ pSimultaneous` + htriv PROVED;
      cover DECORRELATED fidelity-PASS). DecoratedDescent witness typechecks; only #4 (hbase) + #5 (hstep) OPEN.
-   - **NEXT: #4 #149 `DecoratedBaseHyp` — ARCHITECTURE RE-OPENED (UPDATE-942 bedrock finding, desc3-verified).** The d=0
-     base is DONE (`RouteMSJBaseFinite.baseBoxCoV_lt_top`, free-Morse via MP CoV, staged). But the **d≥1 base is NOT "consume
-     pSimultaneous directly"** (my Route-B lean was over-optimistic): (a) sjLoss_terminal needs `c'<monomialThreshold(supp,jac)`
-     as a HYPOTHESIS adm doesn't supply (adversarial supp/jac diverge); (b) `decLoss=∑(genMonomial·resᵢ(z))²` is a COUPLED (u,z)
-     RLCT (vanishing residuals), not the u-only terminal. ⟹ **adm must CARRY base-invariants (monomialThreshold≥½minAdm +
-     residual-unit/coupled-coercivity = the fully-resolved (S,J) form) = #5's peel-closure OUTPUT ⟹ #3↔#5 RE-COUPLED** (the (B)
-     decoupling was incomplete). NOT a wall (labour). **ROUTED to cover** (+ decorrelated Codex): (A) strengthen adm w/ the
-     base-invariants [#5 preserves, #4 consumes] vs (B) fold d≥1 base into #5. FLAG-1 (d=0 degenerate) already FIXED by desc3's
-     `d=0 ∧ carrier=ofMatrix` tightening. **adm re-integration HELD** for cover's design (integrate the base-invariant-complete adm once).
+   - **#4 #149 `DecoratedBaseHyp` — RESOLVED (OPT-A + FaithfulSJAt + γ-LOCK, all decorrelated-confirmed); desc4 (fresh) BUILDING.**
+     The base-provability finding (adm too weak; DecoratedBaseHyp false for it) → **OPT-A: adm carries `FaithfulSJAt`** (the (S,J)
+     resolution-state: α pSimultaneous / β threshold≥½minAdm / γ block-level WHOLE-Z units-bound `Z·Zᵀ≽c·I` on Z=A₂···A_L;
+     d=0∧ofMatrix leaf). γ LOCKED after 2 DECORRELATED-CAUGHT flips (block → i₀-component [UNSATISFIABLE for free Γ] → whole-Z;
+     gammalock-answer). **#4 = route-A `corankLeaf_rpow_lt_top`** (my ORIGINAL banked base LOSS part): d=0 → baseBoxCoV; d≥1 →
+     decLoss ≍ commonDivisor²·frobSq(Γ·Z), threshold min(T_u, D_Γ/2) = ½minAdm via β + the **LEAF IDENTITY dim Γ=minAdm** (MIN-of-
+     two-full-budgets, NOT ADD); corankLeaf integrates Γ FREE (Rayleigh + the whole-Z γ). desc4 revising the adm γ-clause
+     (i₀-component → whole-Z ZZᵀ≽cI) + building #4; cover audits + does the #5 γ-audit. adm+baseBoxCoV STAGED (γ-clause revising).
+     Recalibration: discuss-at-close #115. Process lesson (UPDATE-945): confirm fidelity clauses only AFTER the decorrelated
+     preservability check, not "expect yes". The holds on adm re-integration PROTECTED canonical from the 2 wrong-γ intermediates.
    - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` #5 (the decorated peel):** the coupled corner blow-up → charges-ADD
      to `sjLoss_terminal`, closing on the reduced-chain IH at the ½peelCharge-shifted threshold. **SOUNDNESS RESOLVED (dmcheck #146
      + cover, decorrelated): NO COLLAPSE** — the invariant form is the QIP identity + m=1 + D_q≤M₀q, per-cell `½(M₀ρ+min(M₀q,D_q))`
@@ -73,6 +74,9 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
      driver/shift/QIP/units-bridge/terminal/corank-survival/peel-preservation all BANKED. **★ FLAG-2 (cover): the peel MUST keep
      ν = product-type FIXED** (record row-elimination in coeff/supp), else genuineCarrier preservation fails — or reformulate
      genuineCarrier with an equivalence (ν ≃ product). 3 misread-traps (T-a/T-b/T-c) baked in as "do NOT" guards.
+     ★ #5 is now framed as **`peelOp` PRESERVES FaithfulSJAt** (stephyp-buildplan §5′): α banked (radialStep shared-divisor) /
+     β charges-ADD (#144 + carrierThreshold_shift) / **γ = whole-Z `Z·Zᵀ≽c·I` [σ_min(Z), NOT σ_min(A₂) — γ-lock correction]**;
+     cover's γ-audit focus = whole-Z (rank-drop-of-Z complement recurses, dmcheck P3). Owed Lean: N4′ peelOp + N1′ m=1 slice.
    **THEN:** `DecoratedDescent` proved → `(□)` ∀M → mint unsuffixed `aoyagi_learning_coefficient` (#108, on the FULL general
    (□) — precision guard). Certs: `threads/genm-sj5/` (descent-buildplan, route-reconcile, toric-ray-cert, transversality-recursion,
    cov-ledger-design, obligation1-spec); live read: synthesis UPDATE-931.
