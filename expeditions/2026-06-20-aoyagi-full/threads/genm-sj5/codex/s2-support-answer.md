@@ -1,0 +1,9 @@
+1. **FACT:** The corank generators receive every later radial divisor. If \(Z_{\mathrm{tail}}=uZ'\), then \(\Gamma Z_{\mathrm{tail}}=u(\Gamma Z')\), so the divisor factors from every entry of \(\Gamma Z_{\mathrm{tail}}\). No listed operation freezes supports, and block splitting merely reindexes them. **JUDGEMENT:** Thus corank supports remain in lock-step with the pivot descendants.
+
+2. **FACT:** Initially support is constant; every radial step, faithful row-mix, and block split preserves constant support. Inductively, all surviving base generators therefore have the same accumulated support vector. Hence \(k_\ell=\operatorname{supp}(i,\ell)\) for every \(i,\ell\), so every leftover \(\delta(i,\ell)\) is zero. **JUDGEMENT:** The width-2 base is uniform, not anisotropic.
+
+3. **FACT:** Since no generator has positive leftover, the zero-leftover subset is the entire surviving generator family. At the width-2 base its residuals constitute the full free-matrix block, so they span all \(M_0M_1\) directions. Nothing needs to be dropped, and no rank is lost. **JUDGEMENT:** A coupled-corner spanning argument is unnecessary.
+
+4. **FACT:** The common exceptional monomial factors from the whole base loss, leaving the Frobenius square of a free \(M_0\times M_1\) block. Therefore the stated clean lower bound holds, and the free-block Morse threshold is \(c'<M_0M_1/2\). **JUDGEMENT:** The deciding condition is that every later radial divisor acts on the entire inherited recursive matrix summand, including all previously freed \(\Gamma Z_{\mathrm{tail}}\) entries.
+
+VERDICT: UNIFORM/SPANNING (clean free-block lower bound suffices), condition = every later radial divisor factors from the entire inherited recursive summand, including all corank products \(\Gamma Z_{\mathrm{tail}}\).
