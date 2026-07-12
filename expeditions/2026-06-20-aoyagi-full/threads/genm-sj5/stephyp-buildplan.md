@@ -156,3 +156,70 @@ as the owed geometric lemma) → N2 → N3 → N4 (peelOp) → wire via the driv
   descendant angular loci are the recursion's job, N3).
 - **Next.** Hand this DAG to desc-#5 when it reaches the crux. I audit N4/N1 hardest (the owed nodes) + the
   N5 parameterization against #3's landed form. DROPPING NOW for the #3 audit when desc3 reports #148.
+
+---
+
+## §5′ — the FaithfulSJAt-frame REFINEMENT of N4/N5 (post-`faithfulsj-design.md`, the resolved invariant)
+
+The base-fork resolution (OPT-A) made `adm := genuineCarrier ∧ (a=0 ∨ b=0 ∨ FaithfulSJAt D)`. So #5 is now
+exactly: **`peelOp` PRESERVES `FaithfulSJAt`.** The DecoratedStepHyp is the peel-closure of this ONE invariant
+(#4 consumes it, #5 preserves it). Refined N5/N4:
+
+### N5′ — [the #5 GOAL] `DecoratedStepHyp`: `FaithfulSJAt D → FaithfulSJAt (peelOp u★ D)` (+ finiteness via IH)
+
+Statement: at a binding cut `u★` of `M`, given the decorated IH (`∀ D' : SJDecoration (redChain u★ M),
+FaithfulSJAt D' → DecoratedBoxThresholdFinite D'`), for `D : SJDecoration M` with `FaithfulSJAt D`: the peel
+`peelOp u★ D : SJDecoration (redChain u★ M)` satisfies `FaithfulSJAt (peelOp u★ D)`, and `D`'s integral is
+finite (via the IH on `peelOp u★ D` at the `½peelCharge`-shifted threshold). **Each clause preserved (cert-tied):**
+- **α (pSimultaneous preserved) — [BANKED].** `peelOp` = `radialAttach` (+ chart); the fresh divisor `u₀` has
+  `sharedDivisorExp`-exponent `1` shared by ALL generators (`sharedDivisorExp_prependColumn_one_zero`, banked
+  `RouteMSJLedger`), and old divisors are preserved (`sharedDivisorExp_prependColumn_succ`). So the
+  dehomogenised `i₀` persists (the corank generator stays a unit at every divisor). `p=0` preserved
+  (transversality-recursion §144).
+- **β (threshold ≥ ½minAdm preserved) — [BANKED arithmetic, my certs].** `peelOp` adds `peelCharge = ab` to the
+  `u`-monomial (jac/sharedDivisorExp) and lands on `redChain u★ M`; `minAdm M = peelCharge + minAdm(redChain)`
+  (`minAdm_le_peelCharge_add_redChain`, `exists_binding_cut`), so the shifted `monomialThreshold` stays
+  `≥ ½minAdm(redChain)` (`carrierThreshold_shift`, `half_minAdm_sub_half_peelCharge_le`, banked). The nD-homogeneous
+  corner `½Σ(block dims)` (dmcheck's `½(M₀ρ+min(M₀q,D_q))`, no-undershoot) is the per-peel realisation. **THE
+  charges-ADD content lives HERE** (β preservation), NOT at #4 (§4-settled: #4 consumes β separably).
+- **γ (coercive residual preserved) — [my stephyp/dmcheck certs + #147; the SUBSTANTIAL owed analytic content].**
+  `peelOp` operates on the `σ_min(A₂) ≥ ε` QUANTITATIVE UNITS SECTOR (T4), on which the units bound
+  `Z·Zᵀ ≽ c·I` (`#147`) makes the peeled residual coercive (bounded below). The rank-drop complement
+  `{σ_min(A₂) < ε}` SPLITS to a higher-`Mval` recursive branch (dmcheck P3, threshold `≥ ½minAdm` per-branch
+  via `D_q ≤ M₀q`). ★ This is the deepest #5 content — the intersection COUPLED estimate, NOT a codim freebie
+  (the `x²(x²+y^{2N})` correction). **AUDIT FOCUS:** γ-preservation must be the QUANTITATIVE-sector +
+  per-branch joint-tube (my `stephyp-intersection-cert` §7/§8), never "higher codim ⟹ slack".
+
+### N4′ — [OWED centerpiece] the `peelOp : SJDecoration M → SJDecoration (redChain u★ M)` construction
+
+The transform that realises N5′. **Exact shape (banked-vs-owed):**
+- **[BANKED scaffold]** `radialAttach` (`d+1`, jac-prepend, `carrier.radialStep`, keeps `ζ/ν/ι/Z`); the corner
+  chart `Γ = u·M(s,t,v)` (`RouteMSJSphereBlowup`/`Corner*`, `|dΓ|=u^{ab−1}`); the `diag(b)` row-mix
+  (`gen_rowMix_const`, `RouteMSJLinGen`); the measure-preserving flatten / `MeasurePreserving e`.
+- **[OWED assembly]** (1) the chain re-type `M → redChain u★ M` with `Z : Params M → Params(redChain u★ M)`
+  (the reduced-product re-index) **keeping `ν = product-type FIXED** (FLAG-2: record the row-elimination in
+  `coeff`/`supp`, do NOT shrink `ν`, else `genuineCarrier` preservation fails — cover #3-audit); (2) the
+  `decLoss → carrier.loss` base-connection post-corner (the `frobSq → SJLinGenState.loss` faithful CoV, the
+  `P⁻¹`-free pivot form — `transversality §10`/#141-Q2 decorated-IH obligation); (3) measurability
+  (`RouteMSJDecoratedMeas`/`PeelMeas`). **This is the fiddliest owed piece; desc3 builds it, I audit the
+  fidelity (FLAG-2 `ν`-fixed + the CoV faithfulness).**
+
+### N1′ — [OWED, the one geometric input] exact Lean statement (banked-adjacent `normalSlice_transfer` #109)
+
+`m = 1` reduced full-rank first-order normal slice — the residual-coercivity (γ) source. Exact target:
+> at a generic point of a top-dim rank-`ρ` component of the deeper product `P = A₁···A_{L−1}`, the smallest
+> active singular value satisfies `σ_{ρ+1}(P)² ≍ dist(·, {rank ≤ ρ})²` (`m=1`), and the transverse first-order
+> normal slice is reduced (contains a full-rank-`q` matrix).
+`#109 normalSlice_transfer` gives the CoV/normal-slice IDENTITY (`{rank ≤ q} ⟺ Σ⁰(reduced)`); the OWED GAP is
+the ORDER-1 transversality (`σ² ≍ dist²`) — banked-adjacent, per-direction `σ_min²` (NOT `det(PPᵀ)`, dmcheck
+T-a). Feeds γ (the coercive residual on the units sector).
+
+### Net (FaithfulSJAt frame)
+`DecoratedStepHyp = peelOp preserves FaithfulSJAt`, clause-by-clause: **α banked, β banked arithmetic
+(charges-ADD, my certs), γ the substantial analytic content (my stephyp/dmcheck/#147, the units-sector +
+per-branch joint-tube).** Owed builds: **N4′ peelOp** (scaffold banked, the re-type + CoV + measurability owed;
+FLAG-2 `ν`-fixed) + **N1′ `m=1` slice** (banked-adjacent #109). My audit of #5 = the γ-preservation against
+`stephyp-intersection-cert` (the units-sector, per-branch `½minAdm`, no codim-slack) + `dmcheck` (the
+invariant `½(M₀ρ+min(M₀q,D_q))`) + β against `#144`/`carrierThreshold_shift`. [Codex NOT fired — the
+preservation of α/β/γ is my already-certified content; the peelOp Lean CONSTRUCTION is desc3's formalization,
+audited on landing.]
