@@ -79,11 +79,17 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
      `joint-corner-cert.md`, decorrelated-Codex-confirmed):** the coupling is ASYMMETRIC — integrate Γ FIRST (Route B, banked-heavy: `loss_blockSplit`
      + `frobSq_mul_ge` + `freedSchurLoss_inner_peel_lt_top`), shifting the reduced threshold by ½peelCharge so the IH applies STRICTLY (not at
      saturation), IH as a **BLACK BOX** (`DecoratedBoxThresholdFinite D'` — NO resolved-radial carry ⟹ invariant SIMPLIFICATION). Route A (projective
-     radialization, anchor (3,3,3,4)→7/2) cross-checks. **★ RESIDUAL = the OFF-SECTOR rank-drop recursion (the LAST genuine soundness surface,
-     cover's next design focus):** deleting {σ_min(Z)<ε} as null is ILLEGITIMATE (shrinking nbhds can carry ∞ integral) → needs ADAPTED CHARTS
-     stratifying the small-σ nbhds = the [OWED] N3 assembly (finite-stratum induction + per-branch ≥½minAdm via dmcheck P3 / D_q≤M₀q). dmcheck
-     de-risked no-collapse; general-width per-branch = the concrete verification (labour, not a wall). PRECISION (controller): sector-coercivity FAILS
-     POINTWISE on the rank-drop locus → PER-PEEL-SUPPLIED via the sector cover, NOT a carried adm clause (carried adm = the 6-clause set). Below: the coupled corner blow-up → charges-ADD
+     radialization, anchor (3,3,3,4)→7/2) cross-checks. **★ RESIDUAL = the OFF-SECTOR recursion (the LAST genuine soundness surface;
+     BIGGER than the §3 one-liner — UPDATE-956):** cover's decorrelated skeptical Codex CAUGHT A REAL GAP in the first-pass corank-of-Z cover —
+     m>1 (higher-order σ_min vanishing) does NOT force a corank drop (exact counterexample `Z=ab`: corank=1 but σ_min≍t², first-order fails), so
+     corank-recursion MISSES the m>1 loci. **dmcheck's QIP ≥½minAdm is NECESSARY but NOT SUFFICIENT** for the measure cover (deleting {σ_min<ε} as
+     null is illegitimate). **FIX = TRANSVERSALITY-augmented ARITY recursion:** GOOD tube {corank=q, transverse, m=1} → density ≥½minAdm (needs N1
+     STRENGTHENED to a UNIFORM transversality bound); BAD locus {m>1} = INTERSECTION RAYS (σ_min=coupled-corner monomial) → iterated coupled corner
+     (Q1, banked-adjacent), recursing on ARITY↓ (well-founded; corank-of-Z does NOT decrease at the crossing). **Two OWED:** (1) N1-STRENGTHENED uniform
+     transversality [geometric]; (2) the ARITY-recursion assembly [well-foundedness + per-level uniform constants + finite subcover, measure]. LABOUR,
+     not a decorrelated-confirmed wall. **cover DESIGNING it airtight** (decorrelated; gate is a PROOF for this exhaustiveness claim) → then **controller
+     runs an INDEPENDENT hunt (fresh seat, NOT cover's Codex) before formalize** (bedrock: exhaustiveness at the foundation, one gap already surfaced).
+     PRECISION: sector-coercivity FAILS POINTWISE on the rank-drop locus → PER-PEEL-SUPPLIED, NOT a carried adm clause (carried adm = the 6-clause set). Below: the coupled corner blow-up → charges-ADD
      to `sjLoss_terminal`, closing on the reduced-chain IH at the ½peelCharge-shifted threshold. **SOUNDNESS RESOLVED (dmcheck #146
      + cover, decorrelated): NO COLLAPSE** — the invariant form is the QIP identity + m=1 + D_q≤M₀q, per-cell `½(M₀ρ+min(M₀q,D_q))`
      (NOT bare D/m≥n₀ [view-dependent], NOT codim-slack). **Build-plan BANKED** (`stephyp-buildplan.md`, 6-node DAG, mostly-banked):
