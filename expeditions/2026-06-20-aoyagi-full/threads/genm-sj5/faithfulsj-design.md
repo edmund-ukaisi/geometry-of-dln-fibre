@@ -292,3 +292,37 @@ its level (units sector) so the support stays uniform to the base — now the #5
 form — the weighted `δ` form is only transiently needed WITHIN a peel (pivot vs corank), not in the stable
 carrier the invariant describes. `Z_tail` z-dependent (S1), `=I` at base; `dim Γ` derived-at-base; γ (PSD) is
 the units-sector interface consumed at each peel (`freedSchurLoss`), derived-trivial (`Z=I`) at #4.
+
+---
+
+## ★★★★ S2 PREMISE VERIFIED (2026-07-12, FRESH NEUTRAL Codex `codex/s2-verify-answer.md`, no pre-loaded premise; + buildplan check) — δ≡0 is FORCED by a faithful peel; the clean bound NEEDS it (spanning alone insufficient)
+
+Controller flag (correct): my first S2 Codex run PRE-LOADED the premise (I wrote "rowMix faithful only at
+constant support" into the prompt), so it reasoned FROM it. Re-ran a NEUTRAL Codex ("DO NOT assume any
+faithfulness premise; derive what the operations force") + checked the peel directly (`peel-buildplan.md`).
+All three answers Codex FACT-tagged and DERIVED:
+
+- **Q1 (clean bound): SPANNING IS INSUFFICIENT — a spanning `δ=0` SUBFAMILY is required.** Codex counterexample:
+  `z₁` (δ=0), `z₂` (δ>0) together span, but dropping the `δ>0` term leaves only `z₁` (rank 1). So the `δ=0`
+  residuals must THEMSELVES span the free block. **→ Precision correction: `genuineCarrier` gives SPANNING
+  (residuals read `prod M`), NOT `δ≡0`. Different properties.** `δ≡0` is NOT a `genuineCarrier` consequence.
+- **Q2 (stable support): FORCED-UNIFORM (derived, not assumed).** Initial uniform; RADIAL prepends the same
+  exponent to all; BLOCK-SPLIT changes none; a valid ROW-MIX cannot create different supports from uniform
+  inputs; and a corank freed at peel `j` does NOT acquire peel-`(j+1)`'s radial (radial scales the FRONT), so
+  RETAINING it through a later radial inserts a FALSE monomial (unfaithful) — hence it MUST be integrated out
+  before recursion, and the pivot carrier stays ONE support class. So `δ≡0` on the stable carrier is FORCED for
+  any FAITHFUL peel. Buildplan CONFIRMS: `peel-buildplan.md` line 188 uses `gen_rowMix_const` (constant-support)
+  + per-peel corank integration (`freedSchurLoss`).
+- **Q3: the two anisotropies are INDEPENDENT.** Residual `res=Γ·Q` (S1, coefficients) is compatible with
+  uniform support `δ≡0` (S2, u-exponents). The docstring's `Γ·Q_b` anisotropy (S1) does NOT force `δ≢0`.
+
+**Verdict + carried-clause consequence.** PREMISE HOLDS (forced-uniform) → S2 = YES **and a SIMPLIFICATION**:
+FaithfulSJAt d≥1 should CARRY `residualSupport ≡ 0` (`δ≡0`) alongside the provenance `res_i = (Γ z·Z_tail z)_{ρi}`.
+Then the clean identity holds at all arities (`Z_tail=I` at base), `decoratedBase_routeA_of_leafForm` closes #4,
+and the weighted-`δ` machinery / anisotropic leaf are NOT needed. **`δ≡0` MUST be CARRIED** (not derived at #4):
+#4 sees only `adm D`, not "`D` came from a faithful peel", and `genuineCarrier` gives spanning, not `δ≡0`; the
+clean `hdec` #4 consumes needs `δ≡0` explicitly. #5 preserves it (all ops + corank-integration preserve `δ≡0`;
+forced by faithfulness). **Honest correction to UPDATE-952's "#5-independent via genuineCarrier → δ≡0":** the
+honest chain is `genuineCarrier → spanning`; `carried residualSupport≡0 (established by faithful #5) → δ≡0`;
+`together → the δ=0 subfamily spans → clean bound`. #4 is #5-independent AS A LEMMA (given `adm`, it closes);
+but `δ≡0` is `adm`-content established by #5, so it is a CARRIED clause, not a `genuineCarrier` freebie.
