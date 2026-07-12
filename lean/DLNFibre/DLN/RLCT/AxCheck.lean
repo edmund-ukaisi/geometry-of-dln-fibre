@@ -135,6 +135,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
 import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
+import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 
 /-!
 # Axiom-hygiene check
@@ -1130,3 +1131,10 @@ open DLNFibre.DLN.RLCT
 #print axioms admValuation_iff_pSimultaneous
 #print axioms regression_rank1_admitted
 #print axioms regression_freshTwo_rejected
+-- minAdm PERMUTATION-INVARIANCE (MinAdmPermInvariance, genm-sj5 route-i; the (□)-soundness
+-- combinatorial half + the paper's (C,θ) permutation-invariance): `minAdm (M ∘ σ) = minAdm M` ∀ σ
+-- (adjacent-transposition induction; τ₁ crux `gCrux_symm` = difference-of-squares) + `minAdm_comp_sort`.
+-- NATIVE (no Aoyagi cite). Reduces non-monotone M → sorted rearrangement (route-i closure of link (A)).
+#print axioms gCrux_symm
+#print axioms minAdm_comp_perm
+#print axioms minAdm_comp_sort

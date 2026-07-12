@@ -1349,3 +1349,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
 -- ctx traces prod M, tail derived); admValuation = d=0 (empty-Crit vacuity) ∨ pSimultaneous; a,b = M's
 -- binding-cut widths. htriv (adm_trivial) PROVED ∀ n M; both regression tests pass. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
+-- minAdm PERMUTATION-INVARIANCE (MinAdmPermInvariance, genm-sj5 route-i): the (□)-soundness
+-- combinatorial half + the paper's (C,θ) permutation-invariance — `minAdm (M ∘ σ) = minAdm M` ∀ σ
+-- (adjacent-transposition induction; τ₁ crux `gCrux_symm` = difference-of-squares) + `minAdm_comp_sort`.
+-- NATIVE (no Aoyagi cite). Reduces non-monotone M to its sorted rearrangement — the route-i closure of
+-- link (A) minAdm=cCodim (the cCodim wire = a scoped follow-up: the Adm↔kostant inf'-level bijection).
+import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
