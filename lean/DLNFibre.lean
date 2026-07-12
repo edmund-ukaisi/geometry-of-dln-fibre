@@ -1383,3 +1383,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
 -- where Q_bQ_bᵀ PosDef + BOUNDED brick where not) + box-clip; hyp FULL σ_min(Z)≥c₀ (cert §2a corrected from
 -- "top M₂−1", which was false). The foundational off-sector estimate; Obl-2 (b>1 flag) + Obl-3 build on it.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1
+-- #5 off-sector Obl-2 (genm-sj5-offsector-obl2): the b>1 corank-integrability `corankOffSector_bpos_le`
+-- (convergent regime a<M₂−b+1) — a SINGLE level-0 atom bound (det=∏τ² not σ_min²) obviates the multi-level
+-- flag, since `a≤M₂−b+1` at every genuine b>1 binding cut is a THEOREM (convexity + incidence, cover+Codex
+-- PASS). + `detGram_lintegral_box_lt_top` (general side-T, reusable). Borderline a=M₂−b+1 + Z-uniformity deferred.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos

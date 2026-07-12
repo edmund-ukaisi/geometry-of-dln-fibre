@@ -140,6 +140,7 @@ import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBaseHyp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
 
 /-!
 # Axiom-hygiene check
@@ -1165,3 +1166,8 @@ open DLNFibre.DLN.RLCT
 -- off-sector estimate; a<M₂ clean (a=M₂ borderline-log tracked); Obl-2/Obl-3 build on it.
 #print axioms corankOffSector_b1_le
 #print axioms corankWeight_lt_top
+-- #5 off-sector Obl-2 (genm-sj5-offsector-obl2): the b>1 corank-integrability (convergent a<M₂−b+1); a
+-- single level-0 atom bound obviates the flag (a≤M₂−b+1 at every b>1 binding cut = a theorem).
+#print axioms corankOffSector_bpos_le
+#print axioms corankWeight_bpos_lt_top
+#print axioms detGram_lintegral_box_lt_top
