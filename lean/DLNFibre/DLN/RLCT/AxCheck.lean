@@ -136,6 +136,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
 import DLNFibre.DLN.RLCT.Validate.RouteMSJUnitsBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
 import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
+import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
 
 /-!
 # Axiom-hygiene check
@@ -1138,3 +1139,9 @@ open DLNFibre.DLN.RLCT
 #print axioms gCrux_symm
 #print axioms minAdm_comp_perm
 #print axioms minAdm_comp_sort
+-- minAdm = cCodim ALL WIDTHS (MinAdmCCodim, genm-sj5 route-i Part 2): the paper's CENTRAL codimension
+-- identity — QIP combinatorial `minAdm M` = geometric Ext/orbit fibre codim `cCodim M 0`. Monotone
+-- bridge (`Adm ↔ qipFeasible`, `Mval = Gqip`, `cCodim_eq_qipMin`) + all-width via
+-- `minAdm_comp_sort`.
+#print axioms minAdm_eq_cCodim
+#print axioms minAdm_d222_eq_three

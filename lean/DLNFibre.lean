@@ -1355,3 +1355,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
 -- NATIVE (no Aoyagi cite). Reduces non-monotone M to its sorted rearrangement — the route-i closure of
 -- link (A) minAdm=cCodim (the cCodim wire = a scoped follow-up: the Adm↔kostant inf'-level bijection).
 import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
+-- minAdm = cCodim ALL WIDTHS (MinAdmCCodim, genm-sj5 route-i Part 2): the paper's CENTRAL codimension
+-- identity — the QIP combinatorial minimum `minAdm M` = the geometric Ext/orbit fibre codimension
+-- `cCodim M 0`. Monotone bridge via the value-preserving bijection `Adm M ↔ qipFeasible M`
+-- (`e_c = ρ_c − ρ_{c+1}`, `Mval = Gqip`) + banked `cCodim_eq_qipMin`; all-width via
+-- `minAdm_comp_sort` (Part 1) + `cCodim_comp_sort`. Completes route-i soundness (cited Aoyagi
+-- ⟹ RLCT = ½·cCodim).
+import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
