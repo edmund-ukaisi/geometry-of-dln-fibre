@@ -1,0 +1,13 @@
+1. **FACT:** The endpoint \(c'=(P+R)/2\) is generally logarithmically divergent; only every strict subcritical exponent is claimed. The displayed formula alone is insufficient: if \(V_{\mathrm{scaled}}\) remains bounded, the integral still behaves like \(\int u_0^{P-1-2c'}\,du_0\). **JUDGEMENT:** The required extra corner structure is a remainder radial \(t\) with measure \(t^{R-1}dt\,d\nu\) (or its weighted-monomial analogue) and loss comparable to \(u_0^2U_0+t^2U_r\). On the chart \(t\leq u_0\), set \(t=u_0s\); then the joint measure becomes \(u_0^{P+R-1}s^{R-1}du_0\,ds\,d\nu\), while the loss becomes \(u_0^2(U_0+s^2U_r)\). The \(s\)-integral is uniformly finite, leaving \(\int_0^1u_0^{P+R-1-2c'}du_0\), which converges exactly when \(c'<(P+R)/2\). Thus the remainder’s \(R\) joins \(P\) in the projective-change Jacobian, not through an endpoint exponent split.
+
+2. **FACT:** A black-box RLCT bound is enough if the peel separately supplies a uniform comparison \(F\gtrsim\|\Gamma\|^2+V(w)\) with product, or bounded-density, measure. Indeed, integrating \(\Gamma\) first gives
+\[
+\int(\|\Gamma\|^2+V)^{-c'}d\Gamma\lesssim V^{P/2-c'}
+\]
+when \(c'>P/2\), with bounded or logarithmic variants when \(c'\leq P/2\). The IH then applies because \(c'-P/2<R/2\). **FACT:** The common-radial formula by itself supplies neither this additive comparison nor the extra \(u_0^R\) Jacobian, so bare finiteness of \(V\)’s negative moments cannot justify that chart calculation. **JUDGEMENT:** Consequently, the strengthened induction must carry either the additive/product coupling needed for conditional integration or the remainder’s resolved radial/Jacobian form, with estimates uniform in sector parameters.
+
+3. **FACT:** Lower bounds on \(U_0,U_r\) make the projective integral \(\int s^{R-1}(U_0+s^2U_r)^{-c'}ds\) uniformly harmless. If \(U_0\to0\), that bound blows up and the \(s\to0\) endpoint becomes a new singular direction, so the reduction to a single \(u_0\)-power fails. A genuinely lower-dimensional rank-drop locus has zero measure for a smooth ambient measure, but that fact controls only the locus itself. Its arbitrarily small neighborhoods can still contribute an infinite integral; finite measure is likewise insufficient. **JUDGEMENT:** A separate recursive branch is legitimate only when adapted charts stratify and control those neighborhoods, including the unit’s transverse vanishing, rather than merely deleting the zero set.
+
+JOINT-MECHANISM: Joint projective radialization \(t=u_0s\), whose Jacobian contributes the remainder’s \(u_0^R\) budget.
+
+IH-MUST-CARRY: Uniform negative moments plus an additive product comparison—or, if working directly in corner charts, the equivalent resolved radial/Jacobian law.
