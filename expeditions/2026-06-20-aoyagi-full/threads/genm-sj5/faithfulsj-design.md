@@ -150,3 +150,91 @@ The γ-clause above (`‖residualBlock‖ ≥ c`) and the intermediate desc3 sha
   `min_s|q₁+sq₂| = σ_min(block)` was WRONG (it is `dist(q₁, span q₂)`) — the conclusion (i₀ unsatisfiable)
   holds; (c) γ is `ZZᵀ≽cI` on the WHOLE `Z`, route-A `corankLeaf` consumes it, MIN-of-full-budgets. **#5's
   γ-preservation = `ZZᵀ≽cI` on the WHOLE `Z` via the units sector (my updated audit focus).**
+
+---
+
+## ★★ CO-DESIGN ADJUDICATION (2026-07-12, desc4 reshape + decorrelated Codex `codex/bundle-shape-answer.md`) — the d≥1 branch is a PROVENANCE CERTIFICATE, not a global-nondegeneracy clause
+
+desc4 (Lean-verified, `RouteMSJBaseHyp.lean:27-50`) found the current d≥1 clause needs RESHAPING; I
+audited against the actual Lean (`RouteMSJDecoratedRec`/`Decorated`/`LeafRayleigh`/`LeafFinite`/`Adm`) and
+fired a decorrelated Codex (conclusion withheld). Codex **independently converged** on every point and
+**sharpened two**. The load-bearing architecture fact that reframes everything:
+
+> **`adm` (hence `FaithfulSJAt d≥1`) is a GENERAL-ARITY LOOP INVARIANT, not a base-only postcondition.**
+> The driver `decoratedBoxThresholdFinite_of_decoratedStep` inducts DOWN on arity; each peel INCREASES `d`
+> and DECREASES arity, producing `D'` at arity `n−1` that MUST be `adm` (to invoke the IH `adm D' →
+> finite D'`). So `FaithfulSJAt d≥1` is consumed at EVERY intermediate arity, and only at arity-1 (width-2)
+> does `#4` close it. A clause faithful only at the base breaks `#5`-preservation.
+
+**desc4's three findings — all CONFIRMED (Lean-grounded + Codex):**
+- **(a) the bare `∃ Z, Z·Zᵀ≽c·I` is VACUOUS.** `corankLeaf`'s `Z` is a standalone MATRIX; `SJDecoration.Z`
+  is a TYPE (deeper param space). An existential matrix unconnected to `decLoss`/`ctx` is satisfied by
+  `Z=I,c=1` — it detects only a dimension inequality. DROP unless tied by an equation to the actual tail
+  factor in `decLoss`.
+- **(b) the route-A leaf form is NOT derivable from α/β/γ** — must be CARRIED. Confirmed.
+- **(c) d=0 HEq non-eliminable** (no type-constructor injectivity; `genuineCarrier` pins `ζ,ν` not `ι`) —
+  needs `D.ι` pinned + carrier-eq post-cast. A semantics-preserving restatement; formalizability, not
+  soundness. Confirmed (`RouteMSJBaseHyp` case (ii) already isolates the analytic core modulo `hloss`).
+
+**The two Codex SHARPENINGS (the load-bearing ones — beyond the γ-lock):**
+- **★ S1 — `Z` is the z-DEPENDENT tail family `Z_tail(z)` (deeper product read via `genuineCarrier`'s
+  `prod`), NOT a fixed/existential matrix; the `Z·Zᵀ≽c·I` PSD bound is a DERIVED BASE CONSEQUENCE, not a
+  carried witness.** At intermediate arity `Z_tail(z)` VARIES over `dom` and rank-drops on a sublocus, so a
+  uniform `∀z∈dom, Z_tail(z)Z_tail(z)ᵀ≽c·I` is IMPOSSIBLE when that sublocus lies in `dom`. And per-`z`
+  finiteness (fixed-`Z` `corankLeaf`) does NOT give integrability over `z` (Fubini/domination gap). At
+  width-2 the tail is EMPTY ⟹ `Z_tail=I`, fixed, `I·Iᵀ≽1·I` — so `corankLeaf` instantiates with `Z=I,c=1`.
+  → the γ-lock's "`ZZᵀ≽cI` on the whole `Z`" was right that `Z` = the tail product, but as a CARRIED clause
+  it is misplaced: it is DERIVED at the base (trivial there) and is a SECTOR (not global) fact at
+  intermediate arity.
+- **★★ S2 — the "clean `frobSq(Γ·Z)`" identity is NOT u-independent in general.** Factoring
+  `commonDivisor`, leftover monomials `u^{δ_iℓ}` (`δ_iℓ = supp i ℓ − k_ℓ ≥ 0`) REMAIN per generator; the
+  faithful identity is the WEIGHTED (anisotropic) form
+  `decLoss = commonDiv(u)²·Σ_i (u^{δ_i}·[Γ·Z_tail]_{ρ(i)})²`. The clean `commonDiv²·frobSq(Γ·Z)` holds only
+  where `δ_iℓ=0` on a SPANNING set of generators (α gives ONE zero-leftover generator `i₀` — a 1-dim span,
+  = the FAILED drop-to-`i₀`; the clean free-block Morse needs a spanning zero-leftover block). A corner
+  sector `|u₁|≤|u₀|` gives monomial COMPARISONS, not an exact u-independent identity (the ratio variable's
+  powers survive). **So `corankLeaf` closes `#4` ONLY IF the width-2 base is spanning-zero-leftover — which is
+  NOT forced by the supplied architecture facts.** Otherwise the base needs an anisotropic leaf estimate
+  STRONGER than `corankLeaf` (the coupled corner). This is a NEW gap the earlier γ-rounds (i₀-component /
+  block-norm / whole-Z — all about the `Z` object) did not reach; it is about the u-independence of the
+  residual, orthogonal to `Z`.
+
+**Verdict on the 4 audit questions:**
+1. **FAITHFUL** — the reshape DIRECTION is right (provenance certificate: front/tail decomposition + the
+   exact support-weighted residual identity + the tail family), but desc4's draft as described (fixed `Z`,
+   global `dom≅matBox`, `dim Γ=minAdm`) is the BASE specialization, not the general-arity invariant. Fix per
+   S1/S2.
+2. **#5-PRESERVABLE** — yes IF stated general-arity (varying `Z_tail`, sector, weighted identity); the draft's
+   fixed-`Z`/global-PSD form is NOT preservable (false at intermediate arity). #5's obligation reshapes to
+   "the peel produces the WEIGHTED leaf form for the reduced chain (tail one shorter)", and — the new S2 gap
+   — "the peel drives the width-2 base to a spanning-zero-leftover block" (or an anisotropic leaf is used).
+3. **SUBTLETIES** — both CONFIRMED. `dim Γ = minAdm M` is width-2-specific (`minAdm M = N_front +
+   minAdm(tail)`; front-block dim ≠ total whenever the tail contributes) → DERIVE-AT-BASE via `minAdm_two_eq`
+   + `genuineCarrier` pinning `Γ = Params M = M₀×M₁`. `Z_tail = I` at width-2 → DERIVE-AT-BASE.
+4. **OVER-SPECIFIED** — yes in two places: a global measure iso `dom≅matBox` is stronger than needed (Fubini
+   / domination-by-a-fixed-matrix-box suffices); and `∃ Z (fixed matrix)` over-commits (use the derived
+   `Z_tail`). Drop both.
+
+**RECOMMENDED MINIMAL d≥1 BUNDLE** (`1 ≤ D.d ∧ …`):
+- **[CARRY]** the front/tail split `(y, Γ)` with `Γ` the genuine free active block and `y` the
+  spectators/tail params; the tail family `Z_tail(z)` IDENTIFIED (via `ctx`/`genuineCarrier`'s `prod`) with
+  the deeper product — not a fresh matrix.
+- **[CARRY]** the generator↔product-entry correspondence `ρ` + the leftover exponents `δ_iℓ`.
+- **[CARRY]** the FAITHFUL WEIGHTED identity `decLoss u z = commonDiv(u)²·Σ_i (u^{δ_i}·[Γ(z)·Z_tail(z)]_{ρ(i)})²`.
+- **[CARRY]** β retained as the exceptional-coordinate charge `∫₀¹ u_ℓ^{jac_ℓ − 2c'k_ℓ} du_ℓ < ∞` ⟺
+  `c' < monomialThreshold` with `monomialThreshold ≥ ½minAdm`.
+- **[CARRY]** measure compatibility sufficient for Fubini/domination (NOT a global `dom≅matBox`).
+- **[DERIVE-AT-BASE]** `Z_tail=I` (empty tail); `dim Γ = M₀·M₁ = minAdm M` (`minAdm_two_eq`); the
+  spanning-zero-leftover block giving `decLoss ≥ commonDiv²·frobSq(Γ)` (⟹ `corankLeaf` with `Z=I`) — **OR** an
+  anisotropic leaf theorem. THIS terminal coverage is the load-bearing unforced obligation (S2).
+- **[DROP]** `∃ Z, Z·Zᵀ≽c·I` as a standalone clause; uniform PD of the varying tail on all of `dom`; a clean
+  u-independent frobSq at every arity; `dim Γ = minAdm M` as an all-arities clause.
+
+**Load-bearing risk + what settles it.** The one unforced obligation is whether **#5's peel drives the
+width-2 base to a spanning-zero-leftover (uniform-enough) block** so `corankLeaf` (clean frobSq, `Z=I`)
+closes `#4`. The radial divisors ARE uniform (`radialStep`: shared by every generator, `δ=0`); the anisotropy
+enters via the `rowMix R` (the deferred analytic half). Settling it = tracing whether the accumulated
+`rowMix` support at width-2 is spanning-zero-leftover. If yes, `corankLeaf` closes `#4` cleanly. If no, `#4`
+needs the anisotropic coupled-corner leaf (harder, = the Q1 estimate in `stephyp-intersection-cert`). desc4
+should build the bundle in the [CARRY]/[DERIVE-AT-BASE]/[DROP] shape above and, at the base, attempt the
+spanning-zero-leftover route first — flagging the anisotropic-leaf fallback if the support isn't uniform.

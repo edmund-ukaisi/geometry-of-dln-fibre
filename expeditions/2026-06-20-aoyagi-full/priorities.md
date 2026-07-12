@@ -56,16 +56,23 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
    - **LANDED clean-three (genm-sj5-desc3):** units bridge #147 (`RouteMSJUnitsBridge` @cab04ba5, eigenvalue-free Loewner) +
      #3 adm def (B) #148 (`RouteMSJAdm` @0ba81dcb: genuineCarrier (i) + admValuation=`d=0 ∨ pSimultaneous` + htriv PROVED;
      cover DECORRELATED fidelity-PASS). DecoratedDescent witness typechecks; only #4 (hbase) + #5 (hstep) OPEN.
-   - **#4 #149 `DecoratedBaseHyp` — RESOLVED (OPT-A + FaithfulSJAt + γ-LOCK, all decorrelated-confirmed); desc4 (fresh) BUILDING.**
+   - **#4 #149 `DecoratedBaseHyp` — RESOLVED-to-labour (OPT-A + FaithfulSJAt); bundle SHAPE co-designed (UPDATE-948); desc4 (fresh) BUILDING the WEIGHTED bundle.**
      The base-provability finding (adm too weak; DecoratedBaseHyp false for it) → **OPT-A: adm carries `FaithfulSJAt`** (the (S,J)
-     resolution-state: α pSimultaneous / β threshold≥½minAdm / γ block-level WHOLE-Z units-bound `Z·Zᵀ≽c·I` on Z=A₂···A_L;
-     d=0∧ofMatrix leaf). γ LOCKED after 2 DECORRELATED-CAUGHT flips (block → i₀-component [UNSATISFIABLE for free Γ] → whole-Z;
-     gammalock-answer). **#4 = route-A `corankLeaf_rpow_lt_top`** (my ORIGINAL banked base LOSS part): d=0 → baseBoxCoV; d≥1 →
-     decLoss ≍ commonDivisor²·frobSq(Γ·Z), threshold min(T_u, D_Γ/2) = ½minAdm via β + the **LEAF IDENTITY dim Γ=minAdm** (MIN-of-
-     two-full-budgets, NOT ADD); corankLeaf integrates Γ FREE (Rayleigh + the whole-Z γ). desc4 revising the adm γ-clause
-     (i₀-component → whole-Z ZZᵀ≽cI) + building #4; cover audits + does the #5 γ-audit. adm+baseBoxCoV STAGED (γ-clause revising).
-     Recalibration: discuss-at-close #115. Process lesson (UPDATE-945): confirm fidelity clauses only AFTER the decorrelated
-     preservability check, not "expect yes". The holds on adm re-integration PROTECTED canonical from the 2 wrong-γ intermediates.
+     resolution-state invariant, a **general-arity LOOP INVARIANT** consumed at every intermediate arity, #4 closes it only at width-2).
+     **Bundle SHAPE (cover co-design, decorrelated-Codex-confirmed, faithfulsj §★★; supersedes the γ-lock's carried-γ):** CARRY the
+     front/tail split (y,Γ), the z-dependent tail family **Z_tail(z)** (S1 — NOT a fixed matrix; the standalone `∃Z,ZZᵀ≽cI` is VACUOUS
+     + the PSD bound is DERIVED-at-base / SECTOR-at-intermediate, so DROP it as a carried clause), the generator↔entry map ρ + leftovers
+     δ, the **WEIGHTED identity** `decLoss = commonDivisor²·Σ_i(u^{δ_i}·[Γ·Z_tail]_{ρ(i)})²` (S2 — the clean `frobSq(Γ·Z)` is NOT
+     u-independent in general), β (`∫u^{jac−2c'k}<∞`), Fubini-compat. DERIVE-at-base: Z_tail=I, dim Γ=minAdm (LEAF IDENTITY, width-2-
+     specific), spanning-zero-leftover ⟹ route-A `corankLeaf_rpow_lt_top` (Γ free, Rayleigh) OR the anisotropic leaf.
+     **★★ S2 = the deeper OBLIGATION (soundness-adjacent, to SETTLE not hand-wave):** route-A corankLeaf closes #4 ONLY IF the width-2
+     base is spanning-zero-leftover (δ=0 on a SPANNING set of gens) — α gives only i₀ (1-dim), NOT architecture-forced. Settle by
+     tracing whether #5's peel drives width-2 to spanning-zero-leftover (radial divisors δ=0-uniform; anisotropy = deferred rowMix R);
+     if not, the base needs the anisotropic leaf (the Q1 coupled corner = #5-adjacent, banked-adjacent). desc4 builds the WEIGHTED
+     bundle, attempts spanning-zero-leftover at base first, flags the anisotropic-leaf fallback; cover traces rowMix + audits.
+     desc4's RouteMSJBaseHyp (case i complete + case ii-core) STAGED for the one-shot #4 integration (against the confirmed shape).
+     Recalibration: discuss-at-close #115 + #116. Process lesson (UPDATE-945/948): confirm fidelity clauses / GO only AFTER the
+     decorrelated co-design lands, not "expect yes" — the holds PROTECTED canonical from 2 wrong-γ intermediates + the clean-frobSq GO.
    - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` #5 (the decorated peel):** the coupled corner blow-up → charges-ADD
      to `sjLoss_terminal`, closing on the reduced-chain IH at the ½peelCharge-shifted threshold. **SOUNDNESS RESOLVED (dmcheck #146
      + cover, decorrelated): NO COLLAPSE** — the invariant form is the QIP identity + m=1 + D_q≤M₀q, per-cell `½(M₀ρ+min(M₀q,D_q))`
