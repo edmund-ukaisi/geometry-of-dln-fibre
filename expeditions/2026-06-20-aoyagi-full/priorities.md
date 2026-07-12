@@ -89,7 +89,8 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
      transversality [geometric]; (2) the ARITY-recursion assembly [well-foundedness + per-level uniform constants + finite subcover, measure]. LABOUR,
      not a decorrelated-confirmed wall. **cover DESIGNING it airtight** (decorrelated; gate is a PROOF for this exhaustiveness claim) → then **controller
      runs an INDEPENDENT hunt (fresh seat, NOT cover's Codex) before formalize** (bedrock: exhaustiveness at the foundation, one gap already surfaced).
-     PRECISION: sector-coercivity FAILS POINTWISE on the rank-drop locus → PER-PEEL-SUPPLIED, NOT a carried adm clause (carried adm = the 6-clause set). Below: the coupled corner blow-up → charges-ADD
+     PRECISION: sector-coercivity FAILS POINTWISE on the rank-drop locus → PER-PEEL-SUPPLIED, NOT a carried adm clause (carried adm = the 6-clause set).
+     **★ #5 ρ-EQUIV PRODUCTION OBLIGATION (cover re-audit, UPDATE-959-adjacent):** the ρ-Equiv `D.ι ≃ Fin a × Fin Dt` (generators ↔ Γ·Z entries, load-bearing for Σres²=frobSq) is a fine CONSUMED hypothesis for #4, but #5's peel must PRODUCE it — exactly one generator per resolved-corner entry, NO spurious/omitted generators (`|ι|=a·Dt`). A #5 fidelity requirement on the resolved carrier. Below: the coupled corner blow-up → charges-ADD
      to `sjLoss_terminal`, closing on the reduced-chain IH at the ½peelCharge-shifted threshold. **SOUNDNESS RESOLVED (dmcheck #146
      + cover, decorrelated): NO COLLAPSE** — the invariant form is the QIP identity + m=1 + D_q≤M₀q, per-cell `½(M₀ρ+min(M₀q,D_q))`
      (NOT bare D/m≥n₀ [view-dependent], NOT codim-slack). **Build-plan BANKED** (`stephyp-buildplan.md`, 6-node DAG, mostly-banked):
