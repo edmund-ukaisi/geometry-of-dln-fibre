@@ -137,16 +137,6 @@ theorem hsSplit_fst_succ (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u
     (A' : Params (tailChain M)) (s : Fin L) :
     (hsSplit M u κ A').1 s.succ = A' s.succ := rfl
 
-/-- `weakEigCount` is monotone in the threshold: a smaller `ε` counts no more small eigenvalues. -/
-theorem weakEigCount_mono {M₂ nn : ℕ} {ε₁ ε₂ : ℝ} (h0 : 0 ≤ ε₁) (h : ε₁ ≤ ε₂)
-    (Z : Matrix (Fin M₂) (Fin nn) ℝ) :
-    weakEigCount ε₁ Z ≤ weakEigCount ε₂ Z := by
-  unfold weakEigCount
-  apply Finset.card_le_card
-  intro i hi
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
-  nlinarith [hi, sq_nonneg ε₁]
-
 /-- `freedSchurLoss` reads `Q` only through its two row-blocks `Q.submatrix Sum.inl/inr id`; equal blocks
 give equal loss. -/
 theorem freedSchurLoss_submatrix_congr {t a b q : ℕ} (x : SJOuter t a b) (Γ : Fin a → Fin b → ℝ)
@@ -156,6 +146,82 @@ theorem freedSchurLoss_submatrix_congr {t a b q : ℕ} (x : SJOuter t a b) (Γ :
     freedSchurLoss x Γ Q1 = freedSchurLoss x Γ Q2 := by
   unfold freedSchurLoss
   rw [h1, h2]
+
+/-- **The integrand identity (step 1).** For a point `(z, A_cor)` in the good set (`Zf z = Z_deep`), the
+freed-loss at the reassembled `Q = Q1(hsSplit.symm (z,A_cor))` equals the freed-loss at `hsQ z A_cor`:
+`Q1`'s pivot rows are `prod(redChain u M) z` and corank rows `A_cor·Z_deep = A_cor·Zf z` (via forward
+action + `prod_headSplit` + `hgood`). Reads only the two row-blocks (`freedSchurLoss_submatrix_congr`). -/
+theorem hsSplit_freedSchur_symm_eq {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (κ : Fin (t + j) ↪ Fin (M 1))
+    (Zf : Params (redChain (t + j) M)
+        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
+            (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
+    (z : Params (redChain (t + j) M))
+    (A_cor : Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ)
+    (hgood : Zf z = deeperFlagZdeep M (t + j) z)
+    (x : SJOuter (t + j) (M 0 - (t + j)) (M 1 - (t + j)))
+    (Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ) :
+    freedSchurLoss x Γ
+        ((prod (tailChain M) ((hsSplit M (t + j) κ).symm (z, A_cor))).submatrix
+          (blockSplitEquiv κ) id)
+      = freedSchurLoss x Γ (hsQ M (t + j) Zf z A_cor) := by
+  set A' := (hsSplit M (t + j) κ).symm (z, A_cor) with hA'def
+  have hps : hsSplit M (t + j) κ A' = (z, A_cor) := (hsSplit M (t + j) κ).apply_symm_apply (z, A_cor)
+  have hz0 : (fun i => A' 0 (blockSplitEquiv κ (Sum.inl i))) = z 0 := by
+    rw [← hsSplit_fst_zero M (t + j) κ A', hps]
+  have hAcor : (fun i => A' 0 (blockSplitEquiv κ (Sum.inr i))) = A_cor := by
+    rw [← hsSplit_snd M (t + j) κ A', hps]
+  have hsucc : ∀ s : Fin L, A' s.succ = z s.succ := by
+    intro s; rw [← hsSplit_fst_succ M (t + j) κ A' s, hps]
+  -- `deeperFlagZdeep M u z = prod (dropHead (tailChain M)) (A'∘succ)` (chains defeq by rfl; arg by hsucc).
+  have hZd : deeperFlagZdeep M (t + j) z
+      = prod (dropHead (tailChain M)) (fun (s : Fin L) => A' s.succ) := by
+    have harg : (fun (s : Fin L) => (paramsHeadSplit (redChain (t + j) M) z).2 s)
+        = fun (s : Fin L) => A' s.succ := by funext s; exact (hsucc s).symm
+    show prod (dropHead (tailChain M)) (fun (s : Fin L) => (paramsHeadSplit (redChain (t + j) M) z).2 s)
+        = prod (dropHead (tailChain M)) (fun (s : Fin L) => A' s.succ)
+    rw [harg]
+  -- `Zd = prod (dropHead (redChain u M)) (z∘succ)` (the pivot-block deep factor, both defeq forms).
+  have hZd2 : (prod (dropHead (tailChain M)) (fun (s : Fin L) => A' s.succ))
+      = prod (dropHead (redChain (t + j) M)) (fun (s : Fin L) => z s.succ) :=
+    hZd.symm.trans rfl
+  refine freedSchurLoss_submatrix_congr x Γ _ _ ?_ ?_
+  · -- pivot: `Q1.submatrix inl id = hsQ.submatrix inl id`
+    ext i col
+    rw [hsQ, prod_headSplit (tailChain M) A']
+    simp only [Matrix.submatrix_apply, id_eq, Matrix.fromRows_apply_inl, Matrix.submatrix_apply]
+    rw [blockSplitEquiv_inl]
+    show rmatMul (A' 0) (prod (dropHead (tailChain M)) (fun s => A' s.succ)) (κ i) col
+        = (prod (redChain (t + j) M) z) (finCongr (redChain_zero (t + j) M).symm i)
+            (finCongr (dropHead_last_eq_redChain_last M (t + j)) col)
+    have hA0 : A' 0 (κ i) = z 0 i := by
+      rw [← blockSplitEquiv_inl κ i]; exact congrFun hz0 i
+    have hrow : finCongr (redChain_zero (t + j) M).symm i = i := Fin.ext (finCongr_apply_coe _ i)
+    have hcolc : finCongr (dropHead_last_eq_redChain_last M (t + j)) col = col :=
+      Fin.ext (finCongr_apply_coe _ col)
+    rw [hrow, hcolc, prod_headSplit (redChain (t + j) M) z, hZd2]
+    simp only [rmatMul]
+    refine Finset.sum_congr rfl (fun k _ => ?_)
+    rw [congrFun hA0 k]
+  · -- corank: `Q1.submatrix inr id = hsQ.submatrix inr id`
+    ext i col
+    rw [hsQ]
+    simp only [Matrix.submatrix_apply, id_eq, Matrix.fromRows_apply_inr]
+    rw [hgood, prod_headSplit (tailChain M) A']
+    simp only [rmatMul, Matrix.mul_apply, Matrix.of_apply]
+    rw [← hZd]
+    refine Finset.sum_congr rfl (fun k _ => ?_)
+    rw [congrFun hAcor i]
+
+/-- `weakEigCount` is monotone in the threshold: a smaller `ε` counts no more small eigenvalues. -/
+theorem weakEigCount_mono {M₂ nn : ℕ} {ε₁ ε₂ : ℝ} (h0 : 0 ≤ ε₁) (h : ε₁ ≤ ε₂)
+    (Z : Matrix (Fin M₂) (Fin nn) ℝ) :
+    weakEigCount ε₁ Z ≤ weakEigCount ε₂ Z := by
+  unfold weakEigCount
+  apply Finset.card_le_card
+  intro i hi
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+  nlinarith [hi, sq_nonneg ε₁]
 
 /-- **The shell⊆good-set containment (step 5, D-C).** On the shell (`prod (tailChain M) A'` has `j` small
 singular values) with `A'` in the entry-box, the deep factor `Z_deep = deeperFlagZdeep M u (hsSplit A').1`
