@@ -285,10 +285,34 @@ theorem blockFront_rowSplit {t a b q : ℕ} (P : Matrix (Fin t) (Fin t) ℝ)
     simp only [Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
   rw [htop, hbot]
 
+/-- **The block-front reduction of `pivotDomLHS` (scaffold, cert-free).** Threading `pivotInner_Dsubst`
+(step 1) through the outer `(z, A_cor)` integrals (per `x ∈ outerDom`, so `IsUnit P` holds via the 4th
+`outerDom` conjunct) rewrites the freed-`Γ` spine as the clean block-front integral over the raw `(2,2)`
+block `D ∈ genBox`. This is the concrete starting point the σ-coupled analytic core (D-A-radial + S3 +
+C-absorption) attaches to; the core then applies `of_blockSplitD_symm_eq_fromBlocks` + `blockFront_rowSplit`
+pointwise to expose the pivot(top)/corank(bottom) split. -/
+theorem pivotDomLHS_eq_blockFront (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
+    pivotDomLHS M u c' Zf
+      = ∫⁻ z in paramsBoxM (redChain u M) 1,
+          ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+            ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
+              ∫⁻ D in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
+                ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD u (M 0 - u) (M 1 - u)).symm (x, D))
+                  * hsQ M u Zf z A_cor) ^ (-c')) := by
+  unfold pivotDomLHS
+  refine lintegral_congr fun z => ?_
+  refine lintegral_congr fun A_cor => ?_
+  refine setLIntegral_congr_fun (measurableSet_outerDom u (M 0 - u) (M 1 - u) 1) (fun x hx => ?_)
+  exact pivotInner_Dsubst x hx.2.2.2 (hsQ M u Zf z A_cor) c'
+
 /-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX — scaffold + 1-sorry, standing decision 7).**
 The freed Schur-loss spine LHS is dominated by a FINITE reorganisation constant times the comparator-core
 RHS. This is exactly the conclusion of `RouteMSJHeadSplitDom.headSplit_pivotDom`; it carries the entire
-head-split analytic crux and is left as the single `sorry` of this module.
+head-split analytic crux and is left as the single `sorry` of this module. The block-front reduction
+`pivotDomLHS_eq_blockFront` gives the concrete starting point.
 
 **Internal decomposition** (the scaffold, to be built sorry-free around the one residual C-absorption):
 * **Reformulation** (`freedSchurLoss_eq_frobSq_block`, LANDED): on `outerDom` (`IsUnit P`), `freedSchurLoss
