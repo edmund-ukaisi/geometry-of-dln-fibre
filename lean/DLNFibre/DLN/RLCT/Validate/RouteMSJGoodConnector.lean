@@ -33,11 +33,11 @@ finite below `carrierThreshold M`. The chain (mirroring `#4`'s width-2 base
    monomial factor is finite below `monomialThreshold` (the β clause).
 4. **Cover** (`routeMBox_le_shellSum`, the genuinely-new content): the box integral is bounded by the
    finite sum, over shells `j` and pivot columns `κ`, of the deeper-cut spine integrands
-   `shellSpineIntegrand M (t★+j) κ ε r j c'` (`t★ = bindingCut M`, `r = min (M₀−t★) (M₁−t★)`). This is
+   `shellSpineIntegrand M (ts+j) κ ε r j c'` (`ts = bindingCut M`, `r = min (M₀−ts) (M₁−ts)`). This is
    the decorated/deeper-cut analogue of `sjBoundaryPeel`: shell-stratify the outer tail
-   (`offSector_cover_le`) + per-shell re-peel of the front factor at the deeper cut `t★+j`
-   (`gammaPeelIntegral_schurShearFree_eq` restricted to the shell, pivot-cover at depth `t★+j`).
-5. Each `shellSpineIntegrand M (t★+j) κ ε r j c' < ⊤` via the sibling holes (a)
+   (`offSector_cover_le`) + per-shell re-peel of the front factor at the deeper cut `ts+j`
+   (`gammaPeelIntegral_schurShearFree_eq` restricted to the shell, pivot-cover at depth `ts+j`).
+5. Each `shellSpineIntegrand M (ts+j) κ ε r j c' < ⊤` via the sibling holes (a)
    `deeperFlagStrictShell_finite` (`j < r`) / (b) `deeperFlagSaturatedShell_finite` (`j = r`),
    consumed here as hypotheses (WITH the `hcT : c' < carrierThreshold M` clause the controller is
    adding); `ENNReal.sum_lt_top` closes.
@@ -191,15 +191,77 @@ theorem rank_ge_ae {m n t : ℕ} (htm : t ≤ m) (htn : t ≤ n) :
   rw [not_le] at hlt
   exact hA (Core.submatrix_det_eq_zero_of_rank_le (A := Matrix.of A) (r := c) (by omega) ρ₀ κ₀)
 
+/-- **General-depth product pivot-chart cover** (the `frontBox_pivotCover_le` analogue at depth `t`).
+For a front factor `A₀ : Fin m → Fin n → ℝ` (with `t ≤ m`, `t ≤ n`) times a tail set `s`, the
+`matBox ×ˢ s` product integral is bounded by the finite sum, over the `t`-pivot charts `(ρ, κ)`, of the
+`(matBox ∩ pivotChart ρ κ) ×ˢ s` integrals. The `{rank < t}` locus is null (`rank_ge_ae`, SNAG-D), so
+`matBox ×ˢ s =ᵐ (matBox ∩ {t ≤ rank}) ×ˢ s`, then `pivotLocus_eq_iUnion t` distributed over `×ˢ s` +
+subadditivity. The generalisation of `frontBox_pivotCover_le` (its `t = 1`, `{rank = 0} = {0}` case) to
+the deeper cut `t = ts + j`. -/
+private theorem frontBox_pivotCover_depth {m n : ℕ} (t : ℕ) (htm : t ≤ m) (htn : t ≤ n)
+    {β : Type*} [MeasureSpace β] [SigmaFinite (volume : Measure β)]
+    (T : ℝ) (s : Set β) (f : (Fin m → Fin n → ℝ) × β → ℝ≥0∞) :
+    ∫⁻ q in matBox m n T ×ˢ s, f q
+      ≤ ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n,
+          ∫⁻ q in (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q := by
+  classical
+  have hnull0 : (volume : Measure (Fin m → Fin n → ℝ)) {A | (Matrix.of A).rank < t} = 0 := by
+    have h := rank_ge_ae (m := m) (n := n) (t := t) htm htn
+    rw [ae_iff] at h
+    refine measure_mono_null ?_ h
+    intro A hA; rw [Set.mem_setOf_eq] at hA ⊢; omega
+  have hae : (matBox m n T ×ˢ s)
+      =ᵐ[volume] ((matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}) ×ˢ s) := by
+    rw [ae_eq_set]
+    refine ⟨?_, ?_⟩
+    · have hsub : (matBox m n T ×ˢ s)
+            \ ((matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}) ×ˢ s)
+          ⊆ ({A : Fin m → Fin n → ℝ | (Matrix.of A).rank < t}) ×ˢ s := by
+        rintro ⟨A0, b⟩ hq
+        rw [Set.mem_diff, Set.mem_prod, Set.mem_prod, Set.mem_inter_iff] at hq
+        obtain ⟨⟨hA0, hb⟩, hnot⟩ := hq
+        have hr : (Matrix.of A0).rank < t := by
+          by_contra hge; rw [not_lt] at hge; exact hnot ⟨⟨hA0, hge⟩, hb⟩
+        exact ⟨hr, hb⟩
+      have hnull : volume (({A : Fin m → Fin n → ℝ | (Matrix.of A).rank < t}) ×ˢ s) = 0 := by
+        rw [Measure.volume_eq_prod, Measure.prod_prod, hnull0, zero_mul]
+      exact measure_mono_null hsub hnull
+    · rw [Set.diff_eq_empty.mpr (Set.prod_mono Set.inter_subset_left (subset_refl s))]
+      exact measure_empty
+  have hcov : {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}
+      = ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), pivotChart ρ κ := pivotLocus_eq_iUnion t
+  have hdist : (⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), matBox m n T ∩ pivotChart ρ κ)
+      = matBox m n T ∩ ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), pivotChart ρ κ := by
+    simp only [Set.inter_iUnion]
+  have hset : matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}
+      = ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), matBox m n T ∩ pivotChart ρ κ :=
+    (congrArg (fun st => matBox m n T ∩ st) hcov).trans hdist.symm
+  have hcover : (matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}) ×ˢ s
+      = ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), (matBox m n T ∩ pivotChart ρ κ) ×ˢ s := by
+    rw [hset]; simp only [Set.iUnion_prod_const]
+  rw [setLIntegral_congr hae, hcover]
+  calc ∫⁻ q in ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q
+      ≤ ∑' ρ : Fin t ↪ Fin m,
+          ∫⁻ q in ⋃ κ : Fin t ↪ Fin n, (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q :=
+        lintegral_iUnion_le _ _
+    _ = ∑ ρ : Fin t ↪ Fin m,
+          ∫⁻ q in ⋃ κ : Fin t ↪ Fin n, (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q := tsum_fintype _
+    _ ≤ ∑ ρ : Fin t ↪ Fin m, ∑' κ : Fin t ↪ Fin n,
+          ∫⁻ q in (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q :=
+        Finset.sum_le_sum (fun ρ _ => lintegral_iUnion_le _ _)
+    _ = ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n,
+          ∫⁻ q in (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q :=
+        Finset.sum_congr rfl (fun ρ _ => tsum_fintype _)
+
 /-! ## The genuinely-new cover (deeper-cut analogue of `sjBoundaryPeel`) — hole (d) piece -/
 
 /-- **The good-case box→shell-sum cover (GENUINELY-NEW — sorried, pending design sanity-check).** The
 layer-product box integral is bounded by the finite sum, over the singular shells `j : Fin (r+1)`
-(`r = min (M₀−t★) (M₁−t★)`, `t★ = bindingCut M`) and the pivot-column embeddings `κ`, of the deeper-cut
-spine integrands at cut `t★+j` restricted to shell `j`. This is the shell-stratify (outer tail,
+(`r = min (M₀−ts) (M₁−ts)`, `ts = bindingCut M`) and the pivot-column embeddings `κ`, of the deeper-cut
+spine integrands at cut `ts+j` restricted to shell `j`. This is the shell-stratify (outer tail,
 `offSector_cover_le` / `singularShell_iUnion`) + per-shell re-peel of the front factor at the deeper cut
-`t★+j` (`gammaPeelIntegral_schurShearFree_eq` on the shell + pivot-cover at depth `t★+j`, whose
-`{rank < t★+j}` null-set is SNAG-D). It is UNDECORATED (a statement about `routeMLayerBoxIntegral`) — the
+`ts+j` (`gammaPeelIntegral_schurShearFree_eq` on the shell + pivot-cover at depth `ts+j`, whose
+`{rank < ts+j}` null-set is SNAG-D). It is UNDECORATED (a statement about `routeMLayerBoxIntegral`) — the
 decoration enters only in the `D.integral → monomial · routeMLayerBoxIntegral` separation. -/
 theorem routeMBox_le_shellSum (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) {ε : ℝ} (hε : 0 < ε) :
     routeMLayerBoxIntegral M c' 1
@@ -208,7 +270,51 @@ theorem routeMBox_le_shellSum (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) {ε :
             ∑ κ : Fin (bindingCut M + (j : ℕ)) ↪ Fin (M 1),
               shellSpineIntegrand M (bindingCut M + (j : ℕ)) κ ε
                 (min (M 0 - bindingCut M) (M 1 - bindingCut M)) j c' := by
-  sorry
+  classical
+  have hbind : bindingCut M ≤ min (M 0) (M 1) := (Nat.find_spec (exists_binding_cut M)).1
+  set ts := bindingCut M with hts
+  set r := min (M 0 - ts) (M 1 - ts) with hr
+  -- Step 1: front-split of the box integral.
+  rw [routeMLayerBoxIntegral_front_split M c']
+  -- Step 2: shell-stratify the outer tail `A'` (pullback of `singularShell` under `prod (tailChain M)`).
+  have hcov : paramsBoxM (tailChain M) 1
+      ⊆ ⋃ j : Fin (r + 1), (paramsBoxM (tailChain M) 1
+          ∩ {A' | prod (tailChain M) A' ∈ singularShell ε r j}) := by
+    intro A' hA'
+    have hu : prod (tailChain M) A' ∈ (⋃ j : Fin (r + 1), singularShell ε r j) := by
+      rw [singularShell_iUnion]; trivial
+    rw [Set.mem_iUnion] at hu
+    obtain ⟨j, hj⟩ := hu
+    exact Set.mem_iUnion.mpr ⟨j, hA', hj⟩
+  refine le_trans (lintegral_le_sum_finCover
+    (fun j => paramsBoxM (tailChain M) 1 ∩ {A' | prod (tailChain M) A' ∈ singularShell ε r j})
+    (fun A' => ∫⁻ A0 in matBox (M 0) (M 1) 1,
+        ENNReal.ofReal ((frobSq (rmatMul A0 (prod (tailChain M) A'))) ^ (-c'))) hcov) ?_
+  refine Finset.sum_le_sum (fun j _ => ?_)
+  -- Per shell `j`: re-peel the front factor at the deeper cut `ts + j` (SNAG-D pivot-cover + schur).
+  have hcut : ts + (j : ℕ) ≤ min (M 0) (M 1) :=
+    deeperCut_le M ts (j : ℕ) hbind (Nat.lt_succ_iff.mp j.isLt)
+  have htm : ts + (j : ℕ) ≤ M 0 := le_trans hcut (min_le_left _ _)
+  have htn : ts + (j : ℕ) ≤ M 1 := le_trans hcut (min_le_right _ _)
+  -- Tonelli: the shell piece is the product integral over `matBox ×ˢ (shell A'-set)`.
+  rw [show (∫⁻ A' in paramsBoxM (tailChain M) 1
+          ∩ {A' | prod (tailChain M) A' ∈ singularShell ε r j},
+        ∫⁻ A0 in matBox (M 0) (M 1) 1,
+          ENNReal.ofReal ((frobSq (rmatMul A0 (prod (tailChain M) A'))) ^ (-c')))
+      = ∫⁻ q in matBox (M 0) (M 1) 1 ×ˢ (paramsBoxM (tailChain M) 1
+          ∩ {A' | prod (tailChain M) A' ∈ singularShell ε r j}),
+          ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-c')) from by
+    rw [Measure.volume_eq_prod, setLIntegral_prod_symm _ (measurable_frontIntegrand M c').aemeasurable]]
+  refine le_trans (frontBox_pivotCover_depth (ts + (j : ℕ)) htm htn 1
+    (paramsBoxM (tailChain M) 1 ∩ {A' | prod (tailChain M) A' ∈ singularShell ε r j})
+    (fun q => ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-c')))) ?_
+  refine Finset.sum_le_sum (fun ρ _ => Finset.sum_le_sum (fun κ _ => le_of_eq ?_))
+  -- Each pivot-chart product integral IS the shell-spine integrand (Tonelli back + schur weld/shear).
+  rw [shellSpineIntegrand, Measure.volume_eq_prod,
+    setLIntegral_prod_symm _ (measurable_frontIntegrand M c').aemeasurable]
+  refine lintegral_congr (fun A' => ?_)
+  rw [chartInner_schurWeld_eq_of_emb ρ κ (prod (tailChain M) A') c' 1]
+  exact chartInner_schurShearFree_eq ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id) c' 1
 
 /-! ## The assembled hole (d) — `deeperFlagGood_finite_impl` (assembly sorried, pending checkpoint) -/
 
