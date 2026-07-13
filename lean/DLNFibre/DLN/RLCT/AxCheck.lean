@@ -150,6 +150,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
 import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
 
 /-!
 # Axiom-hygiene check
@@ -1212,3 +1213,14 @@ open DLNFibre.DLN.RLCT
 #print axioms DLNFibre.DLN.RLCT.strongBlock_lintegral_lt_top
 #print axioms DLNFibre.DLN.RLCT.deeperCut_shell_corankWeight_lt_top
 #print axioms DLNFibre.DLN.RLCT.shell_corankOffSector_le
+-- T-Obl3b OWED-3 mountain headline (`RouteMSJDeeperFlagCore`): L1 `deeperFlag_shell_core_le` (analytic
+-- heart) + the S3 `U_s`-uniform bricks — all clean-three. The headline `deeperFlag_shell_le` carries a
+-- TRACKED sorryAx = exactly the one isolated (□)-rung `deeperFlag_spineToCore` (S1, head-split CoV, next
+-- target); tracked here so the day S1 lands and it goes clean-three is visible (std-decision-7).
+#print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_core_le
+#print axioms DLNFibre.DLN.RLCT.strongBlock_lintegral_le_unif
+#print axioms DLNFibre.DLN.RLCT.shellCorankWeight_le_unif
+#print axioms DLNFibre.DLN.RLCT.strongBlock_unif_const_lt_top
+#print axioms DLNFibre.DLN.RLCT.deeperFlagUnifConst_lt_top
+#print axioms DLNFibre.DLN.RLCT.shell_corankOffSector_le_unif
+#print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_le

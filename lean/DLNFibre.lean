@@ -1428,3 +1428,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
 -- corankWeight_lt_top` (OWED-1 ∘ OWED-2 on the shell) → `shell_corankOffSector_le` (the w-uniform per-shell
 -- interior bound). The full `deeperFlag_shell_le` (decorated integrand + Z↦U_s selector) is pin-pending.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
+-- T-Obl3b OWED-3 mountain headline (`RouteMSJDeeperFlagCore`, corrected deeper-cut route): L1
+-- `deeperFlag_shell_core_le` (off-sector-core integrand ≤ `C·(cornerComparator …).integral`, the
+-- analytic heart; S4 closed via `w:=decLoss`) + the S3 `U_s`-uniform bricks
+-- (`strongBlock_lintegral_le_unif` &c.), all clean-three; the headline `deeperFlag_shell_le` (literal
+-- spine triple → comparator, binding-cut `1≤t` + nondegenerate `hnd`) reduces to the ONE isolated
+-- (□)-rung `deeperFlag_spineToCore` (S1 = the head-split spine→core CoV, next target). Reviewer-audited
+-- (a5fd475, decorrelated Codex): L1 faithful/non-gerrymandered, S1 genuinely-true + non-vacuous.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
