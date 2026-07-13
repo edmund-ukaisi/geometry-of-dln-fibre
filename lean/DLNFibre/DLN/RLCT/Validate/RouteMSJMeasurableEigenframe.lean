@@ -136,4 +136,49 @@ theorem lagProj_symm {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam : Fin M₂ → 
     obtain ⟨k, _, rfl⟩ := hN
     exact lagFactor_commute i j k
 
+/-! ## Layer A, Section 3 — the sequential frame construction (pivot + fold) -/
+
+open scoped Classical in
+/-- The nonzero-column index set of `R` (columns `c` with `fun r => R r c ≠ 0`). -/
+noncomputable def nzColSet (R : Matrix (Fin M₂) (Fin M₂) ℝ) : Finset (Fin M₂) :=
+  Finset.univ.filter (fun c => (fun r => R r c) ≠ 0)
+
+open scoped Classical in
+/-- The first (least-index) nonzero column of `R`, or `0` if `R = 0`. -/
+noncomputable def pivotVec (R : Matrix (Fin M₂) (Fin M₂) ℝ) : Fin M₂ → ℝ :=
+  if h : (nzColSet R).Nonempty then (fun r => R r ((nzColSet R).min' h)) else 0
+
+/-- The Euclidean-normalized first nonzero column of `R` (a unit vector when `R ≠ 0`). -/
+noncomputable def pivotUnit (R : Matrix (Fin M₂) (Fin M₂) ℝ) : Fin M₂ → ℝ :=
+  (Real.sqrt (dotProduct (pivotVec R) (pivotVec R)))⁻¹ • pivotVec R
+
+/-- The `n`-th column step from an accumulated projector `Q`: normalize the first nonzero column of
+`P⟨n⟩ * (1 − Q)` (junk `0` for out-of-range `n`, never used). -/
+noncomputable def colStep (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) (n : ℕ)
+    (Q : Matrix (Fin M₂) (Fin M₂) ℝ) : Fin M₂ → ℝ :=
+  if h : n < M₂ then pivotUnit (lagProj A lam ⟨n, h⟩ * (1 - Q)) else 0
+
+/-- The accumulated orthogonal projector onto the first `n` chosen columns. -/
+noncomputable def Qacc (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) :
+    ℕ → Matrix (Fin M₂) (Fin M₂) ℝ
+  | 0 => 0
+  | (n + 1) =>
+    Qacc A lam n +
+      vecMulVec (colStep A lam n (Qacc A lam n)) (colStep A lam n (Qacc A lam n))
+
+/-- The `n`-th frame column (`colStep` at the accumulated projector `Qacc … n`). -/
+noncomputable def colFn (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) (n : ℕ) : Fin M₂ → ℝ :=
+  colStep A lam n (Qacc A lam n)
+
+@[simp] theorem Qacc_zero (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) :
+    Qacc A lam 0 = 0 := rfl
+
+theorem Qacc_succ (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) (n : ℕ) :
+    Qacc A lam (n + 1) = Qacc A lam n + vecMulVec (colFn A lam n) (colFn A lam n) := rfl
+
+/-- The measurable sorted orthonormal eigenframe: column `c` is `colFn … c`. -/
+noncomputable def Uframe (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) :
+    Matrix (Fin M₂) (Fin M₂) ℝ :=
+  Matrix.of (fun r c => colFn A lam (c : ℕ) r)
+
 end DLNFibre.DLN.RLCT.MEframe
