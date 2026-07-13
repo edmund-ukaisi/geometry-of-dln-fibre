@@ -190,7 +190,7 @@ base RLCT needs). This is the predicate `DecoratedDescent` (`RouteMSJDecoratedRe
 (trivial admissible, `adm_trivial`), `DecoratedStepHyp` (peel-closure PRESERVES `FaithfulSJAt`, `#5`), and
 `DecoratedBaseHyp` (leaf finiteness CONSUMES `FaithfulSJAt`, `#4`). -/
 def adm (n : ℕ) (M : Fin (n + 1) → ℕ) (D : SJDecoration M) : Prop :=
-  genuineCarrier D ∧ (admCorankA M = 0 ∨ admCorankB M = 0 ∨ FaithfulSJAt D)
+  genuineCarrier D ∧ FaithfulSJAt D
 
 /-! ## `htriv` — the trivial decoration is admissible -/
 
@@ -213,7 +213,7 @@ theorem adm_trivial (n : ℕ) (M : Fin (n + 1) → ℕ) : adm n M (SJDecoration.
     rw [SJLinGenState.loss_ofMatrix]
     simp only [frobSq]
     rw [Fintype.sum_prod_type]
-  refine ⟨genuineCarrier_trivial M, Or.inr (Or.inr (Or.inl ⟨rfl, fun z x u => ?_⟩))⟩
+  refine ⟨genuineCarrier_trivial M, Or.inl ⟨rfl, fun z x u => ?_⟩⟩
   obtain ⟨⟩ := z
   exact key u x
 
