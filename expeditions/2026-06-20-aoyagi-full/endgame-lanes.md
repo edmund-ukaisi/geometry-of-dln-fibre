@@ -10,6 +10,18 @@ Tides build in worktrees; controller integrates one-at-a-time (aggregator + AxCh
 `DecoratedBaseHyp` (#4) DONE. `DecoratedStepHyp` (#5) = the mountain: **track (a) L≥1 head-split**
 `deeperFlag_spineToCore` = F ∘ headSplit_domination; **track (b) L=0 base** = banked (`routeMBoxThresholdFinite_mnp`).
 
+**★★ #1 PRIORITY — CORE SOUNDNESS BUG in `adm` (stepasm found, controller CONFIRMED from the def):**
+`adm`'s corank disjunct (`admCorankA/B M = 0`, RouteMSJAdm:192) BYPASSES FaithfulSJAt's β threshold
+(:170). `genuineCarrier` (:60-66) constrains ζ/ν/e/ctx but NOT d/jac/supp ⟹ a genuineCarrier decoration
+with jac≡0 is `adm` via the corank disjunct yet DIVERGES below threshold. Decide-checkable witness: M=(5,2,1),
+admCorankB=0 (bindingCut=2=M₁), minAdm=2; decLoss=|u₀|²·frobSq(prod) ⟹ ∫₀¹u₀^{-2c'}=⊤ for c'∈[1/2,1)<1
+⟹ **`DecoratedStepHyp adm` is FALSE as stated.** Base #4 masked it (corank=0⟺minAdm=0⟺vacuous,
+`decoratedBase_corankZero`); the step's interior binding cut un-masks it. FIX in progress: reviewer **admfix**
+(a962fb42, decorrelated Codex) designing the minimal sound tightening of the corank disjunct + the #4/descent
+ripple. **LOCALIZED:** the analytic cruxes (head-split step-2, waist O2, L=1) prove FaithfulSJAt finiteness —
+the fix EXCLUDES non-FaithfulSJAt corank decorations, so those lanes are ROBUST (not wasted). stepasm:
+dispatch-fix @7a132673 stands; banking clean + FaithfulSJAt-(e) bricks; corank subcases HELD pending the fix.
+
 **★ STATUS (2026-07-13, CORRECTED — the earlier "ZERO walls" milestone is STALE):** the endgame has TWO
 descent structures, each with a crux: **(1) head-split** (via redChain) — the pivotDom crux (step 1 grinding
 ~60% + step 2 forward-finiteness archfin-pinning), LABOUR; **(2) WAIST route-(b)** (via dropHead, KEEP M₁) —
