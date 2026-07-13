@@ -258,4 +258,49 @@ theorem trace_lagProj {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ 
     simp
   rw [Finset.sum_congr rfl (fun m _ => hterm m), Finset.sum_boole]
 
+/-! ## Layer A, Section 5 — the frame is orthonormal and diagonalizes (the invariant) -/
+
+/-- Total eigenvalue lookup: `lam ⟨p,·⟩` when `p < M₂`, else `0`. -/
+noncomputable def lamN (lam : Fin M₂ → ℝ) (p : ℕ) : ℝ := if h : p < M₂ then lam ⟨p, h⟩ else 0
+
+/-- Outer-product transpose. -/
+theorem vecMulVec_transpose (v w : Fin M₂ → ℝ) : (vecMulVec v w)ᵀ = vecMulVec w v := by
+  ext i j; simp [vecMulVec, Matrix.transpose_apply, mul_comm]
+
+/-- An outer product acts on a vector by the dotProduct: `(v wᵀ) *ᵥ u = ⟨w, u⟩ • v`. -/
+theorem vecMulVec_mulVec (v w u : Fin M₂ → ℝ) :
+    vecMulVec v w *ᵥ u = (dotProduct w u) • v := by
+  funext i
+  simp only [Matrix.mulVec, vecMulVec, Matrix.of_apply, dotProduct, Pi.smul_apply, smul_eq_mul]
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl (fun j _ => by ring)
+
+/-- The accumulated projector is a sum of outer products of the chosen columns. -/
+theorem Qacc_eq_sum (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) (n : ℕ) :
+    Qacc A lam n = ∑ p ∈ Finset.range n, vecMulVec (colFn A lam p) (colFn A lam p) := by
+  induction n with
+  | zero => simp
+  | succ k ih => rw [Qacc_succ, ih, Finset.sum_range_succ]
+
+/-- The accumulated projector is symmetric. -/
+theorem Qacc_symm (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) (n : ℕ) :
+    (Qacc A lam n)ᵀ = Qacc A lam n := by
+  rw [Qacc_eq_sum, Matrix.transpose_sum]
+  exact Finset.sum_congr rfl (fun p _ => vecMulVec_transpose _ _)
+
+/-- Given orthonormality of the first `n` columns, `Qacc … n` fixes each of them. -/
+theorem Qacc_fixes (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → ℝ) (n : ℕ)
+    (hon : ∀ p q : ℕ, p < n → q < n →
+      dotProduct (colFn A lam p) (colFn A lam q) = if p = q then 1 else 0)
+    (q : ℕ) (hq : q < n) :
+    Qacc A lam n *ᵥ colFn A lam q = colFn A lam q := by
+  rw [Qacc_eq_sum, Matrix.sum_mulVec,
+    Finset.sum_congr rfl
+      (fun p _ => vecMulVec_mulVec (colFn A lam p) (colFn A lam p) (colFn A lam q)),
+    Finset.sum_eq_single q]
+  · rw [hon q q hq hq]; simp
+  · intro p hp hpq
+    rw [hon p q (Finset.mem_range.mp hp) hq, if_neg hpq, zero_smul]
+  · intro h; exact absurd (Finset.mem_range.mpr hq) h
+
 end DLNFibre.DLN.RLCT.MEframe
