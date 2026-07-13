@@ -78,8 +78,8 @@ S = ["# Structure summary (from decls.json)", "",
 S += [f"- {fan_in[n]:>4} ← `{n.split('.')[-1]}`  ({file_of[n].split('/')[-1]})"
       for n, _ in fan_in.most_common(20)]
 S += ["", "## Load-bearing on-cone theorems (top 15 by in-cone fan-in)", ""]
-S += [f"- {incone_fanin[n]:>4} ← `{n.split('.')[-1]}`  ({file_of[n].split('/')[-1]})"
-      for n, _ in incone_fanin.most_common(15) if decls[n]["kind"] == "theorem"][:15]
+thm_rank = [(n, c) for n, c in incone_fanin.most_common() if decls[n]["kind"] == "theorem"][:15]
+S += [f"- {c:>4} ← `{n.split('.')[-1]}`  ({file_of[n].split('/')[-1]})" for n, c in thm_rank]
 S += ["", "## Dead weight",
       f"- theorem orphans (no dependents in tree): {len(thm_orphans)} "
       f"({100*len(thm_orphans)/max(1,sum(1 for d in decls.values() if d['kind']=='theorem')):.0f}% of theorems)",
