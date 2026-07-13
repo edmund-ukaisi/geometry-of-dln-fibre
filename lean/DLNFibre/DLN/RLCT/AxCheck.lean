@@ -147,6 +147,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
 
 /-!
 # Axiom-hygiene check
@@ -1197,3 +1199,10 @@ open DLNFibre.DLN.RLCT
 #print axioms DLNFibre.DLN.RLCT.lintegral_le_sum_finCover
 #print axioms DLNFibre.DLN.RLCT.singularShell_iUnion
 #print axioms DLNFibre.DLN.RLCT.gramDet_eq_prod
+-- T-Obl3b corrected route (deeper-cut re-peel + PSD-monotonicity): OWED-1 `uniformWenn_proj_le`
+-- (`uniformWenn_le` with `1→U_sU_sᵀ`, the weak-direction elimination) + OWED-2 crux `exists_ortho_ext`
+-- (orthogonal extension of U_s) + the (iii) helpers. OWED-2 reduction + OWED-3 build on these.
+#print axioms DLNFibre.DLN.RLCT.uniformWenn_proj_le
+#print axioms DLNFibre.DLN.RLCT.exists_ortho_ext
+#print axioms DLNFibre.DLN.RLCT.detGram_eq_prod_rows
+#print axioms DLNFibre.DLN.RLCT.offSector_cover_le

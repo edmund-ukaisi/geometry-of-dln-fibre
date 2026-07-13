@@ -1414,3 +1414,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
+-- T-Obl3b corrected route (deeper-cut re-peel + PSD-monotonicity, cornershift-chart-cert): OWED-1
+-- `uniformWenn_proj_le` (`uniformWenn_le` with `1→U_sU_sᵀ`, the PSD-mono weak-direction elimination
+-- `M₂→m`) + the (iii) helpers `detGram_eq_prod_rows`/`offSector_cover_le`, in `RouteMSJDeeperFlagShell`;
+-- OWED-2 crux `exists_ortho_ext` (orthogonal extension of `U_s` to a square `U`, first m cols `=U_s`;
+-- EuclideanSpace ON-basis → coordinate matrix) in `RouteMSJOrthoExtend`. The OWED-2 reduction +
+-- OWED-3 `deeperFlag_shell_le` (decorated assembly) build on these.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
