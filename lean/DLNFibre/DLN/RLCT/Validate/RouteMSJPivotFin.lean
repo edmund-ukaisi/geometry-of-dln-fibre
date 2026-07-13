@@ -285,6 +285,34 @@ theorem blockFront_rowSplit {t a b q : ℕ} (P : Matrix (Fin t) (Fin t) ℝ)
     simp only [Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
   rw [htop, hbot]
 
+/-- **The σ-coupled S3-variant (the ISOLATED new lemma; STATEMENT for review, fill pending).** The
+corank `(A_cor, Γ)` integral with an A_cor-DEPENDENT pivot weight `wf A_cor` — S3's per-`A_cor` corank
+charge (`corankBlock_morsePeel_setLE` at `Apiv = 0`, valid for ANY `w > 0`) integrated over `A_cor`
+WITHOUT the A_cor-free pull-out (the banked `shell_corankOffSector_le_unif` requires `w` A_cor-free; the
+head-split's `w = frobSq([P|B₁₂]·Q_stack)` depends on `A_cor` via `Q_b = A_cor·Z`, so the pull-out is the
+unsound one archfin ruled out). The `½ab` charge appears as the Gram divisor `det((A_cor·Z)(A_cor·Z)ᵀ)^{−a/2}`
+and the exponent shift `c' → c'−½ab`, with `wf A_cor` and the divisor left COUPLED inside the `A_cor`
+integral — the coupled residual is bounded downstream (D-A radial for `wf` + couplingfin's shell/transversality).
+PLAN: `corank_survival_ae Z hbZ` (`A_cor·Z` full row-rank a.e.) → per such `A_cor`,
+`corankBlock_morsePeel_setLE (Apiv := 0) (Ccross) (Qb := A_cor·Z) (posDef_gram_of_rank_eq …) c' hc' (wf A_cor)
+(hwf A_cor) sΓ` (the `frobSq 0 = 0` term drops) → `lintegral_mono_ae`. -/
+theorem shell_corankPivot_coupled_le {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin n) ℝ)
+    (hbZ : b ≤ Z.rank) (c' : ℝ) (hc' : (a * b : ℝ) / 2 < c')
+    (Ccross : Matrix (Fin a) (Fin n) ℝ)
+    (wf : (Fin b → Fin M₂ → ℝ) → ℝ) (hwf : ∀ A_cor, 0 < wf A_cor)
+    (sΓ : Set (Fin a → Fin b → ℝ)) :
+    (∫⁻ A_cor in matBox b M₂ 1, ∫⁻ Γ in sΓ,
+        ENNReal.ofReal
+          ((wf A_cor + frobSq (Ccross + (Matrix.of Γ) * (Matrix.of A_cor * Z))) ^ (-c')))
+      ≤ ∫⁻ A_cor in matBox b M₂ 1,
+          ENNReal.ofReal
+            (((Matrix.of A_cor * Z) * (Matrix.of A_cor * Z)ᵀ).det ^ (-(a : ℝ) / 2)
+              * Cresid (a * b) c'
+              * (wf A_cor + frobSq (Ccross * (1 - (Matrix.of A_cor * Z)ᵀ
+                  * ((Matrix.of A_cor * Z) * (Matrix.of A_cor * Z)ᵀ)⁻¹ * (Matrix.of A_cor * Z))))
+                ^ (-(c' - (a * b : ℝ) / 2))) := by
+  sorry
+
 /-- **The block-front reduction of `pivotDomLHS` (scaffold, cert-free).** Threading `pivotInner_Dsubst`
 (step 1) through the outer `(z, A_cor)` integrals (per `x ∈ outerDom`, so `IsUnit P` holds via the 4th
 `outerDom` conjunct) rewrites the freed-`Γ` spine as the clean block-front integral over the raw `(2,2)`
