@@ -1445,3 +1445,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
 -- via `finrank_sup_add_finrank_inf_eq`, in `weakEigCount` form). The reusable core of the shell⊆G
 -- containment (replaces the absent min-max Ky-Fan); the containment corollary consumes it.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan
+-- `#108` mint pre-stage (`RouteMSJMint`): `aoyagi_learning_coefficient_gen_of_descent` — verifies the
+-- final wiring `DecoratedDescent → (□) → unconditional aoyagi_learning_coefficient_gen` typechecks
+-- end-to-end, so minting is one application once the descent is proven.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMint
