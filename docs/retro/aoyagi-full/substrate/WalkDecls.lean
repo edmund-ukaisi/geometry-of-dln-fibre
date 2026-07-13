@@ -8,16 +8,16 @@ whose defining module name starts with a given prefix (default `DLNFibre`). No t
 proving: this is pure environment introspection (kind, module, file:line, pretty-printed
 type, binder count, type/proof constant dependencies, transitive axioms).
 
-Run from the `lean/` directory:
+Run from the `lean/` directory (paths are relative to `lean/`):
 
-    lake env lean --run docs/retro/aoyagi-full/substrate/WalkDecls.lean \
+    lake env lean --run ../docs/retro/aoyagi-full/substrate/WalkDecls.lean \
       --module DLNFibre --prefix DLNFibre \
       --out ../docs/retro/aoyagi-full/substrate/decls.json \
       --generated "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 Prototype against a small Mathlib namespace without building DLNFibre:
 
-    lake env lean --run docs/retro/aoyagi-full/substrate/WalkDecls.lean \
+    lake env lean --run ../docs/retro/aoyagi-full/substrate/WalkDecls.lean \
       --module Mathlib.Analysis.MeanInequalities \
       --prefix Mathlib.Analysis.MeanInequalities --out /tmp/walk-test.json
 -/
@@ -64,8 +64,8 @@ partial def countForalls : Expr → Nat → Nat
 (those not already caught by `Name.isInternalDetail`). -/
 def genSuffixes : List String :=
   ["rec", "recOn", "casesOn", "brecOn", "below", "ibelow", "binductionOn",
-   "injEq", "sizeOf_spec", "noConfusion", "noConfusionType", "eq_def",
-   "toCtorIdx", "fromArrays"]
+   "injEq", "inj", "sizeOf_spec", "noConfusion", "noConfusionType", "eq_def",
+   "toCtorIdx", "ctorIdx", "ctorElimType", "fromArrays", "congr_simp", "congr"]
 
 /-- Is this an auto-generated declaration we should skip? -/
 def isGenerated (n : Name) : Bool :=
@@ -82,8 +82,47 @@ def moduleToFile (n : Name) : String :=
 def strToName (s : String) : Name :=
   s.splitOn "." |>.foldl (fun acc part => acc.str part) .anonymous
 
+/-- The dependency edges `Lean.collectAxioms` follows (type/value per constant kind). -/
+def axEdges (ci : ConstantInfo) : Array Name :=
+  match ci with
+  | .axiomInfo v  => v.type.getUsedConstants
+  | .defnInfo v   => v.type.getUsedConstants ++ v.value.getUsedConstants
+  | .thmInfo v    => v.type.getUsedConstants ++ v.value.getUsedConstants
+  | .opaqueInfo v => v.type.getUsedConstants ++ v.value.getUsedConstants
+  | .quotInfo _   => #[]
+  | .ctorInfo v   => v.type.getUsedConstants
+  | .recInfo v    => v.type.getUsedConstants
+  | .inductInfo v => v.type.getUsedConstants ++ v.ctors.toArray
+
+/-- Memoized transitive-axiom collector matching `Lean.collectAxioms` reachability.
+The shared `cache` makes the whole walk near-linear instead of re-walking each decl's
+(deep) closure per call. Cycles — every inductive ↔ its constructors form one — break to
+`#[]`, and the node is still cached: the axioms of interest (`propext`, `Classical.choice`,
+`Quot.sound`, `sorryAx`) are reached through proof-term DAG paths, and `sorryAx` sits
+directly in a sorry-using decl's own value, so caching through a cycle does not drop them. -/
+partial def reachAxioms (env : Environment) (cache : IO.Ref (Std.HashMap Name (Array Name)))
+    (stack : NameSet) (c : Name) : IO (Array Name) := do
+  if let some r := (← cache.get).get? c then return r
+  if stack.contains c then return #[]
+  let some ci := env.find? c | return #[]
+  let stack := stack.insert c
+  let mut seen : NameSet := {}
+  let mut acc : Array Name := #[]
+  if ci matches .axiomInfo _ then
+    seen := seen.insert c
+    acc := acc.push c
+  for d in axEdges ci do
+    if d != c then
+      for a in (← reachAxioms env cache stack d) do
+        unless seen.contains a do
+          seen := seen.insert a
+          acc := acc.push a
+  cache.modify (·.insert c acc)
+  return acc
+
 /-- Build the JSON object for one declaration, or `none` if it should be skipped. -/
 def processDecl (pfx : Name) (modName : Name) (fileRel : String)
+    (cache : IO.Ref (Std.HashMap Name (Array Name)))
     (n : Name) (ci : ConstantInfo) : MetaM (Option String) := do
   if isGenerated n then return none
   let env ← getEnv
@@ -108,7 +147,7 @@ def processDecl (pfx : Name) (modName : Name) (fileRel : String)
   let depsProof := match ci.value? (allowOpaque := true) with
     | some val => val.getUsedConstants.filter (fun d => pfx.isPrefixOf d && d != n)
     | none => #[]
-  let axs ← (do collectAxioms n) <|> pure #[]
+  let axs ← reachAxioms env cache {} n
   let line ← match (← findDeclarationRanges? n) with
     | some r => pure r.range.pos.line
     | none => pure 0
@@ -132,16 +171,30 @@ def walk (pfx : Name) (generated : String) : MetaM String := do
   let env ← getEnv
   let mods := env.header.moduleNames
   let modData := env.header.moduleData
+  IO.eprintln s!"walk: env loaded ({modData.size} modules); scanning prefix {pfx}"
+  let t0 ← IO.monoMsNow
+  let cache ← IO.mkRef ({} : Std.HashMap Name (Array Name))
   let mut objs : Array String := #[]
+  let mut nSeen : Nat := 0
   for i in [0:modData.size] do
     let modName := mods[i]!
     if !pfx.isPrefixOf modName then continue
     let data := modData[i]!
     let fileRel := moduleToFile modName
     for (n, ci) in data.constNames.zip data.constants do
-      match ← processDecl pfx modName fileRel n ci with
-      | some obj => objs := objs.push obj
+      -- Emit each constant only from its owning module. A name defined in two closure modules
+      -- (e.g. the same short lemma name in two files) otherwise appears twice, and the
+      -- name-keyed `findDeclarationRanges?` gives the phantom row the survivor's line.
+      if let some j := env.getModuleIdxFor? n then
+        if j.toNat != i then continue
+      nSeen := nSeen + 1
+      match ← processDecl pfx modName fileRel cache n ci with
+      | some obj =>
+        objs := objs.push obj
+        if objs.size % 250 == 0 then
+          IO.eprintln s!"walk: {objs.size} emitted / {nSeen} scanned ({(← IO.monoMsNow) - t0} ms)"
       | none => pure ()
+  IO.eprintln s!"walk: finished — {objs.size} decls from {nSeen} scanned ({(← IO.monoMsNow) - t0} ms)"
   let metaObj :=
     "{\"generated\":" ++ jstr generated ++
     ",\"root_prefix\":" ++ jstr pfx.toString ++
@@ -171,7 +224,9 @@ unsafe def main (args : List String) : IO UInt32 := do
       "../docs/retro/aoyagi-full/substrate/decls.json" "unknown"
   IO.eprintln s!"walk: import {root} | prefix {pfx} | out {out}"
   Lean.enableInitializersExecution
+  let tImp ← IO.monoMsNow
   let env ← importModules #[{ module := root }] {} (loadExts := true)
+  IO.eprintln s!"walk: import+init done ({(← IO.monoMsNow) - tImp} ms)"
   let opts : Options := ({} : Options).setBool `pp.universes false
   let coreCtx : Core.Context :=
     { fileName := "WalkDecls", fileMap := default, options := opts, maxHeartbeats := 0 }

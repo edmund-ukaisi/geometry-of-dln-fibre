@@ -21,6 +21,38 @@ Read-only against `origin/expedition/aoyagi-full`; safe to rerun as the branch m
   micro-tides are finer-grained than the combed campaign threads by design).
 - `pool_summary.md` — join-quality stats + first readouts.
 
+## `decls.json` — Lean environment walk (`WalkDecls.lean`)
+
+One row per **source declaration** whose defining module starts with `DLNFibre` (Core + DLN,
+everything). Auto-generated decls are skipped (recursors, `.casesOn`/`.recOn`/`.brecOn`/`.below`,
+`.injEq`/`.inj`, `.noConfusion*`, `.ctorIdx`/`.congr_simp`, `match_*`/`proof_*`/`_eq_*`/`_private.*`
+via `Name.isInternalDetail` + a suffix blacklist). Each row:
+
+- `name`, `kind` (`theorem|def|abbrev|structure|inductive|instance|opaque|axiom`), `module`,
+  `file` (`lean/DLNFibre/…​.lean`), `line` (declaration start incl. its docstring; `0` if no range).
+- `statement` — pretty-printed type, notation delaborated (`≤`, `∑'`, `^`, `ℝ`), truncated at 2000 chars.
+- `n_binders` — leading `∀`/`Π` count (hypothesis-count proxy).
+- `deps_type` / `deps_proof` — `DLNFibre.*` constants used by the type / by the value (proof term),
+  self excluded.
+- `axioms` — transitive axioms (matches `Lean.collectAxioms`; the field to read for the `sorryAx`
+  footprint and the clean-three `[propext, Classical.choice, Quot.sound]`).
+
+Each row is keyed to its **owning** module (`getModuleIdxFor?`), so names are unique even when a short
+lemma name is declared in two closure files. Regenerate from the `lean/` directory **after a green
+`scripts/lb DLNFibre`** (the walker imports the compiled environment):
+
+    cd lean && lake env lean --run ../docs/retro/aoyagi-full/substrate/WalkDecls.lean \
+      --module DLNFibre --prefix DLNFibre \
+      --out ../docs/retro/aoyagi-full/substrate/decls.json \
+      --generated "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+`--module`/`--prefix` are configurable (e.g. a `Mathlib.*` namespace prototypes without building
+DLNFibre). The walker is `unsafe` and calls `enableInitializersExecution` so `importModules
+(loadExts := true)` runs the imported `initialize` code through the interpreter — required for
+notation to delaborate. Axiom collection is memoized across decls (a shared reachability cache),
+which keeps the walk near-linear; run time ≈ 2.5 min (≈14 s import + init, ≈2 min walk) for ~8.4k
+decls.
+
 ## Known data notes (honest)
 
 1. Ledger coverage: 991/995 blocks (range 5..999; missing 300, 615-617 = referenced numbers
@@ -37,8 +69,6 @@ Read-only against `origin/expedition/aoyagi-full`; safe to rerun as the branch m
 
 ## Planned next extractors
 
-- `walk_decls` (Lean metaprogram): decls + statements + proof-term dependency edges → the
-  structure themes; needs a built tree (kick `lb DLNFibre` first).
 - Longitudinal ledger recovery (gap 1) + `--all`-refs sha resolution (gap 2).
 - Claimed-vs-kernel auditor: every `clean-three @sha` ledger claim re-checked against the kernel
   at that sha (port of the dev cordon batch collector).
