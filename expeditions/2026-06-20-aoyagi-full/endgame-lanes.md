@@ -29,7 +29,7 @@ genuine analytic crux (`pivotDom_finiteness`, the cross-term drop) + mechanical 
 | Lane | Tide | Branch | Status |
 |---|---|---|---|
 | **shellSpine_le_hsQ_box** (plumbing) | a8a42c82 | genm-sj5-headsplit-dom @8deb0aca+ | finishing #1 integrand-id + #2 transport/Tonelli (mechanical, route mapped; hsSplit + hsSplit_good_of_shell banked; all 4 stub-refinements committed) |
-| **pivotDom_finiteness** (crux, tide b) | a93e7b9c | RouteMSJPivotFin on genm-sj5-pivotdom | checkpoint-first; SOLE remaining analytic content (cross-term drop; corank KEPT; D-A→S3, codim-uρ+det-Gram, hpiv). Design: s1-Chle cert. #166 |
+| **pivotDom_finiteness** (crux, tide b) | a93e7b9c | RouteMSJPivotFin on genm-sj5-pivotdom | CHECKPOINTED + LOCKED (Route A domination, uses hRHS directly, no exponent extraction). **ARCH-A CORRECTION #2 applied at checkpoint:** step-3 cross-term drop as a pointwise-in-corank C_ang at exponent c' (D-B codim uρ ⟹ c'<uρ/2) is UNSOUND for c'∈(uρ/2,minAdm(M)/2); witness (3,3,3) c'∈(3,3.5). The corank MUST supply the residual ab/2. Sound realizations: (a) JOINT D-B on (P̂,B̃₁₂,A_cor,Γ)↦freedLoss at codim uρ+ab≥minAdm(M) [cross-term drop = shear-preserves-rank, S3 drops out]; (b) sequence corank-first, C·decLoss^{-(c'-ab/2)}, pivot at reduced exp c'-ab/2<uρ/2. Recon-gate: (3,3,3) accounting + tide's Codex before grinding step 3. #166 |
 | **RHS≠0 + uzero** (helper) | aa56113 @334e7f96 | RouteMSJPivotDom on genm-sj5-pivotdom | mechanical (confirmed 3-piece plan); fills the other 2 pivotDom sorries. (Its startup flaked into MAIN once — recovered; see Process) |
 
 `headSplit_pivotDom_impl` ratio wiring is sorry-free (GLUE-2 @19dd58ff = origin/genm-sj5-pivotdom); reduces to those 3 sorries.
