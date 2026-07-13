@@ -11,10 +11,11 @@ import Mathlib.LinearAlgebra.Matrix.PosDef
 predicate (fork (B), OPT-A; `faithfulsj-design §★★★`) the `DecoratedDescent` spine
 (`RouteMSJDecoratedRec`) quantifies over:
 
-    adm n M D  :=  genuineCarrier D  ∧  (a = 0 ∨ b = 0 ∨ FaithfulSJAt D)
+    adm n M D  :=  genuineCarrier D  ∧  FaithfulSJAt D
 
-with `a = M₀ − t★`, `b = M₁ − t★` the front-block corank widths at `M`'s binding cut `t★`, and
-`FaithfulSJAt` the `(S,J)` resolution-state base-invariant (below): either the smooth free-block leaf
+(the earlier `a = 0 ∨ b = 0 ∨ …` corank disjunct was REMOVED as UNSOUND — it bypassed FaithfulSJAt's β
+threshold on a degenerate binding cut, admitting a divergent `jac ≡ 0` decoration; `genm-admfix`, 2026-07-13.)
+`FaithfulSJAt` is the `(S,J)` resolution-state base-invariant (below): either the smooth free-block leaf
 (`d = 0` and the carrier loss IS the Frobenius sum-of-squares — the HEq-free OBSERVABLE form) or a
 resolved corner (`1 ≤ d`) with a dehomogenised generator `i₀` carrying (α) `pSimultaneous`,
 (β) `½·minAdm M ≤ monomialThreshold`, (γ') the clean route-A LEAF FORM (`decLoss = commonDivisor(u)² ·
@@ -183,10 +184,11 @@ def FaithfulSJAt {M : Fin (L + 1) → ℕ} (D : SJDecoration M) : Prop :=
 /-! ## The admissibility predicate `adm` (fork (B), OPT-A) -/
 
 /-- **The A2 admissibility predicate (fork (B), OPT-A).** `adm n M D` iff the carrier is genuine
-(`genuineCarrier`, form (i)) AND either the binding-cut front block is degenerate (`a = 0 ∨ b = 0`, the
-no-op peel) or the resolution-state base-invariant `FaithfulSJAt D` holds (which STRENGTHENS `admValuation`:
-its α clause IS `admValuation`'s `pSimultaneous`, plus the β threshold + γ residual-coercivity the coupled
-base RLCT needs). This is the predicate `DecoratedDescent` (`RouteMSJDecoratedRec`) quantifies over: `htriv`
+(`genuineCarrier`, form (i)) AND the resolution-state base-invariant `FaithfulSJAt D` holds (which
+STRENGTHENS `admValuation`: its α clause IS `admValuation`'s `pSimultaneous`, plus the β threshold + γ
+residual-coercivity the coupled base RLCT needs). (An earlier `a = 0 ∨ b = 0` corank disjunct was REMOVED
+as UNSOUND — it bypassed the β threshold on a degenerate binding cut; `genm-admfix`.) This is the predicate
+`DecoratedDescent` (`RouteMSJDecoratedRec`) quantifies over: `htriv`
 (trivial admissible, `adm_trivial`), `DecoratedStepHyp` (peel-closure PRESERVES `FaithfulSJAt`, `#5`), and
 `DecoratedBaseHyp` (leaf finiteness CONSUMES `FaithfulSJAt`, `#4`). -/
 def adm (n : ℕ) (M : Fin (n + 1) → ℕ) (D : SJDecoration M) : Prop :=
@@ -261,8 +263,8 @@ theorem regression_rank1_admitted :
 
 The support `{(1,0),(0,1)}` (`suppFreshTwo`, banked) has NO single generator that is a unit at both
 divisors — the `(P) ⇏ (T)` gap (cert §6-C1). The valuation clause REJECTS it (as a terminal), so it is
-inadmissible unless the intersection `{x = y = 0}` is refined (`a = 0 ∨ b = 0` does not fire on a genuine
-`a, b > 0` peel). Below `admValuation` fails on any decoration carrying `suppFreshTwo`. -/
+inadmissible unless the intersection `{x = y = 0}` is refined. Below `admValuation` fails on any decoration
+carrying `suppFreshTwo`. -/
 
 /-- **REGRESSION TEST 2 — the `x² + y²` carrier is REJECTED by the valuation clause.** No generator is a
 unit at BOTH divisors: this is `¬ pSimultaneous suppFreshTwo` (banked `suppFreshTwo_not_pSimultaneous`),

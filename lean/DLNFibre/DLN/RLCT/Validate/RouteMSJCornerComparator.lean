@@ -196,9 +196,9 @@ theorem cornerComparator_faithful (M' : Fin (L + 1 + 1) → ℕ) (k jc : Fin d �
 /-! ## The full `adm` admissibility + non-vacuity -/
 
 /-- **The reduced comparator is `adm`-admissible** (the S1 producibility deliverable). Given `1 ≤ d` and the
-β threshold, `adm (L+1) M' (cornerComparator M' k jc)`: `genuineCarrier` ∧ `FaithfulSJAt` (the third `adm`
-disjunct). This is the genuinely-admissible reduced decoration `D'` the S0-corrected domination hands to the
-decorated IH. -/
+β threshold, `adm (L+1) M' (cornerComparator M' k jc)`: both `adm` conjuncts `genuineCarrier` ∧
+`FaithfulSJAt`. This is the genuinely-admissible reduced decoration `D'` the S0-corrected domination hands to
+the decorated IH. -/
 theorem cornerComparator_adm (M' : Fin (L + 1 + 1) → ℕ) (k jc : Fin d → ℕ) (hd : 1 ≤ d)
     (i₀ : Fin (M' 0) × Fin (M' (Fin.last (L + 1))))
     (hbeta : (minAdm M' : ℝ≥0∞) / 2 ≤ monomialThreshold d k jc) :

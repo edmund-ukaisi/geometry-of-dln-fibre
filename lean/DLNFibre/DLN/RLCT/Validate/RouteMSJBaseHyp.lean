@@ -385,13 +385,13 @@ under the `D.ν = Params-index` transport `hν ▸ (D.ctx z).2`. -/
 theorem eqRec_fun_apply_eqRec {α β : Type} (h : α = β) (f : α → ℝ) (x : α) :
     (h ▸ f) (h ▸ x) = f x := by subst h; rfl
 
-/-- **`DecoratedBaseHyp adm` — #4 COMPLETE (S2 settled uniform).** At a width-2 chain, the `adm`
-disjunction dispatches: (i) a degenerate binding corank → `decoratedBase_corankZero` (vacuous);
-(ii) the `d = 0` observable-loss leaf → `decoratedBase_d0_of_lossEq`, deriving
+/-- **`DecoratedBaseHyp adm` — #4 COMPLETE (S2 settled uniform).** At a width-2 chain, `FaithfulSJAt`
+dispatches 2-way: (i) the `d = 0` observable-loss leaf → `decoratedBase_d0_of_lossEq`, deriving
 `decLoss = frobSq (prod M (e z))` from the observable form + `genuineCarrier`'s `ctx = prod` clause
-(the `hν`-transport cancelled by `eqRec_fun_apply_eqRec`); (iii) the `d ≥ 1` resolved corner →
+(the `hν`-transport cancelled by `eqRec_fun_apply_eqRec`); (ii) the `d ≥ 1` resolved corner →
 `decoratedBase_routeA_of_leafForm`, consuming `FaithfulSJAt`'s clean route-A leaf-form bundle
-(`Z_tail = I`-at-base baked into the carried clean identity, S2 §★★★). -/
+(`Z_tail = I`-at-base baked into the carried clean identity, S2 §★★★). (The old degenerate-corank arm
+`decoratedBase_corankZero` is gone with the removed `a = 0 ∨ b = 0` disjunct; `genm-admfix`.) -/
 theorem decoratedBaseHyp_faithful : DecoratedBaseHyp adm := by
   intro M D hD
   obtain ⟨hgen, hf⟩ := hD
