@@ -218,6 +218,17 @@ theorem freedSchurLoss_eq_frobSq_block {t a b q : ℕ} (x : SJOuter t a b)
   rw [← schurLoss_of_blockSplitD_symm_shift x Γ Q]
   exact (frobSq_schur_split_inv _ hU' Q).symm
 
+/-- **Row-split of `frobSq` over a `⊕`-indexed row type.** `frobSq X = frobSq (top rows) + frobSq
+(bottom rows)` — the Frobenius square of a row-block-stacked matrix is the sum of the row-blocks'
+Frobenius squares (`Fintype.sum_sum_type`). Feeds the pivot(top-`Fin u`)/corank(bottom-`Fin a`) separation
+of the block-front loss `frobSq(fromBlocks P B₁₂ C D · Q_stack)` in the peel scaffold. -/
+theorem frobSq_sum_rows {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ]
+    (X : Matrix (α ⊕ β) γ ℝ) :
+    frobSq X = frobSq (X.submatrix Sum.inl id) + frobSq (X.submatrix Sum.inr id) := by
+  unfold frobSq
+  rw [Fintype.sum_sum_type (fun i => ∑ j, (X i j) ^ 2)]
+  simp only [Matrix.submatrix_apply, id_eq]
+
 /-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX — scaffold + 1-sorry, standing decision 7).**
 The freed Schur-loss spine LHS is dominated by a FINITE reorganisation constant times the comparator-core
 RHS. This is exactly the conclusion of `RouteMSJHeadSplitDom.headSplit_pivotDom`; it carries the entire
