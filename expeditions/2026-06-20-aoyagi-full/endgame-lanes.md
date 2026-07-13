@@ -10,6 +10,17 @@ Tides build in worktrees; controller integrates one-at-a-time (aggregator + AxCh
 `DecoratedBaseHyp` (#4) DONE. `DecoratedStepHyp` (#5) = the mountain: **track (a) L≥1 head-split**
 `deeperFlag_spineToCore` = F ∘ headSplit_domination; **track (b) L=0 base** = banked (`routeMBoxThresholdFinite_mnp`).
 
+## ★ CURRENT LANES (re-flush 2026-07-13 ~22:00 — authoritative)
+Base: `genm-sj5-assembly` @ea55126a (fixed adm + 4 files, 8 holes; the fills land on branches, I wire+merge at rendezvous). Canonical @03354db3+ (fixed adm @80932d88 + L=1 @0fe85ad3 landed, green-confirmed).
+- **step2** (a27134b, genm-sj5-step2 @8a82f11b) — head-split crux hole (a) `pivotPeel_domination` = the σ-COUPLED MODULE (from-scratch, ~65-75%-new, multi-tide; BOUNDED per couplingfin+Codex, LABOUR not wall). Scaffold (5 sorry-free reduction lemmas) banked. Grinding option (i): Brick F→`Σσ²` identity → β-CoV → anisotropic sublevel bound → σ-coupled S3-VARIANT (banked S3 doesn't apply: OBSTACLE A) → charge accounting. **SINGLE-WRITER** (hot lane, ~1 sub-lemma/10min; do NOT split).
+- **holesbe** (ab5e9b1, genm-sj5-holesbe) — holes (b) `deeperFlagSaturatedShell_finite` [jreqadjud 5-step arity-IH] + (e) `deeperFlagWaistM1_finite` [rank-1 factor]; small, recipe-pinned, fill in RouteMSJDecoratedStep.
+- **holed** (a74b50d, genm-sj5-good) — hole (d) `deeperFlagGood_finite` good-connector [coupled→shell bridge + decorated shell-cover peel; consumes (a)/(b) STATEMENTS as sorried inputs → auto-closes on crux]; NEW module; checkpoint-first.
+- **holec** (a6ab894, genm-sj5-waist) — hole (c) `deeperFlagWaist_finite` waist [route-A SVD-qPeel (#156 L=0 base) + reorientation + Gram-spectral/Weyl-Jacobian brick]; NEW module; checkpoint-first (Gram-spectral = risky piece).
+- **mintreview** (ae0af9b8) — fidelity review of L=1 + fixed adm + mint re-point structure (overlaps the tail).
+- **mintrehearse** (aca97a8, genm-sj5-mintrehearsal) — #108 re-point DRY-RUN (Skeleton:1685→prestage wrapper; hDescent the hole; forced-axiom audit) so the mint = cherry-pick + one gate.
+
+**★ BATCH-INTEGRATION POLICY (operator #3, adopted):** during the batch, TARGETED module builds per brick (`scripts/lb <chain-top>`, the asmbase pattern); FULL `scripts/lb DLNFibre` + AxCheck ONCE per batch (not per landing — a full 8.9k-job gate per landing serializes hours); ONE final full gate + AxCheck at the mint. Canonical stays load-bearing-clean (AxCheck-gated); the assembly gate = "sorries in the 4 files == 8" (NOT whole-tree — 21 pre-existing tracked scaffold sorries).
+
 **★★ #1 PRIORITY — CORE SOUNDNESS BUG in `adm` (stepasm found, controller CONFIRMED from the def):**
 `adm`'s corank disjunct (`admCorankA/B M = 0`, RouteMSJAdm:192) BYPASSES FaithfulSJAt's β threshold
 (:170). `genuineCarrier` (:60-66) constrains ζ/ν/e/ctx but NOT d/jac/supp ⟹ a genuineCarrier decoration
