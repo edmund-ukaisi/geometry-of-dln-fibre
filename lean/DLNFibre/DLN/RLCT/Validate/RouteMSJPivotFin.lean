@@ -41,6 +41,71 @@ open scoped ENNReal BigOperators
 
 variable {L : ℕ}
 
+/-- **The `matBox` volume** `= ofReal(2ρ)^{a·b}` (for `ρ ≥ 0`). Nested `volume_pi_pi` + `Real.volume_Icc`. -/
+theorem matBox_volume (a b : ℕ) {ρ : ℝ} (hρ : 0 ≤ ρ) :
+    volume (matBox a b ρ) = ENNReal.ofReal (2 * ρ) ^ (a * b) := by
+  have hset : matBox a b ρ
+      = Set.univ.pi (fun _ : Fin a => Set.univ.pi (fun _ : Fin b => Set.Icc (-ρ) ρ)) := by
+    ext X
+    simp only [matBox, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
+  rw [hset, MeasureTheory.volume_pi_pi]
+  have hinner : ∀ _i : Fin a,
+      volume (Set.univ.pi (fun _ : Fin b => Set.Icc (-ρ) ρ)) = ENNReal.ofReal (2 * ρ) ^ b := by
+    intro _
+    rw [MeasureTheory.volume_pi_pi]
+    simp only [Real.volume_Icc]
+    rw [show ρ - -ρ = 2 * ρ by ring, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  rw [Finset.prod_congr rfl (fun i _ => hinner i),
+    Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, Nat.mul_comm]
+
+/-- **The corner sublevel-volume lower bound.** For `w > 0` and a `Γ`-box of radius `ρ ≤ 1` on which
+`frobSq(Γ·(A·Z)) ≤ w` (uniformly over `A ∈ matBox`), the corank inner integral dominates
+`(2w)^{−c'}·(2ρ)^{ab}·vol(matBox b M₂ 1)`: restrict `Γ` to `matBox a b ρ ⊆ genBox`, use the pointwise
+`(w+frobSq)^{−c'} ≥ (2w)^{−c'}` and `matBox_volume`. The `(2ρ)^{ab}` scaling is what produces the `ab/2`
+threshold shift downstream. -/
+theorem corner_inner_ge {a b M₂ nn : ℕ} (Z : Matrix (Fin M₂) (Fin nn) ℝ) {c' : ℝ} (hc0 : 0 ≤ c')
+    {w ρ : ℝ} (hw : 0 < w) (hρ0 : 0 < ρ) (hρ1 : ρ ≤ 1)
+    (hbound : ∀ A : Fin b → Fin M₂ → ℝ, A ∈ matBox b M₂ 1 →
+      ∀ Γ : Fin a → Fin b → ℝ, Γ ∈ matBox a b ρ →
+        frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z)) ≤ w) :
+    ENNReal.ofReal ((2 * w) ^ (-c')) * ENNReal.ofReal (2 * ρ) ^ (a * b) * volume (matBox b M₂ 1)
+      ≤ ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+          ENNReal.ofReal ((w + frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z))) ^ (-c')) := by
+  have hsub : matBox a b ρ ⊆ genBox (Fin a) (Fin b) 1 := by
+    intro Γ hΓ i k
+    have := hΓ i k
+    rw [Set.mem_Icc] at this ⊢
+    constructor <;> [nlinarith [this.1]; nlinarith [this.2]]
+  -- per-`A` inner lower bound
+  have hinner : ∀ A : Fin b → Fin M₂ → ℝ, A ∈ matBox b M₂ 1 →
+      ENNReal.ofReal ((2 * w) ^ (-c')) * ENNReal.ofReal (2 * ρ) ^ (a * b)
+        ≤ ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+            ENNReal.ofReal ((w + frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z))) ^ (-c')) := by
+    intro A hA
+    calc ENNReal.ofReal ((2 * w) ^ (-c')) * ENNReal.ofReal (2 * ρ) ^ (a * b)
+        = ENNReal.ofReal ((2 * w) ^ (-c')) * volume (matBox a b ρ) := by
+          rw [matBox_volume a b hρ0.le]
+      _ = ∫⁻ _Γ in matBox a b ρ, ENNReal.ofReal ((2 * w) ^ (-c')) := by
+          rw [setLIntegral_const]
+      _ ≤ ∫⁻ Γ in matBox a b ρ,
+            ENNReal.ofReal ((w + frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z))) ^ (-c')) := by
+          refine setLIntegral_mono_ae' (matBox_measurableSet a b ρ) (ae_of_all _ (fun Γ hΓ => ?_))
+          refine ENNReal.ofReal_le_ofReal ?_
+          have hfnn : (0 : ℝ) ≤ frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z)) := frobSq_nonneg _
+          have hle : w + frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z)) ≤ 2 * w := by
+            have := hbound A hA Γ hΓ; linarith
+          exact Real.rpow_le_rpow_of_nonpos (by linarith) hle (by linarith)
+      _ ≤ ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+            ENNReal.ofReal ((w + frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z))) ^ (-c')) :=
+          lintegral_mono_set hsub
+  calc ENNReal.ofReal ((2 * w) ^ (-c')) * ENNReal.ofReal (2 * ρ) ^ (a * b) * volume (matBox b M₂ 1)
+      = ∫⁻ _A in matBox b M₂ 1,
+          ENNReal.ofReal ((2 * w) ^ (-c')) * ENNReal.ofReal (2 * ρ) ^ (a * b) := by
+        rw [setLIntegral_const]
+    _ ≤ ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+          ENNReal.ofReal ((w + frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z))) ^ (-c')) :=
+        setLIntegral_mono_ae' (matBox_measurableSet b M₂ 1) (ae_of_all _ (fun A hA => hinner A hA))
+
 /-- **Step 1 — the exponent extraction.** If the comparator-core RHS is finite then `c'` is strictly below
 the shared RLCT threshold `X = (minAdm (redChain u M) + peelCharge M u)/2`. Proof (contrapositive): for
 `c' ≥ X`, `pivotDomRHS = ⊤` — the corner sublevel-volume lower bound `μ{‖Γ·(A_cor·Zf z)‖² ≤ D} ≳ D^{ab/2}`
