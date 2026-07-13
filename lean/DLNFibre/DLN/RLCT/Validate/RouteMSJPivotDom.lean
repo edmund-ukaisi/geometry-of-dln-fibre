@@ -367,6 +367,74 @@ theorem pivotDom_RHS_ne_zero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
   refine rpow_min_endpoint_le hv (by nlinarith [frobSq_nonneg (Matrix.of Γ * (Matrix.of A_cor * Zf z))]) ?_
   linarith [hbub]
 
+/-! ### Elementary helpers for the degenerate `u = 0` edge (`pivotDom_uzero`) -/
+
+/-- At `u = 0` the comparator's active index `ι = Fin 0 × …` is empty, so its decorated loss vanishes. -/
+private theorem pivotUzero_decLoss_zero (M : Fin (L + 1 + 1 + 1) → ℕ) (v : Fin 1 → ℝ)
+    (z : Params (redChain 0 M)) :
+    (cornerComparator (redChain 0 M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ)).decLoss v z = 0 := by
+  haveI : IsEmpty (cornerComparator (redChain 0 M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ)).ι := by
+    show IsEmpty (Fin (redChain 0 M 0) × Fin (redChain 0 M (Fin.last (L + 1))))
+    rw [redChain_zero]; infer_instance
+  letI := (cornerComparator (redChain 0 M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ)).fι
+  letI := (cornerComparator (redChain 0 M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ)).fν
+  unfold SJDecoration.decLoss SJLinGenState.loss
+  rw [Finset.univ_eq_empty, Finset.sum_empty]
+
+/-- At `t = 0` the block shift `schurShift` (with a `Fin 0`-inner product) vanishes. -/
+private theorem pivotUzero_schurShift_zero {a b : ℕ} (x : SJOuter 0 a b) : schurShift x = 0 := by
+  funext i j
+  simp only [schurShift, Pi.zero_apply]
+  rw [Matrix.mul_apply]; simp
+
+/-- At `t = 0` the freed Schur loss keeps only the corank energy (pivot rows are `Fin 0`). -/
+private theorem pivotUzero_freedSchurLoss {a b q : ℕ} (x : SJOuter 0 a b) (Γ : Fin a → Fin b → ℝ)
+    (Q : Matrix (Fin 0 ⊕ Fin b) (Fin q) ℝ) :
+    freedSchurLoss x Γ Q = frobSq (Matrix.of Γ * Q.submatrix Sum.inr id) := by
+  unfold freedSchurLoss
+  have h1 : frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+      + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id)) = 0 := by simp [frobSq]
+  have h2 : Matrix.of x.2 * (Q.submatrix Sum.inl id
+      + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id) = 0 := by
+    ext i j; rw [Matrix.mul_apply]; simp
+  rw [h1, h2, zero_add, zero_add]
+
+/-- The `(P, B₁₂, C)` outer domain at `t = 0` is the whole (single-point) space. -/
+private theorem pivotUzero_outerDom_univ (a b : ℕ) : outerDom 0 a b 1 = Set.univ := by
+  ext x
+  simp only [outerDom, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+  refine ⟨fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun i j => Fin.elim0 j, ?_⟩
+  have : Matrix.of x.1.1 = 1 := Subsingleton.elim _ _
+  rw [this]; exact isUnit_one
+
+/-- The `t = 0` outer domain has volume `1` (a probability-space singleton). -/
+private theorem pivotUzero_outerDom_volume (a b : ℕ) : volume (outerDom 0 a b 1) = 1 := by
+  rw [pivotUzero_outerDom_univ]
+  haveI hp0 : IsProbabilityMeasure (volume : Measure (Fin 0 → ℝ)) :=
+    ⟨by rw [volume_pi]; exact Measure.pi_empty_univ _⟩
+  haveI : IsProbabilityMeasure (volume : Measure (Fin 0 → Fin 0 → ℝ)) :=
+    ⟨by rw [volume_pi]; exact Measure.pi_empty_univ _⟩
+  haveI : IsProbabilityMeasure (volume : Measure (Fin 0 → Fin b → ℝ)) :=
+    ⟨by rw [volume_pi]; exact Measure.pi_empty_univ _⟩
+  haveI : IsProbabilityMeasure (volume : Measure (Fin a → Fin 0 → ℝ)) := by infer_instance
+  haveI : IsProbabilityMeasure (volume : Measure (SJOuter 0 a b)) := by
+    unfold SJOuter; infer_instance
+  exact measure_univ
+
+/-- `hsQ`'s bottom (`Sum.inr`) block is the corank rows `A_cor · Zf z`. -/
+private theorem hsQ_submatrix_inr (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (z : Params (redChain u M)) (A_cor : Fin (M 1 - u) → Fin (dropHead (redChain u M) 0) → ℝ) :
+    (hsQ M u Zf z A_cor).submatrix Sum.inr id = Matrix.of A_cor * Zf z := by
+  ext i j
+  rw [hsQ]; simp [Matrix.submatrix_apply, Matrix.fromRows_apply_inr]
+
 /-- **The degenerate `u = 0` edge.** With a `0`-width pivot the front block vanishes
 (`freedSchurLoss = frobSq(Γ·Q_b)`, the `(P,B₁₂,C)`-integral is over a singleton), and `hpiv` forces
 `minAdm(redChain 0 M) = 0` so the RHS Jacobian monomial is `|v 0|^0 = 1`; a Tonelli factorisation of the
@@ -377,7 +445,75 @@ theorem pivotDom_uzero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu0 : u = 0)
         → Matrix (Fin (dropHead (redChain u M) 0))
             (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
     pivotDomLHS M u c' Zf ≤ pivotDomRHS M u c' Zf := by
-  sorry
+  subst hu0
+  have hpiv0 : minAdm (redChain 0 M) = 0 := by
+    have : minAdm (redChain 0 M) ≤ 0 := by simpa using hpiv
+    omega
+  apply le_of_eq
+  rw [pivotDomLHS, pivotDomRHS, deeperFlagCoreIntegrand]
+  refine lintegral_congr (fun z => ?_)
+  -- the common inner integral (corank energy only)
+  refine Eq.trans ?_ (?_ : (∫⁻ A_cor in matBox (M 1 - 0) (dropHead (redChain 0 M) 0) 1,
+      ∫⁻ Γ in genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1,
+        ENNReal.ofReal ((frobSq (Matrix.of Γ * (Matrix.of A_cor * Zf z))) ^ (-c'))) = _)
+  · -- LHS side = common
+    refine lintegral_congr (fun A_cor => ?_)
+    have hx : ∀ x : SJOuter 0 (M 0 - 0) (M 1 - 0),
+        (∫⁻ Γ in {Γ : Fin (M 0 - 0) → Fin (M 1 - 0) → ℝ
+            | Γ + schurShift x ∈ genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1},
+          ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M 0 Zf z A_cor)) ^ (-c')))
+        = ∫⁻ Γ in genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1,
+            ENNReal.ofReal ((frobSq (Matrix.of Γ * (Matrix.of A_cor * Zf z))) ^ (-c')) := by
+      intro x
+      have hset : {Γ : Fin (M 0 - 0) → Fin (M 1 - 0) → ℝ
+          | Γ + schurShift x ∈ genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1}
+          = genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1 := by
+        rw [pivotUzero_schurShift_zero x]; ext Γ; simp
+      rw [hset]
+      refine lintegral_congr (fun Γ => ?_)
+      rw [pivotUzero_freedSchurLoss x Γ (hsQ M 0 Zf z A_cor), hsQ_submatrix_inr]
+    rw [setLIntegral_congr_fun (measurableSet_outerDom 0 (M 0 - 0) (M 1 - 0) 1)
+      (fun x _ => hx x), setLIntegral_const, pivotUzero_outerDom_volume, mul_one]
+  · -- common = RHS side
+    symm
+    have hpt : ∀ v : Fin 1 → ℝ,
+        ENNReal.ofReal (∏ ℓ, |v ℓ| ^ ((![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ) ℓ))
+          * (∫⁻ A_cor in matBox (M 1 - 0) (dropHead (redChain 0 M) 0) 1,
+              ∫⁻ Γ in genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1,
+                ENNReal.ofReal
+                  (((cornerComparator (redChain 0 M) (![1] : Fin 1 → ℕ)
+                      (![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ)).decLoss v z
+                      + frobSq ((fun _ => 0) z + Matrix.of Γ * (Matrix.of A_cor * Zf z))) ^ (-c')))
+          = ∫⁻ A_cor in matBox (M 1 - 0) (dropHead (redChain 0 M) 0) 1,
+              ∫⁻ Γ in genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1,
+                ENNReal.ofReal ((frobSq (Matrix.of Γ * (Matrix.of A_cor * Zf z))) ^ (-c')) := by
+      intro v
+      have hmono1 : ENNReal.ofReal (∏ ℓ, |v ℓ| ^ ((![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ) ℓ))
+          = 1 := by simp [hpiv0, Fin.prod_univ_one]
+      rw [hmono1, one_mul]
+      refine lintegral_congr (fun A_cor => ?_)
+      refine lintegral_congr (fun Γ => ?_)
+      rw [pivotUzero_decLoss_zero M v z, zero_add]
+      exact congrArg (fun m => ENNReal.ofReal (frobSq m ^ (-c')))
+        (zero_add (Matrix.of Γ * (Matrix.of A_cor * Zf z)))
+    calc (∫⁻ v in unitBox 1,
+            ENNReal.ofReal (∏ ℓ, |v ℓ| ^ ((![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ) ℓ))
+              * (∫⁻ A_cor in matBox (M 1 - 0) (dropHead (redChain 0 M) 0) 1,
+                  ∫⁻ Γ in genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1,
+                    ENNReal.ofReal
+                      (((cornerComparator (redChain 0 M) (![1] : Fin 1 → ℕ)
+                          (![minAdm (redChain 0 M) - 1] : Fin 1 → ℕ)).decLoss v z
+                          + frobSq ((fun _ => 0) z
+                              + Matrix.of Γ * (Matrix.of A_cor * Zf z))) ^ (-c'))))
+        = ∫⁻ _v in unitBox 1, ∫⁻ A_cor in matBox (M 1 - 0) (dropHead (redChain 0 M) 0) 1,
+            ∫⁻ Γ in genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1,
+              ENNReal.ofReal ((frobSq (Matrix.of Γ * (Matrix.of A_cor * Zf z))) ^ (-c')) :=
+          lintegral_congr (fun v => hpt v)
+      _ = (∫⁻ A_cor in matBox (M 1 - 0) (dropHead (redChain 0 M) 0) 1,
+            ∫⁻ Γ in genBox (Fin (M 0 - 0)) (Fin (M 1 - 0)) 1,
+              ENNReal.ofReal ((frobSq (Matrix.of Γ * (Matrix.of A_cor * Zf z))) ^ (-c')))
+            * volume (unitBox 1) := setLIntegral_const _ _
+      _ = _ := by rw [unitBox_one_volume, mul_one]
 
 /-- **GLUE-2 — the coupled pivot→`decLoss` domination (the analytic crux).** Verbatim statement of the
 `RouteMSJHeadSplitDom.headSplit_pivotDom` stub; the controller wires the stub to it. Ratio wiring:
