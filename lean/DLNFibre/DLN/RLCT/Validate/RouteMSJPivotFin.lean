@@ -198,14 +198,66 @@ theorem pivotRHS_decLoss_eq (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 
     rfl
   rw [hcd, sq_abs]
 
-/-- **The forward finiteness (the ISOLATED CRUX, Option B).** From the RHS finiteness `hRHS`, the freed
-Schur-loss spine LHS is finite. THE genuine bilinear-RLCT content of GLUE-2 (the non-pointwise cross-term
-drop; the pivot `‖P·Q_p + B₁₂·Q_b‖²` couples to the corank variable `A_cor` via `B₁₂·Q_b`, so it is not
-`∑(linear)²` jointly). Route: `freedLoss = Σ_i σ_i(z,A_cor)²·|β_i|²` (SVD/eigenframe of `Q_stack`, Brick
-F), σ-coupled peel RETAINING `σ_i(z,A_cor)` (a uniform pivot pull-out DIVERGES — archfin + Codex);
-degenerating small-`σ_i` directions charge the corank `ab` (S3 `shell_corankOffSector_le_unif`) + the
-reduced-chain via `hRHS`; `σ_i`-bounded-below directions give the uniform pivot capacity `uρ`, non-binding
-by `hpiv`. Yields `pivotDomLHS ≤ C·pivotDomRHS` (`C < ⊤`), closed by `hRHS`. -/
+/-- **Reformulation: the freed Schur loss is the full-block loss (on the chart).** On `outerDom`
+(`IsUnit (Matrix.of x.1.1)`), the freed Schur loss equals the plain block loss of the reconstructed
+block matrix `[[P, B₁₂], [C, Γ + schurShift x]]` against `Q`. The Schur / `P⁻¹` coupling CANCELS: the
+freed loss was the block loss all along, re-parametrised. Banked `schurLoss_of_blockSplitD_symm_shift`
+(freed = `schurLoss` of the reconstructed block) + `frobSq_schur_split_inv` (`schurLoss = frobSq(·)` on
+`IsUnit` pivot). Turns the σ-coupled peel into a clean block-front RLCT integral (the `(2,2)` block
+`D := Γ + schurShift x` ranges over `genBox` as `Γ` ranges over the shifted set). -/
+theorem freedSchurLoss_eq_frobSq_block {t a b q : ℕ} (x : SJOuter t a b)
+    (hP : IsUnit (Matrix.of x.1.1)) (Γ : Fin a → Fin b → ℝ)
+    (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) :
+    freedSchurLoss x Γ Q
+      = frobSq (Matrix.of ((blockSplitD t a b).symm (x, Γ + schurShift x)) * Q) := by
+  have hblk : (Matrix.of ((blockSplitD t a b).symm (x, Γ + schurShift x))).toBlocks₁₁
+      = Matrix.of x.1.1 := by
+    rw [of_blockSplitD_symm_eq_fromBlocks]; rfl
+  have hU' : IsUnit (Matrix.of ((blockSplitD t a b).symm (x, Γ + schurShift x))).toBlocks₁₁ := by
+    rw [hblk]; exact hP
+  rw [← schurLoss_of_blockSplitD_symm_shift x Γ Q]
+  exact (frobSq_schur_split_inv _ hU' Q).symm
+
+/-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX — scaffold + 1-sorry, standing decision 7).**
+The freed Schur-loss spine LHS is dominated by a FINITE reorganisation constant times the comparator-core
+RHS. This is exactly the conclusion of `RouteMSJHeadSplitDom.headSplit_pivotDom`; it carries the entire
+head-split analytic crux and is left as the single `sorry` of this module.
+
+**Internal decomposition** (the scaffold, to be built sorry-free around the one residual C-absorption):
+* **Reformulation** (`freedSchurLoss_eq_frobSq_block`, LANDED): on `outerDom` (`IsUnit P`), `freedSchurLoss
+  x Γ Q = frobSq(fromBlocks P B₁₂ C (Γ+schurShift x) · Q)` — the `P⁻¹` coupling cancels.
+* **D-subst**: substitute `D := Γ + schurShift x` (translation, measure-preserving); the `(2,2)` block `D`
+  ranges over `genBox`, giving the clean block-front integral `∫_{P,B₁₂,C box, D genBox} frobSq(B·Q_stack)^{−c'}`.
+* **Row-split**: `frobSq(B·Q_stack) = frobSq((P|B₁₂)·Q_stack) + frobSq((C|D)·Q_stack)` — top rows = pivot
+  `w`, bottom rows = corank.
+* **D-A radial (top)**: `pivotBlock_radial_blowup` on `W = (P|B₁₂)` (Jacobian `r^{u·M₁−1}`); the direction
+  `P̂` hits `Q_stack`, RETAINING the `σ_i(z,A_cor)`-dependence (a uniform pivot pull-out DIVERGES — archfin
+  + Codex). `σ_i`-bounded-below directions give the uniform pivot capacity `uρ`, non-binding by `hpiv`.
+* **S3 corank (bottom)** + **the σ-coupled C-ABSORPTION (the residual, ~65-75%-new, the RISKY piece)**:
+  the LHS corank integrates over `C` (a×u, box) AND `D` (a×b, genBox) with the `C·Q_p` CROSS-TERM
+  `frobSq(C·Q_p + D·Q_b)`, whereas S3 (`shell_corankOffSector_le_unif`) handles `∫_{A_cor,Γ}(w +
+  frobSq(Ccross + Γ·(A_cor·Z)))^{−c'} ≤ Cunif·w^{−(c'−ab/2)}` with `Ccross` FIXED. The residual identifies
+  `Ccross := C·Q_p` and absorbs `C` by S3's `Ccross`-UNIFORMITY (box-vol, NOT codim ⟹ corank charge `ab`,
+  closing the `b>u` window) — the piece the certs flag needs the adapted chart-constant lemma. -/
+theorem pivotPeel_domination (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
+    (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
+    {ε' : ℝ} (hε' : 0 < ε')
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (hZfMeas : Measurable Zf)
+    (U_sf : Params (redChain u M) → Matrix (Fin (dropHead (redChain u M) 0)) (Fin m) ℝ)
+    (hUs : ∀ z, (U_sf z)ᵀ * U_sf z = 1)
+    (hrank : ∀ z, m ≤ (Zf z).rank)
+    (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef) :
+    ∃ C : ℝ≥0∞, C < ⊤ ∧ pivotDomLHS M u c' Zf ≤ C * pivotDomRHS M u c' Zf := by
+  sorry
+
+/-- **The forward finiteness (Option B).** From the RHS finiteness `hRHS` and the σ-coupled domination
+`pivotPeel_domination` (`LHS ≤ C·RHS`, `C < ⊤`), the freed Schur-loss spine LHS is finite:
+`lt_of_le_of_lt` the domination against `C·RHS < ⊤` (`ENNReal.mul_lt_top`). -/
 theorem forward_LHS_finiteness (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
     {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
@@ -221,7 +273,9 @@ theorem forward_LHS_finiteness (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu :
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
     (hRHS : pivotDomRHS M u c' Zf < ⊤) :
     pivotDomLHS M u c' Zf < ⊤ := by
-  sorry
+  obtain ⟨C, hC, hle⟩ := pivotPeel_domination M u hu hε c' hnd hpiv hcvg hmM hε' Zf hZfMeas
+    U_sf hUs hrank hfloor
+  exact lt_of_le_of_lt hle (ENNReal.mul_lt_top hC hRHS)
 
 /-- **The `u = 0` edge.** With a `0`-width pivot the front block vanishes and `decLoss = 0`, so
 `pivotDomLHS ≤ pivotDomRHS` (`pivotDom_uzero`), hence finite from `hRHS`. -/
