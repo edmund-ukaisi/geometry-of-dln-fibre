@@ -85,4 +85,55 @@ theorem lagProj_eigen {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam w : Fin M₂ �
     field_simp
     ring
 
+/-! ## Layer A, Section 2 — the projector is symmetric (factors commute, are symmetric) -/
+
+/-- Two matrices affine in a common `B` commute. -/
+theorem commute_affine {n : ℕ} (B : Matrix (Fin n) (Fin n) ℝ) (c c' : ℝ) :
+    Commute (1 + c • B) (1 + c' • B) := by
+  refine Commute.add_right (Commute.one_right _) (Commute.smul_right ?_ c')
+  refine Commute.add_left (Commute.one_left _) (Commute.smul_left ?_ c)
+  exact Commute.refl _
+
+/-- Each Lagrange factor is symmetric when `A` is (`Aᵀ = A`). -/
+theorem lagFactor_symm {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam : Fin M₂ → ℝ} (hA : Aᵀ = A)
+    (i j : Fin M₂) : (lagFactor A lam i j)ᵀ = lagFactor A lam i j := by
+  unfold lagFactor
+  rw [transpose_add, transpose_one, transpose_smul, transpose_sub, hA, transpose_smul,
+    transpose_one]
+
+/-- Any two Lagrange factors (same `i`) commute — both affine in `A − lam i • 1`. -/
+theorem lagFactor_commute {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam : Fin M₂ → ℝ} (i j k : Fin M₂) :
+    Commute (lagFactor A lam i j) (lagFactor A lam i k) :=
+  commute_affine (A - lam i • 1) _ _
+
+/-- A list of pairwise-commuting symmetric matrices has a symmetric product. -/
+theorem prod_symm_of {n : ℕ} (l : List (Matrix (Fin n) (Fin n) ℝ))
+    (hsym : ∀ M ∈ l, Mᵀ = M) (hcomm : ∀ M ∈ l, ∀ N ∈ l, Commute M N) :
+    (l.prod)ᵀ = l.prod := by
+  induction l with
+  | nil => simp
+  | cons a t ih =>
+    rw [List.prod_cons, transpose_mul,
+      ih (fun M hM => hsym M (List.mem_cons_of_mem _ hM))
+        (fun M hM N hN => hcomm M (List.mem_cons_of_mem _ hM) N (List.mem_cons_of_mem _ hN)),
+      hsym a List.mem_cons_self]
+    refine Commute.list_prod_left t a (fun x hx => ?_)
+    exact hcomm x (List.mem_cons_of_mem _ hx) a List.mem_cons_self
+
+/-- The zero-safe Lagrange projector is symmetric when `A` is. -/
+theorem lagProj_symm {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam : Fin M₂ → ℝ} (hA : Aᵀ = A)
+    (i : Fin M₂) : (lagProj A lam i)ᵀ = lagProj A lam i := by
+  rw [lagProj]
+  apply prod_symm_of
+  · intro M hM
+    rw [List.mem_map] at hM
+    obtain ⟨j, _, rfl⟩ := hM
+    exact lagFactor_symm hA i j
+  · intro M hM N hN
+    rw [List.mem_map] at hM
+    rw [List.mem_map] at hN
+    obtain ⟨j, _, rfl⟩ := hM
+    obtain ⟨k, _, rfl⟩ := hN
+    exact lagFactor_commute i j k
+
 end DLNFibre.DLN.RLCT.MEframe
