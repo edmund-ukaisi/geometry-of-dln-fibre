@@ -106,6 +106,54 @@ theorem corner_inner_ge {a b M₂ nn : ℕ} (Z : Matrix (Fin M₂) (Fin nn) ℝ)
           ENNReal.ofReal ((w + frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z))) ^ (-c')) :=
         setLIntegral_mono_ae' (matBox_measurableSet b M₂ 1) (ae_of_all _ (fun A hA => hinner A hA))
 
+/-- **Entrywise upper bound for the corank block** `frobSq(Γ·(A·Z)) ≤ (a·nn)·(b·M₂·BZ)²·ρ²` when
+`|Γ| ≤ ρ`, `|A| ≤ 1`, `|Z| ≤ BZ` entrywise. Per-entry triangle bound `|(Γ·(A·Z))_{ij}| ≤ b·ρ·M₂·BZ`, then
+`frobSq ≤ card · (entry bound)²`. Supplies `corner_inner_ge`'s `hbound` with `ρ ~ √(w/C)`. -/
+theorem frobSq_corank_le {a b M₂ nn : ℕ} (Z : Matrix (Fin M₂) (Fin nn) ℝ)
+    {BZ : ℝ} (hBZ0 : 0 ≤ BZ) (hBZ : ∀ l j, |Z l j| ≤ BZ)
+    (A : Fin b → Fin M₂ → ℝ) (hA : ∀ k l, |A k l| ≤ 1)
+    (Γ : Fin a → Fin b → ℝ) {ρ : ℝ} (hρ0 : 0 ≤ ρ) (hΓ : ∀ i k, |Γ i k| ≤ ρ) :
+    frobSq ((Matrix.of Γ) * ((Matrix.of A) * Z))
+      ≤ ((a * nn : ℕ) : ℝ) * (b * M₂ * BZ) ^ 2 * ρ ^ 2 := by
+  classical
+  set W : Matrix (Fin b) (Fin nn) ℝ := (Matrix.of A) * Z with hW
+  -- entry bound on `W = A·Z`
+  have hWentry : ∀ k j, |W k j| ≤ (M₂ : ℝ) * BZ := by
+    intro k j
+    have : W k j = ∑ l, A k l * Z l j := by simp [hW, Matrix.mul_apply, Matrix.of_apply]
+    rw [this]
+    calc |∑ l, A k l * Z l j| ≤ ∑ l, |A k l * Z l j| := Finset.abs_sum_le_sum_abs _ _
+      _ ≤ ∑ _l : Fin M₂, (1 : ℝ) * BZ := by
+          refine Finset.sum_le_sum (fun l _ => ?_)
+          rw [abs_mul]
+          exact mul_le_mul (hA k l) (hBZ l j) (abs_nonneg _) (by norm_num)
+      _ = (M₂ : ℝ) * BZ := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]; ring
+  -- entry bound on `Γ·W`
+  have hprodentry : ∀ i j, |((Matrix.of Γ) * W) i j| ≤ (b : ℝ) * ρ * ((M₂ : ℝ) * BZ) := by
+    intro i j
+    have : ((Matrix.of Γ) * W) i j = ∑ k, Γ i k * W k j := by
+      simp [Matrix.mul_apply, Matrix.of_apply]
+    rw [this]
+    calc |∑ k, Γ i k * W k j| ≤ ∑ k, |Γ i k * W k j| := Finset.abs_sum_le_sum_abs _ _
+      _ ≤ ∑ _k : Fin b, ρ * ((M₂ : ℝ) * BZ) := by
+          refine Finset.sum_le_sum (fun k _ => ?_)
+          rw [abs_mul]
+          exact mul_le_mul (hΓ i k) (hWentry k j) (abs_nonneg _) hρ0
+      _ = (b : ℝ) * ρ * ((M₂ : ℝ) * BZ) := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]; ring
+  -- `frobSq ≤ card · (entry bound)²`
+  have hE0 : (0 : ℝ) ≤ (b : ℝ) * ρ * ((M₂ : ℝ) * BZ) := by positivity
+  calc frobSq ((Matrix.of Γ) * W)
+      = ∑ i, ∑ j, (((Matrix.of Γ) * W) i j) ^ 2 := rfl
+    _ ≤ ∑ _i : Fin a, ∑ _j : Fin nn, ((b : ℝ) * ρ * ((M₂ : ℝ) * BZ)) ^ 2 := by
+        refine Finset.sum_le_sum (fun i _ => Finset.sum_le_sum (fun j _ => ?_))
+        have := hprodentry i j
+        nlinarith [abs_nonneg (((Matrix.of Γ) * W) i j), sq_abs (((Matrix.of Γ) * W) i j), hE0, this]
+    _ = ((a * nn : ℕ) : ℝ) * (b * M₂ * BZ) ^ 2 * ρ ^ 2 := by
+        rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]
+        simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+        push_cast; ring
+
 /-- **Step 1 — the exponent extraction.** If the comparator-core RHS is finite then `c'` is strictly below
 the shared RLCT threshold `X = (minAdm (redChain u M) + peelCharge M u)/2`. Proof (contrapositive): for
 `c' ≥ X`, `pivotDomRHS = ⊤` — the corner sublevel-volume lower bound `μ{‖Γ·(A_cor·Zf z)‖² ≤ D} ≳ D^{ab/2}`
