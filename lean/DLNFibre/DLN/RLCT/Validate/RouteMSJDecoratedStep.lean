@@ -40,15 +40,17 @@ shells (a per-shell split, INSIDE the outer tail integral, NOT a per-`D` case):
   the 3-width box finiteness `routeMBoxThresholdFinite_mnp` — that is a PROVEN NO-GO for `L ≥ 1` (witness
   `minAdm (4,2,3,3) = 5` but `minAdm (4,2,3) = 6`, so `I(4,2,3,3)` diverges on `c' ∈ (5/2, 3)` while the
   3-width `I(4,2,3)` is finite there; no `c'`-uniform 3-width domination can hold — the deep charge is
-  higher-dimensional). 3-width is only the BASE, never a step target. Instead the waist reduces to the
-  ONE-SHORTER decorated IH, in two sub-cases:
-  - **`M₁ ≠ 1`** — hole (c) `deeperFlagWaist_finite`: the reversal CoV `I(M) = I(rev M)`
-    (glued by the banked `minAdm_comp_perm`, `minAdm (rev M) = minAdm M`, + a reversal-CoV lemma) makes
-    the REVERSED chain FRONT-GOOD (`rev M` is front-good whenever `M` is waist, ≥ 4-width, 0 exceptions),
-    so head-split on `rev M` descends to `redChain (u, rev M)` = the one-shorter IH.
-  - **`M₁ = 1`** (any `L`) — hole (e) `deeperFlagWaistM1_finite`, reversal-FREE: the loss factorizes
-    `frobSq (A₀ · Q) = ‖A₀‖² · ‖Q‖²` (rank-1 front), so the integral splits as a front Morse integral ×
-    the plain-tail IH. A standalone lemma.
+  higher-dimensional). 3-width is only the BASE, never a step target. The waist fires WITH nontrivial
+  decoration (front-good + deep pinch → decorated waist), in two sub-cases:
+  - **`M₁ ≥ 2`** — hole (c) `deeperFlagWaist_finite`, ROUTE (b) DROP-FRONT: integrate out the front
+    block `Γ` (KEEPING `M₁`), landing on the `dropHead M` DECORATED IH carrying an eigenvalue-profile
+    weight (the deep-pinch spectral weight rides in the reduced decoration's carrier/jac). Reversal route
+    (a) is DEAD here: `FaithfulSJAt` is front-oriented, and reversal's endpoint `a ≠ M₀` makes it a
+    re-resolution, not a reindex. Calls `hIH (dropHead M) D_w`; the `adm` premise on the weight `D_w` is
+    the OPEN gate **O2** (a scout adjudicating admissibility).
+  - **`M₁ = 1`** (any `L`) — hole (e) `deeperFlagWaistM1_finite`, reversal-FREE and UNCONDITIONAL: the
+    loss factorizes `frobSq (Γ · Q) = ‖Γ‖² · ‖Q‖²` for ANY `D`, so the integral splits as a front Morse
+    integral × the dropHead-tail IH. A standalone lemma.
 
 The main `decoratedStepHyp_dispatch : DecoratedStepHyp adm` is itself `sorry`-free — the exhaustive
 `by_cases hpiv` (good/waist) with a further `by_cases M₁ = 1` inside waist, dispatching to holes (d),
@@ -151,25 +153,24 @@ theorem deeperFlagGood_finite
     DecoratedBoxThresholdFinite D := by
   sorry
 
-/-! ## Hole (c) — the WAIST branch, `M₁ ≠ 1` (reversal CoV → reversed one-shorter IH) -/
+/-! ## Hole (c) — the WAIST branch, `M₁ ≥ 2` (route (b) DROP-FRONT → dropHead-decorated IH) -/
 
-/-- **HOLE (c) — the waist branch, `M₁ ≠ 1` (reversal route).** When the pivot-admissibility FAILS at
-the binding cut (`¬hpiv`, i.e. `M₁ < min(M₂,…,M_last)`, the deep-tail product full-row-rank case) and
-`M₁ ≠ 1`, `deeperFlag_shell_le` is inapplicable (`hpiv` is one of its hypotheses). The chain reduces to
-the ONE-SHORTER decorated IH via the REVERSAL change of variables — NOT to the 3-width box
-`routeMBoxThresholdFinite_mnp` (proven NO-GO for `L ≥ 1`; see module header).
+/-- **HOLE (c) — the waist branch, `M₁ ≠ 1` (route (b): DROP-FRONT → dropHead-decorated IH).** When the
+pivot-admissibility FAILS at the binding cut (`¬hpiv`, i.e. `M₁ < min(M₂,…,M_last)`, the deep-tail
+product full-row-rank case) and `M₁ ≠ 1`, `deeperFlag_shell_le` is inapplicable (`hpiv` is one of its
+hypotheses). The waist fires WITH nontrivial decoration (front-good + deep pinch → decorated waist).
 
-**The EXACT statement this hole requires of its connector** (the contract to relay to the route-(a)
-waist pen-and-paper): let `rev M` be the reversed width chain. Then
-1. **charge match** — `minAdm (rev M) = minAdm M` (the banked `minAdm_comp_perm` at the reversal
-   permutation), so `carrierThreshold (rev M) = carrierThreshold M`;
-2. **integral match** — a measure-preserving reversal CoV giving `D.integral c' = (rev-transported
-   decoration).integral c'` (the small reversal-CoV lemma, being pinned on `waistpin` — the
-   reversal↔decoration commutation);
-3. **front-good on `rev M`** — when `M` is waist and `≥ 4`-width, `rev M` is FRONT-GOOD (satisfies the
-   pivot-admissibility `hpiv` for `rev M`, 0 exceptions), so the head-split (holes a/b + connector d)
-   applies to `rev M`, descending through `redChain (u, rev M)` to the DECORATED IH `hIH`.
-Concludes `DecoratedBoxThresholdFinite D`. NOT filled here. -/
+**Fill route (b) — DROP-FRONT** (waistpin's corrected pin; the earlier reversal route (a) is DEAD:
+`FaithfulSJAt` is front-oriented, and reversal's endpoint `a ≠ M₀` makes it a re-resolution, not a
+reindex — and the waist genuinely fires with nontrivial decoration). Integrate out the FRONT block `Γ`
+while KEEPING `M₁`, landing on the `dropHead M` DECORATED IH carrying an eigenvalue-profile weight (the
+deep-pinch spectral weight rides in the reduced decoration's carrier/jac). Concretely the fill calls
+`hIH (dropHead M) D_w` where `D_w : SJDecoration (dropHead M)` is the eigenvalue-profile-weight
+decoration; the `adm (L+1) (dropHead M) D_w` premise `hIH` needs is the OPEN gate **O2** (a scout is
+adjudicating whether that weight is admissible). NOT `routeMBoxThresholdFinite_mnp` (proven NO-GO for
+`L ≥ 1`; see module header). The hole STATEMENT below is route-agnostic (hyps → finiteness, with `hIH`);
+only the documented fill route changed from reversal to (b). Concludes `DecoratedBoxThresholdFinite D`.
+NOT filled here. -/
 theorem deeperFlagWaist_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
@@ -182,12 +183,13 @@ theorem deeperFlagWaist_finite
 
 /-! ## Hole (e) — the WAIST sub-case `M₁ = 1` (reversal-FREE rank-1 factorization) -/
 
-/-- **HOLE (e) — the waist sub-case `M₁ = 1` (reversal-free).** When `M₁ = 1` (any `L`), the front layer
-`A₀` is a column and the deep-tail product `Q = prod (dropHead M)` a row, so the loss FACTORIZES:
-`frobSq (A₀ · Q) = ‖A₀‖² · ‖Q‖²` (rank-1 outer product). The decorated box integral therefore splits as
-a FRONT Morse integral (the radial `‖A₀‖²` factor, `L = 1` free-matrix Morse) times the PLAIN-tail IH
-(`Q` = one-shorter chain product, closed by the DECORATED IH `hIH` at the reduced arity). Reversal-free,
-a standalone lemma. Concludes `DecoratedBoxThresholdFinite D`. NOT filled here. -/
+/-- **HOLE (e) — the waist sub-case `M₁ = 1` (reversal-free, UNCONDITIONAL).** When `M₁ = 1` (any `L`),
+the front block `Γ` is a column and the deep-tail product `Q = prod (dropHead M)` a row, so the loss
+FACTORIZES for ANY `D`: `frobSq (Γ · Q) = ‖Γ‖² · ‖Q‖²` (rank-1 outer product; waistpin-confirmed cheap +
+unconditional). The decorated box integral therefore splits as a FRONT Morse integral (the radial `‖Γ‖²`
+factor, `corankLeaf_rpow_lt_top` at `n = 1`) times the dropHead-tail IH (`Q` = one-shorter chain product,
+closed by the DECORATED IH `hIH` on `dropHead M` at the reduced arity). Reversal-free, a standalone
+lemma, no open gate. Concludes `DecoratedBoxThresholdFinite D`. NOT filled here. -/
 theorem deeperFlagWaistM1_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
