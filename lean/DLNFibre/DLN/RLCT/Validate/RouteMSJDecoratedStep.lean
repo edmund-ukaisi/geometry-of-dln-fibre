@@ -83,10 +83,12 @@ lane's `deeperFlag_spineToCore`; flagged for its confirmation, not verified here
 
 ## Status
 
-CONTRACT-FIRST skeleton: 5 named `sorry`-holes (a=strict, b=saturated, d=good-connector,
-c=waist-reversal, e=waist-`M₁=1`), main dispatch sorry-free. UNTRACKED, NOT wired into
-`DLNFibre.lean`/`AxCheck` — the canonical library stays 0-sorry. Sorries are the explicit deliverable
-on this tide branch.
+CONTRACT-FIRST skeleton, partially filled: hole (e) `deeperFlagWaistM1_finite` (waist-`M₁=1`) is
+FILLED sorry-free (axiom-clean `[propext, Classical.choice, Quot.sound]`), leaving 4 named `sorry`-holes
+(a=strict, b=saturated, d=good-connector, c=waist-reversal); main dispatch sorry-free. Hole (b) carries a
+newly-added `hcT : c' < carrierThreshold M` (threaded from the dispatch at final wiring). UNTRACKED, NOT
+wired into `DLNFibre.lean`/`AxCheck` — the canonical library stays 0-sorry. The remaining sorries are the
+explicit deliverable on this tide branch.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -350,40 +352,37 @@ theorem deeperFlagWaist_finite
 
 /-! ## Hole (e) — the WAIST sub-case `M₁ = 1` (reversal-FREE rank-1 factorization) -/
 
-/-- **HOLE (e) — the waist sub-case `M₁ = 1`.** At `M₁ = 1` the loss factors through the width-1
-bottleneck: `frobSq (rmatMul Γ Q) = frobSq Γ · frobSq Q` (the banked `frobSq_rmatMul_mid_one`), so the
-decorated box integral splits into a FRONT Morse factor × a dropHead-TAIL IH factor. Fill dispatches the
-`adm` disjunction `obtain ⟨hgen, hdisj⟩ := hD; rcases hdisj with hcA | hcB | hf`.
+/-- **HOLE (e) — the waist sub-case `M₁ = 1` (FILLED, sorry-free, axiom-clean).** At `M₁ = 1` the loss
+factors through the width-1 bottleneck: `frobSq (rmatMul Γ Z) = frobSq Γ · frobSq Z`
+(`frobSq_rmatMul_mid_one'`, the `w = 1` wrapper of the banked `frobSq_rmatMul_mid_one`), so the decorated
+box integral splits into a FRONT Morse factor × a `dropHead M`-TAIL IH factor. UNCONDITIONAL in the waist
+(no `hwaist` hypothesis needed) — the factorization holds for any `M₁ = 1`; the dispatch only invokes it
+inside the waist branch.
 
-**DURABLE FILL RECIPE (for the batched post-admfix completion tide — inherit exactly).**
+The fill: `intro c' hc'`, then the vacuous `minAdm M = 0` branch (threshold `0`, no `c' ≥ 0` below it).
+Otherwise `minAdm M ≥ 1` gives `1 ≤ M 0` (via `minAdm_le_mul_head`, `minAdm M ≤ M₀·M₁ = M₀`); the tail
+finiteness is `hIH (dropHead M) (SJDecoration.trivial _) (adm_trivial (L+1) _)` +
+`decoratedBoxThresholdFinite_trivial_iff` (→ `RouteMBoxThresholdFinite (dropHead M)`, i.e. the finite tail
+integral at `c'`). Threshold bookkeeping: `c' < ½·minAdm M ≤ min(½·(M₀·M₁), ½·minAdm (dropHead M))` via
+`minAdm_le_mul_head` (front budget) and `minAdm_le_minAdm_dropHead_of_mid_one` (tail budget). Then the
+`adm = genuineCarrier ∧ FaithfulSJAt` disjunction is dispatched
+`obtain ⟨hgen, hf⟩ := hD; obtain ⟨hζ, hν, e, hmpe, hdome, hctx⟩ := hgen;
+rcases hf with ⟨hd0, hobs⟩ | ⟨_hd1, i₀, _halpha, hbeta, hdelta0, hgamma⟩`:
+- **d=0** (`hobs : carrier.loss u z x = ∑ v, (x v)²`): `decLoss u z = frobSq (prod M (e z))` (the eqRec
+  transport `hν`/`hctx`/`eqRec_fun_apply_eqRec`, as in `decoratedBase_d0_of_lossEq`); the `d = 0` integral
+  collapses (empty monomial, unit-box measure `1`) and the measure-preserving CoV along `e` reduces it to
+  `routeMLayerBoxIntegral M c' 1`, closed by the banked `routeMLayerBoxIntegral_mid_one_lt_top` (head-split
+  CoV → front-Morse `frobSq_matBox_rpow_lt_top` × tail-IH).
+- **d≥1**: `decLoss_clean_of_uniformResidualSupport D i₀ hdelta0` + `gammaPrimeClause` provenance give
+  `decLoss u z = commonDivisor² · frobSq (rmatMul (eΓ z).1 (prod (dropHead M) (eΓ z).2))`; Tonelli splits
+  `D.integral` into `(∫ monomialIntegrand)` (finite below `monomialThreshold`, from `hbeta`, via
+  `monomialIntegrand_lintegral_unitBox_lt_top`) × `(∫ frobSq(rmatMul Γ Z_tail)^{−c'})` (CoV along `eΓ`,
+  rank-1 split `frobSq_rmatMul_mid_one'`, then the banked `frontTail_prod_lt_top`).
 
-*Corank sub-cases* `hcA : admCorankA M = 0` / `hcB : admCorankB M = 0` — **HOLD pending admfix.** The
-current corank disjunct is UNSOUND at the step (it is an M-property, requires no β, and `genuineCarrier`
-does not bound `jac`; concrete counterexample `M = (5,2,1)`, `admCorankB = 0`, a genuine `D` with
-`d=1, supp≡1, jac≡0` has `D.integral = ⊤` on `c' ∈ [1/2,1)` below `carrierThreshold = 1`). Fill against
-the admfix-repaired `adm`, not the current one.
-
-*FaithfulSJAt* `hf`, dispatched `rcases hf with ⟨hd0, hobs⟩ | ⟨hd1, i₀, halpha, hbeta, hdelta0, hgamma⟩`:
-- **d=0** (`hobs : carrier.loss u z x = ∑ v, (x v)²`): decLoss = `frobSq (prod M (e z))` [adapt the
-  eqRec transport of `decoratedBase_d0_of_lossEq`: `hν`, `hctx`, `eqRec_fun_apply_eqRec`] → `prod_headSplit`
-  (`prod M A = rmatMul (A 0) (prod (dropHead M) (fun j ↦ A j.succ))`) → `frobSq_rmatMul_mid_one` (banked;
-  needs the `Fin (M 1) = Fin 1` cast from `hM1` — the documented opaque-width `have`+`exact` pattern) →
-  box split `paramsHeadSplit_preimage_box` (`Params M` box ≃ `matBox (M 0) (M 1) 1 × Params (dropHead M) 1`)
-  → Tonelli 2-way → FRONT `∫_{matBox (M 0) 1} frobSq (A 0)^{-c'}` via `corankLeaf_rpow_lt_top` at `n = 1`
-  (finite below `M₀/2`) × TAIL `hIH (dropHead M) (SJDecoration.trivial _) (adm_trivial ..)` +
-  `decoratedBoxThresholdFinite_trivial_iff` (finite below `½·minAdm (dropHead M)`).
-- **d≥1**: the SAME skeleton with the extra `commonDivisor(u)²·(monomial)` factor —
-  `decLoss_clean_of_uniformResidualSupport D i₀ hdelta0` gives decLoss = `commonDivisor² · frobSq (Γ·Z_tail)`,
-  `hgamma` (`gammaPrimeClause`) supplies `eΓ : D.Z ≃ᵐ (Fin a → Fin (M 1) → ℝ) × Params (dropHead M)` +
-  provenance, then `frobSq_rmatMul_mid_one` (Γ : `a×1`, Z_tail = `prod (dropHead M) · : 1×M_last`) factors,
-  Tonelli 3-way: `monomialIntegrand_lintegral_unitBox_lt_top` (below `monomialThreshold`, from `hbeta` β) ×
-  FRONT (`corankLeaf_rpow_lt_top`@n=1) × TAIL (`hIH` on `dropHead M`).
-
-*Threshold bookkeeping* (both FaithfulSJAt cases): `c' < ½·minAdm M ≤ min(M₀/2, ½·minAdm (dropHead M))`
-via `minAdm_le_mul_head` (`minAdm M ≤ M₀·M₁ = M₀`) and the banked `minAdm_le_minAdm_dropHead_of_mid_one`.
-
-Bricks banked sorry-free: `frobSq_rmatMul_mid_one`, `minAdm_le_minAdm_dropHead_of_mid_one`. Concludes
-`DecoratedBoxThresholdFinite D`. NOT filled here. -/
+Bricks banked sorry-free (this file): `frobSq_rmatMul_mid_one'`, `frobSq_prod_mid_one`,
+`frontTail_prod_lt_top`, `routeMLayerBoxIntegral_mid_one_lt_top` (+ the reused
+`frobSq_rmatMul_mid_one`, `minAdm_le_minAdm_dropHead_of_mid_one`). Concludes `DecoratedBoxThresholdFinite
+D`; `#print axioms` = `[propext, Classical.choice, Quot.sound]`. -/
 theorem deeperFlagWaistM1_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
