@@ -107,7 +107,10 @@ theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
             (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
     (hagree : ∀ z, weakEigCount ε' (deeperFlagZdeep M (t + j) z)
         ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-        → Zf z = deeperFlagZdeep M (t + j) z) :
+        → Zf z = deeperFlagZdeep M (t + j) z)
+    (hGmeas : MeasurableSet {z : Params (redChain (t + j) M) |
+        weakEigCount ε' (deeperFlagZdeep M (t + j) z)
+          ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)}) :
     shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
       ≤ ∫⁻ z in paramsBoxM (redChain (t + j) M) 1,
           ∫⁻ A_cor in matBox (M 1 - (t + j)) (dropHead (redChain (t + j) M) 0) 1,
@@ -140,7 +143,10 @@ theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
     (hagree : ∀ z, weakEigCount ε' (deeperFlagZdeep M (t + j) z)
         ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-        → Zf z = deeperFlagZdeep M (t + j) z) :
+        → Zf z = deeperFlagZdeep M (t + j) z)
+    (hGmeas : MeasurableSet {z : Params (redChain (t + j) M) |
+        weakEigCount ε' (deeperFlagZdeep M (t + j) z)
+          ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)}) :
     ∃ (Ccrossf : Params (redChain (t + j) M)
           → Matrix (Fin (M 0 - (t + j))) (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
         (sΓf : Params (redChain (t + j) M)
@@ -161,6 +167,6 @@ theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t
       hcvg hmM hε' Zf U_sf hUs hrank hfloor
   refine ⟨C_hle, hfin, ?_⟩
   -- mechanical head/row split, then GLUE-2
-  exact le_trans (shellSpine_le_hsQ_box M t j κ hε c' ht hj ht1 hnd hrange hε' Zf hagree) hle
+  exact le_trans (shellSpine_le_hsQ_box M t j κ hε c' ht hj ht1 hnd hrange hε' Zf hagree hGmeas) hle
 
 end DLNFibre.DLN.RLCT
