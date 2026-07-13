@@ -146,6 +146,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
 
 /-!
 # Axiom-hygiene check
@@ -1186,10 +1187,13 @@ open DLNFibre.DLN.RLCT
 -- + T-charge (flag charge C_j≥minAdm + the IH-fires shift). Consumed by the mountain (deeperFlag_shell_le).
 #print axioms uniformWenn_le
 #print axioms flagCharge_ge
--- #5 T-Obl3b mountain (genm-sj5, bordered-Gram route): M1 the bordered-Gram Schur-complement
--- det recursion + its nonneg residual (Cauchy–Binet-free native primitive); M2 the single-ε
--- singular-value shell cover (measurability-free `∫⁻` finite-cover subadditivity + exhaustiveness).
+-- #5 T-Obl3b mountain (genm-sj5): M2 shell cover is LOAD-BEARING (single-ε shell subadditivity +
+-- exhaustiveness; corrected route stratifies Z first). M1 bordered-Gram Schur-complement det recursion
+-- + M3 its `gramDet_eq_prod` iterate are CORRECT reusable determinant identities but DIAGNOSTIC only —
+-- the pin (tobl3b-cornershift-chart-cert) REFUTED bordered-Gram as the corner-shrink primitive; the
+-- corrected corner-shrink is a deeper-cut re-peel + PSD-monotonicity, not these. Clean-three regardless.
 #print axioms DLNFibre.DLN.RLCT.borderedGram_det
 #print axioms DLNFibre.DLN.RLCT.borderedGramSchur_nonneg
 #print axioms DLNFibre.DLN.RLCT.lintegral_le_sum_finCover
 #print axioms DLNFibre.DLN.RLCT.singularShell_iUnion
+#print axioms DLNFibre.DLN.RLCT.gramDet_eq_prod

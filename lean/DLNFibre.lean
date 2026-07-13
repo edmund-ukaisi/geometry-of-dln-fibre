@@ -1401,11 +1401,16 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
 -- iterated-spectral shell peel) is being re-formulated (Cauchy–Binet absent at the pin → iterated spectral).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
--- T-Obl3b mountain (genm-sj5, bordered-Gram route): M1 `RouteMSJBorderedGram` — the one-step
--- bordered-Gram Schur-complement det recursion `det Gram(v₀…vₙ) = det Gram(v₀…v_{n−1})·borderedGramSchur`
--- (via `det_fromBlocks₁₁`) + `borderedGramSchur_nonneg` (Schur-of-PSD). The Cauchy–Binet-free native
--- primitive (absent at v4.29). M2 `RouteMSJShellCover` — the single-ε singular-value shell cover
--- (`lintegral_le_sum_finCover` measurability-free finite-cover `∫⁻` subadditivity + `singularShell`
--- exhaustiveness `singularShell_iUnion`). Consumed by the mountain's minor-CoV (deeperFlag_shell_le).
+-- T-Obl3b mountain (genm-sj5): M2 `RouteMSJShellCover` is LOAD-BEARING — the single-ε singular-value
+-- shell cover (`lintegral_le_sum_finCover` measurability-free finite-cover `∫⁻` subadditivity +
+-- `singularShell`/`singularShell_iUnion` exhaustiveness); the corrected route stratifies Z into shells
+-- FIRST (cornershift-chart-cert). M1 `RouteMSJBorderedGram` (bordered-Gram Schur-complement det
+-- recursion via `det_fromBlocks₁₁` + `borderedGramSchur_nonneg`) + M3 `RouteMSJGramRowPeel` (its iterate
+-- `gramDet_eq_prod : det(gram v)=∏ᵢ gramSchurSeq v i`) are CORRECT, reusable determinant identities but
+-- DIAGNOSTIC only: the pen-and-paper pin (tobl3b-cornershift-chart-cert) REFUTED bordered-Gram as the
+-- corner-shrink primitive (the minor/row-peel Jacobian is a divergent non-sequitur). The corrected
+-- corner-shrink is a deeper-cut (t★+j) re-peel + banked PSD-monotonicity (`det_le_det_of_posSemidef_sub`,
+-- generalising `uniformWenn_le`), not these. Kept as reusable primitives (M1 may aid OWED-2 for b−j≥2).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
