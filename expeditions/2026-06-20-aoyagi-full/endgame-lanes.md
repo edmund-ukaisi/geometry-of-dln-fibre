@@ -44,6 +44,17 @@ Use tide-b's arch-correction-#2 grind hours (hours) to lock every downstream con
 
 **Interface handoff:** stepasm reports the waist hole's required statement → I relay it to waistpin as its exact target. When pivotDom closes: headSplit_domination clean-three → DeeperFlagCore stubs → deeperFlag_spineToCore → DecoratedStepHyp (skeleton's holes filled) → DecoratedDescent → (□) → mint (L=1 brick + _gen).
 
+## CRUX DE-RISK (parallel to tide-b; advisory-to-controller)
+| Lane | Agent | Status |
+|---|---|---|
+| **arch-#2 realization adjudication** | archfin (pen-and-paper) | Decorrelated check of the tide-b crux: verify (a) joint-D-B codim uρ+ab and (b) sequenced exponent-reduction c'-ab/2 are each SOUND (exact (3,3,3) accounting), NAME the single new sub-lemma each needs, RECOMMEND the cheaper-to-formalize route, flag any third arch-A-style hazard. Returns to controller; NO cross-talk with tide-b. Reconcile vs tide-b's own (3,3,3) gate → relay ONE locked answer. |
+
+## PLAN-AHEAD — post-pivotDom assembly sequence + triggers (controller-owned)
+1. hGmeas: soft-asked to #2 (consumer-owner); fallback = controller builds from F2a at integration.
+2. **TRIGGER — on stepasm's report:** it names the j=r saturated-shell hole's exact statement. Assess j=r = one-liner (IH application at reduced arity) vs needs-a-tide; commission immediately if the latter (pivotDom-INDEPENDENT — it's the IH, not the head-split). Also relay the waist hole's required statement to waistpin.
+3. **TRIGGER — on archfin's report:** reconcile with tide-b's (3,3,3) gate; if they agree, tide-b's route is confirmed (raise confidence, let it grind); if they diverge, dig before tide-b sinks more hours.
+4. **On pivotDom + #2 + helper landing:** merge headsplit-dom + pivotdom branches (inline pivotDom_finiteness → RouteMSJPivotDom, break hsQ cycle) → fill headSplit_domination → DeeperFlagCore stubs (exists_headSplitFrame := F1 impl; hGmeas; refinements hjr/hε'le=le_refl/hZfMeas from Brick F) → deeperFlag_spineToCore = F ∘ it → DecoratedStepHyp (fill stepasm's 3 holes: j<r=spineToCore, j=r=IH, waist=waistpin route) → DecoratedDescent (+#4 base) → (□) → mint (_gen ∘ discharge + L=1).
+
 ## Controller-owned integration (at the head-split assembly)
 1. **Head-split assembly**: fill `headSplit_domination` (RouteMSJDeeperFlagCore) = headSplit_pivotDom (GLUE-2 pieces) + shellSpine_le_hsQ_box (plumbing) + D-A/B/C banked + S3 + L1. Reconcile: inline pivotDom_finiteness (tide b, RouteMSJPivotFin) into RouteMSJPivotDom; merge the helper's RHS≠0/uzero.
 2. **DeeperFlagCore stub refinements** (I own): `headSplit_domination` STUB gains `hjr : j<r` + `hε'le : ε'≤ε/√(M₁M₂)` + `hZfMeas : Measurable Zf` — all discharged in `deeperFlag_spineToCore` (ε'=ε/√(M₁M₂) by le_refl; j<r from shell dispatch; hZfMeas from Brick F's Measurable Zf; hGmeas via the wrapper below).
