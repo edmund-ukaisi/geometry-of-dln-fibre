@@ -537,4 +537,63 @@ theorem Uframe_diagonalizes {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin
   · intro s _ hsc; rw [Matrix.diagonal_apply_ne _ hsc, mul_zero]
   · intro h; exact absurd (Finset.mem_univ c) h
 
+/-! ## Layer M — measurability (entrywise, then the fold by `ℕ`-induction) -/
+
+variable {X : Type*} [MeasurableSpace X]
+
+/-- A matrix family with all entries measurable. -/
+def MeasEntries (f : X → Matrix (Fin M₂) (Fin M₂) ℝ) : Prop :=
+  ∀ i j, Measurable (fun z => f z i j)
+
+/-- A vector family with all components measurable. -/
+def MeasVec (v : X → Fin M₂ → ℝ) : Prop := ∀ i, Measurable (fun z => v z i)
+
+theorem MeasEntries.add {f g : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hf : MeasEntries f)
+    (hg : MeasEntries g) : MeasEntries (fun z => f z + g z) := fun i j => by
+  simpa using (hf i j).add (hg i j)
+
+theorem MeasEntries.sub {f g : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hf : MeasEntries f)
+    (hg : MeasEntries g) : MeasEntries (fun z => f z - g z) := fun i j => by
+  simpa using (hf i j).sub (hg i j)
+
+theorem MeasEntries.mul {f g : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hf : MeasEntries f)
+    (hg : MeasEntries g) : MeasEntries (fun z => f z * g z) := fun i j => by
+  simp only [Matrix.mul_apply]
+  exact Finset.measurable_sum _ (fun k _ => (hf i k).mul (hg k j))
+
+theorem MeasEntries.smul {c : X → ℝ} {f : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hc : Measurable c)
+    (hf : MeasEntries f) : MeasEntries (fun z => c z • f z) := fun i j => by
+  simp only [Matrix.smul_apply, smul_eq_mul]
+  exact hc.mul (hf i j)
+
+theorem measEntries_one : MeasEntries (fun _ : X => (1 : Matrix (Fin M₂) (Fin M₂) ℝ)) :=
+  fun _ _ => measurable_const
+
+theorem MeasVec.vecMulVec {v : X → Fin M₂ → ℝ} (hv : MeasVec v) :
+    MeasEntries (fun z => vecMulVec (v z) (v z)) := fun i j => by
+  simp only [vecMulVec_apply]; exact (hv i).mul (hv j)
+
+/-- Each Lagrange factor is entrywise measurable. -/
+theorem measEntries_lagFactor {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X → Fin M₂ → ℝ}
+    (hA : MeasEntries A) (hlam : MeasVec lam) (i j : Fin M₂) :
+    MeasEntries (fun z => lagFactor (A z) (lam z) i j) := by
+  refine measEntries_one.add (MeasEntries.smul ((hlam i).sub (hlam j)).inv ?_)
+  exact hA.sub (MeasEntries.smul (hlam i) measEntries_one)
+
+/-- The list-projector is entrywise measurable. -/
+theorem measEntries_listProj {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X → Fin M₂ → ℝ}
+    (hA : MeasEntries A) (hlam : MeasVec lam) (i : Fin M₂) (l : List (Fin M₂)) :
+    MeasEntries (fun z => (l.map (fun j => lagFactor (A z) (lam z) i j)).prod) := by
+  induction l with
+  | nil => simpa using measEntries_one
+  | cons a t ih =>
+    simp only [List.map_cons, List.prod_cons]
+    exact (measEntries_lagFactor hA hlam i a).mul ih
+
+/-- The Lagrange projector is entrywise measurable. -/
+theorem measEntries_lagProj {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X → Fin M₂ → ℝ}
+    (hA : MeasEntries A) (hlam : MeasVec lam) (i : Fin M₂) :
+    MeasEntries (fun z => lagProj (A z) (lam z) i) :=
+  measEntries_listProj hA hlam i (List.finRange M₂)
+
 end DLNFibre.DLN.RLCT.MEframe
