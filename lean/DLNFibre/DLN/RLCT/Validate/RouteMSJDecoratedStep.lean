@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
+import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 
 set_option linter.style.longLine false
 
@@ -19,12 +20,21 @@ SPECIFY/audit artifact: the deliverable is a TYPECHECKING skeleton + a seam repo
 finiteness for every `adm`-admissible decoration of every one-shorter chain), every `adm`-admissible
 `D : SJDecoration M` is finite below `carrierThreshold M = ½·minAdm M`.
 
-The dispatch is NOT a flat 3-way case on `D`. It is a **2-way split on the pivot-admissibility** at the
-binding cut `t★ = bindingCut M`, and the "good" half further decomposes over the deeper-flag singular
-shells (a per-shell split, INSIDE the outer tail integral, NOT a per-`D` case):
+The dispatch is NOT a flat 3-way case on `D`. It is a **2-way split on the decide-checkable Nat key
+`M 1 < deepTailMin M`** (waist) vs `≥` (good), where `deepTailMin M = ⨅_{i≥2} M i = min (M₂,…,M_last)`.
+This key — NOT the binding-cut hpiv — is the SOUND gate (waistpin #172, decide-checked, 1188
+counterexamples): keying on `minAdm (redChain (bindingCut M) M) ≤ bindingCut M · tailMinWidth M` is BUGGY,
+because when `bindingCut M = 0` (356 waist chains, e.g. `(1,1,2),(1,2,3)`) it reads `≤ 0` trivially and
+routes WAIST chains into the GOOD branch, where the head-split DIVERGES. The "good" half further
+decomposes over the deeper-flag singular shells (a per-shell split, INSIDE the outer tail integral, NOT a
+per-`D` case):
 
-* **good** (`hpiv : minAdm (redChain t★ M) ≤ t★ · tailMinWidth M`) — `D.integral c'` peels at the binding
-  cut and covers the outer tail by the singular shells `singularShell ε r jf`, `jf : Fin (r+1)`,
+* **good** (`hgood : deepTailMin M ≤ M 1`) — the per-cut pivot bound `minAdm (redChain u M) ≤
+  u · deepTailMin M` (∀ u, the banked `minAdm_redChain_le_deepTailMin`, proved by permuting the argmin
+  tail width to position 1 via `minAdm_comp_perm` then `minAdm_le_mul_head`) DERIVES the per-cut hpiv
+  `minAdm (redChain (t+j) M) ≤ (t+j) · tailMinWidth M` each shell needs — because on the good side
+  `tailMinWidth M = deepTailMin M` — so there is NO per-cut/binding-cut gap. `D.integral c'` peels at the
+  binding cut and covers the outer tail by the singular shells `singularShell ε r jf`, `jf : Fin (r+1)`,
   `r = min (M₀−t★) (M₁−t★)` (`singularShell_iUnion` exhaustive). Each shell contribution
   `shellSpineIntegrand M t★ κ ε r jf c'` is bounded:
   - **strict** `jf < r` → hole (a) `deeperFlagStrictShell_finite` (the head-split domination
@@ -35,8 +45,8 @@ shells (a per-shell split, INSIDE the outer tail integral, NOT a per-`D` case):
     degenerates at `jf = r`, see seam note below).
   Summing the finitely-many shells (`lintegral_le_sum_finCover` + `ENNReal.sum_lt_top`) and the peel
   is the **cover connector**, hole (d) `deeperFlagGood_finite`.
-* **waist** (`¬hpiv` ⟺ `M₁ < min(M₂,…,M_last)`, the deep-tail product has full row rank) —
-  `deeperFlag_shell_le` is inapplicable (`hpiv` is one of its hypotheses). The chain does NOT reduce to
+* **waist** (`hwaist : M 1 < deepTailMin M`, the deep-tail product has full row rank) —
+  `deeperFlag_shell_le` is inapplicable (its per-cut hpiv fails). The chain does NOT reduce to
   the 3-width box finiteness `routeMBoxThresholdFinite_mnp` — that is a PROVEN NO-GO for `L ≥ 1` (witness
   `minAdm (4,2,3,3) = 5` but `minAdm (4,2,3) = 6`, so `I(4,2,3,3)` diverges on `c' ∈ (5/2, 3)` while the
   3-width `I(4,2,3)` is finite there; no `c'`-uniform 3-width domination can hold — the deep charge is
@@ -53,8 +63,9 @@ shells (a per-shell split, INSIDE the outer tail integral, NOT a per-`D` case):
     integral × the dropHead-tail IH. A standalone lemma.
 
 The main `decoratedStepHyp_dispatch : DecoratedStepHyp adm` is itself `sorry`-free — the exhaustive
-`by_cases hpiv` (good/waist) with a further `by_cases M₁ = 1` inside waist, dispatching to holes (d),
-(e), (c). All analytic content lives in the five holes.
+`by_cases (M 1 < deepTailMin M)` (waist/good) with a further `by_cases (M 1 = 1)` inside waist,
+dispatching to holes (e), (c), (d). All analytic content lives in the five holes; the banked
+`deepTailMin` + `minAdm_redChain_le_deepTailMin` (the per-cut pivot bound) are sorry-free.
 
 ## The j ≤ r vs j < r seam (report point i)
 
@@ -80,6 +91,49 @@ open MeasureTheory Set
 open scoped ENNReal BigOperators
 
 variable {L : ℕ}
+
+/-! ## The sound dispatch key + the per-cut pivot bound (banked, sorry-free) -/
+
+/-- **The deep-tail width minimum** `deepTailMin M = ⨅_{i≥2} M i = min (M₂,…,M_last)` — the tail widths
+STRICTLY past the pivot layer `M₁` (excludes `M₁`, unlike `tailMinWidth = min (M₁,…,M_last)`). The
+decide-checkable SOUND waist key is `M 1 < deepTailMin M` (waistpin #172): keying on the binding-cut
+hpiv is buggy (`bindingCut M = 0` routes waist chains to the good branch). -/
+def deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) : ℕ :=
+  (Finset.univ : Finset (Fin (L + 1))).inf' ⟨0, Finset.mem_univ 0⟩ (fun i => M i.succ.succ)
+
+/-- **The head-times-tail-minimum bound `minAdm N ≤ N₀ · ⨅_{i≥1} Nᵢ`**, via permutation invariance:
+move the argmin tail width to position 1 (`minAdm_comp_perm` at `Equiv.swap 1 i★.succ`, fixing `0`),
+then apply the head bound `minAdm_le_mul_head`. -/
+theorem minAdm_le_head_mul_tailInf {k : ℕ} (N : Fin (k + 1 + 1) → ℕ) :
+    minAdm N ≤ N 0 * (Finset.univ : Finset (Fin (k + 1))).inf'
+      ⟨0, Finset.mem_univ 0⟩ (fun i => N i.succ) := by
+  classical
+  obtain ⟨istar, -, histar⟩ := Finset.exists_mem_eq_inf'
+    (⟨0, Finset.mem_univ 0⟩ : (Finset.univ : Finset (Fin (k + 1))).Nonempty)
+    (fun i => N i.succ)
+  rw [histar]
+  calc minAdm N = minAdm (N ∘ Equiv.swap (1 : Fin (k + 1 + 1)) istar.succ) :=
+        (minAdm_comp_perm _ N).symm
+    _ ≤ (N ∘ Equiv.swap (1 : Fin (k + 1 + 1)) istar.succ) 0
+          * (N ∘ Equiv.swap (1 : Fin (k + 1 + 1)) istar.succ) 1 := minAdm_le_mul_head _
+    _ = N 0 * N istar.succ := by
+        simp only [Function.comp_apply]
+        rw [Equiv.swap_apply_of_ne_of_ne Fin.zero_ne_one (Fin.succ_ne_zero istar).symm,
+          Equiv.swap_apply_left]
+
+/-- **The per-cut pivot bound `minAdm (redChain u M) ≤ u · deepTailMin M`** (∀ u) — the GOOD-branch
+per-cut hpiv source. `redChain u M = (u, M₂,…,M_last)`, so its position-0 width is `u` and its
+tail minimum (indices `≥ 1`) is `deepTailMin M`; `minAdm_le_head_mul_tailInf` gives the bound. On the
+good side (`deepTailMin M ≤ M 1`) `tailMinWidth M = deepTailMin M`, so this is exactly the per-cut hpiv
+`minAdm (redChain (t+j) M) ≤ (t+j) · tailMinWidth M` that `deeperFlag_shell_le` requires. -/
+theorem minAdm_redChain_le_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) :
+    minAdm (redChain u M) ≤ u * deepTailMin M := by
+  have h := minAdm_le_head_mul_tailInf (redChain u M)
+  rw [redChain_zero] at h
+  have hfun : (fun i : Fin (L + 1) => (redChain u M) i.succ) = (fun i => M i.succ.succ) := by
+    funext i; exact redChain_succ u M i
+  rw [hfun] at h
+  exact h
 
 /-! ## Hole (a) — the strict deeper-flag shell `jf < r` (head-split domination) -/
 
@@ -135,19 +189,21 @@ theorem deeperFlagSaturatedShell_finite
 
 /-! ## Hole (d) — the GOOD-case cover connector (assembly of the strict + saturated shells) -/
 
-/-- **HOLE (d) — the good-case cover connector.** For a GOOD chain (`hpiv` at the binding cut) and an
-`adm`-admissible `D`, GIVEN the decorated IH, `D` is finite below its carrier threshold. Its eventual
-proof is the ASSEMBLY: peel `D.integral c'` at the binding cut `t★ = bindingCut M` into the shell-spine
-integrands (the decorated analogue of `sjBoundaryPeel` + `gammaPeelIntegral_schurShearFree_eq`), cover
-the outer tail by the singular shells (`singularShell_iUnion` exhaustive), bound each shell by hole (a)
-if `jf < r` and hole (b) if `jf = r`, and sum the finitely-many shells
-(`lintegral_le_sum_finCover` + `ENNReal.sum_lt_top`). This connector — the peel-to-shell-sum reduction
-for an ARBITRARY admissible `D` (not just the trivial decoration) — is the seam being pinned on the
-cover lane. It consumes holes (a), (b). -/
+/-- **HOLE (d) — the good-case cover connector.** For a GOOD chain (`hgood : deepTailMin M ≤ M 1`, the
+SOUND key) and an `adm`-admissible `D`, GIVEN the decorated IH, `D` is finite below its carrier
+threshold. Its eventual proof is the ASSEMBLY: peel `D.integral c'` at the binding cut `t★ = bindingCut M`
+into the shell-spine integrands (the decorated analogue of `sjBoundaryPeel` +
+`gammaPeelIntegral_schurShearFree_eq`), cover the outer tail by the singular shells
+(`singularShell_iUnion` exhaustive), bound each shell by hole (a) if `jf < r` and hole (b) if `jf = r`,
+and sum the finitely-many shells (`lintegral_le_sum_finCover` + `ENNReal.sum_lt_top`). Each shell's
+per-cut hpiv is DERIVED from `hgood` via the banked `minAdm_redChain_le_deepTailMin` (on good,
+`tailMinWidth M = deepTailMin M`). This connector — the peel-to-shell-sum reduction for an ARBITRARY
+admissible `D` (not just the trivial decoration) — is the seam being pinned on the cover lane. It
+consumes holes (a), (b). -/
 theorem deeperFlagGood_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
-    (hpiv : minAdm (redChain (bindingCut M) M) ≤ (bindingCut M) * tailMinWidth M)
+    (hgood : deepTailMin M ≤ M 1)
     (hIH : ∀ (M' : Fin (L + 1 + 1) → ℕ) (D' : SJDecoration M'),
         adm (L + 1) M' D' → DecoratedBoxThresholdFinite D') :
     DecoratedBoxThresholdFinite D := by
@@ -155,10 +211,10 @@ theorem deeperFlagGood_finite
 
 /-! ## Hole (c) — the WAIST branch, `M₁ ≥ 2` (route (b) DROP-FRONT → dropHead-decorated IH) -/
 
-/-- **HOLE (c) — the waist branch, `M₁ ≠ 1` (route (b): DROP-FRONT → dropHead-decorated IH).** When the
-pivot-admissibility FAILS at the binding cut (`¬hpiv`, i.e. `M₁ < min(M₂,…,M_last)`, the deep-tail
-product full-row-rank case) and `M₁ ≠ 1`, `deeperFlag_shell_le` is inapplicable (`hpiv` is one of its
-hypotheses). The waist fires WITH nontrivial decoration (front-good + deep pinch → decorated waist).
+/-- **HOLE (c) — the waist branch, `M₁ ≠ 1` (route (b): DROP-FRONT → dropHead-decorated IH).** In the
+waist regime (`hwaist : M 1 < deepTailMin M`, i.e. `M₁ < min(M₂,…,M_last)`, the deep-tail product
+full-row-rank case) with `M₁ ≠ 1`, `deeperFlag_shell_le` is inapplicable (its per-cut hpiv fails). The
+waist fires WITH nontrivial decoration (front-good + deep pinch → decorated waist).
 
 **Fill route (b) — DROP-FRONT** (waistpin's corrected pin; the earlier reversal route (a) is DEAD:
 `FaithfulSJAt` is front-oriented, and reversal's endpoint `a ≠ M₀` makes it a re-resolution, not a
@@ -174,7 +230,7 @@ NOT filled here. -/
 theorem deeperFlagWaist_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
-    (hpiv : ¬ (minAdm (redChain (bindingCut M) M) ≤ (bindingCut M) * tailMinWidth M))
+    (hwaist : M 1 < deepTailMin M)
     (hM1 : M 1 ≠ 1)
     (hIH : ∀ (M' : Fin (L + 1 + 1) → ℕ) (D' : SJDecoration M'),
         adm (L + 1) M' D' → DecoratedBoxThresholdFinite D') :
@@ -210,10 +266,12 @@ reversal route hole (c) `deeperFlagWaist_finite`. Sorry-free itself — all anal
 five holes. -/
 theorem decoratedStepHyp_dispatch : DecoratedStepHyp adm := by
   intro L M hIH D hD
-  by_cases hpiv : minAdm (redChain (bindingCut M) M) ≤ (bindingCut M) * tailMinWidth M
-  · exact deeperFlagGood_finite M D hD hpiv hIH
-  · by_cases hM1 : M 1 = 1
+  by_cases hkey : M 1 < deepTailMin M
+  · -- WAIST (`M 1 < deepTailMin M`): route (b) drop-front, split off the `M₁ = 1` sub-case.
+    by_cases hM1 : M 1 = 1
     · exact deeperFlagWaistM1_finite M D hD hM1 hIH
-    · exact deeperFlagWaist_finite M D hD hpiv hM1 hIH
+    · exact deeperFlagWaist_finite M D hD hkey hM1 hIH
+  · -- GOOD (`deepTailMin M ≤ M 1`): the head-split cover connector.
+    exact deeperFlagGood_finite M D hD (not_lt.mp hkey) hIH
 
 end DLNFibre.DLN.RLCT
