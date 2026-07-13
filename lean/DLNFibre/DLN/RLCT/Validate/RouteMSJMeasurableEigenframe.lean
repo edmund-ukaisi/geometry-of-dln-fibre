@@ -345,4 +345,44 @@ theorem dotProduct_pivotUnit_self {R : Matrix (Fin M₂) (Fin M₂) ℝ} (hR : R
   rw [pivotUnit, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
     ← mul_inv, Real.mul_self_sqrt hd.le, inv_mul_cancel₀ (ne_of_gt hd)]
 
+/-- `trace (P * v vᵀ) = ⟨v, P *ᵥ v⟩` (dotProduct). -/
+theorem trace_mul_vecMulVec (P : Matrix (Fin M₂) (Fin M₂) ℝ) (v : Fin M₂ → ℝ) :
+    (P * vecMulVec v v).trace = dotProduct v (P *ᵥ v) := by
+  rw [Matrix.trace, dotProduct]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [Matrix.diag_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  simp only [vecMulVec_apply]; ring
+
+/-- Multiplicity of `c` is the same through `lam` or through `μ` (a perm-reindexing). -/
+theorem card_lam_eq_card_mu {lam μ : Fin M₂ → ℝ} {σ : Equiv.Perm (Fin M₂)}
+    (hσ : lam = μ ∘ σ) (c : ℝ) :
+    (Finset.univ.filter (fun k => lam k = c)).card
+      = (Finset.univ.filter (fun m => μ m = c)).card := by
+  apply Finset.card_equiv σ
+  intro k
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, hσ, Function.comp_apply]
+
+/-- The count of chosen columns already in the `lam ⟨n⟩`-eigenspace is below its multiplicity. -/
+theorem chosen_lt_mult (lam : Fin M₂ → ℝ) (n : ℕ) (hn : n < M₂) :
+    ((Finset.range n).filter (fun p => lamN lam p = lam ⟨n, hn⟩)).card
+      < (Finset.univ.filter (fun k : Fin M₂ => lam k = lam ⟨n, hn⟩)).card := by
+  set T : Finset (Fin M₂) := Finset.univ.filter (fun k => lam k = lam ⟨n, hn⟩) with hT
+  have hsub : (Finset.range n).filter (fun p => lamN lam p = lam ⟨n, hn⟩) ⊆ T.image Fin.val := by
+    intro p hp
+    rw [Finset.mem_filter, Finset.mem_range] at hp
+    have hpM : p < M₂ := lt_trans hp.1 hn
+    have hpl : lam ⟨p, hpM⟩ = lam ⟨n, hn⟩ := by rw [lamN, dif_pos hpM] at hp; exact hp.2
+    rw [Finset.mem_image]
+    exact ⟨⟨p, hpM⟩, by rw [hT, Finset.mem_filter]; exact ⟨Finset.mem_univ _, hpl⟩, rfl⟩
+  have hnotL : n ∉ (Finset.range n).filter (fun p => lamN lam p = lam ⟨n, hn⟩) := by
+    rw [Finset.mem_filter, Finset.mem_range]; rintro ⟨h, _⟩; omega
+  have hnT : n ∈ T.image Fin.val := by
+    rw [Finset.mem_image]
+    exact ⟨⟨n, hn⟩, by rw [hT, Finset.mem_filter]; exact ⟨Finset.mem_univ _, rfl⟩, rfl⟩
+  calc ((Finset.range n).filter (fun p => lamN lam p = lam ⟨n, hn⟩)).card
+      < (T.image Fin.val).card :=
+        Finset.card_lt_card ((Finset.ssubset_iff_of_subset hsub).mpr ⟨n, hnT, hnotL⟩)
+    _ = T.card := Finset.card_image_of_injective T Fin.val_injective
+
 end DLNFibre.DLN.RLCT.MEframe
