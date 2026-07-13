@@ -181,4 +181,81 @@ noncomputable def Uframe (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ 
     Matrix (Fin M₂) (Fin M₂) ℝ :=
   Matrix.of (fun r c => colFn A lam (c : ℕ) r)
 
+/-! ## Layer A, Section 4 — eigenbasis helpers (orthogonality, trace-via-basis, matrix equality) -/
+
+/-- The matrix whose columns are the abstract eigenbasis vectors `b m`. -/
+noncomputable def Bmat (b : Fin M₂ → Fin M₂ → ℝ) : Matrix (Fin M₂) (Fin M₂) ℝ :=
+  Matrix.of (fun r m => b m r)
+
+variable {b : Fin M₂ → Fin M₂ → ℝ}
+
+/-- Orthonormality in matrix form gives `B Bᵀ = 1` (right inverse of the left inverse). -/
+theorem Bmat_mul_transpose (hB : (Bmat b)ᵀ * Bmat b = 1) : Bmat b * (Bmat b)ᵀ = 1 :=
+  mul_eq_one_comm.mpr hB
+
+/-- `(M * Bmat b) s m` is the `s`-th entry of `M *ᵥ b m`. -/
+theorem mul_Bmat_apply (M : Matrix (Fin M₂) (Fin M₂) ℝ) (s m : Fin M₂) :
+    (M * Bmat b) s m = (M *ᵥ b m) s := by
+  simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, Bmat]
+
+/-- Orthonormality (matrix form) as a dotProduct indicator: `⟨b p, b q⟩ = [p = q]`. -/
+theorem dotProduct_b (hB : (Bmat b)ᵀ * Bmat b = 1) (p q : Fin M₂) :
+    dotProduct (b p) (b q) = if p = q then 1 else 0 := by
+  have := congrFun (congrFun hB p) q
+  rw [Matrix.mul_apply, Matrix.one_apply] at this
+  rw [dotProduct]
+  simp only [Matrix.transpose_apply, Bmat, Matrix.of_apply] at this ⊢
+  rw [← this]
+
+/-- **Trace via an orthonormal basis.** `trace M = ∑ₘ ⟨b m, M *ᵥ b m⟩` (dotProduct). -/
+theorem traceViaBasis (hB : (Bmat b)ᵀ * Bmat b = 1) (M : Matrix (Fin M₂) (Fin M₂) ℝ) :
+    M.trace = ∑ m, dotProduct (b m) (M *ᵥ b m) := by
+  have hBBt := Bmat_mul_transpose hB
+  have hstep : M.trace = ((Bmat b)ᵀ * (M * Bmat b)).trace := by
+    rw [← Matrix.trace_mul_comm (M * Bmat b) (Bmat b)ᵀ, Matrix.mul_assoc, hBBt, Matrix.mul_one]
+  rw [hstep, Matrix.trace]
+  refine Finset.sum_congr rfl (fun m _ => ?_)
+  rw [Matrix.diag_apply, Matrix.mul_apply, dotProduct]
+  refine Finset.sum_congr rfl (fun s _ => ?_)
+  rw [Matrix.transpose_apply, mul_Bmat_apply]
+  simp only [Bmat, Matrix.of_apply]
+
+/-- **Matrix equality from eigenbasis action.** `X`, `Y` agreeing on every `b m` forces `X = Y`. -/
+theorem matrix_eq_of_mulVec_basis (hB : (Bmat b)ᵀ * Bmat b = 1)
+    {X Y : Matrix (Fin M₂) (Fin M₂) ℝ} (h : ∀ m, X *ᵥ b m = Y *ᵥ b m) : X = Y := by
+  have hXB : X * Bmat b = Y * Bmat b := by
+    ext s m; rw [mul_Bmat_apply, mul_Bmat_apply, h]
+  have hBBt := Bmat_mul_transpose hB
+  calc X = X * (Bmat b * (Bmat b)ᵀ) := by rw [hBBt, Matrix.mul_one]
+    _ = X * Bmat b * (Bmat b)ᵀ := by rw [Matrix.mul_assoc]
+    _ = Y * Bmat b * (Bmat b)ᵀ := by rw [hXB]
+    _ = Y * (Bmat b * (Bmat b)ᵀ) := by rw [Matrix.mul_assoc]
+    _ = Y := by rw [hBBt, Matrix.mul_one]
+
+/-- **The projector is a `lam i`-eigenprojection (matrix form): `A · P i = lam i • P i`.** Proved by
+agreement on the eigenbasis (`proj_mulVec_eigen`: `P i` acts `0/1` on each `b m`). -/
+theorem Amul_lagProj {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → ℝ}
+    (hB : (Bmat b)ᵀ * Bmat b = 1) (heig : ∀ m, A *ᵥ b m = μ m • b m)
+    (hμrange : ∀ m, ∃ k, lam k = μ m) (i : Fin M₂) :
+    A * lagProj A lam i = lam i • lagProj A lam i := by
+  refine matrix_eq_of_mulVec_basis hB (fun m => ?_)
+  have hp := lagProj_eigen (heig m) (hμrange m) i
+  rw [← mulVec_mulVec, smul_mulVec]
+  simp only [hp]
+  rw [mulVec_smul, heig m, smul_smul, smul_smul]
+  by_cases h : μ m = lam i <;> simp [h]
+
+/-- **The projector trace counts the `lam i`-eigenvalue multiplicity** `#{m : μ m = lam i}`. -/
+theorem trace_lagProj {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → ℝ}
+    (hB : (Bmat b)ᵀ * Bmat b = 1) (heig : ∀ m, A *ᵥ b m = μ m • b m)
+    (hμrange : ∀ m, ∃ k, lam k = μ m) (i : Fin M₂) :
+    (lagProj A lam i).trace = ((Finset.univ.filter (fun m => μ m = lam i)).card : ℝ) := by
+  rw [traceViaBasis hB]
+  have hterm : ∀ m, dotProduct (b m) (lagProj A lam i *ᵥ b m)
+      = if μ m = lam i then (1 : ℝ) else 0 := by
+    intro m
+    rw [lagProj_eigen (heig m) (hμrange m) i, dotProduct_smul, dotProduct_b hB m m]
+    simp
+  rw [Finset.sum_congr rfl (fun m _ => hterm m), Finset.sum_boole]
+
 end DLNFibre.DLN.RLCT.MEframe
