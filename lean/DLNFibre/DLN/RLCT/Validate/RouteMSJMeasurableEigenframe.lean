@@ -462,4 +462,49 @@ theorem Rt_mulVec_colFn_zero {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam : Fin M
   · rw [if_pos hc, one_smul, sub_mulVec, one_mulVec, Qacc_fixes A lam n ih_on q hq, sub_self]
   · rw [if_neg hc, zero_smul, mulVec_zero]
 
+/-- **The frame invariant.** For `n ≤ M₂`: the first `n` columns are orthonormal and each `colFn p`
+(`p < n`) is an `A`-eigenvector with eigenvalue `lamN lam p`. Induction on `n`, the new column `k`
+handled by the pivot facts (`R_ne_zero`, `pivotUnit_eigen`, `Rt_mulVec_colFn_zero`). -/
+theorem frame_invariant {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → ℝ}
+    {σ : Equiv.Perm (Fin M₂)} (hsymm : Aᵀ = A) (hB : (Bmat b)ᵀ * Bmat b = 1)
+    (heig : ∀ m, A *ᵥ b m = μ m • b m) (hσ : lam = μ ∘ σ) :
+    ∀ n : ℕ, n ≤ M₂ →
+      (∀ p q : ℕ, p < n → q < n →
+        dotProduct (colFn A lam p) (colFn A lam q) = if p = q then 1 else 0) ∧
+      (∀ p : ℕ, p < n → A *ᵥ colFn A lam p = lamN lam p • colFn A lam p) := by
+  intro n
+  induction n with
+  | zero => exact fun _ => ⟨fun p q hp _ => absurd hp (by omega), fun p hp => absurd hp (by omega)⟩
+  | succ k ih =>
+    intro hk1
+    have hk : k < M₂ := by omega
+    obtain ⟨ih_on, ih_eig⟩ := ih (by omega)
+    have hRne : lagProj A lam ⟨k, hk⟩ * (1 - Qacc A lam k) ≠ 0 :=
+      R_ne_zero hB heig hσ k hk ih_on ih_eig
+    have hcolk : colFn A lam k = pivotUnit (lagProj A lam ⟨k, hk⟩ * (1 - Qacc A lam k)) := by
+      rw [colFn, colStep, dif_pos hk]
+    have heigk : A *ᵥ colFn A lam k = lam ⟨k, hk⟩ • colFn A lam k := by
+      rw [hcolk]; exact pivotUnit_eigen (AR_smul hB heig hσ ⟨k, hk⟩ (1 - Qacc A lam k))
+    have hunitk : dotProduct (colFn A lam k) (colFn A lam k) = 1 := by
+      rw [hcolk]; exact dotProduct_pivotUnit_self hRne
+    have horthk : ∀ q : ℕ, q < k → dotProduct (colFn A lam q) (colFn A lam k) = 0 := by
+      intro q hq
+      have hpv : dotProduct (colFn A lam q)
+          (pivotVec (lagProj A lam ⟨k, hk⟩ * (1 - Qacc A lam k))) = 0 := by
+        rw [pivotVec_eq _ (nzColSet_nonempty_of_ne_zero hRne), dotProduct_mulVec,
+          ← mulVec_transpose (lagProj A lam ⟨k, hk⟩ * (1 - Qacc A lam k)) (colFn A lam q),
+          Rt_mulVec_colFn_zero hsymm k hk ih_on ih_eig q hq, zero_dotProduct]
+      rw [hcolk, pivotUnit, dotProduct_smul, hpv, smul_zero]
+    refine ⟨fun p q hp hq => ?_, fun p hp => ?_⟩
+    · rcases Nat.lt_succ_iff_lt_or_eq.mp hp with hpk | hpe
+      · rcases Nat.lt_succ_iff_lt_or_eq.mp hq with hqk | hqe
+        · exact ih_on p q hpk hqk
+        · rw [hqe, horthk p hpk, if_neg (by omega)]
+      · rcases Nat.lt_succ_iff_lt_or_eq.mp hq with hqk | hqe
+        · rw [hpe, dotProduct_comm, horthk q hqk, if_neg (by omega)]
+        · rw [hpe, hqe, hunitk, if_pos rfl]
+    · rcases Nat.lt_succ_iff_lt_or_eq.mp hp with hpk | hpe
+      · exact ih_eig p hpk
+      · rw [hpe, show lamN lam k = lam ⟨k, hk⟩ from by rw [lamN, dif_pos hk]]; exact heigk
+
 end DLNFibre.DLN.RLCT.MEframe
