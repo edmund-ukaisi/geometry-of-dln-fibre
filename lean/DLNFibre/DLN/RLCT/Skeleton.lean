@@ -1681,8 +1681,16 @@ for `L ≥ 2` — while the closed form `aoyagiLambda` is finite; the L2 core re
 loss-empty case `H s = 0`.) This REFINES the paper's non-strict realisability `r ≤ min H` to the
 non-degenerate domain — sound within it, not a verbatim Aoyagi assumption (the `resolution_charts`
 docstring's H-form). Assembled: D1 (→ deepest point) ▸ L2 (→ reg + core) ▸ R1
-(→ charts) ▸ S2 (→ min ratio) ▸ A1 (→ clean form = `aoyagiLambda`). -/
-theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
+(→ charts) ▸ S2 (→ min ratio) ▸ A1 (→ clean form = `aoyagiLambda`).
+
+**RE-POINT (`#108` mint, 2026-07-13).** This is the **legacy conditional** headline: it routes through
+the sorry-carrying D1▸L2 rungs (`deepest_point_reduction` + `product_reduction`), carrying 5 `sorryAx`.
+The clean unsuffixed `aoyagi_learning_coefficient` is re-homed DOWNSTREAM in
+`Validate.HeadlineL1Mint` (Skeleton cannot import the prestage — `DeepestBaseL1 → Skeleton` is a
+cycle), routing through `aoyagi_learning_coefficient_prestage` with the single open contract
+`DecoratedDescent`. This legacy assembly is retained here as the documented D1▸L2 route; it is
+superseded and is no longer the headline the library exposes. -/
+theorem aoyagi_learning_coefficient_legacy (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (hpos : ∀ s : Fin (L + 1), r < H s) :

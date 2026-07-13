@@ -177,8 +177,12 @@ Reading the output:
   axiom" are SUPERSEDED (those results are now clean-three) — trust the emitted `#print axioms` output,
   not the stale expectation prose; a full comment sweep is a minor batched follow-on.
 * `sorryAx` — an unproven rung underneath. **Expected** on `aoyagi_learning_coefficient` until the
-  5 Skeleton rungs (L2 `product_reduction`, D1 `deepest_point_reduction`-≥, R1 `resolution_charts`,
-  A1 ×2) are proven; it must **not** appear on any result below that claims to be proven.
+  single open contract `DecoratedDescent` (the `(□)` box-finiteness discharge) is proven. After the
+  `#108` re-point (2026-07-13) the headline is re-homed to `Validate.HeadlineL1Mint`, routing through
+  `aoyagi_learning_coefficient_prestage` (the clean `L = 1` / `L ≥ 2` case-split); its ONLY hole is
+  `DecoratedDescent` (no longer the 5 legacy D1▸L2 Skeleton rungs, which survive on the retained
+  `aoyagi_learning_coefficient_legacy`). `sorryAx` must **not** appear on any result below that claims
+  to be proven.
 
 This file is `#print`-only — it adds no definitions and no axioms of its own.
 -/
@@ -495,8 +499,12 @@ open DLNFibre.DLN.RLCT
 #print axioms eihd_hD
 #print axioms interiorDet_leaf_headline_eihd
 
--- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
+-- Headline — after the `#108` re-point (re-homed to `HeadlineL1Mint`, routing through the prestage),
+-- `sorryAx` expected ONLY from the single open `DecoratedDescent` hole; tracked here so the day it goes
+-- clean (when `DecoratedDescent` lands) is visible. The prestage itself (below) is clean-three modulo
+-- `DecoratedDescent` (it takes it as a hypothesis).
 #print axioms aoyagi_learning_coefficient
+#print axioms aoyagi_learning_coefficient_prestage
 
 -- ★ L=2 HEADLINE — CLOSED (2026-07-07), S2-FREE since the Stage-A de-cite (2026-07-09).
 -- `aoyagi_learning_coefficient_L2` is PROVEN sorry-free, clean-THREE: forced `#print axioms` =

@@ -86,4 +86,24 @@ theorem aoyagi_learning_coefficient_prestage (hDescent : DecoratedDescent)
     exact aoyagi_learning_coefficient_L1 H r B hB hr hpos
   · exact aoyagi_learning_coefficient_gen_of_descent hDescent H r B hB hr hL hge hpos
 
+/-- **T (Theorem 2, the headline) — the re-homed unsuffixed headline (`#108` mint target).** The global
+learning coefficient — the infimum of the local RLCT over the optimal set (fibre `mult⁻¹(B)`) — equals
+Aoyagi's closed form `aoyagiLambda H r`, for any rank-`r` target `B` with every width `> r` at every
+layer (`hpos`) and `1 ≤ L`. The STATEMENT is identical to the legacy `aoyagi_learning_coefficient_legacy`
+(`Skeleton.lean`); the ROUTE is the clean `aoyagi_learning_coefficient_prestage` case-split
+(`L = 1` unconditional endpoint / `L ≥ 2` general descent). The re-point re-homes the name here because
+`Skeleton` cannot import the prestage (`DeepestBaseL1 → Skeleton` cycle). The single remaining contract
+is `DecoratedDescent` (the `(□)` box-finiteness discharge, still in flight): on this REHEARSAL branch it
+is a clearly-marked `sorry`; minting `#108` replaces that `sorry` with the proven `DecoratedDescent`
+term, whereupon this theorem inherits the prestage's clean-three axiom profile. -/
+theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s) :
+    (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
+  -- (□) MINT HOLE — `DecoratedDescent` still in flight. Mint = replace this `sorry` with the proven
+  -- descent term; the wiring below is then complete and inherits the prestage's clean-three profile.
+  have hDescent : DecoratedDescent := sorry
+  exact aoyagi_learning_coefficient_prestage hDescent H r B hB hr hL hpos
+
 end DLNFibre.DLN.RLCT

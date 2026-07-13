@@ -1,6 +1,9 @@
 import DLNFibre.DLN.RLCT.Skeleton
 import DLNFibre.DLN.RLCT.Validate.Case222Rlct
 import DLNFibre.DLN.RLCT.Validate.Case212
+-- `#108` re-point: the unsuffixed `aoyagi_learning_coefficient` is re-homed to `HeadlineL1Mint`
+-- (Skeleton cannot import the prestage — `DeepestBaseL1 → Skeleton` cycle), so `aoyagi_rrr` imports it.
+import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RRR` — the reduced-rank-regression (`L = 2`) model
