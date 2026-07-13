@@ -52,12 +52,14 @@ per-`D` case):
   3-width `I(4,2,3)` is finite there; no `c'`-uniform 3-width domination can hold — the deep charge is
   higher-dimensional). 3-width is only the BASE, never a step target. The waist fires WITH nontrivial
   decoration (front-good + deep pinch → decorated waist), in two sub-cases:
-  - **`M₁ ≥ 2`** — hole (c) `deeperFlagWaist_finite`, ROUTE (b) DROP-FRONT: integrate out the front
-    block `Γ` (KEEPING `M₁`), landing on the `dropHead M` DECORATED IH carrying an eigenvalue-profile
-    weight (the deep-pinch spectral weight rides in the reduced decoration's carrier/jac). Reversal route
-    (a) is DEAD here: `FaithfulSJAt` is front-oriented, and reversal's endpoint `a ≠ M₀` makes it a
-    re-resolution, not a reindex. Calls `hIH (dropHead M) D_w`; the `adm` premise on the weight `D_w` is
-    the OPEN gate **O2** (a scout adjudicating admissibility).
+  - **`M₁ ≥ 2`** — hole (c) `deeperFlagWaist_finite`, ROUTE-A **SVD-qPeel + REORIENTATION** (O2 verdict):
+    deep-layer SVD → the banked `qPeelIntegral` (`#156` = its `L = 0` base), consuming the decoration
+    BEFORE a plain REORIENTATION to a good end (every `≥ 4`-width chain has one; reversal CoV
+    `I(M) = I(rev M)`, `minAdm` half-banked via `minAdm_comp_perm`) — the SVD-qPeel consuming the
+    decoration first sidesteps waistpin's decoration-transport obstruction. Route-(b) drop-front is DEAD:
+    its eigenvalue-profile weight `J_c` is NON-admissible (Hölder `β < 3/4 < 1` needed), a red herring.
+    New labour: one deep-layer Gram-spectral/Weyl-Jacobian CoV brick + the reversal-CoV lemma (bounded,
+    no wall); NO new decorated-IH predicate (a simplification vs route-(b)).
   - **`M₁ = 1`** (any `L`) — hole (e) `deeperFlagWaistM1_finite`, reversal-FREE and UNCONDITIONAL: the
     loss factorizes `frobSq (Γ · Q) = ‖Γ‖² · ‖Q‖²` for ANY `D`, so the integral splits as a front Morse
     integral × the dropHead-tail IH. A standalone lemma.
@@ -240,24 +242,22 @@ theorem deeperFlagGood_finite
     DecoratedBoxThresholdFinite D := by
   sorry
 
-/-! ## Hole (c) — the WAIST branch, `M₁ ≥ 2` (route (b) DROP-FRONT → dropHead-decorated IH) -/
+/-! ## Hole (c) — the WAIST branch, `M₁ ≥ 2` (route-A SVD-qPeel + reorientation) -/
 
-/-- **HOLE (c) — the waist branch, `M₁ ≠ 1` (route (b): DROP-FRONT → dropHead-decorated IH).** In the
-waist regime (`hwaist : M 1 < deepTailMin M`, i.e. `M₁ < min(M₂,…,M_last)`, the deep-tail product
-full-row-rank case) with `M₁ ≠ 1`, `deeperFlag_shell_le` is inapplicable (its per-cut hpiv fails). The
-waist fires WITH nontrivial decoration (front-good + deep pinch → decorated waist).
+/-- **HOLE (c) — the waist branch, `M₁ ≠ 1` (route-A SVD-qPeel + reorientation).** In the waist regime
+(`hwaist : M 1 < deepTailMin M`, i.e. `M₁ < min(M₂,…,M_last)`, the deep-tail product full-row-rank case)
+with `M₁ ≠ 1`, `deeperFlag_shell_le` is inapplicable (its per-cut hpiv fails).
 
-**Fill route (b) — DROP-FRONT** (waistpin's corrected pin; the earlier reversal route (a) is DEAD:
-`FaithfulSJAt` is front-oriented, and reversal's endpoint `a ≠ M₀` makes it a re-resolution, not a
-reindex — and the waist genuinely fires with nontrivial decoration). Integrate out the FRONT block `Γ`
-while KEEPING `M₁`, landing on the `dropHead M` DECORATED IH carrying an eigenvalue-profile weight (the
-deep-pinch spectral weight rides in the reduced decoration's carrier/jac). Concretely the fill calls
-`hIH (dropHead M) D_w` where `D_w : SJDecoration (dropHead M)` is the eigenvalue-profile-weight
-decoration; the `adm (L+1) (dropHead M) D_w` premise `hIH` needs is the OPEN gate **O2** (a scout is
-adjudicating whether that weight is admissible). NOT `routeMBoxThresholdFinite_mnp` (proven NO-GO for
-`L ≥ 1`; see module header). The hole STATEMENT below is route-agnostic (hyps → finiteness, with `hIH`);
-only the documented fill route changed from reversal to (b). Concludes `DecoratedBoxThresholdFinite D`.
-NOT filled here. -/
+**Fill route-A — SVD-qPeel + REORIENTATION** (O2 scout verdict, decorrelated Codex): a deep-layer SVD
+sends `D.integral` to the banked `qPeelIntegral` (`#156` is its `L = 0` base), CONSUMING the decoration
+first; then a plain REORIENTATION to a good end (every `≥ 4`-width chain has one; reversal CoV
+`I(M) = I(rev M)`, `minAdm` half-banked via `minAdm_comp_perm`) lands the head-split/IH. Consuming the
+decoration in the SVD-qPeel BEFORE the plain reversal sidesteps waistpin's decoration-transport
+obstruction. The earlier route-(b) drop-front is DEAD: its eigenvalue-profile weight `J_c` is
+NON-admissible (Hölder `β < 3/4`, below the `β < 1` a sharp domination needs — a red herring). New
+labour: one deep-layer Gram-spectral / Weyl-Jacobian CoV brick + the reversal-CoV lemma (bounded, no
+wall) — and NO new decorated-IH predicate (a simplification over route-(b)). The hole STATEMENT below is
+route-agnostic (hyps → finiteness, with `hIH`). HELD pending the admfix `adm` repair. NOT filled here. -/
 theorem deeperFlagWaist_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
