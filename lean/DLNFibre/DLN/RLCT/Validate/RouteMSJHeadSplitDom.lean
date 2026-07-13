@@ -74,6 +74,7 @@ theorem headSplit_pivotDom (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     (Zf : Params (redChain u M)
         → Matrix (Fin (dropHead (redChain u M) 0))
             (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (hZfMeas : Measurable Zf)
     (U_sf : Params (redChain u M) → Matrix (Fin (dropHead (redChain u M) 0)) (Fin m) ℝ)
     (hUs : ∀ z, (U_sf z)ᵀ * U_sf z = 1)
     (hrank : ∀ z, m ≤ (Zf z).rank)
@@ -156,6 +157,34 @@ theorem freedSchurLoss_submatrix_congr {t a b q : ℕ} (x : SJOuter t a b) (Γ :
   unfold freedSchurLoss
   rw [h1, h2]
 
+/-- **The shell⊆good-set containment (step 5, D-C).** On the shell (`prod (tailChain M) A'` has `j` small
+singular values) with `A'` in the entry-box, the deep factor `Z_deep = deeperFlagZdeep M u (hsSplit A').1`
+has few small eigenvalues at the rescaled floor `ε' ≤ ε/√(M₁M₂)` — the good-set condition `hagree`
+consumes. `deeperFlagZdeep M u (hsSplit A').1 = prod (dropHead (tailChain M)) (A'∘succ)` (forward action);
+`prod (tailChain M) A' = A'₀·Z_deep` (`prod_headSplit`); then D-C `shell_subset_goodSet` +
+`weakEigCount_mono` at `ε' ≤ ε/√(M₁M₂)`. -/
+theorem hsSplit_good_of_shell {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (hj : j ≤ min (M 0 - t) (M 1 - t))
+    (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
+    {ε' : ℝ} (hε' : 0 < ε') (hε'le : ε' ≤ ε / Real.sqrt ((M 1 : ℝ) * M 2))
+    (A' : Params (tailChain M))
+    (hA'box : A' ∈ paramsBoxM (tailChain M) 1)
+    (hA'shell : prod (tailChain M) A'
+        ∈ singularShell ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩) :
+    weakEigCount ε' (deeperFlagZdeep M (t + j) ((hsSplit M (t + j) κ A').1))
+      ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j) := by
+  set Zd := prod (dropHead (tailChain M)) (fun s => A' s.succ) with hZddef
+  have hbox : ∀ i k, |A' 0 i k| ≤ 1 := by
+    intro i k
+    have h := hA'box 0 i k
+    rw [abs_le]; exact ⟨h.1, h.2⟩
+  rw [prod_headSplit (tailChain M) A'] at hA'shell
+  -- `hA'shell : rmatMul (A' 0) Zd ∈ singularShell` (defeq to `(A' 0) * Zd`, D-C's form)
+  have hdc := shell_subset_goodSet hε ⟨j, Nat.lt_succ_of_le hj⟩ hjr (A' 0) Zd hbox hA'shell
+  -- `deeperFlagZdeep M u (hsSplit A').1` is defeq `Zd` (`hsSplit_fst_succ`, `paramsHeadSplit_snd`, both rfl;
+  -- the `dropHead (redChain u M)` vs `dropHead (tailChain M)` chains are defeq).
+  exact le_trans (weakEigCount_mono hε'.le hε'le Zd) hdc
+
 /-- **The mechanical head/row-split domination** (steps 1,2,5,6 — banked plumbing): the literal
 shell-restricted spine integrand is dominated by the `(z, A_cor)`-box freed-loss integrand at `Q = hsQ`
 (pivot rows `prod(redChain u M) z`, corank rows `A_cor·Zf z`). Route: head split (`paramsHeadSplit` +
@@ -232,7 +261,7 @@ theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t
   -- GLUE-2: the coupled pivot→decLoss domination (the isolated 7th brick)
   obtain ⟨C_hle, hfin, hle⟩ :=
     headSplit_pivotDom M (t + j) hε c' hnd hpiv (m := min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-      hcvg hmM hε' Zf U_sf hUs hrank hfloor
+      hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor
   refine ⟨C_hle, hfin, ?_⟩
   -- mechanical head/row split, then GLUE-2
   exact le_trans
