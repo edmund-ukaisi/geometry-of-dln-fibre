@@ -155,6 +155,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
 import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotBlowup
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellContain
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
 
 /-!
 # Axiom-hygiene check
@@ -1249,3 +1250,6 @@ open DLNFibre.DLN.RLCT
 -- Brick D-C corollary (`RouteMSJShellContain.shell_subset_goodSet`): `A'₀·Z_deep ∈ singularShell` + box
 -- ⟹ `weakEigCount ε' Z_deep ≤ M₂−m`, on the banked D-C core `finrank_add_weakCount_le`. Clean-three.
 #print axioms DLNFibre.DLN.RLCT.shell_subset_goodSet
+-- Brick F2a (`RouteMSJOrderedRootsMeasurable.measurableEigenvalues₀`): sorted eigenvalues of a measurable
+-- Hermitian family are measurable in the parameter (Vieta-eval + Lusin–Souslin). Clean-three.
+#print axioms DLNFibre.DLN.RLCT.measurableEigenvalues₀
