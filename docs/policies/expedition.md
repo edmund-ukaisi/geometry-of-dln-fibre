@@ -90,6 +90,23 @@ harness directory.
 7. **Surface** — escalate operator-facing items, ranked.
 8. **Review to equilibrium** — on a critical finding, loop fix → re-review until stable (cap 4 rounds).
 
+## Controller assistants
+
+A class of controller-commissioned seats that augment the controller's executive function — the
+functions that decay under interrupt load: working memory (`librarian`), planning/inhibition/
+goal-maintenance (`lookahead`). Shared contract: read-only against the build (librarian's index
+directory excepted — single writer, one live instance); pull state themselves from git/tree/ledger,
+never from the controller's summary (decorrelation is the value); output a numbered disposition
+artifact the controller accepts / re-sequences / moots item-by-item — propose, never act; "no change
+needed" is a first-class verdict; no global memory. **Scale gate**: not instantiated on small
+expeditions (≲100 expedition Lean files / ≲200 ledger blocks / ≲1 week). **Triggers**: a standing
+loop-prompt cadence (every ~60 canonical commits or ~4 h, whichever first; commit-count tracks state
+change, not tempo), self-perpetuating (each pass names the next trigger; passes numbered in the
+ledger so a lapsed cadence is operator-visible) — plus the no-skip gate below.
+
+**No-skip gate:** at every phase transition (design→build, build→assembly, pre-close), a `lookahead`
+pass is mandatory before the transition's first commissioning wave, like AUDIT for tides.
+
 ## priorities.md — the taste ledger
 
 A ranked ledger at the expedition root; the place the operator injects judgment.

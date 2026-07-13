@@ -37,6 +37,12 @@ Given a named build target, sweep and return a **recon-map**:
 - Flag CONTRADICTIONS (a banked lemma whose docstring claims more than its statement; a stale "banked"
   reference that's since been deleted/superseded) — verify against the live tree, not just the log.
 
+## Relation to the librarian's index
+When the expedition index exists (`expeditions/<exped>/index/`, librarian-maintained), START there —
+cite it rather than re-deriving; report gaps/contradictions found so the next librarian pass folds
+them in. Self-recon remains strictly READ-ONLY: it never edits the index (single-writer discipline;
+teammate-called instances would race).
+
 ## Output
 A recon-map (a)/(b)/(c)/(d) with exact names/files + a one-paragraph "what to reuse, what to avoid,
 what's staged" headline the controller folds into the build spec. No Lean; no new claims.

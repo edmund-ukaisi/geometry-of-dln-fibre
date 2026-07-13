@@ -78,7 +78,9 @@ lesson-recurrence intervals (fresh-tide vs veteran).
 retro-only (decls/fan-in tables answer "does this exist?"; cone membership as a computable liveness
 bit, so superseded carriers fall out of status mechanically); (b) negative-knowledge (dead-route /
 trap) auto-injection into every fresh-tide brief; (c) renaming discipline with forwarding pointers;
-(d) possibly a librarian seat/service that build-scoping must query before commissioning. Hypothesis
+(d) possibly a librarian seat/service that build-scoping must query before commissioning. **→ Drafted as harness proposals (2026-07-13):** `.agent-team/roles/{librarian,lookahead}.md`, the
+controller-assistant class + no-skip gate in `docs/policies/expedition.md`, the roles index in
+`CLAUDE.md`, and the index-consumption note in `self-recon.md`. Hypothesis
 to test against the curves: the burden grew roughly linearly while contracts/certs kept the
 *marginal* brick cost flat — i.e. the harness partially solved this without naming it.
 

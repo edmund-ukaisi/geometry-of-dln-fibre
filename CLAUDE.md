@@ -86,6 +86,15 @@ Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
 - `formaliser` — formalisation (tide) threads.
 - `reviewer` — controller-spawned independent audit (soundness / fidelity).
 - `hardener` — independent principles / taste reviewer (precision, bedrock).
+- **Controller assistants** — a class augmenting the controller's *executive function*; read-only,
+  artifact-mediated, propose-never-act, scale-gated (skip on small expeditions); triggered by a
+  loop-prompt cadence (~60 canonical commits or ~4 h) + mandatory at phase transitions
+  ([`docs/policies/expedition.md`](docs/policies/expedition.md) § Controller assistants):
+  - `librarian` — sole writer of the durable expedition index (computed layer regenerated from
+    ground truth + curated overlay: banked-family cards, dead-route registry, naming forwarding-pointers).
+  - `lookahead` — plan audit: closed-loop measurement, future-state simulation (build-time vs
+    sorry-propagation dependencies), hard-part-avoidance + math-drift checks; disposition table
+    against `priorities.md`.
 
 If dispatched into a role, read its role file and agent definition first.
 
