@@ -704,4 +704,74 @@ theorem measurable_Uframe {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X 
   refine measurable_of_measEntries (fun i j => ?_)
   exact (measVec_colFn hA hlam (j : ℕ)) i
 
+/-! ## Layer T — instantiation at the actual eigenbasis (the only spectral touch) -/
+
+/-- `sortedDiag` (`eigenvalues₀ ∘ finCongr`) is a permutation-reindexing of `eigenvalues`. -/
+theorem sortedDiag_eq_eigenvalues_comp {n : ℕ} {A : Matrix (Fin n) (Fin n) ℝ} (hA : A.IsHermitian) :
+    (fun i => hA.eigenvalues₀ (finCongr (Fintype.card_fin n).symm i))
+      = hA.eigenvalues ∘ ((finCongr (Fintype.card_fin n).symm).trans
+        (Fintype.equivOfCardEq (Fintype.card_fin _))) := by
+  funext i
+  simp only [Function.comp_apply, Matrix.IsHermitian.eigenvalues, Equiv.trans_apply,
+    Equiv.symm_apply_apply]
+
+/-- **The frame at the true eigenbasis is orthogonal and diagonalizes `A z`.** The thin terminal
+step: supply the eigendata (`hsymm` from Hermitian-over-ℝ, `hB` from `eigenvectorUnitary` unitarity,
+`heig` from `mulVec_eigenvectorBasis`, `hσ` from `sortedDiag_eq_eigenvalues_comp`) to Layer A. -/
+theorem eigenframe_correct {X : Type*} [MeasurableSpace X] {M₂ : ℕ}
+    (A : X → Matrix (Fin M₂) (Fin M₂) ℝ) (hherm : ∀ z, (A z).IsHermitian) (z : X) :
+    (Uframe (A z) (fun i => (hherm z).eigenvalues₀ (finCongr (Fintype.card_fin M₂).symm i)))ᵀ *
+        Uframe (A z) (fun i => (hherm z).eigenvalues₀ (finCongr (Fintype.card_fin M₂).symm i)) = 1
+      ∧ A z * Uframe (A z) (fun i => (hherm z).eigenvalues₀ (finCongr (Fintype.card_fin M₂).symm i))
+        = Uframe (A z) (fun i => (hherm z).eigenvalues₀ (finCongr (Fintype.card_fin M₂).symm i))
+          * Matrix.diagonal
+            (fun i => (hherm z).eigenvalues₀ (finCongr (Fintype.card_fin M₂).symm i)) := by
+  have hsymm : (A z)ᵀ = A z := by
+    have hconj : (A z)ᵀ = (A z)ᴴ := by
+      ext i j; simp [Matrix.conjTranspose_apply, Matrix.transpose_apply]
+    rw [hconj]; exact hherm z
+  have hB : (Bmat (fun m => ⇑((hherm z).eigenvectorBasis m)))ᵀ
+      * Bmat (fun m => ⇑((hherm z).eigenvectorBasis m)) = 1 := by
+    have hBeq : Bmat (fun m => ⇑((hherm z).eigenvectorBasis m))
+        = ((hherm z).eigenvectorUnitary : Matrix (Fin M₂) (Fin M₂) ℝ) := by
+      ext i j; rw [Bmat, Matrix.of_apply]; exact ((hherm z).eigenvectorUnitary_apply i j).symm
+    have htr : (((hherm z).eigenvectorUnitary : Matrix (Fin M₂) (Fin M₂) ℝ))ᵀ
+        = star ((hherm z).eigenvectorUnitary : Matrix (Fin M₂) (Fin M₂) ℝ) := by
+      ext i j; simp
+    rw [hBeq, htr]
+    exact Matrix.UnitaryGroup.star_mul_self (hherm z).eigenvectorUnitary
+  have heig : ∀ m, A z *ᵥ ⇑((hherm z).eigenvectorBasis m)
+      = (hherm z).eigenvalues m • ⇑((hherm z).eigenvectorBasis m) :=
+    fun m => (hherm z).mulVec_eigenvectorBasis m
+  exact ⟨Uframe_orthonormal hsymm hB heig (sortedDiag_eq_eigenvalues_comp (hherm z)),
+    Uframe_diagonalizes hsymm hB heig (sortedDiag_eq_eigenvalues_comp (hherm z))⟩
+
 end DLNFibre.DLN.RLCT.MEframe
+
+namespace DLNFibre.DLN.RLCT
+
+open Matrix
+
+/-- **Conjunct (ii) core — a measurable sorted orthonormal eigenframe.** With measurable sorted
+eigenvalues (`hlam_meas`, supplied by F2a) as a hypothesis, there is a measurable orthogonal `U`
+whose columns are eigenvectors of `A` in sorted (decreasing) order. From the abstract frame
+(`MEframe.Uframe`): measurability from `MEframe.measurable_Uframe`, correctness from
+`MEframe.eigenframe_correct`. -/
+theorem exists_measurableEigenframe {X : Type*} [MeasurableSpace X] {M₂ : ℕ}
+    (A : X → Matrix (Fin M₂) (Fin M₂) ℝ) (hA : Measurable A)
+    (hherm : ∀ z, (A z).IsHermitian)
+    (hlam_meas : Measurable (fun z => (hherm z).eigenvalues₀)) :
+    ∃ U : X → Matrix (Fin M₂) (Fin M₂) ℝ,
+      Measurable U ∧ (∀ z, (U z)ᵀ * U z = 1) ∧
+        (∀ z, A z * U z = U z *
+          Matrix.diagonal
+            (fun i => (hherm z).eigenvalues₀ (finCongr (Fintype.card_fin M₂).symm i))) := by
+  refine ⟨fun z => MEframe.Uframe (A z)
+      (fun i => (hherm z).eigenvalues₀ (finCongr (Fintype.card_fin M₂).symm i)), ?_, ?_, ?_⟩
+  · exact MEframe.measurable_Uframe
+      (fun i j => (measurable_pi_apply j).comp ((measurable_pi_apply i).comp hA))
+      (fun i => (measurable_pi_apply _).comp hlam_meas)
+  · exact fun z => (MEframe.eigenframe_correct A hherm z).1
+  · exact fun z => (MEframe.eigenframe_correct A hherm z).2
+
+end DLNFibre.DLN.RLCT
