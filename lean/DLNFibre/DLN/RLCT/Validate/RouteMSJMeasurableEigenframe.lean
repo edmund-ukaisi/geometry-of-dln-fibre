@@ -667,4 +667,41 @@ theorem measVec_pivotUnit {R : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hR : Mea
   simp only [pivotUnit, Pi.smul_apply, smul_eq_mul]
   exact (Real.continuous_sqrt.measurable.comp hd).inv.mul (hpv i)
 
+/-- The `n`-th column step is measurable given a measurable accumulated projector. -/
+theorem measVec_colStep {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X → Fin M₂ → ℝ}
+    (hA : MeasEntries A) (hlam : MeasVec lam) (n : ℕ) {Q : X → Matrix (Fin M₂) (Fin M₂) ℝ}
+    (hQ : MeasEntries Q) : MeasVec (fun z => colStep (A z) (lam z) n (Q z)) := by
+  by_cases h : n < M₂
+  · have hR : MeasEntries (fun z => lagProj (A z) (lam z) ⟨n, h⟩ * (1 - Q z)) :=
+      (measEntries_lagProj hA hlam ⟨n, h⟩).mul (measEntries_one.sub hQ)
+    have hpu := measVec_pivotUnit hR
+    intro i; simpa only [colStep, dif_pos h] using hpu i
+  · intro i; simp only [colStep, dif_neg h]; exact measurable_const
+
+/-- The accumulated projector is entrywise measurable, for every `n`. -/
+theorem measEntries_Qacc {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X → Fin M₂ → ℝ}
+    (hA : MeasEntries A) (hlam : MeasVec lam) (n : ℕ) :
+    MeasEntries (fun z => Qacc (A z) (lam z) n) := by
+  induction n with
+  | zero => intro i j; exact measurable_const
+  | succ k ih => exact ih.add (measVec_colStep hA hlam k ih).vecMulVec
+
+/-- Every frame column is measurable. -/
+theorem measVec_colFn {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X → Fin M₂ → ℝ}
+    (hA : MeasEntries A) (hlam : MeasVec lam) (n : ℕ) :
+    MeasVec (fun z => colFn (A z) (lam z) n) :=
+  measVec_colStep hA hlam n (measEntries_Qacc hA hlam n)
+
+/-- Entrywise measurability upgrades to `Measurable` for the `Matrix` (`= Pi`) measurable space. -/
+theorem measurable_of_measEntries {f : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hf : MeasEntries f) :
+    Measurable f :=
+  measurable_pi_iff.mpr (fun i => measurable_pi_iff.mpr (fun j => hf i j))
+
+/-- **Layer M — the frame is measurable.** -/
+theorem measurable_Uframe {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : X → Fin M₂ → ℝ}
+    (hA : MeasEntries A) (hlam : MeasVec lam) :
+    Measurable (fun z => Uframe (A z) (lam z)) := by
+  refine measurable_of_measEntries (fun i j => ?_)
+  exact (measVec_colFn hA hlam (j : ℕ)) i
+
 end DLNFibre.DLN.RLCT.MEframe
