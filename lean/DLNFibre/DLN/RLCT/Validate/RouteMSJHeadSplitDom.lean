@@ -251,6 +251,72 @@ theorem hsSplit_good_of_shell {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
   -- the `dropHead (redChain u M)` vs `dropHead (tailChain M)` chains are defeq).
   exact le_trans (weakEigCount_mono hε'.le hε'le Zd) hdc
 
+/-- **Measurability of the freed-loss inner double-integral in `(z, A_cor)`** (the AEMeasurable gate for
+the Tonelli split in `shellSpine_le_hsQ_box`). Per `(z, A_cor)` the inner `∫x∫Γ` collapses to a single
+`B`-box integral of the CONTINUOUS chart form `frobSq(B·Q)` on `{IsUnit toBlocks₁₁}`
+(`chartInner_schurShearFree_eq` + `frobSq_schur_split_inv`), whose integrand is jointly measurable in
+`(p, B)` via `Zf` measurability (`hZfMeas`) and `prod`-continuity; `Measurable.lintegral_prod_right`
+integrates out `B`. -/
+theorem measurable_hsQ_freedLoss_integral {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ) (c' : ℝ)
+    (Zf : Params (redChain (t + j) M)
+        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
+            (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
+    (hZfMeas : Measurable Zf) :
+    Measurable (fun p : Params (redChain (t + j) M)
+        × (Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ) =>
+      ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+        ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+            Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+          ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M (t + j) Zf p.1 p.2)) ^ (-c'))) := by
+  classical
+  -- per-`p` collapse of the inner double integral to a single `B`-box integral of the frobSq chart form
+  have hkey : ∀ p : Params (redChain (t + j) M)
+        × (Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ),
+      (∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+        ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+            Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+          ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M (t + j) Zf p.1 p.2)) ^ (-c')))
+        = ∫⁻ B in genBox (Fin (t + j) ⊕ Fin (M 0 - (t + j)))
+              (Fin (t + j) ⊕ Fin (M 1 - (t + j))) 1 ∩ {B | IsUnit (Matrix.toBlocks₁₁ B)},
+            ENNReal.ofReal ((frobSq (Matrix.of B * hsQ M (t + j) Zf p.1 p.2)) ^ (-c')) := by
+    intro p
+    rw [← chartInner_schurShearFree_eq (t := t + j) (a := M 0 - (t + j)) (b := M 1 - (t + j))
+      (hsQ M (t + j) Zf p.1 p.2) c' 1]
+    refine setLIntegral_congr_fun
+      ((measurableSet_genBox 1).inter measurableSet_isUnit_toBlocks₁₁) (fun B hB => ?_)
+    rw [frobSq_schur_split_inv (Matrix.of B) hB.2 (hsQ M (t + j) Zf p.1 p.2)]
+  simp only [hkey]
+  -- the per-`p` entrywise measurability of the reassembled `hsQ`
+  have hsQmeas : ∀ (k : Fin (t + j) ⊕ Fin (M 1 - (t + j)))
+      (jj : Fin (dropHead (redChain (t + j) M) (Fin.last L))),
+      Measurable (fun p : Params (redChain (t + j) M)
+          × (Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ) =>
+        hsQ M (t + j) Zf p.1 p.2 k jj) := by
+    intro k jj
+    rcases k with i | i
+    · simp only [hsQ, Matrix.fromRows_apply_inl, Matrix.submatrix_apply]
+      exact ((continuous_prod (redChain (t + j) M)).matrix_elem _ _).measurable.comp measurable_fst
+    · simp only [hsQ, Matrix.fromRows_apply_inr, Matrix.mul_apply, Matrix.of_apply]
+      refine Finset.measurable_sum _ (fun ℓ _ => (?_ : Measurable _).mul ?_)
+      · exact (measurable_pi_apply ℓ).comp ((measurable_pi_apply i).comp measurable_snd)
+      · exact (measurable_pi_apply jj).comp
+          ((measurable_pi_apply ℓ).comp (hZfMeas.comp measurable_fst))
+  -- integrate out `B`; the integrand is jointly measurable in `(p, B)`
+  refine Measurable.lintegral_prod_right
+    (f := fun (p : Params (redChain (t + j) M)
+        × (Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ))
+        (B : (Fin (t + j) ⊕ Fin (M 0 - (t + j))) → (Fin (t + j) ⊕ Fin (M 1 - (t + j))) → ℝ) =>
+      ENNReal.ofReal ((frobSq (Matrix.of B * hsQ M (t + j) Zf p.1 p.2)) ^ (-c'))) ?_
+  apply ENNReal.measurable_ofReal.comp
+  apply Measurable.comp (g := fun r : ℝ => r ^ (-c')) (by fun_prop)
+  unfold frobSq
+  refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun jj _ => ?_))
+  refine Measurable.pow_const ?_ 2
+  simp only [Matrix.mul_apply, Matrix.of_apply]
+  refine Finset.measurable_sum _ (fun k _ => (?_ : Measurable _).mul ?_)
+  · exact (measurable_pi_apply k).comp ((measurable_pi_apply i).comp measurable_snd)
+  · exact (hsQmeas k jj).comp measurable_fst
+
 /-- **The mechanical head/row-split domination** (steps 1,2,5,6 — banked plumbing): the literal
 shell-restricted spine integrand is dominated by the `(z, A_cor)`-box freed-loss integrand at `Q = hsQ`
 (pivot rows `prod(redChain u M) z`, corank rows `A_cor·Zf z`). Route: head split (`paramsHeadSplit` +
@@ -267,6 +333,7 @@ theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
     (Zf : Params (redChain (t + j) M)
         → Matrix (Fin (dropHead (redChain (t + j) M) 0))
             (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
+    (hZfMeas : Measurable Zf)
     (hagree : ∀ z, weakEigCount ε' (deeperFlagZdeep M (t + j) z)
         ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)
         → Zf z = deeperFlagZdeep M (t + j) z)
@@ -287,7 +354,84 @@ theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
   -- (`restrict_mono`) → Tonelli `∫_{Zbox×ˢAbox} = ∫z ∫A_cor` (`setLIntegral_prod`, whose AEMeasurability
   -- of the freed-loss product integrand is the one genuinely-new obligation, via `hZfMeas` + `P⁻¹`
   -- continuity-on-units + `prod`/`frobSq` continuity). All ingredients landed above.
-  sorry
+  classical
+  rw [shellSpineIntegrand]
+  set Zbox := paramsBoxM (redChain (t + j) M) 1 with hZbox
+  set Abox := matBox (M 1 - (t + j)) (dropHead (redChain (t + j) M) 0) 1 with hAbox
+  set Ggood : Set (Params (redChain (t + j) M)) :=
+    {z | weakEigCount ε' (deeperFlagZdeep M (t + j) z)
+      ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)} with hGgood
+  -- the transported integrand (on the head-split codomain) and the target integrand
+  set Gfun : Params (redChain (t + j) M)
+        × (Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ) → ℝ≥0∞ :=
+    fun y => ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+      ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+          Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+        ENNReal.ofReal ((freedSchurLoss x Γ
+          ((prod (tailChain M) ((hsSplit M (t + j) κ).symm y)).submatrix (blockSplitEquiv κ) id))
+          ^ (-c')) with hGfun
+  set hfun : Params (redChain (t + j) M)
+        × (Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ) → ℝ≥0∞ :=
+    fun p => ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+      ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+          Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+        ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M (t + j) Zf p.1 p.2)) ^ (-c')) with hhfun
+  have hmeas : Measurable hfun := measurable_hsQ_freedLoss_integral M t j c' Zf hZfMeas
+  have hBoxMeas : MeasurableSet ((Ggood ∩ Zbox) ×ˢ Abox) :=
+    (hGmeas.inter (measurableSet_paramsBoxM (redChain (t + j) M) 1)).prod
+      (matBox_measurableSet _ _ _)
+  -- image containment: the box-∩-shell maps into `(Ggood ∩ Zbox) ×ˢ Abox`
+  have himg : (hsSplit M (t + j) κ) ''
+      (paramsBoxM (tailChain M) 1
+        ∩ {A' | prod (tailChain M) A'
+            ∈ singularShell ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩})
+      ⊆ (Ggood ∩ Zbox) ×ˢ Abox := by
+    rw [Set.image_subset_iff]
+    intro A' hA'
+    have hbox := hA'.1
+    have hshell := hA'.2
+    refine ⟨⟨hsSplit_good_of_shell M t j κ hε hj hjr hε' hε'le A' hbox hshell, ?_⟩, ?_⟩
+    · intro layer i k
+      rcases Fin.eq_zero_or_eq_succ layer with rfl | ⟨s', rfl⟩
+      · rw [hsSplit_fst_zero]; exact hbox 0 (blockSplitEquiv κ (Sum.inl i)) k
+      · rw [hsSplit_fst_succ]; exact hbox s'.succ i k
+    · intro i k
+      rw [hsSplit_snd]; exact hbox 0 (blockSplitEquiv κ (Sum.inr i)) k
+  calc
+    (∫⁻ A' in paramsBoxM (tailChain M) 1
+        ∩ {A' | prod (tailChain M) A'
+            ∈ singularShell ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩},
+      ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+        ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+            Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+          ENNReal.ofReal ((freedSchurLoss x Γ
+            ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-c')))
+        = ∫⁻ y in (hsSplit M (t + j) κ) ''
+            (paramsBoxM (tailChain M) 1
+              ∩ {A' | prod (tailChain M) A'
+                  ∈ singularShell ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩}),
+            Gfun y := by
+          rw [← (measurePreserving_hsSplit M (t + j) κ).setLIntegral_comp_emb
+                (hsSplit M (t + j) κ).measurableEmbedding Gfun _]
+          refine lintegral_congr (fun A' => ?_)
+          simp only [hGfun, MeasurableEquiv.symm_apply_apply]
+      _ ≤ ∫⁻ y in (Ggood ∩ Zbox) ×ˢ Abox, Gfun y :=
+          lintegral_mono' (Measure.restrict_mono himg le_rfl) le_rfl
+      _ = ∫⁻ y in (Ggood ∩ Zbox) ×ˢ Abox, hfun y := by
+          refine setLIntegral_congr_fun hBoxMeas (fun y hy => ?_)
+          obtain ⟨z, A_cor⟩ := y
+          simp only [hGfun, hhfun]
+          refine lintegral_congr (fun x => ?_)
+          refine lintegral_congr (fun Γ => ?_)
+          exact congrArg (fun r : ℝ => ENNReal.ofReal (r ^ (-c')))
+            (hsSplit_freedSchur_symm_eq M t j κ Zf z A_cor (hagree z hy.1.1) x Γ)
+      _ ≤ ∫⁻ y in Zbox ×ˢ Abox, hfun y :=
+          lintegral_mono'
+            (Measure.restrict_mono (Set.prod_mono Set.inter_subset_right (le_refl _)) le_rfl) le_rfl
+      _ = ∫⁻ z in Zbox, ∫⁻ A_cor in Abox, hfun (z, A_cor) := by
+          rw [Measure.volume_eq_prod (Params (redChain (t + j) M))
+                (Fin (M 1 - (t + j)) → Fin (dropHead (redChain (t + j) M) 0) → ℝ),
+            setLIntegral_prod hfun hmeas.aemeasurable]
 
 /-- **Brick D (isolated): the head-split domination with a FINITE reorganization constant.** Verbatim
 signature of the `headSplit_domination` stub; the controller wires the stub to it. -/
@@ -338,6 +482,7 @@ theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t
   refine ⟨C_hle, hfin, ?_⟩
   -- mechanical head/row split, then GLUE-2
   exact le_trans
-    (shellSpine_le_hsQ_box M t j κ hε c' ht hj hjr ht1 hnd hrange hε' hε'le Zf hagree hGmeas) hle
+    (shellSpine_le_hsQ_box M t j κ hε c' ht hj hjr ht1 hnd hrange hε' hε'le Zf hZfMeas hagree hGmeas)
+    hle
 
 end DLNFibre.DLN.RLCT
