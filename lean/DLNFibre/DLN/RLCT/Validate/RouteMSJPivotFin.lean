@@ -295,11 +295,18 @@ and the exponent shift `c' → c'−½ab`, with `wf A_cor` and the divisor left 
 integral — the coupled residual is bounded downstream (D-A radial for `wf` + couplingfin's shell/transversality).
 PLAN: `corank_survival_ae Z hbZ` (`A_cor·Z` full row-rank a.e.) → per such `A_cor`,
 `corankBlock_morsePeel_setLE (Apiv := 0) (Ccross) (Qb := A_cor·Z) (posDef_gram_of_rank_eq …) c' hc' (wf A_cor)
-(hwf A_cor) sΓ` (the `frobSq 0 = 0` term drops) → `lintegral_mono_ae`. -/
+(hwf A_cor) sΓ` (the `frobSq 0 = 0` term drops) → `lintegral_mono_ae`.
+
+INDEX PINNING (couplingfin's `½ab`): `a = Ccross rows = Γ rows = M₀−u` (the corank/`D` rows), `b = A_cor
+rows = Γ cols = (A_cor·Z) rows = M₁−u`; the atom's `p·q = a·b`, matching `½ab` (the charge is `a,b`-symmetric).
+DOWNSTREAM (not this lemma): the hypothesis `ab/2 < c'` is the shifted-exponent validity — the assembly must
+discharge it in the good-branch shell regime, and route the `c' ≤ ab/2` shells (less singular corner) through
+a cruder no-shift bound. `_hgm` (`Measurable wf`) is statement hygiene (the bound holds regardless — the
+downstream `wf` = the post-D-A-radial pivot energy is measurable). -/
 theorem shell_corankPivot_coupled_le {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (Fin n) ℝ)
     (hbZ : b ≤ Z.rank) (c' : ℝ) (hc' : (a * b : ℝ) / 2 < c')
     (Ccross : Matrix (Fin a) (Fin n) ℝ)
-    (wf : (Fin b → Fin M₂ → ℝ) → ℝ) (hwf : ∀ A_cor, 0 < wf A_cor)
+    (wf : (Fin b → Fin M₂ → ℝ) → ℝ) (hwf : ∀ A_cor, 0 < wf A_cor) (_hgm : Measurable wf)
     (sΓ : Set (Fin a → Fin b → ℝ)) :
     (∫⁻ A_cor in matBox b M₂ 1, ∫⁻ Γ in sΓ,
         ENNReal.ofReal
@@ -311,7 +318,14 @@ theorem shell_corankPivot_coupled_le {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (
               * (wf A_cor + frobSq (Ccross * (1 - (Matrix.of A_cor * Z)ᵀ
                   * ((Matrix.of A_cor * Z) * (Matrix.of A_cor * Z)ᵀ)⁻¹ * (Matrix.of A_cor * Z))))
                 ^ (-(c' - (a * b : ℝ) / 2))) := by
-  sorry
+  have hmeasbox : MeasurableSet (matBox b M₂ 1) := matBox_measurableSet b M₂ 1
+  have hfz : frobSq (0 : Matrix (Fin 0) (Fin n) ℝ) = 0 := by simp [frobSq]
+  refine lintegral_mono_ae ((ae_restrict_iff' hmeasbox).mpr ?_)
+  filter_upwards [corank_survival_ae Z hbZ] with A hrank _hAbox
+  have hPD := posDef_gram_of_rank_eq (Matrix.of A * Z) hrank
+  have hatom := corankBlock_morsePeel_setLE (Apiv := (0 : Matrix (Fin 0) (Fin n) ℝ))
+    (Ccross := Ccross) (Qb := Matrix.of A * Z) hPD c' hc' (wf A) (hwf A) sΓ
+  simpa only [hfz, add_zero] using hatom
 
 /-- **The block-front reduction of `pivotDomLHS` (scaffold, cert-free).** Threading `pivotInner_Dsubst`
 (step 1) through the outer `(z, A_cor)` integrals (per `x ∈ outerDom`, so `IsUnit P` holds via the 4th
