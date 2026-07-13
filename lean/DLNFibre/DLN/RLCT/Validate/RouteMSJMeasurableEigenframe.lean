@@ -422,4 +422,44 @@ theorem R_ne_zero {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → 
   rw [← hi] at hlt
   omega
 
+/-- If `A · R = c • R`, the first nonzero column of `R` is a `c`-eigenvector. -/
+theorem pivotVec_eigen {A R : Matrix (Fin M₂) (Fin M₂) ℝ} {c : ℝ} (hAR : A * R = c • R) :
+    A *ᵥ pivotVec R = c • pivotVec R := by
+  by_cases h : (nzColSet R).Nonempty
+  · rw [pivotVec_eq R h, mulVec_mulVec, hAR, smul_mulVec]
+  · rw [pivotVec, dif_neg h]; simp
+
+/-- The normalized first nonzero column of `R` (with `A · R = c • R`) is a `c`-eigenvector. -/
+theorem pivotUnit_eigen {A R : Matrix (Fin M₂) (Fin M₂) ℝ} {c : ℝ} (hAR : A * R = c • R) :
+    A *ᵥ pivotUnit R = c • pivotUnit R := by
+  rw [pivotUnit, mulVec_smul, pivotVec_eigen hAR, smul_comm]
+
+/-- `A · (P i · X) = lam i • (P i · X)` — the eigenprojector pushed through a right factor. -/
+theorem AR_smul {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → ℝ} {σ : Equiv.Perm (Fin M₂)}
+    (hB : (Bmat b)ᵀ * Bmat b = 1) (heig : ∀ m, A *ᵥ b m = μ m • b m) (hσ : lam = μ ∘ σ)
+    (i : Fin M₂) (X : Matrix (Fin M₂) (Fin M₂) ℝ) :
+    A * (lagProj A lam i * X) = lam i • (lagProj A lam i * X) := by
+  have hμrange : ∀ m, ∃ k, lam k = μ m := fun m => ⟨σ.symm m, by rw [hσ]; simp⟩
+  rw [← Matrix.mul_assoc, Amul_lagProj hB heig hμrange i, Matrix.smul_mul]
+
+/-- The residual's transpose kills every earlier column: `Rᵀ *ᵥ colFn q = 0` for `q < n`. -/
+theorem Rt_mulVec_colFn_zero {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam : Fin M₂ → ℝ} (hsymm : Aᵀ = A)
+    (n : ℕ) (hn : n < M₂)
+    (ih_on : ∀ p q : ℕ, p < n → q < n →
+      dotProduct (colFn A lam p) (colFn A lam q) = if p = q then 1 else 0)
+    (ih_eig : ∀ p : ℕ, p < n → A *ᵥ colFn A lam p = lamN lam p • colFn A lam p)
+    (q : ℕ) (hq : q < n) :
+    (lagProj A lam ⟨n, hn⟩ * (1 - Qacc A lam n))ᵀ *ᵥ colFn A lam q = 0 := by
+  have hRt : (lagProj A lam ⟨n, hn⟩ * (1 - Qacc A lam n))ᵀ
+      = (1 - Qacc A lam n) * lagProj A lam ⟨n, hn⟩ := by
+    rw [Matrix.transpose_mul, lagProj_symm hsymm, Matrix.transpose_sub, Matrix.transpose_one,
+      Qacc_symm]
+  rw [hRt, ← mulVec_mulVec (colFn A lam q) (1 - Qacc A lam n) (lagProj A lam ⟨n, hn⟩)]
+  have hqM : q < M₂ := lt_trans hq hn
+  have hqr : ∃ kk, lam kk = lamN lam q := ⟨⟨q, hqM⟩, by rw [lamN, dif_pos hqM]⟩
+  rw [lagProj_eigen (ih_eig q hq) hqr ⟨n, hn⟩]
+  by_cases hc : lamN lam q = lam ⟨n, hn⟩
+  · rw [if_pos hc, one_smul, sub_mulVec, one_mulVec, Qacc_fixes A lam n ih_on q hq, sub_self]
+  · rw [if_neg hc, zero_smul, mulVec_zero]
+
 end DLNFibre.DLN.RLCT.MEframe
