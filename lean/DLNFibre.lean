@@ -1466,3 +1466,6 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
+-- L=1 Aoyagi headline endpoint (unconditional, regular Morse) + the #108 ∀L≥1 case-split pre-stage
+-- (`aoyagi_learning_coefficient_prestage`, carrying the single `hDescent : DecoratedDescent` hypothesis).
+import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint

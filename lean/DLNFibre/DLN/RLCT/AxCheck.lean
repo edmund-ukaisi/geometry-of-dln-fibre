@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.Case111
+import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
@@ -1260,3 +1261,8 @@ open DLNFibre.DLN.RLCT
 -- + F1 `exists_headSplitFrame_impl` (the measurable piecewise m-frame selector). Both clean-three.
 #print axioms DLNFibre.DLN.RLCT.measurableEigendecomp
 #print axioms DLNFibre.DLN.RLCT.exists_headSplitFrame_impl
+-- L=1 headline endpoint: unconditional, sorry-free (the regular Morse single-layer RLCT = aoyagiLambda).
+-- Clean-three. And the #108 pre-stage wrapper (∀L≥1 case-split) — clean-three, carrying `hDescent` as an
+-- honest HYPOTHESIS (not sorryAx); #108 is a one-exact-fill once DecoratedDescent lands.
+#print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
+#print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage
