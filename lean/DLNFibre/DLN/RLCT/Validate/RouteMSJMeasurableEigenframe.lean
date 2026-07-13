@@ -303,4 +303,46 @@ theorem Qacc_fixes (A : Matrix (Fin M₂) (Fin M₂) ℝ) (lam : Fin M₂ → �
     rw [hon p q (Finset.mem_range.mp hp) hq, if_neg hpq, zero_smul]
   · intro h; exact absurd (Finset.mem_range.mpr hq) h
 
+/-- If `R ≠ 0`, some column is nonzero. -/
+theorem nzColSet_nonempty_of_ne_zero {R : Matrix (Fin M₂) (Fin M₂) ℝ} (hR : R ≠ 0) :
+    (nzColSet R).Nonempty := by
+  by_contra h
+  rw [Finset.not_nonempty_iff_eq_empty] at h
+  apply hR
+  ext i j
+  have hj : (fun r => R r j) = (0 : Fin M₂ → ℝ) := by
+    by_contra hc
+    have hmem : j ∈ nzColSet R := by
+      simp only [nzColSet, Finset.mem_filter]; exact ⟨Finset.mem_univ j, hc⟩
+    rw [h] at hmem; simp at hmem
+  have := congrFun hj i
+  simpa using this
+
+/-- The first nonzero column of `R` is the matrix acting on a standard basis vector. -/
+theorem pivotVec_eq (R : Matrix (Fin M₂) (Fin M₂) ℝ) (h : (nzColSet R).Nonempty) :
+    pivotVec R = R *ᵥ Pi.single ((nzColSet R).min' h) 1 := by
+  funext r
+  rw [pivotVec, dif_pos h]
+  simp [Matrix.mulVec, dotProduct, Pi.single_apply]
+
+/-- The first nonzero column of a nonzero matrix is nonzero. -/
+theorem pivotVec_ne_zero {R : Matrix (Fin M₂) (Fin M₂) ℝ} (hR : R ≠ 0) : pivotVec R ≠ 0 := by
+  have h := nzColSet_nonempty_of_ne_zero hR
+  rw [pivotVec, dif_pos h]
+  have hmem := Finset.min'_mem (nzColSet R) h
+  simp only [nzColSet, Finset.mem_filter] at hmem
+  exact hmem.2
+
+/-- The normalized first nonzero column is a unit vector (`⟨v, v⟩ = 1`). -/
+theorem dotProduct_pivotUnit_self {R : Matrix (Fin M₂) (Fin M₂) ℝ} (hR : R ≠ 0) :
+    dotProduct (pivotUnit R) (pivotUnit R) = 1 := by
+  have hv : pivotVec R ≠ 0 := pivotVec_ne_zero hR
+  have hd : (0 : ℝ) < dotProduct (pivotVec R) (pivotVec R) := by
+    rw [dotProduct]
+    obtain ⟨i, hi⟩ := Function.ne_iff.mp hv
+    refine Finset.sum_pos' (fun j _ => mul_self_nonneg _) ⟨i, Finset.mem_univ i, ?_⟩
+    exact mul_self_pos.mpr (by simpa using hi)
+  rw [pivotUnit, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
+    ← mul_inv, Real.mul_self_sqrt hd.le, inv_mul_cancel₀ (ne_of_gt hd)]
+
 end DLNFibre.DLN.RLCT.MEframe
