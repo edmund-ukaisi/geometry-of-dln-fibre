@@ -90,6 +90,37 @@ theorem headSplit_pivotDom (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
               (fun _ => 0) (fun _ => genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1) c' := by
   sorry
 
+/-- **The head/row split equiv** `Params (tailChain M) ≃ᵐ Params (redChain u M) × corankRows` — peel the
+leading tail layer (`paramsHeadSplit`), row-split it into pivot rows (`κ`'s image, → the leading layer of
+`redChain u M`) and corank rows (`rowSplitEquiv κ`), reassociate, and re-glue the pivot rows onto the deep
+layers as `Params (redChain u M)` (`paramsHeadSplit (redChain u M)`.symm). -/
+noncomputable def hsSplit (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u ↪ Fin (M 1)) :
+    Params (tailChain M) ≃ᵐ
+      Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ) :=
+  (paramsHeadSplit (tailChain M)).trans <|
+    (((rowSplitEquiv κ (M 2)).prodCongr
+        (MeasurableEquiv.refl (Params (dropHead (tailChain M))))).trans <|
+      ((MeasurableEquiv.prodAssoc.trans
+          (((MeasurableEquiv.refl (Fin u → Fin (M 2) → ℝ)).prodCongr
+              MeasurableEquiv.prodComm).trans
+            MeasurableEquiv.prodAssoc.symm)).trans <|
+        ((paramsHeadSplit (redChain u M)).symm.prodCongr
+          (MeasurableEquiv.refl (Fin (M 1 - u) → Fin (M 2) → ℝ)))))
+
+/-- `hsSplit` is measure-preserving. -/
+theorem measurePreserving_hsSplit (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u ↪ Fin (M 1)) :
+    MeasurePreserving (hsSplit M u κ) (volume : Measure (Params (tailChain M))) volume := by
+  unfold hsSplit
+  refine (paramsHeadSplit_mp (tailChain M)).trans ?_
+  refine ((measurePreserving_rowSplitEquiv κ (M 2)).prod
+    (MeasurePreserving.id (volume : Measure (Params (dropHead (tailChain M)))))).trans ?_
+  refine (MeasureTheory.volume_preserving_prodAssoc.trans
+    (((MeasurePreserving.id (volume : Measure (Fin u → Fin (M 2) → ℝ))).prod
+        MeasureTheory.Measure.measurePreserving_swap).trans
+      MeasureTheory.volume_preserving_prodAssoc.symm)).trans ?_
+  exact ((paramsHeadSplit_mp (redChain u M)).symm).prod
+    (MeasurePreserving.id (volume : Measure (Fin (M 1 - u) → Fin (M 2) → ℝ)))
+
 /-- **The mechanical head/row-split domination** (steps 1,2,5,6 — banked plumbing): the literal
 shell-restricted spine integrand is dominated by the `(z, A_cor)`-box freed-loss integrand at `Q = hsQ`
 (pivot rows `prod(redChain u M) z`, corank rows `A_cor·Zf z`). Route: head split (`paramsHeadSplit` +
