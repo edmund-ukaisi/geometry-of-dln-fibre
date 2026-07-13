@@ -333,13 +333,13 @@ theorem shell_corankPivot_coupled_le {a b M₂ n : ℕ} (Z : Matrix (Fin M₂) (
 block `D ∈ genBox`. This is the concrete starting point the σ-coupled analytic core (D-A-radial + S3 +
 C-absorption) attaches to; the core then applies `of_blockSplitD_symm_eq_fromBlocks` + `blockFront_rowSplit`
 pointwise to expose the pivot(top)/corank(bottom) split. -/
-theorem pivotDomLHS_eq_blockFront (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+theorem pivotDomLHS_eq_blockFront (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (ε : ℝ) (c' : ℝ)
     (Zf : Params (redChain u M)
         → Matrix (Fin (dropHead (redChain u M) 0))
             (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
-    pivotDomLHS M u c' Zf
+    pivotDomLHS M u ε c' Zf
       = ∫⁻ z in paramsBoxM (redChain u M) 1,
-          ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+          ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1 ∩ pivotShell M u ε Zf z,
             ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
               ∫⁻ D in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
                 ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD u (M 0 - u) (M 1 - u)).symm (x, D))
@@ -385,7 +385,7 @@ theorem pivotPeel_domination (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1
     (hUs : ∀ z, (U_sf z)ᵀ * U_sf z = 1)
     (hrank : ∀ z, m ≤ (Zf z).rank)
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef) :
-    ∃ C : ℝ≥0∞, C < ⊤ ∧ pivotDomLHS M u c' Zf ≤ C * pivotDomRHS M u c' Zf := by
+    ∃ C : ℝ≥0∞, C < ⊤ ∧ pivotDomLHS M u ε c' Zf ≤ C * pivotDomRHS M u c' Zf := by
   sorry
 
 /-- **The forward finiteness (Option B).** From the RHS finiteness `hRHS` and the σ-coupled domination
@@ -405,20 +405,20 @@ theorem forward_LHS_finiteness (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu :
     (hrank : ∀ z, m ≤ (Zf z).rank)
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
     (hRHS : pivotDomRHS M u c' Zf < ⊤) :
-    pivotDomLHS M u c' Zf < ⊤ := by
+    pivotDomLHS M u ε c' Zf < ⊤ := by
   obtain ⟨C, hC, hle⟩ := pivotPeel_domination M u hu hε c' hnd hpiv hcvg hmM hε' Zf hZfMeas
     U_sf hUs hrank hfloor
   exact lt_of_le_of_lt hle (ENNReal.mul_lt_top hC hRHS)
 
 /-- **The `u = 0` edge.** With a `0`-width pivot the front block vanishes and `decLoss = 0`, so
 `pivotDomLHS ≤ pivotDomRHS` (`pivotDom_uzero`), hence finite from `hRHS`. -/
-theorem pivotDom_finiteness_uzero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu0 : u = 0) (c' : ℝ)
+theorem pivotDom_finiteness_uzero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu0 : u = 0) {ε : ℝ} (c' : ℝ)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M)
     (Zf : Params (redChain u M)
         → Matrix (Fin (dropHead (redChain u M) 0))
             (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
     (hRHS : pivotDomRHS M u c' Zf < ⊤) :
-    pivotDomLHS M u c' Zf < ⊤ :=
+    pivotDomLHS M u ε c' Zf < ⊤ :=
   lt_of_le_of_lt (pivotDom_uzero M u hu0 c' hpiv Zf) hRHS
 
 /-- **GLUE-2 finiteness (the isolated crux).** Verbatim statement of
@@ -438,7 +438,7 @@ theorem pivotDom_finiteness_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     (hrank : ∀ z, m ≤ (Zf z).rank)
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
     (hRHS : pivotDomRHS M u c' Zf < ⊤) :
-    pivotDomLHS M u c' Zf < ⊤ := by
+    pivotDomLHS M u ε c' Zf < ⊤ := by
   rcases Nat.eq_zero_or_pos u with hu0 | hupos
   · exact pivotDom_finiteness_uzero M u hu0 c' hpiv Zf hRHS
   · exact forward_LHS_finiteness M u hupos hε c' hnd hpiv hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor

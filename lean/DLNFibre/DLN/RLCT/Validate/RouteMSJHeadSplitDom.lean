@@ -53,6 +53,22 @@ noncomputable def hsQ (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
       (finCongr (dropHead_last_eq_redChain_last M u)))
     (Matrix.of A_cor * Zf z)
 
+/-- **The core no-collapse shell** `{A_cor | σ_min(Q_stack) ≥ ε}` = `{A_cor | Q_stack·Q_stackᵀ ⪰ ε²·1}`
+(the Loewner floor, `PosSemidef` of the difference), `Q_stack = hsQ M u Zf z A_cor`. This is the `j = 0`
+good set `G` of the outer `singularShell` (`weakEigCount ε = 0`); on it the pivot is non-collapsing
+(`frobSq(P̂·Q_stack) ≥ ε²·frobSq(P̂)`), the load-bearing property for the σ-coupled domination. It is a
+DOMAIN restriction on `A_cor` (per `z`), NOT a `∀ A_cor` hypothesis — the latter is unsatisfiable
+(`A_cor = 0 ⟹ Q_b = A_cor·Zf = 0 ⟹ σ_min(Q_stack) = 0`, and `A_cor = 0 ∈ matBox`). `F`
+(`deeperFlag_spineToCore`) derives that the outer shell reduces to this core per cut (Ky-Fan). -/
+def pivotShell (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (ε : ℝ)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (z : Params (redChain u M)) :
+    Set (Fin (M 1 - u) → Fin (dropHead (redChain u M) 0) → ℝ) :=
+  {A_cor | ((hsQ M u Zf z A_cor) * (hsQ M u Zf z A_cor)ᵀ
+      - (ε ^ 2) • (1 : Matrix (Fin u ⊕ Fin (M 1 - u)) (Fin u ⊕ Fin (M 1 - u)) ℝ)).PosSemidef}
+
 /-- **GLUE-2 — the coupled pivot→`decLoss` domination (the analytic crux, ISOLATED as the 7th brick).**
 On the `(z, A_cor)`-box, the freed Schur-loss spine integrand (pivot rows `prod(redChain u M) z`, corank
 rows `A_cor·Zf z`) is dominated by a FINITE constant times the comparator-core integrand at the clean data
@@ -81,7 +97,7 @@ theorem headSplit_pivotDom (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef) :
     ∃ (C_hle : ℝ≥0∞), C_hle < ⊤
       ∧ (∫⁻ z in paramsBoxM (redChain u M) 1,
-            ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+            ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1 ∩ pivotShell M u ε Zf z,
               ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
                 ∫⁻ Γ in {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
                     Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
@@ -209,7 +225,8 @@ theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
           ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)}) :
     shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
       ≤ ∫⁻ z in paramsBoxM (redChain (t + j) M) 1,
-          ∫⁻ A_cor in matBox (M 1 - (t + j)) (dropHead (redChain (t + j) M) 0) 1,
+          ∫⁻ A_cor in matBox (M 1 - (t + j)) (dropHead (redChain (t + j) M) 0) 1
+              ∩ pivotShell M (t + j) ε Zf z,
             ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
               ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
                   Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},

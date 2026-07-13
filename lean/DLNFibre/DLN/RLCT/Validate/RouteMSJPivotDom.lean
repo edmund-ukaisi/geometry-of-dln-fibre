@@ -41,12 +41,12 @@ variable {L : ℕ}
 /-- **The GLUE-2 LHS integral** — the freed Schur-loss spine integrand at `Q = hsQ` (pivot rows
 `prod(redChain u M) z`, corank rows `A_cor·Zf z`), integrated over `(z, A_cor, x=(P,B₁₂,C), Γ)`. This is
 the exact left-hand side of `RouteMSJHeadSplitDom.headSplit_pivotDom`. -/
-noncomputable def pivotDomLHS (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+noncomputable def pivotDomLHS (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (ε : ℝ) (c' : ℝ)
     (Zf : Params (redChain u M)
         → Matrix (Fin (dropHead (redChain u M) 0))
             (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) : ℝ≥0∞ :=
   ∫⁻ z in paramsBoxM (redChain u M) 1,
-    ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+    ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1 ∩ pivotShell M u ε Zf z,
       ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
         ∫⁻ Γ in {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
             Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
@@ -85,7 +85,7 @@ theorem pivotDom_finiteness (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     (hrank : ∀ z, m ≤ (Zf z).rank)
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
     (hRHS : pivotDomRHS M u c' Zf < ⊤) :
-    pivotDomLHS M u c' Zf < ⊤ := by
+    pivotDomLHS M u ε c' Zf < ⊤ := by
   sorry
 
 /-- **The GLUE-2 RHS is nonzero (in the operative `u ≥ 1` cut).** `decLoss =
@@ -106,12 +106,12 @@ theorem pivotDom_RHS_ne_zero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
 (`freedSchurLoss = frobSq(Γ·Q_b)`, the `(P,B₁₂,C)`-integral is over a singleton), and `hpiv` forces
 `minAdm(redChain 0 M) = 0` so the RHS Jacobian monomial is `|v 0|^0 = 1`; a Tonelli factorisation of the
 `v`-integral gives `LHS = RHS`. NOT the analytic crux (no pivot energy). -/
-theorem pivotDom_uzero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu0 : u = 0) (c' : ℝ)
+theorem pivotDom_uzero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu0 : u = 0) {ε : ℝ} (c' : ℝ)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M)
     (Zf : Params (redChain u M)
         → Matrix (Fin (dropHead (redChain u M) 0))
             (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
-    pivotDomLHS M u c' Zf ≤ pivotDomRHS M u c' Zf := by
+    pivotDomLHS M u ε c' Zf ≤ pivotDomRHS M u c' Zf := by
   sorry
 
 /-- **GLUE-2 — the coupled pivot→`decLoss` domination (the analytic crux).** Verbatim statement of the
@@ -134,7 +134,7 @@ theorem headSplit_pivotDom_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef) :
     ∃ (C_hle : ℝ≥0∞), C_hle < ⊤
       ∧ (∫⁻ z in paramsBoxM (redChain u M) 1,
-            ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+            ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1 ∩ pivotShell M u ε Zf z,
               ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
                 ∫⁻ Γ in {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
                     Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
@@ -143,7 +143,7 @@ theorem headSplit_pivotDom_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
               (![minAdm (redChain u M) - 1] : Fin 1 → ℕ) Zf
               (fun _ => 0) (fun _ => genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1) c' := by
   -- fold LHS/RHS to the named abbreviations (defeq)
-  change ∃ (C_hle : ℝ≥0∞), C_hle < ⊤ ∧ pivotDomLHS M u c' Zf ≤ C_hle * pivotDomRHS M u c' Zf
+  change ∃ (C_hle : ℝ≥0∞), C_hle < ⊤ ∧ pivotDomLHS M u ε c' Zf ≤ C_hle * pivotDomRHS M u c' Zf
   rcases Nat.eq_zero_or_pos u with hu0 | hupos
   · -- degenerate `u = 0`: `LHS ≤ RHS`, `C_hle := 1`
     exact ⟨1, ENNReal.one_lt_top,
@@ -153,9 +153,9 @@ theorem headSplit_pivotDom_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     · exact ⟨1, ENNReal.one_lt_top, by rw [one_mul, htop]; exact le_top⟩
     · have hRlt : pivotDomRHS M u c' Zf < ⊤ := lt_top_iff_ne_top.mpr htop
       have hne : pivotDomRHS M u c' Zf ≠ 0 := pivotDom_RHS_ne_zero M u hupos c' hnd Zf hZfMeas
-      have hfin : pivotDomLHS M u c' Zf < ⊤ :=
+      have hfin : pivotDomLHS M u ε c' Zf < ⊤ :=
         pivotDom_finiteness M u hε c' hnd hpiv hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor hRlt
-      exact ⟨pivotDomLHS M u c' Zf / pivotDomRHS M u c' Zf,
+      exact ⟨pivotDomLHS M u ε c' Zf / pivotDomRHS M u c' Zf,
         ENNReal.div_lt_top hfin.ne hne,
         by rw [ENNReal.div_mul_cancel hne htop]⟩
 
