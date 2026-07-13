@@ -121,6 +121,21 @@ theorem measurePreserving_hsSplit (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (�
   exact ((paramsHeadSplit_mp (redChain u M)).symm).prod
     (MeasurePreserving.id (volume : Measure (Fin (M 1 - u) → Fin (M 2) → ℝ)))
 
+/-- Forward action of `hsSplit` on the corank factor: the corank rows of the leading layer. -/
+theorem hsSplit_snd (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u ↪ Fin (M 1))
+    (A' : Params (tailChain M)) :
+    (hsSplit M u κ A').2 = fun i => A' 0 (blockSplitEquiv κ (Sum.inr i)) := rfl
+
+/-- Forward action of `hsSplit` on the pivot layer (index `0`) of the reduced params. -/
+theorem hsSplit_fst_zero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u ↪ Fin (M 1))
+    (A' : Params (tailChain M)) :
+    (hsSplit M u κ A').1 0 = fun i => A' 0 (blockSplitEquiv κ (Sum.inl i)) := rfl
+
+/-- Forward action of `hsSplit` on the deep layers (index `s.succ`): unchanged from `A'`. -/
+theorem hsSplit_fst_succ (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u ↪ Fin (M 1))
+    (A' : Params (tailChain M)) (s : Fin L) :
+    (hsSplit M u κ A').1 s.succ = A' s.succ := rfl
+
 /-- **The mechanical head/row-split domination** (steps 1,2,5,6 — banked plumbing): the literal
 shell-restricted spine integrand is dominated by the `(z, A_cor)`-box freed-loss integrand at `Q = hsQ`
 (pivot rows `prod(redChain u M) z`, corank rows `A_cor·Zf z`). Route: head split (`paramsHeadSplit` +
