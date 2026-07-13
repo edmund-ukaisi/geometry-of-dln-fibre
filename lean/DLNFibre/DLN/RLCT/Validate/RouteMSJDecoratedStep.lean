@@ -135,6 +135,37 @@ theorem minAdm_redChain_le_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : �
   rw [hfun] at h
   exact h
 
+/-! ## The two clean bricks for hole (e) (`M₁ = 1`), sorry-free -/
+
+/-- **Rank-1 Frobenius factorization at a width-1 middle** `frobSq (rmatMul Γ Z) = frobSq Γ · frobSq Z`
+when the shared index is `Fin 1`. `Γ · Z` is the outer product `(Γ ·₀) ⊗ (Z ₀·)`, whose squared Frobenius
+norm factors. The loss-factorization brick for the `M₁ = 1` waist sub-case (`Γ · prod (dropHead M)` is
+rank-1 through the width-1 bottleneck). -/
+theorem frobSq_rmatMul_mid_one {a q : ℕ} (Γ : Fin a → Fin 1 → ℝ) (Z : Fin 1 → Fin q → ℝ) :
+    frobSq (rmatMul Γ Z) = frobSq Γ * frobSq Z := by
+  simp only [frobSq, rmatMul, Fin.sum_univ_one]
+  rw [Finset.sum_mul_sum]
+  exact Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))
+
+/-- **`minAdm M ≤ minAdm (dropHead M)` when `M₁ = 1`** — the `M₁ = 1` waist-tail threshold brick. Via the
+`minAdmRec` layer-peeling recursion: the `t = 1` cut has block charge `(M₀−1)(M₁−1) = 0` (`M₁ = 1`) and
+reduced chain `redChain 1 M = dropHead M` (they agree at `0`: both `= M 1 = 1`), so `minAdm M` is a min
+over cuts that includes the `t = 1` term `= minAdm (dropHead M)`. Hence the tail IH on `dropHead M`
+(threshold `½·minAdm (dropHead M) ≥ ½·minAdm M`) covers the waist-tail factor. -/
+theorem minAdm_le_minAdm_dropHead_of_mid_one (M : Fin (L + 1 + 1 + 1) → ℕ)
+    (hM0 : 1 ≤ M 0) (hM1 : M 1 = 1) :
+    minAdm M ≤ minAdm (dropHead M) := by
+  have hrd : redChain 1 M = dropHead M := by
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simp only [redChain_zero, dropHead, Fin.succ_zero_eq_one, hM1]
+    · simp only [redChain_succ, dropHead]
+  have h1mem : (1 : ℕ) ∈ Finset.range (min (M 0) (M 1) + 1) := by
+    rw [Finset.mem_range, hM1]; omega
+  rw [← minAdmRec_eq_minAdm M, ← minAdmRec_eq_minAdm (dropHead M), minAdmRec_succ_succ M]
+  refine le_trans (Finset.inf'_le _ h1mem) (le_of_eq ?_)
+  rw [hM1, hrd]; simp
+
 /-! ## Hole (a) — the strict deeper-flag shell `jf < r` (head-split domination) -/
 
 /-- **HOLE (a) — the strict-shell contribution is finite.** For a GOOD chain (`hpiv`) and a strict shell
