@@ -13,19 +13,21 @@ controller-single-writer. Refresh every tick.
 → driver `routeMBoxThresholdFinite_of_decoratedDescent` (:216, clean-three) → `(□) ∀M`
 → `aoyagi_learning_coefficient_gen`'s `hbox` slot → unconditional `_gen` → re-point unsuffixed `#108`.
 
+**★ MILESTONE (2026-07-13): the (□) discharge is now decorrelated-confirmed LABOUR to the end — ZERO walls.** The last wall-candidate (Brick F's measurable eigen-frame) resolved to LABOUR (F2 adjudication a3648768: concrete Borel formula, no KRN). Every remaining piece is bounded labour with a banked or recipe'd route.
+
 `DecoratedBaseHyp` (#4) = DONE/banked. `DecoratedStepHyp` (#5) = the mountain, TWO tracks:
-- **Track (a) L≥1 head-split** = `deeperFlag_spineToCore` (RouteMSJDeeperFlagCore:655) = **F ∘ D-A ∘ (D-B✓+D-C) ∘ D-assembly**.
-- **Track (b) L=0 base** (#156) = `deeperFlag_waist` = **Base-Cayley (s≥3) + Base-routeC (s≤2)**, then the base↔recursion wiring.
+- **Track (a) L≥1 head-split** = `deeperFlag_spineToCore` (RouteMSJDeeperFlagCore:655) = **F ∘ D-A✓ ∘ (D-B✓ + D-C✓) ∘ D-assembly**. Brick D bricks ALL landed (D-A @e45d434d, D-B, D-C core+corollary); F = F1 (building, around 1 isolated primitive) + F2 (building the primitive). Remaining track-(a) Lean: **D-assembly** (the join) + **F1/F2**.
+- **Track (b) L=0 base** = the 3-width waist finiteness is **BANKED** (`routeMBoxThresholdFinite_mnp`, all widths); residual = the #5-compose waist-shell wiring (below), downstream.
 
 ## LANES (live)
 
 | Lane | Module (NEW) | Tide | Status | Locked statement |
 |---|---|---|---|---|
 | **D-C core** | `RouteMSJKyFan.lean` | (landed) | ✅ @a09fdd26 clean-three | `finrank_add_weakCount_le` (Rayleigh≥c subspace ⟹ `finrank U + #{λ<c} ≤ k`) |
-| **D-C corollary** | RouteMSJKyFan/new | a8215839 | 🔄 running | `shell_subset_goodSet`: shell + box ⟹ `weakEigCount ε' Z_deep ≤ M₂−m` (consumes core; 3 pieces: Fact S / transport+CS / weakEigCount↔#{λ<c}) |
-| **D-A** | `RouteMSJPivotBlowup.lean` | abbbbdb7 | 🔄 building (LOCKED) | P-radial blow-up CoV. **Locked**: full-space EXACT equality (B1), ordinary unit sphere (NO det-1 — refuted red herring), owns honest exponent `r^{u·M₁−1}` (drop to `minAdm−1` is downstream on-[0,1] dom), finiteness OUT (D-B banked). Vehicle = banked `RouteMSJRadialPolar`; ~120-180 LoC. Two lemmas: `lintegral_matrix_radial_polar_factor` + `pivotBlock_radial_blowup` |
+| **D-C corollary** | `RouteMSJShellContain` | ✅ @e45d434d | landed clean-three | `shell_subset_goodSet`: `A'₀·Z_deep ∈ singularShell` + box ⟹ `weakEigCount ε' Z_deep ≤ M₂−m` (Fact S / transport+CS / count-bridge, on the banked core). Self-reviewed 7 checks + Codex; controller fidelity-reviewed |
+| **D-A** | `RouteMSJPivotBlowup.lean` | ✅ @e45d434d | landed clean-three | P-radial blow-up CoV. Full-space EXACT equality, ordinary unit sphere (no det-1), honest exponent `r^{u·M₁−1}` (drop downstream), finiteness OUT (D-B banked). `pivotBlock_radial_blowup` + reusable `lintegral_matrix_radial_polar_factor`. Vehicle = banked `RouteMSJRadialPolar`; 186 LoC. Controller fidelity-reviewed |
 | **F1 (frame downstream)** | `RouteMSJHeadSplitFrame.lean` | a19e744c | 🔄 building | `exists_headSplitFrame_impl` = verbatim RouteMSJDeeperFlagCore:492-501, EVERYTHING sorry-free around ONE isolated primitive (piecewise `Zf`/off-G data/PSD floor/rank/agreement/G-measurability). Primitive quarantined as clean sorry on branch |
-| **F2 (eigendecomp primitive)** | `RouteMSJHeadSplitFrame` (F's `measurableEigendecomp` sorry) | adjud a3648768 | 🔄 wall-vs-labour adjudication | LOCKED primitive = `measurableEigendecomp` (measurable `eigenvalues₀` ∧ ∃ measurable orthogonal `U` diagonalizing A with SORTED eigenvalues). Sorted form ⟹ top-m frame = CONSTANT `Fin.castLE` (no per-point column choice). KRN risk isolated to: measurable `U` through DEGENERATE eigenspaces. Pen-and-paper adjudicating resolvent-Riesz+gramSchmidt-without-KRN (a3648768); verdict → build recipe or escalate |
+| **F2 (eigendecomp primitive)** | `RouteMSJMeasurableEigendecomp` | build aba20681 (adjud a3648768 ✅ LABOUR) | 🔄 building | Adjudication VERDICT: **LABOUR, no KRN, no wall** (decorrelated + Codex). Recipe = stratified Sylvester eigenprojection `P_a=∏_{b≠a}(A−μ_bI)/(μ_a−μ_b)` + deterministic lex-first-pivot Gram-Schmidt (NO contour, NO resolvent); degenerate-block O(k) collapsed by formula (not selection). Conjunct (i) = ~1-module Weyl-continuity brick. Building `measurableEigendecomp` against F's verbatim sig |
 | **eigen-coord scout** | `eigen-coord-mathlib-recon.md` | a62dc7e4 | ✅ DONE | 3/4 lanes only PRESENT/BANKED (Weyl/SVD density absent but OFF-PATH); sole void = Cluster-1 Brick-F measurable frame. 2 surprises pre-paid (below) |
 | ~~Base-Cayley / Base-routeC~~ | — | a41b29ac / a0bfe47b | ✅ RESOLVED (stood down) | **3-width base finiteness ALREADY BANKED** — `routeMBoxThresholdFinite_mnp` (RouteMSchurRectCapB:453), unconditional ∀m,n,p, clean-three, load-bearing R1-UPPER atom (verified). SVD/Cayley route redundant. Residual = the #5-compose waist-shell wiring (below) |
 | **#108 mint pre-stage** | `RouteMSJMint.lean` | ✅ @c8302a0e | landed (green 8618) | `aoyagi_learning_coefficient_gen_of_descent`: conditional wiring `DecoratedDescent → _gen unconditional` verified end-to-end |
