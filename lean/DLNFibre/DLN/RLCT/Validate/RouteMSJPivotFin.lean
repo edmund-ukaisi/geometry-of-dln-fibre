@@ -154,6 +154,54 @@ theorem frobSq_corank_le {a b M₂ nn : ℕ} (Z : Matrix (Fin M₂) (Fin nn) ℝ
         simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
         push_cast; ring
 
+/-- **The comparator `decLoss` at the clean data** `k = ![1]`: `decLoss v z = (v 0)²·frobSq(prod z)`
+(`commonDivisor = |v 0|^1`). Isolates the `cornerComparator` instance setup (`fι/fν/Nonempty ι`), computing
+`sharedDivisorExp = 1` directly (`Finset.inf'_const`, uniform support). -/
+theorem pivotRHS_decLoss_eq (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u) (hnd : ∀ i, 1 ≤ M i)
+    (v : Fin 1 → ℝ) (z : Params (redChain u M)) :
+    (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).decLoss v z
+      = (v 0) ^ 2 * frobSq (prod (redChain u M) z) := by
+  have hu1 : 0 < redChain u M 0 := by rw [redChain_zero]; omega
+  have hlast1 : 0 < redChain u M (Fin.last (L + 1)) := by
+    rw [show redChain u M (Fin.last (L + 1)) = M (Fin.last (L + 1 + 1)) by
+      rw [← Fin.succ_last, redChain_succ, Fin.succ_last, Fin.succ_last]]
+    exact hnd _
+  set i₀ : Fin (redChain u M 0) × Fin (redChain u M (Fin.last (L + 1)))
+      := (⟨0, hu1⟩, ⟨0, hlast1⟩) with hi₀
+  letI := (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).fι
+  letI := (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).fν
+  haveI hne : Nonempty (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).ι := ⟨i₀⟩
+  haveI hne0 : NeZero (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).d :=
+    ⟨by rw [show (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).d = 1 from rfl]; omega⟩
+  haveI hss : Subsingleton (Fin (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).d) := by
+    rw [show (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).d = 1 from rfl]; infer_instance
+  rw [cornerComparator_decLoss (redChain u M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain u M) - 1] : Fin 1 → ℕ) i₀ v z]
+  have hcd : commonDivisor (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).carrier.supp v = |v 0| := by
+    unfold commonDivisor
+    rw [Fintype.prod_subsingleton _
+      (0 : Fin (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).d)]
+    have he0 : sharedDivisorExp (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).carrier.supp
+        (0 : Fin (cornerComparator (redChain u M) (![1] : Fin 1 → ℕ)
+          (![minAdm (redChain u M) - 1] : Fin 1 → ℕ)).d) = 1 := by
+      rw [cornerComparator_sharedDivisorExp (redChain u M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain u M) - 1] : Fin 1 → ℕ) i₀]
+      rfl
+    rw [he0, pow_one]
+    rfl
+  rw [hcd, sq_abs]
+
 /-- **Step 1 — the exponent extraction.** If the comparator-core RHS is finite then `c'` is strictly below
 the shared RLCT threshold `X = (minAdm (redChain u M) + peelCharge M u)/2`. Proof (contrapositive): for
 `c' ≥ X`, `pivotDomRHS = ⊤` — the corner sublevel-volume lower bound `μ{‖Γ·(A_cor·Zf z)‖² ≤ D} ≳ D^{ab/2}`
