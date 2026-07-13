@@ -1449,3 +1449,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan
 -- final wiring `DecoratedDescent → (□) → unconditional aoyagi_learning_coefficient_gen` typechecks
 -- end-to-end, so minting is one application once the descent is proven.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMint
+-- Brick D-C corollary (`RouteMSJShellContain`): the shell⊆good-set containment
+-- `shell_subset_goodSet` — `A'₀·Z_deep ∈ singularShell ε r j` + box ⟹ `weakEigCount ε' Z_deep ≤ M₂−m`
+-- (ε'=ε/√(M₁M₂), m=min(M₁,n)−j), on the banked D-C core `finrank_add_weakCount_le`. Consumed by D-assembly.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellContain
+-- Brick D-A (`RouteMSJPivotBlowup`): the P-radial blow-up CoV (Aoyagi §5 step (i)) for the head-split
+-- pivot block — exact equality, ordinary unit sphere, honest Jacobian `r^{u·M₁−1}`, CoV only (D-B has finiteness).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotBlowup

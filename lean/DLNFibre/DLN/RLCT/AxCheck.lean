@@ -153,6 +153,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
 import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotBlowup
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellContain
 
 /-!
 # Axiom-hygiene check
@@ -1240,3 +1242,10 @@ open DLNFibre.DLN.RLCT
 -- (Hermitian H + Rayleigh-≥c subspace U ⟹ finrank U + #{eigenvalues<c} ≤ k) + `rayleigh_expansion`. Clean-three.
 #print axioms DLNFibre.DLN.RLCT.finrank_add_weakCount_le
 #print axioms DLNFibre.DLN.RLCT.rayleigh_expansion
+-- Brick D-A (`RouteMSJPivotBlowup`): the P-radial blow-up CoV (Aoyagi §5 step (i)) for the head-split
+-- pivot block — exact equality, ordinary unit sphere, honest Jacobian `r^{u·M₁−1}`, CoV only. Clean-three.
+#print axioms DLNFibre.DLN.RLCT.pivotBlock_radial_blowup
+#print axioms DLNFibre.DLN.RLCT.lintegral_matrix_radial_polar_factor
+-- Brick D-C corollary (`RouteMSJShellContain.shell_subset_goodSet`): `A'₀·Z_deep ∈ singularShell` + box
+-- ⟹ `weakEigCount ε' Z_deep ≤ M₂−m`, on the banked D-C core `finrank_add_weakCount_le`. Clean-three.
+#print axioms DLNFibre.DLN.RLCT.shell_subset_goodSet
