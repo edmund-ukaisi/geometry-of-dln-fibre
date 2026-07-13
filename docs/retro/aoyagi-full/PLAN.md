@@ -46,6 +46,42 @@ Goal: not correctness review of the headline (small, kernel-assisted, handled se
   paper-diff chapter; counterfactual scheduling on the final DAG.
 - **Iterate:** merge `origin/expedition/aoyagi-full` → regenerate substrate → re-render.
 
+## Framing: the burden-of-knowledge problem (recorded 2026-07-13)
+
+Long expeditions accumulate state — results, refuted routes, conventions, liveness — past what any
+single working context holds. The science-of-science version (Jones: rising education cost at the
+frontier → narrower specialists, larger teams, coordination eats the gains) applies with one
+sharpening for agent expeditions: the corpus is *fully written down* and onboarding is minutes, so
+the binding constraint is not education but **retrieval and status** — agents can search the record
+but don't know what to ask it; self-maintained indexes rot; negative knowledge (dead routes)
+propagates worst; renames devalue references. The burden concentrates in the two long-lived places:
+the controller's context (each compaction ≈ a generational turnover re-learning from the record)
+and the hand-maintained indexes.
+
+Observed instances in this expedition (join-keyed in the substrate):
+- 4× "found already banked" (mnp base case 07-13; native inner slice 07-11; B5a′; the α-unlock
+  scoped as fresh build) — literature-search failures inside the expedition's own literature.
+- Lesson recurrence after recording (det-inverse compass → covasm; shortcut cycle post-certificate).
+- Status decay: three coexisting endgame carriers with priorities pointing at a dead one; stale
+  sorry-count docstrings.
+- Nomenclature drift: one object named hbox → R1-UPPER → (□) → atom → 803 → DecoratedPeelStep →
+  DecoratedDescent.
+- Coordination share: 2.2 prose lines per Lean line; 1,385 doc vs 656 feat commits; the
+  burden-management artifacts (BUILT-INDEX, priorities, traps) themselves drifting.
+
+Measurable readouts (queued for the pool): knowledge-debt curves — doc:code ratio over time;
+time-to-rediscovery for each "already banked" event; brief/contract sizes over time;
+lesson-recurrence intervals (fresh-tide vs veteran).
+
+**Solution in the future? (open, not committed):** the remedies selected by the retrieval framing —
+(a) indexes computed from ground truth as *standing harness infrastructure during* expeditions, not
+retro-only (decls/fan-in tables answer "does this exist?"; cone membership as a computable liveness
+bit, so superseded carriers fall out of status mechanically); (b) negative-knowledge (dead-route /
+trap) auto-injection into every fresh-tide brief; (c) renaming discipline with forwarding pointers;
+(d) possibly a librarian seat/service that build-scoping must query before commissioning. Hypothesis
+to test against the curves: the burden grew roughly linearly while contracts/certs kept the
+*marginal* brick cost flat — i.e. the harness partially solved this without naming it.
+
 ## Inherited assets (in this directory)
 
 - The chronicle toolkit (adapted from the QS expedition): `generate_loc.py` (3-metric + pillar
