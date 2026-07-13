@@ -507,4 +507,34 @@ theorem frame_invariant {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M�
       · exact ih_eig p hpk
       · rw [hpe, show lamN lam k = lam ⟨k, hk⟩ from by rw [lamN, dif_pos hk]]; exact heigk
 
+/-- **The frame is orthogonal: `Uᵀ U = 1`** (orthonormal columns; invariant at `n = M₂`). -/
+theorem Uframe_orthonormal {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → ℝ}
+    {σ : Equiv.Perm (Fin M₂)} (hsymm : Aᵀ = A) (hB : (Bmat b)ᵀ * Bmat b = 1)
+    (heig : ∀ m, A *ᵥ b m = μ m • b m) (hσ : lam = μ ∘ σ) :
+    (Uframe A lam)ᵀ * Uframe A lam = 1 := by
+  obtain ⟨hon, _⟩ := frame_invariant hsymm hB heig hσ M₂ le_rfl
+  ext c c'
+  rw [Matrix.mul_apply, Matrix.one_apply]
+  change dotProduct (colFn A lam (c : ℕ)) (colFn A lam (c' : ℕ)) = if c = c' then 1 else 0
+  rw [hon (c : ℕ) (c' : ℕ) c.isLt c'.isLt]
+  simp [Fin.val_inj]
+
+/-- **The frame diagonalizes: `A U = U · diagonal lam`** (each column a sorted eigenvector). -/
+theorem Uframe_diagonalizes {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → ℝ}
+    {σ : Equiv.Perm (Fin M₂)} (hsymm : Aᵀ = A) (hB : (Bmat b)ᵀ * Bmat b = 1)
+    (heig : ∀ m, A *ᵥ b m = μ m • b m) (hσ : lam = μ ∘ σ) :
+    A * Uframe A lam = Uframe A lam * Matrix.diagonal lam := by
+  obtain ⟨_, heigf⟩ := frame_invariant hsymm hB heig hσ M₂ le_rfl
+  ext r c
+  have hcol : A *ᵥ colFn A lam (c : ℕ) = lam c • colFn A lam (c : ℕ) := by
+    rw [heigf (c : ℕ) c.isLt, lamN, dif_pos c.isLt]
+  have hL : (∑ s, A r s * Uframe A lam s c) = (A *ᵥ colFn A lam (c : ℕ)) r := rfl
+  rw [Matrix.mul_apply, hL, hcol, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply,
+    Finset.sum_eq_single c]
+  · rw [Matrix.diagonal_apply_eq]
+    change lam c * colFn A lam (c : ℕ) r = colFn A lam (c : ℕ) r * lam c
+    ring
+  · intro s _ hsc; rw [Matrix.diagonal_apply_ne _ hsc, mul_zero]
+  · intro h; exact absurd (Finset.mem_univ c) h
+
 end DLNFibre.DLN.RLCT.MEframe
