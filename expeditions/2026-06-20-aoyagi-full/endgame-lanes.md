@@ -43,7 +43,11 @@ All track-(a) bricks are built on branches (gaps quarantined); canonical stays c
 
 ## D-assembly (the JOIN — NOT parallel; runs after D-A + D-C + F land)
 
-Fills `headSplit_domination` (RouteMSJDeeperFlagCore:513) by consuming D-A (pivot reorg) + D-B (`RouteMSJRankRCodim`, ✅) + D-C corollary (`shell_subset_goodSet`) + F frame + S3 (`shell_corankOffSector_le_unif`, banked) + L1 (`deeperFlag_shell_core_le`, banked). Then `deeperFlag_spineToCore` (:655) closes via `exists_headSplitFrame ∘ headSplit_domination`. Controller-owned (edits the shared module).
+**STATUS (2026-07-13):** `headSplit_domination_impl` ASSEMBLED sorry-free in its body (`RouteMSJHeadSplitDom` @origin/genm-sj5-headsplit-dom 71c2b6a6, green), reducing to TWO isolated correct-statement sorries:
+- **GLUE-2** `headSplit_pivotDom` (the analytic crux — coupled pivot→decLoss domination, drops B₁₂·Q_b, non-pointwise): a SEPARATE tide a88527065 (#165, checkpoint-first, `RouteMSJPivotDom`), design = D-A + D-B + s1-Chle cert. The ~65-75%-new content, decorrelated-adjudicated labour.
+- **`shellSpine_le_hsQ_box`** (the ~120-150-line head/row-split measure reduction — NOT bounded plumbing, honest re-scope): D-assembly tide a8a42c82 grinding it in-place (paramsHeadSplit + shell-indicator Tonelli + rowSplit + recombine + D-C rewrite).
+
+On both + D-A✓/D-B✓/D-C✓: `headSplit_domination_impl` clean-three. Then `deeperFlag_spineToCore` = `exists_headSplitFrame(F1) ∘ headSplit_domination`. Controller wires the RouteMSJDeeperFlagCore stubs + breaks the `hsQ` import cycle at integration.
 
 ## Interface risks tracked
 
