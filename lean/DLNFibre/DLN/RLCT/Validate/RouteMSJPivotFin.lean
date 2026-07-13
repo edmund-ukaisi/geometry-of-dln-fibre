@@ -215,6 +215,16 @@ theorem pivotDomRHS_lt_top_exponent (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) 
     (hZfMeas : Measurable Zf)
     (hRHS : pivotDomRHS M u c' Zf < ⊤) :
     c' < ((minAdm (redChain u M) : ℝ) + (peelCharge M u : ℝ)) / 2 := by
+  -- ASSEMBLY (turnkey; all 4 helpers above proved + axiom-clean). Contrapositive `X ≤ c' → pivotDomRHS = ⊤`:
+  -- (1) `f z := frobSq (prod (redChain u M) z) > 0` a.e. z on `paramsBoxM` (copy `deeperFlagCore_decLoss_pos_ae`
+  --     internals: `corePoly`/`eval_corePoly`/`MvPolynomial.ae_eval_ne_zero`/`measurePreserving_paramsEquivFlat`).
+  -- (2) unfold `pivotDomRHS = deeperFlagCoreIntegrand …`; per a.e. z (`f z > 0`) show the `v`-slice `= ⊤`:
+  --     `pivotRHS_decLoss_eq` (decLoss = (v0)²·f), then `corner_inner_ge (Z := Zf z) (w := (v0)²·f) (ρ := ρ z v0)`
+  --     with `ρ z v0 := v0·√(f z / (a·nn·(b·M₂·BZ z)²+1))` (`BZ z` = entry-sup of `Zf z`), `hbound` via
+  --     `frobSq_corank_le`; combine to `integrand ≥ ofReal(K z · v0^{m₀−1+ab−2c'})·vol(matBox b M₂ 1)`,
+  --     `funUnique`-transport `v ↦ v0` + `abs_rpow_lintegral_Ioo_eq_top` (exponent ≤ −1 ⟺ `X ≤ c'`) ⟹ `= ⊤`.
+  -- (3) `G = ⊤` a.e. on `paramsBoxM` ⟹ `∫_z G = ⊤` (`lintegral_congr_ae` + `setLIntegral_const` +
+  --     `paramsBoxM` volume ≠ 0); contradict `hRHS` via `ne_of_lt`.
   sorry
 
 /-- **Step 2 — the forward finiteness (the ISOLATED CRUX).** Below the shared RLCT threshold `X`, the
