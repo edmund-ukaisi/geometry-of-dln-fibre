@@ -385,4 +385,41 @@ theorem chosen_lt_mult (lam : Fin M₂ → ℝ) (n : ℕ) (hn : n < M₂) :
         Finset.card_lt_card ((Finset.ssubset_iff_of_subset hsub).mpr ⟨n, hnT, hnotL⟩)
     _ = T.card := Finset.card_image_of_injective T Fin.val_injective
 
+/-- **The residual `R_n = P⟨n⟩ (1 − Qacc n)` is nonzero** — the trace non-vanishing crux. If it
+vanished, `P⟨n⟩ = P⟨n⟩ Qacc n`, so `trace P⟨n⟩ = trace (P⟨n⟩ Qacc n)`; the former counts the full
+`lam ⟨n⟩`-multiplicity, the latter only the `< n` chosen columns there — strictly fewer. -/
+theorem R_ne_zero {A : Matrix (Fin M₂) (Fin M₂) ℝ} {lam μ : Fin M₂ → ℝ} {σ : Equiv.Perm (Fin M₂)}
+    (hB : (Bmat b)ᵀ * Bmat b = 1) (heig : ∀ m, A *ᵥ b m = μ m • b m) (hσ : lam = μ ∘ σ)
+    (n : ℕ) (hn : n < M₂)
+    (ih_on : ∀ p q : ℕ, p < n → q < n →
+      dotProduct (colFn A lam p) (colFn A lam q) = if p = q then 1 else 0)
+    (ih_eig : ∀ p : ℕ, p < n → A *ᵥ colFn A lam p = lamN lam p • colFn A lam p) :
+    lagProj A lam ⟨n, hn⟩ * (1 - Qacc A lam n) ≠ 0 := by
+  intro hR0
+  set i : Fin M₂ := ⟨n, hn⟩ with hi
+  have hμrange : ∀ m, ∃ k, lam k = μ m := fun m => ⟨σ.symm m, by rw [hσ]; simp⟩
+  have hPQ : lagProj A lam i = lagProj A lam i * Qacc A lam n := by
+    have h0 : lagProj A lam i * (1 - Qacc A lam n) = 0 := hR0
+    rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at h0; exact h0
+  have hterm : ∀ p ∈ Finset.range n,
+      (lagProj A lam i * vecMulVec (colFn A lam p) (colFn A lam p)).trace
+        = (if lamN lam p = lam i then (1 : ℝ) else 0) := by
+    intro p hp
+    have hpn := Finset.mem_range.mp hp
+    have hpM : p < M₂ := lt_trans hpn hn
+    have hpr : ∃ kk, lam kk = lamN lam p := ⟨⟨p, hpM⟩, by rw [lamN, dif_pos hpM]⟩
+    rw [trace_mul_vecMulVec, lagProj_eigen (ih_eig p hpn) hpr i, dotProduct_smul,
+      ih_on p p hpn hpn]
+    simp
+  have key : ((Finset.univ.filter (fun m => μ m = lam i)).card : ℝ)
+      = ((Finset.range n).filter (fun p => lamN lam p = lam i)).card := by
+    rw [← trace_lagProj hB heig hμrange i, hPQ, Qacc_eq_sum, Finset.mul_sum, Matrix.trace_sum,
+      Finset.sum_congr rfl hterm, Finset.sum_boole]
+  have hcast : (Finset.univ.filter (fun m => μ m = lam i)).card
+      = ((Finset.range n).filter (fun p => lamN lam p = lam i)).card := by exact_mod_cast key
+  have hmult := card_lam_eq_card_mu hσ (lam i)
+  have hlt := chosen_lt_mult lam n hn
+  rw [← hi] at hlt
+  omega
+
 end DLNFibre.DLN.RLCT.MEframe
