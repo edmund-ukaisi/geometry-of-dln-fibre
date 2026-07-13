@@ -149,6 +149,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
+import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
 
 /-!
 # Axiom-hygiene check
@@ -1206,3 +1207,8 @@ open DLNFibre.DLN.RLCT
 #print axioms DLNFibre.DLN.RLCT.exists_ortho_ext
 #print axioms DLNFibre.DLN.RLCT.detGram_eq_prod_rows
 #print axioms DLNFibre.DLN.RLCT.offSector_cover_le
+-- OWED-2 reduction + OWED-3 analytic heart (`RouteMSJStrongBlock`): the reduced-weight finiteness at shrunk
+-- dims (column-Fubini, NO bordered-Gram) ∘ OWED-1 on the shell + the w-uniform per-shell interior bound.
+#print axioms DLNFibre.DLN.RLCT.strongBlock_lintegral_lt_top
+#print axioms DLNFibre.DLN.RLCT.deeperCut_shell_corankWeight_lt_top
+#print axioms DLNFibre.DLN.RLCT.shell_corankOffSector_le

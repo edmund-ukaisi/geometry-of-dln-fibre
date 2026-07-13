@@ -1422,3 +1422,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
 -- OWED-3 `deeperFlag_shell_le` (decorated assembly) build on these.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
+-- OWED-2 reduction + the analytic heart of OWED-3 (`RouteMSJStrongBlock`, corrected deeper-cut route):
+-- `strongBlock_lintegral_lt_top` (the reduced-weight finiteness at shrunk dims, via `exists_ortho_ext` +
+-- column-Fubini `colSplitEquiv` → `detGram_lintegral_box_lt_top`; NO bordered-Gram) → `deeperCut_shell_
+-- corankWeight_lt_top` (OWED-1 ∘ OWED-2 on the shell) → `shell_corankOffSector_le` (the w-uniform per-shell
+-- interior bound). The full `deeperFlag_shell_le` (decorated integrand + Z↦U_s selector) is pin-pending.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
