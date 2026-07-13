@@ -1,0 +1,609 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.3
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f5cc5-b79f-76b2-8bd5-f83e0075d3df
+--------
+user
+<task>
+Adjudicate a design question in the RLCT / integral-finiteness resolution of deep-linear-network
+loss (Aoyagi-style). Work the exact algebra; adjudicate EITHER direction (a clean route EXISTS, or a
+scoped no-go with the sufficient conditions). Withhold nothing about the facts; I want your independent
+read, not a rubber stamp.
+
+SETUP (exact, matches a verified Lean formalisation).
+- A "chain" is a width vector M = (M_0, M_1, ..., M_L), all widths >= 1, giving L layer matrices
+  A_s of shape M_s x M_{s+1}. The layer product is prod(M,A) = A_0 A_1 ... A_{L-1}, shape M_0 x M_L.
+- The target box integral is  I(M, c') = ∫_{box} ‖prod(M,A)‖_F^{-2c'} dA, box = all entries in [-1,1].
+  GOAL: prove I(M,c') < ∞ for every c' < minAdm(M)/2.  ("minAdm" defined below.)
+- minAdm recursion (exact, verified):  minAdm(n,m) = n·m;
+  minAdm(M) = min_{0<=t<=min(M_0,M_1)} [ (M_0 - t)(M_1 - t) + minAdm(t, M_2, ..., M_L) ].
+  redChain(t,M) = (t, M_2, ..., M_L), one fewer layer.
+- BASE, ALREADY PROVEN (unconditional, all widths): for every 3-width chain (m,n,p),
+  I((m,n,p), c') < ∞ for c' < minAdm(m,n,p)/2.  Call this "the mnp base".
+- The general proof peels the FRONT: at binding cut t and a "shell" indexed by the number j of small
+  singular values of the deep-tail product Q = A_1...A_{L-1} (shape M_1 x M_L), the head-split reduction
+  bounds the shell integrand by C · [reduced comparator on redChain(u,M), u=t+j] at exponent shifted by
+  ½·(M_0-u)(M_1-u), closed by the induction hypothesis (IH: I(M') for all one-shorter chains M').
+- The head-split's constant C is FINITE iff the "pivot criterion" holds:
+  hpiv(u):  minAdm(redChain(u,M)) <= u · ρ,   where ρ = min(M_1, M_2, ..., M_L) (tail min width).
+  When hpiv(u) FAILS, the head-split diverges (C = ∞). These failing shells are the "WAIST shells".
+
+ESTABLISHED FACTS (exact, exhaustively checked — treat as given).
+(F1) A chain has a hpiv-FAILING (waist) shell  ⟹  M_1 < min(M_2, ..., M_L)  [strict front pinch].
+     Hence on any waist chain ρ = M_1, and the deep-tail product Q (M_1 x M_L) has generic
+     full row rank M_1.
+(F2) For all waist chains:  minAdm(M) <= minAdm(M_0, M_1, M_L)   AND   minAdm(M) <= M_0·M_1.
+(F3) A whole-chain domination  I(M,c') <= const · I((M_0,M_1,M_L), c')  is provably TOO STRONG:
+     the L-layer integral genuinely diverges for c' in (minAdm(M)/2, minAdm(M_0,M_1,M_L)/2), where the
+     3-width integral is still finite. So no c'-uniform domination by a 3-width box can hold on that range.
+(F4) On the shell where Q is bounded away from degeneracy (all singular values >= ε, i.e. j=0), the shell
+     integral is finite up to c' < M_0·M_1/2 directly (frobSq(A_0 Q) >= ε²·frobSq(A_0), front Morse bound,
+     deep integrated over a compact region). So the FULL-rank-deep shell is easy; the hard shells have
+     the deep product degenerate (j >= 1).
+
+THE QUESTION.
+On a WAIST chain (M_1 < min(M_2,...,M_L)), consider a shell where the deep-tail product Q has j >= 1
+small singular values AND hpiv(t+j) fails. The head-split reduction to redChain(t+j, M) diverges there.
+Design a reduction of THIS waist shell's box integral to a 3-width "mnp base" integral (finite up to
+minAdm/2 of the 3-width chain), OR prove a scoped no-go. Key sub-questions:
+  (Q1) Which 3-width chain (m,n,p) is the right target, and does its minAdm cover the needed threshold
+       c' < minAdm(M)/2 (i.e. is minAdm(M) <= minAdm(m,n,p))?
+  (Q2) What is the reduction mechanism that correctly ACCOUNTS FOR the deep charge (the divergence from
+       the deep layers degenerating), given (F3) forbids a naive whole-chain domination? Candidate
+       mechanisms: change-of-variables collapsing the tail; a per-shell exponent/charge bookkeeping that
+       transfers the deep degeneracy into a lower 3-width threshold; peeling a different layer / using the
+       IH on the tail sub-chain (M_1,...,M_L); a rank-stratified additivity.
+  (Q3) Does the reduction need the induction hypothesis (on some one-shorter chain), or is it a direct
+       reduction to the banked 3-width base with no IH? If it needs an IH, which chain?
+  (Q4) Is reversal (transpose CoV, I(M) = I(reverse M)) needed, or avoidable? (Note: 3-width chains are a
+       base case, so the recursion never has to peel a 3-width waist.)
+</task>
+
+<output_contract>
+1. VERDICT: does a waist shell reduce to the mnp base cleanly (LABOUR), or a scoped no-go (+ the
+   sufficient conditions under which it closes)? One line.
+2. For Q1-Q4, a direct answer each, with the exact algebra / threshold arithmetic that settles it.
+3. The single cleanest reduction mechanism you can construct (or the obstruction that blocks all
+   candidates), with a worked check on the minimal waist chains (2,1,2) [L=0, 3-width] and (2,1,2,2)
+   [L=1, 4-width, front waist], stating minAdm of each and the target 3-width chain.
+4. The one thing most likely to break the proposed route.
+Keep it tight; exact arithmetic over prose.
+</output_contract>
+
+<grounding_rules>
+- Exact integer/rational arithmetic for all thresholds; Monte-Carlo only as a guide, never as a result.
+- Distinguish clearly what you PROVE vs CONJECTURE vs suspect.
+- If a candidate mechanism fails, say why with a concrete counterexample.
+- Do not assume any machinery beyond: the mnp 3-width base (given), the minAdm recursion, standard
+  linear algebra (SVD, rank, PSD monotonicity), Lebesgue/Fubini, and the induction hypothesis on
+  one-shorter chains.
+</grounding_rules>
+
+codex
+I’ll independently derive the threshold arithmetic and test the plausible reductions against the two minimal chains. I’ll first read the repository’s local instructions and any existing notes/formal definitions that bear on the shell bookkeeping.
+exec
+/bin/bash -lc "pwd && sed -n '1,240p' AGENTS.md && sed -n '1,280p' CLAUDE.md && rg -n \"hpiv|head-split|waist|minAdm|redChain|Aoyagi|pivot\" . --glob '"'!**/.git/**'"'" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+ exited 2 in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+sed: can't read AGENTS.md: No such file or directory
+
+codex
+The thread directory has no local `AGENTS.md` file despite the injected instructions, so I’m treating the supplied block as authoritative. I’m locating `CLAUDE.md` and the relevant expedition notes from parent directories before fixing the algebraic verdict.
+exec
+/bin/bash -lc "rg --files .. | sed -n '1,240p'; find .. -name CLAUDE.md -o -name AGENTS.md | sed -n '1,120p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+ succeeded in 0ms:
+../codex/waistconn-prompt.md
+../codex/codex-stdout.log
+
+exec
+/bin/bash -lc "sed -n '1,260p' waistconn-prompt.md; sed -n '1,320p' codex-stdout.log" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+ succeeded in 0ms:
+<task>
+Adjudicate a design question in the RLCT / integral-finiteness resolution of deep-linear-network
+loss (Aoyagi-style). Work the exact algebra; adjudicate EITHER direction (a clean route EXISTS, or a
+scoped no-go with the sufficient conditions). Withhold nothing about the facts; I want your independent
+read, not a rubber stamp.
+
+SETUP (exact, matches a verified Lean formalisation).
+- A "chain" is a width vector M = (M_0, M_1, ..., M_L), all widths >= 1, giving L layer matrices
+  A_s of shape M_s x M_{s+1}. The layer product is prod(M,A) = A_0 A_1 ... A_{L-1}, shape M_0 x M_L.
+- The target box integral is  I(M, c') = ∫_{box} ‖prod(M,A)‖_F^{-2c'} dA, box = all entries in [-1,1].
+  GOAL: prove I(M,c') < ∞ for every c' < minAdm(M)/2.  ("minAdm" defined below.)
+- minAdm recursion (exact, verified):  minAdm(n,m) = n·m;
+  minAdm(M) = min_{0<=t<=min(M_0,M_1)} [ (M_0 - t)(M_1 - t) + minAdm(t, M_2, ..., M_L) ].
+  redChain(t,M) = (t, M_2, ..., M_L), one fewer layer.
+- BASE, ALREADY PROVEN (unconditional, all widths): for every 3-width chain (m,n,p),
+  I((m,n,p), c') < ∞ for c' < minAdm(m,n,p)/2.  Call this "the mnp base".
+- The general proof peels the FRONT: at binding cut t and a "shell" indexed by the number j of small
+  singular values of the deep-tail product Q = A_1...A_{L-1} (shape M_1 x M_L), the head-split reduction
+  bounds the shell integrand by C · [reduced comparator on redChain(u,M), u=t+j] at exponent shifted by
+  ½·(M_0-u)(M_1-u), closed by the induction hypothesis (IH: I(M') for all one-shorter chains M').
+- The head-split's constant C is FINITE iff the "pivot criterion" holds:
+  hpiv(u):  minAdm(redChain(u,M)) <= u · ρ,   where ρ = min(M_1, M_2, ..., M_L) (tail min width).
+  When hpiv(u) FAILS, the head-split diverges (C = ∞). These failing shells are the "WAIST shells".
+
+ESTABLISHED FACTS (exact, exhaustively checked — treat as given).
+(F1) A chain has a hpiv-FAILING (waist) shell  ⟹  M_1 < min(M_2, ..., M_L)  [strict front pinch].
+     Hence on any waist chain ρ = M_1, and the deep-tail product Q (M_1 x M_L) has generic
+     full row rank M_1.
+(F2) For all waist chains:  minAdm(M) <= minAdm(M_0, M_1, M_L)   AND   minAdm(M) <= M_0·M_1.
+(F3) A whole-chain domination  I(M,c') <= const · I((M_0,M_1,M_L), c')  is provably TOO STRONG:
+     the L-layer integral genuinely diverges for c' in (minAdm(M)/2, minAdm(M_0,M_1,M_L)/2), where the
+     3-width integral is still finite. So no c'-uniform domination by a 3-width box can hold on that range.
+(F4) On the shell where Q is bounded away from degeneracy (all singular values >= ε, i.e. j=0), the shell
+     integral is finite up to c' < M_0·M_1/2 directly (frobSq(A_0 Q) >= ε²·frobSq(A_0), front Morse bound,
+     deep integrated over a compact region). So the FULL-rank-deep shell is easy; the hard shells have
+     the deep product degenerate (j >= 1).
+
+THE QUESTION.
+On a WAIST chain (M_1 < min(M_2,...,M_L)), consider a shell where the deep-tail product Q has j >= 1
+small singular values AND hpiv(t+j) fails. The head-split reduction to redChain(t+j, M) diverges there.
+Design a reduction of THIS waist shell's box integral to a 3-width "mnp base" integral (finite up to
+minAdm/2 of the 3-width chain), OR prove a scoped no-go. Key sub-questions:
+  (Q1) Which 3-width chain (m,n,p) is the right target, and does its minAdm cover the needed threshold
+       c' < minAdm(M)/2 (i.e. is minAdm(M) <= minAdm(m,n,p))?
+  (Q2) What is the reduction mechanism that correctly ACCOUNTS FOR the deep charge (the divergence from
+       the deep layers degenerating), given (F3) forbids a naive whole-chain domination? Candidate
+       mechanisms: change-of-variables collapsing the tail; a per-shell exponent/charge bookkeeping that
+       transfers the deep degeneracy into a lower 3-width threshold; peeling a different layer / using the
+       IH on the tail sub-chain (M_1,...,M_L); a rank-stratified additivity.
+  (Q3) Does the reduction need the induction hypothesis (on some one-shorter chain), or is it a direct
+       reduction to the banked 3-width base with no IH? If it needs an IH, which chain?
+  (Q4) Is reversal (transpose CoV, I(M) = I(reverse M)) needed, or avoidable? (Note: 3-width chains are a
+       base case, so the recursion never has to peel a 3-width waist.)
+</task>
+
+<output_contract>
+1. VERDICT: does a waist shell reduce to the mnp base cleanly (LABOUR), or a scoped no-go (+ the
+   sufficient conditions under which it closes)? One line.
+2. For Q1-Q4, a direct answer each, with the exact algebra / threshold arithmetic that settles it.
+3. The single cleanest reduction mechanism you can construct (or the obstruction that blocks all
+   candidates), with a worked check on the minimal waist chains (2,1,2) [L=0, 3-width] and (2,1,2,2)
+   [L=1, 4-width, front waist], stating minAdm of each and the target 3-width chain.
+4. The one thing most likely to break the proposed route.
+Keep it tight; exact arithmetic over prose.
+</output_contract>
+
+<grounding_rules>
+- Exact integer/rational arithmetic for all thresholds; Monte-Carlo only as a guide, never as a result.
+- Distinguish clearly what you PROVE vs CONJECTURE vs suspect.
+- If a candidate mechanism fails, say why with a concrete counterexample.
+- Do not assume any machinery beyond: the mnp 3-width base (given), the minAdm recursion, standard
+  linear algebra (SVD, rank, PSD monotonicity), Lebesgue/Fubini, and the induction hypothesis on
+  one-shorter chains.
+</grounding_rules>
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.3
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f5cc5-b79f-76b2-8bd5-f83e0075d3df
+--------
+user
+<task>
+Adjudicate a design question in the RLCT / integral-finiteness resolution of deep-linear-network
+loss (Aoyagi-style). Work the exact algebra; adjudicate EITHER direction (a clean route EXISTS, or a
+scoped no-go with the sufficient conditions). Withhold nothing about the facts; I want your independent
+read, not a rubber stamp.
+
+SETUP (exact, matches a verified Lean formalisation).
+- A "chain" is a width vector M = (M_0, M_1, ..., M_L), all widths >= 1, giving L layer matrices
+  A_s of shape M_s x M_{s+1}. The layer product is prod(M,A) = A_0 A_1 ... A_{L-1}, shape M_0 x M_L.
+- The target box integral is  I(M, c') = ∫_{box} ‖prod(M,A)‖_F^{-2c'} dA, box = all entries in [-1,1].
+  GOAL: prove I(M,c') < ∞ for every c' < minAdm(M)/2.  ("minAdm" defined below.)
+- minAdm recursion (exact, verified):  minAdm(n,m) = n·m;
+  minAdm(M) = min_{0<=t<=min(M_0,M_1)} [ (M_0 - t)(M_1 - t) + minAdm(t, M_2, ..., M_L) ].
+  redChain(t,M) = (t, M_2, ..., M_L), one fewer layer.
+- BASE, ALREADY PROVEN (unconditional, all widths): for every 3-width chain (m,n,p),
+  I((m,n,p), c') < ∞ for c' < minAdm(m,n,p)/2.  Call this "the mnp base".
+- The general proof peels the FRONT: at binding cut t and a "shell" indexed by the number j of small
+  singular values of the deep-tail product Q = A_1...A_{L-1} (shape M_1 x M_L), the head-split reduction
+  bounds the shell integrand by C · [reduced comparator on redChain(u,M), u=t+j] at exponent shifted by
+  ½·(M_0-u)(M_1-u), closed by the induction hypothesis (IH: I(M') for all one-shorter chains M').
+- The head-split's constant C is FINITE iff the "pivot criterion" holds:
+  hpiv(u):  minAdm(redChain(u,M)) <= u · ρ,   where ρ = min(M_1, M_2, ..., M_L) (tail min width).
+  When hpiv(u) FAILS, the head-split diverges (C = ∞). These failing shells are the "WAIST shells".
+
+ESTABLISHED FACTS (exact, exhaustively checked — treat as given).
+(F1) A chain has a hpiv-FAILING (waist) shell  ⟹  M_1 < min(M_2, ..., M_L)  [strict front pinch].
+     Hence on any waist chain ρ = M_1, and the deep-tail product Q (M_1 x M_L) has generic
+     full row rank M_1.
+(F2) For all waist chains:  minAdm(M) <= minAdm(M_0, M_1, M_L)   AND   minAdm(M) <= M_0·M_1.
+(F3) A whole-chain domination  I(M,c') <= const · I((M_0,M_1,M_L), c')  is provably TOO STRONG:
+     the L-layer integral genuinely diverges for c' in (minAdm(M)/2, minAdm(M_0,M_1,M_L)/2), where the
+     3-width integral is still finite. So no c'-uniform domination by a 3-width box can hold on that range.
+(F4) On the shell where Q is bounded away from degeneracy (all singular values >= ε, i.e. j=0), the shell
+     integral is finite up to c' < M_0·M_1/2 directly (frobSq(A_0 Q) >= ε²·frobSq(A_0), front Morse bound,
+     deep integrated over a compact region). So the FULL-rank-deep shell is easy; the hard shells have
+     the deep product degenerate (j >= 1).
+
+THE QUESTION.
+On a WAIST chain (M_1 < min(M_2,...,M_L)), consider a shell where the deep-tail product Q has j >= 1
+small singular values AND hpiv(t+j) fails. The head-split reduction to redChain(t+j, M) diverges there.
+Design a reduction of THIS waist shell's box integral to a 3-width "mnp base" integral (finite up to
+minAdm/2 of the 3-width chain), OR prove a scoped no-go. Key sub-questions:
+  (Q1) Which 3-width chain (m,n,p) is the right target, and does its minAdm cover the needed threshold
+       c' < minAdm(M)/2 (i.e. is minAdm(M) <= minAdm(m,n,p))?
+  (Q2) What is the reduction mechanism that correctly ACCOUNTS FOR the deep charge (the divergence from
+       the deep layers degenerating), given (F3) forbids a naive whole-chain domination? Candidate
+       mechanisms: change-of-variables collapsing the tail; a per-shell exponent/charge bookkeeping that
+       transfers the deep degeneracy into a lower 3-width threshold; peeling a different layer / using the
+       IH on the tail sub-chain (M_1,...,M_L); a rank-stratified additivity.
+  (Q3) Does the reduction need the induction hypothesis (on some one-shorter chain), or is it a direct
+       reduction to the banked 3-width base with no IH? If it needs an IH, which chain?
+  (Q4) Is reversal (transpose CoV, I(M) = I(reverse M)) needed, or avoidable? (Note: 3-width chains are a
+       base case, so the recursion never has to peel a 3-width waist.)
+</task>
+
+<output_contract>
+1. VERDICT: does a waist shell reduce to the mnp base cleanly (LABOUR), or a scoped no-go (+ the
+   sufficient conditions under which it closes)? One line.
+2. For Q1-Q4, a direct answer each, with the exact algebra / threshold arithmetic that settles it.
+3. The single cleanest reduction mechanism you can construct (or the obstruction that blocks all
+   candidates), with a worked check on the minimal waist chains (2,1,2) [L=0, 3-width] and (2,1,2,2)
+   [L=1, 4-width, front waist], stating minAdm of each and the target 3-width chain.
+4. The one thing most likely to break the proposed route.
+Keep it tight; exact arithmetic over prose.
+</output_contract>
+
+<grounding_rules>
+- Exact integer/rational arithmetic for all thresholds; Monte-Carlo only as a guide, never as a result.
+- Distinguish clearly what you PROVE vs CONJECTURE vs suspect.
+- If a candidate mechanism fails, say why with a concrete counterexample.
+- Do not assume any machinery beyond: the mnp 3-width base (given), the minAdm recursion, standard
+  linear algebra (SVD, rank, PSD monotonicity), Lebesgue/Fubini, and the induction hypothesis on
+  one-shorter chains.
+</grounding_rules>
+
+codex
+I’ll independently derive the threshold arithmetic and test the plausible reductions against the two minimal chains. I’ll first read the repository’s local instructions and any existing notes/formal definitions that bear on the shell bookkeeping.
+exec
+/bin/bash -lc "pwd && sed -n '1,240p' AGENTS.md && sed -n '1,280p' CLAUDE.md && rg -n \"hpiv|head-split|waist|minAdm|redChain|Aoyagi|pivot\" . --glob '"'!**/.git/**'"'" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+ exited 2 in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+sed: can't read AGENTS.md: No such file or directory
+
+codex
+The thread directory has no local `AGENTS.md` file despite the injected instructions, so I’m treating the supplied block as authoritative. I’m locating `CLAUDE.md` and the relevant expedition notes from parent directories before fixing the algebraic verdict.
+exec
+/bin/bash -lc "rg --files .. | sed -n '1,240p'; find .. -name CLAUDE.md -o -name AGENTS.md | sed -n '1,120p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex
+ succeeded in 0ms:
+../codex/waistconn-prompt.md
+../codex/codex-stdout.log
+
+
+codex
+**VERDICT:** **Scoped no-go for a direct single-mnp “LABOUR” reduction; every non-base waist shell nevertheless closes cleanly by transpose-reversal plus the ordinary one-shorter IH.**
+
+### Q1–Q4
+
+**Q1.** No single three-width chain records the deep charge in general.
+
+Threshold-only candidates do cover:
+
+\[
+d(M)\le d(M_0,M_1,M_L) \quad\text{(F2)},
+\]
+
+and also
+
+\[
+d(M)\le d(M_0,M_1,M_2),
+\]
+
+because \(d(t,M_2,\ldots,M_L)\le tM_2\). But coverage is not domination.
+
+Concrete obstruction:
+
+\[
+d(4,2,3,3)=\min\{8,\;3+d(1,3,3),\;d(2,3,3)\}
+=\min\{8,6,5\}=5,
+\]
+
+whereas
+
+\[
+d(4,2,3)=\min\{8,6,6\}=6.
+\]
+
+Thus the flat three-width model misses one unit of deep charge.
+
+Under reversal, a four-width chain uses the family
+
+\[
+(u,M_1,M_0).
+\]
+
+For longer chains there is no immediate three-width target: these are replaced by shorter chains \((u,M_{L-2},\ldots,M_0)\).
+
+**Q2.** Use reversal and re-stratify; do not collapse \(Q\).
+
+Let
+
+\[
+N=\operatorname{rev}M=(M_L,M_{L-1},\ldots,M_0).
+\]
+
+The coordinate change \(B_s=A_{L-1-s}^{\mathsf T}\) has Jacobian \(1\) and gives
+
+\[
+I(M,c')=I(N,c').
+\]
+
+The recurrence has the exact back-recursion, hence
+
+\[
+d(N)=d(M).
+\]
+
+Since \(M_1<M_i\) for every \(i\ge2\), when \(M\) has at least four widths,
+
+\[
+N_1=M_{L-1}>M_1\ge \min(N_2,\ldots,N_L).
+\]
+
+Thus \(N\) is not a strict front pinch. By the contrapositive of F1, **every reversed shell satisfies hpiv**.
+
+For a reversed branch \(u\), put
+
+\[
+H_u=(M_L-u)(M_{L-1}-u),\qquad
+D_u=d(u,M_{L-2},\ldots,M_0).
+\]
+
+Then
+
+\[
+d(M)=d(N)=\min_u(H_u+D_u),
+\]
+
+so
+
+\[
+c'<\frac{d(M)}2
+\implies
+c'-\frac{H_u}{2}<\frac{D_u}{2}.
+\]
+
+This is exactly the shifted IH threshold. The original waist shell need not map to a reversed shell: its integral is bounded by the whole reversed integral, which is then re-stratified.
+
+Why collapse fails: a bounded-density replacement of \(Q\) by a free matrix would give
+
+\[
+I(4,2,3,3;c')\lesssim I(4,2,3;c'),
+\]
+
+contradicting divergence of the former for \(5/2<c'<3\) and finiteness of the latter. Moreover, on a partial-rank shell
+\(\sigma_1(Q)\ge\varepsilon\), \(\sigma_2(Q)\to0\), the scalar tail IH sees only
+\(\|Q\|_F\ge\varepsilon\); it carries no rank-defect charge.
+
+**Q3.** Yes. The general route uses IH on every one-shorter reversed chain
+
+\[
+(u,M_{L-2},\ldots,M_0).
+\]
+
+The original tail IH \((M_1,\ldots,M_L)\) alone is insufficient for partial singular-value shells. A direct banked mnp reduction occurs only once the reversed reduction has three widths.
+
+**Q4.** Reversal is essential to this clean route, though not logically unavoidable. It can be avoided when \(M_1=1\), when a relevant factor is uniformly nondegenerate, or with a stronger rank-stratified IH controlling small singular values rather than only \(\|Q\|_F\).
+
+### Minimal checks
+
+For \((2,1,2)\),
+
+\[
+d=\min\{2,2\}=2.
+\]
+
+It is already the mnp base; the threshold is \(c'<1\), and the target is \((2,1,2)\).
+
+For \((2,1,2,2)\),
+
+\[
+d(1,2,2)=2,\qquad d(2,1,2,2)=\min\{2,2\}=2.
+\]
+
+The original \(u=1\) pivot fails since \(2>1\). Here \(M_1=1\), so exceptionally
+
+\[
+\|A_0Q\|_F=\|A_0\|_2\|Q\|_2,
+\]
+
+and the integral factors into the front Morse integral and the base integral for \((1,2,2)\), both finite for \(c'<1\).
+
+The general route reverses to \((2,2,1,2)\). Its nontrivial base targets are
+
+\[
+(1,1,2),\quad d=1;\qquad (2,1,2),\quad d=2,
+\]
+
+with shifted inequalities
+
+\[
+c'-\tfrac12<\tfrac12,\qquad c'<1.
+\]
+
+### Most likely break
+
+The formal route needs a non-circular proof of
+
+\[
+d(M)=d(\operatorname{rev}M)
+\]
+
+from the finite min-recursion. Transpose invariance of the integral alone does not transfer the required threshold.
+tokens used
+42,724
+**VERDICT:** **Scoped no-go for a direct single-mnp “LABOUR” reduction; every non-base waist shell nevertheless closes cleanly by transpose-reversal plus the ordinary one-shorter IH.**
+
+### Q1–Q4
+
+**Q1.** No single three-width chain records the deep charge in general.
+
+Threshold-only candidates do cover:
+
+\[
+d(M)\le d(M_0,M_1,M_L) \quad\text{(F2)},
+\]
+
+and also
+
+\[
+d(M)\le d(M_0,M_1,M_2),
+\]
+
+because \(d(t,M_2,\ldots,M_L)\le tM_2\). But coverage is not domination.
+
+Concrete obstruction:
+
+\[
+d(4,2,3,3)=\min\{8,\;3+d(1,3,3),\;d(2,3,3)\}
+=\min\{8,6,5\}=5,
+\]
+
+whereas
+
+\[
+d(4,2,3)=\min\{8,6,6\}=6.
+\]
+
+Thus the flat three-width model misses one unit of deep charge.
+
+Under reversal, a four-width chain uses the family
+
+\[
+(u,M_1,M_0).
+\]
+
+For longer chains there is no immediate three-width target: these are replaced by shorter chains \((u,M_{L-2},\ldots,M_0)\).
+
+**Q2.** Use reversal and re-stratify; do not collapse \(Q\).
+
+Let
+
+\[
+N=\operatorname{rev}M=(M_L,M_{L-1},\ldots,M_0).
+\]
+
+The coordinate change \(B_s=A_{L-1-s}^{\mathsf T}\) has Jacobian \(1\) and gives
+
+\[
+I(M,c')=I(N,c').
+\]
+
+The recurrence has the exact back-recursion, hence
+
+\[
+d(N)=d(M).
+\]
+
+Since \(M_1<M_i\) for every \(i\ge2\), when \(M\) has at least four widths,
+
+\[
+N_1=M_{L-1}>M_1\ge \min(N_2,\ldots,N_L).
+\]
+
+Thus \(N\) is not a strict front pinch. By the contrapositive of F1, **every reversed shell satisfies hpiv**.
+
+For a reversed branch \(u\), put
+
+\[
+H_u=(M_L-u)(M_{L-1}-u),\qquad
+D_u=d(u,M_{L-2},\ldots,M_0).
+\]
+
+Then
+
+\[
+d(M)=d(N)=\min_u(H_u+D_u),
+\]
+
+so
+
+\[
+c'<\frac{d(M)}2
+\implies
+c'-\frac{H_u}{2}<\frac{D_u}{2}.
+\]
+
+This is exactly the shifted IH threshold. The original waist shell need not map to a reversed shell: its integral is bounded by the whole reversed integral, which is then re-stratified.
+
+Why collapse fails: a bounded-density replacement of \(Q\) by a free matrix would give
+
+\[
+I(4,2,3,3;c')\lesssim I(4,2,3;c'),
+\]
+
+contradicting divergence of the former for \(5/2<c'<3\) and finiteness of the latter. Moreover, on a partial-rank shell
+\(\sigma_1(Q)\ge\varepsilon\), \(\sigma_2(Q)\to0\), the scalar tail IH sees only
+\(\|Q\|_F\ge\varepsilon\); it carries no rank-defect charge.
+
+**Q3.** Yes. The general route uses IH on every one-shorter reversed chain
+
+\[
+(u,M_{L-2},\ldots,M_0).
+\]
+
+The original tail IH \((M_1,\ldots,M_L)\) alone is insufficient for partial singular-value shells. A direct banked mnp reduction occurs only once the reversed reduction has three widths.
+
+**Q4.** Reversal is essential to this clean route, though not logically unavoidable. It can be avoided when \(M_1=1\), when a relevant factor is uniformly nondegenerate, or with a stronger rank-stratified IH controlling small singular values rather than only \(\|Q\|_F\).
+
+### Minimal checks
+
+For \((2,1,2)\),
+
+\[
+d=\min\{2,2\}=2.
+\]
+
+It is already the mnp base; the threshold is \(c'<1\), and the target is \((2,1,2)\).
+
+For \((2,1,2,2)\),
+
+\[
+d(1,2,2)=2,\qquad d(2,1,2,2)=\min\{2,2\}=2.
+\]
+
+The original \(u=1\) pivot fails since \(2>1\). Here \(M_1=1\), so exceptionally
+
+\[
+\|A_0Q\|_F=\|A_0\|_2\|Q\|_2,
+\]
+
+and the integral factors into the front Morse integral and the base integral for \((1,2,2)\), both finite for \(c'<1\).
+
+The general route reverses to \((2,2,1,2)\). Its nontrivial base targets are
+
+\[
+(1,1,2),\quad d=1;\qquad (2,1,2),\quad d=2,
+\]
+
+with shifted inequalities
+
+\[
+c'-\tfrac12<\tfrac12,\qquad c'<1.
+\]
+
+### Most likely break
+
+The formal route needs a non-circular proof of
+
+\[
+d(M)=d(\operatorname{rev}M)
+\]
+
+from the finite min-recursion. Transpose invariance of the integral alone does not transfer the required threshold.

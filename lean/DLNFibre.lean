@@ -1456,3 +1456,13 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJShellContain
 -- Brick D-A (`RouteMSJPivotBlowup`): the P-radial blow-up CoV (Aoyagi §5 step (i)) for the head-split
 -- pivot block — exact equality, ordinary unit sphere, honest Jacobian `r^{u·M₁−1}`, CoV only (D-B has finiteness).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotBlowup
+-- Brick F2a (`RouteMSJOrderedRootsMeasurable`): `measurableEigenvalues₀` — the sorted eigenvalues of a
+-- measurable Hermitian family are measurable in the parameter (Vieta-eval + Lusin–Souslin, contour-free).
+-- Conjunct (i) of the measurable-eigendecomposition primitive + the good-set (hGmeas) measurability source.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
+-- ★ Brick F COMPLETE — the measurable head-split frame. F2b `exists_measurableEigenframe` (Lagrange
+-- projector + measurable pivot) + the F2 assembly `measurableEigendecomp` (F2a ⊕ F2b) + F1
+-- `exists_headSplitFrame_impl` (the piecewise m-frame selector). All clean-three; consumed by deeperFlag_spineToCore.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
+import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
