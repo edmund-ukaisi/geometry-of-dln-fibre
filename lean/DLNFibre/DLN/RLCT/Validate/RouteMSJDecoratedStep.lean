@@ -270,13 +270,40 @@ theorem deeperFlagWaist_finite
 
 /-! ## Hole (e) — the WAIST sub-case `M₁ = 1` (reversal-FREE rank-1 factorization) -/
 
-/-- **HOLE (e) — the waist sub-case `M₁ = 1` (reversal-free, UNCONDITIONAL).** When `M₁ = 1` (any `L`),
-the front block `Γ` is a column and the deep-tail product `Q = prod (dropHead M)` a row, so the loss
-FACTORIZES for ANY `D`: `frobSq (Γ · Q) = ‖Γ‖² · ‖Q‖²` (rank-1 outer product; waistpin-confirmed cheap +
-unconditional). The decorated box integral therefore splits as a FRONT Morse integral (the radial `‖Γ‖²`
-factor, `corankLeaf_rpow_lt_top` at `n = 1`) times the dropHead-tail IH (`Q` = one-shorter chain product,
-closed by the DECORATED IH `hIH` on `dropHead M` at the reduced arity). Reversal-free, a standalone
-lemma, no open gate. Concludes `DecoratedBoxThresholdFinite D`. NOT filled here. -/
+/-- **HOLE (e) — the waist sub-case `M₁ = 1`.** At `M₁ = 1` the loss factors through the width-1
+bottleneck: `frobSq (rmatMul Γ Q) = frobSq Γ · frobSq Q` (the banked `frobSq_rmatMul_mid_one`), so the
+decorated box integral splits into a FRONT Morse factor × a dropHead-TAIL IH factor. Fill dispatches the
+`adm` disjunction `obtain ⟨hgen, hdisj⟩ := hD; rcases hdisj with hcA | hcB | hf`.
+
+**DURABLE FILL RECIPE (for the batched post-admfix completion tide — inherit exactly).**
+
+*Corank sub-cases* `hcA : admCorankA M = 0` / `hcB : admCorankB M = 0` — **HOLD pending admfix.** The
+current corank disjunct is UNSOUND at the step (it is an M-property, requires no β, and `genuineCarrier`
+does not bound `jac`; concrete counterexample `M = (5,2,1)`, `admCorankB = 0`, a genuine `D` with
+`d=1, supp≡1, jac≡0` has `D.integral = ⊤` on `c' ∈ [1/2,1)` below `carrierThreshold = 1`). Fill against
+the admfix-repaired `adm`, not the current one.
+
+*FaithfulSJAt* `hf`, dispatched `rcases hf with ⟨hd0, hobs⟩ | ⟨hd1, i₀, halpha, hbeta, hdelta0, hgamma⟩`:
+- **d=0** (`hobs : carrier.loss u z x = ∑ v, (x v)²`): decLoss = `frobSq (prod M (e z))` [adapt the
+  eqRec transport of `decoratedBase_d0_of_lossEq`: `hν`, `hctx`, `eqRec_fun_apply_eqRec`] → `prod_headSplit`
+  (`prod M A = rmatMul (A 0) (prod (dropHead M) (fun j ↦ A j.succ))`) → `frobSq_rmatMul_mid_one` (banked;
+  needs the `Fin (M 1) = Fin 1` cast from `hM1` — the documented opaque-width `have`+`exact` pattern) →
+  box split `paramsHeadSplit_preimage_box` (`Params M` box ≃ `matBox (M 0) (M 1) 1 × Params (dropHead M) 1`)
+  → Tonelli 2-way → FRONT `∫_{matBox (M 0) 1} frobSq (A 0)^{-c'}` via `corankLeaf_rpow_lt_top` at `n = 1`
+  (finite below `M₀/2`) × TAIL `hIH (dropHead M) (SJDecoration.trivial _) (adm_trivial ..)` +
+  `decoratedBoxThresholdFinite_trivial_iff` (finite below `½·minAdm (dropHead M)`).
+- **d≥1**: the SAME skeleton with the extra `commonDivisor(u)²·(monomial)` factor —
+  `decLoss_clean_of_uniformResidualSupport D i₀ hdelta0` gives decLoss = `commonDivisor² · frobSq (Γ·Z_tail)`,
+  `hgamma` (`gammaPrimeClause`) supplies `eΓ : D.Z ≃ᵐ (Fin a → Fin (M 1) → ℝ) × Params (dropHead M)` +
+  provenance, then `frobSq_rmatMul_mid_one` (Γ : `a×1`, Z_tail = `prod (dropHead M) · : 1×M_last`) factors,
+  Tonelli 3-way: `monomialIntegrand_lintegral_unitBox_lt_top` (below `monomialThreshold`, from `hbeta` β) ×
+  FRONT (`corankLeaf_rpow_lt_top`@n=1) × TAIL (`hIH` on `dropHead M`).
+
+*Threshold bookkeeping* (both FaithfulSJAt cases): `c' < ½·minAdm M ≤ min(M₀/2, ½·minAdm (dropHead M))`
+via `minAdm_le_mul_head` (`minAdm M ≤ M₀·M₁ = M₀`) and the banked `minAdm_le_minAdm_dropHead_of_mid_one`.
+
+Bricks banked sorry-free: `frobSq_rmatMul_mid_one`, `minAdm_le_minAdm_dropHead_of_mid_one`. Concludes
+`DecoratedBoxThresholdFinite D`. NOT filled here. -/
 theorem deeperFlagWaistM1_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
