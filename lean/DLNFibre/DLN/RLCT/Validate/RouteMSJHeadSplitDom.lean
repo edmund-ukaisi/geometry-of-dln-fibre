@@ -280,6 +280,13 @@ theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
               ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
                   Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
                 ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M (t + j) Zf z A_cor)) ^ (-c')) := by
+  -- ASSEMBLY (#2, banked plumbing, route mapped): transport via `measurePreserving_hsSplit`
+  -- (`setLIntegral_comp_emb`) → drop the shell to `(G ∩ Zbox) ×ˢ Abox` (`hsSplit_good_of_shell` +
+  -- box, `Measure.restrict_mono`) → rewrite the integrand `Q₁ ↦ hsQ` on the good set
+  -- (`hsSplit_freedSchur_symm_eq`, needs the set measurable via `hGmeas`) → drop `G`
+  -- (`restrict_mono`) → Tonelli `∫_{Zbox×ˢAbox} = ∫z ∫A_cor` (`setLIntegral_prod`, whose AEMeasurability
+  -- of the freed-loss product integrand is the one genuinely-new obligation, via `hZfMeas` + `P⁻¹`
+  -- continuity-on-units + `prod`/`frobSq` continuity). All ingredients landed above.
   sorry
 
 /-- **Brick D (isolated): the head-split domination with a FINITE reorganization constant.** Verbatim
