@@ -136,6 +136,26 @@ theorem hsSplit_fst_succ (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u
     (A' : Params (tailChain M)) (s : Fin L) :
     (hsSplit M u κ A').1 s.succ = A' s.succ := rfl
 
+/-- `weakEigCount` is monotone in the threshold: a smaller `ε` counts no more small eigenvalues. -/
+theorem weakEigCount_mono {M₂ nn : ℕ} {ε₁ ε₂ : ℝ} (h0 : 0 ≤ ε₁) (h : ε₁ ≤ ε₂)
+    (Z : Matrix (Fin M₂) (Fin nn) ℝ) :
+    weakEigCount ε₁ Z ≤ weakEigCount ε₂ Z := by
+  unfold weakEigCount
+  apply Finset.card_le_card
+  intro i hi
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi ⊢
+  nlinarith [hi, sq_nonneg ε₁]
+
+/-- `freedSchurLoss` reads `Q` only through its two row-blocks `Q.submatrix Sum.inl/inr id`; equal blocks
+give equal loss. -/
+theorem freedSchurLoss_submatrix_congr {t a b q : ℕ} (x : SJOuter t a b) (Γ : Fin a → Fin b → ℝ)
+    (Q1 Q2 : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ)
+    (h1 : Q1.submatrix Sum.inl id = Q2.submatrix Sum.inl id)
+    (h2 : Q1.submatrix Sum.inr id = Q2.submatrix Sum.inr id) :
+    freedSchurLoss x Γ Q1 = freedSchurLoss x Γ Q2 := by
+  unfold freedSchurLoss
+  rw [h1, h2]
+
 /-- **The mechanical head/row-split domination** (steps 1,2,5,6 — banked plumbing): the literal
 shell-restricted spine integrand is dominated by the `(z, A_cor)`-box freed-loss integrand at `Q = hsQ`
 (pivot rows `prod(redChain u M) z`, corank rows `A_cor·Zf z`). Route: head split (`paramsHeadSplit` +
