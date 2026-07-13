@@ -596,4 +596,75 @@ theorem measEntries_lagProj {A : X → Matrix (Fin M₂) (Fin M₂) ℝ} {lam : 
     MeasEntries (fun z => lagProj (A z) (lam z) i) :=
   measEntries_listProj hA hlam i (List.finRange M₂)
 
+open scoped Classical in
+/-- The first-nonzero column, as a finite indicator sum over "`c` is the first nonzero column". -/
+theorem pivotVec_eq_sum_ite (R : Matrix (Fin M₂) (Fin M₂) ℝ) (r : Fin M₂) :
+    pivotVec R r
+      = ∑ c : Fin M₂, if ((fun r' => R r' c) ≠ 0 ∧ ∀ c', c' < c → (fun r' => R r' c') = 0)
+          then R r c else 0 := by
+  by_cases h : (nzColSet R).Nonempty
+  · rw [pivotVec, dif_pos h]
+    have hc0mem := Finset.min'_mem (nzColSet R) h
+    simp only [nzColSet, Finset.mem_filter] at hc0mem
+    have hP0 : (fun r' => R r' ((nzColSet R).min' h)) ≠ 0
+        ∧ ∀ c', c' < (nzColSet R).min' h → (fun r' => R r' c') = 0 := by
+      refine ⟨hc0mem.2, fun c' hc' => ?_⟩
+      by_contra hcol
+      have : c' ∈ nzColSet R := by
+        simp only [nzColSet, Finset.mem_filter]; exact ⟨Finset.mem_univ _, hcol⟩
+      exact absurd (Finset.min'_le _ _ this) (not_le.mpr hc')
+    rw [Finset.sum_eq_single ((nzColSet R).min' h) (fun c _ hcne => ?_) (fun hc0 => ?_)]
+    · rw [if_pos hP0]
+    · refine if_neg (fun ⟨hcol, hlt⟩ => ?_)
+      have hcmem : c ∈ nzColSet R := by
+        simp only [nzColSet, Finset.mem_filter]; exact ⟨Finset.mem_univ _, hcol⟩
+      rcases lt_or_eq_of_le (Finset.min'_le _ _ hcmem) with hlt2 | heq
+      · exact hc0mem.2 (hlt _ hlt2)
+      · exact hcne heq.symm
+    · exact absurd (Finset.mem_univ _) hc0
+  · rw [pivotVec, dif_neg h]
+    refine (Finset.sum_eq_zero (fun c _ => if_neg (fun ⟨hcol, _⟩ => h ⟨c, ?_⟩))).symm
+    simp only [nzColSet, Finset.mem_filter]; exact ⟨Finset.mem_univ _, hcol⟩
+
+/-- Measurability of the first-nonzero-column selection (the sole finite measurable pivot). -/
+theorem measVec_pivotVec {R : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hR : MeasEntries R) :
+    MeasVec (fun z => pivotVec (R z)) := by
+  intro r
+  simp_rw [pivotVec_eq_sum_ite]
+  refine Finset.measurable_sum _ (fun c _ => ?_)
+  have hcolzero : ∀ c', MeasurableSet {z | (fun r' => R z r' c') = 0} := by
+    intro c'
+    have : {z | (fun r' => R z r' c') = 0} = ⋂ r', {z | R z r' c' = 0} := by
+      ext z; simp [funext_iff]
+    rw [this]
+    exact MeasurableSet.iInter (fun r' => (hR r' c') (measurableSet_singleton 0))
+  have hset : MeasurableSet {z | (fun r' => R z r' c) ≠ 0
+      ∧ ∀ c', c' < c → (fun r' => R z r' c') = 0} := by
+    rw [Set.setOf_and]
+    refine MeasurableSet.inter ?_ ?_
+    · have heq : {z | (fun r' => R z r' c) ≠ 0} = (⋂ r', {z | R z r' c = 0})ᶜ := by
+        ext z; simp [funext_iff]
+      rw [heq]
+      exact (MeasurableSet.iInter (fun r' => (hR r' c) (measurableSet_singleton 0))).compl
+    · rw [Set.setOf_forall]
+      refine MeasurableSet.iInter (fun c' => ?_)
+      by_cases hc' : c' < c
+      · have : {z | c' < c → (fun r' => R z r' c') = 0} = {z | (fun r' => R z r' c') = 0} := by
+          ext z; simp [hc']
+        rw [this]; exact hcolzero c'
+      · have : {z | c' < c → (fun r' => R z r' c') = 0} = Set.univ := by ext z; simp [hc']
+        rw [this]; exact MeasurableSet.univ
+  exact Measurable.ite hset (hR r c) measurable_const
+
+/-- Measurability of the normalized first-nonzero column. -/
+theorem measVec_pivotUnit {R : X → Matrix (Fin M₂) (Fin M₂) ℝ} (hR : MeasEntries R) :
+    MeasVec (fun z => pivotUnit (R z)) := by
+  have hpv := measVec_pivotVec hR
+  have hd : Measurable (fun z => dotProduct (pivotVec (R z)) (pivotVec (R z))) := by
+    simp only [dotProduct]
+    exact Finset.measurable_sum _ (fun i _ => (hpv i).mul (hpv i))
+  intro i
+  simp only [pivotUnit, Pi.smul_apply, smul_eq_mul]
+  exact (Real.continuous_sqrt.measurable.comp hd).inv.mul (hpv i)
+
 end DLNFibre.DLN.RLCT.MEframe
