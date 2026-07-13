@@ -394,66 +394,63 @@ disjunction dispatches: (i) a degenerate binding corank → `decoratedBase_coran
 (`Z_tail = I`-at-base baked into the carried clean identity, S2 §★★★). -/
 theorem decoratedBaseHyp_faithful : DecoratedBaseHyp adm := by
   intro M D hD
-  obtain ⟨hgen, hdisj⟩ := hD
-  rcases hdisj with hck | hck | hf
-  · exact decoratedBase_corankZero D (Or.inl hck)
-  · exact decoratedBase_corankZero D (Or.inr hck)
-  · obtain ⟨hζ, hν, e, hmpe, hdome, hctx⟩ := hgen
-    rcases hf with ⟨hd0, hobs⟩ | ⟨_hd1, i₀, _halpha, hbeta, hdelta0, hgamma⟩
-    · -- (ii) `d = 0` observable-loss leaf.
-      refine decoratedBase_d0_of_lossEq D e hmpe hdome hd0 (fun u z => ?_)
-      letI := D.fν; letI := D.fι
-      rw [SJDecoration.decLoss, hobs (D.ctx z).1 (D.ctx z).2 u]
-      have hfrob : frobSq (prod M (e z))
-          = ∑ ik : (Fin (M 0) × Fin (M (Fin.last 1))), (prod M (e z) ik.1 ik.2) ^ 2 := by
-        rw [frobSq, Fintype.sum_prod_type]
-      rw [hfrob]
-      refine Fintype.sum_equiv (Equiv.cast hν) _ _ (fun v => ?_)
-      have hEq : (D.ctx z).2 v = prod M (e z) (Equiv.cast hν v).1 (Equiv.cast hν v).2 := by
-        rw [← eqRec_fun_apply_eqRec hν (D.ctx z).2 v]
-        exact congrFun (hctx z) (Equiv.cast hν v)
-      rw [hEq]
-    · -- (iii) `d ≥ 1` resolved corner (units-FREE Γ×tail split). At the width-2 base the head-dropped
-      -- tail collapses (`prod (dropHead M) ≡ 1`, `tailProd_width2`), so the fixed tail is `Z = 1` and
-      -- the DROPPED units bound is DERIVED (`c = 1`, `(1·1ᵀ − 1•1) = 0` PosSemidef). DERIVE the clean
-      -- loss from `δ≡0` (uniform support) + the provenance `res = (Γ·Z_tail)_{ρ}` (ρ a bijection),
-      -- then close via the product-domain route-A wrapper (`corankLeaf` × finite tail-box volume).
-      obtain ⟨a, eΓ, ρ, hmpΓ, hdomΓ, hdim, hprov⟩ := hgamma
-      letI := D.fν; letI := D.fι; haveI : Nonempty D.ι := ⟨i₀⟩
-      -- the fixed base tail is the identity ⟹ the units bound holds with `c = 1`.
-      have hZ : ((1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ) * (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ)ᵀ
-          - (1 : ℝ) • (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ)).PosSemidef := by
-        rw [Matrix.transpose_one, Matrix.mul_one, one_smul, sub_self]
-        exact Matrix.PosSemidef.zero
-      -- the head-dropped tail box is a one-point (no-layer) space, so it has finite volume.
-      have hRmeas : MeasurableSet (paramsBoxM (dropHead M) 1) :=
-        measurableSet_paramsBoxM (dropHead M) 1
-      haveI hfin : IsFiniteMeasure (volume : Measure (Params (dropHead M))) := by
-        rw [show (volume : Measure (Params (dropHead M))) = Measure.dirac isEmptyElim from
-            Measure.volume_pi_eq_dirac]
-        infer_instance
-      have hRfin : (volume : Measure (Params (dropHead M))) (paramsBoxM (dropHead M) 1) < ⊤ :=
-        measure_lt_top _ _
-      -- the clean loss (δ≡0 collapse + provenance + tail `≡ 1`, `rmatMul _ 1 = _`).
-      have hprov1 : ∀ (z : D.Z) (i : D.ι),
-          D.carrier.residual (D.ctx z).1 (D.ctx z).2 i = (eΓ z).1 (ρ i).1 (ρ i).2 := by
-        intro z i
-        rw [hprov z i, tailProd_width2 M (eΓ z).2]
-        exact congrFun (congrFun (rmatMul_one (eΓ z).1) (ρ i).1) (ρ i).2
-      have hdec : ∀ (u : Fin D.d → ℝ) (z : D.Z),
-          D.decLoss u z = commonDivisor D.carrier.supp u ^ 2
-            * frobSq (rmatMul (eΓ z).1 (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ)) := by
-        intro u z
-        rw [decLoss_clean_of_uniformResidualSupport D i₀ hdelta0 u z, rmatMul_one]
-        congr 1
-        have hsc : ∀ i, (D.carrier.residual (D.ctx z).1 (D.ctx z).2 i) ^ 2
-            = ((eΓ z).1 (ρ i).1 (ρ i).2) ^ 2 := fun i => by rw [hprov1 z i]
-        rw [Finset.sum_congr rfl (fun i _ => hsc i),
-          Equiv.sum_comp ρ (fun pq => ((eΓ z).1 pq.1 pq.2) ^ 2), frobSq]
-        exact Fintype.sum_prod_type (fun pq => ((eΓ z).1 pq.1 pq.2) ^ 2)
-      exact decoratedBase_routeA_of_leafForm_prod D i₀ a (M 1) (M 1) (Params (dropHead M))
-        (paramsBoxM (dropHead M) 1) hRmeas hRfin (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ) 1 one_pos hZ
-        eΓ hmpΓ hdomΓ hdim hbeta hdec
+  obtain ⟨hgen, hf⟩ := hD
+  obtain ⟨hζ, hν, e, hmpe, hdome, hctx⟩ := hgen
+  rcases hf with ⟨hd0, hobs⟩ | ⟨_hd1, i₀, _halpha, hbeta, hdelta0, hgamma⟩
+  · -- (ii) `d = 0` observable-loss leaf.
+    refine decoratedBase_d0_of_lossEq D e hmpe hdome hd0 (fun u z => ?_)
+    letI := D.fν; letI := D.fι
+    rw [SJDecoration.decLoss, hobs (D.ctx z).1 (D.ctx z).2 u]
+    have hfrob : frobSq (prod M (e z))
+        = ∑ ik : (Fin (M 0) × Fin (M (Fin.last 1))), (prod M (e z) ik.1 ik.2) ^ 2 := by
+      rw [frobSq, Fintype.sum_prod_type]
+    rw [hfrob]
+    refine Fintype.sum_equiv (Equiv.cast hν) _ _ (fun v => ?_)
+    have hEq : (D.ctx z).2 v = prod M (e z) (Equiv.cast hν v).1 (Equiv.cast hν v).2 := by
+      rw [← eqRec_fun_apply_eqRec hν (D.ctx z).2 v]
+      exact congrFun (hctx z) (Equiv.cast hν v)
+    rw [hEq]
+  · -- (iii) `d ≥ 1` resolved corner (units-FREE Γ×tail split). At the width-2 base the head-dropped
+    -- tail collapses (`prod (dropHead M) ≡ 1`, `tailProd_width2`), so the fixed tail is `Z = 1` and
+    -- the DROPPED units bound is DERIVED (`c = 1`, `(1·1ᵀ − 1•1) = 0` PosSemidef). DERIVE the clean
+    -- loss from `δ≡0` (uniform support) + the provenance `res = (Γ·Z_tail)_{ρ}` (ρ a bijection),
+    -- then close via the product-domain route-A wrapper (`corankLeaf` × finite tail-box volume).
+    obtain ⟨a, eΓ, ρ, hmpΓ, hdomΓ, hdim, hprov⟩ := hgamma
+    letI := D.fν; letI := D.fι; haveI : Nonempty D.ι := ⟨i₀⟩
+    -- the fixed base tail is the identity ⟹ the units bound holds with `c = 1`.
+    have hZ : ((1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ) * (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ)ᵀ
+        - (1 : ℝ) • (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ)).PosSemidef := by
+      rw [Matrix.transpose_one, Matrix.mul_one, one_smul, sub_self]
+      exact Matrix.PosSemidef.zero
+    -- the head-dropped tail box is a one-point (no-layer) space, so it has finite volume.
+    have hRmeas : MeasurableSet (paramsBoxM (dropHead M) 1) :=
+      measurableSet_paramsBoxM (dropHead M) 1
+    haveI hfin : IsFiniteMeasure (volume : Measure (Params (dropHead M))) := by
+      rw [show (volume : Measure (Params (dropHead M))) = Measure.dirac isEmptyElim from
+          Measure.volume_pi_eq_dirac]
+      infer_instance
+    have hRfin : (volume : Measure (Params (dropHead M))) (paramsBoxM (dropHead M) 1) < ⊤ :=
+      measure_lt_top _ _
+    -- the clean loss (δ≡0 collapse + provenance + tail `≡ 1`, `rmatMul _ 1 = _`).
+    have hprov1 : ∀ (z : D.Z) (i : D.ι),
+        D.carrier.residual (D.ctx z).1 (D.ctx z).2 i = (eΓ z).1 (ρ i).1 (ρ i).2 := by
+      intro z i
+      rw [hprov z i, tailProd_width2 M (eΓ z).2]
+      exact congrFun (congrFun (rmatMul_one (eΓ z).1) (ρ i).1) (ρ i).2
+    have hdec : ∀ (u : Fin D.d → ℝ) (z : D.Z),
+        D.decLoss u z = commonDivisor D.carrier.supp u ^ 2
+          * frobSq (rmatMul (eΓ z).1 (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ)) := by
+      intro u z
+      rw [decLoss_clean_of_uniformResidualSupport D i₀ hdelta0 u z, rmatMul_one]
+      congr 1
+      have hsc : ∀ i, (D.carrier.residual (D.ctx z).1 (D.ctx z).2 i) ^ 2
+          = ((eΓ z).1 (ρ i).1 (ρ i).2) ^ 2 := fun i => by rw [hprov1 z i]
+      rw [Finset.sum_congr rfl (fun i _ => hsc i),
+        Equiv.sum_comp ρ (fun pq => ((eΓ z).1 pq.1 pq.2) ^ 2), frobSq]
+      exact Fintype.sum_prod_type (fun pq => ((eΓ z).1 pq.1 pq.2) ^ 2)
+    exact decoratedBase_routeA_of_leafForm_prod D i₀ a (M 1) (M 1) (Params (dropHead M))
+      (paramsBoxM (dropHead M) 1) hRmeas hRfin (1 : Matrix (Fin (M 1)) (Fin (M 1)) ℝ) 1 one_pos hZ
+      eΓ hmpΓ hdomΓ hdim hbeta hdec
 
 /-! ## P4 — the width-3 non-vacuity witness (anti-vacuity guard, bedrock)
 

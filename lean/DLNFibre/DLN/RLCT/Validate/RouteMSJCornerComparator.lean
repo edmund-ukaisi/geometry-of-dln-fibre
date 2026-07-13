@@ -204,7 +204,7 @@ theorem cornerComparator_adm (M' : Fin (L + 1 + 1) → ℕ) (k jc : Fin d → �
     (hbeta : (minAdm M' : ℝ≥0∞) / 2 ≤ monomialThreshold d k jc) :
     adm (L + 1) M' (cornerComparator M' k jc) :=
   ⟨cornerComparator_genuineCarrier M' k jc,
-    Or.inr (Or.inr (cornerComparator_faithful M' k jc hd i₀ hbeta))⟩
+    cornerComparator_faithful M' k jc hd i₀ hbeta⟩
 
 /-- **Non-vacuity: an admissible reduced comparator EXISTS on every `M'` with inhabited endpoint index.**
 The β threshold is satisfiable
