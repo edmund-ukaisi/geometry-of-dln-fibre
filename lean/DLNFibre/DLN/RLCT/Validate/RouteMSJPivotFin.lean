@@ -229,6 +229,36 @@ theorem frobSq_sum_rows {α β γ : Type*} [Fintype α] [Fintype β] [Fintype γ
   rw [Fintype.sum_sum_type (fun i => ∑ j, (X i j) ^ 2)]
   simp only [Matrix.submatrix_apply, id_eq]
 
+/-- **Step 1 — the `D`-substitution (translation change-of-variables).** The freed-`Γ` inner integral
+(domain `{Γ | Γ + schurShift x ∈ genBox}`) equals the block-front integral over the raw `(2,2)`-block
+`D ∈ genBox`: reformulate the integrand (`freedSchurLoss_eq_frobSq_block`, needs `IsUnit P`), then
+substitute `D := Γ + schurShift x` — a measure-preserving translation on the RAW pi type
+`Fin a → Fin b → ℝ` (`measurePreserving_add_right`, NO `Matrix.module` diamond since `Γ`/`genBox`/
+`schurShift` are all raw functions). `setLIntegral_comp_preimage_emb` on the translation embedding. -/
+theorem pivotInner_Dsubst {t a b q : ℕ} (x : SJOuter t a b) (hP : IsUnit (Matrix.of x.1.1))
+    (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) (c' : ℝ) :
+    (∫⁻ Γ in {Γ : Fin a → Fin b → ℝ | Γ + schurShift x ∈ genBox (Fin a) (Fin b) 1},
+        ENNReal.ofReal (freedSchurLoss x Γ Q ^ (-c')))
+      = ∫⁻ D in genBox (Fin a) (Fin b) 1,
+          ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD t a b).symm (x, D)) * Q) ^ (-c')) := by
+  have hmp : MeasurePreserving (fun Γ : Fin a → Fin b → ℝ => Γ + schurShift x) volume volume :=
+    measurePreserving_add_right volume (schurShift x)
+  have hemb : MeasurableEmbedding (fun Γ : Fin a → Fin b → ℝ => Γ + schurShift x) :=
+    (Homeomorph.addRight (schurShift x)).measurableEmbedding
+  calc (∫⁻ Γ in {Γ : Fin a → Fin b → ℝ | Γ + schurShift x ∈ genBox (Fin a) (Fin b) 1},
+          ENNReal.ofReal (freedSchurLoss x Γ Q ^ (-c')))
+      = ∫⁻ Γ in (fun Γ : Fin a → Fin b → ℝ => Γ + schurShift x) ⁻¹' (genBox (Fin a) (Fin b) 1),
+          ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD t a b).symm (x, Γ + schurShift x)) * Q)
+            ^ (-c')) := by
+        refine lintegral_congr fun Γ => ?_
+        rw [freedSchurLoss_eq_frobSq_block x hP Γ Q]
+    _ = ∫⁻ D in genBox (Fin a) (Fin b) 1,
+          ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD t a b).symm (x, D)) * Q) ^ (-c')) :=
+        hmp.setLIntegral_comp_preimage_emb hemb
+          (fun D => ENNReal.ofReal
+            (frobSq (Matrix.of ((blockSplitD t a b).symm (x, D)) * Q) ^ (-c')))
+          (genBox (Fin a) (Fin b) 1)
+
 /-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX — scaffold + 1-sorry, standing decision 7).**
 The freed Schur-loss spine LHS is dominated by a FINITE reorganisation constant times the comparator-core
 RHS. This is exactly the conclusion of `RouteMSJHeadSplitDom.headSplit_pivotDom`; it carries the entire
