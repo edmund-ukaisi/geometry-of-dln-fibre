@@ -1,7 +1,8 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
-import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
+
+set_option linter.style.longLine false
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedStep` — the `DecoratedStepHyp` assembly skeleton (#5)
@@ -34,13 +35,24 @@ shells (a per-shell split, INSIDE the outer tail integral, NOT a per-`D` case):
     degenerates at `jf = r`, see seam note below).
   Summing the finitely-many shells (`lintegral_le_sum_finCover` + `ENNReal.sum_lt_top`) and the peel
   is the **cover connector**, hole (d) `deeperFlagGood_finite`.
-* **waist** (`¬hpiv`) — hole (c) `deeperFlagWaist_finite`: `deeperFlag_shell_le` is inapplicable
-  (`hpiv` is one of its hypotheses), so the chain reduces to the banked 3-width box finiteness
-  `routeMBoxThresholdFinite_mnp`. PROVISIONAL: the exact reduction route is pinned on a parallel
-  pen-and-paper; this module states the TARGET the connector must hit.
+* **waist** (`¬hpiv` ⟺ `M₁ < min(M₂,…,M_last)`, the deep-tail product has full row rank) —
+  `deeperFlag_shell_le` is inapplicable (`hpiv` is one of its hypotheses). The chain does NOT reduce to
+  the 3-width box finiteness `routeMBoxThresholdFinite_mnp` — that is a PROVEN NO-GO for `L ≥ 1` (witness
+  `minAdm (4,2,3,3) = 5` but `minAdm (4,2,3) = 6`, so `I(4,2,3,3)` diverges on `c' ∈ (5/2, 3)` while the
+  3-width `I(4,2,3)` is finite there; no `c'`-uniform 3-width domination can hold — the deep charge is
+  higher-dimensional). 3-width is only the BASE, never a step target. Instead the waist reduces to the
+  ONE-SHORTER decorated IH, in two sub-cases:
+  - **`M₁ ≠ 1`** — hole (c) `deeperFlagWaist_finite`: the reversal CoV `I(M) = I(rev M)`
+    (glued by the banked `minAdm_comp_perm`, `minAdm (rev M) = minAdm M`, + a reversal-CoV lemma) makes
+    the REVERSED chain FRONT-GOOD (`rev M` is front-good whenever `M` is waist, ≥ 4-width, 0 exceptions),
+    so head-split on `rev M` descends to `redChain (u, rev M)` = the one-shorter IH.
+  - **`M₁ = 1`** (any `L`) — hole (e) `deeperFlagWaistM1_finite`, reversal-FREE: the loss factorizes
+    `frobSq (A₀ · Q) = ‖A₀‖² · ‖Q‖²` (rank-1 front), so the integral splits as a front Morse integral ×
+    the plain-tail IH. A standalone lemma.
 
-The main `decoratedStepHyp_dispatch : DecoratedStepHyp adm` is itself `sorry`-free — it is the exhaustive
-`by_cases hpiv` dispatch to holes (d) and (c). All analytic content lives in the four holes.
+The main `decoratedStepHyp_dispatch : DecoratedStepHyp adm` is itself `sorry`-free — the exhaustive
+`by_cases hpiv` (good/waist) with a further `by_cases M₁ = 1` inside waist, dispatching to holes (d),
+(e), (c). All analytic content lives in the five holes.
 
 ## The j ≤ r vs j < r seam (report point i)
 
@@ -54,9 +66,10 @@ lane's `deeperFlag_spineToCore`; flagged for its confirmation, not verified here
 
 ## Status
 
-CONTRACT-FIRST skeleton: 4 named `sorry`-holes (a, b, c=waist, d=connector), main dispatch sorry-free.
-UNTRACKED, NOT wired into `DLNFibre.lean`/`AxCheck` — the canonical library stays 0-sorry. Sorries are
-the explicit deliverable on this tide branch.
+CONTRACT-FIRST skeleton: 5 named `sorry`-holes (a=strict, b=saturated, d=good-connector,
+c=waist-reversal, e=waist-`M₁=1`), main dispatch sorry-free. UNTRACKED, NOT wired into
+`DLNFibre.lean`/`AxCheck` — the canonical library stays 0-sorry. Sorries are the explicit deliverable
+on this tide branch.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -138,25 +151,49 @@ theorem deeperFlagGood_finite
     DecoratedBoxThresholdFinite D := by
   sorry
 
-/-! ## Hole (c) — the WAIST branch (`hpiv` fails → reduce to `routeMBoxThresholdFinite_mnp`) -/
+/-! ## Hole (c) — the WAIST branch, `M₁ ≠ 1` (reversal CoV → reversed one-shorter IH) -/
 
-/-- **HOLE (c) — the waist branch (PROVISIONAL).** When the pivot-admissibility FAILS at the binding cut
-(`¬hpiv`), `deeperFlag_shell_le` is inapplicable (`hpiv` is one of its hypotheses), so the head-split
-route is unavailable. The chain is a "waist": `D.integral c'` reduces to the banked 3-width box
-finiteness `routeMBoxThresholdFinite_mnp (m n p)` (finite for ALL widths).
+/-- **HOLE (c) — the waist branch, `M₁ ≠ 1` (reversal route).** When the pivot-admissibility FAILS at
+the binding cut (`¬hpiv`, i.e. `M₁ < min(M₂,…,M_last)`, the deep-tail product full-row-rank case) and
+`M₁ ≠ 1`, `deeperFlag_shell_le` is inapplicable (`hpiv` is one of its hypotheses). The chain reduces to
+the ONE-SHORTER decorated IH via the REVERSAL change of variables — NOT to the 3-width box
+`routeMBoxThresholdFinite_mnp` (proven NO-GO for `L ≥ 1`; see module header).
 
-**The EXACT statement this hole requires of its connector** (the contract to relay to the waist
-pen-and-paper): there are widths `m n p : ℕ` (derived from `M` and the waist data) and a threshold-
-respecting reduction such that, for every `c' < carrierThreshold M = ½·minAdm M`,
-`D.integral c' ≤ (routeMLayerBoxIntegral (![m, n, p] : Fin 3 → ℕ) c' 1)` (or a finite multiple thereof),
-with `c' < ½·minAdm (![m,n,p])` guaranteed by the waist inequality `¬hpiv`; the RHS is `< ⊤` by
-`routeMBoxThresholdFinite_mnp m n p`. The open content is (i) the choice of `(m,n,p)` and (ii) the
-threshold bookkeeping `carrierThreshold M ≤ ½·minAdm (![m,n,p])` that the waist inequality must supply.
-NOT filled here. -/
+**The EXACT statement this hole requires of its connector** (the contract to relay to the route-(a)
+waist pen-and-paper): let `rev M` be the reversed width chain. Then
+1. **charge match** — `minAdm (rev M) = minAdm M` (the banked `minAdm_comp_perm` at the reversal
+   permutation), so `carrierThreshold (rev M) = carrierThreshold M`;
+2. **integral match** — a measure-preserving reversal CoV giving `D.integral c' = (rev-transported
+   decoration).integral c'` (the small reversal-CoV lemma, being pinned on `waistpin` — the
+   reversal↔decoration commutation);
+3. **front-good on `rev M`** — when `M` is waist and `≥ 4`-width, `rev M` is FRONT-GOOD (satisfies the
+   pivot-admissibility `hpiv` for `rev M`, 0 exceptions), so the head-split (holes a/b + connector d)
+   applies to `rev M`, descending through `redChain (u, rev M)` to the DECORATED IH `hIH`.
+Concludes `DecoratedBoxThresholdFinite D`. NOT filled here. -/
 theorem deeperFlagWaist_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
     (hD : adm (L + 1 + 1) M D)
-    (hpiv : ¬ (minAdm (redChain (bindingCut M) M) ≤ (bindingCut M) * tailMinWidth M)) :
+    (hpiv : ¬ (minAdm (redChain (bindingCut M) M) ≤ (bindingCut M) * tailMinWidth M))
+    (hM1 : M 1 ≠ 1)
+    (hIH : ∀ (M' : Fin (L + 1 + 1) → ℕ) (D' : SJDecoration M'),
+        adm (L + 1) M' D' → DecoratedBoxThresholdFinite D') :
+    DecoratedBoxThresholdFinite D := by
+  sorry
+
+/-! ## Hole (e) — the WAIST sub-case `M₁ = 1` (reversal-FREE rank-1 factorization) -/
+
+/-- **HOLE (e) — the waist sub-case `M₁ = 1` (reversal-free).** When `M₁ = 1` (any `L`), the front layer
+`A₀` is a column and the deep-tail product `Q = prod (dropHead M)` a row, so the loss FACTORIZES:
+`frobSq (A₀ · Q) = ‖A₀‖² · ‖Q‖²` (rank-1 outer product). The decorated box integral therefore splits as
+a FRONT Morse integral (the radial `‖A₀‖²` factor, `L = 1` free-matrix Morse) times the PLAIN-tail IH
+(`Q` = one-shorter chain product, closed by the DECORATED IH `hIH` at the reduced arity). Reversal-free,
+a standalone lemma. Concludes `DecoratedBoxThresholdFinite D`. NOT filled here. -/
+theorem deeperFlagWaistM1_finite
+    (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDecoration M)
+    (hD : adm (L + 1 + 1) M D)
+    (hM1 : M 1 = 1)
+    (hIH : ∀ (M' : Fin (L + 1 + 1) → ℕ) (D' : SJDecoration M'),
+        adm (L + 1) M' D' → DecoratedBoxThresholdFinite D') :
     DecoratedBoxThresholdFinite D := by
   sorry
 
@@ -164,13 +201,17 @@ theorem deeperFlagWaist_finite
 
 /-- **The assembled decorated step `DecoratedStepHyp adm`.** For every `≥ 3`-width chain `M`, GIVEN the
 decorated strong IH, every `adm`-admissible `D : SJDecoration M` is finite below its carrier threshold.
-The dispatch is the exhaustive `by_cases` on the pivot-admissibility at the binding cut: `hpiv` (good)
-routes to the cover connector hole (d) `deeperFlagGood_finite`; `¬hpiv` (waist) routes to the waist hole
-(c) `deeperFlagWaist_finite`. Sorry-free itself — all analytic content is in the four holes. -/
+The dispatch is exhaustive: `by_cases hpiv` on the pivot-admissibility at the binding cut — `hpiv`
+(front-good) routes to the cover connector hole (d) `deeperFlagGood_finite`; `¬hpiv` (waist) splits
+further `by_cases M₁ = 1` into the reversal-free sub-case hole (e) `deeperFlagWaistM1_finite` and the
+reversal route hole (c) `deeperFlagWaist_finite`. Sorry-free itself — all analytic content is in the
+five holes. -/
 theorem decoratedStepHyp_dispatch : DecoratedStepHyp adm := by
   intro L M hIH D hD
   by_cases hpiv : minAdm (redChain (bindingCut M) M) ≤ (bindingCut M) * tailMinWidth M
   · exact deeperFlagGood_finite M D hD hpiv hIH
-  · exact deeperFlagWaist_finite M D hD hpiv
+  · by_cases hM1 : M 1 = 1
+    · exact deeperFlagWaistM1_finite M D hD hM1 hIH
+    · exact deeperFlagWaist_finite M D hD hpiv hM1 hIH
 
 end DLNFibre.DLN.RLCT
