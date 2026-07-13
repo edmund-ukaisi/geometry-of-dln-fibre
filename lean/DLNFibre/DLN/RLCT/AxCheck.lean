@@ -151,6 +151,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
 import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
 
 /-!
 # Axiom-hygiene check
@@ -1230,3 +1231,7 @@ open DLNFibre.DLN.RLCT
 #print axioms DLNFibre.DLN.RLCT.deeperFlagUnifConst_lt_top
 #print axioms DLNFibre.DLN.RLCT.shell_corankOffSector_le_unif
 #print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_le
+-- Brick D-B (`RouteMSJRankRCodim`): rank-`r` codim integrability (`finrank(range L)=r → c'<r/2 →
+-- ∫_cube (∑(Lx)²)^{−c'} < ⊤`; the s1-Chle §3 correction of the injective `twoMatBox` to rank-r). Clean-three.
+#print axioms DLNFibre.DLN.RLCT.lintegral_cube_frobSq_neg_of_finrank_range
+#print axioms DLNFibre.DLN.RLCT.twoMatBox_rankR_lintegral_lt_top

@@ -1436,3 +1436,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
 -- (□)-rung `deeperFlag_spineToCore` (S1 = the head-split spine→core CoV, next target). Reviewer-audited
 -- (a5fd475, decorrelated Codex): L1 faithful/non-gerrymandered, S1 genuinely-true + non-vacuous.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
+-- Brick D-B (`RouteMSJRankRCodim`, network-free): rank-`r` codim integrability
+-- `finrank(range L)=r → c'<r/2 → ∫_cube (∑(Lx)²)^{−c'} < ⊤` (extends the injective `twoMatBox` to rank-r;
+-- the s1-Chle §3 correction) — discharges the Brick-D C_hle finiteness once the assembly supplies `r=u·ρ`.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
