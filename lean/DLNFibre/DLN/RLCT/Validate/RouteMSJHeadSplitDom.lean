@@ -145,9 +145,10 @@ shell-restricted spine integrand is dominated by the `(z, A_cor)`-box freed-loss
 theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
     (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
     (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
+    (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
     (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
     (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
-    {ε' : ℝ} (hε' : 0 < ε')
+    {ε' : ℝ} (hε' : 0 < ε') (hε'le : ε' ≤ ε / Real.sqrt ((M 1 : ℝ) * M 2))
     (Zf : Params (redChain (t + j) M)
         → Matrix (Fin (dropHead (redChain (t + j) M) 0))
             (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
@@ -171,12 +172,13 @@ signature of the `headSplit_domination` stub; the controller wires the stub to i
 theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
     (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
     (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
+    (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
     (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M)
     (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
         ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
     (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
-    {ε' : ℝ} (hε' : 0 < ε')
+    {ε' : ℝ} (hε' : 0 < ε') (hε'le : ε' ≤ ε / Real.sqrt ((M 1 : ℝ) * M 2))
     (Zf : Params (redChain (t + j) M)
         → Matrix (Fin (dropHead (redChain (t + j) M) 0))
             (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
@@ -213,6 +215,7 @@ theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t
       hcvg hmM hε' Zf U_sf hUs hrank hfloor
   refine ⟨C_hle, hfin, ?_⟩
   -- mechanical head/row split, then GLUE-2
-  exact le_trans (shellSpine_le_hsQ_box M t j κ hε c' ht hj ht1 hnd hrange hε' Zf hagree hGmeas) hle
+  exact le_trans
+    (shellSpine_le_hsQ_box M t j κ hε c' ht hj hjr ht1 hnd hrange hε' hε'le Zf hagree hGmeas) hle
 
 end DLNFibre.DLN.RLCT
