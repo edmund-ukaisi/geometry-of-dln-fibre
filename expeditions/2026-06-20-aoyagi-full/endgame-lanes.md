@@ -41,6 +41,8 @@ All track-(a) bricks are built on branches (gaps quarantined); canonical stays c
 4. **GLUE-2** (7th brick, pending D-assembly's isolated statement) → closes `headSplit_domination_impl` (`RouteMSJHeadSplitDom`, a8a42c82 branch).
 5. Controller fills the RouteMSJDeeperFlagCore stubs: `exists_headSplitFrame` := F1's impl; `headSplit_domination` := the D-assembly impl; then `deeperFlag_spineToCore` = compose → wire aggregator+AxCheck, green-gate clean-three, commit.
 
+**★ hGmeas interface (the plumbing↔F shared measurability, 2026-07-13):** `shellSpine_le_hsQ_box`'s on-shell rewrite `Zf z = Z_deep z` provably needs `MeasurableSet {z | weakEigCount ε' (deeperFlagZdeep M u z) ≤ dropHead(redChain u M) 0 − m}` — the SAME eigenvalue-measurability F2a establishes (don't duplicate). Resolution: it is THREADED as a hypothesis `hGmeas` on both `shellSpine_le_hsQ_box` and `headSplit_domination_impl` (plumbing tide, no wait/no sorry). Controller-owned at integration: (i) add `hGmeas` to the RouteMSJDeeperFlagCore `headSplit_domination` STUB; (ii) build the **shared wrapper** `Measurable (fun z => weakEigCount ε' (Z z))` from F2a's `measurableEigenvalues₀` (each `eigenvalues₀ i` measurable → finite count of sublevel sets → MeasurableSet goodSet, ~15-20 LoC) once F2a lands; (iii) supply `hGmeas` in `deeperFlag_spineToCore` via the wrapper at `A z := Z_deep z·(Z_deep z)ᵀ`. hGmeas is discharged at the spineToCore level — does NOT leak to (□).
+
 ## D-assembly (the JOIN — NOT parallel; runs after D-A + D-C + F land)
 
 **STATUS (2026-07-13):** `headSplit_domination_impl` ASSEMBLED sorry-free in its body (`RouteMSJHeadSplitDom` @origin/genm-sj5-headsplit-dom 71c2b6a6, green), reducing to TWO isolated correct-statement sorries:
