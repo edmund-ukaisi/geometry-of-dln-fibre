@@ -354,6 +354,136 @@ theorem deeperFlagGood_finite_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDeco
         shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t))
           ⟨j, Nat.lt_succ_of_le hj⟩ c' < ⊤) :
     DecoratedBoxThresholdFinite D := by
+  classical
+  intro c' hc'
+  -- `M 1 = 0`: `minAdm M = 0`, so `carrierThreshold M = 0` and `hc'` is unsatisfiable.
+  rcases Nat.eq_zero_or_pos (M 1) with hM10 | hM1pos
+  · exfalso
+    have hle : minAdm M ≤ M 0 * M 1 := minAdm_le_mul_head M
+    rw [hM10, Nat.mul_zero, Nat.le_zero] at hle
+    rw [carrierThreshold, hle] at hc'
+    simp only [Nat.cast_zero, zero_div] at hc'
+    exact absurd hc' (not_lt.mpr c'.coe_nonneg)
+  -- COVER-INDEPENDENT reduction: isolate the box-integral finiteness (the one gated piece).
+  suffices hbox : routeMLayerBoxIntegral M (c' : ℝ) 1 < ⊤ by
+    letI := D.mZ
+    obtain ⟨hgen, hf⟩ := hD
+    obtain ⟨hζ, hν, e, hmpe, hdome, hctx⟩ := hgen
+    rcases hf with ⟨hd0, hobs⟩ | ⟨hd1, i₀, halpha, hbeta, hdelta0, hgamma⟩
+    · -- d = 0 (observable leaf): `D.integral = routeMLayerBoxIntegral M` (collapse + `e` MP).
+      have hloss : ∀ (u : Fin D.d → ℝ) (z : D.Z), D.decLoss u z = frobSq (prod M (e z)) := by
+        intro u z
+        letI := D.fν; letI := D.fι
+        rw [SJDecoration.decLoss, hobs (D.ctx z).1 (D.ctx z).2 u]
+        have hfrob : frobSq (prod M (e z))
+            = ∑ ik : (Fin (M 0) × Fin (M (Fin.last (L + 1 + 1)))), (prod M (e z) ik.1 ik.2) ^ 2 := by
+          rw [frobSq, Fintype.sum_prod_type]
+        rw [hfrob]
+        refine Fintype.sum_equiv (Equiv.cast hν) _ _ (fun v => ?_)
+        have hEq : (D.ctx z).2 v = prod M (e z) (Equiv.cast hν v).1 (Equiv.cast hν v).2 := by
+          rw [← eqRec_fun_apply_eqRec hν (D.ctx z).2 v]
+          exact congrFun (hctx z) (Equiv.cast hν v)
+        rw [hEq]
+      haveI hEmpty : IsEmpty (Fin D.d) := by rw [hd0]; infer_instance
+      have hprod1 : ∀ u : Fin D.d → ℝ, (∏ ℓ, |u ℓ| ^ (D.jac ℓ)) = 1 := fun u => by
+        rw [Finset.univ_eq_empty, Finset.prod_empty]
+      have hvol : (volume : Measure (Fin D.d → ℝ)) (unitBox D.d) = 1 := by
+        rw [unitBox, volume_pi_pi]; simp
+      have hdommeas : MeasurableSet D.dom := by
+        rw [hdome]; exact (measurableSet_paramsBoxM M 1).preimage e.measurable
+      have hkey : D.integral (c' : ℝ)
+          = ∫⁻ z in D.dom, ENNReal.ofReal ((frobSq (prod M (e z))) ^ (-(c' : ℝ))) := by
+        unfold SJDecoration.integral
+        refine setLIntegral_congr_fun hdommeas (fun z _ => ?_)
+        have hpt : ∀ u : Fin D.d → ℝ,
+            ENNReal.ofReal ((∏ ℓ, |u ℓ| ^ D.jac ℓ) * D.decLoss u z ^ (-(c' : ℝ)))
+              = ENNReal.ofReal ((frobSq (prod M (e z))) ^ (-(c' : ℝ))) :=
+          fun u => by rw [hprod1 u, one_mul, hloss u z]
+        rw [lintegral_congr hpt, setLIntegral_const, hvol, mul_one]
+      rw [hkey, hdome,
+        hmpe.setLIntegral_comp_preimage_emb e.measurableEmbedding
+          (fun A => ENNReal.ofReal ((frobSq (prod M A)) ^ (-(c' : ℝ)))) (paramsBoxM M 1)]
+      exact hbox
+    · -- d ≥ 1 (resolved corner): `D.integral = monomial · routeMLayerBoxIntegral M`.
+      obtain ⟨a, eΓ, ρ, hmpΓ, hdomΓ, hdim, hprov⟩ := hgamma
+      have ha : a = M 0 := a_eq_M0_of_domEq M hM1pos a D.dom e hmpe hdome eΓ hmpΓ hdomΓ
+      subst ha
+      letI := D.fν; letI := D.fι; haveI : Nonempty D.ι := ⟨i₀⟩
+      set k := sharedDivisorExp D.carrier.supp with hk
+      rw [carrierThreshold] at hc'
+      -- `decLoss = commonDivisor² · frobSq (Γ · prod (dropHead M) r)` (uniform support + provenance).
+      have hdec : ∀ (u : Fin D.d → ℝ) (z : D.Z),
+          D.decLoss u z = commonDivisor D.carrier.supp u ^ 2
+            * frobSq (rmatMul (eΓ z).1 (prod (dropHead M) (eΓ z).2)) := by
+        intro u z
+        rw [decLoss_clean_of_uniformResidualSupport D i₀ hdelta0 u z]
+        congr 1
+        have hsc : ∀ i, (D.carrier.residual (D.ctx z).1 (D.ctx z).2 i) ^ 2
+            = ((rmatMul (eΓ z).1 (prod (dropHead M) (eΓ z).2)) (ρ i).1 (ρ i).2) ^ 2 :=
+          fun i => by rw [hprov z i]
+        rw [Finset.sum_congr rfl (fun i _ => hsc i),
+          Equiv.sum_comp ρ (fun pq => ((rmatMul (eΓ z).1 (prod (dropHead M) (eΓ z).2)) pq.1 pq.2) ^ 2),
+          frobSq]
+        exact Fintype.sum_prod_type _
+      -- monomial finiteness (β clause).
+      have hc'enn : (c' : ℝ≥0∞) < (minAdm M : ℝ≥0∞) / 2 := by
+        rcases Nat.eq_zero_or_pos (minAdm M) with hm0 | hmpos_nat
+        · rw [hm0] at hc'; simp only [Nat.cast_zero, zero_div] at hc'
+          exact absurd hc' (not_lt.mpr c'.coe_nonneg)
+        · have hmpos : (0 : ℝ) < (minAdm M : ℝ) := by exact_mod_cast hmpos_nat
+          have hden : ENNReal.ofReal ((minAdm M : ℝ) / 2) = (minAdm M : ℝ≥0∞) / 2 := by
+            rw [ENNReal.ofReal_div_of_pos (by norm_num : (0 : ℝ) < 2), ENNReal.ofReal_natCast,
+              ENNReal.ofReal_ofNat]
+          rw [← hden, ← ENNReal.ofReal_coe_nnreal]
+          exact (ENNReal.ofReal_lt_ofReal_iff (div_pos hmpos (by norm_num))).mpr hc'
+      have hax : ∀ j, (c' : ℝ≥0∞) < axisRatio (D.jac j) (k j) := by
+        intro j
+        have hle : monomialThreshold D.d k D.jac ≤ axisRatio (D.jac j) (k j) := by
+          rw [monomialThreshold_eq_iInf_axisRatio]; exact iInf_le _ j
+        exact lt_of_lt_of_le (lt_of_lt_of_le hc'enn hbeta) hle
+      have hIu : (∫⁻ u in unitBox D.d,
+          ENNReal.ofReal (monomialIntegrand D.d k D.jac (c' : ℝ) u)) < ⊤ :=
+        monomialIntegrand_lintegral_unitBox_lt_top D.d k D.jac (c' : ℝ)
+          (fun j => axisRatio_lt_exp (hax j))
+      -- the coupled factor IS `routeMLayerBoxIntegral M` (eΓ CoV + front-split; dropHead = tailChain).
+      have hcoupled : (∫⁻ z in D.dom,
+          ENNReal.ofReal ((frobSq (rmatMul (eΓ z).1 (prod (dropHead M) (eΓ z).2))) ^ (-(c' : ℝ))))
+          = routeMLayerBoxIntegral M (c' : ℝ) 1 := by
+        rw [hdomΓ, hmpΓ.setLIntegral_comp_preimage_emb eΓ.measurableEmbedding
+          (fun p : (Fin (M 0) → Fin (M 1) → ℝ) × Params (dropHead M) =>
+            ENNReal.ofReal ((frobSq (rmatMul p.1 (prod (dropHead M) p.2))) ^ (-(c' : ℝ))))
+          (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (dropHead M) 1)]
+        show (∫⁻ p in matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1,
+            ENNReal.ofReal ((frobSq (rmatMul p.1 (prod (tailChain M) p.2))) ^ (-(c' : ℝ))))
+          = routeMLayerBoxIntegral M (c' : ℝ) 1
+        rw [routeMLayerBoxIntegral_front_split M (c' : ℝ), Measure.volume_eq_prod,
+          setLIntegral_prod_symm _ (measurable_frontIntegrand M (c' : ℝ)).aemeasurable]
+      -- assemble the monomial × coupled separation.
+      have hpt : ∀ (u : Fin D.d → ℝ) (z : D.Z),
+          (∏ ℓ, |u ℓ| ^ D.jac ℓ) * D.decLoss u z ^ (-(c' : ℝ))
+            = monomialIntegrand D.d k D.jac (c' : ℝ) u
+              * (frobSq (rmatMul (eΓ z).1 (prod (dropHead M) (eΓ z).2))) ^ (-(c' : ℝ)) := by
+        intro u z
+        rw [hdec u z, Real.mul_rpow (by positivity) (frobSq_nonneg _), ← mul_assoc]
+        congr 1
+        rw [monomialIntegrand, commonDivisor_sq]
+      have hkey : D.integral (c' : ℝ)
+          = (∫⁻ u in unitBox D.d, ENNReal.ofReal (monomialIntegrand D.d k D.jac (c' : ℝ) u))
+            * (∫⁻ z in D.dom,
+                ENNReal.ofReal ((frobSq (rmatMul (eΓ z).1 (prod (dropHead M) (eΓ z).2))) ^ (-(c' : ℝ)))) := by
+        unfold SJDecoration.integral
+        rw [← lintegral_const_mul' _ _ hIu.ne]
+        refine setLIntegral_congr_fun ?_ (fun z _ => ?_)
+        · rw [hdomΓ]
+          exact ((matBox_measurableSet (M 0) (M 1) 1).prod
+            (measurableSet_paramsBoxM (dropHead M) 1)).preimage eΓ.measurable
+        · rw [← lintegral_mul_const' _ _ ENNReal.ofReal_ne_top]
+          refine lintegral_congr (fun u => ?_)
+          rw [hpt u z, ENNReal.ofReal_mul (monomialIntegrand_nonneg' D.d k D.jac (c' : ℝ) u)]
+      rw [hkey, hcoupled]
+      exact ENNReal.mul_lt_top hIu hbox
+  -- GATED (held pending the hcvg/hrange cover-validity verdict): routeMLayerBoxIntegral M < ⊤ via
+  -- `routeMBox_le_shellSum` (LEMMA C) + the per-shell (a)/(b) bounds (`hstrict`/`hsat`) + `ENNReal.sum_lt_top`.
   sorry
 
 end DLNFibre.DLN.RLCT
