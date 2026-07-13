@@ -1440,3 +1440,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
 -- `finrank(range L)=r → c'<r/2 → ∫_cube (∑(Lx)²)^{−c'} < ⊤` (extends the injective `twoMatBox` to rank-r;
 -- the s1-Chle §3 correction) — discharges the Brick-D C_hle finiteness once the assembly supplies `r=u·ρ`.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
+-- Brick D-C core (`RouteMSJKyFan`, spectral-counting): `finrank_add_weakCount_le` — for Hermitian `H`
+-- + a subspace `U` with Rayleigh `⟪u,Hu⟫≥c‖u‖²`, `finrank U + #{eigenvalues<c} ≤ k` (dimension-counting
+-- via `finrank_sup_add_finrank_inf_eq`, in `weakEigCount` form). The reusable core of the shell⊆G
+-- containment (replaces the absent min-max Ky-Fan); the containment corollary consumes it.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan

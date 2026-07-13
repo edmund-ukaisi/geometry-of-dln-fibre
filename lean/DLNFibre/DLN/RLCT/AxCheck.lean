@@ -152,6 +152,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
 import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
+import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan
 
 /-!
 # Axiom-hygiene check
@@ -1235,3 +1236,7 @@ open DLNFibre.DLN.RLCT
 -- ∫_cube (∑(Lx)²)^{−c'} < ⊤`; the s1-Chle §3 correction of the injective `twoMatBox` to rank-r). Clean-three.
 #print axioms DLNFibre.DLN.RLCT.lintegral_cube_frobSq_neg_of_finrank_range
 #print axioms DLNFibre.DLN.RLCT.twoMatBox_rankR_lintegral_lt_top
+-- Brick D-C core (`RouteMSJKyFan`): the spectral dimension-counting linchpin `finrank_add_weakCount_le`
+-- (Hermitian H + Rayleigh-≥c subspace U ⟹ finrank U + #{eigenvalues<c} ≤ k) + `rayleigh_expansion`. Clean-three.
+#print axioms DLNFibre.DLN.RLCT.finrank_add_weakCount_le
+#print axioms DLNFibre.DLN.RLCT.rayleigh_expansion
