@@ -34,6 +34,16 @@ genuine analytic crux (`pivotDom_finiteness`, the cross-term drop) + mechanical 
 
 `headSplit_pivotDom_impl` ratio wiring is sorry-free (GLUE-2 @19dd58ff = origin/genm-sj5-pivotdom); reduces to those 3 sorries.
 
+## DOWNSTREAM LANES — FRONT-LOADED (2026-07-13, operator parallelization; pivotDom-INDEPENDENT)
+Use tide-b's arch-correction-#2 grind hours (hours) to lock every downstream contract now, so pivotDom's close leaves only one-exact fills, not fresh design questions on mint day.
+| Lane | Agent | Branch | Status |
+|---|---|---|---|
+| **DecoratedStepHyp assembly skeleton** (contract-first) | stepasm a7673edf | genm-sj5-stepasm | Casing deeper-flag shells into 3 named holes (j<r=head-split / j=r=saturated arity-IH / waist=reduce-to-`_mnp`). Deliverable = TYPECHECKING skeleton + seam report (j≤r-vs-j<r quantifier gap, waist hole's REQUIRED statement). Doubles as the statement-level seam audit (the 4×-paid catch pattern). Do NOT fill holes. |
+| **Waist-connector design pin** | waistpin (pen-and-paper) | (no git; returns cert, controller homes) | Adjudicate hpiv-FAILING waist shells → banked `_mnp`. Witness→obstruction; route-B orientation REFUTED (avoid). Only remaining unpinned design. TARGET = the waist hole's required statement from the stepasm skeleton (I relay). BOUNDED-vs-WALL verdict + Codex. |
+| **L=1 mint brick** (headline) | helper aa56113 (QUEUED after RHS≠0/uzero) | genm-sj5-l1mint | Unsuffixed #108 (∀L≥1) needs L=1 via a separate path (`_gen` carries 2≤L). SCOPE-FIRST before grinding. Consumes nobody's output; lands any time before mint. |
+
+**Interface handoff:** stepasm reports the waist hole's required statement → I relay it to waistpin as its exact target. When pivotDom closes: headSplit_domination clean-three → DeeperFlagCore stubs → deeperFlag_spineToCore → DecoratedStepHyp (skeleton's holes filled) → DecoratedDescent → (□) → mint (L=1 brick + _gen).
+
 ## Controller-owned integration (at the head-split assembly)
 1. **Head-split assembly**: fill `headSplit_domination` (RouteMSJDeeperFlagCore) = headSplit_pivotDom (GLUE-2 pieces) + shellSpine_le_hsQ_box (plumbing) + D-A/B/C banked + S3 + L1. Reconcile: inline pivotDom_finiteness (tide b, RouteMSJPivotFin) into RouteMSJPivotDom; merge the helper's RHS≠0/uzero.
 2. **DeeperFlagCore stub refinements** (I own): `headSplit_domination` STUB gains `hjr : j<r` + `hε'le : ε'≤ε/√(M₁M₂)` + `hZfMeas : Measurable Zf` — all discharged in `deeperFlag_spineToCore` (ε'=ε/√(M₁M₂) by le_refl; j<r from shell dispatch; hZfMeas from Brick F's Measurable Zf; hGmeas via the wrapper below).
