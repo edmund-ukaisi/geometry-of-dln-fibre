@@ -144,6 +144,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
 
 /-!
 # Axiom-hygiene check
@@ -1184,3 +1186,10 @@ open DLNFibre.DLN.RLCT
 -- + T-charge (flag charge C_j≥minAdm + the IH-fires shift). Consumed by the mountain (deeperFlag_shell_le).
 #print axioms uniformWenn_le
 #print axioms flagCharge_ge
+-- #5 T-Obl3b mountain (genm-sj5, bordered-Gram route): M1 the bordered-Gram Schur-complement
+-- det recursion + its nonneg residual (Cauchy–Binet-free native primitive); M2 the single-ε
+-- singular-value shell cover (measurability-free `∫⁻` finite-cover subadditivity + exhaustiveness).
+#print axioms DLNFibre.DLN.RLCT.borderedGram_det
+#print axioms DLNFibre.DLN.RLCT.borderedGramSchur_nonneg
+#print axioms DLNFibre.DLN.RLCT.lintegral_le_sum_finCover
+#print axioms DLNFibre.DLN.RLCT.singularShell_iUnion

@@ -1401,3 +1401,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
 -- iterated-spectral shell peel) is being re-formulated (Cauchy–Binet absent at the pin → iterated spectral).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
+-- T-Obl3b mountain (genm-sj5, bordered-Gram route): M1 `RouteMSJBorderedGram` — the one-step
+-- bordered-Gram Schur-complement det recursion `det Gram(v₀…vₙ) = det Gram(v₀…v_{n−1})·borderedGramSchur`
+-- (via `det_fromBlocks₁₁`) + `borderedGramSchur_nonneg` (Schur-of-PSD). The Cauchy–Binet-free native
+-- primitive (absent at v4.29). M2 `RouteMSJShellCover` — the single-ε singular-value shell cover
+-- (`lintegral_le_sum_finCover` measurability-free finite-cover `∫⁻` subadditivity + `singularShell`
+-- exhaustiveness `singularShell_iUnion`). Consumed by the mountain's minor-CoV (deeperFlag_shell_le).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
