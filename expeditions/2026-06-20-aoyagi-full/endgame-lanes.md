@@ -16,9 +16,12 @@ Tides build in worktrees; controller integrates one-at-a-time (aggregator + AxCh
 with jac≡0 is `adm` via the corank disjunct yet DIVERGES below threshold. Decide-checkable witness: M=(5,2,1),
 admCorankB=0 (bindingCut=2=M₁), minAdm=2; decLoss=|u₀|²·frobSq(prod) ⟹ ∫₀¹u₀^{-2c'}=⊤ for c'∈[1/2,1)<1
 ⟹ **`DecoratedStepHyp adm` is FALSE as stated.** Base #4 masked it (corank=0⟺minAdm=0⟺vacuous,
-`decoratedBase_corankZero`); the step's interior binding cut un-masks it. FIX in progress: reviewer **admfix**
-(a962fb42, decorrelated Codex) designing the minimal sound tightening of the corank disjunct + the #4/descent
-ripple. **LOCALIZED:** the analytic cruxes (head-split step-2, waist O2, L=1) prove FaithfulSJAt finiteness —
+`decoratedBase_corankZero`); the step's interior binding cut un-masks it. ★ **FIXED** (admfix verdict, decorrelated
+hand+Lean+Codex; `witness_adm` at (5,2,1) native_decide-confirmed): candidate (a) = `adm := genuineCarrier D ∧
+FaithfulSJAt D` (DROP the corank disjunct — never a producer; both adm_trivial + cornerComparator_adm use
+FaithfulSJAt). Bounded ripple (2 one-token + ~4-line decoratedBaseHyp_faithful; adm-abstract consumers untouched;
+NO sound banked result re-opens). Converts `DecoratedStepHyp adm` FALSE-as-stated → SOUND TARGET. apply-tide
+**admapply** (ac13b308, genm-admfix-apply) applying now. Verdict: threads/genm-admfix/adm-soundness-verdict.md. **LOCALIZED:** the analytic cruxes (head-split step-2, waist O2, L=1) prove FaithfulSJAt finiteness —
 the fix EXCLUDES non-FaithfulSJAt corank decorations, so those lanes are ROBUST (not wasted). stepasm:
 dispatch-fix @7a132673 stands; banking clean + FaithfulSJAt-(e) bricks; corank subcases HELD pending the fix.
 
