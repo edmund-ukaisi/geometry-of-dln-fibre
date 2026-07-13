@@ -259,6 +259,32 @@ theorem pivotInner_Dsubst {t a b q : ℕ} (x : SJOuter t a b) (hP : IsUnit (Matr
             (frobSq (Matrix.of ((blockSplitD t a b).symm (x, D)) * Q) ^ (-c')))
           (genBox (Fin a) (Fin b) 1)
 
+/-- **Step 2-prep — the block-front row-split.** `frobSq(fromBlocks P B₁₂ C D · Q_stack)` splits into
+the pivot (top rows `(P|B₁₂)`) energy `frobSq(P·Q_p + B₁₂·Q_b)` plus the corank (bottom rows `(C|D)`)
+energy `frobSq(C·Q_p + D·Q_b)`, with `Q_p = Q.submatrix Sum.inl id`, `Q_b = Q.submatrix Sum.inr id`.
+`frobSq_sum_rows` + the block-row identities (`Fintype.sum_sum_type` on the product's `⊕`-column sum
+via `fromBlocks_apply₁₁/₁₂/₂₁/₂₂`). Feeds D-A-radial (top) + S3-corank (bottom). -/
+theorem blockFront_rowSplit {t a b q : ℕ} (P : Matrix (Fin t) (Fin t) ℝ)
+    (B12 : Matrix (Fin t) (Fin b) ℝ) (C : Matrix (Fin a) (Fin t) ℝ) (D : Matrix (Fin a) (Fin b) ℝ)
+    (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) :
+    frobSq (Matrix.fromBlocks P B12 C D * Q)
+      = frobSq (P * Q.submatrix Sum.inl id + B12 * Q.submatrix Sum.inr id)
+        + frobSq (C * Q.submatrix Sum.inl id + D * Q.submatrix Sum.inr id) := by
+  rw [frobSq_sum_rows]
+  have htop : (Matrix.fromBlocks P B12 C D * Q).submatrix Sum.inl id
+      = P * Q.submatrix Sum.inl id + B12 * Q.submatrix Sum.inr id := by
+    ext i k
+    simp only [Matrix.submatrix_apply, id_eq, Matrix.mul_apply, Matrix.add_apply]
+    rw [Fintype.sum_sum_type]
+    simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂]
+  have hbot : (Matrix.fromBlocks P B12 C D * Q).submatrix Sum.inr id
+      = C * Q.submatrix Sum.inl id + D * Q.submatrix Sum.inr id := by
+    ext i k
+    simp only [Matrix.submatrix_apply, id_eq, Matrix.mul_apply, Matrix.add_apply]
+    rw [Fintype.sum_sum_type]
+    simp only [Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
+  rw [htop, hbot]
+
 /-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX — scaffold + 1-sorry, standing decision 7).**
 The freed Schur-loss spine LHS is dominated by a FINITE reorganisation constant times the comparator-core
 RHS. This is exactly the conclusion of `RouteMSJHeadSplitDom.headSplit_pivotDom`; it carries the entire
