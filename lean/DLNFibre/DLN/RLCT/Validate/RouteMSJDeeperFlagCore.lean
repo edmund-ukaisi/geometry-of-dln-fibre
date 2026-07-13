@@ -3,6 +3,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
 import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
+import DLNFibre.DLN.RLCT.Validate.DeepestCoreNonvanishing
 
 set_option linter.style.longLine false
 
@@ -31,22 +32,33 @@ seam **S1** (the head-split spine→core CoV, isolated as ONE correct-statement 
   (S4, definitional), is bounded by `Cunif · (cornerComparator (redChain u M) k jc).integral (c' −
   ½·peelCharge M u)`. Consumes `shell_corankOffSector_le_unif` + `cornerComparator_decLoss`.
 
-## The single isolated seam (S1, a correct-statement `sorry`)
+## The two isolated bricks (F, D — cert-pinned correct-statement `sorry`s)
 
-* **`deeperFlag_spineToCore`** — the head-split spine→core reduction: the literal cut-`u`/shell-`S_j`
-  freed-Γ triple (the `RouteMSJDecoratedPeelStep.innerCorankDescent` shape) is bounded by L1's core
-  integrand. This is the ~65–75%-genuinely-new decorated-peel head-split CoV that `RouteMSJDecorated`
-  flagged (Tonelli-factor `∫_{A'}` into leading-layer × deep-tail; head-split `prod_headSplit` exposes
-  the corank block `Q_b = A_cor·Z_deep`; separate the pivot rows feeding the energy `w`). Statement
-  CORRECT — the binding-cut lower bound `1 ≤ t★` and the chain nondegeneracy `∀ i, 1 ≤ M i` are
-  LOAD-BEARING (without them `redChain 0 M 0 = 0` / a zero-width deep layer collapses the comparator
-  index / product, making the carried `hpos : decLoss > 0 a.e.` unsatisfiable and the statement FALSE).
+The S1-good head-split spine→core CoV (`deeperFlag_spineToCore`, scoped to good/non-waist chains via
+`hpiv`/`hcvg`/`hrange`) is now ASSEMBLED sorry-free MODULO exactly two isolated bricks, plus the fully
+proved in-tide assembly (nat clauses, `ε'>0`, endpoint index, `hconv`, the `hpos` positivity
+`deeperFlagCore_decLoss_pos_ae`, and the `hbeta` monomial threshold). The corrected statement carries the
+rescaled floor `ε' = ε/√(M₁M₂)` and the finite reorganization constant `C_hle`.
 
-* **`deeperFlag_shell_le`** — the headline = `deeperFlag_spineToCore` (S1) ∘ `deeperFlag_shell_core_le`
-  (L1) + the decorated IH via `cornerComparator_adm` + `flagShift_lt_carrierThreshold`. Everything above
-  S1 is clean.
+* **`exists_headSplitFrame` (Brick F)** — the measurable piecewise `m`-frame selector (`= Z_deep` on the
+  good set `G`, fixed full-rank `V` off `G`): orthonormal `U_sf`, rank `≥ m`, the Loewner floor at `ε'`,
+  agreeing with `Z_deep` on `G` (`weakEigCount ε' ≤ M₂ − m`). Content: Borel functional calculus. Cert:
+  `s1-spine-headsplit-cert` §B.3.
+* **`headSplit_domination` (Brick D)** — the head-split domination with finite constant: given the frame
+  data, `∃ Ccrossf sΓf C_hle < ⊤, shellSpine ≤ C_hle · deeperFlagCore`. Content: row-split, `prod_headSplit`,
+  the P-radial blow-up, the `B₁₂→Γ'` shear, `C_hle` finite via the codim-`u·ρ` linear-image argument
+  (gated by `hpiv`), Ky-Fan → shell ⊆ G, S3/L1 assembly. Cert: `s1-spine-headsplit-cert` Part A +
+  `s1-Chle-angular-integrability-cert`.
 
-S2-FREE. Axiom-clean `[propext, Classical.choice, Quot.sound]` for the sorry-free results.
+* **`deeperFlag_spineToCore` (S1-good)** — ASSEMBLED: `= exists_headSplitFrame ∘ headSplit_domination` +
+  the proved-in-tide clauses. Sorry-free modulo F, D.
+* **`deeperFlag_shell_le`** — the headline = `deeperFlag_spineToCore` (S1-good) ∘ `deeperFlag_shell_core_le`
+  (L1) + the decorated IH via `cornerComparator_adm`, folding `C := C_hle · C_L1`. Scoped to good chains;
+  waists route through the separate `deeperFlag_waist` SVD-qPeel base case (task #156).
+
+S2-FREE. Axiom-clean `[propext, Classical.choice, Quot.sound]` for the sorry-free results (L1, the S3
+uniform bricks, and the in-tide assembly clauses incl. `deeperFlagCore_decLoss_pos_ae`); `deeperFlag_spineToCore`
+(S1-good) and `deeperFlag_shell_le` (headline) carry `sorryAx` = exactly F + D, the two tracked `(□)`-rungs.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -439,29 +451,224 @@ noncomputable def shellSpineIntegrand {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ
         ENNReal.ofReal
           ((freedSchurLoss x Γ ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-c'))
 
-/-- **S1 (the ISOLATED sorry) — the head-split spine→core reduction, at a binding cut on shell `j`.**
-For a legal binding cut `t★` (`ht`) and shell index `j ≤ r = min(M₀−t★, M₁−t★)` (`hj`), the cut-`u`
-(`u = t★+j`) / shell-`j` spine integrand is bounded by L1's off-sector-core integrand for head-split data
-satisfying the L1 + comparator hypotheses (INCLUDING the strict convergence, true here by the binding-cut
-fact `a−j < M₂−b+1` — cornershift cert, 0/3161). The binding-cut restriction is LOAD-BEARING: at a
-non-binding cut / mismatched shell no convergent head-split exists, so the unconstrained statement would
-be FALSE. This is the ~65–75%-genuinely-new decorated-peel head-split change-of-variables
-(`RouteMSJDecorated`): Tonelli-factor `∫_{A'}` into leading-layer × deep-tail; the banked `prod_headSplit`
-exposes the corank block `Q_b = A_cor·Z_deep`; separate the pivot rows feeding the energy `w = decLoss`;
-the per-point strong projection `U_sf` (deliverable B) discharges the shell PSD hypothesis. Statement
-CORRECT (the existential asserts the convergent head-split EXISTS — it does, per the certs); proof deferred. -/
+/-- **The tail-chain generic rank** `ρ = min(M₁, M₂, …, M_last)` — the generic rank of the deep-tail
+layer product `prod (tailChain M)` (an `M₁ × M_last` product of the widths `M₁, M₂, …, M_last`). The
+pivot-admissibility criterion `hpiv : minAdm (redChain u M) ≤ u·ρ` (gating `C_hle < ⊤`, the P-block
+absorbed integral's codim-`u·ρ` finiteness) is stated against it. -/
+def tailMinWidth {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) : ℕ :=
+  (Finset.univ : Finset (Fin (L + 1 + 1))).inf' ⟨0, Finset.mem_univ 0⟩ (fun i => M i.succ)
+
+/-- **The deep-tail layer product as a function of the reduced params `z`.** Via the banked head split
+(`paramsHeadSplit`): `Z_deep z = prod (dropHead (redChain u M)) (z ∘ succ)` (an `M₂ × n` matrix,
+`M₂ = redChain u M 1 = M 2`, `n = M_last`, depending only on the deep layers of `z`). This is the deep
+factor of the head-split `prod (redChain u M) z = (z 0) · Z_deep z`; the corank block on the RHS core is
+`A_cor · Z_deep z`. -/
+noncomputable def deeperFlagZdeep {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (z : Params (redChain u M)) :
+    Matrix (Fin (dropHead (redChain u M) 0)) (Fin (dropHead (redChain u M) (Fin.last L))) ℝ :=
+  prod (dropHead (redChain u M)) (paramsHeadSplit (redChain u M) z).2
+
+/-- The row-width of `deeperFlagZdeep` is `M 2` (`= redChain u M 1`, the deep-tail leading width). -/
+theorem dropHead_redChain_zero {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) :
+    dropHead (redChain u M) 0 = M 2 := by
+  simp only [dropHead, Fin.succ_zero_eq_one]
+  rfl
+
+/-- The column-width of `deeperFlagZdeep` is `M_last`. -/
+theorem dropHead_redChain_last {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) :
+    dropHead (redChain u M) (Fin.last L) = M (Fin.last (L + 1 + 1)) := by
+  rw [dropHead, ← Fin.succ_last, redChain_succ, Fin.succ_last, Fin.succ_last]
+
+/-! ## The two isolated bricks (F: frame selector; D: domination) — cert-pinned contracts -/
+
+/-- **Brick F (isolated, `s1-spine-headsplit-cert` §B.3) — the measurable piecewise `m`-frame selector.**
+For any measurable deep-matrix family `Zdeep : X → M₂×n`, with `m ≤ M₂`, `m ≤ n`, and a floor `ε' > 0`,
+there is a piecewise `(Zf, U_sf)` — `= Zdeep` on the good set `G = {z | at least m eigenvalues of
+Zdeep·Zdeepᵀ are ≥ ε'²}` (i.e. `weakEigCount ε' (Zdeep z) ≤ M₂ − m`), a fixed full-rank `V` off `G` —
+that is measurable, has an orthonormal `m`-frame `U_sf`, rank `≥ m`, and the Loewner floor
+`Zf·Zfᵀ ⪰ ε'²·U_sf·U_sfᵀ` UNCONDITIONALLY (on `G` from the top-`m` eigenframe, off `G` by construction).
+The agreement `Zf = Zdeep on G` is the connection Brick D consumes (the shell image sits inside `G`).
+Content: Borel functional calculus (`B ↦ 𝟙_{[ε'²,∞)}(B)` Borel) for the measurable frame. -/
+theorem exists_headSplitFrame {X : Type*} [MeasurableSpace X] {M₂ n m : ℕ}
+    (hmM₂ : m ≤ M₂) (hmn : m ≤ n) {ε' : ℝ} (hε' : 0 < ε')
+    (Zdeep : X → Matrix (Fin M₂) (Fin n) ℝ) (hZ : Measurable Zdeep) :
+    ∃ (Zf : X → Matrix (Fin M₂) (Fin n) ℝ) (U_sf : X → Matrix (Fin M₂) (Fin m) ℝ),
+      Measurable Zf ∧ Measurable U_sf
+      ∧ (∀ z, (U_sf z)ᵀ * U_sf z = 1)
+      ∧ (∀ z, m ≤ (Zf z).rank)
+      ∧ (∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
+      ∧ (∀ z, weakEigCount ε' (Zdeep z) ≤ M₂ - m → Zf z = Zdeep z) := by
+  sorry
+
+/-- **Brick D (isolated, `s1-spine-headsplit-cert` Part A + `s1-Chle-angular-integrability-cert`) — the
+head-split domination with a FINITE reorganization constant.** Given the frame data from Brick F (at
+`M₂ = M 2`, `n = M_last`, `m = min(M₁,n)−j`, floor `ε' = ε/√(M₁M₂)`), and the pivot-admissibility `hpiv`
++ convergence `hcvg` + range `hrange`, there exist `Ccrossf`, `sΓf`, and a FINITE `C_hle` for which the
+cut-`u`/shell-`j` spine integrand is `≤ C_hle ·` the off-sector-core integrand at the clean comparator
+data `k = ![1]`, `jc = ![minAdm(redChain u M) − 1]`. Content: the row-split `A' ↔ (z, A_cor)`, the
+head-split `Q_b = A_cor·Zf z`, the P-radial blow-up (`P = commonDivisor(v)·P̂`, det-1 clear → the pivot
+energy `commonDivisor(v)²·frobSq(prod(redChain u M) z) = decLoss` + Jacobian monomial), the exact `B₁₂→Γ'`
+shear, `C_hle` finite via the codim-`u·ρ` linear-image argument (gated by `hpiv`), Ky-Fan → shell ⊆ G,
+S3/L1 assembly. -/
+theorem headSplit_domination {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
+    (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
+    (hpiv : minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M)
+    (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
+        ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
+    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
+    {ε' : ℝ} (hε' : 0 < ε')
+    (Zf : Params (redChain (t + j) M)
+        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
+            (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
+    (U_sf : Params (redChain (t + j) M)
+        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
+            (Fin (min (M 1) (M (Fin.last (L + 1 + 1))) - j)) ℝ)
+    (hZfMeas : Measurable Zf) (hUsMeas : Measurable U_sf)
+    (hUs : ∀ z, (U_sf z)ᵀ * U_sf z = 1)
+    (hrank : ∀ z, (min (M 1) (M (Fin.last (L + 1 + 1))) - j) ≤ (Zf z).rank)
+    (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
+    (hagree : ∀ z, weakEigCount ε' (deeperFlagZdeep M (t + j) z)
+        ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)
+        → Zf z = deeperFlagZdeep M (t + j) z) :
+    ∃ (Ccrossf : Params (redChain (t + j) M)
+          → Matrix (Fin (M 0 - (t + j))) (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
+        (sΓf : Params (redChain (t + j) M)
+          → Set (Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ))
+        (C_hle : ℝ≥0∞),
+      C_hle < ⊤
+      ∧ shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
+          ≤ C_hle * deeperFlagCoreIntegrand M (t + j) (![1] : Fin 1 → ℕ)
+              (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) Zf Ccrossf sΓf c' := by
+  sorry
+
+/-- **The comparator's decorated loss is a.e. positive** (the `hpos` clause of S1-good). At the clean
+comparator data `k = ![1]`, `jc = ![minAdm − 1]`, `decLoss v z = |v 0|² · frobSq(prod (redChain u M) z)`
+(`cornerComparator_decLoss`, `commonDivisor = |v 0|`); both factors are `> 0` a.e.: `v 0 ≠ 0` a.e. on
+`[0,1]`, and `prod (redChain u M) z ≠ 0` a.e. (all reduced widths `≥ 1` via `ht1`/`hnd`, the banked
+general-`L` polynomial-nonvanishing `DeepestCoreNonvanishing`). Reachable, self-contained. -/
+theorem deeperFlagCore_decLoss_pos_ae {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i) :
+    ∀ᵐ z ∂(volume.restrict (paramsBoxM (redChain (t + j) M) 1)),
+      ∀ᵐ v ∂(volume.restrict (unitBox 1)),
+        0 < (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+            (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).decLoss v z := by
+  classical
+  -- Every reduced width is `≥ 1` (`redChain u M 0 = u ≥ 1` via `ht1`; deeper widths via `hnd`).
+  have hposW : ∀ s, 1 ≤ redChain (t + j) M s := by
+    intro s
+    refine Fin.cases ?_ (fun i => ?_) s
+    · rw [redChain_zero]; omega
+    · rw [redChain_succ]; exact hnd _
+  -- The endpoint witness index for the comparator's nonempty `ι`.
+  have hu1 : 0 < redChain (t + j) M 0 := by rw [redChain_zero]; omega
+  have hlastw : redChain (t + j) M (Fin.last (L + 1)) = M (Fin.last (L + 1 + 1)) := by
+    rw [← Fin.succ_last, redChain_succ, Fin.succ_last, Fin.succ_last]
+  have hlast1 : 0 < redChain (t + j) M (Fin.last (L + 1)) := by rw [hlastw]; exact hnd _
+  set i₀ : Fin (redChain (t + j) M 0) × Fin (redChain (t + j) M (Fin.last (L + 1)))
+      := (⟨0, hu1⟩, ⟨0, hlast1⟩) with hi₀
+  -- `prod (redChain u M) z ≠ 0` a.e.: the core polynomial is nonzero (all widths ≥ 1), so its zero set
+  -- is null (`DeepestCoreNonvanishing`), pulled back along the measure-preserving flatten.
+  obtain ⟨Aw, hAw⟩ := dlnLoss_deepest_core_ne_zero_witness (redChain (t + j) M) hposW
+  have hP_ne : corePoly (redChain (t + j) M) ≠ 0 := by
+    intro hP0
+    apply hAw
+    have he := eval_corePoly (redChain (t + j) M) (paramsEquivFlat (redChain (t + j) M) Aw)
+    rw [hP0, map_zero] at he
+    rw [show (paramsEquivFlat (redChain (t + j) M)).symm (paramsEquivFlat (redChain (t + j) M) Aw)
+        = Aw from by simp] at he
+    exact he.symm
+  have hdf : ∀ A, dlnLoss (redChain (t + j) M)
+      (0 : Matrix (Fin (redChain (t + j) M 0)) (Fin (redChain (t + j) M (Fin.last (L + 1)))) ℝ) A
+      = frobSq (prod (redChain (t + j) M) A) := by
+    intro A
+    simp only [dlnLoss, frobSq, Matrix.sub_apply, Matrix.zero_apply, sub_zero]
+  have haeflat := MvPolynomial.ae_eval_ne_zero (corePoly (redChain (t + j) M)) hP_ne
+  have haeP : ∀ᵐ A ∂(volume : Measure (Params (redChain (t + j) M))),
+      frobSq (prod (redChain (t + j) M) A) ≠ 0 := by
+    have hpull := (measurePreserving_paramsEquivFlat (redChain (t + j) M)).quasiMeasurePreserving.ae
+      haeflat
+    filter_upwards [hpull] with A hA
+    rw [eval_corePoly] at hA
+    rw [show (paramsEquivFlat (redChain (t + j) M)).symm (paramsEquivFlat (redChain (t + j) M) A)
+        = A from by simp, hdf] at hA
+    exact hA
+  -- `v 0 ≠ 0` a.e. on the unit box (the singleton `{0}` is Lebesgue-null; transport by `funUnique`).
+  have hv0 : ∀ᵐ v ∂(volume : Measure (Fin 1 → ℝ)), v 0 ≠ 0 := by
+    have h1 : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ 0 := by
+      rw [ae_iff]; simp
+    have hpull := (volume_preserving_funUnique (Fin 1) ℝ).quasiMeasurePreserving.ae h1
+    filter_upwards [hpull] with v hv
+    simpa using hv
+  -- Assemble: `decLoss v z = commonDivisor(v)² · frobSq(prod z)` (both factors `> 0` a.e.).
+  refine (ae_restrict_of_ae haeP).mono (fun z hzne => ?_)
+  have hzpos : 0 < frobSq (prod (redChain (t + j) M) z) :=
+    lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hzne)
+  refine (ae_restrict_of_ae hv0).mono (fun v hvne => ?_)
+  letI := (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).fι
+  letI := (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).fν
+  haveI : Nonempty (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).ι := ⟨i₀⟩
+  rw [cornerComparator_decLoss (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+    (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) i₀ v z]
+  have hd1 : (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).d = 1 := rfl
+  haveI hne0 : NeZero (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).d := ⟨by rw [hd1]; omega⟩
+  haveI hss : Subsingleton (Fin (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).d) := by rw [hd1]; infer_instance
+  have hcd : 0 < commonDivisor
+      (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).carrier.supp v := by
+    unfold commonDivisor
+    apply Finset.prod_pos
+    intro ℓ _
+    refine pow_pos (abs_pos.mpr ?_) _
+    have heq : v ℓ = v (0 : Fin (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).d) := by
+      congr 1; exact Subsingleton.elim ℓ 0
+    rw [heq]; exact hvne
+  exact mul_pos (pow_pos hcd 2) hzpos
+
+/-- **S1-good (the ISOLATED sorry) — the head-split spine→core reduction, at a binding cut on shell `j`,
+in the good-chain (non-waist) scope.** For a legal binding cut `t★` (`ht`) and shell index
+`j ≤ r = min(M₀−t★, M₁−t★)` (`hj`), the cut-`u` (`u = t★+j`) / shell-`j` spine integrand is bounded by a
+FINITE constant `C_hle` times L1's off-sector-core integrand, for head-split data satisfying the L1 +
+comparator hypotheses. This is the ~65–75%-genuinely-new decorated-peel head-split change-of-variables
+(`RouteMSJDecorated`, resolved by `s1-spine-headsplit-cert.md` + `s1-Chle-angular-integrability-cert.md`):
+the row-split `A' ↔ (z, A_cor)` via `blockSplitEquiv κ`; `prod_headSplit` exposes the corank block
+`Q_b = A_cor·Z_deep`; the P-radial blow-up (`P = commonDivisor(v)·P̂`, det-1 clear) reorganizes the pivot
+energy `frobSq(P·Q_p)` to `commonDivisor(v)²·frobSq(Q̃_p) = decLoss v z` plus the Jacobian monomial
+`∏|v_ℓ|^{jc_ℓ}`; `B₁₂` absorbs exactly into the Γ-shear (`Γ' = Γ + C·P⁻¹B₁₂`); the `C`/angular directions
+integrate to the finite `C_hle`; the piecewise `Zf` (`= Z_deep` on the good set `G`, fixed full-rank `V`
+off `G`) makes L1's `∀z` rank/PSD hyps literally TRUE at the rescaled floor `ε' = ε/√(M₁M₂)`.
+
+**Scope (LOAD-BEARING, per the certs).** `hpiv` (`minAdm (redChain u M) ≤ u·tailMinWidth M`, the pivot
+criterion) gates `C_hle < ⊤` — it is STRICTLY stronger than convergence on `M₂>M₁` wide chains
+(`s1-Chle-cert` §6, witness `(3,3,4,4)`); `hcvg`/`hrange` encode the `hconv` clause's TWO parts (cert B.4):
+`a+b ≤ m` (corank convergence) and `m ≤ M₂` (range/nonvacuity — else the shell `S_j` is EMPTY and the
+existential is unsatisfiable), with `m = min(M₁,n) − j`. Waists (`hpiv` fails) are a SEPARATE base case
+(`deeperFlag_waist`, SVD-qPeel, task #156), NOT this theorem. -/
 theorem deeperFlag_spineToCore {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
     (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
     (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
-    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i) :
-    ∃ (M₂ m n d : ℕ) (k jc : Fin d → ℕ)
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
+    (hpiv : minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M)
+    (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
+        ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
+    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2) :
+    ∃ (M₂ m n d : ℕ) (ε' : ℝ) (k jc : Fin d → ℕ) (C_hle : ℝ≥0∞)
       (Zf : Params (redChain (t + j) M) → Matrix (Fin M₂) (Fin n) ℝ)
       (Ccrossf : Params (redChain (t + j) M) → Matrix (Fin (M 0 - (t + j))) (Fin n) ℝ)
       (U_sf : Params (redChain (t + j) M) → Matrix (Fin M₂) (Fin m) ℝ)
       (sΓf : Params (redChain (t + j) M) → Set (Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ))
       (_i₀ : Fin ((redChain (t + j) M) 0) × Fin ((redChain (t + j) M) (Fin.last (L + 1)))),
-      (∀ z, (U_sf z)ᵀ * U_sf z = 1) ∧ (M 1 - (t + j) ≤ m) ∧ (m ≤ M₂) ∧ (∀ z, m ≤ (Zf z).rank)
-      ∧ (∀ z, (Zf z * (Zf z)ᵀ - (ε ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
+      0 < ε' ∧ C_hle < ⊤
+      ∧ (∀ z, (U_sf z)ᵀ * U_sf z = 1) ∧ (M 1 - (t + j) ≤ m) ∧ (m ≤ M₂) ∧ (∀ z, m ≤ (Zf z).rank)
+      ∧ (∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
       ∧ (((M 0 - (t + j) : ℕ) : ℝ) < (m : ℝ) - ((M 1 - (t + j) : ℕ) : ℝ) + 1)
       ∧ (∀ᵐ z ∂(volume.restrict (paramsBoxM (redChain (t + j) M) 1)),
           ∀ᵐ v ∂(volume.restrict (unitBox d)),
@@ -469,33 +676,104 @@ theorem deeperFlag_spineToCore {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j 
       ∧ (1 ≤ d)
       ∧ ((minAdm (redChain (t + j) M) : ℝ≥0∞) / 2 ≤ monomialThreshold d k jc)
       ∧ shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
-          ≤ deeperFlagCoreIntegrand M (t + j) k jc Zf Ccrossf sΓf c' := by
-  sorry
+          ≤ C_hle * deeperFlagCoreIntegrand M (t + j) k jc Zf Ccrossf sΓf c' := by
+  classical
+  -- The rescaled floor `ε' = ε/√(M₁·M₂)` is positive.
+  have hM1 : (1 : ℕ) ≤ M 1 := hnd 1
+  have hM2 : (1 : ℕ) ≤ M 2 := hnd 2
+  have hprodpos : (0 : ℝ) < (M 1 : ℝ) * (M 2 : ℝ) := by
+    have : (0 : ℝ) < (M 1 : ℝ) := by exact_mod_cast hM1
+    have : (0 : ℝ) < (M 2 : ℝ) := by exact_mod_cast hM2
+    positivity
+  have hsqrtpos : (0 : ℝ) < Real.sqrt ((M 1 : ℝ) * (M 2 : ℝ)) := Real.sqrt_pos.mpr hprodpos
+  set ε' : ℝ := ε / Real.sqrt ((M 1 : ℝ) * (M 2 : ℝ)) with hε'def
+  have hε' : 0 < ε' := div_pos hε hsqrtpos
+  -- Width bookkeeping: `M₂ = dropHead (redChain u M) 0 = M 2`, `n = … = M_last`.
+  have hM₂eq : dropHead (redChain (t + j) M) 0 = M 2 := dropHead_redChain_zero M (t + j)
+  have hneq : dropHead (redChain (t + j) M) (Fin.last L) = M (Fin.last (L + 1 + 1)) :=
+    dropHead_redChain_last M (t + j)
+  set m : ℕ := min (M 1) (M (Fin.last (L + 1 + 1))) - j with hmdef
+  have hmM₂ : m ≤ dropHead (redChain (t + j) M) 0 := by rw [hM₂eq]; exact hrange
+  have hmn : m ≤ dropHead (redChain (t + j) M) (Fin.last L) := by rw [hneq, hmdef]; omega
+  -- The deep-tail product is measurable (entrywise: continuous `prod`-entry ∘ head-split projection).
+  have hproj : Measurable (fun z : Params (redChain (t + j) M) =>
+      (paramsHeadSplit (redChain (t + j) M) z).2) :=
+    measurable_snd.comp (paramsHeadSplit (redChain (t + j) M)).measurable
+  have hZdeepMeas : Measurable (deeperFlagZdeep M (t + j)) :=
+    measurable_pi_lambda _ (fun i => measurable_pi_lambda _ (fun jj =>
+      ((continuous_prod (dropHead (redChain (t + j) M))).matrix_elem i jj).measurable.comp hproj))
+  -- Brick F: the measurable piecewise `m`-frame.
+  obtain ⟨Zf, U_sf, _hZfMeas, _hUsMeas, hUs, hrank, hfloor, hagree⟩ :=
+    exists_headSplitFrame (m := m) hmM₂ hmn hε' (deeperFlagZdeep M (t + j)) hZdeepMeas
+  -- Brick D: the head-split domination with finite constant.
+  obtain ⟨Ccrossf, sΓf, C_hle, hChle, hdom⟩ :=
+    headSplit_domination M t j κ hε c' ht hj ht1 hnd hpiv hcvg hrange hε' Zf U_sf
+      _hZfMeas _hUsMeas hUs hrank hfloor hagree
+  -- The endpoint witness index (`redChain u M 0 = u ≥ 1`; `redChain u M last = M_last ≥ 1`).
+  have hu1 : 0 < redChain (t + j) M 0 := by rw [redChain_zero]; omega
+  have hlastw : redChain (t + j) M (Fin.last (L + 1)) = M (Fin.last (L + 1 + 1)) := by
+    rw [← Fin.succ_last, redChain_succ, Fin.succ_last, Fin.succ_last]
+  have hlast1 : 0 < redChain (t + j) M (Fin.last (L + 1)) := by rw [hlastw]; exact hnd _
+  refine ⟨dropHead (redChain (t + j) M) 0, m, dropHead (redChain (t + j) M) (Fin.last L), 1, ε',
+    (![1] : Fin 1 → ℕ), (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ), C_hle, Zf, Ccrossf, U_sf,
+    sΓf, (⟨0, hu1⟩, ⟨0, hlast1⟩), hε', hChle, hUs, ?hbm, hmM₂, hrank, hfloor, ?hconv, ?hpos,
+    le_refl 1, ?hbeta, hdom⟩
+  case hbm => omega
+  case hconv =>
+    have h1 : ((M 0 - (t + j) : ℕ) : ℝ) + ((M 1 - (t + j) : ℕ) : ℝ) ≤ (m : ℝ) := by
+      exact_mod_cast hcvg
+    linarith [h1]
+  case hpos => exact deeperFlagCore_decLoss_pos_ae M t j ht1 hnd
+  case hbeta =>
+    rw [monomialThreshold_eq_iInf_axisRatio]
+    refine le_iInf (fun jidx => ?_)
+    have hk1 : (![1] : Fin 1 → ℕ) jidx = 1 := by simp [Matrix.cons_val_fin_one]
+    have hjc : (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) jidx
+        = minAdm (redChain (t + j) M) - 1 := by simp [Matrix.cons_val_fin_one]
+    rw [hk1, hjc]
+    rcases Nat.eq_zero_or_pos (minAdm (redChain (t + j) M)) with hm0 | hmpos
+    · rw [hm0]; simp
+    · rw [show minAdm (redChain (t + j) M) - 1
+            = (minAdm (redChain (t + j) M) - 1 + 1) - 1 from by omega,
+        axisRatio_regularSeq (minAdm (redChain (t + j) M) - 1 + 1) (by omega),
+        show minAdm (redChain (t + j) M) - 1 + 1 = minAdm (redChain (t + j) M) from by omega]
 
 /-- **The headline `deeperFlag_shell_le` — the T-Obl3b off-sector shell-stratification mountain (per
-shell, corrected deeper-cut route).** At a legal binding cut `t★` and shell `j ≤ r`, the literal cut-`u`
-(`u = t★+j`) / shell-`j` spine integrand is dominated by a finite constant times the reduced comparator's
-integral at the shifted exponent `c' − ½·peelCharge M u`, with the comparator `adm`-admissible (so the
-decorated IH closes it in the compose). Proof = `deeperFlag_spineToCore` (S1, the isolated head-split
-sorry) ∘ `deeperFlag_shell_core_le` (L1, the clean analytic core) + `cornerComparator_adm`. The
-`c' > ½·peelCharge M u` hypothesis is the freed-corner peel regime (the complementary bounded regime is a
-separate, elementary branch). Everything above S1 (L1, the S3 uniform bricks) is sorry-free. -/
+shell, corrected deeper-cut route), scoped to good (non-waist) chains.** At a legal binding cut `t★` and
+shell `j ≤ r`, the literal cut-`u` (`u = t★+j`) / shell-`j` spine integrand is dominated by a finite
+constant times the reduced comparator's integral at the shifted exponent `c' − ½·peelCharge M u`, with the
+comparator `adm`-admissible (so the decorated IH closes it in the compose). Proof =
+`deeperFlag_spineToCore` (S1-good) ∘ `deeperFlag_shell_core_le` (L1, the clean analytic core, consumed at
+the rescaled floor `ε'`) + `cornerComparator_adm`, folding `C := C_hle · C_L1`. The `hpiv`/`hcvg`/`hrange`
+scope (pivot criterion + convergence + range) is the good-chain condition; waists route through the
+separate `deeperFlag_waist` SVD-qPeel base case (task #156). `hc'` is the freed-corner peel regime. -/
 theorem deeperFlag_shell_le {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
     (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
     (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
     (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
+    (hpiv : minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M)
+    (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
+        ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
+    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
     (hc' : (((M 0 - (t + j)) * (M 1 - (t + j)) : ℕ) : ℝ) / 2 < c') :
     ∃ (d : ℕ) (k jc : Fin d → ℕ) (C : ℝ≥0∞), C < ⊤
       ∧ adm (L + 1) (redChain (t + j) M) (cornerComparator (redChain (t + j) M) k jc)
       ∧ shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
           ≤ C * (cornerComparator (redChain (t + j) M) k jc).integral
               (c' - (peelCharge M (t + j) : ℝ) / 2) := by
-  obtain ⟨M₂, m, n, d, k, jc, Zf, Ccrossf, U_sf, sΓf, i₀, hUs, hbm, hmM, hmZ, hshell, hconv, hpos,
-    hd, hbeta, hle⟩ := deeperFlag_spineToCore M t j κ hε c' ht hj ht1 hnd
+  obtain ⟨M₂, m, n, d, ε', k, jc, C_hle, Zf, Ccrossf, U_sf, sΓf, i₀, hε', hChle, hUs, hbm, hmM, hmZ,
+    hshell, hconv, hpos, hd, hbeta, hle⟩ :=
+    deeperFlag_spineToCore M t j κ hε c' ht hj ht1 hnd hpiv hcvg hrange
   obtain ⟨C, hCfin, hcore⟩ :=
-    deeperFlag_shell_core_le M (t + j) k jc Zf Ccrossf U_sf sΓf hε hUs hbm hmM hmZ hshell c'
+    deeperFlag_shell_core_le M (t + j) k jc Zf Ccrossf U_sf sΓf hε' hUs hbm hmM hmZ hshell c'
       hconv hc' hpos
-  exact ⟨d, k, jc, C, hCfin,
-    cornerComparator_adm (redChain (t + j) M) k jc hd i₀ hbeta, hle.trans hcore⟩
+  refine ⟨d, k, jc, C_hle * C, ENNReal.mul_lt_top hChle hCfin,
+    cornerComparator_adm (redChain (t + j) M) k jc hd i₀ hbeta, ?_⟩
+  calc shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
+      ≤ C_hle * deeperFlagCoreIntegrand M (t + j) k jc Zf Ccrossf sΓf c' := hle
+    _ ≤ C_hle * (C * (cornerComparator (redChain (t + j) M) k jc).integral
+          (c' - (peelCharge M (t + j) : ℝ) / 2)) := mul_le_mul_left' hcore C_hle
+    _ = C_hle * C * (cornerComparator (redChain (t + j) M) k jc).integral
+          (c' - (peelCharge M (t + j) : ℝ) / 2) := (mul_assoc _ _ _).symm
 
 end DLNFibre.DLN.RLCT
