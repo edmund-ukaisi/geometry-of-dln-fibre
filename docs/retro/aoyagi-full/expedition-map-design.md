@@ -108,6 +108,52 @@ pattern). Librarian: regenerates the computed companion; near-match service. Loo
 map-vs-territory; its pathology checks are map queries. Reviewer AUDIT: consumer-check = edge
 audit at landing. Operator: reads the map as the dashboard; `priorities.md` ranks node-ids.
 
+## Scaffold consolidation (what the map retires)
+
+The pre-map scaffold accreted one file per coping mechanism — each a sedimentary layer marking the
+moment the previous one rotted (BUILT-INDEX created day 21, endgame-lanes day 23, FRONTIER headers,
+NOW markers). Post-map:
+
+- **`brief.md`** — unchanged; the SINGLE durable home of standing directives (heartbeat/loop
+  prompts reference it; no more four-way directive copies).
+- **`expedition-map/`** — absorbs ALL state (status, edges, ownership, liveness, banked catalog,
+  lane assignment). Retires `BUILT-INDEX.md`, `endgame-lanes.md`, FRONTIER headers, NOW markers.
+- **`journal.md`** (renamed from `synthesis.md` — name = content): append-only journal of
+  decisions and reasoning, entries cite map ids, never restates state. Append-only is
+  machine-checked (each commit's journal diff must be pure tail-addition).
+- **`priorities.md`** — thinned to a ranked list of map node-ids + one-line taste notes. Owner
+  corrected to the CONTROLLER (empirical: the operator channel is conversation + the discuss
+  queue; no operator file-edit occurred in 24 days on aoyagi-full).
+- **`discuss.md`** — namespaced ids (`D-###`), open items only; resolved auto-archived.
+- **`heartbeat-prompt.md`** (renamed from loop-prompt): fixed harness section + a controller
+  memo-to-self section. **Pointer form recommended**: the armed cron message is a constant
+  "read heartbeat-prompt.md and act" — the file is the source of truth and cannot go stale;
+  rearm only on cadence change. (Payload form — memo baked into the cron message — requires an
+  edit⟹rearm discipline that is a fresh rot vector; avoid.)
+- `threads/`, `lessons.md` unchanged (process lessons there; Lean technique in `lean/CLAUDE.md`;
+  thread paths contract-validated). Statement cards become generated views of map nodes.
+
+## Context budgets (controller context management)
+
+Every recurring read carries a hard size budget with a contract check — files without budgets grow
+(synthesis.md's 200k lines are the proof). Access patterns:
+
+| artifact | pattern | budget |
+|---|---|---|
+| heartbeat memo | every cron fire (the multiplier ⟹ costliest real estate) | ≤ 10 lines, entries expire |
+| priorities.md | every tick | ≤ 30 lines |
+| map-summary (generated view: roots, open frontier + owners, unwitnessed edges, risks) | every tick | ≤ 40 lines |
+| expedition-map.yaml (full) | re-ground only | 5–10k tokens; ≤ 12 lines/entry (contract) |
+| journal.md | write-mostly; read = tail (~10 entries) post-compaction | tail 2–3k tokens |
+| open discuss | per-tick surface | ≤ 20 lines |
+| brief.md | re-anchor | 1–2k tokens |
+
+The open-claim count is the over-decomposition alarm (sawtooth; trending past ~30 ⟹ validator
+surfaces it). Compaction re-ground = brief → map-summary → priorities → journal tail → open
+discuss (~12–15k tokens, CONSTANT in expedition age — the burden-of-knowledge fix as a context
+budget). Hold decisions, query facts: anything queryable (banked details, dependency facts,
+history) stays out of context.
+
 ## Someday
 
 - **expedition-cli**: `map validate | query | delta | render` (render = the blueprint-style
