@@ -1,6 +1,9 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
+
+**★ NOW (2026-07-14 RENDEZVOUS) — SOLE active priority = the CAPSTONE.** Strategy below (Route A DecoratedDescent → (□) → mint #108) is UNCHANGED and correct; the tactical detail below is superseded. State: ALL analytic content DONE + independently fidelity-passed (crux u≥1 + O2 reversal CoV, both clean-three + decorrelated-Codex PASS); recon-map + non-vacuity gate resolved (no gap). `asmbase` is executing the file-level assembly + mint on `genm-sj5-rendezvous` (T3=strip frame, T5=re-home dispatch, decisions locked; full detail = synthesis.md FRONTIER + endgame-lanes.md RENDEZVOUS PLAN). Controller's remaining act = final forced-#print-axioms gate + bedrock/vacuity review + promote to canonical → unconditional `aoyagi_learning_coefficient`. No open wall; no new math.
+
 Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-11 (late) — STAGE 2 (A)-BUILD;
 (□) via the DECORATED (S,J) DESCENT (Route A, coupled diag(b) ledger). ★ The spine RE-POINTED (□) onto the new
 sole contract `DecoratedDescent = ∃ adm, (trivial admissible) ∧ DecoratedStepHyp adm ∧ DecoratedBaseHyp adm`
