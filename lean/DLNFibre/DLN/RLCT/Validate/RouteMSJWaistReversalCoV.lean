@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBoxReduction
 import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeel
 import DLNFibre.DLN.RLCT.Validate.RouteMSuffixBridge
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
 
 set_option linter.style.longLine false
 
@@ -228,6 +229,122 @@ theorem prod_revParams (M : Fin (L + 1) → ℕ) (A : Params M)
   simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix]
   congr 1 <;> · ext x; simp [finCongr]
 
+/-- The reversal CoV preserves the squared Frobenius norm of the product (`prod_revParams` +
+transpose/reindex invariance of `frobSq`). -/
+theorem frobSq_prod_revParams (M : Fin (L + 1) → ℕ) (A : Params M) :
+    frobSq (prod (M ∘ Fin.rev) (revParams M A)) = frobSq (prod M A) := by
+  rw [prod_revParams M A (by simp only [Function.comp_apply, Fin.rev_zero])
+        (by simp only [Function.comp_apply, Fin.rev_last])]
+  rw [frobSq_reindex, frobSq_transpose]
+
+/-! ## The measure-preserving reversal change-of-variables (Route B: flat coordinate permutation) -/
+
+/-- The flat-index reversal bijection `((s,i),j) ↦ ((rev s, j), i)` (via `Fin.rev`/`Fin.cast`),
+matching `revParams`'s reverse-transpose action at the scalar-coordinate level. -/
+def revFlatIdxEquiv (M : Fin (L + 1) → ℕ) : FlatIdx (M ∘ Fin.rev) ≃ FlatIdx M where
+  toFun := fun q =>
+    ⟨⟨Fin.rev q.1.1,
+        Fin.cast (show (M ∘ Fin.rev) q.1.1.succ = M (Fin.rev q.1.1).castSucc by
+          simp only [Function.comp_apply]; rw [Fin.rev_succ]) q.2⟩,
+      Fin.cast (show (M ∘ Fin.rev) q.1.1.castSucc = M (Fin.rev q.1.1).succ by
+          simp only [Function.comp_apply]; rw [Fin.rev_castSucc]) q.1.2⟩
+  invFun := fun q =>
+    ⟨⟨Fin.rev q.1.1,
+        Fin.cast (show M q.1.1.succ = (M ∘ Fin.rev) (Fin.rev q.1.1).castSucc by
+          simp only [Function.comp_apply]; rw [Fin.rev_castSucc, Fin.rev_rev]) q.2⟩,
+      Fin.cast (show M q.1.1.castSucc = (M ∘ Fin.rev) (Fin.rev q.1.1).succ by
+          simp only [Function.comp_apply]; rw [Fin.rev_succ, Fin.rev_rev]) q.1.2⟩
+  left_inv := by
+    rintro ⟨⟨s, i⟩, j⟩
+    refine Sigma.ext (Sigma.ext ?_ ?_) ?_
+    · show Fin.rev (Fin.rev s) = s; rw [Fin.rev_rev]
+    · refine (Fin.heq_ext_iff ?_).mpr ?_ <;> simp [Fin.val_cast, Fin.rev_rev]
+    · refine (Fin.heq_ext_iff ?_).mpr ?_ <;> simp [Fin.val_cast, Fin.rev_rev]
+  right_inv := by
+    rintro ⟨⟨s, i⟩, j⟩
+    refine Sigma.ext (Sigma.ext ?_ ?_) ?_
+    · show Fin.rev (Fin.rev s) = s; rw [Fin.rev_rev]
+    · refine (Fin.heq_ext_iff ?_).mpr ?_ <;> simp [Fin.val_cast, Fin.rev_rev]
+    · refine (Fin.heq_ext_iff ?_).mpr ?_ <;> simp [Fin.val_cast, Fin.rev_rev]
+
+/-- The induced flat-coordinate reindex `Fin (flatDim (M∘rev)) ≃ Fin (flatDim M)`. -/
+noncomputable def revCoord (M : Fin (L + 1) → ℕ) : Fin (flatDim (M ∘ Fin.rev)) ≃ Fin (flatDim M) :=
+  (Fintype.equivFin (FlatIdx (M ∘ Fin.rev))).symm.trans
+    ((revFlatIdxEquiv M).trans (Fintype.equivFin (FlatIdx M)))
+
+/-- The flat coordinate permutation `(Fin (flatDim M) → ℝ) ≃ᵐ (Fin (flatDim (M∘rev)) → ℝ)`. -/
+noncomputable def flatRev (M : Fin (L + 1) → ℕ) :
+    (Fin (flatDim M) → ℝ) ≃ᵐ (Fin (flatDim (M ∘ Fin.rev)) → ℝ) :=
+  MeasurableEquiv.piCongrLeft (fun _ : Fin (flatDim (M ∘ Fin.rev)) => ℝ) (revCoord M).symm
+
+/-- The reversal CoV as a `MeasurableEquiv`, the conjugate of `flatRev` by `paramsEquivFlat`. -/
+noncomputable def revParamsEquiv (M : Fin (L + 1) → ℕ) : Params M ≃ᵐ Params (M ∘ Fin.rev) :=
+  (paramsEquivFlat M).trans ((flatRev M).trans (paramsEquivFlat (M ∘ Fin.rev)).symm)
+
+/-- `revParamsEquiv` is measure-preserving (two `paramsEquivFlat` MPs + the coordinate perm `flatRev`). -/
+theorem measurePreserving_revParamsEquiv (M : Fin (L + 1) → ℕ) :
+    MeasurePreserving (revParamsEquiv M) (volume : Measure (Params M))
+      (volume : Measure (Params (M ∘ Fin.rev))) :=
+  (measurePreserving_paramsEquivFlat M).trans
+    ((volume_measurePreserving_piCongrLeft (fun _ : Fin (flatDim (M ∘ Fin.rev)) => ℝ)
+        (revCoord M).symm).trans
+      ((measurePreserving_paramsEquivFlat (M ∘ Fin.rev)).symm _))
+
+/-- Entrywise form of `revParams`: `revParams M A s i j = A (Fin.rev s) (cast j) (cast i)` (transpose
+swaps the indices; the `Fin.cast`s are the value-preserving width relabels). -/
+theorem revParams_apply (M : Fin (L + 1) → ℕ) (A : Params M) (s : Fin L)
+    (i : Fin ((M ∘ Fin.rev) s.castSucc)) (j : Fin ((M ∘ Fin.rev) s.succ)) :
+    revParams M A s i j
+      = (A (Fin.rev s))
+          (Fin.cast (by simp only [Function.comp_apply]; rw [Fin.rev_succ]) j)
+          (Fin.cast (by simp only [Function.comp_apply]; rw [Fin.rev_castSucc]) i) := by
+  simp only [revParams, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.transpose_apply,
+    finCongr_symm, finCongr_apply]
+
+/-- The conjugated MeasurableEquiv coincides with the concrete reversal CoV `revParams`. -/
+theorem revParamsEquiv_apply (M : Fin (L + 1) → ℕ) (A : Params M) :
+    revParamsEquiv M A = revParams M A := by
+  apply (paramsEquivFlat (M ∘ Fin.rev)).injective
+  have hL : paramsEquivFlat (M ∘ Fin.rev) (revParamsEquiv M A) = flatRev M (paramsEquivFlat M A) := by
+    simp only [revParamsEquiv, MeasurableEquiv.trans_apply, MeasurableEquiv.apply_symm_apply]
+  rw [hL]
+  funext c
+  obtain ⟨idx', rfl⟩ := (Fintype.equivFin (FlatIdx (M ∘ Fin.rev))).surjective c
+  rw [paramsEquivFlat_decodeM]
+  have hcoord : (Fintype.equivFin (FlatIdx (M ∘ Fin.rev))) idx'
+      = (revCoord M).symm ((revCoord M) (Fintype.equivFin (FlatIdx (M ∘ Fin.rev)) idx')) := by
+    rw [Equiv.symm_apply_apply]
+  rw [flatRev, hcoord, MeasurableEquiv.piCongrLeft_apply_apply]
+  have hrc : (revCoord M) (Fintype.equivFin (FlatIdx (M ∘ Fin.rev)) idx')
+      = Fintype.equivFin (FlatIdx M) (revFlatIdxEquiv M idx') := by
+    have hstep : (revCoord M) (Fintype.equivFin (FlatIdx (M ∘ Fin.rev)) idx')
+        = Fintype.equivFin (FlatIdx M) (revFlatIdxEquiv M
+            ((Fintype.equivFin (FlatIdx (M ∘ Fin.rev))).symm
+              (Fintype.equivFin (FlatIdx (M ∘ Fin.rev)) idx'))) := rfl
+    rw [hstep, Equiv.symm_apply_apply]
+  rw [hrc, paramsEquivFlat_decodeM, revParams_apply]
+  rfl
+
+/-- `revParamsEquiv` sends the reversed box back to the box (the flat coordinate permutation preserves
+the symmetric cube `cubeBox`). -/
+theorem revParamsEquiv_preimage_box (M : Fin (L + 1) → ℕ) :
+    revParamsEquiv M ⁻¹' (paramsBoxM (M ∘ Fin.rev) 1) = paramsBoxM M 1 := by
+  rw [show paramsBoxM (M ∘ Fin.rev) 1
+        = paramsEquivFlat (M ∘ Fin.rev) ⁻¹' cubeBox (flatDim (M ∘ Fin.rev)) 1
+      from (paramsEquivFlat_preimage_paramsBoxM (M ∘ Fin.rev) 1).symm,
+    show paramsBoxM M 1 = paramsEquivFlat M ⁻¹' cubeBox (flatDim M) 1
+      from (paramsEquivFlat_preimage_paramsBoxM M 1).symm,
+    ← Set.preimage_comp]
+  have hcomp : (paramsEquivFlat (M ∘ Fin.rev)) ∘ (revParamsEquiv M)
+      = (flatRev M) ∘ (paramsEquivFlat M) := by
+    funext A
+    simp only [Function.comp_apply, revParamsEquiv, MeasurableEquiv.trans_apply,
+      MeasurableEquiv.apply_symm_apply]
+  rw [hcomp, Set.preimage_comp]
+  congr 1
+  rw [flatRev, cubeBox, MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_preimage_univ_pi]
+  rfl
+
 /-- **The layer-product box integral is reversal-invariant** —
 `routeMLayerBoxIntegral M c' 1 = routeMLayerBoxIntegral (M ∘ Fin.rev) c' 1`. The measure-preserving
 reverse-transpose bijection `Φ : Params M ≃ᵐ Params (M ∘ Fin.rev)`, `Φ A s = (A (Fin.rev s))ᵀ`, sends
@@ -236,28 +353,13 @@ satisfies `prod (M ∘ Fin.rev) (Φ A) = (prod M A)ᵀ`, so `frobSq (prod (M ∘
 frobSq (prod M A)`. -/
 theorem routeMLayerBoxIntegral_comp_rev (M : Fin (L + 1) → ℕ) (c' : ℝ) :
     routeMLayerBoxIntegral M c' 1 = routeMLayerBoxIntegral (M ∘ Fin.rev) c' 1 := by
-  -- ISOLATED CORRECT-STATEMENT SORRY (the O2 brick; statement is cast-free — the casts live inside
-  -- the proof, matching CLAUDE.md's `prodAux`-reassoc "two-tides" cast territory). PROOF PLAN:
-  --   1. `revParams : Params M → Params (M ∘ Fin.rev)`, `revParams A s = reindex (finCongr h_r)
-  --      (finCongr h_c) (A (Fin.rev s))ᵀ`, with `h_r : M (Fin.rev s).succ = M (Fin.rev s.castSucc)`,
-  --      `h_c : M (Fin.rev s).castSucc = M (Fin.rev s.succ)` (`congrArg M ∘ Fin.ext`, `Fin.val_rev`).
-  --   2. `prod_revParams : prod (M ∘ Fin.rev) (revParams A) = reindex (finCongr _) (finCongr _)
-  --      ((prod M A)ᵀ)` — `prodAux` induction reusing `prodAux_succ` + `Matrix.transpose_mul`; the
-  --      running-width reindex casts are the labour (cf. `RouteMFrontPeel.mul_three_reassoc`,
-  --      `reindex_finCongr_mul`; do cast bookkeeping at the equiv level, never entrywise).
-  --   3. `frobSq (prod (M ∘ Fin.rev) (revParams A)) = frobSq (prod M A)` (frobSq is transpose- and
-  --      reindex-invariant: `∑∑ (Xᵀ)² = ∑∑ X²`, `Finset.sum_comm`).
-  --   4. `revParams` is a MeasurableEquiv, MeasurePreserving (transpose + layer-reindex = a coordinate
-  --      permutation of the flat `Params` pi-Lebesgue; route via `paramsEquivFlat` MP + a
-  --      `MeasurableEquiv.piCongrLeft`/`volume_preserving_piCongrLeft` permutation, OR directly as a
-  --      `Matrix.transposeMeasurableEquiv`-style pi-swap per layer + `MeasurableEquiv.piCongrLeft` on
-  --      `Fin.revPerm`), and `revParams '' (paramsBoxM M 1) = paramsBoxM (M ∘ Fin.rev) 1` (entry bound
-  --      preserved under transpose + reindex).
-  --   5. Assemble via `MeasurePreserving.setLIntegral_comp_preimage_emb` (as in
-  --      `RouteMBoxReduction.routeMCore_le_matBox` step 2) + `setLIntegral_congr_fun` with (3).
-  -- Self-contained, network-free, ideal for a focused tide. NOT laundered — statement correct, connector
-  -- + wrapper + rev-good all proven around it.
-  sorry
+  rw [routeMLayerBoxIntegral, routeMLayerBoxIntegral]
+  rw [← (measurePreserving_revParamsEquiv M).setLIntegral_comp_preimage_emb
+    (MeasurableEquiv.measurableEmbedding (revParamsEquiv M))
+    (fun B => ENNReal.ofReal ((frobSq (prod (M ∘ Fin.rev) B)) ^ (-c'))) (paramsBoxM (M ∘ Fin.rev) 1)]
+  rw [revParamsEquiv_preimage_box M]
+  refine setLIntegral_congr_fun (measurableSet_paramsBoxM M 1) (fun A _ => ?_)
+  rw [revParamsEquiv_apply, frobSq_prod_revParams]
 
 /-- **`RouteMBoxThresholdFinite` transfers across chain reversal.** If the reversed chain `M ∘ Fin.rev`
 has finite box integral below its threshold, so does `M`: the thresholds coincide
