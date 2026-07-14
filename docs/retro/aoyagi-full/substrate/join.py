@@ -100,6 +100,9 @@ per_day_catch = Counter(ev["date"] for ev in catches)
 per_day_land = Counter(ev["date"] for ev in events if "landed" in ev["flags"])
 covered = sum(1 for t in tout.values() if t["role"])
 
+rebased = sum(1 for c in commits
+              if abs((__import__('datetime').datetime.fromisoformat(c["committer_iso"]) -
+                      __import__('datetime').datetime.fromisoformat(c["author_iso"])).total_seconds()) > 3600)
 S = ["# Pool summary (mechanical readouts + join quality)", "",
      f"- commits: {len(commits)}; ledger blocks: {len(events)} (unique {events_doc['_meta']['n_unique']})",
      f"- threads (slug-level): {len(tout)}; with combed role/pillar attached: {covered}",
@@ -108,6 +111,7 @@ S = ["# Pool summary (mechanical readouts + join quality)", "",
      f"- E1 update→landing-commit: {n_e1}/{len(events)} matched ({100*n_e1/len(events):.0f}%)",
      f"- E2 ledger sha-refs resolving to real commits: {n_res}/{n_ref} ({100*n_res/max(n_ref,1):.0f}%)",
      f"- A1 date-agreement (UPDATE header date == landing commit date): {date_agree}/{n_e1} ({100*date_agree/max(n_e1,1):.0f}%)",
+     f"- rebase detector (author≠committer date >1h): {rebased}/{len(commits)} commits",
      "",
      "## Correction-event stream (corrected|retracted|refuted|wall), per day", ""]
 S += [f"- {d}: {'▇' * min(n, 40)} {n}" for d, n in sorted(per_day_catch.items())]
