@@ -125,4 +125,133 @@ theorem chartSwap {b d : ℕ} (X : Matrix (Fin b) (Fin d) ℝ)
               ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ) X, Matrix.nonsing_inv_mul _ hA,
           Matrix.one_mul]
 
+/-! ## The block-route projection complement `I − Π_b = N (NᵀN)⁻¹ Nᵀ` and the transverse-Schur Gram -/
+
+/-- **D-cancellation (cert §0 / build-design).** The orthogonal projection onto `row(Q_b)` for
+`Q_b = D·[I | X]` is `D`-independent: `Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b = [I;Xᵀ]·(I+XXᵀ)⁻¹·[I|X]`. The `D` factors
+cancel (`chartGram_congr` reduces the middle Gram, `mul_inv_rev` splits the inverse). Needs `D` invertible. -/
+theorem chartProj_Dcancel {b d : ℕ} (D : Matrix (Fin b) (Fin b) ℝ) (X : Matrix (Fin b) (Fin d) ℝ)
+    (hD : IsUnit D.det) :
+    (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)ᵀ
+        * ((D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)
+            * (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)ᵀ)⁻¹
+        * (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)
+      = Matrix.fromRows (1 : Matrix (Fin b) (Fin b) ℝ) Xᵀ * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹
+          * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X := by
+  have hDt : IsUnit (Dᵀ).det := by rw [Matrix.det_transpose]; exact hD
+  have hCt : (Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)ᵀ = Matrix.fromRows 1 Xᵀ := by
+    rw [Matrix.transpose_fromCols, Matrix.transpose_one]
+  have hinv : (D * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ) * Dᵀ)⁻¹
+      = Dᵀ⁻¹ * (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * D⁻¹) := by
+    rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev]
+  rw [chartGram_congr, hinv, Matrix.transpose_mul, hCt]
+  simp only [Matrix.mul_assoc]
+  rw [Matrix.nonsing_inv_mul_cancel_left D (Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X) hD,
+      Matrix.mul_nonsing_inv_cancel_left Dᵀ
+        (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)
+        hDt]
+
+/-- **The 4-block projection identity.** `Π_b + P_N = I_n` at the reduced (D-cancelled) level:
+`[I;Xᵀ](I+XXᵀ)⁻¹[I|X] + N(I+XᵀX)⁻¹Nᵀ = I` for `N = [−X;I_d]`, `Nᵀ = [−Xᵀ|I_d]`. The four blocks match
+`I_n = [[I,0],[0,I]]` via `pushThrough` (top-left + bottom-right) and `chartSwap` (the two off-diagonals). -/
+theorem chartProjRed_block {b d : ℕ} (X : Matrix (Fin b) (Fin d) ℝ)
+    (hP : IsUnit ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ))
+    (hQ : IsUnit ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)) :
+    Matrix.fromRows 1 Xᵀ * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * Matrix.fromCols 1 X
+      + Matrix.fromRows (-X) 1 * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Matrix.fromCols (-Xᵀ) 1
+      = 1 := by
+  have hPdet := (Matrix.isUnit_iff_isUnit_det _).mp hP
+  have hQdet := (Matrix.isUnit_iff_isUnit_det _).mp hQ
+  have hPsym : (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹)ᵀ
+      = ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ := by
+    rw [Matrix.transpose_nonsing_inv]; congr 1
+    rw [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_mul, Matrix.transpose_transpose]
+  have hQsym : (((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹)ᵀ
+      = ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ := by
+    rw [Matrix.transpose_nonsing_inv]; congr 1
+    rw [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_mul, Matrix.transpose_transpose]
+  have hswapT : Xᵀ * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹
+      = ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Xᵀ := by
+    have h := congrArg Matrix.transpose (chartSwap X hPdet hQdet)
+    rw [Matrix.transpose_mul, Matrix.transpose_mul, hPsym, hQsym] at h
+    exact h
+  have hTL : ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹
+      + X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Xᵀ = 1 := by
+    have hpt := pushThrough Xᵀ (by simpa using hQ)
+    simp only [Matrix.transpose_transpose] at hpt
+    rw [hpt]; abel
+  have hBR : Xᵀ * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X
+      + ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ = 1 := by
+    rw [pushThrough X hP]; abel
+  have hTR : ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X
+      + -(X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹) = 0 := by
+    rw [chartSwap X hPdet hQdet]; abel
+  have hBL : Xᵀ * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹
+      + -(((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Xᵀ) = 0 := by
+    rw [hswapT]; abel
+  have eT1 : Matrix.fromRows (1 : Matrix (Fin b) (Fin b) ℝ) Xᵀ
+        * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * Matrix.fromCols 1 X
+      = Matrix.fromBlocks (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹)
+          (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X)
+          (Xᵀ * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹)
+          (Xᵀ * ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X) := by
+    rw [Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols]
+    simp only [Matrix.one_mul, Matrix.mul_one]
+  have eT2 : Matrix.fromRows (-X) (1 : Matrix (Fin d) (Fin d) ℝ)
+        * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Matrix.fromCols (-Xᵀ) 1
+      = Matrix.fromBlocks (X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Xᵀ)
+          (-(X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹))
+          (-(((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Xᵀ))
+          (((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹) := by
+    have hneg : (-X) * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * (-Xᵀ)
+        = X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Xᵀ := by
+      rw [Matrix.neg_mul, Matrix.neg_mul, Matrix.mul_neg]; abel
+    rw [Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols, hneg]
+    simp only [Matrix.one_mul, Matrix.mul_one, Matrix.neg_mul, Matrix.mul_neg]
+  rw [eT1, eT2, Matrix.fromBlocks_add, hTL, hTR, hBL, hBR, Matrix.fromBlocks_one]
+
+/-- **The projection complement `I − Π_b = N (NᵀN)⁻¹ Nᵀ`** for `Π_b = Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b` the orthogonal
+projection onto `row(Q_b)`, `Q_b = D·[I|X]`, `N = [−X;I_d]`. Combines `chartProj_Dcancel` (drops `D`) with
+`chartProjRed_block` (the 4-block match); `I − Π_b` is the orthogonal projection onto `ker(Q_b) = col(N)`. -/
+theorem chartProjComplement {b d : ℕ} (D : Matrix (Fin b) (Fin b) ℝ) (X : Matrix (Fin b) (Fin d) ℝ)
+    (hD : IsUnit D.det) (hP : IsUnit ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ))
+    (hQ : IsUnit ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)) :
+    (1 : Matrix (Fin b ⊕ Fin d) (Fin b ⊕ Fin d) ℝ)
+      - (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)ᵀ
+          * ((D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)
+              * (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)ᵀ)⁻¹
+          * (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)
+      = Matrix.fromRows (-X) (1 : Matrix (Fin d) (Fin d) ℝ)
+          * ((Matrix.fromRows (-X) (1 : Matrix (Fin d) (Fin d) ℝ))ᵀ
+              * Matrix.fromRows (-X) (1 : Matrix (Fin d) (Fin d) ℝ))⁻¹
+          * (Matrix.fromRows (-X) (1 : Matrix (Fin d) (Fin d) ℝ))ᵀ := by
+  rw [chartProj_Dcancel D X hD, chartNull_gram, Matrix.transpose_fromRows, Matrix.transpose_neg,
+    Matrix.transpose_one, ← chartProjRed_block X hP hQ]
+  abel
+
+/-- **The transverse-Schur Gram identity (cert §3, piece (i)).** For pivot rows `Q_p = [U | U X + W]`,
+the transverse energy of `Q_p` on the complement of `row(Q_b)` is monomialised by `W`:
+`Q_p (I − Π_b) Q_pᵀ = W (I + Xᵀ X)⁻¹ Wᵀ`. Wired from `chartProjComplement` (`I−Π_b = N(NᵀN)⁻¹Nᵀ`),
+`chartNull_Qp` (`Q_p N = W`), and `chartNull_gram` (`NᵀN = I + XᵀX`). -/
+theorem transverseSchurGram {u b d : ℕ} (D : Matrix (Fin b) (Fin b) ℝ) (X : Matrix (Fin b) (Fin d) ℝ)
+    (U : Matrix (Fin u) (Fin b) ℝ) (W : Matrix (Fin u) (Fin d) ℝ)
+    (hD : IsUnit D.det) (hP : IsUnit ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ))
+    (hQ : IsUnit ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)) :
+    Matrix.fromCols U (U * X + W)
+      * ((1 : Matrix (Fin b ⊕ Fin d) (Fin b ⊕ Fin d) ℝ)
+          - (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)ᵀ
+              * ((D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)
+                  * (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X)ᵀ)⁻¹
+              * (D * Matrix.fromCols (1 : Matrix (Fin b) (Fin b) ℝ) X))
+      * (Matrix.fromCols U (U * X + W))ᵀ
+      = W * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ * Wᵀ := by
+  have hQpN : Matrix.fromCols U (U * X + W) * Matrix.fromRows (-X) (1 : Matrix (Fin d) (Fin d) ℝ) = W :=
+    chartNull_Qp U W X
+  have hNQp : (Matrix.fromRows (-X) (1 : Matrix (Fin d) (Fin d) ℝ))ᵀ * (Matrix.fromCols U (U * X + W))ᵀ
+      = Wᵀ := by
+    rw [← Matrix.transpose_mul, hQpN]
+  rw [chartProjComplement D X hD hP hQ, chartNull_gram]
+  simp only [← Matrix.mul_assoc]
+  rw [hQpN, Matrix.mul_assoc, hNQp]
+
 end DLNFibre.DLN.RLCT
