@@ -350,6 +350,326 @@ theorem pivotDomLHS_eq_blockFront (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (�
   refine setLIntegral_congr_fun (measurableSet_outerDom u (M 0 - u) (M 1 - u) 1) (fun x hx => ?_)
   exact pivotInner_Dsubst x hx.2.2.2 (hsQ M u Zf z A_cor) c'
 
+/-! ## The full-block finiteness route (S3-free crux, approved 2026-07-14)
+
+The crux `pivotPeel_domination` reduces — via the generic `ℝ≥0∞` ratio trick — to `pivotDomRHS < ⊤ →
+pivotDomLHS < ⊤`. On the `pivotShell` the ENTIRE block `T = [[P,B₁₂],[C,D]]` maps through the
+uniformly-full-row-rank `Q_stack = hsQ`, giving a joint full-block Loewner floor `frobSq (T·Q) ≥ ε²·frobSq T`
+(`frobSq_mul_ge_of_gramFloor`); a crude pure-cube bound then wins, WITHOUT the S3 corank peel. The
+`c'`-threshold is supplied by the comparator-side divergence `pivotDomRHS_eq_top_of_critical`, and the nat
+chain `minAdm_add_peel_le` closes it against the block dimension `(u+a)·(u+b)` via `hpiv`. Design:
+`s1-Chle-angular-integrability-cert` §8 + the S3-free simplification (Codex xhigh corroborated, 2026-07-14). -/
+
+/-- **Generic `ℝ≥0∞` ratio trick.** If `R ≠ 0` and `R < ⊤ → L < ⊤`, then `∃ C < ⊤, L ≤ C · R`
+(`C := 1` if `R = ⊤`, else `C := L / R` via `ENNReal.div_mul_cancel`). -/
+theorem exists_finite_mul_of_finite_imp {L R : ℝ≥0∞} (hR0 : R ≠ 0) (hfin : R < ⊤ → L < ⊤) :
+    ∃ C : ℝ≥0∞, C < ⊤ ∧ L ≤ C * R := by
+  by_cases htop : R = ⊤
+  · exact ⟨1, ENNReal.one_lt_top, by rw [one_mul, htop]; exact le_top⟩
+  · have hRlt : R < ⊤ := lt_top_iff_ne_top.mpr htop
+    have hL : L < ⊤ := hfin hRlt
+    exact ⟨L / R, ENNReal.div_lt_top hL.ne hR0, by rw [ENNReal.div_mul_cancel hR0 htop]⟩
+
+/-- **The joint full-block Loewner floor.** If the column-Gram of `Q` is floored, `Q·Qᵀ ⪰ ε²·1`, then the
+whole-block product energy is floored: `ε²·frobSq T ≤ frobSq (T·Q)`, for ANY `T`. Per row `v = T i`:
+`∑ₖ ((T·Q) i k)² = v ⬝ᵥ ((Q·Qᵀ) *ᵥ v) ≥ ε²·(v ⬝ᵥ v)` (the PSD quadratic form); sum over rows. -/
+theorem frobSq_mul_ge_of_gramFloor {ι κ ν : Type*} [Fintype ι] [Fintype κ] [Fintype ν] [DecidableEq κ]
+    (T : Matrix ι κ ℝ) (Q : Matrix κ ν ℝ) {ε : ℝ}
+    (hfloor : (Q * Qᵀ - (ε ^ 2) • (1 : Matrix κ κ ℝ)).PosSemidef) :
+    (ε ^ 2) * frobSq T ≤ frobSq (T * Q) := by
+  have hquad := (Matrix.posSemidef_iff_dotProduct_mulVec.mp hfloor).2
+  have hrow : ∀ i, (ε ^ 2) * (∑ j, (T i j) ^ 2) ≤ ∑ k, ((T * Q) i k) ^ 2 := by
+    intro i
+    -- the `i`-th row of `T·Q` is `T i ᵥ* Q`
+    have hval : ∀ k, (T * Q) i k = (T i ᵥ* Q) k := by
+      intro k; simp [Matrix.mul_apply, Matrix.vecMul, dotProduct]
+    have hsum : (∑ k, ((T * Q) i k) ^ 2) = (T i ᵥ* Q) ⬝ᵥ (T i ᵥ* Q) := by
+      rw [dotProduct]
+      exact Finset.sum_congr rfl (fun k _ => by rw [hval k]; ring)
+    have hvv : (T i) ⬝ᵥ (T i) = ∑ j, (T i j) ^ 2 := by
+      rw [dotProduct]; exact Finset.sum_congr rfl (fun j _ => (sq (T i j)).symm)
+    have hstar : star (T i) = T i := by funext j; exact star_trivial (T i j)
+    have key : (ε ^ 2) * ((T i) ⬝ᵥ (T i)) ≤ (T i ᵥ* Q) ⬝ᵥ (T i ᵥ* Q) := by
+      have h := hquad (T i)
+      rw [hstar] at h
+      have e1 : (Q * Qᵀ - (ε ^ 2) • (1 : Matrix κ κ ℝ)) *ᵥ (T i)
+          = (Q * Qᵀ) *ᵥ (T i) - (ε ^ 2) • (T i) := by
+        rw [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec]
+      rw [e1, dotProduct_sub, dotProduct_smul, smul_eq_mul, ← Matrix.mulVec_mulVec,
+        Matrix.dotProduct_mulVec, Matrix.mulVec_transpose] at h
+      linarith
+    rw [hsum, ← hvv]; exact key
+  calc (ε ^ 2) * frobSq T
+      = ∑ i, (ε ^ 2) * (∑ j, (T i j) ^ 2) := by rw [frobSq, Finset.mul_sum]
+    _ ≤ ∑ i, ∑ k, ((T * Q) i k) ^ 2 := Finset.sum_le_sum (fun i _ => hrow i)
+    _ = frobSq (T * Q) := rfl
+
+/-- **Pure-cube matrix-box finiteness.** For `0 < c' < (p·q)/2`, the pure squared-Frobenius power is
+integrable over the matrix box: `∫_{matBox p q 1} frobSq(of T)^{−c'} < ⊤`. Flatten `matReshapeEquiv`
+(measure-preserving) → cube `[−1,1]^{p·q}`, then the banked `lintegral_box_sq_neg_lt_top`. -/
+theorem matBox_frobSq_neg_lintegral_lt_top {p q : ℕ} {c' : ℝ} (hc0 : 0 < c')
+    (hpq : c' < ((p * q : ℕ) : ℝ) / 2) :
+    (∫⁻ T in matBox p q 1, ENNReal.ofReal (frobSq (Matrix.of T) ^ (-c'))) < ⊤ := by
+  have hpq0 : 0 < p * q := by
+    rcases Nat.eq_zero_or_pos (p * q) with h | h
+    · exfalso; rw [h] at hpq; simp only [Nat.cast_zero, zero_div] at hpq; linarith
+    · exact h
+  set e := matReshapeEquiv p q with he
+  have hmp := measurePreserving_matReshapeEquiv p q
+  -- the flattened coordinate reads off the matrix entry
+  have hval : ∀ (T : Fin p → Fin q → ℝ) (ij : Fin p × Fin q), e T (finProdFinEquiv ij) = T ij.1 ij.2 := by
+    intro T ij
+    rw [← matReshapeEquiv_symm_apply p q (e T) ij.1 ij.2, he, (matReshapeEquiv p q).symm_apply_apply]
+  -- `frobSq` is the flattened squared norm
+  have heq : ∀ T : Fin p → Fin q → ℝ, frobSq (Matrix.of T) = ∑ k, (e T k) ^ 2 := by
+    intro T
+    have hsplit : (∑ k, (e T k) ^ 2)
+        = ∑ i, ∑ j, (e T (finProdFinEquiv (i, j))) ^ 2 := by
+      rw [← Equiv.sum_comp finProdFinEquiv (fun k => (e T k) ^ 2), Fintype.sum_prod_type]
+    rw [hsplit, frobSq]
+    exact Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl
+      (fun j _ => by rw [Matrix.of_apply, hval T (i, j)]))
+  -- the matrix box is the flat cube's preimage
+  have hbox : matBox p q 1
+      = e ⁻¹' (Set.univ.pi (fun _ : Fin (p * q) => Set.Icc (-1 : ℝ) 1)) := by
+    ext T
+    simp only [matBox, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies]
+    constructor
+    · intro h k
+      obtain ⟨ij, rfl⟩ := finProdFinEquiv.surjective k
+      rw [hval T ij]; exact h ij.1 ij.2
+    · intro h i j
+      have := h (finProdFinEquiv (i, j)); rwa [hval T (i, j)] at this
+  -- transport to the flat cube and apply the banked finiteness
+  rw [show (∫⁻ T in matBox p q 1, ENNReal.ofReal (frobSq (Matrix.of T) ^ (-c')))
+        = ∫⁻ T in matBox p q 1, ENNReal.ofReal ((∑ k, (e T k) ^ 2) ^ (-c')) from
+      setLIntegral_congr_fun (matBox_measurableSet p q 1) (fun T _ => by rw [heq T])]
+  rw [hbox, hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding
+    (fun y => ENNReal.ofReal ((∑ k, (y k) ^ 2) ^ (-c')))
+    (Set.univ.pi (fun _ : Fin (p * q) => Set.Icc (-1 : ℝ) 1))]
+  exact lintegral_box_sq_neg_lt_top hpq0 1 hc0.le hpq
+
+/-- **The full-block shell bound (the checkpoint lemma).** On the shell (`Q·Qᵀ ⪰ ε²·1`), the block-front
+integral over the block box is dominated by a `Q`-UNIFORM constant `ε^{−2c'}·(pure-cube)`: apply the
+Loewner floor pointwise (`frobSq_mul_ge_of_gramFloor`), then reindex the block box to `matBox (u+a) (u+b) 1`
+(`matReindexEquiv`, measure-preserving; Frobenius is reindex-invariant). The RHS constant is `Q`-free. -/
+theorem shell_fullBlock_le {u a b n : ℕ} {ε c' : ℝ} (hε : 0 < ε) (hc0 : 0 < c')
+    (Q : Matrix (Fin u ⊕ Fin b) (Fin n) ℝ)
+    (hshell : (Q * Qᵀ - (ε ^ 2) • (1 : Matrix (Fin u ⊕ Fin b) (Fin u ⊕ Fin b) ℝ)).PosSemidef) :
+    (∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1,
+        ENNReal.ofReal (frobSq (Matrix.of B * Q) ^ (-c')))
+      ≤ ENNReal.ofReal ((ε ^ 2) ^ (-c'))
+          * ∫⁻ A₀ in matBox (u + a) (u + b) 1, ENNReal.ofReal (frobSq (Matrix.of A₀) ^ (-c')) := by
+  classical
+  set er : Fin (u + a) ≃ Fin u ⊕ Fin a := finSumFinEquiv.symm with her
+  set ec : Fin (u + b) ≃ Fin u ⊕ Fin b := finSumFinEquiv.symm with hec
+  -- (i) reindex the pure-`frobSq` integral: block box → matrix box
+  have hpre : matReindexEquiv er ec ⁻¹' genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1
+      = matBox (u + a) (u + b) 1 := by
+    ext A₀
+    simp only [Set.mem_preimage, genBox, matBox, Set.mem_setOf_eq]
+    constructor
+    · intro h i k
+      have := h (er i) (ec k)
+      rwa [matReindexEquiv_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply] at this
+    · intro h I J; rw [matReindexEquiv_apply]; exact h _ _
+  have hfrob : ∀ A₀ : Fin (u + a) → Fin (u + b) → ℝ,
+      frobSq (Matrix.of (matReindexEquiv er ec A₀)) = frobSq (Matrix.of A₀) := by
+    intro A₀
+    simp only [frobSq, Matrix.of_apply, matReindexEquiv_apply]
+    rw [← Equiv.sum_comp er (fun I => ∑ J, (A₀ (er.symm I) (ec.symm J)) ^ 2)]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    rw [Equiv.symm_apply_apply, ← Equiv.sum_comp ec (fun J => (A₀ i (ec.symm J)) ^ 2)]
+    exact Finset.sum_congr rfl (fun j _ => by rw [Equiv.symm_apply_apply])
+  have hpure : (∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1,
+        ENNReal.ofReal (frobSq (Matrix.of B) ^ (-c')))
+      = ∫⁻ A₀ in matBox (u + a) (u + b) 1, ENNReal.ofReal (frobSq (Matrix.of A₀) ^ (-c')) := by
+    have hmp := measurePreserving_matReindexEquiv er ec
+    have hstep := hmp.setLIntegral_comp_preimage_emb (matReindexEquiv er ec).measurableEmbedding
+      (fun B => ENNReal.ofReal (frobSq (Matrix.of B) ^ (-c')))
+      (genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1)
+    rw [hpre] at hstep
+    rw [show (∫⁻ A₀ in matBox (u + a) (u + b) 1,
+          ENNReal.ofReal (frobSq (Matrix.of (matReindexEquiv er ec A₀)) ^ (-c')))
+        = ∫⁻ A₀ in matBox (u + a) (u + b) 1, ENNReal.ofReal (frobSq (Matrix.of A₀) ^ (-c')) from
+      setLIntegral_congr_fun (matBox_measurableSet _ _ _) (fun A₀ _ => by rw [hfrob A₀])] at hstep
+    exact hstep.symm
+  -- (ii) pointwise Loewner-floor bound
+  have hpt : ∀ B ∈ genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1,
+      ENNReal.ofReal (frobSq (Matrix.of B * Q) ^ (-c'))
+        ≤ ENNReal.ofReal ((ε ^ 2) ^ (-c')) * ENNReal.ofReal (frobSq (Matrix.of B) ^ (-c')) := by
+    intro B _
+    have hfloorB := frobSq_mul_ge_of_gramFloor (Matrix.of B) Q hshell
+    rcases eq_or_lt_of_le (frobSq_nonneg (Matrix.of B)) with hz | hpos
+    · -- `frobSq (of B) = 0 ⟹ of B = 0 ⟹ of B · Q = 0`
+      have hBzero : Matrix.of B = 0 := by
+        have hzz : (∑ I, ∑ J, ((Matrix.of B) I J) ^ 2) = 0 := hz.symm
+        ext I J
+        have h1 : ∑ J, ((Matrix.of B) I J) ^ 2 = 0 :=
+          (Finset.sum_eq_zero_iff_of_nonneg
+            (fun I _ => Finset.sum_nonneg (fun _ _ => sq_nonneg _))).mp hzz I (Finset.mem_univ I)
+        have h2 : ((Matrix.of B) I J) ^ 2 = 0 :=
+          (Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => sq_nonneg _)).mp h1 J (Finset.mem_univ J)
+        simpa using (pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)).mp h2
+      have hfz : frobSq (0 : Matrix (Fin u ⊕ Fin a) (Fin n) ℝ) = 0 := by simp [frobSq]
+      rw [hBzero, Matrix.zero_mul, hfz, Real.zero_rpow (by linarith : (-c') ≠ 0),
+        ENNReal.ofReal_zero]
+      exact zero_le _
+    · rw [← ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity : (0 : ℝ) ≤ ε ^ 2) _)]
+      refine ENNReal.ofReal_le_ofReal ?_
+      rw [← Real.mul_rpow (by positivity : (0 : ℝ) ≤ ε ^ 2) (frobSq_nonneg _)]
+      exact Real.rpow_le_rpow_of_nonpos (by positivity) hfloorB (by linarith)
+  -- (iii) assemble
+  calc (∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1,
+          ENNReal.ofReal (frobSq (Matrix.of B * Q) ^ (-c')))
+      ≤ ∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1,
+          ENNReal.ofReal ((ε ^ 2) ^ (-c')) * ENNReal.ofReal (frobSq (Matrix.of B) ^ (-c')) :=
+        setLIntegral_mono_ae' (measurableSet_genBox 1) (ae_of_all _ (fun B hB => hpt B hB))
+    _ = ENNReal.ofReal ((ε ^ 2) ^ (-c'))
+          * ∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1,
+              ENNReal.ofReal (frobSq (Matrix.of B) ^ (-c')) :=
+        lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
+    _ = ENNReal.ofReal ((ε ^ 2) ^ (-c'))
+          * ∫⁻ A₀ in matBox (u + a) (u + b) 1, ENNReal.ofReal (frobSq (Matrix.of A₀) ^ (-c')) := by
+        rw [hpure]
+
+/-- **The block-front inner reassembly.** The `(P,B₁₂,C)×D` integral over `outerDom × genBox` is the
+block-coordinate integral over the block box ∩ invertible-pivot locus: `blockSplitD` is measure-preserving
+and `blockSplitD ⁻¹' (outerDom ×ˢ genBox) = genBox ∩ {IsUnit toBlocks₁₁}` (`blockSplitD_preimage_outerDom`);
+the integrand is continuous (`frobSq (of B · Q)`), so `setLIntegral_prod`/`setLIntegral_comp_preimage_emb`
+transport. -/
+theorem blockFront_inner_eq {u a b n : ℕ} (Q : Matrix (Fin u ⊕ Fin b) (Fin n) ℝ) (c' : ℝ) :
+    (∫⁻ x in outerDom u a b 1,
+        ∫⁻ D in genBox (Fin a) (Fin b) 1,
+          ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD u a b).symm (x, D)) * Q) ^ (-c')))
+      = ∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1 ∩ {B | IsUnit (Matrix.toBlocks₁₁ B)},
+          ENNReal.ofReal (frobSq (Matrix.of B * Q) ^ (-c')) := by
+  set F : SJOuter u a b × (Fin a → Fin b → ℝ) → ℝ≥0∞ :=
+    fun y => ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD u a b).symm y) * Q) ^ (-c')) with hF
+  have hFmeas : Measurable F := by
+    rw [hF]
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun r : ℝ => r ^ (-c')) (by fun_prop)
+    have hof : Continuous (fun B : (Fin u ⊕ Fin a) → (Fin u ⊕ Fin b) → ℝ => (Matrix.of B)) :=
+      continuous_matrix (fun I J => (continuous_apply J).comp (continuous_apply I))
+    have hcont : Continuous (fun B : (Fin u ⊕ Fin a) → (Fin u ⊕ Fin b) → ℝ =>
+        frobSq (Matrix.of B * Q)) := by
+      have hmul := hof.matrix_mul (continuous_const (y := Q))
+      unfold frobSq
+      exact continuous_finset_sum _ (fun i _ => continuous_finset_sum _
+        (fun j _ => ((hmul.matrix_elem i j).pow 2)))
+    exact hcont.measurable.comp (blockSplitD u a b).symm.measurable
+  have hmp := measurePreserving_blockSplitD u a b
+  have hpre := hmp.setLIntegral_comp_preimage_emb
+    (MeasurableEquiv.measurableEmbedding (blockSplitD u a b)) F
+    (outerDom u a b 1 ×ˢ genBox (Fin a) (Fin b) 1)
+  rw [blockSplitD_preimage_outerDom] at hpre
+  rw [show (∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1 ∩ {B | IsUnit (Matrix.toBlocks₁₁ B)},
+        F (blockSplitD u a b B))
+      = ∫⁻ B in genBox (Fin u ⊕ Fin a) (Fin u ⊕ Fin b) 1 ∩ {B | IsUnit (Matrix.toBlocks₁₁ B)},
+        ENNReal.ofReal (frobSq (Matrix.of B * Q) ^ (-c')) from
+      setLIntegral_congr_fun ((measurableSet_genBox 1).inter measurableSet_isUnit_toBlocks₁₁)
+        (fun B _ => by rw [hF]; simp only [MeasurableEquiv.symm_apply_apply])] at hpre
+  rw [hpre, Measure.volume_eq_prod (SJOuter u a b) (Fin a → Fin b → ℝ),
+    setLIntegral_prod F hFmeas.aemeasurable]
+
+/-- **The nat chain** `minAdm(redChain u M) + (M₀−u)(M₁−u) ≤ (u+(M₀−u))·(u+(M₁−u))` — the block-dimension
+threshold `N = (u+a)(u+b)` dominates the comparator threshold, via `hpiv` (`minAdm ≤ u·tailMinWidth`),
+`tailMinWidth ≤ M 1`, and `M₁−u ≤ u+(M₁−u)`. -/
+theorem minAdm_add_peel_le (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) :
+    minAdm (redChain u M) + (M 0 - u) * (M 1 - u) ≤ (u + (M 0 - u)) * (u + (M 1 - u)) := by
+  have htw : tailMinWidth M ≤ M 1 := by
+    have h := Finset.inf'_le (f := fun i : Fin (L + 1 + 1) => M i.succ)
+      (Finset.mem_univ (0 : Fin (L + 1 + 1)))
+    simpa [tailMinWidth] using h
+  have h1 : u * tailMinWidth M ≤ u * (u + (M 1 - u)) :=
+    Nat.mul_le_mul (le_refl u) (le_trans htw (by omega))
+  have h2 : (M 0 - u) * (M 1 - u) ≤ (M 0 - u) * (u + (M 1 - u)) :=
+    Nat.mul_le_mul (le_refl (M 0 - u)) (Nat.le_add_left _ _)
+  calc minAdm (redChain u M) + (M 0 - u) * (M 1 - u)
+      ≤ u * (u + (M 1 - u)) + (M 0 - u) * (u + (M 1 - u)) :=
+        Nat.add_le_add (le_trans hpiv h1) h2
+    _ = (u + (M 0 - u)) * (u + (M 1 - u)) := by ring
+
+/-- **RHS positivity.** `pivotDomRHS ≠ 0` (in the `u ≥ 1` cut) — the comparator's decorated loss is `> 0`
+a.e. (`deeperFlagCore_decLoss_pos_ae`), so the integrand is positive on a positive-measure set. -/
+theorem pivotDomRHS_ne_zero_aux (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hu : 1 ≤ u) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
+    pivotDomRHS M u c' Zf ≠ 0 := by
+  sorry
+
+/-- **The comparator diverges above the critical exponent.** For `(minAdm(redChain u M) + (M₀−u)(M₁−u))/2 ≤
+c'`, the comparator RHS is `⊤`: restrict `v₀ ∈ (0,1)`, `|Γ| ≤ v₀`; on the a.e. set `decLoss > 0` the base is
+`≤ K(z)·v₀²`, so the inner integral `≥ K(z)^{−c'}·v₀^{−2c'}·(2v₀)^{ab}`, and `∫₀¹ v₀^{(minAdm−1)+ab−2c'} = ⊤`.
+Contrapositive: `RHS < ⊤ ⟹ 2c' < minAdm + (M₀−u)(M₁−u)`. -/
+theorem pivotDomRHS_eq_top_of_critical (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hu : 1 ≤ u) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (hZfMeas : Measurable Zf)
+    (hc : ((minAdm (redChain u M) + (M 0 - u) * (M 1 - u) : ℕ) : ℝ) / 2 ≤ c') :
+    pivotDomRHS M u c' Zf = ⊤ := by
+  sorry
+
+/-- **The `0 < c'` finiteness** — the main content. Below the block-dimension threshold `c' < (u+a)(u+b)/2`,
+the freed Schur-loss spine LHS is finite: fold to the block-front (`pivotDomLHS_eq_blockFront`), reassemble
+the inner integral (`blockFront_inner_eq`), drop the invertible-pivot restriction, and bound each shell fibre
+by the `Q`-uniform full-block constant (`shell_fullBlock_le` + `matBox_frobSq_neg_lintegral_lt_top`),
+integrated against the finite `(z, A_cor)`-box volume. -/
+theorem pivotDomLHS_lt_top_of_pos (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) {ε : ℝ} (hε : 0 < ε) {c' : ℝ}
+    (hcpos : 0 < c') (hcN : c' < (((u + (M 0 - u)) * (u + (M 1 - u)) : ℕ) : ℝ) / 2)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
+    pivotDomLHS M u ε c' Zf < ⊤ := by
+  set K : ℝ≥0∞ := ENNReal.ofReal ((ε ^ 2) ^ (-c'))
+      * ∫⁻ A₀ in matBox (u + (M 0 - u)) (u + (M 1 - u)) 1,
+          ENNReal.ofReal (frobSq (Matrix.of A₀) ^ (-c')) with hKdef
+  have hKfin : K < ⊤ := by
+    rw [hKdef]
+    exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (matBox_frobSq_neg_lintegral_lt_top hcpos hcN)
+  have hmatvol : volume (matBox (M 1 - u) (dropHead (redChain u M) 0) 1) < ⊤ := by
+    rw [matBox_volume _ _ (by norm_num : (0 : ℝ) ≤ 1)]
+    exact ENNReal.pow_lt_top ENNReal.ofReal_lt_top
+  have hparamsvol : volume (paramsBoxM (redChain u M) 1) < ⊤ :=
+    paramsBoxM_volume_lt_top (redChain u M) 1
+  -- each shell fibre's block-front energy is bounded by the uniform constant `K`
+  have hinner : ∀ (z : Params (redChain u M))
+      (A_cor : Fin (M 1 - u) → Fin (dropHead (redChain u M) 0) → ℝ),
+      A_cor ∈ matBox (M 1 - u) (dropHead (redChain u M) 0) 1 ∩ pivotShell M u ε Zf z →
+      (∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
+          ∫⁻ D in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
+            ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD u (M 0 - u) (M 1 - u)).symm (x, D))
+              * hsQ M u Zf z A_cor) ^ (-c'))) ≤ K := by
+    intro z A_cor hA
+    rw [blockFront_inner_eq (hsQ M u Zf z A_cor) c', hKdef]
+    exact le_trans (lintegral_mono_set Set.inter_subset_left)
+      (shell_fullBlock_le hε hcpos (hsQ M u Zf z A_cor) hA.2)
+  rw [pivotDomLHS_eq_blockFront]
+  refine lt_of_le_of_lt ?_
+    (ENNReal.mul_lt_top (ENNReal.mul_lt_top hKfin hmatvol) hparamsvol)
+  refine le_trans (lintegral_mono
+    (fun z => setLIntegral_mono measurable_const (fun A_cor hA => hinner z A_cor hA))) ?_
+  refine le_trans (lintegral_mono (fun z => lintegral_mono_set Set.inter_subset_left)) ?_
+  refine le_of_eq ?_
+  rw [lintegral_congr (fun z => by rw [setLIntegral_const]), setLIntegral_const]
+
+/-- **The `c' ≤ 0` edge.** With a non-positive exponent the loss power is `frobSq^{|c'|}` (no singularity);
+`RHS < ⊤` controls the deep-frame tail. NOT the application regime (the RLCT exponent is `≥ 0`). -/
+theorem pivotDomLHS_lt_top_of_nonpos (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) {ε : ℝ} {c' : ℝ}
+    (hcneg : c' ≤ 0)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (hRHS : pivotDomRHS M u c' Zf < ⊤) :
+    pivotDomLHS M u ε c' Zf < ⊤ := by
+  sorry
+
 /-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX — scaffold + 1-sorry, standing decision 7).**
 The freed Schur-loss spine LHS is dominated by a FINITE reorganisation constant times the comparator-core
 RHS. This is exactly the conclusion of `RouteMSJHeadSplitDom.headSplit_pivotDom`; it carries the entire
@@ -386,7 +706,25 @@ theorem pivotPeel_domination (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1
     (hrank : ∀ z, m ≤ (Zf z).rank)
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef) :
     ∃ C : ℝ≥0∞, C < ⊤ ∧ pivotDomLHS M u ε c' Zf ≤ C * pivotDomRHS M u c' Zf := by
-  sorry
+  refine exists_finite_mul_of_finite_imp (pivotDomRHS_ne_zero_aux M u hu c' hnd Zf) (fun hRHS => ?_)
+  -- extract `2c' < minAdm(redChain u M) + (M₀−u)(M₁−u)` from RHS finiteness (else RHS = ⊤)
+  have hcrit : 2 * c' < ((minAdm (redChain u M) + (M 0 - u) * (M 1 - u) : ℕ) : ℝ) := by
+    by_contra hcon
+    push_neg at hcon
+    have hle : ((minAdm (redChain u M) + (M 0 - u) * (M 1 - u) : ℕ) : ℝ) / 2 ≤ c' := by linarith
+    rw [pivotDomRHS_eq_top_of_critical M u hu c' hnd Zf hZfMeas hle] at hRHS
+    exact (lt_irrefl _ hRHS)
+  -- the nat chain: comparator threshold ≤ the block dimension `N = (u+a)(u+b)`
+  have hN : (minAdm (redChain u M) + (M 0 - u) * (M 1 - u) : ℕ)
+      ≤ (u + (M 0 - u)) * (u + (M 1 - u)) := minAdm_add_peel_le M u hpiv
+  have hcN : c' < (((u + (M 0 - u)) * (u + (M 1 - u)) : ℕ) : ℝ) / 2 := by
+    have h2 : 2 * c' < (((u + (M 0 - u)) * (u + (M 1 - u)) : ℕ) : ℝ) :=
+      lt_of_lt_of_le hcrit (by exact_mod_cast hN)
+    linarith
+  -- `LHS < ⊤`: the `0 < c'` clean full-block bound, else the non-positive edge
+  by_cases hcpos : 0 < c'
+  · exact pivotDomLHS_lt_top_of_pos M u hε hcpos hcN Zf
+  · exact pivotDomLHS_lt_top_of_nonpos M u (not_lt.mp hcpos) Zf hRHS
 
 /-- **The forward finiteness (Option B).** From the RHS finiteness `hRHS` and the σ-coupled domination
 `pivotPeel_domination` (`LHS ≤ C·RHS`, `C < ⊤`), the freed Schur-loss spine LHS is finite:
