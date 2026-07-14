@@ -646,6 +646,68 @@ theorem prodFrobSq_pos_ae (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 �
   filter_upwards [haeP] with A hA
   exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hA)
 
+/-- **`minAdmRec ≥ 1` for a `≥ 2`-width all-positive chain.** By the layer-peeling recursion: the
+two-width leaf is `M₀·M₁ ≥ 1`; the deeper `inf'` has every candidate `(M₀−t)(M₁−t) + minAdmRec(redChain
+t M) ≥ 1` (for `t = 0` the block term is `M₀·M₁ ≥ 1`; for `t ≥ 1` the recursion is `≥ 1` by IH, since
+`redChain t M` keeps all widths `≥ 1`). -/
+theorem one_le_minAdmRec :
+    ∀ {L : ℕ} (M : Fin (L + 1 + 1) → ℕ), (∀ i, 1 ≤ M i) → 1 ≤ minAdmRec M
+  | 0, M, hM => by
+      rw [minAdmRec_leaf]
+      exact Nat.one_le_iff_ne_zero.mpr
+        (Nat.mul_ne_zero (by have := hM 0; omega) (by have := hM 1; omega))
+  | (_ + 1), M, hM => by
+      rw [minAdmRec_succ_succ]
+      refine Finset.le_inf' _ _ (fun t _ => ?_)
+      rcases Nat.eq_zero_or_pos t with ht0 | htpos
+      · subst ht0
+        have hprod : 1 ≤ M 0 * M 1 := Nat.one_le_iff_ne_zero.mpr
+          (Nat.mul_ne_zero (by have := hM 0; omega) (by have := hM 1; omega))
+        simp only [Nat.sub_zero]
+        omega
+      · have hred : ∀ i, 1 ≤ redChain t M i := by
+          intro i
+          refine Fin.cases ?_ (fun j => ?_) i
+          · rw [redChain_zero]; omega
+          · rw [redChain_succ]; exact hM _
+        have hIH := one_le_minAdmRec (redChain t M) hred
+        omega
+
+/-- **`1 ≤ minAdm (redChain u M)`** for `u ≥ 1` and all `M i ≥ 1`: the reduced chain has all widths `≥ 1`
+(head `= u ≥ 1`, tail `= M _ ≥ 1`), so its minimal admissible codimension is `≥ 1`
+(`one_le_minAdmRec` + `minAdmRec_eq_minAdm`). -/
+theorem one_le_minAdm_redChain (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
+    (hnd : ∀ i, 1 ≤ M i) : 1 ≤ minAdm (redChain u M) := by
+  rw [← minAdmRec_eq_minAdm]
+  refine one_le_minAdmRec (redChain u M) (fun i => ?_)
+  refine Fin.cases ?_ (fun j => ?_) i
+  · rw [redChain_zero]; omega
+  · rw [redChain_succ]; exact hnd _
+
+/-- **The comparator RHS in resolved form.** Unfolds `pivotDomRHS` and resolves the comparator loss
+`decLoss v z = (v 0)²·frobSq(prod z)` (`pivotRHS_decLoss_eq`) and the `Fin 1` monomial `|v 0|^{minAdm−1}`,
+exposing the clean integrand consumed by both the positivity (E) and divergence (B) arguments. -/
+theorem pivotDomRHS_eq_explicit (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
+    (hnd : ∀ i, 1 ≤ M i) (c' : ℝ)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
+    pivotDomRHS M u c' Zf
+      = ∫⁻ z in paramsBoxM (redChain u M) 1, ∫⁻ v in unitBox 1,
+          ENNReal.ofReal (|v 0| ^ (minAdm (redChain u M) - 1))
+            * ∫⁻ A in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+                ∫⁻ Γ in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
+                  ENNReal.ofReal (((v 0) ^ 2 * frobSq (prod (redChain u M) z)
+                    + frobSq (Matrix.of Γ * (Matrix.of A * Zf z))) ^ (-c')) := by
+  rw [pivotDomRHS, deeperFlagCoreIntegrand]
+  refine lintegral_congr (fun z => ?_)
+  refine lintegral_congr (fun v => ?_)
+  congr 1
+  · rw [Fin.prod_univ_one, Matrix.cons_val_zero]
+  · refine lintegral_congr (fun A => lintegral_congr (fun Γ => ?_))
+    rw [pivotRHS_decLoss_eq M u hu hnd v z]
+    simp only [zero_add]
+
 /-- **Joint measurability of the (decLoss-resolved) comparator integrand.** The base scalar
 `((v 0)²·frobSq(prod z) + frobSq(Γ·(A·Zf z)))^{−c'}`, wrapped in `ofReal`, is measurable in the packed
 tuple `((z, v), A, Γ)` — entrywise expansion of the two `frobSq`s (products/sums of projections,
@@ -700,23 +762,8 @@ theorem pivotDomRHS_ne_zero_aux (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     (hZfMeas : Measurable Zf) :
     pivotDomRHS M u c' Zf ≠ 0 := by
   classical
-  -- (1) Resolve the comparator loss `decLoss v z = (v 0)² · frobSq (prod z)` and the `Fin 1` monomial,
-  -- exposing the clean integrand `Gexpr z v`.
-  have heq : pivotDomRHS M u c' Zf
-      = ∫⁻ z in paramsBoxM (redChain u M) 1, ∫⁻ v in unitBox 1,
-          ENNReal.ofReal (|v 0| ^ (minAdm (redChain u M) - 1))
-            * ∫⁻ A in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
-                ∫⁻ Γ in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
-                  ENNReal.ofReal (((v 0) ^ 2 * frobSq (prod (redChain u M) z)
-                    + frobSq (Matrix.of Γ * (Matrix.of A * Zf z))) ^ (-c')) := by
-    rw [pivotDomRHS, deeperFlagCoreIntegrand]
-    refine lintegral_congr (fun z => ?_)
-    refine lintegral_congr (fun v => ?_)
-    congr 1
-    · rw [Fin.prod_univ_one, Matrix.cons_val_zero]
-    · refine lintegral_congr (fun A => lintegral_congr (fun Γ => ?_))
-      rw [pivotRHS_decLoss_eq M u hu hnd v z]
-      simp only [zero_add]
+  -- (1) Resolve the comparator loss `decLoss v z = (v 0)² · frobSq (prod z)` and the `Fin 1` monomial.
+  have heq := pivotDomRHS_eq_explicit M u hu hnd c' Zf
   -- (2) Parametric measurability of the inner spine `F z = ∫_v (mono · INNER)`.
   have hbase := measurable_pivotRHS_integrand M u c' Zf hZfMeas
   have hΓ : Measurable (fun x : (Params (redChain u M) × (Fin 1 → ℝ))
@@ -854,10 +901,175 @@ theorem pivotDomRHS_ne_zero_aux (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
   rw [Set.setOf_mem_eq] at hae
   exact (paramsBoxM_volume_pos (redChain u M)).ne' hae
 
+/-- **The single-fibre divergence (the analytic core of B).** For a fixed corank matrix `Z`, positive
+pivot energy `P > 0`, monomial order `m0 ≥ 1`, and an exponent past the critical value
+(`m0 + a·b ≤ 2c'`), the `v`-fibre integral of the resolved comparator integrand is `⊤`. Route: restrict
+`v₀ ∈ (0, δ)` (transported to a 1-D `ℝ` integral via `funUnique`); per such `v₀`, the corner sublevel
+bound `corner_inner_ge` (with `ρ = v₀·√(P/Kp)` making `frobSq(Γ·(A·Z)) ≤ v₀²·P` via `frobSq_corank_le`)
+gives the inner `≥ D·v₀^{ab−2c'}`, so the integrand `≥ ofReal(Cx·v₀^{(m0−1)+ab−2c'})`; the 1-D monomial
+diverges (`abs_rpow_lintegral_Ioo_eq_top`, exponent `≤ −1 ⟺ m0 + ab ≤ 2c'`). -/
+theorem vfibre_top {a b M₂ nn : ℕ} (Z : Matrix (Fin M₂) (Fin nn) ℝ)
+    {P : ℝ} (hP : 0 < P) (m0 : ℕ) (hm1 : 1 ≤ m0) {c' : ℝ}
+    (hcrit : (m0 : ℝ) + ((a * b : ℕ) : ℝ) ≤ 2 * c') :
+    (∫⁻ v in unitBox 1, ENNReal.ofReal (|v 0| ^ (m0 - 1))
+        * ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+            ENNReal.ofReal (((v 0) ^ 2 * P + frobSq (Matrix.of Γ * (Matrix.of A * Z)))
+              ^ (-c'))) = ⊤ := by
+  classical
+  have hc0 : (0 : ℝ) ≤ c' := by
+    have h1 : (1 : ℝ) ≤ (m0 : ℝ) := by exact_mod_cast hm1
+    have h2 : (0 : ℝ) ≤ ((a * b : ℕ) : ℝ) := Nat.cast_nonneg _
+    linarith
+  -- constants
+  set BZ : ℝ := 1 + ∑ l, ∑ j, |Z l j| with hBZdef
+  have hBZ0 : (0 : ℝ) ≤ BZ := by rw [hBZdef]; positivity
+  have hBZ : ∀ l j, |Z l j| ≤ BZ := by
+    intro l j
+    rw [hBZdef]
+    have h1 : |Z l j| ≤ ∑ j', |Z l j'| :=
+      Finset.single_le_sum (f := fun j' => |Z l j'|) (fun j' _ => abs_nonneg _) (Finset.mem_univ j)
+    have h2 : (∑ j', |Z l j'|) ≤ ∑ l', ∑ j', |Z l' j'| :=
+      Finset.single_le_sum (f := fun l' => ∑ j', |Z l' j'|)
+        (fun l' _ => Finset.sum_nonneg (fun _ _ => abs_nonneg _)) (Finset.mem_univ l)
+    linarith
+  set Kbase : ℝ := ((a * nn : ℕ) : ℝ) * ((b : ℝ) * (M₂ : ℝ) * BZ) ^ 2 with hKbasedef
+  have hKbase0 : (0 : ℝ) ≤ Kbase := by rw [hKbasedef]; positivity
+  set Kp : ℝ := Kbase + 1 with hKpdef
+  have hKp0 : (0 : ℝ) < Kp := by rw [hKpdef]; positivity
+  set s : ℝ := ((m0 - 1 : ℕ) : ℝ) + ((a * b : ℕ) : ℝ) - 2 * c' with hsdef
+  have hs1 : s ≤ -1 := by
+    rw [hsdef, show ((m0 - 1 : ℕ) : ℝ) = (m0 : ℝ) - 1 from by rw [Nat.cast_sub hm1, Nat.cast_one]]
+    linarith
+  set Cx : ℝ := (2 * P) ^ (-c') * (2 * Real.sqrt (P / Kp)) ^ (a * b) * 2 ^ (b * M₂) with hCxdef
+  have hCx0 : 0 < Cx := by
+    rw [hCxdef]
+    have h1 : 0 < (2 * P) ^ (-c') := Real.rpow_pos_of_pos (by linarith) _
+    have h2 : 0 < (2 * Real.sqrt (P / Kp)) ^ (a * b) :=
+      pow_pos (by positivity) _
+    have h3 : (0 : ℝ) < 2 ^ (b * M₂) := by positivity
+    positivity
+  set δ : ℝ := min 1 (Real.sqrt (Kp / P)) with hδdef
+  have hδ0 : 0 < δ := by rw [hδdef]; exact lt_min one_pos (Real.sqrt_pos.mpr (by positivity))
+  have hδ1 : δ ≤ 1 := min_le_left _ _
+  -- the 1-D monomial diverges
+  have hdiv : (∫⁻ x in Set.Ioo (0 : ℝ) δ, ENNReal.ofReal (Cx * x ^ s)) = ⊤ := by
+    have hcongr : ∀ x ∈ Set.Ioo (0 : ℝ) δ,
+        ENNReal.ofReal (Cx * x ^ s) = ENNReal.ofReal Cx * ENNReal.ofReal (|x| ^ s) := by
+      intro x hx
+      rw [abs_of_pos hx.1, ← ENNReal.ofReal_mul hCx0.le]
+    rw [setLIntegral_congr_fun measurableSet_Ioo hcongr,
+      lintegral_const_mul' _ _ ENNReal.ofReal_ne_top,
+      abs_rpow_lintegral_Ioo_eq_top s δ hδ0 hs1,
+      ENNReal.mul_top (by rw [ne_eq, ENNReal.ofReal_eq_zero, not_le]; exact hCx0)]
+  -- per-`x` corner lower bound
+  have hptwise : ∀ x ∈ Set.Ioo (0 : ℝ) δ, ENNReal.ofReal (Cx * x ^ s)
+      ≤ ENNReal.ofReal (|x| ^ (m0 - 1))
+        * ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+            ENNReal.ofReal ((x ^ 2 * P + frobSq (Matrix.of Γ * (Matrix.of A * Z))) ^ (-c')) := by
+    intro x hx
+    have hx0 : 0 < x := hx.1
+    have hxδ : x < δ := hx.2
+    set ρ : ℝ := x * Real.sqrt (P / Kp) with hρdef
+    have hρ0 : 0 < ρ := by rw [hρdef]; exact mul_pos hx0 (Real.sqrt_pos.mpr (by positivity))
+    have hsqprod : Real.sqrt (Kp / P) * Real.sqrt (P / Kp) = 1 := by
+      rw [← Real.sqrt_mul (by positivity), show (Kp / P) * (P / Kp) = 1 from by
+        field_simp, Real.sqrt_one]
+    have hρ1 : ρ ≤ 1 := by
+      rw [hρdef]
+      have hxle : x ≤ Real.sqrt (Kp / P) := le_of_lt (lt_of_lt_of_le hxδ (min_le_right _ _))
+      calc x * Real.sqrt (P / Kp) ≤ Real.sqrt (Kp / P) * Real.sqrt (P / Kp) :=
+            mul_le_mul_of_nonneg_right hxle (Real.sqrt_nonneg _)
+        _ = 1 := hsqprod
+    have hw : 0 < x ^ 2 * P := mul_pos (pow_pos hx0 2) hP
+    have hbound : ∀ A : Fin b → Fin M₂ → ℝ, A ∈ matBox b M₂ 1 →
+        ∀ Γ : Fin a → Fin b → ℝ, Γ ∈ matBox a b ρ →
+          frobSq (Matrix.of Γ * (Matrix.of A * Z)) ≤ x ^ 2 * P := by
+      intro A hA Γ hΓ
+      have hfc := frobSq_corank_le Z hBZ0 hBZ A (fun k l => abs_le.mpr ⟨(hA k l).1, (hA k l).2⟩)
+        Γ hρ0.le (fun i k => abs_le.mpr ⟨(hΓ i k).1, (hΓ i k).2⟩)
+      have hρ2 : ρ ^ 2 = x ^ 2 * (P / Kp) := by
+        rw [hρdef, mul_pow, Real.sq_sqrt (by positivity : (0 : ℝ) ≤ P / Kp)]
+      refine le_trans hfc ?_
+      rw [show ((a * nn : ℕ) : ℝ) * ((b : ℝ) * (M₂ : ℝ) * BZ) ^ 2 * ρ ^ 2 = Kbase * ρ ^ 2 from by
+        rw [hKbasedef], hρ2]
+      calc Kbase * (x ^ 2 * (P / Kp)) ≤ Kp * (x ^ 2 * (P / Kp)) :=
+            mul_le_mul_of_nonneg_right (by rw [hKpdef]; linarith) (by positivity)
+        _ = x ^ 2 * P := by field_simp
+    have hcorner := corner_inner_ge Z hc0 hw hρ0 hρ1 hbound
+    -- convert the corner-constant to a single `ofReal`
+    have hvol : volume (matBox b M₂ 1) = ENNReal.ofReal (2 ^ (b * M₂)) := by
+      rw [matBox_volume b M₂ (by norm_num), show (2 * 1 : ℝ) = 2 from by norm_num,
+        ← ENNReal.ofReal_pow (by norm_num : (0 : ℝ) ≤ 2)]
+    have hLHSeq : ENNReal.ofReal ((2 * (x ^ 2 * P)) ^ (-c')) * ENNReal.ofReal (2 * ρ) ^ (a * b)
+          * volume (matBox b M₂ 1)
+        = ENNReal.ofReal ((2 * (x ^ 2 * P)) ^ (-c') * (2 * ρ) ^ (a * b) * 2 ^ (b * M₂)) := by
+      rw [hvol, ← ENNReal.ofReal_pow (by positivity : (0 : ℝ) ≤ 2 * ρ) (a * b),
+        ← ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity : (0 : ℝ) ≤ 2 * (x ^ 2 * P)) _),
+        ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ (2 * (x ^ 2 * P)) ^ (-c') * (2 * ρ) ^ (a * b))]
+    rw [hLHSeq] at hcorner
+    -- the real identity `|x|^{m0-1} · (corner const) = Cx · x^s`
+    have hEeq : |x| ^ (m0 - 1)
+          * ((2 * (x ^ 2 * P)) ^ (-c') * (2 * ρ) ^ (a * b) * 2 ^ (b * M₂))
+        = Cx * x ^ s := by
+      rw [hCxdef, hsdef, hρdef, abs_of_pos hx0]
+      rw [show (2 * (x * Real.sqrt (P / Kp))) ^ (a * b)
+            = (2 * Real.sqrt (P / Kp)) ^ (a * b) * x ^ (a * b) from by
+          rw [show 2 * (x * Real.sqrt (P / Kp)) = (2 * Real.sqrt (P / Kp)) * x from by ring, mul_pow]]
+      rw [show (2 * (x ^ 2 * P)) ^ (-c') = (2 * P) ^ (-c') * x ^ (((2 : ℕ) : ℝ) * (-c')) from by
+          rw [show 2 * (x ^ 2 * P) = (2 * P) * x ^ 2 from by ring,
+            Real.mul_rpow (by positivity) (by positivity), Real.rpow_natCast_mul hx0.le 2 (-c')]]
+      rw [show (x : ℝ) ^ (m0 - 1) = x ^ (((m0 - 1 : ℕ) : ℝ)) from
+          (Real.rpow_natCast x (m0 - 1)).symm]
+      rw [show (x : ℝ) ^ (a * b) = x ^ (((a * b : ℕ) : ℝ)) from (Real.rpow_natCast x (a * b)).symm]
+      rw [show ((m0 - 1 : ℕ) : ℝ) + ((a * b : ℕ) : ℝ) - 2 * c'
+            = ((m0 - 1 : ℕ) : ℝ) + (((2 : ℕ) : ℝ) * (-c')) + ((a * b : ℕ) : ℝ) from by
+          push_cast; ring]
+      rw [Real.rpow_add hx0, Real.rpow_add hx0]
+      ring
+    rw [show ENNReal.ofReal (Cx * x ^ s)
+        = ENNReal.ofReal (|x| ^ (m0 - 1))
+          * ENNReal.ofReal ((2 * (x ^ 2 * P)) ^ (-c') * (2 * ρ) ^ (a * b) * 2 ^ (b * M₂))
+        from by rw [← hEeq, ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ |x| ^ (m0 - 1))]]
+    exact mul_le_mul_left' hcorner _
+  -- assemble: `⊤ = ∫_{Ioo} monomial-bound ≤ ∫_{Ioo} 1D-integrand ≤ ∫_{unitBox} v-integrand`
+  rw [eq_top_iff]
+  set e := MeasurableEquiv.funUnique (Fin 1) ℝ with hedef
+  have hmp := volume_preserving_funUnique (Fin 1) ℝ
+  have hsymapp : ∀ x : ℝ, (e.symm x) 0 = x := fun x => rfl
+  have hpre : e.symm ⁻¹' {v : Fin 1 → ℝ | v 0 ∈ Set.Ioo (0 : ℝ) δ} = Set.Ioo (0 : ℝ) δ := by
+    ext x; simp only [Set.mem_preimage, Set.mem_setOf_eq, hsymapp x]
+  have htrans := (hmp.symm).setLIntegral_comp_preimage_emb e.symm.measurableEmbedding
+    (fun v : Fin 1 → ℝ => ENNReal.ofReal (|v 0| ^ (m0 - 1))
+      * ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+          ENNReal.ofReal (((v 0) ^ 2 * P + frobSq (Matrix.of Γ * (Matrix.of A * Z))) ^ (-c')))
+    {v : Fin 1 → ℝ | v 0 ∈ Set.Ioo (0 : ℝ) δ}
+  rw [hpre] at htrans
+  calc (⊤ : ℝ≥0∞)
+      = ∫⁻ x in Set.Ioo (0 : ℝ) δ, ENNReal.ofReal (Cx * x ^ s) := hdiv.symm
+    _ ≤ ∫⁻ x in Set.Ioo (0 : ℝ) δ, ENNReal.ofReal (|x| ^ (m0 - 1))
+          * ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+              ENNReal.ofReal ((x ^ 2 * P + frobSq (Matrix.of Γ * (Matrix.of A * Z))) ^ (-c')) :=
+        setLIntegral_mono_ae' measurableSet_Ioo (ae_of_all _ (fun x hx => hptwise x hx))
+    _ = ∫⁻ v in {v : Fin 1 → ℝ | v 0 ∈ Set.Ioo (0 : ℝ) δ},
+          ENNReal.ofReal (|v 0| ^ (m0 - 1))
+            * ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+                ENNReal.ofReal (((v 0) ^ 2 * P + frobSq (Matrix.of Γ * (Matrix.of A * Z))) ^ (-c')) :=
+        htrans
+    _ ≤ ∫⁻ v in unitBox 1, ENNReal.ofReal (|v 0| ^ (m0 - 1))
+          * ∫⁻ A in matBox b M₂ 1, ∫⁻ Γ in genBox (Fin a) (Fin b) 1,
+              ENNReal.ofReal (((v 0) ^ 2 * P + frobSq (Matrix.of Γ * (Matrix.of A * Z))) ^ (-c')) := by
+        refine lintegral_mono_set (fun v hv => ?_)
+        have hv0 : v 0 ∈ Set.Ioo (0 : ℝ) δ := hv
+        simp only [unitBox, Set.mem_pi, Set.mem_univ, true_implies]
+        intro i
+        rw [Subsingleton.elim i (0 : Fin 1)]
+        exact Set.mem_Icc.mpr ⟨le_of_lt hv0.1, le_of_lt (lt_of_lt_of_le hv0.2 hδ1)⟩
+
 /-- **The comparator diverges above the critical exponent.** For `(minAdm(redChain u M) + (M₀−u)(M₁−u))/2 ≤
-c'`, the comparator RHS is `⊤`: restrict `v₀ ∈ (0,1)`, `|Γ| ≤ v₀`; on the a.e. set `decLoss > 0` the base is
-`≤ K(z)·v₀²`, so the inner integral `≥ K(z)^{−c'}·v₀^{−2c'}·(2v₀)^{ab}`, and `∫₀¹ v₀^{(minAdm−1)+ab−2c'} = ⊤`.
-Contrapositive: `RHS < ⊤ ⟹ 2c' < minAdm + (M₀−u)(M₁−u)`. -/
+c'`, the comparator RHS is `⊤`: on the co-null set `frobSq(prod z) > 0` (positive-measure ∩ box), each
+`z`-fibre diverges (`vfibre_top`, with `m0 = minAdm ≥ 1` from `one_le_minAdm_redChain`), so integrating a
+`⊤`-valued fibre over the positive-measure `z`-set gives `⊤`. Contrapositive: `RHS < ⊤ ⟹ 2c' < minAdm +
+(M₀−u)(M₁−u)`. -/
 theorem pivotDomRHS_eq_top_of_critical (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     (hu : 1 ≤ u) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
     (Zf : Params (redChain u M)
@@ -866,7 +1078,54 @@ theorem pivotDomRHS_eq_top_of_critical (M : Fin (L + 1 + 1 + 1) → ℕ) (u : �
     (hZfMeas : Measurable Zf)
     (hc : ((minAdm (redChain u M) + (M 0 - u) * (M 1 - u) : ℕ) : ℝ) / 2 ≤ c') :
     pivotDomRHS M u c' Zf = ⊤ := by
-  sorry
+  classical
+  have hm1 : 1 ≤ minAdm (redChain u M) := one_le_minAdm_redChain M u hu hnd
+  have hcrit : (minAdm (redChain u M) : ℝ) + (((M 0 - u) * (M 1 - u) : ℕ) : ℝ) ≤ 2 * c' := by
+    have := hc
+    push_cast at this ⊢
+    linarith
+  rw [pivotDomRHS_eq_explicit M u hu hnd c' Zf, eq_top_iff]
+  -- the positive-measure `{frobSq(prod z) > 0}` slab of the box
+  have hPmeas : MeasurableSet {z : Params (redChain u M) | 0 < frobSq (prod (redChain u M) z)} := by
+    refine measurableSet_lt measurable_const ?_
+    unfold frobSq
+    exact Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ =>
+      ((continuous_prod (redChain u M)).matrix_elem i j).measurable.pow_const 2))
+  have hSmeas : MeasurableSet (paramsBoxM (redChain u M) 1
+      ∩ {z | 0 < frobSq (prod (redChain u M) z)}) :=
+    (paramsBoxM_measurableSet (redChain u M)).inter hPmeas
+  have hnull : volume (paramsBoxM (redChain u M) 1
+      \ {z | 0 < frobSq (prod (redChain u M) z)}) = 0 := by
+    refine measure_mono_null (fun z hz => ?_) (by
+      rw [← ae_iff]; exact prodFrobSq_pos_ae M u hu hnd)
+    exact hz.2
+  have hSvol : 0 < volume (paramsBoxM (redChain u M) 1
+      ∩ {z | 0 < frobSq (prod (redChain u M) z)}) := by
+    have hadd : volume (paramsBoxM (redChain u M) 1 ∩ {z | 0 < frobSq (prod (redChain u M) z)})
+        + volume (paramsBoxM (redChain u M) 1 \ {z | 0 < frobSq (prod (redChain u M) z)})
+        = volume (paramsBoxM (redChain u M) 1) := measure_inter_add_diff _ hPmeas
+    rw [hnull, add_zero] at hadd
+    rw [hadd]; exact paramsBoxM_volume_pos (redChain u M)
+  calc (⊤ : ℝ≥0∞)
+      = ⊤ * volume (paramsBoxM (redChain u M) 1 ∩ {z | 0 < frobSq (prod (redChain u M) z)}) :=
+        (ENNReal.top_mul hSvol.ne').symm
+    _ = ∫⁻ _z in paramsBoxM (redChain u M) 1 ∩ {z | 0 < frobSq (prod (redChain u M) z)},
+          (⊤ : ℝ≥0∞) := (setLIntegral_const _ _).symm
+    _ = ∫⁻ z in paramsBoxM (redChain u M) 1 ∩ {z | 0 < frobSq (prod (redChain u M) z)},
+          ∫⁻ v in unitBox 1, ENNReal.ofReal (|v 0| ^ (minAdm (redChain u M) - 1))
+            * ∫⁻ A in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+                ∫⁻ Γ in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
+                  ENNReal.ofReal (((v 0) ^ 2 * frobSq (prod (redChain u M) z)
+                    + frobSq (Matrix.of Γ * (Matrix.of A * Zf z))) ^ (-c')) :=
+        setLIntegral_congr_fun hSmeas (fun z hz =>
+          (vfibre_top (Zf z) hz.2 (minAdm (redChain u M)) hm1 hcrit).symm)
+    _ ≤ ∫⁻ z in paramsBoxM (redChain u M) 1,
+          ∫⁻ v in unitBox 1, ENNReal.ofReal (|v 0| ^ (minAdm (redChain u M) - 1))
+            * ∫⁻ A in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+                ∫⁻ Γ in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
+                  ENNReal.ofReal (((v 0) ^ 2 * frobSq (prod (redChain u M) z)
+                    + frobSq (Matrix.of Γ * (Matrix.of A * Zf z))) ^ (-c')) :=
+        lintegral_mono_set Set.inter_subset_left
 
 /-- **The `0 < c'` finiteness** — the main content. Below the block-dimension threshold `c' < (u+a)(u+b)/2`,
 the freed Schur-loss spine LHS is finite: fold to the block-front (`pivotDomLHS_eq_blockFront`), reassemble
@@ -970,16 +1229,14 @@ theorem pivotDomLHS_lt_top_of_zero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) {
 dominated by a FINITE reorganisation constant times the comparator-core RHS — exactly the conclusion of
 `RouteMSJHeadSplitDom.headSplit_pivotDom`.
 
-**This assembly is sorry-free** (the full-block route, approved 2026-07-14). Via the generic `ℝ≥0∞` ratio
-trick (`exists_finite_mul_of_finite_imp`, `RHS ≠ 0` by `pivotDomRHS_ne_zero_aux`) it reduces to
-`pivotDomRHS < ⊤ → pivotDomLHS < ⊤`: the comparator-side divergence `pivotDomRHS_eq_top_of_critical`
-extracts `2c' < minAdm + (M₀−u)(M₁−u)`, the nat chain `minAdm_add_peel_le` (via `hpiv`) closes it against the
-block dimension `N = (u+a)(u+b)`, and the `0 < c'` finiteness `pivotDomLHS_lt_top_of_pos` wins by the joint
-full-block Loewner-floor bound (`shell_fullBlock_le` — the checkpoint lemma), with the `c' ≤ 0` edge
-`pivotDomLHS_lt_top_of_nonpos`. The `hcvg`/`hmM`/`ε'`/`U_sf`/frame hypotheses are UNUSED (the route bypasses
-the S3 corank peel entirely — Codex-corroborated). Three comparator-side helpers
-(`pivotDomRHS_ne_zero_aux`, `pivotDomRHS_eq_top_of_critical`, `pivotDomLHS_lt_top_of_nonpos`) are
-correct-statement `sorry`s pending a follow-up (positivity + divergence of the comparator + the c'≤0 edge). -/
+**This assembly is sorry-free and axiom-clean** (`[propext, Classical.choice, Quot.sound]`; the full-block
+route, approved 2026-07-14). Via the generic `ℝ≥0∞` ratio trick (`exists_finite_mul_of_finite_imp`,
+`RHS ≠ 0` by `pivotDomRHS_ne_zero_aux`) it reduces to `pivotDomRHS < ⊤ → pivotDomLHS < ⊤`: the
+comparator-side divergence `pivotDomRHS_eq_top_of_critical` extracts `2c' < minAdm + (M₀−u)(M₁−u)`, the nat
+chain `minAdm_add_peel_le` (via `hpiv`) closes it against the block dimension `N = (u+a)(u+b)`, the `0 < c'`
+finiteness `pivotDomLHS_lt_top_of_pos` wins by the joint full-block Loewner-floor bound (`shell_fullBlock_le`),
+and the `c' = 0` edge is `pivotDomLHS_lt_top_of_zero`. The `hcvg`/`hmM`/`ε'`/`U_sf`/frame hypotheses are
+UNUSED (the route bypasses the S3 corank peel entirely — Codex-corroborated). -/
 theorem pivotPeel_domination (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
     {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
