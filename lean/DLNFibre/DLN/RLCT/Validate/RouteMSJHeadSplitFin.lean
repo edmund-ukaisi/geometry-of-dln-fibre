@@ -5,15 +5,22 @@ set_option linter.style.longLine false
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFin` — Brick D join, full-matBox route (`genm-sj5-finfin`)
 
-**Thread `genm-sj5-finfin` (aoyagi-full Stage 2).** The full-matBox head-split domination that makes
-`headSplit_domination_impl` sorry-free for ALL `j` (the `j ≥ 1` cover shells). Sits downstream of
-`RouteMSJPivotFin` so it can reuse the shell-INDEPENDENT ratio-trick plumbing (`pivotDomRHS_ne_zero_aux`,
+**Thread `genm-sj5-finfin` (aoyagi-full Stage 2).** The full-matBox head-split domination. Sits downstream
+of `RouteMSJPivotFin` so it can reuse the shell-INDEPENDENT ratio-trick plumbing (`pivotDomRHS_ne_zero_aux`,
 `pivotDomRHS_eq_top_of_critical`, `exists_finite_mul_of_finite_imp`) and the block-front reassembly
 (`pivotInner_Dsubst`, `blockFront_inner_eq`). It supersedes the placeholder `headSplit_pivotDom` /
 `shellSpine_le_hsQ_box` / `headSplit_domination_impl` that `genm-sj5-pradial` left as sorries in
 `RouteMSJHeadSplitDom`; those are relocated here (the from-scratch analytic module the docstring flagged).
 
-## What lands (sorry-free)
+**Shell coverage (CAVEAT).** `headSplit_domination_impl` carries `hjr : j < r` (`r = min(M₀−t, M₁−t)`),
+so it covers the cover shells `0 ≤ j < r` — NOT the lumped/saturated top shell `j = r`
+(`{weakEigCount ε ≥ r}`). The narrowing is inherited from `shell_subset_goodSet` (whose shell⊆good argument
+needs `weakEigCount ε Zf = j` EXACTLY, which fails at the clamped `j = r`), not introduced here; the
+`RouteMSJDeeperFlagCore.headSplit_domination` stub is stated with `hj : j ≤ r`, so the controller must
+either add `hjr` to the stub + its consumers and dispatch `j = r` as a separate top-shell base case (as
+waists are separate), or supply a distinct lumped-shell argument. FLAGGED for wiring.
+
+## What lands (sorry-free, `#print axioms = [propext, Classical.choice, Quot.sound]`)
 
 * **`spine_submatrix_eq_hsQ`** — on the shell (where `Zf z = deeperFlagZdeep`), the spine's row-reindexed
   front factor `(prod (tailChain M) A').submatrix (blockSplitEquiv κ) id` IS `hsQ`. The pivot (`inl`)
@@ -29,18 +36,25 @@ set_option linter.style.longLine false
   good set, not the shell, is the intermediate; the shell's own measurability is never needed), rewrite
   the spine integrand to `Hfull ∘ hsSplit` there, enlarge to the full box, transport (MP `hsSplit`),
   Tonelli-uncurry.
+
+## Reduced to the one analytic wall (carry `sorryAx` VIA `pivotDomLHS_full_lt_top`, not directly)
+
 * **`headSplit_pivotDom`** — brick A, the FULL-matBox domination, via the ratio trick
   (`exists_finite_mul_of_finite_imp` + `pivotDomRHS_ne_zero_aux`; the comparator threshold extracted by
-  `pivotDomRHS_eq_top_of_critical`). The genuine content is isolated as `pivotDomLHS_full_lt_top`.
-* **`headSplit_domination_impl`** — the join `shellSpine_le_hsQ_box ∘ headSplit_pivotDom`; verbatim the
-  `RouteMSJDeeperFlagCore.headSplit_domination` stub conclusion. The controller wires the stub to it.
+  `pivotDomRHS_eq_top_of_critical`). The genuine content is isolated as `pivotDomLHS_full_lt_top`; the
+  ratio wiring itself is sorry-free.
+* **`headSplit_domination_impl`** — the join `shellSpine_le_hsQ_box ∘ headSplit_pivotDom`; its conclusion
+  is identical to the `RouteMSJDeeperFlagCore.headSplit_domination` stub (see the coverage caveat above for
+  the extra `hjr`). The controller wires the stub to it.
 
 ## The one isolated analytic wall (SD-7)
 
-* **`pivotDomLHS_full_lt_top`** — `2c' < minAdm(redChain u M) + (M₀−u)(M₁−u)` (⇔ `c' < carrierThreshold`)
-  and the deep-factor floor `hfloor` ⟹ the full-matBox spine LHS is finite. This is the marginal
-  (`λ_full = carrierThreshold`, reconciled SOUND by `genm-sj5-pradial`'s decorrelated Codex + Monte-Carlo)
-  rank-drop finiteness. Its route (couplingfin-adjudicated bounded, NOT shell-0): unit-Jacobian column-shear
+* **`pivotDomLHS_full_lt_top`** — `2c' < minAdm(redChain u M) + (M₀−u)(M₁−u)` (⇔ `c' < λ_cmp`, the
+  COMPARATOR threshold `(minAdm + ab)/2`; note this is NOT the Lean `carrierThreshold M := minAdm M / 2` —
+  they differ by exactly `ab/2`) and the deep-factor floor `hfloor` ⟹ the full-matBox spine LHS is finite.
+  This is the marginal (`λ_full = λ_cmp = (minAdm+ab)/2`, reconciled SOUND by `genm-sj5-pradial`'s
+  decorrelated Codex + Monte-Carlo) rank-drop finiteness. Its route (couplingfin-adjudicated bounded, NOT
+  shell-0): unit-Jacobian column-shear
   `Q_p R = [I|0]`, `Q_b R = (…,s)` giving the local normal form `L ≍ |x|² + s²|y|²`; the banked coupled
   corank peel `shell_corankPivot_coupled_le` for the `ab/2` charge + det-Gram divisor (integrable via
   `hfloor` — `uniformWenn_proj_le` + `strongBlock_lintegral_lt_top`, `a < m−b+1` from `hcvg`); the transverse
@@ -329,17 +343,18 @@ noncomputable def pivotDomLHS_full (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (
           ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M u Zf z A_cor)) ^ (-c'))
 
 /-- **The full-matBox tight finiteness (the ISOLATED analytic wall, SD-7).** Below the comparator
-threshold `2c' < minAdm(redChain u M) + (M₀−u)(M₁−u)` (⇔ `c' < carrierThreshold`), and given the
+threshold `2c' < minAdm(redChain u M) + (M₀−u)(M₁−u)` (⇔ `c' < λ_cmp := (minAdm + ab)/2`, the comparator
+threshold — NOT the Lean `carrierThreshold M := minAdm M / 2`; they differ by `ab/2`), and given the
 deep-factor floor `hfloor` (`Zf·Zfᵀ ⪰ ε'²·U_sf·U_sfᵀ`, `U_sf` orthonormal `m`-frame, `m ≥ a+b`), the
 full-matBox spine LHS is finite.
 
 RECONCILED SOUND (`genm-sj5-pradial`, decorrelated Codex xhigh + Monte-Carlo): the full-matBox route is
-marginal, `λ_full = (minAdm+ab)/2 = carrierThreshold` EXACTLY (the rank-drop codim-1 locus lowers the shell
-threshold `(u+a)(u+b)/2` to `carrierThreshold`, matching the comparator). ROUTE (couplingfin-adjudicated
+marginal, `λ_full = λ_cmp = (minAdm+ab)/2` EXACTLY (the rank-drop codim-1 locus lowers the shell
+threshold `(u+a)(u+b)/2` to `λ_cmp`, matching the comparator). ROUTE (couplingfin-adjudicated
 bounded, NOT shell-0): local normal form `L ≍ |x|² + s²|y|²` via the unit-Jacobian column-shear `Q_p R =
 [I|0]`, `Q_b R = (…,s)` (`s = σ_min(hsQ)`, the transverse `A`-coordinate) — the inner `T`-integral scales
 `g^{−(c'−ab/2)}` (`g = σ_min²`), the outer transverse integral `∫ |s|^{−2(c'−ab/2)}` converges iff `c' <
-carrierThreshold`; the `ab/2` charge + det-Gram divisor from the banked coupled corank peel
+λ_cmp`; the `ab/2` charge + det-Gram divisor from the banked coupled corank peel
 `shell_corankPivot_coupled_le` (integrable via `hfloor`: `uniformWenn_proj_le` + `strongBlock_lintegral_lt_top`,
 `a < m−b+1` from `hcvg`); the transverse `s`-charge `= ½` matching. The column-shear normal-form
 change-of-variables is genuine NEW machinery (not banked) — a from-scratch analytic module for a next tide.
