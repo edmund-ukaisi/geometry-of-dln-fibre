@@ -154,6 +154,18 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   `calc` when steps are defeq-heavy**, not just `rw` over `unfold`. (2') `set U := …eigenvectorUnitary`
   does NOT help — `set` inlines the heavy term into every downstream defeq; the `…Aux`-over-abstract-`U`
   factoring is NECESSARY (a thin instantiation lemma at the end), not merely tidy.
+- **Heavy spectral terms (`IsHermitian.eigenvalues`/`eigenvectorBasis`) choke the CLOSING `rfl`/defeq even
+  on a syntactically-`X = X` goal** (the same whnf-diamond as above, at the last step). Fix (confirmed,
+  `RouteMSJKyFan`, `genm-sj5` D-C): keep the spectral term INSIDE the inner product and pull it out as a
+  scalar with `real_inner_smul_right` — never let `λᵢ • bᵢ` appear as a bare vector `smul` that a later
+  step must defeq-close. (Rayleigh-expansion / eigenbasis proofs are the usual trigger.)
+- **`Module.finrank ℝ (EuclideanSpace ℝ (Fin k))` as an explicit `have`-type ANNOTATION fails instance
+  synthesis** with a garbled `failed to synthesize Max Type` inside a nontrivial proof context (yet works
+  in a bare `example`). Fix (`RouteMSJKyFan`): do NOT annotate the finrank; take `Submodule.finrank_le _`
+  (RHS type inferred) and `rw [(WithLp.linearEquiv 2 ℝ (Fin k → ℝ)).finrank_eq, Module.finrank_fin_fun]`
+  at the inequality; supply `Module.Finite ℝ (EuclideanSpace ℝ (Fin k))` explicitly via
+  `Module.Finite.equiv (WithLp.linearEquiv 2 ℝ (Fin k → ℝ)).symm`. Recurs in any `EuclideanSpace` finrank /
+  subspace-dimension counting (the D-C dimension-counting family).
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of

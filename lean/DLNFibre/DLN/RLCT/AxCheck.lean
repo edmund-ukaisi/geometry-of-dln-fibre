@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.Case111
+import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
@@ -142,6 +143,23 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerComparator
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorB1
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
+import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
+import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotBlowup
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellContain
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
+import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 
 /-!
 # Axiom-hygiene check
@@ -1178,3 +1196,73 @@ open DLNFibre.DLN.RLCT
 #print axioms corankOffSector_borderline_atBorder_le
 #print axioms corankOffSector_borderline_le
 #print axioms enn_geom_interp
+-- #5 off-sector shell-stratification tiles (genm-sj5-tobl3b-tile): T-Obl3a shell-0 Z-uniform corank weight
+-- + T-charge (flag charge C_j≥minAdm + the IH-fires shift). Consumed by the mountain (deeperFlag_shell_le).
+#print axioms uniformWenn_le
+#print axioms flagCharge_ge
+-- #5 T-Obl3b mountain (genm-sj5): M2 shell cover is LOAD-BEARING (single-ε shell subadditivity +
+-- exhaustiveness; corrected route stratifies Z first). M1 bordered-Gram Schur-complement det recursion
+-- + M3 its `gramDet_eq_prod` iterate are CORRECT reusable determinant identities but DIAGNOSTIC only —
+-- the pin (tobl3b-cornershift-chart-cert) REFUTED bordered-Gram as the corner-shrink primitive; the
+-- corrected corner-shrink is a deeper-cut re-peel + PSD-monotonicity, not these. Clean-three regardless.
+#print axioms DLNFibre.DLN.RLCT.borderedGram_det
+#print axioms DLNFibre.DLN.RLCT.borderedGramSchur_nonneg
+#print axioms DLNFibre.DLN.RLCT.lintegral_le_sum_finCover
+#print axioms DLNFibre.DLN.RLCT.singularShell_iUnion
+#print axioms DLNFibre.DLN.RLCT.gramDet_eq_prod
+-- T-Obl3b corrected route (deeper-cut re-peel + PSD-monotonicity): OWED-1 `uniformWenn_proj_le`
+-- (`uniformWenn_le` with `1→U_sU_sᵀ`, the weak-direction elimination) + OWED-2 crux `exists_ortho_ext`
+-- (orthogonal extension of U_s) + the (iii) helpers. OWED-2 reduction + OWED-3 build on these.
+#print axioms DLNFibre.DLN.RLCT.uniformWenn_proj_le
+#print axioms DLNFibre.DLN.RLCT.exists_ortho_ext
+#print axioms DLNFibre.DLN.RLCT.detGram_eq_prod_rows
+#print axioms DLNFibre.DLN.RLCT.offSector_cover_le
+-- OWED-2 reduction + OWED-3 analytic heart (`RouteMSJStrongBlock`): the reduced-weight finiteness at shrunk
+-- dims (column-Fubini, NO bordered-Gram) ∘ OWED-1 on the shell + the w-uniform per-shell interior bound.
+#print axioms DLNFibre.DLN.RLCT.strongBlock_lintegral_lt_top
+#print axioms DLNFibre.DLN.RLCT.deeperCut_shell_corankWeight_lt_top
+#print axioms DLNFibre.DLN.RLCT.shell_corankOffSector_le
+-- T-Obl3b OWED-3 mountain headline (`RouteMSJDeeperFlagCore`): L1 `deeperFlag_shell_core_le` (analytic
+-- heart) + the S3 `U_s`-uniform bricks + `deeperFlagCore_decLoss_pos_ae` (hpos) — all clean-three. S1-good
+-- `deeperFlag_spineToCore` = `exists_headSplitFrame` (F) ∘ `headSplit_domination` (D) + a clean assembly;
+-- S1-good + the headline `deeperFlag_shell_le` carry a TRACKED sorryAx = exactly the TWO isolated (□)-rungs
+-- F + D (F = Borel-functional-calculus frame selector; D = P-radial blow-up + C_hle + Ky-Fan + S3/L1
+-- assembly). Tracked here so the day F+D land and the module goes clean-three is visible (std-decision-7).
+#print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_core_le
+#print axioms DLNFibre.DLN.RLCT.deeperFlagCore_decLoss_pos_ae
+#print axioms DLNFibre.DLN.RLCT.exists_headSplitFrame
+#print axioms DLNFibre.DLN.RLCT.headSplit_domination
+#print axioms DLNFibre.DLN.RLCT.deeperFlag_spineToCore
+#print axioms DLNFibre.DLN.RLCT.strongBlock_lintegral_le_unif
+#print axioms DLNFibre.DLN.RLCT.shellCorankWeight_le_unif
+#print axioms DLNFibre.DLN.RLCT.strongBlock_unif_const_lt_top
+#print axioms DLNFibre.DLN.RLCT.deeperFlagUnifConst_lt_top
+#print axioms DLNFibre.DLN.RLCT.shell_corankOffSector_le_unif
+#print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_le
+-- Brick D-B (`RouteMSJRankRCodim`): rank-`r` codim integrability (`finrank(range L)=r → c'<r/2 →
+-- ∫_cube (∑(Lx)²)^{−c'} < ⊤`; the s1-Chle §3 correction of the injective `twoMatBox` to rank-r). Clean-three.
+#print axioms DLNFibre.DLN.RLCT.lintegral_cube_frobSq_neg_of_finrank_range
+#print axioms DLNFibre.DLN.RLCT.twoMatBox_rankR_lintegral_lt_top
+-- Brick D-C core (`RouteMSJKyFan`): the spectral dimension-counting linchpin `finrank_add_weakCount_le`
+-- (Hermitian H + Rayleigh-≥c subspace U ⟹ finrank U + #{eigenvalues<c} ≤ k) + `rayleigh_expansion`. Clean-three.
+#print axioms DLNFibre.DLN.RLCT.finrank_add_weakCount_le
+#print axioms DLNFibre.DLN.RLCT.rayleigh_expansion
+-- Brick D-A (`RouteMSJPivotBlowup`): the P-radial blow-up CoV (Aoyagi §5 step (i)) for the head-split
+-- pivot block — exact equality, ordinary unit sphere, honest Jacobian `r^{u·M₁−1}`, CoV only. Clean-three.
+#print axioms DLNFibre.DLN.RLCT.pivotBlock_radial_blowup
+#print axioms DLNFibre.DLN.RLCT.lintegral_matrix_radial_polar_factor
+-- Brick D-C corollary (`RouteMSJShellContain.shell_subset_goodSet`): `A'₀·Z_deep ∈ singularShell` + box
+-- ⟹ `weakEigCount ε' Z_deep ≤ M₂−m`, on the banked D-C core `finrank_add_weakCount_le`. Clean-three.
+#print axioms DLNFibre.DLN.RLCT.shell_subset_goodSet
+-- Brick F2a (`RouteMSJOrderedRootsMeasurable.measurableEigenvalues₀`): sorted eigenvalues of a measurable
+-- Hermitian family are measurable in the parameter (Vieta-eval + Lusin–Souslin). Clean-three.
+#print axioms DLNFibre.DLN.RLCT.measurableEigenvalues₀
+-- ★ Brick F COMPLETE. F2 assembly `measurableEigendecomp` (measurable Hermitian eigendecomposition, F2a⊕F2b)
+-- + F1 `exists_headSplitFrame_impl` (the measurable piecewise m-frame selector). Both clean-three.
+#print axioms DLNFibre.DLN.RLCT.measurableEigendecomp
+#print axioms DLNFibre.DLN.RLCT.exists_headSplitFrame_impl
+-- L=1 headline endpoint: unconditional, sorry-free (the regular Morse single-layer RLCT = aoyagiLambda).
+-- Clean-three. And the #108 pre-stage wrapper (∀L≥1 case-split) — clean-three, carrying `hDescent` as an
+-- honest HYPOTHESIS (not sorryAx); #108 is a one-exact-fill once DecoratedDescent lands.
+#print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
+#print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage

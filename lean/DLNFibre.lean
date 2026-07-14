@@ -1394,3 +1394,78 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
 -- Obl-1/Obl-2 (convergent), all corank regimes of the off-sector are now closed. (Obl-2 helper generalised
 -- nat→real, backward-compat cover-confirmed.)
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBorderline
+-- #5 off-sector shell-stratification tiles (genm-sj5-tobl3b-tile): `RouteMSJShellUniform` (T-Obl3a —
+-- `uniformWenn_le`: shell-0 Z-UNIFORM corank weight `Wenn(Z)≤ε^{−ab}·Wenn(I)` via PSD-det monotonicity) +
+-- `RouteMSJShellCharge` (T-charge — `flagCharge_ge` C_j=(a−j)(b−j)+minAdm(redChain(t+j))≥minAdm, +
+-- `flagShift_lt_carrierThreshold` the IH-fires step). The mountain (deeperFlag_shell_le, the minor-CoV/
+-- iterated-spectral shell peel) is being re-formulated (Cauchy–Binet absent at the pin → iterated spectral).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellUniform
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
+-- T-Obl3b mountain (genm-sj5): M2 `RouteMSJShellCover` is LOAD-BEARING — the single-ε singular-value
+-- shell cover (`lintegral_le_sum_finCover` measurability-free finite-cover `∫⁻` subadditivity +
+-- `singularShell`/`singularShell_iUnion` exhaustiveness); the corrected route stratifies Z into shells
+-- FIRST (cornershift-chart-cert). M1 `RouteMSJBorderedGram` (bordered-Gram Schur-complement det
+-- recursion via `det_fromBlocks₁₁` + `borderedGramSchur_nonneg`) + M3 `RouteMSJGramRowPeel` (its iterate
+-- `gramDet_eq_prod : det(gram v)=∏ᵢ gramSchurSeq v i`) are CORRECT, reusable determinant identities but
+-- DIAGNOSTIC only: the pen-and-paper pin (tobl3b-cornershift-chart-cert) REFUTED bordered-Gram as the
+-- corner-shrink primitive (the minor/row-peel Jacobian is a divergent non-sequitur). The corrected
+-- corner-shrink is a deeper-cut (t★+j) re-peel + banked PSD-monotonicity (`det_le_det_of_posSemidef_sub`,
+-- generalising `uniformWenn_le`), not these. Kept as reusable primitives (M1 may aid OWED-2 for b−j≥2).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBorderedGram
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCover
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramRowPeel
+-- T-Obl3b corrected route (deeper-cut re-peel + PSD-monotonicity, cornershift-chart-cert): OWED-1
+-- `uniformWenn_proj_le` (`uniformWenn_le` with `1→U_sU_sᵀ`, the PSD-mono weak-direction elimination
+-- `M₂→m`) + the (iii) helpers `detGram_eq_prod_rows`/`offSector_cover_le`, in `RouteMSJDeeperFlagShell`;
+-- OWED-2 crux `exists_ortho_ext` (orthogonal extension of `U_s` to a square `U`, first m cols `=U_s`;
+-- EuclideanSpace ON-basis → coordinate matrix) in `RouteMSJOrthoExtend`. The OWED-2 reduction +
+-- OWED-3 `deeperFlag_shell_le` (decorated assembly) build on these.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagShell
+-- OWED-2 reduction + the analytic heart of OWED-3 (`RouteMSJStrongBlock`, corrected deeper-cut route):
+-- `strongBlock_lintegral_lt_top` (the reduced-weight finiteness at shrunk dims, via `exists_ortho_ext` +
+-- column-Fubini `colSplitEquiv` → `detGram_lintegral_box_lt_top`; NO bordered-Gram) → `deeperCut_shell_
+-- corankWeight_lt_top` (OWED-1 ∘ OWED-2 on the shell) → `shell_corankOffSector_le` (the w-uniform per-shell
+-- interior bound). The full `deeperFlag_shell_le` (decorated integrand + Z↦U_s selector) is pin-pending.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJStrongBlock
+-- T-Obl3b OWED-3 mountain headline (`RouteMSJDeeperFlagCore`, corrected deeper-cut route): L1
+-- `deeperFlag_shell_core_le` (off-sector-core integrand ≤ `C·(cornerComparator …).integral`, the
+-- analytic heart; S4 closed via `w:=decLoss`) + the S3 `U_s`-uniform bricks
+-- (`strongBlock_lintegral_le_unif` &c.), all clean-three; the headline `deeperFlag_shell_le` (literal
+-- spine triple → comparator, binding-cut `1≤t` + nondegenerate `hnd`) reduces to the ONE isolated
+-- (□)-rung `deeperFlag_spineToCore` (S1 = the head-split spine→core CoV, next target). Reviewer-audited
+-- (a5fd475, decorrelated Codex): L1 faithful/non-gerrymandered, S1 genuinely-true + non-vacuous.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeeperFlagCore
+-- Brick D-B (`RouteMSJRankRCodim`, network-free): rank-`r` codim integrability
+-- `finrank(range L)=r → c'<r/2 → ∫_cube (∑(Lx)²)^{−c'} < ⊤` (extends the injective `twoMatBox` to rank-r;
+-- the s1-Chle §3 correction) — discharges the Brick-D C_hle finiteness once the assembly supplies `r=u·ρ`.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRankRCodim
+-- Brick D-C core (`RouteMSJKyFan`, spectral-counting): `finrank_add_weakCount_le` — for Hermitian `H`
+-- + a subspace `U` with Rayleigh `⟪u,Hu⟫≥c‖u‖²`, `finrank U + #{eigenvalues<c} ≤ k` (dimension-counting
+-- via `finrank_sup_add_finrank_inf_eq`, in `weakEigCount` form). The reusable core of the shell⊆G
+-- containment (replaces the absent min-max Ky-Fan); the containment corollary consumes it.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJKyFan
+-- `#108` mint pre-stage (`RouteMSJMint`): `aoyagi_learning_coefficient_gen_of_descent` — verifies the
+-- final wiring `DecoratedDescent → (□) → unconditional aoyagi_learning_coefficient_gen` typechecks
+-- end-to-end, so minting is one application once the descent is proven.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMint
+-- Brick D-C corollary (`RouteMSJShellContain`): the shell⊆good-set containment
+-- `shell_subset_goodSet` — `A'₀·Z_deep ∈ singularShell ε r j` + box ⟹ `weakEigCount ε' Z_deep ≤ M₂−m`
+-- (ε'=ε/√(M₁M₂), m=min(M₁,n)−j), on the banked D-C core `finrank_add_weakCount_le`. Consumed by D-assembly.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJShellContain
+-- Brick D-A (`RouteMSJPivotBlowup`): the P-radial blow-up CoV (Aoyagi §5 step (i)) for the head-split
+-- pivot block — exact equality, ordinary unit sphere, honest Jacobian `r^{u·M₁−1}`, CoV only (D-B has finiteness).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotBlowup
+-- Brick F2a (`RouteMSJOrderedRootsMeasurable`): `measurableEigenvalues₀` — the sorted eigenvalues of a
+-- measurable Hermitian family are measurable in the parameter (Vieta-eval + Lusin–Souslin, contour-free).
+-- Conjunct (i) of the measurable-eigendecomposition primitive + the good-set (hGmeas) measurability source.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
+-- ★ Brick F COMPLETE — the measurable head-split frame. F2b `exists_measurableEigenframe` (Lagrange
+-- projector + measurable pivot) + the F2 assembly `measurableEigendecomp` (F2a ⊕ F2b) + F1
+-- `exists_headSplitFrame_impl` (the piecewise m-frame selector). All clean-three; consumed by deeperFlag_spineToCore.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
+import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
+-- L=1 Aoyagi headline endpoint (unconditional, regular Morse) + the #108 ∀L≥1 case-split pre-stage
+-- (`aoyagi_learning_coefficient_prestage`, carrying the single `hDescent : DecoratedDescent` hypothesis).
+import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint

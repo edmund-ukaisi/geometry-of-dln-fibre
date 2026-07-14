@@ -1,0 +1,119 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+npm warn exec The following package was not found and will be installed: @openai/codex@0.144.2
+OpenAI Codex v0.144.2
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-sj5-domination/codex
+model: gpt-5-codex
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f5a0e-2b03-7ad3-b9e3-0a9ab5b539f1
+--------
+user
+<task>
+Adjudicate a linear-algebra / measure-theory question that decides whether a change-of-variables
+in a Laplace-integral resolution is TRUE and PROVABLE. Answer decisively; separate FACT from INFERENCE.
+</task>
+
+<setup>
+Real matrices. A deep-linear product is factored as a head-split:
+
+  Z_full = A0 · Z_deep
+
+where
+  A0     : M1 x M2   (the leading layer; a free integration variable over the box [-1,1]^{M1 x M2})
+  Z_deep : M2 x N    (the product of the remaining deep layers; depends on "deep params")
+  Z_full : M1 x N.
+
+A row-embedding kappa : Fin u ↪ Fin M1 splits the M1 rows of A0 into u "pivot" rows (call them z0,
+a u x M2 block) and b = M1 - u "corank" rows (call them A_cor, a b x M2 block). Correspondingly the
+rows of Z_full split into pivot rows  Qp = z0 · Z_deep  (u x N)  and corank rows  Qb = A_cor · Z_deep
+(b x N).
+
+There is a "singular shell" restriction on the FULL product:
+  Z_full ∈ S_j   :⟺   exactly j of the singular values of Z_full are < ε   (for a fixed j < r, ε>0).
+Equivalently: Z_full has at least (min(M1,N) - j) singular values ≥ ε.
+
+A downstream lemma ("corank weight bound") needs, on the deep factor Z_deep, BOTH of:
+  (R) rank(Z_deep) ≥ m   for some m with b ≤ m ≤ M2, and
+  (P) a Loewner PSD floor:  Z_deep Z_deepᵀ ⪰ δ² · U_s U_sᵀ,  where U_s : M2 x m has U_sᵀ U_s = I_m
+      (an isometry onto an m-dim "strong" subspace), δ > 0.
+The lemma's constant is uniform in A_cor, U_s, and the pivot data; A_cor ranges over the FULL box
+(the shell restriction is NOT imposed on A_cor separately — only Z_full ∈ S_j is imposed).
+
+Numbers you may use: entries of A0 lie in [-1,1], so σ_1(A0) ≤ ‖A0‖_F ≤ √(M1·M2).
+</setup>
+
+<questions>
+Q1 [exact]. Is it TRUE that the top singular value factorization gives, for every index i,
+   σ_i(Z_full) = σ_i(A0 · Z_deep) ≤ σ_1(A0) · σ_i(Z_deep)?
+   State the exact inequality/theorem name and whether it holds for rectangular matrices.
+
+Q2 [exact]. Consequence: on the shell Z_full ∈ S_j (so σ_{min(M1,N)-j}(Z_full) ≥ ε), does it follow that
+   σ_{min(M1,N)-j}(Z_deep) ≥ ε / σ_1(A0) ≥ ε / √(M1·M2)?  Hence rank(Z_deep) ≥ min(M1,N) - j and a PSD
+   floor (P) with δ = ε/√(M1·M2), m = min(M1,N) - j, U_s = top-m left singular vectors of Z_deep?
+   Is this valid, and does it hold POINTWISE for each fixed (A0, Z_deep) with Z_full ∈ S_j?
+
+Q3 [the crux, exact + inference]. The floor (R),(P) is a condition on Z_deep, which depends ONLY on the
+   deep params — NOT on A_cor or z0. But the shell Z_full ∈ S_j couples A0 (= [z0; A_cor]) with Z_deep.
+   Define G := { deep params : σ_m(Z_deep) ≥ δ } with δ = ε/√(M1 M2), m = min(M1,N)-j.
+   CLAIM: the set { A' : Z_full ∈ S_j } (A' = (z0, A_cor, deep params)) is CONTAINED in { A' : deep params ∈ G }.
+   i.e. Z_full ∈ S_j  ⟹  σ_m(Z_deep) ≥ δ. Is this containment TRUE? Give the proof or a counterexample.
+   (Intuition to check: if σ_m(Z_deep) < δ then σ_m(Z_full) ≤ σ_1(A0)·σ_m(Z_deep) < √(M1M2)·δ = ε, so
+    Z_full would have > (min - m) = j small singular values, i.e. NOT in S_j.)
+
+Q4 [inference]. Given the containment in Q3, is the following domination valid for a nonneg integrand F ≥ 0?
+   ∫_{A' : Z_full ∈ S_j} F(A')  ≤  ∫_{A' : deep params ∈ G} F(A')
+   and can the RHS be written (after a measure-preserving row-split A' ↔ (z, A_cor), z = (z0, deep params))
+   as  ∫_{z : deep(z) ∈ G} ∫_{A_cor} F  ?   Any measurability obstruction to defining G / restricting to it?
+
+Q5 [inference]. To feed a downstream lemma that requires the floor to hold for ALL z (unconditionally),
+   is it sound to define a PIECEWISE deep factor Zf(z) := Z_deep(z) on G, and Zf(z) := V (a fixed matrix
+   with rank ≥ m and V Vᵀ ⪰ δ² U_s0 U_s0ᵀ) off G, so that (R),(P) hold for ALL z, while the domination
+   ∫_{shell} F ≤ ∫_z (integrand built from Zf) still holds because the shell mass sits inside G where
+   Zf = Z_deep? What is the one measurability lemma actually needed (measurable selection of U_s(z) =
+   strong subspace / spectral projection of Z_deep(z))? Does Mathlib-style Borel functional calculus /
+   measurable eigenprojection make U_s(z) measurable on G (where there is a spectral gap at δ²)?
+
+Q6. Overall verdict: is the corrected statement (floor on Z_deep = Zf, with rescaled δ = ε/√(M1M2),
+   realized via the shell⊆G containment + piecewise Zf) TRUE and PROVABLE (labour), or is there a genuine
+   obstruction (reroute)? Name the single most likely failure point.
+</questions>
+
+<output_contract>
+For each Q: verdict (TRUE/FALSE/valid/invalid), one-line justification, and FACT-vs-INFERENCE tag.
+End with Q6 overall verdict (labour vs reroute) and the single most-likely failure point.
+Do NOT assume my conclusion; I have deliberately withheld it.
+</output_contract>
+
+<grounding_rules>
+- Singular value / Loewner / rank facts must be exact theorems (name them).
+- If the Q3 containment is false, give an explicit small counterexample (M1,M2,N,j and matrices).
+- Keep measure-theory claims at the level of "standard Tonelli / domain monotonicity / Borel selection";
+  flag anything needing a non-standard disintegration.
+</grounding_rules>
+
+warning: Model metadata for `gpt-5-codex` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+**Q1**  
+Verdict: TRUE — Follows from the Ky Fan (a.k.a. Weyl’s) singular-value inequality, valid for rectangular matrices: σᵢ(A₀Z_deep) ≤ σ₁(A₀)σᵢ(Z_deep). — FACT
+
+**Q2**  
+Verdict: VALID WITH RANGE CONDITION — If m = min(M₁,N)−j ≤ min(M₂,N), then σ_m(Z_deep) ≥ ε/σ₁(A₀) ≥ ε/√(M₁M₂), so rank ≥ m and Z_deepZ_deepᵀ ⪰ (ε²/(M₁M₂))·U_sU_sᵀ pointwise; if m exceeds min(M₂,N), the shell S_j is empty, so the stated conclusion is vacuous. — FACT
+
+**Q3**  
+Verdict: TRUE — Using Q1 with the chosen δ gives σ_m(Z_deep) ≥ ε/σ₁(A₀) ≥ δ for every (A₀,Z_deep) with Z_full ∈ S_j, so {A' : Z_full ∈ S_j} ⊆ {A' : deep params ∈ G}; no counterexample exists once m ≤ min(M₂,N), while m larger makes S_j empty. — FACT
+
+**Q4**  
+Verdict: VALID — For F ≥ 0, indicator domination 1_{S_j} ≤ 1_G yields ∫_{S_j} F ≤ ∫_G F by monotonicity/Tonelli, and the row-split (z₀, deep params, A_cor) is a coordinate projection, hence measure-preserving and measurable, so the iterated integral over A_cor is well-defined. — FACT
+
+**Q5**  
+Verdict: VALID — Defining Z_f(z)=Z_deep(z) on G and a fixed full-rank V off G preserves the integral bound while enforcing (R),(P) everywhere; the needed measurability is the standard Borel functional-calculus fact that B ↦ 1_{[δ²,∞)}(B) is Borel for symmetric B=Z_deepZ_deepᵀ, so the strong-subspace projection U_s(z) is measurable on G. — FACT
+
+**Q6 Overall**  
+Verdict: LABOUR — The scheme is sound and provable; the most likely failure point is neglecting the range condition m ≤ min(M₂,N), under which the shell constraint would be void.
+tokens used
+20,173
