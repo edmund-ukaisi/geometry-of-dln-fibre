@@ -342,26 +342,61 @@ noncomputable def pivotDomLHS_full (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (
             Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
           ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M u Zf z A_cor)) ^ (-c'))
 
-/-- **The full-matBox tight finiteness (the ISOLATED analytic wall, SD-7).** Below the comparator
+/-- **The pure-block Gram-form finiteness (the ISOLATED analytic wall, SD-7).** The full-matBox spine LHS,
+after the chart→block reduction (`Hfull_eq_Hblock`) and dropping the invertible-pivot chart condition
+`IsUnit (toBlocks₁₁ B)` (an enlargement `≤`), is dominated by this pure squared-Frobenius power integrated
+over the FULL front-block box `genBox (Fin u ⊕ Fin (M₀−u)) (Fin u ⊕ Fin (M₁−u)) 1` — NO `pivotShell`, NO
+`IsUnit`. This is EXACTLY the `genm-sj5-pradial` Claim-F object `I(c') = ∫_z ∫_{A_cor} ∫_B ‖B·hsQ‖²_F^{−c'}`,
+which the three decorrelated designs (pradial Claim F + Monte-Carlo; couplingfin; finfin-reviewer)
+adjudicate FINITE precisely for `c' < λ_cmp := (minAdm + ab)/2` (⇔ `2c' < minAdm + ab`, `ab = (M₀−u)(M₁−u)`).
+
+THE ROUTE (genuine NEW machinery, a from-scratch analytic module for a dedicated tide — the `genm-sj5-shearfin`
+brief). `‖B·hsQ‖²_F = tr(B·G·Bᵀ)`, `G = hsQ·hsQᵀ` the `(u+b)×(u+b)` Gram. The unit-Jacobian column-shear
+normal form diagonalises `G` (`Q_p R = [I|0]`, `Q_b R = (…,s)`), giving `L ≍ κ²|x|² + s²|y|²` (`x` strong
+`∈ ℝ^{m0}`, `m0` the strong dim; `y` weak; `s = σ_min(hsQ)` transverse). The inner `B`-integral scales
+`g^{−max(c'−m0/2,0)}` (`g = s²`) — the banked two-block radial estimate `RouteMSJTwoBlockRadial.twoBlock_radial_le`
+(`∫ (κ²‖u‖²+σ²‖v‖²)^{−c'} ≤ σ^{−α'}·C`, `C` σ-independent); the outer `A_cor`-integral of the transverse
+charge `s^{−2(c'−m0/2)}` is finite via the DEEP-factor floor `hfloor` — the banked det-Gram box integrability
+`RouteMSJDeeperFlagCore.shellCorankWeight_le_unif` / `RouteMSJOffSectorBPos.detGram_lintegral_box_lt_top`
+(`a < m−b+1` from `hcvg`), and the corank peel `RouteMSJCorankPeel.corankBlock_morsePeel_setLE` supplies the
+`ab/2` charge + det-Gram divisor; the pivot radial charge `= minAdm` via `RouteMSJPivotBlowup.pivotBlock_radial_blowup`.
+The remaining unbanked GLUE (the wall): (i) the spectral CoV tying `tr(B·G·Bᵀ)` to the two-block form via the
+Gram spectrum; (ii) the pivot-radial finiteness (Brick D-B); (iii) the coupled `A_cor`-residual.
+
+ANTI-REGRESSION (bedrock): finiteness MUST come from the DEEP-factor floor `hfloor` on `Z_deep`, over the
+FULL matBox ∀j; it must NEVER route through `σ_min(hsQ) ≥ ε` (false for `j ≥ 1` — the shell-0 route
+`RouteMSJPivotFin.pivotDomLHS_lt_top_of_pos` does NOT transfer) nor silently drop the `ab/2` charge. -/
+theorem frobSqBlockFull_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
+    (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
+    (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
+    (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
+    {ε' : ℝ} (hε' : 0 < ε')
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (U_sf : Params (redChain u M) → Matrix (Fin (dropHead (redChain u M) 0)) (Fin m) ℝ)
+    (hUs : ∀ z, (U_sf z)ᵀ * U_sf z = 1)
+    (hrank : ∀ z, m ≤ (Zf z).rank)
+    (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
+    (hcrit : 2 * c' < ((minAdm (redChain u M) + (M 0 - u) * (M 1 - u) : ℕ) : ℝ)) :
+    (∫⁻ z in paramsBoxM (redChain u M) 1,
+        ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
+          ∫⁻ B in genBox (Fin u ⊕ Fin (M 0 - u)) (Fin u ⊕ Fin (M 1 - u)) 1,
+            ENNReal.ofReal (frobSq (Matrix.of B * hsQ M u Zf z A_cor) ^ (-c'))) < ⊤ := by
+  sorry
+
+/-- **The full-matBox tight finiteness (SD-7), reduced to the pure Gram-form wall.** Below the comparator
 threshold `2c' < minAdm(redChain u M) + (M₀−u)(M₁−u)` (⇔ `c' < λ_cmp := (minAdm + ab)/2`, the comparator
 threshold — NOT the Lean `carrierThreshold M := minAdm M / 2`; they differ by `ab/2`), and given the
 deep-factor floor `hfloor` (`Zf·Zfᵀ ⪰ ε'²·U_sf·U_sfᵀ`, `U_sf` orthonormal `m`-frame, `m ≥ a+b`), the
 full-matBox spine LHS is finite.
 
-RECONCILED SOUND (`genm-sj5-pradial`, decorrelated Codex xhigh + Monte-Carlo): the full-matBox route is
-marginal, `λ_full = λ_cmp = (minAdm+ab)/2` EXACTLY (the rank-drop codim-1 locus lowers the shell
-threshold `(u+a)(u+b)/2` to `λ_cmp`, matching the comparator). ROUTE (couplingfin-adjudicated
-bounded, NOT shell-0): local normal form `L ≍ |x|² + s²|y|²` via the unit-Jacobian column-shear `Q_p R =
-[I|0]`, `Q_b R = (…,s)` (`s = σ_min(hsQ)`, the transverse `A`-coordinate) — the inner `T`-integral scales
-`g^{−(c'−ab/2)}` (`g = σ_min²`), the outer transverse integral `∫ |s|^{−2(c'−ab/2)}` converges iff `c' <
-λ_cmp`; the `ab/2` charge + det-Gram divisor from the banked coupled corank peel
-`shell_corankPivot_coupled_le` (integrable via `hfloor`: `uniformWenn_proj_le` + `strongBlock_lintegral_lt_top`,
-`a < m−b+1` from `hcvg`); the transverse `s`-charge `= ½` matching. The column-shear normal-form
-change-of-variables is genuine NEW machinery (not banked) — a from-scratch analytic module for a next tide.
-
-ANTI-REGRESSION (bedrock): the bound MUST come from the DEEP-factor floor `hfloor` on `Z_deep`, over the
-FULL matBox ∀j; it must NEVER route through `σ_min(hsQ) ≥ ε` (false for `j ≥ 1` — the shell-0 route
-`RouteMSJPivotFin.pivotDomLHS_lt_top_of_pos` does NOT transfer) nor silently drop the `ab/2` charge. -/
+**Reduction (sorry-free, faithful):** unfold `pivotDomLHS_full`; per `(z, A_cor)` rewrite the freed-`Γ`
+inner integral to the block-front integral over `genBox ∩ {IsUnit toBlocks₁₁}` (`Hfull_eq_Hblock`, an
+EQUALITY); enlarge to the full `genBox` (drop `IsUnit`, `lintegral_mono_set` — the enlargement is a `≤`,
+and by Claim F the enlarged integral is still finite). The genuine analytic content is isolated in
+`frobSqBlockFull_lt_top` (the pure Gram-form wall). The `ε`/`hε` hypotheses are vestigial (the full-box
+route uses the deep floor `ε'`, never the shell `ε`); kept for signature stability with the wired stub. -/
 theorem pivotDomLHS_full_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
     {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
@@ -376,7 +411,12 @@ theorem pivotDomLHS_full_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu 
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
     (hcrit : 2 * c' < ((minAdm (redChain u M) + (M 0 - u) * (M 1 - u) : ℕ) : ℝ)) :
     pivotDomLHS_full M u c' Zf < ⊤ := by
-  sorry
+  refine lt_of_le_of_lt ?_
+    (frobSqBlockFull_lt_top M u hu c' hc0 hnd hpiv hcvg hmM hε' Zf U_sf hUs hrank hfloor hcrit)
+  rw [pivotDomLHS_full]
+  refine lintegral_mono (fun z => lintegral_mono (fun A_cor => ?_))
+  rw [Hfull_eq_Hblock M u Zf c' z A_cor]
+  exact lintegral_mono_set Set.inter_subset_left
 
 /-- **Brick A — the FULL-matBox head-split domination (GLUE-2).** On the `(z, A_cor)`-box with `A_cor`
 over the FULL `matBox`, the freed Schur-loss spine integrand is dominated by a FINITE constant times the
