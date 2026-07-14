@@ -48,10 +48,24 @@ needed — but the finite stratification + per-chart CoV + Jacobian bookkeeping 
 several modules. F (the exponent min ∀M) needs a general nat proof that `inc_sweep.py` only verified for a
 finite range.
 
-## LANDED this tide (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`)
-- `RouteMSJIncidenceChart.lean`: `chartGram_congr` (the minor-chart Gram congruence `(D·[I|X])(D·[I|X])ᵀ =
-  D·(I+XXᵀ)·Dᵀ`) and **`det_chartGram`** (the cert §0 load-bearing identity `det(Q_bQ_bᵀ) = (det D)²·det(I+XXᵀ)`).
-  This is Codex's decomposition lemma #2 (det part) — the algebraic core the resolution is built around.
+## LANDED (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`) — `RouteMSJIncidenceChart.lean`
+The algebraic building blocks of incidencepp's atlas charts (1)-(3) + the transverse-Schur monomialization:
+- `fromCols_mul_transpose` — `(fromCols U V)(fromCols U V)ᵀ = U Uᵀ + V Vᵀ` (reusable block Gram).
+- `chartGram_congr` — `(D·[I|X])(D·[I|X])ᵀ = D·(I+XXᵀ)·Dᵀ` (chart (1) congruence).
+- **`det_chartGram`** — cert §0 / chart (1): `det(Q_bQ_bᵀ) = (det D)²·det(I+XXᵀ)` (the `|det D|²` monomial).
+- **`pushThrough`** — Woodbury / chart (3): `(I+XᵀX)⁻¹ = I − Xᵀ(I+XXᵀ)⁻¹X` (transverse-Schur inverse-Gram).
+- `chartNull_Qb` — chart (2): `Q_b·N = 0` for `N = [−X; I_d]` (`col N = ker Q_b = (row Q_b)^⊥`).
+- **`chartNull_Qp`** — chart (2): `Q_p·N = W` (the transverse energy is carried entirely by `W`).
+- `chartNull_gram` — chart (3): `NᵀN = I + XᵀX` (the `d×d` inverse Gram monomializing the transverse Schur).
+These give `Q_p(I−Π_b)Q_pᵀ = W(NᵀN)⁻¹Wᵀ = W(I+XᵀX)⁻¹Wᵀ` once `I−Π_b = N(NᵀN)⁻¹Nᵀ` is wired (next).
+
+## incidencepp §3b UPGRADE — the explicit atlas landed (unblocks `incidenceCell_lintegral_le`)
+5-chart sequence, all monomial-Jacobian (each a single `lintegral_image_eq_lintegral_abs_det_fderiv_mul`):
+(1) Qb-minor `A_cor↦(D,X)`, `|det D|^d` [det part LANDED]; (2) Qp-shear `Qp↦(U,W)`, Jac 1, `W=Qp·N` [LANDED];
+(3) front B-shear `B↦H`, `|det D|^{−u}`, + `H̃`-completion (Woodbury) [push-through LANDED]; (4) `H̃`-fibre polar
+`∫(‖H̃‖²+τ²)⁻q ≍ τ^{ub−2q}`; (5) determinantal BIG-CELL of `W` (the blow-up `E:=W₂₂−W₂₁W₁₁⁻¹W₁₂`, Jac 1,
+`{E=0}={rank W≤ℓ}`) + rank-`s` `Y`-block, radial `∫₀^δ r^{C_{ℓ,s}−1−2q}dr`; + null-overlap gluing.
+Charts (4)-(5) + gluing = the remaining heavy measure-theory (next tides).
 
 ## Codex Lean-route verdict (`codex/leanroute-{prompt,answer}`, decorrelated xhigh)
 FEASIBILITY: **bounded labour IFF the pen proof supplies explicit pivot/blow-up COORDINATES — not merely
