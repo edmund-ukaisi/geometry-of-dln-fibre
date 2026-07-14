@@ -35,6 +35,47 @@ for the finiteness** (off-shell is already finite to T1, binding at `s = t★`);
 
 ---
 
+## 0. brickdbuild's crux answered: the codim → Jacobian → q bookkeeping LANDS EXACTLY (YES, no obstruction)
+
+**Q: does the incidence-locus codimension produce the radial Jacobian that makes `∫₀^δ r^{(codim−1)−2q}dr`
+finite EXACTLY for `q < ½·codim`, reproducing the corner's "3" and generalizing? Do det-Gram and
+transverse-Schur simultaneously monomialize?** **A: YES on both, cleanly.**
+
+**(i) Corner incidence-locus codim = 3, and it lands q exactly.** Dropping the bounded det-Gram (`≍1` at the
+corner), the loss is `L = ξ² + |t|²·|ρ|²`, `ξ=p+β` (1-dim), `ρ=(β,γ)` (2-dim front-soft), `t=(t₂,t₃)` (2-dim
+A_cor incidence). `{L=0} = {ξ=0,t=0} ∪ {ξ=0,ρ=0}`, **two smooth components each of codimension 3** (on
+`{ξ=0,t=0}` with `ρ` generic, `L ≍ ξ²+|ρ|²·|t|² = ξ²+c·|t|²`, a genuine sum of 3 squares; symmetrically on
+`{ξ=0,ρ=0}`). Each component: polar measure `r^{codim−1}dr = r²dr`, integrand `r^{−2q}`, so
+
+    ∫₀^δ r^{(codim−1)−2q} dr = ∫₀^δ r^{2−2q} dr   finite ⟺ 2−2q > −1 ⟺ q < codim/2 = 3/2 = T1_q.
+
+In `c'` (`q=c'−ab/2=c'−½`, `2c'=2q+1`): `2−2q = 3−2c'`, so `∫₀^δ r^{3−2c'}dr`, finite ⟺
+`c' < (codim+ab)/2 = (3+1)/2 = 2 = T1`. **This is the corner's exponent "3" = `(codim−1)+ab` reproduced, and
+`½·codim = T1_q` exactly.** The LHS-alone has a **double pole** `∼1/(3/2−q)²` (both components; iterated polar
+`∫s^{2−2q}ds·∫w^{2−2q}dw`); the ratio to the comparator (itself single-pole RLCT `uM₂/2`) is a **single pole**
+`K ∼ 1/(T1−c')` — matching `inc_integrated.py` (`K·(T1_q−q)≈100` const). Per-exponent, `K→∞` at `T1⁻`. ✓
+
+**(ii) The corner codim = `C_{0,0}` from the general formula.** `C_{0,0}(2,2,3,u=1) = u·b + M₀·u = 1+2 = 3`.
+So the general joint codimension `C_{ℓ,s}` (§3), which packages det-Gram + transverse-Schur + pivot together,
+gives the corner codim, and `min_{ℓ,s} C_{ℓ,s}/2 = T1_q` **exhaustively (332/332 in-scope cuts, §3/§5)** —
+the bookkeeping lands q at exactly `T1` in general, not just the corner.
+
+**(iii) det-Gram and transverse-Schur DO simultaneously monomialize — the proposed obstruction does NOT
+materialize.** On the minor chart `Qb=D[I|X]` (Codex Q2), the EXACT identity (verified `inc_codim_land.py`)
+
+    det(Qb Qbᵀ) = det(D)² · det(I + X Xᵀ)
+
+**factors the corank-Gram singularity entirely into `|det D|`** (the `rank Qb` drop), with the incidence factor
+`det(I+XXᵀ) ≥ 1` a **UNIT** (never zero). Meanwhile the transverse Schur `‖Qp(I−Πb)‖² ≍ ‖W‖²` lives in the
+`X`/`W` coordinates. `det D` and `X` are **independent chart coordinates**, so `det(Qb Qbᵀ)^{−a/2}` and
+`‖Qp(I−Πb)‖²` are a **product of monomials** in disjoint variables — they monomialize simultaneously. The joint
+determinant power is `|det D|^{n−b−a−u}` (§3); the corank sub-strata (`rank Qb<b`) monomialize further via the
+Schur block `∏τ_i^{n−b−a+2(i−1)}dτ_i` (Codex Q2), still jointly. **No blow-up conflict.** (The det-Gram
+integrability then needs `n−b−a > −1 ⟺ a+b ≤ M₂` — the §Verdict-2 scope.)
+
+**Verdict on the crux: it lands q cleanly, per-exponent K → PROVEN → bounded Lean labour** (the "codim/Jacobian
+don't monomialize" obstruction is refuted by the `det(D)²·det(I+XXᵀ)` split).
+
 ## 1. The object (L=0 leaf), precisely
 
 `Qp = prod(redChain u M) z` (`u×M₂`, fn of `z`); `Qb = A_cor` (`b×M₂`); `hsQ = (Qp ; Qb)` (`(u+b)×M₂`);
