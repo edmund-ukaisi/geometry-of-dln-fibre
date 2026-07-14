@@ -124,7 +124,7 @@ Type is chosen at spawn and selects the sub-machine. Any type can reach `ABANDON
 (record the reason).
 
 - **explore** — `OPENED → LONGLIST (what to compute/derive) → TRIAGE → COMPUTE/DERIVE → CHECK → NOTICE/INTERPRET → STEP_BACK (loop or close)`. Forms and sharpens **claims** with explicit kill-conditions (see [`claims.md`](claims.md)) and stress-tests them. `CHECK` confirms computations are sane.
-- **formalisation (tide)** — `OPENED → SPECIFY → PROVE → AUDIT`. Runs the `lean-formalisation` skill. **AUDIT** is a no-skip gate: `scripts/sorries` clean **and** a reviewer confirms the Lean statement matches the claim (fidelity).
+- **formalisation (tide)** — `OPENED → SPECIFY → PROVE → AUDIT`. Runs the `lean-formalisation` skill. **AUDIT** is a no-skip gate: `scripts/sorries` clean **and** a reviewer confirms the Lean statement matches the claim (fidelity) **and** checks hypothesis-fit against the artifact's intended consumers as named in the tracker (a lemma can be sound, faithful, non-vacuous — and still not enough for what the plan says it discharges; sufficiency-for-consumers is part of the audit, not assumed).
 - **infra** — `OPENED → SPECIFY (interface/spec) → BUILD → TEST`. For harness / computation tooling; run by the formaliser role or a purpose-spawned teammate (no dedicated infra agent yet). **TEST** is a no-skip gate: the spec's tests pass and the read states what each test demonstrates.
 
 `REQUEST_SPAWN` (ask the controller for a reviewer/helper) fires from `CHECK` / `AUDIT` / `TEST`, where fresh eyes are most valuable. Its fields: requester, requested role/function, target artifact, question, blocking/non-blocking, expected output.

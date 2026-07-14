@@ -16,7 +16,7 @@ created. First commissioning creates it; the role then keeps it fresh.
 
 ## The index (`expeditions/<exped>/index/`) — two layers, different conflict physics
 - **Computed layer** (regenerated, cannot rot): declaration/statement dump, dependency edges, fan-in
-  tables, cone/liveness membership, sorry/axiom inventory — produced by extractor tooling (built once
+  tables, cone/liveness membership, sorry/axiom inventory, and **discharge-status bits** (for every prose discharge-claim in the tracker/ledger: does the consumer's proof term reference the provider, and is the consumer still sorried? — claims the dependency graph does not corroborate get flagged) — produced by extractor tooling (built once
   via an `infra` thread; the aoyagi-full retro substrate is the reference implementation). Any merge
   conflict is resolved by regeneration; carry a freshness stamp (anchor sha).
 - **Curated overlay** (single-writer, append-mostly): banked-family cards ("the `RouteMSJ*` corner

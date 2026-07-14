@@ -20,7 +20,14 @@ load-bearing mathematical question).
    variance placement (is the highest-variance item as early as it can be?). Rendezvous/pre-staging
    inventory: reviews, integration reconciliation, close/mint mechanics — what serializes at the end
    if not started now.
-3. **Big-picture adjustment detection** — two named checks, run every pass:
+3. **Composition witness** (scope-inflation guard, from the aoyagi-full T2 lesson): every tracker/
+   ledger claim of the form "X discharges / covers / supplies Y" must point at a compiling Lean
+   term (sorried leaves fine) or be stamped **UNWITNESSED** in the disposition table; and the
+   assembly skeleton for any multi-brick target must exist and compile from statement-lock, not
+   at rendezvous — in a formalization the type-checker simulates the future state better than any
+   reader, and a scope-inflated claim ("shell-0 lemma discharges the j=r branch") dies as a type
+   error instead of surviving as prose.
+4. **Big-picture adjustment detection** — two named checks, run every pass:
    - **Hard-part-avoidance**: is the highest value-of-information item in `priorities.md` actually
      holding a lane? Is any lane building a route *around* a named crux?
    - **Math-drift**: restate, in one sentence from `brief.md`, the load-bearing mathematical
