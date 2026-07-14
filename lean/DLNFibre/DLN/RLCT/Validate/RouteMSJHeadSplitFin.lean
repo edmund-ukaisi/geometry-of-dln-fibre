@@ -350,18 +350,43 @@ over the FULL front-block box `genBox (Fin u ⊕ Fin (M₀−u)) (Fin u ⊕ Fin 
 which the three decorrelated designs (pradial Claim F + Monte-Carlo; couplingfin; finfin-reviewer)
 adjudicate FINITE precisely for `c' < λ_cmp := (minAdm + ab)/2` (⇔ `2c' < minAdm + ab`, `ab = (M₀−u)(M₁−u)`).
 
-THE ROUTE (genuine NEW machinery, a from-scratch analytic module for a dedicated tide — the `genm-sj5-shearfin`
-brief). `‖B·hsQ‖²_F = tr(B·G·Bᵀ)`, `G = hsQ·hsQᵀ` the `(u+b)×(u+b)` Gram. The unit-Jacobian column-shear
-normal form diagonalises `G` (`Q_p R = [I|0]`, `Q_b R = (…,s)`), giving `L ≍ κ²|x|² + s²|y|²` (`x` strong
-`∈ ℝ^{m0}`, `m0` the strong dim; `y` weak; `s = σ_min(hsQ)` transverse). The inner `B`-integral scales
-`g^{−max(c'−m0/2,0)}` (`g = s²`) — the banked two-block radial estimate `RouteMSJTwoBlockRadial.twoBlock_radial_le`
-(`∫ (κ²‖u‖²+σ²‖v‖²)^{−c'} ≤ σ^{−α'}·C`, `C` σ-independent); the outer `A_cor`-integral of the transverse
-charge `s^{−2(c'−m0/2)}` is finite via the DEEP-factor floor `hfloor` — the banked det-Gram box integrability
-`RouteMSJDeeperFlagCore.shellCorankWeight_le_unif` / `RouteMSJOffSectorBPos.detGram_lintegral_box_lt_top`
-(`a < m−b+1` from `hcvg`), and the corank peel `RouteMSJCorankPeel.corankBlock_morsePeel_setLE` supplies the
-`ab/2` charge + det-Gram divisor; the pivot radial charge `= minAdm` via `RouteMSJPivotBlowup.pivotBlock_radial_blowup`.
-The remaining unbanked GLUE (the wall): (i) the spectral CoV tying `tr(B·G·Bᵀ)` to the two-block form via the
-Gram spectrum; (ii) the pivot-radial finiteness (Brick D-B); (iii) the coupled `A_cor`-residual.
+VERDICT (2026-07-14, `genm-sj5-wallfin`; decorrelated Codex xhigh + this repo's own `archfin`/#128/#130
+adjudications converge): **LABOUR, not a Mathlib WALL** — no new foundational Mathlib analytic primitive is
+needed PROVIDED the global-measurable-SVD route is avoided. `‖B·hsQ‖²_F = tr(B·G·Bᵀ)`, `G = hsQ·hsQᵀ` the
+`(u+b)×(u+b)` Gram; `hsQ = [Q_p ; Q_b]`, `Q_b = A_cor·(Zf z)`.
+
+BANKED (sorry-free, axiom-clean — the docstring's earlier "(i) spectral CoV NOT banked" was WRONG):
+* the Frobenius–Gram spectral identity `frobSq(B·hsQ) = ∑_j λ_j·‖(B·U)_{·j}‖²` (`λ,U` = eigen-data of `G`) —
+  `RouteMSJFrontSpectral.frobSq_mul_eq_sum_eigenvalues`; this IS glue (i);
+* the Frobenius-ball orthogonal CoV `∫_{frobSq<R²} g(B·U) = ∫ g(B)` — `RouteMSJFrontFirst.lintegral_frobBall_orthRightMul`;
+* the single-collapse front-first box bound `∫_{box} frobSq(B·P)^{−c'} ≤ C·σ_min(P)^{−α'}` (C σ-uniform),
+  under a one-weak-direction sector `sjSector` — `RouteMSJFrontFirst.frontFirst_g_le_of_sector` (abstract-Aux
+  core `frontBox_abstract`); the two-block radial `RouteMSJTwoBlockRadial.twoBlock_radial_le`; the σ_min↔det
+  bound `sigMin^{−α} ≤ C·det(MMᵀ)^{−α/2}` — `RouteMSJProductTube`; the coupled corank Morse peel (charge
+  `ab/2`, det-Gram divisor) — `RouteMSJPivotFin.shell_corankPivot_coupled_le` /
+  `RouteMSJCorankPeel.corankBlock_morsePeel_setLE`; det-Gram box integrability — `detGram_lintegral_box_lt_top` /
+  `corankWeight_bpos_lt_top`; the pivot polar blow-up — `RouteMSJPivotBlowup.pivotBlock_radial_blowup`.
+
+THE ONE HARDEST OPEN BRICK — `stackedGram_flagPeel_le` (a from-scratch multi-hundred-line analytic module):
+the σ-COUPLED multi-weak-eigenvalue peel of `∫_{B∈box}(∑_j λ_j(z,A_cor)‖col_j(B·U)‖²)^{−c'}`, integrated
+against `A_cor`. With `p=u+a`, `r=u+b`, on the stratum with `k` weak Gram-eigenvalues the spectral split is
+`d_u = p(r−k)`, `d_v = p·k`; **for `k=1` (e.g. `b=1`) the single-`σ_min` route closes** (via
+`frontFirst_g_le_of_sector` + a stacked-Gram det integral), **for `k>1` it does NOT** — collapsing all weak
+eigenvalues to `σ_min` loses the intermediate scales. The correct route is a finite strong-minor-chart
+stratification converting the weak spectrum to Gram–Schmidt/Schur pivots with uniform Jacobian, bounding each
+chart by the shifted pivot comparator and PRESERVING the additive `minAdm + ab` charge. The `ab/2` comes from
+peeling the free `a×b` corner (S3), `minAdm/2` from the reduced-chain/pivot induction (NOT from
+`pivotBlock_radial_blowup` alone). Charges must stay COUPLED (the uniform-`C` pull-out is UNSOUND —
+`sup_{A_cor} C = ⊤` as `A_cor→0`; `archfin` + Codex caught this).
+
+TWO TRAPS to avoid (both make this look like a WALL when it is not):
+* the **global measurable eigendecomposition** — `RouteMSJMeasurableEigendecomp` (2 sorries) is a genuine
+  Mathlib gap; integrating the weighted-radial form over `(z,A_cor)` needs `λ_j(z,A_cor)` measurable, which
+  routes through it. Use per-point strong-minor charts (algebraic ⟹ measurable) instead.
+* the direct `σ_min(hsQ) ↝ det(Q_b Q_bᵀ)` comparison is FALSE (`Q_p=(1,0)`, `Q_b=(1,s)`:
+  `det(Q_bQ_bᵀ)=1+s²` bounded, `σ_min≍|s|`); the honest factor is the Schur complement
+  `det(GGᵀ) = det(Q_bQ_bᵀ)·det(Q_p(1−Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b)Q_pᵀ)` — `detGram` sees rank-drop INSIDE `Q_b`,
+  not `Q_b` approaching `rowspan(Q_p)`. Multiple small eigenvalues need iterated Schur/a full flag.
 
 ANTI-REGRESSION (bedrock): finiteness MUST come from the DEEP-factor floor `hfloor` on `Z_deep`, over the
 FULL matBox ∀j; it must NEVER route through `σ_min(hsQ) ≥ ε` (false for `j ≥ 1` — the shell-0 route
