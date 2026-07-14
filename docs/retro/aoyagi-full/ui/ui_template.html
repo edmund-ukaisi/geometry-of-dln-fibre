@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>aoyagi-full — expedition retro</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --surface-2: #f4f4f1; --border: #e4e3de;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #8a897f;
+    --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
+    --s5: #4a3aa7; --s6: #e34948; --grid: #ececе8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1: #1a1a19; --surface-2: #232322; --border: #3a3936;
+      --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #8a897f;
+      --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
+      --s5: #9085e9; --s6: #e66767; --grid: #2c2c2a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body.viz-root { margin: 0; background: var(--surface-1); color: var(--text-primary);
+    font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1060px; margin: 0 auto; padding: 28px 20px 80px; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  h2 { font-size: 19px; margin: 44px 0 4px; }
+  .sub { color: var(--text-secondary); margin: 0 0 14px; }
+  .explain { color: var(--text-secondary); font-size: 14px; max-width: 76ch; margin: 6px 0 14px; }
+  .chip { display: inline-block; font-size: 11.5px; color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: 10px; padding: 1px 9px; margin-left: 8px;
+    vertical-align: 2px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 14px 0; }
+  .tile { background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; }
+  .tile .v { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; }
+  .tile .k { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+  .chart { width: 100%; height: 300px; margin: 2px 0 6px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 820px) { .row2 { grid-template-columns: 1fr; } }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 8px 0 4px; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-secondary); font-weight: 600; font-size: 12.5px; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  code { background: var(--surface-2); border-radius: 4px; padding: 1px 5px; font-size: 12.5px; }
+  .footer { margin-top: 48px; color: var(--text-muted); font-size: 12.5px;
+    border-top: 1px solid var(--border); padding-top: 14px; }
+</style>
+</head>
+<body class="viz-root">
+<main>
+  <h1>aoyagi-full — the expedition, in hard data</h1>
+  <p class="sub">Every view is regenerated from git + the Lean kernel + the expedition ledger.
+  Grades: <b>H</b> = fully mechanical readout; <b>H⁻</b> = mechanical after a one-time
+  codebook/pairing. Anchor commit: <code id="anchor"></code></p>
+
+  <div class="tiles" id="tiles"></div>
+
+  <h2>Expedition pulse <span class="chip">commits.json · H</span></h2>
+  <p class="explain">Commits per day, split by what they are: <b>build</b> (feat/fix/refactor —
+  Lean landing), <b>coordination</b> (ledger/docs/ticks — the controller's shared-memory writes),
+  and other (merges, wip, setup). The coordination band dominating is not overhead gone wrong —
+  it is the price of a 3-week multi-agent proof staying coherent; the knowledge-debt section
+  below measures where that price stops paying.</p>
+  <div class="chart" id="pulse"></div>
+
+  <h2>Where the lines went <span class="chip">commits.json · H</span></h2>
+  <p class="explain">Left: cumulative lines added — Lean vs expedition prose. Right: the
+  <b>docs:lean daily ratio</b>, the coordination-share curve. The lifetime average is 1.7 prose
+  lines per Lean line; the ratio <i>climbs</i> in the endgame (adjudication-heavy phases), the
+  measured signature of the burden-of-knowledge effect.</p>
+  <div class="row2">
+    <div class="chart" id="loc"></div>
+    <div class="chart" id="ratio"></div>
+  </div>
+
+  <h2>The error economy <span class="chip">events.json flags · H (keyword-grade)</span></h2>
+  <p class="explain">Ledger blocks per day carrying correction-class keywords
+  (corrected / retracted / refuted / WALL) vs blocks recording landings. Keyword-grade:
+  a block <i>discussing</i> a correction counts once — event-grade classification is the
+  planned semantic pass. The table lists the longest-lived corrected claims among pairs where
+  the correction <i>names its target</i> (median catch latency of that subsample: under an hour —
+  biased fast, since quick self-corrections cite targets and long sagas often don't).</p>
+  <div class="chart" id="errors"></div>
+  <table id="latency"></table>
+
+  <h2>Knowledge debt <span class="chip">knowledge_debt.md · H⁻</span></h2>
+  <p class="explain">"Found already banked" events: a theorem the expedition needed, already
+  proven in its own tree, unfound. <b>Debt hours</b> = how long the artifact sat banked before a
+  lane physically rediscovered it. The double mnp row is the sharpest datum in the whole retro:
+  the same theorem was independently rediscovered twice, ~11 hours apart, by different lanes —
+  the index failure repeating after it had already been exposed once. This table is the
+  empirical case for the librarian role.</p>
+  <table id="debt"></table>
+
+  <h2>Structure: what the theorem stands on <span class="chip">decls.json (kernel) · H</span></h2>
+  <p class="explain">From the compiled Lean environment: every declaration, its statement, and
+  the exact constants its proof uses. The <b>cone</b> is the transitive closure of what the
+  headline theorems actually depend on — the load-bearing fraction of the tree. Sorries-on-cone
+  is the kernel-grade integrity number: sorried declarations may exist in dead scaffolding, but
+  zero of them are under any headline. Fan-in ranks the de-facto API — what everything else
+  reaches for. <i>(Snapshot anchor may lag the moving branch; regenerated at each walker run.)</i></p>
+  <div class="tiles" id="stiles"></div>
+  <div class="chart" id="fanin" style="height: 340px"></div>
+
+  <h2>Threads by Lean output <span class="chip">threads.json · H</span></h2>
+  <p class="explain">Thread slugs from commit subjects, ranked by Lean lines added under the
+  slug. Micro-tides are finer-grained than campaign threads by design; spans show first→last
+  commit under the slug.</p>
+  <div class="chart" id="threads" style="height: 340px"></div>
+
+  <div class="footer" id="footer"></div>
+</main>
+
+<script>/*__RETRO_DATA__*/</script>
+<script>
+const R = window.RETRO;
+const css = k => getComputedStyle(document.body).getPropertyValue(k).trim();
+const charts = [];
+function C(id, opt) {
+  const el = document.getElementById(id);
+  const ch = echarts.init(el, null, { renderer: "svg" });
+  ch.setOption(opt); charts.push([ch, opt]); return ch;
+}
+function base() {
+  return {
+    textStyle: { color: css("--text-secondary"), fontSize: 12 },
+    grid: { left: 52, right: 18, top: 30, bottom: 30 },
+    tooltip: { trigger: "axis", backgroundColor: css("--surface-2"),
+      borderColor: css("--border"), textStyle: { color: css("--text-primary"), fontSize: 12 } },
+    xAxis: { type: "category", data: R.series.days.map(d => d.slice(5)),
+      axisLine: { lineStyle: { color: css("--border") } }, axisTick: { show: false } },
+    yAxis: { type: "value", splitLine: { lineStyle: { color: css("--grid") } },
+      axisLabel: { color: css("--text-muted") } },
+  };
+}
+function draw() {
+  charts.forEach(([c]) => c.dispose()); charts.length = 0;
+  const s1 = css("--s1"), s2 = css("--s2"), s3 = css("--s3"),
+        s5 = css("--s5"), s6 = css("--s6"), surf = css("--surface-1");
+  const bar = { type: "bar", stack: "a", barCategoryGap: "35%",
+    itemStyle: { borderColor: surf, borderWidth: 1 } };
+
+  // tiles
+  const T = R.totals, S = R.structure;
+  document.getElementById("anchor").textContent = R.generated_anchor;
+  document.getElementById("tiles").innerHTML = [
+    [T.commits.toLocaleString(), "commits (net of fork)"],
+    [T.blocks.toLocaleString(), `ledger blocks (${T.block_range})`],
+    [T.threads, "thread slugs"],
+    [T.lean_add.toLocaleString(), "Lean lines added"],
+    [T.docs_add.toLocaleString(), "prose lines added"],
+    [T.ratio, "docs : lean ratio"],
+    [T.e1_pct + "%", "ledger↔git join (E1)"],
+    [T.a1, "date agreement (A1)"],
+  ].map(([v, k]) => `<div class="tile"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("");
+
+  // pulse (stacked, fixed slot order: build=blue, coordination=aqua, other=yellow)
+  C("pulse", { ...base(),
+    legend: { top: 0, textStyle: { color: css("--text-secondary") } },
+    series: [
+      { ...bar, name: "build (feat/fix)", data: R.series.build, color: s1 },
+      { ...bar, name: "coordination (docs/tick)", data: R.series.coord, color: s2 },
+      { ...bar, name: "other", data: R.series.other, color: s3 },
+    ] });
+
+  // cumulative LoC (two lines) — one axis, direct scale
+  C("loc", { ...base(),
+    legend: { top: 0, textStyle: { color: css("--text-secondary") } },
+    series: [
+      { type: "line", name: "prose (cumulative)", data: R.series.cum_docs, color: s2,
+        lineStyle: { width: 2 }, symbol: "none" },
+      { type: "line", name: "Lean (cumulative)", data: R.series.cum_lean, color: s1,
+        lineStyle: { width: 2 }, symbol: "none" },
+    ] });
+
+  // ratio (single series — title names it, no legend)
+  C("ratio", { ...base(),
+    title: { text: "docs : lean, per day", left: 6, top: 0,
+      textStyle: { fontSize: 12.5, color: css("--text-secondary"), fontWeight: 600 } },
+    series: [{ type: "line", name: "docs:lean", data: R.series.ratio, color: s5,
+      lineStyle: { width: 2 }, symbol: "circle", symbolSize: 4, connectNulls: true,
+      markLine: { silent: true, symbol: "none",
+        label: { formatter: "lifetime avg", color: css("--text-muted"), fontSize: 11 },
+        lineStyle: { color: css("--text-muted"), type: "dashed", width: 1 },
+        data: [{ yAxis: R.totals.ratio }] } }] });
+
+  // error economy
+  C("errors", { ...base(),
+    legend: { top: 0, textStyle: { color: css("--text-secondary") } },
+    series: [
+      { type: "bar", name: "correction-flagged blocks", data: R.series.corrections,
+        color: s6, barCategoryGap: "40%", itemStyle: { borderRadius: [2, 2, 0, 0] } },
+      { type: "bar", name: "landing blocks", data: R.series.landings, color: s1,
+        barCategoryGap: "40%", itemStyle: { borderRadius: [2, 2, 0, 0] } },
+    ] });
+
+  document.getElementById("latency").innerHTML =
+    "<tr><th>corrected claim</th><th>corrected by</th><th class=num>lived (h)</th><th>date</th></tr>" +
+    R.latency.map(p => `<tr><td>UPDATE-${p.target}</td><td>UPDATE-${p.catcher}</td>
+      <td class=num><b>${p.hours}</b></td><td>${p.date}</td></tr>`).join("");
+
+  document.getElementById("debt").innerHTML =
+    "<tr><th>artifact</th><th>banked</th><th>rediscovered</th><th class=num>debt (h)</th><th>note</th></tr>" +
+    R.debt.map(r => `<tr><td><code>${r.artifact}</code></td><td>${r.banked}</td>
+      <td>${r.rediscovered}</td><td class=num><b>${r.hours}</b></td><td>${r.note}</td></tr>`).join("");
+
+  // structure
+  if (S && S.n_decls) {
+    document.getElementById("stiles").innerHTML = [
+      [S.n_decls.toLocaleString(), "declarations"],
+      [S.cone_pct + "%", `headline cone (${S.cone_size.toLocaleString()} decls)`],
+      [`${S.cone_files}/${S.total_files}`, "files on the cone"],
+      [S.sorries_on_cone, `sorries ON the cone (of ${S.sorry_decls} in tree)`],
+      [S.orphan_pct + "%", `theorem orphans (${S.orphans})`],
+      [S.zero_cone_files, "files with zero cone membership"],
+    ].map(([v, k]) => `<div class="tile"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("");
+    C("fanin", { ...base(), grid: { left: 210, right: 46, top: 8, bottom: 24 },
+      tooltip: { trigger: "item", backgroundColor: css("--surface-2"),
+        borderColor: css("--border"), textStyle: { color: css("--text-primary") },
+        formatter: p => `${R.structure.fan_in_top[p.dataIndex].file}<br>${p.name}: <b>${p.value}</b> dependents` },
+      xAxis: { type: "value", splitLine: { lineStyle: { color: css("--grid") } } },
+      yAxis: { type: "category", data: S.fan_in_top.map(f => f.name).reverse(),
+        axisLine: { show: false }, axisTick: { show: false },
+        axisLabel: { color: css("--text-secondary"), fontFamily: "ui-monospace, monospace", fontSize: 11.5 } },
+      series: [{ type: "bar", data: S.fan_in_top.map(f => f.n).reverse(), color: s1,
+        barCategoryGap: "30%", itemStyle: { borderRadius: [0, 2, 2, 0] },
+        label: { show: true, position: "right", color: css("--text-secondary"), fontSize: 11 } }] });
+  }
+
+  // threads
+  C("threads", { ...base(), grid: { left: 210, right: 60, top: 8, bottom: 24 },
+    tooltip: { trigger: "item", backgroundColor: css("--surface-2"),
+      borderColor: css("--border"), textStyle: { color: css("--text-primary") },
+      formatter: p => { const t = R.threads_top[p.dataIndex];
+        return `<b>${t.slug}</b><br>${t.n} commits · ${t.span}<br>role: ${t.role}`; } },
+    xAxis: { type: "value", splitLine: { lineStyle: { color: css("--grid") } } },
+    yAxis: { type: "category", data: R.threads_top.map(t => t.slug).reverse(),
+      axisLine: { show: false }, axisTick: { show: false },
+      axisLabel: { color: css("--text-secondary"), fontFamily: "ui-monospace, monospace", fontSize: 11.5 } },
+    series: [{ type: "bar", data: R.threads_top.map(t => t.lean).reverse(), color: s2,
+      barCategoryGap: "30%", itemStyle: { borderRadius: [0, 2, 2, 0] },
+      label: { show: true, position: "right", color: css("--text-secondary"), fontSize: 11,
+        formatter: p => p.value.toLocaleString() } }] });
+
+  document.getElementById("footer").innerHTML =
+    `Regenerate: <code>python3 substrate/{mine_commits,recover_ledger,join}.py && python3 ui/build_ui.py</code>
+     · sha-ref classes: ${Object.entries(R.sha_cls).map(([k, v]) => `${k} ${v}`).join(" · ")}
+     · flag counts are keyword-grade by design — see substrate/README.md for the honest caveats.`;
+}
+draw();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+addEventListener("resize", () => charts.forEach(([c]) => c.resize()));
+</script>
+</body>
+</html>
