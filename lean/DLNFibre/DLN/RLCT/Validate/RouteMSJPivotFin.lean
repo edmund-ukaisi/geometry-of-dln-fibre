@@ -659,16 +659,60 @@ theorem pivotDomLHS_lt_top_of_pos (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) {�
   refine le_of_eq ?_
   rw [lintegral_congr (fun z => by rw [setLIntegral_const]), setLIntegral_const]
 
-/-- **The `c' ≤ 0` edge.** With a non-positive exponent the loss power is `frobSq^{|c'|}` (no singularity);
-`RHS < ⊤` controls the deep-frame tail. NOT the application regime (the RLCT exponent is `≥ 0`). -/
-theorem pivotDomLHS_lt_top_of_nonpos (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) {ε : ℝ} {c' : ℝ}
-    (hcneg : c' ≤ 0)
+/-- **The `c' = 0` edge.** At the zero exponent the loss power is `frobSq^0 = 1`, so the spine LHS is the
+finite total measure of its (bounded) integration domain: block-front reassembly (`blockFront_inner_eq`)
+collapses the `(x, D)` fibre to `volume (block box) < ⊤` (via `matReindexEquiv` to `matBox`), then the
+`(z, A_cor)` boxes are finite (`matBox_volume`, `paramsBoxM_volume_lt_top`). This is the only edge of the
+`c' ≤ 0` cut reachable from the RLCT (`DecoratedBoxThresholdFinite` quantifies `c' : NNReal`, and the
+operative rung `deeperFlag_shell_le` carries `ab/2 < c'`); `c' < 0` never occurs, so `0 ≤ c'` suffices. -/
+theorem pivotDomLHS_lt_top_of_zero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) {ε : ℝ}
     (Zf : Params (redChain u M)
         → Matrix (Fin (dropHead (redChain u M) 0))
-            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
-    (hRHS : pivotDomRHS M u c' Zf < ⊤) :
-    pivotDomLHS M u ε c' Zf < ⊤ := by
-  sorry
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ) :
+    pivotDomLHS M u ε 0 Zf < ⊤ := by
+  classical
+  -- the block box has finite volume (reindex to `matBox`, `matReindexEquiv` measure-preserving)
+  have hblockvol : volume (genBox (Fin u ⊕ Fin (M 0 - u)) (Fin u ⊕ Fin (M 1 - u)) 1) < ⊤ := by
+    set er : Fin (u + (M 0 - u)) ≃ Fin u ⊕ Fin (M 0 - u) := finSumFinEquiv.symm with her
+    set ec : Fin (u + (M 1 - u)) ≃ Fin u ⊕ Fin (M 1 - u) := finSumFinEquiv.symm with hec
+    have hpre : matReindexEquiv er ec ⁻¹' genBox (Fin u ⊕ Fin (M 0 - u)) (Fin u ⊕ Fin (M 1 - u)) 1
+        = matBox (u + (M 0 - u)) (u + (M 1 - u)) 1 := by
+      ext A₀
+      simp only [Set.mem_preimage, genBox, matBox, Set.mem_setOf_eq]
+      constructor
+      · intro h i k
+        have := h (er i) (ec k)
+        rwa [matReindexEquiv_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply] at this
+      · intro h I J; rw [matReindexEquiv_apply]; exact h _ _
+    rw [← (measurePreserving_matReindexEquiv er ec).measure_preimage
+          (measurableSet_genBox 1).nullMeasurableSet,
+        hpre, matBox_volume _ _ (by norm_num : (0 : ℝ) ≤ 1)]
+    exact ENNReal.pow_lt_top ENNReal.ofReal_lt_top
+  have hmatvol : volume (matBox (M 1 - u) (dropHead (redChain u M) 0) 1) < ⊤ := by
+    rw [matBox_volume _ _ (by norm_num : (0 : ℝ) ≤ 1)]
+    exact ENNReal.pow_lt_top ENNReal.ofReal_lt_top
+  have hparamsvol : volume (paramsBoxM (redChain u M) 1) < ⊤ :=
+    paramsBoxM_volume_lt_top (redChain u M) 1
+  -- per `(z, A_cor)`: the `(x, D)` fibre integral (integrand `= 1`) is `≤` the block-box volume
+  have hxD : ∀ (z : Params (redChain u M))
+      (A_cor : Fin (M 1 - u) → Fin (dropHead (redChain u M) 0) → ℝ),
+      (∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
+          ∫⁻ D in genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1,
+            ENNReal.ofReal (frobSq (Matrix.of ((blockSplitD u (M 0 - u) (M 1 - u)).symm (x, D))
+              * hsQ M u Zf z A_cor) ^ (-(0 : ℝ))))
+        ≤ volume (genBox (Fin u ⊕ Fin (M 0 - u)) (Fin u ⊕ Fin (M 1 - u)) 1) := by
+    intro z A_cor
+    rw [blockFront_inner_eq (hsQ M u Zf z A_cor) 0]
+    simp only [neg_zero, Real.rpow_zero, ENNReal.ofReal_one, setLIntegral_const, one_mul]
+    exact measure_mono Set.inter_subset_left
+  rw [pivotDomLHS_eq_blockFront]
+  refine lt_of_le_of_lt ?_
+    (ENNReal.mul_lt_top (ENNReal.mul_lt_top hblockvol hmatvol) hparamsvol)
+  refine le_trans (lintegral_mono
+    (fun z => setLIntegral_mono measurable_const (fun A_cor _ => hxD z A_cor))) ?_
+  refine le_trans (lintegral_mono (fun z => lintegral_mono_set Set.inter_subset_left)) ?_
+  refine le_of_eq ?_
+  rw [lintegral_congr (fun z => by rw [setLIntegral_const]), setLIntegral_const]
 
 /-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX).** The freed Schur-loss spine LHS is
 dominated by a FINITE reorganisation constant times the comparator-core RHS — exactly the conclusion of
@@ -685,7 +729,7 @@ the S3 corank peel entirely — Codex-corroborated). Three comparator-side helpe
 (`pivotDomRHS_ne_zero_aux`, `pivotDomRHS_eq_top_of_critical`, `pivotDomLHS_lt_top_of_nonpos`) are
 correct-statement `sorry`s pending a follow-up (positivity + divergence of the comparator + the c'≤0 edge). -/
 theorem pivotPeel_domination (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
-    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
     (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
     {ε' : ℝ} (hε' : 0 < ε')
@@ -716,13 +760,15 @@ theorem pivotPeel_domination (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1
   -- `LHS < ⊤`: the `0 < c'` clean full-block bound, else the non-positive edge
   by_cases hcpos : 0 < c'
   · exact pivotDomLHS_lt_top_of_pos M u hε hcpos hcN Zf
-  · exact pivotDomLHS_lt_top_of_nonpos M u (not_lt.mp hcpos) Zf hRHS
+  · -- `¬ 0 < c'` with `0 ≤ c'` forces `c' = 0` (the RLCT exponent is `≥ 0`; c'<0 unreachable)
+    rw [le_antisymm (not_lt.mp hcpos) hc0]
+    exact pivotDomLHS_lt_top_of_zero M u Zf
 
 /-- **The forward finiteness (Option B).** From the RHS finiteness `hRHS` and the σ-coupled domination
 `pivotPeel_domination` (`LHS ≤ C·RHS`, `C < ⊤`), the freed Schur-loss spine LHS is finite:
 `lt_of_le_of_lt` the domination against `C·RHS < ⊤` (`ENNReal.mul_lt_top`). -/
 theorem forward_LHS_finiteness (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
-    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
     (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
     {ε' : ℝ} (hε' : 0 < ε')
@@ -736,7 +782,7 @@ theorem forward_LHS_finiteness (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu :
     (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
     (hRHS : pivotDomRHS M u c' Zf < ⊤) :
     pivotDomLHS M u ε c' Zf < ⊤ := by
-  obtain ⟨C, hC, hle⟩ := pivotPeel_domination M u hu hε c' hnd hpiv hcvg hmM hε' Zf hZfMeas
+  obtain ⟨C, hC, hle⟩ := pivotPeel_domination M u hu hε c' hc0 hnd hpiv hcvg hmM hε' Zf hZfMeas
     U_sf hUs hrank hfloor
   exact lt_of_le_of_lt hle (ENNReal.mul_lt_top hC hRHS)
 
@@ -755,7 +801,7 @@ theorem pivotDom_finiteness_uzero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (h
 `RouteMSJPivotDom.pivotDom_finiteness`; the controller wires the stub to it. `hRHS` is passed straight to
 the forward finiteness (Option B — the σ-coupled domination), with the `u = 0` edge separate. -/
 theorem pivotDom_finiteness_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
-    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
     (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
     {ε' : ℝ} (hε' : 0 < ε')
@@ -771,7 +817,7 @@ theorem pivotDom_finiteness_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     pivotDomLHS M u ε c' Zf < ⊤ := by
   rcases Nat.eq_zero_or_pos u with hu0 | hupos
   · exact pivotDom_finiteness_uzero M u hu0 c' hpiv Zf hRHS
-  · exact forward_LHS_finiteness M u hupos hε c' hnd hpiv hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor
-      hRHS
+  · exact forward_LHS_finiteness M u hupos hε c' hc0 hnd hpiv hcvg hmM hε' Zf hZfMeas U_sf hUs hrank
+      hfloor hRHS
 
 end DLNFibre.DLN.RLCT
