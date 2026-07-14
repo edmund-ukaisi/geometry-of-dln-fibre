@@ -268,14 +268,62 @@ theorem deeperFlagStrictShell_finite
         ⟨j, Nat.lt_succ_of_le hj⟩ c' < ⊤ := by
   sorry
 
-/-! ## Hole (b) — the saturated deeper-flag shell `jf = r` (arity IH) -/
+/-! ## Hole (b) — the saturated deeper-flag shell `jf = r` (arity IH)
 
-/-- **HOLE (b) — the saturated (full-flag) shell contribution is finite.** For a GOOD chain and the
-LUMPED top shell `j = r = min (M₀−t) (M₁−t)`, the per-shell spine integrand is finite. This is a SEPARATE
-branch from (a): at `j = r` the head-split off-sector block degenerates (`M₀−(t+r) = 0` or
-`M₁−(t+r) = 0`), so the domination of (a) is not available; the saturated shell is discharged via the
-arity IH at reduced arity (`deeperFlag_shell_le`'s `j = r` case fed to `hIH`). Statement mirrors (a) with
-`hjeq : j = r` in place of the strict `hjr`. Filled on the crux lane. -/
+The saturated shell is discharged pivotDom-INDEPENDENTLY (jreqadjud verdict, decorrelated-Codex-concurring).
+The analytic content splits cleanly into two rungs:
+
+* **`deeperFlagSaturatedShell_reduce` (SD-7)** — the degenerate-corner reduction of the freed Schur-loss
+  spine integrand to the CLEAN reduced comparator's integral at the UNSHIFTED exponent `c'` (no
+  `½·peelCharge` shift, since `peelCharge = 0` at `j = r`). This is the residual analytic brick (the
+  degenerate-corner analogue of Brick D + `pivotDom_finiteness`); it uses NONE of `hpiv`/`hcvg`/`hrange`.
+  NOT filled on this tide — isolated at a green boundary.
+* **`deeperFlagSaturatedShell_finite` (the arity-IH close)** — sorry-free MODULO SD-7: consumes SD-7,
+  `cornerComparator_adm`, and `hIH`, wired by the peel-charge arithmetic
+  (`minAdm_le_peelCharge_add_redChain` at `peelCharge = 0` ⟹ `minAdm M ≤ minAdm (redChain (t+j) M)`, so
+  `hcT : c' < ½·minAdm M` gives `c' < ½·minAdm (redChain (t+j) M) = carrierThreshold (redChain (t+j) M)`,
+  exactly the threshold `hIH` needs). This is the genuinely-new content of hole (b), verified in Lean. -/
+
+/-- **SD-7 — the j=r saturated-shell reduction (pivotDom-INDEPENDENT, ISOLATED).** At the lumped top shell
+`j = r = min(M₀−t, M₁−t)` one corner dimension is `0` (`min(M₀−u, M₁−u) = 0`, `u = t+j`), so
+`peelCharge M u = 0`: the head-split's load-bearing content (the σ-coupled corner absorption of the
+pivotDom crux) is VACUOUS. The freed Schur-loss spine integrand is dominated by a finite constant times
+the CLEAN reduced comparator's integral AT THE UNSHIFTED exponent `c'` (no `½·peelCharge` shift):
+
+    shellSpineIntegrand M u κ ε r ⟨r,_⟩ c'
+      ≤ C · (cornerComparator (redChain u M) ![1] ![minAdm−1]).integral c'.
+
+Route (jreqadjud steps 3–4): the empty corner drops the corank energy (`freedSchurLoss ≥ frobSq(P·Q̃ₚ)`,
+C-term `≥ 0`) and the Γ-box collapses to weight `1` (`a·b = 0`); the D-A pivot-radial blow-up
+(`pivotBlock_radial_blowup`) + det-1 clear factors the pivot energy to
+`commonDivisor(v)²·frobSq(prod (redChain u M) z) = decLoss`, the surviving rows integrating to a finite
+constant. This is the degenerate-corner analogue of Brick D + `pivotDom_finiteness`; it uses NONE of
+`hpiv`/`hcvg`/`hrange` (spurious at `j=r`). NOT filled on this tide — the residual analytic reduction,
+isolated at a green boundary. -/
+theorem deeperFlagSaturatedShell_reduce
+    (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
+    (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
+    (hc' : (((M 0 - (t + j)) * (M 1 - (t + j)) : ℕ) : ℝ) / 2 < c')
+    (hjeq : j = min (M 0 - t) (M 1 - t)) :
+    ∃ C : ℝ≥0∞, C < ⊤ ∧
+      shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t))
+          ⟨j, Nat.lt_succ_of_le hj⟩ c'
+        ≤ C * (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+            (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).integral c' := by
+  sorry
+
+/-- **HOLE (b) — the saturated (full-flag) shell contribution is finite (arity-IH close, sorry-free
+MODULO SD-7).** For a GOOD chain and the LUMPED top shell `j = r = min (M₀−t) (M₁−t)`, the per-shell spine
+integrand is finite. This is a SEPARATE branch from (a): at `j = r` the head-split off-sector block
+degenerates (`M₀−(t+r) = 0` or `M₁−(t+r) = 0`), so the domination of (a) is not available; the saturated
+shell is discharged via the arity IH at reduced arity — the reduced comparator on `redChain (t+j) M` fed
+to `hIH`. The wiring is entirely pivotDom-independent: `deeperFlagSaturatedShell_reduce` (SD-7) supplies
+the reduction, `cornerComparator_adm` its admissibility, and the peel-charge arithmetic
+(`peelCharge M (t+j) = 0` ⟹ `minAdm M ≤ minAdm (redChain (t+j) M)`) subordinates `hcT` to the reduced
+threshold `hIH` consumes. The hypotheses `hpiv`/`hcvg`/`hrange` are retained for signature-compatibility
+with the dispatch but are UNUSED at `j=r`. -/
 theorem deeperFlagSaturatedShell_finite
     (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
     (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
@@ -292,15 +340,65 @@ theorem deeperFlagSaturatedShell_finite
         adm (L + 1) M' D' → DecoratedBoxThresholdFinite D') :
     shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t))
         ⟨j, Nat.lt_succ_of_le hj⟩ c' < ⊤ := by
-  -- HOLE (b), SD-7 (flagged): the OUTER `(A', x)` pivot-radial resolution of the freed Schur-loss spine
-  -- to `C · (cornerComparator (redChain (t+j) M) ![1] ![minAdm − 1]).integral (…) < ⊤`, closed by
-  -- `hIH` + `cornerComparator_adm` via `hcT` (at j=r: `minAdm M ≤ minAdm (redChain (t+j) M)`, so
-  -- `c' < ½·minAdm M ≤ ½·minAdm (redChain (t+j) M)`). The `j=r` degeneracy (min(a,b)=0) drops the corank
-  -- corner (S3) but NOT the pivot radial blow-up (`pivotBlock_radial_blowup`) + angular-integrability
-  -- reduction to `cornerComparator.integral` — the SAME unbuilt outer double induction the team's open
-  -- `RouteMSJPivotDom.pivotDom_finiteness` / `RouteMSJInnerDescent.innerCorankDescent_lt_top` carry.
-  -- Beyond a bounded fill on this tide; `hcT` added per coordinator SNAG-C for the eventual close.
-  sorry
+  -- SD-7: the pivotDom-independent reduction to the clean reduced comparator at the unshifted exponent.
+  obtain ⟨C, hC, hle⟩ :=
+    deeperFlagSaturatedShell_reduce M t j κ hε c' ht hj ht1 hnd hc' hjeq
+  -- `c' ≥ 0` (the freed-corner peel regime; at `j=r` the block-charge floor is `0`).
+  have hc'0 : (0 : ℝ) ≤ c' := by
+    have h0 : (0 : ℝ) ≤ (((M 0 - (t + j)) * (M 1 - (t + j)) : ℕ) : ℝ) / 2 := by positivity
+    linarith
+  -- the cut `u = t+j` is legal (`ht`, `hj`).
+  have hu : t + j ≤ min (M 0) (M 1) := by omega
+  -- at `j=r` one corner dimension vanishes, so `peelCharge M (t+j) = 0`.
+  have hpc0 : peelCharge M (t + j) = 0 := by
+    rw [peelCharge]
+    rcases le_total (M 0 - t) (M 1 - t) with h | h
+    · have h0 : M 0 - (t + j) = 0 := by omega
+      rw [h0, Nat.zero_mul]
+    · have h0 : M 1 - (t + j) = 0 := by omega
+      rw [h0, Nat.mul_zero]
+  -- ⟹ `minAdm M ≤ minAdm (redChain (t+j) M)` (peel-charge soundness at `peelCharge = 0`).
+  have hminle : minAdm M ≤ minAdm (redChain (t + j) M) := by
+    have h := minAdm_le_peelCharge_add_redChain M (t + j) hu
+    rw [hpc0, Nat.zero_add] at h; exact h
+  -- ⟹ `c' < ½·minAdm M ≤ ½·minAdm (redChain (t+j) M) = carrierThreshold (redChain (t+j) M)`.
+  have hthr : c' < carrierThreshold (redChain (t + j) M) := by
+    have hle2 : (minAdm M : ℝ) ≤ (minAdm (redChain (t + j) M) : ℝ) := by exact_mod_cast hminle
+    rw [carrierThreshold] at hcT ⊢; linarith
+  -- the reduced comparator is `adm`-admissible (endpoint witness index + β threshold).
+  have hu1 : 0 < redChain (t + j) M 0 := by rw [redChain_zero]; omega
+  have hlastw : redChain (t + j) M (Fin.last (L + 1)) = M (Fin.last (L + 1 + 1)) := by
+    rw [← Fin.succ_last, redChain_succ, Fin.succ_last, Fin.succ_last]
+  have hlast1 : 0 < redChain (t + j) M (Fin.last (L + 1)) := by rw [hlastw]; exact hnd _
+  have hadm : adm (L + 1) (redChain (t + j) M)
+      (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)) := by
+    refine cornerComparator_adm (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) (le_refl 1)
+      (⟨0, hu1⟩, ⟨0, hlast1⟩) ?_
+    rw [monomialThreshold_eq_iInf_axisRatio]
+    refine le_iInf (fun jidx => ?_)
+    have hk1 : (![1] : Fin 1 → ℕ) jidx = 1 := by simp [Matrix.cons_val_fin_one]
+    have hjc : (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) jidx
+        = minAdm (redChain (t + j) M) - 1 := by simp [Matrix.cons_val_fin_one]
+    rw [hk1, hjc]
+    rcases Nat.eq_zero_or_pos (minAdm (redChain (t + j) M)) with hm0 | hmpos
+    · rw [hm0]; simp
+    · rw [show minAdm (redChain (t + j) M) - 1
+            = (minAdm (redChain (t + j) M) - 1 + 1) - 1 from by omega,
+        axisRatio_regularSeq (minAdm (redChain (t + j) M) - 1 + 1) (by omega),
+        show minAdm (redChain (t + j) M) - 1 + 1 = minAdm (redChain (t + j) M) from by omega]
+  -- the reduced comparator's integral at `c'` is finite (arity IH via the reduced threshold).
+  have hfin : (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+      (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)).integral c' < ⊤ := by
+    have hIHapp := hIH (redChain (t + j) M)
+      (cornerComparator (redChain (t + j) M) (![1] : Fin 1 → ℕ)
+        (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ)) hadm
+    have hlt : ((c'.toNNReal : ℝ)) < carrierThreshold (redChain (t + j) M) := by
+      rw [Real.coe_toNNReal c' hc'0]; exact hthr
+    have := hIHapp c'.toNNReal hlt
+    rwa [Real.coe_toNNReal c' hc'0] at this
+  exact lt_of_le_of_lt hle (ENNReal.mul_lt_top hC hfin)
 
 /-! ## Hole (d) — the GOOD-case cover connector (assembly of the strict + saturated shells) -/
 
