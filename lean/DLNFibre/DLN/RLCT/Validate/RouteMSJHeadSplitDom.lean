@@ -83,7 +83,7 @@ directions integrate to the finite `C_hle`, finite as a CONSTANT via the codim-`
 `a < m − b + 1`). Outside the operative `ab/2 < c' < carrierThreshold` regime both sides are `⊤`, so the
 bound is trivial there. Design: `s1-Chle-angular-integrability-cert`. -/
 theorem headSplit_pivotDom (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
-    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
     (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
     {ε' : ℝ} (hε' : 0 < ε')
@@ -236,7 +236,7 @@ theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
 /-- **Brick D (isolated): the head-split domination with a FINITE reorganization constant.** Verbatim
 signature of the `headSplit_domination` stub; the controller wires the stub to it. -/
 theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
-    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
+    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c')
     (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
     (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
     (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
@@ -277,7 +277,7 @@ theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t
     rw [dropHead_redChain_zero]; exact hrange
   -- GLUE-2: the coupled pivot→decLoss domination (the isolated 7th brick)
   obtain ⟨C_hle, hfin, hle⟩ :=
-    headSplit_pivotDom M (t + j) hε c' hnd hpiv (m := min (M 1) (M (Fin.last (L + 1 + 1))) - j)
+    headSplit_pivotDom M (t + j) hε c' hc0 hnd hpiv (m := min (M 1) (M (Fin.last (L + 1 + 1))) - j)
       hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor
   refine ⟨C_hle, hfin, ?_⟩
   -- mechanical head/row split, then GLUE-2

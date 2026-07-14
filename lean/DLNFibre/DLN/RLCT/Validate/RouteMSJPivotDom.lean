@@ -72,7 +72,7 @@ the `ab/2` shift; finiteness is the codim-`u·ρ` singularity (D-B
 `lintegral_cube_frobSq_neg_of_finrank_range`) with the det-Gram outer convergence (`hcvg`, `a < m − b + 1`),
 threshold-covered by `hpiv`. Commissioned as a dedicated fresh tide. -/
 theorem pivotDom_finiteness (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
-    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
     (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
     {ε' : ℝ} (hε' : 0 < ε')
@@ -120,7 +120,7 @@ theorem pivotDom_uzero (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu0 : u = 0)
 `pivotDom_RHS_ne_zero`), closing via `ENNReal.div_mul_cancel`; the degenerate `u = 0` cut via
 `pivotDom_uzero`. -/
 theorem headSplit_pivotDom_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
-    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
     (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
     {ε' : ℝ} (hε' : 0 < ε')
@@ -154,7 +154,7 @@ theorem headSplit_pivotDom_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     · have hRlt : pivotDomRHS M u c' Zf < ⊤ := lt_top_iff_ne_top.mpr htop
       have hne : pivotDomRHS M u c' Zf ≠ 0 := pivotDom_RHS_ne_zero M u hupos c' hnd Zf hZfMeas
       have hfin : pivotDomLHS M u ε c' Zf < ⊤ :=
-        pivotDom_finiteness M u hε c' hnd hpiv hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor hRlt
+        pivotDom_finiteness M u hε c' hc0 hnd hpiv hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor hRlt
       exact ⟨pivotDomLHS M u ε c' Zf / pivotDomRHS M u c' Zf,
         ENNReal.div_lt_top hfin.ne hne,
         by rw [ENNReal.div_mul_cancel hne htop]⟩
