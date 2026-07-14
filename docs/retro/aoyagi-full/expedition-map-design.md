@@ -18,11 +18,28 @@ truth — but the same architectural role. Lineage: leanblueprint validates the 
 (LTE, PFR); we do not adopt it (LaTeX substrate, hand-marked status, authored edges — the rot
 vectors); we build the thin structured version with computed status and gate-time contracts.
 
-## Shape
+## Shape — a heavy lake, many role-views (revised 2026-07-14, second pass)
 
-Three artifacts in `expeditions/<e>/`:
+The object is NOT the curated file; it is a rich data lake whose small human-written heart is the
+claims file, and **everything anyone reads is a generated projection**. (The aoyagi-full retro
+substrate — commits/events/threads/decls/cone tables — IS this lake, built read-side post-hoc;
+the proposal runs it live.) Layout: `expeditions/<e>/map/` containing `claims.yaml` (curated
+heart, sole hand-edited file), `lake/` (computed, heavy, regenerated: decls/deps/status/cone,
+events index, near-match index, estimate-outcome history, evidence store), `views/` (generated,
+role-addressed, explainers embedded), `MapAnchors.lean`.
 
-1. **`expedition-map.yaml`** — curated, controller-single-writer, ~40–80 entries. One file: the
+**Views by role and decision cadence** — controller tick-view (~40 lines ambient: frontier,
+owners, alarms, gates-opened); controller **decision-view** (on-demand, RICH, 5–20k tokens:
+subtree + evidence excerpts + refuted siblings with reasons + near-matches + blast radius +
+calibration stats — invoked before every knowing-decision); tide-brief view (the recon-map as a
+GENERATED artifact — self-recon upgrades from assembling to verifying); lookahead view (DAG with
+build-time vs sorry-propagation edges, unwitnessed edges, owner gaps, coverage-claims-without-
+hunts); reviewer view (the landing artifact's consumers + their hypothesis needs); librarian view
+(corroboration diffs, near-match queue); operator dashboard; retro = the lake's git history.
+
+Curated-heart schema:
+
+1. **`map/claims.yaml`** — curated, controller-single-writer, ~40–80 entries. One file: the
    single writer removes merge pressure, and one `git log -p` is the plan's full evolution — the
    retrospective resource for free. Entry schema (all fields short):
 
@@ -39,9 +56,10 @@ Three artifacts in `expeditions/<e>/`:
        kill:          kill-conditions (claims.md discipline, structured home)
        evidence:      [threads/…/cert.md, …]
 
-2. **`expedition-map.status.json`** — computed companion (package-lock analogy; never hand-edited).
-   The env-walker derives per-entry: lean name exists?, sorried?, axiom closure, referenced-by
-   (edge witnesses), fossil/live cone membership. Regenerated at gate time and librarian cadence.
+2. **`map/lake/`** — computed companion tables (package-lock analogy; never hand-edited). The
+   env-walker + extractors derive: lean name exists?, sorried?, axiom closure, referenced-by (edge
+   witnesses), fossil/live cone membership, near-match index, estimate-vs-outcome history.
+   Regenerated at gate time and librarian cadence.
 
 3. **`MapAnchors.lean`** — the kernel-checked marriage. Every `stated`+ claim gets an
    `example : <statement verbatim> := <lean name>` pin (the harness's existing example-block
@@ -133,10 +151,15 @@ NOW markers). Post-map:
 - `threads/`, `lessons.md` unchanged (process lessons there; Lean technique in `lean/CLAUDE.md`;
   thread paths contract-validated). Statement cards become generated views of map nodes.
 
-## Context budgets (controller context management)
+## Context spend: value-density, not frugality
 
-Every recurring read carries a hard size budget with a contract check — files without budgets grow
-(synthesis.md's 200k lines are the proof). Access patterns:
+The principle is **spend proportional to decision value** — the expensive events are never reads;
+they are mis-commissioned tides (50–100k tokens + hours), rendezvous-discovered mis-classifications
+(T2: half a day), re-derived banked theorems (mnp: 319h), and grep archaeology (re-deriving state
+from a 200k-line ledger costs more than any view and misses things). So: AMBIENT recurring reads
+stay thin (they are mostly redundant with held context); DECISION moments get deliberately rich
+generated views — a 10–20k-token decision-view that prevents one mis-commissioning pays for itself
+many times over. Budgets below apply to the ambient tier only:
 
 | artifact | pattern | budget |
 |---|---|---|
@@ -149,10 +172,24 @@ Every recurring read carries a hard size budget with a contract check — files 
 | brief.md | re-anchor | 1–2k tokens |
 
 The open-claim count is the over-decomposition alarm (sawtooth; trending past ~30 ⟹ validator
-surfaces it). Compaction re-ground = brief → map-summary → priorities → journal tail → open
-discuss (~12–15k tokens, CONSTANT in expedition age — the burden-of-knowledge fix as a context
-budget). Hold decisions, query facts: anything queryable (banked details, dependency facts,
-history) stays out of context.
+surfaces it). Compaction re-ground = brief → tick-view → priorities → journal tail → open discuss
+(~12–15k tokens, CONSTANT in expedition age — the burden-of-knowledge fix as a context budget).
+Hold decisions, query facts — and when a decision is at hand, invoke the rich view rather than
+re-deriving.
+
+## High-value surfaces (each traceable to a paid cost on aoyagi-full)
+
+1. Per-edge WITNESS status badges (T2 overclaim: half a day).
+2. Near-matches at claim creation, from statement-text + fan-in similarity (mnp: 319h, twice).
+3. Owner/parked alarms on open claims (the orphaned balanced-sector residual).
+4. Refuted-sibling context attached to every route node (the shortcut cycle; covasm).
+5. Notion-validation status wherever consumed (adm, false-as-stated).
+6. Blast radius on demand — who consumes this notion/lemma (the adm ripple, computed ad-hoc).
+7. Evidence freshness: cert dates, statement hashes, last-verified stamps (stale trackers).
+8. **Calibration stats**: estimate-vs-outcome base rates surfaced at classification time — "of
+   your last 7 'pure wiring' calls, 3 were re-scoped analytic; of 5 'small brick' verdicts, 1 was
+   crux-shaped." The lake holds the history; no discipline substitutes for seeing one's own curve.
+9. Capacity-vs-rank mismatch (lanes × claims vs priorities — the hard-part-avoidance query).
 
 ## Someday
 
