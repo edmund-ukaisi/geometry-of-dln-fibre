@@ -80,6 +80,51 @@ not a fix.
 
 ---
 
+## ADDENDUM (2026-07-14) — the j=0 branch residual, resolved: sector over-runs the M2 frame by AT MOST 1
+
+Controller residual: does the LANDED sector tool (`uniformWenn_le`/`sjSector`, #120) discharge the sector
+`S_0` up to `c'<minAdm/2` for the balanced/hcvg-failing case, or does it silently carry `a+b ≤ min(M1,Mlast)`
+(which would sink the j=0 branch too)? THREE exact findings (scripts `/tmp/covervalid_{Lge1,sectorframe,balanced,borderline}.py`; decorrelated Codex `codex/sector-{prompt,answer}.md`, conclusion withheld, CONCURS + proves the bound):
+
+1. **The balanced-cube hcvg-failure is L=0-ONLY — it never reaches the cover.** The `DecoratedStepHyp` fill
+   routes `L=0` (3-width) through the banked closed form `routeMBoxThresholdFinite_mnp`; only `L≥1` (≥4-width)
+   uses the shell cover (endgame-lanes lines 10–11). Balanced `L≥1` cubes `(w,…,w)` ALL pass hcvg at the
+   sector (binding cut lands at `a★+b★ ≤ w`; verified arity 4–6, w=2..7, 0 failures). So `(3,3,3)`/`(5,5,5)`
+   are base cases, NOT cover witnesses — the balanced alarm does not reach the cover.
+
+2. **`uniformWenn_le` carries `a+b ≤ M2`, NOT `a+b ≤ min(M1,Mlast)`.** Its finiteness is `Wenn(I_{M₂})<⊤`
+   (`RouteMSJShellUniform:55` + `detGram_lintegral_box_lt_top`), i.e. `a < M₂−b+1 ⟺ a+b ≤ M₂` — the full
+   M₂ (deep-row) frame, a DIFFERENT and strictly weaker condition than the Ky-Fan hcvg frame `min(M1,Mlast)`.
+   For `L≥1` it covers the sector shells where `min(M1,Mlast) < a+b ≤ M₂` (the majority of hcvg-failures).
+
+3. **THEOREM (Codex-proven, exact, all widths/arities): `a★+b★ ≤ M₂+1` always.** Let
+   `G(x)=minAdm((x,M₂,…,Mlast))`. Reusing the minimizing first cut gives `G(x+1)−G(x) ≤ M₂`; binding
+   optimality `f(t★)≤f(t★+1)` gives `a★b★ − (a★−1)(b★−1) = a★+b★−1 ≤ G(t★+1)−G(t★) ≤ M₂`, so
+   `a★+b★ ≤ M₂+1`. Exact sweep (arity 4–6, widths 1..7): sector `a+b≥M₂+2` bucket is EMPTY (0/12111);
+   the only shells failing BOTH frames are exactly `a+b = M₂+1` (the borderline `a = M₂−b+1`).
+
+**Consequence — the j=0 branch does NOT sink; the sector's worst case is the KNOWN θ-interpolation
+borderline `a = M₂−b+1`** (`shell_convergence.py`: "borderline bites ONLY at j=0, θ-interpolation"; the
+vslice anchor `(3,3,3,4)` is an instance). At that borderline the DECOUPLED corank weight (uniformWenn OR
+the Cat-I Gram-Schur det-Gram) diverges MARGINALLY (`a = M₂−b+1` is the exact boundary, not strict), so it
+needs the COUPLED pivot×corank bound — the θ-interpolation / Cat-I good-stratum radial model (#113/#120,
+`RouteMSJRadialInt.integrableOn_norm_rpow_neg_ball` is general-`n` and landed), governed by `hpiv`
+(`c'−½ab < ½·u·tailMinWidth`, holds in the good case), NOT `hcvg`.
+
+**Corrected j=0 routing (refines the 3-way split above):** the sector `S_0` is itself TWO sub-cases —
+(i) `a+b ≤ M₂` (strict): `uniformWenn_le` (deep M₂-frame, no hcvg); (ii) `a+b = M₂+1` (borderline, ≤ +1
+over-run, proven): the COUPLED θ-interpolation (Cat-I radial + pivot; vslice done, general-`n` radial
+landed). **No `a+b ≥ M₂+2` case exists** (proven), so there is NO unbounded sector divergence and NO
+`a+b ≤ min(M1,Mlast)` bound sinking the branch.
+
+**Verdict on the residual: j=0 branch SOUND — no balanced sink, no unbounded scope gap.** The one honest
+open piece is the GENERAL-M borderline θ-interpolation coupled bound (the step2 lane `pivotPeel_domination`,
+D-A-radial + S3-corank, in progress; vslice instance + general radial engine landed) — bounded LABOUR, not
+a wall, and NOT a hidden `a+b ≤ min` assumption. `uniformWenn_le` alone is NOT the full sector tool: it
+discharges only the strict sub-case (i); the borderline (ii) needs the coupled bound.
+
+---
+
 ## Close
 - **Firmest result.** hcvg is FALSE at every non-empty cover-shell only at `j=0`; TRUE (with exact
   derivation) for `1≤j≤r−1` in the good case. Witness `(2,2,1)` / `(3,3,3)`; obstruction proven via
