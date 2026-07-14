@@ -24,6 +24,17 @@
 
 ## Sorry gate
 - Zero `sorry` / `axiom` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
+- **Expedition mode (goal-relative zero-sorry).** On a long expedition the flat zero-gate is
+  unimplementable (composition skeletons carry named holes by design) and a flat token count cannot
+  distinguish an open obligation from dead scaffolding — the aoyagi-full run had to invent the
+  distinction informally ("0-sorry in the AxCheck-load-bearing sense; 21 tracked scaffold sorries").
+  The implementable form: (i) a declared **roots registry** (the goal headline(s) + registered
+  composition skeletons); (ii) every sorry is either **LIVE-frontier** (on a registered root's
+  dependency cone — statement-locked, tracked, owned, count small and sawtoothing) or a **fossil**
+  (off every root's cone — quarantined, pruned at close, never on the value path); (iii) the audit is
+  cone-aware (classify via the env-walker dependency graph; `scripts/sorries` stays as the raw census;
+  `AxCheck` stays the kernel truth for roots). Reference implementation:
+  `docs/retro/aoyagi-full/substrate/frontier_readout.py` + `WalkDecls.lean`.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
 - **`lake build` / `scripts/lb` exit-0 can MASK a `sorryAx` via a stale olean cache.** If an edit does not
   invalidate a `.olean` (a downstream-only change, an edit Lean's incremental compiler deems irrelevant), a
