@@ -34,7 +34,12 @@
 >   coordinates (two different decompositions of `A₁` — the genuinely-new analytic reconciliation);
 >   the flag/shell recursion iterating this single peel; (4) reorientation + arity recursion (reversal
 >   CoV, matrix-measure diamond) with the Γ-consume-before-hIH soundness; (5) `deeperFlagWaist_finite`
->   assembly. See the tide report.
+>   assembly (the sorry in `RouteMSJDecoratedStep.deeperFlagWaist_finite`). **Re-scoping finding:** the
+>   L=0 bare-box waist finiteness (roadmap step 3's target) is ALREADY BANKED as
+>   `routeMBoxThresholdFinite_mnp` (`RouteMSchurRectCapB`, all triples, below `½·minAdm`, via
+>   `rectSchurRecStep`, no SVD, AxCheck-clean); the open content is the DECORATED (`d≥1`) case + the
+>   general-L arity recursion, which do NOT reduce to the bare box (cf. the `minAdm(4,2,3,3)=5 <
+>   minAdm(4,2,3)=6` no-go).
 > - **Structure & ideas observed (pen-and-paper, routeA cert + wall-assessment).** The literal
 >   rectangular-SVD / Wishart eigenvalue density is a HEAVY Mathlib-v4.29 wall (no Stiefel, no Haar-on-O(s),
 >   no Vandermonde density, no eigenvalue Jacobian). The MODERATE bypass is the max-pivot Schur-flag CoV:
@@ -47,4 +52,6 @@
 >   already uses) — this sidesteps the `SchurInc`-product-measure diamond (nested products of `Matrix`
 >   lack `IsAddHaarMeasure`; only single-level `Fin N → ℝ` has clean pi-Haar). Feed
 >   `lintegral_image_eq_lintegral_abs_det_fderiv_mul` the conjugated `hasFDerivAt`, injectivity, and det.
-> - **Status.** sorry-free (fidelity review pending).
+> - **Status.** sorry-free + reviewed (fidelity PASS, soundness OK, forced `#print axioms` clean-three;
+>   reviewer independently rederived the determinant + injectivity and ran a decorrelated Codex check
+>   confirming the `t=1 → |p|³` consistency).
