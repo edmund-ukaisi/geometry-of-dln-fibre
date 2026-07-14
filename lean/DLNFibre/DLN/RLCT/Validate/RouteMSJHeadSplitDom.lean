@@ -10,18 +10,19 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplit
 set_option linter.style.longLine false
 
 /-!
-# `DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitDom` — Brick D join: the head-split domination
+# `DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitDom` — Brick D shared data (`hsQ`, `hsSplit`)
 
-**Isolated Brick D** (`s1-spine-headsplit-cert` Part A + `s1-Chle-angular-integrability-cert`): the
-head-split domination with a FINITE reorganization constant. `headSplit_domination_impl` reproduces the
-`headSplit_domination` stub signature VERBATIM; the controller wires the stub to it.
+**The reusable head-split bedrock** the full-matBox Brick D join stands on. This module holds the
+DEFINITIONS and helper lemmas — the reassembled front factor `hsQ`, the core shell `pivotShell`, the
+measure-preserving head/row split `hsSplit` with its forward-action lemmas, `weakEigCount_mono`,
+`freedSchurLoss_submatrix_congr`, and the shell⊆good containment `hsSplit_good_of_shell` — sorry-free.
 
-The frame data `(Zf, U_sf, hZfMeas, hUsMeas, hUs, hrank, hfloor, hagree)` are HYPOTHESES (Brick F provides
-them). This module lands the MECHANICAL reduction (head/row split, the shell⊆good rewrite, the witnesses
-`Ccrossf = 0` / `sΓf = genBox`) sorry-free, isolating the GENUINE analytic crux as the single sorry
-`headSplit_pivotDom` — the coupled pivot→`decLoss` domination (dropping the `B₁₂·Q_b` cross-coupling),
-commissioned as a dedicated 7th brick (design: D-A `pivotBlock_radial_blowup` + D-B
-`lintegral_cube_frobSq_neg_of_finrank_range` + `s1-Chle-angular-integrability-cert`).
+The domination join itself (`shellSpine_le_hsQ_box`, `headSplit_pivotDom`, `headSplit_domination_impl`)
+was RELOCATED (thread `genm-sj5-finfin`) to `RouteMSJHeadSplitFin`, downstream of `RouteMSJPivotFin`: the
+full-matBox finiteness needs the shell-INDEPENDENT ratio-trick plumbing (`pivotDomRHS_ne_zero_aux`,
+`pivotDomRHS_eq_top_of_critical`, `exists_finite_mul_of_finite_imp`) and the block-front reassembly
+(`pivotInner_Dsubst`, `blockFront_inner_eq`) banked there. `RouteMSJHeadSplitFin.headSplit_domination_impl`
+reproduces the `RouteMSJDeeperFlagCore.headSplit_domination` stub conclusion; the controller wires it.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -70,64 +71,6 @@ def pivotShell (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (ε : ℝ)
     Set (Fin (M 1 - u) → Fin (dropHead (redChain u M) 0) → ℝ) :=
   {A_cor | ((hsQ M u Zf z A_cor) * (hsQ M u Zf z A_cor)ᵀ
       - (ε ^ 2) • (1 : Matrix (Fin u ⊕ Fin (M 1 - u)) (Fin u ⊕ Fin (M 1 - u)) ℝ)).PosSemidef}
-
-/-- **GLUE-2 — the S3 deep-factor domination over the FULL matBox (the analytic crux, ISOLATED).**
-On the `(z, A_cor)`-box with `A_cor` over the **FULL `matBox`** (NO `pivotShell` restriction), the freed
-Schur-loss spine integrand (pivot rows `prod(redChain u M) z`, corank rows `A_cor·Zf z`) is dominated by a
-FINITE constant times the comparator-core integrand at the clean data `k = ![1]`, `jc = ![minAdm(redChain u M)
-− 1]`, `Ccrossf = 0`, `sΓf = genBox`. The deep-factor floor `hfloor` (`Zf·Zfᵀ ⪰ ε'²·U_sf·U_sfᵀ`, `U_sf`
-orthonormal `m`-frame, `m = min(M₁,n)−j ≥ a+b`) is LOAD-BEARING here (unlike the shell-0 crux
-`RouteMSJPivotFin.pivotPeel_domination`, which needed the whole-block floor `σ_min(hsQ) ≥ ε` — false on the
-`j ≥ 1` shells). Bridge `shellSpine_le_hsQ_box` (below) drops the shell-`j` indicator to this full box.
-
-RECONCILIATION (this tide, `genm-sj5-pradial`, decorrelated Codex xhigh + Monte-Carlo, cert
-`codex/reconcile-{prompt,answer}.md`): the full-matBox route is **SOUND** and the shell is NOT load-bearing
-for the FULL loss. At the `(3,3,3)@u=2` anchor the loss has the local normal form `L ≍ |x|² + s²|y|²`
-(`x ∈ ℝ⁶` strong = all three rows of `T` contributing their two strong directions, `y ∈ ℝ³` weak,
-`s = σ_min(hsQ) ≍ |s|` the transverse `A`-coordinate), so the inner `T`-integral scales `J(A) ≍ g^{−(c'−ab/2)}`
-(`g = σ_min²`) and the outer `∫ g^{−(c'−ab/2)} ≍ ∫|s|^{−2(c'−ab/2)}` converges iff `c' < (minAdm+ab)/2`.
-Hence `λ_full = (minAdm(redChain u M)+ab)/2 = carrierThreshold` EXACTLY — MARGINAL, equal to the comparator
-threshold. couplingfin's off-shell degradation (`uρ/2 → 5/2`) was the PIVOT-ONLY sub-integral (it omitted the
-two strong directions from the corank `C,D` row); the full loss reaches the comparator threshold.
-
-STRATEGY (marginality ⟹ the **ratio trick**, not a tight pointwise domination): `RHS = ⊤ → C_hle := 1`;
-`RHS < ⊤ → C_hle := LHS/RHS`, finite iff `LHS < ⊤`. So the genuine content is the ONE finiteness brick
-`LHS < ⊤` for `c' < carrierThreshold` (`RHS < ⊤` extracts this via `pivotDomRHS_eq_top_of_critical`), given
-`hfloor`. Its Lean route (the from-scratch analytic module for a NEXT tide, ≈ `RouteMSJPivotFin`'s finiteness
-lane but over the full matBox): the unit-Jacobian column-shear `Q_p R = [I|0]`, `Q_b R = (…,s)` giving the
-`|x|²+s²|y|²` form; the S3 corank peel `shell_corankPivot_coupled_le` (banked, coupled) for the `ab/2` charge
-+ det-Gram divisor (integrable via `hfloor`, `a < m−b+1`); the transverse `s`-charge `= ½` matching. Reuse
-the shell-INDEPENDENT ratio-trick plumbing already banked in `RouteMSJPivotDom`/`RouteMSJPivotFin`
-(`pivotDomRHS_ne_zero_aux`, `pivotDomRHS_eq_top_of_critical`, `exists_finite_mul_of_finite_imp`); the ONLY
-new lemma is the full-matBox tight finiteness (the shell-0 `pivotDomLHS_lt_top_of_pos` via `shell_fullBlock_le`
-does NOT transfer — no whole-block floor off-shell). Design: `s1-Chle-angular-integrability-cert` +
-`genm-sj5-pradial` reconciliation. -/
-theorem headSplit_pivotDom (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
-    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
-    (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
-    (hcvg : (M 0 - u) + (M 1 - u) ≤ m) (hmM : m ≤ dropHead (redChain u M) 0)
-    {ε' : ℝ} (hε' : 0 < ε')
-    (Zf : Params (redChain u M)
-        → Matrix (Fin (dropHead (redChain u M) 0))
-            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
-    (hZfMeas : Measurable Zf)
-    (U_sf : Params (redChain u M) → Matrix (Fin (dropHead (redChain u M) 0)) (Fin m) ℝ)
-    (hUs : ∀ z, (U_sf z)ᵀ * U_sf z = 1)
-    (hrank : ∀ z, m ≤ (Zf z).rank)
-    (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef) :
-    ∃ (C_hle : ℝ≥0∞), C_hle < ⊤
-      ∧ (∫⁻ z in paramsBoxM (redChain u M) 1,
-            ∫⁻ A_cor in matBox (M 1 - u) (dropHead (redChain u M) 0) 1,
-              ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
-                ∫⁻ Γ in {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
-                    Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
-                  ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M u Zf z A_cor)) ^ (-c')))
-          ≤ C_hle * deeperFlagCoreIntegrand M u (![1] : Fin 1 → ℕ)
-              (![minAdm (redChain u M) - 1] : Fin 1 → ℕ) Zf
-              (fun _ => 0) (fun _ => genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1) c' := by
-  -- ISOLATED (SD-7): the full-matBox tight finiteness brick. Reconciled SOUND (docstring); a
-  -- from-scratch analytic module for a next tide. Everything downstream of this composes green.
-  sorry
 
 /-- **The head/row split equiv** `Params (tailChain M) ≃ᵐ Params (redChain u M) × corankRows` — peel the
 leading tail layer (`paramsHeadSplit`), row-split it into pivot rows (`κ`'s image, → the leading layer of
@@ -222,93 +165,5 @@ theorem hsSplit_good_of_shell {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j :
   -- `deeperFlagZdeep M u (hsSplit A').1` is defeq `Zd` (`hsSplit_fst_succ`, `paramsHeadSplit_snd`, both rfl;
   -- the `dropHead (redChain u M)` vs `dropHead (tailChain M)` chains are defeq).
   exact le_trans (weakEigCount_mono hε'.le hε'le Zd) hdc
-
-/-- **The head/row-split bridge onto the FULL matBox** (steps 1,2,5,6 — the corrected reorg): the literal
-shell-`j` spine integrand is `≤` the `(z, A_cor)`-box freed-loss integrand at `Q = hsQ` (pivot rows
-`prod(redChain u M) z`, corank rows `A_cor·Zf z`), with `A_cor` over the **FULL `matBox`** (NO `pivotShell`).
-This is the `t2adjud`-corrected bridge: SOUND for all `j` (unlike the retired `matBox ∩ pivotShell` RHS,
-which for `j ≥ 1` is disjoint from the shell-`j` image — `t2t2adjud §2`). Route: head split
-(`paramsHeadSplit` + `prod_headSplit`, MP `hsSplit`), the shell⊆good-set rewrite `Zf z = Z_deep` on the shell
-(D-C `shell_subset_goodSet` + `hagree`, so the reindexed spine `Q = hsQ` there), **drop the shell indicator
-to the full box** (`≥ 0`; the monotone-domain step that replaces the false `pivotShell` restriction),
-Tonelli, row split (`rowSplit_lintegral_eq`), recombine `(z0, A'tail) ↝ z`. NO analytic content — pure
-measure reorganization + a monotone domain enlargement onto `GLUE-2`'s (full-matBox) LHS shape. -/
-theorem shellSpine_le_hsQ_box {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
-    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
-    (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
-    (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
-    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
-    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
-    {ε' : ℝ} (hε' : 0 < ε') (hε'le : ε' ≤ ε / Real.sqrt ((M 1 : ℝ) * M 2))
-    (Zf : Params (redChain (t + j) M)
-        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
-            (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
-    (hagree : ∀ z, weakEigCount ε' (deeperFlagZdeep M (t + j) z)
-        ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-        → Zf z = deeperFlagZdeep M (t + j) z)
-    (hGmeas : MeasurableSet {z : Params (redChain (t + j) M) |
-        weakEigCount ε' (deeperFlagZdeep M (t + j) z)
-          ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)}) :
-    shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
-      ≤ ∫⁻ z in paramsBoxM (redChain (t + j) M) 1,
-          ∫⁻ A_cor in matBox (M 1 - (t + j)) (dropHead (redChain (t + j) M) 0) 1,
-            ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
-              ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
-                  Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
-                ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M (t + j) Zf z A_cor)) ^ (-c')) := by
-  -- ISOLATED (step 1, the pure reorg onto the full matBox). Mechanical measure theory (MP `hsSplit`
-  -- + shell⊆good + drop-indicator-to-full-box + row split); no analytic content. Roadmap in docstring.
-  sorry
-
-/-- **Brick D (isolated): the head-split domination with a FINITE reorganization constant.** Verbatim
-signature of the `headSplit_domination` stub; the controller wires the stub to it. -/
-theorem headSplit_domination_impl {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
-    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c')
-    (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
-    (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
-    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
-    (hpiv : minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M)
-    (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
-        ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
-    {ε' : ℝ} (hε' : 0 < ε') (hε'le : ε' ≤ ε / Real.sqrt ((M 1 : ℝ) * M 2))
-    (Zf : Params (redChain (t + j) M)
-        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
-            (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
-    (U_sf : Params (redChain (t + j) M)
-        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
-            (Fin (min (M 1) (M (Fin.last (L + 1 + 1))) - j)) ℝ)
-    (hZfMeas : Measurable Zf) (hUsMeas : Measurable U_sf)
-    (hUs : ∀ z, (U_sf z)ᵀ * U_sf z = 1)
-    (hrank : ∀ z, (min (M 1) (M (Fin.last (L + 1 + 1))) - j) ≤ (Zf z).rank)
-    (hfloor : ∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
-    (hagree : ∀ z, weakEigCount ε' (deeperFlagZdeep M (t + j) z)
-        ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-        → Zf z = deeperFlagZdeep M (t + j) z)
-    (hGmeas : MeasurableSet {z : Params (redChain (t + j) M) |
-        weakEigCount ε' (deeperFlagZdeep M (t + j) z)
-          ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)}) :
-    ∃ (Ccrossf : Params (redChain (t + j) M)
-          → Matrix (Fin (M 0 - (t + j))) (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
-        (sΓf : Params (redChain (t + j) M)
-          → Set (Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ))
-        (C_hle : ℝ≥0∞),
-      C_hle < ⊤
-      ∧ shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
-          ≤ C_hle * deeperFlagCoreIntegrand M (t + j) (![1] : Fin 1 → ℕ)
-              (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) Zf Ccrossf sΓf c' := by
-  -- witnesses: `Ccrossf = 0`, `sΓf = genBox`
-  refine ⟨fun _ => 0, fun _ => genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1, ?_⟩
-  -- `m ≤ M₂ = dropHead (redChain u M) 0` from `hrange`
-  have hmM : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ dropHead (redChain (t + j) M) 0 := by
-    rw [dropHead_redChain_zero]; exact hrange
-  -- GLUE-2: the coupled pivot→decLoss domination (the isolated 7th brick)
-  obtain ⟨C_hle, hfin, hle⟩ :=
-    headSplit_pivotDom M (t + j) hε c' hc0 hnd hpiv (m := min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-      hcvg hmM hε' Zf hZfMeas U_sf hUs hrank hfloor
-  refine ⟨C_hle, hfin, ?_⟩
-  -- mechanical head/row split, then GLUE-2
-  exact le_trans
-    (shellSpine_le_hsQ_box M t j κ hε c' ht hj hjr ht1 hnd hrange hε' hε'le Zf hagree hGmeas) hle
 
 end DLNFibre.DLN.RLCT
