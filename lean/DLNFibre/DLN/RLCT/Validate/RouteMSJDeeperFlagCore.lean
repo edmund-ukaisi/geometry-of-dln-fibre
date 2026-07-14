@@ -4,6 +4,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 import DLNFibre.DLN.RLCT.Validate.DeepestCoreNonvanishing
+import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 
 set_option linter.style.longLine false
 
@@ -43,7 +44,8 @@ rescaled floor `ε' = ε/√(M₁M₂)` and the finite reorganization constant `
 * **`exists_headSplitFrame` (Brick F)** — the measurable piecewise `m`-frame selector (`= Z_deep` on the
   good set `G`, fixed full-rank `V` off `G`): orthonormal `U_sf`, rank `≥ m`, the Loewner floor at `ε'`,
   agreeing with `Z_deep` on `G` (`weakEigCount ε' ≤ M₂ − m`). Content: Borel functional calculus. Cert:
-  `s1-spine-headsplit-cert` §B.3.
+  `s1-spine-headsplit-cert` §B.3. **WIRED sorry-free** to the banked clean-three implementation
+  `exists_headSplitFrame_impl` (`RouteMSJHeadSplitFrame`, on the isolated `measurableEigendecomp` primitive).
 * **`headSplit_domination` (Brick D)** — the head-split domination with finite constant: given the frame
   data, `∃ Ccrossf sΓf C_hle < ⊤, shellSpine ≤ C_hle · deeperFlagCore`. Content: row-split, `prod_headSplit`,
   the P-radial blow-up, the `B₁₂→Γ'` shear, `C_hle` finite via the codim-`u·ρ` linear-image argument
@@ -51,14 +53,15 @@ rescaled floor `ε' = ε/√(M₁M₂)` and the finite reorganization constant `
   `s1-Chle-angular-integrability-cert`.
 
 * **`deeperFlag_spineToCore` (S1-good)** — ASSEMBLED: `= exists_headSplitFrame ∘ headSplit_domination` +
-  the proved-in-tide clauses. Sorry-free modulo F, D.
+  the proved-in-tide clauses. Sorry-free modulo D (F now wired sorry-free).
 * **`deeperFlag_shell_le`** — the headline = `deeperFlag_spineToCore` (S1-good) ∘ `deeperFlag_shell_core_le`
   (L1) + the decorated IH via `cornerComparator_adm`, folding `C := C_hle · C_L1`. Scoped to good chains;
   waists route through the separate `deeperFlag_waist` SVD-qPeel base case (task #156).
 
 S2-FREE. Axiom-clean `[propext, Classical.choice, Quot.sound]` for the sorry-free results (L1, the S3
 uniform bricks, and the in-tide assembly clauses incl. `deeperFlagCore_decLoss_pos_ae`); `deeperFlag_spineToCore`
-(S1-good) and `deeperFlag_shell_le` (headline) carry `sorryAx` = exactly F + D, the two tracked `(□)`-rungs.
+(S1-good) and `deeperFlag_shell_le` (headline) carry `sorryAx` = exactly D, the one remaining tracked
+`(□)`-rung (F wired sorry-free to `exists_headSplitFrame_impl`, `RouteMSJHeadSplitFrame`).
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -497,8 +500,10 @@ theorem exists_headSplitFrame {X : Type*} [MeasurableSpace X] {M₂ n m : ℕ}
       ∧ (∀ z, (U_sf z)ᵀ * U_sf z = 1)
       ∧ (∀ z, m ≤ (Zf z).rank)
       ∧ (∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
-      ∧ (∀ z, weakEigCount ε' (Zdeep z) ≤ M₂ - m → Zf z = Zdeep z) := by
-  sorry
+      ∧ (∀ z, weakEigCount ε' (Zdeep z) ≤ M₂ - m → Zf z = Zdeep z) :=
+  -- Wired to the banked clean-three implementation (`RouteMSJHeadSplitFrame`): the measurable
+  -- eigendecomposition + top-`m` eigenframe assembly. Statement is identical, so this is pure wiring.
+  exists_headSplitFrame_impl hmM₂ hmn hε' Zdeep hZ
 
 /-- **Brick D (isolated, `s1-spine-headsplit-cert` Part A + `s1-Chle-angular-integrability-cert`) — the
 head-split domination with a FINITE reorganization constant.** Given the frame data from Brick F (at

@@ -1225,9 +1225,10 @@ open DLNFibre.DLN.RLCT
 -- T-Obl3b OWED-3 mountain headline (`RouteMSJDeeperFlagCore`): L1 `deeperFlag_shell_core_le` (analytic
 -- heart) + the S3 `U_s`-uniform bricks + `deeperFlagCore_decLoss_pos_ae` (hpos) — all clean-three. S1-good
 -- `deeperFlag_spineToCore` = `exists_headSplitFrame` (F) ∘ `headSplit_domination` (D) + a clean assembly;
--- S1-good + the headline `deeperFlag_shell_le` carry a TRACKED sorryAx = exactly the TWO isolated (□)-rungs
--- F + D (F = Borel-functional-calculus frame selector; D = P-radial blow-up + C_hle + Ky-Fan + S3/L1
--- assembly). Tracked here so the day F+D land and the module goes clean-three is visible (std-decision-7).
+-- F is now WIRED sorry-free (`exists_headSplitFrame_impl`, `RouteMSJHeadSplitFrame`) — clean-three. S1-good
+-- + the headline `deeperFlag_shell_le` carry a TRACKED sorryAx = exactly the ONE remaining isolated (□)-rung
+-- D (P-radial blow-up + C_hle + Ky-Fan + S3/L1 assembly). Tracked here so the day D lands and the module
+-- goes clean-three is visible (std-decision-7).
 #print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_core_le
 #print axioms DLNFibre.DLN.RLCT.deeperFlagCore_decLoss_pos_ae
 #print axioms DLNFibre.DLN.RLCT.exists_headSplitFrame
