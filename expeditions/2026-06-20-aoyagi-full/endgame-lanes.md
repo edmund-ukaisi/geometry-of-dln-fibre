@@ -10,6 +10,15 @@ Tides build in worktrees; controller integrates one-at-a-time (aggregator + AxCh
 `DecoratedBaseHyp` (#4) DONE. `DecoratedStepHyp` (#5) = the mountain: **track (a) L≥1 head-split**
 `deeperFlag_spineToCore` = F ∘ headSplit_domination; **track (b) L=0 base** = banked (`routeMBoxThresholdFinite_mnp`).
 
+## ★ EXPONENT-GATE COLLAPSE (2026-07-14, incidencepp; brickdbuild-decorrelated-confirmed) — LAST general-proof gap CLOSED
+The one piece the forward-guard flagged as possibly needing "its own effort" — the exponent gate `min_{ℓ,s} C_{ℓ,s}/2 = T1_q` — is **pure algebra, no sweep, decide-over-332 RETIRED**.
+Substituting `b=M₁−u, d=M₂−M₁+u` into `C_{ℓ,s}=ub+M₀ℓ+(M₀−s)(u−ℓ−s)+s(M₂−b−ℓ)`, the ℓ-terms cancel (a `ring` identity; **ℓ-cancellation independently re-derived by brickdbuild**):
+  `C_{ℓ,s} = (M₀−s)(M₁−s) + s·M₂ − ab`   (ℓ-independent = the 3-chain zero-product codim at B-rank s, minus the peeled corner ab).
+So `s` IS thresholdhunt's B-rank `r`; the resolution re-derives "binding at r=t★" from the charts (bedrock cross-check: incidence resolution and the independent codim certificate agree on WHY T1 is the threshold).
+- **LOAD-BEARING (finiteness, c'<T1):** TRIVIAL — `min_s over feasible s≤u ≥ min over full range = minAdm(M)`, so `min C_{ℓ,s}/2 ≥ (minAdm−ab)/2 = T1_q`. Just min-over-subset ≥ min-over-set. This IS the whole finiteness gate.
+- **Lean (iv) shrinks to:** (a) the `ring` identity; (b) `Finset.min` monotone under range inclusion; (c) banked `minAdm`/thresholdhunt codim. FORWARD-GUARD held: the `ring` identity is the proof; widths-2..10 numeric is evidence, not a substitute. Relayed to brickdcont with §3 collapse.
+⟹ **No open math remains on the resolution side.** The terminal brick `incidenceCell_lintegral_le` = pure measure-theory labour (charts 4-5 CoV + gluing + assembly).
+
 ## ★★★ RENDEZVOUS PLAN (2026-07-14, decision-LOCKED) — all analytic content banked + fidelity-passed
 Both crux (u≥1) + O2 SORRY-FREE + clean-three + independent-fidelity-PASS. Full git-verified spec = `threads/genm-rendezvous-recon/recon-map.md`. Execute via **FILE-LEVEL assembly** (asmbase off canonical @a87c0506; NOT git-merge — step2 branched pre-reconcile @28d75e7f, divergent lineage add/add-conflicts) on a fresh branch **genm-sj5-rendezvous**. LOCKED:
 - ⚠ **`git fetch origin` FIRST** — local step2/waist refs STALE; integrate from origin tips (step2 e395121c, waist cf47a1a9). All 7 origin tips = cited hashes.
