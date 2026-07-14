@@ -142,6 +142,66 @@ joint charts).
 The **shell-restricted** LHS excludes `s>R_j`, so its threshold `λ_j ≥ T1` (shellj) — even more room. Either
 way finite for `c'<T1`.
 
+## 3b. EXPLICIT per-stratum blow-up charts (the `incidenceCell_lintegral_le` input) — NOT a wall
+
+The resolution is a **finite atlas of explicit coordinate maps, each with a monomial Jacobian**, so each
+per-cell integral is a concrete change-of-variables for Mathlib's
+`lintegral_image_eq_lintegral_abs_det_fderiv_mul`. No abstract resolution framework is needed. The charts
+(all verified — `inc_charts.py`, `inc_bigcell.py`):
+
+**(1) `Qb`-minor chart (linear).** On `{det(Qb_{:,J}) ≠ 0}` for a size-`b` column set `J`: `A_cor = D·[I_b | X]`
+with `D = Qb_{:,J} ∈ GL_b`, `X ∈ ℝ^{b×d}` (`d=M₂−b`). **Jacobian `d(A_cor) = |det D|^{d} dD dX`** (verified
+`inc_charts.py`: `|det J| = |det D|^d` exactly). Finitely many `J` cover `{rank Qb = b}`; lower `Qb`-corank is
+a further big-cell (below), null in the closure.
+
+**(2) `Qp`-shear (unimodular).** `Qp ↦ (U, W)`, `U := Qp_{:,J} ∈ ℝ^{u×b}`, `W := Qp_{:,Jᶜ} − U·X ∈ ℝ^{u×d}`.
+**Jacobian `1`** (a shear). `W = Qp·N`, `N=(−X;I_d)`, is the **incidence coordinate**: `W→0 ⟺ row Qp ⊆ row Qb`.
+For the leaf `Qp = z₀` is free, so `(U,W)` are free coordinates; for `L≥1`, `W` couples `z` and `X` — this is
+why the domination is joint, not per-`z`.
+
+**(3) front `B`-shear + `H̃`-completion (linear/unimodular).** `B ↦ H := P·U + B·D` (Jacobian `|det D|^{−u}`);
+then complete the square in `H`, `H̃ := H + P W Xᵀ(I+XXᵀ)^{−1}` (unimodular shift). **EXACT loss split**
+(verified `inc_charts.py`, via Woodbury `I − Xᵀ(I+XXᵀ)^{−1}X = (I+XᵀX)^{−1}`):
+
+    E_top = ‖H‖²_F + ‖H X + P W‖²_F,   and after the shift    F = E_top + E_tr
+          = tr( H̃ (I+XXᵀ) H̃ᵀ ) + tr( Y W (I+XᵀX)^{−1} (Y W)ᵀ )  ≍  ‖H̃‖²_F + ‖Y·W‖²_F,   Y=(P;C)∈ℝ^{M₀×u}.
+
+The two metrics `(I+XXᵀ)`, `(I+XᵀX)^{−1}` are bounded units (`X` bounded on the chart). **Net `|det D|` power
+`= d − u − a = n−b−a−u`** (the `−a` from the banked `Γ`-integration `det(Qb Qbᵀ)^{−a/2}=|det D|^{−a}
+det(I+XXᵀ)^{−a/2}`).
+
+**(4) the `H̃`-fibre (polar).** `∫_{H̃∈ℝ^{ub}} (‖H̃‖² + τ²)^{−q} dH̃ ≍ τ^{ub−2q}` (`τ = ‖YW‖`; verified
+`inc_bigcell.py`, slope `= ub−2q`). Standard radial CoV.
+
+**(5) the determinantal big-cell of `W` (the genuine blow-up — resolves the rank-drop / pointwise-failure
+locus).** On `{det W₁₁ ≠ 0}` for a size-`ℓ` minor `W₁₁`:
+
+    W = [[W₁₁, W₁₂],[W₂₁, W₂₂]]  ↦  (W₁₁, W₁₂, W₂₁, E),   E := W₂₂ − W₂₁ W₁₁^{−1} W₁₂   ((u−ℓ)×(d−ℓ)).
+
+**Jacobian `≡ 1`** (a translation in `W₂₂`; rational/`C^∞` on `{det W₁₁≠0}` — verified `inc_bigcell.py`, `|det|=1`
+for `(u,d,ℓ) ∈ {(2,2,1),(2,4,1),(3,3,1),(3,3,2),(3,4,2)}`), and **`rank W = ℓ + rank E`** (verified), so `E` is
+the **transverse-Schur normal coordinate**: `{E=0} = {rank W ≤ ℓ}`. The rank-`s` big-cell of the `Y`-block is
+identical (Jacobian `1`). Polar in the `E`-block and the residual `Y`-directions produces the radial measure
+`r^{C_{ℓ,s}−1} dr`; with the loss `r^{−2q}` this is the `∫₀^δ r^{C_{ℓ,s}−1−2q}dr` of §3, exponent read
+directly off the chart.
+
+**Corner `(2,2,3)` explicit cells (the `ℓ=0` cell, no big-cell needed).** `b=u=a=1`, `d=2`, net `|det D|^{0}`.
+After (1)–(3), `F ≍ H̃² + ‖Y‖²‖W‖²` with `H̃` (1-dim), `Y=(P;C)` (2-dim, `= my earlier ρ`), `W` (2-dim,
+`= my earlier t`). Polar in `Y` (`w_Y dw_Y`) and `W` (`w_W dw_W`), `H̃`-fibre `≍ (w_Y w_W)^{1−2q}`:
+
+    monomial  w_Y^{2−2q} w_W^{2−2q} dw_Y dw_W,   two radial ∫ r^{2−2q}dr = ∫ r^{3−2c'}dr,  finite ⟺ c'<2=T1.
+
+This is §2's blow-up presented as the explicit atlas (`{H̃=0,Y=0}` and `{H̃=0,W=0}`, each codim 3 = `C_{0,0}`).
+
+**Verdict on the gate.** Every chart is an explicit rational coordinate map with a monomial Jacobian
+(`|det D|^{n−b−a−u}`, `det(I+XXᵀ)^{−a/2}` a unit, the big-cell Jacobians `≡1`, the polar `r`-powers), covering
+the domain by a **finite** atlas (`b`-minors of `Qb` × `ℓ`-minors of `W` × `s`-minors of `Y`). So
+`incidenceCell_lintegral_le` is **bounded labour** — a per-chart `lintegral_image_eq_lintegral_abs_det_fderiv_mul`
++ the monomial exponent bookkeeping (`C_{ℓ,s}`, §3). **The "missing stratified-CoV framework" wall does NOT
+materialise**: the stratification IS a finite union of explicit big-cells, not an abstract resolution. (The
+substantive Lean work is the finite determinantal atlas + gluing the null overlaps — standard, not novel
+theory.)
+
 ## 4. Why the domination closes with finite per-exponent K (the INTEGRATED, per-stratum mechanism)
 
 Not pointwise-in-`z`. On each joint stratum the LHS is a monomial integral `∫ r^{C_{ℓ,s}−1−2q} dr`, finite for
