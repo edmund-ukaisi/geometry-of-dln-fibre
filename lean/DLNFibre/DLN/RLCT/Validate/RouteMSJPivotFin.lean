@@ -670,28 +670,20 @@ theorem pivotDomLHS_lt_top_of_nonpos (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     pivotDomLHS M u ε c' Zf < ⊤ := by
   sorry
 
-/-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX — scaffold + 1-sorry, standing decision 7).**
-The freed Schur-loss spine LHS is dominated by a FINITE reorganisation constant times the comparator-core
-RHS. This is exactly the conclusion of `RouteMSJHeadSplitDom.headSplit_pivotDom`; it carries the entire
-head-split analytic crux and is left as the single `sorry` of this module. The block-front reduction
-`pivotDomLHS_eq_blockFront` gives the concrete starting point.
+/-- **The σ-coupled pivot-peel DOMINATION (the ISOLATED CRUX).** The freed Schur-loss spine LHS is
+dominated by a FINITE reorganisation constant times the comparator-core RHS — exactly the conclusion of
+`RouteMSJHeadSplitDom.headSplit_pivotDom`.
 
-**Internal decomposition** (the scaffold, to be built sorry-free around the one residual C-absorption):
-* **Reformulation** (`freedSchurLoss_eq_frobSq_block`, LANDED): on `outerDom` (`IsUnit P`), `freedSchurLoss
-  x Γ Q = frobSq(fromBlocks P B₁₂ C (Γ+schurShift x) · Q)` — the `P⁻¹` coupling cancels.
-* **D-subst**: substitute `D := Γ + schurShift x` (translation, measure-preserving); the `(2,2)` block `D`
-  ranges over `genBox`, giving the clean block-front integral `∫_{P,B₁₂,C box, D genBox} frobSq(B·Q_stack)^{−c'}`.
-* **Row-split**: `frobSq(B·Q_stack) = frobSq((P|B₁₂)·Q_stack) + frobSq((C|D)·Q_stack)` — top rows = pivot
-  `w`, bottom rows = corank.
-* **D-A radial (top)**: `pivotBlock_radial_blowup` on `W = (P|B₁₂)` (Jacobian `r^{u·M₁−1}`); the direction
-  `P̂` hits `Q_stack`, RETAINING the `σ_i(z,A_cor)`-dependence (a uniform pivot pull-out DIVERGES — archfin
-  + Codex). `σ_i`-bounded-below directions give the uniform pivot capacity `uρ`, non-binding by `hpiv`.
-* **S3 corank (bottom)** + **the σ-coupled C-ABSORPTION (the residual, ~65-75%-new, the RISKY piece)**:
-  the LHS corank integrates over `C` (a×u, box) AND `D` (a×b, genBox) with the `C·Q_p` CROSS-TERM
-  `frobSq(C·Q_p + D·Q_b)`, whereas S3 (`shell_corankOffSector_le_unif`) handles `∫_{A_cor,Γ}(w +
-  frobSq(Ccross + Γ·(A_cor·Z)))^{−c'} ≤ Cunif·w^{−(c'−ab/2)}` with `Ccross` FIXED. The residual identifies
-  `Ccross := C·Q_p` and absorbs `C` by S3's `Ccross`-UNIFORMITY (box-vol, NOT codim ⟹ corank charge `ab`,
-  closing the `b>u` window) — the piece the certs flag needs the adapted chart-constant lemma. -/
+**This assembly is sorry-free** (the full-block route, approved 2026-07-14). Via the generic `ℝ≥0∞` ratio
+trick (`exists_finite_mul_of_finite_imp`, `RHS ≠ 0` by `pivotDomRHS_ne_zero_aux`) it reduces to
+`pivotDomRHS < ⊤ → pivotDomLHS < ⊤`: the comparator-side divergence `pivotDomRHS_eq_top_of_critical`
+extracts `2c' < minAdm + (M₀−u)(M₁−u)`, the nat chain `minAdm_add_peel_le` (via `hpiv`) closes it against the
+block dimension `N = (u+a)(u+b)`, and the `0 < c'` finiteness `pivotDomLHS_lt_top_of_pos` wins by the joint
+full-block Loewner-floor bound (`shell_fullBlock_le` — the checkpoint lemma), with the `c' ≤ 0` edge
+`pivotDomLHS_lt_top_of_nonpos`. The `hcvg`/`hmM`/`ε'`/`U_sf`/frame hypotheses are UNUSED (the route bypasses
+the S3 corank peel entirely — Codex-corroborated). Three comparator-side helpers
+(`pivotDomRHS_ne_zero_aux`, `pivotDomRHS_eq_top_of_critical`, `pivotDomLHS_lt_top_of_nonpos`) are
+correct-statement `sorry`s pending a follow-up (positivity + divergence of the comparator + the c'≤0 edge). -/
 theorem pivotPeel_domination (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (hu : 1 ≤ u)
     {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hnd : ∀ i, 1 ≤ M i)
     (hpiv : minAdm (redChain u M) ≤ u * tailMinWidth M) {m : ℕ}
