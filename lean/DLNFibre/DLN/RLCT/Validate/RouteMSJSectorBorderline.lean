@@ -171,17 +171,47 @@ theorem shellCorankWeight_real_le_unif {b M₂ m n : ℕ} (Z : Matrix (Fin M₂)
 
 /-! ## The sector borderline θ-interpolation bound over the `U_s` `m`-frame -/
 
+/-- **The `Z`/`w`-uniform per-shell borderline constant.** The θ-interpolation analogue of
+`deeperFlagUnifConst`: `ε^{−θab}` times the θ-scaled fixed-box strong-block weight, times the
+`Cresid^θ`-interpolation factor and the bounded brick's `(vol sΓ)^{1−θ}` — a value INDEPENDENT of the
+deep factor `Z`, the pivot energy `w`, and the cross-shift `Ccross`. It is this uniformity that lets a
+pointwise-in-`(z,v)` application (at `w = decLoss v z`, `Z = Zf z`) factor the constant out of the reduced
+`z`-integral, exactly as `deeperFlagUnifConst` does in the convergent regime. -/
+noncomputable def deeperFlagBorderlineConst (a b m M₂ : ℕ) (hmM : m ≤ M₂) (ε c' θ : ℝ)
+    (volsΓ : ℝ≥0∞) : ℝ≥0∞ :=
+  ENNReal.ofReal (ε ^ (-(θ * (a : ℝ) * (b : ℝ))))
+    * (∫⁻ X in matBox b M₂ ((M₂ : ℝ) ^ 2),
+        ENNReal.ofReal
+          ((((Matrix.of X).submatrix id ⇑(Fin.castLEEmb hmM))
+              * ((Matrix.of X).submatrix id ⇑(Fin.castLEEmb hmM))ᵀ).det ^ (-(θ * (a : ℝ)) / 2)))
+    * ENNReal.ofReal (Cresid (a * b) c' ^ θ) * volsΓ ^ (1 - θ)
+
+/-- **The `Z`/`w`-uniform borderline constant is finite** in the borderline-integrable regime
+`θ·a < m − b + 1` (⟺ `θ < 1` at the border `a = m−b+1`), for a finite-measure freed-corner domain. -/
+theorem deeperFlagBorderlineConst_lt_top (a b m M₂ : ℕ) (hmM : m ≤ M₂) (hbm : b ≤ m)
+    (ε c' θ : ℝ) (hθ1 : θ ≤ 1) (hθa : θ * (a : ℝ) < (m : ℝ) - b + 1)
+    {volsΓ : ℝ≥0∞} (hvol : volsΓ < ⊤) :
+    deeperFlagBorderlineConst a b m M₂ hmM ε c' θ volsΓ < ⊤ := by
+  rw [deeperFlagBorderlineConst]
+  refine ENNReal.mul_lt_top (ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_)
+    ENNReal.ofReal_lt_top) (ENNReal.rpow_lt_top_of_nonneg (by linarith) hvol.ne)
+  exact strongBlock_unif_const_lt_top hmM hbm hθa
+
 /-- **The sector borderline θ-interpolation bound over the `U_s` `m`-frame.** The BORDERLINE analogue of
 `shell_corankOffSector_le_unif` (the convergent `m`-frame bound). On the shell `Z Zᵀ ⪰ ε²·(U_s U_sᵀ)`
 (`U_sᵀ U_s = 1`, `b ≤ m ≤ M₂`, `m ≤ Z.rank`), a fixed pivot energy `w > 0`, cross-shift `Ccross`, `c'`
-above the block Morse threshold `ab/2`, an interpolation weight `θ ∈ [0,1)` with the θ-scaled weight
-integrable (`θ·a < m − b + 1`), and a finite-measure freed-corner domain `sΓ`, the corank-block integral
-is bounded by a finite, `w`-independent constant times the θ-reduced power of `w`:
+above the block Morse threshold `ab/2`, an interpolation weight `θ ∈ [0,1)`, and a finite-measure
+freed-corner domain `sΓ`, the corank-block integral
+is bounded by the `Z`/`w`-uniform constant `deeperFlagBorderlineConst` (finite by
+`deeperFlagBorderlineConst_lt_top`) times the θ-reduced power of `w`:
 
-    ∫_{A_cor} [∫_{Γ∈sΓ} (w + frobSq(Ccross + Γ·(A_cor·Z)))^{−c'}] dA_cor  ≤  C₁ · w^{−(c'−θ·ab/2)}.
+    ∫_{A_cor} [∫_{Γ∈sΓ} (w + frobSq(Ccross + Γ·(A_cor·Z)))^{−c'}] dA_cor
+      ≤ deeperFlagBorderlineConst … (vol sΓ) · w^{−(c'−θ·ab/2)}.
 
 At the sector borderline `a = m − b + 1` the convergent (`θ=1`) `m`-frame weight `∫ det^{−a/2}`
-log-diverges, but `θ·a < m − b + 1 ⟺ θ < 1`, so any `θ < 1` gives a log-free bound. The two banked
+log-diverges; the constant `deeperFlagBorderlineConst` is finite exactly when `θ·a < m − b + 1`
+(`deeperFlagBorderlineConst_lt_top`), which at the border is `⟺ θ < 1`, so any `θ < 1` gives a log-free
+finite bound. The two banked
 pointwise bounds — the atom (`corankBlock_morsePeel_setLE`, core `≥ w`) and the bounded brick
 (`corankBlock_boundedGen_le`) — bound the inner integral on the a.e. full-row-rank set;
 `enn_geom_interp` takes their geometric mean (`borderline_real_identity` collapses the powers), and the
@@ -193,37 +223,30 @@ theorem shell_corankOffSector_borderline_le_unif {a b M₂ m n : ℕ} (Z : Matri
     (hmZ : m ≤ Z.rank) {ε : ℝ} (hε : 0 < ε)
     (hshell : (Z * Zᵀ - (ε ^ 2) • (U_s * U_sᵀ)).PosSemidef)
     (Ccross : Matrix (Fin a) (Fin n) ℝ) (c' θ : ℝ) (hc' : (a * b : ℝ) / 2 < c')
-    (hθ0 : 0 ≤ θ) (hθ1 : θ < 1) (hθa : θ * (a : ℝ) < (m : ℝ) - b + 1)
+    (hθ0 : 0 ≤ θ) (hθ1 : θ < 1)
     (sΓ : Set (Fin a → Fin b → ℝ)) (hsΓ : volume sΓ < ⊤) (w : ℝ) (hw : 0 < w) :
-    ∃ C₁ : ℝ≥0∞, C₁ < ⊤ ∧
-      ∫⁻ A_cor in matBox b M₂ 1,
-          ∫⁻ Γ in sΓ, ENNReal.ofReal
-            ((w + frobSq (Ccross + (Matrix.of Γ) * (Matrix.of A_cor * Z))) ^ (-c'))
-        ≤ C₁ * ENNReal.ofReal (w ^ (-(c' - θ * (a * b : ℝ) / 2))) := by
+    ∫⁻ A_cor in matBox b M₂ 1,
+        ∫⁻ Γ in sΓ, ENNReal.ofReal
+          ((w + frobSq (Ccross + (Matrix.of Γ) * (Matrix.of A_cor * Z))) ^ (-c'))
+      ≤ deeperFlagBorderlineConst a b m M₂ hmM ε c' θ (volume sΓ)
+          * ENNReal.ofReal (w ^ (-(c' - θ * (a * b : ℝ) / 2))) := by
   classical
   have hc0 : (0 : ℝ) ≤ c' := le_of_lt (lt_of_le_of_lt (by positivity) hc')
   have h1θ : (0 : ℝ) ≤ 1 - θ := by linarith
+  have hsa : (0 : ℝ) ≤ θ * (a : ℝ) := mul_nonneg hθ0 (Nat.cast_nonneg a)
   -- the inner freed-corner integral as a function of the corank block `A_cor`
   set F : (Fin b → Fin M₂ → ℝ) → ℝ≥0∞ := fun A =>
     ∫⁻ Γ in sΓ, ENNReal.ofReal
       ((w + frobSq (Ccross + (Matrix.of Γ) * (Matrix.of A * Z))) ^ (-c')) with hFdef
-  -- the θ-scaled corank weight (finite: `θ·a < m − b + 1`, via the m-frame shell floor)
+  -- the θ-scaled corank weight over the ACTUAL box (`Z`-dependent; bounded `Z`-uniformly below)
   set Wθ : ℝ≥0∞ := ∫⁻ A in matBox b M₂ 1,
       ENNReal.ofReal (((Matrix.of A * Z) * (Matrix.of A * Z)ᵀ).det ^ (-(θ * (a : ℝ)) / 2)) with hWdef
-  have hsa : (0 : ℝ) ≤ θ * (a : ℝ) := mul_nonneg hθ0 (Nat.cast_nonneg a)
-  have hWfin : Wθ < ⊤ := by
-    refine lt_of_le_of_lt (shellCorankWeight_real_le_unif Z U_s hUs hbm hmM hε hshell hsa) ?_
-    exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (strongBlock_unif_const_lt_top hmM hbm hθa)
   -- the `A_cor`-independent constant (the Cresid factor + the bounded brick's volume)
   set Kconst : ℝ≥0∞ :=
       ENNReal.ofReal (Cresid (a * b) c' ^ θ * w ^ (-(c' - θ * (a * b : ℝ) / 2)))
         * (volume sΓ) ^ (1 - θ) with hKdef
   have hKfin : Kconst < ⊤ :=
     ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.rpow_lt_top_of_nonneg h1θ (ne_of_lt hsΓ))
-  refine ⟨Wθ * ENNReal.ofReal (Cresid (a * b) c' ^ θ) * (volume sΓ) ^ (1 - θ), ?_, ?_⟩
-  · -- finiteness of `C₁`
-    refine ENNReal.mul_lt_top (ENNReal.mul_lt_top hWfin ENNReal.ofReal_lt_top) ?_
-    exact ENNReal.rpow_lt_top_of_nonneg h1θ (ne_of_lt hsΓ)
   -- the main bound
   have hmeasbox : MeasurableSet (matBox b M₂ 1) := matBox_measurableSet b M₂ 1
   have hbZ : b ≤ Z.rank := le_trans hbm hmZ
@@ -305,6 +328,11 @@ theorem shell_corankOffSector_borderline_le_unif {a b M₂ m n : ℕ} (Z : Matri
           * ENNReal.ofReal (w ^ (-(c' - θ * (a * b : ℝ) / 2))) := by
         rw [hKdef, ENNReal.ofReal_mul (Real.rpow_nonneg (Cresid_nonneg _ _) _)]
         ring
+    _ ≤ deeperFlagBorderlineConst a b m M₂ hmM ε c' θ (volume sΓ)
+          * ENNReal.ofReal (w ^ (-(c' - θ * (a * b : ℝ) / 2))) := by
+        rw [deeperFlagBorderlineConst]
+        gcongr
+        exact shellCorankWeight_real_le_unif Z U_s hUs hbm hmM hε hshell hsa
 
 /-! ## Structural fact (1) — the `m`-frame equals `tailMinWidth` at a nonempty sector -/
 

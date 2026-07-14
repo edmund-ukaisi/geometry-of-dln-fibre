@@ -13,10 +13,14 @@ cross-lane Bricks F/D of `RouteMSJDeeperFlagCore`) is controller rendezvous wiri
 ## Delivered theorems (one line each)
 
 - `shell_corankOffSector_borderline_le_unif` — SECTOR BORDERLINE bound, `m`-frame keyed: on the shell
-  `Z Zᵀ ⪰ ε²·(U_s U_sᵀ)` (`U_sᵀU_s=1`, `b≤m≤M₂`, `m≤Z.rank`), `θ∈[0,1)` with `θ·a < m−b+1`,
-  `∫_{A_cor}∫_Γ (w + frobSq(Ccross + Γ·(A_cor·Z)))^{−c'} ≤ C₁·w^{−(c'−θab/2)}`, `C₁<⊤` free of `w`.
-  The borderline analogue of the banked `shell_corankOffSector_le_unif`; closed by `enn_geom_interp` +
-  `borderline_real_identity`; finiteness via the `m`-frame `shellCorankWeight_real_le_unif` +
+  `Z Zᵀ ⪰ ε²·(U_s U_sᵀ)` (`U_sᵀU_s=1`, `b≤m≤M₂`, `m≤Z.rank`), `θ∈[0,1)`,
+  `∫_{A_cor}∫_Γ (w + frobSq(Ccross + Γ·(A_cor·Z)))^{−c'} ≤ deeperFlagBorderlineConst … (vol sΓ)·w^{−(c'−θab/2)}`.
+  The constant is an EXPLICIT `Z`/`w`/`Ccross`-free term (mirroring `deeperFlagUnifConst`), so it factors
+  out of a pointwise-in-`(z,v)` application — the reshape after reviewer Finding 1 (the earlier `∃ C₁`
+  form did not deliver the uniformity its name asserts). The borderline analogue of the banked
+  `shell_corankOffSector_le_unif`; closed by `enn_geom_interp` + `borderline_real_identity`.
+- `deeperFlagBorderlineConst` (+ `_lt_top`) — the `Z`/`w`-free per-shell borderline constant, finite iff
+  `θ·a < m−b+1` (⟺ `θ<1` at the border), via the `m`-frame `shellCorankWeight_real_le_unif` +
   `strongBlock_unif_const_lt_top` (NOT the `M₂`-keyed `corankWeight_bpos_lt_top`).
 - `uniformWenn_proj_real_le` — real-exponent (`s≥0`) analogue of `uniformWenn_proj_le`: shell-floor
   projection `Z→U_s`, factor `ε^{−sb}`.
