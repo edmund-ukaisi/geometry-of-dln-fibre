@@ -19,7 +19,7 @@ crux module in isolation via a hardlink build (removing only my own hardlink nam
 worktree's oleans were verified untouched). Ran forced `#print axioms` on every target theorem and its
 dependency path. Verified each step of the full-block route by hand, plus the verbatim stub reproduction
 (byte-identical signature + `@pivotDom_finiteness = @pivotDom_finiteness_impl` type-match by `rfl`).
-Decorrelated the mathematics with Codex — see `codex-prompt.md` / `codex-answer.md`; it
+Decorrelated the mathematics with Codex — see `codex/full-block-soundness-{prompt,answer}.md`; it
 corroborated every substantive point.
 
 ## Findings (ranked, most severe first)
