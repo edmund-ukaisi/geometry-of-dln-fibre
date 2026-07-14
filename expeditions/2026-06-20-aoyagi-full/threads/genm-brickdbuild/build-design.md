@@ -57,7 +57,21 @@ The algebraic building blocks of incidencepp's atlas charts (1)-(3) + the transv
 - `chartNull_Qb` — chart (2): `Q_b·N = 0` for `N = [−X; I_d]` (`col N = ker Q_b = (row Q_b)^⊥`).
 - **`chartNull_Qp`** — chart (2): `Q_p·N = W` (the transverse energy is carried entirely by `W`).
 - `chartNull_gram` — chart (3): `NᵀN = I + XᵀX` (the `d×d` inverse Gram monomializing the transverse Schur).
+- **`chartSwap`** — `(I+XXᵀ)⁻¹X = X(I+XᵀX)⁻¹` (the 2nd ingredient, with `pushThrough`, of the projection identity).
 These give `Q_p(I−Π_b)Q_pᵀ = W(NᵀN)⁻¹Wᵀ = W(I+XᵀX)⁻¹Wᵀ` once `I−Π_b = N(NᵀN)⁻¹Nᵀ` is wired (next).
+
+## incidencepp's two routes (banked for the continuation)
+- **Projection identity `I−Π_b = N(NᵀN)⁻¹Nᵀ` — BLOCK route (NO rank/idempotent).** `Π_b` is `D`-independent:
+  `Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b = [I;Xᵀ]·(I+XXᵀ)⁻¹·[I|X]` (`D` cancels via `chartGram_congr`). With `P:=(I+XXᵀ)⁻¹`,
+  `Q:=(I+XᵀX)⁻¹`, `Π_b + P_N` is the 2×2 block `[[P+XQXᵀ, PX−XQ],[XᵀP−QXᵀ, XᵀPX+Q]]`; each block = the
+  `I_n` block via: top-left `P+XQXᵀ=I` (`I−pushThrough`), bot-right `XᵀPX+Q=I` (`pushThrough`), off-diag
+  `PX−XQ=0` (`chartSwap`). 4-block match → done, reusing `pushThrough`+`chartSwap` (both LANDED).
+- **`rank W = ℓ + rank E` + the chart-(5) CoV — block-LU.** Index big-cell by `(I,J)`, `|I|=|J|=ℓ`,
+  chart `{det W_{I,J}≠0}`; permute (|det|=1) so `W₁₁∈GL_ℓ` top-left. `W' = (unipotent)·blockdiag(W₁₁,E)·
+  (unipotent)`, `E:=W₂₂−W₂₁W₁₁⁻¹W₁₂` ⟹ `rank W = ℓ + rank E`, `{rank W≤ℓ}∩chart = {E=0}`. The CoV
+  `(W₁₁,W₁₂,W₂₁,E)↦W` is a TRANSLATION in `E` (`W₂₂=E+W₂₁W₁₁⁻¹W₁₂`), block-triangular unit-diagonal ⟹
+  `|det DΦ|≡1`; C^∞, injective, image `{det W_{I,J}≠0}` open. `E` is the polar variable (dim `(u−ℓ)(d−ℓ)`).
+  [Mathlib: rank-invariance under unit mult + block-diag-rank=sum, or rank = n−dim ker + block-triangular.]
 
 ## incidencepp §3b UPGRADE — the explicit atlas landed (unblocks `incidenceCell_lintegral_le`)
 5-chart sequence, all monomial-Jacobian (each a single `lintegral_image_eq_lintegral_abs_det_fderiv_mul`):

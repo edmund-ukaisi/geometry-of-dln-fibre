@@ -98,4 +98,31 @@ theorem chartNull_gram {b d : ℕ} (X : Matrix (Fin b) (Fin d) ℝ) :
     Matrix.one_mul]
   abel
 
+/-- **The swap identity** `(I_b + X Xᵀ)⁻¹ X = X (I_d + Xᵀ X)⁻¹` — the second ingredient (with
+`pushThrough`) of the block-route projection identity `I − Π_b = N(NᵀN)⁻¹Nᵀ`. From the commutation
+`(I + X Xᵀ) X = X (I + Xᵀ X)` (both `= X + X Xᵀ X`), inverting on both sides. -/
+theorem chartSwap {b d : ℕ} (X : Matrix (Fin b) (Fin d) ℝ)
+    (hA : IsUnit ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ).det)
+    (hB : IsUnit ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X).det) :
+    ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X
+      = X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ := by
+  have hcomm : ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ) * X
+      = X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X) := by
+    rw [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one]
+    exact congrArg (X + ·) (Matrix.mul_assoc X Xᵀ X)
+  calc ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X
+      = ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X
+          * (((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X) * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹) := by
+        rw [Matrix.mul_nonsing_inv _ hB, Matrix.mul_one]
+    _ = ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹
+          * (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ) * X) * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ := by
+        rw [← Matrix.mul_assoc (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹ * X)
+              ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X) (((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹),
+          Matrix.mul_assoc (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹) X
+              ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X), hcomm]
+    _ = X * ((1 : Matrix (Fin d) (Fin d) ℝ) + Xᵀ * X)⁻¹ := by
+        rw [← Matrix.mul_assoc (((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ)⁻¹)
+              ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ) X, Matrix.nonsing_inv_mul _ hA,
+          Matrix.one_mul]
+
 end DLNFibre.DLN.RLCT
