@@ -33,8 +33,10 @@
   dependency cone — statement-locked, tracked, owned, count small and sawtoothing) or a **fossil**
   (off every root's cone — quarantined, pruned at close, never on the value path); (iii) the audit is
   cone-aware (classify via the env-walker dependency graph; `scripts/sorries` stays as the raw census;
-  `AxCheck` stays the kernel truth for roots). Reference implementation:
-  `docs/retro/aoyagi-full/substrate/frontier_readout.py` + `WalkDecls.lean`.
+  `AxCheck` stays the kernel truth for roots). The roots registry and the cone-aware audit are part of
+  the **expedition-map** (see `docs/retro/aoyagi-full/expedition-map-design.md` — the top-down object:
+  curated `expedition-map.yaml` + computed status companion + kernel-checked `MapAnchors.lean` pins).
+  *The map is not the territory*: the kernel is the territory; the map's contracts keep it honest.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
 - **`lake build` / `scripts/lb` exit-0 can MASK a `sorryAx` via a stale olean cache.** If an edit does not
   invalidate a `.olean` (a downstream-only change, an edit Lean's incremental compiler deems irrelevant), a
