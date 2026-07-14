@@ -24,9 +24,11 @@ The object is NOT the curated file; it is a rich data lake whose small human-wri
 claims file, and **everything anyone reads is a generated projection**. (The aoyagi-full retro
 substrate — commits/events/threads/decls/cone tables — IS this lake, built read-side post-hoc;
 the proposal runs it live.) Layout: `expeditions/<e>/map/` containing `claims.yaml` (curated
-heart, sole hand-edited file), `lake/` (computed, heavy, regenerated: decls/deps/status/cone,
-events index, near-match index, estimate-outcome history, evidence store), `views/` (generated,
-role-addressed, explainers embedded), `MapAnchors.lean`.
+heart, sole hand-edited file), `survey/` (computed, heavy, regenerated: decls/deps/status/cone, near-match index,
+estimate-outcome history, evidence store — "the map is drawn from the survey"; named to avoid
+Lean's `lake`), views via CLI (below), `MapAnchors.lean`, and `STATUS.md` (the ONE materialized
+view — the tick-view, auto-written by every validator run, never hand-edited: the post-compaction
+breadcrumb and operator glance).
 
 **Views by role and decision cadence** — controller tick-view (~40 lines ambient: frontier,
 owners, alarms, gates-opened); controller **decision-view** (on-demand, RICH, 5–20k tokens:
@@ -56,10 +58,11 @@ Curated-heart schema:
        kill:          kill-conditions (claims.md discipline, structured home)
        evidence:      [threads/…/cert.md, …]
 
-2. **`map/lake/`** — computed companion tables (package-lock analogy; never hand-edited). The
+2. **`map/survey/`** — computed companion tables (package-lock analogy; never hand-edited). The
    env-walker + extractors derive: lean name exists?, sorried?, axiom closure, referenced-by (edge
-   witnesses), fossil/live cone membership, near-match index, estimate-vs-outcome history.
-   Regenerated at gate time and librarian cadence.
+   witnesses), fossil/live cone membership, near-match index, estimate-vs-outcome history (one
+   convention: a claim's closing delta records predicted-vs-actual — size class, wall/labour call
+   — and calibration stats fall out). Regenerated at gate time and librarian cadence.
 
 3. **`MapAnchors.lean`** — the kernel-checked marriage. Every `stated`+ claim gets an
    `example : <statement verbatim> := <lean name>` pin (the harness's existing example-block
@@ -191,9 +194,30 @@ re-deriving.
    crux-shaped." The lake holds the history; no discipline substitutes for seeing one's own curve.
 9. Capacity-vs-rank mismatch (lanes × claims vs priorities — the hard-part-avoidance query).
 
+## Expedition-time operation (vs retro archaeology)
+
+The retro machinery reconstructed state from exhaust (regex over 200k ledger lines, pickaxe
+recovery). Expedition-time, state is **born structured** — journal entries cite map ids (no ledger
+parsing ever), claims written at the source — so the live survey is SMALLER than the retro lake.
+Operating rules:
+- **Views are a CLI, not a directory** (a `views/` dir is another rot surface): `map view tick |
+  decision <node> | brief <node> | lookahead | reviewer <name>` — computed fresh at invocation,
+  each printing its survey anchor. Only STATUS.md is materialized (auto-written).
+- **Survey refresh rides the green-gate**: every integration gate = build + AxCheck + walker
+  (incremental — re-walk only modules whose oleans changed) + validator + STATUS.md. No new build
+  cadence; ~2–3 marginal minutes.
+- **Staleness is stated, never hidden**: between gates views render from the last survey with an
+  anchor banner; on a broken build the validator reports "territory unreachable since <sha>".
+  Views never block on a build.
+- **Loud change-classes**: a statement edit breaks its MapAnchor pin (pins compile in the
+  aggregator — drift cannot reach a gate silently); a rename breaks the pin too, forcing rename +
+  anchor + forwarding pointer into one atomic commit — naming discipline as a build failure, not
+  a rule to remember.
+
 ## Someday
 
-- **expedition-cli**: `map validate | query | delta | render` (render = the blueprint-style
-  dependency view; the retro dashboard is the prototype).
+- **expedition-cli hardening**: `map validate | query | delta` beyond the view subcommands
+  (delta = applying teammate MAP_DELTA blocks; render = the blueprint-style dependency view; the
+  retro dashboard is the prototype).
 - Migration note: statement cards and BUILT-INDEX entries are prose renderings of map nodes;
   on adoption they become generated views, not sources.
