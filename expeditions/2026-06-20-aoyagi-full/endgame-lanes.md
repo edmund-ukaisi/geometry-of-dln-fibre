@@ -19,6 +19,15 @@ So `s` IS thresholdhunt's B-rank `r`; the resolution re-derives "binding at r=t�
 - **Lean (iv) shrinks to:** (a) the `ring` identity; (b) `Finset.min` monotone under range inclusion; (c) banked `minAdm`/thresholdhunt codim. FORWARD-GUARD held: the `ring` identity is the proof; widths-2..10 numeric is evidence, not a substitute. Relayed to brickdcont with §3 collapse.
 ⟹ **No open math remains on the resolution side.** The terminal brick `incidenceCell_lintegral_le` = pure measure-theory labour (charts 4-5 CoV + gluing + assembly).
 
+## BRICK D BUILD (brickdcont, branch `genm-sj5-brickdcont` off `origin/genm-sj5-brickdbuild@2c3778837`) — progress tracker
+Building the resolution tail (i)→(v) on `RouteMSJIncidenceChart.lean`. Each piece green under the DIRECT module target `scripts/lb DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart` + forced #print axioms clean-three.
+**WIRING = CONTROLLER-DEFERRED to the coherent Brick D unit** (integrate into aggregator `DLNFibre.lean` when `deeperFlag_shell_le` consumes it, NOT per-sub-landing — avoids aggregator thrash while the file grows). Canonical Lean tree frozen (recent commits all docs) ⟹ no drift; direct target fully checks the module regardless of aggregator membership. Integration TODO also: verify no Lean drift between brickdbuild's base and current main at merge (expect clean — no Lean has landed on main since).
+- **(i) transverse-Schur Gram identity** — ✅ LANDED @1c6298148 (+129 LoC): `chartProj_Dcancel`, `chartProjRed_block`, `chartProjComplement` (I−Π_b = N(NᵀN)⁻¹Nᵀ), `transverseSchurGram` (Q_p(I−Π_b)Q_pᵀ = W(I+XᵀX)⁻¹Wᵀ). Sorry-free, clean-three, guards held. Reviewer spawned (fidelity vs cert §3) — verdict pending.
+- **(iv) exponent-gate** — IN PROGRESS (taken next, controller-approved bedrock-first; self-contained algebra, de-risks heavy (ii)). = ring identity + Finset.min monotone + banked minAdm. Forward-guard: `ring` is THE proof.
+- **(ii) charts 4-5 CoV** — PENDING (heavy new module, Mathlib CoV engine).
+- **(iii) null-overlap gluing** — PENDING.
+- **(v) assembly** incidenceCell_lintegral_le → G<⊤ → domination → `deeperFlag_shell_le` — PENDING; this is the point where the module gets wired + AxCheck-gated into canonical.
+
 ## ★★★ RENDEZVOUS PLAN (2026-07-14, decision-LOCKED) — all analytic content banked + fidelity-passed
 Both crux (u≥1) + O2 SORRY-FREE + clean-three + independent-fidelity-PASS. Full git-verified spec = `threads/genm-rendezvous-recon/recon-map.md`. Execute via **FILE-LEVEL assembly** (asmbase off canonical @a87c0506; NOT git-merge — step2 branched pre-reconcile @28d75e7f, divergent lineage add/add-conflicts) on a fresh branch **genm-sj5-rendezvous**. LOCKED:
 - ⚠ **`git fetch origin` FIRST** — local step2/waist refs STALE; integrate from origin tips (step2 e395121c, waist cf47a1a9). All 7 origin tips = cited hashes.
