@@ -333,24 +333,30 @@ theorem deeperFlagGood_finite_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDeco
     (hgoodpiv : ∀ u, minAdm (redChain u M) ≤ u * tailMinWidth M)
     (hIH : ∀ (M' : Fin (L + 1 + 1) → ℕ) (D' : SJDecoration M'),
         adm (L + 1) M' D' → DecoratedBoxThresholdFinite D')
-    -- (a) sibling hole `deeperFlagStrictShell_finite`, WITH the `hcT : c' < carrierThreshold M` clause.
+    -- Nondegeneracy of the widths (controller derives at wiring; the descent maintains it).
+    (hnd : ∀ i, 1 ≤ M i)
+    -- (a) sibling hole `deeperFlagStrictShell_finite`, hcvg-DROPPED (cruxfin's full-block crux is hcvg-FREE
+    -- — uses hu/hε/hnd/hpiv only; controller finalises the DecoratedStep signature at rendezvous). The
+    -- OFF-sector shells `1 ≤ j < r`. Consumed as a sorried hypothesis (auto-closes on the crux fill).
     (hstrict : ∀ (t j : ℕ) (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ}, 0 < ε → ∀ (c' : ℝ),
-        t ≤ min (M 0) (M 1) → (hj : j ≤ min (M 0 - t) (M 1 - t)) → 1 ≤ t → (∀ i, 1 ≤ M i) →
+        t ≤ min (M 0) (M 1) → (hj : j ≤ min (M 0 - t) (M 1 - t)) → (∀ i, 1 ≤ M i) →
         minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M →
-        (M 0 - (t + j)) + (M 1 - (t + j)) ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j →
-        min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2 →
-        (((M 0 - (t + j)) * (M 1 - (t + j)) : ℕ) : ℝ) / 2 < c' →
-        j < min (M 0 - t) (M 1 - t) → c' < carrierThreshold M →
+        c' < carrierThreshold M → j < min (M 0 - t) (M 1 - t) →
         shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t))
           ⟨j, Nat.lt_succ_of_le hj⟩ c' < ⊤)
-    -- (b) sibling hole `deeperFlagSaturatedShell_finite`, WITH `hcT`.
+    -- (b) sibling hole `deeperFlagSaturatedShell_finite`, hcvg-DROPPED (saturated `j = r`, corank-trivial).
     (hsat : ∀ (t j : ℕ) (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ}, 0 < ε → ∀ (c' : ℝ),
-        t ≤ min (M 0) (M 1) → (hj : j ≤ min (M 0 - t) (M 1 - t)) → 1 ≤ t → (∀ i, 1 ≤ M i) →
+        t ≤ min (M 0) (M 1) → (hj : j ≤ min (M 0 - t) (M 1 - t)) → (∀ i, 1 ≤ M i) →
         minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M →
-        (M 0 - (t + j)) + (M 1 - (t + j)) ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j →
-        min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2 →
-        (((M 0 - (t + j)) * (M 1 - (t + j)) : ℕ) : ℝ) / 2 < c' →
-        j = min (M 0 - t) (M 1 - t) → c' < carrierThreshold M →
+        c' < carrierThreshold M → j = min (M 0 - t) (M 1 - t) →
+        shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t))
+          ⟨j, Nat.lt_succ_of_le hj⟩ c' < ⊤)
+    -- (j=0 SECTOR) hole — the #120 sjSector/frontFirst (a+b≤M2 sub-case) + the a+b=M2+1 borderline crux
+    -- (controller's covervalid addendum; discharged at rendezvous). Consumed as a sorried hypothesis.
+    (hsector : ∀ (t j : ℕ) (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ}, 0 < ε → ∀ (c' : ℝ),
+        t ≤ min (M 0) (M 1) → (hj : j ≤ min (M 0 - t) (M 1 - t)) → (∀ i, 1 ≤ M i) →
+        minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M →
+        c' < carrierThreshold M → j = 0 →
         shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t))
           ⟨j, Nat.lt_succ_of_le hj⟩ c' < ⊤) :
     DecoratedBoxThresholdFinite D := by
@@ -482,8 +488,25 @@ theorem deeperFlagGood_finite_impl (M : Fin (L + 1 + 1 + 1) → ℕ) (D : SJDeco
           rw [hpt u z, ENNReal.ofReal_mul (monomialIntegrand_nonneg' D.d k D.jac (c' : ℝ) u)]
       rw [hkey, hcoupled]
       exact ENNReal.mul_lt_top hIu hbox
-  -- GATED (held pending the hcvg/hrange cover-validity verdict): routeMLayerBoxIntegral M < ⊤ via
-  -- `routeMBox_le_shellSum` (LEMMA C) + the per-shell (a)/(b) bounds (`hstrict`/`hsat`) + `ENNReal.sum_lt_top`.
-  sorry
+  -- GATED box-finiteness via LEMMA C + the (hcvg-FREE) 3-way per-shell routing (covervalid verdict:
+  -- j=0 sector / 1≤j<r off-sector / j=r saturated). The per-shell bounds are the sorried crux hyps.
+  have hbind : bindingCut M ≤ min (M 0) (M 1) := (Nat.find_spec (exists_binding_cut M)).1
+  refine lt_of_le_of_lt (routeMBox_le_shellSum M (c' : ℝ) (ε := 1) one_pos) ?_
+  set t := bindingCut M with ht_def
+  set r := min (M 0 - t) (M 1 - t) with hr_def
+  refine ENNReal.sum_lt_top.mpr (fun j _ => ENNReal.sum_lt_top.mpr
+    (fun _ρ _ => ENNReal.sum_lt_top.mpr (fun κ _ => ?_)))
+  have hjle : (j : ℕ) ≤ r := Nat.lt_succ_iff.mp j.isLt
+  have hpiv : minAdm (redChain (t + (j : ℕ)) M) ≤ (t + (j : ℕ)) * tailMinWidth M :=
+    hgoodpiv (t + (j : ℕ))
+  have hjfeq : (⟨(j : ℕ), Nat.lt_succ_of_le hjle⟩ : Fin (r + 1)) = j := Fin.eta j _
+  rcases Nat.eq_zero_or_pos (j : ℕ) with hj0 | _hjpos
+  · have h := hsector t (j : ℕ) κ one_pos (c' : ℝ) hbind hjle hnd hpiv hc' hj0
+    rw [hjfeq] at h; exact h
+  · rcases Nat.lt_or_ge (j : ℕ) r with hjr | hjge
+    · have h := hstrict t (j : ℕ) κ one_pos (c' : ℝ) hbind hjle hnd hpiv hc' hjr
+      rw [hjfeq] at h; exact h
+    · have h := hsat t (j : ℕ) κ one_pos (c' : ℝ) hbind hjle hnd hpiv hc' (le_antisymm hjle hjge)
+      rw [hjfeq] at h; exact h
 
 end DLNFibre.DLN.RLCT
