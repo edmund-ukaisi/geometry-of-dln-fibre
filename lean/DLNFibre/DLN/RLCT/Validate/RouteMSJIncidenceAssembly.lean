@@ -361,4 +361,21 @@ theorem freedSchurLoss_gammaPeel_le {u a b n : ℕ} (x : SJOuter u a b)
     Qb hG c' hc' (frobSq (Matrix.of x.1.1 * Qtp)) hw s) (le_of_eq ?_)
   rw [hz, add_zero]
 
+/-- **The pivot energy in polynomial form (on `IsUnit P`).** `P·Q̃ₚ = P·Q_p + B₁₂·Q_b = [P|B₁₂]·hsQ`,
+free of the matrix inverse (`P·P⁻¹ = 1`). So the pivot energy `E_top = frobSq(P·Q̃ₚ)` is a POLYNOMIAL in
+the front block `x = (P, B₁₂, C)` on the invertible-pivot chart — the form the `E_top > 0` a.e.
+positivity (polynomial nonvanishing, à la `deeperFlagCore_decLoss_pos_ae`) needs; `Q̃ₚ`'s inverse would
+otherwise block that machinery. -/
+theorem pivotEnergy_stack_eq {u a b n : ℕ} (x : SJOuter u a b)
+    (Q : Matrix (Fin u ⊕ Fin b) (Fin n) ℝ) (hP : IsUnit (Matrix.of x.1.1)) :
+    Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+        + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id)
+      = Matrix.of x.1.1 * Q.submatrix Sum.inl id + Matrix.of x.1.2 * Q.submatrix Sum.inr id := by
+  have hdet : IsUnit (Matrix.of x.1.1).det := (Matrix.isUnit_iff_isUnit_det _).mp hP
+  rw [Matrix.mul_add]
+  congr 1
+  rw [Matrix.mul_assoc (Matrix.of x.1.1)⁻¹ (Matrix.of x.1.2) (Q.submatrix Sum.inr id),
+    ← Matrix.mul_assoc (Matrix.of x.1.1) (Matrix.of x.1.1)⁻¹,
+    Matrix.mul_nonsing_inv (Matrix.of x.1.1) hdet, Matrix.one_mul]
+
 end DLNFibre.DLN.RLCT
