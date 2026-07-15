@@ -1,0 +1,586 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.4
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-arch1probe/codex
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f678c-f8e1-7701-b169-415cf238e108
+--------
+user
+<task>
+Adjudicate two questions about an RLCT/integral-finiteness proof architecture for deep linear networks (DLN).
+Setup: chain of widths M=(M0,M1,...,M_last); mult = product of the layer matrices; the "codim" minAdm(M)
+is given by the recursion minAdm(M)=min_{t<=min(M0,M1)}[(M0-t)(M1-t)+minAdm(redChain t M)],
+redChain t M=(t,M2,...,M_last) (one fewer layer); leaf minAdm(a,b)=a*b. deepTailMin(M)=min(M2,...,M_last).
+"good" chains: deepTailMin(M) <= M1.
+
+The box integral (finiteness target) is ∫_box ||mult||^{-2c'} for c'<minAdm(M)/2. A "peel" at the binding
+cut t* (an argmin of the recursion) is followed by singular-value SHELLS j=0..r (r=min(M0-t*,M1-t*)) of the
+DEEP TAIL product; the cut becomes u=t*+j. At each strict shell (1<=j<r) a head/row split exposes:
+ - corank block Q_b = A_cor * Z_deep(z), where Z_deep is the product of the deep tail (M2,...,M_last),
+   generic rank = deepTailMin(M); A_cor is (M1-u) x M2; b := M1-u; a := M0-u.
+ - a Gamma-peel produces the corank charge det(Q_b Q_b^T)^{-a/2} (VALID only when Q_b Q_b^T is PosDef,
+   i.e. rank Q_b = b), times a transverse "front loss" (E_top + E_tr)^{-q}, q=c'-ab/2.
+ - E_top = ||P*Q_p + B12*Q_b||^2 (P invertible pivot on chart), E_tr = ||C*Qtilde_p*Pi_perp||^2,
+   Pi_perp = I - Q_b^T (Q_b Q_b^T)^{-1} Q_b.
+The design routes the deep-factor integrability via a DESCENT: the whole thing is dominated by
+K * cornerComparator(redChain u M).integral(c'-ab/2), whose finiteness is the induction hypothesis on the
+strictly shorter chain redChain u M (threshold reproduced by minAdm(M) <= ab + minAdm(redChain u M)).
+The "corank Gram PosDef a.e." hypothesis (call it hGae) is discharged from: b <= rank Z_deep(z) a.e.,
+which holds iff b <= deepTailMin(M) (generic product rank). There is an ALTERNATIVE mechanism (a "deep
+stratum gate") that explicitly stratifies by the deep rank via a surviving-frame U_s with
+Z Z^T >= eps^2 U_s U_s^T and reduces M2->m=min(M1,M_last)-j; the design claims this deep-stratum arc is
+UNNECESSARY / off-path.
+
+The per-stratum finiteness uses a banked radial blow-up requiring a degree-2-homogeneous transverse loss
+g: R^C -> R (C=stratum codim) with hom: g(r w)=r^2 g(w), and a POSITIVE unit-sphere floor
+hlb: for all ||w||=1, g(w) >= a > 0.
+</task>
+
+<questions>
+Q-A (SOUNDNESS). Is the deep factor genuinely handled WITHOUT the explicit deep-stratum gate? Specifically:
+ (a) The corank charge det(Q_b Q_b^T)^{-a/2}: does it integrate finitely via (hGae a.e. PosDef) + the front
+     radial + the descent, or is there a deep rank-drop locus (Z_deep drops rank so Q_b Q_b^T singular for
+     ALL A_cor) that makes hGae fail on POSITIVE measure and forces an explicit deep-stratum stratification?
+ (b) Key sub-point: hGae needs b=M1-u <= deepTailMin(M) so that {z: rank Z_deep(z)<b} is measure zero. Does
+     this hold at the cuts the peel actually uses? Reason about whether the peel being anchored at a BINDING
+     cut t* (with shells j>=1, u=t*+j) forces b=M1-u < deepTailMin, versus a peel that would need arbitrary
+     cuts. Is "a.e. PosDef (hGae)" ALONE enough to close the deep-factor INTEGRABILITY, or does the descent
+     (IH on shorter chain) do the real work while hGae only enables the pointwise a.e. Gamma-peel?
+
+Q-B (the hlb construction). For a single-block (ell,s) stratum, construct the transverse loss g on the C-dim
+normal block after the unit-Jacobian Schur charts, and determine whether it is cleanly degree-2-homogeneous
+with a positive unit-sphere floor.
+ (i) Is g of the form g(w)=||Lambda w||^2 with Lambda a FIXED (chart-data-dependent) full-column-rank matrix
+     built from the bounded spectators (pivot P, deep factor rows, C-coefficient)? If so, hom is exact and
+     hlb=sigma_min(Lambda)^2. When is sigma_min(Lambda)>0, and what happens at chart boundaries?
+ (ii) Is there a stratum whose transverse loss is NOT degree-2 (e.g. a biquadratic ||Y*W||^2 with BOTH Y and
+      W transverse/blown-up), where the single-block homogeneity g(r w)=r^2 g(w) FAILS? Characterize it.
+</questions>
+
+<output_contract>
+For each of Q-A(a),(b) and Q-B(i),(ii): give a decisive answer. Mark each claim [FACT] (exact algebra /
+provable) vs [INFERENCE] (plausible). For Q-A: state clearly whether the explicit deep-stratum gate is
+NECESSARY or UNNECESSARY, and WHY (what closes the deep-factor integrability). For Q-B: give the explicit g,
+the hom check, the hlb proof (sigma_min), and precisely characterize the stratum (if any) where degree-2
+homogeneity fails. Argue whichever way the mathematics actually goes; do not assume the design is correct.
+</output_contract>
+
+<grounding_rules>
+Exact algebra only for [FACT]. The corank charge det(N G N^T)^{-a/2} over N (b x M2) with G=Z Z^T: its
+A_cor-integral convergence and its leading singularity in G are standard Wishart/corank facts — state them.
+Generic rank of a product of matrices = min of the widths. Do not paste code.
+</grounding_rules>
+
+codex
+I’ll audit the architecture against the exact rank and Wishart thresholds, then separate what follows from the stated setup from anything that would need the missing chart definitions. I’ll first read the repository instructions and look for the relevant proof notes.
+exec
+/bin/bash -lc "pwd && sed -n '1,240p' CLAUDE.md && rg -n \"hGae|deep-stratum|deep stratum|cornerComparator|Gamma-peel|Gamma peel|hlb|unit-sphere|banked radial|single-block|ell,s|Q_b|Qtilde_p|Pi_perp|minAdm|binding cut\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-arch1probe/codex
+ exited 2 in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-arch1probe/codex
+sed: can't read CLAUDE.md: No such file or directory
+
+codex
+The thread directory does not contain the referenced `CLAUDE.md`, so the combined search stopped before reaching the mathematical notes. I’m locating the inherited instructions and relevant files from the workspace tree now.
+exec
+/bin/bash -lc "rg --files .. | rg '("'^|/)(CLAUDE'"\\.md|README\\.md|AGENTS\\.md)"'$|'"\\.(md|lean)"'$'"' | head -n 300" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-arch1probe/codex
+ succeeded in 0ms:
+../codex/arch1-prompt.md
+
+exec
+/bin/bash -lc "sed -n '1,280p' arch1-prompt.md && rg -n \"hGae|deep-stratum|deep stratum|cornerComparator|Gamma-peel|Gamma peel|hlb|unit-sphere|banked radial|single-block|Q_b|Qtilde_p|Pi_perp|minAdm|binding cut\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-arch1probe/codex
+ succeeded in 0ms:
+<task>
+Adjudicate two questions about an RLCT/integral-finiteness proof architecture for deep linear networks (DLN).
+Setup: chain of widths M=(M0,M1,...,M_last); mult = product of the layer matrices; the "codim" minAdm(M)
+is given by the recursion minAdm(M)=min_{t<=min(M0,M1)}[(M0-t)(M1-t)+minAdm(redChain t M)],
+redChain t M=(t,M2,...,M_last) (one fewer layer); leaf minAdm(a,b)=a*b. deepTailMin(M)=min(M2,...,M_last).
+"good" chains: deepTailMin(M) <= M1.
+
+The box integral (finiteness target) is ∫_box ||mult||^{-2c'} for c'<minAdm(M)/2. A "peel" at the binding
+cut t* (an argmin of the recursion) is followed by singular-value SHELLS j=0..r (r=min(M0-t*,M1-t*)) of the
+DEEP TAIL product; the cut becomes u=t*+j. At each strict shell (1<=j<r) a head/row split exposes:
+ - corank block Q_b = A_cor * Z_deep(z), where Z_deep is the product of the deep tail (M2,...,M_last),
+   generic rank = deepTailMin(M); A_cor is (M1-u) x M2; b := M1-u; a := M0-u.
+ - a Gamma-peel produces the corank charge det(Q_b Q_b^T)^{-a/2} (VALID only when Q_b Q_b^T is PosDef,
+   i.e. rank Q_b = b), times a transverse "front loss" (E_top + E_tr)^{-q}, q=c'-ab/2.
+ - E_top = ||P*Q_p + B12*Q_b||^2 (P invertible pivot on chart), E_tr = ||C*Qtilde_p*Pi_perp||^2,
+   Pi_perp = I - Q_b^T (Q_b Q_b^T)^{-1} Q_b.
+The design routes the deep-factor integrability via a DESCENT: the whole thing is dominated by
+K * cornerComparator(redChain u M).integral(c'-ab/2), whose finiteness is the induction hypothesis on the
+strictly shorter chain redChain u M (threshold reproduced by minAdm(M) <= ab + minAdm(redChain u M)).
+The "corank Gram PosDef a.e." hypothesis (call it hGae) is discharged from: b <= rank Z_deep(z) a.e.,
+which holds iff b <= deepTailMin(M) (generic product rank). There is an ALTERNATIVE mechanism (a "deep
+stratum gate") that explicitly stratifies by the deep rank via a surviving-frame U_s with
+Z Z^T >= eps^2 U_s U_s^T and reduces M2->m=min(M1,M_last)-j; the design claims this deep-stratum arc is
+UNNECESSARY / off-path.
+
+The per-stratum finiteness uses a banked radial blow-up requiring a degree-2-homogeneous transverse loss
+g: R^C -> R (C=stratum codim) with hom: g(r w)=r^2 g(w), and a POSITIVE unit-sphere floor
+hlb: for all ||w||=1, g(w) >= a > 0.
+</task>
+
+<questions>
+Q-A (SOUNDNESS). Is the deep factor genuinely handled WITHOUT the explicit deep-stratum gate? Specifically:
+ (a) The corank charge det(Q_b Q_b^T)^{-a/2}: does it integrate finitely via (hGae a.e. PosDef) + the front
+     radial + the descent, or is there a deep rank-drop locus (Z_deep drops rank so Q_b Q_b^T singular for
+     ALL A_cor) that makes hGae fail on POSITIVE measure and forces an explicit deep-stratum stratification?
+ (b) Key sub-point: hGae needs b=M1-u <= deepTailMin(M) so that {z: rank Z_deep(z)<b} is measure zero. Does
+     this hold at the cuts the peel actually uses? Reason about whether the peel being anchored at a BINDING
+     cut t* (with shells j>=1, u=t*+j) forces b=M1-u < deepTailMin, versus a peel that would need arbitrary
+     cuts. Is "a.e. PosDef (hGae)" ALONE enough to close the deep-factor INTEGRABILITY, or does the descent
+     (IH on shorter chain) do the real work while hGae only enables the pointwise a.e. Gamma-peel?
+
+Q-B (the hlb construction). For a single-block (ell,s) stratum, construct the transverse loss g on the C-dim
+normal block after the unit-Jacobian Schur charts, and determine whether it is cleanly degree-2-homogeneous
+with a positive unit-sphere floor.
+ (i) Is g of the form g(w)=||Lambda w||^2 with Lambda a FIXED (chart-data-dependent) full-column-rank matrix
+     built from the bounded spectators (pivot P, deep factor rows, C-coefficient)? If so, hom is exact and
+     hlb=sigma_min(Lambda)^2. When is sigma_min(Lambda)>0, and what happens at chart boundaries?
+ (ii) Is there a stratum whose transverse loss is NOT degree-2 (e.g. a biquadratic ||Y*W||^2 with BOTH Y and
+      W transverse/blown-up), where the single-block homogeneity g(r w)=r^2 g(w) FAILS? Characterize it.
+</questions>
+
+<output_contract>
+For each of Q-A(a),(b) and Q-B(i),(ii): give a decisive answer. Mark each claim [FACT] (exact algebra /
+provable) vs [INFERENCE] (plausible). For Q-A: state clearly whether the explicit deep-stratum gate is
+NECESSARY or UNNECESSARY, and WHY (what closes the deep-factor integrability). For Q-B: give the explicit g,
+the hom check, the hlb proof (sigma_min), and precisely characterize the stratum (if any) where degree-2
+homogeneity fails. Argue whichever way the mathematics actually goes; do not assume the design is correct.
+</output_contract>
+
+<grounding_rules>
+Exact algebra only for [FACT]. The corank charge det(N G N^T)^{-a/2} over N (b x M2) with G=Z Z^T: its
+A_cor-integral convergence and its leading singularity in G are standard Wishart/corank facts — state them.
+Generic rank of a product of matrices = min of the widths. Do not paste code.
+</grounding_rules>
+./arch1-prompt.md:3:Setup: chain of widths M=(M0,M1,...,M_last); mult = product of the layer matrices; the "codim" minAdm(M)
+./arch1-prompt.md:4:is given by the recursion minAdm(M)=min_{t<=min(M0,M1)}[(M0-t)(M1-t)+minAdm(redChain t M)],
+./arch1-prompt.md:5:redChain t M=(t,M2,...,M_last) (one fewer layer); leaf minAdm(a,b)=a*b. deepTailMin(M)=min(M2,...,M_last).
+./arch1-prompt.md:8:The box integral (finiteness target) is ∫_box ||mult||^{-2c'} for c'<minAdm(M)/2. A "peel" at the binding
+./arch1-prompt.md:11: - corank block Q_b = A_cor * Z_deep(z), where Z_deep is the product of the deep tail (M2,...,M_last),
+./arch1-prompt.md:13: - a Gamma-peel produces the corank charge det(Q_b Q_b^T)^{-a/2} (VALID only when Q_b Q_b^T is PosDef,
+./arch1-prompt.md:14:   i.e. rank Q_b = b), times a transverse "front loss" (E_top + E_tr)^{-q}, q=c'-ab/2.
+./arch1-prompt.md:15: - E_top = ||P*Q_p + B12*Q_b||^2 (P invertible pivot on chart), E_tr = ||C*Qtilde_p*Pi_perp||^2,
+./arch1-prompt.md:16:   Pi_perp = I - Q_b^T (Q_b Q_b^T)^{-1} Q_b.
+./arch1-prompt.md:18:K * cornerComparator(redChain u M).integral(c'-ab/2), whose finiteness is the induction hypothesis on the
+./arch1-prompt.md:19:strictly shorter chain redChain u M (threshold reproduced by minAdm(M) <= ab + minAdm(redChain u M)).
+./arch1-prompt.md:20:The "corank Gram PosDef a.e." hypothesis (call it hGae) is discharged from: b <= rank Z_deep(z) a.e.,
+./arch1-prompt.md:23:Z Z^T >= eps^2 U_s U_s^T and reduces M2->m=min(M1,M_last)-j; the design claims this deep-stratum arc is
+./arch1-prompt.md:26:The per-stratum finiteness uses a banked radial blow-up requiring a degree-2-homogeneous transverse loss
+./arch1-prompt.md:27:g: R^C -> R (C=stratum codim) with hom: g(r w)=r^2 g(w), and a POSITIVE unit-sphere floor
+./arch1-prompt.md:28:hlb: for all ||w||=1, g(w) >= a > 0.
+./arch1-prompt.md:32:Q-A (SOUNDNESS). Is the deep factor genuinely handled WITHOUT the explicit deep-stratum gate? Specifically:
+./arch1-prompt.md:33: (a) The corank charge det(Q_b Q_b^T)^{-a/2}: does it integrate finitely via (hGae a.e. PosDef) + the front
+./arch1-prompt.md:34:     radial + the descent, or is there a deep rank-drop locus (Z_deep drops rank so Q_b Q_b^T singular for
+./arch1-prompt.md:35:     ALL A_cor) that makes hGae fail on POSITIVE measure and forces an explicit deep-stratum stratification?
+./arch1-prompt.md:36: (b) Key sub-point: hGae needs b=M1-u <= deepTailMin(M) so that {z: rank Z_deep(z)<b} is measure zero. Does
+./arch1-prompt.md:39:     cuts. Is "a.e. PosDef (hGae)" ALONE enough to close the deep-factor INTEGRABILITY, or does the descent
+./arch1-prompt.md:40:     (IH on shorter chain) do the real work while hGae only enables the pointwise a.e. Gamma-peel?
+./arch1-prompt.md:42:Q-B (the hlb construction). For a single-block (ell,s) stratum, construct the transverse loss g on the C-dim
+./arch1-prompt.md:44:with a positive unit-sphere floor.
+./arch1-prompt.md:47:     hlb=sigma_min(Lambda)^2. When is sigma_min(Lambda)>0, and what happens at chart boundaries?
+./arch1-prompt.md:49:      W transverse/blown-up), where the single-block homogeneity g(r w)=r^2 g(w) FAILS? Characterize it.
+./arch1-prompt.md:54:provable) vs [INFERENCE] (plausible). For Q-A: state clearly whether the explicit deep-stratum gate is
+./arch1-prompt.md:56:the hom check, the hlb proof (sigma_min), and precisely characterize the stratum (if any) where degree-2
+
+codex
+## Q-A(a): deep-factor soundness
+
+**Verdict: the explicit deep-stratum gate is unnecessary on the stated binding-cut/descent route, but `hGae` alone is not an integrability argument. The descent does the substantive work.**
+
+- [FACT] Put \(d=\operatorname{deepTailMin}(M)\). Since the generic rank of \(Z_{\mathrm{deep}}\) is \(d\), if \(b\le d\), then
+  \[
+  \{z:\operatorname{rank}Z_{\mathrm{deep}}(z)<b\}
+  \]
+  is a proper algebraic set and hence has Lebesgue measure zero. It is not a positive-measure obstruction.
+
+- [FACT] For such a \(z\), with \(k=\operatorname{rank}Z_{\mathrm{deep}}(z)\ge b\), the exceptional set
+  \[
+  \{A_{\rm cor}:\operatorname{rank}(A_{\rm cor}Z_{\mathrm{deep}})<b\}
+  \]
+  is also algebraic and null. Thus \(Q_bQ_b^{T}>0\) for almost every \((A_{\rm cor},z)\).
+
+- [FACT] Nevertheless, positivity almost everywhere does not imply integrability. For fixed \(G=ZZ^T\) of rank \(k\), the standard real Wishart criterion is
+  \[
+  \int_{\text{bounded }N}
+  \det(NGN^T)^{-a/2}\,dN<\infty
+  \quad\Longleftrightarrow\quad
+  a<k-b+1,
+  \]
+  locally across the determinantal locus.
+
+  Indeed, after restricting to the \(k\)-dimensional range of \(G\), this is the local integrability criterion for
+  \(\det(XX^T)^{-a/2}\), \(X\in\mathbb R^{b\times k}\).
+
+- [FACT] The dependence on \(G\) is genuinely singular. Cauchy–Binet gives
+  \[
+  \det(X\operatorname{diag}(\lambda_i)X^T)
+  =
+  \sum_{|I|=b}\Bigl(\prod_{i\in I}\lambda_i\Bigr)\det(X_I)^2.
+  \]
+  In particular, \(G\mapsto \rho G\) multiplies the charge by \(\rho^{-ab/2}\). If the singular values of \(Z\) scale by \(\varepsilon\), the charge scales by \(\varepsilon^{-ab}\). When a limiting \(G\) has rank \(k_0<b\), a generic \(N\) gives leading blow-up \(\varepsilon^{-a(b-k_0)}\).
+
+- [FACT] Hence a null deep rank-drop locus can still create nonintegrable neighbourhoods. `hGae` only permits the Gamma-peel identity almost everywhere.
+
+- [FACT] If the asserted comparator estimate is established, then
+  \[
+  I_{\rm shell}\le
+  K\,I_{\rm corner}\!\left(\operatorname{redChain}_uM,\,
+  q\right),
+  \qquad q=c'-\frac{ab}{2},
+  \]
+  and
+  \[
+  q<\frac{\minAdm(M)-ab}{2}
+   \le \frac{\minAdm(\operatorname{redChain}_uM)}2.
+  \]
+  Thus the shorter-chain induction hypothesis controls precisely the degeneration as \(Z\) approaches its rank-drop strata.
+
+- [INFERENCE] Therefore the deep-stratum gate is off-path and unnecessary provided the comparator domination is a proved lemma. If that domination is merely asserted, there is a proof gap—but the gap is not a positive-measure failure of `hGae`.
+
+## Q-A(b): why binding strict shells satisfy the rank conditions
+
+- [FACT] Define
+  \[
+  D(x)=\minAdm(x,M_2,\ldots,M_{\rm last}),\qquad
+  d=\min(M_2,\ldots,M_{\rm last}).
+  \]
+  The recursion implies the one-step bound
+  \[
+  D(x+1)-D(x)\le d.
+  \]
+  This follows inductively: use the same recursive cut when \(d=M_2\), and increment the recursive cut when the minimum width occurs deeper.
+
+- [FACT] Let \(t^*\) minimize
+  \[
+  f(t)=(M_0-t)(M_1-t)+D(t),
+  \]
+  and write \(a_0=M_0-t^*\), \(b_0=M_1-t^*\). A strict shell implies \(t^*+1\) is admissible. Minimality gives
+  \[
+  0\le f(t^*+1)-f(t^*)
+   =-(a_0+b_0-1)+D(t^*+1)-D(t^*),
+  \]
+  hence
+  \[
+  a_0+b_0-1\le d.
+  \]
+
+- [FACT] At a strict shell \(u=t^*+j\), \(j\ge1\),
+  \[
+  a=a_0-j,\qquad b=b_0-j,
+  \]
+  so
+  \[
+  a+b\le d+1-2j\le d-1,
+  \qquad b<d.
+  \]
+  Therefore `hGae` holds, and the generic-rank Wishart condition holds with room to spare:
+  \[
+  a<d-b+1.
+  \]
+
+- [FACT] This conclusion is special to binding strict shells. An arbitrary cut with \(u<M_1-d\) has \(b>d\), so \(Q_bQ_b^T\) is singular for every \(A_{\rm cor}\) on a full-measure set of deep variables. Even when \(b\le d\), an arbitrary cut need not satisfy the stronger Wishart inequality \(a<d-b+1\).
+
+Thus binding supplies pointwise eligibility and generic \(A_{\rm cor}\)-integrability; descent supplies joint deep-factor integrability.
+
+## Q-B(i): the quadratic normal loss
+
+Consider the standard two-factor normal slice \(AZ=0\), with
+\[
+A\in\mathbb R^{p\times m},\qquad Z\in\mathbb R^{m\times q},
+\]
+on the rank-\((\ell,s)\) stratum. Put \(h=m-\ell-s\). After Schur coordinates one obtains the exact local model
+\[
+A=
+\begin{pmatrix}
+P&0&0\\
+C_0&X&Y
+\end{pmatrix},
+\qquad
+Z=
+\begin{pmatrix}
+U&V\\
+R&0\\
+0&W
+\end{pmatrix},
+\]
+where \(P\in GL_\ell\) and \(R\in GL_s\) are the chosen pivots. Then
+\[
+AZ=
+\begin{pmatrix}
+PU&PV\\
+C_0U+XR&C_0V+YW
+\end{pmatrix}.
+\]
+
+- [FACT] The linear normal block is
+  \[
+  w=(\operatorname{vec}U,\operatorname{vec}X,\operatorname{vec}\widehat V)
+  \in\mathbb R^{C_{\rm nor}},
+  \qquad
+  C_{\rm nor}=\ell q+(p-\ell)s.
+  \]
+  Translating \(V\) by its least-squares centre against \(YW\) is triangular and has Jacobian one.
+
+- [FACT] Its transverse loss is
+  \[
+  g(w)=
+  \|PU\|_F^2+\|C_0U+XR\|_F^2
+  +\|P\widehat V\|_F^2+\|C_0\widehat V\|_F^2
+  =\|\Lambda w\|_2^2,
+  \]
+  with
+  \[
+  \Lambda=
+  \begin{pmatrix}
+  I_s\!\otimes P&0&0\\
+  I_s\!\otimes C_0&R^T\!\otimes I_{p-\ell}&0\\
+  0&0&I_{q-s}\!\otimes P\\
+  0&0&I_{q-s}\!\otimes C_0
+  \end{pmatrix}.
+  \]
+
+- [FACT] Homogeneity is exact:
+  \[
+  g(rw)=\|\Lambda(rw)\|^2=r^2g(w).
+  \]
+
+- [FACT] \(\Lambda\) has full column rank whenever \(P\) is invertible and \(R\) has full row rank. Indeed, \(\Lambda w=0\) first gives \(U=V=0\) from \(P\), and then \(XR=0\), hence \(X=0\).
+
+- [FACT] Therefore
+  \[
+  \|w\|=1\quad\Longrightarrow\quad
+  g(w)\ge\sigma_{\min}(\Lambda)^2>0.
+  \]
+
+- [FACT] Merely saying the spectators are bounded is insufficient for a uniform floor. One needs the pivot singular values bounded away from zero. On a compact banked subchart this holds. At a chart boundary, \(\sigma_{\min}(\Lambda)\) may tend to zero; one must change pivot chart or pass to the lower-rank stratum.
+
+## Q-B(ii): the biquadratic corner
+
+- [FACT] There is a nonquadratic residual whenever
+  \[
+  h=m-\ell-s>0,\qquad p-\ell>0,\qquad q-s>0.
+  \]
+  After the \(V\)-translation it is comparable to
+  \[
+  g_{\rm corner}(Y,W)=\|D(YW)\|_F^2,
+  \]
+  where \(D\) is a fixed injective chart-dependent linear map.
+
+- [FACT] If both \(Y\) and \(W\) are placed in one radial block, then
+  \[
+  g_{\rm corner}(rY,rW)=r^4g_{\rm corner}(Y,W),
+  \]
+  not \(r^2g_{\rm corner}(Y,W)\). It also has no positive unit-sphere floor: take \(Y=0\), \(\|W\|=1\), or vice versa.
+
+- [FACT] More generally, scaling the linear normal block and the corner together gives mixed degrees:
+  \[
+  r^2g(w)+r^4g_{\rm corner}(Y,W).
+  \]
+  This is not degree-2 homogeneous. The extreme \((\ell,s)=(0,0)\) stratum is the pure product loss \(\|YW\|^2\), with no linear normal block at all.
+
+- [INFERENCE] A correct architecture therefore applies the banked radial lemma only to \(w=(U,X,\widehat V)\). The \(YW\) corner must be handled by descent, or by banking one factor with an injective surviving-frame bound. Treating both \(Y\) and \(W\) as one quadratic transverse block would be unsound.
+tokens used
+49,499
+## Q-A(a): deep-factor soundness
+
+**Verdict: the explicit deep-stratum gate is unnecessary on the stated binding-cut/descent route, but `hGae` alone is not an integrability argument. The descent does the substantive work.**
+
+- [FACT] Put \(d=\operatorname{deepTailMin}(M)\). Since the generic rank of \(Z_{\mathrm{deep}}\) is \(d\), if \(b\le d\), then
+  \[
+  \{z:\operatorname{rank}Z_{\mathrm{deep}}(z)<b\}
+  \]
+  is a proper algebraic set and hence has Lebesgue measure zero. It is not a positive-measure obstruction.
+
+- [FACT] For such a \(z\), with \(k=\operatorname{rank}Z_{\mathrm{deep}}(z)\ge b\), the exceptional set
+  \[
+  \{A_{\rm cor}:\operatorname{rank}(A_{\rm cor}Z_{\mathrm{deep}})<b\}
+  \]
+  is also algebraic and null. Thus \(Q_bQ_b^{T}>0\) for almost every \((A_{\rm cor},z)\).
+
+- [FACT] Nevertheless, positivity almost everywhere does not imply integrability. For fixed \(G=ZZ^T\) of rank \(k\), the standard real Wishart criterion is
+  \[
+  \int_{\text{bounded }N}
+  \det(NGN^T)^{-a/2}\,dN<\infty
+  \quad\Longleftrightarrow\quad
+  a<k-b+1,
+  \]
+  locally across the determinantal locus.
+
+  Indeed, after restricting to the \(k\)-dimensional range of \(G\), this is the local integrability criterion for
+  \(\det(XX^T)^{-a/2}\), \(X\in\mathbb R^{b\times k}\).
+
+- [FACT] The dependence on \(G\) is genuinely singular. Cauchy–Binet gives
+  \[
+  \det(X\operatorname{diag}(\lambda_i)X^T)
+  =
+  \sum_{|I|=b}\Bigl(\prod_{i\in I}\lambda_i\Bigr)\det(X_I)^2.
+  \]
+  In particular, \(G\mapsto \rho G\) multiplies the charge by \(\rho^{-ab/2}\). If the singular values of \(Z\) scale by \(\varepsilon\), the charge scales by \(\varepsilon^{-ab}\). When a limiting \(G\) has rank \(k_0<b\), a generic \(N\) gives leading blow-up \(\varepsilon^{-a(b-k_0)}\).
+
+- [FACT] Hence a null deep rank-drop locus can still create nonintegrable neighbourhoods. `hGae` only permits the Gamma-peel identity almost everywhere.
+
+- [FACT] If the asserted comparator estimate is established, then
+  \[
+  I_{\rm shell}\le
+  K\,I_{\rm corner}\!\left(\operatorname{redChain}_uM,\,
+  q\right),
+  \qquad q=c'-\frac{ab}{2},
+  \]
+  and
+  \[
+  q<\frac{\minAdm(M)-ab}{2}
+   \le \frac{\minAdm(\operatorname{redChain}_uM)}2.
+  \]
+  Thus the shorter-chain induction hypothesis controls precisely the degeneration as \(Z\) approaches its rank-drop strata.
+
+- [INFERENCE] Therefore the deep-stratum gate is off-path and unnecessary provided the comparator domination is a proved lemma. If that domination is merely asserted, there is a proof gap—but the gap is not a positive-measure failure of `hGae`.
+
+## Q-A(b): why binding strict shells satisfy the rank conditions
+
+- [FACT] Define
+  \[
+  D(x)=\minAdm(x,M_2,\ldots,M_{\rm last}),\qquad
+  d=\min(M_2,\ldots,M_{\rm last}).
+  \]
+  The recursion implies the one-step bound
+  \[
+  D(x+1)-D(x)\le d.
+  \]
+  This follows inductively: use the same recursive cut when \(d=M_2\), and increment the recursive cut when the minimum width occurs deeper.
+
+- [FACT] Let \(t^*\) minimize
+  \[
+  f(t)=(M_0-t)(M_1-t)+D(t),
+  \]
+  and write \(a_0=M_0-t^*\), \(b_0=M_1-t^*\). A strict shell implies \(t^*+1\) is admissible. Minimality gives
+  \[
+  0\le f(t^*+1)-f(t^*)
+   =-(a_0+b_0-1)+D(t^*+1)-D(t^*),
+  \]
+  hence
+  \[
+  a_0+b_0-1\le d.
+  \]
+
+- [FACT] At a strict shell \(u=t^*+j\), \(j\ge1\),
+  \[
+  a=a_0-j,\qquad b=b_0-j,
+  \]
+  so
+  \[
+  a+b\le d+1-2j\le d-1,
+  \qquad b<d.
+  \]
+  Therefore `hGae` holds, and the generic-rank Wishart condition holds with room to spare:
+  \[
+  a<d-b+1.
+  \]
+
+- [FACT] This conclusion is special to binding strict shells. An arbitrary cut with \(u<M_1-d\) has \(b>d\), so \(Q_bQ_b^T\) is singular for every \(A_{\rm cor}\) on a full-measure set of deep variables. Even when \(b\le d\), an arbitrary cut need not satisfy the stronger Wishart inequality \(a<d-b+1\).
+
+Thus binding supplies pointwise eligibility and generic \(A_{\rm cor}\)-integrability; descent supplies joint deep-factor integrability.
+
+## Q-B(i): the quadratic normal loss
+
+Consider the standard two-factor normal slice \(AZ=0\), with
+\[
+A\in\mathbb R^{p\times m},\qquad Z\in\mathbb R^{m\times q},
+\]
+on the rank-\((\ell,s)\) stratum. Put \(h=m-\ell-s\). After Schur coordinates one obtains the exact local model
+\[
+A=
+\begin{pmatrix}
+P&0&0\\
+C_0&X&Y
+\end{pmatrix},
+\qquad
+Z=
+\begin{pmatrix}
+U&V\\
+R&0\\
+0&W
+\end{pmatrix},
+\]
+where \(P\in GL_\ell\) and \(R\in GL_s\) are the chosen pivots. Then
+\[
+AZ=
+\begin{pmatrix}
+PU&PV\\
+C_0U+XR&C_0V+YW
+\end{pmatrix}.
+\]
+
+- [FACT] The linear normal block is
+  \[
+  w=(\operatorname{vec}U,\operatorname{vec}X,\operatorname{vec}\widehat V)
+  \in\mathbb R^{C_{\rm nor}},
+  \qquad
+  C_{\rm nor}=\ell q+(p-\ell)s.
+  \]
+  Translating \(V\) by its least-squares centre against \(YW\) is triangular and has Jacobian one.
+
+- [FACT] Its transverse loss is
+  \[
+  g(w)=
+  \|PU\|_F^2+\|C_0U+XR\|_F^2
+  +\|P\widehat V\|_F^2+\|C_0\widehat V\|_F^2
+  =\|\Lambda w\|_2^2,
+  \]
+  with
+  \[
+  \Lambda=
+  \begin{pmatrix}
+  I_s\!\otimes P&0&0\\
+  I_s\!\otimes C_0&R^T\!\otimes I_{p-\ell}&0\\
+  0&0&I_{q-s}\!\otimes P\\
+  0&0&I_{q-s}\!\otimes C_0
+  \end{pmatrix}.
+  \]
+
+- [FACT] Homogeneity is exact:
+  \[
+  g(rw)=\|\Lambda(rw)\|^2=r^2g(w).
+  \]
+
+- [FACT] \(\Lambda\) has full column rank whenever \(P\) is invertible and \(R\) has full row rank. Indeed, \(\Lambda w=0\) first gives \(U=V=0\) from \(P\), and then \(XR=0\), hence \(X=0\).
+
+- [FACT] Therefore
+  \[
+  \|w\|=1\quad\Longrightarrow\quad
+  g(w)\ge\sigma_{\min}(\Lambda)^2>0.
+  \]
+
+- [FACT] Merely saying the spectators are bounded is insufficient for a uniform floor. One needs the pivot singular values bounded away from zero. On a compact banked subchart this holds. At a chart boundary, \(\sigma_{\min}(\Lambda)\) may tend to zero; one must change pivot chart or pass to the lower-rank stratum.
+
+## Q-B(ii): the biquadratic corner
+
+- [FACT] There is a nonquadratic residual whenever
+  \[
+  h=m-\ell-s>0,\qquad p-\ell>0,\qquad q-s>0.
+  \]
+  After the \(V\)-translation it is comparable to
+  \[
+  g_{\rm corner}(Y,W)=\|D(YW)\|_F^2,
+  \]
+  where \(D\) is a fixed injective chart-dependent linear map.
+
+- [FACT] If both \(Y\) and \(W\) are placed in one radial block, then
+  \[
+  g_{\rm corner}(rY,rW)=r^4g_{\rm corner}(Y,W),
+  \]
+  not \(r^2g_{\rm corner}(Y,W)\). It also has no positive unit-sphere floor: take \(Y=0\), \(\|W\|=1\), or vice versa.
+
+- [FACT] More generally, scaling the linear normal block and the corner together gives mixed degrees:
+  \[
+  r^2g(w)+r^4g_{\rm corner}(Y,W).
+  \]
+  This is not degree-2 homogeneous. The extreme \((\ell,s)=(0,0)\) stratum is the pure product loss \(\|YW\|^2\), with no linear normal block at all.
+
+- [INFERENCE] A correct architecture therefore applies the banked radial lemma only to \(w=(U,X,\widehat V)\). The \(YW\) corner must be handled by descent, or by banking one factor with an injective surviving-frame bound. Treating both \(Y\) and \(W\) as one quadratic transverse block would be unsound.
