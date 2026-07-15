@@ -27,7 +27,11 @@ not a session (P2).
 4. **Big-picture checks**, every pass: **hard-part-avoidance** — the age of the oldest open
    skeleton hole; does the named hard part (from `compass.md`) hold a lane; is any lane building a
    route *around* it? **drift** — restate the load-bearing question from `compass.md`; do the live
-   lanes serve it?
+   lanes serve it? **contract-fit** — against the architecture's non-local invariants (the elder's
+   compass names them): is any lane doing **less** than its node's contract (a shortcut around this
+   level's own work) or **more** (locally re-doing work the architecture delegates — e.g. resolving
+   at this level what the induction hypothesis already covers)? Sound-but-delegated work is the
+   quiet way a day disappears: it survives every review because nothing in it is wrong.
 
 ## Evidence and output contract
 - **Two-channel rule**: every claim grounded in BOTH the journal/map AND the code/git, or marked

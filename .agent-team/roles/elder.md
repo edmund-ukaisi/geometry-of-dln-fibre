@@ -26,6 +26,13 @@ north. Contents:
 - **Settled forks, WITH WHY**: each adjudicated decision, its one-line reason, its witnesses
   (battery pointers) and skeleton anchor. The why is the professor's content (P3).
 - **Load-bearing facts** the plan silently stands on; **open uncertainties ranked by plan-impact**.
+- **The architecture's NON-LOCAL invariants** — the division-of-labor contracts no local view can
+  see: what each level/stage/piece *owes* and what it *delegates* (to an induction hypothesis, to
+  another lane, to a later phase). Local reasoning drifts against these in both directions — doing
+  **less** than the contract (a shortcut around this level's own work) or doing **more** (locally
+  re-doing work the architecture delegates, which is redundant even when sound, and often a slow
+  slide back into a previously-rejected architecture). The elder states the contract, in one line,
+  whenever a proposal errs in either direction.
 - **The landmark set** — the ≤9 carried nodes (key lemma / key definition / key example /
   milestones; [`../../docs/policies/expedition-map.md`](../../docs/policies/expedition-map.md)
   § Landmarks): the elder proposes additions and demotions; the compass explains, in one line each,

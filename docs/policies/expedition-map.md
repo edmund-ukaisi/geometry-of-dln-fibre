@@ -92,6 +92,11 @@ claim's adjudication is the light verify-against-source. The AUDIT gate is uncha
   cannot land quietly.
 - A `refuted`/`superseded` node **retires its skeleton hole** in the same commit (contract 5's
   fossil rule) — a stale hole is worse than none: pull is strong and neutral.
+- **A skeleton hole's statement IS the level-contract** — the executable form of the architecture's
+  non-local division of labor (what this piece owes, what it delegates). Undershooting the contract
+  fails elaboration; overshooting produces sound work with nowhere to plug in — the statement has
+  no slot for it. Work that doesn't fit any hole's type is the signal to convene the elder, not to
+  widen the build.
 
 ## The battery — refutations as tests
 
