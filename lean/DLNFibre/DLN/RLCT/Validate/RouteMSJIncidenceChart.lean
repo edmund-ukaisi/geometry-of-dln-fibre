@@ -230,9 +230,10 @@ theorem chartProjComplement {b d : ℕ} (D : Matrix (Fin b) (Fin b) ℝ) (X : Ma
   abel
 
 /-- **The transverse-Schur Gram identity (cert §3, piece (i)).** For pivot rows `Q_p = [U | U X + W]`,
-the transverse energy of `Q_p` on the complement of `row(Q_b)` is monomialised by `W`:
-`Q_p (I − Π_b) Q_pᵀ = W (I + Xᵀ X)⁻¹ Wᵀ`. Wired from `chartProjComplement` (`I−Π_b = N(NᵀN)⁻¹Nᵀ`),
-`chartNull_Qp` (`Q_p N = W`), and `chartNull_gram` (`NᵀN = I + XᵀX`). -/
+the transverse energy of `Q_p` on the complement of `row(Q_b)` factors through `W` alone (independent of `U`),
+as the `X`-weighted Gram: `Q_p (I − Π_b) Q_pᵀ = W (I + Xᵀ X)⁻¹ Wᵀ`. (The `≍ ‖W‖²_F` monomialisation is the
+downstream estimate — `I + XᵀX` a bounded unit — not this exact identity.) Wired from `chartProjComplement`
+(`I−Π_b = N(NᵀN)⁻¹Nᵀ`), `chartNull_Qp` (`Q_p N = W`), and `chartNull_gram` (`NᵀN = I + XᵀX`). -/
 theorem transverseSchurGram {u b d : ℕ} (D : Matrix (Fin b) (Fin b) ℝ) (X : Matrix (Fin b) (Fin d) ℝ)
     (U : Matrix (Fin u) (Fin b) ℝ) (W : Matrix (Fin u) (Fin d) ℝ)
     (hD : IsUnit D.det) (hP : IsUnit ((1 : Matrix (Fin b) (Fin b) ℝ) + X * Xᵀ))

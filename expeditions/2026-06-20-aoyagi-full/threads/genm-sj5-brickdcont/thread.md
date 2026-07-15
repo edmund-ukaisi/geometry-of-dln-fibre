@@ -45,7 +45,49 @@ building on the 8 banked lemmas. All four `[propext, Classical.choice, Quot.soun
 >   not part of this exact identity. The rest of Brick D (charts 4/5 CoV, gluing, exponent-gate, assembly).
 > - **Route.** incidencepp cert §3/§3b (block-route projection identity, no rank/idempotent argument) →
 >   the two off-diagonal + two diagonal block matches from the banked `pushThrough`/`chartSwap`.
-> - **Status.** sorry-free (awaiting reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (fidelity OK, reviewer verdict below).
+
+**Reviewer verdict on (i): SURVIVED / fidelity OK** (`RouteMSJIncidenceChart` @ `1c6298148`). No break, no
+escalation. `Π_b = Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b` faithfully the orthogonal projection onto `row(Q_b)` (full row rank on
+the chart); `transverseSchurGram` matches cert §3, in fact slightly STRONGER (proves the matrix identity; the
+cert's trace form follows by `I−Π_b` symmetric-idempotent). Hypotheses right + non-vacuous. Axiom-clean
+confirmed by an independent forced `#print axioms`. One precision nicety applied: the docstring phrase
+"monomialised by W" (which leans toward the deferred `≍‖W‖²` estimate) tightened to "factors through `W` alone
+… as the `X`-weighted Gram" (the exact object).
+
+## LANDED — piece (iv): exponent-gate arithmetic certificate (sorry-free, axiom-clean)
+
+NEW standalone file `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJIncidenceExponent.lean` (imports `RouteMLayerSplit`
+for banked `minAdm`/`minAdmRec`; NO matrix algebra, NO integrals). Green under
+`scripts/lb DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceExponent`; forced `#print axioms` clean.
+
+- **`clsCodim`** — the joint incidence-stratum codim `C_{ℓ,s} = u·b + M₀·ℓ + (M₀−s)(u−ℓ−s) + s(d−ℓ)`
+  (`b=M₁−u`, `d=M₂−b`), over `ℕ`.
+- **`clsCodim_add_ab_eq`** — the `ℓ`-independence ring identity (additive form) `C_{ℓ,s} + a·b =
+  (M₀−s)(M₁−s) + s·M₂`, via `zify [range hyps] ; ring` over ℤ (axioms `[propext, Quot.sound]` only).
+- **`minAdm_arity3`** — `minAdm ![M₀,M₁,M₂] = min_{t≤min(M₀,M₁)} [(M₀−t)(M₁−t) + t·M₂]`, from banked
+  `LayerSplit_value_eq_minAdm` + the `Fin 2` leaf.
+- **`clsCodim_gate`** (headline) — the PER-STRATUM gate `minAdm M ≤ C_{ℓ,s} + a·b`, i.e. `T1_q ≤ C_{ℓ,s}/2`.
+- **`minAdm_le_ab_add_uM2`** — `T1_q ≤ u·M₂/2` (the `ℓ=0,s=u` corner; needs `b ≤ M₂`).
+
+### Statement card — exponent gate (cert §3/§5, piece iv)
+
+> **Claim.** For the arity-3 chain `M=(M₀,M₁,M₂)`, a cut `u ≤ min(M₀,M₁)`, and a valid rank-stratum
+> `(ℓ,s)` (`s ≤ u`, `ℓ+s ≤ u`, `(M₁−u)+ℓ ≤ M₂`), the joint codim `C_{ℓ,s}` satisfies `minAdm M ≤ C_{ℓ,s} + ab`
+> (`ab=(M₀−u)(M₁−u)`), i.e. `T1_q = (minAdm M − ab)/2 ≤ C_{ℓ,s}/2`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.clsCodim_gate` (`…/RouteMSJIncidenceExponent.lean`).
+> - **Gloss.** Every enumerated rank-`ℓ`(W)/rank-`s`(Y) stratum has codimension `C_{ℓ,s} ≥ 2·T1_q`, so
+>   `q < T1_q ⟹ q < C_{ℓ,s}/2` (its radial integral `∫r^{C_{ℓ,s}−1−2q}dr` converges).
+> - **Proved.** The per-stratum inequality, for ANY given valid `(ℓ,s)`. Via the `ℓ`-independence ring
+>   identity + `Finset.inf'_le` on the banked layer-peel `minAdm`. NOT a `decide` over any finite range.
+> - **Assumed.** the stratum range constraints + `u ≤ min(M₀,M₁)` (cut in scope). Chart validity `d=M₂−b≥0`.
+> - **Cited.** none.
+> - **Deferred / GATED.** The AGGREGATE headline `min_{(ℓ,s) over the enumerated range} C_{ℓ,s} = 2·T1`
+>   — i.e. that this `(ℓ,s)` enumeration is the COMPLETE stratum set — is NOT proved. It is **`genm-bltj`-gated**:
+>   bltj is probing whether a `b<j` `Q_p`-degeneration stratum (exponent possibly `< T1`) is missed. The
+>   `inc_sweep.py` (332/332) + `11598`-strata numerics are EVIDENCE of completeness, not a proof.
+> - **Status.** sorry-free (per-stratum gate); aggregate completeness gated on bltj.
 
 ## Build notes / lessons (v4.29)
 
