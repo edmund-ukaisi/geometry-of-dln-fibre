@@ -378,4 +378,60 @@ theorem pivotEnergy_stack_eq {u a b n : ℕ} (x : SJOuter u a b)
     ← Matrix.mul_assoc (Matrix.of x.1.1) (Matrix.of x.1.1)⁻¹,
     Matrix.mul_nonsing_inv (Matrix.of x.1.1) hdet, Matrix.one_mul]
 
+/-! ## Step 2, integrated: the coupled corank charge over the front block -/
+
+/-- **The front-charge integrand** — the coupled Γ-peel output at cut `u`, per reduced params `z` and
+corank matrix `A_cor` (`p = (z, A_cor)`). Integrating the `Γ`-peel RHS (`freedSchurLoss_gammaPeel_le`,
+`Q = hsQ M u deeperFlagZdeep p`) over the front block `x`: the COUPLED corank charge
+`det(Q_bQ_bᵀ)^{−a/2}·Cresid(ab)c'` (`Q_b = A_cor·Z_deep`, a function of `p` — no pull-out) times the
+transverse-Schur front loss `(E_top + E_tr)^{−q}`, `q = c'−ab/2`. Step 3 (the joint incidence charts)
+resolves this `∫_x`. -/
+noncomputable def frontChargeIntegrand (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (p : Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)) : ℝ≥0∞ :=
+  ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
+    ENNReal.ofReal
+      ((((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+            * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ).det
+              ^ (-((M 0 - u : ℕ) : ℝ) / 2)
+          * Cresid ((M 0 - u) * (M 1 - u)) c'
+          * (frobSq (Matrix.of x.1.1
+                * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+                  + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                      * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id))
+              + frobSq ((Matrix.of x.2
+                  * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+                    + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                        * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id))
+                * (1 - ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ
+                    * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+                        * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ)⁻¹
+                    * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)))
+              ^ (-(c' - ((M 0 - u : ℕ) : ℝ) * ((M 1 - u : ℕ) : ℝ) / 2))))
+
+/-- **Step 2 (per-`p`) — the coupled corank charge over the front block.** For a fixed reduced-param /
+corank pair `p = (z, A_cor)` with corank Gram `Q_b·Q_bᵀ` PosDef (`Q_b = A_cor·Z_deep` full row rank — a.e.
+in `A_cor` via `corank_survival_ae`, GIVEN the threaded deep-factor rank `b ≤ Z_deep(z).rank`), and pivot
+energy `E_top > 0` a.e. in the front `x` (a.e. via `pivotEnergy_stack_eq` + polynomial nonvanishing, since
+`hsQ ≠ 0`), the coupled box integrand is dominated by the front-charge integrand — the `Γ`-peel executed
+pointwise a.e. (`freedSchurLoss_gammaPeel_le`), producing the COUPLED charge `det(Q_bQ_bᵀ)^{−a/2}` and the
+exponent shift `c' → c'−ab/2`. The two a.e. hypotheses are the genericity content (`hEtop` reachable;
+`hG` from the threaded rank, discharged by rankgen). -/
+theorem coupledBox_le_frontCharge (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (p : Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ))
+    (hc' : ((M 0 - u : ℕ) : ℝ) * ((M 1 - u : ℕ) : ℝ) / 2 < c')
+    (hG : ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+        * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ).PosDef)
+    (hEtop : ∀ᵐ x ∂(volume.restrict (outerDom u (M 0 - u) (M 1 - u) 1)),
+        0 < frobSq (Matrix.of x.1.1
+          * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+            + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id))) :
+    coupledBoxIntegrand M u c' p ≤ frontChargeIntegrand M u c' p := by
+  rw [coupledBoxIntegrand, frontChargeIntegrand]
+  refine lintegral_mono_ae ?_
+  filter_upwards [hEtop] with x hx
+  exact freedSchurLoss_gammaPeel_le x (hsQ M u (deeperFlagZdeep M u) p.1 p.2) hG c' hc' hx
+    {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
+      Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1}
+
 end DLNFibre.DLN.RLCT
