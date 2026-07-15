@@ -28,7 +28,9 @@ indexes that rotted — the burden of a long expedition is retrieval and status,
    and statements behind each new or changed cell until you can describe it in one *true* line;
    descend wherever a cell's prose and its territory might disagree (P7). This is where drift risk
    is actually found — the validator catches structure, this step catches meaning.
-5. **Judge** — the memory-management work: promote/decay calls (read `compass.md` FIRST — what is
+5. **Judge** — the memory-management work — **landmark cards first** (the ≤9 carried nodes get the
+   richest overlay cards, and a landmark whose card has gone stale is automatically a drift-risk
+   item in the report); then: promote/decay calls (read `compass.md` FIRST — what is
    low-level enough to sink depends on what the expedition cares about), tombstones with
    forwarding, curated names per family, family/near-miss cards, orphan flags (feed the navigator),
    battery housekeeping (dedupe witnesses, attach to nodes).

@@ -26,6 +26,10 @@ north. Contents:
 - **Settled forks, WITH WHY**: each adjudicated decision, its one-line reason, its witnesses
   (battery pointers) and skeleton anchor. The why is the professor's content (P3).
 - **Load-bearing facts** the plan silently stands on; **open uncertainties ranked by plan-impact**.
+- **The landmark set** — the ≤9 carried nodes (key lemma / key definition / key example /
+  milestones; [`../../docs/policies/expedition-map.md`](../../docs/policies/expedition-map.md)
+  § Landmarks): the elder proposes additions and demotions; the compass explains, in one line each,
+  *why these are the ones to carry*.
 - **Standing counsel** — the rising-sea calls with standing ("a general <X> machinery is plainly
   useful; commission an independent build with general characteristics"), and the **right-extension
   channel**: an earned taste-judgment that a gap is the right extension → argue Just-Do-It if

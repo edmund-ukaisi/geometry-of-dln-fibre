@@ -46,6 +46,7 @@ nodes:
     status: skeleton-linked    # see ladders below
     tier: new                  # new | established  (established = cited source carries burden)
     owner: capstone            # thread/seat name, or `parked: <one-line reason>` — never blank
+    landmark: true             # optional; the carried shortlist (≤9 map-wide; see § Landmarks)
     kill: battery/box-diverges-at-threshold.py   # executable kill-condition (battery ref)
     edges:
       - {type: needs, to: deeper-flag-shell-le}
@@ -101,6 +102,21 @@ genesis from the source's worked examples; **every hunt-certified refuting witne
 a settled fork's deliverable includes its witnesses (P1). `expedition battery run` executes them;
 the survey refresh re-runs the battery against all open routes' hypotheses, so a new witness
 retro-tests every live plan for free.
+
+**Who consumes the battery** — nobody reads it; gates fire it (P1: attention-free binding):
+
+| consumer | when | on a kill |
+|---|---|---|
+| route-adoption gate | a route tries `proposed → adopted` | adoption blocked — no tide spawns |
+| validator @ green-gate | every survey refresh / commit | contract violation — the merge fails |
+| new-witness retro-test | a hunt banks a fresh witness | every open route re-tested for free |
+| `expedition brief <node>` | a seat spawns near the node | witnesses shown as "your claims must survive these" |
+| elder convening | "does this fight anything settled?" | the executable form of the answer |
+
+**Guards** (exit-0 entries) are not vestigial: they bind definitions to their worked examples — change
+a core definition and its ground-truth guard fails at the next green-gate. Witnesses fire only when
+**attached** to nodes (`# kills:` / `# guards:` headers): attachment is part of the settled-fork
+deliverable, and keeping it complete is the cartographer's battery-housekeeping.
 
 **The route-adoption gate** (a `route` node moves `proposed → adopted` only with both green):
 (a) its composition skeleton elaborates against the consumed nodes' *verbatim* statements (via
@@ -185,6 +201,21 @@ Research-level nodes only — the bottom-up layer (API lemmas, atoms, bricks) ri
 presence; a map with thousands of entries has failed. An exploration arc costs one `conjectured`
 node with a one-line `conjectured-toward` edge and zero obligations: the map is not a permission
 system; let the sea rise, ask only for a sentence of story.
+
+## Landmarks — the carried shortlist
+
+`landmark: true` marks the small set of nodes a working mathematician carries for the whole
+project: the key lemma that does the real work, the key definition whose shape everything depends
+on, the key worked example everything is tested against, the milestone results. **Hard cap 9**
+(validator-enforced; adding one above cap requires demoting one — if everything is a landmark,
+nothing is). Landmarks are the entry layer of the mathematics for every fresh context:
+`STATUS.md` opens with them; `brief` at resolution ≥ 2 orients the target *relative to* them;
+decision views show a node's relation to them. Key examples enter as nodes whose battery guards are
+their executable form — the key-examples list and the battery's ground-truth configs are typically
+the same objects in two representations. Ownership: the **elder proposes** the set (it is the
+compass's shortlist rendered into the map), the **controller sets the field** (sole claims.yaml
+writer), the **cartographer keeps each landmark's overlay card fresh** (a landmark with a stale
+card is a drift-risk item in its report).
 
 ## Genesis
 
