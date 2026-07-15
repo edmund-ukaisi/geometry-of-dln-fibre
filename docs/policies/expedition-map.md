@@ -189,6 +189,10 @@ materialized view; a views/ directory of stale renders is the rot surface this d
 11. **Landmark discipline** (§ Landmarks): at most 9 `landmark` nodes (error, naming them all so
     demotion is easy); a landmark on an exit status (retired/superseded/refuted) is a stale-landmark
     warning.
+12. **Cordon consumption** (when `survey/cordon.json` is present, from the Lean cordon-audit): a
+    blueprint **leak** whose decl anchors a banked node (proven/frozen/landed) is an ERROR — the
+    banked-never-depends-on-a-forecast rule, kernel-grounded; unmatched leaks and unaccounted
+    axioms are warnings; located cites are not flagged (cite-permissive).
 
 ## Ownership and operations
 

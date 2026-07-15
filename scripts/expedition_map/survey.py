@@ -282,3 +282,39 @@ def load_survey(m):
     survey["_stale"] = bool(head and stamped and head != stamped)
     survey["_current_head"] = head
     return survey
+
+
+# ---------------------------------------------------------------------------
+# history cache (per-sha snapshots; keeps survey.json readable)
+# ---------------------------------------------------------------------------
+
+def load_history_cache(m):
+    path = Path(m["map_dir"]) / "survey" / "history-cache.json"
+    if path.is_file():
+        with open(path) as fh:
+            return json.load(fh)
+    return {}
+
+
+def write_history_cache(m, cache):
+    out_dir = Path(m["map_dir"]) / "survey"
+    out_dir.mkdir(exist_ok=True)
+    with open(out_dir / "history-cache.json", "w") as fh:
+        json.dump(cache, fh, indent=2, sort_keys=True)
+
+
+# ---------------------------------------------------------------------------
+# cordon (§ blueprint leak audit) — emitted by the Lean side, consumed by validate
+# ---------------------------------------------------------------------------
+
+def load_cordon(m):
+    """Load ``survey/cordon.json`` if present, else None.
+
+    Schema: {roots:[], unaccounted:[<decl>], cited:[{axiom,source}],
+             leaks:[{decl, via}]}.
+    """
+    path = Path(m["map_dir"]) / "survey" / "cordon.json"
+    if not path.is_file():
+        return None
+    with open(path) as fh:
+        return json.load(fh)

@@ -9,7 +9,7 @@ import argparse
 from pathlib import Path
 
 from . import model, survey as survey_mod, validate as validate_mod
-from . import views, battery as battery_mod, ops
+from . import views, battery as battery_mod, ops, history as history_mod
 
 
 def _load(args):
@@ -80,6 +80,15 @@ def cmd_survey(args):
     with open(src) as fh:
         data = json.load(fh)
     survey = survey_mod.build_survey(m, data, src)
+
+    # Git-metadata history + activity clock (first-parent), with a per-sha cache.
+    cache = survey_mod.load_history_cache(m)
+    hist = history_mod.build_history(m, branch=args.branch, cache=cache)
+    survey["history"] = {k: v for k, v in hist.items() if k != "_cache"}
+    survey["alarms"] = hist.get("alarms", [])
+    if hist.get("_available") and "_cache" in hist:
+        survey_mod.write_history_cache(m, hist["_cache"])
+
     path = survey_mod.write_survey(m, survey)
     fh_ = survey["freshness"]
     print(f"survey written: {path}")
@@ -88,6 +97,12 @@ def cmd_survey(args):
     print(f"  orphans={len(survey['orphans'])}  "
           f"live-sorry={len(survey['live_sorry'])}  "
           f"witness-edges={len(survey['witness'])}")
+    if hist.get("_available"):
+        clk = hist["activity_clock"]
+        print(f"  history: {len(hist['nodes'])} nodes tracked, "
+              f"activity-clock {clk['total_hours']}h, alarms={len(survey['alarms'])}")
+    else:
+        print(f"  history: unavailable ({hist.get('reason')})")
     return 0
 
 
@@ -187,7 +202,7 @@ def cmd_calibration(args):
     if args.action == "add":
         print(ops.calibration_add(m["map_dir"], args.node, args.predicted, args.actual))
     else:
-        print(ops.calibration_show(m["map_dir"]))
+        print(ops.calibration_show(m["map_dir"], survey=survey_mod.load_survey(m)))
     return 0
 
 
@@ -217,6 +232,8 @@ def build_parser():
 
     sp = sub.add_parser("survey", help="build survey/*.json from a walker dump")
     sp.add_argument("--from", dest="source", help="walker JSON dump")
+    sp.add_argument("--branch", default="HEAD",
+                    help="branch to walk for git-metadata history (default HEAD)")
     sp.set_defaults(func=cmd_survey)
 
     sp = sub.add_parser("status", help="materialize STATUS.md (tick view)")

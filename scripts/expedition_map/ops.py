@@ -249,7 +249,7 @@ def _lead_num(s):
     return float(m.group()) if m else None
 
 
-def calibration_show(map_dir):
+def calibration_show(map_dir, survey=None):
     p = _calib_path(map_dir)
     if not p.is_file():
         return "no calibration ledger yet (use `calibration add`)"
@@ -276,8 +276,23 @@ def calibration_show(map_dir):
             matched += 1
         else:
             na += 1
-    return (f"calibration: {n} rows | matched={matched} "
-            f"over-estimated={over} under-estimated={under} unscored={na}")
+    out = [f"calibration: {n} rows | matched={matched} "
+           f"over-estimated={over} under-estimated={under} unscored={na}"]
+
+    # Join authored predictions against computed time-in-status where ids match.
+    hist = (survey or {}).get("history", {}).get("nodes", {}) if survey else {}
+    joined = []
+    for _date, node, pred, _act in rows:
+        h = hist.get(node)
+        if not h:
+            continue
+        joined.append(f"  {node}: predicted {pred} | actual in-status "
+                      f"{h['time_in_status_activity_hours']}h activity "
+                      f"({h['time_in_status_wall_days']}d wall)")
+    if joined:
+        out.append("## time-in-status (predicted vs actual)")
+        out.extend(joined)
+    return "\n".join(out)
 
 
 # ---------------------------------------------------------------------------

@@ -131,6 +131,68 @@ edges among them. Spec-silent decision: the relation phrasing uses the dependenc
 direction from `build_dep_graph` (discharges reversed), and "sibling" means a
 shared direct consumer.
 
+## Metadata history & the activity clock (spec § survey)
+
+`expedition survey [--branch <b>]` now also derives a git-metadata history for
+`claims.yaml` and writes it into `survey.json` under `history` + `alarms`. It
+walks the branch **`--first-parent` only** (default HEAD), so a teammate merge
+collapses to one mainline commit — its side-branch commits create neither phantom
+status transitions nor extra activity-clock buckets. Rather than parse `-p`
+unified diffs, it re-parses the `claims.yaml` **snapshot at each first-parent
+commit** (`git show <sha>:<path>`) and diffs consecutive snapshots; snapshots are
+cached by sha in `survey/history-cache.json`, so a refresh only re-reads commits
+it has not seen (the incremental requirement). Per node it records first-seen,
+status transitions, owner changes, and ages in **both** wall time and the
+**activity clock** (distinct active hour-buckets over the branch's first-parent
+commits) — activity age, time-in-status, adjudicated→skeleton-linked promotion
+lag, owner churn. Not-a-git-repo / no-history degrades to `_available: false`.
+
+Surfaced as **alarms, not columns** — only when firing. Four thresholds (defaults
+in `history.DEFAULT_ALARMS`, all activity-time except staleness):
+oldest-open-hole activity-age (72h), promotion-lag (2 activity-days), owner
+churn (>2 changes within a 24-activity-hour window), and survey staleness (git
+HEAD mismatch, computed at load). Alarms open `STATUS.md`/`view tick` (loud and
+first, budget-guarded) and head `view lookahead`. `calibration show` joins the
+authored predictions in `calibration.md` against the computed time-in-status for
+matching node ids. Spec-silent choices: activity "now" is the branch tip;
+promotion lag is measured to skeleton-linked-time (or, if still adjudicated, to
+the tip, flagged `ongoing`); the staleness alarm is added at view time, not baked
+into the stored survey.
+
+## Cordon → validate (contract 12)
+
+`expedition validate` consumes `survey/cordon.json` if present (emitted by the
+Lean side's cordon/blueprint-leak gate — separately commissioned). Schema:
+
+```json
+{
+  "roots": ["<decl>", ...],
+  "unaccounted": ["<decl>", ...],
+  "cited": [{"axiom": "<name>", "source": "<citation>"}, ...],
+  "leaks": [{"decl": "<name>", "via": "<blueprint-decl>"}, ...]
+}
+```
+
+Contract 12 (contract-9-adjacent — a soundness gate) is structural, so it runs in
+`--fast` too and only acts when the file exists: a **leak** whose `decl` is the
+anchor of a *banked* node (status proven / frozen / landed) is an **ERROR** (a
+banked proof must not depend on a blueprint declaration —
+`BLUEPRINT_LEAKS(D)=∅`); a leak not matched to a banked node is a warning; each
+`unaccounted` decl is a warning; `cited` is the sanctioned allowlist and is not
+flagged. Decl↔anchor matching is by exact name or last-dotted-component.
+
+## Cleanup batch (`scripts/worktree-audit --emit-batch`)
+
+The write half of the worktree audit: `--emit-batch [--min-age-days N=2] [--out
+FILE]` writes a **reviewable, never-executed** shell script of `git worktree
+remove` lines for SAFE registered worktrees (clean, tip banked on origin, not the
+main checkout) older than the age floor, each with a branch/age/banked-ref
+comment, plus a **commented** `git branch -d` section carrying the
+ancestor-of-`origin/dev` preflight (per worktree-branch-hygiene.md; the note flags
+that `--contains`/ancestry misses squash & rebase merges). Independent repos
+(`--extra` hits) are never removal candidates. The read-only default report is
+unchanged.
+
 ## Known v0 limits
 
 - **anchors emit is honest, not complete.** It emits `#check @<name>` pins plus a
@@ -159,7 +221,8 @@ shared direct consumer.
 scripts/expedition --map <dir> validate [--fast] [--strict]
 
 # build the computed survey from a walker dump (full or cone shape)
-scripts/expedition --map <dir> survey --from <walker.json>
+# also derives git-metadata history + activity clock along --branch (default HEAD)
+scripts/expedition --map <dir> survey --from <walker.json> [--branch <b>]
 
 # views
 scripts/expedition --map <dir> status                 # writes STATUS.md

@@ -17,6 +17,7 @@ docs/policies/expedition-cli-notes.md.
 from __future__ import annotations
 
 from . import model
+from . import survey as survey_mod
 
 
 class Finding:
@@ -338,10 +339,50 @@ def c11_landmarks(m, survey, fast):
     return out
 
 
+# ---------------------------------------------------------------------------
+# Contract 12 -- cordon (blueprint-leak audit; contract-9-adjacent).
+# ---------------------------------------------------------------------------
+
+def _matches(lean, decl):
+    return bool(lean) and (lean == decl or model.short_name(lean) == model.short_name(decl))
+
+
+def c12_cordon(m, survey, fast):
+    """Consume ``survey/cordon.json`` if present (emitted by the Lean side).
+
+    A **leak** ({decl, via}) whose decl is the anchor of a banked node
+    (proven / frozen / landed) is an ERROR -- a banked proof must not depend on a
+    blueprint declaration (spec § blueprint: BLUEPRINT_LEAKS(D)=∅). An
+    **unaccounted** decl is a warning. ``cited`` is the sanctioned allowlist and
+    is not flagged.
+    """
+    out = []
+    cordon = survey_mod.load_cordon(m)
+    if not cordon:
+        return out
+    banked = [n for n in m["nodes"] if n.get("status") in model.CLOSED_SUCCESS]
+    for leak in cordon.get("leaks", []):
+        decl = leak.get("decl", "")
+        via = leak.get("via", "?")
+        hit = next((n for n in banked if _matches(n.get("lean"), decl)), None)
+        if hit is not None:
+            out.append(_err(12, hit["id"],
+                            f"banked ({hit['status']}) node leaks blueprint decl "
+                            f"{model.short_name(decl)} via {via} (cordon)"))
+        else:
+            out.append(_warn(12, None,
+                             f"cordon leak {model.short_name(decl)} via {via} "
+                             "(not matched to a banked node)"))
+    for decl in cordon.get("unaccounted", []):
+        name = decl if isinstance(decl, str) else decl.get("decl", str(decl))
+        out.append(_warn(12, None, f"unaccounted by cordon: {model.short_name(name)}"))
+    return out
+
+
 CONTRACTS = [
     c1_dag, c2_anchors, c3_status_kernel, c4_discharge_witness,
     c5_sorry_registered, c6_ownership, c7_notions, c8_reachable,
-    c9_route_gate, c10_lints, c11_landmarks,
+    c9_route_gate, c10_lints, c11_landmarks, c12_cordon,
 ]
 
 

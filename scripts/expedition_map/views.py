@@ -71,6 +71,17 @@ def _landmark_relation(target, landmark_id, adj, rev):
     return "no direct edge"
 
 
+def all_alarms(survey):
+    """Firing alarms from the survey, plus the load-time staleness alarm."""
+    if not survey:
+        return []
+    alarms = list(survey.get("alarms", []))
+    if survey.get("_stale") and not any(a.get("kind") == "staleness" for a in alarms):
+        alarms.append({"kind": "staleness", "node": None,
+                       "message": "survey stale vs git HEAD — run `expedition survey`"})
+    return alarms
+
+
 def _render_landmarks_section(m, adj=None, rev=None, target=None, header="## landmarks"):
     """One line per landmark. With a target + graph, append the relation phrase."""
     lms = model.landmarks(m)
@@ -102,6 +113,14 @@ def render_status(m, survey):
         stale = " (STALE vs HEAD)" if survey.get("_stale") else ""
         head = f"survey: {fh.get('walker_mode', '?')}-mode @ {sha or 'no-git'}{stale}"
     lines.append(f"updated: {updated}    {head}".rstrip())
+
+    # Alarms fire loud and first, only when firing (activity-clock ages + staleness).
+    alarms = all_alarms(survey)
+    if alarms:
+        lines.append("")
+        lines.append(f"## alarms ({len(alarms)})")
+        for a in alarms[:6]:
+            lines.append(f"  ⏰ [{a['kind']}] {a['message']}")
 
     # Landmarks open the view -- the entry layer for a fresh context (§ Landmarks).
     lm_lines = _render_landmarks_section(m)
@@ -153,13 +172,10 @@ def render_status(m, survey):
     tail = []
     if gates:
         tail += ["", "## open gates"] + [f"  ! {g}" for g in gates[:6]]
-    warns = []
-    if survey and survey.get("_stale"):
-        warns.append("survey stale vs git HEAD — run `expedition survey`")
+    # Staleness is surfaced as an alarm (top); the drift line carries orphans only.
     if survey and survey.get("orphans"):
-        warns.append(f"orphaned open nodes: {', '.join(survey['orphans'])}")
-    if warns:
-        tail += ["", "## staleness / drift"] + [f"  ⚠ {w}" for w in warns]
+        tail += ["", "## drift",
+                 f"  ⚠ orphaned open nodes: {', '.join(survey['orphans'])}"]
 
     # Budget: STATUS <= 40 lines. Compress the frontier (the expandable section)
     # so landmarks + roots + gates always fit; blocked entries drop first.
@@ -282,7 +298,11 @@ def render_lookahead(m, survey):
             if info.get("witnessed") is not True:
                 unwit.append((k, info.get("reason", "")))
 
+    alarms = all_alarms(survey)
     head = []
+    if alarms:
+        head.append(f"ALARMS FIRING: {len(alarms)} "
+                    f"({', '.join(sorted({a['kind'] for a in alarms}))})")
     head.append(f"open nodes: {len(open_ids)}")
     head.append(f"build-time-blocked (need open siblings): {len(build_time)}")
     head.append(f"sorry-propagation (buildable vs sorried input): {len(sorry_prop)}")
@@ -291,6 +311,11 @@ def render_lookahead(m, survey):
     if survey and survey.get("orphans"):
         head.append(f"orphans: {len(survey['orphans'])}")
     out = ["# lookahead", "", "## headline"] + [f"  - {h}" for h in head[:7]]
+
+    if alarms:
+        out += ["", "## alarms"]
+        for a in alarms:
+            out.append(f"  ⏰ [{a['kind']}] {a['message']}")
 
     out += ["", "## build-time dependencies (open → open)"]
     for nid, deps in build_time:
