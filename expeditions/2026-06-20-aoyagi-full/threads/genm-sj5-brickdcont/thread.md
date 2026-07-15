@@ -142,3 +142,36 @@ controller to add the import.
 `C_{ℓ,s} = (M₀−s)(M₁−s) + s·M₂ − ab` (ℓ-independent — a `ring` identity). Then (iv) = the ring identity +
 `Finset.min` monotone-under-range-inclusion (min over feasible `s ≤ u` ≥ min over full range) + banked
 `minAdm` codim. The ring identity IS the proof; the widths-2..10 sweep is evidence only — NOT `decide`-over-332.
+
+## LANDED — piece (iii) engine: generic finite-atlas gluing core (sorry-free, axiom-clean)
+
+NEW file `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJIncidenceGluing.lean` (atlas-parameterized, bltj-robust):
+- **`lintegral_lt_top_of_finite_cover`** (`Fintype ι`): `μ(D \ ⋃ i, C i)=0` + `∀ i, ∫⁻_{C i} f < ⊤` ⟹
+  `∫⁻_D f < ⊤`. Via `lintegral_mono_set'` (`ae_le_set`) + `lintegral_iUnion_le` + `tsum_fintype` +
+  `ENNReal.sum_lt_top`.
+- **`lintegral_lt_top_of_finset_cover`** (`Finset s`): the minor-indexed atlas form.
+The gluing LOGIC is independent of chart geometry — the reusable engine the atlas-specific (iii) consumes.
+
+## (iii)/(v) CAPSTONE scoping — the (□) discharge target (HANDOFF)
+
+bltj CLEARED (outcome b): (iii)/(v) UNGATED for `1≤j<r`; atlas COMPLETE (`C_{ℓ,s}` enumerates `Q_p`-degen
+via `ℓ=rank W`); no (v) reshape. `j=r` saturated branch HELD (satcover hunt) — leave as explicit hole.
+
+- **THE target = the single Brick D `sorry`:** `headSplit_domination` @ `RouteMSJDeeperFlagCore.lean:545`
+  (inherited from the branch; NOT mine). Verified: my branch's shape is ALREADY the hcT-corrected one
+  (`hcT : c' < carrierThreshold M` at line 521; brickdfin `9c748b6cd` is an ancestor of HEAD).
+  `deeperFlag_shell_le` (line 752) is proven MODULO this one sorry — so filling it discharges (□).
+- **What it needs (build-design §Decomposition):** banked front-end (row-split `blockFront_rowSplit` +
+  `{IsUnit P}` shear + Γ-integration `shell_corankPivot_coupled_le`) reduces `shellSpineIntegrand` → the
+  cert's `G`; then `G < ⊤` for `c'<T1` via the finite incidence atlas → `incidenceCell_lintegral_le`
+  (chart-4 `chart4_Htilde_fibre_lt_top` + chart-5 CoV + exponent `clsCodim_gate` + gluing core), then the
+  ratio-trick to `cornerComparator.integral`.
+- **READY inputs (banked this thread):** chart-4 (`chart4_Htilde_fibre_lt_top`), exponent gate
+  (`clsCodim_gate`), gluing core (`lintegral_lt_top_of_finite_cover`), transverse-Schur Gram
+  (`transverseSchurGram`). Block-LU rank in `Core.SchurChartIff` (chart5recon).
+- **BLOCKERS for the capstone tide:** (a) chart-5's LANDED statement (dependency-invert as a hypothesis until
+  then); (b) a self-recon of the `shellSpineIntegrand → G` front-end reduction machinery (unfamiliar;
+  `RouteMSJDeeperFlagShell`/`DeeperFlagCore` + the banked row-split/shear/Γ lemmas).
+- **GUARDS to hold in the fill:** INTEGRATED domination (NOT pointwise — false on σ_min(Q_p)→0); carry the
+  `|det D|^{d−a}` Jacobian (flat measure diverges ∀c'); JOINT / `a+b≤M₂` / det-Gram coupled. Scope `1≤j<r`.
+- **Recommendation:** capstone = fresh tide with a `self-recon` on the front-end reduction, once chart-5 lands.
