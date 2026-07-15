@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitDom
+import DLNFibre.DLN.RLCT.Validate.MinAdmPermInvariance
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart4Polar
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart5BigCell
@@ -40,6 +41,53 @@ open Matrix MeasureTheory Set
 open scoped ENNReal BigOperators
 
 variable {L : ℕ}
+
+/-! ## Step 4 dependency — the per-cut pivot bound `minAdm (redChain u M) ≤ u · deepTailMin M`
+
+Copied VERBATIM (same names) from the connector branch `origin/genm-sj5-good`
+(`RouteMSJDecoratedStep.lean` L103/L131) so the coupled-route gate cell (step 4) can consume it on this
+base; the coordinator's steer (no connector merge — the connector carries open waist sorries). These are
+low-level `minAdm`/`redChain` facts (deps `minAdm_comp_perm`, `minAdm_le_mul_head`, `Finset.inf'`, all on
+this base); when the connector integrates to canonical this is a trivial dedup (identical statements). The
+gate chain (gaugelift `clsCodim_gate_genL`): `minAdm M ≤ (M₀−s)(M₁−s) + minAdm(redChain s M) ≤
+(M₀−s)(M₁−s) + s·deepTailMin M ≤ (M₀−s)(M₁−s) + s·M₂ = clsCodim + ab`. -/
+
+/-- **The deep-tail width minimum** `deepTailMin M = ⨅_{i≥2} M i = min (M₂,…,M_last)` — the tail widths
+STRICTLY past the pivot layer `M₁` (excludes `M₁`, unlike `tailMinWidth = min (M₁,…,M_last)`). -/
+def deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) : ℕ :=
+  (Finset.univ : Finset (Fin (L + 1))).inf' ⟨0, Finset.mem_univ 0⟩ (fun i => M i.succ.succ)
+
+/-- **The head-times-tail-minimum bound `minAdm N ≤ N₀ · ⨅_{i≥1} Nᵢ`**, via permutation invariance:
+move the argmin tail width to position 1 (`minAdm_comp_perm` at `Equiv.swap 1 i★.succ`, fixing `0`),
+then apply the head bound `minAdm_le_mul_head`. -/
+theorem minAdm_le_head_mul_tailInf {k : ℕ} (N : Fin (k + 1 + 1) → ℕ) :
+    minAdm N ≤ N 0 * (Finset.univ : Finset (Fin (k + 1))).inf'
+      ⟨0, Finset.mem_univ 0⟩ (fun i => N i.succ) := by
+  classical
+  obtain ⟨istar, -, histar⟩ := Finset.exists_mem_eq_inf'
+    (⟨0, Finset.mem_univ 0⟩ : (Finset.univ : Finset (Fin (k + 1))).Nonempty)
+    (fun i => N i.succ)
+  rw [histar]
+  calc minAdm N = minAdm (N ∘ Equiv.swap (1 : Fin (k + 1 + 1)) istar.succ) :=
+        (minAdm_comp_perm _ N).symm
+    _ ≤ (N ∘ Equiv.swap (1 : Fin (k + 1 + 1)) istar.succ) 0
+          * (N ∘ Equiv.swap (1 : Fin (k + 1 + 1)) istar.succ) 1 := minAdm_le_mul_head _
+    _ = N 0 * N istar.succ := by
+        simp only [Function.comp_apply]
+        rw [Equiv.swap_apply_of_ne_of_ne Fin.zero_ne_one (Fin.succ_ne_zero istar).symm,
+          Equiv.swap_apply_left]
+
+/-- **The per-cut pivot bound `minAdm (redChain u M) ≤ u · deepTailMin M`** (∀ u) — the GOOD-branch
+per-cut hpiv source. `redChain u M = (u, M₂,…,M_last)`, so its position-0 width is `u` and its tail
+minimum (indices `≥ 1`) is `deepTailMin M`; `minAdm_le_head_mul_tailInf` gives the bound. -/
+theorem minAdm_redChain_le_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) :
+    minAdm (redChain u M) ≤ u * deepTailMin M := by
+  have h := minAdm_le_head_mul_tailInf (redChain u M)
+  rw [redChain_zero] at h
+  have hfun : (fun i : Fin (L + 1) => (redChain u M) i.succ) = (fun i => M i.succ.succ) := by
+    funext i; exact redChain_succ u M i
+  rw [hfun] at h
+  exact h
 
 /-! ## Step 1, atom (i): the head/row-split box factorization for `hsSplit` -/
 
