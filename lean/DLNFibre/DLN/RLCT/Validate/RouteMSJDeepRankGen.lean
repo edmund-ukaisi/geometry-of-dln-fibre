@@ -154,8 +154,9 @@ theorem prodMinorPoly_ne_zero (H : Fin (L + 1) → ℕ) (ρ : ℕ) (hρ : ∀ i,
   rw [hI, Matrix.det_one] at hev
   exact one_ne_zero hev.symm
 
-/-- **Generic rank of a chain product = min width.** For a chain `H` and `ρ ≤ H i` for every `i`, a.e.
-parameter `A` has `ρ ≤ rank (prod H A)`. The top-left `ρ×ρ` minor is `eval (flat A)` of the nonzero
+/-- **Generic rank of a chain product ≥ min width** (the `≥` half; the `≤` half is deterministic and not
+needed downstream). For a chain `H` and `ρ ≤ H i` for every `i`, a.e. parameter `A` has
+`ρ ≤ rank (prod H A)`. The top-left `ρ×ρ` minor is `eval (flat A)` of the nonzero
 `prodMinorPoly`, hence `≠ 0` a.e. (`MvPolynomial.ae_eval_ne_zero` + `measurePreserving_paramsEquivFlat`);
 a nonzero `ρ×ρ` minor forces `rank ≥ ρ` (`Core.submatrix_det_eq_zero_of_rank_le`). -/
 theorem prod_minor_rank_ge_ae {N : ℕ} (H : Fin (N + 1) → ℕ) (ρ : ℕ) (hρ : ∀ i, ρ ≤ H i) :
