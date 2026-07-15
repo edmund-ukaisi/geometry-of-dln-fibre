@@ -37,6 +37,23 @@ for ALL z and `= deepTailMin M` for a.e. z (generic rank of a layer product = mi
    arity 3..5). **`a+b ≤ M₂` is the arity-3 shadow** — at arity 3, `deepTailMin = M₂`, so it happens to work
    (0 fails); it is the *generalisation to deep chains* that broke.
 
+   **★ Reconciliation with the REAL guard (`deeperFlag_shell_le` DeeperFlagCore:757, coordinator 2026-07-15).**
+   The lemma's actual scope is `hcvg : a+b ≤ min(M₁,M_last)−j` **∧** `hrange : min(M₁,M_last)−j ≤ M₂` ∧ `hpiv`
+   (NO binding-cut hyp). The COMBINED `hcvg ∧ hrange` controls exactly `{M₂, M_last}` (`hcvg ⟹ b ≤ M_last`,
+   `hrange ⟹ b ≤ M₂`). So there is a clean **arity split** (§2b, exact sweep):
+   - **arity ≤ 4 (L ≤ 1): `hcvg ∧ hrange ⟹ b ≤ deepTailMin` — 0 fails, SAFE AS STATED.** Here
+     `deepTailMin = min(M₂, M_last)` (arity 3: `= M₂`; arity 4: two deep widths `M₂, M_last`), which
+     `{M₂, M_last}` fully controls. hGae discharges DIRECTLY from local hyps — no binding-cut, no marginal
+     lemma. My original witness `M=(3,4,3,1)` fails `hrange` (`min(4,1)−1 = 0 ≥ 3` is false), so it is NOT a
+     counterexample to the real guard — the coordinator is right on that point.
+   - **arity ≥ 5 (L ≥ 2): `hcvg ∧ hrange` does NOT imply `b ≤ deepTailMin`.** An **interior** deep width
+     `M_k` (`2 < k < last`) is seen by neither guard. Witness `M=(3,4,3,1,4)`, `t=1`, `j=1`: `u=2`, `a=1`,
+     `b=2`, `deepTailMin = min(3,1,4) = 1`; `hcvg : 3 ≤ min(4,4)−1 = 3` ✓, `hrange : 3 ≤ M₂=3` ✓, `hpiv` ✓,
+     strict shell ✓ — yet `b=2 > deepTailMin=1`. It is a **non-binding cut** (`t★ = 3 ≠ 1`).
+   - **binding cut (`t = t★`) ∧ strict shell ∧ `hcvg ∧ hrange ∧ hpiv`: 0 fails at EVERY arity (3..6).** So
+     the binding property (which lives in the CALLER, not the signature) is the load-bearing fact for
+     general L — see §2b and the consumer-side adjudication §7.
+
 2. **At the BINDING cut `u = t★+j` (`t★ = argmin` of the layer recursion) — which is the only cut the
    mountain (`deeperFlag_shell_le`, "cut `u = t★+j`") invokes — the fact is TRUE with slack `≥ 2`:**
    `a+b ≤ deepTailMin M − 1`, hence `b ≤ deepTailMin M − 2 < rank Z_deep(z)` a.e. **0 fails** across every
@@ -98,6 +115,33 @@ The failures are genuine geometric divergences, not slack: at `M=(3,4,3,1)`, `u=
 `(3,3,3)@u=1` (a+b > M₂) — except here `a+b ≤ M₂` **holds**, so `a+b ≤ M₂` fails to protect it. The correct
 scope references the deep-tail minimum: `a+b ≤ deepTailMin M` (0 fails), and at arity 3 `deepTailMin = M₂`,
 recovering the known `a+b ≤ M₂`.
+
+## 2b. The arity split under the REAL guard `hcvg ∧ hrange ∧ hpiv` (`rankgen_crux.py`, exact)
+
+`deeperFlag_shell_le` (DeeperFlagCore:757) carries `hcvg : a+b ≤ min(M₁,M_last)−j`, `hrange :
+min(M₁,M_last)−j ≤ M₂`, `hpiv : minAdm(redChain u M) ≤ u·tailMinWidth M`, and `ht : t ≤ min(M₀,M₁)` — with
+**no binding-cut hypothesis**. Sweeping the EXACT guard (strict shell `1≤j<r`):
+
+| arity | cuts (strict, `hcvg∧hrange∧hpiv`) | `b>deepTailMin` fails | binding∧strict fails |
+|---|---|---|---|
+| 3 | 320 | 0 | 0 |
+| 4 | 213 | 0 | 0 |
+| 5 | 1395 | **102** | **0** |
+| 6 | 1833 | **176** | **0** |
+
+- **arity ≤ 4: `hcvg ∧ hrange ⟹ b ≤ deepTailMin` (0 fails, SAFE from local hyps).** Derivation:
+  `hcvg ⟹ b ≤ a+b ≤ min(M₁,M_last)−j ≤ M_last`; `hrange ⟹ b ≤ a+b ≤ min(M₁,M_last)−j ≤ M₂`. For arity ≤ 4
+  the deep tail has ≤ two widths (`deepTailMin = min(M₂, M_last)`, and arity 3 `= M₂`), so `{M₂, M_last}`
+  controls it: `b ≤ min(M₂, M_last) = deepTailMin`. hGae discharges DIRECTLY from `hcvg ∧ hrange`, no
+  binding cut, no marginal lemma. (My original `M=(3,4,3,1)` witness fails `hrange` (`min(4,1)−1 = 0`), so it
+  is not a counterexample to the real guard — the coordinator is right.)
+- **arity ≥ 5: `hcvg ∧ hrange` does NOT imply `b ≤ deepTailMin` (102 strict fails, arity 5).** An **interior**
+  deep width `M_k` (`2 < k < last`) is seen by neither guard (`hcvg` sees `M_last`, `hrange` sees `M₂`).
+  Witness **`M=(3,4,3,1,4)`, `t=1`, `j=1`**: `u=2`, `a=1`, `b=2`, `deepTailMin = min(3,1,4) = 1`;
+  `hcvg : 3 ≤ min(4,4)−1 = 3` ✓, `hrange : 3 ≤ M₂=3` ✓, `hpiv` ✓, strict shell ✓ — yet `b=2 > deepTailMin=1`.
+  It is a **non-binding cut** (`t★ = 3 ≠ 1`). So the SIGNATURE's local guards are insufficient for `L ≥ 2`.
+- **binding cut `t = t★` ∧ strict shell ∧ `hcvg∧hrange∧hpiv`: 0 fails at EVERY arity (3..6).** The binding
+  property is the load-bearing source for general `L`; it lives in the CALLER (§7), not the signature.
 
 ## 3. The resolution: the binding cut forces `a+b ≤ deepTailMin − 1`
 
@@ -181,6 +225,57 @@ same fix applies: the **effective column dimension is `deepTailMin`, not `M₂`*
 `a = deepTailMin−b+1` borderline; at genuine binding cuts the strict `a+b ≤ deepTailMin−1` avoids it.) This
 is stated for the incidence route too: keep the corank charge over the effective `deepTailMin`-space.
 
+## 7. Consumer-side soundness — the recursion PEELS AT THE ARGMIN (NOT a general-L gap)
+
+The load-bearing soundness question (coordinator 2026-07-15): does the driver peel at the argmin `t★` (so
+the binding property is available to `deeperFlag_shell_le`), or at an arbitrary legal cut (⟹ non-argmin
+invocation ⟹ FALSE at arity ≥ 5 = a real gap)? **Verified by direct code reading on
+`origin/genm-sj5-holesbe` — it peels at the argmin; NOT a gap; `hbind` is a suppliable fix.**
+
+- **The recursion's IH is over ALL one-shorter chains.** `DecoratedStepHyp` (DecoratedRec:144): to prove
+  `DecoratedBoxThresholdFinite D` for a `≥3`-width `M`, the strong IH gives it for **every** `adm`-admissible
+  decoration of **every** one-shorter chain `M'`. So the step-proof is FREE to peel at any cut `u` (each
+  `redChain u M` is a valid IH target) — in particular at the argmin.
+- **The step-proof DOES peel at the argmin.** `bindingCut M := Nat.find (exists_binding_cut M)` (RouteMSJAdm:111),
+  where `exists_binding_cut M : ∃ u ≤ min(M₀,M₁), minAdm M = peelCharge M u + minAdm(redChain u M)`
+  (DecoratedCharge:79 — the argmin equality, via `Finset.exists_mem_eq_inf'` on the recursion). The step
+  assembly peels "at the binding cut `t★ = bindingCut M`" (DecoratedStep:309) and decomposes into shells
+  `j ∈ [0, r]`, `r = min(M₀−t★, M₁−t★)`, each bounded by `deeperFlag_shell_le` at `(t = t★, j)`
+  (DecoratedStep:40–43, `singularShell_iUnion` exhaustive). So `deeperFlag_shell_le` is invoked ONLY at
+  `t = t★ = bindingCut M`.
+- **`hbind` is available at the call site and discharges `b ≤ deepTailMin` internally.** The argmin equality
+  `minAdm M = peelCharge M t★ + minAdm(redChain t★ M)` gives, since `minAdm M ≤ peelCharge M (t★+1) +
+  minAdm(redChain (t★+1) M)` (min ≤ any term), the optimality `f(t★) ≤ f(t★+1)` — exactly §3's input. Then
+  §3's algebra + the marginal lemma yield `a+b ≤ deepTailMin − 1`, i.e. `b ≤ deepTailMin`, at every strict
+  shell. So the discharge is LOCAL to `deeperFlag_shell_le` given `hbind` (no external hGae needed at the
+  Nat level); route (c) then lifts `b ≤ deepTailMin` to the a.e. `Q_b`-PosDef.
+- **Signature-hygiene, not a gap.** `deeperFlag_shell_le` as stated (general `t`, `hcvg ∧ hrange ∧ hpiv`, no
+  `hbind`) is **over-permissive**: at `L ≥ 2` its hyps are satisfiable at non-argmin cuts where `b >
+  deepTailMin` (§2b witness `M=(3,4,3,1,4)@(1,1)`), where its conclusion is vacuous-or-unprovable (the
+  corank charge diverges). The CONSUMER never instantiates it there (it uses `t★ = bindingCut M`), so no
+  unsound step arises — but the lemma statement is not honest. **Clean fix:** add
+  `hbind : minAdm M = peelCharge M t + minAdm (redChain t M)` (equivalently `t = bindingCut M`) to
+  `deeperFlag_shell_le`'s signature; it makes the statement honest AND lets it DERIVE `b ≤ deepTailMin`
+  internally (via §3), replacing the arity-≥5-insufficient `hcvg ∧ hrange` reliance. `hbind` is trivially
+  discharged by the caller from `exists_binding_cut`/`bindingCut`. So it is a **suppliable fix, not a wall.**
+
+**Edge case (Codex Q2):** the `f(t★) ≤ f(t★+1)` step needs `t★+1` legal, i.e. `t★ < min(M₀,M₁)`. If
+`t★ = min(M₀,M₁)`, then `r = min(M₀−t★, M₁−t★) = 0`, so there are NO strict shells (`j ∈ [1,r)` empty) and
+`deeperFlag_shell_le` is invoked only at the `j=0` base — the shell lemma / corank charge never fires, so
+the fact is not needed. (My binding sweep is consistent: 0 strict-shell cuts arise when `r=0`.) So the
+endpoint is vacuous, not a hole.
+
+(The `hpiv` note DecoratedStep:28–35: keying the good/waist dispatch on `minAdm(redChain (bindingCut M) M)
+≤ bindingCut M · tailMinWidth M` is separately BUGGY when `bindingCut M = 0` — the waist-chain dispatch,
+routeverify CHECK 1 — orthogonal to the rank-survival fact here.)
+
+**Decorrelated Codex (consumer-side logic-check, conclusion withheld; `codex/consumer-{prompt,answer}.md`)
+CONCURS:** Q1 SOUND (strong IH over all shorter chains ⟹ argmin choice legitimate); Q2 YES (identical
+`P(u)−P(u+1) = (M₀−u)+(M₁−u)−1 ≤ R(u+1)−R(u) ≤ D` derivation, + the endpoint note above); Q3 "using only
+the argmin instance salvages the induction, but a false universally-quantified shell lemma is a real local
+gap — clean fix: add the binding/argmin hypothesis (or assume `b ≤ D`), or specialize to `u = bindingCut M`
+and prove the auxiliary bound before the shell estimate." Identical to the §7 fix.
+
 ## 6. Certificates (exact — MC not used)
 
 - `rankgen-sweep2.py`: `a+b ≤ M₂` ⟹ `b ≤ deepTailMin` FAILS (1074), `a+b ≤ min(M₁,M_last)−j` FAILS (390),
@@ -216,17 +311,25 @@ is stated for the incidence route too: keep the corank charge over the effective
   banked: `ae_matrix_eval_ne_zero` + `exists_submatrix_det_ne_zero_of_le_rank`; one new nonzero-minor witness
   for a layer product) → `b ≤ rank Z_deep(z)` a.e. Route (a) shell-determinism is unavailable (shell dropped
   before the corank charge).
-- **Most likely to break it.** The verdict RESTS on the mountain invoking the spine only at cuts with
-  `b ≤ deepTailMin` (i.e. `t = t★`). If any consumer instantiates the step-2 / `deeperFlag_shell_le` at a
-  non-binding `t` with a strict shell and `b > deepTailMin`, the fact is false there and that instance's
-  corank charge diverges — so the fact must be discharged at the call site from the binding property, never
-  stated as a free `∀(t,j)` lemma. (Controller check: confirm no consumer sums over non-binding `t`.)
-- **Next.** (i) Build route (b′) — the marginal lemma is the one substantive Nat step (bank it beside
-  `minAdm_le_head_mul_tailInf`). (ii) Build route (c) — the deep-product nonzero-`deepTailMin`-minor witness.
-  (iii) Re-scope the whole corank charge (survival + weight) to `deepTailMin`-effective-dimension, not `M₂`
-  (§5); confirm the `Z.rank = M₂` assumption is purged from the deep-chain path.
+- **Consumer-side check — DONE (§7), NOT a gap.** The driver peels at the argmin: the step assembly uses
+  `t★ = bindingCut M = Nat.find(exists_binding_cut M)` (DecoratedStep:309), where `exists_binding_cut` is
+  the argmin equality `minAdm M = peelCharge M t★ + minAdm(redChain t★ M)` (DecoratedCharge:79); it invokes
+  `deeperFlag_shell_le` only at `t = t★` (shells `j ∈ [0,r]`). The `DecoratedStepHyp` IH is over ALL
+  one-shorter chains, so the argmin choice is legitimate (Codex Q1). So `b ≤ deepTailMin` holds at every
+  invoked cut. The one hygiene issue: `deeperFlag_shell_le` is STATED without `hbind` (over-permissive —
+  arity-≥5-false at non-argmin), though never invoked there.
+- **Most likely to break it.** Only a build that instantiates the shell lemma / step-2 at a **non-argmin**
+  cut (ignoring `bindingCut`) — the arity-≥5 witness `M=(3,4,3,1,4)@(1,1)` shows the conclusion is then
+  vacuous/false. Prevented structurally by peeling at `bindingCut M`.
+- **Next.** (i) **Add `hbind : minAdm M = peelCharge M t + minAdm(redChain t M)` to `deeperFlag_shell_le`**
+  (honest statement; caller discharges from `exists_binding_cut`). (ii) Build route (b′) — from `hbind`,
+  `f(t★) ≤ f(t★+1)` + the **marginal lemma** `minAdm(redChain(t+1)M) − minAdm(redChain t M) ≤ deepTailMin`
+  (the one substantive Nat step; bank beside `minAdm_le_head_mul_tailInf`) ⟹ `a+b ≤ deepTailMin−1`. (iii)
+  Build route (c) — the deep-product nonzero-`deepTailMin`-minor witness → a.e. `b ≤ rank Z_deep`. (iv)
+  Re-scope the corank charge (survival + weight) to `deepTailMin`-effective-dimension, not `M₂` (§5); purge
+  the `Z.rank = M₂` assumption from the deep-chain path.
 
 Files (absolute):
 - `…/threads/genm-rankgen/rankgen-cert.md` (this cert)
-- `…/threads/genm-rankgen/codex/rankgen-{prompt,answer}.md`, `run.log`
-- `…/threads/genm-rankgen/rankgen-{binding,mechanism,exact2,sweep2}.py`
+- `…/threads/genm-rankgen/codex/rankgen-{prompt,answer}.md`, `run.log` (core fact); `codex/consumer-{prompt,answer}.md`, `consumer-run.log` (consumer-side)
+- `…/threads/genm-rankgen/rankgen_{binding,mechanism,exact2,sweep2,realhyp,crux}.py`
