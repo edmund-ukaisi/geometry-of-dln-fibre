@@ -40,8 +40,11 @@ def main():
             banked = bool(sh(["git","branch","-r","--contains",head], cwd=p))
         except Exception as ex:
             rows.append((p, w.get("branch","?"), "ERR", "?", "?")); continue
-        rows.append((p, w.get("branch","?"), f"{age}d", dirty, "yes" if banked else "NO"))
-        if dirty == "0" and banked and p != repo: safe.append(p)
+        kind = "repo" if w.get("extra") else "wt"
+        rows.append((p, w.get("branch","?"), f"{age}d", dirty, ("yes" if banked else "NO") + ("" if kind=="wt" else " [independent repo]")))
+        # only REGISTERED worktrees of the target repo are ever removal candidates —
+        # an --extra hit may be an independent repository; never suggest removing those
+        if kind == "wt" and dirty == "0" and banked and p != repo: safe.append(p)
     rows.sort(key=lambda r: r[2])
     print(f"{'path':60} {'branch':40} {'age':>5} {'dirty':>5} banked")
     for r in rows: print(f"{r[0][:60]:60} {r[1][:40]:40} {r[2]:>5} {r[3]:>5} {r[4]}")
