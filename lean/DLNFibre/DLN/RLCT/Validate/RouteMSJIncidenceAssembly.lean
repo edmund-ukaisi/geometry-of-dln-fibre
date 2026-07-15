@@ -128,4 +128,67 @@ theorem hsSplit_preimage_box (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : F
       · rw [hsSplit_fst_succ]; exact h s'.succ i j
     · rw [hsSplit_snd]; exact h 0 _ j
 
+/-! ## Step 1, atom (ii) preparation: `freedSchurLoss` is invariant under a column reindex
+
+The row-split integrand identity (atom (ii)) must relate `freedSchurLoss` at the tailChain column count
+`M (Fin.last (L+1+1))` (the LHS `prod (tailChain M)` columns) to `hsQ`'s redChain column count
+`dropHead (redChain u M) (Fin.last L)` — the same natural number, but propositionally (not defeq) equal
+through the non-`rfl` `redChain_succ`. `freedSchurLoss` reads `Q` only through its two row-blocks, and its
+value is a `frobSq` sum over the shared columns, so it is invariant under ANY column reindex `e`. This lets
+the column cast be absorbed as a `finCongr`-`submatrix` at the point of use, decoupled from the chain
+bookkeeping. -/
+
+/-- `frobSq` is invariant under a column reindex by an equiv: `frobSq (M.submatrix id e) = frobSq M`
+(the inner sum reindexes by `e`). -/
+theorem frobSq_submatrix_id_cols {p q q' : ℕ} (M : Matrix (Fin p) (Fin q) ℝ) (e : Fin q' ≃ Fin q) :
+    frobSq (M.submatrix (id : Fin p → Fin p) e) = frobSq M := by
+  simp only [frobSq, Matrix.submatrix_apply, id_eq]
+  exact Finset.sum_congr rfl (fun i _ => Equiv.sum_comp e (fun k => (M i k) ^ 2))
+
+/-- Left-multiplication commutes with a column reindex: `A * (B.submatrix id e) = (A * B).submatrix id e`
+(the reindex touches only `B`'s free columns, not the contracted index). -/
+theorem mul_submatrix_id_cols {p r q q' : ℕ} (A : Matrix (Fin p) (Fin r) ℝ)
+    (B : Matrix (Fin r) (Fin q) ℝ) (e : Fin q' ≃ Fin q) :
+    A * (B.submatrix (id : Fin r → Fin r) e) = (A * B).submatrix (id : Fin p → Fin p) e := by
+  ext i k
+  simp only [Matrix.mul_apply, Matrix.submatrix_apply, id_eq]
+
+/-- **`freedSchurLoss` is invariant under a column reindex of `Q`.** For any equiv `e : Fin q' ≃ Fin q`,
+`freedSchurLoss x Γ (Q.submatrix id e) = freedSchurLoss x Γ Q`. Both the pivot energy `frobSq(P·Q̃ₚ)` and
+the corank energy `frobSq(C·Q̃ₚ + Γ·Q_b)` are `frobSq` sums over the shared columns, and every matrix
+operation (row-block extraction, `+`, left-mul) commutes with the column reindex, so `frobSq` absorbs it
+(`frobSq_submatrix_id_cols`). Chain-cast-free (`e` abstract) — the reusable bridge that lets atom (ii)
+absorb the tailChain↔redChain column cast as `e = finCongr`. -/
+theorem freedSchurLoss_submatrix_id_cols {t a b q q' : ℕ} (x : SJOuter t a b)
+    (Γ : Fin a → Fin b → ℝ) (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) (e : Fin q' ≃ Fin q) :
+    freedSchurLoss x Γ (Q.submatrix (id : (Fin t ⊕ Fin b) → _) e) = freedSchurLoss x Γ Q := by
+  unfold freedSchurLoss
+  -- row-block extraction commutes with the column reindex
+  have hinl : (Q.submatrix (id : (Fin t ⊕ Fin b) → _) e).submatrix Sum.inl id
+      = (Q.submatrix Sum.inl (id : Fin q → Fin q)).submatrix (id : Fin t → Fin t) e := by
+    ext i k; simp only [Matrix.submatrix_apply, id_eq]
+  have hinr : (Q.submatrix (id : (Fin t ⊕ Fin b) → _) e).submatrix Sum.inr id
+      = (Q.submatrix Sum.inr (id : Fin q → Fin q)).submatrix (id : Fin b → Fin b) e := by
+    ext i k; simp only [Matrix.submatrix_apply, id_eq]
+  rw [hinl, hinr]
+  -- pull the reindex outward through `+` and left-mul, then `frobSq` absorbs it
+  set Qinl := Q.submatrix Sum.inl (id : Fin q → Fin q) with hQinl
+  set Qinr := Q.submatrix Sum.inr (id : Fin q → Fin q) with hQinr
+  set K : Matrix (Fin t) (Fin b) ℝ := (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 with hK
+  -- the shared inner factor `Q̃ₚ = Qinl + K·Qinr`, reindexed, is the un-reindexed one submatrixed
+  have hinner : Qinl.submatrix (id : Fin t → Fin t) e + K * Qinr.submatrix (id : Fin b → Fin b) e
+      = (Qinl + K * Qinr).submatrix (id : Fin t → Fin t) e := by
+    rw [mul_submatrix_id_cols]
+    ext i k; simp only [Matrix.submatrix_apply, Matrix.add_apply, id_eq]
+  rw [hinner]
+  -- pivot energy: `P · (Q̃ₚ.submatrix) = (P · Q̃ₚ).submatrix`, `frobSq` absorbs
+  rw [mul_submatrix_id_cols, frobSq_submatrix_id_cols]
+  -- corank energy: `C · (Q̃ₚ.submatrix) + Γ · (Qinr.submatrix)` factors out `.submatrix id e`
+  rw [mul_submatrix_id_cols, mul_submatrix_id_cols]
+  have hcomb : (Matrix.of x.2 * (Qinl + K * Qinr)).submatrix (id : Fin a → Fin a) e
+        + (Matrix.of Γ * Qinr).submatrix (id : Fin a → Fin a) e
+      = (Matrix.of x.2 * (Qinl + K * Qinr) + Matrix.of Γ * Qinr).submatrix (id : Fin a → Fin a) e := by
+    ext i k; simp only [Matrix.submatrix_apply, Matrix.add_apply, id_eq]
+  rw [hcomb, frobSq_submatrix_id_cols]
+
 end DLNFibre.DLN.RLCT
