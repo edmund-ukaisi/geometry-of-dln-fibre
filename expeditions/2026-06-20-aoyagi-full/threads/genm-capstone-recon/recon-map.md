@@ -7,6 +7,16 @@
 unless noted. NO Lean edits/builds were run — this is a source + log sweep; `#print axioms` is flagged as a
 capstone verification step (I could not run it).
 
+**SCOPE (coordinator, 2026-07-15, satcover landed): `1 ≤ j < r` only** (`r = min(M₀−t, M₁−t)`; the incidence
+proof assumes `min(a,b) ≥ 1`). The capstone target gains **strict `hjr : j < r`**. `j = r` (saturated,
+`min(a,b)=0`, one corner block vanishes ⟹ the incidence resolution is VACUOUS there) is a SEPARATE mechanism
+— SD-7 `deeperFlagSaturatedShell_reduce` (a direct empty-corner pivot reduction), the `satfill` tide, OUT OF
+THIS CAPSTONE'S SCOPE. The good-connector dispatch already routes `jf=r → hsat` (SD-7), `1≤jf<r → hstrict`
+(Brick D), so `headSplit_domination`/(v) is only ever consumed for `j < r`. This map covers `1≤j<r` and maps
+NO `j=r` branch. The impl chain already types this: `shellSpine_le_hsQ_box`@HeadSplitDom:210 and
+`hsSplit_good_of_shell`@:182 both carry strict `hjr : (j:ℕ) < min(M₀−t, M₁−t)`; only the STUB
+`headSplit_domination`@DeeperFlagCore:513 lacks it (GAP-4).
+
 ---
 
 ## HEADLINE — what to reuse / avoid / what's staged (fold into the tide spec)
@@ -32,9 +42,9 @@ dependency-invert on a chart-5 hypothesis. See §(iv).
 **The genuinely-new labour (§(iii)) is:** (1) fill `shellSpine_le_hsQ_box` (mechanical measure
 reorganisation; all deps banked) + `pivotDom_uzero` (u=0 edge; not analytic); (2) an **R-A wiring refactor**
 — the `_impl`s sit *downstream* of the stubs (cyclic-import), so wiring needs a new top file, not a one-line
-`exact` (established precedent, lessons.md:3141); (3) **three stub-signature corrections** on
-`headSplit_domination` itself (`hc0`, `hε'le`/fixed-ε', `hjr`-vs-saturated-`j=min`, `hGmeas`); (4) an
-axiom-clean verification (the tower is currently CI-orphaned — its sorries pass `lake build DLNFibre`
+`exact` (established precedent, lessons.md:3141); (3) **stub-signature corrections** on
+`headSplit_domination` itself — add strict `hjr : j < r` (DEFINITE, satcover-landed), `hc0 : 0≤c'`,
+`hε'le`/fixed-ε', `hGmeas`; (4) an axiom-clean verification (the tower is currently CI-orphaned — its sorries pass `lake build DLNFibre`
 silently).
 
 ---
@@ -205,11 +215,14 @@ signature gaps, not just plumbing:
   vacuous, shell ⊄ G, domination fails). Per lessons.md:287 ("a sorry on a false statement is a landmine"),
   **restate the stub signature in the same pass** (the caller `deeperFlag_spineToCore` sets `ε'=ε/√(M₁M₂)`,
   so the narrowing is free).
-- **`hjr : j < min(M₀−t, M₁−t)` (STRICT)** vs stub's `hj : j ≤ min(…)` — the impl (and
-  `hsSplit_good_of_shell`) needs strict; **`j = min` is the SATURATED branch, a separately-HELD explicit
-  hole** (satcover hunt, scoping doc). So `headSplit_domination` as stated (∀ `j≤min`) is NOT fully
-  dischargeable by the impl — only `1≤j<min`. Decide: re-scope the stub to `j<min`, or route `j=min` to the
-  saturated-branch hole.
+- **`hjr : j < r` (STRICT), `r = min(M₀−t, M₁−t)`** — DEFINITE FIX (coordinator, satcover landed
+  2026-07-15): ADD strict `hjr : j < r` to the stub `headSplit_domination`. Rationale: satcover proved the
+  incidence apparatus is VACUOUS at `j=r` (`min(a,b)=0`, one corner block vanishes), so the incidence
+  resolution is valid only for `1≤j<r`. `j=r` is a SEPARATE mechanism — SD-7 `deeperFlagSaturatedShell_reduce`
+  (`satfill` tide), OUT OF SCOPE for this capstone; the good-connector already routes `jf=r → hsat`,
+  `1≤jf<r → hstrict` (Brick D). The impl (`headSplit_domination_impl`) and its helpers
+  (`shellSpine_le_hsQ_box`, `hsSplit_good_of_shell`) ALREADY carry strict `hjr`, so adding it to the stub
+  makes the signature match with no downstream change. This is a signature ALIGNMENT, not a scope decision.
 - **`hGmeas`** (measurability of the good set) — impl needs it; likely dischargeable inline (`weakEigCount`
   measurable), thread or prove in the wiring.
 
