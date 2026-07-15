@@ -260,3 +260,80 @@ squeeze 0 violations; scalar cross-peel `→0.5`).
   `rlct = C_k/2` for the binding stratum on the Morse–Bott big cells (§6), citing the global Aoyagi equality
   for the `(□)` floor and the sufficient condition (§4) for the big-cell realization; do **not** attempt a
   native proof of the deep-intersection local conjecture inside this expedition.
+
+---
+
+## 9. ADDENDUM (controller follow-up) — the deeper-strata LOWER bound: native-vs-cited axiom footprint
+
+**Question (sharper than §1–§8).** `(□)` is retired (no wall, §★). The mint's closing criterion wants
+`aoyagi_learning_coefficient` to carry only `monomial_rlct` (native resolution), not `cited_aoyagi_dln`.
+Support 1 proves no-wall but **via** cited Aoyagi. Support 3 (binding stratum) is native. The gap is the
+**deeper strata (`k>1`)**: does tide D's needed **lower bound** `rlct_x ≥ (minAdm−ab)/2` (strictly
+**weaker** than the open equality `rlct=codim/2`) hold **natively** at every point, or does the entangled
+locus need cited Aoyagi?
+
+### 9.1 The exact mechanism — deficit = the vertex-cover integrality gap (decorrelated Codex + my Newton, agreeing)
+
+On a monomialised transverse chart the loss is (Codex `lb-answer.md` Q2, confirmed by my
+`newton.py`/`transverse2.py`):
+```
+K⊥  ≍  Σ_{i=1}^q u_i²  +  Σ_{E∈H} ( ∏_{j∈E} v_j )²ᵗ ,      H = the seam-incidence hypergraph on the v-blocks.
+```
+Let `τ(H)` = integer vertex-cover number, `τ*(H)` = its LP (fractional) relaxation. Then **[FACT]**
+```
+codim_chart = q + τ ,     rlct(K⊥) = (q + τ*)/2 ,     deficit = codim/2 − rlct = (τ − τ*)/2 .
+```
+Verified exactly (`newton.py`, Newton-polyhedron rlct = `1/t₀`): path/star/tree/**even cycle** →
+`τ=τ*` → **benign** (`rlct = codim/2`); **odd cycles** → gap `>0` → **deficit**: triangle `C₃`
+`(τ,τ*)=(2,3/2)` rlct `3/4 < 1`; pentagon `C₅` rlct `5/4 < 3/2`; `K₄` rlct `1 < 3/2` (gap `1/2`). The
+`x²+y⁴` deficit is the **odd-cycle** phenomenon; **bipartite/acyclic incidences have zero gap**
+(König: `τ=τ*`).
+
+### 9.2 What is native, what is not
+
+- **[FACT] deepgate proved the INTEGER Nat gate** `q + τ ≥ minAdm−ab` (`C_k ≥ minAdm−ab`).
+- **[FACT] the native lower bound `rlct_x ≥ (minAdm−ab)/2` ⟺ the FRACTIONAL Nat gate**
+  `q + τ*(H) ≥ minAdm−ab` — **stronger** than the proven integer gate (since `τ* ≤ τ`), and **TRUE**
+  (a violation would give `rlct_chart < (minAdm−ab)/2`, hence a divergent box integral below `minAdm/2`,
+  contradicting cited Aoyagi). The open question is a **native** (Aoyagi-free) proof of it.
+- **[FACT] the fractional gate holds with ZERO gap (native, via König) on every BIPARTITE / acyclic /
+  balanced seam incidence** — which includes the **binding stratum** (`k=1`, single drop, the 2-layer
+  Schur-residual incidence is bipartite: `F`-nodes vs `E`-nodes, Codex Q4), the single-peel case (§2), and
+  every hierarchical/chain incidence I could construct (`newton.py`: path/star/tree all `τ=τ*`).
+- **[INFERENCE, Codex-concurred] the residual = ODD-CYCLE-entangled charts with gap exceeding the codim
+  slack.** The 3-layer expansion `(A+a)(B+b)(C+c)` (`ABC=0`) has pairwise terms `abC, aBc, Abc` that
+  *could* form a triangle (Codex Q4). **But a triangle is structurally OBSTRUCTED**: its three edges need
+  `A,B,C ≠ 0`, and then the middle-layer linear term `b ↦ A·b·C` (the sandwich, nonzero when `A,C≠0`)
+  supplies a Morse direction that splits off `b` — my `triangle_hunt.py` could not realise `ABC=0` with all
+  edges present; the naive cyclic bases all give `ABC ≠ 0`. Whether a rank-deficiency-opened sub-space evades
+  this (Codex Q5) is the un-settled structural point.
+
+### 9.3 Verdict on the axiom footprint
+
+**The dichotomy "native OR a DLN deficit exists" is FALSE** (Codex): the current native argument (S1–S4 +
+the *integer* Nat gate) is genuinely **insufficient** for the deeper strata, yet **no DLN point violates the
+bound** (Aoyagi floors every `rlct_x ≥ minAdm/2`). So:
+
+- **Native NOW:** the **binding stratum** (which gates finiteness) and all bipartite/acyclic charts —
+  `rlct = codim/2 ≥ (minAdm−ab)/2` via König (`τ=τ*`). **If tide D's per-stratum gate load-bears only on the
+  binding stratum, the mint is native (`monomial_rlct` only).**
+- **Native ACHIEVABLE for ALL strata IFF the FRACTIONAL Nat gate `q + τ*(H) ≥ minAdm−ab` is proven** —
+  equivalently, the seam-incidence hypergraph is **balanced (`τ=τ*`) on every in-scope chart.** This is a
+  **bounded, concrete combinatorial obligation** (LP duality over the composite-rank codim), **strictly
+  weaker than the open local-equality conjecture** (which is `rlct=codim/2`; here we need only `≥(minAdm−ab)/2`,
+  with slack `codim − (minAdm−ab)` to spare). Strong structural evidence it holds: the 2-layer base incidence
+  is bipartite, and the 3-layer triangle is sandwich-obstructed.
+- **If the fractional gate is NOT pursued:** cite `cited_aoyagi_dln` **only** for the deep-entangled residual
+  (`k>1` odd-cycle charts); the binding stratum stays native. A **small, well-scoped** axiom footprint (the
+  deep-intersection residual), not the whole RLCT.
+
+**Recommendation.** Spawn a bounded pen-and-paper follow-on to prove the **fractional Nat gate**
+`q + τ*(H) ≥ minAdm−ab` / the **balancedness of the DLN seam-incidence hypergraph** (does the type-A layered
+structure force `τ=τ*`?). If it proves out → mint is **fully native (`monomial_rlct` only), fork CLOSED
+native**. If it resists → the residual is a **small** cited-Aoyagi backstop confined to `k>1` entangled
+charts, with the binding stratum and everything bipartite native. Either way **`(□)` is secure** (§★ support 1).
+
+**Kill-condition for THIS question (would force cited-Aoyagi):** a genuine in-scope 3+-layer DLN germ whose
+seam incidence is a non-bipartite odd cycle with integrality gap `τ−τ* > codim − (minAdm−ab)` (slack). Not
+found; structurally obstructed at 3 layers (§9.2); its existence would be a real (bounded) finding, **not** a
+wall for `(□)`.
