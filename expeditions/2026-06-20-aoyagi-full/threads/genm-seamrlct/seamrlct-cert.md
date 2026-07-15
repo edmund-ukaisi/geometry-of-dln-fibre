@@ -383,7 +383,7 @@ RADIALISED coordinates (s=y, t=yθ, Jacobian |∂(s,t)/∂(y,θ)| = |y| ≠ 1):
 ```
 **The odd-cycle "deficit" is an artifact of choosing non-unit-Jacobian (radialising) coordinates. In the
 atomic Schur coordinates the incidence is a balanced path with `rlct = codim/2`; and even in the radialised
-chart the Jacobian weight exactly compensates.** The RLCT is of course coordinate-invariant; the *unweighted
+chart the Jacobian weight exactly compensates.** The RLCT is coordinate-invariant; the *unweighted
 vertex-cover formula* is not, and the atlas must carry the chart Jacobians.
 
 ### 10.3 Verdict on the axiom footprint
