@@ -38,4 +38,6 @@ branch `genm-sj5-c1` (off the capstone base `@12a7ae38a`).
 >   the measure-preserving head split (`paramsHeadSplit_mp`) ∘ `Measure.quasiMeasurePreserving_snd`, using
 >   `deeperFlagZdeep M u z = prod (dropHead (redChain u M)) (paramsHeadSplit (redChain u M) z).2` and
 >   `⨅_s (dropHead (redChain u M)) s = deepTailMin M`; then `ae_restrict_of_ae` to the box.
-> - **Status.** sorry-free (fidelity review requested).
+> - **Status.** sorry-free + reviewed (fidelity reviewer SURVIVED all 5 checkpoints — raw `⨅` = `deepTailMin`
+>   by `rfl`, consumer wiring, non-vacuity via the identity-minor witness, axiom-clean `[propext,
+>   Classical.choice, Quot.sound]`, engine name honest; decorrelated Codex concurred "bedrock").
