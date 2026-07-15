@@ -15,8 +15,9 @@ answer §2). Two deliverables:
 
       minAdm M ≤ CRrec (deepTail M) s + minAdm (M₀, M₁, s)     (for every s)
 
-  where `deepTail M = (M₂, …, M_last)`. Discharges the deep branch of the deep-gate inequality
-  `C_k ≥ minAdm(M) − ab`.
+  where `deepTail M = (M₂, …, M_last)`. Supplies input (I) — the deep-rank stratification — to the
+  deep branch `C_k ≥ minAdm(M) − ab`; the full inequality also needs (II)
+  `minAdm(M₀,M₁,s) ≤ ab + us − γ_s` and the γ_s/charge assembly (both stepbuild's).
 
 **Strategy (all head-peel; `minAdm` permutation-invariance is banked, `MinAdmPermInvariance`).**
 The genuine content is the KEY lemma `minAdm (Fin.snoc D t) ≤ t·s + CRrec D s` (append a head
@@ -192,7 +193,8 @@ def deepTail (M : Fin (L + 1 + 1 + 1 + 1) → ℕ) : Fin (L + 1 + 1) → ℕ :=
 stratification of the QIP (deepgate cert §6 / codex answer §2): head-peel `M` at pivot `t`; the
 reduced chain `redChain t M = Fin.cons t (deepTail M)` is `≤ t·s + CRrec (deepTail M) s` (KEY, via
 `minAdm_cons_eq_snoc`); the achiever `t` of the 3-chain `![M 0, M 1, s]` closes it. Holds for every
-`s` (stepbuild uses `s = ρ − k`). Discharges the deep branch of the gate. -/
+`s` (stepbuild uses `s = ρ − k`). Supplies input (I) to the deep branch `C_k ≥ minAdm(M) − ab`; the
+full branch also needs (II) `minAdm(M₀,M₁,s) ≤ ab + us − γ_s` and the γ_s assembly (stepbuild). -/
 theorem minAdm_le_compositeRank_add (M : Fin (L + 1 + 1 + 1 + 1) → ℕ) (s : ℕ) :
     minAdm M ≤ CRrec (deepTail M) s + minAdm ![M 0, M 1, s] := by
   -- the 3-chain `minAdm ![M₀,M₁,s]` is `gCrux M₀ M₁ s` (banked `minAdmRec_three`).

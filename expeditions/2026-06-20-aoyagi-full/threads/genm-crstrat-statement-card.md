@@ -26,7 +26,7 @@ Discharges the (I) obligation of the Route-B deep gate (deepgate cert §1(A)/§6
 >   equal (65k cases, 0 fails — reversal symmetry of a rank locus), but the equality
 >   `CRrec = CR_last` is NOT proved here (not needed: stepbuild's gate is abstract-param and
 >   consumes `CRrec` directly). A `CRrec` reversal-symmetry lemma would close it if ever wanted.
-> - **Status.** sorry-free.
+> - **Status.** sorry-free + reviewed (crstrat-reviewer PASS; fidelity SURVIVED).
 
 ## Card 2 — THE (I) THEOREM
 
@@ -57,7 +57,7 @@ Discharges the (I) obligation of the Route-B deep gate (deepgate cert §1(A)/§6
 >   banked `minAdmRec_three`/`gCrux` supply the 3-chain form.
 > - **Route.** Head-peel CR (reuses `redChain`); KEY via snoc-append + `minAdm_comp_perm`; (I) via
 >   head-peel of `minAdm M` + KEY at the 3-chain achiever pivot.
-> - **Status.** sorry-free.
+> - **Status.** sorry-free + reviewed (crstrat-reviewer PASS; fidelity SURVIVED).
 
 ---
 
