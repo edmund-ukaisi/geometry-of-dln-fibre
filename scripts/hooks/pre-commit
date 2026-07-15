@@ -1,0 +1,31 @@
+#!/bin/sh
+# expedition-map pre-commit hook: fast structural validation of every map dir.
+#
+# Runs `expedition validate --fast` on each expeditions/*/map that exists in the
+# working tree. Quiet on success; blocks the commit on contract errors. Fast
+# (structural contracts + lints only; no survey/battery). Install with:
+#   git config core.hooksPath scripts/hooks
+#
+# Skips silently if python3 or the launcher is unavailable (never blocks a
+# commit for infrastructure reasons).
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+launcher="$repo_root/scripts/expedition"
+
+[ -x "$launcher" ] || exit 0
+command -v python3 >/dev/null 2>&1 || exit 0
+
+status=0
+found=0
+for mapdir in "$repo_root"/expeditions/*/map; do
+    [ -f "$mapdir/claims.yaml" ] || continue
+    found=1
+    if ! out=$(python3 "$launcher" --map "$mapdir" validate --fast 2>&1); then
+        echo "pre-commit: expedition validate --fast failed for $mapdir" >&2
+        echo "$out" >&2
+        status=1
+    fi
+done
+
+[ "$found" = 1 ] || exit 0
+exit $status
