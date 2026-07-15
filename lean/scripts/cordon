@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# cordon — the citation-cordon repo gate (ENFORCING: nonzero exit on any violation).
+#
+#   docs/policies/citation-cordon.md   (the mechanism + the blueprint extension)
+#
+# Sibling to `scripts/sorries` (informational, always exit 0). This one is the GATE: it FAILS the build
+# if any DLNFibre declaration (scope = module provenance `DLNFibre`) rests on an untagged,
+# non-foundational axiom (UNACCOUNTED ≠ ∅), any in-scope cite axiom is not `@[cited]` + in a located
+# cite file (LOCATION ≠ ∅), or any banked (non-`@[blueprint]`) decl transitively rests on a
+# `@[blueprint]` forecast (LEAKS ≠ ∅).
+#
+# UNLIKE the sibling `qs` gate, this does NOT pass `--max-cites 0`: DLNFibre's definition of done is
+# proved-modulo-declared-cites, NOT zero-cite — the Aoyagi RLCT interface is a *legitimate* cite. So a
+# green gate here means "no unaccounted axiom, all cites located, no blueprint leak" (declared cites are
+# fine). Pass `--max-cites N` yourself to impose a ceiling.
+#
+# Runs `lake exe cordon-audit` (built via the shared-store throttle `lb`). Builds BOTH the math lib (the
+# runtime `importModules DLNFibre` target) AND the exe. Pass-through args go to the executable, e.g.
+# `scripts/cordon --manifest` prints the per-source cite manifest (informational).
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LEAN_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$LEAN_DIR"
+
+# Build the math lib (the runtime import target) AND the executable through the throttled shared-store
+# build — one slot, both targets.
+"$SCRIPT_DIR/lb" DLNFibre cordon-audit >&2
+
+source "$HOME/.elan/env" 2>/dev/null || true
+exec lake exe cordon-audit "$@"
