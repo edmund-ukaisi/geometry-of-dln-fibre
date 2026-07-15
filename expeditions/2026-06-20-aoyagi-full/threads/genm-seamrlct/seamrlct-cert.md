@@ -337,3 +337,88 @@ charts, with the binding stratum and everything bipartite native. Either way **`
 seam incidence is a non-bipartite odd cycle with integrality gap `τ−τ* > codim − (minAdm−ab)` (slack). Not
 found; structurally obstructed at 3 layers (§9.2); its existence would be a real (bounded) finding, **not** a
 wall for `(□)`.
+
+---
+
+## 10. FRACTIONAL-GATE FOLLOW-ON — the odd-cycle "deficit" is a COORDINATE ARTIFACT; NATIVE via unit-Jacobian Schur charts
+
+**Question (controller GO).** Prove the fractional Nat gate `q + τ* ≥ minAdm−ab` natively, via (a) balancedness,
+(b) gap ≤ slack, or (c) triangle-absence. KILL/RESIST = a concrete DLN chart with a genuine odd-cycle
+incidence and gap > slack.
+
+**Result — the seam hypergraph is NOT atlas-invariant; the deficit is an artifact of a non-unit-Jacobian
+coordinate choice, and the atlas's UNIT-Jacobian Schur charts realise `rlct = codim/2` natively.**
+Decorrelated Codex (`codex/bal-answer.md`, gpt-5.x xhigh, my leaning withheld) + my exact computation agree.
+
+### 10.1 The clean partial results (proven)
+
+- **[FACT] ≤3-deep-layer chains and the binding stratum (`k=1`) are native.** A `p`-deep-layer chain has
+  `p−1` transverse peel levels; a rank-`(ρ−k)` drop with `k=1` gives ONE level. An odd cycle needs ≥3
+  mutually-coupled levels ⟹ ≥4 deep layers AND `k≥3`. So every chain with ≤3 deep layers, and the binding
+  `k=1` stratum of any chain, has a path/star (bipartite) incidence — `τ=τ*`, `rlct = codim/2` — **native**
+  (covers small arity + the finiteness-gating stratum).
+- **[FACT] generic points of every stratum are Morse–Bott.** Each transverse `E_j` has a nonzero "sandwich"
+  linear term `L_{>j}·E_j·L_{<j}` when the other layers are generic ⟹ `E_j` is a smooth direction ⟹ the loss
+  is a sum of squares ⟹ `rlct = codim/2`. Deficits can only appear at NON-generic (aligned) points.
+- **[FACT] the whole-matrix triangle is OBSTRUCTED (the sandwich argument).** For a triangle among three
+  layers, removing the *middle* vertex's Morse direction requires a product (`A2A1`, or a sandwich `A2·A0`)
+  to vanish — but that same product is the *coefficient* of one of the triangle's edges, so removing the
+  Morse kills an edge. Verified: zeroing the outer layer collapses the degree-2 `K₄` on the layer
+  perturbations to a **STAR** (`star_collapse.py`: every leading hyperedge contains the centre layer ⟹
+  `τ=τ*=1`, bipartite).
+
+### 10.2 The decisive resolution — atlas-noninvariance of the unweighted hypergraph (Codex Q2, verified)
+
+The naive claim `rlct = (q+τ*)/2` (unweighted fractional cover) is **coordinate-dependent**. Codex's exact
+`2×2×2×2` germ (`verify_codex.py`, reproduced):
+```
+ATOMIC Schur coordinates (unit Jacobian):   K ≍ u² + (xs)² + (xz)² + (tz)²
+   incidence = PATH s–x–z–t (bipartite),  τ=τ*=2,  rlct = ½ + 1 = 3/2 = codim/2.        [FACT, native]
+
+RADIALISED coordinates (s=y, t=yθ, Jacobian |∂(s,t)/∂(y,θ)| = |y| ≠ 1):
+   K ≍ u² + (xy)² + (xz)² + (yz)²,  incidence = TRIANGLE (odd cycle) on x,y,z.
+   UNWEIGHTED:  ½ + ¾ = 5/4  (SPURIOUS deficit, < 3/2);
+   WEIGHTED by the |y| Jacobian (⟹ weight w_y = 2):
+       min{ a + 2b + c : a+b, a+c, b+c ≥ 1 } = 2  ⟹  rlct = ½ + 1 = 3/2 = codim/2.       [FACT, restored]
+```
+**The odd-cycle "deficit" is an artifact of choosing non-unit-Jacobian (radialising) coordinates. In the
+atomic Schur coordinates the incidence is a balanced path with `rlct = codim/2`; and even in the radialised
+chart the Jacobian weight exactly compensates.** The RLCT is of course coordinate-invariant; the *unweighted
+vertex-cover formula* is not, and the atlas must carry the chart Jacobians.
+
+### 10.3 Verdict on the axiom footprint
+
+**Route (b), correctly understood as a WEIGHTED (Jacobian) inequality, is the native closer — and the
+design's atlas already supplies the weights (they are 1).** The deep-atlas charts are **unit-Jacobian Schur
+big-cells** (`chart5_bigcell_cov` `Jac≡1`; the product-layer reduction §2.2 unit-Jac CoV — the design's
+central feature). In these atomic coordinates the seam incidence is balanced (the matrix-product seams are
+bipartite `F`-vs-`E`; the couplings collapse to paths/stars, §10.1), so `rlct = codim/2 ≥ (minAdm−ab)/2`
+**natively — no Aoyagi**.
+
+- **[FACT] routes (a),(c) as originally posed FAIL** (Codex Q1/Q4): depth-order does not force balancedness
+  (a transitively-oriented `K₃` is an acyclic quiver orientation), and the triangle is NOT structurally
+  absent once a residual kernel block is radialised — it is *coordinate-produced*. Type-`A` quiver acyclicity
+  (directed) does not transfer to (undirected) hypergraph balancedness.
+- **[FACT] the correct native closer is route (b) as the weighted discrepancy inequality**: `rlct` = the
+  Jacobian-weighted fractional cover, and the unit-Jacobian Schur atlas makes it equal `codim/2`.
+
+**ANSWER: NATIVE (`monomial_rlct` only), contingent on a GEOMETRIC property of the atlas (its unit-Jacobian
+Schur resolution monomialises each in-scope chart to a normal-crossing form), NOT on cited Aoyagi.** The
+analytic deficit worry is RETIRED — it was a coordinate artifact. The one requirement, already met by the
+design: **tide D must realise the per-stratum `rlct` through the atomic unit-Jacobian Schur charts (carrying
+the chart Jacobians), NOT via an unweighted monomial count on a radialised block.** Under that, the mint drops
+`cited_aoyagi_dln` for the lower bound.
+
+**Residual / kill-condition (now geometric, not analytic).** The only way the native argument stays
+incomplete (Codex): if tide D "insists on the unweighted formula while treating the radial charge as a bounded
+factor" — i.e. radialises a transverse block and forgets its Jacobian weight. That is a **fixable
+formalisation choice**, not a DLN phenomenon: keep the Schur charts atomic (unit-Jac) and the weight is 1. If
+for engineering reasons a radialising chart is unavoidable, carry its `|det J|` weight (the design already
+tracks Jacobians, e.g. the raw-completion `|det Δ|^m` variant §2.2). No genuine in-scope DLN chart forces an
+uncompensated odd-cycle deficit.
+
+**Recommendation.** The fork CLOSES **native**. Drop `cited_aoyagi_dln` from the lower-bound path; the mint's
+`aoyagi_learning_coefficient` carries `monomial_rlct` (the unit-Jacobian Schur resolution) only. The residual
+obligation is GEOMETRIC and lives in tide B (completeness of the unit-Jacobian atlas over every in-scope
+stratum) + the tide-D discipline "atomic Schur coordinates, carry the Jacobian" — both already in the design.
+Cited Aoyagi is NOT needed for the lower bound. (`(□)` remains secure via §★ support 1 independently.)
