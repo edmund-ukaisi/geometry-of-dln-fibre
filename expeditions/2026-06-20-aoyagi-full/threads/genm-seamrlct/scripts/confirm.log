@@ -1,0 +1,38 @@
+==============================================================================
+(A) CHARGE SQUEEZE  lambda^b det(NN^T) <= det(N DD^T N^T) <= Lambda^b det(NN^T)
+==============================================================================
+  VIOLATION 3 2 3 7.176378837654074e-17 -1.4301911760631649e-15 7.344259625368842e-15
+
+==============================================================================
+(B) SCALAR CROSS-PEEL  rlct(p^2 (h^2 + f^2 e^2))  expect 1/2 (min over components)
+==============================================================================
+  rlct(p^2(h^2+f^2 e^2)): fit=0.494 tail=0.503  expect 0.5
+  rlct(h^2+f^2 e^2)     : fit=0.931 tail=0.941  expect 1.0 (=codim/2, codim{=0}=2? no: comp {h=0,e=0} cod2, {h=0,f=0} cod2 -> 1.0)
+
+==============================================================================
+(C) FULL DLN LOSS  rlct_0 (homogeneous => global) for target probes, via IS
+==============================================================================
+          widths  minAdm     /2     fit    tail
+       (2, 2, 2)       3   1.50   1.622   1.453
+    (2, 2, 2, 2)       3   1.50   1.158   1.679
+    (2, 3, 3, 3)       5   2.50   2.339   4.620  <-- CHECK
+       (3, 3, 3)       7   3.50   4.242   3.776
+       (2, 3, 2)       4   2.00   2.636   2.791  <-- CHECK
+       (3, 2, 3)       5   2.50   2.921   3.051  <-- CHECK
+
+==============================================================================
+(D) KILL ATTEMPT: aligned-kernel deep intersection (Codex Q5 'most likely deficit')
+  Model: head P (2x3) with a designed kernel; last-layer seam with spectator rank loss.
+  loss = || P * [H | F E] ||^2, P rank-deficient direction aligned with FE column-space.
+==============================================================================
+Traceback (most recent call last):
+  File "/tmp/seamrlct/confirm.py", line 82, in <module>
+    lf,lt,_ = is_rlct([(2,3),(3,1),(3,1),(1,1)], killmodel, ts, N=700_000, reps=6, B=8, seed=31)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/seamrlct/rlct_is.py", line 34, in is_rlct
+    f = loss_fn(arrs)
+        ^^^^^^^^^^^^^
+  File "/tmp/seamrlct/confirm.py", line 77, in killmodel
+    FE = F * E[:,0][:,None,None]           # 3x1
+         ~~^~~~~~~~~~~~~~~~~~~~~
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 10.7 TiB for an array with shape (700000, 700000, 3, 1) and data type float64

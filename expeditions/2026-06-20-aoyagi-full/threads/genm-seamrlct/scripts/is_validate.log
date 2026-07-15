@@ -1,0 +1,20 @@
+VALIDATE: sum of e squares -> e/2
+  e=1: fit=0.500 tail=0.499  expect 0.5
+  e=2: fit=1.000 tail=1.000  expect 1.0
+  e=3: fit=1.502 tail=1.499  expect 1.5
+  e=4: fit=1.995 tail=1.989  expect 2.0
+  e=5: fit=2.494 tail=2.491  expect 2.5
+  e=6: fit=2.984 tail=3.064  expect 3.0
+
+VALIDATE: matrix product ||FE||^2 -> codim/2  (F:m x q,E:q x n)
+       (m,q,n)  codim  codim/2     fit    tail
+     (2, 1, 1)      1     0.50   0.498   0.496
+     (2, 2, 2)      3     1.50   1.728   2.158  <-- CHECK
+     (3, 2, 3)      5     2.50   2.885   2.916  <-- CHECK
+     (2, 3, 2)      4     2.00   2.297   2.300  <-- CHECK
+     (3, 3, 3)      7     3.50   4.584   3.578
+     (2, 2, 3)      4     2.00   1.977   1.992
+     (4, 2, 4)      7     3.50   3.813   3.539
+     (3, 2, 4)      6     3.00   3.033   2.663  <-- CHECK
+     (3, 3, 2)      5     2.50   3.315   3.765  <-- CHECK
+     (4, 3, 4)     10     5.00   5.699   7.193  <-- CHECK

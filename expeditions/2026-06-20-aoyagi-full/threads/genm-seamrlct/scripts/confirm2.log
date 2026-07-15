@@ -1,0 +1,10 @@
+(A') CHARGE SQUEEZE  det(N G N^T) in [lambda^b, Lambda^b]*det(NN^T),  G=DD^T >0
+   nondegenerate trials=274966, violations=0  (theorem: G>=lam I => NGN^T>=lam NN^T => det>=lam^b det(NN^T), det monotone on PSD) [PASS]
+
+(D') GENUINE aligned-kernel seam: loss=||P[H|FE]||^2, P:2x3, H:3x2, F:3x2, E:2x2
+   rlct: fit=3.606 tail=3.792   reduces to (2,3,4)-product, codim=6, codim/2=3.0
+   (E is 2x2 so FE=F*E spans all 3x2 -> [H|FE] free 3x4 -> not a genuine rank-constrained seam either)
+
+(D'') TRUE rank-constrained seam: F:3x1, E:1x2 -> FE is 3x2 of RANK<=1 (genuine constraint).
+   rlct: fit=2.339 tail=2.216
+   zero set {P[H|FE]=0}, FE rank<=1: components via rank paths; compare to min-path codim/2.
