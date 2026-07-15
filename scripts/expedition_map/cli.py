@@ -120,7 +120,8 @@ def cmd_view(args):
     elif which == "lookahead":
         print(views.render_lookahead(m, survey), end="")
     elif which == "dag":
-        print(views.render_dag(m, kind=args.kind, status=args.status), end="")
+        print(views.render_dag(m, kind=args.kind, status=args.status,
+                               landmarks_only=args.landmarks), end="")
     else:
         print(f"unknown view {which!r}", file=sys.stderr)
         return 2
@@ -226,6 +227,8 @@ def build_parser():
     sp.add_argument("id", nargs="?", help="node id (for decision)")
     sp.add_argument("--kind", choices=list(model.KINDS), help="dag filter")
     sp.add_argument("--status", help="dag filter")
+    sp.add_argument("--landmarks", action="store_true",
+                    help="dag: only landmark nodes + edges among them")
     sp.set_defaults(func=cmd_view)
 
     sp = sub.add_parser("brief", help="teammate context bundle")

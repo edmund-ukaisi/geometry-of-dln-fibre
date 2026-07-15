@@ -113,6 +113,24 @@ it": the tool reports exactly what the available territory can and cannot decide
   both numeric ⟹ matched / over- / under-estimated (actual > predicted =
   under-estimate); non-numeric equal strings ⟹ matched; else unscored.
 
+## Landmarks (§ Landmarks)
+
+`landmark: true` (optional bool, default false) marks the carried shortlist.
+Contract **11** is structural (runs in `--fast`): a hard **error** when the count
+exceeds the cap of 9, and its message names every landmark so demotion is a copy
+away; a **warning** when a landmark sits on an exit status (retired / superseded /
+refuted — a stale landmark to retire from the shortlist). Landmarks open
+`STATUS.md` / `view tick` (a `## landmarks` section before roots); the tick view
+is budget-aware, so with a full shortlist it compresses the live-frontier list
+(`… +N more`, blocked entries dropped first) to hold the 40-line cap. `brief`
+at resolution ≥ 2 and `view decision` add a landmark-orientation section that
+phrases the target's relation to each landmark over the dependency graph —
+`ancestor (this feeds it)`, `descendant (feeds this)`, `sibling`, `is this node`,
+or `no direct edge`. `view dag --landmarks` shows only landmark nodes and the
+edges among them. Spec-silent decision: the relation phrasing uses the dependency
+direction from `build_dep_graph` (discharges reversed), and "sibling" means a
+shared direct consumer.
+
 ## Known v0 limits
 
 - **anchors emit is honest, not complete.** It emits `#check @<name>` pins plus a

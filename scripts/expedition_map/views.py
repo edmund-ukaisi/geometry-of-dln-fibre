@@ -51,6 +51,40 @@ def _fmt(m, nid, width=44):
     return f"{nid} [{n['status']}] {t}"
 
 
+def _landmark_relation(target, landmark_id, adj, rev):
+    """Phrase for the target's relation to a landmark, over the dependency graph.
+
+    ancestor  = landmark is upstream (transitively consumes the target)
+    descendant= landmark is downstream (the target transitively rests on it)
+    sibling   = the two share a direct consumer
+    """
+    if landmark_id == target:
+        return "is this node"
+    if landmark_id in _transitive(rev, target):
+        return "ancestor (this feeds it)"
+    if landmark_id in _transitive(adj, target):
+        return "descendant (feeds this)"
+    tparents = rev.get(target, set())
+    lparents = rev.get(landmark_id, set())
+    if tparents & lparents:
+        return "sibling"
+    return "no direct edge"
+
+
+def _render_landmarks_section(m, adj=None, rev=None, target=None, header="## landmarks"):
+    """One line per landmark. With a target + graph, append the relation phrase."""
+    lms = model.landmarks(m)
+    if not lms:
+        return []
+    lines = [header]
+    for n in lms:
+        line = f"  ★ {n['id']} [{n['status']}] {n.get('title', '')}"
+        if target is not None and adj is not None:
+            line += f"  — {_landmark_relation(target, n['id'], adj, rev)}"
+        lines.append(line)
+    return lines
+
+
 # ---------------------------------------------------------------------------
 # tick / STATUS.md
 # ---------------------------------------------------------------------------
@@ -68,6 +102,12 @@ def render_status(m, survey):
         stale = " (STALE vs HEAD)" if survey.get("_stale") else ""
         head = f"survey: {fh.get('walker_mode', '?')}-mode @ {sha or 'no-git'}{stale}"
     lines.append(f"updated: {updated}    {head}".rstrip())
+
+    # Landmarks open the view -- the entry layer for a fresh context (§ Landmarks).
+    lm_lines = _render_landmarks_section(m)
+    if lm_lines:
+        lines.append("")
+        lines.extend(lm_lines)
 
     reach = model.reachable_from_roots(m)
     open_reach = [n for n in m["nodes"] if model.is_open(n) and n["id"] in reach]
@@ -88,12 +128,11 @@ def render_status(m, survey):
             ready.append(n)
         else:
             blocked.append(n)
-    lines.append("")
-    lines.append(f"## live frontier — {len(ready)} ready, {len(blocked)} blocked")
+    frontier_entries = []
     for n in ready + blocked:
         flag = "▶" if n in ready else "·"
         owner = n.get("owner") or "UNOWNED"
-        lines.append(f"  {flag} {n['id']} [{n['status']}] owner={owner}")
+        frontier_entries.append(f"  {flag} {n['id']} [{n['status']}] owner={owner}")
 
     # Open gates: routes awaiting adoption + unwitnessed discharge edges.
     gates = []
@@ -110,23 +149,29 @@ def render_status(m, survey):
                 unwit += 1
     if unwit:
         gates.append(f"{unwit} discharge edge(s) UNWITNESSED")
-    if gates:
-        lines.append("")
-        lines.append("## open gates")
-        for g in gates[:6]:
-            lines.append(f"  ! {g}")
 
+    tail = []
+    if gates:
+        tail += ["", "## open gates"] + [f"  ! {g}" for g in gates[:6]]
     warns = []
     if survey and survey.get("_stale"):
         warns.append("survey stale vs git HEAD — run `expedition survey`")
     if survey and survey.get("orphans"):
         warns.append(f"orphaned open nodes: {', '.join(survey['orphans'])}")
     if warns:
-        lines.append("")
-        lines.append("## staleness / drift")
-        for w in warns:
-            lines.append(f"  ⚠ {w}")
+        tail += ["", "## staleness / drift"] + [f"  ⚠ {w}" for w in warns]
 
+    # Budget: STATUS <= 40 lines. Compress the frontier (the expandable section)
+    # so landmarks + roots + gates always fit; blocked entries drop first.
+    header = ["", f"## live frontier — {len(ready)} ready, {len(blocked)} blocked"]
+    fixed = len(lines) + len(header) + len(tail)
+    budget = 40 - fixed
+    if len(frontier_entries) > budget:
+        keep = max(1, budget - 1)
+        shown = frontier_entries[:keep]
+        shown.append(f"  … +{len(frontier_entries) - keep} more")
+        frontier_entries = shown
+    lines += header + frontier_entries + tail
     return "\n".join(lines) + "\n"
 
 
@@ -166,6 +211,11 @@ def render_decision(m, survey, nid):
         out += ["", "## kernel (survey)",
                 f"  resolved={s.get('resolved')}  match={s.get('match')}  "
                 f"exists={s.get('lean_exists')}  sorry={s.get('sorry_tainted')}"]
+
+    lm = _render_landmarks_section(m, adj, rev, target=nid,
+                                   header="## relation to landmarks")
+    if lm:
+        out += [""] + lm
 
     out += ["", "## cone up (consumers → roots)"]
     for a in sorted(_transitive(rev, nid)):
@@ -262,12 +312,14 @@ def render_lookahead(m, survey):
 # dag view
 # ---------------------------------------------------------------------------
 
-def render_dag(m, kind=None, status=None):
-    out = ["# dag"]
+def render_dag(m, kind=None, status=None, landmarks_only=False):
+    out = ["# dag" + ("  (landmarks only)" if landmarks_only else "")]
     sel = [n for n in m["nodes"]
-           if (kind is None or n["kind"] == kind)
+           if (not landmarks_only or n.get("landmark"))
+           and (kind is None or n["kind"] == kind)
            and (status is None or n["status"] == status)]
     ids = {n["id"] for n in sel}
+    filtering = bool(kind or status or landmarks_only)
     by_kind = {}
     for n in sel:
         by_kind.setdefault(n["kind"], []).append(n)
@@ -277,8 +329,11 @@ def render_dag(m, kind=None, status=None):
         for n in by_kind[k]:
             out.append(f"  {n['id']} [{n['status']}]")
             for e in n["edges"]:
+                # In landmarks-only mode show only edges among landmarks.
+                if landmarks_only and e["to"] not in ids:
+                    continue
                 mark = "→" if e["type"] in model.DEP_EDGE_TYPES else "⇥"
-                vis = "" if (e["to"] in ids or not (kind or status)) else "  (filtered)"
+                vis = "" if (e["to"] in ids or not filtering) else "  (filtered)"
                 out.append(f"      {mark} {e['type']}: {e['to']}{vis}")
     return "\n".join(out) + "\n"
 
@@ -325,8 +380,12 @@ def render_brief(m, survey, nid, resolution):
     for e in n["edges"]:
         body.append(f"  {e['type']} -> {e['to']}")
 
-    # --- resolution 2: ancestors-to-root + siblings + battery names ---
+    # --- resolution 2: landmark orientation + ancestors + siblings + battery ---
     if resolution >= 2:
+        lm = _render_landmarks_section(m, adj, rev, target=nid,
+                                       header="## landmarks (orientation)")
+        if lm:
+            body += [""] + lm
         body += ["", "## ancestors → root"]
         for a in up:
             body.append(f"  ↑ {a}: {_title(m, a)}")

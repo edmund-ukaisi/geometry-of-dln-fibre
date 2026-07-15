@@ -50,6 +50,9 @@ ALL_EDGE_TYPES = DEP_EDGE_TYPES + EXIT_EDGE_TYPES
 # Selling-register lint words (contract 10 / P5).
 SELLING_WORDS = ("mechanical", "just wiring", "bypasses", "trivially", "suffices")
 
+# Landmarks (§ Landmarks): the carried shortlist, hard-capped map-wide.
+LANDMARK_CAP = 9
+
 
 # ---------------------------------------------------------------------------
 # Status helpers
@@ -84,6 +87,11 @@ def at_least(node, status):
 def short_name(lean_name):
     """Last dotted component of a Lean decl name (``A.B.foo`` -> ``foo``)."""
     return lean_name.rsplit(".", 1)[-1] if lean_name else lean_name
+
+
+def landmarks(m):
+    """Landmark nodes in claims.yaml order (the carried shortlist)."""
+    return [n for n in m["nodes"] if n.get("landmark")]
 
 
 # ---------------------------------------------------------------------------
@@ -155,6 +163,7 @@ def _normalize_node(node, path):
     node.setdefault("lean", "")
     node.setdefault("owner", "")
     node.setdefault("tier", "new")
+    node["landmark"] = bool(node.get("landmark", False))
     return node
 
 

@@ -178,6 +178,9 @@ materialized view; a views/ directory of stale renders is the rot surface this d
     **selling-register lint** — `mechanical`, `just wiring`, `bypasses`, `trivially`, `suffices`
     in a route/claim `notes`/`title` without a witness or evidence pointer is a warning (P5:
     the record is the reward model).
+11. **Landmark discipline** (§ Landmarks): at most 9 `landmark` nodes (error, naming them all so
+    demotion is easy); a landmark on an exit status (retired/superseded/refuted) is a stale-landmark
+    warning.
 
 ## Ownership and operations
 

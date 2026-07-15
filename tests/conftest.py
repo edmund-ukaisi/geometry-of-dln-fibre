@@ -44,6 +44,8 @@ def dump_claims(nodes, roots, expedition="test", updated="2026-07-15"):
                         ":" in str(val) or '"' in str(val)):
                     val = '"' + str(val).replace('"', "'") + '"'
                 lines.append(f"    {key}: {val}")
+        if n.get("landmark"):
+            lines.append("    landmark: true")
         if n.get("prop"):
             lines.append("    prop: |")
             for pl in str(n["prop"]).rstrip().splitlines():

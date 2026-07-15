@@ -318,10 +318,30 @@ def c10_lints(m, survey, fast):
     return out
 
 
+# ---------------------------------------------------------------------------
+# Contract 11 -- landmarks: hard cap <= 9; landmark not on an exit status.
+# ---------------------------------------------------------------------------
+
+def c11_landmarks(m, survey, fast):
+    out = []
+    lms = model.landmarks(m)
+    if len(lms) > model.LANDMARK_CAP:
+        names = ", ".join(n["id"] for n in lms)
+        out.append(_err(11, None,
+                        f"{len(lms)} landmarks exceed the cap of "
+                        f"{model.LANDMARK_CAP}; demote one. Landmarks: {names}"))
+    for n in lms:
+        if model.is_exit(n):
+            out.append(_warn(11, n["id"],
+                             f"stale landmark: status {n['status']} (retire from "
+                             "the carried shortlist)"))
+    return out
+
+
 CONTRACTS = [
     c1_dag, c2_anchors, c3_status_kernel, c4_discharge_witness,
     c5_sorry_registered, c6_ownership, c7_notions, c8_reachable,
-    c9_route_gate, c10_lints,
+    c9_route_gate, c10_lints, c11_landmarks,
 ]
 
 

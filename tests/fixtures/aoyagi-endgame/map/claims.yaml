@@ -31,6 +31,7 @@ nodes:
     status: skeleton-linked
     tier: new
     owner: capstone
+    landmark: true
     edges:
       - {type: needs, to: deeper-flag-shell-le}
       - {type: needs, to: jr-saturated}
@@ -64,6 +65,7 @@ nodes:
     status: adjudicated
     tier: new
     owner: genm-incidencepp
+    landmark: true
     kill: battery/w-corner-223.py
     evidence: [threads/genm-incidencepp/incidence-cert.md]
     notes: "two decorrelated seats on the terminal estimate"
@@ -165,6 +167,7 @@ nodes:
     title: "tail-min-width (includes M₁)"
     status: frozen
     owner: capstone
+    landmark: true
     notes: "includes M1 — hpiv fails iff M2>M1; the route-B ceiling"
 
   - id: corner-comparator
@@ -179,6 +182,7 @@ nodes:
     title: "direct incidence-chart route"
     status: adopted
     owner: genm-routeverify
+    landmark: true
     edges:
       - {type: needs, to: incidence-estimate}
     evidence: [threads/genm-routeverify/routeverify-cert.md]

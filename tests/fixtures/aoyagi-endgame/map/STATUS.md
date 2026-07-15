@@ -2,6 +2,12 @@
 
 updated: 2026-07-15
 
+## landmarks
+  ★ box-threshold [skeleton-linked] (□) RouteMBoxThresholdFinite below T1
+  ★ incidence-estimate [adjudicated] (∗_T1) partial-shell transverse-Schur incidence
+  ★ tail-min-width [frozen] tail-min-width (includes M₁)
+  ★ route-incidence-direct [adopted] direct incidence-chart route
+
 ## roots (1) — 7 open nodes below
   ◦ mint-108 [stated] unsuffixed aoyagi_learning_coefficient re-point
 
