@@ -464,6 +464,83 @@ theorem shellSpine_le_frontCharge (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
   filter_upwards [hGae, hEtopae] with p hG hEtop
   exact coupledBox_le_frontCharge M (t + j) c' p hc' hG hEtop
 
+/-! ## Step 3, entry (a): factor the `x`-independent coupled corank charge out of the front `∫_x`
+
+The front-charge integrand's coupled charge `det(Q_bQ_bᵀ)^{−a/2}·Cresid(ab)c'` (`Q_b = A_cor·Z_deep`, a
+function of `p` only) is CONSTANT across the front-block `x`-integration, so it pulls out as a scalar
+factor. The residual `∫_x`-integral is the FRONT LOSS integrand — the transverse-Schur front loss
+`(E_top + E_tr)^{−q}`, `q = c'−ab/2`, over the front block `x = (P, B₁₂, C)`. This is the object step 3's
+joint incidence charts (`RouteMSJIncidenceChart{,4Polar,5BigCell}`) resolve; the charge stays COUPLED
+inside the OUTER `∫_p` (no `sup_{A_cor}` pull-out, routeverify CHECK 2). -/
+
+/-- **The front-loss integrand** — the `x`-integral factor of `frontChargeIntegrand` after the coupled
+corank charge is pulled out: the transverse-Schur front loss `(E_top + E_tr)^{−q}` over the front block
+`x = (P, B₁₂, C) ∈ outerDom`, `q = c'−ab/2`. `E_top = frobSq(P·Q̃ₚ)` the pivot energy (`Q̃ₚ = Q_p +
+P⁻¹·B₁₂·Q_b`), `E_tr = frobSq((C·Q̃ₚ)·(I − Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b))` the transverse Schur. Coupled to `p`
+through `Q_b = A_cor·Z_deep z` and `Q_p`. Step 3 resolves this `∫_x` via the joint incidence charts. -/
+noncomputable def frontLossIntegrand (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (p : Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)) : ℝ≥0∞ :=
+  ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
+    ENNReal.ofReal
+      ((frobSq (Matrix.of x.1.1
+            * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+              + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                  * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id))
+          + frobSq ((Matrix.of x.2
+                * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+                  + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                      * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id))
+              * (1 - ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ
+                  * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+                      * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ)⁻¹
+                  * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)))
+            ^ (-(c' - ((M 0 - u : ℕ) : ℝ) * ((M 1 - u : ℕ) : ℝ) / 2)))
+
+/-- **Step-3 entry (a) — the front charge factors as (coupled corank charge) × (front loss).** The
+`x`-independent charge `det(Q_bQ_bᵀ)^{−a/2}·Cresid(ab)c'` pulls out of the front-block integral
+(`lintegral_const_mul'`, the charge finite/nonneg via `posSemidef_mul_transpose.det_nonneg` +
+`Cresid_nonneg`), leaving `frontLossIntegrand`. An EXACT equality — the entry point for step 3's joint
+incidence charts (which resolve `frontLossIntegrand`'s `∫_x`). -/
+theorem frontCharge_factor (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (p : Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)) :
+    frontChargeIntegrand M u c' p
+      = ENNReal.ofReal
+          (((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+              * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ).det
+                ^ (-((M 0 - u : ℕ) : ℝ) / 2)
+            * Cresid ((M 0 - u) * (M 1 - u)) c')
+        * frontLossIntegrand M u c' p := by
+  rw [frontChargeIntegrand, frontLossIntegrand,
+    ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+  refine lintegral_congr (fun x => ?_)
+  exact ENNReal.ofReal_mul
+    (mul_nonneg (Real.rpow_nonneg (posSemidef_mul_transpose _).det_nonneg _) (Cresid_nonneg _ _))
+
+/-- **Step-3 entry (b) — the pivot energy in POLYNOMIAL form on `outerDom`.** On the invertible-pivot
+chart `outerDom` (where `IsUnit P`), the pivot energy `E_top = frobSq(P·Q̃ₚ)` clears its inverse to the
+polynomial `frobSq(P·Q_p + B₁₂·Q_b) = frobSq([P|B₁₂]·hsQ)` (`pivotEnergy_stack_eq`). This is the form the
+incidence charts consume (a polynomial in the front block, the `E_top > 0` a.e. positivity's shape). The
+transverse-Schur `E_tr` is unchanged. A `setLIntegral_congr_fun` on `outerDom`. -/
+theorem frontLoss_pivotPoly_eq (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (p : Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)) :
+    frontLossIntegrand M u c' p
+      = ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
+          ENNReal.ofReal
+            ((frobSq (Matrix.of x.1.1 * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+                  + Matrix.of x.1.2 * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)
+              + frobSq ((Matrix.of x.2
+                    * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+                      + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                          * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id))
+                  * (1 - ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ
+                      * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+                          * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ)⁻¹
+                      * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)))
+                ^ (-(c' - ((M 0 - u : ℕ) : ℝ) * ((M 1 - u : ℕ) : ℝ) / 2))) := by
+  rw [frontLossIntegrand]
+  refine setLIntegral_congr_fun (measurableSet_outerDom _ _ _ _) (fun x hx => ?_)
+  rw [pivotEnergy_stack_eq x (hsQ M u (deeperFlagZdeep M u) p.1 p.2) hx.2.2.2]
+
 /-! ## Step 3/4 — the general-`L` per-stratum exponent gate (gaugelift's chain) -/
 
 /-- **The deep-tail-minimum bound `deepTailMin M ≤ M 2`.** The `⨅_{i≥2}` includes the `i = 2` term. -/
