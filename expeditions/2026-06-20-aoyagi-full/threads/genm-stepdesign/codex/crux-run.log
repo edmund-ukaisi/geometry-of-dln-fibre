@@ -1,0 +1,985 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.4
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-af17a4a1ffe1efa07
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f65b5-ab5b-7af0-b814-32c1259c57d8
+--------
+user
+<task>
+You are a second, decorrelated expert (measure theory + real algebraic geometry + change-of-variables
+finiteness estimates). I want your INDEPENDENT verdict on whether a specific multi-dimensional integral is
+FINITE, and on the cleanest change-of-variables to certify it. I am WITHHOLDING my own tentative conclusion
+so as not to anchor you — argue whichever way the algebra points, and if it is a divergence, exhibit the
+divergent direction explicitly.
+
+## The setting (a deep-linear-network RLCT "front charge" integral)
+
+Fix naturals u ≥ 1, a = M₀−u ≥ 1, b = M₁−u ≥ 1, and a "deep effective width" ρ ≥ 1, with the SCOPE
+    a + b ≤ ρ − 1        (STRICT; equivalently d := ρ − b ≥ a + 1).
+Fix a real exponent q with 0 < q, and the finiteness threshold is governed by a per-stratum codimension gate
+(stated below). All matrices are real, all "box" integrations are over entrywise [−1,1] cubes unless noted.
+
+There are TWO nested finiteness questions. Please treat them separately and then jointly.
+
+### PART A — the LEAF integral (deep factor trivial, ρ columns), the CRUX.
+
+Variables (all over boxes):
+- z0 : u×ρ   (pivot rows source)
+- A  : b×ρ   (corank rows source)          [call it A_cor]
+- P  : u×u   restricted to the invertible chart {det P ≠ 0}
+- B  : u×b
+- C  : a×u
+Set the pivot rows Q_p = z0 (u×ρ), corank rows Q_b = A (b×ρ). Let
+    Π_b = Q_bᵀ (Q_b Q_bᵀ)⁻¹ Q_b     (orthogonal projection onto row(Q_b), a ρ×ρ projector),
+    E_top = ‖P·Q_p + B·Q_b‖²_F,
+    E_tr  = ‖C·(Q_p + P⁻¹ B Q_b)·(I_ρ − Π_b)‖²_F.
+The corank charge is det(Q_b Q_bᵀ)^{−a/2} (a b×b Gram; PosDef a.e. since b ≤ ρ). The LEAF integral is
+
+    I_leaf := ∫_{z0,A,P,B,C over boxes, det P≠0}
+                 det(Q_b Q_bᵀ)^{−a/2} · ( E_top + E_tr )^{−q}   d(all).
+
+GOAL A: is I_leaf < ∞ for the exponent range below, in scope a+b ≤ ρ−1?
+
+The proposed CoV atlas (each step named; I want you to check the JACOBIAN BOOKKEEPING, esp. the |det D| powers):
+1. Minor chart on A: A = D·[I_b | X], D∈GL_b (b×b), X∈ℝ^{b×(ρ−b)}=ℝ^{b×d}. Jacobian dA = |det D|^d dD dX.
+2. Corank charge: det(Q_bQ_bᵀ) = det(D)²·det(I_b+XXᵀ), so det^{−a/2} = |det D|^{−a}·(bounded X-unit).
+   Running |det D| power after steps 1–2: |det D|^{d−a}.
+3. Pivot shear: Q_p = [U | U X + W], U = z0's first b cols (u×b), W = z0·[−X;I_d] (u×d). Jacobian 1.
+   Transverse Schur: Q_p(I−Π_b)Q_pᵀ = W(I+XᵀX)⁻¹Wᵀ, so E_tr ≍ ‖Y W‖²_F with Y=(P;C) ((u+a)×u = M₀×u).
+4. Front B-shear: H = P U + B D. As a change in B: dB = |det D|^{−u} dH. Running |det D| power: |det D|^{d−a−u}.
+   Then H̃ = H + (X-dependent shift), measure-preserving. Loss ≍ ‖H̃‖²_F + ‖Y W‖²_F.
+5. The H̃-fibre: ∫_{H̃∈ℝ^{ub}} (‖H̃‖² + τ²)^{−q} dH̃ = τ^{ub−2q}·K, τ = ‖YW‖, finite iff 2q > ub.
+6. W- and Y-block determinantal big cells (Schur-complement CoV, Jacobian 1), then radial blow-up so each
+   stratum (ℓ = rank-drop index of W, s = rank index of Y-block) has radial measure r^{C_{ℓ,s}−1} dr and
+   the loss contributes r^{−2q}, giving ∫₀^δ r^{C_{ℓ,s}−1−2q} dr, finite iff q < C_{ℓ,s}/2.
+
+The EXPONENT GATE (assume PROVEN; it is an exact ring identity + a min bound): for every valid stratum (ℓ,s),
+    C_{ℓ,s} = u·b + M₀·ℓ + (M₀−s)(u−ℓ−s) + s(d−ℓ),   and   min_{ℓ,s} C_{ℓ,s} / 2 ≥ q   (strictly > q in scope).
+So each per-stratum radial integral converges. That is not in question.
+
+The CRUX I want you to adjudicate: step 4 leaves the weight |det D|^{d−a−u}. The scope gives only d ≥ a+1
+(from a+b ≤ ρ−1), NOT d ≥ a+u. So |det D|^{d−a−u} can carry a NEGATIVE net power of |det D| (when u ≥ 2).
+Step 5 as written ENLARGES the H̃-image from the D-dependent parallelepiped {H = PU + B·D : B∈box} (a set of
+volume ∝ |det D|^u that SHRINKS as D→0) to all of ℝ^{ub}. Concretely:
+   ∫_{B∈box} (‖H̃‖²+τ²)^{−q} dB = |det D|^{−u} ∫_{H∈R_D} (‖H̃‖²+τ²)^{−q} dH,  R_D = PU + box·D,  vol(R_D) ∝ |det D|^u.
+Enlarging R_D ↦ ℝ^{ub} gives the a-fortiori |det D|^{−u}·τ^{ub−2q}·K, hence the total D-weight |det D|^{d−a−u}
+whose b×b determinantal radial (via SVD/triangular pivots δ_i, dD ~ ∏δ_i^{b−i}...) has schematic pivot
+exponents (d−a−u) + 2(i−1) per δ_i, which need NOT be > −1 (a divergence) when u ≥ 2.
+
+Q-A1. Is the ENLARGEMENT in step 5 a genuine over-count that creates a FALSE divergence, or is |det D|^{d−a−u}
+   actually integrable as written (i.e. is the b×b determinantal measure ∏_i δ_i^{(d−a−u)+2(i−1)} dδ_i finite
+   under d ≥ a+1)? Give the exact per-pivot exponent condition and evaluate it at the borderline d = a+1, u = 2, b = 2.
+
+Q-A2. If the enlargement over-counts: is the "joint D–H tube resolution" (do NOT enlarge; estimate
+   ∫_{H∈R_D}(‖H̃‖²+τ²)^{−q}dH as a function of BOTH ‖D‖ and τ) actually FINITE overall? Please carry out the
+   two-region estimate: region {‖D‖ ≲ τ} (R_D small vs τ) vs {‖D‖ ≳ τ}, give the D-weight on each region, and
+   determine whether each converges. Is the correct statement "on {‖D‖≲τ} the tube retention cancels |det D|^{−u},
+   restoring |det D|^{d−a} (integrable since d≥a); on {‖D‖≳τ} the τ^{ub−2q} decay + bounded |det D| closes it"?
+   Verify or refute, with the exact exponents.
+
+Q-A3. Given only a FINITENESS goal (< ∞, not a sharp constant), is there a materially SIMPLER route than the
+   full joint tube — e.g. keep B in its box and dominate the H̃-fibre by min(vol(R_D)·τ^{−2q}, ℝ^{ub}-value),
+   or a single clean lower bound E_top+E_tr ≥ (monomial) that separates the variables enough? Or is the joint
+   D–H coupling genuinely irreducible (the min-codimension attained at an INTERIOR stratum forces it)?
+
+### PART B — the DEEP factor (general depth): does the tail obstruct the leaf reduction?
+
+Now the true integral has a deep factor. Replace Q_p, Q_b by
+    Q_p = z0 · Z,   Q_b = A · Z,   Z = Z(z_tail) an M₂×n matrix (n = last width), z_tail over a box,
+with z0 : u×M₂, A : b×M₂. Z is a PRODUCT of layer matrices (a shorter deep-linear chain), whose GENERIC rank
+is exactly ρ := min(M₂, …, n) = "deepTailMin" (NOT necessarily M₂ — ρ ≤ M₂, and ρ < M₂ is reachable, e.g. a
+narrow interior layer). rank Z = ρ for a.e. z_tail; rank Z < ρ on a measure-zero (but positive-codimension)
+set. The scope a+b ≤ ρ−1 is on this ρ.
+
+I claim (please verify) the whole integrand depends on (z0, A, z_tail) only through Q_p, Q_b, and only through
+Z's rank-ρ row space: writing a rank factorization Z = S̃·Õ with S̃ (M₂×ρ, full col rank a.e.), Õ (ρ×n, ÕÕᵀ=I_ρ),
+one has det(Q_bQ_bᵀ)=det((AS̃)(AS̃)ᵀ), E_top=‖P(z0 S̃)+B(A S̃)‖²_F, and E_tr reduces to the ρ-dim leaf form in
+(z0 S̃, A S̃). So the map (z0,A) ↦ (Q̂_p, Q̂_b) := (z0 S̃, A S̃) sends the integrand to the PART-A leaf integrand
+in dimension ρ.
+
+Q-B1. Is that reduction exact (verify the E_tr claim: Q̃ₚ(I_n−Π_b) = Q̂ₚ̃(I_ρ−Π̂_b)Õ, hence ‖C·(...)‖ reduces)?
+
+Q-B2. The map (z0,A) ↦ (z0 S̃, A S̃) from ℝ^{u×M₂}×ℝ^{b×M₂} to ℝ^{u×ρ}×ℝ^{b×ρ} is a linear SURJECTION with
+   kernel of dim (u+b)(M₂−ρ). Pushing the box measure forward gives a bounded compactly-supported density ψ(·;S̃)
+   on the ρ-image; ψ and its support BLOW UP as S̃'s smallest singular value → 0 (i.e. as rank Z → below ρ).
+   So the z_tail-integration of the S̃-dependent constant is the "tail coupling." Is this z_tail-integration
+   FINITE, or is the neighborhood of {rank Z < ρ} a genuine divergence? Note: the corank charge
+   det((AS̃)(AS̃)ᵀ)^{−a/2} only blows up where rank(A S̃) < b, i.e. rank S̃ (=rank Z) drops BELOW b = ρ−(a+2),
+   a drop of ≥ a+2 from the generic ρ — a HIGH-codimension locus. Does that high codimension (vs the −a/2 power)
+   render the tail charge integrable, analogously to Part A's corank charge? Or does ψ's blow-up (a separate,
+   lower-codimension effect at the FIRST rank drop rank Z = ρ−1) dominate and diverge?
+
+Q-B3. VERDICT: is the general-depth front-charge integral I = ∫ det(Q_bQ_bᵀ)^{−a/2}(E_top+E_tr)^{−q} FINITE
+   (bounded multi-step labour, no new obstruction beyond Part A's tube + a corank-charge-style tail estimate),
+   or is there a genuine general-depth WALL that the leaf/Part-A analysis misses? If a wall, isolate the exact
+   divergent direction (which layer degeneration, which exponent fails) as precisely as you can.
+
+<output_contract>
+Answer each of Q-A1, Q-A2, Q-A3, Q-B1, Q-B2, Q-B3 in order, labelled. For each: lead with FINITE / DIVERGENT /
+UNDETERMINED, then the exact exponent arithmetic (per-pivot δ_i exponents, region estimates, codimension-vs-power
+comparisons). Be concrete with the borderline cases I named (d=a+1, u=2, b=2; rank drop ρ→ρ−1 vs ρ→b). If you
+disagree with a claimed identity or reduction, say so and give the corrected statement. Distinguish [FACT]
+(you verified the algebra) from [INFERENCE] (structural expectation). End with the single most likely way the
+overall finiteness could FAIL, if any. Concise; exact algebra over prose.
+</output_contract>
+
+<grounding_rules>
+- Ground in the exact exponents given. Do not invent a different normalization silently; if you change one,
+  state it. The b×b determinantal Lebesgue measure in SVD/triangular pivot coordinates and its pivot exponents
+  are load-bearing — get them right and show them.
+- The exponent gate min_{ℓ,s} C_{ℓ,s}/2 ≥ q is GIVEN (proven); do not re-litigate it. The open questions are
+  the |det D| tube (Part A) and the tail/deep-factor coupling (Part B).
+- "FINITE" must mean a stated, checkable exponent inequality holds (e.g. every δ_i-pivot exponent > −1). Say
+  which inequality and whether the given scope (d≥a+1) delivers it.
+</grounding_rules>
+</task>
+
+codex
+I’ll audit the two Jacobians first, then test the proposed tube split against scalar/matrix degenerations, and finally analyze whether the deep-tail reduction is uniform near rank loss. I’ll keep algebraic facts separate from any conclusion that needs more data about the tail architecture.
+  → Read workspace instructions and fix the precise Part A coordinate/Jacobian formulas
+  • Analyze the retained D–H tube with exact singular/pivot exponents
+  • Verify the rank-factorized Part B identity and test tail rank-loss integrability
+  • Deliver labelled independent verdicts with facts vs inferences
+exec
+/bin/bash -lc "sed -n '1,260p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-af17a4a1ffe1efa07
+ succeeded in 0ms:
+# geometry-of-dln-fibre
+
+AI-assisted math-research + Lean-formalisation harness for **digesting and formalising** the paper
+*"Geometry of the fibers of the multiplication map of deep linear neural networks"* (Simon Pepin
+Lehalleur & Richárd Rimányi, 2024; `paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/`).
+Orientation is in [`README.md`](README.md); this file is the disposition and the working discipline.
+The process harness (disposition + policies + roles + skills + the markdown→Lean pipeline) is ported
+from the `ai-research-assistant` harness and is **domain-agnostic** — see [`TEMPLATE.md`](TEMPLATE.md)
+to instantiate it for another paper.
+
+## Disposition
+
+The work here is research. Not coding, not ticking off a support ticket, not shipping a product. 
+The stance: 
+- careful, conscientious, objective as a scientist.
+- meticulous in calculation as Euler, bold as Grothendieck. 
+- methodical as Sherlock Holmes. Observe before theorising. Distinguish data from interpretation. 
+- update like a Bayesian; do not collapse to the mode. 
+
+
+- **Resist the move-fast-and-ship-it instinct.** Stackable, solid progress is the goal; the trap is
+  *visible* progress raced ahead of it — a clean doc or confident headline that travels far while leaving
+  holes behind. When you reach for a confident headline, that is the moment to look for the confound. Each
+  layer should be solid and hole-free before the next stands on it.
+- **Fill the layer — completion is your strength.** *The sea rises inexorably, but not in spikes*
+  ([`docs/policies/bedrock.md`](docs/policies/bedrock.md)): within a boundary already staked, close the holes
+  — the generality a statement promised, the cases it already claims, fidelity to the definition and the
+  underlying spirit it invokes — rather than defer them. Such hardening is high-value, and it is where your
+  **comparative advantage** lies: your bottleneck is scoping, taste, and direction, not the patient completion
+  of well-scoped work — so do not treat that completion capacity, which is *abundant*, as if it were *scarce*.
+  **Just do it!** Don't file it as a "chore" (an *unprobed* difficulty claim, not a defer). Surface to move the
+  *boundary* — but an **earned** taste-judgment that a gap is the *right* extension is itself direction:
+  **Just Do It** if within reach, else **roadmap** it; only a *bare, unargued* extension waits for the operator.
+- **Build the buildable — Mathlib-absence is not a wall.** The team's strength is getting *well-established
+  mathematics* done and hardened *at scale*: the labour is *abundant*, so the scarce thing is the
+  **discrimination** — *detail-at-scale* (standard material whose proof is patient and decomposable: **build
+  it**, as a clean reusable Mathlib-grade library, letting the sea rise over a whole foundation) versus
+  *genuine monument* (a single deep insight that is itself a research achievement — resolution of
+  singularities, the analytic SLT core: **cite it**). The discriminator is detail-at-scale vs monument, never
+  in-Mathlib-vs-not; the failure mode is **timidity disguised as rigor** ("not in Mathlib, therefore risky").
+  The guardrail is the rest of this disposition — name results for what they are, separate Proved/Cited, cite
+  the monuments: bold to build the buildable, humble before the genuine mountain. Committing the team to a
+  build is the **controller's** executive call ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md));
+  the build-vs-cite test and the Mathlib-grade API discipline live in
+  [`docs/policies/library-building.md`](docs/policies/library-building.md).
+- **Name results for what they are.** A result's name and statement denote exactly what is proven — no more;
+  reaching for an impressive name (or "done") is the visible-progress instinct in disguise. Separate Proved /
+  Assumed / Cited / Deferred. See [`docs/policies/precision.md`](docs/policies/precision.md). (Here the
+  recurring trap: a `rlct_…`-named result that in fact proves only a *codimension* — the `rlct = ½·codim`
+  reading needs the cited Aoyagi equality.)
+- **Build to bedrock.** A sorry-free build defeats *technical* slop; it never defeats *conceptual* slop —
+  "technically correct but subtly wrong, not The Way." **Bedrock is the rock the rising sea rises over**: build
+  the theory so the next result can stand on it without re-opening it. Where short feedback loops fail, **beauty
+  is the instrument** — a vacuous, mis-scoped, or overclaiming result is *ugly*, and the ugliness is
+  information. The **controller holds this taste and judges against it**; a green build is necessary, never
+  sufficient. See [`docs/policies/bedrock.md`](docs/policies/bedrock.md).
+- **Caveats live next to claims, not in footnotes.** An assumed hypothesis or a cited interface goes in the
+  same paragraph as any claim that depends on it.
+- **Write to figure out the truth, not to persuade.** Concise and fact-based.
+- **Elementary, precisely.** Build explanations up from precise but simple well-chunked objects, established locally in the
+  document. "Elementary" does not mean imprecise or dumbed-down or toy analogies: every step stays
+  mathematically precise. Introduce the objects you use before you use them; prefer a chain of small exact
+  statements over one dense one. Resist over-naming things to do chunking. Reach for an analogy only when it is exact and load-bearing. See
+  [`docs/policies/writing-style.md`](docs/policies/writing-style.md).
+
+## Writing and communication discipline (object-level focus)
+In writing or in communication, focus on object-level. Resist meta-level pull. 
+Remove authorial self-reassurance: `honestly`, `fundamentally`, `this is the whole point`, `this is loadbearing`, `of course`, `simply`, `just`, and selling phrasing.
+The full list and the review function that enforces it are in [`docs/policies/review.md`](docs/policies/review.md).
+
+## Controller operation — the cognitive adaptive controller (lead session only)
+
+> **Teammates: skip this section.** It is the controller (lead-session) operating discipline; your
+> role file (`.agent-team/roles/<role>.md`) and every section *other* than this one are your context.
+> (It lives here, not only in `controller.md`, because the lead session reliably loads `CLAUDE.md` but
+> not always its role file.)
+
+You run this project as the **controller** ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md)):
+hold the vision, set the pace, urge the team to the goal, and adapt. During autonomous stretches (the
+hourly loop/heartbeat with the operator away) these are load-bearing, not optional:
+
+- **You are a cognitive adaptive controller, not an open-loop planner.** Hold the vision and the plan, but
+  run **closed-loop**: every tick is feedback — teammate reports, build state, reviews, the counterexample
+  hunt — against the rising-sea reference. *Update like a Bayesian.* When feedback says a layer is a spike,
+  the Mathlib map is wrong, or a step is harder than scoped, **re-plan** — adjust the ladder, re-rank
+  `priorities.md`, re-scope — rather than push a failing setpoint.
+- **Calibrate your sensors on ground truth.** A teammate's "done" and a green exit code are *readings*, not
+  the truth — re-run the build, `#print axioms`, re-run cited scripts, and commission the decorrelated
+  review/hunt before you believe them (there is no operator watching for a miscalibrated sensor). This is
+  the L5/DA-lesson wisdom generalised: gate integration on evidence you re-derived, not on a "done".
+- **Ambition is governed by bedrock — gain needs damping.** The easier it is to build well-established
+  mathematics at scale, the faster you can manufacture *spikes* (broad-named results with holes behind
+  them). The same controller that builds inexorably fills the layer before it climbs: the precision/bedrock
+  check (name = content; weakest hypotheses; base audited hardest; the hunt precedes trust) is the negative
+  feedback that makes high ambition *stable*. Build hard; damp harder.
+- **Stay out of the grind; spend your context on direction.** Your scarce resource is scoping, taste, and
+  integration — not lemma-proving, which is abundant and delegable. Do not rabbit-hole into a proof in your
+  own context ([`docs/policies/expedition.md`](docs/policies/expedition.md) § anti-patterns). Periodically
+  **step back and self-audit** your trajectory against the vision — under autonomy you hold the taste
+  channel the operator would otherwise supply.
+- **The autonomy operating rule — adapt the ladder, never the setpoint.** Re-scoping the *ladder* (which
+  rung first, which Mathlib API to build on, splitting a layer) is the closed loop working — do it freely.
+  Re-scoping the *destination* ([The destination, plainly](#the-destination-plainly)) or the *definition of
+  done* (sorry-free; `#print axioms` = `[propext, Classical.choice, Quot.sound]`; each layer characterized
+  at the weakest hypotheses that suffice; reusable `Core` authored upstream-ready) is **not** yours to do
+  silently. Two decision classes:
+  - **proceed-on-silence** (the default) — anything within the staked boundary: surface the call in prose,
+    keep working what is unblocked, take the recommended option if no reply, and record that you did.
+    Silence = consent. Surface **async and non-blocking** — never a blocking `AskUserQuestion` in a loop (it
+    freezes the inbox and stalls the team; reserve it for a genuine fork you cannot resolve from the code or
+    sensible defaults).
+  - **wait-for-explicit-go** (the few) — the close-phase PR **merge**, the `dev → main` promotion, and
+    **any change to the destination or the definition of done.** These never proceed on silence.
+
+## How research runs here
+
+- **Expeditions** ([`docs/policies/expedition.md`](docs/policies/expedition.md)) are the unit: a central
+  question, a controller delegating to thread teammates (explore / formalisation / infra), reviewers, and a
+  synthesis at close. Run on the Agent Teams substrate (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`); launch with
+  cwd = this repo root.
+- **Pipeline: markdown → Lean.** Theory develops in markdown (`theory/`, expedition notes). A stable claim is
+  formalised in Lean (`lean/`, library `DLNFibre`). The reader-facing digest/expositions live in
+  `docs/expositions/`.
+  - *Scholium* is a **viewer** (renders these markdown docs with KaTeX + callouts), not an editor; write to its
+    conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
+    recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
+    (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
+    subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
+    indented code block (8-space indent) there; top-level fenced code is fine.
+- **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
+  source ([`docs/policies/claims.md`](docs/policies/claims.md)).
+- **Codex** is the independent second model for strategy and review
+  ([`docs/policies/codex-consultation.md`](docs/policies/codex-consultation.md)).
+
+## Team structure
+
+Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
+- `controller` — this lead session: meta-planning, delegation, integration.
+- `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
+- `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
+- `formaliser` — formalisation (tide) threads.
+- `reviewer` — controller-spawned independent audit (soundness / fidelity).
+- `hardener` — independent principles / taste reviewer (precision, bedrock).
+
+If dispatched into a role, read its role file and agent definition first.
+
+## Branch discipline
+
+- **One remote: `origin = git@github.com:edmund-ukaisi/geometry-of-dln-fibre.git`.** All work lives here.
+- **`dev` is the integration branch.** Feature and expedition branches branch off `dev` and PR back into
+  `dev`. `main` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
+  to directly.
+- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `main` directly. One
+  expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
+- **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
+  2026-06-12) — push freely to bank and share work. **Opening a PR and posting PR review comments/replies
+  via `gh` is controller-authorized** (operator standing instruction, 2026-07-01) — but **auto-open at most
+  ONE PR per expedition** unless the operator authorises more; fold everything (including close-out docs)
+  into that one PR before signalling merge (see the expedition's `lessons.md`/DA6). **Merging PRs and the
+  `dev → main` promotion remain operator-gated** (wait-for-explicit-go); the operator performs those.
+  Always confirm the push target is `origin`, never a non-`origin` remote.
+
+## Memory
+
+Persistent context lives **in-repo**: this file, the policies in `docs/policies/`, the expedition docs
+(`synthesis.md` / statement cards / `thread.md`), `ROADMAP.md`, and `lean/CLAUDE.md`. Save conventions and
+decisions there.
+
+**Do NOT write to global Claude memory (`~/.claude/**/memory/`).** It pollutes other workspaces and is
+invisible to collaborators reading the repo. This binds the controller **and every teammate** — the harness
+may prompt you to save a memory there; do not. If a teammate writes one, the controller deletes it and
+re-homes the content in-repo. (Agent-Teams *runtime* state under `~/.claude/teams/` and `~/.claude/tasks/` is
+fine — that's the substrate, not persistent context.)
+
+## The destination, plainly
+
+We want, in honest Lean, the paper's results about the **fibres of matrix multiplication** for deep linear
+networks:
+
+- the space $\operatorname{Rep}_{\underline d}$ of composable matrix tuples, the multiplication map
+  $\operatorname{mult}$, the zero-product / rank-$r$ loci, and the fibres $\operatorname{mult}^{-1}(B)$;
+- via the **type-A quiver** translation (orbits ↔ Kostant partitions ↔ rank patterns, Gabriel, orbit-closure
+  order, the `Ext` codimension): the codimension $C$ and the number $\theta$ of top-dimensional components,
+  in the paper's three forms (Poincaré series, a quadratic integer program, an explicit formula), and the
+  surprising **permutation invariance** of $(C,\theta)$;
+- the payoff: the real log-canonical threshold of the square-Frobenius loss is $C/2$ — DLNs are "mildly
+  singular". The geometric codimension is the new content; the Aoyagi `rlct = ½·codim` **equality** is
+  **Cited** (Watanabe's universal `rlct ≤ ½·codim` + Aoyagi's exact DLN computation — the formal
+  `RlctInterface.cited_aoyagi_dln` is the equality, which the payoff needs).
+
+The reusable **engine** (everything before "the payoff") is network-free and lives in `DLNFibre.Core`; the
+DLN/RLCT **application** lives in `DLNFibre.DLN`. See [`ROADMAP.md`](ROADMAP.md) for the formalisation ladder.
+
+## Pointers
+
+- [`README.md`](README.md) — orientation, how to launch an expedition, Lean build.
+- [`ROADMAP.md`](ROADMAP.md) — the result-map + the Core/DLN formalisation-target ladder.
+- [`docs/policies/`](docs/policies/) — expedition, claims, review, precision, bedrock, codex-consultation, statement-cards, writing-style (+ the reader-facing exposition trio).
+- [`docs/expositions/`](docs/expositions/) — the curated reader-facing digest (starts with `paper-digest/high-level-overview.md`).
+- [`.claude/skills/`](.claude/skills/) — lean-formalisation, local-codex-consult.
+- [`lean/CLAUDE.md`](lean/CLAUDE.md) — Lean build + Mathlib conventions; the Core/DLN split.
+- [`theory/`](theory/) — markdown theory workspace.
+- [`TEMPLATE.md`](TEMPLATE.md) — how to instantiate this harness for a new paper.
+
+codex
+The first audit already exposes one load-bearing correction: a split by the single quantity \(\|D\|\) cannot control \(\det D\). A matrix can have \(\|D\|\asymp1\) while one singular value tends to zero, so the proposed “large-\(D\)” half still contains the rank-\((b-1)\) divisor. I’m refining the split singular value by singular value before deciding finiteness.
+exec
+/bin/bash -lc "rg -n \"joint D|front charge|deepTailMin|C_\\{|corank charge|tube retention|E_tr|A_cor\" theory docs paper-sources .agent-team 2>/dev/null" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-af17a4a1ffe1efa07
+2026-07-15T12:19:40.551922Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f65b5-ab5b-7af0-b814-32c1259c57d8`" }
+2026-07-15T12:19:40.552269Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "rg -n \"joint D|front charge|deepTailMin|C_\\{|corank charge|tube retention|E_tr|A_cor\" theory docs paper-sources .agent-team 2>/dev/null"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+ exited 1:
+codex
+The refined calculation closes Part A: once \(U\) and \(B\) are treated together, a \(k\)-fold rank drop of \(D\) costs \(k^2+\alpha k\) (\(\alpha=d-a\)) and can remove only \(k(u-p)\) front equations when \(\operatorname{rank}P=p\). The resulting weighted codimension is never below the given \(C_{\ell,s}\)-minimum. Part B is different: a codimension-one tail rank drop can replace \(s\) leaf directions by one tail-normal direction, producing a real wall.
+The determinant tube is resolved by a joint (P,D,U,B) rank calculation; a square-tail rank-drop counterexample settles the general-depth question.
+  ✓ Read workspace instructions and fix the precise Part A coordinate/Jacobian formulas
+  ✓ Analyze the retained D–H tube with exact singular/pivot exponents
+  ✓ Verify the rank-factorized Part B identity and test tail rank-loss integrability
+  → Deliver labelled independent verdicts with facts vs inferences
+  ✓ Read workspace instructions and fix the precise Part A coordinate/Jacobian formulas
+  ✓ Analyze the retained D–H tube with exact singular/pivot exponents
+  ✓ Verify the rank-factorized Part B identity and test tail rank-loss integrability
+  ✓ Deliver labelled independent verdicts with facts vs inferences
+codex
+Put
+\[
+\alpha=d-a\ge1,\qquad \beta=\alpha-u=d-a-u,\qquad
+C_s=ub+(M_0-s)(u-s)+sd.
+\]
+The displayed \(C_{\ell,s}\) simplifies exactly to \(C_s\); the \(\ell\)-dependence cancels.
+
+### Q-A1 — DIVERGENT for the enlarged bound; the original tube need not diverge
+
+[FACT] The Jacobians are correct:
+
+\[
+dA=|\det D|^d\,dD\,dX,\qquad
+\det(AA^\top)^{-a/2}=|\det D|^{-a}\det(I+XX^\top)^{-a/2},
+\]
+and, row by row,
+\[
+dB=|\det D|^{-u}\,dH.
+\]
+
+Thus enlargement to all \(H\in\mathbb R^{ub}\) leaves \(|\det D|^\beta\).
+
+For ordered singular values \(0<\sigma_1<\cdots<\sigma_b\),
+\[
+dD\asymp \prod_{i<j}|\sigma_j^2-\sigma_i^2|\,d\sigma\,d\mu.
+\]
+On a standard sector the raw singular-value exponents are
+\[
+e_i=\beta+2(i-1).
+\]
+The exact condition for the first \(k\) singular values to vanish jointly is
+\[
+\sum_{i=1}^k(e_i+1)=k(\beta+k)>0,
+\]
+equivalently \(\beta>-k\). For every \(k\), this is equivalent to the rank-one condition
+\[
+\boxed{\beta>-1}.
+\]
+
+Equivalently, the \(k\)-fold exceptional radial variable has exponent
+\[
+k(\beta+k)-1.
+\]
+
+At \(d=a+1,\ u=2,\ b=2\),
+\[
+\beta=-1,\qquad (e_1,e_2)=(-1,1).
+\]
+The rank-one exponent is \(-1\): logarithmic divergence. The rank-two exponent is
+\[
+2(-1+2)-1=1,
+\]
+so the divergence is specifically transverse to the rank-\((b-1)\) divisor.
+
+Hence the enlargement creates a divergent majorant. Scope \(d\ge a+1\) does not make it integrable; enlargement requires \(d\ge a+u\).
+
+### Q-A2 — FINITE, but the proposed two-region argument is false as stated
+
+[FACT] On \(\|D\|\lesssim\tau\),
+\[
+\int_{R_D}(\|H\|^2+\tau^2)^{-q}dH
+\le C|\det D|^u\tau^{-2q}.
+\]
+Therefore the determinant weight becomes
+\[
+|\det D|^\alpha\tau^{-2q}.
+\]
+Homogeneity gives
+\[
+\int_{\|D\|\le\tau}|\det D|^\alpha\,dD
+\asymp\tau^{b^2+b\alpha}.
+\]
+At a \(Y\!W\)-stratum with
+\[
+N_s=C_s-ub=(M_0-s)(u-s)+sd,
+\]
+this region has radial condition
+\[
+\boxed{2q<N_s+b^2+b\alpha}.
+\]
+
+On \(\|D\|\gtrsim\tau\), however, \(\det D\) is not bounded below. The set contains matrices with
+\[
+\sigma_1\to0,\qquad \sigma_2,\ldots,\sigma_b\asymp1.
+\]
+The full-space estimate still leaves \(|\det D|^\beta\), which is nonintegrable whenever \(\beta\le-1\). Thus the quoted “large-\(D\)” assertion is false.
+
+The correct retained-tube split is singular-value-wise. If exactly \(k\) singular values satisfy \(\sigma_j\le\tau\), then
+\[
+\int_{R_D}(\|H\|^2+\tau^2)^{-q}dH
+\lesssim
+\left(\prod_{j\le k}\sigma_j^u\right)
+\tau^{u(b-k)-2q}.
+\]
+After multiplication by \(|\det D|^{\alpha-u}\), short singular values have exponent \(\alpha\), while long ones retain exponent \(\alpha-u\).
+
+In the named borderline \((\alpha,u,b)=(1,2,2)\):
+
+\[
+\begin{array}{c|c}
+k&\text{\(\tau\)-order after \(D\)-integration}\\ \hline
+0&\tau^{4-2q}\log(1/\tau)\\
+1&\tau^{4-2q}\\
+2&\tau^{6-2q}.
+\end{array}
+\]
+Thus the worst order is the desired \(\tau^{ub-2q}\), up to one harmless logarithm.
+
+For general parameters one must also retain the \(P\)-\(U\) coupling. Let \(p=\operatorname{rank}P\), \(s=\operatorname{rank}Y\), and let \(k=b-\operatorname{rank}D\). Then:
+
+- the rank-\(D\) normal codimension plus charge is \(k^2+\alpha k\);
+- \(PU+BD\) has image dimension
+  \[
+  ub-k(u-p);
+  \]
+- inside the rank-\(Y=s\) stratum, imposing \(\operatorname{rank}P=p\) costs
+  \[
+  (s-p)(u-p).
+  \]
+
+Hence the exact weighted candidate is
+\[
+T_{s,p,k}
+=
+C_s+(s-p)(u-p)+k(k+\alpha-u+p).
+\]
+
+Writing \(h=s-p\), \(t=u-p\):
+
+- if \(k\le h\),
+  \[
+  T_{s,p,k}-C_s=t(h-k)+k(k+\alpha)\ge0;
+  \]
+- if \(h\le k\le t\),
+  \[
+  T_{s,p,k}-C_{p+k}=h(h+\alpha)+t(k-h)\ge0;
+  \]
+- if \(k>t\), directly \(T_{s,p,k}\ge C_s\).
+
+Therefore
+\[
+\boxed{T_{s,p,k}\ge\min_r C_r}.
+\]
+The given strict gate \(2q<\min_r C_r\) makes every joint radial integral converge. Thus \(I_{\rm leaf}<\infty\).
+
+### Q-A3 — FINITE by a cleaner joint convolution estimate
+
+[FACT] A useful compressed route is to keep both \(U\) and \(B\). For
+\[
+L_{P,D}(U,B)=PU+BD,
+\]
+one has
+\[
+L_{P,D}L_{P,D}^{*}
+=
+I_b\otimes PP^\top+D^\top D\otimes I_u.
+\]
+If \(p_i,\sigma_j\) are the singular values of \(P,D\), its eigenvalues are
+\[
+p_i^2+\sigma_j^2.
+\]
+The pushforward density is bounded by
+\[
+C\prod_{i=1}^u\prod_{j=1}^b(p_i^2+\sigma_j^2)^{-1/2}.
+\]
+Consequently, for \(2q>ub\),
+\[
+\int_{U,B}(\|PU+BD\|^2+\tau^2)^{-q}
+\lesssim
+\tau^{ub-2q}
+\prod_{i,j}(p_i^2+\sigma_j^2)^{-1/2}.
+\]
+Its rank-stratum exponents are exactly \(T_{s,p,k}\) above.
+
+So a full geometric tube construction is unnecessary. A scalar bound using only \(\operatorname{vol}(R_D)\) is generally too crude; the singular-value or covariance coupling is essential. No single separated monomial bound handles the cancellations in \(PU+BD\).
+
+### Q-B1 — FINITE reduction algebraically, but not row-space invariance
+
+[FACT] Write
+\[
+Z=\widetilde S\,\widetilde O,\qquad
+\widetilde O\widetilde O^\top=I_\rho,
+\]
+and set
+\[
+\widehat Q_p=z_0\widetilde S,\qquad
+\widehat Q_b=A\widetilde S.
+\]
+Then
+\[
+Q_bQ_b^\top=\widehat Q_b\widehat Q_b^\top,
+\qquad
+\Pi_b=\widetilde O^\top\widehat\Pi_b\widetilde O.
+\]
+If
+\[
+\widehat R=\widehat Q_p+P^{-1}B\widehat Q_b,
+\]
+then
+\[
+\widehat R\widetilde O(I-\Pi_b)
+=
+\widehat R(I-\widehat\Pi_b)\widetilde O.
+\]
+Since right multiplication by \(\widetilde O\) preserves Frobenius norm,
+\[
+\|C\widehat R(I-\widehat\Pi_b)\widetilde O\|_F
+=
+\|C\widehat R(I-\widehat\Pi_b)\|_F.
+\]
+Thus the \(\rho\)-dimensional leaf identity is exact.
+
+But “depends only on the row space of \(Z\)” is false. Replacing \(Z\) by \(tZ\) preserves its row space but scales every \(Q\). The singular values in \(\widetilde S\) survive through the pushforward density.
+
+### Q-B2 — DIVERGENT in general; the first-rank-drop charge itself is finite
+
+[FACT] For \(u+b\) independent rows, the image density has height of order
+\[
+\det(\widetilde S^\top\widetilde S)^{-(u+b)/2}.
+\]
+Its support does not blow up in collapsing directions; it shrinks. Density height alone therefore proves neither convergence nor divergence.
+
+For fixed effective rank \(r\), the corank-charge integral has SVD exponents
+\[
+r-b-a+2(i-1).
+\]
+The exact condition is
+\[
+\boxed{r\ge a+b}.
+\]
+Thus:
+
+- at the first drop \(r=\rho-1\), scope gives \(r\ge a+b\), so the charge remains integrable;
+- at \(r=a+b\), the first exponent is \(0\), still finite;
+- at \(r=a+b-1\), it is \(-1\), logarithmically divergent;
+- at \(r=b\), it is \(-a\le-1\), divergent;
+- below \(b\), the Gram determinant vanishes a.e.
+
+So the assertion that trouble begins only when \(\operatorname{rank}Z<b\) is incorrect for uniform integration in \(A\).
+
+More importantly, the loss already creates a first-drop wall. Let \(\kappa\) be the normal codimension of a smooth tail stratum \(\operatorname{rank}Z=\rho-1\). Since
+\[
+C_s(\rho-1)=C_s(\rho)-s,
+\]
+the combined candidate is
+\[
+\boxed{C_s(\rho)-s+\kappa}.
+\]
+The Part-A gate \(2q<C_s(\rho)\) does not imply convergence when \(\kappa<s\).
+
+### Q-B3 — DIVERGENT in general: explicit allowed counterexample
+
+[FACT] Take
+\[
+u=2,\quad a=1,\quad b=1,\quad \rho=3,\quad d=2,
+\]
+and let the tail be one freely varying \(3\times3\) matrix. Then
+\[
+a+b=2=\rho-1.
+\]
+The leaf codimensions are
+\[
+C_0=8,\qquad C_1=C_2=6.
+\]
+Thus every \(q<3\) passes the stated Part-A gate.
+
+Near a smooth rank-two tail matrix, such as \(\operatorname{diag}(1/2,1/2,0)\), rank loss has one transverse coordinate \(t\), so \(\kappa=1\). On the regular front stratum \(s=u=2\), take:
+
+- \(P\) uniformly invertible;
+- the \(A\)-pivot bounded away from zero, so the corank charge is bounded;
+- the lost transverse \(W\)-column in an annulus.
+
+After smooth shears the loss is comparable to
+\[
+|H|^2+|W_{\rm surviving}|^2+t^2|W_{\rm lost}|^2.
+\]
+Holding \(W_{\rm lost}\) in that annulus leaves
+\[
+|y|^2+t^2,
+\qquad y\in\mathbb R^{ub+u(d-1)}=\mathbb R^4.
+\]
+Hence the local integral contains
+\[
+\int_{\mathbb R^4\times\mathbb R}
+(|y|^2+t^2)^{-q}\,dy\,dt,
+\]
+which diverges exactly when
+\[
+2q\ge5.
+\]
+
+For example,
+\[
+q=\frac{11}{4}
+\]
+satisfies the leaf gate \(2q=5.5<6\), but the general-depth integral diverges.
+
+For a rank drop by \(k\) with tail-normal codimension \(\kappa_k\), the necessary additional gate suggested by the same local model is
+\[
+\boxed{2q<C_s(\rho-k)+\kappa_k
+      =C_s(\rho)-ks+\kappa_k}.
+\]
+
+The most likely failure is therefore a codimension-one rank drop in a square bottleneck tail layer: it replaces \(u\) regular leaf directions by one tail-normal direction. It is not the corank charge; it is the loss degeneration at \(\rho\to\rho-1\).
+tokens used
+78,693
+Put
+\[
+\alpha=d-a\ge1,\qquad \beta=\alpha-u=d-a-u,\qquad
+C_s=ub+(M_0-s)(u-s)+sd.
+\]
+The displayed \(C_{\ell,s}\) simplifies exactly to \(C_s\); the \(\ell\)-dependence cancels.
+
+### Q-A1 — DIVERGENT for the enlarged bound; the original tube need not diverge
+
+[FACT] The Jacobians are correct:
+
+\[
+dA=|\det D|^d\,dD\,dX,\qquad
+\det(AA^\top)^{-a/2}=|\det D|^{-a}\det(I+XX^\top)^{-a/2},
+\]
+and, row by row,
+\[
+dB=|\det D|^{-u}\,dH.
+\]
+
+Thus enlargement to all \(H\in\mathbb R^{ub}\) leaves \(|\det D|^\beta\).
+
+For ordered singular values \(0<\sigma_1<\cdots<\sigma_b\),
+\[
+dD\asymp \prod_{i<j}|\sigma_j^2-\sigma_i^2|\,d\sigma\,d\mu.
+\]
+On a standard sector the raw singular-value exponents are
+\[
+e_i=\beta+2(i-1).
+\]
+The exact condition for the first \(k\) singular values to vanish jointly is
+\[
+\sum_{i=1}^k(e_i+1)=k(\beta+k)>0,
+\]
+equivalently \(\beta>-k\). For every \(k\), this is equivalent to the rank-one condition
+\[
+\boxed{\beta>-1}.
+\]
+
+Equivalently, the \(k\)-fold exceptional radial variable has exponent
+\[
+k(\beta+k)-1.
+\]
+
+At \(d=a+1,\ u=2,\ b=2\),
+\[
+\beta=-1,\qquad (e_1,e_2)=(-1,1).
+\]
+The rank-one exponent is \(-1\): logarithmic divergence. The rank-two exponent is
+\[
+2(-1+2)-1=1,
+\]
+so the divergence is specifically transverse to the rank-\((b-1)\) divisor.
+
+Hence the enlargement creates a divergent majorant. Scope \(d\ge a+1\) does not make it integrable; enlargement requires \(d\ge a+u\).
+
+### Q-A2 — FINITE, but the proposed two-region argument is false as stated
+
+[FACT] On \(\|D\|\lesssim\tau\),
+\[
+\int_{R_D}(\|H\|^2+\tau^2)^{-q}dH
+\le C|\det D|^u\tau^{-2q}.
+\]
+Therefore the determinant weight becomes
+\[
+|\det D|^\alpha\tau^{-2q}.
+\]
+Homogeneity gives
+\[
+\int_{\|D\|\le\tau}|\det D|^\alpha\,dD
+\asymp\tau^{b^2+b\alpha}.
+\]
+At a \(Y\!W\)-stratum with
+\[
+N_s=C_s-ub=(M_0-s)(u-s)+sd,
+\]
+this region has radial condition
+\[
+\boxed{2q<N_s+b^2+b\alpha}.
+\]
+
+On \(\|D\|\gtrsim\tau\), however, \(\det D\) is not bounded below. The set contains matrices with
+\[
+\sigma_1\to0,\qquad \sigma_2,\ldots,\sigma_b\asymp1.
+\]
+The full-space estimate still leaves \(|\det D|^\beta\), which is nonintegrable whenever \(\beta\le-1\). Thus the quoted “large-\(D\)” assertion is false.
+
+The correct retained-tube split is singular-value-wise. If exactly \(k\) singular values satisfy \(\sigma_j\le\tau\), then
+\[
+\int_{R_D}(\|H\|^2+\tau^2)^{-q}dH
+\lesssim
+\left(\prod_{j\le k}\sigma_j^u\right)
+\tau^{u(b-k)-2q}.
+\]
+After multiplication by \(|\det D|^{\alpha-u}\), short singular values have exponent \(\alpha\), while long ones retain exponent \(\alpha-u\).
+
+In the named borderline \((\alpha,u,b)=(1,2,2)\):
+
+\[
+\begin{array}{c|c}
+k&\text{\(\tau\)-order after \(D\)-integration}\\ \hline
+0&\tau^{4-2q}\log(1/\tau)\\
+1&\tau^{4-2q}\\
+2&\tau^{6-2q}.
+\end{array}
+\]
+Thus the worst order is the desired \(\tau^{ub-2q}\), up to one harmless logarithm.
+
+For general parameters one must also retain the \(P\)-\(U\) coupling. Let \(p=\operatorname{rank}P\), \(s=\operatorname{rank}Y\), and let \(k=b-\operatorname{rank}D\). Then:
+
+- the rank-\(D\) normal codimension plus charge is \(k^2+\alpha k\);
+- \(PU+BD\) has image dimension
+  \[
+  ub-k(u-p);
+  \]
+- inside the rank-\(Y=s\) stratum, imposing \(\operatorname{rank}P=p\) costs
+  \[
+  (s-p)(u-p).
+  \]
+
+Hence the exact weighted candidate is
+\[
+T_{s,p,k}
+=
+C_s+(s-p)(u-p)+k(k+\alpha-u+p).
+\]
+
+Writing \(h=s-p\), \(t=u-p\):
+
+- if \(k\le h\),
+  \[
+  T_{s,p,k}-C_s=t(h-k)+k(k+\alpha)\ge0;
+  \]
+- if \(h\le k\le t\),
+  \[
+  T_{s,p,k}-C_{p+k}=h(h+\alpha)+t(k-h)\ge0;
+  \]
+- if \(k>t\), directly \(T_{s,p,k}\ge C_s\).
+
+Therefore
+\[
+\boxed{T_{s,p,k}\ge\min_r C_r}.
+\]
+The given strict gate \(2q<\min_r C_r\) makes every joint radial integral converge. Thus \(I_{\rm leaf}<\infty\).
+
+### Q-A3 — FINITE by a cleaner joint convolution estimate
+
+[FACT] A useful compressed route is to keep both \(U\) and \(B\). For
+\[
+L_{P,D}(U,B)=PU+BD,
+\]
+one has
+\[
+L_{P,D}L_{P,D}^{*}
+=
+I_b\otimes PP^\top+D^\top D\otimes I_u.
+\]
+If \(p_i,\sigma_j\) are the singular values of \(P,D\), its eigenvalues are
+\[
+p_i^2+\sigma_j^2.
+\]
+The pushforward density is bounded by
+\[
+C\prod_{i=1}^u\prod_{j=1}^b(p_i^2+\sigma_j^2)^{-1/2}.
+\]
+Consequently, for \(2q>ub\),
+\[
+\int_{U,B}(\|PU+BD\|^2+\tau^2)^{-q}
+\lesssim
+\tau^{ub-2q}
+\prod_{i,j}(p_i^2+\sigma_j^2)^{-1/2}.
+\]
+Its rank-stratum exponents are exactly \(T_{s,p,k}\) above.
+
+So a full geometric tube construction is unnecessary. A scalar bound using only \(\operatorname{vol}(R_D)\) is generally too crude; the singular-value or covariance coupling is essential. No single separated monomial bound handles the cancellations in \(PU+BD\).
+
+### Q-B1 — FINITE reduction algebraically, but not row-space invariance
+
+[FACT] Write
+\[
+Z=\widetilde S\,\widetilde O,\qquad
+\widetilde O\widetilde O^\top=I_\rho,
+\]
+and set
+\[
+\widehat Q_p=z_0\widetilde S,\qquad
+\widehat Q_b=A\widetilde S.
+\]
+Then
+\[
+Q_bQ_b^\top=\widehat Q_b\widehat Q_b^\top,
+\qquad
+\Pi_b=\widetilde O^\top\widehat\Pi_b\widetilde O.
+\]
+If
+\[
+\widehat R=\widehat Q_p+P^{-1}B\widehat Q_b,
+\]
+then
+\[
+\widehat R\widetilde O(I-\Pi_b)
+=
+\widehat R(I-\widehat\Pi_b)\widetilde O.
+\]
+Since right multiplication by \(\widetilde O\) preserves Frobenius norm,
+\[
+\|C\widehat R(I-\widehat\Pi_b)\widetilde O\|_F
+=
+\|C\widehat R(I-\widehat\Pi_b)\|_F.
+\]
+Thus the \(\rho\)-dimensional leaf identity is exact.
+
+But “depends only on the row space of \(Z\)” is false. Replacing \(Z\) by \(tZ\) preserves its row space but scales every \(Q\). The singular values in \(\widetilde S\) survive through the pushforward density.
+
+### Q-B2 — DIVERGENT in general; the first-rank-drop charge itself is finite
+
+[FACT] For \(u+b\) independent rows, the image density has height of order
+\[
+\det(\widetilde S^\top\widetilde S)^{-(u+b)/2}.
+\]
+Its support does not blow up in collapsing directions; it shrinks. Density height alone therefore proves neither convergence nor divergence.
+
+For fixed effective rank \(r\), the corank-charge integral has SVD exponents
+\[
+r-b-a+2(i-1).
+\]
+The exact condition is
+\[
+\boxed{r\ge a+b}.
+\]
+Thus:
+
+- at the first drop \(r=\rho-1\), scope gives \(r\ge a+b\), so the charge remains integrable;
+- at \(r=a+b\), the first exponent is \(0\), still finite;
+- at \(r=a+b-1\), it is \(-1\), logarithmically divergent;
+- at \(r=b\), it is \(-a\le-1\), divergent;
+- below \(b\), the Gram determinant vanishes a.e.
+
+So the assertion that trouble begins only when \(\operatorname{rank}Z<b\) is incorrect for uniform integration in \(A\).
+
+More importantly, the loss already creates a first-drop wall. Let \(\kappa\) be the normal codimension of a smooth tail stratum \(\operatorname{rank}Z=\rho-1\). Since
+\[
+C_s(\rho-1)=C_s(\rho)-s,
+\]
+the combined candidate is
+\[
+\boxed{C_s(\rho)-s+\kappa}.
+\]
+The Part-A gate \(2q<C_s(\rho)\) does not imply convergence when \(\kappa<s\).
+
+### Q-B3 — DIVERGENT in general: explicit allowed counterexample
+
+[FACT] Take
+\[
+u=2,\quad a=1,\quad b=1,\quad \rho=3,\quad d=2,
+\]
+and let the tail be one freely varying \(3\times3\) matrix. Then
+\[
+a+b=2=\rho-1.
+\]
+The leaf codimensions are
+\[
+C_0=8,\qquad C_1=C_2=6.
+\]
+Thus every \(q<3\) passes the stated Part-A gate.
+
+Near a smooth rank-two tail matrix, such as \(\operatorname{diag}(1/2,1/2,0)\), rank loss has one transverse coordinate \(t\), so \(\kappa=1\). On the regular front stratum \(s=u=2\), take:
+
+- \(P\) uniformly invertible;
+- the \(A\)-pivot bounded away from zero, so the corank charge is bounded;
+- the lost transverse \(W\)-column in an annulus.
+
+After smooth shears the loss is comparable to
+\[
+|H|^2+|W_{\rm surviving}|^2+t^2|W_{\rm lost}|^2.
+\]
+Holding \(W_{\rm lost}\) in that annulus leaves
+\[
+|y|^2+t^2,
+\qquad y\in\mathbb R^{ub+u(d-1)}=\mathbb R^4.
+\]
+Hence the local integral contains
+\[
+\int_{\mathbb R^4\times\mathbb R}
+(|y|^2+t^2)^{-q}\,dy\,dt,
+\]
+which diverges exactly when
+\[
+2q\ge5.
+\]
+
+For example,
+\[
+q=\frac{11}{4}
+\]
+satisfies the leaf gate \(2q=5.5<6\), but the general-depth integral diverges.
+
+For a rank drop by \(k\) with tail-normal codimension \(\kappa_k\), the necessary additional gate suggested by the same local model is
+\[
+\boxed{2q<C_s(\rho-k)+\kappa_k
+      =C_s(\rho)-ks+\kappa_k}.
+\]
+
+The most likely failure is therefore a codimension-one rank drop in a square bottleneck tail layer: it replaces \(u\) regular leaf directions by one tail-normal direction. It is not the corank charge; it is the loss degeneration at \(\rho\to\rho-1\).
