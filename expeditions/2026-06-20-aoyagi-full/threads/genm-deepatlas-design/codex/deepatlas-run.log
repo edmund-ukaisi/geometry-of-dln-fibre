@@ -1,0 +1,1507 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.4
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-addfbb992a4b22860
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f6656-9ae0-71d3-a90d-b40aa90b5fed
+--------
+user
+<task>
+I am designing an explicit "stratified-resolution atlas" for a composite-rank locus, to be formalised in
+Lean 4 / Mathlib as a change-of-variables + finite-cover finiteness argument. I need you, independently, to
+(A) design the cleanest EXPLICIT chart family (coordinate maps + Jacobians), and (B) resolve the one
+structural crux (the product-layer reduction). Argue from the definitions; do not assume my framing is right.
+
+SETTING (exact algebra over the reals).
+- Deep layers L_0,...,L_{p-1}, with L_i a real matrix of shape v_i x v_{i+1}. Write the composite
+  Z = L_0 · L_1 · ... · L_{p-1}  (shape v_0 x v_p). Let rho = min(v_0,...,v_p).
+- Target locus in the PARAMETER space  P := prod_i R^{v_i x v_{i+1}}:   S_s := { (L_i) : rank Z <= s },
+  for s = rho - k, k = 1,...,rho.
+- FACT (verified 3 ways, do not re-derive): the parameter-space codim of S_s is the "composite-rank"
+  recursion, NOT the determinantal codim (v_0-s)(v_p-s):
+      CR((v_0,...,v_p), s) = min_{0<=r<=min(v_{p-1},v_p)} [ (v_{p-1}-r)(v_p-r) + CR((v_0,...,v_{p-2}, r), s) ],
+      base CR((v_0,v_1),s) = (v_0-s)_+ (v_1-s)_+,  inner = 0 when r <= s.
+  Mechanism: stratify by r = rank(last layer); restricting the head-composite to a generic r-dim input
+  subspace = replacing the last width by r. For a single matrix (p=1) CR = determinantal. For products it is
+  strictly smaller (e.g. widths (1,2,1), s=0: CR=1, determinantal would say 2).
+
+WHY (measure context). The eventual integral is  int over P of  (loss)^{-q} * (det charge)^{-a/2} d(params),
+where loss vanishes on S_s and the measure near S_s scales like t^{codim-1} dt. I need each chart to
+monomialise this so a per-stratum radial integral  int_0^delta r^{C_k - 1 - 2q} dr  is read off, with
+C_k = min( u*rho , u*(rho-k) + CR(deep,rho-k) - gamma ) the target exponent. So the atlas must expose the
+codim CR(deep,rho-k) as an explicit normal (transverse) coordinate with a monomial (ideally |det|=1 or a
+monomial power) Jacobian, covering a neighborhood of S_s up to a null set by FINITELY many charts.
+
+THE TEMPLATE I must mirror (a solved SINGLE-matrix case, p=1). To resolve {rank W <= ell} for one matrix
+W (u x d): pick a size-ell invertible pivot minor W11 (block W = [[W11,W12],[W21,W22]]); coordinatise
+  W  <->  (W11, W12, W21, E),   E := W22 - W21 · W11^{-1} · W12   (the Schur complement, (u-ell)x(d-ell)).
+The map (.,.,.,E) -> W is a TRANSLATION in the W22 block by the constant-in-E shift W21 W11^{-1} W12, so its
+Jacobian is identically 1; and rank W = ell + rank E, so {rank W <= ell} = {E = 0} (codim (u-ell)(d-ell)).
+Finitely many pivot minors cover {rank W = full-or-less}; the block-LU rank identity is the workhorse.
+This single Schur big-cell IS the whole atlas for one matrix.
+
+WHAT I FOUND for the product (verified numerically-exactly):
+- rank(head · L_last) = rank(head · A) whenever L_last = A·B with B full row rank (A = the pivot columns).
+- The CR minimiser can force SEVERAL layers below generic rank (telescopes): e.g. deep widths (2,2,2), s=0,
+  CR=3 decomposes as [E-codim 1 at the last layer reduced to rank 1] + [E-codim 2 at the reduced head chain
+  (2,1) at rank 0]. So the resolution looks like a NESTED chain of Schur big-cells, one per recursion level,
+  total transverse codim = sum of per-level (reduced-block) Schur-complement dims = CR.
+
+<questions>
+Q1. What is the cleanest EXPLICIT chart family for S_s that mirrors the single-matrix Schur big-cell, and
+    what is the chart INDEX (finite set)? Is it exactly the CR-recursion tree of (rank r of the current last
+    layer, choice of size-r pivot minor) down to termination (r<=s or chain length 2)?
+
+Q2. THE CRUX — the product-layer reduction. After the last-layer chart-5 gives coords (Delta,B,C,E) with
+    A := pivot columns of L_last (v_{p-1} x r) and E the transverse Schur block, the reduced chain's "last
+    layer" is the PRODUCT  L_{p-2} · A  — a bilinear function of the free L_{p-2} and the chart datum A, NOT
+    a free coordinate. How do you make the recursion an honest change of variables / measurable reduction
+    despite this product? Concretely: is the right move a right-multiplication coordinate change
+    L_{p-2} -> L_{p-2} · G on the free layer L_{p-2} (G an invertible v_{p-1} x v_{p-1} completion [A | A_perp]
+    from the chart), splitting L_{p-2}·G = (L_{p-2}·A , L_{p-2}·A_perp) with a constant (chart-dependent)
+    Jacobian |det G|^{v_{p-2}}, so the reduced layer L_{p-2}·A becomes a genuine free coordinate and A_perp
+    the transverse directions? Or is there a cleaner formulation (e.g. an induction on chain length that
+    never forms the product)? Give the exact CoV and its Jacobian.
+
+Q3. Is the whole resolution best organised as an INDUCTION on chain length p (peel the last layer, reduce to
+    a length-(p-1) chain), with the base case = the single-matrix Schur big-cell? If so, state the inductive
+    step's precise statement (what is assumed for the shorter chain, what is proved for the length-p chain),
+    including how the outer det-charge factor det(Q_b Q_b^T)^{-a/2} (Q_b = A_cor · Z, a separate corank
+    integral) rides along — does it decouple from the deep reduction or must it be threaded?
+
+Q4. The measure/monomialisation. With several Schur blocks E_1,...,E_m (one per dropped level) as transverse
+    coords, the loss near S_s is a sum of squared-scale terms. In the "comparable" regime all E_i scale like
+    one radial t (giving t^{CR-1} dt). Do NON-comparable scalings (some E_i << others) ever produce a
+    stratum with radial exponent LOWER than CR(deep,rho-k) (which would break the C_k gate), or is CR the
+    infimum over all scalings? Argue whether the finite Schur-big-cell atlas EXHAUSTS the degeneration
+    (every parameter point near S_s lies in some big-cell up to a null set), i.e. index-completeness.
+
+Q5. Size/feasibility: as a Lean formalisation mirroring a 5-file / ~690 LoC single-block front atlas
+    (chart-5 big-cell CoV with |det|=1, a polar H-fibre scaling, an exponent-gate arithmetic lemma, a
+    generic finite-cover gluing lemma, and a Schur-complement rank identity already banked), how much extra
+    is the multi-layer telescoping — a bounded induction on chain length reusing the single-block pieces, or
+    genuinely new machinery? Flag any place where the honest resolution could WALL (not just be laborious).
+</questions>
+</task>
+
+<output_contract>
+- For each of Q1-Q5: label claims [FACT] (provable now), [INFERENCE] (your reasoned judgement), or
+  [SPECULATION]. Keep facts vs judgement distinct.
+- For Q2 give the EXACT change of variables (matrices, shapes, the completion G, the Jacobian determinant).
+- For Q4 give a clean argument (or a counterexample) on whether CR is the infimum radial exponent; if you
+  cannot settle it, say what would settle it.
+- End with the single most likely place the honest atlas WALLS, and the one check that would de-risk it.
+- Do not write code; reason in exact algebra.
+</output_contract>
+
+<grounding_rules>
+- Everything is over R; ranks are real ranks; "generic" = outside a proper Zariski-closed (measure-zero) set.
+- The CR recursion and C_k formula are established facts; do not relitigate them. Focus on the EXPLICIT
+  charts, the product-layer reduction, and index-completeness.
+- If my telescoping picture is wrong, say so and give the correct structure.
+</grounding_rules>
+
+codex
+I’ll test the proposed recursion as an actual coordinate atlas, with special attention to the distinction between rank strata and neighborhoods of their closures. I’ll first read the workspace’s mathematical/branch instructions, then derive the layer CoV and stress-test the multi-scale claim with small examples.
+exec
+/bin/bash -lc "sed -n '1,240p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-addfbb992a4b22860
+ succeeded in 0ms:
+# geometry-of-dln-fibre
+
+AI-assisted math-research + Lean-formalisation harness for **digesting and formalising** the paper
+*"Geometry of the fibers of the multiplication map of deep linear neural networks"* (Simon Pepin
+Lehalleur & Richárd Rimányi, 2024; `paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/`).
+Orientation is in [`README.md`](README.md); this file is the disposition and the working discipline.
+The process harness (disposition + policies + roles + skills + the markdown→Lean pipeline) is ported
+from the `ai-research-assistant` harness and is **domain-agnostic** — see [`TEMPLATE.md`](TEMPLATE.md)
+to instantiate it for another paper.
+
+## Disposition
+
+The work here is research. Not coding, not ticking off a support ticket, not shipping a product. 
+The stance: 
+- careful, conscientious, objective as a scientist.
+- meticulous in calculation as Euler, bold as Grothendieck. 
+- methodical as Sherlock Holmes. Observe before theorising. Distinguish data from interpretation. 
+- update like a Bayesian; do not collapse to the mode. 
+
+
+- **Resist the move-fast-and-ship-it instinct.** Stackable, solid progress is the goal; the trap is
+  *visible* progress raced ahead of it — a clean doc or confident headline that travels far while leaving
+  holes behind. When you reach for a confident headline, that is the moment to look for the confound. Each
+  layer should be solid and hole-free before the next stands on it.
+- **Fill the layer — completion is your strength.** *The sea rises inexorably, but not in spikes*
+  ([`docs/policies/bedrock.md`](docs/policies/bedrock.md)): within a boundary already staked, close the holes
+  — the generality a statement promised, the cases it already claims, fidelity to the definition and the
+  underlying spirit it invokes — rather than defer them. Such hardening is high-value, and it is where your
+  **comparative advantage** lies: your bottleneck is scoping, taste, and direction, not the patient completion
+  of well-scoped work — so do not treat that completion capacity, which is *abundant*, as if it were *scarce*.
+  **Just do it!** Don't file it as a "chore" (an *unprobed* difficulty claim, not a defer). Surface to move the
+  *boundary* — but an **earned** taste-judgment that a gap is the *right* extension is itself direction:
+  **Just Do It** if within reach, else **roadmap** it; only a *bare, unargued* extension waits for the operator.
+- **Build the buildable — Mathlib-absence is not a wall.** The team's strength is getting *well-established
+  mathematics* done and hardened *at scale*: the labour is *abundant*, so the scarce thing is the
+  **discrimination** — *detail-at-scale* (standard material whose proof is patient and decomposable: **build
+  it**, as a clean reusable Mathlib-grade library, letting the sea rise over a whole foundation) versus
+  *genuine monument* (a single deep insight that is itself a research achievement — resolution of
+  singularities, the analytic SLT core: **cite it**). The discriminator is detail-at-scale vs monument, never
+  in-Mathlib-vs-not; the failure mode is **timidity disguised as rigor** ("not in Mathlib, therefore risky").
+  The guardrail is the rest of this disposition — name results for what they are, separate Proved/Cited, cite
+  the monuments: bold to build the buildable, humble before the genuine mountain. Committing the team to a
+  build is the **controller's** executive call ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md));
+  the build-vs-cite test and the Mathlib-grade API discipline live in
+  [`docs/policies/library-building.md`](docs/policies/library-building.md).
+- **Name results for what they are.** A result's name and statement denote exactly what is proven — no more;
+  reaching for an impressive name (or "done") is the visible-progress instinct in disguise. Separate Proved /
+  Assumed / Cited / Deferred. See [`docs/policies/precision.md`](docs/policies/precision.md). (Here the
+  recurring trap: a `rlct_…`-named result that in fact proves only a *codimension* — the `rlct = ½·codim`
+  reading needs the cited Aoyagi equality.)
+- **Build to bedrock.** A sorry-free build defeats *technical* slop; it never defeats *conceptual* slop —
+  "technically correct but subtly wrong, not The Way." **Bedrock is the rock the rising sea rises over**: build
+  the theory so the next result can stand on it without re-opening it. Where short feedback loops fail, **beauty
+  is the instrument** — a vacuous, mis-scoped, or overclaiming result is *ugly*, and the ugliness is
+  information. The **controller holds this taste and judges against it**; a green build is necessary, never
+  sufficient. See [`docs/policies/bedrock.md`](docs/policies/bedrock.md).
+- **Caveats live next to claims, not in footnotes.** An assumed hypothesis or a cited interface goes in the
+  same paragraph as any claim that depends on it.
+- **Write to figure out the truth, not to persuade.** Concise and fact-based.
+- **Elementary, precisely.** Build explanations up from precise but simple well-chunked objects, established locally in the
+  document. "Elementary" does not mean imprecise or dumbed-down or toy analogies: every step stays
+  mathematically precise. Introduce the objects you use before you use them; prefer a chain of small exact
+  statements over one dense one. Resist over-naming things to do chunking. Reach for an analogy only when it is exact and load-bearing. See
+  [`docs/policies/writing-style.md`](docs/policies/writing-style.md).
+
+## Writing and communication discipline (object-level focus)
+In writing or in communication, focus on object-level. Resist meta-level pull. 
+Remove authorial self-reassurance: `honestly`, `fundamentally`, `this is the whole point`, `this is loadbearing`, `of course`, `simply`, `just`, and selling phrasing.
+The full list and the review function that enforces it are in [`docs/policies/review.md`](docs/policies/review.md).
+
+## Controller operation — the cognitive adaptive controller (lead session only)
+
+> **Teammates: skip this section.** It is the controller (lead-session) operating discipline; your
+> role file (`.agent-team/roles/<role>.md`) and every section *other* than this one are your context.
+> (It lives here, not only in `controller.md`, because the lead session reliably loads `CLAUDE.md` but
+> not always its role file.)
+
+You run this project as the **controller** ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md)):
+hold the vision, set the pace, urge the team to the goal, and adapt. During autonomous stretches (the
+hourly loop/heartbeat with the operator away) these are load-bearing, not optional:
+
+- **You are a cognitive adaptive controller, not an open-loop planner.** Hold the vision and the plan, but
+  run **closed-loop**: every tick is feedback — teammate reports, build state, reviews, the counterexample
+  hunt — against the rising-sea reference. *Update like a Bayesian.* When feedback says a layer is a spike,
+  the Mathlib map is wrong, or a step is harder than scoped, **re-plan** — adjust the ladder, re-rank
+  `priorities.md`, re-scope — rather than push a failing setpoint.
+- **Calibrate your sensors on ground truth.** A teammate's "done" and a green exit code are *readings*, not
+  the truth — re-run the build, `#print axioms`, re-run cited scripts, and commission the decorrelated
+  review/hunt before you believe them (there is no operator watching for a miscalibrated sensor). This is
+  the L5/DA-lesson wisdom generalised: gate integration on evidence you re-derived, not on a "done".
+- **Ambition is governed by bedrock — gain needs damping.** The easier it is to build well-established
+  mathematics at scale, the faster you can manufacture *spikes* (broad-named results with holes behind
+  them). The same controller that builds inexorably fills the layer before it climbs: the precision/bedrock
+  check (name = content; weakest hypotheses; base audited hardest; the hunt precedes trust) is the negative
+  feedback that makes high ambition *stable*. Build hard; damp harder.
+- **Stay out of the grind; spend your context on direction.** Your scarce resource is scoping, taste, and
+  integration — not lemma-proving, which is abundant and delegable. Do not rabbit-hole into a proof in your
+  own context ([`docs/policies/expedition.md`](docs/policies/expedition.md) § anti-patterns). Periodically
+  **step back and self-audit** your trajectory against the vision — under autonomy you hold the taste
+  channel the operator would otherwise supply.
+- **The autonomy operating rule — adapt the ladder, never the setpoint.** Re-scoping the *ladder* (which
+  rung first, which Mathlib API to build on, splitting a layer) is the closed loop working — do it freely.
+  Re-scoping the *destination* ([The destination, plainly](#the-destination-plainly)) or the *definition of
+  done* (sorry-free; `#print axioms` = `[propext, Classical.choice, Quot.sound]`; each layer characterized
+  at the weakest hypotheses that suffice; reusable `Core` authored upstream-ready) is **not** yours to do
+  silently. Two decision classes:
+  - **proceed-on-silence** (the default) — anything within the staked boundary: surface the call in prose,
+    keep working what is unblocked, take the recommended option if no reply, and record that you did.
+    Silence = consent. Surface **async and non-blocking** — never a blocking `AskUserQuestion` in a loop (it
+    freezes the inbox and stalls the team; reserve it for a genuine fork you cannot resolve from the code or
+    sensible defaults).
+  - **wait-for-explicit-go** (the few) — the close-phase PR **merge**, the `dev → main` promotion, and
+    **any change to the destination or the definition of done.** These never proceed on silence.
+
+## How research runs here
+
+- **Expeditions** ([`docs/policies/expedition.md`](docs/policies/expedition.md)) are the unit: a central
+  question, a controller delegating to thread teammates (explore / formalisation / infra), reviewers, and a
+  synthesis at close. Run on the Agent Teams substrate (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`); launch with
+  cwd = this repo root.
+- **Pipeline: markdown → Lean.** Theory develops in markdown (`theory/`, expedition notes). A stable claim is
+  formalised in Lean (`lean/`, library `DLNFibre`). The reader-facing digest/expositions live in
+  `docs/expositions/`.
+  - *Scholium* is a **viewer** (renders these markdown docs with KaTeX + callouts), not an editor; write to its
+    conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
+    recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
+    (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
+    subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
+    indented code block (8-space indent) there; top-level fenced code is fine.
+- **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
+  source ([`docs/policies/claims.md`](docs/policies/claims.md)).
+- **Codex** is the independent second model for strategy and review
+  ([`docs/policies/codex-consultation.md`](docs/policies/codex-consultation.md)).
+
+## Team structure
+
+Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
+- `controller` — this lead session: meta-planning, delegation, integration.
+- `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
+- `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
+- `formaliser` — formalisation (tide) threads.
+- `reviewer` — controller-spawned independent audit (soundness / fidelity).
+- `hardener` — independent principles / taste reviewer (precision, bedrock).
+
+If dispatched into a role, read its role file and agent definition first.
+
+## Branch discipline
+
+- **One remote: `origin = git@github.com:edmund-ukaisi/geometry-of-dln-fibre.git`.** All work lives here.
+- **`dev` is the integration branch.** Feature and expedition branches branch off `dev` and PR back into
+  `dev`. `main` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
+  to directly.
+- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `main` directly. One
+  expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
+- **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
+  2026-06-12) — push freely to bank and share work. **Opening a PR and posting PR review comments/replies
+  via `gh` is controller-authorized** (operator standing instruction, 2026-07-01) — but **auto-open at most
+  ONE PR per expedition** unless the operator authorises more; fold everything (including close-out docs)
+  into that one PR before signalling merge (see the expedition's `lessons.md`/DA6). **Merging PRs and the
+  `dev → main` promotion remain operator-gated** (wait-for-explicit-go); the operator performs those.
+  Always confirm the push target is `origin`, never a non-`origin` remote.
+
+## Memory
+
+Persistent context lives **in-repo**: this file, the policies in `docs/policies/`, the expedition docs
+(`synthesis.md` / statement cards / `thread.md`), `ROADMAP.md`, and `lean/CLAUDE.md`. Save conventions and
+decisions there.
+
+**Do NOT write to global Claude memory (`~/.claude/**/memory/`).** It pollutes other workspaces and is
+invisible to collaborators reading the repo. This binds the controller **and every teammate** — the harness
+may prompt you to save a memory there; do not. If a teammate writes one, the controller deletes it and
+re-homes the content in-repo. (Agent-Teams *runtime* state under `~/.claude/teams/` and `~/.claude/tasks/` is
+fine — that's the substrate, not persistent context.)
+
+## The destination, plainly
+
+We want, in honest Lean, the paper's results about the **fibres of matrix multiplication** for deep linear
+networks:
+
+- the space $\operatorname{Rep}_{\underline d}$ of composable matrix tuples, the multiplication map
+  $\operatorname{mult}$, the zero-product / rank-$r$ loci, and the fibres $\operatorname{mult}^{-1}(B)$;
+- via the **type-A quiver** translation (orbits ↔ Kostant partitions ↔ rank patterns, Gabriel, orbit-closure
+  order, the `Ext` codimension): the codimension $C$ and the number $\theta$ of top-dimensional components,
+  in the paper's three forms (Poincaré series, a quadratic integer program, an explicit formula), and the
+  surprising **permutation invariance** of $(C,\theta)$;
+- the payoff: the real log-canonical threshold of the square-Frobenius loss is $C/2$ — DLNs are "mildly
+  singular". The geometric codimension is the new content; the Aoyagi `rlct = ½·codim` **equality** is
+  **Cited** (Watanabe's universal `rlct ≤ ½·codim` + Aoyagi's exact DLN computation — the formal
+  `RlctInterface.cited_aoyagi_dln` is the equality, which the payoff needs).
+
+The reusable **engine** (everything before "the payoff") is network-free and lives in `DLNFibre.Core`; the
+DLN/RLCT **application** lives in `DLNFibre.DLN`. See [`ROADMAP.md`](ROADMAP.md) for the formalisation ladder.
+
+## Pointers
+
+- [`README.md`](README.md) — orientation, how to launch an expedition, Lean build.
+- [`ROADMAP.md`](ROADMAP.md) — the result-map + the Core/DLN formalisation-target ladder.
+- [`docs/policies/`](docs/policies/) — expedition, claims, review, precision, bedrock, codex-consultation, statement-cards, writing-style (+ the reader-facing exposition trio).
+- [`docs/expositions/`](docs/expositions/) — the curated reader-facing digest (starts with `paper-digest/high-level-overview.md`).
+- [`.claude/skills/`](.claude/skills/) — lean-formalisation, local-codex-consult.
+- [`lean/CLAUDE.md`](lean/CLAUDE.md) — Lean build + Mathlib conventions; the Core/DLN split.
+- [`theory/`](theory/) — markdown theory workspace.
+- [`TEMPLATE.md`](TEMPLATE.md) — how to instantiate this harness for a new paper.
+
+exec
+/bin/bash -lc "rg -n \"chart.?5|Schur|composite-rank|product-layer|CR\\(\" theory docs lean | head -n 240" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-addfbb992a4b22860
+ succeeded in 0ms:
+lean/DLNFibre.lean:104:-- Bordered Schur minor (G2-2 sub-rung 1): det [[Δ,u],[v,d]] = d·detΔ − v·adjΔ·u over ANY CommRing
+lean/DLNFibre.lean:105:-- (universal-coefficient route, no invertible pivot), and the Schur expression = an (r+1)-minor ⟹
+lean/DLNFibre.lean:116:-- (A_eng ≃ MvPolynomial B22block (MvPolynomial SchurVar k)), blockAlgEquiv_detPivot (detΔ ↦ C
+lean/DLNFibre.lean:117:-- detSchurS). The reindex/detΔ infra feeding the final localized-base presentation (G2-2 D2).
+lean/DLNFibre.lean:120:-- Schur localization, regular dim δ), via the bordered-minor identity (*) + the height squeeze Iad
+lean/DLNFibre.lean:130:-- RepCoord↔stratum/endpoint bridges, and the localized base→total map `schurToSred : SchurLoc →
+lean/DLNFibre.lean:131:-- Sred` giving Sred its SchurLoc-algebra structure (R2-3a's R = SchurLoc, S = Sred). The crux
+lean/DLNFibre.lean:188:-- varietyDim across a coordinate-ring AlgEquiv). `SchurGauge` — the Schur pivot block is a
+lean/DLNFibre.lean:189:-- SchurLoc-unit (det = the inverted detSchurS), the unit the gauge L/H blocks use.
+lean/DLNFibre.lean:191:import DLNFibre.Core.SchurGauge
+lean/DLNFibre.lean:211:-- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
+lean/DLNFibre.lean:220:import DLNFibre.Core.SchurSideNoDrop
+lean/DLNFibre.lean:226:import DLNFibre.Core.SchurFibreVanishing
+lean/DLNFibre.lean:227:-- chart-descent geometry (seams toward e): localized chart coordinates + Schur-side connection.
+lean/DLNFibre.lean:229:import DLNFibre.Core.ChartSchurConnect
+lean/DLNFibre.lean:307:-- `SchurLoc` smooth, the basic-open `IsSmoothAt` bridge — plus the CONDITIONAL headline: given
+lean/DLNFibre.lean:309:-- NOT discharged), the chart product `SchurLoc ⊗ Away g` is `Smooth k`. The fibre is reducible for
+lean/DLNFibre.lean:334:-- P1.d (det-atlas): Schur-complement coordinates on the pivot rank chart. Block-diagonal rank
+lean/DLNFibre.lean:336:-- Schur rank criterion `rank_fromBlocks_eq_card_iff_schur{,_inv}` + the `Fin`-indexed
+lean/DLNFibre.lean:341:-- L7). Re-homed from `DeterminantalChart`/`SchurChartIff` (deleted) + `SchurGauge`'s normal form;
+lean/DLNFibre.lean:343:import DLNFibre.Core.RingTheory.Determinantal.Schur
+lean/DLNFibre.lean:360:-- cocycle is on the AMBIENT `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the
+lean/DLNFibre.lean:362:-- (Now LANDED — per-pivot Schur trivializations (S4b) + target-side cocycle (P2.c/f/g): the
+lean/DLNFibre.lean:413:-- (`iSup_pivot_basicOpen_eq_rankROpen`) + per-pivot trivializations into `SchurLoc ⊗
+lean/DLNFibre.lean:423:-- `e` — `schurComponent_chartQuotientEquiv : SchurLoc ⊗ (sweepFibreRing⧸I) ≃ₐ[k] (Away
+lean/DLNFibre.lean:454:-- k-algebra product SchurLoc ⊗ sweepFibreRing. Deliberately NOT `locallyTrivial`:
+lean/DLNFibre.lean:456:-- one fibration morphism = R1) and k-algebra-only (the over-base SchurLoc-linear trivialization =
+lean/DLNFibre.lean:457:-- S4b, LANDED below; it is over SchurLoc; projection-compatibility with mult is CLOSED (R5,
+lean/DLNFibre.lean:466:-- SchurLoc (generic base change), scheme-level `flat_specMap_…` + `universallyOpen_specMap_…`. NB
+lean/DLNFibre.lean:467:-- S4b (below) DELIVERS the chartwise `Module.Flat SchurLoc (Away(chartDsigAt …))`; projection
+lean/DLNFibre.lean:471:-- S4b (the convergent keystone): the SchurLoc-linear (over-base) trivialization
+lean/DLNFibre.lean:472:-- `chartDsigAt_schurLocTensorEquiv : Away (chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing`
+lean/DLNFibre.lean:473:-- (SchurLoc acting via the HONEST banked structure map schurToDsig, not by pullback) ⟹ chartwise
+lean/DLNFibre.lean:474:-- flatness over the in-chart base direction SchurLoc `chartDsigAt_flat_over_schurLoc` AND the
+lean/DLNFibre.lean:475:-- genuine over-base local triviality (S4's load-bearing completion). NB this is over SchurLoc;
+lean/DLNFibre.lean:483:-- in a pivot chart I over the GEOMETRIC structure `chartDsigAtSchurLocAlgebra` (= schurToDsigAt,
+lean/DLNFibre.lean:485:-- total ring is `≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` AND flat over SchurLoc. Base = SchurLoc,
+lean/DLNFibre.lean:492:-- with mult's comorphism multComap after precomposition with localizeSchur (on Schur generators) —
+lean/DLNFibre.lean:493:-- schurToDsigAt_comp_localizeSchur, every pivot; + ProjCompatOverBaseChart (projection-compat +
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:6:import DLNFibre.Core.SchurSideNoDrop
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:18:- `chartGfib` — the schur-side localizing element `gF := map (algebraMap k O(F)) detSchurS` over
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:19:  `MvPolynomial SchurVar O(F)`, the determinant of the generic Schur Δ-block with `O(F)` coefficients
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:20:  (the exact shape `SchurSideNoDrop` / `ChartLocalizedPolyDim` consume).
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:23:(`Osig = O(Σ^r)`, `Ofib = O(F)`, `ι = SchurVar`, `dsig`, `gfib = gF`) is **definitional**.
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:46:/-- **The schur-side localizing element** `gF = map (algebraMap k O(F)) detSchurS`: the determinant of
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:47:the generic Schur Δ-block, with `O(F)` coefficients, in `MvPolynomial SchurVar O(F)`. The exact shape
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:48:`SchurSideNoDrop.ringKrullDim_localizationAway_eq_of_schurSide` discharges (a unit `k`-coefficient
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:52:    MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) (sweepFibreRing k d r hp hq) :=
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:54:    (detSchurS (d 0) (d (Fin.last (N + 1))) r)
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean:69:      (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) (sweepFibreRing k d r hp hq))
+lean/DLNFibre/Core/ChartEvalRealize.lean:80:    (s : SchurVar (d 0) (d (Fin.last (N + 1))) r → k)
+lean/DLNFibre/Core/ChartEvalRealize.lean:82:    (hs : eval s (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0)
+lean/DLNFibre/Core/DeepChartRing.lean:14:`SchurLoc`-algebra structure (the `R = SchurLoc`-algebra structure that R2-3a's `e` needs).
+lean/DLNFibre/Core/DeepChartRing.lean:32:**R2-3b-2 — the localized base→total map + the `SchurLoc`-algebra structure.**
+lean/DLNFibre/Core/DeepChartRing.lean:45:   `SchurLoc q p r →ₐ[k] Sred d r hp hq`. The resulting `SchurLoc`-algebra structure on `Sred`
+lean/DLNFibre/Core/DeepChartRing.lean:46:   (`RingHom.toAlgebra`) + the `IsScalarTower k (SchurLoc …) (Sred …)` instance.
+lean/DLNFibre/Core/DeepChartRing.lean:48:**Scope (what is NOT here).** The full product iso `e : Sred ≃ₐ[k] SchurLoc ⊗_k FibreAlg`, the
+lean/DLNFibre/Core/DeepChartRing.lean:254:/-! ## R2-3b-2 — the localized base map and the `SchurLoc`-algebra structure on `Sred`
+lean/DLNFibre/Core/DeepChartRing.lean:323:/-- **The base→total `k`-algebra map** `SchurLoc q p r →ₐ[k] Sred d r` (`q = d 0`, `p = d last`):
+lean/DLNFibre/Core/DeepChartRing.lean:325:algebra structure makes `Sred` a `SchurLoc`-algebra (the `R = SchurLoc`-algebra structure that
+lean/DLNFibre/Core/DeepChartRing.lean:329:    SchurLoc (k := k) (d 0) (d (Fin.last N)) r →ₐ[k] Sred (k := k) d r hp hq :=
+lean/DLNFibre/Core/DeepChartRing.lean:333:/-! ## R2-3b-2 — the `SchurLoc`-algebra structure on `Sred` and the scalar tower
+lean/DLNFibre/Core/DeepChartRing.lean:335:The base→total map `schurToSred` induces (via `RingHom.toAlgebra`) the `SchurLoc q p r`-algebra
+lean/DLNFibre/Core/DeepChartRing.lean:336:structure on `Sred`, with `k → SchurLoc → Sred` a scalar tower. These instances are the
+lean/DLNFibre/Core/DeepChartRing.lean:337:`[Algebra R S]` slot that R2-3a's `e : S ≃ₐ[k] R ⊗_k FibreAlg` consumes (`R = SchurLoc q p r`). -/
+lean/DLNFibre/Core/DeepChartRing.lean:339:/-- **The `SchurLoc`-algebra structure on `Sred`**, induced by the base→total map `schurToSred`
+lean/DLNFibre/Core/DeepChartRing.lean:340:(`RingHom.toAlgebra`). The `R = SchurLoc q p r`-algebra structure R2-3a's product iso `e` needs. -/
+lean/DLNFibre/Core/DeepChartRing.lean:341:@[reducible] noncomputable def sredSchurAlgebra [IsAlgClosed k] [CharZero k] (d : Fin (N + 1) → ℕ)
+lean/DLNFibre/Core/DeepChartRing.lean:343:    Algebra (SchurLoc (k := k) (d 0) (d (Fin.last N)) r) (Sred (k := k) d r hp hq) :=
+lean/DLNFibre/Core/DeepChartRing.lean:346:/-- The induced `SchurLoc`-algebra structure on `Sred` makes `k → SchurLoc q p r → Sred` a scalar
+lean/DLNFibre/Core/DeepChartRing.lean:347:tower: `algebraMap k Sred` factors through `algebraMap k (SchurLoc …)` (both `schurToSred` and the
+lean/DLNFibre/Core/DeepChartRing.lean:349:theorem sredSchur_isScalarTower [IsAlgClosed k] [CharZero k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+lean/DLNFibre/Core/DeepChartRing.lean:351:    @IsScalarTower k (SchurLoc (k := k) (d 0) (d (Fin.last N)) r) (Sred (k := k) d r hp hq)
+lean/DLNFibre/Core/DeepChartRing.lean:352:      _ (sredSchurAlgebra (k := k) d r hp hq).toSMul _ := by
+lean/DLNFibre/Core/DeepChartRing.lean:353:  letI := sredSchurAlgebra (k := k) d r hp hq
+lean/DLNFibre/Core/DeepChartRing.lean:355:  -- `algebraMap (SchurLoc …) Sred = schurToSred.toRingHom` (by `toAlgebra`); `schurToSred` is a
+lean/DLNFibre/Core/DeepChartRing.lean:356:  -- `k`-algebra map, so it commutes with `algebraMap k (SchurLoc …)` (`AlgHom.commutes`).
+lean/DLNFibre/Core/FibreComponentOrbitTransport.lean:223:faithfully-flat lying-over of `includeRight : sweepFibreRing → SchurLoc ⊗ sweepFibreRing` (a prime
+lean/DLNFibre/Core/FibreComponentOrbitTransport.lean:250:`Module.FaithfullyFlat sweepFibreRing (SchurLoc ⊗_k sweepFibreRing)`, the orientation flip, and
+lean/DLNFibre/Core/FibreComponentOrbitTransport.lean:251:`Module.Free k SchurLoc`) not built here. -/
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:11:**forward** endpoint gauge at a chart point `A`'s Schur data equals the concrete `k`-valued chart
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:16:This crosses three representations of the same pivot data — the `SchurLoc` gauge variables (`Lmat`,
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:50:/-- The chart-point Schur evaluation maps the localized pivot block `schurΔLoc` to the concrete pivot
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:56:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:59:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:64:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k))
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:65:        (algebraMap (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:66:          (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r) (X (Sum.inl (i, j))))
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:68:          (algebraMap (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:69:            (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r) (X (Sum.inl (i, j)))) from rfl,
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:72:/-- The chart-point Schur evaluation maps the localized `B12` block `schurB12Loc` to the `B12` block
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:78:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:81:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:86:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k))
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:87:        (algebraMap (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k) _
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:90:          (algebraMap (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k) _
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:96:/-- The chart-point Schur evaluation maps the localized `B21` block `schurB21Loc` to the `B21` block
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:101:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:104:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:109:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k))
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:110:        (algebraMap (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k) _
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:113:          (algebraMap (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k) _
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:119:/-- The pivot block of `mult d A` is invertible when the Schur determinant is nonzero at `A`'s data:
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:120:`eval (schurOfMult A) detSchurS = det (chartΔ (mult A))` (`eval_schurOfMult_detSchurS`), and a nonzero
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:125:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:127:  rw [← eval_schurOfMult_detSchurS]
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:130:/-- The chart-point Schur evaluation maps the localized lower-unitriangular gauge block `LblockSum`
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:136:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:139:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:143:    : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k) with hg
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:157:/-- The chart-point Schur evaluation maps the localized upper-triangular gauge block `HblockSum`
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:162:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:165:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:168:    : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k) with hg
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:172:/-- The chart-point Schur evaluation maps the localized `p×p` gauge unit `Lmat` to the concrete
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:177:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:180:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:185:/-- The chart-point Schur evaluation maps the localized `q×q` gauge unit `Hmat` to the concrete
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:190:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0) :
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:193:          : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:200:`SchurLoc` gauge unit, pushed through the chart-point evaluation `schurEval (schurOfMult A)`, equals
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:203:crosses the three representations of the pivot data (`SchurLoc` variables, evaluated blocks of
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:208:    (hs : eval (schurOfMult k d r hp hq A) (detSchurS (d 0) (d (Fin.last (N + 1))) r) ≠ 0)
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean:225:        : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →+* k) with hg
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:9:the pivot chart, eliminates the bottom-right `B22` block: the Schur relation forces
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:13:along the block split `RepCoord ≃ B22block ⊕ SchurVar` (`B22block = Fin (p−r) × Fin (q−r)`,
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:14:`#B22block = (p−r)(q−r) = C`; `SchurVar = Δ ⊕ B12 ⊕ B21`, `#SchurVar = r(p+q−r) = δ`), so the pivot
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:15:minor `detΔ` lives in the `SchurVar` block. The forced-block graph ideal then has height `C`
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:18:`Iad = J` and exhibits `A_loc ⧸ Iad` as the free Schur localization (regular of dimension `δ`).
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:34:/-- The free Schur coordinates `Δ ⊕ B12 ⊕ B21`: the top-left `r×r` pivot block `Δ`, the top-right
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:35:`r × (q−r)` block `B12`, the bottom-left `(p−r) × r` block `B21`. `#SchurVar = δ = r(p+q−r)`. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:36:abbrev SchurVar (q p r : ℕ) : Type :=
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:43:/-- `#SchurVar = r·r + (r·(q−r) + (p−r)·r) = r(p + q − r) = δ` (for `r ≤ p`, `r ≤ q`). -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:44:theorem card_SchurVar (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:45:    Nat.card (SchurVar q p r) = r * (p + q - r) := by
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:46:  simp only [SchurVar, Nat.card_eq_fintype_card, Fintype.card_fin,
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:55:/-- The block reindex of the four products `(Δ ⊕ B12) ⊕ (B21 ⊕ B22)` into `B22block ⊕ SchurVar`
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:56:(B22 outermost for the elimination; `SchurVar = Δ ⊕ (B12 ⊕ B21)`). -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:60:      ≃ B22block q p r ⊕ SchurVar q p r where
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:86:/-- The full block reindex `RepCoord (dStratum q p) ≃ B22block ⊕ SchurVar`. Drops the `Σ _ : Fin 1`
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:90:    RepCoord (dStratum q p) ≃ B22block q p r ⊕ SchurVar q p r :=
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:107:maps under the reindex into the `Δ`-block of `SchurVar`: `Sum.inr (Sum.inl (i, j))`. So the pivot
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:108:minor `detΔ` is a polynomial in the `SchurVar` coordinates only. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:135:/-- A `B12` coordinate (pivot row `i`, non-pivot column `b`) maps to the `B12`-block of `SchurVar`:
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:149:/-- A `B21` coordinate (non-pivot row `a`, pivot column `i`) maps to the `B21`-block of `SchurVar`:
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:186:/-! ## The pivot minor `detΔ` lives in the `SchurVar` block
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:189:maps to `rename Sum.inr detSchurS` — a polynomial in the `SchurVar` (specifically `Δ`) coordinates
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:191:`C detSchurS`, so localizing `A_eng` at `detΔ` is localizing the coefficient ring at `detSchurS`. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:193:/-- The pivot determinant in the free Schur coordinate ring: `det` of the `Δ`-block coordinate
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:194:matrix `(i, j) ↦ X (Sum.inl (i, j))` in `MvPolynomial (SchurVar q p r) k`. This is `detΔ` after
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:195:eliminating the `B22` block — the localization element on the Schur side. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:196:noncomputable def detSchurS (q p r : ℕ) : MvPolynomial (SchurVar q p r) k :=
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:197:  (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k))).det
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:200:`rename Sum.inr (detSchurS)`: it is a polynomial in the `SchurVar` coordinates only. (`det` commutes
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:205:      = rename Sum.inr (detSchurS (k := k) q p r) := by
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:206:  rw [detPivotPoly, detSchurS, AlgEquiv.map_det, AlgHom.map_det (rename Sum.inr)]
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:216:`A_eng ≃ₐ[k] MvPolynomial B22block (MvPolynomial SchurVar k)`: relabel the coordinates
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:221:      ≃ₐ[k] MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k) :=
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:224:/-- Under `blockAlgEquiv`, the pivot minor `detΔ` becomes the constant `C detSchurS`: it lives
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:225:purely in the `SchurVar` coefficient ring (`sumAlgEquiv` sends `rename Sum.inr` into the constants).
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:226:So localizing `A_eng` at `detΔ` corresponds to localizing the `SchurVar` coefficient ring at
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:227:`detSchurS`. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:230:      = C (detSchurS (k := k) q p r) := by
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:232:  have h := sumAlgEquiv_comp_rename_inr (R := k) (S₁ := B22block q p r) (S₂ := SchurVar q p r)
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:233:  have hs := congrArg (fun f ↦ f (detSchurS (k := k) q p r)) h
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:240:`SchurVar` coefficient ring. These are the entry-images the bordered-minor identity uses. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:275:/-- `detSchurS ≠ 0`: it is the determinant of the generic `Δ`-coordinate matrix (a renamed
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:276:`mvPolynomialX`), nonzero by `det_mvPolynomialX_ne_zero`. So `Sd = Localization.Away detSchurS` is a
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:277:nontrivial localization (a domain), and `detSchurS` is a valid localization element. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:278:theorem detSchurS_ne_zero (q p r : ℕ) : detSchurS (k := k) q p r ≠ 0 := by
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:279:  rw [detSchurS]
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:280:  have hren : (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k)))
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:282:          (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))) := by
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:286:        (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r)))).det
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:287:      = rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:289:      (AlgHom.map_det (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))) _).symm,
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:296:On the pivot chart the Schur relation forces `B22 = B21 Δ⁻¹ B12`. The forced value lives in
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:297:`Sd = Localization.Away detSchurS`: `forcedB22 a b = (B21 · adjugate Δ · B12)_{ab} / detSchurS`
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:302:/-- The Schur numerator `B21 · adjugate Δ · B12` in the free coordinate ring
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:303:`MvPolynomial SchurVar k` (`Δ`, `B12`, `B21` the generic free blocks). `adjugate`, not `inv`, keeps
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:306:    Matrix (Fin (p - r)) (Fin (q - r)) (MvPolynomial (SchurVar q p r) k) :=
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:308:    (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k))).adjugate
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:311:/-- The forced `B22` value in `Sd = Localization.Away detSchurS`: the Schur numerator divided by
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:312:`detSchurS` (`= B21 Δ⁻¹ B12` once the pivot det is inverted). The graph map whose ideal `J` the
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:315:    [Algebra (MvPolynomial (SchurVar q p r) k) Sd]
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:316:    [IsLocalization.Away (detSchurS (k := k) q p r) Sd] :
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:319:    (⟨detSchurS q p r, Submonoid.mem_powers _⟩ : Submonoid.powers (detSchurS (k := k) q p r))
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:321:/-- **`height J = C`** for the forced Schur graph ideal `J = graphIdeal forcedB22` in
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:324:detSchurS`, `detSchurS ≠ 0`). The lower bound the `Iad = J` squeeze needs. -/
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:326:    [Algebra (MvPolynomial (SchurVar q p r) k) Sd]
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:327:    [IsLocalization.Away (detSchurS (k := k) q p r) Sd] :
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:329:  rw [height_graphIdeal_localization_eq (k := k) (detSchurS q p r) (detSchurS_ne_zero q p r) Sd,
+lean/DLNFibre/Core/ChartSweepWiring.lean:16:coordinate ring `O(F)` shifted by `card SchurVar = δ`; this module converts that into the
+lean/DLNFibre/Core/ChartSweepWiring.lean:19:> `varietyDim (Σ^r) = δ + varietyDim (F)`   (`δ = r·(p + q − r)`, `card SchurVar`).
+lean/DLNFibre/Core/ChartSweepWiring.lean:22:.unbotD 0` and the `card_SchurVar` arithmetic. Both `O(Σ^r)` and `O(F)` are finite-type `k`-algebras
+lean/DLNFibre/Core/ChartSweepWiring.lean:29:`Core.SchurSideNoDrop`. Everything *around* them is machine-checked here. Nothing in this module
+lean/DLNFibre/Core/ChartSweepWiring.lean:101:- `hP` — the schur-side no-drop (discharged from `SchurSideNoDrop`);
+lean/DLNFibre/Core/ChartSweepWiring.lean:109:    (gF : MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) (sweepFibreRing k d r hp hq))
+lean/DLNFibre/Core/ChartSweepWiring.lean:113:        = ringKrullDim (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r)
+lean/DLNFibre/Core/ChartSweepWiring.lean:120:  -- the wrapper output: `ringKrullDim O(Σ^r) = ringKrullDim O(F) + card SchurVar`.
+lean/DLNFibre/Core/ChartSweepWiring.lean:122:    (ι := SchurVar (d 0) (d (Fin.last (N + 1))) r)
+lean/DLNFibre/Core/ChartSweepWiring.lean:124:  -- `card SchurVar = δ`.
+lean/DLNFibre/Core/ChartSweepWiring.lean:125:  have hcard : (Nat.card (SchurVar (d 0) (d (Fin.last (N + 1))) r) : ℕ∞)
+lean/DLNFibre/Core/ChartSweepWiring.lean:127:    rw [card_SchurVar (d 0) (d (Fin.last (N + 1))) r hp hq]
+lean/DLNFibre/Core/ChartLocalizedPolyDim.lean:14:localized `O(Σ^r)[1/detΔ] ≃ₐ[k] (MvPolynomial SchurVar O(F))[1/gF]`. Inverting `detΔ` on the source
+lean/DLNFibre/Core/ChartGaugeTower.lean:11:`χ : SchurLoc →ₐ[k] T` and a variable assignment `v : RepCoord d → T`, the nested `aevalTower`
+lean/DLNFibre/Core/ChartGaugeTower.lean:22:the inner `aeval` at the ring-hom level, sidestepping the `k`-vs-`SchurLoc` scalar mismatch) + the
+lean/DLNFibre/Core/ChartGaugeTower.lean:40:`χ : MvPolynomial (RepCoord d) R`'s coefficient ring `R →ₐ[S] T` (here `S = k`, `R = SchurLoc`) — more
+lean/DLNFibre/Core/FibreBundleReduced.lean:21:proves (B1–B2) that chart is a product `SchurLoc ⊗_k sweepFibreRing`, and (B4) that the rank-`r`
+lean/DLNFibre/Core/FibreBundleReduced.lean:30:> `Away chartGfib ≃ₐ[k] SchurLoc ⊗_k sweepFibreRing`
+lean/DLNFibre/Core/FibreBundleReduced.lean:32:(`SchurLoc = Localization.Away detSchurS` the free Schur localization; `sweepFibreRing = O(F)` the
+lean/DLNFibre/Core/FibreBundleReduced.lean:148:The downstream `SchurLoc`-linearity of the chart trivialization reduces to exactly this. -/
+lean/DLNFibre/Core/FibreBundleReduced.lean:222:the free Schur localization `SchurLoc` with the **reduced** fibre coordinate ring
+lean/DLNFibre/Core/FibreBundleReduced.lean:225:> `Away (chartGfib d r) ≃ₐ[k] SchurLoc (d 0) (d (last (N+1))) r ⊗_k sweepFibreRing d r`.
+lean/DLNFibre/Core/FibreBundleReduced.lean:228:map (algebraMap k (sweepFibreRing)) detSchurS`, so this is `mvPolynomialAwayMapTensorAlgEquiv` at
+lean/DLNFibre/Core/FibreBundleReduced.lean:229:`f = detSchurS`, `F = sweepFibreRing`, `ι = SchurVar`. The `SchurLoc` factor is the local (matrix)
+lean/DLNFibre/Core/FibreBundleReduced.lean:234:      ≃ₐ[k] SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r ⊗[k] sweepFibreRing k d r hp hq :=
+lean/DLNFibre/Core/FibreBundleReduced.lean:236:    (ι := SchurVar (d 0) (d (Fin.last (N + 1))) r) (detSchurS (d 0) (d (Fin.last (N + 1))) r)
+lean/DLNFibre/Core/FibreBundleReduced.lean:249:> `Away (chartDsig d r) ≃ₐ[k] SchurLoc (d 0) (d (last (N+1))) r ⊗_k sweepFibreRing d r`.
+lean/DLNFibre/Core/FibreBundleReduced.lean:253:`SchurLoc` with the **reduced** fibre coordinate ring `sweepFibreRing`. This is the honest
+lean/DLNFibre/Core/FibreBundleReduced.lean:260:      ≃ₐ[k] SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r ⊗[k] sweepFibreRing k d r hp hq :=
+lean/DLNFibre/Core/FibreBundleReduced.lean:282:`SchurLoc ⊗_k sweepFibreRing`. (This is single-chart triviality + rank-orbit homogeneity, not a full
+lean/DLNFibre/Core/FibreBundleReduced.lean:307:`SchurLoc ⊗_k sweepFibreRing` of the local matrix direction with the **reduced** fibre coordinate
+lean/DLNFibre/Core/FibreBundleReduced.lean:320:        ≃ₐ[k] SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r ⊗[k] sweepFibreRing k d r hp hq) :=
+lean/DLNFibre/Core/ChartPhiLoc.lean:10:SchurVar O(F) →ₐ[k] Away dsig` carries the schur-side localizing element `gF = map (algebraMap k O(F))
+lean/DLNFibre/Core/ChartPhiLoc.lean:11:detSchurS` to a **unit** of `Localization.Away dsig` (its value is `algebraMap dsig`, the inverted
+lean/DLNFibre/Core/ChartPhiLoc.lean:16:The value: `chartPhiAeval gF = chartPhiSchurAeval detSchurS = algebraMap dsig` — the `O(F)`-coefficients
+lean/DLNFibre/Core/ChartPhiLoc.lean:18:reduces to the `chartPhiSchurAeval` of `detSchurS` (`ChartPhiSubstitution.chartPhiSchurAeval_detSchurS`).
+lean/DLNFibre/Core/ChartPhiLoc.lean:37:/-- **The Φ comorphism on a `map (algebraMap k O(F))`-lifted `k`-polynomial is `chartPhiSchurAeval`.**
+lean/DLNFibre/Core/ChartPhiLoc.lean:38:`chartPhiAeval (map (algebraMap k O(F)) p) = chartPhiSchurAeval p`: the `O(F)`-coefficients of the
+lean/DLNFibre/Core/ChartPhiLoc.lean:40:O(F)` is `algebraMap k (Away dsig)`), and the `SchurVar` generators go through `chartPhiVarSub` both
+lean/DLNFibre/Core/ChartPhiLoc.lean:41:sides. Ring-hom extensionality on the two composite homs `MvPolynomial SchurVar k →+* Away dsig`. -/
+lean/DLNFibre/Core/ChartPhiLoc.lean:44:    (p : MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k) :
+lean/DLNFibre/Core/ChartPhiLoc.lean:47:      = chartPhiSchurAeval k d r hp hq p := by
+lean/DLNFibre/Core/ChartPhiLoc.lean:48:  -- compare the two composite ring homs `MvPolynomial SchurVar k →+* Away dsig`, applied to `p`.
+lean/DLNFibre/Core/ChartPhiLoc.lean:51:      = (chartPhiSchurAeval k d r hp hq).toRingHom := by
+lean/DLNFibre/Core/ChartPhiLoc.lean:57:          (C (algebraMap k (sweepFibreRing k d r hp hq) a)) = chartPhiSchurAeval k d r hp hq (C a)
+lean/DLNFibre/Core/ChartPhiLoc.lean:60:      rw [show (C a : MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k)
+lean/DLNFibre/Core/ChartPhiLoc.lean:63:      -- generators: `chartPhiAeval (X s) = chartPhiVarSub s = chartPhiSchurAeval (X s)`.
+lean/DLNFibre/Core/ChartPhiLoc.lean:65:      change chartPhiAeval k d r hp hq (X s) = chartPhiSchurAeval k d r hp hq (X s)
+
+codex
+The layer crux has a cleaner answer than the proposed completion: normalize the pivot columns by the pivot block. This gives a unitriangular completion with determinant \(1\), so the bilinear product becomes a genuinely free reduced layer without introducing any Jacobian power. I’m now separating what this proves set-theoretically from the stronger analytic claim that the pulled-back loss is quadratic in all normal blocks; those are not the same statement.
+exec
+/bin/bash -lc "rg -n \"C_k|det charge|det-charge|Q_b|A_cor|polar H|exponent.gate|front atlas|composite.rank\" . --glob '"'!paper-sources/**'"' --glob '"'!lean/.lake/**'"' | head -n 300" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-addfbb992a4b22860
+ succeeded in 0ms:
+./expeditions/2026-06-25-theta-components/threads/14-rank-witness/scripts/zpoint.py:13:composite-rank pattern is "as large as possible subject to rho(1,N)=0".  We
+./lean/DLNFibre/Core/BoxMoveGeneral.lean:277:`t / 1 = t` jump (`Q_{b+1} = t`, `Q_b = 1`). -/
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:15:For (3,3,3) r=1: profile [1,1] gives composite rank 1 generically and dim S=13, rank(dmult)=5.
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:18:So either profile [1,1] does NOT generically have composite rank 1, OR dim S_[1,1] != 13.
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:61:print("=== (3,3,3), profile [1,1]: many samples, composite rank + jacobian rank ===")
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:71:    print(f"  trial {trial}: composite rank={cr}, rank(dmult)={jr}")
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:72:print("  composite-rank distribution:", crank_counts)
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:73:print("  jacobian-rank by composite rank:", jrank_counts)
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:81:    print(f"  trial {trial}: composite rank={cr}, rank(dmult)={jr}")
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:90:# composite rank 1, and the dimension of that stratum = card - rank(d mult at its generic pt) but
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/diagnose_333.py:100:print("  That is ABSURD (Sigma^1 proper). So profile [1,1] is NOT generic-composite-rank-1, OR")
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/verify_components_rank.py:72:# composite rank r, and record (composite rank, rank d mult). The MAX rank over all such
+./expeditions/2026-06-23-fibre-codim/threads/16-cut-ideal-radical/codex/radical-answer.md:11:Let `p = mult` and let `J_r` be the ideal generated by the `(r+1)`-minors of `p(A)`. The scheme `Z_r = p^{-1}{rank ≤ r}` is a type-A quiver determinantal/rank locus; the standard theorem is that these type-A quiver rank loci are reduced, with orbit closures normal/Cohen-Macaulay/rational and compatibly split in the usual formulations. Buch-Fulton give the type-A composite-rank degeneracy setup, and Kinser-Rajchgot identify type-A orbit closures with Schubert-cell pieces, recovering normality, Cohen-Macaulayness, rational singularities, and compatible splitting. ([arxiv.org](https://arxiv.org/abs/math/9804041?utm_source=openai))
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:95:    """Generic A with rank A_i = profile[i] and product rank = r (=composite rank).
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:96:       Returns (factors, composite_rank)."""
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:107:        # check that SOME generic choice gives composite rank exactly r (and not lower-generic)
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:123:print("  (generic full-rank factors of the profile; composite rank read off)")
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:133:        # take a generic stratum point; require composite rank == r (else this profile's
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:148:    # measured C+delta = MIN over strata with composite rank r of rank(d mult)
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:151:        print(f"\nd={d} r={r}: NO stratum gives composite rank {r}? (skipped)")
+./expeditions/2026-06-23-fibre-codim/threads/27-jacobian-rank-general/validate_fibre_components.py:159:            print(f"   profile={prof}: composite rank={cr} (!= r, different fibre) — skip")
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:2:I am designing an explicit "stratified-resolution atlas" for a composite-rank locus, to be formalised in
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:12:- FACT (verified 3 ways, do not re-derive): the parameter-space codim of S_s is the "composite-rank"
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:20:WHY (measure context). The eventual integral is  int over P of  (loss)^{-q} * (det charge)^{-a/2} d(params),
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:22:monomialise this so a per-stratum radial integral  int_0^delta r^{C_k - 1 - 2q} dr  is read off, with
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:23:C_k = min( u*rho , u*(rho-k) + CR(deep,rho-k) - gamma ) the target exponent. So the atlas must expose the
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:61:    including how the outer det-charge factor det(Q_b Q_b^T)^{-a/2} (Q_b = A_cor · Z, a separate corank
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:67:    stratum with radial exponent LOWER than CR(deep,rho-k) (which would break the C_k gate), or is CR the
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:71:Q5. Size/feasibility: as a Lean formalisation mirroring a 5-file / ~690 LoC single-block front atlas
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:72:    (chart-5 big-cell CoV with |det|=1, a polar H-fibre scaling, an exponent-gate arithmetic lemma, a
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-prompt.md:91:- The CR recursion and C_k formula are established facts; do not relitigate them. Focus on the EXPLICIT
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:16:I am designing an explicit "stratified-resolution atlas" for a composite-rank locus, to be formalised in
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:26:- FACT (verified 3 ways, do not re-derive): the parameter-space codim of S_s is the "composite-rank"
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:34:WHY (measure context). The eventual integral is  int over P of  (loss)^{-q} * (det charge)^{-a/2} d(params),
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:36:monomialise this so a per-stratum radial integral  int_0^delta r^{C_k - 1 - 2q} dr  is read off, with
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:37:C_k = min( u*rho , u*(rho-k) + CR(deep,rho-k) - gamma ) the target exponent. So the atlas must expose the
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:75:    including how the outer det-charge factor det(Q_b Q_b^T)^{-a/2} (Q_b = A_cor · Z, a separate corank
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:81:    stratum with radial exponent LOWER than CR(deep,rho-k) (which would break the C_k gate), or is CR the
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:85:Q5. Size/feasibility: as a Lean formalisation mirroring a 5-file / ~690 LoC single-block front atlas
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:86:    (chart-5 big-cell CoV with |det|=1, a polar H-fibre scaling, an exponent-gate arithmetic lemma, a
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:105:- The CR recursion and C_k formula are established facts; do not relitigate them. Focus on the EXPLICIT
+./expeditions/2026-06-20-aoyagi-full/threads/genm-deepatlas-design/codex/deepatlas-run.log:320:/bin/bash -lc "rg -n \"chart.?5|Schur|composite-rank|product-layer|CR\\(\" theory docs lean | head -n 240" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-addfbb992a4b22860
+
+exec
+/bin/bash -lc "find expeditions/2026-06-20-aoyagi-full/threads -maxdepth 2 -type f | sort | sed -n '1,260p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-addfbb992a4b22860
+2026-07-15T15:17:47.183039Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f6656-9ae0-71d3-a90d-b40aa90b5fed`" }
+ exited 1:
+2026-07-15T15:17:47.183620Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find expeditions/2026-06-20-aoyagi-full/threads -maxdepth 2 -type f | sort | sed -n '1,260p'"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc 'rg --files expeditions/2026-06-20-aoyagi-full/threads | sort | head -n 300' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-addfbb992a4b22860
+2026-07-15T15:17:50.039479Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f6656-9ae0-71d3-a90d-b40aa90b5fed`" }
+ exited 1:
+2026-07-15T15:17:50.039903Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rg --files expeditions/2026-06-20-aoyagi-full/threads | sort | head -n 300'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+codex
+The product-layer crux has a clean solution: normalize the pivot columns before completing them. This gives a unitriangular completion and an identically unit Jacobian. The resulting construction is a finite stratified atlas of \(S_s\), but it is not yet an analytic resolution of the pulled-back loss near intersections of rank strata.
+
+## Q1. Explicit chart family and finite index
+
+[FACT] At a recursive node, let the current effective last layer be
+
+\[
+M\in \mathbb R^{n\times d}.
+\]
+
+Fix \(r\le \min(n,d)\), row and column subsets \(I,J\) of cardinality \(r\), and reorder them first. Write
+
+\[
+M=
+\begin{pmatrix}
+\Delta & U\\
+V & W
+\end{pmatrix},
+\qquad
+E=W-V\Delta^{-1}U,
+\]
+
+where \(\Delta\in \mathrm{GL}_r(\mathbb R)\) and
+
+\[
+E\in\mathbb R^{(n-r)\times(d-r)}.
+\]
+
+The map
+
+\[
+(\Delta,U,V,E)\longmapsto
+\begin{pmatrix}
+\Delta&U\\
+V&V\Delta^{-1}U+E
+\end{pmatrix}
+\]
+
+has absolute Jacobian \(1\). Moreover,
+
+\[
+\operatorname{rank}M=r+\operatorname{rank}E.
+\]
+
+Thus the exact-rank-\(r\) core of this chart is \(E=0\), of codimension
+
+\[
+(n-r)(d-r).
+\]
+
+[FACT] The correct finite index set is recursive:
+
+\[
+\mathcal I_p(v_0,\ldots,v_p;s)
+=
+\bigsqcup_{r=0}^{\min(v_{p-1},v_p)}
+\binom{[v_{p-1}]}r
+\times
+\binom{[v_p]}r
+\times
+\begin{cases}
+\{\ast\},&r\le s,\\[2mm]
+\mathcal I_{p-1}(v_0,\ldots,v_{p-2},r;s),&r>s.
+\end{cases}
+\]
+
+At a nonterminal node, the shorter chain has widths
+
+\[
+(v_0,\ldots,v_{p-2},r).
+\]
+
+No choice of complement beyond the pivot row complement is needed.
+
+[FACT] A path has effective ranks \(r_j\) and effective output widths
+
+\[
+w_p=v_p,\qquad w_{j+1}=r_{j+1}.
+\]
+
+Its core has normal blocks
+
+\[
+E_j\in
+\mathbb R^{(v_j-r_j)\times(w_{j+1}-r_j)}
+\]
+
+and hence codimension
+
+\[
+C_{\text{path}}
+=
+\sum_j (v_j-r_j)(w_{j+1}-r_j).
+\]
+
+Minimizing these sums gives the stated CR recursion.
+
+[FACT] All rank paths and pivots cover \(S_s\) exactly, not merely generically: take the actual rank of the current effective layer, choose a nonzero maximal minor, and recurse when that rank exceeds \(s\).
+
+[INFERENCE] The clean atlas is therefore the full CR recursion tree, not merely the minimizing branches. Minimizers suffice to compute codimension, but lower-rank branches cannot be discarded in an integrability argument merely because their centers have measure zero.
+
+A related correction: size-\(s\) pivot charts cover the rank-exactly-\(s\) part of \(\{\operatorname{rank}\le s\}\), not its lower-rank points. Exact coverage requires all ranks \(0,\ldots,s\).
+
+## Q2. Exact product-layer change of variables
+
+Let
+
+\[
+M=L_{p-1}\in\mathbb R^{n\times d},
+\qquad
+L=L_{p-2}\in\mathbb R^{m\times n},
+\]
+
+where \(n=v_{p-1}\), \(d=v_p\), and \(m=v_{p-2}\). Work after the fixed pivot row and column permutations; these contribute only signs to the Jacobian.
+
+### The proposed raw-pivot completion
+
+[FACT] Let
+
+\[
+A=\begin{pmatrix}\Delta\\V\end{pmatrix}\in\mathbb R^{n\times r},
+\qquad
+K=\begin{pmatrix}0\\I_{n-r}\end{pmatrix},
+\]
+
+and complete \(A\) by
+
+\[
+G_A=[A\mid K]
+=
+\begin{pmatrix}
+\Delta&0\\
+V&I_{n-r}
+\end{pmatrix}.
+\]
+
+Then
+
+\[
+\det G_A=\det\Delta
+\]
+
+and
+
+\[
+M
+=
+G_A
+\begin{pmatrix}
+I_r&\Delta^{-1}U\\
+0&E
+\end{pmatrix}.
+\]
+
+Define
+
+\[
+LG_A=(H_A,F),
+\qquad
+H_A=LA\in\mathbb R^{m\times r},
+\quad
+F=LK\in\mathbb R^{m\times(n-r)}.
+\]
+
+Consequently,
+
+\[
+LM=
+\bigl(H_A,\ H_A\Delta^{-1}U+FE\bigr).
+\]
+
+On \(E=0\),
+
+\[
+LM=H_A[I_r,\Delta^{-1}U],
+\]
+
+and the right factor has full row rank. Hence, for every preceding head \(B\),
+
+\[
+\operatorname{rank}(BLM)=\operatorname{rank}(BH_A).
+\]
+
+[FACT] For fixed chart data, \(L\mapsto LG_A\) has Jacobian
+
+\[
+|\det G_A|^m=|\det\Delta|^m.
+\]
+
+Thus the inverse coordinate map
+
+\[
+(\Delta,U,V,E,H_A,F)\longmapsto(M,L)
+\]
+
+has absolute Jacobian
+
+\[
+|\det\Delta|^{-m}.
+\]
+
+This remains the joint Jacobian even though \(G_A\) depends on \((\Delta,V)\), because the full derivative is block triangular.
+
+The proposed “constant chart-dependent” Jacobian is therefore fiberwise constant in \(L\), but not constant over the whole chart.
+
+### Cleaner unit-Jacobian normalization
+
+[FACT] Normalize the pivot columns:
+
+\[
+A_0=A\Delta^{-1}
+=
+\begin{pmatrix}
+I_r\\
+V\Delta^{-1}
+\end{pmatrix},
+\]
+
+and take
+
+\[
+G_0=[A_0\mid K]
+=
+\begin{pmatrix}
+I_r&0\\
+V\Delta^{-1}&I_{n-r}
+\end{pmatrix}.
+\]
+
+Then
+
+\[
+\det G_0=1,
+\qquad
+M=
+G_0
+\begin{pmatrix}
+\Delta&U\\
+0&E
+\end{pmatrix}.
+\]
+
+Set
+
+\[
+LG_0=(H,F),
+\qquad H=LA\Delta^{-1}.
+\]
+
+Now
+
+\[
+LM=(H\Delta,\ HU+FE).
+\]
+
+On \(E=0\),
+
+\[
+LM=H[\Delta,U],
+\]
+
+and \([\Delta,U]\) is full row rank. Therefore
+
+\[
+\operatorname{rank}(BLM)=\operatorname{rank}(BH).
+\]
+
+[FACT] The joint coordinate map
+
+\[
+(\Delta,U,V,E,H,F)\longleftrightarrow(M,L)
+\]
+
+has absolute Jacobian identically \(1\): the Schur map has Jacobian \(1\), \(G_0\) has determinant \(1\), and the cross-derivatives again form off-diagonal blocks.
+
+[INFERENCE] This normalized completion is the cleanest Lean-facing formulation. If having exactly \(LA\) as the reduced layer is important, use the raw version and accept the monomial \(|\det\Delta|^{-m}\). For a unit-Jacobian atlas, use \(LA\Delta^{-1}\).
+
+## Q3. Induction on chain length and the determinant charge
+
+[FACT] The natural inductive statement is:
+
+> For every width sequence \((v_0,\ldots,v_p)\) and target \(s\), there is a finite family of rational smooth charts with unit absolute Jacobian, normal blocks \(E_j\), and cores \(\{E_j=0\}\), whose core images cover \(S_s\). Each core has codimension equal to the sum of its Schur-block dimensions.
+
+The base \(p=1\) consists of the single-matrix Schur charts for all exact ranks \(r\le s\).
+
+For the inductive step, choose \(r,I,J\) for \(L_{p-1}\).
+
+- If \(r\le s\), impose \(E=0\) and stop; the preceding layers are free.
+- If \(r>s\), use the unit-Jacobian transformation above. The new free last layer is \(H\in\mathbb R^{v_{p-2}\times r}\), while \(F\) is a spectator. Apply the shorter-chain atlas to
+  \[
+  (L_0,\ldots,L_{p-3},H)
+  \]
+  with widths \((v_0,\ldots,v_{p-2},r)\).
+
+This proves the geometric atlas by bounded induction.
+
+[FACT] The determinant charge does not decouple algebraically. On \(E=0\), write
+
+\[
+Z=Z_{\mathrm{red}}D,
+\qquad D=[\Delta,U]
+\]
+
+in normalized coordinates. If \(N=A_{\mathrm{cor}}Z_{\mathrm{red}}\), then
+
+\[
+Q_bQ_b^{T}
+=
+N(DD^{T})N^{T}.
+\]
+
+Here \(DD^T\) is positive definite. On any compact subchart on which
+
+\[
+\lambda I\le DD^T\le \Lambda I,
+\]
+
+and \(Q_b\) has \(b\) rows,
+
+\[
+\lambda^b\det(NN^T)
+\le
+\det(Q_bQ_b^T)
+\le
+\Lambda^b\det(NN^T).
+\]
+
+Thus the charge has the same local corank exponent as the reduced charge, up to a bounded positive factor.
+
+[FACT] Off the core,
+
+\[
+Z
+=
+Z_{\mathrm{head}}(H\Delta,\ HU+FE),
+\]
+
+so the \(FE\) term enters the charge as well as the loss.
+
+[INFERENCE] The purely geometric induction may ignore the charge. An induction proving the integral exponent must thread it, preferably by making the shorter-chain assertion uniform under an arbitrary positive-definite right metric \(R=DD^T\). Treating it as a harmless scalar weight is unjustified near its own corank locus.
+
+## Q4. Non-comparable scales and index completeness
+
+[FACT] If “sum of squared-scale terms” means a genuine uniform estimate
+
+\[
+c\sum_j\|E_j\|^2
+\le
+\mathrm{loss}
+\le
+C\sum_j\|E_j\|^2,
+\]
+
+then non-comparable scales cannot lower the exponent. Let \(c_j=\dim E_j\) and take
+
+\[
+E_j\sim t^{\alpha_j},\qquad \alpha_j>0.
+\]
+
+Normalize \(\min_j\alpha_j=1\). The loss has order \(t^2\), while the volume cost is
+
+\[
+t^{\sum_j c_j\alpha_j}.
+\]
+
+Since
+
+\[
+\sum_jc_j\alpha_j\ge\sum_jc_j=C_{\mathrm{path}},
+\]
+
+the minimum is attained by comparable scaling. The radial threshold is \(q<C_{\mathrm{path}}/2\).
+
+[FACT] This quadratic comparability does not follow from the Schur atlas. Already for widths \((2,2,2)\), \(s=0\), and the \(r=1\) chart,
+
+\[
+Z=(H\Delta,\ HU+FE),
+\]
+
+with \(H,F\in\mathbb R^{2\times1}\) and \(E\in\mathbb R\). Since \(\Delta\ne0\),
+
+\[
+Z=0
+\iff
+H=0\quad\text{and}\quad FE=0.
+\]
+
+Thus the zero locus in this one chart is the union
+
+\[
+\{H=0,E=0\}
+\;\cup\;
+\{H=0,F=0\},
+\]
+
+not only the first core. Near the intersection, the loss has the model
+
+\[
+\|H\|^2+\|FE\|^2,
+\]
+
+rather than \(\|H\|^2+|E|^2\).
+
+In this example the weighted calculation is still safe: if \(H,F,E\) have weights \(a,b,c\), the volume cost is \(2a+2b+c\) and the loss order is \(2\min(a,b+c)\). Normalizing \(\min(a,b+c)=1\) gives minimum cost \(3=\mathrm{CR}(2,2,2;0)\). But this is a separate analytic calculation, not a consequence of codimension.
+
+[FACT] As posed, the loss is not specified sufficiently to conclude that CR is always the infimum. The zero set and its codimension alone are insufficient. For example,
+
+\[
+\ell(x,y)=x^2+y^4
+\]
+
+has zero set of codimension \(2\), but the scaling \(x\sim t^2,\ y\sim t\) gives volume exponent \(3\) against loss order \(4\), hence threshold \(3/4<2/2\).
+
+[INFERENCE] For the intended composite loss, non-comparable scaling likely corresponds to moving toward another rank path, as the \(FE\) example illustrates. However, proving that no fractional weighting beats all discrete CR paths requires an analytic valuation or sector-decomposition lemma. It is not established by the finite pivot index alone.
+
+[FACT] The rank/pivot indices are set-theoretically complete: every point of \(S_s\) lies on a core, and the associated open chart domains form a finite open neighborhood of \(S_s\). This does not imply analytic completeness. Singular centers of measure zero can control local integrability, so “up to a null set” is not enough unless the nearby sectors are also controlled.
+
+What would settle the multi-scale question is a one-peel analytic recursion proving directly, from
+
+\[
+Z=Z_{\mathrm{head}}(H\Delta,\ HU+FE),
+\]
+
+that the local zeta exponent satisfies the same minimization over \(r\) as CR, uniformly as \(F\) loses rank and pivot minors approach lower-rank charts.
+
+## Q5. Lean feasibility
+
+[INFERENCE] The algebraic telescoping is bounded induction, not new resolution machinery. The additional ingredients are:
+
+- the normalized unitriangular completion;
+- a recursive finite path/pivot index;
+- the joint block-triangular Jacobian calculation;
+- spectator-coordinate bookkeeping;
+- the sum-of-block-dimensions/CR arithmetic bridge.
+
+This should remain of the same broad order as the existing single-block atlas, although dependent dimensions and pivot reindexing will be the main Lean engineering cost.
+
+[INFERENCE] The analytic claim is substantially larger. One must control overlapping branches such as \(H=0,\ FE=0\), pivot-collapse seams, non-comparable sectors, and the singular determinant charge. A generic finite-cover gluing lemma cannot replace that analysis.
+
+[SPECULATION] If the one-peel analytic recursion is available as a theorem, the multilayer part should add roughly another atlas-sized tranche of formalisation. Without it, the project has crossed from “iterate Schur CoV” into a genuine stratified-integration or resolution argument, whose size is not responsibly predictable from the existing 690 LoC.
+
+The single most likely wall is the assumption that branchwise Schur cores already monomialize the loss near intersections of rank strata. The one de-risking check is to prove the full one-peel local-zeta recursion—including the \(FE\) seam and determinant charge—before formalising the recursive atlas.
+tokens used
+68,583
+The product-layer crux has a clean solution: normalize the pivot columns before completing them. This gives a unitriangular completion and an identically unit Jacobian. The resulting construction is a finite stratified atlas of \(S_s\), but it is not yet an analytic resolution of the pulled-back loss near intersections of rank strata.
+
+## Q1. Explicit chart family and finite index
+
+[FACT] At a recursive node, let the current effective last layer be
+
+\[
+M\in \mathbb R^{n\times d}.
+\]
+
+Fix \(r\le \min(n,d)\), row and column subsets \(I,J\) of cardinality \(r\), and reorder them first. Write
+
+\[
+M=
+\begin{pmatrix}
+\Delta & U\\
+V & W
+\end{pmatrix},
+\qquad
+E=W-V\Delta^{-1}U,
+\]
+
+where \(\Delta\in \mathrm{GL}_r(\mathbb R)\) and
+
+\[
+E\in\mathbb R^{(n-r)\times(d-r)}.
+\]
+
+The map
+
+\[
+(\Delta,U,V,E)\longmapsto
+\begin{pmatrix}
+\Delta&U\\
+V&V\Delta^{-1}U+E
+\end{pmatrix}
+\]
+
+has absolute Jacobian \(1\). Moreover,
+
+\[
+\operatorname{rank}M=r+\operatorname{rank}E.
+\]
+
+Thus the exact-rank-\(r\) core of this chart is \(E=0\), of codimension
+
+\[
+(n-r)(d-r).
+\]
+
+[FACT] The correct finite index set is recursive:
+
+\[
+\mathcal I_p(v_0,\ldots,v_p;s)
+=
+\bigsqcup_{r=0}^{\min(v_{p-1},v_p)}
+\binom{[v_{p-1}]}r
+\times
+\binom{[v_p]}r
+\times
+\begin{cases}
+\{\ast\},&r\le s,\\[2mm]
+\mathcal I_{p-1}(v_0,\ldots,v_{p-2},r;s),&r>s.
+\end{cases}
+\]
+
+At a nonterminal node, the shorter chain has widths
+
+\[
+(v_0,\ldots,v_{p-2},r).
+\]
+
+No choice of complement beyond the pivot row complement is needed.
+
+[FACT] A path has effective ranks \(r_j\) and effective output widths
+
+\[
+w_p=v_p,\qquad w_{j+1}=r_{j+1}.
+\]
+
+Its core has normal blocks
+
+\[
+E_j\in
+\mathbb R^{(v_j-r_j)\times(w_{j+1}-r_j)}
+\]
+
+and hence codimension
+
+\[
+C_{\text{path}}
+=
+\sum_j (v_j-r_j)(w_{j+1}-r_j).
+\]
+
+Minimizing these sums gives the stated CR recursion.
+
+[FACT] All rank paths and pivots cover \(S_s\) exactly, not merely generically: take the actual rank of the current effective layer, choose a nonzero maximal minor, and recurse when that rank exceeds \(s\).
+
+[INFERENCE] The clean atlas is therefore the full CR recursion tree, not merely the minimizing branches. Minimizers suffice to compute codimension, but lower-rank branches cannot be discarded in an integrability argument merely because their centers have measure zero.
+
+A related correction: size-\(s\) pivot charts cover the rank-exactly-\(s\) part of \(\{\operatorname{rank}\le s\}\), not its lower-rank points. Exact coverage requires all ranks \(0,\ldots,s\).
+
+## Q2. Exact product-layer change of variables
+
+Let
+
+\[
+M=L_{p-1}\in\mathbb R^{n\times d},
+\qquad
+L=L_{p-2}\in\mathbb R^{m\times n},
+\]
+
+where \(n=v_{p-1}\), \(d=v_p\), and \(m=v_{p-2}\). Work after the fixed pivot row and column permutations; these contribute only signs to the Jacobian.
+
+### The proposed raw-pivot completion
+
+[FACT] Let
+
+\[
+A=\begin{pmatrix}\Delta\\V\end{pmatrix}\in\mathbb R^{n\times r},
+\qquad
+K=\begin{pmatrix}0\\I_{n-r}\end{pmatrix},
+\]
+
+and complete \(A\) by
+
+\[
+G_A=[A\mid K]
+=
+\begin{pmatrix}
+\Delta&0\\
+V&I_{n-r}
+\end{pmatrix}.
+\]
+
+Then
+
+\[
+\det G_A=\det\Delta
+\]
+
+and
+
+\[
+M
+=
+G_A
+\begin{pmatrix}
+I_r&\Delta^{-1}U\\
+0&E
+\end{pmatrix}.
+\]
+
+Define
+
+\[
+LG_A=(H_A,F),
+\qquad
+H_A=LA\in\mathbb R^{m\times r},
+\quad
+F=LK\in\mathbb R^{m\times(n-r)}.
+\]
+
+Consequently,
+
+\[
+LM=
+\bigl(H_A,\ H_A\Delta^{-1}U+FE\bigr).
+\]
+
+On \(E=0\),
+
+\[
+LM=H_A[I_r,\Delta^{-1}U],
+\]
+
+and the right factor has full row rank. Hence, for every preceding head \(B\),
+
+\[
+\operatorname{rank}(BLM)=\operatorname{rank}(BH_A).
+\]
+
+[FACT] For fixed chart data, \(L\mapsto LG_A\) has Jacobian
+
+\[
+|\det G_A|^m=|\det\Delta|^m.
+\]
+
+Thus the inverse coordinate map
+
+\[
+(\Delta,U,V,E,H_A,F)\longmapsto(M,L)
+\]
+
+has absolute Jacobian
+
+\[
+|\det\Delta|^{-m}.
+\]
+
+This remains the joint Jacobian even though \(G_A\) depends on \((\Delta,V)\), because the full derivative is block triangular.
+
+The proposed “constant chart-dependent” Jacobian is therefore fiberwise constant in \(L\), but not constant over the whole chart.
+
+### Cleaner unit-Jacobian normalization
+
+[FACT] Normalize the pivot columns:
+
+\[
+A_0=A\Delta^{-1}
+=
+\begin{pmatrix}
+I_r\\
+V\Delta^{-1}
+\end{pmatrix},
+\]
+
+and take
+
+\[
+G_0=[A_0\mid K]
+=
+\begin{pmatrix}
+I_r&0\\
+V\Delta^{-1}&I_{n-r}
+\end{pmatrix}.
+\]
+
+Then
+
+\[
+\det G_0=1,
+\qquad
+M=
+G_0
+\begin{pmatrix}
+\Delta&U\\
+0&E
+\end{pmatrix}.
+\]
+
+Set
+
+\[
+LG_0=(H,F),
+\qquad H=LA\Delta^{-1}.
+\]
+
+Now
+
+\[
+LM=(H\Delta,\ HU+FE).
+\]
+
+On \(E=0\),
+
+\[
+LM=H[\Delta,U],
+\]
+
+and \([\Delta,U]\) is full row rank. Therefore
+
+\[
+\operatorname{rank}(BLM)=\operatorname{rank}(BH).
+\]
+
+[FACT] The joint coordinate map
+
+\[
+(\Delta,U,V,E,H,F)\longleftrightarrow(M,L)
+\]
+
+has absolute Jacobian identically \(1\): the Schur map has Jacobian \(1\), \(G_0\) has determinant \(1\), and the cross-derivatives again form off-diagonal blocks.
+
+[INFERENCE] This normalized completion is the cleanest Lean-facing formulation. If having exactly \(LA\) as the reduced layer is important, use the raw version and accept the monomial \(|\det\Delta|^{-m}\). For a unit-Jacobian atlas, use \(LA\Delta^{-1}\).
+
+## Q3. Induction on chain length and the determinant charge
+
+[FACT] The natural inductive statement is:
+
+> For every width sequence \((v_0,\ldots,v_p)\) and target \(s\), there is a finite family of rational smooth charts with unit absolute Jacobian, normal blocks \(E_j\), and cores \(\{E_j=0\}\), whose core images cover \(S_s\). Each core has codimension equal to the sum of its Schur-block dimensions.
+
+The base \(p=1\) consists of the single-matrix Schur charts for all exact ranks \(r\le s\).
+
+For the inductive step, choose \(r,I,J\) for \(L_{p-1}\).
+
+- If \(r\le s\), impose \(E=0\) and stop; the preceding layers are free.
+- If \(r>s\), use the unit-Jacobian transformation above. The new free last layer is \(H\in\mathbb R^{v_{p-2}\times r}\), while \(F\) is a spectator. Apply the shorter-chain atlas to
+  \[
+  (L_0,\ldots,L_{p-3},H)
+  \]
+  with widths \((v_0,\ldots,v_{p-2},r)\).
+
+This proves the geometric atlas by bounded induction.
+
+[FACT] The determinant charge does not decouple algebraically. On \(E=0\), write
+
+\[
+Z=Z_{\mathrm{red}}D,
+\qquad D=[\Delta,U]
+\]
+
+in normalized coordinates. If \(N=A_{\mathrm{cor}}Z_{\mathrm{red}}\), then
+
+\[
+Q_bQ_b^{T}
+=
+N(DD^{T})N^{T}.
+\]
+
+Here \(DD^T\) is positive definite. On any compact subchart on which
+
+\[
+\lambda I\le DD^T\le \Lambda I,
+\]
+
+and \(Q_b\) has \(b\) rows,
+
+\[
+\lambda^b\det(NN^T)
+\le
+\det(Q_bQ_b^T)
+\le
+\Lambda^b\det(NN^T).
+\]
+
+Thus the charge has the same local corank exponent as the reduced charge, up to a bounded positive factor.
+
+[FACT] Off the core,
+
+\[
+Z
+=
+Z_{\mathrm{head}}(H\Delta,\ HU+FE),
+\]
+
+so the \(FE\) term enters the charge as well as the loss.
+
+[INFERENCE] The purely geometric induction may ignore the charge. An induction proving the integral exponent must thread it, preferably by making the shorter-chain assertion uniform under an arbitrary positive-definite right metric \(R=DD^T\). Treating it as a harmless scalar weight is unjustified near its own corank locus.
+
+## Q4. Non-comparable scales and index completeness
+
+[FACT] If “sum of squared-scale terms” means a genuine uniform estimate
+
+\[
+c\sum_j\|E_j\|^2
+\le
+\mathrm{loss}
+\le
+C\sum_j\|E_j\|^2,
+\]
+
+then non-comparable scales cannot lower the exponent. Let \(c_j=\dim E_j\) and take
+
+\[
+E_j\sim t^{\alpha_j},\qquad \alpha_j>0.
+\]
+
+Normalize \(\min_j\alpha_j=1\). The loss has order \(t^2\), while the volume cost is
+
+\[
+t^{\sum_j c_j\alpha_j}.
+\]
+
+Since
+
+\[
+\sum_jc_j\alpha_j\ge\sum_jc_j=C_{\mathrm{path}},
+\]
+
+the minimum is attained by comparable scaling. The radial threshold is \(q<C_{\mathrm{path}}/2\).
+
+[FACT] This quadratic comparability does not follow from the Schur atlas. Already for widths \((2,2,2)\), \(s=0\), and the \(r=1\) chart,
+
+\[
+Z=(H\Delta,\ HU+FE),
+\]
+
+with \(H,F\in\mathbb R^{2\times1}\) and \(E\in\mathbb R\). Since \(\Delta\ne0\),
+
+\[
+Z=0
+\iff
+H=0\quad\text{and}\quad FE=0.
+\]
+
+Thus the zero locus in this one chart is the union
+
+\[
+\{H=0,E=0\}
+\;\cup\;
+\{H=0,F=0\},
+\]
+
+not only the first core. Near the intersection, the loss has the model
+
+\[
+\|H\|^2+\|FE\|^2,
+\]
+
+rather than \(\|H\|^2+|E|^2\).
+
+In this example the weighted calculation is still safe: if \(H,F,E\) have weights \(a,b,c\), the volume cost is \(2a+2b+c\) and the loss order is \(2\min(a,b+c)\). Normalizing \(\min(a,b+c)=1\) gives minimum cost \(3=\mathrm{CR}(2,2,2;0)\). But this is a separate analytic calculation, not a consequence of codimension.
+
+[FACT] As posed, the loss is not specified sufficiently to conclude that CR is always the infimum. The zero set and its codimension alone are insufficient. For example,
+
+\[
+\ell(x,y)=x^2+y^4
+\]
+
+has zero set of codimension \(2\), but the scaling \(x\sim t^2,\ y\sim t\) gives volume exponent \(3\) against loss order \(4\), hence threshold \(3/4<2/2\).
+
+[INFERENCE] For the intended composite loss, non-comparable scaling likely corresponds to moving toward another rank path, as the \(FE\) example illustrates. However, proving that no fractional weighting beats all discrete CR paths requires an analytic valuation or sector-decomposition lemma. It is not established by the finite pivot index alone.
+
+[FACT] The rank/pivot indices are set-theoretically complete: every point of \(S_s\) lies on a core, and the associated open chart domains form a finite open neighborhood of \(S_s\). This does not imply analytic completeness. Singular centers of measure zero can control local integrability, so “up to a null set” is not enough unless the nearby sectors are also controlled.
+
+What would settle the multi-scale question is a one-peel analytic recursion proving directly, from
+
+\[
+Z=Z_{\mathrm{head}}(H\Delta,\ HU+FE),
+\]
+
+that the local zeta exponent satisfies the same minimization over \(r\) as CR, uniformly as \(F\) loses rank and pivot minors approach lower-rank charts.
+
+## Q5. Lean feasibility
+
+[INFERENCE] The algebraic telescoping is bounded induction, not new resolution machinery. The additional ingredients are:
+
+- the normalized unitriangular completion;
+- a recursive finite path/pivot index;
+- the joint block-triangular Jacobian calculation;
+- spectator-coordinate bookkeeping;
+- the sum-of-block-dimensions/CR arithmetic bridge.
+
+This should remain of the same broad order as the existing single-block atlas, although dependent dimensions and pivot reindexing will be the main Lean engineering cost.
+
+[INFERENCE] The analytic claim is substantially larger. One must control overlapping branches such as \(H=0,\ FE=0\), pivot-collapse seams, non-comparable sectors, and the singular determinant charge. A generic finite-cover gluing lemma cannot replace that analysis.
+
+[SPECULATION] If the one-peel analytic recursion is available as a theorem, the multilayer part should add roughly another atlas-sized tranche of formalisation. Without it, the project has crossed from “iterate Schur CoV” into a genuine stratified-integration or resolution argument, whose size is not responsibly predictable from the existing 690 LoC.
+
+The single most likely wall is the assumption that branchwise Schur cores already monomialize the loss near intersections of rank strata. The one de-risking check is to prove the full one-peel local-zeta recursion—including the \(FE\) seam and determinant charge—before formalising the recursive atlas.
