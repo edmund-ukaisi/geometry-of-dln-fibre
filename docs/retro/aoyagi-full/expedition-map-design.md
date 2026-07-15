@@ -104,6 +104,24 @@ quote a notion carry a `needs` edge — the DAG sequences definitional work ahea
 6. Open claims have `owner` or explicit `parked` (the orphaned-residual detector).
 7. Notions consumed by any `stated` claim must be ≥ `validated` (the adm rule).
 8. Every open claim reachable from a root via some edge chain (conjectured edges count).
+9. **Route-adoption gate** (2026-07-15, the five-fork night): a `route` node moves to adopted (a tide
+   may be spawned on it) only with two machine checks green: **(a)** its composition skeleton
+   elaborates against the consumed claims' *verbatim* statements (via their MapAnchors pins — a route
+   spec may not re-type a signature from a docstring or cert paraphrase; the consumption edge is
+   exactly where paraphrase drifts toward consumer need), sorries only at nodes the route declares
+   new; **(b)** every hypothesis the route carries is evaluated at the **corner battery** (below) —
+   satisfiable-at-the-visited-instances is not implied by well-typed. Provenance: five consecutive
+   route documents in ~12 h each paraphrased a formal statement more generously than it reads, by
+   five different authors — structural, not disciplinary; both sub-modes (edge type error; false
+   hypothesis at the binding corner) appeared, and each check catches one of them.
+
+**The corner battery** (curated, lives beside `claims.yaml`): the standing family of small
+kill-configurations that refuters keep coming from — seeded at genesis from the paper's worked
+examples, grown by appending every refuting witness a hunt certifies (aoyagi-full's would be
+(2,2,3), (3,3,3), (3,3,4), (3,3,7)@u2j2, (1,1,2,2), (6,6,6)@u4 — 5/5 of the five-fork night's
+kill-witnesses were in or adjacent to it). The survey evaluates every open route's hypotheses
+against the battery at the green-gate ride-along; a new battery member re-tests all open routes for
+free. Property-based testing for plans.
 
 ## Flows (the life of the map)
 

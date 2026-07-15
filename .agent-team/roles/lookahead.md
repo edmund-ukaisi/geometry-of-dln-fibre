@@ -27,6 +27,28 @@ load-bearing mathematical question).
    at rendezvous — in a formalization the type-checker simulates the future state better than any
    reader, and a scope-inflated claim ("shell-0 lemma discharges the j=r branch") dies as a type
    error instead of surviving as prose.
+
+   **The route-adoption gate** (sharpened 2026-07-15, from the five-fork night on aoyagi-full: five
+   consecutive route documents in ~12 h — capstonerecon "mechanical", satcover "simple/independent",
+   routefork §5 "exposes decLoss" + "gated by hpiv", the bridge's ledger-DONE-for-a-different-object,
+   and the original T2 miss — each a prose paraphrase of a formal statement at a *consumption edge*,
+   drifted toward what the consumer needed the statement to say; five different well-intentioned
+   authors, so the failure is structural, not disciplinary). No route spec is adopted (no tide
+   spawned on it) until BOTH of:
+   - **(i) Edge elaboration against verbatim statements.** The composition skeleton is written from
+     the banked declarations' *actual signatures* (git-show / anchor pins — never re-typed from a
+     docstring, a cert's paraphrase, or memory), and elaborates with sorries only at the
+     genuinely-new nodes. Catches the type-error sub-mode (e.g. a lemma whose `w : ℝ` is a constant
+     being fed a function of an integration variable) in seconds.
+   - **(ii) Hypothesis instantiation at the corner battery.** Type-checking cannot catch a
+     well-formed hypothesis that is *unsatisfiable at the instances the driver visits* (hpiv at
+     (2,2,3): 3 ≤ 2). Every hypothesis the route carries is `decide`d/evaluated at the expedition's
+     standing **corner battery** — the small recurring family of kill-configurations (on aoyagi-full:
+     (2,2,3), (3,3,3), (3,3,4), (3,3,7)@u2j2, (1,1,2,2), (6,6,6)@u4; 5/5 of the night's refuters
+     came from or adjacent to it). The battery lives in the expedition-map; new refuters join it.
+   Cost per route: well under a tide-hour. Measured cost of absence: five adjudication cycles, two
+   near-misses of multi-hundred-line builds against false/unreachable targets, and one multi-tide
+   build actually spent on a false object.
 4. **Big-picture adjustment detection** — two named checks, run every pass:
    - **Hard-part-avoidance**: is the highest value-of-information item in `priorities.md` actually
      holding a lane? Is any lane building a route *around* a named crux?
