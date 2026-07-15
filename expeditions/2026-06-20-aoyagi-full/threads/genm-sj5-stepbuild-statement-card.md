@@ -82,6 +82,36 @@ and route-agnostic, so unaffected). NOT wired to the aggregator (controller inte
 >   `∫(‖PU+BD‖²+τ²)^{−q} ≲ τ^{ub−2q}·detΣ^{−1/2}` (module (ii)(b)-proper, the analytic heart) — NOT built.
 > - **Status.** sorry-free + reviewed (stepbuild-reviewer fidelity PASS, 2026-07-15; docstring/card precision nits applied)
 
+## Card 4 — Route B deep-stratum gate (Nat part): γ_s + (II) + gate assembly
+
+> **Claim (deepgate-cert §4/§6).** The deep-stratum codim WITH the peeled corank det charge is
+> `C_k = min(u·ρ, u·(ρ−k) + κ_k − γ_{ρ−k}) ≥ minAdm(M) − a·b`, via the charge exponent
+> `γ_s = max_{b−s≤h≤b} h(a+b−s−h)` and the 3-chain QIP `minAdm(M₀,M₁,s) + γ_s ≤ a·b + u·s`, combined with
+> (I) `minAdm(M) ≤ κ_k + minAdm(M₀,M₁,ρ−k)`. Charge inert at the tight `k=1` stratum (`γ_{ρ−1}=0`,
+> `a+b ≤ ρ−1`).
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.chargeExp`, `chargeExp_eq_zero_of_le`, `chargeExp_zero`, `minAdm3_le_qip`,
+>   `minAdm3_add_chargeExp_le`, `deepGate_branch`, `deepGate_uρ_branch`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDeepGate.lean` @ `bbb274da9`)
+> - **Gloss.** `chargeExp a b s = sup'_{b−s≤h≤b} h·(a+b−s−h)` (= γ_s). `chargeExp_eq_zero_of_le`
+>   (`a+b≤s → γ_s=0`). `chargeExp_zero` (`γ_0 = a·b`). `minAdm3_le_qip`
+>   (`minAdm ![M₀,M₁,s] ≤ (M₀−r)(M₁−r)+r·s`, any `r ≤ min`). `minAdm3_add_chargeExp_le` (II):
+>   `minAdm ![M₀,M₁,s] + chargeExp (M₀−u)(M₁−u) s ≤ (M₀−u)(M₁−u) + u·s`. `deepGate_branch`: from
+>   `hI : mM ≤ κ + minAdm ![M₀,M₁,s]` (I) and (II), `mM + γ_{ρ−k} ≤ ab + u·(ρ−k) + κ` (deep branch of C_k).
+>   `deepGate_uρ_branch`: `mM ≤ ab + u·ρ` (uρ branch, κ₀=0 + γ_ρ=0).
+> - **Proved.** All, unconditionally (Nat). (II) numerically re-verified (`deepgate_II_check.py`, 2412/0).
+> - **Assumed.** (I) `minAdm(M) ≤ κ_k + minAdm(M₀,M₁,ρ−k)` — an explicit HYPOTHESIS of the gate
+>   (`κ` abstract ℕ). This is the deep-rank stratification of the QIP, discharged by `crstrat` (its concrete
+>   composite-rank recursion `CRrec` provides `κ_k = CRrec(deep, ρ−k)` and proves (I)); plugs in at
+>   integration with no bridge (option-(a) abstract-param CR treatment).
+> - **Cited.** Banked `minAdm_le_peelCharge_add_redChain`, `minAdmRec_eq_minAdm`, `minAdmRec_leaf`;
+>   Mathlib `Finset.sup'`. The verdict `C_k ≥ 2T1_q` (0 violations, 4–7 width) is the deepgate cert (Codex
+>   -concurred) — this module proves the Nat gate arithmetic (γ_s + II + assembly), NOT the cert's sweep.
+> - **Deferred.** (I) [crstrat]; the **deep stratified-resolution atlas** (composite-rank big-cells,
+>   monomial Jacobians — the deep analog of incidencepp §3b, a dedicated thread); the per-stratum radial
+>   gate (banked `corner_block_cube_lintegral_lt_top` shape); the LINK / density-bound / front-gluing.
+> - **Status.** sorry-free (reviewer fidelity check pending)
+
 ---
 
 ## Route-level caveat (surfaced this thread, held for the controller)
