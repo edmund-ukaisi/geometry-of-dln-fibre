@@ -90,6 +90,14 @@ and route-agnostic, so unaffected). NOT wired to the aggregator (controller inte
 > (I) `minAdm(M) ≤ κ_k + minAdm(M₀,M₁,ρ−k)`. Charge inert at the tight `k=1` stratum (`γ_{ρ−1}=0`,
 > `a+b ≤ ρ−1`).
 >
+> **Scope of what this module realises (precision).** The module proves the **Nat codim inequality** as the
+> **two branch `≤`-lemmas** — `deepGate_branch` (deep branch, given (I)) and `deepGate_uρ_branch` (`uρ` branch)
+> — whose conjunction is `C_k ≥ minAdm−ab` (`min(x,y)≥t ⟺ x≥t ∧ y≥t`, trivial); `C_k` is not a defined object
+> here and there is no single `C_k ≥ minAdm−ab` theorem. The **analytic** per-stratum finiteness
+> `∫ r^{C_k−1−2q} dr < ⊤` is the deferred radial gate (banked `corner_block_cube_lintegral_lt_top`, `N:=C_k`),
+> NOT proved in this module. So "Proved: All" below = the γ_s facts + (II) + the two branch inequalities, not
+> an analytic gate.
+>
 > - **Lean:** `DLNFibre.DLN.RLCT.chargeExp`, `chargeExp_eq_zero_of_le`, `chargeExp_zero`, `minAdm3_le_qip`,
 >   `minAdm3_add_chargeExp_le`, `deepGate_branch`, `deepGate_uρ_branch`
 >   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDeepGate.lean` @ `bbb274da9`)
@@ -110,7 +118,7 @@ and route-agnostic, so unaffected). NOT wired to the aggregator (controller inte
 > - **Deferred.** (I) [crstrat]; the **deep stratified-resolution atlas** (composite-rank big-cells,
 >   monomial Jacobians — the deep analog of incidencepp §3b, a dedicated thread); the per-stratum radial
 >   gate (banked `corner_block_cube_lintegral_lt_top` shape); the LINK / density-bound / front-gluing.
-> - **Status.** sorry-free (reviewer fidelity check pending)
+> - **Status.** sorry-free + reviewed (stepbuild-reviewer fidelity PASS + (II) casework Codex-confirmed sound, 2026-07-15; soft precision note applied to the headline)
 
 ---
 
@@ -120,7 +128,15 @@ The (i-b) uniformity consult (decorrelated Codex xhigh + independent scaling alg
 `codex/ibuniform-{prompt,answer}.md`, `codex/scale_check.py`) returned **NON-UNIFORM**: the designed
 link `∫frontChargeIntegrand ≤ K·cornerComparator.integral` with a fixed finite `K` is FALSE — under
 `Z ↦ r·Z` the front-charge scales `r^{−ab−2q}` (the corank det charge `det(Q_bQ_bᵀ)^{−a/2}`) but the
-bare comparator only `r^{−2q}`, so `front/comp ~ r^{−ab} → ∞` at the deep rank-drop strata. This is a
-route sub-gap (NOT a threat to `∫frontCharge < ∞` itself); the controller commissioned a re-adjudication
-(`deepgate`) and picks the route (A decorated comparator / B direct deep-stratum exponent gate). The
-LINK / (i-b) / FRONT-assembly gluing / density-bound CoV are HELD pending that decision.
+bare comparator only `r^{−2q}`, so `front/comp ~ r^{−ab} → ∞` at the deep rank-drop strata.
+
+**RESOLVED (route decision, 2026-07-15).** `genm-deepgate` re-adjudicated: the deep-stratum codim WITH the
+det charge is **BOUNDED** — the charge never binds (dominated by the `~k²` composite-rank codim `κ_k`; the
+binding stratum is the charge-inert `k=1` drop or the `uρ` cap, both at `2T1_q`; 0 fails 4–7 width,
+Codex-concurred). So the `r^{−ab}` finding correctly killed only the **bare-comparator route**, NOT the
+integral. **Route = B** (direct per-stratum codim gate, no comparator). The Nat part of Route B's gate is
+Card 4 above (`RouteMSJDeepGate`). The remaining Route-B pieces — (I) the deep-rank stratification
+(`crstrat`), the deep stratified-resolution atlas (`deepatlas-design` → dedicated formaliser thread), and
+then the LINK (`∫frontCharge` over deep strata finite via atlas-decomposition × gate × banked
+`corner_block_cube_lintegral_lt_top`) + density-bound + front-gluing — are the coherent unit built once
+(I) + atlas land.
