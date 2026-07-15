@@ -19,7 +19,7 @@ docs/policies/   principles.md  expedition.md  expedition-map.md  expedition-cli
                  review.md  writing-style.md  codex-consultation.md
                  draft-policy-semantic-auditing.md  README.md
 .agent-team/     README.md  teammate-brief-template.md
-                 roles/{controller,scout,pen-and-paper,formaliser,reviewer,cartographer,navigator,elder}.md
+                 roles/{controller,scout,pen-and-paper,formaliser,architect,reviewer,cartographer,navigator,elder}.md
                  logs/.gitkeep  comms/.gitkeep
 scripts/         expedition  expedition_map/  hooks/pre-commit   (+ tests/ for the CLI)
 .claude/skills/  lean-formalisation/SKILL.md   local-codex-consult/SKILL.md

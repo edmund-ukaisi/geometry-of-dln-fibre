@@ -83,6 +83,8 @@ Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
 - `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
 - `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
 - `formaliser` — formalisation (tide) threads.
+- `architect` — a specialised `formaliser`: top-down blueprint development (settled decisions reified
+  as typed, sorried, wired skeletons; gate = elaboration + battery, not sorry-free).
 - `reviewer` — controller-spawned independent audit (soundness / fidelity / bedrock-taste).
 - **Offices (controller assistants)** — read-only advisory seats convened fresh from durable
   artifacts (an office, not a session); propose-never-act, scale-gated, cadence + mandatory joints

@@ -67,7 +67,7 @@ build loop → close.
 - **Operator** — the human. Injects taste by editing `priorities.md` (the
   highest-authority signal) and can seize a thread to drive it directly.
 - **Seats, not per-task hires.** Reuse a bounded set of named seats (one
-  `formaliser`, one `pen-and-paper`, one `reviewer`, …) across tides rather than
+  `formaliser`, one `architect`, one `pen-and-paper`, one `reviewer`, …) across tides rather than
   spawning a fresh teammate per task — synchronous subagents do not self-terminate,
   so per-task names pile up in the roster. Stand every seat down explicitly at
   expedition close.
@@ -186,6 +186,12 @@ Type is chosen at spawn and selects the sub-machine. Any type can reach `ABANDON
 
 - **explore** — `OPENED → LONGLIST (what to compute/derive) → TRIAGE → COMPUTE/DERIVE → CHECK → NOTICE/INTERPRET → STEP_BACK (loop or close)`. Forms and sharpens **claims** as map nodes with executable kill-conditions ([`expedition-map.md`](expedition-map.md) § battery) and stress-tests them. `CHECK` confirms computations are sane.
 - **formalisation (tide)** — `OPENED → SPECIFY → PROVE → AUDIT`. Runs the `lean-formalisation` skill. **AUDIT** is a no-skip gate: `scripts/sorries` clean **and** a reviewer confirms the Lean statement matches the claim (fidelity) **and** checks hypothesis-fit against the artifact's intended consumers as named in the map (a lemma can be sound, faithful, non-vacuous — and still not enough for what the plan says it discharges; sufficiency-for-consumers is part of the audit, not assumed — P3).
+- **blueprint (architect)** — `OPENED → ELABORATE (signatures/defs/wiring compile against verbatim
+  anchors) → GATE (route-adoption: elaboration + battery) → HANDOFF (holes typed, named,
+  node-linked)`. Run by the `architect` role ([`../../.agent-team/roles/architect.md`](../../.agent-team/roles/architect.md)).
+  Definition of done = *elaborates and is wired*, explicitly NOT sorry-free; the GATE is the
+  non-skippable step. Candidate decompositions live on the architect's branch; canonical carries
+  one adopted spine per fork.
 - **infra** — `OPENED → SPECIFY (interface/spec) → BUILD → TEST`. For harness / computation tooling; run by the formaliser role or a purpose-spawned teammate. **TEST** is a no-skip gate: the spec's tests pass and the read states what each test demonstrates.
 
 `REQUEST_SPAWN` (ask the controller for a reviewer/helper) fires from `CHECK` / `AUDIT` / `TEST`, where fresh eyes are most valuable. Its fields: requester, requested role/function, target artifact, question, blocking/non-blocking, expected output.

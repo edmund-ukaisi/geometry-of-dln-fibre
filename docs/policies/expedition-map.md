@@ -210,6 +210,44 @@ presence; a map with thousands of entries has failed. An exploration arc costs o
 node with a one-line `conjectured-toward` edge and zero obligations: the map is not a permission
 system; let the sea rise, ask only for a sentence of story.
 
+## The blueprint — top-down development
+
+The skeleton generalizes into a standing activity: **the blueprint**, top-down Lean development —
+elaborating type signatures, filling definitions, wiring declarations — so the *plan's composition*
+is kernel-checked long before proofs exist. The blueprint is **a forecast, not a bank**: it will
+change as the sea rises and understanding evolves, sometimes structurally. Rules that keep the
+forecast cheap and the bank safe:
+
+- **Coherence, not truth.** Elaboration proves the plan *composes* (signatures fit, quantifier
+  shapes cohere); it cannot prove holes are *true* — a false statement with a sorry compiles.
+  Blueprint and battery are complements: types check fit, witnesses check truth-at-instances; the
+  adoption gate pairs them for exactly this reason.
+- **Two tiers of change.** *Refinement* — statement detail moving under a stable fork-level shape —
+  is normal weather, ungated (the obligation-record pattern absorbs it). *Restructure* — the
+  fork-level shape changing — is the loud, gated event priced by the old fork's witnesses.
+- **Consumption rules protect the bank.** The blueprint freely consumes `drafted` notions and
+  sorried statements — that is its job. The bank may consume only `validated`+ notions (contract 7)
+  and **a banked proof never depends on a blueprint declaration** — mechanized by the
+  `@[blueprint]` tag + the cordon-style leak audit (`BLUEPRINT_LEAKS(D) = ∅` for banked `D`,
+  computed from the kernel's own dependency graph, forget-proof: the tag accounts, it cannot
+  conceal). Tearing up a forecast can then never force re-proving anything banked.
+- **One live spine per fork on canonical.** Elaborating *candidate* decompositions to see which
+  composes is a legitimate design experiment — on the architect's branch. Canonical carries exactly
+  one adopted spine wired to the headline: pull is strong and neutral, and two gradients misdirect
+  every reader (the stale-hole lesson). Candidates that lose are deleted or banked as notes, never
+  left sorried on canonical.
+- **The churn history is a deliverable.** The blueprint lives in git beside `claims.yaml`; the
+  sequence of forecasts, each revision with its gated justification, is the evolution-of-
+  understanding record the retro mines.
+- Blueprint modules carry a one-line header ("spine: statements are forecasts; churn normal;
+  consumption rules apply") and the `@[blueprint]` tag; bank-vs-forecast status is otherwise
+  **computed** (survey: sorry-closure + tag), never remembered.
+
+Attributes are load-bearing only: `@[cited]` feeds the accounting audit, `@[blueprint]` feeds the
+leak audit. There is deliberately no `@[map]` tag — the decl→node join is already derivable from
+`claims.yaml`'s `lean:` field + the survey's reverse index, and **an attribute must feed a machine
+check, not just a label** (label-only tags rot into noise).
+
 ## Landmarks — the carried shortlist
 
 `landmark: true` marks the small set of nodes a working mathematician carries for the whole
