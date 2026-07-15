@@ -70,3 +70,51 @@ enters **no** theorem here.
 
 **Numerical pre-check (before formalising):** 2000 random trials (`r,nr,dc,m,bh = 2,3,2,4,3`) —
 skeleton, `det G₀ = 1`, `rank(B·L·M)=rank(B·H)`, and `L·M=(HΔ,HU+FE)` all pass exactly.
+
+---
+
+# Statement cards — `genm-deepatlas` Tide B (deep atlas: bridge, index, coverage, gluing)
+
+Modules: `RouteMSJDeepCover.lean`, `RouteMSJDeepPivot.lean`, `RouteMSJDeepChainPeel.lean`,
+`RouteMSJDeepIndex.lean`, `RouteMSJDeepCoverage.lean`. Branch `genm-deepatlas` @ `b458bb430`.
+Namespace `DLNFibre.DLN.RLCT.DeepAtlas`. Standalone (NOT aggregator-wired). All sorry-free; force-fresh
+`#print axioms` = `[propext, Classical.choice, Quot.sound]`. Design: `gluing-shape` + `atlas-structure`
+Codex passes (artifacts in `codex/`).
+
+> **Claim (leaf, §3.2 base).** The exact-rank stratum of a single matrix is the union of size-`r`
+> pivot charts cut to `{rank ≤ r}` — non-vacuous (`r=0` cell = `{M=0}`).
+> - **Lean:** `rankEqLocus_eq_iUnion_pivot_inter (r) : {M | M.rank = r} = ⋃ ρ κ, (pivotChart ρ κ ∩ {M | M.rank ≤ r})`.
+> - **Proved.** Reuse of banked `pivotLocus_eq_iUnion`. **Status.** sorry-free.
+
+> **Claim (bridge).** General-pivot CUR + rank reduction (lift of tide-A's top-left `deepReduce_rank`).
+> - **Lean:** `generalPivot_CUR (M)(ρ κ : Fin M.rank ↪ ·)(hU) : M = M.submatrix id κ * (M.submatrix ρ κ)⁻¹ * M.submatrix ρ id`;
+>   `generalPivot_reduce_rank (X)(M)(ρ κ)(hU) : (X*M).rank = (X * M.submatrix id κ * (M.submatrix ρ κ)⁻¹).rank`;
+>   `generalPivot_reduce_rank_of (…)(r)(hr : M.rank = r)(ρ κ : Fin r ↪ ·)(hU)` — explicit-rank variant (subst).
+> - **Proved.** Via banked rank factorization `exists_rank_factorization_gen` + `mul_inv_rev` cancellation;
+>   `mul_submatrix_one` column-selection for the two `rank_mul_le_left` bounds. **Status.** sorry-free.
+
+> **Claim (chain descent, loss-independent concrete↔abstract bridge).** The composite-rank recursion on
+> the actual DLN chain: `rank(prodAux (k+1) · Q) = rank(prodAux k · Q')`, `Q'` the reduced factor.
+> - **Lean:** `effLayer`, `prodAux_succ_mul`, `prodAux_reduce_rank` / `prodAux_reduce_rank_of`.
+> - **Proved.** `prodAux_succ` peel + `mul_assoc` + the general-pivot bridge. **Status.** sorry-free.
+
+> **Claim (index §3.1).** The finite CR-tree path index.
+> - **Lean:** `CRPath` (dependent `Σ`-tree, terminal `Unit`), `instFintypeCRPath`, `CRIndex`.
+> - **Proved.** Structural `Fintype` (noncomputable via `Function.Embedding.fintype`). **Status.** sorry-free.
+
+> **Claim (coverage §3.2 + gluing §3.3).** The deep charts EXHAUST `{rank Z_deep ≤ s}` (invariant-free,
+> non-vacuous), and the null-overlap gluing gives finiteness from per-cell finiteness (a tide-D hyp).
+> - **Lean:** `deepCell` (recursive cell, terminal `{A | (Q A).rank ≤ s}`);
+>   `deepCover_aux : ∀ j hj q Q, {A | (prodAux j · Q A).rank ≤ s} = ⋃ path, deepCell … path Q` (chain-length induction, any `Q`);
+>   `deepRankLE_eq_iUnion_cells : {A | (prod H A).rank ≤ s} = ⋃ i : CRIndex H, deepCell … i (fun _ ↦ 1)`;
+>   `deepRankLE_lintegral_lt_top (f)(hfin : ∀ i, ∫⁻_(deepCell … i) f < ⊤) : ∫⁻_{rank ≤ s} f < ⊤`.
+> - **Proved.** Coverage by leaf + `prodAux_reduce_rank_of` descent + IH; gluing = one application of banked
+>   `lintegral_lt_top_of_finite_cover`.
+> - **Assumed.** In the gluing wrapper, per-cell finiteness `hfin` — a **TIDE-D hypothesis** (the loss tide
+>   discharges it, carrying `|det J|`); `f` is a GENERIC `ℝ≥0∞` integrand (loss-independent).
+> - **Deferred.** Per-cell finiteness (`rlct = C_k/2`) = tide D (seamrlct native route). Measurability of the
+>   cells defers to tide D (the banked gluing lemma needs none). The `ℝ/ℂ` codim bridge for (α) is a separate lane.
+> - **Structure observed.** Codex's locked `Q.rank = q` coverage invariant does NOT survive the descent
+>   (the reduced `Q'` has rank `r` only on the pivot cell); the fix — terminal-constraint cell + `Unit`
+>   terminal path (invariant-free) — was caught by build-verification before it became a false proof.
+> - **Status.** sorry-free, clean-three; fidelity review requested.
