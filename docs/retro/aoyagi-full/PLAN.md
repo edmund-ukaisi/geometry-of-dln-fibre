@@ -80,7 +80,11 @@ bit, so superseded carriers fall out of status mechanically); (b) negative-knowl
 trap) auto-injection into every fresh-tide brief; (c) renaming discipline with forwarding pointers;
 (d) possibly a librarian seat/service that build-scoping must query before commissioning. **→ Unified (2026-07-14) as the expedition-map** (`expedition-map-design.md` — the top-down
 object: claims/notions/routes with computed status, kernel-checked anchors, gate-time contracts;
-the librarian/lookahead/witness/frontier pieces are its operators). Earlier fragments:
+the librarian/lookahead/witness/frontier pieces are its operators). **→ Distilled (2026-07-15,
+post-diagnosis) into [`harness-principles.md`](harness-principles.md)** (P1–P8: binding strength ↔
+half-life; capability is convened; claims travel, understanding doesn't; elaboration is the
+product; the record is the reward model; pull is architecture; gestalt not citation; waste-fear
+backwards) — the *why* the map/roles/policies share; diagnosis evidence in `diagnosis/`. Earlier fragments:
 **→ Drafted as harness proposals (2026-07-13):** `.agent-team/roles/{librarian,lookahead}.md`, the
 controller-assistant class + no-skip gate in `docs/policies/expedition.md`, the roles index in
 `CLAUDE.md`, and the index-consumption note in `self-recon.md`. Hypothesis

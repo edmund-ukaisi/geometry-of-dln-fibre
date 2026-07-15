@@ -146,6 +146,17 @@ kill-witnesses were in or adjacent to it). The survey evaluates every open route
 against the battery at the green-gate ride-along; a new battery member re-tests all open routes for
 free. Property-based testing for plans.
 
+**Resolution (2026-07-15, after the diagnosis — skeleton-primacy):** contract 9's gate is the
+*guard*, not the primary mechanism. The primary is P6 of
+[`harness-principles.md`](harness-principles.md): **a settled fork becomes skeleton immediately**
+(the adjudicated spine in Lean — driver + obligation-record at fork granularity — sorried, on
+canonical, wired to the headline), so the paid-by-the-brick gradient pulls along the adjudicated
+route; the gate prices *revisions* of the skeleton (rare, loud events, re-run the fork's
+witnesses), and refuted map nodes retire their skeleton holes mechanically. Negative space alone
+(gate + battery) fences yesterday's mistakes; the skeleton supplies the pull. See
+harness-principles P1 (binding strength ↔ half-life), P3 (claims travel, understanding doesn't),
+P6 (pull is architecture).
+
 ## Flows (the life of the map)
 
 - **Genesis**: one node — the goal, `conjectured`, charter constraints as properties. No scale
