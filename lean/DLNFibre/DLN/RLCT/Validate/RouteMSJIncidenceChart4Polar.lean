@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialPolar
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+import Mathlib.Analysis.SpecialFunctions.JapaneseBracket
 
 set_option linter.style.longLine false
 
@@ -79,5 +80,31 @@ theorem chart4_polar_scaling {N : ℕ} {τ : ℝ} (hτ : 0 < τ) (q : ℝ) :
     _ = ENNReal.ofReal (τ ^ ((N : ℝ) - 2 * q)) * ∫⁻ V, ENNReal.ofReal (g V) := by
         rw [← mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← Real.rpow_add hτ,
           show -(2 * q) + (N : ℝ) = (N : ℝ) - 2 * q from by ring]
+
+/-- **Chart (4) unit-integral finiteness (sufficiency).** The unit integral `K = ∫(‖V‖²+1)^{−q} dV` over
+`ℝ^N` is finite when `2q > N`. Direct reuse of Mathlib's `integrable_rpow_neg_one_add_norm_sq`
+(`finrank < r ⟹ (1+‖x‖²)^{−r/2}` integrable, at `r = 2q`). `N/2` is the exact fibre threshold; the necessity
+`K < ⊤ ⟹ 2q > N` is not formalised here (so this is a `_lt_top` sufficiency, not an `iff`). -/
+theorem chart4_unit_lintegral_lt_top {N : ℕ} {q : ℝ} (hq : (N : ℝ) < 2 * q) :
+    ∫⁻ V : EuclideanSpace ℝ (Fin N), ENNReal.ofReal ((‖V‖ ^ 2 + 1) ^ (-q)) < ⊤ := by
+  have hint : Integrable
+      (fun V : EuclideanSpace ℝ (Fin N) => ((1 : ℝ) + ‖V‖ ^ 2) ^ (-(2 * q) / 2)) volume :=
+    integrable_rpow_neg_one_add_norm_sq (by rw [finrank_euclideanSpace_fin]; exact hq)
+  have heq : (fun V : EuclideanSpace ℝ (Fin N) => ((1 : ℝ) + ‖V‖ ^ 2) ^ (-(2 * q) / 2))
+      = (fun V => (‖V‖ ^ 2 + 1) ^ (-q)) := by
+    funext V; rw [add_comm]; congr 1; ring
+  rw [heq] at hint
+  have hfin := hint.hasFiniteIntegral
+  rw [hasFiniteIntegral_iff_enorm,
+    lintegral_enorm_of_nonneg (fun V => Real.rpow_nonneg (by positivity) _)] at hfin
+  exact hfin
+
+/-- **Chart (4) — the `H̃`-fibre is finite (assembly-ready).** For `τ > 0` and `2q > N`, the front-block
+integral is finite: `∫(‖H̃‖²+τ²)^{−q} dH̃ = τ^{N−2q}·K < ⊤`. Combines `chart4_polar_scaling` (the scale)
+with `chart4_unit_lintegral_lt_top` (`K < ⊤`). -/
+theorem chart4_Htilde_fibre_lt_top {N : ℕ} {τ : ℝ} (hτ : 0 < τ) {q : ℝ} (hq : (N : ℝ) < 2 * q) :
+    ∫⁻ H : EuclideanSpace ℝ (Fin N), ENNReal.ofReal ((‖H‖ ^ 2 + τ ^ 2) ^ (-q)) < ⊤ := by
+  rw [chart4_polar_scaling hτ q]
+  exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (chart4_unit_lintegral_lt_top hq)
 
 end DLNFibre.DLN.RLCT

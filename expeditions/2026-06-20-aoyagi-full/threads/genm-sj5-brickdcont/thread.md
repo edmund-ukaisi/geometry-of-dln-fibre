@@ -89,7 +89,34 @@ for banked `minAdm`/`minAdmRec`; NO matrix algebra, NO integrals). Green under
 >   `inc_sweep.py` (332/332) + `11598`-strata numerics are EVIDENCE of completeness, not a proof.
 > - **Status.** sorry-free (per-stratum gate); aggregate completeness gated on bltj.
 
+## LANDED — piece (ii) chart (4): H̃-fibre polar scaling (sorry-free, axiom-clean)
+
+NEW file `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJIncidenceChart4Polar.lean` (file-disjoint from chart-5).
+Green under its module target; forced `#print axioms` `[propext, Classical.choice, Quot.sound]`.
+- **`chart4_polar_scaling`** — `∫_{H̃∈ℝ^N}(‖H̃‖²+τ²)^{−q} dH̃ = τ^{N−2q} · ∫(‖V‖²+1)^{−q} dV` (`τ>0`).
+  The load-bearing `τ^{N−2q}` scale extraction. Via Haar scaling `Measure.map_addHaar_smul` at `r=τ⁻¹`
+  (`H̃=τ·V`); integrand reformulation `(‖H‖²+τ²)^{−q}=τ^{−2q}(‖τ⁻¹•H‖²+1)^{−q}`. No polar/sphere.
+- **`chart4_unit_lintegral_lt_top`** (sufficiency) — `K = ∫(‖V‖²+1)^{−q}dV < ⊤` when `2q>N`. DIRECT reuse of
+  Mathlib `integrable_rpow_neg_one_add_norm_sq` (`finrank<r ⟹ (1+‖x‖²)^{−r/2}` integrable, at `r=2q`) — no
+  polar/radial split needed. `N/2` is the exact fibre threshold; necessity NOT formalised (named `_lt_top`,
+  not `iff`, per precision).
+- **`chart4_Htilde_fibre_lt_top`** (assembly-ready) — for `τ>0`, `2q>N`: `∫(‖H̃‖²+τ²)^{−q}dH̃ < ⊤`
+  (`= τ^{N−2q}·K`, product of finites). The ready "H̃-fibre finite" fact the assembly consumes.
+- **CHART (4) DONE** — hole-free (scale + finiteness + combined). Import `Mathlib.Analysis.SpecialFunctions.JapaneseBracket`
+  for `integrable_rpow_neg_one_add_norm_sq`; `hasFiniteIntegral_iff_enorm` + `lintegral_enorm_of_nonneg` bridge
+  `HasFiniteIntegral` → `∫⁻ ofReal < ⊤`.
+
 ## Build notes / lessons (v4.29)
+
+- **`Measure.map_addHaar_smul μ (hr:r≠0)` returns `ENNReal.ofReal (|(r^(finrank ℝ E))⁻¹|) • μ`** — the abs is
+  OUTSIDE the inverse (`|(r^n)⁻¹|`, not `|r^n|⁻¹`). Do NOT ascribe the `have hmap :=` type (write
+  `finrank` and you get "unknown identifier `finrank`" — it's `Module.finrank`); let it infer.
+- **`lintegral_map hf hg` (the CoV) unifies `f` from `hf`'s statement** — passing
+  `ENNReal.measurable_ofReal.comp hg` gives `f = ENNReal.ofReal ∘ g` (composition), and the `rw` pattern
+  `(ofReal∘g)(T a)` then does NOT match an applied `ofReal (g (T a))` in the goal. Use `hg.ennreal_ofReal`
+  (`Measurable.ennreal_ofReal`, the lambda form `fun a => ofReal (g a)`) so the applied pattern matches.
+- **`finrank_euclideanSpace_fin`** collapses `finrank ℝ (EuclideanSpace ℝ (Fin N)) = N` (root name, no
+  `Module.` prefix needed in a `rw`).
 
 - **`Matrix.neg_neg` does NOT `rw`/`simp` a matrix double-negation `- -A`** (both as a `simp` arg — reported
   "unused" — and as `rw [neg_neg]` — "did not find pattern `- -?a`"), even in a clean standalone `example`.
