@@ -711,4 +711,48 @@ theorem clsCodim_gate_genL (M : Fin (L + 1 + 1 + 1) → ℕ) (u ℓ s : ℕ)
     simpa using h
   rw [hcls]; exact hchain
 
+/-! ## Step 3 (iii) — the per-stratum radial blow-up finiteness (gate → corner)
+
+The joint incidence resolution puts each `(ℓ, s)` stratum's residual, after the determinantal charts, at
+a codimension-`C_{ℓ,s}` normal block: the rank-drop locus becomes the origin of a `C_{ℓ,s}`-dim block on
+which the loss is degree-2-homogeneous (vanishes to order 2, bounded below on the unit sphere). The polar
+blow-up exposes `r^{C_{ℓ,s}−1}` and the loss `r^{−2q}` (`q = c'−ab/2`), so the radial integral
+`∫₀ r^{C_{ℓ,s}−1−2q} dr` is finite iff `q < C_{ℓ,s}/2` — which the banked exponent gate
+`clsCodim_gate_genL` supplies below the shell threshold `c' < carrierThreshold M`. This bridges the gate
+to the banked single-block blow-up `corner_block_cube_lintegral_lt_top` (which already carries the
+`lintegral_ball_radial_polar_factor` `r^{N−1}` CoV). **Scope note:** this is the SINGLE-block corner form
+(the loss a single degree-2-homogeneous block of dim `C_{ℓ,s}`, sphere-bounded); a stratum whose residual
+retains the BILINEAR `‖Y·W‖²`-coupling (the `ℓ=0`/two-radius corner, incidence-cert §2/§3b) needs the
+two-block variant `twoBlock_radial_le` instead — that packaging is deferred to the (i)/(ii) tube design. -/
+
+/-- **Step-3 (iii) — per-stratum radial finiteness below the shell threshold (gate → corner).** For a
+stratum `(ℓ, s)` at cut `u` with the joint-codimension gate constraints, a nonzero codimension
+`C_{ℓ,s} = clsCodim ![M₀,M₁,M₂] u ℓ s`, and any degree-2-homogeneous loss `g` on the `C_{ℓ,s}`-dim normal
+block that is bounded below by `a > 0` on the unit sphere, the residual power integral over the box
+`[−1,1]^{C_{ℓ,s}}` at the shifted exponent `q = c'−ab/2` is finite, for `ab/2 < c' < carrierThreshold M`.
+The threshold is exactly the gate: `q < ½(minAdm M − ab) ≤ ½·C_{ℓ,s}` (`clsCodim_gate_genL` + `hcT`), fed
+to the banked `corner_block_cube_lintegral_lt_top`. Decomposition-agnostic (`g` abstract); the single-block
+form (bilinear strata use `twoBlock_radial_le`, per the module note). -/
+theorem stratum_corner_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (u ℓ s : ℕ) (c' : ℝ)
+    (hu : u ≤ min (M 0) (M 1)) (hs : s ≤ u) (hℓs : ℓ + s ≤ u) (hbℓ : (M 1 - u) + ℓ ≤ M 2)
+    (hN : 0 < clsCodim ![M 0, M 1, M 2] u ℓ s)
+    (hc' : (((M 0 - u) * (M 1 - u) : ℕ) : ℝ) / 2 < c') (hcT : c' < carrierThreshold M)
+    (g : (Fin (clsCodim ![M 0, M 1, M 2] u ℓ s) → ℝ) → ℝ) (hg : Measurable g)
+    (hom : ∀ (r : ℝ) (x : Fin (clsCodim ![M 0, M 1, M 2] u ℓ s) → ℝ), g (r • x) = r ^ 2 * g x)
+    (a : ℝ) (ha : 0 < a)
+    (hlb : ∀ ω : Metric.sphere (0 : EuclideanSpace ℝ (Fin (clsCodim ![M 0, M 1, M 2] u ℓ s))) 1,
+        a ≤ g (WithLp.ofLp (ω : EuclideanSpace ℝ (Fin (clsCodim ![M 0, M 1, M 2] u ℓ s))))) :
+    ∫⁻ z in Set.univ.pi
+        (fun _ : Fin (clsCodim ![M 0, M 1, M 2] u ℓ s) => Set.Icc (-1 : ℝ) 1),
+        ENNReal.ofReal ((g z) ^ (-(c' - (((M 0 - u) * (M 1 - u) : ℕ) : ℝ) / 2))) < ⊤ := by
+  haveI : NeZero (clsCodim ![M 0, M 1, M 2] u ℓ s) := ⟨by omega⟩
+  refine corner_block_cube_lintegral_lt_top g hg hom
+    (c' - (((M 0 - u) * (M 1 - u) : ℕ) : ℝ) / 2) (by linarith) ?_ a ha hlb
+  -- `q < C_{ℓ,s}/2` from the gate + the shell threshold
+  have hgateR : (minAdm M : ℝ)
+      ≤ (clsCodim ![M 0, M 1, M 2] u ℓ s : ℝ) + (((M 0 - u) * (M 1 - u) : ℕ) : ℝ) := by
+    exact_mod_cast clsCodim_gate_genL M u ℓ s hu hs hℓs hbℓ
+  rw [carrierThreshold] at hcT
+  linarith
+
 end DLNFibre.DLN.RLCT
