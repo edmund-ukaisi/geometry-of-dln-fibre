@@ -20,11 +20,7 @@ hstrict/hsat/hsector; WaistConnector takes hred) — they don't import PivotFin,
 
 ## 2. Confirmed-safe / de-risked findings (bankable)
 
-- **`hjr : j < r` is VESTIGIAL** in `shell_subset_goodSet` (`RouteMSJShellContain`) — unused in the body
-  (grep-verified). So the j=r saturated shell is NOT a wall: relax the shell chain
-  (`shell_subset_goodSet`, `hsSplit_good_of_shell`, `shellSpine_le_hsQ_box`) from `hjr` to `hj : j ≤ r`
-  and the SAME crux covers j=r (peelCharge = 0). Removing an unused hyp from a landed clean-three theorem
-  is safe.
+- ~~**`hjr : j < r` is VESTIGIAL**~~ **← CORRECTED (rvprep, 2026-07-15): this "confirmed-safe" bank is FALSE — `hjr` is LOAD-BEARING.** Empirically: dropping `hjr` and rebuilding → `RouteMSJShellContain.lean:182:4: omega could not prove the goal`. The `omega` in `hj_eq` derives `weakEigCount ε Zf = ↑j` from `min(weakEigCount ε Zf, r) = ↑j`, which NEEDS `↑j < r` (at `↑j = r`, min gives only `w ≥ r`). `omega` SILENTLY consumes `hjr`, so a name-grep misreads it as "unused" — **the omega trap** (this is why the original "grep-verified unused" was wrong). **Do NOT relax `hjr`.** The j=r saturated shell is GENUINE content, already handled the RIGHT way by rescopefin's **j-agnostic** `RouteMSJShellSubset.shellSpineIntegrand_le_layerBox` (shell integrand ≤ full-box integral, bypassing the shell restriction + the crux entirely). USE THAT at rendezvous for j=r, not a hyp-drop.
 - **T3 frame-strip is OPTIONAL for the load-bearing build** (cosmetic/bedrock only). Codex + direct read
   confirm `{m,hcvg,hmM,ε',hε',U_sf,hUs,hrank,hfloor}` are unused in `pivotPeel_domination`'s body. R can
   either strip them or supply them from Brick F (`exists_headSplitFrame`) in the moved `spineToCore`.
