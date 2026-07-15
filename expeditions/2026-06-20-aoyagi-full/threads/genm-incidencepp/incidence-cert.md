@@ -132,15 +132,32 @@ chart of `W` (`h=u−ℓ`) and the rank-`s` chart of the `Y`-block, the normal c
 
     C_{ℓ,s} = u·b + M₀·ℓ + (M₀−s)(u−ℓ−s) + s(d−ℓ),      radial chart  ∫₀^δ r^{ C_{ℓ,s} − 1 − 2q } dr.
 
-**Verified EXHAUSTIVELY (`inc_sweep.py`, exact-integer, all arity-3 chains widths 2..8):** over **all 332
-in-scope binding cuts** (`a+b≤M₂`, `1≤j<r`, `u=t★+j`), `min_{ℓ,s} C_{ℓ,s}/2 = T1_q` with **0 failures**, and
-`T1_q ≤ uM₂/2` with **0 violations**. The minimiser sits at `ℓ=0, s = ` an **argmin cut `t★` of `minAdm(M)`**
-(the resolution finds the cheapest argmin; when `minAdm` has two argmins it may pick the one other than the
-`t★` the cut was built around — 56/332). So the **off-shell** LHS is finite to **exactly T1**, binding at an
-argmin cut (= reconciliation-T1 / thresholdhunt "binding at `r=t★`", independently re-derived here from the
-joint charts).
-The **shell-restricted** LHS excludes `s>R_j`, so its threshold `λ_j ≥ T1` (shellj) — even more room. Either
-way finite for `c'<T1`.
+**GENERAL PROOF (closed-form — supersedes the `inc_sweep.py` 332-cut `decide`; verified 0 failures over widths
+2..10, 11154 `(ℓ,s)` points / 920 binding cuts).** The exponent gate reduces to a `ring` identity + a trivial
+min-monotonicity; no case sweep:
+
+- **Exact `ℓ`-independent identity:** substituting `b=M₁−u`, `d=M₂−M₁+u`,
+  **`C_{ℓ,s} = (M₀−s)(M₁−s) + s·M₂ − ab`   for every feasible `(ℓ,s)`** (the `ℓ`-terms cancel: `M₀ℓ −
+  (M₀−s)ℓ − sℓ = 0`). So the per-stratum codimension is *literally* the 3-chain zero-product-stratum
+  codimension `(M₀−s)(M₁−s)+sM₂` (the `minAdm` summand at B-rank `s`) minus the peeled corner `ab` — this is
+  WHY `T1` appears, and it re-derives thresholdhunt's "binding at `r=t★`" (the `s`-index IS the B-rank).
+  Lean: `ring` after the `b,d` substitution.
+- **Hence** `min_{ℓ,s} C_{ℓ,s} = minAdm_feas(u) − ab`, where `minAdm_feas(u) := min_{0≤s≤u}[(M₀−s)(M₁−s)+sM₂]`
+  (the feasibility `s ≤ u−ℓ ≤ u`).
+- **Load-bearing direction (LHS finite for `c'<T1`), TRIVIAL:** `minAdm_feas(u) ≥ minAdm(M)` (min over a
+  subrange ≥ min over `0..min(M₀,M₁)`), so `min C_{ℓ,s}/2 = (minAdm_feas(u)−ab)/2 ≥ (minAdm(M)−ab)/2 = T1_q`.
+  No optimization argument needed — this is the whole finiteness gate.
+- **Sharpness `min C_{ℓ,s}/2 = T1_q` for binding cuts:** `u = t★+j`, `j≥1`, `t★=argmin minAdm` ⟹ `t★ ≤ u−1 < u`,
+  so the argmin `s=t★` is feasible ⟹ `minAdm_feas(u) = minAdm(M)`. (Binding at `s=t★`.)
+- **Comparator gate `T1_q ≤ uM₂/2`:** `⟺ minAdm(M) ≤ ab + u·M₂ = ab + minAdm(u,M₂)` — the banked `minAdm`
+  subadditivity (the shellj-prompt algebraic fact). 0 violations.
+
+So the **off-shell** LHS is finite to **exactly T1**, binding at the argmin cut `s=t★` (independently
+re-derived from the joint charts). The **shell-restricted** LHS excludes `s>R_j`, so `λ_j ≥ T1` (shellj) —
+more room. Either way finite for `c'<T1`. **The general-proof gap is closed** — the `decide`-over-332 is
+replaced by the `ring` identity + `minAdm_feas ≥ minAdm` (trivial) + banked subadditivity.
+
+> **⚠ CONTROLLER CAVEAT (2026-07-15) — this "gap closed" is scoped to the `(ℓ,s)` chart index; INDEX-COMPLETENESS is under live adjudication (genm-bltj).** The general proof above establishes `min C_{ℓ,s}/2 = T1` over the ENUMERATED strata (`rank W = ℓ`, `Y`-block rank `s`, `0≤s≤u`). The operator flagged (2026-07-14) that on **b<j** cuts (`r≥3`, upper half of the j-range) the shell forces `j−b` weak singular values into **Q_p** (pivot block) — a locus whose z-marginal blow-up may NOT be indexed by `(ℓ,s)` (probe `M=(3,3,7),u=2,j=2,b=1`: local threshold apparently drops `4.5→3` as `σ_min(Q_p)→0`, which if real is a stratum at exponent `3 < T1=4.5` that this min-computation does not reach). If bltj finds that missed stratum, this §3 min IS taken over an incomplete index and reshapes. So the exponent-gate general proof is sound FOR the enumerated index; whether that index covers the b<j / Q_p-degeneration locus is the open question this cert does not settle.
 
 ## 3b. EXPLICIT per-stratum blow-up charts (the `incidenceCell_lintegral_le` input) — NOT a wall
 
@@ -192,6 +209,23 @@ After (1)–(3), `F ≍ H̃² + ‖Y‖²‖W‖²` with `H̃` (1-dim), `Y=(P;C)
     monomial  w_Y^{2−2q} w_W^{2−2q} dw_Y dw_W,   two radial ∫ r^{2−2q}dr = ∫ r^{3−2c'}dr,  finite ⟺ c'<2=T1.
 
 This is §2's blow-up presented as the explicit atlas (`{H̃=0,Y=0}` and `{H̃=0,W=0}`, each codim 3 = `C_{0,0}`).
+
+**Two lower-level identities the Lean build needs (worked for brickdbuild; verified this thread).**
+
+*(a) The complement-projection identity `I − Π_b = N(NᵀN)^{−1}Nᵀ`* (`Π_b = Q_bᵀ(Q_bQ_bᵀ)^{−1}Q_b`, `N=[−X;I_d]`).
+**Cleanest route (no rank/idempotent machinery) — the block form + push-through.** `Π_b` is `D`-independent:
+`Π_b = [I_b;Xᵀ](I+XXᵀ)^{−1}[I_b|X]` (D cancels via `Q_bQ_bᵀ=D(I+XXᵀ)Dᵀ`). With `P:=(I+XXᵀ)^{−1}`,
+`Q:=(I+XᵀX)^{−1}`, `Π_b + N(NᵀN)^{−1}Nᵀ` is the block matrix `[[P+XQXᵀ, PX−XQ],[XᵀP−QXᵀ, XᵀPX+Q]] = I_n` by the
+three (banked) identities: `X(I+XᵀX)^{−1}Xᵀ = I−(I+XXᵀ)^{−1}` (push-through), symmetrically for the `(d×d)`
+block, and the swap `(I+XXᵀ)^{−1}X = X(I+XᵀX)^{−1}` (from `(I+XXᵀ)X = X(I+XᵀX)`). No `Matrix.rank`.
+(Fallback: `Π_b,P_N` symmetric idempotents, `Π_b P_N=0` from `Π_b N=0`, `rank = tr`, `b+d=n` ⟹ sum `=I`.)
+
+*(b) `rank W = ℓ + rank E`* (`E := W₂₂ − W₂₁W₁₁^{−1}W₁₂`, `W₁₁∈GL_ℓ`). Block-LU: `W' = [[I,0],[W₂₁W₁₁^{−1},I]]·
+blockdiag(W₁₁,E)·[[I,W₁₁^{−1}W₁₂],[0,I]]`; outer factors unipotent (units), so `rank W = rank W₁₁ + rank E =
+ℓ + rank E`. Hence `{rank W ≤ ℓ}∩chart = {E=0}`. The CoV `(W₁₁,W₁₂,W₂₁,E) ↦ W` is a translation in `W₂₂`
+(`|det DΦ| ≡ 1`), `C^∞` on `{det W₁₁≠0}`, image `{det W_{I,J}≠0}` — feeds
+`lintegral_image_eq_lintegral_abs_det_fderiv_mul` directly. Charts indexed by `(I,J)` minors (permute to
+top-left, perm Jacobian `±1`); the `{rank W=ℓ}` strata partition `W`-space.
 
 **Verdict on the gate.** Every chart is an explicit rational coordinate map with a monomial Jacobian
 (`|det D|^{n−b−a−u}`, `det(I+XXᵀ)^{−a/2}` a unit, the big-cell Jacobians `≡1`, the polar `r`-powers), covering
