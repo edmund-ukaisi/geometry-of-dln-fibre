@@ -32,7 +32,8 @@ worktree, the gates, the report shape.
 >   `#print axioms` on the headline result. Report the gate *output*, not "it builds".
 > - **A green build is the floor, not the ceiling.** name = content; disclose every added hypothesis;
 >   separate Proved / Assumed / Cited; show the witness in-file (non-vacuity).
-> - **When done: report completion to the controller and stand down.** Do not stay on-call, and do not
+> - **When done: push your branch (origin is the bank — your worktree becomes safely reapable),
+>   report completion to the controller, and stand down.** Do not stay on-call, and do not
 >   coordinate peer-to-peer — route everything through the controller.
 > - **Under a hold:** pitch the idea + its cost and wait for an explicit go; do not build ahead and report
 >   after. (Authorized tasks are fine to run.)

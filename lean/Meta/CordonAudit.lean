@@ -48,6 +48,10 @@ structure CordonReport where
   nsPrefixes : Array Name
   /-- Number of public declarations scanned. -/
   scanned : Nat
+  /-- The in-scope declaration names scanned (the audit roots, sorted). -/
+  roots : Array Name
+  /-- The flat, sorted set of **unaccounted** axiom names across the scope (for the JSON report). -/
+  unaccountedAxioms : Array Name
   /-- Declarations with a non-empty UNACCOUNTED set (decl, its unaccounted axioms). -/
   unaccounted : Array (Name × Array Name)
   /-- All distinct `@[cited]` axioms used across the scope, with sources (sorted). -/
@@ -140,8 +144,9 @@ def buildReport (nsPrefixes : Array Name) : CoreM CordonReport := do
       let hits := blueprintDepsOf env d
       unless hits.isEmpty do
         blueprintLeaks := blueprintLeaks.push (d, hits)
-  pure { nsPrefixes, scanned := decls.size, unaccounted, citedUsed, locationViolations,
-         blueprintLeaks, blueprintTagged }
+  pure { nsPrefixes, scanned := decls.size, roots := decls,
+         unaccountedAxioms := unaccountedAx.qsort Name.lt,
+         unaccounted, citedUsed, locationViolations, blueprintLeaks, blueprintTagged }
 
 /-- The reusable core invariants (UNACCOUNTED + LOCATION). Blueprint-leak and cite-ceiling gating are
 applied by the exe (`--allow-blueprint` / `--max-cites`), so `ok` is the always-on cited-cordon floor. -/

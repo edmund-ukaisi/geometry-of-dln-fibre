@@ -113,6 +113,14 @@ views) — ambient context stays thin precisely so decision context can be rich.
 paragraphs drowning in designed decay); briefs that carried the question but not the standing
 vetoes; the heartbeat that carried no memo.
 
+**Corollary — uplift latency.** A lesson's binding strength is zero until it reaches the branch
+agents actually run on; a fix parked in an unmerged PR binds nobody. Operational split:
+**conventions** (naming, hygiene, one-line disciplines) are promoted to the live expedition
+immediately at lesson-promotion time — one line in its `lessons.md` + heartbeat memo; **structures**
+(new artifacts, roles, gates) wait for the next expedition (the no-retrofit rule).
+*Provenance:* a worktree-hygiene convention sat in an unmerged PR for a week while the live
+expedition created three more workspace-level worktrees in one afternoon.
+
 ## Scope note
 
 P1/P2/P3/P4/P5/P9 are substrate-independent (they apply to open research questions with no kernel:

@@ -11,7 +11,8 @@ BLUEPRINT-LEAK (unless `--allow-blueprint`). The wrapper is `scripts/cordon`; po
 
 Usage:
 ```
-cordon-audit [--manifest] [--allow-blueprint] [--max-cites N] [--ns <ModulePrefix>] [--import <Module>]...
+cordon-audit [--manifest] [--allow-blueprint] [--max-cites N] [--json <outfile>] [--generated <sha>]
+             [--ns <ModulePrefix>] [--import <Module>]...
 ```
 * default import `DLNFibre` (the aggregator), default scope module-provenance `DLNFibre`;
 * `--manifest` prints the per-headline / per-source cite manifest and exits 0 (informational);
@@ -19,6 +20,13 @@ cordon-audit [--manifest] [--allow-blueprint] [--max-cites N] [--ns <ModulePrefi
   NOT fail the gate (for auditing a scope that is itself the forecast layer);
 * `--max-cites N` FAILS if more than `N` cites are present (default: cite-permissive — DLNFibre's DoD
   is proved-modulo-declared-cites, NOT zero-cite; the Aoyagi RLCT interface is a legitimate cite);
+* `--json <outfile>` additionally writes the machine-readable report (schema below) to `<outfile>`;
+  the human output and the exit code are unchanged (the file is written on green AND red gates so the
+  map validator always gets the report). Schema:
+  `{"roots":[…], "unaccounted":["axiomName",…], "cited":[{"axiom":"…","source":"…"}],
+    "leaks":[{"decl":"…","via":"blueprintConstant"}], "generated":"<git HEAD sha>", "scope":"<args>"}`
+  — one `leaks` entry per (banked decl, blueprint dep) pair;
+* `--generated <sha>` overrides the `generated` field (default: `git rev-parse HEAD`, else `"unknown"`);
 * `--ns M` (repeatable) appends a **module-name** prefix to the scope;
 * `--import M` (repeatable) chooses the module(s) to load — the test harness points this at the
   adversarial fixture modules in isolation so their intentional violations don't touch the real gate.
@@ -43,6 +51,10 @@ structure Config where
   = FAIL if `CITED > n`. (The sibling `qs` harness passes `--max-cites 0` for its zero-cite DoD; here
   the default is permissive.) -/
   maxCites : Option Nat := none
+  /-- If `some path`, additionally write the JSON report to `path` (human output + exit code unchanged). -/
+  json : Option String := none
+  /-- Override for the `generated` field of the JSON report; `none` = auto-detect `git rev-parse HEAD`. -/
+  generated : Option String := none
 
 /-- Parse argv into a `Config` (simple, order-independent flags). -/
 def parseArgs (args : List String) : Except String Config := do
@@ -50,6 +62,8 @@ def parseArgs (args : List String) : Except String Config := do
     | [] => .ok c
     | "--manifest" :: rest => go { c with manifest := true } rest
     | "--allow-blueprint" :: rest => go { c with allowBlueprint := true } rest
+    | "--json" :: v :: rest => go { c with json := some v } rest
+    | "--generated" :: v :: rest => go { c with generated := some v } rest
     | "--ns" :: v :: rest => go { c with nsPrefixes := c.nsPrefixes.push v.toName } rest
     | "--import" :: v :: rest => go { c with imports := c.imports.push v.toName } rest
     | "--max-cites" :: v :: rest =>

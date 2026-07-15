@@ -26,7 +26,7 @@ tail, threads). Grounding is cheap; prefer it to guessing.
    P6), and a refuted node retires its hole in the same commit.
 3. **Dispatch and merge.** Sole spawner (hub-and-spoke: all coordination through you; done agents
    stand down and you shut them down; verify a teammate actually stopped before spawning a
-   successor). Briefs from the template + `scripts/expedition brief <node>` — never hand-assembled
+   successor; reap a done agent's worktree — clean+banked → remove, else journal-note and leave). Briefs from the template + `scripts/expedition brief <node>` — never hand-assembled
    epistemic context. Sole merger: fetch → merge → green-gate (with the map ride-alongs: survey,
    validator, anchors, battery) → commit.
 4. **Run the gates.** Read every AUDIT with the precision + bedrock check; require the decorrelated

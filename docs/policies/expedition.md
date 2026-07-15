@@ -302,7 +302,10 @@ committed tree intact throughout. The shape that holds:
   to the controller and then stands down / requests shutdown. It does **not** stay on-call by default — the
   on-call value (a possible later review) rarely exceeds the noise, and a fresh seat re-spawns turnkey when
   a specific need arises (context lives in the committed code + docs).
-- **The controller shuts down done agents** rather than leaving them idle-on-call.
+- **The controller shuts down done agents** rather than leaving them idle-on-call — **and reaps the
+  worktree**: clean + tip banked on origin → `git worktree remove`; anything else → leave it and
+  journal one line (`scripts/worktree-audit` is the check). Creation is automatic; this is the
+  matching defined moment for removal.
 - **All coordination routes through the controller (the hub).** No teammate↔teammate cross-talk — the sole
   sanctioned spoke-to-spoke channel is a *tight live collaboration* (a builder and its reviewer on one
   in-flight piece).
@@ -440,7 +443,9 @@ Stop at CLOSE, or when the operator pauses.
 ## Close
 
 Final controller integration → the calibration delta (predicted vs actual on the major nodes, into
-`map/calibration.md`) → the lessons pass (promote-or-decay) → a last journal entry → commit on the
+`map/calibration.md`) → the worktree sweep (`scripts/worktree-audit --emit-batch` → operator
+approves the batch) → the lessons pass (promote-or-decay; **conventions promote to the live
+expedition immediately** — see P9's uplift-latency corollary) → a last journal entry → commit on the
 expedition branch → signal-and-wait before opening the close PR. The deliverable is the expedition
 record itself: the map (with its battery and anchors), the journal, and the formalised claims.
 Reader-facing write-ups, when wanted, are commissioned by the operator separately — they are not a
