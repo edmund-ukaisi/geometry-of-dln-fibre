@@ -13,8 +13,8 @@ set_option linter.unusedVariables false
 # `RouteMSJDeepCoverage` — the deep atlas coverage + gluing (Tide B §3.2/§3.3)
 
 **Thread `genm-deepatlas`, aoyagi-full Stage 2 (branch β, NATIVE).** The set-theoretic
-**coverage-completeness** of the deep stratified-resolution atlas (design §3.2) and the **null-overlap
-gluing** wiring (§3.3), assembled on the banked spine (leaf `rankEqLocus_eq_iUnion_pivot_inter`,
+**coverage-completeness** of the deep stratified-resolution atlas (design §3.2) and the **finite
+(subadditive) cover gluing** wiring (§3.3), assembled on the banked spine (leaf `rankEqLocus_eq_iUnion_pivot_inter`,
 general-pivot bridge `generalPivot_reduce_rank`, chain descent `prodAux_reduce_rank`, finite index
 `CRIndex`). Design locked by the `gluing-shape` Codex pass; the coverage is INVARIANT-FREE (an earlier
 `Q.rank = q` invariant does NOT survive the descent — the terminal cell carries the rank constraint
@@ -167,11 +167,13 @@ theorem deepRankLE_eq_iUnion_cells (H : Fin (L + 1) → ℕ) (s : ℕ) :
   exact haux
 
 open MeasureTheory in
-/-- **Null-overlap gluing (§3.3, generic-`f` / loss-independent).** From per-cell finiteness of a
-generic `ℝ≥0∞` integrand `f`, the rank-`≤ s` domain integral is finite. ONE application of the banked
+/-- **Finite (subadditive) cover gluing (§3.3, generic-`f` / loss-independent).** From per-cell finiteness
+of a generic `ℝ≥0∞` integrand `f`, the rank-`≤ s` domain integral is finite. ONE application of the banked
 atlas-parameterised `lintegral_lt_top_of_finite_cover`; `hcover` is trivial (the cells exhaust the
-domain by `deepRankLE_eq_iUnion_cells`). Per-cell finiteness `hfin` stays a HYPOTHESIS — the loss tide
-discharges it (carrying `|det J|`); nothing loss-specific enters here. -/
+domain by `deepRankLE_eq_iUnion_cells`). The cells need NOT be disjoint — the bound is subadditivity of
+`∫⁻` over a finite cover (`∫⁻_D f ≤ ∑ᵢ ∫⁻_{Cᵢ} f`), which holds for overlapping cells; no null-overlap
+is claimed or used. Per-cell finiteness `hfin` stays a HYPOTHESIS — the loss tide discharges it (carrying
+`|det J|`); nothing loss-specific enters here. -/
 theorem deepRankLE_lintegral_lt_top (H : Fin (L + 1) → ℕ) (s : ℕ)
     {μ : Measure (Params H)} (f : Params H → ENNReal)
     (hfin : ∀ i : CRIndex H, ∫⁻ A in deepCell H s L le_rfl (H (Fin.last L)) i

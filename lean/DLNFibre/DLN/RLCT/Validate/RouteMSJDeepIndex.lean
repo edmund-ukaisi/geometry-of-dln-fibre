@@ -14,8 +14,8 @@ set_option linter.style.longLine false
 **Thread `genm-deepatlas`, aoyagi-full Stage 2 (branch β, NATIVE).** The finite index of the deep
 stratified-resolution atlas (`genm-deepatlas-design/design.md` §3.1): one flat dependent `Σ`-tree
 enumerating the root-to-leaf paths of the composite-rank recursion. Design locked by the
-`gluing-shape` Codex pass — a single flat `Fintype` fed once to the banked null-overlap gluing (nested
-per-level unions gain nothing).
+`gluing-shape` Codex pass — a single flat `Fintype` fed once to the banked finite (subadditive) cover
+gluing (nested per-level unions gain nothing).
 
 ## The path type
 
@@ -71,8 +71,8 @@ noncomputable instance instFintypeCRPath {L : ℕ} (H : Fin (L + 1) → ℕ) :
       infer_instance
 
 /-- **The deep-atlas finite index.** The CR-tree paths of the full chain (start width `H (last)`, the
-input dimension) — the finite family the atlas cells are indexed by and the null-overlap gluing
-consumes once. -/
+input dimension) — the finite family the atlas cells are indexed by and the finite (subadditive) cover
+gluing consumes once. -/
 noncomputable def CRIndex {L : ℕ} (H : Fin (L + 1) → ℕ) : Type :=
   CRPath H L le_rfl (H (Fin.last L))
 

@@ -103,7 +103,9 @@ Codex passes (artifacts in `codex/`).
 > - **Proved.** Structural `Fintype` (noncomputable via `Function.Embedding.fintype`). **Status.** sorry-free.
 
 > **Claim (coverage §3.2 + gluing §3.3).** The deep charts EXHAUST `{rank Z_deep ≤ s}` (invariant-free,
-> non-vacuous), and the null-overlap gluing gives finiteness from per-cell finiteness (a tide-D hyp).
+> non-vacuous), and the finite (subadditive) cover gluing gives finiteness from per-cell finiteness (a
+> tide-D hyp). The cover need NOT be disjoint — the bound is subadditivity of `∫⁻` over a finite cover
+> (`∫⁻_D f ≤ ∑ᵢ ∫⁻_{Cᵢ} f`); no null-overlap is claimed or used (cells share positive-measure overlap).
 > - **Lean:** `deepCell` (recursive cell, terminal `{A | (Q A).rank ≤ s}`);
 >   `deepCover_aux : ∀ j hj q Q, {A | (prodAux j · Q A).rank ≤ s} = ⋃ path, deepCell … path Q` (chain-length induction, any `Q`);
 >   `deepRankLE_eq_iUnion_cells : {A | (prod H A).rank ≤ s} = ⋃ i : CRIndex H, deepCell … i (fun _ ↦ 1)`;
