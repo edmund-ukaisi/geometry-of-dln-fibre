@@ -134,6 +134,18 @@ theorem generalPivot_reduce_rank {p : ℕ} (X : Matrix (Fin p) (Fin m) ℝ)
     rw [hXC]
     exact Matrix.rank_mul_le_left _ _
 
+/-- **The rank reduction with an EXPLICIT rank `r`.** The `generalPivot_reduce_rank` variant taking a
+size-`r` pivot `(ρ, κ : Fin r ↪ ·)` and a witness `hr : M.rank = r`, rather than pivots typed at
+`Fin M.rank`. `subst hr` rewrites `r → M.rank` in the pivot types (clean — `r` is a fresh variable, not
+circular like `M`), reducing to `generalPivot_reduce_rank`. This is the form the telescoping atlas cells
+consume: a CR-path node fixes the exact rank `r`, and its pivot embeddings are typed `Fin r`. -/
+theorem generalPivot_reduce_rank_of {p : ℕ} (X : Matrix (Fin p) (Fin m) ℝ)
+    (M : Matrix (Fin m) (Fin n) ℝ) (r : ℕ) (hr : M.rank = r)
+    (ρ : Fin r ↪ Fin m) (κ : Fin r ↪ Fin n) (hU : IsUnit (M.submatrix ρ κ)) :
+    (X * M).rank = (X * M.submatrix id κ * (M.submatrix ρ κ)⁻¹).rank := by
+  subst hr
+  exact generalPivot_reduce_rank X M ρ κ hU
+
 /-- Non-vacuity: both the CUR skeleton and the rank reduction apply at a concrete `3×4` effective
 layer with an arbitrary size-`M.rank` unit pivot and a `2×3` preceding head. -/
 example (M : Matrix (Fin 3) (Fin 4) ℝ) (ρ : Fin M.rank ↪ Fin 3) (κ : Fin M.rank ↪ Fin 4)

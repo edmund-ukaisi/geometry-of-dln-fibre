@@ -50,38 +50,39 @@ namespace DeepAtlas
 /-- **The CR-tree path type.** A root-to-leaf path of the composite-rank recursion, from an effective
 chain of length `j` with right-factor width `q`. A descent node picks the exact effective rank `r`, a
 size-`r` row pivot into the level-`k` width `H⟨k⟩`, a size-`r` column pivot into `q`, and the tail on
-the shortened chain of width `r`; the terminal node carries `q ≤ s`. -/
-def CRPath {L : ℕ} (H : Fin (L + 1) → ℕ) (s : ℕ) : (j : ℕ) → j ≤ L → ℕ → Type
-  | 0, _, q => PLift (q ≤ s)
+the shortened chain of width `r`; the terminal node is a single leaf (`Unit`). The rank-`≤ s` constraint
+lives in the atlas CELL (`deepCell`, terminal `{A | (Q A).rank ≤ s}`), NOT the index — this keeps the
+coverage induction invariant-free (it holds for any right factor `Q`, no `Q.rank = q` assumption). -/
+def CRPath {L : ℕ} (H : Fin (L + 1) → ℕ) : (j : ℕ) → j ≤ L → ℕ → Type
+  | 0, _, _ => Unit
   | (k + 1), hk, q =>
       Σ r : Fin (min (H ⟨k, by omega⟩) q + 1),
-        (Fin r.1 ↪ Fin (H ⟨k, by omega⟩)) × (Fin r.1 ↪ Fin q) × CRPath H s k (by omega) r.1
+        (Fin r.1 ↪ Fin (H ⟨k, by omega⟩)) × (Fin r.1 ↪ Fin q) × CRPath H k (by omega) r.1
 
 /-- The CR-tree path type is a `Fintype`: bounded branching (finitely many ranks × pivot embeddings per
 node) and depth `≤ L`. Noncomputable via `Function.Embedding.fintype`. -/
-noncomputable instance instFintypeCRPath {L : ℕ} (H : Fin (L + 1) → ℕ) (s : ℕ) :
-    ∀ (j : ℕ) (hj : j ≤ L) (q : ℕ), Fintype (CRPath H s j hj q)
+noncomputable instance instFintypeCRPath {L : ℕ} (H : Fin (L + 1) → ℕ) :
+    ∀ (j : ℕ) (hj : j ≤ L) (q : ℕ), Fintype (CRPath H j hj q)
   | 0, _, q => by unfold CRPath; infer_instance
   | (k + 1), hk, q => by
       unfold CRPath
-      haveI : ∀ r : Fin (min (H ⟨k, by omega⟩) q + 1), Fintype (CRPath H s k (by omega) r.1) :=
-        fun r => instFintypeCRPath H s k (by omega) r.1
+      haveI : ∀ r : Fin (min (H ⟨k, by omega⟩) q + 1), Fintype (CRPath H k (by omega) r.1) :=
+        fun r => instFintypeCRPath H k (by omega) r.1
       infer_instance
 
 /-- **The deep-atlas finite index.** The CR-tree paths of the full chain (start width `H (last)`, the
 input dimension) — the finite family the atlas cells are indexed by and the null-overlap gluing
 consumes once. -/
-noncomputable def CRIndex {L : ℕ} (H : Fin (L + 1) → ℕ) (s : ℕ) : Type :=
-  CRPath H s L le_rfl (H (Fin.last L))
+noncomputable def CRIndex {L : ℕ} (H : Fin (L + 1) → ℕ) : Type :=
+  CRPath H L le_rfl (H (Fin.last L))
 
-noncomputable instance {L : ℕ} (H : Fin (L + 1) → ℕ) (s : ℕ) : Fintype (CRIndex H s) :=
-  instFintypeCRPath H s L le_rfl (H (Fin.last L))
+noncomputable instance {L : ℕ} (H : Fin (L + 1) → ℕ) : Fintype (CRIndex H) :=
+  instFintypeCRPath H L le_rfl (H (Fin.last L))
 
-/-- Non-vacuity: the terminal (length-`0`) path is inhabited exactly when the width fits under `s`
-(`q ≤ s`), so the index is not vacuously empty at a reachable leaf. -/
-example {L : ℕ} (H : Fin (L + 1) → ℕ) (s q : ℕ) (hq : q ≤ s) :
-    Nonempty (CRPath H s 0 (Nat.zero_le _) q) :=
-  ⟨(by unfold CRPath; exact PLift.up hq)⟩
+/-- Non-vacuity: the terminal leaf `CRPath H 0 _ q = Unit` is inhabited — the atlas cell family is not
+vacuously empty; the rank-`≤ s` content lives in the cells (`deepCell`), not the index. -/
+example {L : ℕ} (H : Fin (L + 1) → ℕ) (hj : (0 : ℕ) ≤ L) (q : ℕ) : CRPath H 0 hj q := by
+  unfold CRPath; exact ()
 
 end DeepAtlas
 
