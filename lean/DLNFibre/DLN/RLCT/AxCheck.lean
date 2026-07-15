@@ -160,6 +160,14 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
+-- Brick D incidence-chart pieces (PROVISIONAL / off-primary; see aggregator note). Imported here so
+-- their clean-three footprint is CI-force-verified (closes the chart5review "asserted-not-reverified"
+-- caveat), even though the corrected capstone route (S3/deep-factor floor) does not consume them.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceExponent
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart4Polar
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart5BigCell
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceGluing
 
 /-!
 # Axiom-hygiene check
@@ -1267,3 +1275,20 @@ open DLNFibre.DLN.RLCT
 -- honest HYPOTHESIS (not sorryAx); #108 is a one-exact-fill once DecoratedDescent lands.
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage
+-- Brick D incidence-chart pieces (PROVISIONAL / off-primary — routefork's corrected capstone route
+-- to the S3/deep-factor floor does NOT consume these). Force-verify their clean-three footprint here
+-- (closes the chart5review "asserted-not-reverified" caveat). Chart (1)/(2) Gram+Schur identities:
+#print axioms DLNFibre.DLN.RLCT.transverseSchurGram
+#print axioms DLNFibre.DLN.RLCT.chartProjComplement
+-- Arity-3 exponent gate (`RouteMSJIncidenceExponent`):
+#print axioms DLNFibre.DLN.RLCT.minAdm_le_ab_add_uM2
+#print axioms DLNFibre.DLN.RLCT.clsCodim_gate
+-- Chart (4) polar fibre finiteness (`RouteMSJIncidenceChart4Polar`):
+#print axioms DLNFibre.DLN.RLCT.chart4_Htilde_fibre_lt_top
+#print axioms DLNFibre.DLN.RLCT.chart4_unit_lintegral_lt_top
+-- Chart (5) determinantal big-cell CoV + rank geometry (`RouteMSJIncidenceChart5BigCell`):
+#print axioms DLNFibre.DLN.RLCT.chart5_bigcell_cov
+#print axioms DLNFibre.DLN.RLCT.chart5_rank_le_iff_reassembled
+-- Finite-cover gluing (`RouteMSJIncidenceGluing`):
+#print axioms DLNFibre.DLN.RLCT.lintegral_lt_top_of_finset_cover
+#print axioms DLNFibre.DLN.RLCT.lintegral_lt_top_of_finite_cover

@@ -1469,3 +1469,15 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 -- L=1 Aoyagi headline endpoint (unconditional, regular Morse) + the #108 ∀L≥1 case-split pre-stage
 -- (`aoyagi_learning_coefficient_prestage`, carrying the single `hDescent : DecoratedDescent` hypothesis).
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
+-- Brick D incidence-chart pieces (banked, network-free/measure-theoretic joint incidence-rank
+-- resolution; genm-incidencepp cert §3b). PROVISIONAL / off-primary wiring: routefork (2026-07-15)
+-- adjudicated the corrected capstone route to the S3/deep-factor floor, NOT the incidence charts, so
+-- these are valid banked lemmas the canonical route does not currently consume. Wired here to keep them
+-- CI-checked (AxCheck force-verifies their clean-three axiom footprint). Chart (1)/(2) Gram+Schur
+-- identities, the arity-3 exponent gate, chart (4) polar fibre finiteness, chart (5) big-cell CoV, and
+-- the finite-cover gluing lemma.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceExponent
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart4Polar
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart5BigCell
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceGluing
