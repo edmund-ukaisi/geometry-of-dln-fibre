@@ -34,8 +34,15 @@
   (off every root's cone — quarantined, pruned at close, never on the value path); (iii) the audit is
   cone-aware (classify via the env-walker dependency graph; `scripts/sorries` stays as the raw census;
   `AxCheck` stays the kernel truth for roots). The roots registry and the cone-aware audit are part of
-  the **expedition-map** (see `docs/retro/aoyagi-full/expedition-map-design.md` — the top-down object:
-  curated `expedition-map.yaml` + computed status companion + kernel-checked `MapAnchors.lean` pins).
+  the **expedition-map** (see `docs/policies/expedition-map.md` — curated `claims.yaml` + computed
+  survey + kernel-checked `MapAnchors.lean` pins; roots = `meta.roots`, LIVE frontier = the
+  goal-relative sorry cone; fossils belong to retired nodes and are pruned, not carried).
+
+- **Skeleton discipline (P6).** A settled fork lands as a driver + obligation-record structure
+  (fields = the obligations; churn-robust: statement detail moves under a stable fork-level shape),
+  sorried, wired toward the headline. Each skeleton hole names its map node (`-- map: <node-id>`);
+  a refuted/superseded node retires its hole in the same commit — a stale hole misdirects the
+  brick-closing gradient (the false-bridge lesson).
   *The map is not the territory*: the kernel is the territory; the map's contracts keep it honest.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
 - **`lake build` / `scripts/lb` exit-0 can MASK a `sorryAx` via a stale olean cache.** If an edit does not

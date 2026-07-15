@@ -1,3 +1,6 @@
+> **SUPERSEDED (2026-07-15):** the live spec is `docs/policies/expedition-map.md (spec) + docs/policies/expedition.md (process)`. This file is the
+> design-history record (provenance, decision narrative) — read it for *why*, never for *current*.
+
 # The expedition-map — design note (harness proposal, 2026-07-14)
 
 **The map is not the territory.** The kernel is the territory; the expedition-map is the top-down

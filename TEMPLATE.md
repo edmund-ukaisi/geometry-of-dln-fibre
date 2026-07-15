@@ -14,11 +14,14 @@ To start a new paper project, copy Layer 1, scrub the worked-examples, and write
 From an existing instance (this repo, or the `ai-research-assistant` source):
 
 ```
-docs/policies/   expedition.md  bedrock.md  precision.md  claims.md  statement-cards.md
+docs/policies/   principles.md  expedition.md  expedition-map.md  expedition-cli-notes.md
+                 worktree-branch-hygiene.md  bedrock.md  precision.md  statement-cards.md
                  review.md  writing-style.md  codex-consultation.md
-                 draft-policy-semantic-auditing.md  README.md
-.agent-team/     README.md   roles/{controller,scout,pen-and-paper,formaliser,reviewer,hardener}.md
+                 draft-policy-semantic-auditing.md  README.md   (claims.md = stub)
+.agent-team/     README.md  teammate-brief-template.md
+                 roles/{controller,scout,pen-and-paper,formaliser,reviewer,cartographer,lookahead,elder}.md
                  logs/.gitkeep  comms/.gitkeep
+scripts/         expedition  expedition_map/  hooks/pre-commit   (+ tests/ for the CLI)
 .claude/skills/  lean-formalisation/SKILL.md   local-codex-consult/SKILL.md
 .claude/agents/  scout.md  pen-and-paper.md  lean-formaliser.md  reviewer.md
 lean/scripts/    sorries   lean-search

@@ -82,19 +82,19 @@ Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
 - `controller` — this lead session: meta-planning, delegation, integration.
 - `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
 - `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
-- `self-recon` — read-only INTERNAL reconnaissance: before a substantial build, maps our OWN banked state — reusable lemmas/methods to **consume**, pieces **staged** for exactly this point, **lessons/pitfalls** that bite, and **dead/ruled-out** routes to avoid — so the tide spec names banked pieces, not blind. Distinct from `scout` (which maps external terrain — Mathlib/the paper). Deploy judiciously at a large build's start; auditing reusable code/math/lessons beats re-deriving. Output: a `recon-map.md`. The controller (holding the most context) judges usefulness vs distraction.
 - `formaliser` — formalisation (tide) threads.
-- `reviewer` — controller-spawned independent audit (soundness / fidelity).
-- `hardener` — independent principles / taste reviewer (precision, bedrock).
-- **Controller assistants** — a class augmenting the controller's *executive function*; read-only,
-  artifact-mediated, propose-never-act, scale-gated (skip on small expeditions); triggered by a
-  loop-prompt cadence (~60 canonical commits or ~4 h) + mandatory at phase transitions
+- `reviewer` — controller-spawned independent audit (soundness / fidelity / bedrock-taste).
+- **Offices (controller assistants)** — read-only advisory seats convened fresh from durable
+  artifacts (an office, not a session); propose-never-act, scale-gated, cadence + mandatory joints
   ([`docs/policies/expedition.md`](docs/policies/expedition.md) § Controller assistants):
-  - `librarian` — sole writer of the durable expedition index (computed layer regenerated from
-    ground truth + curated overlay: banked-family cards, dead-route registry, naming forwarding-pointers).
-  - `lookahead` — plan audit: closed-loop measurement, future-state simulation (build-time vs
-    sorry-propagation dependencies), hard-part-avoidance + math-drift checks; disposition table
-    against `priorities.md`.
+  - `cartographer` — memory: the map's overlay + index (banked-family cards, dead-route registry,
+    naming forwarding-pointers); the diff-then-judge pass.
+  - `lookahead` — planning: the parallelisation audit, gate verification, hard-part-avoidance +
+    math-drift checks; calibration ledger.
+  - `elder` — comprehension/direction: keeper of `compass.md` (the question, settled forks + whys,
+    standing rising-sea counsel); convened at every route adoption; the stern voice.
+- Retired to forwarding stubs (2026-07-15): `self-recon` (→ generated brief sections), `hardener`
+  (→ reviewer function + elder's right-extension channel), `librarian` (→ `cartographer`).
 
 If dispatched into a role, read its role file and agent definition first.
 
@@ -146,7 +146,7 @@ DLN/RLCT **application** lives in `DLNFibre.DLN`. See [`ROADMAP.md`](ROADMAP.md)
 
 - [`README.md`](README.md) — orientation, how to launch an expedition, Lean build.
 - [`ROADMAP.md`](ROADMAP.md) — the result-map + the Core/DLN formalisation-target ladder.
-- [`docs/policies/`](docs/policies/) — expedition, claims, review, precision, bedrock, codex-consultation, statement-cards, writing-style (+ the reader-facing exposition trio).
+- [`docs/policies/`](docs/policies/) — principles (P1–P9), expedition, expedition-map, review, precision, bedrock, codex-consultation, statement-cards, writing-style, worktree-branch-hygiene (+ the reader-facing exposition trio).
 - [`docs/expositions/`](docs/expositions/) — the curated reader-facing digest (starts with `paper-digest/high-level-overview.md`).
 - [`.claude/skills/`](.claude/skills/) — lean-formalisation, local-codex-consult.
 - [`lean/CLAUDE.md`](lean/CLAUDE.md) — Lean build + Mathlib conventions; the Core/DLN split.
