@@ -89,6 +89,139 @@ theorem minAdm_redChain_le_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : �
   rw [hfun] at h
   exact h
 
+/-! ## Step 4 dependency (b′) — the `minAdm` head-increment marginal `≤ deepTailMin`
+
+The rankgen hGae-discharge chain (`genm-rankgen §2b/§7`) needs: incrementing the leading (pivot) width of
+the reduced chain by 1 raises `minAdm` by at most the deep-tail minimum. Companion to
+`minAdm_le_head_mul_tailInf` but by the layer-peeling recursion `minAdmRec` (tail-length induction), not
+permutation invariance — permutation invariance cannot see the *marginal* in the head. -/
+
+/-- **The `inf'`-univ head/tail split.** `⨅_{Fin (k+2)} f = min (f 0) (⨅_{Fin (k+1)} f∘succ)` — the min
+over all indices is the min of the head value and the min over the tail. Elementary `le_antisymm` on the
+`Finset.inf'`. -/
+theorem inf'_univ_fin_succ {k : ℕ} (f : Fin (k + 1 + 1) → ℕ) :
+    (Finset.univ : Finset (Fin (k + 1 + 1))).inf' ⟨0, Finset.mem_univ 0⟩ f
+      = min (f 0)
+          ((Finset.univ : Finset (Fin (k + 1))).inf' ⟨0, Finset.mem_univ 0⟩ (fun i => f i.succ)) := by
+  refine le_antisymm (le_min ?_ ?_) (Finset.le_inf' _ _ (fun j _ => ?_))
+  · exact Finset.inf'_le _ (Finset.mem_univ 0)
+  · exact Finset.le_inf' _ _ (fun i _ => Finset.inf'_le _ (Finset.mem_univ i.succ))
+  · refine Fin.cases ?_ (fun i => ?_) j
+    · exact min_le_left _ _
+    · exact le_trans (min_le_right _ _) (Finset.inf'_le _ (Finset.mem_univ i))
+
+/-- **The `minAdmRec` head-increment marginal (general, over a `Fin.cons` chain).** For any tail
+`tl : Fin (k+1) → ℕ` and head width `w`, incrementing the head raises `minAdmRec` by at most the tail
+minimum:
+`minAdmRec (Fin.cons (w+1) tl) ≤ minAdmRec (Fin.cons w tl) + ⨅_i tl i`. Tail-length induction: the leaf
+(`k=0`) is exact (`(w+1)·tl₀ = w·tl₀ + tl₀`); the step peels the layer recursion, takes the parent argmin
+`s★`, and bounds the incremented chain by BOTH the `s★`-candidate (`≤ … + (tl₀−s★) ≤ … + tl₀`) and the
+`s★+1`-candidate (`≤ … + ⨅ tail(tl)` via the IH on the deeper chain), giving `≤ … + min(tl₀, ⨅ tail(tl))
+= … + ⨅ tl`. -/
+theorem minAdmRec_cons_head_succ_le : ∀ {k : ℕ} (tl : Fin (k + 1) → ℕ) (w : ℕ),
+    minAdmRec (Fin.cons (w + 1) tl)
+      ≤ minAdmRec (Fin.cons w tl)
+        + (Finset.univ : Finset (Fin (k + 1))).inf' ⟨0, Finset.mem_univ 0⟩ tl := by
+  intro k
+  induction k with
+  | zero =>
+    intro tl w
+    have hcons1 : ∀ v : ℕ, (Fin.cons v tl : Fin 2 → ℕ) 1 = tl 0 := by
+      intro v
+      have h1 : (1 : Fin 2) = (0 : Fin 1).succ := by apply Fin.ext; simp
+      rw [h1, Fin.cons_succ]
+    have hleaf : ∀ v : ℕ, minAdmRec (Fin.cons v tl) = v * tl 0 := by
+      intro v; rw [minAdmRec_leaf, Fin.cons_zero, hcons1 v]
+    have hinf : (Finset.univ : Finset (Fin 1)).inf' ⟨0, Finset.mem_univ 0⟩ tl = tl 0 :=
+      le_antisymm (Finset.inf'_le _ (Finset.mem_univ 0))
+        (Finset.le_inf' _ _ (fun i _ => le_of_eq (by rw [Subsingleton.elim i 0])))
+    rw [hleaf w, hleaf (w + 1), hinf]
+    exact le_of_eq (add_one_mul w (tl 0))
+  | succ k ih =>
+    intro tl w
+    -- component readbacks + the deeper-chain identity `redChain s (cons w tl) = cons s (tail tl)`
+    have hcons1 : ∀ v : ℕ, (Fin.cons v tl : Fin (k + 1 + 1 + 1) → ℕ) 1 = tl 0 := by
+      intro v
+      have h1 : (1 : Fin (k + 1 + 1 + 1)) = (0 : Fin (k + 1 + 1)).succ := by
+        apply Fin.ext; simp [Fin.val_succ, Fin.val_one]
+      rw [h1, Fin.cons_succ]
+    have hred : ∀ v s : ℕ, redChain s (Fin.cons v tl : Fin (k + 1 + 1 + 1) → ℕ)
+        = Fin.cons s (Fin.tail tl) := by
+      intro v s
+      funext j
+      refine Fin.cases ?_ (fun i => ?_) j
+      · simp only [redChain, Fin.cons_zero]
+      · simp only [redChain, Fin.cons_succ, Fin.tail]
+    -- unfold both minAdmRec via the ≥3-width recursion + the readbacks
+    have hunf : ∀ v : ℕ, minAdmRec (Fin.cons v tl : Fin (k + 1 + 1 + 1) → ℕ)
+        = (Finset.range (min v (tl 0) + 1)).inf' (by simp)
+            (fun s => (v - s) * (tl 0 - s) + minAdmRec (Fin.cons s (Fin.tail tl))) := by
+      intro v
+      rw [minAdmRec_succ_succ (Fin.cons v tl), Fin.cons_zero, hcons1 v]
+      refine Finset.inf'_congr _ rfl (fun s _ => ?_)
+      rw [hred v s]
+    -- rewrite only the RHS deep-inf; keep `minAdmRec (Fin.cons _ tl)` as the omega atoms
+    rw [inf'_univ_fin_succ tl, show (fun i : Fin (k + 1) => tl i.succ) = Fin.tail tl from rfl]
+    set dinf := (Finset.univ : Finset (Fin (k + 1))).inf' ⟨0, Finset.mem_univ 0⟩ (Fin.tail tl)
+      with hdinf
+    -- extract the parent argmin `s★` of `minAdmRec (Fin.cons w tl)`
+    obtain ⟨sstar, hsmem, hseq⟩ := Finset.exists_mem_eq_inf'
+      (Finset.nonempty_range_iff.mpr (by omega) : (Finset.range (min w (tl 0) + 1)).Nonempty)
+      (fun s => (w - s) * (tl 0 - s) + minAdmRec (Fin.cons s (Fin.tail tl)))
+    have hsle : sstar ≤ min w (tl 0) := by have := Finset.mem_range.mp hsmem; omega
+    have hsw : sstar ≤ w := le_trans hsle (min_le_left _ _)
+    have hsD0 : sstar ≤ tl 0 := le_trans hsle (min_le_right _ _)
+    have hRw : minAdmRec (Fin.cons w tl)
+        = (w - sstar) * (tl 0 - sstar) + minAdmRec (Fin.cons sstar (Fin.tail tl)) := by
+      rw [hunf w]; exact hseq
+    -- candidate bound (via s★): `minAdmRec (cons (w+1) tl) ≤ minAdmRec (cons w tl) + tl 0`
+    have h1 : minAdmRec (Fin.cons (w + 1) tl) ≤ minAdmRec (Fin.cons w tl) + tl 0 := by
+      rw [hunf (w + 1)]
+      refine le_trans (Finset.inf'_le _ (Finset.mem_range.mpr
+        (show sstar < min (w + 1) (tl 0) + 1 by omega))) ?_
+      show (w + 1 - sstar) * (tl 0 - sstar) + minAdmRec (Fin.cons sstar (Fin.tail tl))
+        ≤ minAdmRec (Fin.cons w tl) + tl 0
+      rw [show (w + 1 - sstar) * (tl 0 - sstar)
+            = (w - sstar) * (tl 0 - sstar) + (tl 0 - sstar) from by
+          rw [show w + 1 - sstar = (w - sstar) + 1 from by omega]; ring]
+      omega
+    -- candidate bound (via s★+1, or s★ when s★ = tl 0): `… ≤ minAdmRec (cons w tl) + dinf`
+    have h2 : minAdmRec (Fin.cons (w + 1) tl) ≤ minAdmRec (Fin.cons w tl) + dinf := by
+      rw [hunf (w + 1)]
+      rcases lt_or_eq_of_le hsD0 with hlt | heq
+      · refine le_trans (Finset.inf'_le _ (Finset.mem_range.mpr
+          (show sstar + 1 < min (w + 1) (tl 0) + 1 by omega))) ?_
+        show (w + 1 - (sstar + 1)) * (tl 0 - (sstar + 1))
+            + minAdmRec (Fin.cons (sstar + 1) (Fin.tail tl))
+          ≤ minAdmRec (Fin.cons w tl) + dinf
+        have hih := ih (Fin.tail tl) sstar
+        rw [← hdinf] at hih
+        rw [show w + 1 - (sstar + 1) = w - sstar from by omega]
+        have hprodle : (w - sstar) * (tl 0 - (sstar + 1)) ≤ (w - sstar) * (tl 0 - sstar) :=
+          Nat.mul_le_mul (le_refl _) (by omega)
+        omega
+      · refine le_trans (Finset.inf'_le _ (Finset.mem_range.mpr
+          (show sstar < min (w + 1) (tl 0) + 1 by omega))) ?_
+        show (w + 1 - sstar) * (tl 0 - sstar) + minAdmRec (Fin.cons sstar (Fin.tail tl))
+          ≤ minAdmRec (Fin.cons w tl) + dinf
+        have hz : tl 0 - sstar = 0 := by omega
+        rw [hz, Nat.mul_zero, Nat.zero_add]
+        rw [hz, Nat.mul_zero, Nat.zero_add] at hRw
+        omega
+    omega
+
+/-- **The per-cut `minAdm` marginal on `redChain` (rankgen (b′)).** Incrementing the surviving pivot
+width `t` of the reduced chain raises `minAdm` by at most the deep-tail minimum:
+`minAdm (redChain (t+1) M) ≤ minAdm (redChain t M) + deepTailMin M`. Specialises
+`minAdmRec_cons_head_succ_le` (at `tl = fun i => M i.succ.succ`, the deep-tail widths — so `redChain t M
+= Fin.cons t tl` and `deepTailMin M = ⨅ tl`) through `minAdmRec_eq_minAdm`. The rankgen hGae-discharge
+step: with the binding-cut equality `hbind`, `a★+b★−1 ≤ deepTailMin`, giving `b ≤ deepTailMin ≤ rank Z_deep`. -/
+theorem minAdm_redChain_succ_le (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) :
+    minAdm (redChain (t + 1) M) ≤ minAdm (redChain t M) + deepTailMin M := by
+  have hkey := minAdmRec_cons_head_succ_le (fun i : Fin (L + 1) => M i.succ.succ) t
+  rw [← minAdmRec_eq_minAdm, ← minAdmRec_eq_minAdm]
+  exact hkey
+
 /-! ## Step 1, atom (i): the head/row-split box factorization for `hsSplit` -/
 
 /-- **The `hsSplit` box factorization.** `hsSplit M u κ` pulls the product box
