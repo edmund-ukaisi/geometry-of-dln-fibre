@@ -5,6 +5,29 @@ record of claimed land and charted routes, and every contract below exists to ke
 against the territory. Write this slogan wherever the map is taught; it is the design discipline
 in one line.
 
+**What the map is for: gestalt, not citation.** The map's value is the *gestalt* — the perceived
+shape of the whole (what exists, what is dead, what is owned, what sits next to what, where the
+frontier bulges) — which is exactly what the territory cannot give you: the kernel returns
+point-truths, one expensive query at a time, and no amount of grepping composes them into a
+situation. Use the map to decide **what matters**; use the territory to decide **what is true**.
+Concretely, the controller's usage discipline:
+- Read the map freely for orientation, prioritisation, delegation — the gestalt layer needs no
+  verification, because being approximately-and-holistically right is its whole job.
+- The moment a *specific cell* becomes decision-load-bearing — "this lemma is mechanical", "X
+  discharges Y", "that route is dead", "this is orphaned" — it stops being gestalt and becomes a
+  claim, and a claim from the map is **prose with a freshness stamp, never a crisp truth**. Verify
+  it against the territory before acting (the map makes this cheap: it tells you exactly *where*
+  to look — verification degrades from search to lookup).
+- Verify the **ripples** too: acting on a cell changes its neighbours (retire a lemma → who
+  consumes it? adopt a route → which hypotheses does it *now* need? rename → what dangles?). The
+  map's edges tell you the blast radius to check; they do not certify it.
+The five-fork night (2026-07-14/15) is the demonstration from the usage side: five different
+readers took a map-layer cell (a docstring, a cert paraphrase, a ledger DONE, a "zero consumers"
+grep) as crisp, and each was wrong in the direction the reader needed it to be; every catch came
+from someone re-deriving the cell against the territory at decision time. The contracts below
+harden the cells; this principle governs the *reading* — no contract can make prose true, only
+fresher.
+
 ## Why (one paragraph of origin)
 
 The bottom-up motion (the rising sea: bricks, banked lemmas) has the kernel as its consistency
