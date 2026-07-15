@@ -160,9 +160,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
--- Brick D incidence-chart pieces (PROVISIONAL / off-primary; see aggregator note). Imported here so
--- their clean-three footprint is CI-force-verified (closes the chart5review "asserted-not-reverified"
--- caveat), even though the corrected capstone route (S3/deep-factor floor) does not consume them.
+-- Brick D incidence-chart pieces (coupled incidence route — the VERIFIED capstone route, routeverify
+-- 2026-07-15; see aggregator note). Imported here so their clean-three footprint is CI-force-verified
+-- (closes the chart5review "asserted-not-reverified" caveat); deeperFlag_shell_le is proved DIRECTLY
+-- through these charts (spine → comparator).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceExponent
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart4Polar
@@ -1275,9 +1276,10 @@ open DLNFibre.DLN.RLCT
 -- honest HYPOTHESIS (not sorryAx); #108 is a one-exact-fill once DecoratedDescent lands.
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage
--- Brick D incidence-chart pieces (PROVISIONAL / off-primary — routefork's corrected capstone route
--- to the S3/deep-factor floor does NOT consume these). Force-verify their clean-three footprint here
--- (closes the chart5review "asserted-not-reverified" caveat). Chart (1)/(2) Gram+Schur identities:
+-- Brick D incidence-chart pieces (coupled incidence route — the VERIFIED capstone route, routeverify
+-- 2026-07-15: deeperFlag_shell_le is proved DIRECTLY through these charts). Force-verify their
+-- clean-three footprint here (closes the chart5review "asserted-not-reverified" caveat). Chart (1)/(2)
+-- Gram+Schur identities:
 #print axioms DLNFibre.DLN.RLCT.transverseSchurGram
 #print axioms DLNFibre.DLN.RLCT.chartProjComplement
 -- Arity-3 exponent gate (`RouteMSJIncidenceExponent`):
