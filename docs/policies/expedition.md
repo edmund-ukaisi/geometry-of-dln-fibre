@@ -160,8 +160,10 @@ value); output a numbered disposition artifact the controller accepts / re-seque
 item-by-item — propose, never act; "no change needed" is a first-class verdict; no global memory.
 **Scale gate**: not instantiated on small expeditions (≲100 expedition Lean files / ≲200 journal
 blocks / ≲1 week) — there the controller holds the offices itself and `compass.md` is a section of
-`brief.md`. **Cadence**: every ~60 canonical commits or ~4 h, whichever first (commit-count tracks
-state change, not tempo), self-perpetuating (each pass names the next trigger; passes numbered in
+`brief.md`. **Cadence**: every ~60 canonical commits or ~4 h of **activity time**, whichever first
+(commit-count tracks state change, not tempo; activity time = active commit-buckets on the
+canonical branch first-parent, so idle nights and VM downtime don't fire cadences or age alarms —
+wall-clock silence during a supposed build is its own separate signal), self-perpetuating (each pass names the next trigger; passes numbered in
 the journal so a lapsed cadence is operator-visible).
 
 ## priorities.md — the taste ledger
@@ -421,6 +423,7 @@ Main quest: <central question, one line>.
 - <the 3–5 things post-compaction-you must not lose>
 
 ## Protocol (per wake)
+0. Verify placement: main checkout, expedition branch (controller.md resp. 0). Recover first if not.
 1. Re-ground if fresh/compacted/unsure: the bundle (expedition.md § State) — brief, this file,
    priorities, map/STATUS.md, compass, journal tail, threads.
 2. Tick: ingest → re-anchor (brief + compass) → triage priorities → delegate (briefs via template

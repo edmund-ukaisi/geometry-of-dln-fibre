@@ -12,6 +12,13 @@ tail, threads). Grounding is cheap; prefer it to guessing.
 
 ## Responsibilities (enumerated, not exclusive)
 
+0. **Verify your placement — before anything else, at every re-ground and heartbeat wake.** You must
+   sit in the **main checkout** (not a worktree — teammate `isolation: worktree` collapses onto a
+   controller-in-a-worktree) **on the expedition branch**: check `git rev-parse --show-toplevel`
+   and the current branch. If you find yourself elsewhere (a spawn once switched a controller's
+   checkout mid-expedition): assess before acting — `ExitWorktree` (then `EnterWorktree` if needed)
+   to escape a worktree; a plain `git switch` for a flipped branch; **never** a destructive
+   checkout over a dirty tree — if the tree is dirty with work that isn't yours, stop and surface.
 1. **Hold the question.** Re-anchor every tick on `brief.md` + the elder's `compass.md`; restate the
    single most decision-relevant question before triaging anything.
 2. **Own the plan.** Sole curated writer of `map/claims.yaml`; apply or reject `MAP_DELTA` proposals;

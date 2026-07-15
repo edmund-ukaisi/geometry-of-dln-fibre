@@ -141,7 +141,10 @@ what is low-level enough to sink depends on what the expedition cares about.
 ## The survey — computed, riding the green-gate
 
 Regenerated (never edited) from: the Lean declaration walker (names, statements, deps, axioms,
-sorries), git state (branches, tips, freshness), battery results. Provides the computed joins:
+sorries), git state (branches, tips, freshness), battery results. **Git-derived metadata walks the
+expedition branch `--first-parent` only** (teammate merges must not create phantom status
+transitions or inflate the cadence clock), and ages/staleness are expressed on the **activity
+clock** (active commit-buckets), not wall time — a hole is not stale because the VM slept. Provides the computed joins:
 per-node kernel status (`proven` ⟺ sorry-free closure with expected axioms), discharge-edge
 witnessing (does the consumer's proof term reference the provider), the live-sorry cone from
 `meta.roots` (goal-relative zero-sorry: LIVE frontier vs fossils), orphan detection (open effort

@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+"""Read-only worktree audit: branch, age, dirtiness, banked-on-origin, SAFE-TO-REMOVE shortlist.
+Usage: scripts/worktree-audit [--repo DIR] [--extra DIR ...] [--quick (skip dirty check)]
+"""
+import argparse, subprocess, os, sys, datetime
+
+def sh(args, cwd=None):
+    r = subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=60)
+    return r.stdout.strip()
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--repo", default=".")
+    ap.add_argument("--extra", action="append", default=[])
+    ap.add_argument("--quick", action="store_true")
+    a = ap.parse_args()
+    repo = os.path.abspath(a.repo)
+    out = sh(["git", "worktree", "list", "--porcelain"], cwd=repo)
+    wts, cur = [], {}
+    for line in out.splitlines():
+        if line.startswith("worktree "): cur = {"path": line.split(" ",1)[1]}; wts.append(cur)
+        elif line.startswith("branch "): cur["branch"] = line.split(" ",1)[1].replace("refs/heads/","")
+        elif line == "detached": cur["branch"] = "(detached)"
+    for d in a.extra:
+        for name in sorted(os.listdir(d)):
+            p = os.path.join(d, name)
+            if os.path.isdir(os.path.join(p, ".git")) and not any(w["path"]==p for w in wts):
+                try: br = sh(["git","branch","--show-current"], cwd=p) or "(detached)"
+                except Exception: continue
+                wts.append({"path": p, "branch": br, "extra": True})
+    now = datetime.datetime.now(datetime.timezone.utc)
+    rows, safe = [], []
+    for w in wts:
+        p = w["path"]
+        try:
+            ts = sh(["git","log","-1","--format=%cI"], cwd=p)
+            age = (now - datetime.datetime.fromisoformat(ts)).days if ts else -1
+            dirty = "?" if a.quick else str(len(sh(["git","status","--porcelain","-uno"], cwd=p).splitlines()))
+            head = sh(["git","rev-parse","HEAD"], cwd=p)
+            banked = bool(sh(["git","branch","-r","--contains",head], cwd=p))
+        except Exception as ex:
+            rows.append((p, w.get("branch","?"), "ERR", "?", "?")); continue
+        rows.append((p, w.get("branch","?"), f"{age}d", dirty, "yes" if banked else "NO"))
+        if dirty == "0" and banked and p != repo: safe.append(p)
+    rows.sort(key=lambda r: r[2])
+    print(f"{'path':60} {'branch':40} {'age':>5} {'dirty':>5} banked")
+    for r in rows: print(f"{r[0][:60]:60} {r[1][:40]:40} {r[2]:>5} {r[3]:>5} {r[4]}")
+    print(f"\n{len(rows)} worktrees; SAFE-TO-REMOVE (clean + tip on origin): {len(safe)}")
+    for p in safe: print(f"  git worktree remove {p}")
+
+if __name__ == "__main__": main()

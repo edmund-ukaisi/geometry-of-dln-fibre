@@ -119,3 +119,15 @@ motion — so most of the cleanup is a set of final commits on the root, done be
 - **Automation.** A `scripts/expedition-cleanup <slug>` keyed on the naming convention (remove worktrees +
   delete branches that are ancestors of `origin/dev`, refuse and list exceptions otherwise) is the natural
   next step once the convention lands, replacing the manual loop. Roadmapped, not built.
+
+
+## The worktree audit (`scripts/worktree-audit`)
+
+The read-only half of cleanup automation: for every registered worktree (plus `--extra <dir>` roots
+for pre-convention sprawl), report branch, last-commit age, dirty file count, and whether the tip
+is banked on origin — then a `SAFE-TO-REMOVE` shortlist (clean + tip reachable from an origin ref).
+Removal stays manual and operator-approved (`git worktree remove` refuses dirty trees — the safety
+you want). The controller's placement check (controller.md resp. 0) is the other half of the same
+discipline: the controller sits in the main checkout on the expedition branch, verified at every
+re-ground and heartbeat wake, recovered via ExitWorktree/EnterWorktree or a plain switch — never a
+destructive checkout.
