@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.Case111
+import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
@@ -1224,9 +1225,10 @@ open DLNFibre.DLN.RLCT
 -- T-Obl3b OWED-3 mountain headline (`RouteMSJDeeperFlagCore`): L1 `deeperFlag_shell_core_le` (analytic
 -- heart) + the S3 `U_s`-uniform bricks + `deeperFlagCore_decLoss_pos_ae` (hpos) — all clean-three. S1-good
 -- `deeperFlag_spineToCore` = `exists_headSplitFrame` (F) ∘ `headSplit_domination` (D) + a clean assembly;
--- S1-good + the headline `deeperFlag_shell_le` carry a TRACKED sorryAx = exactly the TWO isolated (□)-rungs
--- F + D (F = Borel-functional-calculus frame selector; D = P-radial blow-up + C_hle + Ky-Fan + S3/L1
--- assembly). Tracked here so the day F+D land and the module goes clean-three is visible (std-decision-7).
+-- F is now WIRED sorry-free (`exists_headSplitFrame_impl`, `RouteMSJHeadSplitFrame`) — clean-three. S1-good
+-- + the headline `deeperFlag_shell_le` carry a TRACKED sorryAx = exactly the ONE remaining isolated (□)-rung
+-- D (P-radial blow-up + C_hle + Ky-Fan + S3/L1 assembly). Tracked here so the day D lands and the module
+-- goes clean-three is visible (std-decision-7).
 #print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_core_le
 #print axioms DLNFibre.DLN.RLCT.deeperFlagCore_decLoss_pos_ae
 #print axioms DLNFibre.DLN.RLCT.exists_headSplitFrame
@@ -1260,3 +1262,8 @@ open DLNFibre.DLN.RLCT
 -- + F1 `exists_headSplitFrame_impl` (the measurable piecewise m-frame selector). Both clean-three.
 #print axioms DLNFibre.DLN.RLCT.measurableEigendecomp
 #print axioms DLNFibre.DLN.RLCT.exists_headSplitFrame_impl
+-- L=1 headline endpoint: unconditional, sorry-free (the regular Morse single-layer RLCT = aoyagiLambda).
+-- Clean-three. And the #108 pre-stage wrapper (∀L≥1 case-split) — clean-three, carrying `hDescent` as an
+-- honest HYPOTHESIS (not sorryAx); #108 is a one-exact-fill once DecoratedDescent lands.
+#print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
+#print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage
