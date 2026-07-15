@@ -72,7 +72,7 @@ The full list and the review function that enforces it are in [`docs/policies/re
     subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
     indented code block (8-space indent) there; top-level fenced code is fine.
 - **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
-  source ([`docs/policies/claims.md`](docs/policies/claims.md)).
+  source ([`docs/policies/expedition-map.md`](docs/policies/expedition-map.md) — kill-conditions live as executable battery witnesses).
 - **Codex** is the independent second model for strategy and review
   ([`docs/policies/codex-consultation.md`](docs/policies/codex-consultation.md)).
 
@@ -89,12 +89,14 @@ Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
   ([`docs/policies/expedition.md`](docs/policies/expedition.md) § Controller assistants):
   - `cartographer` — memory: the map's overlay + index (banked-family cards, dead-route registry,
     naming forwarding-pointers); the diff-then-judge pass.
-  - `lookahead` — planning: the parallelisation audit, gate verification, hard-part-avoidance +
-    math-drift checks; calibration ledger.
+  - `navigator` — position + planning: where we came from / are / are going (critical-path vs
+    distinct-bet vs infra placement), the parallelisation audit, gate verification,
+    hard-part-avoidance + drift checks; calibration ledger.
   - `elder` — comprehension/direction: keeper of `compass.md` (the question, settled forks + whys,
     standing rising-sea counsel); convened at every route adoption; the stern voice.
-- Retired to forwarding stubs (2026-07-15): `self-recon` (→ generated brief sections), `hardener`
-  (→ reviewer function + elder's right-extension channel), `librarian` (→ `cartographer`).
+- Retired (2026-07-15): `self-recon` (→ the generated brief's epistemic sections), `hardener`
+  (→ reviewer function + the elder's right-extension channel), `lookahead`/`librarian` (renamed →
+  `navigator`/`cartographer`).
 
 If dispatched into a role, read its role file and agent definition first.
 

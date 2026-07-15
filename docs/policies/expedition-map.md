@@ -7,11 +7,11 @@ the map honest against it), and **the map is for gestalt, not citation** — rea
 matters, read the territory to decide what is true; any cell that becomes decision-load-bearing is
 re-verified against the territory, with its ripples ([`principles.md`](principles.md) P7).
 
-The map has two faces, one object: the **ledger face** (this directory — nodes, status, witnesses)
-and the **engine face** (the skeleton — settled decisions reified as typed, sorried Lean holes
-wired to the headline, so the brick-closing gradient pulls along the adjudicated route; P6). A map
-built as ledger alone is bookkeeping with no pull; the anchor pins and hole↔node links below are
-what tie the faces together.
+The map is one object in two parts: the **ledger** (the `expeditions/<slug>/map/` directory below —
+nodes, status, witnesses) and the **engine** (the skeleton — settled decisions reified as typed,
+sorried Lean holes wired to the headline, so the brick-closing gradient pulls along the adjudicated
+route; P6). A map built as ledger alone is bookkeeping with no pull; the anchor pins and hole↔node
+links below are what tie the two parts together.
 
 ## Layout — one authored file, everything else computed or curated
 
@@ -55,8 +55,8 @@ nodes:
 ```
 
 **Kinds.** `claim` — a mathematical statement with a truth-value. `notion` — a definition/carrier
-whose *shape* is the design question (the adm lesson: a notion consumed before validation was
-false-as-stated). `route` — a proof strategy: a decomposition claim ("these nodes compose to that
+whose *shape* is the design question (a recurring failure: a notion consumed by builds before it
+was validated, and false-as-stated). `route` — a proof strategy: a decomposition claim ("these nodes compose to that
 one") subject to the adoption gate.
 
 **Edges.** `needs` (dependency), `discharges` (this node closes that obligation — must become
@@ -67,7 +67,7 @@ tombstones, never silence).
 ## Maturity ladders (one per kind)
 
 - **claim**: `conjectured` → `adjudicated` (a cert with witnesses exists; for `tier: established`,
-  verified against the source — the old claims.md `verified`) → `stated` (Lean statement exists +
+  verified against the source — the former claims-policy `verified`) → `stated` (Lean statement exists +
   anchor pin) → `skeleton-linked` (a consumer in the skeleton elaborates against it) →
   `proven` (sorry-free closure, expected axioms — computed, not asserted).
   Exits: `refuted` (battery witness attached) / `superseded` / `retired` (+ `forwarded-to`).
@@ -110,8 +110,8 @@ same gate — loud, priced events, never quiet edits.
 
 ## The overlay — the cartographer's layer
 
-`overlay/` holds what judgment curates over the computed layer: **banked-family cards** ("the
-RouteMSJ* corner atoms: what exists, what each assumes, the near-misses one hypothesis away"),
+`overlay/` holds what judgment curates over the computed layer: **banked-family cards** (per lemma
+family: what exists, what each assumes, the near-misses one hypothesis away),
 the **dead-route registry** (refuted approaches + one-line reasons + battery pointers), **naming
 forwarding-pointers** (every rename leaves one; `expedition rename` maintains them), and
 **tombstones** for decayed detail. Promote/decay judgment reads the elder's `compass.md` first —
@@ -136,7 +136,7 @@ regeneration, by definition.
 | `view tick` → STATUS.md | controller (every tick; post-compaction) | ≤ 40 lines | roots' distance, live frontier, open gates, owners, staleness |
 | `view decision <id>` | controller at a decision | rich (5–20k tokens) | the node's full context: cone, siblings, refuted-sibling history, battery, evidence |
 | `brief <id> --resolution 1–4` | worker teammates at spawn / mid-thread descent | printed token estimate | ancestors→root, siblings, attached battery, banked/near-miss cards, dead routes with reasons, traps |
-| `view lookahead` | lookahead office | ≤ 7 items feed | open-node DAG (build-time vs sorry-propagation deps), idle-lanes-vs-open-gates, gates-ran ledger |
+| `view lookahead` | navigator office | ≤ 7 items feed | open-node DAG (build-time vs sorry-propagation deps), idle-lanes-vs-open-gates, gates-ran ledger |
 | `view dag` | any | — | the edge graph, filtered by kind/status |
 
 Don't economize on the decision and brief views — ambient context stays thin so that

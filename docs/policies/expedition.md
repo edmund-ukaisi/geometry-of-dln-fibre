@@ -9,9 +9,9 @@ the plan layer it maintains is the expedition-map ([`expedition-map.md`](expedit
 ## What an expedition is
 
 A structured investigation with a central question tied to the research direction.
-It runs for some duration, spawns threads dynamically, and produces an exposition
-(and a final synthesis) at close — whether the question is answered, refuted,
-refined into a successor, or abandoned.
+It runs for some duration, spawns threads dynamically, and produces its durable record — the map,
+the journal, the formalised claims — and a closing synthesis, whether the question is answered,
+refuted, refined into a successor, or abandoned.
 
 One expedition is one substantial chunk (a paper-section's worth), not one lemma.
 The thread is the working unit; a formalisation thread (tide) is the fine unit.
@@ -38,7 +38,8 @@ build loop → close.
   | joint | convened | mechanism |
   |---|---|---|
   | route adoption / skeleton revision | elder (+ council at major forks) | route-adoption gate ([`expedition-map.md`](expedition-map.md) contract 9) |
-  | phase transition (design→build, build→assembly, pre-close) | lookahead (no-skip) | disposition table before the first commissioning wave |
+  | scope-drop / pre-deferral / "simplification" of a named hard part | elder (consult before deciding) | written counsel into the record |
+  | phase transition (design→build, build→assembly, pre-close) | navigator (no-skip) | disposition table before the first commissioning wave |
   | universal / coverage / exhaustiveness claim | decorrelated hunt | § Gates |
   | tide completion | reviewer | AUDIT |
 
@@ -61,7 +62,7 @@ build loop → close.
   claim (see [`review.md`](review.md)). A reviewer can call `local-codex-consult`
   for an independent Codex opinion. A thread never reviews itself.
 - **Offices** (controller assistants) — read-only advisory seats convened fresh from durable
-  state: **cartographer** (memory), **lookahead** (planning), **elder** (comprehension/direction).
+  state: **cartographer** (memory), **navigator** (planning), **elder** (comprehension/direction).
   § Controller assistants.
 - **Operator** — the human. Injects taste by editing `priorities.md` (the
   highest-authority signal) and can seize a thread to drive it directly.
@@ -136,8 +137,7 @@ its question in-window (P2, P3).
 6. **Integrate** — apply accepted `MAP_DELTA`s to `claims.yaml`; append the tick's narrative to
    `journal.md`; refresh `STATUS.md` (`expedition status`); precision-check thread output
    (name = content; is the load-bearing step proved or merely assumed? — § Supervising the
-   formaliser); create or refactor the relevant `expositions/` doc when a result crystallises
-   (respecting operator-`stable` docs).
+   formaliser).
 7. **Surface** — escalate operator-facing items, ranked.
 8. **Review to equilibrium** — on a critical finding, loop fix → re-review until stable (cap 4 rounds).
 
@@ -151,7 +151,7 @@ stands down. Office = charter (role file) + one per-expedition artifact + conven
 | office | function | artifact | convened |
 |---|---|---|---|
 | **cartographer** | memory: what exists, what died, what is it called | `map/` overlay + index | cadence; anomaly digs |
-| **lookahead** | planning/inhibition: the parallelisation audit, gates-ran, avoidance | `map/calibration.md` + numbered passes | **mandatory at phase transitions**; cadence |
+| **navigator** | planning/inhibition: the parallelisation audit, gates-ran, avoidance | `map/calibration.md` + numbered passes | **mandatory at phase transitions**; cadence |
 | **elder** | comprehension/direction: the question, the whys, the counsel | `compass.md` | **mandatory at route adoption / skeleton revision**; cadence |
 
 Shared contract: read-only against the build (each office's own artifact excepted — single writer);
@@ -166,10 +166,14 @@ the journal so a lapsed cadence is operator-visible).
 
 ## priorities.md — the taste ledger
 
-A ranked ledger at the expedition root (≤ 30 lines); the place the operator injects judgment.
-Entries are **map node ids** with a one-line disposition each; the controller proposes a ranking by
-value-of-information and directed suspicion (from `lessons.md` and the dead-route registry), and
-flags low-confidence calls. The operator edits it directly.
+**What it is for:** the operator's asynchronous taste channel — the one file the operator is
+expected to edit, and the controller's own ranked triage. It answers "what should get the next
+lane?", which no computed view can (STATUS reports state; priorities encodes *judgment* over it).
+A ranked ledger at the expedition root (≤ 30 lines): entries are **map node ids**, each with a
+one-line disposition (pursue / park-unclear / drop / escalate). The controller proposes the ranking
+by value-of-information and directed suspicion (from `lessons.md` and the dead-route registry),
+flags low-confidence calls, and re-reads the file every substantive tick (the operator may have
+edited it out-of-band; operator edits are the highest-authority signal).
 
 Two states the ledger forces:
 - **Nothing unranked** — every observation is differentiated.
@@ -231,7 +235,9 @@ reach**, not below it. Drop scope only for a *genuine* blocker (missing theory, 
 risk to proven work) — never to save effort or make the close look tidy. Pre-emptively deferring
 sound, reachable work is the visible-progress instinct one level up; the review bar (audits, precision
 checks), **not** pre-emptive deferral, is the filter. The controller should be *more* ambitious than
-the teammates, not less.
+the teammates, not less. **Scope-drops, pre-deferrals, and "simplifications" of a named hard part
+are elder-consultation items** (§ Phases, convening joints): the elder reviews recent scope and
+ambition decisions on its cadence, and the controller consults it before making one.
 
 ## Mediating a positive/negative pair (the refutation dialectic)
 
@@ -310,7 +316,7 @@ committed tree intact throughout. The shape that holds:
 - a **universal / negative / exhaustiveness** claim ("holds for all", "no counterexample", "the case-split is complete") is not treated as **established** until a **decorrelated counterexample hunt** has attacked it and failed — an empty hunt is *scoped evidence* (state what was searched), not a proof; review confirms the cases shown, the hunt surfaces the case missed ([`bedrock.md`](bedrock.md) § the refutation dialectic). And **cited scripts are re-run** to confirm they reproduce their headline (not a relayed verdict; watch the script that reconstructs a *different* object than the one claimed) ([`bedrock.md`](bedrock.md) §Non-vacuity).
 - the expedition cannot CLOSE without a final controller integration deciding *close*.
 - a critical reviewer finding floors a review-to-equilibrium loop.
-- one blocking signal-and-wait: the close-phase PR — the expedition record (exposition + synthesis + Lean) becomes a shared artefact.
+- one blocking signal-and-wait: the close-phase PR — the expedition record (map + journal + Lean) becomes a shared artefact.
 
 ## Files
 
@@ -333,9 +339,8 @@ expeditions/<date>-<slug>/
 │   ├── battery/            executable witnesses                          (append: controller/cartographer)
 │   ├── overlay/            cards, dead routes, naming pointers           (cartographer)
 │   ├── survey/             computed; gitignored                          (tooling, rides green-gate)
-│   ├── calibration.md      predicted-vs-actual ledger                    (lookahead office)
+│   ├── calibration.md      predicted-vs-actual ledger                    (navigator office)
 │   └── STATUS.md           the sole materialized view, ≤40 lines         (tooling: `expedition status`)
-├── expositions/          human-facing docs (draft = fluid, stable = protected)
 └── threads/<NN>-<slug>/thread.md   brief + notes + read, one per thread
 ```
 
@@ -392,7 +397,6 @@ reconstructible.
 | `compass.md` | elder at convenings | re-ground; before any route adoption |
 | `heartbeat-prompt.md` | controller (memo section) | every heartbeat firing |
 | `threads/<NN>/thread.md` | the thread · during work + at close | controller on integration; reviewer on audit |
-| `expositions/` | controller · result-crystallisation + close | humans on review |
 | `lessons.md` | anyone · on a learning (append) | brief-template injection; close pass |
 
 ## Heartbeat
@@ -415,8 +419,8 @@ Main quest: <central question, one line>.
    priorities, map/STATUS.md, compass, journal tail, threads.
 2. Tick: ingest → re-anchor (brief + compass) → triage priorities → delegate (briefs via template
    + `expedition brief`) → integrate (journal append + map + STATUS) → surface → review-to-equilibrium.
-3. Office cadence check: ~60 commits or ~4 h since the last cartographer/lookahead/elder pass →
-   convene; phase transition → lookahead mandatory; route adoption → elder + gate.
+3. Office cadence check: ~60 commits or ~4 h since the last cartographer/navigator/elder pass →
+   convene; phase transition → navigator mandatory; route adoption → elder + gate.
 4. Flush before yielding (§ State). In-repo only — never `~/.claude` global memory; remind teammates.
 
 Teammate reports + operator messages wake you automatically — don't poll. This heartbeat is a long
@@ -426,32 +430,12 @@ Stop at CLOSE, or when the operator pauses.
 
 ## Close
 
-Final controller integration → finalise the exposition(s) (the human/paper-facing deliverable) →
-the calibration delta (predicted vs actual on the major nodes, into `map/calibration.md`) → the
-lessons pass (promote-or-decay) → a last journal entry → commit on the expedition branch →
-signal-and-wait before opening any PR. The exposition is the markdown chunk that feeds the paper;
-the formalised claims are its anchors.
-
-## Expositions
-
-`expeditions/<id>/expositions/` holds the **human-facing** docs — the legibility deliverable
-(purpose and the correct > elegant > efficient ordering: [`writing-style.md`](writing-style.md)).
-They are distinct from `journal.md`, the controller's *internal* narrative that assumes repo
-context.
-
-- **Controller-curated, by taste.** The controller starts a doc when a reader-facing piece
-  coheres — the whole expedition, a sub-result, or a cluster of threads. Not one per thread; the
-  expedition has at least one, and a sub-unit earns its own only when rich enough.
-- **Draft docs are fluid.** While `status: draft`, the controller may freely restructure a doc —
-  including a massive refactor (split / merge / rewrite) — as understanding improves. Do not be
-  precious about draft structure.
-- **Stable docs are protected.** Once the **operator marks a doc `status: stable`** (read and
-  blessed), the controller treats it as fixed: additive or careful edits only, no churn. A
-  massive refactor of a stable doc requires the operator to re-open it (`stable` → `draft`).
-- **Cadence.** Create or update at result-crystallisation (a claim verified + formalised +
-  reviewed) and at close — not every STEP_BACK.
-- **Promotion.** When a topic matures across expeditions, a stable exposition is synthesised into
-  the cross-expedition library `theory/expositions/<topic>.md`.
+Final controller integration → the calibration delta (predicted vs actual on the major nodes, into
+`map/calibration.md`) → the lessons pass (promote-or-decay) → a last journal entry → commit on the
+expedition branch → signal-and-wait before opening the close PR. The deliverable is the expedition
+record itself: the map (with its battery and anchors), the journal, and the formalised claims.
+Reader-facing write-ups, when wanted, are commissioned by the operator separately — they are not a
+standing close obligation.
 
 ## Anti-patterns
 
@@ -468,4 +452,3 @@ context.
 - **A settled fork left unskeletoned** — promotion lag is measured in re-litigations (P6).
 - **Selling-register verbs in a route document without witness pointers** ("mechanical", "just
   wiring", "bypasses") — the fork vocabulary; lint it, then prove it or strike it (P5).
-- Massive-refactoring an operator-`stable` exposition, or leaving a crystallised result with no human-facing doc.

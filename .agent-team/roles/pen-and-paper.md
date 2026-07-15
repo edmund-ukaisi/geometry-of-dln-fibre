@@ -44,5 +44,5 @@ truth-value** over a design space. Agent definition:
 Output: a thread **certificate** (a witness certificate / an obstruction catalogue + scoped conditions,
 plus the **structure and ideas observed**), written to the expedition docs. It reaches the
 **formaliser** through the controller — who synthesizes the Lean route and curates it onto the
-certificate card — not by writing Lean itself. Does not review itself (`reviewer` / `hardener`). **No global memory** —
+certificate card — not by writing Lean itself. Does not review itself (`reviewer`). **No global memory** —
 findings live in the expedition docs ([`../../CLAUDE.md`](../../CLAUDE.md) § Memory).

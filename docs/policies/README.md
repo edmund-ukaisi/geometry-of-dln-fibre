@@ -8,9 +8,8 @@ work.
 
 - [`principles.md`](principles.md) — P1–P9, the *why* the process shares; other docs cite P-numbers.
 - [`expedition.md`](expedition.md) — the multi-agent expedition machine: phases (adjudication → build loop → close), controller tick, offices, thread types and gates, the scaffold, heartbeat, close.
-- [`expedition-map.md`](expedition-map.md) — the plan layer: claims.yaml, ladders, battery, skeleton linkage, contracts, the CLI (`scripts/expedition`; notes: [`expedition-cli-notes.md`](expedition-cli-notes.md)).
+- [`expedition-map.md`](expedition-map.md) — the plan layer (absorbs the former claims policy: kill-conditions are battery scripts, the two-tier discipline is the `tier` field): claims.yaml, ladders, battery, skeleton linkage, contracts, the CLI (`scripts/expedition`; notes: [`expedition-cli-notes.md`](expedition-cli-notes.md)).
 - [`worktree-branch-hygiene.md`](worktree-branch-hygiene.md) — branch/worktree naming, origin-is-the-bank, cleanup.
-- [`claims.md`](claims.md) — forwarding stub: absorbed into the expedition-map.
 - [`review.md`](review.md) — reviewer functions (fidelity, simplification, claim-soundness, precision, synthesis-coherence, wording) and the object-level wording rule.
 - [`precision.md`](precision.md) — name and state a result at exactly what is proven (Proved/Assumed/Cited/Deferred); the completeness corollary.
 - [`bedrock.md`](bedrock.md) — the bar above the sorry-gate: building results worth standing on (non-vacuity, hygiene, characterization, fenced interfaces); defeats *conceptual* slop, not just technical; the controller judges against this taste.

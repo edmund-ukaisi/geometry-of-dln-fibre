@@ -17,9 +17,9 @@ From an existing instance (this repo, or the `ai-research-assistant` source):
 docs/policies/   principles.md  expedition.md  expedition-map.md  expedition-cli-notes.md
                  worktree-branch-hygiene.md  bedrock.md  precision.md  statement-cards.md
                  review.md  writing-style.md  codex-consultation.md
-                 draft-policy-semantic-auditing.md  README.md   (claims.md = stub)
+                 draft-policy-semantic-auditing.md  README.md
 .agent-team/     README.md  teammate-brief-template.md
-                 roles/{controller,scout,pen-and-paper,formaliser,reviewer,cartographer,lookahead,elder}.md
+                 roles/{controller,scout,pen-and-paper,formaliser,reviewer,cartographer,navigator,elder}.md
                  logs/.gitkeep  comms/.gitkeep
 scripts/         expedition  expedition_map/  hooks/pre-commit   (+ tests/ for the CLI)
 .claude/skills/  lean-formalisation/SKILL.md   local-codex-consult/SKILL.md
@@ -33,7 +33,8 @@ If your project also wants the reader-facing **exposition-format trio** (`scholi
 alongside the research-process policies.
 
 ## 2. Scrub the worked-examples (Layer 1 carries illustrations, not just rules)
-Most Layer-1 files are domain-agnostic; a handful thread *worked examples* from the prior project that must be
+Most Layer-1 files are domain-agnostic; `principles.md` deliberately carries the prior project's
+provenance (it is the evidence record — keep or trim at taste), and a handful of others thread *worked examples* from the prior project that must be
 recast or neutralized. Run a residual-token grep and recast each hit to your paper's mathematics (prefer a
 faithful recast over bland neutralization — the prior project's RLCT/codimension example, e.g., often has a
 natural analogue):
