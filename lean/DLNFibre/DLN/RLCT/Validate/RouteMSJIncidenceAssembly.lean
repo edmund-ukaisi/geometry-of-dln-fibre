@@ -222,6 +222,37 @@ theorem minAdm_redChain_succ_le (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) :
   rw [← minAdmRec_eq_minAdm, ← minAdmRec_eq_minAdm]
   exact hkey
 
+/-- **The (b′) discharge arithmetic — the pivot-row width is within the deep-tail minimum at a binding
+cut.** Given the binding-cut equality `hbind : minAdm M = peelCharge M t + minAdm (redChain t M)` (`t = t★`,
+the argmin) and `t+1 ≤ min(M₀,M₁)` (from a strict shell `j ≥ 1`), the pivot-row width `M₁−t` is at most the
+deep-tail minimum: `M₁ − t ≤ deepTailMin M`. Combine `min ≤ term` at `t+1`
+(`minAdm_le_peelCharge_add_redChain`) with the head-increment marginal (`minAdm_redChain_succ_le`); cancel
+`minAdm (redChain t M)` to get `a★·b★ ≤ (a★−1)(b★−1) + deepTailMin`, i.e. `a★+b★−1 ≤ deepTailMin`, so
+`b★ ≤ deepTailMin` (`a★ ≥ 1`). At a cut `u = t+j` the corank width `b = M₁−u ≤ M₁−t ≤ deepTailMin`, which
+(rankgen (c): nonzero `deepTailMin`-minor + `ae_matrix_eval_ne_zero` → `corank_survival_ae`) discharges
+`hGae` uniformly for all arity. -/
+theorem tailWidth_le_deepTailMin_of_binding (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht1 : t + 1 ≤ min (M 0) (M 1))
+    (hbind : minAdm M = peelCharge M t + minAdm (redChain t M)) :
+    M 1 - t ≤ deepTailMin M := by
+  have hmin := minAdm_le_peelCharge_add_redChain M (t + 1) (by omega)
+  have hmarg := minAdm_redChain_succ_le M t
+  rw [peelCharge] at hbind hmin
+  set a := M 0 - t with ha
+  set b := M 1 - t with hb
+  have ha1 : 1 ≤ a := by omega
+  have hb1 : 1 ≤ b := by omega
+  have hab0 : M 0 - (t + 1) = a - 1 := by omega
+  have hab1 : M 1 - (t + 1) = b - 1 := by omega
+  rw [hab0, hab1] at hmin
+  have hprod : a * b = (a - 1) * (b - 1) + (a + b - 1) := by
+    have e1 : a = (a - 1) + 1 := by omega
+    have e2 : b = (b - 1) + 1 := by omega
+    calc a * b = ((a - 1) + 1) * ((b - 1) + 1) := by rw [← e1, ← e2]
+      _ = (a - 1) * (b - 1) + ((a - 1) + (b - 1) + 1) := by ring
+      _ = (a - 1) * (b - 1) + (a + b - 1) := by omega
+  omega
+
 /-! ## Step 1, atom (i): the head/row-split box factorization for `hsSplit` -/
 
 /-- **The `hsSplit` box factorization.** `hsSplit M u κ` pulls the product box
