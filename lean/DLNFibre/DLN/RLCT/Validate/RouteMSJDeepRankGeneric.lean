@@ -9,8 +9,9 @@ set_option linter.style.longLine false
 
 **Thread `genm-sj5-c1` (aoyagi-full Stage 2), the rankgen hGae-discharge chain.** This module lands the
 one genuinely-AG input the coupled-incidence route otherwise avoids: the deep-layer PRODUCT
-`deeperFlagZdeep M u z` (the product of the deep chain `M₂ × M_last`) attains its GENERIC rank — the
-minimum deep width `deepTailMin M = ⨅_{i} M i.succ.succ` — for a.e. `z`.
+`deeperFlagZdeep M u z` (the product of the deep chain `M₂ × M_last`) has rank AT LEAST its generic value —
+the minimum deep width `deepTailMin M = ⨅_{i} M i.succ.succ` — for a.e. `z`. (Only this `≥` half is proved
+here; the always-true `≤` half is the standard `rank_mul_le`, so a.e. the rank equals `deepTailMin M`.)
 
     (c1)   ∀ᵐ z ∂(vol.restrict (paramsBoxM (redChain u M) 1)),  deepTailMin M ≤ (deeperFlagZdeep M u z).rank
 
@@ -178,10 +179,11 @@ theorem prod_rank_ge_chainInf_ae {n : ℕ} (C : Fin (n + 1) → ℕ) :
 
 /-! ## The deep-factor generic rank (c1) -/
 
-/-- **(c1) — the deep-factor generic rank.** For a.e. `z` in the reduced-params box, the deep-layer product
-`deeperFlagZdeep M u z` attains its generic rank `deepTailMin M = ⨅_i M i.succ.succ` (stated in the raw `⨅`
-form, DEFINITIONALLY `deepTailMin M`). This is `hZrank`, the input `hGae_from_deepRank` consumes (composed
-with the binding-cut Nat bound `M 1 - u ≤ deepTailMin M`). -/
+/-- **(c1) — the deep-factor generic rank (lower bound).** For a.e. `z` in the reduced-params box, the
+deep-layer product `deeperFlagZdeep M u z` has rank at least `deepTailMin M = ⨅_i M i.succ.succ` (its generic
+value; stated in the raw `⨅` form, DEFINITIONALLY `deepTailMin M`). Only the `≥` half is asserted — that is
+what the discharge needs; the `≤` half is the always-true `rank_mul_le`. This is `hZrank`, the input
+`hGae_from_deepRank` consumes (composed with the binding-cut Nat bound `M 1 - u ≤ deepTailMin M`). -/
 theorem deeperFlagZdeep_rank_ge_min_ae {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) :
     ∀ᵐ z ∂(volume.restrict (paramsBoxM (redChain u M) 1)),
       (Finset.univ : Finset (Fin (L + 1))).inf' ⟨0, Finset.mem_univ 0⟩ (fun i => M i.succ.succ)
