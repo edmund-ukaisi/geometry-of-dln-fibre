@@ -2,31 +2,67 @@
 
 A policy for running research as multi-agent **expeditions**: one **controller**
 (an Agent Teams team lead) orchestrating role-specialist **thread** teammates
-around a central question. Theory-adapted from the patterning expeditions-v2
-architecture. The disposition it runs under is in [`../../CLAUDE.md`](../../CLAUDE.md).
+around a central question. The disposition it runs under is in [`../../CLAUDE.md`](../../CLAUDE.md);
+the design principles it implements are [`principles.md`](principles.md) (cited as P1–P9);
+the plan layer it maintains is the expedition-map ([`expedition-map.md`](expedition-map.md)).
 
 ## What an expedition is
 
-A structured investigation with a central question tied to the research direction
-(the DLN-fibre / type-A quiver programme). It runs for some duration, spawns
-threads dynamically, and produces an exposition (and a final synthesis) at close — whether
-the question is answered, refuted, refined into a successor, or abandoned.
+A structured investigation with a central question tied to the research direction.
+It runs for some duration, spawns threads dynamically, and produces an exposition
+(and a final synthesis) at close — whether the question is answered, refuted,
+refined into a successor, or abandoned.
 
 One expedition is one substantial chunk (a paper-section's worth), not one lemma.
 The thread is the working unit; a formalisation thread (tide) is the fine unit.
+An expedition moves through **phases**: genesis → digestion/adjudication → the
+build loop → close.
+
+## Phases
+
+- **Genesis.** Instantiate the scaffold (§ Files), the map with `meta.roots` + the goal node(s),
+  the battery seeded from the source's worked examples, `heartbeat-prompt.md`.
+- **Digestion / adjudication.** Digest the source (or, for an open problem, the problem terrain);
+  adjudicate the forks that can be settled now. **Deliverable contract — a settled fork emits three
+  artifacts, immediately (promotion lag ≈ 0; P6):**
+  1. its **skeleton increment** — the adjudicated decomposition as a driver + obligation-record in
+     Lean, sorried, on canonical, wired toward the headline (the *pull*; the obligation-record
+     pattern is churn-robust: statement detail moves freely under a stable fork-level shape);
+  2. its **witnesses into the battery** — kill-conditions as executable scripts, not sentences (P1);
+  3. its **toolkit spec** — the domain-general machinery the new holes' types name, funding a
+     parallel **library lane** (P8: domain-general machinery survives route churn; route-glue does
+     not; "Mathlib-worthy" is an immediate integration obligation, never a side branch).
+  For an open problem this phase never ends — forks settle progressively and the skeleton ratchets.
+- **Build loop.** The controller tick (below), threads, gates — with the **convening joints**:
+
+  | joint | convened | mechanism |
+  |---|---|---|
+  | route adoption / skeleton revision | elder (+ council at major forks) | route-adoption gate ([`expedition-map.md`](expedition-map.md) contract 9) |
+  | phase transition (design→build, build→assembly, pre-close) | lookahead (no-skip) | disposition table before the first commissioning wave |
+  | universal / coverage / exhaustiveness claim | decorrelated hunt | § Gates |
+  | tide completion | reviewer | AUDIT |
+
+  A gate is a convening device; the alternative to a gate is not trust — it is an unconvened
+  moment (P2).
+- **Close.** § Close, plus the calibration delta (predicted vs actual per major node — feeds the
+  calibration ledger) and the lessons pass (promote-or-decay: a lesson that recurred moves up into
+  a role file or the brief template; the rest stays in `lessons.md` and is allowed to fade).
 
 ## Architecture (Agent Teams)
 
-- **Controller** — the team lead and sole delegator. Holds the strategic state
-  (`brief.md`, `priorities.md`, `synthesis.md`), does meta-level planning and
-  integration, and delegates execution. Does not do thread grunt-work in its own
-  context.
+- **Controller** — the team lead and sole delegator and **the only actor**. Holds the strategic
+  state (`brief.md`, `priorities.md`, the map's `claims.yaml` as its single curated writer), does
+  meta-level planning and integration, and delegates execution. Does not do thread grunt-work in
+  its own context.
 - **Threads** — role-specialist teammates, each running its typed loop. Leaf
   executors: they execute and decide within their loop but cannot spawn agents; a
   thread needing a helper sends the controller a `REQUEST_SPAWN`.
 - **Reviewers** — teammates the controller spawns to audit a thread's output or a
   claim (see [`review.md`](review.md)). A reviewer can call `local-codex-consult`
   for an independent Codex opinion. A thread never reviews itself.
+- **Offices** (controller assistants) — read-only advisory seats convened fresh from durable
+  state: **cartographer** (memory), **lookahead** (planning), **elder** (comprehension/direction).
+  § Controller assistants.
 - **Operator** — the human. Injects taste by editing `priorities.md` (the
   highest-authority signal) and can seize a thread to drive it directly.
 - **Seats, not per-task hires.** Reuse a bounded set of named seats (one
@@ -37,7 +73,11 @@ The thread is the working unit; a formalisation thread (tide) is the fine unit.
 
 Communication is the Agent Teams mailbox (turn-based, non-blocking). Run with
 `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`; one team per expedition; cwd is this
-harness directory.
+harness directory. Spawn briefs are built from
+[`.agent-team/teammate-brief-template.md`](../../.agent-team/teammate-brief-template.md) — the
+epistemic sections (standing decisions, battery, traps, consume/staged) are generated via
+`scripts/expedition brief <node>`, so a seat is never convened without the settled forks that touch
+its question in-window (P2, P3).
 
 ### Isolation, merging, and long compiles
 
@@ -45,6 +85,7 @@ harness directory.
   construction*: a stale or misdirected command (a `revert`/`checkout` that crossed in flight) cannot
   reach another agent's tree, writers never collide on the same files, and a reviewer audits a
   **frozen** checkout that cannot shift under it mid-audit. Spawn with `isolation: "worktree"`.
+  Naming + cleanup: [`worktree-branch-hygiene.md`](worktree-branch-hygiene.md).
   - *Lean / heavy-build contingency:* a fresh worktree gets its own build dir, so dependency oleans
     (Mathlib, ~GBs) would rebuild per worktree. **Share the dependency build** — reuse/symlink
     `.lake/packages` across worktrees — so only the project's own small oleans rebuild per worktree.
@@ -55,9 +96,7 @@ harness directory.
     the controller is itself in a worktree, spawned isolation-worktrees **collapse onto the controller's**
     (all teammates share one) — isolation becomes nominal. When that happens, run teammates **serially**
     in the shared worktree (one active editor at a time): the centralized-merge integrity still holds, but
-    the parallelism is lost. (a past Stage-3 run: the controller was launched in a worktree, so all
-    teammates shared it; the inherently sequential P1→P2→P3 chain made serial fine. Launch the controller
-    from the main checkout to get true isolation.)
+    the parallelism is lost.
 - **The controller is the sole merger.** Teammates commit only to their own worktree branches; the
   controller is the only agent that integrates — `fetch → merge → resolve conflicts → green-gate
   (build) → commit`. This gives **one coherent integration state the controller alone owns** (so
@@ -65,7 +104,8 @@ harness directory.
   confusion), and resolves any conflict in one place with the full picture. Partition work by module
   (single-writer-per-file, e.g. the Lean aggregator) to keep conflicts rare. This is the
   "contributors on branches, controller as maintainer" model: a teammate racing ahead becomes a safe
-  *merge decision*, not a shared-tree hazard.
+  *merge decision*, not a shared-tree hazard. The green-gate also carries the map's ride-alongs:
+  survey refresh, full validator, anchor compile, battery.
 - **Run long compiles (`lake build`, large test/CAS suites) as non-blocking background processes.** A
   blocking multi-minute build stalls the agent's turn and *widens the window for message crossing*;
   backgrounding it keeps the agent responsive and lets completion notify rather than block. This
@@ -81,38 +121,55 @@ harness directory.
 
 ## Controller tick
 
-1. **Re-ground (when you need to)** — on a fresh session, after a compaction, or whenever you are unsure of the current state, read the full re-ground list (§ State, compaction, and recovery). On a warm tick, read only the delta — `priorities.md` + the reporting thread's `thread.md`. Grounding is cheap; prefer it to guessing.
-2. **Ingest** — mailbox (thread reports, `REQUEST_SPAWN`), finished jobs, operator edits.
-3. **Re-anchor** — reread `brief.md` and the research direction; restate the single most decision-relevant question.
-4. **Triage** — maintain `priorities.md`: rank live observations / threads / claims by value-of-information and directed suspicion; mark each pursue / park-unclear / drop / escalate.
-5. **Delegate** — spawn or instruct threads; spawn reviewers.
-6. **Integrate** — update `synthesis.md` against the research direction (drift guard); precision-check thread output (name = content; is the load-bearing step proved or merely assumed? — § Supervising the formaliser); create or refactor the relevant `expositions/` doc when a result crystallises (respecting operator-`stable` docs).
+1. **Re-ground (when you need to)** — on a fresh session, after a compaction, or whenever you are
+   unsure of the current state, read the **re-ground bundle** (§ State, compaction, and recovery) —
+   constant-size by design. On a warm tick, read only the delta — `priorities.md` + the reporting
+   thread's `thread.md`. Grounding is cheap; prefer it to guessing.
+2. **Ingest** — mailbox (thread reports, `REQUEST_SPAWN`, `MAP_DELTA` proposals), finished jobs,
+   operator edits.
+3. **Re-anchor** — reread `brief.md` and the elder's `compass.md`; restate the single most
+   decision-relevant question.
+4. **Triage** — maintain `priorities.md`: rank live map nodes by value-of-information and directed
+   suspicion; mark each pursue / park-unclear / drop / escalate.
+5. **Delegate** — spawn or instruct threads (briefs via the template + `expedition brief`);
+   spawn reviewers; convene offices at their joints.
+6. **Integrate** — apply accepted `MAP_DELTA`s to `claims.yaml`; append the tick's narrative to
+   `journal.md`; refresh `STATUS.md` (`expedition status`); precision-check thread output
+   (name = content; is the load-bearing step proved or merely assumed? — § Supervising the
+   formaliser); create or refactor the relevant `expositions/` doc when a result crystallises
+   (respecting operator-`stable` docs).
 7. **Surface** — escalate operator-facing items, ranked.
 8. **Review to equilibrium** — on a critical finding, loop fix → re-review until stable (cap 4 rounds).
 
-## Controller assistants
+## Controller assistants (the offices)
 
-A class of controller-commissioned seats that augment the controller's executive function — the
-functions that decay under interrupt load: working memory (`librarian`), planning/inhibition/
-goal-maintenance (`lookahead`). Shared contract: read-only against the build (librarian's index
-directory excepted — single writer, one live instance); pull state themselves from git/tree/ledger,
-never from the controller's summary (decorrelation is the value); output a numbered disposition
-artifact the controller accepts / re-sequences / moots item-by-item — propose, never act; "no change
-needed" is a first-class verdict; no global memory. **Scale gate**: not instantiated on small
-expeditions (≲100 expedition Lean files / ≲200 ledger blocks / ≲1 week). **Triggers**: a standing
-loop-prompt cadence (every ~60 canonical commits or ~4 h, whichever first; commit-count tracks state
-change, not tempo), self-perpetuating (each pass names the next trigger; passes numbered in the
-ledger so a lapsed cadence is operator-visible) — plus the no-skip gate below.
+Read-only advisory seats that augment the controller's executive function — the functions that
+decay under interrupt load and context turnover (P2). **An office, not a session**: no long-running
+instance (fake persistence, correlation hub); each is convened fresh from its durable artifact and
+stands down. Office = charter (role file) + one per-expedition artifact + convening triggers.
 
-**No-skip gate:** at every phase transition (design→build, build→assembly, pre-close), a `lookahead`
-pass is mandatory before the transition's first commissioning wave, like AUDIT for tides.
+| office | function | artifact | convened |
+|---|---|---|---|
+| **cartographer** | memory: what exists, what died, what is it called | `map/` overlay + index | cadence; anomaly digs |
+| **lookahead** | planning/inhibition: the parallelisation audit, gates-ran, avoidance | `map/calibration.md` + numbered passes | **mandatory at phase transitions**; cadence |
+| **elder** | comprehension/direction: the question, the whys, the counsel | `compass.md` | **mandatory at route adoption / skeleton revision**; cadence |
+
+Shared contract: read-only against the build (each office's own artifact excepted — single writer);
+pull state themselves from git/tree/map, never from the controller's summary (decorrelation is the
+value); output a numbered disposition artifact the controller accepts / re-sequences / moots
+item-by-item — propose, never act; "no change needed" is a first-class verdict; no global memory.
+**Scale gate**: not instantiated on small expeditions (≲100 expedition Lean files / ≲200 journal
+blocks / ≲1 week) — there the controller holds the offices itself and `compass.md` is a section of
+`brief.md`. **Cadence**: every ~60 canonical commits or ~4 h, whichever first (commit-count tracks
+state change, not tempo), self-perpetuating (each pass names the next trigger; passes numbered in
+the journal so a lapsed cadence is operator-visible).
 
 ## priorities.md — the taste ledger
 
-A ranked ledger at the expedition root; the place the operator injects judgment.
-The controller proposes a ranking by value-of-information (how much does the next
-action change across an item's resolutions?) and directed suspicion (from
-`lessons.md`), and flags low-confidence calls. The operator edits it directly.
+A ranked ledger at the expedition root (≤ 30 lines); the place the operator injects judgment.
+Entries are **map node ids** with a one-line disposition each; the controller proposes a ranking by
+value-of-information and directed suspicion (from `lessons.md` and the dead-route registry), and
+flags low-confidence calls. The operator edits it directly.
 
 Two states the ledger forces:
 - **Nothing unranked** — every observation is differentiated.
@@ -123,20 +180,23 @@ Two states the ledger forces:
 Type is chosen at spawn and selects the sub-machine. Any type can reach `ABANDONED`
 (record the reason).
 
-- **explore** — `OPENED → LONGLIST (what to compute/derive) → TRIAGE → COMPUTE/DERIVE → CHECK → NOTICE/INTERPRET → STEP_BACK (loop or close)`. Forms and sharpens **claims** with explicit kill-conditions (see [`claims.md`](claims.md)) and stress-tests them. `CHECK` confirms computations are sane.
-- **formalisation (tide)** — `OPENED → SPECIFY → PROVE → AUDIT`. Runs the `lean-formalisation` skill. **AUDIT** is a no-skip gate: `scripts/sorries` clean **and** a reviewer confirms the Lean statement matches the claim (fidelity) **and** checks hypothesis-fit against the artifact's intended consumers as named in the tracker (a lemma can be sound, faithful, non-vacuous — and still not enough for what the plan says it discharges; sufficiency-for-consumers is part of the audit, not assumed).
-- **infra** — `OPENED → SPECIFY (interface/spec) → BUILD → TEST`. For harness / computation tooling; run by the formaliser role or a purpose-spawned teammate (no dedicated infra agent yet). **TEST** is a no-skip gate: the spec's tests pass and the read states what each test demonstrates.
+- **explore** — `OPENED → LONGLIST (what to compute/derive) → TRIAGE → COMPUTE/DERIVE → CHECK → NOTICE/INTERPRET → STEP_BACK (loop or close)`. Forms and sharpens **claims** as map nodes with executable kill-conditions ([`expedition-map.md`](expedition-map.md) § battery) and stress-tests them. `CHECK` confirms computations are sane.
+- **formalisation (tide)** — `OPENED → SPECIFY → PROVE → AUDIT`. Runs the `lean-formalisation` skill. **AUDIT** is a no-skip gate: `scripts/sorries` clean **and** a reviewer confirms the Lean statement matches the claim (fidelity) **and** checks hypothesis-fit against the artifact's intended consumers as named in the map (a lemma can be sound, faithful, non-vacuous — and still not enough for what the plan says it discharges; sufficiency-for-consumers is part of the audit, not assumed — P3).
+- **infra** — `OPENED → SPECIFY (interface/spec) → BUILD → TEST`. For harness / computation tooling; run by the formaliser role or a purpose-spawned teammate. **TEST** is a no-skip gate: the spec's tests pass and the read states what each test demonstrates.
 
 `REQUEST_SPAWN` (ask the controller for a reviewer/helper) fires from `CHECK` / `AUDIT` / `TEST`, where fresh eyes are most valuable. Its fields: requester, requested role/function, target artifact, question, blocking/non-blocking, expected output.
 
 Thread `status` in `threads.md` is one of `open` / `in-progress` / `blocked` / `review-pending` / `closed` / `abandoned`.
 
-## The maturity gradient
+## Maturity
 
-A claim flows **explore → stable claim → formalisation (tide)**. A new claim is
-tide-eligible at status `survived` or `refined`; an established/published result at
-`verified` (light verify-against-source) — see [`claims.md`](claims.md). The universal
-non-skippable gate is the formalisation AUDIT.
+Claim/notion/route maturity is the map's ladders ([`expedition-map.md`](expedition-map.md)
+§ Maturity ladders), which absorb the former claims-card statuses: a **new** claim is tide-eligible
+at `adjudicated` (stress-tested, cert with witnesses); an **established** (published/cited) claim's
+adjudication is the light verify-against-source. The universal non-skippable gate is the
+formalisation AUDIT — a light path to the tide never weakens it. Refuted nodes stay (with their
+battery witness): they are the trail, and the battery re-tests every open route against them for
+free.
 
 ## Supervising the formaliser
 
@@ -183,6 +243,8 @@ parallel and report two one-sided results.
 - **Drive the loop.** A counterexample from one side becomes a *narrow-the-theorem* task for the other; a
   theorem becomes a *hypothesise-a-reasonable-strengthening-and-hunt* task for the first. Decide each handoff
   on judgement; the deliverable is the converged boundary, not a lone witness or a padded weak theorem.
+  Certified witnesses land in the **battery** (P1) — a refutation stored as a test binds every future
+  author who never read the cert.
 - **Two task modes — name which you are issuing, to control biasing:**
   - **decorrelated** (a correctness gate or an independent attack): give the *config / question* and
     **withhold the expected answer and the other seat's hypothesis** — "compute X from scratch and report
@@ -214,141 +276,167 @@ damage:
 - **Throttle cadence while a hold is outstanding** — a stream of fast follow-ups is where crossing
   compounds.
 
+### Hub-and-spoke — the finished-agent discipline
+
+Peer-to-peer coordination among *finished* agents is where async crossing turns into a self-sustaining
+noise cascade. In a past endgame ~7 done agents stayed alive and cross-messaged to re-confirm committed
+work, de-conflict, and chase misattributed relays; with queue-lag and task-replays each stale message
+triggered defensive cross-checks that themselves landed stale — zero new work, real token/cycle cost, the
+committed tree intact throughout. The shape that holds:
+
+- **Done → report + stand down.** A teammate that has delivered and committed its piece reports completion
+  to the controller and then stands down / requests shutdown. It does **not** stay on-call by default — the
+  on-call value (a possible later review) rarely exceeds the noise, and a fresh seat re-spawns turnkey when
+  a specific need arises (context lives in the committed code + docs).
+- **The controller shuts down done agents** rather than leaving them idle-on-call.
+- **All coordination routes through the controller (the hub).** No teammate↔teammate cross-talk — the sole
+  sanctioned spoke-to-spoke channel is a *tight live collaboration* (a builder and its reviewer on one
+  in-flight piece).
+- **A teammate's *requests* route through the hub too.** In the rare case a teammate needs to coordinate
+  with another thread, or judges that a new teammate should be spawned for a different piece, it raises that
+  with the controller — it does not reach across to a peer or spawn on its own. The controller decides and
+  dispatches.
+- **Break a cascade with an artifact ID, not more prose.** When queue-lagged messages replay a settled
+  reconciliation, one broadcast of the committed **SHA / file md5** ends it — an artifact identity is
+  independently verifiable and timeless; "it's done, trust me" is not.
+- **Verify a serious relayed claim on ground truth before acting.** "landed" / "fabricated" / "clobbered"
+  from a peer is checked against disk/git first; a claim that contradicts established ground truth is
+  reconciled before it is believed. Never relay-and-act.
+
 ## Gates (non-skippable)
 
-- formalisation cannot reach done without AUDIT; infra cannot without TEST. The controller reads the AUDIT alongside a **precision + bedrock check** (§ Supervising the formaliser): the name/statement denotes exactly what is proved, the load-bearing step is proved or named as the open target, and the result clears the bedrock bar ([`bedrock.md`](bedrock.md) — non-vacuous, hygienic, characterized, fenced). A green, sorry-free, axiom-clean build is necessary, never sufficient.
+- formalisation cannot reach done without AUDIT; infra cannot without TEST. The controller reads the AUDIT alongside a **precision + bedrock check** (§ Supervising the formaliser): the name/statement denotes exactly what is proved, the load-bearing step is proved or named as the open target, and the result clears the bedrock bar ([`bedrock.md`](bedrock.md) — non-vacuous, hygienic, characterized, fenced). A green, sorry-free, axiom-clean build is necessary, never sufficient. The bedrock/taste pass is a **reviewer function** ([`review.md`](review.md)), decorrelated from the builder.
+- **Route adoption and skeleton revision** pass the route-adoption gate ([`expedition-map.md`](expedition-map.md) contract 9): the composition skeleton elaborates against the consumed nodes' *verbatim* statements (anchor pins — never a docstring or cert paraphrase; P3), and every carried hypothesis is evaluated at the battery. The elder is convened (a council of two, independently, at major forks). A route document's sufficiency verbs ("suffices", "bypasses", "mechanical") without witness pointers are lint (P5).
 - a **universal / negative / exhaustiveness** claim ("holds for all", "no counterexample", "the case-split is complete") is not treated as **established** until a **decorrelated counterexample hunt** has attacked it and failed — an empty hunt is *scoped evidence* (state what was searched), not a proof; review confirms the cases shown, the hunt surfaces the case missed ([`bedrock.md`](bedrock.md) § the refutation dialectic). And **cited scripts are re-run** to confirm they reproduce their headline (not a relayed verdict; watch the script that reconstructs a *different* object than the one claimed) ([`bedrock.md`](bedrock.md) §Non-vacuity).
 - the expedition cannot CLOSE without a final controller integration deciding *close*.
 - a critical reviewer finding floors a review-to-equilibrium loop.
-- the **bedrock check is run by an independent `hardener`** ([`../../.agent-team/roles/hardener.md`](../../.agent-team/roles/hardener.md)), not only the controller — a decorrelated principles/taste pass (distinct from the correctness audit) at each gate and at step-back, surfacing overclaims, holes-vs-extensions, *and the right extensions* (→ Just-Do-It if within reach, else roadmap). The controller integrates its findings and holds precedence; a critical hardener finding floors a loop like a reviewer finding.
 - one blocking signal-and-wait: the close-phase PR — the expedition record (exposition + synthesis + Lean) becomes a shared artefact.
 
 ## Files
 
 ```
 expeditions/<date>-<slug>/
-├── brief.md         central question + closing criterion
-├── priorities.md    the taste ledger (controller proposes; operator edits)
-├── threads.md       index: status / type / one-line subject per thread
-├── synthesis.md     controller's internal integrative ground (current read + drift-guard; not a deliverable)
-├── lessons.md       methodological learnings (append-only)
-├── expositions/     human-facing docs (controller-curated; draft = fluid, stable = human-read/protected)
+├── brief.md              central question + closing criterion            (controller · setup)
+├── priorities.md         taste ledger: ranked map-node ids, ≤30 lines    (controller proposes; operator edits)
+├── compass.md            the elder's counsel: the question, settled forks
+│                         + whys, load-bearing facts, ranked uncertainties,
+│                         standing build-the-general-machinery calls; ≤2pp (elder office)
+├── journal.md            append-only narrative, tail-read only — designed
+│                         decay; NEVER holds load-bearing status (P9)      (controller · every tick)
+├── heartbeat-prompt.md   re-ground protocol + controller memo ≤10 lines  (controller edits memo)
+├── threads.md            index: status / type / one-line per thread      (controller)
+├── lessons.md            methodological learnings (append; promote-or-
+│                         decay at close)                                 (anyone · on a learning)
+├── discuss-at-close.md   operator-facing items, D-### ids                (controller)
+├── map/                  the expedition-map (see expedition-map.md):
+│   ├── claims.yaml         the plan of record                            (controller, sole curated writer)
+│   ├── battery/            executable witnesses                          (append: controller/cartographer)
+│   ├── overlay/            cards, dead routes, naming pointers           (cartographer)
+│   ├── survey/             computed; gitignored                          (tooling, rides green-gate)
+│   ├── calibration.md      predicted-vs-actual ledger                    (lookahead office)
+│   └── STATUS.md           the sole materialized view, ≤40 lines         (tooling: `expedition status`)
+├── expositions/          human-facing docs (draft = fluid, stable = protected)
 └── threads/<NN>-<slug>/thread.md   brief + notes + read, one per thread
 ```
 
-Agent Teams runtime state (team config, mailbox, task list) lives outside the repo under `~/.claude/teams/<team>/` and `~/.claude/tasks/<team>/`.
+Retired from the previous scaffold (forwarding: git history + `overlay/naming.md`): `synthesis.md`
+(split into `journal.md` + `STATUS.md` + `compass.md` — the frontier must never live inside the
+decay layer), `loop-prompt.md` (→ `heartbeat-prompt.md`), hand-maintained built-indexes and
+endgame-lane trackers (→ the map + overlay).
+
+Agent Teams runtime state (team config, mailbox, task list) lives outside the repo under
+`~/.claude/teams/<team>/` and `~/.claude/tasks/<team>/`.
 
 ## State, compaction, and recovery
 
 The repo docs are the expedition's **durable memory**. The controller's and teammates'
-in-context state, and the Agent-Teams runtime (mailbox, per-team task list under
-`~/.claude/`), are **volatile** — lost on context compaction or session restart. Two rules
-follow.
+in-context state, and the Agent-Teams runtime, are **volatile** — lost on context compaction or
+session restart. Two rules follow.
 
-**Write to survive compaction.** The controller flushes its working read to `synthesis.md` and
-`priorities.md` at each tick (and before any long or risky operation), so a post-compaction
-controller loses at most the last tick's un-flushed thinking. Teammates flush progress to their
-`thread.md` for the same reason. `threads.md` is the durable thread-status ledger; the team
-task-list is a runtime convenience that mirrors it. Never hold decision-relevant state only in
-context or only in the mailbox — land it in a doc.
+**Write to survive compaction.** At each tick (and before any long or risky operation): append the
+tick's narrative to `journal.md`, apply map edits, run `expedition status`, and update the
+heartbeat memo if the phase or top decision changed. Teammates flush progress to their `thread.md`.
+Never hold decision-relevant state only in context or only in the mailbox — land it in an artifact
+at the right binding strength (P1): a decision in the skeleton/map, a refutation in the battery, a
+status in STATUS.md — narrative (and only narrative) in the journal.
 
-**Read to re-ground.** Re-ground — read the full list below — on a fresh session, after a
-compaction, or **whenever you are unsure of the current state**. Grounding is cheap; prefer it to
-guessing. On a warm tick (you have reasoned continuously since your last read), read only the
-**delta**: `priorities.md` (the operator may have edited it out-of-band) and the reporting
-thread's `thread.md`.
+**Read to re-ground.** Re-ground on a fresh session, after a compaction, or whenever unsure.
+The **re-ground bundle is constant-size by design** (the journal is *never* read in full — tail
+only; archaeology is an on-demand dig, not recovery):
 
-**Re-ground full-read list** (paths from the harness root; `<exp>` = the expedition dir):
-
-- `docs/policies/expedition.md` — your full contract (this file: tick, gates, recovery)
+- `docs/policies/expedition.md` — your full contract (this file)
 - `<exp>/brief.md` — the central question
-- `<exp>/priorities.md` — the taste ledger / decision queue
-- `<exp>/synthesis.md` — your current integrative read
+- `<exp>/heartbeat-prompt.md` — the protocol + your own memo to yourself
+- `<exp>/priorities.md` — the taste ledger (the operator may have edited it)
+- `<exp>/map/STATUS.md` — the frontier, owners, open gates
+- `<exp>/compass.md` — the question's state, settled forks, counsel
+- `<exp>/journal.md` — tail (last 2–3 entries) only
 - `<exp>/threads.md` — thread-status ledger
-- `<exp>/lessons.md` — methodological learnings
-- `<exp>/expositions/` — any in-progress draft you were writing
 
-`CLAUDE.md` is auto-loaded (always present — not in the list). Read `claims.md` / `review.md` /
-`precision.md` / `writing-style.md` / `statement-cards.md` / `codex-consultation.md`,
-`theory/setup.md`, and `lean/CLAUDE.md` when their action arises. A freshly spawned teammate orients from its spawn brief
-plus the durable docs it points at. After a full restart the runtime team may be gone
-(cross-restart persistence is unverified); re-ground from the list and re-spawn teammates — the
-docs are the source of truth, the team is reconstructible.
+`CLAUDE.md` is auto-loaded. Read `expedition-map.md` / `review.md` / `precision.md` /
+`bedrock.md` / `writing-style.md` / `codex-consultation.md` / `lean/CLAUDE.md` when their action
+arises; `expedition view decision <id>` for any node about to carry a decision (P7: gestalt from
+the map, truth from the territory). A freshly spawned teammate orients from its spawn brief
+(template + `expedition brief <node>`). After a full restart the runtime team may be gone;
+re-ground from the bundle and re-spawn teammates — the docs are the source of truth, the team is
+reconstructible.
 
 **Cadence (read / write).**
 
 | Doc | Written · when | Read · when |
 |---|---|---|
-| `brief.md` | controller · setup, `REFINE_QUESTION` | controller on re-ground; each thread on spawn |
-| `priorities.md` | controller every tick; operator anytime | controller every substantive tick (operator's async channel) |
-| `synthesis.md` | controller every tick (flush) | controller on re-ground; distilled into expositions |
+| `brief.md` | controller · setup | re-ground; each thread on spawn |
+| `priorities.md` | controller every tick; operator anytime | every substantive tick |
+| `journal.md` | controller every tick (append) | tail on re-ground; archaeology on demand |
+| `map/` + `STATUS.md` | per § Files owners | STATUS every tick; views at decisions |
+| `compass.md` | elder at convenings | re-ground; before any route adoption |
+| `heartbeat-prompt.md` | controller (memo section) | every heartbeat firing |
 | `threads/<NN>/thread.md` | the thread · during work + at close | controller on integration; reviewer on audit |
-| `expositions/` | controller · result-crystallisation + close | humans on review; controller when distilling |
-| `lessons.md` | controller / threads · on a learning (append) | controller on re-ground |
+| `expositions/` | controller · result-crystallisation + close | humans on review |
+| `lessons.md` | anyone · on a learning (append) | brief-template injection; close pass |
 
-So `synthesis.md` is *written* every tick (the recovery substrate must stay current) but *read*
-only on re-ground; expositions move at the slower crystallisation cadence — they are the
-deliverable, not the memory.
+## Heartbeat
 
-## Loop prompt
-
-The executable wrapper of the tick — instantiated per expedition at SETUP (`<exp>/loop-prompt.md`)
-and, when an unattended heartbeat is wanted, run via `/loop`. Keep it short: it re-issues
-identity, the re-ground list, and the decisions, and points at the full contract
-(`docs/policies/expedition.md`) — the first doc read in full on re-ground.
+The unattended cadence wrapper. The cron/loop message is **constant and tiny** — it never changes,
+so it cannot rot: *"You are the controller of `<expedition-id>`. Read `<exp>/heartbeat-prompt.md`
+and act on it. One tick per wake."* Everything mutable lives in the file:
 
 ````markdown
-# Controller loop — <expedition-id>
+# Heartbeat — <expedition-id>
 
-You are the controller (team lead) of the `<expedition-id>` expedition.
 Main quest: <central question, one line>.
 
-Run ONE tick per wake.
+## Memo (controller-edited, ≤10 lines — the costliest lines in the system: keep them current)
+- phase: <…>   top decision in flight: <…>
+- <the 3–5 things post-compaction-you must not lose>
 
-## Re-ground when you need to
-On a fresh session, after a compaction, or whenever you are unsure of the current state, read
-these in full (grounding is cheap — prefer it to guessing):
-- docs/policies/expedition.md   ← your full contract (tick, gates, recovery)
-- <exp>/brief.md                ← the central question
-- <exp>/priorities.md           ← the taste ledger / decision queue
-- <exp>/synthesis.md            ← your current integrative read
-- <exp>/threads.md              ← thread-status ledger
-- <exp>/lessons.md              ← methodological learnings
-- <exp>/expositions/            ← any in-progress draft you were writing
-(CLAUDE.md is auto-loaded. Read claims.md / review.md / precision.md / bedrock.md / writing-style.md /
- statement-cards.md / codex-consultation.md, theory/setup.md, lean/CLAUDE.md when their action arises.)
-If warm and sure, read only the delta: priorities.md + the reporting thread's thread.md.
+## Protocol (per wake)
+1. Re-ground if fresh/compacted/unsure: the bundle (expedition.md § State) — brief, this file,
+   priorities, map/STATUS.md, compass, journal tail, threads.
+2. Tick: ingest → re-anchor (brief + compass) → triage priorities → delegate (briefs via template
+   + `expedition brief`) → integrate (journal append + map + STATUS) → surface → review-to-equilibrium.
+3. Office cadence check: ~60 commits or ~4 h since the last cartographer/lookahead/elder pass →
+   convene; phase transition → lookahead mandatory; route adoption → elder + gate.
+4. Flush before yielding (§ State). In-repo only — never `~/.claude` global memory; remind teammates.
 
-## Tick
-re-anchor to the quest → triage priorities.md (VOI × suspicion) → delegate (spawn/instruct
-threads, spawn reviewers) → integrate into synthesis.md + precision-check / supervise the formaliser
-(name = content; push the load-bearing maths, don't defer it) + create/refactor an exposition at
-result-crystallisation → surface operator items → review-to-equilibrium on a critical finding.
-
-## Flush before yielding
-Land new state in synthesis.md / priorities.md (thread progress in thread.md). **In-repo only —
-never write to `~/.claude` global Claude memory** (CLAUDE.md § Memory); remind spawned teammates of
-the same (the harness will prompt them to save memories there; they must not).
-
-## Wake
-Teammate reports + operator messages wake you automatically — don't poll. This loop is only a
-long (≥20 min) idle heartbeat; on an idle wake with nothing new, drift-glance and re-sleep.
-
+Teammate reports + operator messages wake you automatically — don't poll. This heartbeat is a long
+(≥20 min) idle pulse; on an idle wake with nothing new, drift-glance and re-sleep.
 Stop at CLOSE, or when the operator pauses.
 ````
 
 ## Close
 
-Final controller integration → finalise the exposition(s) (the human/paper-facing
-deliverable) and a last internal `synthesis.md` pass → commit on the expedition branch →
-signal-and-wait before opening any PR. The exposition is the markdown chunk that feeds the
-paper; the formalised claims are its anchors.
+Final controller integration → finalise the exposition(s) (the human/paper-facing deliverable) →
+the calibration delta (predicted vs actual on the major nodes, into `map/calibration.md`) → the
+lessons pass (promote-or-decay) → a last journal entry → commit on the expedition branch →
+signal-and-wait before opening any PR. The exposition is the markdown chunk that feeds the paper;
+the formalised claims are its anchors.
 
 ## Expositions
 
 `expeditions/<id>/expositions/` holds the **human-facing** docs — the legibility deliverable
 (purpose and the correct > elegant > efficient ordering: [`writing-style.md`](writing-style.md)).
-They are distinct from `synthesis.md`, the controller's *internal* ledger that assumes repo
+They are distinct from `journal.md`, the controller's *internal* narrative that assumes repo
 context.
 
 - **Controller-curated, by taste.** The controller starts a doc when a reader-facing piece
@@ -372,5 +460,12 @@ context.
 - A critical finding gets one pass, not equilibrium.
 - `priorities.md` left flat, or a live ambiguity collapsed/dropped.
 - A formalisation/infra thread reaching done bypassing AUDIT/TEST.
-- Threads spawned without integration (the synthesis loses the question).
+- Threads spawned without integration (the journal loses the question).
+- **A route adopted on a sufficiency paraphrase** — "X discharges Y" with no compiled witness; the
+  five-fork failure shape (P3). Elaborate the edge or stamp it UNWITNESSED.
+- **Load-bearing status held in the journal** — the frontier drowning in the decay layer; status
+  lives in STATUS.md/the map, narrative in the journal (P9).
+- **A settled fork left unskeletoned** — promotion lag is measured in re-litigations (P6).
+- **Selling-register verbs in a route document without witness pointers** ("mechanical", "just
+  wiring", "bypasses") — the fork vocabulary; lint it, then prove it or strike it (P5).
 - Massive-refactoring an operator-`stable` exposition, or leaving a crystallised result with no human-facing doc.
