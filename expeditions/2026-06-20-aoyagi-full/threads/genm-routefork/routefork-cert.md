@@ -240,6 +240,62 @@ it on-branch for a future tight-RLCT computation, per capstonerecon §(d).
 
 ---
 
+## 7. SECONDARY — SD-7 `deeperFlagSaturatedShell_reduce` (j=r, ab=0) vs the capstone engine
+
+Coordinator's secondary questions, answered from the loaded pivot-near-singularity context (satfill's
+`FINDING-sd7-false-as-stated.md` cross-read, verified against
+`origin/genm-sj5-satfill:RouteMSJDecoratedStep.lean:303` reduce / :327 finite).
+
+**Same trap, same root cause as the capstone.** SD-7 is FALSE-as-stated for the identical structural reason
+as `shellSpine_le_hsQ_box`: a reduction lemma **drops the scope-guard its caller carries** and over-reaches
+into a regime where the pivot singularity diverges but the comparator RHS stays finite.
+- Caller `deeperFlagSaturatedShell_finite`@327 CARRIES `hcT : c' < carrierThreshold M` (and `hpiv`), and is
+  SAFE (via the `peelCharge = 0` subordination `minAdm M ≤ minAdm(redChain u M)` it already proves).
+- Reduction SD-7 `deeperFlagSaturatedShell_reduce`@303 DROPS `hcT` and `hpiv` (only `hc' : ab/2 < c'`, which
+  is `0 < c'` at `ab=0`), so it claims `shellSpineIntegrand(j=r) ≤ C·comparator.integral(c')` for arbitrarily
+  large `c'`, where it fails (satfill's `(1,1,2,2)`, `t=1,j=0,c'∈[1/2,1)`: LHS `= (∫|p|^{−2c'}dp)·J = ⊤`,
+  RHS finite). This mirrors the capstone exactly (§4).
+
+**(i) Short reduction, or a genuine brick?** A GENUINE analytic brick of the `pivotDom`/`headSplit_domination`
+class — NOT the "separate, simpler, pivotDom-independent, bounded, no-new-math" fill satcover scoped (satfill
+refutes that verbatim). At `min(a,b)=0` the corank block is empty, so `freedSchurLoss = frobSq(P·Q_p)`
+(pivot-only) and the RHS is the comparator DIRECTLY (no `deeperFlagCoreIntegrand` intermediate; `peelCharge=0`
+⟹ unshifted exponent `c'`). The content is the **P-radial blow-up (D-A `pivotBlock_radial_blowup`) matched to
+the comparator monomial `|v|^{minAdm(redChain u M)−1}`** — precisely the capstone's pivot half MINUS the
+corank half. Shorter than the full capstone (no `shell_corankOffSector`/`hfloor`) but the same
+product-map/singular-value analysis (Codex's ~400 lines plausible). It is NOT dischargeable by the banked
+`pivotDom_finiteness` — that is the full-block/**pivotShell** finiteness (the DEAD route, §4), a different
+object; SD-7 is a pivot-only domination to the comparator over the trivial (r=0) shell.
+
+**(ii) `hcT` vs `hpiv`?** The structurally-correct gate is **`hpiv`** (`minAdm(redChain u M) ≤ u·tailMinWidth M`)
+— it IS the codim balance "pivot threshold `u·tailMinWidth/2` ≥ comparator threshold `minAdm(redChain u M)/2`."
+At satfill's counterexample `hpiv` is VIOLATED (`u·tailMinWidth = 1 < minAdm(1,2,2) = 2`), so `hpiv` excludes
+it structurally and makes SD-7 the honest `ab=0` instance of Brick D, consistent with the dispatch (which
+carries `hpiv`). `hcT` also excludes the counterexample and — via the caller's `peelCharge=0` subordination —
+keeps the caller safe, but `hcT` is a `c'`-scope proxy; the load-bearing fact is the pivot-vs-comparator
+threshold balance that `hpiv` names directly. Recommend **`hpiv`** (satfill option 2); if a one-line
+call-site edit is preferred, thread `hcT` and close the balance under the `hpiv`-chain the caller establishes.
+
+**(iii) Do capstone (j<r) and SD-7 (j=r) UNIFY?** YES — the coordinator's read is correct. Both instantiate
+**one** pivot-near-singularity engine: P-radial blow-up (D-A) + `hpiv`-gated power-domination to
+`|v|^{minAdm(redChain u M)−1}`. The only difference is the corank block, keyed by `min(a,b)`:
+- `1 ≤ j < r` (capstone): `min(a,b) ≥ 1` ⟹ corank block present ⟹ pivot half + corank half
+  (`shell_corankOffSector_le_unif` + `hfloor`), RHS `= deeperFlagCoreIntegrand`.
+- `j = r` (SD-7): `min(a,b) = 0` ⟹ corank block empty ⟹ pivot half ONLY, RHS `=` comparator directly.
+
+So SD-7 is the corank-trivial base corner of the capstone's pivot lemma. Build the **P-radial-blow-up
+domination ONCE** (parameterised by `min(a,b)`, corank half conditionally present); SD-7 falls out as the
+`ab=0` corner. They unify under the CORRECTED capstone engine (§5), NOT under the dead
+full-block/pivotShell `pivotDom_finiteness`. This reinforces §5's "genuine remaining brick = the
+P-radial-blow-up assembly (D-A)": that assembly, done once, discharges both `j<r` and `j=r`.
+
+**Lessons note (recurring trap).** `shellSpine_le_hsQ_box` and SD-7 `deeperFlagSaturatedShell_reduce` are
+both reduction lemmas that dropped the caller's `hcT`/`hpiv` guard and became false in the over-reached
+regime, while their callers retain the guard and are safe. A reduction lemma must inherit its caller's
+scope-guard; a sorry on the unguarded statement is a landmine (`lessons.md:287`).
+
+---
+
 ## Close
 
 `shellSpine_le_hsQ_box`@210 is **FALSE for `1 ≤ j < r`** (refuter `(3,3,3)`, `t=j=1`, `c'=4`; LHS=⊤,
