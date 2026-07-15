@@ -1,0 +1,577 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.4
+--------
+workdir: /tmp/codexcons
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019f6809-71a9-7ba3-81b2-db6114060472
+--------
+user
+<task>
+Adjudicate two questions about an exact matrix-integral reassembly (RLCT / real-log-canonical-threshold
+finiteness). Argue whichever way the algebra points; do NOT assume the reassembly is clean or broken.
+This is for a deep-linear-network zero-fibre RLCT recursion. Answer with exact algebra (Wishart /
+Selberg-type matrix integrals, coarea/Jacobian, local-zeta / determinantal-variety lct).
+</task>
+
+<setup>
+Fix a "chain" M = (M0, M1, M2, ..., M_last) of positive integer widths (>=3 widths). Define n = M_last.
+A cut u (1 <= u <= min(M0,M1)); set a = M0 - u, b = M1 - u.
+Deep factor: Z = A_2 A_3 ... A_{last-1}, an (M2 x n) matrix (product of the deep layers), generic rank
+k = min(M2,...,M_last) =: dtm.  "Good branch" means dtm <= M1 and (binding cut) a+b <= dtm - 1 < dtm.
+Reduced chain M' = (u, M2, M3, ..., M_last) — ONE FEWER layer.  A0' is the reduced first layer (u x M2).
+- Q_p = A0' Z          (u x n)   [the "pivot rows"; = product of reduced chain]
+- A_cor : b x M2 (free box);  Q_b = A_cor Z   (b x n)   [the "corank rows"]
+- hsQ = (Q_p ; Q_b), an (u+b) x n matrix.  Front block T = [P | B12], plus a transverse block C.
+Front loss (after an exact Gamma-peel that produces the charge det(Q_b Q_b^T)^{-a/2} and shifts the
+exponent c' -> q = c' - ab/2):
+    frontLoss(z, A_cor) = ∫_{front x=(P,B12,C)} ( E_top + E_tr )^{-q},
+    E_top = ||P Q_p + B12 Q_b||_F^2,   E_tr = ||C Q_p (I - Πb)||_F^2,  Πb = Q_b^T (Q_b Q_b^T)^{-1} Q_b.
+The FULL LHS to reassemble:
+    G = ∫_{z=(A0',deep params)} ∫_{A_cor∈box} det(Q_b Q_b^T)^{-a/2} · frontLoss(z, A_cor).
+The claimed target ("comparator"):
+    Comp(q) = ∫_{z'=(A0', deep params)} ∫_{v0∈[0,1]} |v0|^{minAdm(M')-1-2q} · ( ||A0' Z||_F^2 )^{-q},
+where minAdm(M') is a combinatorial value; Comp(q) is FINITE for q < minAdm(M')/2 (an induction hypothesis
+on the shorter chain M', taken as GIVEN). The descent needs a CONSTRUCTIVE domination
+    G  <=  K · Comp(q)     with K < ∞ per fixed q < (minAdm(M) - ab)/2 =: T1q,
+where "constructive" means the bound must be derivable so that Comp(q) finite ⟹ G finite (NOT the reverse;
+using "G finite" as an input would be circular — G finite to T1q is separately known but circular to invoke).
+Note minAdm(M) <= ab + minAdm(M') (a proven gate), so T1q <= minAdm(M')/2.
+</setup>
+
+<questions>
+Q1. Compute the "A_cor-Wishart" integral in isolation:  I(Z) = ∫_{A_cor∈box} det((A_cor Z)(A_cor Z)^T)^{-a/2} dA_cor.
+   Give the EXACT dependence on Z: which determinant of Z (full M2xM2 Gram Z Z^T, or the k x k Gram, or
+   pseudo-determinant of Z Z^T) and to which EXACT power, and the exact convergence criterion. Be careful
+   about the case M2 > k (Z rank-deficient as an M2 x M2 Gram).
+
+Q2. The MAIN question. In G, both the charge AND the front loss depend on A_cor (through Q_b = A_cor Z),
+   and the loss/charge depend on z only through Q_p = A0' Z and Q_b = A_cor Z (which lie in row(Z)).
+   Reduce G by a change of variables (row(Z) coordinates / coarea). Does G reassemble as
+       G  =  ∫_{deep} [some power of a Z-Gram determinant] · [a leaf-type integral over A0', A_cor, front]
+   and, after bounding the leaf-type integral by the leaf comparator ||A0' Z||^{-2q}, does an UNCOMPENSATED
+   deep-Gram factor det(...)^{-b/2} remain that is NOT present in Comp(q)? If so, is that residual
+   (i) always bounded/harmless, (ii) integrable for some (a,b) but not others (which?), or (iii) does the
+   constructive domination G <= K·Comp still close by some mechanism that avoids the residual? Distinguish
+   the case where Z is a scalar/identity (M2 = n, single trivial deep layer) from a genuine deep product.
+   State clearly whether the CONSTRUCTIVE (non-circular) domination onto Comp as written holds for a
+   genuine deep factor, and if not, what the correct comparator loss should carry.
+
+Q3. σ-bank / biquadratic corner. On the stratum where the incidence coordinate W = Q_p·N has rank 0 (the
+   "corner"), the residual front loss is biquadratic g(Y,W) = ||Y·W||_F^2 (degree 2 in Y = (P;C), degree
+   2 in W), plus an H̃-fibre term ||H̃||^2. There is a banked lemma `twoBlock_radial_le`:
+       ∫_{ball_du × ball_dv} (κ²||u||² + σ²||v||²)^{-q} <= C·σ^{-α'},  C σ-independent, on 0<σ<=B,
+       for max(0,2q-du) < α' < dv.
+   Question: can the corner ∫_{H̃,Y,W}(||H̃||² + ||Y W||²)^{-q} be closed by twoBlock_radial_le + an outer
+   radial integral over σ (fed with σ = ||W|| from an intrinsic polar-in-W, and the H̃-fibre as the
+   κ-stable block), WITHOUT any externally-supplied orthonormal frame / Loewner floor on the front pivot?
+   Or is such a frame genuinely required to put g into two-radius form? Identify du, dv, the σ-charge α'
+   gate, and whether the outer W-radial ∫ σ^{dW-1-α'}dσ absorbs it (dW = dim W).
+</questions>
+
+<output_contract>
+For each question: a verdict line (FACT / INFERENCE), the exact powers/criteria, and the key algebraic
+identity. For Q2 explicitly: does an uncompensated det(Z-Gram)^{-b/2} residual survive, yes or no, and is
+the constructive domination onto Comp (loss = ||A0' Z||^2, no deep-Gram factor) sound for a genuine deep
+product? For Q3: (a) frame DROPPABLE or (b) frame NEEDED, with the α' gate.
+</output_contract>
+
+<grounding_rules>
+Exact algebra only for load-bearing claims. Wishart/matrix-T integrability = determinantal-variety local
+integrability (lct of det of a b×k Gram is (k-b+1)/2). Coarea Jacobian of a linear surjection A: R^m->R^n
+(m>=n) is sqrt(det(A A^T)). Distinguish a FIXED-exponent weight (det^{-b/2}, independent of q) from a
+q-dependent loss. Keep pseudo-determinant vs full determinant distinct when the Gram is rank-deficient.
+</grounding_rules>
+
+codex
+I’ll separate exact coarea identities from local-domain comparability, since a fixed box does not generally produce a determinant-only function of \(Z\). The decisive issue in Q2 is whether the coarea Jacobians cancel when both \(A_0'\) and \(A_{\rm cor}\) are transformed.
+codex
+### Q1
+
+**FACT — the coarea Jacobian is \(\operatorname{pdet}(ZZ^{T})^{-b/2}\), but a fixed-box integral is not a determinant-only function of \(Z\).**
+
+Write the rank-\(k\) SVD
+\[
+Z=U_k D V_k^{T},\qquad D=\operatorname{diag}(s_1,\ldots,s_k),
+\]
+and define
+\[
+\Delta_k(Z):=\operatorname{pdet}(ZZ^{T})
+ =\det(D^2)=\prod_{i=1}^k s_i^2.
+\]
+When \(M_2>k\), the full determinant \(\det(ZZ^T)\) is identically zero and must not be used.
+
+For the rowwise map
+\[
+L_Z:A\in\mathbb R^{b\times M_2}\longmapsto AZ\in\mathbb R^{b\times k},
+\]
+the normal Jacobian is
+\[
+J(L_Z)=\Delta_k(Z)^{b/2}.
+\]
+Thus, exactly,
+\[
+I_\Omega(Z)
+=\Delta_k(Z)^{-b/2}
+ \int_{\mathbb R^{b\times k}}
+ \det(XX^T)^{-a/2}\,\rho_{\Omega,Z}(X)\,dX,
+\]
+where \(\rho_{\Omega,Z}(X)\) is the \((M_2-k)b\)-dimensional volume of the corresponding fibre inside the original box.
+
+Consequently:
+
+- The exact coarea prefactor is \(\boxed{\Delta_k(Z)^{-b/2}}\).
+- The remaining integral still depends on the singular values, singular subspaces, and transformed box through \(\rho_{\Omega,Z}\).
+- Therefore, for a fixed box,
+  \[
+  I_\Omega(Z)\ne C\,\Delta_k(Z)^{-b/2}
+  \]
+  in general.
+
+The scalar-scaling identity makes this unavoidable:
+\[
+I_\Omega(tZ)=|t|^{-ab}I_\Omega(Z),
+\]
+whereas
+\[
+\Delta_k(tZ)^{-b/2}=|t|^{-bk}\Delta_k(Z)^{-b/2}.
+\]
+The transformed-domain/fibre integral supplies the difference \(t^{b(k-a)}\).
+
+The singular-value/Selberg density for \(X\in\mathbb R^{b\times k}\) gives
+\[
+dX\asymp
+\prod_{i=1}^b\lambda_i^{(k-b-1)/2}
+\prod_{i<j}|\lambda_i-\lambda_j|\,d\lambda\,d\mu,
+\]
+while
+\[
+\det(XX^T)^{-a/2}=\prod_i\lambda_i^{-a/2}.
+\]
+Hence, for a box meeting the rank-deficient locus,
+\[
+\boxed{b\le k,\qquad a<k-b+1}
+\]
+is the exact convergence criterion. Equivalently,
+\[
+\frac a2<\operatorname{lct}\det(XX^T)
+=\frac{k-b+1}{2}.
+\]
+Equality gives logarithmic divergence. If \(a>0\) and \(b>k\), the Gram determinant vanishes identically. The case \(a=0\) is separately trivial.
+
+---
+
+### Q2
+
+**FACT — after row-space coarea and a \(Z\)-uniform leaf estimate, an uncompensated**
+\[
+\boxed{\Delta_k(Z)^{-b/2}}
+\]
+**remains.**
+
+Let
+\[
+h_q(Q_p,Q_b)
+=\det(Q_bQ_b^T)^{-a/2}\operatorname{frontLoss}(Q_p,Q_b).
+\]
+Changing both \(A_0'\) and \(A_{\rm cor}\) to row-\(Z\) coordinates gives
+\[
+G_Z
+=\Delta_k(Z)^{-(u+b)/2}
+ \int h_q(X_pV_k^T,X_bV_k^T)\,
+ \rho_{0,Z}(X_p)\rho_{b,Z}(X_b)\,dX_p\,dX_b.
+\]
+By comparison,
+\[
+\int_{A_0'}\|A_0'Z\|^{-2q}\,dA_0'
+=\Delta_k(Z)^{-u/2}
+ \int\|X_p\|^{-2q}\rho_{0,Z}(X_p)\,dX_p.
+\]
+
+Equivalently, changing only \(A_{\rm cor}\), and then applying the asserted leaf bound,
+\[
+\int_{X_b,\mathrm{front}}
+ h_q(Q_p,X_bV_k^T)\rho_{b,Z}(X_b)
+ \le C_q\|Q_p\|^{-2q},
+\]
+gives
+\[
+\boxed{
+G_Z\le
+C_q\,\Delta_k(Z)^{-b/2}
+\int_{A_0'}\|A_0'Z\|^{-2q}\,dA_0'.
+}
+\]
+
+The exact box-domain identity can contain partial compensation through its shrinking image, but once the leaf integral is standardized or extended uniformly, the coarea factor above survives. There is no general cancellation against the \(A_0'\) Jacobian.
+
+A useful obstruction is \(Z=tZ_0\):
+\[
+G_{tZ_0}=|t|^{-ab-2q}G_{Z_0},\qquad
+\mathrm{Comp}_{tZ_0}=|t|^{-2q}\mathrm{Comp}_{Z_0}.
+\]
+Thus, when \(ab>0\), their slice ratio grows as \(|t|^{-ab}\). No \(Z\)-uniform unweighted comparison can hold near \(Z=0\).
+
+**FACT — the residual is option (ii): integrable for some geometries and not others.** It is harmless only if \(b=0\), or \(\Delta_k(Z)\) is uniformly bounded below, as for a fixed identity factor.
+
+For a general product map \(Z=\Phi(\theta)\), its exact local criterion is
+\[
+\boxed{
+\frac b2<
+\operatorname{lct}_{\theta}
+\bigl(\Delta_k(\Phi(\theta))\bigr).
+}
+\]
+This depends on the entire deep chain, not merely on \(a,b,k\). The parameter \(a\) does not enter this residual criterion.
+
+For a single free \(m\times n\) matrix \(Z\), \(k=\min(m,n)\), and
+\[
+\operatorname{lct}\Delta_k(Z)=\frac{|m-n|+1}{2}.
+\]
+Therefore
+\[
+\boxed{b<|m-n|+1}
+\]
+is necessary and sufficient; equality is logarithmically divergent. In particular, for square \(k\times k\) \(Z\), every positive integer \(b\) fails.
+
+At a width-\(k\) bottleneck, \(Z=LR\) with \(L\in\mathbb R^{m\times k}\) and \(R\in\mathbb R^{k\times n}\),
+\[
+\boxed{
+\Delta_k(LR)=\det(L^TL)\det(RR^T).
+}
+\]
+Hence square \(k\times k\) factors produce the usual determinant threshold \(b<1\), showing explicitly why genuine products can make the residual nonintegrable.
+
+**INFERENCE — the supplied induction hypothesis does not constructively prove \(G<\infty\) for a genuine deep product.**
+
+Finiteness of
+\[
+\int \|A_0'Z\|^{-2q}
+\]
+does not imply finiteness after multiplication by the unbounded fixed-exponent weight \(\Delta_k(Z)^{-b/2}\). A separate weighted local-zeta estimate would be needed.
+
+The safe corrected comparator is
+\[
+\boxed{
+\int_{\mathrm{deep},A_0',v_0}
+|v_0|^{\minAdm(M')-1-2q}\,
+\Delta_k(Z)^{-b/2}\,
+\bigl(\|A_0'Z\|_F^2\bigr)^{-q}.
+}
+\]
+For \(q>0\), the combined \(q\)-dependent loss can equivalently be written as
+\[
+\left[
+\Delta_k(Z)^{\,b/(2q)}
+\|A_0'Z\|_F^2
+\right]^{-q},
+\]
+but the determinant exponent itself is the fixed charge \(-b/2\), independent of \(q\).
+
+If the deep product is trivial, \(Z=I_n\) or another fixed nonsingular matrix, \(\Delta_k(Z)^{-b/2}\) is a constant and the original comparator is adequate. A variable scalar factor is not harmless.
+
+---
+
+### Q3
+
+**FACT — frame DROPPABLE, provided \(d_v\) is the intrinsically controlled slice of \(Y\), not all entries of \(Y\).**
+
+Let
+\[
+W\in\mathbb R^{s\times t},\qquad
+Y\in\mathbb R^{r\times s},\qquad
+\sigma=\|W\|_F,
+\]
+and let \(\tau_1\) be the largest singular value of \(W\). With
+\[
+p=\min(s,t),
+\qquad
+\tau_1^2\ge \frac{\sigma^2}{p}.
+\]
+Choose an intrinsic leading left singular vector \(e_1(W)\). Then
+\[
+\boxed{
+\|YW\|_F^2
+=\operatorname{tr}(YWW^TY^T)
+\ge\tau_1^2\|Ye_1\|^2
+\ge\frac{\sigma^2}{p}\|Ye_1\|^2.
+}
+\]
+The change \(Y\mapsto(Ye_1,Y_\perp)\) is orthogonal and has Jacobian one. The \(Y_\perp\) variables contribute only bounded volume. No externally supplied pivot frame or Loewner floor is required.
+
+Thus the two-block lemma applies with
+\[
+\boxed{
+d_u=\dim\widetilde H,\qquad
+d_v=r=\dim(Ye_1),
+}
+\]
+not \(d_v=rs=\dim Y\). Using all \(rs\) variables would require a uniform Loewner bound \(WW^T\gtrsim\sigma^2I_s\).
+
+Since \(d_W=st\), choose
+\[
+\boxed{
+\max(0,2q-d_u)<\alpha'<\min(d_v,d_W).
+}
+\]
+The bank yields \(C\sigma^{-\alpha'}\), and intrinsic polar coordinates in \(W\) give
+\[
+\int_0^\varepsilon
+\sigma^{d_W-1-\alpha'}\,d\sigma<\infty
+\quad\Longleftrightarrow\quad
+\alpha'<d_W.
+\]
+Equivalently, such an \(\alpha'\) exists precisely when
+\[
+2q<d_u+\min(d_v,d_W).
+\]
+
+So the corner closes by the bank plus outer \(W\)-radial integration, using only the leading singular direction supplied intrinsically by \(W\).
+tokens used
+23,855
+### Q1
+
+**FACT — the coarea Jacobian is \(\operatorname{pdet}(ZZ^{T})^{-b/2}\), but a fixed-box integral is not a determinant-only function of \(Z\).**
+
+Write the rank-\(k\) SVD
+\[
+Z=U_k D V_k^{T},\qquad D=\operatorname{diag}(s_1,\ldots,s_k),
+\]
+and define
+\[
+\Delta_k(Z):=\operatorname{pdet}(ZZ^{T})
+ =\det(D^2)=\prod_{i=1}^k s_i^2.
+\]
+When \(M_2>k\), the full determinant \(\det(ZZ^T)\) is identically zero and must not be used.
+
+For the rowwise map
+\[
+L_Z:A\in\mathbb R^{b\times M_2}\longmapsto AZ\in\mathbb R^{b\times k},
+\]
+the normal Jacobian is
+\[
+J(L_Z)=\Delta_k(Z)^{b/2}.
+\]
+Thus, exactly,
+\[
+I_\Omega(Z)
+=\Delta_k(Z)^{-b/2}
+ \int_{\mathbb R^{b\times k}}
+ \det(XX^T)^{-a/2}\,\rho_{\Omega,Z}(X)\,dX,
+\]
+where \(\rho_{\Omega,Z}(X)\) is the \((M_2-k)b\)-dimensional volume of the corresponding fibre inside the original box.
+
+Consequently:
+
+- The exact coarea prefactor is \(\boxed{\Delta_k(Z)^{-b/2}}\).
+- The remaining integral still depends on the singular values, singular subspaces, and transformed box through \(\rho_{\Omega,Z}\).
+- Therefore, for a fixed box,
+  \[
+  I_\Omega(Z)\ne C\,\Delta_k(Z)^{-b/2}
+  \]
+  in general.
+
+The scalar-scaling identity makes this unavoidable:
+\[
+I_\Omega(tZ)=|t|^{-ab}I_\Omega(Z),
+\]
+whereas
+\[
+\Delta_k(tZ)^{-b/2}=|t|^{-bk}\Delta_k(Z)^{-b/2}.
+\]
+The transformed-domain/fibre integral supplies the difference \(t^{b(k-a)}\).
+
+The singular-value/Selberg density for \(X\in\mathbb R^{b\times k}\) gives
+\[
+dX\asymp
+\prod_{i=1}^b\lambda_i^{(k-b-1)/2}
+\prod_{i<j}|\lambda_i-\lambda_j|\,d\lambda\,d\mu,
+\]
+while
+\[
+\det(XX^T)^{-a/2}=\prod_i\lambda_i^{-a/2}.
+\]
+Hence, for a box meeting the rank-deficient locus,
+\[
+\boxed{b\le k,\qquad a<k-b+1}
+\]
+is the exact convergence criterion. Equivalently,
+\[
+\frac a2<\operatorname{lct}\det(XX^T)
+=\frac{k-b+1}{2}.
+\]
+Equality gives logarithmic divergence. If \(a>0\) and \(b>k\), the Gram determinant vanishes identically. The case \(a=0\) is separately trivial.
+
+---
+
+### Q2
+
+**FACT — after row-space coarea and a \(Z\)-uniform leaf estimate, an uncompensated**
+\[
+\boxed{\Delta_k(Z)^{-b/2}}
+\]
+**remains.**
+
+Let
+\[
+h_q(Q_p,Q_b)
+=\det(Q_bQ_b^T)^{-a/2}\operatorname{frontLoss}(Q_p,Q_b).
+\]
+Changing both \(A_0'\) and \(A_{\rm cor}\) to row-\(Z\) coordinates gives
+\[
+G_Z
+=\Delta_k(Z)^{-(u+b)/2}
+ \int h_q(X_pV_k^T,X_bV_k^T)\,
+ \rho_{0,Z}(X_p)\rho_{b,Z}(X_b)\,dX_p\,dX_b.
+\]
+By comparison,
+\[
+\int_{A_0'}\|A_0'Z\|^{-2q}\,dA_0'
+=\Delta_k(Z)^{-u/2}
+ \int\|X_p\|^{-2q}\rho_{0,Z}(X_p)\,dX_p.
+\]
+
+Equivalently, changing only \(A_{\rm cor}\), and then applying the asserted leaf bound,
+\[
+\int_{X_b,\mathrm{front}}
+ h_q(Q_p,X_bV_k^T)\rho_{b,Z}(X_b)
+ \le C_q\|Q_p\|^{-2q},
+\]
+gives
+\[
+\boxed{
+G_Z\le
+C_q\,\Delta_k(Z)^{-b/2}
+\int_{A_0'}\|A_0'Z\|^{-2q}\,dA_0'.
+}
+\]
+
+The exact box-domain identity can contain partial compensation through its shrinking image, but once the leaf integral is standardized or extended uniformly, the coarea factor above survives. There is no general cancellation against the \(A_0'\) Jacobian.
+
+A useful obstruction is \(Z=tZ_0\):
+\[
+G_{tZ_0}=|t|^{-ab-2q}G_{Z_0},\qquad
+\mathrm{Comp}_{tZ_0}=|t|^{-2q}\mathrm{Comp}_{Z_0}.
+\]
+Thus, when \(ab>0\), their slice ratio grows as \(|t|^{-ab}\). No \(Z\)-uniform unweighted comparison can hold near \(Z=0\).
+
+**FACT — the residual is option (ii): integrable for some geometries and not others.** It is harmless only if \(b=0\), or \(\Delta_k(Z)\) is uniformly bounded below, as for a fixed identity factor.
+
+For a general product map \(Z=\Phi(\theta)\), its exact local criterion is
+\[
+\boxed{
+\frac b2<
+\operatorname{lct}_{\theta}
+\bigl(\Delta_k(\Phi(\theta))\bigr).
+}
+\]
+This depends on the entire deep chain, not merely on \(a,b,k\). The parameter \(a\) does not enter this residual criterion.
+
+For a single free \(m\times n\) matrix \(Z\), \(k=\min(m,n)\), and
+\[
+\operatorname{lct}\Delta_k(Z)=\frac{|m-n|+1}{2}.
+\]
+Therefore
+\[
+\boxed{b<|m-n|+1}
+\]
+is necessary and sufficient; equality is logarithmically divergent. In particular, for square \(k\times k\) \(Z\), every positive integer \(b\) fails.
+
+At a width-\(k\) bottleneck, \(Z=LR\) with \(L\in\mathbb R^{m\times k}\) and \(R\in\mathbb R^{k\times n}\),
+\[
+\boxed{
+\Delta_k(LR)=\det(L^TL)\det(RR^T).
+}
+\]
+Hence square \(k\times k\) factors produce the usual determinant threshold \(b<1\), showing explicitly why genuine products can make the residual nonintegrable.
+
+**INFERENCE — the supplied induction hypothesis does not constructively prove \(G<\infty\) for a genuine deep product.**
+
+Finiteness of
+\[
+\int \|A_0'Z\|^{-2q}
+\]
+does not imply finiteness after multiplication by the unbounded fixed-exponent weight \(\Delta_k(Z)^{-b/2}\). A separate weighted local-zeta estimate would be needed.
+
+The safe corrected comparator is
+\[
+\boxed{
+\int_{\mathrm{deep},A_0',v_0}
+|v_0|^{\minAdm(M')-1-2q}\,
+\Delta_k(Z)^{-b/2}\,
+\bigl(\|A_0'Z\|_F^2\bigr)^{-q}.
+}
+\]
+For \(q>0\), the combined \(q\)-dependent loss can equivalently be written as
+\[
+\left[
+\Delta_k(Z)^{\,b/(2q)}
+\|A_0'Z\|_F^2
+\right]^{-q},
+\]
+but the determinant exponent itself is the fixed charge \(-b/2\), independent of \(q\).
+
+If the deep product is trivial, \(Z=I_n\) or another fixed nonsingular matrix, \(\Delta_k(Z)^{-b/2}\) is a constant and the original comparator is adequate. A variable scalar factor is not harmless.
+
+---
+
+### Q3
+
+**FACT — frame DROPPABLE, provided \(d_v\) is the intrinsically controlled slice of \(Y\), not all entries of \(Y\).**
+
+Let
+\[
+W\in\mathbb R^{s\times t},\qquad
+Y\in\mathbb R^{r\times s},\qquad
+\sigma=\|W\|_F,
+\]
+and let \(\tau_1\) be the largest singular value of \(W\). With
+\[
+p=\min(s,t),
+\qquad
+\tau_1^2\ge \frac{\sigma^2}{p}.
+\]
+Choose an intrinsic leading left singular vector \(e_1(W)\). Then
+\[
+\boxed{
+\|YW\|_F^2
+=\operatorname{tr}(YWW^TY^T)
+\ge\tau_1^2\|Ye_1\|^2
+\ge\frac{\sigma^2}{p}\|Ye_1\|^2.
+}
+\]
+The change \(Y\mapsto(Ye_1,Y_\perp)\) is orthogonal and has Jacobian one. The \(Y_\perp\) variables contribute only bounded volume. No externally supplied pivot frame or Loewner floor is required.
+
+Thus the two-block lemma applies with
+\[
+\boxed{
+d_u=\dim\widetilde H,\qquad
+d_v=r=\dim(Ye_1),
+}
+\]
+not \(d_v=rs=\dim Y\). Using all \(rs\) variables would require a uniform Loewner bound \(WW^T\gtrsim\sigma^2I_s\).
+
+Since \(d_W=st\), choose
+\[
+\boxed{
+\max(0,2q-d_u)<\alpha'<\min(d_v,d_W).
+}
+\]
+The bank yields \(C\sigma^{-\alpha'}\), and intrinsic polar coordinates in \(W\) give
+\[
+\int_0^\varepsilon
+\sigma^{d_W-1-\alpha'}\,d\sigma<\infty
+\quad\Longleftrightarrow\quad
+\alpha'<d_W.
+\]
+Equivalently, such an \(\alpha'\) exists precisely when
+\[
+2q<d_u+\min(d_v,d_W).
+\]
+
+So the corner closes by the bank plus outer \(W\)-radial integration, using only the leading singular direction supplied intrinsically by \(W\).

@@ -3,9 +3,9 @@
 **Seat:** pen-and-paper (adjudication, decorrelated), aoyagi-full Stage 2, `genm-reassembly`.
 **Date:** 2026-07-15. **NO Lean edits, NO build.** Exact algebra (coarea Jacobian of a linear surjection,
 Wishart / determinantal-variety lct, matrix-product RLCT) + numerics as GUIDE/confirmation only. Decorrelated
-`local-codex-consult` (gpt-5.6, my conclusion WITHHELD; prompt framed "argue whichever way"):
-`codex/reassembly-{prompt,answer}.md` (pending at write time — folded in when it returns; the finding below
-does not rest on it).
+`local-codex-consult` (gpt-5.6, xhigh, my conclusion WITHHELD; prompt framed "argue whichever way"):
+`codex/reassembly-{prompt,answer}.md` — **returned; INDEPENDENTLY CONCURS on all three questions (§6)** and
+contributed a cleaner scaling obstruction (`Z = tZ₀`) that upgrades my one soft caveat to rigorous (§3.2).
 
 **Consumed / verified (signatures, not paraphrased):**
 `RouteMSJDecorated.lean` (`SJDecoration.integral` :139, `decLoss` :128, `carrierThreshold` :64,
@@ -103,6 +103,12 @@ row map, `b` rows). Hence **[FACT, coarea + determinantal lct]**:
   both hold with room.
 - **L=0 special case:** `Z = I_{M₂}`, `k = M₂`, `det⁺ = 1` — **no deep-factor power**, `I` a box constant iff
   `a+b ≤ M₂`. This is why the arity-3 route is clean.
+- **Precision caveat (decorrelated Codex §6):** for a FIXED box, `I(Z) ≠ C·det⁺(ZZᵀ)^{−b/2}` exactly — the
+  residual `∫_{Â} det(ÂÂᵀ)^{−a/2} ρ_{Ω,Z}(Â) dÂ` still depends on `Z`'s singular subspaces + the transformed
+  box (fibre volume `ρ`). The `det⁺(ZZᵀ)^{−b/2}` is the exact COAREA prefactor; the scaling identity
+  `I(tZ) = |t|^{−ab} I(Z)` vs `det⁺(tZ)^{−b/2} = |t|^{−bk} det⁺(Z)^{−b/2}` shows the fibre integral supplies
+  `t^{b(k−a)}` — so "(box const)" is not literally `Z`-constant, but the deep-Gram SINGULARITY is exactly
+  `det⁺(ZZᵀ)^{−b/2}`, which is what drives Verdict B.
 
 ---
 
@@ -174,11 +180,19 @@ small search `M₀,M₁≤5`, all satisfying `a+b ≤ M₂` (so the L=0 scope do
 Contrast: `(3,3,4,3)@u=2` (`b=1 ≤ |4−3|=1`, boundary) and `(4,5,6,4)@u=3` (`b=2 < |6−4|=2`... at `b/2=1 <
 1.5`, integrable) have the residual INTEGRABLE (`/tmp/confirm_witness.py`: truncated ∫ stable).
 
-**Consequence.** The inner leaf integral `L(Z)` stays bounded-below-positive (or itself blows up) as
-`Z_deep → rank-drop`, so `G` (the charge-form integrand of `frontChargeIntegrand`, integrated) genuinely
-**diverges** for these cuts — for `(4,4,4,4)@u=3` it diverges for *every* `q ≥ 0`. Meanwhile the comparator is
-finite (`q < uM₂/2`). So **`∫ frontChargeIntegrand ≤ K · cornerComparator.integral(q)` is FALSE for these
-L≥1 cuts** (∞ ≤ finite). The reassembly does NOT close.
+**The scaling obstruction (rigorous, no `L(Z)` needed) [FACT, decorrelated Codex-derived §6].** On the ray
+`Z = t·Z₀` (`t→0`, a direction that lies in the deep-param box):
+
+    G_{tZ₀} = |t|^{−ab−2q} · G_{Z₀},     cornerComparator_{tZ₀} = |t|^{−2q} · cornerComparator_{Z₀},
+
+so the per-`Z` slice ratio `G/cornerComparator = |t|^{−ab} → ∞` as `t→0` whenever `ab > 0`. **Hence NO
+`Z`-uniform (integrand-level / per-deep-slice) domination `G ≤ K·cornerComparator` can hold near the deep
+origin** — the constructive descent (the form a Lean proof needs: bound the integrand, then integrate) is
+refuted directly, for EVERY L≥1 cut with `ab>0`, without appealing to `L(Z)`'s rank-drop asymptotics. The
+INTEGRATED domination fails additionally when the residual is non-integrable over the deep params
+(`b > |M₂−M₃|`, the table above): there `∫ frontChargeIntegrand` itself diverges while the comparator is
+finite (`q < uM₂/2`), so **`∫ frontChargeIntegrand ≤ K · cornerComparator.integral(q)` is FALSE (∞ ≤ finite)**.
+Either way the reassembly onto the flat-measure comparator does NOT close for L≥1.
 
 **Why the TRUE object is still finite (no contradiction with Aoyagi/bltj).** The undecorated shell integral
 `∫_{shell,A',T} frobSq(T·hsQ)^{−c'} = ∫ frobSq(prod M)^{−c'}|_shell ≤ off-shell`, RLCT `= ½minAdm(M) = T1`
@@ -220,20 +234,26 @@ The ℓ=0 corner front loss (after the `H̃`-fibre) is `∫_{H̃,Y,W}(‖H̃‖�
 `W∈ℝ^{u×d}` (`d=M₂−b`). **Verdict (a): the σ-bank is DROPPABLE — no externally-supplied front-pivot
 orthonormal frame / Loewner floor is needed.** [FACT for L=0]
 
-**Mechanism (intrinsic).** Polar-in-`W`: `W = σ·Ŵ`, `σ = ‖W‖`, `Ŵ∈S^{dW−1}`, `dW = u·d`. Then `‖YW‖² =
-σ²‖YŴ‖²`. Feed `twoBlock_radial_le` with the **`H̃`-block as the κ-stable block** (`d_u = ub`, `κ=1`) and the
-**`Y`-projection as the σ-scaled block** (`d_v = active Y-directions`, `σ = ‖W‖`):
+**Mechanism (intrinsic, sharpened by decorrelated Codex §6).** The one subtlety: the σ-scaled block is NOT
+all of `Y` — it is the **leading left-singular direction** of `W`. Let `σ = ‖W‖_F`, `τ₁` = top singular value
+of `W`, `p = min(u, d)`; then `τ₁² ≥ σ²/p`, and with `e₁(W)` the (intrinsic) leading left singular vector,
 
-    ∫_{H̃, Y}( 1·‖H̃‖² + σ²‖YŴ‖² )^{−q}  ≤  C · σ^{−α'},   C σ-independent,   max(0, 2q − ub) < α' < d_v,
+    ‖Y·W‖²_F = tr(Y W Wᵀ Yᵀ) ≥ τ₁²‖Y e₁‖² ≥ (σ²/p)·‖Y e₁‖².
 
-then the **outer `W`-radial** (`∫₀^B σ^{dW−1} · σ^{−α'} dσ`, from the `dW`-dim polar measure) absorbs it,
-finite ⟺ `α' < dW`. Composite gate: `max(0, 2q−ub) < α' < min(d_v, dW)` — non-empty exactly in the operative
-range `q < T1_q` (the `C_{ℓ,s}` min at `(ℓ,s)=(0,·)`, incidence-cert §3b: corner `(2,2,3)` gives two radial
-`∫r^{2−2q}dr`, `C_{0,0}=3`). The σ here is the **intrinsic incidence-coordinate radius `‖W‖`**, an
-integration variable — NOT a banked external frame; `twoBlock_radial_le`'s `C` is σ-independent, so no frame
-field is threaded. The `Y`-rank degeneration (`κ_eff = σ_min(Y)→0`) is the `s`-index determinantal big-cell
-(intrinsic), not a floor. This parallels **Brick F droppable** (routeverify §5D): the coupled incidence route
-keeps everything in intrinsic chart coordinates and needs no Loewner floor.
+The orthogonal split `Y ↦ (Y e₁ ∈ ℝ^{M₀}, Y_⊥)` has Jacobian 1 and `Y_⊥` contributes only bounded volume.
+Feed `twoBlock_radial_le` with the **`H̃`-block as the κ-stable block** (`d_u = ub`, `κ=1`) and the **leading
+`Y e₁`-slice as the σ-scaled block** (`d_v = M₀`, the row-dim of `Y` — NOT `d_v = M₀·u = dim Y`), `σ = ‖W‖`:
+
+    ∫_{H̃, Ye₁}( ‖H̃‖² + σ²‖Ye₁‖² )^{−q}  ≤  C · σ^{−α'},   C σ-independent,   max(0, 2q − ub) < α' < M₀,
+
+then the **outer `W`-radial** (`∫₀^B σ^{dW−1} · σ^{−α'} dσ`, `dW = u·d`) absorbs it, finite ⟺ `α' < dW`.
+Composite gate `max(0, 2q − ub) < α' < min(M₀, u·d)` — non-empty ⟺ `2q < ub + min(M₀, u·d)`, which holds in
+the operative range `q < T1_q` (matches the `C_{ℓ,s}` min at `(ℓ,s)=(0,·)`; corner `(2,2,3)` gives two radial
+`∫r^{2−2q}dr`, `C_{0,0}=3`). The σ is the **intrinsic incidence-coordinate radius `‖W‖`**, an integration
+variable — NOT a banked external frame; `twoBlock_radial_le`'s `C` is σ-independent, so no frame field is
+threaded. **Using `d_v = dim Y = M₀·u` instead of the leading slice `M₀` WOULD require an external Loewner
+floor `W Wᵀ ⪰ σ²·I_u` — that is the failure mode to avoid.** The `Y`-rank degeneration (`σ_min(Y)→0`) is the
+`s`-index determinantal big-cell (intrinsic), not a floor. Parallels **Brick F droppable** (routeverify §5D).
 
 **CAVEAT (L≥1).** For `L≥1`, `W = Q_p·N` with `Q_p = A'₀ Z_deep` couples the deep factor, so the corner's
 `σ = ‖W‖` polar and the `Y`-block sit under the same deep-Gram residual as §3.2. So (a) "droppable" is clean
@@ -241,7 +261,28 @@ for L=0; for L≥1 the ℓ=0 corner inherits the Verdict-B residual and is not i
 
 ---
 
-## 5. Levels kept apart
+## 5. Decorrelated Codex (conclusion WITHHELD; prompt "argue whichever way")
+
+`codex/reassembly-{prompt,answer}.md` (gpt-5.6, xhigh, no repo access, my verdicts withheld). Independent,
+CONCURS on all three, and sharpened two points:
+- **Q1 [FACT].** Coarea prefactor is `pdet(ZZᵀ)^{−b/2}` (my `det⁺`); full det must not be used when `M₂>k`;
+  criterion `b≤k, a<k−b+1`; **and** a fixed-box `I(Z)` is not a determinant-only function of `Z` (the fibre
+  volume matters) — the scaling identity `I(tZ)=|t|^{−ab}I(Z)` proves it. (Folded into §2.)
+- **Q2 [FACT + INFERENCE].** "After row-space coarea + a `Z`-uniform leaf estimate, an uncompensated
+  `Δ_k(Z)^{−b/2}` remains" — verbatim my §3.2. Option (ii): integrable iff `b < |m−n|+1` (single free layer),
+  and for a **width-`k` bottleneck `Z=LR`**, `Δ_k(LR) = det(LᵀL)·det(RRᵀ)`, so **square `k×k` factors give
+  threshold `b<1` — every `b≥1` fails**. "The supplied IH does NOT constructively prove `G<∞` for a genuine
+  deep product … a separate weighted local-zeta estimate would be needed." **The safe corrected comparator
+  carries `Δ_k(Z)^{−b/2}`** — exactly my §3.3 option 2. Contributed the scaling obstruction `Z=tZ₀`
+  (slice ratio `|t|^{−ab}→∞`) now in §3.2 — this makes the constructive-domination refutation rigorous.
+- **Q3 [FACT].** Frame DROPPABLE, provided `d_v` is the **leading-singular slice** `Ye₁` (`d_v = M₀`), not all
+  of `Y` (that would need a Loewner floor); gate `max(0, 2q−ub) < α' < min(M₀, u·d)`. (Folded into §4.)
+
+No point of divergence between my exact-algebra derivation and the decorrelated consult.
+
+---
+
+## 6. Levels kept apart
 
 - **Quiver/orbit** — untouched; consumed via `minAdm`/`redChain` (`RouteMLayerSplit`).
 - **Codim `(C,θ)`** — `clsCodim`/`clsCodim_gate` are the `ℕ` block-count gate, **Fin 3 (L=0) ONLY** (verified).
@@ -265,11 +306,14 @@ for L=0; for L≥1 the ℓ=0 corner inherits the Verdict-B residual and is not i
   K·cornerComparator.integral` is FALSE there; it must NOT be asserted (route-B mode). σ-bank (3') is
   DROPPABLE for L=0 (intrinsic `‖W‖`-polar + `twoBlock_radial_le`, no external frame), deep-caveated for L≥1.
 - **Most likely to break it.** (a) If the arch1build target is arity-3 ONLY, Verdict B is a scope flag, not a
-  blocker — proceed. (b) My last non-rigorous step is that `L(Z)` (the inner leaf integral) does not vanish
-  fast enough on the deep rank-drop to kill the residual; I argued it stays `O(1)` or blows up (never
-  suppresses), so `G` diverges — but a Codex/hardener check of `L(Z)`'s deep-rank-drop asymptotics would fully
-  seal "the domination is FALSE" vs merely "the natural bound is too lossy". The residual's PRESENCE and
-  non-integrability are rigorous regardless (coarea + exact RLCT + `/tmp/confirm_witness.py`).
+  blocker — proceed. (b) Verdict B rests on: the residual's PRESENCE (coarea, rigorous), its non-integrability
+  for `b>|M₂−M₃|` (exact RLCT `(|M₂−M₃|+1)/2` + `/tmp/confirm_witness.py`), and the scaling obstruction
+  `Z=tZ₀` giving slice ratio `|t|^{−ab}→∞` (rigorous, refutes the constructive/per-`Z` domination for every
+  `ab>0` cut, decorrelated-Codex-derived §6) — these no longer depend on the `L(Z)` asymptotics I earlier
+  flagged. The one thing that would SOFTEN B: if the intended general-L route is NOT this charge-form
+  descent-onto-`cornerComparator` but a deep-decorated comparator (§3.3 option 2) or a deep-stratum gate
+  (option 3) — then B is "the naive route fails, use the corrected object", not "no route exists". The naive
+  charge-form domination onto the flat comparator is definitively refuted either way.
 - **Next construction/consult.** (i) Confirm arch1build's step-(6) target is arity-3 (if so, ship §3.1).
   (ii) For general L, pick a fix (§3.3): the deep-decorated comparator (option 2) is the cleanest — pin the
   deep-Gram-weighted RLCT `RLCT(det⁺(Z_deep Z_deepᵀ)^{−b/2}·‖A'₀Z_deep‖^{−2q})` and whether it stays `≥ T1_q`
