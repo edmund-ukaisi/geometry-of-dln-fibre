@@ -13,13 +13,19 @@ load-bearing mathematical question).
 1. **Closed-loop feedback measurement** — predicted vs actual: brick durations vs estimates,
    correction/absorption rates, lanes idle against gates that have ALREADY opened (a landed fix, a
    returned verdict, a reconciled base) since the last disposition.
-2. **Future-state simulation** — the true dependency DAG of open items, distinguishing **build-time**
-   dependencies from **sorry-propagation** dependencies (a hole with a locked statement is buildable
-   NOW against sorried inputs; its sorry-freeness propagates later). False-serialization hunt —
-   ALWAYS inspect a "batched" tide (batching is where false serialization hides). Long-pole and
+2. **Future-state simulation / THE PARALLELISATION AUDIT** — the true dependency DAG of open items,
+   distinguishing **build-time** dependencies from **sorry-propagation** dependencies (a hole with a
+   locked statement is buildable NOW against sorried inputs; its sorry-freeness propagates later).
+   False-serialization hunt — ALWAYS inspect a "batched" tide (batching is where false serialization
+   hides) and any HELD/gated lane (a gate on one item rarely gates its neighbours). Long-pole and
    variance placement (is the highest-variance item as early as it can be?). Rendezvous/pre-staging
    inventory: reviews, integration reconciliation, close/mint mechanics — what serializes at the end
-   if not started now.
+   if not started now; at endgame, **review latency joins the critical path** — commission reviewers
+   to shadow builds, not follow them. Named "the parallelisation audit" because that is what the
+   operator kept invoking it as on aoyagi-full: ~6 operator-prompted audits, every one finding
+   actionable splits (charts two-hand, (iv) pull-forward, rvprep/capbase/inputreview during a held
+   window, the satfill lane) — demand-proof that this must run on the CADENCE, not wait for the
+   operator to ask.
 3. **Composition witness** (scope-inflation guard, from the aoyagi-full T2 lesson): every tracker/
    ledger claim of the form "X discharges / covers / supplies Y" must point at a compiling Lean
    term (sorried leaves fine) or be stamped **UNWITNESSED** in the disposition table; and the
