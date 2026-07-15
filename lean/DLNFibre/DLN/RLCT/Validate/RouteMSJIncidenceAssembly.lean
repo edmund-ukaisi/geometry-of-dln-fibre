@@ -315,4 +315,50 @@ theorem shellSpine_le_coupledBox (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
           (coupledBoxIntegrand M (t + j) c')
           (paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1)
 
+/-! ## Step 2, atomic core: the coupled Γ-peel producing the corank charge `det(Q_bQ_bᵀ)^{−a/2}` -/
+
+/-- **Step-2 pointwise Γ-peel — the coupled corank charge, per fixed front `x` and corank rows.** For the
+freed Schur loss at any `Q` whose corank rows `Q_b = Q.submatrix Sum.inr id` have a `PosDef` Gram (full
+row rank, a.e. in `A_cor` on the incidence route) and pivot energy `w = frobSq(P·Q̃ₚ) > 0` (a.e. in `x`,
+since the stack is full row rank a.e.), the Γ-integral over any domain `s` produces the COUPLED corank
+charge `det(Q_bQ_bᵀ)^{−a/2}` and shifts the exponent `c' → c'−ab/2`, leaving the transverse-Schur core
+`(E_top + E_tr)`. Direct consumption of the banked `corankBlock_morsePeel_setLE` (`Apiv := 0`); the
+COUPLED version — the det charge rides on `Q_b = A_cor · Z_deep` (no `sup_{A_cor}` pull-out, the route-B
+error). `Q̃ₚ = Q_inl + P⁻¹·B₁₂·Q_inr`, `E_tr = frobSq(C·Q̃ₚ·(I − Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b))` the transverse
+Schur. -/
+theorem freedSchurLoss_gammaPeel_le {u a b n : ℕ} (x : SJOuter u a b)
+    (Q : Matrix (Fin u ⊕ Fin b) (Fin n) ℝ)
+    (hG : ((Q.submatrix Sum.inr id) * (Q.submatrix Sum.inr id)ᵀ).PosDef)
+    (c' : ℝ) (hc' : (a * b : ℝ) / 2 < c')
+    (hw : 0 < frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+        + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id)))
+    (s : Set (Fin a → Fin b → ℝ)) :
+    ∫⁻ Γ in s, ENNReal.ofReal ((freedSchurLoss x Γ Q) ^ (-c'))
+      ≤ ENNReal.ofReal
+          (((Q.submatrix Sum.inr id) * (Q.submatrix Sum.inr id)ᵀ).det ^ (-(a : ℝ) / 2)
+            * Cresid (a * b) c'
+            * (frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+                  + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id))
+                + frobSq ((Matrix.of x.2 * (Q.submatrix Sum.inl id
+                    + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id))
+                  * (1 - (Q.submatrix Sum.inr id)ᵀ
+                      * ((Q.submatrix Sum.inr id) * (Q.submatrix Sum.inr id)ᵀ)⁻¹
+                      * (Q.submatrix Sum.inr id)))) ^ (-(c' - (a * b : ℝ) / 2))) := by
+  set Qtp := Q.submatrix Sum.inl id
+      + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id with hQtp
+  set Qb := Q.submatrix Sum.inr id with hQb
+  -- freedSchurLoss matches the atom's `w + frobSq Apiv + frobSq (Ccross + Γ·Qb)` with `Apiv = 0`
+  have hz : frobSq (0 : Matrix (Fin 0) (Fin n) ℝ) = 0 := by simp [frobSq]
+  have hfree : ∀ Γ : Fin a → Fin b → ℝ,
+      ENNReal.ofReal ((freedSchurLoss x Γ Q) ^ (-c'))
+        = ENNReal.ofReal ((frobSq (Matrix.of x.1.1 * Qtp)
+            + frobSq (0 : Matrix (Fin 0) (Fin n) ℝ)
+            + frobSq (Matrix.of x.2 * Qtp + (Matrix.of Γ) * Qb)) ^ (-c')) := by
+    intro Γ
+    rw [freedSchurLoss, hz, add_zero]
+  rw [lintegral_congr hfree]
+  refine le_trans (corankBlock_morsePeel_setLE (0 : Matrix (Fin 0) (Fin n) ℝ) (Matrix.of x.2 * Qtp)
+    Qb hG c' hc' (frobSq (Matrix.of x.1.1 * Qtp)) hw s) (le_of_eq ?_)
+  rw [hz, add_zero]
+
 end DLNFibre.DLN.RLCT
