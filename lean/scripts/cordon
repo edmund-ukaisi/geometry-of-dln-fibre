@@ -17,6 +17,11 @@
 # Runs `lake exe cordon-audit` (built via the shared-store throttle `lb`). Builds BOTH the math lib (the
 # runtime `importModules DLNFibre` target) AND the exe. Pass-through args go to the executable, e.g.
 # `scripts/cordon --manifest` prints the per-source cite manifest (informational).
+#
+# All args are forwarded, including `--json <outfile>` (writes the machine-readable report the map
+# validator consumes; human output + exit code unchanged). For a mapped expedition the suggested output
+# is `<exp>/map/survey/cordon.json`, e.g.
+#   scripts/cordon --json ../expeditions/<exp>/map/survey/cordon.json
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -127,6 +127,43 @@ echo "$OUT_ALLOW"
 check_exit "leak allowed with --allow-blueprint" 0 "$CODE_ALLOW"
 check "leak still reported under --allow-blueprint" "LEAKS=1" "$OUT_ALLOW"
 
+echo "== (E) --json report matches the fixture verdicts (parsed) =="
+JSON_OUT="$(mktemp --suffix=.json)"
+set +e
+lake exe cordon-audit --import CordonFixtures --ns CordonFixtures --ns FixtureCited --json "$JSON_OUT" >/dev/null 2>&1
+CODE_JSON=$?
+set -e
+check_exit "json run leaves exit code unchanged (gate still red)" 1 "$CODE_JSON"
+echo "--- fixture-scope cordon.json ---"
+cat "$JSON_OUT"; echo
+set +e
+python3 - "$JSON_OUT" <<'PY'
+import json, sys
+d = json.load(open(sys.argv[1]))
+ok = True
+def want(cond, msg):
+    global ok
+    print(("    PASS: " if cond else "    FAIL: ") + msg)
+    ok = ok and cond
+want(isinstance(d.get("roots"), list) and len(d["roots"]) > 0, "roots is a non-empty list")
+leaks = {(l["decl"], l["via"]) for l in d["leaks"]}
+want(("CordonFixtures.bankedUsesBlueprint", "CordonFixtures.blueprintForecast") in leaks,
+     "known leak pair (bankedUsesBlueprint -> blueprintForecast) present")
+want(len(d["leaks"]) == 1, "exactly one leak entry")
+cited = {(c["axiom"], c["source"]) for c in d["cited"]}
+want(("CordonFixtures.citedFixtureAxiom", "Fixture Source B") in cited,
+     "located cite (citedFixtureAxiom / Fixture Source B) present")
+want("CordonFixtures.untaggedFixtureAxiom" in d["unaccounted"], "untagged axiom in unaccounted")
+want("CordonFixtures.hiddenFixtureAxiom" in d["unaccounted"], "opaque-hidden axiom in unaccounted")
+want(isinstance(d.get("generated"), str) and isinstance(d.get("scope"), str),
+     "generated + scope are strings")
+sys.exit(0 if ok else 1)
+PY
+JSON_RC=$?
+set -e
+rm -f "$JSON_OUT"
+check_exit "json content matches fixture verdicts" 0 "$JSON_RC"
+
 echo ""
 echo "cordon-test: $pass passed, $fail failed."
 [ "$fail" = 0 ]

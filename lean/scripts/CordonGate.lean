@@ -124,6 +124,70 @@ def printListing (r : CordonReport) (allowBlueprint : Bool) : IO Unit := do
     unless allowBlueprint do
       IO.eprintln "  → banked never consumes a forecast: prove/ban the forecast, or `@[blueprint]` the consumer."
 
+/-! ## The JSON report (consumed by the map validator) -/
+
+/-- Escape a string for embedding inside a JSON string literal (matches `WalkDecls.jsonEscape`). -/
+def jsonEscape (s : String) : String := Id.run do
+  let mut out := ""
+  for c in s.toList do
+    match c with
+    | '"'  => out := out ++ "\\\""
+    | '\\' => out := out ++ "\\\\"
+    | '\n' => out := out ++ "\\n"
+    | '\r' => out := out ++ "\\r"
+    | '\t' => out := out ++ "\\t"
+    | _ =>
+      if c.val < 0x20 then
+        let hex := String.ofList (Nat.toDigits 16 c.val.toNat)
+        let padded := String.ofList (List.replicate (4 - hex.length) '0') ++ hex
+        out := out ++ "\\u" ++ padded
+      else
+        out := out.push c
+  return out
+
+/-- A JSON string literal. -/
+def jstr (s : String) : String := "\"" ++ jsonEscape s ++ "\""
+
+/-- A JSON array of strings from `Name`s. -/
+def jarrN (xs : Array Name) : String :=
+  "[" ++ String.intercalate "," (xs.toList.map (fun n => jstr n.toString)) ++ "]"
+
+/-- The git HEAD sha of the invocation's cwd, best-effort (`"unknown"` if git is unavailable / not a
+repo). -/
+def gitHeadSha : IO String := do
+  try
+    let out ← IO.Process.output { cmd := "git", args := #["rev-parse", "HEAD"] }
+    -- git prints `<sha>\n`; take the first line (avoids the deprecated `String.trim`).
+    if out.exitCode == 0 then pure (out.stdout.takeWhile (· != '\n')).toString else pure "unknown"
+  catch _ => pure "unknown"
+
+/-- Serialise the report to the map-validator schema. `leaks` is flattened to one entry per (banked
+decl, blueprint dependency) pair. -/
+def reportToJson (r : CordonReport) (generated scope : String) : String := Id.run do
+  let citedJson := "[" ++ String.intercalate ","
+    (r.citedUsed.toList.map (fun (n, src) =>
+      "{\"axiom\":" ++ jstr n.toString ++ ",\"source\":" ++ jstr src ++ "}")) ++ "]"
+  let mut leakItems : Array String := #[]
+  for (d, vias) in r.blueprintLeaks do
+    for v in vias do
+      leakItems := leakItems.push
+        ("{\"decl\":" ++ jstr d.toString ++ ",\"via\":" ++ jstr v.toString ++ "}")
+  let leaksJson := "[" ++ String.intercalate "," leakItems.toList ++ "]"
+  return "{" ++
+    "\"roots\":" ++ jarrN r.roots ++
+    ",\"unaccounted\":" ++ jarrN r.unaccountedAxioms ++
+    ",\"cited\":" ++ citedJson ++
+    ",\"leaks\":" ++ leaksJson ++
+    ",\"generated\":" ++ jstr generated ++
+    ",\"scope\":" ++ jstr scope ++
+    "}\n"
+
+/-- The effective scope, as a reproducible CLI-arg string (for the JSON `scope` field). -/
+def scopeString (cfg : Config) : String :=
+  String.intercalate " " (
+    (cfg.imports.toList.map (fun m => s!"--import {m}")) ++
+    (cfg.nsPrefixes.toList.map (fun m => s!"--ns {m}")))
+
 unsafe def main (args : List String) : IO UInt32 := do
   let cfg ← match parseArgs args with
     | .ok c => pure c
@@ -138,6 +202,15 @@ unsafe def main (args : List String) : IO UInt32 := do
       { fileName := "<cordon-audit>", fileMap := default } { env }
     -- One-line machine-parseable summary (always, to stdout).
     IO.println report.summaryLine
+    -- `--json`: write the machine-readable report (human output + exit code unchanged), on green AND red.
+    match cfg.json with
+    | some path =>
+      let sha ← match cfg.generated with
+        | some g => pure g
+        | none   => gitHeadSha
+      IO.FS.writeFile path (reportToJson report sha (scopeString cfg))
+      IO.eprintln s!"cordon-audit: wrote JSON report to {path}"
+    | none => pure ()
     if cfg.manifest then
       printManifest report
       return (0 : UInt32)
