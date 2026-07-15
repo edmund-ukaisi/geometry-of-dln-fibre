@@ -434,4 +434,34 @@ theorem coupledBox_le_frontCharge (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c
     {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
       Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1}
 
+/-- **Steps 1 + 2 composed — the coupled-route bound spine → front-charge.** The shell-restricted spine
+integrand (strict shell `1≤j<r`) is dominated by the `(z, A_cor)`-box integral of the front-charge
+integrand — the coupled corank charge `det(Q_bQ_bᵀ)^{−a/2}` (`Q_b = A_cor·Z_deep`, coupled) times the
+front loss `(E_top+E_tr)^{−q}`. Composes `shellSpine_le_coupledBox` (step 1) with the per-`p`
+`coupledBox_le_frontCharge` (step 2, `lintegral_mono_ae` over `p`). The two a.e.-`p` genericity
+hypotheses (`hGae` corank Gram PosDef a.e.; `hEtopae` pivot energy `>0` a.e. in `x`, a.e. in `p`) are the
+honest genericity content — `hGae` from the threaded deep-factor rank `b ≤ Z_deep(z).rank` + `corank_survival_ae`
+(discharged by rankgen); `hEtopae` from `pivotEnergy_stack_eq` + polynomial nonvanishing. Ready for step 3
+(the joint incidence charts resolve `frontChargeIntegrand`). -/
+theorem shellSpine_le_frontCharge (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (κ : Fin (t + j) ↪ Fin (M 1)) (ε c' : ℝ) (hj : j ≤ min (M 0 - t) (M 1 - t))
+    (hc' : ((M 0 - (t + j) : ℕ) : ℝ) * ((M 1 - (t + j) : ℕ) : ℝ) / 2 < c')
+    (hGae : ∀ᵐ p ∂(volume.restrict
+        (paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1)),
+        ((hsQ M (t + j) (deeperFlagZdeep M (t + j)) p.1 p.2).submatrix Sum.inr id
+          * ((hsQ M (t + j) (deeperFlagZdeep M (t + j)) p.1 p.2).submatrix Sum.inr id)ᵀ).PosDef)
+    (hEtopae : ∀ᵐ p ∂(volume.restrict
+        (paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1)),
+        ∀ᵐ x ∂(volume.restrict (outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1)),
+          0 < frobSq (Matrix.of x.1.1
+            * ((hsQ M (t + j) (deeperFlagZdeep M (t + j)) p.1 p.2).submatrix Sum.inl id
+              + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                  * (hsQ M (t + j) (deeperFlagZdeep M (t + j)) p.1 p.2).submatrix Sum.inr id))) :
+    shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
+      ≤ ∫⁻ p in paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1,
+          frontChargeIntegrand M (t + j) c' p := by
+  refine le_trans (shellSpine_le_coupledBox M t j κ ε c' hj) (lintegral_mono_ae ?_)
+  filter_upwards [hGae, hEtopae] with p hG hEtop
+  exact coupledBox_le_frontCharge M (t + j) c' p hc' hG hEtop
+
 end DLNFibre.DLN.RLCT
