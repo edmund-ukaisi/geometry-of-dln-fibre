@@ -191,4 +191,128 @@ theorem freedSchurLoss_submatrix_id_cols {t a b q q' : ℕ} (x : SJOuter t a b)
     ext i k; simp only [Matrix.submatrix_apply, Matrix.add_apply, id_eq]
   rw [hcomb, frobSq_submatrix_id_cols]
 
+/-! ## Step 1, atom (ii) proper: the row-reindexed product IS `hsQ` at the actual deep factor -/
+
+/-- The column-width bridge `dropHead (redChain u M) (Fin.last L) = tailChain M (Fin.last (L+1))`
+(both `= M (Fin.last (L+1+1))`, the input width). -/
+theorem dropHead_redChain_last_eq_tailChain_last (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) :
+    dropHead (redChain u M) (Fin.last L) = tailChain M (Fin.last (L + 1)) := by
+  rw [dropHead_redChain_last]
+  simp only [tailChain, Fin.succ_last]
+
+/-- **Step-1 atom (ii) proper — the row-reindexed cut-`u` front factor is `hsQ` at the actual deep
+factor.** The leading-tail-layer product `prod (tailChain M) A'`, row-reindexed by `blockSplitEquiv κ`
+(pivot rows → `κ`-image, corank rows → complement) and column-cast to the reduced-chain width, equals
+`hsQ M u (deeperFlagZdeep M u) z A_cor` for `z = (hsSplit A').1`, `A_cor = (hsSplit A').2`. Both sides
+factor `Q = rows · Z_deep` through the SAME (defeq) deep factor `Z_deep = prod (dropHead ·) (A' ∘ succ)`
+(`dropHead (tailChain M) = dropHead (redChain u M)` by `rfl`); the pivot/corank row split is
+`blockSplitEquiv κ` on `A' 0` (`hsSplit_fst_zero`/`hsSplit_snd`), and the only genuine cast is the shared
+column width (`finCongr`). -/
+theorem row_reindex_prod_eq_hsQ (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (κ : Fin u ↪ Fin (M 1))
+    (A' : Params (tailChain M)) :
+    (prod (tailChain M) A').submatrix (blockSplitEquiv κ)
+        (finCongr (dropHead_redChain_last_eq_tailChain_last M u))
+      = hsQ M u (deeperFlagZdeep M u) (hsSplit M u κ A').1 (hsSplit M u κ A').2 := by
+  -- expose both products through the head split (the deep factor is defeq across the two chains)
+  rw [prod_headSplit (tailChain M) A']
+  unfold hsQ deeperFlagZdeep
+  rw [prod_headSplit (redChain u M) (hsSplit M u κ A').1]
+  ext I k
+  rcases I with i | i
+  · -- pivot rows: `blockSplitEquiv κ (Sum.inl i) = κ i`
+    simp only [Matrix.submatrix_apply, Matrix.fromRows_apply_inl, blockSplitEquiv_inl,
+      rmatMul, finCongr_apply]
+    rfl
+  · -- corank rows: `(hsSplit A').2 = A' 0 ∘ (complement)`, `of A_cor * Z`
+    simp only [Matrix.submatrix_apply, Matrix.fromRows_apply_inr, rmatMul, finCongr_apply,
+      Matrix.mul_apply, hsSplit_snd]
+    rfl
+
+/-- **The `freedSchurLoss` value identity (step-1 atom (ii)).** The shell-spine's freed loss at the
+row-reindexed tailChain product equals the freed loss at `hsQ` (the reduced-chain corank stack at the
+actual deep factor): absorb the column-count cast via the bridge (`freedSchurLoss_submatrix_id_cols`),
+then the reindexed product IS `hsQ` (`row_reindex_prod_eq_hsQ`). -/
+theorem freedSchurLoss_rowReindex_eq_hsQ (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (κ : Fin u ↪ Fin (M 1)) (A' : Params (tailChain M)) {a : ℕ} (x : SJOuter u a (M 1 - u))
+    (Γ : Fin a → Fin (M 1 - u) → ℝ) :
+    freedSchurLoss x Γ ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)
+      = freedSchurLoss x Γ
+          (hsQ M u (deeperFlagZdeep M u) (hsSplit M u κ A').1 (hsSplit M u κ A').2) := by
+  rw [← row_reindex_prod_eq_hsQ M u κ A',
+    ← freedSchurLoss_submatrix_id_cols x Γ
+      ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)
+      (finCongr (dropHead_redChain_last_eq_tailChain_last M u))]
+  congr 1
+
+/-! ## Step 1: the row-split reduction to the coupled full-box freed-loss integral -/
+
+/-- **The coupled full-box freed-loss integrand** — the RHS of the step-1 reduction, as a function of the
+reduced params `z` and the corank matrix `A_cor`. The corank block `Q_b = A_cor · deeperFlagZdeep z` is
+the ACTUAL deep factor (COUPLED — no `sup_{A_cor}` pull-out), integrated over the FULL `matBox`
+(NOT route-B's `pivotShell`). Brick F absent: `deeperFlagZdeep` is the actual measurable deep factor. -/
+noncomputable def coupledBoxIntegrand (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (p : Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)) : ℝ≥0∞ :=
+  ∫⁻ x in outerDom u (M 0 - u) (M 1 - u) 1,
+    ∫⁻ Γ in {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
+        Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
+      ENNReal.ofReal
+        ((freedSchurLoss x Γ (hsQ M u (deeperFlagZdeep M u) p.1 p.2)) ^ (-c'))
+
+/-- **Step 1 (row-split → coupled full-box) — the coupled-incidence-route entry point.** The
+shell-restricted spine integrand at a strict shell `j ≤ r = min(M₀−t, M₁−t)` is dominated by the coupled
+`(z, A_cor)`-box freed-loss integral at the ACTUAL deep factor `Q_b = A_cor · deeperFlagZdeep z`, over the
+FULL product box `paramsBoxM (redChain u M) 1 ×ˢ matBox (M₁−u) M₂ 1` (`u = t+j`). Route: drop the shell
+indicator (`lintegral_mono_set`, a fortiori — off-shell is finite to T1 per incidence-cert §Verdict), then
+the measure-preserving head/row split transports the `A'`-integral to the `(z, A_cor)`-product box
+(`measurePreserving_hsSplit` + `setLIntegral_comp_preimage_emb`, consuming the box factorization
+`hsSplit_preimage_box`), with the integrand identity `freedSchurLoss_rowReindex_eq_hsQ` exhibiting the
+row-reindexed product as `hsQ`. This bypasses route-B's FALSE `shellSpine_le_hsQ_box` (which lands on
+`matBox ∩ pivotShell`). Coupling KEPT (`Q_b = A_cor · deeperFlagZdeep z` joint); INTEGRATED not pointwise;
+`hcT`/shell retained in the STATEMENT (dropped only in the a-fortiori bound). -/
+theorem shellSpine_le_coupledBox (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (κ : Fin (t + j) ↪ Fin (M 1)) (ε c' : ℝ) (hj : j ≤ min (M 0 - t) (M 1 - t)) :
+    shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
+      ≤ ∫⁻ p in paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1,
+          coupledBoxIntegrand M (t + j) c' p := by
+  rw [shellSpineIntegrand]
+  -- integrand identity: the shell-spine inner integral is `coupledBoxIntegrand ∘ hsSplit`
+  have hval : ∀ A' : Params (tailChain M),
+      (∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+          ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+            ENNReal.ofReal
+              ((freedSchurLoss x Γ
+                  ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-c')))
+        = coupledBoxIntegrand M (t + j) c' (hsSplit M (t + j) κ A') := by
+    intro A'
+    rw [coupledBoxIntegrand]
+    refine lintegral_congr fun x => lintegral_congr fun Γ => ?_
+    rw [freedSchurLoss_rowReindex_eq_hsQ M (t + j) κ A' x Γ]
+  calc ∫⁻ A' in paramsBoxM (tailChain M) 1
+          ∩ {A' | prod (tailChain M) A'
+              ∈ singularShell ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩},
+        ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+          ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+            ENNReal.ofReal
+              ((freedSchurLoss x Γ
+                  ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-c'))
+      ≤ ∫⁻ A' in paramsBoxM (tailChain M) 1,
+          ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+            ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+                Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+              ENNReal.ofReal
+                ((freedSchurLoss x Γ
+                    ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-c')) :=
+        lintegral_mono_set Set.inter_subset_left
+    _ = ∫⁻ A' in paramsBoxM (tailChain M) 1, coupledBoxIntegrand M (t + j) c' (hsSplit M (t + j) κ A') :=
+        lintegral_congr hval
+    _ = ∫⁻ p in paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1,
+          coupledBoxIntegrand M (t + j) c' p := by
+        rw [← hsSplit_preimage_box M (t + j) κ]
+        exact (measurePreserving_hsSplit M (t + j) κ).setLIntegral_comp_preimage_emb
+          (MeasurableEquiv.measurableEmbedding (hsSplit M (t + j) κ))
+          (coupledBoxIntegrand M (t + j) c')
+          (paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1)
+
 end DLNFibre.DLN.RLCT
