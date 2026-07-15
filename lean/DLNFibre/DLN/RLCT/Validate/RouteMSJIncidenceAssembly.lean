@@ -464,4 +464,41 @@ theorem shellSpine_le_frontCharge (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
   filter_upwards [hGae, hEtopae] with p hG hEtop
   exact coupledBox_le_frontCharge M (t + j) c' p hc' hG hEtop
 
+/-! ## Step 3/4 — the general-`L` per-stratum exponent gate (gaugelift's chain) -/
+
+/-- **The deep-tail-minimum bound `deepTailMin M ≤ M 2`.** The `⨅_{i≥2}` includes the `i = 2` term. -/
+theorem deepTailMin_le_M2 (M : Fin (L + 1 + 1 + 1) → ℕ) : deepTailMin M ≤ M 2 := by
+  refine le_trans (Finset.inf'_le _ (Finset.mem_univ (0 : Fin (L + 1)))) (le_of_eq ?_)
+  rfl
+
+/-- **The general-`L` per-stratum exponent gate (cert §3/§5, gaugelift's chain).** For a valid stratum
+`(ℓ, s)` at a cut `u ≤ min(M₀,M₁)` of a general chain `M : Fin (L+1+1+1) → ℕ`, the DESCENT-target
+`minAdm M` is bounded by the arity-3 joint-stratum codimension `clsCodim ![M₀,M₁,M₂]` plus the peeled
+corner `ab`. Chain (gaugelift, M₂-controlled — the banked arity-3 `clsCodim_add_ab_eq` applies verbatim):
+`minAdm M ≤ (M₀−s)(M₁−s) + minAdm(redChain s M)` (`minAdm_le_peelCharge_add_redChain`) `≤ (M₀−s)(M₁−s) +
+s·deepTailMin M` (`minAdm_redChain_le_deepTailMin`) `≤ (M₀−s)(M₁−s) + s·M₂` (`deepTailMin_le_M2`) `=
+clsCodim + ab` (`clsCodim_add_ab_eq`). So each stratum's radial integral is finite below the shell
+threshold — the exponent gate the finite-cover gluing consumes. -/
+theorem clsCodim_gate_genL (M : Fin (L + 1 + 1 + 1) → ℕ) (u ℓ s : ℕ)
+    (hu : u ≤ min (M 0) (M 1)) (hs : s ≤ u) (hℓs : ℓ + s ≤ u) (hbℓ : (M 1 - u) + ℓ ≤ M 2) :
+    minAdm M ≤ clsCodim ![M 0, M 1, M 2] u ℓ s + (M 0 - u) * (M 1 - u) := by
+  have hsu : s ≤ min (M 0) (M 1) := le_trans hs hu
+  -- gaugelift's chain to `(M₀−s)(M₁−s) + s·M₂`
+  have hchain : minAdm M ≤ (M 0 - s) * (M 1 - s) + s * M 2 := by
+    calc minAdm M ≤ (M 0 - s) * (M 1 - s) + minAdm (redChain s M) := by
+            have h := minAdm_le_peelCharge_add_redChain M s hsu
+            rwa [peelCharge] at h
+      _ ≤ (M 0 - s) * (M 1 - s) + s * deepTailMin M := by
+            gcongr
+            exact minAdm_redChain_le_deepTailMin M s
+      _ ≤ (M 0 - s) * (M 1 - s) + s * M 2 := by
+            gcongr
+            exact deepTailMin_le_M2 M
+  -- the arity-3 codim identity on the first three widths
+  have hcls : clsCodim ![M 0, M 1, M 2] u ℓ s + (M 0 - u) * (M 1 - u)
+      = (M 0 - s) * (M 1 - s) + s * M 2 := by
+    have h := clsCodim_add_ab_eq ![M 0, M 1, M 2] u ℓ s (by simpa using hu) hs hℓs (by simpa using hbℓ)
+    simpa using h
+  rw [hcls]; exact hchain
+
 end DLNFibre.DLN.RLCT
