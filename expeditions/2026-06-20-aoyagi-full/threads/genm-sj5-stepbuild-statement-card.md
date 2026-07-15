@@ -11,9 +11,11 @@ and route-agnostic, so unaffected). NOT wired to the aggregator (controller inte
 
 ## Card 1 — module (ii)(a): D–H front-Gram Kronecker-sum primitive
 
-> **Claim (design §2.2/§2.4).** The joint front map `L(U,B) = P·U + B·D` has covariance
-> `Σ = frontGram P D = I_b⊗(P Pᵀ) + (Dᵀ D)⊗I_u`; this is the genuine Gram of the vectorised map
-> `(vec U, vec B) ↦ vec L`, its two Kronecker summands commute, and it is positive semidefinite.
+> **Claim (design §2.2/§2.4).** The joint front map `L(U,B) = P·U + B·D` has front-Gram
+> `Σ = frontGram P D = I_b⊗(P Pᵀ) + (Dᵀ D)⊗I_u = K Kᵀ`, the Gram of the vectorised map
+> `(vec U, vec B) ↦ vec L` (equal to its pushforward *covariance* precisely when `(U,B)` carries an
+> isotropic/standard source — the design §2.2 source); its two Kronecker summands commute, and it is
+> positive semidefinite.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.vec_frontMap`, `frontGram`, `frontGram_eq_gram`,
 >   `frontGram_factors_commute`, `frontGram_posSemidef`
@@ -28,7 +30,7 @@ and route-agnostic, so unaffected). NOT wired to the aggregator (controller inte
 > - **Cited.** Mathlib `mul_kronecker_mul`, `kroneckerMap_transpose`, `Matrix.vec` API
 >   (`kronecker_mulVec_vec`, `vec_mul_eq_mulVec`), `posSemidef_self_mul_conjTranspose`.
 > - **Deferred.** PosDef under `IsUnit P` (a strengthening); the eigenvalues `{pᵢ²+σⱼ²}` — see Card 3.
-> - **Status.** sorry-free
+> - **Status.** sorry-free + reviewed (stepbuild-reviewer fidelity PASS, 2026-07-15; docstring/card precision nits applied)
 
 ## Card 2 — module (i-a): exact `ρ = deepTailMin` leaf-reduction algebra
 
@@ -52,7 +54,7 @@ and route-agnostic, so unaffected). NOT wired to the aggregator (controller inte
 > - **Deferred.** The **measurable `S̃`-selector** — producing `S̃, Õ` from `Z` measurably a.e.-`z_tail`
 >   (design §1 Lean-shape note, parallel to Brick F's frame selector). This layer is the pure algebra;
 >   the selector is the "substance" and is NOT built here.
-> - **Status.** sorry-free
+> - **Status.** sorry-free + reviewed (stepbuild-reviewer fidelity PASS, 2026-07-15; docstring/card precision nits applied)
 
 ## Card 3 — module (ii)(b): front-Gram determinant `det Σ = ∏(pᵢ²+σⱼ²)`
 
@@ -78,7 +80,7 @@ and route-agnostic, so unaffected). NOT wired to the aggregator (controller inte
 >   `IsHermitian.eigenvalues`) — a whnf-fiddly wrapper (CLAUDE.md spectral-defeq trap); the abstract-
 >   diagonalisation form above is the CoV-usable one. Also the **pushforward-density bound**
 >   `∫(‖PU+BD‖²+τ²)^{−q} ≲ τ^{ub−2q}·detΣ^{−1/2}` (module (ii)(b)-proper, the analytic heart) — NOT built.
-> - **Status.** sorry-free
+> - **Status.** sorry-free + reviewed (stepbuild-reviewer fidelity PASS, 2026-07-15; docstring/card precision nits applied)
 
 ---
 

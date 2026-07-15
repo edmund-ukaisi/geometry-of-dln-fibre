@@ -13,13 +13,15 @@ self-contained primitive from `genm-stepdesign/design.md §2.2/§2.4`.
 The joint front map `L(U,B) = P·U + B·D` (`u×b`, `P : u×u` invertible pivot, `D : b×b`) is the
 `B`-shear image of the outer front (incidence-cert §3b step (3), `H = PU + BD`). The crux de-risk
 (design §2.1) is that the naive tube (`chart4` standalone over `ℝ^{ub}`) DIVERGES via a false
-`|det D|^{d−a−u}` weight; the resolution (§2.2) keeps `(U,B)` together and uses the **covariance
-(front-Gram)** of the vectorised map `(vec U, vec B) ↦ vec L`, a Kronecker SUM
+`|det D|^{d−a−u}` weight; the resolution (§2.2) keeps `(U,B)` together and uses the **front-Gram** `K Kᵀ`
+of the vectorised map `(vec U, vec B) ↦ vec L` (`K = [K_P|K_D]`), a Kronecker SUM
 
-    Σ = frontGram P D = I_b ⊗ (P Pᵀ) + (Dᵀ D) ⊗ I_u,
+    Σ = frontGram P D = I_b ⊗ (P Pᵀ) + (Dᵀ D) ⊗ I_u.
 
-whose honest joint weight `(det Σ)^{−1/2} = ∏(pᵢ²+σⱼ²)^{−1/2}` (`pᵢ, σⱼ` the singular values of
-`P, D`) automatically interpolates the two `D`-radial regimes with no enlargement.
+(`Σ` is the pushforward *covariance* of `vec L` precisely when `(U,B)` carries an isotropic/standard source
+— the design §2.2 source; in general `Σ` is the Gram of the front map, which is what is proved here.)
+Its honest joint weight `(det Σ)^{−1/2} = ∏(pᵢ²+σⱼ²)^{−1/2}` (`pᵢ, σⱼ` the singular values of `P, D`)
+automatically interpolates the two `D`-radial regimes with no enlargement.
 
 This file banks the **algebraic** core of the primitive:
 - `vec_frontMap` — the vectorisation `vec (PU+BD) = (I_b⊗P)·vec U + (Dᵀ⊗I_u)·vec B` (grounds Σ as a
@@ -69,15 +71,16 @@ theorem vec_frontMap (P : Matrix u u ℝ) (D : Matrix b b ℝ) (U B : Matrix u b
   congr 1
   rw [Matrix.kronecker_mulVec_vec, Matrix.transpose_transpose, Matrix.one_mul]
 
-/-- **The front-Gram (covariance) matrix** `Σ = I_b ⊗ (P Pᵀ) + (Dᵀ D) ⊗ I_u` — the covariance of the
-vectorised front map `vec (PU + BD)` (design §2.2). A Kronecker sum, indexed by `b × u`. -/
+/-- **The front-Gram matrix** `Σ = I_b ⊗ (P Pᵀ) + (Dᵀ D) ⊗ I_u` — the Gram of the vectorised front map
+`vec (PU + BD)` (its pushforward covariance for an isotropic source, design §2.2). Kronecker sum, `b × u`. -/
 noncomputable def frontGram (P : Matrix u u ℝ) (D : Matrix b b ℝ) : Matrix (b × u) (b × u) ℝ :=
   ((1 : Matrix b b ℝ) ⊗ₖ (P * Pᵀ)) + ((Dᵀ * D) ⊗ₖ (1 : Matrix u u ℝ))
 
 /-- **`frontGram` IS the Gram `[K_P|K_D][K_P|K_D]ᵀ`** — `Σ = K_P K_Pᵀ + K_D K_Dᵀ` with `K_P = I_b⊗P`,
 `K_D = Dᵀ⊗I_u`. Each summand collapses by the Kronecker mixed-product `mul_kronecker_mul`:
 `(I_b⊗P)(I_b⊗Pᵀ) = I_b⊗(PPᵀ)`, `(Dᵀ⊗I_u)(D⊗I_u) = (DᵀD)⊗I_u`. Confirms `frontGram` is the genuine
-covariance of the map `vec_frontMap`, not a free-floating identity. -/
+Gram `K Kᵀ` of the map `vec_frontMap` (= its pushforward covariance for an isotropic source), not a
+free-floating identity. -/
 theorem frontGram_eq_gram (P : Matrix u u ℝ) (D : Matrix b b ℝ) :
     frontGram P D
       = ((1 : Matrix b b ℝ) ⊗ₖ P) * ((1 : Matrix b b ℝ) ⊗ₖ P)ᵀ
@@ -104,8 +107,8 @@ theorem frontGram_factors_commute (P : Matrix u u ℝ) (D : Matrix b b ℝ) :
   rw [e1, e2]
 
 /-- **The front-Gram is positive semidefinite** — `Σ = K_P K_Pᵀ + K_D K_Dᵀ` is a sum of two Grams
-`M Mᵀ` (each PSD), so PSD. (PosDef under `IsUnit P`/`IsUnit D` is a later strengthening; PSD is the
-weakest form the density bound needs to define `det Σ^{−1/2}`.) -/
+`M Mᵀ` (each PSD), so PSD. (PSD is what this layer proves; the density weight `(det Σ)^{−1/2}` needs
+`det Σ > 0`, i.e. the PosDef strengthening under `IsUnit P` — deferred.) -/
 theorem frontGram_posSemidef (P : Matrix u u ℝ) (D : Matrix b b ℝ) :
     (frontGram P D).PosSemidef := by
   rw [frontGram_eq_gram]
