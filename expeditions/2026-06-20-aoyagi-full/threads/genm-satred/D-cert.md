@@ -192,6 +192,21 @@ chain to reach exactly `½minAdm M` (plausibly the IH's business, since `det(Q̃
 leading-Gram singularity). This is the genuinely-new analytic content for a≥u; the CoV + form are pinned,
 the reduced-chain charge accounting is the remaining verification.
 
+**Update (edgered + RouteMSJDecorated finding) — the a≥u C-integral is BANKED; the accounting is
+arch1build's atom-vs-decorated call.** edgered confirmed my a≥u C-integral IS the landed
+`RouteMSJGammaAtom.gammaAtom_aniso_shifted_eq` term-for-term (`R=Q̃ₚ, q=u, S=γ⊗Q_b, p=a`: `det(RRᵀ)^{−p/2}·
+Cresid(pq)·(w+‖S(I−P_R)‖²)^{−(c'−pq/2)}`; needs `Q̃ₚQ̃ₚᵀ` PosDef = full-row-rank, generic at edge). So the
+hard C-integral is done. The ONLY open a≥u piece: `∫ det(Q̃ₚQ̃ₚᵀ)^{−a/2}·[reduced] → residual charge → ½minAdm`.
+**CAUTION (honest):** `RouteMSJDecorated`'s docstring flags a `det(Q_b Q_bᵀ)` Gram field as **"the atom trap"**
+(the divergent pointwise route on the rank-deficient locus) and the decorated route deliberately carries the
+`SJLinGenState` carrier INSTEAD. `gammaAtom`'s `det(Q̃ₚQ̃ₚᵀ)` is a DIFFERENT Gram (pivot-shifted `Q̃ₚ`, full
+rank u — not the corank `Q_b`), so it is plausibly NOT the trap; but whether the `det(Q̃ₚQ̃ₚᵀ)^{−a/2}`
+recursion over the reduced chain is clean (atom route) or must instead go through the decorated
+(`SJLinGenState`) route is **tied to the SJ-resolution atom-vs-decorated design choice — arch1build's domain**,
+not a pen-and-paper adjudication. Recommend the a≥u accounting be resolved WITH arch1build (who owns the
+atom/decorated split), citing `gammaAtom` for the C-integral. No wall (corner ⊆ RMBTF(M)); it is the
+route-selection (atom vs decorated) for the reduced-Gram charge that is open.
+
 ## 4. Part 3 — Lean-friendly design
 
 **Object / target.** `∫_p coupledBoxIntegrand M u c' p < ⊤` per-exponent for `c' < ½·minAdm M`
