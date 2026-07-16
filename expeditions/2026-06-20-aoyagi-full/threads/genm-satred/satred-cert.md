@@ -68,6 +68,31 @@ The threshold: at `a=0`, `peelCharge M u = a·b = 0`, so `flagShift_lt_carrierTh
 and `minAdm M ≤ minAdm(redChain u M)` (saturated `flagCharge_ge`). The **needed** finiteness is for
 `c' < ½·minAdm M`.
 
+**Correspondence to the actual `shellSpineIntegrand` def** (`RouteMSJDeeperFlagCore:444`, verified — the
+brief's `redChain z` framing is idealized; the Lean def uses `tailChain`/`κ`): `shellSpineIntegrand M u κ ε
+r ⟨r⟩ c' = ∫_{A' ∈ paramsBoxM(tailChain M) 1 ∩ singularShell} ∫_{x ∈ outerDom u (M₀−u) (M₁−u) 1} ∫_Γ
+(freedSchurLoss x Γ Q)^{−c'}`, with `Q = (prod(tailChain M) A').submatrix (blockSplitEquiv κ) id`,
+`tailChain M = (M₁,…,M_last)`, `blockSplitEquiv κ : Fin u ⊕ Fin (M₁−u) ≃ Fin M₁` reindexing **rows**
+(pivot rows via `κ` first, then corank). So the loss data is — **two precision points a build must not
+miss:**
+- `Q_p = Q_inl` = the `u` pivot rows of `prod(tailChain M) A'` = **`z₀·Zdeep`** (`u×M_last`), NOT `z₀`;
+  here `z₀` = the `κ`-pivot rows of the **leading tail layer** `A₀ := A' 0` (`M₁×M₂`), a sub-block of the
+  shell-constrained `A'`, **not a free box variable**. `Q_b = Q_inr = A_cor·Zdeep`, `A_cor` = the `b`
+  corank rows of `A₀`. `Zdeep = deeperFlagZdeep` (`M₂×M_last`).
+- `X = [P|B₁₂]` (`u×M₁`), `Y = A₀ = [z₀;A_cor]` (the **full `M₁×M₂` leading tail layer**), **NOT**
+  `[Q_p;Q_b]` (`= A₀·Zdeep`, `M₁×M_last`, wrong shape). `z̃₀ = X·Y`; the first `freedSchurLoss` term
+  `= frobSq(P·Q_p+B₁₂·Q_b) = frobSq((P·z₀+B₁₂·A_cor)·Zdeep) = frobSq(z̃₀·Zdeep)` by right-factoring
+  `Zdeep` (needs the `Q_inl` head-split, `paramsHeadSplit`).
+- **`Cresid` does NOT appear in `shellSpineIntegrand`** (pure `freedSchurLoss^{−c'}`); it lives downstream
+  in the radial/frontCharge layer (`RouteMSJShellUniform`, `C₁(Z)=Cresid·Wenn`). `Cresid(0)=1` inert.
+
+**Scope of the Δ-accounting (honest).** `Δ` (§4) is on a **free-box model** (`z₀,A_cor,Zdeep` independent).
+In the real integrand `z₀`/`A_cor` are rows of the **shell-constrained** `A'`. The **det-P resolution is
+front-only** (`X=[P|B₁₂]` full row rank, in the `x`-block) and **robust** to that coupling; the exact
+reduction to `RMBTF(redChain u M)` composes the front reassembly with the **deep descent** (shell → redChain
+box, arch1build's mechanism). The shell constraint only *restricts* `A'` (shrinks the integral) — should
+help — but the composition is arch1build's to confirm.
+
 ## 2. The hazard, made precise: the naive CoV DIVERGES
 
 The natural attempt "absorb `P` into the leading reduced layer": `z₀ ↦ w = P·z₀ + B₁₂·A_cor`, affine in `z₀`
