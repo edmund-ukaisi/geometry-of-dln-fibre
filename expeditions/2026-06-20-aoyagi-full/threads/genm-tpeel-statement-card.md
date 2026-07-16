@@ -49,7 +49,8 @@ Chain: **G1 (box ≤ ∑ shellSpine)** → LINK (`shellSpine_le_frontCharge_bind
 >   (re-proved ρ-generic). The one genuinely-new sub-lemma is `ae_rank_ge` (determinantal a.e.-full-rank),
 >   reusing the a.e.-nonzero-polynomial engine `ae_matrix_eval_ne_zero` (parallels `corank_survival_ae`,
 >   simpler — no deep factor). ~200 lines.
-> - **Status.** sorry-free (awaiting fidelity review).
+> - **Status.** sorry-free + reviewed (fidelity SURVIVED all 5 checks; kernel-verified verbatim
+>   composition with the LINK `box ≤ ∑ shellSpine ≤ ∑ frontCharge`; decorrelated Codex-confirmed).
 
 ## Fidelity note (why the RHS sums over `(ρ, κ)`, not just `j`)
 
