@@ -996,11 +996,20 @@ intloss's per-p FINITENESS + rank lemma. Confirmed with intloss (its (a)+(b) are
 separate front-block var, not a sub-block of z0). charge `z0`-INDEPENDENT CONFIRMED (`Q_inr = Q_b =
 A_cor·Z_deep`, `Z_deep` = deeper layers, no z0 → `det(Q_bQ_bᵀ)^{−a/2}` constant, no competing pole).
 width-caveat RESOLVED (single width `d`, Codex B̃-decoupling). QIP CLOSED (★3, multi-pivot form A — no new
-lemma). REMAINING (ONE): (b) the RLCT rests on the **transverse-stratum criterion** — that each determinantal
-rank-stratum of `Q_inl·Π` contributes to the coupled `∫_p` integrably and independently (the joint
-resolution's one assumed analytic input). This is a clean determinantal-variety RLCT (detail-at-scale, NOT a
-monument); Codex flagged it explicitly. It is the last thing between "interior converges ∀-cell (verified)"
-and a full Lean interior closure.
+lemma). And the transverse-stratum criterion REDUCES TO THE ARITY-3 (□) BASE CASE — see ★6.
+
+**★6 The transverse-stratum criterion = the arity-3 (□) base case (NOT a new monument).** Via the
+B̃-decoupling, the loss depends on `z0` ONLY through `Y := z0·Z_deep·Π` (u×d): `E_top = frobSq(P·Y) +
+frobSq(B̃·Q_b)`, `E_tr = frobSq(C·Y)`. The map `z0 ↦ Y = z0·(Z_deepΠ)` is a linear surjection onto u×d
+(Jacobian const; the u·(M₂−d) kernel directions integrate freely over the box). So `∫_p` reduces to
+`∫_{Y,P,C,B̃} (frobSq(E·Y) + frobSq(B̃·Q_b))^{−q}`, `E := [P;C]` ((u+a)×u) — this is the **arity-3 (□)
+loss-integral** of the reduced 2-layer chain `(u+a, u, d)` (product `E·Y`, (u+a)×d through the middle dim u)
+× a free ub-dim Gaussian block `‖B̃Q_b‖²`. Its RLCT-numerator is `u·b + minAdm((u+a, u, d))`, which EQUALS
+`min_ℓ φ(ℓ)` EXACTLY (0 mismatch / 2016 configs, `couplerad_reduce3.py`). So the interior "loss-degeneracy"
+is the recursion peeling `z0` (the leading deep layer M₁→M₂) and BOTTOMING INTO the arity-3 (□) base — the
+same machinery the expedition already builds; no separate determinantal-RLCT monument. **Composes with the
+arity-3 (□) closure** (the recursion base) applied to the reduced `(E,Y)` chain. This is the recursion-threaded
+route: the interior ∫_p is one descent step into arity-3, not a standalone analytic wall.
 
 **Decorrelated Codex (2 consults, `xhigh`, self-contained, conclusion WITHHELD): CONCUR + SHARPEN.** Consult 1
 (`codex/boundary-{prompt,answer}.md`): pole `P=2q−ub`, threshold `q<ρ₀/2`, crude-σ_min NON-integrable
