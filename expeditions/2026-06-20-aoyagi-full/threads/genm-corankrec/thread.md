@@ -147,6 +147,23 @@ scratch). The CHARGED variant (w3) must preserve this — built from `det_fromBl
 all NATIVE. So once `coupled_hfin_cell`'s `sorry` is filled, verify via a force-elaborated `#print axioms
 coupled_hfin` (must lose the lone `sorryAx`, gain nothing — no `cited_aoyagi_dln`).
 
+**★ w2 dispatch must be EXHAUSTIVE by cell deep-rank ρ_i (dbuild-surfaced, 2026-07-16).** `coupled_hfin_cell`
+is `∀ i : CRIndex`. The `∀ i` PROOF partitions the cells by the cell's deep-rank `ρ_i` (the CRPath descent-node
+`r.1`; arity-4: `(prod (dropHead (redChain u M)) A).rank ≤ ρ_i` on the cell, read off the `deepCell` node
+conjunct — NO banked `cellRank` extractor exists, rg-verified; deepatlas owner for a named one / the multi-layer
+case). With `a = M₀−u`, `b = M₁−u`:
+- (i) `ρ_i < b`: `Q_b = A_cor·Z_deep` has `rank ≤ ρ_i < b` for ALL `A_cor` ⟹ `Q_bQ_bᵀ` singular ⟹ `det ≡ 0` ⟹
+  charge `det^(−a/2) = 0` a.e. (`Real.zero_rpow`, confirmed v4.29, a≥1) ⟹ integrand vanishes a.e. ⟹ `∫ = 0 < ⊤`
+  TRIVIALLY (a Lean-convention freebie — NO charge argument needed). w2 must dispatch this branch explicitly.
+- (ii) `ρ_i = a+b−1` (`a+b = ρ_i+1`; `ρ_i ≥ b` since `a≥1`): `det > 0` a.e., the TIGHT boundary — dbuild's (D)
+  edge brick (`hedge` slot of arch1build's `coupledBox_lt_top_of_cells`).
+- (iii) `ρ_i ≥ a+b`: interior, slack — MY route (w3 charged `ChargedRectSchurCore`, `hcell` slot).
+- (iv) `b ≤ ρ_i ≤ a+b−2` (nonempty only if `a≥2`): `det > 0` a.e., `a+b ≥ ρ_i+2` — OPEN which brick covers it
+  (is the edge exactly `ρ_i=a+b−1`, or `a+b ≥ ρ_i+1` covering (iv)?). couplerad's per-cell accounting must
+  confirm (iv) is covered so no cell falls through — the load-bearing EXHAUSTIVENESS of the split (flagged to
+  dbuild + arch1build + coordinator). The `coupled_hfin_cell` STATEMENT (∀ i) stands (reviewed); this refines
+  its PROOF-dispatch plan.
+
 ## Consults
 
 - couplerad (a0bd7f4f9aa5ce4f8): confirmed the reduction is genuine multi-lemma new work even square
