@@ -565,6 +565,37 @@ uncharged mnp`; per deep cell recurse on the Schur-complement `E` with its measu
 complement `det(SSᵀ) = det(surviving)·det(E-Schur)` via `det_fromBlocks` on `G=SSᵀ`, + the measure accounting)
 is the technical heart for `b≥2`; the `δ=0` per-ray inequality guarantees it closes.
 
+### w3-deep — the EXACT deep-cell inequality, b=1 (corneradj-VALIDATED: LOGARITHMIC, not power)
+
+*corneradj (decorrelated) confirmed the interior deep-locus `∫_S` converges and CORRECTED my mechanism: the
+charge weight is `Ch(S) ~ ln(1/σ)` (LOGARITHMIC), the `S`-measure (codim ≥ 1) pays, `γ=0`; and the
+`A_cor⊥frame`/`σ` directions are COUPLED (`σ→0` supplies the transverse direction taming `A_cor·u→0`
+off-stratum; the residual log is absorbed by the `S`-measure). `(□)` is SAFE. Exact-verified here
+(`couplerad_deeplog.py`, sympy).*
+
+**The exact per-stratum accounting (b=1, a=1 — all three b=1 dispatch witnesses).** Near the rank-drop, `S`
+has one order-1 singular value `σ₁~1` and the next `σ₂ = σ → 0`; with `x = A_cor·u₁`, `y = A_cor·u₂`:
+- **charge weight is LOGARITHMIC** (NOT a power — corrects my earlier power-preview):
+  `W(S) = ∫_{A_cor} ‖A_cor·S‖^{−1} ~ ∫∫(x²+σ²y²)^{−1/2}dx dy = ∫ arcsinh(1/(σy)) dy ~ ln(1/σ) + const`
+  (exact: inner `∫_0^1(x²+σ²y²)^{−1/2}dx = arcsinh(1/(σy)) → ln(2/(σy))`, outer `∫_0^1 ln(1/(σy))dy = 1−ln σ`).
+- **the S-measure pays:** with `σ`-measure `σ^{c−1}dσ` (`c = codim of the rank-drop ≥ 1`),
+  `∫_0^δ (1+ln(1/σ))·σ^{c−1}dσ < ∞` for every `c ≥ 1` (even `c=1`: `= δ(2−ln δ)`). **`δ = 0`** — the log is
+  SUB-power, no codim shift; `γ = 0`.
+- **Lean-buildable form (two options):** (I) explicit `arcsinh → log` bound + the measure integral; (II)
+  Lean-friendlier — bound the log crudely by a small power `ln(1/σ) ≤ C_ε·σ^{−ε}` (`σ∈(0,1)`, any `ε>0`),
+  so `W(S) ≤ C_ε σ^{−ε}` and `∫_0^δ σ^{−ε}·σ^{c−1}dσ < ∞` for `ε < c` (pick `ε∈(0,1)`, `c≥1`). Option (II)
+  avoids `arcsinh` entirely — just `japaneseBracket`/`σ^{−ε}`-integrability against the codim-≥1 measure.
+
+**⚠ SCOPE — the LOG is `a=1`-specific.** For `a≥2` (`b=1`) the inner integral is a POWER `~ σ^{−(a−1)}` and
+the `y`-integral `∫y^{−(a−1)}dy` needs `a≥2` handled by the deeper (`b≥2`-style) measure — a DIFFERENT
+(power) case. **All three `b=1` dispatch witnesses have `a=1`**, so the LOG form is exactly what schurrec's
+`b=1` build needs. The `b≥2` deep cells (and `a≥2`) are the power case = the general `E`-recursion (§w3-atlas),
+to be pinned when schurrec reaches them.
+
+**Net for the `b=1` deep cell:** it is NOT a power-recursion — it is a LOG weight killed by the codim-≥1
+`S`-measure (one clean step, `δ=0`), plus the `A_cor⊥frame`/`σ` coupling that corneradj confirmed closes.
+Much milder than my preview implied.
+
 ---
 
 ## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
