@@ -156,6 +156,19 @@ exactly this scalar model.
 **Object / target.** `∫_p coupledBoxIntegrand M u c' p < ⊤` per-exponent for `c' < ½·minAdm M`
 (`RouteMSJIncidenceAssembly:417`, via the proven `shellSpine_le_coupledBox`).
 
+**EDGE (`k=1`) vs DEEP (`k≥2`) — the W2 reduction differs (verified `edge_single_chain.py`, 0/377 edge
+cells fail):**
+- **EDGE (`k=1`, the `s=0/s=1` tie): SINGLE-chain.** The corank charge cleanly `= ab/2` (both critical
+  sectors have codim `ab`), so reduce to the SINGLE chain `redChain u M` at exponent `c'−ab/2` (+ the tie
+  LOG, δ-slack `→ c'−ab/2+δ`). Sufficient by cut-soundness `minAdm M ≤ ab + minAdm(redChain u M)`
+  (`minAdm_le_peelCharge_add_redChain`, `RouteMSJResolution:204`): `ab/2+½minAdm(redChain u M) ≥ ½minAdm M`.
+  **NO multi-chain / no `u'`-cuts** — the `s=1` sector is the LOG on the SAME `redChain u M @ c'−ab/2`
+  reduction, not a second chart. (This is corneradj's Step E; only its "`J` finite" was wrong.)
+- **DEEP (`k≥2`): MULTI-chain.** The single-chain corank charge `< ab/2` (the min sector-codim shifts to a
+  deeper stratum, undershooting by `(k−1)/2`), so reduce stratum `s` to the DIFFERENT chain `redChain(u+s)M`
+  at charge `peelCharge(u+s)/2`; `min_s = ½minAdm M` (the `u'`-cut multi-chain, §2). The `u'`-cuts are
+  needed HERE only.
+
 **The joint rank-sector reduction (atomic; carry `|det J|`).**
 1. **Minor chart on `Q_b`** (`Q_b = D·[I|X]`, full-rank `min(b,ρ)`-minor; finite cover; det-P→0 benign via
    the minor supplement, cf. satred). Carry the minor Jacobian.
