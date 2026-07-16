@@ -124,6 +124,22 @@ charge = `‖A_cor·Z_deep‖^{−1}` (concrete). ⟹ **schurrec's rect step is 
 a CHARGED variant of `mnp` (charge in the per-corank step). Banked: `hGae` (det>0 a.e., Card 2),
 `Matrix.det_fromBlocks`, the uncharged `mnp` chain (to extend). Full detail + tightness data: couplerad cert §w3.
 
+**Terminal interface (LOCKED with schurrec, 2026-07-16).** schurrec builds (scaffold underway) the charged
+terminal, PARAMETRIC:
+`ChargedRectSchurCore (m n p a b : ℕ) (c' T : ℝ) := ∫_{Δ∈matBox m n T} ∫_{Acor∈matBox b n T} ∫_{S∈matBox n p T}
+ofReal( det((Acor·S)·(Acor·S)ᵀ)^(−a/2) · frobSq(Δ·S)^(−c') ) < ⊤`, finite for `c' < ½·minAdm(![m,n,p])`
+(δ=0, UNSHIFTED). Dimensionally = `frontChargeIntegrand`'s charge exactly (Δ=Front, Acor free `b×n`, S=Z_deep;
+`Acor·S = Q_b`, Gram `b×b`, a=M₀−u, b=M₁−u). **Contract:** schurrec keeps it PARAMETRIC in (m,n,p,a,b,c',T);
+w1/w2 dispatches EACH deep-cell rank-flag stratum to `ChargedRectSchurCore` at that stratum's own (m,n,p) —
+all (m,n,p)/exponent/shift bookkeeping is w1/w2's, not the terminal's. Deepest cell (k=ρ): (m,n,p)=(u,M₂,n_last),
+terminal exp = c'−ab/2. **Threshold closes** (banked): `c' < ½·minAdm M ⟹` terminal exp `< ½·minAdm(![m,n,p])`
+— deepest cell via `minAdm_le_peelCharge_add_redChain` (`minAdm M − ab ≤ minAdm(redChain u M) = minAdm(![u,M₂,n_last])`
+at arity-4), per-stratum via `clsCodim_gate_genL`. **Recursion-invariant** (schurrec): dropping the shared middle
+`n` keeps Q_b `b×p` (Gram always `b×b`) — so rankgen `a+b+1≤ρ` is a FIXED top-level side-hypothesis (my
+`BindingShell` carries it), the wrapper stays rankgen-free, rankgen lives only in the per-corank step + endpoint.
+The per-corank Gram-Schur inequality on the sum-form `Q_b = A_top·S_top + A_bot·S_bot` (NOT a block form) is
+couplerad's pending §w3 input to schurrec.
+
 **NATIVE-footprint note (for the fresh tide):** the uncharged `routeMBoxThresholdFinite_mnp` + its chain
 (`rectSchurRecStep_mnp`, `rectCore_schurGen_lt_top`, `schurCoreRect_capA_interior`, `schurCoreRect_directMorse`)
 are forced-`#print axioms` `[propext, Classical.choice, Quot.sound]` — NATIVE (schurrec-confirmed, fresh
