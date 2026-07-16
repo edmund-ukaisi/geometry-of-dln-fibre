@@ -191,4 +191,25 @@ theorem minAdm_le_interior_qip (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
     _ ≤ (M 1 - u) * M 0 + u * M 2 := Nat.add_le_add hp hq
     _ = u * M 2 + (M 1 - u) * M 0 := by ring
 
+/-- **The TIGHTER interior QIP `minAdm M ≤ u·deepTailMin M + (M₁−u)·M₀`** (with `deepTailMin M` in place of
+`M₂`). The loss degenerates on `{Q_inl = z0·Z_deep = 0}` — codim `u·rank(Z_deep) = u·deepTailMin M` on the
+generic cell — NOT just on `{z0=0}` (codim `u·M₂`); when `Z_deep` is WIDE (`deepTailMin < M₂`) this is the
+SUB-COLLAPSE, and the effective pole codim is `u·deepTailMin`, so THIS form (not the `u·M₂` one) is what
+couplerad's `∫_p` closes on. Same proof as `minAdm_le_interior_qip` WITHOUT the final `deepTailMin ≤ M₂`
+weakening. `minAdm_le_interior_qip` follows from this via `deepTailMin_le_M2`. -/
+theorem minAdm_le_interior_qip_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hu : u ≤ min (M 0) (M 1)) :
+    minAdm M ≤ u * deepTailMin M + (M 1 - u) * M 0 := by
+  have h1 : minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := by
+    have h := minAdm_le_peelCharge_add_redChain M u hu
+    rwa [peelCharge] at h
+  have h2 : minAdm (redChain u M) ≤ u * deepTailMin M := minAdm_redChain_le_deepTailMin M u
+  have hp : (M 0 - u) * (M 1 - u) ≤ (M 1 - u) * M 0 := by
+    rw [Nat.mul_comm (M 0 - u) (M 1 - u)]
+    exact Nat.mul_le_mul (le_refl (M 1 - u)) (Nat.sub_le (M 0) u)
+  calc minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := h1
+    _ ≤ (M 0 - u) * (M 1 - u) + u * deepTailMin M := Nat.add_le_add_left h2 _
+    _ ≤ (M 1 - u) * M 0 + u * deepTailMin M := Nat.add_le_add_right hp _
+    _ = u * deepTailMin M + (M 1 - u) * M 0 := by ring
+
 end DLNFibre.DLN.RLCT
