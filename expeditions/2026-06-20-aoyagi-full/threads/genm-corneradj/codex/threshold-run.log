@@ -1,0 +1,260 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f6a13-c543-7801-8978-ca19b90e0c36
+--------
+user
+<task>
+Two exact real-analysis convergence questions. Derive each from first principles
+(codimension of the singular locus, transverse vanishing order of the determinant,
+and the r^{-p} local-integrability criterion in R^d). Exact algebra only; treat any
+numerics as a guide, not a proof.
+
+Fix integers a >= 1, b >= 1. Let S be a fixed real n x p matrix of rank rho, and fix T > 0.
+Define the "front charge"
+    Ch(S) = integral over A in [-T,T]^{b x n} of  det( (A S)(A S)^T )^{-a/2}  dA,
+where A is b x n, so A S is b x p and the Gram (A S)(A S)^T is b x b (symmetric PSD).
+Assume b <= rho (otherwise the Gram is identically singular).
+
+QUESTION 1. Give the EXACT convergence threshold of Ch(S) for fixed generic S, as an
+inequality among (a, b, rho). In particular decide the BOUNDARY case rho = a + b - 1:
+does Ch(S) converge or diverge there? Be explicit about strict vs non-strict and the
+log-divergent endpoint. Address this subtlety: A is b x n with possibly n > rho, so A has
+b(n-rho) "free" directions that map into ker(S) and do not affect A S. Do those free
+directions change the effective codimension / threshold, given the integration domain is a
+BOUNDED box (not all of R^{b x n})? Concrete instance to settle: b=2, a=2, rho=3 (so
+a+b = rho+1), S = 3x3 identity, A in [-1,1]^{2x3}: is
+    integral of det( (A S)(A S)^T )^{-1} dA  finite?
+
+QUESTION 2. Now let S ALSO vary over a box, and add an independent loss factor. Define
+    I = integral over (Delta, A, S) each in its own box of
+        det( (A S)(A S)^T )^{-a/2}  *  frobSq(Delta S)^{-c'}  d(Delta) dA dS,
+where Delta is m x n, frobSq(X) = sum of squares of entries of X, and c' > 0 is small
+enough that the Delta-integral converges for generic S. Note A appears ONLY in the first
+factor and Delta appears ONLY in the second; both couple to S. At the boundary rho = a+b-1
+(taking dimensions so generic S in its box has rank rho), is I finite or +infinity?
+Determine whether integrating S over a box, or the loss factor frobSq(Delta S)^{-c'},
+can "rescue" finiteness of I even if Ch(S) diverges for each fixed generic S. Name the
+mechanism (Fubini/Tonelli factorization? correlation between the two factors through S?
+change of the effective codimension when S is free?) that decides it.
+</task>
+
+<output_contract>
+1. Q1 threshold: one clean inequality in (a,b,rho) for convergence, with the derivation
+   (codim of {rank(A S) < b}; transverse vanishing order of det(Gram); the R^d radial
+   criterion). State the rho = a+b-1 verdict (converge / diverge / log-divergent endpoint)
+   and answer the b=2,a=2,rho=3 instance with the exact reason.
+2. The free-direction (n > rho) verdict: do they shift the threshold? one sentence + why.
+3. Q2 verdict at the boundary: I finite or +infinity, with the decisive mechanism named.
+   If finite, name the exact regularizer; if +infinity, give the one-line proof.
+4. Flag explicitly which statements are exact derivations vs heuristic.
+Keep it tight. No code unless a 3-line sketch clarifies the transverse model.
+</output_contract>
+
+<grounding_rules>
+Do not assume a conclusion I have not stated; I am withholding my own answer on purpose.
+Derive independently. If a step is heuristic (e.g. a genericity or density-boundedness
+assumption), say so explicitly and state what would make it rigorous. Distinguish the
+fixed-S question (Q1) from the S-varying question (Q2) carefully — they may have different
+answers.
+</grounding_rules>
+
+codex
+I’ll derive the matrix threshold in reduced rank-\(\rho\) coordinates, then check the \(S\)-varying integral with Tonelli; the key subtlety is whether the extra loss factor is positive on a sufficiently large set, not whether it is independent after conditioning on \(S\).
+exec
+/bin/bash -lc "sed -n '1,240p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+ exited 2 in 0ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'CLAUDE.md' -g 'AGENTS.md' | head -40" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+
+codex
+For any fixed \(S\) of rank \(\rho\),
+
+\[
+\boxed{\operatorname{Ch}(S)<\infty \iff a<\rho-b+1}
+\]
+
+equivalently,
+
+\[
+\boxed{\rho>a+b-1}.
+\]
+
+Since the parameters are integers, this is \(\rho\ge a+b\).
+
+Let \(X=AS\), expressed in the \(\rho\)-dimensional image of \(S\). The singular locus
+
+\[
+\Sigma=\{X\in\mathbb R^{b\times \rho}:\operatorname{rank}X<b\}
+\]
+
+has codimension
+
+\[
+d=\rho-b+1.
+\]
+
+At a smooth rank-\((b-1)\) point, write \(z\in\mathbb R^d\) for the normal coordinates. Gram–Schmidt gives
+
+\[
+\det(XX^{T})\asymp |z|^2.
+\]
+
+Thus the integrand is locally \(|z|^{-a}\), and
+
+\[
+\int_0^\varepsilon r^{d-1-a}\,dr
+\]
+
+converges exactly when \(a<d\). At \(a=d\), it is \(\int_0^\varepsilon dr/r\): logarithmic divergence.
+
+Lower-rank strata impose no stronger condition. Indeed, for rows \(x_1,\dots,x_b\),
+
+\[
+\det(XX^T)
+=\prod_{j=1}^b
+\operatorname{dist}\!\left(x_j,\operatorname{span}(x_1,\dots,x_{j-1})\right)^2.
+\]
+
+At stage \(j\), the transverse dimension is \(\rho-j+1\); the strongest condition occurs at \(j=b\).
+
+Therefore, at
+
+\[
+\rho=a+b-1,
+\]
+
+the charge diverges logarithmically.
+
+For \(b=2,a=2,\rho=3,S=I_3\), the transverse dimension is \(2\), while the integrand behaves as \(|z|^{-2}\) in \(\mathbb R^2\). Hence
+
+\[
+\int_{[-1,1]^{2\times3}}\det(AA^T)^{-1}\,dA=+\infty
+\]
+
+with logarithmic divergence.
+
+The \(b(n-\rho)\) directions annihilated by \(S\) do not change the threshold: over a bounded box they contribute only a finite, locally positive fiber-volume factor. Over an unbounded domain they would instead cause a separate infinite-volume divergence.
+
+For Question 2, at the boundary,
+
+\[
+\boxed{I=+\infty}.
+\]
+
+For almost every \(S\) in the \(S\)-box, \(\operatorname{rank}S=\rho\), and Tonelli gives
+
+\[
+\int_{A,\Delta} f_S(A)g_S(\Delta)\,dA\,d\Delta
+=
+\left(\int_A f_S(A)\,dA\right)
+\left(\int_\Delta g_S(\Delta)\,d\Delta\right).
+\]
+
+The first factor is \(+\infty\); by the stated assumption the second is finite and strictly positive. Hence the inner integral is \(+\infty\) for almost every generic \(S\), so its \(S\)-integral is \(+\infty\).
+
+Thus neither varying \(S\) nor the loss factor can regularize the divergence. The decisive mechanism is nonnegative Tonelli factorization conditional on \(S\); correlation through \(S\) cannot produce cancellation.
+
+All claims above are exact Lebesgue-integrability arguments. The only structural assumption is that the boxes are nondegenerate and the \(A\)-box meets the rank-deficient locus, as the centered boxes in the question do.
+tokens used
+17,365
+For any fixed \(S\) of rank \(\rho\),
+
+\[
+\boxed{\operatorname{Ch}(S)<\infty \iff a<\rho-b+1}
+\]
+
+equivalently,
+
+\[
+\boxed{\rho>a+b-1}.
+\]
+
+Since the parameters are integers, this is \(\rho\ge a+b\).
+
+Let \(X=AS\), expressed in the \(\rho\)-dimensional image of \(S\). The singular locus
+
+\[
+\Sigma=\{X\in\mathbb R^{b\times \rho}:\operatorname{rank}X<b\}
+\]
+
+has codimension
+
+\[
+d=\rho-b+1.
+\]
+
+At a smooth rank-\((b-1)\) point, write \(z\in\mathbb R^d\) for the normal coordinates. Gram–Schmidt gives
+
+\[
+\det(XX^{T})\asymp |z|^2.
+\]
+
+Thus the integrand is locally \(|z|^{-a}\), and
+
+\[
+\int_0^\varepsilon r^{d-1-a}\,dr
+\]
+
+converges exactly when \(a<d\). At \(a=d\), it is \(\int_0^\varepsilon dr/r\): logarithmic divergence.
+
+Lower-rank strata impose no stronger condition. Indeed, for rows \(x_1,\dots,x_b\),
+
+\[
+\det(XX^T)
+=\prod_{j=1}^b
+\operatorname{dist}\!\left(x_j,\operatorname{span}(x_1,\dots,x_{j-1})\right)^2.
+\]
+
+At stage \(j\), the transverse dimension is \(\rho-j+1\); the strongest condition occurs at \(j=b\).
+
+Therefore, at
+
+\[
+\rho=a+b-1,
+\]
+
+the charge diverges logarithmically.
+
+For \(b=2,a=2,\rho=3,S=I_3\), the transverse dimension is \(2\), while the integrand behaves as \(|z|^{-2}\) in \(\mathbb R^2\). Hence
+
+\[
+\int_{[-1,1]^{2\times3}}\det(AA^T)^{-1}\,dA=+\infty
+\]
+
+with logarithmic divergence.
+
+The \(b(n-\rho)\) directions annihilated by \(S\) do not change the threshold: over a bounded box they contribute only a finite, locally positive fiber-volume factor. Over an unbounded domain they would instead cause a separate infinite-volume divergence.
+
+For Question 2, at the boundary,
+
+\[
+\boxed{I=+\infty}.
+\]
+
+For almost every \(S\) in the \(S\)-box, \(\operatorname{rank}S=\rho\), and Tonelli gives
+
+\[
+\int_{A,\Delta} f_S(A)g_S(\Delta)\,dA\,d\Delta
+=
+\left(\int_A f_S(A)\,dA\right)
+\left(\int_\Delta g_S(\Delta)\,d\Delta\right).
+\]
+
+The first factor is \(+\infty\); by the stated assumption the second is finite and strictly positive. Hence the inner integral is \(+\infty\) for almost every generic \(S\), so its \(S\)-integral is \(+\infty\).
+
+Thus neither varying \(S\) nor the loss factor can regularize the divergence. The decisive mechanism is nonnegative Tonelli factorization conditional on \(S\); correlation through \(S\) cannot produce cancellation.
+
+All claims above are exact Lebesgue-integrability arguments. The only structural assumption is that the boxes are nondegenerate and the \(A\)-box meets the rank-deficient locus, as the centered boxes in the question do.
