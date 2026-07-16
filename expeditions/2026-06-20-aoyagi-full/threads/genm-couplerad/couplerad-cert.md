@@ -534,25 +534,30 @@ loss's Front-driven `mnp` charts do NOT stratify `S`'s rank, so the `S`-rank fla
 uncharged `mnp` is applied to the Front-loss PER `S`-cell.
 
 **(b)/(c) — ONE atlas (`S`-rank flag), but the charge is RE-EXPRESSED per rank-drop, not carried (the Hole-1
-fix), and it is bolt-on ONLY on the shallow cells.** Split the `S`-cells by `rank S = ρ−k`:
-- **SHALLOW cells `rank S ≥ a+b−1` (i.e. `k ≤ ρ−(a+b)+1`):** the charge is Wishart-BOUNDED — det-monotone
-  (A) against the order-1 rank-`(ρ−k)` surviving pivot block (`hGae` PosDef floor) gives
-  `charge ≤ det(A_cor·[surviving]·A_corᵀ)^{−a/2}`, whose `∫_{A_cor}` is a fixed Wishart constant (finite iff
-  `a < (ρ−k)−b+1`). So **charge ≤ C × uncharged `mnp`** — TRUE BOLT-ON on these cells.
-- **DEEP cells `rank S < a+b−1`:** the Wishart weight DIVERGES (Hole 1). Here the charge is RE-EXPRESSED on
-  the Schur-complement block `E` (the small σ's): the `b×b` Gram gets its last `b−(ρ−k)` rank from `E`, so
-  `charge ~ [order-1] · det(E-Schur)^{−a/2}`, and `E`'s MEASURE (the `σ^{p−k}`·Vandermonde the `S`-rank cover
-  carries) PAYS the charge increment (`δ=0`, per-ray `γ^{hier}(e) ≤` freed measure). This is a WELL-FOUNDED
-  recursion on the REDUCED factor `E` (strictly smaller rank) — a charged core on `E` with `E`'s measure —
-  and Hole 1 is dodged precisely because the charge is re-expressed-with-measure, NOT carried at fixed `(a,b)`.
+fix), and it is bolt-on ONLY on the shallow cells.** ⚠ **CORRECTED THRESHOLD (schurrec-caught off-by-one):**
+the Wishart weight `∫_{A_cor} det((A_cor·S)(A_cor·S)ᵀ)^{−a/2}` is finite iff `a < rank(S) − b + 1`, i.e.
+**`rank S ≥ a+b`** (integers) — NOT `≥ a+b−1`. Split the `S`-cells by `rank S`:
+- **SHALLOW cells `rank S ≥ a+b`:** the charge is Wishart-BOUNDED. Cover `{rank S ≥ a+b}` by pivot-charts
+  (which `(a+b)×(a+b)` minor of `SSᵀ` is `≥ δ`); on each, det-monotone (A) against the FIXED order-1
+  rank-`(a+b)` pivot block `G₁` (`⪯ SSᵀ`, `hGae` floor) gives `charge ≤ det(A_cor·G₁·A_corᵀ)^{−a/2}`, whose
+  `∫_{A_cor}` over the `a+b` effective directions is a fixed Wishart const (finite: `a < (a+b)−b+1 = a+1`,
+  trivially). So **charge ≤ C × uncharged `mnp`** — bolt-on PER PIVOT-CHART (reading (ii)), with a
+  **rank-`(a+b)` floor, NOT the full rank-`n` floor** (so `corankWeight_lt_top`'s `SSᵀ ⪰ c₀²I_n` is TOO
+  STRONG for the mid shallow cells `rank S ∈ {a+b,…,n−1}`; it covers only the top cell `rank S = n`).
+- **DEEP cells `rank S ≤ a+b−1`:** the Wishart weight DIVERGES (Hole 1). Charge RE-EXPRESSED on the
+  Schur-complement `E`; `E`'s MEASURE (`σ^{p−k}`·Vandermonde) PAYS the increment (`δ=0`, per-ray
+  `γ^{hier}(e) ≤` freed measure). WELL-FOUNDED recursion on `E` (strictly smaller). Hole 1 dodged because
+  re-expressed-with-measure, not carried at fixed `(a,b)`.
 
-**Scope (the actionable part):**
-- **`b=1` (ALL 3 square dispatch witnesses `(4,4,4,4)`,`(5,5,5,5)`,`(3,3,4,4)`): deep = ONLY `{rank S < 1}
-  = {S=0}` (measure zero).** So `b=1` is EFFECTIVELY ALL-SHALLOW — pure bolt-on (Wishart-bounded charge ×
-  uncharged `mnp`), NO deep recursion. Build + bank these now; they need no charge re-expression.
-- **`b≥2` (e.g. `(3,4,5,4)`, `b=2`: deep cells `rank S ∈ {1,0}`; `(4,5,6,5)` `b=2`: `rank S ∈ {1,0}`):**
-  positive-codim deep cells ⟹ the charge-re-expression recursion on `E` is genuinely needed. This is the
-  joint coupling — no clean bounded-charge × uncharged-loss factorization there.
+**Scope (the actionable part) — CORRECTED:**
+- **`b=1` (the 3 square dispatch witnesses `(4,4,4,4)`,`(5,5,5,5)`,`(3,3,4,4)`): deep = `{rank S ≤ 1}`**
+  (`a+b−1 = 1`), which is POSITIVE-codim (the rank-`1` locus), **NOT `{S=0}` only**. *(My earlier
+  "`b=1` all-shallow / pure bolt-on" was the off-by-one error — WRONG.)* So `b=1` is NOT a freebie: shallow
+  `{rank S ≥ 2}` is per-chart bolt-on (rank-`2` floor), but `{rank S ≤ 1}` needs the coupled re-expression
+  (a SHORT 2-level recursion: rank `1` then `0`). `corankWeight_lt_top` (full-rank-`n`) applies only to the
+  top cell `rank S = n` (needs `ρ = n`; holds for `(4,4,4,4)→(3,4,4)`, `n=4=ρ`).
+- **`b≥2` (e.g. `(3,4,5,4)`,`b=2`: deep `rank S ≤ 2`; `(4,5,6,5)`,`b=2`: deep `rank S ≤ 2`):** deeper
+  coupled region, longer `E`-recursion. Same structure as `b=1`, more levels.
 
 **Smallest correct decomposition:** `S`-rank-flag cover; per shallow cell `charge(Wishart const) ×
 uncharged mnp`; per deep cell recurse on the Schur-complement `E` with its measure. NOT a Front-driven cover
