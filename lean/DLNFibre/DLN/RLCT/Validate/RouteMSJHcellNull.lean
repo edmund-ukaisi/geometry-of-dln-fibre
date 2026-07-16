@@ -93,4 +93,84 @@ theorem routeMBoxThresholdFinite_of_coupled_generic
     (fun c' j hj => coupledBox_cell_lt_top_of_generic M (t + (j : ℕ)) c' (hgeneric c' j hj))
     hbdryShell
 
+/-! ## The 4-way b-split of the generic-cell obligation -/
+
+/-- **The generic-cell coupled-box finiteness at cut `u`** — the `hgen` hypothesis of
+`coupledBox_cell_lt_top_of_generic`, named so the 4-way dispatch reads cleanly. Definitionally the
+per-generic-cell (`cellRankIndex i = deepTailMin M`) coupled-box integral finiteness. -/
+def GenericCellFinite (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ) : Prop :=
+  ∀ i : CRIndex (dropHead (redChain u M)),
+      cellRankIndex (dropHead (redChain u M)) i = deepTailMin M →
+      ∫⁻ p in (paramsBoxM (redChain u M) 1 ×ˢ matBox (M 1 - u) (M 2) 1)
+          ∩ projDeep M u ⁻¹' (deepCell (dropHead (redChain u M)) (dropHead (redChain u M) 0) L
+              le_rfl (dropHead (redChain u M) (Fin.last L)) i
+              (fun _ => (1 : Matrix (Fin (dropHead (redChain u M) (Fin.last L)))
+                (Fin (dropHead (redChain u M) (Fin.last L))) ℝ))),
+        coupledBoxIntegrand M u c' p < ⊤
+
+/-- **The 4-way b-split dispatch of the generic-cell obligation.** At an interior shell `u = t + j`
+(`j < r = min(M₀−t, M₁−t)`, so `a = M₀−u ≥ 1`, `b = M₁−u ≥ 1`), the generic-cell finiteness splits into
+FOUR arms keyed on the decidable `(a+b vs deepTailMin) × (b vs 1)` regime — EXHAUSTIVE and DISJOINT: the
+`a+b ≤ deepTailMin+1` cover is `bindingCut_ab_le_deepTailMin_succ` (at cut `t`, extended to `u = t+j` by
+`Nat.sub_le_sub_left` monotonicity — corankrec's deep-corank-empty scan: NO `a+b ≥ deepTailMin+2` regime),
+so `a+b ≤ deepTailMin` (interior) ∪ `a+b = deepTailMin+1` (edge) is a trichotomy split, and `b ≥ 1`
+(from `hj`) makes `b = 1` ∪ `b ≥ 2` the other axis. Each arm is a NAMED hole, closed by its piece as it
+lands: `h_int_b1` ← charge-factoring (`frontChargeIntegrand_eq_charge_mul_loss`) + `chargeFreeBox_b1a1` +
+the uniform-`frontLossIntegral` bound (couplerad); `h_int_b2` ← the (D)/slabD `chargeFreeBox_of_inner`;
+`h_edge_b1` ← edgered's corank-one edge brick; `h_edge_b2` ← R3 (couplerad). Banks the dispatch STRUCTURE
+sorry-free over the atlas. -/
+theorem coupledBox_cell_generic_of_bsplit (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (c' : ℝ)
+    (ht1 : t + 1 ≤ min (M 0) (M 1))
+    (hbind : minAdm M = peelCharge M t + minAdm (redChain t M))
+    (j : ℕ) (hj : j < min (M 0 - t) (M 1 - t))
+    (h_int_b1 : (M 0 - (t + j)) + (M 1 - (t + j)) ≤ deepTailMin M → M 1 - (t + j) = 1 →
+        GenericCellFinite M (t + j) c')
+    (h_int_b2 : (M 0 - (t + j)) + (M 1 - (t + j)) ≤ deepTailMin M → 2 ≤ M 1 - (t + j) →
+        GenericCellFinite M (t + j) c')
+    (h_edge_b1 : (M 0 - (t + j)) + (M 1 - (t + j)) = deepTailMin M + 1 → M 1 - (t + j) = 1 →
+        GenericCellFinite M (t + j) c')
+    (h_edge_b2 : (M 0 - (t + j)) + (M 1 - (t + j)) = deepTailMin M + 1 → 2 ≤ M 1 - (t + j) →
+        GenericCellFinite M (t + j) c') :
+    GenericCellFinite M (t + j) c' := by
+  have hcov : (M 0 - (t + j)) + (M 1 - (t + j)) ≤ deepTailMin M + 1 := by
+    have hc := bindingCut_ab_le_deepTailMin_succ M t ht1 hbind
+    have h0 : M 0 - (t + j) ≤ M 0 - t := Nat.sub_le_sub_left (Nat.le_add_right t j) _
+    have h1 : M 1 - (t + j) ≤ M 1 - t := Nat.sub_le_sub_left (Nat.le_add_right t j) _
+    omega
+  have hb1 : 1 ≤ M 1 - (t + j) := by omega
+  rcases (show (M 0 - (t + j)) + (M 1 - (t + j)) ≤ deepTailMin M
+      ∨ (M 0 - (t + j)) + (M 1 - (t + j)) = deepTailMin M + 1 by omega) with hint | hedge
+  · rcases (show M 1 - (t + j) = 1 ∨ 2 ≤ M 1 - (t + j) by omega) with hb | hb
+    · exact h_int_b1 hint hb
+    · exact h_int_b2 hint hb
+  · rcases (show M 1 - (t + j) = 1 ∨ 2 ≤ M 1 - (t + j) by omega) with hb | hb
+    · exact h_edge_b1 hedge hb
+    · exact h_edge_b2 hedge hb
+
+/-- **`hcell` (∀-cell coupled-box finiteness) from the 4-way b-split.** Composes the b-split dispatch
+(`coupledBox_cell_generic_of_bsplit`, generic cells) with the null-layer discharge
+(`coupledBox_cell_lt_top_of_generic`, deficient cells `∫ = 0`). Drop-in for the coupled route's `hcell`
+slot at the interior shell `u = t + j`, reduced to the FOUR named regime arms. -/
+theorem coupledBox_cell_lt_top_of_bsplit (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (c' : ℝ)
+    (ht1 : t + 1 ≤ min (M 0) (M 1))
+    (hbind : minAdm M = peelCharge M t + minAdm (redChain t M))
+    (j : ℕ) (hj : j < min (M 0 - t) (M 1 - t))
+    (h_int_b1 : (M 0 - (t + j)) + (M 1 - (t + j)) ≤ deepTailMin M → M 1 - (t + j) = 1 →
+        GenericCellFinite M (t + j) c')
+    (h_int_b2 : (M 0 - (t + j)) + (M 1 - (t + j)) ≤ deepTailMin M → 2 ≤ M 1 - (t + j) →
+        GenericCellFinite M (t + j) c')
+    (h_edge_b1 : (M 0 - (t + j)) + (M 1 - (t + j)) = deepTailMin M + 1 → M 1 - (t + j) = 1 →
+        GenericCellFinite M (t + j) c')
+    (h_edge_b2 : (M 0 - (t + j)) + (M 1 - (t + j)) = deepTailMin M + 1 → 2 ≤ M 1 - (t + j) →
+        GenericCellFinite M (t + j) c') :
+    ∀ i : CRIndex (dropHead (redChain (t + j) M)),
+        ∫⁻ p in (paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1)
+            ∩ projDeep M (t + j) ⁻¹' (deepCell (dropHead (redChain (t + j) M))
+                (dropHead (redChain (t + j) M) 0) L le_rfl (dropHead (redChain (t + j) M) (Fin.last L)) i
+                (fun _ => (1 : Matrix (Fin (dropHead (redChain (t + j) M) (Fin.last L)))
+                  (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ))),
+          coupledBoxIntegrand M (t + j) c' p < ⊤ :=
+  coupledBox_cell_lt_top_of_generic M (t + j) c'
+    (coupledBox_cell_generic_of_bsplit M t c' ht1 hbind j hj h_int_b1 h_int_b2 h_edge_b1 h_edge_b2)
+
 end DLNFibre.DLN.RLCT

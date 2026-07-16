@@ -1487,8 +1487,6 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJChargeFactor
 import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeCShift
 import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeScalar
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCharged
--- NOTE: RouteMSchurPSDDetMono (+ dependents RouteMSchurWishartWeight / RouteMSchurCorankSlab /
--- RouteMSJInteriorShell) still NOT imported: a SECOND clash — RouteMSchurPSDDetMono redefines
--- `det_le_det_of_posSemidef_sub`, which RouteMSJDetMono already owns (both `DLNFibre.DLN.RLCT.…`).
--- schurB deduped `schurCompl → blockSchurComplPSD` but not this one; needs rename/reuse before the
--- (D)/interior chain can join the aggregator.
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurWishartWeight
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlab
+import DLNFibre.DLN.RLCT.Validate.RouteMSJInteriorShell
