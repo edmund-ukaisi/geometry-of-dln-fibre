@@ -52,7 +52,7 @@ satred's route (b=1 first; verified 12/12), with banked/reachable vs HARD tagged
 | Step | Content | Status |
 |---|---|---|
 | R1 | b=1: corank term `frobSq(C·Q̃ₚ + Γ·Q_b)`, `Q_b=A_cor·Zf` a single row → `Γ·Q_b = γ⊗Q_b` (outer product) | banked (`RouteMSJFreeBilinear.rmatMul_corank_one`, `frobSq_outer`) |
-| R2 | C-shift CoV: `mulVec_of_surjective` (v=Q̃ₚ·η), Jacobian `‖v‖^{−a}` bounded off null `{v=0}`; a×t matrix-space CoV | **HARD** (matrix CoV, module diamond; edgebrick consulting) |
+| R2 | C-shift: bound `∫_C (w+‖C·v+σΓη‖²)^{−c'} dC` by the UNIFORM δ-slack (NOT a transversality-everywhere proof); `mulVec_of_surjective` gives the shift DIRECTION only | **MEDIUM** (shifted singular-integral CoV, atoms in hand; NOT hard — see § "R2" below) |
 | R3 | b≥2: `(b−1)`-row minor chart, bounded Gram-det Jac `det(Q_R Q_Rᵀ)^{−1/2}` (satred) | HARD but bounded (b=1 skips) |
 | P1 | polar on Γ (γ) → `r^{a−1}` radial | banked (`RouteMSJSphereBlowup`, `RouteMSJRadialPolar` — edge-safe) |
 | P2 | polar/coupling on A_cor (z) → `‖z‖^{−a}` → the log; the FRESH `u=rs` CoV | **MEDIUM-NEW** (satred: the one genuinely-new CoV; region-split at `‖z‖=√w`) |
@@ -63,11 +63,13 @@ satred's route (b=1 first; verified 12/12), with banked/reachable vs HARD tagged
 | W1 | `w=frobSq(P·Q̃ₚ)` constant over the fragile (γ,z,C) integration | satred-verified (algebraic) |
 | W2 | w-integral = **SINGLE** arity−1 IH call on `redChain u M` at exponent `c'−ab/2+δ` (see § "W2 — the edge is single-chain" below) | **MEDIUM** (one IH call + one banked cut-soundness lemma) |
 
-**Net remaining new content:** R2 (C-shift matrix CoV) is the one genuinely-hard piece; P2/L3
-(coupling→log→δ-fold) is medium; W2 is medium (single IH call + banked lemma — see below); R3 is bounded.
-The HARD CAVEAT (edgebrick, satred): build the δ-slack **UNIFORMLY**; never "C removes the log" (FALSE at
-C=0/v→0) — the C-non-degeneracy supplies the CoV shift, the δ-slack fallback (open IH exponent range)
-carries `v→0`.
+**Net remaining new content (satred de-risk):** with R2 framed as the uniform δ-slack singular-integral
+bound (below), there is **NO genuinely-hard piece left** — R2, P2, L3, W2 are all **medium** with the atoms
+in hand (P3 landed; L1/L2/W2-lemma/P1 banked). The wall-risk on R2 is de-risked: do NOT prove
+C-transversality everywhere (that IS the wall, and it's FALSE at `v=0`/`C=0`); assemble the localized
+singular integral via the uniform δ-slack. The HARD CAVEAT (edgebrick, satred): build the δ-slack
+**UNIFORMLY**; never "C removes the log" — the C-non-degeneracy supplies the shift DIRECTION only, the
+δ-slack (open IH exponent range) carries `v=0` by the SAME estimate (not a separate case).
 
 ## W2 — the edge is SINGLE-CHAIN (satred correction, verified 0/377 edge cells fail)
 
@@ -133,3 +135,13 @@ bound, (ii) the image contains `0` (so the `w`-shift + `‖ξ‖²` radial — i
 The uniform-δ-slack is precisely because `ρ` does NOT vanish at `ξ=0` yet `v→0` (C small) still needs the
 δ-fold — **never** a pointwise C-lower-bound. (dbuild has the density-bound lemma shape on request; edgebrick
 on call to pin the `‖v‖^{−a}`/`{v=0}`-null against the concrete Lean integral.)
+
+**R2 framing that keeps it MEDIUM, not a wall (satred de-risk).** Do NOT attempt a
+"C-transversality-holds-everywhere" lemma — that is the wall AND is FALSE at `v=0` (`w∈ker Q̃ₚ`) and at
+`C=0`. Instead bound the C-integral `∫_C (w+‖C·v+σΓη‖²)^{−c'} dC` DIRECTLY by the UNIFORM estimate
+`(1+log(1/τ)) ≤ C_δ·τ^{−δ}` with `τ² ≍ w+‖η_C‖²` (dbuild's `one_add_log_inv_le_rpow`/`one_add_sigmaLog_le_rpow`),
+which holds **regardless of `v`** — `mulVec_of_surjective` (`v = Q̃ₚ·w ≠ 0`) supplies the shift DIRECTION
+generically, and the `v=0` sub-locus is covered by the **same** δ-slack (not a separate case). Framed this
+way R2 is a shifted localized-singular-integral CoV with all atoms in hand (`mulVec_of_surjective` +
+`sigmaLog` + `one_add_log_inv_le_rpow` + `scaledRadialEuclid`), per-exponent — **medium, not hard**. (satred
+on call to pin the exact C-shift CoV + the `∫_C` bound if the assembly snags.)
