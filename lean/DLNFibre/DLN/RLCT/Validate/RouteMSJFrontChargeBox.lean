@@ -75,4 +75,43 @@ theorem frontChargeBox_lt_top_of_hfin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ
     rw [hcov, Set.inter_univ]
   rw [hunion]; simp
 
+/-- **coupledBox-G2 — the coupled-box integral is finite, given per-cell coupledBox finiteness.** IDENTICAL
+atlas-cover gluing to `frontChargeBox_lt_top_of_hfin` (the cover completeness is integrand-independent), with
+`coupledBoxIntegrand` (Γ kept on the box, coupling intact) in place of `frontChargeIntegrand`. This is the
+HONEST coupled-route entry: the front-charge box is +∞ at EDGE cells (`a+b=ρ+1`) because step-2's Γ→univ
+extension (`coupledBox_le_frontCharge` ∘ `corankBlock_morsePeel_setLE`) manufactures the divergent
+`det(Q_bQ_bᵀ)^{−a/2}` charge, whereas the coupled box is FINITE per-cell at every rank sector. `hcell` splits
+by cell AT THE FILL (not here): in-regime cells (`a+b≤ρ`) via `coupledBox_le_frontCharge` + item 4; edge cells
+(`a+b=ρ+1`) via the corank-one edge brick (edgebrick's `edge_coupledBox_lt_top`). -/
+theorem coupledBox_lt_top_of_cells (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (hcell : ∀ i : CRIndex (dropHead (redChain u M)),
+        ∫⁻ p in (paramsBoxM (redChain u M) 1 ×ˢ matBox (M 1 - u) (M 2) 1)
+            ∩ projDeep M u ⁻¹' (deepCell (dropHead (redChain u M)) (dropHead (redChain u M) 0) L
+                le_rfl (dropHead (redChain u M) (Fin.last L)) i (fun _ => (1 : Matrix (Fin (dropHead (redChain u M) (Fin.last L))) (Fin (dropHead (redChain u M) (Fin.last L))) ℝ))),
+          coupledBoxIntegrand M u c' p < ⊤) :
+    ∫⁻ p in paramsBoxM (redChain u M) 1 ×ˢ matBox (M 1 - u) (M 2) 1,
+        coupledBoxIntegrand M u c' p < ⊤ := by
+  classical
+  set box := paramsBoxM (redChain u M) 1 ×ˢ matBox (M 1 - u) (M 2) 1 with hbox
+  set dcell : CRIndex (dropHead (redChain u M)) →
+      Set (Params (dropHead (redChain u M))) :=
+    fun i => deepCell (dropHead (redChain u M)) (dropHead (redChain u M) 0) L le_rfl
+      (dropHead (redChain u M) (Fin.last L)) i (fun _ => (1 : Matrix (Fin (dropHead (redChain u M) (Fin.last L))) (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)) with hdcell
+  refine lintegral_lt_top_of_finite_cover (fun i => box ∩ projDeep M u ⁻¹' dcell i) box
+    (coupledBoxIntegrand M u c') ?_ hcell
+  have hunion : (⋃ i, box ∩ projDeep M u ⁻¹' dcell i) = box := by
+    rw [← Set.inter_iUnion]
+    have hcov : (⋃ i, projDeep M u ⁻¹' dcell i) = Set.univ := by
+      rw [← Set.preimage_iUnion]
+      have hdeep : (⋃ i, dcell i)
+          = {A : Params (dropHead (redChain u M)) |
+              (prod (dropHead (redChain u M)) A).rank ≤ dropHead (redChain u M) 0} := by
+        rw [hdcell, ← deepRankLE_eq_iUnion_cells]
+      rw [hdeep]
+      ext p
+      simp only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+      exact deepFactor_rank_le_rows M u p.1
+    rw [hcov, Set.inter_univ]
+  rw [hunion]; simp
+
 end DLNFibre.DLN.RLCT
