@@ -43,9 +43,14 @@ charge + nested-peel accounting + every-chart-≥-floor, on the witnesses), `cou
 **The honest per-cell coupled RLCT-codim is `≥ minAdm((u,)+deep) = minAdm(redChain u M) ≥ 2T1q` and this is
 realized by an EXPLICIT covering monomial resolution whose every chart has radial exponent `≥ floor`, with
 the Jacobian (Vandermonde + `σ^{p−k}` measure + every CoV determinant) carried at every step, and the charge
-`det(Q_bQ_bᵀ)^{−a/2}` dominated.** No stratum's honest exponent falls below the floor (0 cases, exact LP over
-the witnesses + scan). **The `rlct = ½·codim` equality (`cited_aoyagi_dln`) is NOT needed** — only the native
-codim LOWER bound is used (elementary `∫r^{c−1−2q}dr<∞` per chart), so the axiom footprint is NATIVE.
+`det(Q_bQ_bᵀ)^{−a/2}` dominated on the binding-shell scope.** No stratum's honest exponent falls below the
+floor on the gate's actual scope (**0 cases over 4386 in-scope cells** — binding strict shells `u=t★+j`,
+`1≤j<r`, rankgen `a+b≤ρ−1`, arity-4 widths 1..8; exact LP). **The `rlct = ½·codim` equality
+(`cited_aoyagi_dln`) is NOT needed** — only the native codim LOWER bound is used (elementary
+`∫r^{c−1−2q}dr<∞` per chart), so the axiom footprint is NATIVE. **The scope is LOAD-BEARING** (decorrelated
+Codex red-team): the charge is NOT universally dominated — at NON-binding cuts (e.g. `(6,8,5,5) u=5`, which
+has no strict shell) it lowers the codim below the floor; the binding-shell + rankgen scope is exactly what
+keeps it dominated.
 
 **★1 — Two atlases; the honest one is Lean-hostile, so the design is the Lean-friendly re-realization.**
 - **The SVD singular-value ray atlas (GROUND TRUTH).** Diagonalize the reduced deep factor's normal slice
@@ -273,12 +278,46 @@ SVD atlas would mean building all of that — a strong reason to take the raw-co
 
 ---
 
-## 5. Decorrelated Codex
+## 5. Decorrelated Codex (gpt-5.x `xhigh`, self-contained, my conclusion WITHHELD)
 
-Fired `local-codex-consult` (gpt-5.x, `xhigh`, read-only), my conclusion WITHHELD (prompt gives the objects +
-the 4 sub-questions + the banked atoms, asks it to "reason it out and DECIDE"; `codex/couplerad-{prompt,answer}.md`).
-[ANSWER pending at write time — fold the verdict in when it lands; the exact-algebra certificate above is
-self-standing (the LP + closed form + atom-sum = minAdm are exact rational, not model-dependent).]
+`codex/couplerad-{prompt,answer}.md`. Codex CONFIRMS the load-bearing structure and SHARPENS the scope —
+it is a genuine red-team, not a rubber stamp.
+
+**CONFIRMED (decorrelated):**
+- **Uncharged additivity + closed form** — Codex independently derived `C_k^{(0)} = u(ρ−k) + Σ_{j=0}^{k−1}
+  min(u, p−k+1+2j)` (= my `u(ρ−k)+Σᵢmin(βᵢ,u)`, reindexed) with the exact key inequality `βᵢeᵢ+ugᵢ ≥
+  min(βᵢ,u)(eᵢ+gᵢ) ≥ ½min(βᵢ,u)`, and equality at `eᵢ=0` (βᵢ>u) / `eᵢ=½` (βᵢ<u), the ordering respected
+  since `βᵢ` decreases. So ★2/★3 are decorrelated-confirmed.
+- **Both dispatch examples reach the floor exactly** (`(4,4,4,4)@u=3`: all k → 10; `(3,4,5,4)@u=2`: all k →
+  8); "no analytic obstruction; a chartwise lower bound `C_chart ≥ FLOOR` suffices — exact RLCT equality
+  unnecessary" (confirms the NATIVE axiom footprint, no `cited_aoyagi_dln`).
+- **The non-square gap** — Codex's "precise problematic set" (`FLOOR−u(ρ−k)>u`, `M₂≠n`, `u≠M₂−(ρ−k)`) matches
+  my ★5: for `(3,4,5,4)` k=2,3,4 "a rectangular corank step is required." It confirms atom (B) alone
+  certifies at most `u` units (the fibre undershoot) and (C) needs the square condition `u=r` or `r=c`
+  (`r=M₂−s, c=n−s`).
+- **The Jacobian warnings** — Codex flags the SAME critical factors that must not be dropped: the Vandermonde
+  `2(k−i)`, the `σᵢ^{p−k}` measure, `dWᵢ=σᵢ^{−u}d(σᵢWᵢ)`, the `w^{us/2}` Morse-shift Jacobian, every pivot
+  power (the tide-D KILL guard, §2.3).
+
+**SHARPENED (Codex red-team — I verified each against the gate scope, `couplerad_chargescope.py`):**
+- **The charge is NOT universally dominated.** Codex exhibits `(6,8,5,5) u=5`: charged `C_5 = 18 < FLOOR =
+  minAdm(5,5,5) = 19` (my LP reproduces `18` exactly — Codex is arithmetically right). **BUT this is a
+  NON-binding cut:** `(6,8,5,5)` has `t★=6`, `r=0`, so it has NO strict binding shell — `u=5` is outside the
+  gate scope. **My exact scan confirms 0 charged-below-floor over all 4386 in-scope cells** (binding strict
+  shells `u=t★+j, 1≤j<r`, rankgen `a+b≤ρ−1`, arity-4 widths 1..8; including the endpoint `j=r`). So ★4
+  (charge inert) HOLDS on the gate's actual scope, and **the scope restriction (binding shell + rankgen) is
+  LOAD-BEARING** — the formaliser must carry `u = t★+j` (a binding shell), not invoke the per-cell floor at
+  an arbitrary cut. Codex's floor-domination criterion (its inequality (4) + recession conditions) is exactly
+  what the binding-shell scope satisfies.
+- **The single-matrix SVD model is ARITY-4-specific.** Codex's `(4,4,10,3,10) u=3` (arity 5, `ρ=3 <
+  min(M₂,n)`) shows the single normal-slice `p=k+exc` measure under-counts the deep-stratum codim for
+  arity≥5. This confirms the scope in §6: the explicit SVD-ray model + reduced-bilinear analysis is ARITY 4
+  (single deep matrix); arity≥5 uses the banked CR-path multi-layer descent to the terminal single-matrix
+  coupling (the multi-layer codim accumulates across CR-path cells — deephier's cross-layer LP §4, NOT the
+  single-matrix formula).
+- **The charge needs NO SVD — Cauchy–Binet.** `det(Q_bQ_bᵀ) = Σ_{|I|=b} det(Q_{b,I})²` (a sum of squared
+  `b×b` minors), so the charge is resolvable by raw minor-pivot / Schur charts (no spectral term) — a
+  concrete Lean-mechanism contribution reinforcing the SVD-free route, provided every pivot Jacobian is kept.
 
 ---
 
@@ -293,9 +332,16 @@ self-standing (the LP + closed form + atom-sum = minAdm are exact rational, not 
 - **Square vs non-square (★5).** The banked `SchurCore` covers the square-first-factor reduced bilinear
   (`u=M₂` and `M₂=n`); the non-square case (`exc>0` or `u≠M₂`; 630 arity-4 cuts, reached by neither fibre
   nor square-`SchurCore`) needs the general non-square corank recursion.
-- **Arity.** For arity-4 (single deep matrix) the deepest cell is the 3-chain `(u,M₂,n)`; for arity≥5 the
-  deep sub-chain is longer and resolved layer-by-layer by the CR-path (Level 0), with the terminal single-matrix
-  coupling handled by Stages A/B.
+- **Arity (Codex-sharpened).** The explicit SVD-ray model + reduced-bilinear analysis is **ARITY 4** (single
+  deep matrix, all dispatch witnesses) — the single normal-slice `p=k+exc` measure is arity-4-specific and
+  UNDER-counts for arity≥5 (Codex CE#1 `(4,4,10,3,10) u=3`, `ρ<min(M₂,n)`). For arity≥5 the banked CR-path
+  multi-layer descent (Level 0) reduces to the terminal single-matrix coupling (Stages A/B), and the
+  multi-layer deep-stratum codim accumulates ACROSS CR-path cells (deephier's cross-layer LP §4), NOT via the
+  single-matrix formula.
+- **The binding-shell + rankgen scope is LOAD-BEARING for charge-domination.** Off the binding shells (e.g.
+  `t★` at the front-collapse endpoint, `r=0`) the charge can lower the codim below the floor (Codex CE#2
+  `(6,8,5,5) u=5`). The per-cell floor may be invoked ONLY for `u=t★+j`, `1≤j<r`, which the upstream
+  shell-restriction supplies; the formaliser must carry this hypothesis.
 
 ---
 
@@ -311,12 +357,50 @@ self-standing (the LP + closed form + atom-sum = minAdm are exact rational, not 
 
 ---
 
-## 8. Close
+## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
+
+**RECOMMENDATION: Route A (the general non-square corank recursion on the reduced bilinear), NOT Route B
+(chain-length-IH).** Route A is lower-risk-to-build.
+
+**Why Route B (chain-length-IH) re-hits the option-2 failure.** The reduced object IS the arity-3
+(□)-with-charge for `(u, M₂, n)`, one arity down — but the "one arity down" does NOT rescue a length
+induction, because the *charge* is what breaks it, not the arity. The front-peel decorates the sub-chain with
+`det(Q_bQ_bᵀ)^{−a/2}`; under a chain-LENGTH induction, each recursive peel of the sub-chain generates ANOTHER
+determinantal decoration, and they COMPOUND (do not telescope) — precisely diagbfix's dead option-2. The
+arity-3-(□)-with-charge does not avoid this: a clean `(□)` IH is uncharged, and the charge cannot be dropped
+(it is a negative power, the wrong direction for an upper bound), so the IH must carry a growing product of
+charges. So Route B inherits the parked-Route-B obstruction.
+
+**Why Route A carries the charge cleanly.** Route A resolves the SINGLE reduced bilinear `frobSq(Front·Z_deep)`
+directly by a corank recursion (recursion on the CORANK of one bilinear, not on chain length). The charge is
+ONE decoration (`a=M₀−u` fixed), carried through the corank steps and dominated at EACH step (★4, verified
+inert per-corank on the binding-shell scope, `couplerad_chargescope.py`; and Cauchy–Binet `det(Q_bQ_bᵀ) =
+Σ_{|I|=b} det(Q_{b,I})²` keeps it raw-minor / SVD-free). No compounding. Route A also REUSES the banked
+`core_schurGen_lt_top` WellFounded-on-corank wrapper — only the per-corank `SchurRecStep` needs the non-square
+generalization (analogous to the banked square `routeMBoxThresholdFinite_rrp`), and its floor-reach is the
+atom-sum `= minAdm(u,p,k)` (exact), matching the QIP recursion the corank step implements.
+
+**Build order suggestion (bank a real win first).** The square sub-family `u=M₂=n` (`(4,4,4,4)`, `(5,5,5,5)`,
+`(3,3,4,4)`) lands IMMEDIATELY on the banked `routeMBoxThresholdFinite_rrp` + the y-Morse (A) / front (B)
+peels — no new corank lemma. Build that arity-4 square case first (closes the two "square" dispatch witnesses
+`(4,4,4,4)`, `(5,5,5,5)`), then the non-square per-corank `SchurRecStep` for the `exc>0`/`u≠M₂` cuts (closes
+`(3,4,5,4)`). Always-available fallback if the non-square corank step stalls: the SVD ray atlas (Lean-costly,
+needs the spectral + Vandermonde-measure Mathlib build — reason to avoid, but it is a valid native route, so
+no wall either way).
+
+**Residual risk on Route A (name it):** the non-square per-corank step is genuinely new (square is banked),
+and the charge must be threaded through it (dominated per ★4, but not dropped). Both are detail-at-scale
+(feasibility-validated in `iterfibre-route-cert.md` §4), not monuments.
+
+---
+
+## 9. Close
 
 - **Firmest result.** The coupled per-cell finiteness is realized by an EXPLICIT covering monomial resolution
   (§2) whose every chart has radial exponent `≥ minAdm((u,)+deep) ≥ 2T1q`, with the Vandermonde/`σ^{p−k}`
   measure and every CoV Jacobian carried and the charge `det(Q_bQ_bᵀ)^{−a/2}` dominated. **NO native wall;
-  KILL-condition NOT triggered** (0 strata below floor, exact LP + scan). The honest floor is reached WITHOUT
+  KILL-condition NOT triggered** (0 strata below floor over 4386 in-scope binding-shell cells, exact LP scan;
+  the charge-domination is scoped to the binding shells — Codex-red-teamed, §5). The honest floor is reached WITHOUT
   SVD by the raw pivot/Schur + fibre + residual-power atlas, because the lost-block resolution is a `minAdm`
   corank recursion (`Σᵢmin(βᵢ,u)=minAdm(u,p,k)`) — Lean-friendly (raw-pi, banked atoms). Axiom footprint
   NATIVE (no `cited_aoyagi_dln`).
@@ -328,12 +412,14 @@ self-standing (the LP + closed form + atom-sum = minAdm are exact rational, not 
   always-available fallback), but the substantive new build. Secondary: carrying the charge through the raw
   corank recursion (the `γ^{hier}` domination is exact, ★4, but must be threaded not dropped — a bounded
   `INFERENCE`).
-- **Next construction/consult.** (a) The formaliser builds the general non-square 3-width RRR corank
-  recursion (the rank-stratified `{V=0}` cover of `frobSq(Front·Z_deep)`), reusing the `core_schurGen_lt_top`
-  WellFounded wrapper with a NON-square per-corank `SchurRecStep`; the reduced object is the arity-3
-  (□)-with-charge, one arity down — a chain-length-IH structure worth weighing against the from-scratch build.
-  (b) The square sub-family (`u=M₂=n`: `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`) lands immediately on the banked
-  `routeMBoxThresholdFinite_rrp` + the y-Morse/front peels. (c) Fold in the Codex verdict when it lands.
+- **Next construction (route: §8, Route A recommended).** (a) Build the arity-4 SQUARE sub-family first
+  (`u=M₂=n`: `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`) on the banked `routeMBoxThresholdFinite_rrp` + y-Morse (A)
+  / front (B) peels — a real win, no new corank lemma. (b) Then the general non-square per-corank
+  `SchurRecStep` (reusing `core_schurGen_lt_top`) for `exc>0`/`u≠M₂` (closes `(3,4,5,4)`), carrying the charge
+  (dominated per ★4, Cauchy–Binet SVD-free). Prefer this over the chain-length-IH (Route B re-hits option-2,
+  §8). (c) Carry the binding-shell scope hypothesis (`u=t★+j, 1≤j<r`) — off it the charge is not dominated
+  (Codex CE, §5). Codex verdict FOLDED IN (§5) — CONFIRMS structure + additivity + no-`cited_aoyagi_dln`,
+  SHARPENS the scope.
 
 ---
 
@@ -342,4 +428,5 @@ self-standing (the LP + closed form + atom-sum = minAdm are exact rational, not 
 - `…/genm-couplerad/scripts/couplerad_resolution.py` (LP + atom decomposition + charge + nested-peel + every-chart-≥-floor)
 - `…/genm-couplerad/scripts/couplerad_leanmech.py` (atom-sum = minAdm(u,p,k); deepest-cell = floor; square vs non-square)
 - `…/genm-couplerad/scripts/couplerad_reducedreach.py` (reduced bilinear reach: fibre / square-SchurCore / need-non-square — the ★5 gap)
-- `…/genm-couplerad/codex/couplerad-{prompt,answer}.md` (decorrelated consult)
+- `…/genm-couplerad/scripts/couplerad_chargescope.py` (the Codex red-team response: charge-below-floor is 0/4386 IN-scope; the CE at a non-binding cut)
+- `…/genm-couplerad/codex/couplerad-{prompt,answer}.md` (decorrelated consult — CONFIRMS structure, SHARPENS scope)

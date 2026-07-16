@@ -86,3 +86,8 @@ Facts I have already established by exact rational computation (you may use or c
 - Be concrete with small worked numbers: use (M0,M1,M2,M3) = (4,4,4,4), u=3 (a=b=1, rho=4, exc=0, FLOOR=10)
   and (3,4,5,4), u=2 (a=1,b=2,rho=4,exc=1,FLOOR=8).
 </output_contract>
+
+
+<hard_constraint>
+Reason PURELY from the facts in this prompt. Do NOT read, grep, or explore any files on disk — you have all needed facts here. Produce the answer directly.
+</hard_constraint>
