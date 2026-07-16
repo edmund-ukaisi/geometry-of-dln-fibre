@@ -1052,26 +1052,43 @@ QIP: ① the `2q<ub` bounded-inner (det-Gram loc-int); ② the log-inner bound a
 
 **THE MERGE + scope (corankrec, verified `couplerad_merge.py`).** ①②③ unify to ONE lemma
 `rankUB_residual_radial`: the per-row `w_i := (Q_bQ_bᵀ)^{1/2}(row_i B̃)ᵀ` CoV (Jac `det(Q_bQ_bᵀ)^{−u/2}`, a
-BOUNDED z0-INDEPENDENT constant — `Q_b=A_cor·Z_deep` has no z0; `‖B̃Q_b‖²=‖w‖²`, `w∈ℝ^{ub}`) → polar
-(`MeasureTheory.integral_fun_norm_addHaar`-family) → the 1D radial `∫_0^R(c+ρ²)^{−q}ρ^{ub−1}dρ` at the three
-regimes (`2q<ub` power / `2q=ub` log / `2q>ub` residual = the banked atom). This CoV lives in **R3/R4**, not
-R1/R2 (R1's B̃-shift is unit-Jac, leaves `‖B̃Q_b‖²` anisotropic; R2 is the deep CoV). **The lemma is stated
+BOUNDED z0-INDEPENDENT constant — `Q_b=A_cor·Z_deep` has no z0; `‖B̃Q_b‖²=‖w‖²`, `w∈ℝ^{ub}`) → the isotropic
+`(c+‖w‖²)^{−q}` at the three regimes (`2q<ub` power / `2q=ub` log / `2q>ub` residual = the banked atom). This
+CoV lives in **R3/R4**, not R1/R2 (R1's B̃-shift is unit-Jac, leaves `‖B̃Q_b‖²` anisotropic; R2 is the deep
+CoV). **MECHANISM (real Mathlib names — twice-corrected, now verified).** The radial spine is REAL AND BANKED
+in our own foundation: `radial_ball_iff` (`S1SmoothBlock.lean:78`, sorry-free) is the exact iff
+`IntegrableOn (‖x‖^s) (ball 0 R) ↔ −(m+1) < s`, built on Mathlib's **`integrable_fun_norm_addHaar`**
+(`Mathlib.MeasureTheory.Constructions.HaarToSphere`). [History/lesson: my draft first cited "polar
+`integral_fun_norm_addHaar`", then I DECLARED it phantom — but that declaration was itself a false-phantom from
+a one-word name typo (`integral_` vs `integrable_`); corankrec caught it. Verify ABSENCE with the same rigor as
+presence — a typo makes a real, banked lemma look absent, and mis-routes the formaliser into rebuilding what
+exists. Reverse of the `log_le_rpow` lesson.] So `rankUB_residual_radial` builds on `radial_ball_iff`, and TWO
+of the three regimes are ALREADY BANKED (sorry-free): **① (`2q<ub`, incl. `c=0`) = `euclidND_ball_integrable`**
+(`S1RadialMorse.lean:46`: `c'<(m+1)/2 → IntegrableOn (‖y‖^{−2c'}) (ball 0 R)`, i.e. `2q<ub` — an iff via
+`radial_ball_iff`); **③ (`2q>ub`) = `radial_morse_residual_power_le`** (the banked atom). Only **② (`2q=ub`,
+log)** is genuinely new — built on the SAME `radial_ball_iff` machinery (critical 1D `∫ρ^{−1}` shell) + the
+`log≤ε` step (`Real.log_rpow` + `Real.log_le_sub_one_of_pos`). Plus the per-row-G^{1/2} CoV + Tonelli. **The
+lemma is stated
 for `c ≥ 0`** (not `c>0`) — this is the key that folds EVERY interior cell into it:
 - **`d ≥ 1` (`c=frobSq(EY)>0` a.e.) — the MERGE:** state ② for the whole `2q≤ub` (bounded ⟹
   `≤C(1+log⁺(1/c))` trivially), so the entire `2q≤ub` side routes `log≤ε-power → rectCore_schurGen_lt_top(ε)`,
   `ε∈(0,½minAdm(![u+a,u,d]))` nonempty ⟺ `minAdm(![u+a,u,d])≥1 ⟺ d≥1`. HOLDS for EVERY `d≥1` cell (7962
   genuine `u≥1,a≥1` + all `a=0,d≥1`; 0 failures, `couplerad_merge.py`). Regimes ①②③ via the one lemma.
-- **`d = 0 ⟺ a = 0 ⟺ ρ_d=b` (square-saturated front) — regime ① AT `c=0`:** `Z_deepΠ=0 ⟹ Y≡0 ⟹ c=0`, loss
-  `= ‖B̃Q_b‖²` pure. This is NOT a separate lemma and NOT an availability risk (my earlier "un-regularized
-  loc-int not in Mathlib" flag was timidity-disguised-as-rigor — corankrec dissolved it): it is
-  `rankUB_residual_radial` at `c=0`, regime ① — after the per-row CoV + polar it is
-  `det(Q_bQ_bᵀ)^{−u/2}·ω_{ub}·∫_0^R ρ^{ub−1−2q}dρ`, a BOUNDED-INTERVAL power integral finite for `2q<ub`
-  (`integral_rpow`, exponent `ub−1−2q > −1`) — detail-at-scale, standard. `2q<ub` holds unconditionally
-  in-window (`a=0 ⟹ minAdm M ≤ ub`). So the `c≥0` unified lemma covers it as a specialisation.
+- **`d = 0 ⟺ a = 0 ⟺ ρ_d=b` (square-saturated front) — regime ① AT `c=0`, BANKED:** `Z_deepΠ=0 ⟹ Y≡0 ⟹ c=0`,
+  loss `= ‖B̃Q_b‖²` pure. After the per-row CoV this is the un-regularised `∫_{ball_R⊆ℝ^{ub}} ‖w‖^{−2q}dw`,
+  finite for `2q<ub` — which is EXACTLY `euclidND_ball_integrable` (`S1RadialMorse.lean:46`, sorry-free, an iff),
+  at `m+1=ub`, `2c'=2q`. So it is BANKED, not a build-time call. (`2q<ub` holds unconditionally in-window:
+  `a=0 ⟹ minAdm M ≤ ub`.) My earlier "availability risk / detail-at-scale build-time call / wrinkle (i′)" flag
+  was WRONG — timidity, corrected: the lemma is proven in our foundation. It still couples to the SCOPING Q (if
+  the regular/square regime owns `a=0` upstream, couplerad never reaches `c=0`), but either way regime ① is
+  banked, so there is NO gap.
 
-**Net: ONE new lemma (`rankUB_residual_radial`, `c≥0`, per-row-G^{1/2} CoV + polar + 3 regimes) covers the
-ENTIRE interior** — `d≥1` merge and `d=0` pure alike; everything else banked (RectSchurCore ∀T, the QIP,
-the deep/hGae machinery, `log≤ε`). **Scope (corankrec's deep-atlas):** `a=0` (square front) IS in couplerad's
+**Net: the `+ub` interior brick is ALMOST ENTIRELY BANKED.** Regimes ① (`euclidND_ball_integrable`) and ③
+(`radial_morse_residual_power_le`) are proven; the ONLY genuinely-new piece is regime ② (the `2q=ub`
+critical-log, on the same `radial_ball_iff` machinery + `log≤ε`). Assembled: `rankUB_residual_radial` (`c≥0`,
+per-row-G^{1/2} CoV + the 3 regimes) + Tonelli over `(E,Y)` — covering the ENTIRE interior (`d≥1` merge and
+`d=0` pure alike). Everything else banked (RectSchurCore ∀T, the QIP `minAdm_le_inf_pivot_qip`, the deep/hGae
+machinery). **Scope (corankrec's deep-atlas):** `a=0` (square front) IS in couplerad's
 interior scope — the atlas routes deep-rank → deficient/generic → interior/edge with NO separate "square"
 bucket, and LATE-27 corrected the "square-first freebie" overclaim; so square/`a=0` is couplerad's, not a
 freebie owned upstream. (`u=0` = no pivot / empty front is the one genuinely out-of-scope stratum.) Controller
