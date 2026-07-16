@@ -267,15 +267,17 @@ theorem routeMBoxThresholdFinite_of_zero_width (M : Fin (L + 1 + 1 + 1) → ℕ)
 
 /-- **The direct `SJStepHyp` from the coupled route + the degenerate handler.** Case-splits each `≥ 3`-width
 chain `M`: if `M` has all-positive widths AND a nondegenerate interior binding cut, the coupled route
-(`hcoupled`) gives box-finiteness; otherwise (degenerate width `M₀=1`/`M₁=1`, boundary-argmin, or a zero
-width) the degenerate handler `hdegen` — WITH the arity-IH (the one-shorter box-finiteness `SJStepHyp`
-supplies) — gives it. This is the honest isolate-every-hole step: `hcoupled` is discharged by
-`routeMBoxThresholdFinite_of_coupled` (consuming hG1/hfin/hbdryFin); `hdegen` is the degenerate
-reduction-to-shorter-chain (genuine hole, uses the IH). No route touches the gammaPeel/`sjJointResolution`
-sorry. -/
+(`hcoupled`, WHICH TAKES the arity-IH — the saturated boundary shell `j=r` reduces to the reduced chain
+`redChain (min(M₀,M₁)) M` via the IH, satred's saturated brick) gives box-finiteness; otherwise (degenerate
+width `M₀=1`/`M₁=1`, boundary-argmin, or a zero width) the degenerate handler `hdegen` — also WITH the
+arity-IH — gives it. This is the honest isolate-every-hole step: `hcoupled` is discharged by
+`routeMBoxThresholdFinite_of_coupled` (consuming hG1/hfin/hbdryShell, with the IH feeding hbdryShell at
+`j=r`); `hdegen` is the degenerate reduction-to-shorter-chain (genuine hole, uses the IH). No route touches
+the gammaPeel/`sjJointResolution` sorry. -/
 theorem sjStepHyp_of_coupled
     (hcoupled : ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ),
-        (∀ i, 1 ≤ M i) → NondegBindingCut M t → RouteMBoxThresholdFinite M)
+        (∀ i, 1 ≤ M i) → NondegBindingCut M t →
+        (∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') → RouteMBoxThresholdFinite M)
     (hdegen : ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ),
         ¬ ((∀ i, 1 ≤ M i) ∧ ∃ t, NondegBindingCut M t) →
         (∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') → RouteMBoxThresholdFinite M) :
@@ -283,7 +285,7 @@ theorem sjStepHyp_of_coupled
   intro L M hIH
   by_cases h : (∀ i, 1 ≤ M i) ∧ ∃ t, NondegBindingCut M t
   · obtain ⟨hnd, t, hcut⟩ := h
-    exact hcoupled M t hnd hcut
+    exact hcoupled M t hnd hcut hIH
   · exact hdegen M h hIH
 
 /-- **The `∀-M` box-finiteness capstone, conditional on the coupled route + the degenerate handler.**
@@ -291,11 +293,13 @@ Feeds `sjStepHyp_of_coupled` and the banked `L = 1` free-matrix base (`sjBase1_f
 banked sorry-free strong-arity-induction wrapper `routeMBoxThresholdFinite_of_step`. So `(hcoupled ∧
 hdegen) ⟹ RouteMBoxThresholdFinite M` for EVERY width vector `M` — the coupled-route form of `(□)`,
 NATIVE (no `cited_aoyagi_dln`, no gammaPeel/`sjJointResolution` sorry). The remaining holes are exactly
-`hcoupled` (= hG1 [tpeel] ∧ hfin [corankrec] ∧ hbdryFin [boundary]) and `hdegen` (the degenerate
-reduction). -/
+`hcoupled` (= hG1 [tpeel] ∧ hfin [corankrec, interior] ∧ hbdryShell [boundary: j=0 uniformWenn Morse, j=r
+satred's IH-fed saturated brick]) and `hdegen` (the degenerate reduction). `hcoupled` takes the arity-IH
+(threaded from `sjStepHyp_of_coupled`) for the j=r saturated reduction. -/
 theorem routeMBoxThresholdFinite_coupled
     (hcoupled : ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ),
-        (∀ i, 1 ≤ M i) → NondegBindingCut M t → RouteMBoxThresholdFinite M)
+        (∀ i, 1 ≤ M i) → NondegBindingCut M t →
+        (∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') → RouteMBoxThresholdFinite M)
     (hdegen : ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ),
         ¬ ((∀ i, 1 ≤ M i) ∧ ∃ t, NondegBindingCut M t) →
         (∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') → RouteMBoxThresholdFinite M)
