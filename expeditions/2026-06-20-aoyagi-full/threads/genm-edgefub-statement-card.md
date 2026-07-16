@@ -1,9 +1,13 @@
 # Statement card — `genm-edgefub` (b=1, a<u EDGE brick, leaf side)
 
-Branch `genm-edgefub` (off `expedition/genm-tideD-edgedispatch`), tip `@cf940ee47`.
+Branch `genm-edgefub` (off `expedition/genm-tideD-edgedispatch`), tip `@e9dbc4f6f` (merged to
+`genm-integration @89f3f5fc5`).
 The **leaf-side reduction** of the b=1, a<u edge arm of the coupled-box finiteness: turns the edge cell's
 `coupledBoxIntegrand` inner `(C, Γ)` double integral into the corank-charge × radial form the landed C-shift
 atoms close. All lemmas clean-three `[propext, Classical.choice, Quot.sound]`, sorry-free.
+
+**Reviewed** (independent audit, fresh recompile + force-elaborated `#print axioms`): all lemmas faithful,
+composition sound, no soundness defects, no overclaims, axiom-clean confirmed (not stale-olean-masked).
 
 ## The schur-shear cancellation (any b)
 
@@ -46,10 +50,26 @@ atoms close. All lemmas clean-three `[propext, Classical.choice, Quot.sound]`, s
 >   `RouteMBoxThresholdFinite(redChain u M)` (satred's edge-descent lemma = `hBackbone`).
 > - **Status.** sorry-free.
 
-## The full edge brick (interface — NOT yet stated in Lean, pending hBackbone lock)
+## Cell-drop + selector (banked, `hBackbone`-independent)
 
-`edge_coupledBox_lt_top` will discharge the edge case of `coupledBox_cell_lt_top_of_generic`'s `hgen`,
-conditional on:
+> **`edge_generic_cells_of_box`** (`RouteMSJEdgeCellDrop.lean`): `(∫_box coupledBox < ⊤) → GenericCellFinite`
+> — the cell-drop a-fortiori (`cell ⊆ box`, `lintegral_mono_set`, integrand-agnostic). The `hBackbone`-independent
+> half of `edge_coupledBox_lt_top`. Full `RouteMSJHcellNull` closure green (8453 jobs). sorry-free.
+>
+> **`exists_measurable_nonzero_index`** (`RouteMSJEdgeSelector.lean`, Mathlib-only): for measurable
+> `v : P → Fin(m+1) → ℝ` nonzero a.e., a MEASURABLE `j₀ : P → Fin(m+1)` with `v p (j₀ p) ≠ 0` a.e.
+> (least-nonzero via `Fin.find` + `measurable_to_countable'`). Supplies the per-`p` pivot column for
+> `edgeBackbone`'s `|v'_{j₀}|^{−a}` disposal. sorry-free.
+
+## The full edge brick (interface — NOT yet stated in Lean, pending `edgeBackbone` core)
+
+`edge_coupledBox_lt_top` will discharge the edge case of `coupledBox_cell_lt_top_of_generic`'s `hgen`
+(the `GenericCellFinite`-shaped `h_edge_b1` slot of `routeMBoxThresholdFinite_of_coupled_bsplit`,
+arch1build), as `edge_generic_cells_of_box ∘ edgeBackbone`. `edgeBackbone` (satred, `hBackbone-edge-pin.md`)
+is the TWO-CHAIN joint rank-sector descent (`r ∈ {0,1}`: `redChain u M` and `redChain (u+1) M`, both at
+`c'−a/2`; the corank-one tie-log relocated but δ-folded harmless via `one_add_log_inv_le_rpow` +
+strict headroom). It consumes: this leaf (`coupledInner_slice_le`), the cell-drop, the selector, the
+arity-IH, and Brick-F frame facts (rank-genericity `Q_inl≠0` / uniform singular-value bound). Conditional on:
 - `hBackbone : RouteMBoxThresholdFinite (redChain u M) → EDGEREDUCED M u c' < ⊤`, where (satred-locked, radial collapsed via `scaledRadialEuclid_eq`, `|v'|^{−a}` kept jointly):
   `EDGEREDUCED := ofReal(C_a·2^a·2^{a·u'}) · ∫_{p∈box} |v'_{j₀}(p)|^{−a} · ∫_{pb∈outerPB} frobSq(P·Q̃ₚ)^{a/2−c'}`;
 - `hIH : RouteMBoxThresholdFinite (redChain u M)` (arity−1 IH);
