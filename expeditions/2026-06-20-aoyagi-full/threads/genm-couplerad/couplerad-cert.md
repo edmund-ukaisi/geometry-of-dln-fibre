@@ -955,34 +955,32 @@ directions `g` (any rank — `couplerad_boundary_strata.py`). [This is the `ℓ=
 binder is stratified — see ★2.]
 
 The full-degeneration locus is `{Q_inl·Π = z0·Z_deep·Π = 0}` (⊇ both `{z0=0}` and `{z0·Z_deep=0}`), codim
-`u·d`, `d := rank(Z_deep·Π) = ρ_d − b` — NOT `{z0=0}` (codim uM₂). So the effective pole codim is `u·d`, and
-the binding is STRATIFIED (below), not the single point.
+`u·d`, `d := rank(Z_deep·Π) = ρ_d − b`. The clean route (★6) resolves the whole `∫_p` via the arity-3 base
+case, giving the condition directly; ★2's hand-stratification was an intermediate step (error-prone — see the
+caveat).
 
-**★2 The condition (STRATIFIED — Codex-sharpened).** Codex's clean decoupling `B̃ = B₁₂ + P·A_z`
-(`A_z = Q_inl·Q_bᵀ(Q_bQ_bᵀ)⁻¹`) gives `E_top = frobSq(P·Q_inl·Π) + frobSq(B̃·Q_b)` (verified machine ε,
-`couplerad_verify_strata.py`) — so BOTH loss blocks degenerate on the rank strata of `Q_inl·Π` (SINGLE
-width `d`; NO two-width correction). The corank-ℓ stratum of `Q_inl·Π` (rank `u−ℓ`) loses
-`k_ℓ = ℓ(u+a)` eigenvalues (`u·ℓ` from `P·Q_inl·Π`, `a·ℓ` from `C·Q_inl·Π`; `k_meas = ℓ(u+a)` confirmed),
-codim `c_ℓ = ℓ(|u−d|+ℓ)`. So:
-> `∫_p < ⊤ ⟺ 2q < min_{0≤ℓ≤min(u,d)} φ(ℓ)`,  `φ(ℓ) = ρ₀ + ℓ² + (d−2u−a)·ℓ`,  `ρ₀ = (u+a)·min(u,d) + u·b`.
+**★2 The condition — `2q < u·b + minAdm((u+a, u, d))`** (via the arity-3 reduction ★6; `d = ρ_d − b`). The
+`B̃`-decoupling (`B̃ = B₁₂ + P·Ã_z`, `Ã_z = Q_inl·Q_bᵀ(Q_bQ_bᵀ)⁻¹`) gives `E_top = frobSq(P·Y) +
+frobSq(B̃·Q_b)`, `E_tr = frobSq(C·Y)`, `Y := Q_inl·Π = z0·Z_deepΠ` (u×n, rank ≤ d) — verified machine ε
+(`couplerad_verify_strata.py`). So `∫_p` reduces (★6) to the arity-3 (□) of chain `(u+a,u,d)` + a free
+`ub`-Gaussian, finite iff:
+> **`2q < u·b + minAdm((u+a, u, d))`**  (`= u·b + Λ`, `Λ` = the two-layer RLCT-numerator of `(u+a,u,d)`).
 
-Closed form (Codex): `min_ℓ φ = u·ρ_d` if `d ≤ a` (deep stratum `ℓ=u` binds = **form A**); `= ρ₀ −
-⌊(2u+a−d)²/4⌋` if `a+1 ≤ d ≤ 2u+a−2` (an INTERMEDIATE `ℓ<u` binds, STRICTLY tighter than form A); `= ρ₀`
-(generic-z0 inner, `ℓ=0`) if `d ≥ 2u+a−1`. So `2q < u·ρ_d` (form A) is the binder ONLY for `d ≤ a+1`; for
-wider deep it is strictly tighter.
+Codex-confirmed `Λ = minAdm((u+a,u,d)) = min_{0≤r≤min(u,d)} {u·d + r² + (a−d)r}` (0 mismatch / all configs).
+[CAVEAT — a corrected error: my earlier hand-stratification `2q < min_ℓ φ(ℓ)`, `φ(ℓ)=ρ₀+ℓ²+(d−2u−a)ℓ`, used
+`c_ℓ = ℓ(d−u+ℓ)` WITHOUT the absolute value; it agrees with `u·b+Λ` only for `d ≥ u` and is WRONG for
+`d < u` (Codex counterexample `u=3,a=0,d=1`: `φ`-min `−1` vs `Λ=3`). The correct determinantal codim is
+`ℓ(|u−d|+ℓ)`, and the clean arity-3 route ★6 avoids the hand-stratification entirely. The scripts
+`couplerad_truecond/peelfamily/reduce3.py` used `|u−d|` and are correct.]
 
-**★3 The ∀-cell condition — interior CONVERGES, NO obstruction.** With the cap `c' < ½·minAdm M`, `∫_p<⊤`
-at every interior cell iff
-> **`minAdm M ≤ a·b + min_ℓ φ(ℓ)`** — VERIFIED 0 fails / 12720 interior cells (`couplerad_truecond.py`).
+**★3 The ∀-cell condition — interior CONVERGES, NO obstruction; QIP CLOSED (landed).** With the cap
+`c' < ½·minAdm M`, `∫_p<⊤` at every interior cell iff
+> **`minAdm M ≤ a·b + u·b + minAdm((u+a, u, d))`** — VERIFIED 0 fails / 12720 interior cells
+> (`couplerad_final.py`); tight (margin 0) in some cells but STRICT-safe.
 
-The `min_ℓ φ` RHS is strictly tighter than form A (`ab+uρ_d`) in 1158 wide-deep cells; tight (margin 0) in
-some but STRICT-safe. So the interior converges for ALL cells — no KILL. **Proof — CLOSED by the landed lemma
-(no new QIP).** The RLCT condition `minAdm ≤ ab + min_ℓ φ` is certified by the MULTI-PIVOT peel family:
-peel at `t = u−ℓ` gives `minAdm M ≤ (M₀−(u−ℓ))(M₁−(u−ℓ)) + minAdm(redChain (u−ℓ) M) ≤ (a+ℓ)(b+ℓ) + (u−ℓ)·ρ_d
-=: B_ℓ` — this is EXACTLY corankrec's landed `minAdm_le_u_deepTailMin_add_peelCharge` @bc9652824 instantiated
-at pivot `u−ℓ` (valid `u−ℓ ≤ min(M₀,M₁)`). And `minAdm ≤ min_{0≤ℓ≤u} B_ℓ ≤ ab + min_ℓ φ` (both 0-fails /
-12720, `couplerad_peelfamily.py`). So the stratified QIP is closed by the ALREADY-LANDED form A applied at
-every pivot `u'∈{0..u}` — no new lemma; `min_ℓ B_ℓ` is the certificate.
+CERTIFIED by corankrec's LANDED full-min corollary `minAdm_le_inf_pivot_qip` @a070b639a:
+`minAdm M ≤ ⨅_{u'≤min(M₀,M₁)} [(M₀−u')(M₁−u') + u'·ρ_d] ≤ a·b + u·b + minAdm((u+a,u,d))` (the second `≤`
+verified 0-fails / 12720). So the entire interior arithmetic is closed by the landed QIP — no new lemma.
 
 **★4 intloss's crude σ_min bound is NOT p-integrable (why the joint route).** `frontLossIntegral(p) ≤
 σ_min(L_p)^{−2q}·C` is tight per-p, but `σ_min(L_p)` vanishes on the codim-1 locus `{rank[Q_inl;Q_b]<u+b}`
@@ -1004,23 +1002,39 @@ frobSq(B̃·Q_b)`, `E_tr = frobSq(C·Y)`. The map `z0 ↦ Y = z0·(Z_deepΠ)` is
 (Jacobian const; the u·(M₂−d) kernel directions integrate freely over the box). So `∫_p` reduces to
 `∫_{Y,P,C,B̃} (frobSq(E·Y) + frobSq(B̃·Q_b))^{−q}`, `E := [P;C]` ((u+a)×u) — this is the **arity-3 (□)
 loss-integral** of the reduced 2-layer chain `(u+a, u, d)` (product `E·Y`, (u+a)×d through the middle dim u)
-× a free ub-dim Gaussian block `‖B̃Q_b‖²`. Its RLCT-numerator is `u·b + minAdm((u+a, u, d))`, which EQUALS
-`min_ℓ φ(ℓ)` EXACTLY (0 mismatch / 2016 configs, `couplerad_reduce3.py`). So the interior "loss-degeneracy"
-is the recursion peeling `z0` (the leading deep layer M₁→M₂) and BOTTOMING INTO the arity-3 (□) base — the
-same machinery the expedition already builds; no separate determinantal-RLCT monument. **Composes with the
-arity-3 (□) closure** (the recursion base) applied to the reduced `(E,Y)` chain. This is the recursion-threaded
-route: the interior ∫_p is one descent step into arity-3, not a standalone analytic wall.
+× a free ub-dim Gaussian block `‖B̃Q_b‖²`. Its RLCT-numerator is `u·b + minAdm((u+a, u, d))`. So the interior
+"loss-degeneracy" is the recursion peeling `z0` (the leading deep layer M₁→M₂) and BOTTOMING INTO the
+arity-3 (□) base — no separate determinantal-RLCT monument.
 
-**Decorrelated Codex (2 consults, `xhigh`, self-contained, conclusion WITHHELD): CONCUR + SHARPEN.** Consult 1
-(`codex/boundary-{prompt,answer}.md`): pole `P=2q−ub`, threshold `q<ρ₀/2`, crude-σ_min NON-integrable
-(codim-1 false divergence), singular-P irrelevant. Consult 2 (`codex/strata-{prompt,answer}.md`): the
-STRATIFIED condition `2q<min_ℓ φ(ℓ)`, the intermediate-ℓ binding for `d≥a+2`, the width-caveat resolution via
-the B̃-decoupling.
+**Codex CONFIRMS the reduction (consult 4, `codex/reduce-{prompt,answer}.md`), with two domain caveats it
+resolves.** R1 (`B̃`-orthogonal split): correct (cross term `tr(P·Y·Q_bᵀ·B̃ᵀ)=0` via `Π·Q_bᵀ=0`); the
+integrand factors through `Y`, though the shifted `B̃`-domain depends on `z0`. R2 (surjection): correct; the
+`z0`-box image is a zonotope, NOT a literal product box. R4 (suspension): free block adds `ub/2` to the RLCT.
+**These caveats do NOT break finiteness:** the transformed domain is contained in a bounded product box AND
+contains a product neighborhood of `(Y,K,B̃)=0`, with constant Jacobian, so by INNER/OUTER comparison the
+`∫_p` has EXACTLY the same finiteness threshold as the rectangular arity-3 loss integral (`0` is an interior
+point → the `Y`-image boundary adds no singularity). And `min_ℓ φ − ub = Λ` for `d ≥ u`; for `d < u` my
+hand-`φ` was wrong (★2 caveat) but `Λ = minAdm((u+a,u,d))` is right for all `d` (0 mismatch). So the
+reduction dissolves the stratification, is valid for FINITENESS via bounded-domain comparison, and the
+strata-independence question is SUBSUMED into the (banked) arity-3 (□) closure — Codex-verified.
 
-**Owner:** intloss (rank lemma + per-p finiteness — FEED the joint resolution; NOT a sharp per-p bound) + me
-(the joint `∫_p` resolution + stratification) + corankrec (the `min_ℓ φ` QIP). This is the LAST interior
-analytic piece; the interior CONVERGES ∀-cell (no obstruction), pending (a) the full QIP + (b) the
-transverse-stratum criterion.
+**Lean target (corankrec-mapped, all pieces banked/landed):** `∫_p` = [R1 Frobenius-orthogonal split
+(`Q_b·Π=0` + E_top/E_tr forms, banked)] + [R2 linear CoV, unit-Jac, free kernel + `rank(Z_deepΠ)=ρ_d−b`
+(cellRank/atlas)] + [R3/R4 = **`routeMBoxThresholdFinite_mnp (u+a) u d`** (schurrec's banked arity-3 (□)
+closure, on corankrec's clean-three base) × free `ub`-Gaussian] + [threshold via
+`minAdm_le_inf_pivot_qip`]. Composes with `frontCharge_cell_lt_top_of_freebox` + `hGae_cell_interior`.
+The bounded-domain inner/outer comparison (the R1/R2 caveats) is the one detail-at-scale step for the
+formaliser — standard (a bounded measurable integrand, `0` interior), NOT a monument.
+
+**Owner:** intloss (rank lemma + per-p finiteness) + me (the joint `∫_p` reduction, Codex-confirmed) +
+corankrec (QIP landed + the Lean assembly). The interior CONVERGES ∀-cell (no obstruction); the Lean closure
+is the assembly of banked pieces above + the bounded-domain comparison. This completes the interior design.
+
+**Decorrelated Codex (4 consults total, `xhigh`, conclusion WITHHELD): CONCUR + SHARPEN.** (1)
+`boundary-*`: pole `P=2q−ub`, crude-σ_min NON-integrable. (2) `strata-*`: the stratified structure +
+width-caveat resolution via B̃-decoupling (also surfaced the intermediate-ℓ binding — later subsumed by the
+reduction). (3) `couplerad-interior-*` (Q1/Q2): the per-cell RLCT + the edge (b−1)-Gaussian. (4) `reduce-*`:
+the arity-3 reduction CONFIRMED (with the bounded-domain caveats + the `d<u` correction of my hand-`φ`).
 
 ---
 
