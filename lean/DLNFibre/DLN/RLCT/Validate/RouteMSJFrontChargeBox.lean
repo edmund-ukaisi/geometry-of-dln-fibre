@@ -114,4 +114,27 @@ theorem coupledBox_lt_top_of_cells (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (
     rw [hcov, Set.inter_univ]
   rw [hunion]; simp
 
+/-- **The IN-REGIME per-cell dispatch (coupledBox ≤ frontCharge on any cell).** On any measurable cell `s`
+where the two a.e.-`p` genericity facts hold (corank Gram PosDef `hGae`; pivot energy `>0` a.e.-`x` `hEtopae`),
+the coupled-box integral is dominated by the front-charge integral (per-`p` step 2 `coupledBox_le_frontCharge`
+under `lintegral_mono_ae`). So on IN-REGIME cells (`a+b≤ρ`), where item 4 gives `∫frontCharge over s < ⊤`,
+`∫coupledBox over s < ⊤` follows. (On EDGE cells `a+b=ρ+1` the front-charge side is `+∞` — this dispatch is
+NOT used there; edgebrick's coupledBox brick supplies `∫coupledBox over s < ⊤` directly.) -/
+theorem coupledCell_le_frontCell (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (s : Set (Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)))
+    (hc' : ((M 0 - u : ℕ) : ℝ) * ((M 1 - u : ℕ) : ℝ) / 2 < c')
+    (hGae : ∀ᵐ p ∂(volume.restrict s),
+        ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+          * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ).PosDef)
+    (hEtopae : ∀ᵐ p ∂(volume.restrict s),
+        ∀ᵐ x ∂(volume.restrict (outerDom u (M 0 - u) (M 1 - u) 1)),
+          0 < frobSq (Matrix.of x.1.1
+            * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+              + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                  * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id))) :
+    ∫⁻ p in s, coupledBoxIntegrand M u c' p ≤ ∫⁻ p in s, frontChargeIntegrand M u c' p := by
+  refine lintegral_mono_ae ?_
+  filter_upwards [hGae, hEtopae] with p hG hEtop
+  exact coupledBox_le_frontCharge M u c' p hc' hG hEtop
+
 end DLNFibre.DLN.RLCT
