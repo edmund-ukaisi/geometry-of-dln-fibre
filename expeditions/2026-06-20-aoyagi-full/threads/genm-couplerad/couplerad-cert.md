@@ -633,23 +633,63 @@ crude uniform atom integrated.
 - **(b) wire the §w3-deep log directly:** the per-shell bound `W(S) ≤ C·(1+log(1/σ_ρ))` (b=1,a=1, ready)
   + the `σ_ρ`-measure CoV. Recommended for the 3 square witnesses (ready now).
 
-**Interface answers (schurB's Q1/Q2):**
-- **Q1 (rank `ρ = n`, or `ρ < n` lift?):** `ρ = min(M₂, n_last)` (S = Z_deep is `M₂×n_last`, schurB's inner
-  dim `n = M₂`). If `M₂ ≤ n_last`: `ρ = M₂ =` schurB's `n` (full-rank, `P_J = I`). If `M₂ > n_last`:
-  `ρ = n_last < M₂` — the **rank-`ρ` LIFT IS needed** (`P_J` = projection onto the `ρ` pivot columns `J`).
-  **Build the rank-`ρ` lift (general; subsumes full-rank).** For the dispatch witnesses `M₂ = n_last`
-  (`(3,4,4)`,`(4,5,5)`,`(2,4,4)`: `ρ=M₂`; `(2,5,4)`: `M₂=5>n=4`, `ρ=4<M₂` — LIFT needed there).
-- **Q2 (Loewner vs σ_min/det-minor floor?):** **Loewner** `(SSᵀ − δ²·P_J).PosSemidef` — clean interface,
-  yes. My pivotShell provides `|det P| ≥ ε` (det-minor); on the box (entries `≤ 1`, so `σ_max(P)` bounded)
-  this gives `σ_min(P) ≥ δ(ε) = ε/C`, hence the Loewner floor. So I hand the det-minor shell + the box
-  `σ_max` bound; the Loewner form is a short bridge (schurB's `charge_ge_isotropic` consumes Loewner).
-  `J` = the `ρ` pivot columns of the invertible `ρ×ρ` block from `exists_nonsingular_submatrix_of_le_rank`.
+**Interface answers (schurB's Q1/Q2) — CORRECTED (a coordinate-`P_J` subtlety at `ρ<n`).** `ρ = min(M₂,
+n_last)` (S = Z_deep `M₂×n_last`, schurB's inner dim `n = M₂`).
+- **FULL-RANK case `ρ = M₂ = n` (S square — ALL 3 square dispatch witnesses `(3,4,4)`,`(4,5,5)`,`(2,4,4)`):**
+  `P_J = I_n`, floor `SSᵀ ⪰ δ²·I_n`. **Q2 bridge is CLEAN here:** `|det S| ≥ ε ∧ σ_max(S) ≤ M ⟹ σ_min(S) ≥
+  ε/M^{n−1} ⟹ SSᵀ ⪰ (ε/M^{n−1})²·I_n` (`det S = ∏σ_i`, `σ_i ≤ M`; then `σ_min` floor ⟹ Loewner over ALL `n`
+  directions). `σ_max(S) ≤ M = √(M₂·n_last)` on the box. So I hand `(|det S| ≥ ε, σ_max ≤ M)`; schurB writes
+  the `det→σ_min→SSᵀ⪰δ²I` bridge (~15-25 lines). **This is the immediate build (3 square witnesses).**
+- **⚠ RANK-`ρ` lift `ρ < n` (`M₂ > n_last`, e.g. `(2,5,4)`): the COORDINATE-`P_J` floor `SSᵀ ⪰ δ²·P_J` is
+  NOT bridgeable — FLAG.** When `SSᵀ` is rank-deficient (`ρ < n`), `SSᵀ ⪰ δ²·(rank-ρ COORDINATE projection)`
+  can FAIL even with an invertible `ρ×ρ` pivot minor (exact counterexample: `S = [[1,0],[2,0]]` rank-1,
+  pivot `S[0,0]=1`, yet `SSᵀ − δ²·diag(1,0)` has a negative eigenvalue — the `Jᶜ`-rows are dependent on the
+  `J`-row, so no coordinate floor). So the coordinate-`P_J` lift does NOT work for `ρ<n`; the correct floor
+  is `SSᵀ ⪰ δ²·P_{rowspace(S)}` (the ACTUAL `ρ`-dim row-space projection, NON-coordinate) or the
+  drop-columns route (`(A_cor S)(A_cor S)ᵀ ⪰ (A_cor S[:,K])(A_cor S[:,K])ᵀ`, det-monotone, `K` = pivot
+  COLUMNS). Both are heavier than the coordinate lift. **Defer `ρ<n` (only `(2,5,4)` among the witnesses); I
+  pin the correct `ρ<n` lift when schurB reaches it.** `Q1`: `P_J = I` (full-rank, immediate); `P_J` for `ρ<n`
+  is NOT a coordinate `range e` — that's the flag.
+  `J`/pivot from `exists_nonsingular_submatrix_of_le_rank` gives the `ρ` pivot rows (coordinate subset,
+  `range` of the injective row-embedding) — but the coordinate floor on it fails for `ρ<n` (above).
 
 **Net:** bulk = schurB's uniform atom (rank-`ρ` lift); interior = the graded/log tight bound (route a or b) +
 the `σ_ρ`-measure CoV (`c = (M₂−ρ+1)(n−ρ+1)`). The MINIMAL GAP is the tight (graded) per-shell bound — the
 crude uniform atom's `ε^{−ab}` fails at `c ≤ ab` (all witnesses). Log-integrability is standard/sound: **NO
 WALL** (the graded bound is a build, not an obstruction). General `(a,b)`: the tight interior form is the
 §w3 general estimate (log for b=1,a=1, verified; the `(3,4,5,4)` a=1,b=2 tight form I pin when reached).
+
+### w3-deep-spec — Lean-ready tight-interior spec for the formaliser (intmtn), SQUARE witnesses (b=1,a=1)
+
+*The interior closure `∫_S W(S)·[S-measure] < ⊤` (charge free-box; the loss is the separate banked `mnp`
+factor, finite). For the 3 square witnesses `S = Z_deep` is `M₂×M₂` square, `ρ = M₂`, `a=b=1`. NO SVD needed
+— everything via `det S` (the det-minor) + the box. Exact-verified `couplerad_deeplog.py`.*
+
+1. **The charge weight `W(S)` (exact) + the tight bound.** `W(S) = ∫_{A_cor ∈ matBox 1 M₂ 1} ‖A_cor·S‖^{−1}
+   dA_cor` (b=1,a=1: `A_cor` a `1×M₂` row, charge `= det((A_cor S)(A_cor S)ᵀ)^{−1/2} = ‖A_cor·S‖^{−1}`).
+   **Tight bound:** `W(S) ≤ C·(1 + log(1/|det S|))`, with `C = C(M₂)` from the `arcsinh` integral (`C =
+   2·(∏ over the M₂−1 order-1 directions) · vol`, a fixed box constant; explicitly the `Cresid`-analog of the
+   `∫∫(x²+σ²y²)^{−1/2}` computation). σ_ρ is expressed via the det-minor: `σ_min(S) ≥ |det S|/M^{M₂−1}` on the
+   box (`M = σ_max ≤ M₂`), so `log(1/σ_min) ≤ (M₂−1)log M + log(1/|det S|)` — hence the `log(1/|det S|)` form,
+   NO singular values.
+2. **The `σ_ρ`-measure CoV — direct via the `det S` pushforward (NO co-area formula).** For the square case
+   `c = (M₂−ρ+1)(n−ρ+1) = 1`, so use the pushforward of `t = det S` under the box: `∫_S g(|det S|) dS =
+   ∫_ℝ g(|t|)·ν(t) dt`, `ν(t) =` the density of `det S` under the uniform box measure, **BOUNDED near `t=0`**
+   (`det S` is a polynomial with a.e.-nondegenerate gradient on `{det S = 0}`; `ν(0) < ∞`). So the shell
+   Jacobian is just `ν(t)` bounded — no `ε^{c−1}` weight beyond the (trivial, `c=1`) constant. (For `ρ<n`,
+   `c>1` and `ν(t) ~ |t|^{c−1}`, even more convergent — but that's the `ρ<n` case, deferred.)
+3. **Convergence.** `∫_S W(S) dS ≤ C·∫_{|t|≤δ₀}(1 + log(1/|t|))·ν(t) dt < ⊤` since `ν` bounded and
+   `∫_0^{δ₀}(1+log(1/t)) dt = δ₀(2−log δ₀) < ∞`. **Recommended Mathlib route:** the `σ^{−κ}` domination
+   (`log(1/t) ≤ C_κ·t^{−κ}` for `t∈(0,1)`, any `κ∈(0,1)`) → `∫_0^{δ₀} t^{−κ} dt < ∞` via
+   `integrableOn_rpow`/`intervalIntegrable_rpow` (`κ<1`), avoiding `Real.log`-integrability API entirely. (If
+   you prefer `Real.log`: Mathlib has `integrableOn` of `log` on bounded intervals — either works; the
+   `t^{−κ}` route is more uniform across `c`.)
+
+**Doc/branch:** cert `§w3-deep` + `§w3-shellint` + this `§w3-deep-spec`; scripts `couplerad_deeplog.py`
+(the exact `arcsinh→log`), `couplerad_shellint.py` (the shell accounting), on
+`origin/worktree-agent-a0bd7f4f9aa5ce4f8`. The exact `arcsinh` computation: `∫_0^1(x²+σ²y²)^{−1/2}dx =
+arcsinh(1/(σy)) → ln(2/(σy))`, `∫_0^1 ln(1/(σy))dy = 1−ln σ` ⟹ `W ~ ln(1/σ)`. The `(3,4,5,4)` a=1,b=2 tight
+form (and the `ρ<n` cases) I pin when reached.
 
 ---
 
