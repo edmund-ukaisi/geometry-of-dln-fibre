@@ -7,6 +7,41 @@ guide (`scripts/{spot,scope,deeper}.py`); exact algebra + Codex (`codex/coupled-
 
 ---
 
+> ## ⚠ CORRECTION (2026-07-16, post-`edgebrick`) — Part 1's "clean separate brick" claim is **FALSE**.
+>
+> `edgebrick` (formalising this design; triply corroborated: analysis + 3 numerics + Codex xhigh) refuted the
+> **central Part-1 claim** that the edge is a CLEAN `{Γ=0}`/polar brick separable from the `(D)` joint
+> rank-sector. The load-bearing error is in **Step D** (§3): the "angular front charge"
+> `J = ∫_{A_cor}∫_{S^{ab−1}} frobSq(Ω·A_cor·Zf)^{−ab/2}` is **NOT** a new finite object that replaces the
+> divergent `Ch`. The **sphere identity** (`frobSq(ΩK)=Σᵢ Ωᵢ(KKᵀ)Ωᵢᵀ`, a quadratic form `I_a⊗KKᵀ` on
+> `S^{ab−1}`, and `∫_{S^{N−1}}(xᵀMx)^{−N/2}=ω·det(M)^{−1/2}`) gives
+>
+>     ∫_{S^{ab−1}} frobSq(ΩK)^{−ab/2} dΩ = ω · det(KKᵀ)^{−a/2},   so   J = ω·Ch,
+>
+> i.e. the polar-`Γ` blow-up **re-derives the SAME divergent charge** `det^{−a/2}` — it does not avoid it.
+> (Verified independently: `scripts/sphere.py`, `ω≈1` constant across `K`.) The **Step C "worst-case
+> `Ccross=0`"** move (§3) compounds the error by **dropping the saving `C`-integration** — the cross-term
+> `Ccross` (integrated over the `C`-box) is exactly the regularizer, and it is part of `(D)`'s coupled
+> machinery, not a separable factor. **So Steps C/D and the SUMMARY-1 "clean brick, separate from `(D)`" are
+> withdrawn.**
+>
+> **What STANDS (the honest frame `(D)` is built on):**
+> - **The edge OBJECT is FINITE / `(□)` safe** — `corner-cert-addendum.md`'s verdict (`edgebrick` confirms
+>   the finiteness `T` is TRUE). The edge converges to `½·minAdm M`; only the *mechanism* I proposed for it
+>   was wrong.
+> - **The per-stratum bookkeeping** (`scripts/strata.py`; `red_r = a·r/2 + (b−r)(ρ−r)/2`; the `r=b`/`r=b−1`
+>   **tie** = the log — which is what the erroneous "J-log" actually was) is correct and is `(D)`'s frame.
+> - **The `satred` reconciliation** — drop `a+b≤M₂` as a factored-route artifact, carry `b≤ρ` (r-range
+>   `0..min(b,ρ)`), the `u'=u+(b−r)` strata↔cuts map — stands.
+> - **`corner-cert.md`** (Q1 threshold `a+b≤ρ`; Q2 separated `I=+∞`) stands unchanged.
+>
+> **Correct resolution:** the edge is the **corank-one (`k=1`) boundary case of `(D)`** (the joint
+> determinantal rank-sector, led by `satred`), NOT a separate clean brick. Read §3-4 below only through this
+> correction: the *object/threshold* claims (Part 1's finiteness at `½minAdm`, Part 2, Part 3's frontier map
+> and the `k≥2` analysis) hold; the *proposed clean-brick reduction* (Steps C/D) does not.
+
+---
+
 ## ★ SUMMARY
 
 1. **(Part 1) The edge bound.** For a binding cut `u` with `a=M₀−u≥1`, `b=M₁−u≥1`, and `a+b=ρ+1`
