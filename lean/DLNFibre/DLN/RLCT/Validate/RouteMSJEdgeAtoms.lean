@@ -1,5 +1,6 @@
 import Mathlib.LinearAlgebra.Matrix.DotProduct
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.longLine false
 
@@ -91,5 +92,26 @@ theorem one_le_rpow_neg_of_le_one {τ δ : ℝ} (hτ0 : 0 < τ) (hτ1 : τ ≤ 1
   have hτ0' : (0 : ℝ) ≤ τ := le_of_lt hτ0
   rw [Real.rpow_neg hτ0', ← Real.inv_rpow hτ0']
   exact Real.one_le_rpow ((one_le_inv₀ hτ0).mpr hτ1) hδ
+
+/-! ## Atom 3 — the σ-radial log (the cut-off `1/σ` integral producing the corank-one log) -/
+
+/-- **The σ-radial log identity.** `∫_{σ ∈ [τ,1]} σ⁻¹ dσ = log(1/τ)` (`τ > 0`). This is the elementary
+`1/|y|`-Jacobian integral (satred's atom 3) that produces the corank-one **log**: after the `u = xy`
+substitution in the scalar model `∫(w+x²y²)^{−p}`, the `y`-integral of the carried Jacobian `|y|⁻¹` over
+the radial cut-off `[τ,1]` is exactly this log. Thin wrapper over `intervalIntegral.integral_inv_of_pos`. -/
+theorem sigmaLog_integral {τ : ℝ} (hτ0 : 0 < τ) :
+    ∫ σ in τ..1, σ⁻¹ = Real.log τ⁻¹ := by
+  rw [integral_inv_of_pos hτ0 (by norm_num : (0:ℝ) < 1), one_div]
+
+/-- **The σ-radial log, folded (the form the edge δ-slack consumes).** `1 + ∫_{[τ,1]} σ⁻¹ dσ`
+`≤ (1 + 1/δ)·τ^{−δ}` for `τ ∈ (0,1]`, `δ > 0`. Composes the σ-radial log (atom 3) with the δ-fold
+(atom 2): the corank-one log `∫σ⁻¹ = log(1/τ)`, incremented by `1`, is dominated by an arbitrarily-small
+negative power `τ^{−δ}`. This is the per-exponent δ-slack bound: it converts the log into a `τ^{−δ}` the
+arity-IH's open exponent headroom (`c' − ab/2 + δ < ½·minAdm(redChain)`) absorbs. The `+1` covers the
+constant part of the morse residual. -/
+theorem one_add_sigmaLog_le_rpow {τ δ : ℝ} (hτ0 : 0 < τ) (hτ1 : τ ≤ 1) (hδ : 0 < δ) :
+    1 + ∫ σ in τ..1, σ⁻¹ ≤ (1 + 1 / δ) * τ ^ (-δ) := by
+  rw [sigmaLog_integral hτ0]
+  exact one_add_log_inv_le_rpow hτ0 hτ1 hδ
 
 end DLNFibre.DLN.RLCT
