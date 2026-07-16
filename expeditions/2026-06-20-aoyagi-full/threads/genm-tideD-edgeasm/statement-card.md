@@ -12,7 +12,7 @@
 >   - `DLNFibre.DLN.RLCT.japaneseBracket_euclid_lt_top` — `∫⁻ x:EuclideanSpace ℝ (Fin a), ofReal((1+‖x‖²)^{−p}) < ⊤` (`ha : (a:ℝ) < 2*p`)
 >   - `DLNFibre.DLN.RLCT.scaledRadialEuclid_eq` — `∫⁻ x:EuclideanSpace ℝ (Fin a), ofReal((w+‖x‖²)^{−p}) = ofReal(w^{a/2−p}) · ∫⁻ s, ofReal((1+‖s‖²)^{−p})` (`hw : 0<w`)
 >   - `DLNFibre.DLN.RLCT.scaledRadialEuclid_lt_top` — the above `< ⊤` (`hw : 0<w`, `ha : (a:ℝ) < 2*p`)
->   - File: `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJEdgeScalar.lean` @ `<pending-SHA>`
+>   - File: `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJEdgeScalar.lean` @ `fd8f974f7`
 > - **Gloss.** After polar coordinates, the corank-one edge leaf reduces to these radials; the `w^{d/2−p}`
 >   factor is the pivot-energy (`w = frobSq(P·Q̃ₚ)`) dependence carried into the arity−1 comparator. The `eq`
 >   forms give the exact `w`-power (via `Real.map_volume_mul_left` / `map_addHaar_smul`); the `lt_top` forms
