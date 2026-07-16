@@ -336,4 +336,14 @@ theorem det_le_det_of_posSemidef_sub :
           _ ≤ dX * (schurCompl X').det := by
               apply mul_le_mul_of_nonneg_left hScmono_det hdX0
 
+/-- **A real PSD matrix has nonnegative determinant** (the `Y = 0` corollary of the monotonicity;
+Mathlib v4.29 lacks a direct `PosSemidef.det_nonneg`). -/
+theorem posSemidef_det_nonneg {N : ℕ} {M : Matrix (Fin N) (Fin N) ℝ} (hM : M.PosSemidef) :
+    0 ≤ M.det := by
+  rcases Nat.eq_zero_or_pos N with hN | hN
+  · subst hN; simp [Matrix.det_fin_zero]
+  · have h := det_le_det_of_posSemidef_sub M 0 (by simpa using Matrix.PosSemidef.zero)
+      (by simpa using hM)
+    rwa [Matrix.det_eq_zero_of_row_eq_zero (⟨0, hN⟩ : Fin N) (fun _ => rfl)] at h
+
 end DLNFibre.DLN.RLCT
