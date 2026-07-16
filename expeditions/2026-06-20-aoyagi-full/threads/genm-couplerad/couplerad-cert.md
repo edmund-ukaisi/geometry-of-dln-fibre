@@ -596,6 +596,61 @@ to be pinned when schurrec reaches them.
 `S`-measure (one clean step, `δ=0`), plus the `A_cor⊥frame`/`σ` coupling that corneradj confirmed closes.
 Much milder than my preview implied.
 
+### w3-shellint — the interior free-box SHELL-INTEGRATION design (deliverable (ii), for schurB)
+
+*The interior free-box bound `∫∫_box det((A_cor·S)(A_cor·S)ᵀ)^{−a/2} dA_cor dS < ⊤` for `a+b ≤ ρ`
+(`ρ = deepTailMin = rank S generic`). corankrec/schurB routed the shell-integration to me; schurB's
+`chargedWishartWeight_lt_top` is the per-shell atom. Lean-friendly design + the interface answers +
+the ONE flag (`couplerad_shellint.py`).*
+
+**Shell decomposition (by `σ_ρ(S)`, the smallest singular value).** `{S-box} = {σ_ρ ≥ δ₀}` (BULK) `∪
+⋃_ε {σ_ρ ∈ [ε,2ε)}` (INTERIOR, `ε ↓ 0`). Equivalently by `|det P|` for `P` the `ρ×ρ` pivot block (on the
+pivot chart `|det P| ~ σ_ρ` × order-1). This is the deepCover_aux/`rankEqLocus` pivot cover refined to a
+uniform-`ε` shell (the charts give only pointwise `IsUnit(P)`; the shell adds `|det P| ∈ [ε,2ε)`).
+
+**σ-measure CoV (the ladder step-2 Jacobian).** Co-area for `σ_ρ` (equivalently `det P`): the shell
+`{σ_ρ ∈ [ε,2ε)}` has S-measure `~ ε^{c−1}dε`, `c = codim{rank S ≤ ρ−1} = (M₂−ρ+1)(n−ρ+1) ≥ 1`. So the
+shell-integration is `∫_S = ∫_0^{δ₀} C(ε)·ε^{c−1}dε` (× the transverse order-1 directions), `C(ε) =` the
+per-shell charge bound.
+
+**BULK `{σ_ρ ≥ δ₀}`:** schurB's `chargedWishartWeight_lt_top` at fixed `δ₀` — charge `≤ C(δ₀)` uniform,
+`∫_S` over the finite-volume bulk `< ⊤`. schurB's atom IS the bulk consumer (with the rank-`ρ` lift, below).
+
+**⚠ INTERIOR — the ONE FLAG: schurB's UNIFORM-`δ` atom is TOO CRUDE for the shell-integration; it needs the
+TIGHT (graded) per-shell bound.** schurB's atom, via the isotropic reduction `charge ≥ (δ²)^b·det(A_cor
+A_corᵀ)`, gives `C(ε) ~ ε^{−ab}` — and `∫_0 ε^{−ab}·ε^{c−1}dε` DIVERGES when `c ≤ ab`. **`c ≤ ab` for EVERY
+dispatch witness** (`c=1=ab` for the three square `a=b=1` cases `(4,4,4,4)`,`(5,5,5,5)`,`(3,3,4,4)`;
+`c=2=ab` for `(3,4,5,4)`). The uniform-`ε²` floor over-charges — it treats ALL `ρ` singular values as `~ε`,
+but only `σ_ρ ~ ε` (the top `ρ−1` are order-1). The TIGHT bound uses the GRADED structure: on `{σ_ρ ~ ε}`,
+`C(ε) ~ log(1/ε)` (b=1,a=1; exact §w3-deep / `couplerad_deeplog`), and `∫_0 log(1/ε)·ε^{c−1}dε < ⊤` for
+`c ≥ 1` (even `c=1`: `= δ₀(2−ln δ₀)`). So the interior is the **§w3-deep graded/log estimate**, NOT the
+crude uniform atom integrated.
+
+**Two routes for the tight interior (schurB picks):**
+- **(a) graded-floor Wishart atom:** extend `chargedWishartWeight_lt_top` from the uniform floor
+  `SSᵀ ⪰ δ²·P_J` to the GRADED floor `SSᵀ ⪰ δ₀²·P_{top(ρ−1)} + ε²·P_{last}` (top `ρ−1` at order-1, the
+  `ρ`-th at `ε²`), which exposes `C(ε) ~ log(1/ε)` [b=1,a=1] directly. Then shell-integrate.
+- **(b) wire the §w3-deep log directly:** the per-shell bound `W(S) ≤ C·(1+log(1/σ_ρ))` (b=1,a=1, ready)
+  + the `σ_ρ`-measure CoV. Recommended for the 3 square witnesses (ready now).
+
+**Interface answers (schurB's Q1/Q2):**
+- **Q1 (rank `ρ = n`, or `ρ < n` lift?):** `ρ = min(M₂, n_last)` (S = Z_deep is `M₂×n_last`, schurB's inner
+  dim `n = M₂`). If `M₂ ≤ n_last`: `ρ = M₂ =` schurB's `n` (full-rank, `P_J = I`). If `M₂ > n_last`:
+  `ρ = n_last < M₂` — the **rank-`ρ` LIFT IS needed** (`P_J` = projection onto the `ρ` pivot columns `J`).
+  **Build the rank-`ρ` lift (general; subsumes full-rank).** For the dispatch witnesses `M₂ = n_last`
+  (`(3,4,4)`,`(4,5,5)`,`(2,4,4)`: `ρ=M₂`; `(2,5,4)`: `M₂=5>n=4`, `ρ=4<M₂` — LIFT needed there).
+- **Q2 (Loewner vs σ_min/det-minor floor?):** **Loewner** `(SSᵀ − δ²·P_J).PosSemidef` — clean interface,
+  yes. My pivotShell provides `|det P| ≥ ε` (det-minor); on the box (entries `≤ 1`, so `σ_max(P)` bounded)
+  this gives `σ_min(P) ≥ δ(ε) = ε/C`, hence the Loewner floor. So I hand the det-minor shell + the box
+  `σ_max` bound; the Loewner form is a short bridge (schurB's `charge_ge_isotropic` consumes Loewner).
+  `J` = the `ρ` pivot columns of the invertible `ρ×ρ` block from `exists_nonsingular_submatrix_of_le_rank`.
+
+**Net:** bulk = schurB's uniform atom (rank-`ρ` lift); interior = the graded/log tight bound (route a or b) +
+the `σ_ρ`-measure CoV (`c = (M₂−ρ+1)(n−ρ+1)`). The MINIMAL GAP is the tight (graded) per-shell bound — the
+crude uniform atom's `ε^{−ab}` fails at `c ≤ ab` (all witnesses). Log-integrability is standard/sound: **NO
+WALL** (the graded bound is a build, not an obstruction). General `(a,b)`: the tight interior form is the
+§w3 general estimate (log for b=1,a=1, verified; the `(3,4,5,4)` a=1,b=2 tight form I pin when reached).
+
 ---
 
 ## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
