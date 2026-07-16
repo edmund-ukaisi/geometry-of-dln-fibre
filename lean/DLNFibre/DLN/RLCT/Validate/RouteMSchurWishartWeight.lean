@@ -117,34 +117,54 @@ theorem chargeGramDet_eq_zero_of_corank_singular {b n p : ℕ} (Acor : Fin b →
   unfold chargeGramDet
   exact Matrix.exists_mulVec_eq_zero_iff.mp ⟨v, hv_ne, hMv⟩
 
-/-- **The (A) det-monotone charge lower bound.** With the full-deep-rank Loewner floor `S·Sᵀ ⪰ δ²·I`,
-the charge Gram dominates the isotropic corank Gram: `(δ²)^b · det(A·Aᵀ) ≤ det((A·S)(A·S)ᵀ)`. Via the
-banked non-spectral `det_le_det_of_posSemidef_sub` applied to `X = A·(S·Sᵀ)·Aᵀ`, `Y = δ²·(A·Aᵀ)`
-(`X − Y = A·(S·Sᵀ − δ²I)·Aᵀ ⪰ 0`, `Y ⪰ 0`; `det Y = (δ²)^b·det(A·Aᵀ)` by `det_smul`). -/
+/-- **The identity matrix over `ℝ` is PosSemidef** (Mathlib v4.29 lacks a direct instance; derived from the
+banked Gram fact `1 = 1·1ᵀ`). -/
+theorem posSemidef_one_real {n : ℕ} : (1 : Matrix (Fin n) (Fin n) ℝ).PosSemidef := by
+  have h := posSemidef_mul_transpose (1 : Matrix (Fin n) (Fin n) ℝ)
+  rwa [Matrix.transpose_one, Matrix.mul_one] at h
+
+/-- **The (A) det-monotone charge lower bound, GENERAL floor** — the shared (A)-route brick. For any PSD
+floor `F` with the Loewner bound `S·Sᵀ ⪰ δ²·F`, the charge Gram dominates the conjugated floor Gram:
+`(δ²)^b · det(A·F·Aᵀ) ≤ det((A·S)(A·S)ᵀ)` (`A = Matrix.of Acor`). Via the banked non-spectral
+`det_le_det_of_posSemidef_sub` applied to `X = A·(S·Sᵀ)·Aᵀ`, `Y = δ²·(A·F·Aᵀ)`
+(`X − Y = A·(S·Sᵀ − δ²F)·Aᵀ ⪰ 0`, `Y ⪰ 0`; `det Y = (δ²)^b·det(A·F·Aᵀ)` by `det_smul`). `F = I` gives the
+isotropic full-deep-rank atom; `F = P_J` (coordinate projection) the rank-ρ lift; `F = δ₀²·P_top + P_last`
+the graded per-shell bound the tight-interior log-integrability consumes. -/
+theorem charge_ge_floor {b n p : ℕ} (S : Fin n → Fin p → ℝ) (δ : ℝ)
+    (F : Matrix (Fin n) (Fin n) ℝ) (hF : F.PosSemidef)
+    (hS : (((Matrix.of S) * (Matrix.of S)ᵀ) - δ ^ 2 • F).PosSemidef)
+    (Acor : Fin b → Fin n → ℝ) :
+    (δ ^ 2) ^ b * ((Matrix.of Acor) * F * (Matrix.of Acor)ᵀ).det ≤ chargeGramDet Acor S := by
+  set A := Matrix.of Acor with hA
+  set G := (Matrix.of S) * (Matrix.of S)ᵀ with hG
+  -- Y = δ²•(A F Aᵀ) is PSD (F PSD ⟹ A F Aᵀ PSD by conjugation, then nonneg smul)
+  have hYpsd : ((δ ^ 2) • (A * F * Aᵀ)).PosSemidef := by
+    have hconjF := hF.mul_mul_conjTranspose_same A
+    rw [Matrix.conjTranspose_eq_transpose_of_trivial] at hconjF
+    exact hconjF.smul (by positivity)
+  -- X − Y = A·(G − δ²F)·Aᵀ is PSD
+  have hXYpsd : ((A * G * Aᵀ) - (δ ^ 2) • (A * F * Aᵀ)).PosSemidef := by
+    have hconj := hS.mul_mul_conjTranspose_same A
+    rw [Matrix.conjTranspose_eq_transpose_of_trivial] at hconj
+    have hmateq : A * (G - δ ^ 2 • F) * Aᵀ = (A * G * Aᵀ) - (δ ^ 2) • (A * F * Aᵀ) := by
+      rw [Matrix.mul_sub, Matrix.sub_mul]
+      congr 1
+      rw [Matrix.mul_smul, Matrix.smul_mul]
+    rw [hmateq] at hconj
+    exact hconj
+  have hdet := det_le_det_of_posSemidef_sub (A * G * Aᵀ) ((δ ^ 2) • (A * F * Aᵀ)) hYpsd hXYpsd
+  rw [Matrix.det_smul, Fintype.card_fin] at hdet
+  rw [chargeGramDet_eq_conj, ← hA, ← hG]
+  exact hdet
+
+/-- **The (A) charge lower bound, isotropic (`F = I`) instance** — the full-deep-rank atom's engine:
+`(δ²)^b · det(A·Aᵀ) ≤ det((A·S)(A·S)ᵀ)` when `S·Sᵀ ⪰ δ²·I`. -/
 theorem charge_ge_isotropic {b n p : ℕ} (S : Fin n → Fin p → ℝ) (δ : ℝ)
     (hS : (((Matrix.of S) * (Matrix.of S)ᵀ) - δ ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)).PosSemidef)
     (Acor : Fin b → Fin n → ℝ) :
     (δ ^ 2) ^ b * ((Matrix.of Acor) * (Matrix.of Acor)ᵀ).det ≤ chargeGramDet Acor S := by
-  set A := Matrix.of Acor with hA
-  set G := (Matrix.of S) * (Matrix.of S)ᵀ with hG
-  -- Y = δ²•(A Aᵀ) is PSD
-  have hYpsd : ((δ ^ 2) • (A * Aᵀ)).PosSemidef :=
-    (posSemidef_mul_transpose A).smul (by positivity)
-  -- X − Y = A·(G − δ²I)·Aᵀ is PSD
-  have hXYpsd : ((A * G * Aᵀ) - (δ ^ 2) • (A * Aᵀ)).PosSemidef := by
-    have hconj := hS.mul_mul_conjTranspose_same A
-    rw [Matrix.conjTranspose_eq_transpose_of_trivial] at hconj
-    have hmateq : A * (G - δ ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)) * Aᵀ
-        = (A * G * Aᵀ) - (δ ^ 2) • (A * Aᵀ) := by
-      rw [Matrix.mul_sub, Matrix.sub_mul]
-      congr 1
-      rw [Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]
-    rw [hmateq] at hconj
-    exact hconj
-  have hdet := det_le_det_of_posSemidef_sub (A * G * Aᵀ) ((δ ^ 2) • (A * Aᵀ)) hYpsd hXYpsd
-  rw [Matrix.det_smul, Fintype.card_fin] at hdet
-  rw [chargeGramDet_eq_conj, ← hA, ← hG]
-  exact hdet
+  have h := charge_ge_floor S δ (1 : Matrix (Fin n) (Fin n) ℝ) posSemidef_one_real hS Acor
+  rwa [Matrix.mul_one] at h
 
 /-- **The charged Wishart weight is finite (full deep-rank / ρ = n core).** For a deep factor `S : n×p`
 with the FULL-deep-rank Loewner floor `hS : S·Sᵀ ⪰ δ²·I` (`δ > 0`, forcing `rank S = n`), and the
