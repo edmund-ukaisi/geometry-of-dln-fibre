@@ -154,8 +154,8 @@ interior charge exponent `a + b ≤ n`, the charged corank weight
 isotropic corank Gram, and `∫ det(A_cor·A_corᵀ)^{−a/2}` is finite by the banked `detGram_lintegral_lt_top`
 (`a < n − b + 1 ⟺ a + b ≤ n`). NON-SPECTRAL. Scope: this needs `S·Sᵀ ⪰ δ²·I` (`ρ = n`); the rank-`ρ<n`
 cell lift (row-space Loewner floor) is separate. -/
-theorem chargedWishartWeight_lt_top {a b n p : ℕ} (S : Fin n → Fin p → ℝ) (δ : ℝ) (hδ : 0 < δ)
-    (hab : a + b ≤ n)
+theorem chargedWishartWeight_fullDeepRank_lt_top {a b n p : ℕ} (S : Fin n → Fin p → ℝ) (δ : ℝ)
+    (hδ : 0 < δ) (hab : a + b ≤ n)
     (hS : (((Matrix.of S) * (Matrix.of S)ᵀ) - δ ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)).PosSemidef) :
     (∫⁻ Acor in matBox b n 1,
         ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2))) < ⊤ := by
@@ -210,8 +210,8 @@ theorem chargedWishartWeight_lt_top {a b n p : ℕ} (S : Fin n → Fin p → ℝ
         simpa using h
 
 /-- **Non-vacuity of the full-deep-rank floor `hS`.** The identity deep factor `S = 1` (`p = n`) with
-`0 < δ ≤ 1` satisfies `S·Sᵀ ⪰ δ²·I` — so `chargedWishartWeight_lt_top`'s hypotheses are consistent
-(the atom is not vacuous; `rank S = n`). -/
+`0 < δ ≤ 1` satisfies `S·Sᵀ ⪰ δ²·I` — so `chargedWishartWeight_fullDeepRank_lt_top`'s hypotheses are
+consistent (the atom is not vacuous; `rank S = n`). -/
 example (n : ℕ) (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
     ∃ S : Fin n → Fin n → ℝ,
       ((Matrix.of S * (Matrix.of S)ᵀ) - δ ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)).PosSemidef := by
