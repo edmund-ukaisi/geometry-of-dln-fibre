@@ -1,0 +1,175 @@
+#!/usr/bin/env python3
+"""Worktree audit + cleanup-batch emitter.
+
+Read-only half (default): for every registered worktree (plus ``--extra <dir>``
+roots for pre-convention sprawl), report branch, last-commit age, dirty count,
+and whether the tip is banked on origin, then a SAFE-TO-REMOVE shortlist.
+
+Cleanup half (``--emit-batch``): writes a *reviewable* shell script (never
+executed) of ``git worktree remove`` lines for SAFE registered worktrees older
+than ``--min-age-days`` (default 2), each with a branch/age/banked comment, plus
+a separate **commented** section of ``git branch -d`` candidates carrying the
+ancestor-of-origin/dev preflight (docs/policies/worktree-branch-hygiene.md).
+Independent repos (``--extra`` hits) are never removal candidates.
+
+Usage:
+  scripts/worktree-audit [--repo DIR] [--extra DIR ...] [--quick]
+  scripts/worktree-audit --emit-batch [--min-age-days N] [--out FILE] [--repo DIR]
+"""
+import argparse
+import subprocess
+import os
+import datetime
+
+
+def sh(args, cwd=None):
+    r = subprocess.run(args, cwd=cwd, capture_output=True, text=True, timeout=60)
+    return r.stdout.strip()
+
+
+def sh_ok(args, cwd=None):
+    return subprocess.run(args, cwd=cwd, capture_output=True, text=True,
+                          timeout=60).returncode == 0
+
+
+def collect(repo, extra, quick):
+    """Return per-worktree dicts with branch, age (int days), dirty, banked."""
+    out = sh(["git", "worktree", "list", "--porcelain"], cwd=repo)
+    wts, cur = [], {}
+    for line in out.splitlines():
+        if line.startswith("worktree "):
+            cur = {"path": line.split(" ", 1)[1]}
+            wts.append(cur)
+        elif line.startswith("branch "):
+            cur["branch"] = line.split(" ", 1)[1].replace("refs/heads/", "")
+        elif line == "detached":
+            cur["branch"] = "(detached)"
+    for d in extra:
+        if not os.path.isdir(d):
+            continue
+        for name in sorted(os.listdir(d)):
+            p = os.path.join(d, name)
+            if os.path.isdir(os.path.join(p, ".git")) and not any(w["path"] == p for w in wts):
+                try:
+                    br = sh(["git", "branch", "--show-current"], cwd=p) or "(detached)"
+                except Exception:
+                    continue
+                wts.append({"path": p, "branch": br, "extra": True})
+
+    now = datetime.datetime.now(datetime.timezone.utc)
+    for w in wts:
+        p = w["path"]
+        try:
+            ts = sh(["git", "log", "-1", "--format=%cI"], cwd=p)
+            w["age"] = (now - datetime.datetime.fromisoformat(ts)).days if ts else -1
+            w["dirty"] = "?" if quick else str(
+                len(sh(["git", "status", "--porcelain", "-uno"], cwd=p).splitlines()))
+            head = sh(["git", "rev-parse", "HEAD"], cwd=p)
+            refs = sh(["git", "for-each-ref", "--contains", head,
+                       "--format=%(refname:short)", "refs/remotes/origin/"], cwd=p)
+            w["banked_refs"] = [r for r in refs.splitlines() if r]
+            w["banked"] = bool(w["banked_refs"])
+        except Exception:
+            w["age"], w["dirty"], w["banked"], w["banked_refs"] = -1, "?", False, []
+        w["kind"] = "repo" if w.get("extra") else "wt"
+    return wts
+
+
+def is_safe(w, repo, min_age=0):
+    """Registered worktree, clean, tip banked on origin, not the repo root, old enough."""
+    return (w["kind"] == "wt" and w.get("dirty") == "0" and w.get("banked")
+            and w["path"] != repo and w.get("age", -1) >= min_age)
+
+
+def print_report(wts, repo):
+    rows = []
+    for w in wts:
+        banked = ("yes" if w.get("banked") else "NO") + (
+            "" if w["kind"] == "wt" else " [independent repo]")
+        rows.append((w["path"], w.get("branch", "?"),
+                     f"{w.get('age', '?')}d", str(w.get("dirty", "?")), banked))
+    rows.sort(key=lambda r: r[2])
+    print(f"{'path':60} {'branch':40} {'age':>5} {'dirty':>5} banked")
+    for r in rows:
+        print(f"{r[0][:60]:60} {r[1][:40]:40} {r[2]:>5} {r[3]:>5} {r[4]}")
+    safe = [w for w in wts if is_safe(w, repo)]
+    print(f"\n{len(rows)} worktrees; SAFE-TO-REMOVE (clean + tip on origin): {len(safe)}")
+    for w in safe:
+        print(f"  git worktree remove {w['path']}")
+
+
+def emit_batch(wts, repo, min_age, out_path):
+    safe = [w for w in wts if is_safe(w, repo, min_age)]
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    has_dev = sh_ok(["git", "rev-parse", "--verify", "--quiet", "origin/dev"], cwd=repo)
+
+    lines = [
+        "#!/bin/sh",
+        f"# worktree-audit batch — REVIEW BEFORE RUNNING (generated {now}).",
+        "# NOT executed by the audit tool. Removes clean, origin-banked worktrees",
+        f"# older than {min_age} day(s). Independent repos are never touched.",
+        "# `git worktree remove` refuses dirty trees — a built-in safety.",
+        "",
+        f"# --- worktree removals ({len(safe)}) ---",
+        "",
+    ]
+    if not safe:
+        lines.append("# (none: no clean, banked worktrees older than the age floor)")
+    for w in safe:
+        ref = w["banked_refs"][0] if w["banked_refs"] else "origin/?"
+        lines.append(f"# branch: {w['branch']}  age: {w['age']}d  banked: yes ({ref})")
+        lines.append(f"git worktree remove {w['path']}")
+        lines.append("")
+
+    lines += [
+        "# --- branch deletion candidates (COMMENTED — uncomment to act) ---",
+        "# Run AFTER the removals above (a checked-out branch cannot be deleted).",
+        "# Preflight: `git merge-base --is-ancestor <branch> origin/dev`.",
+        "# NOTE: --contains/ancestor misses squash & rebase merges — fall back to",
+        "#       the PR-merged fact (the bank invariant), not ancestry alone.",
+        "",
+    ]
+    if not has_dev:
+        lines.append("# origin/dev not found — cannot run the preflight; review each manually.")
+    for w in safe:
+        br = w["branch"]
+        if br in ("(detached)", "?"):
+            continue
+        if has_dev:
+            anc = sh_ok(["git", "merge-base", "--is-ancestor", br, "origin/dev"], cwd=repo)
+            verdict = "yes  -> safe" if anc else "NO   -> KEEP (review; not banked in dev)"
+        else:
+            verdict = "unknown (no origin/dev)"
+        lines.append(f"# branch {br}: ancestor of origin/dev = {verdict}")
+        lines.append(f"# git branch -d {br}")
+        lines.append("")
+
+    with open(out_path, "w") as fh:
+        fh.write("\n".join(lines) + "\n")
+    print(f"batch written: {out_path}  ({len(safe)} worktree removal(s), NOT executed)")
+    return out_path
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--repo", default=".")
+    ap.add_argument("--extra", action="append", default=[])
+    ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--emit-batch", action="store_true",
+                    help="write a reviewable cleanup shell script (not executed)")
+    ap.add_argument("--min-age-days", type=int, default=2,
+                    help="batch: only worktrees at least this old (default 2)")
+    ap.add_argument("--out", default="worktree-audit-batch.sh",
+                    help="batch output path")
+    a = ap.parse_args()
+    repo = os.path.abspath(a.repo)
+    # The batch always needs a real dirty check; ignore --quick there.
+    wts = collect(repo, a.extra, a.quick and not a.emit_batch)
+    if a.emit_batch:
+        emit_batch(wts, repo, a.min_age_days, a.out)
+    else:
+        print_report(wts, repo)
+
+
+if __name__ == "__main__":
+    main()

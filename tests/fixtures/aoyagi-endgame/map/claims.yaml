@@ -1,0 +1,228 @@
+meta:
+  expedition: aoyagi-full
+  roots: [mint-108]
+  updated: 2026-07-15
+
+# The heart. Single curated writer (controller). Everything voluminous is
+# computed against this by the CLI (survey/views), joined by `id` and `lean`.
+# Statuses as of the 2026-07-15 morning tick of the aoyagi-full endgame.
+
+nodes:
+  # --------------------------------------------------------------- root goal
+  - id: mint-108
+    kind: claim
+    title: "unsuffixed aoyagi_learning_coefficient re-point"
+    prop: |
+      The bare `aoyagi_learning_coefficient` (no _gen/_L2 suffix) is re-pointed
+      to the box-threshold route so it inherits the sorry-free proof.
+    lean: aoyagi_learning_coefficient
+    status: stated
+    tier: new
+    owner: controller
+    notes: "root goal; currently sorry-tainted, awaiting box-threshold discharge"
+
+  # ----------------------------------------------------------- (□) umbrella
+  - id: box-threshold
+    kind: claim
+    title: "(□) RouteMBoxThresholdFinite below T1"
+    prop: |
+      ∀ c' < minAdm(M)/2, the box integral ∫_box frobSq(prod M ·)^(−c') is finite.
+    lean: RouteMBoxThresholdFinite
+    status: skeleton-linked
+    tier: new
+    owner: capstone
+    landmark: true
+    edges:
+      - {type: needs, to: deeper-flag-shell-le}
+      - {type: needs, to: jr-saturated}
+      - {type: needs, to: j0-sector}
+      - {type: needs, to: waist-connector}
+      - {type: discharges, to: mint-108}
+    notes: "the box-integral finiteness umbrella; four sub-obligations"
+
+  - id: deeper-flag-shell-le
+    kind: claim
+    title: "deeperFlag_shell_le — shell bound below the flag"
+    prop: |
+      The deeper-flag shell exponent is ≤ the partial-shell transverse-Schur
+      incidence estimate, gated by the general clsCodim exponent gate.
+    lean: deeperFlag_shell_le
+    status: stated
+    tier: new
+    owner: capstone
+    edges:
+      - {type: needs, to: incidence-estimate}
+      - {type: needs, to: exponent-gate}
+      - {type: discharges, to: box-threshold}
+    notes: "sharpened by the five-fork night; consumes the (∗_T1) estimate"
+
+  - id: incidence-estimate
+    kind: claim
+    title: "(∗_T1) partial-shell transverse-Schur incidence"
+    prop: |
+      The partial-shell incidence is transverse-Schur bounded at the terminal
+      threshold T1; the binding corner is (2,2,3) with T1 = minAdm([2,2,3])/2 = 2.
+    status: adjudicated
+    tier: new
+    owner: genm-incidencepp
+    landmark: true
+    kill: battery/w-corner-223.py
+    evidence: [threads/genm-incidencepp/incidence-cert.md]
+    notes: "two decorrelated seats on the terminal estimate"
+
+  - id: exponent-gate
+    kind: claim
+    title: "clsCodim general gate"
+    prop: |
+      clsCodim_gate_genL: the general clsCodim exponent gate holds for all L.
+    lean: clsCodim_gate_genL
+    status: proven
+    tier: new
+    owner: capstone
+
+  - id: crux-pivot-peel
+    kind: claim
+    title: "pivotPeel_domination (shell-0)"
+    prop: |
+      pivotPeel_domination: shell-0 pivot peel dominates. Scope is shell-0 only.
+    lean: pivotPeel_domination
+    status: proven
+    tier: new
+    owner: capstone
+    notes: "scope shell-0 only — j≥1 NOT discharged; see route-shellspine-bridge refuted"
+
+  - id: j0-sector
+    kind: claim
+    title: "j=0 sector base case"
+    status: proven
+    tier: new
+    owner: capstone
+    edges:
+      - {type: discharges, to: box-threshold}
+    notes: "the j=0 base sector; discharged directly"
+
+  - id: jr-saturated
+    kind: claim
+    title: "SD-7 j=r empty-corner"
+    prop: |
+      At the saturated corner j=r the empty-corner reduction closes the estimate.
+    status: adjudicated
+    tier: new
+    owner: satfill
+    edges:
+      - {type: discharges, to: box-threshold}
+    notes: "SD-7 empty-corner; adjudicated, awaiting statement"
+
+  - id: waist-connector
+    kind: claim
+    title: "deeperFlagWaist_finite_impl waist connector"
+    prop: |
+      deeperFlagWaist_finite_impl: the waist connector carries finiteness across
+      the deeper-flag waist.
+    lean: deeperFlagWaist_finite_impl
+    status: skeleton-linked
+    tier: new
+    owner: capstone
+    edges:
+      - {type: discharges, to: box-threshold}
+
+  - id: minadm-eq-ccodim
+    kind: claim
+    title: "route-i soundness (minAdm = cCodim)"
+    prop: |
+      minAdm_eq_cCodim: the min-admissible recursion equals the c-codimension.
+    lean: minAdm_eq_cCodim
+    status: proven
+    tier: new
+    owner: capstone
+
+  - id: brick-f
+    kind: claim
+    title: "measurable head-split frame"
+    prop: |
+      exists_headSplitFrame_impl: a measurable head-split frame exists.
+    lean: exists_headSplitFrame_impl
+    status: proven
+    tier: new
+    owner: capstone
+    notes: "likely droppable from mint cone — banked, Mathlib-extraction candidate"
+
+  # --------------------------------------------------------------- notions
+  - id: adm-carrier
+    kind: notion
+    title: "admissible carrier (genuineCarrier ∧ FaithfulSJAt)"
+    status: frozen
+    owner: capstone
+    notes: "corank disjunct refuted (5,2,1) — genuineCarrier∧FaithfulSJAt"
+
+  - id: pivot-shell
+    kind: notion
+    title: "pivot shell (= shell-0)"
+    status: frozen
+    owner: capstone
+    notes: "= shell-0 exactly; the t2adjud trap"
+
+  - id: tail-min-width
+    kind: notion
+    title: "tail-min-width (includes M₁)"
+    status: frozen
+    owner: capstone
+    landmark: true
+    notes: "includes M1 — hpiv fails iff M2>M1; the route-B ceiling"
+
+  - id: corner-comparator
+    kind: notion
+    title: "corner comparator"
+    status: frozen
+    owner: capstone
+
+  # --------------------------------------------------------------- routes
+  - id: route-incidence-direct
+    kind: route
+    title: "direct incidence-chart route"
+    status: adopted
+    owner: genm-routeverify
+    landmark: true
+    edges:
+      - {type: needs, to: incidence-estimate}
+    evidence: [threads/genm-routeverify/routeverify-cert.md]
+    notes: "adopted route: incidence charts are required, not a fallback"
+
+  - id: route-shellspine-bridge
+    kind: route
+    title: "shell-spine bridge route"
+    status: refuted
+    owner: "parked: refuted"
+    kill: battery/w-333-bridge.py
+    edges:
+      - {type: forwarded-to, to: route-incidence-direct}
+    notes: "shell-j ≤ pivotShell RHS false for 1≤j<r"
+
+  - id: route-fullblock-deepfloor
+    kind: route
+    title: "full-block deep-floor route"
+    status: refuted
+    owner: "parked: refuted"
+    kill: battery/w-666-u4.py
+    edges:
+      - {type: forwarded-to, to: route-incidence-direct}
+    notes: "divergent exponents in [13.5,14) at (6,6,6)"
+
+  - id: route-subset
+    kind: route
+    title: "subset-bound route"
+    status: refuted
+    owner: "parked: refuted"
+    edges:
+      - {type: forwarded-to, to: route-incidence-direct}
+    notes: "circular: bounds by B(M) itself"
+
+  - id: route-b-s3floor
+    kind: route
+    title: "route-B S3-floor route"
+    status: refuted
+    owner: "parked: refuted"
+    kill: battery/w-223-hpiv.py
+    edges:
+      - {type: forwarded-to, to: route-incidence-direct}
+    notes: "w type error + hpiv ceiling"

@@ -1,3 +1,6 @@
+> **SUPERSEDED (2026-07-15):** the live spec is `docs/policies/principles.md`. This file is the
+> design-history record (provenance, decision narrative) — read it for *why*, never for *current*.
+
 # Harness principles (distilled 2026-07-15 from the aoyagi-full retro)
 
 Durable design principles for multi-agent research expeditions — Lean formalization of known proofs,

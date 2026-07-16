@@ -16,3 +16,33 @@ rev = "v4.29.0"
 
 [[lean_lib]]
 name = "DLNFibre"
+
+# ── The citation-cordon TOOLING (additive; NOT a default target) ─────────────────────────────────
+# A sibling library OUTSIDE the DLNFibre math library (which stays tooling-free). These stanzas add
+# new targets only — `defaultTargets = ["DLNFibre"]` is unchanged, so `lake build` / `scripts/lb`
+# with no args, and the live expedition build, are unperturbed. Built explicitly by `scripts/cordon`
+# and `scripts/cordon-test`. Policy: docs/policies/citation-cordon.md.
+
+# `Meta.Cordon` = the `@[cited]` + `@[blueprint]` attributes + `auditDecl` core + the blueprint walk +
+# `#audit_cited` / `#audit_blueprint`; `Meta.CordonAudit` = the env-reading gate. srcDir defaults to
+# `.` (the `lean/` dir), so the modules are `lean/Meta/{Cordon,CordonAudit}.lean`.
+[[lean_lib]]
+name = "Meta"
+globs = ["Meta.Cordon", "Meta.CordonAudit"]
+
+# The citation-cordon gate executable (`lake exe cordon-audit`); wrapper `scripts/cordon`.
+# Root lives in `scripts/CordonGate.lean`; imports `Meta.CordonAudit`.
+[[lean_exe]]
+name = "cordon-audit"
+srcDir = "scripts"
+root = "CordonGate"
+supportInterpreter = true
+
+# Adversarial cordon fixtures (the SPEC — known-expected verdicts). A SEPARATE library in bare
+# namespaces (`CordonFixtures` / `CordonClean` / `CordonLeak`), in modules whose names have no
+# `DLNFibre` prefix, so the real gate (module provenance `DLNFibre`) never sees its intentional
+# violations; the harness `scripts/cordon-test` audits each in isolation. NOT a default target.
+[[lean_lib]]
+name = "CordonFixtures"
+srcDir = "tests"
+globs = ["CordonFixtures", "FixtureCited", "CordonClean", "CordonLeak"]

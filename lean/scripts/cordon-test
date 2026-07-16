@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+# cordon-test — battle-test the citation cordon against the adversarial fixtures.
+#
+#   docs/policies/citation-cordon.md   (the mechanism + the blueprint extension)
+#   tests/{CordonFixtures,FixtureCited,CordonClean,CordonLeak}.lean  (fixtures + expected verdicts)
+#
+# The load-bearing proof that the cordon catches violations: a cordon unproven to catch a forgotten
+# cite / a hidden axiom / a banked-consumes-a-forecast leak is worthless. Builds the cordon lib + the
+# fixtures + the exe (NOT the DLNFibre math lib — this test is self-contained on the fixtures), runs the
+# audit over the fixture module scopes, and asserts:
+#   * (A) over `[CordonFixtures, FixtureCited]` (the violating set): exit 1, summary
+#     `UNACCOUNTED=5 CITED=2 LOCATION=3 LEAKS=1`, naming (c) untagged, (d) misplaced, (f) opaque-hidden,
+#     (h) blueprint-leak;
+#   * (B) `--manifest` lists the two cite sources + the blueprint forecasts;
+#   * (B') `@[cited]` on a non-axiom is rejected at elaboration; (B'') `@[cited ""]` is rejected;
+#   * (C) over the GREEN control `CordonClean` (DLNFibre's real DoD): exit 0 with
+#     `UNACCOUNTED=0 CITED=1 LOCATION=0 LEAKS=0` — a located cite is PERMITTED (not zero-cite);
+#   * (D) over the isolated leak `CordonLeak`: exit 1 (`LEAKS=1`) without `--allow-blueprint`, exit 0
+#     with it (the leak is reported but not gated).
+# Exits 0 iff every assertion holds. Deterministic.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LEAN_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$LEAN_DIR"
+
+pass=0 ; fail=0
+check() { # check <label> <expected-substring> <actual>
+  if printf '%s' "$3" | grep -qF -- "$2"; then
+    echo "  PASS: $1"; pass=$((pass+1))
+  else
+    echo "  FAIL: $1"; echo "        expected to contain: $2"; echo "        got: $3"; fail=$((fail+1))
+  fi
+}
+check_exit() { # check_exit <label> <expected-code> <actual-code>
+  if [ "$3" = "$2" ]; then echo "  PASS: $1 (exit $3)"; pass=$((pass+1));
+  else echo "  FAIL: $1 (expected exit $2, got $3)"; fail=$((fail+1)); fi
+}
+
+echo "== building cordon lib + fixtures + exe (throttled; NOT DLNFibre) =="
+"$SCRIPT_DIR/lb" Meta CordonFixtures cordon-audit >&2
+source "$HOME/.elan/env" 2>/dev/null || true
+
+echo "== (A) audit the fixture module scope (must FAIL) =="
+set +e
+OUT_FIX="$(lake exe cordon-audit --import CordonFixtures --ns CordonFixtures --ns FixtureCited 2>&1)"
+CODE_FIX=$?
+set -e
+echo "$OUT_FIX"
+check_exit "fixtures gate fails" 1 "$CODE_FIX"
+check "summary line" "UNACCOUNTED=5 CITED=2 LOCATION=3 LEAKS=1" "$OUT_FIX"
+check "(c) untagged axiom surfaced" "untaggedFixtureAxiom" "$OUT_FIX"
+check "(d) misplaced cited axiom surfaced" "misplacedCitedAxiom" "$OUT_FIX"
+check "(c) unaccounted decl named" "usesUntagged" "$OUT_FIX"
+check "(f) opaque-hidden axiom surfaced" "hiddenFixtureAxiom" "$OUT_FIX"
+check "(f) opaque-using decl unaccounted" "usesOpaque" "$OUT_FIX"
+check "(h) blueprint leak decl surfaced" "bankedUsesBlueprint" "$OUT_FIX"
+check "(h) leaked forecast surfaced" "blueprintForecast" "$OUT_FIX"
+
+echo "== (B) manifest over the fixtures (informational, exit 0) =="
+set +e
+OUT_MAN="$(lake exe cordon-audit --import CordonFixtures --ns CordonFixtures --ns FixtureCited --manifest 2>&1)"
+CODE_MAN=$?
+set -e
+echo "$OUT_MAN"
+check_exit "manifest exit 0" 0 "$CODE_MAN"
+check "(b) cite source listed" "Fixture Source B" "$OUT_MAN"
+check "(b) cite axiom listed" "citedFixtureAxiom" "$OUT_MAN"
+check "blueprint forecast listed" "blueprintForecast" "$OUT_MAN"
+
+echo "== (B') @[cited] on a non-axiom must be REJECTED at elaboration =="
+SCRATCH="$(mktemp --suffix=.lean)"
+cat > "$SCRATCH" <<'LEAN'
+import Meta.Cordon
+open Meta.Cordon
+@[cited "wrong target"]
+def notAnAxiom : Nat := 0
+LEAN
+set +e
+OUT_REJ="$(lake env lean "$SCRATCH" 2>&1)"
+CODE_REJ=$?
+set -e
+rm -f "$SCRATCH"
+check_exit "@[cited] on a def fails to compile" 1 "$CODE_REJ"
+check "rejection message" "may only tag a cited external result declared as \`axiom\`" "$OUT_REJ"
+
+echo "== (B'') @[cited] with an EMPTY/whitespace source must be REJECTED at elaboration =="
+SCRATCH2="$(mktemp --suffix=.lean)"
+cat > "$SCRATCH2" <<'LEAN'
+import Meta.Cordon
+open Meta.Cordon
+@[cited ""]
+axiom emptySourceAx : True
+LEAN
+set +e
+OUT_EMPTY="$(lake env lean "$SCRATCH2" 2>&1)"
+CODE_EMPTY=$?
+set -e
+rm -f "$SCRATCH2"
+check_exit "@[cited \"\"] fails to compile" 1 "$CODE_EMPTY"
+check "empty-source rejection message" "non-empty citation source" "$OUT_EMPTY"
+
+echo "== (C) audit the GREEN control CordonClean (DLNFibre DoD: cites permitted) — must PASS =="
+set +e
+OUT_CLEAN="$(lake exe cordon-audit --import CordonClean --ns CordonClean 2>&1)"
+CODE_CLEAN=$?
+set -e
+echo "$OUT_CLEAN"
+check_exit "green control passes (proved-modulo-declared-cites)" 0 "$CODE_CLEAN"
+check "green control summary (CITED=1, still green)" "UNACCOUNTED=0 CITED=1 LOCATION=0 LEAKS=0" "$OUT_CLEAN"
+
+echo "== (D) isolated blueprint leak CordonLeak — FAILS without flag, PASSES with --allow-blueprint =="
+set +e
+OUT_LEAK="$(lake exe cordon-audit --import CordonLeak --ns CordonLeak 2>&1)"
+CODE_LEAK=$?
+set -e
+echo "$OUT_LEAK"
+check_exit "leak gate fails" 1 "$CODE_LEAK"
+check "leak summary" "UNACCOUNTED=0 CITED=0 LOCATION=0 LEAKS=1" "$OUT_LEAK"
+check "leak names banked consumer" "bankedLeak" "$OUT_LEAK"
+
+set +e
+OUT_ALLOW="$(lake exe cordon-audit --import CordonLeak --ns CordonLeak --allow-blueprint 2>&1)"
+CODE_ALLOW=$?
+set -e
+echo "$OUT_ALLOW"
+check_exit "leak allowed with --allow-blueprint" 0 "$CODE_ALLOW"
+check "leak still reported under --allow-blueprint" "LEAKS=1" "$OUT_ALLOW"
+
+echo "== (E) --json report matches the fixture verdicts (parsed) =="
+JSON_OUT="$(mktemp --suffix=.json)"
+set +e
+lake exe cordon-audit --import CordonFixtures --ns CordonFixtures --ns FixtureCited --json "$JSON_OUT" >/dev/null 2>&1
+CODE_JSON=$?
+set -e
+check_exit "json run leaves exit code unchanged (gate still red)" 1 "$CODE_JSON"
+echo "--- fixture-scope cordon.json ---"
+cat "$JSON_OUT"; echo
+set +e
+python3 - "$JSON_OUT" <<'PY'
+import json, sys
+d = json.load(open(sys.argv[1]))
+ok = True
+def want(cond, msg):
+    global ok
+    print(("    PASS: " if cond else "    FAIL: ") + msg)
+    ok = ok and cond
+want(isinstance(d.get("roots"), list) and len(d["roots"]) > 0, "roots is a non-empty list")
+leaks = {(l["decl"], l["via"]) for l in d["leaks"]}
+want(("CordonFixtures.bankedUsesBlueprint", "CordonFixtures.blueprintForecast") in leaks,
+     "known leak pair (bankedUsesBlueprint -> blueprintForecast) present")
+want(len(d["leaks"]) == 1, "exactly one leak entry")
+cited = {(c["axiom"], c["source"]) for c in d["cited"]}
+want(("CordonFixtures.citedFixtureAxiom", "Fixture Source B") in cited,
+     "located cite (citedFixtureAxiom / Fixture Source B) present")
+want("CordonFixtures.untaggedFixtureAxiom" in d["unaccounted"], "untagged axiom in unaccounted")
+want("CordonFixtures.hiddenFixtureAxiom" in d["unaccounted"], "opaque-hidden axiom in unaccounted")
+want(isinstance(d.get("generated"), str) and isinstance(d.get("scope"), str),
+     "generated + scope are strings")
+sys.exit(0 if ok else 1)
+PY
+JSON_RC=$?
+set -e
+rm -f "$JSON_OUT"
+check_exit "json content matches fixture verdicts" 0 "$JSON_RC"
+
+echo ""
+echo "cordon-test: $pass passed, $fail failed."
+[ "$fail" = 0 ]

@@ -362,7 +362,7 @@ the conceptual/mathematical side is not yet covered.*
    per natural cluster (a def + its immediate API lemmas). Likely: Merkle node per-declaration, but an
    agent cards a tight cluster per pass.
 3. **Feedback routing (flagged load-bearing)** — audit team *advises*, controller decides, formaliser
-   edits (the `hardener` precedent) — OR the audit team adds its own Lean (witnesses / basic-property
+   edits (the independent-taste-review precedent) — OR the audit team adds its own Lean (witnesses / basic-property
    lemmas) directly behind a green-gate. Since the audit's best outputs ARE Lean, this decision most
    shapes the two-team relationship.
 

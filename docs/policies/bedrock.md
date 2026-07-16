@@ -71,7 +71,7 @@ negative-results disposition in [`../../CLAUDE.md`](../../CLAUDE.md) — never d
 The **decorrelated adversarial search** (a counterexample hunt, run independently of whoever built the claim)
 is the *instrument*, not the certificate: a **review** reads the proof you have and confirms the cases shown;
 a **hunt** attacks the claim you do *not yet* have a proof of and surfaces the case *missed* — and
-completeness/exhaustiveness failures are exactly what review structurally passes over (a hardener PASS on
+completeness/exhaustiveness failures are exactly what review structurally passes over (a taste-review PASS on
 "the split is exhaustive" certifies the branches written, not the stratum forgotten). So a decorrelated hunt
 is **mandatory before such a claim is trusted** — it refutes the false ones early — and when it comes up
 empty it yields the scoped evidence, never the theorem.
@@ -161,8 +161,8 @@ Generality*); the refutation dialectic is Lakatos's *method of proofs and refuta
 Press, 1976). The rest are our own, collaboratively-generated principles — phrasing borrowed freely and held
 as ours, no inline citation intended. **Who holds this taste, and the cadence for applying it, live in
 [`expedition.md`](expedition.md)** (the controller judges formalised work against it; a green build is
-necessary, never sufficient; the judgement takes precedence). An independent **hardener**
-([`../../.agent-team/roles/hardener.md`](../../.agent-team/roles/hardener.md)) applies this taste as a
+necessary, never sufficient; the judgement takes precedence). An independent **taste pass**
+(a [`reviewer`](../../.agent-team/roles/reviewer.md) function; right-extension findings go to the elder's compass) applies this taste as a
 standing, decorrelated review function — surfacing overclaims, holes, *and the right extensions* — which the
 controller integrates and holds precedence over. Working summaries are in
 [`../../CLAUDE.md`](../../CLAUDE.md) and [`../../lean/CLAUDE.md`](../../lean/CLAUDE.md). In-repo kin:
