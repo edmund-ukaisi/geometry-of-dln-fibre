@@ -103,4 +103,18 @@ theorem frontCharge_cell_lt_top_of_freebox (M : Fin (L + 1 + 1 + 1) → ℕ) (t 
         frontChargeIntegrand M (t + j) c' p < ⊤ :=
   lt_of_le_of_lt (lintegral_mono_set Set.inter_subset_left) hfreebox
 
+/-- **`cellRankIndex i ≤ deepTailMin M`** (dbuild's trichotomy cap). The exact deep-product rank on any
+atlas cell is below the deep-tail-width minimum: `cellRankIndex_le_inf'` (`≤ ⨅ (dropHead (redChain u M))`)
+composed with `⨅ (dropHead (redChain u M)) = deepTailMin M` (both `inf'` over the shared function
+`fun i => M i.succ.succ`, via `dropHead`/`redChain_succ`). Turns the null-disposal + rank-bridge into the
+TRICHOTOMY: `cellRankIndex i < deepTailMin` (deficient → null) / `= deepTailMin` (the unique co-null generic
+cell → interior|edge); `> deepTailMin` is impossible. -/
+theorem cellRank_le_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (i : CRIndex (dropHead (redChain u M))) :
+    cellRankIndex (dropHead (redChain u M)) i ≤ deepTailMin M := by
+  have hfun : dropHead (redChain u M) = fun i => M i.succ.succ := by
+    funext i; rw [dropHead]; exact redChain_succ u M i
+  refine le_trans (cellRankIndex_le_inf' (dropHead (redChain u M)) i) (le_of_eq ?_)
+  rw [deepTailMin, hfun]
+
 end DLNFibre.DLN.RLCT

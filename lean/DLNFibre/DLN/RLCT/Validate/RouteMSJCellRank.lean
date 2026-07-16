@@ -135,6 +135,57 @@ theorem prod_rank_eq_cellRankIndex (H : Fin (L + 1) → ℕ) (s : ℕ) (A : Para
   congr 1
   exact (Matrix.mul_one _).symm
 
+/-! ## `cellRank ≤` every chain width ⟹ `≤ ⨅ H` (the trichotomy upper cap) -/
+
+/-- **The two-part `cellRank` cap** — `cellRank ≤ q` AND `cellRank ≤ H m` for every level `m < j` the path
+passes. Path induction: the base is `cellRank = q`; the step reads the node `r : Fin (min (H⟨k⟩) q + 1)`
+(so `r.1 ≤ min(H⟨k⟩, q)`), and `cellRank = cellRank(tail at q'=r.1) ≤ r.1` (the `≤ q` half of the IH), which
+is `≤ H⟨k⟩` (new width `m = k`) and `≤ q`, while the IH covers `m < k`. The non-increasing telescoping in a
+single carry. -/
+theorem cellRank_le_aux (H : Fin (L + 1) → ℕ) :
+    ∀ (j : ℕ) (hj : j ≤ L) (q : ℕ) (path : CRPath H j hj q),
+      cellRank H j hj q path ≤ q
+        ∧ ∀ m : Fin (L + 1), (m : ℕ) < j → cellRank H j hj q path ≤ H m := by
+  intro j
+  induction j with
+  | zero =>
+      intro hj q path
+      exact ⟨le_of_eq rfl, fun m hm => absurd hm (by omega)⟩
+  | succ k ih =>
+      intro hj q path
+      obtain ⟨r, ρ, κ, tail⟩ := path
+      have hcr : cellRank H (k + 1) hj q ⟨r, ρ, κ, tail⟩
+          = cellRank H k (Nat.le_of_succ_le hj) r.1 tail := rfl
+      have hIH := ih (Nat.le_of_succ_le hj) r.1 tail
+      have hrmin : r.1 ≤ min (H ⟨k, Nat.lt_succ_of_le (Nat.le_of_succ_le hj)⟩) q :=
+        Nat.lt_succ_iff.mp r.2
+      have hle_r : cellRank H (k + 1) hj q ⟨r, ρ, κ, tail⟩ ≤ r.1 := by rw [hcr]; exact hIH.1
+      refine ⟨le_trans hle_r (le_trans hrmin (min_le_right _ _)), fun m hm => ?_⟩
+      rcases Nat.lt_or_ge (m : ℕ) k with hmk | hmk
+      · rw [hcr]; exact hIH.2 m hmk
+      · have hmeq : (m : ℕ) = k := by omega
+        have : m = ⟨k, Nat.lt_succ_of_le (Nat.le_of_succ_le hj)⟩ := Fin.ext hmeq
+        rw [this]
+        exact le_trans hle_r (le_trans hrmin (min_le_left _ _))
+
+/-- **`cellRankIndex ≤ H m` for every level `m`** — the deep-product rank on a cell is below every chain
+width. From `cellRank_le_aux` at the full chain (`j = L`, `q = H (last L)`): `m < L` via the width half,
+`m = last L` via the `≤ q = H (last L)` half. -/
+theorem cellRankIndex_le_width (H : Fin (L + 1) → ℕ) (i : CRIndex H) (m : Fin (L + 1)) :
+    cellRankIndex H i ≤ H m := by
+  have haux := cellRank_le_aux H L le_rfl (H (Fin.last L)) i
+  rcases Nat.lt_or_ge (m : ℕ) L with hmL | hmL
+  · exact haux.2 m hmL
+  · have hmeq : m = Fin.last L := Fin.ext (by rw [Fin.val_last]; have := m.isLt; omega)
+    rw [hmeq]; exact haux.1
+
+/-- **`cellRankIndex ≤ ⨅ H`** — the exact deep-product rank on a cell is below the chain-width minimum.
+`Finset.le_inf'` on `cellRankIndex_le_width`. -/
+theorem cellRankIndex_le_inf' (H : Fin (L + 1) → ℕ) (i : CRIndex H) :
+    cellRankIndex H i
+      ≤ (Finset.univ : Finset (Fin (L + 1))).inf' ⟨0, Finset.mem_univ 0⟩ H :=
+  Finset.le_inf' _ _ (fun m _ => cellRankIndex_le_width H i m)
+
 end DeepAtlas
 
 end DLNFibre.DLN.RLCT
