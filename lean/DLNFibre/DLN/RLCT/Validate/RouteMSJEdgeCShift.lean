@@ -11,18 +11,22 @@ Thread `genm-tideD` (aoyagi-full Stage 2). The **C-shift change-of-variables** b
 edge peel: the `C`-integral of the shifted fragile residual over the pivot box is dominated by the
 `a`-dimensional scaled radial (`scaledRadialEuclid`, landed in `RouteMSJEdgeScalar`).
 
-For a nonzero fragile direction `v : Fin u → ℝ` (`v = Q̃ₚ·ω`), a fixed shift `β : Fin a → ℝ` (`β = σ·Γη`,
-`C`-independent), and pivot energy `W > 0`:
+For a nonzero fragile direction `v : Fin (u+1) → ℝ` (`v = Q̃ₚ·ω`), a fixed shift `β : Fin a → ℝ`
+(`β = σ·Γη`, `C`-independent), and pivot energy `W > 0`:
 
-    ∫_{C ∈ [−1,1]^{a×u}} (W + ‖(of C).mulVec v + β‖²)^{−c'} dC  ≤  K(v) · ∫_{ζ∈ℝ^a} (W + ‖ζ‖²)^{−c'} dζ,
+    ∫_{C ∈ [−1,1]^{a×(u+1)}} (W + ‖(of C).mulVec v + β‖²)^{−c'} dC  ≤  K(v) · ∫_{ζ∈ℝ^a} (W + ‖ζ‖²)^{−c'} dζ,
 
-with `K(v) = 2^{a(u−1)}·|v_{j₀}|^{−a}` (`j₀` any index with `v_{j₀}≠0`). The bound is **β-invariant** (the
-`C`-integration absorbs the shift, by Lebesgue translation invariance) and the RHS is exactly
-`scaledRadialEuclid = W^{a/2−c'}·B` — so the C-shift carries the corank charge `ab/2` (`b=1`: `a/2`) into
-the arity−1 comparator, and at the critical exponent `c'=a/2` the RHS `≍ log(1/W)` (the corank-one tie,
-δ-folded downstream). Consultant-converged (dbuild/edgebrick/satred): the column substitution
-`C ↦ C·Λ` (`Λ = I` with column `j₀` replaced by `v`, `det Λ = v_{j₀}`) realises the bounded pushforward
-density; `{v=0}` is NOT an R2 case (assembly-level, via the reduced chain).
+with `K(v) = 2^{a·u}·|v_{j₀}|^{−a}` (`j₀` any index with `v_{j₀}≠0`). The bound is **β-invariant** (the
+RHS is β-free: after the a-fortiori box→ℝ^a enlargement, Lebesgue translation invariance absorbs the
+shift — the finite-box integral itself is β-dependent, only its ℝ^a-enlargement is not) and the RHS is exactly
+`scaledRadialEuclid = W^{a/2−c'}·B`, `B = ∫_{ℝ^a}(1+‖s‖²)^{−c'}`. `B` is FINITE exactly for `a < 2c'`
+(`japaneseBracket_euclid_lt_top`), i.e. in the edge window `c' > a/2` (`= (M₀−u)(M₁−u)/2` for the
+corank-one column), where the RHS gives the clean corank charge `W^{a/2−c'}` — NO log. (At `c' = a/2`
+the full-space RHS DIVERGES to `+∞`; the corank-one tie-log is a property of a BOUNDED/cutoff radial, NOT
+this full-space comparator, and the edge window's strict lower bound excludes `c' = a/2` — reviewer/Codex,
+correcting an earlier "RHS ≍ log(1/W)" gloss.) Consultant-converged (dbuild/edgebrick/satred): the column
+substitution `C ↦ C·Λ` (`Λ = I` with column `j₀` replaced by `v`, `det Λ = v_{j₀}`) realises the bounded
+pushforward density.
 
 ## What lands here
 * `affineScale_pi_le` — the `a`-dimensional core atom: the scaled-and-shifted box integral over
@@ -236,6 +240,44 @@ theorem edge_C_shift_lt_top {a u : ℕ} (v : Fin (u + 1) → ℝ) (j₀ : Fin (u
         ENNReal.ofReal ((W + ∑ i, ((Matrix.of C).mulVec v i + β i) ^ 2) ^ (-c'))) < ⊤ :=
   lt_of_le_of_lt (edge_C_shift_bound v j₀ hj₀ β hW)
     (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (scaledRadialEuclid_lt_top hW ha))
+
+/-- **The edge leaf over the free Γ-direction (R2 composed with the P1 free block).** For the `b=1`
+corank, `Γ·Q_b = (d•γ)⊗ω` (`γ` the free `a`-vector over the pivot box, `d=‖Q_b‖` a fixed scalar);
+integrating the fragile-column residual `‖(of C)·v + d•γ‖²` over BOTH the `C`-box and the free `γ`-box is
+`≤ 2^a·(2^{a·u}·|v_{j₀}|^{−a}) · scaledRadialEuclid(W,c')` — the free-direction integral adds only the
+finite volume factor `2^a`, NO singularity, a direct consequence of R2's β-invariance
+(`edge_C_shift_bound` is uniform in the shift `d•γ`). δ-FREE: in the edge window `c' > a/2` the RHS
+`scaledRadialEuclid = W^{a/2−c'}·B` is finite (`B = ∫_{ℝ^a}(1+‖s‖²)^{−c'} < ⊤` for `a < 2c'`) and gives
+the clean power `W^{a/2−c'}` — no log at the leaf (the full-space comparator diverges at `c' = a/2`, which
+the window excludes; any tie-log/δ-fold is a bounded-radial matter in the downstream `W`-integral). This
+exposes the `|v_{j₀}|^{−a}` constant; its DISPOSAL over the reduced params (the exact
+`v = Q̃ₚ·ω` structure, `ω` on the fragile sphere ⟹ `|v_{j₀}|^{−a}` bounded by `σ_min(Q̃ₚ)^{−a}`; and
+whether R2's dropped-transverse bound suffices or the transverse must be kept) is a SEPARATE step, pending
+satred's pinned computation — NOT settled here. -/
+theorem edge_leaf_gamma_bound {a u : ℕ} (v : Fin (u + 1) → ℝ) (j₀ : Fin (u + 1)) (hj₀ : v j₀ ≠ 0)
+    (d : ℝ) {W c' : ℝ} (hW : 0 < W) :
+    (∫⁻ γ in Set.pi Set.univ (fun _ : Fin a => Set.Icc (-1 : ℝ) 1),
+        ∫⁻ C in Set.pi Set.univ (fun _ : Fin a => Set.pi Set.univ (fun _ : Fin (u + 1) => Set.Icc (-1 : ℝ) 1)),
+          ENNReal.ofReal ((W + ∑ i, ((Matrix.of C).mulVec v i + d * γ i) ^ 2) ^ (-c')))
+      ≤ ENNReal.ofReal (2 ^ a * (2 ^ (a * u) * (|v j₀| ^ a)⁻¹))
+          * ∫⁻ x : EuclideanSpace ℝ (Fin a), ENNReal.ofReal ((W + ‖x‖ ^ 2) ^ (-c')) := by
+  classical
+  set radial := ∫⁻ x : EuclideanSpace ℝ (Fin a), ENNReal.ofReal ((W + ‖x‖ ^ 2) ^ (-c')) with hradial
+  set K : ℝ≥0∞ := ENNReal.ofReal (2 ^ (a * u) * (|v j₀| ^ a)⁻¹) with hK
+  have hγvol : volume (Set.pi Set.univ (fun _ : Fin a => Set.Icc (-1 : ℝ) 1))
+      = ENNReal.ofReal (2 ^ a) := by
+    rw [volume_pi_pi]
+    simp only [Real.volume_Icc]
+    rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin,
+      show (1 : ℝ) - (-1) = 2 from by ring, ← ENNReal.ofReal_pow (by norm_num)]
+  calc (∫⁻ γ in Set.pi Set.univ (fun _ : Fin a => Set.Icc (-1 : ℝ) 1),
+          ∫⁻ C in Set.pi Set.univ (fun _ : Fin a => Set.pi Set.univ (fun _ : Fin (u + 1) => Set.Icc (-1 : ℝ) 1)),
+            ENNReal.ofReal ((W + ∑ i, ((Matrix.of C).mulVec v i + d * γ i) ^ 2) ^ (-c')))
+      ≤ ∫⁻ _γ in Set.pi Set.univ (fun _ : Fin a => Set.Icc (-1 : ℝ) 1), K * radial :=
+        lintegral_mono (fun γ => edge_C_shift_bound v j₀ hj₀ (fun i => d * γ i) hW)
+    _ = K * radial * ENNReal.ofReal (2 ^ a) := by rw [setLIntegral_const, hγvol]
+    _ = ENNReal.ofReal (2 ^ a * (2 ^ (a * u) * (|v j₀| ^ a)⁻¹)) * radial := by
+        rw [hK, mul_right_comm, ← ENNReal.ofReal_mul (by positivity), mul_comm (2 ^ (a * u) * (|v j₀| ^ a)⁻¹)]
 
 /-- Non-vacuity witness: `a = 1`, `u+1 = 2` columns, `v = ![1, 0]` (so `v 0 = 1 ≠ 0`), any shift, `W = 1`,
 `c' = 1` (`a = 1 < 2 = 2c'`); the shifted pivot-box integral is finite. -/
