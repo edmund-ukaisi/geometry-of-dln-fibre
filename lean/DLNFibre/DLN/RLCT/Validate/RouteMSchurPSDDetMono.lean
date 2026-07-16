@@ -55,4 +55,61 @@ theorem blockQuadForm_expand {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ 
     Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun x_1 _ => by ring))
   rw [h2, hdd]; ring
 
+/-! ## The Schur complement and its variational quadratic form -/
+
+/-- **The `1⊕k` Schur complement** `Sc j l := M(inr j)(inr l) − M₁₁⁻¹·M(inr j)(inl 0)·M(inl 0)(inr l)`
+(pivot `M₁₁ = M (inl 0)(inl 0)`; Lean's `0⁻¹ = 0` makes it the plain lower block when the pivot is `0`). -/
+noncomputable def schurCompl {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ) :
+    Matrix (Fin k) (Fin k) ℝ :=
+  Matrix.of fun j l => M (Sum.inr j) (Sum.inr l)
+    - (M (Sum.inl 0) (Sum.inl 0))⁻¹ * (M (Sum.inr j) (Sum.inl 0) * M (Sum.inl 0) (Sum.inr l))
+
+/-- **The Schur-complement quadratic form, closed form.** `v ⬝ᵥ Sc *ᵥ v = ∑ⱼₗ vⱼ·M(inr j)(inr l)·vₗ −
+M₁₁⁻¹·(∑ⱼ M(inl 0)(inr j)·vⱼ)²` (the second sum factors as a square via symmetry). -/
+theorem schurCompl_quadForm_closed {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hsymm : ∀ p q, M p q = M q p) (v : Fin k → ℝ) :
+    v ⬝ᵥ (schurCompl M *ᵥ v)
+      = (∑ j, ∑ l, v j * M (Sum.inr j) (Sum.inr l) * v l)
+        - (M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j) ^ 2 := by
+  classical
+  set d := M (Sum.inl 0) (Sum.inl 0) with hd
+  -- Step 1: expand `v ⬝ᵥ Sc v` as one double sum with the sub kept inside each summand.
+  have hL : v ⬝ᵥ (schurCompl M *ᵥ v)
+      = ∑ j, ∑ l, (v j * M (Sum.inr j) (Sum.inr l) * v l
+          - d⁻¹ * ((v j * M (Sum.inr j) (Sum.inl 0)) * (M (Sum.inl 0) (Sum.inr l) * v l))) := by
+    simp only [dotProduct, mulVec, schurCompl, Matrix.of_apply, Finset.mul_sum, hd]
+    exact Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun l _ => by ring))
+  rw [hL]
+  simp only [Finset.sum_sub_distrib]
+  congr 1
+  -- Step 2: the pivot-correction double sum factors as `d⁻¹ · R²` (via symmetry + product-of-sums).
+  rw [sq, Finset.sum_mul_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun l _ => ?_)
+  rw [hsymm (Sum.inr j) (Sum.inl 0)]; ring
+
+/-- **The variational identity: `v ⬝ᵥ Sc *ᵥ v` is the block QF at the minimiser `u* = −M₁₁⁻¹·(row·v)`.**
+So for `M` PSD the Schur form is nonneg (`= w* ⬝ᵥ M *ᵥ w* ≥ 0`), and it is `≤` the block QF at every `u`. -/
+theorem schurCompl_quadForm_eq_blockQuadForm_min {k : ℕ}
+    (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ) (hsymm : ∀ p q, M p q = M q p) (v : Fin k → ℝ) :
+    v ⬝ᵥ (schurCompl M *ᵥ v)
+      = (Sum.elim (fun _ : Fin 1 =>
+            -(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v)
+          ⬝ᵥ (M *ᵥ (Sum.elim (fun _ : Fin 1 =>
+            -(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v)) := by
+  rw [schurCompl_quadForm_closed M hsymm v,
+    blockQuadForm_expand M hsymm
+      (-(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v]
+  set d := M (Sum.inl 0) (Sum.inl 0) with hd
+  set R := ∑ j, M (Sum.inl 0) (Sum.inr j) * v j with hR
+  -- both sides equal `(∑∑ vMv) − d⁻¹·R²`; the pivot terms collapse via `d·d⁻² = d⁻¹` (holds even d=0).
+  have hdd : d * (d⁻¹ * d⁻¹) = d⁻¹ := by
+    rcases eq_or_ne d 0 with h | h
+    · simp [h]
+    · field_simp
+  ring_nf
+  rw [hR] at *
+  nlinarith [hdd, sq_nonneg R]
+
 end DLNFibre.DLN.RLCT
