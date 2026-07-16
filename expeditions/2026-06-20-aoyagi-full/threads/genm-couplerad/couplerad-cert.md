@@ -522,6 +522,44 @@ UNIFORM chart bound replaces the `S`-varying Gram by the fixed order-1 rank-`ρ`
 `G₁ =` the order-1 rank-`ρ` block for the integrability bound (drop-columns to a `b×b` minor is ONLY the
 a.e.-nonzero step, not the integral — see the ⚠ above). The plan (b=1 first, then b≥2) is SOUND.
 
+### w3-atlas — the charged-core COVER structure (schurrec's Holes 1 & 2)
+
+*schurrec found: (H1) a carried-charge WF recursion at fixed `(a,b)` is uninhabitable — the charge weight
+`∫_{A_cor} det((A_cor·S)(A_cor·S)ᵀ)^{−a/2}` needs `a < rank(S)−b+1`, and a shared-dim-dropping recursion
+sends `rank(S)` below `a+b`, diverging; (H2) the charge needs an `S=Z_deep`-rank floor the loss's
+Front-driven charts don't supply. Both are correct. The exact structure:*
+
+**(a) YES — resolve `Z_deep = S` by its OWN rank flag as the PRIMARY (outer) cover** (the Hole-2 fix). The
+loss's Front-driven `mnp` charts do NOT stratify `S`'s rank, so the `S`-rank flag is the outer atlas; the
+uncharged `mnp` is applied to the Front-loss PER `S`-cell.
+
+**(b)/(c) — ONE atlas (`S`-rank flag), but the charge is RE-EXPRESSED per rank-drop, not carried (the Hole-1
+fix), and it is bolt-on ONLY on the shallow cells.** Split the `S`-cells by `rank S = ρ−k`:
+- **SHALLOW cells `rank S ≥ a+b−1` (i.e. `k ≤ ρ−(a+b)+1`):** the charge is Wishart-BOUNDED — det-monotone
+  (A) against the order-1 rank-`(ρ−k)` surviving pivot block (`hGae` PosDef floor) gives
+  `charge ≤ det(A_cor·[surviving]·A_corᵀ)^{−a/2}`, whose `∫_{A_cor}` is a fixed Wishart constant (finite iff
+  `a < (ρ−k)−b+1`). So **charge ≤ C × uncharged `mnp`** — TRUE BOLT-ON on these cells.
+- **DEEP cells `rank S < a+b−1`:** the Wishart weight DIVERGES (Hole 1). Here the charge is RE-EXPRESSED on
+  the Schur-complement block `E` (the small σ's): the `b×b` Gram gets its last `b−(ρ−k)` rank from `E`, so
+  `charge ~ [order-1] · det(E-Schur)^{−a/2}`, and `E`'s MEASURE (the `σ^{p−k}`·Vandermonde the `S`-rank cover
+  carries) PAYS the charge increment (`δ=0`, per-ray `γ^{hier}(e) ≤` freed measure). This is a WELL-FOUNDED
+  recursion on the REDUCED factor `E` (strictly smaller rank) — a charged core on `E` with `E`'s measure —
+  and Hole 1 is dodged precisely because the charge is re-expressed-with-measure, NOT carried at fixed `(a,b)`.
+
+**Scope (the actionable part):**
+- **`b=1` (ALL 3 square dispatch witnesses `(4,4,4,4)`,`(5,5,5,5)`,`(3,3,4,4)`): deep = ONLY `{rank S < 1}
+  = {S=0}` (measure zero).** So `b=1` is EFFECTIVELY ALL-SHALLOW — pure bolt-on (Wishart-bounded charge ×
+  uncharged `mnp`), NO deep recursion. Build + bank these now; they need no charge re-expression.
+- **`b≥2` (e.g. `(3,4,5,4)`, `b=2`: deep cells `rank S ∈ {1,0}`; `(4,5,6,5)` `b=2`: `rank S ∈ {1,0}`):**
+  positive-codim deep cells ⟹ the charge-re-expression recursion on `E` is genuinely needed. This is the
+  joint coupling — no clean bounded-charge × uncharged-loss factorization there.
+
+**Smallest correct decomposition:** `S`-rank-flag cover; per shallow cell `charge(Wishart const) ×
+uncharged mnp`; per deep cell recurse on the Schur-complement `E` with its measure. NOT a Front-driven cover
+(H2), NOT a fixed-`(a,b)` carried recursion (H1). The deep-cell per-step charge re-expression (Gram Schur
+complement `det(SSᵀ) = det(surviving)·det(E-Schur)` via `det_fromBlocks` on `G=SSᵀ`, + the measure accounting)
+is the technical heart for `b≥2`; the `δ=0` per-ray inequality guarantees it closes.
+
 ---
 
 ## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
