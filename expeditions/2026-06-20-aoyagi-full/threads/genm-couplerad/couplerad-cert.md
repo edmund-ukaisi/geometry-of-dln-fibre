@@ -810,7 +810,14 @@ form (and the `ρ<n` cases) I pin when reached.
 
 ---
 
-### w3-interior — the interior uniform `I_loss(p)` bound: the coupled loss DECOUPLES + is a pure box-RLCT (NO WALL, native; ∀-M PROVEN)
+### w3-interior — the interior loss integral: the coupled loss DECOUPLES + is a pure box-RLCT (per-p finiteness)
+
+> **CORRECTION (see §w3-boundary).** ★2 below gives the correct PER-P finiteness (∫_x < ∞ iff 2q < ρ,
+> generic z0). But ★5's "p-UNIFORM bound over interior cells" is UNSOUND: arch1build/intloss measured
+> `frontLossIntegral(p) ~ σ_min(L_p)^{−2q} → ∞` at the loss-degeneracy locus (z0→0), so there is NO
+> p-independent bound `D`. The interior closes as the COUPLED integral `∫_p charge(p)·frontLossIntegral(p)`
+> in §w3-boundary. The proven arithmetic `minAdm M ≤ M₀·min(M₁,ρ_d)` (★5) stands as a QIP fact; it just is
+> not the interior's closure.
 
 **Object.** After arch1build's front-charge factorization, the interior closes iff
 `I_loss(p) = ∫_x (E_top + E_tr)^{−q}` is uniformly bounded over interior cells (`a+b ≤ ρ_d = deepTailMin`),
@@ -926,6 +933,82 @@ the exact `Cst = π^{a(b−1)/2}Γ(c'−a(b−1)/2)/Γ(c')`, convergence `c' > a
 ((b−1)-block detGram at boundary). **Scope (corankrec binding-cut scan):** the b≥2 strict-edge IS reached
 (witness `(3,3,3,4)@t=1`, 110 witnesses) but the deep-corank tower is EMPTY — R3 is the immediate-edge
 (single-level `(b−1)` peel) case ONLY.
+
+---
+
+### w3-boundary — the interior COUPLED ∫_p estimate (loss-degeneracy): the CORRECTED interior closure
+
+**Object.** `frontCharge = ∫_{z0} charge(z0)·frontLossIntegral(z0) dz0` (a COUPLED integral over the deep var
+`z0`, NOT a factored `D·chargeFreeBox`). `frontLossIntegral(z0) = ∫_x (E_top+E_tr)^{−q}dx` (the §w3-interior
+box-RLCT, finite per generic z0, BLOWS UP at z0→0). `charge(z0) = det(Q_inr Q_inrᵀ)^{−a/2}` (bounded near
+z0=0). `z0` = the u×M₂ leading-deep block, `dim z = u·M₂`.
+
+**★1 The blow-up pole (EXACT, eigenvalue-scaling).** As `z0 = δg → 0`, the loss quadratic `H(z0)` (rank
+`ρ = u·r_stack + a·r_K`, `r_stack = min(M₁,ρ_d)`, `r_K = r_stack − b`) has `k` eigenvalues scaling as `δ²`:
+E_top contributes `u·r_K` (the Q_inl-block, via the Schur complement `δ²·Q_inl'ΠQ_inl'ᵀ` off the `b` O(1)
+Q_b-directions); E_tr contributes `a·r_K` (all of `KK ~ δ²`). So `k = (u+a)·r_K = M₀·r_K`, and
+> `frontLossIntegral(z0) ~ ‖z0‖^{−P}`,  **`P = 2q − ρ + k = 2q − u·b`**  (`r_stack − r_K = b`).
+
+Matches the witness `(4,4,4,4)@u3, a=b=1, c'=4.9` EXACTLY: `2q=8.8`, `ub=3` ⟹ `P=5.8`
+(`couplerad_boundary.py`: `2q−ρ+k == 2q−ub` verified across cells). The pole is UNIFORM over all radial
+directions `g` (any rank — `couplerad_boundary_strata.py`). [This is the `ℓ=u` deep stratum; the actual
+binder is stratified — see ★2.]
+
+The full-degeneration locus is `{Q_inl·Π = z0·Z_deep·Π = 0}` (⊇ both `{z0=0}` and `{z0·Z_deep=0}`), codim
+`u·d`, `d := rank(Z_deep·Π) = ρ_d − b` — NOT `{z0=0}` (codim uM₂). So the effective pole codim is `u·d`, and
+the binding is STRATIFIED (below), not the single point.
+
+**★2 The condition (STRATIFIED — Codex-sharpened).** Codex's clean decoupling `B̃ = B₁₂ + P·A_z`
+(`A_z = Q_inl·Q_bᵀ(Q_bQ_bᵀ)⁻¹`) gives `E_top = frobSq(P·Q_inl·Π) + frobSq(B̃·Q_b)` (verified machine ε,
+`couplerad_verify_strata.py`) — so BOTH loss blocks degenerate on the rank strata of `Q_inl·Π` (SINGLE
+width `d`; NO two-width correction). The corank-ℓ stratum of `Q_inl·Π` (rank `u−ℓ`) loses
+`k_ℓ = ℓ(u+a)` eigenvalues (`u·ℓ` from `P·Q_inl·Π`, `a·ℓ` from `C·Q_inl·Π`; `k_meas = ℓ(u+a)` confirmed),
+codim `c_ℓ = ℓ(|u−d|+ℓ)`. So:
+> `∫_p < ⊤ ⟺ 2q < min_{0≤ℓ≤min(u,d)} φ(ℓ)`,  `φ(ℓ) = ρ₀ + ℓ² + (d−2u−a)·ℓ`,  `ρ₀ = (u+a)·min(u,d) + u·b`.
+
+Closed form (Codex): `min_ℓ φ = u·ρ_d` if `d ≤ a` (deep stratum `ℓ=u` binds = **form A**); `= ρ₀ −
+⌊(2u+a−d)²/4⌋` if `a+1 ≤ d ≤ 2u+a−2` (an INTERMEDIATE `ℓ<u` binds, STRICTLY tighter than form A); `= ρ₀`
+(generic-z0 inner, `ℓ=0`) if `d ≥ 2u+a−1`. So `2q < u·ρ_d` (form A) is the binder ONLY for `d ≤ a+1`; for
+wider deep it is strictly tighter.
+
+**★3 The ∀-cell condition — interior CONVERGES, NO obstruction.** With the cap `c' < ½·minAdm M`, `∫_p<⊤`
+at every interior cell iff
+> **`minAdm M ≤ a·b + min_ℓ φ(ℓ)`** — VERIFIED 0 fails / 12720 interior cells (`couplerad_truecond.py`).
+
+The `min_ℓ φ` RHS is strictly tighter than form A (`ab+uρ_d`) in 1158 wide-deep cells; tight (margin 0) in
+some but STRICT-safe. So the interior converges for ALL cells — no KILL. **Proof status:** the `ℓ=u` (form A)
+case has the banked 2-step proof (peel `t¹=u` → `ab + minAdm(redChain u M)`, then `minAdm_redChain_le_deepTailMin`
+≤ `ab + u·ρ_d`; corankrec `minAdm_le_u_deepTailMin_add_peelCharge` @bc9652824). The tighter intermediate-ℓ
+RHS (`ab + ρ₀ − ⌊(2u+a−d)²/4⌋`) is a NEW QIP (the ℓ-family `minAdm ≤ ab + φ(ℓ) ∀ℓ`; holds 0-fails) — routed
+to corankrec.
+
+**★4 intloss's crude σ_min bound is NOT p-integrable (why the joint route).** `frontLossIntegral(p) ≤
+σ_min(L_p)^{−2q}·C` is tight per-p, but `σ_min(L_p)` vanishes on the codim-1 locus `{rank[Q_inl;Q_b]<u+b}`
+(`σ_min ~ dist`), so `∫_p σ_min^{−2q}` DIVERGES for `2q ≥ 1` — a FALSE divergence (the TRUE `∫_p` converges;
+at a generic corank-1 point `pole′ = 2q−ρ₀+(u+a)`, integrable over codim 1 iff `pole′ < 1`, and `<0` for the
+dispatch cells). So the coupled `∫_p` does NOT bolt on a sharp per-p bound (route (c), avoided); it is the
+**JOINT monomial resolution** over `(z0,x)` (via the M/D CoV `f = frobSq(M) + frobSq(D·M·Π)`), fed by
+intloss's per-p FINITENESS + rank lemma. Confirmed with intloss (its (a)+(b) are the right scope).
+
+**★5 Opens (mostly closed).** dim `z0 = u·M₂` CONFIRMED (corankrec — z0 fully integrated; the pivot `P` is a
+separate front-block var, not a sub-block of z0). charge `z0`-INDEPENDENT CONFIRMED (`Q_inr = Q_b =
+A_cor·Z_deep`, `Z_deep` = deeper layers, no z0 → `det(Q_bQ_bᵀ)^{−a/2}` constant, no competing pole).
+width-caveat RESOLVED (single width `d`, Codex B̃-decoupling). REMAINING: (a) the intermediate-ℓ QIP
+`minAdm ≤ ab + min_ℓ φ` landed in full (corankrec — form A landed; the tighter min-φ family pending);
+(b) the RLCT rests on the **transverse-stratum criterion** (each determinantal rank-stratum's contribution
+integrable independently) — the one ASSUMED analytic step (a clean determinantal-variety RLCT, detail-at-scale,
+not a monument; Codex flagged it explicitly).
+
+**Decorrelated Codex (2 consults, `xhigh`, self-contained, conclusion WITHHELD): CONCUR + SHARPEN.** Consult 1
+(`codex/boundary-{prompt,answer}.md`): pole `P=2q−ub`, threshold `q<ρ₀/2`, crude-σ_min NON-integrable
+(codim-1 false divergence), singular-P irrelevant. Consult 2 (`codex/strata-{prompt,answer}.md`): the
+STRATIFIED condition `2q<min_ℓ φ(ℓ)`, the intermediate-ℓ binding for `d≥a+2`, the width-caveat resolution via
+the B̃-decoupling.
+
+**Owner:** intloss (rank lemma + per-p finiteness — FEED the joint resolution; NOT a sharp per-p bound) + me
+(the joint `∫_p` resolution + stratification) + corankrec (the `min_ℓ φ` QIP). This is the LAST interior
+analytic piece; the interior CONVERGES ∀-cell (no obstruction), pending (a) the full QIP + (b) the
+transverse-stratum criterion.
 
 ---
 
