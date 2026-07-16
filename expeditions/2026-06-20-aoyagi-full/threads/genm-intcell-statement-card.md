@@ -14,16 +14,23 @@ scoped below; the atom is the leaf it consumes.
 > `0 < ε ≤ c'` and `c' − ε < (m+1)/2`,
 > `∫⁻_{[−T,T]^{m+1}} (∑ᵢ Pᵢ² + w)^{−c'} dP ≤ ofReal( w^{−ε} · C )`, where `C = ∫_{ball_R} ‖P‖^{−2(c'−ε)}`
 > (`R = √((m+1)T²)+1`) is a finite, `w`-independent constant. This is the `2q ≤ ub` companion of the
-> banked `radial_morse_residual_power_le` (`2q > ub`); the `ε`-parameter UNIFIES all three couplerad
-> regimes ①②③ (including the boundary log `c' = (m+1)/2`, i.e. `2q = ub`), folding the log into `w^{−ε}`.
+> banked `radial_morse_residual_power_le` (`2q > ub`); the `ε`-parameter also COVERS all three couplerad
+> regimes ①②③ under one statement (including the boundary log `c' = (m+1)/2`, i.e. `2q = ub`, folded into
+> `w^{−ε}`). **On ③ (`2q > ub`) the coverage is NON-SHARP:** there `ε > c' − (m+1)/2` is forced, so `w^{−ε}`
+> is weaker (for `0 < w < 1`) than the sharp sibling's `w^{−(c'−(m+1)/2)}` — the chaining threshold
+> `2c' < ub + minAdm(![u+a,u,d])` COINCIDES (so ③ is genuinely covered), but `radial_morse_residual_power_le`
+> remains the intended owner of ③. This atom's own new content is the `2q ≤ ub` side (①②), where no sharp
+> sibling exists.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.radial_morse_critical_power_le` (box form) and
 >   `DLNFibre.DLN.RLCT.lintegral_ball_critical_le` (ball-form core)
 >   (`lean/DLNFibre/DLN/RLCT/Validate/RadialCriticalPower.lean` @ `49019b5668d71f3c5f81b7fbd8398a74742544d1`)
 > - **Gloss.** The critical/sub-critical box integral of `(∑Pᵢ²+w)^{−c'}` is dominated by a residual
->   power `w^{−ε}` of the core, times a `w`-independent ball constant. The residual exponent `ε` can be
->   taken as small as one likes (any `ε > 0` at the critical `c' = (m+1)/2`), which is what lets the deep
->   sub-chain threshold `½·minAdm(![u+a,u,d])` absorb it in the composition.
+>   power `w^{−ε}` of the core, times a `w`-independent ball constant. At the critical `c' = (m+1)/2` any
+>   `ε > 0` is admissible (for `c' > (m+1)/2`, `ε > c' − (m+1)/2`). The bound is NOT ε-uniform: each fixed
+>   `ε` gives a finite `critBallConst`, but `critBallConst ≍ const/(2ε) → ∞` as `ε → 0` (the `ε → 0` limit
+>   does NOT recover the log bound). One picks a single `ε` below `½·minAdm(![u+a,u,d])`, which the deep
+>   sub-chain threshold absorbs in the composition.
 > - **Proved.** Both statements unconditionally (sorry-free, axiom footprint `[propext,
 >   Classical.choice, Quot.sound]`). The pointwise a.e. bound `(‖P‖²+w)^{−c'} ≤ w^{−ε}·‖P‖^{−2(c'−ε)}`
 >   (off the null point `P = 0`) via `Real.rpow_le_rpow_of_nonpos` twice; the constant finite via the
@@ -39,13 +46,18 @@ scoped below; the atom is the leaf it consumes.
 >   `(E,Y)`, live UPSTREAM — see Card 2.)
 > - **Structure & ideas observed (couplerad §w3-boundary).** The load-bearing step is the exponent split
 >   `−c' = −ε + (−(c'−ε))`: `(‖P‖²+w)^{−ε} ≤ w^{−ε}` (base `≥ w`) and `(‖P‖²+w)^{−(c'−ε)} ≤ ‖P‖^{−2(c'−ε)}`
->   (base `≥ ‖P‖²`, needs `ε ≤ c'`). corankrec's decorrelated verification: the atom SUBSUMES all three
->   regimes for `w > 0` (the regime split dissolves into the ε-parameter); `radial_morse_residual_power_le`
->   (③) becomes a cross-check, not a dependency. Numerically pre-verified (pointwise + integral, showing
+>   (base `≥ ‖P‖²`, needs `ε ≤ c'`). corankrec's decorrelated verification: the atom covers all three
+>   regimes for `w > 0` under one statement (the regime split dissolves into the ε-parameter) — sharply on
+>   ①② (its own content), non-sharply on ③ (see the Claim caveat; the sharp sibling
+>   `radial_morse_residual_power_le` keeps ③). Numerically pre-verified (pointwise + integral, showing
 >   the critical-log growth of `I(w)` dominated by `C_ε·w^{−ε}`).
 > - **Route (coordinator).** Build the isotropic box atom first (green + clean-three), mirroring
 >   `radial_morse_residual_power_le`; the CoV/Tonelli/RectSchurCore composition wires it afterward.
-> - **Status.** sorry-free (awaiting fidelity review).
+> - **Status.** sorry-free + reviewed. Fidelity reviewer (2026-07-16): SURVIVED / MATCHES — statements
+>   faithful to claim/card, axiom footprint `[propext, Classical.choice, Quot.sound]` re-confirmed by forced
+>   recompile, non-vacuous at the intended use, S2-FREE / NATIVE. The two wording tightenings it flagged
+>   (③ non-sharpness; the ε→0 non-uniformity of `critBallConst`) are applied above; the upstream `core > 0`
+>   a.e. caveat is tracked in Card 2's Deferred assembly.
 
 ---
 
