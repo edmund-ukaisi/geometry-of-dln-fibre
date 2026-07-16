@@ -148,4 +148,102 @@ theorem bindingCut_ab_le_deepTailMin_succ (M : Fin (L + 1 + 1 + 1) → ℕ) (t :
       _ = (a - 1) * (b - 1) + (a + b - 1) := by omega
   omega
 
+/-- **`minAdm M ≤ M₀ · min(M₁, deepTailMin M)`** — the interior uniform-`I_loss` bound's load-bearing
+arithmetic (couplerad (A): the interior cell closes iff `2c' < M₀·min(M₁, deepTailMin M)`, which the
+carrier threshold `c' < ½·minAdm M` gives iff this holds). It is EXACTLY the banked head×tail-inf bound
+`minAdm_le_head_mul_tailInf` (`minAdm M ≤ M₀ · ⨅_{i≥1} Mᵢ`) reformulated, since
+`⨅_{i≥1} Mᵢ = min(M₁, ⨅_{i≥2} Mᵢ) = min(M₁, deepTailMin M)` (`inf'_univ_fin_succ` + the `deepTailMin`
+def). NOT a subtle new minAdm property — a clean composition. (Decorrelated-verified: 0 failures over
+19551 nondeg cells, arity 3–5, widths 1–7; 6741 tight, all strict-`<` on the carrier side so tight still
+converges.) -/
+theorem minAdm_le_head_mul_min_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    minAdm M ≤ M 0 * min (M 1) (deepTailMin M) := by
+  have h := minAdm_le_head_mul_tailInf M
+  have hinf : (Finset.univ : Finset (Fin (L + 1 + 1))).inf'
+        ⟨0, Finset.mem_univ 0⟩ (fun i => M i.succ)
+      = min (M 1) (deepTailMin M) := by
+    rw [inf'_univ_fin_succ (fun i : Fin (L + 1 + 1) => M i.succ)]
+    congr 1
+  rwa [hinf] at h
+
+/-- **`minAdm M ≤ u·M₂ + (M₁−u)·M₀`** — the INTERIOR coupled-`∫_p` load-bearing arithmetic (couplerad's
+boundary-RLCT estimate: `∫_p < ⊤ ⟺ 2c' < u·M₂ + (M₁−u)·M₀`, which the carrier threshold `c' < ½·minAdm M`
+gives iff this holds, at every interior cut `u`). PROVEN ∀ valid cut `u ≤ min(M₀,M₁)` by a 3-banked-lemma
+composition (NOT a new QIP argument): peel at `t=u` (`minAdm_le_peelCharge_add_redChain`:
+`minAdm M ≤ (M₀−u)(M₁−u) + minAdm(redChain u M)`), the per-cut pivot bound
+(`minAdm_redChain_le_deepTailMin`: `minAdm(redChain u M) ≤ u·deepTailMin M`), and `deepTailMin M ≤ M₂`
+(`deepTailMin_le_M2`), then `(M₀−u)(M₁−u) ≤ (M₁−u)·M₀` (since `M₀−u ≤ M₀`). Decorrelated-verified 0 fails
+over 9288 nondeg cells (arity 3–5, widths 2–7; 511 tight, strict-safe). Closes the interior arm's
+arithmetic — same clean shape as `minAdm_le_head_mul_min_deepTailMin`. -/
+theorem minAdm_le_interior_qip (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hu : u ≤ min (M 0) (M 1)) :
+    minAdm M ≤ u * M 2 + (M 1 - u) * M 0 := by
+  have h1 : minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := by
+    have h := minAdm_le_peelCharge_add_redChain M u hu
+    rwa [peelCharge] at h
+  have h2 : minAdm (redChain u M) ≤ u * deepTailMin M := minAdm_redChain_le_deepTailMin M u
+  have hp : (M 0 - u) * (M 1 - u) ≤ (M 1 - u) * M 0 := by
+    rw [Nat.mul_comm (M 0 - u) (M 1 - u)]
+    exact Nat.mul_le_mul (le_refl (M 1 - u)) (Nat.sub_le (M 0) u)
+  have hq : u * deepTailMin M ≤ u * M 2 := Nat.mul_le_mul (le_refl u) (deepTailMin_le_M2 M)
+  calc minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := h1
+    _ ≤ (M 0 - u) * (M 1 - u) + u * deepTailMin M := Nat.add_le_add_left h2 _
+    _ ≤ (M 1 - u) * M 0 + u * M 2 := Nat.add_le_add hp hq
+    _ = u * M 2 + (M 1 - u) * M 0 := by ring
+
+/-- **The TIGHTER interior QIP `minAdm M ≤ u·deepTailMin M + (M₁−u)·M₀`** (with `deepTailMin M` in place of
+`M₂`). The loss degenerates on `{Q_inl = z0·Z_deep = 0}` — codim `u·rank(Z_deep) = u·deepTailMin M` on the
+generic cell — NOT just on `{z0=0}` (codim `u·M₂`); when `Z_deep` is WIDE (`deepTailMin < M₂`) this is the
+SUB-COLLAPSE, and the effective pole codim is `u·deepTailMin`, so THIS form (not the `u·M₂` one) is what
+couplerad's `∫_p` closes on. Same proof as `minAdm_le_interior_qip` WITHOUT the final `deepTailMin ≤ M₂`
+weakening. `minAdm_le_interior_qip` follows from this via `deepTailMin_le_M2`. -/
+theorem minAdm_le_interior_qip_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hu : u ≤ min (M 0) (M 1)) :
+    minAdm M ≤ u * deepTailMin M + (M 1 - u) * M 0 := by
+  have h1 : minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := by
+    have h := minAdm_le_peelCharge_add_redChain M u hu
+    rwa [peelCharge] at h
+  have h2 : minAdm (redChain u M) ≤ u * deepTailMin M := minAdm_redChain_le_deepTailMin M u
+  have hp : (M 0 - u) * (M 1 - u) ≤ (M 1 - u) * M 0 := by
+    rw [Nat.mul_comm (M 0 - u) (M 1 - u)]
+    exact Nat.mul_le_mul (le_refl (M 1 - u)) (Nat.sub_le (M 0) u)
+  calc minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := h1
+    _ ≤ (M 0 - u) * (M 1 - u) + u * deepTailMin M := Nat.add_le_add_left h2 _
+    _ ≤ (M 1 - u) * M 0 + u * deepTailMin M := Nat.add_le_add_right hp _
+    _ = u * deepTailMin M + (M 1 - u) * M 0 := by ring
+
+/-- **The TIGHTEST interior QIP `minAdm M ≤ u·deepTailMin M + (M₀−u)·(M₁−u)`** (couplerad's form A, `a·b`
+not `b·M₀`). couplerad's binding deep stratum is `{z0·Z_deep·Π = 0}` (codim `u·(deepTailMin−b)`, tighter
+than `{z0·Z_deep=0}`), giving the pole condition `2c' < u·deepTailMin + a·b` (`a = M₀−u`, `b = M₁−u`,
+`a·b = peelCharge M u`). This is the STRICTEST of the three (`a·b ≤ (M₁−u)·M₀ ≤ ...`), and the proof is the
+SHORTEST — just the peel `minAdm_le_peelCharge_add_redChain` (`minAdm M ≤ (M₀−u)(M₁−u) + minAdm(redChain u
+M)`, and `peelCharge M u = (M₀−u)(M₁−u) = a·b` exactly) + the per-cut bound `minAdm_redChain_le_deepTailMin`
+(`≤ u·deepTailMin M`), NO weakening step. The other two forms follow (`(M₀−u)≤M₀`, `deepTailMin≤M₂`).
+Decorrelated-verified 0 fails over 9288 nondeg cells (6295 tight — genuinely binding). -/
+theorem minAdm_le_u_deepTailMin_add_peelCharge (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hu : u ≤ min (M 0) (M 1)) :
+    minAdm M ≤ u * deepTailMin M + (M 0 - u) * (M 1 - u) := by
+  have h1 : minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := by
+    have h := minAdm_le_peelCharge_add_redChain M u hu
+    rwa [peelCharge] at h
+  have h2 : minAdm (redChain u M) ≤ u * deepTailMin M := minAdm_redChain_le_deepTailMin M u
+  calc minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := h1
+    _ ≤ (M 0 - u) * (M 1 - u) + u * deepTailMin M := Nat.add_le_add_left h2 _
+    _ = u * deepTailMin M + (M 0 - u) * (M 1 - u) := by ring
+
+/-- **The full-min interior QIP corollary** `minAdm M ≤ ⨅_{u'≤min(M₀,M₁)} [(M₀−u')(M₁−u') + u'·deepTailMin M]`
+— the pivot-INDEPENDENT single object couplerad's analytic assembly cites. Since it is `≤` the min over ALL
+pivots `u'`, it is `≤` the min over any sub-range, hence certifies the stratified interior condition
+(`2c' < ab + min_ℓ φ`) at EVERY cell in one shot. A one-liner: `Finset.le_inf'` of form A
+(`minAdm_le_u_deepTailMin_add_peelCharge`) at each `u' ∈ range(min(M₀,M₁)+1)`. Green, sorry-free, NATIVE. -/
+theorem minAdm_le_inf_pivot_qip (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    minAdm M ≤ (Finset.range (min (M 0) (M 1) + 1)).inf'
+      ⟨0, Finset.mem_range.mpr (Nat.succ_pos _)⟩
+      (fun u' => (M 0 - u') * (M 1 - u') + u' * deepTailMin M) := by
+  refine Finset.le_inf' _ _ (fun u' hu' => ?_)
+  have hle : u' ≤ min (M 0) (M 1) := by
+    have := Finset.mem_range.mp hu'; omega
+  have h := minAdm_le_u_deepTailMin_add_peelCharge M u' hle
+  omega
+
 end DLNFibre.DLN.RLCT
