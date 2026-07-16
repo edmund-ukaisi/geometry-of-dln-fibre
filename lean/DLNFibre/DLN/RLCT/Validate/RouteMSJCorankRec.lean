@@ -117,4 +117,35 @@ theorem cellRank_le_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
   refine le_trans (cellRankIndex_le_inf' (dropHead (redChain u M)) i) (le_of_eq ?_)
   rw [deepTailMin, hfun]
 
+/-- **The binding-cut `a★+b★ ≤ deepTailMin M + 1` bound** (the dispatch-boundary predicate). At a
+nondegenerate binding cut `t` (`t+1 ≤ min(M₀,M₁)`, `hbind`), the peeled corner widths satisfy
+`(M₀−t) + (M₁−t) ≤ deepTailMin M + 1`. Same technique as `tailWidth_le_deepTailMin_of_binding` (which
+extracts only `M₁−t ≤ deepTailMin`): `minAdm_le_peelCharge_add_redChain` at `t+1` + the head-increment
+marginal `minAdm_redChain_succ_le` cancel `minAdm (redChain t M)`, giving `a·b ≤ (a−1)(b−1) + deepTailMin`,
+i.e. `a+b−1 ≤ deepTailMin`. Combined with `a+b = a★+b★ − 2j` (decreasing in `j`), EVERY dispatch cut
+`u = t+j` has `(M₀−u)+(M₁−u) ≤ deepTailMin M + 1`: so the generic cell is ALWAYS interior
+(`a+b ≤ deepTailMin`) ∪ immediate-edge (`a+b = deepTailMin+1`) — NO `a+b ≥ deepTailMin+2` regime
+(the deep-corank band is empty). The clean 4-way-dispatch boundary predicate for arch1build. -/
+theorem bindingCut_ab_le_deepTailMin_succ (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht1 : t + 1 ≤ min (M 0) (M 1))
+    (hbind : minAdm M = peelCharge M t + minAdm (redChain t M)) :
+    (M 0 - t) + (M 1 - t) ≤ deepTailMin M + 1 := by
+  have hmin := minAdm_le_peelCharge_add_redChain M (t + 1) (by omega)
+  have hmarg := minAdm_redChain_succ_le M t
+  rw [peelCharge] at hbind hmin
+  set a := M 0 - t with ha
+  set b := M 1 - t with hb
+  have ha1 : 1 ≤ a := by omega
+  have hb1 : 1 ≤ b := by omega
+  have hab0 : M 0 - (t + 1) = a - 1 := by omega
+  have hab1 : M 1 - (t + 1) = b - 1 := by omega
+  rw [hab0, hab1] at hmin
+  have hprod : a * b = (a - 1) * (b - 1) + (a + b - 1) := by
+    have e1 : a = (a - 1) + 1 := by omega
+    have e2 : b = (b - 1) + 1 := by omega
+    calc a * b = ((a - 1) + 1) * ((b - 1) + 1) := by rw [← e1, ← e2]
+      _ = (a - 1) * (b - 1) + ((a - 1) + (b - 1) + 1) := by ring
+      _ = (a - 1) * (b - 1) + (a + b - 1) := by omega
+  omega
+
 end DLNFibre.DLN.RLCT
