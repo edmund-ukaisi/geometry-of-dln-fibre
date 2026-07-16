@@ -98,4 +98,53 @@ theorem freedSchurLoss_corank_one_le {u a n : ℕ}
   rw [hfree]
   exact corank_integrand_le x.2 Qtp (fun i => Γ i 0) ω σ hω hW hc'
 
+/-- **The schur-shear cancellation (any `b`).** Substituting the corank block `Γ = D − schurShift x`
+(`schurShift x = C·P⁻¹·B₁₂`) into `freedSchurLoss` collapses the cross-coupling: the corank term
+`frobSq(C·Q̃ₚ + Γ·Q_b)` becomes `frobSq(C·Q_inl + D·Q_inr)` — the `C·P⁻¹·B₁₂·Q_inr` terms cancel
+exactly. So the sheared loss reads the pivot rows `Q_inl` (deep factor) DIRECTLY, decoupled from the
+front `(P, B₁₂)`; the pivot core `frobSq(P·Q̃ₚ)` is `Γ`-free and unchanged. This is the measure-side
+shear (`D = Γ + schurShift` maps `shearBox → genBox`) at the value level; it makes the edge C-shift
+target `v' = Q_inl·ω` (front-independent), the key decoupling of the b=1 leaf. -/
+theorem freedSchurLoss_shear_eq {u a b n : ℕ} (x : SJOuter u a b) (D : Fin a → Fin b → ℝ)
+    (Q : Matrix (Fin u ⊕ Fin b) (Fin n) ℝ) :
+    freedSchurLoss x (D - schurShift x) Q
+      = frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+            + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id))
+        + frobSq (Matrix.of x.2 * Q.submatrix Sum.inl id
+            + Matrix.of D * Q.submatrix Sum.inr id) := by
+  unfold freedSchurLoss
+  congr 1
+  have hof : Matrix.of (D - schurShift x)
+      = Matrix.of D - Matrix.of x.2 * (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 := by
+    ext i j
+    simp only [schurShift, Matrix.of_apply, Matrix.sub_apply, Pi.sub_apply]
+  rw [hof, Matrix.mul_add, Matrix.sub_mul]
+  simp only [Matrix.mul_assoc]
+  abel
+
+/-- **The b=1 SHEARED freedSchurLoss → corank-atom wiring (the front-decoupled R1).** After the schur
+shear (`Γ = D − schurShift x`), `(freedSchurLoss x (D−schurShift x) Q)^{−c'}` is bounded above by the
+single-fragile-direction power with the FRONT-INDEPENDENT target `v' = Q_inl·ω`:
+
+    (freedSchurLoss x (D−schurShift x) Q)^{−c'} ≤ (W + ∑ᵢ ((of x.2)·(Q_inl·ω) i + σ·D i 0)²)^{−c'}.
+
+Composes `freedSchurLoss_shear_eq` (corank term = `frobSq(C·Q_inl + D·Q_inr)`), `of_gamma_mul_corank_row`
+(`D·Q_inr = (σ (D·,0)) ⊗ ω` at b=1), and the landed `corank_integrand_le`. The RHS is
+`edge_leaf_gamma_bound`'s integrand at `v = v' = Q_inl·ω`, `d = σ`, `γ = D·,0` — the target the
+`|v'_{j₀}|^{−a}` (a<u) disposal consumes, decoupled from `(P, B₁₂)`. -/
+theorem freedSchurLoss_shear_corank_one_le {u a n : ℕ}
+    (x : SJOuter u a 1) (D : Fin a → Fin 1 → ℝ) (Q : Matrix (Fin u ⊕ Fin 1) (Fin n) ℝ)
+    (ω : Fin n → ℝ) (σ : ℝ) (hω : ∑ j, (ω j) ^ 2 = 1)
+    (hqb : ∀ j, (Q.submatrix Sum.inr id) 0 j = σ * ω j) {c' : ℝ}
+    (hW : 0 < frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+        + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id)))
+    (hc' : 0 ≤ c') :
+    ENNReal.ofReal ((freedSchurLoss x (D - schurShift x) Q) ^ (-c'))
+      ≤ ENNReal.ofReal ((frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+              + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id))
+            + ∑ i, ((Matrix.of x.2).mulVec ((Q.submatrix Sum.inl id).mulVec ω) i
+              + σ * D i 0) ^ 2) ^ (-c')) := by
+  rw [freedSchurLoss_shear_eq, of_gamma_mul_corank_row D (Q.submatrix Sum.inr id) ω σ hqb]
+  exact corank_integrand_le x.2 (Q.submatrix Sum.inl id) (fun i => D i 0) ω σ hω hW hc'
+
 end DLNFibre.DLN.RLCT
