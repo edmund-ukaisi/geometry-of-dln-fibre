@@ -15,9 +15,10 @@ Loewner-monotone via the variational identity `vᵀ(X/X₁₁)v = min_u [u;v]ᵀ
 `Matrix.PosSemidef.det_nonneg` is the `Y = 0` instance (`det 0 = 0 ≤ det X`), so the induction proves both
 at once — no `PosSemidef.sqrt` / continuous-functional-calculus import needed.
 
-## Status: building bottom-up. Landed: `blockQuadForm_expand` (the `1⊕k` block QF expansion — the heart).
-## Remaining (documented plan): complete-square form → Schur-complement PSD + Loewner-monotone (variational)
-## → `det_fromBlocks₁₁` pivot step → induction on dimension. Non-spectral throughout.
+## Status: COMPLETE. `det_le_det_of_posSemidef_sub` (`0 ⪯ Y ⪯ X → det Y ≤ det X`) is sorry-free +
+## axiom-clean `[propext, Classical.choice, Quot.sound]` (NATIVE, no eigenvalues). Chain:
+## `blockQuadForm_expand` → `schurCompl` + variational identity → Schur PSD + Loewner-monotone →
+## `posSemidef_pivotRow_zero` + complete-square lower bound → `det_fromBlocks₁₁` pivot step + induction.
 -/
 
 open Matrix
@@ -227,5 +228,112 @@ theorem schurCompl_loewner_mono {k : ℕ} (X Y : Matrix (Fin 1 ⊕ Fin k) (Fin 1
     rw [hsw, Matrix.sub_mulVec, dotProduct_sub] at this
     linarith
   rw [hSX]; linarith [hSY, hgeq]
+
+/-! ## The determinant pivot step and the main monotonicity theorem -/
+
+/-- The `(0,0)` entry of the inverse of an invertible `1×1` matrix is the scalar inverse. -/
+private theorem invOf_fin_one_apply (A : Matrix (Fin 1) (Fin 1) ℝ) [Invertible A] :
+    (⅟ A) 0 0 = (A 0 0)⁻¹ := by
+  rw [invOf_eq_nonsing_inv, inv_def, adjugate_fin_one, det_fin_one]
+  simp [Ring.inverse_eq_inv']
+
+/-- The det-`fromBlocks` Schur complement of the `1⊕k` reshape equals `schurCompl`. -/
+private theorem detBlocks_schur_eq {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    [Invertible M.toBlocks₁₁] :
+    M.toBlocks₂₂ - M.toBlocks₂₁ * ⅟ M.toBlocks₁₁ * M.toBlocks₁₂ = schurCompl M := by
+  ext j l
+  simp only [Matrix.sub_apply, Matrix.mul_apply, schurCompl, Matrix.of_apply,
+    Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.toBlocks₁₂, Matrix.toBlocks₁₁, Matrix.of_apply,
+    Fin.sum_univ_one]
+  rw [invOf_fin_one_apply]
+  simp only [Matrix.of_apply]
+  ring
+
+/-- **Loewner-order determinant monotonicity (non-spectral).** For real matrices, `0 ⪯ Y ⪯ X` (i.e. `Y`
+and `X − Y` both PSD) implies `det Y ≤ det X`. Minkowski's inequality via the Schur-complement recursion —
+NO eigenvalues. `PosSemidef.det_nonneg` is the `Y = 0` instance. -/
+theorem det_le_det_of_posSemidef_sub :
+    ∀ {N : ℕ} (X Y : Matrix (Fin N) (Fin N) ℝ), Y.PosSemidef → (X - Y).PosSemidef → Y.det ≤ X.det := by
+  intro N
+  induction N with
+  | zero => intro X Y _ _; simp [Matrix.det_fin_zero]
+  | succ n ih =>
+    intro X Y hY hXY
+    set e : Fin (n + 1) ≃ Fin 1 ⊕ Fin n :=
+      (finCongr (Nat.add_comm n 1)).trans finSumFinEquiv.symm with he
+    set X' := X.submatrix e.symm e.symm with hX'def
+    set Y' := Y.submatrix e.symm e.symm with hY'def
+    have hY'psd : Y'.PosSemidef := hY.submatrix _
+    have hXY'psd : (X' - Y').PosSemidef := by
+      have hsub : X' - Y' = (X - Y).submatrix ⇑e.symm ⇑e.symm := by
+        rw [hX'def, hY'def]; ext i j; simp [Matrix.submatrix_apply, Matrix.sub_apply]
+      rw [hsub]; exact hXY.submatrix _
+    have hX'psd : X'.PosSemidef := by
+      have h := hY'psd.add hXY'psd; rwa [show Y' + (X' - Y') = X' from by abel] at h
+    rw [show Y.det = Y'.det from (det_submatrix_equiv_self e.symm Y).symm,
+      show X.det = X'.det from (det_submatrix_equiv_self e.symm X).symm]
+    set dX := X'.toBlocks₁₁.det with hdX
+    set dY := Y'.toBlocks₁₁.det with hdY
+    have hdX_eq : dX = X' (Sum.inl 0) (Sum.inl 0) := by rw [hdX, det_fin_one]; rfl
+    have hdY_eq : dY = Y' (Sum.inl 0) (Sum.inl 0) := by rw [hdY, det_fin_one]; rfl
+    have hdX0 : 0 ≤ dX := hdX_eq ▸ hX'psd.diag_nonneg
+    have hdY0 : 0 ≤ dY := hdY_eq ▸ hY'psd.diag_nonneg
+    have hdYX : dY ≤ dX := by
+      have : 0 ≤ (X' - Y') (Sum.inl 0) (Sum.inl 0) := hXY'psd.diag_nonneg
+      rw [Matrix.sub_apply] at this; rw [hdX_eq, hdY_eq]; linarith
+    rcases eq_or_lt_of_le hdX0 with hdX_zero | hdX_pos
+    · -- pivot `dX = 0`: both matrices have a zero pivot row ⟹ both dets `0`.
+      have hXrow : ∀ j, X' (Sum.inl 0) j = 0 := by
+        rintro (i | j)
+        · rw [Subsingleton.elim i 0, ← hdX_eq]; exact hdX_zero.symm
+        · exact posSemidef_pivotRow_zero X' hX'psd (hdX_eq ▸ hdX_zero.symm) j
+      have hYrow : ∀ j, Y' (Sum.inl 0) j = 0 := by
+        have hdY_zero : dY = 0 := le_antisymm (hdX_zero ▸ hdYX) hdY0
+        rintro (i | j)
+        · rw [Subsingleton.elim i 0, ← hdY_eq]; exact hdY_zero
+        · exact posSemidef_pivotRow_zero Y' hY'psd (hdY_eq ▸ hdY_zero) j
+      rw [Matrix.det_eq_zero_of_row_eq_zero (Sum.inl 0) hXrow,
+        Matrix.det_eq_zero_of_row_eq_zero (Sum.inl 0) hYrow]
+    · -- pivot `dX > 0`: Schur recursion + IH.
+      have hdX_ne : dX ≠ 0 := hdX_pos.ne'
+      letI : Invertible X'.toBlocks₁₁ := X'.toBlocks₁₁.invertibleOfIsUnitDet (isUnit_iff_ne_zero.2 hdX_ne)
+      have hXdet : X'.det = dX * (schurCompl X').det := by
+        conv_lhs => rw [← Matrix.fromBlocks_toBlocks X']
+        rw [Matrix.det_fromBlocks₁₁, detBlocks_schur_eq X']
+      -- `dY` may be `0` (then `det Y' = 0`); else the same recursion.
+      have hScX_psd : (schurCompl X').PosSemidef := schurCompl_posSemidef X' hX'psd
+      have hScY_psd : (schurCompl Y').PosSemidef := schurCompl_posSemidef Y' hY'psd
+      have hScmono : (schurCompl X' - schurCompl Y').PosSemidef :=
+        schurCompl_loewner_mono X' Y' hY'psd hXY'psd
+      have hdet0 : (0 : ℝ) ≤ (0 : Matrix (Fin n) (Fin n) ℝ).det := by
+        rcases Nat.eq_zero_or_pos n with hn | hn
+        · subst hn; simp [Matrix.det_fin_zero]
+        · exact le_of_eq (Matrix.det_eq_zero_of_row_eq_zero (⟨0, hn⟩ : Fin n) (fun _ => rfl)).symm
+      have hScdetY0 : 0 ≤ (schurCompl Y').det := by
+        have h := ih (schurCompl Y') 0 (by simpa using Matrix.PosSemidef.zero)
+          (by simpa using hScY_psd)
+        linarith
+      have hScmono_det : (schurCompl Y').det ≤ (schurCompl X').det :=
+        ih _ _ hScY_psd hScmono
+      rcases eq_or_lt_of_le hdY0 with hdY_zero | hdY_pos
+      · -- `dY = 0` ⟹ `det Y' = 0 ≤ det X'`.
+        have hYrow : ∀ j, Y' (Sum.inl 0) j = 0 := by
+          rintro (i | j)
+          · rw [Subsingleton.elim i 0, ← hdY_eq]; exact hdY_zero.symm
+          · exact posSemidef_pivotRow_zero Y' hY'psd (hdY_eq ▸ hdY_zero.symm) j
+        rw [Matrix.det_eq_zero_of_row_eq_zero (Sum.inl 0) hYrow, hXdet]
+        exact mul_nonneg hdX0 (le_trans hScdetY0 hScmono_det)
+      · have hdY_ne : dY ≠ 0 := hdY_pos.ne'
+        letI : Invertible Y'.toBlocks₁₁ :=
+          Y'.toBlocks₁₁.invertibleOfIsUnitDet (isUnit_iff_ne_zero.2 hdY_ne)
+        have hYdet : Y'.det = dY * (schurCompl Y').det := by
+          conv_lhs => rw [← Matrix.fromBlocks_toBlocks Y']
+          rw [Matrix.det_fromBlocks₁₁, detBlocks_schur_eq Y']
+        rw [hXdet, hYdet]
+        calc dY * (schurCompl Y').det
+            ≤ dX * (schurCompl Y').det := by
+              apply mul_le_mul_of_nonneg_right hdYX hScdetY0
+          _ ≤ dX * (schurCompl X').det := by
+              apply mul_le_mul_of_nonneg_left hScmono_det hdX0
 
 end DLNFibre.DLN.RLCT
