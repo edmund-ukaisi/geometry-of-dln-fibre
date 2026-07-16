@@ -68,6 +68,39 @@ genuine new plumbing (Fubini + Stage A + A/B + charge domination). (b) NON-SQUAR
   sufficient rankgen with couplerad (does charge-domination need `a+b ≤ ρ−1` or only `b ≤ ρ`?).
 - **c'-window**: `hc'lo`/`hc'hi` carried; confirm assembly supplies both (`hc' j` + a `c' < carrierThreshold`).
 
+## Banked-piece inventory (recon — the mountain is largely the PENDING step 2–5 chart-wiring)
+
+The coupled-incidence route's `RouteMSJIncidenceAssembly` docstring itself lists steps 2–5 as **pending**
+(the coupled Γ-peel is banked as `frontChargeIntegrand`; the chart resolution of its `∫_x` + the finite
+cover are the deferred work). That pending work IS `coupled_hfin_cell`. The pieces it wires are BANKED:
+
+- **Charge factor (step 1)** — `frontCharge_factor` (EXACT), `frontLoss_pivotPoly_eq` (E_top → polynomial):
+  `frontChargeIntegrand = ofReal(det(Q_bQ_bᵀ)^{−a/2}·Cresid)·frontLossIntegrand`, and `frontLossIntegrand`
+  in polynomial front-block form. Both in `RouteMSJIncidenceAssembly`.
+- **Chart algebra (step 3)** — `RouteMSJIncidenceChart`: `det_chartGram`, `chartNull_Qb/_Qp/_gram`,
+  `chartProj_Dcancel`, `chartProjRed_block`, `chartSwap` — the transverse-Schur `E_tr` chart reductions.
+- **Front-block fibre finiteness (step 3)** — `chart4_Htilde_fibre_lt_top {N}{τ>0}{q}(hq:(N:ℝ)<2q) :
+  ∫(‖H‖²+τ²)^{−q} < ⊤` (`RouteMSJIncidenceChart4Polar`); `chart5_bigcell_cov` / `chart5_rank_le_iff_schur`
+  (`RouteMSJIncidenceChart5BigCell`, the big-cell coverage + rank↔Schur).
+- **Exponent gate (step 4)** — `clsCodim_gate_genL` + `stratum_corner_lt_top` (`RouteMSJArity4Assembly`,
+  general-L: `minAdm M ≤ clsCodim + ab`, feeding `2q < C_{ℓ,s}`); `clsCodim`/`clsCodim_gate`/`minAdm_arity3`
+  (`RouteMSJIncidenceExponent`); the corner blow-up `corner_block_cube_lintegral_lt_top`.
+- **Atoms** — `radial_morse_residual_power_le` / `core_T_peel_le`(`_ae`) (A, y-Morse);
+  `fibre_lintegral_mul_le` (B, front fibre); `routeMBoxThresholdFinite_rrp` / `core_schurGen_lt_top` (RRP).
+- **Conditional inner finiteness** — `freedSchurLoss_inner_peel_lt_top` / `_bounded_lt_top`
+  (`RouteMSJFreedPeel`): per-point `∫_Γ (freedSchurLoss)^{−c'} < ⊤` given pivot-energy>0, Q_bQ_bᵀ PosDef,
+  c'>ab/2 — the interface hypotheses arch1build's `hGae` + `pivotEnergy` supply a.e.
+- **Cover gluing (step 5)** — `lintegral_lt_top_of_finite_cover` / `_finset_cover`
+  (`RouteMSJIncidenceGluing`); the deep-cover `deepCover_aux` / `deepRankLE_eq_iUnion_cells` (`RouteMSJDeepCoverage`).
+
+**The genuinely-NEW wiring (no cheap green sub-commit — hard multi-step lemmas):**
+(w1) map `frontLossIntegrand`'s `∫_x` onto the chart-algebra + `chart4`/`chart5` H̃-fibre form, per deep-cell
+rank-flag stratum; (w2) the deep-cell (CR-path rank flag) → (ℓ,s) stratum + `chart5` big-cell dispatch;
+(w3) the NEW charge-domination lemma (couplerad ★4 `γ^hier`; via arch1build's a.e.-PosDef `hGae` + exponent
+domination — Cauchy–Binet UNAVAILABLE v4.29); (w4) the finite-cover gluing over CRIndex. Square sub-family
+(u=M₂=n): the Move-2 lost-block core collapses to the banked `routeMBoxThresholdFinite_rrp`; non-square →
+schurrec's SchurRecStep. RankGEN (`a+b+1≤ρ`): arch1build supplies `bindingShell_rankgen` (BackPeel, arity≥4).
+
 ## Consults
 
 - couplerad (a0bd7f4f9aa5ce4f8): confirmed the reduction is genuine multi-lemma new work even square

@@ -47,8 +47,15 @@ LAST substantive analytic content of the arity≥4 `(□)` discharge. Route A (c
 >   (chain-length IH, DEAD — charge compounds). SVD-free. Charge single-layer in `A_cor`. The
 >   square-first-factor `(r,r,p)` `SchurCore` is banked; only the non-square per-corank step is new.
 > - **Route.** couplerad §8 Route A + coordinator's corrections (Cauchy-Binet out, square not a freebie).
-> - **Status.** interface: green-gated + G2-type-witnessed, NOT sorry-free (one documented mountain
->   sorry). Awaiting fidelity review (statement match) + the mountain build.
+> - **Status.** interface: green-gated + G2-type-witnessed + **REVIEWED (PASS, corankrec-rev)** on all
+>   four items — fidelity (token-for-token G2 match at u=t+j), scope soundness (window = exactly
+>   `0 < q < T1q`; `carrierThreshold` correctly the full-chain q-threshold), honest-sorry, and rankgen.
+>   `#print axioms coupled_hfin` (force-elaborated, decorrelated from build exit) =
+>   `[propext, sorryAx, Classical.choice, Quot.sound]` — exactly one `sorryAx` (the mountain), NO
+>   `cited_aoyagi_dln` (NATIVE confirmed at the axiom level). NOT sorry-free (one documented mountain
+>   sorry, `coupled_hfin_cell`). Rankgen RESOLVED: the strict `a+b+1≤ρ` is genuinely needed (Codex: charge
+>   pole `~r^{−a}`, `a` load-bearing) and IS derivable at the binding cut (arch1build's `bindingShell_rankgen`
+>   via BackPeel `ρ ≤ tailMin` + the cominimizer lower bound, arity≥4) — I carry it, arch1build fills it.
 
 ---
 
