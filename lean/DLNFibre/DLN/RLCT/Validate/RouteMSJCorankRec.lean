@@ -1,4 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJArity4Assembly
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankGeneric
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCellRank
 
 set_option linter.style.longLine false
 set_option linter.unusedVariables false
@@ -111,5 +113,30 @@ example (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ) (c' : ℝ)
     ∫⁻ p in paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1,
         frontChargeIntegrand M (t + j) c' p < ⊤ :=
   frontChargeBox_lt_top_of_hfin M (t + j) c' (coupled_hfin M t j c' hshell hc'lo hc'hi)
+
+/-! ## Route-B interior deliverables — the cell-level genericity `hGae` (feeds arch1build's conversion) -/
+
+/-- **The corank-Gram genericity `hGae` ON an interior cell** (Route B; feeds arch1build's
+`coupledCell_interior_lt_top`). On the cell region (box ∩ deep-cell), the corank Gram `Q_b·Q_bᵀ`
+(`Q_b = A_cor·Z_deep`) is PosDef a.e. This is the BOX-level genericity `hGae_from_deepRank`
+(built from `M₁−u ≤ deepTailMin M` at the binding cut, via `deepFactor_hZrank_of_le`), RESTRICTED to the
+cell ⊆ box (`ae_mono` on `Measure.restrict_mono` — an a.e. statement descends to any subset: vacuous on
+a null deficient cell, box-a.e. on the co-null generic cell). NATIVE, no new genericity content. -/
+theorem hGae_cell_interior (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (hshell : BindingShell M t j)
+    (i : CRIndex (dropHead (redChain (t + j) M))) :
+    ∀ᵐ p ∂(volume.restrict ((paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1)
+        ∩ projDeep M (t + j) ⁻¹'
+          (deepCell (dropHead (redChain (t + j) M)) (dropHead (redChain (t + j) M) 0) L
+            le_rfl (dropHead (redChain (t + j) M) (Fin.last L)) i
+            (fun _ => (1 : Matrix (Fin (dropHead (redChain (t + j) M) (Fin.last L)))
+              (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ))))),
+      ((hsQ M (t + j) (deeperFlagZdeep M (t + j)) p.1 p.2).submatrix Sum.inr id
+        * ((hsQ M (t + j) (deeperFlagZdeep M (t + j)) p.1 p.2).submatrix Sum.inr id)ᵀ).PosDef := by
+  have hb : M 1 - (t + j) ≤ deepTailMin M :=
+    le_trans (Nat.sub_le_sub_left (Nat.le_add_right t j) (M 1))
+      (tailWidth_le_deepTailMin_of_binding M t hshell.htb hshell.hbind)
+  have hbox := hGae_from_deepRank M (t + j) (deepFactor_hZrank_of_le M (t + j) hb)
+  exact hbox.filter_mono (ae_mono (Measure.restrict_mono Set.inter_subset_left le_rfl))
 
 end DLNFibre.DLN.RLCT
