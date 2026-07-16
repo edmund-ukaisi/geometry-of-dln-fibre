@@ -1,0 +1,9 @@
+**Q1 — NON-VACUOUS.** **FACT:** For \(\rho>0\), the partial-identity layers compose to the identity on the first \(\rho\) coordinates, so the selected minor genuinely has determinant \(1\). **INFERENCE:** Thus its polynomial is nonzero; over finite-dimensional real Lebesgue space, its nonvanishing locus has positive measure—and indeed full measure modulo a null set. The bound is not automatic (zero matrices can violate it); the \(\rho=0\) branch is correctly trivial because \(0\le\operatorname{rank}\) always.
+
+**Q2 — TRUE.** **FACT:** Under the stated product-Lebesgue model, the nonzero maximal minor gives \(\operatorname{rank}\ge\min_s C_s\) almost everywhere. Combining this with the given universal upper bound yields rank exactly \(\min_s C_s\) almost everywhere, including both endpoint widths. This assumes freely varying real matrices with product Lebesgue measure, or equivalently independent absolutely continuous sampling—not arbitrary concentrated distributions.
+
+**Q3 — FAITHFUL.** **FACT:** `prod_rank_ge_chainInf_ae` says exactly that the product rank is at least the infimum of all chain widths almost everywhere. Since the chain is finite, that infimum is its minimum, and including both endpoints is mathematically necessary. There is no over-claim: the qualification “a.e.” is explicit, and the statement only records the proved lower bound.
+
+**Q4 — SOUND.** **FACT:** Pointwise transitivity gives \(b\le\texttt{deepTailMin}\le\operatorname{rank}\), and therefore the same conclusion on the almost-everywhere event. **INFERENCE:** Stating E at the full generic rank is the more reusable and conceptually natural altitude; consumer-specific bounds should be derived afterward. Non-vacuity of the restricted-measure consumer additionally requires the box to have positive measure, but this does not affect the logical chaining.
+
+**Verdict:** Yes—the statement is bedrock: non-vacuous in its substantive cases, correctly scoped, and faithfully named.
