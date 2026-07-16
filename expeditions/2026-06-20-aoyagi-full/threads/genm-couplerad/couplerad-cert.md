@@ -1026,30 +1026,36 @@ closure, on corankrec's clean-three base) × free `ub`-Gaussian] + [threshold vi
 The bounded-domain inner/outer comparison (the R1/R2 caveats) is the one detail-at-scale step for the
 formaliser — spec'd turnkey in ★7.
 
-**★7 The inner/outer bounded-domain comparison (turnkey spec for the R1/R2 caveats).** The one step beyond a
-literal change-of-variables. It rests on ONE reusable lemma + its two applications.
+**★7 The inner/outer bounded-domain comparison (CORRECTED — the one real analytic step, not a point-germ).**
 
-*The germ lemma (reusable, Mathlib-grade).* Let `h : ℝⁿ → ℝ≥0∞` measurable, LOCALLY BOUNDED on
-`ℝⁿ \ {0}` (its only possible non-integrability is at the origin — true here: `h = (loss)^{−q}`, `loss` a
-sum of squares vanishing only where the arguments do, and the reduction places that at the joint origin).
-Let `S ⊆ T` be bounded measurable with `S ⊇ Metric.ball 0 r` for some `r>0`. Then `∫_S h < ∞ ⟺ ∫_T h < ∞`.
-[Proof: `∫_S h ≤ ∫_T h`; and `∫_T h = ∫_S h + ∫_{T\S} h` with `T\S ⊆ T` bounded and `⊆ {‖·‖ ≥ r}` (disjoint
-from the ball), where `h` is bounded ⟹ `∫_{T\S} h < ∞`. So both finite or both infinite.] Corollary: for a
-linear surjection `Φ : ℝᴺ ↠ ℝᵐ` (`ℝᴺ = V ⊕ ker Φ`, `Φ|_V` iso, `|det| = J`) and `g ≥ 0` loc-bounded off
-`0∈ℝᵐ`, `∫_{B} g∘Φ` (over any bounded `B ⊇ ball 0 ρ`) is finite `⟺ ∫_{nbhd of 0 ⊆ ℝᵐ} g < ∞` — via Fubini
-`V⊕ker` + the germ lemma on each factor (the `ker` factor contributes a finite volume; `Φ|_V(B∩V-slice)` is
-a bounded `Y`-region containing a `0`-neighborhood).
+⚠️ SELF-CORRECTION. An earlier draft of ★7 claimed a trivial "germ at `{0}`" lemma (`h` loc-bounded off the
+single point `0`). That is WRONG: the singular locus of the reduced integrand is the DETERMINANTAL CONE
+`Σ = {loss=0} = {E·Y=0, B̃=0}` (positive-dimensional), and the inner integral `h(Y) =
+∫_x(‖EY‖²+‖B̃Q_b‖²)^{−q}dx` is `+∞` on the whole locus `{rank Y < u}` (numerically: for `2q ∈
+[(u+a)(u−1)+ub, (u+a)u+ub)`, `h=+∞` on `{rank Y<u}` — `couplerad_domain.py`). So `h` is NOT loc-bounded off a
+point; the point-germ lemma does not apply.
 
-*Application to R2 (zonotope).* `Φ : z0 ↦ z0·(Z_deepΠ)`, `ℝ^{uM₂} ↠ ℝ^{ud}`. The `z0`-box image is a
-zonotope, but it is bounded AND contains `ball 0 ρ` (`0` interior, `Φ` surjective). So `∫_{z0-box}(loss∘Φ)^{−q}`
-has the SAME finiteness as `∫_{Y-box}(loss)^{−q}` (the rectangular arity-3 domain) — germ corollary, `J`
-constant.
-*Application to R1 (`B̃`-shift).* `B̃ = B₁₂ + P·Ã_z(z0)`: for fixed `(z0,P)` the `B̃`-domain is the box
-shifted by `P·Ã_z`. The singularity is at the JOINT origin `(z0,P,B₁₂,C)=0`, where the shift `P·Ã_z → 0`, so
-the shifted domain contains a `0`-neighborhood in `B̃`; away from the origin `h` is bounded on the (bounded)
-box ⟹ finite. So the germ lemma applies at the joint origin and the `B̃`-shift changes nothing.
-*Net:* `∫_p < ∞ ⟺` the rectangular arity-3 (□) integral `< ∞` — no domain subtlety survives. The germ lemma
-is the one new (reusable, standard) Mathlib-grade brick; everything else is `Φ`-Fubini + `routeMBoxThresholdFinite_mnp`.
+*The correct reduction* (Φ-Fubini + box-sandwich + RLCT-locality):
+- **Φ-Fubini.** `z0 = v ⊕ k` (`v∈V≅ℝ^{ud}`, `Φ|_V` iso `|det|=J`; `k∈ker Φ`, dim `u(M₂−d)`). The integrand
+  `H(z0,x)` depends only on `(Y=Φ|_V(v), x)`, so `∫_{z0-box×x-box}H = ∫_{k}[∫_{v,x}H(Φ|_V(v),x)]` — the `k`
+  directions integrate to a FINITE volume (bounded box), leaving `J⁻¹·∫_{Y∈𝒫, x-box}H(Y,x)` over a `Y`-PARALLELEPIPED
+  `𝒫 = Φ|_V(v-box)`.
+- **Box-sandwich.** `∃ 0<c₁<c₂` with `[−c₁,c₁]^{ud} ⊆ 𝒫 ⊆ [−c₂,c₂]^{ud}` (`𝒫` bounded parallelepiped, `0`
+  interior). So `∫_{[−c₁,c₁]×x-box}H ≤ ∫_{𝒫×x-box}H ≤ ∫_{[−c₂,c₂]×x-box}H`.
+- **The ONE substantive fact — SCALE-INDEPENDENCE of the arity-3 (□) box-finiteness.** `∫_{[−c,c]^{ud}×x-box}
+  (‖EY‖²+‖B̃Q_b‖²)^{−q}` finite for one `c>0` ⟺ for all `c>0`. This is RLCT-locality: finiteness is governed by
+  the RLCT of the homogeneous determinantal cone `Σ` at its apex `0`, and the RLCT is a LOCAL invariant
+  minimised at the apex (upper-semicontinuity; the origin is the most-singular point of the homogeneous ideal),
+  so box size does not affect finiteness. R1's `B̃`-shift `P·Ã_z` is smooth+bounded and fixes the apex, so the
+  same locality covers it.
+
+*Net:* `∫_p < ∞ ⟺` the rectangular arity-3 (□) integral `< ∞`, via Φ-Fubini + box-sandwich + scale-independence.
+**HONEST STATUS:** this is DETAIL-AT-SCALE (a standard, decomposable analytic lemma — scale/shape-independence
+of box-finiteness = RLCT locality at a conical apex — Mathlib-grade to build), NOT the trivial point-germ I first
+wrote, and NOT a monument. But it IS more than composition-of-banked-pieces: the formaliser must confirm
+`routeMBoxThresholdFinite_mnp` delivers scale-independence (it should, if proven via monomialisation/Watanabe,
+which is inherently local), or add a scale-independence lemma. This is the one place the interior closure needs a
+genuine (standard) analytic step beyond the banked endpoints.
 
 **Owner:** intloss (rank lemma + per-p finiteness) + me (the joint `∫_p` reduction, Codex-confirmed) +
 corankrec (QIP landed + the Lean assembly). The interior CONVERGES ∀-cell (no obstruction); the Lean closure
