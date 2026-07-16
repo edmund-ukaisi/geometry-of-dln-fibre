@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurWishartWeight
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlab
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlabD
 import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
 
 set_option linter.style.longLine false
@@ -244,5 +245,18 @@ theorem chargeFreeBox_of_inner {n p a b : ℕ} (hab : a + b ≤ n) (C : ℝ≥0�
           have : (a : ℝ) + (b : ℝ) ≤ (n : ℝ) := by exact_mod_cast hab
           linarith
         exact detGram_lintegral_lt_top hbn haq
+
+/-- **The interior charge free-box is finite, UNCONDITIONALLY (general `b`, general `a`).** For the interior
+scope `a+b ≤ n ∧ a+b ≤ p` (`= a+b ≤ ρ = min(n,p)`), the interior CHARGE free-box `∫∫_{(A_cor,S)∈box}
+det((A_cor·S)(A_cor·S)ᵀ)^{−a/2}` is finite. This is the FULL interior closure of route C: the `b`-general
+outer `chargeFreeBox_of_inner` (the `S`-first outer + banked `detGram_lintegral_lt_top` `r=b`) composed with
+slabD's `b`-general inner corank-slab `CorankSlabD.corankSlabD_charge_sint_le` (the coupled Wishart-det
+negative-moment slab, couplerad's §w3-atlas power recursion). Subsumes the `b=1` `chargeFreeBox_b1a1_lt_top`.
+NATIVE (no `cited_aoyagi_dln`), pure power (no log — the log is edge-only). -/
+theorem chargeFreeBox_lt_top {n p a b : ℕ} (hn : a + b ≤ n) (hp : a + b ≤ p) :
+    (∫⁻ Acor in matBox b n 1, ∫⁻ S in matBox n p 1,
+        ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2))) < ⊤ := by
+  obtain ⟨C, hC, hinner⟩ := CorankSlabD.corankSlabD_charge_sint_le (by omega : b ≤ n) hp
+  exact chargeFreeBox_of_inner hn C hC hinner
 
 end DLNFibre.DLN.RLCT
