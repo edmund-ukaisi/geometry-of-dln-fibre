@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontChargeBox
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
 
 set_option linter.style.longLine false
 
@@ -222,6 +223,25 @@ binding equality, and `0 < minAdm (redChain t M)` (nonempty `c'`-window / nontri
 def NondegBindingCut (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) : Prop :=
   1 ≤ t ∧ t + 1 ≤ min (M 0) (M 1)
     ∧ minAdm M = peelCharge M t + minAdm (redChain t M) ∧ 0 < minAdm (redChain t M)
+
+/-- **The binding-shell rank-genericity bound `a+b+1 ≤ deepTailMin M`** (corankrec's `hrankgen`, supplied
+from banked BackPeel). For a `≥ 4`-width chain at a nondegenerate binding cut `t` and an INTERIOR shell
+`1 ≤ j < r = min(M₀−t, M₁−t)`, the widths satisfy `(M₀−(t+j)) + (M₁−(t+j)) + 1 ≤ deepTailMin M`. Chain:
+BackPeel gives a co-minimizing deeper rank `ρ` of `redChain t M` with `(M₀−t)+(M₁−t)−1 ≤ ρ`
+(`minAdm_backPeel_cominimizer_ge`) and `ρ ≤ tailMin (redChain t M) = deepTailMin M` (both
+`= min(M₂,…,M_{last})`, via `Fin.cons_succ`); so `(M₀−t)+(M₁−t)−1 ≤ deepTailMin M`, and the interior
+shift (`j ≥ 1`, `j < r` so no truncation) gives `(M₀−(t+j))+(M₁−(t+j))+1 = (M₀−t)+(M₁−t)−2j+1 ≤ deepTailMin M`.
+NATIVE (pure ℕ + banked BackPeel). -/
+theorem bindingShell_rankgen (M : Fin (L + 1 + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (hcut : NondegBindingCut M t) (hj1 : 1 ≤ j) (hjr : j < min (M 0 - t) (M 1 - t)) :
+    (M 0 - (t + j)) + (M 1 - (t + j)) + 1 ≤ deepTailMin M := by
+  obtain ⟨-, htb, hbind, -⟩ := hcut
+  obtain ⟨ρ, hρtail, hρcomin, -⟩ :=
+    exists_minAdm_backPeel_cominimizer_corankWidth M t htb hbind
+  have hge := minAdm_backPeel_cominimizer_ge M t htb hbind ρ hρtail hρcomin
+  have htail_eq : tailMin (redChain t M) = deepTailMin M := rfl
+  rw [htail_eq] at hρtail
+  omega
 
 /-- **The direct `SJStepHyp` from the coupled route + the degenerate handler.** Case-splits each `≥ 3`-width
 chain `M`: if `M` has all-positive widths AND a nondegenerate interior binding cut, the coupled route
