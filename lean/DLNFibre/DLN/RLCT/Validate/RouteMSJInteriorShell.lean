@@ -4,36 +4,35 @@ import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
 set_option linter.style.longLine false
 
 /-!
-# `RouteMSJInteriorShell` — the tight-interior log-integrability (couplerad §w3-deep)
+# `RouteMSJInteriorShell` — the interior charge free-box (route C) + the log-integrability atom
 
-**Thread (aoyagi-full Stage 2), the interior coupled shell-integration.** The interior charge integral
-`∫_cell < ⊤` (for the generic cell `a+b ≤ ρ`, `ρ = min(M₂, n_last)`) splits by the smallest singular value
-`σ_ρ(S)` of the deep factor `S`. This module owns the `σ_ρ → 0` TIGHT shells; schurB's uniform atom
-`chargedWishartWeight_fullDeepRank_lt_top` covers the BULK `{σ_ρ ≥ δ₀}` (and, unified, is optional — the
-graded log bound is valid for all `σ_ρ`).
+**Thread (aoyagi-full Stage 2), the interior coupled shell-integration.** The interior gate is the CHARGE
+free-box `∫∫_{(A_cor,S)∈box} det((A_cor·S)(A_cor·S)ᵀ)^{−a/2}` (arch1build's definitional read: the loss
+factor is `x`-independent and BOUNDED on the interior generic cell — `E_top`'s `P·P⁻¹` cancels, `E_tr`'s
+`Q_inr` is killed by its own projector — so it pulls out and the gate reduces to the charge). For the 3
+square dispatch witnesses (`b=1, a=1`, `S` square `n×p`, `ρ = min(n,p)`), the free-box is **POWER-convergent**
+by integrating `S` FIRST: `∫_S ‖A_cor·S‖⁻¹ dS ≤ C·‖A_cor‖⁻¹` uniformly, then `∫_{A_cor} ‖A_cor‖⁻¹ dA_cor <
+⊤` (`a=1 < n`). There is NO log on the interior — the log was an `A_cor`-first-order artifact (the fixed-`S`
+charge weight `W(S) ~ log(1/σ_min(S))`), which the `S`-first order avoids; the genuine log lives at the
+EDGE `a+b = ρ+1` (edgeasm).
 
-The crux (couplerad §w3-deep): the per-shell charge weight grows only **logarithmically** in `1/σ_ρ`,
-`W(S) ≤ C·(1 + log(1/σ_ρ))` (the top `ρ−1` singular directions are order-1; only `σ_ρ ~ ε` is small),
-while the `σ_ρ`-measure of the shell `{σ_ρ ~ ε}` is `~ ε^{c−1} dε` with `c = codim{rank S ≤ ρ−1} =
-(M₂−ρ+1)(n−ρ+1) ≥ 1`. Hence
+## Contents
+Route C (the interior closure, `b=1,a=1`), power-convergent, `S`-first:
+- `chargeFreeBox_b1a1_of_inner` — the assembly: given schurB's inner uniform charge bound `∫_S charge^{−1/2}
+  dS ≤ C·frobSq(A_cor)^{−1/2}` (via the banked qbox projection-radial core `projection_rpow_lintegral_
+  uniform`), the outer `A_cor`-integral closes by the banked `detGram_lintegral_lt_top` (`r=1`, `a=1<n`).
+  Discharges to `chargeFreeBox_b1a1_lt_top` once schurB lands the inner contract. Needs `n≥2 ∧ p≥2`.
 
-    ∫_{σ_ρ < δ₀} W dS ≤ ∫₀^{δ₀} C·(1 + log(1/ε))·ε^{c−1} dε < ∞   (converges since c ≥ 1).
-
-The `s = c−1 ≥ 0 > −1` power is integrable near `0`; the log factor is dominated by an arbitrarily small
-power `log(1/ε) ≤ η⁻¹·ε^{−η}` (any `η > 0`), reducing the whole thing to a power integral `∫ ε^{s−η}`
-finite for `s−η > −1` (the §w3-deep "option II" Lean route; couplerad's recommended σ^{−κ} domination).
-This is the genuinely-new log-machinery; the naive uniform-atom `ε^{−ab}` bound would DIVERGE (`c = ab`
-borderline), the graded log bound converges.
-
-## Contents (this milestone — the analytic convergence core)
+The log-integrability atom (re-homed: NOT the interior tool — it is the EDGE tool for `a+b=ρ+1`, and the
+last-step tool for the `A_cor`-first lens of the coupled/edge integrals; reusable clean bedrock):
 - `log_one_div_le_rpow_neg` — log-vs-power domination `log(1/x) ≤ η⁻¹·x^{−η}` (network-free, `x, η > 0`).
-- `shellLogWeight_integrableOn` — the tight-shell weight `C·(1+log(1/ε))·ε^s` is integrable on `(0,t)`
-  (`0 < t ≤ 1`, `−1 < s`, `0 ≤ C`); the analytic convergence core (Bochner form).
+- `shellLogWeight_integrableOn` — the weight `C·(1+log(1/ε))·ε^s` is integrable on `(0,t)` (`0<t≤1`,
+  `−1<s`, `0≤C`); the analytic convergence core (Bochner form), via the `σ^{−κ}` domination.
 - `shellLogWeight_lintegral_lt_top` — the `ℝ≥0∞` form: `∫⁻ ε in Ioc 0 t, ofReal(C·(1+log(1/ε))·ε^s) < ⊤`.
 -/
 
-open MeasureTheory Set
-open scoped ENNReal
+open MeasureTheory Set Matrix
+open scoped ENNReal Matrix
 
 namespace DLNFibre.DLN.RLCT
 
@@ -131,5 +130,55 @@ theorem shellLogWeight_lintegral_lt_top {t s C : ℝ} (ht : 0 < t) (ht1 : t ≤ 
     positivity
   have := (lintegral_ofReal_ne_top_iff_integrable hInt.aestronglyMeasurable hnn).mpr hInt
   exact lt_top_iff_ne_top.mpr this
+
+/-! ## The interior charge free-box (route C, `b=1,a=1` square witnesses)
+
+The interior closure is the CHARGE free-box `∫∫_{(A_cor,S)∈box} det((A_cor·S)(A_cor·S)ᵀ)^{−a/2}` (arch1build:
+the loss factor is x-independent and BOUNDED on the interior generic cell — `E_top`'s `P·P⁻¹` cancels,
+`E_tr`'s `Q_inr` is killed by its own projector — so it pulls out, leaving the charge). For the 3 square
+dispatch witnesses `b=1, a=1` (`S = Z_deep` square `n×p`, `ρ = min(n,p)`), `chargeGramDet A_cor S =
+frobSq(A_cor·S) = ‖A_cor·S‖²`, and the free-box is POWER-convergent by integrating `S` FIRST:
+`∫_S ‖A_cor·S‖⁻¹ dS ≤ C·‖A_cor‖⁻¹` uniformly (schurB's inner contract, via the banked qbox projection-
+radial core `projection_rpow_lintegral_uniform`), then `∫_{A_cor} ‖A_cor‖⁻¹ dA_cor < ⊤` (banked
+`detGram_lintegral_lt_top` at `r=1`). No log, no shell, no CoV — the log was an `A_cor`-first artifact,
+`S`-first is pure power. Needs `n≥2 ∧ p≥2` (`= a+b ≤ ρ`). -/
+
+/-- **The interior charge free-box is finite, given the inner uniform bound (`b=1, a=1`).** The assembly
+of route C: consume schurB's inner uniform charge bound `hinner` (`∫_S charge^{−1/2} dS ≤ C·frobSq(A_cor)^
+{−1/2}`, uniform `C`, via the banked projection-radial core) and close the outer `A_cor`-integral by the
+banked `detGram_lintegral_lt_top` (`r=1`, exponent `−1/2 = −a/2` at `a=1 < n`). `hinner` is exactly
+schurB's contract; it discharges to `chargeFreeBox_b1a1_lt_top` once landed. -/
+theorem chargeFreeBox_b1a1_of_inner {n p : ℕ} (hn : 2 ≤ n) (C : ℝ≥0∞) (hC : C < ⊤)
+    (hinner : ∀ Acor : Fin 1 → Fin n → ℝ,
+      (∫⁻ S in matBox n p 1, ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2)))
+        ≤ C * ENNReal.ofReal ((frobSq Acor) ^ (-(1 : ℝ) / 2))) :
+    (∫⁻ Acor in matBox 1 n 1, ∫⁻ S in matBox n p 1,
+        ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2))) < ⊤ := by
+  classical
+  -- the `1×n` Gram determinant is `frobSq` (inline `det_gramRow`)
+  have hgram : ∀ v : Fin 1 → Fin n → ℝ,
+      ((Matrix.of v) * (Matrix.of v)ᵀ).det = frobSq v := by
+    intro v
+    rw [Matrix.det_fin_one]
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply]
+    rw [frobSq, Fin.sum_univ_one]
+    exact Finset.sum_congr rfl (fun j _ => by rw [sq])
+  calc (∫⁻ Acor in matBox 1 n 1, ∫⁻ S in matBox n p 1,
+          ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2)))
+      ≤ ∫⁻ Acor in matBox 1 n 1, C * ENNReal.ofReal ((frobSq Acor) ^ (-(1 : ℝ) / 2)) :=
+        lintegral_mono hinner
+    _ = C * ∫⁻ Acor in matBox 1 n 1, ENNReal.ofReal ((frobSq Acor) ^ (-(1 : ℝ) / 2)) :=
+        lintegral_const_mul' _ _ hC.ne
+    _ = C * ∫⁻ Acor in matBox 1 n 1,
+          ENNReal.ofReal (((Matrix.of Acor) * (Matrix.of Acor)ᵀ).det ^ (-(1 : ℝ) / 2)) := by
+        congr 1
+        refine setLIntegral_congr_fun (matBox_measurableSet 1 n 1) (fun Acor _ => ?_)
+        rw [hgram]
+    _ < ⊤ := by
+        refine ENNReal.mul_lt_top hC ?_
+        have hn2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        have h := detGram_lintegral_lt_top (r := 1) (n := n) (by omega) (a := (1 : ℝ))
+          (by push_cast; linarith)
+        simpa using h
 
 end DLNFibre.DLN.RLCT
