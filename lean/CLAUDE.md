@@ -64,6 +64,16 @@ cited bound). The controller judges against this taste and holds precedence — 
 Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific ones here as they are found
 (the ReLU programme's proof-specific notes were intentionally not ported — they were about a different theory).
 
+- **Verify ABSENCE before declaring a lemma a phantom (and rebuilding it).** When a needed lemma seems
+  missing, a `grep` for the exact name is NOT enough — check variant names (`integral_` vs `integrable_`,
+  `_le_` vs `_lt_`, `norm` vs `nnorm`, argument order) AND check our own `Foundations/` before concluding
+  Mathlib/we lack it. Real example (2026-07-16): a scout grep'd `integral_fun_norm_addHaar` (absent) and
+  declared the polar/radial route a phantom — but `integrable_fun_norm_addHaar` (integral→**integrable**) is
+  present in Mathlib (`MeasureTheory.Constructions.HaarToSphere`) AND already consumed in our foundation via
+  `radial_ball_iff` (Foundations/S1SmoothBlock.lean:78) + `euclidND_ball_integrable` (S1RadialMorse.lean:46).
+  Declaring a banked lemma absent risks a wasted rebuild. Verify-before-building cuts both ways: the same
+  discipline that catches a genuine phantom (`Real.log_le_rpow`, truly absent at this pin → use `Real.log_rpow`
+  + `Real.log_le_sub_one_of_pos`) must not mistake a REAL lemma for a phantom via a name typo.
 - **`Basis` is `Module.Basis` at the v4.29 pin.** Bare `Basis` is unknown even with full Mathlib imports;
   ascribe `Module.Basis (Fin _) ℝ _` (e.g. from `Pi.basisFun`). Dot-notation (`b.tensorProduct b'`) is
   unaffected. Likely to recur in any `Matrix.rank` / column-span work.
