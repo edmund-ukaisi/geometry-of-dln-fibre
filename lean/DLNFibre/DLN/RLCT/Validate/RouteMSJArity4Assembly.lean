@@ -162,4 +162,56 @@ theorem routeMBox_arity4_lt_top_of_coupled
   · exact frontChargeBox_lt_top_of_hfin M (t + (j : ℕ)) c' (hfin j hmid.1 hmid.2)
   · exact hbdryFin j (by omega)
 
+/-! ## Per-`M` coupled closure (nondegenerate interior binding cut) -/
+
+/-- **The coupled route delivers `RouteMBoxThresholdFinite M` for a nondegenerate interior binding cut.**
+Wires the per-`c'` skeleton (`routeMBox_arity4_lt_top_of_coupled`) through the all-`c'` window wrapper
+(`routeMBoxThresholdFinite_of_window`). The window's lower endpoint is `lo = (M₀−t)(M₁−t)/2 = peelCharge/2`;
+its nonemptiness (`lo < ½·minAdm M`) is exactly `hred : 0 < minAdm (redChain t M)` (via `hbind`,
+`minAdm M = peelCharge M t + minAdm (redChain t M)`). The skeleton's per-shell block-charge bound `hc'` at
+each `j` follows from `lo < c'` by monotonicity `(M₀−(t+j))(M₁−(t+j)) ≤ (M₀−t)(M₁−t)`. Isolates the coupled
+bricks `hG1` (tpeel), `hfin` (corankrec, interior `1≤j<r`), `hbdryFin` (boundary `j=0`/`j=r`) as ∀-`c'`
+hypotheses. NATIVE. Does NOT use the arity-IH — this is the nondegenerate-interior case; the degenerate /
+boundary-argmin chains are handled by the wrapper `routeMBoxThresholdFinite_of_step`'s strong induction. -/
+theorem routeMBoxThresholdFinite_of_coupled
+    (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ε : ℝ)
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i) (htb : t + 1 ≤ min (M 0) (M 1))
+    (hbind : minAdm M = peelCharge M t + minAdm (redChain t M))
+    (hred : 0 < minAdm (redChain t M))
+    (hG1 : ∀ c' : ℝ, routeMLayerBoxIntegral M c' 1
+        ≤ ∑ j : Fin (min (M 0 - t) (M 1 - t) + 1),
+            ∑ _ρ : Fin (t + (j : ℕ)) ↪ Fin (M 0),
+              ∑ κ : Fin (t + (j : ℕ)) ↪ Fin (M 1),
+                shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c')
+    (hfin : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+        1 ≤ (j : ℕ) → (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        ∀ i : CRIndex (dropHead (redChain (t + (j : ℕ)) M)),
+        ∫⁻ p in (paramsBoxM (redChain (t + (j : ℕ)) M) 1 ×ˢ matBox (M 1 - (t + (j : ℕ))) (M 2) 1)
+            ∩ projDeep M (t + (j : ℕ)) ⁻¹'
+              (deepCell (dropHead (redChain (t + (j : ℕ)) M)) (dropHead (redChain (t + (j : ℕ)) M) 0) L
+                le_rfl (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)) i
+                (fun _ => (1 : Matrix (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)))
+                  (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L))) ℝ))),
+          frontChargeIntegrand M (t + (j : ℕ)) c' p < ⊤)
+    (hbdryFin : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+        (j : ℕ) = 0 ∨ (j : ℕ) = min (M 0 - t) (M 1 - t) →
+        ∫⁻ p in paramsBoxM (redChain (t + (j : ℕ)) M) 1 ×ˢ matBox (M 1 - (t + (j : ℕ))) (M 2) 1,
+          frontChargeIntegrand M (t + (j : ℕ)) c' p < ⊤) :
+    RouteMBoxThresholdFinite M := by
+  have hpeellt : ((M 0 - t) * (M 1 - t) : ℕ) < minAdm M := by
+    rw [hbind, peelCharge]; omega
+  have hpeelR : (((M 0 - t) * (M 1 - t) : ℕ) : ℝ) < (minAdm M : ℝ) := by exact_mod_cast hpeellt
+  refine routeMBoxThresholdFinite_of_window M ((((M 0 - t) * (M 1 - t) : ℕ) : ℝ) / 2) (by linarith)
+    (fun c' hlo hhi => ?_)
+  refine routeMBox_arity4_lt_top_of_coupled M t ε c' ht1 hnd htb hbind ?_
+    (hG1 c') (hfin c') (hbdryFin c')
+  intro j
+  have hmono : (M 0 - (t + (j : ℕ))) * (M 1 - (t + (j : ℕ))) ≤ (M 0 - t) * (M 1 - t) :=
+    Nat.mul_le_mul (Nat.sub_le_sub_left (Nat.le_add_right t _) _)
+      (Nat.sub_le_sub_left (Nat.le_add_right t _) _)
+  have hmonoR : ((M 0 - (t + (j : ℕ)) : ℕ) : ℝ) * ((M 1 - (t + (j : ℕ)) : ℕ) : ℝ)
+      ≤ ((M 0 - t : ℕ) : ℝ) * ((M 1 - t : ℕ) : ℝ) := by exact_mod_cast hmono
+  rw [Nat.cast_mul] at hlo
+  linarith
+
 end DLNFibre.DLN.RLCT
