@@ -11,13 +11,13 @@ scripts/expedition                 executable launcher (stdlib only; adds script
 scripts/expedition_map/
   model.py        load + index claims.yaml; vocabulary; dependency graph + reachability
   survey.py       walker-dump adapter; per-node join; git freshness
-  validate.py     contracts 1-10 -> Findings (error | warning)
+  validate.py     contracts 1-12 -> Findings (error | warning)
   views.py        tick/STATUS, decision, lookahead, dag, brief
   battery.py      header parsing + script execution + verdicts
   ops.py          rename, tombstone, new, calibration, anchors
   cli.py          argparse dispatch
 scripts/hooks/pre-commit           runs `validate --fast` on every expeditions/*/map
-tests/                             pytest (74 tests); real fixture under tests/fixtures/
+tests/                             pytest (106 tests); real fixture under tests/fixtures/
 ```
 
 Dependencies: Python 3.12, `pyyaml` (6.0.3), stdlib. No framework, no classes
@@ -199,8 +199,10 @@ unchanged.
   `-- TODO statement pin` comment per node — a real `example : <prop> := <name>`
   needs hand-translation of the prose prop into a Lean term. Only nodes with both
   `lean` and `prop` are pinned. It is not wired to a compile step here.
-- **No per-node ages.** `claims.yaml` has no per-node timestamps, so the tick view
-  shows owner + status but not age; a git-blame pass would recover ages (deferred).
+- **Per-node ages come from git, not the yaml.** `claims.yaml` carries no per-node
+  timestamps; ages/time-in-status are derived from the snapshot history at survey
+  time (§ Metadata history & the activity clock) and degrade to unavailable
+  outside a git repo.
 - **rename prose caveat.** The id rewriter only touches structural positions
   (`id:` / `to:` / `roots`), leaving `title`/`notes`/`prop`/`evidence` prose
   untouched — verified by test. Block-style `roots:` lists are handled; a rename

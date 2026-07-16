@@ -1,10 +1,10 @@
-"""The validator: contracts 1-10 from docs/policies/expedition-map.md.
+"""The validator: contracts 1-12 from docs/policies/expedition-map.md.
 
 Findings carry a level (``error`` | ``warning``), the contract number, the node
 id (if any), and a message. Errors fail the command (exit nonzero); warnings do
 not, unless ``--strict``. ``--fast`` runs the structural contracts only (1, 2
-structural, 6, 7, 8, 9, 10) and skips the survey-heavy ones (3, 4, 5); it uses
-survey data for existence only when a survey happens to be present.
+structural, 6, 7, 8, 9, 10, 11, 12) and skips the survey-heavy ones (3, 4, 5);
+it uses survey data for existence only when a survey happens to be present.
 
 Design note where the spec leaves room: several checks that the spec frames as
 hard contracts (2 existence, 9 route-adoption) can only be *definitively*

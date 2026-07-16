@@ -89,7 +89,8 @@ claim's adjudication is the light verify-against-source. The AUDIT gate is uncha
 - **Anchor pins**: `expedition anchors emit` writes `MapAnchors.lean` — one
   `example : <prop-as-stated> := <lean-name>` per pinned node — compiled at the green-gate, so a
   statement edit that breaks fidelity is a build failure, and a rename without a forwarding pointer
-  cannot land quietly.
+  cannot land quietly. (v0 wiring: emission works; the compile step is a manual item on the
+  close checklist — `expedition-cli-notes.md` § Known v0 limits.)
 - A `refuted`/`superseded` node **retires its skeleton hole** in the same commit (contract 5's
   fossil rule) — a stale hole is worse than none: pull is strong and neutral.
 - **A skeleton hole's statement IS the level-contract** — the executable form of the architecture's
@@ -167,7 +168,7 @@ Don't economize on the decision and brief views — ambient context stays thin s
 decision-relevant context can be rich (the value-density principle). `STATUS.md` is the *only*
 materialized view; a views/ directory of stale renders is the rot surface this design removes.
 
-## Contracts (the validator; every CLI command runs it, pre-commit runs `--fast`)
+## Contracts (the validator; read/report commands run it as a gate, pre-commit runs `--fast`)
 
 1. Well-formed DAG; stable ids; every exit-status node carries a forwarding pointer.
 2. `stated`+ ⟹ `lean` exists AND its anchor pin elaborates (pin compile at green-gate; `--fast`
@@ -208,7 +209,9 @@ materialized view; a views/ directory of stale renders is the rot surface this d
   anchor regeneration), `expedition tombstone <id>`, `expedition new <kind>` (scaffold a node).
   All other edits are by hand; the validator catches what hands break.
 - **Hooks**: pre-commit runs `expedition validate --fast` (structural contracts, lints); the
-  green-gate runs the full validator + survey refresh + anchor compile + battery.
+  green-gate runs the full validator + survey refresh + anchor compile + battery. (v0: pre-commit
+  is wired; the green-gate sequence is the close checklist, run by hand until a runner is wired —
+  `expedition-cli-notes.md` § Known v0 limits.)
 
 ## Granularity and freedom
 

@@ -1,5 +1,7 @@
-"""CLI dispatch. Every command resolves a map and runs the validator; contract
-errors exit nonzero, warnings do not (unless ``--strict``)."""
+"""CLI dispatch. Read/report commands (validate, status, view, brief, battery)
+run the validator as a gate; contract errors exit nonzero, warnings do not
+(unless ``--strict``). Write ops (rename, tombstone) use their own re-parse
+guard; survey / new / calibration / anchors run unguarded."""
 
 from __future__ import annotations
 
@@ -156,6 +158,9 @@ def cmd_brief(args):
 
 def cmd_battery(args):
     m = _load(args)
+    rc = _guard(m, args)
+    if rc:
+        return rc
     results, skipped = battery_mod.run_battery(
         m, node=args.node, run_all=args.all)
     if not results:
@@ -226,7 +231,7 @@ def build_parser():
     p.add_argument("--strict", action="store_true", help="treat warnings as errors")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    sp = sub.add_parser("validate", help="run contracts 1-10")
+    sp = sub.add_parser("validate", help="run contracts 1-12")
     sp.add_argument("--fast", action="store_true", help="structural only (skip 3/4/5)")
     sp.set_defaults(func=cmd_validate)
 
