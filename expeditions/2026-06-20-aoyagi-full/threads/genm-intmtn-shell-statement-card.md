@@ -14,25 +14,20 @@ Thread `genm-intmtn-shell` (aoyagi-full Stage 2, the interior coupled shell-inte
 > generic cell (`E_top`'s `P·P⁻¹` cancels; `E_tr`'s `Q_inr` is killed by its own orthogonal projector), so
 > it pulls out and the gate reduces to the charge.
 
-- **Lean (assembly, LANDED conditional):** `DLNFibre.DLN.RLCT.chargeFreeBox_b1_of_inner` (general `a < n`)
-  and its `a=1` corollary `chargeFreeBox_b1a1_of_inner`
-  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJInteriorShell.lean` @ `980a4cc68`)
-- **Lean (unconditional headline, PENDING):** `chargeFreeBox_b1a1_lt_top` — trivial wiring
-  `chargeFreeBox_b1a1_of_inner hn C hC hinner` once schurB lands `corankSlab_charge_sint_le`.
-- **Gloss.** `chargeFreeBox_b1a1_of_inner`: given `n ≥ 2` and a uniform inner bound
-  `∀ A_cor, ∫⁻_{S∈matBox n p 1} ofReal(chargeGramDet A_cor S ^ (−1/2)) ≤ C·ofReal(frobSq A_cor ^ (−1/2))`
-  with `C < ⊤`, the iterated free-box `∫⁻_{A_cor∈matBox 1 n 1} ∫⁻_{S∈matBox n p 1}
-  ofReal(chargeGramDet A_cor S ^ (−1/2))` is `< ⊤`.
-- **Proved.** The assembly, unconditionally in the inner bound: `lintegral_mono` (the inner bound,
-  pointwise in `A_cor`) → `lintegral_const_mul'` (pull `C`) → inline `det_gramRow`
-  (`frobSq A_cor = det(A_cor·A_corᵀ)`) → banked `detGram_lintegral_lt_top` (`r=1`, exponent `−1/2 = −a/2`
-  at `a=1 < n`). Clean-three `[propext, Classical.choice, Quot.sound]`; zero sorry.
-- **Assumed (interface, to be discharged).** The inner uniform charge bound `hinner` — exactly schurB's
-  `corankSlab_charge_sint_le {n p} (hp : 2 ≤ p)` (confirmed type-checks in this shape; schurB is proving
-  it via the banked qbox projection-radial core `projection_rpow_lintegral_uniform`, the `S`-first pure-power
-  route: `𝔼^{n·p}` column-along-`Â_cor` subspace `V` of finrank `p`, `‖A_cor·S‖ = ‖A_cor‖·‖P_V S‖`,
-  box⊆ball, `a=1<p`). On its landing, `hinner` discharges and `chargeFreeBox_b1a1_lt_top` becomes
-  unconditional.
+- **Lean (UNCONDITIONAL headline, LANDED):** `DLNFibre.DLN.RLCT.chargeFreeBox_b1a1_lt_top`
+  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJInteriorShell.lean` @ `a5f5a8554`)
+- **Lean (assembly + general form):** `chargeFreeBox_b1_of_inner` (general `a < n`) and its `a=1` corollary
+  `chargeFreeBox_b1a1_of_inner` (same file/SHA).
+- **Gloss.** `chargeFreeBox_b1a1_lt_top`: for `n ≥ 2` and `p ≥ 2`, the iterated free-box
+  `∫⁻_{A_cor∈matBox 1 n 1} ∫⁻_{S∈matBox n p 1} ofReal(chargeGramDet A_cor S ^ (−1/2))` is `< ⊤`.
+  (`chargeGramDet A_cor S = det((A_cor·S)(A_cor·S)ᵀ)`; at `b=1` `= ‖A_cor·S‖²`.)
+- **Proved.** UNCONDITIONALLY (for `n≥2 ∧ p≥2`). Chain: `chargeFreeBox_b1a1_of_inner` (the assembly:
+  `lintegral_mono` on the inner bound → `lintegral_const_mul'` → inline `det_gramRow` → banked
+  `detGram_lintegral_lt_top` `r=1`, `a=1<n`) ∘ slabcore/schurB's `corankSlab_charge_sint_le` (the inner
+  corank-slab bound `∫_S charge^{−1/2} ≤ C·frobSq^{−1/2}`, via the banked projection-radial core, `S`-first
+  pure power). VERIFIED: `scripts/lb` green + forced `#print axioms chargeFreeBox_b1a1_lt_top` =
+  `[propext, Classical.choice, Quot.sound]` (the WHOLE chain incl. the crux, not just source-sorry-free);
+  zero sorry/admit/axiom in both modules.
 - **Cited.** none (native; NO `cited_aoyagi_dln`).
 - **Deferred.** `b≥2` interior (general det-Gram slab — schurB's wheelhouse); `ρ<n` for `b≥2`
   (couplerad's rowspace/drop-columns rework). NOT this card.
@@ -42,10 +37,10 @@ Thread `genm-intmtn-shell` (aoyagi-full Stage 2, the interior coupled shell-inte
   `W(S) ~ log(1/σ_min(S))` was an integration-ORDER artifact; the `S`-first order avoids it. The genuine log
   lives at the EDGE `a+b = ρ+1` (edgeasm). The `S`-first route SUBSUMES the bulk atom + shell-integration +
   det-pushforward CoV + arcsinh — one banked radial core does it.
-- **Route (controller-adopted).** Route C, split: schurB owns the inner corank slab (via the banked radial
-  core); intmtn owns the assembly + the banked outer `detGram`.
-- **Status.** assembly sorry-free (conditional on the interface); unconditional headline pending schurB's
-  inner + a reviewer fidelity check.
+- **Route (controller-adopted).** Route C, split: schurB/slabcore own the inner corank slab (via the banked
+  radial core); intmtn owns the assembly + the banked outer `detGram` + the unconditional wiring.
+- **Status.** sorry-free, UNCONDITIONAL (`chargeFreeBox_b1a1_lt_top` @ `a5f5a8554`, green + clean-three,
+  whole chain verified); awaiting a reviewer fidelity check.
 
 ---
 
