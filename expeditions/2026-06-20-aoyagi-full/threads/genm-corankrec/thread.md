@@ -98,8 +98,17 @@ cover are the deferred work). That pending work IS `coupled_hfin_cell`. The piec
 rank-flag stratum; (w2) the deep-cell (CR-path rank flag) → (ℓ,s) stratum + `chart5` big-cell dispatch;
 (w3) the NEW charge-domination lemma (couplerad ★4 `γ^hier`; via arch1build's a.e.-PosDef `hGae` + exponent
 domination — Cauchy–Binet UNAVAILABLE v4.29); (w4) the finite-cover gluing over CRIndex. Square sub-family
-(u=M₂=n): the Move-2 lost-block core collapses to the banked `routeMBoxThresholdFinite_rrp`; non-square →
-schurrec's SchurRecStep. RankGEN (`a+b+1≤ρ`): arch1build supplies `bindingShell_rankgen` (BackPeel, arity≥4).
+(u=M₂=n) AND non-square (exc>0/u≠M₂) both land on the SAME banked terminal `routeMBoxThresholdFinite_mnp`
+(schurrec's non-square SchurRecStep was REDUNDANT — `mnp` already banks the uncharged non-square terminal;
+the charge is w3). RankGEN (`a+b+1≤ρ`): arch1build's `bindingShell_rankgen` LANDED @a176c92b8 (arity≥4,
+`NondegBindingCut` + interior `1≤j<r`); the caller fills `BindingShell.mk`'s `hrankgen` via the L-offset.
+
+**NATIVE-footprint note (for the fresh tide):** the terminal `routeMBoxThresholdFinite_mnp` + its chain
+(`rectSchurRecStep_mnp`, `rectCore_schurGen_lt_top`, `schurCoreRect_capA_interior`, `schurCoreRect_directMorse`)
+are forced-`#print axioms` `[propext, Classical.choice, Quot.sound]` — NATIVE, no `sorryAx`/`cited_aoyagi_dln`/
+`monomial_rlct` (schurrec-confirmed, fresh scratch). So w1–w4 + w3 built on these + the atoms keep
+`coupled_hfin_cell` NATIVE once its `sorry` is filled — verify via a force-elaborated `#print axioms
+coupled_hfin` (must lose the lone `sorryAx`, gain nothing).
 
 ## Consults
 
