@@ -35,6 +35,34 @@ theorem of_gamma_mul_corank_row {a n : ℕ} (Γ : Fin a → Fin 1 → ℝ)
   rw [Matrix.mul_apply, Fin.sum_univ_one, Matrix.of_apply, Matrix.of_apply, hqb j]
   ring
 
+/-- **The b=1 corank row against the unit fragile direction is the scalar `σ`.** For `Q_b 0 = σ • ω`
+(`ω` unit), `Q_b.mulVec ω = fun _ => σ`: `(Q_b.mulVec ω) 0 = ∑ⱼ σ ωⱼ · ωⱼ = σ·∑ⱼ ωⱼ² = σ`. -/
+theorem corank_row_mulVec_omega {n : ℕ} (Qb : Matrix (Fin 1) (Fin n) ℝ) (ω : Fin n → ℝ) (σ : ℝ)
+    (hω : ∑ j, (ω j) ^ 2 = 1) (hqb : ∀ j, Qb 0 j = σ * ω j) :
+    Qb.mulVec ω = fun _ => σ := by
+  funext k
+  have hk : k = 0 := Subsingleton.elim k 0
+  subst hk
+  simp only [Matrix.mulVec, dotProduct]
+  rw [Finset.sum_congr rfl (fun j _ => by rw [hqb j]; ring :
+      ∀ j ∈ Finset.univ, Qb 0 j * ω j = σ * (ω j) ^ 2), ← Finset.mul_sum, hω, mul_one]
+
+/-- **The shear-cancel identity (b=1).** For the freed pivot factor `Q̃ₚ = Q_inl + PB·Q_inr`
+(`PB = P⁻¹·B₁₂ : Matrix (Fin u) (Fin 1)`, single-row `Q_inr 0 = σ • ω`), the fragile direction
+`v = Q̃ₚ·ω` decomposes as `Q_inl·ω + σ·(PB·,0)`. The `PB·Q_inr` cross-term contributes only
+`σ·(PB·,0)` (since `Q_inr·ω = σ`), so subtracting it recovers the pivot-rows direction `Q_inl·ω` —
+the C-shift target `v'` after the schur-shear substitution `D = Γ + C·PB`, INDEPENDENT of the front
+`(P, B₁₂)`. -/
+theorem qtp_mulVec_corank_one {u n : ℕ} (Qinl : Matrix (Fin u) (Fin n) ℝ)
+    (PB : Matrix (Fin u) (Fin 1) ℝ) (Qinr : Matrix (Fin 1) (Fin n) ℝ) (ω : Fin n → ℝ) (σ : ℝ)
+    (hω : ∑ j, (ω j) ^ 2 = 1) (hqb : ∀ j, Qinr 0 j = σ * ω j) :
+    (Qinl + PB * Qinr).mulVec ω = Qinl.mulVec ω + σ • (fun i => PB i 0) := by
+  rw [Matrix.add_mulVec, ← Matrix.mulVec_mulVec, corank_row_mulVec_omega Qinr ω σ hω hqb]
+  funext i
+  simp only [Pi.add_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_one, Pi.smul_apply,
+    smul_eq_mul]
+  ring
+
 /-- **The b=1 freedSchurLoss → corank-atom wiring (R1 at the edge-cell shape).** With the pivot core
 `W = frobSq(P·Q̃ₚ) > 0` (`P = of x.1.1`, `Q̃ₚ = Q_inl + P⁻¹·B₁₂·Q_inr`) and the single corank row written
 `Q_b 0 = σ • ω` (`ω` unit, `σ = ‖q_b‖`), the freed-Schur-loss power is bounded above by the
