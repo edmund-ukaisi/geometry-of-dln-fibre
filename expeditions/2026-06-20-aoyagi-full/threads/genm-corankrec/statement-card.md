@@ -64,6 +64,15 @@ LAST substantive analytic content of the arity≥4 `(□)` discharge. Route A (c
 >   sorry, `coupled_hfin_cell`). Rankgen RESOLVED: the strict `a+b+1≤ρ` is genuinely needed (Codex: charge
 >   pole `~r^{−a}`, `a` load-bearing) and IS derivable at the binding cut (arch1build's `bindingShell_rankgen`
 >   via BackPeel `ρ ≤ tailMin` + the cominimizer lower bound, arity≥4) — I carry it, arch1build fills it.
+> - **Architecture update (2026-07-16, coordinator).** **Route B (coupledBox) is CANONICAL** (see
+>   `thread.md` §★★ ARCHITECTURE SETTLED). The frontCharge/G2 route this card's `coupled_hfin_cell` states
+>   is SUPERSEDED as the TOP-LEVEL route (it is TRUE + reviewed at interior cuts — `hrankgen` excludes the
+>   divergent edge/deep-corank cuts — but frontCharge is `+∞` at edge cuts, so it can't be the whole route).
+>   My LIVE contribution rescopes to the INTERIOR: `coupledCell_le_frontCell` → schurrec's interior
+>   `ChargedRectSchurCore` (scoped `a+b≤ρ`, endpoint `RouteMSchurWishartWeight.lean` @847e71039). The
+>   corankrec NULL insight (all non-generic cells null ⟹ `∫=0`, `deepFactor_rank_ge_deepTailMin_ae` +
+>   `setLIntegral_measure_zero`) is adopted by dbuild for Route B's deficient-cell disposal. This card's
+>   `coupled_hfin_cell` STATEMENT + review stand; the exact interior slot is pending arch1build's pin.
 
 ---
 

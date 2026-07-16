@@ -16,7 +16,43 @@ corank recursion). **Interface consumer:** arch1build's `routeMBox_arity4_lt_top
 Green-gated (`lean/scripts/lb`, exit 0), NATIVE, no name clash. One documented `sorry`
 (`coupled_hfin_cell:70`) — the mountain.
 
-## The mountain (`coupled_hfin_cell`) — decomposition roadmap
+## ★★ ARCHITECTURE SETTLED (2026-07-16, coordinator adjudication) — READ FIRST
+
+**Route B (coupledBox) is CANONICAL.** The shell bound is `shell → ∫ coupledBoxIntegrand = ∑cells →
+per-cell coupledBox finiteness` — NOT the frontCharge/G2 detour (which only works at interior cuts). The
+per-deep-cell dispatch (cells indexed by `CRIndex`, cell deep-rank `ρ_i`; `a=M₀−u`, `b=M₁−u`,
+`ρ=deepTailMin M`; stratum `k := a+b−ρ_i`):
+
+- **ALL non-generic cells (`ρ_i < deepTailMin`): NULL** ⟹ `∫ coupledBox = 0` (via
+  `deepFactor_rank_ge_deepTailMin_ae` (RouteMSJDeepRankGen:163) ⟹ only the generic cell `ρ_i=deepTailMin`
+  is positive-measure + the deepCell node forces rank EXACTLY `ρ_i` via `isUnit_submatrix_le_rank`, +
+  `setLIntegral_measure_zero` (scratch-confirmed, ∫=0 even for +∞ integrand)). **dbuild builds this
+  null-disposal** (disposes the "ρ_i<b gap" + all deficient strata at once — the corankrec null insight,
+  adopted for Route B).
+- **GENERIC cell (`ρ_i = deepTailMin`), by cut:**
+  - **INTERIOR (`a+b ≤ ρ` = `a+b ≤ deepTailMin`, `k≤0`): MY piece.** `coupledCell_le_frontCell` VALID
+    (frontCharge FINITE here) → schurrec's **interior `ChargedRectSchurCore`** (scoped `a+b ≤ ρ`, finite
+    `c'<½·minAdm(![m,n,p])`; endpoint + 5-step resume ladder at `RouteMSchurWishartWeight.lean` docstring
+    @847e71039; schurrec banked (A) det-monotone COMPLETE + brick 1 Gram-bridge, handed (B) to coordinator).
+  - **EDGE / deep-corank (`a+b ≥ deepTailMin+1`, `k≥1`): dbuild's (D).** frontCharge is `+∞` here (the
+    Wishart weight `∫_{A_cor} det(Q_bQ_bᵀ)^{−a/2}` log-diverges at `a=ρ−b+1`, super-diverges beyond;
+    triply-corroborated — satred D-cert TRAP #1, edgebrick numerics, schurrec Wishart) — so NO frontCharge,
+    NO ChargedRectSchurCore (its `a+b≤ρ` scope EXCLUDES the edge); coupledBox-DIRECT per-stratum instead.
+
+**My `coupled_hfin_cell` STATEMENT (frontCharge, rankgen-scoped) stands + is reviewed** — it is TRUE at
+interior cuts (its `hrankgen: a+b+1≤deepTailMin` correctly EXCLUDES the divergent edge/deep-corank cuts, e.g.
+dbuild's CE `M=(2,3,2,2) u=1` violates it). But as the TOP-LEVEL route it is SUPERSEDED by Route B; my LIVE
+contribution is the INTERIOR `ChargedRectSchurCore` consumption via `coupledCell_le_frontCell`. Exact interior
+slot signature of `coupledBox_lt_top_of_cells`: PENDING arch1build's pin.
+
+**Corrections folded in (were live-explored below):** (1) `ChargedRectSchurCore` is scoped `a+b≤ρ`, EXCLUDES
+the edge (schurrec Wishart: charge `+∞` at `a+b=ρ+1`); (2) the corankrec null argument's step-3 assumed the
+INTERIOR rankgen — at edge cuts the GENERIC cell is positive-measure + divergent, so null-disposal does NOT
+rescue the frontCharge route there (Route B needed); (3) the null insight itself is CORRECT + adopted by
+dbuild. The route-A / w1–w4 / w3-charged-terminal material below is **SUPERSEDED exploration** — kept for the
+null-insight derivation + the banked-piece inventory + the corrections; the SETTLED architecture is this block.
+
+## The mountain (`coupled_hfin_cell`) — decomposition roadmap [SUPERSEDED top-level route; see SETTLED block above]
 
 Target: `∫_{p ∈ box ∩ deepCell i} frontChargeIntegrand M u c' p < ⊤`, `u=t+j`, per rank-flag cell `i`.
 `frontChargeIntegrand = ∫_{x∈outerDom} det(Q_bQ_bᵀ)^{−a/2}·Cresid·(E_top+E_tr)^{−q}`, `q=c'−ab/2`,
