@@ -718,39 +718,46 @@ graded-log + coordinate/rowspace floors are all obviated.
 
 ---
 
-### w3-Drec — the (D) b≥2 coupled-residual E-recursion (design in progress, to bedrock; off critical path)
+### w3-Drec — the (D) b≥2 charge free-box: a CLEAN TWO-STEP (the coupling DISSOLVES; = (C) generalized)
 
-*(D) b≥2 charge free-box `∫∫_box det((A·S)(A·S)ᵀ)^{−a/2} dA dS`, `a+b ≤ ρ`, one witness `(2,5,4)`, independent
-of the now-CLOSED b=1 (C). schurB peels via `det_gram_cons`: `charge = ∏_{i=1}^b ‖P⊥_{<i}(A_i·S)‖^{−a}`
-(`P⊥_{<i}` = projection off `span(A_1S,…,A_{i−1}S)` in `ℝ^n`). Unlike b=1, the per-step is COUPLED — this is
-the §w3-atlas power E-recursion.*
+*RESOLVED. (D) `∫∫_box det((A·S)(A·S)ᵀ)^{−a/2} dA dS`, `a+b ≤ ρ`, one witness `(2,5,4)`. My earlier "coupled
+E-recursion" was an artifact of the WRONG decomposition (the A-ROW-peel via `det_gram_cons` IS coupled). The
+**S-FIRST route dissolves the coupling** — (D) is a clean two-step, exactly (C) generalized from `‖A‖^{−1}` to
+`det(A·Aᵀ)^{−a/2}`. NO E-recursion, NO pseudo-det, NO log, NO Cauchy–Binet, NO SVD. `couplerad_Dclean.py`.*
 
-**CONFIRMED structure (numerical + exact reasoning):**
-- **The per-step is COUPLED (NOT uniform).** `g(A',S) = ∫_{A_b} ‖P⊥(A_b·S)‖^{−a} dA_b` GROWS as `S`
-  degenerates (verified: `g` ~1.4–3.1× larger on near-rank-(ρ−1) `S` vs generic). So it does NOT pull out as
-  a uniform constant → NOT a clean b→b−1 induction. The b=1 clean-uniformity (C) does NOT lift to b≥2.
-- **Residual dimensions:** `P⊥_{<i}` has codim `i−1`, so dim `n−i+1`; the effective rank of `A_b ↦
-  P⊥(A_b·S)` is `≥ ρ−b+1 ≥ a+1` (from `a+b ≤ ρ`), so each per-step `A_b`-integral is FINITE (dim ≥ a+1) — but
-  its VALUE is a `Z`-charge on `S` (via `S_W = S·P_W`, `g(A',S) ~ (pseudo-det S_W)^{−power}`), NOT a constant.
-- **The det-monotone drop-samples shortcut is TOO LOSSY.** Dropping `A·S` to its first `b` columns
-  (`det(Σ_{j=1}^n v_jv_jᵀ) ≥ det(Σ_{j=1}^b)` by PSD-monotone) over-bounds: `∫∫ det(A·S_{[b]})^{−a}` has
-  effective `n=b` ⟹ threshold `a+b ≤ b` ⟹ `a≤0`, DIVERGES. So the recursion MUST keep all `n` columns
-  (coupled), confirming the coordinator's read.
-- **Also NOT clean via A-first or S-first uniform:** S-first inner `I(A) = ∫_S det(A·SSᵀ·Aᵀ)^{−a/2}dS` blows
-  up as `A` degenerates (`~` a matrix `Z`-charge on `A`), so the outer `∫_A` couples too. b≥2 is a NESTED
-  double-charge (inner charge → `Z`-charge on the other factor → recurse). Genuine coupling either order.
-- **Cauchy–Binet route is out** (`det((AS)(AS)ᵀ) = Σ_{|K|=b} det(A S_{:,K})²` would decouple, but v4.29 lacks it).
+**The clean two-step (the recipe for schurB):**
+- **INNER (the key per-step, exact scaling):** for full-row-rank `A` (`b×M₂`),
+  `∫_{S ∈ box} det((A·S)(A·S)ᵀ)^{−a/2} dS  =  C(Q)·det(A·Aᵀ)^{−a/2}`, and `≤ C·det(A·Aᵀ)^{−a/2}` (`C` uniform).
+  **Proof (non-spectral):** LQ-factor `A = R·Q` (`R` invertible `b×b`, `Q` `b×M₂` with orthonormal rows,
+  `QQᵀ=I_b`; via Gram–Schmidt / Cholesky of `AAᵀ`, NO eigenvalues). Then `det(A·SSᵀ·Aᵀ) =
+  det(R)²·det((Q·S)(Q·S)ᵀ)` and `det(R)² = det(RRᵀ) = det(A·Aᵀ)` (since `QQᵀ=I_b`), so
+  `det((A·S)(A·S)ᵀ)^{−a/2} = det(A·Aᵀ)^{−a/2}·det((Q·S)(Q·S)ᵀ)^{−a/2}`. Integrate `S`:
+  `= det(A·Aᵀ)^{−a/2}·C(Q)`, `C(Q) = ∫_S det((Q·S)(Q·S)ᵀ)^{−a/2} dS`. **`C(Q)` is FINITE iff `a+b ≤ n`** (the
+  `b`-row Wishart on the box; `Q·S` is `b×n`) and **BOUNDED uniformly over orthonormal-row `Q`** (the columns
+  `Q·s_j` have a density bounded uniformly over `Q` — orthonormal `Q` ⟹ the projected-box density is uniformly
+  bounded; equivalently `C` continuous on the compact Stiefel). (Verified: `I(A)·det(AAᵀ)^{a/2}` flat across
+  well- and ill-conditioned `A`, `couplerad_Dclean.py`.) So the `g`-scaling schurB asked for is exactly
+  **`det(A·Aᵀ)^{−a/2}`** — clean, NOT the pseudo-det/`Z`-charge (the row-peel artifact).
+- **OUTER:** `∫_{A ∈ box} det(A·Aᵀ)^{−a/2} dA < ⊤` iff `a+b ≤ M₂` — this IS **schurB's `detGram_lintegral`**
+  (the corank / `∫ det(XXᵀ)^{−a/2}` weight).
+- **COMBINED:** `a+b ≤ n` (inner) ∧ `a+b ≤ M₂` (outer) ⟺ `a+b ≤ min(M₂,n) = ρ`. Sharp (verified: in-scope
+  bounded, `a+b=ρ+1` diverges). **CLEAN — uniform inner × finite outer, no recursion.**
 
-**The exact per-step inequality (TO PIN, to bedrock).** The E-recursion carries the coupling: each row-peel
-re-expresses the charge with the per-step `Z`-factor `g(A',S)`, and the exponent must accumulate so the total
-closes at `a+b ≤ ρ` (corankrec-verified threshold; guide-confirmed jointly integrable incl `(2,5,4)`). The
-precise Lean-friendly form (the coupled re-expression + the exponent bookkeeping, WITHOUT Cauchy–Binet or SVD)
-is the design I owe schurB — pinned carefully (off critical path, bedrock-pace), NOT a rushed possibly-wrong
-inequality. Open sub-questions I'm settling: (i) the exact `g(A',S)` `Z`-factor form (via `det_gram_cons` +
-the b=1 slab as base, tracking `S_W`'s pseudo-det); (ii) whether the accumulated exponent closes at exactly
-`a+b ≤ ρ` per-step or needs a global argument; (iii) the Lean-friendliest carrier for the coupling (the
-`P⊥` residual via `det_gram_cons` is schurB's, rank-flag-free). Handing schurB the structural design now;
-the exact per-step follows to bedrock.
+**Why the row-peel looked coupled (resolved):** `det_gram_cons` peels the `b` ROWS of `A·S`, and the per-row
+residual `∫_{A_i}‖P⊥_{<i}(A_i·S)‖^{−a}` genuinely couples through `S` (grows as `S` degenerates). But that's
+the wrong order — integrating **all of `S` first** (fixed `A`) gives the clean `det(A·Aᵀ)^{−a/2}` via the LQ
+factorization, because the `S`-integral only sees `A` through `det(A·Aᵀ)` (the `R` factor), and the `Q`-part
+integrates to a uniform constant. The nested-double-charge worry was wrong: the inner `S`-integral's
+`A`-dependence is EXACTLY `det(A·Aᵀ)^{−a/2}`, which the outer absorbs (`a+b ≤ M₂`). The det-monotone
+drop-samples shortcut is still too lossy (do not use); but it is not needed — the LQ route is clean.
+
+**Lean recipe for schurB (all non-spectral, banked-adjacent):** (1) LQ / Cholesky of `A` (`A = R·Q`,
+Gram–Schmidt of rows — Mathlib `gramSchmidt`); (2) `det(A·SSᵀ·Aᵀ) = det(R)²·det((Q·S)(Q·S)ᵀ)` (`det_mul` +
+`det(RXRᵀ)=det(R)²det X`); (3) `det(R)² = det(A·Aᵀ)`; (4) the uniform inner `C(Q) = ∫_S det((Q·S)(Q·S)ᵀ)^{−a/2}
+dS ≤ C` (a `Q`-uniform `b`-row Wishart-on-box bound — schurB's `det_gram_cons` + the b=1 slab, with the
+projected-box density bound for uniformity); (5) OUTER = `detGram_lintegral` (banked). This closes `(2,5,4)`
+and all b≥2 `a+b ≤ ρ`. **(D) is NOT a hard coupled recursion — it's (C) with `det(AAᵀ)^{−a/2}` for `‖A‖^{−1}`.**
+[Decorrelated Codex on the clean-vs-coupled verdict: `codex/couplerad2-{prompt,answer}.md` — fold in when it lands.]
 
 ---
 
