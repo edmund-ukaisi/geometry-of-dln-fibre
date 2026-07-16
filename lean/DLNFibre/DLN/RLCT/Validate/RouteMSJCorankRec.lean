@@ -139,4 +139,23 @@ theorem hGae_cell_interior (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
   have hbox := hGae_from_deepRank M (t + j) (deepFactor_hZrank_of_le M (t + j) hb)
   exact hbox.filter_mono (ae_mono (Measure.restrict_mono Set.inter_subset_left le_rfl))
 
+/-- **The interior-cell front-charge finiteness (`hfront`), from schurB's FREE-BOX bound + cell⊆box
+monotonicity** (Route B). The per-cell front-charge integral over the cell region (box ∩ deep-cell) is
+bounded by the whole-box integral (`lintegral_mono_set`, cell ⊆ box), so schurB's free-box bound
+`∫_box frontCharge < ⊤` (built for `a+b ≤ ρ`, consuming the `RouteMSchurWishartWeight` ladder) DIRECTLY
+gives per-cell finiteness — no cell-specific analytic content on my side, just the monotone restriction.
+This is the `hfront` slot of arch1build's `coupledCell_interior_lt_top`. -/
+theorem frontCharge_cell_lt_top_of_freebox (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ) (c' : ℝ)
+    (i : CRIndex (dropHead (redChain (t + j) M)))
+    (hfreebox : ∫⁻ p in paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1,
+        frontChargeIntegrand M (t + j) c' p < ⊤) :
+    ∫⁻ p in (paramsBoxM (redChain (t + j) M) 1 ×ˢ matBox (M 1 - (t + j)) (M 2) 1)
+        ∩ projDeep M (t + j) ⁻¹'
+          (deepCell (dropHead (redChain (t + j) M)) (dropHead (redChain (t + j) M) 0) L
+            le_rfl (dropHead (redChain (t + j) M) (Fin.last L)) i
+            (fun _ => (1 : Matrix (Fin (dropHead (redChain (t + j) M) (Fin.last L)))
+              (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ))),
+        frontChargeIntegrand M (t + j) c' p < ⊤ :=
+  lt_of_le_of_lt (lintegral_mono_set Set.inter_subset_left) hfreebox
+
 end DLNFibre.DLN.RLCT
