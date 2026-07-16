@@ -376,6 +376,58 @@ it is a genuine red-team, not a rubber stamp.
 
 ---
 
+## w3 — the EXACT charge-domination input for the formaliser (corankrec Q3/Q4)
+
+*The last new-math input for the terminal mountain build. The precise, Lean-relevant answer — including a
+correction to the assumed shape.*
+
+**The exact charge.** `det(Q_bQ_bᵀ)^{−a/2}`, `Q_b = A_cor·Z_deep ∈ ℝ^{b×n}`, `a = M₀−u`, `b = M₁−u`. In the
+**square-first dispatch case `u=M₂=n` all four witnesses have `a=b=1`**, so `b=1` ⟹ `Q_b` is a `1×n` row and
+the charge is concretely `det(Q_bQ_bᵀ)^{−1/2} = ‖A_cor·Z_deep‖^{−1}` (`A_cor ∈ ℝ^{1×M₂}` a row) — an
+inverse-norm singularity on `{A_cor·Z_deep = 0}`.
+
+**★4 exact (the domination, ray form).** On a resolution ray, `N_charged(e) = N_loss(e) − γ^{hier}(e)`,
+`γ^{hier}(e) = max_h [a(e₁+…+e_h) − h(s−b+h)]`, and
+`min_e 2·N_charged/D = min_e 2·N_loss/D = floor` — the charge exponent `γ^{hier}` is DOMINATED at the binding
+ray, so the charged per-cell RLCT-codim EQUALS the uncharged one. **Exponent shift `δ = 0`** (verified
+`0/4386` in-scope, `0/14828` waist). This is the exact inequality: `N_loss(e) − γ^{hier}(e) ≥ floor/2` for
+every ray `e` (equivalently, the charge is absorbed into the freed measure at each corank).
+
+**⚠ CORRECTION to the assumed shape — there is NO Gram-vs-frobSq FOLD onto the uncharged `mnp` at a shifted
+`c'` on the tight shells.** A fold `det(Q_bQ_bᵀ)^{−a/2}·frobSq^{−q'} ≤ C·frobSq^{−(q'+δ)}` with `δ>0` shifts
+the loss threshold from `½·floor` down to `½·floor − δ`, which **UNDER-proves whenever the shell is TIGHT**
+(`floor = 2·T1q` ⟹ `½·floor = T1q` exactly, ZERO exponent slack). **396/761 in-scope arity-4 shells are
+tight — INCLUDING ALL FOUR DISPATCH WITNESSES** (`(4,4,4,4)@u=3`, `(3,4,5,4)@u=2`, `(5,5,5,5)@u=4`,
+`(3,3,4,4)@u=2`: each `½·floor = T1q`). And the pointwise form `det(Q_bQ_bᵀ)^{a/2} ≥ c·frobSq^δ` is FALSE
+(`Front ⊥ A_cor`: the charge `→ ∞` on `{A_cor·Z_deep rank-deficient}` while the loss stays order 1 — disproof:
+`A_cor` in the left-kernel of `Z_deep`, `Front` generic). So **w3 CANNOT be a bolt-on fold on the uncharged
+`routeMBoxThresholdFinite_mnp`** on the tight shells; the `Front`-vs-`A_cor` independence means the charge and
+loss vanish on different loci, so no loss power dominates the charge.
+
+**The correct w3 — thread the charge THROUGH the corank recursion (δ=0): a CHARGED RectSchurCore.** The charge
+must be carried INSIDE `routeMBoxThresholdFinite_mnp`'s per-corank step, not bolted on top. The per-corank
+inequality to prove: at each corank step (`Z_deep` drops one rank, a singular direction `e_h` freed), the
+charge factor's exponent `a·e_h` is `≤` the loss+measure exponent freed at that step — i.e. `γ^{hier}(e) ≤`
+(the Jacobian/measure the corank step already carries), so the charge is absorbed at `δ=0`. This is the exact
+input; it makes w3 a modest EXTENSION of schurrec's `mnp` proof (charge threaded per-corank), NOT a separate
+bolt-on lemma.
+
+**Cauchy–Binet-free realization (the sub-question for schurrec).** v4.29 lacks rectangular Cauchy–Binet, so
+`det(Q_bQ_bᵀ) = Σ_{|I|=b} det(Q_{b,I})²` is unavailable. Two Lean-friendly options: (a) the **Gram
+Schur-complement det identity** (`Matrix.det_fromBlocks`-based) applied along the SAME pivots the corank
+recursion uses — `det(Q_bQ_bᵀ)` factors in lockstep with `Z_deep`'s resolution, each factor's `−a/2` power
+`≤` the corresponding loss-codim gain; (b) a determinant-monotonicity bound — but the crude `det(A_cor G
+A_corᵀ) ≥ det(A_cor A_corᵀ)·λ_min(G)^b` REINTRODUCES a `det(Z_deep Z_deepᵀ)`-charge (option-2 compounding) and
+is spectral (avoid). Route (a) is the target. **Banked consumed:** `hGae` (Card 2, `Q_bQ_bᵀ` PosDef a.e. ⟹
+`det > 0`, charge finite a.e.), schurrec's `mnp` recursion (extended charged), `Matrix.det_fromBlocks`.
+**Exponent shift: `δ = 0`** — that the charge costs the loss NOTHING is the whole content, and is exactly why
+it must live in the recursion rather than a fold.
+
+**Slack shells (365/761, `floor > 2·T1q`).** There a fold with `δ ≤ ½·floor − T1q > 0` IS admissible — but
+since the tight shells (incl. all witnesses) force `δ=0`, build the charged-recursion route uniformly.
+
+---
+
 ## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
 
 **RECOMMENDATION: Route A (the general non-square corank recursion on the reduced bilinear), NOT Route B
