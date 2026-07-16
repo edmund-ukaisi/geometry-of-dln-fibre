@@ -106,16 +106,46 @@ homogeneous, for the `T★` radius). **NEW to build:** (a) the `A≤2Δ` bounded
 raw-`Pi` for `X·Y ↦ z̃₀`. **Trap:** the per-`P` CoV `z₀↦P·z₀` (`|det P|^{−M₂}` non-integrable — the
 domain-enlargement artifact; use the `X·Y` pushforward, NOT the per-P Jacobian).
 
-## 5. The b=0 MIRROR (M₁ ≤ M₀) — flagged for the decorrelated re-check
+## 5. The b=0 MIRROR — a DISTINCT brick (b0mirror-confirmed, NOT a transpose-dual)
 
-For `M₁ ≤ M₀`, the saturated cut is `u = M₁`, `b = M₁−u = 0`, `a = M₀−u = M₀−M₁`. By the `M₀↔M₁` symmetry
-of `minAdm` (the recursion is symmetric in `M₀,M₁`) the reach is identical (`m_I = minAdm(M)`). **BUT
-satbuild flagged "the b=0 mirror is NOT the literal transpose"** — the corank/pivot roles swap (the front
-factor `[P|B₁₂]` becomes the tall `[P;C]` dual), so the density-order and the empty-block are on the OTHER
-side. The MATH reaches identically (symmetric recursion, verified: the scan restricted to `M₀≤M₁` but the
-`M₀↔M₁` swap gives the b=0 cells). **This is the one place I'd fire a decorrelated re-check** before the
-build commits to a single (a=0) template — confirm the b=0 mirror's density-domination is the genuine dual,
-not a transpose (satbuild's finding). At `M₀=M₁` both a=0,b=0 hold at `u=M₀=M₁` (self-dual, no ambiguity).
+**b0mirror's decorrelated verdict: the b=0 mirror needs its OWN waist brick.** The M₀↔M₁ symmetry transfers
+only the COUNT (`m_I = minAdm`, 0/8232 both branches; my re-verify 0/10976) — NOT the analytic domination.
+No integrand symmetry (transpose reverses the chain; the tall factor lands at the back). **My a=0 `hdens`
+(the wide-product density table `A = max_j j(M₂−b−j)`) is a=0-SPECIFIC and WRONG for b=0** — a formaliser
+copying the a=0 brick + swapping M₀↔M₁ would carry the wrong domination. The b=0 brick has its OWN `hdens`.
+
+**b=0 structure** (`M₁ ≤ M₀`, saturated cut `u = M₁`, `a = M₀−u = M₀−M₁`, `b = M₁−u = 0`): the CORANK
+vanishes (`b=0`, `A_cor`/`Γ`/`Q_b` empty), and the front factor is the **TALL** `[P;C]` (`M₀×M₁`, `P` the
+u×u top block, `C` the a×u bottom block). `freedSchurLoss = frobSq([P;C]·Q_p)`, `Q_p = z₀·Z_deep` (`M₁×n`).
+This is the DUAL of a=0's wide `[P|B₁₂]·Y`. Reduced chain `redChain M₁ M = (M₁, M₂,…)` (drops M₀) — my
+`redChain (u,M)` at `u=M₁` is ALREADY correct (b0mirror confirmed).
+
+**b=0 `hdens` (DISTINCT — the Gram/Wishart facts, largely BANKED):** integrating the tall `[P;C]` gives the
+Wishart determinant `∫_{[P;C]∈box} det(PᵀP + CᵀC)^{−M₂/2}` (`= det([P;C]ᵀ[P;C])^{−M₂/2}`, the Gram of the
+tall M₀×M₁ factor). This is `RouteMSJQBoxCore.qbox_lintegral_lt_top` with `(qbox-b, qbox-q, α) = (M₁, M₀, M₂)`
+(apply to `X = [P;C]ᵀ`, wide M₁×M₀): **converges ⟺ M₂ < M₀−M₁+1 = a+1 ⟺ M₂ ≤ a** (codim `a+1`, verified).
+Split (`scripts/`, 10976 b=0 cells): `M₂ ≤ a` (3136) → clean one-shot qbox (BANKED); `M₂ > a` (7840) →
+the one-shot qbox diverges → recurse via the reduced-chain IH (the D-cert §3bis per-level pivot-Gram
+recursion — the `[P;C]`-Gram folds into `redChain M₁ M`'s recursion, NO new density content). **So b=0 is
+CLEANER than a=0** (injective CoV — the tall `[P;C]` is full column rank M₁; the Gram/Wishart is a banked
+qbox/gammaAtom-family object; no wide-product pushforward density).
+
+**b=0 contract:** SAME structure as §2, with the mirror hyp `hb0 : M 1 − min (M 0) (M 1) = 0` (replaces
+`ha0`), `u = min(M₀,M₁) = M₁`, and `hdens = the Gram/Wishart facts` (replaces the a=0 wide-density `hdens`).
+The contract STRUCTURE degenerates correctly at b=0 (the corank blocks are empty); only `ha0`+`hdens` are
+a=0-only. **The one open piece:** the `[P;C]`-Gram → qbox dim-matching (which `qbox-b,qbox-q` from the
+actual `[P;C]` dims) → the reduced-chain recursive IH — folds into the coherent-unit merge (D-cert §3bis).
+
+**Routing (resolves Brick D's `hjr` b=0-top):** the b=0 top shell (M₁<M₀, `j = M₁−t`) routes to THIS b=0
+mirror waist (not the a=0 waist, not Brick D). At `M₀=M₁` both a=0,b=0 hold at `u=M₀=M₁` (self-dual).
+
+## 5bis. So the WAIST = TWO bricks
+
+- **`deeperFlag_waist_a0`** (§1–§4): a=0 (`M₀≤M₁`, `u=M₀`), the WIDE-product pushforward density `ρ(z̃₀)`
+  (`hdens` = the wide-density table, the genuinely-new content), front-rank-sector, A vs 2Δ split.
+- **`deeperFlag_waist_b0`** (§5): b=0 (`M₁≤M₀`, `u=M₁`), the TALL Gram/Wishart `det(PᵀP+CᵀC)^{−M₂/2}`
+  (`hdens` = the Gram/Wishart facts, banked qbox), CLEANER (injective CoV). Its own `hb0`+`hdens`.
+Both reach `½minAdm(M)` (the count symmetry, 0/8232). The waist formaliser builds both.
 
 ## 6. Decorrelated coverage
 

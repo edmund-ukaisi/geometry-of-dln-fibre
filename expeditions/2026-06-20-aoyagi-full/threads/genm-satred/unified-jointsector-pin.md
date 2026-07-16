@@ -1,0 +1,108 @@
+# unified-jointsector-pin — the ONE joint-rank-sector descent for all HARD cells
+
+**Seat:** pen-and-paper (design, decorrelated), `genm-satred`, capstone. **Date:** 2026-07-16. **NO Lean.**
+The unified mechanism the controller adopted (the leaf-1 confound revealed the unification). Subsumes
+`hFrontReduce` (edgefub's front reduce), the edge two-chain descent (`hBackbone-edge-pin`), the two waist
+bricks (`waist-pin` a=0/b=0), and the interior-HARD shells (`leaf1-soundness`). Consolidates
+`backbone-cert` (decorated joint descent) + `D-cert` (joint rank-sector) + `satred-cert` (X·Y). Verified:
+exact-ℕ (`scripts/{kill_check,waist_reach,edge_twochain,leaf1_threshold2,draft_route_sound}.py`, all 0-fail
+on the min-recursion) + decorrelated Codex (`codex/{backbone,brickD,edgereach,leaf1}-answer.md`).
+
+---
+
+## ★ THE MECHANISM (one seam, four instances)
+
+A **HARD cell** (a corner/shell where the bare-constant front bound undershoots — `minAdm(M) > ab +
+u·(conditioned frame dim)`, the A>2Δ regime) is reduced to `½minAdm(M)` by the **joint-rank-sector
+descent**: reorganize the front into a coupled linear factor, stratify a rank, reduce each stratum to a
+DIFFERENT shorter chain `redChain u'_r M` carrying the reduced-Gram `det(GGᵀ)^{−·}` to the arity-IH via
+`qbox`, and `min_r [charge_r + minAdm(redChain u'_r M)] = minAdm(M)` (the `minAdm` recursion, geometrically).
+**No `(□)` wall** (every hard cell `⊆ RMBTF(M)`, reaches `½minAdm(M)`). The four instances differ ONLY in
+which factor is stratified + the `qbox` dims + the chains.
+
+## 1. The easy/hard GUARD (arch1build's dispatch)
+
+Per shell/corner at cut `u=t+j` (`a=M₀−u`, `b=M₁−u`, `M₁−j = b+t` = the shell's conditioned SV count):
+- **EASY** (`minAdm M ≤ ab + u·(M₁−j)`): the bare-constant front bound (threshold `u(M₁−j)/2`, shell-
+  conditioned domain) reaches → `deeperFlagCore + L1` (route α, brickf's easy leaf). Built machinery.
+- **HARD** (`minAdm M > ab + u·(M₁−j)`, the A>2Δ regime — 6090/76832 interior shells + all edge-tie + all
+  waist a=0/b=0): the bare constant caps below `½minAdm M` → **the unified joint-rank-sector descent**.
+
+## 2. The THREE shared primitives (the seam)
+
+**(P1) Coupled reorganization (the X·Y / [P|B₁₂] / [P;C] seam) — EXACT, banked block identity.** The front
+energy is LINEAR in the joint front factor `F`: `frobSq(F · G)`, `G` = the reduced-chain leading-Gram data
+(a function of the reduced params `z` and the corank `A_cor`). No affine drop (verified |lhs−rhs|~1e-14).
+- wide `F=[P|B₁₂]` (u×M₁), `G=[z₀;A_cor]·Z_deep` (interior/edge/waist-a0);
+- tall `F=[P;C]` (M₀×M₁), `G=Q_p=z₀·Z_deep` (waist-b0).
+
+**(P2) Rank-sector blow-up + the `det(GGᵀ)^{−·}` Gram carry.** Stratify the critical rank `r`; on stratum
+`r`, the rank-drop peels to a deeper effective cut `u'_r` (reduce to `redChain u'_r M`), and the front
+integral over the stratum yields the reduced-Gram `det(G_r G_rᵀ)^{−·}` — carried to the arity-IH via
+`RouteMSJQBoxCore.qbox_lintegral_lt_top` (the PIVOT Gram, full-rank on the stratum; NEVER the corank Gram —
+the `a=q−b+1` trap). The one-shot `qbox` converges in a range; outside it, the per-level `qbox` **recurses**
+into `redChain u'_r M`'s own recursion (D-cert §3bis; the arity recursion, NO new density content).
+
+**(P3) Min-over-strata = the recursion.** `min_r [charge_r + minAdm(redChain u'_r M)] = minAdm(M)` — this
+IS the `minAdm` recursion realized geometrically (`minAdm_le_peelCharge_add_redChain`). Reaches `½minAdm(M)`
+for `c'<½minAdm(M)`; coincident-charge strata give harmless-multiplicity logs (δ-slack, no threshold shift,
+`one_add_log_inv_le_rpow`). Verified across instances: interior-hard 0/4039 (`kill_check`), edge 0/1076
+(`edge_twochain`), waist-a0 0/10976, waist-b0 0/10976 (`waist_reach`).
+
+## 3. The FOUR instances (specializations)
+
+| instance | front `F` | stratify | chains `redChain u'_r M` | Gram carry | notes |
+|---|---|---|---|---|---|
+| **interior-HARD** | `[P|B₁₂]` wide | `rank(G=[Q_p;Q_b])` | per stratum `r`, `u'_r` = cut+drop | `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` via qbox | A>2Δ, `minAdm M>ab+u(M₁−j)`; corank `Γ·Q_b` term present |
+| **edge-tie (b=1)** | `[P|B₁₂]` | `rank(A_cor·Z_deep)∈{0,1}` | `redChain u M` (r=1) + `redChain (u+1) M` (r=0) | — (leaf: `\|v'_{j₀}\|^{−a}`, a<u sphere) | 2 chains, both @ `c'−a/2`; tie-log δ-fold |
+| **waist a=0** | `[P|B₁₂]` wide (`X·Y`) | `rank(z̃₀=X·Y)`, `s∈0..M₀` | `redChain s M` | wide-product density `ρ(z̃₀)` (order `A=max_j j(M₂−b−j)`) | `u=M₀≤M₁`; genuinely-new density (the ONE non-qbox instance) |
+| **waist b=0** | `[P;C]` TALL | `rank([P;C])` | `redChain M₁ M` (drops M₀) | `det(PᵀP+CᵀC)^{−M₂/2}` via qbox (b=M₁,q=M₀,α=M₂), conv ⟺ M₂≤a | `u=M₁≤M₀`; CLEANER (injective CoV, banked) |
+
+All four: (P1) coupled reorganization → (P2) rank-sector + Gram carry → (P3) min = `minAdm(M)`. The edge is
+the corank-rank instance (2 strata); the waists are the front-rank instances (wide/tall dual); interior-hard
+is the corank-rank instance with the full A>2Δ strata. `hFrontReduce` (edgefub's front→RMBTF) = the (P1)+(P2)
+core specialized to the edge. **Only waist-a0's `hdens` (the wide density `ρ`) is genuinely-new; the other
+three carry `det(GGᵀ)` via banked `qbox`/`gammaAtom`.**
+
+## 4. Banked vs new
+
+**BANKED (consume):** the coupled block identity / `prod_headSplit` / `hsQ` (P1); `gammaAtom_aniso_shifted_eq`
++ `qbox_lintegral_lt_top` (P2 Gram carry); `minAdm_le_peelCharge_add_redChain` (P3 recursion); the arity-IH
+`sjStepHyp_of_coupled` (`∀ shorter chain, RMBTF`); `one_add_log_inv_le_rpow` (δ-fold); `scaledRadialEuclid`
++ `corner_block_lintegral_lt_top` (edge leaf); `edge_generic_cells_of_box` + `exists_measurable_nonzero_index`
+(edgefub, edge cells + j₀ selector). **NEW (build, ONE formaliser):** (i) the per-stratum rank-sector blow-up
+(the determinantal stratification + the per-stratum charge → `redChain u'_r M`); (ii) the `qbox`-recursion
+threading (the per-level pivot-Gram folds into `redChain`'s recursion); (iii) waist-a0's wide-product density
+domination (the genuinely-new `ρ(z̃₀)` order bound — the ONE hard analytic atom); (iv) the min-over-strata
+assembly (= the recursion, arithmetic). **Diamond guard:** raw-`Pi` for all matrix CoV/products.
+
+## 5. The open piece (per-instance `qbox` dim-matching → reduced-chain IH)
+
+For each instance, the `qbox` `(b,q,α)` must be read from the ACTUAL front/Gram dims (interior: `Q̃ₚ`
+row/col; waist-b0: `[P;C]ᵀ` = `M₁×M₀`, `(b,q,α)=(M₁,M₀,M₂)`; edge: no qbox, the `a<u` sphere). The single-
+level `qbox` is strict in a range; the marginal cells recurse ONE level into `redChain u'_r M` (the arity
+recursion — D-cert §3bis, verified single-level strict for 209/283 a≥u edge cells, the rest recurse). This
+dim-matching FOLDS into the coherent-unit merge (it has the exact dims + the recursion); no further pen-and-
+paper design. Finiteness is guaranteed (`⊆ RMBTF(M)`).
+
+## Close
+
+- **Firmest.** The unified joint-rank-sector descent is the ONE mechanism for all hard cells (interior-A>2Δ,
+  edge-tie, waist a=0/b=0), reaching `½minAdm(M)` via `min_r[charge_r + minAdm(redChain u'_r M)] = minAdm(M)`
+  (verified 0-fail across all four instances). Three shared primitives (coupled reorganization; rank-sector
+  + `det(GGᵀ)`→qbox→IH; min-recursion); four specializations differing only in the stratified factor + qbox
+  dims. Subsumes hFrontReduce + the edge/waist descents + the two waist bricks. Easy/hard guard =
+  `minAdm M ≤ ab + u(M₁−j)`. No `(□)` wall.
+- **Most likely to break the BUILD.** (i) qbox on the corank Gram (the `a=q−b+1` trap) — always the PIVOT
+  Gram. (ii) Treating waist-a0 by qbox (it's the genuinely-new wide density `ρ`, NOT qbox). (iii) A one-shot
+  qbox where the marginal cells must recurse (the per-level arity recursion). (iv) The edge/interior corank-
+  rank tie-logs must δ-fold (harmless, but present). (v) Forcing the bare constant on a hard cell (unsound).
+- **Next.** ONE formaliser builds the unified descent (the 3 primitives + the 4 instance specializations);
+  brickf builds the easy leaf; the wrappers (edgefub, waist) consume it as instances; arch1build guards the
+  easy/hard split (`minAdm M ≤ ab+u(M₁−j)`). The one genuinely-new atom is waist-a0's density; everything
+  else is banked qbox/gammaAtom + the rank-sector chart-maps + the recursion. I pin any per-instance detail
+  (the exact qbox dims, the waist-a0 density order) on request.
+
+Files (absolute): `…/threads/genm-satred/unified-jointsector-pin.md` (this); `backbone-cert.md`, `D-cert.md`,
+`hBackbone-edge-pin.md`, `waist-pin.md`, `leaf1-soundness.md`, `brickD-{pin,sublemmas}.md`, `satred-cert.md`;
+`codex/{backbone,brickD,edgereach,leaf1}-answer.md`; `scripts/{kill_check,waist_reach,edge_twochain,leaf1_threshold2}.py`.
