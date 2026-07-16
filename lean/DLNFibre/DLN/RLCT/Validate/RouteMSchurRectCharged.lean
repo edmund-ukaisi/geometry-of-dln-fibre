@@ -65,6 +65,17 @@ namespace DLNFibre.DLN.RLCT
 noncomputable def chargeGramDet {b n p : ℕ} (Acor : Fin b → Fin n → ℝ) (S : Fin n → Fin p → ℝ) : ℝ :=
   ((Matrix.of (rmatMul Acor S)) * (Matrix.of (rmatMul Acor S))ᵀ).det
 
+/-- **The charge Gram det at `b = 1` is the scalar `frobSq(A_cor·S)`.** The `1×1` Gram
+`(A_cor·S)(A_cor·S)ᵀ` has determinant its single entry `∑_j (A_cor·S)_{0j}² = frobSq(A_cor·S)`. Bridges
+the `b = 1` charge to the banked `frobSq`-based corank-weight atoms (`corankWeight_lt_top`). -/
+theorem chargeGramDet_one {n p : ℕ} (Acor : Fin 1 → Fin n → ℝ) (S : Fin n → Fin p → ℝ) :
+    chargeGramDet Acor S = frobSq (rmatMul Acor S) := by
+  unfold chargeGramDet frobSq
+  rw [Matrix.det_fin_one]
+  simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Fin.sum_univ_one]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [sq]
+
 /-! ## The charged corank finiteness predicate -/
 
 /-- **The charged rectangular Schur core finiteness predicate.** `ChargedRectSchurCore m n p a b c' T`
