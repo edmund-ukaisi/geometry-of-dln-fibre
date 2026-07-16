@@ -1,4 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeFubini
+import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeAssembly
+import DLNFibre.DLN.RLCT.Validate.RouteMSJHcellNull
 
 set_option linter.style.longLine false
 
@@ -125,5 +127,31 @@ theorem coupledInner_aemeasurable {u a b n : ℕ} (Q : Matrix (Fin u ⊕ Fin b) 
   dsimp only
   rw [shearBox_lintegral_eq x Q c' T]
   exact lintegral_congr (fun D => by rw [freedSchurLoss_shear_isUnit_eq x D Q hx.2.2.2])
+
+/-- **The outerDom peel of `coupledBoxIntegrand` (half-A step 1).** The coupled-box integrand's front
+`x`-integral factors — via the peel gate (`outerDom_lintegral_prod` + `coupledInner_aemeasurable`) — into
+the front pivot pair `pb = (P, B₁₂) ∈ outerPB` and the corank left-block `C ∈ [−1,1]^{a×u}`:
+
+    coupledBoxIntegrand M u c' p
+      = ∫_{pb ∈ outerPB} ∫_{C ∈ Cbox} ∫_{Γ ∈ shearBox (pb,C)} (freedSchurLoss (pb,C) Γ (hsQ …))^{−c'}.
+
+This peels `(P, B₁₂)` off `C` so the per-slice corank charge (`coupledInner_slice_le`) applies per fixed
+pivot pair — the entry point for the two-sector descent. -/
+theorem coupledBoxIntegrand_peel {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ) (hc0 : 0 ≤ c')
+    (p : Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)) :
+    coupledBoxIntegrand M u c' p
+      = ∫⁻ pb in outerPB u (M 1 - u) 1,
+          ∫⁻ C in {C : Fin (M 0 - u) → Fin u → ℝ | ∀ i j, C i j ∈ Set.Icc (-1 : ℝ) 1},
+            ∫⁻ Γ in {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
+                Γ + schurShift ((pb, C) : SJOuter u (M 0 - u) (M 1 - u))
+                  ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
+              ENNReal.ofReal ((freedSchurLoss ((pb, C) : SJOuter u (M 0 - u) (M 1 - u)) Γ
+                (hsQ M u (deeperFlagZdeep M u) p.1 p.2)) ^ (-c')) := by
+  rw [coupledBoxIntegrand]
+  exact outerDom_lintegral_prod 1
+    (fun x => ∫⁻ Γ in {Γ : Fin (M 0 - u) → Fin (M 1 - u) → ℝ |
+        Γ + schurShift x ∈ genBox (Fin (M 0 - u)) (Fin (M 1 - u)) 1},
+      ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M u (deeperFlagZdeep M u) p.1 p.2)) ^ (-c')))
+    (coupledInner_aemeasurable (hsQ M u (deeperFlagZdeep M u) p.1 p.2) c' 1 hc0)
 
 end DLNFibre.DLN.RLCT
