@@ -241,9 +241,84 @@ example (n : ℕ) (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
   rw [hof, Matrix.transpose_one, Matrix.mul_one,
     show (1 : Matrix (Fin n) (Fin n) ℝ) - δ ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)
         = (1 - δ ^ 2) • (1 : Matrix (Fin n) (Fin n) ℝ) from by rw [sub_smul, one_smul]]
-  have hone : (1 : Matrix (Fin n) (Fin n) ℝ).PosSemidef := by
-    have h := posSemidef_mul_transpose (1 : Matrix (Fin n) (Fin n) ℝ)
-    rwa [Matrix.transpose_one, Matrix.mul_one] at h
+  have hone : (1 : Matrix (Fin n) (Fin n) ℝ).PosSemidef := posSemidef_one_real
   exact hone.smul (by nlinarith [hδ0, hδ1] : (0 : ℝ) ≤ 1 - δ ^ 2)
+
+/-! ## The det-lower-bound → uniform-Loewner-floor bridge (non-spectral)
+
+The producer of `chargedWishartWeight_fullDeepRank_lt_top`'s hypothesis `hS` from a determinant lower
+bound: on the couplerad det-shell `|det S| ≥ ε` (square `S`), with a box bound on the adjugate Frobenius
+norm, `S·Sᵀ ⪰ (ε/C)²·I`. Non-spectral — via the adjugate identity `det(S)·v = adj(Sᵀ)·(Sᵀv)` + a
+discrete Cauchy–Schwarz, dodging the eigenvalue/`σ_min` whnf trap. -/
+
+/-- **Frobenius square is transpose-invariant.** `frobSq Mᵀ = frobSq M`. -/
+theorem frobSq_transpose {m n : ℕ} (M : Matrix (Fin m) (Fin n) ℝ) : frobSq Mᵀ = frobSq M := by
+  unfold frobSq
+  rw [Finset.sum_comm]
+  exact Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by
+    rw [Matrix.transpose_apply]))
+
+/-- **Discrete Cauchy–Schwarz for `mulVec`.** `‖M·w‖² ≤ ‖M‖_F²·‖w‖²` in dot-product form:
+`(M·w)⬝(M·w) ≤ frobSq M · (w⬝w)` (per-row `Finset.sum_mul_sq_le_sq_mul_sq`, then sum the rows). -/
+theorem mulVec_dotProduct_self_le_frobSq {m n : ℕ} (M : Matrix (Fin m) (Fin n) ℝ) (w : Fin n → ℝ) :
+    (M *ᵥ w) ⬝ᵥ (M *ᵥ w) ≤ frobSq M * (w ⬝ᵥ w) := by
+  have hww : w ⬝ᵥ w = ∑ j, w j ^ 2 :=
+    Finset.sum_congr rfl (fun j _ => (sq (w j)).symm)
+  have hlhs : (M *ᵥ w) ⬝ᵥ (M *ᵥ w) = ∑ i, (∑ j, M i j * w j) ^ 2 :=
+    Finset.sum_congr rfl (fun i _ => by rw [← sq]; rfl)
+  rw [hlhs, frobSq, Finset.sum_mul]
+  refine Finset.sum_le_sum (fun i _ => ?_)
+  refine le_trans (Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => M i j) (fun j => w j)) ?_
+  rw [hww]
+
+/-- **Det-lower-bound → uniform Loewner floor (square `S`, non-spectral).** For a square `S` with
+`ε ≤ |det S|` (`ε > 0`) and the adjugate Frobenius bound `frobSq (adjugate S) ≤ C²` (`C > 0`), the deep
+Gram has the uniform floor `S·Sᵀ ⪰ (ε/C)²·I`. This produces `chargedWishartWeight_fullDeepRank_lt_top`'s
+`hS` from couplerad's det-shell + box bound. Route: `adj(Sᵀ)·(Sᵀv) = det(S)·v` (`adjugate_mul` +
+`det_transpose`), so `det(S)²·(v⬝v) = ‖adj(Sᵀ)·(Sᵀv)‖² ≤ frobSq(adj S)·‖Sᵀv‖² ≤ C²·‖Sᵀv‖²`
+(`mulVec_dotProduct_self_le_frobSq` + `frobSq_transpose`); with `ε² ≤ det²` this gives `‖Sᵀv‖² ≥
+(ε/C)²·(v⬝v)`, i.e. the Loewner floor. NON-SPECTRAL. -/
+theorem loewner_floor_of_abs_det_ge {n : ℕ} (S : Matrix (Fin n) (Fin n) ℝ) (ε C : ℝ)
+    (hε : 0 < ε) (hC : 0 < C) (hdet : ε ≤ |S.det|) (hadj : frobSq S.adjugate ≤ C ^ 2) :
+    ((S * Sᵀ) - (ε / C) ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)).PosSemidef := by
+  have hHerm : ((S * Sᵀ) - (ε / C) ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)).IsHermitian :=
+    (posSemidef_mul_transpose S).isHermitian.sub
+      (posSemidef_one_real.smul (by positivity : (0 : ℝ) ≤ (ε / C) ^ 2)).isHermitian
+  refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hHerm (fun x => ?_)
+  have hstar : (star x : Fin n → ℝ) = x := funext (fun i => star_trivial (x i))
+  rw [hstar]
+  set w : Fin n → ℝ := Sᵀ *ᵥ x with hw
+  have hxx : 0 ≤ x ⬝ᵥ x := Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
+  have hww : 0 ≤ w ⬝ᵥ w := Finset.sum_nonneg (fun i _ => mul_self_nonneg _)
+  -- adjugate identity `(adj S)ᵀ · w = det(S) • x`
+  have hadjid : (S.adjugate)ᵀ *ᵥ w = S.det • x := by
+    have h : (S.adjugate)ᵀ * Sᵀ = S.det • (1 : Matrix (Fin n) (Fin n) ℝ) := by
+      rw [Matrix.adjugate_transpose, Matrix.adjugate_mul, Matrix.det_transpose]
+    have h2 : (S.adjugate)ᵀ *ᵥ (Sᵀ *ᵥ x) = ((S.adjugate)ᵀ * Sᵀ) *ᵥ x :=
+      Matrix.mulVec_mulVec x (S.adjugate)ᵀ Sᵀ
+    rw [hw, h2, h, Matrix.smul_mulVec, Matrix.one_mulVec]
+  -- det²·(x⬝x) = ‖(adj S)ᵀ·w‖² ≤ C²·(w⬝w)
+  have hdet2xx : S.det ^ 2 * (x ⬝ᵥ x) = ((S.adjugate)ᵀ *ᵥ w) ⬝ᵥ ((S.adjugate)ᵀ *ᵥ w) := by
+    rw [hadjid, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]; ring
+  have hchain : S.det ^ 2 * (x ⬝ᵥ x) ≤ C ^ 2 * (w ⬝ᵥ w) := by
+    rw [hdet2xx]
+    refine le_trans (mulVec_dotProduct_self_le_frobSq (S.adjugate)ᵀ w) ?_
+    rw [frobSq_transpose]
+    exact mul_le_mul_of_nonneg_right hadj hww
+  have hεdet : ε ^ 2 ≤ S.det ^ 2 := by
+    rw [← sq_abs S.det]; exact pow_le_pow_left₀ hε.le hdet 2
+  -- reduce the quadratic form and conclude
+  rw [Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, Matrix.one_mulVec,
+    dotProduct_smul, smul_eq_mul]
+  have hquad : x ⬝ᵥ ((S * Sᵀ) *ᵥ x) = w ⬝ᵥ w := by
+    have e1 : (S * Sᵀ) *ᵥ x = S *ᵥ (Sᵀ *ᵥ x) := (Matrix.mulVec_mulVec x S Sᵀ).symm
+    rw [e1, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, ← hw]
+  rw [hquad]
+  have hfin : (ε / C) ^ 2 * (x ⬝ᵥ x) ≤ w ⬝ᵥ w := by
+    rw [div_pow, div_mul_eq_mul_div, div_le_iff₀ (by positivity : (0 : ℝ) < C ^ 2)]
+    calc ε ^ 2 * (x ⬝ᵥ x) ≤ S.det ^ 2 * (x ⬝ᵥ x) := mul_le_mul_of_nonneg_right hεdet hxx
+      _ ≤ C ^ 2 * (w ⬝ᵥ w) := hchain
+      _ = w ⬝ᵥ w * C ^ 2 := by ring
+  linarith [hfin]
 
 end DLNFibre.DLN.RLCT
