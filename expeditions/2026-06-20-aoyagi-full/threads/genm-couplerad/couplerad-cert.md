@@ -1055,19 +1055,27 @@ QIP: ① the `2q<ub` bounded-inner (det-Gram loc-int); ② the log-inner bound a
 BOUNDED z0-INDEPENDENT constant — `Q_b=A_cor·Z_deep` has no z0; `‖B̃Q_b‖²=‖w‖²`, `w∈ℝ^{ub}`) → polar
 (`MeasureTheory.integral_fun_norm_addHaar`-family) → the 1D radial `∫_0^R(c+ρ²)^{−q}ρ^{ub−1}dρ` at the three
 regimes (`2q<ub` power / `2q=ub` log / `2q>ub` residual = the banked atom). This CoV lives in **R3/R4**, not
-R1/R2 (R1's B̃-shift is unit-Jac, leaves `‖B̃Q_b‖²` anisotropic; R2 is the deep CoV). **MERGE:** state ② for
-the whole `2q≤ub` (bounded ⟹ `≤C≤C(1+log⁺(1/c))` trivially) — then the entire `2q≤ub` side routes through
-`log≤ε-power → rectCore_schurGen_lt_top(ε)`, needing `ε∈(0,½minAdm(![u+a,u,d]))` nonempty, i.e.
-`minAdm(![u+a,u,d])≥1 ⟺ d≥1`. This HOLDS for EVERY `d≥1` cell (all 7962 genuine `u≥1,a≥1` + all `a=0,d≥1`;
-0 failures). So for `d≥1` the whole interior is ONE new lemma (`rankUB_residual_radial`) + Tonelli + the QIP —
-the un-regularized loc-int is SIDESTEPPED. **The two exceptions** (`minAdm(![u+a,u,d])=0`): `u=0` (no pivot,
-empty front — not a couplerad interior-hard cell) and `d=0 ⟺ a=0 ⟺ ρ_d=b` (square-saturated front, no deep
-transverse: `Z_deepΠ=0 ⟹ Y≡0 ⟹` loss `= ‖B̃Q_b‖²` PURE, DECOUPLED from `(E,Y)`, finite iff `2q<ub` which
-holds unconditionally in-window). The `d=0` case is the ONLY place the standalone un-regularized loc-int
-(`∫_{ball}‖x‖^{−2q}<∞`, `2q<ub` — the one piece not cleanly in Mathlib, corankrec-flagged) is needed —
-and only IF couplerad owns square-saturated (`a=0`) cells rather than the regular/square regime upstream
-(open scoping Q for the controller). Net: `d≥1` = pure merge (one lemma, no un-reg loc-int); `d=0` = the
-decoupled `2q<ub` standalone (if in scope).
+R1/R2 (R1's B̃-shift is unit-Jac, leaves `‖B̃Q_b‖²` anisotropic; R2 is the deep CoV). **The lemma is stated
+for `c ≥ 0`** (not `c>0`) — this is the key that folds EVERY interior cell into it:
+- **`d ≥ 1` (`c=frobSq(EY)>0` a.e.) — the MERGE:** state ② for the whole `2q≤ub` (bounded ⟹
+  `≤C(1+log⁺(1/c))` trivially), so the entire `2q≤ub` side routes `log≤ε-power → rectCore_schurGen_lt_top(ε)`,
+  `ε∈(0,½minAdm(![u+a,u,d]))` nonempty ⟺ `minAdm(![u+a,u,d])≥1 ⟺ d≥1`. HOLDS for EVERY `d≥1` cell (7962
+  genuine `u≥1,a≥1` + all `a=0,d≥1`; 0 failures, `couplerad_merge.py`). Regimes ①②③ via the one lemma.
+- **`d = 0 ⟺ a = 0 ⟺ ρ_d=b` (square-saturated front) — regime ① AT `c=0`:** `Z_deepΠ=0 ⟹ Y≡0 ⟹ c=0`, loss
+  `= ‖B̃Q_b‖²` pure. This is NOT a separate lemma and NOT an availability risk (my earlier "un-regularized
+  loc-int not in Mathlib" flag was timidity-disguised-as-rigor — corankrec dissolved it): it is
+  `rankUB_residual_radial` at `c=0`, regime ① — after the per-row CoV + polar it is
+  `det(Q_bQ_bᵀ)^{−u/2}·ω_{ub}·∫_0^R ρ^{ub−1−2q}dρ`, a BOUNDED-INTERVAL power integral finite for `2q<ub`
+  (`integral_rpow`, exponent `ub−1−2q > −1`) — detail-at-scale, standard. `2q<ub` holds unconditionally
+  in-window (`a=0 ⟹ minAdm M ≤ ub`). So the `c≥0` unified lemma covers it as a specialisation.
+
+**Net: ONE new lemma (`rankUB_residual_radial`, `c≥0`, per-row-G^{1/2} CoV + polar + 3 regimes) covers the
+ENTIRE interior** — `d≥1` merge and `d=0` pure alike; everything else banked (RectSchurCore ∀T, the QIP,
+the deep/hGae machinery, `log≤ε`). **Scope (corankrec's deep-atlas):** `a=0` (square front) IS in couplerad's
+interior scope — the atlas routes deep-rank → deficient/generic → interior/edge with NO separate "square"
+bucket, and LATE-27 corrected the "square-first freebie" overclaim; so square/`a=0` is couplerad's, not a
+freebie owned upstream. (`u=0` = no pivot / empty front is the one genuinely out-of-scope stratum.) Controller
+to confirm against the FULL taxonomy that no upstream regular regime peels `a=0` before the interior split.
 
 **★7 The inner/outer bounded-domain comparison (CORRECTED TWICE — the domain/scale step is FREE; the real analytic step is R3/R4).**
 
