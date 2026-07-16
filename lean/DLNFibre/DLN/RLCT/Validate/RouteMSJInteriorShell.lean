@@ -209,4 +209,40 @@ theorem chargeFreeBox_b1a1_lt_top {n p : ℕ} (hn : 2 ≤ n) (hp : 2 ≤ p) :
   obtain ⟨C, hC, hinner⟩ := corankSlab_charge_sint_le hp
   exact chargeFreeBox_b1a1_of_inner hn C hC hinner
 
+/-! ## The `b`-general interior charge free-box outer (for (D) `b≥2`)
+
+The `b`-general outer assembly, ready to consume a `b`-general inner corank-slab bound (schurB's (D)
+target). Identical structure to the `b=1` outer, but the RHS scale is the `b×b` corank-Gram determinant
+`det((Matrix.of A_cor)(Matrix.of A_cor)ᵀ)^{−a/2}` DIRECTLY (no `det_gramRow` — that `frobSq` coincidence is
+`b=1`-only), so it closes by the banked `detGram_lintegral_lt_top` at `r = b` (threshold `a < n−b+1`, the
+corneradj rank-`m` corank floor `= a+b ≤ n`). -/
+
+/-- **The interior charge free-box is finite, given the `b`-general inner uniform bound.** Given the
+`b`-general inner corank bound `hinner` (`∫_S charge^{−a/2} dS ≤ C·det(A_cor·A_corᵀ)^{−a/2}`, uniform `C`
+— schurB's (D) inner slab) and the corank threshold `a+b ≤ n`, the iterated free-box `∫_{A_cor∈matBox b n 1}
+∫_{S∈matBox n p 1} charge^{−a/2}` is finite: `lintegral_mono` (the inner) → `lintegral_const_mul'` →
+banked `detGram_lintegral_lt_top` (`r=b`, `a < n−b+1`). The `b=1` frobSq path
+(`chargeFreeBox_b1_of_inner`) stays separate for the landed `corankSlab_charge_sint_le` wiring. -/
+theorem chargeFreeBox_of_inner {n p a b : ℕ} (hab : a + b ≤ n) (C : ℝ≥0∞) (hC : C < ⊤)
+    (hinner : ∀ Acor : Fin b → Fin n → ℝ,
+      (∫⁻ S in matBox n p 1, ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2)))
+        ≤ C * ENNReal.ofReal ((((Matrix.of Acor) * (Matrix.of Acor)ᵀ).det) ^ (-(a : ℝ) / 2))) :
+    (∫⁻ Acor in matBox b n 1, ∫⁻ S in matBox n p 1,
+        ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2))) < ⊤ := by
+  calc (∫⁻ Acor in matBox b n 1, ∫⁻ S in matBox n p 1,
+          ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2)))
+      ≤ ∫⁻ Acor in matBox b n 1,
+          C * ENNReal.ofReal ((((Matrix.of Acor) * (Matrix.of Acor)ᵀ).det) ^ (-(a : ℝ) / 2)) :=
+        lintegral_mono hinner
+    _ = C * ∫⁻ Acor in matBox b n 1,
+          ENNReal.ofReal ((((Matrix.of Acor) * (Matrix.of Acor)ᵀ).det) ^ (-(a : ℝ) / 2)) :=
+        lintegral_const_mul' _ _ hC.ne
+    _ < ⊤ := by
+        refine ENNReal.mul_lt_top hC ?_
+        have hbn : b ≤ n := by omega
+        have haq : (a : ℝ) < (n : ℝ) - (b : ℝ) + 1 := by
+          have : (a : ℝ) + (b : ℝ) ≤ (n : ℝ) := by exact_mod_cast hab
+          linarith
+        exact detGram_lintegral_lt_top hbn haq
+
 end DLNFibre.DLN.RLCT
