@@ -92,19 +92,28 @@ all-rank resolution, SAME mechanism).
    `ω·∫ det(KKᵀ)^{−a/2}` by the sphere identity — same divergence. **corneradj `edge-design-cert.md` Part-1
    is WRONG here** (its worst-case `C₀=0` maximises the charge, dropping the saving mechanism).
 
-**The HONEST mechanism (what (D) does at corank-one).** Keep `Γ` on the **BOX** (radial cutoff `s_max(Ω)`)
-AND retain the **C-integration**. Near a rank-`(b−1)` point of `K`, the cross map `Ccross=C·Q̃ₚ` supplies the
-`a` **fragile transverse directions** `η_C`; the box cutoff kicks in at scale `τ² ≍ w + ‖η_C‖²`, turning
-`∫ dσ/σ` into `1+log(1/τ)` — FINITE. Then `∫_C ln(1/‖η_C‖) dC < ∞` absorbs the residual log. **Net: reduction
-`ab/2` with a LOG at the tie.** Only the **δ-slack per-exponent** bound holds — **NO finite-constant exact
-`ab/2` peel** (scalar model `∫_{[−1,1]²}(w+x²y²)^{−p} ≍ w^{1/2−p}·log(1/w)`, so `H_p(w) ≤ C_δ
-w^{−(p−1/2+δ)}` only, `δ` chosen inside per-`c'`). **RLCT VALUE `= ½minAdm` intact — the log is a
-pole-order/multiplicity bump, NOT a threshold shift. Claim the VALUE, never a multiplicity `m`.**
+**The HONEST mechanism (what (D) does at corank-one) — stated to bedrock (edgebrick, load-bearing).** Keep
+`Γ` on the **BOX** (radial cutoff `s_max(Ω)`) AND retain the **C-integration**. Near a rank-`(b−1)` point of
+`K`, let `η` be the unit vector spanning `K`'s lost row-direction; the morse residual carries
+`‖Ccross·η‖² = ‖C·Q̃ₚ·η‖²`. The **enabling lemma is a NON-DEGENERACY of the MAP** (NOT a uniform bound):
+`C ↦ C·Q̃ₚ·η` (`ℝ^{a×u}→ℝ^a`) is **SURJECTIVE whenever `Q̃ₚ·η ≠ 0`** (generic, `Q̃ₚ` full rank). This
+surjectivity lets the **C-INTEGRATION** absorb the log — it does **NOT** remove the log pointwise-uniformly:
+**`C=0` is in the box**, where `η_C=0` and no fragile direction is supplied, so there is **NO
+uniform-constant / finite-constant bound**. The honest deliverable is the **δ-slack per-exponent** finiteness:
+`∫_C(w+‖η_C‖²)^{−q}dC` finite via `1+log(1/τ) ≤ C_δ τ^{−δ}` + the arity-IH on the open range
+`c'−ab/2+δ < ½minAdm(redChain)`. **Net: reduction `ab/2` with a LOG at the tie — NO finite-constant exact
+`ab/2` peel** (scalar model `∫_{[−1,1]²}(w+x²y²)^{−p} ≍ w^{1/2−p}·log(1/w)`; `H_p(w) ≤ C_δ w^{−(p−1/2+δ)}`
+only). **RLCT VALUE `= ½minAdm` intact — the log is a pole-order/multiplicity bump, NOT a threshold shift.
+Claim the VALUE, never a multiplicity `m`, and NEVER "uniform C-transversality removes the log" (FALSE at
+`C=0`).**
 
 **Starting atom.** `RouteMSJFreeBilinear.lean` (b=1): `Γ·Q_b = γ⊗z` (outer product),
 `frobSq(γ⊗z)^{−c'}` box integral FACTORS into two independent radial integrals (`sumSqND_box_lt_top`),
-finite `c'<½·min(a+1,D+1)`. This is the `b=1` corank-one LEAF (the `C_cross=0` worst-case IS that
-outer-product); the general rank-`(b−1)` drop needs the C-transversality LIFT on top of it.
+finite `c'<½·min(a+1,D+1)`. This is the `b=1` corank-one LEAF (`C_cross=0` at `b=1` IS that outer-product). For general
+`b≥2`, `C_cross=0` does NOT reduce to FreeBilinear (it is the divergent det-charge — why C-integration is
+essential); instead **localize at the rank-`(b−1)` stratum, factor off the full-rank `(b−1)` block**, and the
+remaining 1D fragile direction is a FreeBilinear-type rank-1 outer product LOCALLY — so FreeBilinear is the
+local model AFTER localization, plus the C-non-degeneracy lift.
 
 ## 4. Part 3 — Lean-friendly design
 
@@ -127,14 +136,25 @@ outer-product); the general rank-`(b−1)` drop needs the C-transversality LIFT 
    recursion; banked `minAdm_le_peelCharge_add_redChain`, `RouteMSJResolution:204`). Corner finite for
    `c'<½minAdm M`. The corank-one tie contributes a log absorbed by the per-`c'` `δ`-slack.
 
+**Composition with the deep resolution (couplerad, verified 0/1296).** The corank axis and the deep-rank
+axis are ORTHOGONAL and stack via **ARITY** induction. `redChain u' M = (u', M₂,…,M_last)` has its deep tail
+`(M₂,…,M_last)` **IDENTICAL to `M`'s and UNTOUCHED** by the corank peel (which collapses only the front
+`M₀,M₁→u'=M₁−r`), so `Zf` is generic/fresh (rank `ρ`) in `redChain u' M` — a genuine FRESH arity−1 chain
+whose OWN charge (and deep-rank resolution) is supplied by the arity−1 IH, with **no coupling-back / no
+carried corank decoration** (this is why ARITY induction is clean where LENGTH induction compounds
+decorations — `arity ≠ length`). **Double-count GUARD:** the stratum `{rank(A_cor·Zf)=r}` mixes `A_cor`- and
+`Zf`-rank-drops; **attribute the drop to `A_cor`** (the corank matrix) so the deep tail stays fresh, and let
+`Zf`'s own rank-drops be resolved by the arity−1 IH's deep resolution of `redChain u' M` — do NOT
+double-count the `Zf`-drop between the corank axis and the deep axis.
+
 **Banked pieces.** `freedSchurLoss`/weld/`blockSplitEquiv` (`RouteMSJChartShear`); the arity-IH
 `∀M':Fin(L+1+1), RouteMBoxThresholdFinite M'` (`sjStepHyp_of_coupled`, arch1build @4dff27df1); the `minAdm`
 recursion (`peelCharge`, `minAdm_le_peelCharge_add_redChain`); `RouteMSJFreeBilinear` (b=1 leaf,
 `sumSqND_box_lt_top`); `uniformWenn_proj_le`/`offSector_cover_le` (shell cover). **New content:** (i) the
 per-stratum determinantal blow-up + `min`-over-strata `= minAdm` recursion (the JOINT, multi-chain); (ii)
-the **corank-one C-transversality** — that `C·Q̃ₚ` supplies the `a` fragile `η_C` directions UNIFORMLY near
-every rank-`(b−1)` point of `K` (edgebrick's open lemma; the alternative honest statement is the δ-slack log
-bound). **Diamond guard:** raw-`Pi` instances for all matrix products/reindexes.
+the **corank-one enabling non-degeneracy** `C ↦ C·Q̃ₚ·η` surjective (iff `Q̃ₚ·η≠0`) `⟹` the **δ-slack
+per-exponent log bound** (NOT a uniform "C removes the log" — false at `C=0`; edgebrick). A transversality +
+a localized singular-integral estimate; the honest form the build closes on. **Diamond guard:** raw-`Pi` instances for all matrix products/reindexes.
 
 **Mathlib gap for the controller's build-vs-cite call.** The polar / Stiefel-sphere CoV and the
 determinantal-stratum blow-up with Jacobians: this is **detail-at-scale to BUILD** (patient, decomposable —
