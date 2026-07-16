@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontChargeBox
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 
 set_option linter.style.longLine false
 
@@ -267,12 +268,14 @@ theorem routeMBoxThresholdFinite_of_zero_width (M : Fin (L + 1 + 1 + 1) → ℕ)
   simp only [Nat.cast_zero, zero_div] at hc'
   exact absurd hc' (not_lt.mpr c'.coe_nonneg)
 
-/-- **The direct `SJStepHyp` from the coupled route + the degenerate handler.** Case-splits each `≥ 3`-width
-chain `M`: if `M` has all-positive widths AND a nondegenerate interior binding cut, the coupled route
-(`hcoupled`, WHICH TAKES the arity-IH — the saturated boundary shell `j=r` reduces to the reduced chain
-`redChain (min(M₀,M₁)) M` via the IH, satred's saturated brick) gives box-finiteness; otherwise (degenerate
-width `M₀=1`/`M₁=1`, boundary-argmin, or a zero width) the degenerate handler `hdegen` — also WITH the
-arity-IH — gives it. This is the honest isolate-every-hole step: `hcoupled` is discharged by
+/-- **The direct `SJStepHyp` from the coupled route + the degenerate handler.** Dispatches by arity: at
+ARITY 3 (`L=0`, the step's induction floor) it bottoms at the banked arity-3 `(□)`
+`routeMBoxThresholdFinite_mnp` — the coupled route is arity ≥ 4 (`bindingShell_rankgen` is `Fin (L+1+1+1+1)`),
+so it CANNOT fill arity 3. At ARITY ≥ 4 (`L=succ`) it case-splits each chain `M`: if `M` has all-positive
+widths AND a nondegenerate interior binding cut, the coupled route (`hcoupled`, WHICH TAKES the arity-IH — the
+saturated boundary shell `j=r` reduces to the reduced chain via the IH, satred's saturated brick) gives
+box-finiteness; otherwise (degenerate width `M₀=1`/`M₁=1`, boundary-argmin, or a zero width) the degenerate
+handler `hdegen` — also WITH the arity-IH — gives it. This is the honest isolate-every-hole step: `hcoupled` is discharged by
 `routeMBoxThresholdFinite_of_coupled` (consuming hG1/hfin/hbdryShell, with the IH feeding hbdryShell at
 `j=r`); `hdegen` is the degenerate reduction-to-shorter-chain (genuine hole, uses the IH). No route touches
 the gammaPeel/`sjJointResolution` sorry. -/
@@ -284,16 +287,30 @@ theorem sjStepHyp_of_coupled
         ¬ ((∀ i, 1 ≤ M i) ∧ ∃ t, NondegBindingCut M t) →
         (∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') → RouteMBoxThresholdFinite M) :
     SJStepHyp := by
-  intro L M hIH
-  by_cases h : (∀ i, 1 ≤ M i) ∧ ∃ t, NondegBindingCut M t
-  · obtain ⟨hnd, t, hcut⟩ := h
-    exact hcoupled M t hnd hcut hIH
-  · exact hdegen M h hIH
+  intro L
+  cases L with
+  | zero =>
+    -- ARITY 3 (the induction floor for the step): the coupled route is arity ≥ 4
+    -- (`bindingShell_rankgen`, corankrec's hfin support, is typed `Fin (L+1+1+1+1)`), so it CANNOT
+    -- fill arity 3. Bottom the arity-3 case at the banked arity-3 `(□)` `routeMBoxThresholdFinite_mnp`.
+    intro M _hIH
+    have hM : M = ![M 0, M 1, M 2] := by funext i; fin_cases i <;> rfl
+    have hmnp := routeMBoxThresholdFinite_mnp (M 0) (M 1) (M 2)
+    rwa [← hM] at hmnp
+  | succ L' =>
+    -- ARITY ≥ 4: the coupled route (nondeg interior binding cut) or the degenerate handler.
+    intro M hIH
+    by_cases h : (∀ i, 1 ≤ M i) ∧ ∃ t, NondegBindingCut M t
+    · obtain ⟨hnd, t, hcut⟩ := h
+      exact hcoupled M t hnd hcut hIH
+    · exact hdegen M h hIH
 
 /-- **The `∀-M` box-finiteness capstone, conditional on the coupled route + the degenerate handler.**
 Feeds `sjStepHyp_of_coupled` and the banked `L = 1` free-matrix base (`sjBase1_freeMatrix`) into the
-banked sorry-free strong-arity-induction wrapper `routeMBoxThresholdFinite_of_step`. So `(hcoupled ∧
-hdegen) ⟹ RouteMBoxThresholdFinite M` for EVERY width vector `M` — the coupled-route form of `(□)`,
+banked sorry-free strong-arity-induction wrapper `routeMBoxThresholdFinite_of_step`. The induction bottoms
+HONESTLY at every arity: arity 0/1 vacuous + arity 2 (`sjBase1_freeMatrix`) via the wrapper, and arity 3
+inside `sjStepHyp_of_coupled` at the banked `routeMBoxThresholdFinite_mnp` (the coupled route is arity ≥ 4).
+So `(hcoupled ∧ hdegen) ⟹ RouteMBoxThresholdFinite M` for EVERY width vector `M` — the coupled-route form of `(□)`,
 NATIVE (no `cited_aoyagi_dln`, no gammaPeel/`sjJointResolution` sorry). The remaining holes are exactly
 `hcoupled` (= hG1 [tpeel] ∧ hfin [per-cell on `j<r`: couplerad item 4 on `1≤j<r` + schurrec's
 ChargedRectSchurCore at the generic entry `j=0`] ∧ hbdryShell [saturated shell `j=r`: satred/satbuild's
