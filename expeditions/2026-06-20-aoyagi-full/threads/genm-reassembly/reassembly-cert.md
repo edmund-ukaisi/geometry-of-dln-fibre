@@ -73,23 +73,27 @@ product of nonzero eigenvalues) because `Q_b = A_cor·Z_deep` only sees `row(Z_d
 (flat deep measure, loss `frobSq(prod M') = ‖A'₀ Z_deep‖²`) carries no matching weight, and nothing in `G`
 cancels it. This residual is **non-integrable over the deep params** for good-branch binding cuts with
 `b > |M₂−M₃|` (L=1) — **including uniform-width `(d,d,d,d)`** (`t★=d−2, u=d−1, a=b=1`) **and `(3,4,5,4)@u=2`**,
-all of which satisfy the L=0 scope `a+b ≤ M₂` (so the current scope does NOT catch them). **This is exactly the
-route-B failure mode the controller warned against: an asserted reassembly identity that is false for general
-L.** In fact (§3.3) the intermediate `∫ frontChargeIntegrand` is itself **`+∞`** for these cuts (the
-a-fortiori shell-drop feeds the Morse charge form over the deep rank-drop), so `∫ frontChargeIntegrand ≤
-K·cornerComparator.integral` is `+∞ ≤ finite` — and **no comparator redesign rescues it** (a dominating
-comparator would carry the same `−b/2` weight and be `+∞` too). arch1probe §1.2's "`det(Z_deep Z_deepᵀ)^{−b/2}
-… reabsorbed into the comparator's decLoss" is NOT valid — `det⁺(Z_deep Z_deepᵀ)^{−b/2}` is a distinct
-deep-factor charge, not the comparator's loss. **Q1 power confirmed** (`−b/2`, pseudo-det), but it is a
-divergent RESIDUAL, not a reabsorption. **KILL-condition #3 is triggered for L≥1.** The fix is to keep the
-deep rank-drop OUT of the charge form (deep-stratum gate / undecorated descent, §3.3), NOT a comparator reshape.
+all of which satisfy the L=0 scope `a+b ≤ M₂`. The **MAJORANT** `det⁺(Z_deep Z_deepᵀ)^{−b/2}` is
+non-integrable over the deep params there — a failed UPPER bound.
+
+> **⚠ RETRACTED (ERRATUM).** I previously concluded here "therefore `∫ frontChargeIntegrand` is itself `+∞`
+> … `+∞ ≤ finite` … no comparator redesign rescues it … KILL-condition triggered". That inference is WRONG —
+> a non-integrable majorant does not prove the integral diverges. `∫ frontChargeIntegrand` is FINITE
+> (diagbfix, conceded; `inf L = 0`, the pushforward box cancels the pole). The charge chain is reusable, not
+> dead. What SURVIVES is the **scaling obstruction** (per-slice ratio `|t|^{−ab}→∞`), which refutes the
+> *descent onto the flat `cornerComparator`* (route α), not the object's finiteness.
+
+arch1probe §1.2's "`det(Z_deep Z_deepᵀ)^{−b/2} … reabsorbed into the comparator's decLoss" is still NOT valid
+(the descent onto `cornerComparator` is unsound per the scaling obstruction); **Q1 power confirmed** (`−b/2`,
+pseudo-det) as a majorant prefactor. The correct L≥1 route is the direct joint stratified atlas + deep-stratum
+gate (3a) on the finite object (§3.3), NOT a comparator reshape and NOT because anything diverges.
 
 **C. σ-bank (3'): DROPPABLE for L=0 — the ℓ=0 biquadratic corner closes via `twoBlock_radial_le` +
 intrinsic polar, NO external front-pivot frame.** The two-radius form arises from polar-in-`W` (σ = ‖W‖ is
 the intrinsic incidence-coordinate radius) + the `H̃`-fibre (the κ-stable block); the outer `W`-radial absorbs
 the σ-charge under a non-empty α'-gate (§4). Parallels Brick F droppable (routeverify §5D). **CAVEAT:** for
-L≥1 the corner's `W = Q_p·N` couples the deep factor, so it inherits the Verdict-B residual — droppability is
-clean only for L=0.
+L≥1 the corner's `W = Q_p·N` couples the deep factor, so its analysis folds into the deep-stratum gate (3a)
+rather than a standalone front-corner argument — the σ-bank droppability is stated cleanly for L=0.
 
 ---
 
