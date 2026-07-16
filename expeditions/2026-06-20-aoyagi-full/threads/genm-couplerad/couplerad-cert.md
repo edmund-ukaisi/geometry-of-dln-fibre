@@ -701,8 +701,20 @@ Per corankrec's reduction (loss absorbed → charge free-box), (C) is COMPLETE; 
 upstream (not re-coupled in the interior). If it IS coupled, keep the §w3-deep per-S bound as the tool.
 
 **Route (C) is `b=1`-specific** (charge `= ‖A_cor·S‖^{−1}`). For `b≥2` (matrix charge `det((A_cor S)(A_cor
-S)ᵀ)^{−a/2}`) the S-first Tonelli inner is a matrix-variate integral (harder) — the general (D). So: b=1 →
-(C); b≥2 / `(2,5,4)` → (D). The 3 square witnesses are all b=1,a=1 → (C) closes them.
+S)ᵀ)^{−a/2}`) the S-first Tonelli inner is a matrix-variate integral — but schurB's banked `det_gram_cons`
+(`det(gram(cons w u)) = det(gram u)·‖P⊥w‖²`) row-peels it to `charge = ∏_i ‖P⊥_i(A_i·S)‖^{−a}`, then a
+per-residual slab — so the **S-first slab route LIFTS to b≥2 (= (D))**, same rank-flag-free structure. So:
+b=1 → (C); b≥2 → (D)-via-S-first. The 3 square witnesses are all b=1,a=1 → (C).
+
+**⟹ The ρ<n DEFERRED REGIME DISSOLVES.** The S-first slab route (C for b=1, D-via-`det_gram_cons` for b≥2)
+sidesteps the rank-flag/rowspace floor for BOTH b=1 and b≥2 — the slab is on the LINEAR forms `⟨A_i,s_j⟩`,
+no rank stratification of `S`. So the ρ<n coordinate-P_J obstruction (which was specific to the BULK-ATOM /
+uniform-floor route) is OBVIATED everywhere; there is **NO separate ρ<n rowspace-floor build**. `(2,5,4)`
+(b=2, ρ<n) is just the general (D)-via-S-first, closed by `a+b ≤ ρ` (corankrec-verified threshold, general b;
+guide-confirmed jointly integrable). And the square uniform-I det-shell bridge (`loewner_floor_of_abs_det_ge`)
+has **NO consumer post-(C)** — left banked as-is (correct, reusable), not gilded. Net architecture: ONE
+S-first slab route closes the entire charge free-box (all b, all `a+b ≤ ρ` incl ρ<n); the bulk-atom + shells +
+graded-log + coordinate/rowspace floors are all obviated.
 
 ---
 
