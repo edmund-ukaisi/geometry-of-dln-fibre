@@ -136,6 +136,19 @@ Gram-det `|det Q_R Q_Rᵀ|^{1/2}`, carried) **peels off the full-rank `(b−1)` 
 FreeBilinear leaf** (`z=τ`, `γ=Γη`). So the whole corank-one instance is dbuild's 6-lemma kit end-to-end +
 this one bounded chart — `a`-agnostic (the `u^{a−1}` radial carries `a`).
 
+**R2 (C-shift) refinement (edgered's question — VERIFIED `R2_Cshift.py`).** The isolated C-integral
+`∫_{C∈box[−1,1]^{a×u}} (W + ‖(of C).mulVec v + β‖²)^{−c'} dC` (v=Q̃ₚ·ω, β=σ·Γη, W=frobSq(P·Q̃ₚ)+transverse)
+is **β-INVARIANT as a bound** (the C-integration ABSORBS the σγ shift) and equals
+`≤ ‖ρ_v‖∞ · R_a(W,c')`, `‖ρ_v‖∞ ≤ (2‖v‖_∞)^{−a}` (the C·v density sup, finite for `v≠0`), `R_a(W,c') =
+∫_{ball_a}(W+‖ζ‖²)^{−c'}dζ` = the a-dim radial (`= C_a·W^{a/2−c'}` for `c'>a/2`; **`≍ log(1/W)` at `c'=a/2`
+= `ab/2` (b=1), the corank-one tie**). **SIMPLIFICATION: the LOG lives in the a-dim radial `R_a` (=
+`scaledRadialEuclid`/P3 at its critical exponent), NOT in a σ-coupling — R2 is σ-INDEPENDENT (β-invariant),
+so the Γ-polar (σ,γ,Ω) integration decouples as a bounded volume factor, and the separate `u=rs`/`sigmaLog`
+is UNNEEDED for the generic `v≠0` edge** (it collapses to P3 + δ-fold). Isolated-brick hypothesis: `v≠0`
+(`mulVec_of_surjective`); the `v→0` sub-locus (ω∈ker Q̃ₚ, codim-u) is covered at ASSEMBLY by the reduced
+chain, NOT an R2 case (do not build a τ-cutoff for it). This supersedes the earlier "`u=rs` coupling →
+`sigmaLog`" framing (that was the `C=0` worst-case route; R2-first is cleaner).
+
 **Build-route refinement (dbuild's question — the 2D atom is REAL but FACTORS, do NOT build a monolith).**
 The corank-one per-cell finiteness is NOT sidestepped by the multi-chain min-over-cuts arithmetic (that
 gives the VALUE `½minAdm`; the LOG at the tie is genuine analytic content). BUT the scalar 2D model
