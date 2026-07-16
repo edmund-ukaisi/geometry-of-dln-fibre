@@ -231,4 +231,19 @@ theorem minAdm_le_u_deepTailMin_add_peelCharge (M : Fin (L + 1 + 1 + 1) → ℕ)
     _ ≤ (M 0 - u) * (M 1 - u) + u * deepTailMin M := Nat.add_le_add_left h2 _
     _ = u * deepTailMin M + (M 0 - u) * (M 1 - u) := by ring
 
+/-- **The full-min interior QIP corollary** `minAdm M ≤ ⨅_{u'≤min(M₀,M₁)} [(M₀−u')(M₁−u') + u'·deepTailMin M]`
+— the pivot-INDEPENDENT single object couplerad's analytic assembly cites. Since it is `≤` the min over ALL
+pivots `u'`, it is `≤` the min over any sub-range, hence certifies the stratified interior condition
+(`2c' < ab + min_ℓ φ`) at EVERY cell in one shot. A one-liner: `Finset.le_inf'` of form A
+(`minAdm_le_u_deepTailMin_add_peelCharge`) at each `u' ∈ range(min(M₀,M₁)+1)`. Green, sorry-free, NATIVE. -/
+theorem minAdm_le_inf_pivot_qip (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    minAdm M ≤ (Finset.range (min (M 0) (M 1) + 1)).inf'
+      ⟨0, Finset.mem_range.mpr (Nat.succ_pos _)⟩
+      (fun u' => (M 0 - u') * (M 1 - u') + u' * deepTailMin M) := by
+  refine Finset.le_inf' _ _ (fun u' hu' => ?_)
+  have hle : u' ≤ min (M 0) (M 1) := by
+    have := Finset.mem_range.mp hu'; omega
+  have h := minAdm_le_u_deepTailMin_add_peelCharge M u' hle
+  omega
+
 end DLNFibre.DLN.RLCT
