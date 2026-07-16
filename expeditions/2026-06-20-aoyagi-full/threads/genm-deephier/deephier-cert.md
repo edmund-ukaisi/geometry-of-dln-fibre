@@ -251,7 +251,59 @@ cleaner than a standalone RRR-floor atlas; both are native. Route choice is the 
   RRR floor. A from-scratch multi-layer charge LP (2 deep layers, composite `CR` measure) would retire residual
   (a); it is bounded, not a wall.
 
+---
+
+## 9. Route-A spec — banked-state reconnaissance (controller Q1/Q2, post-route-decision)
+
+*Controller chose Route A (per-stratum RRR-floor atlas), parking Route B (chain-length IH) because the
+front peel decorates the deep factor with `det⁺(Z_deep)^{−b/2}` (diagbfix's dead option-2 territory). This
+section is a MATH-OBJECT determination read off the banked statements on `origin/genm-deepatlas` +
+`origin/genm-sj5-stepbuild`; the Lean-mechanism / feasibility judgment is the controller's (I hold no
+Mathlib model and prescribe no proof route). `scripts/separable_vs_coupled.py`.*
+
+**Item 1 — the coverage is FLOOR-AGNOSTIC (no rework).** `RouteMSJDeepCoverage.deepRankLE_lintegral_lt_top`
+is a generic-`f` subadditive finite-cover gluing wrapper: per-cell finiteness `hfin` is a HYPOTHESIS
+("loss-independent; the loss tide discharges it carrying `|det J|`; nothing loss-specific enters here"). It
+bakes in NO floor. The cells are indexed by `CRIndex = CRPath` = **a rank choice at each layer**
+(`deepCell` recurses per-layer via pivot big-cells; the terminal cell is the raw `{reduced-factor rank ≤ s}`);
+`deepCover_aux` proves the cover is a SET-equality by chain-length induction. So the **cross-layer** hierarchical
+corners (the "layer `~t` vs layer `~t²`" case) are already separated geometrically and banked-complete. The
+floor lives ENTIRELY in the per-cell `hfin` (the loss tide's obligation).
+
+**Item 2 — the sub-chain codim: machinery BANKED, needs INSTANTIATION at `(u,)+deep`.** The floor is
+`cCodim((u, M₂,…,M_last), 0) = minAdm((u,)+deep)`, via the SAME banked
+`Core.SigmaCodim.codimRepCanonical_productRankLocusLE_eq_cCodim` (`= cCodim =` the paper's QIP codim) evaluated
+at the dimension vector `(u,)+deep` — the front-cut width `u` PREPENDED to the deep widths. **⚠ DISTINCT from
+`κ_k = cCodim(deep, ρ−k)` (deep-only chain, a different dimension vector).** The `t=u` reduction
+`minAdm(M) ≤ ab + minAdm((u,)+deep)` is ALSO banked: `minAdm_le_peelCharge_add_redChain` (front-peel at
+`r=u`; `deepGate` already uses it at the 3-chain as `minAdm3_le_qip`).
+
+**Item 3 — ★ the sharp correction for the per-cell `hfin`.** `RouteMSJDeepGate.deepGate_branch` is a pure `ℕ`
+inequality bounding `C_k^{single} = u(ρ−k)+κ_k−γ`, which is the **SEPARABLE** sum (front `u(ρ−k)` ⊕
+deep-measure `κ_k` ⊖ charge `γ`, as independent radials). The honest per-cell exponent **COUPLES** front↔deep
+(the loss `Σσᵢ²|Wᵢ|²` ties the deep singular values to the front) and is SMALLER — `C_k^{hier} ≤ C_k^{single}`,
+STRICT at deep strata (`(4,4,4,4)@u=3`: `k=3,4` give `C_single=12` but the honest coupled `=10 =` RRR floor;
+`scripts/separable_vs_coupled.py`). **So `deepGate_branch`'s `C_k^{single}` is NOT a sound per-cell exponent
+floor** — it over-estimates ("true codim `≥ C_single`" is the wrong direction). The sound per-cell floor is the
+RRR floor `C_k^{hier} ≥ minAdm((u,)+deep) ≥ 2T1_q`.
+
+> **RRR-floor lemma (math statement the formaliser builds).** For each `CRPath` cell (terminal rank `s=ρ−k`),
+> the per-cell loss·charge integral is finite for `q<T1_q`, because the cell's honest (COUPLED) RLCT-codim
+> `≥ cCodim((u,)+deep, 0) = minAdm((u,)+deep) ≥ minAdm(M)−ab = 2T1_q`. Inputs: (i) [geometric] the coupled
+> per-cell codim `≥` the RRR floor — the front↔deep coupling in the raw terminal `{reduced rank ≤ s}` cell is
+> the substantive NEW content (NOT the separable `κ_k`); (ii) [`ℕ`, banked] `minAdm((u,)+deep) ≥ minAdm(M)−ab`.
+
+**Atlas-completeness with the CORRECT floor.** Cross-layer (`CRPath`) completeness is banked (`deepCover_aux`).
+The WITHIN-matrix coupling in the raw terminal cell is where the RRR floor must be EARNED. Whether the tide
+realizes the coupled exponent by a direct coupled radial or a further sub-resolution is a Lean-mechanism choice
+(deferred). The chart-INDEPENDENT guarantee I assert: in ANY complete resolution the honest per-cell RLCT-codim
+`≥ minAdm((u,)+deep) ≥ 2T1_q`. **Soundness ⟺ completeness + the RRR-floor codim; do NOT wire the per-cell
+radial with `κ_k` / `C_k^{single}`.** Net: Route A = one new geometric input (per-cell coupled finiteness at
+the RRR floor) + reuse the banked codim machinery (at `(u,)+deep`) + the banked `t=u` term.
+
+---
+
 **Files (absolute):**
 - `…/.claude/worktrees/agent-a9fa628dc1a919710/expeditions/2026-06-20-aoyagi-full/threads/genm-deephier/deephier-cert.md` (this cert)
-- `…/genm-deephier/scripts/{deephier_lp,confirm_floor,verify_minadm_identity,arity4_min_compare,gate_reduction,multilayer_check,crosslayer_ray,validate_rlct,mlayer_numeric}.py`
-- `…/genm-deephier/codex/deephier-{prompt,answer}.md` (decorrelated consult)
+- `…/genm-deephier/scripts/{deephier_lp,confirm_floor,verify_minadm_identity,arity4_min_compare,gate_reduction,multilayer_check,crosslayer_ray,discharge_check,separable_vs_coupled,validate_rlct,mlayer_numeric}.py`
+- `…/genm-deephier/codex/deephier-{prompt,prompt-tight,answer}.md` (decorrelated consult, concurs)
