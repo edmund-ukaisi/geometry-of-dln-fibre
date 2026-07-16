@@ -68,8 +68,22 @@ scoped below; the atom is the leaf it consumes.
 >   Tonelli over `(E,Y)`) to `Card 1` (the ε-atom) + `rectCore_schurGen_lt_top (u+a) u d ε` (banked) +
 >   the QIP `minAdm_le_inf_pivot_qip` (banked, certifies the ε-window nonempty).
 > - **Cited.** none intended (NATIVE — only the codim LOWER bound is used).
-> - **Deferred (NOT done).** R1, R2, Φ-Fubini, the charge-through-recursion, the per-row G^{1/2} CoV
->   (spectral `G^{1/2}` — D-C whnf-friction risk, wants the abstract-`Aux` pattern), and the Tonelli
->   assembly. Entangled with `hsQ`/`deeperFlagZdeep`/`E_top`/`E_tr` and under active build by several
->   interior threads (intloss, intmtn, schurB, slabD). Ownership/next-boundary flagged to the coordinator.
+> - **Deferred (NOT done).** R1, R2, Φ-Fubini, the charge-through-recursion, the per-row G^{1/2} CoV,
+>   and the Tonelli assembly. Entangled with `hsQ`/`deeperFlagZdeep`/`E_top`/`E_tr` and under active build
+>   by several interior threads (intloss, intmtn, schurB, slabD). Ownership/next-boundary flagged to the
+>   coordinator.
+> - **Build notes for the mountain (couplerad, machine-ε verified — bank when building).**
+>   - **Per-row CoV — do NOT use `Matrix.PosDef.sqrt`** (spectral → the `IsHermitian.eigenvalues` whnf /
+>     D-C friction trap). Use the **LQ/Cholesky co-isometry factor** `L` of `Q_b`: `Q_b = L·Q̃`
+>     (`L` = `b×b` factor, `LLᵀ = Q_bQ_bᵀ`; `Q̃ = L⁻¹Q_b` row-orthonormal, `Q̃Q̃ᵀ = I_b`). Then `w := B̃·L`
+>     (`u×b`) gives `‖B̃·Q_b‖² = ‖B̃·L‖² = ‖w‖²` (co-isometry kills `Q̃`) and Jac `= det(L)^u`,
+>     `det(L)² = det(Q_bQ_bᵀ)` ⟹ Jac `= det(Q_bQ_bᵀ)^{u/2}` — SAME constant as the spectral route, friction-free.
+>     **Reuse slabD's LQ/co-isometry lemma** (genm-schurcore-D, `corankSlabD_charge_sint_le`; `Q_b = A_cor·Z_deep`
+>     is the same `b×n` full-row-rank shape as slabD's `A = R·Q`). The factor CoV is on RAW-PI → `EuclideanSpace`
+>     (Matrix.module diamond, per lean/CLAUDE.md), NOT `Matrix.module`.
+>   - **The circumscribe** (ellipsoid `w`-image ⊆ `ball R₀`) is a one-liner: `lintegral_mono_set` on top of
+>     `lintegral_ball_critical_le` (Card 1) — no new content.
+>   - **R1 Frobenius split** (`E_top = frobSq(P·Y)+frobSq(B̃·Q_b)`, `E_tr = frobSq(C·Y)`; `B̃ = B₁₂+P·Ã_z`,
+>     `Ã_z = Q_inl·Q_bᵀ(Q_bQ_bᵀ)⁻¹`, cross-term `0` via `Q_b·Π = 0`) — couplerad holds the machine-ε-verified
+>     identity, to be pinned against corankrec's exact `hsQ`/`Q_inl`/`Q_b`/`Π` object names once the boundary is set.
 > - **Status.** scoped; atom (Card 1) landed as the leaf.
