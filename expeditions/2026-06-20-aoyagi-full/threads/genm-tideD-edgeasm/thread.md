@@ -61,12 +61,40 @@ satred's route (b=1 first; verified 12/12), with banked/reachable vs HARD tagged
 | L2 | δ-fold `1+log(1/τ) ≤ (1+1/δ)τ^{−δ}` | banked (dbuild `one_add_sigmaLog_le_rpow`) |
 | L3 | 2D-leaf δ-bound `H_p(w) ≤ C_δ·w^{−(p−a/2+δ)}` (region-split, P2+L1+L2+P3) | MEDIUM |
 | W1 | `w=frobSq(P·Q̃ₚ)` constant over the fragile (γ,z,C) integration | satred-verified (algebraic) |
-| W2 | w-integral = arity−1 IH box integral at exponent `c'−ab/2+δ`, finite by `hIH (redChain u' M)` since `< ½·minAdm(redChain u')` (strict-`<` openness) | **MEDIUM-HARD** (minAdm-recursion exponent bookkeeping; stratum→cut per D-cert v3: s=0→redChain u @ c'−ab/2, s=1→u'=u+1) |
+| W2 | w-integral = **SINGLE** arity−1 IH call on `redChain u M` at exponent `c'−ab/2+δ` (see § "W2 — the edge is single-chain" below) | **MEDIUM** (one IH call + one banked cut-soundness lemma) |
 
-**Net remaining new content:** R2 (C-shift matrix CoV) and W2 (w-integral = IH, minAdm recursion) are the
-genuinely-hard pieces; P2/L3 (coupling→log→δ-bound) is medium; R3 is bounded. The HARD CAVEAT (edgebrick,
-satred): build the δ-slack **UNIFORMLY**; never "C removes the log" (FALSE at C=0/v→0) — the C-non-degeneracy
-supplies the CoV shift, the δ-slack fallback (open IH exponent range) carries `v→0`.
+**Net remaining new content:** R2 (C-shift matrix CoV) is the one genuinely-hard piece; P2/L3
+(coupling→log→δ-fold) is medium; W2 is medium (single IH call + banked lemma — see below); R3 is bounded.
+The HARD CAVEAT (edgebrick, satred): build the δ-slack **UNIFORMLY**; never "C removes the log" (FALSE at
+C=0/v→0) — the C-non-degeneracy supplies the CoV shift, the δ-slack fallback (open IH exponent range)
+carries `v→0`.
+
+## W2 — the edge is SINGLE-CHAIN (satred correction, verified 0/377 edge cells fail)
+
+**CORRECTION to an earlier framing.** At the EDGE (k=1, THIS build target) W2 is **single-chain — do NOT
+build the u'-cut multi-chain.** The "s=1→u'=u+1" is the DEEP-corank (k≥2) mechanism, NOT the edge. At the
+edge, the s=0 and s=1 sectors BOTH reduce to the SAME chain `redChain u M` at the SAME exponent `c'−ab/2`;
+the s=0/s=1 codim tie (both `= ab`) is just the LOG multiplicity on that one reduction — not a second chart.
+
+**The exact edge W2 (satred, verified):**
+- corank charge (from the `{Γ=0}` polar `s^{ab−1}` → FreeBilinear/`u=rs`) `= ab/2`; reduce to
+  `redChain u M` at exponent `c'−ab/2`;
+- the s=0/s=1 tie → LOG on that same reduction; δ-fold `c'−ab/2 → c'−ab/2+δ` (`sigmaLog` +
+  `one_add_log_inv_le_rpow`);
+- **finiteness bookkeeping (the W2 lemma):** `c'−ab/2+δ < ½·minAdm(redChain u M)` for `c' < ½·minAdm M`
+  BECAUSE of the banked cut-soundness `minAdm M ≤ ab + minAdm(redChain u M)` =
+  **`minAdm_le_peelCharge_add_redChain` (`RouteMSJResolution:204`)** (so
+  `ab/2 + ½·minAdm(redChain u M) ≥ ½·minAdm M`; the `δ` goes into the OPEN IH range).
+- So W2 = ONE arity−1 IH call on `redChain u M` at `c'−ab/2+δ` + the banked cut-soundness lemma.
+  **No min-over-strata, no `u'=u+1`, no multi-chain.**
+
+Verified: (3,2,2,2)@u=1 (a=2,b=1): redChain=(1,2,2), corner thr `= ab/2 + ½minAdm(redChain) = 1+1 = 2 ≥
+½minAdm(M)=1.5` ✓ (over-covers, fine). Why single-chain at the edge but not deep k≥2: at the edge the
+sector-codim min `= ab` (the s=0/s=1 tie), so the single-chain charge is exactly `ab/2`; at k≥2 the min
+shifts to a deeper stratum (`< ab`), the single-chain charge `< ab/2` undershoots, and THERE the u'-cut
+multi-chain (`redChain (u+s) M`) is needed. **This build is the EDGE ⟹ single-chain.** (If the coverage ever
+routes a k≥2 cut here, that's a different W2 — ping satred.) This is corneradj's original edge Step E; only
+its "J finite" claim was wrong (the log is real, δ-slack absorbs it).
 
 ## Traps (do NOT route through — satred/edgebrick, confirmed)
 - `corankBlock_morsePeel_setLE` (Γ→univ ⟹ divergent `det(Q_bQ_bᵀ)^{−a/2}`, log-diverges AT the edge).
