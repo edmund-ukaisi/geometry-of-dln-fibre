@@ -1018,15 +1018,25 @@ hand-`φ` was wrong (★2 caveat) but `Λ = minAdm((u+a,u,d))` is right for all 
 reduction dissolves the stratification, is valid for FINITENESS via bounded-domain comparison, and the
 strata-independence question is SUBSUMED into the (banked) arity-3 (□) closure — Codex-verified.
 
-**Lean target (corankrec-mapped, all pieces banked/landed):** `∫_p` = [R1 Frobenius-orthogonal split
-(`Q_b·Π=0` + E_top/E_tr forms, banked)] + [R2 linear CoV, unit-Jac, free kernel + `rank(Z_deepΠ)=ρ_d−b`
-(cellRank/atlas)] + [R3/R4 = **`routeMBoxThresholdFinite_mnp (u+a) u d`** (schurrec's banked arity-3 (□)
-closure, on corankrec's clean-three base) × free `ub`-Gaussian] + [threshold via
+**Lean target (corankrec-mapped from the code, all pieces banked/landed):** `∫_p` = [R1 Frobenius-orthogonal
+split (`Q_b·Π=0` + E_top/E_tr forms, banked)] + [R2 linear CoV, unit-Jac, free kernel + `rank(Z_deepΠ)=ρ_d−b`
+(cellRank/atlas)] + [**R3/R4 = the residual-power +ub chaining** (below)] + [threshold via
 `minAdm_le_inf_pivot_qip`]. Composes with `frontCharge_cell_lt_top_of_freebox` + `hGae_cell_interior`.
-The bounded-domain inner/outer comparison (the R1/R2 caveats) is the one detail-at-scale step for the
-formaliser — spec'd turnkey in ★7.
 
-**★7 The inner/outer bounded-domain comparison (CORRECTED — the one real analytic step, not a point-germ).**
+**R3/R4 in detail (corankrec's code-level sharpening — the `+ub` is the real content, NOT the scale).** The
+free `ub`-Gaussian `‖B̃Q_b‖²` is LOAD-BEARING: dropping it (`(‖EY‖²+‖B̃Q_b‖²)^{−q} ≤ (‖EY‖²)^{−q}`) gives only
+`2q < minAdm(![u+a,u,d])`, MISSING the `+ub` — and `ab + minAdm(![u+a,u,d])` alone can fall short of `minAdm M`
+(the QIP needs `ab+ub+minAdm`). The `+ub` comes from a RESIDUAL-POWER shift on the B̃-Gaussian:
+`∫_{B̃∈box}(c+‖B̃Q_b‖²)^{−q}dB̃ ≤ C·c^{−(q−ub/2)}` for `2q>ub` (and `≤ C` bounded for `2q≤ub`), `c=frobSq(EY)`,
+`C` uniform in `(E,Y)` (verified `couplerad_residual.py`: slope `= ub/2−q` exactly for `2q>ub`, `~0` for
+`2q≤ub`). By Tonelli this `= C·(RectSchurCore integrand at exponent q−ub/2)`, so it plugs straight into
+`rectCore_schurGen_lt_top (u+a) u d (q−ub/2) … T (max radii)` (finite iff `q−ub/2 < ½·minAdm(![u+a,u,d])` — by
+`rectSchurLambda d = ½·minAdm(![·]) by rfl`). So **R3/R4 = residual-power-atom (`radial_morse_residual_power_le`,
+the `−ub/2` shift) ∘ `rectCore_schurGen_lt_top`(q−ub/2) ∘ Tonelli**, with the `2q≤ub` (bounded) vs `2q>ub`
+(residual-power) split; union = `2q < ub + minAdm(![u+a,u,d])`. Both endpoints banked; the genuine analytic
+wiring is the Tonelli interchange + the uniform-in-(E,Y) residual bound + the 2-case split.
+
+**★7 The inner/outer bounded-domain comparison (CORRECTED TWICE — the domain/scale step is FREE; the real analytic step is R3/R4).**
 
 ⚠️ SELF-CORRECTION. An earlier draft of ★7 claimed a trivial "germ at `{0}`" lemma (`h` loc-bounded off the
 single point `0`). That is WRONG: the singular locus of the reduced integrand is the DETERMINANTAL CONE
@@ -1035,27 +1045,25 @@ single point `0`). That is WRONG: the singular locus of the reduced integrand is
 [(u+a)(u−1)+ub, (u+a)u+ub)`, `h=+∞` on `{rank Y<u}` — `couplerad_domain.py`). So `h` is NOT loc-bounded off a
 point; the point-germ lemma does not apply.
 
-*The correct reduction* (Φ-Fubini + box-sandwich + RLCT-locality):
+*The correct reduction* (Φ-Fubini + box-sandwich; scale is FREE — corankrec code-check):
 - **Φ-Fubini.** `z0 = v ⊕ k` (`v∈V≅ℝ^{ud}`, `Φ|_V` iso `|det|=J`; `k∈ker Φ`, dim `u(M₂−d)`). The integrand
   `H(z0,x)` depends only on `(Y=Φ|_V(v), x)`, so `∫_{z0-box×x-box}H = ∫_{k}[∫_{v,x}H(Φ|_V(v),x)]` — the `k`
   directions integrate to a FINITE volume (bounded box), leaving `J⁻¹·∫_{Y∈𝒫, x-box}H(Y,x)` over a `Y`-PARALLELEPIPED
   `𝒫 = Φ|_V(v-box)`.
-- **Box-sandwich.** `∃ 0<c₁<c₂` with `[−c₁,c₁]^{ud} ⊆ 𝒫 ⊆ [−c₂,c₂]^{ud}` (`𝒫` bounded parallelepiped, `0`
-  interior). So `∫_{[−c₁,c₁]×x-box}H ≤ ∫_{𝒫×x-box}H ≤ ∫_{[−c₂,c₂]×x-box}H`.
-- **The ONE substantive fact — SCALE-INDEPENDENCE of the arity-3 (□) box-finiteness.** `∫_{[−c,c]^{ud}×x-box}
-  (‖EY‖²+‖B̃Q_b‖²)^{−q}` finite for one `c>0` ⟺ for all `c>0`. This is RLCT-locality: finiteness is governed by
-  the RLCT of the homogeneous determinantal cone `Σ` at its apex `0`, and the RLCT is a LOCAL invariant
-  minimised at the apex (upper-semicontinuity; the origin is the most-singular point of the homogeneous ideal),
-  so box size does not affect finiteness. R1's `B̃`-shift `P·Ã_z` is smooth+bounded and fixes the apex, so the
-  same locality covers it.
+- **Box-sandwich, and SCALE IS FREE.** `[−c₁,c₁]^{ud} ⊆ 𝒫 ⊆ [−c₂,c₂]^{ud}` (`𝒫` bounded, `0` interior); then
+  `lintegral_mono_set` sandwiches `∫_𝒫` between the two box integrals. And the box RADIUS is FREE: corankrec
+  verified in the code (`RouteMSchurRect:119-120`) that `rectCore_schurGen_lt_top` concludes `RectSchurCore m n p
+  c' T` for **∀ T>0** (the `1 one_pos` in `routeMBoxThresholdFinite_mnp` is the ONLY place `T=1` enters — swap it
+  for `T hT`). So the arity-3 (□) finiteness holds at any box radius; NO scale-independence lemma is needed. (My
+  earlier draft mislocated the substantive step here — scale is a non-issue.)
 
-*Net:* `∫_p < ∞ ⟺` the rectangular arity-3 (□) integral `< ∞`, via Φ-Fubini + box-sandwich + scale-independence.
-**HONEST STATUS:** this is DETAIL-AT-SCALE (a standard, decomposable analytic lemma — scale/shape-independence
-of box-finiteness = RLCT locality at a conical apex — Mathlib-grade to build), NOT the trivial point-germ I first
-wrote, and NOT a monument. But it IS more than composition-of-banked-pieces: the formaliser must confirm
-`routeMBoxThresholdFinite_mnp` delivers scale-independence (it should, if proven via monomialisation/Watanabe,
-which is inherently local), or add a scale-independence lemma. This is the one place the interior closure needs a
-genuine (standard) analytic step beyond the banked endpoints.
+*Net:* `∫_p < ∞ ⟺` the rectangular arity-3 (□) integral `< ∞`, via Φ-Fubini + `lintegral_mono_set` box-sandwich
++ `rectCore_schurGen_lt_top ∀T`. **HONEST STATUS (corrected twice):** the domain/scale step is NOW FREE (not the
+point-germ of draft 1, not the scale-independence lemma of draft 2 — both superseded). The ONE genuine analytic
+step is NOT here but in **R3/R4 (the `+ub` residual-power chaining, see the R3/R4-detail block above)**: the
+Tonelli interchange + the uniform-in-(E,Y) residual-power bound `∫_{B̃}(c+‖B̃Q_b‖²)^{−q}dB̃ ≤ C·c^{−(q−ub/2)}` +
+the `2q≤ub` vs `>ub` split. That chaining (composing `radial_morse_residual_power_le` with
+`rectCore_schurGen_lt_top(q−ub/2)`) is where Finding-7's premise review should aim — NOT the scale.
 
 **Owner:** intloss (rank lemma + per-p finiteness) + me (the joint `∫_p` reduction, Codex-confirmed) +
 corankrec (QIP landed + the Lean assembly). The interior CONVERGES ∀-cell (no obstruction); the Lean closure
