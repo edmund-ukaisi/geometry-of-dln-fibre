@@ -1018,15 +1018,66 @@ hand-`φ` was wrong (★2 caveat) but `Λ = minAdm((u+a,u,d))` is right for all 
 reduction dissolves the stratification, is valid for FINITENESS via bounded-domain comparison, and the
 strata-independence question is SUBSUMED into the (banked) arity-3 (□) closure — Codex-verified.
 
-**Lean target (corankrec-mapped, all pieces banked/landed):** `∫_p` = [R1 Frobenius-orthogonal split
-(`Q_b·Π=0` + E_top/E_tr forms, banked)] + [R2 linear CoV, unit-Jac, free kernel + `rank(Z_deepΠ)=ρ_d−b`
-(cellRank/atlas)] + [R3/R4 = **`routeMBoxThresholdFinite_mnp (u+a) u d`** (schurrec's banked arity-3 (□)
-closure, on corankrec's clean-three base) × free `ub`-Gaussian] + [threshold via
+**Lean target (corankrec-mapped from the code, all pieces banked/landed):** `∫_p` = [R1 Frobenius-orthogonal
+split (`Q_b·Π=0` + E_top/E_tr forms, banked)] + [R2 linear CoV, unit-Jac, free kernel + `rank(Z_deepΠ)=ρ_d−b`
+(cellRank/atlas)] + [**R3/R4 = the residual-power +ub chaining** (below)] + [threshold via
 `minAdm_le_inf_pivot_qip`]. Composes with `frontCharge_cell_lt_top_of_freebox` + `hGae_cell_interior`.
-The bounded-domain inner/outer comparison (the R1/R2 caveats) is the one detail-at-scale step for the
-formaliser — spec'd turnkey in ★7.
 
-**★7 The inner/outer bounded-domain comparison (CORRECTED — the one real analytic step, not a point-germ).**
+**R3/R4 in detail (corankrec's code-level sharpening — the `+ub` is the real content; a 3-CASE split, not 2).**
+The free `ub`-Gaussian `‖B̃Q_b‖²` is LOAD-BEARING: dropping it gives only `2q < minAdm(![u+a,u,d])`, MISSING the
+`+ub` (the QIP needs `ab+ub+minAdm`). The `+ub` comes from the B̃-Gaussian via `inner(c) := ∫_{B̃∈box}
+(c+‖B̃Q_b‖²)^{−q}dB̃`, `c=frobSq(EY)`. ⚠️ CORRECTION (corankrec + `couplerad_boundary_case.py`): the `2q≤ub`
+side is TWO cases, and the boundary `2q=ub` is a **log divergence**, not bounded (my slope-numerics masked it:
+`d log(inner)/d log c = 1/log c → 0` mimics a bounded slope; direct values GROW `inner ≈ 0.95·log(1/c)+1.9`).
+So the split is 3-CASE:
+- **① `2q < ub` (strict):** `inner(c) ≤ ∫_{box}‖B̃Q_b‖^{−2q}dB̃ =: C₀ < ∞` (monotone in `c≥0`; `C₀` finite,
+  `2q < ub =` codim of `{B̃=0}`), UNIFORM in `c`. So `∫_p ≤ C₀·vol(E,Y-box) < ∞`.
+- **② `2q = ub` (boundary, LOG):** `inner(c) ≤ C·(1+log⁺(1/c))`; then `log⁺(1/c) ≤ (1/ε)·c^{−ε}` (`c≤1`, any
+  `ε>0`) — derived from `Real.log_rpow` (`log(t^ε)=ε·log t`) + `Real.log_le_sub_one_of_pos` (`log y ≤ y−1`):
+  `log t = (1/ε)·log(t^ε) ≤ (1/ε)(t^ε−1) ≤ t^ε/ε`, `t=c⁻¹`. [NB — the once-cited `Real.log_le_rpow` is a
+  PHANTOM (not in Mathlib v4.29, corankrec-checked); use the two real lemmas.] So `inner ≤ C_ε·(c^{−ε} ⊔ 1)`.
+  Pick `ε ∈ (0, ½·minAdm(![u+a,u,d]))` — nonempty since `minAdm(![u+a,u,d]) ≥ 1` at ALL boundary-reachable
+  cells (verified 0 fails). `∫_p ≤ C_ε·rectCore_schurGen_lt_top(u+a,u,d,ε) + vol < ∞`.
+- **③ `2q > ub` (strict):** `inner(c) ≤ Cresid·c^{−(q−ub/2)}` = `radial_morse_residual_power_le` (`m+1=ub`,
+  `c'=q`, `w=c`; its `(m+1)/2<c'` strict IS `2q>ub`). By Tonelli `∫_p ≤ Cresid·rectCore_schurGen_lt_top(u+a,u,d,q−ub/2)`,
+  finite iff `q−ub/2 < ½·minAdm(![u+a,u,d]) ⟺ 2q < ub + minAdm(![u+a,u,d])`.
+
+COVERAGE of the c'-window `(ab/2, ½minAdm M)`: ①② have `2q ≤ ub < ub+minAdm(![u+a,u,d])` (`minAdm≥1`) ⟹ finite;
+③ needs `2q < ub+minAdm(![u+a,u,d])`, and `c' < ½minAdm M ⟹ 2q < minAdm M − ab ≤ ub + minAdm(![u+a,u,d])` by
+the ∀-cell QIP `minAdm_le_inf_pivot_qip`. So the 3-case union closes every interior cell. The boundary `2q=ub`
+is REACHABLE (11388/12720 cells have `minAdm M > ab+ub` ⟹ `c'=(ab+ub)/2` in-window) — so the log case is NOT
+dodgeable; it is handled (② works, `minAdm(![u+a,u,d])≥1`). NEW pieces beyond the atom + RectSchurCore + the
+QIP: ① the `2q<ub` bounded-inner (det-Gram loc-int); ② the log-inner bound at the critical exponent + the
+`log ≤ ε-power` step. Both standard/small, Mathlib-grade. This is the one genuine analytic content of R3/R4.
+
+**THE MERGE + scope (corankrec, verified `couplerad_merge.py`).** ①②③ unify to ONE lemma
+`rankUB_residual_radial`: the per-row `w_i := (Q_bQ_bᵀ)^{1/2}(row_i B̃)ᵀ` CoV (Jac `det(Q_bQ_bᵀ)^{−u/2}`, a
+BOUNDED z0-INDEPENDENT constant — `Q_b=A_cor·Z_deep` has no z0; `‖B̃Q_b‖²=‖w‖²`, `w∈ℝ^{ub}`) → polar
+(`MeasureTheory.integral_fun_norm_addHaar`-family) → the 1D radial `∫_0^R(c+ρ²)^{−q}ρ^{ub−1}dρ` at the three
+regimes (`2q<ub` power / `2q=ub` log / `2q>ub` residual = the banked atom). This CoV lives in **R3/R4**, not
+R1/R2 (R1's B̃-shift is unit-Jac, leaves `‖B̃Q_b‖²` anisotropic; R2 is the deep CoV). **The lemma is stated
+for `c ≥ 0`** (not `c>0`) — this is the key that folds EVERY interior cell into it:
+- **`d ≥ 1` (`c=frobSq(EY)>0` a.e.) — the MERGE:** state ② for the whole `2q≤ub` (bounded ⟹
+  `≤C(1+log⁺(1/c))` trivially), so the entire `2q≤ub` side routes `log≤ε-power → rectCore_schurGen_lt_top(ε)`,
+  `ε∈(0,½minAdm(![u+a,u,d]))` nonempty ⟺ `minAdm(![u+a,u,d])≥1 ⟺ d≥1`. HOLDS for EVERY `d≥1` cell (7962
+  genuine `u≥1,a≥1` + all `a=0,d≥1`; 0 failures, `couplerad_merge.py`). Regimes ①②③ via the one lemma.
+- **`d = 0 ⟺ a = 0 ⟺ ρ_d=b` (square-saturated front) — regime ① AT `c=0`:** `Z_deepΠ=0 ⟹ Y≡0 ⟹ c=0`, loss
+  `= ‖B̃Q_b‖²` pure. This is NOT a separate lemma and NOT an availability risk (my earlier "un-regularized
+  loc-int not in Mathlib" flag was timidity-disguised-as-rigor — corankrec dissolved it): it is
+  `rankUB_residual_radial` at `c=0`, regime ① — after the per-row CoV + polar it is
+  `det(Q_bQ_bᵀ)^{−u/2}·ω_{ub}·∫_0^R ρ^{ub−1−2q}dρ`, a BOUNDED-INTERVAL power integral finite for `2q<ub`
+  (`integral_rpow`, exponent `ub−1−2q > −1`) — detail-at-scale, standard. `2q<ub` holds unconditionally
+  in-window (`a=0 ⟹ minAdm M ≤ ub`). So the `c≥0` unified lemma covers it as a specialisation.
+
+**Net: ONE new lemma (`rankUB_residual_radial`, `c≥0`, per-row-G^{1/2} CoV + polar + 3 regimes) covers the
+ENTIRE interior** — `d≥1` merge and `d=0` pure alike; everything else banked (RectSchurCore ∀T, the QIP,
+the deep/hGae machinery, `log≤ε`). **Scope (corankrec's deep-atlas):** `a=0` (square front) IS in couplerad's
+interior scope — the atlas routes deep-rank → deficient/generic → interior/edge with NO separate "square"
+bucket, and LATE-27 corrected the "square-first freebie" overclaim; so square/`a=0` is couplerad's, not a
+freebie owned upstream. (`u=0` = no pivot / empty front is the one genuinely out-of-scope stratum.) Controller
+to confirm against the FULL taxonomy that no upstream regular regime peels `a=0` before the interior split.
+
+**★7 The inner/outer bounded-domain comparison (CORRECTED TWICE — the domain/scale step is FREE; the real analytic step is R3/R4).**
 
 ⚠️ SELF-CORRECTION. An earlier draft of ★7 claimed a trivial "germ at `{0}`" lemma (`h` loc-bounded off the
 single point `0`). That is WRONG: the singular locus of the reduced integrand is the DETERMINANTAL CONE
@@ -1035,27 +1086,27 @@ single point `0`). That is WRONG: the singular locus of the reduced integrand is
 [(u+a)(u−1)+ub, (u+a)u+ub)`, `h=+∞` on `{rank Y<u}` — `couplerad_domain.py`). So `h` is NOT loc-bounded off a
 point; the point-germ lemma does not apply.
 
-*The correct reduction* (Φ-Fubini + box-sandwich + RLCT-locality):
+*The correct reduction* (Φ-Fubini + box-sandwich; scale is FREE — corankrec code-check):
 - **Φ-Fubini.** `z0 = v ⊕ k` (`v∈V≅ℝ^{ud}`, `Φ|_V` iso `|det|=J`; `k∈ker Φ`, dim `u(M₂−d)`). The integrand
   `H(z0,x)` depends only on `(Y=Φ|_V(v), x)`, so `∫_{z0-box×x-box}H = ∫_{k}[∫_{v,x}H(Φ|_V(v),x)]` — the `k`
   directions integrate to a FINITE volume (bounded box), leaving `J⁻¹·∫_{Y∈𝒫, x-box}H(Y,x)` over a `Y`-PARALLELEPIPED
   `𝒫 = Φ|_V(v-box)`.
-- **Box-sandwich.** `∃ 0<c₁<c₂` with `[−c₁,c₁]^{ud} ⊆ 𝒫 ⊆ [−c₂,c₂]^{ud}` (`𝒫` bounded parallelepiped, `0`
-  interior). So `∫_{[−c₁,c₁]×x-box}H ≤ ∫_{𝒫×x-box}H ≤ ∫_{[−c₂,c₂]×x-box}H`.
-- **The ONE substantive fact — SCALE-INDEPENDENCE of the arity-3 (□) box-finiteness.** `∫_{[−c,c]^{ud}×x-box}
-  (‖EY‖²+‖B̃Q_b‖²)^{−q}` finite for one `c>0` ⟺ for all `c>0`. This is RLCT-locality: finiteness is governed by
-  the RLCT of the homogeneous determinantal cone `Σ` at its apex `0`, and the RLCT is a LOCAL invariant
-  minimised at the apex (upper-semicontinuity; the origin is the most-singular point of the homogeneous ideal),
-  so box size does not affect finiteness. R1's `B̃`-shift `P·Ã_z` is smooth+bounded and fixes the apex, so the
-  same locality covers it.
+- **Box-sandwich, and SCALE IS FREE.** `[−c₁,c₁]^{ud} ⊆ 𝒫 ⊆ [−c₂,c₂]^{ud}` (`𝒫` bounded, `0` interior); then
+  `lintegral_mono_set` sandwiches `∫_𝒫` between the two box integrals. And the box RADIUS is FREE: corankrec
+  verified in the code (`RouteMSchurRect:119-120`) that `rectCore_schurGen_lt_top` concludes `RectSchurCore m n p
+  c' T` for **∀ T>0** (the `1 one_pos` in `routeMBoxThresholdFinite_mnp` is the ONLY place `T=1` enters — swap it
+  for `T hT`). So the arity-3 (□) finiteness holds at any box radius; NO scale-independence lemma is needed. (My
+  earlier draft mislocated the substantive step here — scale is a non-issue.)
 
-*Net:* `∫_p < ∞ ⟺` the rectangular arity-3 (□) integral `< ∞`, via Φ-Fubini + box-sandwich + scale-independence.
-**HONEST STATUS:** this is DETAIL-AT-SCALE (a standard, decomposable analytic lemma — scale/shape-independence
-of box-finiteness = RLCT locality at a conical apex — Mathlib-grade to build), NOT the trivial point-germ I first
-wrote, and NOT a monument. But it IS more than composition-of-banked-pieces: the formaliser must confirm
-`routeMBoxThresholdFinite_mnp` delivers scale-independence (it should, if proven via monomialisation/Watanabe,
-which is inherently local), or add a scale-independence lemma. This is the one place the interior closure needs a
-genuine (standard) analytic step beyond the banked endpoints.
+*Net:* `∫_p < ∞ ⟺` the rectangular arity-3 (□) integral `< ∞`, via Φ-Fubini + `lintegral_mono_set` box-sandwich
++ `rectCore_schurGen_lt_top ∀T`. **HONEST STATUS (corrected twice):** the domain/scale step is NOW FREE (not the
+point-germ of draft 1, not the scale-independence lemma of draft 2 — both superseded). The ONE genuine analytic
+step is NOT here but in **R3/R4 (the `+ub` residual-power chaining, see the R3/R4-detail block above)**: the
+Tonelli interchange + the uniform-in-(E,Y) residual-power bound + the **3-CASE split** on `2q` vs `ub`
+(`<ub` bounded / `=ub` LOG / `>ub` atom — the boundary log case is reachable in 11388/12720 cells and is the
+real subtlety). That chaining (composing the bounded-inner / log-ε / `radial_morse_residual_power_le` cases
+with `rectCore_schurGen_lt_top` at exponents `ε` and `q−ub/2`) is where Finding-7's premise review should aim
+— NOT the scale.
 
 **Owner:** intloss (rank lemma + per-p finiteness) + me (the joint `∫_p` reduction, Codex-confirmed) +
 corankrec (QIP landed + the Lean assembly). The interior CONVERGES ∀-cell (no obstruction); the Lean closure
