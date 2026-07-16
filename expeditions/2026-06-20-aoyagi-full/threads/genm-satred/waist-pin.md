@@ -8,6 +8,18 @@ decorrelated Codex (satred-cert §5 Codex + `codex/edgereach-answer.md` Q3, both
 
 ---
 
+## ⚠ SUPERSESSION (q2gate Q2 verdict, LATE-84) — the POINTWISE-FOLD assembly is superseded
+
+**The §3-§4 pointwise density fold (`ρ ≤ frobSq^{−A/2}`) UNDERSHOOTS on the A>2Δ cells** (q2gate verified
+exact-ℕ: (2,2,2,2), (3,3,3,3), (2,2,3,3), (2,3,4,4), (4,4,4,4)). **Do NOT build the pointwise-fold saturated
+brick.** The WORKING saturated route is **q2gate's dyadic-shell (σ_max) homogeneity + Hölder** (which my
+§3bis A≤2Δ / A>2Δ dichotomy MISSED as a third route): it reaches the full ½·minAdm using ONLY the plain
+unweighted IH + a STANDALONE waist-density atom — NOT a weighted IH, NOT σ_min(P)≥δ charts. **My waist-a0/b0
+pushforward-density characterization below (the density orders + the {det=0} log-shape) IS the standalone
+atom that route consumes** — the density SHAPE is the reusable content; the pointwise-fold ASSEMBLY is not.
+q2gate owns the shell+Hölder assembly; I supply the density atom (coordinating). The reach `m_I = minAdm`
+and the a=0/b=0 structure (§1, §5) stand; only the §3-§4 pointwise-fold assembly is superseded.
+
 ## ★ VERDICT — the waist reaches ½minAdm(M) via the FRONT-factor rank-sector (dual of the edge)
 
 At the saturated shell `j=r` (deepest cut `u = min(M₀,M₁)`), the corank/C-block VANISHES and the loss

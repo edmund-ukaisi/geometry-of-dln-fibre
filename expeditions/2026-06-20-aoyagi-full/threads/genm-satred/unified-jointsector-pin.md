@@ -20,6 +20,14 @@ DIFFERENT shorter chain `redChain u'_r M` carrying the reduced-Gram `det(GGᵀ)^
 **No `(□)` wall** (every hard cell `⊆ RMBTF(M)`, reaches `½minAdm(M)`). The four instances differ ONLY in
 which factor is stratified + the `qbox` dims + the chains.
 
+## 0bis. SUPERSESSION (q2gate Q2, LATE-84) — the SATURATED instances use Hölder, not the pointwise fold
+
+The waist-a0/b0 saturated instances' POINTWISE density fold undershoots on A>2Δ (q2gate verified). The
+working saturated route is **q2gate's dyadic-shell (σ_max) + Hölder** with the plain unweighted IH + the
+STANDALONE waist-density atom (my characterization). So in the table below, waist-a0/b0's "carry" is NOT the
+pointwise fold — it is the density atom fed into q2gate's Hölder assembly. The interior-hard/edge instances
+(P2 pivot-Gram carry) are unaffected by this note; they remain the uniform-chart / full-coupling content.
+
 ## 1. The easy/hard GUARD (arch1build's dispatch)
 
 Per shell/corner at cut `u=t+j` (`a=M₀−u`, `b=M₁−u`, `M₁−j = b+t` = the shell's conditioned SV count):
