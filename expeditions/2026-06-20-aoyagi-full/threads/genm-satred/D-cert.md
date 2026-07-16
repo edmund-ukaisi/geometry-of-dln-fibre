@@ -115,6 +115,18 @@ essential); instead **localize at the rank-`(b−1)` stratum, factor off the ful
 remaining 1D fragile direction is a FreeBilinear-type rank-1 outer product LOCALLY — so FreeBilinear is the
 local model AFTER localization, plus the C-non-degeneracy lift.
 
+**The (b−1)-block chart, precise (delivered to dbuild; verified `bminus1_chart.py`/`matrix_to_scalar.py`).**
+The `b=1` edge IS FreeBilinear directly: `Q_b` is `1×n`, `Γ·Q_b = γ⊗Q_b` (`γ=Γ∈ℝ^a`), corank energy
+`‖C·Q̃ₚ + γ⊗Q_b‖²`; after the C-shift and localizing the fragile row `z=Q_b` (∈ℝ^a effective, `ρ=a` at
+`b=1` edge) the model is `(w+‖γ‖²‖z‖²)^{−c'}`. It reduces by **polar + the coupling `u=rs`** (`r=‖γ‖`,
+`s=‖z‖`): `∫r^{a−1}∫s^{a−1}(w+r²s²)^{−p} = [∫s^{−1}ds=log]·[∫u^{a−1}(w+u²)^{−p}du = w^{a/2−p}B]` — i.e.
+**the `|y|⁻¹=s⁻¹` (`sigmaLog`) arises from `u=rs`, NOT the chart**; the radial is `JapaneseBracket`
+(`u^{a−1}` weight). For general `b≥2`: the `(b−1)`-block MINOR CHART (finite cover over which `(b−1)`-row
+block `Q_R` of `Q_b` is full-rank; `q_frag = c·Q_R + τ`, `{rank=b−1}={τ=0}` codim `a`; Jacobian a **BOUNDED**
+Gram-det `|det Q_R Q_Rᵀ|^{1/2}`, carried) **peels off the full-rank `(b−1)` block, leaving the `b=1`
+FreeBilinear leaf** (`z=τ`, `γ=Γη`). So the whole corank-one instance is dbuild's 6-lemma kit end-to-end +
+this one bounded chart — `a`-agnostic (the `u^{a−1}` radial carries `a`).
+
 **Build-route refinement (dbuild's question — the 2D atom is REAL but FACTORS, do NOT build a monolith).**
 The corank-one per-cell finiteness is NOT sidestepped by the multi-chain min-over-cuts arithmetic (that
 gives the VALUE `½minAdm`; the LOG at the tie is genuine analytic content). BUT the scalar 2D model
