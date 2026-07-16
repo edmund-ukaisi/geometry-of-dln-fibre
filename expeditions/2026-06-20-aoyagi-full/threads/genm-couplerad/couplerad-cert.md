@@ -428,6 +428,56 @@ since the tight shells (incl. all witnesses) force `δ=0`, build the charged-rec
 
 ---
 
+## w3-percorank — the EXACT per-corank charge-absorption inequality (schurrec's charged RectSchurCore step-4)
+
+*schurrec's rect split: pivot `t×t` minor of `Δ=Front`, residual `Sc`; `S=Z_deep` row-split `S_top`(t) +
+`S_bot`(M₂−t); `A_cor=[A_top|A_bot]` col-split, so `Q_b = A_cor·S = A_top·S_top + A_bot·S_bot` (a SUM).
+schurrec asks (1) how `det_fromBlocks` factors `det(Q_bQ_bᵀ)` in lockstep, and (2) which variable's measure
+absorbs `a·e_h`. Exact answers (`/tmp` per-corank check + `couplerad_chargescope.py`):*
+
+**A1 — `det_fromBlocks` does NOT apply to `Q_b` (schurrec is right: `Q_b` is a SUM, not a block matrix). The
+right tool is det-MONOTONICITY on the PSD Gram.** Do not chase a `Q_b` block-factorization. Instead use
+`det(Q_bQ_bᵀ) = det(A_cor·G·A_corᵀ)` with `G := Z_deep·Z_deepᵀ ⪰ 0` (`M₂×M₂`, PSD; `G` IS block under the
+`S_top/S_bot` split, `det_fromBlocks` applies to `G`, and `G/G_tt = S_bot·Π_⊥·S_botᵀ` is the transverse-Schur
+= `E_tr`). The domination is a LOWER bound on `det(Q_bQ_bᵀ)`:
+- split `G = G₁ + G₀` into the σ-**order-1** part `G₁` (the directions the resolution keeps at scale `τ⁰`)
+  and the small part `G₀` (both `⪰ 0`); then `A_cor·G·A_corᵀ = A_cor·G₁·A_corᵀ + A_cor·G₀·A_corᵀ` (both `⪰ 0`),
+  so by **det-monotonicity on PSD** (`det(X+Y) ≥ det X` for `X,Y ⪰ 0` symmetric),
+  `det(Q_bQ_bᵀ) ≥ det(A_cor·G₁·A_corᵀ)`.
+- On the pivot chart the order-1 block `G₁` has rank `= #{e_i = 0}`, and **along the binding ray this is `≥ b`**
+  (see A2), so `det(A_cor·G₁·A_corᵀ) > 0` and is order-1 a.e. (this is exactly `hGae`/corank-survival: `A_cor`
+  sees `b` order-1 directions). Hence `det(Q_bQ_bᵀ)^{−a/2} ≤ C` — the charge is **BOUNDED** on the chart.
+  No Cauchy–Binet, no `det_fromBlocks` on `Q_b`, no spectral eigen-term needed for the bound itself — only
+  `det`-monotone-on-PSD + `G₁ ⪯ G` PSD + `hGae`.
+
+**A2 — which measure absorbs `a·e_h`: Z_deep's, via the FRONT-peel keeping σ order-1 — and at the binding
+ray the charge exponent is `γ = 0` (EXACT, verified all cells).** At the charged-LP binding vertex, `γ^{hier}(e)
+= 0` for EVERY cell `k=1..ρ` including the deepest `s=0` (`/tmp` check: `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`,
+`(3,4,5,4)` all `γ=0` at binding). Mechanism: the binding (cheapest) ray peels the charge-relevant LARGE
+singular values via the FRONT weights (`g_i=½, e_i=0`), leaving those `σ_i` at scale `τ⁰` = order 1 — so
+`Q_b` sees `≥ b` order-1 directions and the charge stays order 1 (`γ=0`). The charge only excites (`γ>0`)
+along NON-binding rays that peel those large `σ` in the `σ`-direction (`e_i>0`), and there the LOSS codim is
+correspondingly larger. **The exact per-corank inequality: `γ^{hier}(e) ≤ N_loss(e) − floor/2` for EVERY ray
+`e`** (equality, both `=floor/2`, at the binding ray). So the charge exponent is absorbed by **Z_deep's
+loss+measure at δ=0** — NOT `A_cor`'s blow-up (A_cor only supplies the a.e.-positivity `hGae`), NOT `Front`'s.
+
+**A=b=1 concrete (the square-first dispatch case).** `det(Q_bQ_bᵀ) = ‖A_cor·Z_deep‖² = A_cor·G·A_corᵀ`
+(scalar). det-monotonicity ⟹ `‖A_cor·Z_deep‖² ≥ A_cor·G₁·A_corᵀ ≥ λ·(A_cor·v)²` for `v` an order-1
+direction (`λ` order 1) `> 0` a.e. (hGae) ⟹ charge `= ‖A_cor·Z_deep‖^{−1} ≤ C` on the chart. Bolt-on
+`charge·loss ≤ C·loss` closes via uncharged `mnp`. The full-collapse leaf is handled by the same order-1
+count (`≥ b=1` front-peeled direction along the binding ray).
+
+**Banked / needed.** CONSUMES: `det`-monotone-on-PSD (`det(X) ≤ det(X+Y)`, `Y ⪰ 0` — CONFIRM in Mathlib
+v4.29 or a small proof via `PosSemidef` order + `det` on the Loewner order; schurrec has `PosSemidef`
+Gram), `G₁ ⪯ G` (the order-1 block `⪯ G`, PSD), `hGae` (Card 2, `A_cor` sees `b` order-1 directions a.e.),
+uncharged `routeMBoxThresholdFinite_mnp`. Does NOT need: Cauchy–Binet (unavailable), `det_fromBlocks` on `Q_b`
+(wrong — sum form), spectral eigenvalues. `det_fromBlocks` on `G` is optional (only to exhibit the
+transverse-Schur `E_tr`). **Exponent shift `δ = 0`.** The one thing to nail in Lean: the order-1 block `G₁`
+in raw coordinates (it is the pivot block the loss recursion already keeps order-1 — reuse that pivot, don't
+re-derive spectrally).
+
+---
+
 ## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
 
 **RECOMMENDATION: Route A (the general non-square corank recursion on the reduced bilinear), NOT Route B
