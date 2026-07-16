@@ -115,6 +115,21 @@ essential); instead **localize at the rank-`(b−1)` stratum, factor off the ful
 remaining 1D fragile direction is a FreeBilinear-type rank-1 outer product LOCALLY — so FreeBilinear is the
 local model AFTER localization, plus the C-non-degeneracy lift.
 
+**Build-route refinement (dbuild's question — the 2D atom is REAL but FACTORS, do NOT build a monolith).**
+The corank-one per-cell finiteness is NOT sidestepped by the multi-chain min-over-cuts arithmetic (that
+gives the VALUE `½minAdm`; the LOG at the tie is genuine analytic content). BUT the scalar 2D model
+`H_p(w)=∫_{[−1,1]²}(w+x²y²)^{−p}dx dy` **FACTORS** (verified exactly, `scripts/edge_2d_factor.py`,
+`H_direct=H_factored`): substitute `u=xy` (Jacobian `|y|^{−1}` — CARRY it, it is the source of the log),
+giving `∫dy |y|^{−1}·[∫(w+u²)^{−p}du] = [w^{1/2−p}·B] × [∫_τ^1|y|^{−1}dy = log(1/τ)]`. So the Lean atoms are:
+polar-`Γ` (banked `s^{ab−1}`); the **1D radial `∫(w+u²)^{−p}du`** (the SAME single-sum-of-squares leaf,
+`sumSqND`-type, in the ONE coupled variable `u`); an **elementary σ-log `∫_τ^1 σ^{−1}dσ = log(1/τ)`**
+(`Real.log`); the **δ-fold** (`one_add_log_inv_le_rpow`); the **C-non-degeneracy** (`mulVec_of_surjective`)
+setting `τ²≍w+‖η_C‖²` and giving `∫_C ln(1/‖η_C‖)dC<∞`; the arity-IH on the open range. The rank-sector
+recursion (B) ORGANIZES where this atom is applied (the `r=b−1` tie stratum); the 2D model is proved by the
+factorization, NOT as a monolithic 2D singular integral. Matrix→scalar: minor chart + localize at
+rank-`(b−1)` (C-non-degeneracy picks the 1D fragile `σ_min` direction) reduces the matrix corank-one to
+exactly this scalar model.
+
 ## 4. Part 3 — Lean-friendly design
 
 **Object / target.** `∫_p coupledBoxIntegrand M u c' p < ⊤` per-exponent for `c' < ½·minAdm M`
