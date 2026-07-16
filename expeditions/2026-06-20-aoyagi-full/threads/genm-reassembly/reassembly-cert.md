@@ -24,6 +24,33 @@ Scans (exact ℕ recursion + exact-RLCT criteria; MC guide/confirmation): `/tmp/
 
 ---
 
+## ★ ERRATUM (2026-07-16) — Verdict B's "`∫ frontChargeIntegrand = +∞`" is RETRACTED
+
+**`∫_p frontChargeIntegrand` is FINITE for L≥1.** genm-diagbfix refuted my +∞ self-audit and is CORRECT; I
+concede on the specific point. My divergence step `∫frontCharge ≥ (inf L)·∫det⁺(ZZᵀ)^{−b/2} = +∞` was a
+**direction error**: it needs `inf L > 0`, but `inf L = 0` — provable from my OWN scaling identity
+`I(tZ)=|t|^{−ab}I(Z)`, which forces the pushforward-box fibre factor `L(tZ) = |t|^{b(k−a)}L(Z) → 0` (since
+`bk > ab` at binding cuts). The residual `det⁺(ZZᵀ)^{−b/2}` is a non-integrable **UPPER** bound (vacuous:
+`∫f ≤ K·(+∞)` says nothing); the shrinking pushforward box `Ω_Z` collapses like `det⁺(ZZᵀ)^{+b/2}` and
+exactly cancels the pole. **Confirmed by exact/careful numerics (`/tmp/concede_check.py`,
+`/tmp/global_check.py`):** the honest inner charge `J(Z) = ∫_{A_cor∈box} det(Q_bQ_bᵀ)^{−a/2}` stays `Θ(1)`
+(`≈24.3`) as the deep smallest singular value `s_k→0` while the residual blows up (`→2083`); and the global
+charge integral for `(4,4,4,4)@u=3` CONVERGES (truncated ∫ stabilises at `≈1.06e6`; small-ball exponent of
+`‖A_cor A₂‖²` `≈1.78 ≫ a/2=0.5`).
+
+**What this changes:** Verdict B's headline ("+∞ / the charge chain is dead / KILL-condition triggered") is
+WRONG — the charge chain (`shellSpine → frontCharge_factor → stratum_corner`) is FINITE and **reusable**, a
+bonus asset, not dead. **What SURVIVES (diagbfix concurs):** (i) the deep-Gram residual is a real coarea
+upper-bound prefactor; (ii) the **scaling obstruction** `Z=tZ₀ ⟹ G/cornerComparator = |t|^{−ab} → ∞` REFUTES
+the per-slice **descent onto the flat `cornerComparator`** (route α) — that domination IS unsound for L≥1;
+(iii) **option 2** (deep-Gram-decorated comparator) is DEAD; (iv) arch1probe's "reabsorb into decLoss" is
+FALSE; (v) the **deep-stratum gate (3a)** is load-bearing for L≥1. The correct diagnosis (diagbfix): the L≥1
+sound route is the **direct joint stratified atlas** — front gate [banked] + deep-stratum gate `C_k` [banked,
+`RouteMSJDeepGate`, sorry-free] — self-contained per cut, NOT a descent onto `cornerComparator`, and NOT
+because the object diverges. Verdict A (arity-3) is UNAFFECTED. Read §3.2/§3.3 below through this erratum.
+
+---
+
 ## ★ VERDICTS
 
 **A. Arity-3 (L=0): the reassembly is CLEAN and PINNED — no deep factor, no residual.** For `M : Fin 3`
@@ -35,9 +62,13 @@ proceed on this identity** (one correction to the brief's RHS exponent, §1). Q1
 `A_cor`-Wishart is a finite box constant iff `a+b ≤ M₂` (lct of the `b×M₂` Gram det is `(M₂−b+1)/2`); **no
 deep-factor power** (`Z=I`).
 
-**B. General L≥1: the charge-form reassembly has an UNCOMPENSATED deep-Gram residual
-`det⁺(Z_deep Z_deepᵀ)^{−b/2}` that does NOT land on `cornerComparator` — a genuine gap, NOT a mechanical
-lift of the L=0 gate.** The `A_cor`-measure carries a coarea Jacobian `det⁺(Z_deep Z_deepᵀ)^{−b/2}` (`det⁺` =
+**B. General L≥1 — ⚠ PARTIALLY RETRACTED (see ERRATUM at top).** The "+∞ / genuine gap / KILL-condition"
+headline is WRONG: `∫frontChargeIntegrand` is FINITE (diagbfix, conceded). What survives is narrower and still
+useful: the descent **onto the flat `cornerComparator`** (route α) is unsound for L≥1 (the scaling obstruction),
+so the sound L≥1 route is the direct joint stratified atlas + deep-stratum gate (3a) — NOT a `Fin 3 → Fin(L+…)`
+lift of the L=0 descent. The text below documents the (correct) coarea residual + (correct) scaling obstruction;
+its inference "therefore the object is +∞" is the retracted over-read. — The `A_cor`-measure carries a coarea
+Jacobian `det⁺(Z_deep Z_deepᵀ)^{−b/2}` (`det⁺` =
 product of nonzero eigenvalues) because `Q_b = A_cor·Z_deep` only sees `row(Z_deep)`; the `cornerComparator`
 (flat deep measure, loss `frobSq(prod M') = ‖A'₀ Z_deep‖²`) carries no matching weight, and nothing in `G`
 cancels it. This residual is **non-integrable over the deep params** for good-branch binding cuts with
@@ -166,12 +197,19 @@ carry.** It is a FIXED-exponent (`b/2`, `q`-independent) weight against the FLAT
 the deep rank-drop `{rank Z_deep < k}` (where `‖A'₀ Z_deep‖²` is generically `O(1)`, so the comparator's loss
 gives no compensation).
 
-**Integrability of the residual over the deep params (L=1 single layer `Z=A₂`, `M₂×M₃`) [FACT, exact +
-confirmed `/tmp/confirm_witness.py`]:** `RLCT(det⁺(A₂A₂ᵀ)) = (|M₂−M₃|+1)/2`, so `det⁺(A₂A₂ᵀ)^{−b/2}`
+> **⚠ RETRACTED INFERENCE (see ERRATUM).** The residual-integrability computation below is CORRECT as a fact
+> about the **upper-bound prefactor `det⁺(ZZᵀ)^{−b/2}` alone**, but it does NOT bound the honest object: the
+> object also carries the pushforward-box fibre factor `L(Z) → 0` (like `det⁺^{+b/2}`), which cancels the
+> pole. So "non-integrable residual" ≠ "divergent object" — the object is FINITE (`/tmp/concede_check.py`,
+> `/tmp/global_check.py`). The table lists where the *majorant* diverges (a failed bound), NOT where the
+> object diverges (nowhere). Kept for the record; the divergence conclusion is withdrawn.
+
+**Integrability of the residual over the deep params (L=1 single layer `Z=A₂`, `M₂×M₃`) [FACT about the
+majorant, exact]:** `RLCT(det⁺(A₂A₂ᵀ)) = (|M₂−M₃|+1)/2`, so `det⁺(A₂A₂ᵀ)^{−b/2}`
 integrable ⟺ `b/2 < (|M₂−M₃|+1)/2` ⟺ **`b ≤ |M₂−M₃|`**.
 
-**Good-branch binding strict-shell cuts where the residual is NON-integrable (`b > |M₂−M₃|`)** — 9 in the
-small search `M₀,M₁≤5`, all satisfying `a+b ≤ M₂` (so the L=0 scope does NOT exclude them):
+**Good-branch binding strict-shell cuts where the MAJORANT is NON-integrable (`b > |M₂−M₃|`)** — 9 in the
+small search `M₀,M₁≤5` (these are where the naive coarea UPPER bound fails, NOT where the object diverges):
 
 | M | t★ | u | a | b | `\|M₂−M₃\|` | residual | signature (`/tmp/confirm_witness.py`) |
 |---|---|---|---|---|---|---|---|
@@ -192,64 +230,65 @@ Contrast: `(3,3,4,3)@u=2` (`b=1 ≤ |4−3|=1`, boundary) and `(4,5,6,4)@u=3` (`
 so the per-`Z` slice ratio `G/cornerComparator = |t|^{−ab} → ∞` as `t→0` whenever `ab > 0`. **Hence NO
 `Z`-uniform (integrand-level / per-deep-slice) domination `G ≤ K·cornerComparator` can hold near the deep
 origin** — the constructive descent (the form a Lean proof needs: bound the integrand, then integrate) is
-refuted directly, for EVERY L≥1 cut with `ab>0`, without appealing to `L(Z)`'s rank-drop asymptotics. The
-INTEGRATED domination fails additionally when the residual is non-integrable over the deep params
-(`b > |M₂−M₃|`, the table above): there `∫ frontChargeIntegrand` itself diverges while the comparator is
-finite (`q < uM₂/2`), so **`∫ frontChargeIntegrand ≤ K · cornerComparator.integral(q)` is FALSE (∞ ≤ finite)**.
-Either way the reassembly onto the flat-measure comparator does NOT close for L≥1.
+refuted directly, for EVERY L≥1 cut with `ab>0`, without appealing to `L(Z)`'s asymptotics. **This part
+SURVIVES** — the scaling obstruction is a valid refutation of the per-slice descent onto the flat comparator.
 
-**Why the TRUE object is still finite (no contradiction with Aoyagi/bltj).** The undecorated shell integral
-`∫_{shell,A',T} frobSq(T·hsQ)^{−c'} = ∫ frobSq(prod M)^{−c'}|_shell ≤ off-shell`, RLCT `= ½minAdm(M) = T1`
-(arity-agnostic, bltj §3) — finite for `c'<T1`, general L. But that bound is the **circular** off-shell route
-(same chain `M`; assumes the answer). The Γ-peel **charge form** `frontChargeIntegrand` is a Morse
-OVER-estimate (`freedSchurLoss_gammaPeel_le` is `≤`); near the deep rank-drop the over-estimate blows up
-(the residual) even though the true object is finite. **So the charge form is too lossy for general L, and the
-non-circular descent onto `cornerComparator` (which the recursion NEEDS) does not hold.**
+> **⚠ RETRACTED (see ERRATUM).** I previously wrote here that "the INTEGRATED domination fails additionally
+> … `∫ frontChargeIntegrand` itself diverges … `+∞ ≤ finite`." That is WRONG. `∫ frontChargeIntegrand` is
+> FINITE (diagbfix, conceded; `/tmp/concede_check.py`, `/tmp/global_check.py`). The scaling obstruction only
+> refutes the **per-slice/integrand-level** domination onto the flat `cornerComparator` (route α), not the
+> finiteness of the object. The correct L≥1 route is the DIRECT joint stratified atlas + deep-stratum gate
+> (3a), which does NOT descend onto `cornerComparator`.
 
-**This corrects arch1probe Q-A.** Its conclusion "the deep-stratum arc is off-path; the descent handles the
-deep factor" rests on §1.2's invalid "reabsorption". The residual `det⁺(Z_deep Z_deepᵀ)^{−b/2}` is precisely a
-deep-rank-drop charge, and controlling it is exactly what a deep-stratum handling would do — so the deep-strata
-question is **reopened** for L≥1, not off-path. (arch1probe's L=0 verdicts and its `hGae`/`hZrank`/binding
-conditions stand; only the general-L "descent handles the deep factor" claim fails.)
+**The object IS finite (diagbfix, conceded).** `∫frontChargeIntegrand` is finite for all `c' < carrierThreshold`
+— the deep rank-drop is NOT a pole (the pushforward-box fibre `L(Z)→0` cancels the residual majorant; `J(Z)=Θ(1)`
+at the codim-1 drop, global ∫ converges, §ERRATUM). So the Γ-peel charge form is NOT "too lossy"; the honest
+reason the descent-onto-`cornerComparator` fails is the scaling obstruction (per-slice ratio `|t|^{−ab}→∞`), a
+statement about the DOMINATION shape, not the object's finiteness.
 
-### 3.3 What the fix must supply — and why a comparator redesign does NOT rescue the charge form
+**This corrects arch1probe Q-A (and diagbfix concurs).** Its conclusion "the deep-stratum arc is off-path; the
+descent handles the deep factor" rests on §1.2's invalid "reabsorption" — refuted by the scaling obstruction
+(the per-slice descent onto `cornerComparator` is unsound). So the **deep-stratum arc is reopened / load-bearing
+for L≥1** — but as the sound ROUTE (the direct joint per-stratum gate `C_k` on the finite object), NOT because
+the object diverges (it does not) and NOT requiring a separate lower-arity descent over the deep strata
+(`frontChargeIntegrand` is already finite over them; diagbfix VERDICT 2). arch1probe's L=0 verdicts and its
+`hGae`/`hZrank`/binding conditions stand; only its general-L "descent handles the deep factor" claim fails.
 
-**Sharper than "the domination fails": the charge form `∫ frontChargeIntegrand` is itself `+∞` for the bad
-cuts.** `shellSpine_le_coupledBox` DROPS the shell indicator a-fortiori (`lintegral_mono_set
-Set.inter_subset_left`, :472), so `∫_p frontChargeIntegrand` runs over the FULL box — deep params included,
-hence over a neighbourhood of the deep rank-drop `{det⁺(Z_deep Z_deepᵀ)=0}`. With `L(Z) := ` the inner
-(front + `A_cor`-leaf) integral a positive quantity bounded below by a positive constant on the full-rank side
-of that locus:
+### 3.3 What the fix must supply (CORRECTED per ERRATUM — the object is finite; the descent shape is the issue)
 
-    ∫_p frontChargeIntegrand  ≥  (inf_{deep near rank-drop} L(Z)) · ∫_{deep near rank-drop} det⁺(Z_deep Z_deepᵀ)^{−b/2}  =  (>0) · (+∞)  =  +∞
+> **⚠ RETRACTED.** This section previously argued "the charge form `∫ frontChargeIntegrand` is itself `+∞`"
+> via `∫ ≥ (inf L)·∫det⁺^{−b/2} = +∞`. That is WRONG: `inf L = 0` (the pushforward box collapses like
+> `det⁺^{+b/2}`; §ERRATUM, `/tmp/concede_check.py`), so the lower bound is `0·∞`, invalid — and the object is
+> FINITE (`/tmp/global_check.py`). diagbfix refuted this and is correct; I concede.
 
-for every good-branch cut with `b > |M₂−M₃|` (§3.2 table). **[FACT, rigorous — needs only `L>0` locally, NOT
-`L`'s rank-drop asymptotics; this closes the Close(b) caveat.]** So the charge-form intermediate diverges;
-`shellSpine ≤ ∫ frontChargeIntegrand` becomes the vacuous `shellSpine ≤ +∞`, and the next step
-`∫ frontChargeIntegrand ≤ K·cornerComparator.integral` is `+∞ ≤ finite`, FALSE.
-
-**Consequence for the fixes.** A `cornerComparator` is a valid IH target only if it is FINITE (below its
-threshold). No finite comparator can dominate a `+∞` intermediate. So:
+**The corrected picture.** `∫ frontChargeIntegrand` is FINITE for all L≥1 good cuts. So the charge chain
+(`shellSpine → frontCharge_factor → stratum_corner`) is a **reusable asset**, not dead. What genuinely fails
+for L≥1 is only the **per-slice descent onto the flat `cornerComparator`** (route α), refuted by the scaling
+obstruction (§3.2) — a statement about the DOMINATION shape, not the object. So:
 
 1. **Scope step (6) to arity-3 (L=0) now** — clean, buildable (§3.1) — and treat general L as a genuinely-open
    brick (= routeverify Brick B), NOT a mechanical `Fin 3 → Fin(L+…)` lift. (Recommended: unblocks
    arch1build immediately without an unsound general-L claim.)
-2. **A deep-Gram-decorated comparator does NOT work.** To dominate `G`'s residual, the comparator would have to
-   carry `det⁺(Z_deep Z_deepᵀ)^{−b/2}` (the same negative power) — but then the comparator ITSELF is `+∞` for
-   the bad cuts (`b > |M₂−M₃|`), so it is not a valid finite IH target. A `+b/2` weight is finite but does NOT
-   dominate the `−b/2` residual. **Neither sign rescues it** — the problem is that `G` (this intermediate) is
-   genuinely divergent, not that the comparator is mis-shaped. Do NOT pursue a comparator-decoration fix for
-   the non-integrable cuts.
-3. **Fix the OBJECT, not the comparator — keep the deep rank-drop out of the charge form.** The divergence
-   comes from the a-fortiori shell-drop feeding the Morse charge form over the deep rank-drop. Two viable
-   routes: **(3a)** do NOT drop the shell / restrict to the deep-full-rank stratum, and handle the deep
-   rank-drop `{rank Z_deep < deepTailMin}` by its OWN (lower-arity) descent — this is exactly a **deep-stratum
-   gate** (the deepgate/CRrec/`deepRankLE` arc arch1probe declared off-path — **it is load-bearing for L≥1**);
-   or **(3b)** descend via the UNDECORATED matrix-product object (avoid the Γ-peel over-estimate entirely),
-   whose RLCT is `½minAdm` with no residual (bltj/Aoyagi), at the cost of a different (non-charge) route.
+2. **Option 2 (deep-Gram-decorated comparator) is DEAD** — but for the RIGHT reason (diagbfix VERDICT 5). Not
+   because any intermediate is `+∞` (it is finite), but because decorating `cornerComparator` to match a
+   SPURIOUS residual (the vacuous majorant) introduces an unnecessary deep-Gram-weighted IH that does not
+   close. Drop it.
+3. **The sound L≥1 route is the DIRECT joint stratified atlas — front gate [banked] + deep-stratum gate `C_k`
+   (3a)** — NOT a descent onto `cornerComparator`. diagbfix (adjudicated winner): `frontChargeIntegrand` is
+   ALREADY finite over every deep stratum `{rank Z_deep = ρ−k}` (the corank charge is inert at the binding
+   stratum), so (3a) is a JOINT per-stratum RLCT gate `C_k = min(uρ, u(ρ−k)+κ_k−γ_{ρ−k}) ≥ minAdm(M)−ab =
+   2T1_q` — the banked, sorry-free `deepGate_branch` (`RouteMSJDeepGate`), each stratum radial-finite via the
+   same `corner_block_cube_lintegral_lt_top` engine as `stratum_corner_lt_top`. It needs NO separate
+   lower-arity descent over the deep rank-drops (my earlier (3a) framing was heavier than needed). **(3b)**
+   (undecorated descent) is viable ONLY as the full Aoyagi §5 `(S,J)` recursion, NOT as a "drop the Γ-peel"
+   shortcut — the charge `det(Q_bQ_bᵀ)^{−a/2}` is the EXACT Gaussian integral of the peeled corank block,
+   intrinsic to any front peel (diagbfix §4).
 
-Any general-L build must NOT assert `∫ frontChargeIntegrand ≤ K·cornerComparator.integral` — it is `+∞ ≤
-finite` for the bad cuts (route-B mode). The L≥1 fix is (3a)/(3b), not a comparator reshape.
+The **deep-stratum arc is load-bearing for L≥1** (arch1probe's "off-path" is un-reversed) — but the correct
+consequence is the JOINT gate (3a) on the finite object, not a wall and not a comparator reshape. Any general-L
+build must NOT assert the descent `∫ frontChargeIntegrand ≤ K·cornerComparator.integral` (unsound per the
+scaling obstruction) — but it MAY use `∫ frontChargeIntegrand < ⊤` directly (it is finite) as the reusable
+front-charge asset feeding the joint atlas.
 
 ---
 
@@ -297,10 +336,10 @@ CONCURS on all three, and sharpened two points:
   `Δ_k(Z)^{−b/2}` remains" — verbatim my §3.2. Option (ii): integrable iff `b < |m−n|+1` (single free layer),
   and for a **width-`k` bottleneck `Z=LR`**, `Δ_k(LR) = det(LᵀL)·det(RRᵀ)`, so **square `k×k` factors give
   threshold `b<1` — every `b≥1` fails**. "The supplied IH does NOT constructively prove `G<∞` for a genuine
-  deep product … a separate weighted local-zeta estimate would be needed." Codex names the object `G` reduces
-  to (`Δ_k(Z)^{−b/2}·loss`); §3.3 sharpens that this weighted object is itself `+∞` for the bad cuts, so it is
-  the correct IDENTITY for the intermediate but NOT a viable finite comparator — the fix is (3a)/(3b), not a
-  decoration. Codex contributed the scaling obstruction `Z=tZ₀` (slice ratio `|t|^{−ab}→∞`) now in §3.2.
+  deep product … a separate weighted local-zeta estimate would be needed." **NB (ERRATUM):** Codex was
+  careful here — "the IH does not CONSTRUCTIVELY prove `G<∞`" is TRUE and does NOT say `G=+∞`; my §3.3 over-read
+  it into "+∞", which diagbfix refuted (`G` is finite). Codex contributed the scaling obstruction `Z=tZ₀`
+  (slice ratio `|t|^{−ab}→∞`, §3.2) — that refutes the per-slice DESCENT, which is the surviving content.
 - **Q3 [FACT].** Frame DROPPABLE, provided `d_v` is the **leading-singular slice** `Ye₁` (`d_v = M₀`), not all
   of `Y` (that would need a Loewner floor); gate `max(0, 2q−ub) < α' < min(M₀, u·d)`. (Folded into §4.)
 
@@ -325,27 +364,27 @@ No point of divergence between my exact-algebra derivation and the decorrelated 
 
 - **Firmest result.** Arity-3 (L=0) reassembly is CLEAN and PINNED — the exact identity + per-stratum gate in
   §3.1, with the brief's monomial exponent corrected to `|v₀|^{minAdm(M')−1−2q}` (single, not doubled).
-  **arch1build step (6) can proceed for arity-3.** For general **L≥1** the charge-form reassembly carries an
-  **uncompensated deep-Gram residual `det⁺(Z_deep Z_deepᵀ)^{−b/2}`** (coarea Jacobian of the `A_cor`-measure),
-  non-integrable over the deep params for good-branch cuts with `b > |M₂−M₃|` — witnessed by **uniform-width
-  `(d,d,d,d)`** and `(3,4,5,4)@u=2`, all inside the L=0 scope `a+b ≤ M₂`. `∫ frontChargeIntegrand ≤
-  K·cornerComparator.integral` is FALSE there; it must NOT be asserted (route-B mode). σ-bank (3') is
-  DROPPABLE for L=0 (intrinsic `‖W‖`-polar + `twoBlock_radial_le`, no external frame), deep-caveated for L≥1.
-- **Most likely to break it.** (a) If the arch1build target is arity-3 ONLY, Verdict B is a scope flag, not a
-  blocker — proceed. (b) Verdict B is airtight: the residual's PRESENCE (coarea), its non-integrability for
-  `b>|M₂−M₃|` (exact RLCT `(|M₂−M₃|+1)/2` + `/tmp/confirm_witness.py`) forcing `∫ frontChargeIntegrand = +∞`
-  (§3.3, needs only `L>0` locally — resolves the earlier `L(Z)` caveat), and the scaling obstruction `Z=tZ₀`
-  (slice ratio `|t|^{−ab}→∞`, decorrelated-Codex-derived §5). What Verdict B does NOT claim: that the paper's
-  result is wrong (it is not — the UNDECORATED object is finite to `T1`, bltj/Aoyagi) or that no general-L
-  route exists — only that THIS charge-form-onto-flat-comparator route is `+∞ ≤ finite` and cannot be repaired
-  by reshaping the comparator (§3.3). The general-L route must keep the deep rank-drop out of the charge form.
-- **Next construction/consult.** (i) Confirm arch1build's step-(6) target is arity-3 (if so, ship §3.1).
-  (ii) For general L, the fix is (3a) a deep-stratum gate (split `{rank Z_deep < deepTailMin}`, handle by its
-  own descent — the deepgate/CRrec arc, load-bearing after all) or (3b) an undecorated-object descent — NOT a
-  comparator decoration (dead, §3.3). Pin which via a dedicated design pass. (iii) A deep-stratum-codimension
-  vs `T1_q` check (does splitting off `{rank Z_deep < deepTailMin}` recover the full threshold on each piece?).
+  **arch1build step (6) can proceed for arity-3.** For general **L≥1** (CORRECTED per ERRATUM, diagbfix
+  conceded): `∫ frontChargeIntegrand` is **FINITE** (my "+∞" was a direction error — `inf L = 0`, the vacuous
+  majorant); the charge chain is a **reusable asset**. What genuinely fails is only the per-slice **descent
+  onto the flat `cornerComparator`** (scaling obstruction `|t|^{−ab}→∞`, SURVIVES) — so L≥1 is not a
+  `Fin 3→Fin(L+…)` descent-lift; the sound route is the direct joint stratified atlas + **deep-stratum gate
+  `C_k`** (3a, banked sorry-free `RouteMSJDeepGate`). σ-bank (3') is DROPPABLE for L=0.
+- **Most likely to break it.** (a) Arity-3 (Verdict A) is unaffected — proceed. (b) The SURVIVING L≥1 content
+  (scaling obstruction refutes route-α descent; option 2 dead; deep-stratum arc load-bearing) is solid and
+  diagbfix-concurred. The RETRACTED content (the "+∞" object-divergence) is fully conceded — the residual
+  `det⁺^{−b/2}` is a vacuous non-integrable UPPER bound, not a divergence proof (`/tmp/concede_check.py`:
+  `J(Z)=Θ(1)` at rank-drop; `/tmp/global_check.py`: global ∫ converges). Lesson banked: a non-integrable
+  MAJORANT never proves an integral diverges — I should have computed the honest `J(Z)` (bounded) from the
+  start, not the residual alone.
+- **Next construction/consult.** (i) Ship arity-3 step (6) (§3.1). (ii) L≥1: build the direct joint stratified
+  atlas + deep-stratum gate `C_k` (diagbfix's adjudicated (3a)); confirm `C_k ≥ 2T1_q` on the finite object
+  per stratum (banked `deepGate_branch`, `minAdm3_add_chargeExp_le`). (iii) If a pen-and-paper adjudication of
+  (3a) `C_k` vs the front-gate composition is wanted, I can take it.
 
 **Files (absolute):**
 - `/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-reassembly/reassembly-cert.md` (this cert)
 - `…/genm-reassembly/codex/reassembly-{prompt,answer}.md` (decorrelated consult)
-- scans: `/tmp/minadm.py`, `/tmp/deepresid.py`, `/tmp/witness_summary.py`, `/tmp/confirm_witness.py`
+- scans (in the thread dir): `minadm.py`, `witness_summary.py`, `confirm_witness.py` (majorant — the vacuous
+  bound), and the CONCESSION checks `concede_check.py` (`J(Z)=Θ(1)` at rank-drop), `global_check.py` (global ∫
+  converges) — the decisive refutation of the retracted "+∞".
