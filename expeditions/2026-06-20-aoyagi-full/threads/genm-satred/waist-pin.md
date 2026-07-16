@@ -27,6 +27,26 @@ This atom is the a=0 (wide `X·Y`) waist. The **b=0 mirror** (M₁≤M₀, tall 
 Gram/Wishart atom `det(PᵀP+CᵀC)^{−M₂/2}` = qbox (§5, banked) — also `u≤2`-clean. So the `u≤2` waist brick
 consumes: a=0 → the (a)+(b) density atom; b=0 → the qbox.
 
+## 5quater. Refinements (q2gate/edgefub coordination, LATE-84+)
+
+**EDGE is NOT native (edgefub, builder) — my earlier "retire D§3 on Q2 grounds" was PREMATURE; the edge-pin
+STANDS.** q2gate's GenericCellFinite is the Q2-clean STATEMENT WRAPPER (direct `∫coupledBox<⊤`, no Q2
+pathology), but its CONTENT is the coupled descent: factor 1 (`|v'|^{−a}`, a<u) is native, factor 2
+(pivot-core `∫_pb frobSq(P·Q̃ₚ)^{−(c'−a/2)}`) is finite IFF `c'−a/2 < ½minAdm(redChain u M)` = the
+reduced-chain RLCT, needing `RMBTF(redChain u M)` via the X·Y descent. **Q2-clean-statement ≠ native
+buildability** — the edge coupled-descent tide IS needed; `hBackbone-edge-pin.md` two-chain stands.
+
+**b=0 leaf is NOT universally weight-free — it INHERITS.** The b=0 (M₀>M₁, u=M₁) CoV is weight-free at its
+level (injective, clean qbox Jacobian), but the `M₂>a` recursion reduces to `redChain M₁ M` and INHERITS its
+Q2-status. Exact-ℕ: 2850 clean / 276 decorated / 654 open. Decorated inheritors hit the square wall —
+`(5,3,3,3) → redChain 3 = (3,3,3)` square. So b=0 tall u≥3 is Q2-clean IFF its reduced chain avoids the
+square-decorated.
+
+**a=0/b>0 wide-non-square γ: the pointwise `A=r(M₂−b−r)` is a LOSSY UPPER bound, NOT the true density order**
+(it overstates — q2gate's 3×3 square MC: true γ=0/1 vs pointwise 2/2). The true order is milder + monotone-
+decreasing in b (more excess ⟹ milder), so the SQUARE (b=0) is the worst case. Use the pointwise A as a
+SUFFICIENT closure test for the coupled shell; the true order (milder) needs the pushforward computation.
+
 ## 5ter. u≥3 waists → DECORATED (the per-stratum A_r, for backbone NOT the coupled shell)
 
 For `u≥3` the front-product `z̃₀` (u×M₂) has MULTIPLE intermediate rank strata; the DEEP strata carry a
