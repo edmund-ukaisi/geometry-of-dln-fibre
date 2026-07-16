@@ -112,4 +112,29 @@ theorem schurCompl_quadForm_eq_blockQuadForm_min {k : ℕ}
   rw [hR] at *
   nlinarith [hdd, sq_nonneg R]
 
+/-! ## Schur complement is Hermitian and PSD (when `M` is PSD) -/
+
+/-- The Schur complement of a symmetric matrix is symmetric (Hermitian over ℝ). -/
+theorem schurCompl_isHermitian {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hsymm : ∀ p q, M p q = M q p) : (schurCompl M).IsHermitian := by
+  ext j l
+  simp only [Matrix.conjTranspose_apply, schurCompl, Matrix.of_apply, star_trivial]
+  rw [hsymm (Sum.inr l) (Sum.inr j), hsymm (Sum.inr l) (Sum.inl 0), hsymm (Sum.inl 0) (Sum.inr j)]
+  ring
+
+/-- **The Schur complement of a PSD matrix is PSD** (`v ⬝ᵥ Sc *ᵥ v = w* ⬝ᵥ M *ᵥ w* ≥ 0` via the
+variational identity). Non-spectral. -/
+theorem schurCompl_posSemidef {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hM : M.PosSemidef) : (schurCompl M).PosSemidef := by
+  have hsymm : ∀ p q, M p q = M q p := fun p q => by
+    have := hM.isHermitian.apply q p; simpa using this
+  refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (schurCompl_isHermitian M hsymm) (fun v => ?_)
+  have hstar : (star v : Fin k → ℝ) = v := funext (fun i => star_trivial (v i))
+  rw [hstar, schurCompl_quadForm_eq_blockQuadForm_min M hsymm v]
+  set w := Sum.elim (fun _ : Fin 1 =>
+      -(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v with hw
+  have hsw : (star w : Fin 1 ⊕ Fin k → ℝ) = w := funext (fun i => star_trivial (w i))
+  have := hM.dotProduct_mulVec_nonneg w
+  rwa [hsw] at this
+
 end DLNFibre.DLN.RLCT
