@@ -1024,7 +1024,32 @@ strata-independence question is SUBSUMED into the (banked) arity-3 (□) closure
 closure, on corankrec's clean-three base) × free `ub`-Gaussian] + [threshold via
 `minAdm_le_inf_pivot_qip`]. Composes with `frontCharge_cell_lt_top_of_freebox` + `hGae_cell_interior`.
 The bounded-domain inner/outer comparison (the R1/R2 caveats) is the one detail-at-scale step for the
-formaliser — standard (a bounded measurable integrand, `0` interior), NOT a monument.
+formaliser — spec'd turnkey in ★7.
+
+**★7 The inner/outer bounded-domain comparison (turnkey spec for the R1/R2 caveats).** The one step beyond a
+literal change-of-variables. It rests on ONE reusable lemma + its two applications.
+
+*The germ lemma (reusable, Mathlib-grade).* Let `h : ℝⁿ → ℝ≥0∞` measurable, LOCALLY BOUNDED on
+`ℝⁿ \ {0}` (its only possible non-integrability is at the origin — true here: `h = (loss)^{−q}`, `loss` a
+sum of squares vanishing only where the arguments do, and the reduction places that at the joint origin).
+Let `S ⊆ T` be bounded measurable with `S ⊇ Metric.ball 0 r` for some `r>0`. Then `∫_S h < ∞ ⟺ ∫_T h < ∞`.
+[Proof: `∫_S h ≤ ∫_T h`; and `∫_T h = ∫_S h + ∫_{T\S} h` with `T\S ⊆ T` bounded and `⊆ {‖·‖ ≥ r}` (disjoint
+from the ball), where `h` is bounded ⟹ `∫_{T\S} h < ∞`. So both finite or both infinite.] Corollary: for a
+linear surjection `Φ : ℝᴺ ↠ ℝᵐ` (`ℝᴺ = V ⊕ ker Φ`, `Φ|_V` iso, `|det| = J`) and `g ≥ 0` loc-bounded off
+`0∈ℝᵐ`, `∫_{B} g∘Φ` (over any bounded `B ⊇ ball 0 ρ`) is finite `⟺ ∫_{nbhd of 0 ⊆ ℝᵐ} g < ∞` — via Fubini
+`V⊕ker` + the germ lemma on each factor (the `ker` factor contributes a finite volume; `Φ|_V(B∩V-slice)` is
+a bounded `Y`-region containing a `0`-neighborhood).
+
+*Application to R2 (zonotope).* `Φ : z0 ↦ z0·(Z_deepΠ)`, `ℝ^{uM₂} ↠ ℝ^{ud}`. The `z0`-box image is a
+zonotope, but it is bounded AND contains `ball 0 ρ` (`0` interior, `Φ` surjective). So `∫_{z0-box}(loss∘Φ)^{−q}`
+has the SAME finiteness as `∫_{Y-box}(loss)^{−q}` (the rectangular arity-3 domain) — germ corollary, `J`
+constant.
+*Application to R1 (`B̃`-shift).* `B̃ = B₁₂ + P·Ã_z(z0)`: for fixed `(z0,P)` the `B̃`-domain is the box
+shifted by `P·Ã_z`. The singularity is at the JOINT origin `(z0,P,B₁₂,C)=0`, where the shift `P·Ã_z → 0`, so
+the shifted domain contains a `0`-neighborhood in `B̃`; away from the origin `h` is bounded on the (bounded)
+box ⟹ finite. So the germ lemma applies at the joint origin and the `B̃`-shift changes nothing.
+*Net:* `∫_p < ∞ ⟺` the rectangular arity-3 (□) integral `< ∞` — no domain subtlety survives. The germ lemma
+is the one new (reusable, standard) Mathlib-grade brick; everything else is `Φ`-Fubini + `routeMBoxThresholdFinite_mnp`.
 
 **Owner:** intloss (rank lemma + per-p finiteness) + me (the joint `∫_p` reduction, Codex-confirmed) +
 corankrec (QIP landed + the Lean assembly). The interior CONVERGES ∀-cell (no obstruction); the Lean closure
