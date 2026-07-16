@@ -154,4 +154,13 @@ theorem coupledBoxIntegrand_peel {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (u 
       ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M u (deeperFlagZdeep M u) p.1 p.2)) ^ (-c')))
     (coupledInner_aemeasurable (hsQ M u (deeperFlagZdeep M u) p.1 p.2) c' 1 hc0)
 
+/-- **The peel's C-box in `Set.pi` form.** The corank-left-block box `{C | ∀ i j, C i j ∈ [−1,1]}`
+(the peel's `Cbox`) equals `coupledInner_slice_le`'s `Set.pi`-of-`Icc` cube — the set-form bridge letting
+the per-slice leaf apply to the peeled inner. -/
+theorem Cbox_eq_pi (a u : ℕ) :
+    {C : Fin a → Fin u → ℝ | ∀ i j, C i j ∈ Set.Icc (-1 : ℝ) 1}
+      = Set.pi Set.univ (fun _ : Fin a => Set.pi Set.univ (fun _ : Fin u => Set.Icc (-1 : ℝ) 1)) := by
+  ext C
+  simp only [Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
+
 end DLNFibre.DLN.RLCT
