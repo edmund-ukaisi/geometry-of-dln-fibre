@@ -35,6 +35,24 @@ theorem of_gamma_mul_corank_row {a n : ℕ} (Γ : Fin a → Fin 1 → ℝ)
   rw [Matrix.mul_apply, Fin.sum_univ_one, Matrix.of_apply, Matrix.of_apply, hqb j]
   ring
 
+/-- **Unit-scale decomposition of a nonzero row.** Any nonzero `q : Fin n → ℝ` is `σ • ω` for
+`σ = ‖q‖ > 0` and a unit `ω = q/σ` (`∑ ωⱼ² = 1`). Supplies the `(σ, ω)` data `coupledInner_slice_le`
+(and the edge descent) consume from `q_b ≠ 0`. -/
+theorem exists_unit_scale {n : ℕ} (q : Fin n → ℝ) (hq : q ≠ 0) :
+    ∃ (σ : ℝ) (ω : Fin n → ℝ), 0 < σ ∧ (∑ j, (ω j) ^ 2 = 1) ∧ (∀ j, q j = σ * ω j) := by
+  set S : ℝ := ∑ j, (q j) ^ 2 with hS
+  have hSpos : 0 < S := by
+    obtain ⟨j, hj⟩ := Function.ne_iff.1 hq
+    exact Finset.sum_pos' (fun i _ => sq_nonneg _)
+      ⟨j, Finset.mem_univ j, lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hj))⟩
+  set σ : ℝ := Real.sqrt S with hσ
+  have hσpos : 0 < σ := Real.sqrt_pos.mpr hSpos
+  have hσsq : σ ^ 2 = S := Real.sq_sqrt hSpos.le
+  refine ⟨σ, fun j => q j / σ, hσpos, ?_, fun j => by field_simp⟩
+  have : ∑ j, (q j / σ) ^ 2 = (∑ j, (q j) ^ 2) / σ ^ 2 := by
+    rw [Finset.sum_div]; exact Finset.sum_congr rfl (fun j _ => by rw [div_pow])
+  rw [this, hσsq, ← hS, div_self (ne_of_gt hSpos)]
+
 /-- **The b=1 corank row against the unit fragile direction is the scalar `σ`.** For `Q_b 0 = σ • ω`
 (`ω` unit), `Q_b.mulVec ω = fun _ => σ`: `(Q_b.mulVec ω) 0 = ∑ⱼ σ ωⱼ · ωⱼ = σ·∑ⱼ ωⱼ² = σ`. -/
 theorem corank_row_mulVec_omega {n : ℕ} (Qb : Matrix (Fin 1) (Fin n) ℝ) (ω : Fin n → ℝ) (σ : ℝ)
