@@ -354,6 +354,13 @@ it is a genuine red-team, not a rubber stamp.
   `t★` at the front-collapse endpoint, `r=0`) the charge can lower the codim below the floor (Codex CE#2
   `(6,8,5,5) u=5`). The per-cell floor may be invoked ONLY for `u=t★+j`, `1≤j<r`, which the upstream
   shell-restriction supplies; the formaliser must carry this hypothesis.
+- **WAIST (`M₁ < deepTailMin`) is covered by the same coupled route — NO separate branch** (confirms
+  arch1build's waist verdict, decorrelated). The charge-domination holds identically in the waist: **0
+  charged-below-floor over 14828 in-scope waist cells** (binding strict shells + rankgen, `M₁<ρ`;
+  `couplerad_chargescope.py`). This stresses the charge in its worst regime — waist shells run asymmetric
+  with `a>b` (e.g. `(5,3,6,6) u=2`: `a=3,b=1`, `min_k C=11=floor`; `(6,4,8,8) u=2`: `a=4,b=2`, `C=15=floor`),
+  the large-`a` case where `det(Q_bQ_bᵀ)^{−a/2}` most plausibly bites — and it stays dominated (tight, margin
+  0). Some waist configs simply have no in-scope shell (narrow `M₁` collapses fully, `r=0`, e.g. `(6,2,5,5)`).
 
 ---
 
