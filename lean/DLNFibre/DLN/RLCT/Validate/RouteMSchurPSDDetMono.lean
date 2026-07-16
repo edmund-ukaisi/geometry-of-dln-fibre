@@ -137,4 +137,60 @@ theorem schurCompl_posSemidef {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕
   have := hM.dotProduct_mulVec_nonneg w
   rwa [hsw] at this
 
+/-! ## PSD zero-row fact + the complete-square lower bound -/
+
+/-- **PSD with a zero pivot has a zero pivot row.** If `M` is PSD and `M₁₁ = 0`, then every off-pivot
+entry `M(inl 0)(inr j) = 0`. (From `0 ≤ QF at (s, eⱼ) = 2s·M(inl0)(inr j) + M(inr j)(inr j)` ∀s, which
+forces the linear coefficient to vanish.) Non-spectral (uses `blockQuadForm_expand`). -/
+theorem posSemidef_pivotRow_zero {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hM : M.PosSemidef) (h0 : M (Sum.inl 0) (Sum.inl 0) = 0) (j : Fin k) :
+    M (Sum.inl 0) (Sum.inr j) = 0 := by
+  have hsymm : ∀ p q, M p q = M q p := fun p q => by
+    have := hM.isHermitian.apply q p; simpa using this
+  have key : ∀ s : ℝ,
+      0 ≤ 2 * s * M (Sum.inl 0) (Sum.inr j) + M (Sum.inr j) (Sum.inr j) := by
+    intro s
+    have hexp := blockQuadForm_expand M hsymm s (Pi.single j 1)
+    have hpos := hM.dotProduct_mulVec_nonneg (Sum.elim (fun _ : Fin 1 => s) (Pi.single j (1 : ℝ)))
+    have hstar : (star (Sum.elim (fun _ : Fin 1 => s) (Pi.single j (1 : ℝ)))
+        : Fin 1 ⊕ Fin k → ℝ) = Sum.elim (fun _ => s) (Pi.single j 1) :=
+      funext (fun i => star_trivial _)
+    rw [hstar, hexp, h0] at hpos
+    simp only [Pi.single_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul,
+      Finset.sum_ite_eq', Finset.mem_univ, if_true] at hpos
+    linarith [hpos]
+  by_contra hb
+  have h1 := key (-(M (Sum.inr j) (Sum.inr j) + 1) / (2 * M (Sum.inl 0) (Sum.inr j)))
+  have hcalc : 2 * (-(M (Sum.inr j) (Sum.inr j) + 1) / (2 * M (Sum.inl 0) (Sum.inr j)))
+        * M (Sum.inl 0) (Sum.inr j) = -(M (Sum.inr j) (Sum.inr j) + 1) := by
+    field_simp
+  rw [hcalc] at h1
+  linarith
+
+/-- **The complete-square lower bound.** For `M` PSD, the Schur-complement quadratic form is `≤` the block
+QF at EVERY `u`: `v ⬝ᵥ Sc *ᵥ v ≤ [u;v]ᵀ M [u;v]` (the Schur value is the minimum over the pivot coord).
+`d = M₁₁ ≥ 0`; if `d > 0` the gap is `d·(u+d⁻¹R)² ≥ 0`, if `d = 0` the pivot row vanishes so `R = 0`. -/
+theorem schurCompl_le_blockQuadForm {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hM : M.PosSemidef) (u : ℝ) (v : Fin k → ℝ) :
+    v ⬝ᵥ (schurCompl M *ᵥ v)
+      ≤ (Sum.elim (fun _ : Fin 1 => u) v) ⬝ᵥ (M *ᵥ (Sum.elim (fun _ : Fin 1 => u) v)) := by
+  have hsymm : ∀ p q, M p q = M q p := fun p q => by
+    have := hM.isHermitian.apply q p; simpa using this
+  rw [schurCompl_quadForm_closed M hsymm v, blockQuadForm_expand M hsymm u v]
+  set d := M (Sum.inl 0) (Sum.inl 0) with hd
+  set R := ∑ j, M (Sum.inl 0) (Sum.inr j) * v j with hR
+  have hdnn : 0 ≤ d := hM.diag_nonneg
+  rcases eq_or_lt_of_le hdnn with hd0 | hdpos
+  · -- pivot `d = 0` ⟹ pivot row zero ⟹ `R = 0`
+    have hR0 : R = 0 := by
+      rw [hR]; refine Finset.sum_eq_zero (fun j _ => ?_)
+      rw [posSemidef_pivotRow_zero M hM hd0.symm j, zero_mul]
+    rw [hR0, ← hd0]; simp
+  · -- pivot `d > 0` ⟹ gap `= d·(u + d⁻¹R)² ≥ 0`
+    have hne : d ≠ 0 := hdpos.ne'
+    have hid : d * (u + d⁻¹ * R) ^ 2 = d * u ^ 2 + 2 * u * R + d⁻¹ * R ^ 2 := by
+      field_simp; ring
+    have hnn : 0 ≤ d * (u + d⁻¹ * R) ^ 2 := mul_nonneg hdpos.le (sq_nonneg _)
+    linarith [hid, hnn]
+
 end DLNFibre.DLN.RLCT
