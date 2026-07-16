@@ -123,13 +123,15 @@ theorem routeMBoxThresholdFinite_of_window (M : Fin (L + 1) → ℕ) (lo : ℝ)
 /-! ## The coupled-incidence assembly skeleton -/
 
 /-- **The coupled-incidence assembly skeleton (arity ≥ 4, per-`c'`).** Given G1 (`hG1`), the per-cell
-finiteness `hfin` on ALL non-saturated shells `j < r`, and the saturated-shell finiteness `hbdryShell`
-(`j = r`), the box integral is finite. Shells `j < r` (INCLUDING the generic entry shell `j = 0`, which has
-interior dims `a=M₀−t, b=M₁−t ≥ 1`) go through the LINK (`shellSpine_le_frontCharge_binding`) → G2
-(`frontChargeBox_lt_top_of_hfin`); the SATURATED shell `j = r` (one of `a,b = 0`) is bounded by DIRECT
-`shellSpineIntegrand` finiteness (`hbdryShell`, satred/satbuild's brick — the LINK is inapplicable at the
-saturated cut). `hfin`'s content splits by cut for the caller: couplerad's item 4 on `1 ≤ j < r`, schurrec's
-charged-terminal base at the generic entry `j = 0`. NATIVE. See the module docstring for the scope. -/
+COUPLED-BOX finiteness `hcell` on ALL non-saturated shells `j < r`, and the saturated-shell finiteness
+`hbdryShell` (`j = r`), the box integral is finite. Shells `j < r` go through the HONEST coupled-box route:
+`shellSpine ≤[shellSpine_le_coupledBox, step 1, PROVEN unconditional] ∫coupledBox <[coupledBox_lt_top_of_cells]
+⊤` — NOT the front-charge route, which is `+∞` at EDGE cells (`a+b=ρ+1`, where step-2's Γ→univ extension
+manufactures the divergent `det(Q_bQ_bᵀ)^{−a/2}` charge). The SATURATED shell `j = r` (one of `a,b = 0`) is
+bounded by DIRECT `shellSpineIntegrand` finiteness (`hbdryShell`, satred/satbuild's brick). `hcell`'s content
+splits by CELL at the fill: IN-REGIME cells (`a+b≤ρ`) via `coupledCell_le_frontCell` (step 2) + item 4
+(couplerad `1≤j<r` / schurrec entry `j=0`); EDGE cells (`a+b=ρ+1`) via (D)'s corank-one instance
+(`edge_coupledBox_lt_top`). NATIVE. See the module docstring for the scope. -/
 theorem routeMBox_arity4_lt_top_of_coupled
     (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ε c' : ℝ)
     (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i) (htb : t + 1 ≤ min (M 0) (M 1))
@@ -141,7 +143,7 @@ theorem routeMBox_arity4_lt_top_of_coupled
             ∑ _ρ : Fin (t + (j : ℕ)) ↪ Fin (M 0),
               ∑ κ : Fin (t + (j : ℕ)) ↪ Fin (M 1),
                 shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c')
-    (hfin : ∀ (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+    (hcell : ∀ (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
         (j : ℕ) < min (M 0 - t) (M 1 - t) →
         ∀ i : CRIndex (dropHead (redChain (t + (j : ℕ)) M)),
         ∫⁻ p in (paramsBoxM (redChain (t + (j : ℕ)) M) 1 ×ˢ matBox (M 1 - (t + (j : ℕ))) (M 2) 1)
@@ -150,7 +152,7 @@ theorem routeMBox_arity4_lt_top_of_coupled
                 le_rfl (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)) i
                 (fun _ => (1 : Matrix (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)))
                   (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L))) ℝ))),
-          frontChargeIntegrand M (t + (j : ℕ)) c' p < ⊤)
+          coupledBoxIntegrand M (t + (j : ℕ)) c' p < ⊤)
     (hbdryShell : ∀ (j : Fin (min (M 0 - t) (M 1 - t) + 1))
         (κ : Fin (t + (j : ℕ)) ↪ Fin (M 1)),
         (j : ℕ) = min (M 0 - t) (M 1 - t) →
@@ -162,9 +164,12 @@ theorem routeMBox_arity4_lt_top_of_coupled
   refine ENNReal.sum_lt_top.mpr (fun κ _ => ?_)
   have hjr : (j : ℕ) ≤ min (M 0 - t) (M 1 - t) := Nat.lt_succ_iff.mp j.isLt
   by_cases hlt : (j : ℕ) < min (M 0 - t) (M 1 - t)
-  · exact lt_of_le_of_lt
-      (shellSpine_le_frontCharge_binding M t (j : ℕ) κ ε c' hjr (hc' j) ht1 hnd htb hbind)
-      (frontChargeBox_lt_top_of_hfin M (t + (j : ℕ)) c' (hfin j hlt))
+  · -- HONEST coupled-route interior: shellSpine ≤[step1, unconditional] ∫coupledBox <[coupledBox-G2] ⊤.
+    -- (NOT via frontCharge, which is +∞ at edge cells a+b=ρ+1.) hcell splits at the fill: in-regime
+    -- (a+b≤ρ) via coupledCell_le_frontCell + item 4; edge (a+b=ρ+1) via (D)'s corank-one instance.
+    exact lt_of_le_of_lt
+      (shellSpine_le_coupledBox M t (j : ℕ) κ ε c' hjr)
+      (coupledBox_lt_top_of_cells M (t + (j : ℕ)) c' (hcell j hlt))
   · exact hbdryShell j κ (by omega)
 
 /-! ## Per-`M` coupled closure (nondegenerate interior binding cut) -/
@@ -189,7 +194,7 @@ theorem routeMBoxThresholdFinite_of_coupled
             ∑ _ρ : Fin (t + (j : ℕ)) ↪ Fin (M 0),
               ∑ κ : Fin (t + (j : ℕ)) ↪ Fin (M 1),
                 shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c')
-    (hfin : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+    (hcell : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
         (j : ℕ) < min (M 0 - t) (M 1 - t) →
         ∀ i : CRIndex (dropHead (redChain (t + (j : ℕ)) M)),
         ∫⁻ p in (paramsBoxM (redChain (t + (j : ℕ)) M) 1 ×ˢ matBox (M 1 - (t + (j : ℕ))) (M 2) 1)
@@ -198,7 +203,7 @@ theorem routeMBoxThresholdFinite_of_coupled
                 le_rfl (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)) i
                 (fun _ => (1 : Matrix (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)))
                   (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L))) ℝ))),
-          frontChargeIntegrand M (t + (j : ℕ)) c' p < ⊤)
+          coupledBoxIntegrand M (t + (j : ℕ)) c' p < ⊤)
     (hbdryShell : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1))
         (κ : Fin (t + (j : ℕ)) ↪ Fin (M 1)),
         (j : ℕ) = min (M 0 - t) (M 1 - t) →
@@ -210,7 +215,7 @@ theorem routeMBoxThresholdFinite_of_coupled
   refine routeMBoxThresholdFinite_of_window M ((((M 0 - t) * (M 1 - t) : ℕ) : ℝ) / 2) (by linarith)
     (fun c' hlo hhi => ?_)
   refine routeMBox_arity4_lt_top_of_coupled M t ε c' ht1 hnd htb hbind ?_
-    (hG1 c') (hfin c') (hbdryShell c')
+    (hG1 c') (hcell c') (hbdryShell c')
   intro j
   have hmono : (M 0 - (t + (j : ℕ))) * (M 1 - (t + (j : ℕ))) ≤ (M 0 - t) * (M 1 - t) :=
     Nat.mul_le_mul (Nat.sub_le_sub_left (Nat.le_add_right t _) _)
