@@ -148,4 +148,22 @@ theorem bindingCut_ab_le_deepTailMin_succ (M : Fin (L + 1 + 1 + 1) → ℕ) (t :
       _ = (a - 1) * (b - 1) + (a + b - 1) := by omega
   omega
 
+/-- **`minAdm M ≤ M₀ · min(M₁, deepTailMin M)`** — the interior uniform-`I_loss` bound's load-bearing
+arithmetic (couplerad (A): the interior cell closes iff `2c' < M₀·min(M₁, deepTailMin M)`, which the
+carrier threshold `c' < ½·minAdm M` gives iff this holds). It is EXACTLY the banked head×tail-inf bound
+`minAdm_le_head_mul_tailInf` (`minAdm M ≤ M₀ · ⨅_{i≥1} Mᵢ`) reformulated, since
+`⨅_{i≥1} Mᵢ = min(M₁, ⨅_{i≥2} Mᵢ) = min(M₁, deepTailMin M)` (`inf'_univ_fin_succ` + the `deepTailMin`
+def). NOT a subtle new minAdm property — a clean composition. (Decorrelated-verified: 0 failures over
+19551 nondeg cells, arity 3–5, widths 1–7; 6741 tight, all strict-`<` on the carrier side so tight still
+converges.) -/
+theorem minAdm_le_head_mul_min_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    minAdm M ≤ M 0 * min (M 1) (deepTailMin M) := by
+  have h := minAdm_le_head_mul_tailInf M
+  have hinf : (Finset.univ : Finset (Fin (L + 1 + 1))).inf'
+        ⟨0, Finset.mem_univ 0⟩ (fun i => M i.succ)
+      = min (M 1) (deepTailMin M) := by
+    rw [inf'_univ_fin_succ (fun i : Fin (L + 1 + 1) => M i.succ)]
+    congr 1
+  rwa [hinf] at h
+
 end DLNFibre.DLN.RLCT
