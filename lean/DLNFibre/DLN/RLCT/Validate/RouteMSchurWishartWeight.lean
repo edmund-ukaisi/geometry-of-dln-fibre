@@ -1,7 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramResidual
 import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCharged
-import DLNFibre.DLN.RLCT.Validate.RouteMSchurPSDDetMono
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDetMono
 
 set_option linter.style.longLine false
 
@@ -152,7 +152,8 @@ theorem charge_ge_floor {b n p : ℕ} (S : Fin n → Fin p → ℝ) (δ : ℝ)
       rw [Matrix.mul_smul, Matrix.smul_mul]
     rw [hmateq] at hconj
     exact hconj
-  have hdet := det_le_det_of_posSemidef_sub (A * G * Aᵀ) ((δ ^ 2) • (A * F * Aᵀ)) hYpsd hXYpsd
+  -- reuse the banked RouteMSJDetMono.det_le_det_of_posSemidef_sub (implicit A B): A = Y = δ²•(A F Aᵀ), B = X = A G Aᵀ
+  have hdet := det_le_det_of_posSemidef_sub hYpsd hXYpsd
   rw [Matrix.det_smul, Fintype.card_fin] at hdet
   rw [chargeGramDet_eq_conj, ← hA, ← hG]
   exact hdet
