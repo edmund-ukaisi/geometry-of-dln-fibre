@@ -80,4 +80,28 @@ supplies the CoV shift, the δ-slack fallback (open IH exponent range) carries `
 mapped-measure integral on the LEFT — so the scaling-CoV equation comes out `k • ∫f = …` REVERSED from the
 naive expectation. Convert `•`→`*` with `smul_eq_mul` and use `hlm.symm`; build the cancellation via
 `congrArg (k * ·)` not `rw [hlm]` (the latter's pattern-matching on `EuclideanSpace` integrands is brittle
-vs the `ℝ` case). Cost ~6 build cycles on `scaledRadialEuclid_eq`.
+vs the `ℝ` case). Cost ~6 build cycles on `scaledRadialEuclid_eq`. (Worth banking in
+`lean/CLAUDE.md` Mathlib-gotchas at integration — left to the controller to avoid a mid-flight shared-doc
+conflict; dbuild also filed it in its consultant notes.)
+
+## Continuation recipe — P2 and R2 atom-wiring (dbuild, deepest context; verified)
+
+**P2 (u=rs coupling → log), the concrete wiring.** At FIXED `s`, sub `u = rs` (r the fragile radius),
+`dr = du/s`, `r^{a−1} = (u/s)^{a−1}`:
+- the `s`-integral factor is `∫ s^{a−1}·s^{−a} ds = ∫ s^{−1} ds = sigmaLog = log(1/τ)` over the radial
+  cutoff `[τ,1]` (dbuild's `sigmaLog_integral`);
+- the `u`-integral is exactly `scaledRadialEuclid` (the `u^{a−1}` weight after polar) `= w^{a/2−p}·B`
+  (**LANDED**, `scaledRadialEuclid_eq`).
+So `H = [log(1/τ)]·[w^{a/2−p}·B]`. Then do NOT keep the bare log — fold via
+`one_add_sigmaLog_le_rpow` (`1 + ∫_τ^1 σ⁻¹ ≤ (1+1/δ)τ^{−δ}`): `H ≤ w^{a/2−p}·B·(1+1/δ)·τ^{−δ}`. `τ` is the
+radial cutoff scale; carry `τ^{−δ}` into the exponent (`c' → c'+δ`), and the IH's OPEN range
+`c'−ab/2+δ < ½·minAdm(redChain)` absorbs it. (dbuild: `u=rs` arithmetic verified 12/12 for `a=1,2,3`.)
+
+**R2 (C-shift, `mulVec_of_surjective`), the concrete wiring.** The surjectivity is NOT measure-preserving.
+The CoV `C ↦ ξ := C·v` pushes `∫_C f(‖C·v‖²) dC` to `∫_ξ f(‖ξ‖²)·ρ(ξ) dξ` with `ρ` the pushforward
+density — **BOUNDED** (a linear surjection `ℝ^{a×u} → ℝ^a` of a box; the kernel fibres give a bounded
+density on the image, a box-image containing a neighbourhood of `0`). CARE: need (i) the bounded-density
+bound, (ii) the image contains `0` (so the `w`-shift + `‖ξ‖²` radial — i.e. `scaledRadialEuclid` — applies).
+The uniform-δ-slack is precisely because `ρ` does NOT vanish at `ξ=0` yet `v→0` (C small) still needs the
+δ-fold — **never** a pointwise C-lower-bound. (dbuild has the density-bound lemma shape on request; edgebrick
+on call to pin the `‖v‖^{−a}`/`{v=0}`-null against the concrete Lean integral.)
