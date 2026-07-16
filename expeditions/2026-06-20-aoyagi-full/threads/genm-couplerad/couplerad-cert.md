@@ -810,6 +810,125 @@ form (and the `ρ<n` cases) I pin when reached.
 
 ---
 
+### w3-interior — the interior uniform `I_loss(p)` bound: the coupled loss DECOUPLES + is a pure box-RLCT (NO WALL, native; ∀-M PROVEN)
+
+**Object.** After arch1build's front-charge factorization, the interior closes iff
+`I_loss(p) = ∫_x (E_top + E_tr)^{−q}` is uniformly bounded over interior cells (`a+b ≤ ρ_d = deepTailMin`),
+`q = c' − ab/2`, `x = (P,B₁₂,C) ∈ outerDom` — the BOUNDED box `[−1,1]^{u×u}×[−1,1]^{u×b}×[−1,1]^{a×u} ∩
+{IsUnit P}` (`T=1`; corankrec-verified verbatim `RouteMSJChartShear:185`). corankrec's forms:
+`E_top = frobSq(P·Q_inl + B₁₂·Q_b)`, `E_tr = frobSq(C·Q̃ₚ·Π)`, `Q̃ₚ = Q_inl + P⁻¹B₁₂Q_b`,
+`Π = 1 − Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b`. `Q_inl=(z0)·Z_deep` (u×n), `Q_b=A_cor·Z_deep` (b×n), `Z_deep` rank `ρ_d`.
+
+**★1 The loss DECOUPLES (E_tr is pure-C).** Since `Q_b·Π = 0`, `Q̃ₚ·Π = Q_inl·Π` (the `P⁻¹B₁₂Q_b·Π` term
+vanishes), so **`E_tr = frobSq(C·Q_inl·Π)`** — independent of `(P,B₁₂)`. Verified to machine ε (corankrec +
+`couplerad_interior.py`). [Equivalent M/D derivation: `E_tr = frobSq(D·M·Π)`, `M=W_top·Z_deep`, `D=C·P⁻¹`,
+`M·Π = P·Q_inl·Π` ⟹ `E_tr = frobSq(C·Q_inl·Π)`.] So `f := E_top + E_tr` splits: `E_top` on the `(P,B₁₂)`
+block, `E_tr` on the `C` block.
+
+**★2 f is a PSD quadratic on the box; the integral is a pure RLCT threshold.**
+`E_top = ‖[P|B₁₂]‖²_{G_stack}` (`G_stack = [Q_inl;Q_b][Q_inl;Q_b]ᵀ`), `E_tr = ‖C‖²_{KKᵀ}` (`K = Q_inl·Π`).
+As a quadratic in `vec(P,B₁₂,C)`, `f = zᵀHz`, `H ⪰ 0`, `rank H = u·r_stack + a·r_K` (`r_stack =
+rank[Q_inl;Q_b]`, `r_K = rank K`; via `vec(XS)=(Sᵀ⊗I)vec X`, `rank(AᵀA)=rank A`). **On the BOUNDED box there
+is NO decay/∞ constraint — the sole condition is near-zero-set (RLCT) integrability:**
+> `I_loss(p) < ∞  ⟺  2q < u·r_stack + a·r_K`   (RLCT of a rank-ρ PSD quadratic = ρ/2).
+
+NO lower q-window. (The earlier `q > au/2` was an unbounded-`C` artifact of the Gaussian β-formula; `C` is
+BOXED, so no `∞`-tail.) Excluding `{det P=0}` (IsUnit P) is measure-zero, does not move the threshold
+(Codex Q1(d)).
+
+**★3 The ranks on the interior cell.** `r_stack = min(u+b, ρ_d) = min(M₁, deepTailMin)` (since `u+b = M₁`);
+`r_K = r_stack − b` (`Q_b` full rank `b` ⟹ `rank(Q_inl·Π) = rank[Q_inl;Q_b] − rank Q_b`). Both verified
+(`couplerad_interior.py`, machine ε). So `u·r_stack + a·r_K = (a+u)·r_stack − ab = M₀·r_stack − ab`, and
+`2q < M₀·r_stack − ab` with `q = c'−ab/2` collapses to
+> **`I_loss(p) < ∞  ⟺  c' < M₀·min(M₁, deepTailMin)/2`.**
+
+**★4 E_top is load-bearing exactly on the gap `a·r_K/2 ≤ q < (a·r_K+u·r_stack)/2`** (Codex Q1(c); matches
+corankrec's S2 + Codex's earlier `∫E_tr^{−q}=∞` counterexample): the `C`-only integral
+`∫_box frobSq(C·K)^{−q}` diverges for `q ≥ a·r_K/2` (on `ker(C↦CK)`), but `E_top` floors it there. Drop
+`E_top` → divergence.
+
+**★5 The uniform bound — NO WALL, ∀-M PROVEN.** `c'` is capped by `carrierThreshold M = ½·minAdm M`. So the
+uniform bound over interior cells holds iff `½minAdm M ≤ M₀·min(M₁,ρ_d)/2`, i.e.
+> **`minAdm M ≤ M₀·min(M₁, deepTailMin)`.**
+
+PROVEN ∀-M constructively (`couplerad_minadm_proof.py`; verified exact, 0/7536 interior cases). `minAdm M =
+min_{T∈Adm} Mval`; exhibit an admissible `T` with `Mval(M,T) ≤ M₀·min(M₁,ρ_d)`. Let `ρ = M_{k*}`, `k*` least
+in `{2..L}` with `M_{k*}=ρ`. **Easy half (`M₁ ≤ ρ`):** `T≡0` ⟹ `Mval = M₀·M₁ = M₀·min(M₁,ρ)`. **Hard half
+(`M₁ > ρ`):** the running-min-then-drop `T*`: `t^j = min(M₀,…,M_{j+1})` for `j ≤ k*−2`, `t^j = 0` for
+`j ≥ k*−1`. Admissible (running-min weakly decreasing, `≤ admBound`, last `=0`). Telescoping: every term
+`j ≤ k*−2` is `0` (consecutive running-mins equal, or the width factor `0`); `j > k*−1` all-zero; only
+`j = k*−1` survives `= t^{k*−2}·ρ = min(M₀,…,M_{k*−1})·ρ ≤ M₀·ρ = M₀·min(M₁,ρ)`. ∎ Tight in 295 cases
+(arity 3-4) but never violated; both bounds STRICT-`<`, so tight still converges (open window).
+
+**LANDED (corankrec @e9e262341, `RouteMSJCorankRec`):** `minAdm_le_head_mul_min_deepTailMin (M) : minAdm M ≤
+M 0 * min (M 1) (deepTailMin M)`, green + native (`[propext, Classical.choice, Quot.sound]`). It went via the
+banked `minAdm_le_head_mul_tailInf` (`minAdm M ≤ M₀·⨅_{i≥1}Mᵢ`, proven by permutation-invariance moving the
+argmin tail width to position 1) reformulated `⨅_{i≥1}Mᵢ = min(M₁, deepTailMin M)` — 6 lines, no T* fold.
+The interior arithmetic was already a banked minAdm property. My constructive T* (running-min-then-drop,
+`Mval(T*) = min(M₀,…,M_{k*−1})·ρ`, actually SHARPER) is the DECORRELATED confirmation — both routes + two
+independent scans (mine 1292 interior cells arity 3-4; corankrec's 19551 cells arity 3-5 widths 1-7) agree,
+0-failure. So (A)'s uniform bound rests on a PROVEN ∀-M inequality.
+
+**Decorrelated Codex (Q1, `xhigh`, self-contained, conclusion WITHHELD): CONCURS** — rank
+`ρ = u·r_S + a·r_K`, threshold `q < ρ/2`, load-bearing gap `a·r_K/2 ≤ q < (a·r_K+u·r_S)/2` nonempty iff
+`r_S>0`, singular-X irrelevant (`codex/couplerad-interior-{prompt,answer}.md`).
+
+**Lean-mechanism map.** `I_loss(p)` is ONE-SHOT (does NOT interact with satred's `a≥u` charge recursion — it
+is the loss-side, pulled out). Formaliser needs: (i) decoupling `E_tr = frobSq(C·Q_inl·Π)` (algebraic,
+`Q_b·Π=0`); (ii) `f = ‖[P|B₁₂]‖²_{G_stack} + ‖C‖²_{KKᵀ}` PSD quadratic, `rank = u·r_stack + a·r_K`
+(Kronecker + `rank(AᵀA)=rank A`); (iii) box-RLCT of a PSD quadratic (`∫_box q^{−s}<∞ iff s<rank/2`) — a
+Morse/monomial-normal-form or a direct radial bound on the `ρ` nondegenerate directions; (iv) the rank
+formulas `r_stack=min(M₁,ρ_d)`, `r_K=r_stack−b` on the cell-generic locus (corankrec's atlas); (v) the QIP
+arithmetic `minAdm M ≤ M₀·min(M₁,ρ_d)` (★5, corankrec). **Trap:** keep the box bounded — do NOT extend `C`
+to ℝ and invoke the β-formula (it spuriously introduces a lower q-window). **Owner:** corankrec / schurrec
+(the `ρ=n` resolved-chart consumer).
+
+---
+
+### w3-edgeR3 — the b≥2 edge (`a+b=ρ_d+1`): R3 DISSOLVES = (b−1)-Γ-column peel [(D)-boundary] + b=1 coupled leaf (NO new measure theory)
+
+**Object (edgered's COUPLED route, no explicit charge factor).**
+`coupledBoxIntegrand = ∫_x∫_Γ (freedSchurLoss)^{−c'}`, `freedSchurLoss = W + frobSq(C·Q̃ₚ + Γ·Q_b)`,
+`W = frobSq(P·Q̃ₚ)` (pivot energy, `C,Γ`-free), `Q_b = A_cor·Z_deep` (`b` corank rows), `Γ` the freed `a×b`
+variable. The edge is `a+b = ρ_d+1`; the FULL `b`-block charge `det(Q_bQ_bᵀ)^{−a/2}` diverges there
+(`a+b > ρ_d`).
+
+**★1 The Γ-integral IS the charge pull-out (unifies (A)/(B)).**
+`∫_Γ (W + frobSq(C·Q̃ₚ + Γ·Q_b))^{−c'} dΓ = det(Q_bQ_bᵀ)^{−a/2}·β(ab,c')·(W + frobSq(C·Q̃ₚ·Π))^{−(c'−ab/2)}`
+[`Γ↦ΓQ_b` onto `a×rowspace(Q_b)`, Jac `det(Q_bQ_bᵀ)^{a/2}`, Π-split via `Q_bΠ=0`]. With `q = c'−ab/2`,
+`W = E_top`, `frobSq(C·Q̃ₚ·Π) = E_tr`, this IS arch1build's factorization
+`= det(Q_bQ_bᵀ)^{−a/2}·β·I_loss(p)`. So the coupled route and the (A) interior are the SAME computation; the
+full `b`-pull's charge is the divergent trap.
+
+**★2 R3 = peel only `b−1` Γ-columns (the SAFE rows).** Split `Γ = [Γ' | γ_last]`, `Q_b = [Q_b'; q_last]`
+(`Q_b'` = top `b−1` rows, full rank `b−1`). `Γ·Q_b = Γ'·Q_b' + γ_last·q_last`.
+- STEP 1 (exact Gaussian, EQUALITY): `∫_{Γ'} (W + frobSq(C·Q̃ₚ + Γ'Q_b' + γ_last q_last))^{−c'} dΓ' =
+  det(Q_b'Q_b'ᵀ)^{−a/2}·β(a(b−1),c')·(W + frobSq((C·Q̃ₚ+γ_last q_last)·Π'))^{−c''}`, `Π'` = ⊥-proj off
+  `rowspace(Q_b')`, `c'' = c' − a(b−1)/2`.
+- STEP 2 (edgered's a-fortiori, ≤): fragile direction `q̃_last := q_last·Π'` (`q_last` ⊥ the `b−1` peeled
+  rows), `σ = ‖q̃_last‖`, `ω = q̃_last/σ`. Project onto `ω`: `frobSq((C·Q̃ₚ+γ_last q_last)Π') ≥ ‖C·v' +
+  σ·γ_last‖²`, `v' = Q̃ₚ·Π'·ω` — EXACTLY edgered's `corank_afortiori` b=1 form (`v→v'`, `γ→γ_last`,
+  `c'→c''`).
+> `coupledBoxIntegrand(b) ≤ det(Q_b'Q_b'ᵀ)^{−a/2}·β(a(b−1),c')·[edgered's LANDED b=1 leaf at exponent c'']`.
+
+**★3 WHY NO WALL.** `det(Q_b'Q_b'ᵀ)^{−a/2}` is the (D) charge at `(a, b−1)`; in the deep integral it is
+FINITE iff `a+(b−1) ≤ ρ_d ⟺ a+b ≤ ρ_d+1 = the IMMEDIATE EDGE` (the (D) BOUNDARY — slabD's
+`corankSlabD_charge_sint_le` @aa4319774 closes exactly this). The last (would-be-divergent) row is NOT
+charged — it is edgered's `b=1` coupled leaf where `W` floors the fragile `v'`-direction. edgered confirmed
+the arithmetic: the edge window `c' > ab/2` gives `c'' = c'−a(b−1)/2 > a/2`, i.e. `a < 2c''` STRICTLY —
+exactly the `b=1` leaf's finiteness threshold (`scaledRadialEuclid_lt_top`, open window). So **R3 =
+(D)-at-boundary [(b−1) block] + edgered's b=1 leaf [last row]**, no new measure theory; the `a_b↔C` coupling
+survives cleanly into `v'`.
+
+**Decorrelated Codex (Q2, `xhigh`): CONCURS** — the `(b−1)`-Γ Gaussian identity, `det(BBᵀ)^{−a/2}` Jacobian,
+the exact `Cst = π^{a(b−1)/2}Γ(c'−a(b−1)/2)/Γ(c')`, convergence `c' > a(b−1)/2`, and `c'' = c' − a(b−1)/2`
+(`codex/couplerad-interior-{prompt,answer}.md` Q2). **Owner:** edgered (b=1 leaf, LANDED) + slabD/arch1build
+((b−1)-block detGram at boundary). **Scope (corankrec binding-cut scan):** the b≥2 strict-edge IS reached
+(witness `(3,3,3,4)@t=1`, 110 witnesses) but the deep-corank tower is EMPTY — R3 is the immediate-edge
+(single-level `(b−1)` peel) case ONLY.
+
+---
+
 ## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
 
 **RECOMMENDATION: Route A (the general non-square corank recursion on the reduced bilinear), NOT Route B
