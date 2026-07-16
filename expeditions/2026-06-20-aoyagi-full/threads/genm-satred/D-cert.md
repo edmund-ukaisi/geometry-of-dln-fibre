@@ -164,6 +164,34 @@ factorization, NOT as a monolithic 2D singular integral. Matrix→scalar: minor 
 rank-`(b−1)` (C-non-degeneracy picks the 1D fragile `σ_min` direction) reduces the matrix corank-one to
 exactly this scalar model.
 
+## 3bis. DEFINITIVE edge (b=1) reduction — the single source of truth (supersedes my message-trail churn)
+
+The b=1 edge corner splits by `a` vs `u` (verified reliably; `scripts/{R2_Cshift,bminus1_chart,aGEu_fuller}.py`,
+scipy-quad + CoV-checks, NOT heavy-tail MC). Both close (corner finite, ⊆RMBTF, no wall); the ROUTE differs:
+
+**Fragile decomposition (both cases).** `ω=Q_b/‖Q_b‖`, `v=Q̃ₚ·ω` (u-vector), `σ=‖Q_b‖`, `γ=Γ` (a-vector).
+`frobSq(C·Q̃ₚ+γ⊗Q_b) = ‖C·v+σγ‖²` [fragile ω-column] `+ ‖C·Q̃ₚΠ_⊥ω‖²` [transverse, C-dependent].
+
+**a < u: DROP the transverse → clean R2 leaf.** `(freedSchurLoss)^{−c'} ≤ (frobSq(P·Q̃ₚ)+‖C·v+σγ‖²)^{−c'}`
+(dropping `‖·Π_⊥ω‖²≥0`). C-integral = R2 (`edge_C_shift_bound`, β-invariant) `≤ |v_{j₀}|^{−a}·R_a(W,c')`,
+`R_a = scaledRadialEuclid` = **clean power `W^{a/2−c'}` for c'>ab/2 (NO log/δ), log ONLY at c'=ab/2**. The
+`|v_{j₀}|^{−a}` disposal is `∫_{ω∈S^{n−1}}‖Q̃ₚω‖^{−a}dω` = RLCT of a rank-u linear form over the sphere =
+**finite IFF a<u** (`ker Q̃ₚ` codim-u; `corner_block_lintegral_lt_top`). Then W-integral = arity−1 IH on
+`redChain u M @ c'−ab/2` via cut-soundness. δ-fold only at the single c'=ab/2. **CLEAN network-free leaf.**
+[Correction: `a<u` is right — an earlier "honest-stop" retraction of it, claiming `‖Q̃ₚω‖≥σ_min`, was WRONG:
+`Q̃ₚ` (u<n) has a kernel, so `v→0` on `ker Q̃ₚ` and the `a<u` threshold is genuine.]
+
+**a ≥ u: KEEP the transverse → the fuller lemma** (R2's dropped-transverse is lossy: `∫‖v‖^{−a}dω` DIVERGES
+for a≥u). The FULL C-integral, via `Y=C·Q̃ₚ` (Jacobian `det(Q̃ₚQ̃ₚᵀ)^{−a/2}`, `a` copies of the u-Gram) + Y
+shift-invariance:
+`∫_C(W+frobSq(C·Q̃ₚ+γ⊗Q_b))^{−c'}dC = det(Q̃ₚQ̃ₚᵀ)^{−a/2}·(W+‖M0⊥‖²)^{au/2−c'}·B_{au}` (verified), `M0⊥ =
+γ⊗Q_b off rowspace(Q̃ₚ)`. **Charge `au/2` (not a/2), NO `‖v‖^{−a}`**; the `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` is the reduced
+chain's OWN Gram (disposed by the IH), the `‖M0⊥‖²` shift carries the σ,γ. **Open piece (my design pass):**
+the full charge accounting — that `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` + the σ,γ (`M0⊥`) structure integrate over the reduced
+chain to reach exactly `½minAdm M` (plausibly the IH's business, since `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` is the reduced
+leading-Gram singularity). This is the genuinely-new analytic content for a≥u; the CoV + form are pinned,
+the reduced-chain charge accounting is the remaining verification.
+
 ## 4. Part 3 — Lean-friendly design
 
 **Object / target.** `∫_p coupledBoxIntegrand M u c' p < ⊤` per-exponent for `c' < ½·minAdm M`
