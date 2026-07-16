@@ -165,16 +165,38 @@ whose leading layer is `z̃₀` (`u×M₂ = M₀×M₂`) and whose product is `z
 (At `W=0`, `A = ⌊(M₂−b)²/4⌋` for `u ≥ M₂`, truncated at `j=u` for `u<M₂`; scalar check `u=M₂=b=1`:
 `ρ = f∗f`, `f(t)=2log(1/|t|)`, `ρ ≤ ‖f‖₂² = 16` bounded, Codex + `ratio_diag`.)
 
-The density's **RLCT cost is exactly** `Δ = ½·(minAdm(redChain u M) − minAdm M) ≥ 0`
-(`scripts/final_accounting.py`: `(1,2,3,3)` has `minAdm M = 2`, `minAdm(redChain=(1,3,3)) = 3`, `Δ = ½`,
-measured `λ_H → 1.0 = ½·minAdm M ≠ ½·minAdm(redChain) = 1.5`). Hence
+**Two DIFFERENT quantities — do not conflate them (CORRECTED; the earlier draft's "headroom = Δ exactly
+covers the density" was an overclaim):**
+- the **joint RLCT headroom** `2Δ := minAdm(redChain u M) − minAdm M ≥ 0` — the gap between RMBTF(redChain)'s
+  validity `½·minAdm(redChain)` and the needed threshold `½·minAdm M`; free from the arity-IH;
+- the **pointwise density order** `A = max_{1≤j≤min(u,M₂)} j(M₂−b−j)` at the rank-drop — what a *naive
+  pointwise* fold of `ρ` into the exponent actually consumes (`A/2`, via `‖z̃₀‖^{−A} ≤ ‖Zdeep‖^A ·
+  frobSq(z̃₀·Zdeep)^{−A/2}` at the deep-generic origin).
 
-    (I) ≤ K_ε · RouteMLayerBoxIntegral(redChain u M) (c' + Δ + ε) T★,
+The naive pointwise domination `(I) ≤ K_ε · RouteMLayerBoxIntegral(redChain u M) (c' + A/2 + ε) T★` reaches
+the needed threshold `½·minAdm M` **iff `A ≤ 2Δ`**. This is a genuine SPLIT (exact scan
+`scripts/AvsDelta.py`, all saturated `a=0` shells `M₀≤M₁≤5, M₂,M₃≤5`):
+- **Clean SUFFICIENT condition `b ≥ M₂−1` (density bounded or log, `A ≤ 0`) ⟹ REACHES** (0/540
+  counterexamples). Also many `b ≤ M₂−2` reach when `A = 2Δ` (e.g. `(1,2,3,3)` `A=2Δ=1`, `(1,2,4,4)`
+  `A=2Δ=2`, `(1,1,2,2)` `A=2Δ=1`). Here a bounded/log/small-power density folds into RMBTF(redChain) at
+  exponent `c'+A/2+ε < ½·minAdm(redChain)`. Clean, no new content beyond the fold.
+- **`A > 2Δ` (naive domination UNDERSHOOTS)** — the `b ≤ M₂−2` power-density regime when the power exceeds
+  the headroom. Occurs for **`b = 0` (`M₀=M₁`) with `M₂ ≥ 2`** [e.g. `(1,1,M₂,·)`, `(2,2,2,2)` `A=1,2Δ=0`,
+  `(2,2,3,3)` `A=2,2Δ=1`, `(3,3,3,3)` `A=2,2Δ=1`, `(2,2,4,4)` `A=4,2Δ=3`] AND for some `b>0` [`(2,3,4,4)`
+  `A=2,2Δ=1`] — NOT an `M₀=1` vs `M₀≥2` dichotomy (e.g. `M=(1,1,3,1)` undershoots: `A=2,2Δ=0`). Here the
+  pointwise fold gives only `c' < ½·minAdm M − (A/2 − Δ) < ½·minAdm M`. **Reaching the true threshold
+  `½·minAdm M` needs the JOINT determinantal rank-sector resolution** (Codex Q1/Q3: the density's
+  rank-`r`-stratum exponents `E_j = j(j−d_r)` interacting with `frobSq(z̃₀·Zdeep)`'s own rank-`r` locus —
+  the origin fold is lossy because it ignores that `{z̃₀ low-rank}` and `{deep low-rank}` are jointly
+  higher-codim). This is the genuinely-hard new analytic content, and it is exactly the `b=0`/small-`b`
+  (no-cross-block or weak-cross-block) regime where the structural det-P compensation is weakest.
 
-**finite for `c' < ½·minAdm M`**: the exponent `c'+Δ+ε < ½·minAdm M + Δ = ½·minAdm(redChain u M)`, inside
-RMBTF(redChain u M)'s validity. The reduced chain's headroom `½·minAdm(redChain) − ½·minAdm M = Δ` exactly
-covers the density cost. (`Δ = 0` ⟺ the saturated cut minimises ⟺ `ρ` bounded/log; `Δ > 0` occurs, e.g.
-`M=(1,2,3,3)`, where a shallower cut wins and `ρ` is a genuine power.)
+**The finiteness itself is NOT in doubt** — `(I)`'s exact RLCT is `½·minAdm M` in ALL cases (Codex Q1
+determinantal result `m_I = minAdm M` at `k=u+b=M₁`; independently `(I) = RMBTF(M)|_{P invertible}`,
+Aoyagi). Only the *route to it via the IH `RMBTF(redChain u M)`* splits: `A ≤ 2Δ` ⟹ clean pointwise
+domination; `A > 2Δ` (`u≥2`, small `b`) ⟹ needs the joint rank-sector resolution. `u = M₀ = 1` is always
+in the clean regime. (`scripts/final_accounting.py` measures `λ_H → ½·minAdm M`, e.g. `(1,2,3,3) → 1.0`,
+`(2,2,2,2) → 1.5`, confirming finiteness holds to threshold regardless of route.)
 
 ## 5. Deliverables
 
@@ -196,15 +218,16 @@ covers the density cost. (`Δ = 0` ⟺ the saturated cut minimises ⟺ `ρ` boun
      **bumped exponent `c'+Δ+ε`** and a **rescaled radius `T★`** — a scaling CoV, `frobSq(prod)` is
      degree-`2·arity` homogeneous); `Cresid_zero`, `frobSq_empty_rows` (S1/S2); the block identity
      `of_blockSplitD_symm_eq_fromBlocks` / `hsQ = fromRows`.
-   - *New content (the crux):* the **matrix-product density / RLCT-cost lemma** — that pushing
-     `∫_{X∈{IsUnit-left-block}∩box, Y∈box} f(X·Y)` forward is dominated by
-     `K_ε·∫_{z̃₀∈box_T★} f(z̃₀)·(rank-degeneracy)^{−(2Δ+ε)}`, absorbed into RMBTF at `c'+Δ+ε`. Two Lean routes:
-     (a) **`b ≥ M₂` (Δ possibly 0, ρ bounded):** a clean measure-domination `(X·Y)_*Leb ≤ K·Leb_{box}`
-     (surjection-of-a-box) ⟹ `(I) ≤ K·RMBTF(redChain u M) T★` at the **same** `c'` — simplest, no headroom;
-     (b) **`b < M₂` (ρ power/log-singular):** the ε-headroom fold. The origin `{z̃₀=0}` piece is handled by
-     submultiplicativity `frobSq(z̃₀·Zdeep) ≤ ‖z̃₀‖²‖Zdeep‖²` ⟹ `‖z̃₀‖^{−ε} ≤ ‖Zdeep‖^ε·frobSq^{−ε/2}`,
-     folding into the exponent; the deeper rank-strata need the stratified bound (Codex Q3) — genuine
-     analytic content, NOT free.
+   - *New content (the crux) — TWO regimes (see §4, `scripts/AvsDelta.py`):*
+     (a) **`b ≥ M₂−1` (ρ bounded or log; `A ≤ 0 ≤ 2Δ`):** a clean measure/integral domination
+     `(X·Y)_*Leb ≤ K·(log-weighted) Leb_{box}` (surjection-of-a-box) ⟹ `(I) ≤ K_ε·RMBTF(redChain u M) T★`
+     at exponent `c'+ε < ½·minAdm(redChain)` — simplest; the log folds via any `ε>0`.
+     (b) **`b ≤ M₂−2` with `A > 2Δ` (`A = max_j j(M₂−b−j)`):** the naive pointwise fold
+     (`‖z̃₀‖^{−A} ≤ ‖Zdeep‖^A·frobSq^{−A/2}`) consumes `A/2 > Δ` and **UNDERSHOOTS** (reaches only
+     `½·minAdm M − (A/2−Δ)`). Reaching `½·minAdm M` needs the **JOINT determinantal rank-sector resolution**
+     (Codex Q1/Q3) — the genuine hard content; this is the `b=0`/small-`b` regime (`(2,2,2,2)`, `(1,1,M₂,·)`,
+     `(2,3,4,4)`, …), where the structural det-P compensation is weakest/absent. (`b ≤ M₂−2` with `A ≤ 2Δ`,
+     e.g. `(1,2,3,3)`, still reaches via the pointwise fold — the exact criterion is `A ≤ 2Δ`, not `b`.)
    - *Diamond guard:* the matrix CoV / product must use the **raw-`Pi` instances** (`lean/CLAUDE.md`
      `Matrix.module` diamond) for `[P|B₁₂]·[z₀;A_cor]` and the reindex `X·Y ↦ z̃₀`.
    - *Architecture (arch1build-confirmed).* The coupled route **bypasses** `cornerComparator` (that is the
@@ -243,15 +266,20 @@ covers the density cost. (`Δ = 0` ⟺ the saturated cut minimises ⟺ `ρ` boun
 ## Close
 
 - **Firmest result.** The det-P→0 hazard is resolved (route iii, structural): `u+b=M₁` makes the leading
-  layer the product `[P|B₁₂]·[z₀;A_cor]` with full-row-rank front factor; `det P→0` is compensated by the
-  corank block `B₁₂`. No RLCT drop — `λ_H = ½·minAdm M` (I is `RMBTF(M)|_{P invertible}`). The reduction to
-  `RMBTF(redChain u M)` closes at exponent `c'+Δ+ε`, `Δ = ½(minAdm(redChain u M) − minAdm M)`, absorbed
-  exactly by the reduced chain's headroom. `Cresid(0)=1`. No KILL.
-- **Most likely to break it.** (i) The `b < M₂` power-density (`Δ>0`, e.g. `(1,2,3,3)`) is genuine analytic
-  content — if the build tries `(I) ≤ K·RMBTF(redChain)` at the **same** exponent (bounded density) it will
-  FAIL there; the bumped exponent `c'+Δ+ε` is mandatory. (ii) If a build ever reverts to the per-`P` CoV
-  `z₀↦Pz₀` and enlarges, it diverges (`|det P|^{−M₂}`). (iii) The `b=M₁−u` (not `b=1`) identity is
-  load-bearing; a mis-set `b` gives a spurious drop.
+  layer the matrix product `[P|B₁₂]·[z₀;A_cor]`; for `b>0` the front factor `[P|B₁₂]` stays full row rank as
+  `det P→0` (the corank block `B₁₂` supplements), so det-P is benign. **No RLCT drop in ANY case** —
+  `λ_H = ½·minAdm M` (I is `RMBTF(M)|_{P invertible}`, Aoyagi; Codex determinantal `m_I=minAdm M`). `Cresid(0)=1`.
+  No KILL — finiteness holds to `½·minAdm M` throughout. The **reduction to the IH `RMBTF(redChain u M)`
+  SPLITS by `A vs 2Δ`** (`A=max_j j(M₂−b−j)` density order; `2Δ=minAdm(redChain u M)−minAdm M` headroom):
+  `A≤2Δ` (incl. all `b≥M₂−1`) ⟹ clean pointwise density domination; `A>2Δ` (the `b=0`/small-`b`,
+  weak-compensation regime — e.g. `(2,2,2,2)`, `(1,1,M₂,·)`) ⟹ the naive fold undershoots, needing the
+  joint determinantal rank-sector resolution.
+- **Most likely to break it.** (i) **The `A>2Δ` regime** (`b=0`/small-`b`, e.g. `(2,2,2,2)`, `(1,1,M₂,·)`,
+  `(2,3,4,4)`): a build that reduces to `RMBTF(redChain)` via the naive pointwise density fold **undershoots
+  the threshold** (reaches only `½·minAdm M − (A/2−Δ)`) — it will NOT close `c'` up to `½·minAdm M`. This is
+  the genuinely-hard case and needs the joint rank-sector resolution; do not ship a naive-fold brick for it.
+  (ii) If a build ever reverts to the per-`P` CoV `z₀↦Pz₀` and enlarges, it diverges (`|det P|^{−M₂}`).
+  (iii) The `b=M₁−u` (not `b=1`) identity is load-bearing; a mis-set `b` gives a spurious RLCT drop.
 - **Next construction/consult.** *(Resolved with arch1build.)* `cornerComparator` is bypassed (coupled
   route); the `Δ` headroom is free from the arity-IH `sjStepHyp_of_coupled` and `Δ≥0` is banked
   (`minAdm_le_peelCharge_add_redChain`, `RouteMSJResolution:204`); the **Δ-carrying density domination is the
@@ -265,4 +293,4 @@ Files (absolute):
 - `…/threads/genm-satred/satred-cert.md` (this cert)
 - `…/threads/genm-satred/codex/satred-{prompt,answer}.md`, `satred-run.log`
 - `…/threads/genm-satred/scripts/{density_probe, ratio_diag, rlct_exponent, detP_fix, correct_b,
-  final_accounting}.py`
+  final_accounting, AvsDelta}.py`
