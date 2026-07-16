@@ -14,8 +14,9 @@ Thread `genm-intmtn-shell` (aoyagi-full Stage 2, the interior coupled shell-inte
 > generic cell (`E_top`'s `P·P⁻¹` cancels; `E_tr`'s `Q_inr` is killed by its own orthogonal projector), so
 > it pulls out and the gate reduces to the charge.
 
-- **Lean (assembly, LANDED conditional):** `DLNFibre.DLN.RLCT.chargeFreeBox_b1a1_of_inner`
-  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJInteriorShell.lean` @ `e2e200b1b`)
+- **Lean (assembly, LANDED conditional):** `DLNFibre.DLN.RLCT.chargeFreeBox_b1_of_inner` (general `a < n`)
+  and its `a=1` corollary `chargeFreeBox_b1a1_of_inner`
+  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJInteriorShell.lean` @ `980a4cc68`)
 - **Lean (unconditional headline, PENDING):** `chargeFreeBox_b1a1_lt_top` — trivial wiring
   `chargeFreeBox_b1a1_of_inner hn C hC hinner` once schurB lands `corankSlab_charge_sint_le`.
 - **Gloss.** `chargeFreeBox_b1a1_of_inner`: given `n ≥ 2` and a uniform inner bound
@@ -55,7 +56,7 @@ Thread `genm-intmtn-shell` (aoyagi-full Stage 2, the interior coupled shell-inte
 > NOT on the interior, which is power.)
 
 - **Lean:** `DLNFibre.DLN.RLCT.shellLogWeight_lintegral_lt_top` (+ `shellLogWeight_integrableOn`,
-  `log_one_div_le_rpow_neg`) (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJInteriorShell.lean` @ `e2e200b1b`)
+  `log_one_div_le_rpow_neg`) (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJInteriorShell.lean` @ `980a4cc68`)
 - **Gloss.** `∫⁻ ε in Ioc 0 t, ofReal(C·(1+log(1/ε))·ε^s) < ⊤` for `0<t≤1`, `−1<s`, `0≤C`; via the
   domination `log(1/x) ≤ η⁻¹·x^{−η}` (any `η>0`) reducing to a power integral (`s−η > −1`).
 - **Proved.** Fully, unconditionally. Clean-three `[propext, Classical.choice, Quot.sound]`; zero sorry.
