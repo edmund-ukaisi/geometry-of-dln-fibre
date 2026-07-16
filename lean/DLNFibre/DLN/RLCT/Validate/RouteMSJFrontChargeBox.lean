@@ -137,4 +137,28 @@ theorem coupledCell_le_frontCell (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c'
   filter_upwards [hGae, hEtopae] with p hG hEtop
   exact coupledBox_le_frontCharge M u c' p hc' hG hEtop
 
+/-- **The INTERIOR-cell coupledBox slot (conversion from frontCharge finiteness).** Packages the interior
+fill of `coupledBox_lt_top_of_cells`'s `hcell i`: given the front-charge cell finiteness (corankrec's
+`coupled_hfin_cell_interior`, on interior cells `a+b≤ρ_i`) + the a.e.-`p` genericity on the cell, the
+coupled-box cell integral is finite (`coupledCell_le_frontCell` + `lt_of_le_of_lt`). Thin by design — the
+LOAD-BEARING content is (a) corankrec's `hfront` (frontCharge finiteness via ChargedRectSchurCore) and (b)
+the `hGae` corank-Gram PosDef A.E. ON THE CELL, which needs the cell's own deep rank `ρ_i ≥ b` (the cell can
+be null in the box, so the box-level `hGae_from_deepRank` does NOT restrict to it) — a deep-atlas fact.
+`hEtopae` (pivot energy `>0`) restricts from the box (polynomial nonvanishing, null in any cell). -/
+theorem coupledCell_interior_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (c' : ℝ)
+    (s : Set (Params (redChain u M) × (Fin (M 1 - u) → Fin (M 2) → ℝ)))
+    (hc' : ((M 0 - u : ℕ) : ℝ) * ((M 1 - u : ℕ) : ℝ) / 2 < c')
+    (hGae : ∀ᵐ p ∂(volume.restrict s),
+        ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id
+          * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)ᵀ).PosDef)
+    (hEtopae : ∀ᵐ p ∂(volume.restrict s),
+        ∀ᵐ x ∂(volume.restrict (outerDom u (M 0 - u) (M 1 - u) 1)),
+          0 < frobSq (Matrix.of x.1.1
+            * ((hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inl id
+              + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2
+                  * (hsQ M u (deeperFlagZdeep M u) p.1 p.2).submatrix Sum.inr id)))
+    (hfront : ∫⁻ p in s, frontChargeIntegrand M u c' p < ⊤) :
+    ∫⁻ p in s, coupledBoxIntegrand M u c' p < ⊤ :=
+  lt_of_le_of_lt (coupledCell_le_frontCell M u c' s hc' hGae hEtopae) hfront
+
 end DLNFibre.DLN.RLCT
