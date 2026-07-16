@@ -212,4 +212,23 @@ theorem minAdm_le_interior_qip_deepTailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (u 
     _ ≤ (M 1 - u) * M 0 + u * deepTailMin M := Nat.add_le_add_right hp _
     _ = u * deepTailMin M + (M 1 - u) * M 0 := by ring
 
+/-- **The TIGHTEST interior QIP `minAdm M ≤ u·deepTailMin M + (M₀−u)·(M₁−u)`** (couplerad's form A, `a·b`
+not `b·M₀`). couplerad's binding deep stratum is `{z0·Z_deep·Π = 0}` (codim `u·(deepTailMin−b)`, tighter
+than `{z0·Z_deep=0}`), giving the pole condition `2c' < u·deepTailMin + a·b` (`a = M₀−u`, `b = M₁−u`,
+`a·b = peelCharge M u`). This is the STRICTEST of the three (`a·b ≤ (M₁−u)·M₀ ≤ ...`), and the proof is the
+SHORTEST — just the peel `minAdm_le_peelCharge_add_redChain` (`minAdm M ≤ (M₀−u)(M₁−u) + minAdm(redChain u
+M)`, and `peelCharge M u = (M₀−u)(M₁−u) = a·b` exactly) + the per-cut bound `minAdm_redChain_le_deepTailMin`
+(`≤ u·deepTailMin M`), NO weakening step. The other two forms follow (`(M₀−u)≤M₀`, `deepTailMin≤M₂`).
+Decorrelated-verified 0 fails over 9288 nondeg cells (6295 tight — genuinely binding). -/
+theorem minAdm_le_u_deepTailMin_add_peelCharge (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (hu : u ≤ min (M 0) (M 1)) :
+    minAdm M ≤ u * deepTailMin M + (M 0 - u) * (M 1 - u) := by
+  have h1 : minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := by
+    have h := minAdm_le_peelCharge_add_redChain M u hu
+    rwa [peelCharge] at h
+  have h2 : minAdm (redChain u M) ≤ u * deepTailMin M := minAdm_redChain_le_deepTailMin M u
+  calc minAdm M ≤ (M 0 - u) * (M 1 - u) + minAdm (redChain u M) := h1
+    _ ≤ (M 0 - u) * (M 1 - u) + u * deepTailMin M := Nat.add_le_add_left h2 _
+    _ = u * deepTailMin M + (M 0 - u) * (M 1 - u) := by ring
+
 end DLNFibre.DLN.RLCT
