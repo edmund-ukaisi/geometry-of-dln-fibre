@@ -22,20 +22,20 @@ range; the shells are `j : Fin (r+1)`.
 ## The coupled bricks (hypotheses)
 * `hG1` — **G1** (tpeel, `RouteMSJTPeel`): `box ≤ ∑_j ∑_ρ ∑_κ shellSpineIntegrand M (t+j) κ ε r j c'`
   (front-split + outer singular-shell cover + inner co-null pivot-chart cover + freed CoV).
-* `hfin` — **item 4** (corankrec ← couplerad), the sole hypothesis of `G2`, **SCOPED to BINDING SHELLS
-  `1 ≤ j < r`**. Codex red-team (couplerad): the item-4 chartwise charge-domination `C ≥ floor` holds on
-  binding shells (`1 ≤ j < r`, + rank-genericity), NOT at the boundary shells `j = 0` or `j = r`. (Codex
-  CE `(6,8,5,5)`: `C₅ = 18 <` floor `19` — the NON-binding cut `u = 5 < t★ = 6`, out of scope; exact scan
-  = 0 below-floor over 4386 in-scope binding-shell cells.) So `hfin` carries `1 ≤ j < r`, matching
-  corankrec's target.
-* `hbdryFin` — the **boundary shells** `j = 0` and `j = r`: the front-charge box at `u = t` and `u = t+r`.
-  Held as a hypothesis — item-4 does not cover them. Expected EASIER (banked handling): `j = 0` the bulk /
-  generic-rank shell (entry / hsector); `j = r` the saturated / degenerate boundary (`a = M₀−u = 0` or
-  `b = M₁−u = 0`, higher-codim / near-null; SD-7). The `shellSpineIntegrand_le_layerBox` a-fortiori is the
-  WRONG direction for finiteness — the boundary discharge is a separate small build, not that lemma.
+* `hfin` — the sole hypothesis of `G2`, on ALL NON-SATURATED shells `j < r` (`u = t+j`). Its CONTENT splits
+  by cut, for the caller: couplerad's item 4 (the chartwise charge-domination `C ≥ floor`) on the BINDING
+  shells `1 ≤ j < r` (Codex red-team: holds there, + rank-genericity; CE `(6,8,5,5)` `C₅=18<19` was the
+  non-binding cut `u=5<t★=6`, out of scope — exact scan 0 below-floor over 4386 in-scope cells); and
+  schurrec's `ChargedRectSchurCore` at the GENERIC ENTRY shell `j = 0` (cut `u=t`, interior dims
+  `a=M₀−t, b=M₁−t ≥ 1`, full deep rank — a genuinely CHARGED core, `a≥1`, converging with the front `a·b`
+  charge; NB the uncharged `a<M₂−b+1` can sit at the edge `a+b=M₂+1` here, so `j=0` needs the CHARGED
+  convergence, not the bare corank weight).
+* `hbdryShell` — the **saturated shell** `j = r` only (`u = t+r = min(M₀,M₁)`, so `a=M₀−u=0` OR `b=M₁−u=0`):
+  DIRECT `shellSpineIntegrand` finiteness (satred/satbuild's IH-fed brick — the LINK is inapplicable there,
+  as it drops the singular-shell restriction). `j = 0` is NOT here — it has interior dims (see `hfin`).
 
-The wiring: `hG1 → LINK → G2` on binding shells, `hG1 → LINK → hbdryFin` on boundary shells, then a finite
-triple sum. NATIVE (no `cited_aoyagi_dln`).
+The wiring: `hG1 → LINK → G2` on `j < r` (interior + generic entry `j=0`); `hbdryShell` DIRECT on `j=r`;
+then a finite triple sum. NATIVE (no `cited_aoyagi_dln`).
 
 ## Scope (caveats next to the claim)
 Per-`c'`, and `hc'` is the LINK's block-charge lower bound `(M₀−(t+j))(M₁−(t+j))/2 < c'` at every shell
@@ -121,13 +121,14 @@ theorem routeMBoxThresholdFinite_of_window (M : Fin (L + 1) → ℕ) (lo : ℝ)
 
 /-! ## The coupled-incidence assembly skeleton -/
 
-/-- **The coupled-incidence assembly skeleton (arity ≥ 4, per-`c'`, binding-shell-scoped).** Given G1
-(`hG1`), item 4 scoped to binding shells (`hfin`, `1 ≤ j < r`), and the boundary-shell finiteness
-(`hbdryShell`, `j = 0` / `j = r`), the box integral is finite. INTERIOR shells (`1 ≤ j < r`) go through the
-LINK (`shellSpine_le_frontCharge_binding`) → G2 (`frontChargeBox_lt_top_of_hfin`); BOUNDARY shells are bounded
-by DIRECT `shellSpineIntegrand` finiteness (`hbdryShell`) — the LINK is NOT used there, as it drops the
-singular-shell restriction the boundary det-bound / saturated structure needs. NATIVE. See the module
-docstring for the scope. -/
+/-- **The coupled-incidence assembly skeleton (arity ≥ 4, per-`c'`).** Given G1 (`hG1`), the per-cell
+finiteness `hfin` on ALL non-saturated shells `j < r`, and the saturated-shell finiteness `hbdryShell`
+(`j = r`), the box integral is finite. Shells `j < r` (INCLUDING the generic entry shell `j = 0`, which has
+interior dims `a=M₀−t, b=M₁−t ≥ 1`) go through the LINK (`shellSpine_le_frontCharge_binding`) → G2
+(`frontChargeBox_lt_top_of_hfin`); the SATURATED shell `j = r` (one of `a,b = 0`) is bounded by DIRECT
+`shellSpineIntegrand` finiteness (`hbdryShell`, satred/satbuild's brick — the LINK is inapplicable at the
+saturated cut). `hfin`'s content splits by cut for the caller: couplerad's item 4 on `1 ≤ j < r`, schurrec's
+charged-terminal base at the generic entry `j = 0`. NATIVE. See the module docstring for the scope. -/
 theorem routeMBox_arity4_lt_top_of_coupled
     (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ε c' : ℝ)
     (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i) (htb : t + 1 ≤ min (M 0) (M 1))
@@ -140,7 +141,7 @@ theorem routeMBox_arity4_lt_top_of_coupled
               ∑ κ : Fin (t + (j : ℕ)) ↪ Fin (M 1),
                 shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c')
     (hfin : ∀ (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
-        1 ≤ (j : ℕ) → (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        (j : ℕ) < min (M 0 - t) (M 1 - t) →
         ∀ i : CRIndex (dropHead (redChain (t + (j : ℕ)) M)),
         ∫⁻ p in (paramsBoxM (redChain (t + (j : ℕ)) M) 1 ×ˢ matBox (M 1 - (t + (j : ℕ))) (M 2) 1)
             ∩ projDeep M (t + (j : ℕ)) ⁻¹'
@@ -151,7 +152,7 @@ theorem routeMBox_arity4_lt_top_of_coupled
           frontChargeIntegrand M (t + (j : ℕ)) c' p < ⊤)
     (hbdryShell : ∀ (j : Fin (min (M 0 - t) (M 1 - t) + 1))
         (κ : Fin (t + (j : ℕ)) ↪ Fin (M 1)),
-        (j : ℕ) = 0 ∨ (j : ℕ) = min (M 0 - t) (M 1 - t) →
+        (j : ℕ) = min (M 0 - t) (M 1 - t) →
         shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c' < ⊤) :
     routeMLayerBoxIntegral M c' 1 < ⊤ := by
   refine lt_of_le_of_lt hG1 ?_
@@ -159,10 +160,10 @@ theorem routeMBox_arity4_lt_top_of_coupled
   refine ENNReal.sum_lt_top.mpr (fun _ρ _ => ?_)
   refine ENNReal.sum_lt_top.mpr (fun κ _ => ?_)
   have hjr : (j : ℕ) ≤ min (M 0 - t) (M 1 - t) := Nat.lt_succ_iff.mp j.isLt
-  by_cases hmid : 1 ≤ (j : ℕ) ∧ (j : ℕ) < min (M 0 - t) (M 1 - t)
+  by_cases hlt : (j : ℕ) < min (M 0 - t) (M 1 - t)
   · exact lt_of_le_of_lt
       (shellSpine_le_frontCharge_binding M t (j : ℕ) κ ε c' hjr (hc' j) ht1 hnd htb hbind)
-      (frontChargeBox_lt_top_of_hfin M (t + (j : ℕ)) c' (hfin j hmid.1 hmid.2))
+      (frontChargeBox_lt_top_of_hfin M (t + (j : ℕ)) c' (hfin j hlt))
   · exact hbdryShell j κ (by omega)
 
 /-! ## Per-`M` coupled closure (nondegenerate interior binding cut) -/
@@ -173,8 +174,9 @@ Wires the per-`c'` skeleton (`routeMBox_arity4_lt_top_of_coupled`) through the a
 its nonemptiness (`lo < ½·minAdm M`) is exactly `hred : 0 < minAdm (redChain t M)` (via `hbind`,
 `minAdm M = peelCharge M t + minAdm (redChain t M)`). The skeleton's per-shell block-charge bound `hc'` at
 each `j` follows from `lo < c'` by monotonicity `(M₀−(t+j))(M₁−(t+j)) ≤ (M₀−t)(M₁−t)`. Isolates the coupled
-bricks `hG1` (tpeel), `hfin` (corankrec, interior `1≤j<r`), `hbdryShell` (direct shellSpine finiteness at the
-boundary `j=0`/`j=r`) as ∀-`c'` hypotheses. NATIVE. Does NOT use the arity-IH — this is the nondegenerate-interior case; the degenerate /
+bricks `hG1` (tpeel), `hfin` (per-cell finiteness on ALL non-saturated shells `j<r`: couplerad's item 4 on
+`1≤j<r` + schurrec's ChargedRectSchurCore at the generic entry `j=0`), `hbdryShell` (direct shellSpine
+finiteness at the SATURATED shell `j=r`) as ∀-`c'` hypotheses. NATIVE. Does NOT use the arity-IH — this is the nondegenerate-interior case; the degenerate /
 boundary-argmin chains are handled by the wrapper `routeMBoxThresholdFinite_of_step`'s strong induction. -/
 theorem routeMBoxThresholdFinite_of_coupled
     (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ε : ℝ)
@@ -187,7 +189,7 @@ theorem routeMBoxThresholdFinite_of_coupled
               ∑ κ : Fin (t + (j : ℕ)) ↪ Fin (M 1),
                 shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c')
     (hfin : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
-        1 ≤ (j : ℕ) → (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        (j : ℕ) < min (M 0 - t) (M 1 - t) →
         ∀ i : CRIndex (dropHead (redChain (t + (j : ℕ)) M)),
         ∫⁻ p in (paramsBoxM (redChain (t + (j : ℕ)) M) 1 ×ˢ matBox (M 1 - (t + (j : ℕ))) (M 2) 1)
             ∩ projDeep M (t + (j : ℕ)) ⁻¹'
@@ -198,7 +200,7 @@ theorem routeMBoxThresholdFinite_of_coupled
           frontChargeIntegrand M (t + (j : ℕ)) c' p < ⊤)
     (hbdryShell : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1))
         (κ : Fin (t + (j : ℕ)) ↪ Fin (M 1)),
-        (j : ℕ) = 0 ∨ (j : ℕ) = min (M 0 - t) (M 1 - t) →
+        (j : ℕ) = min (M 0 - t) (M 1 - t) →
         shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c' < ⊤) :
     RouteMBoxThresholdFinite M := by
   have hpeellt : ((M 0 - t) * (M 1 - t) : ℕ) < minAdm M := by
@@ -293,9 +295,10 @@ Feeds `sjStepHyp_of_coupled` and the banked `L = 1` free-matrix base (`sjBase1_f
 banked sorry-free strong-arity-induction wrapper `routeMBoxThresholdFinite_of_step`. So `(hcoupled ∧
 hdegen) ⟹ RouteMBoxThresholdFinite M` for EVERY width vector `M` — the coupled-route form of `(□)`,
 NATIVE (no `cited_aoyagi_dln`, no gammaPeel/`sjJointResolution` sorry). The remaining holes are exactly
-`hcoupled` (= hG1 [tpeel] ∧ hfin [corankrec, interior] ∧ hbdryShell [boundary: j=0 uniformWenn Morse, j=r
-satred's IH-fed saturated brick]) and `hdegen` (the degenerate reduction). `hcoupled` takes the arity-IH
-(threaded from `sjStepHyp_of_coupled`) for the j=r saturated reduction. -/
+`hcoupled` (= hG1 [tpeel] ∧ hfin [per-cell on `j<r`: couplerad item 4 on `1≤j<r` + schurrec's
+ChargedRectSchurCore at the generic entry `j=0`] ∧ hbdryShell [saturated shell `j=r`: satred/satbuild's
+IH-fed brick]) and `hdegen` (the degenerate reduction). `hcoupled` takes the arity-IH (threaded from
+`sjStepHyp_of_coupled`) for the `j=r` saturated reduction. -/
 theorem routeMBoxThresholdFinite_coupled
     (hcoupled : ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ),
         (∀ i, 1 ≤ M i) → NondegBindingCut M t →
