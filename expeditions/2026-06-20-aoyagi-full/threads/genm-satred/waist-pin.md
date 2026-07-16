@@ -8,6 +8,35 @@ decorrelated Codex (satred-cert §5 Codex + `codex/edgereach-answer.md` Q3, both
 
 ---
 
+## ★★ THE PINNED DENSITY ATOM (a)+(b) — q2gate's u≤2 coupled shell interface (LATE-84 outcome)
+
+**q2gate's verdict (three decorrelated lines converge): the coupled route natively closes ONLY `u≤2`
+saturated waists** (its shell+Hölder reaches ½minAdm via the plain IH + the log-density atom below);
+**`u≥3` waists → DECORATED / weighted IH** (the deep density strata carry a genuine power, not log — my
+joint-rank-sector's domain; see §5ter). The atom q2gate wires (I pin, it does the shell sum):
+
+**(a) Origin homogeneity:** `ρ(r·z̃₀) ≲ r^{−A_scale} · ρ_ang(z̃₀/‖z̃₀‖)`, with
+`A_scale = u·M₂ − minAdm(redChain u M)` (`= ⌊·⌋`, an integer; **verified `≥0` for all 9072 saturated
+waists**, `= 1` for `(2,2,2,2)`/`(2,3,4,4)`, `= 2` for `(3,3,3,3)`).
+**(b) Angular Lᵖ:** `ρ_ang ∈ Lᵖ(σ_max ≍ 1 shell)` for the `p` conjugate to `q` with `c'·q < ½minAdm(redChain
+u M)`. **At `u≤2`: `ρ_ang ∈ ⋂_{p<∞} Lᵖ`** (the top density stratum is LOG — `b≥M₂−1` at u≤2), so `q→1⁺`
+works and the Hölder bump costs nothing. **This is NOT a global pointwise `ρ ≤ C·dist^{−A}`** (that is the
+superseded pointwise fold — it undershoots); it is the dyadic-shell (a)+(b) form.
+
+This atom is the a=0 (wide `X·Y`) waist. The **b=0 mirror** (M₁≤M₀, tall `[P;C]`) is the DIFFERENT
+Gram/Wishart atom `det(PᵀP+CᵀC)^{−M₂/2}` = qbox (§5, banked) — also `u≤2`-clean. So the `u≤2` waist brick
+consumes: a=0 → the (a)+(b) density atom; b=0 → the qbox.
+
+## 5ter. u≥3 waists → DECORATED (the per-stratum A_r, for backbone NOT the coupled shell)
+
+For `u≥3` the front-product `z̃₀` (u×M₂) has MULTIPLE intermediate rank strata; the DEEP strata carry a
+POWER density (q2gate: rank-`(u−2)` stratum `γ=1`, `ρ∈Lᵖ` only `p<codim/A` — e.g. `(3,3,3,3)`: rank-1
+codim-4 power `γ=1`, `ρ∉L⁴`), which caps the Hölder `q` away from 1 and undershoots the plain-IH shell. So
+`u≥3` saturated needs the **weighted/DECORATED IH** (the min-over-strata domination is itself a
+weighted/coupled estimate). The per-stratum density orders `A_r = max_j j(M₂−(u−r)−j)` (each intermediate
+rank `r`) — my joint-rank-sector's `A_r` — feed the **decorated/backbone build**, NOT q2gate's coupled shell
+brick (which is now excluded at u≥3). This is the endgame call (coupled `u≤2` + decorated `u≥3`).
+
 ## ⚠ SUPERSESSION (q2gate Q2 verdict, LATE-84) — the POINTWISE-FOLD assembly is superseded
 
 **The §3-§4 pointwise density fold (`ρ ≤ frobSq^{−A/2}`) UNDERSHOOTS on the A>2Δ cells** (q2gate verified
