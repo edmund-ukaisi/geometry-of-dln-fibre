@@ -27,30 +27,53 @@ The truth-value splits **exactly by the saturated-shell waist rank `u = min(M₀
   to the origin, absorbed by the shell volume `r⁴` → `r^{minAdm−2c'}`, tight to `c'<3/2`). Numerically
   confirmed (Tests 1&3) + structural (`RMBTF(M)|_{P inv}`, Aoyagi RLCT `3/2`).
 
-- **`u ≥ 3`: Q2-INHERITING.** The plain-IH shell/Hölder/pointwise routes ALL **undershoot**; the escape
-  requires a **weighted/coupled IH** (= the decorated FaithfulSJAt mechanism) or `σ_min(P) ≥ δ` pinned
-  charts (unavailable at the full-`{IsUnit P}` waist) — both strictly stronger than the plain unweighted
-  IH. **Confirmed by THREE decorrelated lines:** (i) a second decorrelated Codex (u≥3 consult,
-  `codex/u3-answer.md`): "the shell route using only the unweighted `B_n` reaches sharply only for
-  `n≤2`"; for `n≥3` pure Hölder reaches `(3/8)·minAdm(n,n,n)` vs the needed `½·minAdm(n,n,n,n)` — `n=3`:
-  `21/8 = 2.625 < 3`, gap `3/8`; `n=4`: `9/2 < 11/2`, gap `1`. (ii) satred's density atom: the waist
-  density has a genuine power `γ = ⌊k²/4⌋` on the corank-`k` stratum, so `ρ_ang ∈ L^p` iff `p < 4`
-  (binding: corank-2 stratum, codim 4, `γ=1`), NOT all `p`. (iii) My 3×3-product Monte-Carlo
-  (`u3_strata.py`): rank-2 stratum (codim 1) LOG (`γ=0`); rank-1 stratum (codim 4) measure `~ε³` (not
-  `ε⁴`) ⟹ density power `γ=1` — exactly the `p<4` obstruction. The `u≥3` waists are in-scope with nondeg
-  cuts (**(3,3,3,3)** t=2, **(4,4,4,4)** t∈{2,3}, **(3,3,4,4)** t∈{1,2}, **(3,3,3,3,3)** t=2), so the
+- **`u ≥ 3`, SQUARE waist (`M₀=M₁≥3`, `a=b=0`): Q2-INHERITING (proven).** Here the front is `X=P`
+  (square `u×u`, NON-injective product `z̃₀=P·z₀`), the worst density. The plain-IH shell/Hölder/pointwise
+  routes ALL **undershoot**; the escape requires a **weighted/coupled IH** (= the decorated FaithfulSJAt
+  mechanism) or `σ_min(P) ≥ δ` pinned charts (unavailable at the full-`{IsUnit P}` waist) — both strictly
+  stronger than the plain unweighted IH. **Confirmed by THREE decorrelated lines:** (i) a second
+  decorrelated Codex (u≥3 consult, `codex/u3-answer.md`): "the shell route using only the unweighted `B_n`
+  reaches sharply only for `n≤2`"; for `n≥3` pure Hölder reaches `(3/8)·minAdm(n,n,n)` vs the needed
+  `½·minAdm(n,n,n,n)` — `n=3`: `21/8 = 2.625 < 3`, gap `3/8`; `n=4`: `9/2 < 11/2`, gap `1`. (ii) satred's
+  density atom: the wide-square density has a genuine power `γ = ⌊k²/4⌋` on the corank-`k` stratum, so
+  `ρ_ang ∈ L^p` iff `p < 4` (binding: corank-2 stratum, codim 4, `γ=1`), NOT all `p`. (iii) My
+  3×3-product Monte-Carlo (`u3_strata.py`): rank-2 stratum (codim 1) LOG (`γ=0`); rank-1 stratum (codim 4)
+  measure `~ε³` (not `ε⁴`) ⟹ density power `γ=1` — exactly the `p<4` obstruction. The square `u≥3` waists
+  are in-scope with nondeg cuts (**(3,3,3,3)** t=2, **(4,4,4,4)** t∈{2,3}, **(3,3,3,3,3)** t=2), so the
   coupled route as wired (plain `SJStepHyp` → `routeMBoxThresholdFinite_of_step`) **cannot** discharge
   `hcoupled` for them.
 
-**Net for the controller (endgame call).** Because the mint is `∀-M` and every chain with
-`min(M₀,M₁) ≥ 3` (all square `(n,n,…)`, `n≥3`, and much else) hits a `u≥3` saturated waist, **the
-coupled route CANNOT close the full mint via the plain `SJStepHyp` — it inherits Q2 exactly there, and
-the DECORATED route (weighted FaithfulSJAt IH) is canonical for the full `∀-M` closure.** The coupled
-route is a genuine *partial* result: it closes the `u ≤ 2` sub-family natively (shell+Hölder saturated
-brick + interior `RectSchurCore` bricks) and its interior/entry machinery is reusable. This is the same
-wall as the bare `sjJointResolution` L≥3 sorry — the coupled *split* pushes it from the general cut down
-to the `u≥3` waist, but does not remove it. The saturated brick must NEVER be a pointwise-fold brick
-(provably undershoots on `A>2Δ` at every `u`); at `u≤2` it is the shell+Hölder form (§8).
+- **`u ≥ 3`, NON-square waist: not fully adjudicated, but the closability arithmetic points the SAME way
+  (likely also inheriting).** The shell brick closes a cell for-sure iff `min_k codim_k/γ_k ≥ R/(R−1)`
+  where `R = minAdm(redChain u M)/minAdm(M)` (`γ_k` = the TRUE per-corank density order; `codim_k` the
+  stratum codim). This is the exact criterion; satred owns the true `γ_k`. **(a=0, b>0 wide-non-square)**
+  e.g. `(3,4,4,4)`: `R=10/9`, so the **target `R/(R−1)=10`** (even HIGHER than the square's `7`, because a
+  larger `minAdm` gives less relative headroom); the strata have small codim (corank-1 codim 2, corank-2
+  codim 6), so closing needs nearly ALL strata LOG (`γ_k≈0`) — implausible for a genuine rank-drop (the
+  deepest stratum carries `γ≥1`). The `B₁₂`-columns *do* soften `γ` (satred: true order milder,
+  monotone-decreasing in `b`, so the square is the worst *density*), but they do not lower the *target*.
+  So wide-non-square `u≥3` **very likely also inherits** — pending satred's true `γ_k` for the definitive
+  call (targets: `(3,4,4,4)→10`, `(3,5,5,5)→13`, `(4,5,5,5)→16`, `(3,4,5,5)→13/2`). **(b=0, a>0 tall)**
+  e.g. `(5,3,3,3)`: injective `[P;C]` ⟹ no pushforward-density power ⟹ satred's **qbox**
+  `det(PᵀP+CᵀC)^{−M₂/2}` (conv ⟺ `M₂≤a`, recurses if `M₂>a`); the recursion INHERITS its reduced chain's
+  status (satred exact-ℕ: 2850 clean / 276 decorated / 654 open; decorated ones reduce to a square, e.g.
+  `(5,3,3,3)→(3,3,3)`). satred owns the qbox leaf.
+
+**Net for the controller (endgame call).** The `∀-M` mint contains the **square** chains `(n,n,…,n)`,
+`n≥3` — in-scope, nondeg cut, and PROVEN Q2-inheriting — so **the coupled route CANNOT close the full
+mint via the plain `SJStepHyp`; the DECORATED route (weighted FaithfulSJAt IH) is canonical for the full
+`∀-M` closure.** This call rests on the square witnesses alone and does not need the non-square `u≥3`
+sub-cases resolved. The coupled route is a genuine *partial* result: the **interior** cells are fully
+native (`RectSchurCore`, no reduced-chain descent) and always close; the `u ≤ 2` sub-family closes via
+the shell+Hölder saturated brick (a=0) / qbox leaf (b=0), and the edge pivot-core descent is `u≤2`-clean.
+Three sites route through `RMBTF(redChain u M)` via the `X·Y` descent — the saturated shell `hbdryShell`,
+the EDGE pivot-core (edgefub's factor 2; Q2-clean only in *statement form*, §1), and `hdegen` — so all
+three inherit the square-`u≥3` wall through `redChain` (satred's b=0 exact-ℕ scan: 2850 clean / 276
+decorated-inheritor / 654 open; the decorated inheritors reduce to a square, e.g. `(5,3,3,3) → (3,3,3)`).
+This is the same wall as the bare `sjJointResolution` L≥3 sorry — the coupled *split* pushes it from the
+general cut down to the square `u≥3` waist/reduced-chain, but does not remove it. The saturated brick must
+NEVER be a pointwise-fold brick (provably undershoots on `A>2Δ` at every `u`); at `u≤2` it is the
+shell+Hölder form (a=0) / qbox leaf (b=0) of §8.
 
 ---
 
@@ -73,13 +96,27 @@ NOT take `hIH`), the IH is consumed exactly at **`hbdryShell`** — the **satura
 (`u = t+r = min(M₀,M₁)`, so `a = M₀−u = 0` OR `b = M₁−u = 0`). satred's brick signature bakes this in:
 `hbdryShell(j=r) : (hIH : RMBTF (redChain (min M₀ M₁) M)) → (density facts) → shellSpineIntegrand … < ⊤`.
 
-The **interior** cells (`hcell`, `j < r`, `a,b ≥ 1`) are `GenericCellFinite` (RouteMSJHcellNull:101) — a
-**direct** `∫ coupledBoxIntegrand < ⊤` statement, NOT phrased through `RMBTF(shorter)`. They are
-discharged by native bricks: couplerad's interior reduces to `RectSchurCore (u+a) u d c' T`, proven
-`∀T>0` by `rectCore_schurGen_lt_top` (a WellFounded recursion — a **proven arity-3 base**, NOT the plain
-IH). **Verified independently** (per the controller's steer): the interior/edge arms do not syntactically
-touch `hIH`, so they cannot inherit Q2 through the plain IH. This confines the plain-IH question to
-**(i) the saturated shell `hbdryShell`** and **(ii) `hdegen`**.
+The `hcell` cells (`j < r`, `a,b ≥ 1`) are `GenericCellFinite` (RouteMSJHcellNull:101) — a **direct**
+`∫ coupledBoxIntegrand < ⊤` statement, NOT phrased through `RMBTF(shorter)`, so none of them
+**syntactically** consumes the wrapper's `hIH`. But "not through the wrapper IH" is **statement form**,
+not native buildability — split the arms (edgefub correction, satred item 1):
+- **INTERIOR (in-regime `a+b ≤ ρ`):** genuinely native — couplerad reduces it to `RectSchurCore (u+a) u
+  d c' T`, proven `∀T>0` by `rectCore_schurGen_lt_top` (WellFounded on `min(m,n)`, a **proven arity-3
+  base**). Q2-clean in full (native, no reduced-chain descent).
+- **EDGE (`a+b = deepTailMin+1`):** Q2-clean only in **statement form**. edgefub (with
+  `coupledInner_slice_le`) shows the edge cell FACTORS: factor 1 `|v'|^{−a}` (`a<u` sphere) is native,
+  but **factor 2 = the pivot-core `∫_pb frobSq(P·Q̃ₚ)^{−(c'−a/2)}`, finite ⟺ `c'−a/2 < ½·minAdm(redChain
+  u M)`** — the reduced-chain RLCT, reached via the SAME `X·Y` front-product descent as the saturated
+  shell. So the edge's CONTENT is a reduced-chain descent; it is NOT the wrapper `hIH` (so no Q2
+  *pathology through the recursion wrapper*), but it **inherits the square-`u≥3` wall through
+  `redChain u M`** exactly when that reduced chain is square-`≥3` (§5). The `a/2` corank charge gives an
+  exponent-shift headroom the saturated waist lacks (`c'−a/2` vs `c'`), so an edge cell can be milder
+  than its bare-waist analogue — but it is not unconditionally native.
+
+So the plain-IH / reduced-chain-descent question lands on **(i) `hbdryShell`** (saturated shell), **(ii)
+the EDGE pivot-core** (factor 2, via `redChain`), and **(iii) `hdegen`** — the interior is fully native.
+All three route through the same `X·Y` front-product descent to `RMBTF(redChain u M)`, so they share the
+square-`u≥3` wall.
 
 ## 2. The pointwise-fold obstruction is REAL (satred's `A > 2Δ`) — exact-ℕ
 
@@ -223,10 +260,19 @@ should be checked with the same log-vs-power density lens if a width-1 chain rou
 
 ## 8. Saturated-brick design (the `u ≤ 2` shell+Hölder form — for the formaliser)
 
-This is the ONLY saturated-brick form the coupled route can ship (the `u≥3` waists go to decorated, §5).
-Coordinate with satred: satred supplies the **density atom**; this cert owns the **shell+Hölder
-assembly**. Target: `hbdryShell` at `j=r`, `u = min(M₀,M₁) ≤ 2`, from the plain arity-IH
-`RMBTF(redChain u M)`.
+This is the `u≤2` saturated-brick the coupled route can ship (the square `u≥3` waists go to decorated,
+§5). **The saturated shell has TWO structurally different forms — dispatch on `sign(M₀−M₁)`:**
+
+- **`M₀ ≤ M₁` (a=0, wide `X=[P|B₁₂]`, NON-injective product):** the **shell+Hölder** brick below (this
+  cert owns the assembly; satred supplies the (a)+(b) density atom).
+- **`M₀ > M₁` (b=0, tall `[P;C]`, INJECTIVE front):** a **separate qbox leaf** — satred's banked
+  `qbox_lintegral_lt_top` on `det(PᵀP+CᵀC)^{−M₂/2}` (`b=M₁,q=M₀,α=M₂`, conv ⟺ `M₂≤a`, recurses if
+  `M₂>a`). Injective front ⟹ no pushforward-density power ⟹ NOT the shell assembly. satred owns this leaf
+  end-to-end (incl. its Q2-status under the `M₂>a` recursion).
+
+The shell+Hölder brick (a=0 case). Coordinate with satred: satred supplies the **density atom**; this
+cert owns the **shell+Hölder assembly**. Target: `hbdryShell` at `j=r`, `u = min(M₀,M₁) ≤ 2`, `M₀≤M₁`,
+from the plain arity-IH `RMBTF(redChain u M)`.
 
 - **Object.** `I = shellSpineIntegrand M u κ ε r ⟨r⟩ c'`; at `a=0` (resp. `b=0`) it is
   `∫ frobSq(z̃₀·Zdeep)^{−c'}` over `z̃₀ = X·Y` (`X=[P|B₁₂]` full-row-rank `u×M₁`, `Y=[z₀;A_cor]`
