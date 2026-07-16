@@ -17,7 +17,7 @@ at once — no `PosSemidef.sqrt` / continuous-functional-calculus import needed.
 
 ## Status: COMPLETE. `det_le_det_of_posSemidef_sub` (`0 ⪯ Y ⪯ X → det Y ≤ det X`) is sorry-free +
 ## axiom-clean `[propext, Classical.choice, Quot.sound]` (NATIVE, no eigenvalues). Chain:
-## `blockQuadForm_expand` → `schurCompl` + variational identity → Schur PSD + Loewner-monotone →
+## `blockQuadForm_expand` → `blockSchurComplPSD` + variational identity → Schur PSD + Loewner-monotone →
 ## `posSemidef_pivotRow_zero` + complete-square lower bound → `det_fromBlocks₁₁` pivot step + induction.
 -/
 
@@ -60,25 +60,25 @@ theorem blockQuadForm_expand {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ 
 
 /-- **The `1⊕k` Schur complement** `Sc j l := M(inr j)(inr l) − M₁₁⁻¹·M(inr j)(inl 0)·M(inl 0)(inr l)`
 (pivot `M₁₁ = M (inl 0)(inl 0)`; Lean's `0⁻¹ = 0` makes it the plain lower block when the pivot is `0`). -/
-noncomputable def schurCompl {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ) :
+noncomputable def blockSchurComplPSD {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ) :
     Matrix (Fin k) (Fin k) ℝ :=
   Matrix.of fun j l => M (Sum.inr j) (Sum.inr l)
     - (M (Sum.inl 0) (Sum.inl 0))⁻¹ * (M (Sum.inr j) (Sum.inl 0) * M (Sum.inl 0) (Sum.inr l))
 
 /-- **The Schur-complement quadratic form, closed form.** `v ⬝ᵥ Sc *ᵥ v = ∑ⱼₗ vⱼ·M(inr j)(inr l)·vₗ −
 M₁₁⁻¹·(∑ⱼ M(inl 0)(inr j)·vⱼ)²` (the second sum factors as a square via symmetry). -/
-theorem schurCompl_quadForm_closed {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+theorem blockSchurComplPSD_quadForm_closed {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
     (hsymm : ∀ p q, M p q = M q p) (v : Fin k → ℝ) :
-    v ⬝ᵥ (schurCompl M *ᵥ v)
+    v ⬝ᵥ (blockSchurComplPSD M *ᵥ v)
       = (∑ j, ∑ l, v j * M (Sum.inr j) (Sum.inr l) * v l)
         - (M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j) ^ 2 := by
   classical
   set d := M (Sum.inl 0) (Sum.inl 0) with hd
   -- Step 1: expand `v ⬝ᵥ Sc v` as one double sum with the sub kept inside each summand.
-  have hL : v ⬝ᵥ (schurCompl M *ᵥ v)
+  have hL : v ⬝ᵥ (blockSchurComplPSD M *ᵥ v)
       = ∑ j, ∑ l, (v j * M (Sum.inr j) (Sum.inr l) * v l
           - d⁻¹ * ((v j * M (Sum.inr j) (Sum.inl 0)) * (M (Sum.inl 0) (Sum.inr l) * v l))) := by
-    simp only [dotProduct, mulVec, schurCompl, Matrix.of_apply, Finset.mul_sum, hd]
+    simp only [dotProduct, mulVec, blockSchurComplPSD, Matrix.of_apply, Finset.mul_sum, hd]
     exact Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun l _ => by ring))
   rw [hL]
   simp only [Finset.sum_sub_distrib]
@@ -92,14 +92,14 @@ theorem schurCompl_quadForm_closed {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 
 
 /-- **The variational identity: `v ⬝ᵥ Sc *ᵥ v` is the block QF at the minimiser `u* = −M₁₁⁻¹·(row·v)`.**
 So for `M` PSD the Schur form is nonneg (`= w* ⬝ᵥ M *ᵥ w* ≥ 0`), and it is `≤` the block QF at every `u`. -/
-theorem schurCompl_quadForm_eq_blockQuadForm_min {k : ℕ}
+theorem blockSchurComplPSD_quadForm_eq_blockQuadForm_min {k : ℕ}
     (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ) (hsymm : ∀ p q, M p q = M q p) (v : Fin k → ℝ) :
-    v ⬝ᵥ (schurCompl M *ᵥ v)
+    v ⬝ᵥ (blockSchurComplPSD M *ᵥ v)
       = (Sum.elim (fun _ : Fin 1 =>
             -(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v)
           ⬝ᵥ (M *ᵥ (Sum.elim (fun _ : Fin 1 =>
             -(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v)) := by
-  rw [schurCompl_quadForm_closed M hsymm v,
+  rw [blockSchurComplPSD_quadForm_closed M hsymm v,
     blockQuadForm_expand M hsymm
       (-(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v]
   set d := M (Sum.inl 0) (Sum.inl 0) with hd
@@ -116,22 +116,22 @@ theorem schurCompl_quadForm_eq_blockQuadForm_min {k : ℕ}
 /-! ## Schur complement is Hermitian and PSD (when `M` is PSD) -/
 
 /-- The Schur complement of a symmetric matrix is symmetric (Hermitian over ℝ). -/
-theorem schurCompl_isHermitian {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
-    (hsymm : ∀ p q, M p q = M q p) : (schurCompl M).IsHermitian := by
+theorem blockSchurComplPSD_isHermitian {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hsymm : ∀ p q, M p q = M q p) : (blockSchurComplPSD M).IsHermitian := by
   ext j l
-  simp only [Matrix.conjTranspose_apply, schurCompl, Matrix.of_apply, star_trivial]
+  simp only [Matrix.conjTranspose_apply, blockSchurComplPSD, Matrix.of_apply, star_trivial]
   rw [hsymm (Sum.inr l) (Sum.inr j), hsymm (Sum.inr l) (Sum.inl 0), hsymm (Sum.inl 0) (Sum.inr j)]
   ring
 
 /-- **The Schur complement of a PSD matrix is PSD** (`v ⬝ᵥ Sc *ᵥ v = w* ⬝ᵥ M *ᵥ w* ≥ 0` via the
 variational identity). Non-spectral. -/
-theorem schurCompl_posSemidef {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
-    (hM : M.PosSemidef) : (schurCompl M).PosSemidef := by
+theorem blockSchurComplPSD_posSemidef {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hM : M.PosSemidef) : (blockSchurComplPSD M).PosSemidef := by
   have hsymm : ∀ p q, M p q = M q p := fun p q => by
     have := hM.isHermitian.apply q p; simpa using this
-  refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (schurCompl_isHermitian M hsymm) (fun v => ?_)
+  refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg (blockSchurComplPSD_isHermitian M hsymm) (fun v => ?_)
   have hstar : (star v : Fin k → ℝ) = v := funext (fun i => star_trivial (v i))
-  rw [hstar, schurCompl_quadForm_eq_blockQuadForm_min M hsymm v]
+  rw [hstar, blockSchurComplPSD_quadForm_eq_blockQuadForm_min M hsymm v]
   set w := Sum.elim (fun _ : Fin 1 =>
       -(M (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, M (Sum.inl 0) (Sum.inr j) * v j)) v with hw
   have hsw : (star w : Fin 1 ⊕ Fin k → ℝ) = w := funext (fun i => star_trivial (w i))
@@ -171,13 +171,13 @@ theorem posSemidef_pivotRow_zero {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 
 /-- **The complete-square lower bound.** For `M` PSD, the Schur-complement quadratic form is `≤` the block
 QF at EVERY `u`: `v ⬝ᵥ Sc *ᵥ v ≤ [u;v]ᵀ M [u;v]` (the Schur value is the minimum over the pivot coord).
 `d = M₁₁ ≥ 0`; if `d > 0` the gap is `d·(u+d⁻¹R)² ≥ 0`, if `d = 0` the pivot row vanishes so `R = 0`. -/
-theorem schurCompl_le_blockQuadForm {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+theorem blockSchurComplPSD_le_blockQuadForm {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
     (hM : M.PosSemidef) (u : ℝ) (v : Fin k → ℝ) :
-    v ⬝ᵥ (schurCompl M *ᵥ v)
+    v ⬝ᵥ (blockSchurComplPSD M *ᵥ v)
       ≤ (Sum.elim (fun _ : Fin 1 => u) v) ⬝ᵥ (M *ᵥ (Sum.elim (fun _ : Fin 1 => u) v)) := by
   have hsymm : ∀ p q, M p q = M q p := fun p q => by
     have := hM.isHermitian.apply q p; simpa using this
-  rw [schurCompl_quadForm_closed M hsymm v, blockQuadForm_expand M hsymm u v]
+  rw [blockSchurComplPSD_quadForm_closed M hsymm v, blockQuadForm_expand M hsymm u v]
   set d := M (Sum.inl 0) (Sum.inl 0) with hd
   set R := ∑ j, M (Sum.inl 0) (Sum.inr j) * v j with hR
   have hdnn : 0 ≤ d := hM.diag_nonneg
@@ -199,9 +199,9 @@ theorem schurCompl_le_blockQuadForm {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin
 /-- **Schur complement is Loewner-monotone.** If `0 ⪯ Y ⪯ X` (both PSD, `X − Y` PSD) then
 `Sc_Y ⪯ Sc_X`. Chain: `v⬝Sc_X⬝v = w*⬝X⬝w* ≥ w*⬝Y⬝w* ≥ v⬝Sc_Y⬝v` — the variational identity for `X`, then
 `X ⪰ Y` at the minimiser `w*`, then the complete-square lower bound for `Y`. Non-spectral. -/
-theorem schurCompl_loewner_mono {k : ℕ} (X Y : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+theorem blockSchurComplPSD_loewner_mono {k : ℕ} (X Y : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
     (hY : Y.PosSemidef) (hXY : (X - Y).PosSemidef) :
-    (schurCompl X - schurCompl Y).PosSemidef := by
+    (blockSchurComplPSD X - blockSchurComplPSD Y).PosSemidef := by
   have hX : X.PosSemidef := by
     have h := hY.add hXY; rwa [show Y + (X - Y) = X from by abel] at h
   have hsymmX : ∀ p q, X p q = X q p := fun p q => by
@@ -209,16 +209,16 @@ theorem schurCompl_loewner_mono {k : ℕ} (X Y : Matrix (Fin 1 ⊕ Fin k) (Fin 1
   have hsymmY : ∀ p q, Y p q = Y q p := fun p q => by
     have := hY.isHermitian.apply q p; simpa using this
   refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg
-    ((schurCompl_isHermitian X hsymmX).sub (schurCompl_isHermitian Y hsymmY)) (fun v => ?_)
+    ((blockSchurComplPSD_isHermitian X hsymmX).sub (blockSchurComplPSD_isHermitian Y hsymmY)) (fun v => ?_)
   have hstar : (star v : Fin k → ℝ) = v := funext (fun i => star_trivial (v i))
   rw [hstar, Matrix.sub_mulVec, dotProduct_sub]
   set wX := Sum.elim (fun _ : Fin 1 =>
       -(X (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, X (Sum.inl 0) (Sum.inr j) * v j)) v with hwX
   -- variational identity for X
-  have hSX := schurCompl_quadForm_eq_blockQuadForm_min X hsymmX v
+  have hSX := blockSchurComplPSD_quadForm_eq_blockQuadForm_min X hsymmX v
   rw [← hwX] at hSX
   -- lower bound for Y at the X-minimiser `wX`
-  have hSY := schurCompl_le_blockQuadForm Y hY
+  have hSY := blockSchurComplPSD_le_blockQuadForm Y hY
     (-(X (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, X (Sum.inl 0) (Sum.inr j) * v j)) v
   rw [← hwX] at hSY
   -- `X ⪰ Y` at `wX`: `wX⬝Y⬝wX ≤ wX⬝X⬝wX`
@@ -237,12 +237,12 @@ private theorem invOf_fin_one_apply (A : Matrix (Fin 1) (Fin 1) ℝ) [Invertible
   rw [invOf_eq_nonsing_inv, inv_def, adjugate_fin_one, det_fin_one]
   simp [Ring.inverse_eq_inv']
 
-/-- The det-`fromBlocks` Schur complement of the `1⊕k` reshape equals `schurCompl`. -/
+/-- The det-`fromBlocks` Schur complement of the `1⊕k` reshape equals `blockSchurComplPSD`. -/
 private theorem detBlocks_schur_eq {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
     [Invertible M.toBlocks₁₁] :
-    M.toBlocks₂₂ - M.toBlocks₂₁ * ⅟ M.toBlocks₁₁ * M.toBlocks₁₂ = schurCompl M := by
+    M.toBlocks₂₂ - M.toBlocks₂₁ * ⅟ M.toBlocks₁₁ * M.toBlocks₁₂ = blockSchurComplPSD M := by
   ext j l
-  simp only [Matrix.sub_apply, Matrix.mul_apply, schurCompl, Matrix.of_apply,
+  simp only [Matrix.sub_apply, Matrix.mul_apply, blockSchurComplPSD, Matrix.of_apply,
     Matrix.toBlocks₂₂, Matrix.toBlocks₂₁, Matrix.toBlocks₁₂, Matrix.toBlocks₁₁, Matrix.of_apply,
     Fin.sum_univ_one]
   rw [invOf_fin_one_apply]
@@ -297,23 +297,23 @@ theorem det_le_det_of_posSemidef_sub :
     · -- pivot `dX > 0`: Schur recursion + IH.
       have hdX_ne : dX ≠ 0 := hdX_pos.ne'
       letI : Invertible X'.toBlocks₁₁ := X'.toBlocks₁₁.invertibleOfIsUnitDet (isUnit_iff_ne_zero.2 hdX_ne)
-      have hXdet : X'.det = dX * (schurCompl X').det := by
+      have hXdet : X'.det = dX * (blockSchurComplPSD X').det := by
         conv_lhs => rw [← Matrix.fromBlocks_toBlocks X']
         rw [Matrix.det_fromBlocks₁₁, detBlocks_schur_eq X']
       -- `dY` may be `0` (then `det Y' = 0`); else the same recursion.
-      have hScX_psd : (schurCompl X').PosSemidef := schurCompl_posSemidef X' hX'psd
-      have hScY_psd : (schurCompl Y').PosSemidef := schurCompl_posSemidef Y' hY'psd
-      have hScmono : (schurCompl X' - schurCompl Y').PosSemidef :=
-        schurCompl_loewner_mono X' Y' hY'psd hXY'psd
+      have hScX_psd : (blockSchurComplPSD X').PosSemidef := blockSchurComplPSD_posSemidef X' hX'psd
+      have hScY_psd : (blockSchurComplPSD Y').PosSemidef := blockSchurComplPSD_posSemidef Y' hY'psd
+      have hScmono : (blockSchurComplPSD X' - blockSchurComplPSD Y').PosSemidef :=
+        blockSchurComplPSD_loewner_mono X' Y' hY'psd hXY'psd
       have hdet0 : (0 : ℝ) ≤ (0 : Matrix (Fin n) (Fin n) ℝ).det := by
         rcases Nat.eq_zero_or_pos n with hn | hn
         · subst hn; simp [Matrix.det_fin_zero]
         · exact le_of_eq (Matrix.det_eq_zero_of_row_eq_zero (⟨0, hn⟩ : Fin n) (fun _ => rfl)).symm
-      have hScdetY0 : 0 ≤ (schurCompl Y').det := by
-        have h := ih (schurCompl Y') 0 (by simpa using Matrix.PosSemidef.zero)
+      have hScdetY0 : 0 ≤ (blockSchurComplPSD Y').det := by
+        have h := ih (blockSchurComplPSD Y') 0 (by simpa using Matrix.PosSemidef.zero)
           (by simpa using hScY_psd)
         linarith
-      have hScmono_det : (schurCompl Y').det ≤ (schurCompl X').det :=
+      have hScmono_det : (blockSchurComplPSD Y').det ≤ (blockSchurComplPSD X').det :=
         ih _ _ hScY_psd hScmono
       rcases eq_or_lt_of_le hdY0 with hdY_zero | hdY_pos
       · -- `dY = 0` ⟹ `det Y' = 0 ≤ det X'`.
@@ -326,14 +326,14 @@ theorem det_le_det_of_posSemidef_sub :
       · have hdY_ne : dY ≠ 0 := hdY_pos.ne'
         letI : Invertible Y'.toBlocks₁₁ :=
           Y'.toBlocks₁₁.invertibleOfIsUnitDet (isUnit_iff_ne_zero.2 hdY_ne)
-        have hYdet : Y'.det = dY * (schurCompl Y').det := by
+        have hYdet : Y'.det = dY * (blockSchurComplPSD Y').det := by
           conv_lhs => rw [← Matrix.fromBlocks_toBlocks Y']
           rw [Matrix.det_fromBlocks₁₁, detBlocks_schur_eq Y']
         rw [hXdet, hYdet]
-        calc dY * (schurCompl Y').det
-            ≤ dX * (schurCompl Y').det := by
+        calc dY * (blockSchurComplPSD Y').det
+            ≤ dX * (blockSchurComplPSD Y').det := by
               apply mul_le_mul_of_nonneg_right hdYX hScdetY0
-          _ ≤ dX * (schurCompl X').det := by
+          _ ≤ dX * (blockSchurComplPSD X').det := by
               apply mul_le_mul_of_nonneg_left hScmono_det hdX0
 
 /-- **A real PSD matrix has nonnegative determinant** (the `Y = 0` corollary of the monotonicity;
