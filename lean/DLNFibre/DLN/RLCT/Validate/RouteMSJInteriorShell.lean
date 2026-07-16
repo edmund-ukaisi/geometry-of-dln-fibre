@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurWishartWeight
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlab
 import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
 
 set_option linter.style.longLine false
@@ -194,5 +195,18 @@ theorem chargeFreeBox_b1a1_of_inner {n p : ℕ} (hn : 2 ≤ n) (C : ℝ≥0∞) 
   have h := chargeFreeBox_b1_of_inner (n := n) (p := p) (a := 1) (by omega) C hC
     (by simpa using hinner)
   simpa using h
+
+/-- **The interior charge free-box is finite, UNCONDITIONALLY (`b=1, a=1` — the 3 square dispatch
+witnesses).** For `n ≥ 2 ∧ p ≥ 2` (`= a+b ≤ ρ`, `ρ = min(n,p)`), the interior CHARGE free-box
+`∫∫_{(A_cor,S)∈box} det((A_cor·S)(A_cor·S)ᵀ)^{−1/2}` is finite. This CLOSES the interior `b=1` gate: the
+assembly `chargeFreeBox_b1a1_of_inner` (the `S`-first outer, `detGram`) composed with slabcore/schurB's inner
+corank-slab bound `corankSlab_charge_sint_le` (the `S`-first power route via the banked projection-radial
+core). NATIVE (no `cited_aoyagi_dln`), pure power (no log/shell/CoV/arcsinh — the log was an `A_cor`-first
+artifact; the genuine log lives at the EDGE `a+b=ρ+1`). -/
+theorem chargeFreeBox_b1a1_lt_top {n p : ℕ} (hn : 2 ≤ n) (hp : 2 ≤ p) :
+    (∫⁻ Acor in matBox 1 n 1, ∫⁻ S in matBox n p 1,
+        ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2))) < ⊤ := by
+  obtain ⟨C, hC, hinner⟩ := corankSlab_charge_sint_le hp
+  exact chargeFreeBox_b1a1_of_inner hn C hC hinner
 
 end DLNFibre.DLN.RLCT
