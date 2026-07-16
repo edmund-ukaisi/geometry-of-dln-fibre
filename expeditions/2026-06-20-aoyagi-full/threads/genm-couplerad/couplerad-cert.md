@@ -240,6 +240,14 @@ consumes and where the genuine new content sits, for the controller to synthesiz
 - The `ℕ` `t=u` term: `minAdm_le_peelCharge_add_redChain` (banked); the codim value `minAdm((u,)+deep) =
   cCodim` via `codimRepCanonical_productRankLocusLE_eq_minAdmRec` at the dimension vector `redChain u M`
   (NOT `κ_k = cCodim(deep, ρ−k)` — a DIFFERENT object; deephier §7 Q1b).
+- Charge pull-out: `frontCharge_factor` (banked, IncidenceAssembly) — factors `frontChargeIntegrand` into the
+  charge `det(Q_bQ_bᵀ)^{−a/2}` × `frontLossIntegrand`; `frontLoss_pivotPoly_eq` gives `E_top`'s polynomial form.
+
+⚠ **These are ATOMS and ENDPOINTS — the CONNECTIVE REDUCTION `frontChargeIntegrand → SchurCore` is NEW
+plumbing, substantial EVEN in the square case** (corankrec-confirmed): the Fubini `∫_p∫_x` split, the `∫_x`
+peel composing (A)+(B) to leave a residual power of the deep bilinear (the `core_T_peel_le` pattern
+generalized to `(E_top+E_tr)`), landing on `SchurCore`, and the charge-domination lemma. No banked lemma does
+`frontLoss → (residual-power × fibre)` — it is new (no analytic wall; the atoms exist).
 
 **New lemmas needed (the genuine content):**
 1. **The Stage-A within-cell pivot split of the reduced factor + the front comparability** — the raw
@@ -315,9 +323,13 @@ it is a genuine red-team, not a rubber stamp.
   (single deep matrix); arity≥5 uses the banked CR-path multi-layer descent to the terminal single-matrix
   coupling (the multi-layer codim accumulates across CR-path cells — deephier's cross-layer LP §4, NOT the
   single-matrix formula).
-- **The charge needs NO SVD — Cauchy–Binet.** `det(Q_bQ_bᵀ) = Σ_{|I|=b} det(Q_{b,I})²` (a sum of squared
-  `b×b` minors), so the charge is resolvable by raw minor-pivot / Schur charts (no spectral term) — a
-  concrete Lean-mechanism contribution reinforcing the SVD-free route, provided every pivot Jacobian is kept.
+- **The charge needs NO SVD — but the Cauchy–Binet route is NOT Mathlib-banked.** `det(Q_bQ_bᵀ) = Σ_{|I|=b}
+  det(Q_{b,I})²` (a sum of squared `b×b` minors) is the SVD-free MATH route — but **Mathlib v4.29 LACKS a
+  rectangular Cauchy–Binet** (confirmed in-repo: `Core/CommonPivotL2.lean`, `DLN/…/D1GeCommonPivot.lean` both
+  state it and route around it). So do not plan on Cauchy–Binet. The Lean-buildable SVD-free charge handling:
+  use the banked a.e.-PosDef `hGae` (arch1build Card 2, `deepFactor_hZrank`) ⟹ `det(Q_bQ_bᵀ) > 0` a.e. (charge
+  bounded on the generic locus), then the `−a/2` power is dominated by the loss+measure exponent at the
+  binding ray (★4, exact-algebra) — a NEW domination lemma, no spectral term, every pivot Jacobian kept.
 
 ---
 
@@ -374,19 +386,26 @@ charges. So Route B inherits the parked-Route-B obstruction.
 **Why Route A carries the charge cleanly.** Route A resolves the SINGLE reduced bilinear `frobSq(Front·Z_deep)`
 directly by a corank recursion (recursion on the CORANK of one bilinear, not on chain length). The charge is
 ONE decoration (`a=M₀−u` fixed), carried through the corank steps and dominated at EACH step (★4, verified
-inert per-corank on the binding-shell scope, `couplerad_chargescope.py`; and Cauchy–Binet `det(Q_bQ_bᵀ) =
-Σ_{|I|=b} det(Q_{b,I})²` keeps it raw-minor / SVD-free). No compounding. Route A also REUSES the banked
+inert per-corank on the binding-shell scope, `couplerad_chargescope.py`; SVD-free via the banked a.e.-PosDef
+`hGae` + the ★4 exponent domination — NOT via Cauchy–Binet, which Mathlib v4.29 lacks). No compounding. Route A also REUSES the banked
 `core_schurGen_lt_top` WellFounded-on-corank wrapper — only the per-corank `SchurRecStep` needs the non-square
 generalization (analogous to the banked square `routeMBoxThresholdFinite_rrp`), and its floor-reach is the
 atom-sum `= minAdm(u,p,k)` (exact), matching the QIP recursion the corank step implements.
 
 **Build order suggestion (bank a real win first).** The square sub-family `u=M₂=n` (`(4,4,4,4)`, `(5,5,5,5)`,
-`(3,3,4,4)`) lands IMMEDIATELY on the banked `routeMBoxThresholdFinite_rrp` + the y-Morse (A) / front (B)
-peels — no new corank lemma. Build that arity-4 square case first (closes the two "square" dispatch witnesses
-`(4,4,4,4)`, `(5,5,5,5)`), then the non-square per-corank `SchurRecStep` for the `exc>0`/`u≠M₂` cuts (closes
-`(3,4,5,4)`). Always-available fallback if the non-square corank step stalls: the SVD ray atlas (Lean-costly,
-needs the spectral + Vandermonde-measure Mathlib build — reason to avoid, but it is a valid native route, so
-no wall either way).
+`(3,3,4,4)`) needs **no new CORANK lemma and no new analytic ATOM/wall** — but it is NOT zero new work.
+⚠ **The reduction plumbing `frontChargeIntegrand → SchurCore` is itself substantial NEW work even square**
+(corankrec pinned this; my earlier "lands immediately" was an overclaim). What is banked: `frontCharge_factor`
+(charge pull-out → `frontLossIntegrand`), the atoms `radial_morse_residual_power_le` (A) +
+`fibre_lintegral_mul_le` (B), and `routeMBoxThresholdFinite_rrp` (the SchurCore endpoint). What is NEW
+plumbing: (i) the Fubini `∫_p ∫_x` split; (ii) the `∫_x` peel = front-fibre (B) + surviving y-Morse (A)
+leaving a RESIDUAL POWER of the deep bilinear — the `RouteM334Hfin.core_T_peel_le` pattern (with `w :=` the
+deep bilinear under the outer `∫_p`) generalized to `frontLossIntegrand`'s transverse-Schur `(E_top+E_tr)`;
+(iii) landing the deep residual on `SchurCore`; (iv) the charge-domination lemma (§2.3). So: build the arity-4
+square case first (closes `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`) as the plumbing + banked endpoints, THEN add
+the non-square per-corank `SchurRecStep` for `exc>0`/`u≠M₂` (closes `(3,4,5,4)`). Always-available fallback if
+the non-square corank step stalls: the SVD ray atlas (Lean-costly — needs the spectral + Vandermonde-measure
+Mathlib build; a valid native route, so no wall either way).
 
 **Residual risk on Route A (name it):** the non-square per-corank step is genuinely new (square is banked),
 and the charge must be threaded through it (dominated per ★4, but not dropped). Both are detail-at-scale
@@ -413,11 +432,12 @@ and the charge must be threaded through it (dominated per ★4, but not dropped)
   corank recursion (the `γ^{hier}` domination is exact, ★4, but must be threaded not dropped — a bounded
   `INFERENCE`).
 - **Next construction (route: §8, Route A recommended).** (a) Build the arity-4 SQUARE sub-family first
-  (`u=M₂=n`: `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`) on the banked `routeMBoxThresholdFinite_rrp` + y-Morse (A)
-  / front (B) peels — a real win, no new corank lemma. (b) Then the general non-square per-corank
-  `SchurRecStep` (reusing `core_schurGen_lt_top`) for `exc>0`/`u≠M₂` (closes `(3,4,5,4)`), carrying the charge
-  (dominated per ★4, Cauchy–Binet SVD-free). Prefer this over the chain-length-IH (Route B re-hits option-2,
-  §8). (c) Carry the binding-shell scope hypothesis (`u=t★+j, 1≤j<r`) — off it the charge is not dominated
+  (`u=M₂=n`: `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`): the reduction plumbing (Fubini + y-Morse (A) / front (B)
+  atom composition + charge domination) onto the banked `routeMBoxThresholdFinite_rrp` — NO new corank lemma /
+  atom, but the plumbing IS substantial new work (§8, corankrec-confirmed). (b) Then the general non-square
+  per-corank `SchurRecStep` (reusing `core_schurGen_lt_top`) for `exc>0`/`u≠M₂` (closes `(3,4,5,4)`), carrying
+  the charge (dominated per ★4; SVD-free via banked a.e.-PosDef `hGae`, NOT Cauchy–Binet which Mathlib v4.29
+  lacks). Prefer this over the chain-length-IH (Route B re-hits option-2, §8). (c) Carry the binding-shell scope hypothesis (`u=t★+j, 1≤j<r`) — off it the charge is not dominated
   (Codex CE, §5). Codex verdict FOLDED IN (§5) — CONFIRMS structure + additivity + no-`cited_aoyagi_dln`,
   SHARPENS the scope.
 
