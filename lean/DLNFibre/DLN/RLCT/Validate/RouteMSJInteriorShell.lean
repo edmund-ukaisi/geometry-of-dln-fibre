@@ -143,17 +143,18 @@ radial core `projection_rpow_lintegral_uniform`), then `∫_{A_cor} ‖A_cor‖�
 `detGram_lintegral_lt_top` at `r=1`). No log, no shell, no CoV — the log was an `A_cor`-first artifact,
 `S`-first is pure power. Needs `n≥2 ∧ p≥2` (`= a+b ≤ ρ`). -/
 
-/-- **The interior charge free-box is finite, given the inner uniform bound (`b=1, a=1`).** The assembly
-of route C: consume schurB's inner uniform charge bound `hinner` (`∫_S charge^{−1/2} dS ≤ C·frobSq(A_cor)^
-{−1/2}`, uniform `C`, via the banked projection-radial core) and close the outer `A_cor`-integral by the
-banked `detGram_lintegral_lt_top` (`r=1`, exponent `−1/2 = −a/2` at `a=1 < n`). `hinner` is exactly
-schurB's contract; it discharges to `chargeFreeBox_b1a1_lt_top` once landed. -/
-theorem chargeFreeBox_b1a1_of_inner {n p : ℕ} (hn : 2 ≤ n) (C : ℝ≥0∞) (hC : C < ⊤)
+/-- **The interior charge free-box is finite, given the inner uniform bound (`b=1`, general `a < n`).** The
+assembly of route C: consume the inner uniform charge bound `hinner` (`∫_S charge^{−a/2} dS ≤
+C·frobSq(A_cor)^{−a/2}`, uniform `C`, via the banked projection-radial core — schurB's contract) and close
+the outer `A_cor`-integral by the banked `detGram_lintegral_lt_top` (`r=1`, exponent `−a/2` at `a < n`).
+The proof carries `a` freely (only `a < n` matters for the outer); the `a=1` square witnesses are the
+corollary `chargeFreeBox_b1a1_of_inner` below. -/
+theorem chargeFreeBox_b1_of_inner {n p a : ℕ} (hn : a < n) (C : ℝ≥0∞) (hC : C < ⊤)
     (hinner : ∀ Acor : Fin 1 → Fin n → ℝ,
-      (∫⁻ S in matBox n p 1, ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2)))
-        ≤ C * ENNReal.ofReal ((frobSq Acor) ^ (-(1 : ℝ) / 2))) :
+      (∫⁻ S in matBox n p 1, ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2)))
+        ≤ C * ENNReal.ofReal ((frobSq Acor) ^ (-(a : ℝ) / 2))) :
     (∫⁻ Acor in matBox 1 n 1, ∫⁻ S in matBox n p 1,
-        ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2))) < ⊤ := by
+        ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2))) < ⊤ := by
   classical
   -- the `1×n` Gram determinant is `frobSq` (inline `det_gramRow`)
   have hgram : ∀ v : Fin 1 → Fin n → ℝ,
@@ -164,21 +165,34 @@ theorem chargeFreeBox_b1a1_of_inner {n p : ℕ} (hn : 2 ≤ n) (C : ℝ≥0∞) 
     rw [frobSq, Fin.sum_univ_one]
     exact Finset.sum_congr rfl (fun j _ => by rw [sq])
   calc (∫⁻ Acor in matBox 1 n 1, ∫⁻ S in matBox n p 1,
-          ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2)))
-      ≤ ∫⁻ Acor in matBox 1 n 1, C * ENNReal.ofReal ((frobSq Acor) ^ (-(1 : ℝ) / 2)) :=
+          ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(a : ℝ) / 2)))
+      ≤ ∫⁻ Acor in matBox 1 n 1, C * ENNReal.ofReal ((frobSq Acor) ^ (-(a : ℝ) / 2)) :=
         lintegral_mono hinner
-    _ = C * ∫⁻ Acor in matBox 1 n 1, ENNReal.ofReal ((frobSq Acor) ^ (-(1 : ℝ) / 2)) :=
+    _ = C * ∫⁻ Acor in matBox 1 n 1, ENNReal.ofReal ((frobSq Acor) ^ (-(a : ℝ) / 2)) :=
         lintegral_const_mul' _ _ hC.ne
     _ = C * ∫⁻ Acor in matBox 1 n 1,
-          ENNReal.ofReal (((Matrix.of Acor) * (Matrix.of Acor)ᵀ).det ^ (-(1 : ℝ) / 2)) := by
+          ENNReal.ofReal (((Matrix.of Acor) * (Matrix.of Acor)ᵀ).det ^ (-(a : ℝ) / 2)) := by
         congr 1
         refine setLIntegral_congr_fun (matBox_measurableSet 1 n 1) (fun Acor _ => ?_)
         rw [hgram]
     _ < ⊤ := by
         refine ENNReal.mul_lt_top hC ?_
-        have hn2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-        have h := detGram_lintegral_lt_top (r := 1) (n := n) (by omega) (a := (1 : ℝ))
+        have hna : (a : ℝ) < (n : ℝ) := by exact_mod_cast hn
+        have h := detGram_lintegral_lt_top (r := 1) (n := n) (by omega) (a := (a : ℝ))
           (by push_cast; linarith)
-        simpa using h
+        exact h
+
+/-- **The `a=1` square-witness corollary** (matching schurB's `corankSlab_charge_sint_le` contract exactly):
+the interior charge free-box `∫∫_{(A_cor,S)∈box} det((A_cor·S)(A_cor·S)ᵀ)^{−1/2}` is finite given the
+`a=1` inner uniform bound, for `n ≥ 2`. Discharges to `chargeFreeBox_b1a1_lt_top` on wiring schurB's inner. -/
+theorem chargeFreeBox_b1a1_of_inner {n p : ℕ} (hn : 2 ≤ n) (C : ℝ≥0∞) (hC : C < ⊤)
+    (hinner : ∀ Acor : Fin 1 → Fin n → ℝ,
+      (∫⁻ S in matBox n p 1, ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2)))
+        ≤ C * ENNReal.ofReal ((frobSq Acor) ^ (-(1 : ℝ) / 2))) :
+    (∫⁻ Acor in matBox 1 n 1, ∫⁻ S in matBox n p 1,
+        ENNReal.ofReal ((chargeGramDet Acor S) ^ (-(1 : ℝ) / 2))) < ⊤ := by
+  have h := chargeFreeBox_b1_of_inner (n := n) (p := p) (a := 1) (by omega) C hC
+    (by simpa using hinner)
+  simpa using h
 
 end DLNFibre.DLN.RLCT
