@@ -3,36 +3,28 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitDom
 set_option linter.style.longLine false
 
 /-!
-# `RouteMSJHeadSplitDomBuild` — Brick D: signature reconciliation (`hGmeas` discharged) + wiring landing pad
+# `RouteMSJHeadSplitDomBuild` — Brick D (route α, EASY shells): corrected structured decomposition
 
-**Thread `genm-brickd` (aoyagi-full Stage 2).** Builds toward `headSplit_domination`
-(`RouteMSJDeeperFlagCore:550`, the single remaining `(□)` sorry of the interior deeper-cut descent) via the
-DRAFT route confirmed sound by satred (`brickD-sublemmas` correction, 2026-07-16): the **hpiv-gated
-codim-u·ρ** route (D-B `lintegral_cube_frobSq_neg_of_finrank_range` applied at the SHIFTED `c'' = c'−ab/2`,
-the corank `ab/2` extracted first by the strong-block), `pivotShell` conditioning, `Ccrossf = 0`,
-`sΓf = genBox`. satred's gammaAtom two-arm route (`corner_C_shift_disposal`/`_gammaAtom`) is the documented
-FALLBACK if `headSplit_pivotDom` proves intractable.
+**Thread `genm-brickd` (aoyagi-full Stage 2).** Builds `headSplit_domination` (`RouteMSJDeeperFlagCore:550`)
+for the **easy interior shells** via route α, on the CORRECTED geometry satred pinned (2026-07-16) after the
+draft's `pivotShell(ε)` domain was found FALSE for `j≥1` (`hsQ` shares singular values with
+`prod(tailChain)A'`, so the shell-`j` mass sits OUTSIDE `pivotShell`; decorrelated-Codex-confirmed).
 
-## What this module delivers (green)
+## Corrected geometry (vs the false draft `pivotShell`)
 
-* **`measurableSet_weakEigCount_le`** (reusable) — the good-set `{z | weakEigCount ε (Z z) ≤ K}` is
-  measurable for a measurable matrix family `Z`. Route: `weakEigCount ε (Z z) = ∑ᵢ 𝟙[λᵢ(Z z Z zᴴ) < ε²]`
-  is a measurable `ℕ`-valued function (sorted eigenvalues measurable via Brick F's `measurableEigenvalues₀`),
-  so its `Iic K`-preimage is measurable. Discharges the draft impl's `hGmeas` HYPOTHESIS internally.
-* **`headSplit_domination_impl_amended`** — the reconciled signature (matching the canonical stub +
-  controller-sanctioned `hε'le`, and the guard/regime hypotheses the draft route genuinely needs — see
-  FINDINGS), proven from the draft's `headSplit_domination_impl` with `hGmeas` discharged. Assembly PROVEN;
-  the two tracked leaf sorries are `shellSpine_le_hsQ_box` + `headSplit_pivotDom` (in `RouteMSJHeadSplitDom`).
+* **Domain** `shellCondSet` — `{A_cor | weakEigCount ε (hsQ) ≤ j}` (≤ `j` small singular values of the
+  reassembled `hsQ` ⟺ `σ_{M₁−j}(hsQ) ≥ ε`), NOT `pivotShell(ε) = {weakEigCount ε (hsQ) = 0}` (false for
+  `j≥1`), NOT full `matBox` (non-uniform: `t^{−2c''}` blowup at `0`). The shell-`j` support
+  (`weakEigCount = j`) `⊆ {≤ j}`, so this domain ⊇ the LHS support and the conditioning `σ_{M₁−j}(hsQ) ≥ ε`
+  holds UNIFORMLY on it. `hsQ` (row type `Fin u ⊕ Fin(M₁−u)`) is reindexed to `Fin(u+(M₁−u))` for
+  `weakEigCount` (`finSumFinEquiv`); `measurableSet_weakEigCount_le` gives the domain measurable.
+* **Threshold** `u(M₁−j)/2` (the shell conditions the top-`(M₁−j)` frame of `hsQ`), NOT the drafted `uρ/2`.
+* **Easy-shell guard** `minAdm M ≤ (M₀−u)·(M₁−u) + u·(M₁−j)` (`= ab + u(M₁−j)`): the exact scope where the
+  `u(M₁−j)/2` bare-constant reaches `½·minAdm M`. The `6090/76832` interior shells that FAIL it are the HARD
+  shells — routed to satred's unified joint-rank-sector mechanism, NOT this leaf.
 
-## FINDINGS for the stub amendment (arch1build) — the draft route needs MORE than `a≥1`
-
-* **`hε'le : ε' ≤ ε/√(M₁M₂)`** — controller-sanctioned; holds by `rfl` at the `deeperFlag_spineToCore` site.
-* **`hjr : (j:ℕ) < min (M₀−t) (M₁−t)` (STRICT, both a≥1 AND b≥1)** — NOT merely `a≥1`. `shell_subset_goodSet`
-  (the shell⊆good containment, step 5) requires `j < min(M₀−t, M₁−t)`. `a≥1` alone leaves the `b=0` top shell
-  (`M₁<M₀`, `j=M₁−t`) uncovered. Where the `b=0` top shell routes (waist? distinct?) is an OPEN scope
-  question for satred/the assembly owner (companion to `a=0 → deeperFlag_waist`).
-* **`hc0 : 0 ≤ c'`** — the D-B integrability lemma `lintegral_cube_frobSq_neg_of_finrank_range` genuinely
-  requires `0 ≤ c'`; NOT cleanly discharged internally (the `c'<0` regime is not obviously trivial). Flagged.
+The shell↦conditioning is the LOAD-BEARING analytic step (leaf-1 is NOT "mechanical"); the crux's front
+bound is uniform over the fresh per-`(z,A_cor)` top-`(M₁−j)` spectral projection `Π` of `hsQ·hsQᵀ`.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -72,16 +64,104 @@ theorem measurableSet_weakEigCount_le {X : Type*} [MeasurableSpace X] {M₂ n : 
     exact (measurable_pi_apply i).comp heig
   exact hcount measurableSet_Iic
 
-/-- **Brick D (draft route), reconciled signature.** The head-split domination with a FINITE reorganization
-constant, proven from the draft's `headSplit_domination_impl` with `hGmeas` discharged via
-`measurableSet_weakEigCount_le`. Signature matches the canonical stub + `hε'le` + the guard/regime
-hypotheses the draft route needs (`hjr` strict-both, `hc0`); `hcT` carried for the stub match (unused here).
-Assembly PROVEN; the tracked leaves are `shellSpine_le_hsQ_box` + `headSplit_pivotDom`. -/
-theorem headSplit_domination_impl_amended {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+variable {L : ℕ}
+
+/-- **The reindexed reassembled block product** `hsQ` with its `Fin u ⊕ Fin(M₁−u)` rows flattened to
+`Fin (u + (M₁−u))`, so `weakEigCount` (which wants `Fin M₂` rows) applies. Row-reindexing is orthogonal
+conjugation, so its `weakEigCount` equals that of `hsQ`. -/
+noncomputable def hsQflat (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (z : Params (redChain u M))
+    (A_cor : Fin (M 1 - u) → Fin (dropHead (redChain u M) 0) → ℝ) :
+    Matrix (Fin (u + (M 1 - u))) (Fin (dropHead (redChain u M) (Fin.last L))) ℝ :=
+  (hsQ M u Zf z A_cor).submatrix (⇑finSumFinEquiv.symm) id
+
+/-- **The shell-conditioned domain** (replaces the false-for-`j≥1` `pivotShell`): `A_cor` with at most `j`
+small singular values of the reassembled `hsQ`, i.e. `σ_{M₁−j}(hsQ) ≥ ε`. -/
+def shellCondSet (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ) (ε : ℝ)
+    (Zf : Params (redChain u M)
+        → Matrix (Fin (dropHead (redChain u M) 0))
+            (Fin (dropHead (redChain u M) (Fin.last L))) ℝ)
+    (z : Params (redChain u M)) (j : ℕ) :
+    Set (Fin (M 1 - u) → Fin (dropHead (redChain u M) 0) → ℝ) :=
+  {A_cor | weakEigCount ε (hsQflat M u Zf z A_cor) ≤ j}
+
+/-- **Leaf-1 (CORRECTED, load-bearing): the shell→conditioned-domain reduction.** The literal
+shell-restricted spine integrand is dominated by the `(z, A_cor)`-box freed-loss integrand at `Q = hsQ`,
+over `matBox ∩ shellCondSet` (the shell-`j` support sits inside `{weakEigCount ε (hsQ) ≤ j}`, so the RHS
+domain ⊇ LHS support; integrand `≥ 0`). Route: head split (`paramsHeadSplit` + `prod_headSplit`, MP),
+shell⊆good-set rewrite `Zf z = Z_deep` (`hsSplit_good_of_shell` + `hagree`), the shell membership recast to
+`weakEigCount ε (hsQ) ≤ j` (`hsQ` = row-perm of `prod(tailChain)A'`, same singular values), Tonelli, row
+split (`rowSplit_lintegral_eq`). The shell↦conditioning identification is the analytic content. -/
+theorem shellSpine_le_condBox (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
+    (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
+    (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
+    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
+    {ε' : ℝ} (hε' : 0 < ε') (hε'le : ε' ≤ ε / Real.sqrt ((M 1 : ℝ) * M 2))
+    (Zf : Params (redChain (t + j) M)
+        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
+            (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
+    (hagree : ∀ z, weakEigCount ε' (deeperFlagZdeep M (t + j) z)
+        ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)
+        → Zf z = deeperFlagZdeep M (t + j) z)
+    (hGmeas : MeasurableSet {z : Params (redChain (t + j) M) |
+        weakEigCount ε' (deeperFlagZdeep M (t + j) z)
+          ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)}) :
+    shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
+      ≤ ∫⁻ z in paramsBoxM (redChain (t + j) M) 1,
+          ∫⁻ A_cor in matBox (M 1 - (t + j)) (dropHead (redChain (t + j) M) 0) 1
+              ∩ shellCondSet M (t + j) ε Zf z j,
+            ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+              ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+                  Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+                ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M (t + j) Zf z A_cor)) ^ (-c')) := by
+  sorry
+
+/-- **The crux (CORRECTED, easy shells): the conditioned-domain pivot→`decLoss` domination.** On
+`matBox ∩ shellCondSet` (where `σ_{M₁−j}(hsQ) ≥ ε` uniformly), the freed Schur-loss integrand is dominated
+by a FINITE constant times the comparator-core integrand at `k = ![1]`, `jc = ![minAdm−1]`, `Ccrossf = 0`,
+`sΓf = genBox`. Route α: P-radial blow-up (`pivotBlock_radial_blowup`) → `decLoss` + monomial `r^{uM₁−1}`;
+fold `B₁₂` into the joint front `[P|B₁₂]`; the front `frobSq(X·hsQ) ≥ ε²‖X·Π‖²` for `Π` = the top-`(M₁−j)`
+spectral projection of `hsQ·hsQᵀ` (rank `≥ M₁−j` on `shellCondSet`); D-B
+`lintegral_cube_frobSq_neg_of_finrank_range` on `X·Π` at rank `u(M₁−j)`, UNIFORM for `2c'' < u(M₁−j)`,
+`c'' = c'−ab/2`; monomial `r^{uM₁−1} → r^{minAdm−1}` via the easy-shell guard. GATED by
+`hguard : minAdm M ≤ ab + u(M₁−j)` (the hard shells route to the joint-rank-sector mechanism). -/
+theorem headSplit_pivotDom_easy (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
+    {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c') (hnd : ∀ i, 1 ≤ M i)
+    (hguard : minAdm M ≤ (M 0 - (t + j)) * (M 1 - (t + j)) + (t + j) * (M 1 - j))
+    {ε' : ℝ} (hε' : 0 < ε')
+    (Zf : Params (redChain (t + j) M)
+        → Matrix (Fin (dropHead (redChain (t + j) M) 0))
+            (Fin (dropHead (redChain (t + j) M) (Fin.last L))) ℝ)
+    (hZfMeas : Measurable Zf) :
+    ∃ (C_hle : ℝ≥0∞), C_hle < ⊤
+      ∧ (∫⁻ z in paramsBoxM (redChain (t + j) M) 1,
+            ∫⁻ A_cor in matBox (M 1 - (t + j)) (dropHead (redChain (t + j) M) 0) 1
+                ∩ shellCondSet M (t + j) ε Zf z j,
+              ∫⁻ x in outerDom (t + j) (M 0 - (t + j)) (M 1 - (t + j)) 1,
+                ∫⁻ Γ in {Γ : Fin (M 0 - (t + j)) → Fin (M 1 - (t + j)) → ℝ |
+                    Γ + schurShift x ∈ genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1},
+                  ENNReal.ofReal ((freedSchurLoss x Γ (hsQ M (t + j) Zf z A_cor)) ^ (-c')))
+          ≤ C_hle * deeperFlagCoreIntegrand M (t + j) (![1] : Fin 1 → ℕ)
+              (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) Zf
+              (fun _ => 0) (fun _ => genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1) c' := by
+  sorry
+
+/-- **Brick D (route α, easy shells): the head-split domination.** Assembly = the corrected leaf-1
+(`shellSpine_le_condBox`) ∘ the corrected crux (`headSplit_pivotDom_easy`), with `hGmeas` discharged via
+`measurableSet_weakEigCount_le`. Signature = the canonical stub + `hε'le` + `hjr` (strict-both) + `hc0` +
+the easy-shell guard `hguard`; `hcT`/`hUsMeas`/`U_sf`/`hUs`/`hrank`/`hfloor` carried for the stub match.
+arch1build amends the stub for the EASY route + wires `headSplit_domination := this`. -/
+theorem headSplit_domination_impl_easy (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : ℕ)
     (κ : Fin (t + j) ↪ Fin (M 1)) {ε : ℝ} (hε : 0 < ε) (c' : ℝ) (hc0 : 0 ≤ c')
     (ht : t ≤ min (M 0) (M 1)) (hj : j ≤ min (M 0 - t) (M 1 - t))
     (hjr : (j : ℕ) < min (M 0 - t) (M 1 - t))
     (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i)
+    (hguard : minAdm M ≤ (M 0 - (t + j)) * (M 1 - (t + j)) + (t + j) * (M 1 - j))
     (hpiv : minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M)
     (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
         ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
@@ -110,18 +190,20 @@ theorem headSplit_domination_impl_amended {L : ℕ} (M : Fin (L + 1 + 1 + 1) →
       ∧ shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
           ≤ C_hle * deeperFlagCoreIntegrand M (t + j) (![1] : Fin 1 → ℕ)
               (![minAdm (redChain (t + j) M) - 1] : Fin 1 → ℕ) Zf Ccrossf sΓf c' := by
-  -- The good set is measurable (discharge the draft impl's `hGmeas`), via the deep-factor measurability.
-  have hproj : Measurable (fun z : Params (redChain (t + j) M) =>
-      (paramsHeadSplit (redChain (t + j) M) z).2) :=
-    measurable_snd.comp (paramsHeadSplit (redChain (t + j) M)).measurable
-  have hZdeepMeas : Measurable (deeperFlagZdeep M (t + j)) :=
-    measurable_pi_lambda _ (fun i => measurable_pi_lambda _ (fun jj =>
-      ((continuous_prod (dropHead (redChain (t + j) M))).matrix_elem i jj).measurable.comp hproj))
   have hGmeas : MeasurableSet {z : Params (redChain (t + j) M) |
       weakEigCount ε' (deeperFlagZdeep M (t + j) z)
-        ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)} :=
-    measurableSet_weakEigCount_le _ (deeperFlagZdeep M (t + j)) hZdeepMeas
-  exact headSplit_domination_impl M t j κ hε c' hc0 ht hj hjr ht1 hnd hpiv hcvg hrange hε' hε'le
-    Zf U_sf hZfMeas hUsMeas hUs hrank hfloor hagree hGmeas
+        ≤ dropHead (redChain (t + j) M) 0 - (min (M 1) (M (Fin.last (L + 1 + 1))) - j)} := by
+    have hproj : Measurable (fun z : Params (redChain (t + j) M) =>
+        (paramsHeadSplit (redChain (t + j) M) z).2) :=
+      measurable_snd.comp (paramsHeadSplit (redChain (t + j) M)).measurable
+    have hZdeepMeas : Measurable (deeperFlagZdeep M (t + j)) :=
+      measurable_pi_lambda _ (fun i => measurable_pi_lambda _ (fun jj =>
+        ((continuous_prod (dropHead (redChain (t + j) M))).matrix_elem i jj).measurable.comp hproj))
+    exact measurableSet_weakEigCount_le _ (deeperFlagZdeep M (t + j)) hZdeepMeas
+  obtain ⟨C_hle, hfin, hcrux⟩ :=
+    headSplit_pivotDom_easy M t j hε c' hc0 hnd hguard hε' Zf hZfMeas
+  exact ⟨fun _ => 0, fun _ => genBox (Fin (M 0 - (t + j))) (Fin (M 1 - (t + j))) 1, C_hle, hfin,
+    le_trans (shellSpine_le_condBox M t j κ hε c' ht hj hjr ht1 hnd hrange hε' hε'le Zf hagree hGmeas)
+      hcrux⟩
 
 end DLNFibre.DLN.RLCT
