@@ -659,7 +659,56 @@ crude uniform atom's `ε^{−ab}` fails at `c ≤ ab` (all witnesses). Log-integ
 WALL** (the graded bound is a build, not an obstruction). General `(a,b)`: the tight interior form is the
 §w3 general estimate (log for b=1,a=1, verified; the `(3,4,5,4)` a=1,b=2 tight form I pin when reached).
 
+### w3-routeC — the S-FIRST Tonelli route (intmtn's (C)): closes the WHOLE b=1 charge free-box in one step
+
+*intmtn's route (C) — integrate `S` FIRST — is VALID and SUBSUMES the bulk-atom + shell-integration for the
+b=1 charge free-box `∫∫_box ‖A_cor·S‖^{−1} dA_cor dS` (a=b=1). It sidesteps my arcsinh (route b), the
+det-pushforward anti-concentration (route a), schurB's uniform atom + bridge, AND the shell decomposition —
+all replaced by one Tonelli + a linear-form slab bound. It also sidesteps the ρ<n coordinate-P_J issue for b=1.*
+
+**Validity (intmtn's Q1).** The interior charge object is `∫∫_box ‖A_cor·S‖^{−1} dA_cor dS` over the FULL
+positive-measure box (corankrec's "free-box", the `a+b ≤ ρ` regime — NO rank restriction; `{rank S ≤ ρ−1}` is
+measure-zero WITHIN the box where the charge blows up, but the integral is over all of it). So Tonelli / S-first
+applies. NOT a lower-dim rank-stratum chart. ✓
+
+**The bound (exact, elementary).** Tonelli: `∫∫ = ∫_A [∫_S ‖A·S‖^{−1} dS] dA`. Inner: `‖A·S‖² = Σ_{j=1}^{n}
+⟨A, s_j⟩²` (`s_j` = columns of S, independent over the box); so `∫_S ‖A·S‖^{−1} dS = ‖A‖^{−1}·J(â)`,
+`J(â) = ∫(Σ_j⟨â,s_j⟩²)^{−1/2}∏ds_j ≤ C_slab^{n}·∫_{ball}‖g‖^{−1}dg < ∞` **uniformly** over unit `â` (`n ≥ 2`
+⟹ `‖g‖^{−1}` integrable; the `g_j = ⟨â,s_j⟩` have bounded density by the SLAB bound). Outer: `∫_A C·‖A‖^{−1}
+dA < ∞` (`M₂ ≥ 2`, corank). So finite for `M₂ ≥ 2 ∧ n ≥ 2 = a+b ≤ ρ` (a=b=1) — exactly the free-box threshold.
+(Verified: inner `J(â)` bounded+uniform for `n≥2`, diverges `n=1`; `couplerad` MC guide.)
+
+**The ONE new fact (elementary):** the LINEAR-FORM SLAB `vol{s ∈ [−1,1]^{M₂} : |⟨â,s⟩| < ε} ≤ C·ε` uniform over
+unit `â`. Proof: `max_k|â_k| ≥ 1/√M₂`; fix that coordinate, the interval has length `≤ 2ε/|â_k| ≤ 2ε√M₂`;
+Fubini over the rest. NO SVD, NO det-polynomial anti-concentration, NO co-area. Banked-adjacent: `‖g‖^{−1}`
+integrability (Japanese-bracket / corank), `∫_A ‖A‖^{−1}` (corankWeight-style).
+
+**Route (C) SUBSUMES (for the b=1 charge free-box):** the bulk/interior split, schurB's `chargedWishartWeight`
+atom + the Loewner bridge, my §w3-deep graded log + §w3-shellint σ_ρ-shells + intmtn's shell-integration — ALL
+replaced by one Tonelli. **RECOMMEND adopting (C)** for the b=1 charge free-box (cheapest by far). The
+non-spectral det-monotone stays foundational (used elsewhere); schurB's bridge may be reusable for `b≥2`.
+
+**BONUS — (C) sidesteps ρ<n for b=1.** (C) needs only `M₂ ≥ 2` (outer) and `n ≥ 2` (inner) — NO rank-flag,
+NO pivot, NO coordinate-P_J. So it closes b=1 `ρ<n` (`M₂ > n_last`) cases too, sidestepping the
+coordinate-floor obstruction entirely. **The ρ<n deferred regime shrinks to `b≥2` only** (e.g. `(2,5,4)`,
+b=2 — NOT covered by (C), still the general (D)). *(The 3 square dispatch witnesses are `ρ=n` anyway.)*
+
+**⚠ ONE architectural CHECK (for corankrec/schurrec):** (C) closes the CHARGE free-box `∫∫ ‖A_cor·S‖^{−1}`
+(charge alone, L¹) — corankrec's stated interior object. IF the interior closure needs the COUPLED
+`∫∫ loss·charge` (loss and charge both functions of S, coupled near `{rank S low}`), then (C) gives the charge
+piece and the coupling needs the per-S bound (my §w3-deep `W(S) ≤ C(1+log(1/|det S|))` × loss, then `∫_S`).
+Per corankrec's reduction (loss absorbed → charge free-box), (C) is COMPLETE; confirm the loss is absorbed
+upstream (not re-coupled in the interior). If it IS coupled, keep the §w3-deep per-S bound as the tool.
+
+**Route (C) is `b=1`-specific** (charge `= ‖A_cor·S‖^{−1}`). For `b≥2` (matrix charge `det((A_cor S)(A_cor
+S)ᵀ)^{−a/2}`) the S-first Tonelli inner is a matrix-variate integral (harder) — the general (D). So: b=1 →
+(C); b≥2 / `(2,5,4)` → (D). The 3 square witnesses are all b=1,a=1 → (C) closes them.
+
+---
+
 ### w3-deep-spec — Lean-ready tight-interior spec for the formaliser (intmtn), SQUARE witnesses (b=1,a=1)
+*(SUPERSEDED for the b=1 charge free-box by §w3-routeC above — kept as the per-S bound in case the interior
+needs the coupled loss·charge, or for cross-checking.)*
 
 *The interior closure `∫_S W(S)·[S-measure] < ⊤` (charge free-box; the loss is the separate banked `mnp`
 factor, finite). For the 3 square witnesses `S = Z_deep` is `M₂×M₂` square, `ρ = M₂`, `a=b=1`. NO SVD needed
