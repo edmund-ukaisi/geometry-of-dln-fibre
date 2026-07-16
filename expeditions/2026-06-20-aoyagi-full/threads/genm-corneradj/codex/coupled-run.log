@@ -1,0 +1,522 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.144.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f6a32-0453-7632-8b72-12ab35b1b19a
+--------
+user
+<task>
+Two exact real-analysis / RLCT convergence questions about a COUPLED integral. Derive from first
+principles (codimension of the zero-locus of the loss, transverse vanishing order, and how a positive
+additive term regularizes). Exact algebra decides; numerics only guide.
+
+SETUP. Fixed integers a,b >= 1, and a fixed real matrix Zf (M2 x n) of rank rho. Boxes are cubes
+[-1,1]. frobSq(X) = sum of squares of entries.
+
+QUESTION A (the coupled inner integral, "edge" case a+b = rho+1). Concrete: a=b=2, rho=3, Zf a
+generic 3x3 rank-3 matrix, Ccross a generic 2x3 matrix, w>0 a scalar. Define
+    H(w) = int_{A_cor in [-1,1]^{2x3}} int_{Gamma in [-1,1]^{2x2}}
+             ( w + frobSq( Ccross + Gamma * (A_cor * Zf) ) )^{-c'}  dGamma dA_cor.
+(Here A_cor is 2x3, Gamma is 2x2, A_cor*Zf is 2x3, Gamma*(A_cor*Zf) is 2x3.)
+(i) Is H(w) finite for each fixed w>0? (ii) As w -> 0+, find the exponent beta with H(w) ~ w^{-beta}
+(up to constants/logs), for c' in a range around 3.5-4.5. Give beta exactly via the codimension kappa
+of the locus N = { (Gamma, A_cor) : Ccross + Gamma*A_cor*Zf = 0 } inside the 10-dim (Gamma,A_cor) space
+(4 + 6 dims), i.e. beta = c' - kappa/2 if N is smooth and c' > kappa/2. Compute kappa: is the map
+Phi(Gamma,A_cor) = Gamma*A_cor*Zf a submersion onto the 2x3 = 6-dim target at generic points of N?
+Watch the subtlety: for FIXED A_cor, the equation Gamma*(A_cor*Zf) = -Ccross is solvable in Gamma ONLY
+if the rows of Ccross lie in rowspace(A_cor*Zf) (a 2-dim subspace of R^3) — so the w-blowup is confined
+to a sub-locus of A_cor-space; quantify its codimension and add it to the Gamma-reduction ab/2.
+
+QUESTION B (does an additive positive term rescue a divergent "front charge"). Separately, the
+"front charge" Ch = int_{A_cor in [-1,1]^{2x3}} det((A_cor*Zf)(A_cor*Zf)^T)^{-a/2} dA_cor is known to
+DIVERGE at a=b=2, rho=3 (logarithmically). The coupled H(w) above replaces det(...)^{-a/2} implicitly
+by a Gamma-integral WITH the additive w and the additive cross-term Ccross. Question: do the additive
+terms (w>0 from a pivot energy, and the residual dist(Ccross, rowspace(A_cor*Zf))^2 from the cross term)
+CAP the front-charge singularity so that H(w) stays finite (and scales as a clean power w^{-beta})
+EVEN THOUGH Ch = +infinity? Name the mechanism precisely. Is the reduction (c' - beta) at least 1
+(which would lift a baseline threshold of 3.5 to >= 4.5)? Is it exactly ab/2 = 2, or more?
+</task>
+
+<output_contract>
+1. Q-A(i): H(w) finite for w>0? one line + reason.
+2. Q-A(ii): kappa (codim of N) with the submersion check; beta = c' - kappa/2; the split
+   (Gamma-reduction ab/2 = 2) + (A_cor-sublocus codim ν)/2. State beta numerically for c'=4.0, 4.49.
+   Check: is det((A_cor Zf)(A_cor Zf)^T) bounded away from 0 on the relevant sublocus {rows Ccross in
+   rowspace(A_cor Zf)} (i.e. is A_cor Zf full rank b there)?
+3. Q-B: finite (rescue) or +infinity; the exact regularizer(s) named; reduction (c'-beta) vs 1 and vs 2.
+4. Flag each statement as exact derivation vs heuristic/genericity assumption.
+Tight. A 3-line transverse-model sketch is fine.
+</output_contract>
+
+<grounding_rules>
+Do not assume my conclusion; I am withholding it. Derive independently. If a genericity/density-
+boundedness assumption is used, say so and state what would make it rigorous. Distinguish the fixed-w
+question from the w->0 scaling. Be careful: a positive additive term inside (w + frobSq(...))^{-c'} can
+only HELP (bound the base below), never hurt; the question is the exact exponent it yields.
+</grounding_rules>
+
+codex
+I’ll check the workspace instructions first, then derive the zero-locus geometry and the uniform transverse integral carefully. The key distinction will be fixed \(w>0\) versus the \(w\downarrow0\) contribution near the exact-fit locus.
+exec
+/bin/bash -lc "sed -n '1,240p' CLAUDE.md && sed -n '1,240p' AGENTS.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+ exited 2 in 0ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+codex
+`CLAUDE.md` is not present at this thread root, so I’m locating the inherited repository instructions before doing the calculation.
+exec
+/bin/bash -lc "pwd; rg --files -g 'CLAUDE.md' -g 'AGENTS.md' -g '"'!lake-packages'"' -g '"'!node_modules'"' .. ../.. ../../.. ../../../.. ../../../../.. 2>/dev/null | head -80" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+2026-07-16T09:11:39.010773Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f6a32-0453-7632-8b72-12ab35b1b19a`" }
+ exited 1:
+2026-07-16T09:11:39.011127Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "pwd; rg --files -g 'CLAUDE.md' -g 'AGENTS.md' -g '"'!lake-packages'"' -g '"'!node_modules'"' .. ../.. ../../.. ../../../.. ../../../../.. 2>/dev/null | head -80"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc "sed -n '1,280p' /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a8418c120e4029f7a/expeditions/2026-06-20-aoyagi-full/threads/genm-corneradj
+ succeeded in 0ms:
+# geometry-of-dln-fibre
+
+AI-assisted math-research + Lean-formalisation harness for **digesting and formalising** the paper
+*"Geometry of the fibers of the multiplication map of deep linear neural networks"* (Simon Pepin
+Lehalleur & Richárd Rimányi, 2024; `paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/`).
+Orientation is in [`README.md`](README.md); this file is the disposition and the working discipline.
+The process harness (disposition + policies + roles + skills + the markdown→Lean pipeline) is ported
+from the `ai-research-assistant` harness and is **domain-agnostic** — see [`TEMPLATE.md`](TEMPLATE.md)
+to instantiate it for another paper.
+
+## Disposition
+
+The work here is research. Not coding, not ticking off a support ticket, not shipping a product. 
+The stance: 
+- careful, conscientious, objective as a scientist.
+- meticulous in calculation as Euler, bold as Grothendieck. 
+- methodical as Sherlock Holmes. Observe before theorising. Distinguish data from interpretation. 
+- update like a Bayesian; do not collapse to the mode. 
+
+
+- **Resist the move-fast-and-ship-it instinct.** Stackable, solid progress is the goal; the trap is
+  *visible* progress raced ahead of it — a clean doc or confident headline that travels far while leaving
+  holes behind. When you reach for a confident headline, that is the moment to look for the confound. Each
+  layer should be solid and hole-free before the next stands on it.
+- **Fill the layer — completion is your strength.** *The sea rises inexorably, but not in spikes*
+  ([`docs/policies/bedrock.md`](docs/policies/bedrock.md)): within a boundary already staked, close the holes
+  — the generality a statement promised, the cases it already claims, fidelity to the definition and the
+  underlying spirit it invokes — rather than defer them. Such hardening is high-value, and it is where your
+  **comparative advantage** lies: your bottleneck is scoping, taste, and direction, not the patient completion
+  of well-scoped work — so do not treat that completion capacity, which is *abundant*, as if it were *scarce*.
+  **Just do it!** Don't file it as a "chore" (an *unprobed* difficulty claim, not a defer). Surface to move the
+  *boundary* — but an **earned** taste-judgment that a gap is the *right* extension is itself direction:
+  **Just Do It** if within reach, else **roadmap** it; only a *bare, unargued* extension waits for the operator.
+- **Build the buildable — Mathlib-absence is not a wall.** The team's strength is getting *well-established
+  mathematics* done and hardened *at scale*: the labour is *abundant*, so the scarce thing is the
+  **discrimination** — *detail-at-scale* (standard material whose proof is patient and decomposable: **build
+  it**, as a clean reusable Mathlib-grade library, letting the sea rise over a whole foundation) versus
+  *genuine monument* (a single deep insight that is itself a research achievement — resolution of
+  singularities, the analytic SLT core: **cite it**). The discriminator is detail-at-scale vs monument, never
+  in-Mathlib-vs-not; the failure mode is **timidity disguised as rigor** ("not in Mathlib, therefore risky").
+  The guardrail is the rest of this disposition — name results for what they are, separate Proved/Cited, cite
+  the monuments: bold to build the buildable, humble before the genuine mountain. Committing the team to a
+  build is the **controller's** executive call ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md));
+  the build-vs-cite test and the Mathlib-grade API discipline live in
+  [`docs/policies/library-building.md`](docs/policies/library-building.md).
+- **Name results for what they are.** A result's name and statement denote exactly what is proven — no more;
+  reaching for an impressive name (or "done") is the visible-progress instinct in disguise. Separate Proved /
+  Assumed / Cited / Deferred. See [`docs/policies/precision.md`](docs/policies/precision.md). (Here the
+  recurring trap: a `rlct_…`-named result that in fact proves only a *codimension* — the `rlct = ½·codim`
+  reading needs the cited Aoyagi equality.)
+- **Build to bedrock.** A sorry-free build defeats *technical* slop; it never defeats *conceptual* slop —
+  "technically correct but subtly wrong, not The Way." **Bedrock is the rock the rising sea rises over**: build
+  the theory so the next result can stand on it without re-opening it. Where short feedback loops fail, **beauty
+  is the instrument** — a vacuous, mis-scoped, or overclaiming result is *ugly*, and the ugliness is
+  information. The **controller holds this taste and judges against it**; a green build is necessary, never
+  sufficient. See [`docs/policies/bedrock.md`](docs/policies/bedrock.md).
+- **Caveats live next to claims, not in footnotes.** An assumed hypothesis or a cited interface goes in the
+  same paragraph as any claim that depends on it.
+- **Write to figure out the truth, not to persuade.** Concise and fact-based.
+- **Elementary, precisely.** Build explanations up from precise but simple well-chunked objects, established locally in the
+  document. "Elementary" does not mean imprecise or dumbed-down or toy analogies: every step stays
+  mathematically precise. Introduce the objects you use before you use them; prefer a chain of small exact
+  statements over one dense one. Resist over-naming things to do chunking. Reach for an analogy only when it is exact and load-bearing. See
+  [`docs/policies/writing-style.md`](docs/policies/writing-style.md).
+
+## Writing and communication discipline (object-level focus)
+In writing or in communication, focus on object-level. Resist meta-level pull. 
+Remove authorial self-reassurance: `honestly`, `fundamentally`, `this is the whole point`, `this is loadbearing`, `of course`, `simply`, `just`, and selling phrasing.
+The full list and the review function that enforces it are in [`docs/policies/review.md`](docs/policies/review.md).
+
+## Controller operation — the cognitive adaptive controller (lead session only)
+
+> **Teammates: skip this section.** It is the controller (lead-session) operating discipline; your
+> role file (`.agent-team/roles/<role>.md`) and every section *other* than this one are your context.
+> (It lives here, not only in `controller.md`, because the lead session reliably loads `CLAUDE.md` but
+> not always its role file.)
+
+You run this project as the **controller** ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md)):
+hold the vision, set the pace, urge the team to the goal, and adapt. During autonomous stretches (the
+hourly loop/heartbeat with the operator away) these are load-bearing, not optional:
+
+- **You are a cognitive adaptive controller, not an open-loop planner.** Hold the vision and the plan, but
+  run **closed-loop**: every tick is feedback — teammate reports, build state, reviews, the counterexample
+  hunt — against the rising-sea reference. *Update like a Bayesian.* When feedback says a layer is a spike,
+  the Mathlib map is wrong, or a step is harder than scoped, **re-plan** — adjust the ladder, re-rank
+  `priorities.md`, re-scope — rather than push a failing setpoint.
+- **Calibrate your sensors on ground truth.** A teammate's "done" and a green exit code are *readings*, not
+  the truth — re-run the build, `#print axioms`, re-run cited scripts, and commission the decorrelated
+  review/hunt before you believe them (there is no operator watching for a miscalibrated sensor). This is
+  the L5/DA-lesson wisdom generalised: gate integration on evidence you re-derived, not on a "done".
+- **Ambition is governed by bedrock — gain needs damping.** The easier it is to build well-established
+  mathematics at scale, the faster you can manufacture *spikes* (broad-named results with holes behind
+  them). The same controller that builds inexorably fills the layer before it climbs: the precision/bedrock
+  check (name = content; weakest hypotheses; base audited hardest; the hunt precedes trust) is the negative
+  feedback that makes high ambition *stable*. Build hard; damp harder.
+- **Stay out of the grind; spend your context on direction.** Your scarce resource is scoping, taste, and
+  integration — not lemma-proving, which is abundant and delegable. Do not rabbit-hole into a proof in your
+  own context ([`docs/policies/expedition.md`](docs/policies/expedition.md) § anti-patterns). Periodically
+  **step back and self-audit** your trajectory against the vision — under autonomy you hold the taste
+  channel the operator would otherwise supply.
+- **The autonomy operating rule — adapt the ladder, never the setpoint.** Re-scoping the *ladder* (which
+  rung first, which Mathlib API to build on, splitting a layer) is the closed loop working — do it freely.
+  Re-scoping the *destination* ([The destination, plainly](#the-destination-plainly)) or the *definition of
+  done* (sorry-free; `#print axioms` = `[propext, Classical.choice, Quot.sound]`; each layer characterized
+  at the weakest hypotheses that suffice; reusable `Core` authored upstream-ready) is **not** yours to do
+  silently. Two decision classes:
+  - **proceed-on-silence** (the default) — anything within the staked boundary: surface the call in prose,
+    keep working what is unblocked, take the recommended option if no reply, and record that you did.
+    Silence = consent. Surface **async and non-blocking** — never a blocking `AskUserQuestion` in a loop (it
+    freezes the inbox and stalls the team; reserve it for a genuine fork you cannot resolve from the code or
+    sensible defaults).
+  - **wait-for-explicit-go** (the few) — the close-phase PR **merge**, the `dev → main` promotion, and
+    **any change to the destination or the definition of done.** These never proceed on silence.
+
+## How research runs here
+
+- **Expeditions** ([`docs/policies/expedition.md`](docs/policies/expedition.md)) are the unit: a central
+  question, a controller delegating to thread teammates (explore / formalisation / infra), reviewers, and a
+  synthesis at close. Run on the Agent Teams substrate (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`); launch with
+  cwd = this repo root.
+- **Pipeline: markdown → Lean.** Theory develops in markdown (`theory/`, expedition notes). A stable claim is
+  formalised in Lean (`lean/`, library `DLNFibre`). The reader-facing digest/expositions live in
+  `docs/expositions/`.
+  - *Scholium* is a **viewer** (renders these markdown docs with KaTeX + callouts), not an editor; write to its
+    conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
+    recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
+    (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
+    subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
+    indented code block (8-space indent) there; top-level fenced code is fine.
+- **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
+  source ([`docs/policies/claims.md`](docs/policies/claims.md)).
+- **Codex** is the independent second model for strategy and review
+  ([`docs/policies/codex-consultation.md`](docs/policies/codex-consultation.md)).
+
+## Team structure
+
+Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
+- `controller` — this lead session: meta-planning, delegation, integration.
+- `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
+- `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
+- `formaliser` — formalisation (tide) threads.
+- `reviewer` — controller-spawned independent audit (soundness / fidelity).
+- `hardener` — independent principles / taste reviewer (precision, bedrock).
+
+If dispatched into a role, read its role file and agent definition first.
+
+## Branch discipline
+
+- **One remote: `origin = git@github.com:edmund-ukaisi/geometry-of-dln-fibre.git`.** All work lives here.
+- **`dev` is the integration branch.** Feature and expedition branches branch off `dev` and PR back into
+  `dev`. `main` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
+  to directly.
+- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `main` directly. One
+  expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
+- **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
+  2026-06-12) — push freely to bank and share work. **Opening a PR and posting PR review comments/replies
+  via `gh` is controller-authorized** (operator standing instruction, 2026-07-01) — but **auto-open at most
+  ONE PR per expedition** unless the operator authorises more; fold everything (including close-out docs)
+  into that one PR before signalling merge (see the expedition's `lessons.md`/DA6). **Merging PRs and the
+  `dev → main` promotion remain operator-gated** (wait-for-explicit-go); the operator performs those.
+  Always confirm the push target is `origin`, never a non-`origin` remote.
+
+## Memory
+
+Persistent context lives **in-repo**: this file, the policies in `docs/policies/`, the expedition docs
+(`synthesis.md` / statement cards / `thread.md`), `ROADMAP.md`, and `lean/CLAUDE.md`. Save conventions and
+decisions there.
+
+**Do NOT write to global Claude memory (`~/.claude/**/memory/`).** It pollutes other workspaces and is
+invisible to collaborators reading the repo. This binds the controller **and every teammate** — the harness
+may prompt you to save a memory there; do not. If a teammate writes one, the controller deletes it and
+re-homes the content in-repo. (Agent-Teams *runtime* state under `~/.claude/teams/` and `~/.claude/tasks/` is
+fine — that's the substrate, not persistent context.)
+
+## The destination, plainly
+
+We want, in honest Lean, the paper's results about the **fibres of matrix multiplication** for deep linear
+networks:
+
+- the space $\operatorname{Rep}_{\underline d}$ of composable matrix tuples, the multiplication map
+  $\operatorname{mult}$, the zero-product / rank-$r$ loci, and the fibres $\operatorname{mult}^{-1}(B)$;
+- via the **type-A quiver** translation (orbits ↔ Kostant partitions ↔ rank patterns, Gabriel, orbit-closure
+  order, the `Ext` codimension): the codimension $C$ and the number $\theta$ of top-dimensional components,
+  in the paper's three forms (Poincaré series, a quadratic integer program, an explicit formula), and the
+  surprising **permutation invariance** of $(C,\theta)$;
+- the payoff: the real log-canonical threshold of the square-Frobenius loss is $C/2$ — DLNs are "mildly
+  singular". The geometric codimension is the new content; the Aoyagi `rlct = ½·codim` **equality** is
+  **Cited** (Watanabe's universal `rlct ≤ ½·codim` + Aoyagi's exact DLN computation — the formal
+  `RlctInterface.cited_aoyagi_dln` is the equality, which the payoff needs).
+
+The reusable **engine** (everything before "the payoff") is network-free and lives in `DLNFibre.Core`; the
+DLN/RLCT **application** lives in `DLNFibre.DLN`. See [`ROADMAP.md`](ROADMAP.md) for the formalisation ladder.
+
+## Pointers
+
+- [`README.md`](README.md) — orientation, how to launch an expedition, Lean build.
+- [`ROADMAP.md`](ROADMAP.md) — the result-map + the Core/DLN formalisation-target ladder.
+- [`docs/policies/`](docs/policies/) — expedition, claims, review, precision, bedrock, codex-consultation, statement-cards, writing-style (+ the reader-facing exposition trio).
+- [`docs/expositions/`](docs/expositions/) — the curated reader-facing digest (starts with `paper-digest/high-level-overview.md`).
+- [`.claude/skills/`](.claude/skills/) — lean-formalisation, local-codex-consult.
+- [`lean/CLAUDE.md`](lean/CLAUDE.md) — Lean build + Mathlib conventions; the Core/DLN split.
+- [`theory/`](theory/) — markdown theory workspace.
+- [`TEMPLATE.md`](TEMPLATE.md) — how to instantiate this harness for a new paper.
+
+codex
+The algebra gives a stronger answer than a fixed-\(A_{\rm cor}\) Gamma reduction: at every exact fit, full row rank of \(C_{\rm cross}\) forces both \(\Gamma\) and \(A_{\rm cor}Z_f\) to have rank \(2\). Consequently the joint loss map is a submersion in all six target directions; I’m retaining one necessary caveat that “generic” does not by itself ensure the exact-fit locus intersects the fixed cubes.
+codex
+## Q-A(i)
+
+**[Exact]** Yes. The domain has volume \(2^{10}\) and the integrand is at most \(w^{-c'}\), so \(H(w)\le 2^{10}w^{-c'}<\infty\).
+
+## Q-A(ii)
+
+Put \(B=A_{\rm cor}Z_f\). Since \(Z_f\in GL_3\), this is an invertible linear change of the six \(A_{\rm cor}\)-coordinates.
+
+**[Exact, assuming generic \(C_{\rm cross}\), hence \(\operatorname{rank}C_{\rm cross}=2\)]** On
+
+\[
+N=\{(\Gamma,B):C_{\rm cross}+\Gamma B=0\},
+\]
+
+both \(\Gamma\) and \(B\) have rank \(2\). Hence \(\Gamma\in GL_2\), and
+
+\[
+D\Phi(\dot\Gamma,\dot A)
+ =\dot\Gamma B+\Gamma\dot A Z_f
+\]
+
+is onto \(\mathbb R^{2\times3}\): given \(Y\), take \(\dot\Gamma=0\) and
+\(\dot A=\Gamma^{-1}YZ_f^{-1}\). Thus
+
+\[
+\boxed{\kappa=6},\qquad \dim N=10-6=4.
+\]
+
+Indeed \(N\) is locally the graph \(B=-\Gamma^{-1}C_{\rm cross}\).
+
+The fixed-\(B\) split is:
+
+\[
+\underbrace{\frac{ab}{2}}_{=2}
++
+\underbrace{\frac{\nu}{2}}_{=1}
+=\frac{\kappa}{2}=3.
+\]
+
+Here \(\dot\Gamma\mapsto\dot\Gamma B\) has rank \(4\), while
+
+\[
+S=\{B:\operatorname{row}(C_{\rm cross})\subseteq\operatorname{row}(B)\}
+  =\{TC_{\rm cross}:T\in GL_2\}
+\]
+
+has dimension \(4\) in the six-dimensional \(B\)-space, so \(\nu=2\).
+
+**[Exact transverse model]**
+
+\[
+H(w)\asymp
+\int_{\mathbb R^6}(w+|t|^2)^{-c'}\,dt
+\asymp w^{3-c'}\qquad(c'>3).
+\]
+
+Consequently,
+
+\[
+\boxed{\beta=c'-3}.
+\]
+
+Thus
+
+\[
+c'=4:\quad \beta=1,
+\qquad
+c'=4.49:\quad \beta=1.49.
+\]
+
+At \(c'=3\) the growth is logarithmic; for \(c'<3\), \(\beta=0\).
+
+**[Necessary feasibility assumption]** This power law requires \(N\) to meet the cubes cleanly—for example, to contain an interior point. “Generic” does not ensure this because the boxes fix a scale. If \(N=\varnothing\), compactness gives a positive minimum loss and \(H(w)\to H(0)<\infty\), so \(\beta=0\).
+
+### Determinant check
+
+**[Exact]** Every \(B\in S\) has rank \(2\), but \(\det(BB^T)\) is **not** bounded away from zero on all of \(S\). For example,
+
+\[
+B_\varepsilon=\lambda\operatorname{diag}(1,\varepsilon)C_{\rm cross}
+\]
+
+lies in the \(A_{\rm cor}\)-box for sufficiently small fixed \(\lambda\), while
+\(\det(B_\varepsilon B_\varepsilon^T)\to0\).
+
+It is, however, uniformly bounded away from zero on the actual exact-fit locus \(N\). There,
+
+\[
+\det(BB^T)
+=\frac{\det(C_{\rm cross}C_{\rm cross}^T)}{\det(\Gamma)^2}
+\ge \frac{\det(C_{\rm cross}C_{\rm cross}^T)}4,
+\]
+
+because \(|\det\Gamma|\le2\) on the Gamma cube.
+
+## Q-B
+
+**[Exact]** The coupled integral is finite for every \(w>0\), despite \(Ch=+\infty\). Under feasible clean exact fit it still diverges as \(w\downarrow0\), but only as
+
+\[
+H(w)\asymp w^{-(c'-3)}.
+\]
+
+The mechanisms are:
+
+- \(w>0\) is the pointwise cutoff.
+- The row-space residual supplies the additional \(A_{\rm cor}\)-codimension \(\nu=2\).
+- Full-rank \(C_{\rm cross}\) together with bounded \(\Gamma\) excludes ill-conditioned \(B\) from the low-loss region. The row-space residual alone does not do this: it vanishes for \(B_\varepsilon\) above, but cancellation would require \(\Gamma=-\lambda^{-1}\operatorname{diag}(1,\varepsilon^{-1})\), outside the cube.
+
+Therefore
+
+\[
+\boxed{c'-\beta=3},
+\]
+
+which is more than \(ab/2=2\): the extra reduction is \(\nu/2=1\). It is therefore at least \(1\); under direct additive threshold bookkeeping, \(3.5\) would be lifted by \(3\), to \(6.5\). No numerical heuristic is used.
+tokens used
+26,746
+## Q-A(i)
+
+**[Exact]** Yes. The domain has volume \(2^{10}\) and the integrand is at most \(w^{-c'}\), so \(H(w)\le 2^{10}w^{-c'}<\infty\).
+
+## Q-A(ii)
+
+Put \(B=A_{\rm cor}Z_f\). Since \(Z_f\in GL_3\), this is an invertible linear change of the six \(A_{\rm cor}\)-coordinates.
+
+**[Exact, assuming generic \(C_{\rm cross}\), hence \(\operatorname{rank}C_{\rm cross}=2\)]** On
+
+\[
+N=\{(\Gamma,B):C_{\rm cross}+\Gamma B=0\},
+\]
+
+both \(\Gamma\) and \(B\) have rank \(2\). Hence \(\Gamma\in GL_2\), and
+
+\[
+D\Phi(\dot\Gamma,\dot A)
+ =\dot\Gamma B+\Gamma\dot A Z_f
+\]
+
+is onto \(\mathbb R^{2\times3}\): given \(Y\), take \(\dot\Gamma=0\) and
+\(\dot A=\Gamma^{-1}YZ_f^{-1}\). Thus
+
+\[
+\boxed{\kappa=6},\qquad \dim N=10-6=4.
+\]
+
+Indeed \(N\) is locally the graph \(B=-\Gamma^{-1}C_{\rm cross}\).
+
+The fixed-\(B\) split is:
+
+\[
+\underbrace{\frac{ab}{2}}_{=2}
++
+\underbrace{\frac{\nu}{2}}_{=1}
+=\frac{\kappa}{2}=3.
+\]
+
+Here \(\dot\Gamma\mapsto\dot\Gamma B\) has rank \(4\), while
+
+\[
+S=\{B:\operatorname{row}(C_{\rm cross})\subseteq\operatorname{row}(B)\}
+  =\{TC_{\rm cross}:T\in GL_2\}
+\]
+
+has dimension \(4\) in the six-dimensional \(B\)-space, so \(\nu=2\).
+
+**[Exact transverse model]**
+
+\[
+H(w)\asymp
+\int_{\mathbb R^6}(w+|t|^2)^{-c'}\,dt
+\asymp w^{3-c'}\qquad(c'>3).
+\]
+
+Consequently,
+
+\[
+\boxed{\beta=c'-3}.
+\]
+
+Thus
+
+\[
+c'=4:\quad \beta=1,
+\qquad
+c'=4.49:\quad \beta=1.49.
+\]
+
+At \(c'=3\) the growth is logarithmic; for \(c'<3\), \(\beta=0\).
+
+**[Necessary feasibility assumption]** This power law requires \(N\) to meet the cubes cleanly—for example, to contain an interior point. “Generic” does not ensure this because the boxes fix a scale. If \(N=\varnothing\), compactness gives a positive minimum loss and \(H(w)\to H(0)<\infty\), so \(\beta=0\).
+
+### Determinant check
+
+**[Exact]** Every \(B\in S\) has rank \(2\), but \(\det(BB^T)\) is **not** bounded away from zero on all of \(S\). For example,
+
+\[
+B_\varepsilon=\lambda\operatorname{diag}(1,\varepsilon)C_{\rm cross}
+\]
+
+lies in the \(A_{\rm cor}\)-box for sufficiently small fixed \(\lambda\), while
+\(\det(B_\varepsilon B_\varepsilon^T)\to0\).
+
+It is, however, uniformly bounded away from zero on the actual exact-fit locus \(N\). There,
+
+\[
+\det(BB^T)
+=\frac{\det(C_{\rm cross}C_{\rm cross}^T)}{\det(\Gamma)^2}
+\ge \frac{\det(C_{\rm cross}C_{\rm cross}^T)}4,
+\]
+
+because \(|\det\Gamma|\le2\) on the Gamma cube.
+
+## Q-B
+
+**[Exact]** The coupled integral is finite for every \(w>0\), despite \(Ch=+\infty\). Under feasible clean exact fit it still diverges as \(w\downarrow0\), but only as
+
+\[
+H(w)\asymp w^{-(c'-3)}.
+\]
+
+The mechanisms are:
+
+- \(w>0\) is the pointwise cutoff.
+- The row-space residual supplies the additional \(A_{\rm cor}\)-codimension \(\nu=2\).
+- Full-rank \(C_{\rm cross}\) together with bounded \(\Gamma\) excludes ill-conditioned \(B\) from the low-loss region. The row-space residual alone does not do this: it vanishes for \(B_\varepsilon\) above, but cancellation would require \(\Gamma=-\lambda^{-1}\operatorname{diag}(1,\varepsilon^{-1})\), outside the cube.
+
+Therefore
+
+\[
+\boxed{c'-\beta=3},
+\]
+
+which is more than \(ab/2=2\): the extra reduction is \(\nu/2=1\). It is therefore at least \(1\); under direct additive threshold bookkeeping, \(3.5\) would be lifted by \(3\), to \(6.5\). No numerical heuristic is used.
