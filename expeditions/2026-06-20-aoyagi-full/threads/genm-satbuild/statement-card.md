@@ -58,3 +58,30 @@ The saturated boundary hole of the arity-≥4 `(□)` closure: the `hbdryShell` 
 >   (`IsEmpty (Fin (M₀−u))` avoids dependent-type rewrites); consume `hIH` at the shifted exponent. The
 >   capstone's post-re-route `hbdryShell` is `j = r` only = this conclusion verbatim (wires by `exact`).
 > - **Status.** sorry-free (awaiting fidelity review).
+
+---
+
+## b = 0 mirror — structural collapse (skeleton deferred)
+
+The transpose-dual corner `M₁ < M₀` (cut `u = min = M₁`, `b = M₁ − u = 0`, `a = M₀ − u > 0`). Only the
+STRUCTURAL COLLAPSE is delivered; the reduction skeleton is deferred (design-gated, coordinator hold).
+
+> **Claim.** At `b = 0` the shell integrand collapses to the Γ-free vertical-stack front integrand.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.freedSchurLoss_of_isEmpty_b`, `satFrontIntegrand_b`,
+>   `shellSpine_le_satFront_b` (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJSaturatedShell.lean` @ `611fea752`).
+> - **Gloss.** When the corank column index `Fin b` is empty, the empty-MIDDLE products `B₁₂·Q_inr` and
+>   `Γ·Q_inr` vanish, so `freedSchurLoss = frobSq(P·Q_inl) + frobSq(C·Q_inl)` (Γ-free, both terms survive —
+>   the vertical stack `frobSq([P;C]·Q_inl)`). The `∫⁻ Γ` runs over `Fin (M₀−u) → Fin 0 → ℝ`, a probability
+>   space (inner empty-column factor = `dirac`), so it collapses; `shellSpineIntegrand ≤ satFrontIntegrand_b`.
+> - **Proved (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`):** all three above.
+> - **Deferred.** The `b = 0` reduction SKELETON (`saturatedShell_lt_top_b`). Distinct mechanism from `a = 0`
+>   (NOT a mechanical transpose): the front factor `[P;C]` is `M₀×M₁` TALL / full COLUMN rank, so
+>   `A₀ ↦ [P;C]·A₀` is INJECTIVE ⟹ SINGULAR pushforward on a proper subvariety (no abs-continuous density),
+>   the OPPOSITE of `a = 0`'s wide / full-row-rank SURJECTIVE front. Hence NO `z̃₀`-box density reduction; the
+>   `C` output rows are a separate high-codim OUTPUT charge; and the reduced-chain target is `redChain (M 0) M`
+>   (leading `M₀ = max`), not `redChain u M`. The `∀-M'` arity-IH covers `redChain (M 0) M` (arch1build: no
+>   capstone threading change), but the skeleton's `hdensity_b`/reduction shape awaits the corner-frontier
+>   (corneradj) mechanism verdict — plausibly the transpose-dual instance of the same joint rank-sector object
+>   as the primary `A > 2Δ` corner.
+> - **Status.** collapse pieces sorry-free; skeleton deferred (design-gated).
