@@ -56,4 +56,41 @@ theorem coupledBox_cell_lt_top_of_generic (M : Fin (L + 1 + 1 + 1) → ℕ) (u :
   · rw [coupledBox_deficientCell_null M u c' i hlt]; exact ENNReal.zero_lt_top
   · exact hgen i heq
 
+/-- **Per-`M` coupled closure from the GENERIC-cell finiteness (null layer banked).** Same as
+`routeMBoxThresholdFinite_of_coupled` but the per-shell per-cell hole is only the GENERIC cells
+(`cellRankIndex i = deepTailMin M`) — the deficient/null cells are discharged internally by
+`coupledBox_cell_lt_top_of_generic`. So the coupled route delivers `RouteMBoxThresholdFinite M` from
+`hgeneric` (generic-cell finiteness on `j<r`: interior via schurB's charge free-box through the
+`frontChargeIntegrand ↔ chargeGramDet` bridge, edge via `edge_coupledBox_lt_top`), `hG1`, `hbdryShell`.
+Makes the remaining item-4 hole PRECISE: only the single co-null generic cell per interior shell. -/
+theorem routeMBoxThresholdFinite_of_coupled_generic
+    (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ε : ℝ)
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i) (htb : t + 1 ≤ min (M 0) (M 1))
+    (hbind : minAdm M = peelCharge M t + minAdm (redChain t M))
+    (hred : 0 < minAdm (redChain t M))
+    (hG1 : ∀ c' : ℝ, routeMLayerBoxIntegral M c' 1
+        ≤ ∑ j : Fin (min (M 0 - t) (M 1 - t) + 1),
+            ∑ _ρ : Fin (t + (j : ℕ)) ↪ Fin (M 0),
+              ∑ κ : Fin (t + (j : ℕ)) ↪ Fin (M 1),
+                shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c')
+    (hgeneric : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+        (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        ∀ i : CRIndex (dropHead (redChain (t + (j : ℕ)) M)),
+        cellRankIndex (dropHead (redChain (t + (j : ℕ)) M)) i = deepTailMin M →
+        ∫⁻ p in (paramsBoxM (redChain (t + (j : ℕ)) M) 1 ×ˢ matBox (M 1 - (t + (j : ℕ))) (M 2) 1)
+            ∩ projDeep M (t + (j : ℕ)) ⁻¹'
+              (deepCell (dropHead (redChain (t + (j : ℕ)) M)) (dropHead (redChain (t + (j : ℕ)) M) 0) L
+                le_rfl (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)) i
+                (fun _ => (1 : Matrix (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L)))
+                  (Fin (dropHead (redChain (t + (j : ℕ)) M) (Fin.last L))) ℝ))),
+          coupledBoxIntegrand M (t + (j : ℕ)) c' p < ⊤)
+    (hbdryShell : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1))
+        (κ : Fin (t + (j : ℕ)) ↪ Fin (M 1)),
+        (j : ℕ) = min (M 0 - t) (M 1 - t) →
+        shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c' < ⊤) :
+    RouteMBoxThresholdFinite M :=
+  routeMBoxThresholdFinite_of_coupled M t ε ht1 hnd htb hbind hred hG1
+    (fun c' j hj => coupledBox_cell_lt_top_of_generic M (t + (j : ℕ)) c' (hgeneric c' j hj))
+    hbdryShell
+
 end DLNFibre.DLN.RLCT
