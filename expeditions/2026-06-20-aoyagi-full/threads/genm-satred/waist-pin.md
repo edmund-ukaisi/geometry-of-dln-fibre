@@ -27,6 +27,29 @@ This atom is the a=0 (wide `X·Y`) waist. The **b=0 mirror** (M₁≤M₀, tall 
 Gram/Wishart atom `det(PᵀP+CᵀC)^{−M₂/2}` = qbox (§5, banked) — also `u≤2`-clean. So the `u≤2` waist brick
 consumes: a=0 → the (a)+(b) density atom; b=0 → the qbox.
 
+## 5penta. CLOSABILITY CRITERION + endgame scope (q2gate, LATE-84++, coordination CLOSED)
+
+q2gate's EXACT closability criterion (the coupled shell brick closes a saturated cell for sure iff):
+
+    min_k [ codim_k / γ_k ]  ≥  R/(R−1),     R := minAdm(redChain u M) / minAdm(M)
+
+(`γ_k` = TRUE per-corank density order; `codim_k` = stratum codim; log strata `γ_k=0` → `codim/γ=∞`,
+non-binding). Reproduces the square: `(3,3,3,3)` binding corank-2 `codim 4 / γ 1 = 4`, `R=7/6`, target
+`R/(R−1)=7` ⟹ `4<7` ⟹ INHERITS (decorated). ✓
+
+**Endgame scope (CLOSED):** the coupled route closes **u≤2 waists (a=0 shell + my (a)+(b) atom / b=0 qbox /
+edge descent) + INTERIOR everywhere (native RectSchurCore)**. **u≥3 → DECORATED** — square (proven), wide-
+non-square (the targets are HIGHER not lower: R closer to 1 ⟹ `R/(R−1)` large — `(3,4,4,4)→10`,
+`(3,5,5,5)→13`, `(4,5,5,5)→16`; `codim_k` small ⟹ needs `γ_k≈0` LOG on essentially every stratum, but the
+deepest stratum carries `γ≥1` ⟹ fails ⟹ inherits), and b=0-reducing-to-square. So **essentially all u≥3
+inherits decorated** — the square is the root wall, not a lucky worst case. My "true order milder, monotone-↓
+in b" softens `γ` but does NOT lower the target `R/(R−1)`, so it does not rescue wide u≥3.
+
+**Discipline note:** do NOT MC the true `γ_k` speculatively (q2gate + my error-history: heavy-tail near
+{det=0}). A definitive per-cell call (which wide cells, if any, escape) needs the deepest-stratum true `γ`
+via a careful pushforward computation (not MC) — a FORMALITY that does not change the endgame (decorated
+canonical for u≥3). The coupled/decorated split is SEALED at the scope level.
+
 ## 5quater. Refinements (q2gate/edgefub coordination, LATE-84+)
 
 **EDGE is NOT native (edgefub, builder) — my earlier "retire D§3 on Q2 grounds" was PREMATURE; the edge-pin

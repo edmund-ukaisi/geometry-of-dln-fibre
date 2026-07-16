@@ -95,6 +95,57 @@ tie-log δ-fold. Banked for edgeBackbone: `outerDom_lintegral_prod`, `scaledRadi
 `one_add_log_inv_le_rpow` + `sigmaLog_integral` (`RouteMSJEdgeAtoms`), `corner_block_lintegral_lt_top`,
 `minAdm_le_peelCharge_add_redChain` (cut-soundness), the Brick-F frame contract. **Diamond guard:** raw-`Pi`.
 
+## ★ hFrontReduce — the ROUTE-AGNOSTIC front-block reduction interface (for edgefub half-B)
+
+edgefub builds `edge_coupledBox_lt_top` conditional on the abstract, route-agnostic box-finiteness of the
+TWO sector chains. This is the exact reduction shape (my seam) — the DISCHARGE (u≤2 plain-RMBTF vs u≥3
+decorated, per q2gate's split) folds in at assembly, so this statement is route-AGNOSTIC.
+
+**The route-agnostic predicate** (edgefub instantiates it; hFrontReduce is indifferent):
+
+    boxFinite (M' : Fin (L+1+1) → ℕ) (e : ℝ) : Prop  :=  routeMLayerBoxIntegral M' e 1 < ⊤
+
+(`routeMLayerBoxIntegral` is the reduced box integral; `boxFinite` is satisfied by plain-RMBTF at u≤2 and by
+the decorated/weighted box at u≥3 — the discharge picks which, at assembly. hFrontReduce only consumes
+`boxFinite`, never how it's proven.)
+
+**The pinned statement** (edge scope: `u = t+j`, `a = M₀−u`, `b = M₁−u = 1`, `a < u`, the tie):
+
+    hFrontReduce {L} (M : Fin (L+1+1+1) → ℕ) (t j : ℕ) (κ : Fin (t+j) ↪ Fin (M 1))
+      {ε : ℝ} (hε : 0 < ε) (c' : ℝ)
+      (hb1 : M 1 - (t+j) = 1)                                  -- b = 1  (edge)
+      (hau : M 0 - (t+j) < t+j)                               -- a < u
+      (hc' : ((M 0 - (t+j) : ℕ) : ℝ)/2 < c')                  -- c' > a/2  (= ab/2 at b=1)
+      (hcarr : c' < carrierThreshold M)                       -- c' < ½·minAdm M
+      (hnd : ∀ i, 1 ≤ M i) (ht1 : 1 ≤ t)
+      -- the ROUTE-AGNOSTIC box-finiteness of the TWO sector chains, both at the SHIFTED exponent c'−a/2:
+      (h_u  : boxFinite (redChain (t+j) M)     (c' - ((M 0 - (t+j) : ℕ):ℝ)/2))     -- sector r=1 (generic)
+      (h_u1 : boxFinite (redChain (t+j+1) M)   (c' - ((M 0 - (t+j) : ℕ):ℝ)/2))     -- sector r=0 (A_cor·Z_deep = 0)
+      -- Brick-F frame facts + a.e.-positivity (rank-genericity of Q_inl; v'_{j₀}≠0 a.e.; the measurable j₀ selector):
+      (hframe : <the Brick-F frame data for deeperFlagZdeep M (t+j) + the a.e.-positivity clauses>) :
+      EDGEREDUCED M (t+j) κ ε c' < ⊤
+
+where `EDGEREDUCED M u κ ε c' := ofReal(C_a · 2^a · 2^{a·u}) · ∫_{p ∈ paramsBoxM (redChain u M) 1 ×ˢ matBox
+(M₁−u) M₂ 1} |v'_{j₀}(p)|^{−a} · ∫_{pb ∈ outerPB} frobSq(P·Q̃ₚ(pb,p))^{a/2−c'}` (edgefub's collapsed leaf
+output; `C_a = scaledRadialEuclid` const; `Q̃ₚ`,`v'` from `hsQ M u (deeperFlagZdeep M u)`).
+
+**Both sector hyps at the SAME shifted exponent `c'−a/2`** (b=1 ⟹ peelCharge = a·b = a ⟹ shift = a/2; both
+sectors codim a — the corank-one tie), and **both reach for `c'<½minAdm M`** via cut-soundness (verified
+0/1076 `scripts/edge_twochain.py`: `a + minAdm(redChain (t+j) M) ≥ minAdm M` and `a + minAdm(redChain
+(t+j+1) M) ≥ minAdm M`; `u+1 = M₁` is a valid cut since M₀≥M₁ at the edge).
+
+**Proof shape (my seam, route-agnostic — edgefub does NOT build this discharge):** stratify `rank(A_cor·Z_deep)
+∈ {0,1}`; r=1 (generic) → the coupled `[P|B₁₂]↔leading-layer` X·Y identification reduces `∫_{pb} frobSq(P·Q̃ₚ)^{−(c'−a/2)}`
+to `boxFinite(redChain (t+j) M)(c'−a/2)` (`h_u`); r=0 (`A_cor·Z_deep=0`, re-peel to cut u+1) → `boxFinite(redChain
+(t+j+1) M)(c'−a/2)` (`h_u1`); the `|v'_{j₀}|^{−a}` disposed by the `a<u` sphere-finiteness; the corank-one
+tie-log δ-folded (`one_add_log_inv_le_rpow`, banked, via the strict headroom). **The u≥3 X·Y-descent wall
+(decstep's crux) lives INSIDE proving `boxFinite` (the discharge), NOT in hFrontReduce** — so edgefub's
+half-B (which consumes `h_u`,`h_u1` abstractly) is fully off that wall.
+
+**Composition (edgefub):** `edge_coupledBox_lt_top = coupledInner_slice_le` (leaf: `coupledBox ≤ const · EDGEREDUCED`)
+`∘ hFrontReduce` (this: `EDGEREDUCED < ⊤` from `h_u`,`h_u1`). The two `boxFinite` hyps are discharged at
+ASSEMBLY (decstep): u≤2 → plain RMBTF; u≥3-inheritors → the decorated/weighted box. Route-agnostic here.
+
 ## Close
 
 - **Firmest result.** hBackbone (edge, b=1) = the two-chain joint rank-sector: `r∈{0,1}` → `redChain u M`
