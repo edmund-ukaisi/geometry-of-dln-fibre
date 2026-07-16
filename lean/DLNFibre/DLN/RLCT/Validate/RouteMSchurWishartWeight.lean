@@ -209,4 +209,21 @@ theorem chargedWishartWeight_lt_top {a b n p : ℕ} (S : Fin n → Fin p → ℝ
         rw [hs]
         simpa using h
 
+/-- **Non-vacuity of the full-deep-rank floor `hS`.** The identity deep factor `S = 1` (`p = n`) with
+`0 < δ ≤ 1` satisfies `S·Sᵀ ⪰ δ²·I` — so `chargedWishartWeight_lt_top`'s hypotheses are consistent
+(the atom is not vacuous; `rank S = n`). -/
+example (n : ℕ) (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
+    ∃ S : Fin n → Fin n → ℝ,
+      ((Matrix.of S * (Matrix.of S)ᵀ) - δ ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)).PosSemidef := by
+  refine ⟨fun i j => (1 : Matrix (Fin n) (Fin n) ℝ) i j, ?_⟩
+  have hof : Matrix.of (fun i j => (1 : Matrix (Fin n) (Fin n) ℝ) i j)
+      = (1 : Matrix (Fin n) (Fin n) ℝ) := rfl
+  rw [hof, Matrix.transpose_one, Matrix.mul_one,
+    show (1 : Matrix (Fin n) (Fin n) ℝ) - δ ^ 2 • (1 : Matrix (Fin n) (Fin n) ℝ)
+        = (1 - δ ^ 2) • (1 : Matrix (Fin n) (Fin n) ℝ) from by rw [sub_smul, one_smul]]
+  have hone : (1 : Matrix (Fin n) (Fin n) ℝ).PosSemidef := by
+    have h := posSemidef_mul_transpose (1 : Matrix (Fin n) (Fin n) ℝ)
+    rwa [Matrix.transpose_one, Matrix.mul_one] at h
+  exact hone.smul (by nlinarith [hδ0, hδ1] : (0 : ℝ) ≤ 1 - δ ^ 2)
+
 end DLNFibre.DLN.RLCT
