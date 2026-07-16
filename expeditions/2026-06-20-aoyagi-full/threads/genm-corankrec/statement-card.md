@@ -121,3 +121,18 @@ The critical-path atlas layer + the Route-B interior contribution (pushed; `Rout
 `coupledBox_deficientCell_null`); generic `cellRank i = deepTailMin` split interior `a+b ≤ cellRank i`
 (mine: `hGae_cell_interior` + `frontCharge_cell_lt_top_of_freebox` → arch1build's conversion) vs
 edge/deep-corank `cellRank i < a+b` (dbuild's edge brick). Exhaustive + disjoint by trichotomy.
+
+## `cellRank_le_deepTailMin` — the trichotomy cap (LANDED, 2026-07-16, @aa8080e5e)
+
+> **`DeepAtlas.cellRankIndex_le_inf'`** (`RouteMSJCellRank`) — `cellRankIndex H i ≤ ⨅_{m} H m` (via
+> `cellRank_le_aux`: `cellRank ≤ q ∧ ≤ H m ∀ m<j`, the non-increasing telescoping; + `cellRankIndex_le_width`
+> + `Finset.le_inf'`). **`cellRank_le_deepTailMin`** (`RouteMSJCorankRec`) — `cellRankIndex (dropHead
+> (redChain u M)) i ≤ deepTailMin M` (specialisation, `⨅ (dropHead (redChain u M)) = deepTailMin M`).
+> Turns the null-disposal + rank bridge into the **TRICHOTOMY**: `< deepTailMin` (deficient → null) /
+> `= deepTailMin` (unique co-null generic cell → interior|edge); `> deepTailMin` impossible. Green,
+> sorry-free, NATIVE `[propext, Classical.choice, Quot.sound]`. Consumed by arch1build's hcell dispatch.
+>
+> **Branch state (final):** `origin/genm-corankrec` @ `aa8080e5e` — SORRY-FREE, all NATIVE. Two files:
+> `RouteMSJCellRank` (cellRank + bridge + width caps) + `RouteMSJCorankRec` (BindingShell + hGae_cell_interior
+> + frontCharge_cell_lt_top_of_freebox + cellRank_le_deepTailMin). The atlas/interior half of Route B, turnkey
+> for arch1build's coherent-unit merge.
