@@ -243,6 +243,26 @@ theorem bindingShell_rankgen (M : Fin (L + 1 + 1 + 1 + 1) → ℕ) (t j : ℕ)
   rw [htail_eq] at hρtail
   omega
 
+/-- **Degenerate sub-case (zero width): a chain with any zero width is box-finite (vacuously).** If some
+`M i = 0` then `minAdm M = 0` (via `minAdm_leading_zero` for `i = 0`, or `minAdm_le_head_mul_tailInf`
++ `Finset.inf'_le` for a tail index — the tail `inf'` has a `0` member), so the threshold `c' < ½·minAdm M
+= 0` is unsatisfiable for `c' : NNReal` and `RouteMBoxThresholdFinite M` holds vacuously. Discharges the
+zero-width branch of `hdegen`. NATIVE. -/
+theorem routeMBoxThresholdFinite_of_zero_width (M : Fin (L + 1 + 1 + 1) → ℕ)
+    (i : Fin (L + 1 + 1 + 1)) (hi : M i = 0) : RouteMBoxThresholdFinite M := by
+  have hmin : minAdm M = 0 := by
+    rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩
+    · exact minAdm_leading_zero M hi
+    · have h2 : minAdm M ≤ M 0 * M j.succ :=
+        le_trans (minAdm_le_head_mul_tailInf M)
+          (by gcongr; exact Finset.inf'_le _ (Finset.mem_univ j))
+      rw [hi, Nat.mul_zero] at h2
+      exact Nat.le_zero.mp h2
+  intro c' hc'
+  rw [hmin] at hc'
+  simp only [Nat.cast_zero, zero_div] at hc'
+  exact absurd hc' (not_lt.mpr c'.coe_nonneg)
+
 /-- **The direct `SJStepHyp` from the coupled route + the degenerate handler.** Case-splits each `≥ 3`-width
 chain `M`: if `M` has all-positive widths AND a nondegenerate interior binding cut, the coupled route
 (`hcoupled`) gives box-finiteness; otherwise (degenerate width `M₀=1`/`M₁=1`, boundary-argmin, or a zero
