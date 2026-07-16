@@ -1489,4 +1489,5 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeScalar
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCharged
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurWishartWeight
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlab
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlabD
 import DLNFibre.DLN.RLCT.Validate.RouteMSJInteriorShell

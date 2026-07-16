@@ -173,4 +173,49 @@ theorem coupledBox_cell_lt_top_of_bsplit (M : Fin (L + 1 + 1 + 1) → ℕ) (t : 
   coupledBox_cell_lt_top_of_generic M (t + j) c'
     (coupledBox_cell_generic_of_bsplit M t c' ht1 hbind j hj h_int_b1 h_int_b2 h_edge_b1 h_edge_b2)
 
+/-- **The clean conditional `(□)` from the 4-way b-split arms.** Threads the per-shell 4-way b-split
+(`coupledBox_cell_generic_of_bsplit`) through the per-`M` coupled closure
+(`routeMBoxThresholdFinite_of_coupled_generic`): `RouteMBoxThresholdFinite M` holds given `hG1` (tpeel),
+`hbdryShell` (saturated shell `j=r`), and the FOUR named regime arms per interior shell `j<r`
+{interior-b1, interior-b≥2, edge-b1, edge-b≥2}. Each arm is a direct hole — it closes to unconditional as
+its piece lands: `h_int_b1` ← charge-factoring + `chargeFreeBox_b1a1` + uniform `frontLossIntegral`;
+`h_int_b2` ← slabD's `corankSlabD_charge_sint_le` via `chargeFreeBox_of_inner`; `h_edge_b1` ← edgered's
+corank-one brick; `h_edge_b2` ← R3. Null cells are discharged internally (deficient → `∫ = 0`). This is
+the coupled-route `(□)` at its finest granularity — the whole atlas structure banked, four honest holes. -/
+theorem routeMBoxThresholdFinite_of_coupled_bsplit
+    (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ε : ℝ)
+    (ht1 : 1 ≤ t) (hnd : ∀ i, 1 ≤ M i) (htb : t + 1 ≤ min (M 0) (M 1))
+    (hbind : minAdm M = peelCharge M t + minAdm (redChain t M))
+    (hred : 0 < minAdm (redChain t M))
+    (hG1 : ∀ c' : ℝ, routeMLayerBoxIntegral M c' 1
+        ≤ ∑ j : Fin (min (M 0 - t) (M 1 - t) + 1),
+            ∑ _ρ : Fin (t + (j : ℕ)) ↪ Fin (M 0),
+              ∑ κ : Fin (t + (j : ℕ)) ↪ Fin (M 1),
+                shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c')
+    (h_int_b1 : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+        (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        (M 0 - (t + (j : ℕ))) + (M 1 - (t + (j : ℕ))) ≤ deepTailMin M → M 1 - (t + (j : ℕ)) = 1 →
+        GenericCellFinite M (t + (j : ℕ)) c')
+    (h_int_b2 : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+        (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        (M 0 - (t + (j : ℕ))) + (M 1 - (t + (j : ℕ))) ≤ deepTailMin M → 2 ≤ M 1 - (t + (j : ℕ)) →
+        GenericCellFinite M (t + (j : ℕ)) c')
+    (h_edge_b1 : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+        (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        (M 0 - (t + (j : ℕ))) + (M 1 - (t + (j : ℕ))) = deepTailMin M + 1 → M 1 - (t + (j : ℕ)) = 1 →
+        GenericCellFinite M (t + (j : ℕ)) c')
+    (h_edge_b2 : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1)),
+        (j : ℕ) < min (M 0 - t) (M 1 - t) →
+        (M 0 - (t + (j : ℕ))) + (M 1 - (t + (j : ℕ))) = deepTailMin M + 1 → 2 ≤ M 1 - (t + (j : ℕ)) →
+        GenericCellFinite M (t + (j : ℕ)) c')
+    (hbdryShell : ∀ (c' : ℝ) (j : Fin (min (M 0 - t) (M 1 - t) + 1))
+        (κ : Fin (t + (j : ℕ)) ↪ Fin (M 1)),
+        (j : ℕ) = min (M 0 - t) (M 1 - t) →
+        shellSpineIntegrand M (t + (j : ℕ)) κ ε (min (M 0 - t) (M 1 - t)) j c' < ⊤) :
+    RouteMBoxThresholdFinite M :=
+  routeMBoxThresholdFinite_of_coupled_generic M t ε ht1 hnd htb hbind hred hG1
+    (fun c' j hj => coupledBox_cell_generic_of_bsplit M t c' htb hbind (j : ℕ) hj
+      (h_int_b1 c' j hj) (h_int_b2 c' j hj) (h_edge_b1 c' j hj) (h_edge_b2 c' j hj))
+    hbdryShell
+
 end DLNFibre.DLN.RLCT
