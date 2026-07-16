@@ -7051,3 +7051,13 @@ atlas R1.1/R1.3(codim=Mval, heavy)/R1.6(cover) in PARALLEL (math validate-small'
 resolution_charts (core) + wires product_reduction. (3) L2 → D1 → T. #19 PARKED. Critical path: Fubini-iteration
 + R1-(1,1,1)-gate → general R1 atlas → wire product_reduction → D1 → T. rv-2 decorrelated (R1 = heaviest audits).
 Watch the fm→#19 pull (parked 3×). Don't stop in a blocked state.
+
+---
+
+## UPDATE (2026-07-16 LATE-81) — the (□)-endgame integrative read lives in endgame-lanes.md; ROUTE PINNED (COUPLED)
+The Stage-2 (□)-discharge synthesis is tracked in `endgame-lanes.md` (LATE-77..81, the comprehensive ledger) + `priorities.md` (the authoritative ★★ NOW). Current state, briefly:
+- **Operator external audit (07-16 eve, 7 findings)** reshaped the tick from "push builds" to "pin route + verify premise". All findings integrated (LATE-77..81).
+- **ROUTE PINNED = COUPLED** (decision A + two route-map passes): couplerad (LOSS/deep-z0 axis, IH-free to the proven arity-3 base `RectSchurCore` ∀T) + satred (CHARGE/corank axis, multi-chain arity-IH) as COMPLEMENTARY arms (compose loss·charge; D-cert §4 defers deep to couplerad). The mint's decorated wiring is STALE → re-point to `routeMBoxThresholdFinite_coupled` (zero shape gap).
+- **THE DECISIVE GATE (q2gate, in flight):** does the coupled capstone inherit "Q2" (its plain `SJStepHyp` confined to Q2-clean cells + the arms carrying the hard cells)? Discriminator = satred's UNIFORM SANDWICH (holds ⟹ coupled sound/canonical/expensive; fails on positive measure ⟹ needs the weighted IH ⟹ pivot to decorated; decscope reading the decorated cost in parallel).
+- **INTERIOR de-risked** to bounded wiring on banked endpoints (scale-independence FREE; the +ub residual-power 3-case; corankrec's landed QIP). **INTEGRATION DEBT DONE** (arch1build @6e7691a96 clean-three). **RESIDUAL (no wall):** satred's A>2Δ saturated atom + per-instance uniform sandwich + edge de-dup + hdegen + the hcoupled assembler.
+- **Deep tide HELD pending q2gate** (pin-before-build; already caught couplerad's ★7 + satred's P2 pre-tide). Canonical docs 0-sorry @cdf7689df / aggregator green @6e7691a96.
