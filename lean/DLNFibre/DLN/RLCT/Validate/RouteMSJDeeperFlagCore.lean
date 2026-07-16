@@ -4,6 +4,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJShellCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 import DLNFibre.DLN.RLCT.Validate.DeepestCoreNonvanishing
+import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 
 set_option linter.style.longLine false
 
@@ -43,7 +44,8 @@ rescaled floor `ε' = ε/√(M₁M₂)` and the finite reorganization constant `
 * **`exists_headSplitFrame` (Brick F)** — the measurable piecewise `m`-frame selector (`= Z_deep` on the
   good set `G`, fixed full-rank `V` off `G`): orthonormal `U_sf`, rank `≥ m`, the Loewner floor at `ε'`,
   agreeing with `Z_deep` on `G` (`weakEigCount ε' ≤ M₂ − m`). Content: Borel functional calculus. Cert:
-  `s1-spine-headsplit-cert` §B.3.
+  `s1-spine-headsplit-cert` §B.3. **WIRED sorry-free** to the banked clean-three implementation
+  `exists_headSplitFrame_impl` (`RouteMSJHeadSplitFrame`, on the isolated `measurableEigendecomp` primitive).
 * **`headSplit_domination` (Brick D)** — the head-split domination with finite constant: given the frame
   data, `∃ Ccrossf sΓf C_hle < ⊤, shellSpine ≤ C_hle · deeperFlagCore`. Content: row-split, `prod_headSplit`,
   the P-radial blow-up, the `B₁₂→Γ'` shear, `C_hle` finite via the codim-`u·ρ` linear-image argument
@@ -51,14 +53,15 @@ rescaled floor `ε' = ε/√(M₁M₂)` and the finite reorganization constant `
   `s1-Chle-angular-integrability-cert`.
 
 * **`deeperFlag_spineToCore` (S1-good)** — ASSEMBLED: `= exists_headSplitFrame ∘ headSplit_domination` +
-  the proved-in-tide clauses. Sorry-free modulo F, D.
+  the proved-in-tide clauses. Sorry-free modulo D (F now wired sorry-free).
 * **`deeperFlag_shell_le`** — the headline = `deeperFlag_spineToCore` (S1-good) ∘ `deeperFlag_shell_core_le`
   (L1) + the decorated IH via `cornerComparator_adm`, folding `C := C_hle · C_L1`. Scoped to good chains;
   waists route through the separate `deeperFlag_waist` SVD-qPeel base case (task #156).
 
 S2-FREE. Axiom-clean `[propext, Classical.choice, Quot.sound]` for the sorry-free results (L1, the S3
 uniform bricks, and the in-tide assembly clauses incl. `deeperFlagCore_decLoss_pos_ae`); `deeperFlag_spineToCore`
-(S1-good) and `deeperFlag_shell_le` (headline) carry `sorryAx` = exactly F + D, the two tracked `(□)`-rungs.
+(S1-good) and `deeperFlag_shell_le` (headline) carry `sorryAx` = exactly D, the one remaining tracked
+`(□)`-rung (F wired sorry-free to `exists_headSplitFrame_impl`, `RouteMSJHeadSplitFrame`).
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -497,8 +500,10 @@ theorem exists_headSplitFrame {X : Type*} [MeasurableSpace X] {M₂ n m : ℕ}
       ∧ (∀ z, (U_sf z)ᵀ * U_sf z = 1)
       ∧ (∀ z, m ≤ (Zf z).rank)
       ∧ (∀ z, (Zf z * (Zf z)ᵀ - (ε' ^ 2) • (U_sf z * (U_sf z)ᵀ)).PosSemidef)
-      ∧ (∀ z, weakEigCount ε' (Zdeep z) ≤ M₂ - m → Zf z = Zdeep z) := by
-  sorry
+      ∧ (∀ z, weakEigCount ε' (Zdeep z) ≤ M₂ - m → Zf z = Zdeep z) :=
+  -- Wired to the banked clean-three implementation (`RouteMSJHeadSplitFrame`): the measurable
+  -- eigendecomposition + top-`m` eigenframe assembly. Statement is identical, so this is pure wiring.
+  exists_headSplitFrame_impl hmM₂ hmn hε' Zdeep hZ
 
 /-- **Brick D (isolated, `s1-spine-headsplit-cert` Part A + `s1-Chle-angular-integrability-cert`) — the
 head-split domination with a FINITE reorganization constant.** Given the frame data from Brick F (at
@@ -518,6 +523,7 @@ theorem headSplit_domination {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : 
     (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
         ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
     (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
+    (hcT : c' < carrierThreshold M)
     {ε' : ℝ} (hε' : 0 < ε')
     (Zf : Params (redChain (t + j) M)
         → Matrix (Fin (dropHead (redChain (t + j) M) 0))
@@ -659,7 +665,8 @@ theorem deeperFlag_spineToCore {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j 
     (hpiv : minAdm (redChain (t + j) M) ≤ (t + j) * tailMinWidth M)
     (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
         ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
-    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2) :
+    (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
+    (hcT : c' < carrierThreshold M) :
     ∃ (M₂ m n d : ℕ) (ε' : ℝ) (k jc : Fin d → ℕ) (C_hle : ℝ≥0∞)
       (Zf : Params (redChain (t + j) M) → Matrix (Fin M₂) (Fin n) ℝ)
       (Ccrossf : Params (redChain (t + j) M) → Matrix (Fin (M 0 - (t + j))) (Fin n) ℝ)
@@ -707,7 +714,7 @@ theorem deeperFlag_spineToCore {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j 
     exists_headSplitFrame (m := m) hmM₂ hmn hε' (deeperFlagZdeep M (t + j)) hZdeepMeas
   -- Brick D: the head-split domination with finite constant.
   obtain ⟨Ccrossf, sΓf, C_hle, hChle, hdom⟩ :=
-    headSplit_domination M t j κ hε c' ht hj ht1 hnd hpiv hcvg hrange hε' Zf U_sf
+    headSplit_domination M t j κ hε c' ht hj ht1 hnd hpiv hcvg hrange hcT hε' Zf U_sf
       _hZfMeas _hUsMeas hUs hrank hfloor hagree
   -- The endpoint witness index (`redChain u M 0 = u ≥ 1`; `redChain u M last = M_last ≥ 1`).
   have hu1 : 0 < redChain (t + j) M 0 := by rw [redChain_zero]; omega
@@ -755,7 +762,8 @@ theorem deeperFlag_shell_le {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : �
     (hcvg : (M 0 - (t + j)) + (M 1 - (t + j))
         ≤ min (M 1) (M (Fin.last (L + 1 + 1))) - j)
     (hrange : min (M 1) (M (Fin.last (L + 1 + 1))) - j ≤ M 2)
-    (hc' : (((M 0 - (t + j)) * (M 1 - (t + j)) : ℕ) : ℝ) / 2 < c') :
+    (hc' : (((M 0 - (t + j)) * (M 1 - (t + j)) : ℕ) : ℝ) / 2 < c')
+    (hcT : c' < carrierThreshold M) :
     ∃ (d : ℕ) (k jc : Fin d → ℕ) (C : ℝ≥0∞), C < ⊤
       ∧ adm (L + 1) (redChain (t + j) M) (cornerComparator (redChain (t + j) M) k jc)
       ∧ shellSpineIntegrand M (t + j) κ ε (min (M 0 - t) (M 1 - t)) ⟨j, Nat.lt_succ_of_le hj⟩ c'
@@ -763,7 +771,7 @@ theorem deeperFlag_shell_le {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t j : �
               (c' - (peelCharge M (t + j) : ℝ) / 2) := by
   obtain ⟨M₂, m, n, d, ε', k, jc, C_hle, Zf, Ccrossf, U_sf, sΓf, i₀, hε', hChle, hUs, hbm, hmM, hmZ,
     hshell, hconv, hpos, hd, hbeta, hle⟩ :=
-    deeperFlag_spineToCore M t j κ hε c' ht hj ht1 hnd hpiv hcvg hrange
+    deeperFlag_spineToCore M t j κ hε c' ht hj ht1 hnd hpiv hcvg hrange hcT
   obtain ⟨C, hCfin, hcore⟩ :=
     deeperFlag_shell_core_le M (t + j) k jc Zf Ccrossf U_sf sΓf hε' hUs hbm hmM hmZ hshell c'
       hconv hc' hpos

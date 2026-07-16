@@ -160,6 +160,15 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
+-- Brick D incidence-chart pieces (coupled incidence route — the VERIFIED capstone route, routeverify
+-- 2026-07-15; see aggregator note). Imported here so their clean-three footprint is CI-force-verified
+-- (closes the chart5review "asserted-not-reverified" caveat); deeperFlag_shell_le is proved DIRECTLY
+-- through these charts (spine → comparator).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceExponent
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart4Polar
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart5BigCell
+import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceGluing
 
 /-!
 # Axiom-hygiene check
@@ -1225,9 +1234,10 @@ open DLNFibre.DLN.RLCT
 -- T-Obl3b OWED-3 mountain headline (`RouteMSJDeeperFlagCore`): L1 `deeperFlag_shell_core_le` (analytic
 -- heart) + the S3 `U_s`-uniform bricks + `deeperFlagCore_decLoss_pos_ae` (hpos) — all clean-three. S1-good
 -- `deeperFlag_spineToCore` = `exists_headSplitFrame` (F) ∘ `headSplit_domination` (D) + a clean assembly;
--- S1-good + the headline `deeperFlag_shell_le` carry a TRACKED sorryAx = exactly the TWO isolated (□)-rungs
--- F + D (F = Borel-functional-calculus frame selector; D = P-radial blow-up + C_hle + Ky-Fan + S3/L1
--- assembly). Tracked here so the day F+D land and the module goes clean-three is visible (std-decision-7).
+-- F is now WIRED sorry-free (`exists_headSplitFrame_impl`, `RouteMSJHeadSplitFrame`) — clean-three. S1-good
+-- + the headline `deeperFlag_shell_le` carry a TRACKED sorryAx = exactly the ONE remaining isolated (□)-rung
+-- D (P-radial blow-up + C_hle + Ky-Fan + S3/L1 assembly). Tracked here so the day D lands and the module
+-- goes clean-three is visible (std-decision-7).
 #print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_core_le
 #print axioms DLNFibre.DLN.RLCT.deeperFlagCore_decLoss_pos_ae
 #print axioms DLNFibre.DLN.RLCT.exists_headSplitFrame
@@ -1266,3 +1276,21 @@ open DLNFibre.DLN.RLCT
 -- honest HYPOTHESIS (not sorryAx); #108 is a one-exact-fill once DecoratedDescent lands.
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage
+-- Brick D incidence-chart pieces (coupled incidence route — the VERIFIED capstone route, routeverify
+-- 2026-07-15: deeperFlag_shell_le is proved DIRECTLY through these charts). Force-verify their
+-- clean-three footprint here (closes the chart5review "asserted-not-reverified" caveat). Chart (1)/(2)
+-- Gram+Schur identities:
+#print axioms DLNFibre.DLN.RLCT.transverseSchurGram
+#print axioms DLNFibre.DLN.RLCT.chartProjComplement
+-- Arity-3 exponent gate (`RouteMSJIncidenceExponent`):
+#print axioms DLNFibre.DLN.RLCT.minAdm_le_ab_add_uM2
+#print axioms DLNFibre.DLN.RLCT.clsCodim_gate
+-- Chart (4) polar fibre finiteness (`RouteMSJIncidenceChart4Polar`):
+#print axioms DLNFibre.DLN.RLCT.chart4_Htilde_fibre_lt_top
+#print axioms DLNFibre.DLN.RLCT.chart4_unit_lintegral_lt_top
+-- Chart (5) determinantal big-cell CoV + rank geometry (`RouteMSJIncidenceChart5BigCell`):
+#print axioms DLNFibre.DLN.RLCT.chart5_bigcell_cov
+#print axioms DLNFibre.DLN.RLCT.chart5_rank_le_iff_reassembled
+-- Finite-cover gluing (`RouteMSJIncidenceGluing`):
+#print axioms DLNFibre.DLN.RLCT.lintegral_lt_top_of_finset_cover
+#print axioms DLNFibre.DLN.RLCT.lintegral_lt_top_of_finite_cover
