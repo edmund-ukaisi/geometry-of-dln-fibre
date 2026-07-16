@@ -31,9 +31,12 @@
 >   `volume_preserving_piFinSuccAbove`, `volume_measurePreserving_arrowProdEquivProdArrow`,
 >   `setLIntegral_prod_symm`, `PiLp.volume_preserving_ofLp`, `EuclideanSpace.real_norm_sq_eq`);
 >   `RouteMSJEdgeScalar.scaledRadialEuclid_lt_top`.
-> - **Deferred.** this is R2 in isolation (fixed `v ≠ 0`). The `{v=0}` sub-locus is NOT an R2 case — the
->   assembly disposes it via the reduced chain (satred). The OUTER integrability of the `|v j₀|^{−a}`
->   constant over the reduced params (edgebrick: adaptive-pivot `j₀ = argmax|vⱼ|`, `a ≤ codim{v=0}`) is an
->   assembly-level (P2/L3/W2) obligation, not R2. The full `edge_coupledBox_lt_top` remains (see thread.md).
+> - **Deferred.** this is R2 in isolation (fixed `v ≠ 0`). **Scope (satred recalibration):** R2 is the
+>   `a < u` SHORTCUT — its exposed `|v j₀|^{−a}` constant integrates over the assembly only when `a < u`
+>   (127/286 edge cells). For `a ≥ u` (159/286) the `v→0` locus (`ω ∈ ker Q_p`, positive-codim) makes
+>   `∫|v j₀|^{−a} ~ ∫_{ℝ^u}‖x‖^{−a}` DIVERGE, and the reduced chain does NOT dispose it — so R2-alone is
+>   lossy there. The assembly's UNIFORM closer is the `u=rs` route (P2), which handles all `v` without
+>   `‖v‖^{−a}`. The full `edge_coupledBox_lt_top` (P2 uniform closer + L3 δ-fold + W2 IH + R3 + the wiring)
+>   remains — see thread.md.
 > - **Status.** sorry-free; axiom-clean `[propext, Classical.choice, Quot.sound]` (all four, force-recompiled
 >   `#print axioms`).

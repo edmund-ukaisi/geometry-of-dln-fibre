@@ -26,23 +26,40 @@ both dissolved — dbuild's `rightMulₚ`-over-pi pattern generalises, and `Meas
 column-peel) + its apply-readback both close by `.comp` / `rfl`. No `map_linearMap_addHaar` over
 `Matrix.module`; the whole CoV is native over the raw pi type.
 
-## The banked edge map (edgeasm's, updated) — what remains for the full `edge_coupledBox_lt_top`
+## The banked edge map — what remains for the full `edge_coupledBox_lt_top`
 
-R1 (FreeBilinear) banked · P1 (Γ polar) banked · **R2 (C-shift) LANDED this tide** · P3
-(scaledRadialEuclid) banked · L1/L2 (σ-log, δ-fold) banked. Remaining, all **medium** with atoms in hand:
+**RECALIBRATION (satred, decorrelated scan — supersedes the earlier "P2 collapsed" framing).** R2's
+exposed `|v_{j₀}|^{−a}` constant does NOT integrate over the assembly near `v→0` when `a ≥ u`
+(`v = Q̃ₚ·ω ≈ Q_p·ω`; `ω ∈ ker Q_p` is a positive-codim sub-locus where `Q_p·ω` fills `ℝ^u` with bounded
+density, so `∫|v_{j₀}|^{−a} ~ ∫_{ℝ^u}‖x‖^{−a}` — finite iff `a<u`, DIVERGES if `a≥u`). Exact edge-cell
+scan: **159/286 cells have `a≥u`**. So the reduced chain does NOT dispose `v→0` for those — R2-alone is
+LOSSY there. Consequence:
+
+- **R2 (LANDED this tide) is the `a<u` SHORTCUT** (127/286 cells): where `a<u`, `|v_{j₀}|^{−a}` integrates
+  and R2 gives the cleaner no-log bound.
+- **The UNIFORM assembly closer is the `u=rs` route** (edgeasm's original P2 / edgebrick's `H_p` /
+  corneradj Step E) — handles ALL `v` incl. `v→0` WITHOUT `‖v‖^{−a}`, gives `W^{a/2−c'}·log(1/W)`
+  δ-folded. **`u=rs`/P2 is UN-retired; it is the primary closer, not R2.** (No wall — u=rs is
+  established/uniform/medium.)
+
+R1 (FreeBilinear) banked · P1 (Γ polar) banked · P3 (scaledRadialEuclid) banked · L1/L2 (σ-log, δ-fold)
+banked. Remaining, all **medium** with atoms in hand:
 
 | Step | Content | Status |
 |---|---|---|
-| P2 | coupling → log: satred COLLAPSED this into P3 + δ-fold (the log is `scaledRadialEuclid` at the critical exponent `c'=a/2`, σ-independent / β-invariant — R2 absorbs σ). No separate `u=rs` CoV for the generic edge. | atoms in hand (P3 + `one_add_log_inv_le_rpow`) |
-| L3 | 2D-leaf δ-bound: `scaledRadialEuclid_eq` gives `W^{a/2−c'}` for `c'>a/2`; at the `c'=a/2` tie it is `≍ log(1/W)`, δ-folded via banked `one_add_log_inv_le_rpow` → `W^{−δ}`. | medium |
+| **P2 (u=rs)** | **THE UNIFORM CLOSER.** `∫_{σ,γ}(W+‖η_C+σγ‖²)^{−c'} ≤ C·W^{a/2−c'}·(1+log)`, uniform in the C-shift `η_C`; σ-γ decoupled by `u=σ·r` (`r^{a−1}·s^{−1}` → `sigmaLog × scaledRadialEuclid`), δ-folded via `one_add_log_inv_le_rpow`. Self-contained network-free lemma (`edge_uniform_urs_bound`) — exact statement pending satred. | NEXT (atoms in hand: scaledRadialEuclid + sigmaLog_integral + one_add_log_inv_le_rpow + polar) |
+| L3 | 2D-leaf δ-bound: the P2 log δ-folded into `c'→c'+δ` on the IH's open range → `≤ C_δ·W^{−(c'−a/2+δ)}`. | medium (folds into P2 output) |
 | W1 | `W = frobSq(P·Q̃ₚ)+transverse` constant over the C/σ/γ integration | satred-verified (algebraic) |
 | W2 | **SINGLE**-chain (satred, verified 0/377): reduce to `redChain u M` at exponent `c'−ab/2+δ`; finiteness via banked cut-soundness `sjChargeBudget_le` (`RouteMSJResolution` — `minAdm M ≤ (M₀−u)(M₁−u) + minAdm(redChain u M)`); one arity−1 IH call. **No u'-cut multi-chain at the edge.** | medium (1 IH call + 1 banked lemma) |
 | R3 | `b≥2`: `(b−1)`-block minor chart, bounded Gram-det Jacobian (satred). `b=1` skips it. | bounded (b=1 first) |
 
 **The assembly wiring** (`coupledBoxIntegrand` → `freedSchurLoss` → R1 corank-one peel → P1 polar →
-the `‖C·v+β‖²` form R2 consumes) is the connective tissue between the banked atoms and R2, and is itself
-a substantial (medium) step. R2 (this tide) is the clean interface between that wiring and the radial
-engine — it takes the localized `(W+‖(of C)·v+β‖²)^{−c'}` box integral and returns `K·W^{a/2−c'}·B`.
+the `(W+‖η_C+σγ‖²)^{−c'}` form P2 consumes) is the connective tissue between the banked atoms and the
+closers, and is itself a substantial (medium) def-heavy step.
+
+**dbuild's KILL-guard (banked).** The tie-log is FOLDED (`c'→c'+δ` on the IH's open range via
+`one_add_sigmaLog_le_rpow`), never COUNTED — the top-level deliverable stays a `< ⊤`/threshold/VALUE claim
+(finiteness for `c' < ½·minAdm`), NEVER an order-of-pole or multiplicity `m` claim (D-cert guard iv).
 
 ## Two assembly-level obligations R2 does NOT carry (by design; consultant-confirmed)
 
