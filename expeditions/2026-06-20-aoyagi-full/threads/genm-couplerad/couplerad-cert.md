@@ -733,11 +733,16 @@ E-recursion" was an artifact of the WRONG decomposition (the A-ROW-peel via `det
   det(R)²·det((Q·S)(Q·S)ᵀ)` and `det(R)² = det(RRᵀ) = det(A·Aᵀ)` (since `QQᵀ=I_b`), so
   `det((A·S)(A·S)ᵀ)^{−a/2} = det(A·Aᵀ)^{−a/2}·det((Q·S)(Q·S)ᵀ)^{−a/2}`. Integrate `S`:
   `= det(A·Aᵀ)^{−a/2}·C(Q)`, `C(Q) = ∫_S det((Q·S)(Q·S)ᵀ)^{−a/2} dS`. **`C(Q)` is FINITE iff `a+b ≤ n`** (the
-  `b`-row Wishart on the box; `Q·S` is `b×n`) and **BOUNDED uniformly over orthonormal-row `Q`** (the columns
-  `Q·s_j` have a density bounded uniformly over `Q` — orthonormal `Q` ⟹ the projected-box density is uniformly
-  bounded; equivalently `C` continuous on the compact Stiefel). (Verified: `I(A)·det(AAᵀ)^{a/2}` flat across
-  well- and ill-conditioned `A`, `couplerad_Dclean.py`.) So the `g`-scaling schurB asked for is exactly
-  **`det(A·Aᵀ)^{−a/2}`** — clean, NOT the pseudo-det/`Z`-charge (the row-peel artifact).
+  `b`-row Wishart on the box; `Q·S` is `b×n`) and **uniformly BOUNDED (two-sided) over orthonormal-row `Q`**.
+  ⚠ `C(Q)` is **NOT a single `Q`-independent constant** — Codex (decorrelated) exhibits `b=1,M₂=2,n=2,a=1`:
+  `C(q₁)=32 log(1+√2)≈28.20` vs `C(q₂)≈33.64` (the box is not rotation-invariant). What holds (and suffices)
+  is `ℓ^n·K_{1/2} ≤ C(Q) ≤ L^n·K_{√M₂}` via the **projected-box DENSITY bound**: the pushforward density
+  `f_Q(x) = 𝓗^{M₂−b}([−1,1]^{M₂} ∩ {s : Qs = x})` satisfies `f_Q ≤ L_{M₂,b} = ω_{M₂−b}·M₂^{(M₂−b)/2}` uniformly
+  over `Q` (each fibre lies in a `(M₂−b)`-ball of radius `√M₂`; `√det(QQᵀ)=1`), and `≥ ℓ_{M₂,b}` near `0`.
+  This DENSITY estimate — NOT Stiefel-compactness — is the Lean route to uniformity. (Verified numerically:
+  `I(A)·det(AAᵀ)^{a/2}` bounded across well- and ill-conditioned `A`, spread = the `Q`-dependence,
+  `couplerad_Dclean.py`.) So the `g`-scaling schurB asked for is exactly **`det(A·Aᵀ)^{−a/2}`** — clean, NOT
+  the pseudo-det/`Z`-charge (the row-peel artifact); the `C(Q)` factor is a bounded orientation constant.
 - **OUTER:** `∫_{A ∈ box} det(A·Aᵀ)^{−a/2} dA < ⊤` iff `a+b ≤ M₂` — this IS **schurB's `detGram_lintegral`**
   (the corank / `∫ det(XXᵀ)^{−a/2}` weight).
 - **COMBINED:** `a+b ≤ n` (inner) ∧ `a+b ≤ M₂` (outer) ⟺ `a+b ≤ min(M₂,n) = ρ`. Sharp (verified: in-scope
@@ -757,7 +762,15 @@ Gram–Schmidt of rows — Mathlib `gramSchmidt`); (2) `det(A·SSᵀ·Aᵀ) = de
 dS ≤ C` (a `Q`-uniform `b`-row Wishart-on-box bound — schurB's `det_gram_cons` + the b=1 slab, with the
 projected-box density bound for uniformity); (5) OUTER = `detGram_lintegral` (banked). This closes `(2,5,4)`
 and all b≥2 `a+b ≤ ρ`. **(D) is NOT a hard coupled recursion — it's (C) with `det(AAᵀ)^{−a/2}` for `‖A‖^{−1}`.**
-[Decorrelated Codex on the clean-vs-coupled verdict: `codex/couplerad2-{prompt,answer}.md` — fold in when it lands.]
+
+**Decorrelated Codex (`codex/couplerad2-{prompt,answer}.md`, self-contained, my conclusion withheld) — CONCURS,
+"all statements proved, not conjectured": VERDICT CLEAN two-step, no singular-value coupling, no recursion.**
+Independently derived the identity `det((AS)(AS)ᵀ) = det(AAᵀ)·det((QS)(QS)ᵀ)`, `I(A)=det(AAᵀ)^{−a/2}C(Q)`
+("all singular values enter only through `det(AAᵀ)`; no condition-number dependence"), the density-bound
+uniformity (the `C(Q)`-nonconstant counterexample is Codex's), the `det_gram_cons`/Gram–Schmidt integrability
+lemma (`det(YYᵀ)=∏dist², a<N−b+1`, no Cauchy–Binet), and the **`iff`** threshold `a+b ≤ min(M₂,n)` WITH
+NECESSITY (inner fails ⟹ `I(A)=∞ ∀` full-rank `A`; outer fails ⟹ the uniform `C(Q)` lower bound blocks
+compensation). So `a+b ≤ ρ` is sharp both ways.
 
 ---
 
