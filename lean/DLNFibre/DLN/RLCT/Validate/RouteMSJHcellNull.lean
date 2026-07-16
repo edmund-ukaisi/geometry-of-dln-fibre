@@ -115,10 +115,12 @@ FOUR arms keyed on the decidable `(a+b vs deepTailMin) × (b vs 1)` regime — E
 `Nat.sub_le_sub_left` monotonicity — corankrec's deep-corank-empty scan: NO `a+b ≥ deepTailMin+2` regime),
 so `a+b ≤ deepTailMin` (interior) ∪ `a+b = deepTailMin+1` (edge) is a trichotomy split, and `b ≥ 1`
 (from `hj`) makes `b = 1` ∪ `b ≥ 2` the other axis. Each arm is a NAMED hole, closed by its piece as it
-lands: `h_int_b1` ← charge-factoring (`frontChargeIntegrand_eq_charge_mul_loss`) + `chargeFreeBox_b1a1` +
-the uniform-`frontLossIntegral` bound (couplerad); `h_int_b2` ← the (D)/slabD `chargeFreeBox_of_inner`;
-`h_edge_b1` ← edgered's corank-one edge brick; `h_edge_b2` ← R3 (couplerad). Banks the dispatch STRUCTURE
-sorry-free over the atlas. -/
+lands: `h_int_b1` ← charge-factoring (`frontChargeIntegrand_eq_charge_mul_loss`) + the COUPLED
+`∫_{z,A_cor} charge·frontLossIntegral < ⊤` boundary estimate (couplerad §w3-interior ★5 — NOT a factored
+uniform-loss bound; `frontLossIntegral p` blows up at the loss-degeneracy locus but is `p`-integrable
+against the bounded charge); `h_int_b2` ← the same coupled estimate with slabD's `corankSlabD_charge_sint_le`
+via `chargeFreeBox_of_inner`; `h_edge_b1` ← edgered's corank-one edge brick; `h_edge_b2` ← R3 (couplerad).
+Banks the dispatch STRUCTURE sorry-free over the atlas. -/
 theorem coupledBox_cell_generic_of_bsplit (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (c' : ℝ)
     (ht1 : t + 1 ≤ min (M 0) (M 1))
     (hbind : minAdm M = peelCharge M t + minAdm (redChain t M))
@@ -178,9 +180,11 @@ theorem coupledBox_cell_lt_top_of_bsplit (M : Fin (L + 1 + 1 + 1) → ℕ) (t : 
 (`routeMBoxThresholdFinite_of_coupled_generic`): `RouteMBoxThresholdFinite M` holds given `hG1` (tpeel),
 `hbdryShell` (saturated shell `j=r`), and the FOUR named regime arms per interior shell `j<r`
 {interior-b1, interior-b≥2, edge-b1, edge-b≥2}. Each arm is a direct hole — it closes to unconditional as
-its piece lands: `h_int_b1` ← charge-factoring + `chargeFreeBox_b1a1` + uniform `frontLossIntegral`;
-`h_int_b2` ← slabD's `corankSlabD_charge_sint_le` via `chargeFreeBox_of_inner`; `h_edge_b1` ← edgered's
-corank-one brick; `h_edge_b2` ← R3. Null cells are discharged internally (deficient → `∫ = 0`). This is
+its piece lands: `h_int_b1` ← charge-factoring + the coupled `∫_p charge·frontLossIntegral` boundary
+estimate (couplerad §w3-interior ★5, chargeFreeBox_b1a1 the b=1 charge leg — NOT a factored uniform-loss
+bound); `h_int_b2` ← the same coupled estimate with slabD's `corankSlabD_charge_sint_le` via
+`chargeFreeBox_of_inner`; `h_edge_b1` ← edgered's corank-one brick; `h_edge_b2` ← R3. Null cells are
+discharged internally (deficient → `∫ = 0`). This is
 the coupled-route `(□)` at its finest granularity — the whole atlas structure banked, four honest holes. -/
 theorem routeMBoxThresholdFinite_of_coupled_bsplit
     (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ε : ℝ)
