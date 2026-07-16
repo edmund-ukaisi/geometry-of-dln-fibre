@@ -223,6 +223,21 @@ IH at the coherent-unit merge** (it has the exact `Q̃ₚ↔qbox` dims + the mer
 `gammaAtom_aniso_shifted_eq` (C-integral) + `qbox_lintegral_lt_top` (reduced-Gram), and the bookkeeping is
 the marginal-at-edge (`a=ρ−b+1`) `δ`-fold + the IH. No further pen-and-paper design; the route is banked.
 
+**Dim-matching refined (edgered caution + reliable ℕ scan) — qbox is per-LEVEL; the pivot-Gram folds into
+the reduced chain's RECURSIVE IH, not a one-shot.** edgered's Explore flagged: `qbox`'s `a<q−b+1` for the
+CORANK Gram `det(Q_bQ_bᵀ)` at edge dims is `a<a`=FALSE (the trap — why the coupled route is mandatory; do
+NOT cite qbox for the corank block). For MY a≥u accounting the Gram is the PIVOT `det(Q̃ₚQ̃ₚᵀ)^{−a/2}`
+(full-rank, safe), disposed at the REDUCED level. Reliable ℕ scan (283 a≥u edge cells, widths≤7): the naive
+single-level qbox `a < q−u+1` is STRICT for only **209/283** (`q=M₂`, `=M₃`, `=M₂+M₃` all 209; `q=min(M₂,M₃)`
+169; `q=ρ` 123) — 74 cells are marginal (e.g. `(3,2,2,2)@u=1`: `a=2, M₂−u+1=2`, fails). **So the pivot-Gram
+charge is NOT closed by qbox at a single reduced level; it folds into the reduced chain's FULL recursive IH**
+(qbox is the per-level SHAPE; the marginal-`q` cells recurse one more level within `redChain u M`, where the
+dims become strict — exactly the arity recursion). Finiteness is guaranteed (⊆RMBTF(M)); the mechanism is
+the reduced-chain recursion, its natural home the coherent-unit merge. **Net: cite qbox as the per-level
+pivot-Gram atom, but drive it by the reduced-chain IH/recursion (NOT a one-shot qbox), and NEVER cite qbox
+for the corank `Q_b` block at the edge (`a=q−b+1` trap).** This is the final dim-matching care-point for the
+merge.
+
 ## 4. Part 3 — Lean-friendly design
 
 **Object / target.** `∫_p coupledBoxIntegrand M u c' p < ⊤` per-exponent for `c' < ½·minAdm M`
