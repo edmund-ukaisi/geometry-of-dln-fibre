@@ -28,28 +28,40 @@ column-peel) + its apply-readback both close by `.comp` / `rfl`. No `map_linearM
 
 ## The banked edge map — what remains for the full `edge_coupledBox_lt_top`
 
-**RECALIBRATION (satred, decorrelated scan — supersedes the earlier "P2 collapsed" framing).** R2's
-exposed `|v_{j₀}|^{−a}` constant does NOT integrate over the assembly near `v→0` when `a ≥ u`
-(`v = Q̃ₚ·ω ≈ Q_p·ω`; `ω ∈ ker Q_p` is a positive-codim sub-locus where `Q_p·ω` fills `ℝ^u` with bounded
-density, so `∫|v_{j₀}|^{−a} ~ ∫_{ℝ^u}‖x‖^{−a}` — finite iff `a<u`, DIVERGES if `a≥u`). Exact edge-cell
-scan: **159/286 cells have `a≥u`**. So the reduced chain does NOT dispose `v→0` for those — R2-alone is
-LOSSY there. Consequence:
+**STATUS (satred, VERIFIED after churn — definitive; a≥u being consolidated into the D-cert as single
+source of truth).** The reliable core:
 
-- **R2 (LANDED this tide) is the `a<u` SHORTCUT** (127/286 cells): where `a<u`, `|v_{j₀}|^{−a}` integrates
-  and R2 gives the cleaner no-log bound.
-- **The UNIFORM assembly closer is the `u=rs` route** (edgeasm's original P2 / edgebrick's `H_p` /
-  corneradj Step E) — handles ALL `v` incl. `v→0` WITHOUT `‖v‖^{−a}`, gives `W^{a/2−c'}·log(1/W)`
-  δ-folded. **`u=rs`/P2 is UN-retired; it is the primary closer, not R2.** (No wall — u=rs is
-  established/uniform/medium.)
+1. **The corner is FINITE, RLCT `= ½minAdm(M)`, NO wall** (`⊆ RMBTF(M)|_chart` + sublevel-volume).
+2. **R2 (`edge_C_shift_bound`) + `edge_leaf_gamma_bound` (both LANDED) are CORRECT bricks** — β-invariant,
+   σ-independent, δ-free, giving the FULL `ab/2` charge `W^{a/2−c'}` in the open window `c' > (M₀−u)(M₁−u)/2`.
+3. **PRECISION (reviewer+Codex):** the FULL-SPACE `scaledRadialEuclid = W^{a/2−c'}·B` DIVERGES at `c'=a/2`
+   (`B = ∫_{ℝ^a}(1+‖s‖²)^{−c'} = +∞` for `a=2c'`), it does NOT `≍ log(1/W)`. The tie-log is a
+   BOUNDED/cutoff-radial property, not this full-space comparator; the open window excludes `c'=a/2`, so
+   `edge_leaf_gamma_bound` gives a finite RHS throughout. (This corroborates: the log ≠ R2/scaledRadialEuclid.)
+
+**The edge splits by `a` vs `u` (`a=M₀−u`, `u+1`=pivot columns):**
+- **`a < u`: CLEAN network-free leaf, fully GO with what's LANDED.** Close = `edge_leaf_gamma_bound` →
+  `|v_{j₀}|^{−a}`-disposal (finite iff `a<u`: `v=Q̃ₚ·ω`, `Q̃ₚ` has a kernel, `‖v‖~dist` to a codim-`u`
+  locus ⟹ `∫_ω‖v‖^{−a}<⊤ ⟺ a<u` = `corner_block_lintegral_lt_top`, `g=‖·‖²`, `c'=a/2`, `N=u` — verified
+  by satred, citation STANDS) → arity−1 IH on `redChain u M` (strict range, `sjChargeBudget_le`). δ-fold
+  only at `c'=ab/2` (bounded-radial, W2).
+- **`a ≥ u`: satred's design DONE (D-cert §3bis @38ae38662).** Keep the transverse; CoV `Y = C·Q̃ₚ` gives
+  `∫_C(W+frobSq(C·Q̃ₚ+γ⊗Q_b))^{−c'}dC = det(Q̃ₚQ̃ₚᵀ)^{−a/2}·(W+‖M0⊥‖²)^{au/2−c'}·B` — charge `au/2`, NO
+  `‖v‖^{−a}` (so a≥u is fine).
+  **KEY (this thread): that C-integral IS the LANDED `RouteMSJGammaAtom.gammaAtom_aniso_shifted_eq`** with
+  `R=Q̃ₚ` (`q=u`), `S=γ⊗Q_b`, `p=a` — `det(RRᵀ)^{−p/2}·Cresid(pq)·(w+‖S(I−P_R)‖²)^{−(c'−pq/2)}` matches
+  term-for-term (needs `Q̃ₚQ̃ₚᵀ` PosDef = generic full-row-rank edge). So the hard a≥u C-integral is BANKED;
+  the ONLY open piece is satred's reduced-chain ACCOUNTING (that `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` + σ,γ integrate over
+  the reduced chain to `½minAdm M` — plausibly the IH's leading-Gram, likely an assembly-level treatment).
 
 R1 (FreeBilinear) banked · P1 (Γ polar) banked · P3 (scaledRadialEuclid) banked · L1/L2 (σ-log, δ-fold)
-banked. Remaining, all **medium** with atoms in hand:
+banked. Remaining:
 
 | Step | Content | Status |
 |---|---|---|
-| **P2 (u=rs)** | **THE UNIFORM CLOSER.** `∫_{σ,γ}(W+‖η_C+σγ‖²)^{−c'} ≤ C·W^{a/2−c'}·(1+log)`, uniform in the C-shift `η_C`; σ-γ decoupled by `u=σ·r` (`r^{a−1}·s^{−1}` → `sigmaLog × scaledRadialEuclid`), δ-folded via `one_add_log_inv_le_rpow`. Self-contained network-free lemma (`edge_uniform_urs_bound`) — exact statement pending satred. | NEXT (atoms in hand: scaledRadialEuclid + sigmaLog_integral + one_add_log_inv_le_rpow + polar) |
-| L3 | 2D-leaf δ-bound: the P2 log δ-folded into `c'→c'+δ` on the IH's open range → `≤ C_δ·W^{−(c'−a/2+δ)}`. | medium (folds into P2 output) |
-| W1 | `W = frobSq(P·Q̃ₚ)+transverse` constant over the C/σ/γ integration | satred-verified (algebraic) |
+| a<u disposal wiring | `edge_leaf_gamma_bound` → `corner_block` (a<u) → IH on `redChain u M`. All atoms LANDED; the wiring instantiates them (assembly-level: `v=Q̃ₚ·ω`, `W=frobSq(P·Q̃ₚ)`). | atoms in hand — assembly wiring |
+| a≥u fuller lemma | transverse-kept C-integral. | satred design pass (D-cert) |
+| W1 | `W = frobSq(P·Q̃ₚ)` constant over the C/γ integration | satred-verified (algebraic) |
 | W2 | **SINGLE**-chain (satred, verified 0/377): reduce to `redChain u M` at exponent `c'−ab/2+δ`; finiteness via banked cut-soundness `sjChargeBudget_le` (`RouteMSJResolution` — `minAdm M ≤ (M₀−u)(M₁−u) + minAdm(redChain u M)`); one arity−1 IH call. **No u'-cut multi-chain at the edge.** | medium (1 IH call + 1 banked lemma) |
 | R3 | `b≥2`: `(b−1)`-block minor chart, bounded Gram-det Jacobian (satred). `b=1` skips it. | bounded (b=1 first) |
 
