@@ -476,6 +476,42 @@ transverse-Schur `E_tr`). **Exponent shift `δ = 0`.** The one thing to nail in 
 in raw coordinates (it is the pivot block the loss recursion already keeps order-1 — reuse that pivot, don't
 re-derive spectrally).
 
+### w3-percorank addendum — the `b≥2` det-monotone, NON-SPECTRALLY (schurrec's snag)
+
+*The Loewner det-monotone `0 ⪯ Y ⪯ X ⟹ det Y ≤ det X` is not in Mathlib v4.29, and its textbook proof is
+spectral (`det = ∏ eigenvalues`), hitting the D-C `IsHermitian.eigenvalues` whnf trap. A non-spectral proof
++ a cleaner reduction, so `b≥2` (e.g. `(3,4,5,4)`, `b=2`) dodges the trap.*
+
+**Cleaner reduction — drop columns, no spectral `G₁`.** `Q_b` is `b×n` with columns `q_1,…,q_n ∈ ℝ^b`, so
+`Q_bQ_bᵀ = Σ_{c=1}^n q_c q_cᵀ`. Pick `b` order-1 columns `κ'` (the pivot columns), `M := Q_b[:,κ']` (`b×b`).
+Then `Q_bQ_bᵀ − M·Mᵀ = Σ_{c∉κ'} q_c q_cᵀ ⪰ 0` (a sum of rank-1 PSD outer products — ELEMENTARY, no Schur, no
+spectrum), i.e. **`Q_bQ_bᵀ ⪰ M·Mᵀ`**. With det-monotone: `det(Q_bQ_bᵀ) ≥ det(M·Mᵀ) = det(M)²`, and `det(M) ≠ 0`
+a.e. (hGae: `M` = a `b×b` minor of `Q_b = A_cor·Z_deep`, nonzero a.e. when the `b` columns are order-1). So
+the charge `det(Q_bQ_bᵀ)^{−a/2} ≤ |det M|^{−a}`, and `∫_{A_cor} |det M|^{−a}` is the `b`-general corank-survival
+integral (finite via rankgen `a+b ≤ ρ−1`). This makes `G₁` a RAW `b×b` minor's Gram — no rank-`t`
+reconstruction, no projection.
+
+**The det-monotone, non-spectrally (induction on `b` via the Schur complement).** `0 ⪯ Y ⪯ X` (`b×b` sym) ⟹
+`det Y ≤ det X`:
+- `b=1`: scalars `0 ≤ y ≤ x`. ✓ (this is all `b=1` needs — no det lemma at all).
+- `b→`: if `det Y = 0`, done (`det X ≥ 0`). Else `Y ≻ 0` (so `X ≻ 0`, `X',Y' ≻ 0`). Block on the last
+  coordinate `X = [[X',p],[pᵀ,α]]`, `Y = [[Y',q],[qᵀ,β]]`. Then (a) `X' ⪰ Y' ⪰ 0` (principal submatrix:
+  `vᵀX'v = [v;0]ᵀX[v;0] ≥ [v;0]ᵀY[v;0]`); (b) `det_fromBlocks₁₁`: `det X = det X'·(α − pᵀX'⁻¹p)`,
+  `det Y = det Y'·(β − qᵀY'⁻¹q)`; (c) the Schur complements are monotone by the VARIATIONAL identity
+  `α − pᵀX'⁻¹p = min_{w} [w;1]ᵀ X [w;1]` (complete the square; minimiser `w=−X'⁻¹p`), and `[w;1]ᵀX[w;1] ≥
+  [w;1]ᵀY[w;1] ∀w` (Loewner pointwise) ⟹ `min_w(X) ≥ min_w(Y)` (min of a pointwise-larger function:
+  `min f_X = f_X(w_X^*) ≥ f_Y(w_X^*) ≥ min f_Y`); (d) induction `det X' ≥ det Y'`, all factors `≥ 0` ⟹
+  `det X = det X'·Schur(X) ≥ det Y'·Schur(Y) = det Y`. ∎
+  Consumes: `Matrix.det_fromBlocks₁₁` (banked), completing-the-square min (elementary), principal-submatrix
+  Loewner (elementary), induction. **NO eigenvalues** — dodges the whnf trap. (Equivalent packaging: this IS
+  Minkowski's determinant inequality proved via Schur complements rather than majorisation.)
+
+**So for schurrec:** `b=1` is fully elementary (scalar `‖A_cor·Z_deep‖² ≥ (A_cor·v)²` for `v` an order-1
+column, no det lemma) — banks `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`. For `b≥2`, prove the non-spectral
+det-monotone ONCE (reusable), then `det(Q_bQ_bᵀ) ≥ det(M)²` via the drop-columns `⪰`. `G₁ = M·Mᵀ` (raw
+`b×b` minor Gram), NOT the `t×t` pivot Gram directly; hGae gives `det M ≠ 0` a.e. when the chart keeps `≥ b`
+order-1 columns (holds along the binding ray, verified). The plan (b=1 first, then b≥2) is SOUND.
+
 ---
 
 ## 8. Route recommendation (controller Q) — RECOMMEND the non-square corank recursion (Route A) over the chain-length-IH (Route B)
