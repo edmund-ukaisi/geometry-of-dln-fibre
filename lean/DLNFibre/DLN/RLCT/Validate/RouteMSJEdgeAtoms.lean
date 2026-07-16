@@ -1,6 +1,7 @@
 import Mathlib.LinearAlgebra.Matrix.DotProduct
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.Analysis.SpecialFunctions.JapaneseBracket
 
 set_option linter.style.longLine false
 
@@ -30,7 +31,8 @@ dependency) and reusable:
 
 namespace DLNFibre.DLN.RLCT
 
-open scoped BigOperators
+open MeasureTheory
+open scoped BigOperators ENNReal
 
 /-! ## Atom 1 — the C-non-degeneracy surjectivity -/
 
@@ -92,6 +94,31 @@ theorem one_le_rpow_neg_of_le_one {τ δ : ℝ} (hτ0 : 0 < τ) (hτ1 : τ ≤ 1
   have hτ0' : (0 : ℝ) ≤ τ := le_of_lt hτ0
   rw [Real.rpow_neg hτ0', ← Real.inv_rpow hτ0']
   exact Real.one_le_rpow ((one_le_inv₀ hτ0).mpr hτ1) hδ
+
+/-! ## Atom 2 — the 1D radial `∫(1+t²)^{−p}` (the coupled radial leaf after the `u = xy` sub) -/
+
+/-- **The 1D radial integral is finite for `p > 1/2`.** `∫⁻_ℝ (1+t²)^{−p} dt < ⊤`. This is the single
+coupled radial variable `u` (satred's atom 2) the corank-one 2D model factors into after the `u = xy`
+substitution — NOT the full 2D integral, one variable. Finite exactly when `p > 1/2` (the `‖·‖ₑ` tail
+`t^{−2p}` integrable ⟺ `2p > 1`). Via Mathlib's Japanese-bracket
+`integrable_rpow_neg_one_add_norm_sq` at `E = ℝ` (`finrank = 1 < 2p`), pushing the Bochner integrability
+to the `∫⁻ ofReal` finiteness (`ofReal ≤ ‖·‖ₑ`). The scaled form `∫(w+u²)^{−p} = w^{1/2−p}·(this)` (sub
+`u = √w·t`) supplies the `w^{1/2−p}` pivot-energy dependence in the edge assembly. -/
+theorem radial1D_lintegral_lt_top {p : ℝ} (hp : 1 / 2 < p) :
+    ∫⁻ t : ℝ, ENNReal.ofReal ((1 + t ^ 2) ^ (-p)) < ⊤ := by
+  have hr : (Module.finrank ℝ ℝ : ℝ) < 2 * p := by
+    rw [Module.finrank_self]; push_cast; linarith
+  have hint : Integrable (fun x : ℝ => ((1 : ℝ) + ‖x‖ ^ 2) ^ (-(2 * p) / 2)) :=
+    integrable_rpow_neg_one_add_norm_sq hr
+  have hfun : (fun x : ℝ => ((1 : ℝ) + ‖x‖ ^ 2) ^ (-(2 * p) / 2))
+      = (fun t : ℝ => (1 + t ^ 2) ^ (-p)) := by
+    funext x
+    rw [Real.norm_eq_abs, sq_abs, show (-(2 * p) / 2) = -p from by ring]
+  rw [hfun] at hint
+  have hfin : ∫⁻ t : ℝ, ‖(1 + t ^ 2) ^ (-p)‖ₑ < ⊤ := by
+    rw [← hasFiniteIntegral_iff_enorm]; exact hint.hasFiniteIntegral
+  refine lt_of_le_of_lt (lintegral_mono (fun t => ?_)) hfin
+  exact Real.ofReal_le_enorm _
 
 /-! ## Atom 3 — the σ-radial log (the cut-off `1/σ` integral producing the corank-one log) -/
 
