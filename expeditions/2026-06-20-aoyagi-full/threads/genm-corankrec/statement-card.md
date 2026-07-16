@@ -38,15 +38,23 @@ LAST substantive analytic content of the arity≥4 `(□)` discharge. Route A (c
 >   monomial resolution reaching the floor `minAdm((u,)+deep) ≥ 2·T1q`. Decomposition (couplerad §2,
 >   the roadmap; see `thread.md`): Stage A raw pivot/Schur split (NEW, raw-pi CoV — the `Matrix.module`
 >   diamond) → Move 1 y-Morse peel (banked atom A `radial_morse_residual_power_le` / `core_T_peel_le`) →
->   Move 2 lost-block bilinear corank recursion (banked square `routeMBoxThresholdFinite_rrp` /
->   `core_schurGen_lt_top` for `u=M₂=n`; NEW non-square per-corank `SchurRecStep` for `exc>0`/`u≠M₂`) +
->   the NEW charge-domination lemma (couplerad ★4 `γ^hier`; Cauchy–Binet UNAVAILABLE in v4.29 — use
->   arch1build's a.e.-PosDef `hGae` + exponent domination). The coupling (charge · loss through `Q_b`) is
->   ESSENTIAL — it does NOT factor into "charge finite × loss finite" (couplerad's whole point).
+>   Move 2 lost-block bilinear corank recursion — terminal UNIFIED (square + non-square) via schurrec's
+>   `routeMBoxThresholdFinite_mnp u M₂ n_last`, but as a CHARGED variant: the charge
+>   `det(Q_bQ_bᵀ)^{−a/2}` is threaded THROUGH the per-corank step (couplerad §w3 CORRECTION, 2026-07-16).
+>   The earlier "fold the charge into the loss at a shifted exponent onto uncharged `mnp`" plan is
+>   REFUTED — the fold under-proves on TIGHT shells (all 4 dispatch witnesses); the exact fact is
+>   `δ = 0` (charged codim = uncharged codim = floor, via CODIM not a fold: `N_loss(e) − γ^hier(e) ≥
+>   floor/2`), so the charge must live IN the corank recursion, absorbed at each rank-drop by the freed
+>   measure/Jacobian (`γ^hier ≤ freed measure`), Cauchy-Binet-FREE via `Matrix.det_fromBlocks` (NOT
+>   spectral det-monotonicity = option-2 compounding). The coupling (charge · loss through `Q_b`) is
+>   ESSENTIAL — it does NOT factor into "charge finite × loss finite" (couplerad's whole point). Full
+>   detail + the 4-piece wiring plan (w1–w4): `thread.md` §w3 CORRECTION.
 > - **Structure & ideas observed.** couplerad's cert: Route A (corank recursion) over Route B
 >   (chain-length IH, DEAD — charge compounds). SVD-free. Charge single-layer in `A_cor`. The
 >   square-first-factor `(r,r,p)` `SchurCore` is banked; only the non-square per-corank step is new.
-> - **Route.** couplerad §8 Route A + coordinator's corrections (Cauchy-Binet out, square not a freebie).
+> - **Route.** couplerad §8 Route A + corrections: Cauchy-Binet out (v4.29); square not a freebie; and
+>   couplerad §w3 (2026-07-16) — the charge is threaded THROUGH the corank recursion at δ=0 (charged
+>   `RectSchurCore`), NOT folded onto the uncharged terminal (fold refuted on the tight dispatch shells).
 > - **Status.** interface: green-gated + G2-type-witnessed + **REVIEWED (PASS, corankrec-rev)** on all
 >   four items — fidelity (token-for-token G2 match at u=t+j), scope soundness (window = exactly
 >   `0 < q < T1q`; `carrierThreshold` correctly the full-chain q-threshold), honest-sorry, and rankgen.

@@ -96,19 +96,40 @@ cover are the deferred work). That pending work IS `coupled_hfin_cell`. The piec
 **The genuinely-NEW wiring (no cheap green sub-commit — hard multi-step lemmas):**
 (w1) map `frontLossIntegrand`'s `∫_x` onto the chart-algebra + `chart4`/`chart5` H̃-fibre form, per deep-cell
 rank-flag stratum; (w2) the deep-cell (CR-path rank flag) → (ℓ,s) stratum + `chart5` big-cell dispatch;
-(w3) the NEW charge-domination lemma (couplerad ★4 `γ^hier`; via arch1build's a.e.-PosDef `hGae` + exponent
-domination — Cauchy–Binet UNAVAILABLE v4.29); (w4) the finite-cover gluing over CRIndex. Square sub-family
-(u=M₂=n) AND non-square (exc>0/u≠M₂) both land on the SAME banked terminal `routeMBoxThresholdFinite_mnp`
-(schurrec's non-square SchurRecStep was REDUNDANT — `mnp` already banks the uncharged non-square terminal;
-the charge is w3). RankGEN (`a+b+1≤ρ`): arch1build's `bindingShell_rankgen` LANDED @a176c92b8 (arity≥4,
-`NondegBindingCut` + interior `1≤j<r`); the caller fills `BindingShell.mk`'s `hrankgen` via the L-offset.
+(w3) the charge threaded THROUGH the corank recursion — a CHARGED `RectSchurCore` (see the ★ CORRECTION
+below; NOT a bolt-on fold onto the uncharged `mnp`); (w4) the finite-cover gluing over CRIndex.
+RankGEN (`a+b+1≤ρ`): arch1build's `bindingShell_rankgen` LANDED @a176c92b8 (arity≥4, `NondegBindingCut` +
+interior `1≤j<r`); the caller fills `BindingShell.mk`'s `hrankgen` via the L-offset.
 
-**NATIVE-footprint note (for the fresh tide):** the terminal `routeMBoxThresholdFinite_mnp` + its chain
+**★ w3 CORRECTION (couplerad §w3, 2026-07-16 — REFUTES the earlier "fold onto uncharged `mnp`" plan; the
+fresh tide must NOT build the folded shape).** The charge does NOT fold into the loss at a shifted exponent,
+and the terminal is NOT the uncharged `routeMBoxThresholdFinite_mnp`:
+- Pointwise `det(Q_bQ_bᵀ)^{a/2} ≥ c·frobSq^δ` is FALSE — Front ⊥ A_cor, so the charge → ∞ on
+  `{A_cor·Z_deep rank-deficient}` while the loss stays order 1; charge and loss vanish on DIFFERENT loci, no
+  loss power dominates the charge.
+- Any `δ>0` fold `det^{−a/2}·frobSq^{−q'} ≤ C·frobSq^{−(q'+δ)}` shifts the loss threshold to `½floor−δ`,
+  which UNDER-proves on TIGHT shells (`floor = 2·T1q ⟹ ½floor = T1q`, zero slack). 396/761 in-scope shells
+  are tight, INCLUDING ALL 4 dispatch witnesses ((4,4,4,4),(3,4,5,4),(5,5,5,5),(3,3,4,4)) — so a fold fails
+  on exactly the targets.
+- The exact fact (★4): charged codim = uncharged codim = floor, i.e. **exponent shift δ = 0** — the charge
+  costs the loss NOTHING, but via CODIM, not a fold. Precise: `N_loss(e) − γ^hier(e) ≥ floor/2` for every
+  ray `e`, `γ^hier(e) = max_h[a(e₁+..+e_h) − h(s−b+h)]`.
+
+⟹ **w3 = a CHARGED `RectSchurCore`** (the charge lives IN the per-corank step, not separate). Per-corank
+inequality to prove: at each rank-drop the charge exponent `a·e_h ≤` the measure/Jacobian the corank step
+already frees (`γ^hier ≤ freed measure`), absorbing at δ=0. Cauchy-Binet-FREE via the Gram Schur-complement
+det identity (`Matrix.det_fromBlocks`) along the recursion's pivots — NOT the spectral det-monotonicity bound
+(it reintroduces a `det(Z_deepZ_deepᵀ)` charge = option-2 compounding). Square case `a=b=1`:
+charge = `‖A_cor·Z_deep‖^{−1}` (concrete). ⟹ **schurrec's rect step is NOT redundant** — the terminal needs
+a CHARGED variant of `mnp` (charge in the per-corank step). Banked: `hGae` (det>0 a.e., Card 2),
+`Matrix.det_fromBlocks`, the uncharged `mnp` chain (to extend). Full detail + tightness data: couplerad cert §w3.
+
+**NATIVE-footprint note (for the fresh tide):** the uncharged `routeMBoxThresholdFinite_mnp` + its chain
 (`rectSchurRecStep_mnp`, `rectCore_schurGen_lt_top`, `schurCoreRect_capA_interior`, `schurCoreRect_directMorse`)
-are forced-`#print axioms` `[propext, Classical.choice, Quot.sound]` — NATIVE, no `sorryAx`/`cited_aoyagi_dln`/
-`monomial_rlct` (schurrec-confirmed, fresh scratch). So w1–w4 + w3 built on these + the atoms keep
-`coupled_hfin_cell` NATIVE once its `sorry` is filled — verify via a force-elaborated `#print axioms
-coupled_hfin` (must lose the lone `sorryAx`, gain nothing).
+are forced-`#print axioms` `[propext, Classical.choice, Quot.sound]` — NATIVE (schurrec-confirmed, fresh
+scratch). The CHARGED variant (w3) must preserve this — built from `det_fromBlocks` + `hGae` + the rect chain,
+all NATIVE. So once `coupled_hfin_cell`'s `sorry` is filled, verify via a force-elaborated `#print axioms
+coupled_hfin` (must lose the lone `sorryAx`, gain nothing — no `cited_aoyagi_dln`).
 
 ## Consults
 
