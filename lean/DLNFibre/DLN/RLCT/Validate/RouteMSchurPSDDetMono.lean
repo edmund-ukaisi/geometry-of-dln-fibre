@@ -193,4 +193,39 @@ theorem schurCompl_le_blockQuadForm {k : ℕ} (M : Matrix (Fin 1 ⊕ Fin k) (Fin
     have hnn : 0 ≤ d * (u + d⁻¹ * R) ^ 2 := mul_nonneg hdpos.le (sq_nonneg _)
     linarith [hid, hnn]
 
+/-! ## The Schur complement is Loewner-monotone -/
+
+/-- **Schur complement is Loewner-monotone.** If `0 ⪯ Y ⪯ X` (both PSD, `X − Y` PSD) then
+`Sc_Y ⪯ Sc_X`. Chain: `v⬝Sc_X⬝v = w*⬝X⬝w* ≥ w*⬝Y⬝w* ≥ v⬝Sc_Y⬝v` — the variational identity for `X`, then
+`X ⪰ Y` at the minimiser `w*`, then the complete-square lower bound for `Y`. Non-spectral. -/
+theorem schurCompl_loewner_mono {k : ℕ} (X Y : Matrix (Fin 1 ⊕ Fin k) (Fin 1 ⊕ Fin k) ℝ)
+    (hY : Y.PosSemidef) (hXY : (X - Y).PosSemidef) :
+    (schurCompl X - schurCompl Y).PosSemidef := by
+  have hX : X.PosSemidef := by
+    have h := hY.add hXY; rwa [show Y + (X - Y) = X from by abel] at h
+  have hsymmX : ∀ p q, X p q = X q p := fun p q => by
+    have := hX.isHermitian.apply q p; simpa using this
+  have hsymmY : ∀ p q, Y p q = Y q p := fun p q => by
+    have := hY.isHermitian.apply q p; simpa using this
+  refine Matrix.PosSemidef.of_dotProduct_mulVec_nonneg
+    ((schurCompl_isHermitian X hsymmX).sub (schurCompl_isHermitian Y hsymmY)) (fun v => ?_)
+  have hstar : (star v : Fin k → ℝ) = v := funext (fun i => star_trivial (v i))
+  rw [hstar, Matrix.sub_mulVec, dotProduct_sub]
+  set wX := Sum.elim (fun _ : Fin 1 =>
+      -(X (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, X (Sum.inl 0) (Sum.inr j) * v j)) v with hwX
+  -- variational identity for X
+  have hSX := schurCompl_quadForm_eq_blockQuadForm_min X hsymmX v
+  rw [← hwX] at hSX
+  -- lower bound for Y at the X-minimiser `wX`
+  have hSY := schurCompl_le_blockQuadForm Y hY
+    (-(X (Sum.inl 0) (Sum.inl 0))⁻¹ * (∑ j, X (Sum.inl 0) (Sum.inr j) * v j)) v
+  rw [← hwX] at hSY
+  -- `X ⪰ Y` at `wX`: `wX⬝Y⬝wX ≤ wX⬝X⬝wX`
+  have hgeq : wX ⬝ᵥ (Y *ᵥ wX) ≤ wX ⬝ᵥ (X *ᵥ wX) := by
+    have hsw : (star wX : Fin 1 ⊕ Fin k → ℝ) = wX := funext (fun i => star_trivial (wX i))
+    have := hXY.dotProduct_mulVec_nonneg wX
+    rw [hsw, Matrix.sub_mulVec, dotProduct_sub] at this
+    linarith
+  rw [hSX]; linarith [hSY, hgeq]
+
 end DLNFibre.DLN.RLCT
