@@ -976,11 +976,13 @@ at every interior cell iff
 > **`minAdm M ≤ a·b + min_ℓ φ(ℓ)`** — VERIFIED 0 fails / 12720 interior cells (`couplerad_truecond.py`).
 
 The `min_ℓ φ` RHS is strictly tighter than form A (`ab+uρ_d`) in 1158 wide-deep cells; tight (margin 0) in
-some but STRICT-safe. So the interior converges for ALL cells — no KILL. **Proof status:** the `ℓ=u` (form A)
-case has the banked 2-step proof (peel `t¹=u` → `ab + minAdm(redChain u M)`, then `minAdm_redChain_le_deepTailMin`
-≤ `ab + u·ρ_d`; corankrec `minAdm_le_u_deepTailMin_add_peelCharge` @bc9652824). The tighter intermediate-ℓ
-RHS (`ab + ρ₀ − ⌊(2u+a−d)²/4⌋`) is a NEW QIP (the ℓ-family `minAdm ≤ ab + φ(ℓ) ∀ℓ`; holds 0-fails) — routed
-to corankrec.
+some but STRICT-safe. So the interior converges for ALL cells — no KILL. **Proof — CLOSED by the landed lemma
+(no new QIP).** The RLCT condition `minAdm ≤ ab + min_ℓ φ` is certified by the MULTI-PIVOT peel family:
+peel at `t = u−ℓ` gives `minAdm M ≤ (M₀−(u−ℓ))(M₁−(u−ℓ)) + minAdm(redChain (u−ℓ) M) ≤ (a+ℓ)(b+ℓ) + (u−ℓ)·ρ_d
+=: B_ℓ` — this is EXACTLY corankrec's landed `minAdm_le_u_deepTailMin_add_peelCharge` @bc9652824 instantiated
+at pivot `u−ℓ` (valid `u−ℓ ≤ min(M₀,M₁)`). And `minAdm ≤ min_{0≤ℓ≤u} B_ℓ ≤ ab + min_ℓ φ` (both 0-fails /
+12720, `couplerad_peelfamily.py`). So the stratified QIP is closed by the ALREADY-LANDED form A applied at
+every pivot `u'∈{0..u}` — no new lemma; `min_ℓ B_ℓ` is the certificate.
 
 **★4 intloss's crude σ_min bound is NOT p-integrable (why the joint route).** `frontLossIntegral(p) ≤
 σ_min(L_p)^{−2q}·C` is tight per-p, but `σ_min(L_p)` vanishes on the codim-1 locus `{rank[Q_inl;Q_b]<u+b}`
@@ -993,11 +995,12 @@ intloss's per-p FINITENESS + rank lemma. Confirmed with intloss (its (a)+(b) are
 **★5 Opens (mostly closed).** dim `z0 = u·M₂` CONFIRMED (corankrec — z0 fully integrated; the pivot `P` is a
 separate front-block var, not a sub-block of z0). charge `z0`-INDEPENDENT CONFIRMED (`Q_inr = Q_b =
 A_cor·Z_deep`, `Z_deep` = deeper layers, no z0 → `det(Q_bQ_bᵀ)^{−a/2}` constant, no competing pole).
-width-caveat RESOLVED (single width `d`, Codex B̃-decoupling). REMAINING: (a) the intermediate-ℓ QIP
-`minAdm ≤ ab + min_ℓ φ` landed in full (corankrec — form A landed; the tighter min-φ family pending);
-(b) the RLCT rests on the **transverse-stratum criterion** (each determinantal rank-stratum's contribution
-integrable independently) — the one ASSUMED analytic step (a clean determinantal-variety RLCT, detail-at-scale,
-not a monument; Codex flagged it explicitly).
+width-caveat RESOLVED (single width `d`, Codex B̃-decoupling). QIP CLOSED (★3, multi-pivot form A — no new
+lemma). REMAINING (ONE): (b) the RLCT rests on the **transverse-stratum criterion** — that each determinantal
+rank-stratum of `Q_inl·Π` contributes to the coupled `∫_p` integrably and independently (the joint
+resolution's one assumed analytic input). This is a clean determinantal-variety RLCT (detail-at-scale, NOT a
+monument); Codex flagged it explicitly. It is the last thing between "interior converges ∀-cell (verified)"
+and a full Lean interior closure.
 
 **Decorrelated Codex (2 consults, `xhigh`, self-contained, conclusion WITHHELD): CONCUR + SHARPEN.** Consult 1
 (`codex/boundary-{prompt,answer}.md`): pole `P=2q−ub`, threshold `q<ρ₀/2`, crude-σ_min NON-integrable
