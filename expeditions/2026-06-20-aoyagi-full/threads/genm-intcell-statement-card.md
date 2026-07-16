@@ -67,6 +67,12 @@ scoped below; the atom is the leaf it consumes.
 >   the PSD Gram; the per-row-`(Q_bQ_bᵀ)^{1/2}` CoV `‖B̃Q_b‖²→‖w‖²` with Jac `det(Q_bQ_bᵀ)^{−u/2}`;
 >   Tonelli over `(E,Y)`) to `Card 1` (the ε-atom) + `rectCore_schurGen_lt_top (u+a) u d ε` (banked) +
 >   the QIP `minAdm_le_inf_pivot_qip` (banked, certifies the ε-window nonempty).
+> - **Endpoint confirmed route-agnostic (corankrec, off q2gate).** The interior arm is Q2-CLEAN and
+>   reduces **IH-FREE** to the arity-3 BASE `rectCore_schurGen_lt_top (u+a) u d ε T` — it NEVER touches the
+>   recursive plain IH. The decorated-route flip affects ONLY the saturated-waist cells (`j=r`, `u≥3`-square,
+>   decstep's arm — a separate arm, handed separately); it does not disturb the interior base or `w3-percorank
+>   A1/A2` (which aligns to the plain arity-3 RectSchurCore, unchanged). So the plain endpoint is correct for
+>   the interior regardless of the route decision.
 > - **Cited.** none intended (NATIVE — only the codim LOWER bound is used).
 > - **Deferred (NOT done).** R1, R2, Φ-Fubini, the charge-through-recursion, the per-row G^{1/2} CoV,
 >   and the Tonelli assembly. Entangled with `hsQ`/`deeperFlagZdeep`/`E_top`/`E_tr` and under active build
