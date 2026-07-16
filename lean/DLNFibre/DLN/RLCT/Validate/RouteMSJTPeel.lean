@@ -84,7 +84,7 @@ theorem ae_rank_ge {p q u : ℕ} (hu : 1 ≤ u) (hup : u ≤ p) (huq : u ≤ q) 
     have hsub : (Matrix.of W₀).submatrix er ec = (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℝ) := by
       ext i k
       rw [Matrix.submatrix_apply, Matrix.of_apply, hW₀, her, hec]
-      simp only [Fin.coe_castLE, Matrix.one_apply]
+      simp only [Fin.val_castLE, Matrix.one_apply]
       by_cases h : i = k
       · subst h; simp
       · rw [if_neg (by rw [Fin.val_inj]; exact h), if_neg h]
@@ -155,7 +155,7 @@ theorem frontBox_pivotCover_le_gen {m n u : ℕ} (hu : 1 ≤ u) (hum : u ≤ m) 
         rw [Set.mem_prod] at hin
         obtain ⟨hA0, hb⟩ := hin
         refine ⟨?_, hb⟩
-        show Matrix.rank A0 < u
+        change Matrix.rank A0 < u
         by_contra hge
         exact hnot ⟨Set.mem_inter hA0 (not_lt.mp hge), hb⟩
       have hnull : volume (({A : Matrix (Fin m) (Fin n) ℝ | A.rank < u} : Set _) ×ˢ s) = 0 := by
