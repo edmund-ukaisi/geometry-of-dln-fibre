@@ -207,6 +207,22 @@ not a pen-and-paper adjudication. Recommend the a≥u accounting be resolved WIT
 atom/decorated split), citing `gammaAtom` for the C-integral. No wall (corner ⊆ RMBTF(M)); it is the
 route-selection (atom vs decorated) for the reduced-Gram charge that is open.
 
+**RESOLVED (edgered + controller): a≥u is fully BANKED — both analytic pieces are landed lemmas, and the
+det-Gram is NOT the trap.** (1) C-integral = `gammaAtom_aniso_shifted_eq`; (2) reduced-Gram Wishart charge
+`∫ det(Q̃ₚQ̃ₚᵀ)^{−a/2}·[reduced]` = `RouteMSJQBoxCore.qbox_lintegral_lt_top` (`∫ det(gram Q)^{−a/2} < ⊤`
+iff `qbox-b ≤ qbox-q` and `a < qbox-q − qbox-b + 1`; sorry-free). So no analytic wall — the a≥u accounting
+is BOOKKEEPING over the two banked atoms + the IH. **One reliable finding for the bookkeeping (exact ℕ,
+`scripts/kill_check`-style):** at the edge, `a + b = ρ + 1 ⟹ a = ρ − b + 1` EXACTLY (283/283 a≥u edge
+cells) — so the corank-Wishart threshold `a < ρ − b + 1` is **MARGINAL at the edge** (`a = ρ−b+1`, the
+boundary), i.e. the log/`δ`-fold case, consistent with the edge being the corank-one tie. **The exact
+dim-matching (`Q̃ₚ`'s row/col-count ↔ qbox's `b`,`q`, and thus the precise `a < q−b+1` charge) is Lean-def
+level and is the assembly's natural home** — my quick matching (`n=M_last`: 209/283; `n=ρ`: 123/283) is not
+clean, which signals the effective `q` must be read from the actual `Q̃ₚ`/`qbox` correspondence, not guessed.
+**Recommendation (controller-offered): the dim-matching accounting FOLDS into the assembly's reduced-chain
+IH at the coherent-unit merge** (it has the exact `Q̃ₚ↔qbox` dims + the merge); the a≥u tide CITES
+`gammaAtom_aniso_shifted_eq` (C-integral) + `qbox_lintegral_lt_top` (reduced-Gram), and the bookkeeping is
+the marginal-at-edge (`a=ρ−b+1`) `δ`-fold + the IH. No further pen-and-paper design; the route is banked.
+
 ## 4. Part 3 — Lean-friendly design
 
 **Object / target.** `∫_p coupledBoxIntegrand M u c' p < ⊤` per-exponent for `c' < ½·minAdm M`
