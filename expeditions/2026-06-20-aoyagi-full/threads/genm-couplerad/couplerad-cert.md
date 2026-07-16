@@ -718,6 +718,42 @@ graded-log + coordinate/rowspace floors are all obviated.
 
 ---
 
+### w3-Drec — the (D) b≥2 coupled-residual E-recursion (design in progress, to bedrock; off critical path)
+
+*(D) b≥2 charge free-box `∫∫_box det((A·S)(A·S)ᵀ)^{−a/2} dA dS`, `a+b ≤ ρ`, one witness `(2,5,4)`, independent
+of the now-CLOSED b=1 (C). schurB peels via `det_gram_cons`: `charge = ∏_{i=1}^b ‖P⊥_{<i}(A_i·S)‖^{−a}`
+(`P⊥_{<i}` = projection off `span(A_1S,…,A_{i−1}S)` in `ℝ^n`). Unlike b=1, the per-step is COUPLED — this is
+the §w3-atlas power E-recursion.*
+
+**CONFIRMED structure (numerical + exact reasoning):**
+- **The per-step is COUPLED (NOT uniform).** `g(A',S) = ∫_{A_b} ‖P⊥(A_b·S)‖^{−a} dA_b` GROWS as `S`
+  degenerates (verified: `g` ~1.4–3.1× larger on near-rank-(ρ−1) `S` vs generic). So it does NOT pull out as
+  a uniform constant → NOT a clean b→b−1 induction. The b=1 clean-uniformity (C) does NOT lift to b≥2.
+- **Residual dimensions:** `P⊥_{<i}` has codim `i−1`, so dim `n−i+1`; the effective rank of `A_b ↦
+  P⊥(A_b·S)` is `≥ ρ−b+1 ≥ a+1` (from `a+b ≤ ρ`), so each per-step `A_b`-integral is FINITE (dim ≥ a+1) — but
+  its VALUE is a `Z`-charge on `S` (via `S_W = S·P_W`, `g(A',S) ~ (pseudo-det S_W)^{−power}`), NOT a constant.
+- **The det-monotone drop-samples shortcut is TOO LOSSY.** Dropping `A·S` to its first `b` columns
+  (`det(Σ_{j=1}^n v_jv_jᵀ) ≥ det(Σ_{j=1}^b)` by PSD-monotone) over-bounds: `∫∫ det(A·S_{[b]})^{−a}` has
+  effective `n=b` ⟹ threshold `a+b ≤ b` ⟹ `a≤0`, DIVERGES. So the recursion MUST keep all `n` columns
+  (coupled), confirming the coordinator's read.
+- **Also NOT clean via A-first or S-first uniform:** S-first inner `I(A) = ∫_S det(A·SSᵀ·Aᵀ)^{−a/2}dS` blows
+  up as `A` degenerates (`~` a matrix `Z`-charge on `A`), so the outer `∫_A` couples too. b≥2 is a NESTED
+  double-charge (inner charge → `Z`-charge on the other factor → recurse). Genuine coupling either order.
+- **Cauchy–Binet route is out** (`det((AS)(AS)ᵀ) = Σ_{|K|=b} det(A S_{:,K})²` would decouple, but v4.29 lacks it).
+
+**The exact per-step inequality (TO PIN, to bedrock).** The E-recursion carries the coupling: each row-peel
+re-expresses the charge with the per-step `Z`-factor `g(A',S)`, and the exponent must accumulate so the total
+closes at `a+b ≤ ρ` (corankrec-verified threshold; guide-confirmed jointly integrable incl `(2,5,4)`). The
+precise Lean-friendly form (the coupled re-expression + the exponent bookkeeping, WITHOUT Cauchy–Binet or SVD)
+is the design I owe schurB — pinned carefully (off critical path, bedrock-pace), NOT a rushed possibly-wrong
+inequality. Open sub-questions I'm settling: (i) the exact `g(A',S)` `Z`-factor form (via `det_gram_cons` +
+the b=1 slab as base, tracking `S_W`'s pseudo-det); (ii) whether the accumulated exponent closes at exactly
+`a+b ≤ ρ` per-step or needs a global argument; (iii) the Lean-friendliest carrier for the coupling (the
+`P⊥` residual via `det_gram_cons` is schurB's, rank-flag-free). Handing schurB the structural design now;
+the exact per-step follows to bedrock.
+
+---
+
 ### w3-deep-spec — Lean-ready tight-interior spec for the formaliser (intmtn), SQUARE witnesses (b=1,a=1)
 *(SUPERSEDED for the b=1 charge free-box by §w3-routeC above — kept as the per-S bound in case the interior
 needs the coupled loss·charge, or for cross-checking.)*
