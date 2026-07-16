@@ -84,3 +84,40 @@ cut `u=t+j`, `b = M₁−t−j ≤ M₁−t ≤ ρ`, but `a+b ≤ ρ−1` is STR
 discharge `a+b+1 ≤ ρ` at the binding cut, or only `b ≤ ρ`? If only `b ≤ ρ`, either the charge-domination
 proof needs only `b ≤ ρ` (couplerad to confirm the weakest sufficient rankgen) or the scope has a gap to
 resolve. Carried as an explicit hypothesis pending resolution (bedrock: weakest hypotheses, named).
+
+---
+
+## ATLAS deliverables LANDED (Route B, 2026-07-16) — green, sorry-free, NATIVE
+
+The critical-path atlas layer + the Route-B interior contribution (pushed; `RouteMSJCellRank.lean`
+@c0690410d, `RouteMSJCorankRec.lean` @c38348658):
+
+> **`DLNFibre.DLN.RLCT.DeepAtlas.cellRank`** — recursive CR-path extractor = the DEEPEST descent node's
+> `r.1` (the exact deep-product rank on the cell). **`cellRankIndex`** at `CRIndex`.
+>
+> **`prod_rank_eq_cellRankIndex` (THE bridge)** — `A ∈ deepCell H (H 0) L le_rfl (H (last)) i (fun _=>1)
+> → (prod H A).rank = cellRankIndex H i`, EXACT equality, general-`L`. Per-`A` path-induction:
+> `prodAux_reduce_rank_of` (composed rank preserved) + `reduced_factor_rank` (each reduced factor is full
+> column rank = its width). Gloss: the deep-product rank is FIXED (constant) on each atlas cell.
+> **Proved / NATIVE.** dbuild's null-disposal (`coupledBox_deficientCell_null`, clean-three) consumes it:
+> `cellRankIndex i < deepTailMin M ⟹ cell ⊆ {rank<deepTailMin} = null ⟹ ∫coupledBox = 0`.
+>
+> **`hGae_cell_interior`** — `∀ᵐ p ∂(vol.restrict (box ∩ projDeep⁻¹'(deepCell…i…))), (Q_b·Q_bᵀ).PosDef`,
+> the corank-Gram genericity on an interior cell. Proved = banked `hGae_from_deepRank` (from
+> `M₁−u ≤ deepTailMin M` at the binding cut, `deepFactor_hZrank_of_le`) restricted to cell ⊆ box (`ae_mono`;
+> an a.e. statement descends to any subset — vacuous on a null deficient cell, box-a.e. on the co-null
+> generic cell, so the null-cell concern is moot for the a.e. hypothesis). Feeds arch1build's
+> `coupledCell_interior_lt_top` (`hGae` slot).
+>
+> **`frontCharge_cell_lt_top_of_freebox`** — `(hfreebox : ∫_box frontCharge < ⊤) → ∫_{cell} frontCharge
+> < ⊤`, the interior `hfront` slot = cell⊆box monotone (`lintegral_mono_set`) on schurB's FREE-BOX bound.
+> No cell-specific analytic content; the interior frontCharge finiteness reduces to schurB's free-box bound.
+>
+> - **Status.** All four green, sorry-free, NATIVE, no name clash. My Route-B interior contribution is
+>   green modulo schurB's (external) free-box bound. The lone sorry `coupled_hfin_cell` is the SUPERSEDED
+>   Route-A ∀i frontCharge form (kept as the G2-route interface + fidelity witness), not the live path.
+
+**Cell partition (locked with dbuild + arch1build):** deficient `cellRank i < deepTailMin` → NULL (dbuild's
+`coupledBox_deficientCell_null`); generic `cellRank i = deepTailMin` split interior `a+b ≤ cellRank i`
+(mine: `hGae_cell_interior` + `frontCharge_cell_lt_top_of_freebox` → arch1build's conversion) vs
+edge/deep-corank `cellRank i < a+b` (dbuild's edge brick). Exhaustive + disjoint by trichotomy.
