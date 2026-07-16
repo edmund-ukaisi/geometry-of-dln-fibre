@@ -1483,10 +1483,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceChart5BigCell
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceGluing
 import DLNFibre.DLN.RLCT.Validate.RouteMSJArity4Assembly
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHcellNull
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChargeFactor
 import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeCShift
 import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeScalar
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCharged
--- NOTE: RouteMSchurPSDDetMono (and its dependents RouteMSchurWishartWeight / RouteMSchurCorankSlab /
--- RouteMSJInteriorShell) are NOT imported here: RouteMSchurPSDDetMono.schurCompl clashes with the
--- existing RouteMSJPivotChart.schurCompl (both `DLNFibre.DLN.RLCT.schurCompl`). schurB must rename or
--- reuse before that (D)/interior chain can join the aggregator.
+-- NOTE: RouteMSchurPSDDetMono (+ dependents RouteMSchurWishartWeight / RouteMSchurCorankSlab /
+-- RouteMSJInteriorShell) still NOT imported: a SECOND clash — RouteMSchurPSDDetMono redefines
+-- `det_le_det_of_posSemidef_sub`, which RouteMSJDetMono already owns (both `DLNFibre.DLN.RLCT.…`).
+-- schurB deduped `schurCompl → blockSchurComplPSD` but not this one; needs rename/reuse before the
+-- (D)/interior chain can join the aggregator.
