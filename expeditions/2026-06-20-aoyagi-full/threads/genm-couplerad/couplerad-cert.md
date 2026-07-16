@@ -1023,18 +1023,29 @@ split (`Q_b·Π=0` + E_top/E_tr forms, banked)] + [R2 linear CoV, unit-Jac, free
 (cellRank/atlas)] + [**R3/R4 = the residual-power +ub chaining** (below)] + [threshold via
 `minAdm_le_inf_pivot_qip`]. Composes with `frontCharge_cell_lt_top_of_freebox` + `hGae_cell_interior`.
 
-**R3/R4 in detail (corankrec's code-level sharpening — the `+ub` is the real content, NOT the scale).** The
-free `ub`-Gaussian `‖B̃Q_b‖²` is LOAD-BEARING: dropping it (`(‖EY‖²+‖B̃Q_b‖²)^{−q} ≤ (‖EY‖²)^{−q}`) gives only
-`2q < minAdm(![u+a,u,d])`, MISSING the `+ub` — and `ab + minAdm(![u+a,u,d])` alone can fall short of `minAdm M`
-(the QIP needs `ab+ub+minAdm`). The `+ub` comes from a RESIDUAL-POWER shift on the B̃-Gaussian:
-`∫_{B̃∈box}(c+‖B̃Q_b‖²)^{−q}dB̃ ≤ C·c^{−(q−ub/2)}` for `2q>ub` (and `≤ C` bounded for `2q≤ub`), `c=frobSq(EY)`,
-`C` uniform in `(E,Y)` (verified `couplerad_residual.py`: slope `= ub/2−q` exactly for `2q>ub`, `~0` for
-`2q≤ub`). By Tonelli this `= C·(RectSchurCore integrand at exponent q−ub/2)`, so it plugs straight into
-`rectCore_schurGen_lt_top (u+a) u d (q−ub/2) … T (max radii)` (finite iff `q−ub/2 < ½·minAdm(![u+a,u,d])` — by
-`rectSchurLambda d = ½·minAdm(![·]) by rfl`). So **R3/R4 = residual-power-atom (`radial_morse_residual_power_le`,
-the `−ub/2` shift) ∘ `rectCore_schurGen_lt_top`(q−ub/2) ∘ Tonelli**, with the `2q≤ub` (bounded) vs `2q>ub`
-(residual-power) split; union = `2q < ub + minAdm(![u+a,u,d])`. Both endpoints banked; the genuine analytic
-wiring is the Tonelli interchange + the uniform-in-(E,Y) residual bound + the 2-case split.
+**R3/R4 in detail (corankrec's code-level sharpening — the `+ub` is the real content; a 3-CASE split, not 2).**
+The free `ub`-Gaussian `‖B̃Q_b‖²` is LOAD-BEARING: dropping it gives only `2q < minAdm(![u+a,u,d])`, MISSING the
+`+ub` (the QIP needs `ab+ub+minAdm`). The `+ub` comes from the B̃-Gaussian via `inner(c) := ∫_{B̃∈box}
+(c+‖B̃Q_b‖²)^{−q}dB̃`, `c=frobSq(EY)`. ⚠️ CORRECTION (corankrec + `couplerad_boundary_case.py`): the `2q≤ub`
+side is TWO cases, and the boundary `2q=ub` is a **log divergence**, not bounded (my slope-numerics masked it:
+`d log(inner)/d log c = 1/log c → 0` mimics a bounded slope; direct values GROW `inner ≈ 0.95·log(1/c)+1.9`).
+So the split is 3-CASE:
+- **① `2q < ub` (strict):** `inner(c) ≤ ∫_{box}‖B̃Q_b‖^{−2q}dB̃ =: C₀ < ∞` (monotone in `c≥0`; `C₀` finite,
+  `2q < ub =` codim of `{B̃=0}`), UNIFORM in `c`. So `∫_p ≤ C₀·vol(E,Y-box) < ∞`.
+- **② `2q = ub` (boundary, LOG):** `inner(c) ≤ C·(1+log⁺(1/c))`; then `log⁺(1/c) ≤ (1/ε)·c^{−ε}` (`c≤1`, any
+  `ε>0`; `Real.log_le_rpow`), so `inner ≤ C_ε·(c^{−ε} ⊔ 1)`. Pick `ε ∈ (0, ½·minAdm(![u+a,u,d]))` — nonempty
+  since `minAdm(![u+a,u,d]) ≥ 1` at ALL boundary-reachable cells (verified 0 fails). `∫_p ≤ C_ε·rectCore_schurGen_lt_top(u+a,u,d,ε) + vol < ∞`.
+- **③ `2q > ub` (strict):** `inner(c) ≤ Cresid·c^{−(q−ub/2)}` = `radial_morse_residual_power_le` (`m+1=ub`,
+  `c'=q`, `w=c`; its `(m+1)/2<c'` strict IS `2q>ub`). By Tonelli `∫_p ≤ Cresid·rectCore_schurGen_lt_top(u+a,u,d,q−ub/2)`,
+  finite iff `q−ub/2 < ½·minAdm(![u+a,u,d]) ⟺ 2q < ub + minAdm(![u+a,u,d])`.
+
+COVERAGE of the c'-window `(ab/2, ½minAdm M)`: ①② have `2q ≤ ub < ub+minAdm(![u+a,u,d])` (`minAdm≥1`) ⟹ finite;
+③ needs `2q < ub+minAdm(![u+a,u,d])`, and `c' < ½minAdm M ⟹ 2q < minAdm M − ab ≤ ub + minAdm(![u+a,u,d])` by
+the ∀-cell QIP `minAdm_le_inf_pivot_qip`. So the 3-case union closes every interior cell. The boundary `2q=ub`
+is REACHABLE (11388/12720 cells have `minAdm M > ab+ub` ⟹ `c'=(ab+ub)/2` in-window) — so the log case is NOT
+dodgeable; it is handled (② works, `minAdm(![u+a,u,d])≥1`). NEW pieces beyond the atom + RectSchurCore + the
+QIP: ① the `2q<ub` bounded-inner (det-Gram loc-int); ② the log-inner bound at the critical exponent + the
+`log ≤ ε-power` step. Both standard/small, Mathlib-grade. This is the one genuine analytic content of R3/R4.
 
 **★7 The inner/outer bounded-domain comparison (CORRECTED TWICE — the domain/scale step is FREE; the real analytic step is R3/R4).**
 
@@ -1061,9 +1072,11 @@ point; the point-germ lemma does not apply.
 + `rectCore_schurGen_lt_top ∀T`. **HONEST STATUS (corrected twice):** the domain/scale step is NOW FREE (not the
 point-germ of draft 1, not the scale-independence lemma of draft 2 — both superseded). The ONE genuine analytic
 step is NOT here but in **R3/R4 (the `+ub` residual-power chaining, see the R3/R4-detail block above)**: the
-Tonelli interchange + the uniform-in-(E,Y) residual-power bound `∫_{B̃}(c+‖B̃Q_b‖²)^{−q}dB̃ ≤ C·c^{−(q−ub/2)}` +
-the `2q≤ub` vs `>ub` split. That chaining (composing `radial_morse_residual_power_le` with
-`rectCore_schurGen_lt_top(q−ub/2)`) is where Finding-7's premise review should aim — NOT the scale.
+Tonelli interchange + the uniform-in-(E,Y) residual-power bound + the **3-CASE split** on `2q` vs `ub`
+(`<ub` bounded / `=ub` LOG / `>ub` atom — the boundary log case is reachable in 11388/12720 cells and is the
+real subtlety). That chaining (composing the bounded-inner / log-ε / `radial_morse_residual_power_le` cases
+with `rectCore_schurGen_lt_top` at exponents `ε` and `q−ub/2`) is where Finding-7's premise review should aim
+— NOT the scale.
 
 **Owner:** intloss (rank lemma + per-p finiteness) + me (the joint `∫_p` reduction, Codex-confirmed) +
 corankrec (QIP landed + the Lean assembly). The interior CONVERGES ∀-cell (no obstruction); the Lean closure
