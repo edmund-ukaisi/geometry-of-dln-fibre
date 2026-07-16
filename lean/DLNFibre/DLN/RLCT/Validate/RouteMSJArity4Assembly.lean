@@ -98,6 +98,26 @@ theorem routeMLayerBoxIntegral_exponent_mono (M : Fin (L + 1) → ℕ) {c₀ c' 
     _ = volume (paramsBoxM M 1) + routeMLayerBoxIntegral M c' 1 := by
         rw [setLIntegral_const, one_mul]; rfl
 
+/-- **All-`c'` from a top window.** `RouteMBoxThresholdFinite M` (box finite for every
+`c' < ½·minAdm M`) follows from box-finiteness on any TOP window `(lo, ½·minAdm M)` with `lo < ½·minAdm M`.
+For a target `c₀ < ½·minAdm`, pick `c'` strictly between `max(lo, c₀)` and `½·minAdm` (`exists_between`),
+bound `box(c₀) ≤ vol(box) + box(c')` (`routeMLayerBoxIntegral_exponent_mono`), and both terms are finite
+(`paramsBoxM_volume_lt_top`, `hwin`). This is the wrapper that turns the coupled skeleton's per-`c'`,
+top-window output into the full threshold predicate; the coupled route supplies `hwin` with
+`lo = (M₀−t)(M₁−t)/2`. Arity-agnostic, NATIVE. -/
+theorem routeMBoxThresholdFinite_of_window (M : Fin (L + 1) → ℕ) (lo : ℝ)
+    (hlo : lo < (minAdm M : ℝ) / 2)
+    (hwin : ∀ c' : ℝ, lo < c' → c' < (minAdm M : ℝ) / 2 →
+        routeMLayerBoxIntegral M c' 1 < ⊤) :
+    RouteMBoxThresholdFinite M := by
+  intro c₀ hc₀
+  obtain ⟨c', hlt1, hlt2⟩ := exists_between (max_lt hlo hc₀)
+  have hc₀c' : (c₀ : ℝ) ≤ c' := le_of_lt (lt_of_le_of_lt (le_max_right lo (c₀ : ℝ)) hlt1)
+  have hloc' : lo < c' := lt_of_le_of_lt (le_max_left lo (c₀ : ℝ)) hlt1
+  refine lt_of_le_of_lt
+    (routeMLayerBoxIntegral_exponent_mono M (c₀.coe_nonneg) hc₀c') ?_
+  exact ENNReal.add_lt_top.mpr ⟨paramsBoxM_volume_lt_top M 1, hwin c' hloc' hlt2⟩
+
 /-! ## The coupled-incidence assembly skeleton -/
 
 /-- **The coupled-incidence assembly skeleton (arity ≥ 4, per-`c'`, binding-shell-scoped).** Given G1
