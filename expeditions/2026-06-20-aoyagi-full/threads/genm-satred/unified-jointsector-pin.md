@@ -36,12 +36,22 @@ energy is LINEAR in the joint front factor `F`: `frobSq(F · G)`, `G` = the redu
 - wide `F=[P|B₁₂]` (u×M₁), `G=[z₀;A_cor]·Z_deep` (interior/edge/waist-a0);
 - tall `F=[P;C]` (M₀×M₁), `G=Q_p=z₀·Z_deep` (waist-b0).
 
-**(P2) Rank-sector blow-up + the `det(GGᵀ)^{−·}` Gram carry.** Stratify the critical rank `r`; on stratum
-`r`, the rank-drop peels to a deeper effective cut `u'_r` (reduce to `redChain u'_r M`), and the front
-integral over the stratum yields the reduced-Gram `det(G_r G_rᵀ)^{−·}` — carried to the arity-IH via
-`RouteMSJQBoxCore.qbox_lintegral_lt_top` (the PIVOT Gram, full-rank on the stratum; NEVER the corank Gram —
-the `a=q−b+1` trap). The one-shot `qbox` converges in a range; outside it, the per-level `qbox` **recurses**
-into `redChain u'_r M`'s own recursion (D-cert §3bis; the arity recursion, NO new density content).
+**(P2) Rank-sector blow-up + the Gram carry — THREE distinct Gram integrals (precision, review-corrected).**
+Stratify the critical rank `r`; on stratum `r`, the rank-drop peels to a deeper effective cut `u'_r` (reduce
+to `redChain u'_r M`). The Gram-carry object depends on WHICH VARIABLE it is integrated over — a distinction
+that is load-bearing (verified exact-ℕ + decorrelated Codex; the controller flagged it "most likely to break"):
+- **PIVOT Gram** `det(Q̃ₚ Q̃ₚᵀ)^{−a/2}`, `Q̃ₚ` the u×n pivot block — integrated over the REDUCED-CHAIN
+  params `z` (NOT over `A_cor`). It IS the reduced chain's own leading-layer Gram singularity, so it is
+  **ABSORBED by `redChain u'_r M`'s recursion (the arity-IH)** — not a separate integral. (interior-hard, edge.)
+- **WAIST-b0 Gram** `det(PᵀP + CᵀC)^{−M₂/2}` — a LITERAL `qbox` over the FRONT `(P,C)` box
+  (`RouteMSJQBoxCore.qbox_lintegral_lt_top`, `(qbox-b,qbox-q,α)=(M₁,M₀,M₂)`, converges ⟺ `M₂ ≤ a`; `M₂>a`
+  recurses one level — D-cert §3bis).
+- **CORANK Gram** `∫_{A_cor box} det((A_cor·Z_deep)(·)ᵀ)^{−a/2}` — a strong-block over `A_cor`, converges
+  iff `a < ρ−b+1` (ρ=rank Z_deep). **This is the TRAP: it FAILS at the edge `a+b=ρ+1` (a=ρ−b+1 exactly;
+  21898/26460 interior shells are in its failure region).** It is the EASY route's (L1's) corank weight; the
+  HARD route must NOT fall back to it — the coupled rank-sector (pivot Gram → IH) replaces it precisely
+  because the corank strong-block fails on the hard shells. **NEVER cite the corank strong-block for a hard
+  cell; carry the PIVOT Gram to the IH (or the literal front-box `qbox` for waist-b0).**
 
 **(P3) Min-over-strata = the recursion.** `min_r [charge_r + minAdm(redChain u'_r M)] = minAdm(M)` — this
 IS the `minAdm` recursion realized geometrically (`minAdm_le_peelCharge_add_redChain`). Reaches `½minAdm(M)`
@@ -63,6 +73,43 @@ the corank-rank instance (2 strata); the waists are the front-rank instances (wi
 is the corank-rank instance with the full A>2Δ strata. `hFrontReduce` (edgefub's front→RMBTF) = the (P1)+(P2)
 core specialized to the edge. **Only waist-a0's `hdens` (the wide density `ρ`) is genuinely-new; the other
 three carry `det(GGᵀ)` via banked `qbox`/`gammaAtom`.**
+
+## 3bis. Decorrelated premise review (Finding 7) — P1 sound; P2/P3 are INFERENCES with named gaps
+
+A decorrelated Codex xhigh (`codex/premise-{prompt,answer}.md`, conclusion withheld) red-teamed the P1/P2/P3
+geometric premise. Verdict: the STRUCTURE is right, but **P2/P3 are inferences, not proven** — the tide must
+build genuine analytic content, and the naive "extract bare determinant + invoke IH" is UNSOUND.
+
+- **P1 — SOUND (Jacobian = 1), with a coordinate caveat.** The reorganization `[P|B₁₂][Q_p;Q_b] = P(Q_p +
+  P⁻¹B₁₂Q_b)` (and the tall stacking) is measure-preserving IN THE ORIGINAL `(P,B₁₂)` variables (Jac 1).
+  **Do NOT substitute `D=P⁻¹B₁₂`** — that introduces `dP dB₁₂ = |det P|^b dP dD`, harmless only on a
+  `σ_min(P) ≥ δ` chart (the det-P hazard resurfaces). Also: the WIDE product is NOT rank-preserving
+  pointwise (`P=B₁₂=1, Q_p=1, Q_b=−1 ⟹ FG=0` while `rank G=1`); the front-map `F↦FG` has rank `ur` for
+  `rank G=r`. The TALL `[P;C]` is injective ⟹ rank-preserving.
+- **P2 — the corank/pivot distinction is REAL, but pivot-Gram IH-absorption is an INFERENCE.** Codex
+  COUNTERCHECK: `∫_{[−1,1]²} e^{−N(1+c²)z²} dz dc ~ N^{−1/2}` (NO log) though the extracted pivot weight
+  `|z|^{−1}` is NON-integrable. **So "carry the pivot Gram to the IH" must mean carrying the FULL finite-N
+  coupling — NOT extracting `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` pointwise and invoking an unweighted IH (UNSOUND).** Valid
+  only when (i) the IH explicitly handles the coupled/weighted reduced chain, OR (ii) `P` is uniformly
+  invertible on the chart (`σ_min(P)≥δ`), so `‖PQ̃ₚ‖²` is uniformly comparable to `‖Q̃ₚ‖²`. This is exactly
+  the backbone-cert's "refined joint descent" (relatively-compact GL charts + boundary resolution, OR the
+  coupled full-coupling IH) — the pivot-Gram carry IS the genuine analytic core (= Bricks F/D), NOT a
+  one-line extraction.
+- **P3 — the min-over-strata is an INFERENCE.** The `min_r[charge_r + minAdm(redChain u'_r M)] = minAdm(M)`
+  ARITHMETIC is verified (0-fail); but its PROOF as a domination needs the rank-stratum normal
+  Jacobians/codimensions + the log multiplicities (the actual determinantal blow-up geometry), not only the
+  minimum exponent.
+- **Cheapest de-risk (Codex Q3, for the tide):** on every pivot-IH chart, prove the UNIFORM sandwich
+  `m²‖Q‖²_F ≤ ‖PQ‖²_F + ‖CQ‖²_F ≤ (M²+K²)‖Q‖²_F` (`m>0`, constants uniform on the chart) — this immediately
+  gives RLCT + log-multiplicity equality with the reduced chain. **If the uniform constants fail, the IH
+  absorption is NOT justified** (the boundary logs are created/erased by a non-uniform Gaussian/Fubini step —
+  the single biggest soundness risk). So the tide's FIRST obligation is the uniform-chart sandwich, per
+  instance.
+
+**Net:** P1 clears (keep original vars, no D-substitution). P2/P3 do NOT clear as one-liners — the pivot-Gram
+carry needs the uniform-`P` chart (or full-coupling IH), and the min-recursion needs the stratum-Jacobian
+domination. These are the backbone's Bricks F/D, now confirmed as the unified descent's genuine analytic
+core. The exponent arithmetic (P3-min) is a DONE certificate; the analytic domination is the build.
 
 ## 4. Banked vs new
 
