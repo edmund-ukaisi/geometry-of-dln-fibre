@@ -92,6 +92,15 @@ all-rank resolution, SAME mechanism).
    `ω·∫ det(KKᵀ)^{−a/2}` by the sphere identity — same divergence. **corneradj `edge-design-cert.md` Part-1
    is WRONG here** (its worst-case `C₀=0` maximises the charge, dropping the saving mechanism).
 
+**Banked-file classification (for the edge build — checked headers).** USE (edge-safe): `RouteMSJSphereBlowup`
+(the KEEP-Γ-on-box polar `∫⁻` blow-up — its own header names it as NOT the det route), `RouteMSJRadialPolar`
+(general degree-2-homog polar factor `r^{N−1}`), `RouteMSJDecoratedRadial` (`radialAttachFactor =
+∫|u₀|^{j₀}(u₀²)^{−c'}`, the 1-D weighted radial for step 4), `RouteMSJFreeBilinear` (the b=1 leaf). BUILD
+FRESH: the `u=rs` coupling (r=‖γ‖, s=‖z‖=‖τ‖; Jacobian `s^{−1}` = `sigmaLog`) + the C-shift
+(`mulVec_of_surjective`). **DO NOT USE `RadialResidualPower`** — it is the dead full-space det route
+(manufactures the divergent `det(Q_bQ_bᵀ)`; named as such in `RouteMSJSphereBlowup`'s header). `RouteMSJTwoBlockRadial`
+(front-first coupled σ-charge majorant) and `RouteMSJProjRadial` (Cat-I) are NOT the edge route — skip.
+
 **The HONEST mechanism (what (D) does at corank-one) — stated to bedrock (edgebrick, load-bearing).** Keep
 `Γ` on the **BOX** (radial cutoff `s_max(Ω)`) AND retain the **C-integration**. Near a rank-`(b−1)` point of
 `K`, let `η` be the unit vector spanning `K`'s lost row-direction; the morse residual carries
