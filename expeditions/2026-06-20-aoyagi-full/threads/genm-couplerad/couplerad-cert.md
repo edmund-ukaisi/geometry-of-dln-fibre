@@ -444,11 +444,16 @@ right tool is det-MONOTONICITY on the PSD Gram.** Do not chase a `Q_b` block-fac
   and the small part `G₀` (both `⪰ 0`); then `A_cor·G·A_corᵀ = A_cor·G₁·A_corᵀ + A_cor·G₀·A_corᵀ` (both `⪰ 0`),
   so by **det-monotonicity on PSD** (`det(X+Y) ≥ det X` for `X,Y ⪰ 0` symmetric),
   `det(Q_bQ_bᵀ) ≥ det(A_cor·G₁·A_corᵀ)`.
-- On the pivot chart the order-1 block `G₁` has rank `= #{e_i = 0}`, and **along the binding ray this is `≥ b`**
-  (see A2), so `det(A_cor·G₁·A_corᵀ) > 0` and is order-1 a.e. (this is exactly `hGae`/corank-survival: `A_cor`
-  sees `b` order-1 directions). Hence `det(Q_bQ_bᵀ)^{−a/2} ≤ C` — the charge is **BOUNDED** on the chart.
-  No Cauchy–Binet, no `det_fromBlocks` on `Q_b`, no spectral eigen-term needed for the bound itself — only
-  `det`-monotone-on-PSD + `G₁ ⪯ G` PSD + `hGae`.
+- **`G₁` must be the FULL order-1 rank-`ρ` block** (`ρ = deepTailMin`, the generic rank of `Z_deep`), NOT a
+  rank-`b` piece. `det(Q_bQ_bᵀ) ≥ det(A_cor·G₁·A_corᵀ)` gives the UNIFORM chart bound: `G₁` is fixed
+  (`S`-independent, order-1), so `∫_{A_cor} det(A_cor·G₁·A_corᵀ)^{−a/2} =: C` is a CONSTANT, finite iff
+  `a < ρ − b + 1` — which rankgen `a+b ≤ ρ−1` guarantees (`⟹ a+b ≤ ρ−1 < ρ+1`; this is deephier §5's
+  "non-integrable wall `a+b ≥ ρ+1`"). Then `∫_S W(S)·L(S) ≤ C·(uncharged mnp) < ⊤`, `δ=0`. **⚠ Do NOT reduce
+  `G₁` to a rank-`b` minor for this bound** — the charge integral `∫_{A_cor}` uses the FULL rank-`ρ` Gram; a
+  rank-`b` reduction over-bounds and DIVERGES (`a≥1` vs the rank-`b` wall `a<1`) — this is a real trap
+  (schurrec-caught). Consumes only `det`-monotone-on-PSD + `G₁ ⪯ G` PSD + `hGae` (no Cauchy–Binet, no
+  `det_fromBlocks`-on-`Q_b`, no spectrum). *(A rank-`b` minor `M` with `det M ≠ 0` a.e. is a SEPARATE, weaker
+  fact — good only for the a.e.-nonzero genericity, not the `∫_{A_cor}` integrability; see the addendum.)*
 
 **A2 — which measure absorbs `a·e_h`: Z_deep's, via the FRONT-peel keeping σ order-1 — and at the binding
 ray the charge exponent is `γ = 0` (EXACT, verified all cells).** At the charged-LP binding vertex, `γ^{hier}(e)
@@ -482,14 +487,17 @@ re-derive spectrally).
 spectral (`det = ∏ eigenvalues`), hitting the D-C `IsHermitian.eigenvalues` whnf trap. A non-spectral proof
 + a cleaner reduction, so `b≥2` (e.g. `(3,4,5,4)`, `b=2`) dodges the trap.*
 
-**Cleaner reduction — drop columns, no spectral `G₁`.** `Q_b` is `b×n` with columns `q_1,…,q_n ∈ ℝ^b`, so
-`Q_bQ_bᵀ = Σ_{c=1}^n q_c q_cᵀ`. Pick `b` order-1 columns `κ'` (the pivot columns), `M := Q_b[:,κ']` (`b×b`).
-Then `Q_bQ_bᵀ − M·Mᵀ = Σ_{c∉κ'} q_c q_cᵀ ⪰ 0` (a sum of rank-1 PSD outer products — ELEMENTARY, no Schur, no
-spectrum), i.e. **`Q_bQ_bᵀ ⪰ M·Mᵀ`**. With det-monotone: `det(Q_bQ_bᵀ) ≥ det(M·Mᵀ) = det(M)²`, and `det(M) ≠ 0`
-a.e. (hGae: `M` = a `b×b` minor of `Q_b = A_cor·Z_deep`, nonzero a.e. when the `b` columns are order-1). So
-the charge `det(Q_bQ_bᵀ)^{−a/2} ≤ |det M|^{−a}`, and `∫_{A_cor} |det M|^{−a}` is the `b`-general corank-survival
-integral (finite via rankgen `a+b ≤ ρ−1`). This makes `G₁` a RAW `b×b` minor's Gram — no rank-`t`
-reconstruction, no projection.
+**⚠ Two DIFFERENT bounds — do not conflate them (schurrec-caught).**
+1. **a.e.-NONZERO (genericity only):** drop columns. `Q_bQ_bᵀ = Σ_c q_c q_cᵀ ⪰ M·Mᵀ` for `M = Q_b[:,κ']` a
+   `b×b` column-minor (`Q_bQ_bᵀ − MMᵀ = Σ_{c∉κ'} q_c q_cᵀ ⪰ 0`, elementary), so det-monotone ⟹
+   `det(Q_bQ_bᵀ) ≥ det(M)²`, and `det M ≠ 0` a.e. (hGae). This shows the charge is FINITE a.e. — nothing more.
+2. **UNIFORM INTEGRABILITY bound (the one that closes the integral):** det-monotone with `G₁ =` the FULL
+   order-1 **rank-`ρ`** block (`⪯ G`), giving `det(Q_bQ_bᵀ) ≥ det(A_cor·G₁·A_corᵀ)` with `G₁` fixed, so
+   `∫_{A_cor} det(A_cor·G₁·A_corᵀ)^{−a/2} = C < ⊤` iff `a < ρ−b+1` (rankgen).
+**Do NOT use bound 1 for the integral:** `∫_{A_cor} |det M|^{−a}` with `M` a `b×b` (rank-`b`) minor DIVERGES
+for `a ≥ 1` (its zero locus is codim `< ρ`), whereas the true charge integral uses the FULL rank-`ρ` Gram
+`Σ_c q_c q_cᵀ` (zero locus codim `ρ`, finite for `a < ρ−b+1`). Reducing to a rank-`b` minor over-bounds. So
+`G₁` for the integrability bound is the rank-`ρ` order-1 block, NOT a `b×b` minor.
 
 **The det-monotone, non-spectrally (induction on `b` via the Schur complement).** `0 ⪯ Y ⪯ X` (`b×b` sym) ⟹
 `det Y ≤ det X`:
@@ -506,11 +514,13 @@ reconstruction, no projection.
   Loewner (elementary), induction. **NO eigenvalues** — dodges the whnf trap. (Equivalent packaging: this IS
   Minkowski's determinant inequality proved via Schur complements rather than majorisation.)
 
-**So for schurrec:** `b=1` is fully elementary (scalar `‖A_cor·Z_deep‖² ≥ (A_cor·v)²` for `v` an order-1
-column, no det lemma) — banks `(4,4,4,4)`, `(5,5,5,5)`, `(3,3,4,4)`. For `b≥2`, prove the non-spectral
-det-monotone ONCE (reusable), then `det(Q_bQ_bᵀ) ≥ det(M)²` via the drop-columns `⪰`. `G₁ = M·Mᵀ` (raw
-`b×b` minor Gram), NOT the `t×t` pivot Gram directly; hGae gives `det M ≠ 0` a.e. when the chart keeps `≥ b`
-order-1 columns (holds along the binding ray, verified). The plan (b=1 first, then b≥2) is SOUND.
+**So for schurrec:** `b=1` is fully elementary — the charge integral `∫_{A_cor} ‖A_cor·Z_deep‖^{−a}` uses the
+FULL rank-`ρ` Gram `Z_deep·Z_deepᵀ` (a rank-`ρ` quadratic form), finite for `a < ρ` (⟸ rankgen), and the
+UNIFORM chart bound replaces the `S`-varying Gram by the fixed order-1 rank-`ρ` block (det-monotone, `b=1`
+= trivial scalar monotonicity) — NO det lemma, NO reduction to a single column. Banks `(4,4,4,4)`,
+`(5,5,5,5)`, `(3,3,4,4)`. For `b≥2`, prove the non-spectral det-monotone ONCE (reusable) and apply it with
+`G₁ =` the order-1 rank-`ρ` block for the integrability bound (drop-columns to a `b×b` minor is ONLY the
+a.e.-nonzero step, not the integral — see the ⚠ above). The plan (b=1 first, then b≥2) is SOUND.
 
 ---
 
