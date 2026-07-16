@@ -1,0 +1,19 @@
+Q1. **VERDICT: not finite or uniform in the stated generality.** PROVEN by direct linear algebra: with \(Q_t\) full row rank and \(k=\operatorname{rank}\binom{Q_t}{Q_b}\), the map
+\[
+(P,C,\Gamma)\mapsto(PQ_t,\;CQ_t+\Gamma Q_b)
+\]
+has transverse rank \(d=u^2+ak\), so its local integral at the joint zero is finite exactly when \(2c'<d\), logarithmically divergent at equality, and power divergent above it. For example, take \(u=a=b=1\), \(m=N=2\), \(Q_t=(1,0)\), \(Q_b=(0,1)\), and \(c'=2\); then the loss is \(p^2+c^2+\gamma^2\), and \(\int r^{2-4}\,dr=\infty\), although \(1<2-1+1\) and \(c'>1/2\). The bounded \(B_{12}\)-integration merely contributes its box volume. The strong-block condition controls a Gram-determinant singularity in \(A_{\rm cor}\), but supplies no upper bound on \(c'\). Uniformity additionally fails unless \(Q_t\) and the relevant rank-\(m\) part of \(Z_{\rm deep}\) are quantitatively bounded away from rank drop; “generically full row rank” is insufficient.
+
+Q2. **VERDICT: no intrinsic split is needed, although the proposed sphere majorant splits at \(a=u\).** PROVEN: if \(\omega\in S^{N-1}\) and \(Q_t\) has rank \(u\), then near \(\ker Q_t\) the integral behaves as
+\[
+\int_0^\varepsilon \rho^{u-1}\rho^{-a}\,d\rho,
+\]
+and hence \(\int_S\|Q_t\omega\|^{-a}d\omega<\infty\) exactly when \(a<u\). Dropping a nonnegative transverse term gives a legitimate upper bound, but its divergence for \(a\ge u\) says nothing about the original, better-regularized integral. Fact (ii) can instead be used for every \(a\), but enlarging the \(C\)-box to all of \(\mathbb R^{a\times u}\) requires \(c'>au/2\), which does not follow from \(c'>ab/2\) when \(u>b\). Moreover, fact (iii) disposes of \(\det(Q_tQ_t^\top)^{-a/2}\) only if \(Q_t\) itself has the required box-linear structure and satisfies \(a<q-u+1\); that hypothesis was not supplied. The direct transverse-rank test above works without an \(a<u\)/\(a\ge u\) split.
+
+Q3. **VERDICT: finite and cutoff-vanishing only conditionally; there is no determinant-specific pole.** Since \(Q_t\) has full row rank, \(PQ_t=0\) implies \(P=0\), so the hypersurface \(\det P=0\) away from the origin is harmless. Fact (i) rules out the artificial \(|\det P|^{-M_2}\) Jacobian, but \(B_{12}\) does not regularize the displayed loss because it does not occur in it. If \(2c'<u^2+ak\), absolute continuity implies that the contribution from \(\{|\det P|<\varepsilon\}\) tends to zero. At equality the joint origin produces a logarithm, and above equality a power divergence; excluding singular \(P\) does not help because invertible matrices have full measure arbitrarily near \(P=0\).
+
+Q4. **VERDICT: no hidden fixed-\(Z_{\rm deep}\) divergence, but uniformity can fail.** PROVEN from fact (iii): if \(r=\operatorname{rank}Z_{\rm deep}\ge m\), the determinantal locus \(\operatorname{rank}(A_{\rm cor}Z_{\rm deep})<b\) is precisely what the condition \(a<r-b+1\) controls, and the stronger \(a<m-b+1\) implies it strictly. Its positive codimension alone would not suffice, but the Gram-integrability lemma handles its neighborhoods. Uniformity requires control of the nonzero singular values of \(Z_{\rm deep}\): for \(b=1\) and \(Z_{\rm deep}=\varepsilon I_m\), the finite integral scales exactly as \(\varepsilon^{-a}\int\|A_{\rm cor}\|^{-a}dA_{\rm cor}\). Also, fact (iii) does not cover a projected residual such as \(Q_b(I-P_{Q_t})\) if that projection lowers the effective rank.
+
+DECISIVE OBSTRUCTION: The joint zero \((P,C,\Gamma)=(0,0,0)\), with transverse dimension \(d=u^2+a\,\operatorname{rank}\binom{Q_t}{Q_b}\).  
+CHEAPEST CHECK: Verify \(2c'<d\); equality gives a logarithm and \(2c'>d\) a power divergence.  
+UNIFORM CHECK: Establish positive lower bounds for the relevant singular values of \(Q_t\) and \(Z_{\rm deep}\), or explicitly absorb their blow-up into the decorated integrand.
