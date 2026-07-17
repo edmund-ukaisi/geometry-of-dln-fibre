@@ -1,0 +1,66 @@
+
+======================================================================
+(A) master peel budget: minAdm(M) = min_t [peelCharge + minAdm(redChain)]
+======================================================================
+ n=3: minAdm=6  binding cut t*=[2] (corank m*=[1])  eq@binding=True  strict@off=True
+ n=4: minAdm=11  binding cut t*=[2, 3] (corank m*=[2, 1])  eq@binding=True  strict@off=True  <== HEADLINE
+     t=0: peelCharge=16 + minAdm((0, 4, 4))= 0  = 16
+     t=1: peelCharge= 9 + minAdm((1, 4, 4))= 4  = 13
+     t=2: peelCharge= 4 + minAdm((2, 4, 4))= 7  = 11 <= BINDING (equality)
+     t=3: peelCharge= 1 + minAdm((3, 4, 4))=10  = 11 <= BINDING (equality)
+     t=4: peelCharge= 0 + minAdm((4, 4, 4))=12  = 12
+ n=5: minAdm=17  binding cut t*=[3, 4] (corank m*=[2, 1])  eq@binding=True  strict@off=True  <== HEADLINE
+ n=6: minAdm=24  binding cut t*=[4] (corank m*=[2])  eq@binding=True  strict@off=True  <== HEADLINE
+ n=7: minAdm=33  binding cut t*=[4, 5] (corank m*=[3, 2])  eq@binding=True  strict@off=True  <== HEADLINE
+ n=8: minAdm=43  binding cut t*=[5, 6] (corank m*=[3, 2])  eq@binding=True  strict@off=True
+(A) VERDICT  equality at binding cut, strict above off it, all n: True
+
+======================================================================
+(B) free-block outer peel:  T_m = 1/2 m^2 + 1/2 minAdm((n-m,n,n))  >= c*
+======================================================================
+ n=3: c*=3  min_m T_m=3 (==c*? True)  binding m*=[1]  T_m>=c* all m=True  eq@binding=True  strict@off=True
+ n=4: c*=11/2  min_m T_m=11/2 (==c*? True)  binding m*=[1, 2]  T_m>=c* all m=True  eq@binding=True  strict@off=True  <== HEADLINE
+ n=5: c*=17/2  min_m T_m=17/2 (==c*? True)  binding m*=[1, 2]  T_m>=c* all m=True  eq@binding=True  strict@off=True  <== HEADLINE
+ n=6: c*=12  min_m T_m=12 (==c*? True)  binding m*=[2]  T_m>=c* all m=True  eq@binding=True  strict@off=True  <== HEADLINE
+ n=7: c*=33/2  min_m T_m=33/2 (==c*? True)  binding m*=[2, 3]  T_m>=c* all m=True  eq@binding=True  strict@off=True  <== HEADLINE
+ n=8: c*=43/2  min_m T_m=43/2 (==c*? True)  binding m*=[2, 3]  T_m>=c* all m=True  eq@binding=True  strict@off=True
+(B) VERDICT  T_m>=c* with equality exactly at binding m*, all n: True
+
+======================================================================
+(C) balanced product-corank threshold:  T_k = 1/2 (C_k + n(n-k))  >= c*
+======================================================================
+ n=3: c*=3  min_k T_k=3 (==c*? True)  binding k*=[2]  T_k>=c* all k=True  eq@binding=True  strict@off=True
+ n=4: c*=11/2  min_k T_k=11/2 (==c*? True)  binding k*=[2, 3]  T_k>=c* all k=True  eq@binding=True  strict@off=True  <== HEADLINE
+ n=5: c*=17/2  min_k T_k=17/2 (==c*? True)  binding k*=[3, 4]  T_k>=c* all k=True  eq@binding=True  strict@off=True  <== HEADLINE
+     k=0: C_k= 0 + n(n-k)=25  -> T_k=25/2
+     k=1: C_k= 1 + n(n-k)=20  -> T_k=21/2
+     k=2: C_k= 3 + n(n-k)=15  -> T_k=9
+     k=3: C_k= 7 + n(n-k)=10  -> T_k=17/2 <= BINDING (equality)
+     k=4: C_k=12 + n(n-k)= 5  -> T_k=17/2 <= BINDING (equality)
+     k=5: C_k=19 + n(n-k)= 0  -> T_k=19/2
+ n=6: c*=12  min_k T_k=12 (==c*? True)  binding k*=[4]  T_k>=c* all k=True  eq@binding=True  strict@off=True  <== HEADLINE
+ n=7: c*=33/2  min_k T_k=33/2 (==c*? True)  binding k*=[4, 5]  T_k>=c* all k=True  eq@binding=True  strict@off=True  <== HEADLINE
+ n=8: c*=43/2  min_k T_k=43/2 (==c*? True)  binding k*=[5, 6]  T_k>=c* all k=True  eq@binding=True  strict@off=True
+(C) VERDICT  T_k>=c* with equality exactly at binding k*, all n: True
+
+======================================================================
+(D) GUARD: T_m = 1/2 C_m + 1/2 minAdm((n-m,n,n)) STRICTLY UNDERSHOOTS c* (n>=4)
+======================================================================
+ n=3: c*=3  undershooting balanced strata: none
+ n=4: c*=11/2  undershooting balanced strata: m=2:T=5(deficit 1/2)  <== HEADLINE
+ n=5: c*=17/2  undershooting balanced strata: m=2:T=8(deficit 1/2), m=3:T=8(deficit 1/2)  <== HEADLINE
+ n=6: c*=12  undershooting balanced strata: m=2:T=23/2(deficit 1/2), m=3:T=23/2(deficit 1/2), m=4:T=23/2(deficit 1/2)  <== HEADLINE
+ n=7: c*=33/2  undershooting balanced strata: m=2:T=16(deficit 1/2), m=3:T=31/2(deficit 1), m=4:T=31/2(deficit 1), m=5:T=16(deficit 1/2)  <== HEADLINE
+ n=8: c*=43/2  undershooting balanced strata: m=2:T=21(deficit 1/2), m=3:T=41/2(deficit 1), m=4:T=20(deficit 3/2), m=5:T=41/2(deficit 1), m=6:T=21(deficit 1/2)
+(D) VERDICT  invalid split exposes a strict undershoot for every n>=4: True
+
+======================================================================
+W3 OVERALL
+======================================================================
+(A) master peel budget tight at binding cut: True
+(B) free-block outer peel equality at m*: True
+(C) balanced product-corank equality at k*: True
+(D) invalid split strictly undershoots (guard): True
+W3 PASS: True
+
+[W3] the budget inequalities are EXACTLY tight at the binding cell (equality, no slack); the invalid C_m-plus-reduced-chain split undershoots.

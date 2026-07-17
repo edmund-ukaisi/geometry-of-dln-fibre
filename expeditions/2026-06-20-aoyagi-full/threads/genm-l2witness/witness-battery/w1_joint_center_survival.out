@@ -1,0 +1,48 @@
+
+======================================================================
+SETUP: n=2, k=2 balanced chart
+======================================================================
+P  = [[1, 0], [0, x]]
+Z  = [[b*c + y, b], [c, 1]]
+P*Z= [[b*c + y, b], [c*x, x]]
+entries (generators of I(P*Z)) = [b*c + y, b, c*x, x]
+
+======================================================================
+E1: I(P*Z) = (x, y, b)   (Groebner, both containments)
+======================================================================
+each P*Z entry reduced mod (x,y,b): [0, 0, 0, 0] => all zero: True
+each of x,y,b reduced mod (entries): [0, 0, 0] => all zero: True
+E1 VERDICT  I(P*Z) = (x,y,b): True
+
+======================================================================
+E2: single-factor rank divisors
+======================================================================
+det(P) = x   (P's rank-drop divisor)
+det(Z) = y   (Z's rank-drop divisor)
+E2 VERDICT  det P = x and det Z = y: True
+
+======================================================================
+E3: KILL — alignment coordinate b NOT in (det P, det Z) = (x, y)
+======================================================================
+Groebner basis of (det P, det Z): [x, y]
+b reduced mod (det P, det Z) = b  (nonzero => b NOT in the ideal)
+(x,y,b) strictly contains (det P, det Z)=(x,y): True
+E3 VERDICT  KILL fires (single-factor divisors miss the alignment b): True
+
+======================================================================
+E4: (x,y,b) smooth, codim 3 = C_2
+======================================================================
+Jacobian of (x,y,b) = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0]]
+rank(Jacobian) = 3  ; codim of center = 3 ; C_2 = 3
+E4 VERDICT  smooth codim-3 complete intersection = C_2: True
+
+======================================================================
+W1 OVERALL
+======================================================================
+E1 (ideal = (x,y,b)): True
+E2 (factor divisors x,y): True
+E3 (KILL: b escapes (x,y)): True
+E4 (smooth codim-3 = C_2): True
+W1 PASS: True
+
+[W1] joint center (x,y,b) survives every single-factor blow-up. min-corank>=2 is NOT single-factor-principalizable.

@@ -1,0 +1,83 @@
+
+======================================================================
+E1: true product-corank codim  vs  naive m^2  vs  C_m  (exact integer)
+======================================================================
+family: headline n=4..7, robustness n=2..8
+
+ n=2:
+   m=1: true codim=  1  naive m^2=  1  C_m=  1  UNDERSHOOT gap = m^2 - C_m =  0 = floor(m^2/4)=0 = a*c=0  (a,c,e)=(0, 1, 0)  match=True
+   m=2: true codim=  3  naive m^2=  4  C_m=  3  UNDERSHOOT gap = m^2 - C_m =  1 = floor(m^2/4)=1 = a*c=1  (a,c,e)=(1, 1, 1)  match=True
+
+ n=3:
+   m=1: true codim=  1  naive m^2=  1  C_m=  1  UNDERSHOOT gap = m^2 - C_m =  0 = floor(m^2/4)=0 = a*c=0  (a,c,e)=(0, 1, 0)  match=True
+   m=2: true codim=  3  naive m^2=  4  C_m=  3  UNDERSHOOT gap = m^2 - C_m =  1 = floor(m^2/4)=1 = a*c=1  (a,c,e)=(1, 1, 1)  match=True
+   m=3: true codim=  7  naive m^2=  9  C_m=  7  UNDERSHOOT gap = m^2 - C_m =  2 = floor(m^2/4)=2 = a*c=2  (a,c,e)=(1, 2, 1)  match=True
+
+ n=4:  <== HEADLINE
+   m=1: true codim=  1  naive m^2=  1  C_m=  1  UNDERSHOOT gap = m^2 - C_m =  0 = floor(m^2/4)=0 = a*c=0  (a,c,e)=(0, 1, 0)  match=True
+   m=2: true codim=  3  naive m^2=  4  C_m=  3  UNDERSHOOT gap = m^2 - C_m =  1 = floor(m^2/4)=1 = a*c=1  (a,c,e)=(1, 1, 1)  match=True
+   m=3: true codim=  7  naive m^2=  9  C_m=  7  UNDERSHOOT gap = m^2 - C_m =  2 = floor(m^2/4)=2 = a*c=2  (a,c,e)=(1, 2, 1)  match=True
+   m=4: true codim= 12  naive m^2= 16  C_m= 12  UNDERSHOOT gap = m^2 - C_m =  4 = floor(m^2/4)=4 = a*c=4  (a,c,e)=(2, 2, 2)  match=True
+
+ n=5:  <== HEADLINE
+   m=1: true codim=  1  naive m^2=  1  C_m=  1  UNDERSHOOT gap = m^2 - C_m =  0 = floor(m^2/4)=0 = a*c=0  (a,c,e)=(0, 1, 0)  match=True
+   m=2: true codim=  3  naive m^2=  4  C_m=  3  UNDERSHOOT gap = m^2 - C_m =  1 = floor(m^2/4)=1 = a*c=1  (a,c,e)=(1, 1, 1)  match=True
+   m=3: true codim=  7  naive m^2=  9  C_m=  7  UNDERSHOOT gap = m^2 - C_m =  2 = floor(m^2/4)=2 = a*c=2  (a,c,e)=(1, 2, 1)  match=True
+   m=4: true codim= 12  naive m^2= 16  C_m= 12  UNDERSHOOT gap = m^2 - C_m =  4 = floor(m^2/4)=4 = a*c=4  (a,c,e)=(2, 2, 2)  match=True
+   m=5: true codim= 19  naive m^2= 25  C_m= 19  UNDERSHOOT gap = m^2 - C_m =  6 = floor(m^2/4)=6 = a*c=6  (a,c,e)=(2, 3, 2)  match=True
+
+ n=6:  <== HEADLINE
+   m=1: true codim=  1  naive m^2=  1  C_m=  1  UNDERSHOOT gap = m^2 - C_m =  0 = floor(m^2/4)=0 = a*c=0  (a,c,e)=(0, 1, 0)  match=True
+   m=2: true codim=  3  naive m^2=  4  C_m=  3  UNDERSHOOT gap = m^2 - C_m =  1 = floor(m^2/4)=1 = a*c=1  (a,c,e)=(1, 1, 1)  match=True
+   m=3: true codim=  7  naive m^2=  9  C_m=  7  UNDERSHOOT gap = m^2 - C_m =  2 = floor(m^2/4)=2 = a*c=2  (a,c,e)=(1, 2, 1)  match=True
+   m=4: true codim= 12  naive m^2= 16  C_m= 12  UNDERSHOOT gap = m^2 - C_m =  4 = floor(m^2/4)=4 = a*c=4  (a,c,e)=(2, 2, 2)  match=True
+   m=5: true codim= 19  naive m^2= 25  C_m= 19  UNDERSHOOT gap = m^2 - C_m =  6 = floor(m^2/4)=6 = a*c=6  (a,c,e)=(2, 3, 2)  match=True
+   m=6: true codim= 27  naive m^2= 36  C_m= 27  UNDERSHOOT gap = m^2 - C_m =  9 = floor(m^2/4)=9 = a*c=9  (a,c,e)=(3, 3, 3)  match=True
+
+ n=7:  <== HEADLINE
+   m=1: true codim=  1  naive m^2=  1  C_m=  1  UNDERSHOOT gap = m^2 - C_m =  0 = floor(m^2/4)=0 = a*c=0  (a,c,e)=(0, 1, 0)  match=True
+   m=2: true codim=  3  naive m^2=  4  C_m=  3  UNDERSHOOT gap = m^2 - C_m =  1 = floor(m^2/4)=1 = a*c=1  (a,c,e)=(1, 1, 1)  match=True
+   m=3: true codim=  7  naive m^2=  9  C_m=  7  UNDERSHOOT gap = m^2 - C_m =  2 = floor(m^2/4)=2 = a*c=2  (a,c,e)=(1, 2, 1)  match=True
+   m=4: true codim= 12  naive m^2= 16  C_m= 12  UNDERSHOOT gap = m^2 - C_m =  4 = floor(m^2/4)=4 = a*c=4  (a,c,e)=(2, 2, 2)  match=True
+   m=5: true codim= 19  naive m^2= 25  C_m= 19  UNDERSHOOT gap = m^2 - C_m =  6 = floor(m^2/4)=6 = a*c=6  (a,c,e)=(2, 3, 2)  match=True
+   m=6: true codim= 27  naive m^2= 36  C_m= 27  UNDERSHOOT gap = m^2 - C_m =  9 = floor(m^2/4)=9 = a*c=9  (a,c,e)=(3, 3, 3)  match=True
+   m=7: true codim= 37  naive m^2= 49  C_m= 37  UNDERSHOOT gap = m^2 - C_m = 12 = floor(m^2/4)=12 = a*c=12  (a,c,e)=(3, 4, 3)  match=True
+
+ n=8:
+   m=1: true codim=  1  naive m^2=  1  C_m=  1  UNDERSHOOT gap = m^2 - C_m =  0 = floor(m^2/4)=0 = a*c=0  (a,c,e)=(0, 1, 0)  match=True
+   m=2: true codim=  3  naive m^2=  4  C_m=  3  UNDERSHOOT gap = m^2 - C_m =  1 = floor(m^2/4)=1 = a*c=1  (a,c,e)=(1, 1, 1)  match=True
+   m=3: true codim=  7  naive m^2=  9  C_m=  7  UNDERSHOOT gap = m^2 - C_m =  2 = floor(m^2/4)=2 = a*c=2  (a,c,e)=(1, 2, 1)  match=True
+   m=4: true codim= 12  naive m^2= 16  C_m= 12  UNDERSHOOT gap = m^2 - C_m =  4 = floor(m^2/4)=4 = a*c=4  (a,c,e)=(2, 2, 2)  match=True
+   m=5: true codim= 19  naive m^2= 25  C_m= 19  UNDERSHOOT gap = m^2 - C_m =  6 = floor(m^2/4)=6 = a*c=6  (a,c,e)=(2, 3, 2)  match=True
+   m=6: true codim= 27  naive m^2= 36  C_m= 27  UNDERSHOOT gap = m^2 - C_m =  9 = floor(m^2/4)=9 = a*c=9  (a,c,e)=(3, 3, 3)  match=True
+   m=7: true codim= 37  naive m^2= 49  C_m= 37  UNDERSHOOT gap = m^2 - C_m = 12 = floor(m^2/4)=12 = a*c=12  (a,c,e)=(3, 4, 3)  match=True
+   m=8: true codim= 48  naive m^2= 64  C_m= 48  UNDERSHOOT gap = m^2 - C_m = 16 = floor(m^2/4)=16 = a*c=16  (a,c,e)=(4, 4, 4)  match=True
+
+E1 VERDICT  true codim == C_m for all (n,m): True
+E1 VERDICT  gap == floor(m^2/4) == a*c for all (n,m): True
+
+======================================================================
+E2: EXACT normal-map rank at n=4, m=2 balanced point (expect 3 = C_2, not 4)
+======================================================================
+rank P = 3  rank Z = 3  rank(P*Z) = 2  (target rank n-m = 2)
+EXACT rank of normal-space map (= local codim of V_2 at this point): 3
+naive transverse codim would be (n-r)^2 = 2^2 = 4; C_2 = 3
+E2 VERDICT  exact local codim = 3 = C_2 (undershoots naive 4): True
+
+======================================================================
+E3: EXACT coker(d mu) dim at n=4, m=4 balanced point (expect a*c=4)
+======================================================================
+rank P = 2  rank Z = 2  rank(P*Z) = 0  (im Z subset ker P => P*Z = 0)
+EXACT dim image(d mu) = 12  ; coker dim = 4
+expected a*c = 2*2 = 4 = floor(16/4) = 4^2 - C_4 = 4
+E3 VERDICT  exact coker(d mu) dim = 4 = 4^2 - C_4: True
+
+======================================================================
+W2 OVERALL
+======================================================================
+E1 (codim=C_m, gap=floor(m^2/4)=a*c): True
+E2 (exact normal-map rank = 3 = C_2): True
+E3 (exact coker(d mu) dim = 4 = 4^2-C_4): True
+W2 PASS: True
+
+[W2] the balanced product-corank codim C_m undershoots naive m^2 by exactly floor(m^2/4) = coker(d mu). m^2 and C_m are distinct for m>=2.
