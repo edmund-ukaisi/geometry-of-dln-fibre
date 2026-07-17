@@ -109,3 +109,13 @@ step-invariant-everywhere + branch-rooted + neighborhood cover; obligations beco
 + consequences — fixes C1/C2/M3/M5 in one shape); M4's ratio pinned to cert-d3's identity with a
 new consistency witness; M6 clause added. Carrier stays drafted; six stay adjudicated. Equilibrium
 round 2 = re-review after the repair.
+
+## 2026-07-17 HEARTBEAT (tick 11)
+Placement recovery #2 — `git worktree add` re-pins the controller session's cwd to the new
+worktree (mechanism now confirmed by recurrence; memo rule added: re-enter root after every
+worktree creation). Read-only glance only; nothing touched in t01-r2, where the architect is
+actively repairing (both Engine files modified + a thread dir appearing). Hunt banked two more
+increments on origin: alt-pivot invariance ((3,3,4) all pivots → 8) + (2,3,2,2) L3 cross-check +
+Tier C tracked-leaf census (NewtonLP == closed form; no sub-threshold divisor at the second
+blow-up) — no undershoot anywhere yet; Tier B (weighted/coordinate-changed) still to come.
+Re-sleeping.

@@ -10,6 +10,8 @@ Main quest: the transform-only Aoyagi resolution engine → `∀ M, RouteMBoxThr
   verdicts (theorem4 D2, coverage D3 certs committed locally — integrate on report).
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
+- `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
+  EnterWorktree(root) immediately after every worktree creation; placement check catches it.
 - Six obligations HELD at adjudicated until carrier validates (contract 7 — correct, keep it).
 - Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
 
