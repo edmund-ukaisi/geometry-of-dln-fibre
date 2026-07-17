@@ -374,3 +374,10 @@ probe-without-import). Battery + validate clean on the merge. Gate 7c caught MY 
 FRESH REVIEW spawned: rev-carrier (worktree rev2, branch --rev2) against the 12-item union
 checklist; verdict gates merge-to-canonical + the contract-7 status flips. Architect owes two
 cosmetics (reflow + vacuity-note re-scope), non-blocking.
+
+## 2026-07-17 GATE 8 GREEN; ROOT PUSHED (tick 31)
+Gate 8 (my full AxCheck on the merged restructure + the driver watch entry) exit=0. Footprints:
+canonicalResolution224_arithmetic clean-three; canonicalResolution224 +sorryAx (forecast, expected);
+engine_box_threshold_finite +sorryAx (the watch line — its flip to clean-three IS the hbox event).
+sorryAx census unchanged (forecast + mint + 4 inherited predecessor decls, all off the engine cone
+or expected). Root pushed. In flight: rev-carrier fresh round; architect cosmetics.
