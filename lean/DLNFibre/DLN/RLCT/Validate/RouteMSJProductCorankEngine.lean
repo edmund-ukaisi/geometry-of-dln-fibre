@@ -203,21 +203,24 @@ certificate; the transverse-Jacobian sign repair (GAP-IN-RELATIVE-JACOBIAN) is w
 cell (W3/W4). **Status: OPEN** (the genuinely-new §H content — transcription of Aoyagi's resolution;
 the arithmetic budget is banked, the analytic determinantal CoV + Jacobian bookkeeping is NEW).
 
-**Level discipline (l2witness E5, load-bearing):** the eventual PROOF must establish genuine
-PRINCIPALIZATION — that the chart family is an actual SNC log-resolution whose charts principalize the
-joint ideal (W1: single-factor blow-ups do NOT — the joint center `(x,y,b)` with its alignment coordinate
-survives). A cross-check of the divisor RATIOS `min_i (a_iᵢ+1)/(2Nᵢ) ≥ c*` certifies `rlct ≥ c*`
-CONDITIONAL on the `(aᵢ,Nᵢ)` coming from a valid resolution; it does NOT certify that validity, and a
-green ratio-check is NOT by itself a native re-derivation of `rlct = c*`. Establishing the resolution's
-validity at d≥2 (not merely its ratios) is exactly this hole's burden — the boundary between native and
-cited. `hthr = 2c' < a·rank(S)` is the active-direction count of the corank block ALONE; the operative
-per-stratum gate couples it with the transverse-Jacobian `|det J| = A_r = (b−r)²` weight (satred's
-rank-sector charge, `min_r[A_r + minAdm(reducedᵣ)] = minAdm`), so the final per-chart exponent form is
-NOT `hthr` alone — it is pinned when the SVD chart maps are built. -/
+**LEVEL SEPARATION (l2svd cert, the framing correction — this hole is SIMPLER than the §H framing).**
+With `S` FIXED, `frobSq(Γ·S)` is a **Morse (smooth-linear-center)** singularity: a PSD quadratic form in
+`Γ` of rank EXACTLY `a·rank(S)`, zero-locus the LINEAR subspace `{Γ·S=0}`. NOT a determinantal blow-up —
+the "d=c coords / single-radial-DEAD / transverse-Jac sign repair" language is mis-imported from the
+JOINT problem (S VARYING with `x, A'`), which lives ENTIRELY in `corankStratum_lt_top` (obligation 2).
+For fixed S: ONE spectral CoV (unit Jacobian) + ONE `corner_block_cube_lintegral_lt_top` on the
+`a·rank(S)` active block, threshold `2c' < a·rank(S)` (= `hthr`, TIGHT). EXPENSIVE-TRANSCRIPTION, NOT
+open; `measurableEigendecomp` NOT needed (fixed S). W1/W2 do NOT bite (no joint incidence, no varying
+product). Route: l2svd cert §§1–4 (sub-lemmas N1–N5). Fill in flight (`genm-l2morse`).
+
+**SPEC (l2svd, REQUIRED — the `volume box < ⊤` form is FALSE):** `hbox : Bornology.IsBounded box`
+(finiteness needs boundedness, not finite volume — verified counterexample a=b=2, r=1, c'=0.9<1: a
+finite-VOLUME wedge shrinking toward `{Γ·S=0}` diverges). The real call site
+(`{Γ | Γ + schurShift x ∈ genBox … 1}`, a translate of a genuine product box) IS bounded → safe/cost-free. -/
 theorem corankSVD_chartFamily_lt_top {a b q : ℕ} (hab : 2 ≤ min a b)
     (S : Matrix (Fin b) (Fin q) ℝ) (c' : NNReal)
     (hthr : 2 * (c' : ℝ) < (a : ℝ) * (S.rank : ℝ))
-    (box : Set (Fin a → Fin b → ℝ)) (hbox : volume box < ⊤) :
+    (box : Set (Fin a → Fin b → ℝ)) (hbox : Bornology.IsBounded box) :
     ∫⁻ Γ in box, ENNReal.ofReal ((frobSq (Matrix.of Γ * S)) ^ (-(c' : ℝ))) < ⊤ := by
   sorry
 
