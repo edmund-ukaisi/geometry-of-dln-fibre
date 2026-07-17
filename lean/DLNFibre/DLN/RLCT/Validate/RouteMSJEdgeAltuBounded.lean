@@ -380,6 +380,32 @@ theorem edge_frontCollapse_cleanBox_lt_top {L : ℕ} (M : Fin (L + 1 + 1 + 1) �
   rw [← wingFrontBox_consFront_eq_cleanBox M t (le_trans ht2 (min_le_right _ _))]
   exact edge_frontCollapse_consFront_lt_top M t ht2 hbnd hb hIH c' hlow
 
+/-- **`frontStdEquivM` maps `outerPB` onto `cleanFrontBox`** (cast-free, no `min`). Box conditions match
+(`Sum.elim` of the pivot pair's entries); the leading block reads `pb.1` DIRECTLY via
+`frontStd_leadingBlock` (no `leadingBlock`/`min` reindex). -/
+theorem frontStdEquivM_preimage_cleanBox {t M₁ : ℕ} (htM1 : t ≤ M₁) :
+    frontStdEquivM htM1 ⁻¹' cleanFrontBox htM1 = outerPB t (M₁ - t) 1 := by
+  ext pb
+  simp only [Set.mem_preimage, cleanFrontBox, outerPB, Set.mem_setOf_eq]
+  have hlead : (Matrix.of (fun i j : Fin t => frontStdEquivM htM1 pb i (Fin.castLE htM1 j)))
+      = Matrix.of pb.1 := by
+    ext i j
+    simp only [Matrix.of_apply, frontStdEquivM_apply, frontStd_leadingBlock htM1 pb.1 pb.2 i j]
+  rw [hlead]
+  constructor
+  · rintro ⟨hbox, hU⟩
+    refine ⟨fun i j => ?_, fun i j => ?_, hU⟩
+    · have hh := hbox i (frontStdEquiv htM1 (Sum.inl j))
+      rwa [frontStdEquivM_apply, Equiv.symm_apply_apply, Sum.elim_inl] at hh
+    · have hh := hbox i (frontStdEquiv htM1 (Sum.inr j))
+      rwa [frontStdEquivM_apply, Equiv.symm_apply_apply, Sum.elim_inr] at hh
+  · rintro ⟨hP, hB12, hU⟩
+    refine ⟨fun i m => ?_, hU⟩
+    rw [frontStdEquivM_apply]
+    rcases (frontStdEquiv htM1).symm m with j | j
+    · exact hP i j
+    · exact hB12 i j
+
 /-! ## The pivot-energy zero locus is null (the a.e.-`W > 0` restriction)
 
 For a fixed nonzero tail product `QT`, the front-Gram zero locus `{F | frobSq (rmatMul F QT) = 0}` is
@@ -395,6 +421,66 @@ theorem rmatMul_colReindex {t n q : ℕ} (e : Fin n ≃ Fin n) (F : Fin t → Fi
   simp only [rmatMul, Matrix.submatrix_apply, id_eq]
   rw [← Equiv.sum_comp e (fun m => F I m * QT (e.symm m) j)]
   exact Finset.sum_congr rfl (fun m _ => by rw [Equiv.symm_apply_apply])
+
+/-- **Row-reindex of the matrix box is measure-preserving.** For `e : Fin p ≃ Fin p` and measurable `ψ`,
+`∫_{A ∈ matBox} ψ (A ∘ e.symm) = ∫_{A ∈ matBox} ψ A` — permuting the rows of `A` fixes `matBox` and the
+Lebesgue measure (`arrowCongr' e` MP + the box preimage). -/
+theorem matBox_rowReindex_lintegral {p n : ℕ} (e : Fin p ≃ Fin p)
+    (ψ : (Fin p → Fin n → ℝ) → ℝ≥0∞) (hψ : Measurable ψ) :
+    (∫⁻ A in matBox p n 1, ψ (fun I j => A (e.symm I) j)) = ∫⁻ A in matBox p n 1, ψ A := by
+  have hval : ∀ (A : Fin p → Fin n → ℝ),
+      (MeasurableEquiv.arrowCongr' e (MeasurableEquiv.refl (Fin n → ℝ))) A
+        = fun I j => A (e.symm I) j := fun _ => rfl
+  have hmp := volume_preserving_arrowCongr' e (MeasurableEquiv.refl (Fin n → ℝ))
+    (MeasurePreserving.id volume)
+  have hpre := hmp.setLIntegral_comp_preimage_emb
+    (MeasurableEquiv.measurableEmbedding (MeasurableEquiv.arrowCongr' e (MeasurableEquiv.refl _)))
+    ψ (matBox p n 1)
+  have hpreim : (MeasurableEquiv.arrowCongr' e (MeasurableEquiv.refl (Fin n → ℝ))) ⁻¹' matBox p n 1
+      = matBox p n 1 := by
+    ext A
+    simp only [Set.mem_preimage, matBox, Set.mem_setOf_eq, hval]
+    constructor
+    · intro h I j
+      have hh := h (e I) j
+      rwa [Equiv.symm_apply_apply] at hh
+    · intro h I j; exact h (e.symm I) j
+  rw [hpreim] at hpre
+  simp only [hval] at hpre
+  exact hpre
+
+/-- **Tail column-perm invariance of the front-factor box integral.** For `e : Fin (N 0) ≃ Fin (N 0)`,
+reindexing the tail product `prod N A`'s rows by `e.symm` leaves the `A`-integral of the front-factor
+loss unchanged: a front column-perm (`rmatMul_colReindex`) becomes a first-layer row-perm, absorbed by the
+banked front-split (`frontFactor_split`) + the `matBox` row-reindex CoV (`matBox_rowReindex_lintegral`). -/
+theorem tail_colperm_invariant {n p : ℕ} (N : Fin (n + 1 + 1) → ℕ) (e : Fin (N 0) ≃ Fin (N 0))
+    (F : Fin p → Fin (N 0) → ℝ) (c' : ℝ) :
+    (∫⁻ A in paramsBoxM N 1,
+        ENNReal.ofReal ((frobSq (rmatMul F ((prod N A).submatrix e.symm id))) ^ (-c')))
+      = ∫⁻ A in paramsBoxM N 1, ENNReal.ofReal ((frobSq (rmatMul F (prod N A))) ^ (-c')) := by
+  have hL : (∫⁻ A in paramsBoxM N 1,
+        ENNReal.ofReal ((frobSq (rmatMul F ((prod N A).submatrix e.symm id))) ^ (-c')))
+      = ∫⁻ A in paramsBoxM N 1,
+          ENNReal.ofReal ((frobSq (rmatMul (fun I m => F I (e m)) (prod N A))) ^ (-c')) := by
+    refine lintegral_congr fun A => ?_
+    rw [rmatMul_colReindex e F (prod N A)]
+  rw [hL, frontFactor_split N (fun I m => F I (e m)) c', frontFactor_split N F c']
+  have hInner : ∀ A₁ : Fin (N 0) → Fin (N 1) → ℝ,
+      (∫⁻ A'' in paramsBoxM (Mtail N) 1,
+          ENNReal.ofReal ((frobSq (rmatMul (rmatMul (fun I m => F I (e m)) A₁)
+            (prod (Mtail N) A''))) ^ (-c')))
+        = ∫⁻ A'' in paramsBoxM (Mtail N) 1,
+            ENNReal.ofReal ((frobSq (rmatMul (rmatMul F (fun I j => A₁ (e.symm I) j))
+              (prod (Mtail N) A''))) ^ (-c')) := by
+    intro A₁
+    refine lintegral_congr fun A'' => ?_
+    rw [show rmatMul (fun I m => F I (e m)) A₁ = rmatMul F (fun I j => A₁ (e.symm I) j)
+      from rmatMul_colReindex e F A₁]
+  simp only [hInner]
+  exact matBox_rowReindex_lintegral e
+    (fun A₁ => ∫⁻ A'' in paramsBoxM (Mtail N) 1,
+      ENNReal.ofReal ((frobSq (rmatMul (rmatMul F A₁) (prod (Mtail N) A''))) ^ (-c')))
+    (measurable_frontFactorIntegrand N F c').lintegral_prod_right'
 
 /-- **The front-Gram zero locus is null** (fixed nonzero tail `QT`, `t ≥ 1`). `frobSq (rmatMul F QT) = 0`
 forces `(rmatMul F QT) 0 j₀ = 0`, a nonzero polynomial in `F` (`QT`'s column `j₀ ≠ 0`); its zero set is
