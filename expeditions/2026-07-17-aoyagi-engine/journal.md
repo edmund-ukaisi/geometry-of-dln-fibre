@@ -205,3 +205,19 @@ carries a RESIDUAL factor the pure-monomial read omits — resRank ≥ minAdm be
 obligation with truth witness. Region-glue held back to adjudicated (kill attached). Elder
 convening for the skeleton-revision ratification; architect redirected: rung 0 = the ChartBridge
 revision per the cert, priced by the new witnesses.
+
+## 2026-07-17 STOP-AND-SURFACE: CARRIER RESTRUCTURE PROPOSED (tick 19)
+Two events. (1) MY tombstone edit had broken RouteMSJDecoratedRec (double docstring) — caught by
+the AxCheck gate build, fixed to a module comment, rebuilt (gate 5 backgrounded). The gate caught
+the controller again. (2) The architect STOP-surfaced before rung 1 (the brief's tripwire, used
+correctly): its decorrelated Codex architecture review flags a carrier RESTRUCTURE to do before
+the tide — edge-labelled children (StepCase/recurrence belong to edges; unary StepInvariant is
+edge-blind), openness UPSTAIRS (downstairs blow-up images aren't open — the ROOT CAUSE of lane 2's
+vacuity finding, independently reached), lexicographic termination, realized-tStar attainment.
+Intersects the ChartBridge revision: the elder convening's scope EXPANDED to the combined
+restructure, with explicit questions (one event or two; council-of-two?; pricing — what of the
+validated carrier/224 witness/r2 VALIDATE survives). Architect holds merges, drafting the combined
+candidate spine on its branch so the ratification gates against a concrete design. Convergence
+note: two independent decorrelated sources (lane 2's exact counterexample; the consult's
+structural review) point at the same chart/upstairs gap — the restructure is evidence-driven, not
+churn.
