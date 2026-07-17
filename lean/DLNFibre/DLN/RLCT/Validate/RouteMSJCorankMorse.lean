@@ -427,4 +427,200 @@ theorem corankSVD_chartFamily_lt_top {a b q : ℕ} (hab : 2 ≤ min a b)
     (c' : ℝ) (NNReal.coe_nonneg c') ?_ box hbox
   rw [card_pos_eigenvalues_eq_rank S]; exact hthr
 
+/-! ## The quantitative inner bound (companion) — top-stratum, for the outer descent -/
+
+/-- **`frobSq(Γ·S)` is bounded by the max Gram eigenvalue times `frobSq Γ`.** From the spectral rewrite
+`frobSq(Γ·S)=∑_j λ_j ∑_i((Γ·Q)_{ij})²`, bound each `λ_j ≤ Λ`, then `frobSq(Γ·Q)=frobSq Γ`. -/
+theorem frobSq_mul_le_lambdaMax {a b q : ℕ} (S : Matrix (Fin b) (Fin q) ℝ) (Λ : ℝ)
+    (hΛ : ∀ i, (posSemidef_mul_transpose S).isHermitian.eigenvalues i ≤ Λ)
+    (Γ : Fin a → Fin b → ℝ) : frobSq (Matrix.of Γ * S) ≤ Λ * frobSq Γ := by
+  have hQ : ((posSemidef_mul_transpose S).isHermitian.eigenvectorUnitary : Matrix (Fin b) (Fin b) ℝ)
+        * ((posSemidef_mul_transpose S).isHermitian.eigenvectorUnitary :
+            Matrix (Fin b) (Fin b) ℝ)ᵀ = 1 := by
+    have h := Matrix.mem_unitaryGroup_iff.mp
+      (posSemidef_mul_transpose S).isHermitian.eigenvectorUnitary.property
+    rwa [Matrix.star_eq_conjTranspose, Matrix.conjTranspose_eq_transpose_of_trivial] at h
+  rw [frobSq_mul_eq_sum_eigenvalues (Matrix.of Γ) S]
+  calc ∑ j, (posSemidef_mul_transpose S).isHermitian.eigenvalues j
+          * ∑ i, ((Matrix.of Γ * ((posSemidef_mul_transpose S).isHermitian.eigenvectorUnitary :
+              Matrix (Fin b) (Fin b) ℝ)) i j) ^ 2
+      ≤ ∑ j, Λ * ∑ i, ((Matrix.of Γ * ((posSemidef_mul_transpose S).isHermitian.eigenvectorUnitary :
+              Matrix (Fin b) (Fin b) ℝ)) i j) ^ 2 := by
+        refine Finset.sum_le_sum (fun j _ => ?_)
+        exact mul_le_mul_of_nonneg_right (hΛ j) (Finset.sum_nonneg (fun i _ => sq_nonneg _))
+    _ = Λ * ∑ i, ∑ j, ((Matrix.of Γ * ((posSemidef_mul_transpose S).isHermitian.eigenvectorUnitary :
+              Matrix (Fin b) (Fin b) ℝ)) i j) ^ 2 := by rw [← Finset.mul_sum, Finset.sum_comm]
+    _ = Λ * frobSq (fun i => Γ i ᵥ* ((posSemidef_mul_transpose S).isHermitian.eigenvectorUnitary :
+              Matrix (Fin b) (Fin b) ℝ)) := rfl
+    _ = Λ * frobSq Γ := by rw [frobSq_vecMul_right _ hQ Γ]
+
+/-- **The Gram square root** `M = (S·Sᵀ)^{1/2}`: symmetric, `M·M = S·Sᵀ`, `det M ≠ 0`,
+`|det M| = √(det(S·Sᵀ))`. Derived from the banked normaliser `N = (S·Sᵀ)^{−1/2}` (`M = N⁻¹`). -/
+theorem exists_gram_sqrt {b q : ℕ} (S : Matrix (Fin b) (Fin q) ℝ) (hS : (S * Sᵀ).PosDef) :
+    ∃ M : Matrix (Fin b) (Fin b) ℝ,
+      Mᵀ = M ∧ M * M = S * Sᵀ ∧ M.det ≠ 0 ∧ |M.det| = Real.sqrt (S * Sᵀ).det := by
+  obtain ⟨N, hNsym, hNG, hNdet, hNabs⟩ := exists_gram_normalizer (S * Sᵀ) hS
+  have hNunit : IsUnit N.det := isUnit_iff_ne_zero.mpr hNdet
+  rw [hNsym] at hNG
+  have hNGN : N * ((S * Sᵀ) * N) = 1 := by rw [← Matrix.mul_assoc]; exact hNG
+  have hNinv : N⁻¹ = (S * Sᵀ) * N := Matrix.inv_eq_right_inv hNGN
+  refine ⟨N⁻¹, ?_, ?_, ?_, ?_⟩
+  · rw [Matrix.transpose_nonsing_inv, hNsym]
+  · nth_rewrite 1 [hNinv]
+    rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv N hNunit, Matrix.mul_one]
+  · rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv]; exact inv_ne_zero hNdet
+  · rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv, abs_inv, hNabs, inv_inv]
+
+/-- **The quantitative inner bound (top-stratum, form (B)).** For FULL-rank `S` (`S·Sᵀ` PosDef),
+`2c' < a·b`, `w ≥ 0`, and a chart bound `Λ` on the Gram eigenvalues, the box integral of the
+`w`-buffered loss power is bounded by `det(S·Sᵀ)^{−a/2}` times a fixed (S-independent) constant `K`.
+The `w`-buffer drops a.e. (`{Γ·S=0}={0}` null); `frobSq(Γ·S)=frobSq(Γ·M)` for the Gram sqrt `M`; the
+banked right-mult CoV extracts the `det(S·Sᵀ)^{−a/2}` Jacobian; the enclosing box `matBox a b (√(Λab)T)`
+(from the λmax bound) gives the constant `K`. -/
+theorem corankSVD_quantBound_matBox {a b q : ℕ}
+    (S : Matrix (Fin b) (Fin q) ℝ) (hS : (S * Sᵀ).PosDef)
+    (c' : ℝ) (hc0 : 0 ≤ c') (hc' : 2 * c' < (a : ℝ) * b)
+    (Λ : ℝ) (hΛ : ∀ i, (posSemidef_mul_transpose S).isHermitian.eigenvalues i ≤ Λ)
+    (T : ℝ) (hT : 0 < T) (w : ℝ) (hw : 0 ≤ w) :
+    ∫⁻ Γ in matBox a b T, ENNReal.ofReal ((w + frobSq (Matrix.of Γ * S)) ^ (-c'))
+      ≤ ENNReal.ofReal ((S * Sᵀ).det ^ (-(a : ℝ) / 2))
+        * ∫⁻ Δ in matBox a b (Real.sqrt (Λ * (a * b)) * T),
+            ENNReal.ofReal ((frobSq Δ) ^ (-c')) := by
+  obtain ⟨M, hMsym, hMM, hMdet, hMabs⟩ := exists_gram_sqrt S hS
+  have hGnn : (0 : ℝ) ≤ (S * Sᵀ).det := hS.posSemidef.det_nonneg
+  -- `S·Sᵀ = M·Mᵀ`, hence `frobSq(Γ·S) = frobSq(Γ·M)`
+  have hgram : S * Sᵀ = M * Mᵀ := by rw [hMsym, hMM]
+  have hfrob : ∀ Γ : Fin a → Fin b → ℝ,
+      frobSq (Matrix.of Γ * S) = frobSq (fun i => Γ i ᵥ* M) := by
+    intro Γ
+    have hbridge : frobSq (fun i => Γ i ᵥ* M) = frobSq (Matrix.of Γ * M) := rfl
+    rw [hbridge, frobSq_eq_trace (Matrix.of Γ * S), frobSq_eq_trace (Matrix.of Γ * M),
+      Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+      Matrix.mul_assoc (Matrix.of Γ) S Sᵀ, Matrix.mul_assoc (Matrix.of Γ) M Mᵀ, hgram]
+  have hmb : ∀ T' : ℝ, MeasurableSet (matBox a b T') := fun T' => by
+    rw [matBox_eq_eMatFlat_preimage]
+    exact (morseBox_measurableSet (a * b) T').preimage (eMatFlat a b).measurable
+  set ρ : ℝ := Real.sqrt (Λ * (a * b)) * T with hρdef
+  set A : Set (Fin a → Fin b → ℝ) := matBox a b ρ with hAdef
+  have hAmeas : MeasurableSet A := by rw [hAdef]; exact hmb ρ
+  set φ : (Fin a → Fin b → ℝ) → ℝ≥0∞ := fun Δ => ENNReal.ofReal ((frobSq Δ) ^ (-c')) with hφdef
+  have hφmeas : Measurable φ := by
+    rw [hφdef]
+    refine ENNReal.measurable_ofReal.comp ((by fun_prop : Measurable fun s : ℝ => s ^ (-c')).comp ?_)
+    unfold frobSq; fun_prop
+  -- Step 1: drop `w` (a.e.; `{Γ·S=0}={0}` is null)
+  have ha : 0 < a := by
+    rcases Nat.eq_zero_or_pos a with h | h
+    · exfalso; rw [h] at hc'; simp only [Nat.cast_zero, zero_mul] at hc'; linarith
+    · exact h
+  have hb : 0 < b := by
+    rcases Nat.eq_zero_or_pos b with h | h
+    · exfalso; rw [h] at hc'; simp only [Nat.cast_zero, mul_zero] at hc'; linarith
+    · exact h
+  haveI : NoAtoms (volume : Measure (Fin b → ℝ)) := MeasureTheory.Measure.pi_noAtoms ⟨0, hb⟩
+  haveI : NoAtoms (volume : Measure (Fin a → Fin b → ℝ)) := MeasureTheory.Measure.pi_noAtoms ⟨0, ha⟩
+  have hΛ0 : 0 ≤ Λ := le_trans (hS.posSemidef.eigenvalues_nonneg ⟨0, hb⟩) (hΛ ⟨0, hb⟩)
+  have hGunit : IsUnit (S * Sᵀ).det := (Matrix.isUnit_iff_isUnit_det _).mp hS.isUnit
+  have hnull : volume {Γ : Fin a → Fin b → ℝ | frobSq (Matrix.of Γ * S) = 0} = 0 := by
+    refine measure_mono_null ?_ (measure_singleton (0 : Fin a → Fin b → ℝ))
+    intro Γ hΓ
+    simp only [Set.mem_setOf_eq] at hΓ
+    have hΓS : Matrix.of Γ * S = 0 := by
+      have h2 : ∀ i j, ((Matrix.of Γ * S) i j) ^ 2 = 0 := by
+        intro i j
+        have hi := (Finset.sum_eq_zero_iff_of_nonneg
+          (fun i _ => Finset.sum_nonneg (fun j _ => sq_nonneg _))).mp hΓ i (Finset.mem_univ i)
+        exact (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg _)).mp hi j (Finset.mem_univ j)
+      ext i j; simpa using (pow_eq_zero_iff (two_ne_zero)).mp (h2 i j)
+    have hΓ0 : Matrix.of Γ = 0 := by
+      have h1 : Matrix.of Γ * (S * Sᵀ) = 0 := by rw [← Matrix.mul_assoc, hΓS, Matrix.zero_mul]
+      calc Matrix.of Γ = Matrix.of Γ * (S * Sᵀ) * (S * Sᵀ)⁻¹ := by
+            rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hGunit, Matrix.mul_one]
+        _ = 0 := by rw [h1, Matrix.zero_mul]
+    exact Set.mem_singleton_iff.mpr hΓ0
+  have hae0 : ∀ᵐ Γ : Fin a → Fin b → ℝ ∂volume, frobSq (Matrix.of Γ * S) ≠ 0 := by
+    rw [ae_iff]; simpa using hnull
+  have hdrop : ∫⁻ Γ in matBox a b T, ENNReal.ofReal ((w + frobSq (Matrix.of Γ * S)) ^ (-c'))
+      ≤ ∫⁻ Γ in matBox a b T, ENNReal.ofReal ((frobSq (Matrix.of Γ * S)) ^ (-c')) := by
+    refine lintegral_mono_ae (ae_restrict_of_ae ?_)
+    filter_upwards [hae0] with Γ hΓ
+    have hpos : 0 < frobSq (Matrix.of Γ * S) := lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hΓ)
+    exact ENNReal.ofReal_le_ofReal
+      (Real.rpow_le_rpow_of_nonpos hpos (by linarith) (by linarith))
+  refine hdrop.trans ?_
+  -- Step 2: `frobSq(ΓS)=frobSq(ΓM)`, then the CoV extracting `det^{−a/2}`
+  rw [setLIntegral_congr_fun (hmb T) (fun Γ _ => by rw [hfrob Γ])]
+  -- now: `∫_{matBox T} φ (fun i => Γ i ᵥ* M) ≤ det^{−a/2} · ∫_A φ`
+  have hρ0 : 0 ≤ ρ := by rw [hρdef]; positivity
+  have hρ2 : ρ ^ 2 = Λ * (a * b) * T ^ 2 := by
+    rw [hρdef, mul_pow, Real.sq_sqrt (mul_nonneg hΛ0 (by positivity))]
+  have hsub : matBox a b T ⊆ (fun Γ : Fin a → Fin b → ℝ => fun i => Γ i ᵥ* M) ⁻¹' A := by
+    intro Γ hΓ
+    simp only [Set.mem_preimage, hAdef, matBox, Set.mem_setOf_eq]
+    intro i k
+    have hΓb : frobSq Γ ≤ (a * b : ℝ) * T ^ 2 := by
+      have hfe : frobSq Γ = ∑ i, ∑ j, (Γ i j) ^ 2 := rfl
+      rw [hfe]
+      calc ∑ i, ∑ j, (Γ i j) ^ 2 ≤ ∑ _i : Fin a, ∑ _j : Fin b, T ^ 2 := by
+            refine Finset.sum_le_sum (fun i _ => Finset.sum_le_sum (fun j _ => ?_))
+            have h := hΓ i j; rw [Set.mem_Icc] at h; nlinarith [h.1, h.2]
+        _ = (a * b : ℝ) * T ^ 2 := by
+            rw [Finset.sum_const, Finset.sum_const, Finset.card_univ, Finset.card_univ,
+              Fintype.card_fin, Fintype.card_fin, nsmul_eq_mul, nsmul_eq_mul]; push_cast; ring
+    have hfrobΓ : frobSq (fun i => Γ i ᵥ* M) ≤ ρ ^ 2 := by
+      rw [hρ2, ← hfrob Γ]
+      exact (frobSq_mul_le_lambdaMax S Λ hΛ Γ).trans
+        (by nlinarith [mul_le_mul_of_nonneg_left hΓb hΛ0])
+    have hik : ((fun i => Γ i ᵥ* M) i k) ^ 2 ≤ ρ ^ 2 := by
+      refine le_trans ?_ hfrobΓ
+      have hfe : frobSq (fun i => Γ i ᵥ* M) = ∑ i', ∑ j, ((fun i => Γ i ᵥ* M) i' j) ^ 2 := rfl
+      rw [hfe]
+      exact (Finset.single_le_sum (f := fun j => ((fun i => Γ i ᵥ* M) i j) ^ 2)
+              (fun j _ => sq_nonneg _) (Finset.mem_univ k)).trans
+        (Finset.single_le_sum (f := fun i' => ∑ j, ((fun i => Γ i ᵥ* M) i' j) ^ 2)
+              (fun i' _ => Finset.sum_nonneg (fun j _ => sq_nonneg _)) (Finset.mem_univ i))
+    have habs : |(fun i => Γ i ᵥ* M) i k| ≤ ρ := by
+      rw [← Real.sqrt_sq_eq_abs, ← Real.sqrt_sq hρ0]; exact Real.sqrt_le_sqrt hik
+    exact Set.mem_Icc.mpr (abs_le.mp habs)
+  calc ∫⁻ Γ in matBox a b T, φ (fun i => Γ i ᵥ* M)
+      ≤ ∫⁻ Γ in (fun Γ : Fin a → Fin b → ℝ => fun i => Γ i ᵥ* M) ⁻¹' A, φ (fun i => Γ i ᵥ* M) :=
+        lintegral_mono_set hsub
+    _ = ENNReal.ofReal (|M.det| ^ a)⁻¹ * ∫⁻ Δ in A, φ Δ := by
+        have hLmeas : Measurable (fun Γ : Fin a → Fin b → ℝ => (fun i => Γ i ᵥ* M)) := by
+          have he : (fun Γ : Fin a → Fin b → ℝ => (fun i => Γ i ᵥ* M)) = rightMulₚ a M := by
+            funext Γ i; exact (rightMulₚ_apply a M Γ i).symm
+          rw [he]; exact (rightMulₚ a M).continuous_of_finiteDimensional.measurable
+        rw [← lintegral_indicator (hAmeas.preimage hLmeas)]
+        have hrw : ((fun Γ : Fin a → Fin b → ℝ => fun i => Γ i ᵥ* M) ⁻¹' A).indicator
+              (fun Γ => φ (fun i => Γ i ᵥ* M))
+            = fun Γ => (A.indicator φ) (fun i => Γ i ᵥ* M) := by
+          funext Γ
+          by_cases hΓ : (fun i => Γ i ᵥ* M) ∈ A
+          · rw [Set.indicator_of_mem (Set.mem_preimage.mpr hΓ), Set.indicator_of_mem hΓ]
+          · rw [Set.indicator_of_notMem (by rwa [Set.mem_preimage]), Set.indicator_of_notMem hΓ]
+        rw [hrw, lintegral_comp_rightMulₚ a M hMdet (A.indicator φ) (hφmeas.indicator hAmeas),
+          lintegral_indicator hAmeas]
+    _ ≤ ENNReal.ofReal ((S * Sᵀ).det ^ (-(a : ℝ) / 2)) * ∫⁻ Δ in A, φ Δ := by
+        refine mul_le_mul_right' (le_of_eq ?_) _
+        congr 1
+        rw [hMabs, Real.sqrt_eq_rpow, ← Real.rpow_natCast ((S * Sᵀ).det ^ ((1 : ℝ) / 2)) a,
+          ← Real.rpow_mul hGnn, ← Real.rpow_neg hGnn]
+        ring_nf
+
+/-- **The quantitative inner bound over a general bounded box (drop-in for the outer descent).**
+For `box ⊆ matBox a b R`, the `w`-buffered loss-power integral is `≤ det(S·Sᵀ)^{−a/2}·K` with `K` the
+fixed `matBox` integral at radius `√(Λ·a·b)·R`. Covers l2engine's translated shear-box (bound it by a
+centered `matBox a b R`). `C(S) = det(S·Sᵀ)^{−a/2}·K` with `K` uniform (via the chart `Λ`, `R`). -/
+theorem corankSVD_quantBound {a b q : ℕ}
+    (S : Matrix (Fin b) (Fin q) ℝ) (hS : (S * Sᵀ).PosDef)
+    (c' : ℝ) (hc0 : 0 ≤ c') (hc' : 2 * c' < (a : ℝ) * b)
+    (Λ : ℝ) (hΛ : ∀ i, (posSemidef_mul_transpose S).isHermitian.eigenvalues i ≤ Λ)
+    (R : ℝ) (hR : 0 < R) (box : Set (Fin a → Fin b → ℝ)) (hbox : box ⊆ matBox a b R)
+    (w : ℝ) (hw : 0 ≤ w) :
+    ∫⁻ Γ in box, ENNReal.ofReal ((w + frobSq (Matrix.of Γ * S)) ^ (-c'))
+      ≤ ENNReal.ofReal ((S * Sᵀ).det ^ (-(a : ℝ) / 2))
+        * ∫⁻ Δ in matBox a b (Real.sqrt (Λ * (a * b)) * R),
+            ENNReal.ofReal ((frobSq Δ) ^ (-c')) :=
+  (lintegral_mono_set hbox).trans (corankSVD_quantBound_matBox S hS c' hc0 hc' Λ hΛ R hR w hw)
+
 end DLNFibre.DLN.RLCT
