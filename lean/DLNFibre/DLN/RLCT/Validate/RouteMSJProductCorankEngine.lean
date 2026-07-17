@@ -203,36 +203,45 @@ theorem tailRankStrata_cover (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (κ : F
 /-! ## ★ THE ISOLATED WALL — obligation 2 (the non-submersive `A_r` principalization) -/
 
 /-- **★ OBLIGATION 2 — THE WALL (isolated, the minimal remaining gap; native-vs-cite = LATE-102).**
-The outer integrability of the **pivot change-of-variables Jacobian** `|det Ψ(Q_b(A'))|^{−t} =
-det(Q_b(A')·Q_b(A')ᵀ)^{−t/2}` (`Ψ` = the invertible part of `Q_b`'s right-singular frame; `Q_b(A')` = the
-corank block `Sum.inr` of the shared tail product) against the rank-drop boundary `{A' : rank Q_b(A') < b}`.
-This is the ONE genuinely-OPEN gap of the native engine; everything above it (the Morse corank family
-`corankSVD_chartFamily_lt_top`, the top-stratum pivot-Gram disposal, the region glue, the descent
-arithmetic) is EXPENSIVE-TRANSCRIPTION.
+The **full-tail product Wishart**: `∫_{A'} det(Q(A')·Q(A')ᵀ)^{−a/2} < ⊤` (`a = M₀−t`), where
+`Q(A') = (prod (tailChain M) A').submatrix (blockSplitEquiv κ) id` is the reindexed SHARED tail product
+(`(t+b) = M₁` rows), against the product-tail rank-drop `{A' : rank Q(A') < t+b}`. This is the ONE
+genuinely-OPEN gap; everything above it (the Morse corank family `corankSVD_chartFamily_lt_top`, the
+gammaAtom C-integration, the region glue, the descent arithmetic) is EXPENSIVE-TRANSCRIPTION.
+
+**Why THIS is the object (the Schur-complement Gram identity — verified, resolves the Π-coupling).** The
+assembly's C-integration (gammaAtom) yields the PIVOT Gram `det(Q̃ₚ·Q̃ₚᵀ)^{−a/2}`; the Γ-integration
+(Morse quantitative variant) yields the corank factor `det((Q_b·Π)(Q_b·Π)ᵀ)^{−a/2}·(bounded)`,
+`Π = 1 − Q̃ₚᵀ(Q̃ₚQ̃ₚᵀ)⁻¹Q̃ₚ`. The identity `det(Q̃ₚQ̃ₚᵀ)·det((Q_bΠ)(Q_bΠ)ᵀ) = det(Q·Qᵀ)` (Schur
+complement of the block Gram + the unit-det shear `[Q̃ₚ;Q_b] = [[I,P⁻¹B₁₂],[0,I]]·[Q_p;Q_b]`; verified
+numerically, all regimes, double-decorrelated) COMBINES them into the full-tail Gram `det(QQᵀ)^{−a/2}`,
+which is `P,B₁₂`-INDEPENDENT — so the `(P,B₁₂)` integral is a bounded factor and obligation 2 is A'-only.
+(This obviates a separate pivot-Gram `(P,B₁₂)→Wishart` CoV; `RouteMSJPivotWishart` stays banked as the
+narrow-regime fallback.)
 
 **Why it is a WALL, not transcription (l2svd cert §9, prodcorank-cert, decstep round-5 —
-`GAP-IN-RELATIVE-JACOBIAN`).** `det(Q_b·Q_bᵀ)^{−t/2}` here is a CoV JACOBIAN weight (from freeing the
-pivot tail for `qbox`), NOT a carried corank-Gram integrand (that would be the atom trap). For a FREE
-`Q_b` the outer integral is finite iff `t < q − b + 1` (standard, submersive; per-rank codim `(b−r)(q−r)`,
-vanishing order `(b−r)`, threshold `q−r`, min `q−b+1`). But `Q_b(A')` is a **shared DEEPER PRODUCT**
-(nested DLN factors), and the product map is **NON-SUBMERSIVE** at the rank-drop locus: the pullback
-acquires factor divisors the free-matrix count never sees. Concretely (Codex, decisive) for `Q_b = L·R`
-(`L` free `b×b`, `R` free `b×q`), `|det Ψ(Q_b)| = |det L|·|det Ψ(R)|`, so integrability requires
-SIMULTANEOUSLY `t < 1` (the extra divisor `{det L = 0}`, codim 1, linear vanishing) AND `t < q−b+1` —
-threshold `t < 1`, STRICTLY worse than the free baseline when `q > b`. The transverse Jacobian `= A_r`
-STRUCTURE transcribes (Aoyagi Case-2 carries the codim exponent), but its EXACT VALIDITY — that blowing
-up `{rank Q_b(A')=r}` through the product parametrization principalizes with ALL exponents `> −1` and NO
-smaller-ratio divisor — is genuinely ABSENT from Aoyagi's worked EXACT results (his general Theorem 5
-gives only UPPER bounds; exact values only `N=1`/small `H`; the finiteness `rlct ≥ c*` direction is his
-stated future work). **Circularity guard:** one cannot use "rlct = c* (Aoyagi) ⟹ no smaller-ratio
-divisor" inside a native proof.
+`GAP-IN-RELATIVE-JACOBIAN`).** `det(QQᵀ)^{−a/2}` has the SHAPE of the banked FREE-matrix Wishart
+`detGram_lintegral_lt_top`/`qbox` (finite iff `a < q − (t+b) + 1`, submersive), but `Q(A')` is a
+**shared DEEPER PRODUCT** (nested DLN factors), and the product map is **NON-SUBMERSIVE** at the
+rank-drop: the pullback acquires factor divisors the free-matrix count never sees. Concretely (Codex) for
+`Q = L·R`, `√det(QQᵀ) = |det L|·√det(RRᵀ)`, so integrability needs the EXTRA divisor `{det L = 0}` — a
+STRICTLY worse threshold. The transverse Jacobian `= A_r` STRUCTURE transcribes (Aoyagi Case-2 carries the
+codim exponent), but its EXACT VALIDITY — that blowing up `{rank Q(A')=k}` through the product
+parametrization principalizes with ALL exponents `> −1` and NO smaller-ratio divisor — is genuinely ABSENT
+from Aoyagi's worked EXACT results (Theorem 5 gives only UPPER bounds; exact values only `N=1`/small `H`;
+the `rlct ≥ c*` finiteness direction is his stated future work). **Circularity guard:** one cannot use
+"rlct = c* (Aoyagi) ⟹ no smaller-ratio divisor" inside a native proof.
 
 **Reconciliation with the airtight arithmetic.** satred's `A_r = (b−r)²` (`= peelCharge(M, deepened cut)`;
-round-5 care-point — the invariant is `(corank at the deepened cut)²`, carried as a kill-condition) and
-`min_r[A_r + minAdm(reducedᵣ)] = minAdm(M)` (verified `(4,4,4,4)@t=2 A_r=[0,1,4]→11`, n=3..15) are the
-airtight BUDGET; l2witness cross-checks the ratios `min_i (a_i+1)/(2Nᵢ) ≥ c*`. But a green ratio-check
-certifies `rlct ≥ c*` CONDITIONAL on the `(aᵢ,Nᵢ)` coming from a VALID resolution — it does NOT certify
-that validity (the non-submersive principalization), which is exactly this hole.
+round-5 care-point — the invariant is `(corank at the deepened cut)²`) and `min_r[A_r + minAdm(reducedᵣ)]
+= minAdm(M)` (verified `(4,4,4,4)@t=2 A_r=[0,1,4]→11`, n=3..15) are the airtight BUDGET; l2witness
+cross-checks the ratios `min_i (a_i+1)/(2Nᵢ) ≥ c*`. But a green ratio-check certifies `rlct ≥ c*`
+CONDITIONAL on the `(aᵢ,Nᵢ)` coming from a VALID resolution — it does NOT certify that validity (the
+non-submersive principalization), which is exactly this hole.
+
+**Regime.** Clean for `t+b ≤ q` (`q = M_last`, `t+b = M₁`) — incl. all SQUARE chains (`t+b = M₁ = n = q`,
+det(QQᵀ) generically ≠ 0). For `t+b > q` (narrow, `M₁ > M_last`): `det(QQᵀ) ≡ 0`, `S = Q_bΠ` never full
+rank → the pseudo-det form `(∏_{λ>0}λ)^{−a/2}` + the banked `RouteMSJPivotWishart` fallback (a sub-case).
 
 **Status: OPEN — THE WALL.** ESCALATED to the operator (LATE-102 native-vs-cite): build the multi-tide
 non-submersive product-corank resolution, or consolidate at the cite (`cited_aoyagi_product_corank` as a
@@ -244,9 +253,9 @@ theorem nonsubmersive_Ar_principalization (M : Fin (L + 1 + 1 + 1) → ℕ) (t :
     (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
     (∫⁻ A' in paramsBoxM (tailChain M) 1,
         ENNReal.ofReal
-          (((((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id) *
-              (((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id).transpose).det
-            ^ (-(t : ℝ) / 2))) < ⊤ := by
+          ((((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id) *
+              ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).transpose).det
+            ^ (-(↑(M 0 - t) : ℝ) / 2))) < ⊤ := by
   sorry
 
 /-! ## Analytic hole — the per-stratum outer-measure descent (the whole §H at measure level) -/
