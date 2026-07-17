@@ -3,7 +3,8 @@ import DLNFibre.DLN.RLCT.Engine.EngineObligations
 /-!
 # `DLNFibre.DLN.RLCT.Engine.CanonicalWitness224` — the `(2,2,4)` model, split (edge-labelled)
 
-Witness split (precision ruling): `canonicalResolution224_arithmetic` — a clean-three BANK piece (the
+Witness split (precision ruling): `canonicalResolution224_arithmetic` — a clean-three BANK piece
+(the
 four carrier-independent conjuncts: full monomialisation, edge-relational `StepRel`, branch-rooted
 base, exponent hooks); `canonicalResolution224` — a `@[blueprint]` FORECAST whose `ChartBridge`
 conjunct is sorried pending the P8 CoV lemma. Plus the in-file MIXED-CASE positive witness. Rebuilt
@@ -66,7 +67,8 @@ theorem rootEdge224_stepRel :
   · intro h; simp [Edge.case] at h
 
 /-- **The arithmetic bank piece** (clean-three): at `M = (2,2,4)` the FOUR carrier-independent
-conjuncts of `CanonicalResolution` are jointly satisfiable — full monomialisation, the edge-relational
+conjuncts of `CanonicalResolution` are jointly satisfiable — full monomialisation, the
+edge-relational
 `StepRel` on every parent–edge pair, the branch-rooted base, and the exponent hooks. Survives the
 restructure (it never touches the chart/CoV data). -/
 theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
@@ -86,16 +88,18 @@ theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
     rw [stepEdges_tree224, List.mem_singleton] at hp
     subst hp
     exact rootEdge224_stepRel
-  · exact ⟨rootNode224, [Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)], rfl, rfl, rfl⟩
+  · exact ⟨rootNode224, [Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)],
+      rfl, rfl, rfl⟩
   · rw [terminalExponents_tree224, minAdm_M224]
     refine ⟨?_, ?_⟩
     · intro e he; rw [List.mem_singleton] at he; subst he; exact le_refl 4
     · simp
 
 /-- **The full `CanonicalResolution` witness** at `(2,2,4)` — a `@[blueprint]` FORECAST. The four
-arithmetic conjuncts are the bank piece above; the `ChartBridge` conjunct is sorried pending the P8 CoV
-lemma (the real `(2,2,4)` chart's pullback / Jacobian / coherence). -/
-@[blueprint] theorem canonicalResolution224 : ∃ t : ResolutionTree M224, CanonicalResolution M224 t := by
+arithmetic conjuncts are the bank piece above; the `ChartBridge` conjunct is sorried pending the P8
+CoV lemma (the real `(2,2,4)` chart's pullback / Jacobian / coherence). -/
+@[blueprint] theorem canonicalResolution224 :
+    ∃ t : ResolutionTree M224, CanonicalResolution M224 t := by
   obtain ⟨t, hmono, hstep, hroot, hexp⟩ := canonicalResolution224_arithmetic
   exact ⟨t, hmono, hstep, hroot, by sorry, hexp⟩
 
@@ -106,7 +110,8 @@ def subst224b : ChartSubst M224 where
   localSub := id; jacDivCount := 1; jacPow := fun _ => 1
 
 /-- **A mixed-case Case-1 blow-up**: one node with TWO edges of distinct case + substitution, which
-the edge-labelled carrier records faithfully — the constructive complement of the necessity witness. -/
+the edge-labelled carrier records faithfully — the constructive complement of the necessity witness.
+-/
 noncomputable def mixedCaseTree : ResolutionTree M224 :=
   ResolutionTree.branch rootNode224
     [Edge.mk StepCase.case11 subst224 (ResolutionTree.leaf leaf224),
@@ -127,8 +132,10 @@ def badNode224 : StepData M224 where
   numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   divExp := fun _ => 2; divTilde := fun _ => 0; numGen := 1; support := fun _ => {0}
 
-/-- **case-contradicts-subst rejection**: a Case-2 edge on `badNode224` is REJECTED by `StepRel` — the
-case tag cannot contradict the ledger (the required exponent `resRows·resCols = 1` is not realised by
+/-- **case-contradicts-subst rejection**: a Case-2 edge on `badNode224` is REJECTED by `StepRel` —
+the
+case tag cannot contradict the ledger (the required exponent `resRows·resCols = 1` is not realised
+by
 any divisor, whose exponent is `2`). So a mislabelled chart cannot slip through the invariant. -/
 theorem stepRel_rejects_mismatched_case2 :
     ¬ StepRel badNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)) := by

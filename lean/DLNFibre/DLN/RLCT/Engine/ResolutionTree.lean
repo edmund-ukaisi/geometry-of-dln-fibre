@@ -6,21 +6,29 @@ import Mathlib.Order.Monotone.Basic
 /-!
 # `DLNFibre.DLN.RLCT.Engine.ResolutionTree` — the pp.14–22 resolution-tree carrier (edge-labelled)
 
-**Blueprint spine: statements are forecasts; churn is normal; the blueprint consumption rules apply.**
+**Blueprint spine: statements are forecasts; churn is normal; the blueprint consumption rules
+apply.**
 The founding carrier of the transform-only Aoyagi engine: a Lean datatype for the paper's double
-induction (`S = 0..L+1`, `J`) that resolves the multiplication-ideal singularity by iterated blow-ups
+induction (`S = 0..L+1`, `J`) that resolves the multiplication-ideal singularity by iterated
+blow-ups
 (Aoyagi 2023 pp.14–22; worked.tex § blow-up).
 
-**Edge-labelled shape (council of two, 2026-07-17).** One Case-1 blow-up emits BOTH a 1(1) and a 1(2)
-chart of ONE step (necessity witness); the per-chart **case** and **substitution** are per-EDGE data.
+**Edge-labelled shape (council of two, 2026-07-17).** One Case-1 blow-up emits BOTH a 1(1) and a
+1(2)
+chart of ONE step (necessity witness); the per-chart **case** and **substitution** are per-EDGE
+data.
 So children hang off `Edge {case, subst, child}`, `StepData` carries no `case`, and the chart CoV is
 the FOLD of the edge substitutions down the tree.
 
-**Charts as self-maps of `Params M` (Q5 route (b), fork 8).** Each substitution is a coordinate change
+**Charts as self-maps of `Params M` (Q5 route (b), fork 8).** Each substitution is a coordinate
+change
 `Params M → Params M` (the space is normed / finite-dimensional / Haar via `Foundations/
-ParamsFlatLinear`), so a leaf chart's Jacobian `Dφ w : Params M →L Params M` is an endomorphism with a
-`det` — exactly the shape `rlctAtOn_boundedUnit_localHomeomorph` consumes. The monomial-Jacobian ledger
-(`ChartSubst.jacPow`, folded along the path) carries the divisor exponents; NO opaque derivative field
+ParamsFlatLinear`), so a leaf chart's Jacobian `Dφ w : Params M →L Params M` is an endomorphism with
+a
+`det` — exactly the shape `rlctAtOn_boundedUnit_localHomeomorph` consumes. The monomial-Jacobian
+ledger
+(`ChartSubst.jacPow`, folded along the path) carries the divisor exponents; NO opaque derivative
+field
 is stored as data. Divisor / Morse coordinates are read off `w` via `paramsEquivFlat` (indices in
 `Fin (flatDim M)`).
 
@@ -46,7 +54,8 @@ inductive StepCase
 
 /-- **The per-edge substitution ledger** (fork 8): `localSub` is the chart's coordinate change as a
 self-map of `Params M` (blow-up ∘ shear); `jacPow` is its monomial-Jacobian ledger (the exceptional
-exponents contributed at this step). The leaf chart CoV is the fold of the `localSub`s along the path;
+exponents contributed at this step). The leaf chart CoV is the fold of the `localSub`s along the
+path;
 the leaf Jacobian exponent is the fold of the `jacPow`s. No opaque derivative field. -/
 structure ChartSubst (M : Fin (L + 1) → ℕ) where
   /-- The chart coordinate change (self-map of parameter space). -/
@@ -56,7 +65,8 @@ structure ChartSubst (M : Fin (L + 1) → ℕ) where
   /-- Monomial-Jacobian exponents contributed at this step. -/
   jacPow : Fin jacDivCount → ℕ
 
-/-- **Per-node data of the double induction** (map node: `resolution-tree`). The step's CASE is on the
+/-- **Per-node data of the double induction** (map node: `resolution-tree`). The step's CASE is on
+the
 edge, not here. -/
 structure StepData (M : Fin (L + 1) → ℕ) where
   /-- The layer index `S`. -/
@@ -87,7 +97,8 @@ structure StepData (M : Fin (L + 1) → ℕ) where
 
 /-- **Terminal (leaf) data**: the fully monomialised state. The chart CoV `chartMap : Params M →
 Params M` is DERIVED (= fold of the root→leaf edge substitutions; coherence in the bundle), over the
-UPSTAIRS source domain `srcBox`. Divisor coords `divCoord` and Morse coords `resCoord` are indices in
+UPSTAIRS source domain `srcBox`. Divisor coords `divCoord` and Morse coords `resCoord` are indices
+in
 `Fin (flatDim M)`, read off a point via `paramsEquivFlat`. -/
 structure LeafData (M : Fin (L + 1) → ℕ) where
   /-- Number of terminal divisors (all `t̃ = 0`). -/
@@ -110,7 +121,8 @@ structure LeafData (M : Fin (L + 1) → ℕ) where
   resRank : ℕ
   /-- Which flat coordinates are the terminal divisors `u_k` (for the pullback monomial `∏ u²`). -/
   divCoord : Fin numDiv → Fin (flatDim M)
-  /-- The Morse residual coordinates `z` (disjoint from the divisors), for the `‖z‖²` normal form. -/
+  /-- The Morse residual coordinates `z` (disjoint from the divisors), for the `‖z‖²` normal form.
+  -/
   resCoord : Fin resRank → Fin (flatDim M)
 
 mutual
