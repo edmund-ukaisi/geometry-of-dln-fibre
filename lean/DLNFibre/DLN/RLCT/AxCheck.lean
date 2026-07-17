@@ -1272,7 +1272,7 @@ open DLNFibre.DLN.RLCT
 -- edge-labelled restructure (precision ruling 2026-07-17). The ARITHMETIC bank piece (four
 -- carrier-independent conjuncts) MUST be clean-three [propext, Classical.choice, Quot.sound] and rest
 -- on NO @[blueprint] forecast:
-#print axioms canonicalResolution224_arithmetic
+#print axioms Engine.canonicalResolution224_arithmetic
 -- The FULL CanonicalResolution witness is a @[blueprint] FORECAST (its ChartBridge conjunct is sorried
 -- pending the P8 CoV lemma) — it EXPECTS `sorryAx` in its footprint until the P8 tide lands:
-#print axioms canonicalResolution224
+#print axioms Engine.canonicalResolution224

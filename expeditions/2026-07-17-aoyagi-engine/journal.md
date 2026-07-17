@@ -346,3 +346,12 @@ coherence for chartMap; the tStar emitted-path form; two battery follow-ups; doc
 and it has now MISSED the Q5-final ruling twice (still "pending"); third relay sent, blunt. Fresh
 review round HELD until the final increment lands (review once, not twice). My own AxCheck gate
 build running (its slot-terminated full-closure build is not accepted as the gate).
+
+## 2026-07-17 GATE 7 CAUGHT AN AXCHECK BREAK; 7b GREEN (heartbeat tick 29)
+Gate 7 FAILED: the architect's AxCheck entries used bare names for decls living in
+`DLNFibre.DLN.RLCT.Engine` — "Unknown constant" — masked by its slot-terminated build ("names I
+verified exist" checked existence, not RESOLUTION from AxCheck's open context). Fixed (Engine.-
+qualified), gate 7b GREEN exit=0. Footprints per the precision ruling: canonicalResolution224_
+arithmetic = clean-three; canonicalResolution224 = +sorryAx (the @[blueprint] ChartBridge forecast,
+expected); aoyagi_learning_coefficient_gen clean-three intact. Lesson re-confirmed: a slot-
+terminated/partial build is NEVER the gate; the controller's own full AxCheck build is.
