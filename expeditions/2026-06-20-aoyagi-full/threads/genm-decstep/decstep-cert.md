@@ -13,7 +13,16 @@ genuine `(□)` wall?**
 
 ---
 
-## ★ VERDICT (sharp, two decorrelated lines converge)
+## ★ ROUND-2 RESOLUTION (2026-07-17): the gap is SELF-SIMILAR-BOUNDED → BUILD NATIVE (option a)
+
+The controller's deciding de-risk (is the `≥2×2` corank-block gap self-similar, or does the `C'·B₀`
+coupling break it?) is **RESOLVED: option (a), SELF-SIMILAR-BOUNDED — build it natively, no cited-Aoyagi
+step needed.** The `GAP-AT-CORANK-2` below is REAL but NATIVELY closable: it is a *detail-at-scale*
+determinantal resolution (bounded, self-similar), not a monument. Full analysis + the flag-`γ'` design
+sketch + preservation check in **§ ADDENDUM (round 2)** at the end. The round-1 verdict below stands as
+the precise characterization of *what the current design lacks*; the addendum says *how to close it natively*.
+
+## ★ VERDICT (round 1, sharp, two decorrelated lines converge)
 
 **It is NOT a genuine `(□)` wall, and it is NOT plainly provable-as-designed. It is: `(□)` is TRUE
 (Aoyagi — the integral IS finite, budget exactly tight), the DECORATED route ESCAPES the plain/coupled
@@ -192,3 +201,109 @@ Files (absolute):
 - `…/threads/genm-decstep/codex/crux-{prompt,answer}.md`, `crux-run.log` (decorrelated consult, `GAP-AT-CORANK-2`)
 - exact-ℕ recomputations inline (reuse `…/threads/genm-q2gate/q2_arith.py`'s `minAdm` recursion; binding
   cut / corank `⌈n/3⌉` / gap-set / joint rank-`r'` `= ½minAdm` all recomputed and verified in this thread).
+
+---
+
+# ADDENDUM (round 2, 2026-07-17) — the deciding de-risk: SELF-SIMILAR-BOUNDED → build native (option a)
+
+**Question (controller):** is the `≥2×2` corank-block finiteness SELF-SIMILAR (an `(a,b,q)` sub-instance
+the arity-IH bottoms out → option (a), native nested build), or does the `C'·B₀` coupling BREAK
+self-similarity on `{rank Q_b<b}` → option (b), cite Aoyagi? Decorrelated Codex (`codex/selfsim-{prompt,
+answer}.md`, xhigh, my conclusion withheld) + my exact-ℕ, **both converge**.
+
+## ★★ VERDICT: OPTION (a), SELF-SIMILAR-BOUNDED. Build the native determinantal corank descent; no cited-Aoyagi step needed.
+
+The `C'·B₀` coupling remainder is **DROPPABLE** (PROVEN, exact-ℕ, decorrelated ×2): dropping it does NOT
+lose the threshold. The corank descent is a *detail-at-scale* determinantal resolution — bounded,
+self-similar, terminating — exactly the kind the disposition says to **build**, not cite (the monument to
+cite stays the Aoyagi `rlct=½·codim` equality, unchanged; the `(□)` box-finiteness is native).
+
+## 1. The coupling is droppable — PROVEN (exact-ℕ, both lines)
+
+The freed Schur loss is `frobSq(F·Q)`, `F = [[P,0],[C,Γ]]` block-lower-triangular (pivot `P` invertible,
+`C` free `a×t`, `Γ` free `a×b`), `Q` the tail `(t+b)×q`. It splits as
+`frobSq(P·Q̃ₚ)` [pivot → reduced chain] `+ frobSq([C|Γ]·Q)` [corank residual — a FREE-front `(a, t+b, q)`
+sub-chain]. Integrating the free `Γ` block and DROPPING the coupling remainder `frobSq(C'·B₀·Π)` (`Π =
+I−Q_b⁺Q_b`, nonneg) gives the upper bound `det(Q_bQ_bᵀ)^{−a/2}·frobSq(B₀)^{−·}` — the det-Gram-weighted
+reduced chain. Its threshold, via the joint rank stratification over `k = rank(deeper W)` and `r = rank Q_b`,
+
+    2·T_{k,r} = (n−k)² + t*·k + (b−r)(k−r) + a·r   (codim{rank W=k} + codim{B₀=0} + codim{rank Q_b=r} + active Γ),
+    min_{k,r} T_{k,r} = ½·minAdm(n,n,n,n) = c*   EXACTLY.
+
+**Verified `n=3..15`** (my recompute of Codex's `T_{k,r}`, `min_{k,r} 2T = minAdm(n,n,n,n)`, 0 fails;
+`codex/selfsim-answer.md` Q1 PROVEN independently). So **dropping the coupling reaches `c*`** — the
+remainder is NOT load-bearing. The `{rank Q_b<b}` strata (my round-1 worry) are supplied by the lower-`r`
+terms of the stratification, exactly where the round-1 route feared a gap. The critical-Wishart tie (e.g.
+`n=4`, `k=3`, `r∈{1,2}`) is a log-boundary (harmless multiplicity), not a lower threshold.
+
+## 2. Why it is SELF-SIMILAR and BOUNDED
+
+- **Self-similar.** The corank residual `frobSq([C|Γ]·Q)` is a genuine DLN sub-chain `(a, t+b, q)` (free
+  front `[C|Γ]`), an instance of `(□)` the arity-IH handles. The det-Gram weight `det(Q_bQ_bᵀ)^{−a/2}` is
+  a decoration on the reduced chain `(t*, n, n)`, closed by the DECORATED IH.
+- **Bounded termination** (Codex Q2, INFERENCE; I concur structurally). The lexicographic measure
+  `(chain arity, corank c)` strictly decreases: an outer peel shortens the chain; the internal rank
+  resolution shrinks the Gram (`c → r < c`). It bottoms out at the width-2 leaf (proven base
+  `decoratedBaseHyp_faithful`), where the Gram is trivial. The determinantal resolution per peel is FINITE
+  (finitely many ranks `0..c`); its SIZE grows as `c = ⌈n/3⌉` but is bounded for each fixed chain.
+- **The Gram itself is native.** `det(Q_bQ_bᵀ)^{−a/2}` (`Q_b` `c×q`) is Wishart one-shot integrable when
+  `2c ≤ q` — **holds for ALL square `(n,n,n,n)` binding cuts** (verified `n=3..15`: `2⌈n/3⌉ ≤ n`). When
+  `2c > q` (e.g. `(2,2,3,3)`, `(3,3,5,5)` — 71 arity-4 chains ≤ width 8), the Gram RECURSES via the
+  reduced-chain IH — satred's D-cert §3bis per-level pivot-Gram fold, the *same* structure satred banked
+  for the `b=0` mirror (now needed for the `a=b≥2` both-corank case). Still self-similar; still bounded.
+
+## 3. The genuinely-new heart (what to BUILD) — the determinantal corank descent + flag-`γ'` carrier
+
+Round-1's `GAP-AT-CORANK-2` is real and stays: **one radial coordinate does NOT resolve a `c×c` corank
+block for `c≥2`** (only the origin `Γ=0`, not the rank-`1..c−1` cone). The native fix is the FULL
+multi-singular-value (SVD) determinantal resolution of the `c×c` Gram — `d = c` exceptional coordinates —
+NOT a single `radialAttach`. Design shape (a sketch, not a Lean route):
+
+- **flag-`γ'` carrier.** The current `gammaPrimeClause` (`RouteMSJAdm.lean:135`) carries `residual =
+  Γ·prod(dropHead M)` — a SINGLE-front product. Strengthen it to a FLAG: `d = c` exceptional coords (the
+  SVD singular values of the corank Gram) with `jac` monomial `= det(Q_bQ_bᵀ)` after R-blowup, and the
+  residual the NESTED front `[C|Γ]·Q` (free front block × deeper tail product) — matching the resolution
+  flag. The residual being the self-similar sub-chain `(a, t+b, q)` is what makes the flag = "reduced
+  chain's `γ'` + one extra front level".
+- **`β` threshold.** The SVD monomial's `monomialThreshold` `≥ ½·minAdm(reduced)` IS the Wishart criterion
+  recast (`2·(a/2) < q−c+1` one-shot; else supplied by the Gram recursion). The budget identity `c²/2 +
+  ½·minAdm(t*,n,n) = c*` (verified) is why `β` is exactly achievable.
+- **Consume the banked bricks.** The full-rank `{Q_bQ_bᵀ PosDef}` stratum is the banked atom
+  `corankBlock_morsePeel_lt_top` / `freedSchurLoss_inner_peel_lt_top` (`RouteMSJFreedPeel`), whose three
+  interface hyps (`c'>ab/2`, `Q_bQ_bᵀ` PosDef, pivot energy `>0`) are exactly what the measure-level
+  descent supplies a.e.; the `{rank Q_b<c}` strata recurse. This IS the `innerCorankDescent_lt_top` hole —
+  now known to be native-closable, not cited.
+
+## 4. The build's REAL risk (the one thing not hard-proved here)
+
+**Preservation of the flag-`γ'` for `c≥2`.** The peel must map `flag-γ'(M, d)` → `flag-γ'(redChain t* M,
+d+c)` (the `d` grows by the `c` new SVD coords each peel). Whether the SVD monomial + reduced product
+satisfies `FaithfulSJAt`'s `β` + (flag-)`γ'` at every level — and whether the coupling-drop is realized
+soundly at the MEASURE level (not just the pointwise budget) — is the genuinely-new content the build must
+discharge. The exact-ℕ budget + Wishart gate + droppability are PROVEN; the measure-level CoV +
+admissibility-preservation for the `c×c` determinantal blow-up is ARGUED (structural), not hard-proved. It
+is *detail-at-scale* (decomposable, bounded), so **build it**; but it is the multi-tide heart, and the
+`min(a,b)≥2` preservation is where to concentrate the soundness review.
+
+## 5. The fallback (option b) — NOT needed, and even it is native
+
+If the determinantal rank recursion were declined, the minimal object to bank/cite is the **UNCOUPLED
+Gram-weighted reduced-chain finiteness** `∫ det(Q_bQ_bᵀ)^{−a/2}·frobSq(reduced)^{−c'} < ⊤` for `c'<c'`
+below the shifted threshold — itself native (satred's qbox/Wishart family, `RouteMSJQBoxCore`), NOT a
+coupled-incidence theorem (Codex Q3: the coupled integral is bounded by the uncoupled one, §1). So `(□)`
+is native EITHER way; the only question is how much of the det-Gram recursion to build vs bank from satred.
+There is NO genuine cited-Aoyagi step inside `(□)` — the Aoyagi citation stays where it always was: the
+`rlct = ½·codim` equality (the monument), one level up from box-finiteness.
+
+## 6. Net endgame call
+
+**COMMISSION the native-nested build (option a).** The `(□)` capstone `DecoratedStepHyp adm` is native and
+bounded: the corank descent is a determinantal (SVD) resolution + a flag-`γ'` carrier + the Wishart
+one-shot/recurse dispatch, all self-similar and terminating; the coupling that looked load-bearing is
+provably droppable; the Aoyagi monument is untouched. Concentrate the build + soundness review on the
+`c≥2` flag-`γ'` preservation (§4). This keeps the full unconditional `∀-M` mint reachable and native
+(the #97 mandate), rather than consolidating at a cited-corank-Gram boundary.
+
+Files (round 2): `codex/selfsim-{prompt,answer}.md`, `selfsim-run.log` (decorrelated, `SELF-SIMILAR-BOUNDED`);
+`T_{k,r}` min `= minAdm` and the Wishart-gate recursion scan recomputed + verified inline (`n=3..15`
+square; 71 gate-recurse chains ≤ width 8).
