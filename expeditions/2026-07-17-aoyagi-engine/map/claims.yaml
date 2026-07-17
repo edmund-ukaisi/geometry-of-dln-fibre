@@ -82,12 +82,12 @@ nodes:
   - id: resolution-tree
     kind: notion
     title: "the pp.14-22 chart-tree datatype: monomials + divisibility chain + SHARING maps"
-    status: validated
+    status: drafted
     tier: new
     owner: architect
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "BUNDLE REVISION PENDING (lane 2, elder-gated): ChartsCover→ChartBridge; LeafData gains chartMap/srcBox/resRank(+orders, Morse normal form per Codex); canonicalResolution_224 must be REBUILT with real charts (its atlas conjunct rode the vacuity). VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition"
+    notes: "COMBINED RESTRUCTURE (elder ruling 2): ONE gated event — edge-vs-node carrier shape at COUNCIL OF TWO (mandate: inductive+edge labels, State/StateInvariant split, lex termination, chart-map placement; four GIVENS fixed: ChartBridge content+witnesses, image-cover/upstairs openness, tStar-realization sub-obligation, the openness statement defect). r2 VALIDATE marked superseded+incomplete (missed the vacuity). Fresh review round owed on the result. Prior pending note: ChartsCover→ChartBridge; LeafData gains chartMap/srcBox/resRank(+orders, Morse normal form per Codex); canonicalResolution_224 must be REBUILT with real charts (its atlas conjunct rode the vacuity). VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition"
 
   - id: case-step-lemmas
     kind: claim
@@ -96,7 +96,7 @@ nodes:
     prop: |
       Each branch case: an explicit unipotent CoV + blow-up substitution under which
       ideal = diag(b)·[E_J 0; 0 D_J]·(remaining product) is preserved with monomial Jacobian.
-    status: stated
+    status: adjudicated
     tier: established
     owner: "parked: statements at skeleton; tides after route adoption"
     edges:
@@ -109,7 +109,7 @@ nodes:
     title: "the recursion terminates at S=L+1 in a full monomial diagonal"
     lean: monomialization_terminates
     prop: "⟨∏ C⟩ = ⟨diag(b_1..b_{M(L+1)})⟩ at S=L+1; b_i a divisibility chain"
-    status: stated
+    status: adjudicated
     tier: established
     owner: "parked: transcription after adoption"
     edges:
@@ -124,7 +124,7 @@ nodes:
       The tree's chart images cover a box-neighborhood of the zero locus (non-deepest points
       via IH/domination), and the candidate set {M_{s,k}} is exhaustive: every exceptional
       divisor's ratio ≥ the tracked minimum. WITHOUT invoking rlct=c* (circularity guard).
-    status: stated
+    status: adjudicated
     tier: new
     owner: coverage-design
     landmark: true
@@ -139,7 +139,7 @@ nodes:
     prop: |
       ½·min{M_{s,k} : t̃=0} = ½·minAdm(M) via the closed-form minimization; matches the
       banked QIP family and Mval=codim arithmetic.
-    status: stated
+    status: adjudicated
     tier: new
     owner: "parked: survey-first; consume banked, never rebuild"
     landmark: true
@@ -166,7 +166,7 @@ nodes:
     prop: |
       Unit-triangular P1,P2 with P1(∏A)P2 = diag(C1, ∏C), C1 regular; RLCT split
       = regular prefactor + λ⟨∏C⟩; pivot regularity region-ized via co-null covers.
-    status: stated
+    status: adjudicated
     tier: established
     owner: "parked: transcription; banked shear/pivot analogues"
     notes: "Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)"

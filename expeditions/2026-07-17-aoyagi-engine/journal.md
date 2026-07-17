@@ -237,3 +237,19 @@ witLeaf/witTree rebuild; residual folded into terminalExponents keeping the sing
 Codex general forms #1/#2 adopted). Architect authorized to BUILD the combined candidate
 (edge-labelled carrier + ChartBridge + upstairs coverage + lex termination + realized attainment,
 amendments folded); MERGE gate = the elder's supplementary ruling on the expanded scope.
+
+## 2026-07-17 ELDER RULING 2: ONE RESTRUCTURE, COUNCIL ESCALATION (tick 21)
+Accepted in full. (a) ONE combined restructure — the ChartBridge leaf-encoding must NOT land
+standalone (P6 double-build of the chart-map interface); its analytic content carries as
+REQUIREMENTS. (b) COUNCIL OF TWO convened on the CARRIER SHAPE — the edge-vs-node question is a
+genuine design fork with live alternatives, reopening a reviewer-validated artifact (the weight
+class the charter reserves for councils; the elder explicitly reversed its own single-seat call
+for this scope — the waiver-vs-escalation reasoning is itself now precedent-grade record). Four
+givens fixed for the council; necessity-witness discipline applies (a concrete mixed-case Case-1
+blow-up the node carrier cannot express — or its refutation, which would dissolve the fork).
+(c) Pricing recorded: the HUNT survives untouched (the hard part's de-risk is math, not datatype);
+all arithmetic batteries survive; fresh review round owed; the 224 witness reduces to its decided
+arithmetic. Map: resolution-tree → drafted; the five statement-locked consumers → adjudicated
+(their statements change under the restructure); r2 VALIDATE marked superseded+incomplete in the
+node note. Architect: hold continues; now preparing BOTH candidate encodings + the necessity
+witness so the council adjudicates concrete designs. elder-rev1 stands down (two deliveries).
