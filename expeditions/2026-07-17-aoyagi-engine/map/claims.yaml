@@ -1,0 +1,171 @@
+meta:
+  expedition: 2026-07-17-aoyagi-engine
+  roots: [mint-repoint]
+  updated: 2026-07-17
+
+nodes:
+  - id: mint-repoint
+    kind: claim
+    title: "unconditional mint: aoyagi_learning_coefficient = gen ∘ hbox + L1 fold"
+    prop: |
+      (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r),
+      for B.rank = r, 1 ≤ L, r < H s all s — no Aoyagi hypothesis, clean-three.
+    lean: aoyagi_learning_coefficient
+    status: stated
+    tier: new
+    owner: "parked: until hbox-root lands (consumer stack proven; wiring only)"
+    landmark: true
+    edges:
+      - {type: needs, to: hbox-root}
+    evidence: [lean/DLNFibre/DLN/RLCT/Validate/HeadlineGenAssembly.lean]
+    notes: "gen-headline proven conditional solely on hbox; legacy Skeleton stubs re-point at mint"
+
+  - id: hbox-root
+    kind: claim
+    title: "(□) ∀-M box-threshold finiteness, native"
+    prop: |
+      ∀ M, RouteMBoxThresholdFinite M — i.e. ∀ c' < minAdm(M)/2,
+      routeMLayerBoxIntegral M c' 1 < ⊤. No carried/cited Aoyagi Prop.
+    lean: RouteMBoxThresholdFinite
+    status: stated
+    tier: new
+    owner: engine-route
+    landmark: true
+    edges:
+      - {type: discharges, to: mint-repoint}
+    evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMBoxReduction.lean]
+    notes: "the engine's SOLE output Prop; interface confirmed by reuse audit"
+
+  - id: engine-route
+    kind: route
+    title: "transform-only Aoyagi engine: reduce → tree → coverage → thresholds"
+    status: proposed
+    tier: new
+    owner: controller
+    landmark: true
+    edges:
+      - {type: needs, to: reduction-layer}
+      - {type: needs, to: resolution-tree}
+      - {type: needs, to: case-step-lemmas}
+      - {type: needs, to: monomialization-termination}
+      - {type: needs, to: coverage-theorem}
+      - {type: needs, to: exponent-ledger-bridge}
+      - {type: needs, to: region-glue}
+      - {type: discharges, to: hbox-root}
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/architecture-cert.md]
+    notes: "adoption gate = elder council + architect skeleton elaboration + battery"
+
+  - id: naked-weight-route
+    kind: route
+    title: "REFUTED: naked Jacobian-weight residual obligations (integrate-early)"
+    status: refuted
+    tier: new
+    owner: "parked: refuted at genesis; kept as trail + battery anchor"
+    kill: battery/w-naked-weight-111.py
+    edges:
+      - {type: forwarded-to, to: engine-route}
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/architecture-cert.md]
+    notes: "false on legal cuts, not merely hard; the zero-slack lesson's anchor"
+
+  - id: resolution-tree
+    kind: notion
+    title: "the pp.14-22 chart-tree datatype: monomials + divisibility chain + SHARING maps"
+    status: proposed
+    tier: new
+    owner: architect
+    landmark: true
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
+    notes: "divisor-support data mandatory at corank>=2; flattening provably breaks"
+
+  - id: case-step-lemmas
+    kind: claim
+    title: "Case 1(1)/1(2)/2 steps preserve the inductive invariant (paper pp.15-22)"
+    prop: |
+      Each branch case: an explicit unipotent CoV + blow-up substitution under which
+      ideal = diag(b)·[E_J 0; 0 D_J]·(remaining product) is preserved with monomial Jacobian.
+    status: adjudicated
+    tier: established
+    owner: "parked: statements at skeleton; tides after route adoption"
+    edges:
+      - {type: needs, to: resolution-tree}
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md, theory/aoyagi-2023-reproduction/aoyagi-2023-worked.tex]
+
+  - id: monomialization-termination
+    kind: claim
+    title: "the recursion terminates at S=L+1 in a full monomial diagonal"
+    prop: "⟨∏ C⟩ = ⟨diag(b_1..b_{M(L+1)})⟩ at S=L+1; b_i a divisibility chain"
+    status: adjudicated
+    tier: established
+    owner: "parked: transcription after adoption"
+    edges:
+      - {type: needs, to: resolution-tree}
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
+
+  - id: coverage-theorem
+    kind: claim
+    title: "THE HARD PART: charts cover; no untracked chart has a smaller ratio"
+    prop: |
+      The tree's chart images cover a box-neighborhood of the zero locus (non-deepest points
+      via IH/domination), and the candidate set {M_{s,k}} is exhaustive: every exceptional
+      divisor's ratio ≥ the tracked minimum. WITHOUT invoking rlct=c* (circularity guard).
+    status: conjectured
+    tier: new
+    owner: coverage-design
+    landmark: true
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
+    notes: "paper asserts (p.22 'candidates', 'by a blow-up process'); we reconstruct. design-first"
+
+  - id: exponent-ledger-bridge
+    kind: claim
+    title: "chart exponents M_{s,k} land on the banked minAdm forms (Lemma 3 bridge)"
+    prop: |
+      ½·min{M_{s,k} : t̃=0} = ½·minAdm(M) via the closed-form minimization; matches the
+      banked QIP family and Mval=codim arithmetic.
+    status: adjudicated
+    tier: new
+    owner: "parked: survey-first; consume banked, never rebuild"
+    landmark: true
+    evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerSplit.lean, lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankRec.lean]
+
+  - id: region-glue
+    kind: claim
+    title: "box covers + deepest-point/IH reduction glue chart-local reads to hbox"
+    prop: "finite subcover of the box; non-deepest points dominated via the arity IH"
+    status: adjudicated
+    tier: new
+    owner: "parked: tools banked (S1Cover, RouteMCoverLemmas, null disposals)"
+    evidence: [lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean]
+
+  - id: reduction-layer
+    kind: claim
+    title: "Lemma 2 / Theorem 3: rank-r peel to the reduced chain, region-uniform"
+    prop: |
+      Unit-triangular P1,P2 with P1(∏A)P2 = diag(C1, ∏C), C1 regular; RLCT split
+      = regular prefactor + λ⟨∏C⟩; pivot regularity region-ized via co-null covers.
+    status: adjudicated
+    tier: established
+    owner: "parked: transcription; banked shear/pivot analogues"
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
+
+  - id: theorem4-localization
+    kind: claim
+    title: "deepest-point domination (Thm 4, cited to Entropy 2013): transcribe vs dissolve"
+    prop: "λ at the deepest point ≤ λ at nearby points, for homogeneous ideals + prior condition"
+    status: conjectured
+    tier: established
+    owner: "parked: adjudicate role at skeleton time — not a silent default"
+    edges:
+      - {type: conjectured-toward, to: region-glue}
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
+
+  - id: rr4-precedent
+    kind: claim
+    title: "the (r,r,4) family: the whole engine end-to-end, banked (guard/precedent)"
+    status: adjudicated
+    tier: new
+    owner: "parked: guard node; cartographer pins decl names at first pass"
+    landmark: true
+    edges:
+      - {type: conjectured-toward, to: engine-route}
+    evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMBoxThresholdRR4.lean]
+    notes: "0-sorry worked instance: sub → det-Jacobian → atom → cover → threshold"
