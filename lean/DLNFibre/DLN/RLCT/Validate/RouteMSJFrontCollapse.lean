@@ -79,20 +79,29 @@ theorem frontCollapseRankSector_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
           ENNReal.ofReal ((frobSq (rmatMul F (prod (tailChain M) A'))) ^ (-(c' : ℝ)))) < ⊤ := by
   sorry
 
-/-- **The `a=0` wide reduction threshold (LANDED, green).** For the wide wing (`M₀ ≤ M₁`), the
-saturated cut is `u = M₀`, where `peelCharge M M₀ = (M₀−M₀)(M₁−M₀) = 0` — so the front-collapse to
-`redChain M₀ M` carries NO charge, and the sub-threshold `c' < ½·minAdm M` transfers UNCHANGED to
-`c' < ½·minAdm(redChain M₀ M)` (the reduced-chain RLCT the IH consumes). This is the charge arithmetic
-the `a=0` slice closes on. -/
-theorem wide_a0_threshold (M : Fin (L + 1 + 1 + 1) → ℕ) (hwide : M 0 ≤ M 1)
+/-- **The saturated-cut charge is zero (LANDED, green, BOTH wings).** At the saturated cut
+`u = min(M₀,M₁)`, `peelCharge M u = (M₀−u)(M₁−u) = 0` — for a wide front (`M₀≤M₁`, `u=M₀`, the a=0
+factor vanishes) OR a tall front (`M₁≤M₀`, `u=M₁`, the b=0 factor vanishes). This is exactly the
+saturated-shell (`a=0`/`b=0`) wing regime the front-collapse targets. -/
+theorem peelCharge_min_eq_zero (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    peelCharge M (min (M 0) (M 1)) = 0 := by
+  simp only [peelCharge]
+  rcases le_total (M 0) (M 1) with h | h
+  · rw [min_eq_left h]; simp
+  · rw [min_eq_right h]; simp
+
+/-- **The saturated reduction threshold (LANDED, green, BOTH wings).** At the saturated cut
+`u = min(M₀,M₁)` the front-collapse to `redChain u M` carries NO charge (`peelCharge M u = 0`), so the
+sub-threshold `c' < ½·minAdm M` transfers UNCHANGED to `c' < ½·minAdm(redChain u M)` (the reduced-chain
+RLCT the plain IH consumes). Covers the `a=0` wide wing and the `b=0` tall wing in one statement. This
+is the charge arithmetic the wing slices close on. -/
+theorem saturated_threshold (M : Fin (L + 1 + 1 + 1) → ℕ)
     (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
-    (c' : ℝ) < (minAdm (redChain (M 0) M) : ℝ) / 2 := by
-  have hu : M 0 ≤ min (M 0) (M 1) := by omega
-  have hzero : peelCharge M (M 0) = 0 := by
-    simp [peelCharge]
-  have hle := minAdm_le_peelCharge_add_redChain M (M 0) hu
-  rw [hzero, Nat.zero_add] at hle
-  have hcast : (minAdm M : ℝ) ≤ (minAdm (redChain (M 0) M) : ℝ) := by exact_mod_cast hle
+    (c' : ℝ) < (minAdm (redChain (min (M 0) (M 1)) M) : ℝ) / 2 := by
+  have hu : min (M 0) (M 1) ≤ min (M 0) (M 1) := le_rfl
+  have hle := minAdm_le_peelCharge_add_redChain M (min (M 0) (M 1)) hu
+  rw [peelCharge_min_eq_zero M, Nat.zero_add] at hle
+  have hcast : (minAdm M : ℝ) ≤ (minAdm (redChain (min (M 0) (M 1)) M) : ℝ) := by exact_mod_cast hle
   linarith
 
 /-- **(N1a) `wingFrontBox` is measurable** — the entry-box (a finite intersection of coordinate
@@ -122,5 +131,16 @@ theorem measurableSet_wingFrontBox (M : Fin (L + 1 + 1 + 1) → ℕ) :
     rw [hunit]
     exact (hdet (measurableSet_singleton 0)).compl
   exact hbox.inter hns
+
+/-- **The reduced-chain box finiteness the front-collapse reduces to (LANDED, green, route-independent).**
+At the saturated cut `u = min(M₀,M₁)`, the plain IH `hIH` closes the reduced chain `redChain u M` at the
+UNSHIFTED exponent `c'` (no charge, `saturated_threshold`). This is the finiteness target the absorption
+CoV `(F, A₁) ↦ W` reduces the front-factor box integral to (up to the bounded pushforward density) — the
+`hIH`-side of the reduction, independent of the CB-vs-GS density-bound route. -/
+theorem redChain_box_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
+    routeMLayerBoxIntegral (redChain (min (M 0) (M 1)) M) (c' : ℝ) 1 < ⊤ :=
+  hIH (redChain (min (M 0) (M 1)) M) c' (saturated_threshold M c' hc')
 
 end DLNFibre.DLN.RLCT
