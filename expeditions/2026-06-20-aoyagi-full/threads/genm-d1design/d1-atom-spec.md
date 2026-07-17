@@ -22,18 +22,23 @@ the correct structure is a LOCAL per-cut dispatch, not a carried global weight.
   (§1). The pushforward `(F, A₁) ↦ F·A₁` is resolved by a **joint SOURCE-incidence-sector `(r,s)` atlas**
   (retain the exceptional variables at the source; do NOT push forward to the density `ρ(W)` first — that is
   what leaves a Gram). Per sector the Jacobian is a pure monomial and reduces to PLAIN `hIH(redChain s M)`.
-- **`d=1 a≥u` corank-one: the HARDEST arm — a LOCAL measure-level domain-split** (§2), NOT a global
-  decoration. The corank `C` couples to the DEEP product `Q̃ₚ` (not a free next-layer), so its rank-drop is a
-  deep event, independent of the front Jacobian (Codex 1, PROVEN) — it produces an irreducible pivot Gram
-  `det(Q̃ₚQ̃ₚᵀ)^{−a/2}`. Closure needs a **domain-split by `Q̃ₚ`-conditioning** using the TWO banked inner-Γ
-  branches: on the ill-conditioned piece the `_inner_bounded_lt_top` branch (pivot energy lower-bounds the
-  loss), on the well-conditioned piece the `_inner_peel_lt_top` (gammaAtom) branch + `hIH`. This is genuinely-
-  new to build but uses only banked branches; it is the arm least de-risked on paper (flag §2).
+- **`d=1 a≥u` corank-one: the HARDEST arm — RE-PINNED (§2), the §1 atlas on the EXTENDED tail** (d1split
+  red-team + corners Codex, decorrelated). **My earlier "absolute-`σ_min` domain-split" was UNSOUND** (d1split
+  PROVEN: it routes the radial cone `{Q̃ₚ→0}` to the bounded branch, dropping the corank charge, diverging on a
+  positive-length `c'`-window for 1221/1395 `a≥u` cuts). The correct structure: write the corank energy as a
+  free-front Wishart `frobSq([C|Γ]·Q̂)`, `[C|Γ]` free `a×(u+1)`, `Q̂=[Q̃ₚ;Q_b]` the extended tail — the **§1
+  source-incidence atlas applied to `([C|Γ], Q̂)`, pivot-regularized** by `w=frobSq(P·Q̃ₚ)` (d1split's radial-peel
+  `‖PΘ‖²≥σ_min(P)²>0` on the `Q̃ₚ`-sphere is the regularizer). Tracks `(rank Q̃ₚ, rank Q̂)`, monomial Jacobian, →
+  plain `hIH`, **no `‖Q_b‖^{−a}` weight**. At `b=1` the corank leaf is the banked `freeBilinear` (`γ⊗Q_b`). So
+  `d=1 a≥u` UNIFIES with §1 (same atlas machinery, extended tail + regularizer), not a separate split.
 
 **Nothing here is math-open** (as the controller carries it): every arm is mathematically true (the chain IS
 box-finite), NATIVE single-factor (P-invertibility forces `rank F = min(M₀,M₁)`, so the `d≥2` product-corank
 tubes are EMPTY — 0/5292 achievable strata reach `minAdm` with the naive charge), and buildable. The cost is
-concentrated in ONE new atom (§1) + the `d=1 a≥u` local split (§2). NOT a new cite, NOT a new global decoration.
+concentrated in ONE atlas mechanism (§1, extended to `Q̂` for `d=1 a≥u`, §2). NOT a new cite, NOT a global
+decoration (the naked Gram-decorated IH is FALSE — d1split ε-counter). **Two soundness corrections from the
+red-team are folded into §2** (the absolute-`σ_min` split is unsound; the banked `_inner_peel` emits the CORANK
+Gram `‖Q_b‖^{−a}`, not the pivot Gram — both my earlier §2 slips).
 
 ## 1. THE ATOM — `frontCollapseRankSector_lt_top` (the genuinely-new native heart)
 
@@ -127,11 +132,29 @@ obtained by a square CoV — NOT the minor sum:
 
 So the bounded base = `[qbox(M₂≤b)] × [hIH]`, NO Cauchy-Binet, NO coarea, NO minor sum. The Gram is of the FREE
 front F (not a product), so `qbox` applies directly. **Consumed banked:** `lintegral_comp_rightMulₚ`,
-`qbox_lintegral_lt_top`, `frobSq_rmatMul_smul`, `hIH`; **Mathlib:** `gramSchmidt`. **NEW (small):** the
-block-Gram-det identity `|det[F;S]| = det(FFᵀ)^{1/2}` (elementary), the F-independent slice-volume bound, and
-the measurable `S(F)`-parametrised CoV wire (the one plumbing delicacy — apply `lintegral_comp_rightMulₚ`
-per-F under Tonelli over the F-box). **Recommend route (a) over building Cauchy-Binet (c)** — it reuses the
-banked square-CoV + qbox and skips the ~150–400 LoC Cauchy-Binet brick AND the minor-chart cover.
+`qbox_lintegral_lt_top`, `frobSq_rmatMul_smul`, `hIH`; **Mathlib:** `gramSchmidt` / `OrthonormalBasis` of the
+row-complement submodule. **NEW (small):** the block-Gram-det identity `|det[F;S]| = det(FFᵀ)^{1/2}` (elementary,
+lane1shell landed it via `det_fromBlocks_zero₂₁`), the F-independent slice-volume bound. **Recommend route (a)
+over building Cauchy-Binet (c)** — it reuses the banked square-CoV + qbox and skips the ~150–400 LoC Cauchy-Binet
+brick AND the minor-chart cover.
+
+**POINTWISE-bound-then-integrate (lane1shell's refinement — removes the measurable-`S(F)` delicacy).** Do NOT
+carry `S` as a measurable function of F. For a.e. (full-rank) `F`, the fixed-F bound
+`∫_{A₁ box} g(F·A₁) ≤ C·det(FFᵀ)^{−M₂/2}·∫_{W box'} g` holds with an EXISTENTIAL `S` per F — its RHS is
+`S`-INDEPENDENT (`C` and `det(FFᵀ)` do not depend on the choice of `S`; different `S` just relabels the
+integrated-out slack `R`). Then `F ↦ ∫_{A₁} g(F·A₁)` is measurable (a partial `lintegral` of a jointly
+measurable integrand — automatic), so `lintegral_mono` over the F-box gives
+`∫_F ∫_{A₁} g(F·A₁) ≤ C·[∫_W g]·∫_F det(FFᵀ)^{−M₂/2}` (the F-independent `C·∫_W g` pulls out; `qbox` closes the
+last factor). No measurable selection of `S`; the `{det=0}` null set is harmless (RHS `= +∞` there). This is
+strictly cleaner than a measurable-S(F) pushforward and is the intended form.
+
+**Row-complement `S` construction.** `S : (M₁−M₀)×M₁` with `S·Fᵀ = 0 ∧ S·Sᵀ = 1` = an orthonormal basis of
+`(rowspace F)^⊥` (a submodule of `ℝ^{M₁}` of `finrank = M₁−M₀`, from rows-independent ⟺ `det(FFᵀ)≠0` +
+`Submodule.finrank_add_finrank_orthogonal`). Take Mathlib `OrthonormalBasis (Fin (M₁−M₀))` of that complement,
+stack as rows → `S` (orthonormal ⟹ `S·Sᵀ=1`; in the complement ⟹ `S·Fᵀ=0`). The banked `exists_ortho_ext`
+(`RouteMSJOrthoExtend`) is COLUMN-oriented (extends orthonormal columns) — reusable only via `gramSchmidt`(F's
+rows)→Q(orthonormal rows)→`Qᵀ`(orthonormal cols)→extend→transpose, i.e. more plumbing than the direct
+complement-`OrthonormalBasis` route. Use the submodule route.
 
 **LOG sub-case (`M₂ = b+1`):** `qbox` is MARGINAL here (needs `M₂ < b+1` STRICT), so `∫_F det(FFᵀ)^{−M₂/2}`
 is log-divergent. Close by a **δ-fold**: run the CoV at `det(FFᵀ)^{−(M₂−δ)/2}` (qbox strict at `M₂−δ < b+1`)
@@ -140,42 +163,74 @@ same δ-slack as the corank-one tie). **POWER sub-case (`M₂ ≥ b+2`):** the G
 (`qbox` fails), so the front DOES NOT separate from the loss — this is where the full `(r,s)` source-incidence
 atlas (§1, N1–N5) is required (the loss must control the rank-drop, per Codex 2b), NOT the §1bis CoV.
 
-## 2. THE `d=1 a≥u` LOCAL DOMAIN-SPLIT (the hardest arm — flag)
+## 2. THE `d=1 a≥u` ARM — RE-PINNED (d1split red-team + corners Codex; my earlier absolute-σ_min split was UNSOUND)
 
-`d=1`, `b=1` (a≥1), `a ≥ u`. After the corank-one integration the residual carries the **pivot Gram**
-`det(Q̃ₚQ̃ₚᵀ)^{−a/2}`, `Q̃ₚ = W'·Z_deep` a deeper PRODUCT (`u×q`). Codex PROVED (ε-counter, `M=(4,3,2)`,
-`t=u=a=q=2`, `b=1`, `c'=5/2`, `Q̃ₚ_ε = diag(1,ε)`: front Jacobian a unit, residual loss → positive const,
-`det(Q̃ₚ_εQ̃ₚ_εᵀ)^{−a/2} = |ε|^{−2}`, `∫_{−δ}^{δ}|ε|^{−2} = ∞`): the pivot-Gram divisor is INDEPENDENT of the
-front Jacobian (no cancellation), an unconditional last-layer `qbox` FAILS (needs `u≤q ∧ a<q−u+1`, and emits
-`det(DDᵀ)^{−q/2}` one layer earlier), and a **naked Gram-decorated IH is FALSE** (diverges near a nonzero
-rank-`(u−1)` `Q̃ₚ`).
+**⚠ SUPERSEDES the earlier "LOCAL domain-split by absolute `σ_min(Q̃ₚ)`" pin below — it was UNSOUND, and my
+corner-(ii) "tall-collapse" resolution was also wrong. Corrected via d1split (`redteam-cert.md`) + my corners
+Codex (`codex/corners-{prompt,answer}.md`, decorrelated) + exact-ℕ.** Two soundness corrections landed:
+1. **d1split (PROVEN):** dispatching by the ABSOLUTE `σ_min(Q̃ₚ) < δ` is UNSOUND — the radial corner
+   `{Q̃ₚ → 0 radially, comparable singular values, Q_b = O(1)}` (positive-measure cone, `σ_min < δ`) is routed
+   to the bounded branch, which DISCARDS the corank charge `ab/2` and DIVERGES on `c' ∈ (½minAdm(redChain u M),
+   ½minAdm M)` — a window of positive length on **1221/1395** `a≥u` cuts. Binding cell `M=(4,3,2) @ t=2`: true
+   `~ε^{5−2c'}` (conv `c'<3`) vs bounded majorant `~ε^{3−2c'}` (conv only `c'<2`); window `c'∈(2,3)`.
+2. **Cert correction:** the banked `_inner_peel` emits the **CORANK** Gram `det(Q_bQ_bᵀ)^{−a/2} = ‖Q_b‖^{−a}`
+   (`R = Q_b`), NOT the pivot Gram `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` (that is `R = Q̃ₚ`, a different step). My earlier §2
+   conflated them.
 
-**The closing structure — a LOCAL domain-split (not a global decoration).** Split the outer `A'`-domain by the
-conditioning `σ_min(Q̃ₚ)`:
-- **`Q̃ₚ` ill-conditioned (near rank-`(u−1)`):** use `freedSchurLoss_inner_bounded_lt_top` (the pivot energy
-  lower-bounds `freedSchurLoss`, so the Γ-integrand is bounded on the finite shear box). The pivot Gram is
-  never formed here; the reduced loss reduces via the §1 atom.
-- **`Q̃ₚ` well-conditioned (`σ_min(Q̃ₚ) ≥ δ`):** use `freedSchurLoss_inner_peel_lt_top` (= `gammaAtom_aniso_shifted_eq`)
-  → `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` bounded by `δ^{−au}`, absorbed into a constant; the reduced loss
-  `frobSq(P·Q̃ₚ)^{−(c'−au/2)}` reduces via the §1 atom + `hIH`. Charge closes: `c'−au/2 < ½·minAdm(redChain t M)
-  − a(u−1)/2 ≤ ½·minAdm(redChain t M)` (from `minAdm M ≤ a + minAdm(redChain t M)` at `b=1`; verified
-  `scripts/d1_charge.py`).
+**The correct structure — ONE joint source-incidence atlas over the EXTENDED tail, pivot-regularized (this
+UNIFIES with §1, no separate machinery).** Write the corank energy as a single free-front Wishart:
+`frobSq(C·Q̃ₚ + Γ·Q_b) = frobSq([C|Γ]·Q̂)`, `[C|Γ]` a FREE `a×(u+1)` block, `Q̂ = [Q̃ₚ; Q_b]` the extended tail
+`((u+1)×q)`. So `freedSchurLoss = frobSq(P·Q̃ₚ) + frobSq([C|Γ]·Q̂)` — the §1 source-incidence atlas applied to
+`([C|Γ], Q̂)`, with the pivot term `w = frobSq(P·Q̃ₚ)` as a **regularizer**. The atlas tracks the JOINT ranks
+`(rank Q̃ₚ, rank Q̂)` (Codex resolution (b), PROVEN required), monomial Jacobians, each stratum → PLAIN `hIH`,
+**no `‖Q_b‖^{−a}` weight** (that artifact only arises from peeling `Γ` alone; the joint `[C|Γ]` atlas avoids it).
+- **d1split's radial-peel is the pivot regularizer.** Blow up `ρ = ‖Q̃ₚ‖`, `Q̃ₚ = ρΘ`; on the sphere
+  `‖PΘ‖² ≥ σ_min(P)² > 0` (P injective, `Θ ≠ 0`; does NOT need `Θ` full rank — arity-independent, `codex/corners`
+  (i)(a) PROVEN). This positive core lets the atlas close the `{Q̃ₚ → 0}` corner KEEPING the corank charge; the
+  radial integral reaches the FULL `½minAdm(M)`. Equivalently: dispatch by RELATIVE conditioning
+  `σ_min(Q̃ₚ)/‖Q̃ₚ‖`, not absolute (the radial corner has good relative conditioning → the peel side).
+- **The corank-one leaf is banked.** At `b=1`, `Γ·Q_b = γ⊗Q_b` (rank-one outer product), so the joint corner is
+  `‖P·Q̃ₚ‖² + frobSq(γ⊗Q_b)`-shaped, closed by the banked `freeBilinear_box_lt_top` (`γ⊗z`, `sumSqND_box_lt_top`)
+  reaching `½·min(a+1, D+1)`. Codex's (4,3,2) model `‖X‖² + ‖γ‖²‖r‖²` (`X∈ℝ⁴, γ,r∈ℝ²`) has threshold
+  `4/2 + min(2,2)/2 = 3 = full ½minAdm(M)` (vs `2` if the bilinear `‖γ‖²‖r‖²` is dropped) — so KEEPING the
+  bilinear corank incidence (resolution (b)) reaches the full threshold; dropping it (bounded-Γ, (a)) undershoots.
 
-Codex's "OPT-DECORATED (the min of the two branches)" IS this split — the `min{vol(C-Box)·w^{−c'},
-K·det(Q̃ₚQ̃ₚᵀ)^{−a/2}·w^{−(c'−au/2)}}` is the a.e. domain-split, NOT a carried global weight. **Banked:** both
-inner-Γ branches (`RouteMSJFreedPeel`), `gammaAtom_aniso_shifted_eq`, the §1 atom, `hIH`.
-**NEW sub-lemma: (N6)** the measurable `σ_min(Q̃ₚ)`-conditioning domain-split + the a.e. two-branch dispatch +
-the `δ`-uniform Gram bound on the well-conditioned piece.
+**CLASSIFY: EXPENSIVE-TRANSCRIPTION (native, standalone) — the §1 atlas machinery extended to `Q̂` + the pivot
+regularizer + the banked FreeBilinear leaf. NEEDS the atlas (already the §1 core), NOT a new global decoration
+(the naked Gram-decorated IH is FALSE — d1split ε-counter). No `‖Q_b‖^{−a}` artifact.**
 
-**FLAG (controller's ask — the one arm least de-risked on paper):** the interaction of the TWO degeneracies
-on the ill-conditioned piece — `σ_min(Q̃ₚ) → 0` AND the pivot energy `w = frobSq(P·Q̃ₚ) → 0` (when `P` is also
-ill-conditioned) — is where my paper analysis is thinnest. The bounded-C branch needs `w > 0`; where `w → 0`
-the reduction must fall back to the §1 atom on the ill-conditioned sub-piece. I judge this CLOSES (the §1
-atom handles `w → 0`; the bounded branch handles the `Q̃ₚ`-drop where `w` is bounded below), so it is
-genuinely-new-to-formalise, NOT math-open — but it is the arm to red-team / build first, and the one where an
-unforeseen coupling could force a genuine (mild, local) decoration after all.
+### 2-corners — VERIFIED (controller's ask, before the §2 tide)
+- **Corner (i) deeper-arity `Q_p` a PRODUCT — ABSORBED-NATIVE (Codex + exact-ℕ agree).** The sphere bound
+  `‖PΘ‖²≥σ_min(P)²>0` is arity-independent (P is the `u×u` outer pivot). The pivot term reduces via the §1
+  **wide** atom (`F=[P|B₁₂]`, `u×(u+1)`) at the shifted charge `s = c'−a/2 < ½minAdm(redChain u M)` — **but this
+  is the §1 atom, NOT plain hIH**: `Q̃ₚ = F·A₁` collapse is a PRODUCT with singular source-rank pushforward, so
+  it needs the §1 source-incidence atlas (product-aware, delivers the right product-shell threshold via
+  `hIH(redChain u M)`; Codex (i)(b)). Charge closes 0/3276 (cut-soundness, `scripts/d1_corners.py`, arity-general).
+  Deep-tail degeneracy (`Q̃ₚ→0` with `Q_p` near its own rank-drop): shell law worse than `ρ^{uq−1}` but cannot
+  exceed the reduced-chain threshold — absorbed by `hIH(redChain s M)` once the collapse chart exposes an
+  unweighted reduced product (Codex (i)(c)). Cheapest check (Codex): `M=(2,2,1,3)`, `Q̃ₚ=xy`, the product-shell
+  threshold `s<½` is exactly what `hIH` gives (not the free `uq/2`). **VERDICT: absorbed by the §1 atom (core),
+  no new gap.**
+- **Corner (ii) `Q_b → 0` — NEEDS resolution (b), the JOINT atlas (Codex PROVEN; my earlier (a) was WRONG).**
+  My earlier "bounded-in-Γ / tall `[P;C]` collapse → `hIH((M₀,M2,…))`" is UNSOUND: `freedSchurLoss ≥
+  frobSq([P;C]·Q̃ₚ)` is FALSE (the free `Γ` can cancel `C·Q̃ₚ`, so the integrand exceeds `frobSq([P;C]·Q̃ₚ)^{−c'}`).
+  My exact-ℕ `minAdm((M₀,M2,…)) ≥ minAdm(M)` (0/3276) checked that WRONG reduction — it does not validate (ii).
+  The correct handling: `{Q_b→0}` is a rank-`(u+1)→u` drop of the extended tail `Q̂`, a native stratum of the
+  JOINT `[C|Γ]` atlas — NO `‖Q_b‖^{−a}` weight. The bounded-Γ / pivot-only cap genuinely UNDERSHOOTS: window
+  `c'∈(2,3)` for `M=(4,3,2)` (pivot-only chain `(2,3,2)` threshold 2, true 3; Codex (ii)(c) PROVEN). When `q≤u`,
+  `Q_b→0` may cause NO total-rank drop — so the atlas must track RELATIVE-row incidence `(rank Q̃ₚ, rank Q̂)`,
+  not total rank (Codex (ii)(b)). **VERDICT: the joint atlas (resolution b) is REQUIRED and is the same §1-family
+  machinery on `Q̂`; resolution (a) is unsound. No `‖Q_b‖^{−a}` artifact once (b) is used.**
 
-**CLASSIFY: EXPENSIVE-TRANSCRIPTION (native, local split) — but the least de-risked; build/red-team FIRST.**
+**Net:** the `d=1 a≥u` arm is the §1 source-incidence atlas on the extended tail `Q̂` (pivot-regularized by the
+radial-peel), + the banked FreeBilinear leaf at `b=1`. Both corners are absorbed within this one atlas. NOT a
+domain-split, NOT a `‖Q_b‖^{−a}` weight, NOT a global decoration. This is the corrected pin.
+
+---
+**(HISTORICAL — the UNSOUND earlier pin, kept for the record):** *"LOCAL domain-split by absolute `σ_min(Q̃ₚ)`;
+ill→`_inner_bounded`, well→`_inner_peel`."* d1split PROVED the absolute-`σ_min` dispatch routes the radial cone
+to the bounded branch (charge `ab/2` dropped) → diverges on `c'∈(½minAdm(redChain u M), ½minAdm M)`. And my
+corner-(ii) tall-collapse was not a valid upper bound. Superseded by the joint-atlas pin above.
 
 ## 3. `d=1 a<u` (the clean leaf) — for completeness
 
@@ -193,9 +248,11 @@ Every inequality-shaped condition is TIGHT (marginal) at a concrete cell (`scrip
   = minAdm M` (EQUALITY). E.g. `M=(2,2,1,2)@t=1`: `minAdm=2`, `peelCharge+minAdm(redChain)=1+1=2` (EQUALITY).
 - **§2 `d=1 a≥u` boundary `a = u`:** the `a<u` drop-transverse route is marginal (`∫_ω ‖Q̃ₚω‖^{−a}` is the
   rank-`u` form RLCT, finite iff `a<u`, LOG at `a=u`). Cell **`M=(2,2,1,2)@t=1`**: `a=1,b=1,u=1` (`a=u`).
-- **§2 well-conditioned qbox range `a < q−u+1`:** Codex's ε-cell **`M=(4,3,2)`** (`t=u=a=q=2`, `b=1`): `a=2`,
-  `q−u+1=2−2+1=1`, so `a<1` FALSE → the naked-Gram/qbox route DIVERGES (`∫|ε|^{−2}=∞`) → the domain-split
-  (bounded branch) is FORCED here. This is the EQUALITY-at-binding-cell witness that OPT-DECORATED-naked is unsound.
+- **§2 the naked-Gram / bounded-branch UNSOUNDNESS witness `M=(4,3,2)@t=2`** (`u=a=q=2, b=1`): the naked-Gram/qbox
+  route DIVERGES (`a<q−u+1=1` FALSE, `∫|ε|^{−2}=∞`), AND the bounded-Γ (absolute-`σ_min`) route DIVERGES on the
+  window `c'∈(2,3)` (pivot-only chain `(2,3,2)` threshold 2, true `½minAdm=3`). Only the joint `[C|Γ]`-atlas over
+  `Q̂` (KEEPING the corank bilinear, `‖X‖²+‖γ‖²‖r‖²` threshold `4/2+min(2,2)/2=3`) reaches the full threshold.
+  This is the EQUALITY-at-binding-cell witness that BOTH the naked-Gram IH and the absolute-`σ_min` split are unsound.
 - **`b=0` tall qbox (§1 tall sector) marginal `M₂ = a+1`:** `M=(2,1,2,·)`: `a=1, M₂=2=a+1` (marginal; §1's
   `(r,s)` atlas handles it standalone, unlike the crude one-shot qbox which fails here).
 - **`a=0` wide fold boundary `A = 2Δ`:** `M=(1,2,3,3)`, `(1,2,3,4)`: `A=1=2Δ` (the fold is marginal AND unsound
@@ -203,32 +260,38 @@ Every inequality-shaped condition is TIGHT (marginal) at a concrete cell (`scrip
 
 ## 5. Architecture trade-off (STANDALONE vs DECORATED — justified)
 
-- **STANDALONE (recommended).** ONE new native atom (§1) + the `d=1 a≥u` local split (§2, using banked
-  branches). No new global IH; the plain driver (`decoratedPeelStep_proof` → `routeMBoxThresholdFinite_of_decoratedPeel`)
-  is untouched; footprint stays `[cited_aoyagi_product_corank, propext, Classical.choice, Quot.sound]`.
+- **STANDALONE (recommended).** ONE atlas mechanism (§1, extended to `Q̂` for `d=1 a≥u`, §2). No new global IH;
+  the plain driver (`decoratedPeelStep_proof` → `routeMBoxThresholdFinite_of_decoratedPeel`) is untouched;
+  footprint stays `[cited_aoyagi_product_corank, propext, Classical.choice, Quot.sound]`.
 - **DECORATED (rejected).** A global Gram-decorated `RouteMBoxThresholdFinite` IH carrying `det(leadingGram)^{−w}`
-  through the recursion. **Rejected on math, not taste:** Codex PROVED a naked Gram-decorated IH is FALSE
-  (diverges near a nonzero rank-`(u−1)` leading Gram outside the qbox range, ε-counter §2) — carrying the weight
-  unconditionally does not converge. The only sound use of the Gram branch is the LOCAL well-conditioned split
-  (§2), which needs no global carrier. So STANDALONE is not just preferred (operator's lean) — it is the sound
-  structure; the decorated global IH is unsound.
+  through the recursion. **Rejected on math, not taste:** d1split PROVED a naked Gram-decorated IH is FALSE
+  (diverges near a nonzero rank-`(u−1)` leading Gram outside the qbox range, ε-counter `M=(4,3,2)`) — carrying the
+  weight unconditionally does not converge. The `d=1 a≥u` arm is closed by the §1 atlas on the extended tail `Q̂`
+  (pivot-regularized), which needs no global carrier. So STANDALONE is not just preferred (operator's lean) — it
+  is the sound structure; the decorated global IH is unsound.
 
 ## Close
 
-- **Firmest.** The `d≤1` native arm funnels to ONE new NATIVE atom — the **front-collapse rank-sector**
-  (`frontCollapseRankSector_lt_top`, §1): reduce `frobSq(F·prod(tailChain M) A')` to `hIH(redChain s M)` via a
-  joint SOURCE-incidence-sector `(r,s)` atlas (pure-monomial Jacobian, single-factor NATIVE), covering both
-  wings; plus the `d=1 a≥u` LOCAL domain-split (§2, two banked inner-Γ branches). Architecture: STANDALONE (no
-  new global decorated IH — the naked Gram-decorated IH is FALSE, Codex PROVEN). Charge airtight (0/5292).
-- **Most likely to break.** (i) `d=1 a≥u` (§2) — the double degeneracy (`σ_min(Q̃ₚ)→0` ∧ `w→0`); build/red-team
-  FIRST. (ii) The `(r,s)` atlas Jacobian identity (N3) being a clean monomial in the tall sector — the tall
-  incidence is subtler than the wide (Codex flagged the tall target correction). (iii) If the source-incidence
-  CoV secretly reintroduces a product-Gram in some sector, the §1 standalone claim weakens toward §2's split.
-- **Next.** Commission the §1 atom build (start with the WIDE `a=0` sectors — the cleanest, `F` surjective —
-  then the tall, then wire the `d=1` dressing), with the §2 `a≥u` split red-teamed first. The `(r,s)` atlas +
-  Jacobian (N1–N3) is the genuinely-new heart; N4–N5 is the reduction wire; the banked list is complete.
-  Recommend surfacing the standalone-vs-decorated call to the operator (STANDALONE, math-forced) before the tide.
+- **Firmest.** The `d≤1` native arm funnels to ONE atlas mechanism — the **front-collapse source-incidence
+  `(r,s)` atlas** (`frontCollapseRankSector_lt_top`, §1): reduce `frobSq(F·prod(tailChain M) A')` to
+  `hIH(redChain s M)` (pure-monomial Jacobian, single-factor NATIVE), covering both wings + `d=1 a<u`; and, for
+  `d=1 a≥u` (§2, RE-PINNED after the d1split red-team), the SAME atlas on the EXTENDED tail `Q̂=[Q̃ₚ;Q_b]` with
+  the corank block `[C|Γ]` free, pivot-regularized by `w=frobSq(P·Q̃ₚ)` (`‖PΘ‖²≥σ_min(P)²>0` on the sphere), +
+  the banked FreeBilinear leaf at `b=1`. Architecture: STANDALONE (no global decoration — the naked Gram IH is
+  FALSE, d1split PROVEN). Charge airtight (cut-soundness 0/22932; front rank-sector 0/5292; corner-(i) 0/3276).
+  **Two soundness corrections from d1split folded into §2** (absolute-`σ_min` split unsound; `_inner_peel` emits
+  the CORANK Gram `‖Q_b‖^{−a}`, not the pivot Gram — the joint `Q̂`-atlas avoids the `‖Q_b‖^{−a}` artifact).
+- **Most likely to break.** (i) `d=1 a≥u` (§2) — the joint `[C|Γ]`-atlas over `Q̂` tracking `(rank Q̃ₚ, rank Q̂)`:
+  the `Q_b→0` stratum (corner ii, Codex PROVEN needs the joint atlas — bounded-Γ undershoots, window `c'∈(2,3)`
+  for `(4,3,2)`) and the pivot-regularizer at `{Q̃ₚ→0}` are the subtle pieces; build/red-team the atlas Jacobian
+  FIRST. (ii) The `(r,s)` / joint atlas Jacobian identity (N3) being a clean monomial in the tall / extended-tail
+  sectors (subtler than the wide; Codex flagged). (iii) `q≤u`: `Q_b→0` may cause no total-rank drop of `Q̂`, so
+  the atlas must track RELATIVE-row incidence, not total rank (Codex ii-b).
+- **Next.** Commission the §1 atom build (start WIDE `a=0` sectors — cleanest, `F` surjective — then tall, then
+  the `d=1 a≥u` extended-tail `Q̂` atlas). The `(r,s)` atlas + Jacobian (N1–N3) is the genuinely-new heart;
+  N4–N5 is the reduction wire; the banked list is complete. Standalone-vs-decorated is math-forced (STANDALONE).
 
 Files (absolute): `…/threads/genm-d1design/d1-atom-spec.md` (this); `d1-build-plan.md` (the open-vs-transcription
-pass); `codex/atom-{prompt,answer}.md` (decorrelated, OPT-STANDALONE wings + OPT-DECORATED-as-local-split a≥u);
-`scripts/d1_{charge,wings,discriminate,witnesses}.py`. Socket: `RouteMSJDecoratedPeelStep.lean` @ origin/genm-integration.
+pass); `codex/atom-{prompt,answer}.md` (wings STANDALONE) + `codex/corners-{prompt,answer}.md` (the two-corner
+red-team: (i) absorbed by §1, (ii) needs the joint atlas); d1split `redteam-cert.md` @ origin/genm-d1split;
+`scripts/d1_{charge,wings,discriminate,witnesses,corners}.py`. Socket: `RouteMSJDecoratedPeelStep.lean` @ origin/genm-integration.
