@@ -83,8 +83,8 @@ truth scan.
 | **Lane 1 — 2a** | (lane1shell, on-call) | PENDING recipe — generic dominant-minor cover (EXPENSIVE TRANSCRIPTION, the tractable-first sub-tide) | d1design recipe |
 | **Lane 1 — 2b/2c** | (unassigned) | PENDING recipe — 2b corank-one C-transversality atom + 2c a=0 waist density (the genuinely-new-to-formalise atoms) + b=0 Wishart | d1design recipe |
 | **Lane 2 — survey** | `l2recon` | ✅ DONE — `recon-map.md` @798601328 (genm-l2recon): plumbing richly banked clean-three (§A–§G); the new heart = §H (c×c chart family + transverse-Jacobian sign-repair); 5 DEAD routes to forbid | feeds the engine spec |
-| **Lane 2 — witnesses** | `l2witness` | IN FLIGHT — joint-center survival / codim-undershoot / tightness-at-binding-cell as runnable exhibits | battery lands → gates the engine design pass |
-| **Lane 2 — engine** | (not yet commissioned) | PENDING — after l2witness lands; concentrate on §H (treat §A–§G as banked) | skeleton = terminal statement typed = socket's Prop + in-file fit example |
+| **Lane 2 — witnesses** | `l2witness` | ✅ DONE — battery @dbc977f71 (W1 joint-center survival / W2 codim-undershoot / W3 tightness-at-binding-cell equality; exact-QQ ranks, decorrelated-Codex-confirmed). **W4 (block-level min(a,b) witness) commissioned** — the engine's dispatch index | W4 lands → tightness-checks the native≤1/transcribe≥2 branch |
+| **Lane 2 — engine** | `l2engine` (→ genm-l2engine) | IN FLIGHT — SKELETON first (terminal statement typed = socket's Prop + in-file fit example + chart-family scaffold w/ named holes); concentrate on §H, forbid the 5 dead routes, holes pass W1–W4 | skeleton types-to-fit → report by hypothesis list |
 
 ## Socket facts (the one interface between the lanes)
 - **Prop:** `cited_aoyagi_product_corank` (RouteMSJDecoratedPeelStep.lean, genm-integration). Non-vacuous:
