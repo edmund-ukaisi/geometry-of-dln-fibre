@@ -26,3 +26,11 @@ the trail is local):
   "Params not normed" blocker was closed weeks ago by a 0-sorry module consumed in 13 files
   (ParamsFlatLinear); the probe ran importless and a false "hard fact" nearly forced a route. The
   survey-first rule applies to INSTANCES, not just lemmas. (seat B catch, 2026-07-17)
+- An elder-RATIFIED amendment is not landed until a grep/reviewer CONFIRMS it in the statement:
+  the resRank fold was ratified at rev-1, recorded in compass, and still absent from
+  terminalExponents — caught only by the fresh round's counterexample. Ratification ≠ landing;
+  verify amendments like any other claim. (cert-carrier-review, 2026-07-17)
+- A relation that never reads the CHILD certifies nothing about transitions: StepRel read only
+  the parent + case tag, so any child exponent passed — and the in-file witness "passing" was a
+  symptom of the weakness, not evidence of the design. When a predicate is justified BY a specific
+  equation (the case-1(1) merge), grep that the equation's variables actually appear. (2026-07-17)

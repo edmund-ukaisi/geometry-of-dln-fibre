@@ -82,12 +82,12 @@ nodes:
   - id: resolution-tree
     kind: notion
     title: "the pp.14-22 chart-tree datatype: monomials + divisibility chain + SHARING maps"
-    status: drafted
+    status: validated
     tier: new
     owner: architect
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "COMBINED RESTRUCTURE (elder ruling 2): ONE gated event — edge-vs-node carrier shape at COUNCIL OF TWO (mandate: inductive+edge labels, State/StateInvariant split, lex termination, chart-map placement; four GIVENS fixed: ChartBridge content+witnesses, image-cover/upstairs openness, tStar-realization sub-obligation, the openness statement defect). r2 VALIDATE marked superseded+incomplete (missed the vacuity). Fresh review round owed on the result. Prior pending note: ChartsCover→ChartBridge; LeafData gains chartMap/srcBox/resRank(+orders, Morse normal form per Codex); canonicalResolution_224 must be REBUILT with real charts (its atlas conjunct rode the vacuity). VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition"
+    notes: "COMBINED RESTRUCTURE (elder ruling 2): ONE gated event — edge-vs-node carrier shape at COUNCIL OF TWO (mandate: inductive+edge labels, State/StateInvariant split, lex termination, chart-map placement; four GIVENS fixed: ChartBridge content+witnesses, image-cover/upstairs openness, tStar-realization sub-obligation, the openness statement defect). r2 VALIDATE marked superseded+incomplete (missed the vacuity). Fresh review round owed on the result. Prior pending note: ChartsCover→ChartBridge; LeafData gains chartMap/srcBox/resRank(+orders, Morse normal form per Codex); canonicalResolution_224 must be REBUILT with real charts (its atlas conjunct rode the vacuity). VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition. FRESH ROUND (threads/05-carrier-review/cert-carrier-review.md, 2026-07-17): CARRIER VALIDATED (edge-labelled shape, ledger-only edge data, coherence clause, witness-split footprints forced-checked, circularity clean); obligation PREDICATES held at adjudicated — 2 CRITICAL statement defects (StepRel never reads e.child, drops the case-1(1) merge; region_glue missing the elder-ratified resRank fold + transport inapplicable on the singular factor) + 5 major gaps; repair commissioned; six-obligation flip waits on the r2 re-check"
 
   - id: case-step-lemmas
     kind: claim

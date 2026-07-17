@@ -388,3 +388,26 @@ vacuity re-scope note (closure is IN-LEAN: LeafPullback + coherence + ledger + S
 Verified cosmetic-only (AxCheck untouched — root's qualified entries + driver import intact; the
 one non-comment diff is a term line-split); witness closure rebuilt green (2717 jobs). Task #44
 closed. Awaiting rev-carrier verdict.
+
+## 2026-07-17 FRESH ROUND VERDICT: VALIDATE-WITH-CHANGES (tick 34)
+rev-carrier's cert (threads/05-carrier-review/, Codex-convergent on both criticals): the CARRIER
+is validated (map: resolution-tree → validated); the OBLIGATION PREDICATES are not yet correctly
+stated. CRITICAL 1: StepRel never reads e.child — the case-1(1) exponent-merge the restructure
+was justified to pin is DROPPED (counterexample: child exponent 0/11/99 all accepted); the 224
+witness passes only because the relation is weak (1x1 toy root step). CRITICAL 2: region_glue
+under-provisioned — (a) the elder-RATIFIED resRank fold never landed (Codex counterexample makes
+the statement FALSE: resRank=1, e=2, c'=3/4); (b) the local-homeomorph transport is inapplicable
+on the singular blow-up factor (|det|=|u| has no lower bound at u=0), so the sorry owned the
+singular CoV — laundering. Plus 5 major statement gaps (empty-srcBox phantom attainment,
+divProfile∉Adm, coord injectivity/disjointness, InjOn wrong for blow-ups, Jacobian sign) and
+minors incl. the line-96 false-premise strike the architect reported done but wasn't.
+ADJUDICATION: repair pass commissioned with four rulings — 2a = the terminalExponents fold
+(elder-ratified form); 2b = ψ∘β factorization, transport on ψ only, β by direct monomial
+integration (fork-8 route (b) done correctly; STOP-and-report fallback if ψ inverse data is not
+constructible from the localSubs); 7 = absolute-value form; witness upgraded to the REAL ≥2x2
+root step with truth-witness-at-pin-time on the merge equation (page image + numeric instance)
+and the truth-signal rule if the real data can't satisfy the strengthened relation. r2 re-check
+(rev-carrier, warm) gates the six-obligation flip + merge-to-canonical; elder convenes at the
+construction-tide gate. LESSON (pattern, 4th instance): the architect's self-reports overstate
+completion (AxCheck names, cosmetics-immediately, strike-done, three-vs-four modules) — every
+claim gets controller- or reviewer-verified before it counts.
