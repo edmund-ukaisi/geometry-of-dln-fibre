@@ -14,3 +14,15 @@ flatten, minAdm ground truth, form-A tightness, Def-3 brokenness) all survive. V
 genuine authoring error on first run (cycle from redundant back-edges) — fixed; 0 errors, 2
 expected no-survey warnings. Next: elder council of two (founding route adoption counsel),
 architect commissioned for the skeleton increment, heartbeat armed.
+
+## 2026-07-17 COUNCIL #1 INTEGRATED (tick 2)
+Elder council of two returned: ADOPT × 2, independent, both re-derived the killed mechanism from
+the battery and verified the interface anchors. Integrated: compass rewritten (fork 2 precision;
+fork 6 = DecoratedDescent disposition [seat B's find: the predecessor's conditional decorated route
+is still wired — witness-or-tombstone in the adoption commit]; two-cost-center framing [seat A's
+find: RR4 is an OUTER precedent only — Layer B has no inner precedent]; the non-deepest EXACT-
+reduction contract with ONE owner). theorem4-localization promoted to landmark #8 + given to
+coverage-design. Two battery gaps commissioned (glue-level lossy-vs-exact; pivot co-null).
+Exhaustiveness hunt = a named lane on coverage. Architect being instructed with the live design
+constraints (typed sharing fields; Layer-B fence verbatim; DecoratedDescent fit check; no
+Eqs-(1)–(5) transcription). Coverage-design seat spawning. Validator green post-edits.
