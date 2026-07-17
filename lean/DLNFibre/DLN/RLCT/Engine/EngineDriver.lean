@@ -64,11 +64,17 @@ example (H : Fin (L + 1) → ℕ) (r : ℕ)
   aoyagi_learning_coefficient_gen H r B hB hr hL hL2 hpos
     (engine_box_threshold_finite (fun s => H s - r))
 
-/-- **`region_glue`'s ratio hypothesis is loss-proof** (council #1, item 4). `hrat` quantifies over
-*every* terminal divisor exponent, so it forces the tight threshold `c' < ½·minAdm M` — because
-`minAdm M` is itself a terminal exponent (`exponent_ledger_bridge.2`). No lossy over-threshold (a
-`c' ≥ ½·minAdm M` that drops the binding divisor or reads a larger exponent) can satisfy it. This is
-why the assembly `region_glue` cannot be discharged by a reweighted-residual bound. -/
+/-- **`region_glue`'s ratio hypothesis is loss-proof** (council #1, item 4), as an implication.
+* PROVED here (the WIRING): *given* that `minAdm M` is a terminal exponent, `hrat` — which ranges
+  over *every* terminal exponent — forces the tight threshold `c' < ½·minAdm M`; no lossy
+  over-threshold (`c' ≥ ½·minAdm M`, dropping the binding divisor or reading a larger exponent) can
+  satisfy it, so the assembly cannot be discharged by a reweighted-residual bound.
+* ASSUMED (NOT settled here): the attainment `minAdm M ∈ terminalExponents (resolutionOf M)` — the
+  `.2` of `exponent_ledger_bridge`, i.e. the C2-flagged conjunct of `CanonicalResolution` that the
+  `monomialization_terminates` construction must MAKE true. This example rides on that (hence on
+  `sorryAx`); it is a wiring witness, NOT evidence the bridge is proved. (Were `terminalExponents`
+  empty, `hrat` would be vacuous — the reviewer's empty-list disproof — which is exactly why the
+  attainment conjunct is load-bearing and lives in the bundle.) -/
 example (M : Fin (L + 1) → ℕ) (c' : ℝ)
     (hrat : ∀ e ∈ ResolutionTree.terminalExponents (resolutionOf M), c' < (e : ℝ) / 2) :
     c' < (minAdm M : ℝ) / 2 :=
