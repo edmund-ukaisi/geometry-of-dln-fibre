@@ -267,3 +267,23 @@ split. (3) Vacuity closes at TYPE strength under the new fields (the fake atlas 
 unconstructible) — no extra witness needed. Architect redirected off the leaf-monolithic build
 (elder's P6 bar) onto the council-window tasks: the mixed-case necessity witness + both encoding
 sketches under both Q5 routes. Council deliberating with the addendum.
+
+## 2026-07-17 COUNCIL RULES: EDGE-LABELLED CARRIER ADOPTED (Q1-Q4) (tick 23)
+Both seats convergent on Q1-Q4, independently, with the architect's probe-backed witness as a third
+angle: ADOPT edge-labelled children (Edge = case + local substitution + child). The necessity
+landed in its honest form — the raw node datatype is NOT inexpressive (both seats caught the
+overstatement); the binding facts are (i) the unary invariant provably cannot pin the paper's
+parent-referencing case-1(1) exponent-merge, (ii) the per-chart SUBSTITUTION is DATA no Prop can
+supply and no current field can hold, (iii) leaf-terminating charts lose their case label
+irrecoverably. Q2: State/StateInvariant split ADOPTED for the construction register with the
+fork-3 fence; DISAGREEMENT ADJUDICATED — bChain STAYS a type-strength LeafData field (seat A over
+seat B's invariant-relocation; C1 must not regress; cost nil). genDivExp = legal strengthening;
+scalar flatten stays a type error. Q3: lexicographic measure ADOPTED (case11 verified invisible to
+depth — inner recursion at fixed (S,J)); construction-tide obligation, not carrier. Q4: edges
+carry local substitutions as data; leaf chartMap = DERIVED fold; bridge predicates at leaf level
+(givens plug in unchanged); chartDom REMOVED (downstairs-open defect); P8 composer consumes edges.
+Q5 (fderiv-flat vs RLCT-transport) crossed both deliberations — short supplemental rulings
+requested from both seats. The union of the two seats' fresh-review checklists (9+9 items,
+heavily overlapping) is the review brief. Architect cleared to BEGIN the structural
+implementation (Q1-Q4 final), shaping subst/Jacobian so either Q5 route fits; merge to canonical
+gated on the fresh review round.
