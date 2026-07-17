@@ -50,7 +50,7 @@ multi-chart CoV assembly + qbox dim-match — a multi-brick effort, staged below
 namespace DLNFibre.DLN.RLCT
 
 open MeasureTheory
-open scoped ENNReal BigOperators
+open scoped ENNReal BigOperators Matrix
 
 variable {L : ℕ}
 
@@ -142,5 +142,19 @@ theorem redChain_box_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
     (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     routeMLayerBoxIntegral (redChain (min (M 0) (M 1)) M) (c' : ℝ) 1 < ⊤ :=
   hIH (redChain (min (M 0) (M 1)) M) c' (saturated_threshold M c' hc')
+
+/-- **The block-Gram-det identity (LANDED, green — the "elementary, NOT Cauchy-Binet" core).** For a
+front `F : m×n` extended by a residual `S : k×n` orthonormal to `F`'s row space (`S·Fᵀ = 0`,
+`S·Sᵀ = 1`), the stacked Gram determinant collapses to the front Gram:
+`det([F;S]·[F;S]ᵀ) = det(F·Fᵀ)`. The off-diagonal blocks (`S·Fᵀ`) vanish, so the block-Gram is
+block-triangular with diagonal `(F·Fᵀ, 1)` — `det_fromBlocks_zero₂₁`, no minor sum. This is what makes
+`|det[F;S]| = det(F·Fᵀ)^{1/2}` (the square-CoV Jacobian) reachable WITHOUT Cauchy-Binet: the front Gram
+`det(F·Fᵀ)` (a FREE-`F` Gram) then feeds `qbox_lintegral_lt_top` directly. -/
+theorem det_gram_fromRows_of_orthonormal {m k n : ℕ}
+    (F : Matrix (Fin m) (Fin n) ℝ) (S : Matrix (Fin k) (Fin n) ℝ)
+    (hSF : S * Fᵀ = 0) (hSS : S * Sᵀ = 1) :
+    ((Matrix.fromRows F S) * (Matrix.fromRows F S)ᵀ).det = (F * Fᵀ).det := by
+  rw [Matrix.transpose_fromRows, Matrix.fromRows_mul_fromCols, hSF, hSS,
+    Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
 
 end DLNFibre.DLN.RLCT
