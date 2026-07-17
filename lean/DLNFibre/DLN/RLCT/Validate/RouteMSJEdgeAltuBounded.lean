@@ -5,6 +5,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontCollapseWide
 import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
 
 set_option linter.style.longLine false
 
@@ -238,6 +239,158 @@ theorem frontStd_leadingBlock {t M₁ : ℕ} (htM1 : t ≤ M₁) (P : Fin t → 
     Sum.elim (P i) (B12 i) ((frontStdEquiv htM1).symm (Fin.castLE htM1 j)) = P i j := by
   rw [frontStdEquiv_symm_castLE htM1 j, Sum.elim_inl]
 
+/-- **The standard front measurable equiv** `((P, B₁₂)) ≃ᵐ (Fin t → Fin M₁ → ℝ)` — combine the pivot
+pair into a sum-front (`splitCols⁻¹`) then reindex columns to `Fin M₁` by `frontStdEquiv` (`Sum.inl`
+onto the first `t`). Measure-preserving; `frontStdEquivM pb i m = Sum.elim (pb.1 i) (pb.2 i)
+((frontStdEquiv htM1).symm m)`. -/
+noncomputable def frontStdEquivM {t M₁ : ℕ} (htM1 : t ≤ M₁) :
+    ((Fin t → Fin t → ℝ) × (Fin t → Fin (M₁ - t) → ℝ)) ≃ᵐ (Fin t → Fin M₁ → ℝ) :=
+  (splitCols t t (M₁ - t)).symm.trans
+    (MeasurableEquiv.arrowCongr' (Equiv.refl (Fin t))
+      (MeasurableEquiv.arrowCongr' (frontStdEquiv htM1) (MeasurableEquiv.refl ℝ)))
+
+/-- `frontStdEquivM pb i m = Sum.elim (pb.1 i) (pb.2 i) ((frontStdEquiv htM1).symm m)`. -/
+theorem frontStdEquivM_apply {t M₁ : ℕ} (htM1 : t ≤ M₁)
+    (pb : (Fin t → Fin t → ℝ) × (Fin t → Fin (M₁ - t) → ℝ)) (i : Fin t) (m : Fin M₁) :
+    frontStdEquivM htM1 pb i m = Sum.elim (pb.1 i) (pb.2 i) ((frontStdEquiv htM1).symm m) := rfl
+
+/-- `frontStdEquivM` is measure-preserving. -/
+theorem measurePreserving_frontStdEquivM {t M₁ : ℕ} (htM1 : t ≤ M₁) :
+    MeasurePreserving (frontStdEquivM htM1)
+      (volume : Measure ((Fin t → Fin t → ℝ) × (Fin t → Fin (M₁ - t) → ℝ)))
+      (volume : Measure (Fin t → Fin M₁ → ℝ)) := by
+  refine MeasurePreserving.trans (measurePreserving_splitCols t t (M₁ - t)).symm ?_
+  exact volume_preserving_arrowCongr' (Equiv.refl (Fin t))
+    (MeasurableEquiv.arrowCongr' (frontStdEquiv htM1) (MeasurableEquiv.refl ℝ))
+    (volume_preserving_arrowCongr' (frontStdEquiv htM1) (MeasurableEquiv.refl ℝ)
+      (MeasurePreserving.id volume))
+
+/-- **The shear-image box has the same volume as the centered box** (translation-invariance): the shear
+`Γ ↦ Γ + s` is measure-preserving, and the shearbox is its preimage of `genBox`. -/
+theorem volume_shearbox_eq {a b : ℕ} (s : Fin a → Fin b → ℝ) (T : ℝ) :
+    volume {Γ : Fin a → Fin b → ℝ | Γ + s ∈ genBox (Fin a) (Fin b) T}
+      = volume (genBox (Fin a) (Fin b) T) := by
+  have hpre : {Γ : Fin a → Fin b → ℝ | Γ + s ∈ genBox (Fin a) (Fin b) T}
+      = (fun Γ => Γ + s) ⁻¹' genBox (Fin a) (Fin b) T := rfl
+  rw [hpre, (measurePreserving_add_right (volume : Measure (Fin a → Fin b → ℝ)) s).measure_preimage
+    (measurableSet_genBox T).nullMeasurableSet]
+
+/-! ## The keep-`M₁` chain and its front-collapse finiteness (α-LOW target)
+
+The α-LOW clean branch feeds the keep-`M₁` chain `M'' = (t, M₁, M₂, …) = Fin.cons t (tailChain M)` to
+`frontCollapse_wide_bounded_lt_top`. Its tail chain is `tailChain M` (the A'-domain of the target). -/
+
+/-- `tailChain (Fin.cons t (tailChain M)) = tailChain M` — the keep-`M₁` chain's tail is `tailChain M`. -/
+theorem tailChain_consFront {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) :
+    tailChain (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) = (fun i : Fin (L + 1 + 1) => M i.succ) := by
+  funext i
+  rw [tailChain, Fin.cons_succ]
+
+-- Heartbeats raised: the `tailChain (Fin.cons t …) ≡ M ·.succ` chain defeqs and the `Fin.cons`
+-- width reductions (`M'' 1 ≡ M 1`, etc.) force expensive `whnf` during elaboration.
+set_option maxHeartbeats 1600000 in
+/-- **The keep-`M₁` chain front-collapse finiteness (α-LOW target integral).** For the keep-`M₁` chain
+`M'' = Fin.cons t (tailChain M)`, below `½·minAdm (redChain t M)` (which transfers to `½·minAdm M''` via
+`minAdm_redChain_le_consFront`), in the wide (`t ≤ M₁`) bounded (`M₂ ≤ M₁−t`) regime, the front-factor box
+integral over `wingFrontBox M'' × paramsBoxM(tailChain M)` is finite. -/
+theorem edge_frontCollapse_consFront_lt_top {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht2 : t ≤ min (M 0) (M 1)) (hbnd : (M 2 : ℝ) < (M 1 : ℝ) - t + 1) (hb : M 2 ≤ M 1 - t)
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (c' : NNReal) (hlow : (c' : ℝ) < (minAdm (redChain t M) : ℝ) / 2) :
+    (∫⁻ F in wingFrontBox (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)),
+        ∫⁻ A' in paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ) 1,
+          ENNReal.ofReal ((frobSq (rmatMul F
+            (prod (fun i : Fin (L + 1 + 1) => M i.succ) A'))) ^ (-(c' : ℝ)))) < ⊤ := by
+  -- the chain values for `M'' = Fin.cons t (fun i => M i.succ)`
+  have h0 : (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 0 = t := by
+    rw [Fin.cons_zero]
+  have h1 : (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 1 = M 1 := by
+    rw [Fin.cons_one]; simp only [Fin.succ_zero_eq_one]
+  have h2 : (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 2 = M 2 := by
+    rw [show (2 : Fin (L + 1 + 1 + 1)) = (1 : Fin (L + 1 + 1)).succ from rfl, Fin.cons_succ,
+      Fin.succ_one_eq_two]
+  have hwide : (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 0
+      ≤ (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 1 := by
+    rw [h0, h1]; exact le_trans ht2 (min_le_right _ _)
+  have hbnd'' : ((Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 2 : ℝ)
+      < ((Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 1 : ℝ)
+        - ((Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 0 : ℝ) + 1 := by
+    rw [h0, h1, h2]; exact hbnd
+  -- threshold transfer: c' < ½·minAdm (redChain t M) ≤ ½·minAdm M''
+  have hle : minAdm (redChain t M)
+      ≤ minAdm (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) :=
+    minAdm_redChain_le_consFront M t hb
+  have hc'' : (c' : ℝ)
+      < (minAdm (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) : ℝ) / 2 := by
+    have : (minAdm (redChain t M) : ℝ)
+        ≤ (minAdm (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) : ℝ) := by exact_mod_cast hle
+    linarith
+  have hFC := frontCollapse_wide_bounded_lt_top
+    (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) hwide hbnd'' hIH c' hc''
+  exact tailChain_consFront M t ▸ hFC
+
+/-! ## The pivot-energy zero locus is null (the a.e.-`W > 0` restriction)
+
+For a fixed nonzero tail product `QT`, the front-Gram zero locus `{F | frobSq (rmatMul F QT) = 0}` is
+Lebesgue-null: `frobSq = 0` forces the `(0, j₀)`-entry (a nonzero polynomial in `F`, `QT`'s column `j₀`
+nonzero) to vanish, and a nonzero polynomial's zero set is null (`ae_matrix_eval_ne_zero`). -/
+
+/-- **Column-reindex of the raw product.** `rmatMul (fun I m => F I (e m)) QT = rmatMul F (QT.submatrix
+e.symm id)` — a column permutation of the front `F` is a row permutation of the tail `QT`. -/
+theorem rmatMul_colReindex {t n q : ℕ} (e : Fin n ≃ Fin n) (F : Fin t → Fin n → ℝ)
+    (QT : Matrix (Fin n) (Fin q) ℝ) :
+    rmatMul (fun I m => F I (e m)) QT = rmatMul F (QT.submatrix e.symm id) := by
+  funext I j
+  simp only [rmatMul, Matrix.submatrix_apply, id_eq]
+  rw [← Equiv.sum_comp e (fun m => F I m * QT (e.symm m) j)]
+  exact Finset.sum_congr rfl (fun m _ => by rw [Equiv.symm_apply_apply])
+
+/-- **The front-Gram zero locus is null** (fixed nonzero tail `QT`, `t ≥ 1`). `frobSq (rmatMul F QT) = 0`
+forces `(rmatMul F QT) 0 j₀ = 0`, a nonzero polynomial in `F` (`QT`'s column `j₀ ≠ 0`); its zero set is
+Lebesgue-null by `ae_matrix_eval_ne_zero`. -/
+theorem ae_frobSq_rmatMul_ne_zero {t n q : ℕ} (ht : 1 ≤ t) (QT : Matrix (Fin n) (Fin q) ℝ)
+    (hQT : QT ≠ 0) :
+    ∀ᵐ F : Fin t → Fin n → ℝ, frobSq (rmatMul F QT) ≠ 0 := by
+  classical
+  obtain ⟨t', rfl⟩ : ∃ t', t = t' + 1 := ⟨t - 1, by omega⟩
+  -- pick a nonzero column `j₀` of `QT`.
+  obtain ⟨k₀, j₀, hkj⟩ : ∃ k j, QT k j ≠ 0 := by
+    by_contra h
+    apply hQT
+    ext k j
+    by_contra hkj
+    exact h ⟨k, j, hkj⟩
+  -- the `(0, j₀)`-entry polynomial `P = ∑ k, X(0,k)·C(QT k j₀)`.
+  set P : MvPolynomial (Fin (t' + 1) × Fin n) ℝ :=
+    ∑ k, MvPolynomial.X ((0 : Fin (t' + 1)), k) * MvPolynomial.C (QT k j₀) with hP
+  have hencode : ∀ F : Fin (t' + 1) → Fin n → ℝ,
+      MvPolynomial.eval (fun ij : Fin (t' + 1) × Fin n => F ij.1 ij.2) P
+        = rmatMul F QT (0 : Fin (t' + 1)) j₀ := by
+    intro F
+    rw [hP, map_sum]
+    simp only [map_mul, MvPolynomial.eval_X, MvPolynomial.eval_C, rmatMul]
+  have hPne : P ≠ 0 := by
+    intro h0
+    have hev := hencode (fun _ k => if k = k₀ then (1 : ℝ) else 0)
+    rw [h0, map_zero] at hev
+    have hval : rmatMul (fun _ k => if k = k₀ then (1 : ℝ) else 0) QT (0 : Fin (t' + 1)) j₀
+        = QT k₀ j₀ := by
+      simp only [rmatMul]
+      rw [Finset.sum_eq_single k₀ (fun k _ hk => by rw [if_neg hk, zero_mul])
+        (fun h => absurd (Finset.mem_univ k₀) h), if_pos rfl, one_mul]
+    rw [hval] at hev
+    exact hkj hev.symm
+  filter_upwards [ae_matrix_eval_ne_zero P hPne] with F hF
+  rw [hencode] at hF
+  intro hz
+  apply hF
+  -- frobSq = 0 ⟹ the (0,j₀) entry is 0.
+  rw [frobSq, Finset.sum_eq_zero_iff_of_nonneg
+    (fun i _ => Finset.sum_nonneg (fun j _ => sq_nonneg _))] at hz
+  have h2 := hz (0 : Fin (t' + 1)) (Finset.mem_univ _)
+  rw [Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg (rmatMul F QT 0 j))] at h2
+  exact pow_eq_zero_iff (two_ne_zero) |>.mp (h2 j₀ (Finset.mem_univ _))
+
 /-- **The b=1, a<u, bounded-w arm of the front-collapse dispatch.** For a `≥ 3`-width chain `M` with a
 legal pivot cut `1 ≤ t ≤ min(M₀,M₁)` on the corank-one edge (`M₁ − t = 1`), in the `a < u` regime
 (`M₀ − t < t`) and bounded-density regime (`M₂ < M₁ − t + 1`, i.e. `M₂ ≤ M₁ − t`), GIVEN the plain
@@ -278,9 +431,37 @@ theorem frontCollapse_edge_b1_altu_bounded {L : ℕ} (M : Fin (L + 1 + 1 + 1) �
   --       restrict to co-null {W>0}. ALL pieces banked + verified present.
   --   • α-HIGH (c' ≥ ½·minAdm(redChain t M)) — the a/2 corank charge is needed = the heart's rank-1 (b=1)
   --       joint (Δ,C,Z) FreeBilinear leaf → hIH at c'−a/2, HELD (gated on the heart, jointpnp).
-  -- The α-LOW clean branch is a ~150-200 LoC assembly (all machinery located); its one wire-up subtlety is
-  -- the reindex→wingFrontBox membership under general κ (the blockSplitEquiv column-permutation relates
-  -- outerPB's IsUnit-P to wingFrontBox's first-t block; pivotChart vs wingFrontBox). Building it next.
+  -- ── α-LOW build state (tide `d1altu-full`) ─────────────────────────────────────────────────────
+  -- BANKED green helpers in this file (all axiom-clean, reusable):
+  --   • `edge_frontCollapse_consFront_lt_top` — the α-LOW TARGET: charge transfer (via
+  --     `minAdm_redChain_le_consFront`) + `frontCollapse_wide_bounded_lt_top` for the keep-M₁ chain
+  --     `M'' = Fin.cons t (tailChain M)`, giving `∫_{F∈wingFrontBox M''} ∫_{A'} frobSq(F·prod A')^{−c'} < ⊤`.
+  --   • `ae_frobSq_rmatMul_ne_zero` — the {W=0}-null: for `QT ≠ 0`, `{F | frobSq(rmatMul F QT)=0}` is
+  --     Lebesgue-null (via `ae_matrix_eval_ne_zero` on the (0,j₀)-entry polynomial).
+  --   • `rmatMul_colReindex` — front column-perm = tail row-perm (the algebra of the reindex/h-invariance).
+  --   • `frontStdEquivM` (+ `measurePreserving_frontStdEquivM`, `frontStdEquivM_apply`) — the standard
+  --     front measure-equiv `(P,B₁₂) ≃ᵐ (Fin t → Fin M₁ → ℝ)`, pb ↦ [P|B₁₂] in STANDARD order.
+  --   • `volume_shearbox_eq` — `vol(shearbox x) = vol(genBox)` (C-free, translation-invariant).
+  -- REMAINING α-LOW plumbing (route fully resolved on paper; the residual is Lean cast-plumbing):
+  --   STEP 1 (drop-corank): outerDom_lintegral_prod (split x=(pb,C)) + freedSchurLoss_inner_bounded_le
+  --     (needs 0<W, a.e. by the {W=0}-null via `frontStdEquivM` MP + `ae_frobSq_rmatMul_ne_zero`, with a
+  --     by_cases on Q=0 for the degenerate all-zero tail) + `volume_shearbox_eq` ⟹
+  --     (TGT) ≤ (vol Cbox · vol genBox) · ∫_{A'} ∫_{pb∈outerPB} ofReal(W^{−c'}), W via
+  --     `pivotEnergy_inverse_free` + `pivotEnergy_reindex_rmatMul`.
+  --   STEP 2 (reindex to FC): `frontStdEquivM` CoV (outerPB ↔ wingFrontBox M'') + Tonelli + the h-column-
+  --     perm-invariance (frontFactor_split + `rmatMul_colReindex` + a matBox row-reindex CoV) ⟹
+  --     ∫_{A'}∫_{pb} ofReal(W^{−c'}) = `edge_frontCollapse_consFront_lt_top`'s integral < ⊤.
+  --   WALL (reported, not faked): STEP 2's `frontStdEquivM ⁻¹' (wingFrontBox (Fin.cons t (tailChain M)))
+  --     = outerPB` — the IsUnit(leadingBlock M'')↔IsUnit P direction — walls on the OPAQUE-WIDTH defeq
+  --     `Fin ((Fin.cons t ·) 1) ≡ Fin (M 1)` (and `Fin (min (M''0)(M''1))`): the value-level index
+  --     equalities (`hY`/`hX`) prove, but `rw`/`simp` cannot bridge the two syntactically-distinct-but-defeq
+  --     width types for the cast-indexed `(frontStdEquiv).symm (castLE …)` in `leadingBlock`. This is the
+  --     documented `Fin.cons`/`min` opaque-width friction (lean/CLAUDE.md). Needs either a value-transported
+  --     `leadingBlock`-membership bridge or restating `edge_frontCollapse_consFront_lt_top` over a
+  --     syntactic `Fin t → Fin (M 1)` front box.
+  --   • α-HIGH (c' ≥ ½·minAdm(redChain t M)) — the a/2 corank charge = the heart's rank-1 (b=1) joint
+  --     (Δ,C,Z) FreeBilinear leaf → hIH at c'−a/2, HELD (gated on the heart, jointpnp). NOT attempted.
   sorry
 
 end DLNFibre.DLN.RLCT
+
