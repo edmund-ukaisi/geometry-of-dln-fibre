@@ -74,6 +74,7 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   Declaring a banked lemma absent risks a wasted rebuild. Verify-before-building cuts both ways: the same
   discipline that catches a genuine phantom (`Real.log_le_rpow`, truly absent at this pin → use `Real.log_rpow`
   + `Real.log_le_sub_one_of_pos`) must not mistake a REAL lemma for a phantom via a name typo.
+- **Composed matrix expressions with an inverse hit a DecidableEq/Inv instance diamond that blocks `rw`/`linarith` matching.** E.g. the transverse projector `1 − Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b` (`Ring.inverse`/`⁻¹` carries a `DecidableEq`/`Invertible` instance that doesn't defeq-match the one in your facts). `set … with h` + `clear_value` does NOT fix it. **Working pattern: `generalize` the composite to a fresh atomic variable across the goal AND all hypotheses at once** — then the matching fires on the atom. Found building the R1 Frobenius-split (RouteMSJInteriorR1) 2026-07-17; recurs in any proof manipulating a projector/Schur-complement built from `(·)⁻¹`.
 - **`Basis` is `Module.Basis` at the v4.29 pin.** Bare `Basis` is unknown even with full Mathlib imports;
   ascribe `Module.Basis (Fin _) ℝ _` (e.g. from `Pi.basisFun`). Dot-notation (`b.tensorProduct b'`) is
   unaffected. Likely to recur in any `Matrix.rank` / column-span work.
