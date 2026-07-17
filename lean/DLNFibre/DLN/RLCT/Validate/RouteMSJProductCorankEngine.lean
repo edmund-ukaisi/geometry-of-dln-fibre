@@ -219,6 +219,16 @@ which is `P,B₁₂`-INDEPENDENT — so the `(P,B₁₂)` integral is a bounded 
 (This obviates a separate pivot-Gram `(P,B₁₂)→Wishart` CoV; `RouteMSJPivotWishart` stays banked as the
 narrow-regime fallback.)
 
+**★ GUARD against over-reading (the clean SHAPE is NOT tractability).** The Gram identity collapses the
+COUPLING/shape (pivot×corank → `det(QQᵀ)^{−a/2}`); it does NOT dissolve the wall. The 200-sample numeric
+verifies the IDENTITY (generic full-rank `Q`); it does NOT probe the `∫`'s CONVERGENCE at the rank-drop
+`{rank Q < t+b}`, where the non-submersive product-corank difficulty lives. `∫_{A'} det(QQᵀ)^{−a/2}` with
+`Q = prod(tailChain M) A'` (a deeper PRODUCT) is EXACTLY the object four decorrelated lines called the wall
+(prodcorank Gröbner, decstep GAP-IN-RELATIVE-JACOBIAN, l2svd §9, Aoyagi future-work): the `L·R` divisor
+`{det L = 0}` lowers the threshold below the free-matrix `q−(t+b)+1`. So this is a HELD hypothesis in a
+simpler FORM, NOT a re-derivation — do not declare it native/tractable until the decorrelated make-or-break
+(obl2form) confirms the `∫` converges below `c*` for the non-submersive product.
+
 **Why it is a WALL, not transcription (l2svd cert §9, prodcorank-cert, decstep round-5 —
 `GAP-IN-RELATIVE-JACOBIAN`).** `det(QQᵀ)^{−a/2}` has the SHAPE of the banked FREE-matrix Wishart
 `detGram_lintegral_lt_top`/`qbox` (finite iff `a < q − (t+b) + 1`, submersive), but `Q(A')` is a
