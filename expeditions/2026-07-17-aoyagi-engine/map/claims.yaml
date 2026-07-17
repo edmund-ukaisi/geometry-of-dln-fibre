@@ -39,7 +39,8 @@ nodes:
   - id: engine-route
     kind: route
     title: "transform-only Aoyagi engine: reduce → tree → coverage → thresholds"
-    status: proposed
+    lean: engine_box_threshold_finite
+    status: adopted
     tier: new
     owner: controller
     landmark: true
@@ -53,7 +54,7 @@ nodes:
       - {type: needs, to: region-glue}
       - {type: discharges, to: hbox-root}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/architecture-cert.md]
-    notes: "adoption gate = council(done, 2x ADOPT) + architect skeleton + battery + DecoratedDescent disposition (witness-or-tombstone, fork 6)"
+    notes: "ADOPTED 2026-07-17: council 2x ADOPT + skeleton elaborates (fit example vs _gen) + battery 12-green + fork-6 TOMBSTONE (decorated-descent-route superseded)"
 
   - id: naked-weight-route
     kind: route
@@ -66,6 +67,17 @@ nodes:
       - {type: forwarded-to, to: engine-route}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/architecture-cert.md]
     notes: "false on legal cuts, not merely hard; the zero-slack lesson's anchor"
+
+  - id: decorated-descent-route
+    kind: route
+    title: "SUPERSEDED: the predecessor's conditional decorated route to hbox"
+    status: superseded
+    tier: new
+    owner: "parked: tombstoned at adoption (fork 6); trail only"
+    edges:
+      - {type: forwarded-to, to: engine-route}
+    evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedRec.lean]
+    notes: "witnessing DecoratedDescent would re-import the refuted decorated-peel object (architect fit report); tombstoned in the Lean docstring; one live spine per fork"
 
   - id: resolution-tree
     kind: notion

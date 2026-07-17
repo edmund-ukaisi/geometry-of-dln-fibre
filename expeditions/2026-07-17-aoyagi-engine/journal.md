@@ -61,3 +61,16 @@ blow-up; and a correction WITH TEETH to the week-one reproduction: its T-C "non-
 too strong — Case-2 t=0 exponents TIE minAdm on three small chains, so Case-2 divisors must stay
 in coverage's candidate set. Two more batteries promoted (12 total, all correct, verified by my
 own runs). Hunt (t03) running; architect still owes the constraint increment (18–21).
+
+## 2026-07-17 ROUTE ADOPTED + FORK 6 CLOSED (tick 7)
+Architect constraint increment merged (@27959cba7): typed-sharing flatten=type-error stated in the
+carrier docstring; the Layer-B fence added — and it CAUGHT ITS OWN AUTHOR (the first-cut
+reduction_layer was an integral bound, off-contract; reshaped structural); region_glue assembly-
+only; driver cone acyclic; MinAdmMono avoided. DecoratedDescent fit report: near-fit-with-delta
+tending MISMATCH — witnessing costs a tree→adm bridge that re-imports the refuted decorated-peel
+object. Fork 6 closed by the council's pre-agreed rule: TOMBSTONE — docstring tombstone on
+routeMBoxThresholdFinite_of_decoratedDescent + map node decorated-descent-route (superseded,
+forwarded to engine-route). ENGINE-ROUTE → ADOPTED (council 2×ADOPT + skeleton fit example +
+battery 12-green + disposition). C9 warnings correctly track that the six consumed nodes await
+carrier validation before stated — the reviewer's job, spawning now. Gate build 2 (reshaped
+driver) backgrounded.

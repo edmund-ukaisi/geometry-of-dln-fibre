@@ -213,6 +213,11 @@ decorated contract, `RouteMBoxThresholdFinite M` holds for every width vector `M
 `(□)` chain off the dead plain `routeMBoxThresholdFinite_of_decoratedPeel` (whose `DecoratedPeelStep`
 antecedent is unprovable, Q2) onto the decorated recursion. Mechanical — the analytic content is entirely
 in `DecoratedDescent`. -/
+/-- **TOMBSTONE (2026-07-17, expedition aoyagi-engine, fork-6 disposition).** SUPERSEDED as the
+live hbox discharger by `DLNFibre.DLN.RLCT.Engine.engine_box_threshold_finite` (the transform-only
+Aoyagi engine). Witnessing `DecoratedDescent` from the engine's tree would re-import the refuted
+decorated-peel object (architect fit report, near-fit-with-delta→mismatch). Kept for the trail;
+do NOT build toward `DecoratedDescent` — one live spine per fork (P6). -/
 theorem routeMBoxThresholdFinite_of_decoratedDescent (h : DecoratedDescent) :
     ∀ (n : ℕ) (M : Fin (n + 1) → ℕ), RouteMBoxThresholdFinite M := by
   obtain ⟨adm, htriv, hstep, hbase⟩ := h
