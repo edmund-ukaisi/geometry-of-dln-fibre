@@ -125,9 +125,18 @@ the decorated/weighted box at u≥3 — the discharge picks which, at assembly. 
       (hframe : <the Brick-F frame data for deeperFlagZdeep M (t+j) + the a.e.-positivity clauses>) :
       EDGEREDUCED M (t+j) κ ε c' < ⊤
 
-where `EDGEREDUCED M u κ ε c' := ofReal(C_a · 2^a · 2^{a·u}) · ∫_{p ∈ paramsBoxM (redChain u M) 1 ×ˢ matBox
-(M₁−u) M₂ 1} |v'_{j₀}(p)|^{−a} · ∫_{pb ∈ outerPB} frobSq(P·Q̃ₚ(pb,p))^{a/2−c'}` (edgefub's collapsed leaf
-output; `C_a = scaledRadialEuclid` const; `Q̃ₚ`,`v'` from `hsQ M u (deeperFlagZdeep M u)`).
+where **`EDGEREDUCED M u c'` is edgefub's PER-CELL form (NO κ, ε — corrected; κ/ε are consumed upstream in
+`shellSpine_le_coupledBox` → the per-cell `coupledBoxIntegrand M u c' p`):**
+
+    EDGEREDUCED M u c' := ofReal(C_a · 2^a · 2^{a·u}) ·
+      ∫_{p ∈ paramsBoxM (redChain u M) 1 ×ˢ matBox (M₁−u) M₂ 1} |v'_{j₀}(p)|^{−a} ·
+        ∫_{pb ∈ outerPB u (M₁−u) 1} frobSq(P · Q̃ₚ(pb,p)) ^ (a/2 − c')
+
+`v'(p) = Q_inl(p)·ω(p)`, `ω(p) = q_b(p)/‖q_b(p)‖`, `Q_inl/q_b` from `hsQ M u (deeperFlagZdeep M u) p.1 p.2`,
+`j₀` the measurable selector (`exists_measurable_nonzero_index`); `C_a = scaledRadialEuclid` const. **LOCK
+to edgefub's verbatim half-A Lean def when it lands** (edgefub OWNS the `EDGEREDUCED` def — I target it).
+[The earlier `EDGEREDUCED M u κ ε c'` was shell-spine-level, one level too high; the per-cell form is what
+`GenericCellFinite`/`h_edge_b1` needs.]
 
 **Both sector hyps at the SAME shifted exponent `c'−a/2`** (b=1 ⟹ peelCharge = a·b = a ⟹ shift = a/2; both
 sectors codim a — the corank-one tie), and **both reach for `c'<½minAdm M`** via cut-soundness (verified
@@ -142,9 +151,13 @@ tie-log δ-folded (`one_add_log_inv_le_rpow`, banked, via the strict headroom). 
 (decstep's crux) lives INSIDE proving `boxFinite` (the discharge), NOT in hFrontReduce** — so edgefub's
 half-B (which consumes `h_u`,`h_u1` abstractly) is fully off that wall.
 
-**Composition (edgefub):** `edge_coupledBox_lt_top = coupledInner_slice_le` (leaf: `coupledBox ≤ const · EDGEREDUCED`)
-`∘ hFrontReduce` (this: `EDGEREDUCED < ⊤` from `h_u`,`h_u1`). The two `boxFinite` hyps are discharged at
-ASSEMBLY (decstep): u≤2 → plain RMBTF; u≥3-inheritors → the decorated/weighted box. Route-agnostic here.
+**Composition + OWNERSHIP (corrected):** `edge_coupledBox_lt_top = cell-drop ∘ coupledInner_slice_le` (edgefub's
+half-A leaf) `∘ hFrontReduce`. **I DESIGN hFrontReduce (the two-sector reduction math — this §, pinned);
+edgefub BUILDS it in Lean (half-B), consuming this design + the abstract `boxFinite`** (I'm pen-and-paper,
+NO Lean — my earlier "I own/build" was a misstatement; per the controller's steer, edgefub builds the
+reduction). The two `boxFinite` hyps are discharged at ASSEMBLY (decstep): u≤2 → plain RMBTF; u≥3-inheritors
+→ the decorated/weighted box. Route-agnostic here. I'm available for the design details (the X·Y
+identification, the |v'|^{−a} a<u sphere, the tie-log δ-fold) as edgefub builds.
 
 ## Close
 
