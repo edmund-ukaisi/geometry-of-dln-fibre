@@ -82,7 +82,7 @@ nodes:
   - id: resolution-tree
     kind: notion
     title: "the pp.14-22 chart-tree datatype: monomials + divisibility chain + SHARING maps"
-    status: drafted
+    status: validated
     tier: new
     owner: architect
     landmark: true
@@ -96,12 +96,12 @@ nodes:
     prop: |
       Each branch case: an explicit unipotent CoV + blow-up substitution under which
       ideal = diag(b)·[E_J 0; 0 D_J]·(remaining product) is preserved with monomial Jacobian.
-    status: adjudicated
+    status: stated
     tier: established
     owner: "parked: statements at skeleton; tides after route adoption"
     edges:
       - {type: needs, to: resolution-tree}
-    notes: \"Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)\"
+    notes: "PROVED PROJECTION of the bundle. CAVEAT (rev r2): the Lean conjuncts are case FOOTPRINTS (divisor existence/support/level), not the ideal-preservation identity — that is the construction tide's burden"
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md, theory/aoyagi-2023-reproduction/aoyagi-2023-worked.tex]
 
   - id: monomialization-termination
@@ -109,7 +109,7 @@ nodes:
     title: "the recursion terminates at S=L+1 in a full monomial diagonal"
     lean: monomialization_terminates
     prop: "⟨∏ C⟩ = ⟨diag(b_1..b_{M(L+1)})⟩ at S=L+1; b_i a divisibility chain"
-    status: adjudicated
+    status: stated
     tier: established
     owner: "parked: transcription after adoption"
     edges:
@@ -124,7 +124,7 @@ nodes:
       The tree's chart images cover a box-neighborhood of the zero locus (non-deepest points
       via IH/domination), and the candidate set {M_{s,k}} is exhaustive: every exceptional
       divisor's ratio ≥ the tracked minimum. WITHOUT invoking rlct=c* (circularity guard).
-    status: adjudicated
+    status: stated
     tier: new
     owner: coverage-design
     landmark: true
@@ -139,11 +139,11 @@ nodes:
     prop: |
       ½·min{M_{s,k} : t̃=0} = ½·minAdm(M) via the closed-form minimization; matches the
       banked QIP family and Mval=codim arithmetic.
-    status: adjudicated
+    status: stated
     tier: new
     owner: "parked: survey-first; consume banked, never rebuild"
     landmark: true
-    notes: \"Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)\"
+    notes: "Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)"
     evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerSplit.lean, lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankRec.lean]
 
   - id: region-glue
@@ -151,12 +151,12 @@ nodes:
     title: "box covers + deepest-point/IH reduction glue chart-local reads to hbox"
     lean: region_glue
     prop: "finite subcover of the box; non-deepest points dominated via the arity IH"
-    status: adjudicated
+    status: stated
     tier: new
     owner: "parked: tools banked (S1Cover, RouteMCoverLemmas, null disposals)"
     evidence: [lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean]
     kill: battery/g-leaf-chain-separation.py
-    notes: "ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation"
+    notes: "STATED AS PLACEHOLDER SHAPE (rev r2 finding 2): the chart<->monomial-integrand CoV bridge is absent from the skeleton — expect signature refinement (added hypotheses) at its tide; the analytic sorry owns it. ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation"
 
   - id: reduction-layer
     kind: claim
@@ -165,10 +165,10 @@ nodes:
     prop: |
       Unit-triangular P1,P2 with P1(∏A)P2 = diag(C1, ∏C), C1 regular; RLCT split
       = regular prefactor + λ⟨∏C⟩; pivot regularity region-ized via co-null covers.
-    status: adjudicated
+    status: stated
     tier: established
     owner: "parked: transcription; banked shear/pivot analogues"
-    notes: \"Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)\"
+    notes: "Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)"
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
 
   - id: theorem4-localization

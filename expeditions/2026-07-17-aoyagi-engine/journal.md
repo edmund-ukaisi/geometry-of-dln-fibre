@@ -151,3 +151,16 @@ Placement clean (memo rule holding — no strays since the worktree-add fix). Ga
 has merged the repair into its worktree — round 2 in progress. Cadence: 40 canonical commits since
 genesis (offices not yet due at ~60); the navigator pass is planned as MANDATORY at the
 build-loop phase transition, which round-2 VALIDATE would trigger. Idle otherwise; re-sleeping.
+
+## 2026-07-17 CARRIER VALIDATED — EQUILIBRIUM REACHED (tick 15)
+Round 2: VALIDATE. Both round-1 criticals verified genuinely fixed (the reviewer re-ran its own
+counterexamples: junk leaf + bare leaf + incomparable-b all provably rejected; projections honest,
+sorryAx confined to the two holes). MY regression caught: the tick-13 raw-string map edit wrote
+literal \" into claims.yaml — map unparseable as merged; the pre-commit hook that would have
+caught it was never installed (worktree needs core.hooksPath). Fixed both; lesson banked. Acting
+on the verdict: resolution-tree → validated; the six obligations → stated (contract 7 satisfied),
+with honest caveats recorded: region-glue is a PLACEHOLDER SHAPE (the chart↔integrand CoV bridge
+is the analytic tide's, signature will change — rev finding 2); case-step conjuncts are FOOTPRINTS
+(ideal-preservation identity is the construction tide's — finding 3). Report-only residuals 2–4
+recorded in the map. Reviewer: equilibrium reached in 2 rounds — standing down. PHASE TRANSITION
+adjudication → BUILD LOOP: navigator pass (mandatory) convening before the first tide wave.

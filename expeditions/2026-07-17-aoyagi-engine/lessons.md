@@ -18,3 +18,7 @@ the trail is local):
 - A "coordinate-changed" hunt WITHOUT shear-exposing the product-vanishing conditions is as vacuous
   as a monomial hunt — the hunter must fix the instrument before trusting it (hunt-t03 caught the
   spec's false-pass and replaced grid sampling with an exact continuous-weight LP). (2026-07-17)
+- Python RAW strings keep backslashes: an rf"..." map edit wrote literal \" into claims.yaml,
+  breaking the parse — banked broken because the pre-commit hook was NOT installed in the worktree
+  (hooks need core.hooksPath per checkout). Hook now installed; validate after EVERY map edit.
+  Caught by the reviewer, not by me. (2026-07-17)
