@@ -307,3 +307,117 @@ provably droppable; the Aoyagi monument is untouched. Concentrate the build + so
 Files (round 2): `codex/selfsim-{prompt,answer}.md`, `selfsim-run.log` (decorrelated, `SELF-SIMILAR-BOUNDED`);
 `T_{k,r}` min `= minAdm` and the Wishart-gate recursion scan recomputed + verified inline (`n=3..15`
 square; 71 gate-recurse chains ≤ width 8).
+
+---
+
+# ADDENDUM (round 3, 2026-07-17) — the LAST design gate: pin the c≥2 flag-γ' preservation to bedrock
+
+**Question (controller):** pin the c≥2 flag-γ' preservation to Lean-friendly bedrock BEFORE the multi-tide
+formaliser sinks in — (1) does the peel map flag-γ'(M,d) → flag-γ'(redChain,d+c) with FaithfulSJAt β+γ'
+at every level? (2) is the coupling-drop at the MEASURE level (strengthened `gammaPrimeClause` d=c +
+R-blowup jac)? Coordinate with satred (D-cert §2/§3bis), fire decorrelated Codex.
+
+## ★★★ VERDICT: DECORATION-NECESSARY (4 decorrelated lines converge). Commission Route-Dec. The preservation is pinnable in STRUCTURE; ONE residual atom (the c≥2 joint-principalization) is the genuinely-new heart to pin before/at the tide.
+
+I first probed whether the D-cert's joint-rank-sector is a plain-IH shortcut that makes the decoration
+UNNECESSARY (Route-D). It is NOT — decorrelated red-team caught it, and the catch prevented a
+mis-commissioned plain-IH build:
+
+- **My Codex route consult** (`codex/route-{prompt,answer}.md`, xhigh, verdict withheld): **DECORATION-
+  NECESSARY.** Blowing up the corank tail `K` alone does NOT resolve the LOSS ideal — after `Q_b ~
+  diag(I_r,S)`, `‖Γ·Q_b‖² ~ ‖Γ₁‖² + ‖Γ₂·S‖²` leaves the JOINT incidence `Γ₂·S = 0`; the pulled-back loss
+  is not yet monomial×unit, and a full joint log-resolution has net exceptional powers `a_i − 2c·N_i` that
+  CAN be negative. "Standard determinantal Jacobian positivity … effectively packages the decorated
+  machinery into one analytic atom."
+- **satred's direct verification** (`decstep_c2.py`, resumed): **6804/7560 deep-corank `c≥2` cuts are
+  `a≥u`** ⟹ the c×c pivot-minor Gram `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` is CARRIED, not absorbed. `(4,4,4,4)@u=2`
+  (a=b=2, a≥u, hard 11>10) and `(5,5,5,5)@u=3` (a<u, hard 17>13) both carry. satred **corrected D-cert §4**:
+  its "plain arity-IH, no carried corank decoration" was over-optimistic; the reduction TARGET is the
+  DECORATED `redChain u' M` box, not the plain box.
+- **The D-cert's own a≥u caveat** (§3bis): the a≥u residual charge accounting was already flagged "the
+  remaining verification", and edgered's "corank Gram at edge dims: `a<q−b+1` is `a<a` = FALSE" (the trap).
+- **q2gate Q2 + leaf1-soundness**: unweighted shell reaches only u≤2; u≥3 → decorated; the bare-determinant
+  extraction is unsound.
+
+So the DECORATION is necessary; the flag-γ' preservation is the right thing to pin (NOT moot). This is the
+same object as round-1's `GAP-AT-CORANK-2` and round-2's `≥2×2` gap — now confirmed unavoidable.
+
+## 1. The preservation STRUCTURE (Lean-friendly, arity≠length) — pinned
+
+The one CORRECT half of D-cert §4 survives and is the key enabling insight: **arity ≠ length ⟹ the reduced
+chain `redChain u' M` has a FRESH deep tail (untouched).** So the decoration does NOT compound into the
+deep tail; it rides ONLY on the FRONT. Precisely, one peel of an admissible `D` of `M`:
+
+1. **Schur-weld** (banked, measure-preserving `chartInner_schurWeld_eq`): `freedSchurLoss = frobSq(P·Q̃ₚ) +
+   frobSq(C·Q̃ₚ + Γ·Q_b)`, `Γ` (c×c) free, `Q̃ₚ` the pivot-shifted tail (full row rank `u` generically).
+2. **Integrate the coupling block `C`** (C-transversality; banked for the resolved shape as
+   `gammaAtom_aniso_shifted_eq`): this INTEGRATES the coupling (it is NOT dropped), trading the corank
+   residual for `det(Q̃ₚQ̃ₚᵀ)^{−a/2} · (W + ‖M0⊥‖²)^{au/2 − c'}`, `M0⊥ = Γ·Q_b off rowspace(Q̃ₚ)`.
+3. The **PIVOT Gram** `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` (full rank `u`, safe) becomes the NEW front decoration on the
+   FRESH `redChain u' M`; the residual `‖M0⊥‖²` is the reduced carrier loss.
+4. The **decorated IH** on `redChain u' M` (fresh tail + front pivot-Gram decoration) closes it, disposing
+   the pivot Gram via the per-level `qbox_lintegral_lt_top` (D-cert §3bis: qbox is per-level; the
+   marginal-`q` cells fold into the reduced chain's own recursion).
+
+**Preservation invariant (β + γ') — the answer to Q1.** The peel maps `flag-γ'(M, d) → flag-γ'(redChain u'
+M, d + Δd)`, `Δd` = the exceptional coords of the pivot-Gram R-blowup (a c×c SVD ⟹ up to `c` new coords):
+- **β**: the accumulated front-monomial RLCT ≥ ½·minAdm at every level. Budget: `peelCharge(u')/2 +
+  ½·minAdm(redChain u' M) = ½·minAdm(M)` (exact-ℕ, verified n=3..15 + satred 0/4039). The pivot-Gram charge
+  is `qbox`'s `a < q − u + 1` — MARGINAL at the edge (`a = ρ−b+1`), folding into the reduced recursion.
+- **γ'**: the residual carrier `= Γ · (fresh tail product)`. Because the deep tail is UNTOUCHED, `Ztail =
+  prod(dropHead(redChain u' M))` is the genuine fresh product — the `gammaPrimeClause` tie holds. The
+  block-diagonality (this peel's Δd coords independent of the fresh tail's future coords) IS the FLAG
+  structure. So the flag-γ' is well-defined and preserved — **modulo the c≥2 atom (§2).**
+
+**Answer to Q2 (a load-bearing CORRECTION to the design):** the coupling is **INTEGRATED** (C-transversality,
+measure-level via the banked `gammaAtom_aniso_shifted_eq`), NOT dropped; and the carried jac must encode the
+**PIVOT Gram `det(Q̃ₚQ̃ₚᵀ)`** (full rank `u`, safe, `qbox`-disposable) — **NOT the corank Gram
+`det(Q_bQ_bᵀ)`**, which is the **"atom trap"** (`RouteMSJDecorated` docstring; `a<q−b+1` is `a<a`=FALSE at
+edge dims — divergent on the rank-deficient locus). The controller's Q2 phrasing "R-blowup jac =
+det(Q_bQ_bᵀ)" is exactly the trap; the strengthened `gammaPrimeClause` must carry the pivot Gram (via
+`gammaAtom` + `qbox`), not the corank Gram. This distinction is bedrock — building the corank-Gram jac would
+reproduce the divergent route.
+
+## 2. The ONE residual design gap (the genuinely-new heart) — the c≥2 joint-principalization atom
+
+The preservation reduces to a SINGLE genuinely-new atom, the c≥2 analogue of the D-cert's PINNED corank-one
+C-transversality (§3):
+
+> **c≥2 relative joint-principalization of `(Q̃ₚ, Γ·Q_b)`.** After integrating `C`, the residual
+> `‖M0⊥‖² = ‖Γ·Q_b off rowspace(Q̃ₚ)‖²` still carries the c×c JOINT incidence (`Γ₂·S = 0` type, Codex Q1).
+> Resolve it into a monomial normal form whose pushforward is a finite sum of shifted PLAIN reduced-chain
+> integrals (`redChain u' M` at `c' − peelCharge(u')/2`), preserving β. For c=1 this is the FreeBilinear
+> leaf + σ-log + the C-non-degeneracy `C ↦ C·Q̃ₚ·η` surjective (D-cert §3, PINNED). For c≥2 it is the
+> determinantal rank-sector of the c×c incidence — DESIGNED at the structure level (D-cert §4 step 3) but
+> NOT atom-pinned.
+
+- **Status: buildable, detail-at-scale, NOT a monument** (D-cert §4 "Mathlib gap": rank-sector of a
+  determinantal variety + reusable radial/polar box lemmas). BOTH routes need it (Route-Dec to make the
+  decoration admissible; Route-D as the "relative joint-resolution atom" Codex named). So it is intrinsic to
+  the problem, not an artifact of the decorated framing.
+- **satred supplies** the per-corank `A_r` vector + the nested min-over-strata design (D-cert §2 rank-sector
+  feeding the flag-γ' nested resolution) when commissioned — the arithmetic (`min = minAdm`) is airtight;
+  the analytic atom is the c≥2 determinantal CoV + its Jacobian bookkeeping.
+- **The build's real risk concentrates here** (not in the outer recursion, which is mechanical): the c≥2
+  determinantal rank-sector CoV must (i) produce the c new exceptional coords with the right `(a_i, N_i)`,
+  (ii) keep the pushforward a finite sum of shifted PLAIN reduced-chain integrals (the fresh tail), (iii)
+  carry `|det J|` (never drop it — the tide-D KILL guard). This is where the soundness review must sit.
+
+## 3. Recommendation (the endgame-route decision)
+
+**Commission the DECORATED (Route-Dec) build for c≥2**, NOT the plain-IH joint-rank-sector (which
+undershoots on 6804/7560 deep-corank cuts — satred-verified). Before the multi-tide formaliser sinks in,
+**pin the c≥2 joint-principalization atom** as a focused design step (satred + this seat: extend the D-cert
+§3 corank-one C-transversality to the c×c rank-sector — the residual `‖M0⊥‖²` resolution). That is the LAST
+bedrock gap; the outer flag-γ' recursion, the β budget, the γ' fresh-tail tie, and the C-integration
+(`gammaAtom`) + pivot-Gram disposal (`qbox`) are pinned. Bake into the strengthened `gammaPrimeClause`: the
+PIVOT Gram (not corank Gram); `d = Δd` per-peel exceptional coords; the fresh-tail `Ztail` tie.
+
+**Fallback (if the c≥2 atom walls at build):** the uncoupled per-stratum `qbox`/Wishart (D-cert §3bis fold)
+— still native, with the `{rank Q_b < c}` strata driven by the reduced-chain recursion — is the minimal
+retreat; it is NOT a cited-Aoyagi step (the Aoyagi monument stays at `rlct = ½·codim`, one level up). So
+`(□)` remains native either way; the only open question is the analytic form of the c≥2 atom.
+
+Files (round 3): `codex/route-{prompt,answer}.md`, `route-run.log` (decorrelated, DECORATION-NECESSARY);
+satred D-cert §4bis correction (6804/7560 a≥u, `decstep_c2.py`); the preservation-structure + pivot-Gram
+correction + the c≥2 atom isolation recomputed/reconciled inline.
