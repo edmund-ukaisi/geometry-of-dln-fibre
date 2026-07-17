@@ -1,8 +1,8 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJOffSectorBPos
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDetMono
-import DLNFibre.DLN.RLCT.Validate.RouteMSJOrthoExtend
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramSqrt
-import Mathlib.Data.Matrix.ColumnRowPartitioned
+
+set_option linter.style.longLine false
 
 /-!
 # `RouteMSJPivotWishart` — the pivot top-stratum Gram disposal (Lane 2, obligation 1)
@@ -15,10 +15,10 @@ rank-drop strata are obligation 2 (`nonsubmersive_Ar_principalization`, the HELD
 ## What obligation 1 delivers
 
 After the coupling `C` is integrated out (`gammaAtom_aniso_shifted_eq`, banked), the freed integrand
-carries the **PIVOT Gram** `det(Q̃ₚ·Q̃ₚᵀ)^{−a/2}` where `Q̃ₚ = Q_p + P⁻¹·B₁₂·Q_b` is the pivot-shifted
+carries the **PIVOT Gram** `det(Qtₚ·Qtₚᵀ)^{−a/2}` where `Qtₚ = Q_p + P⁻¹·B₁₂·Q_b` is the pivot-shifted
 tail (`t × q`; `Q_b` `b × q` full row rank on the top stratum, `Q_p` `t × q`). Certificate §8 step 1
 (`B₁₂ ↦ B' := P⁻¹·B₁₂`, a linear CoV with bounded Jacobian `|det P|^b`) frees the pivot to
-`Q̃ₚ = Q_p + B'·Q_b`. This file discharges the resulting **free-`B'`** integral
+`Qtₚ = Q_p + B'·Q_b`. This file discharges the resulting **free-`B'`** integral
 
     ∫_{B' ∈ box} det((Q_p + B'·Q_b)·(Q_p + B'·Q_b)ᵀ)^{−a/2}  < ⊤   (gate `a < b − t + 1`),
 
@@ -27,25 +27,27 @@ which is the mathematical content of obligation 1. The outer `P`-integral is a b
 
 ## The route (l2svd cert §8), all banked pieces named
 
-The free-ification is a right-orthogonal compress of `Q_b`:
+The free-ification is a projection compress of `Q_b` onto its own row space:
 
-* **`pivotGram_compress`** — pick the right-singular frame of `Q_b` (via the Gram normaliser
-  `exists_gram_normalizer` on `Q_b·Q_bᵀ` PosDef + the orthogonal extension `exists_ortho_ext`): there is
-  an invertible `Ψ` (`b × b`, `= (Q_b·Q_bᵀ)^{1/2}`), a shift `R₁` (`t × b`) and a residual `R₂`
-  (`t × (q−b)`) with
-      `det((Q_p + B'·Q_b)·(Q_p + B'·Q_b)ᵀ) = det((R₁ + B'·Ψ)·(R₁ + B'·Ψ)ᵀ + R₂·R₂ᵀ)`   for all `B'`.
-  The compress is an ALGEBRAIC integrand rewrite (Gram-invariance under the orthogonal `V`,
-  `V·Vᵀ = 1`), NOT a measure CoV.
+* **`pivotGram_compress`** — via the Gram normaliser `exists_gram_normalizer` on `Q_b·Q_bᵀ` PosDef,
+  set `M := (Q_b·Q_bᵀ)^{−1/2}`, `col := Q_bᵀ·M` (orthonormal columns), `P := col·colᵀ` (the orthogonal
+  projection onto the row space of `Q_b`). There is an invertible `Ψ := Q_b·col` (`b × b`,
+  `= (Q_b·Q_bᵀ)^{1/2}`), a shift `R₁ := Q_p·col` (`t × b`) and a PSD residual
+  `C₀ := (Q_p·(1−P))·(Q_p·(1−P))ᵀ` (`t × t`) with
+      `det((Q_p + B'·Q_b)·(Q_p + B'·Q_b)ᵀ) = det((R₁ + B'·Ψ)·(R₁ + B'·Ψ)ᵀ + C₀)`   for all `B'`.
+  This is a pure ALGEBRAIC integrand rewrite (`Q_b·P = Q_b` + `col·colᵀ + (1−P) = 1`), NOT a measure
+  CoV — and it needs no orthogonal extension / column split.
 * **`affineShiftGram_box_lt_top`** — the free-Wishart endpoint: `∫ det((R₁ + B'·Ψ)(…)ᵀ + C₀)^{−a/2}`
   is finite for a PSD shift `C₀`, via the affine CoV `B' ↦ R₁ + B'·Ψ` (`lintegral_comp_rightMulₚ` +
-  translation), the Löwner PSD-shift domination `det(Y·Yᵀ + C₀) ≥ det(Y·Yᵀ)`
-  (`det_le_det_of_posSemidef_sub`, banked P1), the a.e. full-rank fact (`corank_survival_ae`, banked),
-  and the banked free-Wishart integral `detGram_lintegral_box_lt_top` at gate `a < b − t + 1`.
+  translation `lintegral_add_right_eq_self`), the Löwner PSD-shift domination
+  `det(Y·Yᵀ + C₀) ≥ det(Y·Yᵀ)` (`det_le_det_of_posSemidef_sub`, banked P1), the a.e. full-rank fact
+  (`corank_survival_ae`, banked), and the banked free-Wishart integral `detGram_lintegral_box_lt_top`
+  at gate `a < b − t + 1`.
 
 ## The DEAD routes honored (recon §DEAD)
 
-Carry the PIVOT Gram `det(Q̃ₚ·Q̃ₚᵀ)`, NEVER the corank Gram `det(Q_b·Q_bᵀ)` (atom trap). The PSD shift
-`C₀ = R₂·R₂ᵀ` only HELPS (`det(·+C₀) ≥ det(·)`); the Jacobian `|det Ψ|^{−t}` is carried, never dropped.
+Carry the PIVOT Gram `det(Qtₚ·Qtₚᵀ)`, NEVER the corank Gram `det(Q_b·Q_bᵀ)` (atom trap). The PSD shift
+`C₀` only HELPS (`det(·+C₀) ≥ det(·)`); the Jacobian `|det Ψ|^{−t}` is carried, never dropped.
 
 UNTRACKED / NOT wired into `DLNFibre.lean` or `AxCheck` — l2engine merges + wires it. Intended axiom
 footprint `[propext, Classical.choice, Quot.sound]`.
@@ -239,25 +241,100 @@ theorem affineShiftGram_box_lt_top {t b : ℕ}
 
 /-! ## The right-orthogonal compress (cert §8 step 2, the free-ification) -/
 
-/-- **The pivot-tail compress.** For `Q_b` (`b × q`) of full row rank (`Q_b·Q_bᵀ` PosDef, `b ≤ q`) and
-any `Q_p` (`t × q`), there is an invertible `Ψ` (`b × b`), a shift `R₁` (`t × b`) and a residual `R₂`
-(`t × (q−b)`) with, for every `B'` (`t × b`),
+/-- **The pivot-tail compress.** For `Q_b` (`b × q`) of full row rank (`Q_b·Q_bᵀ` PosDef) and any
+`Q_p` (`t × q`), there is an invertible `Ψ` (`b × b`), a shift `R₁` (`t × b`) and a PSD residual `C₀`
+(`t × t`) with, for every `B'` (`t × b`),
 
-    det((Q_p + B'·Q_b)·(Q_p + B'·Q_b)ᵀ) = det((R₁ + B'·Ψ)·(R₁ + B'·Ψ)ᵀ + R₂·R₂ᵀ).
+    det((Q_p + B'·Q_b)·(Q_p + B'·Q_b)ᵀ) = det((R₁ + B'·Ψ)·(R₁ + B'·Ψ)ᵀ + C₀).
 
-The right-singular frame `V` of `Q_b` (orthogonal, `Q_b·V = [Ψ | 0]`) rewrites the Gram by
-orthogonal-invariance (`V·Vᵀ = 1`); the pivot's image splits into the `Ψ`-active block `R₁ + B'·Ψ` and
-the constant residual `R₂`. -/
-theorem pivotGram_compress {t b q : ℕ} (hbq : b ≤ q)
+Let `M := (Q_b·Q_bᵀ)^{−1/2}` (Gram normaliser), `col := Q_bᵀ·M` (orthonormal columns `colᵀ·col = 1`),
+and `P := col·colᵀ` (the orthogonal projection onto the row space of `Q_b`, symmetric and idempotent).
+Take `Ψ := Q_b·col` (`= (Q_b·Q_bᵀ)^{1/2}`, invertible), `R₁ := Q_p·col`,
+`C₀ := (Q_p·(1−P))·(Q_p·(1−P))ᵀ`. Since `Q_b·P = Q_b` (the rows of `Q_b` sit in the projection's range),
+`Q_b·(1−P) = 0`, so the shift `Q_p·(1−P)·Q_pᵀ` sees only `Q_p`, and `col·colᵀ + (1−P) = 1` reassembles
+`(Q_p + B'·Q_b)·(Q_p + B'·Q_b)ᵀ` — no orthogonal extension / column split needed. -/
+theorem pivotGram_compress {t b q : ℕ}
     (Qp : Matrix (Fin t) (Fin q) ℝ) (Qb : Matrix (Fin b) (Fin q) ℝ)
     (hQb : (Qb * Qbᵀ).PosDef) :
     ∃ (Ψ : Matrix (Fin b) (Fin b) ℝ) (R₁ : Matrix (Fin t) (Fin b) ℝ)
-      (R₂ : Matrix (Fin t) (Fin (q - b)) ℝ),
-      Ψ.det ≠ 0 ∧
+      (C₀ : Matrix (Fin t) (Fin t) ℝ),
+      Ψ.det ≠ 0 ∧ C₀.PosSemidef ∧
       ∀ B' : Fin t → Fin b → ℝ,
         ((Qp + Matrix.of B' * Qb) * (Qp + Matrix.of B' * Qb)ᵀ).det
-          = ((R₁ + Matrix.of B' * Ψ) * (R₁ + Matrix.of B' * Ψ)ᵀ + R₂ * R₂ᵀ).det := by
-  sorry
+          = ((R₁ + Matrix.of B' * Ψ) * (R₁ + Matrix.of B' * Ψ)ᵀ + C₀).det := by
+  classical
+  obtain ⟨M, hMsymm, hMGM, hMdet, _⟩ := exists_gram_normalizer (Qb * Qbᵀ) hQb
+  have hMunit : IsUnit M.det := isUnit_iff_ne_zero.mpr hMdet
+  -- `M * (Qb Qbᵀ) * M = 1` (symmetric normaliser).
+  have hMGM' : M * (Qb * Qbᵀ) * M = 1 := by rw [hMsymm] at hMGM; exact hMGM
+  set col : Matrix (Fin q) (Fin b) ℝ := Qbᵀ * M with hcoldef
+  have hcolT : colᵀ = M * Qb := by
+    rw [hcoldef, Matrix.transpose_mul, Matrix.transpose_transpose, hMsymm]
+  -- `colᵀ * col = 1` (orthonormal columns).
+  have hcolortho : colᵀ * col = 1 := by
+    rw [hcolT, hcoldef, Matrix.mul_assoc, ← Matrix.mul_assoc Qb, ← Matrix.mul_assoc M, hMGM']
+  set P : Matrix (Fin q) (Fin q) ℝ := col * colᵀ with hPdef
+  have hPsymm : Pᵀ = P := by rw [hPdef, Matrix.transpose_mul, Matrix.transpose_transpose]
+  have hPidem : P * P = P := by
+    rw [hPdef, Matrix.mul_assoc, ← Matrix.mul_assoc colᵀ, hcolortho, Matrix.one_mul]
+  -- `G * M * M = 1`, hence `Qb * P = Qb`.
+  have hMGM'' : M * ((Qb * Qbᵀ) * M) = 1 := by rw [← Matrix.mul_assoc]; exact hMGM'
+  have hGM_rinv : M⁻¹ = (Qb * Qbᵀ) * M := Matrix.inv_eq_right_inv hMGM''
+  have hGMM : (Qb * Qbᵀ) * M * M = 1 := by rw [← hGM_rinv, Matrix.nonsing_inv_mul M hMunit]
+  have hQbP : Qb * P = Qb := by
+    rw [hPdef, hcolT, hcoldef]
+    calc Qb * (Qbᵀ * M * (M * Qb))
+        = (Qb * Qbᵀ) * M * M * Qb := by
+          simp only [Matrix.mul_assoc]
+      _ = Qb := by rw [hGMM, Matrix.one_mul]
+  set Ψ : Matrix (Fin b) (Fin b) ℝ := Qb * col with hΨdef
+  set R₁ : Matrix (Fin t) (Fin b) ℝ := Qp * col with hR₁def
+  set C₀ : Matrix (Fin t) (Fin t) ℝ := (Qp * (1 - P)) * (Qp * (1 - P))ᵀ with hC₀def
+  refine ⟨Ψ, R₁, C₀, ?_, posSemidef_mul_transpose _, ?_⟩
+  · -- `det Ψ ≠ 0`
+    have hΨeq : Ψ = (Qb * Qbᵀ) * M := by rw [hΨdef, hcoldef, Matrix.mul_assoc]
+    rw [hΨeq, Matrix.det_mul]
+    exact mul_ne_zero (ne_of_gt hQb.det_pos) hMdet
+  · -- the matrix identity (via `congrArg det`)
+    intro B'
+    refine congrArg Matrix.det ?_
+    set B : Matrix (Fin t) (Fin b) ℝ := Matrix.of B' with hBdef
+    set Qt : Matrix (Fin t) (Fin q) ℝ := Qp + B * Qb with hQtdef
+    -- `1 - P` symmetric idempotent; `Qb (1-P) = 0` and `(1-P) Qbᵀ = 0`.
+    have hsymm1P : (1 - P)ᵀ = 1 - P := by
+      rw [Matrix.transpose_sub, Matrix.transpose_one, hPsymm]
+    have hidem1P : (1 - P) * (1 - P) = 1 - P := by
+      have h : (1 - P) * (1 - P) = 1 - P - P + P * P := by
+        simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul]; abel
+      rw [h, hPidem]; abel
+    have hQb1P : Qb * (1 - P) = 0 := by
+      rw [Matrix.mul_sub, Matrix.mul_one, hQbP, sub_self]
+    have h1PQbT : (1 - P) * Qbᵀ = 0 := by
+      have h := congrArg Matrix.transpose hQb1P
+      rwa [Matrix.transpose_mul, hsymm1P, Matrix.transpose_zero] at h
+    -- `R₁ + B Ψ = Qt col`.
+    have hkey1 : R₁ + B * Ψ = Qt * col := by
+      rw [hR₁def, hΨdef, hQtdef, Matrix.add_mul, Matrix.mul_assoc B Qb col]
+    -- `(Qt col)(Qt col)ᵀ = Qt P Qtᵀ`.
+    have hkey2 : (Qt * col) * (Qt * col)ᵀ = Qt * P * Qtᵀ := by
+      rw [hPdef, Matrix.transpose_mul, ← Matrix.mul_assoc (Qt * col) colᵀ Qtᵀ,
+        Matrix.mul_assoc Qt col colᵀ]
+    -- `C₀ = Qt (1-P) Qtᵀ` (both sides `= Qp (1-P) Qpᵀ`).
+    have hCa : C₀ = Qp * (1 - P) * Qpᵀ := by
+      rw [hC₀def, Matrix.transpose_mul, hsymm1P,
+        ← Matrix.mul_assoc (Qp * (1 - P)) (1 - P) Qpᵀ, Matrix.mul_assoc Qp (1 - P) (1 - P),
+        hidem1P]
+    have hleft : Qt * (1 - P) = Qp * (1 - P) := by
+      rw [hQtdef, Matrix.add_mul, Matrix.mul_assoc B Qb (1 - P), hQb1P, Matrix.mul_zero, add_zero]
+    have hCb : Qt * (1 - P) * Qtᵀ = Qp * (1 - P) * Qpᵀ := by
+      rw [hQtdef, Matrix.transpose_add, Matrix.transpose_mul, ← hQtdef, hleft,
+        Matrix.mul_add, Matrix.mul_assoc Qp (1 - P) (Qbᵀ * Bᵀ),
+        ← Matrix.mul_assoc (1 - P) Qbᵀ Bᵀ, h1PQbT, Matrix.zero_mul, Matrix.mul_zero, add_zero]
+    have hkey3 : C₀ = Qt * (1 - P) * Qtᵀ := hCa.trans hCb.symm
+    -- assemble: `Qt Qtᵀ = Qt P Qtᵀ + Qt (1-P) Qtᵀ`.
+    have hsplit : Qt * Qtᵀ = Qt * P * Qtᵀ + Qt * (1 - P) * Qtᵀ := by
+      rw [← Matrix.add_mul, ← Matrix.mul_add, show P + (1 - P) = 1 from by abel, Matrix.mul_one]
+    rw [hkey1, hkey2, hkey3]; exact hsplit
 
 /-! ## Obligation 1 — the free-`B'` pivot-Gram disposal -/
 
@@ -270,23 +347,22 @@ rank (`Q_b·Q_bᵀ` PosDef, `b ≤ q`), any `Q_p` (`t × q`), and the convergent
 Combine the compress (`pivotGram_compress`) with the affine endpoint (`affineShiftGram_box_lt_top`,
 `C₀ := R₂·R₂ᵀ` PSD). This is the mathematical content of obligation 1 (l2svd cert §8); the outer
 `P`-integral is a bounded-factor wrapper l2engine adds when wiring. -/
-theorem pivotGram_freeShift_lt_top {t b q : ℕ} (hbq : b ≤ q)
+theorem pivotGram_freeShift_lt_top {t b q : ℕ}
     (Qp : Matrix (Fin t) (Fin q) ℝ) (Qb : Matrix (Fin b) (Fin q) ℝ)
     (hQb : (Qb * Qbᵀ).PosDef)
     {a : ℝ} (ha : 0 ≤ a) (hgate : a < (b : ℝ) - t + 1) :
     (∫⁻ B' in matBox t b 1,
         ENNReal.ofReal
           (((Qp + Matrix.of B' * Qb) * (Qp + Matrix.of B' * Qb)ᵀ).det ^ (-a / 2))) < ⊤ := by
-  obtain ⟨Ψ, R₁, R₂, hΨ, hcompress⟩ := pivotGram_compress hbq Qp Qb hQb
-  have hC₀ : (R₂ * R₂ᵀ).PosSemidef := posSemidef_mul_transpose R₂
+  obtain ⟨Ψ, R₁, C₀, hΨ, hC₀, hcompress⟩ := pivotGram_compress Qp Qb hQb
   calc (∫⁻ B' in matBox t b 1,
           ENNReal.ofReal
             (((Qp + Matrix.of B' * Qb) * (Qp + Matrix.of B' * Qb)ᵀ).det ^ (-a / 2)))
       = ∫⁻ B' in matBox t b 1,
           ENNReal.ofReal
-            (((R₁ + Matrix.of B' * Ψ) * (R₁ + Matrix.of B' * Ψ)ᵀ + R₂ * R₂ᵀ).det ^ (-a / 2)) := by
+            (((R₁ + Matrix.of B' * Ψ) * (R₁ + Matrix.of B' * Ψ)ᵀ + C₀).det ^ (-a / 2)) := by
         refine setLIntegral_congr_fun (matBox_measurableSet t b 1) (fun B' _ => ?_)
         rw [hcompress B']
-    _ < ⊤ := affineShiftGram_box_lt_top ha hgate R₁ Ψ hΨ (R₂ * R₂ᵀ) hC₀
+    _ < ⊤ := affineShiftGram_box_lt_top ha hgate R₁ Ψ hΨ C₀ hC₀
 
 end DLNFibre.DLN.RLCT
