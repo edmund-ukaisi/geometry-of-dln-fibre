@@ -302,3 +302,17 @@ carrier data) — relayed to the architect immediately since it closes its last 
 ambiguity. Checklist +3 items (strike the false premise from all memos; verify the transport-aux
 cone; ledger-not-fderiv as data). Lesson banked: instance probes without import surveys are not
 evidence. Awaiting seat A's supplement for the final adjudication.
+
+## 2026-07-17 COUNCIL COMPLETE: Q5 = ROUTE (b), CORRECTED RECORD (tick 25)
+Both Q5 supplements convergent: route (b) — the banked local-homeomorph RLCT transport + the one
+homogeneity scaling-bridge lemma — adopted on CORRECTED merits after the fork's framing died on
+both sides (normed-Params banked in ParamsFlatLinear, controller-verified; the transport consumes
+fderiv). The real distinction was fresh-composer vs banked-reuse; reuse wins on survey-first,
+source-match, and the one-lemma P8 collapse. Carrier confirmed ROUTE-STABLE by both seats (Q4/Q5
+decoupled: edges carry localSub + the monomial ledger; analytics derived at region_glue). Load-
+bearing guards recorded: circularity (invariance only, never the cited equality — verify no path
+to cited_aoyagi_dln), no-laundering (transport hypotheses discharged not relocated), transport-aux
+cone verification, ledger-not-fderiv carrier data. Compass forks 7+8 written. Fresh-review brief =
+the union checklist (~15 items). Council seats stand down. Architect: full implementation brief
+now unambiguous — carrier per council spec, LeafJacobian as the transport-hypothesis form over
+flat coords, region_glue tide = transport + scaling bridge.

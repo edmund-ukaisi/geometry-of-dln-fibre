@@ -74,6 +74,27 @@ over banked substrate.
   Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation,
   g-chartscover-vacuity (old-shape kill), g-chart-bridge-pullback.
 
+## Settled forks (continued — council #2, carrier restructure, 2026-07-17)
+7. **Edge-labelled carrier** (council of two, convergent + architect's probe-backed witness).
+   WHY: the unary invariant provably cannot pin the paper's parent-referencing case-1(1) merge;
+   per-chart substitution is DATA no Prop supplies; leaf-terminating charts lose case labels.
+   bChain stays a TYPED FIELD (adjudicated). Spec: Edge{case, localSub, child}; StepRel relational;
+   ChartBridge = upstairs-open image cover + InjOn + LeafPullback + LeafJacobian; chartDom removed;
+   leaf chartMap = DERIVED fold; tStar attainment via an emitted path; lex termination for the
+   construction recursion.
+8. **Q5 route (b): banked-RLCT-transport + ONE scaling-bridge lemma** (both seats, corrected
+   merits). WHY: fresh-composer vs banked-reuse — the 0-sorry LOCAL-homeomorph transport
+   (rlctAtOn_boundedUnit_localHomeomorph) fits blow-up charts (proper, not globally injective);
+   the only new analytic lemma is ∫_{εK}F^(-c') = ε^(N−2Lc')∫_K with its homogeneity input banked;
+   one-sided ≤ suffices; source-match (Aoyagi reads the RLCT off the resolution — (b) IS her move).
+   RECORD CORRECTION carried: the original fork framing was FALSE on both sides (ParamsFlatLinear
+   banks the normed instances — controller-verified; and the transport CONSUMES fderiv). Both
+   routes go through flat coords; the choice was reuse-vs-rebuild. (a) stays a live fallback if
+   the review finds the transport-aux cone unclean or the chart hypotheses undischargeable.
+   GUARDS: circularity (the transport gives INVARIANCE only — no path may consume rlct=c* /
+   cited_aoyagi_dln); no-laundering (transport hypotheses DISCHARGED from the construction, never
+   relocated to fresh holes); edge data = the monomial ledger, never opaque derivative fields.
+
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
 - `engine-route` — founding route; its gate is the first live test of the harness.
