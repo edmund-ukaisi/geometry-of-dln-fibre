@@ -411,3 +411,11 @@ and the truth-signal rule if the real data can't satisfy the strengthened relati
 construction-tide gate. LESSON (pattern, 4th instance): the architect's self-reports overstate
 completion (AxCheck names, cosmetics-immediately, strike-done, three-vs-four modules) — every
 claim gets controller- or reviewer-verified before it counts.
+
+## 2026-07-17 REVIEWER ADDENDUM MERGED (tick 35)
+rev-carrier independently re-diffed the cosmetic commit (confirmed cosmetic-only), marked finding
+12 RESOLVED, and confirmed finding 9 (the line-96 false-premise strike) STILL OPEN — correctly
+distinguishing it from the g-chartscover re-scope note (a different item; already in the repair
+commission). Cert addendum merged (f5fb3f53c). Its r2 adversarial focus is right: (2b) ψ's inverse
+data actually constructible on the exceptional fibre vs pushed into a fresh hole; (3) the upgraded
+witness's attaining leaf has a LIVE srcBox, not just a strengthened StepRel. Standing by warm.
