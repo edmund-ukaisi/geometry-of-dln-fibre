@@ -253,3 +253,17 @@ arithmetic. Map: resolution-tree → drafted; the five statement-locked consumer
 (their statements change under the restructure); r2 VALIDATE marked superseded+incomplete in the
 node note. Architect: hold continues; now preparing BOTH candidate encodings + the necessity
 witness so the council adjudicates concrete designs. elder-rev1 stands down (two deliveries).
+
+## 2026-07-17 CROSSED MESSAGES RECONCILED; Q5 ADDED TO COUNCIL (tick 22)
+Architect's rung-0 probe surfaced three items (its message crossed the council convening).
+(1) SPEC BUG with a hard probe: Params M has no normed instance — cert §3's fderiv LeafJacobian
+does not type-check as written; the fix is a genuine route fork (flat-coord fderiv vs the RLCT
+route via banked weightedThreshold_transport + ONE scaling-bridge lemma; two independent Codex
+consults prefer the latter). ADDED to the council mandate as Q5 (couples to Q4). (2) The rebuilt
+224 witness is P8-blocked (real-chart proofs need unbanked lemmas) — RULED (precision): split into
+an honestly-renamed arithmetic BANK piece (clean-three, four carrier-independent conjuncts) + the
+full ChartBridge witness as a @[blueprint] forecast pending P8; AxCheck entries to follow the
+split. (3) Vacuity closes at TYPE strength under the new fields (the fake atlas is
+unconstructible) — no extra witness needed. Architect redirected off the leaf-monolithic build
+(elder's P6 bar) onto the council-window tasks: the mixed-case necessity witness + both encoding
+sketches under both Q5 routes. Council deliberating with the addendum.
