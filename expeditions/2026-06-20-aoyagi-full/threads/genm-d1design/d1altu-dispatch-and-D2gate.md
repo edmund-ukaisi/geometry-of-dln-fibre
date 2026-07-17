@@ -80,12 +80,44 @@ Segre/Room-Kempf resolution, not the row-recursion), THEN monolithic (multi-tide
 single-matrix A₁ row-recursion (Gram-Schmidt) IS the standard resolution, and qbox already realizes it for the
 det_gram form. jointpnp's cross-check settles it.
 
+## GATE CONFIRMED — jointpnp decorrelated (exact symbolic), 2026-07-17
+
+**gate-YES, detail-at-scale — HARD-SETTLED.** jointpnp cross-checked decorrelated (exact symbolic) and
+confirmed the `{rank A₁=σ}` resolution is a PURE PRODUCT of row-projection radials; reuses
+`det_gram_cons`/qbox/projection_rpow, NO bespoke Segre/Kempf. Load-bearing exact facts verified:
+- `det(A₁A₁ᵀ) = ∏ₖ dist(rowₖ, span(rows<k))²` (checked 2×3, 3×3, 3×4) — pure product of per-row projection
+  radials, NO cross-terms (= det_gram_cons).
+- On the dominant-σ-row chart, `codim{rank A₁≤σ} = (M₁−σ)(M₂−σ) = Σ_{(M₁−σ) non-pivot rows} (M₂−σ)`; each
+  non-pivot row = ONE projection_rpow onto the (M₂−σ)-dim complement of the pivot span (converges iff
+  exponent `a < M₂−σ = finrank U⊥`). Threshold = codim/2. Reuses projection_rpow **verbatim**.
+- **σ=2 witness (my concrete cell, exact):** `det(A₁A₁ᵀ) = det(pivot 2×2 Gram)·ε²·‖n‖²`, ε = 3rd-row
+  projection onto the pivot-span complement — the rank-2 transverse is a SINGLE projection radial × bounded
+  pivot Gram, NOT a coupled monomial. The varying pivot-span is absorbed by **projection_rpow's UNIFORMITY**
+  (stated for finrank U ≥ r) — subspace-variation creates no cross-term. σ=1 = FreeBilinear, confirmed.
+
+So the full #2 Jacobian = [∏ (M₁−σ) row-projection radials] × [front X·U qbox] × [σ-core → hIH(redChain σ M)]
+— all banked, pure product. **ONE detail-at-scale tide** (finite dominant-σ-minor chart atlas + per-chart
+qbox + sum = N1–N5, reusing the harness's existing dominant-minor cover).
+
+### TWO LOAD-BEARING CAVEATS (jointpnp, keep beside the build)
+1. **PEEL-FIRST GUARD (the gate-NO exclusion is conditional).** The genuine gate-NO trigger — a PRODUCT Gram
+   `det((CZ)(CZ)ᵀ)^{−r/2}` (two coupled matrices) — is excluded ONLY because the front is full-rank ⟹ the
+   Gram is always SINGLE-matrix. gate-YES is **conditional on the build holding PEEL-FIRST**: if any step
+   integrates a corank block against a tail product FIRST, the Gram becomes coupled and it is back to the dead
+   nested-qbox. **Keep the residual-disposal (retain-γ) guard** — this is the standing kill-condition for #2.
+2. **N3 plumbing is a build call.** jointpnp confirmed the determinantal/Gram structure is a pure product
+   (the MATH discriminator); the exact Lean monomial-Jacobian identity (N3) coupling this to `‖X·A₁·Z‖²` is
+   the formaliser's plumbing — the math CAN close via qbox/projection_rpow; the wiring is the build's.
+
+Ref: jointpnp `scratch/l1_gate2_check.py` (its worktree; diff to re-home via controller).
+
 ## Close
 - **A (dispatch):** the definitive d1-a<u by_cases (hlow × hM2), CHARGE 0 for the drop-whole-corank, banked
   frontCollapse_wide_bounded (M₂≤b clean) + LOG (b+1) + #2 (≥b+2) + heart-rank-1 (α-high). d1altu builds ONE
   clean spec; clean-now = α-low ∧ M₂≤b (924); sorries precisely scoped (#2-gated, heart-rank-1-gated).
-- **B (gate):** gate-YES, DETAIL-AT-SCALE — the wing rank-σ = qbox row-recursion + projection_rpow +
-  FreeBilinear per-stratum; NO monolithic det-variety primitive. #2 = a tide. ASSESSED; jointpnp to cross-check.
-- **Next:** jointpnp cross-checks the row-recursion gate; then #2 is a single detail-at-scale tide.
+- **B (gate):** gate-YES, DETAIL-AT-SCALE — **CONFIRMED (jointpnp, exact symbolic)**: the wing rank-σ = qbox
+  row-recursion + projection_rpow + FreeBilinear per-stratum; NO monolithic det-variety primitive. #2 = a
+  single tide. Two caveats: PEEL-FIRST guard (gate-NO exclusion conditional) + N3 plumbing = build call.
+- **Next:** #2 is a single detail-at-scale tide, held to PEEL-FIRST. d1altu builds the dispatch.
 
 Files: `…/threads/genm-d1design/d1altu-dispatch-and-D2gate.md` (this); `scripts/{d1altu_dispatch,d2_charge_reconcile,d1_wing_stratum_rank}.py`; `d2-wingfront-pin.md`, `joint-coupled-spec.md`.
