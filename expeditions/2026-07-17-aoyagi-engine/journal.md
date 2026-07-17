@@ -164,3 +164,15 @@ is the analytic tide's, signature will change — rev finding 2); case-step conj
 (ideal-preservation identity is the construction tide's — finding 3). Report-only residuals 2–4
 recorded in the map. Reviewer: equilibrium reached in 2 rounds — standing down. PHASE TRANSITION
 adjudication → BUILD LOOP: navigator pass (mandatory) convening before the first tide wave.
+
+## 2026-07-17 NAVIGATOR PASS #1 INTEGRATED — BUILD LOOP OPENS (tick 16)
+Disposition accepted in full: priorities rewritten to the 2-hole build-loop shape (the bundle
+collapsed the 6-obligation fan-out; no 4-way tide exists). Its catches: the theorem4 shape-check
+had NO live owner (architect reaped before running it — reassigned as lane-1 rider); stale
+resolution-tree note contradicted validated (fixed); coverage must be a DISTINGUISHED sub-target
+inside the construction tide (never the buried last conjunct). Calibration ledger seeded (merged
+from --nav). Wave 1 dispatching: lane 1 = concrete CanonicalResolution witness + riders (architect
+seat revived on t01-r2); lane 2 = the CoV-bridge design (covdesign seat revived, new worktree).
+Wave 2 (construction tide + composer lane) gated on wave 1. Contract-fit warnings baked into both
+briefs (construction must not re-prove what the IH covers; glue tide must not start on the
+placeholder signature).

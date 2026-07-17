@@ -87,7 +87,7 @@ nodes:
     owner: architect
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "REVIEW ROUND 1 (VALIDATE-WITH-CHANGES): C1 leaf-chain NOT yet encoded (LeafData lacks bChain; junk leaves compile); C2 resolutionOf:=choose under-determines (obligations not dischargeable from the existence spec — junk-leaf witness). Repair round in flight; validation WITHHELD until C1+C2 land + re-review. Confirmed sound: bChain=Monotone IS the divisibility chain; support faithful"
+    notes: "VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition"
 
   - id: case-step-lemmas
     kind: claim
