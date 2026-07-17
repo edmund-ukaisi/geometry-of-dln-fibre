@@ -329,6 +329,57 @@ theorem edge_frontCollapse_consFront_lt_top {L : ℕ} (M : Fin (L + 1 + 1 + 1) �
     (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) hwide hbnd'' hIH c' hc''
   exact tailChain_consFront M t ▸ hFC
 
+/-- **The syntactic (`Fin t → Fin M₁`) clean front box** — the `wingFrontBox` of the keep-`M₁` chain
+`M'' = Fin.cons t (tailChain M)` restated over the syntactic widths `t`, `M₁` (min-free): all entries in
+`[−1,1]` and the leading `t×t` block (first `t` columns via `Fin.castLE htM1`) invertible. Its `IsUnit`
+condition is exactly the form `frontStd_leadingBlock` produces, so downstream `frontStdEquivM` membership
+is cast-free (avoids the `Fin (min (M''0)(M''1))` opaque-width friction of `leadingBlock`). -/
+def cleanFrontBox {t M₁ : ℕ} (htM1 : t ≤ M₁) : Set (Fin t → Fin M₁ → ℝ) :=
+  {F | (∀ i j, F i j ∈ Set.Icc (-1 : ℝ) 1)
+    ∧ IsUnit (Matrix.of (fun i j : Fin t => F i (Fin.castLE htM1 j)))}
+
+-- Heartbeats raised: the `Fin.cons` width defeqs (`M'' 0 ≡ t`, `M'' 1 ≡ M 1`) force `whnf` here.
+set_option maxHeartbeats 1600000 in
+/-- **`wingFrontBox (Fin.cons t (tailChain M)) = cleanFrontBox`** — the ONE controlled width-cast
+conversion (min-cast localized here). The box conditions match; the `IsUnit(leadingBlock M'')` block equals
+the `cleanFrontBox` leading block up to the `min (M''0)(M''1) = t` `finCongr` reindex
+(`Matrix.isUnit_submatrix_equiv`). Semantics-preserving: same `t×t` leading block, just min-free. -/
+theorem wingFrontBox_consFront_eq_cleanBox {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (htM1 : t ≤ M 1) :
+    wingFrontBox (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) = cleanFrontBox htM1 := by
+  have hM0 : (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 0 = t :=
+    Fin.cons_zero _ _
+  have hM1' : (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 1 = M 1 := by
+    rw [Fin.cons_one]; simp only [Fin.succ_zero_eq_one]
+  have hmin : min ((Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 0)
+      ((Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ) : Fin (L + 1 + 1 + 1) → ℕ) 1) = t := by
+    rw [hM0, hM1', min_eq_left htM1]
+  ext F
+  simp only [wingFrontBox, cleanFrontBox, Set.mem_setOf_eq]
+  refine and_congr Iff.rfl ?_
+  have hEq : Matrix.of (fun i j : Fin t => F i (Fin.castLE htM1 j))
+      = (leadingBlock (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) F).submatrix
+          (finCongr hmin.symm) (finCongr hmin.symm) := by
+    ext I J
+    simp only [Matrix.of_apply, Matrix.submatrix_apply, leadingBlock]
+    refine congr_arg₂ F ?_ ?_ <;>
+      (apply Fin.ext; simp only [Fin.val_castLE, finCongr_apply, Fin.val_cast])
+  exact hEq.symm ▸ (Matrix.isUnit_submatrix_equiv (finCongr hmin.symm) (finCongr hmin.symm)).symm
+
+/-- **The α-LOW target over the syntactic clean front box.** Restates
+`edge_frontCollapse_consFront_lt_top` over `cleanFrontBox` (min-free `Fin t → Fin M₁` front), via the ONE
+controlled conversion `wingFrontBox_consFront_eq_cleanBox`. -/
+theorem edge_frontCollapse_cleanBox_lt_top {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht2 : t ≤ min (M 0) (M 1)) (hbnd : (M 2 : ℝ) < (M 1 : ℝ) - t + 1) (hb : M 2 ≤ M 1 - t)
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (c' : NNReal) (hlow : (c' : ℝ) < (minAdm (redChain t M) : ℝ) / 2) :
+    (∫⁻ F in cleanFrontBox (show t ≤ M 1 from le_trans ht2 (min_le_right _ _)),
+        ∫⁻ A' in paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ) 1,
+          ENNReal.ofReal ((frobSq (rmatMul F
+            (prod (fun i : Fin (L + 1 + 1) => M i.succ) A'))) ^ (-(c' : ℝ)))) < ⊤ := by
+  rw [← wingFrontBox_consFront_eq_cleanBox M t (le_trans ht2 (min_le_right _ _))]
+  exact edge_frontCollapse_consFront_lt_top M t ht2 hbnd hb hIH c' hlow
+
 /-! ## The pivot-energy zero locus is null (the a.e.-`W > 0` restriction)
 
 For a fixed nonzero tail product `QT`, the front-Gram zero locus `{F | frobSq (rmatMul F QT) = 0}` is
