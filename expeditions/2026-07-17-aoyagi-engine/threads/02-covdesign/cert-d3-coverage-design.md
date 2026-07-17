@@ -130,3 +130,42 @@ is load-bearing not only for the value but for coverage's ≥-leg.** (Drafted as
   Finset DivVar`; then the `(2,2,1)`/`(3,3,4)` corank-2 charts to exercise the sharing transport; the
   covering-composition up the `(S,J)` tree is then the general-M `routeStep` read. **Before "establishing"
   coverage, run the D4 exhaustiveness hunt (cert-d4) as the gate.**
+
+---
+
+## ADDENDUM (2026-07-17) — two controller/architect additions, settled EXACT
+
+### A1 (HIGH) — `region_glue`'s SEPARATED leaf integrand IS correct at corank ≥ 2; it needs NO coupled form
+
+The architect's `monomialChartIntegral` (`Engine/EngineObligations.lean:49`) is the separated product
+`∏_k u_k^{(divExp_k−1)−2c'}` (threshold `min_k divExp_k/2`); its docstring asserts "at a normal-crossing
+leaf it separates to this product form." **Settled TRUE, exact.** Mechanism: Aoyagi's `b_i` satisfy a
+**divisibility chain** `b_1 | b_2 | … | b_{M(L+1)}`, so the leaf loss `Σ_i b_i² = b_1²·(1 + (b_2/b_1)² + …)
+= b_1²·unit` — a SINGLE dominant monomial times a unit — whose rlct is exactly `min` over `b_1`'s divisors
+of `divExp/2`, the separated form. Verified (Newton-LP, `battery-drafts/g-leaf-chain-separation.py`, exit 0):
+- chain leaves (`b_1|b_2`, `b_1|b_2|b_3`, `u_1²|u_1²u_2`): `NewtonLP(Σb_i²) == min divExp/2` EXACTLY;
+- non-chain nodes (Morse `u_1²+u_2²`; the `(2,2,1)` residual `⟨d_1x,d_2y⟩`, rlct 1 additive): the separated
+  min UNDERSHOOTS (`1/2 < 1`) — **these are NOT leaves**, they need further blow-up.
+
+**Answer to the architect's question:** at corank ≥ 2 the leaf-level finiteness genuinely factors per-divisor
+**because the divisibility chain collapses `Σb_i²` to `b_1²·unit`**; the coupling has been pushed into
+*which divisors form `b_1`* and *their `divExp` values* (`= Mval` of the sharing-aware profile — set by
+`StepInvariant` consulting `support`), NOT into the leaf integrand. **`region_glue` must take the SEPARATED
+form and must NOT consult `support`; its load-bearing PRECONDITION is `IsFullMonomialization`** (every leaf a
+genuine chain leaf). The flattening risk is therefore entirely at the tree layer (`StepInvariant` + `support`
++ `IsFullMonomialization` giving the right `divExp`), exactly as compass fork-3 (typed sharing) fences —
+NOT at `region_glue`. A node declared a leaf while its `b`'s are incomparable is the kill (undershoot);
+`IsFullMonomialization` rules it out.
+
+### A2 (LOW) — Case-2 step exponent: re-derived, and the "non-binding" scope CORRECTED
+
+`battery-drafts/g-case2-exponent.py` (exit 0): (a) the Case-2 divisor exponent re-derived from the blow-up
+= codimension of the `(M(S)−J)×(M(S+1)−J)` residual block = the printed `(M(S)−J)(M(S+1)−J)` (matches on all
+shapes/`J`). (b) **The coverage-relevant fact holds:** every top-level full-block exponent `M^{(i)}M^{(i+1)}
+≥ minAdm(M)` (by permutation-invariance) — a Case-2 divisor NEVER undershoots `½ minAdm`, so it cannot break
+coverage's ≥-leg. (c) **Scope correction (obstruction finding):** the reproduction's T-C flag "non-binding —
+never attains the min" is **too strong** — the full-block (`t=0`) exponent **TIES** `minAdm` for `(2,2,3)`
+pair(0,1), `(2,2,4)` pair(0,1), `(2,2,1)` pair(1,2) [3 ties vs 15 strict on the tested chains]. So a Case-2
+`J=0` divisor **can be binding** and must be KEPT in the candidate set; do not discard Case-2 divisors as
+"always non-binding." True load-bearing statement: **Case-2 exponents are upper bounds on `minAdm` (never
+undershoot), tight for some chains.**
