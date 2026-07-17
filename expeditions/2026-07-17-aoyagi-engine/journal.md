@@ -26,3 +26,10 @@ coverage-design. Two battery gaps commissioned (glue-level lossy-vs-exact; pivot
 Exhaustiveness hunt = a named lane on coverage. Architect being instructed with the live design
 constraints (typed sharing fields; Layer-B fence verbatim; DecoratedDescent fit check; no
 Eqs-(1)–(5) transcription). Coverage-design seat spawning. Validator green post-edits.
+
+## 2026-07-17 HEARTBEAT (tick 3, idle + placement recovery)
+Placement check caught the controller shell sitting in the architect's worktree (t01-skeleton) —
+read-only queries only, no state touched; recovered to root. Standing reminder reinforced: absolute
+paths in every controller command. Drift glance: architect has merged the council commit into its
+branch and is building (untracked Engine/ modules in progress); covdesign freshly spawned, no
+commits yet. Nothing to integrate; re-sleeping.
