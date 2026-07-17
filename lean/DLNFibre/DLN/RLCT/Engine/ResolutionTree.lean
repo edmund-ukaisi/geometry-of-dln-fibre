@@ -79,10 +79,11 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   divTilde : Fin numDiv → ℕ
   /-- Number of residual generators tracked for sharing. -/
   numGen : ℕ
-  /-- **The divisor-support (sharing) map**: which divisor variables divide each generator. This is a
+  /-- **The divisor-support (sharing) map**: which divisor variables divide each generator. A
   `Finset`-valued (not `ℕ`-valued) field ON PURPOSE — "simplifying" it to per-generator
-  multiplicities `Fin numGen → ℕ` is a TYPE ERROR here, not merely a battery failure: a multiplicity
-  cannot record WHICH divisors are shared, and sharing changes the RLCT (`g-delta-flatten.py`). -/
+  multiplicities `Fin numGen → ℕ` is a TYPE ERROR here, not merely a battery failure: a
+  multiplicity cannot record WHICH divisors are shared, and sharing changes the RLCT
+  (`g-delta-flatten.py`). -/
   support : Fin numGen → Finset (Fin numDiv)
 
 /-- **Terminal (leaf) data**: the fully monomialised state at `S = L+1` — the diagonal
@@ -101,6 +102,12 @@ structure LeafData (M : Fin (L + 1) → ℕ) where
   numB : ℕ
   /-- The diagonal monomial vector at the leaf. -/
   bExp : Fin numB → (Fin numDiv → ℕ)
+  /-- **The leaf divisibility chain** `b₁ ∣ b₂ ∣ … ∣ b_{M(L+1)}` — `bExp` is pointwise monotone. The
+  type-level hook the separated leaf integrand needs: on a chain leaf `∑ bᵢ² = b₁²·unit`, so the rlct
+  is the separated `min divExp/2` (cert-d3 A1). A leaf with INCOMPARABLE `b`'s (a genuine additive
+  Morse / `⟨d₁x,d₂y⟩` node, where the separated min undershoots) cannot be constructed — it is not a
+  real leaf and needs further blow-up. Mirrors `StepData.bChain`. -/
+  bChain : Monotone bExp
   /-- The coordinate chart's domain in parameter space (its image covers part of the zero locus). -/
   chartDom : Set (Params M)
 
