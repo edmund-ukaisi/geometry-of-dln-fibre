@@ -719,3 +719,48 @@ native corank-block resolution there.
 
 Files (round 6): this addendum (the spec); mirrors `innerCorankDescent_lt_top` (`RouteMSJDecoratedPeelStep`);
 dispatch-boundary `⌊k²/4⌋>0 ⟺ min-corank≥2` verified inline.
+
+---
+
+# ADDENDUM (round 7, 2026-07-17) — the simplification is SOUND (re-architecture sanity-check, 2 decorrelated lines)
+
+**Question (controller):** before re-routing the tide (revive the plain `DecoratedPeelStep` route, drop the
+whole `DecoratedStepHyp`/`DecoratedDescent`/flag-γ' apparatus), CONFIRM the plain route fully closes (□)
+with the ONLY hole `innerCorankDescent_lt_top`, and NO residual was silently discharged by the decoration.
+
+## ★ VERDICT: SIMPLIFICATION-SOUND (my Lean dependency audit + decorrelated Codex xhigh, converge).
+
+- **Q1 (PROVEN — audit + Codex):** the plain driver `routeMBoxThresholdFinite_of_decoratedPeel` =
+  `routeMBoxThresholdFinite_of_step (decoratedPeelStep_imp_sjStepHyp h) sjBase1_freeMatrix`. Audited: the
+  wrapper (`RouteMSJResolution:863`, strong induction) is sorry-free; `sjBase1_freeMatrix` (:912, Morse
+  base) sorry-free; `decoratedPeelStep_imp_sjStepHyp` (`RouteMSJDecoratedRec`) sorry-free (trivial-decoration
+  π=∅ recovery only). The ONLY standalone `sorry` in the chain is `innerCorankDescent_lt_top`
+  (`RouteMSJDecoratedPeelStep:86`). It uses `decoratedPeelStep_imp_sjStepHyp`, NOT `sjResolutionStep_proof`
+  — so `sjJointResolution` (`RouteMSJResolution:803`, the obsolete gammaPeel bare sorry) is NOT in the chain.
+  No `native_decide`/`admit`. NO dependency consumes `FaithfulSJAt`/flag-γ'/`DecoratedDescent`. The "Q2
+  dead" tag (LATE-79) was PRECISELY the higher-corank descent, now cited.
+- **Q2 (PROVEN coverage; native = expected work):** `d = min(M₀−t,M₁−t) ∈ {0,1,≥2}` exhausts every pivot
+  cut (d=0 = square endpoint + the two non-square wings). The d≤1 native branches close with the PLAIN IH
+  (transversality/qbox/free-bilinear consume the rank-≤1 factor LOCALLY — no Gram weight crosses into the
+  shorter-chain recursion); INFERENCE until the §3 c=1 + wings + dominant-minor are implemented (the
+  expected native work, satred-supplied). d≥2 cited atom consumes the plain IH at strictly-smaller arity —
+  NO induction cycle.
+- **Q3 (PROVEN, kill-guard correct):** at d≥2 a single-factor peel leaves the joint center {Γ·S=0} → native
+  is unsound. Codex qualification (folded in): non-submersivity ALSO occurs at d=1, but the rank-1 incidence
+  is resolved by the banked free-bilinear leaf; d≥2 is the FIRST unresolved higher-rank incidence.
+- **Q4 (PROVEN structurally):** no weighted residual outside the cited atom; no decorated IH needed. The
+  weighted carrier + decorated driver are removable; only the trivial-decoration shim
+  (`decoratedBoxThresholdFinite_trivial_iff` = the π=∅ recovery = plain box) stays. Conditional only on
+  completing the d≤1 native proofs + matching `cited_aoyagi_product_corank` to the exact `innerCorankDescent`
+  signature/widths.
+
+## Build notes (from `lean/CLAUDE.md`, for the formaliser tide)
+- **`#print axioms` the final (□)** — confirm footprint = `[cited_aoyagi_product_corank, propext,
+  Classical.choice, Quot.sound]`; a green build can MASK a `sorryAx` via a stale olean.
+- **The d=1 C-transversality branch** manipulates the transverse projector `1 − Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b`, which
+  hits the `DecidableEq`/`Inv` instance diamond (blocks `rw`/`linarith`) — workaround: `generalize` the
+  composite to a fresh atom across goal + all hyps (2026-07-17 gotcha, RouteMSJInteriorR1).
+
+Files (round 7): `codex/simplify-{prompt,answer}.md`, `simplify-run.log` (decorrelated, SIMPLIFICATION-SOUND);
+the plain-driver dependency audit (only-hole = `innerCorankDescent_lt_top`; `sjJointResolution:803` NOT in
+chain; wrapper/base sorry-free; no native_decide/admit) done inline.
