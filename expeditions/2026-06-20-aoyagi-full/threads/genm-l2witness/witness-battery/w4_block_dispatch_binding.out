@@ -1,0 +1,87 @@
+
+======================================================================
+(E1) bridge: d = min(M0-t, M1-t), block (a,b), charge a*b = d(d+delta)
+======================================================================
+  M=(4, 4, 4, 4): delta=0, d-values=[0, 1, 2, 3, 4] (bijection t<->d: True); charge=d(d+delta) & min(a,b)=d for all cuts: True
+  M=(5, 5, 5, 5): delta=0, d-values=[0, 1, 2, 3, 4, 5] (bijection t<->d: True); charge=d(d+delta) & min(a,b)=d for all cuts: True
+  M=(3, 5, 5): delta=2, d-values=[0, 1, 2, 3] (bijection t<->d: True); charge=d(d+delta) & min(a,b)=d for all cuts: True
+  M=(4, 7, 7): delta=3, d-values=[0, 1, 2, 3, 4] (bijection t<->d: True); charge=d(d+delta) & min(a,b)=d for all cuts: True
+  M=(2, 4, 4): delta=2, d-values=[0, 1, 2] (bijection t<->d: True); charge=d(d+delta) & min(a,b)=d for all cuts: True
+(E1) VERDICT  bridge holds (d=min(a,b), charge=d(d+delta), t<->d bijection): True
+
+======================================================================
+(E2) tightness at the branch index d: minAdm = min_d[d(d+delta)+minAdm(red)]
+======================================================================
+  n=3: nodes on optimal paths=[(2, 3, 3), (3, 3, 3, 3)]  equality@binding-d & strict-off, all nodes: True
+  n=4: nodes on optimal paths=[(2, 4, 4), (3, 4, 4), (4, 4, 4, 4)]  equality@binding-d & strict-off, all nodes: True  <== HEADLINE
+  n=5: nodes on optimal paths=[(3, 5, 5), (4, 5, 5), (5, 5, 5, 5)]  equality@binding-d & strict-off, all nodes: True  <== HEADLINE
+  n=6: nodes on optimal paths=[(4, 6, 6), (6, 6, 6, 6)]  equality@binding-d & strict-off, all nodes: True  <== HEADLINE
+  n=7: nodes on optimal paths=[(4, 7, 7), (5, 7, 7), (7, 7, 7, 7)]  equality@binding-d & strict-off, all nodes: True  <== HEADLINE
+(E2) VERDICT  budget tight at the binding d, strict off it, all nodes: True
+
+======================================================================
+(E3) bridge-correctness: reproduce decstep's reported min(a,b) sequences
+======================================================================
+  M=(5, 5, 5, 5): decstep min(a,b) seq (2, 2) present among optimal peel paths: True  (all peel-d seqs: [(1, 2), (2, 1), (2, 2)])
+  M=(7, 7, 7, 7): decstep min(a,b) seq (3, 2) present among optimal peel paths: True  (all peel-d seqs: [(2, 2), (2, 3), (3, 2)])
+  M=(4, 4, 4, 4): decstep min(a,b) seq (2, 1) present among optimal peel paths: True  (all peel-d seqs: [(1, 1), (1, 2), (2, 1)])
+(E3) VERDICT  bridge reproduces decstep's reported min(a,b) values: True
+
+======================================================================
+(E4) dispatch classification by d (native d<=1 / transcribe d>=2)
+======================================================================
+     BASE = terminal free bilinear/Wishart block (always native).
+  n=3: peel-d=[1, 1]  [1x1 d=1 NATIVE] -> [1x2 d=1 NATIVE] -> BASE(1x3 native)
+   => n=3: best-case max corank-d=1, worst-case=1  [native-corank cover EXISTS]
+
+  n=4: peel-d=[2, 1]  [2x2 d=2 TRANSCRIBE] -> [1x3 d=1 NATIVE] -> BASE(1x4 native)
+  n=4: peel-d=[1, 2]  [1x1 d=1 NATIVE] -> [2x3 d=2 TRANSCRIBE] -> BASE(1x4 native)
+  n=4: peel-d=[1, 1]  [1x1 d=1 NATIVE] -> [1x2 d=1 NATIVE] -> BASE(2x4 native)
+   => n=4: best-case max corank-d=1, worst-case=2  [native-corank cover EXISTS]  <== HEADLINE
+
+  n=5: peel-d=[2, 2]  [2x2 d=2 TRANSCRIBE] -> [2x4 d=2 TRANSCRIBE] -> BASE(1x5 native)
+  n=5: peel-d=[2, 1]  [2x2 d=2 TRANSCRIBE] -> [1x3 d=1 NATIVE] -> BASE(2x5 native)
+  n=5: peel-d=[1, 2]  [1x1 d=1 NATIVE] -> [2x3 d=2 TRANSCRIBE] -> BASE(2x5 native)
+   => n=5: best-case max corank-d=2, worst-case=2  [d>=2 TRANSCRIBE forced on every optimal path]  <== HEADLINE
+
+  n=6: peel-d=[2, 2]  [2x2 d=2 TRANSCRIBE] -> [2x4 d=2 TRANSCRIBE] -> BASE(2x6 native)
+   => n=6: best-case max corank-d=2, worst-case=2  [d>=2 TRANSCRIBE forced on every optimal path]  <== HEADLINE
+
+  n=7: peel-d=[3, 2]  [3x3 d=3 TRANSCRIBE] -> [2x5 d=2 TRANSCRIBE] -> BASE(2x7 native)
+  n=7: peel-d=[2, 3]  [2x2 d=2 TRANSCRIBE] -> [3x5 d=3 TRANSCRIBE] -> BASE(2x7 native)
+  n=7: peel-d=[2, 2]  [2x2 d=2 TRANSCRIBE] -> [2x4 d=2 TRANSCRIBE] -> BASE(3x7 native)
+   => n=7: best-case max corank-d=2, worst-case=3  [d>=2 TRANSCRIBE forced on every optimal path]  <== HEADLINE
+
+BOUNDARY: best-case max corank-block d by n = {3: 1, 4: 1, 5: 2, 6: 2, 7: 2}
+  n<=4: a fully-native corank optimal path exists (only the free BASE carries d>=2);
+  n>=5: every optimal path has a min(a,b)>=2 product-corank block (transcribe forced).
+(E4) VERDICT  dispatch boundary as stated (n<=4 native path / n>=5 forced): True
+
+======================================================================
+(E4') equality-at-binding-cell for each d>=2 TRANSCRIBE atom that occurs
+======================================================================
+  atom node=(3, 4, 4) cut t=1: block 2x3 d=2 (min(a,b)>=2) charge=6 + minAdm((1, 4))=4 = 10 == minAdm((3, 4, 4))=10  eq=True strict-off=True
+  atom node=(3, 5, 5) cut t=1: block 2x4 d=2 (min(a,b)>=2) charge=8 + minAdm((1, 5))=5 = 13 == minAdm((3, 5, 5))=13  eq=True strict-off=True
+  atom node=(4, 4, 4, 4) cut t=2: block 2x2 d=2 (min(a,b)>=2) charge=4 + minAdm((2, 4, 4))=7 = 11 == minAdm((4, 4, 4, 4))=11  eq=True strict-off=True
+  atom node=(4, 5, 5) cut t=2: block 2x3 d=2 (min(a,b)>=2) charge=6 + minAdm((2, 5))=10 = 16 == minAdm((4, 5, 5))=16  eq=True strict-off=True
+  atom node=(4, 6, 6) cut t=2: block 2x4 d=2 (min(a,b)>=2) charge=8 + minAdm((2, 6))=12 = 20 == minAdm((4, 6, 6))=20  eq=True strict-off=True
+  atom node=(4, 7, 7) cut t=2: block 2x5 d=2 (min(a,b)>=2) charge=10 + minAdm((2, 7))=14 = 24 == minAdm((4, 7, 7))=24  eq=True strict-off=True
+  atom node=(5, 5, 5, 5) cut t=3: block 2x2 d=2 (min(a,b)>=2) charge=4 + minAdm((3, 5, 5))=13 = 17 == minAdm((5, 5, 5, 5))=17  eq=True strict-off=True
+  atom node=(5, 7, 7) cut t=2: block 3x5 d=3 (min(a,b)>=2) charge=15 + minAdm((2, 7))=14 = 29 == minAdm((5, 7, 7))=29  eq=True strict-off=True
+  atom node=(5, 7, 7) cut t=3: block 2x4 d=2 (min(a,b)>=2) charge=8 + minAdm((3, 7))=21 = 29 == minAdm((5, 7, 7))=29  eq=True strict-off=True
+  atom node=(6, 6, 6, 6) cut t=4: block 2x2 d=2 (min(a,b)>=2) charge=4 + minAdm((4, 6, 6))=20 = 24 == minAdm((6, 6, 6, 6))=24  eq=True strict-off=True
+  atom node=(7, 7, 7, 7) cut t=4: block 3x3 d=3 (min(a,b)>=2) charge=9 + minAdm((4, 7, 7))=24 = 33 == minAdm((7, 7, 7, 7))=33  eq=True strict-off=True
+  atom node=(7, 7, 7, 7) cut t=5: block 2x2 d=2 (min(a,b)>=2) charge=4 + minAdm((5, 7, 7))=29 = 33 == minAdm((7, 7, 7, 7))=33  eq=True strict-off=True
+(E4') VERDICT  every d>=2 transcribe atom is tight at its binding cut (no slack): True
+
+======================================================================
+W4 OVERALL
+======================================================================
+(E1) bridge d=min(M0-t,M1-t): True
+(E2) tightness at branch index d: True
+(E3) reproduces decstep min(a,b): True
+(E4) dispatch boundary n<=4 native / n>=5 forced: True
+(E4') d>=2 transcribe atoms tight (no slack): True
+W4 PASS: True
+
+[W4] the engine branches on d=min(M0-t,M1-t); the budget is tight at the binding d; n<=4 admit a native-corank optimal path, n>=5 force a min(a,b)>=2 product-corank (transcribe) atom on every optimal path.

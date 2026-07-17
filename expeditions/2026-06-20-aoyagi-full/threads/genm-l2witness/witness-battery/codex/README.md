@@ -7,12 +7,12 @@ are correct — it was told to test them.
 
 - `battery-prompt.md` — the contract-shaped prompt.
 - `battery-answer.md` — Codex's last message (its derivations + tables).
-- `battery-run.log` — the raw run.
+- (`battery-run.log` — the raw transcript; gitignored by repo policy, local only.)
 
 ## Method note (inference vs fact)
 
 The read-only sandbox blocked Codex from EXECUTING Python (`approval policy is UnlessTrusted`
-rejected the exec, see `battery-run.log`). So Codex's `output`/BigInt-DP blocks are its own
+rejected the exec, per the run transcript). So Codex's `output`/BigInt-DP blocks are its own
 **analytic derivations presented in tabular form**, not verified runs. This makes the check
 genuinely **decorrelated by method**: my exhibits are executed enumeration / Groebner / exact-rank
 / exact-DP (`../w*.out`); Codex's are closed-form derivations. The convergence below is between two
@@ -55,8 +55,27 @@ per codim value (e.g. `(1,2,1)`). Both give the same codim `C_k` and the same ga
 triple is the `a<->c` symmetry of the balanced component, not a disagreement. No load-bearing
 number differs.
 
+## W4 consult (`w4-{prompt,answer}.md`, `w4-run.log`)
+
+A second decorrelated consult on W4's dispatch boundary. My conclusion (threshold `n=5`) WITHHELD;
+Codex was asked to derive it. Same sandbox limitation (code execution declined), so Codex ran an
+in-memory exact DP plus a closed-form audit — again a decorrelated method.
+
+| W4 claim | Codex (independent) | Battery | Match |
+|---|---|---|---|
+| optimal peel paths `(d1,d2)` | n=3 `[1,1]`; n=4 `[2,1],[1,2],[1,1]`; n=5 `[2,2],[2,1],[1,2]`; n=6 `[2,2]`; n=7 `[3,2],[2,3],[2,2]` | W4 (E4): identical | YES |
+| `B(n) = min over optimal paths of max(d1,d2)` | `{3:1, 4:1, 5:2, 6:2, 7:2}` | W4 (E4) boundary: identical | YES |
+| smallest `n` forcing `d>=2` on every optimal path | `n=5` | W4: `n=5` | YES |
+| strictness (non-argmin cut strictly larger) | YES, all nodes n=4..7 | W4 (E2/E4'): strict-off True | YES |
+
+Bonus closed forms (Codex, structural corroboration of the strictness in E2): root value
+`F_n(a) = (n-a)^2 + a*n - floor(a^2/4)`; child-node gap from its minimum `= (s - a/2)^2` (a even) /
+`(s-k)(s-k-1)` (a = 2k+1), vanishing exactly at the argmins. Consistent with the executed
+enumeration here.
+
 ## Verdict
 
-The decorrelated consult CONVERGES with the battery on every load-bearing exhibit (W1 ideal +
-membership, W2 codim + gap, W3 B/C equalities and D undershoot), by an independent (analytic)
-method, and supplies corroborating closed forms. No discrepancy requiring a human double-check.
+Both decorrelated consults CONVERGE with the battery on every load-bearing exhibit — W1 ideal +
+membership, W2 codim + gap, W3 (B)/(C) equalities and (D) undershoot, W4 optimal-path
+classification + `B(n)` + the `n=5` threshold + strictness — by an independent (analytic) method,
+and supply corroborating closed forms. No discrepancy requiring a human double-check.
