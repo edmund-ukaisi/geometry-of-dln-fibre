@@ -14,3 +14,10 @@ flatten, minAdm ground truth, form-A tightness, Def-3 brokenness) all survive. V
 genuine authoring error on first run (cycle from redundant back-edges) — fixed; 0 errors, 2
 expected no-survey warnings. Next: elder council of two (founding route adoption counsel),
 architect commissioned for the skeleton increment, heartbeat armed.
+
+## 2026-07-17 HEARTBEAT (tick 3, idle + placement recovery)
+Placement check caught the controller shell sitting in the architect's worktree (t01-skeleton) —
+read-only queries only, no state touched; recovered to root. Standing reminder reinforced: absolute
+paths in every controller command. Drift glance: architect has merged the council commit into its
+branch and is building (untracked Engine/ modules in progress); covdesign freshly spawned, no
+commits yet. Nothing to integrate; re-sleeping.
