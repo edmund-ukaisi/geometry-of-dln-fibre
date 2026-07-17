@@ -64,4 +64,14 @@ example (H : Fin (L + 1) → ℕ) (r : ℕ)
   aoyagi_learning_coefficient_gen H r B hB hr hL hL2 hpos
     (engine_box_threshold_finite (fun s => H s - r))
 
+/-- **`region_glue`'s ratio hypothesis is loss-proof** (council #1, item 4). `hrat` quantifies over
+*every* terminal divisor exponent, so it forces the tight threshold `c' < ½·minAdm M` — because
+`minAdm M` is itself a terminal exponent (`exponent_ledger_bridge.2`). No lossy over-threshold (a
+`c' ≥ ½·minAdm M` that drops the binding divisor or reads a larger exponent) can satisfy it. This is
+why the assembly `region_glue` cannot be discharged by a reweighted-residual bound. -/
+example (M : Fin (L + 1) → ℕ) (c' : ℝ)
+    (hrat : ∀ e ∈ ResolutionTree.terminalExponents (resolutionOf M), c' < (e : ℝ) / 2) :
+    c' < (minAdm M : ℝ) / 2 :=
+  hrat (minAdm M) (exponent_ledger_bridge M).2
+
 end DLNFibre.DLN.RLCT.Engine
