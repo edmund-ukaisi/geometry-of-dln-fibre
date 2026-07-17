@@ -127,11 +127,29 @@ obtained by a square CoV — NOT the minor sum:
 
 So the bounded base = `[qbox(M₂≤b)] × [hIH]`, NO Cauchy-Binet, NO coarea, NO minor sum. The Gram is of the FREE
 front F (not a product), so `qbox` applies directly. **Consumed banked:** `lintegral_comp_rightMulₚ`,
-`qbox_lintegral_lt_top`, `frobSq_rmatMul_smul`, `hIH`; **Mathlib:** `gramSchmidt`. **NEW (small):** the
-block-Gram-det identity `|det[F;S]| = det(FFᵀ)^{1/2}` (elementary), the F-independent slice-volume bound, and
-the measurable `S(F)`-parametrised CoV wire (the one plumbing delicacy — apply `lintegral_comp_rightMulₚ`
-per-F under Tonelli over the F-box). **Recommend route (a) over building Cauchy-Binet (c)** — it reuses the
-banked square-CoV + qbox and skips the ~150–400 LoC Cauchy-Binet brick AND the minor-chart cover.
+`qbox_lintegral_lt_top`, `frobSq_rmatMul_smul`, `hIH`; **Mathlib:** `gramSchmidt` / `OrthonormalBasis` of the
+row-complement submodule. **NEW (small):** the block-Gram-det identity `|det[F;S]| = det(FFᵀ)^{1/2}` (elementary,
+lane1shell landed it via `det_fromBlocks_zero₂₁`), the F-independent slice-volume bound. **Recommend route (a)
+over building Cauchy-Binet (c)** — it reuses the banked square-CoV + qbox and skips the ~150–400 LoC Cauchy-Binet
+brick AND the minor-chart cover.
+
+**POINTWISE-bound-then-integrate (lane1shell's refinement — removes the measurable-`S(F)` delicacy).** Do NOT
+carry `S` as a measurable function of F. For a.e. (full-rank) `F`, the fixed-F bound
+`∫_{A₁ box} g(F·A₁) ≤ C·det(FFᵀ)^{−M₂/2}·∫_{W box'} g` holds with an EXISTENTIAL `S` per F — its RHS is
+`S`-INDEPENDENT (`C` and `det(FFᵀ)` do not depend on the choice of `S`; different `S` just relabels the
+integrated-out slack `R`). Then `F ↦ ∫_{A₁} g(F·A₁)` is measurable (a partial `lintegral` of a jointly
+measurable integrand — automatic), so `lintegral_mono` over the F-box gives
+`∫_F ∫_{A₁} g(F·A₁) ≤ C·[∫_W g]·∫_F det(FFᵀ)^{−M₂/2}` (the F-independent `C·∫_W g` pulls out; `qbox` closes the
+last factor). No measurable selection of `S`; the `{det=0}` null set is harmless (RHS `= +∞` there). This is
+strictly cleaner than a measurable-S(F) pushforward and is the intended form.
+
+**Row-complement `S` construction.** `S : (M₁−M₀)×M₁` with `S·Fᵀ = 0 ∧ S·Sᵀ = 1` = an orthonormal basis of
+`(rowspace F)^⊥` (a submodule of `ℝ^{M₁}` of `finrank = M₁−M₀`, from rows-independent ⟺ `det(FFᵀ)≠0` +
+`Submodule.finrank_add_finrank_orthogonal`). Take Mathlib `OrthonormalBasis (Fin (M₁−M₀))` of that complement,
+stack as rows → `S` (orthonormal ⟹ `S·Sᵀ=1`; in the complement ⟹ `S·Fᵀ=0`). The banked `exists_ortho_ext`
+(`RouteMSJOrthoExtend`) is COLUMN-oriented (extends orthonormal columns) — reusable only via `gramSchmidt`(F's
+rows)→Q(orthonormal rows)→`Qᵀ`(orthonormal cols)→extend→transpose, i.e. more plumbing than the direct
+complement-`OrthonormalBasis` route. Use the submodule route.
 
 **LOG sub-case (`M₂ = b+1`):** `qbox` is MARGINAL here (needs `M₂ < b+1` STRICT), so `∫_F det(FFᵀ)^{−M₂/2}`
 is log-divergent. Close by a **δ-fold**: run the CoV at `det(FFᵀ)^{−(M₂−δ)/2}` (qbox strict at `M₂−δ < b+1`)
