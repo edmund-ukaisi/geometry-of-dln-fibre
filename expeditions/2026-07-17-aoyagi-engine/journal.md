@@ -119,3 +119,16 @@ increments on origin: alt-pivot invariance ((3,3,4) all pivots → 8) + (2,3,2,2
 Tier C tracked-leaf census (NewtonLP == closed form; no sub-threshold divisor at the second
 blow-up) — no undershoot anywhere yet; Tier B (weighted/coordinate-changed) still to come.
 Re-sleeping.
+
+## 2026-07-17 HUNT SURVIVED (tick 12)
+The expedition-level kill-condition did NOT trigger: hunt-t03 returned SURVIVE across five
+decorrelated legs (exhaustive monomial, two independent codim computations, sheared-incidence
+exact LP over the continuous weight space, tracked-leaf census, MC guide) on seven instances incl.
+the corank-2 binding case — where the spurious sub-threshold "divisor" is confirmed an artifact of
+mis-tracked sharing (proof risk, not truth risk — exactly fork 3's content, now decorrelated).
+Adversary value-adds: the spec's Tier B needed shear-exposure to be non-vacuous (lesson banked);
+the Codex-proposed angular family was run and survives on (2,2,2,2). Residual scope honest and
+parked (4 items + an optional independent D-module check). Coverage's map note now cites the
+cert's scope verbatim-by-pointer — no blanket "established"; the proof remains the ledger
+induction. Hunter stood down + reaped. Critical path: architect repair → re-review → six stated →
+tides.

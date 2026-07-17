@@ -129,7 +129,7 @@ nodes:
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
     kill: battery/g-coverage-sharing-killcond.py
-    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. GATE: D4 hunt Tier B/C running. Case-2 divisors CAN BIND (tie minAdm on (2,2,3)/(2,2,4)/(2,2,1) — keep in candidate set; corrects the reproduction's too-strong T-C 'non-binding' flag; g-case2-exponent.py)"
+    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. HUNT SURVIVED (t03: 5 decorrelated legs, 0 undershoots incl. sheared-incidence LP + Codex angular family; scope stated in threads/03-hunt/hunt-cert.md §5 — cite THAT, never blanket 'established'; residual: angular beyond (2,2,2,2), 3rd+ blowups, (4,4,4,4) full, optional D-module lct check). Case-2 divisors CAN BIND (g-case2-exponent.py). Proof = the per-(S,J) ledger induction (cert-d3)"
 
   - id: exponent-ledger-bridge
     kind: claim

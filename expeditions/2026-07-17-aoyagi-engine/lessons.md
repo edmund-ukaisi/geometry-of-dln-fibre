@@ -15,3 +15,6 @@ the trail is local):
   direction. Caught at covdesign D2 before any formaliser grabbed it. (2026-07-17)
 - A monomial-only exhaustiveness hunt is VACUOUS for blow-up coverage claims (extremal valuations
   are non-monomial/incidence); gates need coord-changed + weighted-center tiers. (covdesign D4)
+- A "coordinate-changed" hunt WITHOUT shear-exposing the product-vanishing conditions is as vacuous
+  as a monomial hunt — the hunter must fix the instrument before trusting it (hunt-t03 caught the
+  spec's false-pass and replaced grid sampling with an exact continuous-weight LP). (2026-07-17)
