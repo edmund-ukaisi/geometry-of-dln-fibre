@@ -127,3 +127,15 @@ existing monomial ledger — NO opaque derivative field is stored as data.
   own `expects-sorryAx` entry.
 - Vacuity closes at TYPE strength under either A or B (the fake univ-atlas leaf has no chart data /
   fails `LeafPullback`); fold the Python note into `g-chartscover-vacuity` when implementing.
+
+## g-chartscover-vacuity re-scope (2026-07-17, post-restructure)
+
+The `g-chartscover-vacuity` counterexample (an all-`univ` atlas satisfying the OLD `ChartsCover ∧ hrat`
+while the box diverges) is now closed IN-LEAN by the edge-labelled bundle — no Python edit needed:
+`LeafPullback` ties each leaf's `chartMap` to the loss (`F ∘ chartMap = ∏ u² · residualCore`), so a
+constant / `univ` / mislabelled chart cannot satisfy it (its pullback is not a monomial × residual);
+and the `ChartBridge` coherence forces `chartMap = the fold of the edge substitutions`, so it is not a
+free field. What now kills the fake atlas: a chart whose pullback is not `monomial × (unit OR Morse)`
+fails `LeafPullback`; a `divExp` not matching the true resolution exponents fails
+`exponent_ledger_bridge` (`minAdm ∈ terminalExponents`). Complementary Lean witness:
+`stepRel_rejects_mismatched_case2` (a mislabelled Case-2 edge fails `StepRel`).
