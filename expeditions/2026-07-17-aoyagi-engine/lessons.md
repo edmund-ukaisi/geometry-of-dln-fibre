@@ -22,3 +22,7 @@ the trail is local):
   breaking the parse — banked broken because the pre-commit hook was NOT installed in the worktree
   (hooks need core.hooksPath per checkout). Hook now installed; validate after EVERY map edit.
   Caught by the reviewer, not by me. (2026-07-17)
+- An `inferInstance` probe WITHOUT surveying imports is not evidence of a missing instance: the
+  "Params not normed" blocker was closed weeks ago by a 0-sorry module consumed in 13 files
+  (ParamsFlatLinear); the probe ran importless and a false "hard fact" nearly forced a route. The
+  survey-first rule applies to INSTANCES, not just lemmas. (seat B catch, 2026-07-17)

@@ -287,3 +287,18 @@ requested from both seats. The union of the two seats' fresh-review checklists (
 heavily overlapping) is the review brief. Architect cleared to BEGIN the structural
 implementation (Q1-Q4 final), shaping subst/Jacobian so either Q5 route fits; merge to canonical
 gated on the fresh review round.
+
+## 2026-07-17 Q5 SUPPLEMENT (SEAT B): FORK PREMISE FALSE; (b)-PREFERRED ON CORRECTED MERITS (tick 24)
+Seat B's supplement corrects the record twice, controller-verified: (1) the "no normed-Params"
+probe is FALSE — ParamsFlatLinear (0-sorry, 13 consumers, built expressly to close this blocker)
+provides the instances + CLE + fderiv, rfl-compatible topology; the probe ran without the import.
+(2) Route (b) does not "drop fderiv" either — the transport consumes it. The fork as posed was
+void on BOTH sides. Seat B still rules (b)-preferred on the corrected merits: reuse the banked
+LOCAL-homeomorph transport (the global variant's injectivity doesn't fit a blow-up), the scaling
+lemma's hard ingredient (degree-2L homogeneity) already banked, one-sided finiteness suffices, two
+decorrelated consults converged — with 3 verification conditions and (a) as a fully-live fallback.
+Q4/Q5 DECOUPLED (route-invariant edge data = the monomial ledger; no opaque derivative fields as
+carrier data) — relayed to the architect immediately since it closes its last data-shape
+ambiguity. Checklist +3 items (strike the false premise from all memos; verify the transport-aux
+cone; ledger-not-fderiv as data). Lesson banked: instance probes without import surveys are not
+evidence. Awaiting seat A's supplement for the final adjudication.
