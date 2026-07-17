@@ -23,12 +23,15 @@ Target integrand (the RHS of `gammaPeelIntegral_schurShearFree_eq`, the freed-`�
     ∫_{A' ∈ box(tailChain M)} ∫_{x ∈ outerDom t (M₀−t) (M₁−t) 1}
       ∫_{Γ ∈ shearbox} (freedSchurLoss x Γ ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id))^{−c'} < ⊤
 
-Status: SPECIFY skeleton (signature validated against the socket; body `sorry`). The PROVE step is
-gated on a scoping decision — see the `d1altu` report: the brief's radial recipe (steps 2–5, via
-`edge_leaf_gamma_bound`/`scaledRadialEuclid`) gives a VACUOUS bound for `c' ≤ a/2` (the a-radial `B`
-diverges when `a ≥ 2c'`), so the full `c' < ½·minAdm M` window needs a two-branch dispatch (bounded
-branch for `c' ≤ a/2`). Numerically-verified charge facts: `minAdm M'' = minAdm(redChain t M)` (M'' the
-keep-M₁ chain), coverage `min(a, minAdm M) ≤ minAdm M''`.
+Status (tide `d1altu-full`): the dispatch is `by_cases c' < ½·minAdm (redChain t M)`. The α-LOW branch
+(drop the whole corank) is REDUCED to banked green helpers in this file — STEP 2 (`edge_J_lt_top`, the
+pivot-energy box integral `< ⊤`, the conceptually-hard reindex, COMPLETE) + the {W=0}-null
+(`edge_W_pos_ae`) + STEP 1 (drop-corank via `outerDom_lintegral_prod` + `freedSchurLoss_inner_bounded_le`
++ `volume_shearbox_eq`) — assembled EXCEPT the `AEMeasurable` side-condition of `outerDom_lintegral_prod`
+(the matrix-inverse measurability of `freedSchurLoss`, not banked in Mathlib v4.29). The α-HIGH branch is
+the heart's rank-1 leaf (gated on jointpnp). Both fold into the single `sorry`; see the in-proof note.
+The opaque-width wall (`wingFrontBox`/`Fin.cons`/`min` cast) is CLEARED via
+`wingFrontBox_consFront_eq_cleanBox` + `cleanFrontBox`.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -679,6 +682,82 @@ theorem edge_J_lt_top {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
   rw [hfin]
   exact edge_frontCollapse_cleanBox_lt_top M t ht2 hbnd hb hIH c' hlow
 
+set_option maxHeartbeats 1600000 in
+/-- **The pivot energy is a.e. positive on `outerPB`** (given `1 ≤ t` and a nonzero tail product). On
+`outerPB` the inverse cancels so `W = frobSq(rmatMul (frontStdEquivM pb) (Q reindexed))`; the front-Gram
+zero locus is null (`ae_frobSq_rmatMul_ne_zero`), transported through the measure-preserving
+`frontStdEquivM`. The `W > 0` hypothesis the drop-corank bound (`freedSchurLoss_inner_bounded_le`) needs. -/
+theorem edge_W_pos_ae {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ht : 1 ≤ t) (htM1 : t ≤ M 1)
+    (κ : Fin t ↪ Fin (M 1)) (A' : Params (fun i : Fin (L + 1 + 1) => M i.succ))
+    (hQ : (prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+        ((blockSplitEquiv κ).symm.trans (frontStdEquiv htM1)).symm id ≠ 0) :
+    ∀ᵐ pb ∂(volume.restrict (outerPB t (M 1 - t) 1)),
+      0 < frobSq (Matrix.of pb.1 *
+        (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+            Sum.inl id
+          + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+            ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+              Sum.inr id)) := by
+  set e_col : Fin (M 1) ≃ Fin (M 1) := (blockSplitEquiv κ).symm.trans (frontStdEquiv htM1) with he_col
+  set QT' : Matrix (Fin (M 1)) _ ℝ :=
+    (prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id with hQT'def
+  -- W = frobSq(rmatMul (frontStdEquivM pb) QT') on outerPB.
+  have hWid : ∀ (pb : (Fin t → Fin t → ℝ) × (Fin t → Fin (M 1 - t) → ℝ)), IsUnit (Matrix.of pb.1) →
+      frobSq (Matrix.of pb.1 *
+          (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+              Sum.inl id
+            + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+              ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+                Sum.inr id))
+        = frobSq (rmatMul (frontStdEquivM htM1 pb) QT') := by
+    intro pb hpb
+    have hX : (fun (I : Fin t) (n : Fin (M 1)) =>
+          Sum.elim (pb.1 I) (pb.2 I) ((blockSplitEquiv κ).symm n))
+        = fun I n => frontStdEquivM htM1 pb I (e_col n) := by
+      funext I n; rw [frontStdEquivM_apply]; congr 1; rw [he_col, Equiv.trans_apply, Equiv.symm_apply_apply]
+    rw [pivotEnergy_inverse_free (Matrix.of pb.1) hpb (Matrix.of pb.2)
+        (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+          Sum.inl id)
+        (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+          Sum.inr id)]
+    congr 1
+    calc Matrix.of pb.1 * ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+              (blockSplitEquiv κ) id).submatrix Sum.inl id
+          + Matrix.of pb.2 * ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+              (blockSplitEquiv κ) id).submatrix Sum.inr id
+        = Matrix.of (rmatMul (fun (I : Fin t) (n : Fin (M 1)) =>
+            Sum.elim (pb.1 I) (pb.2 I) ((blockSplitEquiv κ).symm n))
+          (prod (fun i : Fin (L + 1 + 1) => M i.succ) A')) :=
+          pivotEnergy_reindex_rmatMul pb.1 pb.2 (prod (fun i : Fin (L + 1 + 1) => M i.succ) A') κ
+      _ = Matrix.of (rmatMul (fun (I : Fin t) (n : Fin (M 1)) => frontStdEquivM htM1 pb I (e_col n))
+          (prod (fun i : Fin (L + 1 + 1) => M i.succ) A')) := by rw [hX]
+      _ = Matrix.of (rmatMul (frontStdEquivM htM1 pb) QT') := by
+          congr 1
+          exact rmatMul_colReindex e_col (frontStdEquivM htM1 pb)
+            (prod (fun i : Fin (L + 1 + 1) => M i.succ) A')
+  -- transport the null zero-set through `frontStdEquivM` (measure-preserving).
+  have hzmeas : MeasurableSet {F : Fin t → Fin (M 1) → ℝ | frobSq (rmatMul F QT') = 0} := by
+    have : Continuous (fun F : Fin t → Fin (M 1) → ℝ => frobSq (rmatMul F QT')) := by
+      unfold rmatMul frobSq
+      refine continuous_finset_sum _ (fun i _ => continuous_finset_sum _ (fun j _ =>
+        (continuous_finset_sum _ (fun k _ => ((continuous_apply k).comp (continuous_apply i)).mul
+          continuous_const)).pow 2))
+    exact this.measurable (measurableSet_singleton 0)
+  have hnull : ∀ᵐ pb ∂(volume : Measure ((Fin t → Fin t → ℝ) × (Fin t → Fin (M 1 - t) → ℝ))),
+      frobSq (rmatMul (frontStdEquivM htM1 pb) QT') ≠ 0 := by
+    have hzero : volume {F : Fin t → Fin (M 1) → ℝ | frobSq (rmatMul F QT') = 0} = 0 := by
+      have hb := ae_frobSq_rmatMul_ne_zero ht QT' hQ
+      rw [ae_iff] at hb
+      simpa only [ne_eq, not_not] using hb
+    rw [ae_iff]
+    have hset : {pb | ¬ frobSq (rmatMul (frontStdEquivM htM1 pb) QT') ≠ 0}
+        = frontStdEquivM htM1 ⁻¹' {F | frobSq (rmatMul F QT') = 0} := by
+      ext pb; simp only [Set.mem_preimage, Set.mem_setOf_eq, not_not]
+    rw [hset, (measurePreserving_frontStdEquivM htM1).measure_preimage hzmeas.nullMeasurableSet, hzero]
+  rw [ae_restrict_iff' (measurableSet_outerPB t (M 1 - t) 1)]
+  filter_upwards [hnull] with pb hpbne hmem
+  exact (hWid pb hmem.2.2).symm ▸ lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hpbne)
+
 /-- **The b=1, a<u, bounded-w arm of the front-collapse dispatch.** For a `≥ 3`-width chain `M` with a
 legal pivot cut `1 ≤ t ≤ min(M₀,M₁)` on the corank-one edge (`M₁ − t = 1`), in the `a < u` regime
 (`M₀ − t < t`) and bounded-density regime (`M₂ < M₁ − t + 1`, i.e. `M₂ ≤ M₁ − t`), GIVEN the plain
@@ -698,58 +777,29 @@ theorem frontCollapse_edge_b1_altu_bounded {L : ℕ} (M : Fin (L + 1 + 1 + 1) �
               Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
             ENNReal.ofReal ((freedSchurLoss x Γ
               ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤ := by
-  -- ISOLATED HOLE — the b=1 corank-one FreeBilinear disposal (regime #1: native, no cite, no decoration).
-  -- Converged route (lane1shell/d1design, Codex-proven): KEEP the (H,γ) coupling — the drop-transverse
-  -- a-fortiori (freedSchurLoss_shear_corank_one_le → single-fragile power) is UNSOUND (discards the
-  -- γ-regularization; M=(3,3,1) diverges for 1<c'<3/2), so `∫ (single-fragile power) < ⊤` is FALSE and must
-  -- NOT be the isolated sorry. The corank term `Γ·Q_b` is rank-1 (`γ⊗z`, frobSq_rmatMul_corank_one) with γ
-  -- free; the sound assembly (M₂≤b, i.e. this `hbnd` regime) is: (1) corank-γ via banked
-  -- freeBilinear_box_lt_top (RouteMSJFreeBilinear) + the C-shift absorption; (2) pivot-H via the B₁₂↦H CoV
-  -- (|det P| cancels); (3) reduced W via frontCollapse_wide_bounded_lt_top at X=[P|B₁₂], exponent c'−a/2 —
-  -- whose threshold c'−a/2 < ½·minAdm M'' the LANDED charge lemmas above supply
-  -- (minAdm_redChain_le_consFront + minAdm_le_peelCharge_add_redChain, b=1 ⟹ peelCharge = a).
-  -- DEFINITIVE dispatch (d1design d1altu-dispatch-and-D2gate.md). `hbnd` ⟹ M₂ ≤ b = M₁−t, so this arm is
-  -- entirely in the M₂≤b regime (no LOG / M₂≥b+2 branches arise). Dispatch on c' vs ½·minAdm(redChain t M):
-  --   • α-LOW (c' < ½·minAdm(redChain t M)) — CLEAN, drop the WHOLE corank (charge 0):
-  --       freedSchurLoss ≥ W = frobSq(P·Q̃ₚ) (freedSchurLoss_inner_bounded_le, needs 0<W) ⟹ ∫_Γ ≤ W^{−c'}·vol;
-  --       W is C,Γ-free; W inverse-free (pivotEnergy_inverse_free) = frobSq(rmatMul X̂ (prod (tailChain M) A')),
-  --       X̂ = the κ-reindexed [P|B₁₂] → frontCollapse_wide_bounded_lt_top(X̂∈wingFrontBox M'') at exp c',
-  --       threshold c'<½·minAdm(redChain t M) ≤ ½·minAdm M'' via minAdm_redChain_le_consFront.
-  --       {W=0} null via ae_matrix_eval_ne_zero (RouteMSJCorankSurvival; W a nonzero matrix-polynomial) —
-  --       restrict to co-null {W>0}. ALL pieces banked + verified present.
-  --   • α-HIGH (c' ≥ ½·minAdm(redChain t M)) — the a/2 corank charge is needed = the heart's rank-1 (b=1)
-  --       joint (Δ,C,Z) FreeBilinear leaf → hIH at c'−a/2, HELD (gated on the heart, jointpnp).
-  -- ── α-LOW build state (tide `d1altu-full`) ─────────────────────────────────────────────────────
-  -- BANKED green helpers in this file (all axiom-clean, reusable):
-  --   • `edge_frontCollapse_consFront_lt_top` — the α-LOW TARGET: charge transfer (via
-  --     `minAdm_redChain_le_consFront`) + `frontCollapse_wide_bounded_lt_top` for the keep-M₁ chain
-  --     `M'' = Fin.cons t (tailChain M)`, giving `∫_{F∈wingFrontBox M''} ∫_{A'} frobSq(F·prod A')^{−c'} < ⊤`.
-  --   • `ae_frobSq_rmatMul_ne_zero` — the {W=0}-null: for `QT ≠ 0`, `{F | frobSq(rmatMul F QT)=0}` is
-  --     Lebesgue-null (via `ae_matrix_eval_ne_zero` on the (0,j₀)-entry polynomial).
-  --   • `rmatMul_colReindex` — front column-perm = tail row-perm (the algebra of the reindex/h-invariance).
-  --   • `frontStdEquivM` (+ `measurePreserving_frontStdEquivM`, `frontStdEquivM_apply`) — the standard
-  --     front measure-equiv `(P,B₁₂) ≃ᵐ (Fin t → Fin M₁ → ℝ)`, pb ↦ [P|B₁₂] in STANDARD order.
-  --   • `volume_shearbox_eq` — `vol(shearbox x) = vol(genBox)` (C-free, translation-invariant).
-  -- REMAINING α-LOW plumbing (route fully resolved on paper; the residual is Lean cast-plumbing):
-  --   STEP 1 (drop-corank): outerDom_lintegral_prod (split x=(pb,C)) + freedSchurLoss_inner_bounded_le
-  --     (needs 0<W, a.e. by the {W=0}-null via `frontStdEquivM` MP + `ae_frobSq_rmatMul_ne_zero`, with a
-  --     by_cases on Q=0 for the degenerate all-zero tail) + `volume_shearbox_eq` ⟹
-  --     (TGT) ≤ (vol Cbox · vol genBox) · ∫_{A'} ∫_{pb∈outerPB} ofReal(W^{−c'}), W via
-  --     `pivotEnergy_inverse_free` + `pivotEnergy_reindex_rmatMul`.
-  --   STEP 2 (reindex to FC): `frontStdEquivM` CoV (outerPB ↔ wingFrontBox M'') + Tonelli + the h-column-
-  --     perm-invariance (frontFactor_split + `rmatMul_colReindex` + a matBox row-reindex CoV) ⟹
-  --     ∫_{A'}∫_{pb} ofReal(W^{−c'}) = `edge_frontCollapse_consFront_lt_top`'s integral < ⊤.
-  --   WALL (reported, not faked): STEP 2's `frontStdEquivM ⁻¹' (wingFrontBox (Fin.cons t (tailChain M)))
-  --     = outerPB` — the IsUnit(leadingBlock M'')↔IsUnit P direction — walls on the OPAQUE-WIDTH defeq
-  --     `Fin ((Fin.cons t ·) 1) ≡ Fin (M 1)` (and `Fin (min (M''0)(M''1))`): the value-level index
-  --     equalities (`hY`/`hX`) prove, but `rw`/`simp` cannot bridge the two syntactically-distinct-but-defeq
-  --     width types for the cast-indexed `(frontStdEquiv).symm (castLE …)` in `leadingBlock`. This is the
-  --     documented `Fin.cons`/`min` opaque-width friction (lean/CLAUDE.md). Needs either a value-transported
-  --     `leadingBlock`-membership bridge or restating `edge_frontCollapse_consFront_lt_top` over a
-  --     syntactic `Fin t → Fin (M 1)` front box.
+  -- DEFINITIVE dispatch (d1design d1altu-dispatch-and-D2gate.md); `hbnd` ⟹ M₂ ≤ b = M₁−t (M₂≤b regime).
+  -- ── STATE (tide `d1altu-full`) ────────────────────────────────────────────────────────────────
+  -- The α-LOW branch (`c' < ½·minAdm (redChain t M)`) is REDUCED to two BANKED, green, axiom-clean lemmas
+  -- in this file, plus one remaining measure-theoretic glue step:
+  --   • `edge_J_lt_top` — STEP 2 (the conceptually-hard reindex), COMPLETE: the pivot-energy box integral
+  --     `∫_{A'} ∫_{pb∈outerPB} W^{−c'} < ⊤`, via `pivotEnergy_inverse_free` + `pivotEnergy_reindex_rmatMul`
+  --     + `rmatMul_colReindex` + `frontStdEquivM` CoV (`outerPB ↔ cleanFrontBox`) + Tonelli +
+  --     `tail_colperm_invariant`, landing on `edge_frontCollapse_cleanBox_lt_top` (which routes through the
+  --     CLEARED opaque-width wall: `wingFrontBox_consFront_eq_cleanBox`, min-cast localized via `congr_arg₂`).
+  --   • `edge_W_pos_ae` — the {W=0}-null (a.e. `W > 0` on `outerPB`), via `frontStdEquivM` MP +
+  --     `ae_frobSq_rmatMul_ne_zero`.
+  -- STEP 1 (drop-corank) reduces (TGT) ≤ (vol Cbox · vol genBox) · J: `outerDom_lintegral_prod`
+  -- (split x=(pb,C)) + `freedSchurLoss_inner_bounded_le` (a.e. via `edge_W_pos_ae`, by_cases on the
+  -- degenerate `Q=0`) + `volume_shearbox_eq` ⟹ finite via `edge_J_lt_top`. The full drop-corank calc is
+  -- assembled (fresh-tide worktree) EXCEPT the `AEMeasurable` side-condition of `outerDom_lintegral_prod`:
+  -- REMAINING GLUE = the matrix-INVERSE measurability of `freedSchurLoss` (the `(of P)⁻¹` term breaks
+  -- continuity, so `fun_prop` deep-recurses; needs entrywise `Matrix.mul`/`frobSq` measurability built on
+  -- `Matrix.inv_def` + `Ring.inverse_eq_inv'` + `Continuous.matrix_adjugate` — ~40 LoC, not banked in
+  -- Mathlib v4.29). Self-contained; no reindex, no new math.
   --   • α-HIGH (c' ≥ ½·minAdm(redChain t M)) — the a/2 corank charge = the heart's rank-1 (b=1) joint
   --     (Δ,C,Z) FreeBilinear leaf → hIH at c'−a/2, HELD (gated on the heart, jointpnp). NOT attempted.
   sorry
 
 end DLNFibre.DLN.RLCT
+
 
