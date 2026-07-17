@@ -116,7 +116,8 @@ nodes:
     owner: coverage-design
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "paper asserts; we reconstruct. design-first. UNIVERSAL claim: decorrelated exhaustiveness hunt required before established; tracked cells only (non-deepest = theorem4's)"
+    kill: battery/g-coverage-sharing-killcond.py
+    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. GATE before established: D4 hunt Tier B/C (monomial-only hunts are VACUOUS)"
 
   - id: exponent-ledger-bridge
     kind: claim
@@ -159,15 +160,20 @@ nodes:
     title: "the non-deepest EXACT reduction (Thm-4 role): to a smaller arity-IH instance"
     prop: |
       A non-deepest neighborhood reduces, by an EXACT RLCT-preserving CoV (never a
-      reweighted-residual bound), to a strictly-smaller-arity instance whose threshold
-      dominates via banked MinAdmMono; the arity IH then supplies finiteness.
-    status: conjectured
+      reweighted-residual bound), to a strictly-smaller instance; threshold preservation is
+      nReg + minAdm(M') >= minAdm(M) via the minAdm-as-minimum property (inf'_le /
+      minAdm_le_Mval class) — NOT MinAdmMono (opposite direction; formaliser trap).
+      Deepest domination is ALREADY BANKED hypothesis-free: deepest_le_of_homogeneous_core
+      (DeepestMinRlct.lean:157). Far points via the exact homogeneity-scaling CoV.
+    status: adjudicated
+    kill: battery/g-glue-lossy-vs-exact.py
     tier: established
     owner: coverage-design
     landmark: true
     edges:
       - {type: conjectured-toward, to: region-glue}
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/02-covdesign/cert-d2-theorem4-localization.md]
+    notes: "DISSOLVE adjudicated (pending architect shape-check). OPEN LEG: L>=3 coupled non-origin points go via the banked domination, NOT a chain-arity-IH"
 
   - id: rr4-precedent
     kind: claim

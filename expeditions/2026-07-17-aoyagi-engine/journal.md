@@ -38,3 +38,15 @@ are PENDING — it stood down mid-integration; re-engaging. covdesign gets archi
 (region_glue may need to consult `support` — the flattening risk at the ANALYTIC layer) and C
 (Case-2 printed exponent un-re-confirmed) added to its brief. Reviewer spawns after the
 architect's constraint increment lands (review once, not mid-churn).
+
+## 2026-07-17 COVDESIGN INTEGRATED (tick 5)
+All four covdesign deliverables merged (t02 @8c6abe1ec) + batteries verified green by my own run
+(10 scripts now). theorem4 ADJUDICATED: DISSOLVE — the deepest domination is ALREADY BANKED
+hypothesis-free (deepest_le_of_homogeneous_core); the exact-CoV far-point bridge via homogeneity
+scaling; acyclicity verified. TRAP CAUGHT: my compass had pinned MinAdmMono for threshold
+preservation — wrong direction; correct pin = the minAdm-as-minimum property. Coverage
+ADJUDICATED reachable-not-wall: new content = the per-blow-up local covering lemma (+ general-M
+support atlas); the sharing kill-condition is now executable (spurious-divisor witnesses).
+D4 finding with teeth: monomial-only hunts are VACUOUS — the real gate is Tier B/C; commissioning
+the hunt run next (decorrelated seat). Still pending: architect constraint increment (fork-6 fit
+report), then reviewer; my root gate build still running.

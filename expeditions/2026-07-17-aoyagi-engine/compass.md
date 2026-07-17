@@ -52,10 +52,14 @@ over banked substrate.
   is a UNIVERSAL claim: not "established" without a decorrelated hunt for an untracked
   smaller-ratio divisor (the expedition-level kill-condition; an empty hunt = scoped evidence).
 - **theorem4-localization** owns the NON-DEEPEST REDUCTION: an EXACT reduction to a strictly
-  smaller arity-IH instance whose threshold dominates by banked `MinAdmMono` — NEVER a
-  reweighted-residual bound (that is the naked-weight falsity one level up). The arity IH is
-  legitimate only once this reduction is proved. Transcribe-vs-dissolve adjudicated at skeleton;
-  gate-check NO coverage↔theorem4 needs-cycle (map currently acyclic; keep it so).
+  smaller instance — NEVER a reweighted-residual bound. Threshold preservation pin:
+  `nReg + minAdm(M') ≥ minAdm(M)` via the minAdm-as-minimum property (inf'_le / minAdm_le_Mval
+  class) — **NOT `MinAdmMono`** (opposite direction; a name-similarity formaliser trap, caught at
+  covdesign D2). Deepest domination ALREADY BANKED hypothesis-free
+  (`deepest_le_of_homogeneous_core`, DeepestMinRlct.lean:157); far points via the exact
+  homogeneity-scaling CoV. ADJUDICATED: DISSOLVE (cert-d2; architect shape-check pending).
+  OPEN LEG: L≥3 coupled non-origin points discharge via the banked domination, NOT a chain-IH.
+  Acyclicity verified (domination calls nothing; CoV strictly drops; disjoint owners).
 - **region-glue** owns the ASSEMBLY only: finite covers gluing chart-local reads + the reduction's
   output into hbox. Region-uniformity of pivot regularity: **UNWITNESSED** — battery witness
   required before its tide (with the glue-level lossy-vs-exact witness, below).
@@ -74,10 +78,11 @@ over banked substrate.
 
 ## Standing counsel
 - Fund the general chart-tree CoV composer as a library lane (P8) — typed consumers exist.
-- Two battery gaps to close before the respective tides: (i) the GLUE-LEVEL witness — smallest
-  instance where a lossy non-deepest domination diverges while the exact IH reduction is finite;
-  (ii) a pivot-regularity co-null witness. (Council #1, both seats.)
-- The decorrelated exhaustiveness hunt for coverage is a NAMED LANE, not an afterthought.
+- Battery gaps CLOSED (covdesign D1): g-glue-lossy-vs-exact.py, g-pivot-conull.py,
+  + g-coverage-sharing-killcond.py (mis-tracked sharing invents a spurious low-ratio divisor —
+  (2,2,1) and (3,3,4) exact witnesses).
+- The exhaustiveness hunt: run Tier B/C per cert-d4 BEFORE the coverage tide; a monomial-only
+  hunt passes vacuously — never accept one as the gate.
 - Watch transcription-level decoupling: a transcriber "simplifying" the carried monomial data is
   fork vocabulary; the sharing maps are the content (typed, per fork 3).
 - Survey banked state before commissioning ANYTHING (3 redundant commissions last run).
