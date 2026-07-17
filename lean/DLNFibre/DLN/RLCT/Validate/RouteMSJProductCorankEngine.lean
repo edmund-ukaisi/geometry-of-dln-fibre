@@ -181,7 +181,19 @@ certificate; the transverse-Jacobian sign repair (GAP-IN-RELATIVE-JACOBIAN) is w
 **Kill-conditions (must pass):** min(a,b)≥2 (W1: joint center survives single-factor); the count is
 `rank(S)` not `b` (W2: `C_m < m²`, the non-submersive product-corank gap); tightness at the binding
 cell (W3/W4). **Status: OPEN** (the genuinely-new §H content — transcription of Aoyagi's resolution;
-the arithmetic budget is banked, the analytic determinantal CoV + Jacobian bookkeeping is NEW). -/
+the arithmetic budget is banked, the analytic determinantal CoV + Jacobian bookkeeping is NEW).
+
+**Level discipline (l2witness E5, load-bearing):** the eventual PROOF must establish genuine
+PRINCIPALIZATION — that the chart family is an actual SNC log-resolution whose charts principalize the
+joint ideal (W1: single-factor blow-ups do NOT — the joint center `(x,y,b)` with its alignment coordinate
+survives). A cross-check of the divisor RATIOS `min_i (a_iᵢ+1)/(2Nᵢ) ≥ c*` certifies `rlct ≥ c*`
+CONDITIONAL on the `(aᵢ,Nᵢ)` coming from a valid resolution; it does NOT certify that validity, and a
+green ratio-check is NOT by itself a native re-derivation of `rlct = c*`. Establishing the resolution's
+validity at d≥2 (not merely its ratios) is exactly this hole's burden — the boundary between native and
+cited. `hthr = 2c' < a·rank(S)` is the active-direction count of the corank block ALONE; the operative
+per-stratum gate couples it with the transverse-Jacobian `|det J| = A_r = (b−r)²` weight (satred's
+rank-sector charge, `min_r[A_r + minAdm(reducedᵣ)] = minAdm`), so the final per-chart exponent form is
+NOT `hthr` alone — it is pinned when the SVD chart maps are built. -/
 theorem corankSVD_chartFamily_lt_top {a b q : ℕ} (hab : 2 ≤ min a b)
     (S : Matrix (Fin b) (Fin q) ℝ) (c' : NNReal)
     (hthr : 2 * (c' : ℝ) < (a : ℝ) * (S.rank : ℝ))
