@@ -304,6 +304,26 @@ corneradj-confirmed artifact; the joint uses the per-stratum rank-`r` image Gram
 construction); carry the r-range `0..min(b,ρ)`; do NOT route the edge through the two traps (§3); carry
 `|det J|`; claim the VALUE `½minAdm`, not a multiplicity.
 
+## 4bis. ⚠ CORRECTION (LATE-84+, decstep's c≥2 verification) — §4's "plain IH, no decoration" is SUPERSEDED
+
+**§4's "no coupling-back / no carried corank decoration" (plain arity-IH) claim was OVER-OPTIMISTIC for the
+DEEP `c=min(a,b)≥2` corank — the correct route is DECORATED (Route-Dec), not plain (Route-D).** My LATER
+findings supersede §4's claim: (i) `leaf1-soundness.md` — the bare/plain route undershoots for the hard cells
+(the det(GGᵀ) must be CARRIED to the IH); (ii) `unified-jointsector-pin §3bis` premise review (Codex) — the
+bare-determinant extraction is UNSOUND, the pivot-Gram carry needs uniform charts / the weighted IH; (iii)
+q2gate's Q2 verdict (exact-ℕ + 2 Codexes + MC) — the unweighted/plain shell reaches only `u≤2`; `u≥3` →
+DECORATED. Exact-ℕ (`scripts/decstep_c2.py`): **6804/7560 deep-corank (c≥2) cuts are `a≥u`** ⟹ the corank
+weight is CARRIED (the `gammaAtom`+`qbox` pivot-Gram route, NOT the disposable a<u sphere) ⟹ a surviving
+negative-power Gram weight `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` onto the fresh chain ⟹ **DECORATED**. Even some `a<u`
+deep-corank cuts are hard (e.g. `(5,5,5,5)@u=3`, minAdm 17 > front-ceiling 13). **What §4 got RIGHT:** the
+reduced chain `redChain u' M` is genuinely FRESH (deep tail untouched, arity≠length). **What §4 got WRONG:**
+the reduction TARGET is the DECORATED `redChain u' M` box (carrying the c×c minor Gram weight), NOT the plain
+box — the blow-up of the c≥2 determinantal stratum leaves a carried Gram weight (the analogue of the k=1
+`|v'|^{−a}`, but rank-c and NON-disposable for a≥u). So the c≥2 corank descent needs the DECORATED IH; the
+c≥2 per-stratum atom is a RESIDUAL DESIGN GAP = decstep's `DecoratedStepHyp` ≥2×2 gap (the joint incidence of
+the sum-form weld), the open endgame piece. My §2 min-over-strata ARITHMETIC (=minAdm, 0/4039) stands; the
+plain-IH ANALYTIC route does not. The k=1 corank-one (§3) IS pinned (disposable weight); c≥2 is decorated.
+
 ## 5. Scope finding (cut-selection axis — for the controller / corneradj)
 
 The peel cut `t★` is **freely choosable** (cut-soundness `flagCharge_ge` for all cuts); shells have
