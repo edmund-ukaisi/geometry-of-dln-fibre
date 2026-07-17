@@ -1,0 +1,286 @@
+import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeAssembly
+import DLNFibre.DLN.RLCT.Validate.RouteMSJEdgeSelector
+import DLNFibre.DLN.RLCT.Validate.RouteMSJProjRadial
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontCollapseWide
+import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
+
+set_option linter.style.longLine false
+
+/-!
+# `RouteMSJEdgeAltuBounded` — the b=1, a<u, bounded-w arm of the front-collapse dispatch
+
+**Thread `d1altu` (Lane-1 `d≤1` dispatch, the b=1 corank-one edge, a<u bounded arm).** Fills the
+`b = 1` (`M₁ − t = 1`), `a < u` (`M₀ − t < t`), bounded-density (`M₂ ≤ M₁ − t`) arm of the front-collapse
+dispatch that discharges `innerCorankDescent_lt_top`'s `d ≤ 1` native `sorry`
+(`RouteMSJDecoratedPeelStep:121`). Matches the socket's freed-`Γ` triple conclusion exactly (minus the
+unused `ρ`).
+
+Target integrand (the RHS of `gammaPeelIntegral_schurShearFree_eq`, the freed-`Γ` triple):
+
+    ∫_{A' ∈ box(tailChain M)} ∫_{x ∈ outerDom t (M₀−t) (M₁−t) 1}
+      ∫_{Γ ∈ shearbox} (freedSchurLoss x Γ ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id))^{−c'} < ⊤
+
+Status: SPECIFY skeleton (signature validated against the socket; body `sorry`). The PROVE step is
+gated on a scoping decision — see the `d1altu` report: the brief's radial recipe (steps 2–5, via
+`edge_leaf_gamma_bound`/`scaledRadialEuclid`) gives a VACUOUS bound for `c' ≤ a/2` (the a-radial `B`
+diverges when `a ≥ 2c'`), so the full `c' < ½·minAdm M` window needs a two-branch dispatch (bounded
+branch for `c' ≤ a/2`). Numerically-verified charge facts: `minAdm M'' = minAdm(redChain t M)` (M'' the
+keep-M₁ chain), coverage `min(a, minAdm M) ≤ minAdm M''`.
+-/
+
+namespace DLNFibre.DLN.RLCT
+
+open MeasureTheory
+open scoped ENNReal BigOperators Matrix
+
+/-! ## The charge sub-lemma (pure `minAdm` nat algebra, decorrelated)
+
+The front-collapse invocation feeds the keep-`M₁` chain `M'' = (t, M₁, M₂, …)` to
+`frontCollapse_wide_bounded_lt_top`, which needs the threshold `exponent < ½·minAdm M''`. The available
+bound is `exponent < ½·minAdm (redChain t M)` (from `c' < ½·minAdm M` + the harvest lemma
+`minAdm_le_peelCharge_add_redChain`). Transferring it needs `minAdm (redChain t M) ≤ minAdm M''`, which
+this block supplies. It rests on a general "first-coordinate Lipschitz" bound on `minAdm`. -/
+
+/-- **First-coordinate Lipschitz bound for `minAdm`.** Raising the leading dimension of a chain from `y`
+to `x` (`y ≤ x`) increases `minAdm` by at most `(x − y)·(second dimension)`:
+`minAdm (cons x rest) ≤ (x − y)·rest 0 + minAdm (cons y rest)`. Leaf (`Fin 2`): equality
+`x·rest₀ = (x−y)·rest₀ + y·rest₀`. Recursion: take a minimiser `r*` of `minAdm (cons y rest)`'s layer-peel
+(`LayerSplit_value_eq_minAdm` + `Finset.exists_mem_eq_inf'`); the harvest lemma at `r*` bounds
+`minAdm (cons x rest)`, and `redChain r* (cons x rest) = redChain r* (cons y rest)` (the reduced chain
+drops the leading two entries, so is `x`/`y`-independent), so the two differ by
+`(x−r*)(rest₀−r*) − (y−r*)(rest₀−r*) = (x−y)(rest₀−r*) ≤ (x−y)·rest₀`. -/
+theorem minAdm_cons_le_first_lipschitz {K : ℕ} (rest : Fin (K + 1) → ℕ) (x y : ℕ) (hyx : y ≤ x) :
+    minAdm (Fin.cons x rest) ≤ (x - y) * rest 0 + minAdm (Fin.cons y rest) := by
+  rcases K with _ | K'
+  · -- leaf: `Fin 2` chains, `minAdm = product`.
+    have hcons1 : ∀ z : ℕ, (Fin.cons z rest : Fin 2 → ℕ) 1 = rest 0 := by
+      intro z; rw [← Fin.succ_zero_eq_one, Fin.cons_succ]
+    have hx : minAdm (Fin.cons x rest) = x * rest 0 := by
+      rw [← minAdmRec_eq_minAdm, minAdmRec_leaf, Fin.cons_zero, hcons1]
+    have hy : minAdm (Fin.cons y rest) = y * rest 0 := by
+      rw [← minAdmRec_eq_minAdm, minAdmRec_leaf, Fin.cons_zero, hcons1]
+    rw [hx, hy, ← add_mul, Nat.sub_add_cancel hyx]
+  · -- recursion: `cons x rest : Fin (K'+1+1+1)`.
+    have hc0 : ∀ z : ℕ, (Fin.cons z rest : Fin (K' + 1 + 1 + 1) → ℕ) 0 = z := by
+      intro z; rw [Fin.cons_zero]
+    have hc1 : ∀ z : ℕ, (Fin.cons z rest : Fin (K' + 1 + 1 + 1) → ℕ) 1 = rest 0 := by
+      intro z; rw [Fin.cons_one]
+    obtain ⟨r, hr_mem, hr_eq⟩ := Finset.exists_mem_eq_inf'
+      (show (Finset.range (min ((Fin.cons y rest : Fin (K' + 1 + 1 + 1) → ℕ) 0)
+          ((Fin.cons y rest : Fin (K' + 1 + 1 + 1) → ℕ) 1) + 1)).Nonempty by simp)
+      (fun s => ((Fin.cons y rest : Fin (K' + 1 + 1 + 1) → ℕ) 0 - s)
+          * ((Fin.cons y rest : Fin (K' + 1 + 1 + 1) → ℕ) 1 - s)
+        + minAdm (redChain s (Fin.cons y rest)))
+    rw [Finset.mem_range, Nat.lt_succ_iff, le_min_iff] at hr_mem
+    have hry : r ≤ y := (hc0 y) ▸ hr_mem.1
+    have hr0 : r ≤ rest 0 := (hc1 y) ▸ hr_mem.2
+    have hrx : r ≤ min x (rest 0) := le_min (le_trans hry hyx) hr0
+    -- the layer-peel value of `minAdm (cons y rest)` at the minimiser `r` (heads kept symbolic).
+    have hyval0 : minAdm (Fin.cons y rest)
+        = ((Fin.cons y rest : Fin (K' + 1 + 1 + 1) → ℕ) 0 - r)
+            * ((Fin.cons y rest : Fin (K' + 1 + 1 + 1) → ℕ) 1 - r)
+          + minAdm (redChain r (Fin.cons y rest)) :=
+      (LayerSplit_value_eq_minAdm (Fin.cons y rest)).symm.trans hr_eq
+    have hyval : minAdm (Fin.cons y rest)
+        = (y - r) * (rest 0 - r) + minAdm (redChain r (Fin.cons y rest)) := by
+      rw [hyval0, hc0, hc1]
+    -- the harvest bound on `minAdm (cons x rest)` at cut `r`.
+    have hxle : minAdm (Fin.cons x rest)
+        ≤ (x - r) * (rest 0 - r) + minAdm (redChain r (Fin.cons x rest)) := by
+      have h := minAdm_le_peelCharge_add_redChain (Fin.cons x rest) r (by rw [hc0, hc1]; exact hrx)
+      rwa [peelCharge, hc0, hc1] at h
+    -- the reduced chain is `x`/`y`-independent.
+    have hred : redChain r (Fin.cons x rest) = redChain r (Fin.cons y rest) := by
+      funext i
+      refine Fin.cases ?_ (fun j => ?_) i
+      · simp [redChain]
+      · simp only [redChain, Fin.cons_succ]
+    -- combine.
+    calc minAdm (Fin.cons x rest)
+        ≤ (x - r) * (rest 0 - r) + minAdm (redChain r (Fin.cons x rest)) := hxle
+      _ = (x - r) * (rest 0 - r) + minAdm (redChain r (Fin.cons y rest)) := by rw [hred]
+      _ = (x - y) * (rest 0 - r) + minAdm (Fin.cons y rest) := by
+            rw [hyval]
+            have hxr : x - r = (x - y) + (y - r) := by omega
+            rw [hxr, add_mul]; ring
+      _ ≤ (x - y) * rest 0 + minAdm (Fin.cons y rest) := by
+            exact Nat.add_le_add_right (Nat.mul_le_mul_left _ (Nat.sub_le _ _)) _
+
+/-- **The keep-`M₁` chain dominates the reduced chain (the `≥` charge direction).** For the front-collapse
+chain `M'' = (t, M₁, M₂, …) = Fin.cons t (tail M)`, if the second layer is bounded (`M₂ ≤ M₁ − t`) and
+`t ≤ M₁`, then `minAdm (redChain t M) ≤ minAdm M''`. Combined with the harvest lemma
+`minAdm M ≤ (M₀−t)(M₁−t) + minAdm (redChain t M)`, this transfers a threshold below `½·minAdm (redChain t M)`
+up to `½·minAdm M''`, the hypothesis `frontCollapse_wide_bounded_lt_top` needs at chain `M''`. Layer-peel
+`M''` (`LayerSplit_value_eq_minAdm`); each cut `t' ≤ t` gives, via the first-coordinate Lipschitz bound
+(`minAdm_cons_le_first_lipschitz`, `x=t, y=t'`) plus `M₂ ≤ M₁ − t ≤ M₁ − t'`,
+`minAdm (redChain t M) ≤ (t−t')·M₂ + minAdm (redChain t' M) ≤ (t−t')(M₁−t') + minAdm (redChain t' M'')`. -/
+theorem minAdm_redChain_le_consFront {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (hb : M 2 ≤ M 1 - t) :
+    minAdm (redChain t M) ≤ minAdm (Fin.cons t (fun i : Fin (L + 1 + 1) => M i.succ)) := by
+  set rest : Fin (L + 1 + 1) → ℕ := fun i => M i.succ with hrest
+  have e0 : (Fin.cons t rest : Fin (L + 1 + 1 + 1) → ℕ) 0 = t := by rw [Fin.cons_zero]
+  have e1 : ∀ z : ℕ, (Fin.cons z rest : Fin (L + 1 + 1 + 1) → ℕ) 1 = M 1 := by
+    intro z; rw [Fin.cons_one, hrest]; simp only [Fin.succ_zero_eq_one]
+  -- the reduced chain of `M''` at cut `t'` is the reduced chain of `M`.
+  have hredM : ∀ t' : ℕ, redChain t' (Fin.cons t rest) = redChain t' M := by
+    intro t'
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simp [redChain]
+    · simp only [redChain, Fin.cons_succ, hrest]
+  rw [← LayerSplit_value_eq_minAdm (Fin.cons t rest)]
+  refine Finset.le_inf' _ _ (fun t' ht' => ?_)
+  rw [Finset.mem_range, Nat.lt_succ_iff, le_min_iff] at ht'
+  have ht't : t' ≤ t := (e0) ▸ ht'.1
+  -- the first-coordinate Lipschitz bound at `x=t, y=t'` on the reduced-chain tail.
+  have hlip := minAdm_cons_le_first_lipschitz (fun i : Fin (L + 1) => M i.succ.succ) t t' ht't
+  -- `redChain t M = cons t (tail²)`, `redChain t' M = cons t' (tail²)`, and `tail² 0 = M 2`.
+  have hrc_t : redChain t M = Fin.cons t (fun i : Fin (L + 1) => M i.succ.succ) := rfl
+  have hrc_t' : redChain t' M = Fin.cons t' (fun i : Fin (L + 1) => M i.succ.succ) := rfl
+  have hM2 : (fun i : Fin (L + 1) => M i.succ.succ) 0 = M 2 := rfl
+  rw [hM2] at hlip
+  -- assemble.
+  calc minAdm (redChain t M)
+      = minAdm (Fin.cons t (fun i : Fin (L + 1) => M i.succ.succ)) := by rw [hrc_t]
+    _ ≤ (t - t') * M 2 + minAdm (Fin.cons t' (fun i : Fin (L + 1) => M i.succ.succ)) := hlip
+    _ = (t - t') * M 2 + minAdm (redChain t' M) := by rw [← hrc_t']
+    _ ≤ (t - t') * (M 1 - t') + minAdm (redChain t' M) := by
+          refine Nat.add_le_add_right (Nat.mul_le_mul_left _ ?_) _
+          exact le_trans hb (Nat.sub_le_sub_left ht't _)
+    _ = ((Fin.cons t rest : Fin (L + 1 + 1 + 1) → ℕ) 0 - t')
+          * ((Fin.cons t rest : Fin (L + 1 + 1 + 1) → ℕ) 1 - t')
+        + minAdm (redChain t' (Fin.cons t rest)) := by rw [e0, e1, hredM]
+
+/-! ## Step 2 — the shifted pivot change-of-variables (`y ↦ H = P·y + shift`)
+
+The pivot side of the disposal integrates the `H`-radial THROUGH the reduced-chain leading layer `y`
+(`H = P·y + η·B₁₂`, `y` free, the `η·B₁₂` a fixed shift), NEVER against `B₁₂` — the latter manufactures a
+spurious `η^{−u}`. The `y ↦ H` map is left-multiplication by `P` plus a shift, so `|det P|` cancels clean.
+This is the shifted variant of `lintegral_comp_rmatMulLeft`; verdict-independent, reusable. -/
+
+/-- **Shifted left-multiplication CoV (raw pi).** For invertible `G` and a fixed shift `c`, precomposing a
+measurable `ℝ≥0∞`-integrand with `A ↦ G·A + c` scales the full-space integral by `|det G|^{−p}`. The
+left-mult Jacobian (`lintegral_comp_rmatMulLeft`) with the shift absorbed by translation invariance
+(`lintegral_add_right_eq_self`). The pivot `y ↦ H = P·y + η·B₁₂` CoV (integrate through `y`, `η·B₁₂` fixed):
+`|det P|` cancels, no spurious `η`-power. -/
+theorem lintegral_comp_rmatMulLeft_shift {N p : ℕ} (G : Matrix (Fin N) (Fin N) ℝ) (hG : G.det ≠ 0)
+    (c : Fin N → Fin p → ℝ) (φ : (Fin N → Fin p → ℝ) → ℝ≥0∞) (hφ : Measurable φ) :
+    (∫⁻ A : Fin N → Fin p → ℝ, φ ((fun i j => ∑ k, G i k * A k j) + c))
+      = ENNReal.ofReal (|G.det| ^ p)⁻¹ * ∫⁻ B, φ B := by
+  have hψ : Measurable (fun B : Fin N → Fin p → ℝ => φ (B + c)) :=
+    hφ.comp (measurable_id.add_const c)
+  have h1 := lintegral_comp_rmatMulLeft G hG (fun B => φ (B + c)) hψ
+  have h2 : (∫⁻ B : Fin N → Fin p → ℝ, φ (B + c)) = ∫⁻ B, φ B :=
+    lintegral_add_right_eq_self φ c
+  calc (∫⁻ A : Fin N → Fin p → ℝ, φ ((fun i j => ∑ k, G i k * A k j) + c))
+      = ∫⁻ A : Fin N → Fin p → ℝ, (fun B => φ (B + c)) (fun i j => ∑ k, G i k * A k j) := rfl
+    _ = ENNReal.ofReal (|G.det| ^ p)⁻¹ * ∫⁻ B, φ (B + c) := h1
+    _ = ENNReal.ofReal (|G.det| ^ p)⁻¹ * ∫⁻ B, φ B := by rw [h2]
+
+/-! ## The pivot-energy reindex (the frontCollapse connection, algebraic crux)
+
+`W = frobSq(P·Q̃ₚ)` with `Q̃ₚ = Q_inl + P⁻¹·B₁₂·Q_inr` is inverse-free (`pivotEnergy_inverse_free`):
+`P·Q̃ₚ = P·Q_inl + B₁₂·Q_inr`. With `Q = QT.submatrix (blockSplitEquiv κ) id`, the left/right column
+blocks read the κ-image / complement rows of `QT`, so `P·Q_inl + B₁₂·Q_inr` is a single raw product
+`rmatMul X̂ QT` with `X̂` the κ-reindexed front `[P | B₁₂]` — the frontCollapse front matrix. -/
+
+/-- **The pivot-energy reindex.** For `Q = QT.submatrix (blockSplitEquiv κ) id`, the inverse-free pivot
+factor `P·Q_inl + B₁₂·Q_inr` equals the raw product `rmatMul X̂ QT`, where `X̂ I n =
+Sum.elim (P I) (B₁₂ I) ((blockSplitEquiv κ).symm n)` places `[P | B₁₂]`'s columns at the κ-image / complement
+rows of `QT`. Reindex the `QT`-row sum by `blockSplitEquiv κ` (`Equiv.sum_comp`) + split the sum type
+(`Fintype.sum_sum_type`); `blockSplitEquiv_inl` identifies the left block with `κ`. -/
+theorem pivotEnergy_reindex_rmatMul {t m q : ℕ} (P : Fin t → Fin t → ℝ)
+    (B12 : Fin t → Fin (m - t) → ℝ) (QT : Matrix (Fin m) (Fin q) ℝ) (κ : Fin t ↪ Fin m) :
+    Matrix.of P * ((QT.submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id)
+        + Matrix.of B12 * ((QT.submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id)
+      = Matrix.of (rmatMul
+          (fun (I : Fin t) (n : Fin m) => Sum.elim (P I) (B12 I) ((blockSplitEquiv κ).symm n)) QT) := by
+  ext i j
+  simp only [Matrix.add_apply, Matrix.mul_apply, Matrix.of_apply, Matrix.submatrix_apply,
+    rmatMul, id_eq]
+  -- RHS: reindex the `Fin m` sum by `blockSplitEquiv κ`, then split the sum type.
+  rw [← Equiv.sum_comp (blockSplitEquiv κ)
+      (fun n => Sum.elim (P i) (B12 i) ((blockSplitEquiv κ).symm n) * QT n j),
+    Fintype.sum_sum_type]
+  simp only [Equiv.symm_apply_apply]
+  simp only [Sum.elim_inl, Sum.elim_inr, blockSplitEquiv_inl]
+
+/-! ## The standard-equiv front reindex (direct `wingFrontBox` membership)
+
+To feed `frontCollapse_wide_bounded_lt_top` (front over `Fin M₁` columns, `wingFrontBox = leading-t-block
+invertible`), reindex the raw `PB = [P | B₁₂]`'s sum-type columns to `Fin M₁` by the STANDARD
+`finSumFinEquiv` (`Sum.inl ↦ first-t`) — NOT `blockSplitEquiv κ` (which κ-permutes and would put `P` at
+the κ-image columns, breaking direct membership). With the standard equiv the leading `t`-block is `P`, so
+membership is `IsUnit P` (the `outerPB` chart), and the κ moves entirely into the tail. -/
+
+/-- **The standard sum→`Fin` column equiv** `Fin t ⊕ Fin (M₁−t) ≃ Fin M₁` (needs `t ≤ M₁`), sending
+`Sum.inl` onto the FIRST `t` indices (`finSumFinEquiv` + the `t + (M₁−t) = M₁` cast). -/
+noncomputable def frontStdEquiv {t M₁ : ℕ} (htM1 : t ≤ M₁) : Fin t ⊕ Fin (M₁ - t) ≃ Fin M₁ :=
+  finSumFinEquiv.trans (finCongr (Nat.add_sub_cancel' htM1))
+
+/-- `frontStdEquiv` sends `Sum.inl i` to `i` embedded in the first `t` indices. -/
+theorem frontStdEquiv_symm_castLE {t M₁ : ℕ} (htM1 : t ≤ M₁) (j : Fin t) :
+    (frontStdEquiv htM1).symm (Fin.castLE htM1 j) = Sum.inl j := by
+  rw [frontStdEquiv, Equiv.symm_trans_apply]
+  have : (finCongr (Nat.add_sub_cancel' htM1)).symm (Fin.castLE htM1 j)
+      = Fin.castAdd (M₁ - t) j := by
+    apply Fin.ext; simp
+  rw [this, finSumFinEquiv_symm_apply_castAdd]
+
+/-- **Front reindex ⟹ leading column reads `P`.** For the `frontStdEquiv`-reindexed raw front, the
+leading `t`-columns read `P`: `Sum.elim (P i) (B₁₂ i) ((frontStdEquiv htM1).symm (castLE j)) = P i j`,
+since `(frontStdEquiv).symm (castLE j) = Sum.inl j`. This makes the leading `t×t` block of the reindexed
+front equal to `P`, so its `IsUnit` ⟺ `IsUnit P` (the `outerPB` chart). -/
+theorem frontStd_leadingBlock {t M₁ : ℕ} (htM1 : t ≤ M₁) (P : Fin t → Fin t → ℝ)
+    (B12 : Fin t → Fin (M₁ - t) → ℝ) (i j : Fin t) :
+    Sum.elim (P i) (B12 i) ((frontStdEquiv htM1).symm (Fin.castLE htM1 j)) = P i j := by
+  rw [frontStdEquiv_symm_castLE htM1 j, Sum.elim_inl]
+
+/-- **The b=1, a<u, bounded-w arm of the front-collapse dispatch.** For a `≥ 3`-width chain `M` with a
+legal pivot cut `1 ≤ t ≤ min(M₀,M₁)` on the corank-one edge (`M₁ − t = 1`), in the `a < u` regime
+(`M₀ − t < t`) and bounded-density regime (`M₂ < M₁ − t + 1`, i.e. `M₂ ≤ M₁ − t`), GIVEN the plain
+one-shorter strong IH `hIH` and below the geometric threshold (`c' < ½·minAdm M`), the freed-`Γ` triple
+integral is finite. This is one arm of the `d ≤ 1` native dispatch of `innerCorankDescent_lt_top`; its
+conclusion matches that socket exactly (`ρ` dropped — the freed-`Γ` integrand uses only `κ`). -/
+theorem frontCollapse_edge_b1_altu_bounded {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1))
+    (κ : Fin t ↪ Fin (M 1)) (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+    (hb1 : M 1 - t = 1)
+    (haltu : M 0 - t < t)
+    (hbnd : (M 2 : ℝ) < (M 1 : ℝ) - t + 1)
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
+    (∫⁻ A' in paramsBoxM (tailChain M) 1,
+        ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
+          ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+            ENNReal.ofReal ((freedSchurLoss x Γ
+              ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤ := by
+  -- ISOLATED HOLE — the b=1 corank-one FreeBilinear disposal (regime #1: native, no cite, no decoration).
+  -- Converged route (lane1shell/d1design, Codex-proven): KEEP the (H,γ) coupling — the drop-transverse
+  -- a-fortiori (freedSchurLoss_shear_corank_one_le → single-fragile power) is UNSOUND (discards the
+  -- γ-regularization; M=(3,3,1) diverges for 1<c'<3/2), so `∫ (single-fragile power) < ⊤` is FALSE and must
+  -- NOT be the isolated sorry. The corank term `Γ·Q_b` is rank-1 (`γ⊗z`, frobSq_rmatMul_corank_one) with γ
+  -- free; the sound assembly (M₂≤b, i.e. this `hbnd` regime) is: (1) corank-γ via banked
+  -- freeBilinear_box_lt_top (RouteMSJFreeBilinear) + the C-shift absorption; (2) pivot-H via the B₁₂↦H CoV
+  -- (|det P| cancels); (3) reduced W via frontCollapse_wide_bounded_lt_top at X=[P|B₁₂], exponent c'−a/2 —
+  -- whose threshold c'−a/2 < ½·minAdm M'' the LANDED charge lemmas above supply
+  -- (minAdm_redChain_le_consFront + minAdm_le_peelCharge_add_redChain, b=1 ⟹ peelCharge = a).
+  -- DEFINITIVE dispatch (d1design d1altu-dispatch-and-D2gate.md). `hbnd` ⟹ M₂ ≤ b = M₁−t, so this arm is
+  -- entirely in the M₂≤b regime (no LOG / M₂≥b+2 branches arise). Dispatch on c' vs ½·minAdm(redChain t M):
+  --   • α-LOW (c' < ½·minAdm(redChain t M)) — CLEAN, drop the WHOLE corank (charge 0):
+  --       freedSchurLoss ≥ W = frobSq(P·Q̃ₚ) (freedSchurLoss_inner_bounded_le, needs 0<W) ⟹ ∫_Γ ≤ W^{−c'}·vol;
+  --       W is C,Γ-free; W inverse-free (pivotEnergy_inverse_free) = frobSq(rmatMul X̂ (prod (tailChain M) A')),
+  --       X̂ = the κ-reindexed [P|B₁₂] → frontCollapse_wide_bounded_lt_top(X̂∈wingFrontBox M'') at exp c',
+  --       threshold c'<½·minAdm(redChain t M) ≤ ½·minAdm M'' via minAdm_redChain_le_consFront.
+  --       {W=0} null via ae_matrix_eval_ne_zero (RouteMSJCorankSurvival; W a nonzero matrix-polynomial) —
+  --       restrict to co-null {W>0}. ALL pieces banked + verified present.
+  --   • α-HIGH (c' ≥ ½·minAdm(redChain t M)) — the a/2 corank charge is needed = the heart's rank-1 (b=1)
+  --       joint (Δ,C,Z) FreeBilinear leaf → hIH at c'−a/2, HELD (gated on the heart, jointpnp).
+  -- The α-LOW clean branch is a ~150-200 LoC assembly (all machinery located); its one wire-up subtlety is
+  -- the reindex→wingFrontBox membership under general κ (the blockSplitEquiv column-permutation relates
+  -- outerPB's IsUnit-P to wingFrontBox's first-t block; pivotChart vs wingFrontBox). Building it next.
+  sorry
+
+end DLNFibre.DLN.RLCT
