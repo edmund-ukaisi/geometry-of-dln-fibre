@@ -18,19 +18,21 @@ Each witness is runnable, checked in **with its captured output** (`*.out`), and
 naming its discriminator, the engine kill-condition it guards, the exact instrument, and the
 expected result.
 
-## The three witnesses
+## The witnesses
 
 | # | Script | Discriminator | Exact instrument |
 |---|--------|---------------|------------------|
 | W1 | `w1_joint_center_survival.py` | JOINT-CENTER SURVIVAL: single-factor resolution does NOT principalize the product ideal | sympy Groebner over QQ |
 | W2 | `w2_codim_undershoot_family.py` | CODIM-UNDERSHOOT FAMILY: true codim `C_m = m^2 - floor(m^2/4)` vs naive `m^2`, gap `floor(m^2/4)` | exact-int min + sympy exact rank over QQ |
 | W3 | `w3_tightness_at_binding_cell.py` | TIGHTNESS AT BINDING CELL: budget inequalities meet `c*` with EQUALITY at the binding cell | exact-int DP + `fractions.Fraction` |
+| W4 | `w4_block_dispatch_binding.py` | BLOCK-LEVEL DISPATCH: the engine branches on `d = min(a,b) = min(M0-t, M1-t)`; tightness + native(<=1)/transcribe(>=2) classification at that index | exact-int DP + exact recursion enumeration |
 
-Run all three (each prints `... PASS: True` and exits 0):
+Run all four (each prints `... PASS: True` and exits 0):
 
     python3 w1_joint_center_survival.py
     python3 w2_codim_undershoot_family.py
     python3 w3_tightness_at_binding_cell.py
+    python3 w4_block_dispatch_binding.py
 
 ## Witness -> engine kill-condition map
 
@@ -90,7 +92,44 @@ strict-undershoot that marks the INVALID accounting.
   `delta` of budget there breaks `c*`. Any accounting that undershoots (D) or that would make the
   binding-cell inequality strict is invalid.
 
-## Reading the three together (the wall boundary)
+### W4 — BLOCK-LEVEL DISPATCH AT THE BINDING CUT  (guards: the branch index the engine keys on)
+
+The native engine's peel branches on `d = min(a,b) = min(M0-t, M1-t)` — the min dimension of the
+residual `a x b` corank block `Gamma` at cut `t` of a node `M = (M0, M1, ...)`. W4 carries this
+block index at the binding cut and tightness-checks the native/transcribe split **where it actually
+branches**.
+
+- **(E1) bridge.** `d = min(M0-t, M1-t)`; block `(a,b) = (M0-t, M1-t)`; charge
+  `a*b = d(d+delta)` with `delta = |M0-M1|`; the `t <-> d` reparametrization is a bijection and
+  `min(a,b) = d`.
+- **(E2) tightness at the branch index.** `minAdm(M) = min_d [ d(d+delta) + minAdm(redChain) ]`,
+  EQUALITY at the binding `d*`, STRICT above off it, at every node on every optimal peel path of
+  `(n,n,n,n)`, `n=4..7`. (The operator EQUALITY-AT-BINDING-CELL rule, applied at the index the
+  engine dispatches on.)
+- **(E3) bridge-correctness vs decstep.** The reported `min(a,b)` sequences reproduce exactly:
+  `(5,5,5,5) -> [2,2]`, `(7,7,7,7) -> [3,2]`, `(4,4,4,4) -> [2, then 1]`. This certifies the bridge
+  is the same object decstep §4 names.
+- **(E4) dispatch classification.** Enumerate optimal peel paths; classify each **corank** peel
+  block by `d` (native `d<=1` = row/column corank, no joint incidence; transcribe `d>=2` = the
+  W1/W2 product-corank atom). The terminal length-2 **BASE** is a single free bilinear/Wishart block
+  (no deeper product) and is **always native**, regardless of its `min`.
+  - **BOUNDARY (best-case max corank-block `d` by `n`): `{3:1, 4:1, 5:2, 6:2, 7:2}`.**
+    `n<=4` admit a fully-native corank optimal path (all corank blocks `d<=1`; only the free BASE
+    carries `d>=2`); `n>=5` FORCE a `min(a,b)>=2` product-corank block on **every** optimal path.
+  - **(E4') equality-at-binding-cell for every `d>=2` transcribe atom** that occurs on an optimal
+    path: `charge + minAdm(reduced) = minAdm(M)` exactly (no slack), strict off. So the engine
+    transcribes at a tight boundary.
+- **Engine kill-condition guarded.** The native `d<=1` vs transcribe `d>=2` dispatch keys on
+  `d = min(M0-t, M1-t)`; W4 certifies the budget is tight at that index and marks exactly which
+  binding blocks are transcribe atoms.
+- **Finding for the engine thread (genm-l2engine).** `n<=4` admit an optimal peel path with all
+  *corank* blocks `d<=1` (the sole `d>=2` block being the free terminal base). Whether that path is
+  a **valid resolution cover** is the engine's call: W1 warns a single-factor cut may fail to
+  principalize, so a `d<=1` cut is not automatically a valid native step. decstep's dominant-minor
+  cover instead takes the balanced cut (`d=2` for `n=4`, chart `t=2`). W4 deposits the classified
+  options; it does not decide the cover.
+
+## Reading the four together (the wall boundary)
 
 - **W3 (tightness):** the budget inequality `>= c*` is exactly tight at the binding cell (equality,
   no slack). This tightness is what the native peel achieves at min-corank <= 1.
@@ -101,6 +140,11 @@ strict-undershoot that marks the INVALID accounting.
   joint center with an alignment coordinate `b` outside the single-factor divisor ideal. The engine
   cannot natively principalize at min-corank >= 2; it must cite (Aoyagi product-corank /
   joint-resolution finiteness).
+- **W4 (block dispatch):** all of the above is indexed by `d = min(a,b) = min(M0-t, M1-t)`, the
+  variable the peel branches on. `d<=1` corank blocks are native (W3's tight budget is achieved
+  there); `d>=2` corank blocks are the W1/W2 transcribe atoms, and each occurring one is tight at
+  its binding cut. The boundary bites at `n=5` (the smallest square chain forcing a `d>=2`
+  product-corank block on every optimal path).
 
 ## Levels kept apart
 
@@ -115,15 +159,21 @@ strict-undershoot that marks the INVALID accounting.
 
 ## Decorrelated Codex sanity-check
 
-`codex/battery-{prompt,answer}.md`, `battery-run.log` — an independent gpt-5.x (xhigh) recompute of
-Q1 (product-corank codim), Q2 (the `n=2` joint ideal + single-factor membership), Q3 (the three
-integer-program minima), with my conclusion WITHHELD. See `codex/README.md` for the outcome and how
-it corroborates / diverges from the exhibits.
+- `codex/battery-{prompt,answer}.md` — independent gpt-5.x (xhigh) recompute of W1/W2/W3's facts
+  (product-corank codim; the `n=2` joint ideal + single-factor membership; the three
+  integer-program minima), conclusion WITHHELD.
+- `codex/w4-{prompt,answer}.md` — independent recompute of W4's dispatch boundary (the smallest `n`
+  forcing `d>=2` on every optimal path), conclusion WITHHELD.
+
+(The raw `*-run.log` transcripts are gitignored by repo policy; the prompt+answer pairs are the
+committed artifacts.) See `codex/README.md` for the outcome and how it corroborates the exhibits.
 
 ## Files
 
 - `w1_joint_center_survival.py` + `w1_joint_center_survival.out`
 - `w2_codim_undershoot_family.py` + `w2_codim_undershoot_family.out`
 - `w3_tightness_at_binding_cell.py` + `w3_tightness_at_binding_cell.out`
+- `w4_block_dispatch_binding.py` + `w4_block_dispatch_binding.out`
 - `index.md` (this file)
-- `codex/battery-prompt.md`, `codex/battery-answer.md`, `codex/battery-run.log`, `codex/README.md`
+- `codex/battery-{prompt,answer}.md`, `codex/w4-{prompt,answer}.md`, `codex/README.md`
+  (raw `*-run.log` transcripts are gitignored — local only)
