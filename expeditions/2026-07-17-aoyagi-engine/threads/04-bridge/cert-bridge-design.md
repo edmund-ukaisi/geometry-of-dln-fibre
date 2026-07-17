@@ -110,6 +110,15 @@ Jacobian). Consequences the controller/architect must weigh:
 - `witTree`/`witNode` non-vacuity witnesses need a real `chartMap` (the `(2,2,2)` δ-chart is the
   smallest genuine one — supplied by this cert's sympy).
 
+**Residual-guard encoding (recommended refinement).** Rather than a separate `hres` (§3e), FOLD the
+residual into `terminalExponents` — append `resRank` as a "residual block exponent" of each leaf, so
+`hrat` (`c' < e/2`) covers `resRank/2` too and `exponent_ledger_bridge` extends to
+`minAdm M ≤ resRank`. This keeps `region_glue`'s ratio interface single (`hrat` only) and pins the
+obligation **`resRank_l ≥ minAdm M`** (the residual/regular base never binds below `½ minAdm`). Verified
+on the charts (`resRank` = 5, ∞, 8 vs `minAdm` = 3, 3, 4), but it must be a THEOREM of the tide, not
+assumed — a truth-witness obligation for the construction (the residual is the innermost nondegenerate
+core; its rank ≥ `minAdm`). Flag: this makes `resRank` a genuine ledger field, not decoration.
+
 ## 5. Banked lemma per bridge step / the P8 composer interface I am pinning
 
 | step | banked lemma (or GAP) |
@@ -155,3 +164,36 @@ without a smallest-instance satisfiability check.
   (P8 composer); (ii) `LeafPullback`/`LeafJacobian` for the `(2,2,2)` δ-chart in Lean (this cert's
   sympy is the spec); (iii) wire `region_glue` to the assembled CoV + the banked radial reads. The
   bundle change (§4) is the controller's call — it re-opens the CanonicalResolution shape.
+
+## 8. ADDENDUM — decorrelated Codex consult (gpt-5.6-sol high; my signature withheld). CONFIRMS + sharpens.
+
+Codex independently reached the same structure (per-leaf chart map + two identities + image cover; the
+sharpest failure = abstract `chartDom` vs image cover; smallest counterexample = the `(2,2,2)` all-univ
+atlas at `c'=8/5`). **Four sharpenings to fold into the pin:**
+
+1. **Separate the always-bounded unit from the residual.** Write `F∘φ_l = u_{F,l}·(∏_i |x_i|^{2 a_i})·R_l`
+   with `0 < m_F ≤ u_{F,l} ≤ M_F` ALWAYS bounded, and `R_l` the residual (bounded-unit OR Morse). Same
+   for the Jacobian: `|det Dφ_l| = u_{J,l}·∏_i |x_i|^{b_i}`, `0 < m_J ≤ u_{J,l} ≤ M_J`. Cleaner than
+   folding the unit into `R_l`.
+2. **Keep the orders `a_i`, `b_i` as fields** (loss order `a_i`, Jacobian power `b_i`) — do NOT hardcode
+   `a_i = 1`. The threshold is `min( min_{a_i>0} (b_i+1)/(2 a_i), ρ_l/2 )`. (On the verified charts
+   `a_i = 1`, `b_i = divExp_i − 1`, recovering `divExp_i/2` — but the general form is safer.)
+3. **The bridge needs only the `≤` CoV, not the equality** — finiteness is ONE-SIDED:
+   `∫_{V_l} g ≤ ∫_{U_l} (g∘φ_l)·|det Dφ_l|` suffices (equality would need a.e. multiplicity one). This is
+   a genuine simplification for `region_glue` (it only bounds the box integral ABOVE).
+4. **The Morse residual needs DISJOINT coordinates + a `‖z‖²` normal form, not just a rank field.**
+   Require `y = (x, z, w)`, `x` the divisor coords disjoint from `z ∈ ℝ^{ρ_l}`, with
+   `m_R ‖z‖² ≤ R_l ≤ M_R ‖z‖²`. My `resRank` field is INSUFFICIENT alone — it must come with the
+   disjoint-`z` + squeeze certificate (then the banked `RadialInt` gives the `ρ_l/2` cap). Resolving the
+   Morse core further is unnecessary (it would add non-unit-Jacobian CoV obligations).
+
+**Route recommendation (Codex Q3, and it matches cert-d2 §3):** prefer **route (b): via the RLCT** —
+the banked `weightedThreshold_transport` already supplies the hard chart transport; the load-bearing
+missing lemma is the **homogeneous local-to-box bridge** `∫_{εK} F^{-c'} = ε^{N−2Lc'} ∫_K F^{-c'}`
+(F degree-`2L` homogeneous), so finiteness on ANY origin-neighborhood ⟹ finiteness on the box `K`.
+This is exactly my cert-d2 §3 scaling identity, now reached decorrelated. So `region_glue` = (transport
+each chart to the RLCT via the banked lemma) + (the scaling bridge to the box) + (the banked radial /
+monomial reads for the leaf thresholds) — the elementary-blow-up box-CoV (the P8 gap) is subsumed by
+the banked `weightedThreshold_transport` on THIS route, leaving the **homogeneity scaling bridge** as
+the single genuinely-missing analytic lemma. **This narrows the P8 gap** (§5) to the scaling bridge on
+the RLCT route.
