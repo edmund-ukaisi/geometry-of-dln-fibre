@@ -336,3 +336,13 @@ sorry-free, so route (b)'s substrate is stronger than priced; compass fork 8 ame
 (region-glue note names the adopted fix explicitly). Calibration staleness flagged for navigator
 pass #2 (theorem4 owner-gap CLOSED at tick 17). AxCheck-rename WATCH recorded in the overlay.
 Cartographer stands down; next pass at cadence.
+
+## 2026-07-17 RESTRUCTURE CHECKPOINT MERGED (tick 28)
+The council-adopted edge-labelled family landed green (49a1f34bd, merged): Edge carrier + StepRel-
+ready shapes, mixed-case positive witness IN-FILE (the constructive complement of the necessity
+witness), upstairs-only openness, the witness split executed with AxCheck entries following, the
+r1 vacuity now failing at the pullback level. Architect honest on the four open items (path-fold
+coherence for chartMap; the tStar emitted-path form; two battery follow-ups; docstring reflow) —
+and it has now MISSED the Q5-final ruling twice (still "pending"); third relay sent, blunt. Fresh
+review round HELD until the final increment lands (review once, not twice). My own AxCheck gate
+build running (its slot-terminated full-closure build is not accepted as the gate).
