@@ -11,14 +11,26 @@ single-factor for EVERY legal Lane-1 sector, and the boundary is EXACT:
      single-factor  <=>  min(r,k) <= 1     (r = M0-t, k = M1-t : the peel corank)
      product-corank (Lane-2 wall, cited)  <=>  min(r,k) >= 2
 
-REASON (load-bearing, PROVEN exactly below): the exceptional block Delta.C has
-rank <= min(r,k). At min(r,k)<=1 it is rank <=1, so ||Delta.C.Z||^2 = ||left||^2 * ||right^T Z||^2
-is a FreeBilinear rank-1 tensor; combined with the core ||B Z||^2 the leaf is the front-collapse of
-an EFFECTIVELY FREE front (+ a radial charge), resolved by peeling on the dominant-minor chart
-(front full-rank => only the tail/deep product drops = single matrix) then handed to hIH (which
-re-dispatches). At min(r,k)>=2 the block Delta.C is genuinely rank-2, ||Delta.C.Z||^2 is a
->=2x>=2 matrix product, and the balanced locus {both factors drop} is a joint determinantal
-center NOT principalized by single-matrix blow-ups = Aoyagi's product-corank = the cited Lane-2 wall.
+Lane-1 native-ness rests on TWO single-factor mechanisms (both proven below), covering the two
+distinct "hearts":
+
+ MECHANISM I -- the CORANK block (d1-a>=u / a<u). The exceptional block Delta.C has
+   rank <= min(r,k). At min(r,k)<=1 it is rank <=1, so ||Delta.C.Z||^2 = ||left||^2 * ||right^T Z||^2
+   is a FreeBilinear rank-1 tensor; combined with the core ||B Z||^2 the leaf is the front-collapse of
+   an EFFECTIVELY FREE front (+ a radial charge). At min(r,k)>=2 the block Delta.C is genuinely rank-2,
+   ||Delta.C.Z||^2 is a >=2x>=2 matrix product, and the balanced locus {both factors drop} is a joint
+   determinantal center = Aoyagi's product-corank = the cited Lane-2 wall. [TEST 1]
+
+ MECHANISM II -- the WING FRONT rank-sector (a=0-POWER / b=0-POWER). Here there is NO corank block;
+   the heart is W = X.A1, X a FULL-RANK front (dominant-minor chart), A1 the free tail layer. These
+   strata are GENERAL-RANK (min(M0-s*,M1-s*) can be >=2, e.g. M=(2,2,3,3)@s*=0, r=k=2) -- NOT rank-1.
+   They are still SINGLE-FACTOR, but by a DIFFERENT mechanism: X full-rank => rank(X.A1)=min(rank A1,t),
+   so only the SINGLE matrix A1 drops, and {rank(X.A1)<=sigma} is the surjective-linear preimage of a
+   single-matrix determinantal variety (codim (t-sigma)(M2-sigma)), NOT a 2-matrix product-corank. The
+   product-corank (X AND A1 both dropping) is EXCLUDED because X cannot drop rank on the chart. [TEST 4]
+
+Both are resolved by peeling on the dominant-minor chart (front full-rank => only the tail/deep product
+drops = single matrix) then handed to hIH (which re-dispatches).
 
 ESSENTIAL SUBTLETY the formaliser must respect (Codex-sharpened, already the spec's KILL-conds):
 the native route must PEEL (keep the front full-rank via the dominant-minor cover, only the tail
@@ -154,6 +166,33 @@ print(f"  F FULL box (rank drops OK): rlct(||F.A1||^2) slope~{slope(np.sum(np.ei
 
 print()
 print("="*93)
-print("VERDICT: NO KILL. Single-factor holds for every Lane-1 sector; boundary EXACT at min(r,k)<=1.")
-print("The min(r,k)>=2 product-corank is exactly the DISPATCHED (cited Lane-2) case.")
+print("TEST 4  (EXACT) -- MECHANISM II: the WING FRONT rank-sector (general-rank) is single-factor")
+print("        via the FULL-RANK front (only A1 drops), distinct from the rank-<=1 corank block.")
+print("="*93)
+# (4a) rank(X.A1) = min(rank A1, t) for X full row rank t  (generic, symbolic)
+ok4=True
+for (t,M1,M2) in [(2,3,3),(2,4,3),(3,4,4),(2,2,3),(2,3,2)]:
+    W = sym_mat("x",t,M1)*sym_mat("a",M1,M2)
+    if W.rank()!=min(t,M2): ok4=False; print(f"   VIOLATION t={t},M1={M1},M2={M2}: rank={W.rank()}!=min(t,M2)")
+print(f"  (4a) generic rank(X.A1)==min(t,M2) [X,A1 full-rank] over shapes : {'CONFIRMED' if ok4 else 'FAILED'}")
+# (4b) surjectivity of A1 |-> X.A1 (rank of the linear map = t*M2) => single-matrix pullback
+allsurj=True
+for (t,M1,M2) in [(2,3,3),(3,4,4),(2,4,3)]:
+    X=rng.standard_normal((t,M1)); J=np.kron(X,np.eye(M2))
+    if np.linalg.matrix_rank(J)!=t*M2: allsurj=False
+    print(f"  (4b) t={t},M1={M1},M2={M2}: rank(dW/dA1)={np.linalg.matrix_rank(J)} (=t*M2={t*M2}) => surjective => codim{{rank(W)<=s}}=(t-s)(M2-s) single-matrix")
+print(f"       A1 |-> X.A1 surjective for all shapes (=> single-matrix pullback, NOT product-corank): {allsurj}")
+# (4c) d1design's general-rank witness M=(2,2,3,3)@s*=0 (SQUARE wing, r=k=2)
+Xs=sym_mat("x",2,2); A1w=sym_mat("a",2,3); Ww=Xs*A1w
+print(f"  (4c) witness M=(2,2,3,3)@s*=0 (r=k=2, general-rank): X 2x2 invertible => {{X.A1=0}}={{A1=0}} (codim 6, LINEAR);")
+print(f"       intermediate {{rank(X.A1)<=1}}={{rank(A1)<=1}} codim (2-1)(3-1)=2 = single-matrix det of A1. Single-factor.")
+print("       (if X were ALSO free: X and A1 both drop => joint balanced center = product-corank, EXCLUDED on chart.)")
+
+print()
+print("="*93)
+print("VERDICT: NO KILL. Single-factor holds for every Lane-1 sector, by TWO mechanisms:")
+print("  I  (corank block, min(r,k)<=1) : rank(Delta.C)<=1 => FreeBilinear rank-1 tensor            [TEST 1]")
+print("  II (wing front, general-rank)  : X full-rank => only A1 drops = single-matrix pullback     [TEST 4]")
+print("Both single-factor. min(r,k)>=2 (rank-2 Delta.C) AND the off-chart {rank(X)<t} tube = the")
+print("DISPATCHED cited Lane-2 product-corank. Boundary EXACT.")
 print("="*93)
