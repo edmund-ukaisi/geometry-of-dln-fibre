@@ -63,11 +63,17 @@ def LeafPullback (l : LeafData (L := L) M) : Prop :=
           = (∏ k : Fin l.numDiv, (u (l.divCoord k)) ^ 2) * residualCore u ∧
       lo * residualBaseForm l u ≤ residualCore u ∧ residualCore u ≤ hi * residualBaseForm l u
 
-/-- **The Jacobian ledger** (cert-bridge-design (J)) — DELIBERATELY LOOSE pending the Q5 ruling
-(fderiv-over-flat-coords vs the RLCT-transport route; `Params M` is not a normed space, so a direct
-`HasFDerivWithinAt … → Params M` is ill-typed). Route-neutral placeholder: the chart's monomial
-Jacobian ledger is positive-bounded on the source box. The exact identity `|det Dφ| = ∏ u^{divExp−1} ·
-unit` is pinned once Q5 lands. -/
+/-- **The Jacobian ledger** (cert-bridge-design (J)) — Q5 RULED route (b): the TRANSPORT-HYPOTHESIS
+form. `Params M` IS a normed space (banked `Foundations/ParamsFlatLinear`: `instNormedAddCommGroupParams`
++ `paramsEquivFlatCLE` + `hasFDerivAt_paramsEquivFlat`; the norm topology is `rfl`-equal to the product
+topology). So the target statement is: `HasFDerivWithinAt` of the composite `paramsEquivFlat M ∘
+chartMap` over `srcBox` with `|det Dφ| = ∏ u^{divExp−1} · unit` (a POSITIVE-bounded `unit`), consumed
+by `region_glue` via the LOCAL-homeomorph transport `rlctAtOn_boundedUnit_localHomeomorph` (a blow-up
+chart is proper, not globally injective) + the scaling bridge. NOTE (architect): the endo-`det`
+requires the chart source to be `Fin (flatDim M)` (numChartVar = flatDim) — pinning the exact
+`HasFDerivWithinAt`/`LinearMap.det` statement carries that flat-coord refactor; done as a focused
+increment (the transport form is the fixed target, not loose). Current elaborating placeholder: a
+positive-bounded Jacobian unit on a nonempty source box. -/
 def LeafJacobian (l : LeafData (L := L) M) : Prop :=
   ∃ Jhi : ℝ, 0 < Jhi ∧ l.srcBox.Nonempty
 
