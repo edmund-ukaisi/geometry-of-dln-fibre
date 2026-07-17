@@ -3981,3 +3981,980 @@ expeditions/2026-06-20-aoyagi-full/threads/genm-waisthunt/codex/revcov-hunt-prom
 expeditions/2026-06-20-aoyagi-full/threads/22-r1-wedge-design/scripts/wedge_weighted_334.py
 expeditions/2026-06-20-aoyagi-full/threads/22-r1-wedge-design/scripts/wedge_weighted_334b.py
 
+codex
+A concrete gap has emerged: the LP is exhaustive only for toroidal divisors of each chosen chart. It does not include a second blow-up whose center is a non-coordinate subvariety of a weighted exceptional divisor—exactly where equal-weight binomial terms cancel. I’m now checking which exact CAS route can certify those descendants for the two 12-variable cubic ideals.
+exec
+/bin/bash -lc "command -v Singular || true
+command -v M2 || true
+command -v sage || true
+sed -n '1,280p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py
+sed -n '1,320p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py
+sed -n '1,260p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h7_chart_lp.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/t03-hunt
+2026-07-17T19:41:52.930553Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f7196-54b8-7441-bae8-eec5a8ea5e92`" }
+ exited 1:
+2026-07-17T19:41:52.930939Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "command -v Singular || true
+command -v M2 || true
+command -v sage || true
+sed -n '1,280p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py
+sed -n '1,320p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py
+sed -n '1,260p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h7_chart_lp.py"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc "sed -n '1,300p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py && sed -n '1,340p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py && sed -n '1,280p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h7_chart_lp.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/t03-hunt
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""HUNT h6 -- (2,2,2,2) [L=3] composed DOUBLE-incidence chart + weighted-divisor hunt.
+
+This is the L>=3 gate: the paper's coverage direction is assertion-level for L>=3,
+so an untracked sub-1/2-minAdm divisor, if any, lives here. We build a genuine
+composition of TWO incidence blow-ups (on C1 and C2) plus row-contraction shears on
+C3 that expose the product-vanishing conditions as coordinates, then search monomial
+weights EXHAUSTIVELY. Jacobian computed exactly by sympy (expect ~ al1^3 al2^3).
+
+KILL iff any weight gives 2*rho = (sum w + w(Jac)) / min_g w(g o phi) < minAdm = 3.
+"""
+import sys, itertools
+from fractions import Fraction as F
+import sympy as sp
+sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/map/battery")
+from _minadm import minAdm
+
+# incidence coords for C1 and C2 (2x2 each), pivot (0,0)
+al1, a1, b1, d1 = sp.symbols("al1 a1 b1 d1")
+al2, a2, b2, d2 = sp.symbols("al2 a2 b2 d2")
+# C3 sheared: expose [1,*]-contraction. Keep 4 free coords.
+p, q, r, s = sp.symbols("p q r s")     # C3 entries (sheared below)
+
+M1 = sp.Matrix([[al1, al1 * a1], [al1 * b1, al1 * (a1 * b1 + d1)]])
+M2 = sp.Matrix([[al2, al2 * a2], [al2 * b2, al2 * (a2 * b2 + d2)]])
+# shear C3 so that row0 absorbs a2-contraction: C3 = [[p - a2*r, q - a2*s],[r, s]]
+C3 = sp.Matrix([[p - a2 * r, q - a2 * s], [r, s]])
+
+newvars = [al1, a1, b1, d1, al2, a2, b2, d2, p, q, r, s]
+# old entries: C1(4), C2(4), C3(4) in terms of new
+oldC1 = [M1[0, 0], M1[0, 1], M1[1, 0], M1[1, 1]]
+oldC2 = [M2[0, 0], M2[0, 1], M2[1, 0], M2[1, 1]]
+oldC3 = [C3[0, 0], C3[0, 1], C3[1, 0], C3[1, 1]]
+old_exprs = oldC1 + oldC2 + oldC3
+
+Jmat = sp.Matrix([[sp.diff(e, v) for v in newvars] for e in old_exprs])
+Jdet = sp.expand(Jmat.det())
+
+P = sp.expand(M1 * M2 * C3)
+gens = [sp.expand(P[i, j]) for i in range(2) for j in range(2)]
+
+
+def support(expr):
+    expr = sp.expand(expr)
+    if expr == 0:
+        return []
+    return [tuple(int(e) for e in m) for m in sp.Poly(expr, *newvars).monoms()]
+
+
+gen_sup = [support(g) for g in gens]
+jac_sup = support(Jdet)
+
+
+def wdeg(sup, w):
+    return min(sum(e * wi for e, wi in zip(m, w)) for m in sup)
+
+
+def hunt(wmax):
+    best = None; argw = None; hits = []
+    nv = len(newvars)
+    for w in itertools.product(range(wmax + 1), repeat=nv):
+        sw = sum(w)
+        if sw == 0:
+            continue
+        denom = min(wdeg(sig, w) for sig in gen_sup)
+        if denom <= 0:
+            continue
+        num = sw + wdeg(jac_sup, w)
+        rr = F(num, denom)
+        if best is None or rr < best:
+            best, argw = rr, w
+        if rr < minAdm((2, 2, 2, 2)):
+            hits.append((rr, w))
+    return best, argw, hits
+
+
+if __name__ == "__main__":
+    ma = minAdm((2, 2, 2, 2))
+    print("=== (2,2,2,2) composed double-incidence chart ===")
+    print("Jacobian det =", Jdet)
+    print("generators:")
+    for g in gens:
+        print("   ", g)
+    print(f"minAdm={ma}, target rho=3/2 (2*rho=3)\n")
+    for wmax in (2, 3):
+        best, argw, hits = hunt(wmax)
+        print(f"[wmax={wmax}] min 2*rho={best} (rho={best/2}); undershoots(<{ma})={len(hits)}")
+        print(f"          argmin w={dict(zip([str(v) for v in newvars], argw))}")
+        for (rr, w) in hits[:8]:
+            print(f"          2rho={rr} at {w}  <== KILL CANDIDATE")
+        print("          VERDICT:", "SURVIVE" if not hits else "KILL FOUND")
+#!/usr/bin/env python3
+"""HUNT h9 -- adversarial extras:
+  (B2) alternative pivot: (3,3,4) incidence at pivot (1,1) and (2,2) -- ratio must be
+       pivot-independent (permutation invariance of the divisor ratios).
+  (L=3 cross-check) (2,3,2,2) double incidence chart (C1 2x3, C2 3x2) + LP.
+  (B4) independentize sanity: show the ACTUAL (3,3,4) t=(1,0) chart ideal is NOT the
+       'independentised' ideal that would give the spurious 3 -- the genuine chart gives 4.
+"""
+import sys
+import sympy as sp
+sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts")
+sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/map/battery")
+from _minadm import minAdm
+from h7_chart_lp import min_ratio_exact, min_ratio_lp
+
+
+def build_L2_chart_pivot(M0, M1, M2, piv=(0, 0)):
+    p, q = piv
+    al = sp.Symbol("al")
+    a = {j: sp.Symbol(f"a{j}") for j in range(M1) if j != q}
+    b = {i: sp.Symbol(f"b{i}") for i in range(M0) if i != p}
+    D = {(i, j): sp.Symbol(f"D{i}_{j}") for i in range(M0) for j in range(M1) if i != p and j != q}
+    C1 = sp.zeros(M0, M1)
+    for i in range(M0):
+        for j in range(M1):
+            if i == p and j == q:
+                C1[i, j] = al
+            elif i == p:
+                C1[i, j] = al * a[j]
+            elif j == q:
+                C1[i, j] = al * b[i]
+            else:
+                C1[i, j] = al * (b[i] * a[j] + D[(i, j)])
+    # shear C2 exposing the pivot-row contraction g = row p + sum_{j!=q} a_j row j
+    c = {(i, k): sp.Symbol(f"c{i}_{k}") for i in range(M1) for k in range(M2) if i != p}
+    g = [sp.Symbol(f"g{k}") for k in range(M2)]
+    C2 = sp.zeros(M1, M2)
+    for k in range(M2):
+        C2[p, k] = g[k] - sum(a[j] * c[(j, k)] for j in range(M1) if j != q)
+    for i in range(M1):
+        if i == p:
+            continue
+        for k in range(M2):
+            C2[i, k] = c[(i, k)]
+    newvars = [al] + [a[j] for j in sorted(a)] + [b[i] for i in sorted(b)] \
+              + [D[k] for k in sorted(D)] + g + [c[k] for k in sorted(c)]
+    old = [C1[i, j] for i in range(M0) for j in range(M1)] + \
+          [C2[i, k] for i in range(M1) for k in range(M2)]
+    Jdet = sp.expand(sp.Matrix([[sp.diff(e, v) for v in newvars] for e in old]).det())
+    P = sp.expand(C1 * C2)
+    gens = [sp.expand(P[i, j]) for i in range(M0) for j in range(M2)]
+
+    def sup(e):
+        e = sp.expand(e)
+        return [] if e == 0 else [tuple(int(x) for x in m) for m in sp.Poly(e, *newvars).monoms()]
+    return newvars, [sup(gm) for gm in gens if gm != 0], sup(Jdet), Jdet
+
+
+def build_2322():
+    """M=(2,3,2,2): C1 2x3 incidence (pivot 0,0), C2 3x2 incidence (pivot 0,0), C3 2x2 free."""
+    al1, a11, a12, b11, D111, D112 = sp.symbols("al1 a11 a12 b11 D111 D112")
+    C1 = sp.Matrix([[al1, al1 * a11, al1 * a12],
+                    [al1 * b11, al1 * (b11 * a11 + D111), al1 * (b11 * a12 + D112)]])  # 2x3
+    al2, a21, b21, b22, D211, D221 = sp.symbols("al2 a21 b21 b22 D211 D221")
+    C2 = sp.Matrix([[al2, al2 * a21],
+                    [al2 * b21, al2 * (b21 * a21 + D211)],
+                    [al2 * b22, al2 * (b22 * a21 + D221)]])  # 3x2
+    p, q, r, s = sp.symbols("p q r s")
+    C3 = sp.Matrix([[p, q], [r, s]])
+    newvars = [al1, a11, a12, b11, D111, D112, al2, a21, b21, b22, D211, D221, p, q, r, s]
+    old = [C1[i, j] for i in range(2) for j in range(3)] + \
+          [C2[i, j] for i in range(3) for j in range(2)] + \
+          [C3[i, j] for i in range(2) for j in range(2)]
+    Jdet = sp.expand(sp.Matrix([[sp.diff(e, v) for v in newvars] for e in old]).det())
+    P = sp.expand(C1 * C2 * C3)
+    gens = [sp.expand(P[i, j]) for i in range(2) for j in range(2)]
+
+    def sup(e):
+        e = sp.expand(e)
+        return [] if e == 0 else [tuple(int(x) for x in m) for m in sp.Poly(e, *newvars).monoms()]
+    return newvars, [sup(gm) for gm in gens if gm != 0], sup(Jdet), Jdet
+
+
+if __name__ == "__main__":
+    print("=== (B2) alternative-pivot invariance: (3,3,4) ===")
+    for piv in [(0, 0), (1, 1), (2, 2)]:
+        nv, gs, js, Jd = build_L2_chart_pivot(3, 3, 4, piv)
+        val, _ = min_ratio_lp(gs, js, len(nv))
+        print(f"   pivot {piv}: Jac={Jd}, LP min 2rho={val:.4f} (rho={val/2:.4f})  "
+              f"-> {'SURVIVE' if val >= 8 - 1e-6 else 'KILL'}")
+
+    print("\n=== (L=3 cross-check) (2,3,2,2) double-incidence chart ===")
+    nv, gs, js, Jd = build_2322()
+    ma = minAdm((2, 3, 2, 2))
+    val, x = min_ratio_lp(gs, js, len(nv))
+    print(f"   #newvars={len(nv)}, Jac={Jd}, minAdm={ma} (target 2rho={ma})")
+    print(f"   LP min 2rho={val:.6f} (rho={val/2:.6f})  -> {'SURVIVE' if val >= ma - 1e-6 else 'KILL'}")
+#!/usr/bin/env python3
+"""HUNT h7 -- EXACT fractional-program min ratio over a chart (vertex enumeration).
+
+For a chart with generator monomial supports {e_m} (exponent vectors over new coords)
+and Jacobian support {f_j}, the induced-valuation ratio is scale-invariant:
+
+    2*rho(w) = ( sum_i w_i + min_j (w . f_j) ) / ( min over gen-monomials m of w . e_m ).
+
+Normalize the denominator to 1: minimize the CONCAVE numerator  N(w) = sum w + min_j w.f_j
+over the polytope  P = { w >= 0 : w . e_m >= 1  for every generator-monomial m }.
+A concave function on P attains its min at a VERTEX of P; enumerate vertices exactly
+(n tight constraints among the (#gen-monomials + n nonneg)), evaluate N exactly, take
+the min. This is the TRUE continuous min ratio for the chart (no grid truncation) --
+so 'no undershoot' here is a real per-chart certificate, not a sampled one.
+"""
+from fractions import Fraction as F
+from itertools import combinations
+
+
+def _solve(rows, rhs):
+    n = len(rows)
+    A = [[F(x) for x in r] + [F(b)] for r, b in zip(rows, rhs)]
+    for c in range(n):
+        piv = next((r for r in range(c, n) if A[r][c] != 0), None)
+        if piv is None:
+            return None
+        A[c], A[piv] = A[piv], A[c]
+        inv = A[c][c]
+        A[c] = [x / inv for x in A[c]]
+        for r in range(n):
+            if r != c and A[r][c] != 0:
+                f = A[r][c]
+                A[r] = [a - f * b for a, b in zip(A[r], A[c])]
+    return [A[r][n] for r in range(n)]
+
+
+def min_ratio_exact(gen_sup, jac_sup, nvars):
+    """gen_sup: list (per generator) of list of exponent tuples. jac_sup: list of exponent
+    tuples (the Jacobian det's monomials). Returns exact min 2*rho (Fraction) and argmin w."""
+    # gen-monomial constraints: w . e >= 1
+    gmons = []
+    for g in gen_sup:
+        for m in g:
+            gmons.append([F(x) for x in m])
+    cons = [(cm, F(1)) for cm in gmons]
+    for i in range(nvars):
+        e = [F(0)] * nvars
+        e[i] = F(1)
+        cons.append((e, F(0)))          # w_i >= 0
+    jf = [[F(x) for x in f] for f in jac_sup] if jac_sup else None
+    best = None; argw = None
+    idxs = list(range(len(cons)))
+    for combo in combinations(idxs, nvars):
+        rows = [cons[c][0] for c in combo]
+        rhs = [cons[c][1] for c in combo]
+        sol = _solve(rows, rhs)
+        if sol is None:
+            continue
+        if any(s < 0 for s in sol):
+            continue
+        # feasibility: every gen-monomial constraint satisfied
+        ok = True
+        for (cv, rv) in cons:
+            if sum(cf * s for cf, s in zip(cv, sol)) < rv - F(1, 10**9):
+                ok = False
+                break
+        if not ok:
+            continue
+        # denom = min gen-monomial value; must be >0 (it's >=1 by feasibility)
+        num = sum(sol)
+        if jf:
+            num += min(sum(cf * s for cf, s in zip(f, sol)) for f in jf)
+        # ratio = num / denom, denom normalized to the min gen-monomial value
+        denom = min(sum(cf * s for cf, s in zip(gm, sol)) for gm in gmons)
+        if denom <= 0:
+            continue
+        rr = F(num, 1) / denom
+        if best is None or rr < best:
+            best, argw = rr, tuple(sol)
+    return best, argw
+
+
+if __name__ == "__main__":
+    import sys
+    sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/map/battery")
+    from _minadm import minAdm
+    # cross-check on the (2,2,2) composed chart
+    sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts")
+    import h5_composed_chart_222 as h5
+    best, argw = min_ratio_exact(h5.gen_sup, h5.jac_sup, len(h5.newvars))
+    print(f"(2,2,2) exact chart min 2*rho = {best} (rho={best/2}); minAdm=3  "
+          f"{'SURVIVE' if best >= 3 else 'KILL'}")
+    import h6_composed_chart_2222 as h6
+    best6, argw6 = min_ratio_exact(h6.gen_sup, h6.jac_sup, len(h6.newvars))
+    print(f"(2,2,2,2) exact chart min 2*rho = {best6} (rho={best6/2}); minAdm=3  "
+          f"{'SURVIVE' if best6 >= 3 else 'KILL'}")
+
+
+def min_ratio_lp(gen_sup, jac_sup, nvars):
+    """LP min ratio when the numerator is LINEAR (Jacobian a single monomial, as for
+    incidence charts). Solves  min c.w  s.t.  w.e_m >= 1 (all gen-monomials), w >= 0,
+    where c = ones + jac_exponent. Float (HiGHS); LP optimum is rational, so we also
+    return the basic weight for exact re-verification. A GUIDE that is exact-at-vertex."""
+    import numpy as np
+    from scipy.optimize import linprog
+    assert jac_sup is None or len(jac_sup) == 1, "numerator not linear (multi-monomial Jac)"
+    c = np.ones(nvars)
+    if jac_sup:
+        for i, e in enumerate(jac_sup[0]):
+            c[i] += e
+    A = []
+    for g in gen_sup:
+        for m in g:
+            A.append([-float(x) for x in m])   # -w.e <= -1
+    b = [-1.0] * len(A)
+    res = linprog(c=c, A_ub=A, b_ub=b, bounds=[(0, None)] * nvars, method="highs")
+    return (res.fun if res.success else None), (res.x if res.success else None)
+
+exec
+/bin/bash -lc 'rg -n "argmin|composed double|h6|2rho=3|D111|binomial|al1" expeditions/2026-07-17-aoyagi-engine/threads/03-hunt -S' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/t03-hunt
+ succeeded in 0ms:
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam-prompt.md:44:   not a grid. Results: (2,2,2) exact min 2rho=3; (2,2,3)=4; (3,3,4)=8 (the corank-2 case, reached by
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam-prompt.md:45:   a single rank-1 peel leaving a 2x2 Delta block); (2,2,2,2) double-incidence LP min 2rho=3;
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam-prompt.md:55:        not yet normal-crossing (my (2,2,2) leaf ideal still has binomials like b*g0 + delta*c210).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam-prompt.md:63:Q4. Given my binomial-leaf concern in Q1(b): with GENERIC coefficients, can a binomial b*g0 + delta*c
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h1_baseline_codim.py:72:    Returns (min_2rho, argmin, mode)."""
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h3_incidence_engine.py:136:    print(f"  argmin w (aligned to {[str(v) for v in newvars]}) = {argw}")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h10_second_blowup.py:2:"""HUNT h10 -- second blow-up of the non-NC binomial leaf (Q1(b)/Q4 self-check).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h10_second_blowup.py:4:The (2,2,2) composed-chart leaf ideal has binomial generators
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h10_second_blowup.py:7:FURTHER blow-up of the binomial locus {b=de=0}. We COMPOSE that blow-up (both standard
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h10_second_blowup.py:56:        print(f"=== (2,2,2) leaf + blow-up of binomial locus, chart '{which}' ===")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h5_composed_chart_222.py:84:    print(f"  argmin w (aligned to {[str(v) for v in newvars]}) = {argw}")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h7_chart_lp.py:39:    tuples (the Jacobian det's monomials). Returns exact min 2*rho (Fraction) and argmin w."""
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h7_chart_lp.py:93:    import h6_composed_chart_2222 as h6
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h7_chart_lp.py:94:    best6, argw6 = min_ratio_exact(h6.gen_sup, h6.jac_sup, len(h6.newvars))
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py:2:"""HUNT h6 -- (2,2,2,2) [L=3] composed DOUBLE-incidence chart + weighted-divisor hunt.
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py:8:weights EXHAUSTIVELY. Jacobian computed exactly by sympy (expect ~ al1^3 al2^3).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py:19:al1, a1, b1, d1 = sp.symbols("al1 a1 b1 d1")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py:24:M1 = sp.Matrix([[al1, al1 * a1], [al1 * b1, al1 * (a1 * b1 + d1)]])
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py:29:newvars = [al1, a1, b1, d1, al2, a2, b2, d2, p, q, r, s]
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py:79:    print("=== (2,2,2,2) composed double-incidence chart ===")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py:88:        print(f"          argmin w={dict(zip([str(v) for v in newvars], argw))}")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py:61:    al1, a11, a12, b11, D111, D112 = sp.symbols("al1 a11 a12 b11 D111 D112")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py:62:    C1 = sp.Matrix([[al1, al1 * a11, al1 * a12],
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py:63:                    [al1 * b11, al1 * (b11 * a11 + D111), al1 * (b11 * a12 + D112)]])  # 2x3
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py:70:    newvars = [al1, a11, a12, b11, D111, D112, al2, a21, b21, b22, D211, D221, p, q, r, s]
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:58:   not a grid. Results: (2,2,2) exact min 2rho=3; (2,2,3)=4; (3,3,4)=8 (the corank-2 case, reached by
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:59:   a single rank-1 peel leaving a 2x2 Delta block); (2,2,2,2) double-incidence LP min 2rho=3;
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:69:        not yet normal-crossing (my (2,2,2) leaf ideal still has binomials like b*g0 + delta*c210).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:77:Q4. Given my binomial-leaf concern in Q1(b): with GENERIC coefficients, can a binomial b*g0 + delta*c
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:99:/bin/bash -lc "sed -n '1,240p' CLAUDE.md && rg -n \"Tier B|incidence|binomial|normal.cross|lct|minAdm|aoyagi|valuation\" -S . --glob '"'!paper-sources/**'"' --glob '"'!*.json'"' --glob '"'!*.lock'"'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/t03-hunt
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:270:./ROADMAP.md:169:through an inverse-Pochhammer orthogonality `Core.QSeriesOrth.orth` — no $q$-binomial library needed) →
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:293:./theory/aoyagi-2023-reproduction/verify-r1-135-cover-design.md:73:| `M` | `minAdm` | argmin `T*` | `\|Adm\|=\|paths\|` | codims over `Adm` |
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:300:./theory/aoyagi-2023-reproduction/verify-r1-135-cover-design.md:120:The `⨅` does not OVERESTIMATE iff SOME leaf realizes `= ½·minAdm`. Only the **minimiser** `T*` (argmin of
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:309:./theory/aoyagi-2023-reproduction/verify-r1-135-cover-design.md:165:    accumulated codim `= Mval(M,T)` (`/tmp/check_branching.py`); `minAdm`/argmins (`/tmp/check_telescope.py`).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1251:./expeditions/2026-06-20-aoyagi-full/discuss-at-close.md:493:binomial identities. **Aoyagi-full impact: NONE on the headline** — `aoyagi_learning_coefficient` is a *λ* statement, and λ AGREES
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1550:./expeditions/2026-06-20-aoyagi-full/discuss-at-close.md:3023:- **What happened.** The last several tides built an "off-shell full-block via the deep floor" route for the head-split domination (t2adjud → pradial's Claim F → finfin → shearfin → flagpeel). Before letting the final build (flagpeel) commit to the wall `frobSqBlockFull_lt_top`, I gated it on a decorrelated obstruction hunt (thresholdhunt) — which **certified the wall FALSE**: witness M=(6,6,6),u=4, c'=13.75 diverges (codim-27, true rlct minAdm/2=13.5) while the wall claimed finite to c'<14. Codex independently agreed (Wishart blow-up). The full-block LHS is u-independent with true threshold minAdm(M)/2; the claimed (minAdm(redChain u)+ab)/2 overcharges at non-argmin cuts.
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1580:./expeditions/2026-06-20-aoyagi-full/discuss-at-close.md:3119:- **Two honest recalibrations (surfacing, no action needed).** (1) I'd relayed item-4's "square sub-family = a banked freebie" — that was an overclaim; corankrec (the formaliser) probed it and couplerad corrected its cert: the square case is substantial reduction plumbing (Fubini + atom composition + a charge-domination lemma), and Cauchy-Binet is unavailable in Mathlib v4.29 (charge routes through the banked a.e.-PosDef `hGae` instead). (2) I'd headlined "arity≥4 (□) reduced to TWO holes (hG1, hfin)" — arch1build's closure probe found that's under-scoped: binding-nondegeneracy is false in general (degenerate widths / boundary-argmin need the arity-IH, so the coupled route isn't IH-free), and the j=0/j=r boundary discharge isn't banked here. So the honest hole count is ~4–5 + the IH, not two. Both are **effort/scope** corrections, not strategic — no wall appeared; the route (Route A + the coupled incidence assembly) is unchanged. I've chosen the isolate-every-hole closure (each gap explicit as a hypothesis; no reliance on the old gammaPeel `sjJointResolution` sorry).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1716:./threads/33-r1-smeared-genM/codex/r0-audit-prompt.md:8:Let r = argmin T0 (the minimiser; "deepRank"). minAdm = min value = Mval(r) (∈ ℕ, ≥ 0).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1776:./expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam-prompt.md:45:   a single rank-1 peel leaving a 2x2 Delta block); (2,2,2,2) double-incidence LP min 2rho=3;
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1780:./expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam-prompt.md:55:        not yet normal-crossing (my (2,2,2) leaf ideal still has binomials like b*g0 + delta*c210).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1785:./expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam-prompt.md:63:Q4. Given my binomial-leaf concern in Q1(b): with GENERIC coefficients, can a binomial b*g0 + delta*c
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1813:./expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:59:   a single rank-1 peel leaving a 2x2 Delta block); (2,2,2,2) double-incidence LP min 2rho=3;
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1817:./expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:69:        not yet normal-crossing (my (2,2,2) leaf ideal still has binomials like b*g0 + delta*c210).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:1822:./expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:77:Q4. Given my binomial-leaf concern in Q1(b): with GENERIC coefficients, can a binomial b*g0 + delta*c
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:2088:./expeditions/2026-06-20-aoyagi-full/threads/genm-waistconn/codex/commute-stdout.log:1498:/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/synthesis.md-1871-**⚙ UPDATE-602 (2026-07-03, ★★ the hNo scope fork is RESOLVED FAVOURABLY — the R1 leg DE-CONDITIONALIZES, no both-drop headline residual; the bridge is one bounded combinatorial build, commissioned.** `bothdropadj` (pen-and-paper) reported the verdict: **hNo-AUTOMATIC in-branch.** Both-drop DOES occur (smallest `M=(1,1,2)` at L=2 — so `hNo` is NOT globally vacuous), **BUT the both-drop stratum is EXACTLY `InteriorDrop`** = the INTERIOR branch, already discharged unconditionally by `interiorLiveGen_hInterior`. The spine consumes `hNo` ONLY in the CLEAN + SMEARED branches, both carrying `¬InteriorDrop`. And the bridge **`¬InteriorDrop M ⟺ NoInteriorBothDrop M`** at every argmin is TRUE ∀L (exact enum L=2..6, 9716 (M,argmin) pairs, 0 violations incl. the `M[L]=0` corner; + decorrelated Codex xhigh agreeing). So `hNo` discharges INSIDE the spine from each branch's `¬InteriorDrop` — **the R1 resolution de-conditionalizes to all nondeg M; NO separate both-drop atom, NO headline residual.** The mechanism is genuinely **minimality-driven** (not local: `row-drop@b ⟹ col-drop@b` is FALSE at `M=(5,3,4,2,1)`; not monotone): the load-bearing **argmin-exchange** raises the plateau `T[p−1..b−2]` by 1, giving `ΔMval = 1 − r_p − c_p ≤ −1 < 0`, contradicting `Mval_tStar_eq_inf'` minimality (verified integer-exact on 11688 cases). **ACTIONS this tick:** (1) commissioned **`hnobridge`** (formaliser, #292) — the STANDALONE bridge `noInteriorBothDrop_of_not_interiorDrop (M)(hWL:0<Wext M L) : ¬InteriorDrop M → NoInteriorBothDrop M` ∀L (new file, NO signature changes; banked `rBlock`/`cBlock`/`sum_rBlock_cBlock_eq_minAdm`; base case `boundaryClean_noInteriorBothDrop_L2`:124; kill-cond = re-derive `admPred T'` cleanly, likely break = plateau-index off-by-one vs the Text/tStar shift; `#print` = no monomial_rlct, pure combinatorics) — DECOUPLED from `r1resolve`, running in parallel; (2) registered the INTEGRATION step (#293, blocked by #292+#290): plumb the bridge into the spine's CLEAN/SMEARED slots + drop `hNo` from `..._full` and `r1_resolution_general` (hyps → hpos/hMpos/hne width facts only); VERIFY the INTERIOR branch doesn't secretly need hNo. (3) `bothdropadj` #291 → COMPLETED; superseded-task prune (#157/#158/#159/#145/#262/#238 → completed). **State:** three hands live — `r1resolve` (conditional R1 resolution), `hnobridge` (the bridge), + the interior/smeared already banked. On both landing → the R1 leg UNCONDITIONAL ∀L. Then D1 (≥-leg #107) + #120 + the global headline. Codex artefacts `/tmp/codex-hno-{prompt,answer}.md`. Canonical @272e49bb→(this).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:3149:./expeditions/2026-06-20-aoyagi-full/threads/genm-l2witness/witness-battery/codex/w4-answer.md:39:| \(n\) | \(F_n(0),\ldots,F_n(n)\) | Root argmins | \(\minAdm(n,n,n,n)\) |
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:3191:./expeditions/2026-06-20-aoyagi-full/threads/genm-l2witness/witness-battery/codex/battery-prompt.md:45:For each of m1, m2, m3 report the value, whether it equals minAdm((n,n,n,n)), and the argmin set.
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:3926:expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:3985:A concrete gap has emerged: the LP is exhaustive only for toroidal divisors of each chosen chart. It does not include a second blow-up whose center is a non-coordinate subvariety of a weighted exceptional divisor—exactly where equal-weight binomial terms cancel. I’m now checking which exact CAS route can certify those descendants for the two 12-variable cubic ideals.
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:3990:sed -n '1,280p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:3998:sed -n '1,280p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4002:/bin/bash -lc "sed -n '1,300p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h6_composed_chart_2222.py && sed -n '1,340p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h9_pivots_and_2322.py && sed -n '1,280p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h7_chart_lp.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/t03-hunt
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4005:"""HUNT h6 -- (2,2,2,2) [L=3] composed DOUBLE-incidence chart + weighted-divisor hunt.
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4011:weights EXHAUSTIVELY. Jacobian computed exactly by sympy (expect ~ al1^3 al2^3).
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4022:al1, a1, b1, d1 = sp.symbols("al1 a1 b1 d1")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4027:M1 = sp.Matrix([[al1, al1 * a1], [al1 * b1, al1 * (a1 * b1 + d1)]])
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4032:newvars = [al1, a1, b1, d1, al2, a2, b2, d2, p, q, r, s]
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4082:    print("=== (2,2,2,2) composed double-incidence chart ===")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4091:        print(f"          argmin w={dict(zip([str(v) for v in newvars], argw))}")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4155:    al1, a11, a12, b11, D111, D112 = sp.symbols("al1 a11 a12 b11 D111 D112")
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4156:    C1 = sp.Matrix([[al1, al1 * a11, al1 * a12],
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4157:                    [al1 * b11, al1 * (b11 * a11 + D111), al1 * (b11 * a12 + D112)]])  # 2x3
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4164:    newvars = [al1, a11, a12, b11, D111, D112, al2, a21, b21, b22, D211, D221, p, q, r, s]
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4230:    tuples (the Jacobian det's monomials). Returns exact min 2*rho (Fraction) and argmin w."""
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4284:    import h6_composed_chart_2222 as h6
+expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/codex/hunt-redteam.log:4285:    best6, argw6 = min_ratio_exact(h6.gen_sup, h6.jac_sup, len(h6.newvars))
+
+exec
+/bin/bash -lc "sed -n '1,260p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h10_second_blowup.py && sed -n '1,220p' expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts/h5_composed_chart_222.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/t03-hunt
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""HUNT h10 -- second blow-up of the non-NC binomial leaf (Q1(b)/Q4 self-check).
+
+The (2,2,2) composed-chart leaf ideal has binomial generators
+    al*(b*g0 + de*c210),  al*(b*g1 + de*c211)
+so the chart is NOT yet normal-crossing. A divisor could in principle hide after a
+FURTHER blow-up of the binomial locus {b=de=0}. We COMPOSE that blow-up (both standard
+charts) onto the leaf, recompute the exact Jacobian (gains a factor rho), and re-run the
+exact vertex-enum min ratio. If the min stays >= minAdm, no sub-threshold divisor hides
+below this leaf (corroborating the 'no new smaller ratio from blowing up' folklore here).
+"""
+import sys
+import sympy as sp
+sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/threads/03-hunt/scripts")
+sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/map/battery")
+from _minadm import minAdm
+from h7_chart_lp import min_ratio_exact
+
+al, a, g0, g1, c210, c211 = sp.symbols("al a g0 g1 c210 c211")
+rho, e, f = sp.symbols("rho e f")
+
+
+def leaf_after_blowup(which):
+    """which='b': b=rho, de=rho*e ; 'de': de=rho, b=rho*f. Returns (newvars, gen_sup, jac_sup)."""
+    if which == "b":
+        b_e, de_e = rho, rho * e
+        extra = e
+        # Jacobian of (b,de)->(rho,e): det[[1,0],[e,rho]] = rho
+        subJac = rho
+    else:
+        b_e, de_e = rho * f, rho
+        extra = f
+        subJac = rho
+    # leaf generators (from h5, corrected labels): al g0, al g1, al(b g0+de c210), al(b g1+de c211)
+    gens = [al * g0, al * g1,
+            al * (b_e * g0 + de_e * c210),
+            al * (b_e * g1 + de_e * c211)]
+    newvars = [al, a, rho, extra, g0, g1, c210, c211]
+    # total Jacobian: original chart al^3 (from incidence) times this sub-blowup's rho.
+    # (the shear had Jac 1; 'a' is inert here.) We fold al^3 * rho into the jac support.
+    Jtot = sp.expand(al**3 * subJac)
+
+    def sup(expr):
+        expr = sp.expand(expr)
+        return [] if expr == 0 else [tuple(int(x) for x in m) for m in sp.Poly(expr, *newvars).monoms()]
+    gen_sup = [sup(g) for g in gens]
+    jac_sup = sup(Jtot)
+    return newvars, gen_sup, jac_sup, gens, Jtot
+
+
+if __name__ == "__main__":
+    ma = minAdm((2, 2, 2))
+    for which in ("b", "de"):
+        nv, gs, js, gens, Jt = leaf_after_blowup(which)
+        best, argw = min_ratio_exact(gs, js, len(nv))
+        print(f"=== (2,2,2) leaf + blow-up of binomial locus, chart '{which}' ===")
+        print(f"   gens: {gens}")
+        print(f"   total Jacobian: {Jt}")
+        print(f"   EXACT min 2rho = {best} (rho={best/2}); minAdm={ma}  "
+              f"-> {'SURVIVE' if best >= ma else 'KILL'}")
+#!/usr/bin/env python3
+"""HUNT h5 -- (2,2,2) FULL composed achiever chart + exhaustive weighted-divisor hunt.
+
+Chart phi (new -> old), a genuine birational modification:
+  C1 incidence at pivot (0,0):  C1 = alpha[[1,a],[b, ab+delta]]
+  C2 shear exposing the C1C2=0 conditions g0,g1:
+     C2_00 = g0 - a*c2_10,  C2_01 = g1 - a*c2_11,  C2_10 = c2_10,  C2_11 = c2_11
+new coords y = (alpha,a,b,delta,g0,c2_10,g1,c2_11).
+
+For a monomial weight w on y, the induced divisorial valuation has (exact)
+   2*rho = ( sum w + w(det d old/d new) ) / min_g w(g o phi).
+This chart is the one carrying the sharing structure (b, delta couple the residual),
+so an EXHAUSTIVE weight search here probes Tier B3 (weighted centers) at the exact
+locus the D3 cert flagged. KILL iff any weight gives 2*rho < minAdm = 3.
+"""
+import sys, itertools
+from fractions import Fraction as F
+import sympy as sp
+sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/map/battery")
+from _minadm import minAdm
+
+al, a, b, de = sp.symbols("al a b de")
+g0, g1, c210, c211 = sp.symbols("g0 g1 c210 c211")
+newvars = [al, a, b, de, g0, c210, g1, c211]
+
+# old entries in terms of new
+C1 = sp.Matrix([[al, al * a], [al * b, al * (a * b + de)]])
+C2_00 = g0 - a * c210
+C2_01 = g1 - a * c211
+C2 = sp.Matrix([[C2_00, C2_01], [c210, c211]])
+old_exprs = [C1[0, 0], C1[0, 1], C1[1, 0], C1[1, 1], C2[0, 0], C2[0, 1], C2[1, 0], C2[1, 1]]
+
+# exact Jacobian of the composite map
+Jmat = sp.Matrix([[sp.diff(e, v) for v in newvars] for e in old_exprs])
+Jdet = sp.expand(Jmat.det())
+
+# product generators in new coords
+P = sp.expand(C1 * C2)
+gens = [sp.expand(P[i, j]) for i in range(2) for j in range(2)]
+
+
+def support(expr):
+    expr = sp.expand(expr)
+    if expr == 0:
+        return []
+    poly = sp.Poly(expr, *newvars)
+    return [tuple(int(e) for e in m) for m in poly.monoms()]
+
+
+gen_sup = [support(g) for g in gens]
+jac_sup = support(Jdet)
+
+
+def wdeg(sup, w):
+    return min(sum(e * wi for e, wi in zip(m, w)) for m in sup)
+
+
+if __name__ == "__main__":
+    print("=== (2,2,2) composed achiever chart ===")
+    print("Jacobian det =", Jdet, " (expect alpha^3)")
+    print("generators in new coords:")
+    for g in gens:
+        print("   ", g)
+    ma = minAdm((2, 2, 2))
+    print(f"minAdm={ma}, target 2*rho = {ma} (rho=3/2)\n")
+
+    wmax = 4
+    best = None; argw = None
+    hits = []
+    for w in itertools.product(range(wmax + 1), repeat=len(newvars)):
+        if sum(w) == 0:
+            continue
+        denom = min(wdeg(s, w) for s in gen_sup)
+        if denom <= 0:
+            continue
+        num = sum(w) + wdeg(jac_sup, w)
+        r = F(num, denom)
+        if best is None or r < best:
+            best, argw = r, w
+        if r < ma:
+            hits.append((r, w))
+    print(f"exhaustive weight search in {{0..{wmax}}}^{len(newvars)}:")
+    print(f"  min 2*rho = {best} (rho={best/2}); minAdm={ma}")
+    print(f"  argmin w (aligned to {[str(v) for v in newvars]}) = {argw}")
+    print(f"  UNDERSHOOTS (2*rho < minAdm): {len(hits)}")
+    for (r, w) in hits[:10]:
+        print(f"    2rho={r} at w={w}  <== KILL CANDIDATE")
+    print("\nVERDICT:", "SURVIVE (no undershoot in this chart)" if not hits else "KILL FOUND")
+
+codex
+Your empty hunt certifies only the toroidal divisors of the chosen incidence charts, at generic residue centers. The first genuinely unsearched family is: blow-ups of non-coordinate subvarieties inside their exceptional/zero-weight directions, especially angular incidence or cancellation loci shared by adjacent layers.
+
+## Q1. Which divisors are unreachable?
+
+**Established fact.** A weight vector \(w\) on chart coordinates \(y_i\) reaches precisely valuations that are monomial in those coordinates:
+
+\[
+v\!\left(\sum c_m y^m\right)=\min_m \langle w,m\rangle .
+\]
+
+This includes every divisor obtained through sequences of toroidal blow-ups—blow-ups of coordinate strata. A second or third toroidal blow-up gives another primitive ray, hence another weight vector already covered by the LP.
+
+It does not include:
+
+- blow-ups of non-coordinate centers;
+- valuations made monomial only after introducing a coordinate such as \(h=b g+\delta c\);
+- special centers among zero-weight “angular” variables, where coefficient residues satisfy relations;
+- residual determinantal centers not converted into coordinate strata by further pivots.
+
+Higher-corank geometry is not intrinsically missed if rank-one Schur pivots are iterated over every residual block. A single peel, however, does not provide that completeness.
+
+**Concrete missed divisor, \((2,2,2,2)\).** In your `h6` chart set
+
+\[
+h=1+a_1b_2.
+\]
+
+The transformed product contains
+
+\[
+\frac{P_{00}}{\alpha_1\alpha_2}=hp+a_1d_2r,\qquad
+\frac{P_{01}}{\alpha_1\alpha_2}=hq+a_1d_2s,
+\]
+
+with analogous second-row expressions. Blow up the smooth non-coordinate center
+
+\[
+Z=(\alpha_1,\alpha_2,d_1,d_2,p,q,r,s,h)=0
+\]
+
+at a generic real point with \(a_1b_2=-1\). Its exceptional divisor \(E_Z\) has
+
+\[
+v(\alpha_1)=v(\alpha_2)=v(d_1)=v(d_2)=v(p)=v(q)=v(r)=v(s)=v(h)=1,
+\]
+
+while \(v(a_1)=v(b_2)=0\). No weight on the original chart can realize simultaneously
+
+\[
+v(a_1)=v(b_2)=0,\qquad v(1+a_1b_2)=1.
+\]
+
+Thus it is absent from the LP. Here \(v(I)=4\); since the center has codimension \(9\) and the chart Jacobian is \(\alpha_1^3\alpha_2^3\),
+
+\[
+A_{E_Z}=9+6=15,\qquad 2\rho(E_Z)=\frac{15}{4}.
+\]
+
+This is not an undershoot, but it proves the family is genuinely unsearched.
+
+**Inference.** Your result should be stated as
+
+\[
+\min_{\substack{\text{toroidal divisors over}\\
+\text{the searched charts, generic centers}}}2\rho\geq\minAdm,
+\]
+
+not as a statement about all divisors over those charts.
+
+**Concrete test.** Add \(h\) as a local coordinate on \(a_1\neq0\),
+
+\[
+b_2=\frac{h-1}{a_1},
+\]
+
+compose the exact Jacobian, and rerun the LP. Then recursively inspect common-zero components of the weighted initial ideal, rather than only coordinate centers.
+
+## Q2. Does the normal-crossing folklore hold?
+
+**Established fact.** Yes, under the full hypothesis that the ideal has been principalized:
+
+\[
+I\mathcal O_Y=\mathcal O_Y\!\left(-\sum_i N_iE_i\right),
+\]
+
+with the total divisor SNC. If a smooth center \(C\) of codimension \(c\) lies in precisely the components \(E_i\), \(i\in S\), then its blow-up produces \(F\) with
+
+\[
+N_F=\sum_{i\in S}N_i,\qquad
+A_F=\sum_{i\in S}A_i+c-|S|.
+\]
+
+Consequently,
+
+\[
+\frac{A_F}{N_F}
+=
+\frac{\sum_{i\in S}N_i(A_i/N_i)+c-|S|}
+     {\sum_{i\in S}N_i}
+\geq \min_{i\in S}\frac{A_i}{N_i}.
+\]
+
+There are no exceptions after a genuine log resolution.
+
+**Not applicable when:** the weak transform still has a residual ideal of order \(m>0\). Then
+
+\[
+N_F=\sum N_i+m,
+\]
+
+and the extra denominator can lower the ratio. An SNC zero-set is also insufficient: the ideal itself must be locally principal monomial.
+
+**Inference here.** Your displayed \((2,2,2)\) leaf looks binomial but its ideal is already monomial after changing generators; see Q4. The \(L=3\) angular locus \(1+a_1b_2=0\), however, is not covered by that argument.
+
+**Concrete test.** Verify either:
+
+1. a monomial generating set for the transformed ideal, or  
+2. a completed principalization with recorded \((A_i,N_i)\).
+
+Do not infer NC from the displayed support alone.
+
+## Q3. What is the first \(L\geq3\) hiding place?
+
+**Established fact.** Generic intersections of rank strata may be exposed by enough pivot charts. What a layerwise toroidal peel misses is a special incidence relation among the angular data of adjacent pivots.
+
+For \((2,2,2,2)\), the first relation is
+
+\[
+h=1+a_1b_2=0.
+\]
+
+It says that the rank-one row direction selected in \(C^{(1)}\) annihilates the rank-one column direction selected in \(C^{(2)}\).
+
+For \((2,3,2,2)\), the corresponding shared-layer relation is
+
+\[
+h=1+a_{11}b_{21}+a_{12}b_{22}=0.
+\]
+
+These are non-coordinate hypersurfaces in the exceptional angular variables. Centers combining \(h=0\) with residual-block conditions \(D_{ijk}=0\) produce divisors not represented by the current LP.
+
+**Inference.** The first plausible hiding place is not “a deeper rank stratum” by itself. It is a non-toroidal component or singular intersection of the weighted initial scheme on that stratum—especially one where all currently minimal product entries vanish simultaneously.
+
+**Concrete test.** For both \(L=3\) instances:
+
+1. introduce \(h\) as a coordinate on each open set where one coefficient is invertible;
+2. substitute exactly and recompute the Jacobian;
+3. blow centers \(h=0\) together with the relevant residual \(D\)-block and minimal product entries;
+4. rerun the exact all-weights calculation.
+
+## Q4. Can generic binomials cancel along a divisor?
+
+**Established fact.** Yes. Generic coefficients do not prevent valuation-theoretic cancellation when the two terms have equal value.
+
+For \(q=bg+\delta c\), blow up the origin of \(\mathbb A^4\), using
+
+\[
+b=t,\quad g=tu,\quad \delta=tv,\quad c=tz.
+\]
+
+Then
+
+\[
+q=t^2(u+vz).
+\]
+
+At the real point \(u=v=1,z=-1\), blow up the codimension-two center
+
+\[
+(t,u+vz)=0.
+\]
+
+The new divisor satisfies
+
+\[
+v(b)=v(g)=v(\delta)=v(c)=1,\qquad v(q)=3>2.
+\]
+
+Thus expanded monomial support is cancellation-correct only for monomial valuations with generic residue center.
+
+**But your \((2,2,2)\) leaf is safe.** Its transformed ideal is
+
+\[
+\alpha\langle
+g_0,g_1,\,
+bg_0+\delta c_{210},\,
+bg_1+\delta c_{211}
+\rangle
+=
+\alpha\langle
+g_0,g_1,\delta c_{210},\delta c_{211}
+\rangle.
+\]
+
+So cancellation in either binomial cannot increase \(v(I)\): the ideal has an exact monomial generating set. Blowing up \((b,\delta)\) does not address cancellation and is toroidal anyway.
+
+**Concrete test.** For every weight \(w\), compute the full weighted initial ideal \(\operatorname{in}_w(I)\), saturate by irrelevant/chart-denominator ideals, and decompose it. For each real irreducible component \(Z\) on the exceptional divisor, blow up \(Z\) and recompute the exact transformed generators. Testing individual generator supports is insufficient.
+
+## Q5. Sharpest decorrelated exact check
+
+**Recommendation.** Compute the local generalized Bernstein–Sato polynomial—or equivalently the local multiplier-ideal log canonical threshold—of the ideal \(I\) over \(\mathbb Q\), using Macaulay2’s `MultiplierIdeals`/`Dmodules` machinery.
+
+Compute the lct of the four-entry ideal itself, not of \(\sum P_{ij}^2\), and localize at the origin. In standard algebraic conventions compare
+
+\[
+\operatorname{lct}_0(I)
+\]
+
+with \(3\) for \((2,2,2,2)\) and \(4\) for \((2,3,2,2)\); your \(2\rho\) is \(A/v(I)\).
+
+This is complete and independent of the incidence resolution. Integral closure alone is not: lct is invariant under integral closure, but normalized-blow-up/Rees divisors need not contain every divisor computing lct. A specific weighted blow-up is an exact refutation tool but cannot corroborate completeness.
+
+If the D-module computation finds a lower complex threshold, extract its center and verify that it has a real smooth point before treating it as a real counterexample.
+tokens used
+73,055
+Your empty hunt certifies only the toroidal divisors of the chosen incidence charts, at generic residue centers. The first genuinely unsearched family is: blow-ups of non-coordinate subvarieties inside their exceptional/zero-weight directions, especially angular incidence or cancellation loci shared by adjacent layers.
+
+## Q1. Which divisors are unreachable?
+
+**Established fact.** A weight vector \(w\) on chart coordinates \(y_i\) reaches precisely valuations that are monomial in those coordinates:
+
+\[
+v\!\left(\sum c_m y^m\right)=\min_m \langle w,m\rangle .
+\]
+
+This includes every divisor obtained through sequences of toroidal blow-ups—blow-ups of coordinate strata. A second or third toroidal blow-up gives another primitive ray, hence another weight vector already covered by the LP.
+
+It does not include:
+
+- blow-ups of non-coordinate centers;
+- valuations made monomial only after introducing a coordinate such as \(h=b g+\delta c\);
+- special centers among zero-weight “angular” variables, where coefficient residues satisfy relations;
+- residual determinantal centers not converted into coordinate strata by further pivots.
+
+Higher-corank geometry is not intrinsically missed if rank-one Schur pivots are iterated over every residual block. A single peel, however, does not provide that completeness.
+
+**Concrete missed divisor, \((2,2,2,2)\).** In your `h6` chart set
+
+\[
+h=1+a_1b_2.
+\]
+
+The transformed product contains
+
+\[
+\frac{P_{00}}{\alpha_1\alpha_2}=hp+a_1d_2r,\qquad
+\frac{P_{01}}{\alpha_1\alpha_2}=hq+a_1d_2s,
+\]
+
+with analogous second-row expressions. Blow up the smooth non-coordinate center
+
+\[
+Z=(\alpha_1,\alpha_2,d_1,d_2,p,q,r,s,h)=0
+\]
+
+at a generic real point with \(a_1b_2=-1\). Its exceptional divisor \(E_Z\) has
+
+\[
+v(\alpha_1)=v(\alpha_2)=v(d_1)=v(d_2)=v(p)=v(q)=v(r)=v(s)=v(h)=1,
+\]
+
+while \(v(a_1)=v(b_2)=0\). No weight on the original chart can realize simultaneously
+
+\[
+v(a_1)=v(b_2)=0,\qquad v(1+a_1b_2)=1.
+\]
+
+Thus it is absent from the LP. Here \(v(I)=4\); since the center has codimension \(9\) and the chart Jacobian is \(\alpha_1^3\alpha_2^3\),
+
+\[
+A_{E_Z}=9+6=15,\qquad 2\rho(E_Z)=\frac{15}{4}.
+\]
+
+This is not an undershoot, but it proves the family is genuinely unsearched.
+
+**Inference.** Your result should be stated as
+
+\[
+\min_{\substack{\text{toroidal divisors over}\\
+\text{the searched charts, generic centers}}}2\rho\geq\minAdm,
+\]
+
+not as a statement about all divisors over those charts.
+
+**Concrete test.** Add \(h\) as a local coordinate on \(a_1\neq0\),
+
+\[
+b_2=\frac{h-1}{a_1},
+\]
+
+compose the exact Jacobian, and rerun the LP. Then recursively inspect common-zero components of the weighted initial ideal, rather than only coordinate centers.
+
+## Q2. Does the normal-crossing folklore hold?
+
+**Established fact.** Yes, under the full hypothesis that the ideal has been principalized:
+
+\[
+I\mathcal O_Y=\mathcal O_Y\!\left(-\sum_i N_iE_i\right),
+\]
+
+with the total divisor SNC. If a smooth center \(C\) of codimension \(c\) lies in precisely the components \(E_i\), \(i\in S\), then its blow-up produces \(F\) with
+
+\[
+N_F=\sum_{i\in S}N_i,\qquad
+A_F=\sum_{i\in S}A_i+c-|S|.
+\]
+
+Consequently,
+
+\[
+\frac{A_F}{N_F}
+=
+\frac{\sum_{i\in S}N_i(A_i/N_i)+c-|S|}
+     {\sum_{i\in S}N_i}
+\geq \min_{i\in S}\frac{A_i}{N_i}.
+\]
+
+There are no exceptions after a genuine log resolution.
+
+**Not applicable when:** the weak transform still has a residual ideal of order \(m>0\). Then
+
+\[
+N_F=\sum N_i+m,
+\]
+
+and the extra denominator can lower the ratio. An SNC zero-set is also insufficient: the ideal itself must be locally principal monomial.
+
+**Inference here.** Your displayed \((2,2,2)\) leaf looks binomial but its ideal is already monomial after changing generators; see Q4. The \(L=3\) angular locus \(1+a_1b_2=0\), however, is not covered by that argument.
+
+**Concrete test.** Verify either:
+
+1. a monomial generating set for the transformed ideal, or  
+2. a completed principalization with recorded \((A_i,N_i)\).
+
+Do not infer NC from the displayed support alone.
+
+## Q3. What is the first \(L\geq3\) hiding place?
+
+**Established fact.** Generic intersections of rank strata may be exposed by enough pivot charts. What a layerwise toroidal peel misses is a special incidence relation among the angular data of adjacent pivots.
+
+For \((2,2,2,2)\), the first relation is
+
+\[
+h=1+a_1b_2=0.
+\]
+
+It says that the rank-one row direction selected in \(C^{(1)}\) annihilates the rank-one column direction selected in \(C^{(2)}\).
+
+For \((2,3,2,2)\), the corresponding shared-layer relation is
+
+\[
+h=1+a_{11}b_{21}+a_{12}b_{22}=0.
+\]
+
+These are non-coordinate hypersurfaces in the exceptional angular variables. Centers combining \(h=0\) with residual-block conditions \(D_{ijk}=0\) produce divisors not represented by the current LP.
+
+**Inference.** The first plausible hiding place is not “a deeper rank stratum” by itself. It is a non-toroidal component or singular intersection of the weighted initial scheme on that stratum—especially one where all currently minimal product entries vanish simultaneously.
+
+**Concrete test.** For both \(L=3\) instances:
+
+1. introduce \(h\) as a coordinate on each open set where one coefficient is invertible;
+2. substitute exactly and recompute the Jacobian;
+3. blow centers \(h=0\) together with the relevant residual \(D\)-block and minimal product entries;
+4. rerun the exact all-weights calculation.
+
+## Q4. Can generic binomials cancel along a divisor?
+
+**Established fact.** Yes. Generic coefficients do not prevent valuation-theoretic cancellation when the two terms have equal value.
+
+For \(q=bg+\delta c\), blow up the origin of \(\mathbb A^4\), using
+
+\[
+b=t,\quad g=tu,\quad \delta=tv,\quad c=tz.
+\]
+
+Then
+
+\[
+q=t^2(u+vz).
+\]
+
+At the real point \(u=v=1,z=-1\), blow up the codimension-two center
+
+\[
+(t,u+vz)=0.
+\]
+
+The new divisor satisfies
+
+\[
+v(b)=v(g)=v(\delta)=v(c)=1,\qquad v(q)=3>2.
+\]
+
+Thus expanded monomial support is cancellation-correct only for monomial valuations with generic residue center.
+
+**But your \((2,2,2)\) leaf is safe.** Its transformed ideal is
+
+\[
+\alpha\langle
+g_0,g_1,\,
+bg_0+\delta c_{210},\,
+bg_1+\delta c_{211}
+\rangle
+=
+\alpha\langle
+g_0,g_1,\delta c_{210},\delta c_{211}
+\rangle.
+\]
+
+So cancellation in either binomial cannot increase \(v(I)\): the ideal has an exact monomial generating set. Blowing up \((b,\delta)\) does not address cancellation and is toroidal anyway.
+
+**Concrete test.** For every weight \(w\), compute the full weighted initial ideal \(\operatorname{in}_w(I)\), saturate by irrelevant/chart-denominator ideals, and decompose it. For each real irreducible component \(Z\) on the exceptional divisor, blow up \(Z\) and recompute the exact transformed generators. Testing individual generator supports is insufficient.
+
+## Q5. Sharpest decorrelated exact check
+
+**Recommendation.** Compute the local generalized Bernstein–Sato polynomial—or equivalently the local multiplier-ideal log canonical threshold—of the ideal \(I\) over \(\mathbb Q\), using Macaulay2’s `MultiplierIdeals`/`Dmodules` machinery.
+
+Compute the lct of the four-entry ideal itself, not of \(\sum P_{ij}^2\), and localize at the origin. In standard algebraic conventions compare
+
+\[
+\operatorname{lct}_0(I)
+\]
+
+with \(3\) for \((2,2,2,2)\) and \(4\) for \((2,3,2,2)\); your \(2\rho\) is \(A/v(I)\).
+
+This is complete and independent of the incidence resolution. Integral closure alone is not: lct is invariant under integral closure, but normalized-blow-up/Rees divisors need not contain every divisor computing lct. A specific weighted blow-up is an exact refutation tool but cannot corroborate completeness.
+
+If the D-module computation finds a lower complex threshold, extract its center and verify that it has a real smooth point before treating it as a real counterexample.
