@@ -101,6 +101,7 @@ nodes:
     owner: "parked: statements at skeleton; tides after route adoption"
     edges:
       - {type: needs, to: resolution-tree}
+    notes: \"Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)\"
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md, theory/aoyagi-2023-reproduction/aoyagi-2023-worked.tex]
 
   - id: monomialization-termination
@@ -142,6 +143,7 @@ nodes:
     tier: new
     owner: "parked: survey-first; consume banked, never rebuild"
     landmark: true
+    notes: \"Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)\"
     evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerSplit.lean, lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankRec.lean]
 
   - id: region-glue
@@ -166,6 +168,7 @@ nodes:
     status: adjudicated
     tier: established
     owner: "parked: transcription; banked shear/pivot analogues"
+    notes: \"Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)\"
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
 
   - id: theorem4-localization

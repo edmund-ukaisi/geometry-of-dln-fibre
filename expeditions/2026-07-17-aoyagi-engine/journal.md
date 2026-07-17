@@ -132,3 +132,15 @@ parked (4 items + an optional independent D-module check). Coverage's map note n
 cert's scope verbatim-by-pointer — no blanket "established"; the proof remains the ledger
 induction. Hunter stood down + reaped. Critical path: architect repair → re-review → six stated →
 tides.
+
+## 2026-07-17 REPAIR ROUND MERGED (tick 13)
+Architect's round-1 repair merged: CanonicalResolution bundle (chain leaves TYPED — incomparable-b
+leaf now has a PROVED type-level rejection; StepInvariant everywhere incl. the new case-1(2)
+conjunct; branch-rooted; neighbourhood-form ChartsCover; exponent hooks); resolutionOf consumes
+the full bundle — junk-leaf probe PROVABLY REJECTED (¬CanonicalResolution junkLeaf). Four middle
+obligations became proved projections; the skeleton is now TWO holes: monomialization_terminates
+(the construction — Layer B's content) + region_glue (the analytic read). Ratio-consistency
+witness promoted (battery = 13, all correct, verified my own run). In-file non-vacuity witnesses
+committed (witNode ⊨ StepInvariant; witTree). Gate build 3 backgrounded. Reviewer dispatched for
+equilibrium round 2 (fresh eyes on the bundle: nonemptiness hooks, witness scope honesty, any
+new-shape regressions).
