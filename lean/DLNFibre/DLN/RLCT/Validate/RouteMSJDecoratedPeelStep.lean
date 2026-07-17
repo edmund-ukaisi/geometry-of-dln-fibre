@@ -58,6 +58,29 @@ open scoped ENNReal BigOperators
 
 variable {L : ℕ}
 
+/-- **CITED (Aoyagi §5, box-level) — product-corank / joint-Vandermonde box-finiteness at
+`min-corank ≥ 2`** (carried as a `Prop` HYPOTHESIS — the one box-level cite of the plain-route `(□)`).
+The freed-`Γ` triple integral (the shear-freed `gammaPeelIntegral`) is finite below `½·minAdm` whenever
+the corank `min(M₀−t, M₁−t) ≥ 2`. This is the BOX-LEVEL shadow of `cited_aoyagi_dln` (`rlct = ½·codim`):
+morally implied by it, but NOT a Lean corollary — the reduction spans the local→global rlct +
+`lossDLN ↔ freedSchurLoss` bridge, which is exactly the research programme native (box) is built to avoid.
+Hence carried as its own distinct box-level Aoyagi interface — a second minimal gap alongside the
+payoff-level `cited_aoyagi_dln`. IH-conditional (cites ONLY the product-corank step; deeper reduced chains
+stay native via `hIH`). `ρ` dropped — the freed-`Γ` integrand uses only `κ` (precision.md 1.1.3). -/
+def cited_aoyagi_product_corank : Prop :=
+  ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (_ht : 1 ≤ t) (_ht2 : t ≤ min (M 0) (M 1))
+    (_hcork : 2 ≤ min (M 0 - t) (M 1 - t))
+    (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
+    (_hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+    (_hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M'),
+    (∫⁻ A' in paramsBoxM (tailChain M) 1,
+        ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
+          ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+            ENNReal.ofReal ((freedSchurLoss x Γ
+              ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤
+
 /-- **THE HOLE (§1.3-3) — the inner deeper-strata corank-Gram descent.** For a legal pivot cut
 `(t, ρ, κ)` (`1 ≤ t ≤ min(M₀,M₁)`) below the geometric threshold (`c' < ½·minAdm M`), GIVEN the
 one-shorter strong IH `hIH`, the freed-`Γ` triple integral (the shear-freed form of
@@ -76,14 +99,20 @@ theorem innerCorankDescent_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
     (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1))
     (ρ : Fin t ↪ Fin (M 0)) (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
-    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (hcited : cited_aoyagi_product_corank) :
     (∫⁻ A' in paramsBoxM (tailChain M) 1,
         ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
           ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
               Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
             ENNReal.ofReal ((freedSchurLoss x Γ
               ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤ := by
-  sorry
+  by_cases hcork : 2 ≤ min (M 0 - t) (M 1 - t)
+  · -- min-corank ≥ 2: CITED (Aoyagi §5 product-corank / joint-Vandermonde box-finiteness)
+    exact hcited M t ht ht2 hcork κ c' hc' hIH
+  · -- min-corank ≤ 1 (¬hcork ⟹ min ≤ 1): NATIVE — satred's d≤1 dispatch (c=1 C-transversality +
+    -- wings + dominant-minor cover + hIH). The sole remaining tracked hole of the plain route.
+    sorry
 
 /-- **The per-chart peeled integral is finite (the wired reduction to the hole).** For a legal pivot
 cut below threshold, GIVEN the one-shorter strong IH, `gammaPeelIntegral M t ρ κ c' < ⊤`. The banked
@@ -95,10 +124,11 @@ theorem gammaPeelIntegral_lt_top_of_descent (M : Fin (L + 1 + 1 + 1) → ℕ) (t
     (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1))
     (ρ : Fin t ↪ Fin (M 0)) (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
-    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (hcited : cited_aoyagi_product_corank) :
     gammaPeelIntegral M t ρ κ (c' : ℝ) < ⊤ := by
   rw [gammaPeelIntegral_schurShearFree_eq M t ρ κ (c' : ℝ)]
-  exact innerCorankDescent_lt_top M t ht ht2 ρ κ c' hc' hIH
+  exact innerCorankDescent_lt_top M t ht ht2 ρ κ c' hc' hIH hcited
 
 /-- **The decorated single-peel step (`decoratedPeelStep_proof`), MODULO the isolated hole.** For
 every `≥ 3`-width chain `M`, GIVEN box-finiteness of every one-shorter chain, the trivial decoration
@@ -110,7 +140,7 @@ recovery (`decoratedBoxThresholdFinite_trivial_iff`) → front cover (`sjBoundar
 Once `innerCorankDescent_lt_top` is filled (Phase 2), this delivers `DecoratedPeelStep`, closing
 `(□)` via the banked driver `routeMBoxThresholdFinite_of_decoratedPeel` and retro-filling
 `sjJointResolution`. -/
-theorem decoratedPeelStep_proof : DecoratedPeelStep := by
+theorem decoratedPeelStep_proof (hcited : cited_aoyagi_product_corank) : DecoratedPeelStep := by
   intro L M hIH
   refine (decoratedBoxThresholdFinite_trivial_iff M).mpr ?_
   intro c' hc'
@@ -118,6 +148,18 @@ theorem decoratedPeelStep_proof : DecoratedPeelStep := by
   refine ENNReal.sum_lt_top.mpr (fun t ht => ENNReal.sum_lt_top.mpr
     (fun ρ _ => ENNReal.sum_lt_top.mpr (fun κ _ => ?_)))
   rw [Finset.mem_Icc] at ht
-  exact gammaPeelIntegral_lt_top_of_descent M t ht.1 ht.2 ρ κ c' hc' hIH
+  exact gammaPeelIntegral_lt_top_of_descent M t ht.1 ht.2 ρ κ c' hc' hIH hcited
+
+/-- **The plain-route `(□)`, conditional on the box-level Aoyagi cite.** Composes the banked driver
+`routeMBoxThresholdFinite_of_decoratedPeel` with `decoratedPeelStep_proof`: GIVEN the carried box-level
+cite `cited_aoyagi_product_corank` (the `min-corank ≥ 2` product-corank box-finiteness — see its
+docstring: the box-level shadow of `cited_aoyagi_dln`, a second minimal Aoyagi gap), every width vector
+`M` is box-threshold-finite. The cite is a HYPOTHESIS — VISIBLE in the type, NOT a global axiom — so
+`#print axioms` stays `[propext, Classical.choice, Quot.sound]`. The `d ≤ 1` native arm of
+`innerCorankDescent_lt_top` remains the one tracked hole (satred's dispatch); until it lands, this carries
+that `sorryAx`. -/
+theorem routeMBoxThresholdFinite_productCorankCited (hcited : cited_aoyagi_product_corank) :
+    ∀ {L : ℕ} (M : Fin (L + 1) → ℕ), RouteMBoxThresholdFinite M :=
+  routeMBoxThresholdFinite_of_decoratedPeel (decoratedPeelStep_proof hcited)
 
 end DLNFibre.DLN.RLCT
