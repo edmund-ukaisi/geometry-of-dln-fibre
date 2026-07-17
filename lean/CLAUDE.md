@@ -138,18 +138,6 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   block-diagonal, so `LinearMap.det` factors via `det_pi` to `(det K)^c` directly, and the Haar CoV
   fires on the pi instance with no diamond. (Pattern: `RouteMSJDecoratedPeelMeas.mulLeftₚ` /
   `lintegral_comp_mulLeftₚ`, transcribing `RouteMSJGammaAtom.rightMulₚ`; `genm-decbuild`, 2026-07-10.)
-- **A composed matrix expression (`1 − Q_bᵀ(Q_bQ_bᵀ)⁻¹Q_b`, the transverse projector) blocks `rw` /
-  `linarith` / `linear_combination` matching across positions — even when the two occurrences PRINT
-  identically.** The `1` (needs `[DecidableEq (Fin n)]`) and the `⁻¹` (`Matrix.inv` instances) sit on an
-  instance diamond, so the same-looking subterm elaborates to distinct terms in the goal vs a `have`, and
-  first-order matching (rw) + atom-detection (linarith) silently fail ("Did not find pattern …" showing the
-  pattern verbatim in the target; "linarith failed"). `set … with h` + `clear_value` do NOT fix it. **Fix:
-  `generalize hP : (1 − Q_bᵀ * (Q_b * Q_bᵀ)⁻¹ * Q_b) = Pp at hFacts ⊢`** — abstract the composite to ONE
-  fresh atomic variable across the goal AND every fact that mentions it, in a single `generalize`, so every
-  occurrence is literally `Pp` (no diamond). Prove the projection facts (`Q_b·Π_⊥=0`, `Π_⊥·Q_bᵀ=0`,
-  `Q_inl_split`) with the explicit form BEFORE the `generalize` (feeding them into its `at`), then the whole
-  downstream proof is on the clean variable; close the final real-valued identity with `linear_combination`
-  (not `linarith`). (`RouteMSJInteriorR1.R1_frobenius_split`, `genm-intcell`, 2026-07-17.)
 - **A `def` inlining a heavy spectral term (`(posSemidef_mul_transpose P).isHermitian.eigenvalues` /
   `.eigenvectorUnitary`) makes any lemma manipulating it hit a `(deterministic) timeout at isDefEq/whnf`
   (even @800k heartbeats)** — unification re-elaborates the spectral term each time. TWO-PART fix
