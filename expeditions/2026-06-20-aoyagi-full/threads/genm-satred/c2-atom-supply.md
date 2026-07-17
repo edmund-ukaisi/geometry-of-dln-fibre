@@ -26,6 +26,33 @@ exceptional powers DO stay ≥ threshold — **by the airtight self-similar recu
 (This is my SUPPLY; decstep confirms the exact `a_i, N_i` via the monomial normal form + the Codex red-team —
 the self-similarity should make the sign uniformly non-negative.)
 
+## ★bis REFINEMENT (decstep's Codex red-team) — RELATIVE (not free) principalization + A_r = sign-repair
+
+decstep fired the Codex red-team on §★: **the self-similarity is the RIGHT structural idea and the arithmetic
+is airtight, but NECESSARY-NOT-SUFFICIENT** (gap = the PROJECTED-TAIL principalization). Two refinements:
+
+1. **The residual is `Γ·Q_b^⊥`, `Q_b^⊥ = Q_b(I−P_{Q̃ₚ})`, with `Q_b^⊥·Q̃ₚᵀ = 0` IDENTICALLY** — so `Q_b^⊥` is
+   COUPLED to the pivot (it lives in the quotient by `rowspace(Q̃ₚ)`). So it is a **RELATIVE joint
+   principalization, NOT a free sub-chain.** The sub-chain is `(a, b, n')` with **`n' = n − u` the PROJECTED
+   width** (the off-pivot complement), and `Γ·Q_b^⊥` has leading width `c=min(a,b)`, not `t*` (they agree
+   ACCIDENTALLY at n=4 since `t*=c=2`, not generally). So my sub-chain cut-soundness (324/324, §★) is the
+   ARITHMETIC (necessary), but the ORDINARY DLN arity-IH does NOT directly apply — it needs the
+   **relative-quotient lemma** (the coupling to the pivot via `Q_b^⊥Q̃ₚᵀ=0`). This is decstep's normal-form lead.
+
+2. **`A_r = (b−r)²` IS the SIGN-REPAIR (my A_r is more central than the "outer nesting" framing).** Codex: the
+   NAIVE pivot-Gram exponent on the rank-`k` shared-tail stratum is `k−n` (`−1` at `k=n−1`, `−2` at `k=n−2`),
+   so the `c < c+1` gate is strict ONLY at the top (`k=n`). **The transverse determinantal Jacobian = my
+   stratum codim `A_r = (b−r)²` is EXACTLY what raises `k−n` to `>−1`**, and `min_r[A_r + minAdm(redChain
+   u'_r M)] = minAdm(M)` confirms the repaired sign reaches `c*`. So **A_r is the sign-repair mechanism** — the
+   genuinely-new ANALYTIC theorem (decstep leads the monomial normal form) is proving the **transverse-Jacobian
+   = A_r-codim identity + the `>−1` sign repair, UNIFORM across the shared-tail rank strata** (the relative
+   joint principalization). Buildable (detail-at-scale, standard determinantal resolution) — NOT a wall, NOT
+   cited.
+
+**Net:** my §★ self-similarity + §1 A_r give the STRUCTURE + airtight ARITHMETIC (the necessary skeleton);
+the genuinely-new ANALYTIC theorem is the RELATIVE joint principalization (the transverse-Jacobian=A_r-codim
+identity + the >−1 sign repair, uniform across strata + the relative-quotient coupling), which decstep leads.
+
 ## 1. The per-corank A_r vector (the OUTER corank rank-sector, my §2)
 
 The corank `Q_b = A_cor·Zf` (b×n) rank-strata `r ∈ [max(0,b−ρ) .. min(b,ρ)]`, stratum `r` → cut
