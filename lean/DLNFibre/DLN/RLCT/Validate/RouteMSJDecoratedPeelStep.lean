@@ -110,8 +110,14 @@ theorem innerCorankDescent_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
   by_cases hcork : 2 ≤ min (M 0 - t) (M 1 - t)
   · -- min-corank ≥ 2: CITED (Aoyagi §5 product-corank / joint-Vandermonde box-finiteness)
     exact hcited M t ht ht2 hcork κ c' hc' hIH
-  · -- min-corank ≤ 1 (¬hcork ⟹ min ≤ 1): NATIVE — satred's d≤1 dispatch (c=1 C-transversality +
-    -- wings + dominant-minor cover + hIH). The sole remaining tracked hole of the plain route.
+  · -- min-corank ≤ 1 (¬hcork ⟹ min ≤ 1): NATIVE — satred's d≤1 dispatch. NOT bounded plumbing:
+    -- needs THREE native sub-builds, none landed as theorems yet (Lane-1 recon, 2026-07-17) —
+    -- 2a generic dominant-minor finite cover + per-chart matrix-space CoV bounded-density → hIH;
+    -- 2b corank-one edge cell (fragile split + C-transversality descent + a<u/a≥u dispatch over
+    -- gammaAtom/qbox + reduced-chain charge accounting); 2c wings (a=0 wide-product X·Y pushforward
+    -- density `deeperFlag_waist_a0`, b=0 tall Wishart qbox `deeperFlag_waist_b0`). The banked ATOMS
+    -- exist; the outer (S,J) descent that supplies their a.e. interface hypotheses over the measure
+    -- and reduces to hIH at charge `peelCharge` does not. See the Lane-1 wall report.
     sorry
 
 /-- **The per-chart peeled integral is finite (the wired reduction to the hole).** For a legal pivot
@@ -158,7 +164,7 @@ docstring: the box-level shadow of `cited_aoyagi_dln`, a second minimal Aoyagi g
 `#print axioms` stays `[propext, Classical.choice, Quot.sound]`. The `d ≤ 1` native arm of
 `innerCorankDescent_lt_top` remains the one tracked hole (satred's dispatch); until it lands, this carries
 that `sorryAx`. -/
-theorem routeMBoxThresholdFinite_productCorankCited (hcited : cited_aoyagi_product_corank) :
+theorem routeMBoxThresholdFinite_of_prodCorank (hcited : cited_aoyagi_product_corank) :
     ∀ {L : ℕ} (M : Fin (L + 1) → ℕ), RouteMBoxThresholdFinite M :=
   routeMBoxThresholdFinite_of_decoratedPeel (decoratedPeelStep_proof hcited)
 
