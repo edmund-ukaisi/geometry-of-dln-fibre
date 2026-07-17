@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Engine.CanonicalWitness224
+import DLNFibre.DLN.RLCT.Engine.EngineDriver
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1276,3 +1277,7 @@ open DLNFibre.DLN.RLCT
 -- The FULL CanonicalResolution witness is a @[blueprint] FORECAST (its ChartBridge conjunct is sorried
 -- pending the P8 CoV lemma) — it EXPECTS `sorryAx` in its footprint until the P8 tide lands:
 #print axioms Engine.canonicalResolution224
+-- The engine's owed composition (map: engine-route): ∀ M, RouteMBoxThresholdFinite M via the two
+-- Engine holes (monomialization_terminates, region_glue). EXPECTS `sorryAx` until both tides land;
+-- this line flipping to clean-three IS the hbox event the mint re-point waits on:
+#print axioms Engine.engine_box_threshold_finite
