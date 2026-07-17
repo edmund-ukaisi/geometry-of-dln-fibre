@@ -381,3 +381,10 @@ canonicalResolution224_arithmetic clean-three; canonicalResolution224 +sorryAx (
 engine_box_threshold_finite +sorryAx (the watch line — its flip to clean-three IS the hbox event).
 sorryAx census unchanged (forecast + mint + 4 inherited predecessor decls, all off the engine cone
 or expected). Root pushed. In flight: rev-carrier fresh round; architect cosmetics.
+
+## 2026-07-17 COSMETICS MERGED (tick 33)
+Architect's cosmetic commit (14927ae91) merged: 0 long lines across the Engine modules + the
+vacuity re-scope note (closure is IN-LEAN: LeafPullback + coherence + ledger + StepRel rejection).
+Verified cosmetic-only (AxCheck untouched — root's qualified entries + driver import intact; the
+one non-comment diff is a term line-split); witness closure rebuilt green (2717 jobs). Task #44
+closed. Awaiting rev-carrier verdict.
