@@ -74,3 +74,13 @@ forwarded to engine-route). ENGINE-ROUTE → ADOPTED (council 2×ADOPT + skeleto
 battery 12-green + disposition). C9 warnings correctly track that the six consumed nodes await
 carrier validation before stated — the reviewer's job, spawning now. Gate build 2 (reshaped
 driver) backgrounded.
+
+## 2026-07-17 ARCHITECT CLOSED OUT (tick 8)
+Final demonstrations merged (@2888cebf7): flatten-is-type-error shown empirically (Membership
+instance failure on the flattened field — fork 3 now demonstrated, not asserted); the hrat
+LOSS-PROOF example — region_glue's ratio hypothesis forces c' < ½·minAdm via
+exponent_ledger_bridge.2, so no reweighted/lossy bound can ever discharge it (zero-slack enforced
+by type); blueprint cone verified theorem4-free (either disposition accommodated). Architect stood
+down; worktree reaped (tip banked + merged; remote branch kept as trail). Reviewer notified of the
+additive post-freeze delta. Live: reviewer (carrier validation), hunt (exhaustiveness), gate
+build 2.
