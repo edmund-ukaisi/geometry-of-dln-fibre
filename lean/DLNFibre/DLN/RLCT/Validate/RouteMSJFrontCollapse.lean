@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlabD
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJFrontCollapse` — the front-collapse rank-sector atom (§1)
@@ -156,5 +157,19 @@ theorem det_gram_fromRows_of_orthonormal {m k n : ℕ}
     ((Matrix.fromRows F S) * (Matrix.fromRows F S)ᵀ).det = (F * Fᵀ).det := by
   rw [Matrix.transpose_fromRows, Matrix.fromRows_mul_fromCols, hSF, hSS,
     Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
+
+/-- **The front-Gram qbox finiteness (LANDED, green — the "first factor", `M₂≤b`).** The free-`F` front
+Gram integral `∫_{F ∈ box} det(F·Fᵀ)^{−M₂/2}` is finite whenever `M₀ ≤ M₁` and `M₂ < M₁ − M₀ + 1`
+(i.e. `M₂ ≤ M₁ − M₀ = b`, the bounded regime). The entry box `[−1,1]^{M₀×M₁}` sits inside the column-ball
+`colBallMat M₀ M₁ M₀` (each column norm² `≤ M₀`), so this reduces to the banked
+`bRowGram_colBall_lt_top` (= `qbox_lintegral_lt_top` transported by `rowsEquiv`). This is the density
+factor the GS-route square-CoV produces (Jacobian reciprocal `det(F·Fᵀ)^{−M₂/2}`, via
+`det_gram_fromRows_of_orthonormal`) — closed WITHOUT Cauchy-Binet. -/
+theorem front_gram_qbox_lt_top {M₀ M₁ : ℕ} (M₂ : ℕ) (hle : M₀ ≤ M₁)
+    (hbnd : (M₂ : ℝ) < (M₁ : ℝ) - M₀ + 1) :
+    (∫⁻ F in matBox M₀ M₁ 1,
+        ENNReal.ofReal ((Matrix.of F * (Matrix.of F)ᵀ).det ^ (-(M₂ : ℝ) / 2))) < ⊤ :=
+  lt_of_le_of_lt (lintegral_mono_set CorankSlabD.box_subset_colBall)
+    (CorankSlabD.bRowGram_colBall_lt_top (n := M₀) hle (a := (M₂ : ℝ)) hbnd)
 
 end DLNFibre.DLN.RLCT
