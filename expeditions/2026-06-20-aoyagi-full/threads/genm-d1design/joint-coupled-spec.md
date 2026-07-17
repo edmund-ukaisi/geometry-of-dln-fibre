@@ -95,7 +95,34 @@ absorb `δ` in the loss headroom `Δ = ½(minAdm(redChain M₀ M) − minAdm(M))
 for LOG cells; confirm at build widths). COUPLED estimate, NOT the clean `[qbox]×[hIH]` factorization.
 EXPENSIVE-TRANSCRIPTION.
 
-## 6. d1-a<u statements (RESCOPED by lane1shell's genm-tideD recon — mostly BANKED, a WIRE-UP)
+## 6. d1-a<u — ⚠ SUPERSEDED: the drop-transverse "clean" route is DECORATED; d1-a<u CONSOLIDATES with the heart
+
+**★ CORRECTION (decorrelated Codex `codex/altu-clean-answer.md`, PROVEN): the drop-transverse a<u pipeline
+(D-cert §3bis's "clean network-free leaf") is UNSOUND — it is DECORATED, NOT clean plain-hIH.** Dropping the
+transverse discards the γ-regularization and, after `edge_C_shift_bound` + `scaledRadialEuclid`, emits an exact
+incidence/conditioning weight `D_inc = ‖R‖^{−a}·‖P⁻¹H‖_∞^{−a}` (Gram-equivalent to `det(RRᵀ)^{−a/2}·det(HᵀH)^{−a/2}`
+on well-conditioned P-charts, `H = Py + B₁₂η`), which `frontCollapse` + `hIH` + `qbox` do NOT control. **Smallest
+cell `M=(3,3,1)`, `(a,u,b)=(1,2,1)`:** for `1<c'<3/2` the drop-transverse residual `∫_{‖H‖<δ}‖H‖^{−1}‖H‖^{−2s}dH
+≍ ∫r^{1−2c'}dr = ∞` (`s=c'−½`), while RETAINING γ gives `u+a=3` normal directions, finite for `2c'<3`.
+
+**⟹ d1-a<u is NOT a clean plain-hIH arm, and NOT §2-independent.** The SOUND route KEEPS the `(H,γ)` coupling =
+the JOINT rank-sector/incidence = **the heart (§1–5)**. So d1-a<u CONSOLIDATES with the joint-coupled heart: it
+is the **corank-rank-1 (b=1 edge) instance** of the joint `(Δ,C,Z)` incidence, resolved by the banked
+**FreeBilinear** leaf (the `u+a` joint normal directions). **At corank rank 1 there is NO min≥2 obstruction**
+(`C_1 = 1−⌊1/4⌋ = 1 = 1²`, no product-corank undershoot), so d1-a<u is the SAFE `r=1` slice — native
+(FreeBilinear), clears WITH the heart regardless of jointpnp's `r≥2` verdict. **Consequence:** the clean
+plain-hIH arms shrink to **a=0-BOUNDED only** (d1-a<u joins b=0 / a=0-POWER / d1-a≥u under the heart); more of
+Lane 1 rests on the heart's argued-native claim, but the verdicts CONSOLIDATE (one mechanism, one obstruction
+check — jointpnp's, at `r≥2`; d1-a<u is the safe `r=1` instance). This corrects my earlier "d1-a<u = §1
+frontCollapse wire-up, buildable now independent of §2" (that route is the decorated one).
+
+**(HISTORICAL — the superseded "wire-up" framing, kept for the record):** lane1shell's genm-tideD recon found
+R2 banked (`edge_C_shift_bound`/`edge_leaf_gamma_bound`), the ω-disposal core banked (`projection_rpow_lintegral_uniform`).
+Those banked pieces are REAL, but the drop-transverse ASSEMBLY they feed is decorated (above). The banked
+`freedSchurLoss_shear_corank_one_le` (`RouteMSJEdgeWiring:153`) + FreeBilinear + the RETAIN-γ joint incidence is
+the sound assembly (= the heart at rank-1), NOT the drop-transverse + frontCollapse pipeline.
+
+### (superseded detail below — the drop-transverse recipe, now known DECORATED)
 
 **lane1shell's recon (adopted): d1-a<u is a WIRE-UP of the banked genm-tideD edge machinery
 (`RouteMSJEdge*`, all green 0-sorry), NOT a fresh 2-sub-lemma build.** The pieces:
