@@ -764,3 +764,28 @@ with the ONLY hole `innerCorankDescent_lt_top`, and NO residual was silently dis
 Files (round 7): `codex/simplify-{prompt,answer}.md`, `simplify-run.log` (decorrelated, SIMPLIFICATION-SOUND);
 the plain-driver dependency audit (only-hole = `innerCorankDescent_lt_top`; `sjJointResolution:803` NOT in
 chain; wrapper/base sorry-free; no native_decide/admit) done inline.
+
+---
+
+# ADDENDUM (round 8, 2026-07-17) — cited-atom signature handed to the formaliser (arch1build)
+
+arch1build is defining `cited_aoyagi_product_corank` (the tree's first global axiom). Confirmed the exact form:
+
+- **VERBATIM the `innerCorankDescent_lt_top` (PeelStep:75) conclusion + `hcork : 2 ≤ min (M 0 - t) (M 1 - t)`**,
+  NOT an abstracted `productCorank_lt_top` (verbatim = zero adapter + IS the research-step footprint; an
+  abstracted shape needs an adapter lemma = a slop site). Keep the full freed-Γ triple integral conclusion.
+- **PRECISION refinement:** `ρ` is UNUSED in the conclusion (only `κ` appears, via `blockSplitEquiv κ`) →
+  DROP it (precision.md 1.1.3). Keep t, ht, ht2, hcork, κ, c', hc', hIH. Refines the round-6 §1 Prop (which
+  listed ρ). (arch1build to verify ρ-unused against the live PeelStep:75.)
+- **KEEP `hIH`** (IH-conditional: cites ONLY the product-corank step; the deeper reduced chains stay native).
+- **Mechanism (deferred to controller):** per the controller's B2 + footprint kill-condition, a global
+  `axiom` (surfaced in `#print axioms`). Soundness caveat baked in: it must be provably-implied-by
+  `cited_aoyagi_dln` (it is "weaker than a corollary" of it) — recommend a documented
+  `cited_aoyagi_product_corank_of_dln` implication so the footprint is honestly "Aoyagi, SHARPENED", not a
+  new independent leap. The global-axiom-vs-carried-field choice is the controller's footprint decision.
+- **Dispatch fill (confirmed):** `by_cases hcork : 2 ≤ min (M 0 - t) (M 1 - t)` → `exact
+  cited_aoyagi_product_corank M t ht ht2 hcork κ c' hc' hIH` (cited) / satred native (min ≤ 1).
+
+The exact signature is in the arch1build handoff message. This is the interface the bounded endgame build
+consumes: fill `innerCorankDescent_lt_top` (cited ⊕ native) → `decoratedPeelStep_proof` →
+`routeMBoxThresholdFinite_of_decoratedPeel` → (□) → mint, footprint = `cited_aoyagi_product_corank`.

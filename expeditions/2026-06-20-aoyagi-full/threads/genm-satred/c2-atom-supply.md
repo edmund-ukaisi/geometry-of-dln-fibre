@@ -53,6 +53,36 @@ is airtight, but NECESSARY-NOT-SUFFICIENT** (gap = the PROJECTED-TAIL principali
 the genuinely-new ANALYTIC theorem is the RELATIVE joint principalization (the transverse-Jacobian=A_r-codim
 identity + the >−1 sign repair, uniform across strata + the relative-quotient coupling), which decstep leads.
 
+## ★ter CORRECTIONS (decstep's 2nd Codex red-team) — labeling fix + my 0/4039 is the MIN, NOT the COVER
+
+Two corrections, one a labeling fix, one an honest downgrade of my own claim:
+
+**(A) Labeling (my message mis-stated it; the script was right).** The per-stratum charge is
+`A_r = peelCharge(u'_r) = (M₀−u'_r)(M₁−u'_r) = (corank at the deepened cut)²` — the CONSISTENT
+minAdm-cut-charge form. My earlier "`A_r=(b−r)²`" MIXED indexings (`(b−r)²` is the DROP-labeling, paired with
+`u'_r=u+(b−r)` the RANK-labeling — inconsistent, gives a spurious `min_r=7/2≠c*=11/2`). Verified: for
+`(4,4,4,4)@u=2`, `peelCharge(u'_r) = [0,1,4]` at `u'=[4,3,2]` (NOT `(b−r)²=[4,1,0]`). Use `peelCharge(u'_r)`.
+
+**(B) ⚠ My `0/4039` (and `324/324`) is the NAIVE-charge MIN ARITHMETIC, NOT the joint-incidence COVER —
+the non-submersive product-corank is an OPEN deep gap (decstep's Codex, GAP-IN-RELATIVE-JACOBIAN).** `Q̃ₚ,
+Q_b` are NOT free matrices — they are shared deeper PRODUCTS, so the joint incidence `Γ·Q_b` is NON-SUBMERSIVE
+at the rank-drop locus. My `peelCharge(u')` is the naive FREE-factor codim (`= m²` for the square, `=4` at
+`(4,4,4,4)` m=2), which OVERSTATES the actual **product-corank codim `C_m = m² − ⌊m²/4⌋`** (`=3` at m=2). With
+the naive `m²` (free-factor, deeper-delegated), all strata `≥ c*` (my `min = minAdm`, COVERS). But with the
+non-submersive `C_m` paired with the full reduced chain, m=2 UNDERSHOOTS: `C_2 + minAdm(redChain 2 (4,4,4,4)) =
+3 + 7 = 10 < 11 = 2c*` (i.e. `3/2 + 7/2 = 5 < 11/2 = c*`). **The standard determinantal fact does NOT settle
+which** — whether the iterated peels COVER the joint product-corank incidence (my naive `m²` right) or the
+incidence FALLS BETWEEN peels (the `C_m` gap) IS the non-submersive product-corank resolution — the genuine
+DEEP HEART. **So my `0/4039` certifies the MIN ARITHMETIC (naive charge), NOT the geometric COVER;** my earlier
+"airtight ⟹ the atom closes" was OVERSTATED (arithmetic ≠ cover), and my §★ verification had a bug (used
+`redChain 4`, minAdm 12, not the correct `redChain 2`, minAdm 7).
+
+**Implication:** use the JOINT rank-sector (the middle-PRODUCT stratification, decomposition-A geometry, codim
+`C_k`), NOT the naive single-factor `peelCharge`. My arithmetic is the airtight CERTIFICATE (necessary); the
+ANALYTIC content is the NATIVE product-corank resolution (transverse Jacobian = `C_k`, no smaller-ratio
+divisor) — deeper than standard determinantal technique. decstep reported to the controller as a surfaced
+sub-gap: path-A deep tide vs the cite-Aoyagi boundary for the product-corank step.
+
 ## 1. The per-corank A_r vector (the OUTER corank rank-sector, my §2)
 
 The corank `Q_b = A_cor·Zf` (b×n) rank-strata `r ∈ [max(0,b−ρ) .. min(b,ρ)]`, stratum `r` → cut
