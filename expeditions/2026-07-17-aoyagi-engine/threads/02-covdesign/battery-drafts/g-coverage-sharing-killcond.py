@@ -27,8 +27,17 @@ ratio is strictly below it (the disease reproduces). No rlct=c* is consumed
 import sys
 from fractions import Fraction as F
 from itertools import combinations
-sys.path.insert(0, "expeditions/2026-07-17-aoyagi-engine/map/battery")
-from _minadm import minAdm
+from functools import lru_cache
+
+
+@lru_cache(maxsize=None)
+def minAdm(M):  # RouteMLayerSplit.minAdmRec, integers only (inlined; matches map/battery/_minadm.py)
+    M = tuple(int(x) for x in M)
+    if len(M) == 1:
+        return 0
+    if len(M) == 2:
+        return M[0] * M[1]
+    return min((M[0] - t) * (M[1] - t) + minAdm((t,) + M[2:]) for t in range(min(M[0], M[1]) + 1))
 
 
 def _solve(rows, rhs):
