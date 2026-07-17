@@ -75,13 +75,32 @@ BOUNDARY: best-case max corank-block d by n = {3: 1, 4: 1, 5: 2, 6: 2, 7: 2}
 (E4') VERDICT  every d>=2 transcribe atom is tight at its binding cut (no slack): True
 
 ======================================================================
+(E5) two boundaries (coverage-adjudication axis for genm-l2engine)
+======================================================================
+  n=2: best-case max corank-d=1 (PATH d>=2? False); binding-atom d-values=[0, 1] (COVER d>=2 atom? False)
+  n=3: best-case max corank-d=1 (PATH d>=2? False); binding-atom d-values=[1] (COVER d>=2 atom? False)
+  n=4: best-case max corank-d=1 (PATH d>=2? False); binding-atom d-values=[1, 2] (COVER d>=2 atom? True)
+  n=5: best-case max corank-d=2 (PATH d>=2? True); binding-atom d-values=[1, 2] (COVER d>=2 atom? True)
+  n=6: best-case max corank-d=2 (PATH d>=2? True); binding-atom d-values=[2] (COVER d>=2 atom? True)
+  n=7: best-case max corank-d=2 (PATH d>=2? True); binding-atom d-values=[2, 3] (COVER d>=2 atom? True)
+  n=8: best-case max corank-d=3 (PATH d>=2? True); binding-atom d-values=[2, 3] (COVER d>=2 atom? True)
+  => PATH boundary (no all-d<=1 optimal path) = n=5
+  => COVER boundary (a binding d>=2 atom exists) = n=4
+(E5) VERDICT  PATH boundary = 5 and COVER boundary = 4 (both exact): True
+     [adjudication for genm-l2engine: a resolution covers all binding rank strata,
+      so COVER (n>=4) is operative unless the d>=2 binding chart resolves natively --
+      W1 says single-factor blow-ups do not principalize it. This witness states the
+      two boundaries; it does not choose the cover.]
+
+======================================================================
 W4 OVERALL
 ======================================================================
 (E1) bridge d=min(M0-t,M1-t): True
 (E2) tightness at branch index d: True
 (E3) reproduces decstep min(a,b): True
-(E4) dispatch boundary n<=4 native / n>=5 forced: True
+(E4) dispatch boundary best-case B(n) native<=1 / forced>=2: True
 (E4') d>=2 transcribe atoms tight (no slack): True
+(E5) two boundaries PATH=5 / COVER=4: True
 W4 PASS: True
 
-[W4] the engine branches on d=min(M0-t,M1-t); the budget is tight at the binding d; n<=4 admit a native-corank optimal path, n>=5 force a min(a,b)>=2 product-corank (transcribe) atom on every optimal path.
+[W4] the engine branches on d=min(M0-t,M1-t); the budget is tight at the binding d. Two boundaries: an all-d<=1 optimal PATH exists for n<=4, but a BINDING d>=2 atom (COVER must-transcribe) exists for every n>=4. Which is operative is the engine's coverage-adjudication (a resolution covers all binding strata => COVER, n>=4).
