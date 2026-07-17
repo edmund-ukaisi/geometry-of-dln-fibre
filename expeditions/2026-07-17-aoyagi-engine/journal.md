@@ -92,3 +92,20 @@ architect-reported. Hunt progress: Tier A complete locally (original-monomial va
 exactly as covdesign predicted; independent minimum-codim check = minAdm on all six instances — a
 consistency datum, not the gate); Tier B/C in progress; push-nudged. Reviewer mid-audit (frozen
 worktree, read-only as designed). Idle otherwise; re-sleeping.
+
+## 2026-07-17 REVIEW ROUND 1 — VALIDATE-WITH-CHANGES, 2 CRITICAL (tick 10)
+rev-skeleton returned: carrier bones sound (bChain=Monotone exactly the divisibility chain;
+support faithful; fit genuine; fence verbatim; no MinAdmMono) but 2 CRITICAL + 4 MAJOR. C1: the
+leaf-chain condition is unencoded — junk/incomparable leaves compile, so the separated-form
+precondition has no hook. C2: resolutionOf := choose under-determines — coverage/ledger/reduction
+assert properties the existence spec doesn't imply; NOT DISCHARGEABLE AS STATED (junk-leaf
+witness falsifies ledger.2). M3 ChartsCover covers the measure-zero locus not a neighborhood;
+M4 region_glue's ratio form must match cert-d3's verified identity (divExp vs bExp); M5
+reduction_layer+case_step orphaned from the driver cone (severed by C2); M6 case12 invariant
+clause missing. THE COMPARISON THAT MATTERS: this is the unprovable-socket disease caught at the
+carrier gate BEFORE any tide — the predecessor caught the same class 3 days post-pin. Repair
+round: architect re-engaged with a bundling design (CanonicalResolution predicate = chain leaves +
+step-invariant-everywhere + branch-rooted + neighborhood cover; obligations become its components
++ consequences — fixes C1/C2/M3/M5 in one shape); M4's ratio pinned to cert-d3's identity with a
+new consistency witness; M6 clause added. Carrier stays drafted; six stay adjudicated. Equilibrium
+round 2 = re-review after the repair.

@@ -87,7 +87,7 @@ nodes:
     owner: architect
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "divisor-support data mandatory at corank>=2; flattening provably breaks. IsFullMonomialization (leaf-chain condition) is load-bearing: a 'leaf' with incomparable b's undershoots (g-leaf-chain-separation.py)"
+    notes: "REVIEW ROUND 1 (VALIDATE-WITH-CHANGES): C1 leaf-chain NOT yet encoded (LeafData lacks bChain; junk leaves compile); C2 resolutionOf:=choose under-determines (obligations not dischargeable from the existence spec — junk-leaf witness). Repair round in flight; validation WITHHELD until C1+C2 land + re-review. Confirmed sound: bChain=Monotone IS the divisibility chain; support faithful"
 
   - id: case-step-lemmas
     kind: claim
