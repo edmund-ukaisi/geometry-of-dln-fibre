@@ -355,3 +355,8 @@ qualified), gate 7b GREEN exit=0. Footprints per the precision ruling: canonical
 arithmetic = clean-three; canonicalResolution224 = +sorryAx (the @[blueprint] ChartBridge forecast,
 expected); aoyagi_learning_coefficient_gen clean-three intact. Lesson re-confirmed: a slot-
 terminated/partial build is NEVER the gate; the controller's own full AxCheck build is.
+
+## 2026-07-17 tick 29 addendum
+Added the engine_box_threshold_finite WATCH entry to AxCheck (expects sorryAx; its flip to
+clean-three IS the hbox event the mint re-point waits on). Gate 7c running in background;
+entry commits ONLY on its green (gate-then-bank). Architect final increment still pending.
