@@ -104,4 +104,12 @@ scoped below; the atom is the leaf it consumes.
 >   - **R1 Frobenius split** (`E_top = frobSq(P·Y)+frobSq(B̃·Q_b)`, `E_tr = frobSq(C·Y)`; `B̃ = B₁₂+P·Ã_z`,
 >     `Ã_z = Q_inl·Q_bᵀ(Q_bQ_bᵀ)⁻¹`, cross-term `0` via `Q_b·Π = 0`) — couplerad holds the machine-ε-verified
 >     identity, to be pinned against corankrec's exact `hsQ`/`Q_inl`/`Q_b`/`Π` object names once the boundary is set.
-> - **Status.** scoped; atom (Card 1) landed as the leaf.
+> - **Progress (2026-07-17).** Base assembled (corankrec+atom+intloss, clean 0-conflict merge, builds green).
+>   **R1 LANDED** (`RouteMSJInteriorR1.lean`, clean-three): the reusable atoms (`frobInner`, cross-term-zero
+>   `frobSq` additivity, F1/F2 transverse-projector facts, `frobInner_eq_trace`, `Q_inl_split` F3) + the full
+>   `R1_frobenius_split` (`E_top+E_tr = frobSq(E·Y)+frobSq(B̃·Q_b)`). Charge FIRMED at `a/2` pure (couplerad
+>   +corankrec: the `u/2` is the B̃-CoV Jacobian, z0-absorbed, no double-count). Routes A (inner per-p,
+>   `interiorLoss_twoMat_lt_top`, cleared by `minAdm_le_head_mul_min_deepTailMin`) + B (outer z0, R2+RectSchurCore
+>   +atom, cleared by `minAdm_le_inf_pivot_qip`) are complementary, both banked. REMAINING: R2 (`z0↦Y` CoV),
+>   the per-row LQ/co-isometry CoV, Tonelli, charge-absorption, wire to `coupledCell_interior_lt_top`.
+> - **Status.** in progress; atom (Card 1) + R1 identity landed clean-three; R2/CoV/Tonelli/charge/wiring remain.
