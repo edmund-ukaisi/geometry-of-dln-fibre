@@ -421,3 +421,102 @@ retreat; it is NOT a cited-Aoyagi step (the Aoyagi monument stays at `rlct = ½�
 Files (round 3): `codex/route-{prompt,answer}.md`, `route-run.log` (decorrelated, DECORATION-NECESSARY);
 satred D-cert §4bis correction (6804/7560 a≥u, `decstep_c2.py`); the preservation-structure + pivot-Gram
 correction + the c≥2 atom isolation recomputed/reconciled inline.
+
+---
+
+# ADDENDUM (round 4, 2026-07-17) — the c≥2 joint-principalization atom: design + the surfaced residual gap
+
+**Question (controller):** design the c≥2 joint-principalization atom (normal form + pushforward
+decomposition + exceptional-power budget), consuming banked Schur-weld/gammaAtom/qbox — OR surface the gap.
+I LEAD; satred supplied the per-corank `A_r` + self-similarity (`c2-atom-supply.md`). Decorrelated Codex on
+the exceptional-power sign (`codex/princ-{prompt,answer}.md`, xhigh, verdict withheld).
+
+## ★★★ VERDICT: DESIGN PINNED IN STRUCTURE + ONE SURFACED RESIDUAL GAP (the relative joint principalization). Buildable (detail-at-scale), arithmetic airtight, NOT a wall, NOT a cited step. The soundness must concentrate on the transverse-Jacobian sign repair.
+
+## 1. The design (the decomposition, consuming banked bricks)
+
+One c≥2 peel of an admissible decoration:
+1. **Schur-weld** (banked, measure-preserving `chartInner_schurWeld_eq`): `freedSchurLoss = frobSq(P·Q̃ₚ)
+   + frobSq(C·Q̃ₚ + Γ·Q_b)`.
+2. **Integrate the coupling `C`** (banked `gammaAtom_aniso_shifted_eq` — verified c-AGNOSTIC: `S` is a
+   general `Fin p × Fin n` shift, not rank-1, so it covers c≥2): yields the **PIVOT Gram**
+   `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` (carried decoration) × `(w + ‖(Γ·Q_b)(I−P_{Q̃ₚ})‖²)^{−(c'−au/2)}`.
+3. **Stratify the shared-tail rank** (satred's outer `A_r`, `c2-atom-supply.md §1`): strata `r → u'_r =
+   u+(b−r)`, stratum codim `A_r = (b−r)²`, and `min_r [A_r + minAdm(redChain u'_r M)] = minAdm(M)`
+   (verified: `(4,4,4,4)@u=2` `A_r=[0,1,4]` min 11; `(5,5,5,5)` [0,1,4,9] min 17; my n=3..15).
+4. **The inner residual `frobSq(Γ·Q_b·(I−P))`** — satred's self-similarity: `Γ·Q_b` is a PRODUCT (a×b · b×n),
+   a NESTED DLN sub-product, so the `Γ₂S=0` incidence is the sub-chain's rank-drop, resolved one level
+   down; the sub-chain cut-soundness `minAdm(a,b,n') ≤ (a−s)(b−s) + minAdm(s,n')` is the minAdm recursion
+   (verified 324/324). This is the RIGHT structural idea.
+5. Each stratum → a **DECORATED `redChain u'_r M`** (pivot-Gram front decoration + stratum monomial),
+   closed by the decorated arity-IH; the transverse `|det J|` (= the `A_r` codim) is CARRIED (never
+   dropped — tide-D KILL guard).
+
+## 2. The exceptional-power budget — the crux, and where the gap is (Codex red-team, decorrelated)
+
+**The naive pivot-Gram sign FAILS on deeper strata; the transverse Jacobian must REPAIR it.** Codex
+(PROVEN): the pivot-Gram gate `c < q−u+1 = c+1` is strict ONLY at the top stratum (`q_eff = n`, full tail
+rank `k=n`); on a deeper shared-tail rank-`k` stratum `q_eff = k`, the gate becomes `c < k−t*+1`, MARGINAL
+at `k=n−1` and FAILING for lower `k`. The naive pivot-Gram exceptional exponent on the rank-`k` stratum is
+`k − n` — **`−1` at `k=n−1`, `−2` at `k=n−2`, …** (Codex, n=4). So the conditional qbox sign FAILS on the
+deeper strata. The stratum codim `A_r = (b−r)²` (the transverse determinantal-blow-up Jacobian) is exactly
+what REPAIRS these negative powers, and `min_r[A_r + reduced] = minAdm` (verified) — so the REPAIRED sign
+holds, reaching `c*`. **But proving the transverse Jacobian equals the `A_r` codim — i.e. that the
+determinantal-stratum blow-up raises the naive `k−n` exponent to `> −1` uniformly across strata — is the
+genuinely-new analytic content, NOT supplied by the banked lemmas.**
+
+**The budget also depends on `t* = c` (accidental at n=4).** Codex: `au/2 + λ_red − c* = c(t*−c)/2`, zero
+ONLY when `t*=c` (holds for n=4: t*=c=2, so `2 + 0 + 7/2 = 11/2 = c*`). For `t*≠c` the C-integration's
+`au/2` shift over/under-spends `c²/2`, and the projected-tail incidence must carry the difference `c(t*−c)/2`
+— which is again the transverse-Jacobian repair, uniform across strata. So the exact per-cut bookkeeping is
+NOT the naive `au/2 + λ_red`; it is the `A_r` stratification (satred, min=minAdm).
+
+## 3. The surfaced residual gap (honest — the genuinely-new theorem)
+
+**GAP-AT-PROJECTED-TAIL-PRINCIPALIZATION** (Codex verdict). The residual `Q_b^⊥ = Q_b·(I−P_{Q̃ₚ})` is NOT a
+clean free reduced-chain: `Q_b^⊥ Q̃ₚᵀ = 0` identically, so it is COUPLED to the pivot tail (a RELATIVE, not
+absolute, principalization), and `Γ·Q_b^⊥` has leading width `c` (not `t*` — agree accidentally at n=4).
+So the ordinary DLN arity-IH does not apply without the missing lemma. The minimal missing piece:
+
+> **A relative joint principalization** of `det(Q̃ₚQ̃ₚᵀ)^{−c/2}·(‖P·Q̃ₚ‖² + ‖Γ·Q_b·(I−P_{Q̃ₚ})‖²)^{−d}`,
+> **uniform across all shared-tail rank strata**, whose pushforward is a finite sum of shifted PLAIN/decorated
+> reduced-chain integrals, with the exceptional powers checked `> −1` (the transverse Jacobian `A_r`
+> repairing the naive `k−n` sign).
+
+- **satred's self-similarity is the right STRUCTURAL idea** (the residual is a nested product) and gives the
+  airtight ARITHMETIC (min = minAdm, sub-chain cut-soundness). **But it is necessary-not-sufficient:** the
+  ANALYTIC realization — the projected-tail coupling (`Q_b^⊥ Q̃ₚᵀ = 0`) + the deeper-stratum sign repair via
+  the transverse Jacobian — is the genuinely-new theorem, not reducible to the arithmetic alone.
+- **Buildable, NOT a wall.** The transverse determinantal-stratum Jacobians repairing the negative powers IS
+  the standard resolution mechanism (the `|det J|` positive Jacobian = the `A_r` codim), consistent with
+  `min = minAdm`. It is *detail-at-scale* (the rank-sector of a determinantal variety + the shared-tail
+  relative quotient), the tide's genuinely-new heart. NOT a cited-Aoyagi step (the monument stays at
+  `rlct=½·codim`, one level up).
+
+## 4. Bedrock guards (bake into the build; each a kill-condition)
+
+1. **Pivot Gram, NOT corank Gram** — carry `det(Q̃ₚQ̃ₚᵀ)` (pivot, gate `c<c+1` at top), never
+   `det(Q_bQ_bᵀ)` (corank, `2c≤n` trap). (verified; RouteMSJDecorated "atom trap".)
+2. **Never integrate `Γ` as a free block after `C`** — that spends `c·n/2 > c²/2` (OVERSHOOT, verified
+   n=3..8). `Γ·Q_b` must be STRATIFIED (the `A_r` joint rank-sector), not integrated free.
+3. **Carry `|det J|` always** (the transverse Jacobian = the `A_r` codim = the sign repair; dropping it is
+   the divergent route).
+4. **The pivot-Gram gate `c<c+1` is TOP-STRATUM only** — deeper shared-tail rank strata are marginal/fail
+   and MUST go through the transverse-Jacobian repair / recursion (Codex Q3). Do not assume a uniform strict
+   gate.
+
+## 5. Recommendation
+
+**Commission the Route-Dec tide with the c≥2 atom = the decorated recursion + the relative joint
+principalization (transverse-Jacobian sign repair across shared-tail rank strata).** The design is pinned
+in structure (steps §1); the arithmetic is airtight (satred `A_r` + my n=3..15 + 324/324); the
+genuinely-new theorem to PROVE is §3 (the relative principalization + the `> −1` sign repair), where the
+soundness review must concentrate. It is buildable (detail-at-scale), not a wall, not cited. If a cleaner
+atom is wanted before the tide, the ONE focused design step is to pin the transverse-Jacobian = `A_r`-codim
+identity (the shared-tail relative quotient) at the exact widths — satred owns the `A_r`/dim-matching, I own
+the monomial normal form + the radial/polar box lemmas. Fallback (§3bis uncoupled qbox driven by the
+reduced-chain recursion) is essentially the SAME mechanism (the recursion IS the repair) — still native.
+
+Files (round 4): `codex/princ-{prompt,answer}.md`, `princ-run.log` (decorrelated, GAP-AT-PROJECTED-TAIL-
+PRINCIPALIZATION); satred `c2-atom-supply.md` (self-similarity + `A_r` + CoV + `c2_atom_selfsim.py` 324/324);
+pivot-vs-corank gate + overshoot recomputed/verified inline (n=3..12).
