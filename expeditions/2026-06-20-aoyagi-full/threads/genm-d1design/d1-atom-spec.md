@@ -81,15 +81,24 @@ tubes are EMPTY here).
 charge/cut-soundness); the MP front-split `routeMLayerBoxIntegral_front_split`/`eFront` + `paramsEquivFlat`/
 `measurableSet_paramsBoxM` (box CoV plumbing); Tonelli/finite-box plumbing.
 
-**NEW sub-lemmas to build (each its own lemma):**
-- **(N1)** the finite joint incidence-sector `(r,s)` cover of `wingFrontBox × A₁`-box (`r ≤ s ≤ t`), measurable,
-  covering off a null boundary.
-- **(N2)** the per-sector measurable determinantal CoV (the incidence blow-up chart).
-- **(N3)** the **Jacobian identity** `|det DΦ| = u(ξ)·∏_j |z_j|^{ν_j−1}`, `0 < c ≤ u(ξ) ≤ C` (pure monomial ×
-  bounded unit — the KILL-guard: carry `|det J|`, never drop it).
-- **(N4)** the **integral-level sector replacement** `I_{r,s}(c') ≤ C_{r,s}·(1 + I_{redChain s M}(c'−N_s/2))`
-  (each sector → plain `hIH`, at charge `N_s`).
-- **(N5)** null-boundary removal (`{det = 0}` is null) + the finite sector summation (`ENNReal.sum_lt_top`).
+**NEW sub-lemmas to build (each its own lemma).** ★ **BUILD-ONCE boundary (controller's sequencing):** N1–N3
+are the SHARED atlas + Jacobian — build them ONCE, reusable by §2 (which instantiates the same atlas on the
+extended tail `Q̂` with a free front `[C|Γ]` + the pivot core). N4–N5 are instantiated PER CASE (§1 pure vs §2
+regularized). To make N1–N3 reusable, state them for a **general nonneg measurable core** `κ(Y) ≥ 0` in the
+loss `(κ(Y) + frobSq(G·Y))^{−c'}`, front `G` free, tail `Y` a product: **§1 = `κ ≡ 0`** (pure); **§2 = `κ(Y) =
+frobSq(P·Q̃ₚ)`** the pivot energy (`Q̃ₚ` = top-`u` rows of `Y = Q̂`). The `(r,s)` decomposition + monomial
+Jacobian are `κ`-INDEPENDENT (they read only the `G·Y` product structure) — so N1–N3 transfer verbatim; only
+N4 (the per-sector reduction / charge) differs (§2's `κ>0` is the radial regularizer that buys the corank
+charge at the `{Y→0}` corner, `‖PΘ‖²≥σ_min(P)²>0`).
+- **(N1, shared)** the finite joint incidence-sector `(r,s)` cover of `frontBox × Y`-box (`r = rank(G·Y) ≤ s =
+  relative-row/intermediate rank ≤ min`), measurable, off a null boundary. [§2: `(rank Q̃ₚ, rank Q̂)`, RELATIVE-row
+  incidence — when `q ≤ u`, `Q_b→0` gives no total-rank drop, so track relative rows, not total rank.]
+- **(N2, shared)** the per-sector measurable determinantal CoV (the incidence blow-up chart).
+- **(N3, shared)** the **Jacobian identity** `|det DΦ| = u(ξ)·∏_j |z_j|^{ν_j−1}`, `0 < c ≤ u(ξ) ≤ C` (pure
+  monomial × bounded unit — the KILL-guard: carry `|det J|`, never drop it). `κ`-independent.
+- **(N4, per-case)** the **integral-level sector replacement** `I_{r,s}(c') ≤ C_{r,s}·(1 + I_{redChain s M}(c'−N_s/2))`
+  (each sector → plain `hIH`, at charge `N_s`). §2 adds the pivot-core regularization at the `{Q̃ₚ→0}` corner.
+- **(N5, per-case)** null-boundary removal (`{det = 0}` is null) + the finite sector summation (`ENNReal.sum_lt_top`).
 
 **Diamond guard (`lean/CLAUDE.md`):** raw-`Pi` instances for every matrix product/reindex; `generalize` the
 composite (e.g. the CoV image) to a fresh atom across the goal + all hyps (round-7 gotcha, `RouteMSJInteriorR1`).
