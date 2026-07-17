@@ -78,11 +78,13 @@ truth scan.
 
 | Lane | Thread | State | Next gate |
 |---|---|---|---|
-| **Landed** | arch1build Option B `@4c2eb5779` (genm-integration) | socket built non-vacuous + plain-route `(□)` conditional on it; clean-three EXCEPT the one d≤1 sorry | Lane 1 closes the sorry |
-| **Lane 1** | `lane1shell` (off genm-integration @4c2eb5779) | IN FLIGHT — fill d≤1 native arm (2a dominant-minor cover / 2b corank-one §3 / 2c wings) + socket discipline + `_of_prodCorank` name + forced axiom-print | green + clean-three suffixed composition |
-| **Lane 2 prep** | `l2recon` (substrate survey) | IN FLIGHT — map the banked substrate the engine consumes (survey-before-commission) | recon-map lands → informs engine spec |
-| **Lane 2 prep** | `l2witness` (executable discriminator battery) | IN FLIGHT — joint-center survival / codim-undershoot / tightness-at-binding-cell as runnable exhibits | battery lands → gates the engine design pass |
-| **Lane 2 engine** | (not yet commissioned) | PENDING — commissioned AFTER l2recon + l2witness land | skeleton = terminal statement typed = socket's Prop + in-file fit example |
+| **Landed** | genm-integration `@5e9d264e6` (Option B + `_of_prodCorank` rename FF'd) | socket built non-vacuous + plain-route `(□) = routeMBoxThresholdFinite_of_prodCorank` conditional on it; **TWO native gaps** = the d≤1 sorry + the d≥2 cite hypothesis (both visible; mint unbuilt) | close both natively |
+| **Lane 1 — design** | `d1design` (pen-and-paper) | IN FLIGHT — honest formal build recipe for the d≤1 arm (which banked atoms compose how + measure-level interfaces + close D-cert §3bis residual + name the new atoms + per-sub-build open-vs-transcription) | recipe lands → commission sub-tides |
+| **Lane 1 — 2a** | (lane1shell, on-call) | PENDING recipe — generic dominant-minor cover (EXPENSIVE TRANSCRIPTION, the tractable-first sub-tide) | d1design recipe |
+| **Lane 1 — 2b/2c** | (unassigned) | PENDING recipe — 2b corank-one C-transversality atom + 2c a=0 waist density (the genuinely-new-to-formalise atoms) + b=0 Wishart | d1design recipe |
+| **Lane 2 — survey** | `l2recon` | ✅ DONE — `recon-map.md` @798601328 (genm-l2recon): plumbing richly banked clean-three (§A–§G); the new heart = §H (c×c chart family + transverse-Jacobian sign-repair); 5 DEAD routes to forbid | feeds the engine spec |
+| **Lane 2 — witnesses** | `l2witness` | IN FLIGHT — joint-center survival / codim-undershoot / tightness-at-binding-cell as runnable exhibits | battery lands → gates the engine design pass |
+| **Lane 2 — engine** | (not yet commissioned) | PENDING — after l2witness lands; concentrate on §H (treat §A–§G as banked) | skeleton = terminal statement typed = socket's Prop + in-file fit example |
 
 ## Socket facts (the one interface between the lanes)
 - **Prop:** `cited_aoyagi_product_corank` (RouteMSJDecoratedPeelStep.lean, genm-integration). Non-vacuous:
@@ -93,7 +95,13 @@ truth scan.
   `aoyagi_learning_coefficient` is minted at clean-three, no Aoyagi hypothesis.
 
 ## Controller hygiene (pitfalls that bit)
-- **After spawning `isolation:worktree` agents, VERIFY `git branch --show-current` is `expedition/aoyagi-full` BEFORE committing.** 2026-07-17: spawning lane1shell/l2recon/l2witness left the MAIN checkout switched to a stray `genm-l2recon` (a worktree/checkout race with an agent's `git checkout -b`); a checkpoint commit landed there instead of the expedition branch, and `push` reported "up-to-date" while the remote stayed behind. Recover with `git checkout expedition/aoyagi-full && git merge --ff-only <sha> && git push && git branch -D <stray>`.
+- **ROOT CAUSE of the checkout race (l2recon confirmed 2026-07-17):** a worktree agent's **bash runs from the MAIN checkout** while its **Write binds to its isolated worktree**. So any `git checkout -b <branch>` in an agent's brief runs in the CONTROLLER's checkout — switching/detaching my branch. It bit twice this tick (genm-l2recon leak, then genm-d1design detach).
+  - **FIX in agent briefs:** do NOT tell agents to `git checkout -b`. Their worktree is already on its own branch; tell them to Write + `git -C <their-worktree>` commit/push, or just work in the pre-branched worktree. (Agents that `cd`/`git -C` into their worktree — as l2recon did — succeed; the bare `git checkout -b` is the hazard.)
+  - **FIX in controller flow:** after ANY worktree-agent spawn, and ALWAYS before committing, run `git branch --show-current` — if not `expedition/aoyagi-full`, re-attach: `git checkout expedition/aoyagi-full`. Working tree stays clean so no work is lost; expedition/aoyagi-full keeps pointing at the last real commit. Do NOT delete the stray branches if they are now checked out in agent worktrees (shown with `+` in `git branch`); just re-attach.
+  - Symptom to watch: `push` reports "Everything up-to-date" while the remote is behind — means the commit landed on a stray/detached ref, not on expedition/aoyagi-full.
+
+## Updates (running log)
+- **LATE-103 (2026-07-17) — Lane 1 RE-SCOPED (not a shell) + Lane 2 survey landed.** lane1shell hit a WALL closing the shell: the d≤1 arm's 2a/2b/2c assembly lemmas DO NOT EXIST (grep-confirmed: dominantMinor/minorCover/deeperFlag_waist_a0/_b0 absent; deeperFlag_waist docstring-only; coupledCell_interior_lt_top is a hypothesis-taking conversion). So the d≤1 arm is a genuine native front = 3 sub-builds, **EXPENSIVE TRANSCRIPTION not open** (the math converges — satred (D) 4 ways, 0/4039; 2b C-transversality + 2c a=0 waist are the costliest = genuinely-new-to-formalise atoms; the one design-residual is D-cert §3bis's a≥u charge accounting, a design-close). lane1shell delivered the sound naming fix (`_of_prodCorank`, FF'd to genm-integration @5e9d264e6) + verified no unsuffixed mint, then stood down. Driving: d1design (recipe pass) commissioned; 2a first (lane1shell on-call), 2b/2c as new-atom builds. **The operator's "bounded shell" premise was itself the design-vs-built blur one level down** — so by the operator's own rule the d≤1 hard objects (2b, 2c-a0) get named + laned now. Lane 2: l2recon DONE (§A–§G banked clean-three, the new heart is §H, 5 dead routes forbidden); l2witness in flight; engine skeleton commissioned after.
 
 ## Pointers
 - Historical record (the design arc LATE-1..102): [`endgame-lanes.md`](endgame-lanes.md).
