@@ -44,7 +44,7 @@ measure-zero locus `{frobSq = 0}` itself, but an OPEN set `U` around it, contain
 the (open) leaf chart domains: `locus ⊆ U ⊆ ⋃ chartDom`, `U` and each `chartDom` open. This is the
 honest covering statement — a resolution atlas must cover a neighbourhood for the
 finite-subcover/domination assembly to fire. -/
-@[blueprint] def ChartsCover (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
+def ChartsCover (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
   (∀ l ∈ ResolutionTree.leaves t, IsOpen l.chartDom) ∧
     ∃ U : Set (Params M), IsOpen U ∧
       {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} ⊆ U ∧
@@ -60,7 +60,7 @@ finite-subcover/domination assembly to fire. -/
   monomial vector (appears in some `bᵢ`) and advances `J` — the new-pivot branch (review round 1,
   M6).
 (Shape-locked; the ideal-preservation identity is the tide's.) -/
-@[blueprint] def StepInvariant {M : Fin (L + 1) → ℕ} (n : StepData M) : Prop :=
+def StepInvariant {M : Fin (L + 1) → ℕ} (n : StepData M) : Prop :=
   (n.case = StepCase.case2 → ∃ k : Fin n.numDiv,
       n.divExp k = n.resRows * n.resCols ∧ ∀ g : Fin n.numGen, k ∈ n.support g) ∧
   (n.case = StepCase.case11 → ∃ k : Fin n.numDiv, n.divTilde k = n.cleared) ∧
@@ -71,7 +71,7 @@ finite-subcover/domination assembly to fire. -/
 `Mval` of its rank profile (Aoyagi p.22: `M_{s,k} = Mval(t_{s,k})`). The leaf divisibility chain is
 enforced at type strength by `LeafData.bChain` (review round 1, C1) — this predicate need only pin
 the exponents to `Mval`. -/
-@[blueprint] def IsFullMonomialization {M : Fin (L + 1) → ℕ} (t : ResolutionTree M) : Prop :=
+def IsFullMonomialization {M : Fin (L + 1) → ℕ} (t : ResolutionTree M) : Prop :=
   ∀ l ∈ ResolutionTree.leaves t, ∀ k : Fin l.numDiv,
     l.divExp k = (Mval M (l.divProfile k)).toNat
 
@@ -82,7 +82,7 @@ branch-rooted base of the invariant `S = J = 0` (`reduction_layer`); (4) neighbo
 (`coverage_theorem`); (5) the exponent-ledger hooks — `minAdm M` is the minimum of the terminal
 exponents (`exponent_ledger_bridge`; this clause is FALSE for a junk/empty leaf, killing the
 underdetermination). -/
-@[blueprint] def CanonicalResolution (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
+def CanonicalResolution (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
   IsFullMonomialization t ∧
     (∀ n ∈ ResolutionTree.nodes t, StepInvariant n) ∧
       (∃ (n : StepData M) (charts : List (ResolutionTree M)),
