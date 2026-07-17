@@ -21,3 +21,20 @@ read-only queries only, no state touched; recovered to root. Standing reminder r
 paths in every controller command. Drift glance: architect has merged the council commit into its
 branch and is building (untracked Engine/ modules in progress); covdesign freshly spawned, no
 commits yet. Nothing to integrate; re-sleeping.
+
+## 2026-07-17 SKELETON MERGED (tick 4)
+Architect delivered: ResolutionTree carrier (typed sharing maps as fields), 6 @[blueprint] holes,
+driver engine_box_threshold_finite : ∀M RouteMBoxThresholdFinite M (sorry-free composition; sorryAx
+via holes only), fit example against _gen COMPILES, blueprint leak audit clean, battery green.
+Merged to root (62cab1c76; journal conflict ours-resolved); my own gate build backgrounded
+(root-local .lake — FIXED the genesis mistake of symlinking the FULL .lake into worktrees, which
+had our builds writing into the predecessor's shared build dir; now packages-only sharing; the
+architect's earlier builds may cost the predecessor a re-elaboration, journaled honestly).
+Map: resolution-tree → drafted; the six obligations keep lean: anchors but HOLD at adjudicated —
+contract 7 fired (stated+ must not consume a drafted notion) and it is right: the carrier is
+unvalidated until the fidelity review. ARCHITECT GAP from the task board: its council-constraint
+tasks (typed-sharing verification, Layer-B fence, theorem4 reshape, DecoratedDescent fit check)
+are PENDING — it stood down mid-integration; re-engaging. covdesign gets architect items B
+(region_glue may need to consult `support` — the flattening risk at the ANALYTIC layer) and C
+(Case-2 printed exponent un-re-confirmed) added to its brief. Reviewer spawns after the
+architect's constraint increment lands (review once, not mid-churn).

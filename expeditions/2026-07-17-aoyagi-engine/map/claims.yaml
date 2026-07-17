@@ -53,7 +53,7 @@ nodes:
       - {type: needs, to: region-glue}
       - {type: discharges, to: hbox-root}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/architecture-cert.md]
-    notes: "adoption gate = elder council + architect skeleton elaboration + battery"
+    notes: "adoption gate = council(done, 2x ADOPT) + architect skeleton + battery + DecoratedDescent disposition (witness-or-tombstone, fork 6)"
 
   - id: naked-weight-route
     kind: route
@@ -70,7 +70,7 @@ nodes:
   - id: resolution-tree
     kind: notion
     title: "the pp.14-22 chart-tree datatype: monomials + divisibility chain + SHARING maps"
-    status: proposed
+    status: drafted
     tier: new
     owner: architect
     landmark: true
@@ -80,6 +80,7 @@ nodes:
   - id: case-step-lemmas
     kind: claim
     title: "Case 1(1)/1(2)/2 steps preserve the inductive invariant (paper pp.15-22)"
+    lean: case_step_invariant
     prop: |
       Each branch case: an explicit unipotent CoV + blow-up substitution under which
       ideal = diag(b)·[E_J 0; 0 D_J]·(remaining product) is preserved with monomial Jacobian.
@@ -93,6 +94,7 @@ nodes:
   - id: monomialization-termination
     kind: claim
     title: "the recursion terminates at S=L+1 in a full monomial diagonal"
+    lean: monomialization_terminates
     prop: "⟨∏ C⟩ = ⟨diag(b_1..b_{M(L+1)})⟩ at S=L+1; b_i a divisibility chain"
     status: adjudicated
     tier: established
@@ -104,20 +106,22 @@ nodes:
   - id: coverage-theorem
     kind: claim
     title: "THE HARD PART: charts cover; no untracked chart has a smaller ratio"
+    lean: coverage_theorem
     prop: |
       The tree's chart images cover a box-neighborhood of the zero locus (non-deepest points
       via IH/domination), and the candidate set {M_{s,k}} is exhaustive: every exceptional
       divisor's ratio ≥ the tracked minimum. WITHOUT invoking rlct=c* (circularity guard).
-    status: conjectured
+    status: adjudicated
     tier: new
     owner: coverage-design
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "paper asserts (p.22 'candidates', 'by a blow-up process'); we reconstruct. design-first"
+    notes: "paper asserts; we reconstruct. design-first. UNIVERSAL claim: decorrelated exhaustiveness hunt required before established; tracked cells only (non-deepest = theorem4's)"
 
   - id: exponent-ledger-bridge
     kind: claim
     title: "chart exponents M_{s,k} land on the banked minAdm forms (Lemma 3 bridge)"
+    lean: exponent_ledger_bridge
     prop: |
       ½·min{M_{s,k} : t̃=0} = ½·minAdm(M) via the closed-form minimization; matches the
       banked QIP family and Mval=codim arithmetic.
@@ -130,15 +134,18 @@ nodes:
   - id: region-glue
     kind: claim
     title: "box covers + deepest-point/IH reduction glue chart-local reads to hbox"
+    lean: region_glue
     prop: "finite subcover of the box; non-deepest points dominated via the arity IH"
     status: adjudicated
     tier: new
     owner: "parked: tools banked (S1Cover, RouteMCoverLemmas, null disposals)"
     evidence: [lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean]
+    notes: "ASSEMBLY only (reduction is theorem4's). region-uniformity UNWITNESSED; 2 battery witnesses required pre-tide (glue-level lossy-vs-exact; pivot co-null)"
 
   - id: reduction-layer
     kind: claim
     title: "Lemma 2 / Theorem 3: rank-r peel to the reduced chain, region-uniform"
+    lean: reduction_layer
     prop: |
       Unit-triangular P1,P2 with P1(∏A)P2 = diag(C1, ∏C), C1 regular; RLCT split
       = regular prefactor + λ⟨∏C⟩; pivot regularity region-ized via co-null covers.
@@ -149,11 +156,15 @@ nodes:
 
   - id: theorem4-localization
     kind: claim
-    title: "deepest-point domination (Thm 4, cited to Entropy 2013): transcribe vs dissolve"
-    prop: "λ at the deepest point ≤ λ at nearby points, for homogeneous ideals + prior condition"
+    title: "the non-deepest EXACT reduction (Thm-4 role): to a smaller arity-IH instance"
+    prop: |
+      A non-deepest neighborhood reduces, by an EXACT RLCT-preserving CoV (never a
+      reweighted-residual bound), to a strictly-smaller-arity instance whose threshold
+      dominates via banked MinAdmMono; the arity IH then supplies finiteness.
     status: conjectured
     tier: established
-    owner: "parked: adjudicate role at skeleton time — not a silent default"
+    owner: coverage-design
+    landmark: true
     edges:
       - {type: conjectured-toward, to: region-glue}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
@@ -168,4 +179,4 @@ nodes:
     edges:
       - {type: conjectured-toward, to: engine-route}
     evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMBoxThresholdRR4.lean]
-    notes: "0-sorry worked instance: sub → det-Jacobian → atom → cover → threshold"
+    notes: "OUTER plumbing precedent only (composition 0-sorry); inner SchurCore walls at depth>=3 (RR4.lean:12-21)"
