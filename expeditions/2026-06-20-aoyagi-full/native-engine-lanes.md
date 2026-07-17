@@ -92,6 +92,9 @@ truth scan.
   When Lane 2 delivers a native theorem of this exact type, Lane 1's socket is filled → the unsuffixed
   `aoyagi_learning_coefficient` is minted at clean-three, no Aoyagi hypothesis.
 
+## Controller hygiene (pitfalls that bit)
+- **After spawning `isolation:worktree` agents, VERIFY `git branch --show-current` is `expedition/aoyagi-full` BEFORE committing.** 2026-07-17: spawning lane1shell/l2recon/l2witness left the MAIN checkout switched to a stray `genm-l2recon` (a worktree/checkout race with an agent's `git checkout -b`); a checkpoint commit landed there instead of the expedition branch, and `push` reported "up-to-date" while the remote stayed behind. Recover with `git checkout expedition/aoyagi-full && git merge --ff-only <sha> && git push && git branch -D <stray>`.
+
 ## Pointers
 - Historical record (the design arc LATE-1..102): [`endgame-lanes.md`](endgame-lanes.md).
 - Operator steer + acceptance: [`discuss-at-close.md`](discuss-at-close.md) LATE-102.
