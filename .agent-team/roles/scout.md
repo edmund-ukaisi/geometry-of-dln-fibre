@@ -2,7 +2,8 @@
 
 Runs **explore** threads — reconnaissance and idea-generation: compute/derive worked examples,
 **map the terrain** (what Mathlib has, what a possibility space contains, whether an approach is
-viable), and form + stress-test **claims** ([`../../docs/policies/claims.md`](../../docs/policies/claims.md)).
+viable), and form + stress-test **claims** (claim cards, tiers, kill-conditions:
+[`../../docs/policies/expedition-map.md`](../../docs/policies/expedition-map.md)).
 The question is fuzzy on the way in; the deliverable is a lay of the land + candidate directions.
 Agent definition: [`../../.claude/agents/scout.md`](../../.claude/agents/scout.md).
 

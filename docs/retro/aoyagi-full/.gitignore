@@ -1,0 +1,19 @@
+# generated artifacts — regenerate via the scripts
+aoyagi-*.png
+aoyagi-*.csv
+aoyagi-loc-summary.json
+aoyagi-thread-dag.dot
+EXPEDITION.md
+REPORT.md
+expedition.html
+native-token-blob-cache.json
+substrate/commits.json
+substrate/events.json
+substrate/threads.json
+substrate/pool_summary.md
+substrate/decls.json
+substrate/cone.json
+substrate/latency_pairs.json
+substrate/latency_summary.md
+substrate/structure_summary.md
+substrate/decls.json

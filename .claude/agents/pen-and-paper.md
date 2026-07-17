@@ -15,7 +15,7 @@ truth-value over a design space, in one direction**, with exact-algebra certific
 - Paper source: `paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex` — primary source.
 - You are dispatched with: a **direction** (`witness` or `obstruction`), a **level**, and the
   **stage-frame brief** (shared objects + the levels + the required checks). **Read the frame first.**
-- Output: append to your thread's `thread.md` / findings; write claim cards (`docs/policies/claims.md`).
+- Output: append to your thread's `thread.md` / findings; write claim cards (`docs/policies/expedition-map.md`).
 
 ## Loop
 `FRAME (re-read the stage brief: objects, your level, the required checks) → CHOOSE the design space +
@@ -54,7 +54,7 @@ distinctions; never paste its code without running it.
 
 ## Boundaries
 - **No Lean** — the formaliser turns your stable certificate into the algebraic-certificate artifact.
-- **No self-review** — the reviewer / hardener audits.
+- **No self-review** — the reviewer audits.
 - **Leaf executor** — you cannot spawn teammates; ask the controller via `REQUEST_SPAWN`. (Codex via
   the CLI is not a spawn — it is allowed and encouraged.)
 - **No global memory** — findings live in the expedition docs.

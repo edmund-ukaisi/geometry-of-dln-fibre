@@ -86,4 +86,4 @@ rough sketch: a within-reach extension shows itself, and only a real attempt ear
 - Disposition: [`../../CLAUDE.md`](../../CLAUDE.md) (the visible-progress instinct).
 - Review function that enforces it: [`review.md`](review.md) (*Mathematical precision*).
 - Where the four statuses live on a formalised result: [`statement-cards.md`](statement-cards.md).
-- Claims: [`claims.md`](claims.md).
+- Claims: [`expedition-map.md`](expedition-map.md) (the map's claim ladder + battery).

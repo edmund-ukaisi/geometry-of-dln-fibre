@@ -24,6 +24,26 @@
 
 ## Sorry gate
 - Zero `sorry` / `axiom` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
+- **Expedition mode (goal-relative zero-sorry).** On a long expedition the flat zero-gate is
+  unimplementable (composition skeletons carry named holes by design) and a flat token count cannot
+  distinguish an open obligation from dead scaffolding — the aoyagi-full run had to invent the
+  distinction informally ("0-sorry in the AxCheck-load-bearing sense; 21 tracked scaffold sorries").
+  The implementable form: (i) a declared **roots registry** (the goal headline(s) + registered
+  composition skeletons); (ii) every sorry is either **LIVE-frontier** (on a registered root's
+  dependency cone — statement-locked, tracked, owned, count small and sawtoothing) or a **fossil**
+  (off every root's cone — quarantined, pruned at close, never on the value path); (iii) the audit is
+  cone-aware (classify via the env-walker dependency graph; `scripts/sorries` stays as the raw census;
+  `AxCheck` stays the kernel truth for roots). The roots registry and the cone-aware audit are part of
+  the **expedition-map** (see `docs/policies/expedition-map.md` — curated `claims.yaml` + computed
+  survey + kernel-checked `MapAnchors.lean` pins; roots = `meta.roots`, LIVE frontier = the
+  goal-relative sorry cone; fossils belong to retired nodes and are pruned, not carried).
+
+- **Skeleton discipline (P6).** A settled fork lands as a driver + obligation-record structure
+  (fields = the obligations; churn-robust: statement detail moves under a stable fork-level shape),
+  sorried, wired toward the headline. Each skeleton hole names its map node (`-- map: <node-id>`);
+  a refuted/superseded node retires its hole in the same commit — a stale hole misdirects the
+  brick-closing gradient (the false-bridge lesson).
+  *The map is not the territory*: the kernel is the territory; the map's contracts keep it honest.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
 - **`lake build` / `scripts/lb` exit-0 can MASK a `sorryAx` via a stale olean cache.** If an edit does not
   invalidate a `.olean` (a downstream-only change, an edit Lean's incremental compiler deems irrelevant), a
