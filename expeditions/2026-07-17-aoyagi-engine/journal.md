@@ -325,3 +325,14 @@ split + ChartsCover→ChartBridge + StepInvariant→StepRel), banked-family card
 substrate (transport/ParamsFlatLinear/minAdm/homogeneity/cover/atoms), and an explicit drift-risk
 report (the six lean anchors point at mid-restructure statements; the AxCheck entry predates the
 coming rename). Architect mid-restructure, correctly unpushed, family adaptation in progress.
+
+## 2026-07-17 CARTOGRAPHER #1 INTEGRATED (tick 27)
+Overlay committed (landmark cards ×8, dead-route registry ×5, naming forwarding-pointers,
+banked-family cards ×6 with the RR4 decl names pinned). Plan layer confirmed honest — no node
+contradicted by the territory; the drift risks are the KNOWN mid-restructure tenders (root Lean =
+the superseded r2 shapes; statuses encode it correctly). CORRECTION with teeth: the "S1Transport
+2 sorries" verification condition was FALSE (docstring words) — the whole transport family is
+sorry-free, so route (b)'s substrate is stronger than priced; compass fork 8 amended. MD1 applied
+(region-glue note names the adopted fix explicitly). Calibration staleness flagged for navigator
+pass #2 (theorem4 owner-gap CLOSED at tick 17). AxCheck-rename WATCH recorded in the overlay.
+Cartographer stands down; next pass at cadence.

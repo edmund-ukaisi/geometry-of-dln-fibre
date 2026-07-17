@@ -89,8 +89,10 @@ over banked substrate.
    one-sided ≤ suffices; source-match (Aoyagi reads the RLCT off the resolution — (b) IS her move).
    RECORD CORRECTION carried: the original fork framing was FALSE on both sides (ParamsFlatLinear
    banks the normed instances — controller-verified; and the transport CONSUMES fderiv). Both
-   routes go through flat coords; the choice was reuse-vs-rebuild. (a) stays a live fallback if
-   the review finds the transport-aux cone unclean or the chart hypotheses undischargeable.
+   routes go through flat coords; the choice was reuse-vs-rebuild. (a) stays a live fallback only if the chart
+   hypotheses prove undischargeable — the transport-family cone is VERIFIED fully sorry-free
+   (cartographer #1: the '2 sorries' were docstring words; only RouteMSJTransport carries 1,
+   the general-composer piece).
    GUARDS: circularity (the transport gives INVARIANCE only — no path may consume rlct=c* /
    cited_aoyagi_dln); no-laundering (transport hypotheses DISCHARGED from the construction, never
    relocated to fresh holes); edge data = the monomial ledger, never opaque derivative fields.

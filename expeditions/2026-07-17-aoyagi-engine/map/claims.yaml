@@ -157,7 +157,7 @@ nodes:
     evidence: [lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean]
     kill: battery/g-leaf-chain-separation.py
     kill: battery/g-chartscover-vacuity.py
-    notes: "PLACEHOLDER REFUTED-AS-STATED (lane 2, exact counterexample: univ atlas satisfies ChartsCover∧hrat where the box diverges) — held at adjudicated until the ChartBridge signature lands (cert-bridge-design). Original r2 caveat: the chart<->monomial-integrand CoV bridge is absent from the skeleton — expect signature refinement (added hypotheses) at its tide; the analytic sorry owns it. ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation"
+    notes: "PLACEHOLDER REFUTED-AS-STATED (lane 2 vacuity witness) — held at adjudicated until the ChartBridge signature lands. ADOPTED FIX (council #2 + Q5(b)): ChartBridge per-leaf; the region_glue tide = the banked local-homeomorph transport (rlctAtOn_boundedUnit_localHomeomorph — family verified FULLY sorry-free, cartographer #1) + the ONE homogeneity scaling-bridge lemma. Original r2 caveat: the chart<->monomial-integrand CoV bridge is absent from the skeleton — expect signature refinement (added hypotheses) at its tide; the analytic sorry owns it. ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation"
 
   - id: reduction-layer
     kind: claim
