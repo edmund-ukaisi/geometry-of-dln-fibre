@@ -607,3 +607,115 @@ c* = 11/2` (n=4). Bake the consistent invariant as a kill-condition.
 Files (round 5): `codex/signrepair-{prompt,answer}.md`, `signrepair-run.log` (decorrelated,
 GAP-IN-RELATIVE-JACOBIAN); the T_m all-strata check + the naive-`m²`-vs-product-`C_m` discriminator +
 the parametrization care-point recomputed/verified inline (n=3..12).
+
+---
+
+# ADDENDUM (round 6, 2026-07-17) — the BOUNDED endgame spec: cited-atom interface + native-above dispatch
+
+**Gate RESOLVED (controller + prodcorank, LATE-97):** native (A) is a WALL at min-corank≥2 — the
+product-corank resolution IS Aoyagi's joint/Vandermonde log-resolution (the hard `rlct ≥ c*` direction).
+Per standing decision 7: CITE the minimal gap, BUILD native above. Re-scope: pin (1) the cited-atom
+interface, (2) the native-above dispatch, (3) the kill-guard.
+
+## 1. The B2 cited-atom interface — `cited_aoyagi_product_corank` (the sharp research step)
+
+The minimal cite = `innerCorankDescent_lt_top` (`RouteMSJDecoratedPeelStep:75`) restricted to the
+JOINT-incidence stratum `2 ≤ min(M₀−t, M₁−t)`. Precise Prop (mirrors the hole, adds `hcork`):
+
+    def cited_aoyagi_product_corank : Prop :=
+      ∀ {L : ℕ} (M : Fin (L+1+1+1) → ℕ) (t : ℕ)
+        (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1))
+        (hcork : 2 ≤ min (M 0 - t) (M 1 - t))              -- ★ the min-corank≥2 joint stratum
+        (ρ : Fin t ↪ Fin (M 0)) (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
+        (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+        (hIH : ∀ M' : Fin (L+1+1) → ℕ, RouteMBoxThresholdFinite M'),
+        (∫⁻ A' in paramsBoxM (tailChain M) 1, ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
+          ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+            ENNReal.ofReal ((freedSchurLoss x Γ
+              ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤
+
+- **What it discharges:** exactly the freed-`Γ` triple integral of the peel at a min-corank≥2 cut — the
+  outer-descent obligation whose analytic core is the non-submersive product-corank (joint/Vandermonde)
+  resolution. It takes the one-shorter plain IH `hIH` (so the reduced chains stay NATIVE; only the
+  product-corank step is cited) — the deeper is discharged by `hIH (redChain t M)` at the
+  `½·peelCharge`-shifted threshold, the corank block by the cited resolution.
+- **Weaker than `cited_aoyagi_dln`** (precision.md-preferred, B2 over B1): it is a FINITENESS (one
+  direction `rlct ≥ c*`), for a SPECIFIC object (the corank descent), IH-conditional, min-corank≥2 only —
+  a corollary of `cited_aoyagi_dln` (the full RLCT equality) stated at exactly the research step's footprint.
+  Naming: `cited_aoyagi_product_corank` (a `product-corank` finiteness, NOT a `dln`-wide equality).
+
+## 2. The native-above dispatch — per-cut on `min(M₀−t, M₁−t)`
+
+The front cover (`sjBoundaryPeel`) sums over cuts `t ∈ [1, min(M₀,M₁)]`; the corank block at cut `t` is
+`(M₀−t) × (M₁−t)`. **Dispatch per-cut on `min(M₀−t, M₁−t)`:**
+
+| cut's corank block | mechanism | why native / cited |
+|---|---|---|
+| `min = 0`, non-square (a=0,b>0 or a>0,b=0) — the two WINGS | NATIVE (satred) | one factor full row/col rank ⟹ SINGLE-factor rank drop (submersive), no joint incidence |
+| `min = 0`, generic chart `t=min(M₀,M₁)` | NATIVE (dominant-minor cover) | `|det P|`-density BOUNDED (redistributed to lower cuts); reduces to `redChain` via `hIH` |
+| `min = 1` (rank-≤1 block) | NATIVE (§3 c=1) | C-transversality (`mulVec_of_surjective`) + FreeBilinear + δ-fold + `hIH`; corank-1 tie ⟹ log, δ-slack |
+| `min ≥ 2` | CITED `cited_aoyagi_product_corank` | BOTH row- and col-corank ≥2 ⟹ joint (both-factor) drop ⟹ `C_k = k²−⌊k²/4⌋ < k²` non-submersive product-corank (the wall) |
+
+The dispatch boundary is EXACT: the joint-incidence gap `⌊k²/4⌋ > 0 ⟺ k ≥ 2 ⟺ min-corank ≥ 2` (verified).
+So min-corank≤1 has NO joint incidence (native, plain IH + banked bricks); min-corank≥2 IS the joint
+incidence (cited). The banked bricks the native cuts consume: Schur-weld (`chartInner_schurWeld_eq`),
+`gammaAtom_aniso_shifted_eq` (C-integration → PIVOT Gram, NOT corank Gram), `qbox_lintegral_lt_top`
+(pivot-Gram disposal), FreeBilinear (`sumSqND_box_lt_top`), the `½·peelCharge` shift
+(`half_minAdm_sub_half_peelCharge_le`), and `hIH` on the reduced chains.
+
+**Lean shape** (`innerCorankDescent_lt_top`, the hole, split by `by_cases 2 ≤ min (M 0 - t) (M 1 - t)`):
+
+    theorem innerCorankDescent_lt_top … (hcited : cited_aoyagi_product_corank) : [freed-Γ triple integral] < ⊤ := by
+      by_cases hcork : 2 ≤ min (M 0 - t) (M 1 - t)
+      · exact hcited M t ht ht2 hcork ρ κ c' hc' hIH          -- min-corank≥2: CITED
+      · -- min-corank≤1: NATIVE (wings / generic dominant-minor / c=1 C-transversality) + hIH
+        …  [satred (c=1) + banked bricks]
+
+## 3. ★ SIMPLIFICATION the cite buys — the DECORATION is no longer needed
+
+The decoration (`DecoratedStepHyp`/`DecoratedDescent`, FaithfulSJAt flag-`γ'`) existed ONLY to carry the
+min-corank≥2 Gram weight through the recursion (the Q2 obstruction). **That case is now CITED.** With
+min-corank≤1 native (plain IH + banked bricks) and min-corank≥2 cited (via the plain IH for the deeper),
+the entire `(□)` closes on the **PLAIN route** `routeMBoxThresholdFinite_of_decoratedPeel : DecoratedPeelStep
+→ ∀M, RouteMBoxThresholdFinite M` — `DecoratedPeelStep` proved by `decoratedPeelStep_proof`
+(`RouteMSJDecoratedPeelStep:113`, already wired to the hole), with the hole `innerCorankDescent_lt_top`
+filled by the §2 dispatch (native ⊕ cited). **`DecoratedStepHyp` / `DecoratedDescent` / the flag-`γ'`
+carrier become UNNECESSARY** — the cite discharges exactly what the decoration was carrying. This is
+precision.md-preferred (fewer moving parts) and destination-consistent: the footprint is
+`cited_aoyagi_product_corank` (one sharp cited interface) feeding the banked plain driver → `(□)` → mint.
+(The controller's "DecoratedStepHyp dispatch" framing is served by the SAME dispatch, one level simpler:
+the plain `DecoratedPeelStep` peel, not the decorated one. Recommend adopting the plain route.)
+
+## 4. The KILL-GUARD (bake as a kill-condition on the min-corank≥2 branch)
+
+**A single-factor peel does NOT close min-corank≥2.** At a min-corank≥2 cut, resolving ONE factor's rank
+(the corank block `Γ`, submersive `m²`) or the tail `S = Q_b(I−P)` alone does NOT principalize the JOINT
+ideal `Γ·S`: the joint center `{Γ·S = 0}` (both factors dropping, the `(x,y,b)` Vandermonde incidence)
+SURVIVES, with product codim `C_k = k²−⌊k²/4⌋ < k²`. Concretely (verified): the naive `m²` per-stratum
+threshold passes (`T_m ≥ c*`) but is NOT the established discrepancy; the actual product-corank `C_m`
+paired with the reduced chain UNDERSHOOTS (`(4,4,4,4)` m=2: `3/2 + 7/2 = 5 < 11/2`). So a min-corank≥2 cut
+MUST route to `cited_aoyagi_product_corank`; any "native" min-corank≥2 peel (single radial, single-factor
+Gram, flat cornerComparator) is UNSOUND. Guard: assert `2 ≤ min(M₀−t, M₁−t) → use hcited` and NEVER a
+native corank-block resolution there.
+
+## 5. Close
+
+- **Deliverable:** (§1) the cited-atom Prop `cited_aoyagi_product_corank` (= `innerCorankDescent` +
+  `hcork : 2 ≤ min(M₀−t,M₁−t)`, IH-conditional — the sharp research-step footprint, weaker than
+  `cited_aoyagi_dln`); (§2) the per-cut dispatch on `min(M₀−t,M₁−t)` (≤1 native ⊕ ≥2 cited); (§3) the
+  cite SIMPLIFIES away the decoration → the PLAIN `DecoratedPeelStep` route; (§4) the kill-guard.
+- **The bounded endgame build:** fill `innerCorankDescent_lt_top` by the §2 dispatch → `decoratedPeelStep_proof :
+  DecoratedPeelStep` → `routeMBoxThresholdFinite_of_decoratedPeel` → `(□)` → mint. Footprint =
+  `cited_aoyagi_product_corank` (destination-consistent; the Aoyagi monument sharpened to exactly the
+  product-corank research step).
+- **satred supplies (on-call):** the c=1 native (C-transversality) + the two wings + the reduced-chain
+  recursion arithmetic (the `½·peelCharge` bookkeeping) — all in the CONSISTENT charge form (§round-5
+  care-point: charge = `(corank-at-cut)² = peelCharge(M,u')`, not the mislabeled `(b−r)²`).
+- **Most likely to break the build:** (i) routing a min-corank≥2 cut natively (kill-guard §4 — unsound);
+  (ii) the dominant-minor cover for the generic `min=0` chart not being in place (then its density is
+  unbounded — must redistribute to the min≥2 cuts); (iii) treating the non-square wings as if they had
+  a joint incidence (they don't — one factor full-rank, native).
+
+Files (round 6): this addendum (the spec); mirrors `innerCorankDescent_lt_top` (`RouteMSJDecoratedPeelStep`);
+dispatch-boundary `⌊k²/4⌋>0 ⟺ min-corank≥2` verified inline.
