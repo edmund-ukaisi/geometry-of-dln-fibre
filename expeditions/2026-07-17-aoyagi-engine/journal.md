@@ -84,3 +84,11 @@ by type); blueprint cone verified theorem4-free (either disposition accommodated
 down; worktree reaped (tip banked + merged; remote branch kept as trail). Reviewer notified of the
 additive post-freeze delta. Live: reviewer (carrier validation), hunt (exhaustiveness), gate
 build 2.
+
+## 2026-07-17 HEARTBEAT (tick 9)
+Controller's own gate build GREEN: the reshaped EngineDriver builds clean from source (8608/8608,
+exit 0) — the adoption commit's skeleton is now controller-verified end to end, not only
+architect-reported. Hunt progress: Tier A complete locally (original-monomial valuations vacuous
+exactly as covdesign predicted; independent minimum-codim check = minAdm on all six instances — a
+consistency datum, not the gate); Tier B/C in progress; push-nudged. Reviewer mid-audit (frozen
+worktree, read-only as designed). Idle otherwise; re-sleeping.
