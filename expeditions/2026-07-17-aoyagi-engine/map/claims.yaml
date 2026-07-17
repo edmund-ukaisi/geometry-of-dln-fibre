@@ -75,7 +75,7 @@ nodes:
     owner: architect
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "divisor-support data mandatory at corank>=2; flattening provably breaks"
+    notes: "divisor-support data mandatory at corank>=2; flattening provably breaks. IsFullMonomialization (leaf-chain condition) is load-bearing: a 'leaf' with incomparable b's undershoots (g-leaf-chain-separation.py)"
 
   - id: case-step-lemmas
     kind: claim
@@ -117,7 +117,7 @@ nodes:
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
     kill: battery/g-coverage-sharing-killcond.py
-    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. GATE before established: D4 hunt Tier B/C (monomial-only hunts are VACUOUS)"
+    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. GATE: D4 hunt Tier B/C running. Case-2 divisors CAN BIND (tie minAdm on (2,2,3)/(2,2,4)/(2,2,1) — keep in candidate set; corrects the reproduction's too-strong T-C 'non-binding' flag; g-case2-exponent.py)"
 
   - id: exponent-ledger-bridge
     kind: claim
@@ -141,7 +141,8 @@ nodes:
     tier: new
     owner: "parked: tools banked (S1Cover, RouteMCoverLemmas, null disposals)"
     evidence: [lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean]
-    notes: "ASSEMBLY only (reduction is theorem4's). region-uniformity UNWITNESSED; 2 battery witnesses required pre-tide (glue-level lossy-vs-exact; pivot co-null)"
+    kill: battery/g-leaf-chain-separation.py
+    notes: "ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation"
 
   - id: reduction-layer
     kind: claim

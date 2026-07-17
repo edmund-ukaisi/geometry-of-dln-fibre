@@ -61,8 +61,12 @@ over banked substrate.
   OPEN LEG: L≥3 coupled non-origin points discharge via the banked domination, NOT a chain-IH.
   Acyclicity verified (domination calls nothing; CoV strictly drops; disjoint owners).
 - **region-glue** owns the ASSEMBLY only: finite covers gluing chart-local reads + the reduction's
-  output into hbox. Region-uniformity of pivot regularity: **UNWITNESSED** — battery witness
-  required before its tide (with the glue-level lossy-vs-exact witness, below).
+  output into hbox. SETTLED EXACT (covdesign addendum): the SEPARATED leaf integrand is correct at
+  corank ≥ 2 — the divisibility chain makes each true leaf a single dominant monomial × unit — so
+  region_glue never consults `support`; its load-bearing precondition is `IsFullMonomialization`
+  (a "leaf" with incomparable b's undershoots — the flattening risk lives ENTIRELY at the tree
+  layer, where fork 3 already fences it). Witnessed: g-glue-lossy-vs-exact, g-pivot-conull,
+  g-leaf-chain-separation.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

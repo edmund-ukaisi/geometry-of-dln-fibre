@@ -50,3 +50,14 @@ support atlas); the sharing kill-condition is now executable (spurious-divisor w
 D4 finding with teeth: monomial-only hunts are VACUOUS — the real gate is Tier B/C; commissioning
 the hunt run next (decorrelated seat). Still pending: architect constraint increment (fork-6 fit
 report), then reviewer; my root gate build still running.
+
+## 2026-07-17 COVDESIGN ADDENDUM INTEGRATED (tick 6)
+Both architect-flagged questions settled exact (t02 @d688441b8, merged): (B) region_glue's
+SEPARATED form is correct — the divisibility chain collapses every true leaf to a single dominant
+monomial × unit, so the analytic layer never consults support; the coupling lives wholly in the
+tree layer (divExp via StepInvariant + which leaves exist), precondition IsFullMonomialization —
+the skeleton's shape stands as built. (C) Case-2 exponent = printed formula, re-derived from the
+blow-up; and a correction WITH TEETH to the week-one reproduction: its T-C "non-binding" flag is
+too strong — Case-2 t=0 exponents TIE minAdm on three small chains, so Case-2 divisors must stay
+in coverage's candidate set. Two more batteries promoted (12 total, all correct, verified by my
+own runs). Hunt (t03) running; architect still owes the constraint increment (18–21).
