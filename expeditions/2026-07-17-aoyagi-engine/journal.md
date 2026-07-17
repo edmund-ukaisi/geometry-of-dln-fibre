@@ -189,3 +189,19 @@ vocabulary defs untagged from @[blueprint] (definitions are not forecasts; the b
 otherwise leak). AxCheck force-print added for the witness. WAVE 2: the construction tide
 (monomialization_terminates — THE LONG POLE) commissioning now on the (2,2,4) template; lane 2
 (bridge) continues in parallel; shadow reviewer at its first increment.
+
+## 2026-07-17 LANE 2: PLACEHOLDER REFUTED, BRIDGE DESIGNED (tick 18)
+covdesign delivered the CoV bridge: the r2-predicted signature change arrives as a PROVEN
+soundness bug — g-chartscover-vacuity (exact): univ-atlas + hrat satisfiable at c' where the box
+diverges, so region_glue-as-stated is unprovable. The fix verified exact on 3 charts incl. the
+corank-2 shared-divisor case: per-leaf chartMap/srcBox/resRank + pullback identity + Jacobian +
+InjOn; image cover; hbridge hypothesis; divExp/2 ratio form retained. BUNDLE CHANGE flagged loudly
+(CanonicalResolution carries ChartBridge; the 224 witness must be rebuilt with real charts — its
+atlas conjunct rode the vacuity, so its de-risk was the arithmetic conjuncts only, honestly noted).
+Codex decorrelated CONFIRMS + sharpens: one-sided (≤) CoV suffices; Morse residual needs disjoint
+coords + normal form; route (b) via banked weightedThreshold_transport narrows the P8 composer gap
+to ONE lemma (the homogeneity scaling bridge — independently = cert-d2 §3). F1: the leaf integrand
+carries a RESIDUAL factor the pure-monomial read omits — resRank ≥ minAdm becomes a pinned
+obligation with truth witness. Region-glue held back to adjudicated (kill attached). Elder
+convening for the skeleton-revision ratification; architect redirected: rung 0 = the ChartBridge
+revision per the cert, priced by the new witnesses.

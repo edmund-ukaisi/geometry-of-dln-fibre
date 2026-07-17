@@ -87,7 +87,7 @@ nodes:
     owner: architect
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition"
+    notes: "BUNDLE REVISION PENDING (lane 2, elder-gated): ChartsCover→ChartBridge; LeafData gains chartMap/srcBox/resRank(+orders, Morse normal form per Codex); canonicalResolution_224 must be REBUILT with real charts (its atlas conjunct rode the vacuity). VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition"
 
   - id: case-step-lemmas
     kind: claim
@@ -151,12 +151,13 @@ nodes:
     title: "box covers + deepest-point/IH reduction glue chart-local reads to hbox"
     lean: region_glue
     prop: "finite subcover of the box; non-deepest points dominated via the arity IH"
-    status: stated
+    status: adjudicated
     tier: new
     owner: "parked: tools banked (S1Cover, RouteMCoverLemmas, null disposals)"
     evidence: [lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean]
     kill: battery/g-leaf-chain-separation.py
-    notes: "STATED AS PLACEHOLDER SHAPE (rev r2 finding 2): the chart<->monomial-integrand CoV bridge is absent from the skeleton — expect signature refinement (added hypotheses) at its tide; the analytic sorry owns it. ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation"
+    kill: battery/g-chartscover-vacuity.py
+    notes: "PLACEHOLDER REFUTED-AS-STATED (lane 2, exact counterexample: univ atlas satisfies ChartsCover∧hrat where the box diverges) — held at adjudicated until the ChartBridge signature lands (cert-bridge-design). Original r2 caveat: the chart<->monomial-integrand CoV bridge is absent from the skeleton — expect signature refinement (added hypotheses) at its tide; the analytic sorry owns it. ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation"
 
   - id: reduction-layer
     kind: claim
