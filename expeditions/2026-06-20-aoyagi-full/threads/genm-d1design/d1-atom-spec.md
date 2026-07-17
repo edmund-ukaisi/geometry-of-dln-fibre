@@ -94,6 +94,52 @@ composite (e.g. the CoV image) to a fresh atom across the goal + all hyps (round
 Est. 800–1500 LoC (the sector atlas + CoV + Jacobian + replacement + summation; the measured record runs 2–5×
 short — budget the high end). NOT a cite, NOT a decoration.
 
+## 1bis. The BOUNDED sub-case (`M₂ ≤ b`) CoV — reaches the threshold WITHOUT Cauchy-Binet (lane1shell's question)
+
+lane1shell asked whether the bounded a=0 base (`M₂ ≤ b`, `b = M₁−M₀`) can be closed WITHOUT Cauchy-Binet
+(`det(FFᵀ) = Σ_σ (det F_σ)²`, absent from Mathlib v4.29 + the codebase) or coarea (also absent). **YES — via
+an orthonormal-complement extension + a single SQUARE CoV. The GS/Gram machinery it needs is already banked
+(`det_gram_cons` + `projection_rpow_lintegral_uniform`, assembled as `qbox_lintegral_lt_top`).**
+
+The per-dominant-minor CoV is the trap: it gives `|det F_σ|^{−M₂}` (`∫_{F_σ box} |det F_σ|^{−M₂}` diverges for
+`M₂ ≥ 1`, codim`{det=0}=1`) because a single minor wastes F's extra width. The fix uses ALL of F via its Gram,
+obtained by a square CoV — NOT the minor sum:
+
+1. **Extend `F` to a square `[F;S]` (`M₁×M₁`).** On the full-row-rank locus (a.e. on `wingFrontBox`, P-block
+   invertible), let `S` be an orthonormal basis of `(rowspace F)^⊥` (`(M₁−M₀)×M₁`), via Mathlib `gramSchmidt`
+   (measurable in F on the full-rank locus). Then `F Sᵀ = 0` and `S Sᵀ = I`, so the block-Gram is
+   block-diagonal: `det([F;S][F;S]ᵀ) = det(FFᵀ)·det(SSᵀ) = det(FFᵀ)`, hence `|det [F;S]| = det(FFᵀ)^{1/2}`.
+   **This is the block-Gram-determinant identity — elementary (`FSᵀ=0` ⟹ off-diagonal blocks vanish), NOT
+   Cauchy-Binet.**
+2. **Single SQUARE CoV per fixed F** (`lintegral_comp_rightMulₚ`, banked, `RouteMSJGammaAtom:74`): transpose to
+   `B := A₁ᵀ` (`M₂×M₁`) and right-multiply by `[F;S]ᵀ` (square `M₁×M₁`, `det ≠ 0`). Jacobian
+   `|det [F;S]ᵀ|^{M₂} = det(FFᵀ)^{M₂/2}`. The image `([F;S]·A₁) = (F·A₁, S·A₁) = (W, R)`, `R = S·A₁` the slack.
+   So `∫_{A₁ box} g(F·A₁) dA₁ = det(FFᵀ)^{−M₂/2} · ∫_W g(W) [∫_R 1_{A₁∈box} dR]`; the inner `R`-slice volume is
+   `≤ (2√(M₁M₂))^{(M₁−M₀)M₂} =: C`, **F-INDEPENDENT** (S orthonormal ⟹ the slice is a fixed box's bounded
+   projection, no det-of-F factor).
+3. **Factor + close.** `∫_F ∫_{A₁} g(F·A₁) ≤ C·[∫_{F ∈ wingFrontBox} det(FFᵀ)^{−M₂/2}]·[∫_{W box'} g(W)]`.
+   The first factor is **`qbox_lintegral_lt_top` DIRECTLY** with `(qbox-b, qbox-q, exp) = (M₀, M₁, M₂)`:
+   converges iff `M₀ ≤ M₁ ∧ M₂ < M₁−M₀+1`, i.e. **`M₂ ≤ b`** (qbox is already the assembled GS-norm recursion
+   `det_gram_cons` + `projection_rpow_lintegral_uniform` — the "GS-normed density" lane1shell asked about is
+   banked INSIDE it). The second factor is `∫_{W ∈ [−M₁,M₁] box'} g(W) = M₁^{M₀M₂−2c'}·hIH(redChain M₀ M)` (the
+   box'-scaling is a constant via `frobSq` homogeneity, `frobSq_rmatMul_smul`), finite since `c' < ½·minAdm(M)
+   ≤ ½·minAdm(redChain M₀ M)` (peelCharge = 0 at a=0).
+
+So the bounded base = `[qbox(M₂≤b)] × [hIH]`, NO Cauchy-Binet, NO coarea, NO minor sum. The Gram is of the FREE
+front F (not a product), so `qbox` applies directly. **Consumed banked:** `lintegral_comp_rightMulₚ`,
+`qbox_lintegral_lt_top`, `frobSq_rmatMul_smul`, `hIH`; **Mathlib:** `gramSchmidt`. **NEW (small):** the
+block-Gram-det identity `|det[F;S]| = det(FFᵀ)^{1/2}` (elementary), the F-independent slice-volume bound, and
+the measurable `S(F)`-parametrised CoV wire (the one plumbing delicacy — apply `lintegral_comp_rightMulₚ`
+per-F under Tonelli over the F-box). **Recommend route (a) over building Cauchy-Binet (c)** — it reuses the
+banked square-CoV + qbox and skips the ~150–400 LoC Cauchy-Binet brick AND the minor-chart cover.
+
+**LOG sub-case (`M₂ = b+1`):** `qbox` is MARGINAL here (needs `M₂ < b+1` STRICT), so `∫_F det(FFᵀ)^{−M₂/2}`
+is log-divergent. Close by a **δ-fold**: run the CoV at `det(FFᵀ)^{−(M₂−δ)/2}` (qbox strict at `M₂−δ < b+1`)
+and pay the `δ` from the loss via `one_add_log_inv_le_rpow` — the headroom `c' < ½minAdm(M)` absorbs it (the
+same δ-slack as the corank-one tie). **POWER sub-case (`M₂ ≥ b+2`):** the Gram is genuinely non-integrable
+(`qbox` fails), so the front DOES NOT separate from the loss — this is where the full `(r,s)` source-incidence
+atlas (§1, N1–N5) is required (the loss must control the rank-drop, per Codex 2b), NOT the §1bis CoV.
+
 ## 2. THE `d=1 a≥u` LOCAL DOMAIN-SPLIT (the hardest arm — flag)
 
 `d=1`, `b=1` (a≥1), `a ≥ u`. After the corank-one integration the residual carries the **pivot Gram**
