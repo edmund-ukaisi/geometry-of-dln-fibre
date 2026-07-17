@@ -32,9 +32,13 @@ integral (`∫ A' ∫ x ∫ Γ`) decomposes as (decstep round-4 §1):
    the **PIVOT Gram** `det(Q̃ₚ·Q̃ₚᵀ)^{−a/2}` × `(w + ‖Γ·Q_b·(I − P_{Q̃ₚ})‖²)^{−(c'−a·t/2)}`. Carry the
    PIVOT Gram (full rank `t`, `qbox`-disposable), **NEVER the corank Gram** `det(Q_b·Q_bᵀ)` — the atom
    trap (`a < q−b+1` is `a<a` = FALSE at edge dims, divergent on the rank-deficient corank locus).
-3. **Stratify the shared-tail rank** `r = rank Q_b` (`tailRankStratum`): the outer `A'`-box splits into
-   the finitely many rank sectors; per sector the stratum codim is `A_r = (corank at the deepened cut)² =
-   peelCharge M (deepened cut)` (round-5 care-point — NOT the mislabeled `(b−r)²`).
+3. **Stratify the full pivot-tail rank** `k = rank Q` (`tailProductRank`/`tailRankStratum`): the outer
+   `A'`-box splits into the finitely many rank sectors. Keyed on `rank Q` (the full `[Q_p; Q_b]`), which
+   DOMINATES both `rank Q̃ₚ` and `rank Q_b` — so the pivot-degenerate locus `{rank Q̃ₚ<t}` (gammaAtom's
+   `hG` failure) is captured at the positive-measure level (`rank Q̃ₚ` depends on `x` not `A'`, so the
+   literal joint pair-over-`A'` is ill-defined; `rank Q` is the A'-only dominating realization — action #1).
+   Per sector the stratum codim is `A_r = (corank at the deepened cut)² = peelCharge M (deepened cut)`
+   (round-5 care-point — the invariant is `(corank-at-cut)²`, not a mislabeled index).
 4. **Resolve the inner residual** `frobSq(Γ·Q_b·(I−P_{Q̃ₚ}))` via the **c×c SVD determinantal chart
    family** (`corankSVD_chartFamily_lt_top`, the §H heart — `d = c` exceptional coordinates on the
    measurable eigenframe, NOT a single radial which resolves only `Γ=0` for c≥2), with the
@@ -108,19 +112,34 @@ noncomputable def pivotTail {t a b q : ℕ} (x : SJOuter t a b)
     (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) : Matrix (Fin t) (Fin q) ℝ :=
   Q.submatrix Sum.inl id + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id
 
-/-- **The shared-tail corank rank** `r = rank Q_b` at an outer tail parameter `A'`, `Q_b` the bottom
-block of the reindexed tail product `(prod (tailChain M) A').submatrix (blockSplitEquiv κ) id`. The
-`A'`-box stratifies into the finitely many rank sectors (step 3); `r ≤ M₁−t` (`Matrix.rank_le_card_height`). -/
-noncomputable def tailCorankRank (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
-    (κ : Fin t ↪ Fin (M 1)) (A' : Params (tailChain M)) : ℕ :=
-  (((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id).rank
+/-- **The full pivot-tail rank** `k = rank Q` at an outer tail parameter `A'`, `Q` the reindexed tail
+product `(prod (tailChain M) A').submatrix (blockSplitEquiv κ) id` (rows `Fin t ⊕ Fin (M₁−t)` — the
+pivot block `Q_p` stacked on the corank block `Q_b`). This A'-only rank **DOMINATES BOTH**
+`rank Q̃ₚ ≤ min(t, rank Q)` (`Q̃ₚ = [I | P⁻¹B₁₂]·Q`, the pivot-shifted tail) and `rank Q_b ≤ rank Q`, so
+stratifying on it captures the **pivot-degenerate locus** `{rank Q̃ₚ < t}` (where gammaAtom's PosDef `hG`
+fails) at the POSITIVE-MEASURE level: `{rank Q̃ₚ < t} ∩ {rank Q ≥ t}` is `x`-null (for a.e. `x`, `Q̃ₚ` has
+full row rank `t` when `rank Q ≥ t` — the exceptional `(P,B₁₂)` locus is a proper subvariety), so gammaAtom
+applies a.e. on `{rank Q ≥ t}`; the genuine positive-measure degeneracy is `{rank Q < t}`. `k ≤ t+(M₁−t)`
+(`Matrix.rank_le_card_height`).
 
-/-- **The shared-tail rank-`r` stratum** of the outer `A'`-box (step 3). The cover
-`⋃_{r ≤ M₁−t} tailRankStratum` is total (`tailRankStrata_cover`); per stratum the residual is resolved
-by the c×c SVD chart family with the `A_r`-codim transverse Jacobian. -/
+**Realization of the controller's joint `(rank Q̃ₚ, rank Q_b)` index (action #1, RECONCILED):** `rank Q̃ₚ`
+depends on `x` (via `P, B₁₂`), NOT on `A'`, so the literal pair-over-`A'` is ILL-DEFINED and a
+pair-over-`(A',x)` cover would drag in the measurability of a parameterized inner integral. `rank Q` is
+the A'-only DOMINATING index that controls both and captures the positive-measure pivot degeneracy — the
+clean realization that keeps the terminal's outer-`A'` cover (no nested-integral measurability). Flagged
+to the controller for confirmation. -/
+noncomputable def tailProductRank (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (κ : Fin t ↪ Fin (M 1)) (A' : Params (tailChain M)) : ℕ :=
+  ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).rank
+
+/-- **The full pivot-tail rank-`k` stratum** of the outer `A'`-box. The cover
+`⋃_{k ≤ t+(M₁−t)} tailRankStratum` is total (`tailRankStrata_cover`); the TOP stratum `k = t+(M₁−t)` is
+where the tail is full rank so `Q̃ₚ·Q̃ₚᵀ` is a.e. PosDef (gammaAtom's C-integration → PIVOT Gram applies),
+while deeper strata `k < t+(M₁−t)` carry the joint pivot/corank degeneracy resolved by the c×c SVD chart
+family + the transverse-Jacobian `A_r = (b−r)²` repair. -/
 noncomputable def tailRankStratum (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
-    (κ : Fin t ↪ Fin (M 1)) (r : ℕ) : Set (Params (tailChain M)) :=
-  {A' | tailCorankRank M t κ A' = r}
+    (κ : Fin t ↪ Fin (M 1)) (k : ℕ) : Set (Params (tailChain M)) :=
+  {A' | tailProductRank M t κ A' = k}
 
 /-! ## PROVEN brick 1 — the descent arithmetic (threshold shift onto the reduced chain) -/
 
@@ -138,28 +157,29 @@ theorem reducedChain_threshold_shift (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
 
 /-! ## PROVEN brick 2 — region-glue index-completeness (the shared-tail rank cover is total) -/
 
-/-- **The shared-tail rank strata cover the outer box up to null (PROVEN, region glue).** Every outer
-tail parameter `A'` lies in the rank-`r` stratum for its own `r = tailCorankRank ≤ M₁−t`, so the
-finite family `{tailRankStratum M t κ r}_{r < M₁−t+1}` covers `paramsBoxM (tailChain M) 1` with EMPTY
+/-- **The full pivot-tail rank strata cover the outer box up to null (PROVEN, region glue).** Every outer
+tail parameter `A'` lies in the rank-`k` stratum for its own `k = tailProductRank ≤ t+(M₁−t)`, so the
+finite family `{tailRankStratum M t κ k}_{k < t+(M₁−t)+1}` covers `paramsBoxM (tailChain M) 1` with EMPTY
 complement (a fortiori null). This is the index-completeness the finite-cover glue
-(`lintegral_lt_top_of_finset_cover`) needs (recon §A, §4 gap 3 — Lean labor over banked math, DONE).
+(`lintegral_lt_top_of_finset_cover`) needs (recon §A, §4 gap 3 — Lean labor over banked math, DONE), now
+re-established for the JOINT-dominating full-tail rank index (action #1).
 
-**Coverage note (W4 E5, adjudicated COVER):** the strata here are keyed on `rank Q_b` (the per-`A'`
-inner cover). Which CUTS `t` route to this engine is the W4 COVER question — operative because
+**Coverage note (W4 E5, adjudicated COVER):** the strata here are keyed on `rank Q` (per-`A'`). Which
+CUTS `t` route to this engine is the separate W4 COVER question — operative because
 `sjBoundaryPeel + ENNReal.sum_lt_top` demands EVERY cut finite (not a chosen path): every `d≥2` cut
 transcribes, `n≥4` each carry binding `d≥2` atoms, `n=3` is the largest fully-native square. Orthogonal
 to this per-`A'` rank cover, which is total for any single cut. -/
 theorem tailRankStrata_cover (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (κ : Fin t ↪ Fin (M 1)) :
     volume ((paramsBoxM (tailChain M) 1) \
-      ⋃ i ∈ (Finset.univ : Finset (Fin (M 1 - t + 1))), tailRankStratum M t κ (i : ℕ)) = 0 := by
+      ⋃ i ∈ (Finset.univ : Finset (Fin (t + (M 1 - t) + 1))), tailRankStratum M t κ (i : ℕ)) = 0 := by
   have hsub : (paramsBoxM (tailChain M) 1) ⊆
-      ⋃ i ∈ (Finset.univ : Finset (Fin (M 1 - t + 1))), tailRankStratum M t κ (i : ℕ) := by
+      ⋃ i ∈ (Finset.univ : Finset (Fin (t + (M 1 - t) + 1))), tailRankStratum M t κ (i : ℕ) := by
     intro A' _
-    have hle : tailCorankRank M t κ A' ≤ M 1 - t := by
+    have hle : tailProductRank M t κ A' ≤ t + (M 1 - t) := by
       have := Matrix.rank_le_card_height
-        (((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id)
-      simpa [tailCorankRank] using this
-    refine Set.mem_iUnion₂.mpr ⟨⟨tailCorankRank M t κ A', ?_⟩, Finset.mem_univ _, rfl⟩
+        ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)
+      simpa [tailProductRank, Fintype.card_sum, Fintype.card_fin] using this
+    refine Set.mem_iUnion₂.mpr ⟨⟨tailProductRank M t κ A', ?_⟩, Finset.mem_univ _, rfl⟩
     omega
   rw [Set.diff_eq_empty.mpr hsub]
   exact measure_empty
@@ -203,32 +223,47 @@ theorem corankSVD_chartFamily_lt_top {a b q : ℕ} (hab : 2 ≤ min a b)
 
 /-! ## Analytic hole — the per-stratum outer-measure descent (the whole §H at measure level) -/
 
-/-- **THE PER-STRATUM DESCENT (hole) — the freed triple integral over one shared-tail rank stratum.**
-For a min-corank≥2 cut `t` below threshold, GIVEN the one-shorter PLAIN IH `hIH`, the freed-Γ triple
-integral RESTRICTED to the rank-`r` stratum `tailRankStratum M t κ r` is finite. This is the outer
-`(S,J)` measure-level descent — where the genuinely-new content lives (the inner Γ-integral is finite
-POINTWISE by `freedSchurLoss_inner_bounded_lt_top`; the difficulty is the OUTER integrability against
-the `x → pivot-rank-drop` / `A' → tail-rank-drop` singularities).
+/-- **THE PER-STRATUM DESCENT (hole) + THE MEASURE-REDUCTION DESIGN NOTE.** For a min-corank≥2 cut `t`
+below threshold, GIVEN the one-shorter PLAIN IH `hIH`, the freed-Γ triple integral RESTRICTED to the
+full-pivot-tail rank-`k` stratum `tailRankStratum M t κ k` is finite. This is the outer `(S,J)`
+measure-level descent — where the genuinely-new content lives (the inner Γ-integral is finite POINTWISE
+by `freedSchurLoss_inner_bounded_lt_top`; the difficulty is the OUTER integrability against the
+`x → pivot-rank-drop` / `A' → tail-rank-drop` singularities).
 
-Its fill (the transcription of Aoyagi App. C Step 1) consumes, per stratum:
-* **C-integration → PIVOT Gram** (banked `gammaAtom_aniso_shifted_eq`, measure-level): trades the
-  coupling `C = x.2` for `det(Q̃ₚ·Q̃ₚᵀ)^{−a/2}` (full rank `t`), NEVER the corank Gram (atom trap);
-* **the c×c SVD chart family** `corankSVD_chartFamily_lt_top` (§H heart) resolving the projected residual
-  `Γ·Q_b·(I−P_{Q̃ₚ})` to monomial normal form with `|det J| = A_r` codim (transverse-Jacobian `> −1`
-  sign repair, uniform across strata — GAP-IN-RELATIVE-JACOBIAN);
-* **the relative principalization** of `(Q̃ₚ, Γ·Q_b)` (`Q_b^⊥·Q̃ₚᵀ = 0` identically — a RELATIVE, not
-  absolute, principalization): the pushforward is a finite sum of shifted PLAIN reduced-chain integrals;
-* **`qbox_lintegral_lt_top`** disposes the pivot Gram; **`hIH (redChain t M)`** at the
-  `reducedChain_threshold_shift`-shifted threshold closes each reduced-chain term.
+## Measure-reduction design note (the traced gammaAtom chain, all 4 caveats)
+
+The chain, per stratum: **(step 2)** integrate the coupling `C = x.2` via `gammaAtom_aniso_shifted_eq`
+with `R := Q̃ₚ` (`t×q`), `S := Γ·Q_b`, `w := frobSq(P·Q̃ₚ)` → `det(Q̃ₚ·Q̃ₚᵀ)^{−a/2}·Cresid·(w +
+frobSq(Γ·Q_b·Π))^{−(c'−a·t/2)}`, `Π = 1 − Q̃ₚᵀ(Q̃ₚQ̃ₚᵀ)⁻¹Q̃ₚ`. The `det(Q̃ₚQ̃ₚᵀ)^{−a/2}` (constant in `Γ`)
+is the **PIVOT Gram** (NEVER the corank Gram — atom trap); the residual chains into
+`corankSVD_chartFamily_lt_top` with `S := Q_b·Π` (the unbuffered SVD hole DOMINATES the `w>0`-buffered
+residual, `w>0 ⟹ (w+f)^{−d} ≤ f^{−d}`, so its finiteness suffices). The FOUR caveats the fill discharges:
+
+1. **Box ≤ full-space (TRANSCRIPTION).** `gammaAtom` is a full-`ℝ^{a×t}` identity; the `C`-domain here is
+   the `outerDom` box. Resolve by monotonicity (box ⊆ full-space, nonneg integrand) → UPPER BOUND (suffices
+   for `< ⊤`); Fubini (banked S1Fubini) isolates `∫_C`.
+2. **JOINT rank index — ADOPTED (action #1).** gammaAtom's `hG : (Q̃ₚQ̃ₚᵀ).PosDef` ⟺ `rank Q̃ₚ = t` holds
+   only a.e.; the degenerate locus is not seen by `rank Q_b` alone. Re-indexed on `rank Q` (`tailProductRank`,
+   dominating both `rank Q̃ₚ, rank Q_b`): on the TOP stratum `k = t+(M₁−t)`, `hG` holds a.e.-`x` (gammaAtom
+   applies); deeper `k` route to the SVD family / the bounded branch on the pivot-degenerate locus.
+3. **`a·t/2` threshold dispatch (TRANSCRIPTION).** gammaAtom needs `c' > a·t/2`; below it, use
+   `freedSchurLoss_inner_bounded_lt_top` (pivot energy `>0`, box finite) directly. Per-cut `by_cases`.
+4. **Pivot-Gram disposal is NOT literal qbox (ROUTED to l2svd, action #2).** `qbox_lintegral_lt_top`
+   disposes a FREE-matrix Gram over a ball; `Q̃ₚ = Q_p + P⁻¹B₁₂Q_b` is NOT free — needs a `(P,B₁₂) → Q̃ₚ`
+   CoV (Jacobian bookkeeping) before qbox fires. And qbox's gate `a < q−t+1` is TOP-stratum only; deeper
+   strata are marginal/fail → the transverse-Jacobian `A_r = (b−r)²` repair (decstep round-4 KILL-guard 4).
+   These are the pivot-tail ANALOGUES of l2svd's corank-tail SVD family (shared `measurableEigendecomp`
+   substrate + `A_r` budget; satred derives `A_r`, l2witness checks ratios).
 
 **Kill-conditions:** carry PIVOT not corank Gram; `Γ·Q_b` STRATIFIED not integrated free (overshoot);
-`|det J|` always carried; the pivot-Gram gate `c<c+1` is TOP-STRATUM only (deeper strata via the
-transverse-Jac repair / recursion). **Status: OPEN** (the multi-tide §H heart at measure level). -/
+`|det J|` always carried; the pivot-Gram gate is TOP-STRATUM only. **Status: OPEN** (the multi-tide §H
+heart at measure level; the SVD family #1 and the pivot-side CoV+repair #4 are the two design obligations,
+routed to l2svd for a decorrelated certificate before the fill). -/
 theorem corankStratum_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
     (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1)) (hcork : 2 ≤ min (M 0 - t) (M 1 - t))
     (κ : Fin t ↪ Fin (M 1)) (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
-    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') (r : ℕ) :
-    (∫⁻ A' in tailRankStratum M t κ r,
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') (k : ℕ) :
+    (∫⁻ A' in tailRankStratum M t κ k,
         ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
           ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
               Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
@@ -259,7 +294,7 @@ theorem productCorankBoxFinite {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : 
             ENNReal.ofReal ((freedSchurLoss x Γ
               ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤ := by
   refine lintegral_lt_top_of_finset_cover
-    (Finset.univ : Finset (Fin (M 1 - t + 1)))
+    (Finset.univ : Finset (Fin (t + (M 1 - t) + 1)))
     (fun i => tailRankStratum M t κ (i : ℕ))
     (paramsBoxM (tailChain M) 1)
     (fun A' => ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
