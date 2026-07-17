@@ -85,17 +85,24 @@ exactly, W4 E4′). This does NOT change the terminal `Prop` (keyed per-cut on `
 valid cover whose `d≥2` binding charts resolve NATIVELY (evading W1) is later found, the footprint
 shrinks — but that is to be PROVEN, not assumed; the default is `n≥4`.
 
-## Named holes — the hypothesis-list report
+## The 1-HOLE state — the hypothesis-list report
 
-* PROVEN bricks: `reducedChain_threshold_shift` (descent arithmetic), `tailRankStrata_cover`
-  (region-glue index-completeness).
-* Analytic holes (`sorry`): `corankSVD_chartFamily_lt_top` (§H heart — the c×c SVD determinantal
-  resolution), `corankStratum_lt_top` (the per-stratum outer-measure descent — the whole §H, consuming
-  the SVD family + transverse-Jac sign repair + relative principalization + `hIH`).
+* PROVEN / imported (clean-three): `reducedChain_threshold_shift` (descent arithmetic);
+  `tailRankStrata_cover` (region-glue index-completeness); `corankSVD_chartFamily_lt_top` +
+  `corankSVD_quantBound` (the fixed-S Morse corank family + its quantitative inner bound, imported from
+  `RouteMSJCorankMorse`); `RouteMSJPivotWishart` (obligation 1, the full-rank-interior pivot-Gram disposal,
+  banked); the terminal reduction `productCorankBoxFinite` + the `fit`.
+* **The SOLE hole (`sorry`) = obligation 2 = `corankStratum_lt_top`** — the COUPLED / ITERATED
+  non-submersive product-corank wall (obl2form §4): the freed-Γ triple integral's outer integrability at
+  the rank-drop boundary of the deeper product `Q`, inner-Morse decay kept COUPLED to the outer Jacobian.
+  TRUE (sub-case of the Aoyagi-finite socket); its NATIVE principalization is Aoyagi's future work. **HELD**
+  (LATE-102 native-vs-cite; the box-level cite `cited_aoyagi_product_corank` is the honest default).
+  NOTE: the det-power forms of obligation 2 were FALSE and are DELETED (obl2form); do NOT close this hole
+  via the decoupled Morse-bound → Gram-collapse (`T ≤ ∫ det(QQᵀ)^{−a/2} = ∞`, vacuous).
 
 This module is UNTRACKED / NOT wired into `DLNFibre.lean` or `AxCheck` — the canonical library stays
-clean-three; the controller wires it when the analytic holes are filled. `#print axioms` on the terminal
-is the mint check (deferred to fill-completion).
+clean-three; the controller wires it per the LATE-102 decision. `#print axioms` on the terminal is the
+mint check (deferred to obligation-2 resolution).
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -196,86 +203,53 @@ theorem tailRankStrata_cover (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (κ : F
 -- `corner_block_cube_lintegral_lt_top` on the `a·rank(S)` active block (l2svd cert §§1–4). NOT a
 -- determinantal blow-up; the "d=c / single-radial-DEAD / sign-repair" language belongs to the JOINT
 -- (varying-S) problem = `corankStratum_lt_top`'s obligation 2. The `corankStratum` descent consumes it
--- directly (same fully-qualified name). SCOPE (l2svd §7): fixed-S INNER finiteness only — it does NOT
--- carry a uniform-across-strata quantitative bound `inner ≤ C(S)` with `C(S)` outer-integrable; that
--- stronger form is obligation 2 (`nonsubmersive_Ar_principalization`), the GAP.
+-- directly (same fully-qualified name). SCOPE (l2svd §7): fixed-S INNER finiteness. The quantitative
+-- inner bound `inner ≤ det(SSᵀ)^{−a/2}·K` is `corankSVD_quantBound` (also in `RouteMSJCorankMorse`,
+-- l2morse, clean-three) — a TRANSCRIPTION piece that closes the full-rank INTERIOR. Neither dissolves the
+-- wall: obligation 2 = the COUPLED `corankStratum_lt_top` (below), the outer integrability at the
+-- rank-drop boundary of the non-submersive product `Q` — the GAP (obl2form: the decoupled
+-- `det(QQᵀ)^{−a/2}` collapse DIVERGES, `T ≤ ∞`, vacuous).
 
-/-! ## ★ THE ISOLATED WALL — obligation 2 (the non-submersive `A_r` principalization) -/
+/-! ## Obligation 2 (the coupled/iterated wall) = `corankStratum_lt_top`, below -/
 
-/-- **★ OBLIGATION 2 — THE WALL (isolated, the minimal remaining gap; native-vs-cite = LATE-102).**
-The **full-tail product Wishart**: `∫_{A'} det(Q(A')·Q(A')ᵀ)^{−a/2} < ⊤` (`a = M₀−t`), where
-`Q(A') = (prod (tailChain M) A').submatrix (blockSplitEquiv κ) id` is the reindexed SHARED tail product
-(`(t+b) = M₁` rows), against the product-tail rank-drop `{A' : rank Q(A') < t+b}`. This is the ONE
-genuinely-OPEN gap; everything above it (the Morse corank family `corankSVD_chartFamily_lt_top`, the
-gammaAtom C-integration, the region glue, the descent arithmetic) is EXPENSIVE-TRANSCRIPTION.
+-- The ISOLATED det-power form of obligation 2 is **FALSE — DELETED** (was
+-- `nonsubmersive_Ar_principalization : ∫_{A'} det(Q_bQ_bᵀ)^{−t/2}`, and its Gram-collapse
+-- `∫_{A'} det(QQᵀ)^{−a/2}`). obl2form (2 decorrelated lines: exact power-count + Codex xhigh) proved BOTH
+-- DIVERGE on legal min-corank≥2 cuts, incl. the engine's OWN `(4,4,4,4)@t=2`: `Q = A₁·A₂`,
+-- `det(QQᵀ)=det(A₁)²·det(A₂)²`, so `∫ det(QQᵀ)^{−1} = (∫|det A₁|^{−2})(∫|det A₂|^{−2}) = ∞·∞` — while the
+-- socket is FINITE there. The `{det L=0}` product divisor lowers the threshold to `a<1`, but `a=M₀−t≥2`
+-- always. A `sorry` on the det-power = the socket conditional on a FALSE hypothesis (precision.md trap:
+-- a never-satisfiable sufficient condition proves nothing — UNSOUND, even "held").
+--
+-- The Schur-complement Gram identity `det(Q̃ₚQ̃ₚᵀ)·det((Q_bΠ)(Q_bΠ)ᵀ) = det(QQᵀ)` is TRUE (verified) and
+-- a valid SHAPE tool, but only INSIDE a COUPLED estimate — NEVER to license the isolated det-power (that
+-- re-commits the l2morse-refuted overestimate `I(S) ≤ det(SSᵀ)^{−a/2}` at the full-Gram level; the true
+-- inner `I(S)` is MILDER near the rank-drop, `e_true = max(0, c'−a(b−1)/2) < a/2`).
+--
+-- The CORRECT minimal obligation 2 is the COUPLED / ITERATED finiteness — `corankStratum_lt_top`'s own
+-- freed-Γ triple integral (below), with the inner Morse decay kept COUPLED to the outer Jacobian and the
+-- rank-drop boundary resolved by a BLOW-UP. That is the HELD wall (LATE-102 native-vs-cite; cite default).
 
-**Why THIS is the object (the Schur-complement Gram identity — verified, resolves the Π-coupling).** The
-assembly's C-integration (gammaAtom) yields the PIVOT Gram `det(Q̃ₚ·Q̃ₚᵀ)^{−a/2}`; the Γ-integration
-(Morse quantitative variant) yields the corank factor `det((Q_b·Π)(Q_b·Π)ᵀ)^{−a/2}·(bounded)`,
-`Π = 1 − Q̃ₚᵀ(Q̃ₚQ̃ₚᵀ)⁻¹Q̃ₚ`. The identity `det(Q̃ₚQ̃ₚᵀ)·det((Q_bΠ)(Q_bΠ)ᵀ) = det(Q·Qᵀ)` (Schur
-complement of the block Gram + the unit-det shear `[Q̃ₚ;Q_b] = [[I,P⁻¹B₁₂],[0,I]]·[Q_p;Q_b]`; verified
-numerically, all regimes, double-decorrelated) COMBINES them into the full-tail Gram `det(QQᵀ)^{−a/2}`,
-which is `P,B₁₂`-INDEPENDENT — so the `(P,B₁₂)` integral is a bounded factor and obligation 2 is A'-only.
-(This obviates a separate pivot-Gram `(P,B₁₂)→Wishart` CoV; `RouteMSJPivotWishart` stays banked as the
-narrow-regime fallback.)
+/-! ## ★ obligation 2 — THE COUPLED / ITERATED WALL (this IS obligation 2; HELD; LATE-102) -/
 
-**★ GUARD against over-reading (the clean SHAPE is NOT tractability).** The Gram identity collapses the
-COUPLING/shape (pivot×corank → `det(QQᵀ)^{−a/2}`); it does NOT dissolve the wall. The 200-sample numeric
-verifies the IDENTITY (generic full-rank `Q`); it does NOT probe the `∫`'s CONVERGENCE at the rank-drop
-`{rank Q < t+b}`, where the non-submersive product-corank difficulty lives. `∫_{A'} det(QQᵀ)^{−a/2}` with
-`Q = prod(tailChain M) A'` (a deeper PRODUCT) is EXACTLY the object four decorrelated lines called the wall
-(prodcorank Gröbner, decstep GAP-IN-RELATIVE-JACOBIAN, l2svd §9, Aoyagi future-work): the `L·R` divisor
-`{det L = 0}` lowers the threshold below the free-matrix `q−(t+b)+1`. So this is a HELD hypothesis in a
-simpler FORM, NOT a re-derivation — do not declare it native/tractable until the decorrelated make-or-break
-(obl2form) confirms the `∫` converges below `c*` for the non-submersive product.
+/-- **★ obligation 2 — THE COUPLED / ITERATED WALL (this hole IS obligation 2; HELD, native-vs-cite =
+LATE-102).** For a min-corank≥2 cut `t` below threshold, GIVEN the one-shorter PLAIN IH `hIH`, the freed-Γ
+triple integral over the rank-`k` stratum is finite. This is the CORRECT minimal form of obligation 2
+(obl2form §4): the **coupled / iterated** finiteness — NOT any isolated det-power (all det-power forms are
+FALSE, deleted above). It is TRUE (a sub-integral of the Aoyagi-finite socket `T`), MINIMAL, and the right
+blow-up target; the genuinely-OPEN content is the **non-submersive principalization** of this coupled
+object (all exponents `> −1`, no smaller-ratio divisor) — the wall, Aoyagi's stated future work.
 
-**Why it is a WALL, not transcription (l2svd cert §9, prodcorank-cert, decstep round-5 —
-`GAP-IN-RELATIVE-JACOBIAN`).** `det(QQᵀ)^{−a/2}` has the SHAPE of the banked FREE-matrix Wishart
-`detGram_lintegral_lt_top`/`qbox` (finite iff `a < q − (t+b) + 1`, submersive), but `Q(A')` is a
-**shared DEEPER PRODUCT** (nested DLN factors), and the product map is **NON-SUBMERSIVE** at the
-rank-drop: the pullback acquires factor divisors the free-matrix count never sees. Concretely (Codex) for
-`Q = L·R`, `√det(QQᵀ) = |det L|·√det(RRᵀ)`, so integrability needs the EXTRA divisor `{det L = 0}` — a
-STRICTLY worse threshold. The transverse Jacobian `= A_r` STRUCTURE transcribes (Aoyagi Case-2 carries the
-codim exponent), but its EXACT VALIDITY — that blowing up `{rank Q(A')=k}` through the product
-parametrization principalizes with ALL exponents `> −1` and NO smaller-ratio divisor — is genuinely ABSENT
-from Aoyagi's worked EXACT results (Theorem 5 gives only UPPER bounds; exact values only `N=1`/small `H`;
-the `rlct ≥ c*` finiteness direction is his stated future work). **Circularity guard:** one cannot use
-"rlct = c* (Aoyagi) ⟹ no smaller-ratio divisor" inside a native proof.
+The inner Γ-integral is finite POINTWISE (`freedSchurLoss_inner_bounded_lt_top`); the difficulty is the
+OUTER integrability against the `A' → tail-rank-drop` / `x → pivot-rank-drop` singularities, where the
+inner Morse decay must stay COUPLED to the outer Jacobian.
 
-**Reconciliation with the airtight arithmetic.** satred's `A_r = (b−r)²` (`= peelCharge(M, deepened cut)`;
-round-5 care-point — the invariant is `(corank at the deepened cut)²`) and `min_r[A_r + minAdm(reducedᵣ)]
-= minAdm(M)` (verified `(4,4,4,4)@t=2 A_r=[0,1,4]→11`, n=3..15) are the airtight BUDGET; l2witness
-cross-checks the ratios `min_i (a_i+1)/(2Nᵢ) ≥ c*`. But a green ratio-check certifies `rlct ≥ c*`
-CONDITIONAL on the `(aᵢ,Nᵢ)` coming from a VALID resolution — it does NOT certify that validity (the
-non-submersive principalization), which is exactly this hole.
-
-**Regime.** Clean for `t+b ≤ q` (`q = M_last`, `t+b = M₁`) — incl. all SQUARE chains (`t+b = M₁ = n = q`,
-det(QQᵀ) generically ≠ 0). For `t+b > q` (narrow, `M₁ > M_last`): `det(QQᵀ) ≡ 0`, `S = Q_bΠ` never full
-rank → the pseudo-det form `(∏_{λ>0}λ)^{−a/2}` + the banked `RouteMSJPivotWishart` fallback (a sub-case).
-
-**Status: OPEN — THE WALL.** ESCALATED to the operator (LATE-102 native-vs-cite): build the multi-tide
-non-submersive product-corank resolution, or consolidate at the cite (`cited_aoyagi_product_corank` as a
-carried box-level Prop, one level below `cited_aoyagi_dln`). satred owns the `A_r` arithmetic, l2witness
-the ratios; the non-submersive transverse-Jac VALIDITY is the operator decision. -/
-theorem nonsubmersive_Ar_principalization (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
-    (ht2 : t ≤ min (M 0) (M 1)) (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
-    (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
-    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
-    (∫⁻ A' in paramsBoxM (tailChain M) 1,
-        ENNReal.ofReal
-          ((((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id) *
-              ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).transpose).det
-            ^ (-(↑(M 0 - t) : ℝ) / 2))) < ⊤ := by
-  sorry
-
-/-! ## Analytic hole — the per-stratum outer-measure descent (the whole §H at measure level) -/
-
-/-- **THE PER-STRATUM DESCENT (hole) + THE MEASURE-REDUCTION DESIGN NOTE.** For a min-corank≥2 cut `t`
-below threshold, GIVEN the one-shorter PLAIN IH `hIH`, the freed-Γ triple integral RESTRICTED to the
-full-pivot-tail rank-`k` stratum `tailRankStratum M t κ k` is finite. This is the outer `(S,J)`
-measure-level descent — where the genuinely-new content lives (the inner Γ-integral is finite POINTWISE
-by `freedSchurLoss_inner_bounded_lt_top`; the difficulty is the OUTER integrability against the
-`x → pivot-rank-drop` / `A' → tail-rank-drop` singularities).
+**★ UNSOUND route — do NOT close this via the decoupled bound (obl2form §5).** Bounding the inner by the
+quantitative Morse `corankSVD_quantBound` (`∫_Γ ≤ det(SSᵀ)^{−a/2}·K`) and collapsing pivot×corank via the
+Gram identity gives `T ≤ ∫_{A'} det(QQᵀ)^{−a/2}·K = ∞` (the RHS DIVERGES on the deeper product — obl2form,
+e.g. `(4,4,4,4)@t=2`), i.e. `T ≤ ∞`: VACUOUS, not a proof. The factorization discards the compensating
+inner decay that carries convergence. The SOUND route keeps inner+outer COUPLED (a boundary blow-up of the
+rank-drop of `Q`), and is exactly the non-submersive principalization = the wall.
 
 ## Measure-reduction design note (the traced gammaAtom chain, all 4 caveats)
 
@@ -302,23 +276,26 @@ residual, `w>0 ⟹ (w+f)^{−d} ≤ f^{−d}`, so its finiteness suffices). The 
    These are the pivot-tail ANALOGUES of l2svd's corank-tail SVD family (shared `measurableEigendecomp`
    substrate + `A_r` budget; satred derives `A_r`, l2witness checks ratios).
 
-**Kill-conditions:** carry PIVOT not corank Gram; `Γ·Q_b` STRATIFIED not integrated free (overshoot);
-`|det J|` always carried; the pivot-Gram gate is TOP-STRATUM only.
+The gammaAtom chain above describes the eventual NATIVE-RESOLUTION route; it closes only the FULL-RANK
+INTERIOR (where `det(QQᵀ)` is bounded below and the CoV is valid), consuming the banked transcription
+pieces — `corankSVD_quantBound` (l2morse, the Morse inner bound, clean-three) + the pivot-Gram disposal
+`RouteMSJPivotWishart` (obligation 1, clean-three). **Kill-conditions:** PIVOT not corank Gram; `Γ·Q_b`
+STRATIFIED not integrated free; `|det J|` always carried; the interior gate is TOP-stratum only.
 
-**§9 BOUNDARY-BLOW-UP CORRECTION (l2svd cert — the decomposition is a blow-up, NOT a null-partition).**
-The rank-`Q` strata `tailRankStratum M t κ k` are a NULL-partition: for `k <` the generic rank,
-`{rank Q = k}` is a determinantal subvariety of `A'`-space, Lebesgue-NULL, so `∫` over it `= 0` trivially
-— the finite-cover glue proves finiteness there only where it was never in doubt. The genuine content is
-the TOP (generic-rank) stratum's OUTER integrability against the null rank-drop BOUNDARY, resolved by a
-rank-boundary BLOW-UP (positive-codim exceptional divisors carrying the `A_r` weights), NOT a partition
-into null exact-rank pieces. That blow-up's transverse-Jacobian `= A_r` VALIDITY for the non-submersive
-shared product `Q_b(A')` is `nonsubmersive_Ar_principalization` (obligation 2, THE isolated wall).
+**§5 SOUND stratification (obl2form — interior/boundary, NOT the exact-rank null-partition).** The genuine
+content is NOT the exact-rank strata (those with `k <` generic rank are Lebesgue-NULL, `∫ = 0` trivially —
+the cover proves finiteness only where it was never in doubt). Split the `A'`-box by DISTANCE to the
+rank-drop: (i) the interior `{dist > δ}` — `det(QQᵀ)` bounded below, closed by the transcription pieces;
+(ii) the boundary tube `{dist ≤ δ}` — the non-submersive product-corank wall, resolved by a BLOW-UP of the
+rank-drop of `Q = prod(tailChain M) A'` that keeps the inner Morse decay COUPLED to the outer Jacobian
+(all exponents `> −1`). The boundary tube's coupled finiteness IS this hole.
 
-**Reduction (the hypothesis list).** `corankStratum_lt_top` REDUCES to: (i) `corankSVD_chartFamily_lt_top`
-(the Morse corank family, l2morse → `genm-l2morse`, TRANSCRIPTION); (ii) the top-stratum pivot-Gram
-disposal (obligation 1, TRANSCRIPTION — the `(P,B₁₂)→free-Wishart` CoV + `qbox`, cert §8); (iii)
-`nonsubmersive_Ar_principalization` (obligation 2, the ONE genuinely-open WALL). **Status: OPEN**, its
-sole non-transcription dependency being obligation 2. -/
+**Status: OPEN — THE HELD WALL (this hole = obligation 2).** The det-power obligation 2 was FALSE and is
+DELETED (above); the SOUND obligation 2 is THIS coupled/iterated statement. Do NOT close it via the
+decoupled `corankSVD_quantBound` → Gram-collapse (`T ≤ ∫ det(QQᵀ)^{−a/2} = ∞`, vacuous — obl2form §5). It
+is TRUE (sub-case of the Aoyagi socket) but its NATIVE principalization is Aoyagi's future work; the honest
+default is to consolidate at the box-level cite `cited_aoyagi_product_corank` (LATE-102, operator decision).
+`satred` owns the `A_r` budget, `l2witness` the ratios; the non-submersive VALIDITY is the wall. -/
 theorem corankStratum_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
     (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1)) (hcork : 2 ≤ min (M 0 - t) (M 1 - t))
     (κ : Fin t ↪ Fin (M 1)) (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
@@ -333,14 +310,15 @@ theorem corankStratum_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
 
 /-! ## The TERMINAL — typed = the socket's `Prop` (reduces to the holes via the finite-cover glue) -/
 
-/-- **TERMINAL — the native product-corank box-finiteness = `cited_aoyagi_product_corank` (unfolded).**
+/-- **TERMINAL — the product-corank box-finiteness = `cited_aoyagi_product_corank` (unfolded).**
 For a min-corank≥2 pivot cut `t` below the geometric threshold, GIVEN the one-shorter PLAIN IH, the
-freed-Γ triple integral is finite. When sorry-free this DISCHARGES the socket natively (see the `fit`
-example) → `(□)` at clean-three, no Aoyagi hypothesis.
+freed-Γ triple integral is finite. Its SOLE remaining dependency is `corankStratum_lt_top` = obligation 2
+= the coupled/iterated non-submersive wall, HELD (LATE-102: native resolution OR the box-level cite
+`cited_aoyagi_product_corank`). When obligation 2 is discharged (either way) this delivers the socket → `(□)`.
 
 The proof REDUCES (banked region glue) the outer `A'`-integral to the finitely many shared-tail rank
-strata: `tailRankStrata_cover` (index-completeness, PROVEN) + `corankStratum_lt_top` (per-stratum
-descent, the §H hole). `ρ` is dropped (the freed-Γ integrand uses only `κ`, precision.md 1.1.3). -/
+strata: `tailRankStrata_cover` (index-completeness, PROVEN) + `corankStratum_lt_top` (the coupled wall).
+`ρ` is dropped (the freed-Γ integrand uses only `κ`, precision.md 1.1.3). -/
 theorem productCorankBoxFinite {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
     (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1))
     (hcork : 2 ≤ min (M 0 - t) (M 1 - t))
@@ -365,9 +343,13 @@ theorem productCorankBoxFinite {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : 
     (tailRankStrata_cover M t κ)
     (fun i _ => corankStratum_lt_top M t ht ht2 hcork κ c' hc' hIH (i : ℕ))
 
-/-- **THE FIT** — `productCorankBoxFinite` discharges the socket `cited_aoyagi_product_corank`. Once the
-two analytic holes (`corankSVD_chartFamily_lt_top`, `corankStratum_lt_top`) are sorry-free, this makes
-the carried box-level Aoyagi hypothesis a NATIVE theorem → `(□)` at clean-three. -/
+/-- **THE FIT** — `productCorankBoxFinite` discharges the socket `cited_aoyagi_product_corank`. The engine
+is at the **1-HOLE state**: the SOLE remaining hole is `corankStratum_lt_top` = obligation 2 = the coupled
+non-submersive wall (HELD). Everything else is proven/imported clean-three (`corankSVD_chartFamily_lt_top`
++ `corankSVD_quantBound` Morse; `RouteMSJPivotWishart` obligation 1; `tailRankStrata_cover`;
+`reducedChain_threshold_shift`; this reduction). When obligation 2 is discharged — natively (the
+non-submersive principalization = Aoyagi future-work) or via the box-level cite `cited_aoyagi_product_corank`
+(LATE-102, the honest default) — this delivers `(□)`. -/
 example : cited_aoyagi_product_corank := @productCorankBoxFinite
 
 end DLNFibre.DLN.RLCT
