@@ -79,7 +79,10 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   divTilde : Fin numDiv → ℕ
   /-- Number of residual generators tracked for sharing. -/
   numGen : ℕ
-  /-- **The divisor-support (sharing) map**: which divisor variables divide each generator. -/
+  /-- **The divisor-support (sharing) map**: which divisor variables divide each generator. This is a
+  `Finset`-valued (not `ℕ`-valued) field ON PURPOSE — "simplifying" it to per-generator
+  multiplicities `Fin numGen → ℕ` is a TYPE ERROR here, not merely a battery failure: a multiplicity
+  cannot record WHICH divisors are shared, and sharing changes the RLCT (`g-delta-flatten.py`). -/
   support : Fin numGen → Finset (Fin numDiv)
 
 /-- **Terminal (leaf) data**: the fully monomialised state at `S = L+1` — the diagonal
