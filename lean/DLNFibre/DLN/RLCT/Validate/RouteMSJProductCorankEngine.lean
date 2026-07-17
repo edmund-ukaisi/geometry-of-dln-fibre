@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelStep
 import DLNFibre.DLN.RLCT.Validate.RouteMSJIncidenceGluing
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankMorse
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotWishart
 
 /-!
 # `RouteMSJProductCorankEngine` — the NATIVE product-corank engine (Lane 2, SKELETON)
@@ -184,45 +186,19 @@ theorem tailRankStrata_cover (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (κ : F
   rw [Set.diff_eq_empty.mpr hsub]
   exact measure_empty
 
-/-! ## Analytic hole (§H heart) — the c×c SVD determinantal chart family -/
+/-! ## §H heart (FILLED, imported) — the c×c Morse corank family -/
 
-/-- **THE §H HEART (hole) — the c×c SVD determinantal resolution of the corank singularity.** For a
-corank block `min(a,b) ≥ 2` and a projected tail `S : Matrix (Fin b) (Fin q) ℝ` (the `Q_b·(I−P_{Q̃ₚ})`
-of step 4), the pure corank singularity `‖Γ·S‖^{−2c'}` (free `Γ : Fin a → Fin b`) is box-integrable
-below the ACTIVE-DIRECTION threshold `2c' < a·rank(S)` (the image `Γ ↦ Γ·S` has dimension `a·rank(S)`).
-
-This is the resolution CONSTRUCTION (Aoyagi App. C Step 1, item (a)): the FULL multi-singular-value
-blow-up — `d = c` exceptional coordinates on the measurable eigenframe (`measurableEigendecomp`) of
-`S·Sᵀ` — NOT a single radial coordinate (which resolves only `Γ=0`, not the rank-`1..c−1` cone; DEAD
-for c≥2, decstep round-3 §3). The threshold `2c' < a·rank(S)` is the `> −1` exceptional-exponent
-certificate; the transverse-Jacobian sign repair (GAP-IN-RELATIVE-JACOBIAN) is what makes `rank(S)`
-(not the naive `b`) the operative count uniformly across shared-tail rank strata.
-
-**Kill-conditions (must pass):** min(a,b)≥2 (W1: joint center survives single-factor); the count is
-`rank(S)` not `b` (W2: `C_m < m²`, the non-submersive product-corank gap); tightness at the binding
-cell (W3/W4). **Status: OPEN** (the genuinely-new §H content — transcription of Aoyagi's resolution;
-the arithmetic budget is banked, the analytic determinantal CoV + Jacobian bookkeeping is NEW).
-
-**LEVEL SEPARATION (l2svd cert, the framing correction — this hole is SIMPLER than the §H framing).**
-With `S` FIXED, `frobSq(Γ·S)` is a **Morse (smooth-linear-center)** singularity: a PSD quadratic form in
-`Γ` of rank EXACTLY `a·rank(S)`, zero-locus the LINEAR subspace `{Γ·S=0}`. NOT a determinantal blow-up —
-the "d=c coords / single-radial-DEAD / transverse-Jac sign repair" language is mis-imported from the
-JOINT problem (S VARYING with `x, A'`), which lives ENTIRELY in `corankStratum_lt_top` (obligation 2).
-For fixed S: ONE spectral CoV (unit Jacobian) + ONE `corner_block_cube_lintegral_lt_top` on the
-`a·rank(S)` active block, threshold `2c' < a·rank(S)` (= `hthr`, TIGHT). EXPENSIVE-TRANSCRIPTION, NOT
-open; `measurableEigendecomp` NOT needed (fixed S). W1/W2 do NOT bite (no joint incidence, no varying
-product). Route: l2svd cert §§1–4 (sub-lemmas N1–N5). Fill in flight (`genm-l2morse`).
-
-**SPEC (l2svd, REQUIRED — the `volume box < ⊤` form is FALSE):** `hbox : Bornology.IsBounded box`
-(finiteness needs boundedness, not finite volume — verified counterexample a=b=2, r=1, c'=0.9<1: a
-finite-VOLUME wedge shrinking toward `{Γ·S=0}` diverges). The real call site
-(`{Γ | Γ + schurShift x ∈ genBox … 1}`, a translate of a genuine product box) IS bounded → safe/cost-free. -/
-theorem corankSVD_chartFamily_lt_top {a b q : ℕ} (hab : 2 ≤ min a b)
-    (S : Matrix (Fin b) (Fin q) ℝ) (c' : NNReal)
-    (hthr : 2 * (c' : ℝ) < (a : ℝ) * (S.rank : ℝ))
-    (box : Set (Fin a → Fin b → ℝ)) (hbox : Bornology.IsBounded box) :
-    ∫⁻ Γ in box, ENNReal.ofReal ((frobSq (Matrix.of Γ * S)) ^ (-(c' : ℝ))) < ⊤ := by
-  sorry
+-- `corankSVD_chartFamily_lt_top {a b q} (hab : 2 ≤ min a b) (S) (c') (hthr : 2c' < a·rank S)
+--   (box) (hbox : Bornology.IsBounded box) : ∫⁻ Γ in box, ofReal((frobSq (Γ·S))^(-c')) < ⊤`
+-- is PROVEN sorry-free (clean-three) in `DLNFibre.DLN.RLCT.Validate.RouteMSJCorankMorse` (merged from
+-- `genm-l2morse`), imported above. With `S` FIXED it is a MORSE (smooth-linear-center) singularity —
+-- a PSD quadratic form of rank `a·rank(S)`, resolved by one spectral CoV (unit Jacobian) + one
+-- `corner_block_cube_lintegral_lt_top` on the `a·rank(S)` active block (l2svd cert §§1–4). NOT a
+-- determinantal blow-up; the "d=c / single-radial-DEAD / sign-repair" language belongs to the JOINT
+-- (varying-S) problem = `corankStratum_lt_top`'s obligation 2. The `corankStratum` descent consumes it
+-- directly (same fully-qualified name). SCOPE (l2svd §7): fixed-S INNER finiteness only — it does NOT
+-- carry a uniform-across-strata quantitative bound `inner ≤ C(S)` with `C(S)` outer-integrable; that
+-- stronger form is obligation 2 (`nonsubmersive_Ar_principalization`), the GAP.
 
 /-! ## ★ THE ISOLATED WALL — obligation 2 (the non-submersive `A_r` principalization) -/
 
