@@ -520,3 +520,90 @@ reduced-chain recursion) is essentially the SAME mechanism (the recursion IS the
 Files (round 4): `codex/princ-{prompt,answer}.md`, `princ-run.log` (decorrelated, GAP-AT-PROJECTED-TAIL-
 PRINCIPALIZATION); satred `c2-atom-supply.md` (self-similarity + `A_r` + CoV + `c2_atom_selfsim.py` 324/324);
 pivot-vs-corank gate + overshoot recomputed/verified inline (n=3..12).
+
+---
+
+# ADDENDUM (round 5, 2026-07-17) — the transverse-Jacobian sign repair: SURFACED SUB-GAP (deeper than detail-at-scale)
+
+**Question (controller):** pin the transverse-Jacobian = A_r-codim identity + the >−1-uniform sign repair
+across ALL shared-tail rank strata (the tide's heart). CONFIRM → commission; surface another genuine
+sub-gap (not standard-technique labour) → reconsider. I LEAD the monomial normal form; decorrelated Codex
+on the >−1-uniform (`codex/signrepair-{prompt,answer}.md`, xhigh, verdict withheld).
+
+## ★★★ VERDICT: the ARITHMETIC >−1-uniform is AIRTIGHT, but the ANALYTIC step surfaces a GENUINE SUB-GAP deeper than standard-technique — the non-submersive PRODUCT-corank resolution. Per your protocol: RECONSIDER (do not commission as clean-confirm).
+
+## 1. The arithmetic >−1-uniform — CONFIRMED (PROVEN, decisive)
+
+The per-stratum threshold `T_m = [corank codim]/2 + ½·minAdm(n−m, n, n)` (stratum m = corank-at-cut,
+m∈[0,b]) satisfies **`T_m ≥ c*` for EVERY stratum**, immediate from the minAdm recursion (`m² +
+minAdm(n−m,n,n)` is one candidate in the min defining `minAdm(n,n,n,n)`). Verified n=3..12 exhaustively
+over strata (both the middle-product `C_k` form of decomposition A and the corank `m²` form; Codex Q1
+independently recomputed n=5). Binding strata are MARGINAL (`T_m = c*` — the harmless log, δ-slack). So:
+
+> for `c' < c*` strict, `a_i − 2c'·N_i > −1` at every stratum (since `c' < c* ≤ T_m = min_i (a_i+1)/(2N_i)`).
+
+This is the exact >−1-uniform SIGN certificate — **conditional on the exceptional powers `(a_i, N_i)`
+being the ones the arithmetic uses.** The ordinary + smoothly-relative determinantal Jacobian is standard
+(Codex Q2: `|det Dπ| = |e|^{d−1}`, `d = (p−r)(q−r) = m²` for square corank; the triangular Schur quotient
+`(R,B₁,B₂)↦(R,B₁,S)` has unit Jacobian, so the pivot-rowspace quotient alone does not alter the codim).
+
+## 2. The surfaced sub-gap — `GAP-IN-RELATIVE-JACOBIAN` (Codex, decorrelated; deeper than detail-at-scale)
+
+**`Q̃ₚ` and `Q_b` are NOT free matrices — they are the shared DEEPER PRODUCTS, and the product map is
+NON-SUBMERSIVE at the rank-drop locus.** So the pullback (from the free-matrix determinantal resolution to
+the actual deeper-factor variables) **need not be transverse to the rank strata**, and under a
+non-submersive pullback the codimension / multiplicity / discrepancy **need not remain the naive `m²`**
+(Codex Q2/Q4). The naive `m²` (free-block, submersive) is right for the FIRST-factor corank `Γ` alone; the
+DEEPER-tail product-corank is the joint incidence, whose actual codim is `C_m = m² − ⌊m²/4⌋` (the
+product-corank codim, either factor drops — the round-1 `⌊k²/4⌋` geometry).
+
+**The two codims give OPPOSITE verdicts** (exact, verified n=4..7):
+- **naive `m²`** (free-factor, deeper delegated to the reduced-chain recursion): `T_m ≥ c*` all strata — PASS.
+- **product `C_m`** (non-submersive joint, paired with the full reduced chain): **UNDERSHOOTS** — e.g.
+  `(4,4,4,4)`, m=2: `C_2/2 + ½minAdm(2,4,4) = 3/2 + 7/2 = 5 < 11/2 = c*`; also n=5,6,7 at m=2,3.
+
+So the >−1-uniform HOLDS iff the discrepancy is the naive `m²` (first-factor corank submersive, the deeper
+product-corank cleanly DELEGATED to the reduced-chain recursion) — and FAILS if the JOINT incidence (both
+factors dropping, the middle-product corank `C_m`) must be resolved AT THIS level (not delegated). **The
+standard determinantal fact does NOT settle which.** The crux: **do the iterated first-factor peels COVER /
+principalize the joint product-corank incidence locus — or does the joint incidence "fall between" the
+peels, requiring the bespoke non-submersive product-corank resolution?** (Codex: "resolving `S` alone does
+not principalize the joint ideal `Γ·S`"; first unresolved case `n=4, m=1`.)
+
+**This is deeper than standard-technique detail-at-scale.** Establishing that the iterated peels resolve
+the joint incidence (natively, so the discrepancies ARE `m²` with no smaller-ratio divisor) IS the native
+re-derivation of (the core of) Aoyagi's product-corank resolution — the central genuinely-new content of
+native `(□)`, not off-the-shelf. Note the circularity trap: one CANNOT use "RLCT = c* (Aoyagi) ⟹ no
+smaller-ratio divisor" in a NATIVE proof — that is the very thing being proved.
+
+## 3. Recommendation (per your protocol — this is a surfaced sub-gap, so RECONSIDER)
+
+The design rounds have converged the c≥2 atom to its genuine analytic core: **the non-submersive
+product-corank resolution** (the joint-incidence cover / the `C_k` transverse Jacobian). The arithmetic
+(all strata ≥ c*, satred 0/4039 + my n=3..12) is the airtight certificate; the ANALYTIC content is the
+deep heart. It is BUILDABLE (Aoyagi's resolution exists) but NOT standard-technique labour. Options:
+
+- **(A) Path-A tide with the product-corank resolution as the FIRST (deep) obligation** — the joint
+  rank-sector (satred's design, the middle-product / joint stratification, NOT the naive single-factor
+  pivot-Gram) with a NATIVE proof that the iterated cover principalizes the joint incidence (the transverse
+  Jacobian = `C_k`, no smaller-ratio divisor). This is the multi-tide heart; sink the soundness here.
+- **(B) The cite-Aoyagi boundary for the product-corank resolution step.** Since this step IS (the core
+  of) Aoyagi's resolution, the minimal honest cited interface is the product-corank finiteness / RLCT of
+  the middle product — one level below `rlct=½·codim`. This trades the deep native theorem for a sharper
+  cited step. (□) would then be native ABOVE this one determinantal-resolution citation.
+
+**Whichever: use the JOINT rank-sector (decomposition A / satred), NOT the naive single-factor pivot-Gram**
+(its naive `m²` passes the arithmetic but is not the established discrepancy; with the correct product `C_m`
+it undershoots). The fallback (§3bis uncoupled qbox) LIKELY inherits the same non-submersive product-corank
+issue — it is not a clean escape; I recommend confirming that before treating it as a native fallback.
+
+## 4. Care-point (parametrization, from the exact check)
+
+satred's `A_r = (b−r)²` paired with `u'_r = u+(b−r)` is internally inconsistent: the charge `(b−r)²` is
+correct if `r` = the rank DROP (then `u' = u+r`); labeled by the corank RANK it must be `r²`. The invariant
+is **charge = (corank at the deepened cut)² = peelCharge(M, u')**. Mixing them gives a spurious `min = 7/2 ≠
+c* = 11/2` (n=4). Bake the consistent invariant as a kill-condition.
+
+Files (round 5): `codex/signrepair-{prompt,answer}.md`, `signrepair-run.log` (decorrelated,
+GAP-IN-RELATIVE-JACOBIAN); the T_m all-strata check + the naive-`m²`-vs-product-`C_m` discriminator +
+the parametrization care-point recomputed/verified inline (n=3..12).
