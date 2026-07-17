@@ -130,7 +130,7 @@ nodes:
     landmark: true
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
     kill: battery/g-coverage-sharing-killcond.py
-    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. HUNT SURVIVED (t03: 5 decorrelated legs, 0 undershoots incl. sheared-incidence LP + Codex angular family; scope stated in threads/03-hunt/hunt-cert.md §5 — cite THAT, never blanket 'established'; residual: angular beyond (2,2,2,2), 3rd+ blowups, (4,4,4,4) full, optional D-module lct check). Case-2 divisors CAN BIND (g-case2-exponent.py). Proof = the per-(S,J) ledger induction (cert-d3)"
+    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. (t03: 5 decorrelated legs, 0 undershoots incl. sheared-incidence LP + Codex angular family; scope stated in threads/03-hunt/hunt-cert.md §5 — cite THAT, never blanket 'established'; residual: angular beyond (2,2,2,2), 3rd+ blowups, (4,4,4,4) full, optional D-module lct check). Case-2 divisors CAN BIND (g-case2-exponent.py). Proof = the per-(S,J) ledger induction (cert-d3)"
 
   - id: exponent-ledger-bridge
     kind: claim
@@ -189,7 +189,7 @@ nodes:
     edges:
       - {type: conjectured-toward, to: region-glue}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/02-covdesign/cert-d2-theorem4-localization.md]
-    notes: "DISSOLVE adjudicated (pending architect shape-check). OPEN LEG: L>=3 coupled non-origin points go via the banked domination, NOT a chain-arity-IH"
+    notes: "DISSOLVE adjudicated + SHAPE-CHECK CONFIRMED at (2,2,4) (lane 1: pure homogeneity domination via deepest_le_of_homogeneous_core, degree 2L; no chain-IH wanted). OPEN LEG unchanged: L>=3 coupled non-origin via the banked domination"
 
   - id: rr4-precedent
     kind: claim

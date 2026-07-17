@@ -176,3 +176,16 @@ seat revived on t01-r2); lane 2 = the CoV-bridge design (covdesign seat revived,
 Wave 2 (construction tide + composer lane) gated on wave 1. Contract-fit warnings baked into both
 briefs (construction must not re-prove what the IH covers; glue tide must not start on the
 placeholder signature).
+
+## 2026-07-17 LANE 1 BANKED — WAVE 2 OPENS (tick 17)
+First true bank piece: canonicalResolution_224 (sorry-free, clean-three, no blueprint leak) — the
+5-conjunct bundle is JOINTLY SATISFIABLE at (2,2,4), deepest profile t=(0,0), Mval=4=minAdm
+(kernel-decided + banked recursion, RR4 cross-check). Rider 1: theorem4 dissolve CONFIRMED at the
+instance (homogeneity domination, degree 2L; nothing wanted a chain-IH) — cert-d2's verdict now
+shape-checked. Rider 2: ledger lands on banked minAdm exactly. FINDING (mapped): ChartsCover is a
+weak conjunct (univ atlas satisfies it) — the real atlas is the construction's + bridge's burden;
+consistent with review finding 2 and the distinguished-sub-target discipline. Principled hygiene:
+vocabulary defs untagged from @[blueprint] (definitions are not forecasts; the bank witness would
+otherwise leak). AxCheck force-print added for the witness. WAVE 2: the construction tide
+(monomialization_terminates — THE LONG POLE) commissioning now on the (2,2,4) template; lane 2
+(bridge) continues in parallel; shadow reviewer at its first increment.

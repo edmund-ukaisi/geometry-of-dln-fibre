@@ -1,3 +1,4 @@
+import DLNFibre.DLN.RLCT.Engine.CanonicalWitness224
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1266,3 +1267,8 @@ open DLNFibre.DLN.RLCT
 -- honest HYPOTHESIS (not sorryAx); #108 is a one-exact-fill once DecoratedDescent lands.
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage
+
+-- ★ ENGINE (aoyagi-engine expedition): the CanonicalResolution joint-satisfiability witness at
+-- (2,2,4) — the bundle's smallest-instance truth check, a BANK piece (sorry-free). MUST be
+-- clean-three [propext, Classical.choice, Quot.sound]; rests on NO @[blueprint] forecast.
+#print axioms canonicalResolution_224
