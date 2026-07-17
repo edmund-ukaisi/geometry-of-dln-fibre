@@ -1,0 +1,19 @@
+======================================================================
+PIVOT-TAIL obligation-1 CoV algebra checks
+======================================================================
+(1) |det(I_b (x) P^-1)| = 0.07884   |det P|^(-b) = 0.07884  match=True
+(2) Q~p == Q_p + B' Q_b : True
+(3) (Q~p V)(Q~p V)^T == Q~p Q~p^T : True
+(4) Q_b V has zero last (q-b) cols: True   Psi=QbV[:,:b] shape=(2, 2)
+    Q~p V == [R1 + B' Psi | R2] : True
+    Gram(Q~p) == W W^T + C0 : True
+(5) |det(map B'->B'Psi)| = 16.30300   |det Psi|^t = 16.30300  match=True
+(6) det(WW^T+C0)>=det(WW^T) over 2000 PSD C0: True
+
+======================================================================
+obligation-2: deeper-strata gate |det Psi|^{-t} blows up as rank Q_b drops
+======================================================================
+  2nd sing val eps=1e+00: |det Psi|=3.1075  |det Psi|^(-t)=0.10  (blows up => needs A_r repair)
+  2nd sing val eps=1e-01: |det Psi|=0.3108  |det Psi|^(-t)=10.36  (blows up => needs A_r repair)
+  2nd sing val eps=1e-02: |det Psi|=0.0311  |det Psi|^(-t)=1035.56  (blows up => needs A_r repair)
+  2nd sing val eps=1e-03: |det Psi|=0.0031  |det Psi|^(-t)=103555.98  (blows up => needs A_r repair)
