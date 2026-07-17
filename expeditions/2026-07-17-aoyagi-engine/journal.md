@@ -144,3 +144,10 @@ witness promoted (battery = 13, all correct, verified my own run). In-file non-v
 committed (witNode ⊨ StepInvariant; witTree). Gate build 3 backgrounded. Reviewer dispatched for
 equilibrium round 2 (fresh eyes on the bundle: nonemptiness hooks, witness scope honesty, any
 new-shape regressions).
+
+## 2026-07-17 HEARTBEAT (tick 14)
+Placement clean (memo rule holding — no strays since the worktree-add fix). Gate build 3 GREEN
+(8608/8608, exit 0): the repaired two-hole skeleton is controller-verified from source. Reviewer
+has merged the repair into its worktree — round 2 in progress. Cadence: 40 canonical commits since
+genesis (offices not yet due at ~60); the navigator pass is planned as MANDATORY at the
+build-loop phase transition, which round-2 VALIDATE would trigger. Idle otherwise; re-sleeping.
