@@ -6,46 +6,29 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorankSlabD
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJFrontCollapse` — the front-collapse rank-sector atom (§1)
 
-**Thread `genm-lane1-shell`, the Lane-1 native heart** (d1design `d1-atom-spec.md` §1). This module
-builds `frontCollapseRankSector_lt_top`: the single genuinely-new native object the `d≤1` arm of
-`innerCorankDescent_lt_top` funnels to. It reduces the pivot-energy term
-`frobSq((of F)·prod(tailChain M) A')^{−c'}` to the plain one-shorter IH `hIH(redChain s M)` by
-recombining the front `F` with the first tail layer `A₁` into `W = F·A₁`, collapsing
-`(t, M₁, M₂) → (t, M₂) = redChain t M`.
+**Thread `genm-lane1-shell`, the Lane-1 native heart** (d1design `d1-atom-spec.md §1`). The single
+genuinely-new native object the `d≤1` arm of `innerCorankDescent_lt_top` funnels to: reduce the
+pivot-energy box integral `∫ (frobSq (F · prod(tailChain M) A'))^{−c'}` (over `F ∈ wingFrontBox`) to
+the plain one-shorter IH `hIH(redChain s M)` by recombining `F` with the first tail layer `A₁` into
+`W = F·A₁`, collapsing `(t, M₁, M₂) → (t, M₂) = redChain t M`, per the source-incidence `(r,s)` atlas
+(`min_s [ (M₀−s)(M₁−s) + minAdm(redChain s M) ] = minAdm M`, d1design 0/5292).
 
-## Status (STATEMENTS-FIRST skeleton + the reachability linchpin)
+## Status
 
-This is the SPECIFY phase: the exact Lean contract (the atom + the wide `a=0` slice) is pinned and
-typechecks; the genuinely-green arithmetic (the `a=0` charge, `peelCharge = 0`) is landed. The analytic
-core (the absorption change-of-variables `(F, A₁) ↦ W`) is NOT filled — see the linchpin below.
+The a=0 wide BOUNDED base (`M₂ ≤ M₁−M₀`) is LANDED sorry-free via the Gram–Schmidt route, with NO
+Cauchy–Binet: `frontCollapse_wide_bounded_lt_top` (`RouteMSJFrontCollapseWide`), built on
+`fixedF_wide_cov_bound` (`RouteMSJFrontCoV`) + `front_gram_qbox_lt_top` + `redChain_box_lt_top`. The
+square extension `[F;S]` (`Core.exists_ortho_complement_rows`) yields the free-`F` Gram `det(F·Fᵀ)`
+(`det_gram_fromRows_of_orthonormal`), fed to the banked Wishart `qbox_lintegral_lt_top` — sidestepping
+the Cauchy–Binet / coarea primitives Mathlib v4.29 lacks (an earlier framing had these as the wall).
 
-## The reachability linchpin (Lane-1 build recon, 2026-07-17)
+The atom `frontCollapseRankSector_lt_top` still carries the dispatch `sorry`; the remaining arms fill
+it — LOG (`M₂ = M₁−M₀+1`, δ-fold), b=0 tall, POWER (`M₂ ≥ M₁−M₀+2`, the `(r,s)` atlas, general-κ) —
+each gated on a pen-and-paper route pin (as the a=0 base was).
 
-Even the cleanest sub-case — WIDE `a=0`, BOUNDED density (`M₂ ≤ M₁ − M₀`, d1design's base case) — is
-reachable in principle via the multi-dominant-minor cover + per-chart affine CoV + the banked Wishart
-`qbox_lintegral_lt_top`, BUT its linchpin is **Cauchy–Binet** (`det(F·Fᵀ) = ∑_σ (det F_σ)²`, the sum
-over `t×t` minors), which is **ABSENT from Mathlib v4.29 and from our codebase**. Cauchy–Binet is what
-turns the per-chart `|det F_σ|^{−M₂}` (divergent alone — d1design's TRAP: `∫|det F_σ|^{−M₂}` diverges
-for `M₂ ≥ 1`) into the convergent Gram integral `det(F·Fᵀ)^{−M₂/2}` on the `σ`-dominant chart, via
-`det(F·Fᵀ) ≤ (#minors)·(det F_σ)²`. Mathlib also has NO coarea formula (only
-`map_linearMap_addHaar_eq_smul_addHaar`, the single-invertible-map CoV). So the front-collapse
-absorption CoV — which `RouteMSJQBoxCore`'s scope note ALSO carries as an unbuilt interface — needs
-either Cauchy–Binet or coarea built first. The `(r,s)` source-incidence atlas of the power case
-(`M₂ ≥ M₁ − M₀ + 2`) is a further layer on top.
-
-**CLASSIFY: EXPENSIVE-TRANSCRIPTION, linchpinned on a MISSING Mathlib primitive (Cauchy–Binet).** The
-math is settled (d1design certified 0/5292 on the charge); the cost is building Cauchy–Binet + the
-multi-chart CoV assembly + qbox dim-match — a multi-brick effort, staged below.
-
-## Sub-lemma decomposition (d1design N1–N5 + the linchpin)
-
-- **(CB)** Cauchy–Binet corollary — the dominant-minor Gram bound (the linchpin; MISSING, build first).
-- **(N1)** the finite dominant-minor cover of `wingFrontBox` (measurable, covers off a null boundary).
-- **(N2)** the per-chart affine CoV `(A₁)_σ ↦ W = F·A₁` (raw-`Pi`, `mulLeftₚ` pattern, diamond guard).
-- **(N3)** the per-sector Jacobian (bounded case: constant `|det F_σ|^{−M₂}`; power case: the monomial
-  `|det DΦ| = u(ξ)·∏|z_j|^{ν_j−1}` — d1design supplies at exact widths).
-- **(N4)** the integral-level sector replacement → plain `hIH(redChain s M)` at charge `N_s`.
-- **(N5)** null-boundary removal + the finite sector sum (`ENNReal.sum_lt_top`).
+This module holds the shared bricks: `wingFrontBox` / `leadingBlock` + measurability; the both-wings
+saturated charge (`peelCharge_min_eq_zero`, `saturated_threshold`); the reduced-chain box finiteness
+(`redChain_box_lt_top`); the block-Gram-det identity; and the front-Gram qbox density factor.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -69,9 +52,10 @@ def wingFrontBox (M : Fin (L + 1 + 1 + 1) → ℕ) : Set (Fin (M 0) → Fin (M 1
 /-- **THE ATOM (§1) — the front-collapse rank-sector finiteness.** For a `≥ 3`-width chain `M`, GIVEN
 the plain one-shorter strong IH `hIH`, below the geometric threshold (`c' < ½·minAdm M`), the
 front-factor box integral over `wingFrontBox M × paramsBoxM(tailChain M)` is finite. Reduces (per
-d1design §1) via the joint source-incidence `(r,s)` atlas to `hIH(redChain s M)` at charge
-`N_s = (M₀−s)(M₁−s)`, with `min_s[N_s + minAdm(redChain s M)] = minAdm M`. NOT filled — the absorption
-CoV is linchpinned on Cauchy–Binet (module header). -/
+d1design §1) via the source-incidence `(r,s)` atlas to `hIH(redChain s M)` at charge
+`N_s = (M₀−s)(M₁−s)`, with `min_s[N_s + minAdm(redChain s M)] = minAdm M`. The dispatch `sorry` is
+filled arm-by-arm: the a=0 wide bounded regime is LANDED (`frontCollapse_wide_bounded_lt_top`,
+`RouteMSJFrontCollapseWide`); LOG / b=0 / POWER remain. -/
 theorem frontCollapseRankSector_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
     (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
     (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
