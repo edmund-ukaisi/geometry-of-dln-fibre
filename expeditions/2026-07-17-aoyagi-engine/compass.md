@@ -63,10 +63,16 @@ over banked substrate.
 - **region-glue** owns the ASSEMBLY only: finite covers gluing chart-local reads + the reduction's
   output into hbox. SETTLED EXACT (covdesign addendum): the SEPARATED leaf integrand is correct at
   corank ≥ 2 — the divisibility chain makes each true leaf a single dominant monomial × unit — so
-  region_glue never consults `support`; its load-bearing precondition is `IsFullMonomialization`
-  (a "leaf" with incomparable b's undershoots — the flattening risk lives ENTIRELY at the tree
-  layer, where fork 3 already fences it). Witnessed: g-glue-lossy-vs-exact, g-pivot-conull,
-  g-leaf-chain-separation.
+  region_glue never consults `support`; its load-bearing precondition is `IsFullMonomialization`.
+  ELDER AMENDMENT (rev-1 ratification): the leaf form is monomial × (bounded unit OR disjoint
+  Morse core) — the Morse core is genuinely singular, contributes resRank/2 to the min, and
+  `resRank ≥ minAdm` is a THEOREM of the tide (truth-witness obligation, never assumed); the
+  separation conclusion stands; IsFullMonomialization is unaffected. OWNERSHIP (one owner): the
+  CoV identities (LeafPullback/LeafJacobian — algebraic, Layer-B-legal: a derivative is not an
+  integral) are the CONSTRUCTION's; coverage-design owns only image-cover + InjOn; region_glue
+  owns ALL integration. g-leaf-chain-separation witnesses DIVISOR separation (re-scoped).
+  Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation,
+  g-chartscover-vacuity (old-shape kill), g-chart-bridge-pullback.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

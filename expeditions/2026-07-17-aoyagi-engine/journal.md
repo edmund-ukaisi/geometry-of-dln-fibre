@@ -221,3 +221,19 @@ candidate spine on its branch so the ratification gates against a concrete desig
 note: two independent decorrelated sources (lane 2's exact counterexample; the consult's
 structural review) point at the same chart/upstairs gap — the restructure is evidence-driven, not
 churn.
+
+## 2026-07-17 ELDER RATIFIES CHARTBRIDGE (AMENDED); COMBINED RULING PENDING (tick 20)
+elder-rev1: RATIFY WITH AMENDMENTS on the ChartBridge revision (counsel delivered before the
+scope-expansion message crossed — the edge-restructure supplement is pending). SINGLE-SEAT WAIVER
+recorded per its own instruction: council-of-two guards decision points with live alternatives and
+weakening moves; here the old shape is refuted by an exit-0 counterexample and the change is a
+STRENGTHENING — waiving council here is NOT precedent for genuine forks. Its checks: fork 1
+respected (the bridge is exact CoV, no slack); forks 2/3 strengthened (chartDom becomes DERIVED
+from chartMap — vacuity closed at type strength); cert-d3 A1's load-bearing separation STANDS with
+one honest refinement (leaf = monomial × (unit OR disjoint Morse core); the Morse core is singular
+and cannot be dropped — resRank ≥ minAdm pinned as tide theorem). Five amendments applied
+(ownership one-liner; compass invariant; witness pricing corrections — witNode untouched, only
+witLeaf/witTree rebuild; residual folded into terminalExponents keeping the single hrat interface;
+Codex general forms #1/#2 adopted). Architect authorized to BUILD the combined candidate
+(edge-labelled carrier + ChartBridge + upstairs coverage + lex termination + realized attainment,
+amendments folded); MERGE gate = the elder's supplementary ruling on the expanded scope.
