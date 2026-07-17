@@ -380,6 +380,29 @@ theorem edge_frontCollapse_cleanBox_lt_top {L : ℕ} (M : Fin (L + 1 + 1 + 1) �
   rw [← wingFrontBox_consFront_eq_cleanBox M t (le_trans ht2 (min_le_right _ _))]
   exact edge_frontCollapse_consFront_lt_top M t ht2 hbnd hb hIH c' hlow
 
+/-- **`outerPB` is measurable** (finite box intersections + the invertible-pivot locus `{det ≠ 0}`). -/
+theorem measurableSet_outerPB (u b : ℕ) (T : ℝ) : MeasurableSet (outerPB u b T) := by
+  have hbox {r c : ℕ} (proj : (Fin u → Fin u → ℝ) × (Fin u → Fin b → ℝ) → (Fin r → Fin c → ℝ))
+      (hproj : Measurable proj) :
+      MeasurableSet {pb : (Fin u → Fin u → ℝ) × (Fin u → Fin b → ℝ) |
+        ∀ i j, proj pb i j ∈ Set.Icc (-T) T} := by
+    rw [Set.setOf_forall]
+    refine MeasurableSet.iInter (fun i => ?_)
+    rw [Set.setOf_forall]
+    exact MeasurableSet.iInter (fun j =>
+      (((measurable_pi_apply j).comp ((measurable_pi_apply i).comp hproj)) measurableSet_Icc))
+  have hP : Measurable (fun pb : (Fin u → Fin u → ℝ) × (Fin u → Fin b → ℝ) => pb.1) := measurable_fst
+  have hB12 : Measurable (fun pb : (Fin u → Fin u → ℝ) × (Fin u → Fin b → ℝ) => pb.2) := measurable_snd
+  have hU : MeasurableSet {pb : (Fin u → Fin u → ℝ) × (Fin u → Fin b → ℝ) | IsUnit (Matrix.of pb.1)} := by
+    have hdet : Measurable (fun pb : (Fin u → Fin u → ℝ) × (Fin u → Fin b → ℝ) => (Matrix.of pb.1).det) :=
+      (Continuous.matrix_det (continuous_matrix (fun i j =>
+        (continuous_apply j).comp (continuous_apply i)))).measurable.comp hP
+    have hEq : {pb : (Fin u → Fin u → ℝ) × (Fin u → Fin b → ℝ) | IsUnit (Matrix.of pb.1)}
+        = {pb | (Matrix.of pb.1).det ≠ 0} := by
+      ext pb; exact (Matrix.isUnit_iff_isUnit_det _).trans isUnit_iff_ne_zero
+    rw [hEq]; exact hdet (measurableSet_singleton (0 : ℝ)).compl
+  exact (hbox _ hP).inter ((hbox _ hB12).inter hU)
+
 /-- **`frontStdEquivM` maps `outerPB` onto `cleanFrontBox`** (cast-free, no `min`). Box conditions match
 (`Sum.elim` of the pivot pair's entries); the leading block reads `pb.1` DIRECTLY via
 `frontStd_leadingBlock` (no `leadingBlock`/`min` reindex). -/
@@ -411,6 +434,16 @@ theorem frontStdEquivM_preimage_cleanBox {t M₁ : ℕ} (htM1 : t ≤ M₁) :
 For a fixed nonzero tail product `QT`, the front-Gram zero locus `{F | frobSq (rmatMul F QT) = 0}` is
 Lebesgue-null: `frobSq = 0` forces the `(0, j₀)`-entry (a nonzero polynomial in `F`, `QT`'s column `j₀`
 nonzero) to vanish, and a nonzero polynomial's zero set is null (`ae_matrix_eval_ne_zero`). -/
+
+/-- **`frontStdEquivM` change-of-variables** (`outerPB → cleanFrontBox`, measure-preserving). -/
+theorem frontStdEquivM_lintegral {t M₁ : ℕ} (htM1 : t ≤ M₁)
+    (g : (Fin t → Fin M₁ → ℝ) → ℝ≥0∞) :
+    (∫⁻ pb in outerPB t (M₁ - t) 1, g (frontStdEquivM htM1 pb)) = ∫⁻ F in cleanFrontBox htM1, g F := by
+  have hmp := measurePreserving_frontStdEquivM htM1
+  have hpre := hmp.setLIntegral_comp_preimage_emb
+    (MeasurableEquiv.measurableEmbedding (frontStdEquivM htM1)) g (cleanFrontBox htM1)
+  rw [frontStdEquivM_preimage_cleanBox htM1] at hpre
+  rw [hpre]
 
 /-- **Column-reindex of the raw product.** `rmatMul (fun I m => F I (e m)) QT = rmatMul F (QT.submatrix
 e.symm id)` — a column permutation of the front `F` is a row permutation of the tail `QT`. -/
@@ -527,6 +560,124 @@ theorem ae_frobSq_rmatMul_ne_zero {t n q : ℕ} (ht : 1 ≤ t) (QT : Matrix (Fin
   have h2 := hz (0 : Fin (t' + 1)) (Finset.mem_univ _)
   rw [Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg (rmatMul F QT 0 j))] at h2
   exact pow_eq_zero_iff (two_ne_zero) |>.mp (h2 j₀ (Finset.mem_univ _))
+
+set_option maxHeartbeats 1600000 in
+/-- **STEP 2 — the pivot-energy box integral is finite.** The `A'`-then-`pb` integral of `W^{−c'}` (the
+pivot energy `W = frobSq(P·Q̃ₚ)`, inverse-free) is finite: per `pb ∈ outerPB` the inverse cancels
+(`pivotEnergy_inverse_free`) and `W = frobSq(rmatMul (frontStdEquivM pb) (Q reindexed))`
+(`pivotEnergy_reindex_rmatMul` + `rmatMul_colReindex`); the `frontStdEquivM` CoV maps `outerPB` to
+`cleanFrontBox`, Tonelli reorders, and the tail column-perm invariance strips the `e_col` reindex,
+landing on `edge_frontCollapse_cleanBox_lt_top`. -/
+theorem edge_J_lt_top {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht2 : t ≤ min (M 0) (M 1)) (hbnd : (M 2 : ℝ) < (M 1 : ℝ) - t + 1) (hb : M 2 ≤ M 1 - t)
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (c' : NNReal) (hlow : (c' : ℝ) < (minAdm (redChain t M) : ℝ) / 2) (κ : Fin t ↪ Fin (M 1)) :
+    (∫⁻ A' in paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ) 1,
+        ∫⁻ pb in outerPB t (M 1 - t) 1,
+          ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+            (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+                  (blockSplitEquiv κ) id).submatrix Sum.inl id
+              + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+                  (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ)))) < ⊤ := by
+  have htM1 : t ≤ M 1 := le_trans ht2 (min_le_right _ _)
+  set e_col : Fin (M 1) ≃ Fin (M 1) := (blockSplitEquiv κ).symm.trans (frontStdEquiv htM1) with he_col
+  -- the per-`(pb, A')` pivot-energy identity (needs `IsUnit P` from `outerPB`).
+  have hWid : ∀ (A' : Params (fun i : Fin (L + 1 + 1) => M i.succ))
+      (pb : (Fin t → Fin t → ℝ) × (Fin t → Fin (M 1 - t) → ℝ)), IsUnit (Matrix.of pb.1) →
+      frobSq (Matrix.of pb.1 *
+          (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+                (blockSplitEquiv κ) id).submatrix Sum.inl id
+            + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+              ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+                (blockSplitEquiv κ) id).submatrix Sum.inr id))
+        = frobSq (rmatMul (frontStdEquivM htM1 pb)
+            ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id)) := by
+    intro A' pb hpb
+    have hX : (fun (I : Fin t) (n : Fin (M 1)) =>
+          Sum.elim (pb.1 I) (pb.2 I) ((blockSplitEquiv κ).symm n))
+        = fun I n => frontStdEquivM htM1 pb I (e_col n) := by
+      funext I n
+      rw [frontStdEquivM_apply]
+      congr 1
+      rw [he_col, Equiv.trans_apply, Equiv.symm_apply_apply]
+    -- inverse cancels (rw, syntactic), then reindex + colReindex via `congr 1; exact` (defeq closes
+    -- the `(fun i => M i.succ) 0 ≡ M 1` row-type defeq that `rw` cannot bridge syntactically).
+    rw [pivotEnergy_inverse_free (Matrix.of pb.1) hpb (Matrix.of pb.2)
+        (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+          Sum.inl id)
+        (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix (blockSplitEquiv κ) id).submatrix
+          Sum.inr id)]
+    congr 1
+    calc Matrix.of pb.1 * ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+              (blockSplitEquiv κ) id).submatrix Sum.inl id
+          + Matrix.of pb.2 * ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+              (blockSplitEquiv κ) id).submatrix Sum.inr id
+        = Matrix.of (rmatMul (fun (I : Fin t) (n : Fin (M 1)) =>
+            Sum.elim (pb.1 I) (pb.2 I) ((blockSplitEquiv κ).symm n))
+          (prod (fun i : Fin (L + 1 + 1) => M i.succ) A')) :=
+          pivotEnergy_reindex_rmatMul pb.1 pb.2 (prod (fun i : Fin (L + 1 + 1) => M i.succ) A') κ
+      _ = Matrix.of (rmatMul (fun (I : Fin t) (n : Fin (M 1)) => frontStdEquivM htM1 pb I (e_col n))
+          (prod (fun i : Fin (L + 1 + 1) => M i.succ) A')) := by rw [hX]
+      _ = Matrix.of (rmatMul (frontStdEquivM htM1 pb)
+          ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id)) := by
+          congr 1
+          exact rmatMul_colReindex e_col (frontStdEquivM htM1 pb)
+            (prod (fun i : Fin (L + 1 + 1) => M i.succ) A')
+  -- rewrite each inner `pb`-integral, then CoV to `cleanFrontBox`.
+  have hstep : ∀ A' : Params (fun i : Fin (L + 1 + 1) => M i.succ),
+      (∫⁻ pb in outerPB t (M 1 - t) 1,
+          ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+            (((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+                  (blockSplitEquiv κ) id).submatrix Sum.inl id
+              + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+                  (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ))))
+        = ∫⁻ F in cleanFrontBox htM1,
+            ENNReal.ofReal ((frobSq (rmatMul F
+              ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id))) ^ (-(c' : ℝ))) := by
+    intro A'
+    rw [setLIntegral_congr_fun (measurableSet_outerPB t (M 1 - t) 1)
+      (fun pb hpb => by rw [hWid A' pb hpb.2.2])]
+    exact frontStdEquivM_lintegral htM1 (fun F => ENNReal.ofReal ((frobSq (rmatMul F
+      ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id))) ^ (-(c' : ℝ))))
+  rw [lintegral_congr hstep]
+  -- Tonelli: reorder `A'` and `F`; then strip the `e_col` reindex per `F`.
+  have hmeas : AEMeasurable
+      (Function.uncurry (fun (A' : Params (fun i : Fin (L + 1 + 1) => M i.succ))
+          (F : Fin t → Fin (M 1) → ℝ) =>
+        ENNReal.ofReal ((frobSq (rmatMul F
+          ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id))) ^ (-(c' : ℝ)))))
+      ((volume.restrict (paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ) 1)).prod
+        (volume.restrict (cleanFrontBox htM1))) := by
+    apply Measurable.aemeasurable
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun r : ℝ => r ^ (-(c' : ℝ))) (by fun_prop)
+    have hcont : Continuous (Function.uncurry (fun (A' : Params (fun i : Fin (L + 1 + 1) => M i.succ))
+        (F : Fin t → Fin (M 1) → ℝ) =>
+      frobSq (rmatMul F ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id)))) := by
+      have hP : Continuous (fun q : Params (fun i : Fin (L + 1 + 1) => M i.succ) × (Fin t → Fin (M 1) → ℝ) =>
+          prod (fun i : Fin (L + 1 + 1) => M i.succ) q.1) := (continuous_prod _).comp continuous_fst
+      simp only [Function.uncurry, rmatMul, frobSq, Matrix.submatrix_apply, id_eq]
+      refine continuous_finset_sum _ (fun i _ => continuous_finset_sum _ (fun j _ => ?_))
+      refine (continuous_finset_sum _ (fun k _ => ?_)).pow 2
+      apply Continuous.mul
+      · exact (continuous_apply k).comp ((continuous_apply i).comp continuous_snd)
+      · exact (continuous_apply j).comp ((continuous_apply (e_col.symm k)).comp hP)
+    exact hcont.measurable
+  rw [lintegral_lintegral_swap hmeas]
+  have hfin : (∫⁻ F in cleanFrontBox htM1,
+      ∫⁻ A' in paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ) 1,
+        ENNReal.ofReal ((frobSq (rmatMul F
+          ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix e_col.symm id))) ^ (-(c' : ℝ))))
+      = ∫⁻ F in cleanFrontBox htM1,
+          ∫⁻ A' in paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ) 1,
+            ENNReal.ofReal ((frobSq (rmatMul F
+              (prod (fun i : Fin (L + 1 + 1) => M i.succ) A'))) ^ (-(c' : ℝ))) := by
+    refine lintegral_congr fun F => ?_
+    exact tail_colperm_invariant (fun i : Fin (L + 1 + 1) => M i.succ) e_col F (c' : ℝ)
+  rw [hfin]
+  exact edge_frontCollapse_cleanBox_lt_top M t ht2 hbnd hb hIH c' hlow
 
 /-- **The b=1, a<u, bounded-w arm of the front-collapse dispatch.** For a `≥ 3`-width chain `M` with a
 legal pivot cut `1 ≤ t ≤ min(M₀,M₁)` on the corank-one edge (`M₁ − t = 1`), in the `a < u` regime
