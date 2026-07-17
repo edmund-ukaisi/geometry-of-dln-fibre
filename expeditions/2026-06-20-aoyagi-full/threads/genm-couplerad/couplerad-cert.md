@@ -943,6 +943,22 @@ the exact `Cst = π^{a(b−1)/2}Γ(c'−a(b−1)/2)/Γ(c')`, convergence `c' > a
 box-RLCT, finite per generic z0, BLOWS UP at z0→0). `charge(z0) = det(Q_inr Q_inrᵀ)^{−a/2}` (bounded near
 z0=0). `z0` = the u×M₂ leading-deep block, `dim z = u·M₂`.
 
+**CHARGE RECONCILIATION (cert ↔ base code, corankrec/intub-flagged — SETTLED).** The base
+`frontCharge_factor` (RouteMSJIncidenceAssembly:668) pulls out the SINGLE pure charge
+`det(Q_bQ_bᵀ)^{−a/2}` (a=M₀−u, x-independent, from the Γ-peel; = intloss `chargeFreeBox_of_inner`, finite
+iff `a<n−b+1`). My earlier M/D factorization's `det(Q_bQ_bᵀ)^{−u/2}·det(NNᵀ)^{−a/2}` is NOT a competing
+charge: (i) the `det(Q_bQ_bᵀ)^{−u/2}` is the B₁₂/B̃-block CoV Jacobian (per-row isotropize `‖B̃Q_b‖²→‖w‖²`),
+living INSIDE the loss `∫_x`; it was an artifact of the UNBOUNDED-x M/D computation (Gaussian over ℝ) and is
+SUPERSEDED by the box-RLCT — **over the BOX it does NOT stack with the charge**: as `Q_b→degenerate`,
+`frobSq(P·Q_inl+B₁₂·Q_b) → frobSq(P·Q_inl)` (B₁₂·Q_b→0 for bounded B₁₂), so `∫_{B₁₂∈box} → (2^{ub})·
+(frobSq(P·Q_inl)+κ)^{−q}` stays BOUNDED (verified machine-ε, `couplerad_R1_charge.py`: boxed ∫ ≈ const while
+`det(Q_bQ_bᵀ)^{−u/2}→∞` as `Q_b→0`). The `u/2` blow-up is **z0-TIED** (needs `frobSq(P·Q_inl)→0` too, i.e.
+z0→0 — the loss/z0 axis, route B), never an independent A_cor pole. (ii) `det(NNᵀ)^{−a/2}` with `N=Q_inl·Π_⊥
+= Y` is the **Y-Gram**, z0-dependent, part of the LOSS / arity-3 base (`frobSq(E·Y)` → RectSchurCore), NOT a
+charge — z0/loss axis, never near `det(Q_bQ_bᵀ)^{−a/2}`. **NET: total A_cor charge exponent = a/2** (the base
+is correct; no double-count, no stacking); consistent with intloss `interiorLoss_twoMat_lt_top` being a direct
+box-RLCT that surfaces no `det(Q_bQ_bᵀ)^{−u/2}` at all.
+
 **★1 The blow-up pole (EXACT, eigenvalue-scaling).** As `z0 = δg → 0`, the loss quadratic `H(z0)` (rank
 `ρ = u·r_stack + a·r_K`, `r_stack = min(M₁,ρ_d)`, `r_K = r_stack − b`) has `k` eigenvalues scaling as `δ²`:
 E_top contributes `u·r_K` (the Q_inl-block, via the Schur complement `δ²·Q_inl'ΠQ_inl'ᵀ` off the `b` O(1)
