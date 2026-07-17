@@ -213,3 +213,30 @@ or unsatisfiability off the positive sector (Codex). **FIX.** Use `∏ |·|^{div
 Findings 1 and 2 changed, plus 3–7, require a ripple re-check of `CanonicalResolution`,
 `resolutionOf_spec`'s projections, and the `(2,2,4)` witness. The carrier-shape flip may proceed now;
 the six-obligation flip waits on the re-review.
+
+---
+
+## ADDENDUM (post-cosmetic commit `14927ae91`, independently re-diffed)
+
+The trailing cosmetic commit (docstring reflow + g-chartscover-vacuity re-scope note, merged into
+`expedition/aoyagi-engine`) is **verified cosmetic-only**: `git show 14927ae91` — the only
+non-comment diffs are term/signature line-splits (`canonicalResolution224_arithmetic`'s conjunct-3
+`exact ⟨…⟩`; the `canonicalResolution224` signature), no semantic change; AxCheck untouched; and a
+12-line appended re-scope section in `necessity-and-encodings.md` (nothing above line 127 changed).
+The substance of all 12 findings is unaffected. Two status updates:
+
+- **Finding 12 (long lines) — RESOLVED.** All three Engine modules now have 0 lines >100 chars.
+- **Finding 7(a) — re-scope note now landed** (prose, `necessity-and-encodings.md` § post-restructure).
+  The vacuity-closure argument is documented; a mechanical in-file `¬`-theorem for the constant/`univ`
+  `chartMap` case (analogous to `stepRel_rejects_mismatched_case2`) would still upgrade it from
+  argued to pinned. Non-blocking.
+- **Finding 9 (item-10 false-premise strike) — STILL OPEN.** `14927ae91` added the re-scope note but
+  did NOT touch `necessity-and-encodings.md:96`, which still asserts "**Hard given (my probe): `Params
+  M` has no `NormedAddCommGroup`/`NormedSpace`**" as a live premise (contradicted only at line 109).
+  Do not conflate the landed re-scope cosmetic with this strike; the strike is still owed.
+
+**Refreshed line citations at the new tip** (`origin/expedition/aoyagi-engine`; the cert body cites
+`dd8280f91`, pre-reflow — symbols are stable, line numbers shifted): `StepRel` → `:88`; `region_glue`
+→ `:177`; `residualBaseForm` → `:41`; `terminalExponents` (ResolutionTree) → `:200`; `LeafPullback`
+/`LeafJacobian`/`ChartBridge`/`IsFullMonomialization`/`CanonicalResolution` moved by the same reflow
+offset — cite by symbol. `EngineDriver.lean:77` ("load-bearing", finding 10) unchanged.
