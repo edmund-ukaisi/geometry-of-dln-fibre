@@ -4,10 +4,11 @@ Main quest: the transform-only Aoyagi resolution engine → `∀ M, RouteMBoxThr
 (clean-three, no Aoyagi hypothesis) → unconditional mint.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: adjudication → PRE-GATE. Skeleton merged (62cab1c76: carrier + 6 holes + driver, fit vs
-  _gen compiles). Top decisions in flight: fork-6 DecoratedDescent disposition (architect owes fit
-  report) + carrier validation (reviewer spawns after architect's constraint increment) + covdesign
-  verdicts (theorem4 D2, coverage D3 certs committed locally — integrate on report).
+- phase: FRESH REVIEW (rev-carrier, worktree rev2, 12-item checklist) on the merged edge-labelled
+  restructure (dd8280f91 = 41373f8e5 merged: LeafJacobian pinned route-(b), coherence clause,
+  rejection theorem, witness split). Gate 8 (AxCheck + driver watch entry) pending — root push
+  GATED on it. Architect owes 2 cosmetics (reflow + vacuity note). Review verdict gates
+  merge-to-canonical + status flips. Then: construction tide (termination) + region_glue/P8 tide.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue

@@ -360,3 +360,17 @@ terminated/partial build is NEVER the gate; the controller's own full AxCheck bu
 Added the engine_box_threshold_finite WATCH entry to AxCheck (expects sorryAx; its flip to
 clean-three IS the hbox event the mint re-point waits on). Gate 7c running in background;
 entry commits ONLY on its green (gate-then-bank). Architect final increment still pending.
+
+## 2026-07-17 FINAL INCREMENT MERGED; FRESH REVIEW SPAWNED (tick 30)
+Architect landed the ruled increment (41373f8e5, merged as dd8280f91): LeafJacobian PINNED per
+fork 8 route (b) — via SELF-MAP charts on Params M (banked normed/findim), so Dφ is an endo with
+a det matching rlctAtOn_boundedUnit_localHomeomorph exactly, avoiding the flatDim source refactor
+it first proposed; chartMap coherence clause added (leafPaths fold — closes the free-map gap);
+false "Params not normed" struck at both sites; tStar membership-over-emitted-leaves documented;
+stepRel_rejects_mismatched_case2 + mixedCaseTree_records_both as real theorems; guards verified.
+It also confirmed the two process findings (was reading only the latest inbox message per revival;
+probe-without-import). Battery + validate clean on the merge. Gate 7c caught MY watch-entry bug
+(EngineDriver not in AxCheck's import closure — added); gate 8 running, root push gated on it.
+FRESH REVIEW spawned: rev-carrier (worktree rev2, branch --rev2) against the 12-item union
+checklist; verdict gates merge-to-canonical + the contract-7 status flips. Architect owes two
+cosmetics (reflow + vacuity-note re-scope), non-blocking.
