@@ -316,3 +316,12 @@ cone verification, ledger-not-fderiv carrier data. Compass forks 7+8 written. Fr
 the union checklist (~15 items). Council seats stand down. Architect: full implementation brief
 now unambiguous — carrier per council spec, LeafJacobian as the transport-hypothesis form over
 flat coords, region_glue tide = transport + scaling bridge.
+
+## 2026-07-17 HEARTBEAT + CARTOGRAPHER PASS #1 CONVENED (tick 26)
+Cadence crossed (63 canonical commits, no prior pass) — cartographer convened to CREATE the curated
+layer from the accreted state: landmark cards (8), the dead-route registry (now five entries incl.
+two refuted STATEMENT shapes and the false Q5 framing), naming forwarding-pointers (the witness
+split + ChartsCover→ChartBridge + StepInvariant→StepRel), banked-family cards for the engine's
+substrate (transport/ParamsFlatLinear/minAdm/homogeneity/cover/atoms), and an explicit drift-risk
+report (the six lean anchors point at mid-restructure statements; the AxCheck entry predates the
+coming rename). Architect mid-restructure, correctly unpushed, family adaptation in progress.
