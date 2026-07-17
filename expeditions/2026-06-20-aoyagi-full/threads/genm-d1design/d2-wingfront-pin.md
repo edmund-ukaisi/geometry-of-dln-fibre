@@ -18,6 +18,13 @@ product-corank (X can't drop — dominant-minor keeps it full-rank), NOT the POW
 ranks incl. the square. It is the genuinely-new heart's HARDEST piece, but it is a KNOWN object (the RLCT of
 a determinantal variety) + wiring — buildable, detail-at-scale.
 
+**Status upgrade (controller LATE-139, 2026-07-17): detail-at-scale CONFIRMED (was ASSESSED).** The D2
+feasibility gate is HARD-SETTLED gate-YES by jointpnp's decorrelated exact-symbolic check
+(`l1_gate2_check.py`): `det(A₁A₁ᵀ)=∏ₖ dist(rowₖ,span<k)²` (pure per-row projection-radial product, no
+cross-terms = `det_gram_cons`); `codim{rank≤σ}=(M₁−σ)(M₂−σ)=Σ` of `projection_rpow`'s (reused verbatim); the
+σ=2 witness = a SINGLE projection radial × bounded pivot Gram (NOT coupled) refutes gate-NO for σ≥2. #2 = ONE
+detail-at-scale tide (no det-variety-primitive wall), CONDITIONAL on the PEEL-FIRST invariant in §6.
+
 ## 1. The object + widths (a=0 wing; b=0 mirror in §4)
 
 a=0 wing (M₀≤M₁, cut t=M₀): `freedSchurLoss = frobSq(X·Q)`, `X=[P|B₁₂]` (`M₀×M₁`, FULL ROW RANK M₀,
@@ -84,12 +91,41 @@ so the pushforward is to a subvariety; the single-matrix det of `A₁` transport
 - **(D5)** the dominant-minor cover of the front (keep X/[P;C] full-rank — the KILL) + null-boundary + sum.
 
 ## 6. Kill-conditions (bake)
-1. **Keep the front FULL-RANK (dominant-minor chart)** — the load-bearing single-factor kill; off-chart
-   `{rank X<M₀}` is the product-corank cited-wall counterpart, dispatched out. (jointpnp KILL#1.)
+
+### ★ THE gate-YES INVARIANT (load-bearing — PEEL-FIRST; fidelity review checks per-peel-step)
+
+**PEEL-FIRST is not a discipline preference — it is the CONDITION under which #2 is gate-YES at all**
+(controller LATE-139; jointpnp decorrelated exact-symbolic, `l1_gate2_check.py`). The precise statement:
+
+- The `{rank W=σ}` Jacobian is a Gram determinant. gate-YES holds **iff that Gram is SINGLE-matrix**
+  (`det(A₁A₁ᵀ) = ∏ₖ dist(rowₖ,span<k)²`, a pure product of per-row projection radials = `det_gram_cons`,
+  reused via `projection_rpow`). This is the KNOWN, buildable object.
+- The gate-NO trigger is a **two-matrix coupled product Gram** `det((C·Z)(C·Z)ᵀ)^{−r/2}` — the
+  product-corank determinantal monomial that has NO row-recursion resolution and sends #2 back to the DEAD
+  nested-qbox (WALLS, `M=(2,2,1,2)`).
+- **The ONLY thing that keeps the Gram single-matrix is the FULL-RANK FRONT.** If any peel step integrates a
+  corank block against a tail PRODUCT *first*, the front stops shielding and the Gram recouples ⟹ gate-NO.
+  So the invariant to hold at **every** peel step is: **peel/dispose the free front (retain-γ residual-disposal)
+  BEFORE the tail product is formed** — never `∫`-out a corank block against `C·Z` first.
+
+**Invariant (state in the #2 tide brief; fidelity review verifies it holds per-peel-step):**
+> At every peel step the Gram entering the CoV is single-matrix (one free layer `A₁`), guaranteed by the
+> dominant-minor full-rank front and the retain-γ residual-disposal order. No step forms a two-matrix
+> product-corank Gram `det((CZ)(CZ)ᵀ)`.
+
+Kill-signal (the review's tripwire): a `det((·)(·)ᵀ)` with TWO distinct free/coupled matrix factors inside,
+or a corank block integrated against `C·Z` ahead of the front disposal → STOP, that step is gate-NO.
+
+### The supporting kills (facets of the invariant + bookkeeping)
+1. **Keep the front FULL-RANK (dominant-minor chart)** — the mechanism that keeps the Gram single-matrix;
+   off-chart `{rank X<M₀}` is the product-corank cited-wall counterpart, dispatched out. (jointpnp KILL#1.)
 2. **Single-matrix det of A₁ only** — NEVER a 2-matrix (X,A₁) joint product-corank (X full-rank precludes it).
 3. **peelCharge `(M₀−s)(M₁−s)`, NOT the raw W-codim** — the `M₂`-excess is the reduced layer, not charge.
-4. **PEEL-FIRST / never the dead nested-qbox** (WALLS, `M=(2,2,1,2)`); never the unsound pointwise fold (Codex 2b).
+4. **PEEL-FIRST / retain-γ residual-disposal at every step** — the invariant above; never the dead
+   nested-qbox (WALLS, `M=(2,2,1,2)`); never the unsound pointwise fold (Codex 2b).
 5. **Carry `|det J|`** (the determinantal monomial Jacobian) — never drop it.
+6. **N3 plumbing is the formaliser's** — the MATH (pure-product Gram) is settled; the exact Lean
+   monomial-Jacobian identity coupling `det_gram` to `‖X·A₁·Z‖²` is the build's wiring (via qbox/projection_rpow).
 
 ## Close
 - **Firmest.** #2 = the STANDARD determinantal resolution of the FREE tail layer `A₁`'s rank-drop (a KNOWN
