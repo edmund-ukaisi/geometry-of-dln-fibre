@@ -207,18 +207,67 @@ for (M, t), (a, b, d, ch, red, v) in sorted(atoms.items()):
 print("(E4') VERDICT  every d>=2 transcribe atom is tight at its binding cut (no slack):", E4b)
 
 # =============================================================================
+# (E5) TWO BOUNDARIES — the coverage-adjudication axis for the engine (genm-l2engine).
+#   The dispatch boundary depends on whether the resolution may CHOOSE a peel path or
+#   must COVER all binding strata:
+#     PATH boundary  : smallest n with NO all-d<=1 optimal path (best-case max-d >= 2).
+#     COVER boundary : smallest n with a BINDING d>=2 atom anywhere on the optimal
+#                      recursion (a resolution covering all binding rank strata must
+#                      transcribe it -- e.g. (4,4,4,4)'s binding chart t=2, block 2x2).
+#   FACT (both exact): PATH boundary = 5, COVER boundary = 4.
+#   INFERENCE (mine, for l2engine to adjudicate, NOT decided here): a log-resolution
+#   of the loss covers ALL binding rank strata -- the rank-(n-2) locus is real and its
+#   threshold is binding (= c*) -- so the COVER boundary (n>=4) is the operative one
+#   UNLESS the engine exhibits a cover whose d>=2 binding chart resolves natively (W1
+#   says single-factor blow-ups do NOT: the joint center (x,y,b) survives). The
+#   all-d<=1 optimal PATH (n<=4) is a property of one path, not a cover; it does not
+#   by itself license a native resolution.
+# =============================================================================
+hdr("(E5) two boundaries (coverage-adjudication axis for genm-l2engine)")
+def binding_nodes(M, acc):
+    if len(M) < 3: return
+    if M in acc: return
+    acc.add(M)
+    for c in optimal_cuts(M):
+        binding_nodes(c['red'], acc)
+path_bd = None; cover_bd = None
+for n in range(2, 10):
+    M = (n, n, n, n)
+    # PATH: best-case over optimal paths of max corank-block d
+    best = min(max([r['d'] for r in p if r['kind'] == 'peel'] or [0]) for p in enum_paths(M))
+    # COVER: does a binding d>=2 atom exist anywhere on the optimal recursion?
+    acc = set(); binding_nodes(M, acc)
+    bind_d = sorted({c['d'] for X in acc for c in optimal_cuts(X)})
+    has_cover_atom = any(d >= 2 for d in bind_d)
+    if path_bd is None and best >= 2: path_bd = n
+    if cover_bd is None and has_cover_atom: cover_bd = n
+    if n <= 8:
+        print(f"  n={n}: best-case max corank-d={best} (PATH d>=2? {best>=2}); "
+              f"binding-atom d-values={bind_d} (COVER d>=2 atom? {has_cover_atom})")
+print(f"  => PATH boundary (no all-d<=1 optimal path) = n={path_bd}")
+print(f"  => COVER boundary (a binding d>=2 atom exists) = n={cover_bd}")
+E5 = (path_bd == 5 and cover_bd == 4)
+print("(E5) VERDICT  PATH boundary = 5 and COVER boundary = 4 (both exact):", E5)
+print("     [adjudication for genm-l2engine: a resolution covers all binding rank strata,")
+print("      so COVER (n>=4) is operative unless the d>=2 binding chart resolves natively --")
+print("      W1 says single-factor blow-ups do not principalize it. This witness states the")
+print("      two boundaries; it does not choose the cover.]")
+
+# =============================================================================
 hdr("W4 OVERALL")
-ok = E1 and E2 and E3 and E4 and E4b
+ok = E1 and E2 and E3 and E4 and E4b and E5
 print("(E1) bridge d=min(M0-t,M1-t):", E1)
 print("(E2) tightness at branch index d:", E2)
 print("(E3) reproduces decstep min(a,b):", E3)
-print("(E4) dispatch boundary n<=4 native / n>=5 forced:", E4)
+print("(E4) dispatch boundary best-case B(n) native<=1 / forced>=2:", E4)
 print("(E4') d>=2 transcribe atoms tight (no slack):", E4b)
+print("(E5) two boundaries PATH=5 / COVER=4:", E5)
 print("W4 PASS:", ok)
 assert ok, "W4 FAILED — a load-bearing exhibit did not reproduce"
 print("\n[W4] the engine branches on d=min(M0-t,M1-t); the budget is tight at the "
-      "binding d; n<=4 admit a native-corank optimal path, n>=5 force a min(a,b)>=2 "
-      "product-corank (transcribe) atom on every optimal path.")
+      "binding d. Two boundaries: an all-d<=1 optimal PATH exists for n<=4, but a BINDING "
+      "d>=2 atom (COVER must-transcribe) exists for every n>=4. Which is operative is the "
+      "engine's coverage-adjudication (a resolution covers all binding strata => COVER, n>=4).")
 
 # =============================================================================
 # CHECKED-IN OUTPUT: see w4_block_dispatch_binding.out . Key lines:
@@ -227,5 +276,6 @@ print("\n[W4] the engine branches on d=min(M0-t,M1-t); the budget is tight at th
 #   (E3) VERDICT  bridge reproduces decstep's reported min(a,b) values: True
 #   (E4) VERDICT  dispatch boundary as stated (n<=4 native path / n>=5 forced): True
 #   (E4') VERDICT  every d>=2 transcribe atom is tight at its binding cut (no slack): True
+#   (E5) VERDICT  PATH boundary = 5 and COVER boundary = 4 (both exact): True
 #   W4 PASS: True
 # =============================================================================

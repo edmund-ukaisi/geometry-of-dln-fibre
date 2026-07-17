@@ -113,21 +113,27 @@ branches**.
   block by `d` (native `d<=1` = row/column corank, no joint incidence; transcribe `d>=2` = the
   W1/W2 product-corank atom). The terminal length-2 **BASE** is a single free bilinear/Wishart block
   (no deeper product) and is **always native**, regardless of its `min`.
-  - **BOUNDARY (best-case max corank-block `d` by `n`): `{3:1, 4:1, 5:2, 6:2, 7:2}`.**
-    `n<=4` admit a fully-native corank optimal path (all corank blocks `d<=1`; only the free BASE
-    carries `d>=2`); `n>=5` FORCE a `min(a,b)>=2` product-corank block on **every** optimal path.
   - **(E4') equality-at-binding-cell for every `d>=2` transcribe atom** that occurs on an optimal
     path: `charge + minAdm(reduced) = minAdm(M)` exactly (no slack), strict off. So the engine
     transcribes at a tight boundary.
+- **(E5) TWO BOUNDARIES (the coverage-adjudication axis for `genm-l2engine`).** The dispatch boundary
+  depends on whether the resolution may CHOOSE a peel path or must COVER all binding rank strata:
+  - **PATH boundary `= 5`** — smallest `n` with NO all-`d<=1` optimal path (best-case max corank-`d`
+    by `n` is `{3:1, 4:1, 5:2, 6:2, 7:2}`; `n<=4` admit a path whose only `d>=2` block is the free
+    BASE).
+  - **COVER boundary `= 4`** — smallest `n` with a BINDING `d>=2` atom anywhere on the optimal
+    recursion (e.g. `(4,4,4,4)`'s binding chart `t=2`, block `2x2`). A resolution covering all
+    binding rank strata must transcribe it.
+  - **INFERENCE (stated, deferred to l2engine, NOT decided here):** a log-resolution of the loss
+    covers ALL binding rank strata — the rank-`(n-2)` locus is real and its threshold is binding
+    (`= c*`) — so the **COVER boundary (`n>=4`) is the operative one**, UNLESS the engine exhibits a
+    cover whose `d>=2` binding chart resolves natively. W1 says single-factor blow-ups do NOT (the
+    joint center `(x,y,b)` survives). The all-`d<=1` optimal PATH (`n<=4`) is a property of one path,
+    not a cover; it does not by itself license a native resolution.
 - **Engine kill-condition guarded.** The native `d<=1` vs transcribe `d>=2` dispatch keys on
-  `d = min(M0-t, M1-t)`; W4 certifies the budget is tight at that index and marks exactly which
-  binding blocks are transcribe atoms.
-- **Finding for the engine thread (genm-l2engine).** `n<=4` admit an optimal peel path with all
-  *corank* blocks `d<=1` (the sole `d>=2` block being the free terminal base). Whether that path is
-  a **valid resolution cover** is the engine's call: W1 warns a single-factor cut may fail to
-  principalize, so a `d<=1` cut is not automatically a valid native step. decstep's dominant-minor
-  cover instead takes the balanced cut (`d=2` for `n=4`, chart `t=2`). W4 deposits the classified
-  options; it does not decide the cover.
+  `d = min(M0-t, M1-t)`; W4 certifies the budget is tight at that index, marks exactly which binding
+  blocks are transcribe atoms, and pins the two boundaries. The coverage-adjudication (PATH vs COVER)
+  is `genm-l2engine`'s call; W4 deposits the classified options, it does not choose the cover.
 
 ## Reading the four together (the wall boundary)
 
@@ -143,8 +149,9 @@ branches**.
 - **W4 (block dispatch):** all of the above is indexed by `d = min(a,b) = min(M0-t, M1-t)`, the
   variable the peel branches on. `d<=1` corank blocks are native (W3's tight budget is achieved
   there); `d>=2` corank blocks are the W1/W2 transcribe atoms, and each occurring one is tight at
-  its binding cut. The boundary bites at `n=5` (the smallest square chain forcing a `d>=2`
-  product-corank block on every optimal path).
+  its binding cut. Two boundaries: a binding `d>=2` atom (COVER must-transcribe) first appears at
+  `n=4`; no all-`d<=1` optimal path survives from `n=5`. Which is operative is l2engine's
+  coverage-adjudication (a resolution covers all binding strata => COVER, `n>=4`).
 
 ## Levels kept apart
 
