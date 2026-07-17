@@ -100,16 +100,21 @@ both) — so any fderiv over `Params M` is ill-typed.
   (normed ⟹ `HasFDerivWithinAt` works), the leaf map = `paramsEquivFlat.symm ∘ (path composite)`.
   `LeafJacobian` keeps cert §3's `HasFDerivWithinAt` + `|det Dφ|` monomial ledger. Cost: flat-coord
   bookkeeping (`paramsEquivFlat` round-trips) at every `LeafPullback`/`Jacobian`.
-- **Route (b) — RLCT transport (Codex §8, both consults prefer).** `ChartSubst M` = the RLCT-transport
-  datum; NO fderiv, NO normed-`Params`. `region_glue` = per-chart transport via banked
-  `weightedThreshold_transport` + the ONE missing **homogeneity scaling bridge**
-  `∫_{εK}F^{-c'} = ε^{N−2Lc'}∫_K F^{-c'}` + the banked radial/monomial reads. Narrows the P8 gap to
-  the scaling bridge; `ChartSubst`'s type is simpler (no flat gymnastics).
+- **Route (b) — RLCT transport (Codex §8, both consults prefer).** `region_glue` = per-chart transport
+  via the banked LOCAL-homeomorph transport (`rlctAtOn_boundedUnit_localHomeomorph` — a blow-up chart
+  is proper, not globally injective, so NOT the global `weightedThreshold_transport`) + the ONE missing
+  **homogeneity scaling bridge** `∫_{εK}F^{-c'} = ε^{N−2Lc'}∫_K F^{-c'}` + the banked radial/monomial
+  reads. Narrows the P8 gap to the scaling bridge.
 
-**Recommendation (mine; council decides):** **A (edge-labelled) + Q5 (b) RLCT.** A is faithful (the
-paper's data IS per-edge) and avoids B's coherence-invariant + two-structure-sync P6 risk; (b) keeps
-`ChartSubst` simple, dodges the `Params`-not-normed wall, and shrinks the P8 gap to one lemma. A+（a)
-is viable but pays flat-coord bookkeeping; B pays the relational invariant.
+**CORRECTION (controller-verified, 2026-07-17):** an earlier draft of this note claimed `Params M` has
+no normed instance (from an `inferInstance` probe run WITHOUT the import). That is FALSE —
+`Foundations/ParamsFlatLinear` banks `instNormedAddCommGroupParams`/`instNormedSpaceParams`/
+`FiniteDimensional` + `paramsEquivFlatCLE` + `hasFDerivAt_paramsEquivFlat` (norm topology rfl-equal to
+the product topology, no diamond). So the fderiv route is unobstructed; a probe is not a survey. Q5 is
+RULED **route (b)**; `LeafJacobian`'s statement is the transport-hypothesis form (`HasFDerivAt` of the
+composite via `paramsEquivFlat`, `det = ∏ u^{divExp−1} × unit`), consumed by the local-homeomorph
+transport + scaling bridge. The per-edge `localSub` is a plain coordinate map; the Jacobian rides the
+existing monomial ledger — NO opaque derivative field is stored as data.
 
 ### Witness split (ruled, precision policy — option ii) — same under A and B
 
