@@ -1268,7 +1268,11 @@ open DLNFibre.DLN.RLCT
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1
 #print axioms DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_prestage
 
--- ★ ENGINE (aoyagi-engine expedition): the CanonicalResolution joint-satisfiability witness at
--- (2,2,4) — the bundle's smallest-instance truth check, a BANK piece (sorry-free). MUST be
--- clean-three [propext, Classical.choice, Quot.sound]; rests on NO @[blueprint] forecast.
-#print axioms canonicalResolution_224
+-- ★ ENGINE (aoyagi-engine expedition): the (2,2,4) joint-satisfiability witness, SPLIT under the
+-- edge-labelled restructure (precision ruling 2026-07-17). The ARITHMETIC bank piece (four
+-- carrier-independent conjuncts) MUST be clean-three [propext, Classical.choice, Quot.sound] and rest
+-- on NO @[blueprint] forecast:
+#print axioms canonicalResolution224_arithmetic
+-- The FULL CanonicalResolution witness is a @[blueprint] FORECAST (its ChartBridge conjunct is sorried
+-- pending the P8 CoV lemma) — it EXPECTS `sorryAx` in its footprint until the P8 tide lands:
+#print axioms canonicalResolution224
