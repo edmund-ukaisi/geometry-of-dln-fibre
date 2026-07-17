@@ -1,0 +1,35 @@
+======================================================================
+CLAIM 1: frobSq(Gamma*S) is a PSD quadratic form in Gamma of rank a*rank(S)
+======================================================================
+a=2, b=3, q=2, rank(S)=2, a*rank(S)=4
+Gram S S^T rank = 2 (should equal rank(S) = 2 )
+frobSq(GS) == sum_i Gamma_i (S S^T) Gamma_i^T : True
+rank of quadratic-form matrix = 4  expected a*rank(S) = 4
+
+======================================================================
+CLAIM 2: threshold 2c' < a*rank(S) is exact & tight (BOUNDED box), Morse
+======================================================================
+  a=2 r=1 n=2 thr(c')=1.0  c'=0.800 -> finite=True (want c'<1.0)
+  a=2 r=1 n=2 thr(c')=1.0  c'=1.000 -> finite=True (want c'<1.0)
+  a=2 r=1 n=2 thr(c')=1.0  c'=1.200 -> finite=False (want c'<1.0)
+  a=2 r=2 n=4 thr(c')=2.0  c'=1.800 -> finite=True (want c'<2.0)
+  a=2 r=2 n=4 thr(c')=2.0  c'=2.000 -> finite=True (want c'<2.0)
+  a=2 r=2 n=4 thr(c')=2.0  c'=2.200 -> finite=False (want c'<2.0)
+  a=2 r=3 n=6 thr(c')=3.0  c'=2.800 -> finite=True (want c'<3.0)
+  a=2 r=3 n=6 thr(c')=3.0  c'=3.000 -> finite=True (want c'<3.0)
+  a=2 r=3 n=6 thr(c')=3.0  c'=3.200 -> finite=False (want c'<3.0)
+  a=3 r=2 n=6 thr(c')=3.0  c'=2.800 -> finite=True (want c'<3.0)
+  a=3 r=2 n=6 thr(c')=3.0  c'=3.000 -> finite=True (want c'<3.0)
+  a=3 r=2 n=6 thr(c')=3.0  c'=3.200 -> finite=False (want c'<3.0)
+
+======================================================================
+CLAIM 3: hbox: volume box < top is INSUFFICIENT (counterexample)
+======================================================================
+  a=b=2, rank(S)=1, threshold c'<1;  c'=0.9 (WITHIN), beta=0.5
+    box has finite volume: True;   integral finite: False
+    => c' within threshold but integral DIVERGES on a finite-VOLUME box: True
+    partial integral (cutoff eps=1e-01) = 20.8447
+    partial integral (cutoff eps=1e-03) = 145.4198
+    partial integral (cutoff eps=1e-06) = 1300.5300
+    partial integral (cutoff eps=1e-09) = -20.9440
+  (grows without bound as eps->0  =>  divergent, confirming counterexample)
