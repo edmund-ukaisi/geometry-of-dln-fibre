@@ -224,6 +224,55 @@ theorem corankSVD_chartFamily_lt_top {a b q : ℕ} (hab : 2 ≤ min a b)
     ∫⁻ Γ in box, ENNReal.ofReal ((frobSq (Matrix.of Γ * S)) ^ (-(c' : ℝ))) < ⊤ := by
   sorry
 
+/-! ## ★ THE ISOLATED WALL — obligation 2 (the non-submersive `A_r` principalization) -/
+
+/-- **★ OBLIGATION 2 — THE WALL (isolated, the minimal remaining gap; native-vs-cite = LATE-102).**
+The outer integrability of the **pivot change-of-variables Jacobian** `|det Ψ(Q_b(A'))|^{−t} =
+det(Q_b(A')·Q_b(A')ᵀ)^{−t/2}` (`Ψ` = the invertible part of `Q_b`'s right-singular frame; `Q_b(A')` = the
+corank block `Sum.inr` of the shared tail product) against the rank-drop boundary `{A' : rank Q_b(A') < b}`.
+This is the ONE genuinely-OPEN gap of the native engine; everything above it (the Morse corank family
+`corankSVD_chartFamily_lt_top`, the top-stratum pivot-Gram disposal, the region glue, the descent
+arithmetic) is EXPENSIVE-TRANSCRIPTION.
+
+**Why it is a WALL, not transcription (l2svd cert §9, prodcorank-cert, decstep round-5 —
+`GAP-IN-RELATIVE-JACOBIAN`).** `det(Q_b·Q_bᵀ)^{−t/2}` here is a CoV JACOBIAN weight (from freeing the
+pivot tail for `qbox`), NOT a carried corank-Gram integrand (that would be the atom trap). For a FREE
+`Q_b` the outer integral is finite iff `t < q − b + 1` (standard, submersive; per-rank codim `(b−r)(q−r)`,
+vanishing order `(b−r)`, threshold `q−r`, min `q−b+1`). But `Q_b(A')` is a **shared DEEPER PRODUCT**
+(nested DLN factors), and the product map is **NON-SUBMERSIVE** at the rank-drop locus: the pullback
+acquires factor divisors the free-matrix count never sees. Concretely (Codex, decisive) for `Q_b = L·R`
+(`L` free `b×b`, `R` free `b×q`), `|det Ψ(Q_b)| = |det L|·|det Ψ(R)|`, so integrability requires
+SIMULTANEOUSLY `t < 1` (the extra divisor `{det L = 0}`, codim 1, linear vanishing) AND `t < q−b+1` —
+threshold `t < 1`, STRICTLY worse than the free baseline when `q > b`. The transverse Jacobian `= A_r`
+STRUCTURE transcribes (Aoyagi Case-2 carries the codim exponent), but its EXACT VALIDITY — that blowing
+up `{rank Q_b(A')=r}` through the product parametrization principalizes with ALL exponents `> −1` and NO
+smaller-ratio divisor — is genuinely ABSENT from Aoyagi's worked EXACT results (his general Theorem 5
+gives only UPPER bounds; exact values only `N=1`/small `H`; the finiteness `rlct ≥ c*` direction is his
+stated future work). **Circularity guard:** one cannot use "rlct = c* (Aoyagi) ⟹ no smaller-ratio
+divisor" inside a native proof.
+
+**Reconciliation with the airtight arithmetic.** satred's `A_r = (b−r)²` (`= peelCharge(M, deepened cut)`;
+round-5 care-point — the invariant is `(corank at the deepened cut)²`, carried as a kill-condition) and
+`min_r[A_r + minAdm(reducedᵣ)] = minAdm(M)` (verified `(4,4,4,4)@t=2 A_r=[0,1,4]→11`, n=3..15) are the
+airtight BUDGET; l2witness cross-checks the ratios `min_i (a_i+1)/(2Nᵢ) ≥ c*`. But a green ratio-check
+certifies `rlct ≥ c*` CONDITIONAL on the `(aᵢ,Nᵢ)` coming from a VALID resolution — it does NOT certify
+that validity (the non-submersive principalization), which is exactly this hole.
+
+**Status: OPEN — THE WALL.** ESCALATED to the operator (LATE-102 native-vs-cite): build the multi-tide
+non-submersive product-corank resolution, or consolidate at the cite (`cited_aoyagi_product_corank` as a
+carried box-level Prop, one level below `cited_aoyagi_dln`). satred owns the `A_r` arithmetic, l2witness
+the ratios; the non-submersive transverse-Jac VALIDITY is the operator decision. -/
+theorem nonsubmersive_Ar_principalization (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht2 : t ≤ min (M 0) (M 1)) (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
+    (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
+    (∫⁻ A' in paramsBoxM (tailChain M) 1,
+        ENNReal.ofReal
+          (((((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id) *
+              (((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id).transpose).det
+            ^ (-(t : ℝ) / 2))) < ⊤ := by
+  sorry
+
 /-! ## Analytic hole — the per-stratum outer-measure descent (the whole §H at measure level) -/
 
 /-- **THE PER-STRATUM DESCENT (hole) + THE MEASURE-REDUCTION DESIGN NOTE.** For a min-corank≥2 cut `t`
@@ -259,9 +308,22 @@ residual, `w>0 ⟹ (w+f)^{−d} ≤ f^{−d}`, so its finiteness suffices). The 
    substrate + `A_r` budget; satred derives `A_r`, l2witness checks ratios).
 
 **Kill-conditions:** carry PIVOT not corank Gram; `Γ·Q_b` STRATIFIED not integrated free (overshoot);
-`|det J|` always carried; the pivot-Gram gate is TOP-STRATUM only. **Status: OPEN** (the multi-tide §H
-heart at measure level; the SVD family #1 and the pivot-side CoV+repair #4 are the two design obligations,
-routed to l2svd for a decorrelated certificate before the fill). -/
+`|det J|` always carried; the pivot-Gram gate is TOP-STRATUM only.
+
+**§9 BOUNDARY-BLOW-UP CORRECTION (l2svd cert — the decomposition is a blow-up, NOT a null-partition).**
+The rank-`Q` strata `tailRankStratum M t κ k` are a NULL-partition: for `k <` the generic rank,
+`{rank Q = k}` is a determinantal subvariety of `A'`-space, Lebesgue-NULL, so `∫` over it `= 0` trivially
+— the finite-cover glue proves finiteness there only where it was never in doubt. The genuine content is
+the TOP (generic-rank) stratum's OUTER integrability against the null rank-drop BOUNDARY, resolved by a
+rank-boundary BLOW-UP (positive-codim exceptional divisors carrying the `A_r` weights), NOT a partition
+into null exact-rank pieces. That blow-up's transverse-Jacobian `= A_r` VALIDITY for the non-submersive
+shared product `Q_b(A')` is `nonsubmersive_Ar_principalization` (obligation 2, THE isolated wall).
+
+**Reduction (the hypothesis list).** `corankStratum_lt_top` REDUCES to: (i) `corankSVD_chartFamily_lt_top`
+(the Morse corank family, l2morse → `genm-l2morse`, TRANSCRIPTION); (ii) the top-stratum pivot-Gram
+disposal (obligation 1, TRANSCRIPTION — the `(P,B₁₂)→free-Wishart` CoV + `qbox`, cert §8); (iii)
+`nonsubmersive_Ar_principalization` (obligation 2, the ONE genuinely-open WALL). **Status: OPEN**, its
+sole non-transcription dependency being obligation 2. -/
 theorem corankStratum_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
     (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1)) (hcork : 2 ≤ min (M 0 - t) (M 1 - t))
     (κ : Fin t ↪ Fin (M 1)) (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
