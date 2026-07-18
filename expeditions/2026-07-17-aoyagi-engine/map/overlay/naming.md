@@ -1,54 +1,73 @@
 # Overlay — naming forwarding-pointers (cartographer, curated layer)
 
-*Every rename leaves a pointer here so old references stay resolvable. Created pass #1. "Pending" = the
-new name is adopted in the plan but NOT yet in the root Lean tree (restructure in flight, task #42).*
+*Every rename leaves a pointer here so old references stay resolvable. Created pass #1; **REFRESHED
+pass #2 (2026-07-18)**: the council-adopted restructure has LANDED (tick 37 r2-validate), so pass-#1's
+"Pending (unlanded)" block moved to Landed; added the new-this-expedition modules + the namespace
+quirk + two pin moves.*
 
-## Pending (adopted, unlanded in root)
+## Landed since pass #1 (was "Pending", now in the root tree)
 
-- **`canonicalResolution_224` → SPLIT into two names** (precision ruling, tick 24; witness split in
-  `necessity-and-encodings.md §Witness split`).
-  - `canonicalResolution224_arithmetic` — the clean-three BANK piece: the FOUR carrier-independent
-    conjuncts (IsFullMonomialization + StepInvariant-on-nodes + branch-rooted + exponent-hooks) at
-    (2,2,4). Survives the restructure (its conjuncts don't touch edge/chart data). **This name inherits
-    the AxCheck clean-three entry** currently on `canonicalResolution_224` (`AxCheck.lean:1274`).
-  - `canonicalResolution224` (full) — a `@[blueprint]` FORECAST: the arithmetic four ∧ the ChartBridge
-    conjunct, the latter's `LeafPullback`/`LeafJacobian` SORRIED pending the P8 lemma. Gets its own
-    `expects-sorryAx` AxCheck entry; must NOT be in the clean-three list.
-  - CURRENT root state: `canonicalResolution_224` (`Engine/CanonicalWitness224.lean:82`) is a single
-    sorry-free theorem proving all 5 conjuncts on the TRIVIAL (univ-atlas) coverage — its ChartsCover
-    conjunct rode the vacuity, so its de-risk was the arithmetic conjuncts only (honestly noted in the
-    module docstring). Task #39 (`pending`) rebuilds it with real charts under the split.
+- **Edge-labelled carrier — LANDED (tick 37, r2-VALIDATED).** `Edge {case, subst, child}` +
+  `branch (n) (edges : List (Edge M))`; `StepData` carries no `case`; leaf `chartMap` = derived
+  path-fold. `Engine/ResolutionTree.lean`. The unary `StepInvariant` is GONE from root
+  (pass #1 flagged it still present — resolved).
 
-- **`ChartsCover` → `ChartBridge`** (bridge cert, tick 18; edge restructure, tick 23). The abstract
-  neighbourhood-cover predicate (`EngineObligations.lean:47`) becomes a per-leaf CoV bridge (chartMap +
-  srcBox + resRank + LeafPullback + LeafJacobian + InjOn + image cover). Root still has `ChartsCover`;
-  `ChartBridge` unlanded. See [[dead-routes]] (region_glue vacuity).
+- **`ChartsCover` → `ChartBridge` — LANDED + STRENGTHENED (tick 46).** Per-leaf CoV bridge (chartMap +
+  MeasurableSet-bounded `srcBox` + resRank + LeafPullback + LeafJacobian + a.e.-InjOn + image cover).
+  In `Engine/EngineObligations.lean`. Interface FROZEN + abstract-field-gate-cleared (tick 51).
 
-- **`StepInvariant` → `StepRel`** (council #2, tick 23). The unary per-node invariant
-  (`EngineObligations.lean:63`) becomes a RELATIONAL invariant over edges (`State/StateInvariant`
-  split). Root still has unary `StepInvariant`; `StepRel` unlanded. See [[dead-routes]] (unary-StepInvariant).
+- **`StepInvariant` (unary) → `StepRel` (faithful) — LANDED (tick 37/44).** `StepRel := rootLedger
+  e.child = stepUpdate n e.case e.subst` (reads `e.child`; discharge rfl-class). `EngineObligations`.
 
-- **`StepData.case` (field) → `Edge.case` (edge label).** Under the adopted edge-labelled carrier the
-  case tag moves from a node field to the incoming edge (`Edge {case, subst, child}`); the leaf's
-  incoming case lives on its edge (no `LeafData.case`). `LeafData.chartDom` is REMOVED (leaf `chartMap`
-  becomes a derived path-composite fold). Root still has `StepData.case` + `LeafData.chartDom`; the
-  `Edge` structure is unlanded (task #42).
+- **`canonicalResolution_224` → split — LANDED (tick 30+).** `canonicalResolution224_arithmetic`
+  (clean-three bank; the carrier-independent conjuncts) + `canonicalResolution224` (`@[blueprint]`
+  forecast, its ChartBridge conjunct sorried at `Engine/CanonicalWitness224.lean:130`). Both live in
+  `CanonicalWitness224.lean`. The AxCheck clean-three entry is on `_arithmetic`.
+
+## New modules this expedition (recorded for reference)
+
+- `Engine/EngineConstruction.lean` — the construction termination spine (rung 2A/2B: `ConState`,
+  `StateInvariant`, `conRel_wf`, per-case μ-descent). NEW tick 58–59.
+- `Engine/CanonicalWitness224.lean` — the (2,2,4) faithful-`stepUpdate` witness (renamed home of the
+  split above).
+- `Engine/CoRank2Spike.lean` — the corank-2 (3,3,4) coordinate-index de-risk (rung 2C). NEW tick 58.
+- `Engine/RegionGlueGlobalize.lean` — homogeneity local→global (glue globalization half). NEW tick 45.
+- `Engine/RegionGluePerLeaf.lean` — per-leaf area-formula read (currently only the Haar/Borel
+  instances; the area-formula theorem is Module B, in flight). NEW tick 57+.
+- `Validate/RegionGlueModelRead.lean` — the flat-coordinate `model_read_lt_top` (Module A). NEW tick 60.
+- `Foundations/S1ScalingBridge.lean` — the abstract scaling bridge `lintegral_rpow_neg_smul_bridge`.
+  NEW tick 40.
+
+## Namespace quirk (FLAG — fold fix into the D1L2 re-home commit per [[import-hygiene]])
+
+- **`RegionGlueGlobalize.lean` + `RegionGluePerLeaf.lean` live in `Engine/` but declare `namespace
+  DLNFibre.DLN.RLCT`** (the parent), NOT `DLNFibre.DLN.RLCT.Engine`. The other 6 Engine modules
+  correctly declare `.Engine`. So their decls (`routeMLayerBoxIntegral_lt_top_of_small_box`,
+  `instIsAddHaarMeasureParams`, …) resolve at `DLNFibre.DLN.RLCT.*`, not under `Engine`. First flagged
+  tick 45 (non-blocking). A reader qualifying with `Engine.` will NOT find them.
+
+## Pin moves since pass #1 (old references now STALE)
+
+- **`minAdm_le_Mval` → `minAdm_le_Mval_toNat` at `Validate/RouteMState.lean:259`** (was pinned to
+  RouteMLayerSplit in pass-#1 banked-families). The minAdm-as-minimum direction the
+  `exponent_ledger_bridge` / theorem4 need. See [[dead-routes]] (MinAdmMono trap).
+- **The two engine holes moved line:** `monomialization_terminates` at `EngineObligations.lean:182`
+  (sorry `:184`), `region_glue` at `:244` (sorry `:248`). Pass-#1 / priorities.md wrote `:142`/`:206`
+  — STALE (the ledger + strengthening commits shifted them ~40 lines).
 
 ## Landed / stable (no forwarding needed, recorded for reference)
 
-- **`RR4.lean` = `RouteMBoxThresholdRR4.lean`.** The compass/map write "RR4.lean:12–21"; the actual
-  file is `Validate/RouteMBoxThresholdRR4.lean` (there is no bare `RR4.lean`). Line 12–21 is the
-  "Why only (r,r,4)" scope note. Main assembly decl: `routeMBoxThresholdFinite_rr4_of_schurRecStep`.
-
-- **`aoyagi_learning_coefficient` (mint anchor).** The bare name is at `Skeleton.lean:1685` (legacy
-  stub re-pointing at mint); the hbox-conditional form used by the engine is
-  `aoyagi_learning_coefficient_gen` (`HeadlineGenAssembly.lean:55`). `claims.yaml` `lean:` points at
-  the bare name but `evidence:` at the `_gen` file — see [[landmark-cards]] mint card (anchor drift flag).
+- **"RR4.lean" = `Validate/RouteMBoxThresholdRR4.lean`** (no bare `RR4.lean`). Assembly:
+  `routeMBoxThresholdFinite_rr4_of_schurRecStep` (`:219`).
+- **`aoyagi_learning_coefficient` (bare, mint anchor) at `Skeleton.lean:1685`** (legacy stub
+  re-pointing at mint); the hbox-conditional form is `aoyagi_learning_coefficient_gen`
+  (`HeadlineGenAssembly.lean:55`). `claims.yaml` `lean:` points at the bare name, `evidence:` at
+  `_gen` — anchor/evidence split across modules (intended; see [[landmark-cards]] mint card). R5 wiring
+  must land the bare name on `_gen`, avoiding the 3 legacy Skeleton stubs (see [[dead-routes]]).
 
 ## Watch (rename risk on landing)
 
-- When task #42 lands the edge carrier, the six obligation projections in `EngineObligations.lean`
-  (`case_step_invariant`, `reduction_layer`, `coverage_theorem`, `exponent_ledger_bridge`, +
-  `resolutionOf`/`resolutionOf_spec`) may change signature (edge-shaped `nodes`/`leaves` read-offs).
-  Their `lean:` anchors in `claims.yaml` are the node names, which are stable; the Lean statements are
-  not. Re-verify anchors at the next pass.
+- The full-`T` chooser (R1 open) + `genDivExp` redesign (R4) will re-shape `LeafData`/`StepData`
+  ledger fields. The obligation projection names (`case_step_invariant`, `reduction_layer`,
+  `coverage_theorem`, `exponent_ledger_bridge`, `resolutionOf`/`resolutionOf_spec`) are stable
+  anchors; their statements are not. Re-verify at the next pass.
