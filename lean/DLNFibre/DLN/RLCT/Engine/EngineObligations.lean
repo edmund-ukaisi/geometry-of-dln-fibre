@@ -107,8 +107,9 @@ parent `n`, the `case`, and the edge substitution `σ` — `numDiv`, per-divisor
   those divisors, one of which can be the binding minimum).
 SUPPORT PROPAGATION is STOP-AND-SURFACEd (NOT modelled here): transporting the `support` `Finset`s
 across the per-divisor re-indexing balloons (Codex-confirmed; compass second cost center), deferred
-to the named `genDivExp` redesign rung. The transitions are page-pinned (case-1(1) merge p.16;
-case-1(2) exponent p.17; case-2 exponent p.20 + `cleared+1` p.21; case-1(1) eligibility p.15). -/
+to the named `genDivExp` redesign rung. The transitions are page-pinned to the AOYAGI preprint
+(`aoyagi-2023-neural-networks-preprint.pdf`, NOT Lehalleur-Rimányi): case-1(1) merge p.16; case-1(2)
+exponent p.17; case-2 exponent p.20 + `cleared+1` p.21; case-1 eligibility p.15. -/
 def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : ChartSubst M) :
     ResolutionTree.RootLedger :=
   match c with
@@ -134,17 +135,23 @@ def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : C
 /-- **The faithful per-step transition relation** (rung 1). FAITHFUL for the exponent/clearing
 ledger CORE (`numDiv`/`divExp`/`divTilde`/`cleared`): the child's root ledger EQUALS the parent's
 `stepUpdate`, AND — for BOTH case-1(1) and case-1(2), the two charts of the SAME case-1 blow-up on
-`u_{s,k}` — the merge/split target is ELIGIBLE: `σ.mergeIdx` in range with `t̃_{mergeIdx} = J + J₁`
-(preprint p.15 "Fix `u_{s,k}` such that `t̃_{s,k} = J + J₁`", closing the no-op acceptance gap). The
-IN-RANGE half is required for case-1(2) too: `stepUpdate` case12 reads `divExp(mergeIdx)` as the
-split pivot's base exponent (`M_{sk} + J₁·(M^{(S+1)}−J)`, p.17), and an OUT-OF-RANGE `mergeIdx`
-silently `dite`-drops the base to `0` — accepted without this guard (`oobSplit_not_stepRel`). The
-case12 `t̃`-half (that the split chart carries the same `t̃ = J + J₁` precondition) is PENDING ELDER
-PAGE-CONFIRM; the in-range half holds regardless (case11/case12 are one blow-up). NOT modelled here:
-support propagation (deferred to the named `genDivExp` rung) and layer-`S` advancement (lives in the
-construction's `State`, the rung-2 μ 1st component). Retires the existential form — a dummy divisor
-appearing/vanishing changes `rootLedger e.child` and is rejected (`dummyDivisor_not_stepRel`). Since
-the construction computes each child ledger via `stepUpdate`, the equality is rfl-class. -/
+`u_{s,k}` — the merge/split target is ELIGIBLE: `σ.mergeIdx` in range with `t̃_{mergeIdx} = J + J₁`.
+Elder-CONFIRMED from the Aoyagi preprint page images: Case 1 fixes ONE divisor `u_{s,k}` with
+`t̃_{s,k} = J + J₁` (p.15) BEFORE the 1(1)/1(2) split, and case-1(2)'s base `M_{sk}` is that same
+divisor's exponent (`u_{s,k} = u_{S,J+1}·u'_{s,k}`, p.17) — so the identical conjunct is faithful
+for both. The in-range half is also mechanically required for case12: `stepUpdate` case12 reads
+`divExp(mergeIdx)` as the split pivot's base, and an OUT-OF-RANGE `mergeIdx` silently `dite`-drops
+it to `0` — accepted without this guard (`oobSplit_not_stepRel`).
+DELIBERATELY UNCAPTURED (shared by case11; the divisor-chooser's burden at rung 3-4, named so they
+do not vanish): (i) the MINIMALITY tie-break — p.15 selects `u_{s,k}` lexicographically-minimal
+(`T_{s,k} ≤ T_{s',k'}` for all `t̃_{s',k'} = J+J₁`, Def. 4 p.14); this conjunct pins the clearing
+LEVEL, not the min-SELECTION; (ii) the GAP CONDITION defining `J₁` — `{t̃_{s,k} = i} = ∅` for
+`i = J+1,…,J+J₁−1` (`runLen = J₁` is the run to the next occupied level); the encoding takes
+`runLen` as given. Also NOT modelled here: support propagation (folds into the `genDivExp` carrier
+at R1; propagation proofs at R4) and layer-`S` advancement (lives in the construction's `State`, the
+μ 1st component). Retires the existential form — a dummy divisor appearing/vanishing changes
+`rootLedger e.child` and is rejected (`dummyDivisor_not_stepRel`). Since the construction computes
+each child ledger via `stepUpdate`, the equality is rfl-class. -/
 def StepRel {M : Fin (L + 1) → ℕ} (n : StepData M) (e : Edge M) : Prop :=
   ResolutionTree.rootLedger e.child = stepUpdate n e.case e.subst ∧
     ((e.case = StepCase.case11 ∨ e.case = StepCase.case12) →
