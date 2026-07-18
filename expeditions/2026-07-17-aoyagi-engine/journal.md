@@ -713,3 +713,15 @@ spec + elder checklist, sub-lemma discipline, nothing was lost — the grind had
 elder-gate3 (fresh bounded convening: the case12 t̃-half page-confirm, pp.15-18). rev-carrier
 respawns when the next scoped check is due. Gate 11 relaunched (/tmp wiped). Push state
 recovered: the consolidated cert fast-forward was local-only — pushed now.
+
+## 2026-07-18 CASE12 T̃-HALF PAGE-CONFIRMED (tick 55)
+elder-gate3 (bounded convening, page images): verdict (a) — the identical eligibility conjunct is
+FAITHFUL for case12. The p.15 precondition (t̃_{s,k} = J + J₁) attaches to the ONE divisor u_{s,k}
+fixed BEFORE the 1(1)/1(2) split; both sub-cases are charts of the single blow-up on it; case-1(2)
+reads the same divisor's exponent as its base. Extension lands FINAL (hedge dropped). SOURCE
+CLARIFICATION recorded: the pp.14-22 cites index the AOYAGI preprint, not Lehalleur-Rimányi. TWO
+pre-existing shared scope gaps flagged (NOT introduced by the extension, mirror case11, not
+consumed by finiteness): the p.15 minimality tie-break (lex-min T per Def.4) and the J₁ gap
+condition ({t̃ = i} empty for the run) — both named in the StepRel docstring as deliberately-
+uncaptured; both become the CONSTRUCTION's rung-3/4 burden (the divisor-chooser implements the
+tie-break + computes runLen via the gap). Relayed to architect-t02 with rung-3 notes directive.
