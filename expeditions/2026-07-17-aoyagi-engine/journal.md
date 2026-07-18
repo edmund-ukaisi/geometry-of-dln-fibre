@@ -1588,3 +1588,20 @@ with a jointly-pinned surjectivity shape. EMISSION UNIT GO (the architect's fres
 + pivotChart_e + per-node ψ + d_center family + total chooser (existence-half plug-in shaped,
 awaiting o4) + dispatch + guarantees. The board: architect (emission), pnp (the o4 certificate),
 everyone else warm. Two units from the oracle; the oracle from hbox.
+
+## 2026-07-18 THE PAPER'S THIRD DEFECT: FULL-CHAIN COMPARABILITY REFUTED (tick 114)
+The o4 certificate work REFUTED p.15's total-comparability invariant — two-way (the simulator +
+Codex, which found it FIRST from a fresh angle): minimal counterexample M=(2,2,1,1), the Case-2
+append (2,1,0) incomparable with the carried (1,1,1); mechanism = an interior width-drop strands
+a divisor above the shrunken b-chain; EXACT scope characterized (interior running-min below
+min(M¹,M²) — a COMMON DLN configuration; 8 witnesses/16 instances; FIX-A-orthogonal). VALUE SAFE
+at 16/16 (min = minAdm always). THE RESHAPE: SameLevelChainInv (same-t̃-level pairwise
+comparability) — holds everywhere on all 16, strictly weaker, EXACTLY what the chooser needs
+(the eligible set is same-level ⟹ chain ⟹ min exists; comp_violations 0 everywhere), robust to
+the profile-model caveat; HeadChainInv also refuted as too strong. THE MUTUAL-INDUCTION HOLD PAID
+MAXIMALLY: CompChainInv was never finalized — the refutation cost ZERO re-proof; the architect
+redirected mid-unit at docstring cost. Cert obligations added: reconcile the depth-3 (c)-finding
+(that pair was different-level — its "protects total comparability" claim needs its scope
+corrected by its own author-lane), the T3-consumer check (does principalization need full-chain
+ANYWHERE), and the p.15 defect-ledger entry (the third). Coverage's lane formally closed +
+stood down warm in the same tick.
