@@ -1485,3 +1485,22 @@ add a ψ-slot parameter). The architect's core-unit claim (StateInvariant + deci
 + termination, where its context + the 4-weakenings pattern live) is HELD for elder-gate5's
 decomposition + seat verdict. The simulator-as-oracle reframe accepted by the seat: the risk
 collapses from discover+prove to transcribe+prove.
+
+## 2026-07-18 FORK 13: THE ORACLE UNIT SHAPED (tick 107)
+elder-gate5's verdict adopted verbatim-class (fork 13 in the compass). THE THREE CORRECTIONS:
+(1) o1↔o4↔o2 is a MUTUAL INDUCTION (chain ⟹ min exists ⟹ picked ⟹ preserved — the simulator's
+def4_min lex-fallback IS the hole the invariant closes): designed + proven together, never
+sequenced apart. (2) TYPE-totality is FREE (junk-state terminal; ConDecision wants eligibility
+not minimality) — the content is CONE-GOODNESS by WF-induction over the invariant cone; the
+recalibration's "totality" worry dissolves into the right shape. (3) o5 SPLIT — the ≤-half
+(no-undershoot) follows from leaf-Adm; the ∈-half (minAdm ∈ terminalExponents + liveAttainment)
+is a REALIZATION/stratum-completeness claim ("profile-set ⊇ Adm" = the pnp 2222 verdict (a) from
+the build side) that was UNOWNED under a covering headline — now owned by BUILD (the realization
+needs the construction's internal paths; T3 owns image-coverage only). HONEST WALL VERDICT: no
+open problem remains; o4 (CompChainInv preservation) is the hardest rung — THE PAPER DOES NOT
+PROVE ITS OWN CHAIN INVARIANT (the defect record grows) — we prove it; pen-and-paper certificate
+FIRST (dispatched to pnp, with the 10-line higher-L clarifier gating the architect's long
+commits). SEAT: the architect (elder rejected fresh-formaliser — carrier friction is tacit).
+DISPATCHED: pnp (clarifier + o4 certificate, sequenced; gauge check still open); architect
+(o1-first GO with the joint-design contract). The endgame's mathematics is now fully
+decomposed, ownered, killed, and certified-before-formalised.
