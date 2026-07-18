@@ -1955,3 +1955,22 @@ sent: (1) derive if the zero-width case is structurally vacuous (empty analytic 
 pre-approved — faithful scope, not retreat; (3) grep the hbox consumer chain first to confirm it
 threads; (4) caveat lives in the statement's docstring; never weaken a conjunct into vacuity.
 t03 proceeding with A.
+
+## 2026-07-18 tick 143: step A banked (2a90d624f); case-1 Mval-delta subtlety flagged pre-grind
+t03: leafOfState now emits the t̃=0 analytic side (t0Indices sublist; total via dite on
+0<flatDim; hleaf by split<;>rfl) — clean-three, pushed. Step B opened with a FINDING flagged
+before grinding: the case-2 telescoping identity is confident (head terms die by
+widthMinUpto_succ, tail by constancy, survivor = resRows·resCols), but the CASE-1 delta computes
+to (τ−J)·(p + M^(l+1) − τ − J) with p = divProfile(layer−1), matching the emitted bump
+runLen·resCols IFF p = τ (= t̃). The seat's argument: an eligible divisor (t̃ > cleared) must
+have been created at a strictly earlier layer, whose tail-write flattened coords ≥ creation
+layer to τ — covering layer−1. So the emission is faithful but the proof needs an auxiliary
+"flat-from-(layer−1) for eligible" fact NOT in the current kit (FlatTail is flat-from-layer).
+Controller pins sent: (1) DERIVABILITY-FIRST — the argument is a history property; check whether
+it reduces to the existing basis (LiveHeadDom forces the min onto the tail + FlatTail constancy
++ eligibility excludes current-layer creation) before widening the basis to a 5th clause;
+(2) battery assertion (divProfile(layer−1)==t̃ at every eligible case-1 firing) across the known
+instances incl. the L=4 stranded witnesses BEFORE Lean; (3) if a clause: maintenance ×3 + OracleInv
+slot + docstring WHY; if the identity is REFUTED: truth-signal — finding about the emission,
+stop-and-surface. Boundary case layer=0 (no layer−1) explicitly requested in the next report.
+Seat also firing a decorrelated Codex check on the delta. Case-2 in progress.
