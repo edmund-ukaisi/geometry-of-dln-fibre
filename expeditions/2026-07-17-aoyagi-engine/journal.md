@@ -2033,3 +2033,22 @@ coupling (0<numDiv → 0<flatDim) into the reachability bundle. Mid-arc; integra
 pnp-o5: finding-rich but ZERO commits banked (branch not even created remotely) — nudged to
 commit+push the scan scripts, counts/witness table, and cert draft immediately (incremental
 banking beats polished-but-local; the ~950-instance scan currently lives only in its context).
+
+## 2026-07-19 tick 150: o5 cert LANDED+MERGED; ledger #4 written; elder-gate7 convened
+pnp-o5's cert merged (threads/12-realization/: cert + 6 battery scripts exit-0/847 + two-way
+Codex). Upgrades vs the tick-148 finding: (1) the obstruction is CHOOSER/BRANCH-INDEPENDENT
+(occ_above tops at r_S−1 ⟹ level-r_S divisors invisible to case-1 under ANY pick — the
+nondeterministic tree fails ⊇ too); (2) minAdm ∈ terminalExponents is now PROVED (Codex's
+envelope-splice: envelope prefix contributes 0 to Mval ⟹ non-clearable has strictly cheaper
+admissible sibling ⟹ every minimizer Clearable), not merely battery-observed — and the
+decorrelation EARNED ITS KEEP (Codex corrected pnp's own wrong-direction transformation);
+(3) the steering rule realizes all of Clearable-Adm in the BUILT tree — no non-minimal chooser
+pick ever needed (B6); ONE flagged brick for the formaliser: intra-layer pull-ordering, reusing
+banked o4 LiveHeadDom/minimality. Scope == compchain-o4 Part-1 mechanism EXACTLY (0/791
+mismatch). Controller: defect ledger #4 WRITTEN (theory/aoyagi-2023-reproduction/
+verify-realization-gap-defect.md — pnp correctly declined to write theory/ itself); D contract
+relayed to t03 (minimizer-only target, cert §§3-5, the flagged brick + its o4 reuse, t̃=0
+restriction); ELDER-GATE7 convened on: the fork-13 reshape, minimizer-now/⊇-Clearable-as-R7
+sequencing (+ whether Clearable should be REIFIED in Lean now as the honest name), and the
+battery-confound standing repair (kill sets must exercise known failure mechanisms). Task #26
+closed; D (#24) reshaped and unblocked behind C.
