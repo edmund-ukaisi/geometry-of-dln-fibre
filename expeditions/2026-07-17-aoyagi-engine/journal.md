@@ -895,3 +895,22 @@ weight, exactly two live holes. The pass also SELF-RECONCILED to the concurrentl
 roadmap (overlay now matches fork 11 — including the struck "kills the cite" gloss). Landmark
 refresh addendum requested (3 stale cards). Reuse-wins relayed implicitly via the overlay; both
 build seats bound to read it before touching Validate/.
+
+## 2026-07-18 BRANCH-HIJACK INCIDENT + RECOVERY; R6 PLACEMENT CONFIRMED (tick 66)
+INCIDENT (root cause = MY brief defect): office/probe briefs said "work from root … commit to a
+NEW branch" without mandating a separate worktree — the cartographer did the natural thing and
+`checkout -b`'d IN ROOT, silently moving root's checked-out branch. My ticks 63-65 commits
+(council seat A integration, the fork-11 adoption, priorities re-cut, the hygiene ratification,
+journal entries) landed on ITS branch; my `git push origin expedition/aoyagi-engine` calls
+"succeeded" pushing the FROZEN ref — three ticks of work invisible on the canonical branch while
+every BANKED echo looked normal. DETECTED via the cartographer's idle + a stale-looking branch
+tip; RECOVERED completely: nothing was lost (all commits lived on carto2, interleaved with the
+cartographer's — including its landmark refresh as the tip), root switched back + carto2 merged +
+BOTH refs pushed; every recovered artifact verified present (fork 11, brief corrections,
+priorities, ratification stamp). GUARDS INSTALLED: memo rule — seats NEVER checkout in root
+(own-worktree mandatory in every future brief; pnp-atlas corrected mid-flight); controller commit
+batches begin with a branch assertion (the placement check must check the BRANCH, not just cwd).
+LESSON: a push that succeeds is not evidence the work is ON the pushed ref — the ref and HEAD can
+diverge silently when a checkout moves under you.
+OPERATOR CONFIRMATION absorbed: R6 (the regular peel) scheduled AFTER the critical path stands
+as adopted — the surfaced scope question is CLOSED.

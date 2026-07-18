@@ -18,6 +18,11 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
   EnterWorktree(root) immediately after every worktree creation; placement check catches it.
+- BRANCH-HIJACK GUARD (incident 2026-07-18): seats must NEVER `git checkout`/`switch` in root —
+  every seat brief mandates its OWN worktree for its branch. Controller: EVERY commit batch begins
+  with the assertion `[ "$(git branch --show-current)" = expedition/aoyagi-engine ]` (a seat's
+  checkout in root silently redirected 3 ticks of controller commits onto its branch; pushes of
+  the frozen ref "succeeded" — the placement check must check the BRANCH, not just the cwd).
 - Obligations STATED (tick 37); case-step-lemmas faithful-flip waits on the full-fidelity items.
 - Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
 
