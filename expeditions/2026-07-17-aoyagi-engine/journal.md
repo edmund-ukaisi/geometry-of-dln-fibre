@@ -1109,3 +1109,18 @@ edit at a clean branch, refined the plan (step 1 = a standalone 6-line descent l
 independent of the struct change — the de-risk inverted into the plan itself; the known
 DecidablePred friction pre-identified with its 2B sidestep; a clean-revert fallback named).
 Plan banked verbatim alongside the T1b spec. GO stands for next turn.
+
+## 2026-07-18 FIDELITY GATE CLEARS — THE region_glue DISCHARGE IS COMMISSIONED (tick 82)
+rev-glue: scoped-VALIDATE, no critical findings, no re-review round. The one-liner was SCRATCH-
+ELABORATED against region_glue's verbatim statement (exit 0, binder-for-binder with t :=
+resolutionOf M); both glue headline decls clean-three by ITS forced probe; Codex-fit on the
+signature; the elder checklist conformed (one meaning-preserving route deviation honestly named:
+split-free AM-GM domination in place of the literal Tonelli split, injective/disjoint coords
+still load-bearing). Two prose nits → the close-phase cosmetics list (the L=0 docstring should
+say "prod M A is constant in A", not "= 1"; the proof itself uses only constancy — sound). ALL
+GATES ON THE ANALYTIC HOLE CLEARED: elder field-pass (tick 51) + assembly controller-verified
+(tick 76) + fidelity review (now). The DISCHARGE is commissioned to the architect (its file):
+one import + one line + the region_glue AxCheck watch entry (must flip CLEAN-THREE) + the
+engine_box_threshold_finite comment update (remaining sorryAx source = the construction hole
+ALONE). When it lands, ONE OF THE TWO ENGINE HOLES IS CLOSED — the box theorem's remaining
+distance to hbox is exactly monomialization_terminates (T1c → T2 assembly → T3 coverage).
