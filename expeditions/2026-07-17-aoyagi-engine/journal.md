@@ -1401,3 +1401,9 @@ cross-lane break is fully resolved with the reviewed analytic chain untouched �
 did what it promised. REMAINING: the buildTree WF.fix body (the architect's LAST unit — emits
 both ledger sides, pivotComplete case-split, the comparability chain, stepUpdate_preserves_
 weakInv) + coverage's two lemmas. The construction hole is two units from assembled.
+
+## tick 101 addendum: B' integration-verified at full-build scale
+The architect's full lake build DLNFibre: 8890 jobs green, footprints EXACT (the analytic
+discharge witness clean-three untouched; the three +sorryAx carriers all sourcing solely from
+monomialization_terminates; the arithmetic witness clean-three WITH the coherence clause). The
+buildTree GO is in its inbox — its next turn is the final construction unit.
