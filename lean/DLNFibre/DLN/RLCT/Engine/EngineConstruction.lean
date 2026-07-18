@@ -672,6 +672,13 @@ theorem widthMinUpto_mono {L : ℕ} (M : Fin (L + 1) → ℕ) {m n : ℕ} (h : m
   rw [Finset.mem_filter] at hi ⊢
   exact ⟨hi.1, le_trans hi.2 h⟩
 
+/-- `runMinWidth` is antitone (a longer prefix mins over more widths): `i ≤ j → runMinWidth j ≤
+runMinWidth i`. The case-2 head `t₀ = runMinWidth` is thus weak-decreasing (`ht0wd`). -/
+theorem runMinWidth_antitone {L : ℕ} (M : Fin (L + 1) → ℕ) {i j : Fin L} (h : i ≤ j) :
+    runMinWidth M j ≤ runMinWidth M i := by
+  rw [runMinWidth_eq_widthMinUpto, runMinWidth_eq_widthMinUpto]
+  exact widthMinUpto_mono M (Nat.succ_le_succ (Fin.le_def.mp h))
+
 /-- `widthMinUpto M n ≤ layerCap M` — the running-min width is `≤ M 0 ≤ ∑ M i`. The room the
 case-1/case-2 append needs (`cleared < widthMinUpto (layer+1) ≤ layerCap`), for the μ₂ descent. -/
 theorem widthMinUpto_le_layerCap {L : ℕ} (M : Fin (L + 1) → ℕ) (n : ℕ) :
@@ -1639,6 +1646,13 @@ The cone-goodness: `OracleInv` holds at the root (base, all invariants vacuous a
 is preserved by every transition the oracle emits (the six-preservation kit). This is what makes the
 chooser total on the reachable cone (`SameLevelChainInv` ⟹ `chooserTotalOnChain`, so the case-1
 fallback never fires) and the leaves admissible (`leaf_mem_Adm`). -/
+
+/-- The step-children a decision emits (`[]` for a terminal). The reachability induction reasons
+about `OracleInv` on exactly these. -/
+def ConDecision.stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} {s : ConState L} :
+    ConDecision M s → List (StepChild M s)
+  | .terminal _ _ => []
+  | .step _ children _ _ _ => children
 
 /-- **The root construction state** (paper `S = 1`, `J = 0`): layer `0`, cleared `0`, no exceptional
 divisors yet. `buildTree`'s starting point; the base of the reachability induction. -/
