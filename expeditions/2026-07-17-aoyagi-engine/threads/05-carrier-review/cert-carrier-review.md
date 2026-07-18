@@ -240,3 +240,128 @@ The substance of all 12 findings is unaffected. Two status updates:
 → `:177`; `residualBaseForm` → `:41`; `terminalExponents` (ResolutionTree) → `:200`; `LeafPullback`
 /`LeafJacobian`/`ChartBridge`/`IsFullMonomialization`/`CanonicalResolution` moved by the same reflow
 offset — cite by symbol. `EngineDriver.lean:77` ("load-bearing", finding 10) unchanged.
+
+---
+
+# r2 RE-CHECK — repair pass `72deeac34` (merged into `expedition/aoyagi-engine`)
+
+**Reviewer:** same seat, rev2 worktree (repair merged in, HEAD `198b3b458`). **Own forced
+`#print axioms`** (targeted scratch over freshly-built Engine oleans) + **decorrelated Codex** on the
+existential-vs-embedding judgment flag (`codex/steprel-existential-{prompt,answer}.md`) + the two new
+batteries re-run.
+
+## VERDICT: VALIDATE
+
+The finiteness certificate is **sound**. All r1 findings 1–7 are addressed at the statement level, and
+minors 8–12 are cleared. The six-obligation flip, merge-to-canonical, and construction-tide
+commissioning **may proceed**. One precision-scope finding (the existential `StepRel`) is recorded as
+a controller/elder scope decision, **not a blocker** — see the judgment-flag adjudication.
+
+## Judgment flag — existential child-read in `StepRel`: SUFFICIENT for the certificate
+
+Adjudicated with decorrelated Codex (its verdict converges with mine, independently):
+
+- **Finiteness soundness — the existential is sufficient.** `engine_box_threshold_finite`
+  (`EngineDriver.lean:44`) consumes ONLY `region_glue` (needs `ChartBridge` + the ratio side-condition)
+  and the lower-bound half `.1` of `exponent_ledger_bridge`. It does **not** consume
+  `case_step_invariant`/`StepRel` at all — `StepRel` "could be replaced by `True` without changing the
+  driver's argument" (Codex, verified against the code). The finiteness guards are: `minAdm` banked
+  independently as `min` over `Adm M` (`RouteMLayerSplit.lean:51`); the exponent hooks forcing every
+  terminal exponent `≥ minAdm` with `minAdm` attained (so the terminal minimum is *literally* `minAdm`
+  — it cannot be "wrong and too large"); `IsFullMonomialization` forcing each terminal exponent
+  `= Mval(admissible profile)`; and `ChartBridge`'s genuine cover. None depend on `StepRel`'s strength.
+- **Sharing-mistrack (fork-3 / g-coverage-sharing-killcond) cannot raise the certified threshold.**
+  Corrupted `support` metadata *is* reachable through the bundle (it is read only by `StepRel`'s
+  case-2 clause, not by `LeafPullback`/`LeafJacobian`/`terminalExponents`/`IsFullMonomialization`), but
+  it cannot change `minAdm` or `terminalExponents`, and the `⟨δx,δy⟩`-vs-`⟨δ₁x,δ₂y⟩` obstruction is
+  blocked by the exact `LeafPullback` identity (Codex: `δ²(x²+y²)` is a valid leaf form; `δ₁²x²+δ₂²y²`
+  cannot masquerade as it — divisibility by `δ₁²δ₂²` fails at `δ₂=0, δ₁x≠0`). The guard is
+  `ChartBridge` + `IsFullMonomialization` + banked `minAdm`, **not** `StepRel`.
+- **Fidelity — the existential is insufficient (recorded, not blocking).** For the claim that
+  `case-step-lemmas` certifies *a faithful Aoyagi transition*, the existential is too weak. Codex's
+  disappearing-divisor schema: take any `CanonicalResolution` tree, append one dummy divisor to the
+  root ledger (constant-zero `bExp` coord, arbitrary `divExp`/`divTilde`/`support`); every old
+  existential `StepRel` witness embeds into the enlarged parent, every other conjunct is unchanged, yet
+  the dummy divisor vanishes at every child — so the **full bundle admits a non-faithful tree**. The
+  case-1(1) form also lets a second parent divisor (e.g. exponent 37 alongside the merged 5→11) simply
+  disappear, unrecorded. This is a fidelity defect, **not** a finiteness-soundness defect.
+- **Recommendation (controller/elder scope call).** Either (a) strengthen `StepRel` to Codex's Q4
+  form — a parent→child divisor injection + equality on unchanged divisors + a distinguished
+  updated/new divisor with the case-specific exponent + an exact `support`-propagation equation (a
+  typed `stepUpdate` with child root ledger `= stepUpdate n e` is the clean shape); OR (b) downscope
+  the `case_step_invariant` name/docstring to state what it proves (a per-edge existence consistency
+  check, necessary but not sufficient for faithfulness) and record that the bundle does not certify
+  tree-fidelity. Since the restructure's founding WHY (compass fork 7) was "pin the parent-referencing
+  merge", (a) matches that intent; but neither blocks the finiteness certificate. Codex notes the clean
+  architectural split: an `AnalyticCertificate` (what the driver consumes) + a stronger
+  `FaithfulAoyagiResolution`.
+
+## Findings 1–7 disposition (repaired)
+
+- **1 (StepRel reads `e.child`) — FIXED for soundness.** `StepRel` (`EngineObligations.lean:95`) now
+  reads the child root (`rootNumDiv`/`rootDivExp`/`rootCleared`) + `e.subst.runLen`: case-2 pins the
+  CHILD divisor exponent `= resRows·resCols`; case-1(1) pins the merge `child = parent divExp +
+  runLen·resCols`; case-1(2) pins the `cleared` advance. The `{0,11,99}` counterexample is killed
+  (`mergeEdge_stepRel`: child `= 11 = 5+2·3`, clean-three; `stepRel_rejects_mismatched_case2`: a child
+  exponent `2 ≠ 4` is rejected, clean-three). Residual = the fidelity-scope item above.
+- **2a (resRank fold) — FIXED.** `terminalExponents` (`ResolutionTree.lean:234`) folds every positive
+  `resRank`; `region_glue`'s `hrat` and `exponent_ledger_bridge` now cover `resRank/2`, pinning
+  `minAdm ≤ resRank` as a bundle obligation (the elder-ratified form).
+- **2b (transport factorization / ψ inverse constructibility) — FIXED; fallback correctly NOT
+  triggered.** `LeafJacobian` (`EngineObligations.lean:63`) is now `chartMap = ψ ∘ β` with `β` the
+  explicit monomial blow-up (`|det Dβ| = ∏ |u|^{divExp−1}`, only `HasFDerivAt` — no inverse required,
+  integrated directly) and `ψ` a bounded-unit local diffeo carrying FULL inverse data (`ψsymm` + both
+  identities + `HasFDerivAt` + `|det Dψ| ∈ [lo,hi]`) on `β '' srcBox`. This separates the singular
+  factor (β) from the bounded-unit factor (ψ) — the sound route. I verified ψ's inverse data IS
+  constructible on the exceptional fibre: the singular vanishing is entirely in β; ψ is the regular
+  gauge/shear (Q,P-reduction) part, invertible everywhere including over `β '' {exceptional}`, so its
+  bounded-unit inverse data is genuine, not relocated into a fresh opaque hole. The transport lemma's
+  hypotheses fit ψ. (Analytic sufficiency of `region_glue` remains an inference until that sorried hole
+  is filled — expected; it is a sanctioned hole.)
+- **3 (live attainment) — FIXED for the empty-phantom; residual on measure-zero.**
+  `CanonicalResolution` gains a 6th conjunct + `exponent_ledger_liveAttainment` (`:186`): `minAdm` is a
+  divisor exponent of a leaf with `srcBox.Nonempty`. This kills the strictly-empty phantom. RESIDUAL:
+  `Nonempty` is weaker than nonempty-*interior* / cover-participation — a measure-zero (e.g. singleton)
+  `srcBox` attaining-leaf still satisfies it while contributing `chartMap '' {pt}` (measure zero) to
+  the cover. This does NOT break finiteness (a measure-zero leaf does not bind the integral, and the
+  exponent hooks keep the threshold at `½·minAdm`), so it is a precision note on the *attainment/
+  tightness* story, not a blocker. Optional: `(interior l.srcBox).Nonempty`.
+- **4 (`divProfile ∈ Adm`) — FIXED for soundness.** `IsFullMonomialization` (`:110`) now requires
+  `divProfile k ∈ Adm M` (witness discharges `(0,0) ∈ Adm (2,2,4)` by `decide`). Closes the impossible
+  -profile relabelling. Residual (fidelity nicety, not soundness): a DIFFERENT admissible profile with
+  the same `Mval` could still relabel a leaf — but `divExp` remains a genuine admissible codimension
+  `≥ minAdm`, so finiteness is unaffected.
+- **5 (coord injectivity/disjointness) — FIXED.** `ChartBridge` (`:78`) requires
+  `Function.Injective divCoord`, `Function.Injective resCoord`, `Disjoint` ranges.
+- **6 (a.e.-injectivity) — FIXED.** `ChartBridge` replaces full `InjOn` with `∃ N, volume N = 0 ∧
+  InjOn chartMap (srcBox \ N)` — correct for blow-up charts (not injective on the exceptional fibre).
+- **7 (Jacobian sign) — FIXED.** `LeafJacobian`'s `β` uses `∏ |paramsEquivFlat …|^{divExp−1}`
+  (abs-value); `LeafPullback` uses `^2` (sign-safe).
+
+## Minors 8–12
+
+- **8 (decorative fields) — ADDRESSED (docstrings).** `jacDivCount`/`jacPow`/`bExp` marked
+  CONSTRUCTION-SIDE BOOKKEEPING; `support` marked read-by-`StepRel`-case-2. Accurate, with the caveat
+  (from the judgment flag) that "read by `StepRel`" is not finiteness-load-bearing.
+- **9 (line-96 strike) — FIXED.** `necessity-and-encodings.md:96` is now struck (`~~…~~`) and annotated
+  "STRUCK, FALSE" in place.
+- **10 (banned wording) — FIXED.** "load-bearing" removed; the full banned-list grep over `Engine/`
+  returns NONE.
+- **11 (toy root step) — FIXED.** `rootNode224` is now a REAL Case-2 step (`resRows=resCols=2`,
+  `divExp=4`); `rootEdge224_stepRel` discharges the strengthened `StepRel` against the real child.
+- **12 (long lines) — FIXED** (`14927ae91`).
+
+## Verification evidence
+- **Own forced `#print axioms`** (scratch over fresh oleans, exit 0, no errors):
+  `canonicalResolution224_arithmetic` → `[propext, Classical.choice, Quot.sound]` (clean-three, WITH
+  the new 5th live-attainment conjunct); `canonicalResolution224` / `engine_box_threshold_finite` /
+  `exponent_ledger_liveAttainment` → `+ sorryAx` (expected); the three in-file witnesses
+  `mergeEdge_stepRel` / `stepRel_rejects_mismatched_case2` / `mixedCaseTree_records_both` →
+  clean-three (real theorems).
+- **Circularity** still clean (only the docstring guard "WITHOUT `rlct = c*`"); the two engine holes
+  are exactly `monomialization_terminates` + `region_glue` (map-tagged) + the documented `(2,2,4)`
+  forecast conjunct.
+- **Batteries re-run:** `g-case11-merge.py` (merge formula `5+2·3=11`; childless admits `[0,11,99]`,
+  child-reading admits `[11]` — child must be read) and `g-fake-chartmap-reject.py` (identity/fake
+  `chartMap` fails `LeafPullback` since order>2 non-Morse `F` has no dividing coordinate) both
+  reproduce their headlines.
