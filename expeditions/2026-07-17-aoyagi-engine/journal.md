@@ -1899,3 +1899,15 @@ profiles — the page-pinned exponent formulas become theorem-checked rather tha
 SPINE (IsFullMono needs it inline), not R4 (which is genDivExp/support propagation — a different
 coherence). The spine tail's full shape: MvalCoh kit → terminalLeaf assembly → the WF-fold →
 o5-∈ → assemble.
+
+## 2026-07-18 THE COHERENCE KIT FIRES: A RAW-WIDTH BUG IN THE EMISSION (tick 139)
+The MvalCoh truth-signal fired on its first discharge — exactly the audit the carry-both design
+promised: conOracle's resRows transcribed the RAW width M(S) where the exponent demands the
+RUNNING-MIN corank (widthMinUpto − cleared) — FIX-A's own defect class, this time in OUR
+emission (the ledger entry said it; the transcription missed it; every monotone witness was
+blind). Decide-verified at (2,2,3,2): Mval(2,2,0) = 4 = running-min (2)(2), not raw (3)(2) = 6.
+The Mval computation itself is elegant — head terms vanish by the min, tail by constancy, the
+sole surviving term IS the running-min product. FIXED IN THE EMISSION per protocol (never the
+invariant); the closed form audited the incremental arithmetic and caught what transcription +
+monotone tests could not. The kit + 4-way preservation are clean-three; the identities close on
+the fixed emission. resCols (raw next width) confirmed correct.

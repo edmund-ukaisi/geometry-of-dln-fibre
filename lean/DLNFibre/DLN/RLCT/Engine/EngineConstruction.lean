@@ -1721,13 +1721,13 @@ noncomputable def conOracle {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
             obtain ⟨hc1, _⟩ := hc; omega
           · rw [if_neg hc] at hk; exact absurd hk (by simp)
         case1Decision M s f (target - s.cleared)
-          (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+          (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
           (not_le.mp h1) (by omega)
           (by rw [(chooseMin_spec s target hf).1]; omega)
           (lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _))
       | none => oracleTerminal M s
     | none =>
-      case2Decision M s (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+      case2Decision M s (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
         (lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _))
 
 /-! ## o1/o4: WF-reachability — `OracleInv` at every reachable state
@@ -1796,7 +1796,7 @@ theorem OracleInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s 
           then some (s.divTilde k) else none)).min? with _ | target
       · -- occ.min? = none → case-2
         have horacle : conOracle M s = case2Decision M s
-            (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
           unfold conOracle; rw [dif_neg h1, dif_neg h2]
           split <;> simp_all only [reduceCtorEq]
         rw [horacle] at hc
@@ -1850,7 +1850,7 @@ theorem OracleInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s 
               rw [List.mem_filterMap]; push Not at hkc
               exact ⟨k, List.mem_finRange k, by rw [if_pos ⟨by omega, by omega⟩]⟩
           have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
-              (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
               (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap := by
             unfold conOracle; rw [dif_neg h1, dif_neg h2]
             split <;> simp_all only [reduceCtorEq, Option.some.injEq]
