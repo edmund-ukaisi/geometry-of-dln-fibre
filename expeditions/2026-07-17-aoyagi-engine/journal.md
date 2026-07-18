@@ -1287,3 +1287,18 @@ split lands in LeafData population. The independent fidelity read (rung-1 atom +
 statement) batches at rung 2's gate — one review at the coupling point. pnp-atlas warm
 (three-for-three on gates). Both engine lanes now have proven bricks: the glue side COMPLETE,
 the construction side carrying rung-1 coverage + the full T1 carrier + the termination spine.
+
+## 2026-07-18 FIX-A MERGED; RULING-2 STOP-AND-SURFACE → RULING (B') (tick 94)
+FIX-A landed + merged (cf867ce65: runMinWidth cap, deviation-note citing the ledger; monotone
+witnesses unaffected, driver green). The architect then STOP-AND-SURFACED on ruling-2 correctly:
+the t̃=0 FILTER on terminalExponents breaks region_glue_of_chartBridge (the per-leaf lemma's
+monomial product runs over ALL Fin numDiv — the ∀k ratio requirement is unmet for t̃>0 divisors)
+— my "glue-consequence NIL" claim was WRONG for the filter route; the reviewed analytic chain
+would have needed restating. RULING (B') replaces the filter: LeafData's divCoord/divExp/numDiv
+BECOME the t̃=0-only ANALYTIC enumeration (semantics, not shape — every glue statement survives
+VERBATIM, no re-review; the exponent hook becomes true by construction), LeafData gains the
+full-LEDGER side (all divisors; StepRel/hledger read it), and the coherence tie (analytic =
+exactly the t̃=0 sublist of the ledger) lands in IsFullMonomialization — making the paper's
+read-off a checkable fact. Blast radius = the architect's carrier files only; gate = the glue
+chain rebuilds GREEN UNTOUCHED. The filter diff is discarded. buildTree structural core
+proceeds in parallel.
