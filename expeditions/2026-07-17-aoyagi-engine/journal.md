@@ -570,3 +570,10 @@ GO on per-leaf helpers with the boundedness hypotheses EXPLICIT — the shape is
 verbatim, so it's the final form; helpers compose if the abstract-field pass adds separate
 conjuncts. My forced verification of bricks 3-4 queued behind gate-10 contention. Battery
 g-glue-unbounded-srcbox.py still owed (chased 2nd time).
+
+## 2026-07-18 tick 45 addendum: verifications closed
+Gate 10 GREEN (exit=0, zero errors): all three engine footprints per ruling on the rung-1 merge.
+Glue bricks 3-4 force-verified clean-three (routeMLayerBoxIntegral_lt_top_of_small_box +
+_nonpos_lt_top; note: the module lives in Engine/ but declares namespace DLNFibre.DLN.RLCT —
+flag to glue-t05 for the naming pass at close, not blocking). Battery 15 SURVIVES + 2 intended
+kills = 17 healthy.
