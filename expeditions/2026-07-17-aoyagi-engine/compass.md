@@ -248,6 +248,35 @@ over banked substrate.
    page-reading surface' warning (tick 46) and the full-mechanism reframe are both vindicated:
    the defect is invisible at monotone widths and every L<=2 instance - only the faithful full-T
    carrier at the non-monotone L=3 instance could expose it.
+13. **The concrete-oracle unit's shape** (elder-gate5, 2026-07-18). monomialization_terminates =
+   assembly [DONE - buildTree/WF.fix + rootLedger_buildTree/base/stepRel_all/WeakDecInv-
+   preservation] + T3 [rung-3 pre-staged] + THE CONCRETE ORACLE: a TOTAL ConState -> ConDecision
+   transcribing the pnp SIMULATOR (validated at 4 instances). RUNGS: o1 strengthened
+   StateInvariant - READ OFF the simulator's maintained set (WeakDecInv [landed] + CompChainInv +
+   J<M(S+1) live-layer + cleared<=layerCap [landed]); weakened 4x already - get it right FIRST.
+   o2 the decision function - dispatch + eligible-minimal chooser + d_center pivotComplete
+   emission (page-pinned; the simulator is the symmetric-quotient PROFILE projection, blind to
+   geometric fan-out). TYPE-totality is FREE (junk-state terminal fall-back; ConDecision requires
+   eligibility not minimality); the content is CONE-GOODNESS via WF-induction over the invariant
+   cone. o3 leaf-Adm = WeakDecInv + block-bound(leaf) + leaf-t-tilde=0 (from J=0/no-pending); the
+   B' coherence tie landed. o4 CompChainInv PRESERVATION - the unattempted brick; consumes
+   chooser MINIMALITY (the (3,0,1) mechanism); THE PAPER DOES NOT CLEANLY PROVE the chain
+   invariant (defect record) - WE prove it. o5 exponent hooks - SPLIT: the <=-half (no-undershoot)
+   from leaf-Adm + banked Mval>=minAdm-on-Adm [BUILD]; the IN-half (minAdm IN terminalExponents)
+   + liveAttainment = a REALIZATION/stratum-completeness claim ('profile-set contains Adm', =
+   cert-atlas-probe-2222 (a) from the build side) - OWNER ASSIGNED: BUILD (the realization needs
+   the construction's internal path structure, which T3 never sees; T3 owns image-coverage only).
+   NON-LOCAL CONTRACT: o1(CompChainInv) <-> o4(preservation) <-> o2(min-EXISTENCE) is a MUTUAL
+   induction (chain => min exists => picked => minimality => preserved) - design + prove TOGETHER
+   (the simulator's def4_min comparability-violation fallback is the exact hole the invariant
+   closes). SEAT: architect formalises (deepest carrier context); o4's uniform arbitrary-L math
+   gets a PEN-AND-PAPER CERTIFICATE FIRST (decorrelated); T3 parallel on the contract shape,
+   real-atlas composition gated on o2 (the shear-reconciliation the coupling point). KILLS
+   (batteries exist): o1/o4 = any reachable incomparable eligible pair (comp_violations, 0/4 so
+   far); o3 = a leaf not in Adm (0 post-FIX-A); o5-IN = an instance where the t-tilde=0
+   profile-set differs from Adm (== at all 4). PRE-COMMIT CLARIFIER: the simulator extension at
+   higher-L non-monotone instances ((2,2,3,3,2), (3,2,4,2)) - comp-violations + profile-set==Adm
+   at unexplored depth, BEFORE the architect's long seat commits.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
