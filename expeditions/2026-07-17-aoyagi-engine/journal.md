@@ -2091,3 +2091,16 @@ never profileSet_eq_Adm-class) relayed to t03 with the reify-now item; "24%" fra
 enumeration-dependent — lead with the mechanism. No inflation found; the seat's self-refutation
 mid-writeup called out as the right move. All edits landed this tick (compass ×2, policy,
 priorities, t03 directive).
+
+## 2026-07-19 tick 153: C COMPLETE + MERGED + SOURCE-VERIFIED — IsFullMonomialization proven
+t03's A→C spine arc merged (2a90d624f…6aead4b00, ~9 clean-three commits). CONTROLLER-VERIFIED,
+not seat-word: full `lake build DLNFibre` green post-merge + forced #print axioms probe →
+`isFullMonomialization_buildTree_conRoot` = exactly [propext, Classical.choice, Quot.sound];
+0 sorries in EngineConstruction.lean. (Probe gotcha recurrence: EngineConstruction is a leaf
+module outside the aggregator — the first probe read a STALE olean; `lake build <module>` first,
+then probe. Third instance of the probe-namespace/staleness class.) THE HEADLINE: the built tree
+from conRoot satisfies IsFullMonomialization for ALL M (no positivity hypothesis — T0Bound/
+NumDivFlatPos carried it; 0<L the only guard, forced by Adm's last-=0 clause). Remaining for
+monomialization_terminates: ChartBridge (T3, the coverage lane) + D (o5-∈ exponent hooks) + E
+(assemble). t03 now reading the realization cert for D; reify-now item (Clearable + statement)
+in its inbox, crossed with its report — nudged. Elder-gate7 idle (office dissolved).
