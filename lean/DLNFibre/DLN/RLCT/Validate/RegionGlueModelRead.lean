@@ -117,4 +117,168 @@ theorem prod_abs_rpow_cube_lt_top : ∀ {d : ℕ} (R : ℝ) (_hR : 0 < R) (f : F
         abs_rpow_lintegral_Icc_lt_top R hR (f 0) (hf 0)
       exact ENNReal.mul_lt_top hax hIH'
 
+/-- **Two-family exponent assembly (pointwise, all `x`).** For injective `dc`, `rc` with disjoint
+ranges into `Fin d`, any per-axis exponent `g` agreeing with `e` on the divisor coords, with `f` on
+the residual coords, and `0` off both, collapses the two-family product of per-axis `rpow`s to the
+single all-axis product `∏_j |x j|^{g j}`. Reindexing of the PRODUCT (via `Finset.prod_image`/
+`prod_union`/`prod_subset`), not the exponent — so `x_j = 0` axes are fine (`|·|^0 = 1`). -/
+theorem prod_two_family_eq {d nd nr : ℕ} (dc : Fin nd → Fin d) (rc : Fin nr → Fin d)
+    (hdc : Function.Injective dc) (hrc : Function.Injective rc)
+    (hdisj : Disjoint (Set.range dc) (Set.range rc))
+    (e : Fin nd → ℝ) (f : ℝ) (g : Fin d → ℝ)
+    (hgd : ∀ k, g (dc k) = e k) (hgr : ∀ i, g (rc i) = f)
+    (hg0 : ∀ j, (∀ k, dc k ≠ j) → (∀ i, rc i ≠ j) → g j = 0)
+    (x : Fin d → ℝ) :
+    (∏ k, |x (dc k)| ^ (e k)) * (∏ i, |x (rc i)| ^ f) = ∏ j, |x j| ^ (g j) := by
+  classical
+  set Sd : Finset (Fin d) := Finset.univ.image dc with hSd
+  set Sr : Finset (Fin d) := Finset.univ.image rc with hSr
+  have hdisjF : Disjoint Sd Sr := by
+    rw [Finset.disjoint_left]
+    intro j hjd hjr
+    rw [hSd, Finset.mem_image] at hjd
+    rw [hSr, Finset.mem_image] at hjr
+    obtain ⟨k, -, hk⟩ := hjd
+    obtain ⟨i, -, hi⟩ := hjr
+    exact Set.disjoint_left.mp hdisj ⟨k, hk⟩ ⟨i, hi⟩
+  have hprodD : (∏ j ∈ Sd, |x j| ^ (g j)) = ∏ k, |x (dc k)| ^ (e k) := by
+    rw [hSd, Finset.prod_image (fun a _ b _ hab => hdc hab)]
+    exact Finset.prod_congr rfl (fun k _ => by rw [hgd k])
+  have hprodR : (∏ j ∈ Sr, |x j| ^ (g j)) = ∏ i, |x (rc i)| ^ f := by
+    rw [hSr, Finset.prod_image (fun a _ b _ hab => hrc hab)]
+    exact Finset.prod_congr rfl (fun i _ => by rw [hgr i])
+  have hrest : ∏ j, |x j| ^ (g j) = ∏ j ∈ Sd ∪ Sr, |x j| ^ (g j) := by
+    symm
+    apply Finset.prod_subset (Finset.subset_univ _)
+    intro j _ hj
+    rw [Finset.mem_union] at hj
+    push_neg at hj
+    obtain ⟨hjd, hjr⟩ := hj
+    have hgj : g j = 0 := by
+      refine hg0 j (fun k hk => hjd ?_) (fun i hi => hjr ?_)
+      · rw [hSd, Finset.mem_image]; exact ⟨k, Finset.mem_univ _, hk⟩
+      · rw [hSr, Finset.mem_image]; exact ⟨i, Finset.mem_univ _, hi⟩
+    rw [hgj, Real.rpow_zero]
+  rw [hrest, Finset.prod_union hdisjF, hprodD, hprodR]
+
+/-- **Coordinate-wise Morse domination (all-nonzero fibre).** For `c' > 0`, `nr ≥ 1`, and `y` with
+every `y i ≠ 0`, the joint Morse factor is `≤` the product of per-axis powers — AM-GM with uniform
+weights `1/nr` gives `∏ |y i|^{2/nr} ≤ (∑ y i²)/nr`, then `t ↦ t^{-c'}` (antitone, both sides `> 0`)
+flips it. Off `{∃ i, y i = 0}` — null upstream (`Measure.pi_hyperplane`) — this is the squeeze feeding
+`prod_abs_rpow_cube_lt_top`. -/
+theorem sumSq_rpow_neg_le {nr : ℕ} (hnr : 0 < nr) (c' : ℝ) (hc' : 0 < c')
+    (y : Fin nr → ℝ) (hy : ∀ i, y i ≠ 0) :
+    (∑ i, (y i) ^ 2) ^ (-c') ≤ (nr : ℝ) ^ (-c') * ∏ i, |y i| ^ (-2 * c' / (nr : ℝ)) := by
+  have hnrR : (0 : ℝ) < nr := by exact_mod_cast hnr
+  -- AM-GM (uniform weights), with both sides rewritten to closed form
+  have hAM : (∏ i, |y i| ^ ((2 : ℝ) / nr)) ≤ (∑ i, (y i) ^ 2) / nr := by
+    have h := Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ : Fin nr => 1 / (nr : ℝ))
+      (fun i => (y i) ^ 2) (fun i _ => by positivity)
+      (by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; field_simp)
+      (fun i _ => by positivity)
+    have hL : (∏ i, ((y i) ^ 2) ^ (1 / (nr : ℝ))) = ∏ i, |y i| ^ ((2 : ℝ) / nr) :=
+      Finset.prod_congr rfl (fun i _ => by
+        rw [← sq_abs (y i), ← Real.rpow_two |y i|, ← Real.rpow_mul (abs_nonneg _), mul_one_div])
+    have hR : (∑ i, (1 / (nr : ℝ)) * (y i) ^ 2) = (∑ i, (y i) ^ 2) / nr := by
+      rw [← Finset.mul_sum, one_div_mul_eq_div]
+    rwa [hL, hR] at h
+  -- positivity of the two sides
+  have hPpos : (0 : ℝ) < ∏ i, |y i| ^ ((2 : ℝ) / nr) :=
+    Finset.prod_pos (fun i _ => Real.rpow_pos_of_pos (abs_pos.mpr (hy i)) _)
+  have hSpos : (0 : ℝ) < ∑ i, (y i) ^ 2 := by
+    refine Finset.sum_pos' (fun i _ => sq_nonneg _) ⟨⟨0, hnr⟩, Finset.mem_univ _, ?_⟩
+    have := hy ⟨0, hnr⟩; positivity
+  -- the RHS is `(nr · P)^{-c'}`
+  have hRHS : (nr : ℝ) ^ (-c') * (∏ i, |y i| ^ (-2 * c' / (nr : ℝ)))
+      = ((nr : ℝ) * ∏ i, |y i| ^ ((2 : ℝ) / nr)) ^ (-c') := by
+    rw [Real.mul_rpow hnrR.le hPpos.le,
+      ← Real.finset_prod_rpow Finset.univ (fun i => |y i| ^ ((2 : ℝ) / nr))
+        (fun i _ => Real.rpow_nonneg (abs_nonneg _) _)]
+    congr 1
+    exact Finset.prod_congr rfl (fun i _ => by
+      rw [← Real.rpow_mul (abs_nonneg _)]; congr 1; ring)
+  rw [hRHS]
+  -- antitone `t ↦ t^{-c'}` on `0 < nr·P ≤ S`
+  have hnrP : (0 : ℝ) < (nr : ℝ) * ∏ i, |y i| ^ ((2 : ℝ) / nr) := mul_pos hnrR hPpos
+  have hle : (nr : ℝ) * (∏ i, |y i| ^ ((2 : ℝ) / nr)) ≤ ∑ i, (y i) ^ 2 := by
+    rw [mul_comm]; exact (le_div_iff₀ hnrR).mp hAM
+  rw [Real.rpow_neg hSpos.le, Real.rpow_neg hnrP.le, ← one_div, ← one_div]
+  exact one_div_le_one_div_of_le (Real.rpow_pos_of_pos hnrP _)
+    (Real.rpow_le_rpow hnrP.le hle hc'.le)
+
+/-- **The per-leaf model read (flat coordinates).** For injective/disjoint divisor `dc` and residual
+`rc` coordinate maps into `Fin d`, divisor exponents `e_k > −1`, `c' > 0` below `nr/2` (`nr ≥ 1` the
+Morse rank), the monomialised leaf integrand
+`(∏_k |x_{dc k}|^{e_k}) · (∑_i x_{rc i}²)^{-c'}` has finite `∫⁻` over the closed cube `[−R,R]^d`.
+Route: AM-GM domination of the Morse factor (a.e., off the coordinate hyperplanes) + the two-family
+reindex collapse to `∏_j |x j|^{G j}` (`G_j > −1` everywhere), closed by `prod_abs_rpow_cube_lt_top`. -/
+theorem model_read_lt_top {d : ℕ} (R : ℝ) (hR : 0 < R)
+    {nd nr : ℕ} (hnr0 : 0 < nr) (dc : Fin nd → Fin d) (rc : Fin nr → Fin d)
+    (hdc : Function.Injective dc) (hrc : Function.Injective rc)
+    (hdisj : Disjoint (Set.range dc) (Set.range rc))
+    (e : Fin nd → ℝ) (he : ∀ k, -1 < e k)
+    (c' : ℝ) (hc' : 0 < c') (hnr : c' < (nr : ℝ) / 2) :
+    ∫⁻ x in cubeBox d R,
+        ENNReal.ofReal ((∏ k, |x (dc k)| ^ (e k)) * (∑ i, (x (rc i)) ^ 2) ^ (-c')) < ⊤ := by
+  classical
+  have hnrR : (0 : ℝ) < nr := by exact_mod_cast hnr0
+  -- the per-axis assembled exponent
+  set g : Fin d → ℝ :=
+    fun j => (∑ k, if dc k = j then e k else 0) + (∑ i, if rc i = j then -2 * c' / (nr : ℝ) else 0)
+    with hgdef
+  have hgd : ∀ k₀, g (dc k₀) = e k₀ := fun k₀ => by
+    show (∑ k, if dc k = dc k₀ then e k else 0)
+        + (∑ i, if rc i = dc k₀ then -2 * c' / (nr : ℝ) else 0) = e k₀
+    rw [Finset.sum_eq_single k₀ (fun k _ hk => if_neg (fun h => hk (hdc h)))
+        (fun h => absurd (Finset.mem_univ k₀) h), if_pos rfl,
+      Finset.sum_eq_zero (fun i _ => if_neg (fun h =>
+        Set.disjoint_left.mp hdisj ⟨k₀, rfl⟩ ⟨i, h⟩)), add_zero]
+  have hgr : ∀ i₀, g (rc i₀) = -2 * c' / (nr : ℝ) := fun i₀ => by
+    show (∑ k, if dc k = rc i₀ then e k else 0)
+        + (∑ i, if rc i = rc i₀ then -2 * c' / (nr : ℝ) else 0) = -2 * c' / (nr : ℝ)
+    rw [Finset.sum_eq_zero (fun k _ => if_neg (fun h =>
+        Set.disjoint_left.mp hdisj ⟨k, h⟩ ⟨i₀, rfl⟩)),
+      Finset.sum_eq_single i₀ (fun i _ hi => if_neg (fun h => hi (hrc h)))
+        (fun h => absurd (Finset.mem_univ i₀) h), if_pos rfl, zero_add]
+  have hg0 : ∀ j, (∀ k, dc k ≠ j) → (∀ i, rc i ≠ j) → g j = 0 := fun j hjd hjr => by
+    show (∑ k, if dc k = j then e k else 0) + (∑ i, if rc i = j then -2 * c' / (nr : ℝ) else 0) = 0
+    rw [Finset.sum_eq_zero (fun k _ => if_neg (hjd k)),
+      Finset.sum_eq_zero (fun i _ => if_neg (hjr i)), add_zero]
+  have hf0pos : -1 < -2 * c' / (nr : ℝ) := by
+    rw [lt_div_iff₀ hnrR]; linarith [hnr]
+  have hgpos : ∀ j, -1 < g j := by
+    intro j
+    by_cases hjd : ∃ k, dc k = j
+    · obtain ⟨k, rfl⟩ := hjd; rw [hgd k]; exact he k
+    · by_cases hjr : ∃ i, rc i = j
+      · obtain ⟨i, rfl⟩ := hjr; rw [hgr i]; exact hf0pos
+      · push_neg at hjd hjr; rw [hg0 j hjd hjr]; norm_num
+  -- a.e. every residual coordinate is nonzero (finite union of null coordinate hyperplanes)
+  have hae : ∀ᵐ x : (Fin d → ℝ), ∀ i : Fin nr, x (rc i) ≠ 0 := by
+    rw [MeasureTheory.ae_all_iff]
+    intro i
+    have h := MeasureTheory.Measure.ae_eval_ne (fun _ : Fin d => (volume : Measure ℝ)) (rc i) (0 : ℝ)
+    rwa [← MeasureTheory.volume_pi] at h
+  -- finiteness of the dominating integral
+  have hfin : ∫⁻ x in cubeBox d R,
+      ENNReal.ofReal ((nr : ℝ) ^ (-c') * ∏ j, |x j| ^ (g j)) < ⊤ := by
+    have hcubeM : MeasurableSet (cubeBox d R) := by
+      rw [cubeBox]; exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+    rw [setLIntegral_congr_fun hcubeM (fun x _ => by
+      rw [ENNReal.ofReal_mul (Real.rpow_nonneg (Nat.cast_nonneg nr) _)]),
+      lintegral_const_mul _ (by fun_prop)]
+    exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (prod_abs_rpow_cube_lt_top R hR g hgpos)
+  refine lt_of_le_of_lt (lintegral_mono_ae ?_) hfin
+  filter_upwards [ae_restrict_of_ae hae] with x hx
+  apply ENNReal.ofReal_le_ofReal
+  calc (∏ k, |x (dc k)| ^ (e k)) * (∑ i, (x (rc i)) ^ 2) ^ (-c')
+      ≤ (∏ k, |x (dc k)| ^ (e k))
+          * ((nr : ℝ) ^ (-c') * ∏ i, |x (rc i)| ^ (-2 * c' / (nr : ℝ))) :=
+        mul_le_mul_of_nonneg_left (sumSq_rpow_neg_le hnr0 c' hc' (fun i => x (rc i)) hx)
+          (Finset.prod_nonneg (fun k _ => Real.rpow_nonneg (abs_nonneg _) _))
+    _ = (nr : ℝ) ^ (-c')
+          * ((∏ k, |x (dc k)| ^ (e k)) * ∏ i, |x (rc i)| ^ (-2 * c' / (nr : ℝ))) := by ring
+    _ = (nr : ℝ) ^ (-c') * ∏ j, |x j| ^ (g j) := by
+        rw [prod_two_family_eq dc rc hdc hrc hdisj e (-2 * c' / (nr : ℝ)) g hgd hgr hg0]
+
 end DLNFibre.DLN.RLCT
