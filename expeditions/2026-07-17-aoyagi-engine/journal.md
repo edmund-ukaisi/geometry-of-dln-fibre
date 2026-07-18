@@ -1817,3 +1817,10 @@ THE ORACLE SPINE IS UNBLOCKED on the ratified carrier — its shape fully specif
 classify; rollover child with the guard from the exhaustion branch; append children definitional;
 case-1(1) via the congruence; terminal via leafOfState) → WF-reachability + o5-∈ close the
 construction. GO issued.
+
+## 2026-07-18 SPINE UNDERWAY: NODE BUILDER + ROLLOVER DECISION (tick 132)
+Merged + verified: ConState.toStepData (the node-side dual — hnode/hlayer are rfl) +
+rolloverDecision (the rollover ConDecision exercising the new carrier + guard end-to-end,
+clean-three). Remaining spine: the case-1/case-2 decision constructors, the total dispatch,
+WF-reachability, o5-∈ — the case-1 branch being the mutual-induction-coupled one, taken on
+the next fresh turn.
