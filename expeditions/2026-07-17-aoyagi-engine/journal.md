@@ -675,3 +675,15 @@ three + pushed before the next (no unpushed monolith; its own visible-progress w
 structurally). Elder checklist absorbed into its plan (N̄ superset trick; never integrate
 residualCore). Remaining glue path: steps 1-6 → leaf_chart_image_lintegral_lt_top →
 region_glue_of_chartBridge → my sequenced one-line discharge.
+
+## 2026-07-18 BLOCKING COMMIT LANDED + MERGED; CONSOLIDATED PASS GO (tick 53)
+The architect's 6d0956655 merged — all items one commit: case-2 cleared += 1 (source-verified;
+the architect's own words: "a real bug, not just a flag"); the eligibility conjunct page-pinned
+against p.15 (∃ h : mergeIdx < numDiv, divTilde = cleared + runLen; witnesses survive — mergeNode
+proves eligibility, rootEdge224 vacuous branch, ¬-witnesses reject via the ledger conjunct);
+region_glue docstring de-staled; StepRel inline scope qualifier. Battery 16-survives (the new
+glue kill script counted) + validate clean. rev-carrier's consolidated pass dispatched with the
+SHA — its forced #print is the footprint authority; my own gate deferred until its verdict to
+keep a build slot free (glue grind + reviewer + architect's queued reconfirm already contend).
+Rung 2 opens on the reviewer's verdict. Rung-2 pre-notes logged by the architect: content-
+rejection free from componentwise equality; divProfile T-settings page-check at the setting rung.
