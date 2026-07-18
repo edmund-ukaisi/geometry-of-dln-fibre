@@ -1179,3 +1179,16 @@ descent consumes; the gap condition supplies it (my preference: one conjunct in 
 page-pinned p.15); (3) case-1(2) parent persistence INFERRED not page-pinned — a real case12
 trace witness owed at T2 (matches the pnp flag). Nits F3-F5 fold into T2's touches. T2 (the
 recursion-assembly skeleton) is GO — the last structural piece before coverage.
+
+## 2026-07-18 T2a PIN MERGED; buildTree DESIGN PASS COMMISSIONED (tick 87)
+T2a merged + verified: the recursion-assembly WF-fix machinery elaborates at the pin (StepOracle
+= per-state Option of conRel-smaller child + descent proof; conStepDepth via WellFounded.fix) —
+the 2A de-risk pattern repeated for the recursion syntax. The runLen ≥ 1 conjunct LANDED on the
+chooser (constraint 2 closed, page-pinned; feeds the case-1(1) descent). Constraints 1 + 3 are
+buildTree-body work. SEQUENCING: buildTree gets its own INTERFACE DESIGN PASS first — the
+decision type + the chart-producer signature (= T3 coverage's output contract: the full
+pivot-chart cover per the probe constraint + the ChartBridge per-leaf tuple) + the conjunct
+distribution + a worked case-1(2) example. The design doc goes to the ELDER (its standing
+coverage-commissioning convening) and T3's commissioning is decided at that gate — the interface
+between the second cost center and the named hard part gets designed ONCE, reviewed, then both
+lanes build against it.
