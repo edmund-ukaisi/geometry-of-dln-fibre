@@ -2052,3 +2052,20 @@ restriction); ELDER-GATE7 convened on: the fork-13 reshape, minimizer-now/⊇-Cl
 sequencing (+ whether Clearable should be REIFIED in Lean now as the honest name), and the
 battery-confound standing repair (kill sets must exercise known failure mechanisms). Task #26
 closed; D (#24) reshaped and unblocked behind C.
+
+## 2026-07-19 tick 151: pnp-o5 pins closed (8067ca0de merged); ledger #4 UNIFIED
+All five cert pins landed: §3 rewritten as 4 numbered small-exact steps certifying the STRONG
+form (every minimizer clearable; ∃-form noted as the sufficient fallback — D needs §4 only at
+ONE minimizer); §1 status-labels both directions (⊆ Clearable [PROVED rule-level]; ⊇ Clearable
+[PROVED modulo the one battery-verified pull-ordering brick]; the minimizer instance of ⊇ is
+[PROVED]); confound counsel in §6 with the bottleneck predicate + instances; scope-counts.md
+committed. Codex confirm is IN (independent No + same missing set + both directions + the
+envelope-splice — which corrected pnp's own wrong-direction attempt). MERGE NOTE: both pnp-o5
+and the controller wrote ledger #4 at the same path (crossed commissioning — tick-148 pin said
+write it, its landing message said it hadn't per report-file discipline, controller wrote one
+at tick 150, its pin-closing pass wrote one too). Add/add conflict resolved by UNIFICATION:
+pnp's richer version (provenance, witness Mval table, mechanism, 4-scan scope table, corrected
+statement, evidence manifest) as base + controller's status header, confound section, and the
+R7 sequencing pointer. Also corrected the record: pnp's cert skeleton HAD been pushed
+(39fdc712a) — the tick-149 "nothing pushed" nudge crossed its push in flight. pnp-o5 idle,
+available. Elder-gate7 verdict pending.
