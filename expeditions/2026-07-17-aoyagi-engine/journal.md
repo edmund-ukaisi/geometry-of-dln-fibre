@@ -541,3 +541,20 @@ the named pattern + prophylactic). NEW GATE: the deliberate ABSTRACT-FIELD PASS 
 region_glue transitively consumes ("what does the real chart supply that this field does not
 force?") runs BEFORE the discharge lands — elder re-convenes for it; its bet for a third gap:
 the image-cover clause or residualCore's squeeze bounds under a real chart.
+
+## 2026-07-18 RUNG 1 LANDED + MERGED; TRIPWIRE FIRED ON SUPPORT; RATIFICATION ROUND (tick 44)
+Rung 1 merged (5b0966b11): RootLedger + stepUpdate (3 cases) + faithful StepRel := rootLedger
+e.child = stepUpdate n e.case e.subst — existential RETIRED, discharge rfl-class exactly as fork 9
+forecast; BOTH ¬-witnesses in-file (dummyDivisor/vanishingDivisor_not_stepRel). The elder's guard
+(i) FIRED as designed: support propagation balloons (Fin-reindexing Finset transport; Codex-
+confirmed; the compass's named second cost center) — architect took a MIDDLE path (faithful for
+exponent/clearing, support deliberately out, genDivExp multiplicity-ledger redesign proposed as a
+later rung) and STOPPED for ratification before rung 2. Also flagged honestly: two formulas
+encoded from page READINGS not page-PINNED (case-1(2) pivot exponent p.17; case-2 cleared advance
+p.20) + two carrier decisions (mergeIdx : ℕ out-of-range=no-op; LeafData gains divTilde/cleared).
+ROUTED: elder ratifies the middle path + carrier taste + verifies both formulas against PAGE
+IMAGES; rev-carrier scoped spot-check (¬-witnesses reject on content; mergeIdx no-op certificate-
+acceptability, Codex-decorrelated; docstring scope honesty; footprints). Rung 2 HOLDS on both.
+MISSED-INBOX INSTANCE #2 (architect): the ChartBridge strengthening directive sat unprocessed
+while rung 1 shipped — chased, landing as its own commit (+ the now-stale transport references in
+the LeafJacobian/header docstrings per the fork-8 revision). Gate 10 running.
