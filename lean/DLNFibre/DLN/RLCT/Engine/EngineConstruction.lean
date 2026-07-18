@@ -1195,7 +1195,15 @@ rank-pattern. Consumed by `IsFullMonomialization` (`divExp k = (Mval M (divProfi
 Maintained by the T-rule; the append/merge preservation lemmas FORCE the emission's
 `resRows·resCols`/bump to equal the `Mval` delta (turning the page-pinned exponent formulas into
 theorems — the truth-signal: a non-closing preservation is a FINDING about the emission arithmetic,
-never patched by weakening the invariant). -/
+never patched by weakening the invariant).
+
+**Why the closed form is `(widthMinUpto layer − J)·(M⁽ˡᵃʸᵉʳ⁺¹⁾ − J)`** (the case-2 append at
+`(layer, J)`, profile `T = setTail layer J runMinWidth`): in `Mval T = ∑ⱼ (tPrev j − Tⱼ)(M⁽ʲ⁺¹⁾ − Tⱼ)`
+every term vanishes except one. HEAD terms (`j < layer`) are killed by the running-min: `Tⱼ =
+runMinWidth j = min(tPrev j, M⁽ʲ⁺¹⁾)`, so one factor is `0`. TAIL terms (`j > layer`) are killed by
+constancy: `Tⱼ = tPrev j = J`, so `tPrev j − Tⱼ = 0`. The lone SURVIVOR (`j = layer`) is
+`(tPrev layer − J)(M⁽ˡᵃʸᵉʳ⁺¹⁾ − J)` with `tPrev layer = runMinWidth (layer−1) = widthMinUpto layer` —
+the running-min corank, NOT the raw `M⁽ˡᵃʸᵉʳ⁾` (the FIX-A-class distinction the truth-signal caught). -/
 def MvalCoh {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
   ∀ k : Fin s.numDiv, s.divExp k = (Mval M (s.divProfile k)).toNat
 
