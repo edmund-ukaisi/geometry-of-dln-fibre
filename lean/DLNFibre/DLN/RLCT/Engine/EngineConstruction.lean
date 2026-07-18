@@ -1436,4 +1436,94 @@ noncomputable def rolloverDecision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConS
       · rintro (h | h) <;> nomatch h
       · intro _; exact hex)
 
+/-- **The case-2 step decision**: append a new full-block pivot (exponent `resRows·resCols`, head
+reset to `runMinWidth`, tail `J`) and advance `J`. The child is definitionally
+`s.stepAppendAdvance (resRows·resCols) runMinWidth` — its ledger IS `stepUpdate … case2` (rfl).
+Eligibility and the rollover guard are both vacuous (case-2). Needs the room `hcap : cleared <
+layerCap` for the μ₂ descent. -/
+noncomputable def case2Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (resRows resCols : ℕ) (hcap : s.cleared < layerCap M) : ConDecision M s :=
+  .step (s.toStepData M resRows resCols)
+    [⟨StepCase.case2, ⟨id, 0, 0, 0, Fin.elim0⟩,
+      s.stepAppendAdvance (resRows * resCols) (fun p => runMinWidth M p),
+      conRel_stepAppendAdvance M s (resRows * resCols) (fun p => runMinWidth M p) hcap⟩]
+    rfl rfl
+    (by
+      intro c hc
+      simp only [List.mem_singleton] at hc
+      subst hc
+      refine ⟨rfl, ?_, ?_⟩
+      · rintro (h | h) <;> nomatch h
+      · intro h; nomatch h)
+
+/-- **The case-1(2) split step decision**: split the chosen divisor `f` into a new pivot with
+INHERITED head (`t₀ = s.divProfile f`), exponent `s.divExp f + runLen·resCols`, tail `J`; advance
+`J`. The child is `s.stepAppendAdvance (s.divExp f + runLen·resCols) (s.divProfile f)`; its ledger
+IS `stepUpdate … case12` (the split reads `divExp/divProfile mergeIdx`, in range as `f.isLt`). The
+eligibility conjunct is `helig : s.divTilde f = s.cleared + runLen`; the rollover guard is vacuous. -/
+noncomputable def case12Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (f : Fin s.numDiv) (runLen resRows resCols : ℕ) (hcap : s.cleared < layerCap M)
+    (helig : s.divTilde f = s.cleared + runLen) : ConDecision M s :=
+  .step (s.toStepData M resRows resCols)
+    [⟨StepCase.case12, ⟨id, runLen, f.val, 0, Fin.elim0⟩,
+      s.stepAppendAdvance (s.divExp f + runLen * resCols) (s.divProfile f),
+      conRel_stepAppendAdvance M s (s.divExp f + runLen * resCols) (s.divProfile f) hcap⟩]
+    rfl rfl
+    (by
+      intro c hc
+      simp only [List.mem_singleton] at hc
+      subst hc
+      refine ⟨?_, ?_, ?_⟩
+      · show (s.stepAppendAdvance (s.divExp f + runLen * resCols) (s.divProfile f)).toRootLedger
+            = stepUpdate (s.toStepData M resRows resCols) StepCase.case12 ⟨id, runLen, f.val, 0,
+              Fin.elim0⟩
+        simp only [stepUpdate, ConState.toStepData, ConState.toRootLedger,
+          ConState.stepAppendAdvance, dif_pos f.isLt]
+        rfl
+      · intro _; exact ⟨f.isLt, helig⟩
+      · intro h; nomatch h)
+
+/-- **The case-1(1) merge step decision**: merge into the chosen divisor `f` — exponent `+= runLen·
+resCols`, rank-pattern tail-written to `J`, `numDiv`/`J` unchanged. The child is
+`s.stepCase11 f` with the `divExp` bump; its cone-descent transfers from `conRel_stepCase11` across
+the bump (`conRel_of_exp_change` — the measure is divExp-blind). The ledger IS `stepUpdate … case11`
+(the merge target's `divProfile` in `Function.update` form equals `stepUpdate`'s `if ·=mergeIdx`
+form, by `funext`). Eligibility is `helig`; the rollover guard is vacuous. -/
+noncomputable def case11Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (f : Fin s.numDiv) (runLen resRows resCols : ℕ) (hlayer : s.layer < L) (hrun : 1 ≤ runLen)
+    (helig : s.divTilde f = s.cleared + runLen) : ConDecision M s :=
+  let bumpedExp : Fin s.numDiv → ℕ :=
+    fun k => if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k
+  let child : ConState L :=
+    ⟨s.layer, s.cleared, s.numDiv, bumpedExp,
+      Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+      s.numGen, s.genDivExp⟩
+  have hdesc : conRel M child s :=
+    conRel_of_exp_change M (s.stepCase11 f) s bumpedExp s.numGen s.genDivExp
+      (conRel_stepCase11 M s f hlayer (by rw [helig]; omega))
+  .step (s.toStepData M resRows resCols)
+    [⟨StepCase.case11, ⟨id, runLen, f.val, 0, Fin.elim0⟩, child, hdesc⟩]
+    rfl rfl
+    (by
+      intro c hc
+      simp only [List.mem_singleton] at hc
+      subst hc
+      refine ⟨?_, ?_, ?_⟩
+      · have hprof : Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f))
+            = fun k : Fin s.numDiv => if (k : ℕ) = f.val then
+                setTail s.layer s.cleared (s.divProfile k) else s.divProfile k := by
+          funext k
+          by_cases hk : k = f
+          · subst hk; simp [Function.update_self]
+          · rw [Function.update_of_ne hk, if_neg (fun h => hk (Fin.ext h))]
+        show (⟨s.numDiv, bumpedExp,
+            Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+            s.cleared⟩ : ResolutionTree.RootLedger L)
+            = stepUpdate (s.toStepData M resRows resCols) StepCase.case11 ⟨id, runLen, f.val, 0,
+              Fin.elim0⟩
+        rw [hprof]
+        rfl
+      · intro _; exact ⟨f.isLt, helig⟩
+      · intro h; nomatch h)
+
 end DLNFibre.DLN.RLCT.Engine
