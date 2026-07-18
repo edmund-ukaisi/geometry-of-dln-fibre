@@ -62,8 +62,13 @@ structure ChartSubst (M : Fin (L + 1) → ℕ) where
   localSub : Params M → Params M
   /-- The Case-1 equal-run length `J₁` of this step (the exponent-merge increment
   `M' = M + J₁·(M^{(S+1)}−J)`; page-image preprint p.16 Case 1(1)). CERTIFICATE CONSTRAINT — read by
-  `StepRel`'s case-1(1) clause. -/
+  `stepUpdate`'s case-1 clauses. -/
   runLen : ℕ
+  /-- **The transition target index** (rung 1): which parent divisor this step acts on — case-1(1)
+  merges INTO it (exponent `+= runLen·resCols`, `t̃ → cleared`); case-1(2) SPLITS it into the new
+  pivot. A raw `ℕ` (out-of-range = no-op) so `stepUpdate` stays a total function of `(StepData,
+  StepCase, ChartSubst)`. CERTIFICATE CONSTRAINT — read by `stepUpdate`. -/
+  mergeIdx : ℕ
   /-- Number of exceptional divisors this step introduces. CONSTRUCTION-SIDE BOOKKEEPING. -/
   jacDivCount : ℕ
   /-- Monomial-Jacobian exponents contributed at this step. CONSTRUCTION-SIDE BOOKKEEPING (minor 8):
@@ -118,6 +123,13 @@ structure LeafData (M : Fin (L + 1) → ℕ) where
   /-- The accumulated exponent `M_{s,k}` of each terminal divisor. CERTIFICATE CONSTRAINT — read by
   `IsFullMonomialization`, `terminalExponents`, and the exponent hooks. -/
   divExp : Fin numDiv → ℕ
+  /-- The per-divisor clearing level `t̃_{s,k}` (rung 1: the leaf ledger, so `rootLedger` is honest
+  and total over the tree — needed for the faithful `StepRel := rootLedger child = stepUpdate
+  parent` when the child is a leaf). CERTIFICATE CONSTRAINT — read via `rootLedger`. -/
+  divTilde : Fin numDiv → ℕ
+  /-- The leaf's cleared-pivot count `J` (rung 1: the leaf ledger). CERTIFICATE CONSTRAINT — read
+  via `rootLedger`. -/
+  cleared : ℕ
   /-- The rank profile of each terminal divisor's branch. CERTIFICATE CONSTRAINT — `Adm`-membership
   and the `Mval` tie are read by `IsFullMonomialization` (finding 4). -/
   divProfile : Fin numDiv → (Fin L → ℕ)
@@ -222,10 +234,32 @@ def rootDivExp {M : Fin (L + 1) → ℕ} : ResolutionTree M → ℕ → ℕ
   | leaf l, k => if h : k < l.numDiv then l.divExp ⟨k, h⟩ else 0
   | branch n _, k => if h : k < n.numDiv then n.divExp ⟨k, h⟩ else 0
 
-/-- The child root's cleared-pivot count `J` (`0` at a leaf, `S = L+1` terminal). -/
+/-- The child root's cleared-pivot count `J` (read off the leaf ledger since rung 1). -/
 def rootCleared {M : Fin (L + 1) → ℕ} : ResolutionTree M → ℕ
-  | leaf _ => 0
+  | leaf l => l.cleared
   | branch n _ => n.cleared
+
+/-- **The transition-determined child root ledger** (rung 1): the exponent/clearing CORE that a step
+determines for its child — `numDiv`, the per-divisor exponent `divExp` and clearing level
+`divTilde`, and the cleared-pivot count. Deliberately NOT the sharing `support`/`numGen`:
+transporting the support `Finset`s across the per-divisor re-indexing is the second cost center (per
+the compass) and BALLOONS
+(Codex-confirmed), so it is STOP-AND-SURFACEd to a later `genDivExp` redesign rung. -/
+structure RootLedger where
+  /-- Divisor count at the child root. -/
+  numDiv : ℕ
+  /-- Per-divisor exponent `M_{s,k}`. -/
+  divExp : Fin numDiv → ℕ
+  /-- Per-divisor clearing level `t̃_{s,k}`. -/
+  divTilde : Fin numDiv → ℕ
+  /-- Cleared-pivot count `J`. -/
+  cleared : ℕ
+
+/-- Project the child root's ledger core off a subtree — honest and total (both `StepData` and
+`LeafData` carry the four fields). The faithful `StepRel` equates this to `stepUpdate parent e`. -/
+def rootLedger {M : Fin (L + 1) → ℕ} : ResolutionTree M → RootLedger
+  | leaf l => ⟨l.numDiv, l.divExp, l.divTilde, l.cleared⟩
+  | branch n _ => ⟨n.numDiv, n.divExp, n.divTilde, n.cleared⟩
 
 /-- The terminal EXPONENTS the threshold `½·min` reads off: each leaf's divisor exponents PLUS its
 positive Morse-residual rank `resRank` (the resRank fold — so the `region_glue` ratio `hrat` covers

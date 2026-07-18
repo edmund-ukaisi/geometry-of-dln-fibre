@@ -1,18 +1,21 @@
 import DLNFibre.DLN.RLCT.Engine.EngineObligations
 
 /-!
-# `DLNFibre.DLN.RLCT.Engine.CanonicalWitness224` — the `(2,2,4)` model, split
+# `DLNFibre.DLN.RLCT.Engine.CanonicalWitness224` — the `(2,2,4)` model (faithful `stepUpdate`)
 
 Witness split (precision ruling): `canonicalResolution224_arithmetic` — a clean-three BANK piece
-(the carrier-independent conjuncts: full monomialisation with `divProfile ∈ Adm`, the child-reading
-`StepRel`, the branch-rooted base, the exponent hooks, and the LIVE attainment);
-`canonicalResolution224` — a `@[blueprint]` FORECAST whose `ChartBridge` conjunct is sorried pending
-the P8 CoV lemma.
+(the carrier-independent conjuncts: full monomialisation with `divProfile ∈ Adm`, the FAITHFUL
+`StepRel` (`rootLedger child = stepUpdate parent`), the branch-rooted base, the exponent hooks, and
+the LIVE attainment); `canonicalResolution224` — a `@[blueprint]` FORECAST whose `ChartBridge`
+conjunct is sorried pending the P8 CoV lemma.
 
-REAL root step (ruling 4): a genuine Case-2 blow-up with a `2×2` residual (`resRows = resCols = 2`,
-so codim `= 4 = minAdm(2,2,4)`), whose CHILD leaf carries the exponent-`4` divisor — certifying the
-STRENGTHENED `StepRel` (which reads the child). Plus a Case-1(1) child-merge witness
-(`M' = M + J₁·resCols`, `5 + 2·3 = 11`; worked.tex:505–507) — kills the old childless `StepRel`.
+RUNG-1 truth-signal: each child leaf's ledger fields are DEFINITIONALLY the projections of
+`stepUpdate parent`, so the faithful `StepRel` discharges by structure-eta `rfl` — exactly fork 9's
+"the construction computes child ledgers definitionally". The root is the BASE node (`numDiv = 0`);
+its case-2 edge appends the one shared divisor of exponent `resRows·resCols = 4 = minAdm(2,2,4)`.
+
+Kill-conditions (dummy-divisor rejection): a child with an EXTRA or MISSING divisor changes
+`rootLedger.numDiv` and is provably rejected (`dummyDivisor_not_stepRel` / `vanishingDivisor_...`).
 -/
 
 namespace DLNFibre.DLN.RLCT.Engine
@@ -23,24 +26,29 @@ open scoped BigOperators
 /-- The width vector `(2,2,4)`. -/
 abbrev M224 : Fin 3 → ℕ := ![2, 2, 4]
 
-/-- The REAL root blow-up node: a Case-2 step with a `2×2` residual (codim `4 = minAdm(2,2,4)`). -/
+/-- The BASE root node (`S = J = 0`, no exceptional divisors yet): its case-2 edge blows up the full
+`2×2` residual. -/
 def rootNode224 : StepData M224 where
   layer := 0; cleared := 0; resRows := 2; resCols := 2
-  numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
-  divExp := fun _ => 4; divTilde := fun _ => 0; numGen := 1; support := fun _ => {0}
+  numDiv := 0; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
+  divExp := fun k => k.elim0; divTilde := fun k => k.elim0; numGen := 0; support := fun k => k.elim0
 
-/-- The terminal leaf: the CHILD divisor of exponent `4 = resRows·resCols = Mval((0,0)) = minAdm`,
-deepest ADMISSIBLE profile `(0,0)`; placeholder chart data (the arithmetic conjuncts do not read
-it). -/
+/-- The Case-2 edge substitution (placeholder self-map; `mergeIdx` unused by case-2). -/
+def subst224 : ChartSubst M224 where
+  localSub := id; runLen := 0; mergeIdx := 0; jacDivCount := 1; jacPow := fun _ => 3
+
+/-- The terminal leaf: its LEDGER is DEFINITIONALLY `stepUpdate rootNode224 case2 subst224` — so the
+faithful `StepRel` is rfl. The one appended shared divisor has exponent
+`4 = resRows·resCols = minAdm`, deepest ADMISSIBLE profile `(0,0)`. -/
 noncomputable def leaf224 : LeafData M224 where
-  numDiv := 1; divExp := fun _ => 4; divProfile := fun _ => ![0, 0]
+  numDiv := (stepUpdate rootNode224 StepCase.case2 subst224).numDiv
+  divExp := (stepUpdate rootNode224 StepCase.case2 subst224).divExp
+  divTilde := (stepUpdate rootNode224 StepCase.case2 subst224).divTilde
+  cleared := (stepUpdate rootNode224 StepCase.case2 subst224).cleared
+  divProfile := fun _ => ![0, 0]
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
-
-/-- The Case-2 edge substitution ledger (placeholder self-map; `runLen` unused by case-2). -/
-def subst224 : ChartSubst M224 where
-  localSub := id; runLen := 0; jacDivCount := 1; jacPow := fun _ => 3
 
 /-- The witness tree: the real Case-2 root over its single terminal chart. -/
 noncomputable def tree224 : ResolutionTree M224 :=
@@ -54,27 +62,28 @@ noncomputable def tree224 : ResolutionTree M224 :=
       = [(rootNode224, Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224))] := by
   simp [tree224, ResolutionTree.stepEdges, ResolutionTree.edgesStepEdges]
 
+/-- `leaf224.numDiv = 1` (the base root's case-2 appends exactly one divisor). -/
+@[simp] theorem numDiv_leaf224 : leaf224.numDiv = 1 := rfl
+
+/-- `leaf224`'s single divisor has exponent `4` (`= resRows·resCols`). -/
+@[simp] theorem divExp_leaf224 (k : Fin leaf224.numDiv) : leaf224.divExp k = 4 := by
+  fin_cases k; decide
+
 theorem terminalExponents_tree224 : ResolutionTree.terminalExponents tree224 = [4] := by
-  simp [ResolutionTree.terminalExponents, leaves_tree224, leaf224, List.finRange]
+  rw [ResolutionTree.terminalExponents, leaves_tree224]; decide
 
 /-- `minAdm (2,2,4) = 4`, via the banked layer-peeling recursion. -/
 theorem minAdm_M224 : minAdm M224 = 4 := by
   rw [← minAdmRec_eq_minAdm]; decide
 
-/-- The real Case-2 root edge satisfies the STRENGTHENED `StepRel` — parent sharing + the CHILD's
-new divisor at exponent `resRows·resCols = 4`. -/
+/-- **The FAITHFUL case-2 root edge**: the child leaf's ledger IS `stepUpdate rootNode224 case2
+subst224` by construction, so `StepRel` is discharged by structure-eta `rfl`. -/
 theorem rootEdge224_stepRel :
-    StepRel rootNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)) := by
-  unfold StepRel rootNode224
-  refine ⟨fun _ => ⟨⟨0, fun _ => Finset.mem_singleton_self 0⟩, ⟨0, ?_, ?_⟩⟩,
-    fun h => by simp [Edge.case] at h, fun h => by simp [Edge.case] at h⟩
-  · simp [Edge.child, ResolutionTree.rootNumDiv, leaf224]
-  · simp [Edge.child, ResolutionTree.rootDivExp, leaf224]
+    StepRel rootNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)) := rfl
 
 /-- **The arithmetic bank piece** (clean-three): at `M = (2,2,4)` the carrier-independent conjuncts
-are jointly satisfiable — full monomialisation (`divExp = Mval`, `divProfile ∈ Adm`), the
-child-reading `StepRel`, the branch-rooted base, the exponent hooks, and the live attainment.
-Survives the restructure. -/
+are jointly satisfiable — full monomialisation (`divExp = Mval`, `divProfile ∈ Adm`), the FAITHFUL
+`StepRel`, the branch-rooted base, the exponent hooks, and the live attainment. -/
 theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
     IsFullMonomialization t ∧
       (∀ p ∈ ResolutionTree.stepEdges t, StepRel p.1 p.2) ∧
@@ -88,8 +97,10 @@ theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
   · intro l hl k
     rw [leaves_tree224, List.mem_singleton] at hl
     subst hl
-    fin_cases k
-    exact ⟨by decide, by decide⟩
+    rw [divExp_leaf224]
+    refine ⟨?_, ?_⟩
+    · fin_cases k; rfl
+    · fin_cases k; decide
   · intro p hp
     rw [stepEdges_tree224, List.mem_singleton] at hp
     subst hp
@@ -101,7 +112,8 @@ theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
   · refine ⟨leaf224, ?_, ?_, ?_⟩
     · rw [leaves_tree224]; exact List.mem_singleton_self _
     · exact ⟨0, trivial⟩
-    · rw [minAdm_M224]; simp [leaf224, List.finRange]
+    · rw [minAdm_M224]
+      exact List.mem_map.mpr ⟨⟨0, by decide⟩, List.mem_finRange _, divExp_leaf224 _⟩
 
 /-- **The full `CanonicalResolution` witness** at `(2,2,4)` — a `@[blueprint]` FORECAST. The
 carrier-independent conjuncts are the bank piece above; the `ChartBridge` conjunct is sorried
@@ -111,45 +123,88 @@ pending the P8 CoV lemma. -/
   obtain ⟨t, hmono, hstep, hroot, hexp, hlive⟩ := canonicalResolution224_arithmetic
   exact ⟨t, hmono, hstep, hroot, by sorry, hexp, hlive⟩
 
-/-! ## Case-1(1) child-merge witness (ruling 4 — kills the old childless `StepRel`) -/
+/-! ## Case-1(1) child-merge witness (faithful; kills the old childless `StepRel`) -/
 
-/-- A Case-1(1) parent: one divisor `divExp 0 = 5` at clearing level `0`, residual width
-`resCols = 3`. -/
+/-- A Case-1(1) parent: one divisor `divExp 0 = 5`, residual width `resCols = 3`. -/
 def mergeNode : StepData M224 where
   layer := 0; cleared := 0; resRows := 1; resCols := 3
   numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   divExp := fun _ => 5; divTilde := fun _ => 0; numGen := 1; support := fun _ => {0}
 
-/-- The merged child leaf: exponent `11 = 5 + 2·3 = parent divExp + J₁·resCols`. -/
+/-- The Case-1(1) edge: `runLen = J₁ = 2`, merging INTO divisor `mergeIdx = 0`. -/
+def mergeSubst : ChartSubst M224 where
+  localSub := id; runLen := 2; mergeIdx := 0; jacDivCount := 1; jacPow := fun _ => 0
+
+/-- The merged child leaf: its ledger IS `stepUpdate mergeNode case11 mergeSubst`; divisor `0`'s
+exponent becomes `11 = 5 + 2·3 = parent divExp + runLen·resCols` (preprint p.16
+`M' = M + J₁·(M^{(S+1)}−J)`). -/
 noncomputable def mergeLeaf : LeafData M224 where
-  numDiv := 1; divExp := fun _ => 11; divProfile := fun _ => ![0, 0]
+  numDiv := (stepUpdate mergeNode StepCase.case11 mergeSubst).numDiv
+  divExp := (stepUpdate mergeNode StepCase.case11 mergeSubst).divExp
+  divTilde := (stepUpdate mergeNode StepCase.case11 mergeSubst).divTilde
+  cleared := (stepUpdate mergeNode StepCase.case11 mergeSubst).cleared
+  divProfile := fun _ => ![0, 0]
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
 
-/-- The Case-1(1) edge: `runLen = J₁ = 2`. -/
-def mergeSubst : ChartSubst M224 where
-  localSub := id; runLen := 2; jacDivCount := 1; jacPow := fun _ => 0
-
-/-- **Case-1(1) child-merge witness** (worked.tex:505–507; `M' = M + J₁·(M^{(S+1)}−J)`, numerically
-`5 + 2·3 = 11`): the merged child exponent equals `parent divExp + runLen·resCols`, so a Case-1(1)
-edge satisfies the STRENGTHENED `StepRel`. The OLD childless clause could not see this. -/
+/-- **Case-1(1) child-merge witness** (faithful; `5 + 2·3 = 11`): the child leaf's ledger IS
+`stepUpdate mergeNode case11 mergeSubst`, so `StepRel` is rfl. -/
 theorem mergeEdge_stepRel :
-    StepRel mergeNode (Edge.mk StepCase.case11 mergeSubst (ResolutionTree.leaf mergeLeaf)) := by
-  unfold StepRel mergeNode
-  refine ⟨fun h => by simp [Edge.case] at h, fun _ => ⟨0, rfl, ⟨0, ?_, ?_⟩⟩,
-    fun h => by simp [Edge.case] at h⟩
-  · simp [Edge.child, ResolutionTree.rootNumDiv, mergeLeaf]
-  · simp [Edge.child, Edge.subst, ResolutionTree.rootDivExp, mergeLeaf, mergeSubst]
+    StepRel mergeNode (Edge.mk StepCase.case11 mergeSubst (ResolutionTree.leaf mergeLeaf)) := rfl
 
-/-! ## The in-file mixed-case Case-1 positive witness + rejection (fresh-review checklist) -/
+/-- The merged child's divisor exponent is `11` (numeric pin of the page-image merge equation). -/
+theorem mergeLeaf_divExp : mergeLeaf.divExp ⟨0, by decide⟩ = 11 := by decide
 
-/-- A second placeholder substitution (distinct from `subst224`) for the case-1(2) edge. -/
+/-! ## Dummy-divisor rejection (the rung-1 kill-condition, both directions) -/
+
+/-- A child with an EXTRA divisor (`numDiv = 2`) not produced by the case-1(1) transition (which
+preserves `numDiv = 1`). -/
+noncomputable def dummyMergeLeaf : LeafData M224 where
+  numDiv := 2; divExp := fun _ => 11; divTilde := fun _ => 0; cleared := 0
+  divProfile := fun _ => ![0, 0]
+  numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
+  chartMap := id; srcBox := Set.univ; resRank := 0
+  divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
+
+/-- **Dummy-divisor rejection (appearing)**: a case-1(1) edge whose child has an EXTRA divisor is
+REJECTED — `rootLedger.numDiv` (`2`) ≠ `stepUpdate.numDiv` (`1`). The faithful `StepRel` sees the
+divisor the old existential form could not. -/
+theorem dummyDivisor_not_stepRel :
+    ¬ StepRel mergeNode
+      (Edge.mk StepCase.case11 mergeSubst (ResolutionTree.leaf dummyMergeLeaf)) := by
+  unfold StepRel
+  intro h
+  have hn : (2 : ℕ) = 1 := congrArg ResolutionTree.RootLedger.numDiv h
+  exact absurd hn (by decide)
+
+/-- A child MISSING the appended divisor (`numDiv = 0`) where case-2 must append one
+(`numDiv = 1`). -/
+noncomputable def vanishingLeaf : LeafData M224 where
+  numDiv := 0; divExp := fun k => k.elim0; divTilde := fun k => k.elim0; cleared := 0
+  divProfile := fun k => k.elim0
+  numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
+  chartMap := id; srcBox := Set.univ; resRank := 0
+  divCoord := fun k => k.elim0; resCoord := Fin.elim0
+
+/-- **Dummy-divisor rejection (vanishing)**: a case-2 edge whose child DROPS the appended divisor is
+REJECTED — `rootLedger.numDiv` (`0`) ≠ `stepUpdate.numDiv` (`1`). -/
+theorem vanishingDivisor_not_stepRel :
+    ¬ StepRel rootNode224
+      (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf vanishingLeaf)) := by
+  unfold StepRel
+  intro h
+  have hn : (0 : ℕ) = 1 := congrArg ResolutionTree.RootLedger.numDiv h
+  exact absurd hn (by decide)
+
+/-! ## The in-file mixed-case Case-1 record (carrier records both cases of one blow-up) -/
+
+/-- A second substitution (distinct from `subst224`) for the case-1(2) edge. -/
 def subst224b : ChartSubst M224 where
-  localSub := id; runLen := 1; jacDivCount := 1; jacPow := fun _ => 1
+  localSub := id; runLen := 1; mergeIdx := 0; jacDivCount := 1; jacPow := fun _ => 1
 
 /-- **A mixed-case Case-1 blow-up**: one node with TWO edges of distinct case + substitution, which
-the edge-labelled carrier records faithfully. -/
+the edge-labelled carrier records faithfully (a carrier-shape witness; not a `StepRel` witness). -/
 noncomputable def mixedCaseTree : ResolutionTree M224 :=
   ResolutionTree.branch rootNode224
     [Edge.mk StepCase.case11 subst224 (ResolutionTree.leaf leaf224),
@@ -160,24 +215,5 @@ theorem mixedCaseTree_records_both :
     (ResolutionTree.stepEdges mixedCaseTree).map (fun p => p.2.case)
       = [StepCase.case11, StepCase.case12] := by
   simp [mixedCaseTree, ResolutionTree.stepEdges, ResolutionTree.edgesStepEdges, Edge.case]
-
-/-- A node whose CHILD does NOT carry the Case-2 codim exponent: `resRows·resCols = 4` but the child
-leaf's divisor exponent is `2 ≠ 4`. -/
-noncomputable def badLeaf : LeafData M224 where
-  numDiv := 1; divExp := fun _ => 2; divProfile := fun _ => ![0, 0]
-  numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
-  chartMap := id; srcBox := Set.univ; resRank := 0
-  divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
-
-/-- **case-contradicts-child rejection**: a Case-2 edge whose CHILD lacks the codim exponent
-(`resRows·resCols = 4`, child exponent `2`) is REJECTED by the STRENGTHENED `StepRel` — the case tag
-cannot contradict the emitted child. (Now reads the child, unlike the old childless form.) -/
-theorem stepRel_rejects_mismatched_case2 :
-    ¬ StepRel rootNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf badLeaf)) := by
-  rintro ⟨hc2, _, _⟩
-  obtain ⟨_, ⟨kc, hlt, hexp⟩⟩ := hc2 rfl
-  simp only [Edge.child, ResolutionTree.rootNumDiv, badLeaf] at hlt
-  interval_cases kc <;>
-    simp [Edge.child, ResolutionTree.rootDivExp, badLeaf, rootNode224] at hexp
 
 end DLNFibre.DLN.RLCT.Engine
