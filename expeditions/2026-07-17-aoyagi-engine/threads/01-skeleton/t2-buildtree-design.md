@@ -193,3 +193,42 @@ At `M = (3,3,4)`, layer `S=1` (Lean `layer=1`), `J=0`, one pending divisor with 
   the IsFullMonomialization + exponent-hook discharge (leaf-Adm = weakInv + leaf-`t̃=0`); (3) wire the
   chart-producer hole. T3 coverage commissioned in parallel against §2 (own lane; first rung = the
   per-blow-up local covering lemma at corank≥2).
+
+## 6. DELIVERED (2026-07-18) + cross-lane inputs folded
+
+**Delivered (§5-(1) structural core, `EngineConstruction.lean`, 3 clean-three pushes):** `buildTree =
+WellFounded.fix (conRel_wf M)` + `ConDecision`/`StepChild` decision types + `rootLedger_buildTree`;
+`base_of_buildTree` (§3 base) + `stepRel_all_of_buildTree` (§2 StepRel-all, via `buildTree_step`/
+`buildTree_terminal`/`edgesStepEdges_eq`); `WeakDecInv` + per-transition preservation. `ConDecision.step`
+carries `hlayer` (base needs `layer`; `RootLedger` core drops it) + `hstep` (= the per-edge `StepRel`
+guarantee). Findings: **block-bound is a LEAF property, not per-node** (a tail-write writes `cleared=J`,
+`> admBound` at a narrow later layer, e.g. `M=(2,3,3,1)`); the per-node invariant is weak-decrease ONLY.
+
+**Recalibration:** closing `monomialization_terminates` needs, beyond the assembly + T3, the **CONCRETE
+ORACLE** — a total `(s) → ConDecision M s` proving a valid eligible-minimal decision exists at every
+reachable state and terminates in admissible `t̃=0` full monomializations, coupled to a **strengthened
+`StateInvariant`** (width bounds `J ≤ running-min widths`). A distinct third unit (the deep termination
+content), not "assembly".
+
+**Input (coverage rung 2 complete):** `pivotComplete`/`StepEmit` contract now concrete in-code
+(`node_pivotCover_of_atom`): per-edge `localSub = q.symm ∘ Prod.map (pivotChart pivotOf) id ∘ q`,
+`childRegion = q⁻¹'(pivotChartDom ×ˢ univ)`, counts per `page-pin-centers.md`.
+
+**Input (srcBox form):** leaves take the **FLAT-CUBE** form `srcBox = paramsEquivFlat⁻¹'(cubeBox R)`
+(`CoRank2Spike` shape) — then `flatCubeSrcBox_measurableSet`/`_bounded` + `coord_clauses`
+(`Engine/PivotLeafClauses.lean`) discharge measurable + bounded + the 3 coordinate conjuncts for free.
+ADOPTED (not the `q`-preimage form, which needs `q` as a `ContinuousLinearEquiv` for bounded).
+
+**Shear DECISION (answer to the coverage seat's question).** Coherence (`ChartBridge`, fixed) forces
+`leaf.chartMap = fold of edge localSubs`; `LeafJacobian` (fixed) is `chartMap = ψ∘β` with `ψ` a
+bounded-unit gauge carrying a nontrivial det bound (`lo ≤ |det Dψ| ≤ hi`). If every `localSub` were the
+PURE pivot `β`, the fold would be pure `β` and force `ψ = id`. The DLN charts carry an LDU/Morse gauge
+(cf. `RouteMInteriorLDU*`, `DeepestGaugeChart`), so `ψ ≠ id` in general — hence the gauge MUST sit in
+the `localSub` fold: **the emission is the ψ-COMPOSED form**, NOT coverage's pure-pivot contract. →
+route the one-lemma reconciliation (coverage's cover argument must absorb the bounded homeomorphism `ψ`,
+or the contract gains a shear factor). **ESCAPE HATCH to check first (cheapest):** if the residual
+distortion is absorbed entirely by the `LeafPullback` SQUEEZE (`lo·‖z‖² ≤ residualCore ≤ hi·‖z‖²`)
+rather than a coordinate gauge, then `ψ = id` and the pure-pivot contract holds with NO reconciliation.
+A pnp/coverage truth-value on "is there a coordinate gauge, or is it squeeze-absorbed?" decides it; I
+lean ψ-composed (the LDU machinery exists as coordinate maps), so route the reconciliation unless that
+check comes back squeeze-only.
