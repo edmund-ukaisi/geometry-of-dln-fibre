@@ -1034,6 +1034,39 @@ theorem leaf_mem_Adm {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (hL : 
       le_tildeOf hL (fun i => hwd k i j (Fin.le_def.mpr (by have := i.isLt; omega)))
     rw [le_antisymm hle (tildeOf_le j), ht0 k]
 
+/-! ## o4→assembly: the joint invariant `OracleInv` + its cone-goodness preservation
+
+The six invariants the oracle carries, bundled: the construction's cone-goodness = `OracleInv` holds
+at every reachable state (base at the root, preserved by each transition via the per-invariant
+maintenance lemmas). The preservation lemmas thread the dispatch/chooser guarantees (eligibility /
+gap / minimality) once. -/
+
+/-- The joint state invariant carried down the construction (the cone-goodness bundle). -/
+structure OracleInv (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop where
+  /-- Per-node weak-decrease. -/
+  wd : WeakDecInv s
+  /-- Constant tail from the current layer. -/
+  ft : FlatTail s
+  /-- Live divisors' head bounded by the running-min width. -/
+  wb : WidthBound M s
+  /-- Head-domination among live divisors. -/
+  lhd : LiveHeadDom M s
+  /-- Same-`t̃`-level pairwise comparability. -/
+  slc : SameLevelChainInv s
+  /-- Layer / cleared / live-width state bounds. -/
+  si : StateInvariant M s
+
+/-- **Layer rollover preserves `OracleInv`** (staying live, `layer < L`) — the joint assembly of the
+six per-invariant rollover-maintenance lemmas. -/
+theorem OracleInv_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (hlive : s.layer < L) (inv : OracleInv M s) : OracleInv M s.stepRollover where
+  wd := WeakDecInv_stepRollover s inv.wd
+  ft := FlatTail_stepRollover s inv.ft
+  wb := WidthBound_stepRollover s inv.wb inv.ft inv.wd hlive
+  lhd := LiveHeadDom_stepRollover s inv.lhd inv.ft inv.wd hlive
+  slc := SameLevelChainInv_stepRollover s inv.slc
+  si := StateInvariant_stepRollover s hlive inv.si
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
