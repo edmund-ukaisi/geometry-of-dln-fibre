@@ -687,6 +687,26 @@ theorem widthMinUpto_le_layerCap {L : ℕ} (M : Fin (L + 1) → ℕ) (n : ℕ) :
     (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ (0 : Fin (L + 1)), by simp⟩))
     (Finset.single_le_sum (fun i _ => Nat.zero_le (M i)) (Finset.mem_univ (0 : Fin (L + 1))))
 
+/-- **`widthMinUpto` one-step recursion**: `widthMinUpto (n+1) = min (widthMinUpto n) (M ⟨n+1⟩)`
+(the running min absorbs the next width). The head-vanishing of the `Mval`-telescoping rides this
+(`T j = runMinWidth j = min(tPrev j, M j.succ)`, so one factor of the `Mval` term is zero). -/
+theorem widthMinUpto_succ {L : ℕ} (M : Fin (L + 1) → ℕ) {n : ℕ} (h : n + 1 < L + 1) :
+    widthMinUpto M (n + 1) = min (widthMinUpto M n) (M ⟨n + 1, h⟩) := by
+  apply le_antisymm
+  · apply le_min
+    · exact widthMinUpto_mono M (Nat.le_succ n)
+    · exact Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ _, Nat.le_refl _⟩)
+  · rw [widthMinUpto]
+    apply Finset.le_inf'
+    intro i hi
+    rw [Finset.mem_filter] at hi
+    obtain ⟨-, hi⟩ := hi
+    rcases Nat.lt_or_ge i.val (n + 1) with h1 | h1
+    · exact le_trans (min_le_left _ _)
+        (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ i, Nat.le_of_lt_succ h1⟩))
+    · have hi' : i = ⟨n + 1, h⟩ := Fin.ext (Nat.le_antisymm hi h1)
+      rw [hi']; exact min_le_right _ _
+
 /-- `runMinWidth M j ≤ admBound M j` — the running-min width is `≤` the block bound (`= min(M⁰,M¹)`
 at `j=0`, `≤ M^{j+1}` otherwise). Bridges the WidthBound `runMinWidth` head to the `Adm`
 block-bound. -/
