@@ -1804,3 +1804,16 @@ off-by-one to the oracle authority) + an early-rollover kill-witness. Honest sco
 load-bearing for o3 — lands alongside. Compass 13(Q3) applied; the carrier edit is FINAL-shaped;
 the oracle spine resumes on it. The gate pattern's full record today: five elder convenings,
 five load-bearing catches.
+
+## 2026-07-18 THE ROLLOVER CARRIER LANDS — GUARD PINNED STRUCTURALLY (tick 131)
+Merged + verified (zero sorryAx incl. the new kill-witness): StepCase.rollover + the relabel
+clause + the AT-EXHAUSTION GUARD — with the design move that dissolves the elder's off-by-one
+concern STRUCTURALLY: widthMinUpto moved to EngineDefs so StepRel's guard and classify's
+rollover trigger read the SAME definition (no comparison to pin — they cannot disagree).
+earlyRollover_not_stepRel bites exactly the fork-9 stranding class (the ledger conjunct HOLDS,
+the guard rejects). The guard is vacuous for the blow-up cases (rfl-class preserved; existing
+witnesses trivially extended). Full aggregator green at the seat (8891); congruence lemma in.
+THE ORACLE SPINE IS UNBLOCKED on the ratified carrier — its shape fully specified (dispatch on
+classify; rollover child with the guard from the exhaustion branch; append children definitional;
+case-1(1) via the congruence; terminal via leafOfState) → WF-reachability + o5-∈ close the
+construction. GO issued.
