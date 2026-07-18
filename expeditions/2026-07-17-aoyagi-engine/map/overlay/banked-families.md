@@ -43,10 +43,13 @@ open fork-10 un-deferral.*
 - `ConState` / `StateInvariant` / per-case μ-descent (`conRel_stepCase11` /`_stepAppendAdvance`/
   `_stepRollover`, all clean-three, tick 59) — `Engine/EngineConstruction.lean`.
 
-**Open (the chooser — fork-10 un-deferral, recon §4 fidelity delta).** The full `T`-vector carrier:
-Aoyagi carries `T_{s,k}=(t¹,…,t^L)`; the engine stores only `t̃`. The p.15 minimality tie-break
-(lex-min `T` per Def 4) and the J₁ gap condition NEED the full vector — both named
-deliberately-uncaptured in the `StepRel` docstring, both the chooser's burden (elder tick 55).
+**Open — the FAITHFUL carrier lands at R1 NOW (council #3 fork 11, 2026-07-18):** full-`T` in the
+State (t̃ DERIVED from T; T is non-derivable chooser-required data — deferring it is incoherent and
+risks a μ-descent retrofit) + the `genDivExp` multiplicity field, in ONE faithful node-data pass.
+The `EngineConstruction` "stores ONLY what the measure reads" docstring is STRUCK (the retired
+finiteness razor encoded in code). The p.15 minimality tie-break + J₁ gap need full-`T`; propagation
+PROOFS defer to R4. STOP-and-surface if full-`T` `stepUpdate` balloons; divProfile T-settings
+page-verified at build.
 
 ---
 
@@ -110,12 +113,11 @@ globalize, task #3) → `leaf_chart_image_lintegral_lt_top` → `region_glue_of_
 
 ---
 
-## R4 — `genDivExp` support redesign (MEDIUM — fidelity)
+## R4 — `genDivExp` PROPAGATION proofs (MEDIUM — fidelity)
 
-*Multiplicity-valued `genDivExp : Fin numGen → Fin numDiv → ℕ`, restoring sharing-propagation
-fidelity. NAMED rung (elder tick 46 condition on the R1 "middle path": support deliberately out of
-rung 1, redesigned here). No banked substrate to consume — this is fresh fidelity work on the
-carrier.*
+*The multiplicity-valued `genDivExp` FIELD now lands at R1 (council #3 fork 11); R4 is the
+sharing-PROPAGATION proofs across per-divisor re-indexing (what balloons — Codex-confirmed tick 44).
+No banked substrate to consume — fresh fidelity work on the carrier.*
 
 **Guard / kill-condition (do NOT ship without):** `g-coupled-binding-334` (minAdm(3,3,4)=8 coupled
 path only) + `g-delta-flatten` (identical multiplicities, different lct) re-checked. The current
@@ -125,10 +127,16 @@ fidelity, not finiteness-load-bearing.
 
 ---
 
-## R5 — wiring (MECHANICAL)
+## R5 — wiring (MECHANICAL) + the enforced axiom-gate
 
-*Discharge `hbox`; repoint the canonical headline → `_gen`; delete `cited_aoyagi_dln`. The recon's
-DECISIVE finding: this is a repoint + delete, NOT a build.*
+*Discharge `hbox`; repoint the canonical headline → `_gen` → the UNCONDITIONAL CLEAN-THREE
+`aoyagi_learning_coefficient` (kills the sorryAx of the 5 skeleton rungs). **Council #3 precision pin
+(fork 11): this does NOT delete `cited_aoyagi_dln`** — the cite was NEVER in the λ cone (grep: only
+absence-asserting docstrings); it lives in the OUT-OF-SCOPE `RlctPayoff` layer (needs `minAdm=codim`,
+the next expedition's runway). "Kills the cite for free" was headline-inflation, STRUCK. GUARD (seat
+B): `_gen`'s clean-three currently rests on a `#print` DIAGNOSTIC (`AxCheck.lean:913`),
+confirmed-by-discipline not build-enforced — R5 installs an ENFORCED axiom-gate. L=1 reaches the
+unsuffixed theorem via a SEPARATE fold (not `_gen`).*
 
 **Consumes (banked, sorry-free — the whole consumer stack is PROVEN):**
 - `aoyagi_learning_coefficient_gen` — `Validate/HeadlineGenAssembly.lean:55`. Clean-three, conditional
@@ -151,16 +159,18 @@ DECISIVE finding: this is a repoint + delete, NOT a build.*
 
 ---
 
-## R6 — regular-peel transcription (DISTINCT-BET, OPTIONAL, NOT critical-path)
+## R6 — regular-peel transcription (OWED FIRST-CLASS; off critical path, cost-probe-gated)
 
-*Lemma 2 + Theorem 3 (block-diagonalization) as first-class library objects, for full fork-10
-fidelity. Recon §4 [Q]: the banked value lane already discharges Theorem 3's `[−r²+…]/2` shift, so
-the recon RECOMMENDS the value lane suffices for λ; R6 first-class transcription is a distinct-bet.*
+*Lemma 2 + Theorem 3 (block-diagonalization, Layer A) as first-class library objects. **Council #3
+OVERRODE the recon's "value lane suffices" (fork 11): both seats reject it as the retired razor — the
+value lane gets the NUMBER, not the OBJECT; under fork 10 (build HER mechanism) the peel is OWED.**
+Placed post-spine, off the critical path, COST-PROBE-GATED (the SchurCore depth-≥3 wall,
+`rr4-precedent`), surfaced to the operator for scope confirmation. θ + Eqs (1)–(5) stay out.*
 
-**Consumes (if adopted):** the value-lane peel is already banked (`reg_shift_add_core_eq_aoyagiLambda`,
-`DeepestFrontGaugeGen`, `HeadlineRowColPermWLOG`, `D1Ge*` — all wired sorry-free in `_gen`). A
-first-class transcription would build Lemma 2's Schur-complement CoV + Theorem 3's peel induction NOT
-from these (they compute the value, not the objects). No banked object-level substrate — fresh work.
+**Consumes:** the value-lane peel (`reg_shift_add_core_eq_aoyagiLambda`, `DeepestFrontGaugeGen`,
+`HeadlineRowColPermWLOG`, `D1Ge*`, all banked sorry-free in `_gen`) computes the shift VALUE, not the
+OBJECT — so R6 builds Lemma 2's Schur-complement CoV + Theorem 3's peel induction as fresh
+object-level work; no banked object-level substrate. Cost-probe first (the SchurCore wall).
 
 ---
 
