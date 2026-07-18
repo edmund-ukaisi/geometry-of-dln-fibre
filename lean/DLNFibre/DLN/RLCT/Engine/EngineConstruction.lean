@@ -853,6 +853,55 @@ theorem LiveHeadDom_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : C
       simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
       exact hlhd a' b' hab hblt i hi'
 
+/-- **A case-1(1) merge preserves `LiveHeadDom`** — the HARDEST case, consuming chooser MINIMALITY.
+The tail-written target `tgt` (the eligible min at level `ℓ`) drops to level `cleared`; its head is
+unchanged. For the new pairs: a live divisor BELOW (`t̃ < cleared`) is dominated by `tgt`'s head via
+`hlhd` (it sits below level `ℓ = t̃ tgt`); a live divisor ABOVE — by the run-gap (`hgap`) it is at
+level `≥ ℓ`, and either `= ℓ` (MINIMALITY: `tgt ≤` it on the head) or `> ℓ` (`hlhd`). Old pairs via
+`hlhd`. -/
+theorem LiveHeadDom_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (tgt : Fin s.numDiv)
+    {ℓ : ℕ} (hlhd : LiveHeadDom M s) (hlive : s.layer < L) (htgt : s.divTilde tgt = ℓ)
+    (hgt : s.cleared < ℓ) (hℓ : ℓ < widthMinUpto M s.layer)
+    (hmin : ∀ k : Fin s.numDiv, s.divTilde k = ℓ → ∀ j : Fin L,
+      s.divProfile tgt j ≤ s.divProfile k j)
+    (hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer →
+      s.divTilde k ≤ s.cleared ∨ ℓ ≤ s.divTilde k) :
+    LiveHeadDom M (s.stepCase11 tgt) := by
+  have htt : (s.stepCase11 tgt).divTilde tgt = s.cleared := by
+    simp only [ConState.divTilde, ConState.stepCase11, Function.update_self]
+    refine tildeOf_setTail_eq hlive (fun p _ => ?_)
+    have h1 : s.divTilde tgt ≤ s.divProfile tgt p := tildeOf_le p
+    omega
+  have htk : ∀ k, k ≠ tgt → (s.stepCase11 tgt).divTilde k = s.divTilde k := fun k hk => by
+    simp only [ConState.divTilde, ConState.stepCase11, Function.update_of_ne hk]
+  intro a b hab hblt i hi
+  have hi' : (i : ℕ) < s.layer := hi
+  have hhead : ∀ k, (s.stepCase11 tgt).divProfile k i = s.divProfile k i := fun k => by
+    simp only [ConState.stepCase11, Function.update_apply]
+    split_ifs with hk
+    · simp only [setTail, if_neg (not_le.mpr hi'), hk]
+    · rfl
+  rw [hhead a, hhead b]
+  rcases eq_or_ne a tgt with ha | ha
+  · rw [ha] at hab ⊢
+    rcases eq_or_ne b tgt with hb | hb
+    · rw [hb, htt] at hab; simp only [lt_self_iff_false] at hab
+    · rw [htt, htk b hb] at hab
+      rw [htk b hb] at hblt
+      rcases hgap b hblt with hc | hc
+      · exact absurd hc (not_le.mpr hab)
+      · rcases eq_or_lt_of_le hc with heq | hlt
+        · exact hmin b heq.symm i
+        · exact hlhd tgt b (htgt ▸ hlt) hblt i hi
+  · rcases eq_or_ne b tgt with hb | hb
+    · rw [hb] at hab ⊢
+      rw [htk a ha, htt] at hab
+      refine hlhd a tgt ?_ (htgt ▸ hℓ) i hi
+      rw [htgt]; omega
+    · rw [htk a ha, htk b hb] at hab
+      rw [htk b hb] at hblt
+      exact hlhd a b hab hblt i hi
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
