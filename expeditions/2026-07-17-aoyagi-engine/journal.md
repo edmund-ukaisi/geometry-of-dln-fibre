@@ -828,3 +828,17 @@ library; the D1L2 re-home as worked example), naming refresh. Sizing rule in the
 index what the rungs consume, register what must be avoided, STOP — a full predecessor catalog
 is itself the local-min trap. Operator priority honored: not-getting-stuck > perfect reuse;
 the independent library first.
+
+## 2026-07-18 RUNG 2C BATTERY + GLUE B0 MERGED (tick 62)
+Architect's g-resrank-minadm.py merged (exit 0) with a CONVENTION FINDING pinned: the threshold-
+relevant residual rank is the TRANSVERSE (on-core) Morse rank (= codim of the core), NOT the
+generic-ambient Hessian rank the bridge-cert tabulated — (2,2,2): 4 not 5; (2,2,4): 8 not 11.
+The truth-witness resRank ≥ minAdm PASSES on every tested chart with a TIGHT instance at (3,3,4):
+8 ≥ 8 — zero slack, so the resRank fold genuinely binds there (consistent with the expedition's
+zero-slack theme; the exact-steps rule was never optional). CONSEQUENCE for the tide: LeafData's
+resRank field means the TRANSVERSE rank — convention flows to rung 4 leaf construction + the glue
+lane's Morse read. HONEST SCOPE: intermediate corank≥2 residuals are coupled recursive cores, not
+Morse; only TRUE leaves carry ‖z‖²; the genuine L=3 leaf is the separate de-risk. Glue B0 merged:
+instIsAddHaarMeasureParams (Params M Haar instance from banked pieces) builds green — the area
+formula now runs on Params M directly. Rung 2C COMPLETE; the architect owes the revised ladder
+next (before rung 3 / recursion assembly); council + cartographer deliberating in parallel.
