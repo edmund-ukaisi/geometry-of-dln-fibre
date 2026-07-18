@@ -1066,3 +1066,13 @@ clean-three by forced probe (3/3) — the spine genuinely untouched by the carri
 council predicted (μ doesn't read T). The carrier the operator's reframe demanded — the one that
 carries what the certificate cannot see — is now the carrier we have. Remaining T-ladder: T1b-ii
 genDivExp field, T1c ConState/chooser-type + razor-docstring strike, T2 assembly, T3 coverage.
+
+## tick 77 addendum (architect report crossed my merge — new facts)
+Two facts beyond my verification: (1) CoRank2Spike now carries a TRUTH-WITNESS reproducing pnp
+verdict-3's page-verified (3,3,4) trace BY DECIDE — merge (1,1)→(1,0) divExp 4→8 = Mval(1,0) =
+minAdm(3,3,4); case-2 head-reset (3,0) divExp 12 = Mval(3,0) — exercising layer-1 head-
+preservation that the all-tail leaf224 cannot. (2) The carry-both COHERENCE (divExp =
+Mval(divProfile)) is machine-verified in the arithmetic witness ALREADY — the T4 coherence brick
+partially landed early, at the witness level. Full-aggregator gate confirming on the seat's side
+(RouteM3333 the unrelated bottleneck); T1b-ii + T1c proceeding, the chooser docstring to cite
+the depth-3 comparability finding.
