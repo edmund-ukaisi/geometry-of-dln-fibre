@@ -1633,4 +1633,26 @@ noncomputable def conOracle {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
       case2Decision M s (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
         hcap
 
+/-! ## o1/o4: WF-reachability — `OracleInv` at every reachable state
+
+The cone-goodness: `OracleInv` holds at the root (base, all invariants vacuous at `numDiv = 0`) and
+is preserved by every transition the oracle emits (the six-preservation kit). This is what makes the
+chooser total on the reachable cone (`SameLevelChainInv` ⟹ `chooserTotalOnChain`, so the case-1
+fallback never fires) and the leaves admissible (`leaf_mem_Adm`). -/
+
+/-- **The root construction state** (paper `S = 1`, `J = 0`): layer `0`, cleared `0`, no exceptional
+divisors yet. `buildTree`'s starting point; the base of the reachability induction. -/
+def conRoot {L : ℕ} : ConState L :=
+  ⟨0, 0, 0, Fin.elim0, Fin.elim0, 0, fun g => g.elim0⟩
+
+/-- **`OracleInv` at the root** (the reachability base): every per-divisor invariant is vacuous
+(`numDiv = 0`); `StateInvariant` holds at `layer = 0`, `cleared = 0`. -/
+theorem OracleInv_conRoot {L : ℕ} {M : Fin (L + 1) → ℕ} : OracleInv M (conRoot : ConState L) where
+  wd := fun k => k.elim0
+  ft := fun k => k.elim0
+  wb := fun k => k.elim0
+  lhd := fun a => a.elim0
+  slc := fun k => k.elim0
+  si := ⟨Nat.zero_le L, Nat.zero_le _, fun i _ => Nat.zero_le _⟩
+
 end DLNFibre.DLN.RLCT.Engine
