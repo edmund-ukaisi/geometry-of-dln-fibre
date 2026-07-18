@@ -725,3 +725,12 @@ consumed by finiteness): the p.15 minimality tie-break (lex-min T per Def.4) and
 condition ({t̃ = i} empty for the run) — both named in the StepRel docstring as deliberately-
 uncaptured; both become the CONSTRUCTION's rung-3/4 burden (the divisor-chooser implements the
 tie-break + computes runLen via the gap). Relayed to architect-t02 with rung-3 notes directive.
+
+## 2026-07-18 RIDER MERGED: case12 GUARD IN (tick 56)
+architect-t02's rider merged (f43507971): the eligibility conjunct now guards BOTH case-1 charts;
+NEW ¬-witness oobSplit_not_stepRel FLIPS the reviewer's acceptance probe (out-of-range case12 now
+REJECTED; numeric pin 6 = base-dropped vs 11 = faithful); rootEdge224 rcases the widened
+disjunction; footprints verified by the seat's own forced #print (clean-three / +sorryAx x2).
+Validate clean. The docstring hedge ("pending elder page-confirm") predates the elder's (a)
+verdict — the confirm + scope-notes directive is in the seat's inbox, folds into its first rung-2
+commit. Rung 2 (μ-lex spine first) is now the sole critical-path item; glue grind parallel.
