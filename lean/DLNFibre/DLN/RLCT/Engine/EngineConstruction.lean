@@ -123,6 +123,23 @@ theorem tildeOf_setTail_le {L : ℕ} {layer cleared : ℕ} {T : Fin L → ℕ} (
     simp only [setTail]; rw [if_pos hle]
   exact le_of_le_of_eq (tildeOf_le ⟨L - 1, by omega⟩) hval
 
+/-- **A tail-write preserves weak-decrease** given the head is weak-decreasing and dominates the
+written tail value `cleared`: `setTail layer cleared T` is antitone. The head (`p < layer`) keeps
+`T` (weak-dec by `hwd`); the tail (`p ≥ layer`) is the constant `cleared`, `≤` the head by `hc`. The
+common engine of the case-1(1) and case-2 weak-decrease preservation. -/
+theorem setTail_antitone {L : ℕ} {layer cleared : ℕ} {T : Fin L → ℕ}
+    (hwd : ∀ i j : Fin L, i ≤ j → T j ≤ T i)
+    (hc : ∀ p : Fin L, (p : ℕ) < layer → cleared ≤ T p)
+    {a b : Fin L} (hab : a ≤ b) :
+    setTail layer cleared T b ≤ setTail layer cleared T a := by
+  have hab' : (a : ℕ) ≤ (b : ℕ) := hab
+  simp only [setTail]
+  split_ifs with hb ha
+  · exact le_refl _
+  · exact hc a (by omega)
+  · omega
+  · exact hwd a b hab
+
 /-! ## The per-case transitions + μ-descent (rung 2B)
 
 Each of the construction's four step kinds is a `ConState → ConState` map, and each strictly drops a
@@ -443,17 +460,62 @@ theorem stepRel_all_of_buildTree (M : Fin (L + 1) → ℕ)
 
 /-! ## T2 build-side invariants (TYPES only; preservation proofs are buildTree bricks) -/
 
-/-- **The weakened per-node invariant** (elder-gate4 §3a). Each divisor's rank-pattern is
-WEAK-DECREASING (`t⁽¹⁾ ≥ … ≥ t⁽ᴸ⁾`) and BLOCK-BOUNDED (`t⁽ʲ⁾ ≤ admBound M j`). This — NOT
-`divProfile ∈ Adm` — is what the T-rule preserves per node: a PENDING node has `t̃ = min T > 0`, so
-its last component `> 0` and it is NOT in `Adm` (clause 3). `∈ Adm` is the LEAF property
-`WeakProfileInv + leaf-t̃=0` (post-final-rollover `J=0`). The preservation lemma
-`stepUpdate_preserves_weakInv` is a buildTree brick; the case-2 raw-width reset at non-monotone
-widths is the pnp (2,2,3,2) gate. -/
+/-- **The per-node profile bundle** (elder-gate4 §3a): WEAK-DECREASE + BLOCK-BOUND. **CORRECTED
+(finding, `stepUpdate_preserves_weakInv` scope):** only WEAK-DECREASE (`WeakDecInv` below) is
+per-node preservable; the BLOCK-BOUND conjunct (`t⁽ʲ⁾ ≤ admBound M j`) is a LEAF property, NOT
+per-node — a case-1(1)/case-2 tail-write sets the tail to `cleared = J`, and at a narrow later layer
+`J > admBound M p` (e.g. `M=(2,3,3,1)`: a Case-2 tail-write gives `t⁽³⁾=2 > admBound=M⁽³⁾=1`), so
+block-bound is recovered only at a leaf where `J = 0` (tail `= 0 ≤ admBound`), exactly like the
+last-component-zero property. Neither this nor `∈ Adm` is a per-node invariant (a PENDING node has
+`t̃ = min T > 0`, last component `> 0`, so `∉ Adm` clause 3). `∈ Adm` is the LEAF property
+`WeakDecInv + block-bound(leaf) + leaf-t̃=0` (post-final-rollover `J=0`). The bundle is retained as
+the LEAF target; the per-node brick is `WeakDecInv_step*` below (the pnp (2,2,3,2) verdict confirms
+FIX-A's running-min reset restores weak-decrease, where raw-`T` broke it). -/
 def WeakProfileInv (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
   ∀ k : Fin s.numDiv,
     (∀ i j : Fin L, i ≤ j → s.divProfile k j ≤ s.divProfile k i) ∧
       (∀ j : Fin L, s.divProfile k j ≤ admBound M j)
+
+/-- **The sound per-node weak-decrease invariant**: each divisor's rank-pattern is weak-decreasing
+(`i ≤ j → T_j ≤ T_i`) — `WeakProfileInv`'s first conjunct, and (per the finding above) the only
+per-node-preservable part. `WeakDecInv_step*` prove the three `ConState` transitions preserve it. -/
+def WeakDecInv {L : ℕ} (s : ConState L) : Prop :=
+  ∀ (k : Fin s.numDiv) (i j : Fin L), i ≤ j → s.divProfile k j ≤ s.divProfile k i
+
+/-- **Layer rollover preserves weak-decrease** — the divisor ledger carries over unchanged. -/
+theorem WeakDecInv_stepRollover {L : ℕ} (s : ConState L) (h : WeakDecInv s) :
+    WeakDecInv s.stepRollover :=
+  fun k i j hij => h k i j hij
+
+/-- **A case-1(1) merge preserves weak-decrease.** The tail-written target `i` stays weak-decreasing
+(`setTail_antitone`: its head is weak-dec by `h`, and dominates the written `cleared` since the
+pending target has `cleared < t̃_i = min T_i ≤ T_i p`); the other divisors are unchanged. -/
+theorem WeakDecInv_stepCase11 {L : ℕ} (s : ConState L) (i : Fin s.numDiv)
+    (hi : s.cleared < s.divTilde i) (h : WeakDecInv s) : WeakDecInv (s.stepCase11 i) := by
+  intro k a b hab
+  simp only [ConState.stepCase11, Function.update_apply]
+  split_ifs with hk
+  · exact setTail_antitone (fun p q hpq => h i p q hpq)
+      (fun p _ => le_of_lt (lt_of_lt_of_le hi (tildeOf_le p))) hab
+  · exact h k a b hab
+
+/-- **A case-1(2)/case-2 append preserves weak-decrease**, GIVEN the appended (pre-tail-write)
+profile `t₀` is itself weak-decreasing and dominates `cleared` on the head (the concrete case-2
+`runMinWidth` head and case-1(2) inherited head both satisfy this — the oracle supplies it). The old
+divisors carry over (`Fin.snoc` at `castSucc`); the new one is `setTail … t₀` via
+`setTail_antitone`. -/
+theorem WeakDecInv_stepAppendAdvance {L : ℕ} (s : ConState L) (e : ℕ) (t₀ : Fin L → ℕ)
+    (ht0wd : ∀ i j : Fin L, i ≤ j → t₀ j ≤ t₀ i)
+    (ht0c : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ t₀ p)
+    (h : WeakDecInv s) : WeakDecInv (s.stepAppendAdvance e t₀) := by
+  intro k
+  refine Fin.lastCases ?_ ?_ k
+  · intro a b hab
+    simp only [ConState.stepAppendAdvance, Fin.snoc_last]
+    exact setTail_antitone ht0wd ht0c hab
+  · intro k' a b hab
+    simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
+    exact h k' a b hab
 
 /-- **The total-comparability CHAIN invariant** (elder-gate4 §3c). The carried profiles are pairwise
 Def-4-comparable (`T_k ≤ T_{k'}` or `T_{k'} ≤ T_k`, componentwise) — the maintained chain, NOT
