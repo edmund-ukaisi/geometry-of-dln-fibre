@@ -109,6 +109,67 @@ theorem ownCovers_branch {n : StepData M} {edges : List (Edge M)} {V : Set (Para
   obtain ⟨Ue, _, hReg, hUe⟩ := hchild e he
   exact hReg.trans hUe
 
+/-! ## The `leafPaths` connection (the headline bridge)
+
+`leafPathImages` was defined by direct recursion; to feed `ChartBridge`'s image-cover clause (stated
+over `leaves`/`chartMap`) we bridge it back to the `leafPaths id` composites via the accumulator
+factoring `imgAcc` and the first-projection identity `leafPaths_mapFst`. Both are mutual inductions
+over the tree/edge-list, mirroring `ResolutionTree.edgesLeaves`. -/
+
+mutual
+/-- **Accumulator factoring**: the union of the `leafPaths acc` composite-images is `acc` applied to
+the own-rooted image set. Mutual with `imgEdgesAcc`. -/
+theorem imgAcc (acc : Params M → Params M) :
+    ∀ t : ResolutionTree M,
+      (⋃ p ∈ ResolutionTree.leafPaths acc t, p.2 '' p.1.srcBox) = acc '' leafPathImages t
+  | .leaf l => by
+      simp only [ResolutionTree.leafPaths, leafPathImages, List.mem_singleton,
+        Set.iUnion_iUnion_eq_left]
+  | .branch _ edges => by
+      simp only [ResolutionTree.leafPaths, leafPathImages]
+      exact imgEdgesAcc acc edges
+/-- Companion of `imgAcc` over an edge list. -/
+theorem imgEdgesAcc (acc : Params M → Params M) :
+    ∀ edges : List (Edge M),
+      (⋃ p ∈ ResolutionTree.edgesLeafPaths acc edges, p.2 '' p.1.srcBox) = acc '' edgesImages edges
+  | [] => by simp [ResolutionTree.edgesLeafPaths, edgesImages]
+  | .mk _ s c :: es => by
+      simp only [ResolutionTree.edgesLeafPaths, edgesImages, List.mem_append, Set.iUnion_or,
+        Set.iUnion_union_distrib]
+      rw [imgAcc (acc ∘ s.localSub) c, imgEdgesAcc acc es]
+      have hcomp : (acc ∘ s.localSub) '' leafPathImages c
+          = acc '' (s.localSub '' leafPathImages c) :=
+        Set.image_comp acc s.localSub (leafPathImages c)
+      rw [hcomp, Set.image_union]
+end
+
+/-- `leafPathImages t` is the union of the `leafPaths id` composite-images (`imgAcc` at `acc = id`).
+The bridge from the recursive def back to the `leafPaths`-composite form coherence reads. -/
+theorem leafPathImages_eq_biUnion_leafPaths (t : ResolutionTree M) :
+    leafPathImages t = ⋃ p ∈ ResolutionTree.leafPaths (id : Params M → Params M) t,
+      p.2 '' p.1.srcBox := by
+  simpa only [Set.image_id] using (imgAcc (id : Params M → Params M) t).symm
+
+mutual
+/-- **First-projection identity**: the leaves of `leafPaths acc t` (any `acc`) are `leaves t`.
+Mutual with `edgesLeafPaths_mapFst`. -/
+theorem leafPaths_mapFst (acc : Params M → Params M) :
+    ∀ t : ResolutionTree M,
+      (ResolutionTree.leafPaths acc t).map Prod.fst = ResolutionTree.leaves t
+  | .leaf _ => by simp [ResolutionTree.leafPaths, ResolutionTree.leaves]
+  | .branch _ edges => by
+      simp only [ResolutionTree.leafPaths, ResolutionTree.leaves]
+      exact edgesLeafPaths_mapFst acc edges
+/-- Companion of `leafPaths_mapFst` over an edge list. -/
+theorem edgesLeafPaths_mapFst (acc : Params M → Params M) :
+    ∀ edges : List (Edge M),
+      (ResolutionTree.edgesLeafPaths acc edges).map Prod.fst = ResolutionTree.edgesLeaves edges
+  | [] => by simp [ResolutionTree.edgesLeafPaths, ResolutionTree.edgesLeaves]
+  | .mk _ s c :: es => by
+      simp only [ResolutionTree.edgesLeafPaths, ResolutionTree.edgesLeaves, List.map_append]
+      rw [leafPaths_mapFst (acc ∘ s.localSub) c, edgesLeafPaths_mapFst acc es]
+end
+
 /-- **The per-node atom bridge** (rung-2's real content + the interface surface): at a blow-up node
 whose edges are the pivot charts of a center that is a coordinate block of dimension `d`, `hnode`
 holds — it is the rung-1 atom `iUnion_pivotChart_image_eq_cubeBox` embedded into the flat
@@ -134,6 +195,15 @@ theorem chartBridge_imageCover_of_ownCovers (t : ResolutionTree M)
     ∃ U : Set (Params M), IsOpen U ∧
       {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} ⊆ U ∧
       U ⊆ ⋃ l ∈ ResolutionTree.leaves t, l.chartMap '' l.srcBox := by
-  sorry
+  obtain ⟨U, hUopen, hVU, hUsub⟩ := hcov
+  refine ⟨U, hUopen, hVU, hUsub.trans ?_⟩
+  rw [leafPathImages_eq_biUnion_leafPaths]
+  intro y hy
+  simp only [Set.mem_iUnion, exists_prop] at hy ⊢
+  obtain ⟨p, hp, hy⟩ := hy
+  refine ⟨p.1, ?_, ?_⟩
+  · rw [← leafPaths_mapFst (id : Params M → Params M) t]
+    exact List.mem_map_of_mem hp
+  · rwa [hcoh p hp]
 
 end DLNFibre.DLN.RLCT.Engine
