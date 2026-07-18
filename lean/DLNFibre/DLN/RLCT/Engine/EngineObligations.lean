@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Engine.EngineDefs
+import DLNFibre.DLN.RLCT.Engine.RegionGlueAssembly
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.EngineObligations` — the engine's obligations (the sorried theorems)
@@ -89,7 +90,7 @@ upstairs-open finite subcover. Precondition `IsFullMonomialization`. -/
 @[blueprint] theorem region_glue (M : Fin (L + 1) → ℕ)
     (hbridge : ChartBridge M (resolutionOf M)) (c' : ℝ)
     (hrat : ∀ e ∈ ResolutionTree.terminalExponents (resolutionOf M), c' < (e : ℝ) / 2) :
-    routeMLayerBoxIntegral M c' 1 < ⊤ := by
-  sorry
+    routeMLayerBoxIntegral M c' 1 < ⊤ :=
+  region_glue_of_chartBridge (resolutionOf M) hbridge c' hrat
 
 end DLNFibre.DLN.RLCT.Engine

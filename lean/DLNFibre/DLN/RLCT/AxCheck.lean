@@ -1277,7 +1277,18 @@ open DLNFibre.DLN.RLCT
 -- The FULL CanonicalResolution witness is a @[blueprint] FORECAST (its ChartBridge conjunct is sorried
 -- pending the P8 CoV lemma) — it EXPECTS `sorryAx` in its footprint until the P8 tide lands:
 #print axioms Engine.canonicalResolution224
--- The engine's owed composition (map: engine-route): ∀ M, RouteMBoxThresholdFinite M via the two
--- Engine holes (monomialization_terminates, region_glue). EXPECTS `sorryAx` until both tides land;
--- this line flipping to clean-three IS the hbox event the mint re-point waits on:
+-- The ANALYTIC hole is DISCHARGED (rev-glue scoped-VALIDATE, 2026-07-18): the load-bearing witness
+-- is the GENERIC assembly `region_glue_of_chartBridge` (over an ABSTRACT tree `t`, `ChartBridge` a
+-- HYPOTHESIS) — it MUST be CLEAN-THREE [propext, Classical.choice, Quot.sound]; a `sorryAx` here means
+-- the assembly re-opened:
+#print axioms Engine.region_glue_of_chartBridge
+-- `region_glue` is the projection to `resolutionOf M`; its PROOF is `region_glue_of_chartBridge` (no
+-- sorry), but its TYPE mentions `resolutionOf M = (monomialization_terminates M).choose`, so its
+-- footprint carries `sorryAx` THROUGH THE TYPE (not the analytic proof) until the construction hole
+-- lands. EXPECTS `+sorryAx`; the sorryAx source is `monomialization_terminates` ALONE:
+#print axioms Engine.region_glue
+-- The engine's owed composition (map: engine-route): ∀ M, RouteMBoxThresholdFinite M. With the
+-- analytic assembly discharged, the SOLE remaining `sorryAx` source is `monomialization_terminates`
+-- (the construction hole, T2–T3). EXPECTS `sorryAx` until that lands; this line flipping to
+-- clean-three IS the hbox event the mint re-point waits on:
 #print axioms Engine.engine_box_threshold_finite
