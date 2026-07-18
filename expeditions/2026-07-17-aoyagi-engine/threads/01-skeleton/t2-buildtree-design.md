@@ -46,17 +46,16 @@ inductive ConDecision (M) (s : ConState L)
   | step     (emit : StepEmit M s)
 ```
 
-**PIVOT-COMPLETENESS (heads-up, rev-cov in flight — do NOT hard-bake edge arity).** The `edges`
-field is a `List` and its arity MUST stay FREE — the worked §4 example emits two edges (one 1(1) +
-one 1(2)) but that is ILLUSTRATIVE, not the emission rule. Coverage's fold needs per-node
-PIVOT-COMPLETENESS (the full residual-`d` chart family; corner-only provably fails, probe Verdict
-1(b)), and at center-dimension `d ≥ 3` a two-edge emission is INCOMPLETE if the resolution is
-per-node full-family. The (a) per-node-full-family vs (b) alternative adjudication is in rev-cov's
-combined review (page-verified + the pnp atlas counts as ground truth; proposed read (a)-generalized:
-the case tag marks pivot TYPE, the per-node count = the center's dimension `d`). CONSEQUENCE: the
-loose `hlive` is a PLACEHOLDER — when the verdict lands, if (a) wins it is REPLACED by a
-`pivotComplete` clause (the emission enumerates the center's `d` pivots), which `buildTree` and T3's
-fold both consume. Until then: keep the `List` arity free, do not commit a fixed per-node edge count.
+**PIVOT-COMPLETENESS (rev-cov verdict: (a)-generalized CONFIRMED — cert-cov-rungs12, page-verified
+×2 + Codex).** The 1(1)/1(2) tags are pivot TYPES of the ONE blow-up, NOT the emission count. The
+full per-node chart family has `d_center` edges: for **Case 1**, `d_center = J₁·(M⁽ˢ⁺¹⁾−J) + 1` (the
+`u`-pivot + EVERY block-`d` pivot; Aoyagi shows only the corner as representative); for **Case 2**,
+the full residual block count. Kill of (b): an omitted pivot direction is UNRECOVERABLE by deeper
+branching. AMENDMENT owed in the buildTree body: **replace the loose `hlive` with `pivotComplete`**
+— the `edges` list ENUMERATES the center's `d_center` pivots (T3's fold + `buildTree` both consume
+it). The `List` arity already accommodates this (the un-baked shape paying off). STEPREL UNAFFECTED
+(reviewer-confirmed): every `d`-pivot edge satisfies the SAME 1(2) ledger relation, so the
+ledger/descent work stands verbatim — only the emission ARITY changes.
 
 Notes.
 - `edges`'s child field is `e.child` = `ResolutionTree.leaf (child-built)` / a branch, produced by the
@@ -160,7 +159,10 @@ T3's cover proof goes THROUGH it, never asserts the cover.
 At `M = (3,3,4)`, layer `S=1` (Lean `layer=1`), `J=0`, one pending divisor with `divProfile = ![1,1]`,
 `divExp = 4 = Mval(1,1)`, run `J₁ = 1` to the next occupied level:
 
-- The blow-up on that divisor emits a NODE with TWO edges (the charts of the one blow-up):
+- The blow-up on that divisor emits a NODE with the full pivot family — `d_center = J₁·(M⁽ˢ⁺¹⁾−J) +
+  1 = 1·4 + 1 = 5` edges (rev-cov (a)-generalized). The 1(1)/1(2) below are two representative pivot
+  TYPES of that family (Aoyagi shows only the corner); all `d_center` edges satisfy the same ledger
+  relations, so the analysis of the two types below transfers to the whole family:
   - **case-1(1)** (`stepCase11`): merge → child `divProfile = ![1,0]`, `divExp = 8 = Mval(1,0) = minAdm(3,3,4)`.
     Descent: `conRel_stepCase11` (needs `layer=1 < L=2` ✓ from §1, `runLen=1 ≥ 1` ✓); `pendingCount` drops.
   - **case-1(2)** (`stepAppendAdvance`, inherited head): child APPENDS a new pivot `divProfile = ![1,0]`
