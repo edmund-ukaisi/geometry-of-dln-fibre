@@ -1418,3 +1418,16 @@ of the rung-1 atom — Codex-mapped route: split coords + slab equality + one CL
 ~100-200 LoC) — GO issued as the focused unit. The coverage theorem is one lemma + one wrapper
 (closing on the architect's pivotComplete) from end-to-end. Probe note for the record: #print
 axiom lists line-wrap at width — future greps test sorryAx ABSENCE, not the exact triple.
+
+## 2026-07-18 COVERAGE RUNG 2 COMPLETE (tick 103)
+All FOUR fold statements proven sorry-free and merged (controller-verified, zero sorryAx probed).
+The atom bridge closed by the right design move: the coordinate split enters as DATA, so the
+lemma's hypotheses ARE the StepEmit contract field-for-field (pivotOf/hbij = the d-pivot family;
+q = the split; hloc/hdom = the conjugated chart/domain) — the cross-lane interface is now
+concrete IN CODE, relayed to the architect. One fidelity caveat correctly surfaced (not
+improvised): the contract assumes pure-pivot localSub; if buildTree composes the ψ shear into
+edges, a reconciliation lemma is needed — routed as a design question the architect answers
+INSIDE the buildTree pass. Coverage now pre-stages the construction-independent per-leaf clauses
+(coords + srcBox over the contract shape; NOT the chart-data-fed Props). The coverage MECHANISM
+is proven end-to-end modulo the constructed atlas: what remains of the named hard part is
+exactly rung 3 = the assembly over buildTree's output.
