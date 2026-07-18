@@ -497,3 +497,14 @@ lintegral_smul_set. Both clean-three by forced probe. The ONE new analytic lemma
 is now BANKED — the ex-P8 gap is closed as a statement family; what remains in the glue tide is
 instantiation (global dlnLoss homogeneity induction from the banked per-layer form) + the per-leaf
 read + cover assembly. No tripwires hit.
+
+## 2026-07-18 GLUE BRICK 2: GLOBAL HOMOGENEITY + FLAT BRIDGE (tick 41)
+Merged + force-verified clean-three: prod_smul (all-layers c^L scaling via prodAux induction),
+dlnLoss_zero_smul (the degree-2L global homogeneity — upgrades the banked per-layer form),
+flatNodeLoss_smul, and lintegral_flatNodeLoss_smul_bridge (the DLN-instantiated scaling bridge:
+∫_{εK} flatNodeLoss^{-c'} = ε^(flatDim−2Lc')∫_K). Architecture note from the seat, build-
+confirmed: volume on Params M is not auto-Haar, so the assembly transports to the flat side via
+the banked measurePreserving_paramsEquivFlat (the routeMCore_le_matBox pattern) — bridge built
+flat-side accordingly. Next: the ASSEMBLY (the genuinely hard glue part; srcBox is an abstract
+Set — Codex consult dispatched by the seat). Possible incoming tripwire: srcBox measurability/
+boundedness may need a ChartBridge strengthening — the protocol is in place.
