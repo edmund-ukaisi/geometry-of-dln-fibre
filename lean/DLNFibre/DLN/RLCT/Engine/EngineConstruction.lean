@@ -804,6 +804,55 @@ theorem LiveHeadDom_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConSta
         divProfile_tail_eq_tilde s hft hwd hlive b hge]
     exact le_of_lt hab'
 
+/-- The appended (`castSucc`) divisor's clearing level is unchanged. -/
+theorem divTilde_stepAppendAdvance_castSucc {L : ℕ} (s : ConState L) (e : ℕ) (t₀ : Fin L → ℕ)
+    (k' : Fin s.numDiv) :
+    (s.stepAppendAdvance e t₀).divTilde (Fin.castSucc k') = s.divTilde k' := by
+  simp only [ConState.divTilde, ConState.stepAppendAdvance, Fin.snoc_castSucc]
+
+/-- The new (`last`) divisor's clearing level is `tildeOf` of its `setTail` profile. -/
+theorem divTilde_stepAppendAdvance_last {L : ℕ} (s : ConState L) (e : ℕ) (t₀ : Fin L → ℕ) :
+    (s.stepAppendAdvance e t₀).divTilde (Fin.last s.numDiv)
+      = tildeOf (setTail s.layer s.cleared t₀) := by
+  simp only [ConState.divTilde, ConState.stepAppendAdvance, Fin.snoc_last]
+
+/-- **A case-2 append preserves `LiveHeadDom`** (minimality-free, via the case-2 GAP). The appended
+`c` sits at level `cleared` with head `= runMinWidth`. The gap (`hgap`: no live divisor above
+`cleared`) makes `c` the TOP of the live chain — never the lower in a live pair — and `WidthBound`
+dominates every live divisor below (`a head ≤ runMinWidth = c head`). Old pairs use `hlhd`. -/
+theorem LiveHeadDom_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hlhd : LiveHeadDom M s) (hwb : WidthBound M s) (hlive : s.layer < L)
+    (hJ : s.cleared < widthMinUpto M s.layer)
+    (hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer → s.divTilde k ≤ s.cleared)
+    (ht0 : ∀ p : Fin L, (p : ℕ) < s.layer → t₀ p = runMinWidth M p)
+    (hcl : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ runMinWidth M p) :
+    LiveHeadDom M (s.stepAppendAdvance e t₀) := by
+  have htl : (s.stepAppendAdvance e t₀).divTilde (Fin.last s.numDiv) = s.cleared := by
+    rw [divTilde_stepAppendAdvance_last]
+    exact tildeOf_setTail_eq hlive (fun p hp => (ht0 p hp) ▸ hcl p hp)
+  intro a b hab hblt i hi
+  have hi' : (i : ℕ) < s.layer := hi
+  induction b using Fin.lastCases with
+  | last =>
+    induction a using Fin.lastCases with
+    | last => simp only [htl, lt_self_iff_false] at hab
+    | cast a' =>
+      rw [htl, divTilde_stepAppendAdvance_castSucc] at hab
+      have ha'live : s.divTilde a' < widthMinUpto M s.layer := by omega
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc, Fin.snoc_last, setTail,
+        if_neg (not_le.mpr hi'), ht0 i hi']
+      exact hwb a' ha'live i hi'
+  | cast b' =>
+    rw [divTilde_stepAppendAdvance_castSucc] at hblt
+    induction a using Fin.lastCases with
+    | last =>
+      rw [htl, divTilde_stepAppendAdvance_castSucc] at hab
+      exact absurd (hgap b' hblt) (by omega)
+    | cast a' =>
+      rw [divTilde_stepAppendAdvance_castSucc, divTilde_stepAppendAdvance_castSucc] at hab
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
+      exact hlhd a' b' hab hblt i hi'
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
