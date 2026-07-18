@@ -1302,6 +1302,24 @@ theorem conRel_of_exp_change {L : ℕ} (M : Fin (L + 1) → ℕ) (s t : ConState
     conRel M ⟨s.layer, s.cleared, s.numDiv, divExp', s.divProfile, numGen', genDivExp'⟩ t :=
   h
 
+/-! ## o5/terminal: the t̃=0 analytic filter (the B' analytic/residual split, fork 12(b)(ii)) -/
+
+/-- The indices of the `t̃ = 0` (ANALYTIC) divisors of a state — the B' analytic enumeration selects
+exactly these; the `t̃ > 0` (stranded/residual) divisors are excluded (fork 12(b)(ii): a terminal
+CARRIES `t̃ > 0` residuals, so the analytic side is the `t̃ = 0` sublist, not all divisors). -/
+def t0Indices {L : ℕ} (s : ConState L) : List (Fin s.numDiv) :=
+  (List.finRange s.numDiv).filter (fun k => decide (s.divTilde k = 0))
+
+/-- Membership in `t0Indices` ⟺ `t̃ = 0` — the analytic-selection characterisation. -/
+theorem mem_t0Indices {L : ℕ} (s : ConState L) (k : Fin s.numDiv) :
+    k ∈ t0Indices s ↔ s.divTilde k = 0 := by
+  simp only [t0Indices, List.mem_filter, List.mem_finRange, true_and, decide_eq_true_eq]
+
+/-- Every listed analytic index has `t̃ = 0` (`get`-form, for the leaf's analytic enumeration). -/
+theorem t0Indices_get_tilde {L : ℕ} (s : ConState L) (i : Fin (t0Indices s).length) :
+    s.divTilde ((t0Indices s).get i) = 0 :=
+  (mem_t0Indices s _).mp ((t0Indices s).get_mem i)
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
