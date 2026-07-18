@@ -1935,3 +1935,23 @@ cleared`); the survivor is the product. Helpers committed: `widthMinUpto_succ`,
 `runMinWidth_eq_widthMinUpto`, `runMinWidth_antitone`. It feeds the `hnew`/`hbump` hypotheses of
 `MvalCoh_stepAppendAdvance`/`MvalCoh_case11child`; the OracleInv fold takes the case-11 child via
 `MvalCoh_case11child`, NOT the divExp-blind congruence.
+
+## 2026-07-18 tick 142: t03 online — map verified against the tree; frontier corrected
+architect-t03 synced clean (t01-r2 fast-forwarded to the integration tip 795f128d0) and, before
+executing, VERIFIED the handoff map against the tree — catching that step 1 (the resRows
+running-min fix) had already landed via the integration merge (conOracle's both emissions use
+`widthMinUpto − cleared`; stepUpdate case-2 uses `setTail runMinWidth`; the reachability proofs
+are consistent with it). Plan of record = its corrected frontier:
+  A. leaf constructor analytic side = t̃=0 sublist via t0Indices (leafOfState currently numDiv=0);
+  B. discharge MvalCoh's hnew/hbump = the Mval telescoping identity, then thread MvalCoh through
+     reachability (OracleInv currently has no mv field — the fold is still owed);
+  C. WF-fold (OracleInv + MvalCoh + layer=L at leaves → IsFullMonomialization);
+  D. o5-∈ (minAdm ∈ terminalExponents — the hardest);
+  E. assemble monomialization_terminates (ChartBridge the sole remaining sorry).
+FLAGGED subtlety (good pre-flag, no interface touched): leaf_mem_Adm_single wants
+`0 < widthMinUpto M L`; monomialization_terminates is stated for arbitrary M. Controller ruling
+sent: (1) derive if the zero-width case is structurally vacuous (empty analytic sublist);
+(2) else a positivity hypothesis matching AOYAGI'S OWN standing assumption (cite the page) is
+pre-approved — faithful scope, not retreat; (3) grep the hbox consumer chain first to confirm it
+threads; (4) caveat lives in the statement's docstring; never weaken a conjunct into vacuity.
+t03 proceeding with A.
