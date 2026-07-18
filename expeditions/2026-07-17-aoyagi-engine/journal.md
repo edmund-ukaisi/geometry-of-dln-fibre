@@ -1192,3 +1192,18 @@ distribution + a worked case-1(2) example. The design doc goes to the ELDER (its
 coverage-commissioning convening) and T3's commissioning is decided at that gate — the interface
 between the second cost center and the named hard part gets designed ONCE, reviewed, then both
 lanes build against it.
+
+## 2026-07-18 T2 INTERFACE DESIGN DELIVERED; COVERAGE GATE CONVENED (tick 88)
+The buildTree + chart-producer design merged (b6be4268c; paper/typed-skeleton, uniform-event-
+first): the decision type carries exactly what the recursion consumes (conRel-smaller child +
+descent + ledger-rfl + eligibility, layer<L in the step emit); the T3 CONTRACT (§2) embeds the
+ChartBridge per-leaf tuple VERBATIM (glue-lane consistency) + the tree-level cover/coherence,
+with the probe constraints pinned structurally (full pivot-cover, non-toric); the conjunct
+distribution is explicit (structural at build; ChartBridge + srcBox.Nonempty at T3); a NEW T2
+brick surfaced honestly — stepUpdate_preserves_adm (divProfile ∈ Adm preserved by the T-rule,
+needed for IsFullMonomialization + no-undershoot); the worked case-1(2) node at (3,3,4) closes
+constraint 3's parent-persistence witness. ELDER-GATE4 CONVENED (the standing coverage-
+commissioning convening): the deliberate abstract-field pass over §2 (the twice-burned pattern),
+the conjunct-ownership audit (incl. WHERE invariant→principalization lives), the new brick's
+shape + kill, and the T3 commissioning shape + gate composition. The last design gate before
+the hard part.
