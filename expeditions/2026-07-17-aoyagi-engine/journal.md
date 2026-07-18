@@ -419,3 +419,18 @@ distinguishing it from the g-chartscover re-scope note (a different item; alread
 commission). Cert addendum merged (f5fb3f53c). Its r2 adversarial focus is right: (2b) ψ's inverse
 data actually constructible on the exceptional fibre vs pushed into a fresh hole; (3) the upgraded
 witness's attaining leaf has a LIVE srcBox, not just a strengthened StepRel. Standing by warm.
+
+## 2026-07-18 REPAIR PASS LANDED + MERGED; r2 GO (tick 36)
+The architect completed the repair (all cert findings + my four rulings) but left it UNCOMMITTED
+in its worktree ("yours to integrate") — banked it myself immediately (72deeac34; VM-restart
+fragility) and merged. Spot-checks pass: StepRel now reads e.child (the case-1(1) merge equation
+verbatim at EngineObligations:103, pinned against the page image, 5+2·3=11 witness); terminal-
+Exponents folds positive resRank; LeafJacobian = ψ∘β with full inverse data (fallback NOT
+triggered — ψ constructible from the localSubs); line-96 strike done properly this time. NEW:
+5th live-attainment conjunct in the arithmetic witness (still clean-three per architect's build);
+REAL 2x2 root step; 2 new batteries (17 total, all green); footprints reported preserved. Battery
++ validate clean on the merge; gate 9 running. r2 dispatched to the warm rev-carrier with the
+architect's own JUDGMENT FLAG front and center: the case-1(1) child read is an EXISTENTIAL index,
+not an embedding/stable-id — sufficient for the certificate or a re-admission of mis-tracked
+sharing? (fork-3 question; g-coverage-sharing-killcond is the relevant kill class). r2 gates the
+six-obligation flip + merge-to-canonical + the tide commissioning (elder at that gate).
