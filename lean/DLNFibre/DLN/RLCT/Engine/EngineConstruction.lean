@@ -641,6 +641,20 @@ theorem widthMinUpto_mono {L : ℕ} (M : Fin (L + 1) → ℕ) {m n : ℕ} (h : m
   rw [Finset.mem_filter] at hi ⊢
   exact ⟨hi.1, le_trans hi.2 h⟩
 
+/-- `runMinWidth M j ≤ admBound M j` — the running-min width is `≤` the block bound (`= min(M⁰,M¹)`
+at `j=0`, `≤ M^{j+1}` otherwise). Bridges the WidthBound `runMinWidth` head to the `Adm`
+block-bound. -/
+theorem runMinWidth_le_admBound {L : ℕ} (M : Fin (L + 1) → ℕ) (j : Fin L) :
+    runMinWidth M j ≤ admBound M j := by
+  unfold admBound runMinWidth
+  split_ifs with hj
+  · refine le_min (Finset.inf'_le _ ?_) (Finset.inf'_le _ ?_)
+    · exact Finset.mem_Iic.mpr (Fin.zero_le _)
+    · refine Finset.mem_Iic.mpr ?_
+      rw [Fin.le_def, Fin.val_succ, hj]
+      exact Nat.mod_le 1 (L + 1)
+  · exact Finset.inf'_le _ (Finset.mem_Iic.mpr le_rfl)
+
 /-- **WidthBound** (o4-cert Part 3/6, consumed by the case-2 Lemma B): each LIVE divisor's HEAD
 (coords at index `< layer`) is bounded by the running-min width `runMinWidth`.
 
@@ -996,6 +1010,29 @@ theorem SameLevelChainInv_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} 
       have := h k'' k''' hkk'
       simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
       exact this
+
+/-! ## o3: leaf-admissibility (`Adm` from the invariants at a terminal state) -/
+
+/-- **o3 — leaf `∈ Adm`.** At a terminal state (`layer = L`, every divisor at `t̃ = 0`), each
+profile is admissible: BLOCK-BOUND from `WidthBound` (all coords are head at `layer = L`) composed
+with `runMinWidth ≤ admBound`; WEAK-DECREASE is `WeakDecInv`; LAST-`= 0` is the min (`= t̃ = 0`)
+attained at the last (weak-decreasing) coordinate. The B'-coherence tie then reads `Mval = divExp`.
+`hlive` (every divisor live, `t̃ = 0 < Mrun`) is supplied by the terminal state's cone-goodness. -/
+theorem leaf_mem_Adm {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (hL : 0 < L)
+    (hlayer : s.layer = L) (hwd : WeakDecInv s) (hwb : WidthBound M s)
+    (hlive : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer)
+    (ht0 : ∀ k : Fin s.numDiv, s.divTilde k = 0) (k : Fin s.numDiv) :
+    s.divProfile k ∈ Adm M := by
+  have hbb : ∀ j : Fin L, s.divProfile k j ≤ admBound M j := fun j => by
+    have hj : (j : ℕ) < s.layer := by rw [hlayer]; exact j.isLt
+    exact le_trans (hwb k (hlive k) j hj) (runMinWidth_le_admBound M j)
+  rw [Adm, Finset.mem_filter]
+  refine ⟨?_, hbb, hwd k, ?_⟩
+  · rw [Fintype.mem_piFinset]; intro j; rw [Finset.mem_range]; exact Nat.lt_succ_of_le (hbb j)
+  · intro j hjlast
+    have hle : s.divProfile k j ≤ s.divTilde k :=
+      le_tildeOf hL (fun i => hwd k i j (Fin.le_def.mpr (by have := i.isLt; omega)))
+    rw [le_antisymm hle (tildeOf_le j), ht0 k]
 
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
