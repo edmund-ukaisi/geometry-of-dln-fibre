@@ -1067,6 +1067,23 @@ theorem OracleInv_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState
   slc := SameLevelChainInv_stepRollover s inv.slc
   si := StateInvariant_stepRollover s hlive inv.si
 
+/-- **A case-1(1) merge preserves `OracleInv`** — the joint assembly of the case-1(1) maintenance
+lemmas, threading the chooser guarantees (level `htgt`, gap `hgap`, minimality `hmin`) once. -/
+theorem OracleInv_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (tgt : Fin s.numDiv)
+    {ℓ : ℕ} (hlive : s.layer < L) (htgt : s.divTilde tgt = ℓ) (hgt : s.cleared < ℓ)
+    (hℓ : ℓ < widthMinUpto M s.layer)
+    (hmin : ∀ k : Fin s.numDiv, s.divTilde k = ℓ → ∀ j : Fin L,
+      s.divProfile tgt j ≤ s.divProfile k j)
+    (hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer →
+      s.divTilde k ≤ s.cleared ∨ ℓ ≤ s.divTilde k)
+    (inv : OracleInv M s) : OracleInv M (s.stepCase11 tgt) where
+  wd := WeakDecInv_stepCase11 s tgt (by rw [htgt]; exact hgt) inv.wd
+  ft := FlatTail_stepCase11 s tgt inv.ft
+  wb := WidthBound_stepCase11 s tgt (by rw [htgt]; exact hℓ) inv.wb
+  lhd := LiveHeadDom_stepCase11 s tgt inv.lhd hlive htgt hgt hℓ hmin hgap
+  slc := SameLevelChainInv_stepCase11 s tgt inv.lhd inv.ft inv.wd hlive htgt hgt hℓ inv.slc
+  si := StateInvariant_stepCase11 s tgt inv.si
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
