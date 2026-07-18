@@ -434,3 +434,21 @@ architect's own JUDGMENT FLAG front and center: the case-1(1) child read is an E
 not an embedding/stable-id — sufficient for the certificate or a re-admission of mis-tracked
 sharing? (fork-3 question; g-coverage-sharing-killcond is the relevant kill class). r2 gates the
 six-obligation flip + merge-to-canonical + the tide commissioning (elder at that gate).
+
+## 2026-07-18 r2 VALIDATE — SIX-OBLIGATION FLIP EXECUTED (tick 37)
+rev-carrier r2: VALIDATE (cert 6fe134d2a merged). All findings fixed at statement level; its own
+forced #print confirms arithmetic clean-three WITH the 5th live-attainment conjunct; both new
+batteries reproduce; ψ∘β constructibility on the exceptional fibre VERIFIED (ψ regular gauge/
+shear; the singular vanishing entirely in β — fallback correctly untriggered). Gate 9 green
+independently. JUDGMENT FLAG adjudicated (Codex-convergent): the existential child-read is
+SUFFICIENT for finiteness (the driver never consumes StepRel — it could be True without changing
+engine_box_threshold_finite; the real guards are ChartBridge + IsFullMonomialization + the
+exponent hooks) and INSUFFICIENT for transition-faithfulness (dummy-divisor schema). SCOPE CALL
+(mine, elder to ratify): docstring downscope NOW (done — StepRel docstring states the consistency-
+check scope honestly; module rebuilt green) + typed stepUpdate strengthening as the construction
+tide's FIRST deliverable (the tide must define the case-update functions anyway — the faithful
+StepRel := child = stepUpdate parent is nearly free there and fills fork 7's layer). Map: the SIX
+obligations flipped adjudicated → stated (case-step-lemmas with the scope note; region-glue with
+the r2 residuals note); theorem4-localization stays at its DISSOLVE disposition; validate clean
+(warnings 15 → 9). Next: elder + navigator convene (tide gate + pass #2), then the tide
+commission.

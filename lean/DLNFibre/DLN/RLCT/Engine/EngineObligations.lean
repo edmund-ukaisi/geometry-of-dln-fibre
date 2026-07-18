@@ -86,7 +86,12 @@ def ChartBridge (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
         LeafPullback l ∧ LeafJacobian l) ∧
     (∀ p ∈ ResolutionTree.leafPaths (id : Params M → Params M) t, p.1.chartMap = p.2)
 
-/-- **The edge-relational per-step invariant** (finding 1: reads `e.child` + `e.subst.runLen`).
+/-- **Per-edge existence-CONSISTENCY check over the child ledger** (r2 scope, 2026-07-18): each
+case demands the case-specific updated exponent EXISTS in the child's root ledger (existential
+index) — it does NOT certify full transition-faithfulness (a dummy divisor can appear/vanish
+across an edge unchecked). Sound for the finiteness certificate, which never consumes it; the
+faithful form (typed `stepUpdate` with child ledger = its output) is the construction tide's
+first deliverable.
 * **case 2** — a shared divisor on the parent (`∀ g, kp ∈ support g`) AND the CHILD's new divisor
   has exponent `resRows·resCols` (worked.tex:516).
 * **case 1(1)** — a parent divisor at level `J` merges: the CHILD exponent is
