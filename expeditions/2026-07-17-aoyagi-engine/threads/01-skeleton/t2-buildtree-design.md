@@ -232,3 +232,24 @@ rather than a coordinate gauge, then `ψ = id` and the pure-pivot contract holds
 A pnp/coverage truth-value on "is there a coordinate gauge, or is it squeeze-absorbed?" decides it; I
 lean ψ-composed (the LDU machinery exists as coordinate maps), so route the reconciliation unless that
 check comes back squeeze-only.
+
+## 7. Q3 `C'^(S+1)` gauge determination (pp.19-21, page images) + ladder-tail status
+
+**DETERMINATION (the construction's last page question): PURE (a) — the `advance` constructor carries
+NOTHING.** Read off Aoyagi pp.19-21 directly: the `C'^(S+1) = Q⁻¹ C^(S+1)` transformation (p.18/21) is
+applied WITHIN the case-1(2)/case-2 STEP — the same unipotent `Q` (p.20) that clears the `D` block also
+transforms the next layer's `C^(S+1)` block via `C'^(S+1) = Q⁻¹ C^(S+1)`. At block exhaustion (`J+1 >
+M(S+1)`, the rollover `S→S+1`) the transformed `C'^(S+1)` is merely RELABELED as the next layer's
+`C^(S+1)` (p.19 "let … c'_{ij} be … c_{ij}") — there is NO new coordinate change at the rollover
+boundary. So the gauge is absorbed into the preceding step's per-node ψ (which acts on BOTH `D` and the
+next-layer `C`-block); the rollover is a pure state phase-transition. → the `advance` constructor is the
+PURE (a) form (carries nothing; `conRel_stepRollover` already gives its descent), and the coherence fold
+sees no coordinate change at the rollover. No (a')/advance-with-gauge needed.
+
+**Ladder-tail status (2026-07-18):** o3 leaf-Adm DONE (`leaf_mem_Adm` + `runMinWidth_le_admBound`,
+clean-three); node334 gloss fixed (layer = S−1 pinned); the o4 maintenance rung + crux + STEP1 all
+landed. REMAINING = the FINAL concrete-oracle assembly (one unit): the `advance` constructor (pure (a),
+now determined) + the concrete case dispatch/chooser producing `ConDecision`s with the named guarantees
+(hlayer/hstep/gap/minimality/eligibility) + o5-∈ (realization `profile-set ⊇ Adm`, needs the oracle's
+internal paths) + cone-goodness (the oracle terminates well, supplying the named guarantees once). That
+assembly closes `monomialization_terminates` modulo T3's ChartBridge.
