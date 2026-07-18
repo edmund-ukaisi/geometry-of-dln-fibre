@@ -1845,3 +1845,13 @@ lemma is owed — conOracle's layer=L terminal has all t̃=0 (the fork-12(a) "le
 termination" obligation made precise; not automatic from layer=L). Remaining: the reachability
 inductive step (the mutual induction realized — the kit is complete), the full terminal leaf +
 termination-completeness, o5-∈. GO on reachability.
+
+## 2026-07-18 REACHABILITY STRUCTURED; TWO BRANCH-FILLS REMAIN (tick 135)
+Merged + verified: stepChildren + runMinWidth_antitone helpers (sorry-free — the seat kept the
+unfinished branch-fills OUT of the tree, no committed sorries); the inductive step's skeleton
+proves terminal (vacuous) + rollover cleanly. The two remaining fills are mapped precisely:
+case-2 mechanical (~15 lines, hgap from occ-emptiness); case-1 the deep piece — hgap from
+occ.min?'s minimality (the mutual-induction coupling: target = the min occupied level ⟹ the
+gap condition), needing the exact List.min? lemma signatures pinned rather than guessed. Taken
+fresh. Then: terminal leaf + termination-completeness, o5-∈ — roughly one focused turn from
+monomialization_terminates-modulo-ChartBridge on the structural side.
