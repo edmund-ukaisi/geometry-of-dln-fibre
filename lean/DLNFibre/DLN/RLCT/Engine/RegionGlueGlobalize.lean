@@ -1,6 +1,6 @@
 import DLNFibre.DLN.RLCT.Foundations.S1ScalingBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxReduction
-import DLNFibre.DLN.RLCT.Validate.D1L2ExplicitCoreProducer
+import DLNFibre.DLN.RLCT.Foundations.FlatNodeHomogeneity
 import DLNFibre.DLN.RLCT.Foundations.S1Cover
 import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
