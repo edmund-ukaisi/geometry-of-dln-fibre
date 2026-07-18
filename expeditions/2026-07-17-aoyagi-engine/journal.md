@@ -1868,3 +1868,21 @@ holds at every reachable state. Remaining spine: the WF-fold (small), the full t
 termination-completeness, o5-∈ — then monomialization_terminates modulo ChartBridge assembles.
 The architect also revived on the liveness ping (the 6-hour quiet was a stalled session; the
 clean-tree discipline meant zero loss).
+
+## 2026-07-18 FINDING-2 CORRECTED: "ALL t̃=0 AT TERMINAL" WAS AN OVER-CLAIM (tick 137)
+The architect's spine-tail reconnaissance caught — pre-build — that its own finding 2 (tick 134,
+"layer=L ⟹ all t̃=0"), WHICH I RATIFIED, contradicts the banked record: fork 12(b)(ii) had
+already established that leaves CARRY t̃>0 divisors (stranded, never cleared — they persist
+through rollovers). The precise termination-completeness: every LIVE divisor is cleared (t̃=0)
+at a terminal — no pending — while stranded divisors remain t̃>0 and belong to the RESIDUAL,
+filtered out of the analytic side. This is exactly the B'-split + coherence-tie design already
+banked (analytic = the t̃=0 sublist); the architect's correction REALIGNS its finding with the
+record rather than discovering new mathematics — and my tick-134 ratification shares the error
+(both of us briefly forgot 12(b)(ii) at the terminal site). leaf_mem_Adm_single landed (the
+per-divisor form — the ∀k form was too strong at terminals with residuals, consistent with the
+t̃=0-restricted read-off). RULINGS on its two questions: (1) the terminal leaf's chart fields
+(divCoord/srcBox/chartMap) stay PARAMETERS per the existing FlatCubeLeaf smart-constructor
+pattern — T3 fills them; the construction supplies the ledgers + the t̃=0 filter; (2) NO new
+decorrelated check needed — the analytic/residual split IS the certified fork-12(b)/B' design
+(the reconciliation above is the check); the dependent-Fin filter is Lean work, proceed solo
+with the gotchas ledger's reindexing patterns.
