@@ -73,8 +73,8 @@ example (H : Fin (L + 1) → ℕ) (r : ℕ)
   `.2` of `exponent_ledger_bridge`, i.e. the C2-flagged conjunct of `CanonicalResolution` that the
   `monomialization_terminates` construction must MAKE true. This example rides on that (hence on
   `sorryAx`); it is a wiring witness, NOT evidence the bridge is proved. (Were `terminalExponents`
-  empty, `hrat` would be vacuous — the reviewer's empty-list disproof — which is exactly why the
-  attainment conjunct is load-bearing and lives in the bundle.) -/
+  empty, `hrat` would be vacuous — the reviewer's empty-list disproof — which is why the attainment
+  conjunct is a hypothesis of the bundle, not a corollary of it.) -/
 example (M : Fin (L + 1) → ℕ) (c' : ℝ)
     (hrat : ∀ e ∈ ResolutionTree.terminalExponents (resolutionOf M), c' < (e : ℝ) / 2) :
     c' < (minAdm M : ℝ) / 2 :=

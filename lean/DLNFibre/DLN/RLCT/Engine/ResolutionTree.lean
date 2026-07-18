@@ -60,9 +60,15 @@ the leaf Jacobian exponent is the fold of the `jacPow`s. No opaque derivative fi
 structure ChartSubst (M : Fin (L + 1) → ℕ) where
   /-- The chart coordinate change (self-map of parameter space). -/
   localSub : Params M → Params M
-  /-- Number of exceptional divisors this step introduces. -/
+  /-- The Case-1 equal-run length `J₁` of this step (the exponent-merge increment
+  `M' = M + J₁·(M^{(S+1)}−J)`; page-image preprint p.16 Case 1(1)). CERTIFICATE CONSTRAINT — read by
+  `StepRel`'s case-1(1) clause. -/
+  runLen : ℕ
+  /-- Number of exceptional divisors this step introduces. CONSTRUCTION-SIDE BOOKKEEPING. -/
   jacDivCount : ℕ
-  /-- Monomial-Jacobian exponents contributed at this step. -/
+  /-- Monomial-Jacobian exponents contributed at this step. CONSTRUCTION-SIDE BOOKKEEPING (minor 8):
+  the leaf Jacobian is pinned by `LeafJacobian`'s existential `Dβ`, NOT by this ledger; no
+  obligation reads `jacPow`, so it may be corrupted without changing the certificate. -/
   jacPow : Fin jacDivCount → ℕ
 
 /-- **Per-node data of the double induction** (map node: `resolution-tree`). The step's CASE is on
@@ -81,18 +87,24 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   numDiv : ℕ
   /-- Length of the monomial vector. -/
   numB : ℕ
-  /-- The monomial vector (exponent vectors over divisor variables). -/
+  /-- The monomial vector (exponent vectors over divisor variables). TYPE-LEVEL CERTIFICATE
+  CONSTRAINT via `bChain` (no runtime Prop reads `bExp`; its content is the typed monotonicity). -/
   bExp : Fin numB → (Fin numDiv → ℕ)
-  /-- **The divisibility chain** — `bExp` pointwise monotone. -/
+  /-- **The divisibility chain** — `bExp` pointwise monotone. CERTIFICATE CONSTRAINT at TYPE
+  strength (a multiplicity flatten is a type error; `g-delta-flatten.py`), not a runtime
+  obligation. -/
   bChain : Monotone bExp
-  /-- The per-divisor exponent ledger `M_{s,k}`. -/
+  /-- The per-divisor exponent ledger `M_{s,k}`. CERTIFICATE CONSTRAINT — read by `StepRel`'s
+  case-1(1) clause and `IsFullMonomialization`. -/
   divExp : Fin numDiv → ℕ
-  /-- The per-divisor clearing level `t̃_{s,k}`. -/
+  /-- The per-divisor clearing level `t̃_{s,k}`. CERTIFICATE CONSTRAINT — read by `StepRel`'s
+  case-1(1) clause (`divTilde kp = cleared`). -/
   divTilde : Fin numDiv → ℕ
   /-- Number of residual generators tracked for sharing. -/
   numGen : ℕ
   /-- **The divisor-support (sharing) map** — `Finset`-valued (a multiplicity flatten is a TYPE
-  ERROR; `g-delta-flatten.py`). -/
+  ERROR; `g-delta-flatten.py`). CERTIFICATE CONSTRAINT — read by `StepRel`'s case-2 clause
+  (`∀ g, kp ∈ support g`). -/
   support : Fin numGen → Finset (Fin numDiv)
 
 /-- **Terminal (leaf) data**: the fully monomialised state. The chart CoV `chartMap : Params M →
@@ -103,15 +115,19 @@ in
 structure LeafData (M : Fin (L + 1) → ℕ) where
   /-- Number of terminal divisors (all `t̃ = 0`). -/
   numDiv : ℕ
-  /-- The accumulated exponent `M_{s,k}` of each terminal divisor. -/
+  /-- The accumulated exponent `M_{s,k}` of each terminal divisor. CERTIFICATE CONSTRAINT — read by
+  `IsFullMonomialization`, `terminalExponents`, and the exponent hooks. -/
   divExp : Fin numDiv → ℕ
-  /-- The rank profile of each terminal divisor's branch. -/
+  /-- The rank profile of each terminal divisor's branch. CERTIFICATE CONSTRAINT — `Adm`-membership
+  and the `Mval` tie are read by `IsFullMonomialization` (finding 4). -/
   divProfile : Fin numDiv → (Fin L → ℕ)
   /-- Length of the diagonal monomial vector. -/
   numB : ℕ
-  /-- The diagonal monomial vector. -/
+  /-- The diagonal monomial vector. TYPE-LEVEL CERTIFICATE CONSTRAINT via `bChain` (no runtime Prop
+  reads `bExp`; its content is the typed monotonicity). -/
   bExp : Fin numB → (Fin numDiv → ℕ)
-  /-- **The leaf divisibility chain** — `bExp` pointwise monotone (C1, type-strength). -/
+  /-- **The leaf divisibility chain** — `bExp` pointwise monotone (C1, type-strength). CERTIFICATE
+  CONSTRAINT at TYPE strength (a flatten is a type error), not a runtime obligation. -/
   bChain : Monotone bExp
   /-- The leaf chart CoV (the root→leaf edge-substitution fold; coherence in the bundle). -/
   chartMap : Params M → Params M
@@ -195,10 +211,29 @@ def edgesStepEdges {M : Fin (L + 1) → ℕ} : List (Edge M) → List (StepData 
   | .mk c s ch :: es => stepEdges ch ++ edgesStepEdges es
 end
 
-/-- The terminal divisor exponents gathered across all leaves — the candidate set the threshold
-`½·min` (Aoyagi p.22) reads off. -/
+/-- Root-node accessors reading the ledger at the ROOT of a subtree (a `StepData` for a `branch`,
+the `LeafData` for a `leaf`) — used by `StepRel` to read an edge's `child` (finding 1). -/
+def rootNumDiv {M : Fin (L + 1) → ℕ} : ResolutionTree M → ℕ
+  | leaf l => l.numDiv
+  | branch n _ => n.numDiv
+
+/-- The child root's divisor exponent at (ℕ-)index `k` (`0` out of range). -/
+def rootDivExp {M : Fin (L + 1) → ℕ} : ResolutionTree M → ℕ → ℕ
+  | leaf l, k => if h : k < l.numDiv then l.divExp ⟨k, h⟩ else 0
+  | branch n _, k => if h : k < n.numDiv then n.divExp ⟨k, h⟩ else 0
+
+/-- The child root's cleared-pivot count `J` (`0` at a leaf, `S = L+1` terminal). -/
+def rootCleared {M : Fin (L + 1) → ℕ} : ResolutionTree M → ℕ
+  | leaf _ => 0
+  | branch n _ => n.cleared
+
+/-- The terminal EXPONENTS the threshold `½·min` reads off: each leaf's divisor exponents PLUS its
+positive Morse-residual rank `resRank` (the resRank fold — so the `region_glue` ratio `hrat` covers
+the `resRank/2` residual threshold and `exponent_ledger_bridge` extends to `minAdm ≤ resRank`;
+ruling 2a / the elder-ratified rev-1 amendment). Aoyagi p.22 + cert-bridge-design A2. -/
 def terminalExponents {M : Fin (L + 1) → ℕ} (t : ResolutionTree M) : List ℕ :=
-  (leaves t).flatMap (fun l => (List.finRange l.numDiv).map l.divExp)
+  (leaves t).flatMap (fun l =>
+    ((List.finRange l.numDiv).map l.divExp) ++ (if 0 < l.resRank then [l.resRank] else []))
 
 end ResolutionTree
 
