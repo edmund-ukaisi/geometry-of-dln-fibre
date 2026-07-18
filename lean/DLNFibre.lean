@@ -1472,3 +1472,6 @@ import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 -- Engine (aoyagi-engine expedition): carrier-facing definitions, explicit per single-writer
 -- convention (already transitively present via RLCT.AxCheck → EngineObligations).
 import DLNFibre.DLN.RLCT.Engine.EngineDefs
+-- Light all-layer homogeneity closure (re-homed from D1L2ExplicitCoreProducer, 2026-07-18;
+-- ~3x build-time cut for the region-glue lane).
+import DLNFibre.DLN.RLCT.Foundations.FlatNodeHomogeneity

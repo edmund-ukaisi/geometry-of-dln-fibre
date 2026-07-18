@@ -1124,3 +1124,12 @@ one import + one line + the region_glue AxCheck watch entry (must flip CLEAN-THR
 engine_box_threshold_finite comment update (remaining sorryAx source = the construction hole
 ALONE). When it lands, ONE OF THE TWO ENGINE HOLES IS CLOSED — the box theorem's remaining
 distance to hbox is exactly monomialization_terminates (T1c → T2 assembly → T3 coverage).
+
+## 2026-07-18 D1L2 RE-HOME EXECUTED — GLUE LANE FULLY COMPLETE (tick 83)
+The ratified re-home landed (4e3475302, merged): FlatNodeHomogeneity (light Foundations module,
+verbatim decl move, import-back preserves all 8 downstream consumers — heaviest gate-checked)
+cuts the region-glue chain ~3× (8560 → 2734 jobs). One import-analysis correction recorded in
+the overlay (LossContinuity, not LossHomogeneity). Aggregator import added (single-writer). The
+glue lane is COMPLETE in every dimension: A/B/C modules green + axiom-clean + fidelity-VALIDATED,
+EngineDefs re-point, statement cards, the re-home. Seat stood down warm. Remaining on the
+analytic hole: the architect's one-line discharge (commissioned, gates cleared).

@@ -97,3 +97,8 @@ import (>100 files) outside it needs a controller note BEFORE it lands. The D1L2
 module consuming only S1NodeFlatHomog + LossHomogeneity + ParamsFlatLinear; D1L2 imports it back)
 is COMMISSIONED to the glue lane with the Engine-namespace fix (RegionGlueGlobalize +
 RegionGluePerLeaf declare the parent namespace) folded in.
+
+**EXECUTED (2026-07-18, glue-t06, 4e3475302).** FlatNodeHomogeneity.lean carries the re-homed
+closure; D1L2 imports it back; RegionGlueGlobalize re-pointed. ROI recorded: the glue chain
+8560 → 2734 jobs (~3×). IMPORT-LIST CORRECTION to the pass-2 analysis: the module needs
+LossContinuity (measurable_dlnLoss), NOT LossHomogeneity (prodAux_step' is locally re-derived).
