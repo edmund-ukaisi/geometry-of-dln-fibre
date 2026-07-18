@@ -1076,3 +1076,12 @@ Mval(divProfile)) is machine-verified in the arithmetic witness ALREADY — the 
 partially landed early, at the witness level. Full-aggregator gate confirming on the seat's side
 (RouteM3333 the unrelated bottleneck); T1b-ii + T1c proceeding, the chooser docstring to cite
 the depth-3 comparability finding.
+
+## 2026-07-18 GLUE SYNC + RE-POINT MERGED; OPTIMIZATION RULINGS (tick 78)
+The glue lane synced against T1a (59 commits, clean), regression-checked all three modules, and
+re-pointed PerLeaf → EngineDefs (the sorried holes off the glue cone) — merged. RULINGS: the
+D1L2 re-home GOES NOW (banked-static substrate, no lane owns it, import-back design leaves the
+8 downstream consumers untouched; gate incl. the heaviest consumer + build-time delta recorded);
+the NAMESPACE fix HOLDS to the close-phase naming sweep (rev-glue's in-flight cert + the
+discharge wiring cite current names; T1 stays carrier-only). Then statement cards → stand down
+warm. The glue lane's remaining work is measured in hours of mechanical steps.
