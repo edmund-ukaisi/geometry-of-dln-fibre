@@ -1739,3 +1739,17 @@ CHOOSER MINIMALITY) + SameLevelChainInv preservation (rides STEP1). The seat cor
 the remaining design content: THREADING the oracle's dispatch/chooser guarantees (gap,
 minimality) through the ConState transitions — which guarantee feeds which lemma — and takes it
 fresh. The summit's face is mapped; three lemmas from the invariant kit's completion.
+
+## 2026-07-18 THE SUMMIT: THE o4 PRESERVATION RUNG IS COMPLETE (tick 126)
+The last hard proof of the construction is FORMALIZED — merged + kernel-verified here (zero
+sorryAx on the three hardest lemmas): LiveHeadDom maintained across all three transitions
+(case-2 via the gap; case-1 via chooser minimality — the single hardest lemma of the engine,
+closed); SameLevelChainInv preserved (case-1 via STEP1, case-2 via Lemma-B/WidthBound); ALL FOUR
+invariants now maintained. The o4/o2 mathematics — refuted, reshaped, certified, and now
+formalized — is Lean fact end-to-end, clean-three throughout. THE METHOD RECORD: the certificate
+mapped lemma-for-lemma; the guarantee-threading landed as named hypotheses (the hlayer pattern);
+the live-guard theme was the proof TECHNIQUE (rollover cases fell to tail=tilde/antitone); the
+one finding was a missing live-guard, caught probe-first. Certified-before-formalised delivered
+the summit with zero mid-formalization discoveries. REMAINING = the ladder's tail: o3 leaf-Adm,
+o5-∈ realization, the advance constructor (+ its page sub-question), the gloss fix — then the
+cone-goodness assembly closes monomialization_terminates modulo T3's ChartBridge.
