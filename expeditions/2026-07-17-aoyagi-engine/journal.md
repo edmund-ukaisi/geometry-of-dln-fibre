@@ -1660,3 +1660,16 @@ advance-with-gauge into the coherence fold)? The fold must see every real coordi
 absorbing a gauge silently is the one way (a) can lie. The board: architect (joint push +
 emission assembly on the two rulings), pnp (the residual brick, then the ψ-factorization check),
 coverage warm.
+
+## 2026-07-18 THE CERTIFICATE IS COMPLETE — THE LAST MATHEMATICS IS CERTIFIED (tick 119)
+pnp's final push merged + battery-verified (livehead-dom 14/14 with the wrong-pick contrast):
+the residual is PROVED, two-way convergent, via LiveHeadDom — head-domination among LIVE
+divisors with the stranded-exclusion guard (< M(S)) built in, which is exactly why it survives
+the width-drops that refuted the paper's invariant. THE FINAL BASIS: maintain LiveHeadDom +
+FlatTail + WeakDec + WidthBound; SameLevelChainInv, STEP1, the residual, and min-existence all
+follow; nothing consumes full-chain. HONEST SUPERSESSION by its own author: LiveHeadDom's case-1
+maintenance DOES consume chooser minimality (the wrong pick breaks it — battery-demonstrated) —
+the (c)-finding's final corrected scope: the tie-break maintains live/in-chain domination.
+THE JOINT PUSH FULLY UNGATES. pnp stands down warm (the ψ-factorization check queued for its
+next wake). Every piece of new mathematics in the construction is now certified on paper with
+executable witnesses; what remains is formalization + assembly. Task #20 closed.

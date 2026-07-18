@@ -87,8 +87,8 @@ when `J ≥ MSp1 = min(Mrun(S), M⁽ˢ⁺¹⁾) ≤ Mrun(S)`, so `J < MSp1 ≤ M
 numerically confirmed at all reachable states of `(2,2,2)`, `(3,3,4)`, `(2,2,2,2)`, `(2,2,3,2)`, and
 the higher-`L` clarifier instances `(2,2,3,3,2)`, `(3,2,4,2)`.) `live_width` discharges the case-2
 append's weak-decrease head-domination (head index `≤ layer−1`, so `cleared ≤ runMinWidth`) and
-feeds the leaf block-bound. The COMPARABILITY (`CompChainInv`) component is held separately — its
-statement is NOT finalized here (the o1↔o4↔o2 mutual-induction contract: lands with the o4 cert). -/
+feeds the leaf block-bound. The COMPARABILITY component finalized as `SameLevelChainInv` (o4 cert:
+the paper's full chain is refuted; same-t̃ comparability holds and is what o2 needs). -/
 structure StateInvariant (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop where
   /-- The layer has not overshot the chain. -/
   layer_le : s.layer ≤ L
@@ -566,16 +566,21 @@ theorem StateInvariant_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s 
   · change s.cleared + 1 ≤ layerCap M; omega
   · intro i hi; change s.cleared + 1 ≤ M i; have := helig i hi; omega
 
-/-- **The total-comparability CHAIN invariant** (elder-gate4 §3c → o1↔o4 join). The carried profiles
-are pairwise Def-4-comparable (`T_k ≤ T_{k'}` or `T_{k'} ≤ T_k`, componentwise) — the maintained
-chain that makes the chooser's `def4_min` total (the simulator's comparability-violation fallback is
-the hole this closes). **Statement HELD (mutual-induction contract):** its precise form (all
-divisors vs eligible-only; with/without the minimality witness) is finalized jointly with the o4
-pen-and-paper certificate; the preservation proof (o4) consumes the chooser minimality and is the
-hardest rung. T3's cover proof CONSUMES this (invariant→principalization, `cert-atlas-probe-2222`
-(c)). -/
-def CompChainInv {L : ℕ} (s : ConState L) : Prop :=
-  ∀ k k' : Fin s.numDiv,
+/-- **The same-level comparability invariant** (o4-cert finalization of the held CompChainInv).
+Divisors at a COMMON clearing level `t̃` are pairwise Def-4-comparable (componentwise `≤`).
+
+**Why not the full chain:** the paper's p.15 TOTAL comparability (all pairs) is REFUTED
+(`cert-compchain-o4.md` Part 1; minimal witness `M=(2,2,1,1)`: at an interior width-bottleneck a
+Case-2 append `(2,1,0)` is incomparable with a stranded `(1,1,1)`). Scope: full-chain fails iff an
+interior layer's running-min drops below `min(M⁽¹⁾,M⁽²⁾)` — a common DLN config. `HeadChainInv`
+(global head-chain) is ALSO too strong (fails at `(3,3,1,1)`). `SameLevelChainInv` holds at every
+reachable state (0/18 instances) and is EXACTLY what o2 needs: the eligible set `{t̃ = ℓ}` is
+same-level, so a chain, so a Def-4 minimum EXISTS (`ChooserTotalOnChain`). Its preservation (o4
+Lemmas A/B) consumes `SameLevelChainInv` + `FlatTail` (+ `WidthBound` for case-2) — NOT minimality
+(both min/max picks preserve it). T3's principalization consumes level-filtration +
+`SameLevelChainInv`, not full-chain (`cert-compchain-o4.md` Part 5(2)). -/
+def SameLevelChainInv {L : ℕ} (s : ConState L) : Prop :=
+  ∀ k k' : Fin s.numDiv, s.divTilde k = s.divTilde k' →
     (∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j) ∨
       (∀ j : Fin L, s.divProfile k' j ≤ s.divProfile k j)
 
@@ -650,12 +655,50 @@ theorem chooseMin_spec {L : ℕ} (s : ConState L) (target : ℕ) {k : Fin s.numD
   have := List.find?_some hk
   simpa using of_decide_eq_true this
 
-/-- **The o4 landing pad**: on a `CompChainInv` state, IF some divisor sits at level `target`, the
-chooser does NOT fall back — a componentwise-min exists (the comparability chain makes `def4_min`
-total). Stated as the plug-in point; its PROOF is the o4 certificate content (mutual-induction
-contract). -/
+/-- **The o4 landing pad**: on a `SameLevelChainInv` state, IF some divisor sits at level `target`,
+the chooser does NOT fall back — a componentwise-min exists (the same-level chain makes `def4_min`
+total). PROVED below (`chooserTotalOnChain_of_sameLevel`) — the o2 min-existence half of the
+mutual induction. -/
 def ChooserTotalOnChain {L : ℕ} (s : ConState L) : Prop :=
   ∀ target : ℕ, (∃ k : Fin s.numDiv, s.divTilde k = target) → (chooseMin s target).isSome
+
+/-- **On a chain, a componentwise minimum equals a sum minimum**: if `a`, `b` are Def-4-comparable
+and `∑ a ≤ ∑ b`, then `a ≤ b` componentwise. (If `b ≤ a` but `a ≰ b`, some coord is strict, so
+`∑ b < ∑ a` — contradicting `∑ a ≤ ∑ b`.) The scalar `∑` witnesses the chain minimum. -/
+theorem le_of_comparable_sum_le {L : ℕ} {a b : Fin L → ℕ}
+    (hcomp : (∀ j, a j ≤ b j) ∨ (∀ j, b j ≤ a j))
+    (hsum : ∑ j, a j ≤ ∑ j, b j) : ∀ j, a j ≤ b j := by
+  rcases hcomp with h | h
+  · exact h
+  · by_contra hcon
+    push Not at hcon
+    obtain ⟨j, hj⟩ := hcon
+    have hlt : ∑ i, b i < ∑ i, a i :=
+      Finset.sum_lt_sum (fun i _ => h i) ⟨j, Finset.mem_univ j, hj⟩
+    omega
+
+/-- **`ChooserTotalOnChain` PROVED from `SameLevelChainInv`** (o2 min-existence). The eligible set
+`{k : t̃ k = target}` is same-level, hence a chain (`hchain`); a `∑`-minimum over it (finite,
+nonempty) is therefore a componentwise minimum (`le_of_comparable_sum_le`), which is exactly
+`chooseMin`'s `find?` predicate — so the chooser returns it (`isSome`), never the fallback. -/
+theorem chooserTotalOnChain_of_sameLevel {L : ℕ} (s : ConState L)
+    (hchain : SameLevelChainInv s) : ChooserTotalOnChain s := by
+  rintro target ⟨k₀, hk₀⟩
+  obtain ⟨k, hkE, hkmin⟩ := Finset.exists_min_image
+    (Finset.univ.filter (fun k => s.divTilde k = target))
+    (fun k => ∑ j, s.divProfile k j)
+    ⟨k₀, Finset.mem_filter.mpr ⟨Finset.mem_univ k₀, hk₀⟩⟩
+  rw [Finset.mem_filter] at hkE
+  have hpred : s.divTilde k = target ∧ ∀ k' : Fin s.numDiv, s.divTilde k' = target →
+      ∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j := by
+    refine ⟨hkE.2, fun k' hk' j => ?_⟩
+    have hcomp := hchain k k' (hkE.2.trans hk'.symm)
+    have hsum : ∑ i, s.divProfile k i ≤ ∑ i, s.divProfile k' i :=
+      hkmin k' (Finset.mem_filter.mpr ⟨Finset.mem_univ k', hk'⟩)
+    exact le_of_comparable_sum_le hcomp hsum j
+  rw [Option.isSome_iff_ne_none, Ne, chooseMin, List.find?_eq_none]
+  push Not
+  exact ⟨k, List.mem_finRange k, by simpa using hpred⟩
 
 /-! ## o2: the dispatch `classify` (simulator `_proc`, indexing pinned `layer = S−1`)
 
