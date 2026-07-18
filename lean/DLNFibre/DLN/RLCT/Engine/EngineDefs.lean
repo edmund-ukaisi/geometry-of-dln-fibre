@@ -6,7 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 # `DLNFibre.DLN.RLCT.Engine.EngineDefs` — the engine's carrier-facing definitions
 
 **Blueprint spine: statements are forecasts; churn is normal.** The `def`s the transform-only Aoyagi
-engine's obligations rest on, SPLIT OUT from the sorried theorems (`EngineObligations`) so downstream
+engine's obligations rest on, SPLIT OUT from the sorried theorems (`EngineObligations`) so the
 consumers — the region-glue lane in particular — can import `ChartBridge`/`LeafPullback`/
 `LeafJacobian`/`residualBaseForm` and the carrier-facing transition defs WITHOUT pulling in the
 sorried `monomialization_terminates` / `region_glue`. `EngineObligations` imports this file and MAY
@@ -85,6 +85,12 @@ def ChartBridge (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
         LeafPullback l ∧ LeafJacobian l) ∧
     (∀ p ∈ ResolutionTree.leafPaths (id : Params M → Params M) t, p.1.chartMap = p.2)
 
+/-- **The running-min corank** `M(i+1) = min(M⁽¹⁾ … M⁽ⁱ⁺¹⁾)` at head index `p` (0-indexed, so the
+1-indexed layer `i = p+1`): the min of the widths `M 0 … M p.succ`. FIX-A (below) caps the Case-2
+head-reset at this, not the RAW `M p.succ`. -/
+def runMinWidth (M : Fin (L + 1) → ℕ) (p : Fin L) : ℕ :=
+  (Finset.Iic p.succ).inf' ⟨p.succ, Finset.mem_Iic.mpr le_rfl⟩ M
+
 /-- **The typed transition** (rung 1, fork 9): the child root ledger CORE a step DETERMINES from its
 parent `n`, the `case`, and the edge substitution `σ` — `numDiv`, per-divisor `divExp`/`divTilde`,
 `cleared`. Faithful to the page-image transitions:
@@ -129,10 +135,15 @@ def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : C
           (setTail (if h : σ.mergeIdx < n.numDiv then n.divProfile ⟨σ.mergeIdx, h⟩ else fun _ => 0))
         cleared := n.cleared + 1 }
   | StepCase.case2 =>
-      -- new pivot: head RESET to widths `t⁽ⁱ⁾ := M⁽ⁱ⁺¹⁾` (`M p.succ`), tail `:= J` (Aoyagi p.20)
+      -- new pivot: head RESET to the RUNNING-MIN width `t⁽ⁱ⁾ := M(i+1) = min(M⁽¹⁾…M⁽ⁱ⁺¹⁾)`
+      -- (`runMinWidth`), tail `:= J`. DEVIATION-FROM-PAGE (FIX-A): Aoyagi p.20 prints the RAW
+      -- `M⁽ⁱ⁺¹⁾`, but that label disagrees with the SAME step's running-min exponent at
+      -- non-monotone widths (label≠exponent at (2,2,3,2); a verified defect, Def-3's class — see
+      -- theory/aoyagi-2023-reproduction/verify-case2-rawwidth-defect.md). The cap restores
+      -- label==exponent + an Adm-clean t̃=0 atlas; invisible at monotone widths / L ≤ 2.
       { numDiv := n.numDiv + 1
         divExp := Fin.snoc n.divExp (n.resRows * n.resCols)
-        divProfile := Fin.snoc n.divProfile (setTail (fun p => M p.succ))
+        divProfile := Fin.snoc n.divProfile (setTail (fun p => runMinWidth M p))
         cleared := n.cleared + 1 }
 
 /-- **The faithful per-step transition relation** (rung 1). FAITHFUL for the exponent/clearing
