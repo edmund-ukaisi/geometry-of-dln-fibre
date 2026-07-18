@@ -1213,6 +1213,29 @@ theorem OracleInv_stepAppendAdvance_case12 {L : ℕ} {M : Fin (L + 1) → ℕ} (
     inv.slc
   si := StateInvariant_stepAppendAdvance s e (s.divProfile f) hcap helig inv.si
 
+/-- **`OracleInv` is blind to `divExp`/`numGen`/`genDivExp`**: every clause reads only
+`layer`/`cleared`/`numDiv`/`divProfile` (the exponent/generator fields are `StepRel`-carrier data, not
+invariant data). So a state differing from `s` only in those fields inherits `s`'s `OracleInv` by
+definitional equality. This is the transfer the case-1(1) tree-child needs: its ledger carries
+`stepUpdate case11`'s `divExp` bump (`+= runLen·resCols`) which `ConState.stepCase11` does not apply,
+but the cone-goodness is exactly `s.stepCase11 i`'s. -/
+theorem OracleInv_of_exp_change {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (divExp' : Fin s.numDiv → ℕ) (numGen' : ℕ) (genDivExp' : Fin numGen' → Fin s.numDiv → ℕ)
+    (inv : OracleInv M s) :
+    OracleInv M ⟨s.layer, s.cleared, s.numDiv, divExp', s.divProfile, numGen', genDivExp'⟩ :=
+  ⟨inv.wd, inv.ft, inv.wb, inv.lhd, inv.slc,
+    ⟨inv.si.layer_le, inv.si.cleared_le, inv.si.live_width⟩⟩
+
+/-- **`conRel` is blind to `divExp`/`numGen`/`genDivExp`** (`conMeasure` reads only
+`layer`/`cleared`/`pendingCount`, `pendingCount` reads `divProfile`). Companion to
+`OracleInv_of_exp_change`: the case-1(1) tree-child's descent transfers from `conRel_stepCase11`
+across the `divExp` bump. -/
+theorem conRel_of_exp_change {L : ℕ} (M : Fin (L + 1) → ℕ) (s t : ConState L)
+    (divExp' : Fin s.numDiv → ℕ) (numGen' : ℕ) (genDivExp' : Fin numGen' → Fin s.numDiv → ℕ)
+    (h : conRel M s t) :
+    conRel M ⟨s.layer, s.cleared, s.numDiv, divExp', s.divProfile, numGen', genDivExp'⟩ t :=
+  h
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches

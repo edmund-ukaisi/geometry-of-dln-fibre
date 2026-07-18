@@ -1774,3 +1774,19 @@ maintenance DIFFERS (case-2 = gap-based, proven; case-1(2) = minimality-based li
 a near-clone lemma owed) — the 2B-era transition unification is what surfaced the split; the
 cert's 5-case analysis always had them distinct. No design break; one lemma + the OracleInv
 splits, then the concrete oracle def + o5-∈ + cone-goodness close the construction.
+
+## 2026-07-18 CARRIER BLOCKER: ROLLOVER NEEDS A TREE EDGE (tick 129)
+The concrete-oracle build FALSIFIED the Q3 absorb ruling at the ledger level (the tripwire
+catching MY ruling this time): an absorbed rollover breaks StepRel's rfl-class equality — the
+child tree's root ledger is post-rollover (cleared=0) while stepUpdate predicts pre-rollover;
+the architect verified every degenerate encoding fails and both green witnesses are single-layer
+(rollover was never exercised in a tree — the untested path bit exactly where untested).
+PROVISIONAL RULING (A): StepCase.rollover + a stepUpdate relabel clause (ledger unchanged,
+cleared := 0) with localSub = id — nodes are the paper's INDUCTIVE STATEMENTS, the p.21
+exhaustion reindexing is a real chartless transition; the pure-(a) gauge determination makes
+the id-edge exactly faithful; StepRel stays rfl-class. Blow-up-only aesthetics yield to ledger
+faithfulness. elder-gate6 convened BOUNDED (ratify/amend + one sharpened condition to weigh:
+must the rollover edge carry an AT-EXHAUSTION-ONLY guard so early rollovers can't strand pending
+divisors — the o3 leaf-t̃=0 interaction). The architect edits the carrier (its files) + builds
+the divExp-blind congruence lemma meanwhile (needed regardless); the oracle spine holds on the
+ratification.
