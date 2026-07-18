@@ -1431,3 +1431,15 @@ INSIDE the buildTree pass. Coverage now pre-stages the construction-independent 
 (coords + srcBox over the contract shape; NOT the chart-data-fed Props). The coverage MECHANISM
 is proven end-to-end modulo the constructed atlas: what remains of the named hard part is
 exactly rung 3 = the assembly over buildTree's output.
+
+## 2026-07-18 COVERAGE LANE: ALL REACHABLE WORK COMPLETE (tick 104)
+The pre-staged per-leaf clauses merged + verified (zero sorryAx): srcBox measurable/bounded in
+BOTH candidate forms + the full coordinate-clause bundle — buildTree's leaves satisfy four of
+the eight per-leaf ChartBridge conjuncts BY CONSTRUCTION if it picks the flat-cube srcBox form
+(recommended to the architect: bounded is trivial there vs an extra CLE hypothesis on the
+q-preimage form; deliberate choice, surfaced not defaulted). The coverage lane has completed
+EVERYTHING reachable without the constructed atlas: atom ✓, fold (all 4) ✓, construction-
+independent clauses ✓. The ENTIRE remaining engine content is now: the architect's buildTree
+body → then the chart-data-fed rung-3 assembly (LeafPullback/LeafJacobian/a.e.-InjOn + the
+ChartBridge composition over the real atlas). One seat's one unit is the critical path;
+everything else waits warm, proven, or pre-staged.
