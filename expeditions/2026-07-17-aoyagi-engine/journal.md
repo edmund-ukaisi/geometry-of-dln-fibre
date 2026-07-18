@@ -1673,3 +1673,15 @@ the (c)-finding's final corrected scope: the tie-break maintains live/in-chain d
 THE JOINT PUSH FULLY UNGATES. pnp stands down warm (the ψ-factorization check queued for its
 next wake). Every piece of new mathematics in the construction is now certified on paper with
 executable witnesses; what remains is formalization + assembly. Task #20 closed.
+
+## 2026-07-18 MINIMALITY IS LOAD-BEARING — the meta-claim corrected (tick 120)
+pnp's finalization caught its OWN under-tested claim: "SameLevelChainInv is minimality-free" was
+an L≤3 shallow-instance confound — at (2,2,3,3,2) L=4 node (4,0), the wrong pick breaks
+SameLevelChainInv ITSELF (10 violations, witnessed; the min pick keeps 0 — battery verified here).
+CORRECTED BASIS (final): the four invariants are maintained USING chooser minimality (case-1) +
+WidthBound/gap (case-2); no "minimality-free" caveat anywhere; the tie-break's role fully
+settled — minimality maintains LiveHeadDom ⟹ SameLevelChainInv ⟹ STEP1/residual. The residual
+PROOF unaffected. Lesson banked (hypothesis-necessity needs instance-DEPTH escalation — the
+depth-scaling discipline applied to hypotheses). o4 FULLY closed; pnp warm. (Also: a cd-induced
+path failure banked a merge-only commit last push — appends redone this commit; the shell-state
+guard class again.)

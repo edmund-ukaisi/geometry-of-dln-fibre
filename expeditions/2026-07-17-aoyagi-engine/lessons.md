@@ -34,3 +34,8 @@ the trail is local):
   the parent + case tag, so any child exponent passed — and the in-file witness "passing" was a
   symptom of the weakness, not evidence of the design. When a predicate is justified BY a specific
   equation (the case-1(1) merge), grep that the equation's variables actually appear. (2026-07-17)
+- A "hypothesis-free" green on SHALLOW instances is a confound: the "minimality-free
+  SameLevelChainInv" claim passed all L≤3 tests and was REFUTED at the minimal L=4 instance
+  (2,2,3,3,2) — the eligible sets at L≤3 are too shallow to expose the dependence. When a
+  hypothesis seems droppable, escalate the instance DEPTH before believing it. Caught by the
+  claimant itself in finalization. (pnp o4 cert Part 7, 2026-07-18)
