@@ -24,7 +24,7 @@ theorem frontCollapse_wide_log_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
 ```
 
 - **Lean:** `DLNFibre.DLN.RLCT.frontCollapse_wide_log_lt_top`
-  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJFrontCollapseLog.lean` @ `<PUSH-SHA>`).
+  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJFrontCollapseLog.lean` @ `c1d30197`, branch `genm-log`).
 - **Gloss.** For a `≥ 3`-width chain `M`, a WIDE front (`M₀ ≤ M₁`) at the LOG (critical) density
   `M₂ = M₁ − M₀ + 1`, GIVEN the plain one-shorter strong IH `hIH` (`RouteMBoxThresholdFinite` for every
   chain of one fewer layer), below the geometric threshold `c' < ½·minAdm M`: the front-factor box
