@@ -109,10 +109,11 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   divProfile : Fin numDiv → (Fin L → ℕ)
   /-- Number of residual generators tracked for sharing. -/
   numGen : ℕ
-  /-- **The divisor-support (sharing) map** — `Finset`-valued (a multiplicity flatten is a TYPE
-  ERROR; `g-delta-flatten.py`). CERTIFICATE CONSTRAINT — read by `StepRel`'s case-2 clause
-  (`∀ g, kp ∈ support g`). -/
-  support : Fin numGen → Finset (Fin numDiv)
+  /-- **The generator-divisor MULTIPLICITY ledger** `genDivExp g k` = the exponent of divisor `k` in
+  generator `g` (rung R1: the ratified redesign — a multiplicity field, NOT a flattened `Finset`;
+  `g-delta-flatten.py`). The sharing `support g` is DERIVED as its nonzero locus (`StepData.support`).
+  CERTIFICATE CONSTRAINT — the propagation proofs across the per-divisor re-indexing are T4. -/
+  genDivExp : Fin numGen → Fin numDiv → ℕ
 
 /-- **Terminal (leaf) data**: the fully monomialised state. The chart CoV `chartMap : Params M →
 Params M` is DERIVED (= fold of the root→leaf edge substitutions; coherence in the bundle), over the
@@ -281,6 +282,12 @@ def tildeOf {L : ℕ} (T : Fin L → ℕ) : ℕ :=
 /-- Derived per-divisor clearing level `t̃_{s,k} = min T_{s,k}` on a step node. -/
 def StepData.divTilde {M : Fin (L + 1) → ℕ} (n : StepData M) (k : Fin n.numDiv) : ℕ :=
   tildeOf (n.divProfile k)
+
+/-- Derived sharing map `support g = { k | genDivExp g k ≠ 0 }` (the nonzero locus of the
+multiplicity ledger; rung R1). -/
+def StepData.support {M : Fin (L + 1) → ℕ} (n : StepData M) (g : Fin n.numGen) :
+    Finset (Fin n.numDiv) :=
+  Finset.univ.filter (fun k => n.genDivExp g k ≠ 0)
 
 /-- Derived per-divisor clearing level `t̃_{s,k} = min T_{s,k}` on a leaf. -/
 def LeafData.divTilde {M : Fin (L + 1) → ℕ} (l : LeafData M) (k : Fin l.numDiv) : ℕ :=
