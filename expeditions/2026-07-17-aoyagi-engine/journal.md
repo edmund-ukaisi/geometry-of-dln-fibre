@@ -1922,3 +1922,16 @@ precisely mapped in its own reports. architect-t03 spawned into the same worktre
 complete state + the 6-step tail (resRows fix → MvalCoh identities → terminal leaf → WF-fold →
 o5-∈ → ASSEMBLE monomialization_terminates modulo ChartBridge) + every standing tripwire. The
 banked-everything discipline made the succession a brief, not a loss.
+
+### Tick-140 addendum: t02's parting map (banked from its final message; relayed to t03)
+Stand-down confirmed clean: HEAD = origin = c0e5c56c5 (`widthMinUpto_succ` landed). The crux it
+hands over — the **Mval-telescoping identity**:
+`Mval M (setTail layer cleared runMinWidth)
+  = ((widthMinUpto M layer : ℤ) − cleared) · ((M ⟨layer+1⟩ : ℤ) − cleared)`,
+then `.toNat` via the ℕ-subtraction bridge (reachable ⟹ `cleared < widthMinUpto layer` and
+`cleared < M(layer+1)`). Proof shape: `Finset.sum_eq_single` at `j = ⟨layer,_⟩`; head terms
+vanish by `widthMinUpto_succ` (one factor 0), tail terms by constancy (`tPrev j = T j =
+cleared`); the survivor is the product. Helpers committed: `widthMinUpto_succ`,
+`runMinWidth_eq_widthMinUpto`, `runMinWidth_antitone`. It feeds the `hnew`/`hbump` hypotheses of
+`MvalCoh_stepAppendAdvance`/`MvalCoh_case11child`; the OracleInv fold takes the case-11 child via
+`MvalCoh_case11child`, NOT the divExp-blind congruence.
