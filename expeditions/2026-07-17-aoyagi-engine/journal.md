@@ -951,3 +951,12 @@ Labels pinned tide-internal (T1-T5) vs fork-11 map labels. Design note offered: 
 coherence theorem IS the exponent-bookkeeping soundness brick and fits T4's uniform slot. T1 Lean
 holds on pnp-atlas verdict 3 (the only gate). Reframe ACK'd by the seat in full — including
 extending its own case-merge instinct.
+
+## 2026-07-18 tick 69 addendum: coherence pre-check (architect, paper-side)
+Numeric coherence GROUNDED ahead of T1 (algebra only, decorrelated from pnp's page-fidelity
+trace): Mval's closed form matches the minAdm recursion on all four instances; leaf-level
+divExp = Mval(divProfile) confirmed on the 224 witness. The architect's read — CARRY BOTH +
+prove coherence (incremental update stays primitive in the hot path; the agreement with
+Mval(T-updated) is the T4 exponent-bookkeeping soundness lemma) — well-argued, held for the pnp
+trace. Correctly fenced flag: (2,2,2,2) has THREE binding profiles (θ-multiplicity territory —
+out of scope, noted only). Seat genuinely held on the pnp gate.
