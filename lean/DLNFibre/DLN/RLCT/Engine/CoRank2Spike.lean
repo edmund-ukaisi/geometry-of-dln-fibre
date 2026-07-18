@@ -32,7 +32,6 @@ monomialisation fields are placeholder-valid; only the coordinate model is exerc
 noncomputable def corank2Leaf : LeafData M334 where
   numDiv := 1
   divExp := fun _ => 8
-  divTilde := fun _ => 0
   cleared := 0
   divProfile := fun _ => ![0, 0]
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
@@ -68,5 +67,42 @@ theorem corank2Leaf_disjoint_coords :
 has room at corank 2). -/
 theorem corank2Leaf_fits : corank2Leaf.resRank + corank2Leaf.numDiv ≤ flatDim M334 := by
   rw [flatDim_M334]; decide
+
+/-! ## T-rule truth-witness at (3,3,4) — the load-bearing head-preservation case (pnp trace)
+
+`leaf224` exercises the `T`-rule only trivially (case-2 at `layer = 0`: all tail).
+The load-bearing case is a case-1(1) merge at `layer = 1`, where the head component is PRESERVED and
+the tail written — the exact place a wrong `tail iff n.layer ≤ p.val` boundary would corrupt. These
+pins reproduce pnp-atlas verdict-3's page-verified (3,3,4) values and confirm `divExp = Mval(T)`. -/
+
+/-- A (3,3,4) case-1(1) parent at `layer = 1`: one divisor with profile `T = (1,1)`, `divExp = 4 =
+Mval(1,1)`, residual cols `M⁽³⁾−J = 4`. -/
+def node334 : StepData M334 where
+  layer := 1; cleared := 0; resRows := 3; resCols := 4
+  numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
+  divExp := fun _ => 4; divProfile := fun _ => ![1, 1]; numGen := 0; support := fun k => k.elim0
+
+/-- The case-1(1) merge substitution: `J₁ = 1`, target divisor `0`. -/
+def subst334 : ChartSubst M334 where
+  localSub := id; runLen := 1; mergeIdx := 0; jacDivCount := 1; jacPow := fun _ => 0
+
+/-- **T-rule head-preservation** (pnp trace): the merge takes profile `(1,1) → (1,0)` — head
+`t⁽¹⁾=1` PRESERVED (`layer = 1`, so `p = 0` is head), tail `t⁽²⁾ := J = 0`. -/
+theorem node334_merge_divProfile :
+    (stepUpdate node334 StepCase.case11 subst334).divProfile ⟨0, by decide⟩ = ![1, 0] := by decide
+
+/-- **The merge is the binding divisor**: `divExp 4 → 8 = 4 + J₁·resCols = 4 + 1·4`, and
+`8 = Mval (3,3,4) (1,0) = minAdm(3,3,4)` — the exponent bookkeeping agrees with the closed form
+(the T4 coherence, at the binder). -/
+theorem node334_merge_coherent :
+    (stepUpdate node334 StepCase.case11 subst334).divExp ⟨0, by decide⟩ = 8 ∧
+      (Mval M334 ![1, 0]).toNat = 8 := by decide
+
+/-- **T-rule head-RESET** (pnp trace, case-2 at `layer = 1`): a new full-block pivot resets the head
+to widths `t⁽¹⁾ := M⁽²⁾ = 3`, tail `t⁽²⁾ := J = 0` — profile `(3,0)`, and `divExp = resRows·resCols`
+`= 12 = Mval (3,3,4) (3,0)`. -/
+theorem node334_case2_divProfile :
+    (stepUpdate node334 StepCase.case2 subst334).divProfile (Fin.last 1) = ![3, 0] ∧
+      (Mval M334 ![3, 0]).toNat = 12 := by decide
 
 end DLNFibre.DLN.RLCT.Engine

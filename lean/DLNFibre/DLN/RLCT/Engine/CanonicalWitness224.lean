@@ -31,7 +31,7 @@ abbrev M224 : Fin 3 → ℕ := ![2, 2, 4]
 def rootNode224 : StepData M224 where
   layer := 0; cleared := 0; resRows := 2; resCols := 2
   numDiv := 0; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
-  divExp := fun k => k.elim0; divTilde := fun k => k.elim0; numGen := 0; support := fun k => k.elim0
+  divExp := fun k => k.elim0; divProfile := fun k => k.elim0; numGen := 0; support := fun k => k.elim0
 
 /-- The Case-2 edge substitution (placeholder self-map; `mergeIdx` unused by case-2). -/
 def subst224 : ChartSubst M224 where
@@ -43,9 +43,8 @@ faithful `StepRel` is rfl. The one appended shared divisor has exponent
 noncomputable def leaf224 : LeafData M224 where
   numDiv := (stepUpdate rootNode224 StepCase.case2 subst224).numDiv
   divExp := (stepUpdate rootNode224 StepCase.case2 subst224).divExp
-  divTilde := (stepUpdate rootNode224 StepCase.case2 subst224).divTilde
   cleared := (stepUpdate rootNode224 StepCase.case2 subst224).cleared
-  divProfile := fun _ => ![0, 0]
+  divProfile := (stepUpdate rootNode224 StepCase.case2 subst224).divProfile
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id
   srcBox := ⇑(paramsEquivFlat M224) ⁻¹' cubeBox (flatDim M224) 1
@@ -103,7 +102,7 @@ theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
     subst hl
     rw [divExp_leaf224]
     refine ⟨?_, ?_⟩
-    · fin_cases k; rfl
+    · fin_cases k; decide
     · fin_cases k; decide
   · intro p hp
     rw [stepEdges_tree224, List.mem_singleton] at hp
@@ -137,7 +136,7 @@ eligibility precondition for merging with `runLen = J₁ = 2` at `cleared = J = 
 def mergeNode : StepData M224 where
   layer := 0; cleared := 0; resRows := 1; resCols := 3
   numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
-  divExp := fun _ => 5; divTilde := fun _ => 2; numGen := 1; support := fun _ => {0}
+  divExp := fun _ => 5; divProfile := fun _ => ![2, 2]; numGen := 1; support := fun _ => {0}
 
 /-- The Case-1(1) edge: `runLen = J₁ = 2`, merging INTO divisor `mergeIdx = 0`. -/
 def mergeSubst : ChartSubst M224 where
@@ -149,9 +148,8 @@ exponent becomes `11 = 5 + 2·3 = parent divExp + runLen·resCols` (preprint p.1
 noncomputable def mergeLeaf : LeafData M224 where
   numDiv := (stepUpdate mergeNode StepCase.case11 mergeSubst).numDiv
   divExp := (stepUpdate mergeNode StepCase.case11 mergeSubst).divExp
-  divTilde := (stepUpdate mergeNode StepCase.case11 mergeSubst).divTilde
   cleared := (stepUpdate mergeNode StepCase.case11 mergeSubst).cleared
-  divProfile := fun _ => ![0, 0]
+  divProfile := (stepUpdate mergeNode StepCase.case11 mergeSubst).divProfile
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
@@ -180,9 +178,8 @@ ledger conjunct holds; the appended pivot exponent is `6 = 0 + 2·3` (base DROPP
 noncomputable def oobSplitLeaf : LeafData M224 where
   numDiv := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).numDiv
   divExp := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divExp
-  divTilde := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divTilde
   cleared := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).cleared
-  divProfile := fun _ => ![0, 0]
+  divProfile := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divProfile
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
@@ -208,7 +205,7 @@ theorem oobSplit_not_stepRel :
 /-- A child with an EXTRA divisor (`numDiv = 2`) not produced by the case-1(1) transition (which
 preserves `numDiv = 1`). -/
 noncomputable def dummyMergeLeaf : LeafData M224 where
-  numDiv := 2; divExp := fun _ => 11; divTilde := fun _ => 0; cleared := 0
+  numDiv := 2; divExp := fun _ => 11; cleared := 0
   divProfile := fun _ => ![0, 0]
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
@@ -228,7 +225,7 @@ theorem dummyDivisor_not_stepRel :
 /-- A child MISSING the appended divisor (`numDiv = 0`) where case-2 must append one
 (`numDiv = 1`). -/
 noncomputable def vanishingLeaf : LeafData M224 where
-  numDiv := 0; divExp := fun k => k.elim0; divTilde := fun k => k.elim0; cleared := 0
+  numDiv := 0; divExp := fun k => k.elim0; cleared := 0
   divProfile := fun k => k.elim0
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
