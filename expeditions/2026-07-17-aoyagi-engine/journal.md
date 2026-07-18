@@ -508,3 +508,21 @@ the banked measurePreserving_paramsEquivFlat (the routeMCore_le_matBox pattern) 
 flat-side accordingly. Next: the ASSEMBLY (the genuinely hard glue part; srcBox is an abstract
 Set — Codex consult dispatched by the seat). Possible incoming tripwire: srcBox measurability/
 boundedness may need a ChartBridge strengthening — the protocol is in place.
+
+## 2026-07-18 GLUE-LANE STOP-TRIPWIRE: ChartBridge NEEDS srcBox BOUNDED (tick 42)
+The sharpest statement-level catch of the expedition so far, and the tripwire protocol worked
+end-to-end: glue-t05 + decorrelated Codex independently found region_glue UNPROVABLE from the
+current ChartBridge — a REALIZABLE unbounded-sector counterexample (L=1, M=(2,1), β(u,v)=
+(u,u^(a−1)v) on |v|≤|u|^(−(a−2)): every clause holds, hrat allows c'<a/2, the integral diverges
+for c'≥1; the unbounded width is exactly the lost power). The seat held the discharge, requested
+the precise strengthening (per-leaf MeasurableSet + bounded-in-flat-cube), built nothing around
+it. ROUTED: architect applies the statement edit now (owns EngineObligations.lean; 224 witness
+updates; real-chart discharge stays rung 4); glue-t05 proceeds on boundedness-independent bricks
++ the per-leaf helper with boundedness EXPLICIT; battery g-glue-unbounded-srcbox.py owed. SECOND
+FINDING (fork-8 mechanism): the banked transport is INAPPLICABLE to LeafJacobian as repaired
+(wants Dψsymm/openness/basepoint); the per-leaf read goes by the AREA FORMULA (needs only the det
+upper bound — weaker hypotheses, more Mathlib reuse); the scaling bridge stays for globalization.
+Put to the elder for ratification (parallel; overrule point = before the discharge). PATTERN
+(2nd instance): an obligation false-as-stated for want of a hypothesis the true construction
+supplies freely (1st: resRank fold) — abstract carriers hide honest content; the counterexample
+hunts must probe WIDTH/measure data, not just exponents. Map region-glue note updated.
