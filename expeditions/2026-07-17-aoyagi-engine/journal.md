@@ -1697,3 +1697,13 @@ PRESERVATION RUNG (WidthBound + LiveHeadDom maintenance [case-1 consumes minimal
 SameLevelChainInv preservation — GO'd fresh, the summit), then o3 + o5-∈, then the emission
 geometry behind the ψ-rung/pnp-check. An interleave note flagged by the seat (an integration
 sweep on its branch history — work safe; add-scoping tightened).
+
+## 2026-07-18 STEP1 PROVED (tick 122)
+Merged + verified: STEP1 — LiveHeadDom + FlatTail ⟹ every level-ℓ divisor dominates every
+level-≤J one, so the chosen minimum's setTail is the level-J MAX — the residual's proven core,
+kernel-checked (plus the tail = t̃ helper family). With min-existence (tick 121) both halves of
+the mutual induction's consequence chain are now Lean facts; what remains of o4 is exactly the
+MAINTENANCE rung (WidthBound + LiveHeadDom [case-1 consuming minimality] + SameLevelChainInv
+preservation from STEP1) — the summit, taken fresh next turn per the standing tripwire. Then
+o3 + o5-∈ + the Q3 advance constructor (with its page sub-question) + the emission geometry
+behind the orthogonal ψ-track.
