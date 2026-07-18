@@ -1054,6 +1054,51 @@ theorem SameLevelChainInv_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} 
       simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
       exact this
 
+/-- **A case-1(2) split preserves `SameLevelChainInv`** (via LiveHeadDom, not WidthBound). The
+appended divisor inherits `f`'s head (`t₀ = s.divProfile f`) at level `cleared`; every pre-existing
+level-`cleared` `g` is `≤` it — head via `hlhd` (`g` below `f`), tail both `= cleared`. -/
+theorem SameLevelChainInv_stepAppendAdvance_case12 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (e : ℕ) (f : Fin s.numDiv) {ℓ : ℕ} (hlhd : LiveHeadDom M s) (hft : FlatTail s)
+    (hwd : WeakDecInv s) (hlive : s.layer < L) (hf : s.divTilde f = ℓ) (hgt : s.cleared < ℓ)
+    (hℓ : ℓ < widthMinUpto M s.layer) (h : SameLevelChainInv s) :
+    SameLevelChainInv (s.stepAppendAdvance e (s.divProfile f)) := by
+  have hcl_f : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ s.divProfile f p := fun p _ => by
+    have h1 : s.divTilde f ≤ s.divProfile f p := tildeOf_le p; omega
+  have htl : (s.stepAppendAdvance e (s.divProfile f)).divTilde (Fin.last s.numDiv) = s.cleared := by
+    rw [divTilde_stepAppendAdvance_last]; exact tildeOf_setTail_eq hlive hcl_f
+  have hkey : ∀ g : Fin s.numDiv, s.divTilde g = s.cleared →
+      ∀ j : Fin L, s.divProfile g j ≤ setTail s.layer s.cleared (s.divProfile f) j := by
+    intro g hlvl j
+    by_cases hj : s.layer ≤ (j : ℕ)
+    · rw [setTail_of_le hj, divProfile_tail_eq_tilde s hft hwd hlive g hj]; omega
+    · rw [setTail, if_neg hj]
+      exact hlhd g f (by omega) (by rw [hf]; exact hℓ) j (by omega)
+  intro k k'
+  induction k using Fin.lastCases with
+  | last =>
+    induction k' using Fin.lastCases with
+    | last => intro _; left; intro j; rfl
+    | cast k'' =>
+      rw [htl, divTilde_stepAppendAdvance_castSucc]
+      intro hkk'
+      refine Or.inr (fun j => ?_)
+      simp only [ConState.stepAppendAdvance, Fin.snoc_last, Fin.snoc_castSucc]
+      exact hkey k'' hkk'.symm j
+  | cast k'' =>
+    induction k' using Fin.lastCases with
+    | last =>
+      rw [divTilde_stepAppendAdvance_castSucc, htl]
+      intro hkk'
+      refine Or.inl (fun j => ?_)
+      simp only [ConState.stepAppendAdvance, Fin.snoc_last, Fin.snoc_castSucc]
+      exact hkey k'' hkk' j
+    | cast k''' =>
+      rw [divTilde_stepAppendAdvance_castSucc, divTilde_stepAppendAdvance_castSucc]
+      intro hkk'
+      have := h k'' k''' hkk'
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
+      exact this
+
 /-! ## o3: leaf-admissibility (`Adm` from the invariants at a terminal state) -/
 
 /-- **o3 — leaf `∈ Adm`.** At a terminal state (`layer = L`, every divisor at `t̃ = 0`), each
@@ -1145,6 +1190,28 @@ theorem OracleInv_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : Con
   lhd := LiveHeadDom_stepAppendAdvance s e t₀ inv.lhd inv.wb hlive hJ hgap ht0 hcl
   slc := SameLevelChainInv_stepAppendAdvance s e t₀ inv.ft inv.wd hlive inv.wb hJ ht0 hcl inv.slc
   si := StateInvariant_stepAppendAdvance s e t₀ hcap helig inv.si
+
+/-- **A case-1(2) split preserves `OracleInv`** — the joint assembly of the case-1(2) append
+maintenance lemmas (`t₀ = s.divProfile f` inherited head; LiveHeadDom + SameLevelChainInv via
+MINIMALITY, the rest generic with the inherited-head hypotheses discharged from `inv`). -/
+theorem OracleInv_stepAppendAdvance_case12 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (f : Fin s.numDiv) {ℓ : ℕ} (hlive : s.layer < L) (hf : s.divTilde f = ℓ) (hgt : s.cleared < ℓ)
+    (hℓ : ℓ < widthMinUpto M s.layer)
+    (hmin : ∀ k : Fin s.numDiv, s.divTilde k = ℓ → ∀ j : Fin L, s.divProfile f j ≤ s.divProfile k j)
+    (hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer →
+      s.divTilde k ≤ s.cleared ∨ ℓ ≤ s.divTilde k)
+    (hcap : s.cleared < layerCap M)
+    (helig : ∀ i : Fin (L + 1), (i : ℕ) ≤ s.layer → s.cleared < M i)
+    (inv : OracleInv M s) : OracleInv M (s.stepAppendAdvance e (s.divProfile f)) where
+  wd := WeakDecInv_stepAppendAdvance s e (s.divProfile f) (fun i j hij => inv.wd f i j hij)
+    (fun p _ => by have h1 : s.divTilde f ≤ s.divProfile f p := tildeOf_le p; omega) inv.wd
+  ft := FlatTail_stepAppendAdvance s e (s.divProfile f) inv.ft
+  wb := WidthBound_stepAppendAdvance s e (s.divProfile f)
+    (fun p hp => inv.wb f (by rw [hf]; exact hℓ) p hp) inv.wb
+  lhd := LiveHeadDom_stepAppendAdvance_case12 s e f inv.lhd hlive hf hgt hℓ hmin hgap
+  slc := SameLevelChainInv_stepAppendAdvance_case12 s e f inv.lhd inv.ft inv.wd hlive hf hgt hℓ
+    inv.slc
+  si := StateInvariant_stepAppendAdvance s e (s.divProfile f) hcap helig inv.si
 
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
