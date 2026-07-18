@@ -794,6 +794,71 @@ theorem Mval_setTail_runMinWidth {L : ℕ} (M : Fin (L + 1) → ℕ) {layer clea
       rw [hTb, htb]; ring
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/-- **The case-1 `Mval` tail-write delta** (the B'-coherence identity for the case-1(1) merge /
+case-1(2) split of an ELIGIBLE divisor `f`, `T = divProfile f`): tail-writing `T` at `(layer, J)`
+raises `Mval` by exactly `runLen·resCols = (τ − J)(M⁽ˡᵃʸᵉʳ⁺¹⁾ − J)` where `τ = tildeOf T`. The HEAD
+terms (`j < layer`) are IDENTICAL in `Mval(setTail T)` and `Mval T` (the head is untouched), so they
+cancel; the `j > layer` terms are `0` on both sides (constant tail `= τ` resp. `= J`); the lone
+DELTA is at `j = layer`, `(τ − J)(m − J) − 0` on the setTail side vs `0` on the `T` side — the latter
+`0` needs the BOUNDARY fact `tPrev(T)_layer = τ` (`hbdry`; a pending divisor is flat also at
+`layer−1`, the reachable-state invariant `BoundaryFlat`), WITHOUT which the `j = layer` term of
+`Mval T` would be `(p − τ)(m − τ) ≠ 0` (Codex-confirmed: match ⟺ `p = τ`). -/
+theorem Mval_setTail_delta {L : ℕ} (M : Fin (L + 1) → ℕ) {layer cleared : ℕ} (T : Fin L → ℕ)
+    (hlive : layer < L)
+    (hflat : ∀ i : Fin L, layer ≤ (i : ℕ) → T i = tildeOf T)
+    (hbdry : tPrev M T ⟨layer, hlive⟩ = (tildeOf T : ℤ)) :
+    Mval M (setTail layer cleared T)
+      = Mval M T
+        + ((tildeOf T : ℤ) - (cleared : ℤ)) * ((M ⟨layer + 1, by omega⟩ : ℤ) - (cleared : ℤ)) := by
+  set τ : ℕ := tildeOf T with hτ
+  -- `tPrev` of the tail-write agrees with `tPrev T` at any coord `≤ layer` (the head is untouched).
+  have htp_eq : ∀ j : Fin L, (j : ℕ) ≤ layer →
+      tPrev M (setTail layer cleared T) j = tPrev M T j := by
+    intro j hj
+    unfold tPrev
+    split_ifs with h0
+    · rfl
+    · congr 2
+      simp only [setTail]
+      rw [if_neg (show ¬ layer ≤ (⟨j.val - 1, by omega⟩ : Fin L).val by simp; omega)]
+  -- the delta is a single surviving term at `j = layer`.
+  have hdelta : Mval M (setTail layer cleared T) - Mval M T
+      = ((τ : ℤ) - cleared) * ((M ⟨layer + 1, by omega⟩ : ℤ) - cleared) := by
+    simp only [Mval, ← Finset.sum_sub_distrib]
+    rw [Finset.sum_eq_single (⟨layer, hlive⟩ : Fin L)]
+    · -- survivor
+      have hset : setTail layer cleared T ⟨layer, hlive⟩ = cleared := setTail_of_le le_rfl
+      have hTl : T ⟨layer, hlive⟩ = τ := hflat _ le_rfl
+      have htpl : tPrev M (setTail layer cleared T) ⟨layer, hlive⟩ = (τ : ℤ) := by
+        rw [htp_eq _ le_rfl, hbdry]
+      have hsucc : M (⟨layer, hlive⟩ : Fin L).succ = M ⟨layer + 1, by omega⟩ :=
+        congrArg M (Fin.ext (by simp))
+      rw [hset, hTl, htpl, hbdry, hsucc]; ring
+    · -- other terms vanish
+      intro b _ hb
+      rcases lt_trichotomy b.val layer with hlt | heq | hgt
+      · -- head: setTail = T, tPrev agrees, term unchanged
+        have h1 : setTail layer cleared T b = T b := by
+          simp only [setTail, if_neg (not_le.mpr hlt)]
+        rw [h1, htp_eq b (le_of_lt hlt)]; ring
+      · exact absurd (Fin.ext heq) hb
+      · -- tail: both sides zero
+        have h1 : setTail layer cleared T b = cleared := setTail_of_le (le_of_lt hgt)
+        have h2 : T b = τ := hflat b (le_of_lt hgt)
+        have htpT : tPrev M T b = (τ : ℤ) := by
+          unfold tPrev
+          rw [if_neg (show b.val ≠ 0 by omega)]
+          have : T ⟨b.val - 1, by omega⟩ = τ := hflat _ (by simp; omega)
+          rw [this]
+        have htpS : tPrev M (setTail layer cleared T) b = (cleared : ℤ) := by
+          unfold tPrev
+          rw [if_neg (show b.val ≠ 0 by omega)]
+          simp only [setTail]
+          rw [if_pos (show layer ≤ (⟨b.val - 1, by omega⟩ : Fin L).val by simp; omega)]
+        rw [h1, h2, htpT, htpS]; ring
+    · intro h; exact absurd (Finset.mem_univ _) h
+  linarith [hdelta]
+
 /-- **WidthBound** (o4-cert Part 3/6, consumed by the case-2 Lemma B): each LIVE divisor's HEAD
 (coords at index `< layer`) is bounded by the running-min width `runMinWidth`.
 
