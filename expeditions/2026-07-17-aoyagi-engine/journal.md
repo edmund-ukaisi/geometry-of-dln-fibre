@@ -1338,3 +1338,13 @@ grind depends on the answer — the decorrelation is the point; pointer sent). G
 two verdict-INDEPENDENT fold lemmas (leafPathImages_branch + ownCovers_branch — set algebra +
 structural induction, untouched by (a)/(b)), with the dependent-type-friction sidestep flagged.
 node_pivotCover_of_atom + the headline stay held.
+
+## 2026-07-18 FOLD PLUMBING PROVEN (tick 97)
+The two verdict-independent fold lemmas merged + controller-verified clean-three (2/2 forced):
+leafPathImages_branch (now DEFINITIONAL — the seat redefined leafPathImages by direct structural
+recursion mirroring edgesLeaves, sidestepping the image_comp friction entirely; the accumulator/
+composite content correctly relocated to the held headline where the coherence bridge lives) +
+ownCovers_branch (the tree-induction step). Statements unchanged — rev-cov's item-2 review
+applies as-is (awareness note sent). The fold's load-bearing plumbing is proven EITHER WAY on
+the (a)/(b) question; only the atom bridge + the headline remain, both held for the verdict.
+The coverage tide's remaining unknowns are now exactly: the verdict, then two lemmas.
