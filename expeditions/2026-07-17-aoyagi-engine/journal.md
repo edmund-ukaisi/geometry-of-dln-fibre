@@ -1728,3 +1728,14 @@ transferring cleanly). The seat is banking green sub-steps through the idiom fri
 than one big push — the right grind shape. Remaining: WidthBound case-1/append + LiveHeadDom ×3
 (case-1 the summit, consuming minimality) + SameLevelChainInv preservation ×3; then o3 + o5-∈
 + the advance constructor.
+
+## 2026-07-18 MAINTENANCE ~80%: THREE INVARIANTS FULLY MAINTAINED (tick 125)
+Merged + verified: WeakDec + FlatTail + WidthBound maintenance COMPLETE (all three transitions
+each) + LiveHeadDom rollover — everything closing first-try once the patterns set (the rollover
+cases fell to tail=tilde + antitone exactly as the live-guard theme predicted). REMAINING: the
+three hypothesis-carrying lemmas — LiveHeadDom case-2 (consumes the CASE-2 GAP: no live divisor
+above J ⟹ the append is the live-chain TOP; minimality-free) + LiveHeadDom case-1 (consumes
+CHOOSER MINIMALITY) + SameLevelChainInv preservation (rides STEP1). The seat correctly identified
+the remaining design content: THREADING the oracle's dispatch/chooser guarantees (gap,
+minimality) through the ConState transitions — which guarantee feeds which lemma — and takes it
+fresh. The summit's face is mapped; three lemmas from the invariant kit's completion.
