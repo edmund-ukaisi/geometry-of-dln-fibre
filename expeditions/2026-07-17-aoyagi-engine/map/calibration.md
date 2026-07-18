@@ -44,3 +44,17 @@ the navigator office's single-writer artifact; the controller merges it from `--
 Navigator pass #2: the build→assembly phase transition (the construction hole discharged, both
 projections + region_glue landing into `engine_box_threshold_finite`), OR the assistants cadence
 (~60 canonical commits / ~4 h activity since genesis; ~40 at pass #1), OR a crux lane going serial.
+
+## Design phase 2 (restructure arc: tick 18 → tick 37) — actuals (navigator pass #2, 2026-07-18)
+| node/event | pass-#1 expectation | actual | delta |
+|---|---|---|---|
+| carrier shape | validated (r2, tick 15) — treated settled | RE-OPENED by lane-2 vacuity (tick 18) + architect Codex review (tick 19) → edge-labelled RESTRUCTURE, council of two, fresh r1 VALIDATE-WITH-CHANGES (2 CRITICAL) → repair → r2 VALIDATE (tick 37) | MAJOR under-estimate: genesis assumed the node carrier; true carrier cost ~4 review rounds (2 initial + 2 restructure), not 1-2. The council's forecast that the carrier is the design crux was CORRECT. |
+| green-checkpoint calibration | green family ≈ trustworthy | tick 34: restructure landed GREEN + battery-green + gate-green, yet rev-carrier found 2 CRITICAL statement defects | STANDING CORRECTION: a green+battery family is NOT statement-validated; only adversarial review (reviewer+Codex) + truth-witness-at-pin-time catches the socket disease. Never flip an obligation to discharged on green elaboration alone. |
+| architect self-reports | trust with spot-check | 5 overstatements journaled (AxCheck bare names; cosmetics-immediately; line-96 strike; three-vs-four modules; repair left UNCOMMITTED) | STANDING DISCOUNT: architect completion claims get controller- OR reviewer-verified before counting — a calibrated prior, not incidents. |
+
+Pass-#1 "Open" items updated: theorem4 owner-gap CLOSED (tick 17, shape-check confirmed at (2,2,4));
+map-hygiene stale-note item FIXED.
+
+## Next trigger (superseded — see below)
+Navigator pass #3: the monomialization_terminates flip (assembly phase), OR a crux lane going
+serial, OR cadence.

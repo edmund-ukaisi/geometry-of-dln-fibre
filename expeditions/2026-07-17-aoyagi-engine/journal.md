@@ -470,3 +470,21 @@ srcBox interior strengthening at the attaining leaf; defer-with-note: finding-4 
 counsel: rung order 1-5 with coverage HOLDING ITS OWN LANE (separate commission; rung 4 must not
 quietly absorb it); per-rung review cadence; Layer-B fence verbatim; State/StateInvariant split;
 no derivable data in state. Elder re-convenes at coverage commissioning + any stop-and-surface.
+
+## 2026-07-18 NAVIGATOR PASS #2 INTEGRATED (tick 39)
+Five deliverables applied: (1) PARALLELISATION — region-glue tide PURSUE-PARALLEL (decoupled:
+consumes ChartBridge as HYPOTHESIS, never construction outputs/StepRel; buildable against the
+sorried resolutionOf_spec; only physical contention = both holes in EngineObligations.lean →
+proof bodies in NEW modules, final exact-discharges sequenced through me); P8 composer DROPPED as
+a lane (route (b) collapsed it to the one scaling-bridge lemma = the glue tide's first brick);
+coverage-hunt re-run NOT needed (the hunt tests a geometric truth invariant under carrier
+encoding — SURVIVE stands carrier-independent). (2) CRITICAL PATH = monomialization_terminates,
+full stop; DISTINCT-BET corrected: (3,3,4) is L=2 and does NOT reach the RR4 depth≥3 wall — the
+right de-risk is the L=3 (2,2,2,2) case-1(1) merge, front-loaded as a tide milestone with
+STOP-and-surface BEFORE the general recursion locks. (3) CALIBRATION appended (carrier cost
+~4 review rounds vs forecast 1-2; green+battery ≠ statement-validated — standing correction;
+architect self-report discount now a calibrated prior). (4) DRIFT CLEAN (no θ/cited creep; the
+one new obligation resRank ≥ minAdm is in-scope and owes a smallest-instance check per standing
+rule 2 — NOT covered by the divisor-ratio hunt). (5) priorities.md re-cut applied verbatim.
+Actions: tide commission amended (L=3 milestone + contention note + resRank battery at rung 2);
+glue tide commissioned in parallel (new formaliser seat).
