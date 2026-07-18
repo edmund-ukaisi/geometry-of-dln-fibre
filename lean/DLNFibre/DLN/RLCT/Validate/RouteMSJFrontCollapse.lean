@@ -49,20 +49,11 @@ def leadingBlock (M : Fin (L + 1 + 1 + 1) → ℕ) (F : Fin (M 0) → Fin (M 1) 
 def wingFrontBox (M : Fin (L + 1 + 1 + 1) → ℕ) : Set (Fin (M 0) → Fin (M 1) → ℝ) :=
   {F | (∀ i j, F i j ∈ Set.Icc (-1 : ℝ) 1) ∧ IsUnit (leadingBlock M F)}
 
-/-- **THE ATOM (§1) — the front-collapse rank-sector finiteness.** For a `≥ 3`-width chain `M`, GIVEN
-the plain one-shorter strong IH `hIH`, below the geometric threshold (`c' < ½·minAdm M`), the
-front-factor box integral over `wingFrontBox M × paramsBoxM(tailChain M)` is finite. Reduces (per
-d1design §1) via the source-incidence `(r,s)` atlas to `hIH(redChain s M)` at charge
-`N_s = (M₀−s)(M₁−s)`, with `min_s[N_s + minAdm(redChain s M)] = minAdm M`. The dispatch `sorry` is
-filled arm-by-arm: the a=0 wide bounded regime is LANDED (`frontCollapse_wide_bounded_lt_top`,
-`RouteMSJFrontCollapseWide`); LOG / b=0 / POWER remain. -/
-theorem frontCollapseRankSector_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
-    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
-    (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
-    (∫⁻ F in wingFrontBox M,
-        ∫⁻ A' in paramsBoxM (tailChain M) 1,
-          ENNReal.ofReal ((frobSq (rmatMul F (prod (tailChain M) A'))) ^ (-(c' : ℝ)))) < ⊤ := by
-  sorry
+-- **THE ATOM (§1) — the front-collapse rank-sector finiteness `frontCollapseRankSector_lt_top`** now
+-- lives DOWNSTREAM in `RouteMSJFrontCollapseDispatch` (it consumes `frontCollapse_wide_bounded_lt_top`
+-- from `RouteMSJFrontCollapseWide`, which is downstream of this module, so the dispatch cannot sit here).
+-- This module holds the shared bricks below (`wingFrontBox`, the saturated charge, the reduced-chain box,
+-- the block-Gram-det identity, the front-Gram qbox factor).
 
 /-- **The saturated-cut charge is zero (LANDED, green, BOTH wings).** At the saturated cut
 `u = min(M₀,M₁)`, `peelCharge M u = (M₀−u)(M₁−u) = 0` — for a wide front (`M₀≤M₁`, `u=M₀`, the a=0

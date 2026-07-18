@@ -1030,19 +1030,43 @@ theorem alpha_low_target {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
         _ < ⊤ := ENNReal.mul_lt_top (edge_J_lt_top M t ht2 hbnd hb hIH c' hlow κ)
               (lt_of_le_of_ne le_top hk_ne)
 
+/-- **NEUTRAL WALL — `EdgeJointFinite`: the corank-one edge α-HIGH super-critical box-finiteness.** A
+plain mathematical hypothesis (NOT attributed): on the corank-one edge (`M₁ − t = 1`) in the `a < u`
+bounded-density regime, ABOVE the reduced-chain geometric threshold (`¬ c' < ½·minAdm (redChain t M)`),
+the freed-`Γ` triple integral is finite below `½·minAdm M`. Carried as a `Prop` HYPOTHESIS — VISIBLE in
+the type. Discharges the α-HIGH branch of `frontCollapse_edge_b1_altu_bounded` (the rank-one joint
+`(Δ,C,Z)` leaf). Banked STANDALONE toward the eventual native fill of the `d ≤ 1` arm. `ρ` dropped. -/
+def EdgeJointFinite : Prop :=
+  ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (_ht : 1 ≤ t) (_ht2 : t ≤ min (M 0) (M 1))
+    (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
+    (_hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+    (_hb1 : M 1 - t = 1) (_haltu : M 0 - t < t)
+    (_hbnd : (M 2 : ℝ) < (M 1 : ℝ) - t + 1)
+    (_hhigh : ¬ (c' : ℝ) < (minAdm (redChain t M) : ℝ) / 2)
+    (_hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M'),
+    (∫⁻ A' in paramsBoxM (tailChain M) 1,
+        ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
+          ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+            ENNReal.ofReal ((freedSchurLoss x Γ
+              ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤
+
 /-- **The b=1, a<u, bounded-w arm of the front-collapse dispatch.** For a `≥ 3`-width chain `M` with a
 legal pivot cut `1 ≤ t ≤ min(M₀,M₁)` on the corank-one edge (`M₁ − t = 1`), in the `a < u` regime
 (`M₀ − t < t`) and bounded-density regime (`M₂ < M₁ − t + 1`, i.e. `M₂ ≤ M₁ − t`), GIVEN the plain
 one-shorter strong IH `hIH` and below the geometric threshold (`c' < ½·minAdm M`), the freed-`Γ` triple
 integral is finite. This is one arm of the `d ≤ 1` native dispatch of `innerCorankDescent_lt_top`; its
-conclusion matches that socket exactly (`ρ` dropped — the freed-`Γ` integrand uses only `κ`). -/
+conclusion matches that socket exactly (`ρ` dropped — the freed-`Γ` integrand uses only `κ`). The α-HIGH
+super-critical branch is consumed from the neutral wall `EdgeJointFinite`; α-LOW is native. -/
 theorem frontCollapse_edge_b1_altu_bounded {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
     (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1))
     (κ : Fin t ↪ Fin (M 1)) (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
     (hb1 : M 1 - t = 1)
     (haltu : M 0 - t < t)
     (hbnd : (M 2 : ℝ) < (M 1 : ℝ) - t + 1)
-    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (hEdge : EdgeJointFinite) :
     (∫⁻ A' in paramsBoxM (tailChain M) 1,
         ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
           ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
@@ -1065,7 +1089,7 @@ theorem frontCollapse_edge_b1_altu_bounded {L : ℕ} (M : Fin (L + 1 + 1 + 1) �
     omega
   by_cases hlow : (c' : ℝ) < (minAdm (redChain t M) : ℝ) / 2
   · exact alpha_low_target M t ht ht2 κ c' hbnd hb hIH hlow
-  · sorry
+  · exact hEdge M t ht ht2 κ c' hc' hb1 haltu hbnd hlow hIH
 
 end DLNFibre.DLN.RLCT
 
