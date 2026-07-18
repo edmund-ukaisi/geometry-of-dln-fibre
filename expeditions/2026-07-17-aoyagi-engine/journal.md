@@ -1144,3 +1144,13 @@ SEQUENCE: T1a split → T1b full-T tree carrier → T1b-ii genDivExp → T1c Con
 green, all verified. The carrier the operator's reframe demanded exists end-to-end. NEXT: the
 architect executes the crossed discharge commission (region_glue → proven; the analytic hole
 closes), then ONE consolidated review of the T1 unit + the discharge, then T2 opens.
+
+## 2026-07-18 THE ANALYTIC HOLE IS CLOSED (tick 85)
+region_glue DISCHARGED (63753153c, merged, controller-verified by forced print): the generic
+region_glue_of_chartBridge is CLEAN-THREE — the analytic content of the box theorem is proven,
+unconditionally, from ChartBridge-as-hypothesis. The projection region_glue carries +sorryAx BY
+TYPE (its statement references resolutionOf = the construction hole's choose) — the architect's
+fidelity finding CORRECTED MY COMMISSION ("must be clean-three" was wrong; sorryAx enters through
+the type, not the proof) and it surfaced-not-forced, setting BOTH watch entries accurately. My
+error + the correction recorded on the map (region-glue → discharged). ONE ENGINE HOLE REMAINS:
+monomialization_terminates. Next: the consolidated T1+discharge review (fresh seat), then T2.
