@@ -1231,3 +1231,14 @@ the un-&&-chained heredoc let the journal bank claiming "Fork 12 applied" while 
 lacked it — the same unchained-heredoc hazard as tick 89's sibling incidents. Fork 12 is NOW in
 the compass (line-anchored insert, grep-verified). Shell-guard practice tightened: heredoc
 python edits get grep-verified before the same command banks.
+
+## 2026-07-18 T2b INVARIANT TYPES IN; buildTree HELD FOR PNP (tick 90)
+The architect folded the gate verdict to the bounded green point: the design doc corrected (one
+RootLedger equality; the corrected Adm decomposition; the pnp gate + chain-carrier obligations
+recorded) and T2b landed — the two build-side invariant TYPES (WeakProfileInv = weak-decrease +
+block-bound, the corrected per-node invariant; CompChainInv = the maintained total-comparability
+chain T3's cover consumes). Merged + verified here. SEQUENCING RULED: the buildTree WF.fix body
+HOLDS for pnp's (2,2,3,2) verdict — it can reshape IsFullMonomialization's statement (the ∀k vs
+t̃=0-only question), and the conjunct-discharge half builds against that statement; one coherent
+pass against settled statements beats two reworks. Three lanes now: pnp adjudicating (the gate),
+coverage-t07 surveying toward the local covering lemma statement, architect warm.
