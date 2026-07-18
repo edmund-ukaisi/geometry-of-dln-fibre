@@ -558,3 +558,15 @@ acceptability, Codex-decorrelated; docstring scope honesty; footprints). Rung 2 
 MISSED-INBOX INSTANCE #2 (architect): the ChartBridge strengthening directive sat unprocessed
 while rung 1 shipped — chased, landing as its own commit (+ the now-stale transport references in
 the LeafJacobian/header docstrings per the fork-8 revision). Gate 10 running.
+
+## 2026-07-18 GLUE: BOUNDEDNESS-INDEPENDENT HALF COMPLETE (tick 45)
+glue-t05 landed bricks 3-4 (merged): RegionGlueGlobalize.lean — the MP transport to the flat
+cube, cubeBox_smul, routeMLayerBoxIntegral_lt_top_of_small_box (homogeneity local→global: small-
+box finiteness ⟹ unit-box finiteness), and the c'≤0 corner. The assembly skeleton is now: c'≤0
+done; c'>0 = (ChartBridge open cover → extract small paramsBox → cover+per-leaf finiteness →
+globalize). ONLY the bracketed cover+per-leaf remains, and it's BLOCKED-by-design on the
+ChartBridge strengthening (correct behavior — the seat held rather than weakened). DECISION:
+GO on per-leaf helpers with the boundedness hypotheses EXPLICIT — the shape is elder-ratified
+verbatim, so it's the final form; helpers compose if the abstract-field pass adds separate
+conjuncts. My forced verification of bricks 3-4 queued behind gate-10 contention. Battery
+g-glue-unbounded-srcbox.py still owed (chased 2nd time).
