@@ -197,3 +197,12 @@ monomial reads for the leaf thresholds) — the elementary-blow-up box-CoV (the 
 the banked `weightedThreshold_transport` on THIS route, leaving the **homogeneity scaling bridge** as
 the single genuinely-missing analytic lemma. **This narrows the P8 gap** (§5) to the scaling bridge on
 the RLCT route.
+
+---
+**DATED CORRECTION (2026-07-18, controller; source: battery g-resrank-minadm.py + rung-2C).**
+§4's tabulated "Morse rank" values MIXED CONVENTIONS: it reported generic-AMBIENT Hessian ranks
+((2,2,2): 5; (2,2,4)-core: 11). The threshold-relevant quantity is the TRANSVERSE (on-core) Morse
+rank = rank Hess_z(R) at a generic point of the core = codim of the core ((2,2,2): 4; (2,2,4): 8)
+— the SMALLER, binding number. The §4 CONCLUSION (resRank ≥ minAdm, truth-witnessed) STANDS under
+the corrected convention — battery-verified on 4 charts incl. a TIGHT (3,3,4) instance (8 ≥ 8).
+LeafData.resRank means the TRANSVERSE rank everywhere downstream.
