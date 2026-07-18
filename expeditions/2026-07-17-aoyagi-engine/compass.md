@@ -3,11 +3,16 @@
 *Seeded at genesis; amended at council #1 (2026-07-17, two independent elder seats, both ADOPT —
 counsels in threads/00-genesis/council-1/). ≤2 pages.*
 
-## The live question
-Transcribe Aoyagi's worked-out resolution (DLN 2023, §5) into a Lean engine producing
-`∀ M, RouteMBoxThresholdFinite M`, clean-three, no Aoyagi hypothesis. Current load-bearing
-sub-question: **the skeleton** — the tree datatype (typed sharing fields) + all obligations as
-holes wired to the verbatim hbox anchor. **The hard part, named: the coverage theorem (Layer C)**
+## The live question (REFRAMED by operator steer, 2026-07-18)
+Build Aoyagi's resolution-of-singularities mechanism (DLN 2023) **FULLY and FAITHFULLY as a
+free-standing library** — her objects, her invariants (sharing/support INCLUDED, never deferred
+for being off some consumer's path), her construction §5 end-to-end — independent of downstream
+consumption. THE DESTINATION IS THE LEARNING COEFFICIENT THEOREM (`aoyagi_learning_coefficient`
+unconditional). `∀ M, RouteMBoxThresholdFinite M` (hbox) is ONE adapter from the library — the
+current default path — and her direct λ-computation (the content we currently CITE) is a
+candidate second path; if it proves shorter, the hole is DITCHED. The old razor "defer what is
+not finiteness-load-bearing" is RETIRED: fidelity to HER mechanism is the bar; what her paper
+builds, we build. **The hard part, named: the coverage theorem (Layer C)**
 — the one genuine new proof; holds a lane from genesis. **Second cost center (not transcription):
 the Layer-B tree build** — divisor-sharing bookkeeping + case-step invariant preservation in Lean,
 with NO worked inner precedent (RR4 precedents the OUTER plumbing only; its SchurCore/front-peel
@@ -150,6 +155,15 @@ over banked substrate.
    isn't the construction's natural definitional shape or the equality balloons, STOP-AND-SURFACE and
    take permanent downscope; (ii) kill-condition = the dummy-divisor witness provably rejected (a
    ¬-theorem, cf. stepRel_rejects_mismatched_case2).
+10. **Full-mechanism reframe (OPERATOR-SETTLED, 2026-07-18).** WHY: the deferral ledger (support
+   propagation, the p.15 minimality tie-break, the J₁ gap condition, the divProfile T-settings)
+   clustered exactly at the named hard part — the sharing bookkeeping that IS her mechanism (fork
+   3) — each deferral argued by "not finiteness-load-bearing", the razor for the HOLE, not the
+   GOAL. RULING: build her mechanism fully; the deferrals are UN-DEFERRED into the construction
+   tide as first-class rungs (genDivExp/support propagation; the divisor-chooser implementing her
+   p.15 selection rule — tie-break + gap condition; the per-case divProfile settings). hbox = an
+   adapter; her λ-route = a candidate replacement for the cite, to be priced by the paper-map
+   recon. The elder office's charge is corrected accordingly.
    RUNG-1 SUB-SCOPING (2026-07-18, elder-ratified). stepUpdate is faithful for the EXPONENT/CLEARING
    ledger (numDiv/divExp/divTilde/cleared), page-verified: case-1(1) merge M'=M+J₁(M^{(S+1)}−J) t̃→J
    cleared-unchanged (p.16); case-1(2) new pivot same increment, t̃=J, cleared+1 (p.17-18); case-2 new
@@ -163,6 +177,34 @@ over banked substrate.
    recursion friction; junk rejected at Prop level per the codebase pattern); eligibility (t̃=cleared+
    runLen) is a cheap Prop conjunct if the no-op acceptance proves certificate-unacceptable — NOT a
    dependent-type refactor. LeafData gains divTilde/cleared (honest total rootLedger).
+11. **Roadmap adopted; Path A ratified as the SOLE critical path** (council #3, two independent
+   elder seats CONVERGENT, both kernel-verified, 2026-07-18). WHY: the ≤-half
+   (routeMCore_box_diverges_achiever_full', 0-sorry general-M; r1_resolution_general_le hbox-FREE)
+   is banked; aoyagi_learning_coefficient_gen (HeadlineGenAssembly:55) is conditional SOLELY on
+   hbox for L≥2 (both seats direct-read the proof); the ONLY open content is hbox = coverage (R2)
+   + region_glue (R3); Path B contains Path A's coverage — not shorter. PRECISION PIN (seat A's
+   confound-hunt catch, controller-verified; resolves the seats' one divergence AGAINST the recon's
+   gloss): discharging hbox + repointing canonical → _gen yields the UNCONDITIONAL CLEAN-THREE
+   aoyagi_learning_coefficient — it kills the sorryAx of the 5 skeleton rungs. It does NOT delete
+   cited_aoyagi_dln: the cite was NEVER in the λ cone (grep: only absence-asserting docstrings);
+   it lives in the OUT-OF-SCOPE RlctPayoff layer (needs minAdm=codim — the next expedition's
+   runway). "Kills the cite for free" was headline-inflation; struck everywhere. GUARDS (seat B):
+   _gen's clean-three rests on a #print DIAGNOSTIC (AxCheck:913), confirmed-by-discipline not
+   build-enforced — an ENFORCED axiom-gate installs at R5; L=1 reaches the unsuffixed theorem via
+   a SEPARATE fold (not _gen). RUNGS ADOPTED: R1 = the FAITHFUL carrier NOW — full-T in the State
+   (t̃ DERIVED; T is non-derivable chooser-required data: deferring it is incoherent AND risks a
+   μ-descent retrofit) + the genDivExp multiplicity field (ONE faithful node-data pass; propagation
+   PROOFS at R4; stop-and-surface if full-T stepUpdate balloons; divProfile T-settings page-verified
+   at build); the EngineConstruction "stores ONLY what the measure reads" docstring is STRUCK (the
+   retired razor encoded in code). R2 = coverage, own permanent lane; gate = the ChartBridge PROOF
+   over the CONSTRUCTED atlas + a DECORRELATED atlas-closure probe (pen-and-paper seat, never the
+   builder — in-house witnesses mask gaps, twice proven) + hunt-cert §5 cited by SCOPE, never
+   blanket. R3 = region_glue (in flight; field-pass cleared). R4 = genDivExp propagation, OWED
+   (kills: g-coupled-binding-334/g-delta-flatten). R5 = wiring + the enforced axiom-gate. R6 =
+   Lemma 2 + Theorem 3 (the regular peel, Layer A) OWED FIRST-CLASS under fork 10 — both seats
+   reject "value lane suffices" as the retired razor (the value lane gets the NUMBER, not the
+   OBJECT) — placed post-spine off critical path, COST-PROBE-GATED (SchurCore depth-≥3 wall,
+   rr4-precedent), surfaced to the operator for scope confirmation. θ + Eqs (1)-(5) stay out.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
@@ -187,6 +229,22 @@ over banked substrate.
 - Watch transcription-level decoupling: a transcriber "simplifying" the carried monomial data is
   fork vocabulary; the sharing maps are the content (typed, per fork 3).
 - Survey banked state before commissioning ANYTHING (3 redundant commissions last run).
+- SCOPE vs SEQUENCING (the corrected-razor discipline, council #3). The finiteness razor is
+  RETIRED for SCOPE — what the faithful library CONTAINS is fixed by fidelity to her paper, not a
+  consumer's path. It stays legitimate ONLY for SEQUENCING — what LANDS FIRST is the critical
+  path; sequencing is never silent abandonment. Recurrence test: any "optional / not-critical-path
+  / value-lane-suffices / the-certificate-never-reads-it" on a NAMED piece of her mechanism is the
+  old failure mode — surface it, never adopt it silently.
+- The R2 atlas-closure gate must be DECORRELATED from the atlas builder (council #3, both seats):
+  in-house nice-instance witnesses MASKED gaps twice (resRank fold; srcBox boundedness). The
+  builder's spike is build-side de-risk; the GATE reads the independent seat.
+- MATHEMATICAL SENSE OVER CASE ANALYSIS (operator, 2026-07-18): case analysis is a VERIFICATION
+  instrument, never the theory-building instrument — chasing per-case fidelity finds local minima.
+  Understand the mechanism at its conceptual altitude first (what the induction IS doing: iterated
+  blow-ups monomializing the ideal, one uniform idea whose "cases" are charts; why the invariant
+  holds; what λ reads off geometrically), THEN transcribe; build the uniform object and DERIVE the
+  cases, not the reverse. When a case-by-case grind feels authoritative but shapeless, stop and
+  re-derive the global structure.
 - OBLIGATION-STATEMENT DISCIPLINE (2nd instance, 2026-07-18): TWICE a region_glue obligation was
   FALSE-AS-STATED for want of a hypothesis the true construction supplies FREELY — (1) the resRank/2
   Morse threshold (resRank fold), (2) srcBox boundedness/measurability. Common root: an obligation

@@ -713,3 +713,331 @@ spec + elder checklist, sub-lemma discipline, nothing was lost — the grind had
 elder-gate3 (fresh bounded convening: the case12 t̃-half page-confirm, pp.15-18). rev-carrier
 respawns when the next scoped check is due. Gate 11 relaunched (/tmp wiped). Push state
 recovered: the consolidated cert fast-forward was local-only — pushed now.
+
+## 2026-07-18 CASE12 T̃-HALF PAGE-CONFIRMED (tick 55)
+elder-gate3 (bounded convening, page images): verdict (a) — the identical eligibility conjunct is
+FAITHFUL for case12. The p.15 precondition (t̃_{s,k} = J + J₁) attaches to the ONE divisor u_{s,k}
+fixed BEFORE the 1(1)/1(2) split; both sub-cases are charts of the single blow-up on it; case-1(2)
+reads the same divisor's exponent as its base. Extension lands FINAL (hedge dropped). SOURCE
+CLARIFICATION recorded: the pp.14-22 cites index the AOYAGI preprint, not Lehalleur-Rimányi. TWO
+pre-existing shared scope gaps flagged (NOT introduced by the extension, mirror case11, not
+consumed by finiteness): the p.15 minimality tie-break (lex-min T per Def.4) and the J₁ gap
+condition ({t̃ = i} empty for the run) — both named in the StepRel docstring as deliberately-
+uncaptured; both become the CONSTRUCTION's rung-3/4 burden (the divisor-chooser implements the
+tie-break + computes runLen via the gap). Relayed to architect-t02 with rung-3 notes directive.
+
+## 2026-07-18 RIDER MERGED: case12 GUARD IN (tick 56)
+architect-t02's rider merged (f43507971): the eligibility conjunct now guards BOTH case-1 charts;
+NEW ¬-witness oobSplit_not_stepRel FLIPS the reviewer's acceptance probe (out-of-range case12 now
+REJECTED; numeric pin 6 = base-dropped vs 11 = faithful); rootEdge224 rcases the widened
+disjunction; footprints verified by the seat's own forced #print (clean-three / +sorryAx x2).
+Validate clean. The docstring hedge ("pending elder page-confirm") predates the elder's (a)
+verdict — the confirm + scope-notes directive is in the seat's inbox, folds into its first rung-2
+commit. Rung 2 (μ-lex spine first) is now the sole critical-path item; glue grind parallel.
+
+## 2026-07-18 GLUE SUB-STEP 1 MERGED (tick 57)
+glue-t06's base brick merged + force-verified clean-three (prod_abs_rpow_cube_lt_top — per-axis
+rpow product over the cube, finite when every axis exponent > −1; module at Validate/
+RegionGlueModelRead.lean, near its banked import). The respawned seat corrected TWO defects in
+its predecessor's untracked draft before building: (1) a re-declaration of the banked
+abs_rpow_lintegral_Icc_lt_top (aggregator name-clash class — deleted, imports the banked one);
+(2) a SOUNDNESS subtlety in the AM-GM Morse-domination route: the coordinate-wise bound
+(∑y²)^(−c') ≤ nr^(−c')·∏|yᵢ|^(−2c'/nr) is A.E., NOT pointwise (fails where some-but-not-all
+resCoords vanish; holds off a finite union of null hyperplanes via Measure.pi_hyperplane) —
+route stays valid via lintegral_mono_ae; docstring corrected. Next: Module A remainder → B
+(area formula) → C (cover+globalize). ChartBridge holding.
+
+## 2026-07-18 RUNG 2A: μ-LEX SPINE ELABORATION-TESTED (tick 58)
+architect-t02's rung 2A merged + force-verified: conRel_wf PROVED clean-three (EngineConstruction
+.lean, unwired). The elder's "cheapest high-information probe" is done — termination is no longer
+design-only: the lex triple μ = (L+1−S, layerCap−J, pendingCount) is well-founded IN LEAN, via a
+BANKED precedent the seat surveyed first (RouteMState.lean banks the exact ℕ ×ₗ ℕ ×ₗ ℕ /
+InvImage.wf idiom — survey-before-build paying off; no new WF machinery invented). ConState
+stores NO derivable data; StateInvariant shape-locked. Rung 2B open: the four State transitions +
+per-case descent (case11 → μ₃ via the eligibility conjunct's runLen≥1; case12/case2 → μ₂;
+rollover → μ₁; paper-pre-verified that every case drops a component under its precondition; the
+KILL guard armed). Glue lane on Module A in parallel.
+
+## 2026-07-18 OPERATOR STEER: FULL-MECHANISM REFRAME (tick 59)
+Operator correction, conceded on the record: the deferral ledger (support propagation, minimality
+tie-break, gap condition, divProfile settings) clusters at the sharing bookkeeping = the named
+hard part = HER MECHANISM; every deferral used the "not finiteness-load-bearing" razor — the
+razor for the hole, not the goal. The elder office kept counsel for □, not for the mechanism;
+the controller signed off each instance. REFRAME (compass live question rewritten + fork 10,
+operator-settled): the destination is the LEARNING COEFFICIENT THEOREM; the central artifact is
+Aoyagi's mechanism built FULLY as a free-standing library; hbox is ONE adapter (default path),
+ditchable; her direct λ-computation (currently the CITE) is the candidate second path — a full
+build natively REPLACES cited_aoyagi_dln, which is the opposite of leaning on it. ACTIONS:
+deferrals UN-DEFERRED into the tide as first-class rungs; architect scope corrected; a paper-map
+recon commissioned (her paper end-to-end: every proposition, dependencies, the two mint paths
+priced); elder council re-convenes on the recon cert with the corrected charge. What stands:
+the carrier, the catches, the WF spine, the glue lane — all on her mechanism's path; the
+correction is objective + scope, not teardown.
+
+## 2026-07-18 RUNG 2B MERGED + SCAFFOLD DIFFUSION (tick 59 addendum)
+Rung 2B merged + force-verified (conRel_stepCase11/_stepAppendAdvance/_stepRollover all clean-
+three): the termination machinery is COMPLETE in Lean, kill-condition cleared, and the seat
+UNIFIED case-1(2)/case-2 into one transition (they differ only in data μ doesn't read) — the
+uniform-idea direction arriving independently. Its case11 precondition IS the eligibility
+conjunct (the rider work load-bearing for descent). OPERATOR (2nd + 3rd steers this tick):
+mathematical sense over case analysis (compass standing counsel); the full-mechanism framing
+DIFFUSED INTO THE SCAFFOLD with priority — brief.md (central question, closing criterion,
+non-goals: path B may REPLACE the cite; θ enters if HER theorem needs it), heartbeat main quest +
+memo, priorities header (ladder marked INTERIM pending recon + council). Architect owes the
+revised ladder (genDivExp native in State, chooser, divProfile) before rung 3; its 2B report
+crossed the reframe — sync reminder sent.
+
+## 2026-07-18 GLUE MODULE A COMPLETE (tick 60)
+Module A merged + force-verified clean-three: the flat-coordinate MODEL READ is banked —
+model_read_lt_top (∫_cube (∏|x_dc|^e)·(∑x_rc²)^(−c') < ⊤ for e>−1, 0<c'<nr/2) + the two-family
+reindex + the a.e. AM-GM domination + the cube rpow product. Module B (per-leaf area formula)
+open; the seat's prerequisite question (Params M instances for the area formula) PRE-ANSWERED
+from the record: normed/findim instances banked (ParamsFlatLinear), but volume-not-Haar on
+Params M (its own predecessor's note) ⟹ Module B transports through paramsEquivFlatCLE and
+applies the area formula flat-side (CLE det = nonzero constant; the elder's field-2 verdict
+already assumed this) — a proof step, not a stop.
+
+## 2026-07-18 PAPER-MAP RECON DELIVERED (tick 61)
+recon-aoyagi-full's cert merged (threads/07-paper-map/; page-pinned, Codex-corrected). THE SINGLE
+IDEA named: chartwise log-principalization of the matrix-product ideal by iterated blow-ups along
+the layer filtration; integrability = Hironaka ratios (h+1)/(2k); min over atlas = the banked QIP;
+cases DERIVED from the invariant (1(1)/1(2) = two charts of ONE Case-1 blow-up; Case 2 = the
+distinct layer event). DECISIVE (Lean-verified): the ≤-half (achiever divergence) is BANKED
+sorry-free (routeMCore_box_diverges_achiever_full'), and aoyagi_learning_coefficient_gen is
+clean-three conditional SOLELY on hbox with NO cite — so the two-path question COLLAPSES: one
+critical path (hbox = coverage + region_glue), and discharging it DELETES cited_aoyagi_dln for
+free (repoint canonical → _gen). Path B contains Path A's coverage content; its unique extras are
+banked or out of scope. HARDEST OBJECT re-confirmed: coverage/no-smaller-ratio — Aoyagi ASSERTS
+("by a blow-up process"), never proves; irreducible on either path. FIDELITY DELTAS all named as
+rungs: full-T carrier (tie-break + gap need it — rung-3 chooser), genDivExp (R4), Theorem-3 peel
+lives in the banked value lane ([Q] for council: does the reframe demand R6 first-class?). NEXT
+PROBE recommended: corank-2 atlas-closure enumeration at (2,2,2)/(3,3,4) — the cheapest stress of
+the R2 kill-condition. Roadmap R0-R6 priced in cert §5. COUNCIL OF TWO convening (corrected
+charge) to adopt.
+
+## 2026-07-18 tick 61 addendum: ROADMAP COUNCIL + CARTOGRAPHER PASS #2 CONVENED
+Council of two (elder-r10a/b, independent, corrected charge) deliberating the recon's roadmap:
+verify-the-collapse-finding-yourself + the R6 scope call + rung adoption + the atlas-closure
+probe placement. IN PARALLEL (operator concern, 3rd steer today): cartographer pass #2 convened
+on the inherited-library index — the honest state: overlay pass-#1 + recon §3 + lean/CLAUDE.md
+are PARTIAL and reactive (3 near-rebuilds caught by seat diligence, not the index; heavy-cone
+imports dragging 15-min builds). Deliverables: consumption-scoped banked-families (by remaining
+rung, pinned + import-weight), a DO-NOT-ENTER register (the predecessor's dead/incomplete zones
++ fossil-sorry census), a proposed import-hygiene whitelist rule (narrow interface for the new
+library; the D1L2 re-home as worked example), naming refresh. Sizing rule in the brief:
+index what the rungs consume, register what must be avoided, STOP — a full predecessor catalog
+is itself the local-min trap. Operator priority honored: not-getting-stuck > perfect reuse;
+the independent library first.
+
+## 2026-07-18 RUNG 2C BATTERY + GLUE B0 MERGED (tick 62)
+Architect's g-resrank-minadm.py merged (exit 0) with a CONVENTION FINDING pinned: the threshold-
+relevant residual rank is the TRANSVERSE (on-core) Morse rank (= codim of the core), NOT the
+generic-ambient Hessian rank the bridge-cert tabulated — (2,2,2): 4 not 5; (2,2,4): 8 not 11.
+The truth-witness resRank ≥ minAdm PASSES on every tested chart with a TIGHT instance at (3,3,4):
+8 ≥ 8 — zero slack, so the resRank fold genuinely binds there (consistent with the expedition's
+zero-slack theme; the exact-steps rule was never optional). CONSEQUENCE for the tide: LeafData's
+resRank field means the TRANSVERSE rank — convention flows to rung 4 leaf construction + the glue
+lane's Morse read. HONEST SCOPE: intermediate corank≥2 residuals are coupled recursive cores, not
+Morse; only TRUE leaves carry ‖z‖²; the genuine L=3 leaf is the separate de-risk. Glue B0 merged:
+instIsAddHaarMeasureParams (Params M Haar instance from banked pieces) builds green — the area
+formula now runs on Params M directly. Rung 2C COMPLETE; the architect owes the revised ladder
+next (before rung 3 / recursion assembly); council + cartographer deliberating in parallel.
+
+## 2026-07-18 COUNCIL SEAT A LANDED (tick 63; adoption HELD for seat B)
+Seat A (kernel-verified, adversarial): RATIFY Path A strategy; the confound hunt FOUND a real
+precision defect in the recon — "discharging hbox deletes cited_aoyagi_dln" is FALSE: the
+canonical headline rides on sorryAx (5 skeleton rungs; AxCheck expectation prose confirms,
+controller-re-verified), and the cite lives ONLY in the out-of-scope RlctPayoff layer (needs
+minAdm=codim — next expedition's runway). The REAL prize: unconditional CLEAN-THREE
+aoyagi_learning_coefficient. brief.md closing criterion needs the correction. HEAD-ON answer to
+the operator's worry: the collapse dissolves the TWO-PATHS tension, NOT the hole-vs-mechanism
+tension — hbox ⊊ mechanism (the certificate provably never reads full-T/tie-break/gap/divProfile/
+genDivExp; EngineConstruction:15 "stores only what the measure reads" IS the retired razor
+encoded in code — to be struck). STANDING RAZOR-GUARD proposed: any rung justified by "not
+needed for hbox / suffices for λ" rejected on sight. R6 (Lemma 2 + Thm 3 peel): OWED under fork
+10, not optional — placed parallel/non-critical after hbox, cost-probe-gated (SchurCore depth≥3
+wall). R1 AMENDED: full-T in the State NOW (t̃ DERIVED — the current state carries the derived
+quantity and drops the primitive; no-derivable-data violated), genDivExp FIELD at R1 (props at
+R4) so R2/R3 build against the final carrier once. R2 gate = ChartBridge PROOF + DECORRELATED
+atlas-closure probe (pen-and-paper seat, NOT the architect — builder-verifying-own-atlas is the
+vacuity pattern). Cheapest clarifier: a pen-and-pencil full-T update trace at (3,3,4) BEFORE
+committing R1 (prices the ballooning risk). Adoption + compass fork-11 HELD until seat B.
+
+## 2026-07-18 COUNCIL #3 CLOSED: ROADMAP ADOPTED (tick 64)
+Seat B landed; CONVERGENT with seat A on all five verdicts (Path A sole critical path — both
+kernel-verified independently; full-T into the State NOW with complementary arguments — A: the
+state carries the DERIVED quantity and drops the primitive, B: T is non-derivable chooser-
+required data + retrofit risk to the merged μ-descent; R6 OWED first-class, both rejecting
+"value lane suffices" as the retired razor; decorrelated atlas-closure seat; genDivExp field at
+R1/proofs at R4 — one faithful node-data pass). ONE DIVERGENCE, resolved to seat A's precision
+pin (controller-verified; B's own grep supports A: no cite-usage token in the cone — nothing
+there to "delete"): the prize is the UNCONDITIONAL CLEAN-THREE headline; cited_aoyagi_dln is the
+out-of-scope payoff layer's. B's unique catches adopted: the #print-diagnostic-not-guard confound
+(ENFORCED axiom-gate at R5), the hL2 caveat (L=1 via the separate fold), the scope-vs-sequencing
+razor discipline (sharper than A's guard; subsumes it). ADOPTION APPLIED: compass fork 11 +
+2 standing-counsel entries; brief.md closing criterion + path-question corrected ("kills the
+cite" struck everywhere — my own tick-61 journal line and reframed-brief line carried the
+inflation; corrected here, not rewritten). Cheapest clarifiers MERGED into the decorrelated
+pen-and-paper seat: atlas closure + the t̃-tie/incomparable-T necessity witness + the full-T
+update-rule trace, all at (2,2,2)/(3,3,4). R6 surfaced to the operator for scope confirmation
+(both seats: owed; post-spine; cost-probe-gated).
+
+## 2026-07-18 CARTOGRAPHER PASS #2 MERGED; IMPORT HYGIENE RATIFIED (tick 65)
+The inherited-library index the operator asked for now EXISTS and binds: banked-families
+consumption-scoped by rung (pins re-grepped; one pass-#1 pin corrected — minAdm_le_Mval moved to
+RouteMState:259); DO-NOT-ENTER register (24-sorry census: 18 fossils across 9 half-built
+predecessor lanes — decorated-peel, the peel-and-integrate residuals, InteriorLDUContract the
+densest; each with what-to-use-instead); import-hygiene RATIFIED (whitelist binds all seats;
+heavy-cone imports need a controller note; the D1L2 re-home commissioned to the glue lane with
+the Engine-namespace fix — RegionGlueGlobalize's 304-import weight drops to light). SHAPE pinned:
+~490 Validate modules of mostly-banked substrate; the NEW engine cone is 8 modules, ≤32-file
+weight, exactly two live holes. The pass also SELF-RECONCILED to the concurrently-adopted council
+roadmap (overlay now matches fork 11 — including the struck "kills the cite" gloss). Landmark
+refresh addendum requested (3 stale cards). Reuse-wins relayed implicitly via the overlay; both
+build seats bound to read it before touching Validate/.
+
+## 2026-07-18 BRANCH-HIJACK INCIDENT + RECOVERY; R6 PLACEMENT CONFIRMED (tick 66)
+INCIDENT (root cause = MY brief defect): office/probe briefs said "work from root … commit to a
+NEW branch" without mandating a separate worktree — the cartographer did the natural thing and
+`checkout -b`'d IN ROOT, silently moving root's checked-out branch. My ticks 63-65 commits
+(council seat A integration, the fork-11 adoption, priorities re-cut, the hygiene ratification,
+journal entries) landed on ITS branch; my `git push origin expedition/aoyagi-engine` calls
+"succeeded" pushing the FROZEN ref — three ticks of work invisible on the canonical branch while
+every BANKED echo looked normal. DETECTED via the cartographer's idle + a stale-looking branch
+tip; RECOVERED completely: nothing was lost (all commits lived on carto2, interleaved with the
+cartographer's — including its landmark refresh as the tip), root switched back + carto2 merged +
+BOTH refs pushed; every recovered artifact verified present (fork 11, brief corrections,
+priorities, ratification stamp). GUARDS INSTALLED: memo rule — seats NEVER checkout in root
+(own-worktree mandatory in every future brief; pnp-atlas corrected mid-flight); controller commit
+batches begin with a branch assertion (the placement check must check the BRANCH, not just cwd).
+LESSON: a push that succeeds is not evidence the work is ON the pushed ref — the ref and HEAD can
+diverge silently when a checkout moves under you.
+OPERATOR CONFIRMATION absorbed: R6 (the regular peel) scheduled AFTER the critical path stands
+as adopted — the surfaced scope question is CLOSED.
+
+## 2026-07-18 L=3 DE-RISK: NO WALL (tick 67)
+The most-feared object since genesis CLEARED, three independent legs: (1) the termination spine
+is L-AGNOSTIC (ConState/μ over arbitrary S; nothing depth-specific to prove); (2) the (2,2,2,2)
+geometry was already hunt-verified end-to-end (double-incidence + shear chart, min 2ρ = 3 =
+minAdm, 0 undershoot, Newton-LP + Gröbner + valuation-slope cross-checked); (3) decorrelated
+Codex structural read: the β-monomial + case-1(1) merge are DEPTH-INDEPENDENT, and the ψ∘β +
+area-formula route SIDESTEPS the SchurCore front-peel (the documented depth-2 wall object never
+forms on our route — the fork-8 revision paying off structurally). LOAD-BEARING INSIGHT: at L=3
+the t=1 path carries a layer-0 contribution of 1 which, isolated, would BREAK the ledger bridge
+(1 < minAdm = 3) — the case-1(1) MERGE is the mechanism that merges it up (fork-3's typed sharing
+content); so case-1(1) faithfulness is SOUNDNESS-load-bearing at depth ≥ 3, retroactively
+strengthening the fork-9/eligibility work. Residual formalisation risk (not a wall): the post-β
+residual at the coupled t=1 leaf provably unit/Morse — queued as a battery extension
+(h6_composed_chart_2222 → one fully-emitted t=1 leaf). RUNG 2 FULLY COMPLETE. Sequencing steer:
+assembly AFTER the R1 faithful carrier (council order; pnp-atlas verdict 3 prices it first).
+
+## 2026-07-18 HEDGE FINALIZED + GLUE MODULE B PROGRESS (tick 68)
+Merged: (1) the case12 guard finalization — elder confirmation absorbed, "PENDING ELDER" hedge
+dropped from the docstring (grep 0), the two scope notes (tie-break, gap condition) named per the
+directive; (2) glue Module B sub-lemmas abs_det_comp + flat_leaf_model_lt_top — force-verified
+clean-three. The glue lane is closing on the per-leaf read (B2 area formula + B_top remain, then
+Module C). pnp-atlas mid-computation (own worktree per the corrected brief). Architect drafting
+the R1 design + revised ladder while holding for pnp verdict 3.
+
+## 2026-07-18 TIDE LADDER AGREED (tick 69)
+The architect's revised ladder (reframe + council folded) AGREED: T1 faithful carrier (full-T
+primitive/t̃ derived + genDivExp field + razor-docstring struck + page-verified T-updates +
+chooser TYPE; gate incl. μ-spine re-verification under the extended carrier) → T2 recursion-
+assembly skeleton (WF.fix over conRel_wf, chart-producer typed hole) → T3 coverage integration →
+T4 propagation + chooser proofs + the UNIFORM invariant-preservation lemma (one lemma, case
+instantiations — the method steer landing in the design) → T5 repoint + enforced axiom-gate.
+Labels pinned tide-internal (T1-T5) vs fork-11 map labels. Design note offered: on divExp-vs-T,
+"carry both + prove COHERENCE (incremental update = closed-form Mval)" is on the table — the
+coherence theorem IS the exponent-bookkeeping soundness brick and fits T4's uniform slot. T1 Lean
+holds on pnp-atlas verdict 3 (the only gate). Reframe ACK'd by the seat in full — including
+extending its own case-merge instinct.
+
+## 2026-07-18 tick 69 addendum: coherence pre-check (architect, paper-side)
+Numeric coherence GROUNDED ahead of T1 (algebra only, decorrelated from pnp's page-fidelity
+trace): Mval's closed form matches the minAdm recursion on all four instances; leaf-level
+divExp = Mval(divProfile) confirmed on the 224 witness. The architect's read — CARRY BOTH +
+prove coherence (incremental update stays primitive in the hot path; the agreement with
+Mval(T-updated) is the T4 exponent-bookkeeping soundness lemma) — well-argued, held for the pnp
+trace. Correctly fenced flag: (2,2,2,2) has THREE binding profiles (θ-multiplicity territory —
+out of scope, noted only). Seat genuinely held on the pnp gate.
+
+## 2026-07-18 GLUE MODULE B COMPLETE: THE PER-LEAF READ IS PROVEN (tick 70)
+leaf_chart_image_lintegral_lt_top merged + force-verified clean-three — the analytic heart of
+region_glue: ChartBridge per-leaf tuple + hrat ⟹ the chart-image integral is finite, via the
+area formula ON Params M (the B0 Haar instance), flat-cube transport, and Module A's model read.
+Two honest technical notes recorded by the seat: the ℕ-subtraction→rpow conversion is DERIVED
+from divExp ≥ 1 (forced by hrat + c'>0 — no interface change); the integrand bound is genuinely
+pointwise (the a.e. lives only inside Module A's AM-GM). Module C (cover + globalization) open —
+the LAST glue piece. WIRING RULING for the final discharge: fold a Defs/Obligations split of
+EngineObligations into T1 (ChartBridge/LeafPullback/LeafJacobian definitions → a Defs file the
+glue modules import; the sorried theorems → an Obligations file that MAY import the glue modules
+and discharge region_glue directly) — one restructure inside the already-planned T1 carrier pass,
+no circularity, the architect owns it, the glue discharge becomes a one-line exact after.
+
+## 2026-07-18 PNP-ATLAS VERDICTS: T1 RELEASED; NECESSITY PROVEN; NON-TORIC CONSTRAINT (tick 71)
+The decorrelated probe delivered (cert merged; Codex hypothesis-withheld replay reproduced the
+SAME atlas at both L=2 instances — strong decorrelation): (1b) NO UNDERSHOOT at (2,2,2)/(3,3,4),
+5 empty adversarial legs — with TWO new R2 design constraints on the map: the binding divisor is
+NON-TORIC (weight-LP loose) so coverage CANNOT be Newton/toric — the proof must run the blow-up
+construction itself; and coverage must instantiate the FULL residual-d pivot-chart cover, never
+corner-only (explicit gap). (2) THE TIE-BREAK NECESSITY IS PROVEN: forced at L≥3 — concrete
+witness at (2,2,2,2) node (3,0,1), divisors (1,1,1)/(2,1,1) both at t̃=1, Def-4 reads full T;
+sole-candidate at L=2 explains why no L=2 spike ever saw it. Council 3a + the operator's full-
+fidelity instinct CONFIRMED as forced, not taste. (3) THE T-UPDATE IS CLEAN — fixed index set,
+tail-slice write + head unchanged/inherit/reset per case, O(L), no re-indexing; the balloon risk
+is genDivExp support only (already T4). T1 LEAN RELEASED with the exact rule + the witness as
+docstring citation + the Defs/Obligations split folded in. pnp-atlas exonerated on the hijack
+(own worktree from the start) and commissioned with the depth-3 closure probe (the R2 gate's
+second leg: tie-break load-bearing-ness + L=3 coverage at once).
+
+## 2026-07-18 DEPTH-3 CLOSURE LEG: THE TIE-BREAK PROTECTS COMPARABILITY (tick 72)
+The probe's second leg merged + battery re-verified here (exact agreement with the Codex replay
+to the component). (a) Stratum-level closure at (2,2,2,2): six rank strata cover {P=0}, all three
+binding strata emitted, non-toric reconfirmed. (b) Min stays 3, no undershoot; the M=1 divisors
+at t̃=1 are fenced by the t̃=0 rule — red herrings. (c) THE DEEPEST FINDING OF THE EXPEDITION:
+Def-4's tie-break protects the TOTAL-COMPARABILITY INVARIANT, not the value — the wrong pick at
+(3,0,1) produces an incomparable pair (breaking principalization/coverage) while the minimum is
+3 EITHER WAY. Corollary: a finiteness-only certificate is provably BLIND to a wrong tie-break.
+The operator's full-mechanism steer, the council's full-T ruling, and this computation now close
+into one argument: the mechanism cannot be trimmed to the hole because the hole's own certificate
+cannot see what the mechanism protects — and coverage (the hole's hard half) rides on exactly the
+protected invariant. TWO NAMED R2 OBLIGATIONS mapped (pointwise cover needs the construction's
+chart maps; invariant→principalization is Aoyagi-ASSERTED and OUR theorem proves it). The
+wrong-pick counterexample queued as a T4 ¬-witness. pnp-atlas stood down warm (re-convenes for
+the R2 gate against the CONSTRUCTED atlas).
+
+## 2026-07-18 GLUE MODULE C: STRUCTURAL PIECES IN (tick 73)
+Merged + force-verified clean-three: exists_small_paramsBox_subset_open (ε-box inside any open
+U ∋ 0, via the flat CLE pullback) + lintegral_leaves_cover_lt_top (finite-leaf cover sum). What
+remains of Module C: the region_glue_of_chartBridge assembly proper (0 ∈ locus, the subcover
+extraction from ChartBridge's U, per-leaf application, the small-box→unit-box globalization +
+the banked c'≤0 corner). The glue lane is one assembly lemma from done.
+
+## tick 73 CORRECTION (immediate)
+The tick-73 entry claimed "force-verified clean-three" — FALSE: the verification build was
+slot-TERMINATED (contention with T1) and the probe never ran; I banked the claim without reading
+the output carefully. The same failure mode I hold seats to (a green echo is not verification).
+Merge stands (the seat's own gate applies); MY verification of the two Module C lemmas is
+PENDING — re-running when a slot frees, will record the actual footprints then.
+
+## 2026-07-18 T1a MERGED: THE DEFS/OBLIGATIONS SPLIT (tick 74)
+T1a merged (4211a714b): EngineDefs.lean carries the carrier-facing definitions (no glue imports,
+no sorried holes); EngineObligations keeps the two holes + projections and MAY import glue;
+consumers re-pointed; the architect green-gated the FULL aggregator build (8884 jobs — the
+name-clash lesson applied) with footprints confirmed from the forced prints inside it. The glue
+lane's wiring path is now physically open (its discharge = one-line exact in EngineObligations
+once its assembly greens). Aggregator import added explicitly (single-writer, me). T1b (the
+faithful carrier proper) proceeding on the pnp-pinned rule with carry-both + decide-checked
+Mval coherence at the trace values. My Module-C re-verification still queued behind contention.
+
+## 2026-07-18 T1b SPEC BANKED; ARCHITECT CHECKPOINTED (tick 75)
+The architect checkpointed at green T1a rather than starting the atomic 3-file struct edit
+mid-budget ("never leave the build broken" outranking push-on — correct). Its T1b execution spec
+is handoff-grade (indexing reconciled against ALL trace cross-checks; decide-friendly tildeOf;
+source-compatible derived accessors; witnesses via structure-eta rfl) — BANKED VERBATIM at
+threads/01-skeleton/t1b-execution-spec.md so executability lives in the repo, not a transcript.
+GO: the architect executes T1b from its own spec next turn (its self-assessment trusted), with
+the standing tripwire: if context/budget threatens MID-edit, stop BEFORE touching files — the
+successor path (any fresh formaliser from the spec) is clean precisely because nothing is
+half-edited. Session ledger to date: rider finalization, full rung 2, L=3 de-risk, T1a split,
+T1b spec — all green + pushed.

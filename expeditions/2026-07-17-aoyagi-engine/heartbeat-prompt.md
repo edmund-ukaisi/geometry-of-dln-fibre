@@ -1,20 +1,29 @@
 # Heartbeat — 2026-07-17-aoyagi-engine
 
-Main quest: the transform-only Aoyagi resolution engine → `∀ M, RouteMBoxThresholdFinite M`
-(clean-three, no Aoyagi hypothesis) → unconditional mint.
+Main quest (operator-reframed 2026-07-18, PRIORITY framing): **Aoyagi's mechanism built FULLY as
+a free-standing library** (her objects + invariants incl. sharing, end-to-end, conceptual-altitude
+first — cases derived, never chased) → THE LEARNING COEFFICIENT THEOREM (`aoyagi_learning_
+coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite M`) = adapter path
+(A), default; her native λ theorem = path (B), replaces the cite; DITCH the hole if (B) prices
+shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: TWO-TIDE BUILD. Construction tide (architect, rungs 1-4 + L=3 de-risk milestone; rung 1 =
-  stepUpdate + faithful StepRel, rev-carrier scoped spot-check on land). Glue tide (glue-t05,
-  parallel; brick 1 scaling-bridge BANKED clean-three; next: global homogeneity → leaf read →
-  assembly; never edits EngineObligations.lean — final discharges sequenced through me).
-  Elder re-convenes at coverage commissioning + any STOP-and-surface. Teammate self-reports get
-  verified before they count (5 instances). Watch line = engine_box_threshold_finite flip.
+- phase: FULL-MECHANISM BUILD (post-reframe). Construction tide (architect-t02): rungs 2A/2B
+  landed (μ-lex WF + descent, kill cleared); deferrals UN-DEFERRED (genDivExp native in State,
+  chooser w/ tie-break + gap, divProfile) — revised ladder owed before rung 3. Glue tide
+  (glue-t06): Module A (path-independent analysis). Recon (recon-aoyagi-full): paper end-to-end
+  map + both mint paths priced → elder council w/ corrected charge adopts the roadmap. Teammate
+  self-reports verified before they count. Watch line = engine_box_threshold_finite (path A).
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
   EnterWorktree(root) immediately after every worktree creation; placement check catches it.
-- Six obligations HELD at adjudicated until carrier validates (contract 7 — correct, keep it).
+- BRANCH-HIJACK GUARD (incident 2026-07-18): seats must NEVER `git checkout`/`switch` in root —
+  every seat brief mandates its OWN worktree for its branch. Controller: EVERY commit batch begins
+  with the assertion `[ "$(git branch --show-current)" = expedition/aoyagi-engine ]` (a seat's
+  checkout in root silently redirected 3 ticks of controller commits onto its branch; pushes of
+  the frozen ref "succeeded" — the placement check must check the BRANCH, not just the cwd).
+- Obligations STATED (tick 37); case-step-lemmas faithful-flip waits on the full-fidelity items.
 - Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
 
 ## Protocol (per wake)

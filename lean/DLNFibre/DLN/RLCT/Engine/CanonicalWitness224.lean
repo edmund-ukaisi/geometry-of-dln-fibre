@@ -1,4 +1,4 @@
-import DLNFibre.DLN.RLCT.Engine.EngineObligations
+import DLNFibre.DLN.RLCT.Engine.EngineDefs
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.CanonicalWitness224` — the `(2,2,4)` model (faithful `stepUpdate`)
@@ -79,11 +79,11 @@ theorem minAdm_M224 : minAdm M224 = 4 := by
   rw [← minAdmRec_eq_minAdm]; decide
 
 /-- **The FAITHFUL case-2 root edge**: the child leaf's ledger IS `stepUpdate rootNode224 case2
-subst224` by construction (ledger equality by structure-eta `rfl`); the case-1(1) eligibility clause
-is vacuous (the edge is case-2). -/
+subst224` by construction (ledger equality by structure-eta `rfl`); the case-1 eligibility clause is
+vacuous (the edge is case-2, neither case-1(1) nor case-1(2)). -/
 theorem rootEdge224_stepRel :
     StepRel rootNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)) :=
-  ⟨rfl, fun h => by simp [Edge.case] at h⟩
+  ⟨rfl, fun h => by rcases h with h | h <;> simp [Edge.case] at h⟩
 
 /-- **The arithmetic bank piece** (clean-three): at `M = (2,2,4)` the carrier-independent conjuncts
 are jointly satisfiable — full monomialisation (`divExp = Mval`, `divProfile ∈ Adm`), the FAITHFUL
@@ -165,6 +165,43 @@ theorem mergeEdge_stepRel :
 
 /-- The merged child's divisor exponent is `11` (numeric pin of the page-image merge equation). -/
 theorem mergeLeaf_divExp : mergeLeaf.divExp ⟨0, by decide⟩ = 11 := by decide
+
+/-! ## Out-of-range case-1(2) rejection (the rider's kill-condition) -/
+
+/-- An OUT-OF-RANGE case-1(2) substitution on `mergeNode`: `mergeIdx = 1 ≥ numDiv = 1`. `stepUpdate`
+case12 reads `divExp(mergeIdx)` as the new pivot's base exponent, but the `dite` defaults to `0`
+when out of range — silently dropping the parent divisor's exponent. -/
+def oobSplitSubst : ChartSubst M224 where
+  localSub := id; runLen := 2; mergeIdx := 1; jacDivCount := 1; jacPow := fun _ => 0
+
+/-- The out-of-range split child: its ledger IS `stepUpdate mergeNode case12 oobSplitSubst`, so the
+ledger conjunct holds; the appended pivot exponent is `6 = 0 + 2·3` (base DROPPED), not the faithful
+`11 = 5 + 2·3`. -/
+noncomputable def oobSplitLeaf : LeafData M224 where
+  numDiv := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).numDiv
+  divExp := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divExp
+  divTilde := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divTilde
+  cleared := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).cleared
+  divProfile := fun _ => ![0, 0]
+  numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
+  chartMap := id; srcBox := Set.univ; resRank := 0
+  divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
+
+/-- The out-of-range split's appended pivot exponent is `6 = 0 + 2·3` — the base `divExp 0 = 5`
+DROPPED by the `dite` default, vs the faithful `11`. This is the corruption the extended guard
+rejects. -/
+theorem oobSplitLeaf_divExp : oobSplitLeaf.divExp ⟨1, by decide⟩ = 6 := by decide
+
+/-- **Out-of-range case-1(2) rejection** (the rider's kill-condition): a case-1(2) edge whose
+`mergeIdx` is out of range is REJECTED by the extended eligibility guard — even though the ledger
+conjunct holds (the child IS `stepUpdate`), the guard needs `mergeIdx < numDiv` and `1 < 1` is
+false. WITHOUT the case12 extension `StepRel` ACCEPTED it (base silently `6`, not `11`). -/
+theorem oobSplit_not_stepRel :
+    ¬ StepRel mergeNode
+      (Edge.mk StepCase.case12 oobSplitSubst (ResolutionTree.leaf oobSplitLeaf)) := by
+  intro h
+  obtain ⟨hlt, _⟩ := h.2 (Or.inr rfl)
+  exact absurd hlt (by decide)
 
 /-! ## Dummy-divisor rejection (the rung-1 kill-condition, both directions) -/
 

@@ -1,38 +1,29 @@
-# Priorities — aoyagi-engine (build loop; navigator pass #2, 2026-07-18)
+# Priorities — aoyagi-engine (council #3 roadmap ADOPTED, 2026-07-18; full-mechanism framing)
 
-Position: carrier VALIDATED (edge-labelled, r2, tick 37); six obligations STATED (projections of
-resolutionOf_spec); TWO holes on the hbox cone — monomialization_terminates (EngineObligations.lean:142,
-THE LONG POLE) + region_glue (:206, analytic). Root in sync with origin. Wave-1 (lane1-derisk,
-lane2-bridge) COMPLETE, folded into the restructure. Critical path = monomialization_terminates.
+The library is the artifact; the learning coefficient theorem is the destination. Path A is the
+SOLE critical path (fork 11): hbox = coverage (R2) + region_glue (R3) → the UNCONDITIONAL
+CLEAN-THREE headline (kills the 5 skeleton-rung sorryAx; cited_aoyagi_dln is the out-of-scope
+payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds every lane.
 
-1. construction-tide (monomialization_terminates) — PURSUE, CRITICAL PATH (the long pole).
-   Milestone order, each truth-witnessed before it counts (standing rule 2):
-   (a) typed stepUpdate strengthening (StepRel := child = stepUpdate parent) — elder-gated FIRST
-       deliverable; fills fork-7 faithfulness; near-free once the case-update functions exist.
-   (b) DEPTH-L=3 inner-recursion de-risk at (2,2,2,2) — RR4/SchurCore walls at depth ≥3 (RR4.lean:12-21);
-       the (2,2,4) template is only L=2 and does NOT reach the wall. STOP-and-surface if the case-1(1)
-       merge walls in Lean, BEFORE the general recursion scheme is locked.
-   (c) coverage — DISTINGUISHED SUB-TARGET (ChartBridge image-cover + per-blow-up local covering lemma
-       at corank≥2, cert-d3 §5), separately reviewed, own kill-condition (g-coverage-sharing-killcond);
-       NEVER the buried last conjunct. Hunt SURVIVED and is carrier-independent — no re-run.
-   (d) the general (S,J) recursion + termination + ChartBridge per leaf.
-   GATE: elder at the tide gate; each milestone truth-witnessed.
-
-2. region-glue-tide — PURSUE-PARALLEL (decoupled; off the critical path). Consumes ChartBridge as a
-   HYPOTHESIS (r2-validated signature); does NOT consume construction outputs or StepRel; buildable
-   against the sorried resolutionOf_spec. Proof = ψ∘β factorization (transport on ψ via banked
-   rlctAtOn_boundedUnit_localHomeomorph + direct monomial integration of β) + the ONE homogeneity
-   scaling-bridge lemma (route-(b), = the ex-P8 gap) + banked radial/monomial reads. First brick =
-   the scaling-bridge lemma. CONTENTION: shares EngineObligations.lean with lane 1 (holes 60 lines
-   apart) — proof body in a NEW module, final exact-discharge sequenced. STOP-tripwire: if the CoV
-   needs srcBox nonempty-INTERIOR, surface a ChartBridge strengthening request to lane 1.
-
-3. resRank ≥ minAdm truth-witness — PURSUE (small; standing rule 2). NEW obligation from the bridge
-   (resRank folded into terminalExponents); NOT covered by the divisor-ratio hunt; verified on 3 charts
-   only. Owe a smallest-instance satisfiability check. Fold into 1(c) or a decorrelated pen-and-paper probe.
-
-4. P8 general chart-tree CoV composer — DROP as a build-loop lane (subsumed by route (b); the surviving
-   scaling-bridge lemma lives in lane 2). Post-hbox library extraction only, if a 2nd typed consumer appears.
-
-5. mint-repoint — PARKED. Waits on the monomialization_terminates → clean-three flip; consumer stack
-   proven (HeadlineGenAssembly), wiring only.
+1. R1 — the FAITHFUL carrier (architect; after its L=3 de-risk + the pnp-atlas pricing):
+   full-T primitive in the State (t̃ derived) + genDivExp multiplicity FIELD, one node-data pass;
+   propagation proofs deferred to R4; the "stores only what the measure reads" docstring struck;
+   T-settings page-verified; STOP-AND-SURFACE if full-T stepUpdate balloons.
+   IN FLIGHT AHEAD OF IT: the L=3 (2,2,2,2) case-1(1) de-risk (the SchurCore depth-≥3 wall probe)
+   + pnp-atlas (decorrelated: atlas closure, tie-break necessity witness, T-update trace).
+2. R2 — COVERAGE (the hard part; own permanent lane; opens after R1 locks the carrier):
+   the ChartBridge PROOF over the CONSTRUCTED atlas. GATE = decorrelated atlas-closure probe
+   (pnp-atlas class, never the builder) + hunt-cert §5 cited by scope + no rlct=c* (circularity).
+3. R3 — region_glue (glue-t06, PURSUE-PARALLEL, in flight): Module B (per-leaf area formula,
+   B0 Haar instance done) → Module C (cover assembly + globalize). Field-pass cleared; one live
+   spine (area formula); final discharge sequenced by controller behind the standing gates.
+4. R4 — genDivExp propagation proofs (OWED, post-spine; kills: g-coupled-binding-334 +
+   g-delta-flatten re-checked against the redesigned support).
+5. R5 — wiring: hbox discharge → repoint canonical → _gen (+ the L=1 separate fold) + the
+   ENFORCED axiom-gate (a #print diagnostic is confirmed-by-discipline, not enforced).
+6. R6 — Lemma 2 + Theorem 3 (the regular peel) — OWED FIRST-CLASS (both council seats; "value
+   lane suffices" struck as the retired razor), post-spine, off critical path, COST-PROBE-GATED
+   (SchurCore depth-≥3 wall, rr4-precedent); operator scope confirmation surfaced. θ + Eqs (1)-(5)
+   stay out.
+Parked: mint-repoint mechanics live inside R5; cartographer pass #2 (reuse index + do-not-enter
+register + import-hygiene proposal) lands asynchronously and binds via ratification.

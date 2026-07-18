@@ -1,15 +1,21 @@
 # Overlay — landmark cards (cartographer, curated layer)
 
-*Sole writer: cartographer office. Created pass #1 (2026-07-17, cadence-triggered at 63 commits, no
-prior pass). One card per carried landmark (8). "True state" is verified against the live Lean tree +
-certs, not the log. Paths are repo-relative to the expedition root.*
+*Sole writer: cartographer office. Created pass #1 (2026-07-17). REFRESHED pass #2 (2026-07-18): the
+restructure LANDED, so cards 3/4 (engine-route, resolution-tree) + the standing-context header were
+de-staled, and drifted line-pins in cards 5/6 corrected (the "stale pin costs tides" class). One card
+per carried landmark (8). "True state" is verified against the live Lean tree + certs, not the log.
+Paths are repo-relative to the expedition root.*
 
-**Standing context (read once):** the expedition is mid-RESTRUCTURE. Council #2 (journal ticks 23–25)
-adopted an EDGE-labelled carrier (fork 7) + the ChartBridge revision + Q5 route (b) (banked
-local-homeomorph RLCT transport). The root Lean (`Engine/*.lean`) is still the r2-VALIDATED
-NODE-carrier shape; the edge restructure is IN FLIGHT on the architect's branch (task #42
-`in_progress`), NOT merged to root. Every landmark card below distinguishes the root state from the
-adopted-but-unlanded shape.
+**Standing context (read once) — REFRESHED pass #2 (2026-07-18): the restructure has LANDED.** The
+EDGE-labelled carrier (fork 7) is in root and r2-VALIDATED (tick 37); the six obligation predicates
+flipped `adjudicated → stated`; `ChartBridge` (the ex-`ChartsCover`) is strengthened + interface-FROZEN
+(tick 46/51). The per-leaf read is now the Mathlib AREA FORMULA (fork-8 revision, tick 43) — the
+banked local-homeomorph RLCT transport stays BANKED-but-UNUSED on the leaf path (P6 one live spine;
+see [[dead-routes]]). Live shape since: the fork-10 full-mechanism reframe + council #3 fork 11 (Path A
+the SOLE critical path; R1 lands the faithful full-`T` + `genDivExp` carrier NOW; R6 regular-peel OWED
+first-class; "kills the cite for free" STRUCK). The two live engine holes are
+`monomialization_terminates` (`EngineObligations.lean:184`) + `region_glue` (`:248`) — see
+[[banked-families]] for the R1–R6 consumption map.
 
 ---
 
@@ -66,9 +72,11 @@ mint-repoint`).
 
 **True status.** ADOPTED (tick 7): council 2×ADOPT + skeleton fit-example elaboration + battery
 12-green + fork-6 TOMBSTONE (decorated-descent superseded). Gate build controller-verified GREEN from
-source (ticks 9, 14). **But the six `needs` nodes are back at `adjudicated`** — the validator's 6 C9
-warnings correctly track this: the restructure (council #2) changes their statements, so the adopted
-route cannot elaborate against verbatim statements yet. This is honest mid-flight state, not rot.
+source (ticks 9, 14). **The six `needs` nodes FLIPPED `adjudicated → stated` at the r2 six-obligation
+flip (tick 37)** — the restructure landed and the predicates are correctly stated (validator warnings
+15 → 9). `engine_box_threshold_finite` now carries only the two live holes
+(`monomialization_terminates`, `region_glue`); its flip to clean-three IS the hbox event the mint
+re-point waits on.
 
 **Witnesses / whys.** Battery 15 scripts: 13 guards SURVIVE, 2 naked-weight kills FIRE
 (`w-naked-weight-111`, `w-naked-weight-4444`) — the zero-slack lesson's anchor. Why a landmark:
@@ -78,21 +86,21 @@ founding route; its adoption gate was the first live test of the uplifted harnes
 
 ---
 
-## 4. `resolution-tree` — the key definition (`drafted`; RESTRUCTURE IN FLIGHT)
+## 4. `resolution-tree` — the key definition (`validated`; edge carrier LANDED)
 
 **What it is.** The pp.14–22 chart-tree datatype: per-node monomial vector + divisibility chain +
 the TYPED divisor-support (sharing) map. Flattening the sharing to per-generator multiplicities is a
 TYPE error, not merely a battery failure (fork 3).
 
-**True status — root vs adopted.** ROOT (`Engine/ResolutionTree.lean`) is the NODE carrier:
-`StepData` with `case : StepCase` as a field, `support : Fin numGen → Finset (Fin numDiv)`,
-`LeafData` with `chartDom : Set (Params M)`; `inductive ResolutionTree | leaf | branch (n) (charts :
-List …)`. This is the r2-VALIDATED shape. The ADOPTED shape (council #2, NOT yet in root) is
-EDGE-labelled: `Edge {case, localSub/subst : ChartSubst M, child}`, `branch (n) (edges : List (Edge
-M))`; `chartDom` REMOVED (downstairs-open defect); leaf `chartMap` = DERIVED path-composite fold;
-ChartBridge predicates at leaf level; `StepInvariant` becomes relational (`StepRel` on edges). Node
-status was `validated` at r2 then reopened to `drafted` when the restructure landed as the plan —
-r2 VALIDATE is marked superseded+incomplete (it missed the univ-atlas vacuity).
+**True status — LANDED + r2-VALIDATED (tick 37).** ROOT (`Engine/ResolutionTree.lean`) is now the
+EDGE carrier: `Edge {case, subst, child}`, `branch (n) (edges : List (Edge M))`; `StepData` carries
+no `case`; `chartDom` REMOVED (downstairs-open defect); leaf `chartMap` = DERIVED path-composite fold;
+ChartBridge predicates at leaf level; the faithful `StepRel := rootLedger e.child = stepUpdate n
+e.case e.subst` (reads `e.child`; discharge rfl-class, tick 44). The pass-#1 NODE carrier
+(`support : Fin numGen → Finset`, `LeafData.chartDom`, unary `StepInvariant`) is SUPERSEDED — GONE
+from root. bChain stays a TYPED field (fork 3). **OPEN under council #3 fork 11:** the faithful carrier
+lands full-`T` (non-derivable, chooser-required) + the `genDivExp` multiplicity field at R1 — the
+current binary `support` is a nonzero-locus approximation ([[banked-families]] R1/R4).
 
 **Witnesses / whys.** `g-coupled-binding-334` (minAdm(3,3,4)=8 reached only on a corank-2 first cut —
 the coupled path), `g-delta-flatten` (`lct(δ²(x²+y²))=½` vs `lct(δ₁²x²+δ₂²y²)=1`, identical
@@ -113,11 +121,14 @@ UNIVERSAL claim — WITHOUT invoking `rlct = c*` (circularity guard). The one ge
 monomial, two independent codim methods, sheared-incidence exact LP over the continuous weight space,
 tracked-leaf Newton-LP census, MC guide), 0 undershoots on 7 instances incl. corank-2 (3,3,4). Scope
 is cited BY POINTER (`hunt-cert.md §5`), never blanket "established". In Lean, `coverage_theorem`
-(`EngineObligations.lean:144`) is a PROVED PROJECTION of `resolutionOf_spec` — the covering CONTENT
-lives inside the sorried construction hole `monomialization_terminates`, NOT its own tide (the bundle
-collapsed the fan-out). **Caveat (load-bearing):** `ChartsCover` as-stated is a WEAK conjunct — the
-univ atlas satisfies it (`g-chartscover-vacuity`, lane 2 exact counterexample); the real geometric
-atlas is the construction's + ChartBridge's burden.
+(`EngineObligations.lean:219`) is a PROVED PROJECTION of `resolutionOf_spec` — the covering CONTENT
+lives inside the sorried construction hole `monomialization_terminates` (`:184`), NOT its own tide
+(the bundle collapsed the fan-out). **Caveat (load-bearing, RESOLVED-in-shape):** the ex-`ChartsCover`
+was a WEAK conjunct the univ atlas satisfied (`g-chartscover-vacuity`); it is now the per-leaf
+`ChartBridge` (strengthened MeasurableSet + bounded srcBox, interface-FROZEN + abstract-field-gate
+cleared, tick 51). Making the monomial assertions TRUE over the constructed atlas is still R2's
+burden — council #3 gate: the ChartBridge PROOF + a DECORRELATED atlas-closure probe (pen-and-paper,
+never the builder).
 
 **Residual scope (honest, parked).** angular/non-coordinate centers for instances other than
 (2,2,2,2); 3rd+ nested blow-ups for instances other than (2,2,2); the (2,3,2,2)/(4,4,4,4)
@@ -138,9 +149,10 @@ expedition-level kill-condition lives here.
 `½·min{M_{s,k} : t̃=0} = ½·minAdm(M)`, i.e. `minAdm M` is a terminal divisor exponent AND lower-bounds
 them all. Consumes `minAdm`/`Mval` verbatim; never re-derives the arithmetic.
 
-**True status.** `adjudicated`. A PROVED PROJECTION of the bundle (`EngineObligations.lean:152`). The
-arithmetic conjunct is made GENUINE at (2,2,4): `canonicalResolution_224` rides precisely on this
-(the four carrier-independent conjuncts, with `Mval((0,0)) = minAdm = 4` by kernel `decide`). The
+**True status.** `adjudicated`. A PROVED PROJECTION of the bundle (`exponent_ledger_bridge`,
+`EngineObligations.lean:226`). The arithmetic conjunct is made GENUINE at (2,2,4):
+`canonicalResolution224_arithmetic` (the split bank piece; `CanonicalWitness224.lean`) rides precisely
+on this (the carrier-independent conjuncts, with `Mval((0,0)) = minAdm = 4` by kernel `decide`). The
 form-A-vs-slack trap (`g-tightness-formA`: truth scans cannot separate a tight bound from a slack
 one) earns the landmark slot — the bridge must be the exact minimisation, not a scan.
 
@@ -150,7 +162,8 @@ one) earns the landmark slot — the bridge must be the exact minimisation, not 
 combinatorics.
 
 **Pointers.** `RouteMLayerSplit.lean` (minAdm/minAdmRec), `RouteMSJCorankRec.lean` (QIP family);
-`paper-read-cert.md`.
+the minAdm-as-minimum property `minAdm_le_Mval_toNat` at `RouteMState.lean:259` (MOVED from
+RouteMLayerSplit — pass #1's pin was stale; see [[naming]]); `paper-read-cert.md`.
 
 ---
 
