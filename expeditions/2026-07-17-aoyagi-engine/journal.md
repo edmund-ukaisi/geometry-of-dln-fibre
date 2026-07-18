@@ -973,3 +973,19 @@ EngineObligations into T1 (ChartBridge/LeafPullback/LeafJacobian definitions →
 glue modules import; the sorried theorems → an Obligations file that MAY import the glue modules
 and discharge region_glue directly) — one restructure inside the already-planned T1 carrier pass,
 no circularity, the architect owns it, the glue discharge becomes a one-line exact after.
+
+## 2026-07-18 PNP-ATLAS VERDICTS: T1 RELEASED; NECESSITY PROVEN; NON-TORIC CONSTRAINT (tick 71)
+The decorrelated probe delivered (cert merged; Codex hypothesis-withheld replay reproduced the
+SAME atlas at both L=2 instances — strong decorrelation): (1b) NO UNDERSHOOT at (2,2,2)/(3,3,4),
+5 empty adversarial legs — with TWO new R2 design constraints on the map: the binding divisor is
+NON-TORIC (weight-LP loose) so coverage CANNOT be Newton/toric — the proof must run the blow-up
+construction itself; and coverage must instantiate the FULL residual-d pivot-chart cover, never
+corner-only (explicit gap). (2) THE TIE-BREAK NECESSITY IS PROVEN: forced at L≥3 — concrete
+witness at (2,2,2,2) node (3,0,1), divisors (1,1,1)/(2,1,1) both at t̃=1, Def-4 reads full T;
+sole-candidate at L=2 explains why no L=2 spike ever saw it. Council 3a + the operator's full-
+fidelity instinct CONFIRMED as forced, not taste. (3) THE T-UPDATE IS CLEAN — fixed index set,
+tail-slice write + head unchanged/inherit/reset per case, O(L), no re-indexing; the balloon risk
+is genDivExp support only (already T4). T1 LEAN RELEASED with the exact rule + the witness as
+docstring citation + the Defs/Obligations split folded in. pnp-atlas exonerated on the hijack
+(own worktree from the start) and commissioned with the depth-3 closure probe (the R2 gate's
+second leg: tie-break load-bearing-ness + L=3 coverage at once).
