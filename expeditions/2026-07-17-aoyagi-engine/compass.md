@@ -205,6 +205,32 @@ over banked substrate.
    reject "value lane suffices" as the retired razor (the value lane gets the NUMBER, not the
    OBJECT) — placed post-spine off critical path, COST-PROBE-GATED (SchurCore depth-≥3 wall,
    rr4-precedent), surfaced to the operator for scope confirmation. θ + Eqs (1)-(5) stay out.
+12. **Coverage-commissioning gate: §2 T3-contract RATIFIED; three §3 corrections** (elder-gate4,
+   2026-07-18). WHY-RATIFIED: §2's ChartLeaf per-leaf tuple is VERBATIM the landed ChartBridge
+   conjunction (8 fields, same order, EngineDefs.lean:79-85 — glue-lane consumption preserved),
+   + hledger/hnonempty; weakest-sufficient for the PROVEN region_glue_of_chartBridge (no
+   consumer-needs-more); the two prior burns absorbed; the tree-level cover is the FULL pivot
+   cover, non-toric — no toric route. CORRECTIONS (Just-Do-It; do NOT block T3 cover
+   commissioning, DO gate the build discharge):
+   (a) THIRD GAP — admissibility. §3's `divProfile ∈ Adm` as a per-node invariant is FALSE:
+   pending ⟹ t̃ = min T > 0 ⟹ last > 0 ⟹ ∉ Adm clause 3 (Lambda.lean:54). WITNESS against the
+   LANDED carrier: node334.divProfile = ![1,1] ∉ Adm(3,3,4) (CoRank2Spike:83). CORRECTED:
+   per-node invariant = weak-decrease + block-bound ONLY; last-comp-0 is a LEAF property from
+   post-final-rollover J=0. leaf-Adm = invariant + leaf-t̃=0. LOAD-BEARING for the exponent-hook
+   no-undershoot (Mval ≥ minAdm on Adm) — hbox critical path, not fidelity.
+   (b) SHARP TRUTH-VALUE owed a pen-and-paper seat BEFORE the build discharges
+   IsFullMonomialization/exponent-hooks: at non-monotone widths L≥3, does the case-2 raw-width
+   head-reset (p.20-faithful) reach a leaf with a non-weakly-decreasing profile? And does every
+   emitted leaf carry ONLY t̃=0 divisors (IsFullMonomialization's ∀k vs the paper's t̃=0-only
+   read-off, p.22)? KILL: a leaf divisor ∉ Adm at M=(2,2,3,2).
+   (c) invariant→principalization is UNOWNED → NAMED: it IS T3's discharge of the image-cover +
+   per-leaf LeafPullback/LeafJacobian, consuming the total-comparability invariant (cert-2222 c),
+   which gets a NAMED build-side carrier (a maintained chain invariant, not only the chooser's
+   local minimality). T3's cover proof GOES THROUGH it, never asserts the cover.
+   T3: own lane + reviewer + parallel buildTree; gate = ChartBridge PROOF over the constructed
+   atlas + decorrelated pnp replay + hunt-cert §5 by-scope + circularity (fork 11 confirmed).
+   FIRST RUNG: the per-blow-up LOCAL covering lemma at corank≥2 (prove the uniform event, fold
+   the cases), then the fold, then invariant→principalization.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

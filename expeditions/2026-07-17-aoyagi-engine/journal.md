@@ -1224,3 +1224,10 @@ T3's cover-discharge theorem consuming a NAMED comparability carrier. T3 commiss
 (own lane, first rung = the local covering lemma at corank≥2). Fork 12 applied. Dispatches:
 pnp-atlas re-engaged on (2,2,3,2); architect gets the corrected Adm decomposition + may proceed
 on the structural buildTree parts; the coverage seat spawns against the ratified §2.
+
+## tick 89 correction: fork 12 landed on the SECOND attempt
+The first fork-12 insert failed its anchor assertion (multi-line-string whitespace mismatch) and
+the un-&&-chained heredoc let the journal bank claiming "Fork 12 applied" while the compass
+lacked it — the same unchained-heredoc hazard as tick 89's sibling incidents. Fork 12 is NOW in
+the compass (line-anchored insert, grep-verified). Shell-guard practice tightened: heredoc
+python edits get grep-verified before the same command banks.
