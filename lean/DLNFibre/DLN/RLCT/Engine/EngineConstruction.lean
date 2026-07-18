@@ -2364,4 +2364,151 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
                 ht0inv,
               NumDivFlatPos_stepAppendAdvance s _ _ (flatDim_pos_of_append hlive (not_le.mp h2))⟩
 
+/-! ## The WF-fold: every leaf of the built tree is a full monomialisation -/
+
+/-- **The terminal leaf `leafOfState M s` is a full monomialisation** (`IsFullMonomialization`'s
+per-leaf body), from the invariants at `s`: the analytic (`t̃=0`) exponents are `Mval` (`MvalCoh`) and
+admissible (`leaf_mem_Adm_t0` via `T0Bound`, no liveness), and the analytic side is EXACTLY the `t̃=0`
+sublist of the full ledger (`t0Indices`; degenerate `flatDim = 0` ⟹ `numDiv = 0` by `NumDivFlatPos`,
+so clause 3 is vacuous). -/
+theorem leafOfState_isFullMono {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (hL : 0 < L)
+    (hwd : WeakDecInv s) (hmv : MvalCoh M s) (ht0 : T0Bound M s) (hnf : NumDivFlatPos M s) :
+    (∀ k : Fin (leafOfState M s).numDiv,
+        (leafOfState M s).divExp k = (Mval M ((leafOfState M s).divProfile k)).toNat ∧
+          (leafOfState M s).divProfile k ∈ Adm M) ∧
+      (∀ k : Fin (leafOfState M s).numDiv, ∃ j : Fin (leafOfState M s).fullNumDiv,
+          (leafOfState M s).divExp k = (leafOfState M s).fullDivExp j ∧
+            (leafOfState M s).divProfile k = (leafOfState M s).fullDivProfile j ∧
+              tildeOf ((leafOfState M s).fullDivProfile j) = 0) ∧
+        (∀ j : Fin (leafOfState M s).fullNumDiv, tildeOf ((leafOfState M s).fullDivProfile j) = 0 →
+          ∃ k : Fin (leafOfState M s).numDiv,
+            (leafOfState M s).divExp k = (leafOfState M s).fullDivExp j ∧
+              (leafOfState M s).divProfile k = (leafOfState M s).fullDivProfile j) := by
+  by_cases hfd : 0 < flatDim M
+  · unfold leafOfState; rw [dif_pos hfd]; dsimp only
+    refine ⟨fun k => ⟨MvalCoh.toNat hmv ((t0Indices s).get k), ?_⟩,
+      fun k => ⟨(t0Indices s).get k, rfl, rfl, t0Indices_get_tilde s k⟩, fun j hj => ?_⟩
+    · exact leaf_mem_Adm_t0 s hL hwd ((t0Indices s).get k)
+        (ht0 ((t0Indices s).get k) (t0Indices_get_tilde s k)) (t0Indices_get_tilde s k)
+    · obtain ⟨i, hi⟩ := List.get_of_mem ((mem_t0Indices s j).mpr hj)
+      exact ⟨i, by rw [hi], by rw [hi]⟩
+  · unfold leafOfState; rw [dif_neg hfd]; dsimp only
+    refine ⟨fun k => k.elim0, fun k => k.elim0, fun j hj => ?_⟩
+    exact absurd (hnf (lt_of_le_of_lt (Nat.zero_le j) j.isLt)) hfd
+
+/-- The leaves reachable through a list of edges are the per-edge child-subtree leaves concatenated
+(`edgesLeaves` as a `flatMap`) — the bridge from the mutual `leaves`/`edgesLeaves` recursion to a
+`List.mem_flatMap` argument. -/
+theorem edgesLeaves_eq {M : Fin (L + 1) → ℕ} (es : List (Edge M)) :
+    ResolutionTree.edgesLeaves es = es.flatMap (fun e => ResolutionTree.leaves e.child) := by
+  induction es with
+  | nil => rfl
+  | cons e es ih =>
+      cases e with
+      | mk c σ ch => rw [ResolutionTree.edgesLeaves, ih, List.flatMap_cons]; rfl
+
+/-- **Every terminal `conOracle` emits is `leafOfState M s`** — the two terminal branches
+(`L ≤ layer`; the `chooseMin = none` fall-back) both call `oracleTerminal M s = .terminal
+(leafOfState M s) _`; the three step branches are `.step`, contradicting `= .terminal`. -/
+theorem conOracle_terminal_leaf {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) {l : LeafData M}
+    {hl} (h : conOracle M s = ConDecision.terminal l hl) : l = leafOfState M s := by
+  by_cases h1 : L ≤ s.layer
+  · rw [show conOracle M s = oracleTerminal M s from by unfold conOracle; rw [dif_pos h1],
+      oracleTerminal] at h
+    injection h with h1'; exact h1'.symm
+  · by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · rw [show conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp h1)) h2 from by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]] at h
+      simp only [rolloverDecision, reduceCtorEq] at h
+    · have hcap : s.cleared < layerCap M :=
+        lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · rw [show conOracle M s = case2Decision M s (widthMinUpto M s.layer - s.cleared)
+            (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap from by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]; split <;> simp_all only [reduceCtorEq]] at h
+        simp only [case2Decision, reduceCtorEq] at h
+      · rcases hf : chooseMin s target with _ | f
+        · rw [show conOracle M s = oracleTerminal M s from by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq])), oracleTerminal] at h
+          injection h with h1'; exact h1'.symm
+        · obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+          rw [List.mem_filterMap] at hmemtar
+          obtain ⟨k0, _, hk0⟩ := hmemtar
+          have htar : s.cleared + 1 ≤ target := by
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0; have := Option.some.inj hk0; omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+          rw [show conOracle M s = case1Decision M s f (target - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap from by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))] at h
+          simp only [case1Decision, reduceCtorEq] at h
+
+/-- **`IsFullMonomialization` for a `buildTree M (conOracle M)` subtree** (the WF-fold): every leaf is
+`leafOfState` of a reachable state, and its per-leaf body holds by `leafOfState_isFullMono`. Proven
+by well-founded induction: a terminal state's tree is its leaf; a step state's leaves split into its
+children's, handled by the IH (invariants preserved by `MvalBoundaryInv_conOracle_stepChildren` +
+`OracleInv_conOracle_stepChildren`). -/
+theorem leaves_isFullMono {L : ℕ} {M : Fin (L + 1) → ℕ} (hL : 0 < L) (s : ConState L)
+    (inv : OracleInv M s) (hbf : BoundaryFlat M s) (hmv : MvalCoh M s) (ht0 : T0Bound M s)
+    (hnf : NumDivFlatPos M s) :
+    ∀ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s),
+      (∀ k : Fin l.numDiv, l.divExp k = (Mval M (l.divProfile k)).toNat ∧ l.divProfile k ∈ Adm M) ∧
+      (∀ k : Fin l.numDiv, ∃ j : Fin l.fullNumDiv, l.divExp k = l.fullDivExp j ∧
+          l.divProfile k = l.fullDivProfile j ∧ tildeOf (l.fullDivProfile j) = 0) ∧
+        (∀ j : Fin l.fullNumDiv, tildeOf (l.fullDivProfile j) = 0 →
+          ∃ k : Fin l.numDiv, l.divExp k = l.fullDivExp j ∧ l.divProfile k = l.fullDivProfile j) := by
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    intro l hl
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+      rw [buildTree_terminal M (conOracle M) s l' hleaf hoc] at hl
+      simp only [ResolutionTree.leaves, List.mem_singleton] at hl
+      subst hl
+      rw [conOracle_terminal_leaf s hoc]
+      exact leafOfState_isFullMono s hL inv.wd hmv ht0 hnf
+    | step node children hnode hlayer hstep =>
+      rw [buildTree_step M (conOracle M) s node children hoc] at hl
+      rw [ResolutionTree.leaves, edgesLeaves_eq, List.mem_flatMap] at hl
+      obtain ⟨e, he, hle⟩ := hl
+      rw [List.mem_map] at he
+      obtain ⟨c, hc, rfl⟩ := he
+      have hcstep : c ∈ (conOracle M s).stepChildren := by rw [hoc]; exact hc
+      obtain ⟨hbf', hmv', ht0', hnf'⟩ :=
+        MvalBoundaryInv_conOracle_stepChildren s inv hbf hmv ht0 hnf c hcstep
+      exact ih c.child c.hdesc (OracleInv_conOracle_stepChildren s inv c hcstep)
+        hbf' hmv' ht0' hnf' l hle
+
+/-- `BoundaryFlat` at the root (vacuous: `numDiv = 0`). -/
+theorem BoundaryFlat_conRoot {L : ℕ} {M : Fin (L + 1) → ℕ} :
+    BoundaryFlat M (conRoot : ConState L) := fun _ k => k.elim0
+/-- `MvalCoh` at the root (vacuous). -/
+theorem MvalCoh_conRoot {L : ℕ} {M : Fin (L + 1) → ℕ} : MvalCoh M (conRoot : ConState L) :=
+  fun k => k.elim0
+/-- `T0Bound` at the root (vacuous). -/
+theorem T0Bound_conRoot {L : ℕ} {M : Fin (L + 1) → ℕ} : T0Bound M (conRoot : ConState L) :=
+  fun k => k.elim0
+/-- `NumDivFlatPos` at the root (vacuous: `numDiv = 0`). -/
+theorem NumDivFlatPos_conRoot {L : ℕ} {M : Fin (L + 1) → ℕ} :
+    NumDivFlatPos M (conRoot : ConState L) := fun h => (Nat.lt_irrefl 0 h).elim
+
+/-- **The built tree is a full monomialisation** (`CanonicalResolution` §1): the resolution tree
+`buildTree (conOracle M) conRoot` satisfies `IsFullMonomialization` — every leaf's `t̃=0` analytic
+side has `divExp = Mval` (admissible) and is exactly the `t̃=0` sublist of the full ledger. The
+`0 < L` hypothesis is the nondegenerate-chain guard (`Adm` reads the last-`= 0` clause at `L−1`). -/
+theorem isFullMonomialization_buildTree_conRoot {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+    IsFullMonomialization (buildTree M (conOracle M) (conRoot : ConState L)) :=
+  leaves_isFullMono hL conRoot OracleInv_conRoot BoundaryFlat_conRoot MvalCoh_conRoot
+    T0Bound_conRoot NumDivFlatPos_conRoot
+
 end DLNFibre.DLN.RLCT.Engine
