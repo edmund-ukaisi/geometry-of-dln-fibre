@@ -85,4 +85,87 @@ banked `routeRel_wf`; the lex-`<` is well-founded via the `WellFoundedLT (α ×�
 theorem conRel_wf (M : Fin (L + 1) → ℕ) : WellFounded (conRel M) :=
   InvImage.wf (conMeasure M) wellFounded_lt
 
+/-! ## The per-case transitions + μ-descent (rung 2B)
+
+Each of the construction's four step kinds is a `ConState → ConState` map, and each strictly drops a
+μ component under its step precondition — so `conRel (step s) s` holds and the recursion is
+well-founded. The KILL-CONDITION (a step decreasing NO component ⇒ design break) is CLEARED: every
+transition below drops a component. `stepAppendAdvance` covers BOTH case-1(2) and case-2 (they
+differ only in the appended exponent, which μ does not read) — both drop component 2. -/
+
+/-- **case-1(1) merge transition**: divisor `i`'s clearing level drops to the cleared count
+(`t̃_i → J`); the ledger is otherwise unchanged (the exponent bump `divExp_i += runLen·resCols` does
+not affect μ, so the carrier records only the `t̃` drop). -/
+def ConState.stepCase11 (s : ConState) (i : Fin s.numDiv) : ConState :=
+  ⟨s.layer, s.cleared, s.numDiv, s.divExp, Function.update s.divTilde i s.cleared⟩
+
+/-- **case-1(2)/case-2 transition**: append a new divisor of exponent `e` at clearing level `J`
+(`t̃ = cleared`), then advance the cleared count by one. The two cases differ ONLY in the appended
+exponent `e`, which μ does not read — both drop component 2. -/
+def ConState.stepAppendAdvance (s : ConState) (e : ℕ) : ConState :=
+  ⟨s.layer, s.cleared + 1, s.numDiv + 1, Fin.snoc s.divExp e, Fin.snoc s.divTilde s.cleared⟩
+
+/-- **Layer rollover transition**: advance the layer (`S → S+1`) and reset the cleared count
+(`J → 0`); the divisor ledger carries over. -/
+def ConState.stepRollover (s : ConState) : ConState :=
+  ⟨s.layer + 1, 0, s.numDiv, s.divExp, s.divTilde⟩
+
+/-- A case-1(1) merge strictly drops the pending-divisor count: its target divisor `i` (pending,
+`J < t̃_i`) has `t̃_i` reset to `J`, leaving the pending set with `i` erased. (In the construction
+the precondition `J < t̃_i` is the eligibility conjunct `t̃_i = J + runLen` with `runLen ≥ 1`.) -/
+theorem pendingCount_stepCase11_lt (s : ConState) (i : Fin s.numDiv)
+    (hi : s.cleared < s.divTilde i) :
+    (s.stepCase11 i).pendingCount < s.pendingCount := by
+  have hset : (Finset.univ.filter
+        (fun k : Fin s.numDiv => s.cleared < Function.update s.divTilde i s.cleared k))
+      = (Finset.univ.filter (fun k : Fin s.numDiv => s.cleared < s.divTilde k)).erase i := by
+    ext k
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase]
+    by_cases hk : k = i
+    · subst hk; simp
+    · rw [Function.update_of_ne hk]; tauto
+  have hmem : i ∈ Finset.univ.filter (fun k : Fin s.numDiv => s.cleared < s.divTilde k) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_univ i, hi⟩
+  -- State the inequality with a single DecidablePred synthesis point (matching `hset`), then close
+  -- the goal by defeq: `(s.stepCase11 i).pendingCount` reduces to this LHS through the projections.
+  have hlt : (Finset.univ.filter
+        (fun k : Fin s.numDiv => s.cleared < Function.update s.divTilde i s.cleared k)).card
+      < (Finset.univ.filter (fun k : Fin s.numDiv => s.cleared < s.divTilde k)).card := by
+    rw [hset]; exact Finset.card_erase_lt_of_mem hmem
+  exact hlt
+
+/-- **case-1(1) drops μ (component 3).** Given the eligible (pending) target, `conRel` holds — the
+layer and cleared count are unchanged, so μ₁, μ₂ tie and μ₃ (`pendingCount`) drops. -/
+theorem conRel_stepCase11 (M : Fin (L + 1) → ℕ) (s : ConState) (i : Fin s.numDiv)
+    (hi : s.cleared < s.divTilde i) :
+    conRel M (s.stepCase11 i) s := by
+  unfold conRel conMeasure
+  rw [Prod.Lex.toLex_lt_toLex]
+  refine Or.inr ⟨rfl, ?_⟩
+  rw [Prod.Lex.toLex_lt_toLex]
+  exact Or.inr ⟨rfl, pendingCount_stepCase11_lt s i hi⟩
+
+/-- **case-1(2)/case-2 drops μ (component 2).** Advancing `J` by one strictly drops `layerCap − J`
+(the precondition `J < layerCap` gives room); the layer ties, so μ₁ ties and μ₂ drops. -/
+theorem conRel_stepAppendAdvance (M : Fin (L + 1) → ℕ) (s : ConState) (e : ℕ)
+    (hlt : s.cleared < layerCap M) :
+    conRel M (s.stepAppendAdvance e) s := by
+  unfold conRel conMeasure
+  rw [Prod.Lex.toLex_lt_toLex]
+  refine Or.inr ⟨rfl, ?_⟩
+  rw [Prod.Lex.toLex_lt_toLex]
+  refine Or.inl ?_
+  change layerCap M - (s.cleared + 1) < layerCap M - s.cleared
+  omega
+
+/-- **Layer rollover drops μ (component 1).** Advancing `S` by one strictly drops `L+1 − S` (the
+precondition `S ≤ L` gives room); μ₁ drops, so μ₂/μ₃ may reset freely. -/
+theorem conRel_stepRollover (M : Fin (L + 1) → ℕ) (s : ConState) (hlayer : s.layer ≤ L) :
+    conRel M s.stepRollover s := by
+  unfold conRel conMeasure
+  rw [Prod.Lex.toLex_lt_toLex]
+  refine Or.inl ?_
+  change L + 1 - (s.layer + 1) < L + 1 - s.layer
+  omega
+
 end DLNFibre.DLN.RLCT.Engine
