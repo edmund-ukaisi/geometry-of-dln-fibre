@@ -603,11 +603,19 @@ def widthMinUpto (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
   (Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ n)).inf'
     ⟨0, by simp⟩ M
 
-/-- **WidthBound** (o4-cert Part 3, consumed by the case-2 Lemma B): each divisor's HEAD (coords at
-index `< layer`) is bounded by the running-min width `runMinWidth` (the Case-2 append head IS
-`runMinWidth`; merges/appends keep the head `≤` it). -/
+/-- **WidthBound** (o4-cert Part 3/6, consumed by the case-2 Lemma B): each LIVE divisor's HEAD
+(coords at index `< layer`) is bounded by the running-min width `runMinWidth`.
+
+**LIVE-RESTRICTED (finding, corrects a too-strong transcription):** the guard `t̃ k < Mrun(S)`
+(live, `= widthMinUpto layer`) is REQUIRED — the GLOBAL form (all divisors) is FALSE, failing at
+`(3,3,1,1)` where the STRANDED divisor `(2,2,2)` has head value `2 > runMinWidth = 1` (8 violations;
+the tail-turned-head coord `= t̃` exceeds the dropped running-min at a bottleneck rollover). The
+live-restricted form holds `0` violations at every reachable state (numerically verified at all
+bottleneck + clarifier instances) — matching Part 6's "for live `a`" usage and `LiveHeadDom`'s live
+restriction. The Case-2 append head IS `runMinWidth`; merges/appends keep the LIVE head `≤` it. -/
 def WidthBound {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
-  ∀ (k : Fin s.numDiv) (p : Fin L), (p : ℕ) < s.layer → s.divProfile k p ≤ runMinWidth M p
+  ∀ (k : Fin s.numDiv), s.divTilde k < widthMinUpto M s.layer →
+    ∀ (p : Fin L), (p : ℕ) < s.layer → s.divProfile k p ≤ runMinWidth M p
 
 /-- **LiveHeadDom** (o4-cert Part 6, the invariant that closes the case-1 residual). Head-domination
 among LIVE divisors: if `t̃ a < t̃ b < Mrun(S)` (both in the b-chain, `Mrun(S) = widthMinUpto`),
