@@ -48,10 +48,15 @@ inductive ConDecision (M) (s : ConState L)
 
 **PIVOT-COMPLETENESS (rev-cov verdict: (a)-generalized CONFIRMED — cert-cov-rungs12, page-verified
 ×2 + Codex).** The 1(1)/1(2) tags are pivot TYPES of the ONE blow-up, NOT the emission count. The
-full per-node chart family has `d_center` edges: for **Case 1**, `d_center = J₁·(M⁽ˢ⁺¹⁾−J) + 1` (the
-`u`-pivot + EVERY block-`d` pivot; Aoyagi shows only the corner as representative); for **Case 2**,
-the full residual block count. Kill of (b): an omitted pivot direction is UNRECOVERABLE by deeper
-branching. AMENDMENT owed in the buildTree body: **replace the loose `hlive` with `pivotComplete`**
+full per-node chart family has `d_center` edges, PER-CASE (cert addendum, both centers
+double-page-grounded): for **Case 1**, `d_center = J₁·(M⁽ˢ⁺¹⁾−J) + 1` (the `u`-pivot + EVERY
+block-`d` pivot; Aoyagi shows only the corner as representative); for **Case 2**, the block pivots
+ONLY — NO `u` variable in its center (p.19 verbatim, independently verified) — count
+`(M(S)−J)·(M⁽ˢ⁺¹⁾−J)`. So `pivotComplete` is CASE-SPLIT (the `u`-pivot edge exists for Case 1, not
+Case 2). Kill of (b): an omitted pivot direction is UNRECOVERABLE by deeper branching; Case-2's
+corner gap bites at ANY codim ≥ 2 (the probe's `(0,ε)` witness is a 2×1 residual block) — NO
+small-case exemption. AMENDMENT owed in the buildTree body: **replace the loose `hlive` with
+`pivotComplete`**
 — the `edges` list ENUMERATES the center's `d_center` pivots (T3's fold + `buildTree` both consume
 it). The `List` arity already accommodates this (the un-baked shape paying off). STEPREL UNAFFECTED
 (reviewer-confirmed): every `d`-pivot edge satisfies the SAME 1(2) ledger relation, so the
