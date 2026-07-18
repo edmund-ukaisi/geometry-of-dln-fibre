@@ -1685,3 +1685,15 @@ PROOF unaffected. Lesson banked (hypothesis-necessity needs instance-DEPTH escal
 depth-scaling discipline applied to hypotheses). o4 FULLY closed; pnp warm. (Also: a cd-induced
 path failure banked a merge-only commit last push — appends redone this commit; the shell-state
 guard class again.)
+
+## 2026-07-18 THE JOINT-PUSH CORE: MIN-EXISTENCE PROVED (tick 121)
+Merged + verified (zero sorryAx): SameLevelChainInv finalized (docstring carrying the refutation
++ scope); **chooserTotalOnChain_of_sameLevel PROVED** — same-level chain ⟹ the ∑-minimum is the
+componentwise min ⟹ chooseMin.isSome: the mutual induction's o2 half, the crux the entire
+reshape turned on, now kernel-checked; FlatTail + WidthBound stated, FlatTail maintained
+(3 transitions, the cert's one-liners); LiveHeadDom stated with the stranded-exclusion guard.
+The formalization basis is STATED and its crux PROVEN. REMAINING on the construction: the
+PRESERVATION RUNG (WidthBound + LiveHeadDom maintenance [case-1 consumes minimality] + STEP1 +
+SameLevelChainInv preservation — GO'd fresh, the summit), then o3 + o5-∈, then the emission
+geometry behind the ψ-rung/pnp-check. An interleave note flagged by the seat (an integration
+sweep on its branch history — work safe; add-scoping tightened).
