@@ -757,3 +757,19 @@ stores NO derivable data; StateInvariant shape-locked. Rung 2B open: the four St
 per-case descent (case11 → μ₃ via the eligibility conjunct's runLen≥1; case12/case2 → μ₂;
 rollover → μ₁; paper-pre-verified that every case drops a component under its precondition; the
 KILL guard armed). Glue lane on Module A in parallel.
+
+## 2026-07-18 OPERATOR STEER: FULL-MECHANISM REFRAME (tick 59)
+Operator correction, conceded on the record: the deferral ledger (support propagation, minimality
+tie-break, gap condition, divProfile settings) clusters at the sharing bookkeeping = the named
+hard part = HER MECHANISM; every deferral used the "not finiteness-load-bearing" razor — the
+razor for the hole, not the goal. The elder office kept counsel for □, not for the mechanism;
+the controller signed off each instance. REFRAME (compass live question rewritten + fork 10,
+operator-settled): the destination is the LEARNING COEFFICIENT THEOREM; the central artifact is
+Aoyagi's mechanism built FULLY as a free-standing library; hbox is ONE adapter (default path),
+ditchable; her direct λ-computation (currently the CITE) is the candidate second path — a full
+build natively REPLACES cited_aoyagi_dln, which is the opposite of leaning on it. ACTIONS:
+deferrals UN-DEFERRED into the tide as first-class rungs; architect scope corrected; a paper-map
+recon commissioned (her paper end-to-end: every proposition, dependencies, the two mint paths
+priced); elder council re-convenes on the recon cert with the corrected charge. What stands:
+the carrier, the catches, the WF spine, the glue lane — all on her mechanism's path; the
+correction is objective + scope, not teardown.

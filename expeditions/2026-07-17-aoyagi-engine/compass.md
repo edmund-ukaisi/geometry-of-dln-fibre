@@ -3,11 +3,16 @@
 *Seeded at genesis; amended at council #1 (2026-07-17, two independent elder seats, both ADOPT —
 counsels in threads/00-genesis/council-1/). ≤2 pages.*
 
-## The live question
-Transcribe Aoyagi's worked-out resolution (DLN 2023, §5) into a Lean engine producing
-`∀ M, RouteMBoxThresholdFinite M`, clean-three, no Aoyagi hypothesis. Current load-bearing
-sub-question: **the skeleton** — the tree datatype (typed sharing fields) + all obligations as
-holes wired to the verbatim hbox anchor. **The hard part, named: the coverage theorem (Layer C)**
+## The live question (REFRAMED by operator steer, 2026-07-18)
+Build Aoyagi's resolution-of-singularities mechanism (DLN 2023) **FULLY and FAITHFULLY as a
+free-standing library** — her objects, her invariants (sharing/support INCLUDED, never deferred
+for being off some consumer's path), her construction §5 end-to-end — independent of downstream
+consumption. THE DESTINATION IS THE LEARNING COEFFICIENT THEOREM (`aoyagi_learning_coefficient`
+unconditional). `∀ M, RouteMBoxThresholdFinite M` (hbox) is ONE adapter from the library — the
+current default path — and her direct λ-computation (the content we currently CITE) is a
+candidate second path; if it proves shorter, the hole is DITCHED. The old razor "defer what is
+not finiteness-load-bearing" is RETIRED: fidelity to HER mechanism is the bar; what her paper
+builds, we build. **The hard part, named: the coverage theorem (Layer C)**
 — the one genuine new proof; holds a lane from genesis. **Second cost center (not transcription):
 the Layer-B tree build** — divisor-sharing bookkeeping + case-step invariant preservation in Lean,
 with NO worked inner precedent (RR4 precedents the OUTER plumbing only; its SchurCore/front-peel
@@ -150,6 +155,15 @@ over banked substrate.
    isn't the construction's natural definitional shape or the equality balloons, STOP-AND-SURFACE and
    take permanent downscope; (ii) kill-condition = the dummy-divisor witness provably rejected (a
    ¬-theorem, cf. stepRel_rejects_mismatched_case2).
+10. **Full-mechanism reframe (OPERATOR-SETTLED, 2026-07-18).** WHY: the deferral ledger (support
+   propagation, the p.15 minimality tie-break, the J₁ gap condition, the divProfile T-settings)
+   clustered exactly at the named hard part — the sharing bookkeeping that IS her mechanism (fork
+   3) — each deferral argued by "not finiteness-load-bearing", the razor for the HOLE, not the
+   GOAL. RULING: build her mechanism fully; the deferrals are UN-DEFERRED into the construction
+   tide as first-class rungs (genDivExp/support propagation; the divisor-chooser implementing her
+   p.15 selection rule — tie-break + gap condition; the per-case divProfile settings). hbox = an
+   adapter; her λ-route = a candidate replacement for the cite, to be priced by the paper-map
+   recon. The elder office's charge is corrected accordingly.
    RUNG-1 SUB-SCOPING (2026-07-18, elder-ratified). stepUpdate is faithful for the EXPONENT/CLEARING
    ledger (numDiv/divExp/divTilde/cleared), page-verified: case-1(1) merge M'=M+J₁(M^{(S+1)}−J) t̃→J
    cleared-unchanged (p.16); case-1(2) new pivot same increment, t̃=J, cleared+1 (p.17-18); case-2 new
