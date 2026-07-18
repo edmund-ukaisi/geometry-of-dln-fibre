@@ -1326,3 +1326,15 @@ B' first next turn (fresh budget — a half-done LeafData restructure is the one
 the glue chain rebuilds green UNTOUCHED), then the buildTree body with rev-cov's pivot verdict
 folded. Neither blocked on the review. The seat's checkpoint discipline continues to be the
 expedition's steadiest asset.
+
+## 2026-07-18 CENTERS PAGE-PINNED: THE PAGES SUPPORT (a)-GENERALIZED (tick 96)
+The page-pin pass merged (page-pin-centers.md): verbatim center loci — Case 1 = the run's
+d-block + the tie-break's u coordinate (codim J₁(M^(S+1)−J)+1, p.16); Case 2 = the FULL residual
+block at the RUNNING-MIN corank, no u (codim (M(S)−J)(M^(S+1)−J), p.19); the 1(1)/1(2) tags mark
+pivot TYPE (u-pivot vs d-pivot), Aoyagi writing only the representative corner + "by a blow-up
+process" — the full per-node family = the center codim, and PROVING it covers is the coverage
+theorem's content. Supports (a)-generalized; rev-cov independently verifies (the producing seat's
+grind depends on the answer — the decorrelation is the point; pointer sent). GO issued on the
+two verdict-INDEPENDENT fold lemmas (leafPathImages_branch + ownCovers_branch — set algebra +
+structural induction, untouched by (a)/(b)), with the dependent-type-friction sidestep flagged.
+node_pivotCover_of_atom + the headline stay held.
