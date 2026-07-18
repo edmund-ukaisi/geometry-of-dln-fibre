@@ -1613,17 +1613,16 @@ noncomputable def conOracle {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
   else if h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared then
     rolloverDecision M s (le_of_lt (not_le.mp h1)) h2
   else
-    let occ := (List.finRange s.numDiv).filterMap (fun k =>
-      if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
-      then some (s.divTilde k) else none)
-    have hcap : s.cleared < layerCap M :=
-      lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
-    match hmin : occ.min? with
+    match hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+        if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+        then some (s.divTilde k) else none)).min? with
     | some target =>
       match hf : chooseMin s target with
       | some f =>
         have htarget : s.cleared + 1 ≤ target := by
-          have hmem : target ∈ occ := List.min?_mem hmin
+          have hmem : target ∈ (List.finRange s.numDiv).filterMap (fun k =>
+              if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+              then some (s.divTilde k) else none) := List.min?_mem hmin
           rw [List.mem_filterMap] at hmem
           obtain ⟨k, _, hk⟩ := hmem
           by_cases hc : s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
@@ -1634,11 +1633,12 @@ noncomputable def conOracle {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
         case1Decision M s f (target - s.cleared)
           (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
           (not_le.mp h1) (by omega)
-          (by rw [(chooseMin_spec s target hf).1]; omega) hcap
+          (by rw [(chooseMin_spec s target hf).1]; omega)
+          (lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _))
       | none => oracleTerminal M s
     | none =>
       case2Decision M s (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
-        hcap
+        (lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _))
 
 /-! ## o1/o4: WF-reachability — `OracleInv` at every reachable state
 
@@ -1668,5 +1668,113 @@ theorem OracleInv_conRoot {L : ℕ} {M : Fin (L + 1) → ℕ} : OracleInv M (con
   lhd := fun a => a.elim0
   slc := fun k => k.elim0
   si := ⟨Nat.zero_le L, Nat.zero_le _, fun i _ => Nat.zero_le _⟩
+
+/-- **The reachability inductive step** (o1↔o4↔o2 realized): every step-child the oracle emits at an
+`OracleInv` state is again an `OracleInv` state. Each dispatch branch is reduced by a local
+`conOracle`-reduction equation (`unfold; split <;> simp_all`, proof-irrelevance matching the
+`hcap`/`Fin` args), then the per-invariant preservation lemma applies: rollover via
+`OracleInv_stepRollover`; case-2 via `OracleInv_stepAppendAdvance` (gap from `occ.min? = none`);
+case-1 via `OracleInv_stepCase11` (through the divExp-blind congruence) & `_case12`, the
+level/minimality from `chooseMin_spec` and the gap from `occ.min?`'s minimum property. -/
+theorem OracleInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (inv : OracleInv M s) : ∀ c ∈ (conOracle M s).stepChildren, OracleInv M c.child := by
+  intro c hc
+  by_cases h1 : L ≤ s.layer
+  · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+  · by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
+      subst hc
+      exact OracleInv_stepRollover s (not_le.mp h1) inv
+    · have hlive : s.layer < L := not_le.mp h1
+      have hJ : s.cleared < widthMinUpto M s.layer :=
+        lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (Nat.le_succ _))
+      have hcap : s.cleared < layerCap M :=
+        lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+      have hwp : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared < runMinWidth M p := fun p hp => by
+        rw [runMinWidth_eq_widthMinUpto]
+        exact lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (by omega))
+      have helig : ∀ i : Fin (L + 1), (i : ℕ) ≤ s.layer → s.cleared < M i := fun i hi =>
+        lt_of_lt_of_le (not_le.mp h2)
+          (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ i, by omega⟩))
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · -- occ.min? = none → case-2
+        have horacle : conOracle M s = case2Decision M s
+            (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hc
+        subst hc
+        refine OracleInv_stepAppendAdvance s _ (fun p => runMinWidth M p) hlive hJ ?_
+          (fun p _ => rfl) (fun i j hij => runMinWidth_antitone M hij)
+          (fun p hp => le_of_lt (hwp p hp)) (fun p hp => le_of_lt (hwp p hp)) hcap helig inv
+        intro k hk
+        by_contra hcon
+        push Not at hcon
+        have hmemk : s.divTilde k ∈ (List.finRange s.numDiv).filterMap (fun k =>
+            if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+            then some (s.divTilde k) else none) := by
+          rw [List.mem_filterMap]
+          exact ⟨k, List.mem_finRange k, by rw [if_pos ⟨by omega, by omega⟩]⟩
+        rw [List.min?_eq_none_iff.mp hmin] at hmemk
+        simp at hmemk
+      · rcases hf : chooseMin s target with _ | f
+        · -- chooseMin = none → fall-back terminal, no children
+          have horacle : conOracle M s = oracleTerminal M s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+            all_goals (try subst_vars)
+            all_goals (first | rfl | simp_all only [reduceCtorEq, Option.some.injEq])
+          rw [horacle] at hc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+        · -- chooseMin = some f → case-1 (two children)
+          obtain ⟨hmemtar, hminle⟩ := List.min?_eq_some_iff'.mp hmin
+          rw [List.mem_filterMap] at hmemtar
+          obtain ⟨k0, _, hk0⟩ := hmemtar
+          have htar : s.cleared + 1 ≤ target ∧ target + 1 ≤ widthMinUpto M s.layer := by
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have hgt : s.cleared < target := by omega
+          have hℓ : target < widthMinUpto M s.layer := by omega
+          have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+          have hmin' : ∀ k : Fin s.numDiv, s.divTilde k = target →
+              ∀ j : Fin L, s.divProfile f j ≤ s.divProfile k j := (chooseMin_spec s target hf).2
+          have hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer →
+              s.divTilde k ≤ s.cleared ∨ target ≤ s.divTilde k := by
+            intro k hk
+            by_cases hkc : s.divTilde k ≤ s.cleared
+            · exact Or.inl hkc
+            · refine Or.inr (hminle _ ?_)
+              rw [List.mem_filterMap]; push Not at hkc
+              exact ⟨k, List.mem_finRange k, by rw [if_pos ⟨by omega, by omega⟩]⟩
+          have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+              (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+            all_goals (try subst_vars)
+            all_goals (first | rfl | simp_all only [reduceCtorEq, Option.some.injEq])
+          rw [horacle] at hc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hc
+          rcases hc with rfl | rfl
+          · exact OracleInv_of_exp_change (s.stepCase11 f) _ _ _
+              (OracleInv_stepCase11 s f hlive htgt hgt hℓ hmin' hgap inv)
+          · exact OracleInv_stepAppendAdvance_case12 s _ f hlive htgt hgt hℓ hmin' hgap hcap helig
+              inv
 
 end DLNFibre.DLN.RLCT.Engine
