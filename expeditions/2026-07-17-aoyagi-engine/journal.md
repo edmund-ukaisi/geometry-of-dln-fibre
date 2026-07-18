@@ -1575,3 +1575,16 @@ remaining gate is the o4 certificate (the clarifier crossed — already green; r
 joint push on the certificate: o4-formalize → CompChainInv-finalize → o2-dispatch → o3 → o5-∈,
 with the gauge fact determined from the pages inside it. The oracle unit is now: one certificate
 + one joint push + T3's atlas-gated tail.
+
+## 2026-07-18 THE GAUGE FACT: PER-NODE, PAGE-DETERMINED (tick 113)
+The architect resolved the (i)/(ii) question FROM pp.17-18 (page images): PER-NODE is faithful —
+the Q/P clears are written for the corner pivot, the d_center family is its symmetric orbit, and
+in the post-pivot frame (each edge's pivotChart_e absorbing the pivot direction) the clearing is
+the SAME structural unipotent shear with the node's shared b-ratios. The landed single-ψ lemma
+applies AS-IS; coverage stands down warm (its lane closed, probability-weighted). The honest
+caveat carried forward as THE EMISSION UNIT'S OWN GATE: the concrete construction mechanically
+CHECKS the single-ψ factorization — contradiction ⟹ STOP-AND-SURFACE, coverage's (ii) branch
+with a jointly-pinned surjectivity shape. EMISSION UNIT GO (the architect's fresh turn): q-split
++ pivotChart_e + per-node ψ + d_center family + total chooser (existence-half plug-in shaped,
+awaiting o4) + dispatch + guarantees. The board: architect (emission), pnp (the o4 certificate),
+everyone else warm. Two units from the oracle; the oracle from hbox.
