@@ -1719,3 +1719,12 @@ THE PATTERN IS NOW A THEME: every invariant that failed, failed on STRANDED divi
 repair is a LIVE-guard. Def fixed + documented; cert erratum queued for pnp's next wake. The
 architect takes the LiveHeadDom 5-case maintenance fresh — the last hard proof of the
 construction.
+
+## 2026-07-18 MAINTENANCE UNDERWAY: THE ROLLOVER CASE FIRST-TRY (tick 124)
+Merged + verified: the maintenance kit's first pieces — the runMinWidth/widthMinUpto bridge +
+antitonicity + WidthBound_stepRollover PROVED (the newly-exposed head coordinate = t̃ bounded by
+the advanced running-min via the bridge; closed FIRST-TRY — the cert's proof plans are
+transferring cleanly). The seat is banking green sub-steps through the idiom friction rather
+than one big push — the right grind shape. Remaining: WidthBound case-1/append + LiveHeadDom ×3
+(case-1 the summit, consuming minimality) + SameLevelChainInv preservation ×3; then o3 + o5-∈
++ the advance constructor.
