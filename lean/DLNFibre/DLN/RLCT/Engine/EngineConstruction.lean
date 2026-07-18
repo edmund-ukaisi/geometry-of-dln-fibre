@@ -740,6 +740,40 @@ theorem WidthBound_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConStat
     rw [divProfile_tail_eq_tilde s hft hwd hlive k hge, runMinWidth_eq_widthMinUpto, hpeq]
     exact le_of_lt hk'
 
+/-- **A case-1(1) merge preserves `WidthBound`** — layer unchanged, the tail-write leaves every HEAD
+coord (`p < layer`) untouched; the merged target `i` was live/eligible (`helig`), the others carry
+their liveness from `hk`. -/
+theorem WidthBound_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (i : Fin s.numDiv)
+    (helig : s.divTilde i < widthMinUpto M s.layer) (hwb : WidthBound M s) :
+    WidthBound M (s.stepCase11 i) := by
+  intro k hk p hp
+  have hp' : (p : ℕ) < s.layer := hp
+  simp only [ConState.stepCase11, Function.update_apply]
+  split_ifs with hk_eq
+  · simp only [setTail, if_neg (not_le.mpr hp')]
+    exact hwb i helig p hp'
+  · have hdt : (s.stepCase11 i).divTilde k = s.divTilde k := by
+      simp only [ConState.divTilde, ConState.stepCase11, Function.update_of_ne hk_eq]
+    exact hwb k (hdt ▸ hk) p hp'
+
+/-- **A case-1(2)/case-2 append preserves `WidthBound`**, GIVEN the appended head is `≤ runMinWidth`
+(`ht0`; the case-2 `runMinWidth` head with equality, the case-1(2) inherited head via the parent's
+bound). Layer unchanged; the old divisors carry over with their liveness. -/
+theorem WidthBound_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (ht0 : ∀ p : Fin L, (p : ℕ) < s.layer → t₀ p ≤ runMinWidth M p)
+    (hwb : WidthBound M s) : WidthBound M (s.stepAppendAdvance e t₀) := by
+  intro k hk p hp
+  have hp' : (p : ℕ) < s.layer := hp
+  induction k using Fin.lastCases with
+  | last =>
+      simp only [ConState.stepAppendAdvance, Fin.snoc_last, setTail, if_neg (not_le.mpr hp')]
+      exact ht0 p hp'
+  | cast k' =>
+      have hdt : (s.stepAppendAdvance e t₀).divTilde (Fin.castSucc k') = s.divTilde k' := by
+        simp only [ConState.divTilde, ConState.stepAppendAdvance, Fin.snoc_castSucc]
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
+      exact hwb k' (hdt ▸ hk) p hp'
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
