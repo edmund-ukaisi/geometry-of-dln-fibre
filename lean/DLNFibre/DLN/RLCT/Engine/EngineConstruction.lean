@@ -265,6 +265,83 @@ noncomputable def conStepDepth (M : Fin (L + 1) → ℕ) (oracle : StepOracle M)
     | none => 0
     | some ⟨s', h⟩ => rec s' h + 1
 
+/-! ## T2: the tree-valued construction recursion (`buildTree`)
+
+The real construction: a `ConState L`-indexed decision (`ConDecision`) at each state either
+TERMINATES (a `LeafData`) or STEPS to a NODE (`StepData`) with a `List` of `conRel`-smaller child
+states, and `buildTree = WellFounded.fix (conRel_wf M)` folds it into a concrete `ResolutionTree M`.
+This is the recursion ASSEMBLY (task T2): it produces the tree; the CanonicalResolution conjuncts
+are discharged on top of it by structural induction (StepRel/base — from the decision's
+per-edge/root guarantees) and by the deep termination content (IsFullMonomialization / exponent
+hooks — GATED, with the ChartBridge/`srcBox` the T3 holes).
+
+The decision carries the two ledger-consistency guarantees the downstream discharge consumes: the
+emitted node/leaf's ledger EQUALS the state's (`hnode`/`hleaf`, design §1/§2 `hledger`), so the
+per-state lemma `rootLedger_buildTree` below reads the child ledger off the child state — the
+load-bearing bridge for the rfl-class `StepRel` equality (a child born of the
+`stepUpdate`-transitioned state has `rootLedger = stepUpdate`). -/
+
+/-- The `RootLedger` a `ConState` presents (its exponent/clearing core) — the shape a step's child
+must match for the rfl-class `StepRel` equality. -/
+def ConState.toRootLedger {L : ℕ} (s : ConState L) : ResolutionTree.RootLedger L :=
+  ⟨s.numDiv, s.divExp, s.divProfile, s.cleared⟩
+
+/-- **One `conRel`-smaller child of a step** at state `s`: its edge `case`/`subst`, the child state
+`child` the recursion descends into, and the descent proof `hdesc : conRel M child s` (from the
+`conRel_step*` descent lemmas). `buildTree` turns it into `Edge.mk case subst (buildTree child)`. -/
+structure StepChild (M : Fin (L + 1) → ℕ) (s : ConState L) where
+  /-- The edge's case tag. -/
+  ecase : StepCase
+  /-- The edge's substitution ledger. -/
+  esubst : ChartSubst M
+  /-- The `conRel`-smaller child state (the `stepUpdate`-transitioned state). -/
+  child : ConState L
+  /-- The descent proof — the recursion may recurse on `child`. -/
+  hdesc : conRel M child s
+
+/-- **The per-state construction decision** (T2, design §1). At `s` the construction either
+TERMINATES into a `LeafData` (whose full-ledger core matches `s`) or STEPS to a `StepData` node
+(whose ledger core matches `s`) with a `List` of `conRel`-smaller children. The `hleaf`/`hnode`
+ledger-match guarantees are what `rootLedger_buildTree` folds into the per-state ledger identity. -/
+inductive ConDecision (M : Fin (L + 1) → ℕ) (s : ConState L) where
+  /-- Terminate: emit a leaf whose FULL-ledger core equals `s`'s. -/
+  | terminal (l : LeafData M)
+      (hleaf : ResolutionTree.rootLedger (ResolutionTree.leaf l) = s.toRootLedger) :
+      ConDecision M s
+  /-- Step: emit a node (ledger core `= s`'s) with `conRel`-smaller children. `rootLedger` on a
+  `branch` ignores the edges, so the guarantee is stated on the node's ledger core directly. -/
+  | step (node : StepData M) (children : List (StepChild M s))
+      (hnode : (⟨node.numDiv, node.divExp, node.divProfile, node.cleared⟩ :
+          ResolutionTree.RootLedger L) = s.toRootLedger) :
+      ConDecision M s
+
+/-- **The tree-valued construction recursion** (T2): `WellFounded.fix (conRel_wf M)` folds the
+per-state `oracle` decision into a concrete `ResolutionTree M`. A terminal decision emits its leaf;
+a step decision emits its node with one `Edge` per child, the child subtree from the recursive call
+on the `conRel`-smaller child state (descent from `StepChild.hdesc`). -/
+noncomputable def buildTree (M : Fin (L + 1) → ℕ)
+    (oracle : (s : ConState L) → ConDecision M s) : ConState L → ResolutionTree M :=
+  WellFounded.fix (conRel_wf M) fun s rec =>
+    match oracle s with
+    | .terminal l _ => ResolutionTree.leaf l
+    | .step node children _ =>
+        ResolutionTree.branch node
+          (children.map (fun c => Edge.mk c.ecase c.esubst (rec c.child c.hdesc)))
+
+/-- **The per-state ledger identity** (T2, the StepRel bridge): the root ledger of `buildTree … s`
+equals the ledger `s` presents. A terminal leaf's ledger is `hleaf`; a step node's ledger reads its
+`StepData` core, which — since `rootLedger` on a `branch` ignores the edges — equals the state's by
+`hnode`. This is what makes the child of a `stepUpdate`-transitioned state satisfy the rfl-class
+`StepRel` equality (discharged over the whole tree in the next unit). -/
+theorem rootLedger_buildTree (M : Fin (L + 1) → ℕ)
+    (oracle : (s : ConState L) → ConDecision M s) (s : ConState L) :
+    ResolutionTree.rootLedger (buildTree M oracle s) = s.toRootLedger := by
+  rw [buildTree, WellFounded.fix_eq]
+  -- `rootLedger (branch node _)` reads the node core, ignoring the edge list; a leaf's is `hleaf`.
+  cases h : oracle s with
+  | terminal l hleaf => exact hleaf
+  | step node children hnode => exact hnode
+
 /-! ## T2 build-side invariants (TYPES only; preservation proofs are buildTree bricks) -/
 
 /-- **The weakened per-node invariant** (elder-gate4 §3a). Each divisor's rank-pattern is
