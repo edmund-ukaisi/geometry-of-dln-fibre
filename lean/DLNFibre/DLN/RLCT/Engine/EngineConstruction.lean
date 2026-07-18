@@ -603,6 +603,18 @@ def widthMinUpto (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
   (Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ n)).inf'
     ⟨0, by simp⟩ M
 
+/-- `runMinWidth M p = widthMinUpto M (p+1)` — both are `min(M 0 … M (p+1))` (`Iic p.succ` and the
+`≤ p+1` filter are the same index set). Bridges the case-2 head (`runMinWidth`) to the live guard
+(`widthMinUpto layer`). -/
+theorem runMinWidth_eq_widthMinUpto {L : ℕ} (M : Fin (L + 1) → ℕ) (p : Fin L) :
+    runMinWidth M p = widthMinUpto M (p.val + 1) := by
+  have hset : Finset.Iic p.succ
+      = Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ p.val + 1) := by
+    ext i
+    simp only [Finset.mem_Iic, Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def,
+      Fin.val_succ]
+  simp only [runMinWidth, widthMinUpto, hset]
+
 /-- **WidthBound** (o4-cert Part 3/6, consumed by the case-2 Lemma B): each LIVE divisor's HEAD
 (coords at index `< layer`) is bounded by the running-min width `runMinWidth`.
 
