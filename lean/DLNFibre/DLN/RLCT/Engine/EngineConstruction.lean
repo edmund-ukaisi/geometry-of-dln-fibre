@@ -616,4 +616,40 @@ theorem buildTree_oracleTerminal (M : Fin (L + 1) → ℕ) (s : ConState L) :
     buildTree M (oracleTerminal M) s = ResolutionTree.leaf (leafOfState M s) :=
   buildTree_terminal M (oracleTerminal M) s (leafOfState M s) rfl rfl
 
+/-! ## o2: the Def-4-minimal chooser (total via fallback; min-EXISTENCE gated on o4)
+
+The case-1 chooser (simulator `def4_min`): among the divisors at the target clearing level, select
+the componentwise-≤ MINIMUM (Def. 4, p.14). Its DEFINITION is total — `find?` returns the first
+componentwise-min, or `none` (the comparability-fallback signal, keeping the oracle type-total). The
+min-EXISTENCE — that on a `CompChainInv` state a componentwise-min always EXISTS at any occupied
+level, so `none` never fires on the reachable cone — is the o4-certificate content that plugs into
+`chooseMin`'s totality (`chooseMin_none_of_compChain` below is its landing pad). -/
+
+/-- **The Def-4 minimal chooser**: the first divisor at clearing level `target` that is
+componentwise-`≤` every divisor at that level (Def. 4, p.14). `none` signals no componentwise-min
+(the comparability fallback). -/
+def chooseMin {L : ℕ} (s : ConState L) (target : ℕ) : Option (Fin s.numDiv) :=
+  (List.finRange s.numDiv).find? (fun k => decide
+    (s.divTilde k = target ∧
+      ∀ k' : Fin s.numDiv, s.divTilde k' = target →
+        ∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j))
+
+/-- **`chooseMin` spec**: a returned divisor is at level `target` AND is Def-4-minimal among the
+divisors at that level (componentwise-`≤` all of them). The eligibility + minimality the case-1
+emission's `hstep` needs, read straight off the chooser. -/
+theorem chooseMin_spec {L : ℕ} (s : ConState L) (target : ℕ) {k : Fin s.numDiv}
+    (hk : chooseMin s target = some k) :
+    s.divTilde k = target ∧
+      ∀ k' : Fin s.numDiv, s.divTilde k' = target →
+        ∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j := by
+  have := List.find?_some hk
+  simpa using of_decide_eq_true this
+
+/-- **The o4 landing pad**: on a `CompChainInv` state, IF some divisor sits at level `target`, the
+chooser does NOT fall back — a componentwise-min exists (the comparability chain makes `def4_min`
+total). Stated as the plug-in point; its PROOF is the o4 certificate content (mutual-induction
+contract). -/
+def ChooserTotalOnChain {L : ℕ} (s : ConState L) : Prop :=
+  ∀ target : ℕ, (∃ k : Fin s.numDiv, s.divTilde k = target) → (chooseMin s target).isSome
+
 end DLNFibre.DLN.RLCT.Engine
