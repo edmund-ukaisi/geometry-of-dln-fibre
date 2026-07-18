@@ -73,6 +73,14 @@ mechanism **running-min saturation freezing** — the two forms coincide (Codex'
 up to `s`" ⟺ `s ≤ b(a)`; his "saturation `a^{s-1}=r_s`" is forced because `Adm` gives `a^{s-1} ≤ r_s`,
 so `a^{s-1} ≥ r_s ⟺ a^{s-1} = r_s`).
 
+**Status of the two directions** (brief item 2, controller pin):
+- **`⊆ Clearable` (unclearable ⟹ stranded): `[PROVED]`** at rule level — the `occ_above ⊆ [·, r_S−1]`
+  argument (§2), chooser/branch-independent. The Lean assembly needs only the ⊇-at-minimizer direction,
+  so a formaliser may carry ⊆ as battery-status without blocking D — but it IS a clean proof.
+- **`⊇ Clearable` (clearable ⟹ realized): `[PROVED modulo one battery-verified brick]`** — the steering
+  rule + descent invariant (§4); the sole brick is the intra-layer pull-ordering, reusing banked o4.
+- Only the **minimizer instance of ⊇** is load-bearing for the Lean o5-∈, and it is `[PROVED]` (§3).
+
 ---
 
 ## 2. The obstruction: why non-clearable profiles are STRANDED (chooser/branch-independent) `[CERT]`
@@ -112,31 +120,49 @@ min is stranded above the shrunken chain.
 
 ---
 
-## 3. The strict need: `minAdm ∈ terminalExponents` — PROVED `[CERT, two-way]`
+## 3. The strict need: `minAdm ∈ terminalExponents` — the load-bearing PAPER PROOF `[PROVED, two-way]`
 
-**Every `Mval`-minimizer is Clearable**, hence realized. Proof (Codex's envelope-splice, verified by my
-battery). `Mval(M,a) = (M¹−a¹)(M²−a¹) + Σ_{j=2}^{L} (a^{j-1}−a^j)(M^{j+1}−a^j)`.
+**This is the piece the Lean D-task formalises** (controller pin). Claim: **every `Mval`-minimizer of
+`Adm(M)` is Clearable** — hence realized (§4), hence `minAdm ∈ terminalExponents`. Small exact steps
+(Codex's envelope-splice; I verified each step, 0 counterexamples). Write
+`Mval(M,a) = (M¹−a¹)(M²−a¹) + Σ_{j=2}^{L} (a^{j-1}−a^j)(M^{j+1}−a^j)`, and `r_S = min(M¹,…,M^S)`.
 
-`[CERT]` **The running-min envelope prefix contributes exactly 0 to `Mval`.** For the envelope
-(`aⁱ = r_{i+1}`) each term vanishes: `(M¹−r_2)(M²−r_2)=0` since `r_2 = min(M¹,M²)`; and
-`(r_j − r_{j+1})(M^{j+1} − r_{j+1}) = 0` since `r_{j+1} = min(r_j, M^{j+1})` makes one factor 0.
-(Verified 0 counterexamples.)
+**Step 1 `[PROVED]` — each running-min-envelope term is 0.** The envelope value at coord `i` is `r_{i+1}`.
+- head term: `(M¹−r_2)(M²−r_2) = 0`, since `r_2 = min(M¹,M²)` kills one factor.
+- for `2 ≤ j ≤ L`, the envelope term is `(r_j − r_{j+1})(M^{j+1} − r_{j+1})`, and `r_{j+1} = min(r_j, M^{j+1})`
+  kills one factor: if `M^{j+1} ≥ r_j` then `r_{j+1}=r_j` and `r_j−r_{j+1}=0`; else `r_{j+1}=M^{j+1}` and
+  `M^{j+1}−r_{j+1}=0`.
+So the running-min envelope contributes **exactly 0** to `Mval`. (Battery: 0 counterexamples.)
 
-`[CERT]` **Envelope-splice ⟹ strict decrease.** Suppose `a ∈ Adm` is non-clearable; let `s` be the first
-bad descent (`a^{s-1} = r_s > a^s`, prefix not full envelope). Replace the prefix by the envelope:
-`bⁱ = r_{i+1}` for `i < s`, `bⁱ = aⁱ` for `i ≥ s`. Then (i) `b ∈ Adm` (lowering-or-raising within the
-running-min bound; the boundary is fine because `b^{s-1} = r_s = a^{s-1} > a^s`); (ii) the boundary term
-`j=s` and all terms `j>s` are UNCHANGED (they use `a^{s-1}=r_s=b^{s-1}` and `aⁱ (i≥s)`); (iii) the prefix
-contribution drops from `> 0` (non-envelope) to `0` (envelope). So `Mval(b) < Mval(a)`. Verified: strict
-decrease at all 356 non-clearable profiles, `b ∈ Adm` always (`battery` verification).
+**Step 2 `[PROVED]` — a non-envelope prefix contributes `> 0`.** Each `Mval` term is a product of two
+NON-negative integers (`Adm` gives `aⁱ ≤ r_{i+1} ≤ M^{i+1}` and `a` weakly decreasing, so both factors
+`≥ 0`). Term `j` is `0` iff `a^{j-1}=a^j` or `a^j = M^{j+1}` — and the componentwise-maximal all-zero
+choice is exactly the envelope (Step 1). Any prefix differing from the envelope has some strictly positive
+term, so its contribution is `> 0`. (Battery: strict for all 356 non-clearable profiles.)
 
-`[CERT]` **Corollary.** A non-clearable profile is never a minimizer ⟹ every minimizer is Clearable ⟹
+**Step 3 `[PROVED]` — the envelope-splice.** Let `a ∈ Adm` be non-clearable, `s` its first bad descent
+(`a^{s-1} = r_s > a^s`, prefix `1..s−1` not the full envelope — §1). Define `b` by `bⁱ = r_{i+1}` for
+`i < s` and `bⁱ = aⁱ` for `i ≥ s`. Then:
+- (a) `b ∈ Adm`: `bⁱ = r_{i+1} ≤ r_{i+1}` and weak-decrease holds at the seam because
+  `b^{s-1} = r_s = a^{s-1} > a^s = b^s`.
+- (b) `Mval` splits as (prefix terms `j < s`) + (boundary term `j=s`) + (suffix terms `j > s`). The
+  boundary term uses `a^{s-1}=r_s=b^{s-1}` and `a^s=b^s`, so it is UNCHANGED; the suffix terms use only
+  `aⁱ (i≥s)=bⁱ`, UNCHANGED.
+- (c) by Steps 1–2 the prefix contribution drops from `> 0` (non-envelope `a`) to `0` (envelope `b`).
+Hence `Mval(b) < Mval(a)`. (Battery: strict decrease + `b ∈ Adm`, all 356.)
+
+**Step 4 `[PROVED]` — corollary.** By Step 3 a non-clearable profile is never a minimizer ⟹ **every
+`Mval`-minimizer is Clearable** ⟹ realized by §4 ⟹
 `minAdm(M) = min_{Clearable-Adm} Mval = min_{P(M)} Mval ∈ terminalExponents`. Directly cross-checked:
-`min over P(M) == minAdm(M)` at all 847 instances (`battery` B3), and every minimizer Clearable
-(`battery` B4). On the witness, `minAdm=5` is attained by `(3,3,1,0),(2,2,1,0),(2,2,0,0)` — all in `P`.
+`min over P(M) == minAdm(M)` at all 847 instances (`battery` B3); every minimizer Clearable (`battery`
+B4). Witness: `minAdm(3,3,4,2,3)=5`, attained by `(3,3,1,0),(2,2,1,0),(2,2,0,0)`, all in `P`.
+
+*(This is the STRONG form — every minimizer clearable. The weaker "∃ a clearable minimizer" also
+follows and equally suffices for `minAdm ∈ terminalExponents`; I certify the strong form.)*
 
 This is the o5-∈ IN-half in its **provable, sufficient** form: NOT "profile-set ⊇ Adm" (false) but
-"`minAdm` is attained by a realized (clearable) profile."
+"`minAdm` is attained by a realized (clearable) profile." It needs §4 only at the ONE minimizer, not the
+whole clearable set.
 
 ---
 
@@ -212,6 +238,17 @@ the formaliser transcribes, and it reuses the banked o4 machinery.
   `(2,3,2,4,2)`, `(3,3,4,2)`… — realization checker + steering verified. The 6 known instances
   `(2,2,2),(3,3,4),(2,2,2,2),(2,2,3,2),(2,2,3,3,2),(3,2,4,2)` all have `P == Adm` (bottleneck-free) —
   consistent, and explains why the gate never fired before.
+- Exact scope counts committed alongside: `threads/12-realization/scope-counts.md`.
+
+**Confound lesson `[STANDING COUNSEL]` (brief item 4 / controller pin).** The elder-gate5 o5-IN kill was
+pre-committed against `(2,2,3,3,2)` and `(3,2,4,2)` (plus `(2,2,2,2),(2,2,3,2)`) — **all four are
+bottleneck-free** (`min(M¹..M^S) ≥ min(M¹,M²)` for every interior `S`), so `P == Adm` there, and the gate
+passed vacuously. The gap ONLY appears once an interior width-drop strands a level-`r_S` divisor. Going
+forward, any pre-committed battery set for a read-off / completeness claim MUST include the KNOWN failure
+mechanism — here an interior bottleneck `∃ 3≤S≤L, min(M¹..M^S) < min(M¹,M²)`, e.g. `(3,3,4,2,3)`,
+`(2,2,1,1)`, `(3,3,2,2)`. This is the same lesson as the FIX-A defect (invisible at monotone widths /
+L≤2): a nice-instance battery is necessary, never sufficient; the adversarial mechanism-aware instance is
+the gate (cf. compass standing counsel "decorrelated from the atlas builder").
 
 ---
 
