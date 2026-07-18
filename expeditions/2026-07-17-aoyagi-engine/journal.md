@@ -1504,3 +1504,17 @@ commits). SEAT: the architect (elder rejected fresh-formaliser — carrier frict
 DISPATCHED: pnp (clarifier + o4 certificate, sequenced; gauge check still open); architect
 (o1-first GO with the joint-design contract). The endgame's mathematics is now fully
 decomposed, ownered, killed, and certified-before-formalised.
+
+## 2026-07-18 SHEAR VERDICT: (A) ψ-COMPOSED (tick 108)
+The gauge check landed (cert-shear-gauge.md, merged): the escape hatch is REJECTED — pp.17-18's
+unipotent Q,P are VARIABLE-DEPENDENT shears applied as CoVs that DEFINE the child coordinates
+(they MOVE coordinates; the squeeze absorbs only the Morse/unit residual). The dets are 1, so
+the Jacobian battery was blind exactly as flagged — geometry was the discriminator. THE CRUX,
+now on the record: Lemma-1 ideal-invariance absorbs the gauges for the RLCT VALUE (a value-only
+argument is gauge-free), but the geometric COVER needs the actual ψ∘β chart — the precise reason
+the reconciliation lemma exists. ROUTED: the ψ-composed hnode variant to coverage (its fold is
+already localSub-agnostic — the pivot geometry enters only at hnode, so the reconciliation is
+one lemma transporting the slab cover through per-edge homeomorphisms); the per-edge
+ψ-homeomorphism guarantee added to the architect's o2 StepEmit contract (a NAMED field,
+dischargeable-by-construction since unipotent shears are invertible everywhere). The architect's
+§6 forced reasoning stands confirmed. pnp continues on the clarifier + o4 certificate.
