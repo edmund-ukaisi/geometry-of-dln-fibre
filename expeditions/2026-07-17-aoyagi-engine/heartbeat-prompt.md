@@ -8,12 +8,15 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: FULL-MECHANISM BUILD (post-reframe). Construction tide (architect-t02): rungs 2A/2B
-  landed (μ-lex WF + descent, kill cleared); deferrals UN-DEFERRED (genDivExp native in State,
-  chooser w/ tie-break + gap, divProfile) — revised ladder owed before rung 3. Glue tide
-  (glue-t06): Module A (path-independent analysis). Recon (recon-aoyagi-full): paper end-to-end
-  map + both mint paths priced → elder council w/ corrected charge adopts the roadmap. Teammate
-  self-reports verified before they count. Watch line = engine_box_threshold_finite (path A).
+- phase: T-LADDER ENDGAME. GLUE LANE COMPLETE (A/B/C axiom-clean, fidelity-VALIDATED, re-homed
+  ~3x lighter; seat warm). Architect (t01-r2): T1a/T1b/T1b-ii MERGED (faithful carrier fields in);
+  two commissions open — the region_glue DISCHARGE (one line + AxCheck watch; ALL gates cleared;
+  closes the analytic hole) + T1c (ConState alignment; plan banked at threads/01-skeleton/
+  t1b-execution-spec.md; descent re-proof tripwire 3-4 attempts). Then T2 assembly → T3 coverage
+  (pnp gate legs banked; non-toric + full-pivot-cover constraints mapped). Council #3 roadmap +
+  fork 11 adopted; R6 post-critical-path (operator-confirmed). pnp-atlas + rev-glue + glue-t06
+  warm. Watch line = engine_box_threshold_finite (+sorryAx via the construction hole ALONE after
+  the discharge lands).
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
