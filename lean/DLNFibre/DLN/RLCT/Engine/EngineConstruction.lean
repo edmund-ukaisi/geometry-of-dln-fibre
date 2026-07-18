@@ -574,4 +574,46 @@ def CompChainInv {L : ℕ} (s : ConState L) : Prop :=
     (∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j) ∨
       (∀ j : Fin L, s.divProfile k' j ≤ s.divProfile k j)
 
+/-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
+
+TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
+the state, so `ConDecision M s` is inhabited for EVERY `s` (`ConDecision` requires eligibility, not
+minimality — the recalibration's "totality" worry dissolves). `leafOfState` is the durable flat-cube
+leaf constructor (analytic side empty, chart fields placeholder — the T3-fed content); the real
+dispatch (rollover / case-1 eligible-minimal chooser / case-2, with CONE-GOODNESS) layers on top and
+is gated on the o1↔o4↔o2 mutual induction (needs `CompChainInv` ⟹ `def4_min` totality). -/
+
+/-- **The flat-cube fall-back leaf** of a state: full ledger `= (numDiv, divExp, divProfile,
+cleared)` of the state, flat-cube `srcBox` (the pre-staged `PivotLeafClauses` form), empty analytic
+side, placeholder chart data (the T3-fed fields). Its `rootLedger` is the state's by construction —
+the terminal `ConDecision`'s `hleaf`. -/
+noncomputable def leafOfState (M : Fin (L + 1) → ℕ) (s : ConState L) : LeafData M where
+  numDiv := 0
+  divExp := Fin.elim0
+  cleared := s.cleared
+  divProfile := Fin.elim0
+  fullNumDiv := s.numDiv
+  fullDivExp := s.divExp
+  fullDivProfile := s.divProfile
+  numB := 0
+  bExp := Fin.elim0
+  bChain := by intro a _ _; exact a.elim0
+  chartMap := id
+  srcBox := ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1
+  resRank := 0
+  divCoord := Fin.elim0
+  resCoord := Fin.elim0
+
+/-- **The type-totality witness** (o2, fork 13 correction 2): a TOTAL oracle — always the terminal
+fall-back — inhabiting `ConDecision M s` for every `s`. The real dispatch replaces the fall-back on
+the reachable cone (cone-goodness, gated); this witnesses that the interface is inhabited. -/
+noncomputable def oracleTerminal (M : Fin (L + 1) → ℕ) (s : ConState L) : ConDecision M s :=
+  .terminal (leafOfState M s) rfl
+
+/-- `buildTree` with the terminal oracle is a single leaf — the totality witness composes with the
+assembly. -/
+theorem buildTree_oracleTerminal (M : Fin (L + 1) → ℕ) (s : ConState L) :
+    buildTree M (oracleTerminal M) s = ResolutionTree.leaf (leafOfState M s) :=
+  buildTree_terminal M (oracleTerminal M) s (leafOfState M s) rfl rfl
+
 end DLNFibre.DLN.RLCT.Engine
