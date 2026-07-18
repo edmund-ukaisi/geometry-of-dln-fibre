@@ -1055,3 +1055,14 @@ checklist conformance) → then the discharge lands in EngineObligations (archit
 T1b) sequenced by me. Statement cards → thread docs. Glue-t06 stands down warm after the cards —
 four modules, zero tripwire violations, one interface-improving catch. The engine's TWO holes
 are now: monomialization_terminates (T-ladder mid-flight) + region_glue (one review + one line).
+
+## 2026-07-18 T1b MERGED: THE FAITHFUL CARRIER IS IN (tick 77)
+The atomic struct edit landed exactly per the banked spec and merged: divProfile (full-T) is the
+PRIMITIVE across StepData/LeafData/RootLedger, divTilde a DERIVED accessor (tildeOf ∘ divProfile,
+source-compatible), RootLedger parametrized by L, the per-case T-rule in stepUpdate (tail-slice
+write + head unchanged/inherit/reset per pnp verdict 3). Controller-verified: witnesses + the
+μ-spine build green (2718 jobs), arithmetic witness clean-three + conRel_wf + case11 descent
+clean-three by forced probe (3/3) — the spine genuinely untouched by the carrier change, as the
+council predicted (μ doesn't read T). The carrier the operator's reframe demanded — the one that
+carries what the certificate cannot see — is now the carrier we have. Remaining T-ladder: T1b-ii
+genDivExp field, T1c ConState/chooser-type + razor-docstring strike, T2 assembly, T3 coverage.
