@@ -189,11 +189,58 @@ So the formalization basis (`SameLevelChainInv`) rests on `SameLevelChainInv` + 
 (+ `WidthBound`); minimality enters only the stronger, non-operative full-chain statement + o2's
 canonical choice.
 
+## Part 6 — the residual sub-lemma is now PROVED (uniform, two-way): `LiveHeadDom`
+
+The residual flagged above (case-1's new pivot `f'` at level `J` comparable to every pre-existing
+level-`J` divisor) is **closed uniformly in L** — my in-chain-domination analysis and an independent
+Codex proof converged on the same invariant (battery `livehead-dom.py`, 0 violations on all 14
+instances incl. every bottleneck; `codex/step1-domination-{prompt,answer}.md`).
+
+**The closing invariant (Lean-ready).**
+> **`LiveHeadDom(S, C)`**: for carried `a, b`, if `t̃(a) < t̃(b) < M(S)` then `a_i ≤ b_i` for every head
+> coordinate `i < S`. (Head-domination among **live** divisors — those at a level `< M(S)`, i.e. *in the
+> b-chain*, NOT stranded; `J`-independent.)
+
+**Why it closes the residual (STEP1).** At a case-1 node, `t̃(y) ≤ J < ℓ = t̃(x) < M(S)` for any level-`ℓ`
+`x` and level-`≤J` `y`; `LiveHeadDom` gives `x_i ≥ y_i` on the head, and `FlatTail` gives
+`x_i = ℓ > J ≥ y_i` on the tail — so **`x ≥ y` (STEP1), for EVERY level-`ℓ` divisor** (minimality-free
+as a statement). Hence `f ≥ g` for every level-`J` `g`, so `f` head `≥ g` head, so
+`f' = setTail(f,S,J) ≥ g` (tails both `J`). `f'` is thus the max of level `J` and comparable to all of it
+— **residual PROVED**, and `SameLevelChainInv` at level `J` is preserved.
+
+**Why the paper's full-chain still fails (and `LiveHeadDom` survives).** The `< M(S)` guard is
+load-bearing: the bottleneck counterexample `(2,1,0)` vs `(1,1,1)` at `(2,2,1,1)` has the higher divisor
+at level `1 = M(S)` — **stranded, not live** — so `LiveHeadDom` says nothing about it. The full-chain
+failure is exactly the stranded pairs; `LiveHeadDom` is the live-restricted statement that holds.
+
+**Maintenance (uniform, Codex-verified; battery-checked).** `LiveHeadDom` is preserved by:
+- **case-2** append `c=(M(2..S), J)`: for live `a` below, `WidthBound` gives `a_i ≤ M(i+1)=c_i`; and the
+  case-2 gap means no live divisor sits above `J`, so `c` incurs no upper obligation. (minimality-free)
+- **case-1** tail-write `f'=setTail(f,S,J)`, `f` the **least** eligible: for live `b` above, run-gap ⟹
+  `t̃(b) ≥ ℓ`; if `t̃(b)=ℓ`, **minimality** gives `f ≤ b` so `f' head = f head ≤ b head`; if `t̃(b)>ℓ`,
+  the IH gives `f head ≤ b head`. For live `a` below `J`, IH gives `a head ≤ f head = f' head`.
+- **layer advance** `S→S+1`: `M(S+1) ≤ M(S)` only shrinks the live set (strands more); the new head
+  coordinate `S` is ordered by `a_S = t̃(a) < t̃(b) = b_S`.
+
+**Consumption — CORRECTION to Part 5.** `LiveHeadDom` maintenance **DOES consume chooser minimality**
+(the case-1 step: the least `f` keeps `f'` below every other level-`ℓ` divisor — the wrong/max pick
+breaks `LiveHeadDom`, `Chain_viol 0→5` at `(2,2,2,2)`). So the earlier "operative lemmas are
+minimality-free" is **too strong**: `SameLevelChainInv` *alone* is preserved minimality-free, but the
+residual rides on `LiveHeadDom`, whose preservation needs minimality. This is the precise, corrected form
+of cert-2222 (c): **the tie-break minimality maintains `LiveHeadDom` (the live/in-chain domination); the
+stranded pairs break the paper's full-chain regardless of the pick.**
+
+**Formalization basis (final).** Maintain **`LiveHeadDom` + `FlatTail` + `WeakDec` + `WidthBound`**; then
+`SameLevelChainInv`, STEP1, the residual, and o2's min-existence all follow. o4 preservation consumes
+these four + chooser minimality (case-1) + the case-2 gap. No full-chain anywhere (Part 2).
+
 ## Close
 
 - **Firmest:** the paper's p.15 total-comparability is FALSE at interior bottlenecks (two-way, exact
-  scope 18/18); `SameLevelChainInv` is the correct, sufficient, everywhere-holding replacement; value safe.
-- **Most likely to break the build:** committing o4 as full total-comparability — unprovable. The gate
-  correctly reshapes it.
-- **Next:** the single residual sub-lemma (case-1 same-level head-comparability at bottlenecks) — the
-  one brick beyond Lemma A/B; and the `ConDecision` case-1(2) keep-vs-consume `f` confirmation.
+  scope 18/18); `LiveHeadDom` (live/in-chain head-domination) is the correct maintained invariant — it
+  proves the residual, implies `SameLevelChainInv`, and its `< M(S)` guard is exactly why it survives the
+  width-drops that break full-chain. Value safe (18/18). All uniform, two-way confirmed.
+- **Most likely to break the build:** committing o4 as full total-comparability — unprovable; or reading
+  the reshape as minimality-free (the `LiveHeadDom` maintenance needs minimality — Part 6).
+- **Next (only open item):** the `ConDecision` case-1(2) keep-vs-consume `f` confirmation (a fidelity
+  detail; `LiveHeadDom` + the reshape hold in either reading). The residual is no longer open.
