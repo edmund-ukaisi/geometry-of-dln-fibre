@@ -1,4 +1,4 @@
-# Priorities — aoyagi-engine (build loop; navigator pass #2, 2026-07-18)
+# Priorities — aoyagi-engine (FULL-MECHANISM framing, operator 2026-07-18: the library is the artifact; the learning coefficient theorem is the destination; hbox = ditchable adapter. Ladder below is INTERIM pending the paper-map recon + elder council roadmap adoption)
 
 Position: carrier VALIDATED (edge-labelled, r2, tick 37); six obligations STATED (projections of
 resolutionOf_spec); TWO holes on the hbox cone — monomialization_terminates (EngineObligations.lean:142,

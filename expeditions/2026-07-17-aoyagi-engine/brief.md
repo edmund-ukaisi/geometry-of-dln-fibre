@@ -1,15 +1,24 @@
-# Expedition: aoyagi-engine — the transform-only resolution engine for (□)
+# Expedition: aoyagi-engine — Aoyagi's mechanism as a standalone library; destination = the learning coefficient theorem
 
-**Central question.** Build Aoyagi's resolution machinery (her 2023 DLN paper, §5) as a standalone
-Lean development — the **transform-only engine** — producing `RouteMBoxThresholdFinite M` for every
-chain `M`, with kernel footprint `[propext, Classical.choice, Quot.sound]` and **no carried or cited
-Aoyagi hypothesis anywhere in (□)**; then re-point the mint so `aoyagi_learning_coefficient` stands
-unconditional modulo standard nondegeneracy hypotheses only.
+**Central question (REFRAMED by operator, 2026-07-18 — this framing has PRIORITY).** Build
+**Aoyagi's resolution-of-singularities mechanism (her 2023 DLN paper) FULLY and FAITHFULLY as a
+free-standing Lean library** — her objects, her invariants (sharing/support INCLUDED, never
+deferred for being off some consumer's path), her construction end-to-end — independent of
+downstream consumption. THE DESTINATION IS THE LEARNING COEFFICIENT THEOREM
+(`aoyagi_learning_coefficient` unconditional modulo standard nondegeneracy, kernel footprint
+`[propext, Classical.choice, Quot.sound]`, no carried or cited Aoyagi hypothesis). Two consumption
+paths from the library, priced by the paper-map recon: (A) the hbox adapter —
+`RouteMBoxThresholdFinite M` ∀M into the proven `aoyagi_learning_coefficient_gen` assembly
+(current default); (B) her native λ-theorem transcribed (REPLACING `cited_aoyagi_dln`). **If (B)
+prices shorter, the hbox hole is DITCHED** — the hole serves the goal, never the reverse. Method
+(operator): mathematical sense over case analysis — understand each piece at conceptual altitude,
+build the uniform object, DERIVE the cases.
 
-**Closing criterion.** `aoyagi_learning_coefficient` (unsuffixed) proven via
-`aoyagi_learning_coefficient_gen ∘ (the engine's ∀-M hbox)` + the L=1 endpoint fold; forced
-`#print axioms` clean-three; skeleton legacy stubs re-pointed at their proven twins; cordon audit
-clean; close PR at signal-and-wait.
+**Closing criterion.** `aoyagi_learning_coefficient` (unsuffixed) proven — via path (A)'s
+`…_gen ∘ hbox` + the L=1 fold, or via path (B)'s native λ theorem, whichever the priced adoption
+selects; forced `#print axioms` clean-three; the full-mechanism library standing as bedrock
+(faithful to her paper, not trimmed to the consumer); skeleton legacy stubs re-pointed; cordon
+audit clean; close PR at signal-and-wait.
 
 **Why this route (the founding adjudication — full whys in `compass.md`).** The predecessor
 expedition's integrate-early engine (RouteM peel-and-integrate) repeatedly manufactured
@@ -48,9 +57,11 @@ above it is proven (`HeadlineGenAssembly`). The worked precedent for the whole p
 3. **Never transcribe the paper's Def-3 inequalities** (verified typo; battery guard) — use the
    geometric `½·min_t Mval(t)` form already banked.
 
-**Non-goals.** The order θ (meromorphic-continuation seam — separate, flagged); `cited_aoyagi_dln`
-/ `RlctPayoff` (untouched; separate operator decision); the predecessor's coupled/residual route
-(superseded — its banked bricks are consumed as-is where types fit, never rebuilt).
+**Non-goals (revised at the reframe).** The order θ remains out UNLESS the paper-map recon shows
+her λ theorem needs it (then it enters as HER content, priced honestly). `cited_aoyagi_dln` is no
+longer untouchable: path (B) REPLACES it natively — building her theorem is the opposite of
+leaning on the cite; `RlctPayoff`/fibre payoff stay out. The predecessor's coupled/residual route
+stays superseded (banked bricks consumed as-is where types fit, never rebuilt).
 
 **Boundary with the predecessor.** `expedition/aoyagi-full` runs independently; we NEVER touch its
 branches, worktrees, or scaffold. Its tip is merged in at genesis (63b3e8cb0); later banked pieces
