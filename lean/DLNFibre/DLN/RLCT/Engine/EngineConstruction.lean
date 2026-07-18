@@ -1188,6 +1188,58 @@ theorem leaf_mem_Adm_single {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
       le_tildeOf hL (fun i => hwd k i j (Fin.le_def.mpr (by have := i.isLt; omega)))
     rw [le_antisymm hle (tildeOf_le j), ht0]
 
+/-! ## MvalCoh: the exponent–profile coherence invariant (the B'-coherence tie, tick-69) -/
+
+/-- **Exponent–profile coherence**: each divisor's accumulated exponent equals `Mval` of its
+rank-pattern. Consumed by `IsFullMonomialization` (`divExp k = (Mval M (divProfile k)).toNat`).
+Maintained by the T-rule; the append/merge preservation lemmas FORCE the emission's
+`resRows·resCols`/bump to equal the `Mval` delta (turning the page-pinned exponent formulas into
+theorems — the truth-signal: a non-closing preservation is a FINDING about the emission arithmetic,
+never patched by weakening the invariant). -/
+def MvalCoh {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
+  ∀ k : Fin s.numDiv, s.divExp k = (Mval M (s.divProfile k)).toNat
+
+/-- **Rollover preserves `MvalCoh`** — the divisor ledger (`divExp`/`divProfile`) carries over
+unchanged. -/
+theorem MvalCoh_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (h : MvalCoh M s) :
+    MvalCoh M s.stepRollover := fun k => h k
+
+/-- **A case-1(2)/case-2 append preserves `MvalCoh`**, GIVEN the new divisor's exponent equals `Mval`
+of its (tail-written) profile (`hnew` — the emission's exponent-arithmetic obligation the oracle
+discharges: for case-2 `e = resRows·resCols = Mval(setTail runMinWidth)`, for case-1(2) `e =
+divExp f + runLen·resCols = Mval(setTail (divProfile f))`). Old divisors carry over. -/
+theorem MvalCoh_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hnew : e = (Mval M (setTail s.layer s.cleared t₀)).toNat)
+    (h : MvalCoh M s) : MvalCoh M (s.stepAppendAdvance e t₀) := by
+  intro k
+  refine Fin.lastCases ?_ ?_ k
+  · simp only [ConState.stepAppendAdvance, Fin.snoc_last]; exact hnew
+  · intro k'
+    simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]; exact h k'
+
+/-- **The case-1(1) merge child preserves `MvalCoh`** (the bumped-`divExp` child, so NOT reachable
+via the divExp-blind congruence — `MvalCoh` reads `divExp`). GIVEN the merge identity `hbump` (the
+target's bumped exponent equals `Mval` of its tail-written profile — the emission's obligation). The
+child form matches `case1Decision`'s `child11`. -/
+theorem MvalCoh_case11child {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (f : Fin s.numDiv)
+    (runLen resCols : ℕ)
+    (hbump : s.divExp f + runLen * resCols
+      = (Mval M (setTail s.layer s.cleared (s.divProfile f))).toNat) (h : MvalCoh M s) :
+    MvalCoh M ⟨s.layer, s.cleared, s.numDiv,
+      (fun k => if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k),
+      Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+      s.numGen, s.genDivExp⟩ := by
+  intro k
+  by_cases hk : k = f
+  · have hkv : (k : ℕ) = f.val := by rw [hk]
+    show (if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k)
+        = (Mval M (Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k)).toNat
+    rw [if_pos hkv, hk, Function.update_self]; exact hbump
+  · have hkv : (k : ℕ) ≠ f.val := fun hc => hk (Fin.ext hc)
+    show (if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k)
+        = (Mval M (Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k)).toNat
+    rw [if_neg hkv, Function.update_of_ne hk]; exact h k
+
 /-! ## o4→assembly: the joint invariant `OracleInv` + its cone-goodness preservation
 
 The six invariants the oracle carries, bundled: the construction's cone-goodness = `OracleInv` holds
