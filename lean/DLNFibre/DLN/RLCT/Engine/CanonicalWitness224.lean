@@ -46,6 +46,10 @@ noncomputable def leaf224 : LeafData M224 where
   divExp := (stepUpdate rootNode224 StepCase.case2 subst224).divExp
   cleared := (stepUpdate rootNode224 StepCase.case2 subst224).cleared
   divProfile := (stepUpdate rootNode224 StepCase.case2 subst224).divProfile
+  -- full ledger = analytic here (the single divisor is t̃=0)
+  fullNumDiv := (stepUpdate rootNode224 StepCase.case2 subst224).numDiv
+  fullDivExp := (stepUpdate rootNode224 StepCase.case2 subst224).divExp
+  fullDivProfile := (stepUpdate rootNode224 StepCase.case2 subst224).divProfile
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id
   srcBox := ⇑(paramsEquivFlat M224) ⁻¹' cubeBox (flatDim M224) 1
@@ -98,12 +102,12 @@ theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
           (∃ l ∈ ResolutionTree.leaves t, l.srcBox.Nonempty ∧
             minAdm M224 ∈ (List.finRange l.numDiv).map l.divExp) := by
   refine ⟨tree224, ?_, ?_, ?_, ?_, ?_⟩
-  · intro l hl k
+  · intro l hl
     rw [leaves_tree224, List.mem_singleton] at hl
     subst hl
-    rw [divExp_leaf224]
-    refine ⟨?_, ?_⟩
-    · fin_cases k; decide
+    -- analytic = full here (single t̃=0 divisor): the coherence matches are the identity.
+    refine ⟨fun k => ?_, fun k => ⟨k, rfl, rfl, ?_⟩, fun j _ => ⟨j, rfl, rfl⟩⟩
+    · rw [divExp_leaf224]; exact ⟨by fin_cases k; decide, by fin_cases k; decide⟩
     · fin_cases k; decide
   · intro p hp
     rw [stepEdges_tree224, List.mem_singleton] at hp
@@ -151,6 +155,9 @@ noncomputable def mergeLeaf : LeafData M224 where
   divExp := (stepUpdate mergeNode StepCase.case11 mergeSubst).divExp
   cleared := (stepUpdate mergeNode StepCase.case11 mergeSubst).cleared
   divProfile := (stepUpdate mergeNode StepCase.case11 mergeSubst).divProfile
+  fullNumDiv := (stepUpdate mergeNode StepCase.case11 mergeSubst).numDiv
+  fullDivExp := (stepUpdate mergeNode StepCase.case11 mergeSubst).divExp
+  fullDivProfile := (stepUpdate mergeNode StepCase.case11 mergeSubst).divProfile
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
@@ -181,6 +188,9 @@ noncomputable def oobSplitLeaf : LeafData M224 where
   divExp := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divExp
   cleared := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).cleared
   divProfile := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divProfile
+  fullNumDiv := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).numDiv
+  fullDivExp := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divExp
+  fullDivProfile := (stepUpdate mergeNode StepCase.case12 oobSplitSubst).divProfile
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
@@ -208,6 +218,7 @@ preserves `numDiv = 1`). -/
 noncomputable def dummyMergeLeaf : LeafData M224 where
   numDiv := 2; divExp := fun _ => 11; cleared := 0
   divProfile := fun _ => ![0, 0]
+  fullNumDiv := 2; fullDivExp := fun _ => 11; fullDivProfile := fun _ => ![0, 0]
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
@@ -228,6 +239,7 @@ theorem dummyDivisor_not_stepRel :
 noncomputable def vanishingLeaf : LeafData M224 where
   numDiv := 0; divExp := fun k => k.elim0; cleared := 0
   divProfile := fun k => k.elim0
+  fullNumDiv := 0; fullDivExp := fun k => k.elim0; fullDivProfile := fun k => k.elim0
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id; srcBox := Set.univ; resRank := 0
   divCoord := fun k => k.elim0; resCoord := Fin.elim0

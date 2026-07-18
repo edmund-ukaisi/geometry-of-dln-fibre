@@ -1367,3 +1367,54 @@ bookkeeping agreeing from opposite directions. DISPATCHED: coverage full-GO on b
 d_center edges; StepRel confirmed unaffected); the paper-map cert's "two charts" corrected
 (dated). ALL statement sets are now settled — no design gates remain ahead of the two build
 units (B' + buildTree) and the two coverage lemmas.
+
+## 2026-07-18 REVIEW FOLLOW-UPS CLOSED (tick 99)
+rev-cov's addendum merged: the (a)-verdict is now INDEPENDENTLY page-grounded on BOTH cases (its
+own read of pp.19-22 matches the seat's pins exactly — the adjudication no longer rests on the
+producing seat's doc), and the refined leafPathImages def reconciled against the actual proofs
+on root (its SOUND reads confirmed). SHARPENING for both build seats: Case-2 has NO u-pivot —
+a pure d-block family — so its corner gap bites at ANY codim ≥ 2 (the probe's (0,ε) witness is
+literally a 2×1 residual block); the pivotComplete clause is per-case (Case 1: u-pivot + block
+pivots; Case 2: block pivots only). All three verdicts stand; no open review items. rev-cov
+stands down warm. The four bounded endgame units are unchanged.
+
+## 2026-07-18 VERDICT FOLDED; ENDGAME BOARD SET (tick 100)
+The architect folded the pivot verdict into the design (62110b48c, merged): pivotComplete
+replaces hlive (per-case d_center enumeration; the worked example now shows the full family —
+d_center = 5 at (3,3,4) — with 1(1)/1(2) as representative TYPES); StepRel confirmed unaffected
+(ledger/descent work stands verbatim). BOTH statement sets fully settled; the architect holds
+its two T1b-scale units (B' first, gate = the glue chain untouched; then buildTree with
+pivotComplete + the comparability chain) for a fresh-budget coherent pass per the standing
+tripwire. The endgame board at tick 100: ONE hole on the hbox cone; four bounded build units
+across two seats, all against doubly-page-grounded reviewer-settled statements; every review
+seat warm with zero open items.
+
+## 2026-07-18 B' COMPLETE — THE CROSS-LANE ISSUE RESOLVED AS DESIGNED (tick 101)
+The ledger/analytic split landed in two green sub-steps and merged: LeafData's analytic fields =
+the t̃=0 read-off enumeration (shape unchanged), the full ledger alongside (rootLedger/StepRel
+read it), and the COHERENCE TIE in IsFullMonomialization (analytic = exactly the t̃=0 sublist,
+both directions — the paper's p.22 read-off is now a theorem-checkable fact, with the ⊆ half
+free from Adm's last-component-0). THE GATE HELD PERFECTLY: the glue chain rebuilt with ZERO
+diff (statements verbatim — region_glue never consumed IsFullMonomialization), controller-
+verified here (glue assembly + arithmetic witness clean-three 2/2 forced). The ruling-2
+cross-lane break is fully resolved with the reviewed analytic chain untouched — the (B') design
+did what it promised. REMAINING: the buildTree WF.fix body (the architect's LAST unit — emits
+both ledger sides, pivotComplete case-split, the comparability chain, stepUpdate_preserves_
+weakInv) + coverage's two lemmas. The construction hole is two units from assembled.
+
+## tick 101 addendum: B' integration-verified at full-build scale
+The architect's full lake build DLNFibre: 8890 jobs green, footprints EXACT (the analytic
+discharge witness clean-three untouched; the three +sorryAx carriers all sourcing solely from
+monomialization_terminates; the arithmetic witness clean-three WITH the coherence clause). The
+buildTree GO is in its inbox — its next turn is the final construction unit.
+
+## 2026-07-18 THE COVERAGE HEADLINE IS PROVEN (tick 102)
+chartBridge_imageCover_of_ownCovers merged + controller-verified clean-three: the tree induction
+now PRODUCES ChartBridge's image-cover clause (verbatim, per the reviewer's shape confirmation),
+with the full accumulator-factoring infrastructure (imgAcc/leafPaths-fst mutual inductions —
+new bedrock, none existed before) proven alongside. 3 of 4 fold statements sorry-free; the
+fold's tree side is COMPLETE. The tide's last unit: node_pivotCover_of_atom (the flat embedding
+of the rung-1 atom — Codex-mapped route: split coords + slab equality + one CLE transport;
+~100-200 LoC) — GO issued as the focused unit. The coverage theorem is one lemma + one wrapper
+(closing on the architect's pivotComplete) from end-to-end. Probe note for the record: #print
+axiom lists line-wrap at width — future greps test sorryAx ABSENCE, not the exact triple.
