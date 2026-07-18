@@ -786,3 +786,13 @@ non-goals: path B may REPLACE the cite; θ enters if HER theorem needs it), hear
 memo, priorities header (ladder marked INTERIM pending recon + council). Architect owes the
 revised ladder (genDivExp native in State, chooser, divProfile) before rung 3; its 2B report
 crossed the reframe — sync reminder sent.
+
+## 2026-07-18 GLUE MODULE A COMPLETE (tick 60)
+Module A merged + force-verified clean-three: the flat-coordinate MODEL READ is banked —
+model_read_lt_top (∫_cube (∏|x_dc|^e)·(∑x_rc²)^(−c') < ⊤ for e>−1, 0<c'<nr/2) + the two-family
+reindex + the a.e. AM-GM domination + the cube rpow product. Module B (per-leaf area formula)
+open; the seat's prerequisite question (Params M instances for the area formula) PRE-ANSWERED
+from the record: normed/findim instances banked (ParamsFlatLinear), but volume-not-Haar on
+Params M (its own predecessor's note) ⟹ Module B transports through paramsEquivFlatCLE and
+applies the area formula flat-side (CLE det = nonzero constant; the elder's field-2 verdict
+already assumed this) — a proof step, not a stop.
