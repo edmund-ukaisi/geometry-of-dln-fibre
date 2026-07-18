@@ -1605,3 +1605,16 @@ redirected mid-unit at docstring cost. Cert obligations added: reconcile the dep
 corrected by its own author-lane), the T3-consumer check (does principalization need full-chain
 ANYWHERE), and the p.15 defect-ledger entry (the third). Coverage's lane formally closed +
 stood down warm in the same tick.
+
+## 2026-07-18 THE o4 CERTIFICATE BANKED (tick 115)
+cert-compchain-o4 merged; the scope battery verified here (18/18: SameLevelChainInv + the
+eligible-chain hold EVERYWHERE; full-chain fails EXACTLY at interior bottlenecks; value safe
+everywhere). The Lean-ready core: build on SameLevelChainInv; Lemma A (the eligible-min's
+mutate/append preserves — ONE uniform idea: run-gap + flat-tail + minimality, no case grind) +
+Lemma B (case-2 same-level comparability via width-bound + equal tails); auxiliary invariants
+(FlatTail, WeakDec, width-bound) with maintenance one-liners; the keep-vs-consume caveat with
+the robustness argument (SameLevel suffices either way). HELD BACK from the architect's joint
+push: FOUR completion items (my additions crossed the cert-writing) — the RESIDUAL SUB-LEMMA'S
+paper proof (the one brick at 0/18-only — the discover-mid-formalization wall pattern), the
+(c)-finding scope correction, the T3-consumer check, the p.15 defect ledger. One completion
+push, then the joint push ungates fully.
