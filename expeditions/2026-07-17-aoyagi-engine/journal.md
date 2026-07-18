@@ -1407,3 +1407,14 @@ The architect's full lake build DLNFibre: 8890 jobs green, footprints EXACT (the
 discharge witness clean-three untouched; the three +sorryAx carriers all sourcing solely from
 monomialization_terminates; the arithmetic witness clean-three WITH the coherence clause). The
 buildTree GO is in its inbox — its next turn is the final construction unit.
+
+## 2026-07-18 THE COVERAGE HEADLINE IS PROVEN (tick 102)
+chartBridge_imageCover_of_ownCovers merged + controller-verified clean-three: the tree induction
+now PRODUCES ChartBridge's image-cover clause (verbatim, per the reviewer's shape confirmation),
+with the full accumulator-factoring infrastructure (imgAcc/leafPaths-fst mutual inductions —
+new bedrock, none existed before) proven alongside. 3 of 4 fold statements sorry-free; the
+fold's tree side is COMPLETE. The tide's last unit: node_pivotCover_of_atom (the flat embedding
+of the rung-1 atom — Codex-mapped route: split coords + slab equality + one CLE transport;
+~100-200 LoC) — GO issued as the focused unit. The coverage theorem is one lemma + one wrapper
+(closing on the architect's pivotComplete) from end-to-end. Probe note for the record: #print
+axiom lists line-wrap at width — future greps test sorryAx ABSENCE, not the exact triple.
