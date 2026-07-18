@@ -914,3 +914,19 @@ LESSON: a push that succeeds is not evidence the work is ON the pushed ref — t
 diverge silently when a checkout moves under you.
 OPERATOR CONFIRMATION absorbed: R6 (the regular peel) scheduled AFTER the critical path stands
 as adopted — the surfaced scope question is CLOSED.
+
+## 2026-07-18 L=3 DE-RISK: NO WALL (tick 67)
+The most-feared object since genesis CLEARED, three independent legs: (1) the termination spine
+is L-AGNOSTIC (ConState/μ over arbitrary S; nothing depth-specific to prove); (2) the (2,2,2,2)
+geometry was already hunt-verified end-to-end (double-incidence + shear chart, min 2ρ = 3 =
+minAdm, 0 undershoot, Newton-LP + Gröbner + valuation-slope cross-checked); (3) decorrelated
+Codex structural read: the β-monomial + case-1(1) merge are DEPTH-INDEPENDENT, and the ψ∘β +
+area-formula route SIDESTEPS the SchurCore front-peel (the documented depth-2 wall object never
+forms on our route — the fork-8 revision paying off structurally). LOAD-BEARING INSIGHT: at L=3
+the t=1 path carries a layer-0 contribution of 1 which, isolated, would BREAK the ledger bridge
+(1 < minAdm = 3) — the case-1(1) MERGE is the mechanism that merges it up (fork-3's typed sharing
+content); so case-1(1) faithfulness is SOUNDNESS-load-bearing at depth ≥ 3, retroactively
+strengthening the fork-9/eligibility work. Residual formalisation risk (not a wall): the post-β
+residual at the coupled t=1 leaf provably unit/Morse — queued as a battery extension
+(h6_composed_chart_2222 → one fully-emitted t=1 leaf). RUNG 2 FULLY COMPLETE. Sequencing steer:
+assembly AFTER the R1 faithful carrier (council order; pnp-atlas verdict 3 prices it first).
