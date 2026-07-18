@@ -16,9 +16,10 @@ Key repairs (cert-carrier-review):
   CHILD divisor of exponent `resRows·resCols`, the case-1(2) `cleared` advance (finding 1).
 * `terminalExponents` folds in every positive `resRank` (ruling 2a), so
   `hrat`/`exponent_ledger_bridge` cover the `resRank/2` residual threshold (`minAdm ≤ resRank`).
-* `LeafJacobian` is the FACTORED transport form `chartMap = ψ ∘ β` (ruling 2b): `ψ` a bounded-unit
-  local diffeo carrying full inverse data (feeds `rlctAtOn_boundedUnit_localHomeomorph`), `β` the
-  explicit monomial blow-up `|det Dβ| = ∏ |u|^{divExp−1}` (finding 7 abs-value; direct integration).
+* `LeafJacobian` is the FACTORED form `chartMap = ψ ∘ β` (ruling 2b): `ψ` a bounded-unit local
+  diffeo whose UPPER determinant bound feeds the Mathlib AREA FORMULA (elder-ratified fork-8
+  revision; the banked local-homeomorph transport is unused), `β` the explicit monomial blow-up
+  `|det Dβ| = ∏ |u|^{divExp−1}` (finding 7 abs-value; direct integration).
 * `ChartBridge`: a.e.-injectivity off a null set (finding 6), injective/disjoint
   `divCoord`/`resCoord` (finding 5), live-`srcBox` attainment (finding 3). `IsFullMonomialization`
   requires `divProfile ∈ Adm M` (finding 4).
@@ -53,13 +54,14 @@ def LeafPullback (l : LeafData (L := L) M) : Prop :=
           = (∏ k : Fin l.numDiv, (paramsEquivFlat M w (l.divCoord k)) ^ 2) * residualCore w ∧
       lo * residualBaseForm l w ≤ residualCore w ∧ residualCore w ≤ hi * residualBaseForm l w
 
-/-- **The Jacobian ledger — FACTORED transport form** (ruling 2b, fork 8). `chartMap = ψ ∘ β` on the
-source box, where `β` is the explicit monomial blow-up (`|det Dβ| = ∏ |u|^{divExp−1}`, abs-value —
-finding 7; handled by direct monomial integration / the scaling bridge) and `ψ` is a bounded-unit
-local diffeomorphism carrying FULL inverse data (forward + inverse identities + `C¹` + determinant
-bounded away from `0`/`∞`) — exactly the hypotheses `rlctAtOn_boundedUnit_localHomeomorph` consumes.
-The transport was never meant to eat the singular factor: `β` is Aoyagi's monomialized-integrand
-chart. -/
+/-- **The Jacobian ledger — FACTORED form** (ruling 2b, fork 8, area-formula revision). `chartMap =
+ψ ∘ β` on the source box, where `β` is the explicit monomial blow-up (`|det Dβ| = ∏ |u|^{divExp−1}`,
+abs-value — finding 7; handled by direct monomial integration / the scaling bridge) and `ψ` is a
+bounded-unit local diffeomorphism. The per-leaf read (elder-ratified fork-8 revision) is the Mathlib
+AREA FORMULA, which consumes only `ψ`'s UPPER determinant bound `|det Dψ| ≤ hi`; the banked
+`rlctAtOn_boundedUnit_localHomeomorph` transport is unused, so the extra inverse data (`ψsymm`,
+inverse identities, the lower bound) is carried but not load-bearing. `β` is Aoyagi's
+monomialized-integrand chart; the read was never meant to eat the singular factor. -/
 def LeafJacobian (l : LeafData (L := L) M) : Prop :=
   ∃ (β ψ ψsymm : Params M → Params M)
     (Dβ Dψ : Params M → (Params M →L[ℝ] Params M)) (lo hi : ℝ), 0 < lo ∧
