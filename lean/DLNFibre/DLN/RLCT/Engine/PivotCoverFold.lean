@@ -47,20 +47,43 @@ open MeasureTheory Set
 
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
-/-- **The own-rooted leaf-chart image set** of a subtree: the union of `φ '' l.srcBox` over the
-leaf/composite pairs of `leafPaths id t` (`acc = id`, so `φ` is the SUBTREE-root→leaf fold). By the
-`ChartBridge` coherence clause, on the FULL tree this equals `⋃ l ∈ leaves t, l.chartMap '' srcBox`
-(each leaf's stored `chartMap` is its `leafPaths id` composite). -/
-def leafPathImages (t : ResolutionTree M) : Set (Params M) :=
-  ⋃ p ∈ ResolutionTree.leafPaths (id : Params M → Params M) t, p.2 '' p.1.srcBox
+mutual
+/-- **The own-rooted leaf-chart image set** of a subtree, by structural recursion (mirroring
+`ResolutionTree.edgesLeaves`): a leaf contributes `l.srcBox` (own image, `acc = id`); a branch is
+the union over its edges of the edge substitution applied to the child's image set. Equals
+`⋃ p ∈ leafPaths id t, p.2 '' p.1.srcBox` (a HELD lemma, via the accumulator factoring), which under
+`ChartBridge` coherence is `⋃ l ∈ leaves t, chartMap '' srcBox`. Recursing directly (not through
+`leafPaths`) makes the fold identity below `image_comp`-free. -/
+def leafPathImages : ResolutionTree M → Set (Params M)
+  | .leaf l => l.srcBox
+  | .branch _ edges => edgesImages edges
+/-- Companion of `leafPathImages` over an edge list (mutual structural recursion). -/
+def edgesImages : List (Edge M) → Set (Params M)
+  | [] => ∅
+  | .mk _ s c :: es => s.localSub '' leafPathImages c ∪ edgesImages es
+end
 
 /-- **The fold identity** (the recursion the tree induction rides on): a branch's own-rooted images
 are the union, over its edges, of the edge substitution applied to the child's own-rooted images.
-Structural: `leafPaths (acc ∘ s) c` prepends `s` to `c`'s own-rooted composites. -/
+`image_comp`-free — the recursion is definitional; only the list-`biUnion` cons is set logic. -/
 theorem leafPathImages_branch (n : StepData M) (edges : List (Edge M)) :
     leafPathImages (ResolutionTree.branch n edges)
       = ⋃ e ∈ edges, e.subst.localSub '' leafPathImages e.child := by
-  sorry
+  simp only [leafPathImages]
+  induction edges with
+  | nil => simp [edgesImages]
+  | cons e es ih =>
+      obtain ⟨c, s, ch⟩ := e
+      simp only [edgesImages, ih]
+      ext y
+      simp only [Set.mem_union, Set.mem_iUnion, List.mem_cons, exists_prop]
+      constructor
+      · rintro (hy | ⟨x, hx, hy⟩)
+        · exact ⟨Edge.mk c s ch, Or.inl rfl, hy⟩
+        · exact ⟨x, Or.inr hx, hy⟩
+      · rintro ⟨x, (rfl | hx), hy⟩
+        · exact Or.inl hy
+        · exact Or.inr ⟨x, hx, hy⟩
 
 /-- **A subtree COVERS a downstairs set `V`** if its own-rooted leaf images contain an open
 neighbourhood of `V`. The tree-level image-cover clause of `ChartBridge` is exactly
@@ -79,7 +102,12 @@ theorem ownCovers_branch {n : StepData M} {edges : List (Edge M)} {V : Set (Para
     (hnode : ∃ U : Set (Params M), IsOpen U ∧ V ⊆ U ∧
       U ⊆ ⋃ e ∈ edges, e.subst.localSub '' childRegion e) :
     OwnCovers (ResolutionTree.branch n edges) V := by
-  sorry
+  obtain ⟨U, hUopen, hVU, hUcov⟩ := hnode
+  refine ⟨U, hUopen, hVU, hUcov.trans ?_⟩
+  rw [leafPathImages_branch]
+  refine Set.iUnion₂_mono (fun e he => Set.image_mono ?_)
+  obtain ⟨Ue, _, hReg, hUe⟩ := hchild e he
+  exact hReg.trans hUe
 
 /-- **The per-node atom bridge** (rung-2's real content + the interface surface): at a blow-up node
 whose edges are the pivot charts of a center that is a coordinate block of dimension `d`, `hnode`
