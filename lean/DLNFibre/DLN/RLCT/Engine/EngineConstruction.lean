@@ -240,4 +240,29 @@ def IsEligibleMinimalChoice {L : ℕ} (s : ConState L) (k : Fin s.numDiv) (runLe
       ∀ k' : Fin s.numDiv, s.divTilde k' = s.cleared + runLen →
         ∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j
 
+/-! ## T2: the recursion-assembly WF-fix pin
+
+Before the full tree-assembly, pin the recursion machinery: `WellFounded.fix (conRel_wf M)` supports
+a construction recursion on `ConState L` whose recursive call lands on any `conRel`-smaller child
+(the output of a step, its descent supplied by the `conRel_step*` lemmas). This mirrors the μ-lex
+pin (rung 2A): fix the syntax at the v4.29 pin, then build the real `buildTree` (producing the
+`ResolutionTree` + discharging the ledger/StepRel/base/exponent/live conjuncts of
+`CanonicalResolution`, with the chart-producer and `ChartBridge` as the T3 typed holes) on top. -/
+
+/-- **The step oracle** (T2): at a state `s`, the construction either TERMINATES (`none`, → a leaf)
+or takes a step to a `conRel`-SMALLER child (`some ⟨s', h⟩`, the descent `h` from a `conRel_step*`
+lemma). The real construction instantiates this from the divisor-chooser + the case dispatch; the
+skeleton is generic over it. -/
+abbrev StepOracle (M : Fin (L + 1) → ℕ) :=
+  (s : ConState L) → Option {s' : ConState L // conRel M s' s}
+
+/-- **Recursion-syntax pin** (T2): `WellFounded.fix (conRel_wf M)` elaborates with the recursive
+call on the `conRel`-smaller child. `conStepDepth` counts steps down the oracle's chain — a generic
+body confirming the WF machinery before the tree-valued `buildTree`. -/
+noncomputable def conStepDepth (M : Fin (L + 1) → ℕ) (oracle : StepOracle M) : ConState L → ℕ :=
+  WellFounded.fix (conRel_wf M) fun s rec =>
+    match oracle s with
+    | none => 0
+    | some ⟨s', h⟩ => rec s' h + 1
+
 end DLNFibre.DLN.RLCT.Engine
