@@ -265,4 +265,27 @@ noncomputable def conStepDepth (M : Fin (L + 1) → ℕ) (oracle : StepOracle M)
     | none => 0
     | some ⟨s', h⟩ => rec s' h + 1
 
+/-! ## T2 build-side invariants (TYPES only; preservation proofs are buildTree bricks) -/
+
+/-- **The weakened per-node invariant** (elder-gate4 §3a). Each divisor's rank-pattern is
+WEAK-DECREASING (`t⁽¹⁾ ≥ … ≥ t⁽ᴸ⁾`) and BLOCK-BOUNDED (`t⁽ʲ⁾ ≤ admBound M j`). This — NOT
+`divProfile ∈ Adm` — is what the T-rule preserves per node: a PENDING node has `t̃ = min T > 0`, so
+its last component `> 0` and it is NOT in `Adm` (clause 3). `∈ Adm` is the LEAF property
+`WeakProfileInv + leaf-t̃=0` (post-final-rollover `J=0`). The preservation lemma
+`stepUpdate_preserves_weakInv` is a buildTree brick; the case-2 raw-width reset at non-monotone
+widths is the pnp (2,2,3,2) gate. -/
+def WeakProfileInv (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
+  ∀ k : Fin s.numDiv,
+    (∀ i j : Fin L, i ≤ j → s.divProfile k j ≤ s.divProfile k i) ∧
+      (∀ j : Fin L, s.divProfile k j ≤ admBound M j)
+
+/-- **The total-comparability CHAIN invariant** (elder-gate4 §3c). The carried profiles are pairwise
+Def-4-comparable (`T_k ≤ T_{k'}` or `T_{k'} ≤ T_k`, componentwise) — the maintained chain, NOT
+merely the chooser's local minimality. T3's cover proof CONSUMES this (invariant→principalization,
+`cert-atlas-probe-2222` (c)); its preservation is a buildTree brick. -/
+def CompChainInv {L : ℕ} (s : ConState L) : Prop :=
+  ∀ k k' : Fin s.numDiv,
+    (∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j) ∨
+      (∀ j : Fin L, s.divProfile k' j ≤ s.divProfile k j)
+
 end DLNFibre.DLN.RLCT.Engine
