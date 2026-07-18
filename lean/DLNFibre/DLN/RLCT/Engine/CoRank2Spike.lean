@@ -71,13 +71,19 @@ theorem corank2Leaf_fits : corank2Leaf.resRank + corank2Leaf.numDiv ≤ flatDim 
 
 /-! ## T-rule truth-witness at (3,3,4) — the load-bearing head-preservation case (pnp trace)
 
-`leaf224` exercises the `T`-rule only trivially (case-2 at `layer = 0`: all tail).
-The load-bearing case is a case-1(1) merge at `layer = 1`, where the head component is PRESERVED and
-the tail written — the exact place a wrong `tail iff n.layer ≤ p.val` boundary would corrupt. These
-pins reproduce pnp-atlas verdict-3's page-verified (3,3,4) values and confirm `divExp = Mval(T)`. -/
+**Indexing:** Lean `layer` is the 0-INDEXED paper layer (`layer = S − 1`; root `layer = 0` is paper
+`S = 1`). So the merge below at Lean `layer = 1` is the paper `S = 2` clearing — this is where the
+`(1,1)→(1,0)` merge with the `M = 8 = minAdm(3,3,4)` bookkeeping actually occurs (confirmed against
+the simulator).
 
-/-- A (3,3,4) case-1(1) parent at `layer = 1`: one divisor with profile `T = (1,1)`, `divExp = 4 =
-Mval(1,1)`, residual cols `M⁽³⁾−J = 4`. -/
+`leaf224` exercises the `T`-rule only trivially (case-2 at `layer = 0`, paper `S = 1`: all tail).
+The load-bearing case is a case-1(1) merge at `layer = 1` (paper `S = 2`), where the head component
+is PRESERVED and the tail written — the exact place a wrong `tail iff n.layer ≤ p.val` boundary
+would corrupt. These pins reproduce pnp-atlas verdict-3's page-verified (3,3,4) values
+(`divExp = Mval(T)`); their `layer` values are the correct Lean 0-indexed layer. -/
+
+/-- A (3,3,4) case-1(1) parent at Lean `layer = 1` (paper `S = 2`): one divisor with profile
+`T = (1,1)`, `divExp = 4 = Mval(1,1)`, residual cols `M⁽³⁾−J = 4`. -/
 def node334 : StepData M334 where
   layer := 1; cleared := 0; resRows := 3; resCols := 4
   numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
