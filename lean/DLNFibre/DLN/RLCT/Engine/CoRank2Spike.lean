@@ -34,6 +34,7 @@ noncomputable def corank2Leaf : LeafData M334 where
   divExp := fun _ => 8
   cleared := 0
   divProfile := fun _ => ![0, 0]
+  fullNumDiv := 1; fullDivExp := fun _ => 8; fullDivProfile := fun _ => ![0, 0]
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   chartMap := id
   srcBox := ⇑(paramsEquivFlat M334) ⁻¹' cubeBox (flatDim M334) 1

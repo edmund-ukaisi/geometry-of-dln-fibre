@@ -172,12 +172,21 @@ def StepRel {M : Fin (L + 1) → ℕ} (n : StepData M) (e : Edge M) : Prop :=
       ∃ h : e.subst.mergeIdx < n.numDiv,
         n.divTilde ⟨e.subst.mergeIdx, h⟩ = n.cleared + e.subst.runLen)
 
-/-- **Full monomialisation**: each leaf's terminal divisor exponent equals `Mval` of its rank
-profile, AND that profile is ADMISSIBLE (`divProfile k ∈ Adm M` — finding 4). The leaf chain is
-enforced at type strength by `LeafData.bChain`. -/
+/-- **Full monomialisation** (B'): each leaf's ANALYTIC (`t̃=0`) divisor exponent equals `Mval` of
+its rank profile, AND that profile is ADMISSIBLE (`divProfile k ∈ Adm M`; note `∈ Adm` gives
+last-component-`0`, so `t̃ = min = 0` — the analytic read-off IS over `t̃=0` divisors, for free). PLUS
+the B' COHERENCE TIE: the analytic enumeration is EXACTLY the `t̃=0` sublist of the FULL ledger — each
+analytic divisor matches a `t̃=0` full divisor, and every `t̃=0` full divisor is matched (so
+`terminalExponents` captures all `t̃=0` exponents; nothing missed, nothing spurious). The leaf chain
+is enforced at type strength by `LeafData.bChain`. -/
 def IsFullMonomialization {M : Fin (L + 1) → ℕ} (t : ResolutionTree M) : Prop :=
-  ∀ l ∈ ResolutionTree.leaves t, ∀ k : Fin l.numDiv,
-    l.divExp k = (Mval M (l.divProfile k)).toNat ∧ l.divProfile k ∈ Adm M
+  ∀ l ∈ ResolutionTree.leaves t,
+    (∀ k : Fin l.numDiv, l.divExp k = (Mval M (l.divProfile k)).toNat ∧ l.divProfile k ∈ Adm M) ∧
+      (∀ k : Fin l.numDiv, ∃ j : Fin l.fullNumDiv,
+        l.divExp k = l.fullDivExp j ∧ l.divProfile k = l.fullDivProfile j ∧
+          tildeOf (l.fullDivProfile j) = 0) ∧
+      (∀ j : Fin l.fullNumDiv, tildeOf (l.fullDivProfile j) = 0 →
+        ∃ k : Fin l.numDiv, l.divExp k = l.fullDivExp j ∧ l.divProfile k = l.fullDivProfile j)
 
 /-- **A canonical resolution** — the bundle every downstream obligation projects from. Conjoins full
 monomialisation; the edge-relational `StepRel` on every parent–edge pair; the branch-rooted base
