@@ -86,28 +86,48 @@ def ChartBridge (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
         LeafPullback l ∧ LeafJacobian l) ∧
     (∀ p ∈ ResolutionTree.leafPaths (id : Params M → Params M) t, p.1.chartMap = p.2)
 
-/-- **Per-edge existence-CONSISTENCY check over the child ledger** (r2 scope, 2026-07-18): each
-case demands the case-specific updated exponent EXISTS in the child's root ledger (existential
-index) — it does NOT certify full transition-faithfulness (a dummy divisor can appear/vanish
-across an edge unchecked). Sound for the finiteness certificate, which never consumes it; the
-faithful form (typed `stepUpdate` with child ledger = its output) is the construction tide's
-first deliverable.
-* **case 2** — a shared divisor on the parent (`∀ g, kp ∈ support g`) AND the CHILD's new divisor
-  has exponent `resRows·resCols` (worked.tex:516).
-* **case 1(1)** — a parent divisor at level `J` merges: the CHILD exponent is
-  `parent divExp + J₁·resCols` (`M' = M + J₁·(M^{(S+1)}−J)`; worked.tex:505–507).
-* **case 1(2)** — the CHILD advances `cleared` (a new pivot). -/
+/-- **The typed transition** (rung 1, fork 9): the child root ledger CORE a step DETERMINES from its
+parent `n`, the `case`, and the edge substitution `σ` — `numDiv`, per-divisor `divExp`/`divTilde`,
+`cleared`. Faithful to the page-image transitions:
+* **case 1(1)** — merge INTO divisor `σ.mergeIdx`: its exponent `+= runLen·resCols`
+  (`M' = M + J₁·(M^{(S+1)}−J)`, preprint p.16), its `t̃ → cleared`; `numDiv`/`cleared` unchanged.
+* **case 1(2)** — SPLIT divisor `σ.mergeIdx` into a NEW pivot appended at the end with exponent
+  `divExp(mergeIdx) + runLen·resCols` and `t̃ = cleared` (preprint p.17 `M'_{S,J+1} = M_{sk} +
+  J₁·(M^{(S+1)}−J)`, `t̃_{S,J+1}=J`); advance `cleared` by one.
+* **case 2** — full block: append a NEW shared divisor of exponent `resRows·resCols` (preprint p.20)
+  with `t̃ = cleared`; clear the whole residual (`cleared += resRows`).
+SUPPORT PROPAGATION is STOP-AND-SURFACEd (NOT modelled here): transporting the `support` `Finset`s
+across the per-divisor re-indexing balloons (Codex-confirmed; compass second cost center), deferred
+to a `genDivExp` redesign rung. The case-1(2) new-exponent and the case-2 `cleared` advance are the
+architect's page-reading choices, flagged for elder ratification. -/
+def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : ChartSubst M) :
+    ResolutionTree.RootLedger :=
+  match c with
+  | StepCase.case11 =>
+      { numDiv := n.numDiv
+        divExp := fun k => if (k : ℕ) = σ.mergeIdx then n.divExp k + σ.runLen * n.resCols
+                            else n.divExp k
+        divTilde := fun k => if (k : ℕ) = σ.mergeIdx then n.cleared else n.divTilde k
+        cleared := n.cleared }
+  | StepCase.case12 =>
+      { numDiv := n.numDiv + 1
+        divExp := Fin.snoc n.divExp
+          ((if h : σ.mergeIdx < n.numDiv then n.divExp ⟨σ.mergeIdx, h⟩ else 0)
+            + σ.runLen * n.resCols)
+        divTilde := Fin.snoc n.divTilde n.cleared
+        cleared := n.cleared + 1 }
+  | StepCase.case2 =>
+      { numDiv := n.numDiv + 1
+        divExp := Fin.snoc n.divExp (n.resRows * n.resCols)
+        divTilde := Fin.snoc n.divTilde n.cleared
+        cleared := n.cleared + n.resRows }
+
+/-- **The faithful per-step transition relation** (rung 1): the child's root ledger core EQUALS the
+parent's `stepUpdate`. Retires the existential form — a dummy divisor appearing/vanishing across an
+edge changes `rootLedger e.child` and is rejected (see `dummyDivisor_not_stepRel`). Since the
+construction computes each child ledger via `stepUpdate`, the equality is rfl-class. -/
 def StepRel {M : Fin (L + 1) → ℕ} (n : StepData M) (e : Edge M) : Prop :=
-  (e.case = StepCase.case2 →
-      (∃ kp : Fin n.numDiv, ∀ g : Fin n.numGen, kp ∈ n.support g) ∧
-      (∃ kc : ℕ, kc < ResolutionTree.rootNumDiv e.child ∧
-        ResolutionTree.rootDivExp e.child kc = n.resRows * n.resCols)) ∧
-  (e.case = StepCase.case11 →
-      ∃ kp : Fin n.numDiv, n.divTilde kp = n.cleared ∧
-        ∃ kc : ℕ, kc < ResolutionTree.rootNumDiv e.child ∧
-          ResolutionTree.rootDivExp e.child kc = n.divExp kp + e.subst.runLen * n.resCols) ∧
-  (e.case = StepCase.case12 →
-      ResolutionTree.rootCleared e.child = n.cleared + 1 ∧ 0 < ResolutionTree.rootNumDiv e.child)
+  ResolutionTree.rootLedger e.child = stepUpdate n e.case e.subst
 
 /-- **Full monomialisation**: each leaf's terminal divisor exponent equals `Mval` of its rank
 profile, AND that profile is ADMISSIBLE (`divProfile k ∈ Adm M` — finding 4). The leaf chain is
