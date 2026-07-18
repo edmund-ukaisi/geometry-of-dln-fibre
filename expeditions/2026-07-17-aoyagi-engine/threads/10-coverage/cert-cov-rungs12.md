@@ -181,3 +181,40 @@ the full family is load-bearing.
   TYPES; the full family is `d_center` charts (the 1(2) representative stands for
   `J₁·(M^{(S+1)}−J)` block-pivot charts). The coverage-thread `page-pin-centers.md` (cov07) already
   states this correctly.
+
+---
+
+## Addendum (post-controller notes): independent Case-2 page-read + def-form reconciliation
+
+**Independent page verification of BOTH centers (item 3 — closing the independence gap).** My
+original cert page-verified only the Case-1 center (p.16); the Case-2 center was relayed from
+`page-pin-centers.md`. I have now read pp.19-22 from the page images directly:
+- **Case 2 (p.19, VERBATIM):** "Construct the blow-up along submanifold
+  `{ d_ij = 0, (i=J+1,…,M(S), j=J+1,…,M^{(S+1)}) }`." — the ENTIRE residual block `D_J`, size
+  `(M(S)−J)×(M^{(S+1)}−J)`, **no `u` variable** (unlike Case 1). Center codim
+  `(M(S)−J)·(M^{(S+1)}−J)`. Shown via the corner `d_{J+1,J+1}=u_{S,J+1}` representative; shear `Q`
+  (p.20) cleans row 1, `P` (p.21) cleans column 1. Head reset `t^{(i)}_{S,J+1}=M^{(i+1)}` (RAW —
+  the FIX-A defect), exponent `M'_{S,J+1}=(M(S)−J)(M^{(S+1)}−J)`.
+- **p.22 read-off (VERBATIM):** `½·min{M_{s,k}, t̃_{s,k}=0}` (the `t̃=0`-only restriction) with
+  `M_{s,k}=(M^{(1)}−t^{(1)})(M^{(2)}−t^{(1)})+∑_{j=2}^{L}(t^{(j−1)}−t^{(j)})(M^{(j+1)}−t^{(j)})`.
+- **Both centers match `page-pin-centers.md` exactly.** The coverage seat's pin is VERIFIED against
+  my own page read. (a)-generalized is now independently page-grounded on both cases, not resting on
+  the seat's document. Note Case-2 has NO `u`-pivot — its full family is pure `d`-block pivots, so the
+  corner gap bites even at codim 2 (the probe's `(0,ε)` witness is a 2×1 residual block).
+
+**Def-form reconciliation (item 2 — verdicts UNCHANGED against current root).** Root now defines
+`leafPathImages` by direct structural mutual recursion (`leaf l ↦ l.srcBox`; `branch ↦ ⋃ edges
+localSub '' child`), so:
+- `leafPathImages_branch` is now `image_comp`-free / definitional-class and is **PROVED on root**
+  (list-biUnion cons set logic); `ownCovers_branch` is **PROVED on root** and its proof
+  (`iUnion₂_mono` + `image_mono` + `hchild` region-containment) matches my hand-derivation. Both are
+  verdict-independent; my SOUND reads confirmed against the actual proofs. Per the "watch
+  rfl-after-rewrite" audit note, `leafPathImages_branch` is now useful API, not independent content —
+  the load-bearing theorem is the headline.
+- The accumulator-factoring content (`leafPathImages = ⋃ p ∈ leafPaths id t, p.2 '' p.1.srcBox`, the
+  prepend argument) relocated INTO the HELD `chartBridge_imageCover_of_ownCovers` proof, alongside
+  `leaves = (leafPaths id t).map fst` and the `hcoh` coherence rewrite. That HELD statement is
+  verbatim-unchanged and remains SOUND/grindable — I re-verified my derivation of the HELD lemma
+  (mutual induction on the tree) holds under the new def.
+- `node_pivotCover_of_atom` unchanged (`pivotComplete : True` + `sorry`) — the stub verdict stands:
+  gate the grind, fill with the (a)-family pivot-completeness contract.
