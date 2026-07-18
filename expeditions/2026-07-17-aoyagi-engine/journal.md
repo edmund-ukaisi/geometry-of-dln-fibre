@@ -1824,3 +1824,12 @@ rolloverDecision (the rollover ConDecision exercising the new carrier + guard en
 clean-three). Remaining spine: the case-1/case-2 decision constructors, the total dispatch,
 WF-reachability, o5-∈ — the case-1 branch being the mutual-induction-coupled one, taken on
 the next fresh turn.
+
+## 2026-07-18 ALL PER-BRANCH DECISIONS DONE (tick 133)
+Merged + verified (zero sorryAx): the complete per-branch decision family — rollover (chartless
++ guard), case2 (definitional append), case12 (split, dite-reduced), case11 (merge + the divExp
+bump via the congruence), and case1Decision (the two-chart blow-up node emitting BOTH case-1
+edges). Every emitted edge discharges the full ratified StepRel including the new guard. The
+spine's remaining summit, one focused unit: the TOTAL dispatch (dite on classify + the
+chooser/occ plumbing — the mutual-induction coupling point), WF-reachability (the preservation
+kit is complete), and o5-∈. These three close monomialization_terminates modulo ChartBridge.
