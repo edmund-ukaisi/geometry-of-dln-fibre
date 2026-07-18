@@ -620,3 +620,16 @@ banked family + keeps the ONE genuinely-new piece (lintegral_flatNodeLoss_smul_b
 to tick 41: brick 2's homogeneity results were re-derivations, not new banked content — the
 seat's redundant-commission was self-caught one brick later. Tide note merged (F1/F2 record).
 Architect's blocking fix + reviewer's spot-check still pending.
+
+## 2026-07-18 GLUE HANDOFF ACCEPTED; ABSTRACT-FIELD PASS CONVENED EARLY (tick 49)
+glue-t05 handed back at the correct checkpoint: the boundedness-independent half is complete and
+the per-leaf + cover work is interface-coupled to ChartBridge's final shape — so the #56
+abstract-field pass runs BEFORE that build (pulled earlier than slotted, on the seat's own
+racing-visible-progress argument). One crossed message absorbed (F1 was already landed/merged;
+the seat's "blocked on F1" predates my unblock ping). Elder convened with the full field list +
+three consumer-fine-print checks I added: (a) Tonelli coordinate-separation — does ChartBridge
+FORCE the disjoint-coordinate alignment the pullback identity uses; (b) finite-subcover — does
+the carrier force FINITE trees; (c) per-leaf lo/hi squeeze constants — uniformity across leaves.
+Deferred-with-note: the D1L2 homogeneity re-home (post-hbox library extraction). Still owed:
+glue's battery script (4th ask) + needs-vs-forces confirmation. Architect's blocking fix +
+rev-carrier spot-check still pending — rung 2 gated.
