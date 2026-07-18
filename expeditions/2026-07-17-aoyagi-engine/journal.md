@@ -930,3 +930,11 @@ strengthening the fork-9/eligibility work. Residual formalisation risk (not a wa
 residual at the coupled t=1 leaf provably unit/Morse — queued as a battery extension
 (h6_composed_chart_2222 → one fully-emitted t=1 leaf). RUNG 2 FULLY COMPLETE. Sequencing steer:
 assembly AFTER the R1 faithful carrier (council order; pnp-atlas verdict 3 prices it first).
+
+## 2026-07-18 HEDGE FINALIZED + GLUE MODULE B PROGRESS (tick 68)
+Merged: (1) the case12 guard finalization — elder confirmation absorbed, "PENDING ELDER" hedge
+dropped from the docstring (grep 0), the two scope notes (tie-break, gap condition) named per the
+directive; (2) glue Module B sub-lemmas abs_det_comp + flat_leaf_model_lt_top — force-verified
+clean-three. The glue lane is closing on the per-leaf read (B2 area formula + B_top remain, then
+Module C). pnp-atlas mid-computation (own worktree per the corrected brief). Architect drafting
+the R1 design + revised ladder while holding for pnp verdict 3.
