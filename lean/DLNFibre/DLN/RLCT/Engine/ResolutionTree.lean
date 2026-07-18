@@ -73,7 +73,7 @@ structure ChartSubst (M : Fin (L + 1) → ℕ) where
   jacDivCount : ℕ
   /-- Monomial-Jacobian exponents contributed at this step. CONSTRUCTION-SIDE BOOKKEEPING (minor 8):
   the certificate's Jacobian content lives entirely in `LeafJacobian`'s existential `Dβ` (fork-8
-  area-formula route), NOT in this ledger — `jacPow` is carried for the construction's own accounting. -/
+  area-formula route), NOT this ledger — `jacPow` is for the construction's own accounting. -/
   jacPow : Fin jacDivCount → ℕ
 
 /-- **Per-node data of the double induction** (map node: `resolution-tree`). The step's CASE is on
@@ -102,7 +102,7 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   /-- The per-divisor exponent ledger `M_{s,k}`. CERTIFICATE CONSTRAINT — read by `StepRel`'s
   case-1(1) clause and `IsFullMonomialization`. -/
   divExp : Fin numDiv → ℕ
-  /-- **The per-divisor rank-pattern vector** `T_{s,k} = (t⁽¹⁾,…,t⁽ᴸ⁾)` (rung R1: full-`T` PRIMITIVE;
+  /-- **The per-divisor rank-pattern vector** `T_{s,k} = (t⁽¹⁾,…,t⁽ᴸ⁾)` (R1: full-`T` PRIMITIVE;
   the clearing level `t̃_{s,k}` is DERIVED via `tildeOf = min T`). CERTIFICATE CONSTRAINT — read by
   `stepUpdate`'s `T`-rule, `StepRel`'s eligibility clause (via derived `t̃`), and the coherence
   `divExp = Mval T` (`IsFullMonomialization`). -/
@@ -111,7 +111,7 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   numGen : ℕ
   /-- **The generator-divisor MULTIPLICITY ledger** `genDivExp g k` = the exponent of divisor `k` in
   generator `g` (rung R1: the ratified redesign — a multiplicity field, NOT a flattened `Finset`;
-  `g-delta-flatten.py`). The sharing `support g` is DERIVED as its nonzero locus (`StepData.support`).
+  `g-delta-flatten.py`). The sharing `support g` = its nonzero locus (`StepData.support`).
   CERTIFICATE CONSTRAINT — the propagation proofs across the per-divisor re-indexing are T4. -/
   genDivExp : Fin numGen → Fin numDiv → ℕ
 
@@ -121,17 +121,27 @@ UPSTAIRS source domain `srcBox`. Divisor coords `divCoord` and Morse coords `res
 in
 `Fin (flatDim M)`, read off a point via `paramsEquivFlat`. -/
 structure LeafData (M : Fin (L + 1) → ℕ) where
-  /-- Number of terminal divisors (all `t̃ = 0`). -/
+  /-- Number of `t̃=0` ANALYTIC divisors (B'): the read-off enumeration `divCoord`/`divExp`/
+  `divProfile` range over these. NOT the full ledger — that is `fullNumDiv` below (the `t̃>0`
+  monomials fold into `residualCore`, T3's squeeze). `IsFullMonomialization` ties this to the `t̃=0`
+  sublist of the full ledger. -/
   numDiv : ℕ
-  /-- The accumulated exponent `M_{s,k}` of each terminal divisor. CERTIFICATE CONSTRAINT — read by
-  `IsFullMonomialization`, `terminalExponents`, and the exponent hooks. -/
+  /-- The accumulated exponent `M_{s,k}` of each `t̃=0` ANALYTIC divisor. CERTIFICATE CONSTRAINT —
+  read by `IsFullMonomialization`, `terminalExponents`, and the exponent hooks (all `t̃=0`). -/
   divExp : Fin numDiv → ℕ
-  /-- The leaf's cleared-pivot count `J` (rung 1: the leaf ledger). CERTIFICATE CONSTRAINT — read
-  via `rootLedger`. The clearing level `t̃_{s,k}` is DERIVED from `divProfile` (`tildeOf = min`). -/
+  /-- The leaf's cleared-pivot count `J`. The clearing level `t̃_{s,k}` is DERIVED from `divProfile`
+  (`tildeOf = min`); the analytic divisors are the `t̃=0` ones. -/
   cleared : ℕ
-  /-- The rank profile of each terminal divisor's branch. CERTIFICATE CONSTRAINT — `Adm`-membership
+  /-- The rank profile of each `t̃=0` ANALYTIC divisor. CERTIFICATE CONSTRAINT — `Adm`-membership
   and the `Mval` tie are read by `IsFullMonomialization` (finding 4). -/
   divProfile : Fin numDiv → (Fin L → ℕ)
+  /-- Number of divisors in the FULL ledger (ALL `t̃`; B'). `rootLedger`/`StepRel` read this side —
+  the ledger keeps every divisor, as before. -/
+  fullNumDiv : ℕ
+  /-- The full ledger's per-divisor exponent (all divisors). -/
+  fullDivExp : Fin fullNumDiv → ℕ
+  /-- The full ledger's per-divisor rank-pattern (all divisors). -/
+  fullDivProfile : Fin fullNumDiv → (Fin L → ℕ)
   /-- Length of the diagonal monomial vector. -/
   numB : ℕ
   /-- The diagonal monomial vector. TYPE-LEVEL CERTIFICATE CONSTRAINT via `bChain` (no runtime Prop
@@ -249,15 +259,17 @@ structure RootLedger (L : ℕ) where
   numDiv : ℕ
   /-- Per-divisor exponent `M_{s,k}`. -/
   divExp : Fin numDiv → ℕ
-  /-- Per-divisor rank-pattern vector `T_{s,k}` (rung R1: `t̃` is DERIVED from this via `tildeOf`). -/
+  /-- Per-divisor rank-pattern `T_{s,k}` (R1: `t̃` DERIVED from this via `tildeOf`). -/
   divProfile : Fin numDiv → (Fin L → ℕ)
   /-- Cleared-pivot count `J`. -/
   cleared : ℕ
 
-/-- Project the child root's ledger core off a subtree — honest and total (both `StepData` and
-`LeafData` carry the fields). The faithful `StepRel` equates this to `stepUpdate parent e`. -/
+/-- Project the child root's ledger core off a subtree — honest and total. Reads the FULL ledger
+(B'): a leaf's `fullNumDiv`/`fullDivExp`/`fullDivProfile` (ALL divisors), a branch node's `StepData`
+fields. The faithful `StepRel` equates this to `stepUpdate parent e` (the ledger keeps every
+divisor; the `t̃=0` analytic sublist is the read-off side). -/
 def rootLedger {M : Fin (L + 1) → ℕ} : ResolutionTree M → RootLedger L
-  | leaf l => ⟨l.numDiv, l.divExp, l.divProfile, l.cleared⟩
+  | leaf l => ⟨l.fullNumDiv, l.fullDivExp, l.fullDivProfile, l.cleared⟩
   | branch n _ => ⟨n.numDiv, n.divExp, n.divProfile, n.cleared⟩
 
 /-- The terminal EXPONENTS the threshold `½·min` reads off: each leaf's divisor exponents PLUS its
