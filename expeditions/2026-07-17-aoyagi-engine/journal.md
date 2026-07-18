@@ -1165,3 +1165,17 @@ pointed at the MAIN checkout's scripts/hooks which does not exist there — the 
 any commit this expedition. Repointed to this worktree's scripts/hooks (verified present). Both
 guards added to the memo. The map is now green (region-glue: validated, with the discharge fact
 + my commission error recorded in the note; schema has no 'discharged' status).
+
+## 2026-07-18 T1 CONSOLIDATED REVIEW: VALIDATE — T2 OPENS (tick 86)
+rev-t1: scoped-VALIDATE on the whole T1 unit + discharge (its own decide re-derivation of the pnp
+traces, own forced prints, Codex-faithful on the T-rule + precondition threading, batteries
+re-run). The T-update matches the page-pinned rule EXACTLY; the μ-spine fully clean-three; the
+discharge's type-level sorryAx analysis CONFIRMED. Map: case-step-lemmas → VALIDATED with the
+faithful prop (the old ideal-preservation framing replaced); resolution-tree note records the
+full-T restructure; validate green (hook now live). THREE T2 INTERFACE CONSTRAINTS flagged and
+relayed: (1) layer < L supplied by the assembly's live-layer branch (not derivable from
+StateInvariant); (2) runLen ≥ 1 — the chooser type doesn't yet require what the case-1(1)
+descent consumes; the gap condition supplies it (my preference: one conjunct in the chooser type,
+page-pinned p.15); (3) case-1(2) parent persistence INFERRED not page-pinned — a real case12
+trace witness owed at T2 (matches the pnp flag). Nits F3-F5 fold into T2's touches. T2 (the
+recursion-assembly skeleton) is GO — the last structural piece before coverage.
