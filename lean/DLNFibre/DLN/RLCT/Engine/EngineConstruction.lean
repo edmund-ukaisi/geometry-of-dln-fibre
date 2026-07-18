@@ -721,6 +721,79 @@ theorem runMinWidth_le_admBound {L : ℕ} (M : Fin (L + 1) → ℕ) (j : Fin L) 
       exact Nat.mod_le 1 (L + 1)
   · exact Finset.inf'_le _ (Finset.mem_Iic.mpr le_rfl)
 
+/-- `widthMinUpto M 0 = M 0` — the running-min through layer 0 is just `M⁽¹⁾`. -/
+theorem widthMinUpto_zero {L : ℕ} (M : Fin (L + 1) → ℕ) : widthMinUpto M 0 = M 0 := by
+  refine le_antisymm
+    (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ (0 : Fin (L + 1)), by simp⟩)) ?_
+  rw [widthMinUpto]
+  refine Finset.le_inf' _ _ (fun i hi => ?_)
+  rw [Finset.mem_filter] at hi
+  have hi0 : i = 0 := Fin.ext (Nat.le_zero.mp hi.2)
+  exact le_of_eq (congrArg M hi0).symm
+
+/-- **The case-2 `Mval` running-min telescoping** (the B'-coherence identity for the case-2 append,
+`T = setTail layer J runMinWidth`): every term of `Mval T = ∑ⱼ (tPrevⱼ − Tⱼ)(M⁽ʲ⁺¹⁾ − Tⱼ)` vanishes
+except the survivor `j = layer`. HEAD terms (`j < layer`): `Tⱼ = runMinWidth j = widthMinUpto (j+1)
+= min(widthMinUpto j, M⁽ʲ⁺¹⁾)` and `tPrevⱼ = widthMinUpto j`, so one factor is `0`. TAIL terms
+(`j > layer`): `Tⱼ = tPrevⱼ = J`, so `tPrevⱼ − Tⱼ = 0`. The lone SURVIVOR is `(widthMinUpto layer −
+J)(M⁽ˡᵃʸᵉʳ⁺¹⁾ − J)` — the running-min corank, NOT the raw `M⁽ˡᵃʸᵉʳ⁾` (the FIX-A distinction).
+Unconditional over ℤ (no bound on `J` needed). -/
+theorem Mval_setTail_runMinWidth {L : ℕ} (M : Fin (L + 1) → ℕ) {layer cleared : ℕ}
+    (hlive : layer < L) :
+    Mval M (setTail layer cleared (fun p => runMinWidth M p))
+      = ((widthMinUpto M layer : ℤ) - (cleared : ℤ))
+        * ((M ⟨layer + 1, by omega⟩ : ℤ) - (cleared : ℤ)) := by
+  set T : Fin L → ℕ := setTail layer cleared (fun p => runMinWidth M p) with hT
+  -- `tPrev` at a coord `≤ layer` is the running-min through that coord.
+  have htprev : ∀ j : Fin L, (j : ℕ) ≤ layer → tPrev M T j = (widthMinUpto M j.val : ℤ) := by
+    intro j hj
+    unfold tPrev
+    split_ifs with h0
+    · rw [h0, widthMinUpto_zero]
+    · rw [hT]
+      have hlt : ¬ layer ≤ j.val - 1 := by omega
+      simp only [setTail]
+      rw [if_neg hlt, runMinWidth_eq_widthMinUpto]
+      norm_cast
+      congr 1
+      show j.val - 1 + 1 = j.val
+      omega
+  rw [Mval, Finset.sum_eq_single (⟨layer, hlive⟩ : Fin L)]
+  · -- the survivor term
+    have hTs : T ⟨layer, hlive⟩ = cleared := by rw [hT]; exact setTail_of_le le_rfl
+    have hts : tPrev M T ⟨layer, hlive⟩ = (widthMinUpto M layer : ℤ) := htprev _ le_rfl
+    have hsucc : M (⟨layer, hlive⟩ : Fin L).succ = M ⟨layer + 1, by omega⟩ :=
+      congrArg M (Fin.ext (by simp))
+    rw [hTs, hts, hsucc]
+  · -- every other term vanishes
+    intro b _ hb
+    rcases lt_trichotomy b.val layer with hlt | heq | hgt
+    · -- head: the running-min absorbs, so one factor is zero
+      have hh : b.val + 1 < L + 1 := by omega
+      have htb : tPrev M T b = (widthMinUpto M b.val : ℤ) := htprev b (le_of_lt hlt)
+      have hTb : T b = min (widthMinUpto M b.val) (M ⟨b.val + 1, hh⟩) := by
+        rw [hT]; simp only [setTail, if_neg (not_le.mpr hlt)]
+        rw [runMinWidth_eq_widthMinUpto, widthMinUpto_succ M hh]
+      have hbsucc : M b.succ = M ⟨b.val + 1, hh⟩ := congrArg M (Fin.ext (by simp))
+      have key : (tPrev M T b - (T b : ℤ)) = 0 ∨ ((M b.succ : ℤ) - (T b : ℤ)) = 0 := by
+        rw [htb, hTb, hbsucc]
+        rcases le_total (widthMinUpto M b.val) (M ⟨b.val + 1, hh⟩) with hle | hle
+        · exact Or.inl (by rw [min_eq_left hle]; ring)
+        · exact Or.inr (by rw [min_eq_right hle]; ring)
+      rcases key with h | h
+      · exact mul_eq_zero_of_left h _
+      · exact mul_eq_zero_of_right _ h
+    · exact absurd (Fin.ext heq) hb
+    · -- tail: `tPrev − T = J − J = 0`
+      have hTb : T b = cleared := by rw [hT]; exact setTail_of_le (le_of_lt hgt)
+      have htb : tPrev M T b = (cleared : ℤ) := by
+        unfold tPrev
+        rw [if_neg (show b.val ≠ 0 by omega), hT]
+        simp only [setTail]
+        rw [if_pos (show layer ≤ (⟨b.val - 1, by omega⟩ : Fin L).val by simp; omega)]
+      rw [hTb, htb]; ring
+  · intro h; exact absurd (Finset.mem_univ _) h
+
 /-- **WidthBound** (o4-cert Part 3/6, consumed by the case-2 Lemma B): each LIVE divisor's HEAD
 (coords at index `< layer`) is bounded by the running-min width `runMinWidth`.
 
