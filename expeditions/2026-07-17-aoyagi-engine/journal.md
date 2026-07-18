@@ -488,3 +488,12 @@ one new obligation resRank ≥ minAdm is in-scope and owes a smallest-instance c
 rule 2 — NOT covered by the divisor-ratio hunt). (5) priorities.md re-cut applied verbatim.
 Actions: tide commission amended (L=3 milestone + contention note + resRank battery at rung 2);
 glue tide commissioned in parallel (new formaliser seat).
+
+## 2026-07-18 GLUE TIDE FIRST BRICK: SCALING-BRIDGE LANDED (tick 40)
+glue-t05's first brick merged + controller-verified (own build + FORCED #print): the homogeneity
+scaling-bridge ∫_{εK}F^(−c') = ε^(N−Dc')∫_K F^(−c') (S1ScalingBridge.lean, Foundations-grade,
+abstract F with homogeneity as the only hypothesis, arbitrary measurable K) + the pure Haar CoV
+lintegral_smul_set. Both clean-three by forced probe. The ONE new analytic lemma route (b) owed
+is now BANKED — the ex-P8 gap is closed as a statement family; what remains in the glue tide is
+instantiation (global dlnLoss homogeneity induction from the banked per-layer form) + the per-leaf
+read + cover assembly. No tripwires hit.
