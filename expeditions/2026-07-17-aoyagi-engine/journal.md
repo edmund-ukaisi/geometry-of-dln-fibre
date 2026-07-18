@@ -1855,3 +1855,16 @@ occ.min?'s minimality (the mutual-induction coupling: target = the min occupied 
 gap condition), needing the exact List.min? lemma signatures pinned rather than guessed. Taken
 fresh. Then: terminal leaf + termination-completeness, o5-∈ — roughly one focused turn from
 monomialization_terminates-modulo-ChartBridge on the structural side.
+
+## 2026-07-18 THE MUTUAL INDUCTION IS LEAN FACT (tick 136)
+OracleInv_conOracle_stepChildren PROVEN, merged, verified (zero sorryAx): every child conOracle
+emits at an invariant state is invariant — the o1↔o4↔o2 mutual induction, the oracle unit's
+deepest piece, realized. The Lean battle documented + its idiom banked to the gotchas ledger
+(dependent match under projection → per-branch reduction equations; the def must inline the
+match; staged simp_all only + subst_vars). Each branch closed via the preservation kit exactly
+as certified (gap from occ-emptiness / occ.min? minimality via List.min?_eq_some_iff';
+minimality from chooseMin_spec; the congruence carrying case-1(1)). With the base, cone-goodness
+holds at every reachable state. Remaining spine: the WF-fold (small), the full terminal leaf +
+termination-completeness, o5-∈ — then monomialization_terminates modulo ChartBridge assembles.
+The architect also revived on the liveness ping (the 6-hour quiet was a stalled session; the
+clean-tree discipline meant zero loss).

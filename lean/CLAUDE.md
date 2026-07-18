@@ -299,3 +299,13 @@ Front-loaded verdict (numeric certificate `expeditions/2026-06-20-aoyagi-full/th
   at the residual/complement level; `rank_mul_le_left/right`, `rank_of_isUnit`, `rank_submatrix` exist at
   the pin); (b3) the `(a,b)` extraction. `hInterface` + value-close finish once these land. Do NOT launder
   `hrank₂` into a sorry or reduce it to another hypothesis (four hands have held this).
+- **A dependent `match h : e with` INSIDE a def resists reduction under a projection**
+  (`split at`/`simp [theDef, h]`/`rw [theDef]; rcases` all fail to reach it — e.g.
+  `(conOracle M s).stepChildren` over `match hmin : occ.min?`). Working idiom (Codex-corroborated,
+  `OracleInv_conOracle_stepChildren`, 2026-07-18): prove per-branch REDUCTION EQUATIONS
+  `theDef args = <branch-value>` (by `unfold; rw [dif_neg …]; split` — the match sits at the
+  equation LHS's head, where `split` CAN reach it; mind proof-irrelevance on dependent args),
+  then `rw` the equation into the hypothesis. Two empirical amendments: (1) the def must INLINE
+  the match (no `let`/`have` wrapping it, else `split` can't reach); (2) discharge branches with
+  `simp_all only [reduceCtorEq, Option.some.injEq]` + `subst_vars` in rounds — full `simp_all`
+  mangles filterMap guard conditions and breaks metavariable reconciliation.
