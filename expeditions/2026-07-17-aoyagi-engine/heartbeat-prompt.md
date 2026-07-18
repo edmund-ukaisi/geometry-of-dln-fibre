@@ -28,6 +28,10 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   the frozen ref "succeeded" — the placement check must check the BRANCH, not just the cwd).
 - Obligations STATED (tick 37); case-step-lemmas faithful-flip waits on the full-fidelity items.
 - Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
+- CONTROLLER SHELL GUARDS (recurring self-bugs): NEVER gate a chain on `validate | tail` (tail
+  masks the exit code — bank only via a grep-for-'0 error' gate); the hooksPath was dangling
+  (pointed at the MAIN checkout's absent scripts/hooks — repointed to THIS worktree's, verified
+  the hook exists); every commit batch starts with the branch assertion.
 
 ## Protocol (per wake)
 0. Verify placement: `.claude/worktrees/aoyagi-engine/root`, branch `expedition/aoyagi-engine`

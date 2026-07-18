@@ -1154,3 +1154,14 @@ fidelity finding CORRECTED MY COMMISSION ("must be clean-three" was wrong; sorry
 the type, not the proof) and it surfaced-not-forced, setting BOTH watch entries accurately. My
 error + the correction recorded on the map (region-glue → discharged). ONE ENGINE HOLE REMAINS:
 monomialization_terminates. Next: the consolidated T1+discharge review (fresh seat), then T2.
+
+## 2026-07-18 tick 85 addendum: two banked-broken map commits + the root causes
+The discharge tick banked TWO broken map states in a row (a YAML quote-nesting parse error, then
+an unknown-status semantic error), both pushed before validation was actually read. ROOT CAUSES,
+both mine: (1) `validate | tail -1 && git ...` gates on TAIL's exit code, not validate's — the
+recurring pipe-masking bug; the bank gate is now a grep-for-'0 error' condition (used for the
+final fix, BANKED-ON-GREEN). (2) The pre-commit hook was DANGLING in this worktree: core.hooksPath
+pointed at the MAIN checkout's scripts/hooks which does not exist there — the hook never ran for
+any commit this expedition. Repointed to this worktree's scripts/hooks (verified present). Both
+guards added to the memo. The map is now green (region-glue: validated, with the discharge fact
++ my commission error recorded in the note; schema has no 'discharged' status).
