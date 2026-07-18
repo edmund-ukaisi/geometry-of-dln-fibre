@@ -902,6 +902,101 @@ theorem LiveHeadDom_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState
       rw [htk b hb] at hblt
       exact hlhd a b hab hblt i hi
 
+/-- **Layer rollover preserves `SameLevelChainInv`** — profiles and levels carry over unchanged. -/
+theorem SameLevelChainInv_stepRollover {L : ℕ} (s : ConState L) (h : SameLevelChainInv s) :
+    SameLevelChainInv s.stepRollover :=
+  fun k k' hkk' => h k k' hkk'
+
+/-- **A case-1(1) merge preserves `SameLevelChainInv`** (via STEP1). The tail-written target `tgt`
+drops from level `ℓ` to level `cleared`; STEP1 makes `f' = setTail(tgt)` DOMINATE every pre-existing
+level-`cleared` divisor (head via STEP1 `≥`, tail both `= cleared`), so the new level-`cleared` set
+is still a chain (`f'` is its max); every other level is a subchain of the old one. -/
+theorem SameLevelChainInv_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (tgt : Fin s.numDiv) {ℓ : ℕ} (hlhd : LiveHeadDom M s) (hft : FlatTail s) (hwd : WeakDecInv s)
+    (hlive : s.layer < L) (htgt : s.divTilde tgt = ℓ) (hgt : s.cleared < ℓ)
+    (hℓ : ℓ < widthMinUpto M s.layer) (h : SameLevelChainInv s) :
+    SameLevelChainInv (s.stepCase11 tgt) := by
+  have htt : (s.stepCase11 tgt).divTilde tgt = s.cleared := by
+    simp only [ConState.divTilde, ConState.stepCase11, Function.update_self]
+    refine tildeOf_setTail_eq hlive (fun p _ => ?_)
+    have h1 : s.divTilde tgt ≤ s.divProfile tgt p := tildeOf_le p; omega
+  have htk : ∀ k, k ≠ tgt → (s.stepCase11 tgt).divTilde k = s.divTilde k := fun k hk => by
+    simp only [ConState.divTilde, ConState.stepCase11, Function.update_of_ne hk]
+  -- every level-cleared k' ≠ tgt is dominated by the tail-written target
+  have hkey : ∀ k' : Fin s.numDiv, k' ≠ tgt → s.divTilde k' = s.cleared →
+      ∀ j : Fin L, s.divProfile k' j ≤ setTail s.layer s.cleared (s.divProfile tgt) j := by
+    intro k' _ hlvl j
+    have hstep := step1_dominates s hlhd hft hwd hlive htgt (le_of_eq hlvl) hgt hℓ
+    by_cases hj : s.layer ≤ (j : ℕ)
+    · rw [setTail_of_le hj, divProfile_tail_eq_tilde s hft hwd hlive k' hj]; omega
+    · rw [setTail, if_neg hj]; exact hstep j
+  have hpt : (s.stepCase11 tgt).divProfile tgt = setTail s.layer s.cleared (s.divProfile tgt) := by
+    simp only [ConState.stepCase11, Function.update_self]
+  have hpk : ∀ k, k ≠ tgt → (s.stepCase11 tgt).divProfile k = s.divProfile k := fun k hk => by
+    simp only [ConState.stepCase11, Function.update_of_ne hk]
+  intro k k' hkk'
+  rcases eq_or_ne k tgt with hk | hk
+  · rcases eq_or_ne k' tgt with hk'e | hk'e
+    · exact Or.inl (fun j => le_of_eq (by rw [hk, hk'e]))
+    · rw [hk, htt, htk k' hk'e] at hkk'
+      refine Or.inr (fun j => ?_)
+      rw [hk, hpt, hpk k' hk'e]
+      exact hkey k' hk'e hkk'.symm j
+  · rcases eq_or_ne k' tgt with hk'e | hk'e
+    · rw [htk k hk, hk'e, htt] at hkk'
+      refine Or.inl (fun j => ?_)
+      rw [hk'e, hpt, hpk k hk]
+      exact hkey k hk hkk' j
+    · rw [htk k hk, htk k' hk'e] at hkk'
+      rw [hpk k hk, hpk k' hk'e]
+      exact h k k' hkk'
+
+/-- **A case-2 append preserves `SameLevelChainInv`** (via Lemma-B / `WidthBound`). The appended `c`
+at level `cleared` DOMINATES every pre-existing level-`cleared` divisor (head `≤ runMinWidth = c`,
+tail both `= cleared`), so the level-`cleared` set stays a chain. -/
+theorem SameLevelChainInv_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hft : FlatTail s) (hwd : WeakDecInv s) (hlive : s.layer < L)
+    (hwb : WidthBound M s) (hJ : s.cleared < widthMinUpto M s.layer)
+    (ht0 : ∀ p : Fin L, (p : ℕ) < s.layer → t₀ p = runMinWidth M p)
+    (hcl : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ runMinWidth M p)
+    (h : SameLevelChainInv s) : SameLevelChainInv (s.stepAppendAdvance e t₀) := by
+  have htl : (s.stepAppendAdvance e t₀).divTilde (Fin.last s.numDiv) = s.cleared := by
+    rw [divTilde_stepAppendAdvance_last]
+    exact tildeOf_setTail_eq hlive (fun p hp => (ht0 p hp) ▸ hcl p hp)
+  -- every level-cleared g (castSucc) is dominated by the appended c
+  have hkey : ∀ g : Fin s.numDiv, s.divTilde g = s.cleared →
+      ∀ j : Fin L, s.divProfile g j ≤ setTail s.layer s.cleared t₀ j := by
+    intro g hlvl j
+    by_cases hj : s.layer ≤ (j : ℕ)
+    · rw [setTail_of_le hj, divProfile_tail_eq_tilde s hft hwd hlive g hj]; omega
+    · rw [setTail, if_neg hj, ht0 j (by omega)]
+      exact hwb g (by rw [hlvl]; exact hJ) j (by omega)
+  intro k k'
+  induction k using Fin.lastCases with
+  | last =>
+    induction k' using Fin.lastCases with
+    | last => intro _; left; intro j; rfl
+    | cast k'' =>
+      rw [htl, divTilde_stepAppendAdvance_castSucc]
+      intro hkk'
+      refine Or.inr (fun j => ?_)
+      simp only [ConState.stepAppendAdvance, Fin.snoc_last, Fin.snoc_castSucc]
+      exact hkey k'' hkk'.symm j
+  | cast k'' =>
+    induction k' using Fin.lastCases with
+    | last =>
+      rw [divTilde_stepAppendAdvance_castSucc, htl]
+      intro hkk'
+      refine Or.inl (fun j => ?_)
+      simp only [ConState.stepAppendAdvance, Fin.snoc_last, Fin.snoc_castSucc]
+      exact hkey k'' hkk' j
+    | cast k''' =>
+      rw [divTilde_stepAppendAdvance_castSucc, divTilde_stepAppendAdvance_castSucc]
+      intro hkk'
+      have := h k'' k''' hkk'
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
+      exact this
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
