@@ -1005,3 +1005,10 @@ protected invariant. TWO NAMED R2 OBLIGATIONS mapped (pointwise cover needs the 
 chart maps; invariant→principalization is Aoyagi-ASSERTED and OUR theorem proves it). The
 wrong-pick counterexample queued as a T4 ¬-witness. pnp-atlas stood down warm (re-convenes for
 the R2 gate against the CONSTRUCTED atlas).
+
+## 2026-07-18 GLUE MODULE C: STRUCTURAL PIECES IN (tick 73)
+Merged + force-verified clean-three: exists_small_paramsBox_subset_open (ε-box inside any open
+U ∋ 0, via the flat CLE pullback) + lintegral_leaves_cover_lt_top (finite-leaf cover sum). What
+remains of Module C: the region_glue_of_chartBridge assembly proper (0 ∈ locus, the subcover
+extraction from ChartBridge's U, per-leaf application, the small-box→unit-box globalization +
+the banked c'≤0 corner). The glue lane is one assembly lemma from done.
