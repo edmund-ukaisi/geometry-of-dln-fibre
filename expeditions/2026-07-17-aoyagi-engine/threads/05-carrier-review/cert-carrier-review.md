@@ -365,3 +365,78 @@ Adjudicated with decorrelated Codex (its verdict converges with mine, independen
   child-reading admits `[11]` — child must be read) and `g-fake-chartmap-reject.py` (identity/fake
   `chartMap` fails `LeafPullback` since order>2 non-Morse `F` has no dividing coordinate) both
   reproduce their headlines.
+
+---
+
+# RUNG-1 SPOT-CHECK — `stepUpdate` / faithful `StepRel` re-point (`5b0966b11`, merged at `f0b691cbb`)
+
+**Reviewer:** same seat, rev2 (merged the rung-1 tip after a stale-fetch reconciliation — the earlier
+`origin/expedition/aoyagi-engine` tip `d5f9b7ece` predated the rung-1 merge; re-fetched to `f0b691cbb`
+which contains `5b0966b11`). Scoped change class: `stepUpdate` + faithful `StepRel` + the two
+`¬`-theorems + witnesses + footprints. Own forced `#print axioms` + two decorrelated Codex consults
+(`steprel-existential`, `mergeidx-oob`). The ChartBridge srcBox strengthening is NOT in this HEAD
+(grep-confirmed) — out of scope, as directed.
+
+## VERDICT: scoped-VALIDATE-WITH-CHANGES
+
+The faithful `StepRel := rootLedger e.child = stepUpdate n e.case e.subst` (`EngineObligations.lean:129`)
+is the right shape and a genuine upgrade — it retires the existential form and makes the disappearing
+-divisor schema fail. But `stepUpdate` carries **two fidelity defects** (one paper-verified) that should
+land before `case-step-lemmas` flips to genuinely *faithful*. Neither affects finiteness soundness
+(`StepRel` is off the driver's critical path — the r2 VALIDATE stands).
+
+## Spot-check items
+
+- **(1) Disappearing-divisor schema now FAILS — PASS.** `StepRel` is a FULL `RootLedger` structural
+  equality (`numDiv`, `divExp`, `divTilde`, `cleared`). `dummyDivisor_not_stepRel` (extra divisor) and
+  `vanishingDivisor_not_stepRel` (missing divisor) are real `¬`-theorems (own `#print`: clean-three),
+  rejecting via `numDiv`. **Content-rejection for free — confirmed:** a `numDiv`-preserving corruption
+  (right count, shuffled/wrong `divExp`/`divTilde`/`cleared`) also fails, because `RootLedger` equality
+  is componentwise — the landed two theorems exercise the `numDiv` route, the `divExp`/`divTilde`/
+  `cleared` routes are the same equality (Codex Q3, verified independently; a `numDiv`-preserving,
+  exponent-wrong child cannot satisfy the equality). The witnesses are genuinely `rfl`-class (leaf
+  ledgers are DEFINITIONALLY `stepUpdate` projections).
+- **(2) mergeIdx out-of-range = CHANGE (fidelity, Q1).** `σ.mergeIdx : ℕ` (raw, out-of-range = no-op).
+  `stepUpdate` case-1(1) with `mergeIdx ≥ numDiv` is the IDENTITY, so `StepRel` ACCEPTS a no-op
+  "case-1(1)" (mechanically confirmed: an out-of-range edge whose child ledger equals the parent's is
+  `StepRel` by `rfl`, child `divExp` stays `5` not the faithful `11`); case-1(2) out-of-range drops the
+  `divExp(mergeIdx)` base (new pivot exponent `= runLen·resCols`). "The construction never emits it" is
+  unencoded intent — it cannot back a *faithful* certificate (Codex: "block the rung-1 fidelity
+  spot-check"). Sound for finiteness (driver never consumes `StepRel`). **FIX (Codex minimal):** a
+  `StepApplicable` guard conjoined into `StepRel` — `mergeIdx < n.numDiv` for case11/case12, `True` for
+  case2 (case2 must allow `numDiv = 0`, as the base witness `rootNode224` shows). Typed `Fin n.numDiv`
+  is stronger but a larger carrier change (`Edge`/`ChartSubst` don't depend on `n`) — defer to a planned
+  redesign.
+- **(3) support scope-out — HONEST, minor staleness.** `stepUpdate`/`RootLedger` docstrings state
+  support propagation is STOP-AND-SURFACEd (not modelled; deferred to a `genDivExp` rung) — honest, no
+  overclaim. Minor: the `StepRel` docstring calls it "the faithful per-step transition relation" without
+  the "ledger core, NOT support" qualifier inline; and the `case-step-lemmas` map note (`claims.yaml`)
+  still describes the RETIRED existential form ("per-edge existence-CONSISTENCY check (existential child
+  index)") — update it to the landed `rootLedger child = stepUpdate parent` form.
+- **(4) footprints — PASS (own forced `#print`).** `canonicalResolution224_arithmetic` clean-three
+  `[propext, Classical.choice, Quot.sound]`; `canonicalResolution224` + `engine_box_threshold_finite`
+  `+ sorryAx`; `rootEdge224_stepRel`, `mergeEdge_stepRel`, `dummyDivisor_not_stepRel`,
+  `vanishingDivisor_not_stepRel`, `mixedCaseTree_records_both` all clean-three.
+
+## NEW finding beyond the four items
+
+- **(Q4) case-2 `cleared` advance is WRONG — CHANGE (fidelity, paper-verified).** `stepUpdate` case-2
+  sets `cleared := n.cleared + n.resRows` (`EngineObligations.lean:123`), but the paper advances `J` by
+  **one** per case-2 step: extracted-text:1499 "the inductive statement **with `J` increased by one**";
+  worked.tex:517-518 "Regular Q,P then reduce `D_J'' → diag(1, D_{J+1})`, advancing `J` (or `S`)". The
+  full block is cleared over MULTIPLE case-2 steps (each `+1`), not one macro `+resRows` step. The
+  current formula agrees only when `resRows = 1`. This is the architect's own flagged page-reading
+  choice — **adjudicated: use `cleared := n.cleared + 1`.** (Codex Q4 independently; verified against the
+  source.) case-1(1) `cleared` unchanged and case-1(2) `+1` are both correct.
+
+## Deferred (elder ratification, not adjudicable from the reproduction)
+
+- **case-1(2) new-pivot exponent** (`divExp(mergeIdx) + runLen·resCols`): the architect flagged it;
+  worked.tex:761-762 says the "full Case-1(2) increment bookkeeping is referenced to the images" and it
+  belongs to the ρ_order (θ) computation, **off the RLCT critical path**. Not verifiable from the
+  available reproduction — defer to elder ratification (as intended). Not a finiteness concern.
+
+**Summary for the flip:** finiteness soundness intact (r2 VALIDATE stands). For `case-step-lemmas` to
+flip to genuinely faithful: land Q1 (`StepApplicable` guard) + Q4 (`cleared += 1`), ratify the
+case-1(2) exponent, and refresh the `StepRel` docstring / `claims.yaml` note. All cheap; none block the
+finiteness certificate or the region-glue tide.
