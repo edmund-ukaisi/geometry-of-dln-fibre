@@ -88,3 +88,12 @@ home the engine can reach without the producer cone.
 3. Namespace discipline: new engine modules declare `namespace DLNFibre.DLN.RLCT.Engine` — two glue
    modules currently violate this (see [[naming]]); fold the fix into the D1L2 re-home commit if
    ratified.
+
+---
+**RATIFIED (controller, 2026-07-18).** The whitelist rule binds all engine/glue seats from now:
+engine modules import banked substrate only from the indexed whitelist above; any heavy-cone
+import (>100 files) outside it needs a controller note BEFORE it lands. The D1L2 re-home
+(flatNodeLoss_smul / dlnLoss_zero_smul / prod_smul_pow + measurability into a light Foundations
+module consuming only S1NodeFlatHomog + LossHomogeneity + ParamsFlatLinear; D1L2 imports it back)
+is COMMISSIONED to the glue lane with the Engine-namespace fix (RegionGlueGlobalize +
+RegionGluePerLeaf declare the parent namespace) folded in.
