@@ -1317,3 +1317,12 @@ the PAGE IMAGES with the pnp atlas-enumeration counts as ground truth; my propos
 the grind; the architect warned off hard-baking two-edge emission (keep the List arity free;
 the completeness clause pending the verdict). Three seats deliberating/building, all statement-
 first, all gated — the machine is running exactly as designed at the hard part's crux.
+
+## 2026-07-18 tick 95 addendum: rulings captured in-repo; architect sequenced
+The architect banked both rulings into the design doc (3c3f7668e, merged): B' recorded verbatim;
+StepEmit's arity confirmed un-baked (List already; hlive marked placeholder for the prospective
+pivotComplete clause; the two-edge example flagged illustrative). Sequencing self-set correctly:
+B' first next turn (fresh budget — a half-done LeafData restructure is the one bad state; gate =
+the glue chain rebuilds green UNTOUCHED), then the buildTree body with rev-cov's pivot verdict
+folded. Neither blocked on the review. The seat's checkpoint discipline continues to be the
+expedition's steadiest asset.
