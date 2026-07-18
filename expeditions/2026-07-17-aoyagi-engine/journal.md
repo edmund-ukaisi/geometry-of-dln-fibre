@@ -1207,3 +1207,20 @@ commissioning convening): the deliberate abstract-field pass over §2 (the twice
 the conjunct-ownership audit (incl. WHERE invariant→principalization lives), the new brick's
 shape + kill, and the T3 commissioning shape + gate composition. The last design gate before
 the hard part.
+
+## 2026-07-18 COVERAGE GATE: §2 RATIFIED, THE THIRD GAP FOUND (tick 89)
+elder-gate4 delivered the stern gate the moment needed: §2 (the T3 contract) RATIFIED after the
+deliberate abstract-field pass (verbatim tuple, weakest-sufficient against the PROVEN glue
+consumer, both prior burns absorbed, probe constraints structural) — but §3's new brick is
+MIS-STATED and it is THE PREDICTED THIRD GAP: divProfile ∈ Adm cannot be a per-node invariant
+(pending ⟹ min T > 0 ⟹ last component > 0 ⟹ ∉ Adm clause 3), witnessed against OUR OWN landed
+node334 (![1,1] ∉ Adm(3,3,4)). The corrected decomposition: per-node = weak-decrease +
+block-bound; last=0 is a LEAF property via termination; leaf-Adm = both. STAKES: finiteness-
+load-bearing (the no-undershoot routes through Adm membership) — the build discharge of
+IsFullMonomialization/exponent-hooks is GATED on it + on a sharp truth-value at M=(2,2,3,2)
+(non-monotone widths: does the case-2 raw-width head-reset break weak-decrease at a leaf? do
+leaves carry only t̃=0 divisors?). ALSO: invariant→principalization was UNOWNED — now NAMED as
+T3's cover-discharge theorem consuming a NAMED comparability carrier. T3 commissioning CONFIRMED
+(own lane, first rung = the local covering lemma at corank≥2). Fork 12 applied. Dispatches:
+pnp-atlas re-engaged on (2,2,3,2); architect gets the corrected Adm decomposition + may proceed
+on the structural buildTree parts; the coverage seat spawns against the ratified §2.
