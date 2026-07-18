@@ -1765,3 +1765,12 @@ PURE (a), the advance constructor carries nothing, the tree stays blow-up-only, 
 fold sees no rollover gauge. REMAINING: the FINAL CONCRETE-ORACLE ASSEMBLY as one fresh unit
 (advance + the concrete dispatch/chooser emission with the proved named guarantees + o5-∈
 inside + cone-goodness) → monomialization_terminates modulo ChartBridge. Then only the ψ-track.
+
+## 2026-07-18 CONE-GOODNESS UNDERWAY; THE APPEND SPLIT SURFACED (tick 128)
+Merged + verified: OracleInv (the joint 6-invariant bundle) preserved for rollover + case-1(1),
+each threading the chooser guarantees once — both first-try. FINDING (surfaced, self-resolving):
+the unified stepAppendAdvance transition serves case-1(2) AND case-2, whose LiveHeadDom
+maintenance DIFFERS (case-2 = gap-based, proven; case-1(2) = minimality-based like case-1(1),
+a near-clone lemma owed) — the 2B-era transition unification is what surfaced the split; the
+cert's 5-case analysis always had them distinct. No design break; one lemma + the OracleInv
+splits, then the concrete oracle def + o5-∈ + cone-goodness close the construction.
