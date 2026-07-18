@@ -45,11 +45,16 @@ open DLNFibre.DLN.RLCT
 variable {L : ℕ}
 
 /-- Which branch of the `(S,J)` step an EDGE realises (case11 exponent-merge / case12 new pivot /
-case2 full-block); one blow-up may emit multiple cases, so the tag lives on the edge. -/
+case2 full-block / rollover layer-advance); one blow-up may emit multiple cases, so the tag lives on
+the edge. `rollover` is the CHARTLESS layer phase-transition (Aoyagi p.21 block-exhaustion
+reindexing `S → S+1`, `J := 0`): a ledger relabel with `localSub = id`, no blow-up — the node is the
+paper's inductive statement at layer `S`, the edge advances to `S+1`. `StepRel`'s eligibility clause
+exempts it (fires only for case11/case12), so it stays rfl-class. -/
 inductive StepCase
   | case11
   | case12
   | case2
+  | rollover
   deriving DecidableEq, Repr
 
 /-- **The per-edge substitution ledger** (fork 8): `localSub` is the chart's coordinate change as a

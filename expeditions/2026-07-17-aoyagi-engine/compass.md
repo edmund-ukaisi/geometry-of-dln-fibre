@@ -277,6 +277,27 @@ over banked substrate.
    profile-set differs from Adm (== at all 4). PRE-COMMIT CLARIFIER: the simulator extension at
    higher-L non-monotone instances ((2,2,3,3,2), (3,2,4,2)) - comp-violations + profile-set==Adm
    at unexplored depth, BEFORE the architect's long seat commits.
+   13(Q3) RESOLVED - the rollover is a CHARTLESS TREE EDGE (elder-gate6, 2026-07-18; ratifies
+   the tick-129 provisional A). The concrete build FALSIFIED the tick-118 absorb ruling: an
+   absorbed rollover breaks StepRel's rfl-class equality (child rootLedger post-rollover
+   cleared=0 vs stepUpdate's pre-rollover prediction). RULING: a 4th StepCase.rollover +
+   stepUpdate relabel clause (numDiv/divExp/divProfile UNCHANGED, cleared := 0), localSub = id.
+   FAITHFUL per pp.19-21 page-read: the case step PRODUCES the (S,J+1) statement (p.20 indexes
+   the new pivot u_{S,J+1} BEFORE any boundary check), THEN the p.19/21 boundary check RELABELS
+   to (S+1,0) ('the inductive statement with S increased by one') - a genuine node reached by a
+   chartless transition (the C' and P/Q shears live INSIDE the case step; tick-127 pure-(a)
+   page-confirmed). REJECTED: (B) compose-into-the-step (breaks one-StepCase=one-ledger-op +
+   name=content: a case2 edge would sometimes reset cleared); (C) relabel-inside-StepRel (loses
+   rfl-class - the blocker's own cause). REQUIRED CONDITION (fork-9 mandate): the rollover edge
+   carries an AT-EXHAUSTION guard (cleared > runMinWidth-class; the exact comparison pinned OFF
+   THE SIMULATOR-VALIDATED ORACLE DISPATCH, not page off-by-one) as a StepRel conjunct + an
+   early-rollover kill-witness. WHY: without it StepRel accepts an early rollover stranding
+   pending divisors - a ledger-consistent non-Aoyagi tree caught only by ChartBridge's semantic
+   falsity, the exact infidelity class fork 9 rejects at the ledger. NOT load-bearing for o3's
+   proof (rides on construction invariants) - lands alongside, never blocks. The intermediate
+   (S,J+1) node is a branch never a leaf (IsFullMonomialization unaffected); the guard is a
+   separate conjunct (ledger equality stays rfl-class). Blow-up-only aesthetics yield to ledger
+   faithfulness: the tree's nodes are the paper's inductive statements, S-increment included.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

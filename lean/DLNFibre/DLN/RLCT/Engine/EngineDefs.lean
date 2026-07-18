@@ -145,6 +145,17 @@ def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : C
         divExp := Fin.snoc n.divExp (n.resRows * n.resCols)
         divProfile := Fin.snoc n.divProfile (setTail (fun p => runMinWidth M p))
         cleared := n.cleared + 1 }
+  | StepCase.rollover =>
+      -- LAYER ROLLOVER (Aoyagi p.21 block-exhaustion reindexing `S → S+1`): a CHARTLESS relabel. The
+      -- divisor ledger (`numDiv`/`divExp`/`divProfile`) carries over UNCHANGED; only the per-layer
+      -- cleared count resets (`J := 0`). No coordinate change (the pure-(a) rollover gauge,
+      -- design §7 — `localSub = id`). The node's `layer` (dropped by `RootLedger`) advances on the
+      -- child; `StepRel`'s eligibility ∨ exempts a rollover edge (not case11/case12), so it stays
+      -- rfl-class. Matches `ConState.stepRollover`'s `toRootLedger` exactly.
+      { numDiv := n.numDiv
+        divExp := n.divExp
+        divProfile := n.divProfile
+        cleared := 0 }
 
 /-- **The faithful per-step transition relation** (rung 1). FAITHFUL for the exponent/clearing
 ledger CORE (`numDiv`/`divExp`/`divTilde`/`cleared`): the child's root ledger EQUALS the parent's
