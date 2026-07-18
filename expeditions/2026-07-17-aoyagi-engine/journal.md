@@ -1974,3 +1974,20 @@ instances incl. the L=4 stranded witnesses BEFORE Lean; (3) if a clause: mainten
 slot + docstring WHY; if the identity is REFUTED: truth-signal — finding about the emission,
 stop-and-surface. Boundary case layer=0 (no layer−1) explicitly requested in the next report.
 Seat also firing a decorrelated Codex check on the delta. Case-2 in progress.
+
+## 2026-07-18 tick 145: case-2 telescoping banked; BoundaryFlat ratified; o5 cert lane opened
+t03: Mval_setTail_runMinWidth (case-2 telescoping) clean-three at 4b0672748. Codex (xhigh)
+CONFIRMS the case-1 analysis — delta = (τ−J)(p+M^(l+1)−τ−J), faithful iff p=τ — and REFUTES
+derivability of "pending ⟹ tPrev(T)_layer = τ" from WeakDec+FlatTail (counterexample T=(3,2));
+artifact threads/11-construction/codex/case1-mval-delta-*. Controller ratifies **BoundaryFlat**
+as the 5th invariant clause (derivability-first pin discharged the earned way; tPrev form
+handles layer=0 uniformly; rollover maintenance from old FlatTail, others vacuous on new
+pivots). Battery assertion (pin #2: tPrev(T)_layer==τ at every pending divisor, incl. the L=4
+stranded witnesses) still owed with the B bank. t03 stays B→C in order.
+PARALLELIZED the harness way: t03's D-offer taken as certified-before-formalised — **pnp-o5**
+spawned (own worktree t12-pnp-o5) on the o5-∈ REALIZATION certificate: steering rule + descent
+invariant for the ⊇-Adm half (⊆ already proven as leaf_mem_Adm), battery extension over all
+a ∈ Adm at 6 known + 2 fresh instances, kills K1/K2(MAJOR: minAdm unreachable)/K3(t̃=0 filter),
+fallback scope = minimizer-only. Key precision in the brief: the Lean o5-∈ is about the BUILT
+deterministic-minimal tree — if realizing some a needs a non-minimal chooser pick, that is a
+finding distinguishing the nondeterministic recursion from conOracle. Cert feeds D once C lands.
