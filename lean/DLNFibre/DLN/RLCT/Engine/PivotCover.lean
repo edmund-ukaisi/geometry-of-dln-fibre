@@ -37,7 +37,9 @@ variable {d : ℕ}
 /-- The `i`-th standard affine blow-up chart of `ℝ^d` at the coordinate origin, in the max-modulus
 normalization: the pivot coordinate `i` is free (`u i`), and each other coordinate `k` is the scaled
 ratio `u i * u k`. Its Jacobian determinant is `u i ^ (d-1)` — exceptional divisor `{u i = 0}` — so
-`pivotChart i` is Aoyagi's monomial blow-up chart `β` (feeds `LeafJacobian`). -/
+`pivotChart i` is Aoyagi's monomial blow-up chart `β`: it matches `LeafJacobian`'s
+`|det Dβ| = ∏ |u|^{divExp-1}` with a SINGLE exceptional divisor at `divExp = d` (discrepancy `d-1`);
+the leaf's accumulated `divExp` is the fold of these per-blow-up contributions. -/
 def pivotChart (i : Fin d) (u : Fin d → ℝ) : Fin d → ℝ :=
   fun k => if k = i then u i else u i * u k
 
