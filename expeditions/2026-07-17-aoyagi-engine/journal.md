@@ -1029,3 +1029,15 @@ lane's wiring path is now physically open (its discharge = one-line exact in Eng
 once its assembly greens). Aggregator import added explicitly (single-writer, me). T1b (the
 faithful carrier proper) proceeding on the pnp-pinned rule with carry-both + decide-checked
 Mval coherence at the trace values. My Module-C re-verification still queued behind contention.
+
+## 2026-07-18 T1b SPEC BANKED; ARCHITECT CHECKPOINTED (tick 75)
+The architect checkpointed at green T1a rather than starting the atomic 3-file struct edit
+mid-budget ("never leave the build broken" outranking push-on — correct). Its T1b execution spec
+is handoff-grade (indexing reconciled against ALL trace cross-checks; decide-friendly tildeOf;
+source-compatible derived accessors; witnesses via structure-eta rfl) — BANKED VERBATIM at
+threads/01-skeleton/t1b-execution-spec.md so executability lives in the repo, not a transcript.
+GO: the architect executes T1b from its own spec next turn (its self-assessment trusted), with
+the standing tripwire: if context/budget threatens MID-edit, stop BEFORE touching files — the
+successor path (any fresh formaliser from the spec) is clean precisely because nothing is
+half-edited. Session ledger to date: rider finalization, full rung 2, L=3 de-risk, T1a split,
+T1b spec — all green + pushed.
