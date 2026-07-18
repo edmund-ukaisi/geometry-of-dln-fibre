@@ -1012,3 +1012,10 @@ U ∋ 0, via the flat CLE pullback) + lintegral_leaves_cover_lt_top (finite-leaf
 remains of Module C: the region_glue_of_chartBridge assembly proper (0 ∈ locus, the subcover
 extraction from ChartBridge's U, per-leaf application, the small-box→unit-box globalization +
 the banked c'≤0 corner). The glue lane is one assembly lemma from done.
+
+## tick 73 CORRECTION (immediate)
+The tick-73 entry claimed "force-verified clean-three" — FALSE: the verification build was
+slot-TERMINATED (contention with T1) and the probe never ran; I banked the claim without reading
+the output carefully. The same failure mode I hold seats to (a green echo is not verification).
+Merge stands (the seat's own gate applies); MY verification of the two Module C lemmas is
+PENDING — re-running when a slot frees, will record the actual footprints then.
