@@ -647,3 +647,18 @@ the designed division of labor. Map staleness fixed (case-step-lemmas note re-po
 faithful equality). Pending: the architect's consolidated blocking commit (fix + conjunct + two
 docstring items), then rev-carrier's ONE consolidated pass (commit + strengthening) gates rung 2.
 Elder's abstract-field pass (#56) runs in parallel.
+
+## 2026-07-18 ABSTRACT-FIELD GATE CLEARS; PER-LEAF RE-TASK OPEN (tick 51)
+The elder's #56 pass: ChartBridge (strengthened) is EXACTLY-SUFFICIENT for region_glue — every
+field FORCES-ENOUGH, no new conjunct (adding one would be over-specification), gate CLEARS. The
+clean result is EARNED: per-field confound hunting (null-set measurability under an incomplete
+volume; divExp=0 under hrat; residualCore non-measurability → never integrate it, bound the
+measurable pullback; per-leaf constants need NO uniformity BECAUSE the inductive carrier forces
+FINITE leaves — the load-bearing structural fact answering both my fine-print checks (b) and
+(c)). BOTH elder bets (image-cover, residualCore squeeze) REFUTED — recorded as calibration; the
+right outcome for a gate. Verdict + the full proof-step checklist (each subtlety → a banked
+lemma) written to threads/06-region-glue/gate-verdict-abstract-field-pass.md. SCOPE CAVEAT held:
+this certifies provability FROM ChartBridge; rung 3-4 owns making the monomial assertions true.
+glue-t05 RE-TASKED against the frozen interface (battery script demanded FIRST — 4 asks overdue).
+Still pending: the architect's blocking commit (elder notes the case-2 wrong advance STILL in
+tree) → rev-carrier's consolidated pass → rung 2.
