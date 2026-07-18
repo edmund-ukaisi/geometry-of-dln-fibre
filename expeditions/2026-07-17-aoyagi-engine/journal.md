@@ -989,3 +989,19 @@ is genDivExp support only (already T4). T1 LEAN RELEASED with the exact rule + t
 docstring citation + the Defs/Obligations split folded in. pnp-atlas exonerated on the hijack
 (own worktree from the start) and commissioned with the depth-3 closure probe (the R2 gate's
 second leg: tie-break load-bearing-ness + L=3 coverage at once).
+
+## 2026-07-18 DEPTH-3 CLOSURE LEG: THE TIE-BREAK PROTECTS COMPARABILITY (tick 72)
+The probe's second leg merged + battery re-verified here (exact agreement with the Codex replay
+to the component). (a) Stratum-level closure at (2,2,2,2): six rank strata cover {P=0}, all three
+binding strata emitted, non-toric reconfirmed. (b) Min stays 3, no undershoot; the M=1 divisors
+at t̃=1 are fenced by the t̃=0 rule — red herrings. (c) THE DEEPEST FINDING OF THE EXPEDITION:
+Def-4's tie-break protects the TOTAL-COMPARABILITY INVARIANT, not the value — the wrong pick at
+(3,0,1) produces an incomparable pair (breaking principalization/coverage) while the minimum is
+3 EITHER WAY. Corollary: a finiteness-only certificate is provably BLIND to a wrong tie-break.
+The operator's full-mechanism steer, the council's full-T ruling, and this computation now close
+into one argument: the mechanism cannot be trimmed to the hole because the hole's own certificate
+cannot see what the mechanism protects — and coverage (the hole's hard half) rides on exactly the
+protected invariant. TWO NAMED R2 OBLIGATIONS mapped (pointwise cover needs the construction's
+chart maps; invariant→principalization is Aoyagi-ASSERTED and OUR theorem proves it). The
+wrong-pick counterexample queued as a T4 ¬-witness. pnp-atlas stood down warm (re-convenes for
+the R2 gate against the CONSTRUCTED atlas).
