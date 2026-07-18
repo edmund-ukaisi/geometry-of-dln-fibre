@@ -1388,3 +1388,16 @@ pivotComplete + the comparability chain) for a fresh-budget coherent pass per th
 tripwire. The endgame board at tick 100: ONE hole on the hbox cone; four bounded build units
 across two seats, all against doubly-page-grounded reviewer-settled statements; every review
 seat warm with zero open items.
+
+## 2026-07-18 B' COMPLETE — THE CROSS-LANE ISSUE RESOLVED AS DESIGNED (tick 101)
+The ledger/analytic split landed in two green sub-steps and merged: LeafData's analytic fields =
+the t̃=0 read-off enumeration (shape unchanged), the full ledger alongside (rootLedger/StepRel
+read it), and the COHERENCE TIE in IsFullMonomialization (analytic = exactly the t̃=0 sublist,
+both directions — the paper's p.22 read-off is now a theorem-checkable fact, with the ⊆ half
+free from Adm's last-component-0). THE GATE HELD PERFECTLY: the glue chain rebuilt with ZERO
+diff (statements verbatim — region_glue never consumed IsFullMonomialization), controller-
+verified here (glue assembly + arithmetic witness clean-three 2/2 forced). The ruling-2
+cross-lane break is fully resolved with the reviewed analytic chain untouched — the (B') design
+did what it promised. REMAINING: the buildTree WF.fix body (the architect's LAST unit — emits
+both ledger sides, pivotComplete case-split, the comparability chain, stepUpdate_preserves_
+weakInv) + coverage's two lemmas. The construction hole is two units from assembled.
