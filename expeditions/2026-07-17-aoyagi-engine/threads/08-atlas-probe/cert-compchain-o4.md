@@ -143,6 +143,52 @@ prediction (interior bottleneck) matches 18/18.
   case-1(2) keeps `f` (then the reshape is mandatory) or (ii) if it consumes `f`, full-comparability may
   be recoverable — but `SameLevelChainInv` suffices regardless, so the safe build does not wait on (i)/(ii).
 
+## Part 5 — the controller's three items (formalization-basis additions)
+
+**(1) Reconciling cert-atlas-probe-2222 (c): what the tie-break protects, precisely** (battery
+`tiebreak-protects.py`). On non-bottleneck instances the CORRECT (Def-4 min) pick keeps `Chain_viol=0`;
+the WRONG (componentwise-max) pick gives `Chain_viol=5` at `(2,2,2,2)` and `(2,2,3,2)` — but **both picks
+keep `SameLevel_viol=0`** (and both give the value `minAdm`, cert-2222). Therefore:
+- `[CERT]` cert-2222 (c)'s "the tie-break protects **total-comparability**" is **correct but must be
+  SCOPED to non-bottleneck instances**. `(2,2,2,2)` is non-bottleneck, so the `(3,0,1)` wrong-pick pair
+  (`(2,1,0)` vs `(1,1,1)` — a DIFFERENT-level pair) breaking comparability there is a genuine full-chain
+  break the correct pick avoids. cert-2222 (c) stands, with this scope.
+- `[CERT]` **The operative invariant `SameLevelChainInv` is preserved by ANY eligible pick
+  (minimality-free)** — so the tie-break minimality is NOT what preserves it. At interior bottlenecks
+  full-chain fails regardless of the pick (Part 1) — the different-level incomparability comes from the
+  width-drop + Case-2, not from a wrong pick. So the property the tie-break protects (full comparability)
+  is NOT a construction invariant; it is maintainable only absent an interior bottleneck.
+- `[CERT]` **Restated:** the Def-4 minimality protects *full* total-comparability at non-bottleneck
+  instances (a nicety + a canonical/deterministic choice); the finiteness certificate rides on
+  `SameLevelChainInv` + the value, both minimality-robust and bottleneck-robust.
+
+**(2) T3-consumer check: does invariant→principalization consume full-chain?** `[CERT]` **No.** The
+`b`-chain `b_i = (∏_{t̃=i-1} u)·b_{i-1}` is **level-filtered**: divisibility `b_1|b_2|…` is automatic
+from the level structure (the `t̃` values, totally ordered as integers); same-level divisors multiply
+**commutatively** into `b_i`, so their intra-level order is irrelevant to the product. The only place
+comparability is consumed is the chooser's min-existence, which needs `SameLevelChainInv`. So
+invariant→principalization consumes **level-filtration + `SameLevelChainInv`, NOT full-chain**
+(cross-level divisor comparability). The refutation does not break principalization. `[SPEC, flagged]`
+the one geometric residue — a **stranded** divisor at a bottleneck (a coordinate whose level exceeds the
+shrunken chain) — is at `t̃>0` (non-contributing to the LCT, value-safe); whether its coordinate needs
+explicit accounting in `⟨diag(b)⟩` is the case-1(2)-keep/consume question (the profile model keeps `f`),
+NOT a full-chain need.
+
+**(3) Paper-defect ledger entry: WRITTEN** — `theory/aoyagi-2023-reproduction/verify-p15-fullchain-defect.md`
+(counterexample + interior-bottleneck scope + `SameLevel` repair). Third verified §4–§5 defect alongside
+**(T-D)** Def-3 sign and **(FIX-A)** the p.20 raw-width head-reset.
+
+**Consumption confirmation (Lean-ready) — with a correction.** `[CERT]`
+- **Operative o4 = `SameLevelChainInv` preservation** consumes `SameLevelChainInv`(IH) + `FlatTail`
+  (+ `WidthBound` for case-2). It does **NOT** consume chooser minimality — both the min and the max
+  pick preserve same-level (verified). *(This corrects the "SameLevel + minimality only" framing: the
+  operative lemmas are minimality-free.)*
+- **Stronger full-chain preservation** (cert-2222 Lemma A; NON-bottleneck only; NOT the formalization
+  basis) consumes full-chain(IH) + `FlatTail` + `WeakDec` + **minimality** + run-gap.
+So the formalization basis (`SameLevelChainInv`) rests on `SameLevelChainInv` + `FlatTail`
+(+ `WidthBound`); minimality enters only the stronger, non-operative full-chain statement + o2's
+canonical choice.
+
 ## Close
 
 - **Firmest:** the paper's p.15 total-comparability is FALSE at interior bottlenecks (two-way, exact
