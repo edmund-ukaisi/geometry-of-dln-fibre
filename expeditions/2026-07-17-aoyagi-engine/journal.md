@@ -1646,3 +1646,17 @@ FlatTail (+WidthBound); minimality is canonicity + a nicety. THE JOINT PUSH PART
 case-1's bottleneck head-comparability (0/18 empirics) — stays with pnp for a uniform proof (or
 an honest needs-X verdict) landing before the architect reaches that spot. The certified-first
 discipline holds to the last brick.
+
+## 2026-07-18 DISPATCH LANDED; ROLLOVER RULED (a)-PROVISIONAL (tick 118)
+Merged: the indexing pin (Lean layer = S−1, FORCED by the T-rule and simulator-confirmed; an
+off-by-one S-GLOSS fidelity finding — Lean values all correct, two docstring glosses wrong, one
+fixed + one ratified-to-fix) + the dispatch classify (simulator _proc, indexing-pinned) +
+widthMinUpto. Fork-13 o2's "dispatch + chooser" is now LANDED. Q3 RULED: rollover maps to a NEW
+ConDecision `advance` constructor — the tree stays blow-up-only (the paper's chart tree; rollover
+is a ConState phase transition with its descent already banked) — PROVISIONAL on one page
+sub-question the architect determines while building: the block-exhaustion fold C'^(S+1) =
+Q⁻¹C^(S+1) — absorbable into the preceding node's ψ (pure (a)) or a rollover-time gauge ((a')
+advance-with-gauge into the coherence fold)? The fold must see every real coordinate change —
+absorbing a gauge silently is the one way (a) can lie. The board: architect (joint push +
+emission assembly on the two rulings), pnp (the residual brick, then the ψ-factorization check),
+coverage warm.
