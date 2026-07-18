@@ -960,3 +960,16 @@ prove coherence (incremental update stays primitive in the hot path; the agreeme
 Mval(T-updated) is the T4 exponent-bookkeeping soundness lemma) — well-argued, held for the pnp
 trace. Correctly fenced flag: (2,2,2,2) has THREE binding profiles (θ-multiplicity territory —
 out of scope, noted only). Seat genuinely held on the pnp gate.
+
+## 2026-07-18 GLUE MODULE B COMPLETE: THE PER-LEAF READ IS PROVEN (tick 70)
+leaf_chart_image_lintegral_lt_top merged + force-verified clean-three — the analytic heart of
+region_glue: ChartBridge per-leaf tuple + hrat ⟹ the chart-image integral is finite, via the
+area formula ON Params M (the B0 Haar instance), flat-cube transport, and Module A's model read.
+Two honest technical notes recorded by the seat: the ℕ-subtraction→rpow conversion is DERIVED
+from divExp ≥ 1 (forced by hrat + c'>0 — no interface change); the integrand bound is genuinely
+pointwise (the a.e. lives only inside Module A's AM-GM). Module C (cover + globalization) open —
+the LAST glue piece. WIRING RULING for the final discharge: fold a Defs/Obligations split of
+EngineObligations into T1 (ChartBridge/LeafPullback/LeafJacobian definitions → a Defs file the
+glue modules import; the sorried theorems → an Obligations file that MAY import the glue modules
+and discharge region_glue directly) — one restructure inside the already-planned T1 carrier pass,
+no circularity, the architect owns it, the glue discharge becomes a one-line exact after.
