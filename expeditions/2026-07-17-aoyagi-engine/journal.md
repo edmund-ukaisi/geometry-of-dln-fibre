@@ -1133,3 +1133,14 @@ the overlay (LossContinuity, not LossHomogeneity). Aggregator import added (sing
 glue lane is COMPLETE in every dimension: A/B/C modules green + axiom-clean + fidelity-VALIDATED,
 EngineDefs re-point, statement cards, the re-home. Seat stood down warm. Remaining on the
 analytic hole: the architect's one-line discharge (commissioned, gates cleared).
+
+## 2026-07-18 T1 COMPLETE — THE CARRIER IS FULLY FAITHFUL (tick 84)
+T1c merged + controller-verified (spine lemmas + tildeOf_setTail_le clean-three; the razor
+docstring STRUCK — grep 0): ConState carries divProfile full-T primitive + genDivExp; the
+μ-descent re-proof closed on attempt 3 of the 3-4 tripwire budget (the Fin/Finset friction via
+a defeq change + a clean tildeOf_le helper — no balloon, fallback unused); the chooser TYPE
+IsEligibleMinimalChoice lands with the comparability-preservation docstring. THE FULL T1
+SEQUENCE: T1a split → T1b full-T tree carrier → T1b-ii genDivExp → T1c ConState faithful — all
+green, all verified. The carrier the operator's reframe demanded exists end-to-end. NEXT: the
+architect executes the crossed discharge commission (region_glue → proven; the analytic hole
+closes), then ONE consolidated review of the T1 unit + the discharge, then T2 opens.
