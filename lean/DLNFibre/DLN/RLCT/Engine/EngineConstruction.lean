@@ -324,6 +324,39 @@ must match for the rfl-class `StepRel` equality. -/
 def ConState.toRootLedger {L : ℕ} (s : ConState L) : ResolutionTree.RootLedger L :=
   ⟨s.numDiv, s.divExp, s.divProfile, s.cleared⟩
 
+/-- **The `StepData` node a `ConState` presents at a step** (the node-side dual of `toRootLedger`):
+the state's ledger core (`numDiv`/`divExp`/`divProfile`/`cleared`) and `layer` carried onto a
+`StepData`, with the residual block dims `resRows`/`resCols` supplied (they feed `stepUpdate`'s
+case-2/case-1(1) exponents) and a placeholder monomial vector (`numB = 1`, trivial `bExp`; the real
+chain is T4). Its ledger core is `s.toRootLedger` and its `layer` is `s.layer` — exactly the
+`hnode`/`hlayer` a step `ConDecision` needs, both `rfl` (`toStepData_rootLedger_core`/
+`toStepData_layer`). Every oracle branch builds its node through this. -/
+def ConState.toStepData {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (resRows resCols : ℕ) : StepData M where
+  layer := s.layer
+  cleared := s.cleared
+  resRows := resRows
+  resCols := resCols
+  numDiv := s.numDiv
+  numB := 1
+  bExp := fun _ _ => 0
+  bChain := fun _ _ _ _ => le_refl _
+  divExp := s.divExp
+  divProfile := s.divProfile
+  numGen := s.numGen
+  genDivExp := s.genDivExp
+
+/-- The node's ledger core equals the state's — the `hnode` of a step decision (`rfl`). -/
+theorem toStepData_rootLedger_core {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (resRows resCols : ℕ) :
+    (⟨(s.toStepData M resRows resCols).numDiv, (s.toStepData M resRows resCols).divExp,
+        (s.toStepData M resRows resCols).divProfile, (s.toStepData M resRows resCols).cleared⟩ :
+      ResolutionTree.RootLedger L) = s.toRootLedger := rfl
+
+/-- The node's layer equals the state's — the `hlayer` of a step decision (`rfl`). -/
+theorem toStepData_layer {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) (resRows resCols : ℕ) :
+    (s.toStepData M resRows resCols).layer = s.layer := rfl
+
 /-- **One `conRel`-smaller child of a step** at state `s`: its edge `case`/`subst`, the child state
 `child` the recursion descends into, and the descent proof `hdesc : conRel M child s` (from the
 `conRel_step*` descent lemmas). `buildTree` turns it into `Edge.mk case subst (buildTree child)`. -/
