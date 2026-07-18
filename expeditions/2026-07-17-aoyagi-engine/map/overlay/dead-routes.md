@@ -1,70 +1,98 @@
-# Overlay — dead-route registry (cartographer, curated layer)
+# Overlay — dead-route registry + DO-NOT-ENTER register (cartographer, curated layer)
 
-*Refuted / superseded / refuted-shape approaches, one line each + mechanism + witness pointer. Created
-pass #1. A route here is DEAD as a destination; its trail is kept as a battery anchor / lesson.*
+*Refuted / superseded / off-limits approaches, one line each + mechanism + witness pointer. Created
+pass #1; **pass #2 (2026-07-18) added the DO-NOT-ENTER register** — the predecessor's
+superseded/incomplete zones an engine seat must not wander into, plus the tree-wide fossil-sorry
+census (engine-cone vs fossil). A route here is DEAD as a destination; its trail is kept as a battery
+anchor / lesson. Operator priority: NOT getting stuck > perfect reuse.*
 
-## Refuted routes (map nodes)
+---
 
-- **`naked-weight-route`** (map `refuted`). Integrate-early: form the naked Jacobian-weight residual
-  obligation, bound it. FALSE on legal cuts, not merely hard — the target exponent is exactly tight at
-  binding cells (zero slack), so a lossy factorization is false there. Killers:
-  `battery/w-naked-weight-111.py` (M=(1,1,1): `∫|y|^{-1}` diverges) + `w-naked-weight-4444.py`
-  (M=(4,4,4,4), t=2). Both KILLED (exit 1) as designed. This is the zero-slack lesson's anchor
-  (compass fork 1). Forwarded → `engine-route`.
+## DO-NOT-ENTER register (predecessor zones — off-limits to engine seats)
 
-- **`decorated-descent-route`** (map `superseded`). The predecessor's conditional decorated route to
-  `hbox` (`routeMBoxThresholdFinite_of_decoratedDescent`, conditional on `DecoratedDescent`). SOUND
-  BUT DEAD as a destination: witnessing `DecoratedDescent` from the engine costs a tree→adm bridge
-  that RE-IMPORTS the refuted decorated-peel object (architect fit report, tick 7). Fork 6 closed by
-  the pre-agreed rule: TOMBSTONE (one live spine per fork, P6). Tombstone live at
-  `RouteMSJDecoratedRec.lean:211`. Forwarded → `engine-route`.
+*The inherited library is ~490 `Validate/` modules of predecessor RouteM machinery. Most is banked
+sorry-free and consumed as substrate (see [[banked-families]]); the zones below are dead/incomplete
+and must be AVOIDED. Three near-rebuild incidents this run were caught by seat diligence, NOT the
+index — this register is the index catching up.*
 
-## Refuted SHAPES (not map nodes — refuted statements/designs inside live nodes)
+- **Decorated-peel / DecoratedDescent lane — REFUTED + TOMBSTONED.** `DecoratedDescent`
+  (`Validate/RouteMSJDecoratedRec.lean:206`) + its tombstone (`:211`, fork-6 disposition); the
+  conditional discharger `routeMBoxThresholdFinite_of_decoratedDescent` is SOUND-BUT-DEAD.
+  `Validate/RouteMSJDecoratedPeelStep.lean:86` carries a fossil sorry. **Why off-limits:** witnessing
+  `DecoratedDescent` from the engine re-imports the refuted decorated-peel object (P6 one-live-spine).
+  **Use instead:** `Engine.engine_box_threshold_finite` (the live discharger).
+
+- **RouteM peel-and-integrate residual lanes — SUPERSEDED (the naked-weight disease lives here).**
+  `Validate/RouteMSJResolution.lean:803` (`gammaPeelIntegral` fossil), `RouteMSchur.lean:429`
+  (`routeMBaseNbhd` finiteness fossil), `RouteMSchurGeneral.lean:144` (`schurRecStep4_stub` — explicit
+  stub), `RouteMRecursion.lean:257` (explicit "documented blocker; genuine machinery is sorry-free in
+  RouteMLayerSplit"), `RouteMLayerCoverGE.lean:133` (`= ⊤` divergence fossil). **Why off-limits:**
+  integrate-early manufactures the false naked-weight obligation (compass fork 1; `w-naked-weight-*`
+  KILLED). **Use instead:** the transform-only engine (reduce → tree → coverage → area-formula reads);
+  the banked `≤`-half (`routeMCore_box_diverges_achiever_full'`) for divergence.
+
+- **`RouteMInteriorLDUContract.lean` — HALF-BUILT (8 fossil sorries, the densest incomplete lane).**
+  `interiorLDU_leafH` / `interiorLDU_factors` / the composeFold + measurability + cover clauses
+  (`:124,130,145,153,165,192,199,212,222`). A predecessor interior-LDU-contract attempt. **Why
+  off-limits:** not on the engine path; the engine's per-leaf read is the area formula
+  (`RegionGluePerLeaf`), not an LDU factor contract. **Use instead:** the R3 area-formula lane.
+
+- **`RouteMSJDeeperFlagCore.lean` — INCOMPLETE (2 fossil sorries, `:500,544`).** Deeper-flag /
+  weak-eigencount core. Off the engine path; do not build toward it.
+
+- **Legacy Skeleton stubs — SUPERSEDED by the banked value lane (3 sorries, NOT engine-cone).**
+  `Skeleton.lean:1094` (lambdaCore value eq), `:1140` (deepestPoint `rlctAt ≤`), `:1197`
+  (monomialThreshold iInf). **Why off-limits:** these are re-pointed-at-mint legacy stubs; the live
+  content is `HeadlineGenAssembly` / `DeepestMinRlct` / the atoms (all sorry-free). **Use instead:**
+  the R5 wiring must land the bare `aoyagi_learning_coefficient` (`Skeleton.lean:1685`) on `_gen`, NOT
+  on any of these stubs.
+
+**Fossil-sorry census (24 tree-wide, 2026-07-18, `lean/scripts/sorries`):**
+- ENGINE-CONE, LIVE/EXPECTED (3): `EngineObligations.lean:184` (`monomialization_terminates` — R1/R2
+  long pole), `:248` (`region_glue` — R3 hole), `CanonicalWitness224.lean:130` (the `@[blueprint]`
+  `canonicalResolution224` ChartBridge conjunct — forecast, `_arithmetic` piece is clean-three).
+- LEGACY STUB, off-cone (3): `Skeleton.lean:1094,1140,1197`.
+- FOSSIL, predecessor Validate (18): `RouteMInteriorLDUContract` ×8, `RouteMSJDeeperFlagCore` ×2, +
+  `DeepestGaugeChart:357`, `RouteMLayerCoverGE:133`, `RouteMRecursion:257`,
+  `RouteMSJDecoratedPeelStep:86`, `RouteMSJResolution:803`, `RouteMSchur:429`,
+  `RouteMSchurGeneral:144` (×1 each).
+
+---
+
+## Retired SHAPES (superseded designs inside live nodes — do not resurrect)
+
+- **Transport-on-the-leaf-path — RETIRED (elder tick 43; NOT refuted, re-scoped).** Pass #1 banked
+  `rlctAtOn_boundedUnit_localHomeomorph` (`Foundations/S1NonMPTransport.lean:292`) as region_glue's
+  per-leaf engine. The mechanism revision (fork-8, tick 42–43) found it INAPPLICABLE to the repaired
+  `LeafJacobian` (wants `Dψsymm`, openness of `β''srcBox`, a fixed basepoint — none supplied). The
+  per-leaf read is now the Mathlib AREA FORMULA (weaker hypotheses, more banked-reuse, closer
+  source-match; avoids the r2 laundering). **The transport family stays BANKED + sorry-free** (all of
+  `S1Transport`/`S1NonMPTransport`/`S1QuasiSplit`/`S1ChartTransfer` are 0-sorry — pass-#1's
+  "RouteMSJTransport carries 1 sorry" is now STALE: RouteMSJTransport is sorry-free) — merely UNUSED on
+  the engine's leaf path (P6 one live spine). Do NOT re-route region_glue through the transport.
 
 - **`region_glue` / `ChartsCover`-as-stated — REFUTED (vacuity), lane 2 tick 18.** The abstract
-  `ChartsCover` (leaf `chartDom` constrained only as an abstract set `locus ⊆ U ⊆ ⋃ chartDom`) is
-  satisfied by the UNIV atlas, so `region_glue`-as-stated is unprovable: a univ atlas + `hrat` are
-  jointly satisfiable at a `c'` where the box integral DIVERGES. Witness: `g-chartscover-vacuity.py`
-  (SURVIVES — (2,2,2) fake atlas chartDom=univ, divExp={4}, c'=8/5 ∈ [3/2,2) satisfies hyps,
-  conclusion FALSE). Mechanism: the pure-monomial integrand omits the leaf's RESIDUAL factor. Fix
-  (adopted, unlanded): per-leaf ChartBridge = chartMap + srcBox + resRank + LeafPullback +
-  LeafJacobian + InjOn + image cover. `region-glue` node held at `adjudicated` (kill attached) until
-  the ChartBridge signature lands. Cert: `threads/04-bridge/cert-bridge-design.md`.
+  `ChartsCover` (univ atlas satisfies it) makes `region_glue`-as-stated unprovable. Witness
+  `g-chartscover-vacuity.py` (SURVIVES). Fixed → per-leaf `ChartBridge` (chartMap + srcBox + resRank +
+  LeafPullback + LeafJacobian + InjOn + image cover); STRENGTHENED tick 46 (MeasurableSet +
+  bounded-in-flat-cube srcBox) after the unbounded-sector counterexample (`g-glue-unbounded-srcbox.py`).
+  Interface FROZEN + abstract-field-gate-CLEARED (tick 51). Cert: `threads/04-bridge/`.
 
-- **Unary-`StepInvariant` carrier shape — REFUTED, council #2 (tick 23).** A per-NODE, edge-blind
-  invariant provably CANNOT pin the paper's parent-referencing case-1(1) exponent-merge; the per-chart
-  SUBSTITUTION is DATA no Prop supplies and no node field can hold; leaf-terminating charts lose their
-  case label irrecoverably. (Correction the council caught: the raw NODE datatype is NOT inexpressive
-  in the abstract — both seats struck that overstatement; the three binding facts above are what kill
-  it.) Fix: edge-labelled carrier (`Edge {case, subst, child}`) + `State/StateInvariant` split,
-  `StepInvariant → StepRel` relational. Root Lean STILL carries the refuted unary
-  `StepInvariant` (`EngineObligations.lean:63`) — the edge shape is in flight (task #42), unlanded.
-  Witness: `threads/01-skeleton/necessity-and-encodings.md §(i)` (probe `/tmp/NecessityProbe.lean`).
+- **Unary-`StepInvariant` carrier — REFUTED, council #2 (tick 23); SUPERSEDED by the edge carrier
+  (LANDED tick 37).** A per-node edge-blind invariant cannot pin the case-1(1) merge. Fixed by the
+  edge-labelled carrier (`Edge {case, subst, child}`); the root Lean now HAS the edge carrier
+  (r2-validated) — this is landed, not in-flight (pass-#1 flagged it unlanded; STALE now).
 
-- **Candidate B (node carrier + relational side-table) — NOT ADOPTED, council #2.** An alternative to
-  edge-labelling: keep the reviewer-validated node `ResolutionTree` and carry per-edge `case`+`φ` in a
-  side relation `edgeCase/edgeSubst : List ℕ → …` with a heavy `EdgeCoherent` invariant. Rejected for
-  the P6 two-structure-sync risk (a tree edit desyncs the table — a silent bug the type system won't
-  catch, unlike A where the edge IS the datum). Witness: `necessity-and-encodings.md §(ii) Candidate B`.
-
-- **The false Q5 fork framing — REFUTED on BOTH sides, council #2 (ticks 24–25).** The posed fork
-  "flat-coord fderiv (a) vs RLCT-transport (b), because `Params M` has no normed instance and (b)
-  drops fderiv" was VOID on both sides: (1) `ParamsFlatLinear` (0-sorry, 13 consumers) ALREADY banks
-  the normed instances + CLE + fderiv — the probe ran without the import; (2) route (b)'s transport
-  CONSUMES fderiv, it does not drop it. The real distinction was fresh-composer vs banked-reuse;
-  route (b) adopted on corrected merits (reuse the banked local-homeomorph transport +
-  ONE homogeneity scaling-bridge lemma). Lesson banked: instance probes without an import survey are
-  not evidence. Witness: journal ticks 24–25; `necessity-and-encodings.md §Q5`.
-
-- **`MinAdmMono` for threshold preservation — WRONG DIRECTION (formaliser trap), covdesign D2.** The
-  compass had pinned `MinAdmMono`; it is the OPPOSITE direction. Correct pin: the minAdm-as-minimum
-  property (`inf'_le` / `minAdm_le_Mval`). Recorded on `theorem4-localization`; kept here as a
-  name-similarity trap warning.
+- **`MinAdmMono` for threshold preservation — WRONG DIRECTION (formaliser trap).** Correct pin: the
+  minAdm-as-minimum property. **Pin MOVED since pass #1:** it is `minAdm_le_Mval_toNat`
+  (`Validate/RouteMState.lean:259`), NOT in RouteMLayerSplit. Kept here as a name-similarity trap.
 
 - **`resolutionOf := (∃ t, IsFullMonomialization t).choose` — REFUTED (under-determination), review
-  round 1 (tick 10, C2).** A naked `choose` under a single weak predicate lets a junk leaf (`numDiv =
-  0`) satisfy it vacuously with empty `terminalExponents`, so the ledger/coverage obligations are not
-  dischargeable. Fixed by the `CanonicalResolution` 5-conjunct bundle (junk-leaf provably rejected).
-  This shape is retired; the bundle is live in `EngineObligations.lean`. Witness: rev-skeleton r1
-  report (journal tick 10); the attainment conjunct `minAdm ∈ terminalExponents` is the load-bearing
-  fix (`EngineDriver.lean:78` loss-proof example).
+  round 1.** Naked `choose` lets a junk leaf (`numDiv=0`) satisfy vacuously. Fixed by the
+  `CanonicalResolution` 5-conjunct bundle; attainment conjunct `minAdm ∈ terminalExponents` is the
+  load-bearing fix. Retired shape.
+
+- **The false Q5 fork framing — REFUTED on BOTH sides, council #2.** "Params not normed (a) vs (b)
+  drops fderiv" was VOID: `ParamsFlatLinear` banks the normed instances (0-sorry, 13 consumers) and
+  route (b) CONSUMES fderiv. Lesson: instance probes without an import survey are not evidence
+  (this false "Params not normed" probe was one of the run's three near-rebuild incidents).

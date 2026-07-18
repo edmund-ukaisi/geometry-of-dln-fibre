@@ -9,16 +9,20 @@ downstream consumption. THE DESTINATION IS THE LEARNING COEFFICIENT THEOREM
 `[propext, Classical.choice, Quot.sound]`, no carried or cited Aoyagi hypothesis). Two consumption
 paths from the library, priced by the paper-map recon: (A) the hbox adapter —
 `RouteMBoxThresholdFinite M` ∀M into the proven `aoyagi_learning_coefficient_gen` assembly
-(current default); (B) her native λ-theorem transcribed (REPLACING `cited_aoyagi_dln`). **If (B)
-prices shorter, the hbox hole is DITCHED** — the hole serves the goal, never the reverse. Method
+(current default); (B) her native λ-theorem transcribed. PATH QUESTION RESOLVED (council #3,
+2026-07-18): Path A ratified as the SOLE critical path — Path B contains Path A's coverage
+content and is not shorter; the prize is the UNCONDITIONAL CLEAN-THREE headline (killing the
+5 skeleton-rung sorryAx). PRECISION PIN: `cited_aoyagi_dln` was never in the λ cone — it is the
+OUT-OF-SCOPE RlctPayoff layer's (needs minAdm=codim; the next expedition's runway). Method
 (operator): mathematical sense over case analysis — understand each piece at conceptual altitude,
 build the uniform object, DERIVE the cases.
 
-**Closing criterion.** `aoyagi_learning_coefficient` (unsuffixed) proven — via path (A)'s
-`…_gen ∘ hbox` + the L=1 fold, or via path (B)'s native λ theorem, whichever the priced adoption
-selects; forced `#print axioms` clean-three; the full-mechanism library standing as bedrock
-(faithful to her paper, not trimmed to the consumer); skeleton legacy stubs re-pointed; cordon
-audit clean; close PR at signal-and-wait.
+**Closing criterion.** `aoyagi_learning_coefficient` (unsuffixed) proven via `…_gen ∘ hbox`
+(L≥2) + the SEPARATE L=1 fold; forced `#print axioms` clean-three with an ENFORCED axiom-gate
+installed at the repoint (a #print diagnostic alone is confirmed-by-discipline, not enforced);
+the full-mechanism library standing as bedrock (faithful to her paper, not trimmed to the
+consumer — R1 faithful carrier, R4 genDivExp propagation, R6 peel per its cost-probe); skeleton
+legacy stubs re-pointed; cordon audit clean; close PR at signal-and-wait.
 
 **Why this route (the founding adjudication — full whys in `compass.md`).** The predecessor
 expedition's integrate-early engine (RouteM peel-and-integrate) repeatedly manufactured

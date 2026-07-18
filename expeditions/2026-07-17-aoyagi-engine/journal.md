@@ -862,3 +862,22 @@ R4) so R2/R3 build against the final carrier once. R2 gate = ChartBridge PROOF +
 atlas-closure probe (pen-and-paper seat, NOT the architect — builder-verifying-own-atlas is the
 vacuity pattern). Cheapest clarifier: a pen-and-pencil full-T update trace at (3,3,4) BEFORE
 committing R1 (prices the ballooning risk). Adoption + compass fork-11 HELD until seat B.
+
+## 2026-07-18 COUNCIL #3 CLOSED: ROADMAP ADOPTED (tick 64)
+Seat B landed; CONVERGENT with seat A on all five verdicts (Path A sole critical path — both
+kernel-verified independently; full-T into the State NOW with complementary arguments — A: the
+state carries the DERIVED quantity and drops the primitive, B: T is non-derivable chooser-
+required data + retrofit risk to the merged μ-descent; R6 OWED first-class, both rejecting
+"value lane suffices" as the retired razor; decorrelated atlas-closure seat; genDivExp field at
+R1/proofs at R4 — one faithful node-data pass). ONE DIVERGENCE, resolved to seat A's precision
+pin (controller-verified; B's own grep supports A: no cite-usage token in the cone — nothing
+there to "delete"): the prize is the UNCONDITIONAL CLEAN-THREE headline; cited_aoyagi_dln is the
+out-of-scope payoff layer's. B's unique catches adopted: the #print-diagnostic-not-guard confound
+(ENFORCED axiom-gate at R5), the hL2 caveat (L=1 via the separate fold), the scope-vs-sequencing
+razor discipline (sharper than A's guard; subsumes it). ADOPTION APPLIED: compass fork 11 +
+2 standing-counsel entries; brief.md closing criterion + path-question corrected ("kills the
+cite" struck everywhere — my own tick-61 journal line and reframed-brief line carried the
+inflation; corrected here, not rewritten). Cheapest clarifiers MERGED into the decorrelated
+pen-and-paper seat: atlas closure + the t̃-tie/incomparable-T necessity witness + the full-T
+update-rule trace, all at (2,2,2)/(3,3,4). R6 surfaced to the operator for scope confirmation
+(both seats: owed; post-spine; cost-probe-gated).

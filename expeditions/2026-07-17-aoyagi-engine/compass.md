@@ -177,6 +177,34 @@ over banked substrate.
    recursion friction; junk rejected at Prop level per the codebase pattern); eligibility (t̃=cleared+
    runLen) is a cheap Prop conjunct if the no-op acceptance proves certificate-unacceptable — NOT a
    dependent-type refactor. LeafData gains divTilde/cleared (honest total rootLedger).
+11. **Roadmap adopted; Path A ratified as the SOLE critical path** (council #3, two independent
+   elder seats CONVERGENT, both kernel-verified, 2026-07-18). WHY: the ≤-half
+   (routeMCore_box_diverges_achiever_full', 0-sorry general-M; r1_resolution_general_le hbox-FREE)
+   is banked; aoyagi_learning_coefficient_gen (HeadlineGenAssembly:55) is conditional SOLELY on
+   hbox for L≥2 (both seats direct-read the proof); the ONLY open content is hbox = coverage (R2)
+   + region_glue (R3); Path B contains Path A's coverage — not shorter. PRECISION PIN (seat A's
+   confound-hunt catch, controller-verified; resolves the seats' one divergence AGAINST the recon's
+   gloss): discharging hbox + repointing canonical → _gen yields the UNCONDITIONAL CLEAN-THREE
+   aoyagi_learning_coefficient — it kills the sorryAx of the 5 skeleton rungs. It does NOT delete
+   cited_aoyagi_dln: the cite was NEVER in the λ cone (grep: only absence-asserting docstrings);
+   it lives in the OUT-OF-SCOPE RlctPayoff layer (needs minAdm=codim — the next expedition's
+   runway). "Kills the cite for free" was headline-inflation; struck everywhere. GUARDS (seat B):
+   _gen's clean-three rests on a #print DIAGNOSTIC (AxCheck:913), confirmed-by-discipline not
+   build-enforced — an ENFORCED axiom-gate installs at R5; L=1 reaches the unsuffixed theorem via
+   a SEPARATE fold (not _gen). RUNGS ADOPTED: R1 = the FAITHFUL carrier NOW — full-T in the State
+   (t̃ DERIVED; T is non-derivable chooser-required data: deferring it is incoherent AND risks a
+   μ-descent retrofit) + the genDivExp multiplicity field (ONE faithful node-data pass; propagation
+   PROOFS at R4; stop-and-surface if full-T stepUpdate balloons; divProfile T-settings page-verified
+   at build); the EngineConstruction "stores ONLY what the measure reads" docstring is STRUCK (the
+   retired razor encoded in code). R2 = coverage, own permanent lane; gate = the ChartBridge PROOF
+   over the CONSTRUCTED atlas + a DECORRELATED atlas-closure probe (pen-and-paper seat, never the
+   builder — in-house witnesses mask gaps, twice proven) + hunt-cert §5 cited by SCOPE, never
+   blanket. R3 = region_glue (in flight; field-pass cleared). R4 = genDivExp propagation, OWED
+   (kills: g-coupled-binding-334/g-delta-flatten). R5 = wiring + the enforced axiom-gate. R6 =
+   Lemma 2 + Theorem 3 (the regular peel, Layer A) OWED FIRST-CLASS under fork 10 — both seats
+   reject "value lane suffices" as the retired razor (the value lane gets the NUMBER, not the
+   OBJECT) — placed post-spine off critical path, COST-PROBE-GATED (SchurCore depth-≥3 wall,
+   rr4-precedent), surfaced to the operator for scope confirmation. θ + Eqs (1)-(5) stay out.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
@@ -201,6 +229,15 @@ over banked substrate.
 - Watch transcription-level decoupling: a transcriber "simplifying" the carried monomial data is
   fork vocabulary; the sharing maps are the content (typed, per fork 3).
 - Survey banked state before commissioning ANYTHING (3 redundant commissions last run).
+- SCOPE vs SEQUENCING (the corrected-razor discipline, council #3). The finiteness razor is
+  RETIRED for SCOPE — what the faithful library CONTAINS is fixed by fidelity to her paper, not a
+  consumer's path. It stays legitimate ONLY for SEQUENCING — what LANDS FIRST is the critical
+  path; sequencing is never silent abandonment. Recurrence test: any "optional / not-critical-path
+  / value-lane-suffices / the-certificate-never-reads-it" on a NAMED piece of her mechanism is the
+  old failure mode — surface it, never adopt it silently.
+- The R2 atlas-closure gate must be DECORRELATED from the atlas builder (council #3, both seats):
+  in-house nice-instance witnesses MASKED gaps twice (resRank fold; srcBox boundedness). The
+  builder's spike is build-side de-risk; the GATE reads the independent seat.
 - MATHEMATICAL SENSE OVER CASE ANALYSIS (operator, 2026-07-18): case analysis is a VERIFICATION
   instrument, never the theory-building instrument — chasing per-case fidelity finds local minima.
   Understand the mechanism at its conceptual altitude first (what the induction IS doing: iterated
