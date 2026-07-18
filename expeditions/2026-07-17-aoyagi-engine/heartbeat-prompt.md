@@ -8,14 +8,16 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: THE ORACLE UNIT (fork 13) + coverage tail. Landed+verified: assembly (buildTree/WF.fix,
-  ConDecision interface), ALL construction-independent coverage infra (atom, fold 4/4, clause
-  lemmas, leaf smart-constructor), shear verdict (A) ψ-composed. IN FLIGHT: architect o1
-  (invariant read off the simulator; CompChainInv statement waits for the o4 certificate — the
-  MUTUAL-INDUCTION contract) + o2-def (+ the ψ-homeo StepEmit guarantee); pnp clarifier
-  ((2,2,3,3,2)/(3,2,4,2): comp-violations + profile-set==Adm) → the o4 pen-and-paper certificate;
-  coverage ψ-reconciliation lemma. o5 ∈-half OWNED BY BUILD (fork 13). Then: o3, o4-formalise,
-  o5, T3 real-atlas composition → hbox flip → mint repoint + enforced gate → cordon → close.
+- phase: THE SPINE TAIL. Summit LANDED (all-invariant maintenance ×3, SameLevelChainInv, STEP1,
+  conOracle TOTAL, mutual induction o1↔o4↔o2 PROVEN, MvalCoh kit; region_glue DISCHARGED —
+  glue lane complete, region_glue_of_chartBridge clean-three). Seat succession: architect-t02
+  stood down at the context ceiling (zero-loss; tick 140); **architect-t03** now owns t01-r2 on
+  the 6-step close: resRows running-min fix → Mval-telescoping identity (t02's parting crux,
+  banked tick-140 addendum) → MvalCoh closure → terminal leaf (t0Indices + smart-constructor,
+  chart fields = T3 slots) → WF-fold → o5-∈ → ASSEMBLE monomialization_terminates mod ChartBridge.
+  WARM: coverage-t07 (T3 rung-3: 3/8 per-leaf Props + ChartBridge wiring, gated on the built
+  atlas); pnp-atlas (Q1b single-ψ factorization fidelity, queued). Then R2 gate (pnp replay +
+  hunt-cert §5 + circularity guard) → hbox flip → mint repoint + ENFORCED axiom-gate → close.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
