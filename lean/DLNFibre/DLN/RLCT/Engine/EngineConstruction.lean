@@ -1406,6 +1406,75 @@ theorem MvalCoh_case11child {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
         = (Mval M (Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k)).toNat
     rw [if_neg hkv, Function.update_of_ne hk]; exact h k
 
+/-! ## BoundaryFlat: the pending-divisor boundary flatness (the case-1 `Mval`-delta precondition) -/
+
+/-- **BoundaryFlat** (the case-1 `Mval`-delta precondition, Codex-ratified): a PENDING divisor
+(`J < t̃_k`) is flat also at the boundary — its predecessor exponent `tPrev(T_k)_layer` (`= M⁽¹⁾` at
+`layer = 0`, else `T_k(layer−1)`) equals its clearing level `t̃_k`. Fin-safe (`∀ h : layer < L`, so
+vacuous at a terminal). A pending divisor was created at a STRICTLY EARLIER layer, so its tail-write
+flattened it through `layer−1`; this reachable-state invariant encodes that without tracking creation
+layers. It is exactly `Mval_setTail_delta`'s `hbdry`. -/
+def BoundaryFlat {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
+  ∀ (h : s.layer < L) (k : Fin s.numDiv), s.cleared < s.divTilde k →
+    tPrev M (s.divProfile k) ⟨s.layer, h⟩ = (s.divTilde k : ℤ)
+
+/-- **Rollover preserves `BoundaryFlat`** — the new boundary coord `layer` was a TAIL coord of the
+old state, so old `FlatTail` + `WeakDec` give `T_k(layer) = t̃_k` (`divProfile_tail_eq_tilde`),
+unconditionally (no `hbf`/pending needed). -/
+theorem BoundaryFlat_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (hlive : s.layer < L) (hft : FlatTail s) (hwd : WeakDecInv s) :
+    BoundaryFlat M s.stepRollover := by
+  intro h' k _hpend
+  change tPrev M (s.divProfile k) ⟨s.layer + 1, h'⟩ = (s.divTilde k : ℤ)
+  unfold tPrev
+  rw [if_neg (show s.layer + 1 ≠ 0 by omega)]
+  norm_cast
+  exact divProfile_tail_eq_tilde s hft hwd hlive k (by simp)
+
+/-- **A case-1(1) merge preserves `BoundaryFlat`** — the merge target drops to `t̃ ≤ J` (no longer
+pending, vacuous); every other divisor's profile & `t̃` are unchanged, so `hbf` carries over. -/
+theorem BoundaryFlat_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (f : Fin s.numDiv)
+    (hlive : s.layer < L) (hbf : BoundaryFlat M s) : BoundaryFlat M (s.stepCase11 f) := by
+  intro h' k hpend
+  by_cases hk : k = f
+  · exfalso
+    have hdp : (s.stepCase11 f).divProfile k = setTail s.layer s.cleared (s.divProfile f) := by
+      show Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k = _
+      rw [hk, Function.update_self]
+    have hle : (s.stepCase11 f).divTilde k ≤ s.cleared := by
+      show tildeOf ((s.stepCase11 f).divProfile k) ≤ s.cleared
+      rw [hdp]; exact tildeOf_setTail_le hlive
+    have hc : (s.stepCase11 f).cleared = s.cleared := rfl
+    omega
+  · have hdp : (s.stepCase11 f).divProfile k = s.divProfile k := Function.update_of_ne hk _ _
+    have hdt : (s.stepCase11 f).divTilde k = s.divTilde k := congrArg tildeOf hdp
+    rw [hdp, hdt]; rw [hdt] at hpend
+    exact hbf h' k hpend
+
+/-- **A case-1(2)/case-2 append preserves `BoundaryFlat`** — the new pivot has `t̃ ≤ J < J+1`, not
+pending (vacuous); old divisors' profiles & `t̃` are unchanged (`snoc_castSucc`), so `hbf` carries
+over (the cleared count rises, shrinking the pending set). -/
+theorem BoundaryFlat_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hlive : s.layer < L) (hbf : BoundaryFlat M s) :
+    BoundaryFlat M (s.stepAppendAdvance e t₀) := by
+  intro h' k
+  induction k using Fin.lastCases with
+  | last =>
+    intro hpend
+    exfalso
+    rw [divTilde_stepAppendAdvance_last] at hpend
+    have hle : tildeOf (setTail s.layer s.cleared t₀) ≤ s.cleared := tildeOf_setTail_le hlive
+    have hc : (s.stepAppendAdvance e t₀).cleared = s.cleared + 1 := rfl
+    omega
+  | cast k' =>
+    intro hpend
+    rw [divTilde_stepAppendAdvance_castSucc] at hpend
+    have hc : (s.stepAppendAdvance e t₀).cleared = s.cleared + 1 := rfl
+    rw [divTilde_stepAppendAdvance_castSucc]
+    rw [show (s.stepAppendAdvance e t₀).divProfile (Fin.castSucc k') = s.divProfile k' from by
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]]
+    exact hbf h' k' (by omega)
+
 /-! ## o4→assembly: the joint invariant `OracleInv` + its cone-goodness preservation
 
 The six invariants the oracle carries, bundled: the construction's cone-goodness = `OracleInv` holds
