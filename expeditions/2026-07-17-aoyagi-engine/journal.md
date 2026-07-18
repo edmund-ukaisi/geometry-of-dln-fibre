@@ -1833,3 +1833,15 @@ edges). Every emitted edge discharges the full ratified StepRel including the ne
 spine's remaining summit, one focused unit: the TOTAL dispatch (dite on classify + the
 chooser/occ plumbing — the mutual-induction coupling point), WF-reachability (the preservation
 kit is complete), and o5-∈. These three close monomialization_terminates modulo ChartBridge.
+
+## 2026-07-18 THE TOTAL ORACLE EXISTS (tick 134)
+conOracle is a Lean function — Aoyagi's construction dispatch, total, producing a valid
+ConDecision (every guarantee incl. the guard) at every state; the reachability base
+OracleInv_conRoot alongside. ~11 green commits this turn, merged + verified. TWO FINDINGS
+surfaced (design points, both within the certified frame): (a) leafOfState is fallback-only —
+a PROPER terminal's leaf populates the analytic side (= the full ledger there, all divisors
+t̃=0 at a true terminal; the B'-split's terminal instantiation); (b) a TERMINATION-COMPLETENESS
+lemma is owed — conOracle's layer=L terminal has all t̃=0 (the fork-12(a) "leaf-t̃=0 FROM
+termination" obligation made precise; not automatic from layer=L). Remaining: the reachability
+inductive step (the mutual induction realized — the kit is complete), the full terminal leaf +
+termination-completeness, o5-∈. GO on reachability.
