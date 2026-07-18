@@ -73,15 +73,25 @@ component. -/
 def ConState.pendingCount {L : ℕ} (s : ConState L) : ℕ :=
   (Finset.univ.filter (fun k : Fin s.numDiv => s.cleared < s.divTilde k)).card
 
-/-- **The state invariant** (rung 2; shape-locked, detail loose). The layer has not overshot the
-chain (`S ≤ L`) and the cleared count has not overshot the within-layer ceiling (`J ≤ layerCap`).
-These are the facts the descent lemmas' strict preconditions refine (a rollover needs `S ≤ L`; a
-`J`-advancing step needs `J < layerCap`). -/
+/-- **The state invariant** (rung 2 → o1 strengthening). The layer has not overshot the chain
+(`S ≤ L`), the cleared count has not overshot the coarse ceiling (`J ≤ layerCap`), and — the o1
+`[add]`, **read off the simulator's `J ≥ MSp1` rollover guard** — the LIVE-LAYER width bound: the
+cleared count never exceeds the running-min width through the current layer,
+`J ≤ min(M⁽¹⁾…M⁽ˢ⁺¹⁾)`, stated in the universal form `∀ i ≤ S, J ≤ M i`. The simulator advances the
+layer exactly when `J ≥ MSp1 = min(Mrun(S), M⁽ˢ⁺¹⁾) = min(M⁽¹⁾…M⁽ˢ⁺¹⁾)`, so every reachable state
+satisfies this (numerically confirmed at all reachable states of `(2,2,2)`, `(3,3,4)`, `(2,2,2,2)`,
+`(2,2,3,2)`, and the higher-`L` clarifier instances `(2,2,3,3,2)`, `(3,2,4,2)`). `live_width`
+discharges the case-2 append's weak-decrease head-domination (`cleared ≤ runMinWidth`) and feeds the
+leaf block-bound. The COMPARABILITY (`CompChainInv`) component is held separately — its statement is
+NOT finalized here (the o1↔o4↔o2 mutual-induction contract: it lands with the o4 certificate). -/
 structure StateInvariant (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop where
   /-- The layer has not overshot the chain. -/
   layer_le : s.layer ≤ L
-  /-- The cleared count has not overshot the within-layer ceiling. -/
+  /-- The cleared count has not overshot the coarse within-layer ceiling. -/
   cleared_le : s.cleared ≤ layerCap M
+  /-- **The live-layer width bound** (o1, simulator read-off): `J ≤ min(M⁽¹⁾…M⁽ˢ⁺¹⁾)`, universal
+  form. Every width index at or below the current layer dominates the cleared count. -/
+  live_width : ∀ i : Fin (L + 1), (i : ℕ) ≤ s.layer → s.cleared ≤ M i
 
 /-! ## The lex-triple measure + well-founded relation (the pinned idiom) -/
 
@@ -517,10 +527,48 @@ theorem WeakDecInv_stepAppendAdvance {L : ℕ} (s : ConState L) (e : ℕ) (t₀ 
     simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
     exact h k' a b hab
 
-/-- **The total-comparability CHAIN invariant** (elder-gate4 §3c). The carried profiles are pairwise
-Def-4-comparable (`T_k ≤ T_{k'}` or `T_{k'} ≤ T_k`, componentwise) — the maintained chain, NOT
-merely the chooser's local minimality. T3's cover proof CONSUMES this (invariant→principalization,
-`cert-atlas-probe-2222` (c)); its preservation is a buildTree brick. -/
+/-! ## o1: `StateInvariant` preservation (settled fields — `CompChainInv` held for the o4 join)
+
+The strengthened `StateInvariant` (layer/coarse-cleared/live-width) is maintained by the three
+transitions. A rollover STAYS LIVE (`layer < L`) — the final rollover (`layer = L`) exits into a
+terminal state, which needs no invariant. The `J`-advancing append needs the STRICT live-width
+(step-eligibility `J < min widths`, the simulator's `J < MSp1` guard) that the oracle supplies. -/
+
+/-- **Layer rollover preserves `StateInvariant`** while staying live (`layer < L`): the new layer is
+`≤ L`, the cleared count resets to `0` (`≤` everything). -/
+theorem StateInvariant_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (hlayer : s.layer < L) (_h : StateInvariant M s) : StateInvariant M s.stepRollover := by
+  refine ⟨?_, ?_, ?_⟩
+  · change s.layer + 1 ≤ L; omega
+  · change (0 : ℕ) ≤ layerCap M; exact Nat.zero_le _
+  · intro i _; change (0 : ℕ) ≤ M i; exact Nat.zero_le _
+
+/-- **A case-1(1) merge preserves `StateInvariant`** — it changes only a divisor profile, not the
+layer or cleared count `StateInvariant` reads. -/
+theorem StateInvariant_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (i : Fin s.numDiv)
+    (h : StateInvariant M s) : StateInvariant M (s.stepCase11 i) :=
+  ⟨h.layer_le, h.cleared_le, h.live_width⟩
+
+/-- **A case-1(2)/case-2 append preserves `StateInvariant`**, given the coarse room
+(`cleared < layerCap`) and the STRICT live-width eligibility (`cleared < M i` for `i ≤ layer` — the
+`J < MSp1` guard). The layer is unchanged; the cleared count advances by one and stays within both
+bounds. -/
+theorem StateInvariant_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hcap : s.cleared < layerCap M)
+    (helig : ∀ i : Fin (L + 1), (i : ℕ) ≤ s.layer → s.cleared < M i)
+    (h : StateInvariant M s) : StateInvariant M (s.stepAppendAdvance e t₀) := by
+  refine ⟨h.layer_le, ?_, ?_⟩
+  · change s.cleared + 1 ≤ layerCap M; omega
+  · intro i hi; change s.cleared + 1 ≤ M i; have := helig i hi; omega
+
+/-- **The total-comparability CHAIN invariant** (elder-gate4 §3c → o1↔o4 join). The carried profiles
+are pairwise Def-4-comparable (`T_k ≤ T_{k'}` or `T_{k'} ≤ T_k`, componentwise) — the maintained
+chain that makes the chooser's `def4_min` total (the simulator's comparability-violation fallback is
+the hole this closes). **Statement HELD (mutual-induction contract):** its precise form (all
+divisors vs eligible-only; with/without the minimality witness) is finalized jointly with the o4
+pen-and-paper certificate; the preservation proof (o4) consumes the chooser minimality and is the
+hardest rung. T3's cover proof CONSUMES this (invariant→principalization, `cert-atlas-probe-2222`
+(c)). -/
 def CompChainInv {L : ℕ} (s : ConState L) : Prop :=
   ∀ k k' : Fin s.numDiv,
     (∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j) ∨
