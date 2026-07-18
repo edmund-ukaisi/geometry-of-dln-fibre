@@ -2009,3 +2009,19 @@ STOP-AND-SURFACE — route (A)'s ripple is a knowing controller decision, never 
 Expected fight location named: the case-1(2)/case-11-at-cleared=0 head-inheritance via parent
 WidthBound. pnp-o5: worktree up (t12-pnp-o5), no push yet — read-in + battery extension phase;
 ping if silent by tick ~149.
+
+## 2026-07-19 tick 148: o5-∈ FINDING — full ⊇ Adm FALSE; minimizer-need SAFE (K1+K3 fire, K2 does not)
+pnp-o5 surfaced mid-writeup (correct move): **the built tree does NOT realize every admissible
+profile.** Witness M=(3,3,4,2,3): (2,2,2,0),(3,2,2,0) ∈ Adm stranded at t̃=2 (level 2 =
+running-min M(4) — layer 4 clears only levels < 2). Cross-validated on the ORIGINAL sim; 84/351
+instances (~24%) have P(M) ⊊ Adm; our 4 pre-committed kill instances were ALL bottleneck-free —
+the shallow-instance confound, second occurrence. Exact characterization (0 counterexamples /
+~950): P(M) = Clearable-Adm. Same width-drop-strand mechanism as the p.15 full-chain defect.
+K2 SAFE: minAdm realized 955/955; the λ formula survives via min-bridge = (P ⊆ Adm, proved) +
+(minAdm ∈ P, cert). This is the 4TH verified read-off-shape defect (Def-3, FIX-A, p.15, now
+realization gap). ACTIONS: hold order to t03 (no ⊇/== Adm conjunct anywhere; o5-∈ target =
+minAdm ∈ terminalExponents only; C unaffected — it's the ⊆ direction); cert scope pinned to
+pnp-o5 (minimizer-clearability as PAPER PROOF = the load-bearing piece, ∃-minimizer fallback
+allowed; both characterization directions status-labelled; ledger entry #4 commissioned in
+FIX-A format; confound lesson explicit; scan artifacts committed); compass fork 13(o5-∈)
+RESHAPED (dated block). Codex-confirm pending on the pnp side.

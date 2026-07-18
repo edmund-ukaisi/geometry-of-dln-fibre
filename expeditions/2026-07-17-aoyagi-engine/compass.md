@@ -298,6 +298,22 @@ over banked substrate.
    (S,J+1) node is a branch never a leaf (IsFullMonomialization unaffected); the guard is a
    separate conjunct (ledger equality stays rfl-class). Blow-up-only aesthetics yield to ledger
    faithfulness: the tree's nodes are the paper's inductive statements, S-increment included.
+   13(o5-IN) RESHAPED (2026-07-19, pnp-o5 battery adjudication; Codex-confirm pending): the
+   realization target 'profile-set contains Adm' is FALSE for the built tree — witness
+   M=(3,3,4,2,3): (2,2,2,0),(3,2,2,0) in Adm are stranded at t-tilde=2 forever (level 2 =
+   running-min M(4); layer 4 clears only levels < 2). NOT a corner: P(M) properly-subset Adm in
+   84/351 instances (widths<=3, L<=4); the 4 pre-committed kill instances were ALL bottleneck-free
+   (shallow-instance confound — pre-committed batteries must include the width-drop mechanism).
+   Exact characterization (0 counterexamples, ~950 exact-recursion instances, cross-validated on
+   the original sim): P(M) = { a in Adm : Clearable(a) }, Clearable = every post-birth descent
+   layer S with a^S < a^{S-1} has a^{S-1} < M(S). SAME width-drop-strand mechanism as the p.15
+   full-chain defect (cert-compchain-o4 Part 1) — one mechanism, two faces. K2 does NOT fire:
+   minAdm's value realized at t-tilde=0 at 955/955 (every minimizer Clearable). THE SURVIVING
+   BRIDGE: min over P == min over Adm from (P subset Adm [leaf_mem_Adm, PROVED]) + (minAdm in P
+   [cert, minimizer-clearability paper-proof commissioned]) — the paper's lambda formula stands;
+   its implicit stratum-completeness does not (4th verified read-off defect; ledger entry
+   verify-realization-gap-defect.md commissioned). o5-IN Lean target = minAdm in
+   terminalExponents ONLY; no '⊇/== Adm' conjunct anywhere (hold order to build, tick 148).
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
