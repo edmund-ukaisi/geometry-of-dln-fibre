@@ -1,5 +1,6 @@
-import DLNFibre.DLN.RLCT.Foundations.S1ScalingBridgeDLN
+import DLNFibre.DLN.RLCT.Foundations.S1ScalingBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxReduction
+import DLNFibre.DLN.RLCT.Validate.D1L2ExplicitCoreProducer
 import DLNFibre.DLN.RLCT.Foundations.S1Cover
 import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
@@ -8,9 +9,9 @@ import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
 The `region_glue` box integral `routeMLayerBoxIntegral M c' 1` (= `∫_{paramsBoxM M 1} F^{-c'}`, with
 `F = frobSq(prod M ·)`) is finite as soon as it is finite on ANY strictly-smaller box
-`paramsBoxM M ε` (`ε > 0`): the integrand's base `F` is degree-`2L` homogeneous
-(`S1ScalingBridgeDLN`), a cone, so the scaling bridge transfers finiteness up to the unit box by the
-finite positive factor `ε^{-(flatDim − 2L·c')}`.
+`paramsBoxM M ε` (`ε > 0`): the integrand's base `F` is degree-`2L` homogeneous (banked
+`flatNodeLoss_smul`), a cone, so the abstract scaling bridge (`S1ScalingBridge`) transfers
+finiteness up to the unit box by the finite positive factor `ε^{-(flatDim − 2L·c')}`.
 
 This is the boundedness-INDEPENDENT half of the assembly: it consumes the per-cover small-box
 finiteness (which the chart cover + per-leaf reads supply) and delivers the unit-box conclusion. The
@@ -67,6 +68,19 @@ theorem cubeBox_smul (N : ℕ) (ε : ℝ) (hε : 0 < ε) :
     · funext i
       rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_assoc,
         mul_inv_cancel₀ (ne_of_gt hε), one_mul]
+
+/-- **The scaling bridge for the flat node loss** — instantiates the abstract `S1ScalingBridge` at
+`F = flatNodeLoss M`, `D = 2L`, consuming the BANKED degree-`2L` homogeneity `flatNodeLoss_smul`
+(`D1L2ExplicitCoreProducer`) and `dlnLoss_nonneg`: `∫_{ε • K} flatNodeLoss^{-c'} =
+ε^(flatDim M − 2L·c') · ∫_K flatNodeLoss^{-c'}`. -/
+theorem lintegral_flatNodeLoss_smul_bridge (M : Fin (L + 1) → ℕ) (c' ε : ℝ)
+    (K : Set (Fin (flatDim M) → ℝ)) (hε : 0 < ε) (hK : MeasurableSet K) :
+    ∫⁻ y in ε • K, ENNReal.ofReal (flatNodeLoss M y ^ (-c'))
+      = ENNReal.ofReal (ε ^ ((flatDim M : ℝ) - (2 * L) * c'))
+          * ∫⁻ x in K, ENNReal.ofReal (flatNodeLoss M x ^ (-c')) := by
+  have hbridge := lintegral_rpow_neg_smul_bridge (flatNodeLoss M) (2 * L) c' ε K
+    (fun x => dlnLoss_nonneg M 0 _) (fun c w => flatNodeLoss_smul M c w) hε hK
+  rw [hbridge]; norm_num
 
 /-- **Homogeneity local→global** (the `region_glue` globalization). If the box integral is finite on
 some smaller box `paramsBoxM M ε` (`ε > 0`), it is finite on the unit box: the scaling bridge gives
