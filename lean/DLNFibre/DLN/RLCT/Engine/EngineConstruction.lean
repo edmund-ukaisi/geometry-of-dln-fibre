@@ -1411,4 +1411,29 @@ def classify (M : Fin (L + 1) → ℕ) (s : ConState L) : StepKind :=
     | some target => .case1 target
     | none => .case2
 
+/-! ## o2: the per-branch step decisions (the oracle's emissions; assembled into the total oracle)
+
+Each branch of `classify` emits a `ConDecision`. The rollover branch is the first and simplest — a
+single chartless edge; it lands directly on the ratified carrier (`StepCase.rollover` + the
+at-exhaustion guard). The case-1/case-2 branches (with the chooser + the divExp-bump child) follow. -/
+
+/-- **The rollover step decision**: at an at-exhaustion state (`widthMinUpto M (s.layer+1) ≤
+s.cleared`, with `s.layer ≤ L` for the descent) the oracle emits ONE chartless `rollover` edge to
+`s.stepRollover` (layer `S+1`, `J := 0`). The node is `s.toStepData` (residual dims unused by a
+relabel edge, so `0`); the child ledger is `stepUpdate … rollover` (rfl); the eligibility clause is
+vacuous (`rollover ∉ {case11,case12}`) and the at-exhaustion guard is exactly `hex`. -/
+noncomputable def rolloverDecision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (hlayer : s.layer ≤ L) (hex : widthMinUpto M (s.layer + 1) ≤ s.cleared) : ConDecision M s :=
+  .step (s.toStepData M 0 0)
+    [⟨StepCase.rollover, ⟨id, 0, 0, 0, Fin.elim0⟩, s.stepRollover,
+      conRel_stepRollover M s hlayer⟩]
+    rfl rfl
+    (by
+      intro c hc
+      simp only [List.mem_singleton] at hc
+      subst hc
+      refine ⟨rfl, ?_, ?_⟩
+      · rintro (h | h) <;> nomatch h
+      · intro _; exact hex)
+
 end DLNFibre.DLN.RLCT.Engine
