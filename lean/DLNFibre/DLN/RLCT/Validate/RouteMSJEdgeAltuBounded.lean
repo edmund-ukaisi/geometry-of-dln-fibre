@@ -6,6 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankSurvival
+import DLNFibre.Core.MeasureTheory.MatrixInverseMeasurable
 
 set_option linter.style.longLine false
 
@@ -38,6 +39,125 @@ namespace DLNFibre.DLN.RLCT
 
 open MeasureTheory
 open scoped ENNReal BigOperators Matrix
+open DLNFibre.Core
+
+/-! ## Measurability of the freed Schur loss (discharging the pivot-inverse obstruction)
+
+`schurShift` and `freedSchurLoss` both carry the pivot inverse `(Matrix.of P)⁻¹`, whose
+discontinuity at `{det P = 0}` defeats `fun_prop`'s continuity search (it deep-recurses on the
+inverse). Measurability is recovered entrywise from the Core kernel
+`DLNFibre.Core.measurable_matrix_of_inv_apply` (the matrix inverse is Borel-measurable) composed with
+the block projections, assembled through the generic matrix product/sum entry helpers and `frobSq`.
+These discharge the `AEMeasurable` side-condition of `outerDom_lintegral_prod` in the α-LOW STEP 1
+drop-corank calc — the one glue step altufill's assembly left open. -/
+
+/-- **Measurability of `frobSq` of an entrywise-measurable matrix family.**
+`frobSq (A x) = ∑ i, ∑ j, (A x i j)^2`, a finite sum of squares of measurable scalars. -/
+theorem measurable_frobSq_of_entry {X : Type*} [MeasurableSpace X] {p q : ℕ}
+    {A : X → Matrix (Fin p) (Fin q) ℝ} (hA : ∀ i j, Measurable fun x => A x i j) :
+    Measurable fun x => frobSq (A x) := by
+  simp only [frobSq]
+  exact Finset.measurable_sum _ fun i _ =>
+    Finset.measurable_sum _ fun j _ => (hA i j).pow_const 2
+
+/-- **`schurShift` is measurable.** The block shift `C · P⁻¹ · B₁₂` is a triple matrix product; the
+only non-continuous factor is the pivot inverse `(Matrix.of P)⁻¹`, whose entries are measurable via
+the Core kernel. Assembled entrywise through `measurable_matrix_mul_entry`. -/
+theorem measurable_schurShift {t a b : ℕ} :
+    Measurable (fun x : SJOuter t a b => schurShift x) := by
+  have hC : ∀ i k, Measurable (fun x : SJOuter t a b => (Matrix.of x.2) i k) := fun i k =>
+    (measurable_pi_apply k).comp ((measurable_pi_apply i).comp measurable_snd)
+  have hPinv : ∀ i k, Measurable (fun x : SJOuter t a b => ((Matrix.of x.1.1)⁻¹) i k) := fun i k =>
+    (measurable_matrix_of_inv_apply i k).comp (measurable_fst.comp measurable_fst)
+  have hB : ∀ i k, Measurable (fun x : SJOuter t a b => (Matrix.of x.1.2) i k) := fun i k =>
+    (measurable_pi_apply k).comp ((measurable_pi_apply i).comp (measurable_snd.comp measurable_fst))
+  rw [measurable_pi_iff]; intro i
+  rw [measurable_pi_iff]; intro j
+  simp only [schurShift]
+  exact measurable_matrix_mul_entry (measurable_matrix_mul_entry hC hPinv) hB i j
+
+/-- **`freedSchurLoss` is jointly measurable** in the outer triple `x` and the freed corank block `Γ`,
+for a fixed tail `Q`. Two `frobSq` summands, each an entrywise product/sum of measurable matrix families
+(the pivot inverse `(of x.1.1)⁻¹` via the Core kernel; the block projections; the constant `Q` blocks). -/
+theorem measurable_freedSchurLoss {t a b q : ℕ} (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) :
+    Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) => freedSchurLoss p.1 p.2 Q) := by
+  have hP : ∀ i k, Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) => (Matrix.of p.1.1.1) i k) :=
+    fun i k => (measurable_pi_apply k).comp ((measurable_pi_apply i).comp
+      (measurable_fst.comp (measurable_fst.comp measurable_fst)))
+  have hB : ∀ i k, Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) => (Matrix.of p.1.1.2) i k) :=
+    fun i k => (measurable_pi_apply k).comp ((measurable_pi_apply i).comp
+      (measurable_snd.comp (measurable_fst.comp measurable_fst)))
+  have hC : ∀ i k, Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) => (Matrix.of p.1.2) i k) :=
+    fun i k => (measurable_pi_apply k).comp ((measurable_pi_apply i).comp
+      (measurable_snd.comp measurable_fst))
+  have hΓ : ∀ i k, Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) => (Matrix.of p.2) i k) :=
+    fun i k => (measurable_pi_apply k).comp ((measurable_pi_apply i).comp measurable_snd)
+  have hPinv : ∀ i k, Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) =>
+      ((Matrix.of p.1.1.1)⁻¹) i k) :=
+    fun i k => (measurable_matrix_of_inv_apply i k).comp
+      (measurable_fst.comp (measurable_fst.comp measurable_fst))
+  have hQinl : ∀ i k, Measurable (fun _p : SJOuter t a b × (Fin a → Fin b → ℝ) =>
+      (Q.submatrix Sum.inl id) i k) := fun _ _ => measurable_const
+  have hQinr : ∀ i k, Measurable (fun _p : SJOuter t a b × (Fin a → Fin b → ℝ) =>
+      (Q.submatrix Sum.inr id) i k) := fun _ _ => measurable_const
+  have hInner : ∀ i k, Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) =>
+      (Q.submatrix Sum.inl id + (Matrix.of p.1.1.1)⁻¹ * Matrix.of p.1.1.2
+        * Q.submatrix Sum.inr id) i k) :=
+    fun i k => measurable_matrix_add_entry hQinl
+      (measurable_matrix_mul_entry (measurable_matrix_mul_entry hPinv hB) hQinr) i k
+  simp only [freedSchurLoss]
+  refine Measurable.add ?_ ?_
+  · apply measurable_frobSq_of_entry; intro i j
+    exact measurable_matrix_mul_entry hP hInner i j
+  · apply measurable_frobSq_of_entry; intro i j
+    exact measurable_matrix_add_entry (measurable_matrix_mul_entry hC hInner)
+      (measurable_matrix_mul_entry hΓ hQinr) i j
+
+/-- **The inner freed-`Γ` integral is measurable in the outer triple `x`.** This is the `AEMeasurable`
+side-condition `outerDom_lintegral_prod` needs to split the `x`-integral. The `Γ`-domain
+`{Γ | Γ + schurShift x ∈ genBox}` is `x`-dependent (through the pivot-inverse shift), so fold it into an
+indicator and apply Tonelli (`Measurable.lintegral_prod_right'`) to the jointly-measurable integrand
+(`measurable_schurShift`, `measurable_freedSchurLoss`, `measurableSet_genBox`). -/
+theorem measurable_freedInner {t a b q : ℕ} (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) (c' T : ℝ) :
+    Measurable (fun x : SJOuter t a b =>
+      ∫⁻ Γ in {Γ : Fin a → Fin b → ℝ | Γ + schurShift x ∈ genBox (Fin a) (Fin b) T},
+        ENNReal.ofReal ((freedSchurLoss x Γ Q) ^ (-c'))) := by
+  have hsx : ∀ x : SJOuter t a b,
+      MeasurableSet {Γ : Fin a → Fin b → ℝ | Γ + schurShift x ∈ genBox (Fin a) (Fin b) T} :=
+    fun x => (measurableSet_genBox (α := Fin a) (β := Fin b) T).preimage
+      (measurable_id.add_const (schurShift x))
+  have hrw : (fun x : SJOuter t a b =>
+        ∫⁻ Γ in {Γ : Fin a → Fin b → ℝ | Γ + schurShift x ∈ genBox (Fin a) (Fin b) T},
+          ENNReal.ofReal ((freedSchurLoss x Γ Q) ^ (-c')))
+      = fun x => ∫⁻ Γ, (genBox (Fin a) (Fin b) T).indicator (fun _ => (1 : ℝ≥0∞)) (Γ + schurShift x)
+          * ENNReal.ofReal ((freedSchurLoss x Γ Q) ^ (-c')) := by
+    funext x
+    rw [← lintegral_indicator (hsx x)]
+    apply lintegral_congr
+    intro Γ
+    by_cases h : Γ + schurShift x ∈ genBox (Fin a) (Fin b) T
+    · rw [Set.indicator_of_mem (by simpa [Set.mem_setOf_eq] using h),
+        Set.indicator_of_mem h]; simp
+    · rw [Set.indicator_of_notMem (by simpa [Set.mem_setOf_eq] using h),
+        Set.indicator_of_notMem h]; simp
+  rw [hrw]
+  have hjoint : Measurable (fun p : SJOuter t a b × (Fin a → Fin b → ℝ) =>
+      (genBox (Fin a) (Fin b) T).indicator (fun _ => (1 : ℝ≥0∞)) (p.2 + schurShift p.1)
+        * ENNReal.ofReal ((freedSchurLoss p.1 p.2 Q) ^ (-c'))) := by
+    refine Measurable.mul ?_ ?_
+    · exact (measurable_const.indicator (measurableSet_genBox (α := Fin a) (β := Fin b) T)).comp
+        (measurable_snd.add (measurable_schurShift.comp measurable_fst))
+    · exact ENNReal.measurable_ofReal.comp
+        ((Measurable.comp (g := fun r : ℝ => r ^ (-c')) (by fun_prop)) (measurable_freedSchurLoss Q))
+  exact hjoint.lintegral_prod_right'
+
+/-- **`freedSchurLoss` vanishes at a zero tail** (`Q = 0`): both `frobSq` summands are `frobSq 0 = 0`.
+Handles the degenerate `prod = 0` cut in the α-LOW drop-corank bound. -/
+theorem freedSchurLoss_zero {t a b q : ℕ} (x : SJOuter t a b) (Γ : Fin a → Fin b → ℝ) :
+    freedSchurLoss x Γ (0 : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) = 0 := by
+  simp only [freedSchurLoss, Matrix.submatrix_zero, Matrix.mul_zero, add_zero, zero_add, frobSq,
+    Pi.zero_apply, Matrix.zero_apply]
+  simp
 
 /-! ## The charge sub-lemma (pure `minAdm` nat algebra, decorrelated)
 
@@ -758,6 +878,158 @@ theorem edge_W_pos_ae {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (ht 
   filter_upwards [hnull] with pb hpbne hmem
   exact (hWid pb hmem.2.2).symm ▸ lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hpbne)
 
+-- Heartbeats raised: the `Fin.cons`/`SJOuter`-product width defeqs and the large `calc` endpoint
+-- matching against the freed-`Γ`/pivot-energy integrands force expensive `whnf` during elaboration.
+set_option maxHeartbeats 1600000 in
+/-- **The α-LOW clean-slice of the b=1, a<u, bounded-w arm** (drop-corank branch). Below
+`½·minAdm (redChain t M)`, the freed-`Γ` triple integral is finite. STEP 1 (drop-corank): split the
+`x`-integral by `outerDom_lintegral_prod` (side-condition `measurable_freedInner`); per `A'`, `by_cases`
+on the degenerate `prod = 0` cut — the good cut uses a.e. pivot-positivity (`edge_W_pos_ae`) +
+`freedSchurLoss_inner_bounded_le` + `volume_shearbox_eq` to bound the freed inner integral by the pivot
+energy, landing (STEP 2) on `edge_J_lt_top`; the degenerate cut gives both sides `0`. A `c' = 0` split
+handles the boundary (`rpow 0 = 1`) by the finite box volumes directly. -/
+theorem alpha_low_target {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ht : 1 ≤ t) (ht2 : t ≤ min (M 0) (M 1))
+    (κ : Fin t ↪ Fin (M 1)) (c' : NNReal)
+    (hbnd : (M 2 : ℝ) < (M 1 : ℝ) - t + 1) (hb : M 2 ≤ M 1 - t)
+    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
+    (hlow : (c' : ℝ) < (minAdm (redChain t M) : ℝ) / 2) :
+    (∫⁻ A' in paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ) 1,
+        ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
+          ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+            ENNReal.ofReal ((freedSchurLoss x Γ
+              ((prod (fun i : Fin (L + 1 + 1) => M i.succ) A').submatrix
+                (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤ := by
+  by_cases hc0 : (c' : ℝ) = 0
+  · simp only [hc0, neg_zero, Real.rpow_zero, ENNReal.ofReal_one]
+    have hinner : ∀ x : SJOuter t (M 0 - t) (M 1 - t),
+        (∫⁻ _Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+            Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1}, (1 : ℝ≥0∞))
+          = volume (genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1) := fun x => by
+      rw [setLIntegral_const, one_mul, volume_shearbox_eq]
+    have houter : volume (outerDom t (M 0 - t) (M 1 - t) 1) < ⊤ := by
+      have hsub : outerDom t (M 0 - t) (M 1 - t) 1 ⊆
+          (genBox (Fin t) (Fin t) 1 ×ˢ genBox (Fin t) (Fin (M 1 - t)) 1)
+            ×ˢ genBox (Fin (M 0 - t)) (Fin t) 1 := by
+        rintro x ⟨h1, h2, h3, _⟩; exact ⟨⟨h1, h2⟩, h3⟩
+      refine lt_of_le_of_lt (measure_mono hsub) ?_
+      rw [Measure.volume_eq_prod, Measure.prod_prod, Measure.volume_eq_prod, Measure.prod_prod]
+      exact ENNReal.mul_lt_top (ENNReal.mul_lt_top (volume_genBox_lt_top 1) (volume_genBox_lt_top 1))
+        (volume_genBox_lt_top 1)
+    simp only [hinner, setLIntegral_const]
+    exact ENNReal.mul_lt_top (ENNReal.mul_lt_top (volume_genBox_lt_top 1) houter)
+      (paramsBoxM_volume_lt_top _ 1)
+  · set N := fun i : Fin (L + 1 + 1) => M i.succ with hN
+    have htM1 : t ≤ M 1 := le_trans ht2 (min_le_right _ _)
+    set kbox : ℝ≥0∞ := volume (genBox (Fin (M 0 - t)) (Fin (M 1 - t)) (1 : ℝ))
+        * volume {C : Fin (M 0 - t) → Fin t → ℝ | ∀ i j, C i j ∈ Set.Icc (-(1 : ℝ)) 1} with hkbox
+    have hk_ne : kbox ≠ ⊤ := by
+      rw [hkbox]; exact (ENNReal.mul_lt_top (volume_genBox_lt_top 1) (volume_genBox_lt_top 1)).ne
+    have hbound : ∀ A' : Params N,
+        (∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
+            ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+                Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+              ENNReal.ofReal ((freedSchurLoss x Γ
+                ((prod N A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ))))
+          ≤ (∫⁻ pb in outerPB t (M 1 - t) 1,
+              ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+                (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                  + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                    ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ))))
+            * kbox := by
+      intro A'
+      by_cases hprod : prod N A' = 0
+      · have hQ0 : (prod N A').submatrix (blockSplitEquiv κ) id = 0 := by
+          rw [hprod]; rfl
+        have hzero : (0 : ℝ) ^ (-(c' : ℝ)) = 0 := Real.zero_rpow (neg_ne_zero.mpr hc0)
+        have hL : ∀ (x : SJOuter t (M 0 - t) (M 1 - t)) (Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ),
+            ENNReal.ofReal ((freedSchurLoss x Γ
+              ((prod N A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ))) = 0 := by
+          intro x Γ; rw [hQ0, freedSchurLoss_zero, hzero, ENNReal.ofReal_zero]
+        have hR : ∀ pb : (Fin t → Fin t → ℝ) × (Fin t → Fin (M 1 - t) → ℝ),
+            ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+              (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                  ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ)))
+            = 0 := by
+          intro pb
+          have hmat : Matrix.of pb.1 *
+              (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                  ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id) = 0 := by
+            rw [hQ0]; simp [Matrix.submatrix_zero]
+          rw [hmat]; simp [frobSq, hzero]
+        simp only [hL, hR, lintegral_zero, zero_mul, le_refl]
+      · have hQTne : (prod N A').submatrix
+            ((blockSplitEquiv κ).symm.trans (frontStdEquiv htM1)).symm id ≠ 0 := by
+          intro hQT
+          apply hprod
+          funext k j
+          have hval := congrFun (congrFun hQT
+            ((blockSplitEquiv κ).symm.trans (frontStdEquiv htM1) k)) j
+          simpa [Matrix.submatrix_apply, Equiv.symm_apply_apply] using hval
+        rw [outerDom_lintegral_prod (a := M 0 - t) 1 _
+          (measurable_freedInner (a := M 0 - t)
+            ((prod N A').submatrix (blockSplitEquiv κ) id) (c' : ℝ) 1).aemeasurable]
+        refine le_trans (lintegral_mono_ae ?_)
+          (le_of_eq (lintegral_mul_const' kbox _ hk_ne))
+        filter_upwards [edge_W_pos_ae M t ht htM1 κ A' hQTne] with pb hpw
+        have hCbound : ∀ C : Fin (M 0 - t) → Fin t → ℝ,
+            (∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+                Γ + schurShift (pb, C) ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+              ENNReal.ofReal ((freedSchurLoss (pb, C) Γ
+                ((prod N A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ))))
+            ≤ ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+                (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                  + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                    ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ)))
+              * volume (genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1) := by
+          intro C
+          have hbnd2 := freedSchurLoss_inner_bounded_le (pb, C)
+            ((prod N A').submatrix (blockSplitEquiv κ) id) (c' : ℝ) (NNReal.coe_nonneg c') hpw
+            {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+              Γ + schurShift (pb, C) ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1}
+          rwa [volume_shearbox_eq] at hbnd2
+        calc (∫⁻ C in {C : Fin (M 0 - t) → Fin t → ℝ | ∀ i j, C i j ∈ Set.Icc (-(1 : ℝ)) 1},
+                ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+                    Γ + schurShift (pb, C) ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+                  ENNReal.ofReal ((freedSchurLoss (pb, C) Γ
+                    ((prod N A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ))))
+              ≤ ∫⁻ _C in {C : Fin (M 0 - t) → Fin t → ℝ | ∀ i j, C i j ∈ Set.Icc (-(1 : ℝ)) 1},
+                  ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+                    (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                      + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                        ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ)))
+                  * volume (genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1) := lintegral_mono hCbound
+          _ = ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+                    (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                      + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                        ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ)))
+                * kbox := by rw [setLIntegral_const, hkbox]; ring
+    calc (∫⁻ A' in paramsBoxM N 1,
+            ∫⁻ x in outerDom t (M 0 - t) (M 1 - t) 1,
+              ∫⁻ Γ in {Γ : Fin (M 0 - t) → Fin (M 1 - t) → ℝ |
+                  Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
+                ENNReal.ofReal ((freedSchurLoss x Γ
+                  ((prod N A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ))))
+          ≤ ∫⁻ A' in paramsBoxM N 1,
+              (∫⁻ pb in outerPB t (M 1 - t) 1,
+                ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+                  (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                    + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                      ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ))))
+              * kbox := lintegral_mono hbound
+        _ = (∫⁻ A' in paramsBoxM N 1,
+              ∫⁻ pb in outerPB t (M 1 - t) 1,
+                ENNReal.ofReal ((frobSq (Matrix.of pb.1 *
+                  (((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inl id
+                    + (Matrix.of pb.1)⁻¹ * Matrix.of pb.2 *
+                      ((prod N A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id))) ^ (-(c' : ℝ))))
+            * kbox := by rw [lintegral_mul_const' kbox _ hk_ne]
+        _ < ⊤ := ENNReal.mul_lt_top (edge_J_lt_top M t ht2 hbnd hb hIH c' hlow κ)
+              (lt_of_le_of_ne le_top hk_ne)
+
 /-- **The b=1, a<u, bounded-w arm of the front-collapse dispatch.** For a `≥ 3`-width chain `M` with a
 legal pivot cut `1 ≤ t ≤ min(M₀,M₁)` on the corank-one edge (`M₁ − t = 1`), in the `a < u` regime
 (`M₀ − t < t`) and bounded-density regime (`M₂ < M₁ − t + 1`, i.e. `M₂ ≤ M₁ − t`), GIVEN the plain
@@ -777,28 +1049,23 @@ theorem frontCollapse_edge_b1_altu_bounded {L : ℕ} (M : Fin (L + 1 + 1 + 1) �
               Γ + schurShift x ∈ genBox (Fin (M 0 - t)) (Fin (M 1 - t)) 1},
             ENNReal.ofReal ((freedSchurLoss x Γ
               ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id)) ^ (-(c' : ℝ)))) < ⊤ := by
-  -- DEFINITIVE dispatch (d1design d1altu-dispatch-and-D2gate.md); `hbnd` ⟹ M₂ ≤ b = M₁−t (M₂≤b regime).
-  -- ── STATE (tide `d1altu-full`) ────────────────────────────────────────────────────────────────
-  -- The α-LOW branch (`c' < ½·minAdm (redChain t M)`) is REDUCED to two BANKED, green, axiom-clean lemmas
-  -- in this file, plus one remaining measure-theoretic glue step:
-  --   • `edge_J_lt_top` — STEP 2 (the conceptually-hard reindex), COMPLETE: the pivot-energy box integral
-  --     `∫_{A'} ∫_{pb∈outerPB} W^{−c'} < ⊤`, via `pivotEnergy_inverse_free` + `pivotEnergy_reindex_rmatMul`
-  --     + `rmatMul_colReindex` + `frontStdEquivM` CoV (`outerPB ↔ cleanFrontBox`) + Tonelli +
-  --     `tail_colperm_invariant`, landing on `edge_frontCollapse_cleanBox_lt_top` (which routes through the
-  --     CLEARED opaque-width wall: `wingFrontBox_consFront_eq_cleanBox`, min-cast localized via `congr_arg₂`).
-  --   • `edge_W_pos_ae` — the {W=0}-null (a.e. `W > 0` on `outerPB`), via `frontStdEquivM` MP +
-  --     `ae_frobSq_rmatMul_ne_zero`.
-  -- STEP 1 (drop-corank) reduces (TGT) ≤ (vol Cbox · vol genBox) · J: `outerDom_lintegral_prod`
-  -- (split x=(pb,C)) + `freedSchurLoss_inner_bounded_le` (a.e. via `edge_W_pos_ae`, by_cases on the
-  -- degenerate `Q=0`) + `volume_shearbox_eq` ⟹ finite via `edge_J_lt_top`. The full drop-corank calc is
-  -- assembled (fresh-tide worktree) EXCEPT the `AEMeasurable` side-condition of `outerDom_lintegral_prod`:
-  -- REMAINING GLUE = the matrix-INVERSE measurability of `freedSchurLoss` (the `(of P)⁻¹` term breaks
-  -- continuity, so `fun_prop` deep-recurses; needs entrywise `Matrix.mul`/`frobSq` measurability built on
-  -- `Matrix.inv_def` + `Ring.inverse_eq_inv'` + `Continuous.matrix_adjugate` — ~40 LoC, not banked in
-  -- Mathlib v4.29). Self-contained; no reindex, no new math.
-  --   • α-HIGH (c' ≥ ½·minAdm(redChain t M)) — the a/2 corank charge = the heart's rank-1 (b=1) joint
+  -- Dispatch on the geometric threshold `½·minAdm (redChain t M)`. (`hbnd` ⟹ `M₂ ≤ M₁−t`, the M₂≤b regime.)
+  --   • α-LOW (`c' < ½·minAdm (redChain t M)`) — the drop-corank clean-slice `alpha_low_target`: STEP 1
+  --     splits the `x`-integral by `outerDom_lintegral_prod` (its `AEMeasurable` side-condition discharged
+  --     by `measurable_freedInner`, i.e. the matrix-inverse measurability of `freedSchurLoss`, built on the
+  --     Core kernel `measurable_matrix_of_inv_apply`), bounds the freed inner `Γ`-integral by the pivot
+  --     energy a.e. (`edge_W_pos_ae` + `freedSchurLoss_inner_bounded_le` + `volume_shearbox_eq`, `by_cases`
+  --     on the degenerate `prod = 0` cut), and lands (STEP 2) on `edge_J_lt_top`.
+  --   • α-HIGH (`c' ≥ ½·minAdm (redChain t M)`) — the a/2 corank charge = the heart's rank-1 (b=1) joint
   --     (Δ,C,Z) FreeBilinear leaf → hIH at c'−a/2, HELD (gated on the heart, jointpnp). NOT attempted.
-  sorry
+  have hb : M 2 ≤ M 1 - t := by
+    have htM1 : t ≤ M 1 := le_trans ht2 (min_le_right _ _)
+    have h2 : (M 2 : ℝ) < ((M 1 - t : ℕ) : ℝ) + 1 := by rw [Nat.cast_sub htM1]; exact hbnd
+    have h3 : (M 2 : ℕ) < (M 1 - t) + 1 := by exact_mod_cast h2
+    omega
+  by_cases hlow : (c' : ℝ) < (minAdm (redChain t M) : ℝ) / 2
+  · exact alpha_low_target M t ht ht2 κ c' hbnd hb hIH hlow
+  · sorry
 
 end DLNFibre.DLN.RLCT
 
