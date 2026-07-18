@@ -1409,38 +1409,70 @@ leaf constructor (analytic side empty, chart fields placeholder — the T3-fed c
 dispatch (rollover / case-1 eligible-minimal chooser / case-2, with CONE-GOODNESS) layers on top and
 is gated on the o1↔o4↔o2 mutual induction (needs `CompChainInv` ⟹ `def4_min` totality). -/
 
-/-- **The flat-cube fall-back leaf** of a state: full ledger `= (numDiv, divExp, divProfile,
-cleared)` of the state, flat-cube `srcBox` (the pre-staged `PivotLeafClauses` form), empty analytic
-side, placeholder chart data (the T3-fed fields). Its `rootLedger` is the state's by construction —
-the terminal `ConDecision`'s `hleaf`. -/
-noncomputable def leafOfState (M : Fin (L + 1) → ℕ) (s : ConState L) : LeafData M where
-  numDiv := 0
-  divExp := Fin.elim0
-  cleared := s.cleared
-  divProfile := Fin.elim0
-  fullNumDiv := s.numDiv
-  fullDivExp := s.divExp
-  fullDivProfile := s.divProfile
-  numB := 0
-  bExp := Fin.elim0
-  bChain := by intro a _ _; exact a.elim0
-  chartMap := id
-  srcBox := ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1
-  resRank := 0
-  divCoord := Fin.elim0
-  resCoord := Fin.elim0
+/-- **The terminal leaf** of a state (B' analytic/residual split): the FULL ledger `= (numDiv,
+divExp, divProfile, cleared)` of the state (so its `rootLedger` is the state's — the terminal
+`ConDecision`'s `hleaf`), and the ANALYTIC side (`numDiv`/`divExp`/`divProfile`) is the `t̃=0`
+sublist of the full ledger (`t0Indices`; fork 12(b)(ii) — the `t̃>0` stranded divisors fold into the
+residual, NOT the analytic side). Flat-cube `srcBox`; placeholder chart data (`divCoord`/`chartMap`
+are the T3-fed fields, read only by the sorried `ChartBridge`).
+
+**The `0 < flatDim M` guard** makes the constructor TOTAL for an arbitrary state (the type-totality
+witness): `divCoord : Fin numDiv → Fin (flatDim M)` needs `0 < flatDim M` when the analytic side is
+nonempty. On the reachable cone a divisor is created only when the rollover guard fails
+(`widthMinUpto (layer+1) > cleared ≥ 0`, forcing `M⁽ˡᵃʸᵉʳ⁾·M⁽ˡᵃʸᵉʳ⁺¹⁾ ≥ 1 ≤ flatDim M`), so
+`0 < s.numDiv → 0 < flatDim M` (`numDiv_pos_flatDim_pos`); the degenerate `flatDim = 0` branch then
+carries no `t̃=0` divisor and the empty analytic side is faithful. -/
+noncomputable def leafOfState (M : Fin (L + 1) → ℕ) (s : ConState L) : LeafData M :=
+  if h : 0 < flatDim M then
+    { numDiv := (t0Indices s).length
+      divExp := fun i => s.divExp ((t0Indices s).get i)
+      cleared := s.cleared
+      divProfile := fun i => s.divProfile ((t0Indices s).get i)
+      fullNumDiv := s.numDiv
+      fullDivExp := s.divExp
+      fullDivProfile := s.divProfile
+      numB := 0
+      bExp := Fin.elim0
+      bChain := by intro a _ _; exact a.elim0
+      chartMap := id
+      srcBox := ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1
+      resRank := 0
+      divCoord := fun _ => ⟨0, h⟩
+      resCoord := Fin.elim0 }
+  else
+    { numDiv := 0
+      divExp := Fin.elim0
+      cleared := s.cleared
+      divProfile := Fin.elim0
+      fullNumDiv := s.numDiv
+      fullDivExp := s.divExp
+      fullDivProfile := s.divProfile
+      numB := 0
+      bExp := Fin.elim0
+      bChain := by intro a _ _; exact a.elim0
+      chartMap := id
+      srcBox := ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1
+      resRank := 0
+      divCoord := Fin.elim0
+      resCoord := Fin.elim0 }
+
+/-- **`leafOfState`'s full ledger is the state's** (`rootLedger` reads the FULL side, which both
+`dite` branches set to `s`'s ledger) — the terminal `ConDecision`'s `hleaf`. -/
+theorem leafOfState_rootLedger (M : Fin (L + 1) → ℕ) (s : ConState L) :
+    ResolutionTree.rootLedger (ResolutionTree.leaf (leafOfState M s)) = s.toRootLedger := by
+  unfold leafOfState; split <;> rfl
 
 /-- **The type-totality witness** (o2, fork 13 correction 2): a TOTAL oracle — always the terminal
 fall-back — inhabiting `ConDecision M s` for every `s`. The real dispatch replaces the fall-back on
 the reachable cone (cone-goodness, gated); this witnesses that the interface is inhabited. -/
 noncomputable def oracleTerminal (M : Fin (L + 1) → ℕ) (s : ConState L) : ConDecision M s :=
-  .terminal (leafOfState M s) rfl
+  .terminal (leafOfState M s) (leafOfState_rootLedger M s)
 
 /-- `buildTree` with the terminal oracle is a single leaf — the totality witness composes with the
 assembly. -/
 theorem buildTree_oracleTerminal (M : Fin (L + 1) → ℕ) (s : ConState L) :
     buildTree M (oracleTerminal M) s = ResolutionTree.leaf (leafOfState M s) :=
-  buildTree_terminal M (oracleTerminal M) s (leafOfState M s) rfl rfl
+  buildTree_terminal M (oracleTerminal M) s (leafOfState M s) (leafOfState_rootLedger M s) rfl
 
 /-! ## o2: the Def-4-minimal chooser (total via fallback; min-EXISTENCE gated on o4)
 
@@ -1850,8 +1882,6 @@ theorem OracleInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s 
             split <;> simp_all only [reduceCtorEq, Option.some.injEq]
             all_goals (try subst_vars)
             all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
-            all_goals (try subst_vars)
-            all_goals (first | rfl | simp_all only [reduceCtorEq, Option.some.injEq])
           rw [horacle] at hc
           simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
         · -- chooseMin = some f → case-1 (two children)
@@ -1884,8 +1914,6 @@ theorem OracleInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s 
             split <;> simp_all only [reduceCtorEq, Option.some.injEq]
             all_goals (try subst_vars)
             all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
-            all_goals (try subst_vars)
-            all_goals (first | rfl | simp_all only [reduceCtorEq, Option.some.injEq])
           rw [horacle] at hc
           simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
             List.not_mem_nil, or_false] at hc
