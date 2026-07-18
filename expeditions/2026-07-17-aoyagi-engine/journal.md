@@ -1518,3 +1518,13 @@ one lemma transporting the slab cover through per-edge homeomorphisms); the per-
 ψ-homeomorphism guarantee added to the architect's o2 StepEmit contract (a NAMED field,
 dischargeable-by-construction since unipotent shears are invertible everywhere). The architect's
 §6 forced reasoning stands confirmed. pnp continues on the clarifier + o4 certificate.
+
+## 2026-07-18 LEAF SMART-CONSTRUCTOR LANDED (tick 109)
+FlatCubeLeaf merged + verified: ONE constructor call assembles a contract-shaped leaf (flat-cube
+srcBox; BOTH B'-split ledger sides) and inherits the 5 free per-leaf ChartBridge clauses via
+PivotLeafClauses; the 3 chart-data-fed Props are hypothesis slots. The ψ-question resolved
+itself by design — chartMap was already a maximally-free field; the factorization lives in
+LeafJacobian's existentials (rung-3-proper). ALL construction-independent coverage infrastructure
+is now BANKED: atom, fold (4/4), clause lemmas, constructor. Coverage's queued unit: the
+ψ-reconciliation lemma (crossed messages — pointer sent). buildTree's leaf emission is now a
+one-call affair.
