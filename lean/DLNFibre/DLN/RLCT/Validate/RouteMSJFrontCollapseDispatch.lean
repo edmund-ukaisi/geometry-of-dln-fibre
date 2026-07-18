@@ -103,8 +103,9 @@ theorem frontCollapse_tall_log_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
 (`c' < ½·minAdm M`) and the POWER-cell wall `PowerCellFinite`, the front-factor box integral over
 `wingFrontBox M × paramsBoxM(tailChain M)` is finite. Dispatches on wing (`le_total M₀ M₁`) then on
 `M₂` vs `s = |M₀−M₁|` (bounded/LOG/POWER): BOUNDED wide = `frontCollapse_wide_bounded_lt_top` (LANDED),
-BOUNDED tall = `frontCollapse_tall_bounded_lt_top`, LOG = `frontCollapse_log_lt_top`, POWER = the wall
-`PowerCellFinite`. Banked STANDALONE (off the checkpoint theorem's path). -/
+BOUNDED tall = `frontCollapse_tall_bounded_lt_top`, LOG wide = `frontCollapse_wide_log_lt_top`, LOG tall =
+`frontCollapse_tall_log_lt_top`, POWER = the wall `PowerCellFinite`. Banked STANDALONE (off the checkpoint
+theorem's path). -/
 theorem frontCollapseRankSector_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ)
     (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
     (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
