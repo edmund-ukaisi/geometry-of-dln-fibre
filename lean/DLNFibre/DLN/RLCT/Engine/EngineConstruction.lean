@@ -597,6 +597,12 @@ def FlatTail {L : ℕ} (s : ConState L) : Prop :=
   ∀ (k : Fin s.numDiv) (i i' : Fin L), s.layer ≤ (i : ℕ) → s.layer ≤ (i' : ℕ) →
     s.divProfile k i = s.divProfile k i'
 
+/-- `min(M i : i ≤ n)` — the running-min width through paper layer `n+1` (`= Mrun(n+1)`; it is
+`Mrun(S)` at `n = layer = S−1`). Nonempty (index `0` qualifies), so a `Finset.inf'`. -/
+def widthMinUpto (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
+  (Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ n)).inf'
+    ⟨0, by simp⟩ M
+
 /-- **WidthBound** (o4-cert Part 3, consumed by the case-2 Lemma B): each divisor's HEAD (coords at
 index `< layer`) is bounded by the running-min width `runMinWidth` (the Case-2 append head IS
 `runMinWidth`; merges/appends keep the head `≤` it). -/
@@ -604,14 +610,14 @@ def WidthBound {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
   ∀ (k : Fin s.numDiv) (p : Fin L), (p : ℕ) < s.layer → s.divProfile k p ≤ runMinWidth M p
 
 /-- **LiveHeadDom** (o4-cert Part 6, the invariant that closes the case-1 residual). Head-domination
-among LIVE divisors: if `t̃ a < t̃ b < Mrun(S)` (both in the b-chain, `Mrun(S) = widthMinUpto layer`)
-then `a`'s head is dominated by `b`'s (`a i ≤ b i` for head `i < layer`). The `< Mrun(S)` guard
+among LIVE divisors: if `t̃ a < t̃ b < Mrun(S)` (both in the b-chain, `Mrun(S) = widthMinUpto`),
+then `a`'s head `≤` `b`'s (`a i ≤ b i` for head `i < layer`). The `< Mrun(S)` guard
 excludes STRANDED divisors (level `≥ Mrun(S)`) — which is precisely why `LiveHeadDom` survives the
 interior width-drops that refute the paper's full chain (the stranded pair `(2,1,0)` vs `(1,1,1)` at
 `(2,2,1,1)` has the higher at level `= Mrun(S)`, so `LiveHeadDom` says nothing). With `FlatTail` it
 gives STEP1 (every level-`ℓ` divisor `≥` every level-`≤J` divisor at a case-1 node), closing the
 residual and preserving `SameLevelChainInv` at level `J`. Its own maintenance (o4) consumes the four
-invariants + the chooser MINIMALITY at case-1 (the least `f` keeps `f'` below level-`ℓ`; a wrong pick
+invariants + the chooser MINIMALITY at case-1 (least `f` keeps `f'` below level-`ℓ`; a wrong pick
 breaks it — cert Part 6 correction to Part 5). -/
 def LiveHeadDom {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
   ∀ (a b : Fin s.numDiv), s.divTilde a < s.divTilde b → s.divTilde b < widthMinUpto M s.layer →
@@ -783,12 +789,6 @@ inductive StepKind where
   | case1 (target : ℕ)
   | case2
   deriving DecidableEq, Repr
-
-/-- `min(M i : i ≤ n)` — the running-min width through paper layer `n+1` (`= Mrun(n+1)`). Nonempty
-(index `0` qualifies), so a `Finset.inf'`. -/
-def widthMinUpto (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
-  (Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ n)).inf'
-    ⟨0, by simp⟩ M
 
 /-- **The dispatch** (simulator `_proc`, `layer = S−1`): the step kind the state admits. -/
 def classify (M : Fin (L + 1) → ℕ) (s : ConState L) : StepKind :=
