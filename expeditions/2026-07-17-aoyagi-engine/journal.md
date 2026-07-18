@@ -1539,3 +1539,16 @@ the realization uniformly; min == minAdm always — the value safe regardless). 
 of the two kill classes confirmed: comparability (o1/o4) is head-reset-independent; realization
 (o5-∈) is exactly the FIX-A issue, closed. THE ARCHITECT'S LONG COMMITS ARE UNGATED (build on
 the FIX-A construction — both kills clean there). pnp proceeds to the o4 certificate.
+
+## 2026-07-18 SHEAR RECONCILIATION PROVEN; ONE HONEST CAVEAT ROUTED (tick 111)
+ShearReconcile merged + verified (zero sorryAx): ownCover_transport (a homeomorphism carries an
+open-nbhd cover of V to one of ψ''V) + node_pivotCover_of_atom_sheared (the ψ-composed bridge,
+strictly generalizing the pure form via ψ = refl; fit example = the (2,2,4) case-1(2) Q,P).
+CAVEAT CARRIED, NOT BURIED: the lemma takes ONE PER-NODE gauge (the seat's gluing argument),
+while the paper writes the clears PER-CHART — whether they glue to a node gauge is a fact the
+architect's o2 emission definition will DISCOVER from the pages. Routed with the fidelity rule
+explicit: the emission must NOT bend to fit the landed lemma — if per-edge-distinct is forced,
+the coverage seat generalizes the bridge (the subtler sector-transport claim), as its unit. The
+coverage lane's mechanism now handles pure AND sheared charts; its remaining content is entirely
+atlas-gated. Board: architect (o1/o2-def, ungated, + the gauge-form determination), pnp (the o4
+certificate), coverage (warm, all infra banked).
