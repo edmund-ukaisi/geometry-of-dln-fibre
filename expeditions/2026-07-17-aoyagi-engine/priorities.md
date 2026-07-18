@@ -25,5 +25,12 @@ payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds e
    lane suffices" struck as the retired razor), post-spine, off critical path, COST-PROBE-GATED
    (SchurCore depth-≥3 wall, rr4-precedent); operator scope confirmation surfaced. θ + Eqs (1)-(5)
    stay out.
+7. R7 — the ⊇ Clearable-Adm completeness PROOF (elder-gate7 ratified, 2026-07-19) — OWED
+   FIRST-CLASS, post-spine (R6 treatment). A theorem ABOUT the constructed object (paper-
+   correcting: the 4th read-off defect), not a component OF her mechanism — hence sequencing,
+   not scope-cut. The STATEMENT + the Clearable predicate reify NOW with the spine (separate
+   named sorried library-surface theorem; never an IsFullMonomialization conjunct); the proof
+   (steering rule + anchor descent invariant + the pull-ordering brick, cert-o5-realization §4)
+   lands here. Basis: threads/12-realization/cert-o5-realization.md.
 Parked: mint-repoint mechanics live inside R5; cartographer pass #2 (reuse index + do-not-enter
 register + import-hygiene proposal) lands asynchronously and binds via ratification.

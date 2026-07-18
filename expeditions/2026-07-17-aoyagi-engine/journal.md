@@ -2069,3 +2069,25 @@ statement, evidence manifest) as base + controller's status header, confound sec
 R7 sequencing pointer. Also corrected the record: pnp's cert skeleton HAD been pushed
 (39fdc712a) — the tick-149 "nothing pushed" nudge crossed its push in flight. pnp-o5 idle,
 available. Elder-gate7 verdict pending.
+
+## 2026-07-19 tick 152: ELDER-GATE7 VERDICT — all three RATIFIED, one substantive amendment
+Q1 reshape RATIFIED (honest + sufficient; refutation is BY ARGUMENT chooser/branch-independent,
+exhaustion = spot-confirmation). Compass drift closed per its precision AMENDs (Codex confirmed
+not pending; 847 not ~950/955; minimizer-clearability PROVED not commissioned; ledger WRITTEN).
+Q2 sequencing RATIFIED with the load-bearing distinction ON RECORD: ⊇ Clearable-Adm is a theorem
+ABOUT the constructed object (paper-correcting), not a component OF her mechanism — R1-R5 build
+the mechanism in full, so deferring the completeness PROOF is sequencing, not scope-cut (contrast
+R4 = component-OF, correctly un-deferred). R7 added to priorities FIRST-CLASS (R6 treatment).
+SUBSTANTIVE AMENDMENT adopted — REIFY-NOW: the Clearable predicate + the STATEMENT P=Clearable-
+Adm land WITH the spine as a separate named SORRIED library-surface theorem (typed honest name;
+docstring cites ledger #4; AxCheck watch +sorryAx until R7); never an IsFullMonomialization
+conjunct; guard = statement now, proof at R7, no over-pull. Q3 confound repair RATIFIED + split:
+GENERAL kill-set-adequacy rule → docs/policies/expedition-map.md §battery (binds future
+expeditions; written as COMPLEMENT to the decorrelated-hunt gate — a green pre-committed battery
+is NEVER sufficient for a universal claim; the hunt is what actually caught this); EXPEDITION
+mechanism list → compass standing counsel ((i) interior-bottleneck width-drop, (ii) L≥4
+non-monotone depth; binds R2/R4/R7). Flags: naming pin for D (minAdm_mem_terminalExponents-class,
+never profileSet_eq_Adm-class) relayed to t03 with the reify-now item; "24%" framing noted as
+enumeration-dependent — lead with the mechanism. No inflation found; the seat's self-refutation
+mid-writeup called out as the right move. All edits landed this tick (compass ×2, policy,
+priorities, t03 directive).

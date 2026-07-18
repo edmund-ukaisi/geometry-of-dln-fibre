@@ -298,22 +298,31 @@ over banked substrate.
    (S,J+1) node is a branch never a leaf (IsFullMonomialization unaffected); the guard is a
    separate conjunct (ledger equality stays rfl-class). Blow-up-only aesthetics yield to ledger
    faithfulness: the tree's nodes are the paper's inductive statements, S-increment included.
-   13(o5-IN) RESHAPED (2026-07-19, pnp-o5 battery adjudication; Codex-confirm pending): the
-   realization target 'profile-set contains Adm' is FALSE for the built tree — witness
-   M=(3,3,4,2,3): (2,2,2,0),(3,2,2,0) in Adm are stranded at t-tilde=2 forever (level 2 =
-   running-min M(4); layer 4 clears only levels < 2). NOT a corner: P(M) properly-subset Adm in
-   84/351 instances (widths<=3, L<=4); the 4 pre-committed kill instances were ALL bottleneck-free
-   (shallow-instance confound — pre-committed batteries must include the width-drop mechanism).
-   Exact characterization (0 counterexamples, ~950 exact-recursion instances, cross-validated on
-   the original sim): P(M) = { a in Adm : Clearable(a) }, Clearable = every post-birth descent
-   layer S with a^S < a^{S-1} has a^{S-1} < M(S). SAME width-drop-strand mechanism as the p.15
-   full-chain defect (cert-compchain-o4 Part 1) — one mechanism, two faces. K2 does NOT fire:
-   minAdm's value realized at t-tilde=0 at 955/955 (every minimizer Clearable). THE SURVIVING
-   BRIDGE: min over P == min over Adm from (P subset Adm [leaf_mem_Adm, PROVED]) + (minAdm in P
-   [cert, minimizer-clearability paper-proof commissioned]) — the paper's lambda formula stands;
-   its implicit stratum-completeness does not (4th verified read-off defect; ledger entry
-   verify-realization-gap-defect.md commissioned). o5-IN Lean target = minAdm in
-   terminalExponents ONLY; no '⊇/== Adm' conjunct anywhere (hold order to build, tick 148).
+   13(o5-IN) RESHAPED (2026-07-19; elder-gate7 RATIFIED tick 152; two-way: cert §8 Codex confirm
+   + independent pnp derivation): the realization target 'profile-set contains Adm' is FALSE for
+   the built tree — REFUTED BY ARGUMENT, chooser/branch-independent (occ_above tops at r_S−1, so
+   a level-r_S divisor is invisible to case-1 under ANY pick; the pick-x-branch exhaustion on the
+   witness is spot-confirmation). Witness M=(3,3,4,2,3): (2,2,2,0),(3,2,2,0) in Adm stranded at
+   t-tilde=2 forever. Gap iff interior bottleneck (0 mismatch/791); the 4 pre-committed kill
+   instances were ALL bottleneck-free (shallow-instance confound — see standing counsel). Exact
+   characterization (0 counterexamples, 847 exact-recursion instances, cross-validated on the
+   original sim): P(M) = { a in Adm : Clearable(a) }, Clearable = every post-birth descent layer
+   S with a^S < a^{S-1} has a^{S-1} < r_S. SAME width-drop-strand mechanism as the p.15
+   full-chain defect (cert-compchain-o4 Part 1) — one mechanism, two faces (earned: 0/791 ==
+   18/18, two independent certs). K2 does NOT fire: minAdm in P is PROVED (cert §3
+   envelope-splice: envelope prefix contributes 0 to Mval, so every non-clearable profile has a
+   strictly cheaper admissible sibling; cross-checked 847/847). THE SURVIVING BRIDGE: min over P
+   == min over Adm from (P subset Adm [leaf_mem_Adm, PROVED]) + (minAdm in P [cert §3, PROVED])
+   — the paper's lambda formula stands; its implicit stratum-completeness does not (4th verified
+   read-off defect; ledger WRITTEN: verify-realization-gap-defect.md). o5-IN Lean target = minAdm
+   in terminalExponents ONLY (name must denote attainment — minAdm_mem_terminalExponents-class,
+   never profileSet_eq_Adm-class); no '⊇/== Adm' conjunct anywhere (hold order stands). REIFY-NOW
+   (elder-gate7 amendment): the Clearable predicate + the STATEMENT 'P(M) = Clearable-Adm' land
+   WITH the spine as a SEPARATE named sorried library-surface theorem (defect explicit in its
+   docstring; the library's typed honest name for what its tree realizes — a docstring is
+   defeasible, a type is not); NOT a conjunct of IsFullMonomialization (that re-inflates the
+   false promise). GUARD: statement now, PROOF at R7 — reify-now must not pull the
+   descent-invariant proof onto the spine.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
@@ -347,6 +356,15 @@ over banked substrate.
 - The R2 atlas-closure gate must be DECORRELATED from the atlas builder (council #3, both seats):
   in-house nice-instance witnesses MASKED gaps twice (resRank fold; srcBox boundedness). The
   builder's spike is build-side de-risk; the GATE reads the independent seat.
+- KILL-SET ADEQUACY for universal claims (elder-gate7, 2026-07-19; general rule in
+  docs/policies/expedition-map.md § battery): every pre-committed kill set must exercise each
+  KNOWN failure mechanism. This expedition's known-mechanism list: (i) interior-bottleneck
+  width-drop (∃ 3≤S≤L, r_S < r_2 — witnesses (3,3,4,2,3), (2,2,1,1)); (ii) L≥4 non-monotone
+  depth ((2,2,3,3,2) — the min-vs-max exposer; width-drop alone misses it). Binds R2/R4/R7 gates.
+  COMPLEMENT, not replacement: a green pre-committed battery is NEVER sufficient for a universal
+  claim — the gate reads a decorrelated hunt (that is what actually caught the realization gap:
+  pnp-o5's independent scan, not the battery). Provenance: the "== Adm at all 4" kill sat green
+  while false at 84/351 (all 4 instances bottleneck-free; 2nd shallow-instance confound).
 - MATHEMATICAL SENSE OVER CASE ANALYSIS (operator, 2026-07-18): case analysis is a VERIFICATION
   instrument, never the theory-building instrument — chasing per-case fidelity finds local minima.
   Understand the mechanism at its conceptual altitude first (what the induction IS doing: iterated

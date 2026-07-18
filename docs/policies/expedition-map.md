@@ -130,6 +130,19 @@ anchor pins — a route spec may not re-type a signature from a docstring or cer
 (b) every hypothesis the route carries is evaluated at the battery. Skeleton *revisions* re-run the
 same gate — loud, priced events, never quiet edits.
 
+**Kill-set adequacy (universal claims).** A pre-committed kill set for a *universal* claim
+("holds at every instance / for all M") is **inadequate** if every instance in it is trivial for
+the claim's known failure mechanisms; a green over only trivial/shallow instances is
+presumed-confounded, not evidence. The gate (and any reviewer auditing a kill) checks adequacy:
+at least one instance must exercise each mechanism in the expedition's known-mechanism list
+(kept in the compass standing counsel). This rule **complements, never replaces**, the deeper
+prophylactic: a green pre-committed battery is never sufficient for a universal claim — the gate
+reads a *decorrelated hunt* (a seat other than the claim's author, searching where the claim is
+most likely false), because known mechanisms are exactly the ones a confound has already taught;
+the hunt is for the unknown ones. (Provenance: the 2026-07 aoyagi-engine realization-gap
+confound — a "== Adm at all 4" kill sat green while the claim was false at 84/351 instances;
+all 4 pre-committed instances were trivial for the width-drop mechanism.)
+
 ## The overlay — the cartographer's layer
 
 `overlay/` holds what judgment curates over the computed layer: **banked-family cards** (per lemma
