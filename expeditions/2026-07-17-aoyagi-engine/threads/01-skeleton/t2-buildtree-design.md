@@ -70,8 +70,10 @@ For each emitted TERMINAL state `s`, T3 (coverage) must supply a `ChartLeaf M s`
 ```
 structure ChartLeaf (M : Fin (L+1) → ℕ) (s : ConState L) where
   leaf        : LeafData M
-  hledger     : leaf.numDiv = s.numDiv ∧ leaf.divExp = s.divExp ∧ leaf.divProfile = s.divProfile ∧
-                leaf.cleared = s.cleared                       -- the ledger IS s's (rfl-class for rootLedger)
+  hledger     : ResolutionTree.rootLedger (ResolutionTree.leaf leaf)
+                  = (⟨s.numDiv, s.divExp, s.divProfile, s.cleared⟩ : ResolutionTree.RootLedger L)
+                -- ONE RootLedger equality (elder JDI): dodges the dependent-numDiv friction of four
+                --   field equations; matches stepUpdate's rfl-class shape.
   -- the ChartBridge per-leaf TUPLE (verbatim the clause region_glue/glue-lane consume):
   hmeas       : MeasurableSet leaf.srcBox
   hbounded    : ∃ R > 0, leaf.srcBox ⊆ paramsEquivFlat M ⁻¹' cubeBox (flatDim M) R
@@ -103,23 +105,43 @@ here; when T3 lands, `coverage_theorem` is discharged and `resolutionOf_spec` cl
 
 | conjunct | discharged at | how |
 |---|---|---|
-| StepRel-all | **BUILD** | rfl-class per edge via `stepUpdate` + `IsEligibleMinimalChoice` (§1) |
-| base (`S=J=0` root) | **BUILD** | the root `ConState` is the base; `buildTree` starts there |
-| IsFullMonomialization | **BUILD** (given invariants) | `divExp = Mval divProfile` = the coherence lemma (T-rule maintains it; the (2,2,4)/(3,3,4) traces witness); `divProfile ∈ Adm` = an ADMISSIBILITY INVARIANT the construction maintains (extend `StateInvariant` with it — a T2 obligation, `zero_mem_Adm`-seeded, preserved by the T-rule) |
-| exponent-hooks (`minAdm ≤ e`, `minAdm ∈`) | **BUILD** (given invariants) | no-undershoot = `Mval T ≥ minAdm` on `Adm` (`Finset.inf'_le`, cert-d3 Check-1) via `IsFullMonomialization`; attainment = the binding leaf reaches `minAdm` (the minimiser exists — Adm nonempty + a binding-leaf witness the construction emits) |
-| liveAttainment (`minAdm` at a NONEMPTY-srcBox leaf) | **BUILD + T3** | the exponent side is build; `srcBox.Nonempty` is `ChartLeaf.hnonempty` (T3) |
+| StepRel-all | **BUILD** (GO NOW) | rfl-class per edge via `stepUpdate` + `IsEligibleMinimalChoice` (§1) |
+| base (`S=J=0` root) | **BUILD** (GO NOW) | the root `ConState` is the base; `buildTree` starts there |
+| liveAttainment — srcBox side | **BUILD** (GO NOW) | `srcBox.Nonempty` is `ChartLeaf.hnonempty` (T3); the leaf-membership is build |
+| IsFullMonomialization | **BUILD, GATED** | `divExp = Mval divProfile` = coherence (T-rule maintains it; the (2,2,4)/(3,3,4) traces witness). `divProfile ∈ Adm` is a LEAF property (see below), NOT per-node — GATED on pnp (2,2,3,2) |
+| exponent-hooks (`minAdm ≤ e`, `minAdm ∈`) | **BUILD, GATED** | no-undershoot = `Mval T ≥ minAdm` on `Adm` (`Finset.inf'_le`, cert-d3 Check-1) — routes through leaf-Adm, so GATED with IsFullMonomialization |
 | ChartBridge | **T3** | the chart-producer contract (§2) |
 
-So `buildTree` produces `Σ t, (IsFullMonomialization t ∧ StepRel-all t ∧ base ∧ exponent-hooks ∧
-liveAttainment-exponent-side)`; combined with the chart-producer hole it yields
-`CanonicalResolution`, closing `monomialization_terminates`. The recursion carries the structural
-certificate (Option B — build tree + proof together via `WellFounded.fix`), because the conjuncts
-(StepRel per edge, terminal-exponent membership) reference the tree's own structure.
+So the **structural core** — StepRel-all, base, liveAttainment-srcBox — discharges at BUILD NOW (none
+touch admissibility). `buildTree` produces `Σ t, (StepRel-all t ∧ base ∧ …)` via `WellFounded.fix`
+(Option B — tree + structural certificate carried together, since StepRel-per-edge / terminal-exponent
+membership reference the tree's own structure). The IsFullMonomialization + exponent-hook discharge is
+GATED (below), and ChartBridge + srcBox-nonempty are the T3 holes.
 
-**New T2 obligation surfaced: the ADMISSIBILITY INVARIANT** (`∀ k, divProfile k ∈ Adm M`), preserved
-by the T-rule. This is the one genuinely-new structural lemma the build needs beyond the landed
-μ-descent — the T-rule's tail-write + head (unchanged/inherited/width-reset) keeps profiles weakly
-decreasing with last `= 0` (Adm). Flag: prove it as `stepUpdate_preserves_adm` (per case), a T2 brick.
+**ADMISSIBILITY — CORRECTED (elder-gate4 §3a; the predicted THIRD GAP).** `divProfile ∈ Adm` is
+**FALSE as a per-node invariant**: a PENDING divisor has `t̃ = min T > 0`, hence its last component
+`> 0`, hence `∉ Adm` (clause 3, last-component-zero; `Lambda.lean:54`). WITNESS against the LANDED
+carrier: `node334.divProfile = ![1,1] ∉ Adm(3,3,4)` (`CoRank2Spike:83`). The corrected decomposition:
+- **per-node invariant = WEAK-DECREASE + BLOCK-BOUND ONLY** (`t⁽¹⁾ ≥ … ≥ t⁽ᴸ⁾`, each `≤ admBound`).
+  This IS preserved by the T-rule; rename the brick `stepUpdate_preserves_weakInv` (per case). TRUE and
+  needed either way — **build it now, meanwhile.**
+- **last-component-zero is a LEAF property**, from post-final-rollover `J = 0` ⟹ no pending divisor ⟹
+  every terminal `t̃ = 0` ⟹ last component `= 0`.
+- **leaf-Adm = weakInv + leaf-`t̃=0`** — a SEPARATE lemma consuming TERMINATION (that a leaf is reached
+  with `J=0` and no pending). This is what feeds no-undershoot; **hbox-critical, not fidelity.**
+- **GATE (elder-gate4 §3b): a pen-and-paper truth-value owed BEFORE the build discharges
+  IsFullMonomialization / exponent-hooks** — at NON-MONOTONE widths `L≥3`, does the case-2 raw-width
+  head-reset (p.20-faithful) reach a leaf with a non-weakly-decreasing profile? And does every emitted
+  leaf carry ONLY `t̃=0` divisors (IsFullMonomialization's `∀k` vs the paper's `t̃=0`-only read-off,
+  p.22)? KILL-CONDITION: a leaf divisor `∉ Adm` at `M=(2,2,3,2)`. (pnp re-engaged; task tracks it.)
+
+**NEW NAMED OBLIGATION (elder-gate4 §3c): the total-comparability CHAIN CARRIER.** The
+invariant→principalization link is T3's (its discharge of the image-cover + per-leaf
+LeafPullback/LeafJacobian CONSUMES the total-comparability invariant, `cert-2222 (c)`), but the
+build side must MAINTAIN it — a chain invariant (`∀ k k', T_k ≤ T_{k'} ∨ T_{k'} ≤ T_k`, total
+comparability of the carried profiles), NOT merely the chooser's LOCAL minimality. Put its TYPE in
+with the `buildTree` invariants (`StateInvariant` extension); its preservation proof is a build brick;
+T3's cover proof goes THROUGH it, never asserts the cover.
 
 ## 4. (d) Worked example — a real case-1(2) node (constraint 3)
 
@@ -141,10 +163,14 @@ At `M = (3,3,4)`, layer `S=1` (Lean `layer=1`), `J=0`, one pending divisor with 
 
 - **Firmest**: the recursion terminates (μ-descent landed, all 4 cases); StepRel/base discharge rfl-class;
   the decision type is a clean sum (terminal / step-with-edges).
-- **Most likely to break**: (i) the ADMISSIBILITY INVARIANT preservation (§3) if the T-rule head-reset
-  (case-2, `M p.succ`) or inherit (case-1(2)) ever violates weak-decrease — needs a per-case proof, flag
-  as the T2 brick; (ii) the image-cover NON-TORICITY (§2) — this is T3's hard part, not buildTree's, but
-  the contract must not accidentally admit a corner-only cover.
-- **Next**: on elder ratification of this interface, (1) implement `buildTree` (WF.fix producing the Σ),
-  (2) prove `stepUpdate_preserves_adm`, (3) wire the chart-producer hole; then T3 coverage is commissioned
-  against the §2 contract.
+- **Most likely to break**: (i) the WEAKENED-INVARIANT preservation (§3) — the case-2 raw-width
+  head-reset (`M p.succ`) at NON-MONOTONE widths (`L≥3`) is the exact place weak-decrease could fail;
+  this is the pnp (2,2,3,2) gate, KILL = a leaf `∉ Adm`; (ii) the image-cover NON-TORICITY (§2), T3's
+  hard part (contract must not admit a corner-only cover).
+- **Next (elder-gate4 ratified — execution split)**: (1) **NOW** — implement `buildTree`'s STRUCTURAL
+  core (decision type w/ the hledger one-equality fix + layer<L threading; WF.fix producing
+  `Σ t, StepRel-all ∧ base ∧ liveAttainment-srcBox`; the case-1(2) witness) + `stepUpdate_preserves_weakInv`
+  (true either way) + the total-comparability chain-invariant TYPE; (2) **GATED on pnp (2,2,3,2)** —
+  the IsFullMonomialization + exponent-hook discharge (leaf-Adm = weakInv + leaf-`t̃=0`); (3) wire the
+  chart-producer hole. T3 coverage commissioned in parallel against §2 (own lane; first rung = the
+  per-blow-up local covering lemma at corank≥2).

@@ -231,6 +231,23 @@ over banked substrate.
    atlas + decorrelated pnp replay + hunt-cert §5 by-scope + circularity (fork 11 confirmed).
    FIRST RUNG: the per-blow-up LOCAL covering lemma at corank≥2 (prove the uniform event, fold
    the cases), then the fold, then invariant→principalization.
+   12(b) RESOLVED (pnp-atlas cert-nonmono-2232 + Codex replay, 2026-07-18): BOTH sub-questions
+   AGAINST the current predicates. (i) The p.20 raw-width head-reset reaches a non-Adm t-tilde=0
+   leaf label at (2,2,3,2) - a VERIFIED TRANSCRIPTION DEFECT (the label uses raw width where the
+   exponent uses the running-min; the paper's own Mval formula conflicts 6-vs-4; same class as
+   Def-3; ledger: theory/aoyagi-2023-reproduction/verify-case2-rawwidth-defect.md). RULING FIX-A:
+   the Case-2 head-reset caps at the RUNNING-MIN - battery-confirmed to restore label==exponent,
+   Adm-clean atlas, min==minAdm; the fork-12(a) Adm argument then goes through unchanged.
+   (ii) Leaves CARRY t-tilde>0 divisors (exponents can be < minAdm - red herrings fenced by the
+   paper's t-tilde=0 read-off, p.22): IsFullMonomialization + the exponent-hooks/terminalExponents
+   READ-OFF RESTRICT to t-tilde=0 divisors - an unrestricted forall-k is stronger than the paper
+   and FALSE. The ChartBridge ANALYTIC tuple is UNCHANGED (T3 supplies leaves whose divCoord/
+   divExp enumerate the t-tilde=0 divisors; the t-tilde>0 monomials fold into residualCore -
+   proving the squeeze on each chart's sector is T3's burden, correctly placed). The VALUE was
+   never at risk (min==minAdm at every probed instance); the predicate SHAPES were. The 'third
+   page-reading surface' warning (tick 46) and the full-mechanism reframe are both vindicated:
+   the defect is invisible at monotone widths and every L<=2 instance - only the faithful full-T
+   carrier at the non-monotone L=3 instance could expose it.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

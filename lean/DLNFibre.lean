@@ -1475,3 +1475,5 @@ import DLNFibre.DLN.RLCT.Engine.EngineDefs
 -- Light all-layer homogeneity closure (re-homed from D1L2ExplicitCoreProducer, 2026-07-18;
 -- ~3x build-time cut for the region-glue lane).
 import DLNFibre.DLN.RLCT.Foundations.FlatNodeHomogeneity
+-- T3 coverage rung 1: the per-blow-up pivot-chart covering atom (+ the corner ¬-theorem).
+import DLNFibre.DLN.RLCT.Engine.PivotCover

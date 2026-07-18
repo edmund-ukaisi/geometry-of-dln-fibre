@@ -1231,3 +1231,59 @@ the un-&&-chained heredoc let the journal bank claiming "Fork 12 applied" while 
 lacked it — the same unchained-heredoc hazard as tick 89's sibling incidents. Fork 12 is NOW in
 the compass (line-anchored insert, grep-verified). Shell-guard practice tightened: heredoc
 python edits get grep-verified before the same command banks.
+
+## 2026-07-18 T2b INVARIANT TYPES IN; buildTree HELD FOR PNP (tick 90)
+The architect folded the gate verdict to the bounded green point: the design doc corrected (one
+RootLedger equality; the corrected Adm decomposition; the pnp gate + chain-carrier obligations
+recorded) and T2b landed — the two build-side invariant TYPES (WeakProfileInv = weak-decrease +
+block-bound, the corrected per-node invariant; CompChainInv = the maintained total-comparability
+chain T3's cover consumes). Merged + verified here. SEQUENCING RULED: the buildTree WF.fix body
+HOLDS for pnp's (2,2,3,2) verdict — it can reshape IsFullMonomialization's statement (the ∀k vs
+t̃=0-only question), and the conjunct-discharge half builds against that statement; one coherent
+pass against settled statements beats two reworks. Three lanes now: pnp adjudicating (the gate),
+coverage-t07 surveying toward the local covering lemma statement, architect warm.
+
+## 2026-07-18 T3 RUNG-1 STATEMENT BLESSED (tick 91)
+coverage-t07's statement-first report adjudicated and BLESSED (controller fidelity read — the
+content is elementary + the interface fit readable, no elder round needed for one lemma family):
+the per-blow-up pivot cover in bounded MAX-MODULUS form — pivotChart i = (pivot u_i, ratios
+u_i·u_k), domain {|u_i| ≤ R, |ratios| ≤ 1}, iUnion of images = cubeBox d R — IS the bounded
+closure of Aoyagi's projective blow-up charts; the pivot-i image is the max-modulus-at-i sector;
+the Jacobian |u_i|^(d-1) matches LeafJacobian's β with divExp = d (the atom's second consumer).
+Survey confirmed the atom is genuinely NEW (the banked cover toolkit is integral-side; no
+geometric image-cover atom exists) — no rebuild. The bedrock ¬-theorem corner_chart_not_cover
+(a fixed corner chart provably misses (0,ε) — the probe's exact Verdict-1(b) gap as a Lean
+witness) rides along. Battery c-pivot-chart-cover.py exit-0 (cover/bound/gap/jac, d = 1..4).
+GO to grind (~60-90 LoC); rung-2 riders: page-pin the case centers; consume CompChainInv.
+
+## 2026-07-18 THE 12(b) GATE: A TRANSCRIPTION DEFECT IN THE PAPER ITSELF (tick 92)
+pnp-atlas's (2,2,3,2) verdict (battery validated on three known instances first; Codex replay
+agreeing to the number): BOTH sub-questions AGAINST the current predicates — the gate held the
+discharge exactly as designed. (i) The p.20 Case-2 head-reset label uses the RAW width while its
+own exponent uses the running-min: at the minimal non-monotone instance this reaches a t̃=0 leaf
+labelled (2,3,0) ∉ Adm with accumulated exponent 4 = Mval(2,2,0) — the ADMISSIBLE stratum
+mislabelled; the paper's own p.22 formula conflicts with its own accumulation (6 vs 4). A
+VERIFIED TRANSCRIPTION DEFECT, Def-3's class — ledgered (verify-case2-rawwidth-defect.md).
+RULING FIX-A: cap the head-reset at the running-min (battery-confirmed: label==exponent,
+Adm-clean, min==minAdm; fork-12(a)'s argument then goes through unchanged). (ii) Leaves CARRY
+t̃>0 divisors with exponents < minAdm (fenced by the paper's t̃=0 read-off): IsFullMonomialization
++ the exponent hooks RESTRICT to t̃=0 — the unrestricted ∀k was stronger than the paper and
+FALSE. The ChartBridge analytic tuple is UNCHANGED (T3 supplies t̃=0-enumerated leaves; the t̃>0
+monomials fold into residualCore — its sector-squeeze is T3's burden, correctly placed). THE
+VALUE WAS NEVER AT RISK; the predicate shapes were. Compass 12(b) resolution appended. The
+vindication chain is now complete: the elder's third-page-surface warning (tick 46) → the
+operator's full-mechanism steer → the faithful full-T carrier → the non-monotone probe → a
+defect INVISIBLE at monotone widths and every L≤2 instance. A trimmed-to-the-hole carrier could
+never have found it — and would have discharged a FALSE predicate.
+
+## 2026-07-18 T3 RUNG 1 PROVEN + WIRED (tick 93)
+The hard part's first brick is REAL: the per-blow-up pivot covering atom proven sorry-free —
+iUnion_pivotChart_image_eq_cubeBox + the isolated ⊇ half + corner_chart_not_cover (the probe's
+Verdict-1(b) gap as a permanent kernel-checked ¬-witness). Merged, aggregator-wired,
+controller-verified (forced probes clean-three 2/2; battery exit-0). Rung-2 scoping GO
+(statement-first): the fold into ChartBridge's flat-coord image cover — where the case centers
+get page-pinned (with the FIX-A corrected Case-2 label semantics) and the t̃=0 analytic/ledger
+split lands in LeafData population. The independent fidelity read (rung-1 atom + rung-2
+statement) batches at rung 2's gate — one review at the coupling point. pnp-atlas warm
+(three-for-three on gates). Both engine lanes now have proven bricks: the glue side COMPLETE,
+the construction side carrying rung-1 coverage + the full T1 carrier + the termination spine.
