@@ -938,3 +938,16 @@ directive; (2) glue Module B sub-lemmas abs_det_comp + flat_leaf_model_lt_top �
 clean-three. The glue lane is closing on the per-leaf read (B2 area formula + B_top remain, then
 Module C). pnp-atlas mid-computation (own worktree per the corrected brief). Architect drafting
 the R1 design + revised ladder while holding for pnp verdict 3.
+
+## 2026-07-18 TIDE LADDER AGREED (tick 69)
+The architect's revised ladder (reframe + council folded) AGREED: T1 faithful carrier (full-T
+primitive/t̃ derived + genDivExp field + razor-docstring struck + page-verified T-updates +
+chooser TYPE; gate incl. μ-spine re-verification under the extended carrier) → T2 recursion-
+assembly skeleton (WF.fix over conRel_wf, chart-producer typed hole) → T3 coverage integration →
+T4 propagation + chooser proofs + the UNIFORM invariant-preservation lemma (one lemma, case
+instantiations — the method steer landing in the design) → T5 repoint + enforced axiom-gate.
+Labels pinned tide-internal (T1-T5) vs fork-11 map labels. Design note offered: on divExp-vs-T,
+"carry both + prove COHERENCE (incremental update = closed-form Mval)" is on the table — the
+coherence theorem IS the exponent-bookkeeping soundness brick and fits T4's uniform slot. T1 Lean
+holds on pnp-atlas verdict 3 (the only gate). Reframe ACK'd by the seat in full — including
+extending its own case-merge instinct.
