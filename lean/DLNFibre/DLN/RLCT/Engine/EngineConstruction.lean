@@ -1127,6 +1127,25 @@ theorem OracleInv_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L
   slc := SameLevelChainInv_stepCase11 s tgt inv.lhd inv.ft inv.wd hlive htgt hgt hℓ inv.slc
   si := StateInvariant_stepCase11 s tgt inv.si
 
+/-- **A case-2 append preserves `OracleInv`** — the joint assembly of the six case-2 append
+maintenance lemmas (`t₀ = runMinWidth`, threading the case-2 gap + step-validity guarantees). -/
+theorem OracleInv_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hlive : s.layer < L) (hJ : s.cleared < widthMinUpto M s.layer)
+    (hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer → s.divTilde k ≤ s.cleared)
+    (ht0 : ∀ p : Fin L, (p : ℕ) < s.layer → t₀ p = runMinWidth M p)
+    (ht0wd : ∀ i j : Fin L, i ≤ j → t₀ j ≤ t₀ i)
+    (ht0c : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ t₀ p)
+    (hcl : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ runMinWidth M p)
+    (hcap : s.cleared < layerCap M)
+    (helig : ∀ i : Fin (L + 1), (i : ℕ) ≤ s.layer → s.cleared < M i)
+    (inv : OracleInv M s) : OracleInv M (s.stepAppendAdvance e t₀) where
+  wd := WeakDecInv_stepAppendAdvance s e t₀ ht0wd ht0c inv.wd
+  ft := FlatTail_stepAppendAdvance s e t₀ inv.ft
+  wb := WidthBound_stepAppendAdvance s e t₀ (fun p hp => le_of_eq (ht0 p hp)) inv.wb
+  lhd := LiveHeadDom_stepAppendAdvance s e t₀ inv.lhd inv.wb hlive hJ hgap ht0 hcl
+  slc := SameLevelChainInv_stepAppendAdvance s e t₀ inv.ft inv.wd hlive inv.wb hJ ht0 hcl inv.slc
+  si := StateInvariant_stepAppendAdvance s e t₀ hcap helig inv.si
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
