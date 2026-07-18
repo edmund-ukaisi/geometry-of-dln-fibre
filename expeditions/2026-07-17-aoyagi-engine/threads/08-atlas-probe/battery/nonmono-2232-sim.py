@@ -264,4 +264,49 @@ print(f"  t~=0 leaf divisors NOT in Adm (FIX-A): {t0_not_admA if t0_not_admA els
 fixA_clean = (not t0_not_admA) and (set(t0A) == set(nested_profiles(M))) and (t0minA == minAdm(M))
 print(f"  FIX-A closes the gate (atlas Adm-clean, profiles == admissible, min == minAdm): {fixA_clean}")
 
+
+# ============================================================================
+# PRE-COMMIT CLARIFIER (fork 13): higher-L non-monotone instances the certs never reached.
+#   (i) comp_violations = reachable incomparable ELIGIBLE pair -> CompChainInv-closure kill (o1/o4).
+#   (ii) t~=0 profile-set == Adm -> realization kill (o5-IN).
+#   Both head-reset modes: raw (p.20-literal) and runmin (FIX-A; the oracle transcribes this).
+# ============================================================================
+def clarify(M, headreset):
+    s = Sim(M, headreset=headreset).run()
+    divs = set()
+    for leaf in s.leaves:
+        divs.update(leaf)
+    t0 = sorted({T for (T, m) in divs if min(T) == 0})
+    t0min = min((m for (T, m) in divs if min(T) == 0), default=None)
+    adm = set(nested_profiles(M))
+    return {"leaves": len(s.leaves), "nodes": s.node_count,
+            "comp_violations": len(s.comp_violations), "pairs": s.comp_violations[:5],
+            "profset_eq_Adm": set(t0) == adm, "profset_minus_Adm": sorted(set(t0) - adm),
+            "min_eq_minAdm": t0min == minAdm(M), "t0min": t0min}
+
+
+print("\n" + "=" * 72)
+print("PRE-COMMIT CLARIFIER (fork 13) — higher-L non-monotone, both head-reset modes")
+print("=" * 72)
+clar_ok = True
+for Mc in [(2, 2, 3, 3, 2), (3, 2, 4, 2)]:
+    print(f"\n### M={Mc}   L={len(Mc)-1}   minAdm={minAdm(Mc)}   "
+          f"|Adm nested profiles|={len(nested_profiles(Mc))}")
+    for mode in ("raw", "runmin"):
+        r = clarify(Mc, mode)
+        print(f"  [{mode:6s}] leaves={r['leaves']:4d} nodes={r['nodes']:6d}  "
+              f"comp_violations={r['comp_violations']}  "
+              f"profile-set==Adm: {r['profset_eq_Adm']}  "
+              f"min==minAdm: {r['min_eq_minAdm']} (min={r['t0min']})")
+        if r["comp_violations"]:
+            print(f"          ** INCOMPARABLE ELIGIBLE PAIRS: {r['pairs']}")
+        if not r["profset_eq_Adm"]:
+            print(f"          profile-set \\ Adm = {r['profset_minus_Adm']}")
+        clar_ok &= (r["comp_violations"] == 0)
+        if mode == "runmin":
+            clar_ok &= r["profset_eq_Adm"] and r["min_eq_minAdm"]
+
+print("\nCLARIFIER:", "PASS (0 comp_violations both modes; runmin profile-set==Adm)"
+      if clar_ok else "FAIL — a kill fired, RESHAPE the oracle unit")
+
 sys.exit(0 if ok else 1)
