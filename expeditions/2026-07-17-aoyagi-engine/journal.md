@@ -703,3 +703,13 @@ StepApplicable it was reported as (case12 guard dropped in translation). RULING:
 (the residual is fidelity-class, off the finiteness path); the case12 guard extension lands
 BEFORE the case-step-lemmas faithful-flip; the case12 t̃-half goes to the elder for page-confirm
 (same division of labor as case-1(2)).
+
+## 2026-07-18 tick 54 addendum: SEATS RESPAWNED POST-RESTART
+The Agent-Teams runtime did not survive the VM restart (old seat names unreachable); all state was
+banked in-repo, so fresh seats respawned into the EXISTING worktrees: architect-t02 (t01-r2;
+rider = the case12 eligibility extension, then rung 2 per the standing commission incl. the μ-lex
+spine + L=3 de-risk + fences); glue-t06 (glue-t05 worktree; the per-leaf grind from the 6-step
+spec + elder checklist, sub-lemma discipline, nothing was lost — the grind hadn't pushed);
+elder-gate3 (fresh bounded convening: the case12 t̃-half page-confirm, pp.15-18). rev-carrier
+respawns when the next scoped check is due. Gate 11 relaunched (/tmp wiped). Push state
+recovered: the consolidated cert fast-forward was local-only — pushed now.
