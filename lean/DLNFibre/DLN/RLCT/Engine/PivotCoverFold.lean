@@ -170,20 +170,52 @@ theorem edgesLeafPaths_mapFst (acc : Params M → Params M) :
       rw [leafPaths_mapFst (acc ∘ s.localSub) c, edgesLeafPaths_mapFst acc es]
 end
 
-/-- **The per-node atom bridge** (rung-2's real content + the interface surface): at a blow-up node
-whose edges are the pivot charts of a center that is a coordinate block of dimension `d`, `hnode`
-holds — it is the rung-1 atom `iUnion_pivotChart_image_eq_cubeBox` embedded into the flat
-coordinates (`Fin (flatDim M)`) via the center's coordinate indices, untouched coordinates passing
-through. The `pivotComplete` hypothesis names exactly what `buildTree` must supply (the ⚠ surface).
-Case-1's center `{d_ij = 0, u_{s,k} = 0}` (pp.15-16) and Case-2's residual block (pp.19-20,
-running-min FIX-A labels) differ only in WHICH coordinates form the center; the atom is uniform. -/
-theorem node_pivotCover_of_atom {n : StepData M} {edges : List (Edge M)} {V : Set (Params M)}
-    {childRegion : Edge M → Set (Params M)}
-    -- PLACEHOLDER for the edge-pivot-completeness contract (§2 must force it; see ⚠ surface):
-    (pivotComplete : True) :
+/-- **The per-node atom bridge** (rung-2's real content, PROVEN; (a)-generalized, cert-cov-rungs12).
+At a blow-up node whose edges realize the FULL pivot family of a codimension-`d` coordinate center,
+`hnode` holds — the rung-1 atom `iUnion_pivotChart_image_eq_cubeBox` transported through the
+construction's coordinate split `q : Params M ≃ₜ (Fin d → ℝ) × E` (center coords × spectators). The
+contract (= the architect's `StepEmit` `pivotComplete` amendment):
+* `pivotOf` tags each edge with its pivot; `hbij` = FULL family (every `i : Fin d` realized) — the
+  load-bearing (a)-vs-(b) content: emitting fewer than `d` pivots leaves the corner gap
+  (`corner_chart_not_cover`, cert-atlas-probe 1(b)); the ATLAS COUNTS are blind to it (symmetric
+  quotient) — the page (center codim) + the corner ¬-theorem are the discriminators;
+* `hloc` = each edge's `localSub` is the `q`-conjugated `pivotChart`; `hdom` = its `childRegion` is
+  the `q`-preimage of the max-modulus sub-cube; `hV` = `V` in the open center-slab (needs `0 < R`).
+Case-1's center `{d_ij=0, u_{s,k}=0}` (p.16, `d = J₁·(M^{(S+1)}−J)+1`) and Case-2's residual block
+(p.19, `d = (M(S)−J)·(M^{(S+1)}−J)`) differ only in WHICH coords form the center; the atom is
+uniform (`page-pin-centers.md`). Element-chase via the atom; `q`-independent of the tree. -/
+theorem node_pivotCover_of_atom {edges : List (Edge M)} {V : Set (Params M)}
+    {childRegion : Edge M → Set (Params M)} {d : ℕ} {E : Type*} [TopologicalSpace E]
+    (hd : 0 < d) {R : ℝ} (hR : 0 < R) (q : Params M ≃ₜ (Fin d → ℝ) × E)
+    (pivotOf : Edge M → Fin d)
+    (hbij : ∀ i : Fin d, ∃ e ∈ edges, pivotOf e = i)
+    (hloc : ∀ e ∈ edges, ∀ w : Params M,
+      e.subst.localSub w = q.symm (Prod.map (pivotChart (pivotOf e)) id (q w)))
+    (hdom : ∀ e ∈ edges, childRegion e = q ⁻¹' (pivotChartDom (pivotOf e) R ×ˢ Set.univ))
+    (hV : V ⊆ q ⁻¹' ((Set.univ.pi fun _ => Set.Ioo (-R) R) ×ˢ Set.univ)) :
     ∃ U : Set (Params M), IsOpen U ∧ V ⊆ U ∧
         U ⊆ ⋃ e ∈ edges, e.subst.localSub '' childRegion e := by
-  sorry
+  refine ⟨q ⁻¹' ((Set.univ.pi fun _ => Set.Ioo (-R) R) ×ˢ Set.univ), ?_, hV, ?_⟩
+  · exact q.isOpen_preimage.mpr
+      ((isOpen_set_pi Set.finite_univ (fun _ _ => isOpen_Ioo)).prod isOpen_univ)
+  · intro w hw
+    rw [Set.mem_preimage, Set.mem_prod] at hw
+    have hcube : (q w).1 ∈ cubeBox d R := by
+      rw [cubeBox, Set.mem_pi]
+      intro k _
+      have hk := hw.1 k (Set.mem_univ k)
+      rw [Set.mem_Ioo] at hk
+      exact Set.mem_Icc.mpr ⟨le_of_lt hk.1, le_of_lt hk.2⟩
+    rw [← iUnion_pivotChart_image_eq_cubeBox hd (le_of_lt hR), Set.mem_iUnion] at hcube
+    obtain ⟨i, u, hu, hpc⟩ := hcube
+    obtain ⟨e, he, hei⟩ := hbij i
+    rw [Set.mem_iUnion₂]
+    refine ⟨e, he, q.symm (u, (q w).2), ?_, ?_⟩
+    · rw [hdom e he, Set.mem_preimage, Homeomorph.apply_symm_apply, Set.mem_prod]
+      exact ⟨by rw [hei]; exact hu, Set.mem_univ _⟩
+    · rw [hloc e he, Homeomorph.apply_symm_apply, hei]
+      simp only [Prod.map_apply, id_eq, hpc]
+      rw [← Prod.mk.eta (p := q w), Homeomorph.symm_apply_apply]
 
 /-- **The headline** (rung-2 target): the `ChartBridge` image-cover clause follows from
 `OwnCovers (resolutionOf M)` of the zero-locus-in-the-unit-box, via coherence
