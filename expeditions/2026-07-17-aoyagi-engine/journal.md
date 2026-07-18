@@ -796,3 +796,21 @@ from the record: normed/findim instances banked (ParamsFlatLinear), but volume-n
 Params M (its own predecessor's note) ⟹ Module B transports through paramsEquivFlatCLE and
 applies the area formula flat-side (CLE det = nonzero constant; the elder's field-2 verdict
 already assumed this) — a proof step, not a stop.
+
+## 2026-07-18 PAPER-MAP RECON DELIVERED (tick 61)
+recon-aoyagi-full's cert merged (threads/07-paper-map/; page-pinned, Codex-corrected). THE SINGLE
+IDEA named: chartwise log-principalization of the matrix-product ideal by iterated blow-ups along
+the layer filtration; integrability = Hironaka ratios (h+1)/(2k); min over atlas = the banked QIP;
+cases DERIVED from the invariant (1(1)/1(2) = two charts of ONE Case-1 blow-up; Case 2 = the
+distinct layer event). DECISIVE (Lean-verified): the ≤-half (achiever divergence) is BANKED
+sorry-free (routeMCore_box_diverges_achiever_full'), and aoyagi_learning_coefficient_gen is
+clean-three conditional SOLELY on hbox with NO cite — so the two-path question COLLAPSES: one
+critical path (hbox = coverage + region_glue), and discharging it DELETES cited_aoyagi_dln for
+free (repoint canonical → _gen). Path B contains Path A's coverage content; its unique extras are
+banked or out of scope. HARDEST OBJECT re-confirmed: coverage/no-smaller-ratio — Aoyagi ASSERTS
+("by a blow-up process"), never proves; irreducible on either path. FIDELITY DELTAS all named as
+rungs: full-T carrier (tie-break + gap need it — rung-3 chooser), genDivExp (R4), Theorem-3 peel
+lives in the banked value lane ([Q] for council: does the reframe demand R6 first-class?). NEXT
+PROBE recommended: corank-2 atlas-closure enumeration at (2,2,2)/(3,3,4) — the cheapest stress of
+the R2 kill-condition. Roadmap R0-R6 priced in cert §5. COUNCIL OF TWO convening (corrected
+charge) to adopt.
