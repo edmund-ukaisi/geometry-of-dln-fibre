@@ -1528,3 +1528,14 @@ LeafJacobian's existentials (rung-3-proper). ALL construction-independent covera
 is now BANKED: atom, fold (4/4), clause lemmas, constructor. Coverage's queued unit: the
 ψ-reconciliation lemma (crossed messages — pointer sent). buildTree's leaf emission is now a
 one-call affair.
+
+## 2026-07-18 THE CLARIFIER GATES GREEN (tick 110)
+pnp's pre-commit numbers merged: comp_violations = 0 at BOTH higher-depth non-monotone instances
+((2,2,3,3,2) L=4 and (3,2,4,2)) in BOTH head-reset modes — CompChainInv's closure now stands at
+0/6 instances through L=4, and notably holds even under the RAW defect (the mis-labels never
+form an incomparable ELIGIBLE pair) — the o4 certificate's generality hardened. profile-set ==
+Adm under FIX-A at both (the raw defect RECURS at every non-monotone instance — FIX-A restores
+the realization uniformly; min == minAdm always — the value safe regardless). CLEAN SEPARATION
+of the two kill classes confirmed: comparability (o1/o4) is head-reset-independent; realization
+(o5-∈) is exactly the FIX-A issue, closed. THE ARCHITECT'S LONG COMMITS ARE UNGATED (build on
+the FIX-A construction — both kills clean there). pnp proceeds to the o4 certificate.
