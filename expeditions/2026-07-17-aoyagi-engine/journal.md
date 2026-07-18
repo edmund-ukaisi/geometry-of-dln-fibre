@@ -2025,3 +2025,11 @@ pnp-o5 (minimizer-clearability as PAPER PROOF = the load-bearing piece, ∃-mini
 allowed; both characterization directions status-labelled; ledger entry #4 commissioned in
 FIX-A format; confound lesson explicit; scan artifacts committed); compass fork 13(o5-∈)
 RESHAPED (dated block). Codex-confirm pending on the pnp side.
+
+## 2026-07-19 tick 149 (idle pulse): C advancing on route (B); pnp-o5 bank-nudge
+Drift glance. t03 pushed two C greens un-reported yet: T0Bound invariant folded into
+reachability ("liveness-free terminal Adm" — route (B) executed as ratified) + a NumDivFlatPos
+coupling (0<numDiv → 0<flatDim) into the reachability bundle. Mid-arc; integrate at its report.
+pnp-o5: finding-rich but ZERO commits banked (branch not even created remotely) — nudged to
+commit+push the scan scripts, counts/witness table, and cert draft immediately (incremental
+banking beats polished-but-local; the ~950-instance scan currently lives only in its context).
