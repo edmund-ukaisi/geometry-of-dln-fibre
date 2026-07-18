@@ -662,3 +662,16 @@ this certifies provability FROM ChartBridge; rung 3-4 owns making the monomial a
 glue-t05 RE-TASKED against the frozen interface (battery script demanded FIRST — 4 asks overdue).
 Still pending: the architect's blocking commit (elder notes the case-2 wrong advance STILL in
 tree) → rev-carrier's consolidated pass → rung 2.
+
+## 2026-07-18 GLUE: BATTERY DEBT CLEARED; PER-LEAF GRIND OPENED (tick 52)
+glue-t05 synced the frozen interface, CLEARED the battery debt (g-glue-unbounded-srcbox.py exit 0
+— the F1 counterexample now executable; merged + verified), and wrote the build-ready 6-step
+decomposition (thread.md; every discharge named; substrate verified banked incl. the product-
+monomial box read and the piEquivPiSubtypeProd precedent). Its no-third-gap needs-vs-forces
+finding AGREES with the elder's gate verdict — decorrelated concurrence on the interface. RULING
+on its scope question: grind the per-leaf NOW, glue-t05 sole focus (context + plan already paid
+for), with sub-step discipline — the 6 steps land as NAMED STANDALONE LEMMAS, each green + clean-
+three + pushed before the next (no unpushed monolith; its own visible-progress worry defused
+structurally). Elder checklist absorbed into its plan (N̄ superset trick; never integrate
+residualCore). Remaining glue path: steps 1-6 → leaf_chart_image_lintegral_lt_top →
+region_glue_of_chartBridge → my sequenced one-line discharge.
