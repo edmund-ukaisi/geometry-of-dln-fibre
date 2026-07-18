@@ -657,4 +657,38 @@ contract). -/
 def ChooserTotalOnChain {L : ℕ} (s : ConState L) : Prop :=
   ∀ target : ℕ, (∃ k : Fin s.numDiv, s.divTilde k = target) → (chooseMin s target).isSome
 
+/-! ## o2: the dispatch `classify` (simulator `_proc`, indexing pinned `layer = S−1`)
+
+Which step the state admits — the simulator's dispatch, transcribed with `layer = S−1`:
+`S = layer+1`, `Mrun(S) = min(M i : i ≤ layer) = widthMinUpto layer`, `MSp1 = min(Mrun(S), M⁽ˢ⁺¹⁾) =
+widthMinUpto (layer+1)`. Terminal at `layer = L` (`S = L+1`); else rollover if `J ≥ MSp1`; else
+case-1 on the least occupied `t̃`-level in `[J+1, Mrun(S)−1]`; else case-2. Pure/decidable — the
+CONE-GOODNESS (this dispatch makes μ-progress on invariant states) is proven separately. -/
+
+/-- Which step a live state admits (the dispatch tag; `case1` carries the target clearing level). -/
+inductive StepKind where
+  | terminal
+  | rollover
+  | case1 (target : ℕ)
+  | case2
+  deriving DecidableEq, Repr
+
+/-- `min(M i : i ≤ n)` — the running-min width through paper layer `n+1` (`= Mrun(n+1)`). Nonempty
+(index `0` qualifies), so a `Finset.inf'`. -/
+def widthMinUpto (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
+  (Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ n)).inf'
+    ⟨0, by simp⟩ M
+
+/-- **The dispatch** (simulator `_proc`, `layer = S−1`): the step kind the state admits. -/
+def classify (M : Fin (L + 1) → ℕ) (s : ConState L) : StepKind :=
+  if L ≤ s.layer then .terminal
+  else if widthMinUpto M (s.layer + 1) ≤ s.cleared then .rollover
+  else
+    let occ := (List.finRange s.numDiv).filterMap (fun k =>
+      let t := s.divTilde k
+      if s.cleared + 1 ≤ t ∧ t + 1 ≤ widthMinUpto M s.layer then some t else none)
+    match occ.min? with
+    | some target => .case1 target
+    | none => .case2
+
 end DLNFibre.DLN.RLCT.Engine
