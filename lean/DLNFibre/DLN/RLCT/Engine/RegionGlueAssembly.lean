@@ -65,4 +65,65 @@ theorem lintegral_leaves_cover_lt_top {M : Fin (L + 1) → ℕ} (c' : ℝ) (ls :
         (ENNReal.add_lt_top.mpr ⟨H l₀ (List.mem_cons.mpr (Or.inl rfl)),
           ih (fun l hl => H l (List.mem_cons.mpr (Or.inr hl)))⟩)
 
+/-- The all-zero parameter tuple has zero product (`L ≥ 1`: the recursion's last layer `= 0` zeroes
+the fold). A public restatement of `Skeleton.prod_zero`. -/
+theorem prod_zero_glue {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    prod M (0 : Params M) = 0 := by
+  show prod M (fun _ => 0) = 0
+  unfold prod
+  obtain ⟨k, hk⟩ : ∃ k, L = k + 1 := ⟨L - 1, by omega⟩
+  subst hk
+  rw [prodAux]; convert Matrix.mul_zero _
+
+/-- **Region glue from the CoV bridge** (the analytic hole's discharge). Given a `ChartBridge` for `t`
+and `c'` below half every terminal exponent, the unit-box layer-product integral is finite. `c' ≤ 0`:
+the banked no-singularity corner. `L = 0`: `prod M A = 1` is constant, so the integrand is constant
+on the compact box. `c' > 0, L ≥ 1`: `0` is in the zero-locus, contained in the atlas neighbourhood
+`U`; a small box `paramsBoxM M ε ⊆ U ⊆ ⋃ leaves chartMap '' srcBox` bounds the box-`ε` integral by the
+finite cover, then the homogeneity globalization lifts to the unit box. -/
+theorem region_glue_of_chartBridge {L : ℕ} {M : Fin (L + 1) → ℕ} (t : ResolutionTree M)
+    (hbridge : ChartBridge M t) (c' : ℝ)
+    (hrat : ∀ e ∈ ResolutionTree.terminalExponents t, c' < (e : ℝ) / 2) :
+    routeMLayerBoxIntegral M c' 1 < ⊤ := by
+  by_cases hc0 : c' ≤ 0
+  · exact routeMLayerBoxIntegral_nonpos_lt_top M c' hc0
+  have hcpos : 0 < c' := not_le.mp hc0
+  rcases Nat.eq_zero_or_pos L with hL0 | hLpos
+  · -- L = 0 : `prod M A` is the (constant) empty product
+    subst hL0
+    have hprodconst : ∀ A : Params M, prod M A = prod M (0 : Params M) := fun A => rfl
+    rw [routeMLayerBoxIntegral,
+      setLIntegral_congr_fun (measurableSet_paramsBoxM M 1) (fun A _ => by rw [hprodconst A]),
+      setLIntegral_const]
+    refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
+    have hcubeM : MeasurableSet (cubeBox (flatDim M) 1) := by
+      rw [cubeBox]; exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+    rw [← paramsEquivFlat_preimage_paramsBoxM M 1,
+      (measurePreserving_paramsEquivFlat M).measure_preimage hcubeM.nullMeasurableSet]
+    exact (show IsCompact (cubeBox (flatDim M) 1) by
+      rw [cubeBox]; exact isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
+  · -- c' > 0, L ≥ 1
+    obtain ⟨⟨U, hUopen, hUlocus, hUcover⟩, hleaf, -⟩ := hbridge
+    have h0box : (0 : Params M) ∈ paramsBoxM M 1 := fun s i j => by
+      have h0 : (0 : Params M) s i j = 0 := rfl
+      rw [h0, Set.mem_Icc]; norm_num
+    have h0locus : (0 : Params M) ∈ {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} :=
+      ⟨h0box, by
+        rw [prod_zero_glue M hLpos]; unfold frobSq
+        exact Finset.sum_eq_zero (fun i _ => Finset.sum_eq_zero (fun j _ => by simp))⟩
+    obtain ⟨ε, hε, hεU⟩ := exists_small_paramsBox_subset_open hUopen (hUlocus h0locus)
+    have Hleaf : ∀ l ∈ ResolutionTree.leaves t, ∫⁻ A in l.chartMap '' l.srcBox,
+        ENNReal.ofReal (frobSq (prod M A) ^ (-c')) < ⊤ := by
+      intro l hl
+      obtain ⟨hsrcM, hbdd, hdcInj, hrcInj, hdisj, hnull, hlp, hlj⟩ := hleaf l hl
+      refine leaf_chart_image_lintegral_lt_top l c' hcpos hsrcM hbdd hdcInj hrcInj hdisj hnull hlp hlj
+        (fun k => hrat _ (List.mem_flatMap.mpr ⟨l, hl, List.mem_append.mpr (Or.inl
+          (List.mem_map.mpr ⟨k, List.mem_finRange k, rfl⟩))⟩))
+        (fun hpos => hrat _ (List.mem_flatMap.mpr ⟨l, hl, List.mem_append.mpr (Or.inr (by
+          rw [if_pos hpos]; exact List.mem_singleton.mpr rfl))⟩))
+    refine routeMLayerBoxIntegral_lt_top_of_small_box M c' ε hε ?_
+    rw [routeMLayerBoxIntegral]
+    exact lt_of_le_of_lt (lintegral_mono_set (hεU.trans hUcover))
+      (lintegral_leaves_cover_lt_top c' (ResolutionTree.leaves t) Hleaf)
+
 end DLNFibre.DLN.RLCT.Engine
