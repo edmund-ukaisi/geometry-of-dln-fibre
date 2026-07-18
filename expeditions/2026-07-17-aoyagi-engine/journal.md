@@ -1462,3 +1462,16 @@ the work is totality/termination/leaf-property PROOFS. elder-gate5 convened on t
 (invariant-first — it's been weakened twice by witnesses), the seat question, the T3 pre-stage
 question, and the open-problem-vs-transcription split. Wiring held. Task #13 closed (the
 assembly WAS T2); the oracle is the new named unit.
+
+## 2026-07-18 SHEAR ANSWERED (ψ-composed, forced) + THE CHEAP CHECK DISPATCHED (tick 106)
+The architect's shear answer merged (design §6): its emission is the ψ-COMPOSED form, by FORCED
+reasoning — the fixed coherence clause (chartMap = the localSub fold) + the fixed LeafJacobian
+(chartMap = ψ∘β, lo>0 nontrivial det bound) mean a pure-β fold forces ψ=id, while the DLN charts
+carry LDU/Morse gauges. ESCAPE HATCH correctly offered: if the distortion is squeeze-absorbed,
+ψ=id and no reconciliation. DECISION: spend the cheap check first (truth-witness-at-pin-time) —
+dispatched to pnp-atlas as a bounded verdict (A: gauge-in-chart ⟹ one reconciliation lemma to
+coverage — covers transport through the per-node bounded homeomorphism; B: squeeze-only ⟹ the
+pure-pivot contract stands). Note the record leans (A): the paper's own Case-1(2) composes
+unipotent Q/P clears, and det-1 gauges are invisible to the Jacobian battery — the discriminator
+is chart GEOMETRY. Flat-cube srcBox ADOPTED (5 of 8 per-leaf clauses free). Wiring stays held;
+the oracle GO waits on elder-gate5.
