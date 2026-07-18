@@ -1085,3 +1085,10 @@ D1L2 re-home GOES NOW (banked-static substrate, no lane owns it, import-back des
 the NAMESPACE fix HOLDS to the close-phase naming sweep (rev-glue's in-flight cert + the
 discharge wiring cite current names; T1 stays carrier-only). Then statement cards → stand down
 warm. The glue lane's remaining work is measured in hours of mechanical steps.
+
+## 2026-07-18 T1b INTEGRATION-VERIFIED; T1b-ii/T1c GO (tick 79)
+The architect's full-aggregator gate came back green (8884 jobs; glue lane integrates; AxCheck
+forced prints unchanged) — T1b closes entirely. GO issued on T1b-ii (genDivExp field-only swap)
++ T1c (ConState alignment + chooser TYPE w/ the comparability docstring + razor strike + μ
+re-verify). After T1c: a consolidated T1 review + the region_glue discharge sequencing in one
+integration pass (rev-glue's verdict expected in by then), then T2 opens.
