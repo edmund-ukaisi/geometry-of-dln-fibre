@@ -87,7 +87,8 @@ subst224` by construction (ledger equality by structure-eta `rfl`); the case-1 e
 vacuous (the edge is case-2, neither case-1(1) nor case-1(2)). -/
 theorem rootEdge224_stepRel :
     StepRel rootNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)) :=
-  ⟨rfl, fun h => by rcases h with h | h <;> simp [Edge.case] at h⟩
+  ⟨rfl, fun h => by rcases h with h | h <;> simp [Edge.case] at h,
+    fun h => by simp [Edge.case] at h⟩
 
 /-- **The arithmetic bank piece** (clean-three): at `M = (2,2,4)` the carrier-independent conjuncts
 are jointly satisfiable — full monomialisation (`divExp = Mval`, `divProfile ∈ Adm`), the FAITHFUL
@@ -167,7 +168,7 @@ noncomputable def mergeLeaf : LeafData M224 where
 target is ELIGIBLE — `mergeIdx = 0 < 1` with `t̃ 0 = 2 = cleared + runLen` (p.15). -/
 theorem mergeEdge_stepRel :
     StepRel mergeNode (Edge.mk StepCase.case11 mergeSubst (ResolutionTree.leaf mergeLeaf)) :=
-  ⟨rfl, fun _ => ⟨by decide, by decide⟩⟩
+  ⟨rfl, fun _ => ⟨by decide, by decide⟩, fun h => by simp [Edge.case] at h⟩
 
 /-- The merged child's divisor exponent is `11` (numeric pin of the page-image merge equation). -/
 theorem mergeLeaf_divExp : mergeLeaf.divExp ⟨0, by decide⟩ = 11 := by decide
@@ -208,7 +209,7 @@ theorem oobSplit_not_stepRel :
     ¬ StepRel mergeNode
       (Edge.mk StepCase.case12 oobSplitSubst (ResolutionTree.leaf oobSplitLeaf)) := by
   intro h
-  obtain ⟨hlt, _⟩ := h.2 (Or.inr rfl)
+  obtain ⟨hlt, _⟩ := h.2.1 (Or.inr rfl)
   exact absurd hlt (by decide)
 
 /-! ## Dummy-divisor rejection (the rung-1 kill-condition, both directions) -/
@@ -253,6 +254,33 @@ theorem vanishingDivisor_not_stepRel :
   intro h
   have hn : (0 : ℕ) = 1 := congrArg ResolutionTree.RootLedger.numDiv h.1
   exact absurd hn (by decide)
+
+/-! ## Early-rollover rejection (elder-gate6 at-exhaustion guard kill-witness) -/
+
+/-- A rollover substitution (chartless — `localSub = id`, no merge/gap data). -/
+def rolloverSubst : ChartSubst M224 where
+  localSub := id; runLen := 0; mergeIdx := 0; jacDivCount := 0; jacPow := Fin.elim0
+
+/-- The rollover child of the base root: its ledger IS `stepUpdate rootNode224 rollover`
+(divisors unchanged, `cleared := 0`) — so the LEDGER conjunct holds. But the rollover is EARLY: at
+`rootNode224` the layer is unexhausted (`cleared = 0 < widthMinUpto M224 1 = 2`). -/
+noncomputable def earlyRolloverLeaf : LeafData M224 where
+  numDiv := 0; divExp := Fin.elim0; cleared := 0; divProfile := Fin.elim0
+  fullNumDiv := 0; fullDivExp := Fin.elim0; fullDivProfile := Fin.elim0
+  numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
+  chartMap := id; srcBox := Set.univ; resRank := 0
+  divCoord := Fin.elim0; resCoord := Fin.elim0
+
+/-- **Early-rollover rejection** (the at-exhaustion guard's kill-condition): a `rollover` edge from
+the UNEXHAUSTED base root is REJECTED — even though the ledger conjunct holds (the child IS
+`stepUpdate rootNode224 rollover`), the guard needs `widthMinUpto M224 1 ≤ cleared` and `2 ≤ 0` is
+false. WITHOUT the guard `StepRel` would ACCEPT this early rollover, stranding the layer's pending
+pivots into a ledger-consistent non-Aoyagi tree (compass 13(Q3); the fork-9 infidelity class). -/
+theorem earlyRollover_not_stepRel :
+    ¬ StepRel rootNode224
+      (Edge.mk StepCase.rollover rolloverSubst (ResolutionTree.leaf earlyRolloverLeaf)) := by
+  intro h
+  exact absurd (h.2.2 rfl) (by decide)
 
 /-! ## The in-file mixed-case Case-1 record (carrier records both cases of one blow-up) -/
 

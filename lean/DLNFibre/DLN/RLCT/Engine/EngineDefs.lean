@@ -91,6 +91,13 @@ head-reset at this, not the RAW `M p.succ`. -/
 def runMinWidth (M : Fin (L + 1) → ℕ) (p : Fin L) : ℕ :=
   (Finset.Iic p.succ).inf' ⟨p.succ, Finset.mem_Iic.mpr le_rfl⟩ M
 
+/-- `min(M i : i ≤ n)` — the running-min width through paper layer `n+1` (`= Mrun(n+1)`; it is
+`Mrun(S)` at `n = layer = S−1`). Nonempty (index `0` qualifies), so a `Finset.inf'`. Lives here (not
+`EngineConstruction`) because the rollover-edge at-exhaustion guard in `StepRel` below reads it — the
+guard is pinned to the construction dispatch's rollover trigger `widthMinUpto (layer+1) ≤ cleared`. -/
+def widthMinUpto (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
+  (Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ n)).inf' ⟨0, by simp⟩ M
+
 /-- **The typed transition** (rung 1, fork 9): the child root ledger CORE a step DETERMINES from its
 parent `n`, the `case`, and the edge substitution `σ` — `numDiv`, per-divisor `divExp`/`divTilde`,
 `cleared`. Faithful to the page-image transitions:
@@ -176,12 +183,21 @@ LEVEL, not the min-SELECTION; (ii) the GAP CONDITION defining `J₁` — `{t̃_{
 at R1; propagation proofs at R4) and layer-`S` advancement (lives in the construction's `State`, the
 μ 1st component). Retires the existential form — a dummy divisor appearing/vanishing changes
 `rootLedger e.child` and is rejected (`dummyDivisor_not_stepRel`). Since the construction computes
-each child ledger via `stepUpdate`, the equality is rfl-class. -/
+each child ledger via `stepUpdate`, the equality is rfl-class.
+THIRD CONJUNCT — the ROLLOVER AT-EXHAUSTION GUARD (elder-gate6, compass 13(Q3); fork-9 mandate): a
+`rollover` edge is faithful only when the parent layer is EXHAUSTED, `widthMinUpto M (n.layer+1) ≤
+n.cleared` (`J ≥ Mrun(S+1)`). WITHOUT it `StepRel` would bless an EARLY rollover stranding pending
+divisors — a ledger-consistent NON-Aoyagi tree caught only by `ChartBridge`'s semantic falsity, the
+exact infidelity class fork 9 rejects at the ledger (`earlyRollover_not_stepRel`). The comparison is
+pinned to the simulator-validated construction dispatch's rollover trigger (`classify`), not a page
+off-by-one. Vacuous for case11/case12/case2 (they are not `rollover`), so the ledger equality stays
+rfl-class and the eligibility clause is unchanged. -/
 def StepRel {M : Fin (L + 1) → ℕ} (n : StepData M) (e : Edge M) : Prop :=
   ResolutionTree.rootLedger e.child = stepUpdate n e.case e.subst ∧
     ((e.case = StepCase.case11 ∨ e.case = StepCase.case12) →
       ∃ h : e.subst.mergeIdx < n.numDiv,
-        n.divTilde ⟨e.subst.mergeIdx, h⟩ = n.cleared + e.subst.runLen)
+        n.divTilde ⟨e.subst.mergeIdx, h⟩ = n.cleared + e.subst.runLen) ∧
+    (e.case = StepCase.rollover → widthMinUpto M (n.layer + 1) ≤ n.cleared)
 
 /-- **Full monomialisation** (B'): each leaf's ANALYTIC (`t̃=0`) divisor exponent equals `Mval` of
 its rank profile, AND that profile is ADMISSIBLE (`divProfile k ∈ Adm M`; note `∈ Adm` gives

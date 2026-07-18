@@ -351,8 +351,10 @@ inductive ConDecision (M : Fin (L + 1) → ℕ) (s : ConState L) where
   is stated on the core directly); `hlayer` — the node's layer equals `s`'s (the `RootLedger` core
   drops `layer`, so `base` needs this separately); `hstep` — each child is the
   `stepUpdate`-transitioned state (ledger core `= stepUpdate node case subst`) AND, for a
-  case-1(1)/1(2) edge, the merge target is eligible. `hstep` is exactly the per-edge `StepRel`
-  content, phrased on the child STATE (bridged to the child SUBTREE by `rootLedger_buildTree`). -/
+  case-1(1)/1(2) edge, the merge target is eligible, AND, for a `rollover` edge, the parent layer is
+  at-exhaustion (`widthMinUpto M (node.layer+1) ≤ node.cleared`, the guard StepRel now carries).
+  `hstep` is exactly the per-edge `StepRel` content, phrased on the child STATE (bridged to the child
+  SUBTREE by `rootLedger_buildTree`). -/
   | step (node : StepData M) (children : List (StepChild M s))
       (hnode : (⟨node.numDiv, node.divExp, node.divProfile, node.cleared⟩ :
           ResolutionTree.RootLedger L) = s.toRootLedger)
@@ -361,7 +363,8 @@ inductive ConDecision (M : Fin (L + 1) → ℕ) (s : ConState L) where
         c.child.toRootLedger = stepUpdate node c.ecase c.esubst ∧
           ((c.ecase = StepCase.case11 ∨ c.ecase = StepCase.case12) →
             ∃ h : c.esubst.mergeIdx < node.numDiv,
-              node.divTilde ⟨c.esubst.mergeIdx, h⟩ = node.cleared + c.esubst.runLen)) :
+              node.divTilde ⟨c.esubst.mergeIdx, h⟩ = node.cleared + c.esubst.runLen) ∧
+          (c.ecase = StepCase.rollover → widthMinUpto M (node.layer + 1) ≤ node.cleared)) :
       ConDecision M s
 
 /-- **The tree-valued construction recursion** (T2): `WellFounded.fix (conRel_wf M)` folds the
@@ -466,12 +469,13 @@ theorem stepRel_all_of_buildTree (M : Fin (L + 1) → ℕ)
         obtain ⟨e, he, rfl⟩ := hp1
         rw [List.mem_map] at he
         obtain ⟨c, hc, rfl⟩ := he
-        obtain ⟨hled, helig⟩ := hstep c hc
-        refine ⟨?_, ?_⟩
+        obtain ⟨hled, helig, hguard⟩ := hstep c hc
+        refine ⟨?_, ?_, ?_⟩
         · change ResolutionTree.rootLedger (buildTree M oracle c.child)
               = stepUpdate node c.ecase c.esubst
           rw [rootLedger_buildTree]; exact hled
         · exact helig
+        · exact hguard
       · -- p is a deeper step-edge — recurse via the IH on the child state
         rw [edgesStepEdges_eq, List.mem_flatMap] at hp2
         obtain ⟨e, he, hpe⟩ := hp2
@@ -613,12 +617,6 @@ the constant `cleared`; a rollover shrinks a constant suffix to a constant suffi
 def FlatTail {L : ℕ} (s : ConState L) : Prop :=
   ∀ (k : Fin s.numDiv) (i i' : Fin L), s.layer ≤ (i : ℕ) → s.layer ≤ (i' : ℕ) →
     s.divProfile k i = s.divProfile k i'
-
-/-- `min(M i : i ≤ n)` — the running-min width through paper layer `n+1` (`= Mrun(n+1)`; it is
-`Mrun(S)` at `n = layer = S−1`). Nonempty (index `0` qualifies), so a `Finset.inf'`. -/
-def widthMinUpto (M : Fin (L + 1) → ℕ) (n : ℕ) : ℕ :=
-  (Finset.univ.filter (fun i : Fin (L + 1) => (i : ℕ) ≤ n)).inf'
-    ⟨0, by simp⟩ M
 
 /-- `runMinWidth M p = widthMinUpto M (p+1)` — both are `min(M 0 … M (p+1))` (`Iic p.succ` and the
 `≤ p+1` filter are the same index set). Bridges the case-2 head (`runMinWidth`) to the live guard
