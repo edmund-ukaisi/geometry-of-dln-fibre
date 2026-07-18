@@ -1443,3 +1443,22 @@ independent clauses ✓. The ENTIRE remaining engine content is now: the archite
 body → then the chart-data-fed rung-3 assembly (LeafPullback/LeafJacobian/a.e.-InjOn + the
 ChartBridge composition over the real atlas). One seat's one unit is the critical path;
 everything else waits warm, proven, or pre-staged.
+
+## 2026-07-18 THE ASSEMBLY LANDS + THE HONEST RECALIBRATION (tick 105)
+The recursion assembly is DELIVERED and merged (3 clean-three pushes, verified here): buildTree
+via WF.fix over the ConDecision interface; the ledger identity; base + StepRel-all discharged
+GIVEN the oracle's guarantees; weak-decrease preservation. THREE load-bearing findings, one
+major: (1) block-bound is NOT per-node-preservable either (witness (2,3,3,1)) — the per-node
+invariant is now WEAK-DECREASE ONLY; block-bound joins last-comp-0 as a leaf property (the
+FOURTH witnessed weakening in this family — invariants keep migrating node→leaf); (2) hlayer as
+a separate oracle guarantee; (3) append-case weak-dec needs oracle-supplied head-domination.
+RECALIBRATION SURFACED (the knowing-decision class): monomialization_terminates = assembly
+[DONE] + T3 [pre-staged] + THE CONCRETE ORACLE — totality (an eligible-minimal decision at every
+reachable state) + termination-into-admissible-t̃=0-leaves, coupled to a STRENGTHENED
+StateInvariant + the unattempted CompChainInv preservation. The deep Aoyagi termination theorem
+— the mathematical core, correctly NOT plunged into. COUNTER-ASSET weighed: the pnp SIMULATORS
+are the oracle in Python, validated at 4 instances — the unit TRANSCRIBES a tested procedure;
+the work is totality/termination/leaf-property PROOFS. elder-gate5 convened on the decomposition
+(invariant-first — it's been weakened twice by witnesses), the seat question, the T3 pre-stage
+question, and the open-problem-vs-transcription split. Wiring held. Task #13 closed (the
+assembly WAS T2); the oracle is the new named unit.
