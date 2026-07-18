@@ -526,3 +526,18 @@ Put to the elder for ratification (parallel; overrule point = before the dischar
 (2nd instance): an obligation false-as-stated for want of a hypothesis the true construction
 supplies freely (1st: resRank fold) — abstract carriers hide honest content; the counterexample
 hunts must probe WIDTH/measure data, not just exponents. Map region-glue note updated.
+
+## 2026-07-18 ELDER RATIFIES BOTH (tick 43)
+elder-gate2, with verify-before-building (confirmed both area-formula lemmas present + exercised
+at the v4.29 pin, and read LeafJacobian directly to confirm the transport's hypotheses genuinely
+unmet): (1) ChartBridge strengthening RATIFIED (weakest sufficient; MeasurableSet doubles as the
+area formula's prerequisite — the fixes reinforce); the elder also WITHDREW its own tide-gate
+counsel item (nonempty-interior NOT needed — keeping its ledger honest). (2) Fork-8 mechanism
+revision RATIFIED — area formula per-leaf (strictly weaker hypotheses, more banked-reuse, closer
+source-match, retires the r2 laundering risk outright); transport family stays banked but UNUSED
+on the leaf path — ONE LIVE SPINE (P6). Compass amendments applied verbatim (fork-8 revision
+record; region-glue strengthening record; standing-counsel OBLIGATION-STATEMENT DISCIPLINE with
+the named pattern + prophylactic). NEW GATE: the deliberate ABSTRACT-FIELD PASS over everything
+region_glue transitively consumes ("what does the real chart supply that this field does not
+force?") runs BEFORE the discharge lands — elder re-convenes for it; its bet for a third gap:
+the image-cover clause or residualCore's squeeze bounds under a real chart.

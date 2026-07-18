@@ -76,7 +76,18 @@ over banked substrate.
   residuals (non-blocking, close-during-tide): srcBox.Nonempty is weaker than nonempty-interior
   (strengthen when the tide builds the attaining leaf); a.e.-injectivity off a null set replaces full
   InjOn (blow-up charts aren't injective on the exceptional fibre); divCoord/resCoord injective +
-  disjoint. IsFullMonomialization unaffected. OWNERSHIP (one owner): the
+  disjoint. IsFullMonomialization unaffected.
+  CHARTBRIDGE STRENGTHENING (2026-07-18, elder-ratified; statement-soundness fix, counterexampled).
+  region_glue is UNPROVABLE from ChartBridge as stated — an UNBOUNDED srcBox sector chart
+  (F=y₁²+y₂², a≥3: β(u,v)=(u,u^(a−1)v) on |v|≤|u|^(−(a−2))) satisfies every leaf clause while the
+  radial integral diverges on the advertised c'<a/2 range; the missing source width is exactly the
+  lost power. FIX (weakest sufficient, both analyses): per-leaf MeasurableSet srcBox ∧ bounded in a
+  flat cube (∃R>0, srcBox ⊆ flatCube M R). Satisfiable — real Aoyagi charts are bounded boxes;
+  discharged at rung 4. NONEMPTY-INTERIOR is NOT needed; the r2 srcBox.Nonempty residual stays
+  non-blocking. MeasurableSet is also the direct prerequisite of the area-formula read (fork 8
+  revision) — the two fixes reinforce. Coverage lane unaffected (it owns the image cover and supplies
+  bounded sources; if the natural covering source is unbounded, take a bounded refinement covering a
+  smaller box + globalize by scaling — assembly-arch-answer §4). OWNERSHIP (one owner): the
   CoV identities (LeafPullback/LeafJacobian — algebraic, Layer-B-legal: a derivative is not an
   integral) are the CONSTRUCTION's; coverage-design owns only image-cover + InjOn; region_glue
   owns ALL integration. g-leaf-chain-separation witnesses DIVISOR separation (re-scoped).
@@ -106,6 +117,20 @@ over banked substrate.
    GUARDS: circularity (the transport gives INVARIANCE only — no path may consume rlct=c* /
    cited_aoyagi_dln); no-laundering (transport hypotheses DISCHARGED from the construction, never
    relocated to fresh holes); edge data = the monomial ledger, never opaque derivative fields.
+   MECHANISM REVISION (2026-07-18, elder-ratified; glue seat + decorrelated Codex,
+   threads/06-region-glue). Route (b)'s WHY (banked-reuse + weakest-hypothesis + source-match + one
+   new lemma) STANDS; the banked lemma reused for the PER-LEAF read changes.
+   rlctAtOn_boundedUnit_localHomeomorph is INAPPLICABLE to the repaired LeafJacobian (it wants
+   Dψsymm, openness of β''srcBox, and a fixed basepoint — none supplied). The per-leaf read is now
+   the Mathlib area formula lintegral_image_eq_lintegral_abs_det_fderiv_mul on srcBox∖N̄ (chain rule
+   Dφ = Dψ∘Dβ; needs ONLY the UPPER det bound |det Dφ| ≤ hi·∏|u|^(divExp−1); null image discarded via
+   addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero) — both lemmas verified present at
+   v4.29. The scaling bridge (landed, clean-three) is RETAINED for small-box→unit-box globalization.
+   STRICTLY weaker-hypothesis and MORE banked-reuse than the transport, a closer source-match (it IS
+   Aoyagi's monomial-leaf integration); guards unchanged and improved (pure measure theory — no path
+   to rlct=c*/cited_aoyagi_dln; hypotheses discharged from ChartBridge/LeafJacobian at rung 4, not
+   relocated — AVOIDS the r2 finding-2b laundering). The transport family is not retired (banked,
+   sorry-free) — merely UNUSED on the engine's per-leaf path; one live spine (P6).
 9. **StepRel scope: existence-consistency now, faithful stepUpdate as the tide's first rung**
    (r2 VALIDATE + elder ratification, 2026-07-18). WHY: the driver provably never consumes StepRel
    — engine_box_threshold_finite rides on ChartBridge + IsFullMonomialization + the exponent hooks +
@@ -149,3 +174,16 @@ over banked substrate.
 - Watch transcription-level decoupling: a transcriber "simplifying" the carried monomial data is
   fork vocabulary; the sharing maps are the content (typed, per fork 3).
 - Survey banked state before commissioning ANYTHING (3 redundant commissions last run).
+- OBLIGATION-STATEMENT DISCIPLINE (2nd instance, 2026-07-18): TWICE a region_glue obligation was
+  FALSE-AS-STATED for want of a hypothesis the true construction supplies FREELY — (1) the resRank/2
+  Morse threshold (resRank fold), (2) srcBox boundedness/measurability. Common root: an obligation
+  quantifying over an ABSTRACT carrier field (a bare exponent list, a bare Set) inherits a gap the
+  real object (a genuine Morse residual, a bounded chart box) always closes. Both were caught by a
+  DECORRELATED counterexample, NOT the in-file satisfiability witness — the witness used a benign
+  concrete instance that happened to satisfy the missing constraint, MASKING the gap. PROPHYLACTIC
+  (before the region_glue discharge lands): a deliberate pass over EVERY abstract carrier field
+  region_glue transitively consumes — chartMap, srcBox, terminalExponents, residualCore, the image
+  cover, divProfile — asking "what does the real chart supply that this field does not force?".
+  Weakest hypotheses that suffice, never weaker than the analytic consumer needs (bedrock: usable
+  form). An in-file nice-instance witness is necessary, never sufficient; the adversarial hunt is the
+  gate.
