@@ -1242,3 +1242,16 @@ HOLDS for pnp's (2,2,3,2) verdict — it can reshape IsFullMonomialization's sta
 t̃=0-only question), and the conjunct-discharge half builds against that statement; one coherent
 pass against settled statements beats two reworks. Three lanes now: pnp adjudicating (the gate),
 coverage-t07 surveying toward the local covering lemma statement, architect warm.
+
+## 2026-07-18 T3 RUNG-1 STATEMENT BLESSED (tick 91)
+coverage-t07's statement-first report adjudicated and BLESSED (controller fidelity read — the
+content is elementary + the interface fit readable, no elder round needed for one lemma family):
+the per-blow-up pivot cover in bounded MAX-MODULUS form — pivotChart i = (pivot u_i, ratios
+u_i·u_k), domain {|u_i| ≤ R, |ratios| ≤ 1}, iUnion of images = cubeBox d R — IS the bounded
+closure of Aoyagi's projective blow-up charts; the pivot-i image is the max-modulus-at-i sector;
+the Jacobian |u_i|^(d-1) matches LeafJacobian's β with divExp = d (the atom's second consumer).
+Survey confirmed the atom is genuinely NEW (the banked cover toolkit is integral-side; no
+geometric image-cover atom exists) — no rebuild. The bedrock ¬-theorem corner_chart_not_cover
+(a fixed corner chart provably misses (0,ε) — the probe's exact Verdict-1(b) gap as a Lean
+witness) rides along. Battery c-pivot-chart-cover.py exit-0 (cover/bound/gap/jac, d = 1..4).
+GO to grind (~60-90 LoC); rung-2 riders: page-pin the case centers; consume CompChainInv.
