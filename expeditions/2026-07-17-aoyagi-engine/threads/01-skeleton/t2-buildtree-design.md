@@ -39,12 +39,24 @@ structure StepEmit (M : Fin (L+1) → ℕ) (s : ConState L) where
                       ResolutionTree.rootLedger e.child = stepUpdate node e.case e.subst ∧
                       (e.case = case11 ∨ e.case = case12 →                    -- (iii) StepRel eligibility
                         ∃ h, node.divTilde ⟨e.subst.mergeIdx,h⟩ = node.cleared + e.subst.runLen))
-  hlive     : 0 < edges.length ∨ True                 -- (kept loose; non-emptiness only where needed)
+  hlive     : 0 < edges.length ∨ True                 -- (kept loose; PLACEHOLDER — see pivot note)
 
 inductive ConDecision (M) (s : ConState L)
   | terminal (leaf : ChartLeaf M s)                    -- T3 hole (§2): a LeafData + its ChartBridge tuple
   | step     (emit : StepEmit M s)
 ```
+
+**PIVOT-COMPLETENESS (heads-up, rev-cov in flight — do NOT hard-bake edge arity).** The `edges`
+field is a `List` and its arity MUST stay FREE — the worked §4 example emits two edges (one 1(1) +
+one 1(2)) but that is ILLUSTRATIVE, not the emission rule. Coverage's fold needs per-node
+PIVOT-COMPLETENESS (the full residual-`d` chart family; corner-only provably fails, probe Verdict
+1(b)), and at center-dimension `d ≥ 3` a two-edge emission is INCOMPLETE if the resolution is
+per-node full-family. The (a) per-node-full-family vs (b) alternative adjudication is in rev-cov's
+combined review (page-verified + the pnp atlas counts as ground truth; proposed read (a)-generalized:
+the case tag marks pivot TYPE, the per-node count = the center's dimension `d`). CONSEQUENCE: the
+loose `hlive` is a PLACEHOLDER — when the verdict lands, if (a) wins it is REPLACED by a
+`pivotComplete` clause (the emission enumerates the center's `d` pivots), which `buildTree` and T3's
+fold both consume. Until then: keep the `List` arity free, do not commit a fixed per-node edge count.
 
 Notes.
 - `edges`'s child field is `e.child` = `ResolutionTree.leaf (child-built)` / a branch, produced by the
