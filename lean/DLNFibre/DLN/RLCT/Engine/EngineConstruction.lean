@@ -867,6 +867,49 @@ theorem LiveHeadDom_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : C
       simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
       exact hlhd a' b' hab hblt i hi'
 
+/-- **A case-1(2) split preserves `LiveHeadDom`** (minimality-based; the append serves both case-2
+[gap] and case-1(2) [minimality]). The appended divisor inherits `f`'s head (`t₀ = s.divProfile f`)
+at level `cleared`. A live divisor BELOW is dominated by `f`'s head via `hlhd`; one ABOVE is at
+level `≥ ℓ` (run-gap) and dominated by MINIMALITY (`= ℓ`) or `hlhd` (`> ℓ`). Old pairs by IH. -/
+theorem LiveHeadDom_stepAppendAdvance_case12 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (f : Fin s.numDiv) {ℓ : ℕ} (hlhd : LiveHeadDom M s) (hlive : s.layer < L)
+    (hf : s.divTilde f = ℓ) (hgt : s.cleared < ℓ) (hℓ : ℓ < widthMinUpto M s.layer)
+    (hmin : ∀ k : Fin s.numDiv, s.divTilde k = ℓ → ∀ j : Fin L, s.divProfile f j ≤ s.divProfile k j)
+    (hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer →
+      s.divTilde k ≤ s.cleared ∨ ℓ ≤ s.divTilde k) :
+    LiveHeadDom M (s.stepAppendAdvance e (s.divProfile f)) := by
+  have hcl_f : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ s.divProfile f p := fun p _ => by
+    have h1 : s.divTilde f ≤ s.divProfile f p := tildeOf_le p; omega
+  have htl : (s.stepAppendAdvance e (s.divProfile f)).divTilde (Fin.last s.numDiv) = s.cleared := by
+    rw [divTilde_stepAppendAdvance_last]; exact tildeOf_setTail_eq hlive hcl_f
+  intro a b hab hblt i hi
+  have hi' : (i : ℕ) < s.layer := hi
+  induction b using Fin.lastCases with
+  | last =>
+    induction a using Fin.lastCases with
+    | last => simp only [htl, lt_self_iff_false] at hab
+    | cast a' =>
+      rw [htl, divTilde_stepAppendAdvance_castSucc] at hab
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc, Fin.snoc_last, setTail,
+        if_neg (not_le.mpr hi')]
+      exact hlhd a' f (by omega) (by rw [hf]; exact hℓ) i hi'
+  | cast b' =>
+    rw [divTilde_stepAppendAdvance_castSucc] at hblt
+    induction a using Fin.lastCases with
+    | last =>
+      rw [htl, divTilde_stepAppendAdvance_castSucc] at hab
+      simp only [ConState.stepAppendAdvance, Fin.snoc_last, Fin.snoc_castSucc, setTail,
+        if_neg (not_le.mpr hi')]
+      rcases hgap b' hblt with hc | hc
+      · omega
+      · rcases eq_or_lt_of_le hc with heq | hlt
+        · exact hmin b' heq.symm i
+        · exact hlhd f b' (by rw [hf]; exact hlt) hblt i hi'
+    | cast a' =>
+      rw [divTilde_stepAppendAdvance_castSucc, divTilde_stepAppendAdvance_castSucc] at hab
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
+      exact hlhd a' b' hab hblt i hi'
+
 /-- **A case-1(1) merge preserves `LiveHeadDom`** — the HARDEST case, consuming chooser MINIMALITY.
 The tail-written target `tgt` (the eligible min at level `ℓ`) drops to level `cleared`; its head is
 unchanged. For the new pairs: a live divisor BELOW (`t̃ < cleared`) is dominated by `tgt`'s head via
