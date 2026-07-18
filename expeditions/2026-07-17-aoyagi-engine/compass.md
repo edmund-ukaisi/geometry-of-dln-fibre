@@ -201,6 +201,13 @@ over banked substrate.
 - Watch transcription-level decoupling: a transcriber "simplifying" the carried monomial data is
   fork vocabulary; the sharing maps are the content (typed, per fork 3).
 - Survey banked state before commissioning ANYTHING (3 redundant commissions last run).
+- MATHEMATICAL SENSE OVER CASE ANALYSIS (operator, 2026-07-18): case analysis is a VERIFICATION
+  instrument, never the theory-building instrument — chasing per-case fidelity finds local minima.
+  Understand the mechanism at its conceptual altitude first (what the induction IS doing: iterated
+  blow-ups monomializing the ideal, one uniform idea whose "cases" are charts; why the invariant
+  holds; what λ reads off geometrically), THEN transcribe; build the uniform object and DERIVE the
+  cases, not the reverse. When a case-by-case grind feels authoritative but shapeless, stop and
+  re-derive the global structure.
 - OBLIGATION-STATEMENT DISCIPLINE (2nd instance, 2026-07-18): TWICE a region_glue obligation was
   FALSE-AS-STATED for want of a hypothesis the true construction supplies FREELY — (1) the resRank/2
   Morse threshold (resRank fold), (2) srcBox boundedness/measurability. Common root: an obligation
