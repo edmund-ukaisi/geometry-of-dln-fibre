@@ -746,3 +746,14 @@ abs_rpow_lintegral_Icc_lt_top (aggregator name-clash class — deleted, imports 
 resCoords vanish; holds off a finite union of null hyperplanes via Measure.pi_hyperplane) —
 route stays valid via lintegral_mono_ae; docstring corrected. Next: Module A remainder → B
 (area formula) → C (cover+globalize). ChartBridge holding.
+
+## 2026-07-18 RUNG 2A: μ-LEX SPINE ELABORATION-TESTED (tick 58)
+architect-t02's rung 2A merged + force-verified: conRel_wf PROVED clean-three (EngineConstruction
+.lean, unwired). The elder's "cheapest high-information probe" is done — termination is no longer
+design-only: the lex triple μ = (L+1−S, layerCap−J, pendingCount) is well-founded IN LEAN, via a
+BANKED precedent the seat surveyed first (RouteMState.lean banks the exact ℕ ×ₗ ℕ ×ₗ ℕ /
+InvImage.wf idiom — survey-before-build paying off; no new WF machinery invented). ConState
+stores NO derivable data; StateInvariant shape-locked. Rung 2B open: the four State transitions +
+per-case descent (case11 → μ₃ via the eligibility conjunct's runLen≥1; case12/case2 → μ₂;
+rollover → μ₁; paper-pre-verified that every case drops a component under its precondition; the
+KILL guard armed). Glue lane on Module A in parallel.
