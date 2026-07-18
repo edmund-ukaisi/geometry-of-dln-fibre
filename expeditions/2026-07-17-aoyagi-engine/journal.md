@@ -1302,3 +1302,18 @@ exactly the t̃=0 sublist of the ledger) lands in IsFullMonomialization — maki
 read-off a checkable fact. Blast radius = the architect's carrier files only; gate = the glue
 chain rebuilds GREEN UNTOUCHED. The filter diff is discarded. buildTree structural core
 proceeds in parallel.
+
+## 2026-07-18 RUNG-2 STATEMENT + THE PIVOT-COMPLETENESS QUESTION (tick 95)
+coverage-t07 delivered the fold statement-first (leafPathImages recursion — the branch case
+factors through localSub images cleanly; OwnCovers tree induction; the headline producing
+ChartBridge's cover clause via coherence; depth-1 fit = the atom as base case) and SURFACED the
+tide's load-bearing interface question rather than baking an answer: per-node PIVOT-COMPLETENESS
+— is the full residual-d family (a) EMITTED per node by buildTree (case tags = pivot TYPE,
+count = center dimension) or (b) realized across branching via CompChainInv? The design §1's
+two-edges-per-Case-1 is incomplete at center-dim ≥ 3 under (a). ROUTED: rev-cov spawned (one
+round: rung-1 independent fidelity + the rung-2 statement + the (a)/(b) adjudication against
+the PAGE IMAGES with the pnp atlas-enumeration counts as ground truth; my proposed resolution =
+(a)-generalized, on the table not presumed). Coverage does the page-pin pass meanwhile, holds
+the grind; the architect warned off hard-baking two-edge emission (keep the List arity free;
+the completeness clause pending the verdict). Three seats deliberating/building, all statement-
+first, all gated — the machine is running exactly as designed at the hard part's crux.
