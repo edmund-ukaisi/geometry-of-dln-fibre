@@ -1911,3 +1911,14 @@ sole surviving term IS the running-min product. FIXED IN THE EMISSION per protoc
 invariant); the closed form audited the incremental arithmetic and caught what transcription +
 monotone tests could not. The kit + 4-way preservation are clean-three; the identities close on
 the fixed emission. resCols (raw next width) confirmed correct.
+
+## 2026-07-18 SEAT HANDOFF: architect-t02 → t03 AT THE CONTEXT CEILING (tick 140)
+architect-t02 stood down with honors — two consecutive idle-without-work turns = the context
+ceiling on the expedition's longest seat (its ledger: the full T-ladder, the faithful carrier
+end-to-end, four witnessed invariant corrections, the summit, the total oracle, the mutual
+induction, the MvalCoh audit catching our own FIX-A-class bug; zero mid-formalization walls
+across ~40 green commits). The handoff cost: ZERO — worktree clean, everything pushed, the tail
+precisely mapped in its own reports. architect-t03 spawned into the same worktree with the
+complete state + the 6-step tail (resRows fix → MvalCoh identities → terminal leaf → WF-fold →
+o5-∈ → ASSEMBLE monomialization_terminates modulo ChartBridge) + every standing tripwire. The
+banked-everything discipline made the succession a brief, not a loss.
