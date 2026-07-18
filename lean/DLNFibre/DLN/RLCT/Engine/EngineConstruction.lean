@@ -1363,19 +1363,25 @@ constancy: `Tⱼ = tPrev j = J`, so `tPrev j − Tⱼ = 0`. The lone SURVIVOR (`
 `(tPrev layer − J)(M⁽ˡᵃʸᵉʳ⁺¹⁾ − J)` with `tPrev layer = runMinWidth (layer−1) = widthMinUpto layer` —
 the running-min corank, NOT the raw `M⁽ˡᵃʸᵉʳ⁾` (the FIX-A-class distinction the truth-signal caught). -/
 def MvalCoh {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
-  ∀ k : Fin s.numDiv, s.divExp k = (Mval M (s.divProfile k)).toNat
+  ∀ k : Fin s.numDiv, (s.divExp k : ℤ) = Mval M (s.divProfile k)
+
+/-- **`MvalCoh` gives the `toNat` read-off** `IsFullMonomialization` consumes (`divExp = Mval.toNat`,
+from the ℤ-equality + `divExp ≥ 0`). -/
+theorem MvalCoh.toNat {L : ℕ} {M : Fin (L + 1) → ℕ} {s : ConState L} (h : MvalCoh M s)
+    (k : Fin s.numDiv) : s.divExp k = (Mval M (s.divProfile k)).toNat := by
+  rw [← h k, Int.toNat_natCast]
 
 /-- **Rollover preserves `MvalCoh`** — the divisor ledger (`divExp`/`divProfile`) carries over
 unchanged. -/
 theorem MvalCoh_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (h : MvalCoh M s) :
     MvalCoh M s.stepRollover := fun k => h k
 
-/-- **A case-1(2)/case-2 append preserves `MvalCoh`**, GIVEN the new divisor's exponent equals `Mval`
-of its (tail-written) profile (`hnew` — the emission's exponent-arithmetic obligation the oracle
-discharges: for case-2 `e = resRows·resCols = Mval(setTail runMinWidth)`, for case-1(2) `e =
-divExp f + runLen·resCols = Mval(setTail (divProfile f))`). Old divisors carry over. -/
+/-- **A case-1(2)/case-2 append preserves `MvalCoh`** (ℤ-equality form), GIVEN the new divisor's
+exponent equals `Mval` of its (tail-written) profile (`hnew` — the emission's exponent-arithmetic
+obligation the oracle discharges: case-2 `e = resRows·resCols = Mval(setTail runMinWidth)`, case-1(2)
+`e = divExp f + runLen·resCols = Mval(setTail (divProfile f))`). Old divisors carry over. -/
 theorem MvalCoh_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
-    (t₀ : Fin L → ℕ) (hnew : e = (Mval M (setTail s.layer s.cleared t₀)).toNat)
+    (t₀ : Fin L → ℕ) (hnew : (e : ℤ) = Mval M (setTail s.layer s.cleared t₀))
     (h : MvalCoh M s) : MvalCoh M (s.stepAppendAdvance e t₀) := by
   intro k
   refine Fin.lastCases ?_ ?_ k
@@ -1383,14 +1389,13 @@ theorem MvalCoh_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConSt
   · intro k'
     simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]; exact h k'
 
-/-- **The case-1(1) merge child preserves `MvalCoh`** (the bumped-`divExp` child, so NOT reachable
-via the divExp-blind congruence — `MvalCoh` reads `divExp`). GIVEN the merge identity `hbump` (the
-target's bumped exponent equals `Mval` of its tail-written profile — the emission's obligation). The
-child form matches `case1Decision`'s `child11`. -/
+/-- **The case-1(1) merge child preserves `MvalCoh`** (ℤ-equality form; the bumped-`divExp` child,
+NOT reachable via the divExp-blind congruence — `MvalCoh` reads `divExp`). GIVEN the merge identity
+`hbump`. The child form matches `case1Decision`'s `child11`. -/
 theorem MvalCoh_case11child {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (f : Fin s.numDiv)
     (runLen resCols : ℕ)
-    (hbump : s.divExp f + runLen * resCols
-      = (Mval M (setTail s.layer s.cleared (s.divProfile f))).toNat) (h : MvalCoh M s) :
+    (hbump : ((s.divExp f + runLen * resCols : ℕ) : ℤ)
+      = Mval M (setTail s.layer s.cleared (s.divProfile f))) (h : MvalCoh M s) :
     MvalCoh M ⟨s.layer, s.cleared, s.numDiv,
       (fun k => if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k),
       Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
@@ -1398,12 +1403,12 @@ theorem MvalCoh_case11child {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
   intro k
   by_cases hk : k = f
   · have hkv : (k : ℕ) = f.val := by rw [hk]
-    show (if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k)
-        = (Mval M (Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k)).toNat
+    show ((if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k : ℕ) : ℤ)
+        = Mval M (Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k)
     rw [if_pos hkv, hk, Function.update_self]; exact hbump
   · have hkv : (k : ℕ) ≠ f.val := fun hc => hk (Fin.ext hc)
-    show (if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k)
-        = (Mval M (Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k)).toNat
+    show ((if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k : ℕ) : ℤ)
+        = Mval M (Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) k)
     rw [if_neg hkv, Function.update_of_ne hk]; exact h k
 
 /-! ## BoundaryFlat: the pending-divisor boundary flatness (the case-1 `Mval`-delta precondition) -/
@@ -2129,5 +2134,100 @@ theorem OracleInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s 
               (OracleInv_stepCase11 s f hlive htgt hgt hℓ hmin' hgap inv)
           · exact OracleInv_stepAppendAdvance_case12 s _ f hlive htgt hgt hℓ hmin' hgap hcap helig
               inv
+
+/-- **The reachability step for `BoundaryFlat ∧ MvalCoh`** (the coherence half of the cone-goodness):
+every step-child the oracle emits at an `OracleInv + BoundaryFlat + MvalCoh` state again satisfies
+`BoundaryFlat ∧ MvalCoh`. Dispatch mirrors `OracleInv_conOracle_stepChildren`; per branch the
+`BoundaryFlat`/`MvalCoh` maintenance lemmas fire, with the case-1/case-2 exponent identities
+discharged by `Mval_setTail_runMinWidth` (case-2) / `Mval_setTail_delta` (case-1, its boundary
+hypothesis supplied by `BoundaryFlat`). -/
+theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (inv : OracleInv M s) (hbf : BoundaryFlat M s) (hmv : MvalCoh M s) :
+    ∀ c ∈ (conOracle M s).stepChildren, BoundaryFlat M c.child ∧ MvalCoh M c.child := by
+  intro c hc
+  by_cases h1 : L ≤ s.layer
+  · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+  · by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
+      subst hc
+      exact ⟨BoundaryFlat_stepRollover s (not_le.mp h1) inv.ft inv.wd, MvalCoh_stepRollover s hmv⟩
+    · have hlive : s.layer < L := not_le.mp h1
+      have hJ : s.cleared < widthMinUpto M s.layer :=
+        lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (Nat.le_succ _))
+      have hcap : s.cleared < layerCap M :=
+        lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+      have hcolpos : s.cleared < M ⟨s.layer + 1, by omega⟩ :=
+        lt_of_lt_of_le (not_le.mp h2)
+          (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simp⟩))
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · -- case-2
+        have horacle : conOracle M s = case2Decision M s
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hc
+        subst hc
+        have hnew : (((widthMinUpto M s.layer - s.cleared) * (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+            : ℕ) : ℤ) = Mval M (setTail s.layer s.cleared (fun p => runMinWidth M p)) := by
+          rw [Mval_setTail_runMinWidth M hlive, Nat.cast_mul, Nat.cast_sub hJ.le,
+            Nat.cast_sub hcolpos.le]
+        exact ⟨BoundaryFlat_stepAppendAdvance s _ _ hlive hbf,
+          MvalCoh_stepAppendAdvance s _ _ hnew hmv⟩
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle M s = oracleTerminal M s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+          rw [horacle] at hc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+        · -- case-1 (two children)
+          obtain ⟨hmemtar, hminle⟩ := List.min?_eq_some_iff'.mp hmin
+          rw [List.mem_filterMap] at hmemtar
+          obtain ⟨k0, _, hk0⟩ := hmemtar
+          have htar : s.cleared + 1 ≤ target ∧ target + 1 ≤ widthMinUpto M s.layer := by
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have hgt : s.cleared < target := by omega
+          have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+          -- shared: the eligible divisor is boundary-flat and tail-constant
+          have hflat : ∀ i : Fin L, s.layer ≤ (i : ℕ) →
+              s.divProfile f i = tildeOf (s.divProfile f) := fun i hi =>
+            divProfile_tail_eq_tilde s inv.ft inv.wd hlive f hi
+          have hbdry : tPrev M (s.divProfile f) ⟨s.layer, hlive⟩ = (tildeOf (s.divProfile f) : ℤ) :=
+            hbf hlive f (by rw [htgt]; exact hgt)
+          have htil : tildeOf (s.divProfile f) = target := htgt
+          have hbump : ((s.divExp f + (target - s.cleared) * (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              : ℕ) : ℤ) = Mval M (setTail s.layer s.cleared (s.divProfile f)) := by
+            rw [Mval_setTail_delta M (s.divProfile f) hlive hflat hbdry, ← hmv f, htil]
+            push_cast [Nat.cast_sub (le_of_lt hgt), Nat.cast_sub hcolpos.le]
+            ring
+          have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+          rw [horacle] at hc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hc
+          rcases hc with rfl | rfl
+          · exact ⟨BoundaryFlat_stepCase11 s f hlive hbf,
+              MvalCoh_case11child s f (target - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+                hbump hmv⟩
+          · exact ⟨BoundaryFlat_stepAppendAdvance s _ _ hlive hbf,
+              MvalCoh_stepAppendAdvance s _ _ hbump hmv⟩
 
 end DLNFibre.DLN.RLCT.Engine
