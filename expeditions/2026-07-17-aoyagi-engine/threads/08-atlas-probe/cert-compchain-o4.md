@@ -234,13 +234,40 @@ stranded pairs break the paper's full-chain regardless of the pick.**
 `SameLevelChainInv`, STEP1, the residual, and o2's min-existence all follow. o4 preservation consumes
 these four + chooser minimality (case-1) + the case-2 gap. No full-chain anywhere (Part 2).
 
+## Part 7 — CORRECTION: minimality is LOAD-BEARING for the operative o4 (supersedes Parts 5–6 on this point)
+
+Parts 5–6 (and my report) said `SameLevelChainInv` preservation is "minimality-free" and minimality is
+"demoted to canonicity + a non-bottleneck nicety". **That is WRONG — an under-tested claim** (the earlier
+wrong-pick check used only `L≤3` instances, where the eligible sets are too shallow to expose it). Deeper
+testing refutes it:
+
+`[CERT]` **The wrong (max-eligible) pick breaks `SameLevelChainInv` itself at `M=(2,2,3,3,2)` (`L=4`)**:
+at node `(S,J)=(4,0)`, level 0, the two carried divisors `(2,1,0,0)` and `(1,1,1,0)` become **incomparable**
+(`2>1` in coord 1, `0<1` in coord 3) — 10 same-level violations under the max pick, `0` under the min pick
+(battery `livehead-dom.py`). So the chooser's Def-4 **minimality is genuinely consumed** to preserve the
+operative invariant, not merely to canonicalize the choice.
+
+**Corrected consumption (final).** `SameLevelChainInv` / `LiveHeadDom` / the residual **all require chooser
+minimality** for their preservation (case-1). Minimality is NOT "demoted": it is a load-bearing hypothesis
+of o4. The clean statement of cert-2222 (c) is: *the tie-break minimality maintains `LiveHeadDom`, hence
+`SameLevelChainInv`, hence STEP1/the residual; a non-minimal eligible pick breaks them (at `L≥4`, or at
+bottlenecks for the full chain).* The formalization basis is therefore: **maintain `LiveHeadDom` (+ `FlatTail`
++ `WeakDec` + `WidthBound`) USING chooser minimality (case-1) + `WidthBound`/case-2-gap (case-2); this
+yields `SameLevelChainInv`, STEP1, the residual, and o2 min-existence; no full-chain anywhere.**
+
+**Why the earlier reading slipped:** at `L≤3` every eligible set that arises has its Def-4 min = its max (or
+the divergence doesn't reach a live same-level collision), so min-vs-max is invisible; `L=4` `(2,2,3,3,2)`
+is the minimal instance where a wrong eligible pick propagates into a same-level incomparability. (A
+discipline note: a "minimality-free" green on shallow instances is exactly the shallow-instance confound.)
+
 ## Close
 
 - **Firmest:** the paper's p.15 total-comparability is FALSE at interior bottlenecks (two-way, exact
   scope 18/18); `LiveHeadDom` (live/in-chain head-domination) is the correct maintained invariant — it
   proves the residual, implies `SameLevelChainInv`, and its `< M(S)` guard is exactly why it survives the
-  width-drops that break full-chain. Value safe (18/18). All uniform, two-way confirmed.
-- **Most likely to break the build:** committing o4 as full total-comparability — unprovable; or reading
-  the reshape as minimality-free (the `LiveHeadDom` maintenance needs minimality — Part 6).
+  width-drops that break full-chain. Value safe (18/18). **Minimality is load-bearing** (Part 7). All
+  uniform, two-way confirmed.
+- **Most likely to break the build:** committing o4 as full total-comparability (unprovable); or building
+  it "minimality-free" (Part 7: the wrong pick breaks `SameLevelChainInv` at `(2,2,3,3,2)`).
 - **Next (only open item):** the `ConDecision` case-1(2) keep-vs-consume `f` confirmation (a fidelity
   detail; `LiveHeadDom` + the reshape hold in either reading). The residual is no longer open.

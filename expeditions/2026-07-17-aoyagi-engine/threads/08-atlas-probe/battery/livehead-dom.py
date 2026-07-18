@@ -85,9 +85,48 @@ for M in tests:
     print(f"  M={str(M):14s} LiveHeadDom_viol={s.viol}  residual(case-1 f' vs level-J)_fail={s.residual_fail}")
 print("LiveHeadDom holds + residual holds (correct min pick), all 14:", ok)
 
-# minimality is load-bearing: the WRONG (max) pick breaks LiveHeadDom
+# MINIMALITY IS LOAD-BEARING (correction to any 'minimality-free' reading).
+#  (a) the WRONG (max) pick breaks LiveHeadDom already at (2,2,2,2):
 sw = livehead_checker("max")((2, 2, 2, 2), headreset="runmin", check_inv=True).run()
 print(f"  (2,2,2,2) LiveHeadDom_viol under WRONG (max) pick = {sw.viol}  (>0 => minimality maintains LiveHeadDom)")
 ok &= (sw.viol > 0)
 
+
+#  (b) the wrong pick breaks the OPERATIVE invariant SameLevelChainInv itself at the L=4
+#      instance (2,2,3,3,2) -- so minimality is NOT merely canonicity: the eligible set is
+#      shallow enough at L<=3 to hide this (why an earlier L<=3 test wrongly read 'minimality-free').
+def samelevel_under_max(M):
+    def comp(a, b):
+        return all(p <= q for p, q in zip(a, b)) or all(p >= q for p, q in zip(a, b))
+
+    class C(Sim):
+        def __init__(self, *a, **k):
+            super().__init__(*a, **k); self.same = 0; self.wit = None
+        def def4_min(self, cands):                       # WRONG (max) pick
+            for c in cands:
+                if all(all(x >= y for x, y in zip(c[0], d[0])) for d in cands):
+                    return c
+            return cands[-1]
+        def _check(self, S, J, divs):
+            from collections import defaultdict
+            bl = defaultdict(list)
+            for d in divs:
+                bl[min(d[0])].append(d[0])
+            for _, g in bl.items():
+                for i in range(len(g)):
+                    for j in range(i + 1, len(g)):
+                        if not comp(g[i], g[j]):
+                            self.same += 1
+                            if self.wit is None:
+                                self.wit = (S, J, min(g[i]), g[i], g[j])
+    return C(M, headreset="runmin", check_inv=True).run()
+
+sb = samelevel_under_max((2, 2, 3, 3, 2))
+print(f"  (2,2,3,3,2) SameLevelChainInv_viol under WRONG (max) pick = {sb.same}  witness={sb.wit}")
+print("  (2,2,3,3,2) SameLevelChainInv_viol under CORRECT (min) pick = 0  (compchain-scope.py)")
+ok &= (sb.same > 0)   # minimality IS needed for SameLevelChainInv (breaks under wrong pick at L=4)
+
+print("\nMINIMALITY is load-bearing for the operative o4 (SameLevelChainInv/LiveHeadDom preservation);"
+      "\nNOT demoted to canonicity. The min pick preserves both (0 on all 14); the max pick breaks them."
+      if ok else "\nUNEXPECTED")
 sys.exit(0 if ok else 1)

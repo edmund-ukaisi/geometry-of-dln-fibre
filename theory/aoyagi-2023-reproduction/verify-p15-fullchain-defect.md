@@ -64,10 +64,13 @@ Replace the full-chain claim by the **same-level** restriction:
 - **The value.** `min` over `t̃=0` leaf divisors `= minAdm` at every one of the 18 instances (no
   undershoot). The finiteness/learning-coefficient value is untouched; only the paper's over-strong
   bookkeeping claim is false.
-- **The tie-break's role.** The Def-4 minimality protects *full* comparability at non-bottleneck
-  instances (a wrong pick breaks it there); the operative same-level invariant is preserved by any
-  eligible pick. So the minimality is a canonicalization + a non-bottleneck nicety, not what carries
-  the finiteness certificate.
+- **The tie-break's role (load-bearing).** The Def-4 minimality *maintains* the operative invariant:
+  it preserves `LiveHeadDom` (live/in-chain head-domination), hence `SameLevelChainInv`, hence the
+  chooser's own min-existence. A non-minimal (but eligible) pick BREAKS `SameLevelChainInv` — witnessed
+  at `M=(2,2,3,3,2)` (`L=4`), node `(S,J)=(4,0)`: the max pick makes the level-0 divisors `(2,1,0,0)` and
+  `(1,1,1,0)` incomparable, whereas the min pick keeps `0` violations. (At `L≤3` this is invisible — the
+  eligible sets are too shallow — which is why an early shallow test wrongly read it "minimality-free".)
+  So minimality is a genuine hypothesis of the repair's preservation, not mere canonicalization.
 
 ## Ledger status
 
