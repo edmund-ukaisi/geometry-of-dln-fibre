@@ -773,3 +773,16 @@ recon commissioned (her paper end-to-end: every proposition, dependencies, the t
 priced); elder council re-convenes on the recon cert with the corrected charge. What stands:
 the carrier, the catches, the WF spine, the glue lane — all on her mechanism's path; the
 correction is objective + scope, not teardown.
+
+## 2026-07-18 RUNG 2B MERGED + SCAFFOLD DIFFUSION (tick 59 addendum)
+Rung 2B merged + force-verified (conRel_stepCase11/_stepAppendAdvance/_stepRollover all clean-
+three): the termination machinery is COMPLETE in Lean, kill-condition cleared, and the seat
+UNIFIED case-1(2)/case-2 into one transition (they differ only in data μ doesn't read) — the
+uniform-idea direction arriving independently. Its case11 precondition IS the eligibility
+conjunct (the rider work load-bearing for descent). OPERATOR (2nd + 3rd steers this tick):
+mathematical sense over case analysis (compass standing counsel); the full-mechanism framing
+DIFFUSED INTO THE SCAFFOLD with priority — brief.md (central question, closing criterion,
+non-goals: path B may REPLACE the cite; θ enters if HER theorem needs it), heartbeat main quest +
+memo, priorities header (ladder marked INTERIM pending recon + council). Architect owes the
+revised ladder (genDivExp native in State, chooser, divProfile) before rung 3; its 2B report
+crossed the reframe — sync reminder sent.

@@ -18,7 +18,7 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
   EnterWorktree(root) immediately after every worktree creation; placement check catches it.
-- Six obligations HELD at adjudicated until carrier validates (contract 7 — correct, keep it).
+- Obligations STATED (tick 37); case-step-lemmas faithful-flip waits on the full-fidelity items.
 - Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
 
 ## Protocol (per wake)
