@@ -814,3 +814,17 @@ lives in the banked value lane ([Q] for council: does the reframe demand R6 firs
 PROBE recommended: corank-2 atlas-closure enumeration at (2,2,2)/(3,3,4) — the cheapest stress of
 the R2 kill-condition. Roadmap R0-R6 priced in cert §5. COUNCIL OF TWO convening (corrected
 charge) to adopt.
+
+## 2026-07-18 tick 61 addendum: ROADMAP COUNCIL + CARTOGRAPHER PASS #2 CONVENED
+Council of two (elder-r10a/b, independent, corrected charge) deliberating the recon's roadmap:
+verify-the-collapse-finding-yourself + the R6 scope call + rung adoption + the atlas-closure
+probe placement. IN PARALLEL (operator concern, 3rd steer today): cartographer pass #2 convened
+on the inherited-library index — the honest state: overlay pass-#1 + recon §3 + lean/CLAUDE.md
+are PARTIAL and reactive (3 near-rebuilds caught by seat diligence, not the index; heavy-cone
+imports dragging 15-min builds). Deliverables: consumption-scoped banked-families (by remaining
+rung, pinned + import-weight), a DO-NOT-ENTER register (the predecessor's dead/incomplete zones
++ fossil-sorry census), a proposed import-hygiene whitelist rule (narrow interface for the new
+library; the D1L2 re-home as worked example), naming refresh. Sizing rule in the brief:
+index what the rungs consume, register what must be avoided, STOP — a full predecessor catalog
+is itself the local-min trap. Operator priority honored: not-getting-stuck > perfect reuse;
+the independent library first.
