@@ -1019,3 +1019,13 @@ slot-TERMINATED (contention with T1) and the probe never ran; I banked the claim
 the output carefully. The same failure mode I hold seats to (a green echo is not verification).
 Merge stands (the seat's own gate applies); MY verification of the two Module C lemmas is
 PENDING — re-running when a slot frees, will record the actual footprints then.
+
+## 2026-07-18 T1a MERGED: THE DEFS/OBLIGATIONS SPLIT (tick 74)
+T1a merged (4211a714b): EngineDefs.lean carries the carrier-facing definitions (no glue imports,
+no sorried holes); EngineObligations keeps the two holes + projections and MAY import glue;
+consumers re-pointed; the architect green-gated the FULL aggregator build (8884 jobs — the
+name-clash lesson applied) with footprints confirmed from the forced prints inside it. The glue
+lane's wiring path is now physically open (its discharge = one-line exact in EngineObligations
+once its assembly greens). Aggregator import added explicitly (single-writer, me). T1b (the
+faithful carrier proper) proceeding on the pnp-pinned rule with carry-both + decide-checked
+Mval coherence at the trace values. My Module-C re-verification still queued behind contention.

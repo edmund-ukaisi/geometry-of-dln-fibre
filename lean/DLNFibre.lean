@@ -1469,3 +1469,6 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 -- L=1 Aoyagi headline endpoint (unconditional, regular Morse) + the #108 ∀L≥1 case-split pre-stage
 -- (`aoyagi_learning_coefficient_prestage`, carrying the single `hDescent : DecoratedDescent` hypothesis).
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
+-- Engine (aoyagi-engine expedition): carrier-facing definitions, explicit per single-writer
+-- convention (already transitively present via RLCT.AxCheck → EngineObligations).
+import DLNFibre.DLN.RLCT.Engine.EngineDefs
