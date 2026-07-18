@@ -1631,3 +1631,18 @@ check goes to pnp decorrelated BEFORE any heavy Lean ψ — fail-fast queued beh
 items. (Q2) o2's dispatch = the SINGULAR phase only (layers 1..L); the regular peel stays R6.
 The joint push remains gated on pnp's completion (the residual sub-lemma proof above all);
 the architect's non-gated queue: classify + the Q1 interface fields.
+
+## 2026-07-18 CERT COMPLETED (3/4) + A CONSUMPTION CORRECTION; JOINT PUSH PARTIALLY UNGATED (tick 117)
+pnp's completion merged + verified: (1) the (c)-finding SCOPED correctly (the tie-break protects
+FULL comparability at non-bottleneck only — canonicity, not a construction invariant; the
+operative SameLevelChainInv is preserved by ANY eligible pick — a reproducible wrong-pick battery
+demonstrates both); (2) the T3-consumer check PASSES (the b-chain is level-filtered — divisibility
+automatic from the level structure, intra-level order commutative; principalization consumes
+level-filtration + SameLevelChainInv, NOT cross-level comparability — the refutation breaks
+nothing downstream); (3) the p.15 defect LEDGERED (the third). PLUS a genuine CORRECTION to my
+own framing: the operative lemmas do NOT consume minimality — the basis is SameLevelChainInv +
+FlatTail (+WidthBound); minimality is canonicity + a nicety. THE JOINT PUSH PARTIALLY UNGATES
+(invariants + Lemmas A/B + chooser-existence from the cert); the ONE remaining unproven link —
+case-1's bottleneck head-comparability (0/18 empirics) — stays with pnp for a uniform proof (or
+an honest needs-X verdict) landing before the architect reaches that spot. The certified-first
+discipline holds to the last brick.
