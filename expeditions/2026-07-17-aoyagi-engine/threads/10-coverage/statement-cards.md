@@ -47,3 +47,37 @@
 >   Verdict 1(b)'s `(0,ε)` miss), JAC (`|det D(pivotChart i)| = |u i|^{d−1}`, symbolic).
 > - **Status.** sorry-free (fidelity read PENDING — the fork-12 commissioning gate: does the atom
 >   faithfully render "cover by a blow-up process"? routed to elder/reviewer via the controller).
+
+## Rung 2 — the FOLD (`Engine/PivotCoverFold.lean` @ `1423d59df`, sorry-free, axiom-clean)
+
+> **Claim.** The per-blow-up atom folds up the resolution tree to `ChartBridge`'s tree-level
+> image-cover clause. Four statements, all PROVEN `[propext, Classical.choice, Quot.sound]`:
+>
+> - **Lean.** `leafPathImages_branch` (fold recursion), `ownCovers_branch` (tree-induction step),
+>   `chartBridge_imageCover_of_ownCovers` (THE HEADLINE), `node_pivotCover_of_atom` (the atom bridge)
+>   (`lean/DLNFibre/DLN/RLCT/Engine/PivotCoverFold.lean` @ `1423d59df`); supporting mutual inductions
+>   `imgAcc`/`imgEdgesAcc`, `leafPaths_mapFst`/`edgesLeafPaths_mapFst`, `leafPathImages_eq_biUnion_leafPaths`.
+> - **Gloss.** `leafPathImages` (own-rooted leaf-image set, structural recursion) satisfies
+>   `leafPathImages (branch n edges) = ⋃ e ∈ edges, localSub_e '' leafPathImages e.child`; `OwnCovers t V`
+>   = an open nbhd of `V` inside `leafPathImages t`; the headline turns `OwnCovers t {frobSq(prod)=0 ∩
+>   unit box}` + coherence into `∃ U open, {zero-locus} ⊆ U ⊆ ⋃ l ∈ leaves t, l.chartMap '' srcBox`
+>   (verbatim the `ChartBridge` image-cover clause). `node_pivotCover_of_atom` discharges the
+>   tree-induction's per-node `hnode` from the rung-1 atom via the construction's coordinate split
+>   `q : Params M ≃ₜ (Fin d → ℝ) × E` + a full-pivot-family edge contract.
+> - **Proved.** The image-cover fold end-to-end, unconditional, for any `ResolutionTree`. The headline
+>   is exactly the clause `coverage_theorem` (`EngineObligations.lean:65`) owes.
+> - **Assumed.** `node_pivotCover_of_atom` consumes the per-node contract (`0<d`, `0<R`, the split `q`,
+>   `pivotOf`/`hbij` = FULL pivot family, `hloc`/`hdom` = q-conjugated chart + domain, `hV` = V in the
+>   open slab). These are exactly what the architect's `StepEmit` `pivotComplete` amendment supplies.
+> - **Cited.** none (uses rung-1 atom + Mathlib set/homeomorph lemmas; circularity guard clear).
+> - **Deferred.** The full `ChartBridge M (resolutionOf M)` assembly (image-cover [DONE] + the per-leaf
+>   clauses: MeasurableSet/bounded/injective-disjoint coords, a.e.-InjOn, LeafPullback, LeafJacobian +
+>   coherence) over the CONSTRUCTED atlas — awaits `buildTree` (architect) + the `pivotComplete`
+>   amendment. That is rung 3 (the coverage_theorem discharge).
+> - **Route.** `leafPathImages_branch` = list induction (structural def, `image_comp`-free);
+>   `ownCovers_branch` = `iUnion₂_mono` + `image_mono`; headline = `imgAcc`(id) + `leafPaths_mapFst` +
+>   coherence element-chase; `node_pivotCover_of_atom` = element-chase through the atom, `q`-transport.
+>   Codex consult `codex/fold-grind-{prompt,answer}.md` mapped the mutual-induction idiom.
+> - **Status.** sorry-free. STATEMENTS reviewed (cert-cov-rungs12: 3 sound + the atom-bridge contract
+>   framed); `node_pivotCover_of_atom`'s PROOF (the q-conjugate contract) is new since that review — a
+>   fidelity re-check of the contract vs the architect's landed charts is owed at rung 3 integration.
