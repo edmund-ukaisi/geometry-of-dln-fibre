@@ -47,7 +47,9 @@ noncomputable def leaf224 : LeafData M224 where
   cleared := (stepUpdate rootNode224 StepCase.case2 subst224).cleared
   divProfile := fun _ => ![0, 0]
   numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
-  chartMap := id; srcBox := Set.univ; resRank := 0
+  chartMap := id
+  srcBox := ⇑(paramsEquivFlat M224) ⁻¹' cubeBox (flatDim M224) 1
+  resRank := 0
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
 
 /-- The witness tree: the real Case-2 root over its single terminal chart. -/
@@ -111,7 +113,9 @@ theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
     exact ⟨fun e he => by rw [List.mem_singleton] at he; subst he; exact le_refl 4, by simp⟩
   · refine ⟨leaf224, ?_, ?_, ?_⟩
     · rw [leaves_tree224]; exact List.mem_singleton_self _
-    · exact ⟨0, trivial⟩
+    · refine Set.Nonempty.preimage ⟨fun _ => 0, ?_⟩ (paramsEquivFlat M224).surjective
+      simp only [cubeBox, Set.pi_univ_Icc, Set.mem_Icc]
+      refine ⟨fun i => ?_, fun i => ?_⟩ <;> norm_num
     · rw [minAdm_M224]
       exact List.mem_map.mpr ⟨⟨0, by decide⟩, List.mem_finRange _, divExp_leaf224 _⟩
 
