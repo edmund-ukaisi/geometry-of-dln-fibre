@@ -584,6 +584,60 @@ def SameLevelChainInv {L : ℕ} (s : ConState L) : Prop :=
     (∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j) ∨
       (∀ j : Fin L, s.divProfile k' j ≤ s.divProfile k j)
 
+/-- A tail coordinate (`layer ≤ p`) of a `setTail` is the written constant `cleared`. -/
+theorem setTail_of_le {L : ℕ} {layer cleared : ℕ} {T : Fin L → ℕ} {p : Fin L}
+    (h : layer ≤ (p : ℕ)) : setTail layer cleared T p = cleared := by
+  simp only [setTail, if_pos h]
+
+/-- **Flat tail** (o4-cert Part 3, the auxiliary invariant Lemmas A/B consume): every divisor's
+tail — coords at index `≥ layer` (the page tail `t⁽ˢ⁾…⁽ᴸ⁾`, `layer = S−1`) — is CONSTANT. With
+weak-decrease this pins `t̃ = the tail value`. Maintained: a tail-write (`setTail`) sets the tail to
+the constant `cleared`; a rollover shrinks a constant suffix to a constant suffix. -/
+def FlatTail {L : ℕ} (s : ConState L) : Prop :=
+  ∀ (k : Fin s.numDiv) (i i' : Fin L), s.layer ≤ (i : ℕ) → s.layer ≤ (i' : ℕ) →
+    s.divProfile k i = s.divProfile k i'
+
+/-- **WidthBound** (o4-cert Part 3, consumed by the case-2 Lemma B): each divisor's HEAD (coords at
+index `< layer`) is bounded by the running-min width `runMinWidth` (the Case-2 append head IS
+`runMinWidth`; merges/appends keep the head `≤` it). -/
+def WidthBound {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
+  ∀ (k : Fin s.numDiv) (p : Fin L), (p : ℕ) < s.layer → s.divProfile k p ≤ runMinWidth M p
+
+/-- **Layer rollover preserves `FlatTail`** — profiles carry over; a constant suffix (`≥ layer`)
+restricts to a constant suffix (`≥ layer+1`). -/
+theorem FlatTail_stepRollover {L : ℕ} (s : ConState L) (h : FlatTail s) :
+    FlatTail s.stepRollover := by
+  intro k i i' hi hi'
+  have hi2 : s.layer ≤ (i : ℕ) := by change s.layer + 1 ≤ (i : ℕ) at hi; omega
+  have hi2' : s.layer ≤ (i' : ℕ) := by change s.layer + 1 ≤ (i' : ℕ) at hi'; omega
+  exact h k i i' hi2 hi2'
+
+/-- **A case-1(1) merge preserves `FlatTail`** — the tail-written divisor has constant tail
+`cleared`; the others are unchanged. -/
+theorem FlatTail_stepCase11 {L : ℕ} (s : ConState L) (i : Fin s.numDiv) (h : FlatTail s) :
+    FlatTail (s.stepCase11 i) := by
+  intro k a a' ha ha'
+  have ha2 : s.layer ≤ (a : ℕ) := ha
+  have ha2' : s.layer ≤ (a' : ℕ) := ha'
+  simp only [ConState.stepCase11, Function.update_apply]
+  split_ifs with hk
+  · rw [setTail_of_le ha2, setTail_of_le ha2']
+  · exact h k a a' ha2 ha2'
+
+/-- **A case-1(2)/case-2 append preserves `FlatTail`** — the appended `setTail … t₀` has constant
+tail `cleared`; the old divisors are unchanged. -/
+theorem FlatTail_stepAppendAdvance {L : ℕ} (s : ConState L) (e : ℕ) (t₀ : Fin L → ℕ)
+    (h : FlatTail s) : FlatTail (s.stepAppendAdvance e t₀) := by
+  intro k a a' ha ha'
+  have ha2 : s.layer ≤ (a : ℕ) := ha
+  have ha2' : s.layer ≤ (a' : ℕ) := ha'
+  refine Fin.lastCases ?_ ?_ k
+  · simp only [ConState.stepAppendAdvance, Fin.snoc_last]
+    rw [setTail_of_le ha2, setTail_of_le ha2']
+  · intro k'
+    simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
+    exact h k' a a' ha2 ha2'
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
