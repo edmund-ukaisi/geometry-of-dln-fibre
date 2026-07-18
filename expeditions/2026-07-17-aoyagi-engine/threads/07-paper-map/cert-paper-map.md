@@ -160,3 +160,12 @@ Free-standing library = **the §5 mechanism as the shared core**, with `hbox` th
 - **Next computation that would clarify:** a small-`L` explicit chart-atlas closure check at a corank-2 instance (e.g. `M=(2,2,2)` or `(3,3,4)`) — enumerate the blow-up charts the construction emits and verify (a) they cover the zero-locus neighbourhood and (b) `min` of per-chart `½·M_{s,k}` equals `½·minAdm` with NO chart undershooting. This directly stress-tests R2's kill-condition against the banked `g-coverage-sharing-killcond` / `g-coupled-binding-334` witnesses and is the cheapest probe of the one thing most likely to break.
 
 **Recommended bet: Path A.** One critical path (`hbox` = coverage + `region_glue`), cite dies for free via the already-proven `_gen` + banked divergence half; Path B adds only out-of-scope or already-banked content.
+
+---
+**DATED CORRECTION (2026-07-18, controller; source: cert-cov-rungs12 item 3 + page-pin-centers).**
+§2.2's "Two charts: 1(1)/1(2)" reading is imprecise: 1(1)/1(2) are pivot TYPES of the ONE Case-1
+blow-up (u-pivot vs d-entry-pivot), and the full chart family per node has d_center =
+J₁·(M^(S+1)−J)+1 members (Aoyagi shows the corner d-pivot as REPRESENTATIVE; "by a blow-up
+process" covers the rest). A two-edge-per-node emission is unsound for coverage at d_center ≥ 3
+(the corner gap, kernel-witnessed by corner_chart_not_cover). Page-verified twice (page-pin-
+centers.md; rev-cov independent read + Codex).
