@@ -615,6 +615,15 @@ theorem runMinWidth_eq_widthMinUpto {L : ℕ} (M : Fin (L + 1) → ℕ) (p : Fin
       Fin.val_succ]
   simp only [runMinWidth, widthMinUpto, hset]
 
+/-- `widthMinUpto` is antitone in `n` (a longer prefix mins over more widths). -/
+theorem widthMinUpto_mono {L : ℕ} (M : Fin (L + 1) → ℕ) {m n : ℕ} (h : m ≤ n) :
+    widthMinUpto M n ≤ widthMinUpto M m := by
+  simp only [widthMinUpto]
+  apply Finset.inf'_mono
+  intro i hi
+  rw [Finset.mem_filter] at hi ⊢
+  exact ⟨hi.1, le_trans hi.2 h⟩
+
 /-- **WidthBound** (o4-cert Part 3/6, consumed by the case-2 Lemma B): each LIVE divisor's HEAD
 (coords at index `< layer`) is bounded by the running-min width `runMinWidth`.
 
@@ -713,6 +722,23 @@ theorem FlatTail_stepAppendAdvance {L : ℕ} (s : ConState L) (e : ℕ) (t₀ : 
   · intro k'
     simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
     exact h k' a a' ha2 ha2'
+
+/-- **Layer rollover preserves `WidthBound`** (live-restricted). Profiles carry over; the live set
+shrinks (`widthMinUpto` antitone). For a staying-live `k`: existing head coords use the old
+`WidthBound` (still live at the smaller layer); the newly-exposed head coord `p = layer` was a tail
+coord, so `= t̃ k < widthMinUpto (layer+1) = runMinWidth p` (bridge helper). -/
+theorem WidthBound_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (hwb : WidthBound M s) (hft : FlatTail s) (hwd : WeakDecInv s) (hlive : s.layer < L) :
+    WidthBound M s.stepRollover := by
+  intro k hk p hp
+  have hk' : s.divTilde k < widthMinUpto M (s.layer + 1) := hk
+  have hp' : (p : ℕ) < s.layer + 1 := hp
+  change s.divProfile k p ≤ runMinWidth M p
+  rcases Nat.lt_or_ge (p : ℕ) s.layer with hlt | hge
+  · exact hwb k (lt_of_lt_of_le hk' (widthMinUpto_mono M (Nat.le_succ _))) p hlt
+  · have hpeq : (p : ℕ) = s.layer := by omega
+    rw [divProfile_tail_eq_tilde s hft hwd hlive k hge, runMinWidth_eq_widthMinUpto, hpeq]
+    exact le_of_lt hk'
 
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
