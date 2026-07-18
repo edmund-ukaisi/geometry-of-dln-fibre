@@ -623,6 +623,42 @@ def LiveHeadDom {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
   ∀ (a b : Fin s.numDiv), s.divTilde a < s.divTilde b → s.divTilde b < widthMinUpto M s.layer →
     ∀ i : Fin L, (i : ℕ) < s.layer → s.divProfile a i ≤ s.divProfile b i
 
+/-- `c ≤ tildeOf T` from a uniform lower bound `c ≤ T i` (companion to `tildeOf_le`). -/
+theorem le_tildeOf {L : ℕ} {T : Fin L → ℕ} (hL : 0 < L) {c : ℕ} (h : ∀ i, c ≤ T i) :
+    c ≤ tildeOf T := by
+  simp only [tildeOf, dif_pos hL]
+  exact Finset.le_inf' _ _ (fun i _ => h i)
+
+/-- **A tail coordinate equals `t̃`** given `FlatTail` + `WeakDec` on a live layer (`layer < L`):
+the tail is constant (`FlatTail`) and, being weak-decreasing, its value is the minimum `= t̃`. -/
+theorem divProfile_tail_eq_tilde {L : ℕ} (s : ConState L) (hft : FlatTail s) (hwd : WeakDecInv s)
+    (hlive : s.layer < L) (k : Fin s.numDiv) {i : Fin L} (hi : s.layer ≤ (i : ℕ)) :
+    s.divProfile k i = s.divTilde k := by
+  have hL : 0 < L := lt_of_le_of_lt (Nat.zero_le _) hlive
+  have hlast : s.layer ≤ ((⟨L - 1, by omega⟩ : Fin L) : ℕ) := by change s.layer ≤ L - 1; omega
+  have hmin : s.divProfile k ⟨L - 1, by omega⟩ ≤ s.divTilde k :=
+    le_tildeOf hL (fun j => hwd k j ⟨L - 1, by omega⟩ (by change (j : ℕ) ≤ L - 1; omega))
+  have hge : s.divTilde k ≤ s.divProfile k ⟨L - 1, by omega⟩ := tildeOf_le _
+  calc s.divProfile k i = s.divProfile k ⟨L - 1, by omega⟩ := hft k i _ hi hlast
+    _ = s.divTilde k := le_antisymm hmin hge
+
+/-- **STEP1** (o4-cert Part 6, the residual's core): at a case-1 node (`ℓ < Mrun(S)`), every
+level-`ℓ` divisor dominates every level-`≤J` divisor — `y ≤ x` componentwise for `t̃ y ≤ J < ℓ = t̃
+x`. Head by `LiveHeadDom` (`t̃ y < t̃ x < Mrun(S)`); tail by `divProfile_tail_eq_tilde` (`x` tail
+`= ℓ`, `y` tail `= t̃ y ≤ J < ℓ`). This makes `f' = setTail(min)` the level-`J` maximum, preserving
+`SameLevelChainInv` at level `J`. -/
+theorem step1_dominates {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (hlhd : LiveHeadDom M s) (hft : FlatTail s) (hwd : WeakDecInv s) (hlive : s.layer < L)
+    {x y : Fin s.numDiv} {ℓ J : ℕ} (hx : s.divTilde x = ℓ) (hy : s.divTilde y ≤ J) (hJ : J < ℓ)
+    (hℓ : ℓ < widthMinUpto M s.layer) :
+    ∀ i : Fin L, s.divProfile y i ≤ s.divProfile x i := by
+  intro i
+  by_cases hi : (i : ℕ) < s.layer
+  · exact hlhd y x (by omega) (by omega) i hi
+  · rw [divProfile_tail_eq_tilde s hft hwd hlive y (by omega),
+        divProfile_tail_eq_tilde s hft hwd hlive x (by omega)]
+    omega
+
 /-- **Layer rollover preserves `FlatTail`** — profiles carry over; a constant suffix (`≥ layer`)
 restricts to a constant suffix (`≥ layer+1`). -/
 theorem FlatTail_stepRollover {L : ℕ} (s : ConState L) (h : FlatTail s) :
