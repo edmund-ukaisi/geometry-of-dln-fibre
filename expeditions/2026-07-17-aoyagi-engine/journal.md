@@ -1886,3 +1886,16 @@ pattern — T3 fills them; the construction supplies the ledgers + the t̃=0 fil
 decorrelated check needed — the analytic/residual split IS the certified fork-12(b)/B' design
 (the reconciliation above is the check); the dependent-Fin filter is Lean work, proceed solo
 with the gotchas ledger's reindexing patterns.
+
+## 2026-07-18 t̃=0 FILTER LANDED; MvalCoh SURFACED AS THE MISSING KIT (tick 138)
+Merged + verified: t0Indices + its membership/tilde lemmas — the fork-12(b)(ii) analytic filter
+in Lean; chart fields as T3 slots per the ruling. NEXT SURFACED (correctly, pre-build): the
+divExp = Mval(divProfile) coherence that IsFullMonomialization asserts is TRUE-but-untracked —
+no OracleInv component carries it. This is the tick-69 "carry both + prove coherence" design
+arriving at its formalization site: a NEW MvalCoh invariant kit (statement + 4 preservations),
+whose case-1/case-2 lemmas will FORCE conOracle's resRows/resCols to match Mval of the appended
+profiles — the page-pinned exponent formulas become theorem-checked rather than transcribed
+(the (3,3,4) decide-witnesses already cross-check the values). SEQUENCING RATIFIED: MvalCoh is
+SPINE (IsFullMono needs it inline), not R4 (which is genDivExp/support propagation — a different
+coherence). The spine tail's full shape: MvalCoh kit → terminalLeaf assembly → the WF-fold →
+o5-∈ → assemble.
