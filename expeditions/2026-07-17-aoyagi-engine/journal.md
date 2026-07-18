@@ -1562,3 +1562,16 @@ where facts resolve: the architect's o2 page-transcription of the concrete local
 the cover needs the construction's blow-up-surjectivity as an oracle guarantee — its shape
 pinned JOINTLY at that moment (emission-honesty first, cover-need second, pnp page-check if
 ambiguous). The landed single-ψ lemma stands as the (i)-branch, ψ=refl covering the pure case.
+
+## 2026-07-18 o1 + o2-def LANDED (tick 112)
+Merged + verified (zero sorryAx): o1 — the strengthened StateInvariant read OFF the simulator
+(live_width: cleared ≤ M i for i ≤ layer = the rollover guard; numerically confirmed at every
+reachable state of all six instances) + the three settled-field preservation lemmas, with the
+satisfying closure that live-width ELIGIBILITY discharges the append-case head-domination the
+architect had threaded as a hypothesis (its own finding 3, now closed by its own o1). CompChainInv
+correctly HELD unfinalized per the mutual-induction contract. o2-def — type-totality DISSOLVED IN
+CODE (leafOfState fall-back + oracleTerminal total + the compose witness). The architect's sole
+remaining gate is the o4 certificate (the clarifier crossed — already green; re-relayed). The
+joint push on the certificate: o4-formalize → CompChainInv-finalize → o2-dispatch → o3 → o5-∈,
+with the gauge fact determined from the pages inside it. The oracle unit is now: one certificate
++ one joint push + T3's atlas-gated tail.
