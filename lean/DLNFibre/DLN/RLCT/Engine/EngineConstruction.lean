@@ -1526,4 +1526,59 @@ noncomputable def case11Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConSta
       · intro _; exact ⟨f.isLt, helig⟩
       · intro h; nomatch h)
 
+/-- **The case-1 blow-up step decision**: the ONE case-1 node emits BOTH charts of the blow-up on the
+chosen divisor `f` — the case-1(1) MERGE edge and the case-1(2) SPLIT edge (two children of one
+node, the pivot TYPES of the single blow-up, design §1). Combines `case11Decision`/`case12Decision`
+into one node: the merge child via the divExp-blind congruence, the split child definitional; both
+edges eligible from `helig`, the rollover guard vacuous. -/
+noncomputable def case1Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (f : Fin s.numDiv) (runLen resRows resCols : ℕ) (hlayer : s.layer < L) (hrun : 1 ≤ runLen)
+    (helig : s.divTilde f = s.cleared + runLen) (hcap : s.cleared < layerCap M) : ConDecision M s :=
+  let bumpedExp : Fin s.numDiv → ℕ :=
+    fun k => if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k
+  let child11 : ConState L :=
+    ⟨s.layer, s.cleared, s.numDiv, bumpedExp,
+      Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+      s.numGen, s.genDivExp⟩
+  have hdesc11 : conRel M child11 s :=
+    conRel_of_exp_change M (s.stepCase11 f) s bumpedExp s.numGen s.genDivExp
+      (conRel_stepCase11 M s f hlayer (by rw [helig]; omega))
+  .step (s.toStepData M resRows resCols)
+    [⟨StepCase.case11, ⟨id, runLen, f.val, 0, Fin.elim0⟩, child11, hdesc11⟩,
+     ⟨StepCase.case12, ⟨id, runLen, f.val, 0, Fin.elim0⟩,
+      s.stepAppendAdvance (s.divExp f + runLen * resCols) (s.divProfile f),
+      conRel_stepAppendAdvance M s (s.divExp f + runLen * resCols) (s.divProfile f) hcap⟩]
+    rfl rfl
+    (by
+      intro c hc
+      simp only [List.mem_cons, List.not_mem_nil, or_false] at hc
+      rcases hc with rfl | rfl
+      · -- the case-1(1) merge edge
+        refine ⟨?_, ?_, ?_⟩
+        · have hprof : Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f))
+              = fun k : Fin s.numDiv => if (k : ℕ) = f.val then
+                  setTail s.layer s.cleared (s.divProfile k) else s.divProfile k := by
+            funext k
+            by_cases hk : k = f
+            · subst hk; simp [Function.update_self]
+            · rw [Function.update_of_ne hk, if_neg (fun h => hk (Fin.ext h))]
+          show (⟨s.numDiv, bumpedExp,
+              Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+              s.cleared⟩ : ResolutionTree.RootLedger L)
+              = stepUpdate (s.toStepData M resRows resCols) StepCase.case11 ⟨id, runLen, f.val, 0,
+                Fin.elim0⟩
+          rw [hprof]; rfl
+        · intro _; exact ⟨f.isLt, helig⟩
+        · intro h; nomatch h
+      · -- the case-1(2) split edge
+        refine ⟨?_, ?_, ?_⟩
+        · show (s.stepAppendAdvance (s.divExp f + runLen * resCols) (s.divProfile f)).toRootLedger
+              = stepUpdate (s.toStepData M resRows resCols) StepCase.case12 ⟨id, runLen, f.val, 0,
+                Fin.elim0⟩
+          simp only [stepUpdate, ConState.toStepData, ConState.toRootLedger,
+            ConState.stepAppendAdvance, dif_pos f.isLt]
+          rfl
+        · intro _; exact ⟨f.isLt, helig⟩
+        · intro h; nomatch h)
+
 end DLNFibre.DLN.RLCT.Engine
