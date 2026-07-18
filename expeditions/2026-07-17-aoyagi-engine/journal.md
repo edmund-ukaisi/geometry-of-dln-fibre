@@ -599,3 +599,14 @@ Compass fork-9 sub-scoping appended. SEPARATELY: architect swept its inbox (all 
 strengthening MERGED (f8a5933d9: ChartBridge measurable+bounded clause; the 224 witness srcBox
 was Set.univ — A LATENT LIE under the new clause, exactly the flagged truth-signal — now a
 concrete cubeBox preimage with Nonempty reproved). Glue lane unblock ping sent.
+
+## 2026-07-18 RECORD CORRECTION + docstrings merged (tick 47)
+Correction to tick 44/46: the ChartBridge strengthening was NOT a missed directive — it landed
+(f8a5933d9) and CROSSED my chase message; my read of the merged root (rung-1-only at that moment)
+saw its absence. The missed-inbox pattern stands at ONE confirmed instance (the Q5 ruling, twice
+relayed), not two. The architect's process improvement stands anyway (full-inbox sweep + cite the
+enabling SHA when a directive spans commits). Docstring fix merged (bab70d169): header +
+LeafJacobian no longer claim the transport consumes ψ; area formula + upper det bound stated;
+statement unchanged (extra inverse data carried, flagged not-load-bearing). Architect has NOT yet
+processed the BLOCKING case-2 fix message (crossed again) — it's in its inbox; rung 2 stays
+blocked on the fix + rev-carrier.
