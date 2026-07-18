@@ -1,4 +1,4 @@
-import DLNFibre.DLN.RLCT.Engine.EngineObligations
+import DLNFibre.DLN.RLCT.Engine.EngineDefs
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.CanonicalWitness224` — the `(2,2,4)` model (faithful `stepUpdate`)
