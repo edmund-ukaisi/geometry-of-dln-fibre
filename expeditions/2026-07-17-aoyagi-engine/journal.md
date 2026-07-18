@@ -1041,3 +1041,17 @@ the standing tripwire: if context/budget threatens MID-edit, stop BEFORE touchin
 successor path (any fresh formaliser from the spec) is clean precisely because nothing is
 half-edited. Session ledger to date: rider finalization, full rung 2, L=3 de-risk, T1a split,
 T1b spec — all green + pushed.
+
+## 2026-07-18 GLUE MANDATE COMPLETE + CONTROLLER-VERIFIED (tick 76)
+region_glue_of_chartBridge is GREEN, SORRY-FREE, and CLEAN-THREE by MY OWN forced probe on the
+merged root (8561-job closure; leaf_chart_image_lintegral_lt_top likewise; this also closes the
+tick-73 pending verification transitively). The non-laundering evidence is the strong form: the
+module imports EngineObligations yet carries NO sorryAx — genuine assembly from ChartBridge-as-
+hypothesis. ChartBridge HELD through the entire tide: every field forced-enough exactly as the
+elder's gate certified; zero under-forcing; one faithful subtlety absorbed (divExp ≥ 1 DERIVED).
+The analytic hole's remaining path: rev-glue's scoped fidelity verdict (spawned — signature-fit
+of the one-line discharge elaborated in scratch, hypothesis-tuple fidelity, non-laundering,
+checklist conformance) → then the discharge lands in EngineObligations (architect's file, post-
+T1b) sequenced by me. Statement cards → thread docs. Glue-t06 stands down warm after the cards —
+four modules, zero tripwire violations, one interface-improving catch. The engine's TWO holes
+are now: monomialization_terminates (T-ladder mid-flight) + region_glue (one review + one line).
