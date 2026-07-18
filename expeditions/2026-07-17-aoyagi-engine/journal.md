@@ -610,3 +610,13 @@ LeafJacobian no longer claim the transport consumes ψ; area formula + upper det
 statement unchanged (extra inverse data carried, flagged not-load-bearing). Architect has NOT yet
 processed the BLOCKING case-2 fix message (crossed again) — it's in its inbox; rung 2 stays
 blocked on the fix + rev-carrier.
+
+## 2026-07-18 GLUE SELF-CATCH: brick 2 was a DUPLICATE (tick 48)
+glue-t05 caught its own brick 2: S1ScalingBridgeDLN duplicated decls ALREADY BANKED in
+D1L2ExplicitCoreProducer (dlnLoss_zero_smul / flatNodeLoss_smul / prod_smul_pow / measurability /
+the symm-linear read — same namespace, would clash in the aggregator; the survey-banked-state +
+name-clash lessons applied by the seat itself). Module deleted; RegionGlueGlobalize consumes the
+banked family + keeps the ONE genuinely-new piece (lintegral_flatNodeLoss_smul_bridge). CORRECTION
+to tick 41: brick 2's homogeneity results were re-derivations, not new banked content — the
+seat's redundant-commission was self-caught one brick later. Tide note merged (F1/F2 record).
+Architect's blocking fix + reviewer's spot-check still pending.
