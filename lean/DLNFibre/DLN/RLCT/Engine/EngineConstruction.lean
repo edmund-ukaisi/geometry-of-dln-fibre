@@ -73,24 +73,29 @@ component. -/
 def ConState.pendingCount {L : ℕ} (s : ConState L) : ℕ :=
   (Finset.univ.filter (fun k : Fin s.numDiv => s.cleared < s.divTilde k)).card
 
-/-- **The state invariant** (rung 2 → o1 strengthening). The layer has not overshot the chain
-(`S ≤ L`), the cleared count has not overshot the coarse ceiling (`J ≤ layerCap`), and — the o1
-`[add]`, **read off the simulator's `J ≥ MSp1` rollover guard** — the LIVE-LAYER width bound: the
-cleared count never exceeds the running-min width through the current layer,
-`J ≤ min(M⁽¹⁾…M⁽ˢ⁺¹⁾)`, stated in the universal form `∀ i ≤ S, J ≤ M i`. The simulator advances the
-layer exactly when `J ≥ MSp1 = min(Mrun(S), M⁽ˢ⁺¹⁾) = min(M⁽¹⁾…M⁽ˢ⁺¹⁾)`, so every reachable state
-satisfies this (numerically confirmed at all reachable states of `(2,2,2)`, `(3,3,4)`, `(2,2,2,2)`,
-`(2,2,3,2)`, and the higher-`L` clarifier instances `(2,2,3,3,2)`, `(3,2,4,2)`). `live_width`
-discharges the case-2 append's weak-decrease head-domination (`cleared ≤ runMinWidth`) and feeds the
-leaf block-bound. The COMPARABILITY (`CompChainInv`) component is held separately — its statement is
-NOT finalized here (the o1↔o4↔o2 mutual-induction contract: it lands with the o4 certificate). -/
+/-- **The state invariant** (rung 2 → o1 strengthening).
+
+**Indexing (pinned):** Lean `layer` is the 0-INDEXED paper layer, `layer = S − 1` (root `layer = 0`
+is paper `S = 1`; forced by the T-rule `setTail` `layer ≤ p` giving the page's tail `t⁽ˢ⁾…⁽ᴸ⁾`, and
+confirmed by the `(1,1)→(1,0)` `M=8` merge occurring at paper `S=2` = Lean `layer=1`).
+
+The layer has not overshot the chain (`layer ≤ L`), the cleared count has not overshot the coarse
+ceiling (`J ≤ layerCap`), and — the o1 `[add]`, **read off the simulator's rollover guard** — the
+LIVE-LAYER width bound `live_width`: the cleared count never exceeds the running-min width THROUGH
+the current layer, `J ≤ min(M i : i ≤ layer) = min(M⁽¹⁾…M⁽ˢ⁾) = Mrun(S)`. (The simulator advances
+when `J ≥ MSp1 = min(Mrun(S), M⁽ˢ⁺¹⁾) ≤ Mrun(S)`, so `J < MSp1 ≤ Mrun(S)` gives this a fortiori;
+numerically confirmed at all reachable states of `(2,2,2)`, `(3,3,4)`, `(2,2,2,2)`, `(2,2,3,2)`, and
+the higher-`L` clarifier instances `(2,2,3,3,2)`, `(3,2,4,2)`.) `live_width` discharges the case-2
+append's weak-decrease head-domination (head index `≤ layer−1`, so `cleared ≤ runMinWidth`) and
+feeds the leaf block-bound. The COMPARABILITY (`CompChainInv`) component is held separately — its
+statement is NOT finalized here (the o1↔o4↔o2 mutual-induction contract: lands with the o4 cert). -/
 structure StateInvariant (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop where
   /-- The layer has not overshot the chain. -/
   layer_le : s.layer ≤ L
   /-- The cleared count has not overshot the coarse within-layer ceiling. -/
   cleared_le : s.cleared ≤ layerCap M
-  /-- **The live-layer width bound** (o1, simulator read-off): `J ≤ min(M⁽¹⁾…M⁽ˢ⁺¹⁾)`, universal
-  form. Every width index at or below the current layer dominates the cleared count. -/
+  /-- **The live-layer width bound** (o1, simulator read-off): `J ≤ min(M i : i ≤ layer)` (the
+  running-min width through the current layer, `= Mrun(S)` with `layer = S−1`), universal form. -/
   live_width : ∀ i : Fin (L + 1), (i : ℕ) ≤ s.layer → s.cleared ≤ M i
 
 /-! ## The lex-triple measure + well-founded relation (the pinned idiom) -/
