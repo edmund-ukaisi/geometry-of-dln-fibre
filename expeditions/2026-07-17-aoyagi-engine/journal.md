@@ -452,3 +452,21 @@ obligations flipped adjudicated → stated (case-step-lemmas with the scope note
 the r2 residuals note); theorem4-localization stays at its DISSOLVE disposition; validate clean
 (warnings 15 → 9). Next: elder + navigator convene (tide gate + pass #2), then the tide
 commission.
+
+## 2026-07-18 ELDER GATE: TIDE OPEN; stepUpdate-first RATIFIED WITH GUARDS (tick 38)
+elder-gate2 (fresh convening): (1) RATIFIED stepUpdate-first with the crux answered sharply — the
+faithful StepRel is NOT finiteness-load-bearing (the recursion's invariant rides the definitional
+ledger updates, not StepRel), yet right-extension not creep: the tide must compute child ledgers
+anyway (typed stepUpdate IS the construction; the faithful StepRel is then rfl-class), it realizes
+fork 7's paid-for WHY, and it makes case_step_invariant name=content. GUARDS: tested at rung 1
+with STOP-AND-SURFACE → permanent-downscope fallback; dummy-divisor ¬-witness kill-condition; must
+never delay the long pole. (2) TIDE GATE OPEN — layer solid; holes named honestly: termination is
+DESIGN-ONLY (Codex: case11 amortization unproven in Lean; the 3rd lex component resolves it in
+design) → the μ-lex WF elaboration test is rung 2, a case decreasing NO component kills it;
+close-during-tide: resRank ≥ minAdm truth-witness theorem (kill: leaf with 0<resRank<minAdm),
+srcBox interior strengthening at the attaining leaf; defer-with-note: finding-4 relabelling.
+(3) Compass amendments APPLIED verbatim (fork 9; region-glue ψ∘β landed shape; 4 staleness fixes
+— theorem4 shape-check confirmed, fork 6 closed, fork 7 pointer, hunt-survived scope). (4) Tide
+counsel: rung order 1-5 with coverage HOLDING ITS OWN LANE (separate commission; rung 4 must not
+quietly absorb it); per-rung review cadence; Layer-B fence verbatim; State/StateInvariant split;
+no derivable data in state. Elder re-convenes at coverage commissioning + any stop-and-surface.

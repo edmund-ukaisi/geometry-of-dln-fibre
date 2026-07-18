@@ -34,7 +34,7 @@ over banked substrate.
    Witness: `battery/g-def3-broken.py`.
 5. **The engine's sole output is hbox** — one Prop (`RouteMBoxReduction.lean:165`, verified
    verbatim). Consumer stack proven (`aoyagi_learning_coefficient_gen`, clean-three).
-6. **DecoratedDescent disposition (open at council #1; closes in the adoption commit).** Two live
+6. **DecoratedDescent disposition (CLOSED: TOMBSTONED at adoption, tick 7 — routeMBoxThresholdFinite_of_decoratedDescent + node decorated-descent-route superseded → engine-route).** Two live
    routes to the identical ∀M Prop is the P6 duplicate-skeleton failure. EITHER the coverage
    theorem constructively witnesses `DecoratedDescent` (the engine then discharges the
    predecessor's conditional route — architect checks type-fit and reports), OR the decorated hole
@@ -57,17 +57,26 @@ over banked substrate.
   class) — **NOT `MinAdmMono`** (opposite direction; a name-similarity formaliser trap, caught at
   covdesign D2). Deepest domination ALREADY BANKED hypothesis-free
   (`deepest_le_of_homogeneous_core`, DeepestMinRlct.lean:157); far points via the exact
-  homogeneity-scaling CoV. ADJUDICATED: DISSOLVE (cert-d2; architect shape-check pending).
+  homogeneity-scaling CoV. ADJUDICATED: DISSOLVE (cert-d2); shape-check CONFIRMED at (2,2,4) (tick 17 — pure homogeneity domination, degree 2L, no chain-IH wanted).
   OPEN LEG: L≥3 coupled non-origin points discharge via the banked domination, NOT a chain-IH.
   Acyclicity verified (domination calls nothing; CoV strictly drops; disjoint owners).
 - **region-glue** owns the ASSEMBLY only: finite covers gluing chart-local reads + the reduction's
   output into hbox. SETTLED EXACT (covdesign addendum): the SEPARATED leaf integrand is correct at
   corank ≥ 2 — the divisibility chain makes each true leaf a single dominant monomial × unit — so
   region_glue never consults `support`; its load-bearing precondition is `IsFullMonomialization`.
-  ELDER AMENDMENT (rev-1 ratification): the leaf form is monomial × (bounded unit OR disjoint
-  Morse core) — the Morse core is genuinely singular, contributes resRank/2 to the min, and
-  `resRank ≥ minAdm` is a THEOREM of the tide (truth-witness obligation, never assumed); the
-  separation conclusion stands; IsFullMonomialization is unaffected. OWNERSHIP (one owner): the
+  ELDER AMENDMENT (rev-1) + r2-LANDED SHAPE: the leaf CoV is FACTORED `chartMap = ψ ∘ β`
+  (EngineObligations LeafJacobian) — β the explicit monomial blow-up (`|det Dβ| = ∏|u|^{divExp−1}`,
+  abs-value — finding 7; HasFDerivAt only, integrated DIRECTLY, no inverse) and ψ a bounded-unit
+  local diffeo with FULL inverse data (feeds rlctAtOn_boundedUnit_localHomeomorph). The transport was
+  never meant to eat the singular factor — that was the r1 laundering break (`|det Dπ|=|u|` has no
+  lower bound at u=0); β carries the singular vanishing, ψ the regular gauge/shear (ψ-inverse
+  constructibility on the exceptional fibre reviewer-VERIFIED). The Morse core is genuinely singular,
+  contributes resRank/2 to the min; `resRank ≥ minAdm` remains a TRUTH-WITNESS THEOREM of the tide,
+  now carried via the terminalExponents resRank fold + the exponent hooks (never assumed). r2
+  residuals (non-blocking, close-during-tide): srcBox.Nonempty is weaker than nonempty-interior
+  (strengthen when the tide builds the attaining leaf); a.e.-injectivity off a null set replaces full
+  InjOn (blow-up charts aren't injective on the exceptional fibre); divCoord/resCoord injective +
+  disjoint. IsFullMonomialization unaffected. OWNERSHIP (one owner): the
   CoV identities (LeafPullback/LeafJacobian — algebraic, Layer-B-legal: a derivative is not an
   integral) are the CONSTRUCTION's; coverage-design owns only image-cover + InjOn; region_glue
   owns ALL integration. g-leaf-chain-separation witnesses DIVISOR separation (re-scoped).
@@ -81,7 +90,8 @@ over banked substrate.
    bChain stays a TYPED FIELD (adjudicated). Spec: Edge{case, localSub, child}; StepRel relational;
    ChartBridge = upstairs-open image cover + InjOn + LeafPullback + LeafJacobian; chartDom removed;
    leaf chartMap = DERIVED fold; tStar attainment via an emitted path; lex termination for the
-   construction recursion.
+   construction recursion. → StepRel scope adjudicated at fork 9 (existence-consistency now;
+   faithful stepUpdate = tide rung 1).
 8. **Q5 route (b): banked-RLCT-transport + ONE scaling-bridge lemma** (both seats, corrected
    merits). WHY: fresh-composer vs banked-reuse — the 0-sorry LOCAL-homeomorph transport
    (rlctAtOn_boundedUnit_localHomeomorph) fits blow-up charts (proper, not globally injective);
@@ -96,6 +106,25 @@ over banked substrate.
    GUARDS: circularity (the transport gives INVARIANCE only — no path may consume rlct=c* /
    cited_aoyagi_dln); no-laundering (transport hypotheses DISCHARGED from the construction, never
    relocated to fresh holes); edge data = the monomial ledger, never opaque derivative fields.
+9. **StepRel scope: existence-consistency now, faithful stepUpdate as the tide's first rung**
+   (r2 VALIDATE + elder ratification, 2026-07-18). WHY: the driver provably never consumes StepRel
+   — engine_box_threshold_finite rides on ChartBridge + IsFullMonomialization + the exponent hooks +
+   banked minAdm; StepRel could be `True` without changing the finiteness certificate (r2 + Codex,
+   verified against the code). So the existential child-read is SOUND for finiteness and INSUFFICIENT
+   for transition-faithfulness (Codex dummy-divisor schema: a divisor may appear/vanish across an edge
+   unrecorded). RULING: docstring downscope stands (StepRel = a per-edge existence-consistency check);
+   the FAITHFUL form `child root ledger = stepUpdate parent e` (per-divisor injection +
+   unchanged-equality + support propagation + the case-specific update) is the construction tide's
+   FIRST rung — NOT a permanent downscope. Right-extension not creep: the tide must compute each
+   child's ledger from its parent to build the tree at all, so typed `stepUpdate` IS the construction;
+   given it, `StepRel := child = stepUpdate parent e` is discharged rfl-class; it realizes fork 7's
+   founding WHY (we PAID for the edge carrier to pin the case-1(1) merge — leaving it weak is an
+   over-built structure) and makes case_step_invariant name=content. The recursion's invariant rides
+   on the definitional ledger updates, NOT StepRel — so faithful-first must never delay or absorb the
+   long pole. GUARDS (Ratification ≠ landing): (i) TESTED at rung 1; if `child = stepUpdate parent`
+   isn't the construction's natural definitional shape or the equality balloons, STOP-AND-SURFACE and
+   take permanent downscope; (ii) kill-condition = the dummy-divisor witness provably rejected (a
+   ¬-theorem, cf. stepRel_rejects_mismatched_case2).
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
@@ -115,7 +144,8 @@ over banked substrate.
   + g-coverage-sharing-killcond.py (mis-tracked sharing invents a spurious low-ratio divisor —
   (2,2,1) and (3,3,4) exact witnesses).
 - The exhaustiveness hunt: run Tier B/C per cert-d4 BEFORE the coverage tide; a monomial-only
-  hunt passes vacuously — never accept one as the gate.
+  hunt passes vacuously — never accept one as the gate. SURVIVED (tick 12, hunt-cert §5 — 5
+  decorrelated legs, 0 undershoots; cite that scope, never blanket 'established').
 - Watch transcription-level decoupling: a transcriber "simplifying" the carried monomial data is
   fork vocabulary; the sharing maps are the content (typed, per fork 3).
 - Survey banked state before commissioning ANYTHING (3 redundant commissions last run).
