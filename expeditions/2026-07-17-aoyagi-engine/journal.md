@@ -1753,3 +1753,15 @@ one finding was a missing live-guard, caught probe-first. Certified-before-forma
 the summit with zero mid-formalization discoveries. REMAINING = the ladder's tail: o3 leaf-Adm,
 o5-∈ realization, the advance constructor (+ its page sub-question), the gloss fix — then the
 cone-goodness assembly closes monomialization_terminates modulo T3's ChartBridge.
+
+## 2026-07-18 o3 PROVED + THE LAST PAGE QUESTION CLOSED (tick 127)
+Merged + verified (zero sorryAx): leaf_mem_Adm — terminal profiles ∈ Adm, composed exactly per
+the corrected fork-12(a) decomposition (block-bound from live-WidthBound through the new
+runMinWidth ≤ admBound bridge; weak-dec from the invariant; last=0 from termination) — the
+elder's third-gap repair now a kernel fact. The node334 gloss fixed. AND the construction's
+FINAL page question closed from pp.19-21: the C'^(S+1) transform lives WITHIN the case step
+(the step's Q clears D and transforms the next C-block in one act); rollover merely RELABELS —
+PURE (a), the advance constructor carries nothing, the tree stays blow-up-only, the coherence
+fold sees no rollover gauge. REMAINING: the FINAL CONCRETE-ORACLE ASSEMBLY as one fresh unit
+(advance + the concrete dispatch/chooser emission with the proved named guarantees + o5-∈
+inside + cone-goodness) → monomialization_terminates modulo ChartBridge. Then only the ψ-track.
