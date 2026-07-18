@@ -1563,6 +1563,40 @@ theorem leaf_mem_Adm_t0 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (hL
       le_tildeOf hL (fun i => hwd k i j (Fin.le_def.mpr (by have := i.isLt; omega)))
     rw [le_antisymm hle (tildeOf_le j), ht0]
 
+/-! ## NumDivFlatPos: a divisor exists only when the parameter space is nontrivial -/
+
+/-- **An append forces `0 < flatDim M`**: a case-1/case-2 append fires only when the rollover guard
+FAILS (`cleared < widthMinUpto (layer+1)`), so `M⁽ˡᵃʸᵉʳ⁾, M⁽ˡᵃʸᵉʳ⁺¹⁾ ≥ 1`, hence the `(layer)`-th term
+`M⁽ˡᵃʸᵉʳ⁾·M⁽ˡᵃʸᵉʳ⁺¹⁾ ≥ 1 ≤ ∑ = flatDim M`. -/
+theorem flatDim_pos_of_append {L : ℕ} {M : Fin (L + 1) → ℕ} {layer cleared : ℕ} (hlive : layer < L)
+    (h2 : cleared < widthMinUpto M (layer + 1)) : 0 < flatDim M := by
+  have hle : ∀ i : Fin (L + 1), (i : ℕ) ≤ layer + 1 → widthMinUpto M (layer + 1) ≤ M i := fun i hi =>
+    Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ i, hi⟩)
+  have hw1 : 1 ≤ widthMinUpto M (layer + 1) := by omega
+  have hml : 1 ≤ M (⟨layer, hlive⟩ : Fin L).castSucc :=
+    le_trans hw1 (hle _ (by simp))
+  have hmr : 1 ≤ M (⟨layer, hlive⟩ : Fin L).succ :=
+    le_trans hw1 (hle _ (by simp))
+  rw [flatDim_eq]
+  exact lt_of_lt_of_le (Nat.mul_pos hml hmr)
+    (Finset.single_le_sum (f := fun s : Fin L => M s.castSucc * M s.succ)
+      (fun i _ => Nat.zero_le _) (Finset.mem_univ (⟨layer, hlive⟩ : Fin L)))
+
+/-- **NumDivFlatPos**: if any divisor exists, the parameter space is nontrivial (`0 < flatDim M`).
+Guards `leafOfState`'s degenerate `flatDim = 0` branch — there, `numDiv = 0`, so the empty analytic
+side carries no `t̃=0` divisor (`IsFullMonomialization` clause 3 is vacuous). -/
+def NumDivFlatPos {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
+  0 < s.numDiv → 0 < flatDim M
+
+theorem NumDivFlatPos_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (h : NumDivFlatPos M s) : NumDivFlatPos M s.stepRollover := fun hn => h hn
+
+theorem NumDivFlatPos_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (f : Fin s.numDiv)
+    (h : NumDivFlatPos M s) : NumDivFlatPos M (s.stepCase11 f) := fun hn => h hn
+
+theorem NumDivFlatPos_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hfd : 0 < flatDim M) : NumDivFlatPos M (s.stepAppendAdvance e t₀) := fun _ => hfd
+
 /-! ## o4→assembly: the joint invariant `OracleInv` + its cone-goodness preservation
 
 The six invariants the oracle carries, bundled: the construction's cone-goodness = `OracleInv` holds
@@ -2225,9 +2259,10 @@ every step-child the oracle emits at an `OracleInv + BoundaryFlat + MvalCoh` sta
 discharged by `Mval_setTail_runMinWidth` (case-2) / `Mval_setTail_delta` (case-1, its boundary
 hypothesis supplied by `BoundaryFlat`). -/
 theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
-    (inv : OracleInv M s) (hbf : BoundaryFlat M s) (hmv : MvalCoh M s) (ht0inv : T0Bound M s) :
+    (inv : OracleInv M s) (hbf : BoundaryFlat M s) (hmv : MvalCoh M s) (ht0inv : T0Bound M s)
+    (hnf : NumDivFlatPos M s) :
     ∀ c ∈ (conOracle M s).stepChildren,
-      BoundaryFlat M c.child ∧ MvalCoh M c.child ∧ T0Bound M c.child := by
+      BoundaryFlat M c.child ∧ MvalCoh M c.child ∧ T0Bound M c.child ∧ NumDivFlatPos M c.child := by
   intro c hc
   by_cases h1 : L ≤ s.layer
   · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
@@ -2240,7 +2275,7 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
       simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
       subst hc
       exact ⟨BoundaryFlat_stepRollover s (not_le.mp h1) inv.ft inv.wd, MvalCoh_stepRollover s hmv,
-        T0Bound_stepRollover s ht0inv⟩
+        T0Bound_stepRollover s ht0inv, NumDivFlatPos_stepRollover s hnf⟩
     · have hlive : s.layer < L := not_le.mp h1
       have hJ : s.cleared < widthMinUpto M s.layer :=
         lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (Nat.le_succ _))
@@ -2270,7 +2305,8 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
         exact ⟨BoundaryFlat_stepAppendAdvance s _ _ hlive hbf,
           MvalCoh_stepAppendAdvance s _ _ hnew hmv,
           T0Bound_stepAppendAdvance s _ _ hlive (fun p _ => le_rfl)
-            (fun p hp => le_of_lt (hwp p hp)) ht0inv⟩
+            (fun p hp => le_of_lt (hwp p hp)) ht0inv,
+          NumDivFlatPos_stepAppendAdvance s _ _ (flatDim_pos_of_append hlive (not_le.mp h2))⟩
       · rcases hf : chooseMin s target with _ | f
         · have horacle : conOracle M s = oracleTerminal M s := by
             unfold conOracle; rw [dif_neg h1, dif_neg h2]
@@ -2319,11 +2355,13 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
           · exact ⟨BoundaryFlat_stepCase11 s f hlive hbf,
               MvalCoh_case11child s f (target - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
                 hbump hmv,
-              T0Bound_stepCase11 s f hlive inv.wb htf hfl ht0inv⟩
+              T0Bound_stepCase11 s f hlive inv.wb htf hfl ht0inv,
+              NumDivFlatPos_stepCase11 s f hnf⟩
           · exact ⟨BoundaryFlat_stepAppendAdvance s _ _ hlive hbf,
               MvalCoh_stepAppendAdvance s _ _ hbump hmv,
               T0Bound_stepAppendAdvance s _ _ hlive (fun p hp => inv.wb f hfl p hp)
                 (fun p _ => by have hdt : s.divTilde f ≤ s.divProfile f p := tildeOf_le p; omega)
-                ht0inv⟩
+                ht0inv,
+              NumDivFlatPos_stepAppendAdvance s _ _ (flatDim_pos_of_append hlive (not_le.mp h2))⟩
 
 end DLNFibre.DLN.RLCT.Engine
