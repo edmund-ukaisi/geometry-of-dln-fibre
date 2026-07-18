@@ -440,3 +440,69 @@ land before `case-step-lemmas` flips to genuinely *faithful*. Neither affects fi
 flip to genuinely faithful: land Q1 (`StepApplicable` guard) + Q4 (`cleared += 1`), ratify the
 case-1(2) exponent, and refresh the `StepRel` docstring / `claims.yaml` note. All cheap; none block the
 finiteness certificate or the region-glue tide.
+
+---
+
+# CONSOLIDATED PASS — fix commit `6d0956655` + ChartBridge strengthening `f8a5933d9` (merged `1c7a1fa1a`)
+
+**Reviewer:** same seat, rev2 (merged the fix + strengthening). Items (a)–(e) from the scope
+extension. Own forced `#print axioms` on the post-fix state (footprint authority for this pass) +
+paper cross-check + one probe.
+
+## VERDICT: scoped-VALIDATE with ONE follow-up change (case-1(2) eligibility)
+
+The rung-1 changes are sound and the two prior fidelity findings are FIXED. One residual of the
+eligibility fix remains: it guards case-1(1) but not case-1(2). Fidelity-class (StepRel is off the
+finiteness critical path — the certificate is sound), cheap, same shape as the (now-closed) case11
+gap. Recommend landing it before `case-step-lemmas` flips to genuinely faithful; it does not block
+rung 2 structurally.
+
+## Items
+
+- **(a) ChartBridge strengthening — PASS.** `ChartBridge`'s per-leaf clause gains `MeasurableSet
+  l.srcBox ∧ ∃ R>0, l.srcBox ⊆ paramsEquivFlat⁻¹' (cubeBox (flatDim M) R)` (bounded-in-flat-cube;
+  `EngineObligations.lean:87-88`) — closes the r1 srcBox residual (measurable + bounded ⇒ the
+  monomial/radial reads run over a compact box). The 224 witness's `leaf224.srcBox` is now
+  `paramsEquivFlat⁻¹' (cubeBox (flatDim M224) 1)` (was `Set.univ`), `Nonempty` reproved via
+  `Set.Nonempty.preimage ⟨0,…⟩ + surjectivity`. The footprint (below) confirms this Nonempty proof
+  keeps the arithmetic bank piece clean-three.
+- **(b) case-2 `cleared += 1` — PASS (Q4 fixed).** `stepUpdate` case2 is `cleared := n.cleared + 1`
+  (`EngineObligations.lean:132`); docstring carries the elder's dropped-divisor justification
+  (successive Case-2 steps, each a distinct pivot of strictly smaller exponent
+  `(M(S)−J−i)(M^{(S+1)}−J−i)`; a `+= resRows` fast-forward drops them). Faithful to p.21.
+- **(c) eligibility conjunct — PASS for case11; ONE CHANGE for case12.**
+  `StepRel := rootLedger e.child = stepUpdate n e.case e.subst ∧ (e.case = case11 → ∃ h : mergeIdx <
+  n.numDiv, n.divTilde ⟨mergeIdx,h⟩ = n.cleared + runLen)` (`:142-146`). The case11 clause faithfully
+  encodes p.15 (`t̃_{s,k} = J + J₁`: in-range + `divTilde(mergeIdx) = cleared + runLen`), closing the
+  no-op-acceptance gap. Witnesses survive: `mergeNode.divTilde = fun _ => 2` (`= cleared 0 + runLen
+  2`), `mergeEdge_stepRel = ⟨rfl, fun _ => ⟨by decide, by decide⟩⟩`; `rootEdge224_stepRel = ⟨rfl, fun
+  h => by simp [Edge.case] at h⟩` (vacuous case11 branch for a case2 edge); `dummyDivisor_/
+  vanishingDivisor_not_stepRel` reject via `h.1` (the ledger conjunct). **CHANGE:** the conjunct
+  guards case11 ONLY, but `stepUpdate` **case12** also reads `divExp(σ.mergeIdx)` (`:124`, dite
+  -defaults to 0) as the split divisor's base exponent (`M_{sk} + J₁·resCols`, p.17). With no case12
+  guard, an out-of-range case12 `mergeIdx` drops the base (new pivot exp `= runLen·resCols`) and
+  `StepRel` ACCEPTS it — **mechanically confirmed** (`oobSplit_stepRel_accepted` proved by
+  `⟨rfl, fun h => simp [Edge.case] at h⟩`; the new pivot exp is `6 = 0+2·3`, not the faithful
+  `11 = 5+2·3`). Since case-1(1)/1(2) are the two charts of the SAME case-1 blow-up on `u_{s,k}`
+  (`t̃ = J+J₁`), case12 should carry the identical eligibility; at minimum the in-range guard (it reads
+  `divExp(mergeIdx)`). This is NOT the "strict superset of StepApplicable" it was reported as —
+  StepApplicable guarded case11 AND case12; the landed conjunct dropped case12. Fix: extend to
+  `(e.case = case11 ∨ e.case = case12) → ∃ h : mergeIdx < n.numDiv, n.divTilde ⟨mergeIdx,h⟩ =
+  n.cleared + runLen` (elder to page-confirm case12 carries the same `t̃` precondition; the in-range
+  half is required regardless).
+- **(d) docstrings — PASS.** `StepRel` docstring now carries the inline scope-qualifier ("FAITHFUL for
+  the exponent/clearing ledger CORE … NOT modelled here: support propagation … and layer-`S`
+  advancement"). `region_glue` docstring de-staled to the area-formula route ("the Mathlib area
+  formula on the `ψ ∘ β` chart (consuming the upper det bound; elder-ratified fork-8 revision) + the
+  scaling-bridge globalization"). The `case-step-lemmas` `claims.yaml` staleness was fixed by the
+  controller.
+- **(e) footprints — PASS (own forced `#print`, post-fix).** `canonicalResolution224_arithmetic` →
+  `[propext, Classical.choice, Quot.sound]` (clean-three, incl. the case-2 fix, the eligibility
+  conjunct, and the cube-preimage `Nonempty` proof); `canonicalResolution224` +
+  `engine_box_threshold_finite` → `+ sorryAx`; `rootEdge224_stepRel`, `mergeEdge_stepRel`,
+  `dummyDivisor_not_stepRel`, `vanishingDivisor_not_stepRel` → clean-three.
+
+**Summary:** case-2 (Q4) and the case11 no-op (Q1) are fixed; the strengthening is sound; footprints
+hold. The one follow-up — extend the eligibility conjunct to case-1(2) — is a cheap fidelity residual
+(same class as the case11 gap it mirrors), off the finiteness path. rung 2 may proceed; the case12
+guard should land before the `case-step-lemmas` faithful-flip.
