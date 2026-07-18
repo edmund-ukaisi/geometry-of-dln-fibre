@@ -1480,6 +1480,89 @@ theorem BoundaryFlat_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : 
       simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]]
     exact hbf h' k' (by omega)
 
+/-! ## T0Bound: `t̃=0` divisors are running-min-bounded (liveness-free terminal admissibility) -/
+
+/-- **T0Bound**: every `t̃=0` divisor's rank-pattern is bounded by the running-min width. Unlike the
+LIVE-restricted `WidthBound`, this holds for a `t̃=0` divisor even at a terminal where
+`widthMinUpto L = 0` strands it (a later zero-width layer) — so it gives `∈ Adm` (via
+`runMinWidth ≤ admBound`) with NO liveness hypothesis. A `t̃=0` divisor arises only at `J=0`: its head
+is `runMinWidth` (case-2) or the parent's live head `≤ runMinWidth` (case-1), its tail `0`. -/
+def T0Bound {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
+  ∀ k : Fin s.numDiv, s.divTilde k = 0 → ∀ p : Fin L, s.divProfile k p ≤ runMinWidth M p
+
+/-- **Rollover preserves `T0Bound`** — profiles, `t̃`, and `runMinWidth` (layer-independent) all carry
+over unchanged. -/
+theorem T0Bound_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (h : T0Bound M s) :
+    T0Bound M s.stepRollover := fun k hk p => h k hk p
+
+/-- **A case-1(1) merge preserves `T0Bound`** — the target `f` becomes `t̃=0` only at `J=0`, where its
+(unchanged) head is `≤ runMinWidth` by `f`'s live `WidthBound`; other divisors are unchanged. -/
+theorem T0Bound_stepCase11 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (f : Fin s.numDiv)
+    (hlive : s.layer < L) (hwb : WidthBound M s)
+    (htf : s.cleared < s.divTilde f) (hfl : s.divTilde f < widthMinUpto M s.layer)
+    (h : T0Bound M s) : T0Bound M (s.stepCase11 f) := by
+  intro k hk p
+  by_cases hkf : k = f
+  · rw [hkf] at hk ⊢
+    have hcl : ∀ q : Fin L, (q : ℕ) < s.layer → s.cleared ≤ s.divProfile f q := fun q _ => by
+      have hdt : s.divTilde f ≤ s.divProfile f q := tildeOf_le q; omega
+    have hdp : (s.stepCase11 f).divProfile f = setTail s.layer s.cleared (s.divProfile f) := by
+      show Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)) f = _
+      rw [Function.update_self]
+    have hk' : (s.stepCase11 f).divTilde f
+        = tildeOf (setTail s.layer s.cleared (s.divProfile f)) := congrArg tildeOf hdp
+    rw [hk', tildeOf_setTail_eq hlive hcl] at hk
+    rw [hdp]; unfold setTail
+    split_ifs with hp
+    · rw [hk]; exact Nat.zero_le _
+    · exact hwb f hfl p (by omega)
+  · have hdp : (s.stepCase11 f).divProfile k = s.divProfile k := Function.update_of_ne hkf _ _
+    have hdt : (s.stepCase11 f).divTilde k = s.divTilde k := congrArg tildeOf hdp
+    rw [hdp]; rw [hdt] at hk
+    exact h k hk p
+
+/-- **A case-1(2)/case-2 append preserves `T0Bound`** — the new pivot is `t̃=0` only at `J=0`, where
+its head `= t₀ ≤ runMinWidth` (`ht0`) and tail `= 0`; old divisors carry over. `hcl` (head `≥ J`)
+pins the new pivot's `t̃` to `J`, so `t̃=0 ⟹ J=0`. -/
+theorem T0Bound_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (e : ℕ)
+    (t₀ : Fin L → ℕ) (hlive : s.layer < L)
+    (ht0 : ∀ p : Fin L, (p : ℕ) < s.layer → t₀ p ≤ runMinWidth M p)
+    (hcl : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared ≤ t₀ p)
+    (h : T0Bound M s) : T0Bound M (s.stepAppendAdvance e t₀) := by
+  intro k
+  refine Fin.lastCases ?_ ?_ k
+  · intro hk p
+    rw [divTilde_stepAppendAdvance_last, tildeOf_setTail_eq hlive hcl] at hk
+    rw [show (s.stepAppendAdvance e t₀).divProfile (Fin.last s.numDiv)
+        = setTail s.layer s.cleared t₀ from by
+      simp only [ConState.stepAppendAdvance, Fin.snoc_last]]
+    unfold setTail
+    split_ifs with hp
+    · rw [hk]; exact Nat.zero_le _
+    · exact ht0 p (by omega)
+  · intro k' hk p
+    rw [divTilde_stepAppendAdvance_castSucc] at hk
+    rw [show (s.stepAppendAdvance e t₀).divProfile (Fin.castSucc k') = s.divProfile k' from by
+      simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]]
+    exact h k' hk p
+
+/-- **o3 (liveness-free) — a `t̃=0` divisor at a terminal is admissible**, via `T0Bound`
+(`runMinWidth ≤ admBound`) — no live hypothesis, so it survives a stranding terminal
+(`widthMinUpto L = 0`). Weak-decrease + `t̃=0` give the last-`=0` and weak-dec `Adm` clauses. -/
+theorem leaf_mem_Adm_t0 {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (hL : 0 < L)
+    (hwd : WeakDecInv s) (k : Fin s.numDiv)
+    (hbound : ∀ p : Fin L, s.divProfile k p ≤ runMinWidth M p) (ht0 : s.divTilde k = 0) :
+    s.divProfile k ∈ Adm M := by
+  have hbb : ∀ j : Fin L, s.divProfile k j ≤ admBound M j := fun j =>
+    le_trans (hbound j) (runMinWidth_le_admBound M j)
+  rw [Adm, Finset.mem_filter]
+  refine ⟨?_, hbb, hwd k, ?_⟩
+  · rw [Fintype.mem_piFinset]; intro j; rw [Finset.mem_range]; exact Nat.lt_succ_of_le (hbb j)
+  · intro j _
+    have hle : s.divProfile k j ≤ s.divTilde k :=
+      le_tildeOf hL (fun i => hwd k i j (Fin.le_def.mpr (by have := i.isLt; omega)))
+    rw [le_antisymm hle (tildeOf_le j), ht0]
+
 /-! ## o4→assembly: the joint invariant `OracleInv` + its cone-goodness preservation
 
 The six invariants the oracle carries, bundled: the construction's cone-goodness = `OracleInv` holds
@@ -2142,8 +2225,9 @@ every step-child the oracle emits at an `OracleInv + BoundaryFlat + MvalCoh` sta
 discharged by `Mval_setTail_runMinWidth` (case-2) / `Mval_setTail_delta` (case-1, its boundary
 hypothesis supplied by `BoundaryFlat`). -/
 theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
-    (inv : OracleInv M s) (hbf : BoundaryFlat M s) (hmv : MvalCoh M s) :
-    ∀ c ∈ (conOracle M s).stepChildren, BoundaryFlat M c.child ∧ MvalCoh M c.child := by
+    (inv : OracleInv M s) (hbf : BoundaryFlat M s) (hmv : MvalCoh M s) (ht0inv : T0Bound M s) :
+    ∀ c ∈ (conOracle M s).stepChildren,
+      BoundaryFlat M c.child ∧ MvalCoh M c.child ∧ T0Bound M c.child := by
   intro c hc
   by_cases h1 : L ≤ s.layer
   · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
@@ -2155,12 +2239,16 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
       rw [horacle] at hc
       simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
       subst hc
-      exact ⟨BoundaryFlat_stepRollover s (not_le.mp h1) inv.ft inv.wd, MvalCoh_stepRollover s hmv⟩
+      exact ⟨BoundaryFlat_stepRollover s (not_le.mp h1) inv.ft inv.wd, MvalCoh_stepRollover s hmv,
+        T0Bound_stepRollover s ht0inv⟩
     · have hlive : s.layer < L := not_le.mp h1
       have hJ : s.cleared < widthMinUpto M s.layer :=
         lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (Nat.le_succ _))
       have hcap : s.cleared < layerCap M :=
         lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+      have hwp : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared < runMinWidth M p := fun p hp => by
+        rw [runMinWidth_eq_widthMinUpto]
+        exact lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (by omega))
       have hcolpos : s.cleared < M ⟨s.layer + 1, by omega⟩ :=
         lt_of_lt_of_le (not_le.mp h2)
           (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ _, by simp⟩))
@@ -2180,7 +2268,9 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
           rw [Mval_setTail_runMinWidth M hlive, Nat.cast_mul, Nat.cast_sub hJ.le,
             Nat.cast_sub hcolpos.le]
         exact ⟨BoundaryFlat_stepAppendAdvance s _ _ hlive hbf,
-          MvalCoh_stepAppendAdvance s _ _ hnew hmv⟩
+          MvalCoh_stepAppendAdvance s _ _ hnew hmv,
+          T0Bound_stepAppendAdvance s _ _ hlive (fun p _ => le_rfl)
+            (fun p hp => le_of_lt (hwp p hp)) ht0inv⟩
       · rcases hf : chooseMin s target with _ | f
         · have horacle : conOracle M s = oracleTerminal M s := by
             unfold conOracle; rw [dif_neg h1, dif_neg h2]
@@ -2201,6 +2291,8 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
             · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
           have hgt : s.cleared < target := by omega
           have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+          have htf : s.cleared < s.divTilde f := by rw [htgt]; exact hgt
+          have hfl : s.divTilde f < widthMinUpto M s.layer := by rw [htgt]; omega
           -- shared: the eligible divisor is boundary-flat and tail-constant
           have hflat : ∀ i : Fin L, s.layer ≤ (i : ℕ) →
               s.divProfile f i = tildeOf (s.divProfile f) := fun i hi =>
@@ -2226,8 +2318,12 @@ theorem MvalBoundaryInv_conOracle_stepChildren {L : ℕ} {M : Fin (L + 1) → �
           rcases hc with rfl | rfl
           · exact ⟨BoundaryFlat_stepCase11 s f hlive hbf,
               MvalCoh_case11child s f (target - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
-                hbump hmv⟩
+                hbump hmv,
+              T0Bound_stepCase11 s f hlive inv.wb htf hfl ht0inv⟩
           · exact ⟨BoundaryFlat_stepAppendAdvance s _ _ hlive hbf,
-              MvalCoh_stepAppendAdvance s _ _ hbump hmv⟩
+              MvalCoh_stepAppendAdvance s _ _ hbump hmv,
+              T0Bound_stepAppendAdvance s _ _ hlive (fun p hp => inv.wb f hfl p hp)
+                (fun p _ => by have hdt : s.divTilde f ≤ s.divProfile f p := tildeOf_le p; omega)
+                ht0inv⟩
 
 end DLNFibre.DLN.RLCT.Engine
