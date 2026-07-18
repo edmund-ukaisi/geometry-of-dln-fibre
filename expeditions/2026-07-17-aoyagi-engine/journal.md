@@ -1475,3 +1475,13 @@ pure-pivot contract stands). Note the record leans (A): the paper's own Case-1(2
 unipotent Q/P clears, and det-1 gauges are invisible to the Jacobian battery — the discriminator
 is chart GEOMETRY. Flat-cube srcBox ADOPTED (5 of 8 per-leaf clauses free). Wiring stays held;
 the oracle GO waits on elder-gate5.
+
+## 2026-07-18 tick 106 addendum: the parallel split set
+The architect's seat input accepted in advance of the elder verdict where it's gate-independent:
+the construction-INDEPENDENT leaf-emission infra (the flat-cube LeafData smart-constructor
+discharging the 5 free ChartBridge clauses via PivotLeafClauses) is dispatched to coverage-t07
+NOW (it built those clauses; no carrier-invariant context needed; the gauge-check verdict may
+add a ψ-slot parameter). The architect's core-unit claim (StateInvariant + decision transcription
++ termination, where its context + the 4-weakenings pattern live) is HELD for elder-gate5's
+decomposition + seat verdict. The simulator-as-oracle reframe accepted by the seat: the risk
+collapses from discover+prove to transcribe+prove.
