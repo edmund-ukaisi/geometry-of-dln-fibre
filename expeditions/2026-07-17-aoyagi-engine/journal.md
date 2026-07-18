@@ -1618,3 +1618,16 @@ push: FOUR completion items (my additions crossed the cert-writing) — the RESI
 paper proof (the one brick at 0/18-only — the discover-mid-formalization wall pattern), the
 (c)-finding scope correction, the T3-consumer check, the p.15 defect ledger. One completion
 push, then the joint push ungates fully.
+
+## 2026-07-18 CHOOSER LANDED; THE ψ-ELEPHANT NAMED (tick 116)
+The Def-4-minimal chooser merged (chooseMin + spec + the ChooserTotalOnChain o4 landing pad —
+type-total via the fallback, existence-half plug-in shaped). THREE DESIGN ANSWERS: (Q1) the
+emission carries q/ψ/pivotOf as DATA + guarantees; THE CONCRETE MORSE-GAUGE ψ — an honest Lean
+homeomorphism for a nonlinear polynomial automorphism — is now a NAMED RUNG owned by COVERAGE
+(the chart-geometry seat), spec'd by the architect's Q/P page-reads. HONEST RE-PRICING journaled:
+this elephant was always inside "chart-data-fed Props"; naming it now, before anyone stumbles
+into it, is the recalibration discipline working. (Q1b) the single-ψ factorization FIDELITY
+check goes to pnp decorrelated BEFORE any heavy Lean ψ — fail-fast queued behind its completion
+items. (Q2) o2's dispatch = the SINGULAR phase only (layers 1..L); the regular peel stays R6.
+The joint push remains gated on pnp's completion (the residual sub-lemma proof above all);
+the architect's non-gated queue: classify + the Q1 interface fields.
