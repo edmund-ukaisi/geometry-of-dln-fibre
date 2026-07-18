@@ -36,13 +36,18 @@ def minAdm(M):
 
 
 class Sim:
-    def __init__(self, M, headreset="raw"):
+    def __init__(self, M, headreset="raw", check_inv=False):
         self.M = tuple(M)                 # M^1..M^{L+1}, 0-indexed
         self.L = len(M) - 1
         self.headreset = headreset        # "raw" (p.20-literal M^{i+1}) or "runmin" (FIX-A: M(i+1))
+        self.check_inv = check_inv        # verify the o4 supporting sub-invariants at every state
         self.leaves = []
         self.comp_violations = []
         self.node_count = 0
+        self.flat_viol = 0                # FlatTail: T_S=...=T_L at state (S,J)
+        self.chain_viol = 0              # full total-comparability of ALL carried pairs
+        self.width_viol = 0              # width-bound: t^i <= M(i+1) (running-min)
+        self.case2_tail_viol = 0         # Case 2 => every carried tilde_t <= J
 
     def Mw(self, i):                       # M^(i), 1-indexed
         return self.M[i - 1]
@@ -75,6 +80,30 @@ class Sim:
         self._proc(1, 0, [])
         return self
 
+    def _check(self, S, J, divs):
+        Ts = [d[0] for d in divs]
+        # FlatTail: components S..L (1-indexed) all equal
+        for T in Ts:
+            if len(set(T[S - 1:])) > 1:
+                self.flat_viol += 1
+        # full total-comparability of ALL carried pairs
+        for a in range(len(Ts)):
+            for b in range(a + 1, len(Ts)):
+                x, y = Ts[a], Ts[b]
+                if not (all(p <= q for p, q in zip(x, y)) or all(p >= q for p, q in zip(x, y))):
+                    self.chain_viol += 1
+        # width-bound (running-min): t^i <= M(i+1)
+        for T in Ts:
+            for i in range(1, self.L + 1):
+                if T[i - 1] > self.Mrun(i + 1):
+                    self.width_viol += 1
+        # Case-2 => every carried tilde_t <= J
+        MS = self.Mrun(S)
+        occ = [m for m in {self.tilde(T) for T in Ts} if J + 1 <= m <= MS - 1]
+        if not occ and Ts:                 # Case 2 at this node
+            if any(self.tilde(T) > J for T in Ts):
+                self.case2_tail_viol += 1
+
     def _proc(self, S, J, divs):
         self.node_count += 1
         if self.node_count > 200000:
@@ -82,6 +111,8 @@ class Sim:
         if S == self.L + 1:
             self.leaves.append(tuple(sorted((tuple(d[0]), d[1]) for d in divs)))
             return
+        if self.check_inv:
+            self._check(S, J, divs)
         MS = self.Mrun(S)
         MSp1 = min(MS, self.Mw(S + 1))     # M(S+1) = max pivots this layer
         if J >= MSp1:
@@ -309,4 +340,27 @@ for Mc in [(2, 2, 3, 3, 2), (3, 2, 4, 2)]:
 print("\nCLARIFIER:", "PASS (0 comp_violations both modes; runmin profile-set==Adm)"
       if clar_ok else "FAIL — a kill fired, RESHAPE the oracle unit")
 
-sys.exit(0 if ok else 1)
+
+# ============================================================================
+# o4 SUB-INVARIANT VERIFICATION (task 2): at EVERY reachable state, in the corrected
+#   runmin (FIX-A) construction, verify the sub-invariants the CompChainInv proof consumes:
+#     FlatTail  : T_S = ... = T_L                (the load-bearing fact for lemma A)
+#     Chain     : ALL carried pairs comparable   (full CompChainInv, not just eligible pairs)
+#     WidthBnd  : t^i <= M(i+1) (running-min)     (lemma B, case-2 head is the chain top)
+#     Case2Tail : Case 2 => every carried tilde_t <= J   (lemma B, case-2 tail dominates)
+# ============================================================================
+print("\n" + "=" * 72)
+print("o4 SUB-INVARIANT VERIFICATION (runmin/FIX-A) at every reachable state")
+print("=" * 72)
+inv_ok = True
+for Mc in [(2, 2, 2), (3, 3, 4), (2, 2, 2, 2), (2, 2, 3, 2), (2, 2, 3, 3, 2), (3, 2, 4, 2)]:
+    s = Sim(Mc, headreset="runmin", check_inv=True).run()
+    v = (s.flat_viol, s.chain_viol, s.width_viol, s.case2_tail_viol)
+    clean = (v == (0, 0, 0, 0))
+    inv_ok &= clean
+    print(f"  M={str(Mc):15s} nodes={s.node_count:6d}  FlatTail_viol={v[0]}  Chain_viol={v[1]}  "
+          f"WidthBnd_viol={v[2]}  Case2Tail_viol={v[3]}  {'OK' if clean else 'VIOLATION'}")
+print("\nSUB-INVARIANTS:", "ALL CLEAN (0 violations across all instances)" if inv_ok
+      else "VIOLATION — the proof's supporting invariant is FALSE")
+
+sys.exit(0 if (ok and inv_ok) else 1)
