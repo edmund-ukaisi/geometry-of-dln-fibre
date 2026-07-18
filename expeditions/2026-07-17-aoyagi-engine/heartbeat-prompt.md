@@ -8,15 +8,14 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: T-LADDER ENDGAME. GLUE LANE COMPLETE (A/B/C axiom-clean, fidelity-VALIDATED, re-homed
-  ~3x lighter; seat warm). Architect (t01-r2): T1a/T1b/T1b-ii MERGED (faithful carrier fields in);
-  two commissions open — the region_glue DISCHARGE (one line + AxCheck watch; ALL gates cleared;
-  closes the analytic hole) + T1c (ConState alignment; plan banked at threads/01-skeleton/
-  t1b-execution-spec.md; descent re-proof tripwire 3-4 attempts). Then T2 assembly → T3 coverage
-  (pnp gate legs banked; non-toric + full-pivot-cover constraints mapped). Council #3 roadmap +
-  fork 11 adopted; R6 post-critical-path (operator-confirmed). pnp-atlas + rev-glue + glue-t06
-  warm. Watch line = engine_box_threshold_finite (+sorryAx via the construction hole ALONE after
-  the discharge lands).
+- phase: FINAL BUILD UNITS. ONE hole on the hbox cone (monomialization_terminates). Landed +
+  verified: full T1 faithful carrier, region_glue DISCHARGED (analytic hole CLOSED; generic
+  assembly clean-three), FIX-A (verified paper defect, ledgered), B' ledger/analytic split
+  (coherence tie; glue zero-diff), T3 rung 1 (pivot atom + corner ¬-thm) + fold plumbing,
+  pivot verdict (a)-generalized (double-page-grounded). IN FLIGHT: architect's buildTree body
+  (last unit: both ledger sides, per-case pivotComplete, comparability chain) + coverage's atom
+  bridge + headline. Then: assembly → watch-line flip (hbox event) → mint repoint + enforced
+  axiom-gate (R5) → cordon → close. All reviews closed, seats warm.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
