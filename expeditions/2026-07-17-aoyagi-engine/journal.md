@@ -1991,3 +1991,21 @@ a ∈ Adm at 6 known + 2 fresh instances, kills K1/K2(MAJOR: minAdm unreachable)
 fallback scope = minimizer-only. Key precision in the brief: the Lean o5-∈ is about the BUILT
 deterministic-minimal tree — if realizing some a needs a non-minimal chooser pick, that is a
 finding distinguishing the nondeterministic recursion from conOracle. Cert feeds D once C lands.
+
+## 2026-07-19 tick 147: B COMPLETE (5a2f42549); C fork adjudicated — route (B) T0Bound
+t03: step B done, clean-three ×4 commits — MvalCoh restated over ℤ ((divExp:ℤ)=Mval), BoundaryFlat
++ 4 maintenance, case-1 delta, and MvalBoundaryInv_conOracle_stepChildren threading
+BoundaryFlat∧MvalCoh through every oracle step-child (case-2 via telescoping, case-1 via
+delta+BoundaryFlat). Step C opened on a genuine fork: terminal t̃=0 divisors need ∈ Adm, but
+leaf_mem_Adm_single routes through the LIVE-restricted WidthBound and a later zero-width layer
+strands an earlier t̃=0 divisor (admissible but not live). Routes: (A) hpos : ∀ i, 0<M i on
+monomialization_terminates — interface ripple through resolutionOf/projections/EngineDriver/
+AxCheck; (B) NEW T0Bound invariant (t̃=0 ⟹ runMinWidth-bounded per-coordinate, unconditional)
+— interface intact, statement unconditional in M (vacuous at degenerate widths, honestly so).
+CONTROLLER RATIFIES (B): fill-the-layer generality + AxCheck watch intact + real fact not patch.
+Pins: (1) battery-assert T0Bound incl. a DEGENERATE zero-width instance (if the sim can't run
+M_i=0, hand-check + docstring note); (2) fallback = if maintenance fights on stranded divisors,
+STOP-AND-SURFACE — route (A)'s ripple is a knowing controller decision, never absorbed silently.
+Expected fight location named: the case-1(2)/case-11-at-cleared=0 head-inheritance via parent
+WidthBound. pnp-o5: worktree up (t12-pnp-o5), no push yet — read-in + battery extension phase;
+ping if silent by tick ~149.
