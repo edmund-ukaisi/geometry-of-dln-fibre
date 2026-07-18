@@ -1348,3 +1348,22 @@ ownCovers_branch (the tree-induction step). Statements unchanged — rev-cov's i
 applies as-is (awareness note sent). The fold's load-bearing plumbing is proven EITHER WAY on
 the (a)/(b) question; only the atom bridge + the headline remain, both held for the verdict.
 The coverage tide's remaining unknowns are now exactly: the verdict, then two lemmas.
+
+## 2026-07-18 THE PIVOT VERDICT: (a)-GENERALIZED CONFIRMED (tick 98)
+rev-cov's three-item round, most severe first: (3) (a)-generalized CONFIRMED — p.16 verbatim:
+ONE Case-1 blow-up center of codim d_center = J₁(M^(S+1)−J)+1 ⟹ d_center pivot charts; the
+1(1)/1(2) tags are pivot TYPES (Aoyagi shows the corner d-pivot as REPRESENTATIVE); the KILL of
+(b): an omitted pivot direction cannot be recovered by deeper branching (descendants live inside
+parent-chart images); CompChainInv is ratio-side only. EPISTEMICS CATCH journaled: the atlas
+COUNTS are NOT a discriminator — the profile atlas is a symmetric QUOTIENT (the simulator emits
+2 children yet gets correct profiles; batteries are blind to geometric fan-out); the page + the
+kernel-witnessed corner gap were the discriminators. (2) The fold: 3 of 4 statements sound, the
+headline VERBATIM against ChartBridge's clauses; node_pivotCover_of_atom correctly flagged as
+the stub item 3 fills (scoping, not concealment); FIX-A integration-safety confirmed. (1) The
+rung-1 atom SURVIVED the independent read — with the beautiful consistency that the atom's
+|u|^(d−1) Jacobian equals the ledger's case-1(1) exponent bump d_center−1: the geometry and the
+bookkeeping agreeing from opposite directions. DISPATCHED: coverage full-GO on both held lemmas
+(the concrete pivotComplete contract); the architect's StepEmit amendment (hlive → pivotComplete,
+d_center edges; StepRel confirmed unaffected); the paper-map cert's "two charts" corrected
+(dated). ALL statement sets are now settled — no design gates remain ahead of the two build
+units (B' + buildTree) and the two coverage lemmas.
