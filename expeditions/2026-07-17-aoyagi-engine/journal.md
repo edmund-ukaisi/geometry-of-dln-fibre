@@ -1552,3 +1552,13 @@ the coverage seat generalizes the bridge (the subtler sector-transport claim), a
 coverage lane's mechanism now handles pure AND sheared charts; its remaining content is entirely
 atlas-gated. Board: architect (o1/o2-def, ungated, + the gauge-form determination), pnp (the o4
 certificate), coverage (warm, all infra banked).
+
+## tick 111 addendum: the gluing claim WITHDRAWN by its author
+Record correction (the seat's own catch, preserved): the coverage seat's initial justification
+for the per-node gauge form — "per-edge shears glue on sector overlaps" — is WITHDRAWN by its
+author on reflection (chart i clears pivot i; on {|x_i|=|x_j|} the clears differ; gluing is not
+free). The (i)-per-node vs (ii)-per-edge question is therefore a genuinely OPEN FACT, resolved
+where facts resolve: the architect's o2 page-transcription of the concrete localSubs. If (ii):
+the cover needs the construction's blow-up-surjectivity as an oracle guarantee — its shape
+pinned JOINTLY at that moment (emission-honesty first, cover-need second, pnp page-check if
+ambiguous). The landed single-ψ lemma stands as the (i)-branch, ψ=refl covering the pure case.
