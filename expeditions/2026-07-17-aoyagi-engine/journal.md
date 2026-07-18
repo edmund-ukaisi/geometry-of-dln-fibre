@@ -1092,3 +1092,13 @@ forced prints unchanged) — T1b closes entirely. GO issued on T1b-ii (genDivExp
 + T1c (ConState alignment + chooser TYPE w/ the comparability docstring + razor strike + μ
 re-verify). After T1c: a consolidated T1 review + the region_glue discharge sequencing in one
 integration pass (rev-glue's verdict expected in by then), then T2 opens.
+
+## 2026-07-18 T1b-ii MERGED; T1c ASSESSED + GO (tick 80)
+genDivExp multiplicity field landed (support = derived nonzero locus; clean swap, driver closure
+verified green here). The carrier FIELD sequence is complete. T1c honestly assessed by the seat
+BEFORE committing Lean: NOT a pure field-add — pendingCount reads the derived divTilde, so the
+2A/2B descent WIRING re-proves (~40-60 lines; the μ definition + WF unchanged — the council's
+spine-safety holds, but the transitions move to divProfile). The council-named balloon risk,
+correctly surfaced with an estimate + a stop-condition (3-4 attempts on the setTail/tildeOf
+lemmas → STOP). GO issued: the seat takes it fresh-budget (author-of-the-proofs advantage);
+scope fence: no T2 creep. rev-glue verdict still pending (gates the discharge only).
