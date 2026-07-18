@@ -128,6 +128,12 @@ theorem tildeOf_le {L : ℕ} {T : Fin L → ℕ} (i : Fin L) : tildeOf T ≤ T i
   simp only [tildeOf, dif_pos hL]
   exact Finset.inf'_le _ (Finset.mem_univ i)
 
+/-- `c ≤ tildeOf T` from a uniform lower bound `c ≤ T i` (companion to `tildeOf_le`). -/
+theorem le_tildeOf {L : ℕ} {T : Fin L → ℕ} (hL : 0 < L) {c : ℕ} (h : ∀ i, c ≤ T i) :
+    c ≤ tildeOf T := by
+  simp only [tildeOf, dif_pos hL]
+  exact Finset.le_inf' _ _ (fun i _ => h i)
+
 /-- **The clearing level drops to `J` after a tail-write** (the case-1(1) merge fact): if there is a
 tail coordinate (`layer < L`), then `t̃ = min (setTail layer J T) ≤ J` — the tail index `L−1`
 carries value `J`. The load-bearing bound of the reworked `pendingCount` descent. -/
@@ -589,6 +595,17 @@ theorem setTail_of_le {L : ℕ} {layer cleared : ℕ} {T : Fin L → ℕ} {p : F
     (h : layer ≤ (p : ℕ)) : setTail layer cleared T p = cleared := by
   simp only [setTail, if_pos h]
 
+/-- **`t̃` of a `setTail` is the written `cleared`**, given a live layer and the head dominating
+`cleared` (`cleared ≤ T` on the head): the min is the constant tail value. The clearing level of the
+case-2/case-1(2) appended divisor. -/
+theorem tildeOf_setTail_eq {L : ℕ} {layer cleared : ℕ} {T : Fin L → ℕ} (hlive : layer < L)
+    (hcl : ∀ p : Fin L, (p : ℕ) < layer → cleared ≤ T p) :
+    tildeOf (setTail layer cleared T) = cleared := by
+  refine le_antisymm (tildeOf_setTail_le hlive) (le_tildeOf (by omega) (fun j => ?_))
+  by_cases hj : layer ≤ (j : ℕ)
+  · exact le_of_eq (setTail_of_le hj).symm
+  · rw [setTail, if_neg hj]; exact hcl j (by omega)
+
 /-- **Flat tail** (o4-cert Part 3, the auxiliary invariant Lemmas A/B consume): every divisor's
 tail — coords at index `≥ layer` (the page tail `t⁽ˢ⁾…⁽ᴸ⁾`, `layer = S−1`) — is CONSTANT. With
 weak-decrease this pins `t̃ = the tail value`. Maintained: a tail-write (`setTail`) sets the tail to
@@ -652,11 +669,6 @@ def LiveHeadDom {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
   ∀ (a b : Fin s.numDiv), s.divTilde a < s.divTilde b → s.divTilde b < widthMinUpto M s.layer →
     ∀ i : Fin L, (i : ℕ) < s.layer → s.divProfile a i ≤ s.divProfile b i
 
-/-- `c ≤ tildeOf T` from a uniform lower bound `c ≤ T i` (companion to `tildeOf_le`). -/
-theorem le_tildeOf {L : ℕ} {T : Fin L → ℕ} (hL : 0 < L) {c : ℕ} (h : ∀ i, c ≤ T i) :
-    c ≤ tildeOf T := by
-  simp only [tildeOf, dif_pos hL]
-  exact Finset.le_inf' _ _ (fun i _ => h i)
 
 /-- **A tail coordinate equals `t̃`** given `FlatTail` + `WeakDec` on a live layer (`layer < L`):
 the tail is constant (`FlatTail`) and, being weak-decreasing, its value is the minimum `= t̃`. -/
