@@ -1790,3 +1790,17 @@ must the rollover edge carry an AT-EXHAUSTION-ONLY guard so early rollovers can'
 divisors — the o3 leaf-t̃=0 interaction). The architect edits the carrier (its files) + builds
 the divExp-blind congruence lemma meanwhile (needed regardless); the oracle spine holds on the
 ratification.
+
+## 2026-07-18 ROLLOVER RATIFIED — WITH THE GUARD THE PROPOSAL MISSED (tick 130)
+elder-gate6 ratified (A) on PAGE grounds sharper than the proposal's: the paper PRODUCES the
+(S,J+1) statement inside the case step (p.20 indexes u_{S,J+1} pre-boundary-check) then RELABELS
+at the boundary — produce-then-relabel is the paper's own two-phase structure, so the id-edge is
+faithful and (B)'s merge would be LESS faithful, not just uglier. AND the gate earned its
+convening: the REQUIRED at-exhaustion guard (a StepRel conjunct) that neither the architect nor
+I had in the proposal — without it StepRel blesses early rollovers stranding pending divisors
+(ledger-consistent non-Aoyagi trees, the exact fork-9 infidelity class), with the comparison
+pinned OFF the simulator-validated dispatch (the elder explicitly deferring its own page
+off-by-one to the oracle authority) + an early-rollover kill-witness. Honest scope: not
+load-bearing for o3 — lands alongside. Compass 13(Q3) applied; the carrier edit is FINAL-shaped;
+the oracle spine resumes on it. The gate pattern's full record today: five elder convenings,
+five load-bearing catches.
