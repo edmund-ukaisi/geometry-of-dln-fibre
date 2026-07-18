@@ -98,7 +98,6 @@ nodes:
     notes: "Elder-ratified NAMED rung (2026-07-18, rung-1 stop-and-surface): support propagation across per-divisor re-indexing balloons (Codex-confirmed; compass second cost center), so rung-1 StepRel is faithful for the exponent/clearing ledger only. This rung redesigns support as genDivExp : Fin numGen → Fin numDiv → ℕ (support = nonzero locus — a STRENGTHENING: recovers multiplicities the binary Finset drops) and restores propagation faithfulness. KILL-CONDITION: g-coupled-binding-334 + g-delta-flatten re-checked against the redesigned support. Guard until then: coupling-breaking is held by the exact LeafPullback identity, NOT propagation; case-2's parent-side support read suffices for the certificate. NOT finiteness-load-bearing; never delays the long pole."
     edges:
       - {type: needs, to: resolution-tree}
-      - {type: informs, to: case-step-lemmas}
 
   - id: case-step-lemmas
     kind: claim
