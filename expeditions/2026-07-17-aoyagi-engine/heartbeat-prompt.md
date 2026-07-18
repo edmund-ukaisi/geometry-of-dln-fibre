@@ -8,14 +8,14 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: FINAL BUILD UNITS. ONE hole on the hbox cone (monomialization_terminates). Landed +
-  verified: full T1 faithful carrier, region_glue DISCHARGED (analytic hole CLOSED; generic
-  assembly clean-three), FIX-A (verified paper defect, ledgered), B' ledger/analytic split
-  (coherence tie; glue zero-diff), T3 rung 1 (pivot atom + corner ¬-thm) + fold plumbing,
-  pivot verdict (a)-generalized (double-page-grounded). IN FLIGHT: architect's buildTree body
-  (last unit: both ledger sides, per-case pivotComplete, comparability chain) + coverage's atom
-  bridge + headline. Then: assembly → watch-line flip (hbox event) → mint repoint + enforced
-  axiom-gate (R5) → cordon → close. All reviews closed, seats warm.
+- phase: THE ORACLE UNIT (fork 13) + coverage tail. Landed+verified: assembly (buildTree/WF.fix,
+  ConDecision interface), ALL construction-independent coverage infra (atom, fold 4/4, clause
+  lemmas, leaf smart-constructor), shear verdict (A) ψ-composed. IN FLIGHT: architect o1
+  (invariant read off the simulator; CompChainInv statement waits for the o4 certificate — the
+  MUTUAL-INDUCTION contract) + o2-def (+ the ψ-homeo StepEmit guarantee); pnp clarifier
+  ((2,2,3,3,2)/(3,2,4,2): comp-violations + profile-set==Adm) → the o4 pen-and-paper certificate;
+  coverage ψ-reconciliation lemma. o5 ∈-half OWNED BY BUILD (fork 13). Then: o3, o4-formalise,
+  o5, T3 real-atlas composition → hbox flip → mint repoint + enforced gate → cordon → close.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
