@@ -308,11 +308,22 @@ inductive ConDecision (M : Fin (L + 1) → ℕ) (s : ConState L) where
   | terminal (l : LeafData M)
       (hleaf : ResolutionTree.rootLedger (ResolutionTree.leaf l) = s.toRootLedger) :
       ConDecision M s
-  /-- Step: emit a node (ledger core `= s`'s) with `conRel`-smaller children. `rootLedger` on a
-  `branch` ignores the edges, so the guarantee is stated on the node's ledger core directly. -/
+  /-- Step: emit a node with `conRel`-smaller children. The guarantees (design §1 `StepEmit`):
+  `hnode` — the node's ledger core equals `s`'s (`rootLedger` on a `branch` ignores the edges, so it
+  is stated on the core directly); `hlayer` — the node's layer equals `s`'s (the `RootLedger` core
+  drops `layer`, so `base` needs this separately); `hstep` — each child is the
+  `stepUpdate`-transitioned state (ledger core `= stepUpdate node case subst`) AND, for a
+  case-1(1)/1(2) edge, the merge target is eligible. `hstep` is exactly the per-edge `StepRel`
+  content, phrased on the child STATE (bridged to the child SUBTREE by `rootLedger_buildTree`). -/
   | step (node : StepData M) (children : List (StepChild M s))
       (hnode : (⟨node.numDiv, node.divExp, node.divProfile, node.cleared⟩ :
-          ResolutionTree.RootLedger L) = s.toRootLedger) :
+          ResolutionTree.RootLedger L) = s.toRootLedger)
+      (hlayer : node.layer = s.layer)
+      (hstep : ∀ c ∈ children,
+        c.child.toRootLedger = stepUpdate node c.ecase c.esubst ∧
+          ((c.ecase = StepCase.case11 ∨ c.ecase = StepCase.case12) →
+            ∃ h : c.esubst.mergeIdx < node.numDiv,
+              node.divTilde ⟨c.esubst.mergeIdx, h⟩ = node.cleared + c.esubst.runLen)) :
       ConDecision M s
 
 /-- **The tree-valued construction recursion** (T2): `WellFounded.fix (conRel_wf M)` folds the
@@ -324,7 +335,7 @@ noncomputable def buildTree (M : Fin (L + 1) → ℕ)
   WellFounded.fix (conRel_wf M) fun s rec =>
     match oracle s with
     | .terminal l _ => ResolutionTree.leaf l
-    | .step node children _ =>
+    | .step node children _ _ _ =>
         ResolutionTree.branch node
           (children.map (fun c => Edge.mk c.ecase c.esubst (rec c.child c.hdesc)))
 
@@ -340,7 +351,95 @@ theorem rootLedger_buildTree (M : Fin (L + 1) → ℕ)
   -- `rootLedger (branch node _)` reads the node core, ignoring the edge list; a leaf's is `hleaf`.
   cases h : oracle s with
   | terminal l hleaf => exact hleaf
-  | step node children hnode => exact hnode
+  | step node children hnode hlayer hstep => exact hnode
+
+/-- **`buildTree` unfolding at a terminal decision**: the tree is the emitted leaf. -/
+theorem buildTree_terminal (M : Fin (L + 1) → ℕ)
+    (oracle : (s : ConState L) → ConDecision M s) (s : ConState L) (l : LeafData M)
+    (hleaf : ResolutionTree.rootLedger (ResolutionTree.leaf l) = s.toRootLedger)
+    (hos : oracle s = ConDecision.terminal l hleaf) :
+    buildTree M oracle s = ResolutionTree.leaf l := by
+  rw [buildTree, WellFounded.fix_eq, hos]
+
+/-- **`buildTree` unfolding at a step decision**: a `branch` whose edges recurse into the children,
+each child subtree `buildTree … c.child`. The clean interface for `base` / `StepRel`. -/
+theorem buildTree_step (M : Fin (L + 1) → ℕ)
+    (oracle : (s : ConState L) → ConDecision M s) (s : ConState L) (node : StepData M)
+    (children : List (StepChild M s)) {hnode hlayer hstep}
+    (hos : oracle s = ConDecision.step node children hnode hlayer hstep) :
+    buildTree M oracle s = ResolutionTree.branch node
+      (children.map (fun c => Edge.mk c.ecase c.esubst (buildTree M oracle c.child))) := by
+  conv_lhs => rw [buildTree, WellFounded.fix_eq]
+  rw [hos]
+  rfl
+
+/-- **The base conjunct** (T2, `CanonicalResolution` §3): if the ROOT state (`layer = 0`,
+`cleared = 0`) STEPS, `buildTree … s` is a `branch` whose node has `layer = 0` and `cleared = 0` —
+the regular peel begins at `S = J = 0`. The node's `cleared` comes from `hnode` (ledger core matches
+the state) and its `layer` from `hlayer` (the `RootLedger` core drops `layer`). -/
+theorem base_of_buildTree (M : Fin (L + 1) → ℕ)
+    (oracle : (s : ConState L) → ConDecision M s) (s : ConState L)
+    (hs0 : s.layer = 0) (hsc : s.cleared = 0)
+    (hstep : ∃ node children hnode hlayer hstepg,
+        oracle s = ConDecision.step node children hnode hlayer hstepg) :
+    ∃ (n : StepData M) (edges : List (Edge M)),
+      buildTree M oracle s = ResolutionTree.branch n edges ∧ n.layer = 0 ∧ n.cleared = 0 := by
+  obtain ⟨node, children, hnode, hlayer, _, hos⟩ := hstep
+  refine ⟨node, _, buildTree_step M oracle s node children hos, ?_, ?_⟩
+  · rw [hlayer, hs0]
+  · have hc : node.cleared = s.cleared := congrArg ResolutionTree.RootLedger.cleared hnode
+    rw [hc, hsc]
+
+/-- The step-edges reachable through a list of edges are the per-child step-edges concatenated
+(`edgesStepEdges` unrolled to a `flatMap` over the children's subtrees) — the bridge from the mutual
+`stepEdges`/`edgesStepEdges` recursion to a `List.mem_flatMap` argument. -/
+theorem edgesStepEdges_eq {M : Fin (L + 1) → ℕ} (es : List (Edge M)) :
+    ResolutionTree.edgesStepEdges es = es.flatMap (fun e => ResolutionTree.stepEdges e.child) := by
+  induction es with
+  | nil => rfl
+  | cons e es ih =>
+      cases e with
+      | mk c σ ch => rw [ResolutionTree.edgesStepEdges, ih, List.flatMap_cons]; rfl
+
+/-- **StepRel on every parent–edge pair** (T2, `CanonicalResolution` §2): every edge of a
+`buildTree`-produced tree satisfies the faithful `StepRel`. The ledger conjunct is the child's
+`rootLedger` (`= c.child.toRootLedger` by `rootLedger_buildTree`, `= stepUpdate node …` by the
+decision's `hstep`); the eligibility conjunct is `hstep` too. Proven by well-founded induction on
+the state: a step node's edges split into its own children (discharged by `hstep`) and the deeper
+step-edges (discharged by the IH on each `conRel`-smaller child). -/
+theorem stepRel_all_of_buildTree (M : Fin (L + 1) → ℕ)
+    (oracle : (s : ConState L) → ConDecision M s) (s : ConState L) :
+    ∀ p ∈ ResolutionTree.stepEdges (buildTree M oracle s), StepRel p.1 p.2 := by
+  refine (conRel_wf M).induction
+    (C := fun s => ∀ p ∈ ResolutionTree.stepEdges (buildTree M oracle s), StepRel p.1 p.2) s ?_
+  intro s ih
+  cases h : oracle s with
+  | terminal l hleaf =>
+      rw [buildTree_terminal M oracle s l hleaf h]
+      intro p hp
+      simp only [ResolutionTree.stepEdges, List.not_mem_nil] at hp
+  | step node children hnode hlayer hstep =>
+      rw [buildTree_step M oracle s node children h]
+      intro p hp
+      rw [ResolutionTree.stepEdges, List.mem_append] at hp
+      rcases hp with hp1 | hp2
+      · -- p is one of this node's own edges
+        rw [List.mem_map] at hp1
+        obtain ⟨e, he, rfl⟩ := hp1
+        rw [List.mem_map] at he
+        obtain ⟨c, hc, rfl⟩ := he
+        obtain ⟨hled, helig⟩ := hstep c hc
+        refine ⟨?_, ?_⟩
+        · change ResolutionTree.rootLedger (buildTree M oracle c.child)
+              = stepUpdate node c.ecase c.esubst
+          rw [rootLedger_buildTree]; exact hled
+        · exact helig
+      · -- p is a deeper step-edge — recurse via the IH on the child state
+        rw [edgesStepEdges_eq, List.mem_flatMap] at hp2
+        obtain ⟨e, he, hpe⟩ := hp2
+        rw [List.mem_map] at he
+        obtain ⟨c, hc, rfl⟩ := he
+        exact ih c.child c.hdesc p hpe
 
 /-! ## T2 build-side invariants (TYPES only; preservation proofs are buildTree bricks) -/
 
