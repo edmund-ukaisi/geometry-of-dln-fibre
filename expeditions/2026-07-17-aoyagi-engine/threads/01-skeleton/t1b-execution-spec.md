@@ -46,3 +46,38 @@ divProfile) + footprints clean-three.
 Gates (standing): μ-spine re-verified under the extended carrier; all witnesses updated;
 footprints preserved (arithmetic clean-three; forecast + watch +sorryAx); full-aggregator green
 before integration-ready claim; STOP-AND-SURFACE if the edit balloons.
+
+---
+# T1c execution plan (architect-t02, 2026-07-18; banked verbatim — the last T1 piece)
+
+Contained to EngineConstruction.lean. Checkpoint state: branch clean at 904cc2921 (T1a/T1b/T1b-ii
+landed + full-build-verified); nothing half-edited.
+
+1. HOIST setTail to a top-level def (currently a local `let` in stepUpdate):
+   `setTail (layer cleared) (T : Fin L → ℕ) : Fin L → ℕ := fun p => if layer ≤ p.val then cleared
+   else T p`. Prove `tildeOf_setTail_le (h : layer < L) : tildeOf (setTail layer cleared T) ≤
+   cleared` (tail index p₀ = last exists since layer ≤ L−1; value there = cleared; tildeOf = min ≤
+   it via inf'_le). ~6 lines, STANDALONE — build FIRST, independent of the struct change.
+2. ConState struct: `divTilde : Fin numDiv → ℕ` → `divProfile : Fin numDiv → (Fin L → ℕ)`
+   (ConState gains L → `ConState L`); ADD numGen/genDivExp fields (field-only, match StepData).
+   Derive `ConState.divTilde k := tildeOf (divProfile k)`.
+3. Transitions: stepCase11 updates divProfile i via setTail (was Function.update divTilde);
+   stepAppendAdvance snocs divProfile — its μ₂ descent reads only layer/cleared, UNCHANGED;
+   stepRollover carries divProfile, UNCHANGED.
+4. μ-descent RE-PROOF (the only real rework): pendingCount = #{k | cleared < tildeOf(divProfile
+   k)}. pendingCount_stepCase11_lt reworks the erase-argument: merged divisor i leaves the pending
+   set via tildeOf_setTail_le (ADD precondition layer < L) + eligibility (i was pending); others
+   unchanged. Same erase-card structure as the landed 2B proof. WATCH the Finset filter
+   DecidablePred desync (2B sidestep: state the inequality at ONE synthesis point, close by
+   defeq). conRel_stepCase11/AppendAdvance/Rollover themselves unchanged.
+5. Chooser interface TYPE (needs step-2 divProfile): `IsEligibleMinimalChoice (s : ConState L)
+   (k)` = in-range ∧ tildeOf(divProfile k) = J+J₁ ∧ Def-4-minimal (∀ eligible k', divProfile k ≤
+   divProfile k' componentwise). Docstring cites the depth-3 verdict: the chooser's obligation is
+   COMPARABILITY-PRESERVATION, not value-protection ((2,2,2,2) node (3,0,1): wrong pick (2,1,0)
+   incomparable with (1,1,1); min 3 under both). Proofs at T4.
+6. STRIKE the EngineConstruction:15 razor docstring ("stores ONLY what the measure reads" + the
+   derivable-data line).
+
+GATE: μ-spine re-verify (4 conRel lemmas clean-three); full-aggregator green. FALLBACK (tripwire):
+if the descent lemmas don't close in 3-4 attempts, `git checkout` the file (clean revert to
+904cc2921) — no half-cascade, then STOP-AND-SURFACE.

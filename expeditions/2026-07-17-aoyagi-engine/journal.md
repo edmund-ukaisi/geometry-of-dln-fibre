@@ -1102,3 +1102,10 @@ spine-safety holds, but the transitions move to divProfile). The council-named b
 correctly surfaced with an estimate + a stop-condition (3-4 attempts on the setTail/tildeOf
 lemmas → STOP). GO issued: the seat takes it fresh-budget (author-of-the-proofs advantage);
 scope fence: no T2 creep. rev-glue verdict still pending (gates the discharge only).
+
+## 2026-07-18 T1c PLAN BANKED; tripwire-checkpoint honored (tick 81)
+The architect invoked the pre-edit tripwire exactly as designed: stopped BEFORE the atomic T1c
+edit at a clean branch, refined the plan (step 1 = a standalone 6-line descent lemma built FIRST,
+independent of the struct change — the de-risk inverted into the plan itself; the known
+DecidablePred friction pre-identified with its 2B sidestep; a clean-revert fallback named).
+Plan banked verbatim alongside the T1b spec. GO stands for next turn.
