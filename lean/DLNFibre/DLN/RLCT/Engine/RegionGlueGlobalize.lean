@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.S1ScalingBridgeDLN
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxReduction
 import DLNFibre.DLN.RLCT.Foundations.S1Cover
+import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.RegionGlueGlobalize` — the homogeneity local→global step
@@ -89,5 +90,33 @@ theorem routeMLayerBoxIntegral_lt_top_of_small_box (M : Fin (L + 1) → ℕ) (c'
     rw [hbr, ← mul_assoc, ENNReal.inv_mul_cancel ha0 haT, one_mul]
   rw [hsolve]
   exact ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr (ENNReal.inv_ne_top.mpr ha0)) hsmall
+
+/-- **The `c' ≤ 0` corner** (no singularity). For `c' ≤ 0` the integrand `F^{-c'} = F^{|c'|}` is
+continuous and hence bounded on the compact box, so the box integral is finite with no ratio
+hypothesis — `region_glue`'s easy case (in real use `c' ≥ 0`, but the statement quantifies all
+`c' : ℝ`). -/
+theorem routeMLayerBoxIntegral_nonpos_lt_top (M : Fin (L + 1) → ℕ) (c' : ℝ) (hc : c' ≤ 0) :
+    routeMLayerBoxIntegral M c' 1 < ⊤ := by
+  rw [routeMLayerBoxIntegral_eq_flat M c' 1]
+  have hcont : Continuous (flatNodeLoss M) :=
+    (continuous_dlnLoss M 0).comp (continuous_paramsEquivFlat_symm M)
+  have hmeas1 : MeasurableSet (cubeBox (flatDim M) 1) :=
+    MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  have hcompact : IsCompact (cubeBox (flatDim M) 1) :=
+    isCompact_univ_pi (fun _ => isCompact_Icc)
+  have hne : (cubeBox (flatDim M) 1).Nonempty :=
+    ⟨0, by intro i _; simp only [Pi.zero_apply, Set.mem_Icc]; constructor <;> norm_num⟩
+  obtain ⟨x0, _, hx0max⟩ := hcompact.exists_isMaxOn hne hcont.continuousOn
+  set C : ℝ := flatNodeLoss M x0 with hC
+  have hbound : ∀ᵐ x ∂(volume.restrict (cubeBox (flatDim M) 1)),
+      ENNReal.ofReal (flatNodeLoss M x ^ (-c')) ≤ ENNReal.ofReal (C ^ (-c')) := by
+    filter_upwards [ae_restrict_mem hmeas1] with x hx
+    exact ENNReal.ofReal_le_ofReal
+      (Real.rpow_le_rpow (dlnLoss_nonneg M 0 _) (hx0max hx) (by linarith))
+  calc ∫⁻ x in cubeBox (flatDim M) 1, ENNReal.ofReal (flatNodeLoss M x ^ (-c'))
+      ≤ ∫⁻ _ in cubeBox (flatDim M) 1, ENNReal.ofReal (C ^ (-c')) := lintegral_mono_ae hbound
+    _ = ENNReal.ofReal (C ^ (-c')) * volume (cubeBox (flatDim M) 1) := setLIntegral_const _ _
+    _ < ⊤ := ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr ENNReal.ofReal_ne_top)
+              hcompact.measure_lt_top
 
 end DLNFibre.DLN.RLCT
