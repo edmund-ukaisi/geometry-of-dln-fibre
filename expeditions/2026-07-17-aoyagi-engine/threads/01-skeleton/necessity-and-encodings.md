@@ -93,8 +93,10 @@ structure Resolution (M) where
 
 ### Q5 route (couples to both A and B — `ChartSubst M`'s type)
 
-**Hard given (my probe): `Params M` has no `NormedAddCommGroup`/`NormedSpace`** (`inferInstance` fails
-both) — so any fderiv over `Params M` is ill-typed.
+**~~Hard given (my probe): `Params M` has no `NormedAddCommGroup`/`NormedSpace` (`inferInstance` fails
+both) — so any fderiv over `Params M` is ill-typed.~~** — STRUCK, FALSE (see the CORRECTION below):
+the probe ran without importing `Foundations/ParamsFlatLinear`, which banks the normed instances.
+`Params M` IS normed / finite-dimensional; the fderiv route is unobstructed.
 
 - **Route (a) — flat-coord fderiv.** `ChartSubst M := (Fin (flatDim M) → ℝ) → (Fin (flatDim M) → ℝ)`
   (normed ⟹ `HasFDerivWithinAt` works), the leaf map = `paramsEquivFlat.symm ∘ (path composite)`.
