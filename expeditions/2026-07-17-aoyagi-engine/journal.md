@@ -881,3 +881,17 @@ inflation; corrected here, not rewritten). Cheapest clarifiers MERGED into the d
 pen-and-paper seat: atlas closure + the t̃-tie/incomparable-T necessity witness + the full-T
 update-rule trace, all at (2,2,2)/(3,3,4). R6 surfaced to the operator for scope confirmation
 (both seats: owed; post-spine; cost-probe-gated).
+
+## 2026-07-18 CARTOGRAPHER PASS #2 MERGED; IMPORT HYGIENE RATIFIED (tick 65)
+The inherited-library index the operator asked for now EXISTS and binds: banked-families
+consumption-scoped by rung (pins re-grepped; one pass-#1 pin corrected — minAdm_le_Mval moved to
+RouteMState:259); DO-NOT-ENTER register (24-sorry census: 18 fossils across 9 half-built
+predecessor lanes — decorated-peel, the peel-and-integrate residuals, InteriorLDUContract the
+densest; each with what-to-use-instead); import-hygiene RATIFIED (whitelist binds all seats;
+heavy-cone imports need a controller note; the D1L2 re-home commissioned to the glue lane with
+the Engine-namespace fix — RegionGlueGlobalize's 304-import weight drops to light). SHAPE pinned:
+~490 Validate modules of mostly-banked substrate; the NEW engine cone is 8 modules, ≤32-file
+weight, exactly two live holes. The pass also SELF-RECONCILED to the concurrently-adopted council
+roadmap (overlay now matches fork 11 — including the struck "kills the cite" gloss). Landmark
+refresh addendum requested (3 stale cards). Reuse-wins relayed implicitly via the overlay; both
+build seats bound to read it before touching Validate/.
