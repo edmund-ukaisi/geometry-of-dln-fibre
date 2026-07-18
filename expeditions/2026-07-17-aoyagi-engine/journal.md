@@ -1367,3 +1367,13 @@ bookkeeping agreeing from opposite directions. DISPATCHED: coverage full-GO on b
 d_center edges; StepRel confirmed unaffected); the paper-map cert's "two charts" corrected
 (dated). ALL statement sets are now settled — no design gates remain ahead of the two build
 units (B' + buildTree) and the two coverage lemmas.
+
+## 2026-07-18 REVIEW FOLLOW-UPS CLOSED (tick 99)
+rev-cov's addendum merged: the (a)-verdict is now INDEPENDENTLY page-grounded on BOTH cases (its
+own read of pp.19-22 matches the seat's pins exactly — the adjudication no longer rests on the
+producing seat's doc), and the refined leafPathImages def reconciled against the actual proofs
+on root (its SOUND reads confirmed). SHARPENING for both build seats: Case-2 has NO u-pivot —
+a pure d-block family — so its corner gap bites at ANY codim ≥ 2 (the probe's (0,ε) witness is
+literally a 2×1 residual block); the pivotComplete clause is per-case (Case 1: u-pivot + block
+pivots; Case 2: block pivots only). All three verdicts stand; no open review items. rev-cov
+stands down warm. The four bounded endgame units are unchanged.
