@@ -102,9 +102,11 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   /-- The per-divisor exponent ledger `M_{s,k}`. CERTIFICATE CONSTRAINT — read by `StepRel`'s
   case-1(1) clause and `IsFullMonomialization`. -/
   divExp : Fin numDiv → ℕ
-  /-- The per-divisor clearing level `t̃_{s,k}`. CERTIFICATE CONSTRAINT — read by `StepRel`'s
-  case-1(1) clause (`divTilde kp = cleared`). -/
-  divTilde : Fin numDiv → ℕ
+  /-- **The per-divisor rank-pattern vector** `T_{s,k} = (t⁽¹⁾,…,t⁽ᴸ⁾)` (rung R1: full-`T` PRIMITIVE;
+  the clearing level `t̃_{s,k}` is DERIVED via `tildeOf = min T`). CERTIFICATE CONSTRAINT — read by
+  `stepUpdate`'s `T`-rule, `StepRel`'s eligibility clause (via derived `t̃`), and the coherence
+  `divExp = Mval T` (`IsFullMonomialization`). -/
+  divProfile : Fin numDiv → (Fin L → ℕ)
   /-- Number of residual generators tracked for sharing. -/
   numGen : ℕ
   /-- **The divisor-support (sharing) map** — `Finset`-valued (a multiplicity flatten is a TYPE
@@ -123,12 +125,8 @@ structure LeafData (M : Fin (L + 1) → ℕ) where
   /-- The accumulated exponent `M_{s,k}` of each terminal divisor. CERTIFICATE CONSTRAINT — read by
   `IsFullMonomialization`, `terminalExponents`, and the exponent hooks. -/
   divExp : Fin numDiv → ℕ
-  /-- The per-divisor clearing level `t̃_{s,k}` (rung 1: the leaf ledger, so `rootLedger` is honest
-  and total over the tree — needed for the faithful `StepRel := rootLedger child = stepUpdate
-  parent` when the child is a leaf). CERTIFICATE CONSTRAINT — read via `rootLedger`. -/
-  divTilde : Fin numDiv → ℕ
   /-- The leaf's cleared-pivot count `J` (rung 1: the leaf ledger). CERTIFICATE CONSTRAINT — read
-  via `rootLedger`. -/
+  via `rootLedger`. The clearing level `t̃_{s,k}` is DERIVED from `divProfile` (`tildeOf = min`). -/
   cleared : ℕ
   /-- The rank profile of each terminal divisor's branch. CERTIFICATE CONSTRAINT — `Adm`-membership
   and the `Mval` tie are read by `IsFullMonomialization` (finding 4). -/
@@ -245,21 +243,21 @@ determines for its child — `numDiv`, the per-divisor exponent `divExp` and cle
 transporting the support `Finset`s across the per-divisor re-indexing is the second cost center (per
 the compass) and BALLOONS
 (Codex-confirmed), so it is STOP-AND-SURFACEd to a later `genDivExp` redesign rung. -/
-structure RootLedger where
+structure RootLedger (L : ℕ) where
   /-- Divisor count at the child root. -/
   numDiv : ℕ
   /-- Per-divisor exponent `M_{s,k}`. -/
   divExp : Fin numDiv → ℕ
-  /-- Per-divisor clearing level `t̃_{s,k}`. -/
-  divTilde : Fin numDiv → ℕ
+  /-- Per-divisor rank-pattern vector `T_{s,k}` (rung R1: `t̃` is DERIVED from this via `tildeOf`). -/
+  divProfile : Fin numDiv → (Fin L → ℕ)
   /-- Cleared-pivot count `J`. -/
   cleared : ℕ
 
 /-- Project the child root's ledger core off a subtree — honest and total (both `StepData` and
-`LeafData` carry the four fields). The faithful `StepRel` equates this to `stepUpdate parent e`. -/
-def rootLedger {M : Fin (L + 1) → ℕ} : ResolutionTree M → RootLedger
-  | leaf l => ⟨l.numDiv, l.divExp, l.divTilde, l.cleared⟩
-  | branch n _ => ⟨n.numDiv, n.divExp, n.divTilde, n.cleared⟩
+`LeafData` carry the fields). The faithful `StepRel` equates this to `stepUpdate parent e`. -/
+def rootLedger {M : Fin (L + 1) → ℕ} : ResolutionTree M → RootLedger L
+  | leaf l => ⟨l.numDiv, l.divExp, l.divProfile, l.cleared⟩
+  | branch n _ => ⟨n.numDiv, n.divExp, n.divProfile, n.cleared⟩
 
 /-- The terminal EXPONENTS the threshold `½·min` reads off: each leaf's divisor exponents PLUS its
 positive Morse-residual rank `resRank` (the resRank fold — so the `region_glue` ratio `hrat` covers
@@ -270,5 +268,27 @@ def terminalExponents {M : Fin (L + 1) → ℕ} (t : ResolutionTree M) : List �
     ((List.finRange l.numDiv).map l.divExp) ++ (if 0 < l.resRank then [l.resRank] else []))
 
 end ResolutionTree
+
+/-- **The derived clearing level** `t̃ = min` over the rank-pattern vector `T` (rung R1: `t̃` is
+DERIVED, not stored — under weak-decrease the tail-write `t⁽ˢ⁾…⁽ᴸ⁾:=J` makes `min T = t⁽ᴸ⁾ = J`).
+Total: `0` for the degenerate `L = 0`. -/
+def tildeOf {L : ℕ} (T : Fin L → ℕ) : ℕ :=
+  if h : 0 < L then
+    haveI : Nonempty (Fin L) := ⟨⟨0, h⟩⟩
+    Finset.univ.inf' Finset.univ_nonempty T
+  else 0
+
+/-- Derived per-divisor clearing level `t̃_{s,k} = min T_{s,k}` on a step node. -/
+def StepData.divTilde {M : Fin (L + 1) → ℕ} (n : StepData M) (k : Fin n.numDiv) : ℕ :=
+  tildeOf (n.divProfile k)
+
+/-- Derived per-divisor clearing level `t̃_{s,k} = min T_{s,k}` on a leaf. -/
+def LeafData.divTilde {M : Fin (L + 1) → ℕ} (l : LeafData M) (k : Fin l.numDiv) : ℕ :=
+  tildeOf (l.divProfile k)
+
+/-- Derived per-divisor clearing level `t̃_{s,k} = min T_{s,k}` on a root ledger. -/
+def ResolutionTree.RootLedger.divTilde {L : ℕ} (r : ResolutionTree.RootLedger L)
+    (k : Fin r.numDiv) : ℕ :=
+  tildeOf (r.divProfile k)
 
 end DLNFibre.DLN.RLCT.Engine

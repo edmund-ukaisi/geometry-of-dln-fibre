@@ -104,25 +104,35 @@ to the named `genDivExp` redesign rung. The transitions are page-pinned to the A
 (`aoyagi-2023-neural-networks-preprint.pdf`, NOT Lehalleur-Rimányi): case-1(1) merge p.16; case-1(2)
 exponent p.17; case-2 exponent p.20 + `cleared+1` p.21; case-1 eligibility p.15. -/
 def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : ChartSubst M) :
-    ResolutionTree.RootLedger :=
+    ResolutionTree.RootLedger L :=
+  -- `T`-rule tail-write (rung R1, pnp-atlas verdict 3): the tail `t⁽ˢ⁾…⁽ᴸ⁾ := J`. Fixed index set
+  -- `{1..L}`, no re-indexing. INDEXING (trace-`S` 1-indexed ↔ Lean `layer` 0-indexed): tail iff
+  -- `n.layer ≤ p.val`. The head is per-case (unchanged / inherited / width-reset).
+  let setTail : (Fin L → ℕ) → (Fin L → ℕ) :=
+    fun T p => if n.layer ≤ (p : ℕ) then n.cleared else T p
   match c with
   | StepCase.case11 =>
+      -- mutate the fixed divisor `mergeIdx`: head UNCHANGED, tail `:= J` (Aoyagi p.16)
       { numDiv := n.numDiv
         divExp := fun k => if (k : ℕ) = σ.mergeIdx then n.divExp k + σ.runLen * n.resCols
                             else n.divExp k
-        divTilde := fun k => if (k : ℕ) = σ.mergeIdx then n.cleared else n.divTilde k
+        divProfile := fun k => if (k : ℕ) = σ.mergeIdx then setTail (n.divProfile k)
+                                else n.divProfile k
         cleared := n.cleared }
   | StepCase.case12 =>
+      -- new pivot: head INHERITED from the parent divisor `mergeIdx`, tail `:= J` (Aoyagi p.17)
       { numDiv := n.numDiv + 1
         divExp := Fin.snoc n.divExp
           ((if h : σ.mergeIdx < n.numDiv then n.divExp ⟨σ.mergeIdx, h⟩ else 0)
             + σ.runLen * n.resCols)
-        divTilde := Fin.snoc n.divTilde n.cleared
+        divProfile := Fin.snoc n.divProfile
+          (setTail (if h : σ.mergeIdx < n.numDiv then n.divProfile ⟨σ.mergeIdx, h⟩ else fun _ => 0))
         cleared := n.cleared + 1 }
   | StepCase.case2 =>
+      -- new pivot: head RESET to widths `t⁽ⁱ⁾ := M⁽ⁱ⁺¹⁾` (`M p.succ`), tail `:= J` (Aoyagi p.20)
       { numDiv := n.numDiv + 1
         divExp := Fin.snoc n.divExp (n.resRows * n.resCols)
-        divTilde := Fin.snoc n.divTilde n.cleared
+        divProfile := Fin.snoc n.divProfile (setTail (fun p => M p.succ))
         cleared := n.cleared + 1 }
 
 /-- **The faithful per-step transition relation** (rung 1). FAITHFUL for the exponent/clearing
