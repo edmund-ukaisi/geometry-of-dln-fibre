@@ -603,6 +603,20 @@ index `< layer`) is bounded by the running-min width `runMinWidth` (the Case-2 a
 def WidthBound {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
   ∀ (k : Fin s.numDiv) (p : Fin L), (p : ℕ) < s.layer → s.divProfile k p ≤ runMinWidth M p
 
+/-- **LiveHeadDom** (o4-cert Part 6, the invariant that closes the case-1 residual). Head-domination
+among LIVE divisors: if `t̃ a < t̃ b < Mrun(S)` (both in the b-chain, `Mrun(S) = widthMinUpto layer`)
+then `a`'s head is dominated by `b`'s (`a i ≤ b i` for head `i < layer`). The `< Mrun(S)` guard
+excludes STRANDED divisors (level `≥ Mrun(S)`) — which is precisely why `LiveHeadDom` survives the
+interior width-drops that refute the paper's full chain (the stranded pair `(2,1,0)` vs `(1,1,1)` at
+`(2,2,1,1)` has the higher at level `= Mrun(S)`, so `LiveHeadDom` says nothing). With `FlatTail` it
+gives STEP1 (every level-`ℓ` divisor `≥` every level-`≤J` divisor at a case-1 node), closing the
+residual and preserving `SameLevelChainInv` at level `J`. Its own maintenance (o4) consumes the four
+invariants + the chooser MINIMALITY at case-1 (the least `f` keeps `f'` below level-`ℓ`; a wrong pick
+breaks it — cert Part 6 correction to Part 5). -/
+def LiveHeadDom {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : Prop :=
+  ∀ (a b : Fin s.numDiv), s.divTilde a < s.divTilde b → s.divTilde b < widthMinUpto M s.layer →
+    ∀ i : Fin L, (i : ℕ) < s.layer → s.divProfile a i ≤ s.divProfile b i
+
 /-- **Layer rollover preserves `FlatTail`** — profiles carry over; a constant suffix (`≥ layer`)
 restricts to a constant suffix (`≥ layer+1`). -/
 theorem FlatTail_stepRollover {L : ℕ} (s : ConState L) (h : FlatTail s) :
