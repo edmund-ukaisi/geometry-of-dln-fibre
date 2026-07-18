@@ -1589,4 +1589,48 @@ noncomputable def case1Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConStat
         · intro _; exact ⟨f.isLt, helig⟩
         · intro h; nomatch h)
 
+/-! ## o2: the total oracle — the construction dispatch on `classify`
+
+The total `(s : ConState L) → ConDecision M s`: terminal at `layer = L`; rollover at layer
+exhaustion; else the least occupied `t̃`-level (`occ.min?`) drives a case-1 blow-up on the
+Def-4-minimal divisor (`chooseMin`), with a terminal FALL-BACK when `chooseMin` returns `none`
+(off the reachable cone — on-cone `SameLevelChainInv` makes it total, `chooserTotalOnChain`, the
+reachability discharge); no occupied level ⟹ case-2. `dite` keeps each branch's dispatch condition in
+scope, so the branch decisions' hypotheses discharge inline (no separate inversion lemmas). -/
+
+/-- **The total construction oracle.** Dispatches exactly as `classify` (same `occ`), emitting the
+per-branch `ConDecision`s with their guarantees discharged from the `dite` conditions + `occ`
+membership + `chooseMin_spec`. -/
+noncomputable def conOracle {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) : ConDecision M s :=
+  if h1 : L ≤ s.layer then oracleTerminal M s
+  else if h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared then
+    rolloverDecision M s (le_of_lt (not_le.mp h1)) h2
+  else
+    let occ := (List.finRange s.numDiv).filterMap (fun k =>
+      if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+      then some (s.divTilde k) else none)
+    have hcap : s.cleared < layerCap M :=
+      lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+    match hmin : occ.min? with
+    | some target =>
+      match hf : chooseMin s target with
+      | some f =>
+        have htarget : s.cleared + 1 ≤ target := by
+          have hmem : target ∈ occ := List.min?_mem hmin
+          rw [List.mem_filterMap] at hmem
+          obtain ⟨k, _, hk⟩ := hmem
+          by_cases hc : s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hc] at hk
+            have hdt : s.divTilde k = target := Option.some.inj hk
+            obtain ⟨hc1, _⟩ := hc; omega
+          · rw [if_neg hc] at hk; exact absurd hk (by simp)
+        case1Decision M s f (target - s.cleared)
+          (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+          (not_le.mp h1) (by omega)
+          (by rw [(chooseMin_spec s target hf).1]; omega) hcap
+      | none => oracleTerminal M s
+    | none =>
+      case2Decision M s (M ⟨s.layer, by omega⟩ - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+        hcap
+
 end DLNFibre.DLN.RLCT.Engine
