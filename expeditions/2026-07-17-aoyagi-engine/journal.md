@@ -1255,3 +1255,23 @@ geometric image-cover atom exists) — no rebuild. The bedrock ¬-theorem corner
 (a fixed corner chart provably misses (0,ε) — the probe's exact Verdict-1(b) gap as a Lean
 witness) rides along. Battery c-pivot-chart-cover.py exit-0 (cover/bound/gap/jac, d = 1..4).
 GO to grind (~60-90 LoC); rung-2 riders: page-pin the case centers; consume CompChainInv.
+
+## 2026-07-18 THE 12(b) GATE: A TRANSCRIPTION DEFECT IN THE PAPER ITSELF (tick 92)
+pnp-atlas's (2,2,3,2) verdict (battery validated on three known instances first; Codex replay
+agreeing to the number): BOTH sub-questions AGAINST the current predicates — the gate held the
+discharge exactly as designed. (i) The p.20 Case-2 head-reset label uses the RAW width while its
+own exponent uses the running-min: at the minimal non-monotone instance this reaches a t̃=0 leaf
+labelled (2,3,0) ∉ Adm with accumulated exponent 4 = Mval(2,2,0) — the ADMISSIBLE stratum
+mislabelled; the paper's own p.22 formula conflicts with its own accumulation (6 vs 4). A
+VERIFIED TRANSCRIPTION DEFECT, Def-3's class — ledgered (verify-case2-rawwidth-defect.md).
+RULING FIX-A: cap the head-reset at the running-min (battery-confirmed: label==exponent,
+Adm-clean, min==minAdm; fork-12(a)'s argument then goes through unchanged). (ii) Leaves CARRY
+t̃>0 divisors with exponents < minAdm (fenced by the paper's t̃=0 read-off): IsFullMonomialization
++ the exponent hooks RESTRICT to t̃=0 — the unrestricted ∀k was stronger than the paper and
+FALSE. The ChartBridge analytic tuple is UNCHANGED (T3 supplies t̃=0-enumerated leaves; the t̃>0
+monomials fold into residualCore — its sector-squeeze is T3's burden, correctly placed). THE
+VALUE WAS NEVER AT RISK; the predicate shapes were. Compass 12(b) resolution appended. The
+vindication chain is now complete: the elder's third-page-surface warning (tick 46) → the
+operator's full-mechanism steer → the faithful full-T carrier → the non-monotone probe → a
+defect INVISIBLE at monotone widths and every L≤2 instance. A trimmed-to-the-hole carrier could
+never have found it — and would have discharged a FALSE predicate.
