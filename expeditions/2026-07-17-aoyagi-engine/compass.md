@@ -150,6 +150,19 @@ over banked substrate.
    isn't the construction's natural definitional shape or the equality balloons, STOP-AND-SURFACE and
    take permanent downscope; (ii) kill-condition = the dummy-divisor witness provably rejected (a
    ¬-theorem, cf. stepRel_rejects_mismatched_case2).
+   RUNG-1 SUB-SCOPING (2026-07-18, elder-ratified). stepUpdate is faithful for the EXPONENT/CLEARING
+   ledger (numDiv/divExp/divTilde/cleared), page-verified: case-1(1) merge M'=M+J₁(M^{(S+1)}−J) t̃→J
+   cleared-unchanged (p.16); case-1(2) new pivot same increment, t̃=J, cleared+1 (p.17-18); case-2 new
+   divisor exponent (M(S)−J)(M^{(S+1)}−J), t̃=J (p.20). TRUTH-WITNESS CATCH: case-2 cleared advance was
+   `+= resRows` — WRONG (p.21: J increases by ONE per Case-2 step; += resRows drops the decreasing-
+   exponent divisors of the skipped steps, making minAdm∈terminalExponents unsatisfiable); corrected to
+   `+= 1`. DEFERRED (fidelity, not finiteness-load-bearing; guard = LeafPullback): support propagation
+   (balloons — genDivExp redesign as a named later rung with the coupled-binding/delta-flatten kill-
+   condition) and layer(S)-advancement (lives in the construction Phase/State, μ 1st component).
+   CARRIER: ℕ mergeIdx + out-of-range no-op ADOPTED over dependent StepSubst n c (avoids dependent-edge
+   recursion friction; junk rejected at Prop level per the codebase pattern); eligibility (t̃=cleared+
+   runLen) is a cheap Prop conjunct if the no-op acceptance proves certificate-unacceptable — NOT a
+   dependent-type refactor. LeafData gains divTilde/cleared (honest total rootLedger).
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

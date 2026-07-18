@@ -577,3 +577,25 @@ Glue bricks 3-4 force-verified clean-three (routeMLayerBoxIntegral_lt_top_of_sma
 _nonpos_lt_top; note: the module lives in Engine/ but declares namespace DLNFibre.DLN.RLCT —
 flag to glue-t05 for the naming pass at close, not blocking). Battery 15 SURVIVES + 2 intended
 kills = 17 healthy.
+
+## 2026-07-18 ELDER ITEM-3 CATCH: case-2 cleared advance WRONG; STRENGTHENING MERGED (tick 46)
+TRUTH-WITNESS-AT-PIN-TIME EARNED ITS KEEP: the elder read the preprint PAGE IMAGES (pp.14-22) and
+found one of the two flagged formulas WRONG — case-2's cleared advance `+= resRows` must be `+= 1`
+(p.21 verbatim: J increases by ONE per Case-2 step; the full-block descriptor is the equal-run,
+which clears over SUCCESSIVE steps each creating a DISTINCT pivot with STRICTLY DECREASING
+exponents (M(S)−J−i)(M^{(S+1)}−J−i) — the fast-forward would DROP the smaller-exponent divisors,
+which can be BINDING, making minAdm ∈ terminalExponents UNSATISFIABLE: the long pole would have
+ground against an unprovable obligation instead of failing cleanly). Rung 2 BLOCKED on the fix.
+The other flagged formula (case-1(2)) CONFIRMED, plus bonus page-verification of the two unflagged
+ones (case-1(1) merge; case-2 exponent). Items 1+2 RATIFIED: support middle path honest to fork 3
+(typed field untouched; coupling guarded by LeafPullback not propagation; case-2's parent-side
+support read suffices) with CONDITIONS (genDivExp = NAMED rung + owner + coupled-binding/delta-
+flatten kill; layer-advancement lives in rung-2 Phase/State — StepRel doesn't check it); ℕ mergeIdx
+ratified over the dependent form (dependent-edge friction; Prop-level junk rejection per codebase
+pattern) with the ELIGIBILITY CONJUNCT (t̃(mergeIdx) = cleared + runLen, p.15) recommended
+Just-Do-It. NEW COUNSEL: divProfile per-case T-settings (case-1(2) t=t_sk vs case-2 t=M^(i+1),
+pp.17/20) = the THIRD page-reading surface — verify vs PAGE at the rung that sets divProfile.
+Compass fork-9 sub-scoping appended. SEPARATELY: architect swept its inbox (all 6 confirmed),
+strengthening MERGED (f8a5933d9: ChartBridge measurable+bounded clause; the 224 witness srcBox
+was Set.univ — A LATENT LIE under the new clause, exactly the flagged truth-signal — now a
+concrete cubeBox preimage with Nonempty reproved). Glue lane unblock ping sent.
