@@ -1275,3 +1275,15 @@ vindication chain is now complete: the elder's third-page-surface warning (tick 
 operator's full-mechanism steer → the faithful full-T carrier → the non-monotone probe → a
 defect INVISIBLE at monotone widths and every L≤2 instance. A trimmed-to-the-hole carrier could
 never have found it — and would have discharged a FALSE predicate.
+
+## 2026-07-18 T3 RUNG 1 PROVEN + WIRED (tick 93)
+The hard part's first brick is REAL: the per-blow-up pivot covering atom proven sorry-free —
+iUnion_pivotChart_image_eq_cubeBox + the isolated ⊇ half + corner_chart_not_cover (the probe's
+Verdict-1(b) gap as a permanent kernel-checked ¬-witness). Merged, aggregator-wired,
+controller-verified (forced probes clean-three 2/2; battery exit-0). Rung-2 scoping GO
+(statement-first): the fold into ChartBridge's flat-coord image cover — where the case centers
+get page-pinned (with the FIX-A corrected Case-2 label semantics) and the t̃=0 analytic/ledger
+split lands in LeafData population. The independent fidelity read (rung-1 atom + rung-2
+statement) batches at rung 2's gate — one review at the coupling point. pnp-atlas warm
+(three-for-three on gates). Both engine lanes now have proven bricks: the glue side COMPLETE,
+the construction side carrying rung-1 coverage + the full T1 carrier + the termination spine.
