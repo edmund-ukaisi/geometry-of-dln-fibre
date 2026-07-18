@@ -133,15 +133,21 @@ def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : C
 
 /-- **The faithful per-step transition relation** (rung 1). FAITHFUL for the exponent/clearing
 ledger CORE (`numDiv`/`divExp`/`divTilde`/`cleared`): the child's root ledger EQUALS the parent's
-`stepUpdate`, AND (case-1(1) only) the merge target is ELIGIBLE — `σ.mergeIdx` in range with
-`t̃_{mergeIdx} = J + J₁` (preprint p.15, closing the no-op acceptance gap). NOT modelled here:
+`stepUpdate`, AND — for BOTH case-1(1) and case-1(2), the two charts of the SAME case-1 blow-up on
+`u_{s,k}` — the merge/split target is ELIGIBLE: `σ.mergeIdx` in range with `t̃_{mergeIdx} = J + J₁`
+(preprint p.15 "Fix `u_{s,k}` such that `t̃_{s,k} = J + J₁`", closing the no-op acceptance gap). The
+IN-RANGE half is required for case-1(2) too: `stepUpdate` case12 reads `divExp(mergeIdx)` as the
+split pivot's base exponent (`M_{sk} + J₁·(M^{(S+1)}−J)`, p.17), and an OUT-OF-RANGE `mergeIdx`
+silently `dite`-drops the base to `0` — accepted without this guard (`oobSplit_not_stepRel`). The
+case12 `t̃`-half (that the split chart carries the same `t̃ = J + J₁` precondition) is PENDING ELDER
+PAGE-CONFIRM; the in-range half holds regardless (case11/case12 are one blow-up). NOT modelled here:
 support propagation (deferred to the named `genDivExp` rung) and layer-`S` advancement (lives in the
 construction's `State`, the rung-2 μ 1st component). Retires the existential form — a dummy divisor
 appearing/vanishing changes `rootLedger e.child` and is rejected (`dummyDivisor_not_stepRel`). Since
 the construction computes each child ledger via `stepUpdate`, the equality is rfl-class. -/
 def StepRel {M : Fin (L + 1) → ℕ} (n : StepData M) (e : Edge M) : Prop :=
   ResolutionTree.rootLedger e.child = stepUpdate n e.case e.subst ∧
-    (e.case = StepCase.case11 →
+    ((e.case = StepCase.case11 ∨ e.case = StepCase.case12) →
       ∃ h : e.subst.mergeIdx < n.numDiv,
         n.divTilde ⟨e.subst.mergeIdx, h⟩ = n.cleared + e.subst.runLen)
 
