@@ -100,12 +100,15 @@ parent `n`, the `case`, and the edge substitution `σ` — `numDiv`, per-divisor
 * **case 1(2)** — SPLIT divisor `σ.mergeIdx` into a NEW pivot appended at the end with exponent
   `divExp(mergeIdx) + runLen·resCols` and `t̃ = cleared` (preprint p.17 `M'_{S,J+1} = M_{sk} +
   J₁·(M^{(S+1)}−J)`, `t̃_{S,J+1}=J`); advance `cleared` by one.
-* **case 2** — full block: append a NEW shared divisor of exponent `resRows·resCols` (preprint p.20)
-  with `t̃ = cleared`; clear the whole residual (`cleared += resRows`).
+* **case 2** — append a NEW pivot divisor of exponent `resRows·resCols` (preprint p.20) with
+  `t̃ = cleared`; advance `cleared` by one, like case 1(2) (elder p.21: J increases by ONE per
+  Case-2 step — the full block clears over SUCCESSIVE Case-2 steps, each a distinct pivot of
+  strictly smaller exponent `(M(S)−J−i)(M^{(S+1)}−J−i)`; a `+= resRows` fast-forward would DROP
+  those divisors, one of which can be the binding minimum).
 SUPPORT PROPAGATION is STOP-AND-SURFACEd (NOT modelled here): transporting the `support` `Finset`s
 across the per-divisor re-indexing balloons (Codex-confirmed; compass second cost center), deferred
-to a `genDivExp` redesign rung. The case-1(2) new-exponent and the case-2 `cleared` advance are the
-architect's page-reading choices, flagged for elder ratification. -/
+to the named `genDivExp` redesign rung. The transitions are page-pinned (case-1(1) merge p.16;
+case-1(2) exponent p.17; case-2 exponent p.20 + `cleared+1` p.21; case-1(1) eligibility p.15). -/
 def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : ChartSubst M) :
     ResolutionTree.RootLedger :=
   match c with
@@ -126,14 +129,21 @@ def stepUpdate {M : Fin (L + 1) → ℕ} (n : StepData M) (c : StepCase) (σ : C
       { numDiv := n.numDiv + 1
         divExp := Fin.snoc n.divExp (n.resRows * n.resCols)
         divTilde := Fin.snoc n.divTilde n.cleared
-        cleared := n.cleared + n.resRows }
+        cleared := n.cleared + 1 }
 
-/-- **The faithful per-step transition relation** (rung 1): the child's root ledger core EQUALS the
-parent's `stepUpdate`. Retires the existential form — a dummy divisor appearing/vanishing across an
-edge changes `rootLedger e.child` and is rejected (see `dummyDivisor_not_stepRel`). Since the
-construction computes each child ledger via `stepUpdate`, the equality is rfl-class. -/
+/-- **The faithful per-step transition relation** (rung 1). FAITHFUL for the exponent/clearing
+ledger CORE (`numDiv`/`divExp`/`divTilde`/`cleared`): the child's root ledger EQUALS the parent's
+`stepUpdate`, AND (case-1(1) only) the merge target is ELIGIBLE — `σ.mergeIdx` in range with
+`t̃_{mergeIdx} = J + J₁` (preprint p.15, closing the no-op acceptance gap). NOT modelled here:
+support propagation (deferred to the named `genDivExp` rung) and layer-`S` advancement (lives in the
+construction's `State`, the rung-2 μ 1st component). Retires the existential form — a dummy divisor
+appearing/vanishing changes `rootLedger e.child` and is rejected (`dummyDivisor_not_stepRel`). Since
+the construction computes each child ledger via `stepUpdate`, the equality is rfl-class. -/
 def StepRel {M : Fin (L + 1) → ℕ} (n : StepData M) (e : Edge M) : Prop :=
-  ResolutionTree.rootLedger e.child = stepUpdate n e.case e.subst
+  ResolutionTree.rootLedger e.child = stepUpdate n e.case e.subst ∧
+    (e.case = StepCase.case11 →
+      ∃ h : e.subst.mergeIdx < n.numDiv,
+        n.divTilde ⟨e.subst.mergeIdx, h⟩ = n.cleared + e.subst.runLen)
 
 /-- **Full monomialisation**: each leaf's terminal divisor exponent equals `Mval` of its rank
 profile, AND that profile is ADMISSIBLE (`divProfile k ∈ Adm M` — finding 4). The leaf chain is
@@ -222,9 +232,9 @@ NONEMPTY source box — no empty-`srcBox` phantom. A projection of `resolutionOf
 /-- **Region glue** (map: `region-glue`; the ONE analytic hole). ASSEMBLY ONLY: given the CoV
 bridge, the box integral is finite whenever `c'` is below half every terminal exponent (divisor
 exponents AND the folded `resRank` — so the Morse-core threshold is covered) — the banked
-monomial/radial reads +
-`rlctAtOn_boundedUnit_localHomeomorph` on the `ψ` factor + direct monomial integration of the `β`
-factor, glued over the upstairs-open finite subcover. Precondition `IsFullMonomialization`. -/
+monomial/radial reads + the Mathlib area formula on the `ψ ∘ β` chart (consuming the upper det
+bound; elder-ratified fork-8 revision) + the scaling-bridge globalization, glued over the
+upstairs-open finite subcover. Precondition `IsFullMonomialization`. -/
 @[blueprint] theorem region_glue (M : Fin (L + 1) → ℕ)
     (hbridge : ChartBridge M (resolutionOf M)) (c' : ℝ)
     (hrat : ∀ e ∈ ResolutionTree.terminalExponents (resolutionOf M), c' < (e : ℝ) / 2) :

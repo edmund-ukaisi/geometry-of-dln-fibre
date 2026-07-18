@@ -79,9 +79,11 @@ theorem minAdm_M224 : minAdm M224 = 4 := by
   rw [← minAdmRec_eq_minAdm]; decide
 
 /-- **The FAITHFUL case-2 root edge**: the child leaf's ledger IS `stepUpdate rootNode224 case2
-subst224` by construction, so `StepRel` is discharged by structure-eta `rfl`. -/
+subst224` by construction (ledger equality by structure-eta `rfl`); the case-1(1) eligibility clause
+is vacuous (the edge is case-2). -/
 theorem rootEdge224_stepRel :
-    StepRel rootNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)) := rfl
+    StepRel rootNode224 (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf leaf224)) :=
+  ⟨rfl, fun h => by simp [Edge.case] at h⟩
 
 /-- **The arithmetic bank piece** (clean-three): at `M = (2,2,4)` the carrier-independent conjuncts
 are jointly satisfiable — full monomialisation (`divExp = Mval`, `divProfile ∈ Adm`), the FAITHFUL
@@ -129,11 +131,13 @@ pending the P8 CoV lemma. -/
 
 /-! ## Case-1(1) child-merge witness (faithful; kills the old childless `StepRel`) -/
 
-/-- A Case-1(1) parent: one divisor `divExp 0 = 5`, residual width `resCols = 3`. -/
+/-- A Case-1(1) parent: one divisor `divExp 0 = 5` at clearing level `t̃ = J + J₁ = 2` (the p.15
+eligibility precondition for merging with `runLen = J₁ = 2` at `cleared = J = 0`), residual width
+`resCols = 3`. -/
 def mergeNode : StepData M224 where
   layer := 0; cleared := 0; resRows := 1; resCols := 3
   numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
-  divExp := fun _ => 5; divTilde := fun _ => 0; numGen := 1; support := fun _ => {0}
+  divExp := fun _ => 5; divTilde := fun _ => 2; numGen := 1; support := fun _ => {0}
 
 /-- The Case-1(1) edge: `runLen = J₁ = 2`, merging INTO divisor `mergeIdx = 0`. -/
 def mergeSubst : ChartSubst M224 where
@@ -153,9 +157,11 @@ noncomputable def mergeLeaf : LeafData M224 where
   divCoord := fun _ => ⟨0, by decide⟩; resCoord := Fin.elim0
 
 /-- **Case-1(1) child-merge witness** (faithful; `5 + 2·3 = 11`): the child leaf's ledger IS
-`stepUpdate mergeNode case11 mergeSubst`, so `StepRel` is rfl. -/
+`stepUpdate mergeNode case11 mergeSubst` (ledger equality by structure-eta `rfl`), and the merge
+target is ELIGIBLE — `mergeIdx = 0 < 1` with `t̃ 0 = 2 = cleared + runLen` (p.15). -/
 theorem mergeEdge_stepRel :
-    StepRel mergeNode (Edge.mk StepCase.case11 mergeSubst (ResolutionTree.leaf mergeLeaf)) := rfl
+    StepRel mergeNode (Edge.mk StepCase.case11 mergeSubst (ResolutionTree.leaf mergeLeaf)) :=
+  ⟨rfl, fun _ => ⟨by decide, by decide⟩⟩
 
 /-- The merged child's divisor exponent is `11` (numeric pin of the page-image merge equation). -/
 theorem mergeLeaf_divExp : mergeLeaf.divExp ⟨0, by decide⟩ = 11 := by decide
@@ -179,7 +185,7 @@ theorem dummyDivisor_not_stepRel :
       (Edge.mk StepCase.case11 mergeSubst (ResolutionTree.leaf dummyMergeLeaf)) := by
   unfold StepRel
   intro h
-  have hn : (2 : ℕ) = 1 := congrArg ResolutionTree.RootLedger.numDiv h
+  have hn : (2 : ℕ) = 1 := congrArg ResolutionTree.RootLedger.numDiv h.1
   exact absurd hn (by decide)
 
 /-- A child MISSING the appended divisor (`numDiv = 0`) where case-2 must append one
@@ -198,7 +204,7 @@ theorem vanishingDivisor_not_stepRel :
       (Edge.mk StepCase.case2 subst224 (ResolutionTree.leaf vanishingLeaf)) := by
   unfold StepRel
   intro h
-  have hn : (0 : ℕ) = 1 := congrArg ResolutionTree.RootLedger.numDiv h
+  have hn : (0 : ℕ) = 1 := congrArg ResolutionTree.RootLedger.numDiv h.1
   exact absurd hn (by decide)
 
 /-! ## The in-file mixed-case Case-1 record (carrier records both cases of one blow-up) -/
