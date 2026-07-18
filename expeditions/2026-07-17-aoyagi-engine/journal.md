@@ -1707,3 +1707,15 @@ MAINTENANCE rung (WidthBound + LiveHeadDom [case-1 consuming minimality] + SameL
 preservation from STEP1) — the summit, taken fresh next turn per the standing tripwire. Then
 o3 + o5-∈ + the Q3 advance constructor (with its page sub-question) + the emission geometry
 behind the orthogonal ψ-track.
+
+## 2026-07-18 WIDTHBOUND FINDING: GLOBAL FORM FALSE, LIVE FORM SOUND (tick 123)
+The tripwire fired correctly AGAIN, pre-grind: the architect numerically probed its transcribed
+WidthBound def BEFORE building maintenance — the GLOBAL form is FALSE (at (3,3,1,1) the stranded
+(2,2,2)'s tail-turned-head exceeds the dropped running-min at a bottleneck rollover; 8
+violations), while the LIVE-RESTRICTED form (t̃ < Mrun guard, matching LiveHeadDom's) is 0
+everywhere reachable. The cert's Part-6 USAGE was always live; only its Part-3 WORDING was
+global — a transcription-literal def caught by the probe-first discipline before a doomed proof.
+THE PATTERN IS NOW A THEME: every invariant that failed, failed on STRANDED divisors; every
+repair is a LIVE-guard. Def fixed + documented; cert erratum queued for pnp's next wake. The
+architect takes the LiveHeadDom 5-case maintenance fresh — the last hard proof of the
+construction.
