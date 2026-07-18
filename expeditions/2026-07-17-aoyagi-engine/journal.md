@@ -1377,3 +1377,14 @@ a pure d-block family — so its corner gap bites at ANY codim ≥ 2 (the probe'
 literally a 2×1 residual block); the pivotComplete clause is per-case (Case 1: u-pivot + block
 pivots; Case 2: block pivots only). All three verdicts stand; no open review items. rev-cov
 stands down warm. The four bounded endgame units are unchanged.
+
+## 2026-07-18 VERDICT FOLDED; ENDGAME BOARD SET (tick 100)
+The architect folded the pivot verdict into the design (62110b48c, merged): pivotComplete
+replaces hlive (per-case d_center enumeration; the worked example now shows the full family —
+d_center = 5 at (3,3,4) — with 1(1)/1(2) as representative TYPES); StepRel confirmed unaffected
+(ledger/descent work stands verbatim). BOTH statement sets fully settled; the architect holds
+its two T1b-scale units (B' first, gate = the glue chain untouched; then buildTree with
+pivotComplete + the comparability chain) for a fresh-budget coherent pass per the standing
+tripwire. The endgame board at tick 100: ONE hole on the hbox cone; four bounded build units
+across two seats, all against doubly-page-grounded reviewer-settled statements; every review
+seat warm with zero open items.
