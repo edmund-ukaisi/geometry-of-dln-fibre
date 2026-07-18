@@ -734,3 +734,15 @@ disjunction; footprints verified by the seat's own forced #print (clean-three / 
 Validate clean. The docstring hedge ("pending elder page-confirm") predates the elder's (a)
 verdict — the confirm + scope-notes directive is in the seat's inbox, folds into its first rung-2
 commit. Rung 2 (μ-lex spine first) is now the sole critical-path item; glue grind parallel.
+
+## 2026-07-18 GLUE SUB-STEP 1 MERGED (tick 57)
+glue-t06's base brick merged + force-verified clean-three (prod_abs_rpow_cube_lt_top — per-axis
+rpow product over the cube, finite when every axis exponent > −1; module at Validate/
+RegionGlueModelRead.lean, near its banked import). The respawned seat corrected TWO defects in
+its predecessor's untracked draft before building: (1) a re-declaration of the banked
+abs_rpow_lintegral_Icc_lt_top (aggregator name-clash class — deleted, imports the banked one);
+(2) a SOUNDNESS subtlety in the AM-GM Morse-domination route: the coordinate-wise bound
+(∑y²)^(−c') ≤ nr^(−c')·∏|yᵢ|^(−2c'/nr) is A.E., NOT pointwise (fails where some-but-not-all
+resCoords vanish; holds off a finite union of null hyperplanes via Measure.pi_hyperplane) —
+route stays valid via lintegral_mono_ae; docstring corrected. Next: Module A remainder → B
+(area formula) → C (cover+globalize). ChartBridge holding.
