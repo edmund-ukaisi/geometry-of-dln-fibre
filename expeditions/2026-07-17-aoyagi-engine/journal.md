@@ -842,3 +842,23 @@ Morse; only TRUE leaves carry ‖z‖²; the genuine L=3 leaf is the separate de
 instIsAddHaarMeasureParams (Params M Haar instance from banked pieces) builds green — the area
 formula now runs on Params M directly. Rung 2C COMPLETE; the architect owes the revised ladder
 next (before rung 3 / recursion assembly); council + cartographer deliberating in parallel.
+
+## 2026-07-18 COUNCIL SEAT A LANDED (tick 63; adoption HELD for seat B)
+Seat A (kernel-verified, adversarial): RATIFY Path A strategy; the confound hunt FOUND a real
+precision defect in the recon — "discharging hbox deletes cited_aoyagi_dln" is FALSE: the
+canonical headline rides on sorryAx (5 skeleton rungs; AxCheck expectation prose confirms,
+controller-re-verified), and the cite lives ONLY in the out-of-scope RlctPayoff layer (needs
+minAdm=codim — next expedition's runway). The REAL prize: unconditional CLEAN-THREE
+aoyagi_learning_coefficient. brief.md closing criterion needs the correction. HEAD-ON answer to
+the operator's worry: the collapse dissolves the TWO-PATHS tension, NOT the hole-vs-mechanism
+tension — hbox ⊊ mechanism (the certificate provably never reads full-T/tie-break/gap/divProfile/
+genDivExp; EngineConstruction:15 "stores only what the measure reads" IS the retired razor
+encoded in code — to be struck). STANDING RAZOR-GUARD proposed: any rung justified by "not
+needed for hbox / suffices for λ" rejected on sight. R6 (Lemma 2 + Thm 3 peel): OWED under fork
+10, not optional — placed parallel/non-critical after hbox, cost-probe-gated (SchurCore depth≥3
+wall). R1 AMENDED: full-T in the State NOW (t̃ DERIVED — the current state carries the derived
+quantity and drops the primitive; no-derivable-data violated), genDivExp FIELD at R1 (props at
+R4) so R2/R3 build against the final carrier once. R2 gate = ChartBridge PROOF + DECORRELATED
+atlas-closure probe (pen-and-paper seat, NOT the architect — builder-verifying-own-atlas is the
+vacuity pattern). Cheapest clarifier: a pen-and-pencil full-T update trace at (3,3,4) BEFORE
+committing R1 (prices the ballooning risk). Adoption + compass fork-11 HELD until seat B.
