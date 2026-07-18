@@ -774,6 +774,24 @@ theorem WidthBound_stepAppendAdvance {L : ℕ} {M : Fin (L + 1) → ℕ} (s : Co
       simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]
       exact hwb k' (hdt ▸ hk) p hp'
 
+/-- **Layer rollover preserves `LiveHeadDom`** — profiles carry over; the live set shrinks. For live
+`a`, `b` (`t̃ a < t̃ b < widthMinUpto (layer+1)`): existing head coords use the old `LiveHeadDom`
+(still live at the smaller layer); the newly-exposed coord `i = layer` is ordered by
+`a_layer = t̃ a < t̃ b = b_layer` (tail `= t̃`). -/
+theorem LiveHeadDom_stepRollover {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (hlhd : LiveHeadDom M s) (hft : FlatTail s) (hwd : WeakDecInv s) (hlive : s.layer < L) :
+    LiveHeadDom M s.stepRollover := by
+  intro a b hab hblt i hi
+  have hab' : s.divTilde a < s.divTilde b := hab
+  have hblt' : s.divTilde b < widthMinUpto M (s.layer + 1) := hblt
+  have hi' : (i : ℕ) < s.layer + 1 := hi
+  change s.divProfile a i ≤ s.divProfile b i
+  rcases Nat.lt_or_ge (i : ℕ) s.layer with hlt | hge
+  · exact hlhd a b hab' (lt_of_lt_of_le hblt' (widthMinUpto_mono M (Nat.le_succ _))) i hlt
+  · rw [divProfile_tail_eq_tilde s hft hwd hlive a hge,
+        divProfile_tail_eq_tilde s hft hwd hlive b hge]
+    exact le_of_lt hab'
+
 /-! ## o2: the decision function — the type-totality witness (fork 13 correction 2)
 
 TYPE-totality is FREE: a junk/incomplete state gets a TERMINAL fall-back whose full ledger matches
