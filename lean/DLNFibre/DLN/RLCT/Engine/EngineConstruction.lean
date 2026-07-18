@@ -672,6 +672,14 @@ theorem widthMinUpto_mono {L : ℕ} (M : Fin (L + 1) → ℕ) {m n : ℕ} (h : m
   rw [Finset.mem_filter] at hi ⊢
   exact ⟨hi.1, le_trans hi.2 h⟩
 
+/-- `widthMinUpto M n ≤ layerCap M` — the running-min width is `≤ M 0 ≤ ∑ M i`. The room the
+case-1/case-2 append needs (`cleared < widthMinUpto (layer+1) ≤ layerCap`), for the μ₂ descent. -/
+theorem widthMinUpto_le_layerCap {L : ℕ} (M : Fin (L + 1) → ℕ) (n : ℕ) :
+    widthMinUpto M n ≤ layerCap M :=
+  le_trans
+    (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ (0 : Fin (L + 1)), by simp⟩))
+    (Finset.single_le_sum (fun i _ => Nat.zero_le (M i)) (Finset.mem_univ (0 : Fin (L + 1))))
+
 /-- `runMinWidth M j ≤ admBound M j` — the running-min width is `≤` the block bound (`= min(M⁰,M¹)`
 at `j=0`, `≤ M^{j+1}` otherwise). Bridges the WidthBound `runMinWidth` head to the `Adm`
 block-bound. -/
