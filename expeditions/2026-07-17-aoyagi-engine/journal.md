@@ -687,3 +687,19 @@ SHA — its forced #print is the footprint authority; my own gate deferred until
 keep a build slot free (glue grind + reviewer + architect's queued reconfirm already contend).
 Rung 2 opens on the reviewer's verdict. Rung-2 pre-notes logged by the architect: content-
 rejection free from componentwise equality; divProfile T-settings page-check at the setting rung.
+
+## 2026-07-18 VM RESTART; CONSOLIDATED VERDICT INTEGRATED (tick 54)
+VM died and restarted mid-tick. Recovered state: the reviewer's consolidated cert (eb86691a3,
+scoped-VALIDATE + one follow-up) had fast-forwarded into root pre-crash — now pushed; the elder's
+abstract-field-gate Codex prompt artifact committed; /tmp wiped (gate 11 log lost — relaunched);
+all teammate SESSIONS died mid-flight (glue-t05 mid-grind with no sub-lemma pushed yet; architect
+standing by; reviewer + elder idle) — resuming each by message. VERDICT RECAP (the tick the crash
+interrupted): all five consolidated items PASS (strengthening; case-2 += 1; case11 eligibility
+with all witnesses surviving; docstrings; footprints by its own forced #print post-fix) with ONE
+follow-up — the eligibility conjunct guards case11 ONLY; stepUpdate case12 also reads
+divExp(mergeIdx) (dite-default 0), so an out-of-range case12 base-drops unguarded (mechanically
+confirmed: oobSplit accepted, exp 6 not 11); the landed conjunct is NOT the strict superset of
+StepApplicable it was reported as (case12 guard dropped in translation). RULING: rung 2 OPENS
+(the residual is fidelity-class, off the finiteness path); the case12 guard extension lands
+BEFORE the case-step-lemmas faithful-flip; the case12 t̃-half goes to the elder for page-confirm
+(same division of labor as case-1(2)).
