@@ -1168,6 +1168,26 @@ theorem leaf_mem_Adm {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (hL : 
       le_tildeOf hL (fun i => hwd k i j (Fin.le_def.mpr (by have := i.isLt; omega)))
     rw [le_antisymm hle (tildeOf_le j), ht0 k]
 
+/-- **Per-divisor leaf-admissibility** (the `leaf_mem_Adm` content weakened to a SINGLE divisor `k`):
+at a terminal layer, a `t̃ = 0` LIVE divisor's rank-pattern is admissible. This is what the terminal
+leaf's ANALYTIC side consumes — the analytic divisors are exactly the `t̃ = 0` sublist (the `t̃ > 0`
+stranded/non-live divisors fold into the residual core, so `leaf_mem_Adm`'s `∀ k` form is too strong
+at a terminal that carries residuals). The proof reads `WidthBound`/`WeakDec` only at `k`. -/
+theorem leaf_mem_Adm_single {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) (hL : 0 < L)
+    (hlayer : s.layer = L) (hwd : WeakDecInv s) (hwb : WidthBound M s) (k : Fin s.numDiv)
+    (hlive : s.divTilde k < widthMinUpto M s.layer) (ht0 : s.divTilde k = 0) :
+    s.divProfile k ∈ Adm M := by
+  have hbb : ∀ j : Fin L, s.divProfile k j ≤ admBound M j := fun j => by
+    have hj : (j : ℕ) < s.layer := by rw [hlayer]; exact j.isLt
+    exact le_trans (hwb k hlive j hj) (runMinWidth_le_admBound M j)
+  rw [Adm, Finset.mem_filter]
+  refine ⟨?_, hbb, hwd k, ?_⟩
+  · rw [Fintype.mem_piFinset]; intro j; rw [Finset.mem_range]; exact Nat.lt_succ_of_le (hbb j)
+  · intro j hjlast
+    have hle : s.divProfile k j ≤ s.divTilde k :=
+      le_tildeOf hL (fun i => hwd k i j (Fin.le_def.mpr (by have := i.isLt; omega)))
+    rw [le_antisymm hle (tildeOf_le j), ht0]
+
 /-! ## o4→assembly: the joint invariant `OracleInv` + its cone-goodness preservation
 
 The six invariants the oracle carries, bundled: the construction's cone-goodness = `OracleInv` holds
