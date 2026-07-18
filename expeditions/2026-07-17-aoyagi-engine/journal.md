@@ -633,3 +633,17 @@ the carrier force FINITE trees; (c) per-leaf lo/hi squeeze constants — uniform
 Deferred-with-note: the D1L2 homogeneity re-home (post-hbox library extraction). Still owed:
 glue's battery script (4th ask) + needs-vs-forces confirmation. Architect's blocking fix +
 rev-carrier spot-check still pending — rung 2 gated.
+
+## 2026-07-18 REVIEWER RUNG-1 VERDICT: CONVERGENT (tick 50)
+rev-carrier: scoped-VALIDATE-WITH-CHANGES (cert merged). CONVERGENCE EVENT: it INDEPENDENTLY
+found the case-2 cleared advance error via the paper text (Q4) — same fix (+= 1), same
+consequence analysis as the elder's page-image catch. Two decorrelated seats, identical verdict.
+Q1 (mergeIdx no-op) mechanically confirmed by rfl — CHANGE; its StepApplicable guard is subsumed
+by the elder's eligibility conjunct (same commissioned commit). Content-rejection confirmed FREE
+from the componentwise RootLedger equality (numDiv-preserving exponent shuffles also fail — no
+extra witness needed). Footprints pass by its own forced #print. Its deferred item (case-1(2)
+exponent, unadjudicable from the reproduction) CLOSED by the elder's direct page verification —
+the designed division of labor. Map staleness fixed (case-step-lemmas note re-pointed to the
+faithful equality). Pending: the architect's consolidated blocking commit (fix + conjunct + two
+docstring items), then rev-carrier's ONE consolidated pass (commit + strengthening) gates rung 2.
+Elder's abstract-field pass (#56) runs in parallel.
