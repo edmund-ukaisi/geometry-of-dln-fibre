@@ -4,11 +4,12 @@ Main quest: the transform-only Aoyagi resolution engine → `∀ M, RouteMBoxThr
 (clean-three, no Aoyagi hypothesis) → unconditional mint.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: REPAIR (architect, cert findings 1-12 + 4 rulings) → r2 re-check (rev-carrier, warm) →
-  obligation flip. Carrier VALIDATED (map flipped); predicates held. Criticals: StepRel childless;
-  region_glue resRank-fold dropped + transport/ψ∘β ruling. Witness needs real ≥2x2 root step.
-  Architect self-reports get verified before they count (4 instances). Review verdict gates
-  merge-to-canonical + status flips. Then: construction tide (termination) + region_glue/P8 tide.
+- phase: TWO-TIDE BUILD. Construction tide (architect, rungs 1-4 + L=3 de-risk milestone; rung 1 =
+  stepUpdate + faithful StepRel, rev-carrier scoped spot-check on land). Glue tide (glue-t05,
+  parallel; brick 1 scaling-bridge BANKED clean-three; next: global homogeneity → leaf read →
+  assembly; never edits EngineObligations.lean — final discharges sequenced through me).
+  Elder re-convenes at coverage commissioning + any STOP-and-surface. Teammate self-reports get
+  verified before they count (5 instances). Watch line = engine_box_threshold_finite flip.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
