@@ -102,12 +102,12 @@ theorem canonicalResolution224_arithmetic : ∃ t : ResolutionTree M224,
           (∃ l ∈ ResolutionTree.leaves t, l.srcBox.Nonempty ∧
             minAdm M224 ∈ (List.finRange l.numDiv).map l.divExp) := by
   refine ⟨tree224, ?_, ?_, ?_, ?_, ?_⟩
-  · intro l hl k
+  · intro l hl
     rw [leaves_tree224, List.mem_singleton] at hl
     subst hl
-    rw [divExp_leaf224]
-    refine ⟨?_, ?_⟩
-    · fin_cases k; decide
+    -- analytic = full here (single t̃=0 divisor): the coherence matches are the identity.
+    refine ⟨fun k => ?_, fun k => ⟨k, rfl, rfl, ?_⟩, fun j _ => ⟨j, rfl, rfl⟩⟩
+    · rw [divExp_leaf224]; exact ⟨by fin_cases k; decide, by fin_cases k; decide⟩
     · fin_cases k; decide
   · intro p hp
     rw [stepEdges_tree224, List.mem_singleton] at hp
