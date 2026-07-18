@@ -72,8 +72,8 @@ structure ChartSubst (M : Fin (L + 1) → ℕ) where
   /-- Number of exceptional divisors this step introduces. CONSTRUCTION-SIDE BOOKKEEPING. -/
   jacDivCount : ℕ
   /-- Monomial-Jacobian exponents contributed at this step. CONSTRUCTION-SIDE BOOKKEEPING (minor 8):
-  the leaf Jacobian is pinned by `LeafJacobian`'s existential `Dβ`, NOT by this ledger; no
-  obligation reads `jacPow`, so it may be corrupted without changing the certificate. -/
+  the certificate's Jacobian content lives entirely in `LeafJacobian`'s existential `Dβ` (fork-8
+  area-formula route), NOT in this ledger — `jacPow` is carried for the construction's own accounting. -/
   jacPow : Fin jacDivCount → ℕ
 
 /-- **Per-node data of the double induction** (map node: `resolution-tree`). The step's CASE is on

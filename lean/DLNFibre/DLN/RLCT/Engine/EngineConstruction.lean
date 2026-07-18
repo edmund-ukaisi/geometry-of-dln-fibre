@@ -16,7 +16,8 @@ The carrier is the FAITHFUL construction state (rung T1c): the layer `S`, the cl
 `J`, and the exceptional-divisor ledger carrying the full rank-pattern vectors `T_{s,k}` (PRIMITIVE)
 and the `genDivExp` sharing-multiplicity ledger, alongside the exponents `M_{s,k}`. The clearing
 level `t̃_{s,k}` is DERIVED (`= min T_{s,k}`), as on the tree carrier. Derivable data
-(`resRows`/`resCols`/`runLen`/`depth`/`minAdm`) is not stored — computed from `M`, `S`, `J`. Mirrors
+(`resRows`/`resCols`/`depth`/`minAdm`) is not stored — computed from `M`, `S`, `J`. (`runLen = J₁`
+is NOT in this list — it is profile-determined, the gap to the next occupied `t̃` level.) Mirrors
 the tree-node `StepData`; `ConState` threads `T` for the divisor-chooser (whose interface type lands
 here) and drives the termination measure.
 
@@ -220,19 +221,23 @@ theorem conRel_stepRollover (M : Fin (L + 1) → ℕ) (s : ConState L) (hlayer :
 /-! ## The divisor-chooser interface (T1c; TYPE only, proofs at T4) -/
 
 /-- **The divisor-chooser SPEC** (rung R1 TYPE; the chooser's PROOFS are T4). At a case-1 step the
-construction must SELECT which divisor `k` to blow up: it must be at clearing level `t̃_k = J + J₁`
-(ELIGIBILITY, the `runLen = J₁` run to the next occupied level, Aoyagi p.15), and Def-4-MINIMAL
-among all eligible divisors — its full rank-pattern `T_k` is componentwise `≤ T_{k'}` for every
-`k'` (Def. 4, p.14). This is why the carrier is full-`T`, not `t̃`-only: pnp-atlas verdict-2 proved
-the MINIMALITY is load-bearing for COMPARABILITY-PRESERVATION, NOT value-protection — at `(2,2,2,2)`
-node `(S,J,J₁)=(3,0,1)` the WRONG pick yields `(2,1,0)`, INCOMPARABLE with the right `(1,1,1)`
-(breaking the total-comparability invariant principalization rides on, p.14), even though `minAdm`
-is `3` under BOTH picks. A finiteness-only certificate is provably blind to a wrong tie-break; only
-the full-`T` chooser sees it. (The kill-witness — the chooser rejects `(2,1,1)` at that node — is a
-T4 `¬`-witness.) -/
+construction must SELECT which divisor `k` to blow up: it must have a POSITIVE run (`1 ≤ runLen`,
+the gap condition — `runLen = J₁ ≥ 1` is the run to the next occupied `t̃` level, Aoyagi p.15), be
+at clearing level `t̃_k = J + J₁` (ELIGIBILITY), and be Def-4-MINIMAL among all eligible divisors —
+its full rank-pattern `T_k` is componentwise `≤ T_{k'}` for every `k'` (Def. 4, p.14). The
+`1 ≤ runLen` conjunct is the gap condition's cheapest faithful shadow; it also feeds the case-1(1)
+μ-descent (with `runLen ≥ 1` the eligible divisor is genuinely pending, `t̃_k > J`). This is why the
+carrier is full-`T`, not `t̃`-only: `cert-atlas-probe-2222` verdict (c) proved the MINIMALITY is
+load-bearing for COMPARABILITY-PRESERVATION, NOT value-protection — at `(2,2,2,2)` node
+`(S,J,J₁)=(3,0,1)` the WRONG pick yields `(2,1,0)`, INCOMPARABLE with the right `(1,1,1)` (breaking
+the total-comparability invariant principalization rides on, p.15), even though `minAdm` is `3`
+under BOTH picks. A finiteness-only certificate is provably blind to a wrong tie-break; only the
+full-`T` chooser sees it. (The kill-witness — the chooser rejects `(2,1,1)` there — is a T4
+`¬`-witness.) -/
 def IsEligibleMinimalChoice {L : ℕ} (s : ConState L) (k : Fin s.numDiv) (runLen : ℕ) : Prop :=
-  s.divTilde k = s.cleared + runLen ∧
-    ∀ k' : Fin s.numDiv, s.divTilde k' = s.cleared + runLen →
-      ∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j
+  1 ≤ runLen ∧
+    s.divTilde k = s.cleared + runLen ∧
+      ∀ k' : Fin s.numDiv, s.divTilde k' = s.cleared + runLen →
+        ∀ j : Fin L, s.divProfile k j ≤ s.divProfile k' j
 
 end DLNFibre.DLN.RLCT.Engine
