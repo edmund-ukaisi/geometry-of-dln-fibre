@@ -54,6 +54,21 @@ per-pivot pieces at assembly (the per-pivot `divExp` values must lie in `termina
 **Shape: structural induction on `t` at `acc = id`** (mirrors `geometricLeafPaths`' own recursion; the child is
 always recursed with `id`, so the motive fixes `acc = id`).
 
+**`acc`-motive robustness (team-lead flag, post-gate).** The `acc = id` motive is clean for the CURRENT
+`geometricLeafPaths` (every child recurses at `id`; `acc` is only a same-node prefix, `id` at the root call).
+t10's rollover/chartless `id`-passthrough FORWARDS `acc` (does not reset to `id`), so at instantiation VERIFY
+(don't assume) that every node reachable from an `id` root call still receives `acc = id`. If that is not
+definitionally clean after t10's reshape, GENERALIZE the motive over `acc` with a composition clause:
+
+    Inv(t): ∀ acc, ∀ lc ∈ geometricLeafPaths … acc t, ∀ w,
+              |det D(lc.2) w| = |det D(acc) (pathFold t lc w)| · <per-piece monomial>(w)
+
+(the `acc = id` headline is the `|det D(id)| = 1` specialization). This is de-risked: the Phase-2 parametric
+fold `abs_det_fderiv_foldr_comp` is ALREADY `acc`-agnostic (it folds an arbitrary map list, so a forwarded
+`acc` is just extra leading factors — a rollover's `id`-passthrough contributes `|det D(id)| = 1` via the
+off-cone atom), so the fold MECHANICS survive any threading; only the leaf-read STATEMENT needs the `acc`
+clause. Decision (id-motive vs acc-generalized) is deferred to the check against t10's landed threading.
+
 Motive `Inv(t)`: for every `lc ∈ geometricLeafPaths (dCenterOfNode M) (qNodeOf M) id t` and every `w`,
 
     |det D(lc.2) w| = ∏_{k : Fin (pieceLedger lc).numDiv}
