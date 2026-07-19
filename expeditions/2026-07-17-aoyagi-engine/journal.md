@@ -3721,3 +3721,14 @@ region_glue_of_chartBridge MUST-clean-three re-probe; the witness recorded in th
 addendum). Coverage counter-signs IN PARALLEL (halt-pre-merge if countered). The cover's two
 truth-signals in one arc — both statement-level, both caught pre-fill: the fill-step is
 proving to be the sharpest verifier in the hierarchy.
+
+## 2026-07-19 tick 256: t09's #26 LANDED — the carrier package is COMPLETE (fidelity chain clean-three)
+Merged + probed: realCNode pointwise + the on-cone injectivity transfer (the dependent-cast —
+the arc's one flagged risk — CRACKED) + **cNodeOf_eq_realCNode on-cone** ("geometry complete").
+t09's full package: dCenterOfNode (option-iv) + edgeSum + le_flatDim + cNodeOf/qNodeOf + the
+q-det trio + the fidelity chain — every piece clean-three, zero spine disturbance, the
+elder-gate9 seam requirements (node-derived, fails-on-fake anchored) all discharged. Its
+report pending; the seat is presumably at consolidation. BOARD: t10 driving the clause-(A)
+0∈U batch (the 5 files + fill, ~120 LoC); t11 on phase 1 of the wall; coverage's counter-sign
+pass pending. The carrier lane — from the conflation catch through the elder finding to this —
+is DONE end-to-end.
