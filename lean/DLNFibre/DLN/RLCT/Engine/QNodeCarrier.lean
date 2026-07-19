@@ -346,17 +346,55 @@ noncomputable def centerSelCase (M : Fin (L + 1) → ℕ) (node : StepData M) (o
           have hd' : 1 + (target - node.cleared) * node.resCols ≤ flatDim M := hd
           omega))
 
+/-! ## `dCenterOfNode` per-case reductions (for `realCNode` + its injectivity) -/
+
+/-- `dCenterOfNode = 0` at a terminal node (`L ≤ layer`). -/
+theorem dCenterOfNode_zero_terminal (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (h1 : L ≤ node.layer) : dCenterOfNode M node = 0 := by
+  unfold dCenterOfNode; rw [if_pos h1]
+
+/-- `dCenterOfNode = 0` at a rollover node (`¬ L ≤ layer`, `widthMinUpto (layer+1) ≤ cleared`). -/
+theorem dCenterOfNode_zero_rollover (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (h1 : ¬ L ≤ node.layer) (h2 : widthMinUpto M (node.layer + 1) ≤ node.cleared) :
+    dCenterOfNode M node = 0 := by
+  unfold dCenterOfNode; rw [if_neg h1, if_pos h2]
+
+/-- At a non-terminal node `dCenterOfNode` is the `occ`-indexed dimension `centerSelCase` uses. -/
+theorem dCenterOfNode_nonterminal (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (h1 : ¬ L ≤ node.layer) (h2 : ¬ widthMinUpto M (node.layer + 1) ≤ node.cleared) :
+    dCenterOfNode M node = (nodeOccMin M node).elim (node.resRows * node.resCols)
+      (fun t => 1 + (t - node.cleared) * node.resCols) := by
+  unfold dCenterOfNode; rw [if_neg h1, if_neg h2]
+
 /-- **The intended per-node center selector** `realCNode` (fidelity): case-1 = the `u`-corner `++`
-the case-1(2) `d`-block; case-2 = the residual block; rollover/off-cone = the canonical injection.
-Total via the inner selectors' fallbacks; dispatches on `dCenterOfNode`'s structure so the dependent
-`Fin (dCenterOfNode …)` type reduces per branch. -/
+the case-1(2) `d`-block; case-2 = the residual block; terminal/rollover = the empty map (dim 0).
+Defined POINTWISE (each branch outputs `Fin (flatDim M)`, the input index cast by `finCongr` through
+`dCenterOfNode`'s per-case reduction) so injectivity is a clean `finCongr`-transfer — no dependent
+`Eq.mpr` on the function type. -/
 noncomputable def realCNode (M : Fin (L + 1) → ℕ) (node : StepData M)
-    (hd : dCenterOfNode M node ≤ flatDim M) : Fin (dCenterOfNode M node) → Fin (flatDim M) := by
-  unfold dCenterOfNode at hd ⊢
-  split_ifs at hd ⊢ with h1 h2
-  · exact Fin.castLE (Nat.zero_le _)
-  · exact Fin.castLE (Nat.zero_le _)
-  · exact centerSelCase M node (nodeOccMin M node) hd
+    (hd : dCenterOfNode M node ≤ flatDim M) : Fin (dCenterOfNode M node) → Fin (flatDim M) :=
+  fun i =>
+    if h1 : L ≤ node.layer then
+      absurd i.isLt (by have := dCenterOfNode_zero_terminal M node h1; omega)
+    else if h2 : widthMinUpto M (node.layer + 1) ≤ node.cleared then
+      absurd i.isLt (by have := dCenterOfNode_zero_rollover M node h1 h2; omega)
+    else
+      centerSelCase M node (nodeOccMin M node) (dCenterOfNode_nonterminal M node h1 h2 ▸ hd)
+        (finCongr (dCenterOfNode_nonterminal M node h1 h2) i)
+
+/-- **`realCNode` is injective from `centerSelCase`'s injectivity**: terminal/rollover have empty
+domain (`dCenterOfNode = 0`, vacuous); the non-terminal branch is `centerSelCase ∘ finCongr`, so
+injectivity transfers through `centerSelCase`'s (`hci`) and `finCongr`'s bijectivity. -/
+theorem realCNode_injective (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (hd : dCenterOfNode M node ≤ flatDim M)
+    (hci : ∀ hd', Function.Injective (centerSelCase M node (nodeOccMin M node) hd')) :
+    Function.Injective (realCNode M node hd) := by
+  intro a b hab
+  simp only [realCNode] at hab
+  split_ifs at hab with h1 h2
+  · exact absurd a.isLt (by have := dCenterOfNode_zero_terminal M node h1; omega)
+  · exact absurd a.isLt (by have := dCenterOfNode_zero_rollover M node h1 h2; omega)
+  · exact (finCongr (dCenterOfNode_nonterminal M node h1 h2)).injective (hci _ hab)
 
 /-- **The center selector with a global injectivity fallback**: `realCNode` when it is injective
 (the reachable cone — `realCNode_injective_of_divBirthInv`), else the canonical `Fin.castLE`. Total
