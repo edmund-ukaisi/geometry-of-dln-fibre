@@ -1294,15 +1294,14 @@ open DLNFibre.DLN.RLCT
 -- `+sorryAx` until the two named holes land; this line flipping to clean-three IS the hbox event the
 -- mint re-point waits on:
 #print axioms Engine.engine_box_threshold_finite
--- ★ ENGINE SPINE (aoyagi-engine, t03 A→C+D§i): the assembled `monomialization_terminates` now has
--- FOUR proven conjuncts + TWO named sorried holes. `sorryAx` source is EXACTLY those two:
+-- ★ ENGINE SPINE (aoyagi-engine): the assembled `monomialization_terminates` now has FIVE proven
+-- conjuncts + ONE named sorried hole. `sorryAx` source is EXACTLY `chartBridge_buildTree`:
 #print axioms Engine.chartBridge_buildTree      -- +sorryAx (← T3 coverage lane)
--- o5_realization is now PROVEN modulo the isolated crux `o5_core` (the plumbing — terminal-exponent
--- membership + srcBox.Nonempty — is discharged); its `+sorryAx` flows THROUGH `o5_core` (a realized
--- Mval-minimizer, cert §3 envelope-splice + §4 steering/pull-ordering). EXPECTS `+sorryAx` until D§ii/iii:
-#print axioms Engine.o5_core                    -- +sorryAx (← D§ii/iii crux, pnp-o5 cert §3-4)
-#print axioms Engine.o5_realization             -- +sorryAx via o5_core (plumbing proven)
-#print axioms Engine.monomialization_terminates -- +sorryAx via EXACTLY chartBridge_buildTree + o5_core
+-- o5_realization is now PROVEN clean-three: its crux `o5_core_realized` LANDED (t06 s4 — the steering
+-- rule + 3-phase SteerInv). It carries `hMpos : ∀ i, 0 < M i` (the attainment half is false at a zero
+-- width — witness ![2,2,0]); the `⊆` lower bound stays width-free. MUST stay clean-three:
+#print axioms Engine.o5_realization             -- clean-three (was +sorryAx via o5_core; o5_core_realized landed)
+#print axioms Engine.monomialization_terminates -- +sorryAx via EXACTLY chartBridge_buildTree
 -- The full-monomialisation headline + the exponent lower bound: MUST stay clean-three [propext,
 -- Classical.choice, Quot.sound] (a `sorryAx` here means the spine re-opened):
 #print axioms Engine.isFullMonomialization_buildTree_conRoot
@@ -1311,9 +1310,13 @@ open DLNFibre.DLN.RLCT
 -- invariant (budget + companion, threaded through conOracle). MUST stay clean-three:
 #print axioms Engine.leaves_numDiv_le_flatDim
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
--- MUST stay clean-three (these feed o5_core's §4 discharge):
+-- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
 #print axioms Engine.clearable_tStar
+-- o5_core §4 (t06 s4): the steering realization — tStar realized as a t̃=0 leaf divisor, and the
+-- composed minAdm-attainment. The engine's hardest proof; both carry `hMpos`. MUST stay clean-three:
+#print axioms Engine.tStar_realized
+#print axioms Engine.o5_core_realized
 -- REIFY-NOW (elder-gate7, compass 13(o5-IN)): the honest realized-stratum surface
 -- `realizedProfiles M = { a ∈ Adm M : Clearable a }` — the library's TYPED name for what the tree's
 -- `t̃=0` read-off realizes (NOT `= Adm`; the completeness is a verified read-off defect #4). STATEMENT

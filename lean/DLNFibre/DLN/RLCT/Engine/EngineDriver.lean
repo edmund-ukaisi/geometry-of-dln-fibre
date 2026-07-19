@@ -41,14 +41,16 @@ variable {L : ℕ}
 `M`, the layer-product box integral is finite below the geometric threshold `½·minAdm M` — i.e.
 `RouteMBoxThresholdFinite M`, the sole Prop the engine owes. A `@[blueprint]` composition of the
 `EngineObligations` holes; `sorry`-free itself (the holes are the obligations). -/
-@[blueprint] theorem engine_box_threshold_finite (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+@[blueprint] theorem engine_box_threshold_finite (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hMpos : ∀ i, 0 < M i) :
     RouteMBoxThresholdFinite M := by
   intro c' hc'
   -- assembly (region_glue): the box integral is finite once `c'` is below every terminal ratio
-  refine region_glue M hL (coverage_theorem M hL) (c' : ℝ) ?_
+  refine region_glue M hL hMpos (coverage_theorem M hL hMpos) (c' : ℝ) ?_
   intro e he
   -- ledger bridge: `minAdm M ≤ e`, and `c' < ½·minAdm M`, so `c' < ½·e`
-  have hmin : (minAdm M : ℝ) ≤ (e : ℝ) := by exact_mod_cast (exponent_ledger_bridge M hL).1 e he
+  have hmin : (minAdm M : ℝ) ≤ (e : ℝ) := by
+    exact_mod_cast (exponent_ledger_bridge M hL hMpos).1 e he
   have hhalf : (minAdm M : ℝ) / 2 ≤ (e : ℝ) / 2 := by linarith
   exact lt_of_lt_of_le hc' hhalf
 
@@ -62,7 +64,7 @@ example (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hpos : ∀ s : Fin (L + 1), r < H s) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) :=
   aoyagi_learning_coefficient_gen H r B hB hr hL hL2 hpos
-    (engine_box_threshold_finite (fun s => H s - r) hL)
+    (engine_box_threshold_finite (fun s => H s - r) hL (fun s => Nat.sub_pos_of_lt (hpos s)))
 
 /-- **`region_glue`'s ratio hypothesis is loss-proof** (council #1, item 4), as an implication.
 * PROVED here (the WIRING): *given* that `minAdm M` is a terminal exponent, `hrat` — which ranges
@@ -75,9 +77,9 @@ example (H : Fin (L + 1) → ℕ) (r : ℕ)
   `sorryAx`); it is a wiring witness, NOT evidence the bridge is proved. (Were `terminalExponents`
   empty, `hrat` would be vacuous — the reviewer's empty-list disproof — which is why the attainment
   conjunct is a hypothesis of the bundle, not a corollary of it.) -/
-example (M : Fin (L + 1) → ℕ) (hL : 0 < L) (c' : ℝ)
-    (hrat : ∀ e ∈ ResolutionTree.terminalExponents (resolutionOf M hL), c' < (e : ℝ) / 2) :
+example (M : Fin (L + 1) → ℕ) (hL : 0 < L) (hMpos : ∀ i, 0 < M i) (c' : ℝ)
+    (hrat : ∀ e ∈ ResolutionTree.terminalExponents (resolutionOf M hL hMpos), c' < (e : ℝ) / 2) :
     c' < (minAdm M : ℝ) / 2 :=
-  hrat (minAdm M) (exponent_ledger_bridge M hL).2
+  hrat (minAdm M) (exponent_ledger_bridge M hL hMpos).2
 
 end DLNFibre.DLN.RLCT.Engine

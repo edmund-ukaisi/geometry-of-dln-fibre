@@ -2595,20 +2595,9 @@ theorem leaves_srcBox_nonempty {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState
       obtain ⟨c, hc, rfl⟩ := he
       exact ih c.child c.hdesc l hle
 
-/-- **o5-∈ CRUX — a realized `Mval`-minimizer** (map: `o5-realization`; D§ii/iii, pnp-o5 cert §3-4).
-`minAdm M` is the accumulated exponent of some `t̃ = 0` leaf divisor of the built tree. The banked
-`Mval`-minimizer `tStar M` (`RouteMAchieverPath`, `Mval M (tStar M) = minAdm M`) is Clearable
-(cert §3 — the envelope-splice: every non-clearable admissible profile has a strictly cheaper
-admissible sibling, so every `Mval`-minimizer is clearable), and a Clearable profile is realized as a
-`t̃ = 0` leaf divisor (cert §4 — the steering rule `R(a)` + the anchor descent invariant, reusing the
-banked `LiveHeadDom` / `chooserTotalOnChain_of_sameLevel` pull-ordering). Its `divExp` then reads off
-`(Mval M ·).toNat = minAdm M` via `IsFullMonomialization`. MINIMIZER-ONLY (NOT `⊇ Clearable-Adm`,
-which is R7 — the reify statement `realizedProfiles_eq_clearableAdm`). **PROOF: D§ii/iii** (the sole
-flagged brick is the intra-layer pull-ordering). -/
-theorem o5_core {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
-    ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
-      ∃ k : Fin l.numDiv, l.divExp k = minAdm M := by
-  sorry
+-- **o5-∈ CRUX — a realized `Mval`-minimizer** — MOVED to `O5Realization.o5_core_realized` (t06 s4,
+-- LANDED clean-three via the steering rule + 3-phase `SteerInv`). It carries `hMpos : ∀ i, 0 < M i`
+-- (the achievability half is false at a zero width). `o5_realization` now consumes it directly.
 
 /-- **The root state STEPS** (for `0 < L`): `conRoot` is live (`¬ L ≤ 0`) so `conOracle` emits a
 `.step` decision (rollover if the first layer is exhausted, else case-2 — `numDiv = 0` makes the
