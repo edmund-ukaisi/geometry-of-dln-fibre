@@ -3044,3 +3044,16 @@ qNodeOf (t05) → β_e = qNodeOf-conjugated pivotChart → β̃_e → the geomet
 (coverage) — every link a def of node data + banked atoms. Everything else unchanged
 (per-edge counts, uniform u-geometry, the fill-batch flags, gate #10). elder-gate9 dissolved.
 Both lanes BUILDING.
+
+## 2026-07-19 tick 207: coverage batch A MERGED — the R-b keystone identity is Lean
+ca0af8d72 (merged, module builds green): **reparam_image** — (β∘α.symm)''(α''D) = β''D for any
+bijection — the domain-reparam identity that reduces the R-b per-node cover to the PURE
+node_pivotCover_of_atom (the det-1 gauge provably doesn't move the covering set); plus the
+CONCRETE source gauges (elemShear/elemShearInv/elemShearHomeomorph — the α_d polynomial
+homeomorphism, a≠b/a≠c side conditions; α_u = .refl), 0 sorries. Batch B (|det Dα_e| = 1, the
+Jacobian atom completing proposal-§2 field 3) in progress Codex-first (the fderiv→matrix→det
+chain; det_transvection_of_ne confirmed present; sympy sanity: upper-triangular unit diagonal).
+The tick-206-addendum qNodeOf correction is in its inbox (its current work is field-home-
+independent — no exposure). Board: coverage building (A done, B in flight); t05 building
+centerIndices/qNodeOf; t06 on the 6d phase branches. All three lanes in parallel proof work —
+zero design questions open anywhere.
