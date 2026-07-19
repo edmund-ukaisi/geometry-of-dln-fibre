@@ -3585,3 +3585,15 @@ The per-node carrier piece landed as one green (clean-three, controller-probed):
 + qNodeOf in a new Engine/QNodeCarrier.lean. Its report pending (mid-turn — the sum property /
 q-det / injectivity tasks #23-26 presumably in flight); merged proactively per the
 pushed-green pattern. The tide's instantiation trigger approaches.
+
+### Tick-246 addendum: t09's report in — option (iv) endorsed; the tide's instantiation FIRED
+The report details the merged core: OPTION (iv) for runLen (recompute node-level via the
+classify/conOracle dispatch — the case isn't on StepData so the recompute is unavoidable
+either way, making the field strictly heavier; ZERO ripple, no protected-set re-probe);
+dCenterOfNode_edgeSum (coverage's required sum property) + dCenterOfNode_le_flatDim (the hd
+totality), both conOracle-relative; qNodeOf = qOfCenter ∘ cNodeOf with the classical
+injectivity-guard making it total; the on-cone realCNode fidelity = #26, in flight, NOT
+blocking. QNodeCarrier wired into AxCheck (background). COVERAGE WOKEN: instantiate pieces 1-2
+NOW ((dCN,qN) := the real pair — the parametrization's payoff); the SPECIFY still gates on the
+q-det lemma (status asked of t09 — possibly in its #26 batch). The (B)-before-(D) sequencing
+stands: cover build holds until the fold-module path is set.
