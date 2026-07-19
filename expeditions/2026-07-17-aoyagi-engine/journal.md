@@ -2452,3 +2452,22 @@ d_center enumeration the decisions already compute internally). R2 GATE ACCOUNTI
 half is effectively done EARLY against the INTENDED atlas; the residual gate check at R2 =
 emitted family == intended family (small), not a fresh hunt. Task #28 closed. pnp-o5 idle
 (two commissions, both landed with distinction).
+
+## 2026-07-19 tick 172: likely TYPE-level false-as-stated in ChartBridge — STOP pre-authorized
+Coverage's sharpened analysis (flagged EARLY, per the stop-rule — correct behavior): the frozen
+ChartBridge image-cover clause quantifies ⋃ over LEDGER leaves of a single chartMap, but the
+ledger tree is the symmetric QUOTIENT of the geometrically fan-out tree (one ledger child ≙ k
+chart-children with identical ledger content — the design fact behind "the simulator is blind
+to geometric fan-out"). A single chart per ledger leaf therefore structurally undershoots
+exactly where the R2 probe quantified the full family as mandatory. If the joint exchange
+confirms: the 5TH obligation-statement instance, first at TYPE level, in an already-merged
+hole type with a PROVEN consumer (region_glue_of_chartBridge). Controller actions: STOP
+PRE-AUTHORIZED (no latency if they jointly conclude it); the joint note must arrive
+DECISION-READY (precise finding; the proposed corrected type — geometric-path-indexed atlas or
+per-leaf finite families with per-piece divCoord, chosen for chartBridge_of_pieces fit; the
+FULL re-elaboration cost map incl. the glue composition's actual needs, the assembly, the
+(2,2,4) witness, the skeleton, the watch lines; the pp.15-21 fidelity check — the paper's
+atlas IS the geometric-leaf atlas). Then an ELDER GATE on the type change (skeleton revision)
+same-tick. Armchair note banked for the exchange: a PIECEWISE chartMap gluing the family fails
+the per-leaf Props as typed too (per-piece divCoord vs the record's one). If t04 instead finds
+a sound mechanism under the frozen type, the joint note says so and no gate fires.
