@@ -80,6 +80,16 @@ theorem birthFlatCoord_ne_diag_layer_cell {M : Fin (L + 1) → ℕ} (s : ConStat
   have hbrow : (s.divBirthCoord k).2 = row := hb
   omega
 
+/-- **`flatCoordOf` congruence** — equal layer index (as `Fin L`) and equal row/col values give the
+same flat coordinate (the `Fin` bounds are proof-irrelevant). The value-level partner of
+`flatCoordOf_val_inj`, used to identify two reads of the same stored corner. -/
+theorem flatCoordOf_congr {M : Fin (L + 1) → ℕ} {a a' : Fin L} (haa : a = a')
+    {i : Fin (M a.castSucc)} {j : Fin (M a.succ)} {i' : Fin (M a'.castSucc)} {j' : Fin (M a'.succ)}
+    (hi : (i : ℕ) = (i' : ℕ)) (hj : (j : ℕ) = (j' : ℕ)) :
+    flatCoordOf M a i j = flatCoordOf M a' i' j' := by
+  subst haa
+  rw [show i = i' from Fin.ext hi, show j = j' from Fin.ext hj]
+
 /-! ## The injectivity atom (distinct divisors, distinct diagonals) -/
 
 /-- **Distinct old divisors have distinct diagonals** — the `k ≠ f` disjointness (`birthFlatCoord`
@@ -255,5 +265,157 @@ theorem case2_diagTarget {M : Fin (L + 1) → ℕ} (s : ConState L) (dinv : DivB
   rw [hdtred]
   exact birthFlatCoord_ne_diag_layer_cell s dinv h k (sf := ⟨node.layer, hlv⟩) hlayer
     hcleared.ge hcc' hcs'
+
+/-! ## Case-1: the node is `s.toStepData` and its `u`-corner / case-1(1) target is divisor `f` -/
+
+/-- **A reachable case-1 node is `s.toStepData`** with residual dims `(widthMinUpto layer − J,
+M⁽ˡᵃʸᵉʳ⁺¹⁾ − J)`, and the merge divisor is `f = chooseMin s target`. One `conOracle` dispatch:
+`hocc` (`nodeOccMin node = some target`) + `hnr` rule out rollover/case-2/terminal and the
+chooser-fallback, leaving the case-1 branch whose emitted node is exactly `s.toStepData`. -/
+theorem case1_node_eq {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (target : ℕ) (hocc : nodeOccMin M node = some target) :
+    ∃ (f : Fin s.numDiv) (hlive : s.layer < L),
+      chooseMin s target = some f ∧
+      node = s.toStepData M (widthMinUpto M s.layer - s.cleared)
+        (M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) - s.cleared) := by
+  have hlive : s.layer < L := layer_lt_of_branch s node edges htree
+  have h1 : ¬ L ≤ s.layer := not_le.mpr hlive
+  have hL1 : s.layer + 1 < L + 1 := by omega
+  have hcap : s.cleared < layerCap M :=
+    lt_of_lt_of_le (not_le.mp hnr) (widthMinUpto_le_layerCap M _)
+  -- The state-level `occ` matches the node's `nodeOccMin` on a built branch (via `toStepData` after
+  -- we learn `node = s.toStepData`); first identify the branch by re-dispatch.
+  rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+      if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+      then some (s.divTilde k) else none)).min? with _ | target'
+  · -- case-2: node = s.toStepData, so nodeOccMin node = none, contradicting hocc
+    have horacle : conOracle M s = case2Decision M s
+        (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared) hcap := by
+      unfold conOracle; rw [dif_neg h1, dif_neg hnr]
+      split <;> simp_all only [reduceCtorEq]
+    rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
+    obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
+    rw [nodeOccMin_toStepData] at hocc
+    exact absurd (hocc.symm.trans hmin) (by simp)
+  · -- case-1 (or chooser-fallback terminal)
+    rcases hf : chooseMin s target' with _ | f
+    · have horacle : conOracle M s = oracleTerminal M s := by
+        unfold conOracle; rw [dif_neg h1, dif_neg hnr]
+        split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+        all_goals (try subst_vars)
+        all_goals (try (split <;> simp_all only [reduceCtorEq]))
+      rw [buildTree_terminal M (conOracle M) s (leafOfState M s)
+        (leafOfState_rootLedger M s) horacle] at htree
+      exact absurd htree (by simp)
+    · have hgt : s.cleared < target' := by
+        obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff.mp hmin
+        rw [List.mem_filterMap] at hmemtar
+        obtain ⟨k0, -, hk0⟩ := hmemtar
+        by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+            s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+        · rw [if_pos hc0] at hk0
+          have hdt : s.divTilde k0 = target' := Option.some.inj hk0
+          omega
+        · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+      have horacle : conOracle M s = case1Decision M s f (target' - s.cleared)
+          (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+          (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target' hf).1]; omega) hcap := by
+        unfold conOracle
+        rw [dif_neg h1, dif_neg hnr]
+        split
+        · rename_i target'' heq
+          obtain rfl : target'' = target' := Option.some.inj (heq ▸ hmin)
+          split
+          · rename_i f' hf'
+            obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+            rfl
+          · rename_i hf'
+            exact absurd (hf' ▸ hf) (by simp)
+        · rename_i heq
+          exact absurd (heq ▸ hmin) (by simp)
+      rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
+      obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
+      -- now `node = s.toStepData …`; `nodeOccMin node = some target'`, and `hocc` gives `target = target'`
+      rw [nodeOccMin_toStepData] at hocc
+      obtain rfl : target = target' := Option.some.inj (hocc.symm.trans hmin)
+      exact ⟨f, hlive, hf, rfl⟩
+
+/-- **The `u`-corner IS the merged divisor's diagonal** (case-1 coherence): at a reachable case-1
+node, the `uCornerSel` center cell equals `birthFlatCoord M s f h` for the merge divisor
+`f = chooseMin s target`. So the case-1(1) pivot / case-1(2) `μ`-cell is the ledger's `mergeIdx`
+diagonal — the cell whose ledger factor the pivot/center reads act on. Discharges the coherence the
+merge-peeled maintenance needs; also shows why the all-`k` spectator form is false at case-1
+(`k = f` sits ON a center cell). -/
+theorem uCornerSel_eq_birthFlatCoord {M : Fin (L + 1) → ℕ} (s : ConState L) (dinv : DivBirthInv M s)
+    (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (target : ℕ) (hocc : nodeOccMin M node = some target)
+    (h : 0 < flatDim M) (hd1 : 1 ≤ flatDim M) (idx : Fin 1) :
+    ∃ f : Fin s.numDiv, chooseMin s target = some f ∧
+      uCornerSel M node target hd1 idx = birthFlatCoord M s f h := by
+  obtain ⟨f, hlive, hf, rfl⟩ := case1_node_eq s node edges htree hnr target hocc
+  refine ⟨f, hf, ?_⟩
+  obtain ⟨hvalid, -, -, -⟩ := dinv
+  obtain ⟨hL, hrow, hcol⟩ := hvalid f
+  have hrowf : (s.divBirthCoord f).2 < M (⟨(s.divBirthCoord f).1, hL⟩ : Fin L).castSucc :=
+    hrow _ (by simp)
+  have hcolf : (s.divBirthCoord f).2 < M (⟨(s.divBirthCoord f).1, hL⟩ : Fin L).succ :=
+    hcol _ (by simp)
+  have huc : uCornerSel M (s.toStepData M (widthMinUpto M s.layer - s.cleared)
+        (M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) - s.cleared)) target hd1 idx
+      = flatCoordOf M ⟨(s.divBirthCoord f).1, hL⟩ ⟨(s.divBirthCoord f).2, hrowf⟩
+          ⟨(s.divBirthCoord f).2, hcolf⟩ := by
+    simp only [uCornerSel, chooseMinData_toStepData, hf]
+    simp only [ConState.toStepData]
+    rw [dif_pos hL, dif_pos ⟨hrowf, hcolf⟩]
+  rw [huc]
+  obtain ⟨hL', hi, hj, hbf⟩ := birthFlatCoord_eq_flatCoordOf' M s f h (hvalid f)
+  rw [hbf]
+
+/-- **The case-1(1) `diagTargetOf` IS the merged divisor's diagonal** (case-1 coherence, target
+half): on a `case11` edge whose `subst.mergeIdx` is `f = chooseMin s target`, `diagTargetOf` reads
+the merge divisor's stored birth corner and equals `birthFlatCoord M s f h`. So the case-1(1) edge
+atom `|z_{diagTargetOf}|^{dCN−1}` is `|z_{birthFlatCoord s f}|^{…}` — the re-merge onto `f`'s
+diagonal. -/
+theorem diagTargetOf_case11_eq_birthFlatCoord {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (dinv : DivBirthInv M s) (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (target : ℕ) (hocc : nodeOccMin M node = some target)
+    (h : 0 < flatDim M) (hd1 : 1 ≤ flatDim M)
+    (e : Edge M) (hcase : e.case = StepCase.case11) (f : Fin s.numDiv)
+    (hmerge : e.subst.mergeIdx = (f : ℕ)) :
+    diagTargetOf M node e hd1 = birthFlatCoord M s f h := by
+  obtain ⟨_, hlive, _, rfl⟩ := case1_node_eq s node edges htree hnr target hocc
+  obtain ⟨hvalid, -, -, -⟩ := dinv
+  obtain ⟨hL, hrow, hcol⟩ := hvalid f
+  have hrowf : (s.divBirthCoord f).2 < M (⟨(s.divBirthCoord f).1, hL⟩ : Fin L).castSucc :=
+    hrow _ (by simp)
+  have hcolf : (s.divBirthCoord f).2 < M (⟨(s.divBirthCoord f).1, hL⟩ : Fin L).succ :=
+    hcol _ (by simp)
+  obtain ⟨hL', hi, hj, hbf⟩ := birthFlatCoord_eq_flatCoordOf' M s f h (hvalid f)
+  rw [hbf]
+  unfold diagTargetOf
+  rw [hcase]
+  simp only [ConState.toStepData]
+  -- Every stored-corner read at `⟨mergeIdx, hm⟩` is `s.divBirthCoord f`.
+  have hidx : ∀ hm : e.subst.mergeIdx < s.numDiv, (⟨e.subst.mergeIdx, hm⟩ : Fin s.numDiv) = f :=
+    fun hm => Fin.ext hmerge
+  split
+  · rename_i hh
+    have hsc : s.divBirthCoord ⟨e.subst.mergeIdx, hh.choose⟩ = s.divBirthCoord f := by rw [hidx]
+    split
+    · rename_i _
+      exact flatCoordOf_congr (Fin.ext (congrArg Prod.fst hsc))
+        (congrArg Prod.snd hsc) (congrArg Prod.snd hsc)
+    · rename_i hcontra
+      obtain ⟨-, hrowc, hcolc⟩ := hvalid ⟨e.subst.mergeIdx, hh.choose⟩
+      exact absurd ⟨hrowc _ (by simp), hcolc _ (by simp)⟩ hcontra
+  · rename_i hcontra
+    exact absurd ⟨hmerge ▸ f.isLt, by rw [hidx]; exact hL⟩ hcontra
 
 end DLNFibre.DLN.RLCT.Engine
