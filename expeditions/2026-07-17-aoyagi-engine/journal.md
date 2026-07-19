@@ -4044,3 +4044,16 @@ follow-up charged: disposition proposal (wire vs cordon; likely the pre-geoAtlas
 machinery joins the #15 retirement sweep). ShearReconcile self-contradiction + the EO:39-50
 stale docstring folded into task #15's discharge flags. The t12-assembly seat now has a
 current checklist to run.
+
+### Tick-269 addendum: carto disposition merged — PivotLeafClauses holds the discharge's ONLY srcBox supply
+Follow-up merged (c19261da7): orphan section reconciled (fold spine CLOSED, cite verified);
+the legacy-orphan disposition PROPOSED: CoRank2Spike + FlatCubeLeaf → superseded-to-cordon
+(join #15; the (3,3,4) de-risk is served by leaves_chart_clauses_conRoot; flatCubeLeafData
+is called by nothing). THE LOAD-BEARING FIND: PivotLeafClauses is PARTIAL banked-to-wire —
+flatCubeSrcBox_measurableSet + flatCubeSrcBox_bounded are the ONLY gate-reachable-or-not
+supply of clause-(B)'s two free clauses (srcBox measurability + boundedness; nothing live
+proves measurability), and geoAtlas pieces inherit exactly the srcBox shape they target →
+the t12-assembly brief MUST carry: wire PivotLeafClauses for the srcBox pair at discharge
+(or knowingly re-derive inline and cordon the whole module — the assembly seat picks);
+its other helpers (coord duplicates, superseded childRegion q-preimage) cordon with
+FlatCubeLeaf. Task #15 updated. carto-standing idle-correct, context warm.
