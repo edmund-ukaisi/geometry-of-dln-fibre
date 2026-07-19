@@ -5173,3 +5173,16 @@ deferred θ-analytic seam must bind to a(ℓ−a)+1, NEVER numTop. Also scout-un
 zero-width hpos narrowing (its top avoidance; the layer-collapse route), the M1/M2/M10
 built-narrower list, the monomial_rlct docstring hygiene. ELDER CHARGE-8 fired: reconcile
 the four divergences → the FINAL build-list → the navigator convenes on its return.
+
+## 2026-07-19 tick 322: t10's gate confirm agrees with mine — the R7 batch is DOUBLY gated; t10 retired with honors
+The seat's own full-batch gate (8914 jobs, EXIT 0; region_glue_of_chartBridge clean-three;
+ZERO new sorries — the sorryAx footprints carry only the pre-existing tracked holes) matches
+the tick-321 integration gate exactly: the redundant channel agrees. Its ∃-DISCHARGE HANDOFF
+to t14 is the contract written out (fc := birthFlatCoord over s; emb := analyticToFull;
+each conjunct's supply named: divBirthCoord-inj, the leaves-walk coherences, birth ≥1,
+⊥resCoord vacuous at resRank=0 — and the wrapper already consumes exactly those conjuncts).
+The watch-item restated (the ≥1 conjunct wrapper-unused; droppable-if-hit, surface not
+force). T10 RETIRED WITH HONORS — twice reactivated, twice delivered; its ledger: the
+weakening, the cover, two construction-defect catches, the verify-catch, the R7 batch.
+The final discharge gate is controller work on the carto §2e checklist. Working set now:
+disj-t17 (case-1 atoms, active) ∥ t14/loss-t15 (triggers) ∥ elder (charge-8) ∥ carto (warm).
