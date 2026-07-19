@@ -4417,3 +4417,12 @@ emission text), import fresh-eyes' map-agnostic proof, re-thread fannedEdges_cov
 downstream via S cube-invariance (a geoChartMapNorm_on_cone companion suggested), zero
 sorries, probe geoAtlas_imageCover clean-three, push. fresh-eyes-t13 retires with thanks —
 its proof survives verbatim; only the statement around it moved.
+
+### Tick-284 addendum: t11's handoff addendum merged (97e29e29b); the seat RETIRED WITH HONORS
+The §HANDOFF covers all four asks — the induction shape (cocycle innermost-first +
+leafPaths→foldr bridge + acc clause; subtree-outermost explicitly marked refuted), the
+refuted turns + TWO build-first sub-lemmas for t14 (geoChartMapNorm §0 chart-action;
+c.divCoord = diagTargetOf coherence), the cert↔case↔atom mapping, and the discharge-time
+wiring notes. t14 notified (pull + sub-lemmas-first pointer; one relayed question to the
+retired seat allowed). t11 stood down clean — the 9th succession, and the deepest seat
+ledger of the expedition behind it.
