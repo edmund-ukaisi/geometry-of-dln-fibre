@@ -5071,3 +5071,26 @@ context on its own 33k-line module is the fastest path through the walk) and los
 are complete but the build mirrors t14's plumbing as it lands). Both are parked-with-owed-
 work, not stale — the distinction the first cleanup drew. If the operator prefers them
 cycled to fresh seats at their triggers instead, the specs support it (succession-ready).
+
+## 2026-07-19 tick 317: the STEER PROPAGATED + the AVOIDED-MATH AUDIT fired on two decorrelated channels
+Operator: propagate the elder steer's spirit to the cartographer and long-range scouts; get
+a general view of what math we SHOULD build wherever we've been avoiding the hard part or
+the right generality; a navigator parallelization pass follows (independent lines to finish
+large objects). EXECUTED:
+- CARTO-STANDING charge 3: the fidelity-provenance pass — every banked-family card gains a
+  PAPER ANCHOR (worked.tex line/§); deviations marked documented-typo-fix or FLAGGED
+  unanchored (an unanchorable family = the "silent Lean-convenience" the steer hunts).
+- ELDER-STANDING charge 7: the whole-mechanism avoided-math/right-generality audit —
+  including its OWN scoping rulings — over the named candidate list (R4/R6/R7; θ + Eqs
+  (1)-(5) with the sharp sub-question: is the COMBINATORIAL θ [quadratic program, explicit
+  formula, permutation invariance] buildable without the meromorphic-continuation gap we
+  cite for scoping it out?; the exact-RLCT fence; the Morse/resRank>0 generality — hers or
+  ours?; the α conditioning generality; §5 transcription narrowings) + a hunt for what I
+  missed. Deliverable: verdict + page cite + what-the-math-wants + size, per item; a
+  build-list ordered by mathematical necessity.
+- SCOUT-LR1 spawned DECORRELATED (paper-FIRST, not shown the team's scoping rationales; the
+  elder's audit includes auditing itself, so the second channel is the control): the
+  mechanism-contents list → BUILT / BUILT-NARROWER / STATED / ABSENT verdicts → top-5 by
+  mathematical necessity + the independently-buildable lines.
+- NAVIGATOR pass queued for the audits' return (fresh convene): parallelization of the
+  build-list + the current board.
