@@ -2236,3 +2236,16 @@ STATEMENT promises less); (2) 0<L docstring framing (vacuous at top, needed insi
 (3) drop "just" at EngineConstruction:724. Reviewer caveat on record: rev-spine did NOT re-run
 #print (no .olean in its worktree) — covered by controller probes at ticks 153/155. rev-spine's
 commission complete.
+
+### Tick-161 addendum: worry-list items 8-10 ALL PASS (review complete, 3603968d0 merged)
+(8) GENUINE-TREE: the headline is buildTree over the REAL conOracle dispatch; for genuine M the
+root steps case-2 (occ=[] → min?=none, rollover excluded since widthMinUpto 1 ≥ 1) — non-trivial
+branch. Bonus robustness on record: the headline survives even the off-cone chooseMin=none
+fallback, and on-cone the fallback never fires. (9a) the (2,2,4) witness gives real content
+(numDiv=1, terminalExponents=[4]=minAdm); empty analytic sides at t̃>0-only leaves legitimately
+allowed per fork 12(b). (9b) the flatDim=0 branch is a PROOF (flatDim_pos_of_append via the
+cleared<widthMinUpto guard; leafOfState_isFullMono's else-branch derives contradiction) — no
+assumption. (10) delta/BoundaryFlat is an acyclic DAG: one call site, hbdry = the PARENT
+invariant via reachability; BoundaryFlat maintenance greps clean of Mval/delta — no feedback;
+Codex independently confirmed divExp is not an Mval alias. Review COMPLETE: SURVIVED, 3 low
+notes, zero blocking. rev-spine's seat dissolved with thanks.
