@@ -1332,6 +1332,9 @@ open DLNFibre.DLN.RLCT
 -- MUST stay clean-three:
 #print axioms Engine.qNodeOf
 #print axioms Engine.dCenterOfNode_edgeSum
+-- The q-det lemma (t09): qOfCenter's linearity exposed as CLE + pointwise fderiv — the fold
+-- module's conjugation input. MUST stay clean-three:
+#print axioms Engine.qOfCenter_hasFDerivAt
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
