@@ -1747,6 +1747,24 @@ leaf constructor (analytic side empty, chart fields placeholder — the T3-fed c
 dispatch (rollover / case-1 eligible-minimal chooser / case-2, with CONE-GOODNESS) layers on top and
 is gated on the o1↔o4↔o2 mutual induction (needs `CompChainInv` ⟹ `def4_min` totality). -/
 
+/-- **The birth-corner flat coordinate** of a full-ledger divisor `k` (slot-stability cert): the flat
+`FlatIdx` index of the diagonal corner `(a, b, b)` where `(a, b) = divBirthCoord k` is the immutable
+birth corner. Dite-guarded by the corner-validity side-conditions (`a < L`, `b < M⁽ᵃ⁾`, `b < M⁽ᵃ⁺¹⁾`)
+so it is TOTAL for an arbitrary (un-real-ified) state; on the reachable cone `DivBirthInv` discharges
+every guard, making it the genuine injective birth-corner map (`DivBirthReach`). The `0 < flatDim M`
+witness gives the off-cone fallback. Equal to `CenterIndices.flatCoordOf` on the real branch (defeq;
+inlined here to break the `EngineConstruction ← CenterIndices` import order). -/
+noncomputable def birthFlatCoord (M : Fin (L + 1) → ℕ) (s : ConState L) (k : Fin s.numDiv)
+    (h : 0 < flatDim M) : Fin (flatDim M) :=
+  if hL : (s.divBirthCoord k).1 < L then
+    if hi : (s.divBirthCoord k).2 < M (Fin.castSucc ⟨(s.divBirthCoord k).1, hL⟩) then
+      if hj : (s.divBirthCoord k).2 < M (Fin.succ ⟨(s.divBirthCoord k).1, hL⟩) then
+        Fintype.equivFin (FlatIdx M)
+          ⟨⟨⟨(s.divBirthCoord k).1, hL⟩, ⟨(s.divBirthCoord k).2, hi⟩⟩, ⟨(s.divBirthCoord k).2, hj⟩⟩
+      else ⟨0, h⟩
+    else ⟨0, h⟩
+  else ⟨0, h⟩
+
 /-- **The terminal leaf** of a state (B' analytic/residual split): the FULL ledger `= (numDiv,
 divExp, divProfile, cleared)` of the state (so its `rootLedger` is the state's — the terminal
 `ConDecision`'s `hleaf`), and the ANALYTIC side (`numDiv`/`divExp`/`divProfile`) is the `t̃=0`
@@ -1775,7 +1793,7 @@ noncomputable def leafOfState (M : Fin (L + 1) → ℕ) (s : ConState L) : LeafD
       chartMap := id
       srcBox := ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1
       resRank := 0
-      divCoord := fun _ => ⟨0, h⟩
+      divCoord := fun i => birthFlatCoord M s ((t0Indices s).get i) h
       resCoord := Fin.elim0 }
   else
     { numDiv := 0
