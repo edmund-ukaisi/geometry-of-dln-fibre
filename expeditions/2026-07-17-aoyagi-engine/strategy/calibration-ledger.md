@@ -210,3 +210,33 @@ arm consumes `hDescent : DecoratedDescent` via _gen_of_descent (the PRE-TOMBSTON
 **What it changes:** the R5 checklist gains the precise stale-arm item; recorded in priorities.
 Score: the recurring miss-class (slogan for signature) now 4/4 across entries — the convention
 is doing its job; conclusions stayed correct each time BECAUSE the check ran before execution.
+
+---
+## Entry 6 (tick 224): the cordon census — what does the live-sorry map look like NOW?
+
+**Question.** The cordon (pre-PR) classifies every sorry LIVE-frontier vs fossil. After the o5
+closures, what is the actual census?
+
+**Predictions (written before looking):**
+- P6a (conf 0.8): the Engine directory = EXACTLY 3 sorries — chartBridge_buildTree
+  (EngineObligations), realizedProfiles_eq_clearableAdm (ClearableReify, R7), the
+  canonicalResolution224 witness conjunct (CanonicalWitness224).
+- P6b (conf 0.6): Skeleton.lean's old L2 route carries ~5 sorry-carrying rungs (the compass's
+  "5 skeleton-rung sorryAx" the mint will orphan into fossils).
+- P6c (conf 0.5): the repo-wide live-sorry total is 20-24 (the cartographer's earlier fossil
+  census said 24 tree-wide; a few closed since).
+
+**Territory.** (next)
+**Territory** (tick 224): Engine = EXACTLY the 3 predicted (EngineObligations:53,
+ClearableReify:78, CanonicalWitness224:135). Skeleton.lean live-sorry pattern = (checked
+separately — see below). Repo-wide live pattern = 24 lines / 13 files.
+
+**Verdicts:** P6a HIT exactly (3/3, named). P6c HIT (24, top of range — the cartographer's
+fossil census figure holding steady). P6b: the naive string count (8) includes docstring
+mentions; the live-pattern count on Skeleton.lean recorded alongside — the "5 rungs" claim is
+the compass's own (sorryAx-cone, not raw sorries); VERIFY AT MINT with #print rather than grep
+(the cone is the truth, grep is the approximation — the very slogan-vs-signature class again,
+caught in-flight this time).
+**What it changes:** the cordon's census base is CURRENT and small: 3 Engine (2 close with the
+tide + the corollary; 1 = R7 owed), the Skeleton fossils orphan at mint, ~21 others enumerated
+for LIVE-vs-fossil classification. No surprises; the cordon is a bounded pass.
