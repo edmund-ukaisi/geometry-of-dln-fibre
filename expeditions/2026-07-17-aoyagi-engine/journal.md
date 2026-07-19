@@ -4538,3 +4538,11 @@ one load-bearing charge-4 flag (the lift must land PROVEN) was discharged before
 even reached the seat — first-attempt build, the atom+walk pattern composing as designed.
 (D)'s remaining delivery: the statements + the stated faithful discharge with the staged
 projection — ONE ingredient hole (t14's fold). The GO re-relayed (its inbox had it; crossed).
+
+### Tick-289 addendum 2: t14's machine-checked disproof merged + KEPT (crossed the tick-286 ruling)
+t14 built the ∀s-falsity disproof before the "not now" reached it: geoAtlas_fold_det_generic_false
+(the csWitness terminal state; LHS=1 vs RHS=0 at w=0), sorry-free, isolated, probed
+clean-three, merged (a03586a8a). Ruling amended cheaply: the artifact exists and is good —
+KEPT as the tripwire module (the executable-witness pattern; a ∀s regression is now
+structurally impossible to miss). The (A) ruling re-relayed; t14 EXECUTING: conRoot headline
+→ the two handoff sub-lemmas → the cocycle. t14 is the expedition's sole critical path.
