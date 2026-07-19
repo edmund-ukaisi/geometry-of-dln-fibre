@@ -3937,3 +3937,12 @@ launched covering the capstone + spine watch lines. Crossed-message wake sent to
 (its wait-list items 1-2 were already resolved at tick 263; only t10 remains). Board:
 t10 (batch, sole file-lock holder) ∥ pnp-fold (cert) ∥ AxCheck verify; t11 idle-correct;
 t09/rev-carrier/navigator-4 retired/complete.
+
+### Tick-265 addendum: t11 gate-ack; acc-fallback banked; correctly idle on t10 alone
+t11's ack merged (the addendum update 474f493ab): the acc=id-vs-generalize decision deferred
+to the check against t10's landed threading WITH the acc-generalized motive written out as
+the robust fallback — and Phase-2's fold is already acc-AGNOSTIC (arbitrary map list; a
+forwarded acc = leading factors; passthrough = det 1), so only the leaf-read statement needs
+the acc clause. The pointwise-idiom gotcha (t09's) pre-applied to #35's per-pivot divCoord
+design (Fin (dCenterOfEdge) → Fin (flatDim) — built pointwise from the start). All t11
+pre-gate work banked; the seat idles on exactly one trigger (t10's batch). No wake owed.
