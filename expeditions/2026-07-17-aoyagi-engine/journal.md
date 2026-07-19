@@ -3597,3 +3597,11 @@ blocking. QNodeCarrier wired into AxCheck (background). COVERAGE WOKEN: instanti
 NOW ((dCN,qN) := the real pair — the parametrization's payoff); the SPECIFY still gates on the
 q-det lemma (status asked of t09 — possibly in its #26 batch). The (B)-before-(D) sequencing
 stands: cover build holds until the fold-module path is set.
+
+### Tick-246 final: t09's sequencing question answered — the audit was already closed
+t09 held #26 for the elder verdict, not realizing it landed at tick 242 (the crossing class
+again — its "if the verdict adds requirements" was answered by the very amendment in its
+inbox). Resolution: q-det FIRST (the small lemma gating coverage's SPECIFY → the fold-module
+chain), then #26 GO (its own risk assessment sound: ~150 LoC reachable, the dependent-dispatch
+transfer = the flagged thrash spot). Its #26 hold-instinct was right in form, moot in fact —
+the WAITING-FOR-WAKE marker did its job (visible hold, quick resolution).
