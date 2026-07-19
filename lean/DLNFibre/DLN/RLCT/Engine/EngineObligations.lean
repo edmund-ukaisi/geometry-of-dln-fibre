@@ -54,13 +54,24 @@ the construction's chart content becomes real. The ONE analytic hole (AxCheck:
 /-- **o5 realization** (map: `o5-realization`; D§ii/iii fills, from pnp-o5 cert §3–4). `minAdm M` is a
 terminal exponent of the built tree (a clearable minimizer is realized — the ATTAINMENT half; the
 lower bound is `minAdm_le_terminalExponents`) AND is attained at a leaf with a nonempty source box.
-NOT `⊇ Adm` (that is false — stranding; ledger #4). AxCheck: `+sorryAx` until D§ii/iii lands. -/
-@[blueprint] theorem o5_realization (M : Fin (L + 1) → ℕ) (_hL : 0 < L) :
+NOT `⊇ Adm` (that is false — stranding; ledger #4).
+
+ASSEMBLED from two pieces: the plumbing is PROVEN here (the terminal-exponent membership follows from
+the leaf's divisor-exponent list via `terminalExponents`' `flatMap`+`++`; `srcBox.Nonempty` is
+`leaves_srcBox_nonempty`), reducing to the sole crux `o5_core` (a realized `Mval`-minimizer — the
+cert §3 envelope-splice + §4 steering/pull-ordering, still sorried). AxCheck: `+sorryAx` via `o5_core`
+until D§ii/iii lands. -/
+@[blueprint] theorem o5_realization (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
     minAdm M ∈ ResolutionTree.terminalExponents (buildTree M (conOracle M) (conRoot : ConState L)) ∧
       (∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
         l.srcBox.Nonempty ∧
           minAdm M ∈ (List.finRange l.numDiv).map l.divExp) := by
-  sorry
+  obtain ⟨l, hl, k, hk⟩ := o5_core M hL
+  have hmem : minAdm M ∈ (List.finRange l.numDiv).map l.divExp :=
+    List.mem_map.mpr ⟨k, List.mem_finRange k, hk⟩
+  refine ⟨?_, l, hl, leaves_srcBox_nonempty (M := M) conRoot l hl, hmem⟩
+  rw [ResolutionTree.terminalExponents, List.mem_flatMap]
+  exact ⟨l, hl, List.mem_append_left _ hmem⟩
 
 /-! ## The construction hole + the canonical resolution -/
 

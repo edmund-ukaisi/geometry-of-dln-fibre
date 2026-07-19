@@ -1295,8 +1295,12 @@ open DLNFibre.DLN.RLCT
 -- ★ ENGINE SPINE (aoyagi-engine, t03 A→C+D§i): the assembled `monomialization_terminates` now has
 -- FOUR proven conjuncts + TWO named sorried holes. `sorryAx` source is EXACTLY those two:
 #print axioms Engine.chartBridge_buildTree      -- +sorryAx (← T3 coverage lane)
-#print axioms Engine.o5_realization             -- +sorryAx (← D§ii/iii, pnp-o5 cert §3-4)
-#print axioms Engine.monomialization_terminates -- +sorryAx via EXACTLY chartBridge_buildTree + o5_realization
+-- o5_realization is now PROVEN modulo the isolated crux `o5_core` (the plumbing — terminal-exponent
+-- membership + srcBox.Nonempty — is discharged); its `+sorryAx` flows THROUGH `o5_core` (a realized
+-- Mval-minimizer, cert §3 envelope-splice + §4 steering/pull-ordering). EXPECTS `+sorryAx` until D§ii/iii:
+#print axioms Engine.o5_core                    -- +sorryAx (← D§ii/iii crux, pnp-o5 cert §3-4)
+#print axioms Engine.o5_realization             -- +sorryAx via o5_core (plumbing proven)
+#print axioms Engine.monomialization_terminates -- +sorryAx via EXACTLY chartBridge_buildTree + o5_core
 -- The full-monomialisation headline + the exponent lower bound: MUST stay clean-three [propext,
 -- Classical.choice, Quot.sound] (a `sorryAx` here means the spine re-opened):
 #print axioms Engine.isFullMonomialization_buildTree_conRoot
