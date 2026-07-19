@@ -45,6 +45,35 @@ abbrev QNodeFam (M : Fin (L + 1) → ℕ) (dCN : StepData M → ℕ) : Type :=
   ∀ node : StepData M, dCN node ≤ flatDim M →
     Params M ≃ₜ (Fin (dCN node) → ℝ) × (Fin (flatDim M - dCN node) → ℝ)
 
+/-- **The diagonal-normalization TARGET** `d` (fork-15, buck-stops: node/edge-derived, no free field):
+the `divBirthCoord` DIAGONAL cell of the divisor born at (or merged by) this edge — the canonical cell the
+ledger references. case-1(1) merges divisor `mergeIdx`, so its target is that divisor's stored birth corner
+`(a,b) ↦ flatCoordOf a b b` (mirrors `uCornerSel`; there the swap is a no-op — pivot = corner already);
+case-1(2)/case-2 births a fresh divisor at corner `(layer, cleared) ↦ flatCoordOf layer cleared cleared`
+(the block diagonal). Totality fallback (`Fin.castLE hd 0`) off the reachable cone / rollover (where
+`geoChartMap` is `id`, so the target is unused). The source swap `S = (cNodeOf pivot ↔ diagTargetOf)`
+relocates the exceptional divisor to this diagonal. Named (not inline) — consumed by the cocycle statement,
+clause (D)'s gated intended-chart, and the fidelity story. -/
+noncomputable def diagTargetOf (M : Fin (L + 1) → ℕ) (node : StepData M) (e : Edge M)
+    (hd : 1 ≤ flatDim M) : Fin (flatDim M) :=
+  match e.case with
+  | StepCase.case11 =>
+      if h : ∃ hm : e.subst.mergeIdx < node.numDiv,
+          (node.divBirthCoord ⟨e.subst.mergeIdx, hm⟩).1 < L then
+        let sc := node.divBirthCoord ⟨e.subst.mergeIdx, h.choose⟩
+        if h2 : sc.2 < M (⟨sc.1, h.choose_spec⟩ : Fin L).castSucc ∧
+            sc.2 < M (⟨sc.1, h.choose_spec⟩ : Fin L).succ then
+          flatCoordOf M ⟨sc.1, h.choose_spec⟩ ⟨sc.2, h2.1⟩ ⟨sc.2, h2.2⟩
+        else Fin.castLE hd 0
+      else Fin.castLE hd 0
+  | _ =>
+      if h : node.layer < L then
+        if h2 : node.cleared < M (⟨node.layer, h⟩ : Fin L).castSucc ∧
+            node.cleared < M (⟨node.layer, h⟩ : Fin L).succ then
+          flatCoordOf M ⟨node.layer, h⟩ ⟨node.cleared, h2.1⟩ ⟨node.cleared, h2.2⟩
+        else Fin.castLE hd 0
+      else Fin.castLE hd 0
+
 /-- **The computed per-node chart** `β` (buck-stops: a function of the `GeoChart` data + banked atoms).
 On the reachable cone (`dCN node ≤ flatDim M`, pivot in range) it is the `qNodeOf`-conjugated max-modulus
 blow-up `pivotChart` on the node's FULL center coordinates (the per-node cover ruling: ONE `q` of dim
