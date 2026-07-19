@@ -2282,3 +2282,24 @@ built speculatively. ARCHITECT CARRIER-MAP ITEM (accumulating, for t03's E batch
 brief): (1) path-accumulator / fold surface for leaf charts; (2) per-edge β/ψ exposure (minimal
 surface per coverage's pending (a)/(b) answer); (3) per-node edge classification (cover-family
 vs ledger-only) making the ψ-mix inspectable.
+
+## 2026-07-19 tick 163: (b) CONFIRMED — chart-emission carrier spec pinned (t04's first item)
+Coverage confirms: its 3 Props consume the CONSTRUCTION'S chart emission, NOT the D§ii/iii
+theorem — lanes fully parallel; the "o5" label in earlier gating notes is CORRECTED to "the
+chart-emission carrier". THE SPEC (coverage's minimal surface, adopted verbatim for the t04
+brief) — per-edge STRUCTURED fields on ChartSubst (or sibling):
+  (1) pivot flat-coordinate index + exponent;
+  (2) β = q.symm ∘ pivotChart(pivot) ∘ q (reusing coverage's atom — product-effect and
+      |det Dβ| = |u|^{exp−1} already characterized);
+  (3) ψ : Params M ≃ₜ Params M with |det Dψ| = 1 (Schur gauge; .refl on ledger-only case-1(1)
+      edges) — proof-carrying;
+  (4) localSub_e = ψ_e ∘ β_e + leafChartFold coherence (leaf.chartMap = fold of localSubs).
+  NOT acceptable: a bare leafChartFold def over opaque localSub (nothing to induct on).
+Given (1)-(4): LeafPullbackWith/LeafJacobianWith = coverage's path induction (per-edge u-power
+telescopes into ∏u²; det-1 gauges telescope to a bounded unit; Jacobian existentials witnessed
+by folded β/ψ); a.e.-InjOn folds from the banked pivotChart_ae_injOn ∘ ψ-homeo.
+SEQUENCING: carrier = t04's FIRST item (t03's budget stays scoped to ripple+E atomic);
+coverage unblocks at t04's first green, then its 3-Prop tide runs PARALLEL to t04's D.
+Promotion to t03's batch only on verified spare budget — not planned. t04 brief accumulator
+now: carrier spec (this entry) + per-node edge classification (tick-162 addendum) + D§ii/iii
+package (tick 158) + 3 close-phase nits (tick 161).
