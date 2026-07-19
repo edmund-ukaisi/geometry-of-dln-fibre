@@ -4346,3 +4346,12 @@ seat's coercion diagnosis + the explicit-witness idiom hints, and the parallel-G
 note (List-level lemma, expected unaffected; pin-and-report if not). t11 confirmed actively
 building the spine change (GeoChart.lean 20:14). Three seats now converge on the same file
 in SEQUENCED, single-writer steps.
+
+### Tick-281 addendum: t10's sorry-2 report (crossed with the merge) — answers relayed
+The report crossed my merge (already banked at tick 281). Proof shape recorded for the
+ledger: conOracle_step_children_ne_nil (~55 lines, full oracle dispatch, terminal branches
+contradict oracleTerminal) — a REUSABLE fact the (D) node-walk will likely want, noted to
+t10 — and the rollover branch collapses the id-passthrough head singleton with NO
+geoChartMap exposure (all edges chartless → no whnf hazard). Answers: hold GeoCoverSpec
+(fresh-eyes-t13 owns :133); no AxCheck run needed (module off the gate path; the full gate
+re-runs at discharge). t10 idle-correct on ONE trigger: t11's spine push → step 3.
