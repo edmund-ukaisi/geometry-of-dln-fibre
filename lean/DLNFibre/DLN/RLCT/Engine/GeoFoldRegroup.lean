@@ -444,6 +444,44 @@ noncomputable def ledgerMonomial (M : Fin (L + 1) → ℕ) (s : ConState L) (h :
     (w : Params M) : ℝ :=
   ∏ k : Fin s.numDiv, |paramsEquivFlat M w (birthFlatCoord M s k h)| ^ (s.divExp k - 1)
 
+/-- **`birthFlatCoord` depends only on the birth-corner value** — equal `divBirthCoord` entries give
+equal flat coordinates (the ledger-delta lemmas transport it across `snoc`/`update`/`rollover`). -/
+theorem birthFlatCoord_congr (M : Fin (L + 1) → ℕ) {s s' : ConState L} (h : 0 < flatDim M)
+    {k : Fin s.numDiv} {k' : Fin s'.numDiv} (heq : s'.divBirthCoord k' = s.divBirthCoord k) :
+    birthFlatCoord M s' k' h = birthFlatCoord M s k h := by
+  unfold birthFlatCoord; rw [heq]
+
+/-- **Rollover is ledger-neutral**: `stepRollover` carries `numDiv`/`divExp`/`divBirthCoord`, so the
+full-ledger monomial is unchanged. -/
+theorem ledgerMonomial_stepRollover (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (w : Params M) : ledgerMonomial M s.stepRollover h w = ledgerMonomial M s h w := rfl
+
+/-- **The birth ledger-delta** (`case-2` / `case-1(2)` at the ConState level): `stepAppendAdvance e t₀`
+appends one divisor of exponent `e` at the fresh corner, so the full-ledger monomial gains exactly the
+factor `|z_{fresh}(w)|^{e−1}` (carried divisors unchanged, `snoc_castSucc`). -/
+theorem ledgerMonomial_stepAppendAdvance (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (e : ℕ) (t₀ : Fin L → ℕ) (w : Params M) :
+    ledgerMonomial M (s.stepAppendAdvance e t₀) h w
+      = ledgerMonomial M s h w
+        * |paramsEquivFlat M w (birthFlatCoord M (s.stepAppendAdvance e t₀) (Fin.last s.numDiv) h)|
+            ^ (e - 1) := by
+  rw [ledgerMonomial]
+  show (∏ k : Fin (s.numDiv + 1),
+      |paramsEquivFlat M w (birthFlatCoord M (s.stepAppendAdvance e t₀) k h)|
+        ^ ((s.stepAppendAdvance e t₀).divExp k - 1)) = _
+  rw [Fin.prod_univ_castSucc, ledgerMonomial]
+  congr 1
+  · refine Finset.prod_congr rfl (fun k _ => ?_)
+    rw [birthFlatCoord_congr M h
+        (show (s.stepAppendAdvance e t₀).divBirthCoord (Fin.castSucc k) = s.divBirthCoord k by
+          simp [ConState.stepAppendAdvance])]
+    have hexp : (s.stepAppendAdvance e t₀).divExp (Fin.castSucc k) = s.divExp k := by
+      simp [ConState.stepAppendAdvance]
+    rw [hexp]
+  · have hexp : (s.stepAppendAdvance e t₀).divExp (Fin.last s.numDiv) = e := by
+      simp [ConState.stepAppendAdvance]
+    rw [hexp]
+
 /-- **The weak no-stranded fact** (team-lead sharpening, pnp-fold adjudicating): a stranded (t̃ ≠ 0)
 divisor has exponent `1`, so its ledger factor `|z|^{1−1} = 1` is harmless. Threaded as an open
 hypothesis until pnp-fold's dichotomy (strong all-t̃=0 / this weak form / false-with-witness) returns. -/
