@@ -175,3 +175,53 @@ CONVERGE at that one decl. The pass-#2 pins `EngineObligations.lean:184`/`:248` 
 standing context) are STALE — the honest current statement is "two named analytic holes: `chartBridge_buildTree`
 + `o5_realization`, both feeding `monomialization_terminates`". `EngineConstruction.lean` = 0 sorries (the whole
 A→C spine + the (a)/(b)/(c)/(d) reuse kit); the coverage kit ((e)) = 0 real sorries.
+
+**UPDATE (cartographer-4, 2026-07-19, HEAD `0ae14ade9`): `EngineConstruction.lean` = 1 sorry now, not 0.**
+The single hole is `o5_core` (`:2607`, sorry `:2611`) — the original minimizer-realization hole. Its proven
+replacement `o5_core_realized` (`O5Realization.lean:333`, proven modulo the crux `tStar_realized`, `:323`
+sorry `:326`) lives in the new `O5Realization.lean`; the **move-at-landing** (tick 189 ruling #3) deletes
+`o5_core` and repoints once `tStar_realized` closes. So the reuse-index (a) header "`EngineConstruction.lean`
+= 0 sorries" is STALE by one sorry until that batch lands — the (a)/(b)/(c)/(d) REUSE KIT is still 0-sorry;
+only `o5_core` itself is open here.
+
+---
+
+## CARRIER-ARC KILLS (cartographer-4, 2026-07-19) — routes t05's carrier must not re-enter
+
+*Refuted / struck during the ψ-adjudication + counter-sign consolidation (ticks 184-194). Each is a
+DESTINATION that is dead; trails kept as lessons. See [[banked-families]] § CARRIER-ADJACENT for the
+positive reuse.*
+
+- **Single per-node `ψ` (one shear per node covering all its edges) — REFUTED (pnp-psi T2, tick 187).**
+  No single per-node `ψ` exists: the u-pivot forces `ψ = id` while the d-pivots force a Schur shear, and
+  distinct d-pivots carry CONJUGATE (not equal) gauges (frame-robust). **`node_pivotCover_of_atom_sheared`
+  (`ShearReconcile.lean:42`) is therefore not the model** — its docstring's "single-`ψ` is the right model"
+  is refuted (drift, flagged for the owner). **Also DEAD: R-a (per-edge TARGET `ψ_e`) — UNSOUND** (cover
+  obligation FALSE; 1176 interior misses at R=10; Codex witness `(1/3,1/3,1/3,1/3,1/6)` re-verified). **Use
+  instead: ROUTE R-b** — per-edge SOURCE reparam `localSub_e = β̃_e = β_e ∘ α_e⁻¹` (det-1 gauge in the
+  source; chart images = pure-β images), so the PURE `node_pivotCover_of_atom` (`PivotCoverFold.lean:187`)
+  applies and the sheared variant retires to `ψ = .refl`. Scope caveat: d-coordinate gap first at
+  `d_center ≥ 5`, u-obstruction from `d_center = 2`. Cert: `threads/15-psi-adjudication/cert-psi-mix.md`.
+
+- **The spine path-accumulator (thread the root→leaf `localSub` fold INTO `leafOfState.chartMap` during
+  `buildTree`) — STRUCK MOOT (tick 187, ratified both sides).** The tick-163 4-part carrier spec's field
+  "path-accumulator through `buildTree`" is struck: the ledger spine is provably `chartMap`-blind, so the
+  atlas is realized as leaves of an auxiliary GEOMETRIC tree `t_geo` (proof-internal; spine untouched) and
+  the flat virtual-leaf re-typing replaces the threading mechanism. **Use instead:** populate the per-edge
+  `localSub`s (R-b `β̃_e`) + supply the concrete `q`/`pivotOf`/`d_center`; the (b) `leafPaths`/
+  `leafPathImages` fold (ALREADY BUILT) reads them. **DRIFT:** `chartBridge_buildTree`'s docstring
+  (`EngineObligations.lean:35-52`) still describes this struck plan — flagged for the owner.
+
+- **`leafOfState.divCoord` assignment on the construction side — SKIPPED MOOT (tick 186).** With the
+  corrected (per-piece `divCoord`) ChartBridge type adopted, sub-gap-1 is complete on the construction side;
+  the atlas-piece `divCoord`/injectivity is COVERAGE's (its per-piece props consume `leaves_numDiv_le_flatDim`,
+  proven clean-three `6c47d27ac`). Do not add a construction-side `divCoord` assignment to `leafOfState`.
+  **Use instead:** the flat-cube per-piece `divCoord` in `flatCubeLeafData`/`PivotLeafClauses`.
+
+- **D1-flat WITHOUT the path-tie (coverage's own D1 encoding) — WITHDRAWN at counter-sign consolidation
+  (tick 185).** coverage-t08 withdrew its self-proposed D1-flat for the elder's PINNED D1, honest reason:
+  under-tied — it anchored the fold to the ledger but let the PATH float (the "D2 wearing D1's name" hole).
+  **Use instead:** the pinned D1 (definitional coherence under any gauge; the fold equation pins `chartMap`
+  to a specific banked composition, `fails-on-fake` met) + the (D) documented-deferred landing (task #10:
+  (D) in the type BEFORE `chartBridge_buildTree`'s discharge, else a proven hole closes with the honest-name
+  tie missing).

@@ -14,7 +14,11 @@ quirk + two pin moves.*
 
 - **`ChartsCover` → `ChartBridge` — LANDED + STRENGTHENED (tick 46).** Per-leaf CoV bridge (chartMap +
   MeasurableSet-bounded `srcBox` + resRank + LeafPullback + LeafJacobian + a.e.-InjOn + image cover).
-  In `Engine/EngineObligations.lean`. Interface FROZEN + abstract-field-gate-cleared (tick 51).
+  Interface FROZEN + abstract-field-gate-cleared (tick 51). **PIN CORRECTION (cartographer-4, HEAD
+  `0ae14ade9`): the `def ChartBridge` is in `Engine/EngineDefs.lean:75`** (a `Prop`), NOT
+  `EngineObligations.lean` as pass-#2 wrote — `EngineObligations` only USES it (`chartBridge_buildTree`
+  `:50`, `resolutionOf`-form `:123`). The re-typing batch (WIP `e849a4b11`, unmerged here) edits this
+  `EngineDefs` def → flat virtual-leaf atlas.
 
 - **`StepInvariant` (unary) → `StepRel` (faithful) — LANDED (tick 37/44).** `StepRel := rootLedger
   e.child = stepUpdate n e.case e.subst` (reads `e.child`; discharge rfl-class). `EngineObligations`.
@@ -65,6 +69,14 @@ quirk + two pin moves.*
   `_gen` — anchor/evidence split across modules (intended; see [[landmark-cards]] mint card). R5 wiring
   must land the bare name on `_gen`, avoiding the 3 legacy Skeleton stubs (see [[dead-routes]]).
 
+## Close-phase rename list (owed at expedition close)
+
+- **`tStar_le_tPrev` / `tStar_le_Msucc` — misleading `tStar_` prefix (rev-s3, tick 191).** Both are
+  GENERIC-`Adm` lemmas over an arbitrary `T ∈ Adm M` (`RouteMAchieverPath.lean:36,52`), NOT specific to the
+  achiever `tStar` — the prefix wrongly suggests `tStar`-only scope. Consumers: `RouteMAchieverPath.lean:112,
+  115`, `RouteMAchieverStructAdm.lean` (several), and `Engine/O5Realization.lean:68,70` (§3 used them). Rename
+  to an `adm_`-prefixed generic name at close; leave a forwarding pointer here.
+
 ## Watch (rename risk on landing)
 
 - The full-`T` chooser (R1 open) + `genDivExp` redesign (R4) will re-shape `LeafData`/`StepData`
@@ -101,10 +113,18 @@ decl (flagged) — the reuse index [[banked-families]] § D-ARC has the full pin
 - **LEDGER carrier (R1)** — the faithful `RootLedger`/full-`T`/`genDivExp` node-data that the μ-descent + the
   divisor/profile bookkeeping read. Landed as the A→C spine (`ConState`, `RootLedger`, `stepUpdate`,
   `leafOfState` divisor fields). This is what (a)–(d) of the reuse index bank.
-- **CHART-EMISSION carrier (R2 pre-rung, t04's FIRST item)** — the per-edge chart surface: real `localSub`s
-  (not `id`) on each decision + a path-accumulator threading the root→leaf `localSub` fold into
-  `leafOfState.chartMap` (journal tick 163 4-part spec). `ChartSubst` ALREADY IS the per-edge surface
-  (`localSub` + `jacDivCount`/`jacPow`) — populate it, no sibling bundle (t04-handoff §3). This is the R2/R3
-  prerequisite the coverage kit ((e)) consumes; navigator-3 (tick 168 E) made it an EXPLICIT R2 pre-rung in the
-  ladder, distinct from R1's ledger carrier. The spine is provably `chartMap`-blind, so populating charts leaves
-  the (a)–(d) reuse kit and the two named-hole types unchanged.
+- **CHART-EMISSION carrier (R2 pre-rung, t05's carrier arc, task #8)** — the per-edge chart surface.
+  `ChartSubst` ALREADY IS the per-edge surface (`localSub` + `jacDivCount`/`jacPow`) — populate it, no sibling
+  bundle (t04-handoff §3). This is the R2/R3 prerequisite the coverage kit ((e)) consumes; navigator-3 (tick
+  168 E) made it an EXPLICIT R2 pre-rung, distinct from R1's ledger carrier. The spine is provably
+  `chartMap`-blind, so populating charts leaves the (a)-(d) reuse kit and the two named-hole types unchanged.
+  **FINAL SCOPE REVISED (tick 187+, R-b decisive) — supersedes the tick-163 "4-part spec":**
+  - **field 3 is `α_e` SOURCE frames, not a target `ψ`** — per-edge `localSub_e = β̃_e = β_e ∘ α_e⁻¹`
+    (det-1 source reparam; single-ψ and R-a target-ψ are BOTH DEAD, [[dead-routes]] carrier-arc kills);
+  - **the spine path-accumulator (threading the fold into `leafOfState.chartMap` during `buildTree`) is
+    STRUCK MOOT** (tick 187) — the atlas is realized via an auxiliary geometric tree `t_geo` (proof-internal;
+    spine untouched), NOT threaded into `leafOfState.chartMap`;
+  - **the coordinate split `q` must be CONCRETE in the carrier** (tick 185), the companion of the β field,
+    not `node_pivotCover_of_atom`'s existential;
+  - **per-node `d_center` family data** (case-1 `= runLen·resCols + 1`, case-2 `= (M(S)−J)·(M^{(S+1)}−J)`).
+  The positive reuse index for all of this is [[banked-families]] § CARRIER-ADJACENT (cartographer-4).
