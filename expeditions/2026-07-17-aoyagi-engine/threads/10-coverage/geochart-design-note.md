@@ -1,21 +1,28 @@
 # GeoChart + geometricLeafPaths — provisional design note (coverage, post-gate9)
 
-*Author: `coverage-t08`. Pins the GeoChart type shape + the edge-driven `geometricLeafPaths` skeleton
-PROVISIONALLY against t05's `carrier-remainder-spec.md` (d5f1f89c2) — so the carrier executor's `qNodeOf`
-green drops straight into the coverage build. NOT Lean yet (Lean against a not-yet-real `qNodeOf` risks
-rework; team-lead-approved to design-note it first). Final lock at the executor's first green.
-Binding rulings: elder-gate9 (amendments 1 per-edge emission, 2 buck-stops, 3 uniform-u) + the ownership
-addendum (I CONSUME `qNodeOf`, t05/t07 build it).*
+*Author: `coverage-t08`. Pins the GeoChart type shape + the edge-driven `geometricLeafPaths` skeleton.
+**FIELD-LOCKED (2026-07-19) against architect-t06's first carrier green** — `qOfCenter` clean-three,
+the four seam questions answered (below). Lean build starts at t06's `qEdgeOf` wrapper green (its
+`divBirthCoord` ripple + wrapper are in flight). Binding rulings: elder-gate9 (amendments 1 per-edge
+emission, 2 buck-stops, 3 uniform-u) + the ownership addendum (I CONSUME the carrier defs, t06 builds).*
 
-## 0. The seam (what I consume)
+## 0. The seam — LOCKED against t06's carrier (what I consume)
 
-From `CenterIndices.lean` (merged, clean-three) + the carrier remainder (t07 builds):
+From `CenterIndices.lean` (merged) + t06's carrier (`qOfCenter` green; `divBirthCoord` + `qEdgeOf` in flight):
 - `flatCoordOf M s i j : Fin (flatDim M)` — the `(i,j)` entry of the `s`-th matrix as a flat index (inj).
 - `resBlockCenterIndices M s J rows cols _ _ : Fin (rows*cols) → Fin (flatDim M)` — residual sub-block,
   flattened, injective.
-- `qNodeOf (node) : Params M ≃ₜ (Fin d_center → ℝ) × (Fin (flatDim M − d_center) → ℝ)` — node-indexed
-  (seam pin: node-derived, never existential), assembled `paramsEquivFlatCLE.toHomeomorph` ∘ permutation
-  (from `centerIndices` range+complement) ∘ `arrowCongr` split.
+- `qOfCenter M (c : Fin d → Fin (flatDim M)) (hinj) : Params M ≃ₜ (Fin d → ℝ) × (Fin (flatDim M − d) → ℝ)`
+  — **PARAMETRIC in the center selector `c`** (Q1); node/edge enters ONLY through `c`. Its `Fin d` is the
+  **PER-EDGE** count (Q4), so my `β_e`'s `pivotChart` index matches the `Fin d` factor DIRECTLY — no
+  node-sum slicing.
+- `qEdgeOf (node) (e) : Params M ≃ₜ (Fin (dCenterOfEdge node e) → ℝ) × …` — t06's thin per-edge wrapper
+  computing `c` (resBlock for case-2/case-1(2); the birth-corner singleton for case-1(1)). **My
+  `geoChartMap` calls `qEdgeOf`** (edge-keyed).
+- `StepData.divBirthCoord : Fin numDiv → ℕ × ℕ` (Q2) — the immutable birth `(layer, cleared)` per divisor
+  (flat slot `= flatCoordOf M s ⟨J⟩ ⟨J⟩`, slot-stable). Case-1(1) u-coord = `node.divBirthCoord mergeIdx`
+  (via the wrapper).
+- `dCenterOfEdge (node) (e) : ℕ` (Q3) — CONSUME t06's helper (don't inline the counts).
 
 ## 1. Amendment 1 — per-edge emission (the enumeration structure, t05-independent)
 
@@ -36,27 +43,27 @@ This is fully pinned + t05-independent; it is the count the `geometricLeafPaths`
 
 GeoChart is the per-(edge, pivot-choice) RECIPE — node-derived DATA only; the chartMap/`β̃` is COMPUTED
 (never a stored free field, else a fabricated atlas satisfies (D) internally — obligation-instance-#5
-class). Provisional fields:
+class). LOCKED fields (edge-keyed, per t06's `qEdgeOf`):
 
     structure GeoChart (M) where
-      node    : StepData M          -- the parent blow-up node (source of qNodeOf + counts)
-      case    : StepCase            -- which edge kind (fixes the family + exponent)
-      subst   : ChartSubst M        -- the edge's subst (runLen for the case12 count)
-      pivot   : ℕ                   -- the pivot choice within this edge's family (< dCenterOfEdge)
-      -- NO chartMap / β̃ field — computed by `geoChartMap` below from node + pivot + banked atoms.
+      node  : StepData M   -- the parent blow-up node (passed to qEdgeOf + divBirthCoord)
+      edge  : Edge M       -- the edge (its .case/.subst fix the family + count; qEdgeOf is keyed on it)
+      pivot : ℕ            -- the pivot choice within this edge's family (< dCenterOfEdge node edge)
+      -- NO chartMap / β̃ field — computed by `geoChartMap` below from node/edge/pivot + banked atoms.
 
 `geoChartMap (g : GeoChart M) : Params M → Params M` (the COMPUTED geometry, a function of `g`'s data
-+ `qNodeOf` + banked atoms — the fails-on-fake teeth):
++ `qEdgeOf` + banked atoms — the fails-on-fake teeth):
 
-    let q  := qNodeOf g.node                      -- t05/t07's node-indexed Homeomorph
-    let p  : Fin d_center_edge := ⟨g.pivot, _⟩    -- the pivot index (bounded by dCenterOfEdge)
+    let q  := qEdgeOf g.node g.edge               -- t06's edge-keyed Homeomorph; its Fin d = PER-EDGE count
+    let p  : Fin (dCenterOfEdge g.node g.edge) := ⟨g.pivot, _⟩   -- pivot index MATCHES q's Fin d directly (Q4)
     let β  := fun w => q.symm (Prod.map (pivotChart p) id (q w))   -- banked PivotCover atom, q-conjugated
-    let α  := elemShearHomeomorph (schur indices from CenterIndices)  -- banked ShearReconcile atom (α_u = .refl)
+    let α  := elemShearHomeomorph (schur indices)  -- banked ShearReconcile atom (α_u = .refl on case11)
     β ∘ α.symm                                     -- = β̃ = β ∘ α_e⁻¹ (R-b source reparam)
 
-α_u = .refl (case11) is a field VALUE (amendment 3), not a type split; the Schur `(a,b,c)` for case12/case2
-are read from `resBlockCenterIndices` (which flat coords the block occupies). The u-coord (case11) is the
-single center index from §2 of the spec (pnp-slot verdict: `flatCoordOf` at the birth corner if slot-stable).
+`α_u = .refl` (case11) is a field VALUE (amendment 3), not a type split. Schur `(a,b,c)` for case12/case2
+are read from the residual block coords (`qEdgeOf` computes `c` via `resBlockCenterIndices`). The case11
+u-coord = `g.node.divBirthCoord g.edge.subst.mergeIdx` → `flatCoordOf` at the birth corner (slot-stable;
+`qEdgeOf` handles this internally, so `geoChartMap` reads it uniformly).
 
 ## 3. geometricLeafPaths — edge-driven skeleton (amendment 1)
 
@@ -70,7 +77,7 @@ Mirror `edgesLeafPaths` (the banked `leafPaths` companion) but fan out per edge 
       | (mk c s ch)::es =>
           -- fan out: one geometric chart per pivot in this edge's family
           (List.finRange (dCenterOfEdge n ⟨c,s,ch⟩)).flatMap (fun p =>
-             geometricLeafPaths (acc ∘ geoChartMap ⟨n, c, s, p⟩) ch)
+             geometricLeafPaths (acc ∘ geoChartMap ⟨n, ⟨c,s,ch⟩, p⟩) ch)
           ++ geomEdges acc n es
 
 The fold is a function of `t` alone (buck-stops): `acc` threads `geoChartMap` (computed), never a free
@@ -84,28 +91,29 @@ from the fold). This is the flat virtual-leaf atlas the corrected `ChartBridge` 
   by `reparam_image` — the domain-reparam identity BANKED; so the gauge doesn't move the covering set and
   the pure atom tiles), folded up the geometric tree via `ownCovers_branch`.
 - **(B) 3 Props per piece:** a.e.-InjOn (`pivotChart_ae_injOn` ∘ α homeo ∘ q); LeafJacobian
-  (`|det Dβ̃| = |det Dβ| = ∏|u|^{divExp−1}` — needs the pivotChart det atom [IN PROGRESS] + `|det Dα|=1`
-  BANKED `abs_det_fderiv_elemShear`); LeafPullback (o5 analytic side).
+  (`|det Dβ̃| = |det Dβ| = ∏|u|^{divExp−1}` — BOTH inputs BANKED: `abs_det_fderiv_pivotChart` +
+  `abs_det_fderiv_elemShear` `|det Dα|=1`); LeafPullback (o5 analytic side).
 - **(C) exponent-agreement:** each geometric chart's `divExp` = its ledger leaf's (chart-independent
   bump), so `∈ terminalExponents t`.
 - **(D) fidelity:** `∀ c ∈ atlas, ∃ p ∈ geometricLeafPaths id t, c.chartMap = geoChartMap-fold p` —
   provable over the constructed atlas, FALSE on a generic one (the fold is a function of `t`; a
   free chartMap can't equal any `geoChartMap` composite). Buck-stops teeth satisfied.
 
-## 5. What's t05/t07-independent (buildable NOW) vs seam-gated
+## 5. Status — banked NOW vs seam-gated on `qEdgeOf`
 
-- NOW (banked or in progress): α_e frames + `reparam_image` (BANKED, ShearReconcile); the pivotChart det
-  atom (IN PROGRESS); `dCenterOfEdge` counts (§1, pinned).
-- SEAM-GATED (at `qNodeOf` green): `geoChartMap` (consumes `qNodeOf`), `geometricLeafPaths` materialization,
-  the cover fold over the geometric tree, clauses (A)/(C)/(D), the 3 Props. Provisional GeoChart fields
-  above lock against t05's `qNodeOf` signature; FINAL lock at the executor's first green.
+- BANKED (green, clean-three, ShearReconcile): α_e frame (`elemShearHomeomorph` + `abs_det_fderiv_elemShear`,
+  `|det Dα|=1`) + `reparam_image` (domain-reparam identity) + `abs_det_fderiv_pivotChart` (β-det,
+  `|u_i|^{d−1}`). Both `LeafJacobian` det inputs in hand: `|det Dβ̃| = |det Dβ| = |u_i|^{d−1}`.
+- SEAM-GATED (build starts at t06's `qEdgeOf` green): `geoChartMap` (consumes `qEdgeOf`),
+  `geometricLeafPaths` materialization, the cover fold, clauses (A)/(C)/(D), the 3 Props. Fields LOCKED
+  above against t06's `qOfCenter`/`qEdgeOf` signature.
 
-## 6. Open pins (resolve at seam)
+## 6. Pins — RESOLVED at field-lock
 
-- **u-coord (pnp-slot):** case11's single center index — `flatCoordOf` at the birth corner IF slot-stable;
-  else a dynamic map (surfaces to controller). GeoChart's case11 `pivot`/index carries whatever pnp-slot
-  sizes; my `geoChartMap` reads it uniformly (amendment 3).
-- **GeoChart field granularity:** whether `node`/`subst` are stored or the chart is indexed by a tree
-  position — settle with t07 to match `qNodeOf`'s exact argument (StepData vs a node handle).
+- **u-coord: RESOLVED** — slot-stable (`cert-slot-stability`); the case11 u-coord = `divBirthCoord` at the
+  birth corner, handled INSIDE t06's `qEdgeOf`; `geoChartMap` reads it uniformly (amendment 3). Coherence
+  bonus: case-1(2)'s rescale-rename-in-place = my R-b `α_d` at the value level — cite in the (D)/fold docstrings.
+- **GeoChart field granularity: LOCKED** — `node : StepData M` + `edge : Edge M` + `pivot : ℕ`; `qEdgeOf`
+  is keyed on `(node, edge)` (Q1), so no free geometry, buck-stops teeth intact.
 - **The two fill-batch retirement flags** (task #15): PivotCoverFold's spine-fold + EngineObligations:40-49
   caveat retire when this atlas fill lands (they describe the struck id-edge spine plan → vacuous).
