@@ -3203,3 +3203,19 @@ predicted and came back NO — the right posture for a genuinely open question. 
 REMAINDER IS NOW FULLY SIZED (spec + this cert): divBirthCoord + qNodeOf assembly. Awaiting
 ONLY t06's landing report + budget signal to pick the executor. pnp-slot dissolved with
 thanks — the fourth pnp commission, fourth clean landing.
+
+## 2026-07-19 tick 216: rev-s4 VERDICT — §4 SURVIVED 6/6; R7-statement falsity escalated + routed
+The audit (merged, reviewed at 88babb1dd): all six PASS — the statement is literally the
+minimizer-only ∃; hMpos TIGHT (the reviewer re-traced ![2,2,0] on the actual Lean conOracle:
+widthMinUpto=0 fires immediate rollover; realizedProfiles={(0,0)}); SteerInv transcribes both
+consults clause-for-clause, NON-VACUOUS (phases genuinely forced; fails at the witness); the
+pull brick is a real proof CONSUMING LowCover (the level-occupancy contradiction), not
+step1_dominates; the fold direction correct; in-file-only verified by git-stat; wording clean.
+THE ESCALATION (the audit's real yield): realizedProfiles_eq_clearableAdm — the SORRIED R7
+statement — is FALSE at zero widths by the same mechanism (Clearable is width-free; REALIZATION
+is not; tStar=(2,0) Clearable-but-unrealized at ![2,2,0]). Fix routed into t06's in-flight
+landing batch (hMpos on the sorried signature + caveat docstring — zero proof impact, prevents
+a future seat attempting a false statement); the ledger #4 positivity caveat ADDED (the cert's
+"EXACT" language scoped to the positive-width battery regime). This is the hMpos mechanism's
+THIRD appearance (divergence half; the attainment chain; now R7's statement) — the attainment
+LAYER is positive-width, period; the picture holds. rev-s4 dissolved with thanks.
