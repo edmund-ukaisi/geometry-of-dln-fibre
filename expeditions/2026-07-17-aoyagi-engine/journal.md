@@ -4615,3 +4615,19 @@ induction's size recorded (the exponent analogue of the STOP-AND-SURFACEd suppor
 tractability read: ℕ additivity through stepUpdate = the cert's three verified identities,
 no Finset transport). Pointer relayed: check the invariant's shape against coverage's
 in-flight ledger BRIDGE before building a second transport.
+
+## 2026-07-19 tick 293: t14 surfaced at the boundary (tripwire discipline); HYBRID ruled — det-fold ∥ pnp-fold cert
+t14 banked tGeo_composite_differentiable (the fold's differentiability hypothesis at every
+leaf) and surfaced BEFORE grinding the correspondence — the wall named precisely: the
+det-fold (tractable list machinery, ~50-100 LoC) is separable from THE REGROUPING
+CORRESPONDENCE ("the state ledger = the accumulated geometric chart contributions", the
+exponent analogue of the support-propagation that EngineDefs:150 STOP-AND-SURFACEd; the
+per-step algebra is banked as its own chart-action atoms, the GLOBAL threaded identification
+is the multi-arc remainder). RULED: the HYBRID (the o5 cert→build pattern, zero idle) —
+t14 GO on the det-fold now (banks as its own green; holds at that boundary rather than
+free-grinding); PNP-FOLD CHARGED in parallel (warm — its own §2 cocycle is the basis): the
+threaded invariant at an internal state (what L is in terms of s's ledger), per-case
+maintenance in LEAN-READY shapes keyed to t14's atom names, the sympy verification extended
+to a depth-3 mixed-case threaded run, and the induction-skeleton transcription notes. The
+shape-check pin: t14 glances at coverage's in-flight ledger bridge before writing its own
+list walk (no gratuitous divergence between the two walks).
