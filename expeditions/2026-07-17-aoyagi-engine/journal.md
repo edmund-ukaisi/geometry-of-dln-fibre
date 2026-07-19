@@ -3152,3 +3152,12 @@ spawned** (fidelity: minimizer-only statement; hMpos genuinely-needed [self-trac
 the pull brick consumes LevelCoverage, not assumes]; the fold's ∃-direction; in-file-only
 verification; wording). The optional t06-absorbs-carrier-remainder question queued for its
 post-batch budget signal.
+
+### Tick-212 addendum: coverage's post-gate plan approved; qNodeOf seam pointed at the spec
+Coverage absorbed all gate-9 amendments correctly (per-edge partition, buck-stops, uniform-u,
+the seam). Plan approved: (1) the pivotChart det atom NOW (t05-independent, the elemShear-det
+analog, verify-every-Codex-name discipline); (2) edgeFamilySize counts as the pinned structural
+core; (3) GeoChart record fields pinned PROVISIONALLY against the qNodeOf signature already in
+t05's t07-carrier-spec (its ask was addressed to the retired t05 — re-pointed at the spec doc;
+final field-lock at the remainder-executor's first green). The seam counterpart (t06-post-batch
+vs t07) announced when decided.
