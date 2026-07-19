@@ -2170,3 +2170,18 @@ check — after engine_box_threshold_finite gains hL, the hbox Prop's binder sha
 the _gen flip site must remain typeable (an unconditioned ∀L stranded anywhere = a SECOND
 interface decision, surface first); (4) balloon tripwire >~12 decls / 4th file = stop-and-surface.
 Sequencing: reify-Clearable → hL ripple + E → D§ii/iii.
+
+## 2026-07-19 tick 158: t03 at honest ceiling — endgame split ruled (t03 finishes the wire; D whole → t04)
+t03 consolidated cleanly (everything integrated through D§i; no unpushed work) and surfaced two
+gates. (1) The hL call had crossed AGAIN (3rd mailbox crossing this arc) — restated: full ripple,
+one atomic batch, the 4 conditions, + conRoot_steps joins the batch (base wireability). (2) Its
+context-ceiling recommendation ADOPTED AND EXTENDED: t03 does NOT start §3 — remaining budget →
+the mechanical work needing its signature knowledge (hL ripple + E assembly + conRoot_steps),
+then stands down with honors (statement card + t04 handoff map). The WHOLE D§ii/iii package
+(reify-Clearable + §3 envelope-splice + §4 steering realization + the pull-ordering brick) goes
+to a FRESH architect-t04 with full budget + the cert: §3 consumes the Clearable predicate, so
+splitting §3 from reify or from §4 would shear the D context across seats for no gain; elder's
+"reify with the spine" stays satisfied (t04's first brick, lands before D does). Post-E plan:
+verify + merge → NAVIGATOR convenes (the spine→coverage phase transition) → spawn t04 into the
+clean t01-r2. The seat-succession pattern (t02→t03) repeats by design, not accident: bank
+everything, map the tail, hand off at the ceiling.
