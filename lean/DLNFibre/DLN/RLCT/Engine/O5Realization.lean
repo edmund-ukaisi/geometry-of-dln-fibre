@@ -324,6 +324,21 @@ theorem leafOfState_carries {M : Fin (L + 1) → ℕ} (s : ConState L) (hfd : 0 
   unfold leafOfState; rw [dif_pos hfd]; dsimp only
   exact ⟨i, by rw [hi, hAa]⟩
 
+/-- **A step's child-subtree leaves are among the parent's leaves** (the existential navigator, the
+branch part of `leaves_isFullMono` reversed): if `conOracle M s` steps with child `c ∈ children`, every
+leaf of `buildTree … c.child` is a leaf of `buildTree … s`. Chains a witness up the steered path. -/
+theorem childLeaves_subset (M : Fin (L + 1) → ℕ) (s : ConState L) {node : StepData M}
+    {children : List (StepChild M s)} {hnode hlayer hstep}
+    (hoc : conOracle M s = ConDecision.step node children hnode hlayer hstep)
+    {c : StepChild M s} (hc : c ∈ children) :
+    ResolutionTree.leaves (buildTree M (conOracle M) c.child) ⊆
+      ResolutionTree.leaves (buildTree M (conOracle M) s) := by
+  intro l hl
+  rw [buildTree_step M (conOracle M) s node children hoc, ResolutionTree.leaves, edgesLeaves_eq,
+      List.mem_flatMap]
+  exact ⟨Edge.mk c.ecase c.esubst (buildTree M (conOracle M) c.child),
+    List.mem_map.2 ⟨c, hc, rfl⟩, hl⟩
+
 /-- **`tStar M` is realized as a `t̃ = 0` leaf-divisor profile of the built tree** (cert §4, the
 anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
 `Clearable-Adm` (= R7). The `t̃ = 0` is automatic (`tStar ∈ Adm`, last coord `0`).
