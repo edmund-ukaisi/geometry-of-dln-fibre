@@ -4027,3 +4027,20 @@ unanswered but a READ-ONLY mtime peek shows it actively editing (GeoCoverSpec.le
 18:56 — this minute; 6 files modified; GeoChart at 18:25 = the passthrough work) — deep in the
 fill grind, NOT stalled; reply expected at its turn boundary. The idle-stall guard
 distinguishes idle-with-intent from working: this is working.
+
+## 2026-07-19 tick 269: carto pass #5 merged — the wiring truth refreshed; one journal-precision miss owned
+carto-standing's first pass merged (50106eb1a): wiring-endgame.md pass-#5 rewrite (the
+discharge import-add set REVISED to the geo-atlas era: chartBridge_of_pieces + GeoChart +
+GeoCoverSpec + GeoJacobianFold; watch-flip line numbers refreshed; the dCenterOfEdge-gated
+(D) obligation IN the checklist §2c; canonicalResolution224 separate-closure CONFIRMED),
+STATUS.md endgame rewrite, banked-family cards, dead-route entries for both emission defects,
+naming forwarding-pointers (qNodeOf LIVE — the pass-#4 "struck" note was stale; o5_core
+deletion recorded). ORPHAN SWEEP: the fold-spine orphan it flagged was ALREADY CLOSED at
+13b86217a (its snapshot pre-dated the commit); the real catch underneath: the tick-265
+JOURNAL claimed "watch lines added" while the edit sat uncommitted pending the build gate —
+a journal-precision miss, owned; convention forward: say "edited, commit pending gate" when
+that is the truth. Legacy orphans (CoRank2Spike, FlatCubeLeaf, PivotLeafClauses) → carto
+follow-up charged: disposition proposal (wire vs cordon; likely the pre-geoAtlas per-leaf
+machinery joins the #15 retirement sweep). ShearReconcile self-contradiction + the EO:39-50
+stale docstring folded into task #15's discharge flags. The t12-assembly seat now has a
+current checklist to run.
