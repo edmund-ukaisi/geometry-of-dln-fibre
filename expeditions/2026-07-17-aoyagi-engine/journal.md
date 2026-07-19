@@ -4907,3 +4907,15 @@ shape-check discipline); the (B) wiring pre-staged; merge t10's imminent field p
 THE HOLE CENSUS NOW: t14's step-case maintenance (the one real grind, in flight) +
 leafDiagFrob (spec-complete, sequenced) + inj-t16's three steps (in flight) + t10's
 restatement batch (in flight). Everything else on the atlas face is PROVEN.
+
+### Tick-308 addendum: loss-t15's Inv_val design banked — the leaf discharge is a CLEAN BRIDGE
+design-inv-val-t15.md merged: the design's key result — at a spine leaf (D_J cleared,
+resRank=0 proven), Inv_val collapses to prod = diag(b), and the b-chain's typed
+divisibility fields give exactly LeafDiagFrob's ratio form (r = the b_j/b₁ ratios, the
+b₁-index ratio = 1) — so leafDiagFrob_geoAtlasNorm IS the leaf case of Inv_val, and
+LeafPullback closes end-to-end through the already-proven reduction. The α maintenance
+reuses the seat's banked shear lemmas verbatim; the only new pieces are the value-payload
+prod-tracking on t14's skeleton + a frobSq-of-diagonal read. The seat is correctly blocked
+on ONE trigger (t14's walk landing) with the build pre-designed for speed. The two
+instances of the shared skeleton are now BOTH fully designed; only the skeleton's first
+instance (t14's step case) is still being ground.
