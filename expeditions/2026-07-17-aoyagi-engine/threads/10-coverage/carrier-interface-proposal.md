@@ -20,30 +20,35 @@ for t05 + the elder; no Lean re-typed. Division of labour at the end.*
 - The fan-out (per-node `d_center` pivot family) lives ENTIRELY in the atlas List, NEVER in `Edge`/`StepRel`
   (sub-gap-3 pin) — realized via a `geometricLeafPaths t` traversal, not a spine change.
 
-## 1. The concrete coordinate split `q` (the one dependency my counter-sign named)
+## 1. The concrete coordinate split `q` — TYPED INTERFACE (co-designed; t05 CONSTRUCTS)
 
 `node_pivotCover_of_atom` (`PivotCoverFold.lean:187`) takes `q : Params M ≃ₜ (Fin d → ℝ) × E` as a
 HYPOTHESIS. For clause (D)'s non-opacity bar (and for the cover to be non-vacuous), `q` must be a CONCRETE
-`Homeomorph`, per blow-up node, not an existential.
+`Homeomorph`, per blow-up node, not an existential. **Ownership (tick-204 correction): the CONSTRUCTION is
+t05's carrier deliverable (its files, per-node); coverage co-designs the TYPED INTERFACE + properties the
+cover lemma consumes.** This section is the interface coverage needs; t05 builds the witness.
 
-**Proposed:** a per-node `centerSplit` builder
-`q_node : Params M ≃ₜ (Fin d_center → ℝ) × (Fin (flatDim M − d_center) → ℝ)` that permutes the flat
-coordinates (via `paramsEquivFlat`) so the first `d_center` are the node's center coordinates and the rest
-are spectators. The center coordinates are:
+**Interface (what t05 constructs per blow-up node):** a `centerSplit`
+`q_node : Params M ≃ₜ (Fin d_center → ℝ) × (Fin (flatDim M − d_center) → ℝ)` permuting the flat coordinates
+(via `paramsEquivFlat`) so the first `d_center` are the node's center coordinates, the rest spectators. The
+center coordinates:
 - Case 1: the `J₁ × (M^{(S+1)}−J)` residual `d`-block entries **plus** the one divisor coord `u_{s,k}`
   (`page-pin-centers.md`; `d_center = runLen·resCols + 1`).
 - Case 2: the whole residual block `(M(S)−J) × (M^{(S+1)}−J)` (`d_center = resRows·resCols`; no `u`).
 
-Construction: a coordinate PERMUTATION homeomorphism = `paramsEquivFlat M` composed with a
-`Fin (flatDim M) ≃ Fin d_center ⊕ Fin (rest)` `Equiv.Perm` selecting the center indices, then
-`(finSumEquiv).arrowCongr`. This is a banked-shape build (finite-coordinate permutation + `paramsEquivFlat`);
-the center-index selector reads the node's `divCoord`/center data. **Owed Lean piece (mine): `centerSplit`
-+ its `Homeomorph` proof.**
+Shape t05 builds: a coordinate PERMUTATION homeomorphism = `paramsEquivFlat M` composed with a
+`Fin (flatDim M) ≃ Fin d_center ⊕ Fin (rest)` selecting the center indices, then an `arrowCongr` split. A
+banked-shape build (finite-coordinate permutation + `paramsEquivFlat`); the center-index selector reads the
+node's `divCoord`/center data. **Coverage consumes only:** `q_node` is a `Homeomorph` and the first factor
+carries exactly the `d_center` center coords (so `pivotChart` acts on them, spectators pass through). No
+other property of `q_node` is read by the cover lemma.
 
-## 2. The per-edge R-b fields (revision of the tick-163 4-part spec)
+## 2. The per-edge R-b fields — the ACCUMULATOR PAYLOAD (revision of the tick-163 4-part spec)
 
-Per blow-up edge `e` (one pivot choice in the node's `d_center` family), expose STRUCTURED data (on
-`ChartSubst` or a sibling record — t05's call on where it lives):
+Framing (cartographer-4's index note): `leafPaths`/`geometricLeafPaths` is the SHAPE (the recursion); this
+per-edge bundle is the PAYLOAD the accumulator carries down each path. So the fields below are exactly what
+`geometricLeafPaths`'s `acc` threads (§4) — the fold of the payload's `localSub_e` IS the leaf `chartMap`.
+Per blow-up edge `e` (one pivot choice in the node's `d_center` family), the payload:
 
 1. **pivot** `pivotOf e : Fin d_center` (the center coordinate this chart pivots on) + its exponent
    contribution (feeds `divExp`; `d_center` per node from §1).
@@ -93,23 +98,27 @@ constructed atlas, false on a generic one (the two-sided honesty test).
 
 ## 6. Division of labour
 
-- **t05 (construction/carrier):** the per-edge structured fields of §2 on the construction side (pivot,
-  β_e via the banked atom, α_e proof-carrying det-1, `localSub_e = β̃_e`); the buildTree path-accumulator so
-  `leafOfState.chartMap` = the fold (replaces the `id` placeholder); the per-node `d_center` count exposed.
-- **coverage (me):** `centerSplit`/concrete `q` (§1); the α_e frames + the domain-reparam identity `β̃ '' αD
-  = β '' D` (§2, cert-specified banked-atom step); `geometricLeafPaths` (§4); the cover fold, the 3 Props,
-  clause (D) (§5). Clause (D) then lands IN `ChartBridge` — the cordon gate (task #10) before
-  `chartBridge_buildTree` discharges.
+- **t05 (construction/carrier — task #8, its files):** the concrete per-node `centerSplit`/`q`
+  CONSTRUCTION (§1, against the co-designed interface); the per-edge structured fields of §2 as the
+  accumulator payload (pivot, `β_e` via the banked atom, `α_e` proof-carrying det-1, `localSub_e = β̃_e`);
+  the buildTree path-accumulator so `leafOfState.chartMap` = the fold (replaces the `id` placeholder); the
+  per-node `d_center` count/family exposed.
+- **coverage (me — my files, AFTER the carrier):** the `α_e` concrete construction (`α_u=.refl`,
+  `α_d`=inverse-Schur) + the domain-reparam identity `β̃ '' αD = β '' D` (§2, the ψ-cert owed Lean piece);
+  `geometricLeafPaths` (§4); the cover fold, the 3 Props, clause (D) (§5). Clause (D) then lands IN
+  `ChartBridge` — the cordon gate (task #10) before `chartBridge_buildTree` discharges. (This proposal doc
+  itself is coverage's co-design deliverable.)
 - **o5:** `LeafPullback`'s monomialization pullback identity (the analytic side).
 
 ## 7. Owed Lean pieces, named (none blocks the interface; all banked-atom-shaped)
 
-1. `centerSplit` (concrete per-node `q` `Homeomorph`) — §1.
-2. α_e frames (`α_u=.refl`, `α_d`=inverse-Schur unipotent, det 1) + `β̃_e '' α_e(D_e) = β_e '' D_e` — §2
-   (the cert-psi-mix owed piece).
+1. `centerSplit` (concrete per-node `q` `Homeomorph`) — §1. **t05's** (its files).
+2. `α_e` frames (`α_u=.refl`, `α_d`=inverse-Schur unipotent, det 1) + `β̃_e '' α_e(D_e) = β_e '' D_e` — §2.
+   **Mine** (the ψ-cert owed piece; my files, after the carrier). t05 carries the `α_e` DATA + the `β̃`
+   factorization guarantee; I supply the concrete `α_e` + the identity.
 3. The `pivotChart` Jacobian-det atom `|det D(pivotChart i)| = |u_i|^{d−1}` in Lean (docstring/battery
-   only today) — feeds `LeafJacobian`; counter-sign item 5b.
-4. `geometricLeafPaths` recursion + clause (D) coherence — §4.
+   only today) — feeds `LeafJacobian`; counter-sign item 5b. **Mine.**
+4. `geometricLeafPaths` recursion + clause (D) coherence — §4. **Mine.**
 
 ## 8. One open question for t05 + elder
 

@@ -3,6 +3,16 @@ import DLNFibre.DLN.RLCT.Engine.PivotCoverFold
 /-!
 # `DLNFibre.DLN.RLCT.Engine.ShearReconcile` — the shear reconciliation lemma (rung 3)
 
+**RETIRE NOTE (2026-07-19, ψ adjudication `threads/15-psi-adjudication/cert-psi-mix.md`).** The
+single-per-node-ψ MODEL described below is REFUTED for a mixed Case-1 node: the `u`-pivot carries `ψ=id`
+and the `d`-pivots `ψ=Schur` (and distinct `d`-pivots carry conjugate-not-equal gauges), so no common `ψ`
+factors the node, and modelling the mix as a per-edge TARGET gauge opens a fundamental interior cover gap.
+The adopted route is **R-b (source reparameterization)**: `localSub_e = β̃_e = β_e ∘ α_e^{-1}` with the
+det-1 gauge in the SOURCE, so chart IMAGES equal the pure-β images and the cover is the **pure**
+`node_pivotCover_of_atom`. Under R-b `node_pivotCover_of_atom_sheared` is used ONLY at `ψ = .refl` (it
+remains a sound generalization of the pure atom; only its "single ψ covers a mixed node" reading is dead).
+The docstring below is kept for provenance; read it through this note.
+
 The gauge verdict (`cert-shear-gauge.md`) is **(A) ψ-COMPOSED**: Aoyagi's per-step chart is
 `chartMap = ψ ∘ β`, where `β` is the monomial pivot blow-up and `ψ` is the variable-dependent
 unipotent `Q`/`P` shear (pp.17-18) — a nontrivial per-node bounded homeomorphism that MOVES
