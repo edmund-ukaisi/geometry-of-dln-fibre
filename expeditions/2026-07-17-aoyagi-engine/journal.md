@@ -3121,3 +3121,18 @@ green (+ pnp-slot only via t07's spec); offered the optional GeoChart-shape desi
 BOARD: t06 executing the move-at-landing batch; t05 writing the t07 spec; pnp-slot
 adjudicating; coverage holding-or-sketching. The chart hole's critical path: pnp-slot cert →
 t07 spawn → carrier green → coverage's tide → chartBridge_buildTree fills → hbox flips.
+
+## 2026-07-19 tick 211: the arithmetic center selector BANKED (0d38f748c merged, clean-three)
+t05's sixth green (built under the pre-hatch GO — the crossing explained, no harm): Engine/
+CenterIndices.lean — flatCoordOf (the FlatIdx sigma reindex) + flatCoordOf_injective +
+resBlockCenterIndices (the residual sub-block [J,J+rows)×[J,J+cols) flattened) +
+resBlockCenterIndices_injective, bounds-as-hyps matching the reachability invariants,
+instantiating case-2 AND case-1(2). The INJECTIVITY is the load-bearing property (it is what
+makes centerSplit's reindex a permutation). Controller probe: exactly clean-three. THE HATCH
+REAFFIRMED (t05's own words for qNodeOf: "the more intricate half" at six arcs — the
+selector-banked point is the natural boundary): t05's last deliverable = the carrier-REMAINDER
+spec (qNodeOf assembly plan + traps; the u-coord slot wired to pnp-slot's verdict with the
+one-line fold-in if slot-stability holds; count helpers; per-case shapes; the gate), then
+honors. REMAINDER EXECUTOR deliberately open: t06 may absorb it post-landing-batch (fresh-ish,
+full engine context, already in the files) vs t07 — decided on t06's post-batch budget signal
++ the slot cert. The carrier is now: selector DONE / assembly SPEC'D / u-coord ADJUDICATING.
