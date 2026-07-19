@@ -4673,3 +4673,17 @@ identity derived or same-skeleton), else characterize the delta precisely. (3b)'
 decided when the cert returns, with the full picture. The frontier's two hardest items just
 became ONE invariant with two reads — the unification the elder's two-face framing
 predicted (the seam is the seam).
+
+## 2026-07-19 tick 297: THE DET-FOLD IS DONE — the wall reduces to EXACTLY the correspondence
+t14's det-fold merged (1a589cd42) + probed clean-three: the list-carrying leafPaths walk
+(leafPathsList + coherence + differentiability), the materialized fold identity
+(tGeo_absdet_foldrList), the headline-facing geoAtlas_absdet_foldr (every atlas leaf's
+|det D chartMap| = the foldr of its carried per-edge factors), and the geoChartMapNorm
+per-edge atoms (on-cone |z_{diagTargetOf}(y)|^{dCN−1}; off-cone 1). Shape-check honored
+(cov08's bridge unassembled → mirrored the canonical walk; no divergence). THE WALL IS NOW
+EXACTLY ONE EQUATION: foldrCompAbsDet cs w = ∏_k |z_{c.divCoord k}(w)|^{c.divExp k−1} — the
+ledger-accumulation correspondence, innermost-first, per-edge factors at intermediate points
+with the banked chart-action atoms as the per-case algebra. Every name pnp-fold's cert keys
+against is banked and listed in the commit. t14 HOLDS at the boundary (correct); the next
+wake is the cert relay. Remaining active: pnp-fold (the shared invariant, value-level scope
+note in hand) ∥ coverage (the bridge) ∥ loss-t15 (phase 2+3a).
