@@ -4106,3 +4106,22 @@ discipline is right: §0 (chart-action lemma) and per-case maintenance NOT built
 diagonal-normalization would change geoChartMap's chart action, so §0 is construction-stable
 only under the other options; the banked spine is consumed machinery under ALL options.
 Waiting correctly on: the elder ruling (charge-2, mid-run) and t10's batch.
+
+## 2026-07-19 tick 272: t10 REPORTS — the cover ASSEMBLED green (2 tracked tactical sorries); bank+gate+merge ruling issued
+The lane's job is done in substance: the weakening batch COMPLETE (4 substantive files —
+PivotCoverFold's general V⊆U lemma correctly left intact as unconsumed; accepted) and the
+whole cover machinery green: tGeo + passthrough, coherence, the R=1 self-cover chain, the
+q-split, node_selfCover, the coherence bridge, and geoAtlas_imageCover ASSEMBLED (U = the
+open unit cube; 0∈U ⊆ flatCube 1 ⊆ leafPathImages). TWO tracked sorries, both
+well-understood: (1) the tiling-membership selection line — pure whnf/isDefEq FRICTION on
+sealed heavy defs (math proven; Codex consulted; change-pattern fails on defeq); (2) the
+rollover sub-case (needs the conOracle singleton-child fact). RULING SENT: (i) BANK NOW —
+the report said "nothing committed, you integrate," which re-contradicts the tick-261
+banking order (two VM deaths; non-negotiable); (ii) run the FULL-BATCH GATE NOW and merge
+WITH the 2 tracked sorries (GeoCoverSpec is a fill-target, sorried on integration before —
+the census expects it; merging early unblocks t11's #35 trigger + the elder's fix); (iii)
+hybrid on its ask: t10 takes the rollover fact + ONE timeboxed RESTRUCTURED attempt at the
+membership line (standalone List.mem-level lemma with explicit binders, provable by one
+simp, applied — never fight change inline against sealed defs; the t09 lesson); hand off to
+fresh eyes if it survives that. Heads-up given: the elder's charge-2 outcome may touch
+geoChartMap post-merge (cover images permutation-invariant — statement unaffected).
