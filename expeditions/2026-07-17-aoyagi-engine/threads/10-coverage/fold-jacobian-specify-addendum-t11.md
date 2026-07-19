@@ -149,3 +149,16 @@ discrepancy remains). The banked spine — per-edge atom (`GeoJacobianSpec.lean`
 involution atom (`GeoJacobianFold.lean`) — is all construction-stable and unaffected by the normalization.
 COORDINATE with team-lead at t10's landing: t10 has a post-swap cover VERIFY (threads `S`; superset route is
 swap-invariant, cheap) — sequence the re-green, not simultaneous.
+
+**pnp-loss impact on #35 scope (`threads/19-loss-factorization/cert-loss-factorization.md`).** LeafPullback
+HOLDS-WITH-CONDITIONS: it CONFIRMS the Jacobian-vs-loss split (terminal divisors are loss-power exactly 2; the
+case-1(1) re-merge accumulates in the JACOBIAN `divExp`, not the loss — exactly this addendum's picture), but
+it is FALSE for the PURE-β `chartMap` at every depth (already L=2) — the R-b source gauge `α` (the det-1 Schur
+shear on ratio coords, `ShearReconcile.elemShear`) must be IN the chart, else the residual keeps the
+determinantal singularity and the lower squeeze `0 < lo` dies. So #35's chart composition may GROW from `S`
+alone to `S + α` (elder charge-3 reconciles S+α-in-one-pass vs α-as-its-own-rung, and the swap/shear
+composition-cleanliness interaction; #35 start HELD for that ruling). **The spine covers `S + α` with no new
+atom:** both gauges are det-neutral — `|det S| = 1` (`clm_involutive_abs_det_one`) and `|det α| = 1`
+(`abs_det_fderiv_elemShear`, banked) — so the per-edge det through `geoChartMap ∘ S ∘ α` is
+`|z_diag|^{dCN−1} · 1 · 1` by the chain rule (`clm_det_comp`), unchanged. Cert condition (2) (gauges compose
+coherently: `chartMap`, `srcBox` AND `resCoord` all transformed across the fold) is a #35/construction concern.
