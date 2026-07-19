@@ -55,6 +55,11 @@ structure ConState (L : ℕ) where
   numGen : ℕ
   /-- The generator-divisor multiplicity ledger (support = nonzero locus; propagation at T4). -/
   genDivExp : Fin numGen → Fin numDiv → ℕ
+  /-- **The per-divisor immutable birth corner** `(s_birth, J_birth)` (slot-stability cert): a divisor
+  born at node `(S, J)` occupies the diagonal corner `(S, J, J)` for its whole life. Set at the
+  case-1(2)/case-2 births, carried VERBATIM by every transition (maintenance = congruence; the profile
+  does NOT determine it — θ-multiplicity). Supplies `divCoord` + the case-1(1) `u`-pivot slot. -/
+  divBirthCoord : Fin numDiv → ℕ × ℕ
 
 /-- Derived per-divisor clearing level `t̃_{s,k} = min T_{s,k}` (the same derivation as the tree
 carrier's `StepData.divTilde`). -/
@@ -175,7 +180,7 @@ exponent bump does not affect μ). -/
 def ConState.stepCase11 {L : ℕ} (s : ConState L) (i : Fin s.numDiv) : ConState L :=
   ⟨s.layer, s.cleared, s.numDiv, s.divExp,
     Function.update s.divProfile i (setTail s.layer s.cleared (s.divProfile i)),
-    s.numGen, s.genDivExp⟩
+    s.numGen, s.genDivExp, s.divBirthCoord⟩
 
 /-- **case-1(2)/case-2 transition**: append a new divisor of exponent `e` and (tail-written)
 rank-pattern `t₀`, then advance the cleared count by one. The two cases differ ONLY in `e`/`t₀`,
@@ -184,12 +189,13 @@ which μ does not read — both drop component 2. The new divisor's `genDivExp` 
 def ConState.stepAppendAdvance {L : ℕ} (s : ConState L) (e : ℕ) (t₀ : Fin L → ℕ) : ConState L :=
   ⟨s.layer, s.cleared + 1, s.numDiv + 1, Fin.snoc s.divExp e,
     Fin.snoc s.divProfile (setTail s.layer s.cleared t₀),
-    s.numGen, fun g => Fin.snoc (s.genDivExp g) 0⟩
+    s.numGen, fun g => Fin.snoc (s.genDivExp g) 0,
+    Fin.snoc s.divBirthCoord (s.layer, s.cleared)⟩
 
 /-- **Layer rollover transition**: advance the layer (`S → S+1`) and reset the cleared count
 (`J → 0`); the divisor ledger carries over. -/
 def ConState.stepRollover {L : ℕ} (s : ConState L) : ConState L :=
-  ⟨s.layer + 1, 0, s.numDiv, s.divExp, s.divProfile, s.numGen, s.genDivExp⟩
+  ⟨s.layer + 1, 0, s.numDiv, s.divExp, s.divProfile, s.numGen, s.genDivExp, s.divBirthCoord⟩
 
 /-- A case-1(1) merge strictly drops the pending-divisor count: its target divisor `i` (pending,
 `J < t̃_i`) has its rank-pattern tail-written, so the derived `t̃_i` drops to `≤ J` (needs a tail
@@ -1399,7 +1405,7 @@ theorem MvalCoh_case11child {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
     MvalCoh M ⟨s.layer, s.cleared, s.numDiv,
       (fun k => if (k : ℕ) = f.val then s.divExp k + runLen * resCols else s.divExp k),
       Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
-      s.numGen, s.genDivExp⟩ := by
+      s.numGen, s.genDivExp, s.divBirthCoord⟩ := by
   intro k
   by_cases hk : k = f
   · have hkv : (k : ℕ) = f.val := by rw [hk]
@@ -1697,7 +1703,8 @@ but the cone-goodness is exactly `s.stepCase11 i`'s. -/
 theorem OracleInv_of_exp_change {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
     (divExp' : Fin s.numDiv → ℕ) (numGen' : ℕ) (genDivExp' : Fin numGen' → Fin s.numDiv → ℕ)
     (inv : OracleInv M s) :
-    OracleInv M ⟨s.layer, s.cleared, s.numDiv, divExp', s.divProfile, numGen', genDivExp'⟩ :=
+    OracleInv M ⟨s.layer, s.cleared, s.numDiv, divExp', s.divProfile, numGen', genDivExp',
+        s.divBirthCoord⟩ :=
   ⟨inv.wd, inv.ft, inv.wb, inv.lhd, inv.slc,
     ⟨inv.si.layer_le, inv.si.cleared_le, inv.si.live_width⟩⟩
 
@@ -1708,7 +1715,8 @@ across the `divExp` bump. -/
 theorem conRel_of_exp_change {L : ℕ} (M : Fin (L + 1) → ℕ) (s t : ConState L)
     (divExp' : Fin s.numDiv → ℕ) (numGen' : ℕ) (genDivExp' : Fin numGen' → Fin s.numDiv → ℕ)
     (h : conRel M s t) :
-    conRel M ⟨s.layer, s.cleared, s.numDiv, divExp', s.divProfile, numGen', genDivExp'⟩ t :=
+    conRel M ⟨s.layer, s.cleared, s.numDiv, divExp', s.divProfile, numGen', genDivExp',
+        s.divBirthCoord⟩ t :=
   h
 
 /-! ## o5/terminal: the t̃=0 analytic filter (the B' analytic/residual split, fork 12(b)(ii)) -/
@@ -1991,7 +1999,7 @@ noncomputable def case11Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConSta
   let child : ConState L :=
     ⟨s.layer, s.cleared, s.numDiv, bumpedExp,
       Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
-      s.numGen, s.genDivExp⟩
+      s.numGen, s.genDivExp, s.divBirthCoord⟩
   have hdesc : conRel M child s :=
     conRel_of_exp_change M (s.stepCase11 f) s bumpedExp s.numGen s.genDivExp
       (conRel_stepCase11 M s f hlayer (by rw [helig]; omega))
@@ -2033,7 +2041,7 @@ noncomputable def case1Decision {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConStat
   let child11 : ConState L :=
     ⟨s.layer, s.cleared, s.numDiv, bumpedExp,
       Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
-      s.numGen, s.genDivExp⟩
+      s.numGen, s.genDivExp, s.divBirthCoord⟩
   have hdesc11 : conRel M child11 s :=
     conRel_of_exp_change M (s.stepCase11 f) s bumpedExp s.numGen s.genDivExp
       (conRel_stepCase11 M s f hlayer (by rw [helig]; omega))
@@ -2136,7 +2144,7 @@ def ConDecision.stepChildren {L : ℕ} {M : Fin (L + 1) → ℕ} {s : ConState L
 /-- **The root construction state** (paper `S = 1`, `J = 0`): layer `0`, cleared `0`, no exceptional
 divisors yet. `buildTree`'s starting point; the base of the reachability induction. -/
 def conRoot {L : ℕ} : ConState L :=
-  ⟨0, 0, 0, Fin.elim0, Fin.elim0, 0, fun g => g.elim0⟩
+  ⟨0, 0, 0, Fin.elim0, Fin.elim0, 0, fun g => g.elim0, Fin.elim0⟩
 
 /-- **`OracleInv` at the root** (the reachability base): every per-divisor invariant is vacuous
 (`numDiv = 0`); `StateInvariant` holds at `layer = 0`, `cleared = 0`. -/
