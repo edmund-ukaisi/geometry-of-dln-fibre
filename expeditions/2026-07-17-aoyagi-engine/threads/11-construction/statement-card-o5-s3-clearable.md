@@ -65,3 +65,14 @@ unchanged), `mval_spliceEnv_lt` (step 3c: strictly cheaper sibling).
 o5_core (`EngineConstruction`, upstream) cannot consume `clearable_tStar` (`O5Realization`, downstream)
 directly; discharging o5_core needs §4 (pnp-o5: clearable ⟹ realized) + a wiring/dependency-order
 resolution (o5_core moves downstream, or a downstream theorem is wired into the assembly).
+
+---
+## Provenance correction (controller, 2026-07-19, post rev-s3)
+The reify commit (e2bacc60b) and journal tick-174 cited a "64024-profile two-form
+cross-verification (saturation vs b/clear primary), 0 mismatches" — that specific script was
+NOT committed and the figure is not reproducible from the repo. The two-form equivalence is
+nevertheless ESTABLISHED, by the §3 review (threads/16-s3-review/review-o5-s3.md, SURVIVED):
+a hand-proof of both directions under Adm, an independent from-scratch 9967-profile scan
+(0 mismatches; 1388 non-clearable ⟹ non-vacuous), and a hypothesis-neutral Codex proof of the
+equivalence. Cite THOSE, not the 64024 figure. (Class: unreproducible-evidence citation —
+the claim was true but its cited witness didn't exist in-repo.)

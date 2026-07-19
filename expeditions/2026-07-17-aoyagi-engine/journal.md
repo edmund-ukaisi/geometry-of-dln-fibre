@@ -2764,3 +2764,19 @@ clean-three). Bookkeeping accuracy: the wiring edit itself rode into the tick-19
 (722ebcfdd) via its `git add -A` — committed + pushed there, not in a dedicated commit as the
 message implied. Wiring state: CORRECT in HEAD, verified. (Minor lesson re-learned: `git add
 -A` on journal commits sweeps pending tree edits — scope adds when a verification is pending.)
+
+## 2026-07-19 tick 191: rev-s3 VERDICT — §3 SURVIVED (6/6 PASS); provenance corrected
+The §3 fidelity audit: ALL PASS. Highlights: the Lean saturation-form Clearable proved
+equivalent to the cert's primary form THREE independent ways (hand-proof both directions;
+the reviewer's own from-scratch 9967-scan, 0 mismatches, non-vacuous; hypothesis-neutral Codex
+proof); the ex-placeholder seam verified as a REAL equality of the actual Mval summands (not
+weakened-to-close); hmin genuineness confirmed (real consequence of the banked inf' identity);
+minimizer-only scope + naming pins honored; a Codex false-positive flag settled AGAINST Codex
+via sim ground truth (the birth-layer exemption is faithful). ONE MINOR FINDING (provenance,
+non-blocking, FIXED this tick): the reify commit's "64024-profile cross-verification" cited a
+script that was never committed — the equivalence is true but the cited witness didn't exist
+in-repo; statement card now carries the correction pointing at the review's committed evidence.
+(New failure-class label for the lessons pass: unreproducible-evidence citation.) Peripheral:
+tStar_le_tPrev/tStar_le_Msucc carry a misleading tStar_ prefix (generic-Adm lemmas) →
+close-phase rename list. rev-s3 dissolved with thanks. §3 now stands REVIEWED as well as
+proven — the o5 lane's only open item is the tStar_realized arc (t05, in flight).
