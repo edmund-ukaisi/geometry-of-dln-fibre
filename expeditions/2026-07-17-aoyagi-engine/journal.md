@@ -3921,3 +3921,19 @@ retired. QNodeCarrier final: 736 LoC, 0 sorries, every headline clean-three, rev
 PASS-with-notes with all notes discharged. Task #36 done. The full review loop
 (build → independent review → notes → closure) completed within one day of the module's
 birth — the carrier is BEDROCK now. t09 retired complete.
+
+## 2026-07-19 tick 265: Phase-2 parametric fold MERGED — the fold-Jacobian's construction-stable spine complete
+t11's GeoJacobianFold.lean merged (c2e4be879) + probed clean-three:
+abs_det_fderiv_foldr_comp (|det D(foldr comp)| = the intermediate-point per-factor product,
+PARAMETRIC over any Differentiable map list — survives the t10 emission churn by design) +
+geoChartMap_differentiable (the bridge letting any geoChartMap list feed the fold; the
+id-passthrough edges land in the off-cone atom, det 1). With the two atoms this completes
+the construction-stable SPINE of the wall; the gated remainder is exactly (i) the
+cert-backed regrouping (pnp-fold, running) and (ii) the instantiation against the fixed
+atlas + per-pivot ledger (#35, post-t10). AxCheck: import + 4 watch lines added for the
+spine (gate-orphan prevention, carto5's lesson); the stale mid-merge verify run KILLED
+(tree changed under it twice — its output was unreliable); ONE consolidated untimed run
+launched covering the capstone + spine watch lines. Crossed-message wake sent to t11
+(its wait-list items 1-2 were already resolved at tick 263; only t10 remains). Board:
+t10 (batch, sole file-lock holder) ∥ pnp-fold (cert) ∥ AxCheck verify; t11 idle-correct;
+t09/rev-carrier/navigator-4 retired/complete.
