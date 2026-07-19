@@ -398,3 +398,11 @@ over banked substrate.
   Weakest hypotheses that suffice, never weaker than the analytic consumer needs (bedrock: usable
   form). An in-file nice-instance witness is necessary, never sufficient; the adversarial hunt is the
   gate.
+
+- CONTROLLER ALTITUDE (operator steer, 2026-07-19): spend real budget on high-level
+  strategising and comprehension of the picture, not only recon/de-risking — the controller's
+  between-gates function is understanding. Instrument: an altitude note at each phase
+  transition (expeditions/.../strategy/); findings integrated WITH their place in the
+  ledger/geometry picture (see altitude-2026-07-19.md §1 — the two-face taste-rule: when a
+  statement mixes a ledger quantifier with a geometric predicate, check which face it lives
+  on). The close synthesis starts from the altitude notes, not the journal chronology.
