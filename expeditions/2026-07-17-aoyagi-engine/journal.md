@@ -3871,3 +3871,22 @@ id edges; the parametric-design pattern that has absorbed every correction); (a)
 LeafPullback report ADOPTED: sequenced after finding-3 + a pnp adjudication of the
 loss-factorization kill-condition (the residualCore-leak trap — a lower-squeeze-breaking
 divisor leak would falsify LeafPullback as stated); pnp-loss commissioned when queue clears.
+
+## 2026-07-19 tick 262: rollover counter-sign GRANTED — t10 merge gate cleared; acc-threading relayed
+Coverage confirmed the finRange-0 drop as ITS OWN bug (geomEdges :82-84 — the flatMap yields
+[] for a chartless edge, dropping the WHOLE child subtree; below the first rollover the atlas
+vanished on any multi-layer tree — the fix is load-bearing for a NON-EMPTY atlas, not just
+completeness). id-passthrough judged sound + faithful + NECESSARY; t10's flagged corner
+resolved as three-way consistent (a 0-count blow-up IS an identity: geoChartMap's dite,
+the passthrough, and the intended chart agree). Relayed to t10 the load-bearing
+implementation detail: chartless branch forwards acc UNCHANGED + offset +0 (sibling pivots
+unaffected; structurally-smaller recursion; hbij tiles only charted edges; the 0∈U induction
+passes through rollovers transparently). NEW DURABLE OBLIGATION (coverage, named
+caveat-next-to-claim): (D)'s "intended chart at edge e" must be dCenterOfEdge-GATED (id at
+0 — rollover OR degenerate 0-factor case12/case2 — pivot-fan at ≥1); (D) must NOT assert
+every case12/case2 edge blows up a real pivot (resCols=0 falsifies it). Coverage builds its
+nodes-walk + (D) statement to the gated form; the t12-assembly brief MUST carry this.
+Fidelity ground unchanged: id-passthrough rests on dCenterOfEdge counting correctly — the
+already-closed elder defect chain, no new assumption. AxCheck: the 550s-timeout attempts
+were killing lake (exit 124 caught — the timeout wrapper, not a failure); one clean untimed
+background run launched, watch-line commit rides its true exit.
