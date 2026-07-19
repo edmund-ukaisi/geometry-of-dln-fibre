@@ -2975,3 +2975,21 @@ atoms now vs against-real-fields later — no schedule pressure either way). Ope
 surface: exactly ONE question (§8 field-home), with t05's position + the elder gate as its
 path. The co-design loop's crossing costs stayed small because every artifact was committed —
 the messages disagreed briefly; the docs never did.
+
+## 2026-07-19 tick 205: t05's carrier review IN — §8 position DECISIVE; elder-gate9 convened
+The review (bd191c47b, merged): CONFIRM the R-b interface with the §8 position carried to its
+conclusion — the pivot-indexed structural fact settles it: a single ChartSubst.localSub cannot
+carry the d-FAMILY (d_center charts per 1(2)/case-2 edge) without collapsing it — the exact
+undershoot the type fix corrected — so the per-pivot geometry lives OFF-SPINE in a sibling
+GeoChart consumed by geometricLeafPaths; ChartSubst untouched (no type-change trigger);
+StepRel stays the untouched quotient; spine localSubs stay id. centerSplit→coverage AGREED
+(pure coordinate machinery; the carrier exposes center-INDEX data). CONSEQUENCE: t05's carrier
+SHRINKS to data exposure — d_center already computable off StepData+ChartSubst; the center-
+index selector = the one possibly-new piece; pivot enumeration falls out. Its arc: small,
+within budget. ELDER-GATE9 convened with the ALIGNED-SEATS risk named (both seats agree —
+the gate hunts what both might miss): Q1 sibling-GeoChart soundness + the id-edges FIDELITY
+question (is the quotient tree still "the paper's tree"? 13(Q3)'s nodes-=-statements reading
+vs the substitution-in-the-statement reading) + the u-edge uniformity pin; Q2 D1/(D) coherence
+under GeoChart (pinned content deliverable? fails-on-fake teeth — where does the buck stop if
+GeoChart itself is fabricated: AMEND to require GeoChart fields DEFINED from node data);
+Q3 the division's completeness + settle the center-index question by inspection if possible.
