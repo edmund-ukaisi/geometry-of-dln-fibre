@@ -104,15 +104,10 @@ theorem region_glue_of_chartBridge {L : ℕ} {M : Fin (L + 1) → ℕ} (t : Reso
       rw [cubeBox]; exact isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
   · -- c' > 0, L ≥ 1
     -- Flat virtual-leaf atlas: the atlas + (A) cover, (B) per-piece props, (C) exponents.
+    -- Clause (A) now delivers `0 ∈ U` directly (the consumer-honest form); the origin is the
+    -- singularity that `routeMLayerBoxIntegral_lt_top_of_small_box`'s scale-homogeneity reduces to.
     obtain ⟨atlas, ⟨U, hUopen, hUlocus, hUcover⟩, hleaf, hexp⟩ := hbridge
-    have h0box : (0 : Params M) ∈ paramsBoxM M 1 := fun s i j => by
-      have h0 : (0 : Params M) s i j = 0 := rfl
-      rw [h0, Set.mem_Icc]; norm_num
-    have h0locus : (0 : Params M) ∈ {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} :=
-      ⟨h0box, by
-        rw [prod_zero_glue M hLpos]; unfold frobSq
-        exact Finset.sum_eq_zero (fun i _ => Finset.sum_eq_zero (fun j _ => by simp))⟩
-    obtain ⟨ε, hε, hεU⟩ := exists_small_paramsBox_subset_open hUopen (hUlocus h0locus)
+    obtain ⟨ε, hε, hεU⟩ := exists_small_paramsBox_subset_open hUopen hUlocus
     -- Each atlas piece has finite chart-image integral; the thresholds route through clause (C).
     have Hleaf : ∀ c ∈ atlas, ∫⁻ A in c.chartMap '' c.srcBox,
         ENNReal.ofReal (frobSq (prod M A) ^ (-c')) < ⊤ := by

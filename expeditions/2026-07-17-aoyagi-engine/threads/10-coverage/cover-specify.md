@@ -101,3 +101,36 @@ if/when `α` is folded in, but the cover itself needs only the pure atom).
 - clause (C) exponent-agreement: separate (each piece's ledger `divExp` ∈ terminalExponents t — from the
   shared ledger-leaf data).
 - The final `chartBridge_of_pieces` bundles (A)+(B)+(C)[+(D)] — the convergence point; the cover delivers (A).
+
+## Addendum (2026-07-19, architect-t10 at the fill) — TWO corrections to the pins above
+
+Building clause (A) surfaced two truth-signal corrections (both accepted by the controller); the pins
+above are superseded where they conflict:
+
+1. **Clause (A) is `0 ∈ U`, NOT `V ⊆ U`** (over-strong-statement class; compass counsel #7). The
+   pinned childRegion `q ⁻¹' (pivotChartDom × Set.univ)` cannot sit inside the flat-cube leaf `srcBox`
+   (unbounded spectator factor), and more fundamentally the atlas chart images equal the radius-1 flat
+   cube while the zero-locus `V = {A ∈ box 1 ∧ frobSq(prod)=0}` TOUCHES that cube's boundary for `L ≥ 2`
+   (kill-witness `M=(1,1,1)`, `(A₀,A₁)=(1,0)`: `prod = A₁·A₀ = 0`, `A₀ = 1 ∈ ∂`), so no open `U ⊇ V`
+   fits. The consumer (`region_glue`, `RegionGlueAssembly:115`) uses ONLY `0 ∈ U` (an ε-box at the
+   origin + `routeMLayerBoxIntegral_lt_top_of_small_box`'s scale-homogeneity — the singularity is local
+   at the origin). So clause (A) was weakened to `(0 : Params M) ∈ U` in `EngineDefs.ChartBridge`,
+   `ChartBridgeWiring`, `GeoCoverSpec`, `RegionGlueAssembly`. This also dissolves the spectator issue:
+   the cover is the R=1 self-cover (`⋃ᵢ pivotChart i '' cubeBox d 1 = cubeBox d 1`, since
+   `pivotChartDom i 1 = cubeBox d 1`) — no `pivotChartDom×univ`, no `node_pivotCover_of_atom` (its
+   `×ˢ univ` is exactly why), no `ownCovers_branch`; instead `flatCube 1 ⊆ leafPathImages (tGeo id t)`
+   by reachability induction. `node_pivotCover_of_atom` is banked-but-retired from the cover path.
+
+2. **`tGeo`/`geometricLeafPaths` must PASS a chartless (rollover) edge through as ONE identity edge.**
+   `dCenterOfEdge rollover = 0` ⟹ the `finRange 0 = []` fan-out DROPS the rollover child subtree; since
+   layer transitions (S→S+1) are rollovers on the main path, this makes `leafPathImages = ∅` at every
+   rollover and cascades the cover failure. Fixed in `tGeo.fannedEdges`: `if dCenterOfEdge n e = 0 then
+   [Edge.mk c {s with localSub := id} (tGeo acc ch)] else <pivots>` — the faithful chartless geometry
+   (rollover = `id` relabel). This grows `geoAtlas` (now includes rollover children — a correction; the
+   old `geometricLeafPaths` silently dropped them).
+
+STATUS at addendum: clause (A) fully WIRED green modulo two tracked `sorry`s in `GeoCoverSpec` — the
+`fannedEdges_covers` membership-selection (pure Lean whnf/isDefEq friction on the sealed
+`qOfCenter`/`centerPerm` machinery; math proven, Codex-consulted) and the `dCenterOfNode = 0` rollover
+sub-case of the induction. Owed at green: the full-batch `AxCheck` gate (`region_glue_of_chartBridge`
+clean-three re-probe).

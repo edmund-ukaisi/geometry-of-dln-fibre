@@ -380,8 +380,8 @@ over banked substrate.
   holds; what λ reads off geometrically), THEN transcribe; build the uniform object and DERIVE the
   cases, not the reverse. When a case-by-case grind feels authoritative but shapeless, stop and
   re-derive the global structure.
-- OBLIGATION-STATEMENT DISCIPLINE (6th instance, 2026-07-19; count elder-audited at gate8 —
-  near-misses COUNT): SIX TIMES an obligation was false/unfillable-as-stated for want of what
+- OBLIGATION-STATEMENT DISCIPLINE (7th instance, 2026-07-19; count elder-audited at gate8 —
+  near-misses COUNT): SEVEN TIMES an obligation was false/unfillable-as-stated for want of what
   the true construction supplies — (1) the resRank/2 Morse threshold (resRank fold), (2) srcBox
   boundedness/measurability, (3) monomialization_terminates at L=0 (the base conjunct forces the
   root to STEP; found by t03 at the E-wire; the hL : 0<L ripple, tick 157; distinct from
@@ -399,7 +399,12 @@ over banked substrate.
   decorrelated Codex consults; the LOWER bound minAdm_le_terminalExponents stays width-free;
   distinct from the (3) hL ripple — this is the width-positivity route (B) proved unnecessary FOR
   THE UPPER-BOUND spine but which the ATTAINMENT/tightness layer genuinely needs, matching the
-  divergence half's hMpos). PRECISION PIN (gate8): say
+  divergence half's hMpos), (7) ChartBridge clause (A) `V ⊆ U` → `(0 : Params M) ∈ U` — covering the
+  WHOLE zero-locus is unfillable/false for L≥2 (atlas images = the radius-1 flat cube; V touches its
+  boundary — boundary witness M=(1,1,1), (A₀,A₁)=(1,0): prod=A₁·A₀=0, A₀=1∈∂); the consumer
+  (`region_glue`) needs only `0∈U` (frobSq∘prod is degree-2L homogeneous, so unit-box finiteness
+  reduces to an ε-box at the origin — Aoyagi's resolution is local at the cone point); countersigned;
+  found by t10 at the cover fill, this batch. PRECISION PIN (gate8): say
   "unfillable by the faithful construction + fidelity-false", never "proven ¬ChartBridge" — no
   formal negation was proved. COUNTER HYGIENE: this counter itself drifted three ways
   (counsel=3, a controller dispatch=4-mislabeled, package=5-correct) — when citing an instance

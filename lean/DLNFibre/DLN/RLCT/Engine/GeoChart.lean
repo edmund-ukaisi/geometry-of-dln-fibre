@@ -92,13 +92,118 @@ The parametrization's payoff: pin `(dCN, qN) := (dCenterOfNode M, qNodeOf M)` (d
 `dCenterOfNode_edgeSum` (`Σ_e dCenterOfEdge = dCenterOfNode` on built branch nodes); the on-cone
 `hd` is `dCenterOfNode_le_flatDim`. -/
 
-/-- **The flat virtual-leaf atlas** for `t` (instantiated): one `LeafData` piece per geometric path —
-its ledger leaf's data (`divCoord`/`resCoord`/`srcBox`/exponents, so `leaves_chart_clauses_conRoot`
-discharges the coordinate bundle per piece) with `chartMap` set to the geometric `β`-fold composite
-(the buck-stops geometry, computed from `qNodeOf`). This is the `List (LeafData M)` the corrected
-`ChartBridge` quantifies over. -/
+/-! ## The geometric fan-out TREE `tGeo` (the cover fold's carrier, t10)
+
+`geometricLeafPaths` above produces the flat atlas List directly; but clause (A)'s cover reuses the
+banked tree-fold (`leafPathImages`/`ownCovers_branch`/`chartBridge_imageCover_of_ownCovers`,
+`PivotCoverFold`), which is `ResolutionTree`-shaped. So the atlas is materialised as the LEAVES of an
+auxiliary geometric fan-out tree `tGeo id t` (each node's edges fanned into its `dCenterOfNode` pivot
+charts, `geoChartMap` on each fanned edge, the composite baked into each leaf's `chartMap` via the
+accumulator). `tGeo` is a proof-internal device (not in `StepRel`/the spine); the atlas List IS
+`leaves (tGeo id t)`, so the proven headline `chartBridge_imageCover_of_ownCovers (tGeo id t)` emits
+clause (A) over `geoAtlas` verbatim (countersign item 2). -/
+mutual
+/-- **The geometric fan-out tree** of a subtree: refine each branch by fanning its edges into their
+`dCenterOfEdge` pivot charts (each fanned edge's `localSub := geoChartMap` for one GLOBAL pivot index,
+the running `offset`), threading the geometric composite into `acc` so a leaf's baked `chartMap` = the
+root→leaf `geoChartMap` fold (coherence). -/
+noncomputable def tGeo (acc : Params M → Params M) : ResolutionTree M → ResolutionTree M
+  | .leaf l => .leaf { l with chartMap := acc }
+  | .branch n edges => .branch n (fannedEdges acc n 0 edges)
+/-- Companion of `tGeo` over an edge list (per-edge fan-out, global pivot offset — the disjoint
+partition tiling `Fin (dCenterOfNode n)` across the node's edges, `dCenterOfNode_edgeSum`). A CHARTLESS
+edge (`dCenterOfEdge = 0`, e.g. a rollover layer-relabel) is passed through as ONE identity edge — its
+child subtree's charts belong to the atlas (composed with `id`); dropping it (`finRange 0 = []`) would
+lose the whole subtree and break the cover (rollovers sit on the main path). -/
+noncomputable def fannedEdges (acc : Params M → Params M) (n : StepData M) (offset : ℕ) :
+    List (Edge M) → List (Edge M)
+  | [] => []
+  | .mk c s ch :: es =>
+      -- The chartless branch forwards the child with `acc` UNCHANGED (`acc ∘ id = acc`) and does NOT
+      -- advance the offset (`+ 0`), so charted siblings tile `Fin (dCenterOfNode n)` unchanged and the
+      -- recursion is on the structurally-smaller child. CORNER for the (D) lane: `dCenterOfEdge = 0`
+      -- occurs at a rollover node AND at a case-1(2)/case-2 edge with `resCols = 0`; at either the
+      -- faithful chart is `id` (a 0-count blow-up IS geometrically the identity, matching `geoChartMap`
+      -- at an out-of-range pivot). Clause (D)'s "intended chart at edge `e`" is `dCenterOfEdge`-GATED
+      -- (`id` at 0, the pivot-fan at ≥ 1).
+      (if dCenterOfEdge n (Edge.mk c s ch) = 0 then
+        [Edge.mk c { s with localSub := id } (tGeo acc ch)]
+      else
+        (List.finRange (dCenterOfEdge n (Edge.mk c s ch))).map (fun p =>
+          Edge.mk c { s with localSub := geoChartMap (dCenterOfNode M) (qNodeOf M)
+                               ⟨n, Edge.mk c s ch, offset + (p : ℕ)⟩ }
+            (tGeo (acc ∘ geoChartMap (dCenterOfNode M) (qNodeOf M)
+                      ⟨n, Edge.mk c s ch, offset + (p : ℕ)⟩) ch)))
+      ++ fannedEdges acc n (offset + dCenterOfEdge n (Edge.mk c s ch)) es
+end
+
+/-- **The flat virtual-leaf atlas** for `t`: the leaves of the geometric fan-out tree `tGeo id t`
+(countersign item 2 — the atlas List realised as `leaves t_geo`, so the banked tree-fold headline
+emits clause (A) verbatim). Each leaf carries its ledger data (`divCoord`/`resCoord`/`srcBox`/
+exponents) with `chartMap` = the baked geometric `β`-fold composite (a function of `t` alone, via
+`qNodeOf` — the buck-stops geometry). This is the `List (LeafData M)` the corrected `ChartBridge`
+quantifies over. -/
 noncomputable def geoAtlas (t : ResolutionTree M) : List (LeafData M) :=
-  (geometricLeafPaths (dCenterOfNode M) (qNodeOf M) id t).map
-    (fun lc => { lc.1 with chartMap := lc.2 })
+  ResolutionTree.leaves (tGeo id t)
+
+/-! ## `tGeo` coherence (the `chartBridge_imageCover_of_ownCovers` hypothesis)
+
+Each `tGeo id t` leaf's baked `chartMap` equals its root→leaf `leafPaths id` composite — the coherence
+`chartBridge_imageCover_of_ownCovers` (`PivotCoverFold`) demands to turn `leafPathImages` into
+`⋃ l ∈ leaves, l.chartMap '' l.srcBox`. Two `leafPaths`-companion helpers, then the mutual induction
+(mirroring `leafPaths_mapFst`/`imgAcc`). Fix-independent (holds for any atlas srcBox / cover shape). -/
+
+/-- `edgesLeafPaths` distributes over list append. -/
+theorem edgesLeafPaths_append (acc : Params M → Params M) (l1 l2 : List (Edge M)) :
+    ResolutionTree.edgesLeafPaths acc (l1 ++ l2)
+      = ResolutionTree.edgesLeafPaths acc l1 ++ ResolutionTree.edgesLeafPaths acc l2 := by
+  induction l1 with
+  | nil => simp [ResolutionTree.edgesLeafPaths]
+  | cons e es ih =>
+      obtain ⟨c, s, ch⟩ := e
+      simp only [List.cons_append, ResolutionTree.edgesLeafPaths, ih, List.append_assoc]
+
+/-- `edgesLeafPaths` of a `.mk`-built mapped edge-list is the `flatMap` of the per-element `leafPaths`. -/
+theorem edgesLeafPaths_mapMk {α : Type*} (acc : Params M → Params M) (g : α → StepCase)
+    (sub : α → ChartSubst M) (chi : α → ResolutionTree M) (l : List α) :
+    ResolutionTree.edgesLeafPaths acc (l.map (fun a => Edge.mk (g a) (sub a) (chi a)))
+      = l.flatMap (fun a => ResolutionTree.leafPaths (acc ∘ (sub a).localSub) (chi a)) := by
+  induction l with
+  | nil => simp [ResolutionTree.edgesLeafPaths]
+  | cons a as ih =>
+      simp only [List.map_cons, ResolutionTree.edgesLeafPaths, ih, List.flatMap_cons]
+
+mutual
+/-- **`tGeo` coherence**: every `tGeo acc t` leaf's baked `chartMap` equals its `leafPaths acc`
+composite (so `chartBridge_imageCover_of_ownCovers` applies to `tGeo id t`). -/
+theorem tGeo_coherence (acc : Params M → Params M) :
+    ∀ t : ResolutionTree M, ∀ p ∈ ResolutionTree.leafPaths acc (tGeo acc t), p.1.chartMap = p.2
+  | .leaf l => by
+      intro p hp
+      rw [tGeo, ResolutionTree.leafPaths] at hp
+      simp only [List.mem_singleton] at hp
+      subst hp; rfl
+  | .branch n edges => by
+      intro p hp
+      rw [tGeo, ResolutionTree.leafPaths] at hp
+      exact fannedEdges_coherence acc n 0 edges p hp
+/-- Companion of `tGeo_coherence` over an edge list. -/
+theorem fannedEdges_coherence (acc : Params M → Params M) (n : StepData M) (offset : ℕ) :
+    ∀ edges : List (Edge M),
+      ∀ p ∈ ResolutionTree.edgesLeafPaths acc (fannedEdges acc n offset edges), p.1.chartMap = p.2
+  | [] => by intro p hp; rw [fannedEdges] at hp; simp [ResolutionTree.edgesLeafPaths] at hp
+  | .mk c s ch :: es => by
+      intro p hp
+      rw [fannedEdges, edgesLeafPaths_append, List.mem_append] at hp
+      rcases hp with hp | hp
+      · by_cases hz : dCenterOfEdge n (Edge.mk c s ch) = 0
+        · rw [if_pos hz] at hp
+          simp only [ResolutionTree.edgesLeafPaths, List.append_nil] at hp
+          exact tGeo_coherence acc ch p hp
+        · rw [if_neg hz, edgesLeafPaths_mapMk, List.mem_flatMap] at hp
+          obtain ⟨i, _, hp⟩ := hp
+          exact tGeo_coherence _ ch p hp
+      · exact fannedEdges_coherence acc n (offset + dCenterOfEdge n (Edge.mk c s ch)) es p hp
+end
 
 end DLNFibre.DLN.RLCT.Engine
