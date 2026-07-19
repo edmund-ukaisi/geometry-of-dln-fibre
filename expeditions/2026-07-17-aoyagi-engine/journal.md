@@ -4016,3 +4016,14 @@ geoAtlas emission seam and two un-adjudicated kill-conditions. Bindings applied 
 Elder confirmed sound/keep: the id-passthrough, the 0∈U local form, LeafPullback's uniform-²
 shape (loss-order vs Jacobian-order — deliberately not the ½-confound), finding-1's conRoot
 specialization. Two offices' memos now pending: carto-standing (wiring) + the two pnp certs.
+
+### Tick-268 addendum: t11 adopted both elder rulings (design settled); t10 confirmed ALIVE mid-grind
+t11's adoption merged (bc56f9edf): #35 reframed in its design as the co-folded seam-fix
+(chartMap + ledger extended in LOCKSTEP per fold step — "the wall shrinks structurally," its
+words matching the elder's payoff prediction); the acc-GENERALIZED motive promoted to primary
+(headline = the acc=id specialization over conRoot) — the exact seam-fix recursion correctly
+deferred to t10's LANDED shape (pre-designing against churn rejected). t10 status: the ping is
+unanswered but a READ-ONLY mtime peek shows it actively editing (GeoCoverSpec.lean touched at
+18:56 — this minute; 6 files modified; GeoChart at 18:25 = the passthrough work) — deep in the
+fill grind, NOT stalled; reply expected at its turn boundary. The idle-stall guard
+distinguishes idle-with-intent from working: this is working.
