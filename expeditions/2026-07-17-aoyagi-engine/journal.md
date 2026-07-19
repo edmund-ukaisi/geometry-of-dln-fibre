@@ -4564,3 +4564,26 @@ enter via EngineDriver→EO). Checklist refreshed with both watches + the projec
 the #guard_msgs extension + current line numbers; STATUS.md to the R-split ladder;
 GeoCoverSpec:8 doc-rot → coverage's batch. No duplicate-spawn artifacts found. The entire
 discharge is now specified to the LINE — it executes the moment t14's fold lands.
+
+## 2026-07-19 tick 291: the R-SPLIT MODULE LANDED + an HONEST DISTANCE CORRECTION — the frontier is FOUR sub-problems, not one
+Coverage's ce87777b1 merged (7e5f60108, one trivial ledger-numbering conflict):
+ChartBridgeFaithful.lean with the fidelity predicate (no fold conjunct, gating implicit),
+the faithful statement (A∧B∧C body verbatim over the SAME atlas ∧ fidelity), THE PROJECTION
+chartBridgeFaithful_imp_chartBridge PROVEN clean-three (controller-probed — the gate
+mechanism exists as code), the all-nodes lift consumed, the EngineDefs docstring pointer,
+counter 7→8 (Entry 12; the elder's own-miss quoted). chartBridgeFaithful_buildTree staged
+with its honest frontier.
+THE SCOPE CORRECTION (coverage's, accepted): my "one hole (the fold)" was a CONFLATION —
+GeoCoverSpec proved (A) ONLY. The true remaining frontier: (1) t14's fold (LeafJacobian, in
+flight); (2) the geoAtlas-leaf↔ledger BRIDGE (keystone: pieces inherit lc.1's ledger
+verbatim; unlocks the 4 ledger props + all of (C) in one stroke — coverage's lane, assigned,
+with PivotLeafClauses' srcBox pair wired per carto's disposition); (3) a.e.-injectivity of
+the composite (coverage SURVEY-FIRST from pivotChart_ae_injOn + the fold structure, report
+before grinding); (4) α-INSTANTIATION + LeafPullback's squeeze — the pnp-loss cert's "needs
+BOTH S and α" means the discharge CONSUMES α after all (the elder's "no consumer waiting"
+premise expired the moment the faithful discharge was stated); the parametric-gauge design
+anticipated exactly this (g := α is the designed fill; cover transfers by image-invariance,
+fold by det-1-transparency) — a dedicated LOSS-SEAT spawns next tick with the cert + the
+ShearReconcile atoms as its spec. Distance revision owned: tick-290's "everything else is
+mechanical" was the confident-headline trap; the corrected picture is 4 sub-problems, of
+which the bridge is near-mechanical, a.e.-inj unknown-small, the fold and the squeeze real.
