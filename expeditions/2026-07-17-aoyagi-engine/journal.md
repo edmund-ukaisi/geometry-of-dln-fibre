@@ -4457,3 +4457,25 @@ obligation type); the formalized disproof tripwire → off-path owed (not now). 
 entry 11 logged (the design-correct/transcription-stale miss class; binder-vs-design diff
 added to the statement gate; provability-check-first goes in formaliser briefs as standard).
 t14 GO: corrected headline → the two handoff sub-lemmas → the cocycle maintenance.
+
+## 2026-07-19 tick 287: coverage's DAG obstruction — (D) cannot be an EngineDefs conjunct; the R-SPLIT proposed; elder charge-4
+Coverage synced, drafted (D), and STOPPED before any edit on a verified structural
+obstruction: geoChartMapNorm/diagTargetOf (GeoChart) and cNodeOf/realCNode (QNodeCarrier)
+both sit ABOVE EngineDefs in the import DAG (GeoChart → ShearReconcile → PivotCoverFold →
+EngineDefs; QNodeCarrier → … → EngineConstruction → EngineDefs), so a (D) conjunct naming
+them inside ChartBridge is a CIRCULAR IMPORT — and ChartBridge cannot move up (pinned low by
+CanonicalResolution → EngineConstruction). The RegionGlueAssembly arity edit is MOOT (the
+tell that the shared model had (D) as a literal low conjunct; the DAG says otherwise —
+including in MY charge text and the elder's own gate-#10 phrasing "IN the type").
+PROPOSED R-SPLIT (coverage): ChartBridgeFidelity.lean HIGH — ChartBridgeFidelity M t atlas
+:= (atlas = geoAtlas t) ∧ (∀ stepEdge node, cNodeOf = realCNode); ChartBridgeFaithful M t :=
+∃ atlas, ⟨the exact A∧B∧C body⟩ ∧ Fidelity. The discharge proves chartBridgeFaithful FIRST;
+chartBridge_buildTree fills ONLY as its projection. region_glue/CanonicalResolution consume
+the projection unchanged. Coverage's CanonicalResolution read: NO fidelity addition there
+(pinned low; carries the LEDGER fidelity already; geometric fidelity = the discharge layer).
+ROUTED: elder charge-4 (it modifies the elder's own gate-#10 ruling — route-class): gate
+intent satisfied? the ENFORCEMENT mechanism ("the hole only fills through the projection" —
+watch/guard/checklist)? the two conjuncts' sufficiency (is atlas = geoAtlas t the right fold
+tie, buck-stops)? CanonicalResolution confirm/counter? placement? Coverage HOLDS (build
+intact, at tip); its node-walk PROOF is R-split-invariant — drafting locally meanwhile.
+Counter 7→8 applies under every variant (ChartBridgeFaithful = a new obligation statement).
