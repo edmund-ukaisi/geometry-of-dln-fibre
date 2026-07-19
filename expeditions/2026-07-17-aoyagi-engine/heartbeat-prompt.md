@@ -50,6 +50,12 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
    review-to-equilibrium.
 3. Office cadence: ~60 commits or ~4 h activity since last pass → convene; phase transition →
    navigator mandatory; route adoption / skeleton revision → elder + gate.
+   ENDGAME STANDING OFFICES (operator, 2026-07-19 tick 266): elder-standing + carto-standing
+   are LONG-RUNNING seats (context kept; charge them via SendMessage, never respawn fresh
+   while they live). Cadence raised: a comprehension/wiring pass ~every 3-4 ticks through the
+   endgame — elder for math-rightness (generalisation level, right objects vs spiky,
+   next-expedition runway), cartographer for wiring/overlay truth (checklist freshness,
+   gate-orphans, forwarding pointers). Route adoptions still gate through the elder.
 4. COMPREHENSION CADENCE (operator, 2026-07-19): every ~5 ticks — and at every phase
    transition — run a CALIBRATION ENTRY: pick a load-bearing question about the territory,
    write the mathematical EXPECTATION first (with confidences), then read the actual Lean,

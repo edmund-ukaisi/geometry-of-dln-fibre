@@ -3946,3 +3946,26 @@ forwarded acc = leading factors; passthrough = det 1), so only the leaf-read sta
 the acc clause. The pointwise-idiom gotcha (t09's) pre-applied to #35's per-pivot divCoord
 design (Fin (dCenterOfEdge) → Fin (flatDim) — built pointwise from the start). All t11
 pre-gate work banked; the seat idles on exactly one trigger (t10's batch). No wake owed.
+
+## 2026-07-19 tick 266: STANDING OFFICES instituted (operator steer) — elder + cartographer as long-running seats
+Operator: nearing endgame, high-level understanding + cartographer wiring review + elder math
+steer are high-value now — do them MORE OFTEN, as LONG-RUNNING office seats that keep context.
+INSTITUTED (heartbeat protocol step 3 amended): elder-standing + carto-standing spawned as
+persistent seats, charged via message (never respawned fresh while alive); comprehension/wiring
+cadence raised to ~every 3-4 ticks through the endgame.
+FIRST CHARGES FIRED:
+- elder-standing: the math-rightness steer — Q1 generalisation level (per-piece ledger +
+  parametric fold + carrier + gated (D): rising sea or patch-on-patch? would a reusable
+  library want a single monomialization-datum seam bundling geometry+ledger?); Q2
+  parametricity audit (what's conOracle/buildTree-specific that is FREE to generalise);
+  Q3 the emission-defect pattern (two statement-caught construction defects — normal cost or
+  a mis-factored seam? one-recursion emission? refactor now vs roadmap); Q4 shortsightedness
+  vs the NEXT expedition (the rlct-runway: do charts/ledgers/thresholds leave the
+  singular-locus lower-bound argument something to consume, or does the headline get
+  re-opened?); Q5 ugliness scan (0∈U, id-passthrough, LeafPullback shape, (D) gating).
+  Deliverable: memo + proposed compass edits (propose-never-act).
+- carto-standing: the wiring review — refresh wiring-endgame.md to the current tree (nav-4
+  found it stale); the (D) dCenterOfEdge-gating obligation INTO the checklist (t12-assembly
+  must not miss it); gate-orphan sweep; map/STATUS.md rewrite (pre-dated the endgame);
+  banked-family cards + forwarding pointers (carrier / DivBirth / geo-atlas incl. both
+  emission-defect traps / fold-spine); diff-then-judge. Commits on carto6 branch.
