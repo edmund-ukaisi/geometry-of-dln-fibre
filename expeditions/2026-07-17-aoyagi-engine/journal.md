@@ -2538,3 +2538,16 @@ cert-single-psi + region_glue's needs); (2) a fresh coverage seat COUNTER-SIGNS 
 committed machinery (acceptance = 3-Prop provability); (3) elder gate on the type change;
 (4) execute. t05 spawning this tick (spawn prompts = the proven channel; the t04 mailbox
 saga is moot — its 4 undelivered steers are all in RULINGS-t04.md).
+
+### Tick-177 addendum: architect-t05 SPAWNED (reconstitution); census re-grounded
+t05's spawn brief = the proven channel carrying everything: RULINGS-t04.md first-read, the
+handoff map, the salvage note, the inbox-sweep-and-say-so discipline (the t04 lesson), and the
+package: (1) the ChartBridge DECISION PACKAGE drafted solo from the banked record (corrected
+type candidates weighed against chartBridge_of_pieces's + region_glue_of_chartBridge's ACTUAL
+hypotheses; full cost map; pp.15-21 fidelity; the 4-part carrier surface + per-NODE family
+pin) — coverage successor counter-signs, then the elder gate; (2) sub-gap-1 battery-first;
+(3) §3 dedicated pass (salvage may seed); (4) §4 pause-for-pnp-o5. Census re-grounded post-
+restart: EXACTLY 4 Engine sorries — chartBridge_buildTree (EngineObligations:52), o5_core
+(EngineConstruction:2611), realizedProfiles_eq_clearableAdm (ClearableReify:72, =R7),
+canonicalResolution224's witness conjunct (CanonicalWitness224:135, off-cone corollary).
+Matches the map exactly. Operator-facing state visual regenerated this tick (inline chart).
