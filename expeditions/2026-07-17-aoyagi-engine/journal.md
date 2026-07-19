@@ -4919,3 +4919,10 @@ prod-tracking on t14's skeleton + a frobSq-of-diagonal read. The seat is correct
 on ONE trigger (t14's walk landing) with the build pre-designed for speed. The two
 instances of the shared skeleton are now BOTH fully designed; only the skeleton's first
 instance (t14's step case) is still being ground.
+
+## 2026-07-19 tick 309: heartbeat — t14's ledger-delta building blocks merged; board grinding
+Merged 3d886171f → e9c026371 (green): the ConState ledger-delta lemmas — the per-case
+stepUpdate arithmetic the §3 maintenance consumes. t14 actively grinding (GeoFoldRegroup
+33.5k and growing); inj-t16 writing GeoInjFold.lean this minute; loss-t15 correctly blocked
+on t14; t10 in its grounding phase on the charge-5 ruling (~20 min, the ruling is long —
+not yet a stall; next glance checks for its push-1). All lanes nominal.
