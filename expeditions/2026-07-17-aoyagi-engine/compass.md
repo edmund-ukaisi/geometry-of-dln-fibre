@@ -481,12 +481,25 @@ over banked substrate.
   cert returns empty of counterexamples; a green build over a sorried LeafPullback is NOT the
   gate. The power-counting shape is right (² in the loss / divExp−1 in the Jacobian);
   satisfiability over the real atlas is the frontier.
-- (D) IS MANDATORY-IN-TYPE BEFORE THE DISCHARGE (gate #10, hard; elder charge-1): the committed
-  body is A∧B∧C; without (D), ChartBridge's name/docstring ("t's resolution charts") overclaims
-  its content ("a monomialising cover with matching exponents"). (D) is near-definitional over
-  geoAtlas (buck-stops chartMap = fold). Required form: dCenterOfEdge-GATED (id at 0-factor
-  edges; an ungated "every case2 edge blows up a real pivot" is FALSE at resCols=0). Reject any
-  "discharge A∧B∧C, add (D) later".
+- (D) — GEOMETRIC FIDELITY — R-SPLIT (elder charge-4, 2026-07-19; supersedes the charge-1
+  "mandatory-IN-TYPE" form; obligation-statement instance #8: the (D)-in-ChartBridge form is
+  UNFILLABLE — GeoChart/QNodeCarrier sit above EngineDefs, circular import; DAG verified). The
+  low ChartBridge (EngineDefs) stays A∧B∧C, honestly docstring-scoped as "a monomialising
+  cover with matching exponents". A HIGH module carries ChartBridgeFidelity M t atlas :=
+  atlas = geoAtlas t ∧ (∀ node, cNodeOf = realCNode) and ChartBridgeFaithful M t := ∃ atlas,
+  (A∧B∧C over atlas) ∧ ChartBridgeFidelity. The discharge proves chartBridgeFaithful_buildTree
+  FIRST; chartBridge_buildTree is filled ONLY as its PROJECTION (the proof term references the
+  faithful theorem → (D) is in the payoff's cone, load-bearing, undroppable — THIS is the
+  gate, replacing "D-in-the-type"). ENFORCE: AxCheck watches BOTH clean-three + the R5
+  enforced axiom-gate covers chartBridgeFaithful_buildTree + a cordon note
+  ("chartBridge_buildTree is the projection; a direct A∧B∧C fill is a fidelity regression") +
+  ChartBridge's docstring points at ChartBridgeFaithful. D-content: atlas = geoAtlas t is
+  SUFFICIENT for the fold (buck-stops; the dCenterOfEdge gating is implicit via fannedEdges);
+  the ∀-node cNodeOf = realCNode needs the ALL-NODES LIFT (t09 Card-3 deferred item 2,
+  DivBirthInv-maintenance — OWED, = coverage's node-walk). CanonicalResolution UNCHANGED
+  (ledger fidelity low, atlas fidelity high — the two-face factorization realized in the
+  module DAG). The assembly-moves-high is FORCED by geoAtlas regardless (not an R-split
+  cost); cartographer placement check owed (EngineDriver/CanonicalWitness224/CoRank2Spike).
 - CHARTBRIDGE TYPE FLIP VERIFY (in-flight, on critical path; elder charge-1): the committed
   type carries V⊆U (EngineDefs:99), UNPROVABLE over geoAtlas at L≥2 (tick 255). The 0∈U
   weakening (#31) is in t10's un-merged batch. chartBridge_buildTree must NOT be discharged

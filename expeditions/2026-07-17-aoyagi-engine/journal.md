@@ -4504,3 +4504,26 @@ pre-dated the cover completion — updated: ingredient (A) of its faithful disch
 its decomposition ((D) statements + PROVEN node-walk + the stated discharge with named
 ingredient-holes) accepted in principle, now lands with ONE hole (t14's fold), not two. Both
 seats hold on their single triggers (discharge gate; elder charge-4).
+
+## 2026-07-19 tick 289: ELDER CHARGE-4 — R-SPLIT ADOPTED with PROJECTION-ENFORCEMENT (stronger than the original gate)
+The ruling (DAG verified by the elder itself): coverage's obstruction REAL; the R-split
+ADOPTED; and the elder OWNED its own miss plainly — the charge-1 "(D)-in-the-type" form was
+ruled without checking the imports = obligation-statement instance #8 (counter 7→8 rides
+coverage's commit). THE KEY UPGRADE (Q-a): the projection IS the gate — chartBridge_buildTree
+fills ONLY as `let ⟨atlas, hABC, _⟩ := chartBridgeFaithful_buildTree; ⟨atlas, hABC⟩`, putting
+(D) in the PAYOFF'S PROOF CONE (load-bearing, undroppable) — STRONGER than in-type, because
+there is no bare A∧B∧C proof at all. Enforcement stack: AxCheck watches both + R5 #guard_msgs
+extends to the faithful theorem + the cordon note + the docstring pointer. Q-b: content
+confirmed; atlas = geoAtlas t SUFFICIENT (no fold conjunct — buck-stops; gating implicit);
+the ∀-node lift flagged as the real proof content (= coverage's node-walk, t09 Card-3
+deferred item 2, must land PROVEN). Q-c: CanonicalResolution UNCHANGED — the elder: the
+ledger-low/atlas-high split is "the two-face factorization realized in the module DAG — a
+structural echo of the deepest idea of the expedition, genuinely beautiful, not a
+workaround." Q-d: dedicated ChartBridgeFaithful.lean; the assembly-moves-high is FORCED by
+geoAtlas regardless (not an R-split cost); carto placement check CHARGED (EngineDriver/
+CanonicalWitness224/CoRank2Spike consumer mapping; the checklist update with both watches +
+the projection cordon note). Compass (D) bullet REPLACED verbatim; task #10 re-scoped;
+coverage GO'd on (i)+(ii)+(iii) with the projection staged and ONE ingredient hole (t14's
+fold). PROCESS SLIP owned: I spawned a duplicate carto seat instead of charging the standing
+one — caught in-tick, duplicate stopped, the standing seat charged properly (the operator's
+arrangement holds: charge via message, never respawn).
