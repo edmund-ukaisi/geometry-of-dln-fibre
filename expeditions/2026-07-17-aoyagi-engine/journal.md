@@ -3673,3 +3673,19 @@ validated fill-targets — the seat's tide became two clean handoffs; the assemb
 (post-t10/t11) deferred to their landing per its session length. THE CLOSING BOARD: t09 (#26)
 ∥ t10 (the cover) ∥ t11 (the wall) — three builders on three bounded pieces, every one from a
 spec, converging at the (D)+assembly → the discharge.
+
+## 2026-07-19 tick 254: t10 truth-signal — the SPECIFY's childRegion pin FALSIFIED; in-lane fix approved
+The build-step catch (the verifier hierarchy, again): the pinned childRegion (the atom's hdom,
+spectator factor = univ) is incompatible with ownCovers_branch's hchild — a leaf's
+leafPathImages = the BOUNDED flat cube, so childRegion ⊆ leafPathImages is FALSE whenever
+spectators exist (generic). THE CLASS: unbounded-spectator `×ˢ univ` = the original
+ChartBridge-srcBox counterexample's lesson resurfacing on the cover path (the countersign used
+the same chain without hitting it; the elder's Q2 traced consumption, not this satisfiability
+link). T10'S FIX APPROVED (in-lane, no type change, srcBox unchanged): the BOUNDED-SPECTATOR
+node cover (⋃ pivot charts over pivotChartDom ×ˢ cubeBox = flatCube, R ≥ 1) + the
+flatCube ⊆ leafPathImages induction (hchild free); node_pivotCover_of_atom stays banked,
+RETIRED from this path (its univ is exactly why). T10 proceeding (~200-250 LoC; the
+foundations fix-independent, no regret); coverage validating in one parallel pass (a) the
+repair vs cheaper banked routes (b) the (B)/(D)/fold-lane interactions (my check: t11
+unaffected — no ownCovers_branch in its lane). The SPECIFY gets a dated childRegion-correction
+addendum at landing. Tripwire next-checkpoint: the hbij tiling.
