@@ -2796,3 +2796,20 @@ grounded for; honest-budget escape hatch pre-agreed). The succession discipline 
 expedition's signature move: 4 handoffs, zero losses, every ceiling called at a banked
 boundary. Board: t06 (the crux) ∥ coverage-t08 (re-typing batch) ∥ t05 (warm, carrier) ∥
 rev-s3 dissolved.
+
+## 2026-07-19 tick 194: re-typing batch implemented (WIP e849a4b11); (D)-deferred approved w/ landing pin
+coverage-t08's actual state (the idle was build-waiting, now WIP-banked per nudge): the batch is
+IMPLEMENTED and re-elaborating green (8632/8894 mid-flight, 0 errors): ChartBridge = the flat
+atlas with (A) cover + (B) 8 per-piece props + (C) exponent-agreement; chartBridge_of_pieces →
+pure bundling (χ dropped, With-variants DELETED, consumer-free confirmed); region_glue
+destructure re-routed through (C), both proven glue lemmas reused VERBATIM; the witness + all
+EngineObligations re-elaborate UNEDITED — the ripple confined exactly as the decision package's
+cost map predicted. ITS FLAGGED DECISION APPROVED: (D) landed as documented-deferred (pinned-D1
+content in the docstring; encoding at the carrier phase; additive def-only touch, consumers
+project opaquely) — the natural reading of the elder's content-now/encoding-deferred amendment,
+and it keeps geometricLeafPaths behind the carrier per the ratified ordering. THE LANDING PIN
+(new gate item, task #10): (D) must be IN the type BEFORE chartBridge_buildTree's discharge —
+a proven hole against a (D)-less type would close with the honest-name tie missing; cordon
+re-checks. Interim docstring form pinned ("a monomialising cover whose exponents agree with t").
+Remaining on the batch: AxCheck footprint confirmation (the watch set grew since its branch
+cut — sync noted) → final commit → the q/t_geo interface PROPOSAL (t05's carrier trigger).
