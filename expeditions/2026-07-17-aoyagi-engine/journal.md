@@ -3352,3 +3352,14 @@ the resCoord clauses possibly vacuous at leaves via leaves_resRank_zero — chec
 (qOfCenter first-try through five named traps; the field ripple with zero spine disturbance;
 qEdgeOf) — every green banked, every gate verbatim, every ceiling honest. THE BOARD: coverage's
 tide ∥ t07's sub-arc → convergence at chartBridge_of_pieces → the last hole → the flip.
+
+## 2026-07-19 tick 226: TIDE PIECE 1 — GeoChart + geoChartMap banked (f0c662ac0, merging)
+The tide's opening green: Engine/GeoChart.lean — GeoChart {node, edge, pivot} (the buck-stops
+recipe, node data only) + geoChartMap = the COMPUTED per-edge chart (qEdgeOf.symm ∘ pivotChart
+×ˢ id ∘ qEdgeOf, dite-total on the cone) — a function of the recipe + banked atoms, no free
+geometry. Sound design note banked: the COVER reads the PURE β_e (R-b's α is source-side and
+image-invariant per reparam_image); α composes in only at LeafPullback if the squeeze needs it.
+GeoChart wired into the AxCheck closure (controller side, verifying in background). A transient
+origin push-lag on qEdgeOf noted-and-resolved (flagged for other seats). Tide remaining:
+geometricLeafPaths → atlas materialization → cover fold → 3 Props (fed hyps) → (A)/(C)/(D)
+[gate #10] → flags [#15] → the full-batch discharge gate. t07 parallel on reachability.
