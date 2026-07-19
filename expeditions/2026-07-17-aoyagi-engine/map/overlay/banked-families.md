@@ -315,6 +315,15 @@ virtual-leaf atlas, WIP `e849a4b11`) is **NOT merged** at this HEAD (verified: `
 `LeafJacobianWith` + the `χ` parameter of `chartBridge_of_pieces` are still present — tick-194's batch
 deletes them). Pins below are the current tree; the post-batch delta is flagged inline where it moves.
 
+> **SUPERSEDED (cartographer-5, 2026-07-19 @ `64fe1a7f2`).** The re-typing batch HAS since merged
+> (task #9 completed). At this HEAD the current `ChartBridgeWiring.lean` (read in full) has NO
+> `LeafPullbackWith`/`LeafJacobianWith` and `chartBridge_of_pieces` has NO `χ` parameter — it bundles the
+> flat atlas `⟨atlas, himg, hleaf, hexp⟩` directly. The With-variants survive only in the historical
+> thread docs / Codex logs. The (a)-section pins below reflect the PRE-batch tree; `leafOfState.divCoord`
+> is also since real-ified (tick 232), though `leafOfState.chartMap = id` remains true BY DESIGN (the
+> ledger spine is `chartMap`-blind; charts live on the atlas pieces). See [[wiring-endgame]] for the
+> current endgame graph + the discharge checklist.
+
 ## (a) `ChartSubst` — the per-edge chart surface (populate `localSub`, no sibling bundle)
 
 - **Structure `ChartSubst`** — `ResolutionTree.lean:65`. Fields, in anonymous-ctor order
