@@ -4426,3 +4426,18 @@ c.divCoord = diagTargetOf coherence), the cert↔case↔atom mapping, and the di
 wiring notes. t14 notified (pull + sub-lemmas-first pointer; one relayed question to the
 retired seat allowed). t11 stood down clean — the 9th succession, and the deepest seat
 ledger of the expedition behind it.
+
+## 2026-07-19 tick 285: t10's verify DELIVERED the fix — adopted; the cover is one applied idiom from done
+t10's step-3 verify (crossed with my tick-284 diagnosis; same finding, arrived WITH the fix)
+merged (53158c5a3): geoChartMapNorm_id_on_cone (on-cone the Norm chart IS (β-pivot)∘S) +
+cubeBox_subset_flatSwap_image (the S-absorption: swap-invariance + involutivity ⟹ the swap
+never shrinks the cover) + the :133 statement CORRECTED to the wired Norm form (membership
+now TRUE; the rfl test made the non-defeq concrete) + fannedEdges_covers re-threaded via
+image_comp + the absorption. GeoCoverSpec green at exactly ONE sorry (:155) — the same
+coercion hole, now under a TRUE statement. The elder's image-invariance argument: confirmed
+correct AND sufficient, but not free — realized as two lemmas. RULING: adopt-t10's (single
+writer); t13 STAYS RETIRED (no redirect — its idiom text is fully written out and was
+relayed to t10 verbatim); t10 applies it to :155, probes geoAtlas_imageCover clean-three,
+pushes — and clause (A) is proven END-TO-END over the normalized atlas. Record note: the
+verify-catches-then-fixes pattern (t10) beat the diagnose-then-rebrief pattern (me) by one
+message cycle — the seat with the file wins the race, as it should.
