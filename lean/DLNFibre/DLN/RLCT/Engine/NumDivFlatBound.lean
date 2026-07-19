@@ -156,7 +156,64 @@ PLAN: `cases`/`split` on the `conOracle` `dif`/`match` structure to obtain each 
 theorem NumDivInv_conOracle_stepChildren {M : Fin (L + 1) → ℕ} (s : ConState L)
     (inv : NumDivInv M s) (c : StepChild M s) (hc : c ∈ (conOracle M s).stepChildren) :
     NumDivInv M c.child := by
-  sorry
+  by_cases h1 : L ≤ s.layer
+  · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+  · have hlive : s.layer < L := not_le.mp h1
+    by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
+      subst hc
+      exact NumDivInv_stepRollover s hlive inv
+    · have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · -- case-2
+        have horacle : conOracle M s = case2Decision M s
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hc
+        subst hc
+        exact NumDivInv_stepAppendAdvance s _ _ hlive hlt inv
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle M s = oracleTerminal M s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+          rw [horacle] at hc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+        · -- case-1 (two children: stepCase11, then stepAppendAdvance)
+          have hgt : s.cleared < target := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            -- CRUX-2 (isolated): reduce conOracle's nested dependent `match hmin`/`match hf` to the
+            -- case-1 branch. The template `MvalBoundaryInv_conOracle_stepChildren`'s split-chain
+            -- does not close here (fewer context hyps); dependent-match reduction under the shadowed
+            -- `hmin`/`hf` binders. Codex-consult pending.
+            sorry
+          rw [horacle] at hc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hc
+          rcases hc with rfl | rfl
+          · exact NumDivInv_stepCase11 s f inv
+          · exact NumDivInv_stepAppendAdvance s _ _ hlive hlt inv
 
 /-- The leaf constructor's analytic count is at most the state's ledger count (`t0Indices` filters
 `finRange numDiv`). -/
