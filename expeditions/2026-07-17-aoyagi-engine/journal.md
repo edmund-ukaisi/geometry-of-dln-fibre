@@ -3702,3 +3702,22 @@ from the center-coord design). Interaction greps: t11's lane has ZERO cover-path
 (unaffected, confirmed); childRegion is proof-internal to clause (A) — no type change
 anywhere. The falsified pin's whole blast radius: one atom signature + ~2 lines + the
 srcBox radius. t10 building through.
+
+## 2026-07-19 tick 255: t10's DEEPER catch — clause (A) UNPROVABLE as stated (L≥2); fix (a) approved
+The finding SUPERSEDES the spectator issue and resolves it at the root: the atlas images =
+flatCube 1 EXACTLY, and V (zero-locus ∩ the CLOSED unit box) touches ∂ — the (1,1,1) witness
+(1,0) ∈ V with A₀ = 1: no OPEN U fits between V and the images (invisible at L≤1 where
+V = {0} interior — why the countersign missed it). THE CONSUMER-TRACE (the decisive part):
+region_glue uses V ⊆ U ONLY to derive 0 ∈ U (RegionGlueAssembly:115), because the
+scale-homogeneity reduction localizes whole-box finiteness to the ε-box at 0 — the boundary
+singularities SCALE INTO it; the argument is genuinely LOCAL. So the honest clause is 0 ∈ U —
+obligation-statement instance #7 (the OVER-STRONG variant: unsatisfiable-by-the-construction
++ stronger-than-consumed). FIDELITY: Aoyagi's resolution is local at the deepest point — the
+weakening is the faithful form (the R2 probe's own language was neighbourhood-shaped). FIX (a)
+APPROVED (t10 drives: the 5-file edit incl. the countersigned type + the PROVEN glue's
+destructure + the fill, ~120 LoC total — the spectator repair DISSOLVES, the atom untouched);
+4 conditions (atomic batch + counter→7 same-commit; the WHY docstring; the FULL-batch gate w/
+region_glue_of_chartBridge MUST-clean-three re-probe; the witness recorded in the SPECIFY
+addendum). Coverage counter-signs IN PARALLEL (halt-pre-merge if countered). The cover's two
+truth-signals in one arc — both statement-level, both caught pre-fill: the fill-step is
+proving to be the sharpest verifier in the hierarchy.
