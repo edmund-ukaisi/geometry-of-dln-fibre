@@ -2757,3 +2757,10 @@ design session → checkpoint review); fused-WF-induction suggestion (the ∃-pa
 the invariant-maintenance induction per the cert — try fused first); bank-aggressively +
 ceiling-honesty (each of the 3 pieces banks independently; consolidate-and-hand-off beats a
 degraded grind — the t02/t03 pattern is the norm, not failure). Tripwire stands.
+
+### Tick-190 addendum: O5Realization AxCheck wiring — build-verified green (bundling note)
+The background verification build completed green (8802 jobs; clearable_* watch lines print
+clean-three). Bookkeeping accuracy: the wiring edit itself rode into the tick-190 commit
+(722ebcfdd) via its `git add -A` — committed + pushed there, not in a dedicated commit as the
+message implied. Wiring state: CORRECT in HEAD, verified. (Minor lesson re-learned: `git add
+-A` on journal commits sweeps pending tree edits — scope adds when a verification is pending.)
