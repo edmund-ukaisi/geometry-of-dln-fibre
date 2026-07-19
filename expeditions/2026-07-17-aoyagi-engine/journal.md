@@ -4150,3 +4150,13 @@ ledger), replaces it with a |det|=1 swap discharged from banked freshness, and l
 carrier + t11's spine UNTOUCHED. Third time this arc: the correction made the theory SMALLER.
 #35 re-tasked; t11 briefed (design prep GO — additive statements draftable now; build still
 gates on t10's merge); t10 owes the post-swap cover VERIFY (elder: superset route available).
+
+### Tick-273 addendum: t11 adopted fork 15 + banked the swap's det-neutrality atom
+Merged (ffcbd3ef2 → 0a6bb9fe6) + probed clean-three: clm_involutive_abs_det_one — an
+involutive CLM has |det| = 1 (a transposition IS an involution), exactly the atom #35's thin
+wrapper consumes (compose S in; the per-edge Jacobian modulus unchanged; the atom reads
+z_diag). Addendum §4 marked RESOLVED with the fidelity grounding recorded. t11's pre-merge
+bank is now complete under fork 15; the seat is correctly file-lock-gated on t10's merge,
+with re-green coordination acknowledged (its #35 landing and t10's post-swap cover VERIFY
+sequenced, never simultaneous). Every lane's next move now waits on exactly one event:
+t10's banked+gated push.
