@@ -163,16 +163,28 @@ atom:** both gauges are det-neutral — `|det S| = 1` (`clm_involutive_abs_det_o
 `|z_diag|^{dCN−1} · 1 · 1` by the chain rule (`clm_det_comp`), unchanged. Cert condition (2) (gauges compose
 coherently: `chartMap`, `srcBox` AND `resCoord` all transformed across the fold) is a #35/construction concern.
 
-## FINAL SCOPE — elder charge-3 ruling (option (a), ONE PASS). Settled.
+## FINAL SCOPE — charge-3, PARAMETRIC-GAUGE FORM (fork 15 re-amended). Settled.
 
-`geoChartMap_e` becomes the FULL normalized per-edge step **β + S + α** in ONE pass (S = the
-diagonal-placement permutation, `clm_involutive_abs_det_one`; α = the incidence shear
-`ShearReconcile.elemShear`), with the coherent transformed source box `srcBox' = g_e⁻¹(cube)`,
-`g_e = S ∘ α`. The decisive `srcBox` argument: S preserves the cube but α does NOT, so the coherence
-identity `(β ∘ g_e)(srcBox') = β(cube)` keeps the IMAGE unchanged (cover preserved verbatim, clause A)
-while `srcBox' ⊆ cube` of radius `R(1+R)` keeps clause B — one pass, not two (two-pass re-shapes the
-domain twice, re-opening cover+bound each time). This is the R2-pre-rung "localSub = ψ∘β" plan executed
-with `ψ = S ∘ α`.
+`geoChartMap_e = (β ∘ S) ∘ g` — **S concrete** (the diagonal-placement permutation,
+`clm_involutive_abs_det_one`; S fixes WHICH cell the monomial lands in — without it the cocycle statement
+is false, charge-2) and **g a COMPOSABLE det-1 source-gauge SLOT** (`g = id` NOW; the incidence shear
+`α = ShearReconcile.elemShear`, `|det Dα| = 1`, instantiated LATER), with `srcBox = g⁻¹(cube)`. Strictly
+better than baking α in (my parametric-design pattern applied to the last piece, elder-endorsed):
+- **(i) the fold-det cocycle is g-det-1-TRANSPARENT** — proven parametric in a det-1 `g` via the banked
+  `abs_det_fderiv_comp_det_one_gauge` (`|det D((β∘S)∘g) w| = |det D(β∘S) (g w)|` for any det-1 `g`) +
+  `clm_det_comp`. **PLAN: prove the cocycle parametric-in-det-1-`g`** (robust; no re-work when α lands).
+- **(ii) t10's cover is g-IMAGE-INVARIANT** — `(β∘S)(g(g⁻¹(cube))) = (β∘S)(cube)`; its proof transfers
+  verbatim under any `g`.
+- **(iii) α's later instantiation is a parametric FILL, no redefinition ripple** — the cert's coherence
+  condition is satisfied STRUCTURALLY (gauge designed into `chartMap` + `srcBox` from the start).
+
+BANKED for this form (all sorry-free, axiom-clean, `GeoJacobianFold.lean`): `clm_involutive_abs_det_one`
+(S det-1), `abs_det_fderiv_comp_det_one_gauge` (g/α transparency), `clm_det_comp` — so the Jacobian side of
+#35 is reduced to wiring + the cocycle maintenance; every det atom it consumes is in hand.
+
+The `srcBox = g⁻¹(cube)` coherence (`(β∘S∘g)(g⁻¹(cube)) = (β∘S)(cube)`) keeps the IMAGE unchanged (cover
+verbatim, clause A) while `srcBox ⊆ cube` of radius `R(1+R)` keeps clause B — the R2-pre-rung
+"localSub = ψ∘β" plan with `ψ = S ∘ g`, one definition, no two-pass domain re-shape.
 
 **CLAUSE FACTORING (the Jacobian side is untouched):** `|det D(β ∘ S ∘ α)| = |det Dβ| · 1 · 1` — α is
 PURELY LeafPullback's concern. The split:

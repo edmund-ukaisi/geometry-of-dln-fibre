@@ -48,6 +48,22 @@ theorem clm_involutive_abs_det_one (E : Params M →L[ℝ] Params M)
     simp [LinearMap.det_id]
   rcases mul_self_eq_one_iff.mp hsq with h | h <;> rw [h] <;> norm_num
 
+/-- **A det-1 source gauge is Jacobian-TRANSPARENT** (`g` det-`1` everywhere ⟹ `|det D(C ∘ g) w| =
+|det DC (g w)|`). The parametric-gauge atom the fork-15 (re-amended) form `geoChartMap = (β∘S)∘g`
+consumes: post-composing the chart with ANY det-1 source gauge `g` (`g = id` now, `α = elemShear`
+later, `|det Dα| = 1` via `abs_det_fderiv_elemShear`) leaves the per-edge Jacobian modulus equal to the
+chart's own det read at the gauged point — so the fold-det cocycle is g-transparent and α instantiates
+with no redefinition ripple. Chain rule + `clm_det_comp` + the det-1 hypothesis. -/
+theorem abs_det_fderiv_comp_det_one_gauge (C g : Params M → Params M)
+    (hC : Differentiable ℝ C) (hg : Differentiable ℝ g)
+    (hgdet : ∀ x, |(fderiv ℝ g x).det| = 1) (w : Params M) :
+    |(fderiv ℝ (C ∘ g) w).det| = |(fderiv ℝ C (g w)).det| := by
+  have hInner : HasFDerivAt g (fderiv ℝ g w) w := (hg w).hasFDerivAt
+  have hOuter : HasFDerivAt C (fderiv ℝ C (g w)) (g w) := (hC (g w)).hasFDerivAt
+  have hcomp : HasFDerivAt (C ∘ g) ((fderiv ℝ C (g w)).comp (fderiv ℝ g w)) w :=
+    hOuter.comp w hInner
+  rw [hcomp.fderiv, clm_det_comp, abs_mul, hgdet w, mul_one]
+
 /-- **The intermediate-point per-factor determinant product** of a list of maps: the abs-det of each
 map's derivative, read at the point reached by folding the SUFFIX of the list onto `w`. The RHS of the
 chain-rule fold. -/
