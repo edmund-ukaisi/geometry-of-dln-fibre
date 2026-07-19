@@ -2518,3 +2518,23 @@ mined), §4 via pnp-o5 through controller, both AFTER (1) the coverage reply + (
 (battery-truth-check of numDiv ≤ flatDim pre-approved — its instinct). ESCALATION STANDING: if
 the next t04 report still shows no receipt → respawn t05 with a spawn-prompt brief (the one
 channel proven to deliver), inheriting the clean 6f0151313 state.
+
+## 2026-07-19 tick 177: VM RESTART #2 — full team substrate lost; banked-state recovery
+The host died and restarted (operator notice). RECOVERY SWEEP: controller placement/hooks/
+branch intact; local == origin at tick 176 (zero controller loss). Worktree inventory: t01-r2
+clean at 6f0151313 EXCEPT an untracked O5Realization.lean (t04's §3 exploration, 207 lines —
+SALVAGED to threads/11-construction/salvage/, original untouched); coverage-t07-wt clean at its
+skeleton push; all other expedition worktrees clean at their pushed tips (the "unpushed" commits
+visible repo-wide belong to aoyagi-full branches — not ours, not touched). REACHABILITY: ALL
+seats dead (architect-t04, coverage-t07 both unreachable; pnp seats presumed same) — the team
+substrate did not survive. LOST (context-only): seat working contexts; coverage's joint-note
+HALF (the corrected-type proposal + verified cost map — its message summary survives in the
+controller record; its detailed FINDING message [tick 172] survives verbatim). Everything else
+was committed — the discipline held; the loss is one negotiation artifact + re-grounding costs.
+RECONSTITUTION PLAN: with both negotiating seats dead, the two-seat negotiation is replaced by
+(1) architect-t05 drafts the DECISION PACKAGE (corrected ChartBridge type + full cost map) from
+the banked record (probe + coverage's tick-172 finding + t04's scoping finding + the pin +
+cert-single-psi + region_glue's needs); (2) a fresh coverage seat COUNTER-SIGNS against its
+committed machinery (acceptance = 3-Prop provability); (3) elder gate on the type change;
+(4) execute. t05 spawning this tick (spawn prompts = the proven channel; the t04 mailbox
+saga is moot — its 4 undelivered steers are all in RULINGS-t04.md).
