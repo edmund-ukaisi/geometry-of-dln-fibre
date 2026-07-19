@@ -578,4 +578,12 @@ theorem leafPullback_geoAtlasNorm (l : LeafData M)
   leafPullback_of_diagFrob l (leafDiagFrob_geoAtlasNorm l hl)
     (geoAtlasNorm_resRank_zero (alphaGauge (M := M)) conRoot l hl)
 
+/- **(B)-discharge wiring (pre-stage, `design-inv-val-statement-t15.md` §5).** Once the loss lane
+closes (`leafDiagFrob_geoAtlasNorm` filled via the `Inv_val` walk),
+`chartBridgeFaithful_buildTree`'s
+(B) `sorry` consumes the `LeafPullback c` conjunct per atlas piece from `leafPullback_geoAtlasNorm`
+(modulo the `geoAtlas`/`geoAtlasNorm alphaGauge` cover-transfer lemma, landed after both lanes). The
+ready wiring line for the (B) `∀ c ∈ atlas, … ∧ LeafPullback c ∧ …` slot is
+`leafPullback_geoAtlasNorm c (by …transfer membership…)`. -/
+
 end DLNFibre.DLN.RLCT.Engine
