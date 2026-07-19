@@ -54,8 +54,14 @@ writing `L(s)(w)` for the RHS product and `diagCell M s k := birthFlatCoord M s 
 
 - **Base (`s = conRoot`, `acc = id`):** `s.numDiv = 0`, so `L(conRoot) = 1`; `|det D id w| = 1`. `Inv(id, conRoot)`.
 - **Headline (`geoAtlas_fold_det`):** at a leaf, `acc = c.chartMap` (the baked full fold, `tGeo_coherence`)
-  and `s = leaf state`, with `c.divExp = s.divExp`, `c.divCoord k = diagCell M s k` (β). So `Inv(chartMap,
-  leafState)` is exactly `|det D c.chartMap w| = ∏_k |z_{c.divCoord k}(w)|^{c.divExp k − 1}` — the headline.
+  and `s = leaf state`. `Inv(chartMap, leafState)` gives `|det D c.chartMap w| = L(s)(w)` over the FULL
+  state ledger `s.numDiv`. **CORRECTION (`cert-stranded-dichotomy.md`, supersedes):** the RHS is the FULL
+  ledger (`fullNumDiv`/`fullDivExp` + a `fullDivCoord`), NOT `leafOfState`'s analytic `c.numDiv`/`c.divExp`.
+  Reachable terminals carry stranded (t̃>0) divisors with `divExp > 1` (witness `M=(2,3)`), so the analytic
+  RHS is FALSE and `geoAtlas_fold_det` (`GeoLeafJacobian.lean:39`) must be restated to the full ledger.
+  The cocycle here is already full-ledger (`L(s)` sums over `s.numDiv`); only the leaf STATEMENT changes.
+  The stranded factors are RLCT-inert (`cert-stranded-dichotomy` §4), so the analytic ledger stays the
+  read for the loss / C-agreement / RLCT pole.
 
 The invariant threads DOWN the tree (mirrors `tGeo`/`tGeo_composite_differentiable`, which already threads
 `acc` and proves the `Differentiable ℝ acc` half at every leaf). The maintenance below carries the
