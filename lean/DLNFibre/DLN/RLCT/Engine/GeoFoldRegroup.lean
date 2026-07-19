@@ -175,4 +175,43 @@ theorem birthFlatCoord_eq_flatCoordOf (M : Fin (L + 1) → ℕ) (s : ConState L)
   obtain ⟨hL, hi, hj, heq⟩ := birthFlatCoord_of_valid (h := h) hv
   exact ⟨hL, hi, hj, by rw [heq, flatCoordOf]⟩
 
+/-! ## Bridge: `tGeo`-leaf composites are differentiable (the `abs_det_fderiv_foldr_comp` hypothesis) -/
+
+mutual
+/-- **Every `tGeo acc t` leaf composite is differentiable** (given `acc` differentiable): each fanned
+edge composes a differentiable `geoChartMapNorm` (or `id`) onto the accumulator. Mirrors `tGeo_coherence`.
+The differentiability the chain-rule fold consumes at every leaf. -/
+theorem tGeo_composite_differentiable (acc : Params M → Params M) (hacc : Differentiable ℝ acc) :
+    ∀ t : ResolutionTree M, ∀ p ∈ ResolutionTree.leafPaths acc (tGeo acc t), Differentiable ℝ p.2
+  | .leaf _ => by
+      intro p hp
+      rw [tGeo, ResolutionTree.leafPaths] at hp
+      simp only [List.mem_singleton] at hp
+      subst hp; exact hacc
+  | .branch n edges => by
+      intro p hp
+      rw [tGeo, ResolutionTree.leafPaths] at hp
+      exact tGeo_edges_composite_differentiable acc hacc n 0 edges p hp
+/-- Companion of `tGeo_composite_differentiable` over an edge list. -/
+theorem tGeo_edges_composite_differentiable (acc : Params M → Params M) (hacc : Differentiable ℝ acc)
+    (n : StepData M) (offset : ℕ) :
+    ∀ edges : List (Edge M),
+      ∀ p ∈ ResolutionTree.edgesLeafPaths acc (fannedEdges acc n offset edges), Differentiable ℝ p.2
+  | [] => by intro p hp; rw [fannedEdges] at hp; simp [ResolutionTree.edgesLeafPaths] at hp
+  | .mk c s ch :: es => by
+      intro p hp
+      rw [fannedEdges, edgesLeafPaths_append, List.mem_append] at hp
+      rcases hp with hp | hp
+      · by_cases hz : dCenterOfEdge n (Edge.mk c s ch) = 0
+        · rw [if_pos hz] at hp
+          simp only [ResolutionTree.edgesLeafPaths, List.append_nil] at hp
+          exact tGeo_composite_differentiable acc hacc ch p hp
+        · rw [if_neg hz, edgesLeafPaths_mapMk, List.mem_flatMap] at hp
+          obtain ⟨i, _, hp⟩ := hp
+          exact tGeo_composite_differentiable _
+            (hacc.comp (geoChartMapNorm_differentiable _)) ch p hp
+      · exact tGeo_edges_composite_differentiable acc hacc n
+          (offset + dCenterOfEdge n (Edge.mk c s ch)) es p hp
+end
+
 end DLNFibre.DLN.RLCT.Engine
