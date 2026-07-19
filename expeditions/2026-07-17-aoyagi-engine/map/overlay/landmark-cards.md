@@ -13,9 +13,12 @@ flipped `adjudicated → stated`; `ChartBridge` (the ex-`ChartsCover`) is streng
 banked local-homeomorph RLCT transport stays BANKED-but-UNUSED on the leaf path (P6 one live spine;
 see [[dead-routes]]). Live shape since: the fork-10 full-mechanism reframe + council #3 fork 11 (Path A
 the SOLE critical path; R1 lands the faithful full-`T` + `genDivExp` carrier NOW; R6 regular-peel OWED
-first-class; "kills the cite for free" STRUCK). The two live engine holes are
-`monomialization_terminates` (`EngineObligations.lean:184`) + `region_glue` (`:248`) — see
-[[banked-families]] for the R1–R6 consumption map.
+first-class; "kills the cite for free" STRUCK). **[REFRESH 2026-07-19 tick 265+, cartographer-6: the
+"two live engine holes = `monomialization_terminates` + `region_glue`" framing is STALE. Post-assembly
+the engine has ONE analytic hole: `chartBridge_buildTree` (`EngineObligations.lean:53`).
+`monomialization_terminates` is assembled (`:91`); `region_glue` is a proven composition (`:154`);
+`o5_realization` went clean-three (`:72`). See [[wiring-endgame]] pass #5 + [[STATUS]] for the current
+hole ladder.]** — see [[banked-families]] for the R1–R6 consumption map.
 
 ---
 
