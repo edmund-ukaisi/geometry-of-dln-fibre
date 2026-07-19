@@ -4291,3 +4291,19 @@ pre-wiring can key on the cover half; the fold half waits on #35's landed shape.
 per-edge code comment carries the (D) dCenterOfEdge-gated note + acc-unchanged/+0 as
 required. TWO gate builds converging (t10's worktree at 8676/8684; my integration gate
 mid-tail) — the merge pushes on MINE (authoritative for the integration tree).
+
+## 2026-07-19 tick 279: THE GATE IS GREEN — t10's batch LANDED on integration; t11's trigger FIRED
+The full-batch gate: LAKE-EXIT:0, zero errors, region_glue_of_chartBridge EXACTLY clean-three
+through the EngineDefs type flip — the protected no-reopen root held; the elder's
+type-flip-verify standing-counsel item is DISCHARGED (the 0∈U form is now IN the type on
+integration). GeoCoverSpec green at exactly its 2 tracked sorries (:133 the coercion idiom,
+:202 the rollover fact). THE STACK PUSHED (t10's both commits + the three elder rulings +
+two pnp certs + fork 15 + all journal/compass state — ten ticks of local commits banked to
+origin in one green push). WAKES FIRED: t11 GO on the 5-step build (the parametric-gauge
+form restated as governing per the tick-277 pin; GeoChart.lean lock transferred); t10
+proceed on sorry 2 (rollover fact), sorry-1 fresh-eyes spawn queued on its release, file-set
+warning issued (GeoChart is t11's now). DEFERRED CONSCIOUSLY: the navigator's
+first-builder-merge audit re-run and the t12-assembly spawn both move to t11's #35 landing
+(the fold signature is the missing freeze for the pre-wiring; a t12 spawned now would
+idle-wait). The endgame's execution phase begins: two builders, two known-shape holes, one
+construction change with a settled cert-backed spec.
