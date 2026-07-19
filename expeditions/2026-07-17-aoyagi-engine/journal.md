@@ -3320,3 +3320,18 @@ tide-critical (per-piece injectivity = distinct-birth-corners) — coverage answ
 citations. t06's budget: real-but-not-unlimited, honest; defaults set (clear-headed + critical
 = its sub-arc; else handoff at this clean banked state). QNodeChart wiring confirmed done
 (tick 220). Awaiting: t06's full-gate verbatim result + coverage's (a)/(b).
+
+## 2026-07-19 tick 223: seam answers in (clause-cited) — qEdgeOf first, reachability ∥ tide
+Coverage's (a): YES qEdgeOf — the per-case selector dispatch + hinj + totality/dite + the
+d≤flatDim bound are construction accounting that belongs in t06's files; its geoChartMap
+becomes ONE call. Its (b), the load-bearing one: **concrete divCoord REQUIRED** — LeafPullback
+reads ∏(paramsEquivFlat w (divCoord k))² as the ACTUAL divisor monomial and LeafJacobian reads
+the matching |det Dβ| product: the chart's monomial LIVES in the birth-corner coordinates, so
+an abstract numDiv↪flatDim injection would make both clauses FALSE. The INJECTIVITY enters only
+as the 3 per-piece hyps (hdcInj/hrcInj/hdisj, RegionGluePerLeaf:123) = pairwise-distinct birth
+corners = t06's reachability lemma. SEQUENCING: the geometry bulk (geoChartMap, materialization,
+cover fold, LeafPullback/LeafJacobian/InjOn) consumes concrete divCoord WITHOUT its injectivity
+— builds now carrying the 3 clauses as FED hypotheses; the reachability sub-arc runs PARALLEL,
+converging at the chartBridge_of_pieces assembly. RULED: t06 → qEdgeOf next (the tide trigger);
+the reachability sub-arc = t06-or-handoff at that boundary (parallel ⟹ zero critical-path cost
+either way; honest read outranks default). Still owed: t06's full-gate verbatim.
