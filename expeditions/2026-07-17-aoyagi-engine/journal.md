@@ -5047,3 +5047,14 @@ per its brief). inj-t16 SHUT DOWN with honors (roster discipline). THE DISCHARGE
 CENSUS: exactly TWO — LeafPullback (loss-t15, consumer-closed, waiting on the walk) +
 LeafJacobian (t14's bundle: the step case [disj-t17's pair + case-12 + the walk] + the R7
 ∃-wrap). Everything else in chartBridgeFaithful_buildTree is PROVEN.
+
+### Tick-315 addendum: disj-t17 independently re-derived the case split; ATOMS-ONLY ruled for case-1
+disj-t17's grounding found the all-k spectator form FALSE at case-1 (hspec fails at
+k = mergeIdx, i = u-corner — an EQUALITY, the merged divisor's own diagonal; hdt fails on the
+case11 edge identically) — independently confirming t14's parting note + cert §3 before
+writing a single statement. The convergence of three independent sources (the cert, the
+consuming seat, the building seat) on the same case shape is the interface discipline
+paying. RULED (for the resting t14): case-2 pair VERBATIM to the banked hypotheses; case-1 =
+ATOMS ONLY (the k≠mergeIdx spectator + the two positive coherences) — no pre-built peeled
+wrapper (t14's maintenance shape unfixed; atoms compose into any prod_congr). inj-t16's
+shutdown confirmed clean. Live: t10 (R7 batch) ∥ disj-t17 (executing).
