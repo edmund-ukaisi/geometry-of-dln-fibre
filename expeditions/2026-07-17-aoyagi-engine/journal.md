@@ -5248,3 +5248,19 @@ LANE 6 IN FLIGHT: verified ZERO monomial_rlct in the full AxCheck run's actual f
 (the entire file is S2-free as the banner claimed); the 11 stale "[..., monomial_rlct]"
 bracket expectations rewritten to historical notes + the banner's ⚠ resolved to the
 verified statement; the rebuild confirming (comments-only, but the discipline holds).
+
+## 2026-07-19 tick 326: THE DISJOINTNESS KIT COMPLETE — t14 WOKEN for the final assembly arc
+disj-t17's kit merged (aad156fd2) + probed clean-three + pushed: 18 theorems — the verbatim
+case-2 pair (hspec/hdt from the step context), the merge-peeled case-1 atoms (case1_spectator
+∀ k≠f + the TWO positive coherences: the u-corner and the case11 diagTarget ARE
+birthFlatCoord s f), and the reduction insight (ONE freshness atom — "an old diagonal (a,b,b)
+never hits a layer-cell with row ≥ cleared" — serves the case-2 spectator, both diagTargets,
+AND the case-1 d-block). Its mispricing flag matches the interface record exactly (the all-k
+form is a case-2 tool). Seat retired with honors.
+T14 WOKEN — the final assembly arc: the case-12 variant → the four-case §3 maintenance (the
+cert + the (α) reads + the kit) → the fan×WF walk into @493 (the conRoot full-ledger headline;
+terminal case direct — ledgerMonomial IS the RHS) → the R7 ∃-discharge per t10's contract
+(the exp-0 watch-item restated: droppable, surface-don't-force). loss-t15 mirrors on its
+landing. THE BOARD: t14 (the last hard arc) ∥ theta-t18 (statement card pending) ∥ pnp-r4
+(the design cert) ∥ loss-t15 (trigger: t14) ∥ the offices. Everything else is done or owed
+post-spine.
