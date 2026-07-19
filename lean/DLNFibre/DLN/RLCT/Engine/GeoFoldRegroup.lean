@@ -349,4 +349,29 @@ theorem tGeo_absdet_foldrList (t : ResolutionTree M) (w : Params M)
     leafPathsList_tGeo_diff [] id (by intro g hg; simp at hg) t p hp
   rw [hchart, abs_det_fderiv_foldr_comp p.2 hdiff w]
 
+/-- **Every `geoAtlas` leaf is a materialized `leafPathsList` leaf** (`geoAtlas t = leaves (tGeo id t) =
+(leafPathsList [] (tGeo id t)).map Prod.fst`, via `leafPaths_mapFst` + `leafPathsList_coherence`). The
+bridge that carries the det-fold onto the atlas pieces the headline quantifies over. -/
+theorem geoAtlas_mem_leafPathsList (t : ResolutionTree M) (c : LeafData M) (hc : c ∈ geoAtlas t) :
+    ∃ cs : List (Params M → Params M), (c, cs) ∈ leafPathsList [] (tGeo id t) := by
+  have h1 : (leafPathsList ([] : List (Params M → Params M)) (tGeo id t)).map Prod.fst
+      = ResolutionTree.leaves (tGeo id t) := by
+    have hco := leafPathsList_coherence ([] : List (Params M → Params M)) (tGeo id t)
+    rw [List.foldr_nil] at hco
+    rw [← leafPaths_mapFst id (tGeo id t), ← hco, List.map_map]
+    rfl
+  rw [geoAtlas, ← h1, List.mem_map] at hc
+  obtain ⟨p, hp, hpc⟩ := hc
+  exact ⟨p.2, by rw [← hpc]; exact hp⟩
+
+/-- **The det-fold over the atlas** (headline-facing): for every `geoAtlas` leaf `c`, its chart
+determinant equals the intermediate-point chain-rule fold of a materialized path-chart list. The
+remaining regrouping cocycle rewrites `foldrCompAbsDet cs` onto the leaf ledger. -/
+theorem geoAtlas_absdet_foldr (t : ResolutionTree M) (c : LeafData M) (hc : c ∈ geoAtlas t)
+    (w : Params M) :
+    ∃ cs : List (Params M → Params M), (c, cs) ∈ leafPathsList [] (tGeo id t) ∧
+      |(fderiv ℝ c.chartMap w).det| = foldrCompAbsDet cs w := by
+  obtain ⟨cs, hcs⟩ := geoAtlas_mem_leafPathsList t c hc
+  exact ⟨cs, hcs, tGeo_absdet_foldrList t w (c, cs) hcs⟩
+
 end DLNFibre.DLN.RLCT.Engine
