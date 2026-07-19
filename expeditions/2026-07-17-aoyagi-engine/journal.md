@@ -4259,3 +4259,13 @@ where the correction flows, keep fixed math fixed — the design idiom that abso
 correction this expedition, applied to the last piece. Fork 15 re-amended (verbatim), #35
 re-tasked, t11 re-briefed. resRank ruling unchanged (#42 stays closed). Gate build still
 running; the stack pushes on its green.
+
+### Tick-277 addendum: t11 crossed-message note — its ack pre-dates the parametric-gauge refinement
+t11's charge-3 ack merged (46433b5a6) — but it recorded the OLD one-pass form ("step 1 puts
+α in geoChartMap regardless"); my (β∘S)∘g refinement crossed it in flight and sits in its
+inbox. THE MERGE-WAKE MESSAGE MUST RE-STATE the parametric-gauge form as governing (g slot
+= id now, α NOT baked concretely) so t11 doesn't execute the superseded shape — pinned here
+so the wake can't omit it. Its LeafPullback-owner preference (a FRESH loss-seat for the
+{α}→squeeze proof; decorrelated, write-disjoint) is AGREED — under the parametric form the
+squeeze comes unhurried at α-instantiation; the loss-seat spawns then. Its 5-step build
+order survives with step 1 re-read as the (β∘S)∘g definition. Gate build still running.
