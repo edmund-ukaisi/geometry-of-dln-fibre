@@ -3438,3 +3438,19 @@ every drift-glance, idle + clean tree + continuing-intent = STALLED → send the
 t04 mailbox saga was the same substrate lesson from the other side: turns and messages are the
 only clock; nothing runs between them.) Operator vigilance > controller drift-glance this time
 — logged plainly.
+
+## 2026-07-19 tick 238: OPERATOR-REQUESTED — the hole's math explained; elder rightness call + cartographer wirings pass fired
+The controller's explanation of chartBridge_buildTree delivered to the operator, WITH an honest
+self-catch recorded: the first mental power-counting paired the multiplicity into the PULLBACK
+(∏x^{2·divExp} × unit ⟹ a universal ½ threshold — contradicting λ = minAdm/2 > ½); the
+re-derived pairing puts the order-2 vanishing in the LOSS (the singular monomial substituted
+away) and the accumulated multiplicity in the JACOBIAN weight ∏|u|^{divExp−1}, giving the
+per-chart threshold divExp/2 and the binding minAdm/2 via the realized minimum. ELDER-ALT2
+convened on exactly this (Q1: certify the pairing against the ACTUAL LeafPullback/LeafJacobian/
+per-leaf-lemma statements; Q2: clause sufficiency + THE one place a conceptual gap could hide —
+does the FOLD's product of per-edge |u|^{d−1} Jacobians actually meet the LEDGER's
+Mval-accumulated divExp in the leaf coordinates, or is there an unproven bridge; Q3 the stern
+too-weak/vacuous scan). CARTOGRAPHER-5 convened on the map+wirings (the endgame module graph
+verified from the imports not memory; the stale-reference sweep incl. the struck-design
+vocabulary; THE DISCHARGE-BATCH WIRING CHECKLIST with file:line pins). Both read the CURRENT
+tree (the stale-ref lesson in both briefs).
