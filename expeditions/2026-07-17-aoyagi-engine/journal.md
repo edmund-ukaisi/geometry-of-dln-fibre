@@ -4655,3 +4655,21 @@ the faithful theorem + the cocycle), the four owned lanes, the realized R-split 
 retired/standing seat roster, and the two new statement-gate rules (binder-vs-design diff;
 provability-check-first). Next events expected: the gate-verify green (AxCheck commit),
 pnp-fold's correspondence cert, coverage's bridge, loss-t15's phase-1 design note.
+
+## 2026-07-19 tick 296: loss-t15 phase 1 GATED — and the (3b) crux unified with t14's wall (ONE shared invariant)
+loss-t15's phase 1 merged (e7169701a, green): GeoAlphaGauge.lean additive+isolated (the
+g=id atlas untouched), the α design cert-faithful (edge-class dispatch: id on case-1(1)/
+rollover; the interior Schur = an elemShear fold on case-1(2)/case-2; the permutation-
+transparency tripwire CHECKED and does not fire), 3 obligation statements sorried. GATE
+PASSED (one rider: the provability-check on (iv)'s binder — conRoot, the generic-s trap).
+GO on Phase 2 + 3a: the α build + the loss algebra closed HOLE-FREE by reduction to the
+named input `prod ∘ chartMap = diagonal(monomial chain)`.
+THE LOAD-BEARING FINDING, ruled: (3b) — that named input — is the loss-VALUE analog of
+t14's correspondence: BOTH are threaded state↔geometry inductions through stepUpdate (the
+VALUE version: the partial fold's prod = the state's partial monomial form; the DET version
+its derivative shadow). ROUTED to the shared invariant: pnp-fold (mid-cert) got the scope
+note — state the invariant at the VALUE level if natural (one cert, two consumers; the det
+identity derived or same-skeleton), else characterize the delta precisely. (3b)'s owner
+decided when the cert returns, with the full picture. The frontier's two hardest items just
+became ONE invariant with two reads — the unification the elder's two-face framing
+predicted (the seam is the seam).
