@@ -3057,3 +3057,22 @@ The tick-206-addendum qNodeOf correction is in its inbox (its current work is fi
 independent — no exposure). Board: coverage building (A done, B in flight); t05 building
 centerIndices/qNodeOf; t06 on the 6d phase branches. All three lanes in parallel proof work —
 zero design questions open anywhere.
+
+## 2026-07-19 tick 208: centerIndices SPLITS (t05 build finding) — u-pivot held on a slot-stability page-check
+t05's build-step catch (a knowing stop-and-surface): the gate's "derivable by pure arithmetic"
+verdict holds for the RESIDUAL BLOCK (case-2/case-12: FlatIdx (layer,J+a,J+b) — GO, building
+now) but MISSES the u-pivot (+1) piece — the case-11 center includes the p.15-chosen EXISTING
+divisor u_{s,k}, whose flat coordinate is birth/history-tied, not node-local arithmetic. This
+is the REAL content divCoord was a placeholder for, resurfacing at its one live consumer.
+CONTROLLER HYPOTHESIS (makes option-(a) cheap if true): the corner note d_{J+1,J+1}=u_{S,J+1}
++ substitution-IN-PLACE (the blow-up puts u in the pivot's old slot; primed ratios keep
+theirs; the gauges mix but don't rename) ⟹ SLOT-STABILITY: a divisor's flat coordinate = its
+IMMUTABLE birth corner (layer,cleared,cleared)@birth ⟹ the mechanism = one immutable
+per-divisor field (divBirthCoord, set at birth, carried verbatim — maintenance is CONGRUENCE,
+not invariant work) — small, within t05's budget. If slot-stability FAILS, the map is dynamic
+→ budget hatch, fresh seat. COMMISSIONED: pnp-slot (T-slot page-check across all transition
+kinds a divisor survives + the divProfile-recoverability secondary + the mechanism
+recommendation; worked (2,2,2)/(3,3,4) traces; Codex leg). t05 meanwhile: the arithmetic
+block part + qNodeOf structured with the u-coordinate as a case-11 parameter (seam pin
+preserved — node-derived once the mechanism lands). Gate-miss noted for the record: even a
+by-inspection elder verdict yields to the build step — the verifier hierarchy working.
