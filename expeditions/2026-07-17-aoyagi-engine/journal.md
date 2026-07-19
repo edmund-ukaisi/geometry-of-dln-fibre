@@ -2876,3 +2876,16 @@ survival) = controller's calibration entry 2, verified before the landing batch;
 docstrings next to claims w/ the ![2,2,0] witness. Codex design refinement approved (3-phase
 invariant + LowCover; the pull brick is NOT step1_dominates — the handoff's reuse line
 superseded). leafOfState_carries merged. Counter increments to 6 WITH the fix's merge.
+
+## 2026-07-19 tick 198: calibration entry 2 — the flip site read; landing batch CONFIRMED SAFE
+Entry 2 (predict-then-check on the payoff/flip site): the _gen headline ALREADY carries
+hpos : ∀ s, r < H s, and hbox is consumed PER-INSTANCE (RouteMBoxThresholdFinite (fun s =>
+H s − r)) — NOT the "∀M" of the running shorthand (an instructive miss: slogan vs signature).
+Consequence: threading hMpos through the attainment chain at the move-at-landing batch is
+FREE at the flip — the fit witness derives 0 < H s − r from its existing hpos; no zero-width
+side-case exists anywhere. t06's decision-ask (b) definitively closed. Also merged: t06's
+second ruling-independent green (childLeaves_subset — the existential navigator) + its note
+that the landed s4-structure consult INDEPENDENTLY re-derived the positivity finding
+(M=(1,1,0) counterexample; three legs now) and resolved the inner-induction worry (anchor
+pulled last = carried by the OUTER conRel WF descent; no new domination lemma — the brick
+shrinks). The §4 arc has zero remaining design unknowns; t06 executing the decomposition.

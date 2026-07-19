@@ -62,3 +62,48 @@ integral threshold ↔ the RlctInterface's rlct). NEITHER is Aoyagi's resolution
 Flip-audit checklist seeded: the two bridge lemmas + the localization layer's scope + the
 hMpos thread. Calibration score: 3/4 predictions, with the miss exactly where the picture was
 too coarse (integrand/domain identity assumed where a reduction mediates).
+
+---
+## Entry 2 (tick 198): the flip-site positivity question — does hbox's ∀M survive o5's hMpos?
+
+**Question.** The move-at-landing batch will thread hMpos through the attainment chain. Does
+that condition reach hbox (∀ M, RouteMBoxThresholdFinite M — consumed by the payoff as a bare
+∀M), and if so, is the zero-width case separately dischargeable or does the payoff already
+exclude it?
+
+**Predictions (written before looking):**
+- P2a (conf 0.7): the DLN fit witness / EngineDriver forms route-M instances whose reduced
+  widths are POSITIVE by construction (the route localization only makes sense for r strictly
+  below the local widths), so the payoff side never needs zero-width instances.
+- P2b (conf 0.6): hbox is nevertheless consumed as a literal ∀M (no positivity guard in the
+  Prop), so IF engine_box_threshold_finite's discharge gains hMpos, the flip needs an explicit
+  zero-width side-case.
+- P2c (conf 0.65): RouteMBoxThresholdFinite at zero-width M is TRUE cheaply (Real.rpow
+  convention: 0^(−c') = 0 for c' ≠ 0 ⟹ integrand ≡ 0 on the degenerate product ⟹ integral
+  0 < ⊤) — a junk-value discharge, no engine needed.
+
+**Territory.** (next)
+**Territory** (read tick 198):
+- `aoyagi_learning_coefficient_gen (H) (r) (B) (hB) (hr) (hL) (hL2) (hpos : ∀ s, r < H s)
+  (hbox : RouteMBoxThresholdFinite (fun s => H s - r))` — HeadlineGenAssembly:55-59.
+- The fit witness (EngineDriver:59-65) carries the SAME `hpos : ∀ s, r < H s` and instantiates
+  `engine_box_threshold_finite (fun s => H s - r) hL`.
+- engine_box_threshold_finite is per-M `(M) (hL)` — EngineDriver:44.
+
+**Verdicts:**
+- P2a HIT, stronger than predicted: the payoff doesn't just supply positive widths naturally —
+  `hpos : ∀ s, r < H s` is ALREADY an explicit hypothesis of the _gen headline, and the hbox
+  instance's widths are H s − r > 0 by exactly it.
+- P2b **MISS (good news)**: hbox is NOT consumed as a literal ∀M — the _gen signature takes the
+  SPECIFIC instance `RouteMBoxThresholdFinite (fun s => H s - r)`. There is no ∀M Prop to
+  preserve and NO zero-width side-case anywhere. (The journal/memo's recurring "hbox = ∀M,
+  RouteMBoxThresholdFinite M" shorthand is imprecise — the slot is parametric; correct the
+  record where it matters.)
+- P2c MOOT (the junk-value discharge is never needed).
+
+**What it changes:** the move-at-landing batch is CONFIRMED SAFE: engine_box_threshold_finite
+gains hMpos and the fit witness supplies it FREE from its existing hpos (r < H s ⟹
+0 < H s − r) — zero new obligations, zero side-cases, the exact composition the tick-197
+hypothesis-form ruling was chosen for. t06's decision-ask (b) is now definitively answered.
+Score: 1 hit / 1 instructive miss / 1 moot — the miss again where the picture used a slogan
+("∀M") in place of the actual signature.
