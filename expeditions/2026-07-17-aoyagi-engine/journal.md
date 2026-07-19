@@ -4399,3 +4399,21 @@ target, ~1-arc tripwire → pnp-fold follow-up); coverage ACTIVATED on the (D) d
 elder's downstream-of-satisfiability pin honored conservatively; counter 7→8 rides the
 merge). Board reconfigures: t14 (the wall) ∥ fresh-eyes (:133) ∥ t10 (verify) ∥ coverage
 ((D) draft). Navigator re-run once the new configuration settles.
+
+## 2026-07-19 tick 284: the sorry-mask caught at integration — fresh-eyes' close was GOOD, the :133 STATEMENT was stale; step 3 restored
+fresh-eyes-t13 delivered (:133 closed clean-three on its pinned pre-wiring base; the gotcha
+is a keeper: the ↑p coercion lifts OUT of the fan lambda ⟹ the fan is map F (finRange d >>=
+pure∘↑) — outer witness i−offset : ℕ never the Fin; List.bind_eq_flatMap before mem_flatMap
+since do-heads are Bind.bind). MERGING IT FAILED at :163 — and the diagnosis matters more
+than the failure: fannedEdges now emits geoChartMapNorm edges but fannedEdges_pivot_mem's
+STATEMENT still names geoChartMap. t11's "zero new reds" at the wiring was SORRY-MASKED:
+a sorried lemma elaborates regardless of statement staleness, and its consumer typechecks on
+the poisoned conclusion — the exact class the standing counsel warned of ("a green build
+over a sorried X is not the gate"), here in miniature. Not a seat fault (invisible by
+construction); the INTEGRATION GATE caught it, which is the system working. Integration
+RESET to green (42062dd4c); fix/covspec-133 unmerged. STEP 3 RESTORED to the real re-green
+and re-briefed to t10: re-point the :133 statement to the wired geoChartMapNorm form (exact
+emission text), import fresh-eyes' map-agnostic proof, re-thread fannedEdges_covers +
+downstream via S cube-invariance (a geoChartMapNorm_on_cone companion suggested), zero
+sorries, probe geoAtlas_imageCover clean-three, push. fresh-eyes-t13 retires with thanks —
+its proof survives verbatim; only the statement around it moved.
