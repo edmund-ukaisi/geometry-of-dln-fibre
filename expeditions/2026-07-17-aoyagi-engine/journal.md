@@ -4813,3 +4813,24 @@ is det-1 — LeafJacobian's transparency to α is now a theorem, not a design no
 cert-stranded-dichotomy.md (the outstanding adjudication, being drafted); t14's
 GeoFoldRegroup at 28k and growing (the 4-case maintenance); inj-t16 orienting in its
 worktree. No stalls, no rulings owed. The endgame is grinding.
+
+## 2026-07-19 tick 305: THE DICHOTOMY IS FALSE — the stranded divisors are REAL; the honest form is FULL-LEDGER; elder charge-5
+pnp-fold's adjudication (merged 2041c8c56; 310 exhaustive FALSE families + the hand-verified
+minimal witness M=(2,3) L=1: terminal ledger {A: exp 6 analytic, B: exp 2 STRANDED}; the
+fold blows up BOTH — true det |z_A|^5·|z_B|^1 vs the analytic headline's |z_A|^5): BOTH the
+strong and weak forms FAIL. geoAtlas_fold_det as stated is FALSE; so is ChartBridge's
+LeafJacobian clause (expedition-wide). THE HONEST FORM: the FULL-LEDGER Jacobian identity —
+which t14's hedged cocycle ALREADY PROVES (L(s) sums the full numDiv; pnp corrected its own
+cert §1's silent no-stranding assumption). THE PAYOFF IS SAFE: stranded factors are
+RLCT-INERT (bounded, pole-free) — with the Codex-sharpened LOAD-BEARING caveat: inertness
+needs the positive residual core AND coordinate disjointness (a stranded coord entangled in
+the Morse core SHIFTS the threshold — F=x²+y², J=|y|^{E−1} witness); hence the disjointness
+clause extends to the full ledger, as substance not hygiene. THE THREE CONSUMERS READ
+DIFFERENT LEDGERS: Jacobian → FULL; loss + (C) + poles → ANALYTIC. ELDER CHARGE-5 fired:
+the restatement design (the clause split; RegionGluePerLeaf's absorption of the stranded
+factors vs a re-thread of the proven region_glue; the LeafData fullDivCoord type change +
+ripple; the disjointness extension; counter #9 + the naming rule so the analytic/full
+distinction can't elide silently — the trap WAS "c.divExp = s.divExp"). t14 told: GRIND ON
+(zero rework — the hedge pays in full); the leaf instantiation + headline restatement land
+on the ruling. The cert-first discipline's biggest save yet: a 200-line induction toward a
+false theorem, prevented.
