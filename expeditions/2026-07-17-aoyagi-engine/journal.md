@@ -3107,3 +3107,17 @@ pre-verified safe at the flip site): GO issued to t06 with the 5-point spec (o5_
 +sorryAx via EXACTLY ONE named hole (chartBridge_buildTree) — the hbox flip then waits on the
 chart lane alone. Board: t06 landing; coverage batch B (det atom) in flight; t05 writing the
 t07 spec; pnp-slot adjudicating.
+
+## 2026-07-19 tick 210: coverage batch B merged — the α_e FRAME is COMPLETE (R-b machinery fully banked)
+2f09042ce merged + probed: abs_det_fderiv_elemShear = clean-three via the TRANSVECTION route
+(fderiv = id + covec.smulRight eₐ = LinearMap.transvection; det = 1 + covec(eₐ) = 1 — Mathlib's
+transvection.det, no matrix/nilpotence grind). With batch A (reparam_image + the concrete
+gauges), proposal-§2 field 3 is fully discharged: the det-1 source frame exists, its Jacobian
+is unit, and the domain-reparam identity reduces the per-node cover to the PURE banked atom.
+Codex-provenance hygiene noted: the consult found the route but misnamed the file and invented
+a lemma — the seat VERIFIED all three rather than trusting (the standing discipline paying).
+STATE-SYNC sent (its holding list predated the gate rulings): actual waits = t07's carrier
+green (+ pnp-slot only via t07's spec); offered the optional GeoChart-shape design note.
+BOARD: t06 executing the move-at-landing batch; t05 writing the t07 spec; pnp-slot
+adjudicating; coverage holding-or-sketching. The chart hole's critical path: pnp-slot cert →
+t07 spawn → carrier green → coverage's tide → chartBridge_buildTree fills → hbox flips.
