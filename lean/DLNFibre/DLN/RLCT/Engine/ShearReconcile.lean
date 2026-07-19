@@ -83,4 +83,70 @@ theorem node_pivotCover_of_atom_sheared {edges : List (Edge M)} {V : Set (Params
       simp only [Prod.map_apply, id_eq, hpc]
       rw [← Prod.mk.eta (p := q w), Homeomorph.symm_apply_apply]
 
+/-! ## R-b source-reparameterization atoms (the adopted route, `cert-psi-mix.md` §R-b)
+
+Under R-b the per-edge chart is `β̃_e = β_e ∘ α_e⁻¹` with the det-1 gauge `α_e` in the SOURCE. Two
+atoms coverage owes (this file, field-home-independent):
+* the **domain-reparam identity** — `β̃_e '' (α_e '' D) = β_e '' D` (any bijection `α_e`); it makes the
+  R-b cover reduce to the PURE `node_pivotCover_of_atom` (chart images unchanged);
+* the **elementary Schur shear** `α_d` (`α_u = .refl`) — the concrete det-1 SOURCE gauge; the det-1
+  Jacobian atom lands next (`cert-psi-mix` §R-b: `|det Dα| = 1` keeps the monomial Jacobian unchanged).
+-/
+
+/-- **The domain-reparameterization identity** (the R-b cover reduction): post-composing the pure chart
+`β` with the SOURCE gauge inverse `α.symm` and applying it to the gauged domain `α '' D` recovers the
+pure image `β '' D` — the gauge does NOT move the covering set. Any bijection `α`; the det-1 shape of the
+concrete gauge is not needed here. This is why R-b's per-node cover is the pure `node_pivotCover_of_atom`
+(`⋃_e β̃_e '' (α_e '' D_e) = ⋃_e β_e '' D_e`). -/
+theorem reparam_image {X Y Z : Type*} (α : X ≃ Y) (β : X → Z) (D : Set X) :
+    (β ∘ α.symm) '' (α '' D) = β '' D := by
+  rw [Set.image_comp, α.symm_image_image]
+
+variable {d : ℕ}
+
+/-- **The elementary Schur shear** on `Fin d → ℝ`: shift coordinate `a` by `− x_b · x_c` (the inverse
+Schur update in ratio coordinates, `cert-psi-mix` §R-b `α_d`; `a`, `b`, `c` the target/two source flat
+indices). A polynomial self-map; its inverse adds the product back. -/
+def elemShear (a b c : Fin d) (x : Fin d → ℝ) : Fin d → ℝ :=
+  Function.update x a (x a - x b * x c)
+
+/-- The inverse of `elemShear` — add the product back. -/
+def elemShearInv (a b c : Fin d) (x : Fin d → ℝ) : Fin d → ℝ :=
+  Function.update x a (x a + x b * x c)
+
+/-- **The elementary Schur shear as a homeomorphism** (`α_d`; `α_u` is `Homeomorph.refl`). A polynomial
+bijection with polynomial inverse — needs `a ≠ b`, `a ≠ c` so the shifted coordinate does not feed back
+into the two sources. This is the concrete det-1 SOURCE gauge `α_e` the carrier carries; the det-1
+Jacobian is the next atom. -/
+def elemShearHomeomorph (a b c : Fin d) (hab : a ≠ b) (hac : a ≠ c) :
+    (Fin d → ℝ) ≃ₜ (Fin d → ℝ) where
+  toFun := elemShear a b c
+  invFun := elemShearInv a b c
+  left_inv := fun x => by
+    funext k
+    simp only [elemShear, elemShearInv]
+    by_cases hk : k = a
+    · subst hk
+      simp only [Function.update_self, Function.update_of_ne hab.symm,
+        Function.update_of_ne hac.symm]
+      ring
+    · simp only [Function.update_of_ne hk]
+  right_inv := fun x => by
+    funext k
+    simp only [elemShear, elemShearInv]
+    by_cases hk : k = a
+    · subst hk
+      simp only [Function.update_self, Function.update_of_ne hab.symm,
+        Function.update_of_ne hac.symm]
+      ring
+    · simp only [Function.update_of_ne hk]
+  continuous_toFun := by
+    change Continuous (fun x : Fin d → ℝ => Function.update x a (x a - x b * x c))
+    exact (continuous_id).update a
+      ((continuous_apply a).sub ((continuous_apply b).mul (continuous_apply c)))
+  continuous_invFun := by
+    change Continuous (fun x : Fin d → ℝ => Function.update x a (x a + x b * x c))
+    exact (continuous_id).update a
+      ((continuous_apply a).add ((continuous_apply b).mul (continuous_apply c)))
+
 end DLNFibre.DLN.RLCT.Engine
