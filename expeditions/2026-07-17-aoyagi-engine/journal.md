@@ -3745,3 +3745,26 @@ the dim-0: the short-circuit in cNodeOf_eq_realCNode over a facts-side discharge
 vacuous-dim node names no coordinates — definitional). Consumer note pinned: the facts feed
 the ASSEMBLY ((D)-fidelity + the discharge), not t10/t11's pieces — important, off their
 critical path.
+
+## 2026-07-19 tick 257: counter-sign GRANTED — clause-(A) fix (a) GO issued to t10
+Coverage's counter-sign on the V⊆U → 0∈U weakening: SOUND + FIDELITY-POSITIVE, by direct
+read. The load-bearing facts: (i) V⊆U is consumed EXACTLY ONCE (RegionGlueAssembly:115,
+solely to extract 0∈U for exists_small_paramsBox_subset_open — signature takes only h0);
+(ii) the globalization underneath (routeMLayerBoxIntegral_lt_top_of_small_box) is PROVEN
+clean code via the degree-2L homogeneity flatNodeLoss_smul — the "boundary singularities
+scale into the ε-box" mechanism is real, not hoped; (iii) clauses (B)/(C)/(D) never touch U.
+The fidelity verdict UPGRADES the fix: the rlct is local at the cone point; V⊆U was
+OVERCLAIMING a global zero-locus cover Aoyagi neither needs nor establishes — the 0∈U form
+is the honest local-resolution statement. Coverage also reconciled its own record: the
+earlier "bounded-spectator atom NECESSARY" was conditional on the V⊆U target and DISSOLVES
+at 0∈U (0 interior ⇒ R=1 self-cover). Required rider: the ChartBridge docstring rewritten to
+the local scope ("...NOT a cover of the entire zero-locus"), same batch — caveat next to
+claim.
+GO sent to t10 with the 4 conditions (atomic 5-file batch + counter 6→7 same-commit; the
+verbatim docstring; full-batch gate with region_glue_of_chartBridge MUST-clean-three; the
+(1,1,1) witness into the SPECIFY addendum) + coverage's simplification (:107 destructure
+unchanged, :115 one-liner, drop :108-114). t10 had meanwhile BANKED fix-independent greens
+(tGeo + fannedEdges fan-out tree; geoAtlas = leaves (tGeo id t); tGeo_coherence = the exact
+imageCover coherence hypothesis) — folds into the batch. Fill ~120 LoC as scoped; the hbij
+tiling link stays the flagged hard step. BOARD: t10 executing; t11 phase 1; t09 on
+RealCNodeFacts; coverage idle-by-design (assembly go awaits the builders).
