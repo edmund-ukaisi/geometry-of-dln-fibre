@@ -88,6 +88,13 @@ Each closes `L(s)(B w) · |z_{diagTargetOf}(w)|^{dCN−1} = L(s')(w)` where `s' 
 ledger updated by `stepUpdate`). Write `μ = diagCell(s, mergeIdx)` (the merged divisor's diagonal) and
 `e = s.divExp mergeIdx`; `b := dCenterOfNode M node − 1`.
 
+**det-only vs value-carrying (for the §7 second consumer).** In each case the ingredients split: the
+coordinate-action reads `geoChartMap_flat_{pivot,center,spectator}` + `flatSwapCLE_apply_flat` are
+**VALUE-CARRYING** (the same reads drive how `prod ∘ chartMap`'s entries transform); the scalar Jacobian
+atom `|z_{diagTargetOf}|^{dCN−1}`, `|det|`-multiplicativity (`clm_det_comp`), and the `divExp − 1`
+exponent arithmetic are **DET-ONLY** (a derivative fact the value never sees). The tree-walk / per-case
+dispatch / `conRoot` base / `DivBirthInv` threading is **SHARED SKELETON**.
+
 **(1) case-2** (`stepUpdate.case2`: appends a divisor, `divExp = resRows·resCols`; `dCN = resRows·resCols`).
 - `d = diagTargetOf` is the fresh `(layer,cleared)` diagonal; the center `C(node)` is the fresh residual
   block. Every EXISTING divisor's diagonal `diagCell(s,k)` is `∉ C(node)` and `≠ d` — from `DivBirthInv`
@@ -180,11 +187,68 @@ run giving `|z_a|^3 · |z_b|^6 = L_3`. Two decorrelated derivations agree to the
   per-pivot divCoord — the `cert-fold-regroup` §4 kill-condition is structurally excluded by
   `geoChartMapNorm`.
 
+## §7 The value-level second consumer (loss-t15) and the DELTA
+
+loss-t15 reduces `LeafPullback` to the named input `prod M (chartMap w) = diagonal(monomial chain)` at
+each leaf — Aoyagi's `Q · prod · P = diag(b₁,…,b_m)` invariant (`cert-loss-factorization.md`). This is
+the loss-VALUE analog of the det correspondence. **Verdict: same SKELETON, different CONTENT; the det is
+NOT derivable from the value, and one cert does not fully serve both.** (Consistent with the sibling
+`cert-loss-factorization` §Structure: "LeafPullback (power-2) and LeafJacobian (accumulated) do NOT share
+the fold induction.")
+
+**Why not derivable (three divergent exponent structures).** A single divisor `A` under a case-2 birth
+`+ k` case-1(1) re-merges carries THREE different exponents (`value_vs_det_delta.py`, exact):
+
+| read | object | `A`-exponent | behaviour under re-merge |
+|---|---|---|---|
+| **DET** (this cert) | `|det D chartMap|` | `divExp(A) − 1 = 3 + k` | **accumulates** |
+| **VALUE** diag-monomial `b₁` | `prod ∘ chartMap = diag(b)` | `1` (squarefree, `b₁ = ∏_{t̃=0} u`) | does NOT accumulate |
+| **LOSS** | `frobSq = (∏ divCoord²)·core` | `2` (uniform) | does NOT accumulate |
+
+The accumulation `divExp − 1` is a change-of-variables (derivative) count, invisible to the value's
+`b₁` (each terminal divisor once) and to the power-2 loss. So `|det D chartMap|` cannot be read off
+`prod ∘ chartMap`.
+
+**What IS shared (the value cert reuses this verbatim).** The threaded-induction SKELETON — the
+`tGeo`/`geometricLeafPaths` tree walk, the per-`stepUpdate`-case dispatch, the `conRoot` base, the
+`DivBirthInv` threading — AND the coordinate-action reads (`geoChartMap_flat_{pivot,center,spectator}` +
+`flatSwapCLE_apply_flat`): the value maintenance uses the SAME reads to track how each entry of `prod`
+transforms across a blow-up. The value invariant states naturally in the SAME acc-threaded form
+`Inv_val(acc, s): prod M (acc w) = diag(b(s))·[[E_J,O],[O,D_J(residual coords)]]` (Aoyagi's state
+invariant), with the SAME motive shape and base (`prod M (id w) = ∏ C^{(s)}` at `conRoot`).
+
+**The DELTA (value-only content the det never sees).**
+1. **The residual / off-diagonal block `D_J`.** The value carries the full matrix, so its maintenance
+   tracks the un-resolved block (the ratio coordinates `d'_{ij}`), not only the diagonal divisor cells.
+   The det collapses this to a scalar and never sees it.
+2. **The `b_i` are PRODUCTS (power 1), not `divExp` powers.** `b₁ = ∏_{t̃=0} u`, `bᵢ/bᵢ₋₁ = ∏_{born at
+   level i−1} u` — a different ledger read than `divExp` (the value cert tracks the `b`-chain; the det
+   tracks `divExp`).
+3. **The incidence / Q,P Schur source gauge.** Reducing the block to `[[1,O],[O,D_{J+1}]]` needs the
+   det-1 ratio shear `α` (`z ↦ z − r_ip·r_pj`). The Jacobian is **det-1-BLIND** to it (`ShearReconcile`:
+   `det Dψ = 1`), so §1–§6 omit it entirely; the value is NOT det-1-blind (Frobenius changes under Q,P),
+   so `Inv_val`'s maintenance MUST carry `α`. This is the "one fix does not serve both" of
+   `cert-loss-factorization` §6: the det needs only the fork-15 diagonal swap `S`; the value needs `S`
+   AND the Schur `α`.
+4. **`resRank`/`resCoord` matching the actual leaf residual shape** (Morse vs fully-diagonal;
+   `cert-loss-factorization` §Structure / task #42) — a value-side obligation the det does not carry.
+
+**Recommendation.** Keep TWO certs (this det cocycle + `cert-loss-factorization` for the value/loss),
+sharing the SKELETON explicitly. When t14/loss-t15 transcribe, factor the shared skeleton
+(tree-walk + per-case dispatch + `DivBirthInv` + the `geoChartMap_flat_*` reads) into a reusable
+induction driver, then instantiate it TWICE: once with the scalar det payload (§3), once with the
+matrix `diag(b)·D_J` payload + the `α` gauge (the value delta). The value delta (points 1–4) is genuinely
+its own content and is already adjudicated in `cert-loss-factorization` — no new paper work owed there.
+
 ## Close
 
 - **Firmest (battery-verified + Codex-decorrelated):** the threaded invariant `Inv(acc, s)` (§1); the
   normalized coordinate-action table + diagonal atom (§2); the four per-case maintenance identities (§3),
   each Lean-ready and keyed to a landed t14 atom; the base at `conRoot` (`L = 1`).
+- **Second consumer (§7):** the value invariant `prod ∘ chartMap = diag(b)` shares this cert's threaded
+  SKELETON + coordinate-action reads but tracks different content (the `b`-chain + residual block + the
+  Schur `α` gauge); the det is NOT derivable from it (three divergent exponent structures). Two certs,
+  one shared driver.
 - **Most likely to break it:** a gap in the reachability supply (§6 side conditions) — specifically if the
   `DivBirthInv` freshness/injectivity is not threaded to EVERY step of the fold (the disjointness reads in
   §3(1)/(3) fail without it), or if a `divExp(mergeIdx) = 0` live divisor slips through (breaks the
