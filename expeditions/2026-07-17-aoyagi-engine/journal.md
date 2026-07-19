@@ -4185,3 +4185,13 @@ ruling; task #42 must adjudicate BEFORE any resRank freeze. t11 told to hold #35
 t10-file-locked anyway — zero time lost). THE PATTERN, 3 for 3: every "compose it in later"
 in the chart lane has been a deferred load-bearing obligation the certs are now surfacing
 BEFORE the Lean grind — the statement-first + cert-first discipline is carrying the endgame.
+
+### Tick-274 addendum: t11 — the spine already covers S+α with NO new atom
+t11's addendum merged (c436c6869): both gauges are det-neutral and BANKED — |det S|=1
+(clm_involutive_abs_det_one) + |det α|=1 (abs_det_fderiv_elemShear) — so the per-edge det
+through geoChartMap∘S∘α is |z_diag|^{dCN−1}·1·1 via clm_det_comp. Whichever way charge-3
+rules (S-only vs S+α), the Jacobian side is UNAFFECTED; the only new work is #35's
+construction concerns (S/α composition-cleanliness + cert condition (2): chartMap/srcBox/
+resCoord transformed coherently across the fold). The reshape keeps the same 3-piece shape
+under both outcomes. The pre-merge bank is closed; the seat idles on charge-3 ∨ t10,
+whichever fires first.
