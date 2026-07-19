@@ -5031,3 +5031,19 @@ line (the remaining hard parts are BUILT not shortcut; the exact-RLCT value is n
 expedition SCOPING, not avoidance). Both proposed standing-counsel entries applied verbatim.
 Working set after cleanup: t10/t16/t17 active, t14/t15 resting-with-owed, elder+carto
 standing, coverage answer desk.
+
+## 2026-07-19 tick 315: a.e.-INJECTIVITY CLOSED — ChartBridgeFaithful is down to its FINAL TWO sorries
+inj-t16's three greens merged (e7efed05c) + controller-probed: geoAtlas_leaf_ae_injOn
+clean-three; the (B) sorry replaced with the term; EngineObligations green; the payoff
+footprint unchanged. The proof shape as surveyed (elementary composition, no Jacobian) with
+ONE honest mispricing surfaced: the per-factor hyperplane-null atom was NOT sufficient — a
+general fold needs pivotChart fully QuasiMeasurePreserving (arbitrary null preimages), proven
+via the {u=0} split + the differentiable-image-of-null route; cost ~2× the survey, driven by
+measure-plumbing (Params M lacks Haar/Borel instances — the conjugators went QMP by TRANSPORT
+through measurePreserving_paramsEquivFlat, "the one lucky break"). The transport helpers
+banked REUSABLE (cle_qmp_* + comp_ae_injOn) — flagged to the sibling lanes. GeoFoldRegroup
+read-only throughout; no R7 conflict (t10 merges origin before its ChartBridgeFaithful edit
+per its brief). inj-t16 SHUT DOWN with honors (roster discipline). THE DISCHARGE'S HOLE
+CENSUS: exactly TWO — LeafPullback (loss-t15, consumer-closed, waiting on the walk) +
+LeafJacobian (t14's bundle: the step case [disj-t17's pair + case-12 + the walk] + the R7
+∃-wrap). Everything else in chartBridgeFaithful_buildTree is PROVEN.
