@@ -299,4 +299,44 @@ theorem clearable_tStar (M : Fin (L + 1) → ℕ) : Clearable M (tStar M) :=
   clearable_of_minimizer M (tStar M) (tStar_mem M) (fun b hb => by
     rw [Mval_tStar_eq_inf']; exact Finset.inf'_le _ hb)
 
+/-! ## §4 — realizing the clearable minimizer `tStar` as a `t̃ = 0` leaf divisor
+
+The construction-tracing half (cert §4). `tStar M` is `Clearable` (`clearable_tStar`, §3), so the
+steering rule `R(tStar)` (take case-1(1) iff the target level `ℓ > tStar^S`, else 1(2); case-2/rollover
+forced) traces a deterministic root→leaf path IN THE BUILT TREE (the fixed Def-4-minimal chooser
+`conOracle`; item-1: no non-minimal pick is ever needed) whose terminal leaf carries `tStar` as a
+`t̃ = 0` analytic divisor. The anchor-descent invariant (cert §4, Lean-ready) tracks one divisor `A`:
+born by case-2 at layer `b(tStar)`, maintained (plateau/descent) through the clearing layers, becoming
+`t̃ = 0` with profile `tStar` at the leaf. The one flagged brick — the intra-layer pull-ordering (`A`
+lands at EXACTLY `tStar^S`, Def-4-least at its level) — reuses the banked o4 `LiveHeadDom` /
+`chooserTotalOnChain_of_sameLevel` / `step1_dominates`. -/
+
+/-- **`tStar M` is realized as a `t̃ = 0` leaf-divisor profile of the built tree** (cert §4, the
+anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
+`Clearable-Adm` (= R7). The `t̃ = 0` is automatic (`tStar ∈ Adm`, last coord `0`).
+
+CRUX (sorried, the §4 construction-tracing brick): trace the `R(tStar)` root→leaf path in
+`buildTree M (conOracle M) conRoot` (following the case-1(1)/1(2) selection per the steering rule),
+maintain the anchor-descent invariant, and read `tStar` off the terminal leaf. Reuses `LiveHeadDom` /
+`chooserTotalOnChain_of_sameLevel` / `step1_dominates` (reuse index (b)). Tripwire: if the pull-ordering
+brick fights beyond a couple honest attempts, STOP + report for a consult seat. -/
+theorem tStar_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+    ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
+      ∃ k : Fin l.numDiv, l.divProfile k = tStar M := by
+  sorry
+
+/-- **`o5_core`, realized** (cert §3 + §4 composed): `minAdm M` is a divisor exponent of a leaf of the
+built tree. The MOVE-AT-LANDING target — when this lands, o5_core moves here from `EngineConstruction`
+(its sorry deleted) and `o5_realization` (`EngineObligations`) consumes it. PROVEN modulo the §4 crux
+`tStar_realized`: the realized `tStar` leaf divisor has `divExp = (Mval M tStar).toNat = minAdm M`
+(`IsFullMonomialization` read-off + `Mval_tStar_eq`). -/
+theorem o5_core_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+    ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
+      ∃ k : Fin l.numDiv, l.divExp k = minAdm M := by
+  obtain ⟨l, hl, k, hk⟩ := tStar_realized M hL
+  refine ⟨l, hl, k, ?_⟩
+  have hexp := ((isFullMonomialization_buildTree_conRoot M hL l hl).1 k).1
+  rw [hexp, hk, Mval_tStar_eq]
+  exact Int.toNat_natCast _
+
 end DLNFibre.DLN.RLCT.Engine
