@@ -125,56 +125,67 @@ theorem biUnion_list_map {α β γ : Type*} (l : List α) (fn : α → β) (F : 
   · rintro ⟨e, ⟨p, hp, rfl⟩, hx⟩; exact ⟨p, hp, hx⟩
   · rintro ⟨p, hp, hx⟩; exact ⟨fn p, ⟨p, hp, rfl⟩, hx⟩
 
-section
--- Seal the heavy chart/tree machinery so unification in the tiling below cannot whnf-unfold it into the
--- classical `qOfCenter`/`centerPerm` machinery (the recurring whnf-timeout hazard). On-cone shapes are
--- still exposed via the syntactic rewrite `geoChartMap_on_cone`; `tGeo`'s children are used only through
--- the abstract IH hypothesis. Sealed only in this section — the induction/bridge below need `tGeo` open.
-attribute [local irreducible] geoChartMap tGeo qNodeOf qOfCenter centerPerm
-
-/-- **The offset tiling (hbij)**: every global pivot `i < dCenterOfNode n` is realised by some fanned
-edge whose child covers the flat cube (IH), so the pivot-`i` chart's image of the flat cube sits inside
-the fanned-edge union. Induction on the edge list with a running `offset`; a chartless edge is skipped
-(its `dCenterOfEdge = 0` slot is empty), and the non-chartless edge owning `i` supplies the chart. -/
-theorem fannedEdges_covers (acc : Params M → Params M) (n : StepData M)
-    (hd : dCenterOfNode M n ≤ flatDim M) (i : ℕ) (hi : i < dCenterOfNode M n) :
+/-- **The offset tiling — MEMBERSHIP form (hbij, List-level)**: every global pivot `i` in the node's
+range is realised by a fanned edge — the edge owning `i` (via the `dCenterOfNode_edgeSum` offset
+partition), with the pivot-`i` `geoChartMap`. Stated + proved at the `List.mem` level (induction on the
+edge list + `rw [fannedEdges]`), AWAY from the `iUnion` body, so the heavy `geoChartMap`/`tGeo` are only
+rewritten syntactically (no whnf/defeq fight). -/
+theorem fannedEdges_pivot_mem (acc : Params M → Params M) (n : StepData M) (i : ℕ) :
     ∀ (offset : ℕ) (edges : List (Edge M)),
-      (∀ e ∈ edges, ∀ a : Params M → Params M,
-        ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 ⊆ leafPathImages (tGeo a e.child)) →
       offset ≤ i → i < offset + (edges.map (dCenterOfEdge n)).sum →
-      (fun w => (qNodeOf M n hd).symm (Prod.map (pivotChart ⟨i, hi⟩) id (qNodeOf M n hd w)))
-          '' (⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1)
-        ⊆ ⋃ e ∈ fannedEdges acc n offset edges, e.subst.localSub '' leafPathImages e.child := by
+      ∃ (c : StepCase) (s : ChartSubst M) (ch : ResolutionTree M),
+        Edge.mk c s ch ∈ edges ∧
+        Edge.mk c { s with localSub := geoChartMap (dCenterOfNode M) (qNodeOf M) ⟨n, Edge.mk c s ch, i⟩ } (tGeo (acc ∘ geoChartMap (dCenterOfNode M) (qNodeOf M) ⟨n, Edge.mk c s ch, i⟩) ch)
+          ∈ fannedEdges acc n offset edges := by
   intro offset edges
   induction edges generalizing offset with
-  | nil => intro _ hlo hhi; simp only [List.map_nil, List.sum_nil, add_zero] at hhi; omega
+  | nil => intro hlo hhi; simp only [List.map_nil, List.sum_nil, add_zero] at hhi; omega
   | cons e es ih =>
     obtain ⟨c, s, ch⟩ := e
-    intro hcov hlo hhi
-    rw [fannedEdges]
-    simp only [List.mem_append, Set.iUnion_or, Set.iUnion_union_distrib]
+    intro hlo hhi
     by_cases hcase : i < offset + dCenterOfEdge n (Edge.mk c s ch)
-    · -- `i` is in this edge's slot; it is non-chartless (`dCenterOfEdge ≥ 1`)
-      have hne : dCenterOfEdge n (Edge.mk c s ch) ≠ 0 := by omega
-      rw [if_neg hne]
-      refine Set.subset_union_of_subset_left ?_ _
+    · have hne : dCenterOfEdge n (Edge.mk c s ch) ≠ 0 := by omega
       have hp : i - offset < dCenterOfEdge n (Edge.mk c s ch) := by omega
       have hi' : offset + (i - offset) = i := by omega
-      -- TACTICAL HOLE (t10): select the fanned edge at pivot `i` in the biUnion. MATH PROVEN — that
-      -- edge's `.subst.localSub = geoChartMap⟨n,e,i⟩ = (geoChartMap_on_cone)` the pivot-`i` chart, its
-      -- `.child` covers the flat cube by `hcov`, so `Set.image_mono (hcov …)` closes it. Remaining fight
-      -- is pure Lean whnf/isDefEq FRICTION: `subset_iUnion₂_of_subset`/`show`/`change`/`biUnion_list_map`
-      -- all timeout or mis-match on the sealed `geoChartMap`/`tGeo`/`qOfCenter`/`centerPerm` classical
-      -- machinery (Codex-diagnosed: biUnion-body HO inference). One tactical line; not a math gap.
+      refine ⟨c, s, ch, List.mem_cons_self .., ?_⟩
+      -- TACTICAL HOLE (t10, isolated to this List-level line): the fanned edge at pivot `i` is in the
+      -- pivot-fan `(finRange d).map (fun p => …offset + ↑p…)`, picking `p = ⟨i-offset, hp⟩` (then
+      -- `offset + (i-offset) = i`). The `↑p` (Fin→ℕ) coercion makes `mem_map`/`simp` HO-factor the map
+      -- as `((finRange d).map ↑).map …`, so the `∃` reindexes to `ℕ` and the witness type won't align.
+      -- MATH TRIVIAL; needs the coercion-aware List idiom (fresh-eyes per controller). Everything else
+      -- (the tail recursion here, and `fannedEdges_covers` applying this lemma) is green.
       sorry
-    · -- `i` is beyond this edge's slot; recurse on the tail
-      refine Set.subset_union_of_subset_right ?_ _
-      have hlo' : offset + dCenterOfEdge n (Edge.mk c s ch) ≤ i := by omega
+    · have hlo' : offset + dCenterOfEdge n (Edge.mk c s ch) ≤ i := by omega
       have hhi' : i < offset + dCenterOfEdge n (Edge.mk c s ch)
           + (es.map (dCenterOfEdge n)).sum := by
         simp only [List.map_cons, List.sum_cons] at hhi; omega
-      exact ih (offset + dCenterOfEdge n (Edge.mk c s ch))
-        (fun e' he' a => hcov e' (List.mem_cons_of_mem _ he') a) hlo' hhi'
+      obtain ⟨c', s', ch', hmem, hfmem⟩ := ih (offset + dCenterOfEdge n (Edge.mk c s ch)) hlo' hhi'
+      exact ⟨c', s', ch', List.mem_cons_of_mem _ hmem, by rw [fannedEdges]; exact List.mem_append_right _ hfmem⟩
+
+section
+-- Seal the heavy chart/tree machinery so `subset_iUnion₂_of_subset` cannot whnf-unfold it into the
+-- classical `qOfCenter`/`centerPerm` machinery (the recurring whnf-timeout hazard). On-cone shape is
+-- exposed via the syntactic rewrite `geoChartMap_on_cone`. Sealed only in this section.
+attribute [local irreducible] geoChartMap tGeo qNodeOf qOfCenter centerPerm
+
+/-- **The offset tiling (hbij)**: the pivot-`i` chart's image of the flat cube sits inside the
+fanned-edge union — the fanned edge realising `i` (`fannedEdges_pivot_mem`) has `localSub = geoChartMap
+⟨n,e,i⟩ = (geoChartMap_on_cone)` the pivot-`i` chart, and its child covers the flat cube by IH. -/
+theorem fannedEdges_covers (acc : Params M → Params M) (n : StepData M)
+    (hd : dCenterOfNode M n ≤ flatDim M) (i : ℕ) (hi : i < dCenterOfNode M n)
+    (offset : ℕ) (edges : List (Edge M))
+    (hcov : ∀ e ∈ edges, ∀ a : Params M → Params M,
+      ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 ⊆ leafPathImages (tGeo a e.child))
+    (hlo : offset ≤ i) (hhi : i < offset + (edges.map (dCenterOfEdge n)).sum) :
+    (fun w => (qNodeOf M n hd).symm (Prod.map (pivotChart ⟨i, hi⟩) id (qNodeOf M n hd w)))
+        '' (⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1)
+      ⊆ ⋃ e ∈ fannedEdges acc n offset edges, e.subst.localSub '' leafPathImages e.child := by
+  obtain ⟨c', s', ch', hmemedge, hfmem⟩ := fannedEdges_pivot_mem acc n i offset edges hlo hhi
+  refine Set.subset_iUnion₂_of_subset (t := fun (e : Edge M)
+      (_ : e ∈ fannedEdges acc n offset edges) => e.subst.localSub '' leafPathImages e.child)
+    _ hfmem ?_
+  simp only [Edge.subst, Edge.child, geoChartMap_on_cone n (Edge.mk c' s' ch') i hd hi]
+  exact Set.image_mono (hcov (Edge.mk c' s' ch') hmemedge _)
 
 end
 
