@@ -2553,4 +2553,33 @@ theorem minAdm_le_terminalExponents {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 
     exact Int.toNat_le_toNat (Finset.inf'_le (Mval M) hadm)
   · rw [hrr] at he; simp at he
 
+/-- **The root state STEPS** (for `0 < L`): `conRoot` is live (`¬ L ≤ 0`) so `conOracle` emits a
+`.step` decision (rollover if the first layer is exhausted, else case-2 — `numDiv = 0` makes the
+case-1 occupancy set empty). This is `base_of_buildTree`'s `hstep`, giving the base conjunct (the tree
+is a `branch` rooted at layer `0`, cleared `0`). At `L = 0` the root would instead terminate, so the
+base conjunct — hence `monomialization_terminates` — genuinely needs `0 < L`. -/
+theorem conRoot_steps {L : ℕ} {M : Fin (L + 1) → ℕ} (hL : 0 < L) :
+    ∃ node children hnode hlayer hstep,
+      conOracle M (conRoot : ConState L) = ConDecision.step node children hnode hlayer hstep := by
+  have h1 : ¬ L ≤ (conRoot : ConState L).layer := by change ¬ L ≤ 0; omega
+  by_cases h2 : widthMinUpto M ((conRoot : ConState L).layer + 1) ≤ (conRoot : ConState L).cleared
+  · rw [show conOracle M (conRoot : ConState L)
+        = rolloverDecision M conRoot (le_of_lt (not_le.mp h1)) h2 from by
+      unfold conOracle; rw [dif_neg h1, dif_pos h2]]
+    exact ⟨_, _, _, _, _, rfl⟩
+  · have hcap : (conRoot : ConState L).cleared < layerCap M :=
+      lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+    have hmin0 : ((List.finRange (conRoot : ConState L).numDiv).filterMap (fun k =>
+        if (conRoot : ConState L).cleared + 1 ≤ (conRoot : ConState L).divTilde k ∧
+          (conRoot : ConState L).divTilde k + 1 ≤ widthMinUpto M (conRoot : ConState L).layer
+        then some ((conRoot : ConState L).divTilde k) else none)).min? = none := rfl
+    rw [show conOracle M (conRoot : ConState L)
+        = case2Decision M conRoot (widthMinUpto M (conRoot : ConState L).layer
+          - (conRoot : ConState L).cleared)
+          (M ⟨(conRoot : ConState L).layer + 1, by omega⟩ - (conRoot : ConState L).cleared) hcap
+        from by
+      unfold conOracle; rw [dif_neg h1, dif_neg h2]
+      split <;> simp_all only [reduceCtorEq]]
+    exact ⟨_, _, _, _, _, rfl⟩
+
 end DLNFibre.DLN.RLCT.Engine

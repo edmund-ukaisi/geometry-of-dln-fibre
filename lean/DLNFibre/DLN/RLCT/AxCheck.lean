@@ -1282,13 +1282,21 @@ open DLNFibre.DLN.RLCT
 -- HYPOTHESIS) — it MUST be CLEAN-THREE [propext, Classical.choice, Quot.sound]; a `sorryAx` here means
 -- the assembly re-opened:
 #print axioms Engine.region_glue_of_chartBridge
--- `region_glue` is the projection to `resolutionOf M`; its PROOF is `region_glue_of_chartBridge` (no
--- sorry), but its TYPE mentions `resolutionOf M = (monomialization_terminates M).choose`, so its
--- footprint carries `sorryAx` THROUGH THE TYPE (not the analytic proof) until the construction hole
--- lands. EXPECTS `+sorryAx`; the sorryAx source is `monomialization_terminates` ALONE:
+-- `region_glue` is the projection to `resolutionOf M hL`; its PROOF is `region_glue_of_chartBridge`
+-- (no sorry), but its TYPE mentions `resolutionOf M hL = (monomialization_terminates M hL).choose`, so
+-- its footprint carries `sorryAx` THROUGH THE TYPE until the construction's two named holes land.
+-- EXPECTS `+sorryAx` via `chartBridge_buildTree` + `o5_realization`:
 #print axioms Engine.region_glue
--- The engine's owed composition (map: engine-route): ∀ M, RouteMBoxThresholdFinite M. With the
--- analytic assembly discharged, the SOLE remaining `sorryAx` source is `monomialization_terminates`
--- (the construction hole, T2–T3). EXPECTS `sorryAx` until that lands; this line flipping to
--- clean-three IS the hbox event the mint re-point waits on:
+-- The engine's owed composition (map: engine-route): ∀ M (0<L), RouteMBoxThresholdFinite M. EXPECTS
+-- `+sorryAx` until the two named holes land; this line flipping to clean-three IS the hbox event the
+-- mint re-point waits on:
 #print axioms Engine.engine_box_threshold_finite
+-- ★ ENGINE SPINE (aoyagi-engine, t03 A→C+D§i): the assembled `monomialization_terminates` now has
+-- FOUR proven conjuncts + TWO named sorried holes. `sorryAx` source is EXACTLY those two:
+#print axioms Engine.chartBridge_buildTree      -- +sorryAx (← T3 coverage lane)
+#print axioms Engine.o5_realization             -- +sorryAx (← D§ii/iii, pnp-o5 cert §3-4)
+#print axioms Engine.monomialization_terminates -- +sorryAx via EXACTLY chartBridge_buildTree + o5_realization
+-- The full-monomialisation headline + the exponent lower bound: MUST stay clean-three [propext,
+-- Classical.choice, Quot.sound] (a `sorryAx` here means the spine re-opened):
+#print axioms Engine.isFullMonomialization_buildTree_conRoot
+#print axioms Engine.minAdm_le_terminalExponents
