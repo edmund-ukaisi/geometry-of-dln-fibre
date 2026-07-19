@@ -4990,3 +4990,13 @@ four maintenance proofs + the leaf instantiation, both mirrors. Everything downs
 "prod = diag(b) at the leaf" is CLOSED. The board's two hard clauses now both terminate in
 pre-built consumer machinery waiting on the ONE shared walk. Idles all correct (t14 resting
 as ruled; t10's R7 GO in its inbox; loss-t15 on the t14 trigger).
+
+### Tick-312 addendum 2: t14's interface note relayed to disj-t17 — the two case shapes pinned pre-statement
+t14's parting note (resting correctly): the disjointness is CASE-SHAPED — case-2 = all-k
+spectators (the banked lemma's current hypotheses verbatim); case-1 = all-k-EXCEPT-mergeIdx
+(whose diagonal IS the u-corner, handled by the case-11/12 lemmas) + the positive
+identification u-corner = birthFlatCoord s f. Relayed to disj-t17 BEFORE it states its
+lemmas (the interface-first discipline); the filtered-set generalization offer (t14 takes a
+one-line relax at its next wake if disj-t17 prefers that form) relayed with it. The R7
+understanding confirmed on t14's side ("the ∃-discharge wraps my fold-det as the identity
+conjunct — clean").
