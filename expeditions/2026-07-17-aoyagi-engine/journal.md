@@ -3090,3 +3090,20 @@ the interface side). The t05 seat's ledger at stand-down: decision package, sub-
 invariant, §3 envelope-splice, §4 SPECIFY + handoff, the carrier interface review — five
 arcs + the spec, all clean-three, zero degraded pushes, two build-step catches (zero-width;
 u-pivot) that outran a cert and a gate respectively.
+
+## 2026-07-19 tick 209: ★ tStar_realized LANDED CLEAN-THREE — the engine's hardest proof is DONE ★
+t06's arc completed: the steered-path realization — the fused WF-induction with the 3-phase
+SteerInv (pre/anchored/done + LevelCoverage), the case-1(2) transport branch, and the case-1(1)
+anchor pull (the pull-ordering brick, closed via the outer conRel descent + occ.min?
+minimality + chooseMin_spec per the design consults — NO new domination lemma needed) —
+**tStar_realized AND o5_core_realized both kernel-verified exactly [propext, Classical.choice,
+Quot.sound]** (controller probe, merged at 423a5c547). The realization hole's MATHEMATICS is
+complete: the built tree provably realizes the Mval-minimizing admissible stratum at t̃=0,
+under hMpos — cert §§3-4 fully transcribed, from t04's salvage through t05's §3 to t06's §4,
+across three seats and one VM death. REMAINING = the MOVE-AT-LANDING batch (mechanical,
+pre-verified safe at the flip site): GO issued to t06 with the 5-point spec (o5_core discharge
++ hMpos threading + AxCheck updates + the zero-width caveat docstrings + counter increment to
+6 in the fix's own commit + the full-batch gate). After it: monomialization_terminates's
++sorryAx via EXACTLY ONE named hole (chartBridge_buildTree) — the hbox flip then waits on the
+chart lane alone. Board: t06 landing; coverage batch B (det atom) in flight; t05 writing the
+t07 spec; pnp-slot adjudicating.
