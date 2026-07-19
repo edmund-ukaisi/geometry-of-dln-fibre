@@ -3076,3 +3076,17 @@ recommendation; worked (2,2,2)/(3,3,4) traces; Codex leg). t05 meanwhile: the ar
 block part + qNodeOf structured with the u-coordinate as a case-11 parameter (seam pin
 preserved — node-derived once the mechanism lands). Gate-miss noted for the record: even a
 by-inspection elder verdict yields to the build step — the verifier hierarchy working.
+
+### Tick-208 addendum: t05's budget call — HATCH GRANTED (supersedes the partial GO)
+t05's ceiling call (6th arc would be intricate Fin/sigma coordinate layout + the unresolved
+u-pivot tracking): the hatch honored — and the earlier "GO on the arithmetic block" is
+SUPERSEDED (one fresh seat builds the whole coherent coordinate arc from a complete spec;
+no mid-file split across a tired seat and a fresh one). t05's last deliverable = the t07
+carrier-build spec (interface + gate verdicts + per-edge counts + seam pin + its grounded
+arithmetic design + the qNodeOf assembly plan + the u-pivot slot parameterized on pnp-slot's
+mechanism verdict + the verification gate), then honors. t07 spawns at spec + slot-cert both
+in. Its seam-pin-reinforces-the-finding read confirmed (the same buck-stops issue seen from
+the interface side). The t05 seat's ledger at stand-down: decision package, sub-gap-1
+invariant, §3 envelope-splice, §4 SPECIFY + handoff, the carrier interface review — five
+arcs + the spec, all clean-three, zero degraded pushes, two build-step catches (zero-width;
+u-pivot) that outran a cert and a gate respectively.
