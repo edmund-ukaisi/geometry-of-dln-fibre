@@ -29,7 +29,12 @@ payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds e
 4. R4 — genDivExp propagation proofs (OWED, post-spine; kills: g-coupled-binding-334 +
    g-delta-flatten re-checked against the redesigned support).
 5. R5 — wiring: hbox discharge → repoint canonical → _gen (+ the L=1 separate fold) + the
-   ENFORCED axiom-gate. MECHANISM PINNED (navigator-3): `#guard_msgs in #print axioms <headline>`
+   ENFORCED axiom-gate. MINT MECHANICS (calibration entry 5, tick 219): the canonical name
+   (Skeleton:1685) re-proves via the PRE-STAGED aoyagi_learning_coefficient_prestage
+   (HeadlineL1Mint) — but its L≥2 arm consumes hDescent : DecoratedDescent (STALE vs the fork-6
+   tombstone): REWRITE that arm to the direct _gen + engine_box_threshold_finite composition
+   (the EngineDriver fit-witness shape); never resurrect DecoratedDescent.
+   MECHANISM PINNED (navigator-3): `#guard_msgs in #print axioms <headline>`
    — the build FAILS if the axiom set drifts from [propext, Classical.choice, Quot.sound];
    a bare #print is diagnostic-by-another-name and does not satisfy R5. PR FRAMING PIN
    (precision): the spine PR delivers the unconditional λ theorem clean-three; it is NOT

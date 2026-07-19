@@ -3265,3 +3265,14 @@ provably isolated — sorried, zero call sites; watch unchanged). t06's report c
 carrier commission (tick-218) — wake-trigger sent pointing at both inbox items (the commission
 + coverage's four field-lock questions). The o5 lane is closed end-to-end INCLUDING its
 future-proofing (R7's statement now true-as-stated). One arc runs: the carrier.
+
+## 2026-07-19 tick 219: calibration entry 5 — the mint mechanics read; a stale pre-staged arm found
+The R5 repoint's territory: the canonical theorem is +sorryAx via the OLD skeleton route (not
+the cite — slogan-vs-signature miss #4); the L=1 endpoint AND the ∀L≥1 case-split wrapper are
+ALREADY PRE-STAGED (HeadlineL1Mint, "flagged for the controller to re-point at mint") — but
+the wrapper's L≥2 arm consumes DecoratedDescent, the route TOMBSTONED at adoption (fork 6).
+THE MINT = rewrite that arm to the direct _gen + engine_box_threshold_finite composition +
+re-prove the canonical name + the #guard_msgs gate — zero new mathematics, one stale-arm
+rewrite the "one-exact fill" docstring doesn't mention. R5 checklist updated in priorities.
+The calibration instrument's running score: 4/4 misses in one class (slogan-for-signature),
+each caught pre-execution — the ledger's first-question convention is carrying its weight.

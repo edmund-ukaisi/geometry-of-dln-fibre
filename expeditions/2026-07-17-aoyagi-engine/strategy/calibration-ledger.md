@@ -167,3 +167,46 @@ per the spec — small + intricate-but-mapped. divCoord's real content finally l
 injective map (births at distinct diagonal corners). Score: hit on the mechanism; the
 question-not-prediction on recoverability was the right epistemic posture (it was genuinely
 open — and NO).
+
+---
+## Entry 5 (tick 219): the R5 mint-repoint mechanics — what does "repoint canonical" actually require?
+
+**Question.** After chartBridge_buildTree fills and hbox flips clean-three, R5 says "repoint
+canonical → _gen (+ the L=1 separate fold) + the ENFORCED axiom-gate". What does the code
+actually require there?
+
+**Predictions (written before looking):**
+- P5a (conf 0.6): the canonical unsuffixed `aoyagi_learning_coefficient` exists in the
+  RlctPayoff/Validate layer, stated via the CITED hypothesis (cited_aoyagi_dln), separate from
+  `_gen`; the repoint = re-proving the canonical NAME via `_gen` + engine_box_threshold_finite,
+  not editing `_gen`.
+- P5b (conf 0.55): the L=1 case lives as a separate banked theorem in HeadlineL1Mint.lean
+  (since `_gen` needs 2 ≤ L), and the repoint composes an L=1-vs-L≥2 case split.
+- P5c (conf 0.7): the repoint needs NO new mathematics — composition + case split + hypothesis
+  supply only, all pieces banked; the only NEW artifact is the #guard_msgs enforced gate.
+
+**Territory.** (next)
+**Territory** (read tick 219): the canonical `aoyagi_learning_coefficient` (Skeleton.lean:1685,
+hL : 1 ≤ L + hpos) is PROVEN via the OLD L2 skeleton (deepest_point_reduction ▸
+product_reduction) — the sorry-carrying route (the compass's "5 skeleton-rung sorryAx"); it
+does NOT take cited_aoyagi_dln as a hypothesis (the cite lives apart, in RlctPayoff). The L=1
+endpoint `aoyagi_learning_coefficient_L1` is banked UNCONDITIONAL sorry-free, AND the ∀L≥1
+case-split wrapper `aoyagi_learning_coefficient_prestage` is ALREADY PRE-STAGED
+(HeadlineL1Mint) — explicitly "flagged for the controller to re-point at mint" — but its L≥2
+arm consumes `hDescent : DecoratedDescent` via _gen_of_descent (the PRE-TOMBSTONE route).
+
+**Verdicts:**
+- P5a PARTIAL MISS: canonical-exists + repoint-not-edit-_gen right; "stated via the CITED
+  hypothesis" WRONG — it's +sorryAx via the old skeleton, the cite was never in its cone
+  (which the compass says verbatim; the slogan-vs-signature class AGAIN, 4th instance).
+- P5b HIT+: L1 banked AND the wrapper pre-staged beyond expectation.
+- P5c HIT with a wrinkle THAT MATTERS: no new math, but the prestage's hDescent arm is STALE
+  relative to compass fork 6's tombstone (DecoratedDescent route tombstoned at adoption; the
+  direct fit is _gen + engine_box_threshold_finite, as the EngineDriver example already
+  demonstrates). THE MINT THEREFORE = (i) rewrite the prestage's L≥2 arm to the direct engine
+  route (do NOT resurrect DecoratedDescent), (ii) re-prove the canonical name by the wrapper,
+  (iii) the #guard_msgs enforced gate. Slightly more than the file's advertised "one-exact
+  fill", still zero mathematics.
+**What it changes:** the R5 checklist gains the precise stale-arm item; recorded in priorities.
+Score: the recurring miss-class (slogan for signature) now 4/4 across entries — the convention
+is doing its job; conclusions stayed correct each time BECAUSE the check ran before execution.
