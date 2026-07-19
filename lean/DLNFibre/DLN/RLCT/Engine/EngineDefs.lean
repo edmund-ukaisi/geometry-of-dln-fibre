@@ -73,8 +73,16 @@ coordinates. The corrected carrier is a FLAT ATLAS: an explicit `List (LeafData 
 pieces ("virtual leaves"), each with its OWN `chartMap`/`srcBox`/`divCoord`/`divExp`, decoupled from
 `leaves t`. LEDGER/ATLAS SPLIT: the ledger (`leaves t`, via `terminalExponents`) carries EXPONENTS; the
 atlas carries CHARTS — no clause here reads a ledger leaf's `chartMap`. Clauses:
-* (A) IMAGE-COVER over the atlas pieces — an UPSTAIRS-open neighbourhood of the zero-locus inside
-  `⋃ c ∈ atlas` (chart IMAGES; a measurable, bounded source box each);
+* (A) IMAGE-COVER over the atlas pieces — an UPSTAIRS-open neighbourhood `U` of the ORIGIN inside
+  `⋃ c ∈ atlas` (chart IMAGES). WHY `0 ∈ U`, not `V ⊆ U` for the whole zero-locus `V = {A ∈ box 1 ∧
+  frobSq(prod)=0}`: (i) `V ⊆ U` is FALSE for `L ≥ 2` — the atlas chart images equal the radius-1 flat
+  cube, and `V` touches its boundary (e.g. `M=(1,1,1)`, `(A₀,A₁)=(1,0)`: `prod = A₁·A₀ = 0`,
+  `A₀ = 1 ∈ ∂`), so no open `U ⊇ V` fits inside the images; (ii) the consumer (`region_glue`,
+  `RegionGlueAssembly`) uses ONLY `0 ∈ U` — it extracts an ε-box at the origin and
+  `routeMLayerBoxIntegral_lt_top_of_small_box`'s scale-homogeneity reduces whole-box finiteness to that
+  ε-box (the singularity is LOCAL at the origin; Aoyagi's resolution is local at the deepest point). So
+  `0 ∈ U` is the consumer-honest statement (compass counsel #7, the over-strong-statement class; found
+  by t10 at the cover fill);
 * (B) the eight per-piece clauses — measurable + bounded-in-flat-cube `srcBox`, injective/disjoint
   divisor & Morse coordinates (finding 5), a.e.-injectivity off a null set (finding 6 — a blow-up chart
   is not injective on the exceptional fibre), `LeafPullback` + `LeafJacobian`; each reads the piece's
@@ -83,6 +91,12 @@ atlas carries CHARTS — no clause here reads a ledger leaf's `chartMap`. Clause
   (LOAD-BEARING: the atlas is decoupled from `leaves t`, so this replaces the old automatic
   `flatMap`-over-`leaves t` routing, feeding exactly the two threshold hypotheses of
   `leaf_chart_image_lintegral_lt_top`).
+HONEST-FORM STATEMENT (coverage counter-sign, verbatim): An atlas of monomial charts covering an open
+NEIGHBOURHOOD of the cone point 0 (0 ∈ the box zero-locus), with terminal-exponent agreement. This
+suffices for the box-integral threshold: frobSq∘prod is degree-2L homogeneous, so unit-box finiteness
+reduces to ε-box finiteness at 0 (routeMLayerBoxIntegral_lt_top_of_small_box). NOT a cover of the
+entire zero-locus.
+
 HONEST FORM (the (D)-less window): (A)∧(B)∧(C) guarantee only that the atlas is A MONOMIALISING COVER
 WHOSE EXPONENTS AGREE WITH `t` — NOT yet that it is `t`'s resolution charts. That fidelity tie is
 exactly DEFERRED clause (D) — fidelity coherence (NOT consumed by `region_glue`; elder-pinned CONTENT,
@@ -95,8 +109,7 @@ tie missing. (D) lands additively (a def-only touch; `region_glue` and the `Cano
 projection are agnostic to it). -/
 def ChartBridge (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
   ∃ atlas : List (LeafData M),
-    (∃ U : Set (Params M), IsOpen U ∧
-        {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} ⊆ U ∧
+    (∃ U : Set (Params M), IsOpen U ∧ (0 : Params M) ∈ U ∧
         U ⊆ ⋃ c ∈ atlas, c.chartMap '' c.srcBox) ∧
     (∀ c ∈ atlas,
       MeasurableSet c.srcBox ∧

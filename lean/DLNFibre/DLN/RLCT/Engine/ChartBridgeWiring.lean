@@ -25,8 +25,7 @@ geometric chart pieces, the image-cover over it (`himg`, clause A), the eight pe
 here, each over the piece's OWN chart), and the exponent-agreement (`hexp`, clause C), `ChartBridge M t`
 holds. A bundling: no `χ`, no coherence rewrite, because each piece carries the real chart. -/
 theorem chartBridge_of_pieces (t : ResolutionTree M) (atlas : List (LeafData M))
-    (himg : ∃ U : Set (Params M), IsOpen U ∧
-      {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} ⊆ U ∧
+    (himg : ∃ U : Set (Params M), IsOpen U ∧ (0 : Params M) ∈ U ∧
       U ⊆ ⋃ c ∈ atlas, c.chartMap '' c.srcBox)
     (hleaf : ∀ c ∈ atlas,
       MeasurableSet c.srcBox ∧
