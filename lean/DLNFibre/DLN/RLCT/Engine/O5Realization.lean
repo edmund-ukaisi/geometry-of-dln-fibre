@@ -339,6 +339,64 @@ theorem childLeaves_subset (M : Fin (L + 1) → ℕ) (s : ConState L) {node : St
   exact ⟨Edge.mk c.ecase c.esubst (buildTree M (conOracle M) c.child),
     List.mem_map.2 ⟨c, hc, rfl⟩, hl⟩
 
+/-- **Positive widths ⟹ positive running-min width** `0 < widthMinUpto M n` (the inf' of positive
+widths). Load-bearing for the anchor descent: the rollover threshold never traps the anchor. -/
+theorem widthMinUpto_pos {M : Fin (L + 1) → ℕ} (hMpos : ∀ i, 0 < M i) (n : ℕ) :
+    0 < widthMinUpto M n :=
+  (Finset.lt_inf'_iff _).2 (fun i _ => hMpos i)
+
+/-- **Post-birth suffix stays below the envelope** (cert §1/§4, the `Clearable` arithmetic). Once an
+admissible clearable `a` drops strictly below the running-min envelope at coord `b`
+(`a b < widthMinUpto M (b+1)`), it stays strictly below at every later coord `d ≥ b`. Otherwise the
+envelope is re-touched at some `d ≥ b`; take the LAST re-touch `e` (it exists, `≥ d`, and `e ≠ L−1`
+since `a^L = 0 < envelope` by positive widths); at `e+1` the profile strictly descends from the
+saturated `a e`, so `Clearable e (e+1)` forces `a b` (with `b ≤ e`) back onto the envelope —
+contradiction. -/
+theorem clearable_suffix_lt_runMinWidth {M : Fin (L + 1) → ℕ} {a : Fin L → ℕ}
+    (ha : a ∈ Adm M) (hc : Clearable M a) (hMpos : ∀ i, 0 < M i) {b d : Fin L}
+    (hb : a b < widthMinUpto M (b.val + 1)) (hbd : b ≤ d) :
+    a d < widthMinUpto M (d.val + 1) := by
+  obtain ⟨_, hdec, hlast⟩ := (Finset.mem_filter.1 ha).2
+  by_contra hcon
+  push_neg at hcon
+  have hd_eq : a d = widthMinUpto M (d.val + 1) :=
+    le_antisymm (adm_le_widthMinUpto M a ha d) hcon
+  have hL : 0 < L := lt_of_le_of_lt (Nat.zero_le d.val) d.isLt
+  -- the LAST coord where `a` re-touches the envelope, at or after `d`.
+  obtain ⟨e, hemem, hemax⟩ := Finset.exists_max_image
+    (Finset.univ.filter (fun e : Fin L => d ≤ e ∧ a e = widthMinUpto M (e.val + 1)))
+    (fun e => e.val)
+    ⟨d, Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_refl _, hd_eq⟩⟩
+  obtain ⟨-, hde, he_env⟩ := Finset.mem_filter.mp hemem
+  -- `e ≠ L−1`: the last coord is `0 < envelope`.
+  have henvpos : 0 < widthMinUpto M ((L - 1) + 1) := widthMinUpto_pos hMpos _
+  have he_ne_last : e.val ≠ L - 1 := by
+    intro h
+    have hz : widthMinUpto M (e.val + 1) = 0 := by rw [← he_env]; exact hlast e h
+    rw [h] at hz; omega
+  have hej : e.val + 1 < L := by omega
+  set j : Fin L := ⟨e.val + 1, hej⟩ with hj
+  have hjval : (j : ℕ) = e.val + 1 := by rw [hj]
+  have hej_le : e ≤ j := by rw [Fin.le_def, hjval]; omega
+  -- `a j < a e` (strict): else `j` re-touches the envelope, contradicting `e = max`.
+  have haj_lt : a j < a e := by
+    rcases lt_or_eq_of_le (hdec e j hej_le) with h | h
+    · exact h
+    · exfalso
+      have h1 : widthMinUpto M (j.val + 1) ≤ widthMinUpto M (e.val + 1) :=
+        widthMinUpto_mono M (by rw [hjval]; omega)
+      have h2 : a j ≤ widthMinUpto M (j.val + 1) := adm_le_widthMinUpto M a ha j
+      have hjenv : a j = widthMinUpto M (j.val + 1) := by rw [h, he_env] at h2 ⊢; omega
+      have hjmem : j ∈ Finset.univ.filter
+          (fun e : Fin L => d ≤ e ∧ a e = widthMinUpto M (e.val + 1)) :=
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_trans hde hej_le, hjenv⟩
+      have hle := hemax j hjmem
+      rw [hjval] at hle; omega
+  -- `Clearable e (e+1)` then forces `a b = envelope`, contradicting `hb`.
+  have hcl := hc e j (by rw [hj]) haj_lt (by rw [hj]; exact he_env)
+  have hbenv := hcl b (le_trans (Fin.le_def.mp hbd) (Fin.le_def.mp hde))
+  omega
+
 /-- **`tStar M` is realized as a `t̃ = 0` leaf-divisor profile of the built tree** (cert §4, the
 anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
 `Clearable-Adm` (= R7). The `t̃ = 0` is automatic (`tStar ∈ Adm`, last coord `0`).
