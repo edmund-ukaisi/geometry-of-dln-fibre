@@ -25,51 +25,63 @@ open DLNFibre.DLN.RLCT
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
 /-- **A geometric chart piece** (buck-stops recipe): node-derived DATA only — the parent blow-up `node`,
-the `edge` (its case/subst fix the family + the per-edge count, and key `qEdgeOf`), and the `pivot`
-choice within the edge's family (`< dCenterOfEdge node edge`). The chart `geoChartMap` is COMPUTED from
-these; no stored free geometry. -/
+the `edge` (emission bookkeeping: which ledger edge fanned this chart, for the partition/hbij), and the
+GLOBAL `pivot` index into the node's full center (`< dCenterOfNode node`). The chart `geoChartMap` is
+COMPUTED from these + the carrier's `qNodeOf`; no stored free geometry. -/
 structure GeoChart (M : Fin (L + 1) → ℕ) where
-  /-- The parent blow-up node (keys `qEdgeOf` + `divBirthCoord`). -/
+  /-- The parent blow-up node (keys `qNodeOf`). -/
   node : StepData M
-  /-- The edge (its `case`/`subst` fix the per-edge family + count). -/
+  /-- The ledger edge that fanned this chart (emission bookkeeping / partition). -/
   edge : Edge M
-  /-- The pivot choice within this edge's family (`< dCenterOfEdge node edge`). -/
+  /-- The GLOBAL pivot index into the node's full center (`< dCenterOfNode node`). -/
   pivot : ℕ
 
-/-- **The computed per-edge chart** `β_e` (buck-stops: a function of the `GeoChart` data + banked atoms).
-On the reachable cone (`dCenterOfEdge node edge ≤ flatDim M`, and the pivot in range) it is the
-`qEdgeOf`-conjugated max-modulus blow-up `pivotChart` on the edge's center coordinates, with the
-spectators passing through; off-cone / out-of-range it is the identity (totality fallback, matching the
-carrier's `qEdgeOf` fallback). The R-b source gauge is composed in at the `LeafPullback` stage (it is a
-SOURCE reparam and does not move the chart image, so the cover reads `β_e` directly). -/
-noncomputable def geoChartMap (g : GeoChart M) : Params M → Params M :=
-  if hd : dCenterOfEdge g.node g.edge ≤ flatDim M then
-    if hp : g.pivot < dCenterOfEdge g.node g.edge then
-      let q := qEdgeOf g.node g.edge hd
+/-- **The qNodeOf family** (assumed carrier signature, per-node cover ruling): a per-NODE center-split
+`Homeomorph` of dimension `dCN node` (the full node center `d_center`), on the reachable cone
+(`dCN node ≤ flatDim M`). Coverage consumes it; the carrier (`qOfCenter` + the concatenated selector)
+supplies it. Parametrized here so the rework banks green before the carrier's `qNodeOf` lands. -/
+abbrev QNodeFam (M : Fin (L + 1) → ℕ) (dCN : StepData M → ℕ) : Type :=
+  ∀ node : StepData M, dCN node ≤ flatDim M →
+    Params M ≃ₜ (Fin (dCN node) → ℝ) × (Fin (flatDim M - dCN node) → ℝ)
+
+/-- **The computed per-node chart** `β` (buck-stops: a function of the `GeoChart` data + banked atoms).
+On the reachable cone (`dCN node ≤ flatDim M`, pivot in range) it is the `qNodeOf`-conjugated max-modulus
+blow-up `pivotChart` on the node's FULL center coordinates (the per-node cover ruling: ONE `q` of dim
+`dCN node`, all `dCenterOfNode` pivots share it), spectators passing through; off-cone / out-of-range it
+is the identity (totality fallback). The R-b source gauge is composed in at the `LeafPullback` stage
+(source reparam, doesn't move the image, so the cover reads `β` directly). -/
+noncomputable def geoChartMap (dCN : StepData M → ℕ) (qN : QNodeFam M dCN)
+    (g : GeoChart M) : Params M → Params M :=
+  if hd : dCN g.node ≤ flatDim M then
+    if hp : g.pivot < dCN g.node then
+      let q := qN g.node hd
       fun w => q.symm (Prod.map (pivotChart ⟨g.pivot, hp⟩) id (q w))
     else id
   else id
 
-/-! **The geometric fan-out leaf paths** (amendment 1: EDGE-DRIVEN). Mirrors `ResolutionTree.leafPaths`
-but at each edge fans out over the edge's `dCenterOfEdge` pivot family, composing `geoChartMap` onto
-each child composite — one `(leaf, root→leaf composite)` pair per (leaf × pivot-choice sequence). The
-atlas is `geometricLeafPaths id t`. The per-edge child is recursed ONCE (with `id`) and the fan-out +
-`acc`-composition is a post-`map` (keeps the recursion structural). `geoChartMap` is COMPUTED — buck-stops. -/
+/-! **The geometric fan-out leaf paths** (amendment 1: EDGE-DRIVEN emission, per-NODE cover). Mirrors
+`ResolutionTree.leafPaths` but at each edge fans out over the edge's `dCenterOfEdge` charts, assigning
+each a GLOBAL pivot index into the node's `dCenterOfNode` center via a running `offset` (the disjoint
+union partitioning `Fin (dCenterOfNode node)` across the node's edges — hbij), and composing
+`geoChartMap` onto each child composite. The atlas is `geometricLeafPaths dCN qN id t`. The per-edge
+child is recursed ONCE (with `id`); the fan-out + `acc`-composition is a post-`map` (structural). -/
 mutual
 /-- Geometric fan-out leaf paths of a subtree (see the section note above). -/
-noncomputable def geometricLeafPaths (acc : Params M → Params M) :
+noncomputable def geometricLeafPaths (dCN : StepData M → ℕ) (qN : QNodeFam M dCN)
+    (acc : Params M → Params M) :
     ResolutionTree M → List (LeafData M × (Params M → Params M))
   | .leaf l => [(l, acc)]
-  | .branch n edges => geomEdges acc n edges
-/-- Companion of `geometricLeafPaths` over an edge list (per-edge pivot fan-out). -/
-noncomputable def geomEdges (acc : Params M → Params M) (n : StepData M) :
+  | .branch n edges => geomEdges dCN qN acc n 0 edges
+/-- Companion of `geometricLeafPaths` over an edge list (per-edge fan-out, global pivot offset). -/
+noncomputable def geomEdges (dCN : StepData M → ℕ) (qN : QNodeFam M dCN)
+    (acc : Params M → Params M) (n : StepData M) (offset : ℕ) :
     List (Edge M) → List (LeafData M × (Params M → Params M))
   | [] => []
   | .mk c s ch :: es =>
-      ((geometricLeafPaths id ch).flatMap fun lc =>
+      ((geometricLeafPaths dCN qN id ch).flatMap fun lc =>
           (List.finRange (dCenterOfEdge n (Edge.mk c s ch))).map fun p =>
-            (lc.1, acc ∘ geoChartMap ⟨n, Edge.mk c s ch, (p : ℕ)⟩ ∘ lc.2))
-        ++ geomEdges acc n es
+            (lc.1, acc ∘ geoChartMap dCN qN ⟨n, Edge.mk c s ch, offset + (p : ℕ)⟩ ∘ lc.2))
+        ++ geomEdges dCN qN acc n (offset + dCenterOfEdge n (Edge.mk c s ch)) es
 end
 
 end DLNFibre.DLN.RLCT.Engine
