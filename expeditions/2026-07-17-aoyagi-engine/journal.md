@@ -4307,3 +4307,14 @@ first-builder-merge audit re-run and the t12-assembly spawn both move to t11's #
 (the fold signature is the missing freeze for the pre-wiring; a t12 spawned now would
 idle-wait). The endgame's execution phase begins: two builders, two known-shape holes, one
 construction change with a settled cert-backed spec.
+
+### Tick-279 addendum: same-file collision averted — sequential ruled on the two GeoCoverSpec sorries
+t10 flagged it before it happened: both remaining sorries live in GeoCoverSpec.lean, so
+fresh-eyes (sorry-1) editing in parallel with t10 (sorry-2) = a two-worktree same-file
+conflict. RULED SEQUENTIAL per its suggestion: t10 finishes sorry-2 and pushes → fresh-eyes
+spawns onto the updated file. Its sorry-2 scope note APPROVED as statement shape — correctly
+generalized past rollover: dCenterOfNode=0 also covers the zero-block case-2, so the lemma
+is "conOracle step ⟹ children nonempty" + "hsum=0 ⟹ all edges chartless" ⟹ the passthrough
+child covers (the (D) gating note anticipated exactly this degenerate class — cite it).
+sorry-1 formally RELEASED by t10 (one restructured attempt made, isolated, stopped per the
+hybrid — the discipline held).
