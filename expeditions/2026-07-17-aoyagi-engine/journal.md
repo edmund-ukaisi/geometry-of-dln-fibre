@@ -2962,3 +2962,16 @@ ChartSubst changes) → parallel build. Coverage UNBLOCKED NOW on the field-home
 α_e frames + domain-reparam identity (+ the ShearReconcile docstring retirement in the same
 batch); centerSplit + geometricLeafPaths HELD until the gate. t06 meanwhile: 6d in progress
 (the four phase-branch sorries = the arc's last substance; skeleton fully wired).
+
+### Tick-204 addendum: proposal CORRECTED (f0a8363fd merged) — crossings reconciled
+Coverage's correction (delivered-before-my-steer, fixed-after): centerSplit CONSTRUCTION
+restored to t05's column (coverage co-designs the typed q interface only — the two properties
+its cover lemma reads); α_e identity confirmed coverage's post-carrier; §2 reframed as the
+geometricLeafPaths accumulator payload; task #8 relabeled to the coverage-side post-carrier
+lane. ShearReconcile single-ψ retire-note DONE immediately (comment-only, green) — the drift
+debt cleared same-day it was flagged. t05's review brief amended (centerSplit ask MOOT; §8
+position remains the live question). α_e timing left to coverage's judgment (abstract-over-
+atoms now vs against-real-fields later — no schedule pressure either way). Open decision
+surface: exactly ONE question (§8 field-home), with t05's position + the elder gate as its
+path. The co-design loop's crossing costs stayed small because every artifact was committed —
+the messages disagreed briefly; the docs never did.
