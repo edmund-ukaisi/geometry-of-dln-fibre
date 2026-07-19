@@ -89,4 +89,25 @@ theorem flatSwapCLE_mem_cube_iff (M : Fin (L + 1) → ℕ) (p d : Fin (flatDim M
     rw [flatSwapCLE_apply_flat]
     exact h (Equiv.swap p d c)
 
+/-- **The per-edge det through `β ∘ S`** (fork-15 wrapper, step 3): post-composing the pure blow-up
+`geoChartMap g` with the source swap `S = flatSwapCLE p d` (`p = cNodeOf node ⟨pivot⟩` the fan-out pivot
+cell) makes the per-edge Fréchet-derivative determinant read the DIAGONAL target `z_d`:
+
+    |det D(geoChartMap g ∘ S) w| = |z_d(w)| ^ (dCenterOfNode node − 1).
+
+Via `abs_det_fderiv_comp_det_one_gauge` (S det-1 + differentiable) + the banked per-edge atom
+`geoChartMap_fderiv_det` (reads `z_p` at the gauged point `S w`) + `flatSwapCLE_apply_flat`
+(`z_p(S w) = z_{swap p d p}(w) = z_d(w)`). This is the diagonal-normalization's Jacobian payoff: the
+atom reads the cell the ledger references. `d` is a parameter here; the wiring picks
+`d = divBirthCoord`-diagonal. -/
+theorem geoChartMap_swap_fderiv_det (g : GeoChart M) (w : Params M)
+    (hd : dCenterOfNode M g.node ≤ flatDim M) (hp : g.pivot < dCenterOfNode M g.node)
+    (d : Fin (flatDim M)) :
+    |(fderiv ℝ (geoChartMap (dCenterOfNode M) (qNodeOf M) g ∘
+        ⇑(flatSwapCLE M (cNodeOf M g.node hd ⟨g.pivot, hp⟩) d)) w).det|
+      = |paramsEquivFlat M w d| ^ (dCenterOfNode M g.node - 1) := by
+  rw [abs_det_fderiv_comp_det_one_gauge _ _ (geoChartMap_differentiable g)
+      (flatSwapCLE_differentiable M _ d) (flatSwapCLE_abs_det_fderiv_one M _ d) w,
+    geoChartMap_fderiv_det g _ hd hp, flatSwapCLE_apply_flat, Equiv.swap_apply_left]
+
 end DLNFibre.DLN.RLCT.Engine
