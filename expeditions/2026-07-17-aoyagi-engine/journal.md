@@ -4734,3 +4734,18 @@ isolated to the final leaf instantiation, slot left open. PNP-FOLD CHARGED on th
 dichotomy: STRONG (all t̃=0) / WEAK (stranded ⟹ exp 1) / FALSE (witness + the honest
 restatement, which would go to the elder expedition-wide). The provability-check-first
 discipline delivers again — the third statement-level catch before a wasted grind.
+
+## 2026-07-19 tick 301: THE BRIDGE IS DONE — (B)(C) shrunk to exactly the 3 geometric holes
+Coverage's three commits merged (ea444f729) + controller-verified: geoAtlas_leaf_update (the
+keystone correspondence — every piece is {l with chartMap := f} for an original leaf; mutual
+induction mirroring tGeo_coherence) + geoAtlas_leaf_ledgerProps (the transfers: srcBox
+measurable+bounded via the flatCube walk + PivotLeafClauses' pair, inj+disjoint via
+leaves_chart_clauses_conRoot, BOTH (C) exponent conjuncts) — both clean-three; wired into
+chartBridgeFaithful_buildTree. THE DISCHARGE NOW HAS: (A) cover + (C) exponents + (D)
+fidelity + 5/8 (B) props ALL PROVEN; the remaining holes are EXACTLY {a.e.-injectivity
+(coverage surveying), LeafPullback (loss-t15's α, phases 2-3a in flight), LeafJacobian
+(t14's fold bundle, mid-transcription with the stranded-divisor slot open)}. Payoff
+footprint unchanged (probed — after two self-inflicted namespace slips, the recurring
+gotcha). Coverage woken for the a.e.-inj survey with the session-depth off-ramp named
+(survey light + its own; the BUILD re-homeable on its survey if it's at ceiling). The
+endgame census: 3 geometric holes + the stranded dichotomy, all owned, all cert-backed.
