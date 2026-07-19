@@ -3470,3 +3470,16 @@ pieces 1-2 against the assumed qNodeOf signature NOW (small: a q-swap; the per-e
 stays as partition bookkeeping); the CARRIER SEAT spawns at elder-alt2's verdict (mid-read on
 this exact seam — its Q2(b) may add structure to the spec; one office-latency buys a
 no-re-fork spec). The cover build HELD. Cost contained: no proof wasted.
+
+### Tick-239 addendum: the runLen spec subtlety (the conflation's probable ROOT CAUSE)
+Coverage's pre-rework grounding: dCenterOfNode's case-1 count (1 + runLen·resCols) needs
+runLen — a per-EDGE field (ChartSubst.runLen), not on StepData (resRows/resCols are). Its
+read: this is LIKELY WHY per-edge was chosen at the field-lock — the count's DATA lived on
+the edge, so the q followed the data instead of the mathematics (synthesis-worthy). Its hold
+(rework awaits the confirmed qNodeOf/dCenterOfNode) is JUSTIFIED this time (under-determined
+spec ⟹ re-rework risk > parallelism gain) — and it used the WAITING FOR WAKE marker. Four
+resolutions for the carrier brief: (i) surface runLen onto the node (one field, emission-set);
+(ii) qNodeOf takes the edge data; (iii) a node field the carrier adds; (iv) [controller] runLen
+is chooser-DETERMINED from the node state (eligibility: t̃(mergeIdx) = cleared + runLen,
+mergeIdx = the deterministic Def-4 pick) — a node-level def could COMPUTE it; pricing = the
+carrier's. The carrier seat spawns at the elder verdict or next tick regardless.
