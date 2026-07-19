@@ -2813,3 +2813,26 @@ a proven hole against a (D)-less type would close with the honest-name tie missi
 re-checks. Interim docstring form pinned ("a monomialising cover whose exponents agree with t").
 Remaining on the batch: AxCheck footprint confirmation (the watch set grew since its branch
 cut — sync noted) → final commit → the q/t_geo interface PROPOSAL (t05's carrier trigger).
+
+## 2026-07-19 tick 195: ALTITUDE PASS (operator steer) — the picture, comprehended and banked
+Operator: "spend time and tokens on high level strategising and understanding of the picture,
+not just recon or de-risking." Executed as a durable artifact: strategy/altitude-2026-07-19.md.
+Its content, compressed: (1) THE STRUCTURAL IDEA — the recursion's two faces (ledger =
+symmetric-quotient combinatorics, where termination/coherence/admissibility/minimizer live;
+atlas = the geometric fan-out the integral reads), with the corrected architecture's two
+explicit joints ((C) exponent-agreement = the only ledger consult; (D) fidelity = the
+this-tree tie); EVERY major event of the expedition was a conflation instance — the four
+defects, the type crux, the ψ-mix, the placeholders — yielding the portable taste-rule:
+a statement mixing a ledger quantifier with a geometric predicate must declare its face.
+(2) The two remaining cruxes are the IRREDUCIBLE CROSS-FACE core (∃-path = ledger quantifier
+with geometric content; carrier = the ledger→geometry functor) — the residue is right, the
+sea rose over bedrock. (3) A strategic AUDIT owed at the hbox flip: with two-sided
+box-threshold control (finiteness at C/2 + the banked divergence below), cited_aoyagi_dln's
+residual content may reduce to a Watanabe-side zeta-bridge (NOT Aoyagi-shaped) — potentially
+re-scoping the next expedition from "reproduce the λ computation" to "prove the bridge";
+kill-condition named (the divergence half's box-family may be too weak — check its exact
+statement). (4) Sequencing re-derived from the picture (R7+R4 = the completeness pair; R6 =
+scope extension, MORE valuable if (3) pans out). (5) Posture correction adopted + a compass
+standing-counsel line added (altitude notes at phase transitions; findings placed in the
+picture, not only blocked/blocking). Board unchanged: t06 (crux) ∥ cov08 (batch verification)
+∥ t05 (warm).
