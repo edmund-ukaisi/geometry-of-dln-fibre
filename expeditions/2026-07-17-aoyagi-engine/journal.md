@@ -2502,3 +2502,19 @@ an explicit confirm-receipt demand. If the next t04 report still shows no receip
 INFRA and switch channels (a RULINGS file on integration it must pull, or task-system notes).
 Its §3 plan approved as scoped (decorrelated algebra first, Codex-first, §4 pauses for pnp-o5
 via controller). Order pinned: negotiation reply → sub-gap-1 → §3.
+
+## 2026-07-19 tick 176: t04 comms — diagnosis revised to one-giant-turn; 4th send + file hedge
+Third consecutive t04 report with zero receipt ("3 messages back", "per your brief" = spawn
+brief only). DIAGNOSIS REVISED: not necessarily infra — the report pattern is consistent with
+ONE long turn since spawn (reports emitted mid-turn; mailbox delivers at turn boundaries; its
+"standing by" ending = the first real boundary). The consolidated report itself is GOOD seat
+work: (c)+(b) banked; §3 attempted, hit Fin-literal friction on admBound₀, REVERTED per
+stop-on-thrash (HEAD clean) with the decomposition worked out; asks the right two decisions.
+ACTIONS: 4th send, consolidated + receipt demand (quote-first-line), timed to land atop the
+delivered backlog; PLUS a file hedge — threads/11-construction/RULINGS-t04.md on integration
+duplicating the standing steer (fork B + pin + probe binding + o5_core route + order of work).
+o5_core route RULED: §3 solo dedicated pass (Codex-first on the Fin friction; reuse index
+mined), §4 via pnp-o5 through controller, both AFTER (1) the coverage reply + (2) sub-gap-1
+(battery-truth-check of numDiv ≤ flatDim pre-approved — its instinct). ESCALATION STANDING: if
+the next t04 report still shows no receipt → respawn t05 with a spawn-prompt brief (the one
+channel proven to deliver), inheriting the clean 6f0151313 state.
