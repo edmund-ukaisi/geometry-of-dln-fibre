@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Engine.QNodeChart
 import DLNFibre.DLN.RLCT.Engine.ShearReconcile
+import DLNFibre.DLN.RLCT.Engine.QNodeCarrier
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.GeoChart` — the geometric fan-out atlas (coverage tide, post-gate9)
@@ -83,5 +84,21 @@ noncomputable def geomEdges (dCN : StepData M → ℕ) (qN : QNodeFam M dCN)
             (lc.1, acc ∘ geoChartMap dCN qN ⟨n, Edge.mk c s ch, offset + (p : ℕ)⟩ ∘ lc.2))
         ++ geomEdges dCN qN acc n (offset + dCenterOfEdge n (Edge.mk c s ch)) es
 end
+
+/-! ## Instantiation against the carrier (`QNodeCarrier`, t09)
+
+The parametrization's payoff: pin `(dCN, qN) := (dCenterOfNode M, qNodeOf M)` (defeq
+`QNodeFam M (dCenterOfNode M)`). The offset partition's range-correctness rides
+`dCenterOfNode_edgeSum` (`Σ_e dCenterOfEdge = dCenterOfNode` on built branch nodes); the on-cone
+`hd` is `dCenterOfNode_le_flatDim`. -/
+
+/-- **The flat virtual-leaf atlas** for `t` (instantiated): one `LeafData` piece per geometric path —
+its ledger leaf's data (`divCoord`/`resCoord`/`srcBox`/exponents, so `leaves_chart_clauses_conRoot`
+discharges the coordinate bundle per piece) with `chartMap` set to the geometric `β`-fold composite
+(the buck-stops geometry, computed from `qNodeOf`). This is the `List (LeafData M)` the corrected
+`ChartBridge` quantifies over. -/
+noncomputable def geoAtlas (t : ResolutionTree M) : List (LeafData M) :=
+  (geometricLeafPaths (dCenterOfNode M) (qNodeOf M) id t).map
+    (fun lc => { lc.1 with chartMap := lc.2 })
 
 end DLNFibre.DLN.RLCT.Engine
