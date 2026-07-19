@@ -2944,3 +2944,21 @@ geometricLeafPaths + (D) [gate #10] + α_e lemmas + the 3 Props + the cover. She
 docstring debt routed to its next own-file batch. The chart lane's sequence is now: proposal
 → t05 checkpoint + carrier → coverage's closing tide — while t06 runs the SteerInv
 decomposition (6b+6c done per the task board).
+
+## 2026-07-19 tick 204: CARRIER INTERFACE PROPOSAL merged — t05 woken; §8 staged for elder; α_e unblocked
+coverage-t08's proposal (3318b1b58) delivers the full co-design surface: (1) centerSplit (the
+concrete q via paramsEquivFlat ∘ center-permutation — REASSIGNING the q-build to coverage,
+t05 to confirm/contest); (2) per-edge R-b fields (β_e = q-conj pivotChart; α_e source det-1,
+α_u=.refl/α_d=inverse-Schur; localSub_e = β̃_e = β_e∘α_e⁻¹; the load-bearing domain-reparam
+identity ⟹ the PURE cover atom applies); (3) the d_center family emission (hbij contract,
+realized in geometricLeafPaths, off-spine per the sub-gap-3 pin); (4) geometricLeafPaths →
+the flat atlas, clause (D) = its coherence. OPEN §8: field-home — extend ChartSubst (on-spine)
+vs sibling GeoChart (zero spine touch; coverage leans sibling). CONTROLLER NOTE fed to the
+review: the ψ cert's structural fact bears — 1(1) edge ↔ ONE u-chart (per-edge definable) but
+1(2)/case-2 ↔ the d-FAMILY (pivot-INDEXED data; a single per-edge field cannot carry it
+faithfully) — the home must hold pivot-indexed data honestly. SEQUENCE: t05 checkpoint review
+(§8 position + centerSplit confirm) → elder gate (sees both positions; mandatory anyway if
+ChartSubst changes) → parallel build. Coverage UNBLOCKED NOW on the field-home-independent
+α_e frames + domain-reparam identity (+ the ShearReconcile docstring retirement in the same
+batch); centerSplit + geometricLeafPaths HELD until the gate. t06 meanwhile: 6d in progress
+(the four phase-branch sorries = the arc's last substance; skeleton fully wired).
