@@ -2856,3 +2856,23 @@ as the t_geo template]); elder-alt1 (stern audit of the controller's OWN compreh
 ledger/geometry factorization faithful-or-just-so [with a concrete discrimination test]; the
 zeta-bridge conjecture against the ACTUAL RlctInterface axiom [flagged: the controller has not
 re-read it — the next unchecked expectation, named honestly]; posture/selling scrub).
+
+## 2026-07-19 tick 197: tStar_realized FALSE-AS-STATED (zero widths) — instance #6; hMpos ruling
+t06's stop-and-surface (the PROVE step exposing a SPECIFY fidelity gap — the system working as
+designed): the achievability direction is FALSE at zero widths — M=![2,2,0]: tStar=(2,0),
+minAdm=0, but widthMinUpto(2)=0 fires the rollover guard instantly, the anchor cannot descend,
+realized t̃=0 = {(0,0)} only; M=![2,0,2] even empties the t̃=0 set. Verified integer-sim + a
+hand-trace of the ACTUAL conOracle. Root: the cert §4 battery (847 instances, B6) ran positive
+widths only; the Lean SPECIFY dropped the regime hypothesis. IMPACT: the ⊇/attainment chain
+(o5_core → o5_realization → the assembly's attainment conjunct) is false at zero-width M;
+the ⊆ chain (minAdm ≤, IsFullMonomialization) is width-free and UNAFFECTED — the SAME
+asymmetry calibration entry 1 recorded one tick earlier (the divergence half's hMpos): the
+attainment/tightness LAYER needs positivity; the upper-bound layer does not. The instrument
+earned its keep immediately. RULINGS: hypothesis = hMpos : ∀ i, 0 < M i (VERBATIM the
+divergence half's form — zero bridge lemmas at the flip); t06 proves IN-FILE only (no
+cross-file ripple now); the downstream threading JOINS the move-at-landing batch (one atomic
+re-signature, full-batch gate); the flip-site question (payoff positivity / hbox's ∀M
+survival) = controller's calibration entry 2, verified before the landing batch; caveat
+docstrings next to claims w/ the ![2,2,0] witness. Codex design refinement approved (3-phase
+invariant + LowCover; the pull brick is NOT step1_dominates — the handoff's reuse line
+superseded). leafOfState_carries merged. Counter increments to 6 WITH the fix's merge.
