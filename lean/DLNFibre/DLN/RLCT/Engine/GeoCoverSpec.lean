@@ -148,13 +148,19 @@ theorem fannedEdges_pivot_mem (acc : Params M → Params M) (n : StepData M) (i 
       have hp : i - offset < dCenterOfEdge n (Edge.mk c s ch) := by omega
       have hi' : offset + (i - offset) = i := by omega
       refine ⟨c, s, ch, List.mem_cons_self .., ?_⟩
-      -- TACTICAL HOLE (t10, isolated to this List-level line): the fanned edge at pivot `i` is in the
-      -- pivot-fan `(finRange d).map (fun p => …offset + ↑p…)`, picking `p = ⟨i-offset, hp⟩` (then
-      -- `offset + (i-offset) = i`). The `↑p` (Fin→ℕ) coercion makes `mem_map`/`simp` HO-factor the map
-      -- as `((finRange d).map ↑).map …`, so the `∃` reindexes to `ℕ` and the witness type won't align.
-      -- MATH TRIVIAL; needs the coercion-aware List idiom (fresh-eyes per controller). Everything else
-      -- (the tail recursion here, and `fannedEdges_covers` applying this lemma) is green.
-      sorry
+      -- The pivot `i` (in this edge's range) is realised by the fanned edge for pivot `i`. KEY: the
+      -- `↑p` (Fin→ℕ) coercion in the def is lifted OUT of the pivot-fan map, so the fan elaborates to
+      -- `map F (finRange d >>= fun a => pure ↑a)` — the index list is a `List ℕ`. Hence the outer
+      -- `mem_map` witness must be `i - offset : ℕ` (NOT the Fin); the `Fin ⟨i-offset, hp⟩` only realises
+      -- the inner bind-membership `i - offset ∈ (finRange d >>= …)`. `hi'` then rewrites `offset + (i -
+      -- offset)` back to `i` on the fanned edge.
+      rw [fannedEdges, if_neg hne]
+      refine List.mem_append_left _ ?_
+      rw [List.mem_map]
+      refine ⟨i - offset, ?_, ?_⟩
+      · rw [List.bind_eq_flatMap, List.mem_flatMap]
+        exact ⟨⟨i - offset, hp⟩, List.mem_finRange _, List.mem_singleton_self _⟩
+      · simp only [hi']
     · have hlo' : offset + dCenterOfEdge n (Edge.mk c s ch) ≤ i := by omega
       have hhi' : i < offset + dCenterOfEdge n (Edge.mk c s ch)
           + (es.map (dCenterOfEdge n)).sum := by
