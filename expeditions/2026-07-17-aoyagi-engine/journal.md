@@ -3219,3 +3219,16 @@ a future seat attempting a false statement); the ledger #4 positivity caveat ADD
 "EXACT" language scoped to the positive-width battery regime). This is the hMpos mechanism's
 THIRD appearance (divergence half; the attainment chain; now R7's statement) — the attainment
 LAYER is positive-width, period; the picture holds. rev-s4 dissolved with thanks.
+
+## 2026-07-19 tick 217: pivotChart det atom MERGED — coverage's t05-independent column COMPLETE
+73ace6c72 merged + probed: abs_det_fderiv_pivotChart = |u i|^(d-1), clean-three (route:
+hasFDerivAt_pi' + proj-CLM dodging the stuck-instance trap; det via row-op-to-diagonal;
+every Codex name verified — it corrected the consult's pi'' misname AND its false reliance
+on hasFDerivAt_apply). BOTH LeafJacobian det inputs now banked: |det Dβ̃_e| = |det Dβ_e| =
+|u_i|^(d-1) (unit α-det × the β-det). Coverage's banked-now inventory is COMPLETE: the
+domain-reparam identity, the α_e frame, the β-det, the provisional GeoChart/geometricLeafPaths
+design — everything that can exist without the executor exists. The chart lane is now a
+single-dependency system: qNodeOf green → coverage's tide (geoChartMap, materialization,
+fold, Props, (A)/(C)/(D) [gate #10], the retirement flags [#15]) → chartBridge_buildTree →
+hbox. THE SOLE IN-FLIGHT WORK: t06's landing batch (+ the R7-statement fix). The executor
+decision fires at its report.
