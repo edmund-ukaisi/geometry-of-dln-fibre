@@ -8,16 +8,18 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: THE SPINE TAIL. Summit LANDED (all-invariant maintenance ×3, SameLevelChainInv, STEP1,
-  conOracle TOTAL, mutual induction o1↔o4↔o2 PROVEN, MvalCoh kit; region_glue DISCHARGED —
-  glue lane complete, region_glue_of_chartBridge clean-three). Seat succession: architect-t02
-  stood down at the context ceiling (zero-loss; tick 140); **architect-t03** now owns t01-r2 on
-  the 6-step close: resRows running-min fix → Mval-telescoping identity (t02's parting crux,
-  banked tick-140 addendum) → MvalCoh closure → terminal leaf (t0Indices + smart-constructor,
-  chart fields = T3 slots) → WF-fold → o5-∈ → ASSEMBLE monomialization_terminates mod ChartBridge.
-  WARM: coverage-t07 (T3 rung-3: 3/8 per-leaf Props + ChartBridge wiring, gated on the built
-  atlas); pnp-atlas (Q1b single-ψ factorization fidelity, queued). Then R2 gate (pnp replay +
-  hunt-cert §5 + circularity guard) → hbox flip → mint repoint + ENFORCED axiom-gate → close.
+- phase: ENDGAME CONVERGENCE. A+B+C+D§i PROVEN+merged+REVIEWED (isFullMonomialization_
+  buildTree_conRoot + minAdm ≤, clean-three ×2 controller-probed; rev-spine SURVIVED 10/10).
+  Realization gap SETTLED (defect #4: ⊇ Adm FALSE, P=Clearable-Adm; minAdm ∈ PROVED at cert —
+  elder-gate7 ratified reshape + R7 + reify-now). IN FLIGHT: **t03's atomic hL-ripple + E batch**
+  (L=0 false-as-stated → hL threads ~8 decls/3 files; 4 conditions incl. protected-set re-probes
+  + R5-flip coherence) — then t03 honors + **t04 spawn** (brief accumulated in journal ticks
+  158/161/162/163: chart-emission carrier spec FIRST [4-part per-edge surface, unblocks
+  coverage's parallel 3-Prop tide] → D§ii/iii [cert §§3-4: envelope-splice + steering; naming
+  pin minAdm_mem_*] → reify-Clearable + close nits). Coverage lane COMPLETE-and-idle (wiring
+  skeleton chartBridge_of_pieces PROVEN; wake at carrier green). pnp-o5/pnp-atlas warm (context
+  consults). NAVIGATOR convenes at E-merge (phase transition). Then: R2 gate → hbox flip →
+  mint repoint + ENFORCED axiom-gate → cordon → close.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
