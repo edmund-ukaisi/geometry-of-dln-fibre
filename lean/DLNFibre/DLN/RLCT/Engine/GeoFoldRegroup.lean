@@ -480,4 +480,48 @@ theorem ledgerMonomial_conRoot (M : Fin (L + 1) → ℕ) (h : 0 < flatDim M) (w 
     ledgerMonomial M (conRoot : ConState L) h w = 1 := by
   simp [ledgerMonomial, conRoot]
 
+/-- **The weak no-stranded fact, expressed on a leaf's FULL ledger fields** (so it threads through the
+`leaves` of `buildTree` without a separate reachability predicate). For `leafOfState s` this is
+defeq to `WeakNoStrand s`. -/
+def WeakNoStrandLeaf {L : ℕ} {M : Fin (L + 1) → ℕ} (l : LeafData M) : Prop :=
+  ∀ k : Fin l.fullNumDiv, tildeOf (l.fullDivProfile k) ≠ 0 → l.fullDivExp k = 1
+
+/-- **The fold-Jacobian cocycle** (the WF walk, `Inv(acc, s)` threaded down `buildTree`). Given the
+incoming full-ledger invariant `|det D acc w| = ledgerMonomial s w`, `DivBirthInv M s`, and the weak
+no-stranded fact on the terminal leaves, every geometric atlas leaf of the subtree from `s` has the
+analytic headline determinant. The headline is the `s = conRoot`, `acc = id` instance. -/
+theorem geoAtlas_cocycle (h : 0 < flatDim M) :
+    ∀ (s : ConState L), DivBirthInv M s →
+      (∀ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s), WeakNoStrandLeaf l) →
+      ∀ (acc : Params M → Params M), Differentiable ℝ acc →
+        (∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) →
+        ∀ p ∈ ResolutionTree.leaves (tGeo acc (buildTree M (conOracle M) s)), ∀ w,
+          |(fderiv ℝ p.chartMap w).det|
+            = ∏ k : Fin p.numDiv, |paramsEquivFlat M w (p.divCoord k)| ^ (p.divExp k - 1) := by
+  intro s
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    intro inv hweak acc haccdiff haccdet p hp w
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+      have hbt : buildTree M (conOracle M) s = ResolutionTree.leaf (leafOfState M s) := by
+        rw [buildTree_terminal M (conOracle M) s l' hleaf hoc, conOracle_terminal_leaf s hoc]
+      have hmem : leafOfState M s ∈ ResolutionTree.leaves (buildTree M (conOracle M) s) := by
+        rw [hbt]; exact List.mem_singleton.mpr rfl
+      have hws : WeakNoStrand s := by
+        intro k hk
+        have hwl := hweak (leafOfState M s) hmem
+        unfold WeakNoStrandLeaf at hwl
+        rw [leafOfState, dif_pos h] at hwl
+        exact hwl k hk
+      rw [hbt, tGeo] at hp
+      simp only [ResolutionTree.leaves, List.mem_singleton] at hp
+      subst hp
+      show |(fderiv ℝ acc w).det|
+        = ∏ k : Fin (leafOfState M s).numDiv,
+            |paramsEquivFlat M w ((leafOfState M s).divCoord k)| ^ ((leafOfState M s).divExp k - 1)
+      rw [haccdet w, ← leafOfState_prod_eq_ledgerMonomial M s h w hws]
+    | step node children hnode hlayer hstep =>
+      sorry
+
 end DLNFibre.DLN.RLCT.Engine
