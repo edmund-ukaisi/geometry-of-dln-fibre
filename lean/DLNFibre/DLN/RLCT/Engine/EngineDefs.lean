@@ -83,11 +83,15 @@ atlas carries CHARTS — no clause here reads a ledger leaf's `chartMap`. Clause
   (LOAD-BEARING: the atlas is decoupled from `leaves t`, so this replaces the old automatic
   `flatMap`-over-`leaves t` routing, feeding exactly the two threshold hypotheses of
   `leaf_chart_image_lintegral_lt_top`).
-DEFERRED clause (D) — fidelity coherence (NOT consumed by `region_glue`; elder-pinned CONTENT, encoding
-deferred to me for the carrier phase): each atlas piece's `chartMap` is the REAL `β∘ψ` geometric fold
-of a `t`-path (a `geometricLeafPaths t` analog + the banked `pivotChart`/gauge atoms — never an opaque
-`Params M → Params M`; two-sided honesty: provable over the constructed atlas, false on a generic one).
-It lands additively with the carrier (a def-only touch; `region_glue` and the `CanonicalResolution`
+HONEST FORM (the (D)-less window): (A)∧(B)∧(C) guarantee only that the atlas is A MONOMIALISING COVER
+WHOSE EXPONENTS AGREE WITH `t` — NOT yet that it is `t`'s resolution charts. That fidelity tie is
+exactly DEFERRED clause (D) — fidelity coherence (NOT consumed by `region_glue`; elder-pinned CONTENT,
+encoding deferred to me for the carrier phase): each atlas piece's `chartMap` is the REAL `β∘ψ`
+geometric fold of a `t`-path (a `geometricLeafPaths t` analog + the banked `pivotChart`/gauge atoms —
+never an opaque `Params M → Params M`; two-sided honesty: provable over the constructed atlas, false on
+a generic one). GATE (cordon-checked): (D) must be IN this type BEFORE `chartBridge_buildTree`'s
+discharge lands — a proven discharge against a (D)-less type would close the hole with the "`t`'s cover"
+tie missing. (D) lands additively (a def-only touch; `region_glue` and the `CanonicalResolution`
 projection are agnostic to it). -/
 def ChartBridge (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
   ∃ atlas : List (LeafData M),
