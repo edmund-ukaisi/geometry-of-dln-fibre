@@ -2836,3 +2836,23 @@ scope extension, MORE valuable if (3) pans out). (5) Posture correction adopted 
 standing-counsel line added (altitude notes at phase transitions; findings placed in the
 picture, not only blocked/blocking). Board unchanged: t06 (crux) ∥ cov08 (batch verification)
 ∥ t05 (warm).
+
+## 2026-07-19 tick 196: CALIBRATION INSTRUMENT ADOPTED (operator steer) — entry 1 run; two consults fired
+Operator: some ticks = the controller asking questions of the codebase, expectation written
+FIRST, checked against territory; some routed to cartographer/elders. INSTRUMENT:
+strategy/calibration-ledger.md (predict → territory → verdict → what-it-changes). ENTRY 1 run
+(the flip-audit preview): 4 predictions on the divergence half's shape, then the actual
+statements read. Score 3/4 — the MISS instructive: the two halves do NOT share an integral
+(divergence: |routeMCore| over cubeBox ε; finiteness: frobSq∘prod over paramsBoxM, meeting
+routeMCore only THROUGH routeMCore_le_matBox + the hfin consumer) — the two-sided reading
+SURVIVES REFINED at the routeMCore local integral, modulo a domain-bridge check (cubeBox-vs-
+routeMBaseNbhd at small ε; T=1-vs-ε). New facts banked: divergence holds AT the threshold
+(≥ not >); the divergence half assumes hMpos (width positivity — the spine's width-free
+generality does NOT extend there). The cited_aoyagi_dln residue refines to: localization glue
++ zeta-bridge — neither Aoyagi-shaped; flip-audit checklist seeded. CONSULTS FIRED per the
+steer: cartographer-4 (targeted pass #3 — the carrier-adjacent reuse index BEFORE t05's arc +
+two controller calibration questions CQ1/CQ2 to verify [no existing localSub fold; leafPaths
+as the t_geo template]); elder-alt1 (stern audit of the controller's OWN comprehension: is the
+ledger/geometry factorization faithful-or-just-so [with a concrete discrimination test]; the
+zeta-bridge conjecture against the ACTUAL RlctInterface axiom [flagged: the controller has not
+re-read it — the next unchecked expectation, named honestly]; posture/selling scrub).
