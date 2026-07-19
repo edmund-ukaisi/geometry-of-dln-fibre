@@ -177,9 +177,9 @@ noncomputable def fannedEdges (acc : Params M → Params M) (n : StepData M) (of
         [Edge.mk c { s with localSub := id } (tGeo acc ch)]
       else
         (List.finRange (dCenterOfEdge n (Edge.mk c s ch))).map (fun p =>
-          Edge.mk c { s with localSub := geoChartMap (dCenterOfNode M) (qNodeOf M)
+          Edge.mk c { s with localSub := geoChartMapNorm (fun _ => id)
                                ⟨n, Edge.mk c s ch, offset + (p : ℕ)⟩ }
-            (tGeo (acc ∘ geoChartMap (dCenterOfNode M) (qNodeOf M)
+            (tGeo (acc ∘ geoChartMapNorm (fun _ => id)
                       ⟨n, Edge.mk c s ch, offset + (p : ℕ)⟩) ch)))
       ++ fannedEdges acc n (offset + dCenterOfEdge n (Edge.mk c s ch)) es
 end
