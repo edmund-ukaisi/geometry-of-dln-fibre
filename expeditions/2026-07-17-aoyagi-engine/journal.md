@@ -4378,3 +4378,51 @@ body change; controller handles the rebase; t10's verify asked to flag if the wi
 needs anything beyond pre-S discharge + S cube-invariance). t11 CONTINUING on the §2
 cocycle maintenance → the LeafJacobian discharge (the wall's last piece), stacking locally.
 Toolkit note: FlatSwap.lean split (cycle-break) landed with its reason in the docstring.
+
+## 2026-07-19 tick 283: #35 CONSTRUCTION FIX LANDED + the wall's headline STATEMENT-LOCKED; t11 → t14 succession
+t11's milestone merged (88525bf3b): every geoAtlas chart is now (β∘S)∘id with the exceptional
+divisor AT c.divCoord (the diagonal) — the ledger and the geometry finally name the same
+cells, by construction. GeoLeafJacobian.lean STAGED (not in the aggregator — the sorry
+contained): geoAtlas_fold_det = LeafJacobian's β-det headline, elaborates green, ONE tracked
+frontier sorry = the cert-§1 regrouping cocycle. Tasks #35 + #29 CLOSED (the construction +
+the statement lock); what remains of the wall (#21/#30) is ONE precisely-specified induction
+with every atom banked and the algebra cert-pinned.
+SUCCESSION: t11 requested handoff at the banked boundary (session depth vs the last-wall
+correctness bar — "I don't want to rush it into conceptual slop at depth"; the correct call,
+9th clean succession). HONORS OWED after its handoff addendum (induction shape, dead-ends
+from the locking pass, the cert-§1 ↔ stepUpdate-case ↔ atom mapping, staged-module wiring
+notes). Its seat ledger: the atoms, the fold, the gauge toolkit, the S primitive,
+geoChartMapNorm, the #35 fix, the locked headline — two Codex catches, zero slop.
+NEXT SPAWNS THIS TICK: t14-regroup (the induction, fresh full arc, statement-untouchable
+target, ~1-arc tripwire → pnp-fold follow-up); coverage ACTIVATED on the (D) drafting
+(draft-on-branch; MERGE held until the regrouping lands or the elder clears — the
+elder's downstream-of-satisfiability pin honored conservatively; counter 7→8 rides the
+merge). Board reconfigures: t14 (the wall) ∥ fresh-eyes (:133) ∥ t10 (verify) ∥ coverage
+((D) draft). Navigator re-run once the new configuration settles.
+
+## 2026-07-19 tick 284: the sorry-mask caught at integration — fresh-eyes' close was GOOD, the :133 STATEMENT was stale; step 3 restored
+fresh-eyes-t13 delivered (:133 closed clean-three on its pinned pre-wiring base; the gotcha
+is a keeper: the ↑p coercion lifts OUT of the fan lambda ⟹ the fan is map F (finRange d >>=
+pure∘↑) — outer witness i−offset : ℕ never the Fin; List.bind_eq_flatMap before mem_flatMap
+since do-heads are Bind.bind). MERGING IT FAILED at :163 — and the diagnosis matters more
+than the failure: fannedEdges now emits geoChartMapNorm edges but fannedEdges_pivot_mem's
+STATEMENT still names geoChartMap. t11's "zero new reds" at the wiring was SORRY-MASKED:
+a sorried lemma elaborates regardless of statement staleness, and its consumer typechecks on
+the poisoned conclusion — the exact class the standing counsel warned of ("a green build
+over a sorried X is not the gate"), here in miniature. Not a seat fault (invisible by
+construction); the INTEGRATION GATE caught it, which is the system working. Integration
+RESET to green (42062dd4c); fix/covspec-133 unmerged. STEP 3 RESTORED to the real re-green
+and re-briefed to t10: re-point the :133 statement to the wired geoChartMapNorm form (exact
+emission text), import fresh-eyes' map-agnostic proof, re-thread fannedEdges_covers +
+downstream via S cube-invariance (a geoChartMapNorm_on_cone companion suggested), zero
+sorries, probe geoAtlas_imageCover clean-three, push. fresh-eyes-t13 retires with thanks —
+its proof survives verbatim; only the statement around it moved.
+
+### Tick-284 addendum: t11's handoff addendum merged (97e29e29b); the seat RETIRED WITH HONORS
+The §HANDOFF covers all four asks — the induction shape (cocycle innermost-first +
+leafPaths→foldr bridge + acc clause; subtree-outermost explicitly marked refuted), the
+refuted turns + TWO build-first sub-lemmas for t14 (geoChartMapNorm §0 chart-action;
+c.divCoord = diagTargetOf coherence), the cert↔case↔atom mapping, and the discharge-time
+wiring notes. t14 notified (pull + sub-lemmas-first pointer; one relayed question to the
+retired seat allowed). t11 stood down clean — the 9th succession, and the deepest seat
+ledger of the expedition behind it.
