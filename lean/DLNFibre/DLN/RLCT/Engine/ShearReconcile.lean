@@ -2,6 +2,10 @@ import DLNFibre.DLN.RLCT.Engine.PivotCoverFold
 import Mathlib.LinearAlgebra.Transvection.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Mul
 import Mathlib.Analysis.Calculus.FDeriv.Prod
+import Mathlib.Analysis.Calculus.FDeriv.Pi
+import Mathlib.LinearAlgebra.Matrix.ToLin
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.Topology.Algebra.Module.Determinant
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.ShearReconcile` — the shear reconciliation lemma (rung 3)
@@ -202,5 +206,77 @@ theorem elemShearDeriv_det (a b c : Fin d) (hab : a ≠ b) (hac : a ≠ c) (x : 
 theorem abs_det_fderiv_elemShear (a b c : Fin d) (hab : a ≠ b) (hac : a ≠ c) (x : Fin d → ℝ) :
     |(fderiv ℝ (elemShear a b c) x).det| = 1 := by
   rw [(elemShear_hasFDerivAt a b c x).fderiv, elemShearDeriv_det a b c hab hac x, abs_one]
+
+/-! ## The pivotChart Jacobian-det atom (`β`-det for `LeafJacobian`, `cert-psi-mix` §R-b)
+
+`|det Dβ| = |u_i|^{d−1}` for the max-modulus blow-up chart `β = pivotChart i` — the per-blow-up
+exceptional-divisor exponent (a SINGLE divisor at `divExp = d`). The leaf's accumulated `divExp` is the
+fold of these; under R-b `|det Dβ̃_e| = |det Dβ_e|` (`abs_det_fderiv_elemShear`), so this atom carries
+the monomial Jacobian for `LeafJacobian`. -/
+
+/-- The Fréchet derivative of `pivotChart i` at `u`: row `i` is `proj i`; row `k ≠ i` is
+`u_i • proj k + u_k • proj i` (product rule on `u_i · u_k`). -/
+noncomputable def pivotChartDeriv (i : Fin d) (u : Fin d → ℝ) : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ) :=
+  ContinuousLinearMap.pi fun k =>
+    if k = i then ContinuousLinearMap.proj i
+    else u i • ContinuousLinearMap.proj k + u k • ContinuousLinearMap.proj i
+
+/-- `pivotChart i` is Fréchet-differentiable with derivative `pivotChartDeriv`. -/
+theorem pivotChart_hasFDerivAt (i : Fin d) (u : Fin d → ℝ) :
+    HasFDerivAt (pivotChart i) (pivotChartDeriv i u) u := by
+  rw [hasFDerivAt_pi']
+  intro k
+  rw [pivotChartDeriv, ContinuousLinearMap.proj_pi]
+  rcases eq_or_ne k i with rfl | hk
+  · have hcomp : (fun y : Fin d → ℝ => pivotChart k y k) = fun y => y k := by
+      funext y; simp [pivotChart]
+    rw [if_pos rfl, hcomp]
+    simpa using (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin d => ℝ) k).hasFDerivAt (x := u)
+  · have hcomp : (fun y : Fin d → ℝ => pivotChart i y k) = fun y => y i * y k := by
+      funext y; simp [pivotChart, hk]
+    rw [if_neg hk, hcomp]
+    have hi := (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin d => ℝ) i).hasFDerivAt (x := u)
+    have hkk := (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin d => ℝ) k).hasFDerivAt (x := u)
+    simpa [add_comm, ContinuousLinearMap.proj_apply] using hi.mul hkk
+
+/-- The determinant of `pivotChartDeriv` is `u_i^{d−1}` (row-operation invariance: subtract `u_k`× row
+`i` from each row `k ≠ i`, leaving `diagonal (1 at i, u_i elsewhere)`). -/
+theorem pivotChartDeriv_det (i : Fin d) (u : Fin d → ℝ) :
+    (pivotChartDeriv i u).det = u i ^ (d - 1) := by
+  rw [ContinuousLinearMap.det, ← LinearMap.det_toMatrix']
+  set A := LinearMap.toMatrix' (pivotChartDeriv i u : (Fin d → ℝ) →ₗ[ℝ] (Fin d → ℝ)) with hA
+  set b : Fin d → ℝ := fun k => if k = i then 1 else u i with hb
+  set c : Fin d → ℝ := fun k => if k = i then 0 else u k with hc
+  have hAentry : ∀ k l, A k l = if k = i then (if l = i then 1 else 0)
+      else u i * (if l = k then 1 else 0) + u k * (if l = i then 1 else 0) := by
+    intro k l
+    rw [hA, LinearMap.toMatrix'_apply]
+    change (pivotChartDeriv i u) (Pi.single l 1) k = _
+    rw [pivotChartDeriv]
+    simp only [ContinuousLinearMap.pi_apply]
+    rcases eq_or_ne k i with rfl | hk
+    · by_cases hl : l = k <;> simp [hl]
+    · simp only [if_neg hk, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul',
+        Pi.smul_apply, ContinuousLinearMap.proj_apply, Pi.single_apply, smul_eq_mul]
+      by_cases hl₁ : l = k <;> by_cases hl₂ : l = i <;> simp_all [eq_comm]
+  have hdet : A.det = (Matrix.diagonal b).det := by
+    apply Matrix.det_eq_of_forall_row_eq_smul_add_const c i
+    · simp [hc]
+    · intro k l
+      rw [hAentry k l, Matrix.diagonal_apply, Matrix.diagonal_apply]
+      by_cases hk : k = i
+      · subst hk; simp [hb, hc, eq_comm]
+      · by_cases hl₁ : l = k <;> by_cases hl₂ : l = i <;> simp_all [eq_comm]
+  rw [hdet, Matrix.det_diagonal, ← Finset.prod_erase (f := b) (a := i) Finset.univ (by simp [hb])]
+  have hval : ∀ k ∈ Finset.univ.erase i, b k = u i := fun k hk => by
+    simp [hb, Finset.ne_of_mem_erase hk]
+  rw [Finset.prod_congr rfl hval, Finset.prod_const,
+    Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ, Fintype.card_fin]
+
+/-- **The pivotChart blow-up has Jacobian determinant of modulus `|u_i|^{d−1}`** — the exceptional
+divisor exponent for `LeafJacobian`'s `β`-det (single divisor at `divExp = d`). -/
+theorem abs_det_fderiv_pivotChart (i : Fin d) (u : Fin d → ℝ) :
+    |(fderiv ℝ (pivotChart i) u).det| = |u i| ^ (d - 1) := by
+  rw [(pivotChart_hasFDerivAt i u).fderiv, pivotChartDeriv_det i u, abs_pow]
 
 end DLNFibre.DLN.RLCT.Engine
