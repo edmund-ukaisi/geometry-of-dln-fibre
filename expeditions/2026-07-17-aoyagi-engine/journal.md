@@ -4307,3 +4307,58 @@ first-builder-merge audit re-run and the t12-assembly spawn both move to t11's #
 (the fold signature is the missing freeze for the pre-wiring; a t12 spawned now would
 idle-wait). The endgame's execution phase begins: two builders, two known-shape holes, one
 construction change with a settled cert-backed spec.
+
+### Tick-279 addendum: same-file collision averted — sequential ruled on the two GeoCoverSpec sorries
+t10 flagged it before it happened: both remaining sorries live in GeoCoverSpec.lean, so
+fresh-eyes (sorry-1) editing in parallel with t10 (sorry-2) = a two-worktree same-file
+conflict. RULED SEQUENTIAL per its suggestion: t10 finishes sorry-2 and pushes → fresh-eyes
+spawns onto the updated file. Its sorry-2 scope note APPROVED as statement shape — correctly
+generalized past rollover: dCenterOfNode=0 also covers the zero-block case-2, so the lemma
+is "conOracle step ⟹ children nonempty" + "hsum=0 ⟹ all edges chartless" ⟹ the passthrough
+child covers (the (D) gating note anticipated exactly this degenerate class — cite it).
+sorry-1 formally RELEASED by t10 (one restructured attempt made, isolated, stopped per the
+hybrid — the discipline held).
+
+## 2026-07-19 tick 280: t11's S-primitive BANKED (spine-untouched); the re-green choreography ruled
+Merged bcf9566d8 + probed: GeoDiagSwap.lean (flatSwapCLE — the diagonal transposition with
+flat-read, involutivity, |det|=1, differentiability, cube-invariance; Codex-confirmed) + the
+per-edge β∘S wrapper (the atom now reads the DIAGONAL cell) — the Jacobian PAYOFF of
+diagonal-normalization banked BEFORE the spine changes. Codex caught the sign-of-composition
+risk (β∘S source-side reads z_d; S∘β target-side would leave z_p) — built correctly.
+RULINGS: (a) the cover VERIFY is t10's (elder-assigned); THREE-STEP CHOREOGRAPHY so
+integration never reds and neither builder idles: t10 lands sorry-2 pre-S (in flight; better
+re-threaded mechanically than written against a moving target) → t11 merges + pushes the
+geoChartMap spine change to ITS branch (transient red cover on a branch is fine) → t10
+merges t11's branch, re-greens + VERIFY, pushes; controller merges the combined green once.
+(b) the per-GeoChart diagonal target = a NAMED buck-stops helper in GeoChart.lean (consumed
+three more times: the cocycle, gated-(D), fidelity — one definition, cited, never re-derived
+inline). t11 GO on the spine change in-worktree.
+
+## 2026-07-19 tick 281: sorry-2 CLOSED+merged (one sorry left in the cover); step 2 fired; fresh-eyes-t13 spawned
+t10's b68e665b0 merged (72b4b4c51): the rollover/zero-block sub-case closed via the
+generalized lemma (conOracle children-nonempty across all three step branches + hsum=0 ⟹
+all-chartless ⟹ the id-passthrough child covers). GeoCoverSpec on integration = exactly ONE
+tracked sorry (:133, the coercion line). Pushed. CHOREOGRAPHY STEP 2 FIRED to t11 (merge
+integration, push the spine change; transient red cover on its branch expected).
+FRESH-EYES-T13 SPAWNED on :133 — single-lemma scope, own branch (fix/covspec-133),
+statement-untouchable (stop-and-report if it's a statement defect), armed with the prior
+seat's coercion diagnosis + the explicit-witness idiom hints, and the parallel-GeoChart-churn
+note (List-level lemma, expected unaffected; pin-and-report if not). t11 confirmed actively
+building the spine change (GeoChart.lean 20:14). Three seats now converge on the same file
+in SEQUENCED, single-writer steps.
+
+### Tick-281 addendum: t10's sorry-2 report (crossed with the merge) — answers relayed
+The report crossed my merge (already banked at tick 281). Proof shape recorded for the
+ledger: conOracle_step_children_ne_nil (~55 lines, full oracle dispatch, terminal branches
+contradict oracleTerminal) — a REUSABLE fact the (D) node-walk will likely want, noted to
+t10 — and the rollover branch collapses the id-passthrough head singleton with NO
+geoChartMap exposure (all edges chartless → no whnf hazard). Answers: hold GeoCoverSpec
+(fresh-eyes-t13 owns :133); no AxCheck run needed (module off the gate path; the full gate
+re-runs at discharge). t10 idle-correct on ONE trigger: t11's spine push → step 3.
+
+### Tick-281 addendum 2: t10's docstring commit merged (the chartless-class statement corrected in-file)
+d437711d0 merged: the dCenterOfNode=0 branch's docstring now cites clause (D)'s
+dCenterOfEdge-gating and states the chartless class correctly (rollover + degenerate
+zero-block case-2 — not rollover alone). Fresh-eyes-t13 already spawned (its worktree
+pre-dates this docstring-only commit; disjoint lines — trivial merge at fold-in). t10
+confirmed holding GeoCoverSpec, idle-correct on the step-3 trigger.
