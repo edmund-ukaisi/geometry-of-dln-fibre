@@ -339,6 +339,280 @@ theorem childLeaves_subset (M : Fin (L + 1) → ℕ) (s : ConState L) {node : St
   exact ⟨Edge.mk c.ecase c.esubst (buildTree M (conOracle M) c.child),
     List.mem_map.2 ⟨c, hc, rfl⟩, hl⟩
 
+/-- **Positive widths ⟹ positive running-min width** `0 < widthMinUpto M n` (the inf' of positive
+widths). Load-bearing for the anchor descent: the rollover threshold never traps the anchor. -/
+theorem widthMinUpto_pos {M : Fin (L + 1) → ℕ} (hMpos : ∀ i, 0 < M i) (n : ℕ) :
+    0 < widthMinUpto M n :=
+  (Finset.lt_inf'_iff _).2 (fun i _ => hMpos i)
+
+/-- **Post-birth suffix stays below the envelope** (cert §1/§4, the `Clearable` arithmetic). Once an
+admissible clearable `a` drops strictly below the running-min envelope at coord `b`
+(`a b < widthMinUpto M (b+1)`), it stays strictly below at every later coord `d ≥ b`. Otherwise the
+envelope is re-touched at some `d ≥ b`; take the LAST re-touch `e` (it exists, `≥ d`, and `e ≠ L−1`
+since `a^L = 0 < envelope` by positive widths); at `e+1` the profile strictly descends from the
+saturated `a e`, so `Clearable e (e+1)` forces `a b` (with `b ≤ e`) back onto the envelope —
+contradiction. -/
+theorem clearable_suffix_lt_runMinWidth {M : Fin (L + 1) → ℕ} {a : Fin L → ℕ}
+    (ha : a ∈ Adm M) (hc : Clearable M a) (hMpos : ∀ i, 0 < M i) {b d : Fin L}
+    (hb : a b < widthMinUpto M (b.val + 1)) (hbd : b ≤ d) :
+    a d < widthMinUpto M (d.val + 1) := by
+  obtain ⟨_, hdec, hlast⟩ := (Finset.mem_filter.1 ha).2
+  by_contra hcon
+  push_neg at hcon
+  have hd_eq : a d = widthMinUpto M (d.val + 1) :=
+    le_antisymm (adm_le_widthMinUpto M a ha d) hcon
+  have hL : 0 < L := lt_of_le_of_lt (Nat.zero_le d.val) d.isLt
+  -- the LAST coord where `a` re-touches the envelope, at or after `d`.
+  obtain ⟨e, hemem, hemax⟩ := Finset.exists_max_image
+    (Finset.univ.filter (fun e : Fin L => d ≤ e ∧ a e = widthMinUpto M (e.val + 1)))
+    (fun e => e.val)
+    ⟨d, Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_refl _, hd_eq⟩⟩
+  obtain ⟨-, hde, he_env⟩ := Finset.mem_filter.mp hemem
+  -- `e ≠ L−1`: the last coord is `0 < envelope`.
+  have henvpos : 0 < widthMinUpto M ((L - 1) + 1) := widthMinUpto_pos hMpos _
+  have he_ne_last : e.val ≠ L - 1 := by
+    intro h
+    have hz : widthMinUpto M (e.val + 1) = 0 := by rw [← he_env]; exact hlast e h
+    rw [h] at hz; omega
+  have hej : e.val + 1 < L := by omega
+  set j : Fin L := ⟨e.val + 1, hej⟩ with hj
+  have hjval : (j : ℕ) = e.val + 1 := by rw [hj]
+  have hej_le : e ≤ j := by rw [Fin.le_def, hjval]; omega
+  -- `a j < a e` (strict): else `j` re-touches the envelope, contradicting `e = max`.
+  have haj_lt : a j < a e := by
+    rcases lt_or_eq_of_le (hdec e j hej_le) with h | h
+    · exact h
+    · exfalso
+      have h1 : widthMinUpto M (j.val + 1) ≤ widthMinUpto M (e.val + 1) :=
+        widthMinUpto_mono M (by rw [hjval]; omega)
+      have h2 : a j ≤ widthMinUpto M (j.val + 1) := adm_le_widthMinUpto M a ha j
+      have hjenv : a j = widthMinUpto M (j.val + 1) := by rw [h, he_env] at h2 ⊢; omega
+      have hjmem : j ∈ Finset.univ.filter
+          (fun e : Fin L => d ≤ e ∧ a e = widthMinUpto M (e.val + 1)) :=
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, le_trans hde hej_le, hjenv⟩
+      have hle := hemax j hjmem
+      rw [hjval] at hle; omega
+  -- `Clearable e (e+1)` then forces `a b = envelope`, contradicting `hb`.
+  have hcl := hc e j (by rw [hj]) haj_lt (by rw [hj]; exact he_env)
+  have hbenv := hcl b (le_trans (Fin.le_def.mp hbd) (Fin.le_def.mp hde))
+  omega
+
+/-! ### The 3-phase steering invariant (`SteerInv`), cert §4 / both design consults
+
+The `conRel`-WF induction carries `SteerInv M a s`: the state satisfies the banked cone-goodness
+(`OracleInv` + `NumDivInv`) and exactly one of three phases along the `R(a)` steered path — `pre`
+(the envelope diagonal being laid, no anchor yet), `anchored` (the anchor `A` present, head `= a`,
+descending), or `done` (terminal, `A`'s profile IS `a`). The load-bearing strengthening over the cert's
+anchor-only form is the **level-coverage** clause (every level `≤ a^layer` is occupied) — it forces the
+anchor's pull at exactly `cleared = a^layer` (both consults; the cert's anchor-only invariant is too
+weak). -/
+
+/-- The anchor's target profile at layer `S`, level `q`: `a` on the frozen head (`< S`), flat `q` on
+the tail (`≥ S`). At the terminal layer `cut a L q = a` on every coord. -/
+def cut (a : Fin L → ℕ) (S q : ℕ) : Fin L → ℕ := fun p => if (p : ℕ) < S then a p else q
+
+/-- **Phase 1 — pre-birth**: the head is the running-min envelope, `cleared` has not passed `a^layer`,
+and every level below `cleared` is occupied (the diagonal being laid down; no anchor yet). -/
+def SteerPre (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  ∃ hm : s.layer < L,
+    (∀ i : Fin L, (i : ℕ) < s.layer → a i = runMinWidth M i) ∧
+      s.cleared ≤ a ⟨s.layer, hm⟩ ∧
+      (∀ q : ℕ, q < s.cleared → ∃ k : Fin s.numDiv, s.divTilde k = q)
+
+/-- **Phase 2 — post-birth**: the anchor `A` is present with profile `cut a layer q` (head `= a`, flat
+tail `= q`) and level `q`; the whole suffix is strictly below the envelope; every level `≤ a^layer` is
+occupied (LowCover — the pull-forcing clause); `a^layer ≤ q < widthMinUpto layer` (the anchor is live);
+and `A` is either LANDED (`q = a^layer`) or PENDING (`q = a^{layer-1} > a^layer`, `cleared ≤ a^layer`). -/
+def SteerAnchored (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  ∃ hm : s.layer < L,
+    (∀ i : Fin L, s.layer ≤ (i : ℕ) → a i < widthMinUpto M ((i : ℕ) + 1)) ∧
+      (∀ q : ℕ, q ≤ a ⟨s.layer, hm⟩ → ∃ k : Fin s.numDiv, s.divTilde k = q) ∧
+        ∃ A : Fin s.numDiv, ∃ q : ℕ,
+          s.divProfile A = cut a s.layer q ∧ s.divTilde A = q ∧
+            a ⟨s.layer, hm⟩ ≤ q ∧ q < widthMinUpto M s.layer ∧
+              (q = a ⟨s.layer, hm⟩ ∨
+                (∃ hm1 : s.layer - 1 < L, q = a ⟨s.layer - 1, hm1⟩ ∧
+                  a ⟨s.layer, hm⟩ < q ∧ s.cleared ≤ a ⟨s.layer, hm⟩))
+
+/-- **Phase 3 — done**: at the terminal layer the anchor's profile IS `a` (level `0`). -/
+def SteerDone (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  L ≤ s.layer ∧ ∃ A : Fin s.numDiv, s.divProfile A = a ∧ s.divTilde A = 0
+
+/-- **The steering invariant** carried through the `conRel`-WF fold: cone-goodness (`OracleInv` +
+`NumDivInv`) plus exactly one steering phase. -/
+def SteerInv (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  OracleInv M s ∧ NumDivInv M s ∧
+    (SteerPre M a s ∨ SteerAnchored M a s ∨ SteerDone a s)
+
+/-- **A cone-good state that terminates has `L ≤ layer`** — rules out the chooser fallback terminal:
+the other terminal route needs `chooseMin = none` at an occupied target level, impossible on a
+`SameLevelChainInv` state (`chooserTotalOnChain_of_sameLevel`). Mirrors `conOracle_terminal_leaf`'s
+dispatch, deriving a contradiction in every non-`L ≤ layer` branch. -/
+theorem conOracle_terminal_le {M : Fin (L + 1) → ℕ} {s : ConState L} (hslc : SameLevelChainInv s)
+    {l' : LeafData M} {hl'} (h : conOracle M s = ConDecision.terminal l' hl') : L ≤ s.layer := by
+  by_contra hcon
+  by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+  · rw [show conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp hcon)) h2 from by
+      unfold conOracle; rw [dif_neg hcon, dif_pos h2]] at h
+    simp only [rolloverDecision, reduceCtorEq] at h
+  · have hcap : s.cleared < layerCap M :=
+      lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+    rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+        if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+        then some (s.divTilde k) else none)).min? with _ | target
+    · rw [show conOracle M s = case2Decision M s (widthMinUpto M s.layer - s.cleared)
+          (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap from by
+        unfold conOracle; rw [dif_neg hcon, dif_neg h2]; split <;> simp_all only [reduceCtorEq]] at h
+      simp only [case2Decision, reduceCtorEq] at h
+    · obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+      rw [List.mem_filterMap] at hmemtar
+      obtain ⟨k0, _, hk0⟩ := hmemtar
+      have hdt : s.divTilde k0 = target := by
+        by_cases hc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+        · rw [if_pos hc] at hk0; exact Option.some.inj hk0
+        · rw [if_neg hc] at hk0; exact absurd hk0 (by simp)
+      rcases hf : chooseMin s target with _ | f
+      · have htot := chooserTotalOnChain_of_sameLevel s hslc target ⟨k0, hdt⟩
+        rw [hf] at htot; simp at htot
+      · have htar : s.cleared + 1 ≤ target := by
+          by_cases hc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hc] at hk0; have := Option.some.inj hk0; omega
+          · rw [if_neg hc] at hk0; exact absurd hk0 (by simp)
+        have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+        rw [show conOracle M s = case1Decision M s f (target - s.cleared)
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+            (not_le.mp hcon) (by omega) (by rw [htgt]; omega) hcap from by
+          unfold conOracle; rw [dif_neg hcon, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+          all_goals (try subst_vars)
+          all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))] at h
+        simp only [case1Decision, reduceCtorEq] at h
+
+/-- **`SteerInv` holds at the root** — cone-goodness (banked) + phase `pre` (vacuous at layer `0`,
+cleared `0`; needs `0 < L` for the `layer < L` witness). The base of the steered fold. -/
+theorem SteerInv_conRoot (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (hL : 0 < L) :
+    SteerInv M a (conRoot : ConState L) := by
+  refine ⟨OracleInv_conRoot, NumDivInv_conRoot, Or.inl ⟨hL, ?_, ?_, ?_⟩⟩
+  · intro i hi; exact absurd hi (Nat.not_lt_zero _)
+  · exact Nat.zero_le _
+  · intro q hq; exact absurd hq (Nat.not_lt_zero _)
+
+/-- **The `R(a)`-steered child preserves `SteerInv`** (the phase-maintenance core, cert §4). At a step
+state, select the child `conOracle` emits along the steering rule (case-1(1) iff the target level
+`> a^layer`, else case-1(2); rollover/case-2 forced) and re-establish `SteerInv` at it. The
+level-coverage clause forces the anchor's pull at exactly `cleared = a^layer` (the descent case).
+CRUX (sorried): the per-phase per-transition maintenance — birth (case-2 at `cleared = a^layer`),
+plateau/descent (case-1), transport (append via `Fin.castSucc`), rollover (landed→pending). -/
+theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha : a ∈ Adm M)
+    (hc : Clearable M a) (hMpos : ∀ i, 0 < M i) {s : ConState L} (hinv : SteerInv M a s)
+    (hlt : s.layer < L) :
+    ∃ c ∈ (conOracle M s).stepChildren, SteerInv M a c.child := by
+  obtain ⟨inv, hnd, hphase⟩ := hinv
+  have h1 : ¬ L ≤ s.layer := not_le.mpr hlt
+  -- OracleInv / NumDivInv for any emitted child are free (banked); only the PHASE is the content.
+  suffices h : ∃ c ∈ (conOracle M s).stepChildren,
+      (SteerPre M a c.child ∨ SteerAnchored M a c.child ∨ SteerDone a c.child) by
+    obtain ⟨c, hcmem, hp⟩ := h
+    exact ⟨c, hcmem, OracleInv_conOracle_stepChildren s inv c hcmem,
+      NumDivInv_conOracle_stepChildren s hnd c hcmem, hp⟩
+  by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+  · -- ROLLOVER (forced): the single child `s.stepRollover`.
+    rw [show conOracle M s = rolloverDecision M s (le_of_lt hlt) h2 from by
+      unfold conOracle; rw [dif_neg h1, dif_pos h2]]
+    refine ⟨_, List.mem_singleton_self _, ?_⟩
+    show SteerPre M a s.stepRollover ∨ SteerAnchored M a s.stepRollover ∨ SteerDone a s.stepRollover
+    sorry
+  · have hcap : s.cleared < layerCap M :=
+      lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+    rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+        if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+        then some (s.divTilde k) else none)).min? with _ | target
+    · -- CASE-2 (forced): the single appended child.
+      rw [show conOracle M s = case2Decision M s (widthMinUpto M s.layer - s.cleared)
+          (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap from by
+        unfold conOracle; rw [dif_neg h1, dif_neg h2]; split <;> simp_all only [reduceCtorEq]]
+      refine ⟨_, List.mem_singleton_self _, ?_⟩
+      show SteerPre M a (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+          (fun p => runMinWidth M p)) ∨
+        SteerAnchored M a (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+          (fun p => runMinWidth M p)) ∨
+        SteerDone a (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+          (fun p => runMinWidth M p))
+      sorry
+    · rcases hf : chooseMin s target with _ | f
+      · -- chooser fallback: impossible on a `SameLevelChainInv` state.
+        exfalso
+        obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+        rw [List.mem_filterMap] at hmemtar
+        obtain ⟨k0, _, hk0⟩ := hmemtar
+        have hdt : s.divTilde k0 = target := by
+          by_cases hcc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hcc] at hk0; exact Option.some.inj hk0
+          · rw [if_neg hcc] at hk0; exact absurd hk0 (by simp)
+        have htot := chooserTotalOnChain_of_sameLevel s inv.slc target ⟨k0, hdt⟩
+        rw [hf] at htot; simp at htot
+      · -- CASE-1: two children; steer 1(1) iff `target > a^layer`, else 1(2).
+        have htar : s.cleared + 1 ≤ target := by
+          obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+          rw [List.mem_filterMap] at hmemtar
+          obtain ⟨k0, _, hk0⟩ := hmemtar
+          by_cases hcc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hcc] at hk0; have := Option.some.inj hk0; omega
+          · rw [if_neg hcc] at hk0; exact absurd hk0 (by simp)
+        have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+        rw [show conOracle M s = case1Decision M s f (target - s.cleared)
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+            (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap from by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+          all_goals (try subst_vars)
+          all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))]
+        simp only [case1Decision, ConDecision.stepChildren]
+        by_cases hsteer : a ⟨s.layer, hlt⟩ < target
+        · -- 1(1): the merge child (first).
+          refine ⟨_, List.mem_cons_self, ?_⟩
+          sorry
+        · -- 1(2): the split child (second).
+          refine ⟨_, List.mem_cons_of_mem _ (List.mem_singleton_self _), ?_⟩
+          sorry
+
+/-- **The steered leaf fold** (cert §4, the `conRel`-WF induction): from `SteerInv M a s`, some leaf of
+`buildTree M (conOracle M) s` carries `a` as an analytic divisor profile. At a terminal, `SteerInv`
+gives phase `done` (the other phases need `layer < L`, excluded by `conOracle_terminal_le`), whose
+anchor reads off via `leafOfState_carries`; at a step, `exists_steered_child` picks the steered child
+and `childLeaves_subset` chains its realized leaf up. -/
+theorem realize_aux (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha : a ∈ Adm M) (hc : Clearable M a)
+    (hMpos : ∀ i, 0 < M i) (s : ConState L) (hinv : SteerInv M a s) :
+    ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s),
+      ∃ k : Fin l.numDiv, l.divProfile k = a := by
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+      have hle : L ≤ s.layer := conOracle_terminal_le hinv.1.slc hoc
+      rcases hinv.2.2 with hpre | hanch | hdone
+      · exfalso; obtain ⟨hm, _⟩ := hpre; omega
+      · exfalso; obtain ⟨hm, _⟩ := hanch; omega
+      · obtain ⟨-, A, hAprof, hA0⟩ := hdone
+        have hfd : 0 < flatDim M :=
+          lt_of_lt_of_le (lt_of_le_of_lt (Nat.zero_le A.val) A.isLt)
+            (numDiv_le_flatDim_of_inv hinv.2.1)
+        obtain ⟨k, hk⟩ := leafOfState_carries s hfd A hA0 hAprof
+        refine ⟨leafOfState M s, ?_, k, hk⟩
+        rw [buildTree_terminal M (conOracle M) s l' hleaf hoc, conOracle_terminal_leaf s hoc]
+        simp [ResolutionTree.leaves]
+    | step node children hnode hlayer hstep =>
+      have hlt : s.layer < L := by
+        by_contra hcon
+        rw [show conOracle M s = oracleTerminal M s from by
+          unfold conOracle; rw [dif_pos (not_lt.mp hcon)]] at hoc
+        simp only [oracleTerminal, reduceCtorEq] at hoc
+      obtain ⟨c, hcmem, hcinv⟩ := exists_steered_child M a ha hc hMpos hinv hlt
+      rw [hoc] at hcmem
+      simp only [ConDecision.stepChildren] at hcmem
+      obtain ⟨l, hl, k, hk⟩ := ih c.child c.hdesc hcinv
+      exact ⟨l, childLeaves_subset M s hoc hcmem hl, k, hk⟩
+
 /-- **`tStar M` is realized as a `t̃ = 0` leaf-divisor profile of the built tree** (cert §4, the
 anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
 `Clearable-Adm` (= R7). The `t̃ = 0` is automatic (`tStar ∈ Adm`, last coord `0`).
@@ -357,8 +631,9 @@ clause forcing the anchor's pull at exactly `cleared = tStar^S`), reading `tStar
 leaf. Tripwire: if the level-coverage / phase-maintenance fights, STOP + report. -/
 theorem tStar_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) (hMpos : ∀ i, 0 < M i) :
     ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
-      ∃ k : Fin l.numDiv, l.divProfile k = tStar M := by
-  sorry
+      ∃ k : Fin l.numDiv, l.divProfile k = tStar M :=
+  realize_aux M (tStar M) (tStar_mem M) (clearable_tStar M) hMpos conRoot
+    (SteerInv_conRoot M (tStar M) hL)
 
 /-- **`o5_core`, realized** (cert §3 + §4 composed): `minAdm M` is a divisor exponent of a leaf of the
 built tree. The MOVE-AT-LANDING target — when this lands, o5_core moves here from `EngineConstruction`
