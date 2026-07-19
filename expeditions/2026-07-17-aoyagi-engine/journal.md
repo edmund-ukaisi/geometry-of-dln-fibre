@@ -4926,3 +4926,17 @@ stepUpdate arithmetic the §3 maintenance consumes. t14 actively grinding (GeoFo
 33.5k and growing); inj-t16 writing GeoInjFold.lean this minute; loss-t15 correctly blocked
 on t14; t10 in its grounding phase on the charge-5 ruling (~20 min, the ruling is long —
 not yet a stall; next glance checks for its push-1). All lanes nominal.
+
+## 2026-07-19 tick 310: Inv_val statement GATED (2 riders); loss-t15 GO on the t14-independent pieces
+The design merged (175a86025) and gated PASS: InvVal(acc,s) = "prod M (acc w) =
+partialDiag M s w" (§7's Aoyagi partial-diagonal form — the power-1 squarefree b-chain at
+the cleared corner, D_J the residual block), four maintenance signatures α-marked per the
+value-carrying table, conRoot base, and the KEY property: the leaf-discharge bridge
+(leafDiagFrob_of_invVal) is T14-INDEPENDENT — at a spine leaf the invariant collapses to
+diag(b) and the typed b-chain fields deliver exactly LeafDiagFrob. RIDERS: (1) thread
+DivBirthInv in the maintenance signatures (the value-side spectator reads need the same
+freshness the det side does — in the signatures now, not retrofitted); (2) pin the
+partialDiag block-encoding INTERFACE abstractly so the t14-coupled finalization is a
+substitution. GO issued on the t14-independent trio (the bridge + frobSq-of-diagonal +
+the ρ instantiation) — pre-building the crux's whole consumer side. After that, the value
+instance owes only the four maintenance proofs + the walk mirror on t14's landed pattern.
