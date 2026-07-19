@@ -103,10 +103,12 @@ exactly DEFERRED clause (D) — fidelity coherence (NOT consumed by `region_glue
 encoding deferred to me for the carrier phase): each atlas piece's `chartMap` is the REAL `β∘ψ`
 geometric fold of a `t`-path (a `geometricLeafPaths t` analog + the banked `pivotChart`/gauge atoms —
 never an opaque `Params M → Params M`; two-sided honesty: provable over the constructed atlas, false on
-a generic one). GATE (cordon-checked): (D) must be IN this type BEFORE `chartBridge_buildTree`'s
-discharge lands — a proven discharge against a (D)-less type would close the hole with the "`t`'s cover"
-tie missing. (D) lands additively (a def-only touch; `region_glue` and the `CanonicalResolution`
-projection are agnostic to it). -/
+a generic one). R-SPLIT (elder charge-4, 2026-07-19): (D) canNOT be a conjunct of THIS type — the
+geometric names (`geoChartMapNorm`/`geoAtlas`/`cNodeOf`/`realCNode`) sit ABOVE `EngineDefs` in the
+import DAG, and `ChartBridge` is pinned low by `CanonicalResolution`. So the geometric-fidelity tie is
+`chartBridgeFaithful_buildTree` (`ChartBridgeFaithful.lean`), and the GATE is realized by the
+PROJECTION: `chartBridge_buildTree` is defined as the projection of `chartBridgeFaithful_buildTree`, so
+(D) is on the payoff's proof CONE (undroppable) — strictly stronger than an in-type conjunct. -/
 def ChartBridge (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
   ∃ atlas : List (LeafData M),
     (∃ U : Set (Params M), IsOpen U ∧ (0 : Params M) ∈ U ∧

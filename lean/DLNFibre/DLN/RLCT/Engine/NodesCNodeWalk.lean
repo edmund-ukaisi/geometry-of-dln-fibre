@@ -5,13 +5,15 @@ import DLNFibre.DLN.RLCT.Engine.QNodeCarrier
 
 The conjunct-2 fidelity of clause (D): every internal node of the built tree has
 `cNodeOf = realCNode` — the per-node center split blows up the INTENDED (ledger-born) coordinates,
-never the injectivity fallback. Proven by well-founded induction over `ConState` (mirroring
-`DivBirthReach.leaves_chart_clauses`), threading `DivBirthInv` down the tree and consuming the
-per-node atom `QNodeCarrier.cNodeOf_eq_realCNode_of_conOracle` at each step-node.
+never the injectivity fallback. This is the **ALL-NODES LIFT** of t09's per-subtree-root atom
+`QNodeCarrier.cNodeOf_eq_realCNode_of_conOracle` (its Card-3 deferred item 2): the atom certifies
+ONE built-tree subtree-root node, and this walk lifts it to EVERY node by well-founded induction
+over `ConState` (mirroring `DivBirthReach.leaves_chart_clauses`), threading `DivBirthInv` down the
+tree via `DivBirthInv_conOracle_stepChildren` and applying the atom at each step-node.
 
-This walk is R-split-invariant (it is conjunct 2 of clause (D) under every design variant, and reads
-only `QNodeCarrier` + `DivBirthReach` — no `GeoChart`), so it is drafted here ahead of the statement
-gate; its final home moves with the ratified (D) module placement.
+It is R-split-invariant (conjunct 2 of clause (D) under every design variant, reading only
+`QNodeCarrier` + `DivBirthReach` — no `GeoChart`); consumed by `ChartBridgeFaithful` as the proof of
+`ChartBridgeFidelity`'s node conjunct.
 -/
 
 namespace DLNFibre.DLN.RLCT.Engine

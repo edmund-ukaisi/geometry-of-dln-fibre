@@ -334,3 +334,25 @@ cover's disjointness story should survive). The option is at least well-formed i
 WHAT IT CHANGES: nothing yet (the ruling is the elder's); confidence that the fix is a
 small chart-side edit rather than an emission rewrite rises. Entry class: model-of-the-
 construction verification — 1/1 this arc.
+
+## Entry 11 (coverage-t08 seat-surfaced): obligation-statement counter 7→8 — the elder's own unfillable gate form
+
+**Obligation-statement instance #8** (the slogan-vs-signature family; this one owned by the
+ELDER, per its charge-4 ruling). The gate-#10 form as ruled — "clause (D) must be a conjunct
+IN `ChartBridge`'s type (`EngineDefs`), phrased against `geoChartMapNorm`/`diagTargetOf`" — is
+UNFILLABLE: those names sit ABOVE `EngineDefs` in the import DAG (GeoChart → ShearReconcile →
+PivotCoverFold → EngineDefs; QNodeCarrier → … → EngineConstruction → EngineDefs), and
+`ChartBridge` is pinned low by `CanonicalResolution`. The obstruction was verified by
+import-chain trace before any edit (the arity-edit charge-item falling out MOOT was the tell
+the shared model had (D) as a literal EngineDefs conjunct).
+**Elder's phrasing (quoted, charge-4 ruling):** the form "was ruled without checking the
+imports; the intent survives via the projection" — the R-split makes the gate STRONGER than the
+original: `chartBridge_buildTree` becomes the PROJECTION of `chartBridgeFaithful_buildTree`,
+putting (D) on the payoff's proof CONE (undroppable), which the in-type conjunct never was.
+**Class:** slogan-for-signature — a design GATE stated at the slogan level ("(D) in the type")
+without checking the type's actual import position could carry the named geometry. Same family
+as the earlier instances (a specification written to intent, refuted by the mechanical signature).
+**Caught by:** the executor's pre-edit DAG check (verifier hierarchy again — the ruling < the
+build's import graph). No proof wasted; surfaced before the first cycle.
+**Lesson:** a gate that names WHERE a fidelity lands (a module/type) must be checked against the
+import DAG at ruling time — "put X in type T" is unfillable if T sits below X's dependencies.
