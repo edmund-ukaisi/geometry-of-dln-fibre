@@ -3647,3 +3647,15 @@ the brief; the SPECIFY's decisions stand unless a build step FALSIFIES one — t
 The closing pair's second lane (t11, the fold-Jacobian wall) awaits t09's q-det → coverage's
 fold SPECIFY. Board: t09 (q-det #27 + #26) ∥ t10 (the cover) ∥ coverage (warm, the fold
 SPECIFY next).
+
+## 2026-07-19 tick 251: q-det LANDED (the linearity form) — the fold SPECIFY triggered
+t09's q-det merged + probed (55706ed22): qOfCenterCLE + the rfl coe + qOfCenter_hasFDerivAt/
+_symm — the POINTWISE fderiv-as-fixed-CLE form, deliberately chosen over measure-preservation
+(the fold's det-conjugation needs linearity; MP banked separately on request). Watch line
+added. COVERAGE TRIGGERED on the fold-Jacobian SPECIFY (the full content list: the statement,
+the chain-rule skeleton w/ the conjugation via the q-det trio, the elder's substitution table,
+the per-case ledger derivations, the consumed-atom pins, + t11's LeafPullback size-and-report
+item; a validated fill-target if it states cleanly). t09 → #26 (the fidelity lemma, tripwire
+standing). THE BOARD, full closing configuration: t09 (#26) ∥ t10 (the cover build) ∥
+coverage (the fold SPECIFY) → t11 spawns at its delivery. All four remaining Lean pieces
+owned; the discharge checklist banked; the gates pre-checked.
