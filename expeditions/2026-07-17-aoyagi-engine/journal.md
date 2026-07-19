@@ -3363,3 +3363,13 @@ GeoChart wired into the AxCheck closure (controller side, verifying in backgroun
 origin push-lag on qEdgeOf noted-and-resolved (flagged for other seats). Tide remaining:
 geometricLeafPaths → atlas materialization → cover fold → 3 Props (fed hyps) → (A)/(C)/(D)
 [gate #10] → flags [#15] → the full-batch discharge gate. t07 parallel on reachability.
+
+## 2026-07-19 tick 227: tide piece 2 merged — the geometric fan-out enumeration is REAL
+038ca537c: geometricLeafPaths/geomEdges (mutual structural recursion; the Edge.mk destructure +
+recurse-once-with-id-then-post-map form) — the EDGE-DRIVEN fan-out per gate-9 amendment 1:
+per edge, fan over Fin (dCenterOfEdge n e), compose geoChartMap onto each child composite;
+atlas = geometricLeafPaths id t. The object whose payload-shape calibration entry 3 pinned
+(the leafPaths recursion SHAPE with the edge/d_center payload) now exists as coverage designed
+it. The tide's structural foundation is banked; the larger proofs next (atlas materialization →
+cover fold → Props → clauses). GeoChart's AxCheck wiring still verifying in background
+(uncommitted until green). t07 parallel.
