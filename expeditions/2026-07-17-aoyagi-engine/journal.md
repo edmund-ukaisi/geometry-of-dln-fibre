@@ -5000,3 +5000,18 @@ lemmas (the interface-first discipline); the filtered-set generalization offer (
 one-line relax at its next wake if disj-t17 prefers that form) relayed with it. The R7
 understanding confirmed on t14's side ("the ∃-discharge wraps my fold-det as the identity
 conjunct — clean").
+
+## 2026-07-19 tick 313: roster cleanup (operator-requested) — seven stand-downs, the working set clarified
+Shutdown requests sent with honors to the DONE seats: pnp-fold (5 certs), pnp-loss (the
+loss-factorization cert), rev-carrier (the carrier review), navigator-4 (pass #4, context
+since superseded), fresh-eyes-t13 (the coercion idiom), architect-t09 (the carrier),
+architect-t11 (the fold spine + normalization). THE WORKING SET after cleanup:
+- ACTIVE: t10 (the R7 batch) ∥ disj-t17 (the corner disjointness) ∥ inj-t16 (a.e.-inj step 3).
+- RESTING WITH OWED WORK: t14 (case-12 + the walk assembly, returns fresh) ∥ loss-t15
+  (the Inv_val maintenance + instantiation, triggers on t14).
+- STANDING OFFICES (operator arrangement, kept): elder-standing (6 charges) +
+  carto-standing (2 passes).
+- ANSWER DESK (kept, justified): coverage-t08 — the (D)/discharge designer of record and
+  the spec author for inj-t16's build; one-question wakes only; the projection-fill
+  capstone offer stands. Everything else terminated. Task list pruned implicitly (the
+  completed tasks stand as the record).
