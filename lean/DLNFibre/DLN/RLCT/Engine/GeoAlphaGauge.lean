@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Engine.GeoChart
 import DLNFibre.DLN.RLCT.Engine.EngineDefs
+import DLNFibre.DLN.RLCT.Engine.GeoJacobianFold
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.GeoAlphaGauge` — the α source-gauge + LeafPullback (loss-t15, PHASE 1)
@@ -43,6 +44,80 @@ writes back. A polynomial det-1 homeomorphism (PHASE-2 lemmas). -/
 noncomputable def flatElemShear (a b c : Fin (flatDim M)) : Params M → Params M :=
   fun w => (paramsEquivFlat M).symm (elemShear a b c (paramsEquivFlat M w))
 
+/-- The CLE inverse has the same underlying function as the measurable-equiv inverse (both are the
+unique inverse of the shared forward flattening). -/
+theorem paramsEquivFlatCLE_symm_coe (H : Fin (L + 1) → ℕ) :
+    ⇑(paramsEquivFlatCLE H).symm = ⇑(paramsEquivFlat H).symm := by
+  funext x
+  apply (paramsEquivFlat H).injective
+  rw [MeasurableEquiv.apply_symm_apply, ← paramsEquivFlatCLE_coe,
+    ContinuousLinearEquiv.apply_symm_apply]
+
+/-- **The flat read of `flatElemShear`**: `z_·(flatElemShear a b c w) = elemShear a b c (z_·(w))`
+— the shear acts as `x_a ↦ x_a − x_b·x_c` on the flat coordinates. -/
+theorem flatElemShear_flat_read (a b c : Fin (flatDim M)) (w : Params M) :
+    paramsEquivFlat M (flatElemShear a b c w) = elemShear a b c (paramsEquivFlat M w) := by
+  rw [flatElemShear, MeasurableEquiv.apply_symm_apply]
+
+/-- `(paramsEquivFlat M).symm` has constant fderiv the inverse reindex CLM (it is ℝ-linear). -/
+theorem hasFDerivAt_paramsEquivFlat_symm (x : Fin (flatDim M) → ℝ) :
+    HasFDerivAt (⇑(paramsEquivFlat M).symm)
+      ((paramsEquivFlatCLE M).symm.toContinuousLinearMap) x := by
+  have h : HasFDerivAt (⇑(paramsEquivFlatCLE M).symm)
+      ((paramsEquivFlatCLE M).symm.toContinuousLinearMap) x :=
+    (paramsEquivFlatCLE M).symm.hasFDerivAt
+  refine h.congr_of_eventuallyEq ?_
+  filter_upwards with y
+  rw [paramsEquivFlatCLE_symm_coe]
+
+/-- **`flatElemShear` is Fréchet-differentiable** with derivative the CLE-conjugated
+`elemShearDeriv` — chain rule over `E.symm ∘ elemShear ∘ E` (`E = paramsEquivFlatCLE`, linear). -/
+theorem flatElemShear_hasFDerivAt (a b c : Fin (flatDim M)) (w : Params M) :
+    HasFDerivAt (flatElemShear a b c)
+      ((paramsEquivFlatCLE M).symm.toContinuousLinearMap.comp
+        ((elemShearDeriv a b c (paramsEquivFlat M w)).comp
+          (paramsEquivFlatCLE M).toContinuousLinearMap)) w := by
+  have hInner : HasFDerivAt (⇑(paramsEquivFlat M))
+      ((paramsEquivFlatCLE M).toContinuousLinearMap) w := hasFDerivAt_paramsEquivFlat M w
+  have hMid : HasFDerivAt (elemShear a b c) (elemShearDeriv a b c (paramsEquivFlat M w))
+      (paramsEquivFlat M w) := elemShear_hasFDerivAt a b c (paramsEquivFlat M w)
+  have hOuter : HasFDerivAt (⇑(paramsEquivFlat M).symm)
+      ((paramsEquivFlatCLE M).symm.toContinuousLinearMap)
+      (elemShear a b c (paramsEquivFlat M w)) := hasFDerivAt_paramsEquivFlat_symm _
+  have h1 : HasFDerivAt (fun x => elemShear a b c (paramsEquivFlat M x))
+      ((elemShearDeriv a b c (paramsEquivFlat M w)).comp
+        (paramsEquivFlatCLE M).toContinuousLinearMap) w := hMid.comp w hInner
+  exact hOuter.comp w h1
+
+/-- **`flatElemShear` is differentiable everywhere**. -/
+theorem flatElemShear_differentiable (a b c : Fin (flatDim M)) :
+    Differentiable ℝ (flatElemShear a b c) :=
+  fun w => (flatElemShear_hasFDerivAt a b c w).differentiableAt
+
+/-- **`flatElemShear` is det-1** (given the `elemShear` side conditions `a ≠ b`, `a ≠ c`): the CLE
+conjugation preserves the determinant (`LinearMap.det_conj`), and `elemShearDeriv_det = 1`. -/
+theorem flatElemShear_abs_det_one (a b c : Fin (flatDim M)) (hab : a ≠ b) (hac : a ≠ c)
+    (w : Params M) : |(fderiv ℝ (flatElemShear a b c) w).det| = 1 := by
+  rw [(flatElemShear_hasFDerivAt a b c w).fderiv]
+  have hconj : ((paramsEquivFlatCLE M).symm.toContinuousLinearMap.comp
+        ((elemShearDeriv a b c (paramsEquivFlat M w)).comp
+          (paramsEquivFlatCLE M).toContinuousLinearMap)).det
+      = (elemShearDeriv a b c (paramsEquivFlat M w)).det := by
+    change LinearMap.det ((paramsEquivFlatCLE M).symm.toContinuousLinearMap.comp
+        ((elemShearDeriv a b c (paramsEquivFlat M w)).comp
+          (paramsEquivFlatCLE M).toContinuousLinearMap)).toLinearMap = _
+    have heq : ((paramsEquivFlatCLE M).symm.toContinuousLinearMap.comp
+          ((elemShearDeriv a b c (paramsEquivFlat M w)).comp
+            (paramsEquivFlatCLE M).toContinuousLinearMap)).toLinearMap
+        = ((paramsEquivFlatCLE M).symm.toLinearEquiv : (Fin (flatDim M) → ℝ) →ₗ[ℝ] Params M) ∘ₗ
+            (elemShearDeriv a b c (paramsEquivFlat M w)).toLinearMap ∘ₗ
+            ((paramsEquivFlatCLE M).symm.toLinearEquiv.symm :
+              Params M →ₗ[ℝ] (Fin (flatDim M) → ℝ)) :=
+      rfl
+    rw [heq, LinearMap.det_conj (elemShearDeriv a b c (paramsEquivFlat M w)).toLinearMap
+      (paramsEquivFlatCLE M).symm.toLinearEquiv]
+  rw [hconj, elemShearDeriv_det a b c hab hac (paramsEquivFlat M w), abs_one]
+
 /-- **The interior residual cells** of a d-family blow-up at `node` with block `rows × cols`: the
 triples `(a, b, c) = ((i,j), (i,piv), (piv,j))` in flat coordinates, `piv = (J,J)` the diagonal
 pivot (`= diagTargetOf`), `(i,j)` over the interior sub-block `i,j > J`. `α_d` clears each such cell
@@ -68,10 +143,32 @@ noncomputable def schurCells (node : StepData M) (rows cols : ℕ) :
             ⟨node.cleared + 1 + (j' : ℕ), by have := j'.isLt; have := h.choose_spec.2; omega⟩)
   else []
 
+/-- The per-cell shear maps of a d-family blow-up (each an interior-cell `flatElemShear`). -/
+noncomputable def schurMaps (node : StepData M) (rows cols : ℕ) : List (Params M → Params M) :=
+  (schurCells node rows cols).map fun abc => flatElemShear abc.1 abc.2.1 abc.2.2
+
 /-- **The interior-block Schur fold** (`α_d`): compose `flatElemShear` over `schurCells`. -/
 noncomputable def residualSchurShear (node : StepData M) (rows cols : ℕ) : Params M → Params M :=
-  (schurCells node rows cols).foldr
-    (fun abc acc => flatElemShear abc.1 abc.2.1 abc.2.2 ∘ acc) id
+  (schurMaps node rows cols).foldr (· ∘ ·) id
+
+/-- **The interior cells are valid `elemShear` triples**: `a ≠ b` and `a ≠ c` — the interior cell
+`(i,j)` (`i,j > J`) differs from the pivot column `(i,J)` in the column and from the pivot row
+`(J,j)` in the row (`flatCoordOf` injective). -/
+theorem schurCells_ne (node : StepData M) (rows cols : ℕ) :
+    ∀ abc ∈ schurCells node rows cols, abc.1 ≠ abc.2.1 ∧ abc.1 ≠ abc.2.2 := by
+  intro abc hmem
+  rw [schurCells] at hmem
+  split at hmem
+  · rw [List.mem_flatMap] at hmem
+    obtain ⟨i', _, hmem⟩ := hmem
+    rw [List.mem_map] at hmem
+    obtain ⟨j', _, rfl⟩ := hmem
+    refine ⟨fun heq => ?_, fun heq => ?_⟩
+    · obtain ⟨_, hj⟩ := flatCoordOf_injective M _ heq
+      rw [Fin.mk.injEq] at hj; omega
+    · obtain ⟨hi, _⟩ := flatCoordOf_injective M _ heq
+      rw [Fin.mk.injEq] at hi; omega
+  · exact (List.not_mem_nil hmem).elim
 
 /-- **The α source-gauge** (the incidence/Q,P Schur; `cert-psi-mix` §R-b): edge-class dispatch —
 `id` on the case-1(1) merge (`α_u = refl`) and rollover; the interior residual Schur fold on the
@@ -117,6 +214,32 @@ noncomputable def geoAtlasNorm (gauge : GeoChart M → Params M → Params M) (t
     List (LeafData M) :=
   ResolutionTree.leaves (tGeoG gauge id t)
 
+/-- The intermediate-point det product of a list of valid interior-cell shears is `1` (each factor
+is det-1 everywhere). -/
+theorem foldrCompAbsDet_flatElemShear
+    (cells : List (Fin (flatDim M) × Fin (flatDim M) × Fin (flatDim M)))
+    (hne : ∀ abc ∈ cells, abc.1 ≠ abc.2.1 ∧ abc.1 ≠ abc.2.2) (w : Params M) :
+    foldrCompAbsDet (cells.map fun abc => flatElemShear abc.1 abc.2.1 abc.2.2) w = 1 := by
+  induction cells with
+  | nil => rfl
+  | cons abc rest ih =>
+    rw [List.map_cons, foldrCompAbsDet]
+    obtain ⟨hab, hac⟩ := hne abc (List.mem_cons_self)
+    rw [flatElemShear_abs_det_one abc.1 abc.2.1 abc.2.2 hab hac,
+      ih (fun x hx => hne x (List.mem_cons_of_mem abc hx)), one_mul]
+
+/-- **The interior-block Schur fold is det-1** — a composition of valid `flatElemShear`s. -/
+theorem residualSchurShear_abs_det_one (node : StepData M) (rows cols : ℕ) (w : Params M) :
+    |(fderiv ℝ (residualSchurShear node rows cols) w).det| = 1 := by
+  rw [residualSchurShear, schurMaps,
+    abs_det_fderiv_foldr_comp _
+      (by
+        intro f hf
+        rw [List.mem_map] at hf
+        obtain ⟨abc, _, rfl⟩ := hf
+        exact flatElemShear_differentiable abc.1 abc.2.1 abc.2.2) w]
+  exact foldrCompAbsDet_flatElemShear _ (schurCells_ne node rows cols) w
+
 /-! ## PHASE-1 obligation statements (the `sorry` frontier) -/
 
 /-- **(ii) α is det-1** (PHASE 2, banked-atom-shaped): each `alphaGauge g` has Fréchet-derivative
@@ -125,7 +248,13 @@ determinant of modulus 1 — `id` trivially; the d-family fold via `abs_det_fder
 t14's `geoAtlas_fold_det` g-det-1-TRANSPARENT (compass fork-15). -/
 theorem alphaGauge_abs_det_one (g : GeoChart M) (w : Params M) :
     |(fderiv ℝ (alphaGauge (M := M) g) w).det| = 1 := by
-  sorry
+  unfold alphaGauge
+  split
+  all_goals first
+    | (rw [fderiv_id, show (ContinuousLinearMap.id ℝ (Params M)).det
+          = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+       simp [LinearMap.det_id])
+    | exact residualSchurShear_abs_det_one _ _ _ w
 
 /-- **(iii) The srcBox transform** (PHASE 2, the cert's boundedness): `alphaGauge g` pulls the flat
 cube of radius `R` back inside the flat cube of radius `R·(1+R)`. `α` fixes the ratio coords `b,c`
