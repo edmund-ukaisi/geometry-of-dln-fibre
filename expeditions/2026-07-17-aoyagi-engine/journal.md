@@ -2395,3 +2395,26 @@ this arc incl. ⊇Adm, raw-p.20, global-WidthBound, absorb-rollover, positivity-
 o5 naming forwarding-pointers + the two-carriers disambiguation. Own-worktree mandate EXPLICIT
 in the brief (this seat class caused the branch-hijack incident); validator gated on grep
 '0 error'. Binds via ratification at merge.
+
+## 2026-07-19 tick 169: carrier BALLOON — tripwire fired correctly; fork (B) adopted; joint interface authorized
+t04 (synced clean to b924272ac, aggregator green) surfaced the carrier scoping finding BEFORE
+building: a faithful chart emission needs a geometric layer the ledger tree doesn't carry.
+Three sub-gaps: (1) divCoord is a constant placeholder — coverage's clauses REQUIRE injectivity;
+needs a real assignment + a numDiv ≤ flatDim reachability invariant [spine-safe, bounded];
+(2) faithful β needs the per-node center→flat embedding (the q split) which the ledger decisions
+don't track — a q-free β gives |u|^{flatDim−1}, NOT the per-divisor product ∏|u_k|^{divExp−1};
+(3) the d_center cover family (J₁(M^{S+1}−J)+1 per node) can't become tree edges without
+breaking StepRel + the proven spine. RULINGS: fork (B) ADOPTED — ownership split (construction
+= ledger tree + spine-safe wiring + slots; coverage = the faithful geometry it already owns:
+pivotChart, q, cover family, β/det). Fork (A) rejected (domain duplication + spine risk).
+SUB-GAP-3 PIN: cover-family charts are per-NODE ChartBridge-layer data, NEVER tree edges — the
+tree is the paper's inductive-statement/ledger structure (13(Q3)); the profile projection is
+blind to geometric fan-out BY DESIGN (the symmetric quotient); tick-162's "(i)" refined
+accordingly. DIRECT t04↔coverage interface sync AUTHORIZED (scoped hub-and-spoke exception);
+deliverable = a JOINT interface note (fields, per-field ownership, per-edge vs per-node split,
+and the COMPOSITION PATH to the frozen hole type through chartBridge_of_pieces's actual
+hypotheses); controller RATIFIES before slots are built; ChartBridge type change = STOP.
+Coverage's acceptance criterion = provability of its own 3 Props against the record.
+MEANWHILE t04 GOES on reify-Clearable (front-loaded) + sub-gap-1 (needed either fork,
+spine-safe). Budget watch: if interface+sub-gap-1 eat into D's budget, carrier build may move
+to coverage/t05 post-ratification — t04 goes straight to D.
