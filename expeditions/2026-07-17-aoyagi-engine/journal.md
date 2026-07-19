@@ -5213,3 +5213,24 @@ zero-width (a) (SMALL) 5. Lemma-1 general (MEDIUM) 6. AxCheck hygiene (SMALL);
 NAVIGATOR-5 CONVENED on the fan-out plan (widths for lanes 2-6 now-vs-later; the quick-win
 bundle; merge pins; the R4 early-design question; the t14 long-pole contingency).
 t10's shutdown confirmed clean (the 8th of the cleanup era).
+
+## 2026-07-19 tick 324: NAVIGATOR-5 ADOPTED — the fan-out executes (theta-t18 + pnp-r4 spawned; lanes 3+6 = controller pass)
+The disposition (two-channel verified, adopted in full): ONE substantial seat now — THETA-T18
+on lanes 2+4 bundled (the combinatorial rorder + the zero-width lambdaCore collapse; ONE
+seat because both live in Lambda.lean — the internal write-collision resolved by ownership;
+statement-first with PARK-ON-STATEMENT-LOCK to bound controller attention at the t14 wall);
+lanes 3+6 (the θ record correction + the AxCheck monomial_rlct docstring hygiene) =
+CONTROLLER PASS in the gaps (#3 first — the framing prerequisite; navigator's mint-guard
+file question answered: it lands in priorities.md R5's framing pin + the mint commit, NOT
+Lambda.lean); lane 5 (Lemma-1 general) DEFERRED to the spine discharge (risk-free wait, no
+second MEDIUM seat at the wall). R4: the DESIGN CERT STARTS NOW (PNP-R4 spawned — the
+ledger-accumulation-cert style target: field design [the charge-6 lesson applied — don't
+duplicate first-class state data], the threaded propagation invariant + per-case
+maintenance, the (3,3,4) sympy trace, the kill-condition, the size re-estimate) so the
+LARGE build starts warm at discharge — design latency shadows, never blocks. NAVIGATOR
+FLAG resolved in-record: build-list #8 "R7" = priorities.md's ⊇ Clearable-Adm completeness
+proof (NOT the charge-6 R7 clause-split — a naming collision; the clause-split is DONE).
+Merge pins verified (lanes write-disjoint; lane 6's AxCheck hunk disjoint from the
+discharge's :1292-1312). t14 contingency re-stated: a fan×WF fight is Lean-assembly, not
+math (the certs anchor); no lane absorbs t14-support; elder escalation is the fallback.
+Re-convene trigger: the spine discharge (release lane 5 + launch 7-9).
