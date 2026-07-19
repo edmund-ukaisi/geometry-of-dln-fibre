@@ -88,6 +88,7 @@ def node334 : StepData M334 where
   layer := 1; cleared := 0; resRows := 3; resCols := 4
   numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   divExp := fun _ => 4; divProfile := fun _ => ![1, 1]; numGen := 0; genDivExp := fun k => k.elim0
+  divBirthCoord := fun _ => (0, 0)
 
 /-- The case-1(1) merge substitution: `J₁ = 1`, target divisor `0`. -/
 def subst334 : ChartSubst M334 where
