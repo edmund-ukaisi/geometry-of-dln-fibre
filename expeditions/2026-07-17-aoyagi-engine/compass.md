@@ -372,8 +372,8 @@ over banked substrate.
   holds; what λ reads off geometrically), THEN transcribe; build the uniform object and DERIVE the
   cases, not the reverse. When a case-by-case grind feels authoritative but shapeless, stop and
   re-derive the global structure.
-- OBLIGATION-STATEMENT DISCIPLINE (5th instance, 2026-07-19; count elder-audited at gate8 —
-  near-misses COUNT): FIVE TIMES an obligation was false/unfillable-as-stated for want of what
+- OBLIGATION-STATEMENT DISCIPLINE (6th instance, 2026-07-19; count elder-audited at gate8 —
+  near-misses COUNT): SIX TIMES an obligation was false/unfillable-as-stated for want of what
   the true construction supplies — (1) the resRank/2 Morse threshold (resRank fold), (2) srcBox
   boundedness/measurability, (3) monomialization_terminates at L=0 (the base conjunct forces the
   root to STEP; found by t03 at the E-wire; the hL : 0<L ripple, tick 157; distinct from
@@ -382,7 +382,16 @@ over banked substrate.
   (5) ChartBridge's TYPE itself (tick 172-180 — the ⋃-ledger-leaves form is unfillable by the
   faithful construction: the ledger tree is the symmetric quotient of the geometric fan-out;
   the first instance at TYPE level and the first realised inside an already-merged hole; fixed
-  by the flat virtual-leaf atlas correction, elder-gate8 ratified). PRECISION PIN (gate8): say
+  by the flat virtual-leaf atlas correction, elder-gate8 ratified), (6) the ATTAINMENT chain at
+  ZERO widths (o5_realization / o5_core / o5_core_realized / tStar_realized / the monomialization
+  chain up to the payoff — the achievability half `minAdm ∈ terminalExponents` is FALSE at a zero
+  width; witness M=![2,2,0]: tStar=(2,0) never realized, zero last-width forces immediate rollover;
+  found by t06 at the PROVE step of tStar_realized; fixed by the hMpos : ∀ i, 0 < M i ripple through
+  the attainment chain, this batch; three-leg confirmed — sim + Lean conOracle trace + two
+  decorrelated Codex consults; the LOWER bound minAdm_le_terminalExponents stays width-free;
+  distinct from the (3) hL ripple — this is the width-positivity route (B) proved unnecessary FOR
+  THE UPPER-BOUND spine but which the ATTAINMENT/tightness layer genuinely needs, matching the
+  divergence half's hMpos). PRECISION PIN (gate8): say
   "unfillable by the faithful construction + fidelity-false", never "proven ¬ChartBridge" — no
   formal negation was proved. COUNTER HYGIENE: this counter itself drifted three ways
   (counsel=3, a controller dispatch=4-mislabeled, package=5-correct) — when citing an instance
