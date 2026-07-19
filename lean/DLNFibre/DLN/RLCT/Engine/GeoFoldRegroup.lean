@@ -214,4 +214,139 @@ theorem tGeo_edges_composite_differentiable (acc : Params M → Params M) (hacc 
           (offset + dCenterOfEdge n (Edge.mk c s ch)) es p hp
 end
 
+/-! ## Det-fold: materialize the per-leaf chart LIST, then the chain-rule fold -/
+
+/-- `foldr (·∘·)` with a nonidentity base splits off the base on the right. -/
+theorem foldr_comp_base (l : List (Params M → Params M)) (g : Params M → Params M) :
+    l.foldr (· ∘ ·) g = l.foldr (· ∘ ·) id ∘ g := by
+  induction l with
+  | nil => rfl
+  | cons a as ih => simp only [List.foldr_cons, ih]; rfl
+
+/-- Appending a single map to a `foldr (·∘·) id` list composes it on the inner (right) end. -/
+theorem foldr_comp_append_single (acc : List (Params M → Params M)) (ls : Params M → Params M) :
+    (acc ++ [ls]).foldr (· ∘ ·) id = acc.foldr (· ∘ ·) id ∘ ls := by
+  rw [List.foldr_append]
+  exact foldr_comp_base acc _
+
+mutual
+/-- **The list-carrying `leafPaths`**: like `leafPaths` but accumulating the LIST of per-edge `localSub`s
+(root→leaf), so `abs_det_fderiv_foldr_comp` can consume it. Its `foldr (·∘·) id` is the `leafPaths`
+composite (`leafPathsList_coherence`). -/
+def leafPathsList (acc : List (Params M → Params M)) :
+    ResolutionTree M → List (LeafData M × List (Params M → Params M))
+  | .leaf l => [(l, acc)]
+  | .branch _ edges => edgesLeafPathsList acc edges
+/-- Companion of `leafPathsList` over an edge list. -/
+def edgesLeafPathsList (acc : List (Params M → Params M)) :
+    List (Edge M) → List (LeafData M × List (Params M → Params M))
+  | [] => []
+  | .mk _ s c :: es => leafPathsList (acc ++ [s.localSub]) c ++ edgesLeafPathsList acc es
+end
+
+mutual
+/-- **`leafPathsList` coherence with `leafPaths`**: folding each carried list recovers the `leafPaths`
+composite (with `acc`'s fold as the outer prefix). -/
+theorem leafPathsList_coherence (acc : List (Params M → Params M)) :
+    ∀ t : ResolutionTree M,
+      (leafPathsList acc t).map (fun p => (p.1, p.2.foldr (· ∘ ·) id))
+        = ResolutionTree.leafPaths (acc.foldr (· ∘ ·) id) t
+  | .leaf l => by simp [leafPathsList, ResolutionTree.leafPaths]
+  | .branch n edges => by
+      rw [leafPathsList, ResolutionTree.leafPaths]
+      exact edgesLeafPathsList_coherence acc edges
+/-- Companion of `leafPathsList_coherence` over an edge list. -/
+theorem edgesLeafPathsList_coherence (acc : List (Params M → Params M)) :
+    ∀ edges : List (Edge M),
+      (edgesLeafPathsList acc edges).map (fun p => (p.1, p.2.foldr (· ∘ ·) id))
+        = ResolutionTree.edgesLeafPaths (acc.foldr (· ∘ ·) id) edges
+  | [] => by simp [edgesLeafPathsList, ResolutionTree.edgesLeafPaths]
+  | .mk c s ch :: es => by
+      rw [edgesLeafPathsList, ResolutionTree.edgesLeafPaths, List.map_append,
+        leafPathsList_coherence, edgesLeafPathsList_coherence, foldr_comp_append_single]
+end
+
+/-- `edgesLeafPathsList` distributes over list append. -/
+theorem edgesLeafPathsList_append (acc : List (Params M → Params M)) (l1 l2 : List (Edge M)) :
+    edgesLeafPathsList acc (l1 ++ l2)
+      = edgesLeafPathsList acc l1 ++ edgesLeafPathsList acc l2 := by
+  induction l1 with
+  | nil => simp [edgesLeafPathsList]
+  | cons e es ih =>
+      obtain ⟨c, s, ch⟩ := e
+      simp only [List.cons_append, edgesLeafPathsList, ih, List.append_assoc]
+
+/-- `edgesLeafPathsList` of a `.mk`-built mapped edge-list is the `flatMap` of the per-element list. -/
+theorem edgesLeafPathsList_mapMk {α : Type*} (acc : List (Params M → Params M)) (g : α → StepCase)
+    (sub : α → ChartSubst M) (chi : α → ResolutionTree M) (l : List α) :
+    edgesLeafPathsList acc (l.map (fun a => Edge.mk (g a) (sub a) (chi a)))
+      = l.flatMap (fun a => leafPathsList (acc ++ [(sub a).localSub]) (chi a)) := by
+  induction l with
+  | nil => simp [edgesLeafPathsList]
+  | cons a as ih =>
+      simp only [List.map_cons, edgesLeafPathsList, ih, List.flatMap_cons]
+
+mutual
+/-- **Every carried `leafPathsList` chart (over `tGeo`) is differentiable** — each accumulated element is
+a `geoChartMapNorm` (or `id`); the `abs_det_fderiv_foldr_comp` hypothesis for the materialized list. -/
+theorem leafPathsList_tGeo_diff (acc : List (Params M → Params M)) (accf : Params M → Params M)
+    (hacc : ∀ f ∈ acc, Differentiable ℝ f) :
+    ∀ t : ResolutionTree M, ∀ p ∈ leafPathsList acc (tGeo accf t), ∀ f ∈ p.2, Differentiable ℝ f
+  | .leaf _ => by
+      intro p hp
+      rw [tGeo, leafPathsList] at hp
+      simp only [List.mem_singleton] at hp
+      subst hp
+      exact hacc
+  | .branch n edges => by
+      intro p hp
+      rw [tGeo, leafPathsList] at hp
+      exact leafPathsList_edges_tGeo_diff acc accf hacc n 0 edges p hp
+/-- Companion of `leafPathsList_tGeo_diff` over an edge list. -/
+theorem leafPathsList_edges_tGeo_diff (acc : List (Params M → Params M)) (accf : Params M → Params M)
+    (hacc : ∀ f ∈ acc, Differentiable ℝ f) (n : StepData M) (offset : ℕ) :
+    ∀ edges : List (Edge M),
+      ∀ p ∈ edgesLeafPathsList acc (fannedEdges accf n offset edges), ∀ f ∈ p.2, Differentiable ℝ f
+  | [] => by intro p hp; rw [fannedEdges] at hp; simp [edgesLeafPathsList] at hp
+  | .mk c s ch :: es => by
+      intro p hp
+      rw [fannedEdges, edgesLeafPathsList_append, List.mem_append] at hp
+      rcases hp with hp | hp
+      · by_cases hz : dCenterOfEdge n (Edge.mk c s ch) = 0
+        · rw [if_pos hz] at hp
+          simp only [edgesLeafPathsList, List.append_nil] at hp
+          refine leafPathsList_tGeo_diff (acc ++ [id]) accf (fun f hf => ?_) ch p hp
+          rcases List.mem_append.mp hf with h | h
+          · exact hacc f h
+          · simp only [List.mem_singleton] at h; subst h; exact differentiable_id
+        · rw [if_neg hz, edgesLeafPathsList_mapMk, List.mem_flatMap] at hp
+          obtain ⟨i, _, hp⟩ := hp
+          refine leafPathsList_tGeo_diff _ _ (fun f hf => ?_) ch p hp
+          rcases List.mem_append.mp hf with h | h
+          · exact hacc f h
+          · simp only [List.mem_singleton] at h; subst h; exact geoChartMapNorm_differentiable _
+      · exact leafPathsList_edges_tGeo_diff acc accf hacc n
+          (offset + dCenterOfEdge n (Edge.mk c s ch)) es p hp
+end
+
+/-- **The det-fold** (the bridge's payoff): for every materialized leaf `(c, cs)` of the built atlas,
+`|det D(c.chartMap) w|` is the intermediate-point per-factor product `foldrCompAbsDet cs w` — i.e. the
+chart determinant equals the chain-rule fold of its path charts. Combines `leafPathsList_coherence` +
+`tGeo_coherence` (`c.chartMap = foldr cs`), `leafPathsList_tGeo_diff` (each `cs` chart differentiable),
+and the banked `abs_det_fderiv_foldr_comp`. The regrouping cocycle then rewrites the RHS onto the leaf
+ledger `∏_k |z_{c.divCoord k}|^{c.divExp k − 1}`. -/
+theorem tGeo_absdet_foldrList (t : ResolutionTree M) (w : Params M)
+    (p : LeafData M × List (Params M → Params M)) (hp : p ∈ leafPathsList [] (tGeo id t)) :
+    |(fderiv ℝ p.1.chartMap w).det| = foldrCompAbsDet p.2 w := by
+  have hmap : (p.1, p.2.foldr (· ∘ ·) id) ∈ ResolutionTree.leafPaths id (tGeo id t) := by
+    have hm : (p.1, p.2.foldr (· ∘ ·) id)
+        ∈ (leafPathsList ([] : List (Params M → Params M)) (tGeo id t)).map
+            (fun q => (q.1, q.2.foldr (· ∘ ·) id)) :=
+      List.mem_map.mpr ⟨p, hp, rfl⟩
+    rwa [leafPathsList_coherence, List.foldr_nil] at hm
+  have hchart : p.1.chartMap = p.2.foldr (· ∘ ·) id := tGeo_coherence id t _ hmap
+  have hdiff : ∀ f ∈ p.2, Differentiable ℝ f :=
+    leafPathsList_tGeo_diff [] id (by intro g hg; simp at hg) t p hp
+  rw [hchart, abs_det_fderiv_foldr_comp p.2 hdiff w]
+
 end DLNFibre.DLN.RLCT.Engine
