@@ -474,4 +474,10 @@ theorem leafOfState_prod_eq_ledgerMonomial (M : Fin (L + 1) → ℕ) (s : ConSta
   have hne : s.divTilde k ≠ 0 := fun h0 => hk (Finset.mem_filter.mpr ⟨Finset.mem_univ k, h0⟩)
   rw [hweak k hne]; simp
 
+/-- **Base of the cocycle**: at `conRoot` (`numDiv = 0`) the full-ledger monomial is the empty product
+`1`. So `Inv(id, conRoot)` is `|det D id w| = 1`. -/
+theorem ledgerMonomial_conRoot (M : Fin (L + 1) → ℕ) (h : 0 < flatDim M) (w : Params M) :
+    ledgerMonomial M (conRoot : ConState L) h w = 1 := by
+  simp [ledgerMonomial, conRoot]
+
 end DLNFibre.DLN.RLCT.Engine
