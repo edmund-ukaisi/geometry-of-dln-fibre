@@ -2431,3 +2431,24 @@ _terminates assembled; region_glue a proven composition); (2) the cert→Lean na
 (STEP1→step1_dominates, WeakDec→WeakDecInv, MvalBoundaryInv = theorem not def) rides the reuse
 index t04 already reads. Also fixed in-tree: PivotCoverFold.lean:8 stale "bodies are sorry"
 docstring (theorems are proven). Cartographer-3 dissolved with thanks.
+
+## 2026-07-19 tick 171: R2 PROBE LANDED (15ad8d22f merged) — cover math SOUND; full-family emission = the one precondition
+The early-fired decorrelated probe (navigator amendment B) returned the best possible structure:
+NO undershoot in the cover MATHEMATICS — the intended atlas (full per-node d_center family,
+ψ-composed, folded) image-covers the zero-locus, adversarially verified (4 exit-0 legs + two-way
+Codex + the FULL kill-set: both known mechanisms + corners). Leg-2 nuance banked: ψ covers
+ψ(target) not the raw cube — exactly the existing hV/scaling-bridge hypotheses, correctly
+stated. Leg-3 CLOSES the stranding worry on the geometric side: a stranded t̃>0 leaf's chart
+still tiles — stranding was never an image-cover gap (it lives in the t̃=0/residualCore ledger
+obligations, where it's already handled). THE LOAD-BEARING FINDING (cert-cov-rungs12's flagged
+gap, now decorrelation-confirmed + QUANTIFIED): conOracle emits the ≤2-rep profile quotient;
+the proved fold chain needs hbij (the FULL family); the gap bites at a MAJORITY of deep nodes
+(173/363 at (3,3,4,2,3), 22/44, 19/39). ROUTE (ii) (cover from invariants) REFUTED two-way —
+registered dead. ROUTE (i) (full-family emission) = the sound route; representation stays per
+the tick-169 pin (per-NODE attached data, no StepRel change — pnp's "edges" phrasing and the
+pin agree on substance: zero spine risk). BOTH negotiating seats briefed — the joint record MUST
+carry the hbij family; the emission side of t04's carrier now includes populating it (the
+d_center enumeration the decisions already compute internally). R2 GATE ACCOUNTING: the probe
+half is effectively done EARLY against the INTENDED atlas; the residual gate check at R2 =
+emitted family == intended family (small), not a fresh hunt. Task #28 closed. pnp-o5 idle
+(two commissions, both landed with distinction).
