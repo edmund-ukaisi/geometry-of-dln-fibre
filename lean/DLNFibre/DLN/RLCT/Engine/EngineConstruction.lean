@@ -721,7 +721,7 @@ theorem runMinWidth_le_admBound {L : ℕ} (M : Fin (L + 1) → ℕ) (j : Fin L) 
       exact Nat.mod_le 1 (L + 1)
   · exact Finset.inf'_le _ (Finset.mem_Iic.mpr le_rfl)
 
-/-- `widthMinUpto M 0 = M 0` — the running-min through layer 0 is just `M⁽¹⁾`. -/
+/-- `widthMinUpto M 0 = M 0` — the running-min through layer 0 is `M⁽¹⁾`. -/
 theorem widthMinUpto_zero {L : ℕ} (M : Fin (L + 1) → ℕ) : widthMinUpto M 0 = M 0 := by
   refine le_antisymm
     (Finset.inf'_le M (Finset.mem_filter.mpr ⟨Finset.mem_univ (0 : Fin (L + 1)), by simp⟩)) ?_
@@ -2504,8 +2504,12 @@ theorem NumDivFlatPos_conRoot {L : ℕ} {M : Fin (L + 1) → ℕ} :
 
 /-- **The built tree is a full monomialisation** (`CanonicalResolution` §1): the resolution tree
 `buildTree (conOracle M) conRoot` satisfies `IsFullMonomialization` — every leaf's `t̃=0` analytic
-side has `divExp = Mval` (admissible) and is exactly the `t̃=0` sublist of the full ledger. The
-`0 < L` hypothesis is the nondegenerate-chain guard (`Adm` reads the last-`= 0` clause at `L−1`). -/
+side has `divExp = Mval` (admissible) and matches the `t̃=0` sublist of the full ledger at
+value-support level. The `0 < L` hypothesis is consumed INSIDE (`leaf_mem_Adm_t0`/`le_tildeOf`, where
+`Adm` reads the last-`= 0` clause at `L−1` for a non-empty leaf) and is genuinely needed at the
+assembly (`CanonicalResolution`'s base conjunct is false at `L = 0`); for THIS headline alone it is
+vacuous (`L = 0` ⟹ a single leaf over empty `Fin 0`), so keeping `hL` under-claims in the safe
+direction. -/
 theorem isFullMonomialization_buildTree_conRoot {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
     IsFullMonomialization (buildTree M (conOracle M) (conRoot : ConState L)) :=
   leaves_isFullMono hL conRoot OracleInv_conRoot BoundaryFlat_conRoot MvalCoh_conRoot
