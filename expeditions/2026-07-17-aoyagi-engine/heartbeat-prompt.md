@@ -8,22 +8,22 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: THE THREE BUILDERS (post the elder rightness call, ticks 242-252). THE LEDGER FACE IS
-  DONE (o5 closed+audited; monomialization_terminates 5/6, +sorryAx via chartBridge_buildTree
-  ALONE). THE ELDER FINDING (tick 242, operator-requested — the endgame's decisive audit):
-  the atlas as then-built could NOT satisfy LeafJacobian — (i) the center-dimension defect
-  (count-vs-dimension conflation; FIXED by t09's per-node carrier: qNodeOf + dCenterOfNode +
-  edgeSum + totality + the q-det trio, all clean-three) + (ii) THE UNBUILT ACCUMULATION (the
-  fold-Jacobian lemma = the last wall, task #21). geoAtlas is CONCRETE (the corrected type's
-  object exists; seam defeq-validated). NOW RUNNING: t09 (#26 fidelity) ∥ t10 (the cover —
-  from coverage's SPECIFY + validated fill-target GeoCoverSpec; medium) ∥ t11 (THE WALL —
-  from the fold SPECIFY + fill-target GeoJacobianSpec; the telescoping = the crux; LeafPullback
-  size-and-report attached). Coverage's authoring COMPLETE (both SPECIFYs; assembly ownership
-  decided at the builders' landing). THEN: (D)+clauses assembly (pre-staged incl. the
-  RegionGlueAssembly:107 destructure line) → the discharge (carto5's wiring checklist:
-  4 import-adds + the watch flips, all pinned) → hbox flips → mint (stale hDescent arm mapped)
-  + #guard_msgs gate → cordon (3 Engine sorries) → signal-and-wait PR (R4/R6/R7 owed named).
-  Honest distance: ~2-4 arcs (the wall is real; everything else is spec'd assembly).
+- phase: ENDGAME CONVERGENCE (ticks 258-261). LEDGER FACE DONE. Carrier (t09) DONE clean-three
+  incl. fidelity capstone cNodeOf_eq_realCNode_of_conOracle (DivBirthInv-only); rev-carrier
+  PASS-with-notes → t09 mini-arc (task #36: case-2 inner-fidelity lemma + doc scope). TWO
+  emission defects caught at statements (zero proof waste): t11's per-pivot divCoord (task
+  #35, t11 AFTER t10 lands) + t10's rollover finRange-0 drop (id-passthrough fix in t10's
+  batch, coverage counter-signing). t11: per-edge det atoms BANKED (on+off-cone); the wall's
+  true shape = the stepUpdate COCYCLE (not chain-rule+atoms) — Phase-2 PARAMETRIC fold now,
+  invariant statement gated (me+coverage) before grind; tripwire: reindex not closing in ~1
+  arc → pnp cert. LeafPullback: after finding-3 + pnp-loss adjudication (kill-condition: the
+  divisor factors out of prod EXACTLY linearly, no residual leak). t10: 4-file weakening +
+  R=1 chain green in worktree; ordered to BANK TO BRANCH at every green + declare GeoCoverSpec
+  signature freeze. ASSEMBLY OWNER DECIDED: fresh t12-assembly at t10-merge (coverage
+  contributes the (D) node-walk; controller keeps the discharge batch). Merge-order pin:
+  t10 → t11-fix → (D) after t10 → discharge after (D)+both. EngineObligations:53 skeleton
+  pre-wires only when BOTH fill-target signatures frozen. Distance ~2-4 arcs; t11 = sole
+  long-pole variance. AxCheck fidelity-capstone watch line: verify running, commit pending.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
