@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Engine.ClearableReify
+import DLNFibre.DLN.RLCT.Engine.NumDivFlatBound
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverPath
 
 /-!
@@ -310,6 +311,18 @@ born by case-2 at layer `b(tStar)`, maintained (plateau/descent) through the cle
 `t̃ = 0` with profile `tStar` at the leaf. The one flagged brick — the intra-layer pull-ordering (`A`
 lands at EXACTLY `tStar^S`, Def-4-least at its level) — reuses the banked o4 `LiveHeadDom` /
 `chooserTotalOnChain_of_sameLevel` / `step1_dominates`. -/
+
+/-- **Reading a `t̃ = 0` divisor off the terminal leaf.** If a state `s` carries a divisor `A` with
+`s.divTilde A = 0` and profile `a` (the flat dimension is positive, forced by `A`'s existence via the
+`numDiv ≤ flatDim` invariant), then the leaf `leafOfState M s` has an analytic index with profile `a`
+(`leafOfState`'s analytic side enumerates exactly the `t̃ = 0` sublist via `t0Indices`). -/
+theorem leafOfState_carries {M : Fin (L + 1) → ℕ} (s : ConState L) (hfd : 0 < flatDim M)
+    {a : Fin L → ℕ} (A : Fin s.numDiv) (hA0 : s.divTilde A = 0) (hAa : s.divProfile A = a) :
+    ∃ k : Fin (leafOfState M s).numDiv, (leafOfState M s).divProfile k = a := by
+  have hmem : A ∈ t0Indices s := (mem_t0Indices s A).mpr hA0
+  obtain ⟨i, hi⟩ := List.get_of_mem hmem
+  unfold leafOfState; rw [dif_pos hfd]; dsimp only
+  exact ⟨i, by rw [hi, hAa]⟩
 
 /-- **`tStar M` is realized as a `t̃ = 0` leaf-divisor profile of the built tree** (cert §4, the
 anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
