@@ -96,6 +96,28 @@ true (small) carrier size; no budget concern on my side for a data-exposure arc.
   pivotChart det atom, geometricLeafPaths). Add: my (small) carrier helper for d_center/center-index if
   not directly derivable.
 
+## ADDENDUM — re-review of the CORRECTED proposal (f0a8363fd, tick-204)
+
+The proposal was corrected after my first pass. One position is superseded; §8 stands.
+
+- **centerSplit — my earlier "AGREE (coverage's)" is SUPERSEDED.** Corrected §1 restores concrete-q
+  CONSTRUCTION to MY column: t05 BUILDS the per-node `centerSplit` `q_node` (a finite-coordinate permutation
+  `Homeomorph` = `paramsEquivFlat` ∘ a `Fin (flatDim M) ≃ Fin d_center ⊕ Fin rest` center selector ∘
+  `arrowCongr`); coverage co-designs only the TYPED INTERFACE it reads (`q_node : Homeomorph`; first factor
+  = exactly the `d_center` center coords; nothing else). CONFIRM — right minimal consumption. I withdraw the
+  reassignment agreement; concrete-q is a real carrier deliverable of mine.
+- **§8 position UNCHANGED — sibling `GeoChart`, decisive** (the pivot-indexed-d-family argument is
+  independent of the centerSplit correction; the controller's wake note stands).
+- **Carrier size — REVISED up from "just data," still bounded.** My carrier now: (1) the concrete
+  `centerSplit` `q_node` per node — THE substantive piece (banked-shape permutation Homeomorph + its proof +
+  the center-index selector: case-1 [d-block + `u`] vs case-2 [residual block]); (2) per-node `d_center`
+  (computable: case-1 `runLen·resCols+1`, case-2 `resRows·resCols`) + the center-index DATA feeding (1); (3)
+  the pivot enumeration. **COUNTER §6:** DROP the "per-edge β_e/α_e as accumulator payload" and "the
+  buildTree path-accumulator so leafOfState.chartMap = the fold" from t05 — per §8→GeoChart the per-pivot
+  geometry is coverage's `GeoChart`/`geometricLeafPaths`, and the spine `leafOfState.chartMap` fold is moot
+  (ratified struck). So t05 = (1)+(2)+(3); coverage = GeoChart geometry + geometricLeafPaths + α_e + fold +
+  Props + clause D. Bounded arc (centerSplit + data), within budget.
+
 ## For the elder gate
 - The §8 counter means NO `ChartSubst` type change → the "ChartSubst type change would make the gate
   mandatory" trigger does NOT fire; the gate rules on the GeoChart shape + the division-of-labour
