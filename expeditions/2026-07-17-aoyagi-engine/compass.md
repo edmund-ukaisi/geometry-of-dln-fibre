@@ -187,8 +187,16 @@ over banked substrate.
    gloss): discharging hbox + repointing canonical → _gen yields the UNCONDITIONAL CLEAN-THREE
    aoyagi_learning_coefficient — it kills the sorryAx of the 5 skeleton rungs. It does NOT delete
    cited_aoyagi_dln: the cite was NEVER in the λ cone (grep: only absence-asserting docstrings);
-   it lives in the OUT-OF-SCOPE RlctPayoff layer (needs minAdm=codim — the next expedition's
-   runway). "Kills the cite for free" was headline-inflation; struck everywhere. GUARDS (seat B):
+   it lives in the OUT-OF-SCOPE RlctPayoff layer. [CORRECTED 2026-07-19, elder-alt1 territory
+   read: the old parenthetical "(needs minAdm=codim — the next expedition's runway)" was STALE —
+   minAdm = cCodim = codimRepCanonical(fibre) is BANKED axiom-clean (minAdm_eq_cCodim,
+   MinAdmCCodim:315, AxCheck:1174; Brick A). The cite's actual residue after the hbox flip =
+   (i) instantiate the interface's opaque rlct with the concrete rlctAt (design change),
+   (ii) loss↔routeMCore localization glue, (iii) nbhd bookkeeping. Direction: divergence half
+   = rlct UPPER bound (easy); hbox/finiteness = the LOWER bound (the hard singular-locus half —
+   the engine's coverage IS the runway's hard part). θ/order stays big (meromorphic
+   continuation). See strategy/altitude-2026-07-19.md §3 as amended.]
+   "Kills the cite for free" was headline-inflation; struck everywhere. GUARDS (seat B):
    _gen's clean-three rests on a #print DIAGNOSTIC (AxCheck:913), confirmed-by-discipline not
    build-enforced — an ENFORCED axiom-gate installs at R5; L=1 reaches the unsuffixed theorem via
    a SEPARATE fold (not _gen). RUNGS ADOPTED: R1 = the FAITHFUL carrier NOW — full-T in the State

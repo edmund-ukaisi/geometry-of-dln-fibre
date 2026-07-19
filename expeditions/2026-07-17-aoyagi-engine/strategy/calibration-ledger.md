@@ -107,3 +107,18 @@ gains hMpos and the fit witness supplies it FREE from its existing hpos (r < H s
 hypothesis-form ruling was chosen for. t06's decision-ask (b) is now definitively answered.
 Score: 1 hit / 1 instructive miss / 1 moot — the miss again where the picture used a slogan
 ("∀M") in place of the actual signature.
+
+### Entry 1 addendum (tick 200, elder-alt1's territory read — the check the entry skipped)
+PROCESS MISS, recorded: entry 1's "What it changes" conclusion (the residue list) was written
+WITHOUT reading cited_aoyagi_dln / rlctAt / the codim bridge — un-territory-checked inference
+inside the calibration ledger itself. The elder read them: (i) codimRepCanonical(fibre) =
+cCodim = minAdm is BANKED axiom-clean (Brick A + minAdm_eq_cCodim — STRONGER than the entry
+assumed; staled a compass fork-11 parenthetical, now fixed); (ii) rlctAt (Foundations/Rlct:71)
+is definitionally the critical exponent — "rlct = critical exponent" is not a theory to build
+for the VALUE; (iii) the corrected residue: interface-instantiation + localization glue + nbhd
+bookkeeping. DIRECTION CORRECTED: divergence = UPPER bound on rlct (single witness, easy);
+hbox/finiteness = LOWER bound (whole-neighbourhood control, the hard singular-locus half) —
+the entry (and altitude §3) had foregrounded the wrong half; the engine's coverage work IS the
+runway's hard part. θ/order excluded (meromorphic continuation, not Mathlib-adjacent).
+Ledger lesson #2 (same class as both prior misses): conclusions drawn past the last
+territory-checked statement must be MARKED unchecked — the ledger now does so by convention.

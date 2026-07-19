@@ -2889,3 +2889,21 @@ that the landed s4-structure consult INDEPENDENTLY re-derived the positivity fin
 (M=(1,1,0) counterexample; three legs now) and resolved the inner-induction worry (anchor
 pulled last = carried by the OUTER conRel WF descent; no new domination lemma — the brick
 shrinks). The §4 arc has zero remaining design unknowns; t06 executing the decomposition.
+
+## 2026-07-19 tick 200: ELDER-ALT1 AUDIT IN — comprehension corrected on three axes; all amendments executed
+Q1: the ledger/geometry taste-rule DISCRIMINATES (three-statement test passed, incl. separating
+the false/true forms of IsFullMonomialization) — but §1's universal was FALSE (Def-3/FIX-A/p.15
+are single-face); altitude §1 re-scoped to the cross-face events. Q2: the meeting-point reading
+verified transcription-accurate; BUT the entry-1 conclusion was NOT territory-checked (the
+exact drift the ledger polices, inside the ledger) — elder read the actual axioms:
+minAdm=cCodim=codim BANKED (compass fork-11 parenthetical was stale → corrected);
+rlctAt definitional; residue re-listed (interface-instantiation + localization + nbhd).
+DIRECTION CORRECTION (the sharp one): divergence = rlct UPPER bound (easy); hbox = the LOWER
+bound (the hard singular-locus half, = the RLCT-runway kill-condition) — the altitude note had
+undersold its own case while mis-crediting the banked half; §3 rewritten. θ/order carve-out
+added. Q3: §2's internal inconsistency fixed (single-face-done scoped to the spine cone;
+R4/R7 open); five selling/self-reassurance lines cut. The elder's own mid-audit
+self-correction (predicted a missing residue item, found it banked, recorded) — the
+calibration discipline modeled by the auditor. Ledger addendum written (process-miss + the
+mark-unchecked convention adopted). elder-alt1 dissolved with thanks — the audit-the-
+controller pattern is now proven valuable; it stays in the comprehension cadence.
