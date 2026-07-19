@@ -314,3 +314,23 @@ WHAT IT CHANGES: prefer WEAKEST-HYPOTHESIS refactors over in-proof case discharg
 edge case is vacuous — the theorem stays uniform, the case split lives in cheap suppliers,
 and consumers pick the supplier per node class. Same lesson-family as the pointwise realCNode
 crack: restructure the STATEMENT so the hard case dissolves, don't fight it in the proof.
+
+## Entry 10 (tick 271) — the kill-condition's mechanics in the actual Lean [self-checked]
+QUESTION: in the current geoChartMap, what determines which flat coordinate gets the u-role
+(the ^(dCN−1) det factor)? (Load-bearing for the elder's charge-2 options: the cert's
+diagnosis must be a chart-vs-ledger REFERENT mismatch for diagonal-normalization to be the
+clean fix.)
+EXPECTATION (~85%): the FAN PIVOT — geoChartMap conjugates pivotChart ⟨g.pivot⟩ through
+qN g.node, landing the u-role on cNodeOf g.node ⟨g.pivot⟩; divBirthCoord (the state-level
+diagonal) enters ONLY the ledger side (leafOfState.divCoord = birthFlatCoord ∘ …).
+TERRITORY (GeoChart.lean:54-61 + the header): HIT — geoChartMap = q.symm ∘ Prod.map
+(pivotChart ⟨g.pivot, hp⟩) id ∘ q inside the dite; the u-role is exactly the fan pivot; the
+ledger references divBirthCoord independently. The cert's J_Φ = L·(z_diag/z_pivot)^b is
+literally the gap between these two referents.
+COROLLARY (for the elder, not a ruling): diagonal-normalization is mechanically LOCAL to
+geoChartMap — conjugate by the (pivot ↔ diag-index) transposition inside the same dite
+(|det swap| = 1; per-copy images stay distinct since the swap differs per copy, so the
+cover's disjointness story should survive). The option is at least well-formed in the code.
+WHAT IT CHANGES: nothing yet (the ruling is the elder's); confidence that the fix is a
+small chart-side edit rather than an emission rewrite rises. Entry class: model-of-the-
+construction verification — 1/1 this arc.

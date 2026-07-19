@@ -4085,3 +4085,14 @@ or compose with fork 14; + Aoyagi's own bookkeeping as the fidelity reference. t
 pnp-loss heads-up sent: check the LOSS side for the same off-diagonal contagion (∏z² references
 the same coords), on both the current and the diagonal-normalized construction — one fix
 should serve both if possible.
+
+## 2026-07-19 tick 271: idle pulse — calibration entry 10 (kill-condition mechanics verified in the Lean)
+Drift glance: no pushes; t10 actively writing GeoCoverSpec (19:14 mtime, +4k — the fill
+induction in progress; ping reply owed but interrupting a grind costs more than it buys).
+Calibration entry 10: predicted (85%) the u-role lands on the FAN PIVOT while the ledger
+references divBirthCoord — HIT (GeoChart.lean:54-61); the cert's discrepancy is literally
+the gap between the chart's referent and the ledger's. Corollary noted for the elder:
+diagonal-normalization would be LOCAL to geoChartMap (a transposition conjugation inside
+the same dite, |det|=1, per-copy images distinct) — well-formed in the code, the ruling
+stays the elder's. Board: elder charge-2 + pnp-loss (contagion addendum) mid-run; t11
+holding; standing offices warm.
