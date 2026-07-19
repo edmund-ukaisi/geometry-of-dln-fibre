@@ -3258,3 +3258,10 @@ which constrains node-indexed-with-edge-parameter vs edge-indexed-outright). For
 NOW so the surface is DESIGNED with the consumer's questions in view (lock-after-green →
 design-with-questions — cheaper). t06 answers all four in its first qNodeOf green's report;
 one-pass field-lock via controller as planned.
+
+### Tick-218 final: R7 hardening merged; t06 wake-triggered onto the carrier commission
+The rev-s4 escalation fix landed (realizedProfiles_eq_clearableAdm + hMpos + caveat docstring;
+provably isolated — sorried, zero call sites; watch unchanged). t06's report crossed the
+carrier commission (tick-218) — wake-trigger sent pointing at both inbox items (the commission
++ coverage's four field-lock questions). The o5 lane is closed end-to-end INCLUDING its
+future-proofing (R7's statement now true-as-stated). One arc runs: the carrier.
