@@ -4333,3 +4333,16 @@ merges t11's branch, re-greens + VERIFY, pushes; controller merges the combined 
 (b) the per-GeoChart diagonal target = a NAMED buck-stops helper in GeoChart.lean (consumed
 three more times: the cocycle, gated-(D), fidelity — one definition, cited, never re-derived
 inline). t11 GO on the spine change in-worktree.
+
+## 2026-07-19 tick 281: sorry-2 CLOSED+merged (one sorry left in the cover); step 2 fired; fresh-eyes-t13 spawned
+t10's b68e665b0 merged (72b4b4c51): the rollover/zero-block sub-case closed via the
+generalized lemma (conOracle children-nonempty across all three step branches + hsum=0 ⟹
+all-chartless ⟹ the id-passthrough child covers). GeoCoverSpec on integration = exactly ONE
+tracked sorry (:133, the coercion line). Pushed. CHOREOGRAPHY STEP 2 FIRED to t11 (merge
+integration, push the spine change; transient red cover on its branch expected).
+FRESH-EYES-T13 SPAWNED on :133 — single-lemma scope, own branch (fix/covspec-133),
+statement-untouchable (stop-and-report if it's a statement defect), armed with the prior
+seat's coercion diagnosis + the explicit-witness idiom hints, and the parallel-GeoChart-churn
+note (List-level lemma, expected unaffected; pin-and-report if not). t11 confirmed actively
+building the spine change (GeoChart.lean 20:14). Three seats now converge on the same file
+in SEQUENCED, single-writer steps.
