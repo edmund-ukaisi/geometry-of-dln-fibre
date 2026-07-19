@@ -274,3 +274,33 @@ load-bearing (forced `#print axioms`). The **α gauge** (LeafPullback, fresh los
 `resCoord`-coherence obligation vacuous.
 
 *t11 stands down here. Seat stays addressable for one question if t14 needs it.*
+
+## §t14 — STATEMENT CORRECTION: the locked binder was `(s)`, honest scope is `conRoot` (2026-07-19)
+
+**What drifted.** The locked Lean headline read `geoAtlas_fold_det (s : ConState L) (c ∈ geoAtlas
+(buildTree M (conOracle M) s)) …`, quantifying over a GENERIC `s` with no hypothesis. That form is
+FALSE — exactly the class finding-1 predicted (lines 8-27). The design had `conRoot` EVERYWHERE (finding-1's
+adjudication, lines 23-27; this file's own scope; the docstring's line 9); only the Lean binder drifted to
+`(s)`. Caught by the check-provability-before-grinding pass (a named miss-class now: the design was right,
+the transcription drifted past the gate + elder audit + the lock).
+
+**The witness** (machine-checked, `GeoLeafJacobianDisproof.geoAtlas_fold_det_generic_false`, axiom-clean
+`[propext, Classical.choice, Quot.sound]`). For any `M` with `0 < flatDim M` and `L ≥ 1`, take the terminal
+state `s = csWitness L` (`layer = L`, so `L ≤ layer` ⟹ `oracleTerminal`; one divisor of exponent `2`,
+all-zero profile ⟹ `t̃ = 0`, analytic). Then `buildTree = leaf (leafOfState M s)`, so
+`geoAtlas = [{leafOfState M s with chartMap := id}]` — a single leaf with `chartMap = id`. Hence
+LHS `= |det D id w| = 1`, while RHS `= |z_{divCoord 0}(w)|^{2−1}` vanishes at `w = 0` (`paramsEquivFlat`
+is linear, `0 ↦ 0`). `1 ≠ 0`. The mechanism: a non-root `s` already carries divisors the fold-from-`s`
+does not blow up (their birth charts are ABOVE `s`), but the leaf's `divExp` accumulates them — so the
+per-`s` identity holds only at `numDiv = 0`, i.e. `conRoot`.
+
+**Why the naive form cannot even be its own induction motive.** A WF induction on `s` (the `DivBirthReach`
+template) visits terminal descendants as base cases; the real tree's leaves ARE terminal states with
+`numDiv > 0` and `divExp ≥ 2`, so the base case is exactly the false terminal statement above. The true
+motive is the acc + incoming-ledger-threaded cocycle (cert §2, standing counsel): true at terminal `s`
+(the incoming ledger `L_s` is threaded; the born-below-`s` product is empty), and `conRoot` instantiates
+it with `L = 1`, `acc = id`. This is precisely why that form was adopted over the subtree-relative motive.
+
+**Resolution (team-lead ruling (A), no new elder gate — a transcription of an already-settled ruling).**
+Headline specialized to `conRoot`; internal cocycle over generic `s` under `DivBirthInv`. The formalized
+disproof is kept as an off-critical-path tripwire (`GeoLeafJacobianDisproof.lean`, nothing imports it).

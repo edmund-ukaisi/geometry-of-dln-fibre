@@ -27,9 +27,17 @@ variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 /-- **The fold-Jacobian headline** (finding-2, over the normalized built atlas): every geometric atlas
 piece's chart determinant is the ledger monomial. This is `LeafJacobian`'s β-det clause (β := chartMap,
 ψ := id). Proof = the banked composite-det (`abs_det_fderiv_foldr_comp`) + per-edge diagonal read
-(`geoChartMap_swap_fderiv_det`) + the cert §1 regrouping cocycle (the tracked `sorry`). -/
-theorem geoAtlas_fold_det (s : ConState L)
-    (c : LeafData M) (hc : c ∈ geoAtlas (buildTree M (conOracle M) s)) (w : Params M) :
+(`geoChartMap_swap_fderiv_det`) + the cert §1 regrouping cocycle (the tracked `sorry`).
+
+**SCOPE = `conRoot`** (t14 correction, team-lead ruling (A), 2026-07-19; addendum §t14). The predecessor's
+locked binder `(s : ConState L)` was FALSE at generic `s`: a terminal `s` carrying an analytic divisor of
+exponent ≥ 2 gives a single-leaf atlas with `chartMap = id`, so `|det D id w| = 1` while the RHS vanishes
+at `w = 0` (machine-checked, `GeoLeafJacobianDisproof.geoAtlas_fold_det_generic_false`). The honest scope
+(finding-1; docstring line 9; addendum lines 23-27) is `conRoot`, where `numDiv = 0` and the full fold
+blows up every divisor. The internal induction is the acc + incoming-ledger-threaded cocycle over generic
+`s` under `DivBirthInv` (cert §2); `conRoot` instantiates it with the empty incoming ledger. -/
+theorem geoAtlas_fold_det (c : LeafData M)
+    (hc : c ∈ geoAtlas (buildTree M (conOracle M) (conRoot : ConState L))) (w : Params M) :
     |(fderiv ℝ c.chartMap w).det|
       = ∏ k : Fin c.numDiv, |paramsEquivFlat M w (c.divCoord k)| ^ (c.divExp k - 1) := by
   sorry
