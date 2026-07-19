@@ -4957,3 +4957,26 @@ absorb into the ∃; ZERO type change, ZERO rebase for the three sibling seats. 
 question posed honestly: does the ∃ open a wrong-witness loophole the field would bar, or
 does nothing downstream need fc pinned beyond the identity holding? t10 holds push-1,
 pre-drafting both R7 and R3 texts; t14/t15/t16 UNAFFECTED (construction-level, s in scope).
+
+## 2026-07-19 tick 312: CHARGE-6 = R7 ADOPTED (t10's typed variant governs); t14's spectator step banked; disj-t17 spawned
+THE RULING: the elder owned its charge-5 field-shape miss, adopted R7 (the existential
+carrier — the entry-9 idiom applied to a statement), rejected R1 (the trace: reviewed-spine
+invasive)/R2/R3 (re-opens ChartBridge's settled shape), and adjudicated the wrong-witness
+loophole HARMLESS on three grounds: (i) the det identity PINS fc/fe to the true monomial
+(unique up to invisible exp-1 padding + reindexing barred by injectivity); (ii) region_glue
+consumes the ∃'s CLAUSES, valid for any witness; (iii) chart fidelity is clause (D)'s job —
+the discharge supplies the faithful witness (birthFlatCoord over s) but nothing downstream
+needs it pinned. (B) STAYS ANALYTIC (the charge-5 strengthening WITHDRAWN — the full-ledger
+properties ride the ∃, "the right home"). Counter stays 8→9 (R7 = the fix of instance #9).
+IMPLEMENTING TEXT = T10'S PRE-DRAFTED VARIANT (verified to elaborate): STRICTLY TIGHTER than
+the elder's — fullNumDiv/fullDivExp stay TYPED fields (they never had the totality problem;
+only the coordinate function into Fin(flatDim) did), fc + the embedding emb are existential.
+Less existential = more name=content; adopted as the ruling's implementation, elder notified
+post-hoc (safe direction). PUSH-1 MOOT (zero type change, zero rebase). Watch-item: the
+≥1-exponent conjunct vs the zero-block case-2 (surface-not-force at the discharge). The
+∃-discharge lands in t14's bundle at assembly (t10's question answered).
+T14: the geometric spectator step BANKED first-try (merged this tick) — the geometric half
+reduced to the ONE grounded disjointness pair; its fresh-seat call ACCEPTED at the long-arc
+boundary → DISJ-T17 SPAWNED (the fresh-eyes single-target pattern; t14's grounding as spec;
+interface-matching verbatim; t09/coverage warm-answerable one question each). t14 rests;
+returns for the case-12 variant + the walk assembly.
