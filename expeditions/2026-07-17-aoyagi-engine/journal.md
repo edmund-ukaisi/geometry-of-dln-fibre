@@ -4497,3 +4497,10 @@ weakening batch, the R=1 chain, the rollover catch+fix, sorry-2, the verify-catc
 the finished cover.
 REMAINING ON THE WALL: t14's regrouping (corrected headline + 2 sub-lemmas + the cocycle)
 ∥ the (D) R-split (elder charge-4 pending) ∥ then: discharge → hbox → mint → cordon → PR.
+
+### Tick-288 addendum: crossed-message reconciliation — both stale in the good direction
+t10's "merge e365a705e" ask was already done (tick 288); acked. Coverage's dependency map
+pre-dated the cover completion — updated: ingredient (A) of its faithful discharge is GREEN;
+its decomposition ((D) statements + PROVEN node-walk + the stated discharge with named
+ingredient-holes) accepted in principle, now lands with ONE hole (t14's fold), not two. Both
+seats hold on their single triggers (discharge gate; elder charge-4).
