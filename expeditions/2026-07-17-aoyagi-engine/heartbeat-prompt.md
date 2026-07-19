@@ -8,28 +8,22 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: THE CLOSING TIDE (ticks 218-227). ★ THE o5 HOLE IS CLOSED: o5_realization CLEAN-THREE
-  (tStar_realized = the engine's hardest proof, landed by t06 from t05's SPECIFY off t04's
-  salvage; audited 6/6; the landing batch threaded hMpos through the attainment chain — the
-  attainment LAYER is positive-width, the ⊆ layer width-free). monomialization_terminates +
-  engine_box_threshold_finite = +sorryAx via **chartBridge_buildTree ALONE**. The corrected
-  ChartBridge (flat virtual-leaf atlas) is LANDED (re-typing batch, ripple as forecast); the
-  ψ-route = R-b source-reparam (target-gauge UNSOUND — pnp-psi); slot-stability = YES (immutable
-  divBirthCoord, pnp-slot); the carrier is BUILT (CenterIndices + qOfCenter + divBirthCoord
-  field + qEdgeOf, all clean-three, spine undisturbed). THE REACHABILITY SUB-ARC IS COMPLETE +
-  AUDITED 6/6 (t07, honors): divCoord REAL-IFIED (the genuine birth-corner map);
-  **leaves_chart_clauses_conRoot** delivers the 3 per-piece coordinate hyps as ONE clean-three
-  theorem (consumed by one `exact` at the assembly; 2 of 3 vacuous at resRank=0 leaves —
-  honest-context noted). ONE LANE REMAINS: **coverage-t08's TIDE** (GeoChart+geoChartMap+
-  geometricLeafPaths banked; IN FLIGHT: atlas materialization [pieces = ledger coords +
-  geometric chartMap] → cover fold → 3 Props → (A)/(C)/(D) [gate #10; the (D) landing FULLY
-  PRE-STAGED incl. the RegionGlueAssembly:107 fixed-arity destructure line — entry 7] → flags
-  #15 → the full-batch discharge gate). Seats t02-t07 ALL retired with honors (8 clean
-  successions). Engine census: 3 sorries (the hole, R7-owed, the witness corollary). THEN: hbox flips → R5 mint (the PRE-STAGED prestage wrapper — REWRITE its stale
-  hDescent arm to the direct _gen+engine composition, calibration entry 5) + #guard_msgs
-  ENFORCED gate → cordon (census entry 6: bounded, no surprises) → signal-and-wait PR
-  (body names R4/R6/R7 owed). Calibration ledger: 6 entries; the miss-class = slogan-for-
-  signature, 4/4 — check the SIGNATURE first.
+- phase: THE THREE BUILDERS (post the elder rightness call, ticks 242-252). THE LEDGER FACE IS
+  DONE (o5 closed+audited; monomialization_terminates 5/6, +sorryAx via chartBridge_buildTree
+  ALONE). THE ELDER FINDING (tick 242, operator-requested — the endgame's decisive audit):
+  the atlas as then-built could NOT satisfy LeafJacobian — (i) the center-dimension defect
+  (count-vs-dimension conflation; FIXED by t09's per-node carrier: qNodeOf + dCenterOfNode +
+  edgeSum + totality + the q-det trio, all clean-three) + (ii) THE UNBUILT ACCUMULATION (the
+  fold-Jacobian lemma = the last wall, task #21). geoAtlas is CONCRETE (the corrected type's
+  object exists; seam defeq-validated). NOW RUNNING: t09 (#26 fidelity) ∥ t10 (the cover —
+  from coverage's SPECIFY + validated fill-target GeoCoverSpec; medium) ∥ t11 (THE WALL —
+  from the fold SPECIFY + fill-target GeoJacobianSpec; the telescoping = the crux; LeafPullback
+  size-and-report attached). Coverage's authoring COMPLETE (both SPECIFYs; assembly ownership
+  decided at the builders' landing). THEN: (D)+clauses assembly (pre-staged incl. the
+  RegionGlueAssembly:107 destructure line) → the discharge (carto5's wiring checklist:
+  4 import-adds + the watch flips, all pinned) → hbox flips → mint (stale hDescent arm mapped)
+  + #guard_msgs gate → cordon (3 Engine sorries) → signal-and-wait PR (R4/R6/R7 owed named).
+  Honest distance: ~2-4 arcs (the wall is real; everything else is spec'd assembly).
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
