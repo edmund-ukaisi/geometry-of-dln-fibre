@@ -4244,3 +4244,18 @@ FINAL; #42 completed; t11 re-briefed (trigger unchanged: the t10 merge gate, sti
 LeafPullback-squeeze ownership decided at its landing). The three certs + three elder charges
 have now converged on ONE construction change with a settled spec — the endgame's remaining
 unknowns are down to the two builders' execution.
+
+## 2026-07-19 tick 277: elder charge-3 SEQUENCING refinement — the PARAMETRIC-GAUGE FORM (supersedes one-pass)
+The elder improved its own same-day ruling on the new facts (LeafPullback has no waiting
+builder; S alone unblocks the wall; α is det-1-transparent to the Jacobian): #35 =
+geoChartMap = (β∘S)∘g — S the CONCRETE diagonal permutation (fixed structure; without it the
+cocycle statement is FALSE), g a COMPOSABLE det-1 source-gauge SLOT (id now, α later),
+srcBox = g⁻¹(cube). Both benefits, neither cost: the cocycle is g-det-1-TRANSPARENT (t11
+proceeds NOW), the cover is g-IMAGE-INVARIANT (t10's proof transfers verbatim), and α's later
+instantiation is a parametric fill with NO ripple — the cert's coherence condition satisfied
+STRUCTURALLY. Rejected: pure one-pass (waits the wall on α's surgery) AND naive two-pass
+(re-shapes srcBox, re-points lemmas). The elder named the meta-pattern itself: parametrize
+where the correction flows, keep fixed math fixed — the design idiom that absorbed every
+correction this expedition, applied to the last piece. Fork 15 re-amended (verbatim), #35
+re-tasked, t11 re-briefed. resRank ruling unchanged (#42 stays closed). Gate build still
+running; the stack pushes on its green.

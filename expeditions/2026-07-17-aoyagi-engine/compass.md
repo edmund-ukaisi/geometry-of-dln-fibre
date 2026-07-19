@@ -357,20 +357,25 @@ over banked substrate.
     (full-cube superset route available; pivotChartDom internal tiling threads S or routes
     through the superset). GUARD: pnp-loss must run against the NORMALIZED charts (Q-c: the
     off-diagonal contagion hits ∏z² identically; one fix serves both).
-    (AMENDED, elder charge-3, 2026-07-19 — the normalization extends from S to the full Q,P.)
-    The per-edge normalization g_e = Aoyagi's regular Q,P has TWO det-1 aspects, BOTH making
-    the pure-β geometry match the proven-faithful ledger: (S) the diagonal-placement
-    PERMUTATION (LeafJacobian regrouping — charge 2) and (α) the incidence SHEAR (elemShear;
-    LeafPullback residual squeeze — pnp-loss cert: the Jacobian is det-1-blind to α, the
-    LOSS is not). #35 builds the FULL g_e∘β (= the deferred "localSub = ψ∘β", ψ = g_e) in
-    ONE pass with a coherent transformed srcBox' = g_e⁻¹(cube): the image = β(cube) is
-    UNCHANGED (cover preserved, clause A), srcBox' bounded by R(1+R) (clause B), the squeeze
-    holds on it (cert lo=(3−√5)/2, hi=(3+√5)/2; lo=1 at resRank=0). REJECT two-pass (S then
-    α): a shear does NOT preserve the cube, so the domain would re-shape twice, re-opening
-    cover+bound each time. Composition-cleanliness (S and α step-local to the current block,
-    disjoint from ancestor cleared diagonals) is charge-2's obligation generalized to a
-    det-1 gauge — same DivBirthInv freshness. α is det-1 so LeafJacobian's fold-det is
-    UNAFFECTED; α touches only LeafPullback.
+    (AMENDED, elder charge-3 sequencing, 2026-07-19 — supersedes the same-day "one pass"
+    clause.) The normalization has TWO det-1 aspects of Aoyagi's ONE regular Q,P step: (S)
+    the diagonal-placement PERMUTATION (LeafJacobian regrouping — charge 2) and (α) the
+    incidence SHEAR (elemShear; LeafPullback residual squeeze — pnp-loss cert: the Jacobian
+    is det-1-blind to α, the LOSS is not). #35 builds geoChartMap = (β∘S)∘g with S the
+    CONCRETE diagonal permutation (fixed structure — the divisor's cell is divBirthCoord)
+    and g a COMPOSABLE det-1 source-gauge SLOT (g = id now; α instantiated later), and
+    srcBox = g⁻¹(cube). The fold-det cocycle (LeafJacobian, t11) is g-det-1-TRANSPARENT and
+    the cover (clause A, t10) is g-IMAGE-INVARIANT ((β∘S)(cube)), so BOTH lanes proceed at
+    g = id NOW without waiting for α; instantiating g = α later is a parametric fill (NO
+    redefinition ripple; srcBox = α⁻¹(cube) ⊆ flatCube R(1+R) automatically), supplying only
+    LeafPullback's squeeze (cert lo=(3−√5)/2, hi=(3+√5)/2; lo=1 at resRank=0; no consumer
+    waiting). The gauge is designed into chartMap+srcBox from the start (cert condition (2)
+    satisfied structurally); α deferred cleanly along the clause boundary (S→Jacobian now,
+    α→loss later). REJECT both pure-one-pass (waits t11 on α's surgery) and naive two-pass
+    (re-shapes srcBox / re-points lemmas). Composition-cleanliness (step-local gauges ⊥
+    ancestor cleared diagonals) is charge-2's obligation generalized to a det-1 gauge — same
+    DivBirthInv freshness. Parametrize the gauge (where the correction flows), keep
+    pivotChart fixed (charge-1 principle).
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
