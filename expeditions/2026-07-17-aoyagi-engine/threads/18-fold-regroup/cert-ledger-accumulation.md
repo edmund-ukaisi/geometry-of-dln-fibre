@@ -233,6 +233,15 @@ invariant), with the SAME motive shape and base (`prod M (id w) = ∏ C^{(s)}` a
 4. **`resRank`/`resCoord` matching the actual leaf residual shape** (Morse vs fully-diagonal;
    `cert-loss-factorization` §Structure / task #42) — a value-side obligation the det does not carry.
 
+**Value battery (the depth-4 value run).** `battery/value_threaded_verify.py` (exit-0) tracks `prod`'s
+VALUE = `diag(b)` through the SAME depth-4 scenario as the det (`threaded_cocycle_verify.py`): Part A —
+the `b`-chain threaded per state (`b₁ = ∏` terminal, loss `= ∑ bᵢ²`, `b₁` squarefree, residual free of
+terminal, all 6 states PASS); Part B — the DET-vs-VALUE contrast on one run (`|det| = z_A⁴` accumulated
+vs `b`-power 1 vs loss-power 2, confirming non-derivability); Part C — the delta on actual matrices: the
+incidence residual `u·[[1,a],[b,ab+ρ]]` has off-diagonal `(a·u, b·u)` that only the **det-1** Q,P Schur
+gauge (`Lg·prod·Rg`) clears to `diag(u, ρu)` — a value-only reduction the det (`|det Lg| = |det Rg| = 1`)
+is blind to.
+
 **Recommendation.** Keep TWO certs (this det cocycle + `cert-loss-factorization` for the value/loss),
 sharing the SKELETON explicitly. When t14/loss-t15 transcribe, factor the shared skeleton
 (tree-walk + per-case dispatch + `DivBirthInv` + the `geoChartMap_flat_*` reads) into a reusable
