@@ -4318,3 +4318,18 @@ is "conOracle step ⟹ children nonempty" + "hsum=0 ⟹ all edges chartless" ⟹
 child covers (the (D) gating note anticipated exactly this degenerate class — cite it).
 sorry-1 formally RELEASED by t10 (one restructured attempt made, isolated, stopped per the
 hybrid — the discipline held).
+
+## 2026-07-19 tick 280: t11's S-primitive BANKED (spine-untouched); the re-green choreography ruled
+Merged bcf9566d8 + probed: GeoDiagSwap.lean (flatSwapCLE — the diagonal transposition with
+flat-read, involutivity, |det|=1, differentiability, cube-invariance; Codex-confirmed) + the
+per-edge β∘S wrapper (the atom now reads the DIAGONAL cell) — the Jacobian PAYOFF of
+diagonal-normalization banked BEFORE the spine changes. Codex caught the sign-of-composition
+risk (β∘S source-side reads z_d; S∘β target-side would leave z_p) — built correctly.
+RULINGS: (a) the cover VERIFY is t10's (elder-assigned); THREE-STEP CHOREOGRAPHY so
+integration never reds and neither builder idles: t10 lands sorry-2 pre-S (in flight; better
+re-threaded mechanically than written against a moving target) → t11 merges + pushes the
+geoChartMap spine change to ITS branch (transient red cover on a branch is fine) → t10
+merges t11's branch, re-greens + VERIFY, pushes; controller merges the combined green once.
+(b) the per-GeoChart diagonal target = a NAMED buck-stops helper in GeoChart.lean (consumed
+three more times: the cocycle, gated-(D), fidelity — one definition, cited, never re-derived
+inline). t11 GO on the spine change in-worktree.
