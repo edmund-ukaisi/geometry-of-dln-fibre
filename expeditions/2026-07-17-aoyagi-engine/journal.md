@@ -4687,3 +4687,18 @@ with the banked chart-action atoms as the per-case algebra. Every name pnp-fold'
 against is banked and listed in the commit. t14 HOLDS at the boundary (correct); the next
 wake is the cert relay. Remaining active: pnp-fold (the shared invariant, value-level scope
 note in hand) ∥ coverage (the bridge) ∥ loss-t15 (phase 2+3a).
+
+## 2026-07-19 tick 298: THE LEDGER-ACCUMULATION CERT IS IN — t14 woken for the final transcription
+pnp-fold delivered (merged e9f7a1888): the threaded invariant Inv(acc,s) = "|det D acc| =
+the state's ledger monomial L(s)" with base L(conRoot)=1; the four-case maintenance in
+LEAN-READY shapes keyed to t14's banked atom names (the case-1(2) crux made LOCAL by
+threading — the inherited |z_d|^{e−1} comes from the pulled-back u-term via
+geoChartMap_flat_center, not the chart det); sympy depth-4 mixed+rollover, per-step AND
+cumulative PASS; the transcription skeleton (motive/base/step signatures/leaf assembly);
+side conditions all already-banked reachability facts; the kill-condition STRUCTURALLY
+EXCLUDED by the swap. Blind Codex re-derived the pullback table + all cases. t14 WOKEN —
+the transcription is GO; this is the last wall's last step. ONE OWED: the VALUE-level delta
+section (the scope note crossed the cert's write-up — follow-up sent; its pullback table is
+already a value-level computation, so the addendum decides (3b)'s owner cheaply). ALSO: the
+R-split gate AxCheck watch committed on a true green (LAKE-EXIT:0; projection clean-three
+in-gate; the faithful theorem's diagnostic line live).
