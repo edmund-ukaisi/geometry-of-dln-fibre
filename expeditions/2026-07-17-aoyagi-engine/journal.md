@@ -4940,3 +4940,20 @@ partialDiag block-encoding INTERFACE abstractly so the t14-coupled finalization 
 substitution. GO issued on the t14-independent trio (the bridge + frobSq-of-diagonal +
 the ρ instantiation) — pre-building the crux's whole consumer side. After that, the value
 instance owes only the four maintenance proofs + the walk mirror on t14's landed pattern.
+
+## 2026-07-19 tick 311: t10's TOTALITY WALL on fullDivCoord — R1 refuted by the consumer trace; elder charge-6
+t10 grounded and surfaced (per instruction, no improvising): leafOfState's degenerate
+else-branch (flatDim M = 0) cannot populate fullDivCoord into Fin 0 (s.numDiv ⊥ M; the
+constructor is total; NumDivInv is reachable-cone-only) — the elder's "mechanical ripple"
+assumption falsified. ITS R1 LEAN REFUTED BY MY TRACE: leafOfState_rootLedger's consumers =
+buildTree's OWN terminal wiring (total definitions that cannot discharge a guard) + 8
+QNodeCarrier fidelity-spine sites — R1 is R2-grade invasive in disguise, not gate-safe.
+CHARGE-6 to the elder with FOUR options: R1 (real cost now known), R2 (rejected), R3 (clause
+reads the state — restructures ChartBridge's ∀-leaves shape), and R7 (controller, the
+entry-9 idiom): NO field — the LeafJacobian clause carries the full ledger EXISTENTIALLY
+(∃ fc fe, Injective fc ∧ fe ≥ 1 ∧ the analytic embedding ∧ the det identity); the discharge
+witnesses fc := birthFlatCoord over s (R3's insight, no restructure); the (B) strengthenings
+absorb into the ∃; ZERO type change, ZERO rebase for the three sibling seats. The R7
+question posed honestly: does the ∃ open a wrong-witness loophole the field would bar, or
+does nothing downstream need fc pinned beyond the identity holding? t10 holds push-1,
+pre-drafting both R7 and R3 texts; t14/t15/t16 UNAFFECTED (construction-level, s in scope).
