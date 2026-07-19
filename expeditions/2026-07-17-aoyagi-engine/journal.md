@@ -2653,3 +2653,19 @@ COMMISSIONED: pnp-psi (fresh seat, own worktree) — T1 (u-pivot load-bearing?) 
 factorization?) by exact algebra incl. the Leg-1 battery check, then R-a/R-b pricing against
 the carrier spec; extra-careful decorrelation (the challenge itself is Codex-sourced). The
 carrier's per-edge ψ typing is compatible with every outcome — t05 unblocked regardless.
+
+## 2026-07-19 tick 185: counter-sign consolidated w/ gate (90add9f82 merged); q-concrete requirement
+coverage-t08 folded the elder amendments: WITHDREW its own D1-flat for the elder's pinned D1
+with the honest reason (under-tied — anchored the fold to the ledger but let the PATH float;
+the D2-wearing-D1's-name hole) and counter-signed the pinned form as PROVABLE: (i)
+geometricLeafPaths t buildable (d_center computable from t: case-1 = runLen·resCols+1 off the
+edge's ChartSubst + node StepData; direct analog of the banked leafPaths recursion); (ii) the
+real β∘ψ fold non-opaque MODULO one named dependency — **the coordinate split q must be
+CONCRETE in the carrier** (not the atom's existential) — logged + relayed to t05 as a carrier
+requirement (companion of the β field); (iii) fails-on-fake met (the fold equation pins
+chartMap to a specific banked composition). Both elder checks PASS against its 3-Prop work
+(clause (C) feeds exactly hdivExp/hres at RegionGluePerLeaf:127-128, orthogonal to the Props;
+the ledger/atlas split verified at ResolutionTree:284-286). SEPARABILITY banked: D1 is
+definitional coherence (holds under any gauge structure); the single-ψ finding bites only the
+COVER PROOF (clause A) — D1 out of the blast radius under every pnp-psi outcome. Coverage told:
+hold tide planning until the ψ cert lands (pnp-psi already running — spawned pre-fold).
