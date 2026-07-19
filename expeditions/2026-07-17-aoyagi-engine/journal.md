@@ -2141,3 +2141,14 @@ unchanged). RULINGS RESTATED (3rd crossing — mailbox latency, not disagreement
 assemble now w/ named holes; D§ii/iii = t03's (critical path; cert reduces it to ONE clearable
 minimizer) with the scope guard — no mid-D generalization toward ⊇ Clearable-Adm (that's R7;
 the D machinery reuses there). Reify-now + naming pin re-pointed. Order: E-wire → D§ii/iii.
+
+## 2026-07-19 tick 156 (idle pulse → lane unblock): coverage lane WOKEN — its gate is satisfied
+Drift glance: t03 tip unchanged (working E-wire/D locally); rev-spine in read-in (no branch yet).
+The productive move this tick: the coverage lane's gate condition ("the built atlas" = buildTree
++ leafOfState with chart-slots exposed) became TRUE at tick 153's merge — coverage-t07 WOKEN
+with the merged-state map (its T3 targets = the FlatCubeLeaf chart slots; the banked pivot/ψ
+machinery pointers; scope note that the realization-gap defect does NOT touch image-coverage but
+its t̃=0 discipline binds read-off-adjacent statements). pnp-atlas WOKEN on Q1b (single-ψ
+factorization fidelity) — now load-bearing since the coverage lane consumes the answer;
+flag-immediately instruction if the single-ψ form is infidelitous. Navigator convening NOTED for
+E-landing (the true phase transition: spine → coverage-critical); not convened early.
