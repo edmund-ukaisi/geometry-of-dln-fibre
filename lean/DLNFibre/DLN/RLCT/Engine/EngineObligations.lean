@@ -33,7 +33,19 @@ variable {L : ℕ}
 /-! ## The two named holes (their own sorried declarations, attributed to their fill sources) -/
 
 /-- **ChartBridge for the built tree** (map: `coverage-theorem`; the T3 coverage lane fills this).
-The CoV atlas over `buildTree (conOracle M) conRoot`. The ONE analytic hole of the assembly (AxCheck:
+The CoV atlas over `buildTree (conOracle M) conRoot`. A `@[blueprint]` FORECAST.
+
+**CAVEAT — the chart-emission carrier is a PREREQUISITE (t04/coverage item).** The current
+construction emits PLACEHOLDER charts: every edge's `ChartSubst.localSub = id` and
+`leafOfState.chartMap = id`. So the coherence clause `p.1.chartMap = p.2` holds trivially (`id = id`),
+but the COVER / `LeafPullback` / `LeafJacobian` clauses — the REAL blow-up geometry (monomial×unit
+pullback, `|det Dβ| = ∏|u|^{divExp−1}`, the singular-locus cover) — are NOT satisfiable against `id`
+charts. This hole is FILLABLE only after the chart-emission carrier lands: the edges must carry the
+real blow-up `localSub`s and `leafOfState.chartMap` must be the root→leaf `localSub` fold (thread a
+path-accumulator through `buildTree`). The TREE def and the CHART-INDEPENDENT spine
+(`isFullMonomialization_buildTree_conRoot`, `StepRel`, base, `minAdm ≤`) are STABLE under that carrier
+change (they read only the divisor/full ledger, never `chartMap`), so this type does not move — only
+the construction's chart content becomes real. The ONE analytic hole (AxCheck:
 `monomialization_terminates` `+sorryAx` via this + `o5_realization`). -/
 @[blueprint] theorem chartBridge_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L) :
     ChartBridge M (buildTree M (conOracle M) (conRoot : ConState L)) := by
