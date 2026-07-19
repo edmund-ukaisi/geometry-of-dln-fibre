@@ -3029,3 +3029,18 @@ built from it). BOTH BUILDS GO (t05: centerIndices + per-edge counts + pivot enu
 coverage: α_e + GeoChart def under amendment-2 NOW, centerSplit at centerIndices-landing,
 then geometricLeafPaths/(D)/Props/cover). elder-gate9 dissolved — its per-edge catch and
 buck-stops pin are exactly what the gate-on-aligned-seats convention exists for.
+
+### Tick-206 addendum: gate addendum — q_node ownership corrected (t05's); the SEAM PIN
+elder-gate9 re-checked against t05's review addendum: the division HOLDS and is CLEANER with
+q_node/centerSplit as T05's (the gate's own Q3 line + the controller's tick-206 relay both
+superseded — corrections sent to both seats). t05's arc = centerIndices + assembling the
+concrete q_node Homeomorph (paramsEquivFlat + Fin-reindex + arrowCongr; bounded coordinate-
+layout, no new math). THE SEAM PIN (the addendum's one new binding requirement — the
+buck-stops principle at the t05→coverage boundary): q_node exposed as a NODE-INDEXED DEF
+(qNodeOf : StepData M → Homeomorph), node-derived from centerIndices, NEVER free/existential —
+an opaque q_node would break fails-on-fake exactly at the seam (fabricated q_node → fabricated
+β_e → (D) internally satisfiable). The verified dependency chain: node data → centerIndices →
+qNodeOf (t05) → β_e = qNodeOf-conjugated pivotChart → β̃_e → the geometricLeafPaths fold
+(coverage) — every link a def of node data + banked atoms. Everything else unchanged
+(per-edge counts, uniform u-geometry, the fill-batch flags, gate #10). elder-gate9 dissolved.
+Both lanes BUILDING.
