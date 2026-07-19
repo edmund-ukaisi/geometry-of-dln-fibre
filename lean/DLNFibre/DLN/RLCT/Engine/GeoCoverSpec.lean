@@ -196,7 +196,10 @@ theorem leafOfState_srcBox (s : ConState L) :
 
 /-- **A `conOracle` step has a nonempty child list** — every step branch (rollover / case-1 / case-2)
 emits ≥1 child; the terminal branches are not steps. Needed for the `dCenterOfNode = 0` (chartless)
-node in the cover: the identity passthrough of one covering child carries the flat cube. -/
+node in the cover: the identity passthrough of one covering child carries the flat cube. The
+chartless class is exactly where clause (D)'s intended chart is `dCenterOfEdge`-gated off (see the
+`fannedEdges` `dCenterOfEdge n e = 0` branch), so it covers both rollover and the degenerate
+zero-block case-2 — not rollover alone. -/
 theorem conOracle_step_children_ne_nil (s : ConState L) (node : StepData M)
     (children : List (StepChild M s)) {hn hl hs}
     (hoc : conOracle M s = ConDecision.step node children hn hl hs) : children ≠ [] := by
@@ -255,8 +258,9 @@ theorem conOracle_step_children_ne_nil (s : ConState L) (node : StepData M)
 /-- **The flat cube is covered by the geometric tree's leaf-path images** (reachability induction on
 the built tree). Terminal: the leaf's `srcBox` is the flat cube. Step: the node's `dCenterOfNode`
 pivot charts self-cover the flat cube (`node_selfCover`), each pivot realised by a fanned edge whose
-child covers by IH (`fannedEdges_covers` + the `dCenterOfNode_edgeSum` tiling); a chartless (rollover)
-node passes the flat cube through its identity edge from the covering child. -/
+child covers by IH (`fannedEdges_covers` + the `dCenterOfNode_edgeSum` tiling); a chartless node
+(`dCenterOfNode = 0`: rollover or degenerate zero-block case-2) passes the flat cube through its
+identity edge from the covering child. -/
 theorem flatCube_subset_leafPathImages :
     ∀ (s : ConState L) (acc : Params M → Params M),
       ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1
