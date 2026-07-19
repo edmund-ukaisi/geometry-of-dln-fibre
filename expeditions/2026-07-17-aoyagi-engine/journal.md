@@ -4867,3 +4867,18 @@ wheelhouse) on a TWO-PUSH batch — the type change FIRST and FAST (three siblin
 rebase on it), then the clauses + wrapper + counter, full gate. File fences pinned
 (GeoLeafJacobian stays t14's — it restates its own headline on the new field). t14's
 maintenance unaffected throughout (full-ledger by design — the hedge that keeps paying).
+
+## 2026-07-19 tick 307: t14's cocycle ARCHITECTURE elaborates (terminal closed) — but on the DEAD WeakNoStrand thread; hard wake sent
+The architecture push merged: geoAtlas_cocycle (the WF walk, terminal case closed, ONE
+tracked step-case sorry at :493) — a real milestone, the wall proven-modulo-one-hole. BUT
+the seat composed TWO consecutive reports without the dichotomy verdict landing (long turns;
+inbox delivery at turn boundaries): the motive still threads WeakNoStrandLeaf and the
+terminal case routes through the dead bridge — at conRoot the premise is FALSE, so the
+walk's conclusion as built is vacuous-conditional. HARD WAKE sent (read tick 305/306 + the
+inbox backlog; confirm before resuming): drop the weak thread from the motive; the terminal
+case SIMPLIFIES under the charge-5 restatement (Inv-det at a leaf IS the full-ledger
+headline — ledgerMonomial already is it); merge t10's imminent push-1 field; the step-case
+maintenance is UNCHANGED (full-ledger by design) and remains the one real grind. The
+conditional artifacts stay, documented, un-routed-through. PROCESS NOTE: the crossed-message
+rate is climbing at endgame tempo — the confirm-before-resume handshake added to the wake;
+consider it standard when a verdict invalidates in-flight work.
