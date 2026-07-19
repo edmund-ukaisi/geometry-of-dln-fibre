@@ -2364,3 +2364,25 @@ t03's t04-handoff.md as the authoritative local map, (a) carrier per the 4-part 
 classification + protected-set gate + REPORT-IMMEDIATELY (coverage wakes on it) → (b)
 o5_realization (cert §§3-4, naming pin, minimizer-only scope guard, pnp-o5 consult route) →
 (c) reify-Clearable + the 3 review nits. All tripwires standing.
+
+## 2026-07-19 tick 168: NAVIGATOR-3 VERDICT — route adopted, 5 amendments, ALL EXECUTED
+A (carrier-first): CONFIRMED optimal (D-first strictly longer; carrier is a genuine
+prerequisite; post-carrier long pole = D, budget accordingly) — matches the tick-167 spawn.
+B: (1) R2 decorrelated PROBE decoupled from the Lean proof and FIRED NOW → pnp-o5 commissioned
+(threads/14-r2-probe/; hunt-cert §5 form, kill-set = both known mechanisms + the corner class;
+circularity guard; flag-immediately on undershoot). Seat correction adopted: NOT pnp-atlas
+(gauge designer — correlated), NOT coverage (builder); pnp-o5 = ledger-side, decorrelated.
+(2) cartographer pass #2 async: positive value for t04's o4-reuse — spawn next tick.
+(3) glue-t06 hhomog residual: close-phase, NOT a wake (region_glue clean-three; misallocation).
+(4) pnp-atlas: done; consult-only. C (hard-part-avoidance): sequencing judged HONEST
+(minimizer-only = correct altitude; R7 = sequencing not scope-cut); guards adopted → t04
+re-ordered (reify-Clearable FIRST, then carrier, then D) + explicit carrier balloon-tripwire
+(surface-don't-absorb; protect D's budget). D (gates): two vaguer-than-executable criteria
+PINNED in priorities — R2's probe = a concrete adversarial artifact (named kill-set + counts);
+R5's "enforced" = #guard_msgs in #print axioms (build-FAILS on drift; bare #print does not
+satisfy R5). E (calibration): drift 1 fixed (chart-emission carrier now an explicit R2 pre-rung
+in the ladder — distinct from R1's LEDGER carrier); drift 2 pinned (spine PR ≠ full mechanism:
+PR body must co-locate "R4+R6+R7 owed post-spine"); census note (3 Engine sorries: the 2 cone
+holes + canonicalResolution224's off-cone witness, closes as a coverage corollary — cordon
+reconciles ALL). Distance: ~4-6 seat-arcs to the spine PR. Top risk: D squeezed to a t05
+handoff (hence the reify front-load + tripwire). Next navigator trigger: cadence or hbox flip.
