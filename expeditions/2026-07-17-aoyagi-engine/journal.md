@@ -3335,3 +3335,20 @@ cover fold, LeafPullback/LeafJacobian/InjOn) consumes concrete divCoord WITHOUT 
 converging at the chartBridge_of_pieces assembly. RULED: t06 → qEdgeOf next (the tide trigger);
 the reachability sub-arc = t06-or-handoff at that boundary (parallel ⟹ zero critical-path cost
 either way; honest read outranks default). Still owed: t06's full-gate verbatim.
+
+## 2026-07-19 tick 225: qEdgeOf GREEN — THE TIDE IS FIRED; t06 honors; t07 on the parallel sub-arc
+qEdgeOf merged + probed clean-three (per-edge keyed, the selector/injectivity/totality/bound
+encapsulated — construction accounting in construction files, the seam as coverage asked).
+The FULL-GATE VERBATIM from the field ripple: every clean-three root INTACT (incl. the required
+canonicalResolution224_arithmetic probe) — the divBirthCoord additions disturbed NOTHING.
+COVERAGE'S TIDE FIRED (its declared order, hdcInj/hrcInj/hdisj as fed hypotheses, gate #10 +
+flags #15 in its path — "the tide that fills the last hole"). t06's SEQUENCING CALL honored:
+the reachability sub-arc HANDED OFF (parallel, zero critical-path cost, the honest fatigued-
+tail read — the pattern's rule applied by its strongest seat). **architect-t07 SPAWNED** on the
+bounded 3-step spec (DivBirthInv [NumDivFlatBound as the template — t06's own task-#4 work
+teaching its successor] → real-ify leafOfState.divCoord → discharge hdcInj/hrcInj/hdisj;
+the resCoord clauses possibly vacuous at leaves via leaves_resRank_zero — check-and-say).
+**t06 STOOD DOWN WITH HONORS**: tStar_realized + the landing batch + R7 + the carrier core
+(qOfCenter first-try through five named traps; the field ripple with zero spine disturbance;
+qEdgeOf) — every green banked, every gate verbatim, every ceiling honest. THE BOARD: coverage's
+tide ∥ t07's sub-arc → convergence at chartBridge_of_pieces → the last hole → the flip.
