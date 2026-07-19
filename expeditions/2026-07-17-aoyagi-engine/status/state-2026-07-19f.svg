@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1330" viewBox="0 0 1180 1330" font-family="ui-sans-serif, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#57606a" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1180" height="1330" fill="#ffffff"/>
+
+  <text x="40" y="42" font-size="21" font-weight="700" fill="#1f2328">State of the mathematics — expedition aoyagi-engine</text>
+  <text x="40" y="64" font-size="13" fill="#57606a">2026-07-19 evening, tick 258 · carrier done · cover countersigned · the wall running</text>
+  <g font-size="12.5">
+    <rect x="736" y="30" width="14" height="14" rx="3" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="756" y="42" fill="#1f2328">PROVED, clean-three</text>
+    <rect x="906" y="30" width="14" height="14" rx="3" fill="#fff3d1" stroke="#9a6700" stroke-width="1.5"/><text x="926" y="42" fill="#1f2328">assembled · named hole</text>
+    <rect x="736" y="52" width="14" height="14" rx="3" fill="#fde8e8" stroke="#c93c37" stroke-width="1.5"/><text x="756" y="64" fill="#1f2328">★ the live front</text>
+    <rect x="906" y="52" width="14" height="14" rx="3" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/><text x="926" y="64" fill="#1f2328">sorried / owed</text>
+  </g>
+
+  <!-- destination -->
+  <rect x="140" y="86" width="900" height="66" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="2"/>
+  <text x="590" y="110" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2328">aoyagi_learning_coefficient ← hbox = engine_box_threshold_finite (hL, hMpos)</text>
+  <text x="590" y="132" text-anchor="middle" font-size="12.5" fill="#1f2328">✓ _gen clean-three · ✓ L=1 · ✓ mint wrapper pre-staged (stale arm mapped) · hbox +sorryAx via chartBridge_buildTree ALONE</text>
+  <line x1="590" y1="152" x2="590" y2="178" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <rect x="40" y="182" width="1100" height="36" rx="6" fill="#dbeafe" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="590" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="#1e50a0">▼ AOYAGI'S LIBRARY (network-free) · the LEDGER face: DONE clean-three · the ATLAS face: the endgame below ▼</text>
+
+  <!-- ledger done strip -->
+  <rect x="140" y="236" width="900" height="64" rx="8" fill="#d1f0dc" stroke="#1a7f37" stroke-width="2"/>
+  <text x="590" y="260" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">THE LEDGER FACE — COMPLETE: termination · coherence · ⊆-admissibility · ATTAINMENT (o5 closed, audited)</text>
+  <text x="590" y="282" text-anchor="middle" font-size="12" fill="#1f2328">monomialization_terminates: 5/6 conjuncts proven · sorryAx via the ONE chart hole · protected set intact through every merge</text>
+  <line x1="590" y1="300" x2="590" y2="326" stroke="#c93c37" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- THE LIVE FRONT -->
+  <rect x="60" y="332" width="1060" height="520" rx="8" fill="#fde8e8" stroke="#c93c37" stroke-width="2.5"/>
+  <text x="590" y="358" text-anchor="middle" font-size="15" font-weight="700" fill="#c93c37">★ THE CHART HOLE — three lanes running; two of the three repair fronts already closed</text>
+
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="386" font-weight="700">CLOSED SINCE THE LAST SNAPSHOT (tick 249 → 258):</text>
+    <text x="80" y="406">✓ THE CARRIER (t09) — COMPLETE, all clean-three: qNodeOf (the per-node (m+1)-dim center) + the edge-sum tiling</text>
+    <text x="80" y="424">&#160;&#160;+ totality + the q-det trio + THE FIDELITY CHAIN: cNodeOf_eq_realCNode — the charts name Aoyagi's INTENDED</text>
+    <text x="80" y="442">&#160;&#160;blow-up coordinates. The flagged dependent-cast risk dissolved by a POINTWISE redefinition (the statement</text>
+    <text x="80" y="460">&#160;&#160;restructured so the hard case never arises — twice now the winning idiom). Left: one case-1 supply walk,</text>
+    <text x="80" y="478">&#160;&#160;off the builders' critical path (it feeds the final ASSEMBLY, not the cover or the wall).</text>
+    <text x="80" y="502">✓ THE COVER STATEMENT (t10 + coverage) — a real DEFECT found at the fill step, fixed honestly: the (1,1,1)</text>
+    <text x="80" y="520">&#160;&#160;boundary witness KILLED the old clause (A) (V ⊆ U unprovable for L≥2 — the atlas images are the closed unit</text>
+    <text x="80" y="538">&#160;&#160;cube EXACTLY; the zero-locus touches its boundary). Counter-signed weakening: (0 ∈ U) — and the fidelity</text>
+    <text x="80" y="556">&#160;&#160;verdict is POSITIVE: the rlct is LOCAL at the cone point; the old form OVERCLAIMED a global zero-locus cover</text>
+    <text x="80" y="574">&#160;&#160;Aoyagi neither needs nor establishes. The proven degree-2L homogeneity carries the local form the rest.</text>
+
+    <text x="80" y="602" font-weight="700" fill="#c93c37">RUNNING NOW (the two builders):</text>
+    <text x="80" y="622" fill="#c93c37">▶ t10 — the COVER: atomic 5-file weakening batch (countersigned, gated on region_glue staying clean-three)</text>
+    <text x="80" y="640" fill="#c93c37">&#160;&#160;+ the ~120 LoC fill: R=1 node self-cover → reachability induction with the edge-sum tiling (hbij = the one</text>
+    <text x="80" y="658" fill="#c93c37">&#160;&#160;flagged hard link) → assemble via the coherence lemma. Fix-independent pieces already banked green.</text>
+    <text x="80" y="682" fill="#c93c37">▶ t11 — THE WALL (fold-Jacobian): |det D(path-fold)| = ∏ |z_k|^{ledger E_k − 1} — phase 1 of 3</text>
+    <text x="80" y="700" fill="#c93c37">&#160;&#160;(per-edge det atom → chain-rule fold skeleton → the TELESCOPING: ledger updates match Jacobian products).</text>
+    <text x="80" y="718" fill="#c93c37">&#160;&#160;This is the last genuinely new mathematics; everything after it is specified assembly.</text>
+
+    <text x="80" y="746" font-weight="700">THEN (every step pre-staged in a durable artifact):</text>
+    <text x="80" y="766">clause (D) into the ChartBridge type (gate #10) → the assembly (destructure line pre-written) → the discharge</text>
+    <text x="80" y="784">(wiring checklist: 4 import-adds + watch flips) → hbox flips clean-three → mint (stale arm rewrite +</text>
+    <text x="80" y="802">#guard_msgs enforced axiom-gate) → cordon (census verified on disk today: 3 Engine sorries + 2 fill-targets)</text>
+    <text x="80" y="820">→ signal-and-wait PR (R4 / R6 / R7 named as owed).</text>
+    <text x="80" y="842" font-size="11.5" fill="#57606a">Sequencing pin (elder): clause (D) is DOWNSTREAM of the Jacobian's satisfiability — the wall lands first.</text>
+  </g>
+
+  <!-- off-path + ledgers -->
+  <rect x="60" y="876" width="520" height="118" rx="8" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/>
+  <text x="80" y="900" font-size="13" font-weight="700" fill="#1f2328">Owed off-path (sequenced, never cut):</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="80" y="920">○ R7 completeness proof (statement typed, hMpos-hardened)</text>
+    <text x="80" y="937">○ case-1 RealCNodeFacts supply (t09, feeds the assembly)</text>
+    <text x="80" y="954">○ LeafPullback sizing (t11 reports) · R4 genDivExp · R6 peel</text>
+    <text x="80" y="971">○ the (2,2,4) witness corollary · flip-audit (cited-axiom residue)</text>
+  </g>
+  <rect x="600" y="876" width="520" height="118" rx="8" fill="#f6f8fa" stroke="#8250df" stroke-width="1.5"/>
+  <text x="620" y="900" font-size="13" font-weight="700" fill="#8250df">Ledgers (all audited):</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="620" y="920">paper defects: 4 verified + the statement-level (A) defect (fixed)</text>
+    <text x="620" y="937">obligation-statement counter: 6 → 7 lands with t10's batch</text>
+    <text x="620" y="954">calibration entries: 9 · the new lesson: restructure the statement</text>
+    <text x="620" y="971">so the hard case dissolves — never case-split the proof for it</text>
+  </g>
+
+  <!-- the picture -->
+  <rect x="60" y="1010" width="1060" height="128" rx="8" fill="#eef4fb" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="80" y="1034" font-size="13" font-weight="700" fill="#1e50a0">The picture: what kind of work remains</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="1056">The two faces of Aoyagi's mechanism — the LEDGER (which exponents the resolution produces) and the ATLAS (that</text>
+    <text x="80" y="1074">honest charts realize them) — are joined by three seams: the charts' CENTERS (done: the carrier), their COVERAGE</text>
+    <text x="80" y="1092">(running: t10, de-risked to assembly by the counter-sign), and their JACOBIANS (running: t11 — the wall, the one</text>
+    <text x="80" y="1110">place where per-blow-up facts must ACCUMULATE along the tree). Every defect this week lived at exactly these</text>
+    <text x="80" y="1128">seams, and each was caught at the statement, before any proof was wasted on it.</text>
+  </g>
+
+  <!-- distance -->
+  <text x="80" y="1176" font-size="12.5" font-weight="600" fill="#1f2328">Honest distance:</text>
+  <text x="80" y="1196" font-size="12" fill="#57606a">~2-3 seat-arcs (was ~2-4 at the rightness call): the carrier finished UNDER estimate, the cover was de-risked by</text>
+  <text x="80" y="1214" font-size="12" fill="#57606a">the counter-sign (its one hard link is the hbij tiling), and the wall (t11) remains the sole genuine unknown.</text>
+  <text x="80" y="1232" font-size="12" fill="#57606a">A navigator office is auditing the parallelisation now (width, lane conflicts, t11-stall contingency).</text>
+
+  <text x="80" y="1268" font-size="11.5" fill="#57606a">Seats: t02-t07 retired w/ honors · t09 = case-1 supply · t10 = cover · t11 = the wall · coverage-t08 = counter-signer, idle by design</text>
+  <text x="80" y="1286" font-size="11.5" fill="#57606a">snapshot artifact — safe to delete; the journal is the record</text>
+</svg>
