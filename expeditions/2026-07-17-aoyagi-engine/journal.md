@@ -4882,3 +4882,12 @@ maintenance is UNCHANGED (full-ledger by design) and remains the one real grind.
 conditional artifacts stay, documented, un-routed-through. PROCESS NOTE: the crossed-message
 rate is climbing at endgame tempo — the confirm-before-resume handshake added to the wake;
 consider it standard when a verdict invalidates in-flight work.
+
+### Tick-307 addendum: handshake confirmed — t14 aligned, grinding the §3 maintenance case-by-case
+The confirm-before-resume worked: t14 read ticks 305/306 + all four backlog messages, absorbed
+the verdict (its own summary is exact — ledgerMonomial already the right RHS, zero rework;
+the conditional bridge documented, un-routed), and is grinding the four-case maintenance as a
+standalone full-ledger lemma against the cleaned motive (Inv-det + DivBirthInv only) —
+case-2 birth first to establish the pattern, the motive/conclusion restatement deferred to
+t10's field + the headline text (merging origin on their appearance). The board's one real
+grind is in motion on the correct statement.
