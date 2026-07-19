@@ -497,11 +497,11 @@ ONE `q` of dimension `dCenterOfNode node`, shared by all the node's `dCenterOfEd
   `threads/10-coverage/cover-specify.md`. Pins: `q = qNodeOf`, `hbij = dCenterOfNode_edgeSum`,
   `hd = dCenterOfNode_le_flatDim`, headline `chartBridge_imageCover_of_ownCovers` over a `tGeo` reshape.
 
-## FOLD-JACOBIAN SPINE family — `GeoJacobianSpec.lean` + `GeoJacobianFold.lean` (t11; sorry-free, ⚠ GATE-ORPHAN)
+## FOLD-JACOBIAN SPINE family — `GeoJacobianSpec.lean` + `GeoJacobianFold.lean` (t11; sorry-free, GATE-WIRED @13b86217a)
 
-*The construction-stable Jacobian workhorse the `LeafJacobian` clause consumes. BANKED sorry-free but
-NOT wired into AxCheck — escapes `lake build DLNFibre` (see [[wiring-endgame]] §1a; wiring
-`GeoJacobianFold` into AxCheck closes the orphan + pulls GeoJacobianSpec).*
+*The construction-stable Jacobian workhorse the `LeafJacobian` clause consumes. BANKED sorry-free;
+GATE-WIRED at `13b86217a` (AxCheck:12 imports `GeoJacobianFold`, pulling GeoJacobianSpec, + 5 watch
+lines). Was a gate-orphan at the carto6 snapshot; closed post-snapshot (see [[wiring-endgame]] §1a).*
 
 - `geoChartMap_fderiv_det` (`GeoJacobianSpec.lean:95`) — the PER-EDGE det atom (on-cone):
   `|det D(geoChartMap g) w| = |z_{cNodeOf(node)(pivot)}(w)|^{dCenterOfNode − 1}`, via q-conjugation

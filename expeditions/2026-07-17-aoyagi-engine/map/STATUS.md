@@ -35,9 +35,9 @@ landing.
       center `dCenterOfNode` + `dCenterOfNode_edgeSum`/`_le_flatDim` + `qNodeOf` + the q-det trio.
   ✔ reachability (coord clauses) [DONE, clean-three] DivBirthReach: `DivBirthInv_conOracle_stepChildren`
       → `leaves_chart_clauses_conRoot` (divCoord/resCoord inj + disjoint per built leaf).
-  ✔ fold-Jacobian SPINE [BANKED sorry-free — but GATE-ORPHAN] GeoJacobianSpec (`geoChartMap_fderiv_det`
-      per-edge atom) + GeoJacobianFold (`abs_det_fderiv_foldr_comp` parametric fold). ⚠ escapes
-      `lake build DLNFibre` — not wired into AxCheck (see map/overlay/wiring-endgame §1a).
+  ✔ fold-Jacobian SPINE [BANKED sorry-free, GATE-WIRED @13b86217a] GeoJacobianSpec (`geoChartMap_fderiv_det`
+      per-edge atom) + GeoJacobianFold (`abs_det_fderiv_foldr_comp` parametric fold); AxCheck:12 import +
+      5 watch lines (was a gate-orphan at the carto6 snapshot; closed post-snapshot).
   ▶ cover (clause A) [IN FLIGHT — t10] `geoAtlas_imageCover` (GeoCoverSpec.lean:38 sorry); 0∈U reshape.
   ⧗ fold cocycle regrouping + instantiation [GATED — finding 2] pnp-fold cert running (the 3 per-case
       intermediate-point substitution identities) + task #30 (regroup onto source-w ledger).
