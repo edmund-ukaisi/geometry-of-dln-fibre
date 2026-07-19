@@ -5108,3 +5108,28 @@ map confirms the steer arrived already-internalized on the math side. ONE WATCH 
 single-tree presentation — faithful (the symmetric quotient) but flagged for re-derivation
 from the math if any future ruling on it leads with build-convenience. The map is now a
 standing fidelity instrument.
+
+## 2026-07-19 tick 319: ELDER CHARGE-7 AUDIT IN — "largely faithful and hard-part-facing"; TWO genuine flags
+The whole-mechanism sweep (page-cited throughout): the paper's half (I) — the (C,θ) quiver
+combinatorics incl. permutation invariance — is COMPREHENSIVELY BUILT zero-cited; half (II)
+(the resolution) is building its hard parts. NOT broadly avoidant. The real findings:
+FLAG A (the clearest avoidance): THE COMBINATORIAL ORDER rorder = a(ℓ−a)+1 (Aoyagi Lemma 5,
+worked.tex:727-750) — only DEFINED on disk; the resolution→count theorem was EXCISED (rightly,
+vs the opaque analytic) but NEVER REBUILT in its honest form: the count of binding branches
+(the Lemma-3 tie + the two-envelope bound) is ELEMENTARY and needs NO analytic binding
+("same (ℓ,a) data as λ, a clean count"). Her resolution computes the value AND the order —
+building only the value narrows her result. Size: elementary.
+FLAG B (possible wrong-wall gating): R6's compass gate cites the SchurCore depth-≥3 wall —
+but that is the FRONT-PEEL method's wall; Aoyagi's Thm 3 regular block is a SMOOTH MORSE
+BLOCK (½·rank, smoothBlockND_rlct banked on our side; the L2 instance already proven).
+RE-PROBE R6 via the smooth-block route before accepting the wall as the gate.
+SEQUENCED-MUST-LAND (not avoidance, flagged against silent drop): R4 (her diag(b) sharing IS
+the mechanism at corank≥2, worked.tex:600-649; not finiteness-load-bearing hence post-spine
+legitimate); R7 (our CORRECTION of the paper's false implicit completeness). FRAMING FIX
+owed to the record: "θ scoped out" wrongly merges combinatorial-θ (DONE unconditional:
+numTop, QIP, explicit, perm-invariance) with analytic-θ (pole multiplicity — meromorphic
+continuation, genuinely tool-absent). resRank>0 = mild OVER-carry (name "beyond-her-
+terminal"); the α box = faithful to her local method. BUILD-LIST by necessity: 1. the spine
+(current endgame) 2. R4 3. R6-via-smooth-block 4. rorder 5. R7; gapped-at-tool-boundary:
+analytic θ-binding + exact-RLCT (next expedition). HELD FOR RECONCILIATION with scout-lr1's
+blind sweep (running) — then the navigator parallelization pass on the reconciled list.
