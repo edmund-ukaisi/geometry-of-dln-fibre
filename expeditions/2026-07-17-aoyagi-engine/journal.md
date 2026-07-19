@@ -4587,3 +4587,17 @@ fold by det-1-transparency) — a dedicated LOSS-SEAT spawns next tick with the 
 ShearReconcile atoms as its spec. Distance revision owned: tick-290's "everything else is
 mechanical" was the confident-headline trap; the corrected picture is 4 sub-problems, of
 which the bridge is near-mechanical, a.e.-inj unknown-small, the fold and the squeeze real.
+
+## 2026-07-19 tick 292: t14's conRoot correction merged; LOSS-T15 SPAWNED (α + the squeeze)
+t14's b37eb712f merged (ead2963eb): geoAtlas_fold_det re-scoped to conRoot (ruling A
+executed; addendum §t14 carries the correction + witness; the disproof module stands as the
+tripwire) — and the seat is actively building GeoFoldRegroup.lean (the cocycle module, mtime
+this minute). LOSS-T15 SPAWNED on the fourth frontier item: PHASE-GATED (the α design note +
+statement skeleton gated past me BEFORE building), spec = the pnp-loss cert verbatim (the 5
+conditions, the exact constants, lo=1 at the proven resRank=0), fidelity reference =
+Aoyagi's regular Q,P step, atoms = ShearReconcile's banked trio, and the COORDINATION pin:
+α instantiates as a NEW atlas definition (additive modules only; the landed g=id
+cover/fold untouched; the transfer lemmas come after both lanes land; GeoChart.lean is
+t14-adjacent territory — no edits). Board at full width: t14 (the cocycle) ∥ coverage (the
+ledger bridge) ∥ loss-t15 (α design) ∥ t10 holding ∥ three standing seats warm. All four
+frontier items now have owners.
