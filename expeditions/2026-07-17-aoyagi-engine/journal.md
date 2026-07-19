@@ -4355,3 +4355,10 @@ t10 — and the rollover branch collapses the id-passthrough head singleton with
 geoChartMap exposure (all edges chartless → no whnf hazard). Answers: hold GeoCoverSpec
 (fresh-eyes-t13 owns :133); no AxCheck run needed (module off the gate path; the full gate
 re-runs at discharge). t10 idle-correct on ONE trigger: t11's spine push → step 3.
+
+### Tick-281 addendum 2: t10's docstring commit merged (the chartless-class statement corrected in-file)
+d437711d0 merged: the dCenterOfNode=0 branch's docstring now cites clause (D)'s
+dCenterOfEdge-gating and states the chartless class correctly (rollover + degenerate
+zero-block case-2 — not rollover alone). Fresh-eyes-t13 already spawned (its worktree
+pre-dates this docstring-only commit; disjoint lines — trivial merge at fold-in). t10
+confirmed holding GeoCoverSpec, idle-correct on the step-3 trigger.
