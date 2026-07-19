@@ -34,6 +34,20 @@ theorem clm_det_comp (A B : Params M →L[ℝ] Params M) : (A.comp B).det = A.de
       = LinearMap.det (A : Params M →ₗ[ℝ] Params M) * LinearMap.det (B : Params M →ₗ[ℝ] Params M)
   rw [ContinuousLinearMap.coe_comp, LinearMap.det_comp]
 
+/-- **An involutive continuous linear map has determinant of modulus `1`** (`E ∘ E = id ⟹ |det E| = 1`).
+The det-neutrality atom the diagonal-normalization swap consumes (fork 15): the source swap
+`S = (pivot ↔ divBirthCoord diagonal)` is a coordinate transposition, hence an involution, so composing
+it into `geoChartMap` leaves the per-edge Jacobian modulus unchanged (`|det S| = 1`) — the atom then
+reads the diagonal cell where it read the pivot. Proof: `det E · det E = det (E ∘ E) = det id = 1`, so
+`det E = ±1`. -/
+theorem clm_involutive_abs_det_one (E : Params M →L[ℝ] Params M)
+    (hinv : E.comp E = ContinuousLinearMap.id ℝ (Params M)) : |E.det| = 1 := by
+  have hsq : E.det * E.det = 1 := by
+    rw [← clm_det_comp, hinv]
+    change LinearMap.det (ContinuousLinearMap.id ℝ (Params M) : Params M →ₗ[ℝ] Params M) = 1
+    simp [LinearMap.det_id]
+  rcases mul_self_eq_one_iff.mp hsq with h | h <;> rw [h] <;> norm_num
+
 /-- **The intermediate-point per-factor determinant product** of a list of maps: the abs-det of each
 map's derivative, read at the point reached by folding the SUFFIX of the list onto `w`. The RHS of the
 chain-rule fold. -/

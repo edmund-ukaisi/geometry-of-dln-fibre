@@ -116,14 +116,36 @@ state-level, shared child honest; vs per-copy child-relabeling; vs proving off-d
 unreachable). The Lean statement must carry this (a `DivBirthInv` extension: geometric birth pivot of any
 subsequently-referenced divisor `= divBirthCoord` diagonal) OR the construction must enforce it.
 
-## Fill-target status (blocked on the #35 construction-fix ruling)
+## §4 RESOLVED — elder ruling fork 15: DIAGONAL-NORMALIZATION (supersedes finding-3 per-pivot ledger)
 
-The elaborating skeleton (a new `Engine/GeoJacobianFold.lean` extension: the re-scoped headline + the §2 cocycle
-+ its three birth/merge/split maintenance lemmas + the §4 scoped-condition hypothesis) is deferred to AFTER (a)
-t10's GeoChart batch + the elder's #35 construction-fix ruling (the kill-condition determines whether the
-`geoChartMap` chart action, hence the §0 chart-action lemma feeding the maintenance, changes — e.g.
-diagonal-normalization alters `geoChartMap`), and (b) the per-piece ledger lands. The cocycle FORM is safe to
-adopt now (construction-independent); the §0 chart-action lemma and the per-case maintenance wait for the ruling
-(a bare statement over the current `geometricLeafPaths` would be false per §4). The banked spine — per-edge atom
-(`GeoJacobianSpec.lean`) + parametric fold (`GeoJacobianFold.lean`) — is the maintenance's consumed machinery
-and is construction-stable.
+The kill-condition is resolved by **diagonal-normalization** (elder fork 15; supersedes the fork-14 co-folded
+per-piece ledger). Compose the cube-invariant SOURCE swap `S = (cNodeOf(pivot) ↔ divBirthCoord diagonal)` into
+`geoChartMap` (inside the existing `dite`); then birth = reference = diagonal for every fan-out copy, the
+off-diagonal discrepancy `(z_diag/z_pivot)^b` vanishes, and the STATE-LEVEL leaf ledger `{lc.1 with chartMap :=
+lc.2}` is correct for every copy. **finding-3 DISSOLVES** — no per-pivot `divCoord`/`divExp` anywhere; the child
+stays shared; the symmetric quotient survives. **My spine is UNTOUCHED**: the swap is additive and `|det S| = 1`
+(it is a coordinate transposition, hence an involution — `clm_involutive_abs_det_one`, banked in
+`GeoJacobianFold.lean`), so the per-edge atom reads `z_diag` where it read `z_pivot`, and the parametric fold is
+unchanged.
+
+**Fidelity grounding (for docstrings):** Aoyagi's `u_{s,k}` is ONE abstract, chart-local coordinate per divisor,
+never reified to a matrix cell — the diagonal-vs-pivot distinction was OUR reification artifact; the swap picks
+the canonical cell representative (`|det| = 1`, geometry-isomorphic), keeping the ledger a symmetric quotient.
+Cite `worked.tex:483-508`.
+
+**#35 RESHAPED (three small pieces, `GeoChart.lean`, on t10's merge):** (1) compose `S` into `geoChartMap`
+inside the `dite`; (2) the swap-composition-clean lemma — deeper swaps never disturb an ancestor's diagonal —
+discharged from BANKED `DivBirthInv` freshness (`cleared ⊥ un-cleared` cells); (3) the thin wrapper reusing the
+per-edge atom through `S` (`|det S| = 1` via `clm_involutive_abs_det_one`, so the atom reads `z_diag`).
+
+## Fill-target status
+
+Banked NOW (construction-stable, additive, no GeoChart conflict): `clm_involutive_abs_det_one`
+(`GeoJacobianFold.lean`) — the swap's det-neutrality atom, which #35's wrapper consumes. The cocycle-form
+maintenance statement (§2) is adopted (construction-independent). Deferred to t10's GeoChart merge (file-lock):
+the three #35 pieces above, then the §0 chart-action lemma (now against the NORMALIZED `geoChartMap`) + the §2
+cocycle maintenance against the STATE-LEVEL ledger (the cert's diagonal-control scenario — no off-diagonal
+discrepancy remains). The banked spine — per-edge atom (`GeoJacobianSpec.lean`) + parametric fold + the
+involution atom (`GeoJacobianFold.lean`) — is all construction-stable and unaffected by the normalization.
+COORDINATE with team-lead at t10's landing: t10 has a post-swap cover VERIFY (threads `S`; superset route is
+swap-invariant, cheap) — sequence the re-green, not simultaneous.
