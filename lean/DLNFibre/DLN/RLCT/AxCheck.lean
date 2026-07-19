@@ -1352,6 +1352,12 @@ open DLNFibre.DLN.RLCT
 -- diagonal-normalized atlas — 0∈U ⊆ flatCube 1 ⊆ the atlas images, via the R=1 self-cover,
 -- the hbij tiling, the rollover passthrough, and the S-absorption. MUST stay clean-three:
 #print axioms Engine.geoAtlas_imageCover
+-- THE R-SPLIT GATE (coverage, tick 294): chartBridge_buildTree IS the projection of the
+-- faithful theorem — a direct A∧B∧C fill is a fidelity regression (the cordon note). The
+-- projection mechanism MUST stay clean-three; the faithful theorem is DIAGNOSTIC
+-- (+sorryAx via its (B)(C) frontier) and FLIPS to MUST-clean-three at the discharge:
+#print axioms Engine.ChartBridgeFaithful.toChartBridge
+#print axioms Engine.chartBridgeFaithful_buildTree
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
