@@ -702,9 +702,37 @@ theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha :
         · -- 1(1): the merge child (first).
           refine ⟨_, List.mem_cons_self, ?_⟩
           sorry
-        · -- 1(2): the split child (second).
+        · -- 1(2): the split child (second) — append at level `cleared`, transport; `cleared+1 ≤ a^m`.
           refine ⟨_, List.mem_cons_of_mem _ (List.mem_singleton_self _), ?_⟩
-          sorry
+          push_neg at hsteer
+          have hle12 : s.cleared + 1 ≤ a ⟨s.layer, hlt⟩ := le_trans htar hsteer
+          have hheadge : ∀ p : Fin L, s.cleared ≤ s.divProfile f p := fun p => by
+            have h := tildeOf_le (T := s.divProfile f) p
+            change s.divTilde f ≤ s.divProfile f p at h; rw [htgt] at h; omega
+          have hnewtilde : ∀ e : ℕ, (s.stepAppendAdvance e (s.divProfile f)).divTilde
+              (Fin.last s.numDiv) = s.cleared := fun e => by
+            rw [divTilde_stepAppendAdvance_last]; exact tildeOf_setTail_eq hlt (fun p _ => hheadge p)
+          rcases hphase with hpre | hanch | hdone
+          · obtain ⟨_, henv, _, hlev⟩ := hpre
+            refine Or.inl ⟨hlt, henv, ?_, ?_⟩
+            · show s.cleared + 1 ≤ a ⟨s.layer, hlt⟩; exact hle12
+            · intro q' hq'
+              have hq'' : q' < s.cleared + 1 := hq'
+              rcases Nat.lt_or_eq_of_le (Nat.lt_succ_iff.mp hq'') with hlt2 | heq2
+              · obtain ⟨k, hk⟩ := hlev q' hlt2
+                exact ⟨Fin.castSucc k, by rw [divTilde_stepAppendAdvance_castSucc]; exact hk⟩
+              · exact ⟨Fin.last s.numDiv, by rw [hnewtilde]; exact heq2.symm⟩
+          · obtain ⟨_, hsuf, hcov, A, q, hAprof, hAq, hqge, hqlt, hlp⟩ := hanch
+            refine Or.inr (Or.inl ⟨hlt, hsuf, ?_, Fin.castSucc A, q, ?_, ?_, hqge, hqlt, ?_⟩)
+            · intro q' hq'; obtain ⟨k, hk⟩ := hcov q' hq'
+              exact ⟨Fin.castSucc k, by rw [divTilde_stepAppendAdvance_castSucc]; exact hk⟩
+            · show (s.stepAppendAdvance _ _).divProfile (Fin.castSucc A) = cut a s.layer q
+              simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]; exact hAprof
+            · rw [divTilde_stepAppendAdvance_castSucc]; exact hAq
+            · rcases hlp with hl | ⟨hm1, hqeq, hgt, -⟩
+              · exact Or.inl hl
+              · exact Or.inr ⟨hm1, hqeq, hgt, hle12⟩
+          · exact absurd hdone.1 (by omega)
 
 /-- **The steered leaf fold** (cert §4, the `conRel`-WF induction): from `SteerInv M a s`, some leaf of
 `buildTree M (conOracle M) s` carries `a` as an analytic divisor profile. At a terminal, `SteerInv`
