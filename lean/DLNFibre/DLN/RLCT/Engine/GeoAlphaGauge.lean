@@ -433,20 +433,63 @@ theorem alphaGauge_srcBox_bounded (g : GeoChart M) {R : ℝ} (hR : 0 ≤ R) :
       simp only [alphaGauge, hc] at hw'
       exact residualSchurShear_srcBox _ _ _ hR w hw'
 
+/-! ## PHASE 3a — the loss-algebra reduction (the named `prod = diagonal` input) -/
+
+/-- **The named geometric input** (PHASE 3b, routed to pnp-fold's shared state↔geometry invariant):
+the loss-side reading of `prod ∘ chartMap = diagonal(monomial chain)`. It asserts, on `srcBox`, that
+`frobSq(prod(chartMap w)) = Σᵢ (D · rᵢ)²` where `D = ∏_k z_{divCoord k}(w)` is the terminal-divisor
+product and the `rᵢ` are the divisibility-chain **ratios** `bᵢ/b₁` (polynomials, by the `bChain`
+monotonicity: `b₁ | bᵢ`); one ratio is `1` (the `b₁ = D` diagonal entry itself); and the ratios are
+uniformly bounded on the bounded `srcBox` (the leaf's flat cube). This is exactly the diagonalization
+the α gauge is designed to realize (`residualSchurShear` clears the residual so `prod` is diagonal);
+supplied by the shared fold invariant, NOT proven here (the loss-VALUE analog of t14's Jacobian
+`geoAtlas_fold_det`). -/
+def LeafDiagFrob (l : LeafData (L := L) M) : Prop :=
+  ∃ (m : ℕ) (r : Params M → Fin m → ℝ) (hi : ℝ),
+    (∀ w ∈ l.srcBox,
+      frobSq (prod M (l.chartMap w))
+        = ∑ i : Fin m,
+            ((∏ k : Fin l.numDiv, paramsEquivFlat M w (l.divCoord k)) * r w i) ^ 2) ∧
+    (∀ w ∈ l.srcBox, ∃ i : Fin m, r w i = 1) ∧
+    (∀ w ∈ l.srcBox, ∑ i : Fin m, (r w i) ^ 2 ≤ hi)
+
+/-- **The loss-algebra reduction** (PHASE 3a, PROVEN): at a `resRank = 0` leaf, the named diagonal
+input `LeafDiagFrob` yields `LeafPullback`. `residualCore := Σᵢ rᵢ²`, `lo := 1`, `hi` from the ratio
+bound; `baseForm = 1` (resRank = 0). The factorization is `Σᵢ (D·rᵢ)² = (∏ z²)·(Σ rᵢ²)`
+(`mul_pow` + `Finset.mul_sum` + `Finset.prod_pow`); `residualCore ≥ 1` because one ratio is `1` and
+squares are nonnegative. This closes the loss-algebra layer hole-free — the only remaining input is
+the geometric `LeafDiagFrob`. -/
+theorem leafPullback_of_diagFrob (l : LeafData (L := L) M)
+    (hd : LeafDiagFrob l) (hr : l.resRank = 0) : LeafPullback l := by
+  obtain ⟨m, r, hi, hfrob, hone, hbd⟩ := hd
+  refine ⟨fun w => ∑ i : Fin m, (r w i) ^ 2, 1, max hi 1, one_pos, fun w hw => ⟨?_, ?_, ?_⟩⟩
+  · rw [hfrob w hw]
+    rw [Finset.sum_congr rfl (fun i _ => mul_pow _ (r w i) 2), ← Finset.mul_sum,
+      ← Finset.prod_pow]
+  · rw [residualBaseForm, if_pos hr, mul_one]
+    obtain ⟨i₀, hi₀⟩ := hone w hw
+    calc (1 : ℝ) = (r w i₀) ^ 2 := by rw [hi₀]; norm_num
+      _ ≤ ∑ i : Fin m, (r w i) ^ 2 :=
+          Finset.single_le_sum (fun i _ => sq_nonneg _) (Finset.mem_univ i₀)
+  · rw [residualBaseForm, if_pos hr, mul_one]
+    exact le_trans (hbd w hw) (le_max_left _ _)
+
 /-- **(iv) LeafPullback over the α-atlas** (PHASE 3, the loss squeeze): every leaf of the
 α-normalized built atlas satisfies the loss factorization `frobSq(prod(chartMap w)) =
 ∏ z_{divCoord}²·residualCore` with `0 < lo ≤ residualCore/baseForm ≤ hi`. On the spine `resRank = 0`
 (`leaves_resRank_zero`, transferred through `tGeoG`), so `baseForm = 1` and `lo = 1` (the
 constant-bound case; `l3_compose_and_diagb.py` §II).
 
-DECOMPOSITION (design note §2): the reachable half is the loss-algebra — given
-`prod(chartMap w) = diagonal(monomial chain)`, the factorization `Σbᵢ² = b₁²·(1 + Σ(bᵢ/b₁)²)` and
-`residualCore ≥ 1` are elementary. The crux is the geometry half `prod ∘ chartMap = diagonal` (the
-loss-VALUE analog of t14's Jacobian `geoAtlas_fold_det`, strictly deeper — no `prod ∘ chart`
-infrastructure exists), the coverage/clause-D fidelity content, surfaced as the seam. -/
+STRUCTURE (design note §2 / elder ruling): the loss-algebra half is `leafPullback_of_diagFrob`
+(PROVEN above). The crux is the geometry half `LeafDiagFrob` (the loss-VALUE analog of t14's Jacobian
+`geoAtlas_fold_det`, strictly deeper — no `prod ∘ chart` infrastructure exists), routed to pnp-fold's
+shared state↔geometry invariant; it enters here as the single named input `leafDiagFrob_geoAtlasNorm`
+plus the `resRank = 0` transfer `geoAtlasNorm_resRank_zero`. -/
 theorem leafPullback_geoAtlasNorm (l : LeafData M)
-    (hl : l ∈ geoAtlasNorm (alphaGauge (M := M)) (buildTree M (conOracle M) conRoot)) :
-    LeafPullback l := by
-  sorry
+    (hl : l ∈ geoAtlasNorm (alphaGauge (M := M)) (buildTree M (conOracle M) conRoot))
+    (hdiag : LeafDiagFrob l)
+    (hr : l.resRank = 0) :
+    LeafPullback l :=
+  leafPullback_of_diagFrob l hdiag hr
 
 end DLNFibre.DLN.RLCT.Engine
