@@ -127,4 +127,23 @@ theorem geoChartMap_fderiv_det (g : GeoChart M) (w : Params M)
   rw [hconj]
   simp only [qOfCenterCLE_fst_apply]
 
+/-- **The per-edge atom off-cone**: when the node center does not fit (`¬ dCenterOfNode ≤ flatDim`) or
+the pivot is out of range (`¬ pivot < dCenterOfNode`), `geoChartMap … g` is the identity totality
+fallback, so its Fréchet-derivative determinant has modulus `1`. Together with
+`geoChartMap_fderiv_det` this totalises the per-edge det (off-cone factors contribute `1` to the
+fold). -/
+theorem geoChartMap_fderiv_det_offcone (g : GeoChart M) (w : Params M)
+    (h : ¬ (dCenterOfNode M g.node ≤ flatDim M ∧ g.pivot < dCenterOfNode M g.node)) :
+    |(fderiv ℝ (geoChartMap (dCenterOfNode M) (qNodeOf M) g) w).det| = 1 := by
+  have hid : geoChartMap (dCenterOfNode M) (qNodeOf M) g = id := by
+    unfold geoChartMap
+    split_ifs with hd hp
+    · exact absurd ⟨hd, hp⟩ h
+    · rfl
+    · rfl
+  rw [hid, fderiv_id]
+  rw [show (ContinuousLinearMap.id ℝ (Params M)).det
+      = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+  simp [LinearMap.det_id]
+
 end DLNFibre.DLN.RLCT.Engine
