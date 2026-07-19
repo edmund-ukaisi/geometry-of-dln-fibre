@@ -1318,6 +1318,9 @@ open DLNFibre.DLN.RLCT
 -- Reachability sub-arc (t07): the birth-corner invariant threaded through the oracle.
 -- MUST stay clean-three:
 #print axioms Engine.DivBirthInv_conOracle_stepChildren
+-- The sub-arc's convergence deliverable: the three per-piece coordinate hypotheses
+-- (hdcInj/hrcInj/hdisj at RegionGluePerLeaf:123) for every built leaf. MUST-clean-three:
+#print axioms Engine.leaves_chart_clauses_conRoot
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
