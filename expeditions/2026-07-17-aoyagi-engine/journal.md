@@ -3498,3 +3498,25 @@ surface-onto-node vs chooser-computed vs edge-argument) + the SUM EQUALITY + cNo
 ++ d-block; injectivity from DivBirthInv's same-layer/earlier-layer distinctness; totality) +
 qNodeOf via the parametric qOfCenter. Elder amendments arrive mid-arc if its verdict adds
 coherence content. The tide wakes at t09's landing.
+
+## 2026-07-19 tick 241: cartographer-5 wirings pass MERGED — two gate-orphans caught + fixed; the discharge checklist banked
+The pass (verified from imports, not memory): (1) ⚠ TWO GATE-ORPHANS — PivotInjOn +
+ChartBridgeWiring imported by NOTHING (escaping `lake build DLNFibre` since their merge; both
+sorry-free today but the exact DLNFibre.lean:273-275 hazard) — WIRED into AxCheck this tick
+(+ MUST-clean-three watch lines for pivotChart_ae_injOn + chartBridge_of_pieces; build
+verifying in background). (2) THE DISCHARGE CHECKLIST banked (map/overlay/wiring-endgame.md):
+EngineObligations' 4 ordered import-adds (ChartBridgeWiring/GeoChart/DivBirthReach/PivotInjOn
+— none currently reachable from it!); the AxCheck watch flips with line pins (:1302/:1307/
+:1299/:1295); the canonicalResolution224-conjunct verify item; a hygiene note (GeoChart drags
+analysis-heavy ShearReconcile into EO — or home the discharge coverage-side). (3) ⚠ MY
+"(D) pre-staged" LANGUAGE CORRECTED: the destructure fix is PLANNED (task #10's capture), but
+nothing is in the code — (D) is prose-only in EngineDefs:86-95, the def body is A∧B∧C, and
+chartBridge_of_pieces has NO (D) arg: landing (D) = the def conjunct + a 4th hfid arg + the
+discharge supplies it (plan ≠ artifact — the ledger's standing lesson in controller prose).
+(4) Retirement flags REFINED surgical (the spine-fold decl list :57-224 retires; KEEP
+node_pivotCover_of_atom:187 — live via ShearReconcile; the :30 docstring coupling; the caveat
+is EO:39-50 and absorbs the last live path-accumulator ref). (5) Stale sweep: CenterIndices
+qNodeOf-docstring flagged for rename — SUPERSEDED-BY-EVENTS annotation: carto5's base predates
+the tick-239 per-node REVERSAL; t09 is building qNodeOf (node-keyed) NOW, so those docstrings
+are becoming correct again — do NOT rename (the pass was right at its base, one tick stale at
+delivery; noted, no fault). banked-families' false With-variant sync note corrected by the pass.

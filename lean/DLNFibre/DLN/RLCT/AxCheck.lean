@@ -6,6 +6,8 @@ import DLNFibre.DLN.RLCT.Engine.O5Realization
 import DLNFibre.DLN.RLCT.Engine.QNodeChart
 import DLNFibre.DLN.RLCT.Engine.GeoChart
 import DLNFibre.DLN.RLCT.Engine.DivBirthReach
+import DLNFibre.DLN.RLCT.Engine.PivotInjOn
+import DLNFibre.DLN.RLCT.Engine.ChartBridgeWiring
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1321,6 +1323,10 @@ open DLNFibre.DLN.RLCT
 -- The sub-arc's convergence deliverable: the three per-piece coordinate hypotheses
 -- (hdcInj/hrcInj/hdisj at RegionGluePerLeaf:123) for every built leaf. MUST-clean-three:
 #print axioms Engine.leaves_chart_clauses_conRoot
+-- Gate-orphan fix (carto5, tick 241): the two coverage modules previously imported by NOTHING
+-- (escaping the full-build gate). Both MUST stay clean-three:
+#print axioms Engine.pivotChart_ae_injOn
+#print axioms Engine.chartBridge_of_pieces
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
