@@ -210,3 +210,67 @@ coherence identity `(β∘g_e)(srcBox') = β(cube)`); (2) the composition-clean 
 (3) the per-edge wrapper (`|det D(β∘S∘α)| = |z_diag|^{dCN−1}` via the banked det-neutral atoms + `clm_det_comp`);
 (4) §0 chart-action against the normalized `geoChartMap`; (5) the §2 cocycle maintenance → LeafJacobian.
 Then re-green coordination with t10's post-swap cover VERIFY.
+
+## HANDOFF to t14-regroup (t11 stand-down; what's in my head, not yet in artifacts)
+
+**STATE AT HANDOFF.** #35 construction fix DONE + merged (88525bf3b): the atlas chart is
+`geoChartMapNorm (fun _ => id) = (β∘S)∘id`, exceptional divisor on the `divBirthCoord` diagonal. All
+det atoms + the S primitive + the per-edge diagonal wrapper are banked (sorry-free, axiom-clean). The
+LOCKED TARGET (statement-untouchable) is `geoAtlas_fold_det` (`GeoLeafJacobian.lean`), one tracked
+frontier sorry = the regrouping cocycle. t14's job: fill that sorry.
+
+**(i) INDUCTION SHAPE (the regrouping cocycle).** Do NOT use structural-on-`t` OUTERMOST with a
+subtree-relative ledger — the cert (correction 1) refuted it (case-1's `mergeIdx` is born OUTSIDE the
+subtree, so a subtree ledger can't carry its inheritance). Use the **relative-Jacobian cocycle, threaded
+`L`, INNERMOST-first** (cert §2): `|det D(Φ' ∘ B)| w = L(B w) · |det DB| w`. Concrete route:
+1. **Bridge** `c.chartMap` (baked in `geoAtlas` = `leaves (tGeo id t)`) to a `foldr (·∘·) id` LIST of the
+   path's `geoChartMapNorm` charts. `tGeo_coherence` (already in `GeoChart`) gives `c.chartMap =` its
+   `leafPaths id` composite; you then need a `leafPaths`-composite → `foldr`-list bridge (likely a small
+   new helper — the composite is `acc ∘ localSub ∘ …`, and `localSub = geoChartMapNorm (fun _=>id) ⟨…⟩`).
+2. `|det D(c.chartMap) w| = foldrCompAbsDet (pathCharts) w` via **`abs_det_fderiv_foldr_comp`** (needs each
+   path chart `Differentiable ℝ` — prove `geoChartMapNorm_differentiable`: on-cone `β∘S∘id` diff via
+   `geoChartMap_differentiable` + `flatSwapCLE_differentiable` + `Differentiable.comp`; off-cone `id`).
+3. Each factor = `|z_{diagTargetOf}(intermediate)|^{dCN−1}` via **`geoChartMap_swap_fderiv_det`** (on-cone)
+   / `= 1` (off-cone `id`-passthrough, `abs`/`fderiv_id`).
+4. **Regroup** `foldrCompAbsDet` (intermediate-point diagonal factors) onto `∏_k |z_{c.divCoord k}(w)|^{c.divExp k−1}`
+   by the cocycle threading `L` (birth/merge/split, below). The `acc`-generalized clause enters as: prove the
+   cocycle for a general outer prefix `Φ'` (its ledger monomial `L`), the headline is `Φ' = id` (`L = 1` at
+   `conRoot`) — this is where t10's rollover `id`-passthrough (forwards `acc`) is absorbed (`id` factor = 1).
+
+**(ii) DEAD-ENDS / notes from the locking pass.** I only locked the STATEMENT (no regrouping attempt), so
+no tactic dead-ends there — but two REFUTED design turns to avoid: (a) the subtree-relative `pieceLedger`
+motive (§ correction 1); (b) per-pivot `divCoord`/`divExp` (finding-3, DISSOLVED by fork-15 — do NOT
+reintroduce it; the STATE-LEVEL ledger `c.divCoord`/`c.divExp` from `leafOfState` is correct now). KEY
+missing sub-lemmas you'll need: (α) `geoChartMapNorm`'s **§0 chart-action** (how it moves flat coords) —
+compose `geoChartMap`'s action (`z_π(βy)=z_π(y)`; `z_c(βy)=z_π(y)·z_c(y)` for other center cells;
+spectators fixed) with `flatSwapCLE_apply_flat` (the S relabel) — this is the workhorse for step 4; (β) the
+**coherence** `c.divCoord = diagonal = diagTargetOf`: `leafOfState.divCoord = birthFlatCoord(divBirthCoord)`
+(`DivBirthReach`/`EngineConstruction:1796`) must equal `diagTargetOf`'s `flatCoordOf(a,b,b)` — a
+`birthFlatCoord = flatCoordOf-diagonal` + `diagTargetOf = same` equality (on-cone via `DivBirthInv`
+validity). The headline elaborated with NO timeout; the atoms are all fast.
+
+**(iii) cert §1's THREE identities → Lean case split** (`match e.case`, `EngineDefs stepUpdate`):
+- `StepCase.case2` ↔ cert (1) CLEAN: `z_diag(intermediate)=z_diag(w)` (terminal) ⟹ atom
+  `|z_diag|^{resRows·resCols−1}` = new divisor's `divExp−1`. Atom: `geoChartMap_swap_fderiv_det`.
+- `StepCase.case11` ↔ cert (3) RE-MERGE: `S = id` (pivot 0 = `mergeIdx` diagonal already), atom
+  `|z_{mergeIdx diag}|^{runLen·resCols}` ADDS to `mergeIdx`'s exponent (`divExp += runLen·resCols`).
+  Sum with `mergeIdx`'s birth/earlier atoms → `divExp(mergeIdx)−1`.
+- `StepCase.case12` ↔ cert (2) INHERITED-THREADING (non-local): the node's own atom is only
+  `|z_p|^{runLen·resCols}`; the inherited `divExp(mergeIdx)−1` comes via the **`L(B w)` pullback** (B scales
+  `z_μ ↦ z_p·z_μ`, so the ancestor `mergeIdx` birth atom, read after B, spawns `z_p^{divExp(mergeIdx)−1}`).
+  THIS is why the cocycle must thread `L` (not per-node-local) — do not try to close case-1(2) with the
+  node's own atom alone.
+Each identity's substitution `z_{diagTargetOf}(B w) = <source monomial>` is a consequence of sub-lemma
+(α) above (the §0 chart-action), no analytic content beyond the substitution algebra (cert §1 (R)).
+
+**(iv) STAGED-MODULE WIRING (when the sorry closes).** `GeoLeafJacobian.lean` is NOT in the `DLNFibre.lean`
+aggregator (staged). On discharge: the assembly batch (coverage / #34) adds `import …Engine.GeoLeafJacobian`
+to the aggregator and consumes `geoAtlas_fold_det` in the per-piece `LeafJacobian` discharge (`∀ c ∈ atlas,
+LeafJacobian c`), wrapping the β-det with the ψ=id boilerplate (`β := c.chartMap`, `ψ = ψsymm = id`,
+`Dψ = ContinuousLinearMap.id`, `|det Dψ| = 1`, `lo = hi = 1`); add `geoAtlas_fold_det` to `AxCheck` once
+load-bearing (forced `#print axioms`). The **α gauge** (LeafPullback, fresh loss-seat) fills
+`geoChartMapNorm`'s gauge slot by changing `fun _ => id` in `fannedEdges` to the α family — a LOCALIZED
+`fannedEdges` edit, no `geoChartMapNorm` redefinition; `resRank = 0` (`leaves_resRank_zero`) makes the
+`resCoord`-coherence obligation vacuous.
+
+*t11 stands down here. Seat stays addressable for one question if t14 needs it.*
