@@ -172,33 +172,51 @@ one; `χ` and the `*With` lemmas drop cleanly (verified no external consumers).
 
 ---
 
-## Item 4 — clause (D): D1 vs D2
+## Item 4 — clause (D): D1 vs D2 (elder-gate8 amendment folded in)
 
-**Recommendation: D1's fidelity content, realized in a FLAT shape, with the fan-out amendment.**
+**The elder-gate8 pin SUPERSEDES my initial "D1-flat" recommendation, and it is the correct tightening.**
+The elder ratified D1 as the direction and pinned its CONTENT (encoding deferred to coverage): D1 must
+(i) quantify over `t`'s ACTUAL geometric paths — a `geometricLeafPaths` analog of the existing `leafPaths`,
+referencing `t`'s edge/node structure — and (ii) define the fold as the REAL `β∘ψ` composition from the
+banked atoms (`pivotChart` + `ShearReconcile`), never an opaque `Params M → Params M`. Honesty test
+(two-sided, since (D) has NO `region_glue` consumer): **provable over the constructed atlas AND false on a
+fake/generic atlas.** A D1 whose path/fold are opaque placeholders is D2 wearing D1's name — reject.
 
-D1 (each atlas chart is a genuine root→leaf geometric fold of per-node `β∘ψ` atoms) is the faithful clause:
-it says the atlas is THE resolution's atlas, not an arbitrary finite good cover. It is **free** for coverage:
-`chartBridge_imageCover_of_ownCovers` already requires the coherence `∀ p ∈ leafPaths id t_geo, p.1.chartMap
-= p.2` (`PivotCoverFold.lean:225`) to run the item-2 cover — that coherence IS D1's content over `t_geo`. So
-D1 costs coverage nothing beyond item 2. D2 (a chart is "some composition of banked atoms" + shares a
-`leaves t` member's ledger) is strictly weaker fidelity for equal-or-greater stating cost, and buys nothing
-region_glue needs (region_glue DISCARDS (D) — `RegionGlueAssembly.lean:106` `-`). So D1 dominates.
+I withdraw my "D1-flat" phrasing: it was UNDER-TIED. My per-piece existential ("a pivot-choice sequence
+whose induced ledger equals some `leaf ∈ leaves t`") anchored the fold to `leaves t`'s ledger but let the
+PATH float free of `t`'s tree structure — the elder's `geometricLeafPaths t` correctly ties the fan-out to
+`t`'s real edges/nodes, closing exactly the "D2 wearing D1's name" hole the honesty test guards.
 
-**The amendment (owned by coverage — the geometry):** D1 as written references "a root→leaf geometric path
-in `t`", but the geometric fan-out is NOT in the quotient `t` (it lacks the `d_center` edges). D1 must
-reference the geometric fan-out. Two realizations:
+**Confirmation the pinned D1 is provable by the banked machinery + carrier surface, and passes the honesty
+test:**
 
-- **D1-literal:** `∃ t_geo, (t_geo quotients to t) ∧ atlas = leaves t_geo ∧ (∀ p ∈ leafPaths id t_geo, p.1.chartMap = p.2)`
-  — sharpest fidelity, but exposes the proof-internal `t_geo` in the type.
-- **D1-flat (recommended):** keep the atlas a flat List; state (D) as a per-piece existential — each `c`'s
-  `chartMap` is a finite composition of `q`-conjugated `pivotChart` atoms and bounded unipotent gauges along
-  a pivot-choice sequence whose induced ledger equals some `leaf ∈ leaves t`. Keeps `t_geo` internal to the
-  coverage proof; carries D1's fold-fidelity without a second tree in the type.
+- **(i) `geometricLeafPaths t` is buildable from `t`'s structure.** The per-node fan-out count is computable
+  from `t`: `d_center` (Case 1) `= J₁·(M^{S+1}−J) + 1 = runLen·resCols + 1` reads the node's `resCols`
+  (`StepData`) and its `1(2)` edge's `runLen` (`ChartSubst`); Case 2 `= (M(S)−J)(M^{S+1}−J)` reads node
+  fields. So a `geometricLeafPaths` recursion (analog of `leafPaths`, `PivotCoverFold.lean:216`) fans out
+  `d_center` pivot choices per node and recurses into the shared profile child (the fan-out charts collapse
+  to one profile-child — chart-independent exponents, `cert-cov-rungs12:66`). This recursion is OWED (not yet
+  banked) but is the direct analog of the existing `leafPaths`/`edgesLeafPaths` mutual recursion.
+- **(ii) the fold is the REAL `β∘ψ`, non-opaque.** `β = q.symm ∘ pivotChart(pivot) ∘ q` (`PivotCover`,
+  `β` = the banked atom); `ψ` = the Schur gauge (`ShearReconcile`, det 1, `.refl` on `ψ=id` edges);
+  `localSub = ψ ∘ β` (carrier spec, tick 163). Non-opaque MODULO one owed carrier piece: the coordinate
+  split `q : Params M ≃ₜ (Fin d → ℝ) × E` must be CONCRETELY constructed (the flat-coordinate embedding of
+  the center via `divCoord`/`resCoord`), not left the existential it is in `node_pivotCover_of_atom`. Name
+  that: D1's non-opacity bar requires a concrete `q`, which is the sub-gap-1 carrier work.
+- **fails-on-fake.** A generic atlas whose `chartMap` is an arbitrary `Params M → Params M` cannot satisfy
+  `chartMap = geometricLeafPaths-fold of banked β∘ψ atoms` — the fold equation pins `chartMap` to a specific
+  composition, so a placeholder chart is refuted. The honesty test is met by the shape of the clause.
 
-Anti-vacuity: agreed with the package that it rests on (A)+(B) (a cover of the zero-locus by finite-integral
-monomial-Jacobian charts is already forced); (D) is fidelity insurance the elder will want, and D1-content
-is the faithful choice. **Recommend D1-flat.** The one point for the elder to pin: whether the fidelity
-clause may reference `t_geo` (D1-literal, sharper) or must stay flat (D1-flat). I recommend flat.
+Anti-vacuity: the elder's two-sided test is the right instrument precisely because (D) has no `region_glue`
+consumer (`RegionGlueAssembly.lean:106` discards it) — (A)+(B) forbid an arbitrary cover, and the
+fails-on-fake half of (D) forbids an arbitrary FOLD-STRUCTURE, which is the fidelity (D) is there to insure.
+**Counter-signed as pinned.** The encoding I will carry: `geometricLeafPaths t` (a new `leafPaths` analog) +
+`chartMap = fold of banked β∘ψ` coherence; the one dependency to name is the concrete `q` (sub-gap-1 carrier).
+
+Caveat linking to item 2: D1's "REAL `β∘ψ` fold" is the SAME object my item-2 single-`ψ` finding concerns,
+but the two are separable — (D) is a definitional COHERENCE (`chartMap` = its geometric fold), which holds
+regardless of gauge structure; the single-`ψ` insufficiency bites only in PROVING the cover (clause A), not
+in stating (D). So the item-2 finding does not weaken the pinned D1.
 
 ---
 
@@ -240,6 +258,24 @@ forecasts. Confirms "no new sorry, no new axiom" on the consumer side.
 
 ---
 
+## Elder-gate8 checks against my 3-Prop work
+
+Two checks the elder asked me to run against items 1/5; both PASS.
+
+- **Clause (C) is load-bearing — confirmed, and orthogonal to the 3 Props.** In the frozen type,
+  `region_glue` routed `hrat` to the per-leaf thresholds via a `flatMap`-over-`leaves t` membership
+  (`RegionGlueAssembly.lean:120-123`). The atlas is decoupled from `leaves t`, so that automatic routing is
+  gone; clause (C) `∀ c ∈ atlas, (∀ k, c.divExp k ∈ terminalExponents t) ∧ (0 < c.resRank → c.resRank ∈
+  terminalExponents t)` replaces it, feeding EXACTLY the two hypotheses of `leaf_chart_image_lintegral_lt_top`
+  — `hdivExp : ∀ k, c' < c.divExp k / 2` and `hres : 0 < c.resRank → c' < c.resRank / 2`
+  (`RegionGluePerLeaf.lean:127-128`). My 3-Prop work (item 1) is over each piece's `chartMap`/geometry and is
+  orthogonal to (C)'s exponent routing; the two do not interact.
+- **The type reads NOTHING off ledger leaves' `chartMap` — confirmed; my Props are all atlas-side.**
+  `terminalExponents t` reads only `l.divExp` and `l.resRank` (`ResolutionTree.lean:284-286`), never
+  `l.chartMap`; the exponent side is pure ledger. My item-1 Props are all over `c ∈ atlas` (the charts),
+  never `leaves t`'s `chartMap`. So the split — ledger carries exponents, atlas carries charts — holds
+  cleanly in my analysis (item 5e's exponent bridge is the one place they meet, and it reads only exponents).
+
 ## Decision asks — coverage position
 
 1. **ADOPT the flat virtual-leaf atlas** (§2 of the package). Counter-signed.
@@ -248,10 +284,13 @@ forecasts. Confirms "no new sorry, no new axiom" on the consumer side.
    indicates tick-113/162's single-`ψ` resolution (i) FAILS in the natural model (the `u`-pivot obstruction);
    the fix is coverage's per-edge (5a) or source-reparam route, not a type change — but it should be
    adjudicated against the architect's page-frame determination before the coverage tide plans on single-`ψ`.
-3. **Elder gate — pin clause (D):** recommend D1-flat (D1's fold-fidelity, no `t_geo` in the type). Also
-   ratify that the atlas is realized as `leaves t_geo` (proof-internal geometric tree, spine untouched).
-4. **Verification gate on execution:** unchanged from the package (`region_glue_of_chartBridge` green +
-   clean-three; `chartBridge_buildTree` keeps its one sorry; AxCheck watch lines stable).
+3. **Clause (D) — pinned by elder-gate8 (counter-signed as pinned):** `geometricLeafPaths t` (a new
+   `leafPaths` analog referencing `t`'s edge/node structure) + `chartMap = fold of banked β∘ψ` coherence,
+   two-sided honesty (provable-over-real, false-on-fake). Dependency named: a CONCRETE coordinate split `q`
+   (sub-gap-1 carrier). Also ratify the item-2 realization `atlas = leaves t_geo` (proof-internal geometric
+   tree, spine untouched).
+4. **Verification gate on execution:** the elder-gate8 full batch (full `lake build` + AxCheck all watched
+   roots + the (2,2,4) witness re-elaboration), not the single re-elaboration — noted, not re-litigated.
 
 Nothing here blocks ratification of the TYPE. The type is sound, more faithful than the frozen type, and
 coverage's content is provable against it. The single-`ψ` finding (5a) is a fold-machinery matter, not a type
