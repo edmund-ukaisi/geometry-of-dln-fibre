@@ -5133,3 +5133,18 @@ terminal"); the α box = faithful to her local method. BUILD-LIST by necessity: 
 (current endgame) 2. R4 3. R6-via-smooth-block 4. rorder 5. R7; gapped-at-tool-boundary:
 analytic θ-binding + exact-RLCT (next expedition). HELD FOR RECONCILIATION with scout-lr1's
 blind sweep (running) — then the navigator parallelization pass on the reconciled list.
+
+## 2026-07-19 tick 320: the R7 BATCH LANDED (t10) — merged locally; the integration gate running
+70120b26e merged (d0bc073cc, push rides the gate): the LeafJacobian clause in its R7 form
+(the β-det over the FULL ledger; fc existential with inj/emb/coherences/≥1/⊥resCoord; the
+dim-0-wall docstring rider), (B) unchanged-analytic, the RegionGluePerLeaf thin wrapper
+(full_prod_le: ∏_full ≤ K_R·∏_analytic via the emb-image split; flat_leaf_model_lt_top
+REUSED UNCHANGED; finiteness-only, no inertness imported), the compass instance-#9 amendment
+(counter stays 9 — R7 is the fix). t10's KEY STRUCTURAL FINDING, recorded: nothing in the
+tree proves LeafJacobian by ∃-intro — it is ONLY ever forwarded (wiring/faithful/flatcube
+forward; region_glue consumes) — so the clause change breaks nothing NOW and the
+∃-discharge is genuinely t14's future work at the bundle. All seven touched modules verified
+green individually on the seat; the WATCH-ITEM carried (the ≥1 conjunct wrapper-unused —
+droppable if t14's discharge hits a 0-exp divisor; surface-not-force). Integration-side
+untimed AxCheck gate RUNNING (region_glue + chartBridge_buildTree footprints); the push +
+the wake to t14/t15 ride its green.
