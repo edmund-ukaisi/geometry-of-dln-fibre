@@ -4797,3 +4797,10 @@ read-only — t14's active file; the other two (B) sorries fenced as other lanes
 BOARD: t14 grinding the 4-case maintenance ∥ inj-t16 (a.e.-inj) ∥ loss-t15 (phases 2b/3a)
 ∥ pnp-fold owes the stranded dichotomy (the one outstanding adjudication). The three (B)
 holes each have a fresh, spec-backed owner.
+
+### Tick-303 addendum: coverage's full-gate confirmation — its entire wake integration-clean
+The background full-aggregator build it flagged closed GREEN (8914 jobs, exit 0, 0 errors,
+0 clashes) — the redundant gate over everything it committed this wake (R-split wiring +
+the bridge + the orphan imports). Warm-answerable status acknowledged; the answer desk is
+staffed. Its wake's net: the gate realized, the discharge at exactly 3 geometric holes,
+the third surveyed-and-handed. Nothing owed.
