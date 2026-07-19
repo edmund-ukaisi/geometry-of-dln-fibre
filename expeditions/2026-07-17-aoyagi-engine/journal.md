@@ -4160,3 +4160,28 @@ bank is now complete under fork 15; the seat is correctly file-lock-gated on t10
 with re-green coordination acknowledged (its #35 landing and t10's post-swap cover VERIFY
 sequenced, never simultaneous). Every lane's next move now waits on exactly one event:
 t10's banked+gated push.
+
+## 2026-07-19 tick 274: PNP-LOSS VERDICT — holds-with-conditions; a THIRD construction gap (the α gauge); elder charge-3
+The cert (merged 25826683f; Codex converged incl. the exact squeeze lo=(3−√5)/2,
+hi=(3+√5)/2): LeafPullback is TRUE for the incidence/Q,P-NORMALIZED composite — and FALSE
+for the PURE-β chartMap currently in geoAtlas, at EVERY depth (L=2 already): the α source
+gauge (R-b det-1 ratio shear) is only "composed in later" per GeoChart.lean:53, and without
+it the residual keeps the fresh DETERMINANTAL singularity and vanishes on srcBox — 0<lo
+dies. CONFIRMED clean: terminal divisors loss-power EXACTLY 2 (squarefree b₁); the
+case-1(1) re-merge accumulates in the JACOBIAN not the loss (t11's picture); LeafPullback's
+STATEMENT stands (a property the normalized chart must satisfy — no restatement).
+Witnesses: W0 (L=3 pure-β residual vanishing at 18 box points; normalized ≥ 0.382·baseForm,
+0 violations), W1 (Codex, sharper: pure-pivot L=2), W2 (the squarefree/enumerate-once
+necessity). The cert's 5 conditions for the builder recorded (α IN the chart; gauges compose
+coherently across the fold — chartMap+srcBox+resCoord all transformed; divCoord injective;
+Q,P conditioned; resRank matches the ACTUAL residual).
+TWO ROUTED QUESTIONS (elder charge-3): (Q-a) reconcile the cert's normalization with fork
+15 — S (transposition) and α (shear) are DISTINCT normalizations; #35 scope = S+α in one
+pass vs α as its own rung; and does the swap-composition-cleanliness question extend to
+S/α pairs across the fold? (Q-b) resRank FLIPPED from "maybe vacuous" (R5b) to "maybe
+load-bearing": the cert's L=2 leaf keeps a Morse residual (resRank=4) vs Aoyagi's diag(b)
+full diagonalization (resRank=0) — what the spine's leaves SHOULD do is an open construction
+ruling; task #42 must adjudicate BEFORE any resRank freeze. t11 told to hold #35 (still
+t10-file-locked anyway — zero time lost). THE PATTERN, 3 for 3: every "compose it in later"
+in the chart lane has been a deferred load-bearing obligation the certs are now surfacing
+BEFORE the Lean grind — the statement-first + cert-first discipline is carrying the endgame.
