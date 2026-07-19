@@ -110,6 +110,48 @@ namespace Engine
 
 open DLNFibre.DLN.RLCT
 
+/-- **Full-ledger product ≤ K_R · analytic product** (R7 stranded-factor wrapper, abstract). The full
+product splits (via the analytic embedding `emb`, `fcx∘emb = dcx`, `fe∘emb = de`) into the analytic
+product times the stranded (complement) product; each stranded factor `fcx j ^ (fe j − 1)` is bounded by
+`B ^ (fe j − 1)` on the box (`0 ≤ fcx j ≤ B`, `1 ≤ B`), so their product is `≤ K_R := ∏ j, B ^ (fe j − 1)`
+(a constant). No exponent-positivity needed (ℕ-subtraction makes any `fe j = 0` factor `= 1`). -/
+theorem full_prod_le {n m : ℕ} (fe : Fin n → ℕ) (de : Fin m → ℕ)
+    (fcx : Fin n → ℝ) (dcx : Fin m → ℝ) (emb : Fin m → Fin n)
+    (hembInj : Function.Injective emb)
+    (hcoord : ∀ k, fcx (emb k) = dcx k) (hexp : ∀ k, fe (emb k) = de k)
+    (B : ℝ) (hB : 1 ≤ B) (hfcx0 : ∀ j, 0 ≤ fcx j) (hfcxB : ∀ j, fcx j ≤ B)
+    (hdcx0 : ∀ k, 0 ≤ dcx k) :
+    (∏ j, fcx j ^ (fe j - 1))
+      ≤ (∏ j, B ^ (fe j - 1)) * (∏ k, dcx k ^ (de k - 1)) := by
+  classical
+  set g : Fin n → ℝ := fun j => fcx j ^ (fe j - 1) with hg
+  set b : Fin n → ℝ := fun j => B ^ (fe j - 1) with hb
+  have hb1 : ∀ j, 1 ≤ b j := fun j => one_le_pow₀ hB
+  have hg0 : ∀ j, 0 ≤ g j := fun j => pow_nonneg (hfcx0 j) _
+  have hgb : ∀ j, g j ≤ b j := fun j => pow_le_pow_left₀ (hfcx0 j) (hfcxB j) _
+  have hsplit : (∏ j, g j)
+      = (∏ j ∈ Finset.univ.image emb, g j) * (∏ j ∈ (Finset.univ.image emb)ᶜ, g j) :=
+    (Finset.prod_mul_prod_compl _ _).symm
+  have himg : (∏ j ∈ Finset.univ.image emb, g j) = ∏ k, dcx k ^ (de k - 1) := by
+    rw [Finset.prod_image (fun a _ b _ h => hembInj h)]
+    exact Finset.prod_congr rfl (fun k _ => by simp only [hg]; rw [hcoord k, hexp k])
+  have himgge1 : (1 : ℝ) ≤ ∏ j ∈ Finset.univ.image emb, b j := by
+    calc (1 : ℝ) = ∏ _j ∈ Finset.univ.image emb, (1 : ℝ) := by rw [Finset.prod_const_one]
+      _ ≤ ∏ j ∈ Finset.univ.image emb, b j :=
+          Finset.prod_le_prod (fun j _ => zero_le_one) (fun j _ => hb1 j)
+  have hcompl : (∏ j ∈ (Finset.univ.image emb)ᶜ, g j) ≤ ∏ j, b j := by
+    refine le_trans (Finset.prod_le_prod (fun j _ => hg0 j) (fun j _ => hgb j)) ?_
+    calc (∏ j ∈ (Finset.univ.image emb)ᶜ, b j)
+        ≤ (∏ j ∈ (Finset.univ.image emb)ᶜ, b j) * (∏ j ∈ Finset.univ.image emb, b j) :=
+          le_mul_of_one_le_right
+            (Finset.prod_nonneg (fun j _ => le_trans zero_le_one (hb1 j))) himgge1
+      _ = ∏ j, b j := by rw [mul_comm]; exact Finset.prod_mul_prod_compl _ _
+  rw [hsplit, himg]
+  calc (∏ k, dcx k ^ (de k - 1)) * (∏ j ∈ (Finset.univ.image emb)ᶜ, g j)
+      ≤ (∏ k, dcx k ^ (de k - 1)) * (∏ j, b j) :=
+        mul_le_mul_of_nonneg_left hcompl (Finset.prod_nonneg (fun k _ => pow_nonneg (hdcx0 k) _))
+    _ = (∏ j, b j) * (∏ k, dcx k ^ (de k - 1)) := mul_comm _ _
+
 /-- **The per-leaf area-formula read.** Given a leaf's `ChartBridge` data (measurable bounded
 `srcBox`, injective/disjoint coordinate maps, a.e.-injectivity off a null set, `LeafPullback`,
 `LeafJacobian`) and `0 < c'` below half every terminal exponent, the box integral over the chart
@@ -135,7 +177,8 @@ theorem leaf_chart_image_lintegral_lt_top {M : Fin (L + 1) → ℕ} (l : LeafDat
   obtain ⟨Nbar, hNsub, hNmeas, hNbarnull⟩ := exists_measurable_superset_of_null hNnull
   have hInj : Set.InjOn l.chartMap (l.srcBox \ Nbar) :=
     hInj0.mono (Set.diff_subset_diff_right hNsub)
-  obtain ⟨β, ψ, ψsymm, Dβ, Dψ, loJ, hiJ, hloJ, hchart, hβ, hψ⟩ := hlj
+  obtain ⟨β, ψ, ψsymm, Dβ, Dψ, loJ, hiJ, fc, emb, hloJ, _hfcInj, hembInj, hfcemb, hexpemb,
+    _hfullpos, _hfcdisj, hchart, hβ, hψ⟩ := hlj
   obtain ⟨rcore, loP, hiP, hloP, hpull⟩ := hlp
   have hhiJ : 0 ≤ hiJ :=
     hloJ.le.trans (((hψ (β w₀) ⟨w₀, hw₀, rfl⟩).2.2.2.1).trans
@@ -161,13 +204,18 @@ theorem leaf_chart_image_lintegral_lt_top {M : Fin (L + 1) → ℕ} (l : LeafDat
     lintegral_image_eq_lintegral_abs_det_fderiv_mul volume (hsrcM.diff hNmeas)
       (fun w hw => (hfd w hw.1).mono Set.diff_subset) hInj
       (fun A => ENNReal.ofReal (frobSq (prod M A) ^ (-c')))]
-  -- flat model + constant
-  set C : ℝ := hiJ * loP ^ (-c') with hCdef
+  -- flat model + constant.  `KR` is the R7 stranded-factor constant: the geometric fold's β-det reads
+  -- the FULL ledger (`fc`/`fullDivExp`), which is bounded by `KR · (analytic β-det)` on the flat box
+  -- (`full_prod_le`; the stranded factors `|z|^{E_s−1}` with `|z| ≤ R` cost the box-independent `KR`).
+  set KR : ℝ := ∏ j : Fin l.fullNumDiv, (max R 1) ^ (l.fullDivExp j - 1) with hKRdef
+  have hKR0 : 0 ≤ KR := Finset.prod_nonneg (fun j _ =>
+    pow_nonneg (le_trans zero_le_one (le_max_right R 1)) _)
+  set C : ℝ := hiJ * KR * loP ^ (-c') with hCdef
   set F : (Fin (flatDim M) → ℝ) → ℝ := fun x =>
     (∏ k, |x (l.divCoord k)| ^ ((l.divExp k : ℝ) - 1 - 2 * c'))
       * (if l.resRank = 0 then (1 : ℝ) else ∑ i, (x (l.resCoord i)) ^ 2) ^ (-c') with hFdef
   have hCnn : 0 ≤ C := by
-    rw [hCdef]; exact mul_nonneg hhiJ (Real.rpow_nonneg hloP.le _)
+    rw [hCdef]; exact mul_nonneg (mul_nonneg hhiJ hKR0) (Real.rpow_nonneg hloP.le _)
   -- the pointwise integrand bound (real)
   have hdivpos : ∀ k, 1 ≤ l.divExp k := fun k => Nat.one_le_iff_ne_zero.mpr (fun h => by
     have h2 := hdivExp k; rw [h] at h2; norm_num at h2; linarith)
@@ -184,7 +232,20 @@ theorem leaf_chart_image_lintegral_lt_top {M : Fin (L + 1) → ℕ} (l : LeafDat
     have hfrobeq : frobSq (prod M (l.chartMap w)) = (∏ k, (x (l.divCoord k)) ^ 2) * rcore w := hpw.1
     have hsqueeze : loP * base ≤ rcore w := hpw.2.1
     have hdet : |(Dcomp w).det| = |(Dψ (β w)).det| * |(Dβ w).det| := abs_det_comp _ _
-    have hdetβ : |(Dβ w).det| = ∏ k, |x (l.divCoord k)| ^ (l.divExp k - 1) := (hβ w hw).2
+    -- R7: the β-det reads the FULL ledger (`fc`/`fullDivExp`); bound it by `KR · (analytic β-det)`.
+    have hdetβfull : |(Dβ w).det| = ∏ j, |x (fc j)| ^ (l.fullDivExp j - 1) := (hβ w hw).2
+    have hxbound : ∀ c, |x c| ≤ R := by
+      intro c
+      have hmem := hRsub hw
+      simp only [Set.mem_preimage, cubeBox, Set.mem_pi, Set.mem_univ, forall_true_left,
+        Set.mem_Icc, ← abs_le] at hmem
+      exact hmem c
+    have hdetβ_le : |(Dβ w).det| ≤ KR * ∏ k, |x (l.divCoord k)| ^ (l.divExp k - 1) := by
+      rw [hdetβfull, hKRdef]
+      exact full_prod_le l.fullDivExp l.divExp (fun j => |x (fc j)|) (fun k => |x (l.divCoord k)|)
+        emb hembInj (fun k => by simp only [hfcemb k]) (fun k => hexpemb k)
+        (max R 1) (le_max_right R 1) (fun _ => abs_nonneg _)
+        (fun j => (hxbound (fc j)).trans (le_max_left R 1)) (fun _ => abs_nonneg _)
     have hDψle : |(Dψ (β w)).det| ≤ hiJ := (hψ (β w) ⟨w, hw, rfl⟩).2.2.2.2
     have hPnn : (0 : ℝ) ≤ ∏ k, (x (l.divCoord k)) ^ 2 := Finset.prod_nonneg (fun k _ => sq_nonneg _)
     rcases eq_or_lt_of_le (frobSq_nonneg (prod M (l.chartMap w))) with hf0 | hfpos
@@ -216,20 +277,20 @@ theorem leaf_chart_image_lintegral_lt_top {M : Fin (L + 1) → ℕ} (l : LeafDat
           rw [← Real.rpow_natCast (|x (l.divCoord k)|) (l.divExp k - 1),
             ← Real.rpow_add (abs_pos.mpr (hukne k)), Nat.cast_sub (hdivpos k)]
           congr 1; push_cast; ring)
-      rw [hFval, hfrobeq, hdet, hdetβ,
+      rw [hFval, hfrobeq, hdet,
         Real.mul_rpow hPnn hrcpos.le, hprodrpow]
-      calc |(Dψ (β w)).det| * (∏ k, |x (l.divCoord k)| ^ (l.divExp k - 1))
+      calc |(Dψ (β w)).det| * |(Dβ w).det|
               * ((∏ k, |x (l.divCoord k)| ^ (-2 * c')) * rcore w ^ (-c'))
-          ≤ hiJ * (∏ k, |x (l.divCoord k)| ^ (l.divExp k - 1))
+          ≤ hiJ * (KR * (∏ k, |x (l.divCoord k)| ^ (l.divExp k - 1)))
               * ((∏ k, |x (l.divCoord k)| ^ (-2 * c')) * (loP * base) ^ (-c')) := by
-            refine mul_le_mul (mul_le_mul_of_nonneg_right hDψle
-                (Finset.prod_nonneg (fun k _ => pow_nonneg (abs_nonneg _) _)))
+            refine mul_le_mul (mul_le_mul hDψle hdetβ_le (abs_nonneg _) hhiJ)
               (mul_le_mul_of_nonneg_left (rpow_neg_antitone (mul_pos hloP hbasepos) hsqueeze hc')
                 (Finset.prod_nonneg (fun k _ => Real.rpow_nonneg (abs_nonneg _) _)))
               (mul_nonneg (Finset.prod_nonneg (fun k _ => Real.rpow_nonneg (abs_nonneg _) _))
                 (Real.rpow_nonneg hrcpos.le _))
-              (mul_nonneg hhiJ (Finset.prod_nonneg (fun k _ => pow_nonneg (abs_nonneg _) _)))
-        _ = hiJ * loP ^ (-c') * (∏ k, |x (l.divCoord k)| ^ ((l.divExp k : ℝ) - 1 - 2 * c'))
+              (mul_nonneg hhiJ (mul_nonneg hKR0
+                (Finset.prod_nonneg (fun k _ => pow_nonneg (abs_nonneg _) _))))
+        _ = hiJ * KR * loP ^ (-c') * (∏ k, |x (l.divCoord k)| ^ ((l.divExp k : ℝ) - 1 - 2 * c'))
               * base ^ (-c') := by
             rw [Real.mul_rpow hloP.le hbaseNN, ← hcombine]; ring
         _ = C * F x := by rw [hCdef, hFval]; ring

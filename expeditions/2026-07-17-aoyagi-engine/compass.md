@@ -523,6 +523,15 @@ over banked substrate.
   fullDivCoord ⊥ resCoord is carried-for-generality (load-bearing at resRank>0 per Codex's
   Morse-entanglement counterexample; VACUOUS at the spine's proven resRank=0). Field naming
   makes the split un-elidable (Jacobian → full*, loss/C → analytic*).
+  CHARGE-6 / R7 (adopted 2026-07-19; t10 LANDED clause+wrapper). NO `fullDivCoord` FIELD (a total
+  `Fin fullNumDiv → Fin (flatDim M)` is undefinable in `leafOfState`'s `flatDim M = 0` branch —
+  `ConState` is M-independent, so `numDiv ⊥ flatDim`; R1/R2 refuted as spine/gate-touching). The full
+  COORDINATE map `fc` is carried EXISTENTIALLY inside `LeafJacobian` (with `fc` injective, the analytic
+  embedding `emb`: `fc∘emb=divCoord`, `fullDivExp∘emb=divExp`, `fullDivExp≥1`, `fc⊥resCoord`);
+  `fullNumDiv`/`fullDivExp` stay fields. Discharge witnesses `fc := birthFlatCoord M s` (t14's bundle);
+  wrong-witness harmless (det pins `fc` up to padding; `region_glue` reads the ∃'s clauses, chart
+  fidelity is (D)). Wrapper = `full_prod_le` (`|det|_full ≤ K_R·|det|_analytic`, `K_R=∏ max(R,1)^{E−1}`)
+  in RegionGluePerLeaf. R7 is instance #9's FIX, not a new instance (counter stays 9).
 - resRank=0 IS PROVEN at every spine leaf (leaves_resRank_zero, EngineConstruction:2545 —
   the construction fully diagonalizes, Aoyagi's diag(b)). Freeze resRank=0 safely; the Morse
   clauses (resRank>0 branch of RegionGluePerLeaf, the (C) 0<resRank implication,

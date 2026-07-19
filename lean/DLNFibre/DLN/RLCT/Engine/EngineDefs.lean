@@ -47,21 +47,39 @@ def LeafPullback (l : LeafData (L := L) M) : Prop :=
           = (∏ k : Fin l.numDiv, (paramsEquivFlat M w (l.divCoord k)) ^ 2) * residualCore w ∧
       lo * residualBaseForm l w ≤ residualCore w ∧ residualCore w ≤ hi * residualBaseForm l w
 
-/-- **The Jacobian ledger — FACTORED form** (ruling 2b, fork 8, area-formula revision). `chartMap =
-ψ ∘ β` on the source box, where `β` is the explicit monomial blow-up (`|det Dβ| = ∏ |u|^{divExp−1}`,
-abs-value — finding 7; handled by direct monomial integration / the scaling bridge) and `ψ` is a
-bounded-unit local diffeomorphism. The per-leaf read (elder-ratified fork-8 revision) is the Mathlib
-AREA FORMULA, which consumes only `ψ`'s UPPER determinant bound `|det Dψ| ≤ hi`; the banked
-`rlctAtOn_boundedUnit_localHomeomorph` transport is unused, so the extra inverse data (`ψsymm`,
-inverse identities, the lower bound) is carried but not load-bearing. `β` is Aoyagi's
-monomialized-integrand chart; the read was never meant to eat the singular factor. -/
+/-- **The Jacobian ledger — FULL-LEDGER FACTORED form** (elder charge-6 / R7, cert-stranded-dichotomy).
+`chartMap = ψ ∘ β` on the source box, where `β` is the explicit monomial blow-up and `ψ` is a
+bounded-unit local diffeomorphism (area formula consumes only `ψ`'s UPPER determinant bound `≤ hi`;
+`ψsymm` + the lower bound are carried, not load-bearing). The det of `β` reads the **FULL** ledger — ALL
+born divisors (`fullNumDiv` / `fullDivExp`), NOT the analytic `t̃=0` sublist: the geometric fold blows up
+every case-2/case-1(2) node, so stranded (`t̃>0`) divisors with `divExp > 1` DO contribute
+(`cert-stranded-dichotomy` — the analytic-only β-det is FALSE; minimal witness `M=(2,3)`, `L=1`).
+
+The full coordinate map `fc` is carried **EXISTENTIALLY** (no `LeafData` field: a total
+`Fin fullNumDiv → Fin (flatDim M)` field is not definable in `leafOfState`'s degenerate `flatDim M = 0`
+branch, since `ConState` is `M`-independent so `numDiv ⊥ flatDim`; the discharge witnesses
+`fc := birthFlatCoord M s` over the terminal state `s`, where `0 < flatDim M` holds). The `∃` carries:
+`fc` injective (load-bearing — the analytic×stranded factorization `region_glue` needs), the analytic
+embedding `emb` (`fc ∘ emb = divCoord`, `fullDivExp ∘ emb = divExp` — so the loss / (C) / RLCT-pole reads
+stay ANALYTIC, `cert-stranded-dichotomy §4`), `fullDivExp ≥ 1` (stranded factors are box-bounded,
+`E_s ≥ 1`), and `fc ⊥ resCoord` (carried-for-generality; vacuous at the spine's proven `resRank = 0`).
+The wrong-witness loophole is harmless (the det identity pins `fc` up to invisible padding; `region_glue`
+consumes the clauses, not the witness provenance); chart **FIDELITY is clause (D)'s job**
+(`chartBridgeFaithful`), not `fc`'s. -/
 def LeafJacobian (l : LeafData (L := L) M) : Prop :=
   ∃ (β ψ ψsymm : Params M → Params M)
-    (Dβ Dψ : Params M → (Params M →L[ℝ] Params M)) (lo hi : ℝ), 0 < lo ∧
+    (Dβ Dψ : Params M → (Params M →L[ℝ] Params M)) (lo hi : ℝ)
+    (fc : Fin l.fullNumDiv → Fin (flatDim M)) (emb : Fin l.numDiv → Fin l.fullNumDiv), 0 < lo ∧
+    Function.Injective fc ∧
+    Function.Injective emb ∧
+    (∀ k : Fin l.numDiv, fc (emb k) = l.divCoord k) ∧
+    (∀ k : Fin l.numDiv, l.fullDivExp (emb k) = l.divExp k) ∧
+    (∀ j : Fin l.fullNumDiv, 1 ≤ l.fullDivExp j) ∧
+    Disjoint (Set.range fc) (Set.range l.resCoord) ∧
     (∀ w ∈ l.srcBox, l.chartMap w = ψ (β w)) ∧
     (∀ w ∈ l.srcBox, HasFDerivAt β (Dβ w) w ∧
       |(Dβ w).det|
-        = ∏ k : Fin l.numDiv, |paramsEquivFlat M w (l.divCoord k)| ^ (l.divExp k - 1)) ∧
+        = ∏ j : Fin l.fullNumDiv, |paramsEquivFlat M w (fc j)| ^ (l.fullDivExp j - 1)) ∧
     (∀ v ∈ β '' l.srcBox, ψsymm (ψ v) = v ∧ ψ (ψsymm v) = v ∧
       HasFDerivAt ψ (Dψ v) v ∧ lo ≤ |(Dψ v).det| ∧ |(Dψ v).det| ≤ hi)
 
