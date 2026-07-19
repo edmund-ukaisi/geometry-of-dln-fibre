@@ -3890,3 +3890,23 @@ Fidelity ground unchanged: id-passthrough rests on dCenterOfEdge counting correc
 already-closed elder defect chain, no new assumption. AxCheck: the 550s-timeout attempts
 were killing lake (exit 124 caught — the timeout wrapper, not a failure); one clean untimed
 background run launched, watch-line commit rides its true exit.
+
+## 2026-07-19 tick 263: finding-2 invariant GATE PASSED; pnp-fold cert commissioned
+t11's statement-first deliverable (addendum merged e6696c884) gated and PASSED on all three
+asks. The design's proof of taste: the BASE case — the per-piece (per-path) ledger makes
+J(root-leaf) = 1=1, revealing finding-3 as not merely a satisfiability patch but WHAT MAKES
+THE ∀-SHAPE TRUE (finding-1's falsity was the GLOBAL leaf ledger; the per-path ledger heals
+the statement). The 3-case regrouping decomposition approved; t11's exponent table matches
+the atom in all three stepUpdate cases (case2 direct; case11 re-merge onto the ancestor birth
+corner; case12 inherited threading) — the ledger and the geometry were built to the same
+book. Per-pivot divExp co-design for #35 approved: PER-CASE (case2 resRows·resCols; case12
+inherits+adds; case11 emits NO new divisor — updates the ancestor's), never a uniform
+dCenterOfNode number. ONE FLAG into the skeleton: the acc=id motive must match t10's LANDED
+threading (the passthrough FORWARDS acc; verify id reaches every rollover, else generalize
+over acc — the weakest-hypothesis lesson). CERT COMMISSIONED: pnp-fold (witness), the 3
+per-case intermediate-point substitution identities (z_{cNodeOf}(lc'.2 w) = which source-w
+monomial) — the elder's table formal-precise, sympy-verified on a depth-≥2 instance,
+kill-condition = a composite det ≠ the per-piece ledger monomial; extends cert-psi-mix
+(per-node) to the FOLD; runs parallel, no file locks. Sequence: t10 lands → #35 ∥ cert →
+skeleton → grind. Board: t09 mini-arc; t10 batch (gate cleared); t11 Phase-2 parametric;
+pnp-fold; AxCheck untimed verify still running.
