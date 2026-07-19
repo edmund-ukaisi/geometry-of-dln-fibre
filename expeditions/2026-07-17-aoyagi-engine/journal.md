@@ -4195,3 +4195,15 @@ construction concerns (S/α composition-cleanliness + cert condition (2): chartM
 resCoord transformed coherently across the fold). The reshape keeps the same 3-piece shape
 under both outcomes. The pre-merge bank is closed; the seat idles on charge-3 ∨ t10,
 whichever fires first.
+
+## 2026-07-19 tick 275: t10 BANKED — the batch merged locally; the full-batch gate RUNNING (push pending)
+t10 executed the banking order: aa1ef9836 on its branch — the COMPLETE batch in one atomic
+commit (4 lean files + compass counter 6→7 [the obligation-statement bullet, instance list
+extended] + the cover-specify addendum with the (1,1,1) kill-witness + the tiling-whnf Codex
+pair; 527 insertions). Conditions 1/2/4 VERIFIED in the merge (docstring at EngineDefs:95
+"NEIGHBOURHOOD of the cone point"; witness at cover-specify:114; counter diff inspected).
+Merged LOCALLY (951d2d4b5 — push gated); condition 3 (the full AxCheck rebuild with
+region_glue_of_chartBridge MUST-clean-three through the EngineDefs type edit) running in
+background. On its green: push → t11's file-lock trigger FIRES (the reshaped #35 + charge-3
+outcome pending from the elder). t10 meanwhile still grinding the 2 tracked sorries
+(GeoCoverSpec mtime 19:37). The choke point is dissolving.
