@@ -444,6 +444,102 @@ def SteerInv (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Pr
   OracleInv M s ∧ NumDivInv M s ∧
     (SteerPre M a s ∨ SteerAnchored M a s ∨ SteerDone a s)
 
+/-- **A cone-good state that terminates has `L ≤ layer`** — rules out the chooser fallback terminal:
+the other terminal route needs `chooseMin = none` at an occupied target level, impossible on a
+`SameLevelChainInv` state (`chooserTotalOnChain_of_sameLevel`). Mirrors `conOracle_terminal_leaf`'s
+dispatch, deriving a contradiction in every non-`L ≤ layer` branch. -/
+theorem conOracle_terminal_le {M : Fin (L + 1) → ℕ} {s : ConState L} (hslc : SameLevelChainInv s)
+    {l' : LeafData M} {hl'} (h : conOracle M s = ConDecision.terminal l' hl') : L ≤ s.layer := by
+  by_contra hcon
+  by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+  · rw [show conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp hcon)) h2 from by
+      unfold conOracle; rw [dif_neg hcon, dif_pos h2]] at h
+    simp only [rolloverDecision, reduceCtorEq] at h
+  · have hcap : s.cleared < layerCap M :=
+      lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+    rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+        if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+        then some (s.divTilde k) else none)).min? with _ | target
+    · rw [show conOracle M s = case2Decision M s (widthMinUpto M s.layer - s.cleared)
+          (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap from by
+        unfold conOracle; rw [dif_neg hcon, dif_neg h2]; split <;> simp_all only [reduceCtorEq]] at h
+      simp only [case2Decision, reduceCtorEq] at h
+    · obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+      rw [List.mem_filterMap] at hmemtar
+      obtain ⟨k0, _, hk0⟩ := hmemtar
+      have hdt : s.divTilde k0 = target := by
+        by_cases hc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+        · rw [if_pos hc] at hk0; exact Option.some.inj hk0
+        · rw [if_neg hc] at hk0; exact absurd hk0 (by simp)
+      rcases hf : chooseMin s target with _ | f
+      · have htot := chooserTotalOnChain_of_sameLevel s hslc target ⟨k0, hdt⟩
+        rw [hf] at htot; simp at htot
+      · have htar : s.cleared + 1 ≤ target := by
+          by_cases hc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hc] at hk0; have := Option.some.inj hk0; omega
+          · rw [if_neg hc] at hk0; exact absurd hk0 (by simp)
+        have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+        rw [show conOracle M s = case1Decision M s f (target - s.cleared)
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+            (not_le.mp hcon) (by omega) (by rw [htgt]; omega) hcap from by
+          unfold conOracle; rw [dif_neg hcon, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+          all_goals (try subst_vars)
+          all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))] at h
+        simp only [case1Decision, reduceCtorEq] at h
+
+/-- **`SteerInv` holds at the root** — cone-goodness (banked) + phase `pre` (vacuous at layer `0`,
+cleared `0`; needs `0 < L` for the `layer < L` witness). The base of the steered fold. -/
+theorem SteerInv_conRoot (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (hL : 0 < L) :
+    SteerInv M a (conRoot : ConState L) := by
+  refine ⟨OracleInv_conRoot, NumDivInv_conRoot, Or.inl ⟨hL, ?_, ?_, ?_⟩⟩
+  · intro i hi; exact absurd hi (Nat.not_lt_zero _)
+  · exact Nat.zero_le _
+  · intro q hq; exact absurd hq (Nat.not_lt_zero _)
+
+/-- **The `R(a)`-steered child preserves `SteerInv`** (the phase-maintenance core, cert §4). At a step
+state, select the child `conOracle` emits along the steering rule (case-1(1) iff the target level
+`> a^layer`, else case-1(2); rollover/case-2 forced) and re-establish `SteerInv` at it. The
+level-coverage clause forces the anchor's pull at exactly `cleared = a^layer` (the descent case).
+CRUX (sorried): the per-phase per-transition maintenance — birth (case-2 at `cleared = a^layer`),
+plateau/descent (case-1), transport (append via `Fin.castSucc`), rollover (landed→pending). -/
+theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha : a ∈ Adm M)
+    (hc : Clearable M a) (hMpos : ∀ i, 0 < M i) {s : ConState L} (hinv : SteerInv M a s)
+    {node : StepData M} {children : List (StepChild M s)} {hnode hlayer hstep}
+    (hoc : conOracle M s = ConDecision.step node children hnode hlayer hstep) :
+    ∃ c ∈ children, SteerInv M a c.child := by
+  sorry
+
+/-- **The steered leaf fold** (cert §4, the `conRel`-WF induction): from `SteerInv M a s`, some leaf of
+`buildTree M (conOracle M) s` carries `a` as an analytic divisor profile. At a terminal, `SteerInv`
+gives phase `done` (the other phases need `layer < L`, excluded by `conOracle_terminal_le`), whose
+anchor reads off via `leafOfState_carries`; at a step, `exists_steered_child` picks the steered child
+and `childLeaves_subset` chains its realized leaf up. -/
+theorem realize_aux (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha : a ∈ Adm M) (hc : Clearable M a)
+    (hMpos : ∀ i, 0 < M i) (s : ConState L) (hinv : SteerInv M a s) :
+    ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s),
+      ∃ k : Fin l.numDiv, l.divProfile k = a := by
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+      have hle : L ≤ s.layer := conOracle_terminal_le hinv.1.slc hoc
+      rcases hinv.2.2 with hpre | hanch | hdone
+      · exfalso; obtain ⟨hm, _⟩ := hpre; omega
+      · exfalso; obtain ⟨hm, _⟩ := hanch; omega
+      · obtain ⟨-, A, hAprof, hA0⟩ := hdone
+        have hfd : 0 < flatDim M :=
+          lt_of_lt_of_le (lt_of_le_of_lt (Nat.zero_le A.val) A.isLt)
+            (numDiv_le_flatDim_of_inv hinv.2.1)
+        obtain ⟨k, hk⟩ := leafOfState_carries s hfd A hA0 hAprof
+        refine ⟨leafOfState M s, ?_, k, hk⟩
+        rw [buildTree_terminal M (conOracle M) s l' hleaf hoc, conOracle_terminal_leaf s hoc]
+        simp [ResolutionTree.leaves]
+    | step node children hnode hlayer hstep =>
+      obtain ⟨c, hcmem, hcinv⟩ := exists_steered_child M a ha hc hMpos hinv hoc
+      obtain ⟨l, hl, k, hk⟩ := ih c.child c.hdesc hcinv
+      exact ⟨l, childLeaves_subset M s hoc hcmem hl, k, hk⟩
+
 /-- **`tStar M` is realized as a `t̃ = 0` leaf-divisor profile of the built tree** (cert §4, the
 anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
 `Clearable-Adm` (= R7). The `t̃ = 0` is automatic (`tStar ∈ Adm`, last coord `0`).
@@ -462,8 +558,9 @@ clause forcing the anchor's pull at exactly `cleared = tStar^S`), reading `tStar
 leaf. Tripwire: if the level-coverage / phase-maintenance fights, STOP + report. -/
 theorem tStar_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) (hMpos : ∀ i, 0 < M i) :
     ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
-      ∃ k : Fin l.numDiv, l.divProfile k = tStar M := by
-  sorry
+      ∃ k : Fin l.numDiv, l.divProfile k = tStar M :=
+  realize_aux M (tStar M) (tStar_mem M) (clearable_tStar M) hMpos conRoot
+    (SteerInv_conRoot M (tStar M) hL)
 
 /-- **`o5_core`, realized** (cert §3 + §4 composed): `minAdm M` is a divisor exponent of a leaf of the
 built tree. The MOVE-AT-LANDING target — when this lands, o5_core moves here from `EngineConstruction`
