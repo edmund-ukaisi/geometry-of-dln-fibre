@@ -4760,3 +4760,14 @@ matrices exactly what α clears (the off-diagonal incidence entries the det neve
 (3b) rulings stand unchanged (one skeleton, two instances, driver optional). NOTE: the
 stranded-divisor dichotomy charge (tick 300) crossed this delivery — it's pnp-fold's next
 wake; the leaf-instantiation slot stays open for it.
+
+## 2026-07-19 tick 302: a.e.-inj survey — coverage-lane CONFIRMED (the Jacobian route is local-only); grind-GO
+The survey's load-bearing finding: geoAtlas_fold_det gives only LOCAL a.e.-injectivity (IFT);
+the clause needs GLOBAL InjOn — so a.e.-inj cannot ride t14's fold and is the elementary
+composition argument instead (per-factor globally-injective-off-null: banked pivotChart_injOn
++ bijective conjugators; the accumulated null set through the fold; ONE new atom — the
+per-factor coordinate-hyperplane preimage-null lemma, explicit computation, no Jacobian).
+Cost priced at bridge-scale. GRIND-GO issued with: the preimage-null atom FIRST as its own
+green; a provability-check of the InjOn statement's N-form against EngineDefs' exact clause;
+the off-ramp standing mid-build. When this lands, the (B) holes are down to LeafPullback
+(loss-t15) + LeafJacobian (t14) — the two cert-scripted instances of the one skeleton.
