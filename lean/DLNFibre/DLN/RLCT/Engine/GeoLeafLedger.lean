@@ -92,4 +92,69 @@ theorem geoAtlas_leaf_update (t : ResolutionTree M) :
       c = { l with chartMap := f } := by
   rw [geoAtlas]; exact tGeo_leaf_update id t
 
+/-! ## The transfers — the (B) ledger props + (C) exponents over `geoAtlas` -/
+
+/-- **Every built-tree leaf's source box is the flat unit cube** (mirrors `leaves_srcBox_nonempty`,
+`leafOfState_srcBox` at the terminal). -/
+theorem leaves_srcBox_flatCube (s : ConState L) :
+    ∀ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s),
+      l.srcBox = ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 := by
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    intro l hl
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+        rw [buildTree_terminal M (conOracle M) s l' hleaf hoc] at hl
+        simp only [ResolutionTree.leaves, List.mem_singleton] at hl
+        subst hl
+        rw [conOracle_terminal_leaf s hoc]
+        exact leafOfState_srcBox s
+    | step node children hnode hlayer hstep =>
+        rw [buildTree_step M (conOracle M) s node children hoc] at hl
+        rw [ResolutionTree.leaves, edgesLeaves_eq, List.mem_flatMap] at hl
+        obtain ⟨e, he, hle⟩ := hl
+        rw [List.mem_map] at he
+        obtain ⟨c, hc, rfl⟩ := he
+        exact ih c.child c.hdesc l hle
+
+/-- A leaf's divisor exponent is a terminal exponent (the `flatMap`-`++` membership). -/
+theorem divExp_mem_terminalExponents (t : ResolutionTree M) (l : LeafData M)
+    (hl : l ∈ ResolutionTree.leaves t) (k : Fin l.numDiv) :
+    l.divExp k ∈ ResolutionTree.terminalExponents t := by
+  rw [ResolutionTree.terminalExponents, List.mem_flatMap]
+  exact ⟨l, hl, List.mem_append_left _ (List.mem_map_of_mem (List.mem_finRange k))⟩
+
+/-- A leaf's positive residual rank is a terminal exponent (the `flatMap`-`++` `if`-branch). -/
+theorem resRank_mem_terminalExponents (t : ResolutionTree M) (l : LeafData M)
+    (hl : l ∈ ResolutionTree.leaves t) (hpos : 0 < l.resRank) :
+    l.resRank ∈ ResolutionTree.terminalExponents t := by
+  rw [ResolutionTree.terminalExponents, List.mem_flatMap]
+  exact ⟨l, hl, List.mem_append_right _ (by rw [if_pos hpos]; exact List.mem_singleton.mpr rfl)⟩
+
+/-- **The (B) ledger props + (C) exponents transfer** to every `geoAtlas` piece via the
+correspondence: srcBox measurable+bounded (`flatCubeSrcBox_*`, the box is the flat cube),
+divCoord/resCoord inj+disjoint (`leaves_chart_clauses_conRoot`), and the exponents
+(`divExp`/`resRank` membership). The geometric props (a.e.-inj, `LeafPullback`, `LeafJacobian`)
+are elsewhere. -/
+theorem geoAtlas_leaf_ledgerProps (c : LeafData M)
+    (hc : c ∈ geoAtlas (buildTree M (conOracle M) (conRoot : ConState L))) :
+    MeasurableSet c.srcBox ∧
+      (∃ R : ℝ, 0 < R ∧ c.srcBox ⊆ ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R) ∧
+      Function.Injective c.divCoord ∧ Function.Injective c.resCoord ∧
+      Disjoint (Set.range c.divCoord) (Set.range c.resCoord) ∧
+      (∀ k : Fin c.numDiv,
+          c.divExp k ∈ ResolutionTree.terminalExponents (buildTree M (conOracle M) conRoot)) ∧
+      (0 < c.resRank →
+          c.resRank ∈ ResolutionTree.terminalExponents (buildTree M (conOracle M) conRoot)) := by
+  obtain ⟨l, hl, f, hf⟩ := geoAtlas_leaf_update _ c hc
+  obtain ⟨hdiv, hres, hdisj⟩ := leaves_chart_clauses_conRoot l hl
+  have hsrc : l.srcBox = ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 :=
+    leaves_srcBox_flatCube conRoot l hl
+  subst hf
+  refine ⟨?_, ⟨1, one_pos, ?_⟩, hdiv, hres, hdisj, ?_, ?_⟩
+  · show MeasurableSet l.srcBox; rw [hsrc]; exact flatCubeSrcBox_measurableSet 1
+  · show l.srcBox ⊆ _; rw [hsrc]
+  · exact fun k => divExp_mem_terminalExponents _ l hl k
+  · exact fun hpos => resRank_mem_terminalExponents _ l hl hpos
+
 end DLNFibre.DLN.RLCT.Engine
