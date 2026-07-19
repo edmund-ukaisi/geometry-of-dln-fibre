@@ -3791,3 +3791,20 @@ navigator-4 CONVENED (office, read-only) on the operator-requested parallelisati
 (width, conflicts, t11-stall contingency, gate-ladder verification, distance calibration).
 Map STATUS.md noted stale (updated 2026-07-17; landmarks pre-date the endgame) — a
 cartographer refresh rides the next office cadence, journal stays authoritative meanwhile.
+
+## 2026-07-19 tick 259: t09 COMPLETE — #26 closed DivBirthInv-ONLY; honors; rev-carrier spawned
+t09's final push (95eea4178) merged (9087c2998) + probed: cNodeOf_eq_realCNode_of_conOracle
+CLEAN-THREE. The closing realisation made the interface SMALLER than its design: the case-1
+conOracle branch itself supplies chooseMin's success (that's what MAKES it case-1), so the
+reachability supply needs DivBirthInv ONLY — no OracleInv threading; the rollover edge
+dissolves via the dim-0 vacuous supplier. The carrier lane is now closed END-TO-END: per-node
+center (dCenterOfNode + edgeSum + totality) + qNodeOf + the q-det trio + the full fidelity
+chain, 668 LoC, every headline clean-three. AxCheck watch line added for the fidelity
+capstone (build verifying in background; commit follows its green — operator: long builds
+never block the tick). HONORS: t09 retired at the banked boundary — two reusable idioms
+minted this arc (pointwise redefinition kills the dependent cast; weakest-hypothesis
+supplier split kills the edge case). rev-carrier SPAWNED (t09 correctly declined
+self-review): independent fidelity check (sharpest questions: what does the headline's
+hypothesis actually quantify over; is a non-trivial instantiation path live from conRoot) +
+the statement card. BOARD: t10 (cover batch+fill) ∥ t11 (the wall) ∥ rev-carrier ∥
+navigator-4 (parallelisation audit, pending).
