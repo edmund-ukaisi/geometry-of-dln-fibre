@@ -3398,3 +3398,14 @@ sub-arc). Coverage notified: the convergence is one `exact` at its assembly. rev
 .get/NoDup injectivity composition; freshness-vs-cert). t07 holds warm pending the verdict +
 the assembly. THE BOARD: ONE lane remains — coverage's tide (atlas materialization → cover
 fold → Props → clauses → the discharge). Everything else on the chart hole is DONE.
+
+### Tick-232 addendum: convergence consumed — the two-face architecture snapping together
+Coverage's assembly implication (sound, worth the record): each atlas piece takes its LEDGER
+leaf's coordinate data (divCoord/resCoord/divExp — shared across the fan-out family, the
+chart-independent bump) + its own GEOMETRIC chartMap (the geoChartMap fold). Consequences
+falling out for free: leaves_chart_clauses_conRoot discharges the coordinate bundle for EVERY
+piece (the family shares its leaf's coords); clause (C) exponent-agreement falls out of the
+SAME shared ledger data; the resCoord clauses are vacuous on the pieces too. This is the
+ledger-carries-exponents / atlas-carries-charts split doing its work at the assembly — the
+joints behaving exactly as the corrected architecture promised. Tide order unchanged;
+pieces 1-2 unaffected by the real-ification (verified both sides).
