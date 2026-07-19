@@ -505,10 +505,76 @@ CRUX (sorried): the per-phase per-transition maintenance — birth (case-2 at `c
 plateau/descent (case-1), transport (append via `Fin.castSucc`), rollover (landed→pending). -/
 theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha : a ∈ Adm M)
     (hc : Clearable M a) (hMpos : ∀ i, 0 < M i) {s : ConState L} (hinv : SteerInv M a s)
-    {node : StepData M} {children : List (StepChild M s)} {hnode hlayer hstep}
-    (hoc : conOracle M s = ConDecision.step node children hnode hlayer hstep) :
-    ∃ c ∈ children, SteerInv M a c.child := by
-  sorry
+    (hlt : s.layer < L) :
+    ∃ c ∈ (conOracle M s).stepChildren, SteerInv M a c.child := by
+  obtain ⟨inv, hnd, hphase⟩ := hinv
+  have h1 : ¬ L ≤ s.layer := not_le.mpr hlt
+  -- OracleInv / NumDivInv for any emitted child are free (banked); only the PHASE is the content.
+  suffices h : ∃ c ∈ (conOracle M s).stepChildren,
+      (SteerPre M a c.child ∨ SteerAnchored M a c.child ∨ SteerDone a c.child) by
+    obtain ⟨c, hcmem, hp⟩ := h
+    exact ⟨c, hcmem, OracleInv_conOracle_stepChildren s inv c hcmem,
+      NumDivInv_conOracle_stepChildren s hnd c hcmem, hp⟩
+  by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+  · -- ROLLOVER (forced): the single child `s.stepRollover`.
+    rw [show conOracle M s = rolloverDecision M s (le_of_lt hlt) h2 from by
+      unfold conOracle; rw [dif_neg h1, dif_pos h2]]
+    refine ⟨_, List.mem_singleton_self _, ?_⟩
+    show SteerPre M a s.stepRollover ∨ SteerAnchored M a s.stepRollover ∨ SteerDone a s.stepRollover
+    sorry
+  · have hcap : s.cleared < layerCap M :=
+      lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
+    rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+        if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+        then some (s.divTilde k) else none)).min? with _ | target
+    · -- CASE-2 (forced): the single appended child.
+      rw [show conOracle M s = case2Decision M s (widthMinUpto M s.layer - s.cleared)
+          (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap from by
+        unfold conOracle; rw [dif_neg h1, dif_neg h2]; split <;> simp_all only [reduceCtorEq]]
+      refine ⟨_, List.mem_singleton_self _, ?_⟩
+      show SteerPre M a (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+          (fun p => runMinWidth M p)) ∨
+        SteerAnchored M a (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+          (fun p => runMinWidth M p)) ∨
+        SteerDone a (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+          (fun p => runMinWidth M p))
+      sorry
+    · rcases hf : chooseMin s target with _ | f
+      · -- chooser fallback: impossible on a `SameLevelChainInv` state.
+        exfalso
+        obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+        rw [List.mem_filterMap] at hmemtar
+        obtain ⟨k0, _, hk0⟩ := hmemtar
+        have hdt : s.divTilde k0 = target := by
+          by_cases hcc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hcc] at hk0; exact Option.some.inj hk0
+          · rw [if_neg hcc] at hk0; exact absurd hk0 (by simp)
+        have htot := chooserTotalOnChain_of_sameLevel s inv.slc target ⟨k0, hdt⟩
+        rw [hf] at htot; simp at htot
+      · -- CASE-1: two children; steer 1(1) iff `target > a^layer`, else 1(2).
+        have htar : s.cleared + 1 ≤ target := by
+          obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+          rw [List.mem_filterMap] at hmemtar
+          obtain ⟨k0, _, hk0⟩ := hmemtar
+          by_cases hcc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hcc] at hk0; have := Option.some.inj hk0; omega
+          · rw [if_neg hcc] at hk0; exact absurd hk0 (by simp)
+        have htgt : s.divTilde f = target := (chooseMin_spec s target hf).1
+        rw [show conOracle M s = case1Decision M s f (target - s.cleared)
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+            (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap from by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+          all_goals (try subst_vars)
+          all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))]
+        simp only [case1Decision, ConDecision.stepChildren]
+        by_cases hsteer : a ⟨s.layer, hlt⟩ < target
+        · -- 1(1): the merge child (first).
+          refine ⟨_, List.mem_cons_self, ?_⟩
+          sorry
+        · -- 1(2): the split child (second).
+          refine ⟨_, List.mem_cons_of_mem _ (List.mem_singleton_self _), ?_⟩
+          sorry
 
 /-- **The steered leaf fold** (cert §4, the `conRel`-WF induction): from `SteerInv M a s`, some leaf of
 `buildTree M (conOracle M) s` carries `a` as an analytic divisor profile. At a terminal, `SteerInv`
@@ -536,7 +602,14 @@ theorem realize_aux (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha : a ∈ Ad
         rw [buildTree_terminal M (conOracle M) s l' hleaf hoc, conOracle_terminal_leaf s hoc]
         simp [ResolutionTree.leaves]
     | step node children hnode hlayer hstep =>
-      obtain ⟨c, hcmem, hcinv⟩ := exists_steered_child M a ha hc hMpos hinv hoc
+      have hlt : s.layer < L := by
+        by_contra hcon
+        rw [show conOracle M s = oracleTerminal M s from by
+          unfold conOracle; rw [dif_pos (not_lt.mp hcon)]] at hoc
+        simp only [oracleTerminal, reduceCtorEq] at hoc
+      obtain ⟨c, hcmem, hcinv⟩ := exists_steered_child M a ha hc hMpos hinv hlt
+      rw [hoc] at hcmem
+      simp only [ConDecision.stepChildren] at hcmem
       obtain ⟨l, hl, k, hk⟩ := ih c.child c.hdesc hcinv
       exact ⟨l, childLeaves_subset M s hoc hcmem hl, k, hk⟩
 
