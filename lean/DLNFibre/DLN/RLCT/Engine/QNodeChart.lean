@@ -68,4 +68,56 @@ def dCenterOfEdge (node : StepData M) (e : Edge M) : ℕ :=
   | StepCase.case2 => node.resRows * node.resCols
   | StepCase.rollover => 0
 
+/-- **The residual-block selector with a totality fallback** (trap A): on the reachable cone the
+bounds `J+rows ≤ M s.castSucc`, `J+cols ≤ M s.succ`, `s < L` hold and this is `resBlockCenterIndices`;
+off the cone (junk states) it falls back to the canonical injective `Fin.castLE hd`. Injective either
+way — so `qOfCenter` always applies. -/
+noncomputable def resBlockOrFallback (M : Fin (L + 1) → ℕ) (s J rows cols : ℕ)
+    (hd : rows * cols ≤ flatDim M) : Fin (rows * cols) → Fin (flatDim M) :=
+  if h : ∃ hs : s < L, J + rows ≤ M (⟨s, hs⟩ : Fin L).castSucc ∧ J + cols ≤ M (⟨s, hs⟩ : Fin L).succ
+  then resBlockCenterIndices M ⟨s, h.choose⟩ J rows cols h.choose_spec.1 h.choose_spec.2
+  else Fin.castLE hd
+
+theorem resBlockOrFallback_injective (M : Fin (L + 1) → ℕ) (s J rows cols : ℕ)
+    (hd : rows * cols ≤ flatDim M) : Function.Injective (resBlockOrFallback M s J rows cols hd) := by
+  unfold resBlockOrFallback
+  split
+  · exact resBlockCenterIndices_injective M _ J rows cols _ _
+  · exact Fin.castLE_injective hd
+
+/-- **The case-1(1) `u`-pivot selector** (`d = 1`): the merged divisor's immutable birth corner
+`(s, J)` (`divBirthCoord mergeIdx`) as a flat coord `flatCoordOf M s ⟨J⟩ ⟨J⟩` — NOT node-local (the
+divisor was born earlier). Totality fallback (trap A) off the reachable cone; injective trivially
+(`Fin 1` is a subsingleton). -/
+noncomputable def uCoordSel (M : Fin (L + 1) → ℕ) (node : StepData M) (es : ChartSubst M)
+    (hd : 1 ≤ flatDim M) : Fin 1 → Fin (flatDim M) := fun _ =>
+  if h : ∃ hm : es.mergeIdx < node.numDiv, (node.divBirthCoord ⟨es.mergeIdx, hm⟩).1 < L then
+    let sc := node.divBirthCoord ⟨es.mergeIdx, h.choose⟩
+    if h2 : sc.2 < M (⟨sc.1, h.choose_spec⟩ : Fin L).castSucc ∧
+        sc.2 < M (⟨sc.1, h.choose_spec⟩ : Fin L).succ then
+      flatCoordOf M ⟨sc.1, h.choose_spec⟩ ⟨sc.2, h2.1⟩ ⟨sc.2, h2.2⟩
+    else Fin.castLE hd 0
+  else Fin.castLE hd 0
+
+theorem uCoordSel_injective (M : Fin (L + 1) → ℕ) (node : StepData M) (es : ChartSubst M)
+    (hd : 1 ≤ flatDim M) : Function.Injective (uCoordSel M node es hd) :=
+  fun a b _ => Subsingleton.elim a b
+
+/-- **The per-edge center-split Homeomorph** (coverage's trigger): `qEdgeOf node e` splits `Params M`
+along the per-EDGE center (case-2/case-1(2) residual block; case-1(1) `u`-pivot; rollover chartless).
+Encapsulates the per-case selector dispatch + its injectivity + the totality fallback + the `d ≤
+flatDim` bound (`hd`, from reachability). `Fin d` matches coverage's `d_center_edge` directly. -/
+noncomputable def qEdgeOf (node : StepData M) (e : Edge M) (hd : dCenterOfEdge node e ≤ flatDim M) :
+    Params M ≃ₜ (Fin (dCenterOfEdge node e) → ℝ) × (Fin (flatDim M - dCenterOfEdge node e) → ℝ) := by
+  obtain ⟨ec, es, ech⟩ := e
+  cases ec with
+  | case11 => exact qOfCenter M (uCoordSel M node es hd) (uCoordSel_injective M node es hd)
+  | case12 =>
+      exact qOfCenter M (resBlockOrFallback M node.layer node.cleared es.runLen node.resCols hd)
+        (resBlockOrFallback_injective M node.layer node.cleared es.runLen node.resCols hd)
+  | case2 =>
+      exact qOfCenter M (resBlockOrFallback M node.layer node.cleared node.resRows node.resCols hd)
+        (resBlockOrFallback_injective M node.layer node.cleared node.resRows node.resCols hd)
+  | rollover => exact qOfCenter M Fin.elim0 (fun a => a.elim0)
+
 end DLNFibre.DLN.RLCT.Engine
