@@ -5186,3 +5186,30 @@ force). T10 RETIRED WITH HONORS — twice reactivated, twice delivered; its ledg
 weakening, the cover, two construction-defect catches, the verify-catch, the R7 batch.
 The final discharge gate is controller work on the carto §2e checklist. Working set now:
 disj-t17 (case-1 atoms, active) ∥ t14/loss-t15 (triggers) ∥ elder (charge-8) ∥ carto (warm).
+
+## 2026-07-19 tick 323: CHARGE-8 RECONCILED — the FINAL BUILD-LIST; R6 retracted; navigator-5 convened
+The elder's reconciliation (verbatim record, the navigator's input):
+(i) θ NON-IDENTITY confirmed load-bearing (the 6≠5 witness); the record correction lands in
+THREE places — the ROADMAP Bundle 4 rewrite, a durable non-identity exposition note, and the
+MINT GUARD (the headline is the VALUE only; the deferred θ-analytic seam binds to a(ℓ−a)+1,
+NEVER numTop). The combinatorial-rorder item is now VERIFIED un-substitutable.
+(ii) ZERO-WIDTH: Aoyagi's theorem COVERS zero reduced widths (worked.tex:710-711 — the ℓ+1
+smallest, possibly 0; positive-width is NOT her scope) — so dropping hpos is owed as
+LIBRARY-COMPLETENESS; but the DLN destination supplies hpos FREE (EngineDriver:64), so it is
+off the destination's critical path. Split: (a) the lambdaCore arithmetic collapse = cheap
+independent win now; (b) the analytic layer-collapse = post-spine.
+(iii) R6 RETRACTED (the scout was right; the elder's charge-7 read was stale — verified:
+deepest_regular_core_reduces_frontPivot_front on AxCheck:923 kernel-clean; the front-pivot
+gauge BYPASSES the SchurCore wall; the general-L r>0 regular VALUE is BUILT). R6 drops.
+An honest same-day retraction — the two-channel design working exactly as intended.
+(iv) M2 Lemma-1 general ideal-inclusion ON (medium, bedrock, off-path); M10's tie FOLDED
+into the combinatorial-θ item; M1 φ-def DISMISSED (decorative); the docstring hygiene ON
+(small).
+THE FINAL LIST: [critical] 1. the spine; [independent-now] 2. combinatorial θ = a(ℓ−a)+1
+(MEDIUM, un-substitutable) 3. the θ record correction (SMALL, do-first-among-docs) 4.
+zero-width (a) (SMALL) 5. Lemma-1 general (MEDIUM) 6. AxCheck hygiene (SMALL);
+[post-spine] 7. R4 sharing (LARGE, must-land) 8. R7 (MEDIUM) 9. zero-width (b) (MEDIUM);
+[gapped-correctly] the analytic θ binding + the exact-RLCT runway; [dropped] R6 + M1.
+NAVIGATOR-5 CONVENED on the fan-out plan (widths for lanes 2-6 now-vs-later; the quick-win
+bundle; merge pins; the R4 early-design question; the t14 long-pole contingency).
+t10's shutdown confirmed clean (the 8th of the cleanup era).
