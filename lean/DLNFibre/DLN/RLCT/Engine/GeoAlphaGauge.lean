@@ -170,6 +170,56 @@ theorem schurCells_ne (node : StepData M) (rows cols : ℕ) :
       rw [Fin.mk.injEq] at hi; omega
   · exact (List.not_mem_nil hmem).elim
 
+/-- **The pivot row/col coordinates are never an interior `a`** (cross-cell): every cell's `b`
+(pivot column, `col = J`) and `c` (pivot row, `row = J`) differs from every cell's `a` (interior,
+`row,col > J`). So the pivot row/col coordinates pass through the whole fold unchanged. -/
+theorem schurCells_snd_ne (node : StepData M) (rows cols : ℕ) :
+    ∀ abc ∈ schurCells node rows cols, ∀ abc' ∈ schurCells node rows cols,
+      abc'.1 ≠ abc.2.1 ∧ abc'.1 ≠ abc.2.2 := by
+  intro abc hmem abc' hmem'
+  rw [schurCells] at hmem hmem'
+  by_cases hguard : ∃ hs : node.layer < L,
+      node.cleared + rows ≤ M (⟨node.layer, hs⟩ : Fin L).castSucc ∧
+      node.cleared + cols ≤ M (⟨node.layer, hs⟩ : Fin L).succ
+  · rw [dif_pos hguard] at hmem hmem'
+    rw [List.mem_flatMap] at hmem; obtain ⟨i', _, hmem⟩ := hmem
+    rw [List.mem_map] at hmem; obtain ⟨j', _, rfl⟩ := hmem
+    rw [List.mem_flatMap] at hmem'; obtain ⟨i'', _, hmem'⟩ := hmem'
+    rw [List.mem_map] at hmem'; obtain ⟨j'', _, rfl⟩ := hmem'
+    refine ⟨fun heq => ?_, fun heq => ?_⟩
+    · obtain ⟨_, hcol⟩ := flatCoordOf_injective M _ heq
+      rw [Fin.mk.injEq] at hcol; omega
+    · obtain ⟨hrow, _⟩ := flatCoordOf_injective M _ heq
+      rw [Fin.mk.injEq] at hrow; omega
+  · rw [dif_neg hguard] at hmem; exact (List.not_mem_nil hmem).elim
+
+/-- **The interior `a`-coordinates are pairwise distinct**: distinct interior cells `(i,j)` map to
+distinct flat coordinates (`flatCoordOf` injective), so no coordinate is written by two shears.
+Proven via `nodup_flatMap` (rows separate the fan-out branches, columns the inner ones). -/
+theorem schurCells_pairwise (node : StepData M) (rows cols : ℕ) :
+    List.Pairwise (fun x y => x.1 ≠ y.1) (schurCells node rows cols) := by
+  have hnodup : ((schurCells node rows cols).map Prod.fst).Nodup := by
+    rw [schurCells]
+    by_cases hguard : ∃ hs : node.layer < L,
+        node.cleared + rows ≤ M (⟨node.layer, hs⟩ : Fin L).castSucc ∧
+        node.cleared + cols ≤ M (⟨node.layer, hs⟩ : Fin L).succ
+    · rw [dif_pos hguard, List.map_flatMap, List.nodup_flatMap]
+      refine ⟨fun i' _ => ?_, ?_⟩
+      · simp only [List.map_map]
+        refine List.Nodup.map (fun j'₁ j'₂ heq => ?_) (List.nodup_finRange _)
+        simp only [Function.comp_apply] at heq
+        obtain ⟨_, hcol⟩ := flatCoordOf_injective M _ heq
+        rw [Fin.mk.injEq] at hcol; exact Fin.ext (by omega)
+      · refine (List.nodup_finRange _).imp fun {i'₁ i'₂} hne x hx₁ hx₂ => ?_
+        simp only [List.map_map, List.mem_map, Function.comp_apply] at hx₁ hx₂
+        obtain ⟨j'₁, _, rfl⟩ := hx₁
+        obtain ⟨j'₂, _, heq⟩ := hx₂
+        obtain ⟨hrow, _⟩ := flatCoordOf_injective M _ heq
+        rw [Fin.mk.injEq] at hrow
+        exact hne (Fin.ext (show (i'₁ : ℕ) = i'₂ by omega))
+    · rw [dif_neg hguard]; simp
+  rwa [List.Nodup, List.pairwise_map] at hnodup
+
 /-- **Conjugation of the fold**: the flat read of `residualSchurShear` is the fold of the bare
 `elemShear`s on the flat coordinates (the inner `paramsEquivFlat`/`.symm` pairs cancel). -/
 theorem residualSchur_flat_read (node : StepData M) (rows cols : ℕ) (w : Params M) :
@@ -196,6 +246,33 @@ theorem elemShearFold_fixed
     rw [List.map_cons, List.foldr_cons, Function.comp_apply, elemShear,
       Function.update_of_ne (Ne.symm (hk abc List.mem_cons_self))]
     exact ih (fun a ha => hk a (List.mem_cons_of_mem abc ha))
+
+/-- **The fold's value at a target coordinate `a`**: `= X a − X b · X c`. Given the `a`-coordinates
+are pairwise distinct (`hpair`, so `a` is written once) and every `b`, `c` is never a target
+(`hb`/`hc`, so they pass through unchanged), the interior-block Schur fold reads its two source
+ratios at their original values. -/
+theorem elemShearFold_at_a
+    (cells : List (Fin (flatDim M) × Fin (flatDim M) × Fin (flatDim M)))
+    (X : Fin (flatDim M) → ℝ) (abc : Fin (flatDim M) × Fin (flatDim M) × Fin (flatDim M))
+    (hmem : abc ∈ cells) (hpair : List.Pairwise (fun x y => x.1 ≠ y.1) cells)
+    (hb : ∀ abc' ∈ cells, abc'.1 ≠ abc.2.1) (hc : ∀ abc' ∈ cells, abc'.1 ≠ abc.2.2) :
+    (cells.map fun q => elemShear q.1 q.2.1 q.2.2).foldr (· ∘ ·) id X abc.1
+      = X abc.1 - X abc.2.1 * X abc.2.2 := by
+  induction cells with
+  | nil => exact (List.not_mem_nil hmem).elim
+  | cons abc₀ rest ih =>
+    obtain ⟨hhead, hrestpair⟩ := List.pairwise_cons.mp hpair
+    rw [List.map_cons, List.foldr_cons, Function.comp_apply]
+    rcases List.mem_cons.mp hmem with rfl | hmem'
+    · rw [elemShear, Function.update_self,
+        elemShearFold_fixed rest X abc.1 (fun a ha => Ne.symm (hhead a ha)),
+        elemShearFold_fixed rest X abc.2.1
+          (fun a ha => hb a (List.mem_cons_of_mem abc ha)),
+        elemShearFold_fixed rest X abc.2.2
+          (fun a ha => hc a (List.mem_cons_of_mem abc ha))]
+    · rw [elemShear, Function.update_of_ne (Ne.symm (hhead abc hmem'))]
+      exact ih hmem' hrestpair (fun abc' ha => hb abc' (List.mem_cons_of_mem abc₀ ha))
+        (fun abc' ha => hc abc' (List.mem_cons_of_mem abc₀ ha))
 
 /-- **The α source-gauge** (the incidence/Q,P Schur; `cert-psi-mix` §R-b): edge-class dispatch —
 `id` on the case-1(1) merge (`α_u = refl`) and rollover; the interior residual Schur fold on the
@@ -283,6 +360,48 @@ theorem alphaGauge_abs_det_one (g : GeoChart M) (w : Params M) :
        simp [LinearMap.det_id])
     | exact residualSchurShear_abs_det_one _ _ _ w
 
+/-- **The interior-block Schur fold is R(1+R)-bounded in preimage** (per coordinate): if every flat
+coordinate of `residualSchurShear … w` has modulus `≤ R`, then every flat coordinate of `w` has
+modulus `≤ R·(1+R)`. Non-target coords are unchanged (`≤ R`); a target `a` satisfies `X a = (fold X)
+a + (fold X) b · (fold X) c` (its ratios `b,c` unchanged), so `|X a| ≤ R + R·R`. -/
+theorem residualSchurShear_srcBox (node : StepData M) (rows cols : ℕ) {R : ℝ} (hR : 0 ≤ R)
+    (w : Params M) (hw : ∀ k, |paramsEquivFlat M (residualSchurShear node rows cols w) k| ≤ R) :
+    ∀ k, |paramsEquivFlat M w k| ≤ R * (1 + R) := by
+  simp only [residualSchur_flat_read] at hw
+  intro k
+  by_cases hk : ∃ abc ∈ schurCells node rows cols, abc.1 = k
+  · obtain ⟨abc, habc, rfl⟩ := hk
+    have hbc := schurCells_snd_ne node rows cols abc habc
+    have ha := elemShearFold_at_a (schurCells node rows cols) (paramsEquivFlat M w) abc habc
+      (schurCells_pairwise node rows cols) (fun abc' h => (hbc abc' h).1)
+      (fun abc' h => (hbc abc' h).2)
+    have hb1 := hw abc.1
+    have hbc_bd : |paramsEquivFlat M w abc.2.1 * paramsEquivFlat M w abc.2.2| ≤ R * R := by
+      rw [abs_mul]
+      refine mul_le_mul ?_ ?_ (abs_nonneg _) hR
+      · rw [← elemShearFold_fixed (schurCells node rows cols) (paramsEquivFlat M w) abc.2.1
+          (fun abc' h => (hbc abc' h).1)]; exact hw abc.2.1
+      · rw [← elemShearFold_fixed (schurCells node rows cols) (paramsEquivFlat M w) abc.2.2
+          (fun abc' h => (hbc abc' h).2)]; exact hw abc.2.2
+    have hsub : |paramsEquivFlat M w abc.1
+        - paramsEquivFlat M w abc.2.1 * paramsEquivFlat M w abc.2.2| ≤ R := by
+      rw [← ha]; exact hb1
+    have hsplit : paramsEquivFlat M w abc.1
+        = (paramsEquivFlat M w abc.1
+            - paramsEquivFlat M w abc.2.1 * paramsEquivFlat M w abc.2.2)
+          + paramsEquivFlat M w abc.2.1 * paramsEquivFlat M w abc.2.2 := by ring
+    calc |paramsEquivFlat M w abc.1|
+        = |(paramsEquivFlat M w abc.1
+              - paramsEquivFlat M w abc.2.1 * paramsEquivFlat M w abc.2.2)
+            + paramsEquivFlat M w abc.2.1 * paramsEquivFlat M w abc.2.2| := by rw [← hsplit]
+      _ ≤ _ + _ := abs_add_le _ _
+      _ ≤ R + R * R := add_le_add hsub hbc_bd
+      _ = R * (1 + R) := by ring
+  · push_neg at hk
+    have hbound := hw k
+    rw [elemShearFold_fixed (schurCells node rows cols) (paramsEquivFlat M w) k hk] at hbound
+    nlinarith [hbound, abs_nonneg (paramsEquivFlat M w k)]
+
 /-- **(iii) The srcBox transform** (PHASE 2, the cert's boundedness): `alphaGauge g` pulls the flat
 cube of radius `R` back inside the flat cube of radius `R·(1+R)`. `α` fixes the ratio coords `b,c`
 and shifts `x_a ↦ x_a − x_b·x_c`, so `x_a` before `α` is `α(x)_a + x_b·x_c`, `|x_a| ≤ R + R² =
@@ -291,7 +410,28 @@ bound. -/
 theorem alphaGauge_srcBox_bounded (g : GeoChart M) {R : ℝ} (hR : 0 ≤ R) :
     alphaGauge (M := M) g ⁻¹' (⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R)
       ⊆ ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) (R * (1 + R)) := by
-  sorry
+  intro w hw
+  have hw' : ∀ k, |paramsEquivFlat M (alphaGauge (M := M) g w) k| ≤ R := by
+    intro k
+    have h1 := Set.mem_preimage.mp (Set.mem_preimage.mp hw)
+    rw [cubeBox, Set.mem_pi] at h1
+    exact abs_le.mpr (Set.mem_Icc.mp (h1 k (Set.mem_univ k)))
+  rw [Set.mem_preimage, cubeBox, Set.mem_pi]
+  suffices h : ∀ k, |paramsEquivFlat M w k| ≤ R * (1 + R) by
+    intro k _; exact Set.mem_Icc.mpr (abs_le.mp (h k))
+  cases hc : g.edge.case with
+  | case11 =>
+      simp only [alphaGauge, hc, id_eq] at hw'
+      intro k; nlinarith [hw' k, mul_nonneg hR hR, abs_nonneg (paramsEquivFlat M w k)]
+  | rollover =>
+      simp only [alphaGauge, hc, id_eq] at hw'
+      intro k; nlinarith [hw' k, mul_nonneg hR hR, abs_nonneg (paramsEquivFlat M w k)]
+  | case12 =>
+      simp only [alphaGauge, hc] at hw'
+      exact residualSchurShear_srcBox _ _ _ hR w hw'
+  | case2 =>
+      simp only [alphaGauge, hc] at hw'
+      exact residualSchurShear_srcBox _ _ _ hR w hw'
 
 /-- **(iv) LeafPullback over the α-atlas** (PHASE 3, the loss squeeze): every leaf of the
 α-normalized built atlas satisfies the loss factorization `frobSq(prod(chartMap w)) =
