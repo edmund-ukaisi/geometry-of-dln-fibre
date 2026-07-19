@@ -5148,3 +5148,11 @@ green individually on the seat; the WATCH-ITEM carried (the ≥1 conjunct wrappe
 droppable if t14's discharge hits a 0-exp divisor; surface-not-force). Integration-side
 untimed AxCheck gate RUNNING (region_glue + chartBridge_buildTree footprints); the push +
 the wake to t14/t15 ride its green.
+
+### Tick-320 addendum: disj-t17's case-2 pair merged clean-three; atoms-only re-confirmed
+9019bac22 merged + probed: case2_spectator + case2_diagTarget — VERBATIM matches to
+ledgerMonomial_comp_spectator's hypotheses, dischargeable from the cocycle-step context —
+plus the reusable atoms (the freshness heart, the injectivity contrapositive, the
+realCNode→residual-block reduction). Case-1's A/B/C atoms next (the heavier Fin.append
+reduction); the atoms-only ruling re-confirmed across the crossing. The maintenance's
+case-2 leg is now fully supplied; t14's next-arc assembly shortens again.
