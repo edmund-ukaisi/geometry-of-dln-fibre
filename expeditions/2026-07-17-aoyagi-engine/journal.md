@@ -3172,3 +3172,15 @@ helpers; per-case shapes; the gate. Coverage re-pointed at the new doc. architec
 OVER-AND-OUT — six arcs, six greens, the two truth-signal catches, the pattern-defining seat.
 Awaiting: t06's landing batch + budget signal; pnp-slot's verdict; rev-s4's audit;
 coverage's det atom.
+
+## 2026-07-19 tick 213: GeoChart provisional design note merged (5ffe86a58)
+Coverage's design note pins the seam-facing shape ahead of the executor: GeoChart = a
+node-derived RECIPE record (geoChartMap COMPUTED from qNodeOf + banked atoms — the buck-stops
+teeth, no free geometry); the edge-driven geometricLeafPaths skeleton with the amendment-1
+per-edge counts; the (A)/(B)/(C)/(D) discharge routes over the atlas (reparam_image +
+pivotChart-det + α_e-det → LeafJacobian; fold-as-function-of-t → (D)'s fails-on-fake); the
+now-vs-seam-gated split + the open pins (u-coord verdict; field granularity to settle with the
+carrier executor; the two fill-batch flags). The pivotChart det atom in flight (Codex route
+consult; the seat pre-verified the four needed det lemmas exist — the verify-every-name
+discipline now habitual). The chart lane is as pre-staged as it can be without the executor:
+when the remainder lands, coverage's tide drops straight in.
