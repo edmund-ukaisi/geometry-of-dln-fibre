@@ -8,21 +8,26 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: THE TWO HOLES, post-VM-restart-#2 (tick 177: FULL team substrate lost; banked state
-  intact; ~1 arc cost). Census (kernel-verified): 4 Engine sorries — chartBridge_buildTree
-  (★ TYPE CRUX: frozen ⋃-ledger-leaves unfillable, ledger tree = symmetric quotient of the
-  geometric fan-out; R2 probe: cover MATH sound, full per-node family MANDATORY, route-(ii)
-  dead), o5_core (★ realization: cert §§3-4, both halves certified; §3 exploration salvaged),
-  realizedProfiles_eq_clearableAdm (=R7, owed), canonicalResolution224 witness (off-cone
-  corollary). SOLE ACTIVE SEAT: **architect-t05** (t01-r2; receipt-confirmed, boundary
-  discipline adopted) on: (1) the ChartBridge DECISION PACKAGE solo-drafted from the banked
-  record (threads/11-construction/decision-package-chartbridge-type.md; key read =
-  region_glue_of_chartBridge's consumption shape) → coverage-successor COUNTER-SIGN → elder
-  gate; (2) sub-gap-1 (divCoord injectivity, battery-first) — parallel; (3) §3 dedicated pass;
-  (4) §4 PAUSES for pnp-o5 (respawn-on-need) via controller. RULINGS-t04.md = the standing
-  rulings file (binds successors); comms lesson standard: turn-boundary discipline + rulings
-  file hedge. Then: holes flip → hbox clean-three → mint repoint + #guard_msgs ENFORCED gate →
-  cordon (reconcile ALL 4 sorries) → signal-and-wait PR (body names R4/R6/R7 owed).
+- phase: THE CLOSING TIDE (ticks 218-227). ★ THE o5 HOLE IS CLOSED: o5_realization CLEAN-THREE
+  (tStar_realized = the engine's hardest proof, landed by t06 from t05's SPECIFY off t04's
+  salvage; audited 6/6; the landing batch threaded hMpos through the attainment chain — the
+  attainment LAYER is positive-width, the ⊆ layer width-free). monomialization_terminates +
+  engine_box_threshold_finite = +sorryAx via **chartBridge_buildTree ALONE**. The corrected
+  ChartBridge (flat virtual-leaf atlas) is LANDED (re-typing batch, ripple as forecast); the
+  ψ-route = R-b source-reparam (target-gauge UNSOUND — pnp-psi); slot-stability = YES (immutable
+  divBirthCoord, pnp-slot); the carrier is BUILT (CenterIndices + qOfCenter + divBirthCoord
+  field + qEdgeOf, all clean-three, spine undisturbed). TWO PARALLEL LANES converge at
+  chartBridge_of_pieces: **coverage-t08's TIDE** (GeoChart+geoChartMap+geometricLeafPaths
+  banked; next: atlas materialization → cover fold → 3 Props [hdcInj/hrcInj/hdisj as FED hyps]
+  → (A)/(C)/(D) [gate #10: (D) IN the type pre-discharge] → flags #15 → the full-batch
+  discharge gate) ∥ **t07's reachability sub-arc** (DivBirthInv → real-ify divCoord →
+  discharge the 3 fed hyps; NumDivFlatBound = the template). Seats t02-t06 all retired with
+  honors (7 clean successions). Engine census: 3 sorries (the hole, R7-owed, the witness
+  corollary). THEN: hbox flips → R5 mint (the PRE-STAGED prestage wrapper — REWRITE its stale
+  hDescent arm to the direct _gen+engine composition, calibration entry 5) + #guard_msgs
+  ENFORCED gate → cordon (census entry 6: bounded, no surprises) → signal-and-wait PR
+  (body names R4/R6/R7 owed). Calibration ledger: 6 entries; the miss-class = slogan-for-
+  signature, 4/4 — check the SIGNATURE first.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
