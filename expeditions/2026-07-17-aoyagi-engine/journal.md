@@ -4601,3 +4601,17 @@ cover/fold untouched; the transfer lemmas come after both lanes land; GeoChart.l
 t14-adjacent territory — no edits). Board at full width: t14 (the cocycle) ∥ coverage (the
 ledger bridge) ∥ loss-t15 (α design) ∥ t10 holding ∥ three standing seats warm. All four
 frontier items now have owners.
+
+### Tick-292 addendum: t14's sub-lemma bank merged — the regrouping workhorse EXISTS
+6188fc6dd merged + probed clean-three: the corrected conRoot headline; GeoFoldRegroup.lean
+with (α) the FULL §0 chart-action (pivot-free / center-scaled-by-pivot [= the case-1(2)
+u-corner scaling] / spectator-fixed + the paramsEquivFlat master read + the β∘S on-cone
+reduction — cert §1's (R) made Lean) and (β) birthFlatCoord_eq_flatCoordOf (the leaf ledger
+and the chart geometry name the SAME diagonal cell — the last referent tie). Both handoff
+build-first sub-lemmas DONE. t14 CONTINUES (no reallocation — fresh, one arc in, the plan
+right): the leafPaths→foldr bridge banks next as its own green, then the ledger-
+correspondence induction attempt under the ~1-arc tripwire. Its honest flag on the
+induction's size recorded (the exponent analogue of the STOP-AND-SURFACEd support transport;
+tractability read: ℕ additivity through stepUpdate = the cert's three verified identities,
+no Finset transport). Pointer relayed: check the invariant's shape against coverage's
+in-flight ledger BRIDGE before building a second transport.
