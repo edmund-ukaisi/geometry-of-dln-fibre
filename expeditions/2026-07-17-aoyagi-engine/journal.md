@@ -2342,3 +2342,12 @@ naming pin) → (c) reify-Clearable + watch line; 4 local subtleties (per-branch
 dependent match; finRange-in-match whnf; 0<L defeq 1≤L; terminalExponents = divExp lists via
 leaves_resRank_zero). t03's tide: 14 commits, A+B+C+D§i+E, zero walls. Seat dissolved WITH
 HONORS. t04 spawn holds for navigator-3's A-verdict (t04 order) — one office-latency, by design.
+
+### Tick-166 addendum: t04-handoff.md committed (66e578f58, merged); worktree t01-r2 RELEASED
+The handoff doc covers all four asks (hole types + consumption slots; the D-tail read incl.
+where §4's construction-tracing concentrates; the carrier read — ChartSubst IS the per-edge
+surface, populate localSub/jacPow + thread the leafPaths fold; 4 local subtleties incl. Fin
+proof-irrelevance). t03 fully dissolved. Coverage confirmed the hole-type outcome (zero rework;
+hχ = the post-carrier provable joint) and logged the right refinement UNPROMPTED: it will not
+prove anything against the current id-edge tree (cover would be vacuous) — the anti-vacuity pin
+holding by the seat's own reflex now. Both idle-warm. t04 spawn still holds on navigator-3.
