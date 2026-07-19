@@ -2587,3 +2587,27 @@ carrier surface + ψ-mix, skeleton re-typing check, (D) recommendation, name-wha
 prove) + elder-gate8 convened (false-as-stated verdict; correction-not-weakening esp. the
 exponent-agreement/λ-meaning tie; (D) pin depth; re-elaboration gate sufficiency; naming
 scrub; instance-count drift check). Controller ratifies on both verdicts.
+
+## 2026-07-19 tick 181: ELDER-GATE8 — RATIFY + 2 AMENDs; counsel counter fixed (my error owned)
+Q1 RATIFY, verified end-to-end against live code: (a) the frozen type is unfillable-by-the-
+faithful-construction (structural: quotient leaves < geometric charts at d_center≥3; LeafJacobian
+ties det to ONE divCoord) — PRECISION PIN: "unfillable + fidelity-false", never "proven
+¬ChartBridge"; (b) flat List(LeafData) is the honest correction (both glue lemmas verified
+index-agnostic at their statements; rejections sound); (c) CORRECTION NOT WEAKENING — clause (C)
+is load-bearing (replaces the automatic flatMap threshold-routing; feeds exactly the two
+per-leaf-lemma hyps); the λ read-off is PRESERVED (terminalExponents stays over leaves t; the
+atlas is a covering device pinned into terminalExponents by (C), never a λ-carrier); BONUS: the
+new type reads nothing off ledger chartMap fields — retires the tick-159 id-chart problem
+(ledger carries exponents, atlas carries charts). Q2: D1 RATIFIED as direction; AMEND — (D1) is
+THE SOLE TIE between ledger and atlas halves (under-rated as "insurance"): pin CONTENT now
+(quantify t's actual geometric paths; fold = real β∘ψ from banked atoms; never opaque), defer
+only encoding; counter-sign criterion = provable-over-real AND fails-on-fake (D2 = the
+visible-progress trap). Q3a AMEND: verification gate = FULL batch (full build + AxCheck all
+watched roots + (2,2,4) witness re-elaboration) — the "sole gate" framing struck (stale-olean
+masking; package §6.4 adopted over §3). Q3b: "MORE faithful… not merely" selling struck; docstring
+conventions pinned. STERN FLAG EXECUTED: the obligation-statement counter had drifted 3 ways
+(counsel=3 STALE, controller dispatch=4-mislabeled [#3 is L=0, #4 is the id-charts near-miss —
+MY error, owned], package=5 CORRECT). Counsel incremented to 5 with the near-miss convention +
+counter-hygiene rule (verify against the entry; increment in the fix's own commit). Coverage
+counter-sign refined mid-flight (D1 two-sided criterion + the exponents/charts split). Awaiting
+counter-sign → consolidated ratification → t05 executes under the full-batch gate.

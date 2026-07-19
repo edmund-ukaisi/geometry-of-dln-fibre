@@ -372,12 +372,22 @@ over banked substrate.
   holds; what λ reads off geometrically), THEN transcribe; build the uniform object and DERIVE the
   cases, not the reverse. When a case-by-case grind feels authoritative but shapeless, stop and
   re-derive the global structure.
-- OBLIGATION-STATEMENT DISCIPLINE (3rd instance, 2026-07-19): THRICE an obligation was
-  FALSE-AS-STATED for want of a hypothesis the true construction supplies FREELY — (1) the resRank/2
-  Morse threshold (resRank fold), (2) srcBox boundedness/measurability, (3) monomialization_terminates
-  at L=0 (the base conjunct forces the root to STEP; at L=0 conRoot is a leaf — found by t03 at the
-  E-wire, fixed by the hL : 0<L ripple, tick 157; hL is the nondegenerate-chain hypothesis, distinct
-  from width-positivity which route (B) proved unnecessary). Common root: an obligation
+- OBLIGATION-STATEMENT DISCIPLINE (5th instance, 2026-07-19; count elder-audited at gate8 —
+  near-misses COUNT): FIVE TIMES an obligation was false/unfillable-as-stated for want of what
+  the true construction supplies — (1) the resRank/2 Morse threshold (resRank fold), (2) srcBox
+  boundedness/measurability, (3) monomialization_terminates at L=0 (the base conjunct forces the
+  root to STEP; found by t03 at the E-wire; the hL : 0<L ripple, tick 157; distinct from
+  width-positivity which route (B) proved unnecessary), (4) ChartBridge over the id-charts as
+  built (tick 159 — AVERTED pre-freeze by the fold-form anti-vacuity pin; a near-miss, counted),
+  (5) ChartBridge's TYPE itself (tick 172-180 — the ⋃-ledger-leaves form is unfillable by the
+  faithful construction: the ledger tree is the symmetric quotient of the geometric fan-out;
+  the first instance at TYPE level and the first realised inside an already-merged hole; fixed
+  by the flat virtual-leaf atlas correction, elder-gate8 ratified). PRECISION PIN (gate8): say
+  "unfillable by the faithful construction + fidelity-false", never "proven ¬ChartBridge" — no
+  formal negation was proved. COUNTER HYGIENE: this counter itself drifted three ways
+  (counsel=3, a controller dispatch=4-mislabeled, package=5-correct) — when citing an instance
+  number, verify against THIS entry, and increment it in the same commit as the fix it records.
+  Common root: an obligation
   quantifying over an ABSTRACT carrier field (a bare exponent list, a bare Set) inherits a gap the
   real object (a genuine Morse residual, a bounded chart box) always closes. Both were caught by a
   DECORRELATED counterexample, NOT the in-file satisfiability witness — the witness used a benign
