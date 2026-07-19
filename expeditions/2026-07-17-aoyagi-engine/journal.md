@@ -3732,3 +3732,16 @@ report pending; the seat is presumably at consolidation. BOARD: t10 driving the 
 0∈U batch (the 5 files + fill, ~120 LoC); t11 on phase 1 of the wall; coverage's counter-sign
 pass pending. The carrier lane — from the conflation catch through the elder finding to this —
 is DONE end-to-end.
+
+### Tick-256 addendum: t09's report — the pointwise crack; RealCNodeFacts assigned to t09
+The dependent-cast risk was cracked by REDEFINING realCNode POINTWISE (every branch outputs
+Fin (flatDim M); injectivity transfers by finCongr.injective — no Eq.mpr on the function
+type; a gotchas-ledger candidate idiom). The remaining scoped piece (supply RealCNodeFacts at
+reachable branch nodes — a DivBirthInv+OracleInv tree-walk on t07's leaves_chart_clauses
+template, ~100-150 LoC, with the rollover dim-0 subtlety) ASSIGNED TO T09 (its own
+recommendation's alternative; the premise "coverage does such walks" was stale — coverage is
+authoring-only; the template is t07's, adjacent to t09's module). Controller lean relayed on
+the dim-0: the short-circuit in cNodeOf_eq_realCNode over a facts-side discharge (a
+vacuous-dim node names no coordinates — definitional). Consumer note pinned: the facts feed
+the ASSEMBLY ((D)-fidelity + the discharge), not t10/t11's pieces — important, off their
+critical path.
