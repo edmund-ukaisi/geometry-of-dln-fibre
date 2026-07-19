@@ -3808,3 +3808,33 @@ self-review): independent fidelity check (sharpest questions: what does the head
 hypothesis actually quantify over; is a non-trivial instantiation path live from conRoot) +
 the statement card. BOARD: t10 (cover batch+fill) ∥ t11 (the wall) ∥ rev-carrier ∥
 navigator-4 (parallelisation audit, pending).
+
+## 2026-07-19 tick 260: t11's THREE SCOPING FINDINGS (Codex-corroborated) — the wall's true shape named; all accepted
+t11's first arc merged (92584aacc): the per-edge det atom BANKED sorry-free
+(geoChartMap_fderiv_det: |det D(geoChartMap g) w| = |z_{cNodeOf(node)(pivot)}(w)|^{dCenterOfNode−1}
+via t09's q-conjugation trio + pivotChartDeriv_det; + the off-cone totalisation, det 1) — the
+elder's chart-by-chart Jacobian made honest, construction-stable. In grinding the PROVE it
+surfaced, statement-first:
+(1) the fold SPECIFY's ∀t headline is FALSE at root-leaves (composite id, det 1 vs nonconstant
+    monomial RHS; the cover SPECIFY carried htree, the fold one omitted it) → RE-SCOPE to the
+    conRoot build APPROVED; coverage counter-signs its own SPECIFY's correction; counterexample
+    into the addendum ((1,1,1)-witness discipline).
+(2) the ledger↔geometry match is a COCYCLE, not chain-rule+atoms: the chain rule yields path-pivot
+    factors at INTERMEDIATE points; the ledger wants source-point divisor factors with accumulated
+    exponents — the stepUpdate reindexing is content the chain rule doesn't carry. This IS the
+    wall's mechanism, named. Ruling: statement-first invariant design (J(conRoot)=1, per-case
+    maintenance, leaf-read = the identity; DivBirthInv/SteerInv templates); statement gated by
+    controller + coverage before any maintenance grind; pnp certificate commissioned if the
+    reindexing algebra fights.
+(3) geoAtlas fan-out pieces INHERIT leaf.divCoord but each piece's exceptional coordinate is its
+    OWN pivot (cNodeOf injective) → LeafJacobian unsatisfiable for non-birth-corner pieces. The
+    per-pivot design was already recorded (EngineDefs clause-(B) note) — the emission never
+    implemented it: layer-hardening, no counter tick. OWNERSHIP PIN: GeoChart.lean stays t10's
+    until its batch lands (uncommitted tGeo reshape in flight — hard conflict risk); then the
+    per-pivot fix transfers to t11 as its own green (task #35). t10 pinned: no scope creep, land
+    the batch as-is; its cover proof reads chartMap images only — unaffected.
+Also merged: t09's consumer-note + gotcha-ledger doc commit (the pointwise-cast idiom now in
+lean/CLAUDE.md). AxCheck rebuild verifying in background (the first "EXIT:0" was GREP's exit,
+not lake's — the pipe-gating self-bug again; re-gated properly). Board: t10 (batch+fill,
+tracker shows the weakening + first fill chunk done, push pending) ∥ t11 (invariant design) ∥
+rev-carrier ∥ navigator-4.
