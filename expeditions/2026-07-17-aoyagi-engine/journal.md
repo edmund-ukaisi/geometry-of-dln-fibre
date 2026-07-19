@@ -4057,3 +4057,31 @@ the t12-assembly brief MUST carry: wire PivotLeafClauses for the srcBox pair at 
 (or knowingly re-derive inline and cordon the whole module — the assembly seat picks);
 its other helpers (coord duplicates, superseded childRegion q-preimage) cordon with
 FlatCubeLeaf. Task #15 updated. carto-standing idle-correct, context warm.
+
+## 2026-07-19 tick 270: PNP-FOLD CERT — identities CONFIRMED, but a BINDING KILL-CONDITION found; elder charge-2 fired
+The cert (merged d81175d83; 7/7 sympy scenarios; Codex blind re-derivation converged) delivers
+the three regrouping identities formal-precise — AND the discipline's biggest catch yet:
+- STRUCTURAL CORRECTION 1: the closable invariant is the relative-Jacobian COCYCLE
+  (|det D(Φ'∘B)| = L(B(w))·|det DB|), NOT the addendum's subtree-relative pieceLedger motive —
+  case-1 inheritance references a divisor born OUTSIDE the subtree; n-outermost induction
+  cannot close. (Back to t11's ORIGINAL finding-2 framing; the addendum's subtree refinement —
+  which my tick-263 gate approved — was the wrong turn. Gate miss, owned; caught pre-grind.)
+- STRUCTURAL CORRECTION 2: case-1(2)'s inherited exponent is NON-LOCAL — realized at the
+  ANCESTOR's birth atom via the u-corner chart scaling.
+- THE KILL-CONDITION (binding, upstream): on the current shared-child geometricLeafPaths, the
+  fold-det FAILS for a fan-out copy birthing a NON-terminal divisor at an OFF-diagonal pivot —
+  the merge power lands on the state-level divBirthCoord DIAGONAL (descendants reference it),
+  not the pivot cell; J_Φ = L·(z_diag/z_pivot)^b, a two-cell monomial NO single-cell divExp
+  expresses. Finding-3's per-pivot divCoord: NECESSARY BUT NOT SUFFICIENT. A sorry-free
+  discharge without the side condition would close the hole under a FALSE statement — exactly
+  what the elder's "not trusted until the cert returns" counsel existed to prevent.
+ROUTED: elder-standing charge-2 (route-adoption class) adjudicates the construction fix —
+(i) diagonal-normalization (compose the pivot↔divBirthCoord transposition into geoChartMap;
+ledger stays state-level; shared child honest; |det swap|=1, atom untouched; does finding-3
+DISSOLVE?) vs (ii) child-relabeling (per-copy reference renaming; loses the shared child) vs
+(iii) prove off-diagonal-non-terminal unreachable (likely false); + does the cocycle supersede
+or compose with fork 14; + Aoyagi's own bookkeeping as the fidelity reference. t11 told: HOLD
+#35's final shape; the cocycle-form maintenance statement is safe to adopt under every option.
+pnp-loss heads-up sent: check the LOSS side for the same off-diagonal contagion (∏z² references
+the same coords), on both the current and the diagonal-normalized construction — one fix
+should serve both if possible.
