@@ -2551,3 +2551,15 @@ restart: EXACTLY 4 Engine sorries — chartBridge_buildTree (EngineObligations:5
 (EngineConstruction:2611), realizedProfiles_eq_clearableAdm (ClearableReify:72, =R7),
 canonicalResolution224's witness conjunct (CanonicalWitness224:135, off-cone corollary).
 Matches the map exactly. Operator-facing state visual regenerated this tick (inline chart).
+
+## 2026-07-19 tick 178: t05 receipt CONFIRMED — reconstitution complete, comms discipline landed
+t05's first check-in is the model form: explicit receipt, inbox-sweep reported ("exactly one
+message — your spawn brief"), synced clean (0bfbeafc3), aggregator green, all reads done,
+census cross-verified (4 sorries, matches), plan == rulings (sub-gap-1 battery-first + package
+grounding in parallel; solo draft + coverage counter-sign understood; §4 held for pnp-o5
+routing; turn-boundary discipline adopted explicitly). The t04 comms saga is closed: cause was
+one-giant-turn delivery starvation, cure = boundary discipline + the RULINGS file pattern —
+both now standard. Anticipatory pin sent: the region_glue_of_chartBridge consumption read
+(structural leaf-indexing vs destructured countable-family) determines most of the corrected
+type's cost map. Board: t05 sole active seat; coverage successor spawns at package-ready;
+pnp-o5 respawn-on-need. Post-restart reconstitution COMPLETE at a cost of ~1 re-grounding arc.
