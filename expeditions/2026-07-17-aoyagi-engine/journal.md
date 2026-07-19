@@ -4096,3 +4096,13 @@ diagonal-normalization would be LOCAL to geoChartMap (a transposition conjugatio
 the same dite, |det|=1, per-copy images distinct) — well-formed in the code, the ruling
 stays the elder's. Board: elder charge-2 + pnp-loss (contagion addendum) mid-run; t11
 holding; standing offices warm.
+
+### Tick-271 addendum: t11 folded the cert corrections; correctly gated on the ruling
+t11's addendum merged (64696ab75): the COCYCLE FORM adopted as the maintenance invariant
+(a clean return to its own original finding-2 framing — the subtree refinement acknowledged
+as the wrong turn on both our ledgers); case-1(2) non-locality recorded (ancestor birth atom
+via the L(B w) pullback); the kill-condition recorded as #35's binding gate item. Its scope
+discipline is right: §0 (chart-action lemma) and per-case maintenance NOT built pre-ruling —
+diagonal-normalization would change geoChartMap's chart action, so §0 is construction-stable
+only under the other options; the banked spine is consumed machinery under ALL options.
+Waiting correctly on: the elder ruling (charge-2, mid-run) and t10's batch.
