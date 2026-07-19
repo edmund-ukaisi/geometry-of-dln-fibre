@@ -3579,3 +3579,9 @@ t10's brief as SIZE-AND-REPORT (it holds the same substitution table). Q3 acks r
 (fold BEFORE (D)/discharge; the EO caveat retirement deferred). Coverage WAITING-FOR-WAKE
 (for t09's q-det). The endgame's remaining ladder: t09 → SPECIFY → t10's fold module (+ the
 LeafPullback sizing) → the (D)+clauses assembly → the discharge → the flip.
+
+## 2026-07-19 tick 246: t09's CORE GREEN merged — qNodeOf + dCenterOfNode (QNodeCarrier.lean, 385 lines)
+The per-node carrier piece landed as one green (clean-three, controller-probed): dCenterOfNode
++ qNodeOf in a new Engine/QNodeCarrier.lean. Its report pending (mid-turn — the sum property /
+q-det / injectivity tasks #23-26 presumably in flight); merged proactively per the
+pushed-green pattern. The tide's instantiation trigger approaches.
