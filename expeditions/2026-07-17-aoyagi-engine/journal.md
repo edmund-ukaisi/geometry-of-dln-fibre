@@ -2611,3 +2611,19 @@ MY error, owned], package=5 CORRECT). Counsel incremented to 5 with the near-mis
 counter-hygiene rule (verify against the entry; increment in the fix's own commit). Coverage
 counter-sign refined mid-flight (D1 two-sided criterion + the exponents/charts split). Awaiting
 counter-sign → consolidated ratification → t05 executes under the full-batch gate.
+
+## 2026-07-19 tick 182: sub-gap-1 recalibrated + scaffold merged; divCoord-defer ruled; elder dissolved
+t05's scaffold merged (0040ffefe: Engine/NumDivFlatBound.lean spine-isolated, not wired —
+sum_widthMinUpto_le_flatDim + widthMinUpto_le PROVEN; leaves_numDiv_le_flatDim sorried
+LIVE-frontier with the accounting plan). FINDING 1 (difficulty recalibration, accepted): the
+bare bound is not locally inductive (append does numDiv+1 needing strict <) and is TIGHT at
+all-1s — the correct uniform object is the EXACT accounting invariant numDiv ≤ ∑_{i<layer}
+widthMinUpto(i+1) + cleared with companion cleared ≤ widthMinUpto(layer+1) (~150-250 LoC;
+the MvalBoundaryInv threading pattern is the template; controller note sent: the companion's
+rollover maintenance must use the guard's own shared comparison). FINDING 2 (scope interaction,
+ruled): under the ratified corrected type ChartBridge reads the ATLAS pieces' divCoord, not
+leafOfState's — the ledger-leaf assignment change is MOOT there; DEFER APPROVED (avoids a spine
+edit the corrected type strands); the invariant itself is needed under BOTH types (atlas pieces
+inherit numDiv) and proceeds. Gate8 amendments relayed to t05 as binding-at-execution (D1
+content, full-batch gate, selling scrub). elder-gate8 dissolved. Remaining before execution:
+the coverage-t08 counter-sign.
