@@ -4378,3 +4378,24 @@ body change; controller handles the rebase; t10's verify asked to flag if the wi
 needs anything beyond pre-S discharge + S cube-invariance). t11 CONTINUING on the §2
 cocycle maintenance → the LeafJacobian discharge (the wall's last piece), stacking locally.
 Toolkit note: FlatSwap.lean split (cycle-break) landed with its reason in the docstring.
+
+## 2026-07-19 tick 283: #35 CONSTRUCTION FIX LANDED + the wall's headline STATEMENT-LOCKED; t11 → t14 succession
+t11's milestone merged (88525bf3b): every geoAtlas chart is now (β∘S)∘id with the exceptional
+divisor AT c.divCoord (the diagonal) — the ledger and the geometry finally name the same
+cells, by construction. GeoLeafJacobian.lean STAGED (not in the aggregator — the sorry
+contained): geoAtlas_fold_det = LeafJacobian's β-det headline, elaborates green, ONE tracked
+frontier sorry = the cert-§1 regrouping cocycle. Tasks #35 + #29 CLOSED (the construction +
+the statement lock); what remains of the wall (#21/#30) is ONE precisely-specified induction
+with every atom banked and the algebra cert-pinned.
+SUCCESSION: t11 requested handoff at the banked boundary (session depth vs the last-wall
+correctness bar — "I don't want to rush it into conceptual slop at depth"; the correct call,
+9th clean succession). HONORS OWED after its handoff addendum (induction shape, dead-ends
+from the locking pass, the cert-§1 ↔ stepUpdate-case ↔ atom mapping, staged-module wiring
+notes). Its seat ledger: the atoms, the fold, the gauge toolkit, the S primitive,
+geoChartMapNorm, the #35 fix, the locked headline — two Codex catches, zero slop.
+NEXT SPAWNS THIS TICK: t14-regroup (the induction, fresh full arc, statement-untouchable
+target, ~1-arc tripwire → pnp-fold follow-up); coverage ACTIVATED on the (D) drafting
+(draft-on-branch; MERGE held until the regrouping lands or the elder clears — the
+elder's downstream-of-satisfiability pin honored conservatively; counter 7→8 rides the
+merge). Board reconfigures: t14 (the wall) ∥ fresh-eyes (:133) ∥ t10 (verify) ∥ coverage
+((D) draft). Navigator re-run once the new configuration settles.
