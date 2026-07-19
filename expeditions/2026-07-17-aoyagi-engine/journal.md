@@ -4479,3 +4479,21 @@ watch/guard/checklist)? the two conjuncts' sufficiency (is atlas = geoAtlas t th
 tie, buck-stops)? CanonicalResolution confirm/counter? placement? Coverage HOLDS (build
 intact, at tip); its node-walk PROOF is R-split-invariant — drafting locally meanwhile.
 Counter 7→8 applies under every variant (ChartBridgeFaithful = a new obligation statement).
+
+## 2026-07-19 tick 288: ★ THE COVER IS DONE ★ — geoAtlas_imageCover proven end-to-end, clean-three on integration
+t10's e365a705e merged (3073f8a67): GeoCoverSpec ZERO sorries; geoAtlas_imageCover +
+fannedEdges_pivot_mem both probe EXACTLY [propext, Classical.choice, Quot.sound] on
+integration — controller-verified, not seat-reported. CLAUSE (A) of the ChartBridge is
+PROVEN over the diagonal-normalized atlas: an open U ∋ 0 inside flatCube 1 inside the atlas
+images, via the R=1 node self-cover, the hbij offset tiling (fresh-eyes-t13's ℕ-reindex
+idiom, credited, transferred verbatim to the corrected statement), the rollover
+id-passthrough, and the S-absorption pair. The chain rests on TRUE lemmas throughout — the
+sorry-masked false statement is gone. One of the two SPECIFY fill-targets is COMPLETE.
+Wired into AxCheck (import + the geoAtlas_imageCover MUST-clean-three watch; untimed
+background verify running; watch-line commit rides its green — the tick-284 convention).
+fix/covspec-133 retired-redundant (its idiom lives on in the correct statement, credited).
+Tasks #33/#34 closed. t10 holds for the discharge-batch gate — its lane ledger now: the
+weakening batch, the R=1 chain, the rollover catch+fix, sorry-2, the verify-catch+fix, and
+the finished cover.
+REMAINING ON THE WALL: t14's regrouping (corrected headline + 2 sub-lemmas + the cocycle)
+∥ the (D) R-split (elder charge-4 pending) ∥ then: discharge → hbox → mint → cordon → PR.
