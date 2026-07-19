@@ -34,9 +34,9 @@ immutable birth corner, via the recomputed Def-4 chooser `chooseMinData`) `++` t
 `d`-block
 (`resBlockCenterIndices`); case-2 = the block alone. Injectivity is total via a classical fallback
 (off the reachable cone the intended selector may collide; there we fall back to `Fin.castLE`), so
-`qNodeOf` is a well-formed `Homeomorph` for every node; the ON-CONE fidelity (that the fallback
-is not taken — the intended selector IS injective under `DivBirthInv`) is
-`realCNode_injective_of_divBirthInv`.
+`qNodeOf` is a well-formed `Homeomorph` for every node; the ON-CONE fidelity (that the fallback is
+not taken — the intended selector IS injective) is `cNodeOf_eq_realCNode`, given `RealCNodeFacts`
+(the per-node corner/block/chooser facts the reachable cone's `DivBirthInv`/`OracleInv` supply).
 -/
 
 namespace DLNFibre.DLN.RLCT.Engine
