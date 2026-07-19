@@ -2627,3 +2627,29 @@ edit the corrected type strands); the invariant itself is needed under BOTH type
 inherit numDiv) and proceeds. Gate8 amendments relayed to t05 as binding-at-execution (D1
 content, full-batch gate, selling scrub). elder-gate8 dissolved. Remaining before execution:
 the coverage-t08 counter-sign.
+
+## 2026-07-19 tick 184: COUNTER-SIGN IN — type RATIFICATION COMPLETE; single-ψ challenge routed
+coverage-t08's counter-sign merged (5d54f2a26): COUNTER-SIGN the flat virtual-leaf atlas. Per
+item: (1) per-piece divCoord is a PRECONDITION for 3-Prop provability (the frozen type made
+LeafPullback/LeafJacobian unfillable); (2) its banked fold produces clause (A) VERBATIM with the
+atlas realized as leaves of an auxiliary GEOMETRIC tree t_geo (proof-internal; spine untouched;
+consistent with the sub-gap-3 pin) — realization flag folded into the carrier design; (3)
+re-typing SIMPLER than priced (χ drops; the With-variants deletable, verified consumer-free);
+(4) D1-flat encoding recommended (fold-fidelity, no t_geo in the type) + amendment: D1
+references the geometric fan-out, not the quotient. RATIFICATION CONSOLIDATED → t05: type
+ADOPTED with all amendments binding (D1 content + t_geo realization + full-batch gate + naming
+scrub); execution order = finish the accounting invariant first, then type change + carrier as
+one interlocked arc.
+THE NEW DECORRELATED FINDING (fold-machinery, NOT type — does not reopen ratification):
+coverage's Codex leg (hypothesis withheld) challenges the tick-162 "(i)" expectation — claims
+(a) no single per-node ψ exists (u-pivot ψ=id vs d-pivot Schur), (b) the u-pivot is
+GEOMETRICALLY load-bearing (uniquely covers the u-axis {D=0,u≠0} — refuting the ledger-only-
+extra escape; R2 Leg-1's every-proper-subset-undershoots appears to corroborate, pending an
+exact check of whether Leg-1's family included the u-pivot), (c) a det-1 gap witness for
+independently-sheared sectors. If true: node_pivotCover_of_atom_sheared (single-ψ) is
+insufficient at case-1 nodes; fixes = the held per-edge ψ_e reserve (R-a) or Codex's
+source-reparameterization β̃=β∘α⁻¹ keeping images fixed (R-b, pure atom applies). ADJUDICATION
+COMMISSIONED: pnp-psi (fresh seat, own worktree) — T1 (u-pivot load-bearing?) + T2 (single-ψ
+factorization?) by exact algebra incl. the Leg-1 battery check, then R-a/R-b pricing against
+the carrier spec; extra-careful decorrelation (the challenge itself is Codex-sourced). The
+carrier's per-edge ψ typing is compatible with every outcome — t05 unblocked regardless.
