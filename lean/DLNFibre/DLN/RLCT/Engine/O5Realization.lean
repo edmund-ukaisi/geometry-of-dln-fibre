@@ -411,6 +411,17 @@ weak). -/
 the tail (`≥ S`). At the terminal layer `cut a L q = a` on every coord. -/
 def cut (a : Fin L → ℕ) (S q : ℕ) : Fin L → ℕ := fun p => if (p : ℕ) < S then a p else q
 
+/-- **Rollover re-index of a landed anchor**: `cut a m (a^m) = cut a (m+1) (a^m)` — the flat tail
+value `a^m` becomes the frozen coord `m` at the next layer (the new coord `m` reads `a m` either way). -/
+theorem cut_succ_self (a : Fin L → ℕ) {m : ℕ} (hm : m < L) :
+    cut a m (a ⟨m, hm⟩) = cut a (m + 1) (a ⟨m, hm⟩) := by
+  funext p; unfold cut
+  by_cases hp : (p : ℕ) < m
+  · rw [if_pos hp, if_pos (by omega)]
+  · by_cases hp1 : (p : ℕ) < m + 1
+    · rw [if_neg hp, if_pos hp1]; exact congrArg a (Fin.ext (by omega : m = (p : ℕ)))
+    · rw [if_neg hp, if_neg hp1]
+
 /-- **Phase 1 — pre-birth**: the head is the running-min envelope, `cleared` has not passed `a^layer`,
 and every level below `cleared` is occupied (the diagonal being laid down; no anchor yet). -/
 def SteerPre (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
@@ -521,7 +532,57 @@ theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha :
       unfold conOracle; rw [dif_neg h1, dif_pos h2]]
     refine ⟨_, List.mem_singleton_self _, ?_⟩
     show SteerPre M a s.stepRollover ∨ SteerAnchored M a s.stepRollover ∨ SteerDone a s.stepRollover
-    sorry
+    obtain ⟨-, hdec, hlast⟩ := (Finset.mem_filter.1 ha).2
+    have ham : a ⟨s.layer, hlt⟩ ≤ widthMinUpto M (s.layer + 1) := adm_le_widthMinUpto M a ha ⟨s.layer, hlt⟩
+    have hdecm : ∀ (h : s.layer + 1 < L), a ⟨s.layer + 1, h⟩ ≤ a ⟨s.layer, hlt⟩ := fun h =>
+      hdec ⟨s.layer, hlt⟩ ⟨s.layer + 1, h⟩ (Fin.mk_le_mk.mpr (Nat.le_succ _))
+    rcases hphase with hpre | hanch | hdone
+    · -- PRE: `a^m = envelope` forced by `widthMinUpto(m+1) ≤ cleared ≤ a^m ≤ widthMinUpto(m+1)`.
+      obtain ⟨_, henv, hcl_le, -⟩ := hpre
+      have haeq : a ⟨s.layer, hlt⟩ = widthMinUpto M (s.layer + 1) :=
+        le_antisymm ham (le_trans h2 hcl_le)
+      have hmL : s.layer + 1 < L := by
+        rcases Nat.lt_or_ge (s.layer + 1) L with h | h
+        · exact h
+        · exfalso
+          have hz : a ⟨s.layer, hlt⟩ = 0 := hlast _ (by omega : s.layer = L - 1)
+          have hpos := widthMinUpto_pos hMpos (s.layer + 1)
+          omega
+      refine Or.inl ⟨hmL, ?_, Nat.zero_le _, fun q hq => absurd hq (Nat.not_lt_zero _)⟩
+      intro i hi
+      by_cases him : (i : ℕ) < s.layer
+      · exact henv i him
+      · have hisl : (i : ℕ) < s.layer + 1 := hi
+        have hie : i = ⟨s.layer, hlt⟩ := Fin.ext (by omega : (i : ℕ) = s.layer)
+        rw [hie, runMinWidth_eq_widthMinUpto]; exact haeq
+    · -- ANCHORED: pending impossible (suffix `< envelope`); landed → pending/landed at `m+1`, or done.
+      obtain ⟨_, hsuf, hcov, A, q, hAprof, hAq, hqge, hqlt, hlp⟩ := hanch
+      have hsufm : a ⟨s.layer, hlt⟩ < widthMinUpto M (s.layer + 1) := hsuf ⟨s.layer, hlt⟩ (le_refl _)
+      have hland : q = a ⟨s.layer, hlt⟩ := by
+        rcases hlp with hl | ⟨_, -, -, hcl⟩
+        · exact hl
+        · exact absurd (le_trans h2 hcl) (not_le.mpr hsufm)
+      by_cases hmL : s.layer + 1 < L
+      · refine Or.inr (Or.inl ⟨hmL, fun i hi => hsuf i (by have : s.layer + 1 ≤ (i : ℕ) := hi; omega),
+          ?_, A, a ⟨s.layer, hlt⟩, ?_, ?_, hdecm hmL, hsufm, ?_⟩)
+        · intro q' hq'; exact hcov q' (le_trans hq' (hdecm hmL))
+        · show s.divProfile A = _; rw [hAprof, hland]; exact cut_succ_self a hlt
+        · show s.divTilde A = _; rw [hAq, hland]
+        · rcases lt_or_eq_of_le (hdecm hmL) with hlt' | heq'
+          · exact Or.inr ⟨(by omega : s.layer + 1 - 1 < L),
+              congrArg a (Fin.ext (by omega : s.layer = s.layer + 1 - 1)), hlt', Nat.zero_le _⟩
+          · exact Or.inl heq'.symm
+      · have hmlL : s.layer + 1 = L := by omega
+        refine Or.inr (Or.inr ⟨(by omega : L ≤ s.layer + 1), A, ?_, ?_⟩)
+        · show s.divProfile A = a
+          rw [hAprof, hland]
+          funext p; unfold cut
+          by_cases hp : (p : ℕ) < s.layer
+          · rw [if_pos hp]
+          · rw [if_neg hp]
+            exact congrArg a (Fin.ext (by have := p.isLt; omega : s.layer = (p : ℕ)))
+        · show s.divTilde A = 0; rw [hAq, hland]; exact hlast _ (by omega : s.layer = L - 1)
+    · exact absurd hdone.1 (by omega)
   · have hcap : s.cleared < layerCap M :=
       lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
     rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
@@ -538,7 +599,76 @@ theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha :
           (fun p => runMinWidth M p)) ∨
         SteerDone a (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
           (fun p => runMinWidth M p))
-      sorry
+      have hwp : ∀ p : Fin L, (p : ℕ) < s.layer → s.cleared < runMinWidth M p := fun p hp => by
+        rw [runMinWidth_eq_widthMinUpto]
+        exact lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (by omega))
+      have hnewtilde : (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+          (fun p => runMinWidth M p)).divTilde (Fin.last s.numDiv) = s.cleared := by
+        rw [divTilde_stepAppendAdvance_last]
+        exact tildeOf_setTail_eq hlt (fun p hp => le_of_lt (hwp p hp))
+      -- `occ.min? = none` ⟹ no live divisor sits strictly above `cleared`.
+      have hgap : ∀ k : Fin s.numDiv, s.divTilde k < widthMinUpto M s.layer →
+          s.divTilde k ≤ s.cleared := by
+        intro k hk
+        by_contra hcon; push_neg at hcon
+        have hmemk : s.divTilde k ∈ (List.finRange s.numDiv).filterMap (fun k =>
+            if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+            then some (s.divTilde k) else none) := by
+          rw [List.mem_filterMap]
+          exact ⟨k, List.mem_finRange k, by rw [if_pos ⟨by omega, by omega⟩]⟩
+        rw [List.min?_eq_none_iff.mp hmin] at hmemk; simp at hmemk
+      rcases hphase with hpre | hanch | hdone
+      · obtain ⟨_, henv, hcl_le, hlev⟩ := hpre
+        by_cases hbirth : s.cleared = a ⟨s.layer, hlt⟩
+        · -- BIRTH → ANCHORED (the anchor is the newborn at level `cleared = a^m`).
+          have hdep : a ⟨s.layer, hlt⟩ < widthMinUpto M (s.layer + 1) := hbirth ▸ not_le.mp h2
+          refine Or.inr (Or.inl ⟨hlt, ?_, ?_, Fin.last s.numDiv, s.cleared, ?_, hnewtilde,
+            le_of_eq hbirth.symm, ?_, Or.inl hbirth⟩)
+          · intro i hi
+            exact clearable_suffix_lt_runMinWidth ha hc hMpos hdep
+              (Fin.le_def.mpr (show s.layer ≤ (i : ℕ) from hi))
+          · intro q' hq'
+            have hq2 : q' ≤ s.cleared := le_of_le_of_eq hq' hbirth.symm
+            rcases Nat.lt_or_eq_of_le hq2 with hlt2 | heq2
+            · obtain ⟨k, hk⟩ := hlev q' hlt2
+              exact ⟨Fin.castSucc k, by rw [divTilde_stepAppendAdvance_castSucc]; exact hk⟩
+            · exact ⟨Fin.last s.numDiv, by rw [hnewtilde]; exact heq2.symm⟩
+          · have hprof : (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+                (fun p => runMinWidth M p)).divProfile (Fin.last s.numDiv)
+                = setTail s.layer s.cleared (fun p => runMinWidth M p) := by
+              simp only [ConState.stepAppendAdvance, Fin.snoc_last]
+            show (s.stepAppendAdvance (widthMinUpto M s.layer - s.cleared)
+              (fun p => runMinWidth M p)).divProfile (Fin.last s.numDiv) = cut a s.layer s.cleared
+            rw [hprof]; funext p; unfold cut setTail
+            by_cases hp : s.layer ≤ (p : ℕ)
+            · rw [if_pos hp, if_neg (by omega)]
+            · rw [if_neg hp, if_pos (by omega)]; exact (henv p (by omega)).symm
+          · exact lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_mono M (Nat.le_succ _))
+        · -- diagonal → PRE (`cleared + 1 ≤ a^m`).
+          have hclt : s.cleared < a ⟨s.layer, hlt⟩ := lt_of_le_of_ne hcl_le hbirth
+          refine Or.inl ⟨hlt, henv, ?_, ?_⟩
+          · show s.cleared + 1 ≤ a ⟨s.layer, hlt⟩; omega
+          · intro q' hq'
+            have hq'' : q' < s.cleared + 1 := hq'
+            rcases Nat.lt_or_eq_of_le (Nat.lt_succ_iff.mp hq'') with hlt2 | heq2
+            · obtain ⟨k, hk⟩ := hlev q' hlt2
+              exact ⟨Fin.castSucc k, by rw [divTilde_stepAppendAdvance_castSucc]; exact hk⟩
+            · exact ⟨Fin.last s.numDiv, by rw [hnewtilde]; exact heq2.symm⟩
+      · -- ANCHORED: transport (`Fin.castSucc`); pending ruled out (anchor live ⟹ in `occ`).
+        obtain ⟨_, hsuf, hcov, A, q, hAprof, hAq, hqge, hqlt, hlp⟩ := hanch
+        have hland : q = a ⟨s.layer, hlt⟩ := by
+          rcases hlp with hl | ⟨_, _, hgt, hcl⟩
+          · exact hl
+          · exfalso
+            have hq_le : s.divTilde A ≤ s.cleared := hgap A (by rw [hAq]; exact hqlt)
+            rw [hAq] at hq_le; omega
+        refine Or.inr (Or.inl ⟨hlt, hsuf, ?_, Fin.castSucc A, q, ?_, ?_, hqge, hqlt, Or.inl hland⟩)
+        · intro q' hq'; obtain ⟨k, hk⟩ := hcov q' hq'
+          exact ⟨Fin.castSucc k, by rw [divTilde_stepAppendAdvance_castSucc]; exact hk⟩
+        · show (s.stepAppendAdvance _ _).divProfile (Fin.castSucc A) = cut a s.layer q
+          simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]; exact hAprof
+        · rw [divTilde_stepAppendAdvance_castSucc]; exact hAq
+      · exact absurd hdone.1 (by omega)
     · rcases hf : chooseMin s target with _ | f
       · -- chooser fallback: impossible on a `SameLevelChainInv` state.
         exfalso
@@ -569,12 +699,119 @@ theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha :
           all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))]
         simp only [case1Decision, ConDecision.stepChildren]
         by_cases hsteer : a ⟨s.layer, hlt⟩ < target
-        · -- 1(1): the merge child (first).
+        · -- 1(1): the merge child (first) — the anchor PULL. Phase is `divExp`-blind, so prove it
+          -- for `s.stepCase11 f` (identical `divProfile`/`divTilde`/`layer`/`cleared`/`numDiv`).
           refine ⟨_, List.mem_cons_self, ?_⟩
-          sorry
-        · -- 1(2): the split child (second).
+          show SteerPre M a (s.stepCase11 f) ∨ SteerAnchored M a (s.stepCase11 f) ∨
+            SteerDone a (s.stepCase11 f)
+          have hheadge : ∀ p : Fin L, s.cleared ≤ s.divProfile f p := fun p => by
+            have h := tildeOf_le (T := s.divProfile f) p
+            change s.divTilde f ≤ s.divProfile f p at h; rw [htgt] at h; omega
+          have hcl_ne : ∀ k : Fin s.numDiv, k ≠ f → (s.stepCase11 f).divTilde k = s.divTilde k :=
+            fun k hk => by simp only [ConState.divTilde, ConState.stepCase11, Function.update_of_ne hk]
+          have hcl_f : (s.stepCase11 f).divTilde f = s.cleared := by
+            simp only [ConState.divTilde, ConState.stepCase11, Function.update_self]
+            exact tildeOf_setTail_eq hlt (fun p _ => hheadge p)
+          have hℓ : target < widthMinUpto M s.layer := by
+            obtain ⟨hmemtar, _⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar; obtain ⟨k0, _, hk0⟩ := hmemtar
+            by_cases hcc : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hcc] at hk0; have := Option.some.inj hk0; omega
+            · rw [if_neg hcc] at hk0; exact absurd hk0 (by simp)
+          rcases hphase with hpre | hanch | hdone
+          · -- PRE → PRE (`case11` doesn't touch `cleared`/low-level witnesses).
+            obtain ⟨_, henv, hcl_le, hlev⟩ := hpre
+            refine Or.inl ⟨hlt, henv, hcl_le, ?_⟩
+            intro q' hq'
+            have hq'c : q' < s.cleared := hq'
+            obtain ⟨k, hk⟩ := hlev q' hq'c
+            have hkf : k ≠ f := fun h => by rw [h, htgt] at hk; omega
+            exact ⟨k, by rw [hcl_ne k hkf]; exact hk⟩
+          · obtain ⟨_, hsuf, hcov, A, q, hAprof, hAq, hqge, hqlt, hlp⟩ := hanch
+            rcases eq_or_ne f A with hfA | hfA
+            · -- f = A: the PULL. `A` is pending; level-coverage forces `cleared = a^m`; `A` lands.
+              subst hfA
+              have hqt : q = target := hAq.symm.trans htgt
+              have hgt' : a ⟨s.layer, hlt⟩ < q := by
+                rcases hlp with hl | ⟨_, _, hgt, _⟩
+                · exact absurd (hl.symm.trans hqt) (by have := hsteer; omega)
+                · exact hgt
+              have hcl' : s.cleared ≤ a ⟨s.layer, hlt⟩ := by
+                rcases hlp with hl | ⟨_, _, _, hcl⟩
+                · exact absurd (hl.symm.trans hqt) (by have := hsteer; omega)
+                · exact hcl
+              have hclear : s.cleared = a ⟨s.layer, hlt⟩ := by
+                rcases Nat.lt_or_eq_of_le hcl' with hlt3 | heq3
+                · exfalso
+                  obtain ⟨w, hw⟩ := hcov (s.cleared + 1) (by omega)
+                  have hwmem : s.divTilde w ∈ (List.finRange s.numDiv).filterMap (fun k =>
+                      if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+                      then some (s.divTilde k) else none) := by
+                    rw [List.mem_filterMap]
+                    exact ⟨w, List.mem_finRange w, by rw [if_pos ⟨by omega, by omega⟩]⟩
+                  have hle := (List.min?_eq_some_iff'.mp hmin).2 (s.divTilde w) hwmem
+                  omega
+                · exact heq3
+              refine Or.inr (Or.inl ⟨hlt, hsuf, ?_, f, s.cleared, ?_, hcl_f,
+                le_of_eq hclear.symm, ?_, Or.inl hclear⟩)
+              · intro q' hq'
+                rcases Nat.lt_or_eq_of_le (le_of_le_of_eq hq' hclear.symm) with hlt2 | heq2
+                · obtain ⟨k, hk⟩ := hcov q' (le_of_lt (lt_of_lt_of_eq hlt2 hclear))
+                  have hkf : k ≠ f := fun h => by rw [h, htgt] at hk; omega
+                  exact ⟨k, by rw [hcl_ne k hkf]; exact hk⟩
+                · exact ⟨f, by rw [hcl_f]; exact heq2.symm⟩
+              · have hpf : (s.stepCase11 f).divProfile f
+                    = setTail s.layer s.cleared (s.divProfile f) := by
+                  simp only [ConState.stepCase11, Function.update_self]
+                show (s.stepCase11 f).divProfile f = cut a s.layer s.cleared
+                rw [hpf]; funext p; unfold setTail cut
+                by_cases hp : s.layer ≤ (p : ℕ)
+                · rw [if_pos hp, if_neg (by omega)]
+                · rw [if_neg hp, if_pos (by omega)]
+                  rw [hAprof]; unfold cut; rw [if_pos (by omega)]
+              · exact lt_of_le_of_lt (le_of_eq hclear) (lt_trans hgt' hqlt)
+            · -- f ≠ A: retain the anchor unchanged.
+              refine Or.inr (Or.inl ⟨hlt, hsuf, ?_, A, q, ?_, ?_, hqge, hqlt, hlp⟩)
+              · intro q' hq'
+                have hq'2 : q' ≤ a ⟨s.layer, hlt⟩ := hq'
+                obtain ⟨k, hk⟩ := hcov q' hq'
+                have hkf : k ≠ f := fun h => by rw [h, htgt] at hk; omega
+                exact ⟨k, by rw [hcl_ne k hkf]; exact hk⟩
+              · show (s.stepCase11 f).divProfile A = cut a s.layer q
+                simp only [ConState.stepCase11, Function.update_of_ne (Ne.symm hfA)]; exact hAprof
+              · rw [hcl_ne A (Ne.symm hfA)]; exact hAq
+          · exact absurd hdone.1 (by omega)
+        · -- 1(2): the split child (second) — append at level `cleared`, transport; `cleared+1 ≤ a^m`.
           refine ⟨_, List.mem_cons_of_mem _ (List.mem_singleton_self _), ?_⟩
-          sorry
+          push_neg at hsteer
+          have hle12 : s.cleared + 1 ≤ a ⟨s.layer, hlt⟩ := le_trans htar hsteer
+          have hheadge : ∀ p : Fin L, s.cleared ≤ s.divProfile f p := fun p => by
+            have h := tildeOf_le (T := s.divProfile f) p
+            change s.divTilde f ≤ s.divProfile f p at h; rw [htgt] at h; omega
+          have hnewtilde : ∀ e : ℕ, (s.stepAppendAdvance e (s.divProfile f)).divTilde
+              (Fin.last s.numDiv) = s.cleared := fun e => by
+            rw [divTilde_stepAppendAdvance_last]; exact tildeOf_setTail_eq hlt (fun p _ => hheadge p)
+          rcases hphase with hpre | hanch | hdone
+          · obtain ⟨_, henv, _, hlev⟩ := hpre
+            refine Or.inl ⟨hlt, henv, ?_, ?_⟩
+            · show s.cleared + 1 ≤ a ⟨s.layer, hlt⟩; exact hle12
+            · intro q' hq'
+              have hq'' : q' < s.cleared + 1 := hq'
+              rcases Nat.lt_or_eq_of_le (Nat.lt_succ_iff.mp hq'') with hlt2 | heq2
+              · obtain ⟨k, hk⟩ := hlev q' hlt2
+                exact ⟨Fin.castSucc k, by rw [divTilde_stepAppendAdvance_castSucc]; exact hk⟩
+              · exact ⟨Fin.last s.numDiv, by rw [hnewtilde]; exact heq2.symm⟩
+          · obtain ⟨_, hsuf, hcov, A, q, hAprof, hAq, hqge, hqlt, hlp⟩ := hanch
+            refine Or.inr (Or.inl ⟨hlt, hsuf, ?_, Fin.castSucc A, q, ?_, ?_, hqge, hqlt, ?_⟩)
+            · intro q' hq'; obtain ⟨k, hk⟩ := hcov q' hq'
+              exact ⟨Fin.castSucc k, by rw [divTilde_stepAppendAdvance_castSucc]; exact hk⟩
+            · show (s.stepAppendAdvance _ _).divProfile (Fin.castSucc A) = cut a s.layer q
+              simp only [ConState.stepAppendAdvance, Fin.snoc_castSucc]; exact hAprof
+            · rw [divTilde_stepAppendAdvance_castSucc]; exact hAq
+            · rcases hlp with hl | ⟨hm1, hqeq, hgt, -⟩
+              · exact Or.inl hl
+              · exact Or.inr ⟨hm1, hqeq, hgt, hle12⟩
+          · exact absurd hdone.1 (by omega)
 
 /-- **The steered leaf fold** (cert §4, the `conRel`-WF induction): from `SteerInv M a s`, some leaf of
 `buildTree M (conOracle M) s` carries `a` as an analytic divisor profile. At a terminal, `SteerInv`
