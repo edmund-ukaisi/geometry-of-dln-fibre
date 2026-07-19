@@ -158,4 +158,21 @@ theorem geoChartMapNorm_apply_oncone (g : GeoChart M) (x : Params M)
   rw [dif_pos hd, dif_pos hp]
   rfl
 
+/-! ## (β) The coherence `divCoord = diagTargetOf` (kernel: `birthFlatCoord` is a `flatCoordOf`-diagonal) -/
+
+/-- **(β)-kernel**: on a valid birth corner, `birthFlatCoord` IS the diagonal `flatCoordOf` cell
+`(a, b, b)`. This is the shared form of both the leaf ledger's `divCoord` (`= birthFlatCoord ∘ divBirthCoord`,
+`EngineConstruction:1796`) and the chart's `diagTargetOf` (`= flatCoordOf` of the divisor's `divBirthCoord`,
+`GeoChart`) — so the two name the SAME diagonal cell, which the regrouping needs. -/
+theorem birthFlatCoord_eq_flatCoordOf (M : Fin (L + 1) → ℕ) (s : ConState L) (k : Fin s.numDiv)
+    (h : 0 < flatDim M) (hv : CornerValid M (s.divBirthCoord k)) :
+    ∃ (hL : (s.divBirthCoord k).1 < L)
+      (hi : (s.divBirthCoord k).2 < M (Fin.castSucc ⟨(s.divBirthCoord k).1, hL⟩))
+      (hj : (s.divBirthCoord k).2 < M (Fin.succ ⟨(s.divBirthCoord k).1, hL⟩)),
+      birthFlatCoord M s k h
+        = flatCoordOf M ⟨(s.divBirthCoord k).1, hL⟩ ⟨(s.divBirthCoord k).2, hi⟩
+            ⟨(s.divBirthCoord k).2, hj⟩ := by
+  obtain ⟨hL, hi, hj, heq⟩ := birthFlatCoord_of_valid (h := h) hv
+  exact ⟨hL, hi, hj, by rw [heq, flatCoordOf]⟩
+
 end DLNFibre.DLN.RLCT.Engine
