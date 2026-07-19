@@ -8,22 +8,22 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: ENDGAME CONVERGENCE (ticks 258-261). LEDGER FACE DONE. Carrier (t09) DONE clean-three
-  incl. fidelity capstone cNodeOf_eq_realCNode_of_conOracle (DivBirthInv-only); rev-carrier
-  PASS-with-notes → t09 mini-arc (task #36: case-2 inner-fidelity lemma + doc scope). TWO
-  emission defects caught at statements (zero proof waste): t11's per-pivot divCoord (task
-  #35, t11 AFTER t10 lands) + t10's rollover finRange-0 drop (id-passthrough fix in t10's
-  batch, coverage counter-signing). t11: per-edge det atoms BANKED (on+off-cone); the wall's
-  true shape = the stepUpdate COCYCLE (not chain-rule+atoms) — Phase-2 PARAMETRIC fold now,
-  invariant statement gated (me+coverage) before grind; tripwire: reindex not closing in ~1
-  arc → pnp cert. LeafPullback: after finding-3 + pnp-loss adjudication (kill-condition: the
-  divisor factors out of prod EXACTLY linearly, no residual leak). t10: 4-file weakening +
-  R=1 chain green in worktree; ordered to BANK TO BRANCH at every green + declare GeoCoverSpec
-  signature freeze. ASSEMBLY OWNER DECIDED: fresh t12-assembly at t10-merge (coverage
-  contributes the (D) node-walk; controller keeps the discharge batch). Merge-order pin:
-  t10 → t11-fix → (D) after t10 → discharge after (D)+both. EngineObligations:53 skeleton
-  pre-wires only when BOTH fill-target signatures frozen. Distance ~2-4 arcs; t11 = sole
-  long-pole variance. AxCheck fidelity-capstone watch line: verify running, commit pending.
+- phase: THE FOUR-LANE FRONTIER (ticks 288-294). DONE clean-three: the LEDGER face; the
+  carrier (t09, reviewed); the COVER (geoAtlas_imageCover end-to-end, tick 288, AxCheck-
+  watched); diagonal-normalization LIVE (fork 15, (β∘S)∘g gauge slot at id); the (D) R-SPLIT
+  GATE REALIZED (tick 294: chartBridge_buildTree IS the projection of
+  chartBridgeFaithful_buildTree — fidelity on the payoff's cone; projection clean-three;
+  cordon: a direct A∧B∧C fill is a fidelity regression). THE HOLE CENSUS: TWO sorries in
+  chartBridgeFaithful_buildTree ((B) props + (C) exponents) + geoAtlas_fold_det's cocycle.
+  FOUR OWNED LANES: t14 det-fold now, holds at boundary for pnp-fold's ledger-accumulation
+  cert (the threaded invariant, Lean-ready shapes) ∥ coverage: the geoAtlas↔ledger BRIDGE
+  (keystone → 4 props + (C)), then a.e.-inj SURVEY-first ∥ loss-t15: α design note PHASE-
+  GATED → the LeafPullback squeeze (pnp-loss cert = spec; additive modules only) ∥ t10 holds.
+  Retired w/ honors: t02-t11, t13. Standing: elder (4 charges), carto (2), pnp-fold/loss warm.
+  THEN: (B)(C) close → faithful discharge → hbox flips → mint (stale arm + #guard_msgs incl.
+  the faithful theorem) → cordon (census: the 2 + Skeleton fossils + CanonicalWitness224
+  separate) → signal-and-wait PR. Statement-gate rule: binder-vs-design diff (entry 11);
+  provability-check-first in every formaliser brief.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue

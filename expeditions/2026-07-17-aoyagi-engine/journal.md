@@ -4647,3 +4647,11 @@ AxCheck: projection MUST-clean-three + the faithful theorem DIAGNOSTIC (flips at
 in chartBridgeFaithful_buildTree ((B) props + (C) exponents), fed by the four owned lanes
 (t14 det-fold + pnp-fold cert ∥ coverage bridge ∥ loss-t15 α ∥ a.e.-inj survey). Coverage
 GO'd on the bridge (its crossed decision-ask answered — tick 291's ruling re-relayed).
+
+## 2026-07-19 tick 295: idle pulse — memo refreshed to the four-lane frontier
+Drift glance: no pushes (all four lanes mid-work; the AxCheck gate verify at its final job).
+Memo rewritten from the tick-261 state to the current truth: the hole census (2 sorries in
+the faithful theorem + the cocycle), the four owned lanes, the realized R-split gate, the
+retired/standing seat roster, and the two new statement-gate rules (binder-vs-design diff;
+provability-check-first). Next events expected: the gate-verify green (AxCheck commit),
+pnp-fold's correspondence cert, coverage's bridge, loss-t15's phase-1 design note.
