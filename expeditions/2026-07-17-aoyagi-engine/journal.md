@@ -5234,3 +5234,17 @@ Merge pins verified (lanes write-disjoint; lane 6's AxCheck hunk disjoint from t
 discharge's :1292-1312). t14 contingency re-stated: a fan×WF fight is Lean-assembly, not
 math (the certs anchor); no lane absorbs t14-support; elder escalation is the fallback.
 Re-convene trigger: the spine discharge (release lane 5 + launch 7-9).
+
+## 2026-07-19 tick 325: the CONTROLLER PASS (lanes 3+6) — the θ record corrected in all three places
+LANE 3 DONE: (1) ROADMAP's deferred-seam paragraph rewritten — rorder = a(ℓ−a)+1 (the pole
+order) explicitly distinguished from numTop/cTheta = binom(m,|δ|) (the component count), the
+6≠5 witness in-line, the seam's binding target corrected to a(ℓ−a)+1-never-numTop, the live
+build item cross-referenced; (2) the durable note docs/expositions/notes/theta-invariants-
+non-identity.md (the two invariants, the machine-verified witness, the mint guard, the
+provenance chain); (3) priorities.md R5's PR FRAMING PIN amended — R6 REMOVED from the owed
+list (the charge-8 retraction: built via the front-pivot gauge) + the MINT GUARD embedded
+(the headline is the VALUE only; no text may imply numTop is the RLCT multiplicity).
+LANE 6 IN FLIGHT: verified ZERO monomial_rlct in the full AxCheck run's actual footprints
+(the entire file is S2-free as the banner claimed); the 11 stale "[..., monomial_rlct]"
+bracket expectations rewritten to historical notes + the banner's ⚠ resolved to the
+verified statement; the rebuild confirming (comments-only, but the discipline holds).
