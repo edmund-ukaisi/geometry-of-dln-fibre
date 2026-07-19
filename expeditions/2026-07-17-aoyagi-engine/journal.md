@@ -4781,3 +4781,19 @@ FULL ledger, which consumes the SAME maintenance), only the terminal bridge (ful
 waits. Holding correct lines hostage to a fact that only touches their final consumer
 inverts the dependency. pnp-fold's dichotomy = the one outstanding adjudication; watch its
 pickup next drift glance (the charge may have crossed its battery delivery).
+
+## 2026-07-19 tick 303: coverage's ceiling call — the 10th succession; inj-t16 spawned on the sharp handoff
+Coverage took the off-ramp plainly at its honest ceiling — after one of the expedition's
+largest single-seat arcs (the full R-split realization + the entire (B)(C) bridge + the
+a.e.-inj survey: seven clean-three commits in one wake). Its reasoning is the disposition's
+own: fresh work adjacent to the payoff cone is exactly where a fatigued proof hides a hole.
+THE HANDOFF IS COMPLETE: the provability check done (EngineDefs:121 is a FREE ∃N — the
+builder unconstrained), the 3-step build order (preimage-null atom → InjOn composition →
+the fold-induction mirroring its own bridge templates), the file map, and the answer-desk
+commitment. STATUS: warm-answerable (the (D)/discharge designer of record; one-question
+wakes only; offered the final projection-fill as the lane's capstone at assembly).
+INJ-T16 SPAWNED on the handoff verbatim (new module GeoInjFold-class; GeoFoldRegroup
+read-only — t14's active file; the other two (B) sorries fenced as other lanes').
+BOARD: t14 grinding the 4-case maintenance ∥ inj-t16 (a.e.-inj) ∥ loss-t15 (phases 2b/3a)
+∥ pnp-fold owes the stranded dichotomy (the one outstanding adjudication). The three (B)
+holes each have a fresh, spec-backed owner.
