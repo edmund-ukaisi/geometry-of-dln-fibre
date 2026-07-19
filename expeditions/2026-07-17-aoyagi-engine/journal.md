@@ -2710,3 +2710,16 @@ PROVEN; ~100-150 LoC remain); carrier spec revised (field 3: α_e source frames,
 spine path-fold STRUCK as moot — ratified from both sides). AxCheck wiring committed
 build-verified (leaves_numDiv_le_flatDim MUST-clean-three). pnp-psi dissolved with thanks —
 three pnp commissions this expedition, all landed with distinction.
+
+## 2026-07-19 tick 188: §3 DONE SORRY-FREE — clearable_tStar clean-three (merged + probed)
+t05's §3 arc landed ahead of its report (branch pushed; merged here): O5Realization.lean now
+proves the envelope-splice end-to-end — **clearable_of_minimizer** (every Mval-minimizer of Adm
+is Clearable) and **clearable_tStar** (the banked achiever tStar is Clearable), controller-
+probed = exactly [propext, Classical.choice, Quot.sound]. Cert §3's four steps are now Lean:
+t04's salvage supplied prefix_forces_env (the hard strong induction); t05 closed the Fin/
+admBound friction, the weak-decrease seam, the strict Mval drop, and the final contradiction.
+o5_core's remaining distance = §4 ONLY (the steering realization: Clearable(tStar) ⟹ tStar
+realized as a t̃=0 leaf divisor — the pull-ordering brick reusing LiveHeadDom/minimality).
+Per RULINGS, t05 PAUSES before §4 for the pnp-o5-class coordination through controller — its
+pause-report with the precise brick questions is the trigger to spawn the consult seat.
+Coverage-t08: re-typing batch commissioned (tick 187), no push yet — expected mid-arc.
