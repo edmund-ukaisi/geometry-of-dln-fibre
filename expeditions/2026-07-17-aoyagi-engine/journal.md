@@ -2993,3 +2993,13 @@ vs the substitution-in-the-statement reading) + the u-edge uniformity pin; Q2 D1
 under GeoChart (pinned content deliverable? fails-on-fake teeth — where does the buck stop if
 GeoChart itself is fabricated: AMEND to require GeoChart fields DEFINED from node data);
 Q3 the division's completeness + settle the center-index question by inspection if possible.
+
+### Tick-205 addendum: t05's review addendum (3fe01c45e merged) — centerSplit reconciled; gate supplemented
+The crossing fully reconciled: centerSplit CONSTRUCTION confirmed t05's (the substantive
+carrier piece — per-node q_node permutation-Homeomorph + center-index selector; its earlier
+"agree, coverage's" withdrawn as superseded by the corrected proposal); §8 unchanged
+(sibling GeoChart, decisive); §6 COUNTER logged (drop per-edge-β/α-payload + spine
+path-accumulator from t05 — GeoChart's/moot respectively). Carrier size honestly revised UP
+from "just data" to "centerSplit + data", still bounded-within-budget. elder-gate9
+supplemented mid-audit with the addendum's division as the Q3 object. The decision surface
+remains one question (§8 + the division), one gate, both seats' final positions in.
