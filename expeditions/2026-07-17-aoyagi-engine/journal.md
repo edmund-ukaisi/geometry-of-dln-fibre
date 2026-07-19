@@ -2303,3 +2303,24 @@ coverage unblocks at t04's first green, then its 3-Prop tide runs PARALLEL to t0
 Promotion to t03's batch only on verified spare budget — not planned. t04 brief accumulator
 now: carrier spec (this entry) + per-node edge classification (tick-162 addendum) + D§ii/iii
 package (tick 158) + 3 close-phase nits (tick 161).
+
+## 2026-07-19 tick 165: E MERGED + CONTROLLER-VERIFIED — monomialization_terminates ASSEMBLED
+The phase-transition event. t03's atomic batch (52ed3b75d) merged; my re-verification: full
+aggregator green (8892 jobs); monomialization_terminates = [propext, sorryAx, Classical.choice,
+Quot.sound]; isFullMonomialization_buildTree_conRoot stays EXACTLY clean-three. All 4 ripple
+conditions executed: the 4 protected probes reported verbatim (all clean-three); sorryAx enters
+via EXACTLY the two named holes (chartBridge_buildTree ← T3, o5_realization ← D§ii/iii, both
+probed individually); R5-flip coherence CONFIRMED (hbox Prop shape unchanged; fit witness's
+1≤L defeq-supplies 0<L; no stranded ∀L; no second interface decision); ripple UNDER scope
+(2 files — CanonicalWitness224 + PivotCoverFold untouched). AxCheck watch: 5 new/corrected
+lines, hole-sources named. THE ENGINE'S STATE: everything of Aoyagi's mechanism the spine
+promises is proven except the two named holes; the theorem EXISTS with honest typed debts.
+t03: STAND DOWN WITH HONORS sent (seat ledger: resRows verification, MvalCoh+BoundaryFlat
+reachability, unconditional-T0Bound route, WF-fold capstone, D§i, the L=0 catch, E assembly —
+zero mid-formalization walls, 12 commits, two interface decisions SURFACED not absorbed);
+final artifact requested = the t04 handoff map (hole types, D-tail read, carrier-fields
+placement opinion, defeq traps). NAVIGATOR-3 CONVENED (mandated at phase transition): A-E audit
+(t04 order; parallelisation incl. glue residual + R2 seat identity; hard-part-avoidance on the
+o5 arc; executable gate list; calibration + top schedule risk). t04 spawns after t03's
+handoff-map push + stand-down confirmation. (Also: the cd-trap recurred on this very tick's
+first journal attempt — lean/ cwd persisted from the probe; redone from root.)
