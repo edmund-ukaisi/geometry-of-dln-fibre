@@ -2119,3 +2119,13 @@ from durable artifacts, not by the audited seat). rev-spine commissioned by cont
 implementation; invariant-kit fidelity vs cert-compchain-o4; guard honesty 0<L; at-exhaustion
 guard structurally shared with classify; wording scrub) + one decorrelated Codex leg; deliverable
 threads/13-spine-review/review-spine-abc.md, propose-never-act.
+
+### Tick-154 addendum: crossed REQUEST_SPAWN; worry-list forwarded to rev-spine
+t03's reviewer message was a REQUEST_SPAWN (leaf executor — cannot spawn), sent before my
+rulings arrived; the "interception" framing corrected on the record. Its worry-list added to
+rev-spine's checklist as items 8-10 (controller-curated relay; briefing topology intact):
+(8) GENUINE-TREE — the capstone must be about the real conOracle dispatch, not the
+oracleTerminal fallback (vacuous-object class); (9) non-vacuity — analytic side not always
+empty (witness file check) + the flatDim=0 dite branch carried by NumDivFlatPos as PROOF not
+assumption; (10) case-1 delta/BoundaryFlat circle check (precondition supplied by reachability
+at call sites; maintenance must not consume the delta lemma). Codex-leg weighting: 10 or 9(b).
