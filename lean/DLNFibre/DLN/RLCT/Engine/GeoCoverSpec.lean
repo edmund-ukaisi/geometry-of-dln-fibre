@@ -4,9 +4,9 @@ import DLNFibre.DLN.RLCT.Engine.GeoChart
 # `DLNFibre.DLN.RLCT.Engine.GeoCoverSpec` — the cover SPECIFY skeleton (clause (A), for t10)
 
 The SPECIFY handoff for the cover builder (coverage-t08 → t10, the two-lane pattern). Full recipe:
-`threads/10-coverage/cover-specify.md`. This file carries the VALIDATED statement (below) with its one
-`sorry`; t10 fills it by the recipe. q-det-INDEPENDENT (the cover reads pure `β` via `reparam_image`;
-the Jacobian is t11's fold-module).
+`threads/10-coverage/cover-specify.md`. DONE (t10, tick 288): `geoAtlas_imageCover` is proven,
+sorry-free — clause (A) over `geoAtlas`. q-det-INDEPENDENT (the cover reads pure `β` via
+`reparam_image`; the Jacobian is t14's fold-module). Consumed by `ChartBridgeFaithful` as clause (A).
 
 **Decided structure (see the note):** build the geometric fan-out TREE `tGeo` (bake the composite into
 leaves, `geoChartMap` onto edges) and reuse the banked tree-fold — do NOT re-prove over the
