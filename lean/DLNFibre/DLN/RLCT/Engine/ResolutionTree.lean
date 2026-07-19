@@ -119,6 +119,11 @@ structure StepData (M : Fin (L + 1) → ℕ) where
   `g-delta-flatten.py`). The sharing `support g` = its nonzero locus (`StepData.support`).
   CERTIFICATE CONSTRAINT — the propagation proofs across the per-divisor re-indexing are T4. -/
   genDivExp : Fin numGen → Fin numDiv → ℕ
+  /-- **The per-divisor immutable birth corner** `(s_birth, J_birth)` (slot-stability cert), carried
+  onto the node from the `ConState`. The case-1(1) `u`-pivot chart reads the merged divisor's corner
+  (`divBirthCoord mergeIdx`); NOT node-local (100% wrong at merges — the divisor was born earlier). Not
+  in `RootLedger`, so `stepUpdate`/`StepRel` are unaffected. -/
+  divBirthCoord : Fin numDiv → ℕ × ℕ
 
 /-- **Terminal (leaf) data**: the fully monomialised state. The chart CoV `chartMap : Params M →
 Params M` is DERIVED (= fold of the root→leaf edge substitutions; coherence in the bundle), over the

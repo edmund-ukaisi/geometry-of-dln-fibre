@@ -351,6 +351,7 @@ def ConState.toStepData {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)
   divProfile := s.divProfile
   numGen := s.numGen
   genDivExp := s.genDivExp
+  divBirthCoord := s.divBirthCoord
 
 /-- The node's ledger core equals the state's — the `hnode` of a step decision (`rfl`). -/
 theorem toStepData_rootLedger_core {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L)

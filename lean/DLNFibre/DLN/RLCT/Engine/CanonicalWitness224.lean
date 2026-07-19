@@ -32,7 +32,7 @@ def rootNode224 : StepData M224 where
   layer := 0; cleared := 0; resRows := 2; resCols := 2
   numDiv := 0; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   divExp := fun k => k.elim0; divProfile := fun k => k.elim0
-  numGen := 0; genDivExp := fun k => k.elim0
+  numGen := 0; genDivExp := fun k => k.elim0; divBirthCoord := fun k => k.elim0
 
 /-- The Case-2 edge substitution (placeholder self-map; `mergeIdx` unused by case-2). -/
 def subst224 : ChartSubst M224 where
@@ -143,6 +143,7 @@ def mergeNode : StepData M224 where
   layer := 0; cleared := 0; resRows := 1; resCols := 3
   numDiv := 1; numB := 1; bExp := fun _ _ => 0; bChain := fun _ _ _ _ => le_refl _
   divExp := fun _ => 5; divProfile := fun _ => ![2, 2]; numGen := 1; genDivExp := fun _ _ => 1
+  divBirthCoord := fun _ => (0, 0)
 
 /-- The Case-1(1) edge: `runLen = J₁ = 2`, merging INTO divisor `mergeIdx = 0`. -/
 def mergeSubst : ChartSubst M224 where
