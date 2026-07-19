@@ -8,6 +8,7 @@ import DLNFibre.DLN.RLCT.Engine.GeoChart
 import DLNFibre.DLN.RLCT.Engine.DivBirthReach
 import DLNFibre.DLN.RLCT.Engine.PivotInjOn
 import DLNFibre.DLN.RLCT.Engine.ChartBridgeWiring
+import DLNFibre.DLN.RLCT.Engine.QNodeCarrier
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1327,6 +1328,10 @@ open DLNFibre.DLN.RLCT
 -- (escaping the full-build gate). Both MUST stay clean-three:
 #print axioms Engine.pivotChart_ae_injOn
 #print axioms Engine.chartBridge_of_pieces
+-- The per-node carrier (t09): the full-center split the cover + fold-Jacobian consume.
+-- MUST stay clean-three:
+#print axioms Engine.qNodeOf
+#print axioms Engine.dCenterOfNode_edgeSum
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer

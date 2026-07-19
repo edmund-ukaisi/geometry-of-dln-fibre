@@ -3605,3 +3605,19 @@ inbox). Resolution: q-det FIRST (the small lemma gating coverage's SPECIFY → t
 chain), then #26 GO (its own risk assessment sound: ~150 LoC reachable, the dependent-dispatch
 transfer = the flagged thrash spot). Its #26 hold-instinct was right in form, moot in fact —
 the WAITING-FOR-WAKE marker did its job (visible hold, quick resolution).
+
+## 2026-07-19 tick 247: seam VALIDATED (defeq-clean); the closing structure SET — two SPECIFYs, two builders
+Coverage's validation: the instantiation typechecks DEFEQ-CLEAN against t09's carrier (qNodeOf
+IS QNodeFam M dCenterOfNode by defeq; both pieces instantiate) — the parametrization move's
+full payoff. The cover's hypotheses now have EXACT-MATCH lemmas (hbij = edgeSum; hd =
+le_flatDim; hloc = geoChartMap-is-the-conjugation) ⟹ the cover re-sizes to MEDIUM
+(assembly-around-banked-atoms), distinctly below the fold-Jacobian wall. RULINGS: q-det =
+t09's (in flight, ordered first); SPECIFY-BOTH adopted + extended — coverage writes the cover
+SPECIFY NOW (q-det-independent; the t_geo-vs-List choice as a DECIDED recommendation; the
+srcBox handling) and the fold SPECIFY at q-det; TWO fresh parallel builders: t10 (the cover,
+at its SPECIFY) ∥ t11 (the fold-Jacobian, at its SPECIFY + q-det) — different files, clean
+interface, converging at the discharge; the two-lane pattern that closed o5, reapplied.
+Coverage's take-with-tripwire alternative declined on its own earlier ceiling signal (the
+structural parts it flags are where the tripwire would fire; its SPECIFYs outvalue its grind
+at this depth). The endgame's final roster forming: t09 (q-det + #26) → coverage's two
+SPECIFYs → t10 ∥ t11 → the discharge batch.
