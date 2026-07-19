@@ -3373,3 +3373,13 @@ atlas = geometricLeafPaths id t. The object whose payload-shape calibration entr
 it. The tide's structural foundation is banked; the larger proofs next (atlas materialization →
 cover fold → Props → clauses). GeoChart's AxCheck wiring still verifying in background
 (uncommitted until green). t07 parallel.
+
+## 2026-07-19 tick 229: t07 step 1 GREEN — DivBirthInv threaded (freshness = the strengthening)
+Engine/DivBirthReach.lean merged: CornerValid + DivBirthInv (validity/layerBound/freshness/
+injectivity), conRoot base + 3 maintenance lemmas + the conOracle_stepChildren fold (the
+NumDivFlatBound sibling, as templated). The freshness clause IS the inductive strengthening
+the spec anticipated (births snoc a corner distinct from all stored — slot-cert §4's
+0-collision ground truth formalized); a small bonus: rollover maintenance proved
+UNCONDITIONAL (hlive unneeded). Clean-three probes verbatim. AxCheck wiring in background.
+Next: step 2 — the spine-adjacent divCoord real-ification, full protected-set re-probe gated.
+The convergence: t07 at 1/3; coverage mid atlas-materialization.
