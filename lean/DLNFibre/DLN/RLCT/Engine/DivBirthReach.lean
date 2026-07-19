@@ -204,4 +204,128 @@ theorem DivBirthInv_conOracle_stepChildren {M : Fin (L + 1) → ℕ} (s : ConSta
           · exact DivBirthInv_stepCase11 s f inv
           · exact DivBirthInv_stepAppendAdvance s _ _ hlive hlt inv
 
+/-! ## From the invariant to `divCoord` injectivity at every leaf -/
+
+/-- On a valid corner, `birthFlatCoord` takes its real branch — the `FlatIdx`-encoded diagonal corner
+`(a, b, b)`. (The dite guards are exactly `CornerValid`'s conjuncts.) -/
+theorem birthFlatCoord_of_valid {M : Fin (L + 1) → ℕ} {s : ConState L} {k : Fin s.numDiv}
+    {h : 0 < flatDim M} (hv : CornerValid M (s.divBirthCoord k)) :
+    ∃ (hL : (s.divBirthCoord k).1 < L)
+      (hi : (s.divBirthCoord k).2 < M (Fin.castSucc ⟨(s.divBirthCoord k).1, hL⟩))
+      (hj : (s.divBirthCoord k).2 < M (Fin.succ ⟨(s.divBirthCoord k).1, hL⟩)),
+      birthFlatCoord M s k h = Fintype.equivFin (FlatIdx M)
+        ⟨⟨⟨(s.divBirthCoord k).1, hL⟩, ⟨(s.divBirthCoord k).2, hi⟩⟩,
+          ⟨(s.divBirthCoord k).2, hj⟩⟩ := by
+  obtain ⟨hL, hrow, hcol⟩ := hv
+  have hi : (s.divBirthCoord k).2 < M (Fin.castSucc ⟨(s.divBirthCoord k).1, hL⟩) := hrow _ (by simp)
+  have hj : (s.divBirthCoord k).2 < M (Fin.succ ⟨(s.divBirthCoord k).1, hL⟩) := hcol _ (by simp)
+  exact ⟨hL, hi, hj, by rw [birthFlatCoord, dif_pos hL, dif_pos hi, dif_pos hj]⟩
+
+/-- **The `FlatIdx` diagonal-corner encoding is injective in the corner pair** — distinct corners
+`(a, b)` give distinct `FlatIdx` sigmas (the `Fin (L+1)` layer + both diagonal `Fin` cells recover
+`a`/`b`; `HEq` handled via `Fin.heq_ext_iff` after the layer matches). -/
+theorem flatIdx_corner_inj {M : Fin (L + 1) → ℕ} {a b a' b' : ℕ}
+    {hLa : a < L} {hia : b < M (Fin.castSucc ⟨a, hLa⟩)} {hja : b < M (Fin.succ ⟨a, hLa⟩)}
+    {hLa' : a' < L} {hia' : b' < M (Fin.castSucc ⟨a', hLa'⟩)}
+    {hja' : b' < M (Fin.succ ⟨a', hLa'⟩)}
+    (heq : (⟨⟨⟨a, hLa⟩, ⟨b, hia⟩⟩, ⟨b, hja⟩⟩ : FlatIdx M)
+      = ⟨⟨⟨a', hLa'⟩, ⟨b', hia'⟩⟩, ⟨b', hja'⟩⟩) : a = a' ∧ b = b' := by
+  obtain ⟨hq, hjeq⟩ := Sigma.mk.inj_iff.mp heq
+  obtain ⟨hs, -⟩ := Sigma.mk.inj_iff.mp hq
+  have ha : a = a' := congrArg Fin.val hs
+  refine ⟨ha, ?_⟩
+  have hM : M (Fin.succ ⟨a, hLa⟩) = M (Fin.succ ⟨a', hLa'⟩) :=
+    congrArg (fun t : Fin L => M (Fin.succ t)) hs
+  simpa using (Fin.heq_ext_iff hM).mp hjeq
+
+/-- **`birthFlatCoord` is injective** on the full ledger under `DivBirthInv`: two divisors with the
+same flat coordinate have the same birth corner (`flatIdx_corner_inj`), hence are equal (`divBirthCoord`
+injective). -/
+theorem birthFlatCoord_injective {M : Fin (L + 1) → ℕ} {s : ConState L} {h : 0 < flatDim M}
+    (inv : DivBirthInv M s) : Function.Injective (fun k => birthFlatCoord M s k h) := by
+  obtain ⟨hvalid, -, -, hcinj⟩ := inv
+  intro k k' heq
+  obtain ⟨hLk, hik, hjk, hEk⟩ := birthFlatCoord_of_valid (h := h) (hvalid k)
+  obtain ⟨hLk', hik', hjk', hEk'⟩ := birthFlatCoord_of_valid (h := h) (hvalid k')
+  have heq' : birthFlatCoord M s k h = birthFlatCoord M s k' h := heq
+  rw [hEk, hEk'] at heq'
+  obtain ⟨ha, hb⟩ := flatIdx_corner_inj ((Fintype.equivFin (FlatIdx M)).injective heq')
+  exact hcinj (Prod.ext_iff.mpr ⟨ha, hb⟩)
+
+/-- `leafOfState`'s residual rank is `0` in both `flatDim` branches (the analytic/residual split). -/
+theorem leafOfState_resRank_zero {M : Fin (L + 1) → ℕ} (s : ConState L) :
+    (leafOfState M s).resRank = 0 := by
+  unfold leafOfState; split <;> rfl
+
+/-- **`leafOfState`'s `divCoord` is injective** under `DivBirthInv`: on the `flatDim > 0` branch it is
+`birthFlatCoord ∘ (t0Indices s).get` — both injective (the ledger `birthFlatCoord`, and the nodup
+`t0Indices` selector); on the degenerate `flatDim = 0` branch the analytic side is empty. -/
+theorem leafOfState_divCoord_injective {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (inv : DivBirthInv M s) : Function.Injective (leafOfState M s).divCoord := by
+  have hget : Function.Injective (t0Indices s).get :=
+    ((List.nodup_finRange s.numDiv).filter _).injective_get
+  by_cases hfd : 0 < flatDim M
+  · unfold leafOfState; rw [dif_pos hfd]
+    exact (birthFlatCoord_injective (h := hfd) inv).comp hget
+  · unfold leafOfState; rw [dif_neg hfd]
+    intro a; exact a.elim0
+
+/-- **`leafOfState`'s `resCoord` is injective** — vacuously, the residual side is empty
+(`leafOfState_resRank_zero`). -/
+theorem leafOfState_resCoord_injective {M : Fin (L + 1) → ℕ} (s : ConState L) :
+    Function.Injective (leafOfState M s).resCoord := by
+  intro a _ _
+  exfalso
+  have h := a.isLt
+  have hn := leafOfState_resRank_zero (M := M) s
+  omega
+
+/-- **`leafOfState`'s divisor and residual coordinate ranges are disjoint** — vacuously, the residual
+range is empty (`leafOfState_resRank_zero`). -/
+theorem leafOfState_disjoint {M : Fin (L + 1) → ℕ} (s : ConState L) :
+    Disjoint (Set.range (leafOfState M s).divCoord) (Set.range (leafOfState M s).resCoord) := by
+  have hempty : Set.range (leafOfState M s).resCoord = ∅ := by
+    rw [Set.eq_empty_iff_forall_notMem]
+    rintro x ⟨a, -⟩
+    have h := a.isLt
+    have hn := leafOfState_resRank_zero (M := M) s
+    omega
+  rw [hempty]; exact disjoint_bot_right
+
+/-- **The ChartBridge per-leaf clauses over the built tree** (sub-gap-1, divCoord half): every leaf
+carries an INJECTIVE `divCoord`, an injective `resCoord`, and disjoint coordinate ranges — the three
+hypotheses `hdcInj`/`hrcInj`/`hdisj` the per-leaf region-glue lemma feeds. Proven by well-founded
+induction threading `DivBirthInv`; at a terminal state the leaf is `leafOfState`. -/
+theorem leaves_chart_clauses {M : Fin (L + 1) → ℕ} (s : ConState L) (inv : DivBirthInv M s) :
+    ∀ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s),
+      Function.Injective l.divCoord ∧ Function.Injective l.resCoord ∧
+        Disjoint (Set.range l.divCoord) (Set.range l.resCoord) := by
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    intro l hl
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+      rw [buildTree_terminal M (conOracle M) s l' hleaf hoc] at hl
+      simp only [ResolutionTree.leaves, List.mem_singleton] at hl
+      subst hl
+      rw [conOracle_terminal_leaf s hoc]
+      exact ⟨leafOfState_divCoord_injective s inv, leafOfState_resCoord_injective s,
+        leafOfState_disjoint s⟩
+    | step node children hnode hlayer hstep =>
+      rw [buildTree_step M (conOracle M) s node children hoc] at hl
+      rw [ResolutionTree.leaves, edgesLeaves_eq, List.mem_flatMap] at hl
+      obtain ⟨e, he, hle⟩ := hl
+      rw [List.mem_map] at he
+      obtain ⟨c, hc, rfl⟩ := he
+      have hcstep : c ∈ (conOracle M s).stepChildren := by rw [hoc]; exact hc
+      exact ih c.child c.hdesc (DivBirthInv_conOracle_stepChildren s inv c hcstep) l hle
+
+/-- **Sub-gap-1 headline (divCoord half)**: every leaf of the built tree from the root carries an
+injective `divCoord`, an injective `resCoord`, and disjoint coordinate ranges. -/
+theorem leaves_chart_clauses_conRoot {M : Fin (L + 1) → ℕ} (l : LeafData M)
+    (hl : l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L))) :
+    Function.Injective l.divCoord ∧ Function.Injective l.resCoord ∧
+      Disjoint (Set.range l.divCoord) (Set.range l.resCoord) :=
+  leaves_chart_clauses conRoot DivBirthInv_conRoot l hl
+
 end DLNFibre.DLN.RLCT.Engine
