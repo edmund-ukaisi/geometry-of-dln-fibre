@@ -3659,3 +3659,17 @@ item; a validated fill-target if it states cleanly). t09 → #26 (the fidelity l
 standing). THE BOARD, full closing configuration: t09 (#26) ∥ t10 (the cover build) ∥
 coverage (the fold SPECIFY) → t11 spawns at its delivery. All four remaining Lean pieces
 owned; the discharge checklist banked; the gates pre-checked.
+
+## 2026-07-19 tick 252: fold SPECIFY merged — t11 SPAWNED on THE WALL; coverage's authoring COMPLETE
+The second SPECIFY (1908b7494): the accumulation target, the chain-rule induction with the
+q-conjugation via t09's pointwise trio, THE CRUX named (the exponent telescoping onto the
+ledger divExp — the dependent-index reassociation, L2/D1 idiom), FOUR foreseen tripwires
+(telescoping; CLE-det cancellation; Prod.map block-det; α inheritance — Codex recommended on
+the first two), all atoms pinned, + Engine/GeoJacobianSpec.lean = the validated fill-target
+(geoChart_fold_det, one tracked sorry). T11 SPAWNED with full fresh budget + the LeafPullback
+size-and-report deliverable + the truth-signal framing (this arc EXISTS because one fired).
+COVERAGE'S AUTHORING IS COMPLETE: all R-b atoms, the whole atlas machinery, both SPECIFYs with
+validated fill-targets — the seat's tide became two clean handoffs; the assembly ownership
+(post-t10/t11) deferred to their landing per its session length. THE CLOSING BOARD: t09 (#26)
+∥ t10 (the cover) ∥ t11 (the wall) — three builders on three bounded pieces, every one from a
+spec, converging at the (D)+assembly → the discharge.
