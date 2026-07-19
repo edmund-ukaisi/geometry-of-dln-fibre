@@ -2351,3 +2351,16 @@ proof-irrelevance). t03 fully dissolved. Coverage confirmed the hole-type outcom
 hχ = the post-carrier provable joint) and logged the right refinement UNPROMPTED: it will not
 prove anything against the current id-edge tree (cover would be vacuous) — the anti-vacuity pin
 holding by the seat's own reflex now. Both idle-warm. t04 spawn still holds on navigator-3.
+
+## 2026-07-19 tick 167: t04 SPAWNED (carrier-first) — advisory latency not allowed to block the critical path
+Navigator-3 still reading (no verdict yet). Controller call: spawn t04 NOW with the planned
+carrier-first order rather than hold the critical path on an advisory office — the ordering is
+reasoned (both holes independent; R2 needs the CONSTRUCTED atlas = carrier + coverage tide, so
+carrier-first strictly increases parallelism; no consumer needs D before ChartBridge); the
+navigator's B-E verdicts (R2 seat identity, gates, calibration) amend downstream when they land,
+and even an A-amendment arrives before t04's carrier sub-arc completes. t04's brief = the full
+accumulator: sync-first (integration ahead of t01-r2: coverage's PivotInjOn + ChartBridgeWiring),
+t03's t04-handoff.md as the authoritative local map, (a) carrier per the 4-part spec + edge
+classification + protected-set gate + REPORT-IMMEDIATELY (coverage wakes on it) → (b)
+o5_realization (cert §§3-4, naming pin, minimizer-only scope guard, pnp-o5 consult route) →
+(c) reify-Clearable + the 3 review nits. All tripwires standing.
