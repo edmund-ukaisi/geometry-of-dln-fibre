@@ -4527,3 +4527,14 @@ coverage GO'd on (i)+(ii)+(iii) with the projection staged and ONE ingredient ho
 fold). PROCESS SLIP owned: I spawned a duplicate carto seat instead of charging the standing
 one — caught in-tick, duplicate stopped, the standing seat charged properly (the operator's
 arrangement holds: charge via message, never respawn).
+
+### Tick-289 addendum: coverage's node-walk PROVEN + merged — (D)'s conjunct 2 banked before its GO arrived
+Crossed in the good direction again: coverage's warm-hands delivery (2618347d5 → merged
+5f5f3fef7) landed the ALL-NODES LIFT proven — nodes_cNode_eq_realCNode, WF-induction
+threading DivBirthInv on the leaves_chart_clauses template, consuming t09's per-root atom;
++ the edgesNodes_eq helper. Controller-probed clean-three. Staged (NodesCNodeWalk.lean, not
+in the aggregator; R-split-invariant — reads only QNodeCarrier + DivBirthReach). The elder's
+one load-bearing charge-4 flag (the lift must land PROVEN) was discharged before the ruling
+even reached the seat — first-attempt build, the atom+walk pattern composing as designed.
+(D)'s remaining delivery: the statements + the stated faithful discharge with the staged
+projection — ONE ingredient hole (t14's fold). The GO re-relayed (its inbox had it; crossed).
