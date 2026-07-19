@@ -2557,6 +2557,59 @@ theorem minAdm_le_terminalExponents {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 
     exact Int.toNat_le_toNat (Finset.inf'_le (Mval M) hadm)
   · rw [hrr] at he; simp at he
 
+/-- **Every `leafOfState` leaf has a NONEMPTY source box** — its `srcBox` is the flat-cube
+`paramsEquivFlat ⁻¹' cubeBox (flatDim M) 1` (both `dite` branches), which contains
+`paramsEquivFlat.symm 0` (the origin lies in the radius-1 cube). -/
+theorem leafOfState_srcBox_nonempty {L : ℕ} (M : Fin (L + 1) → ℕ) (s : ConState L) :
+    (leafOfState M s).srcBox.Nonempty := by
+  have hsrc : (leafOfState M s).srcBox
+      = ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 := by
+    unfold leafOfState; split <;> rfl
+  rw [hsrc]
+  refine ⟨(paramsEquivFlat M).symm (fun _ => 0), ?_⟩
+  rw [Set.mem_preimage, MeasurableEquiv.apply_symm_apply, cubeBox, Set.mem_pi]
+  intro i _
+  rw [Set.mem_Icc]
+  constructor <;> norm_num
+
+/-- **Every leaf of the built tree has a NONEMPTY source box** — the construction emits only
+`leafOfState` leaves (`leafOfState_srcBox_nonempty`). The `srcBox.Nonempty` slot of `o5_realization`
+/ `CanonicalResolution` (finding 3, killing the empty-`srcBox` phantom). -/
+theorem leaves_srcBox_nonempty {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) :
+    ∀ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s), l.srcBox.Nonempty := by
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    intro l hl
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+      rw [buildTree_terminal M (conOracle M) s l' hleaf hoc] at hl
+      simp only [ResolutionTree.leaves, List.mem_singleton] at hl
+      subst hl
+      rw [conOracle_terminal_leaf s hoc]
+      exact leafOfState_srcBox_nonempty M s
+    | step node children hnode hlayer hstep =>
+      rw [buildTree_step M (conOracle M) s node children hoc] at hl
+      rw [ResolutionTree.leaves, edgesLeaves_eq, List.mem_flatMap] at hl
+      obtain ⟨e, he, hle⟩ := hl
+      rw [List.mem_map] at he
+      obtain ⟨c, hc, rfl⟩ := he
+      exact ih c.child c.hdesc l hle
+
+/-- **o5-∈ CRUX — a realized `Mval`-minimizer** (map: `o5-realization`; D§ii/iii, pnp-o5 cert §3-4).
+`minAdm M` is the accumulated exponent of some `t̃ = 0` leaf divisor of the built tree. The banked
+`Mval`-minimizer `tStar M` (`RouteMAchieverPath`, `Mval M (tStar M) = minAdm M`) is Clearable
+(cert §3 — the envelope-splice: every non-clearable admissible profile has a strictly cheaper
+admissible sibling, so every `Mval`-minimizer is clearable), and a Clearable profile is realized as a
+`t̃ = 0` leaf divisor (cert §4 — the steering rule `R(a)` + the anchor descent invariant, reusing the
+banked `LiveHeadDom` / `chooserTotalOnChain_of_sameLevel` pull-ordering). Its `divExp` then reads off
+`(Mval M ·).toNat = minAdm M` via `IsFullMonomialization`. MINIMIZER-ONLY (NOT `⊇ Clearable-Adm`,
+which is R7 — the reify statement `realizedProfiles_eq_clearableAdm`). **PROOF: D§ii/iii** (the sole
+flagged brick is the intra-layer pull-ordering). -/
+theorem o5_core {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+    ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
+      ∃ k : Fin l.numDiv, l.divExp k = minAdm M := by
+  sorry
+
 /-- **The root state STEPS** (for `0 < L`): `conRoot` is live (`¬ L ≤ 0`) so `conOracle` emits a
 `.step` decision (rollover if the first layer is exhausted, else case-2 — `numDiv = 0` makes the
 case-1 occupancy set empty). This is `base_of_buildTree`'s `hstep`, giving the base conjunct (the tree
