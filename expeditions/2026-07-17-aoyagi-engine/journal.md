@@ -3483,3 +3483,18 @@ resolutions for the carrier brief: (i) surface runLen onto the node (one field, 
 is chooser-DETERMINED from the node state (eligibility: t̃(mergeIdx) = cleared + runLen,
 mergeIdx = the deterministic Def-4 pick) — a node-level def could COMPUTE it; pricing = the
 carrier's. The carrier seat spawns at the elder verdict or next tick regardless.
+
+## 2026-07-19 tick 240: rework MERGED (parametrized — the clean move); architect-t09 SPAWNED on qNodeOf
+Coverage's rework (2e547e8de): rather than wait OR build against an under-determined spec, it
+PARAMETRIZED — QNodeFam M dCN = the assumed carrier signature as an abbrev; geoChartMap +
+geometricLeafPaths take (dCN, qN) and compile green NOW, instantiating at the carrier's
+landing; the per-edge emission partitions Fin (dCenterOfNode) via a running GLOBAL OFFSET —
+which IS the disjoint-union hbij the cover needs. Robust to the elder's Q2(b) additions by
+construction. One carrier property named (the instantiation's correctness condition):
+**dCenterOfNode = Σ dCenterOfEdge over the node's edges** — the sum equality making the offset
+partition land in range. ARCHITECT-T09 SPAWNED (the elder verdict's one-tick grace expired;
+the wrapper shape is settled): dCenterOfNode (the runLen resolution priced deliberately —
+surface-onto-node vs chooser-computed vs edge-argument) + the SUM EQUALITY + cNodeOf (u-coord
+++ d-block; injectivity from DivBirthInv's same-layer/earlier-layer distinctness; totality) +
+qNodeOf via the parametric qOfCenter. Elder amendments arrive mid-arc if its verdict adds
+coherence content. The tide wakes at t09's landing.
