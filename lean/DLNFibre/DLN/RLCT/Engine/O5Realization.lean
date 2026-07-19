@@ -397,6 +397,53 @@ theorem clearable_suffix_lt_runMinWidth {M : Fin (L + 1) → ℕ} {a : Fin L →
   have hbenv := hcl b (le_trans (Fin.le_def.mp hbd) (Fin.le_def.mp hde))
   omega
 
+/-! ### The 3-phase steering invariant (`SteerInv`), cert §4 / both design consults
+
+The `conRel`-WF induction carries `SteerInv M a s`: the state satisfies the banked cone-goodness
+(`OracleInv` + `NumDivInv`) and exactly one of three phases along the `R(a)` steered path — `pre`
+(the envelope diagonal being laid, no anchor yet), `anchored` (the anchor `A` present, head `= a`,
+descending), or `done` (terminal, `A`'s profile IS `a`). The load-bearing strengthening over the cert's
+anchor-only form is the **level-coverage** clause (every level `≤ a^layer` is occupied) — it forces the
+anchor's pull at exactly `cleared = a^layer` (both consults; the cert's anchor-only invariant is too
+weak). -/
+
+/-- The anchor's target profile at layer `S`, level `q`: `a` on the frozen head (`< S`), flat `q` on
+the tail (`≥ S`). At the terminal layer `cut a L q = a` on every coord. -/
+def cut (a : Fin L → ℕ) (S q : ℕ) : Fin L → ℕ := fun p => if (p : ℕ) < S then a p else q
+
+/-- **Phase 1 — pre-birth**: the head is the running-min envelope, `cleared` has not passed `a^layer`,
+and every level below `cleared` is occupied (the diagonal being laid down; no anchor yet). -/
+def SteerPre (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  ∃ hm : s.layer < L,
+    (∀ i : Fin L, (i : ℕ) < s.layer → a i = runMinWidth M i) ∧
+      s.cleared ≤ a ⟨s.layer, hm⟩ ∧
+      (∀ q : ℕ, q < s.cleared → ∃ k : Fin s.numDiv, s.divTilde k = q)
+
+/-- **Phase 2 — post-birth**: the anchor `A` is present with profile `cut a layer q` (head `= a`, flat
+tail `= q`) and level `q`; the whole suffix is strictly below the envelope; every level `≤ a^layer` is
+occupied (LowCover — the pull-forcing clause); `a^layer ≤ q < widthMinUpto layer` (the anchor is live);
+and `A` is either LANDED (`q = a^layer`) or PENDING (`q = a^{layer-1} > a^layer`, `cleared ≤ a^layer`). -/
+def SteerAnchored (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  ∃ hm : s.layer < L,
+    (∀ i : Fin L, s.layer ≤ (i : ℕ) → a i < widthMinUpto M ((i : ℕ) + 1)) ∧
+      (∀ q : ℕ, q ≤ a ⟨s.layer, hm⟩ → ∃ k : Fin s.numDiv, s.divTilde k = q) ∧
+        ∃ A : Fin s.numDiv, ∃ q : ℕ,
+          s.divProfile A = cut a s.layer q ∧ s.divTilde A = q ∧
+            a ⟨s.layer, hm⟩ ≤ q ∧ q < widthMinUpto M s.layer ∧
+              (q = a ⟨s.layer, hm⟩ ∨
+                (∃ hm1 : s.layer - 1 < L, q = a ⟨s.layer - 1, hm1⟩ ∧
+                  a ⟨s.layer, hm⟩ < q ∧ s.cleared ≤ a ⟨s.layer, hm⟩))
+
+/-- **Phase 3 — done**: at the terminal layer the anchor's profile IS `a` (level `0`). -/
+def SteerDone (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  L ≤ s.layer ∧ ∃ A : Fin s.numDiv, s.divProfile A = a ∧ s.divTilde A = 0
+
+/-- **The steering invariant** carried through the `conRel`-WF fold: cone-goodness (`OracleInv` +
+`NumDivInv`) plus exactly one steering phase. -/
+def SteerInv (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
+  OracleInv M s ∧ NumDivInv M s ∧
+    (SteerPre M a s ∨ SteerAnchored M a s ∨ SteerDone a s)
+
 /-- **`tStar M` is realized as a `t̃ = 0` leaf-divisor profile of the built tree** (cert §4, the
 anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
 `Clearable-Adm` (= R7). The `t̃ = 0` is automatic (`tStar ∈ Adm`, last coord `0`).
