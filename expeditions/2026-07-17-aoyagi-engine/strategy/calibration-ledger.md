@@ -122,3 +122,28 @@ the entry (and altitude §3) had foregrounded the wrong half; the engine's cover
 runway's hard part. θ/order excluded (meromorphic continuation, not Mathlib-adjacent).
 Ledger lesson #2 (same class as both prior misses): conclusions drawn past the last
 territory-checked statement must be MARKED unchecked — the ledger now does so by convention.
+
+---
+## Entry 3 (tick 201, OFFICE-ROUTED — cartographer-4): the carrier-adjacent map, two SPLIT verdicts
+
+**CQ1** (expectation: no fold-of-localSubs anywhere in Engine): **SPLIT.** HIT narrowly — the
+construction-side accumulator is absent (leafOfState.chartMap := id; struck moot). MISS
+literally — TWO proven fold-of-localSubs recursions exist as SPEC functions over a built tree:
+leafPaths/edgesLeafPaths (ResolutionTree:218/223, `acc ∘ s.localSub`) and
+leafPathImages/edgesImages (PivotCoverFold:57/61), both consumed by the cover proof.
+RECALIBRATION: the carrier POPULATES the localSubs an EXISTING fold reads — it builds no fold.
+
+**CQ2** (expectation: leafPaths enumerates root→leaf EDGE LISTS, the t_geo template): **SPLIT.**
+HIT — it exists and its recursion SHAPE is the template. MISS — its payload is the COMPOSITE
+fold (`List (LeafData M × (Params M → Params M))`), not edge lists; no root→leaf edge-path
+enumerator exists (stepEdges gives flat pairs). geometricLeafPaths = the leafPaths recursion
+shape with a DIFFERENT accumulator payload (edge/d_center data), not a verbatim reuse.
+
+**Class note:** both misses are the same signature-vs-slogan class as entries 1-2's misses
+(right object, wrong payload/quantifier). Three-for-three on the class — the convention
+(check the SIGNATURE, not the name) is now the ledger's standing first question.
+
+**Drift-risks banked by the office** (routed to owners): ShearReconcile.lean:6-18 docstring
+still sells single-ψ (refuted; retire-note owed with coverage's next touch);
+chartBridge_buildTree docstring (EngineObligations:35-52) describes the STRUCK spine-fold
+carrier plan (rewrite owed at the move-at-landing batch); reuse-index sorry-count corrected.
