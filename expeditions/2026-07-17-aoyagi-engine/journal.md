@@ -2780,3 +2780,19 @@ in-repo; statement card now carries the correction pointing at the review's comm
 tStar_le_tPrev/tStar_le_Msucc carry a misleading tStar_ prefix (generic-Adm lemmas) →
 close-phase rename list. rev-s3 dissolved with thanks. §3 now stands REVIEWED as well as
 proven — the o5 lane's only open item is the tStar_realized arc (t05, in flight).
+
+## 2026-07-19 tick 192: t05 ceiling call at the SPECIFY boundary — split adopted (t06 on the crux; t05 keeps the carrier)
+t05 invoked ruling #4 (ceiling honesty) exactly as designed: four clean-three arcs carried
+(decision package / sub-gap-1 / §3 / §4-SPECIFY), the deep arc mapped BEFORE the ceiling
+(threads/12-realization/tstar-realized-handoff.md, merged: target verbatim, reuse machinery
+with verified line numbers, the fused-induction plan, 3 named risks, battery ground truth,
+the pending Codex design consult's landing spot). Its honest reasoning: grinding the engine's
+hardest proof degraded risks a WRONG anchor-descent design — worse than one re-grounding arc.
+SPLIT ADOPTED (its option b): **architect-t06 spawned** on tStar_realized ONLY (fresh budget,
+own worktree t06-s4, O5Realization.lean only, upstream edits routed through controller — no
+file collision with t05); **t05 stays ON scoped to the carrier co-design** (idle-warm, no
+grinding, until coverage's batch + interface proposal land; the one bounded arc it's uniquely
+grounded for; honest-budget escape hatch pre-agreed). The succession discipline is now the
+expedition's signature move: 4 handoffs, zero losses, every ceiling called at a banked
+boundary. Board: t06 (the crux) ∥ coverage-t08 (re-typing batch) ∥ t05 (warm, carrier) ∥
+rev-s3 dissolved.
