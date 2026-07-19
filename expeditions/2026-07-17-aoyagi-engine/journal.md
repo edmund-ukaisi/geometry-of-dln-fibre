@@ -3184,3 +3184,22 @@ carrier executor; the two fill-batch flags). The pivotChart det atom in flight (
 consult; the seat pre-verified the four needed det lemmas exist — the verify-every-name
 discipline now habitual). The chart lane is as pre-staged as it can be without the executor:
 when the remainder lands, coverage's tide drops straight in.
+
+## 2026-07-19 tick 214: SLOT-STABILITY VERDICT — T-slot YES; the immutable-field mechanism; carrier fully sized
+pnp-slot's cert merged: **T-slot = YES** (page-read pp.15-22 + exact sim, all transition
+kinds): every divisor occupies its BIRTH CORNER (s_birth, J_birth, J_birth) for life — the only
+u-slot writes are births into fresh corners; case-1(1) merges bump (T,M) in place; case-1(2)'s
+rescale-rename is a VALUE-level det-1 gauge (= the R-b α_d — the ψ-mix and slot certs describing
+ONE object from two sides); rollover/Q/P touch no u-slot. **Recoverability = NO** — the birth
+corner is NOT a function of the current divProfile (exact (2,2,2) witness: same profile, two
+corners in two leaves — the θ-multiplicity surfacing at slot level; + at 100% of merge nodes
+the node-local corner ≠ the true birth corner). So the field is NECESSARY. **MECHANISM =
+IMMUTABLE FIELD**: divBirthCoord set at the two birth cases = (layer, cleared, cleared),
+carried verbatim (congruence maintenance, zero rewrites); divCoord's real content finally
+lands as an injective map (distinct diagonal corners). Decorrelated Codex: full convergence
+(same formula, own witness, same mechanism; one arithmetic slip corrected by the sim).
+Calibration entry 4: HIT on the tick-208 hypothesis; the recoverability half was asked-not-
+predicted and came back NO — the right posture for a genuinely open question. THE CARRIER
+REMAINDER IS NOW FULLY SIZED (spec + this cert): divBirthCoord + qNodeOf assembly. Awaiting
+ONLY t06's landing report + budget signal to pick the executor. pnp-slot dissolved with
+thanks — the fourth pnp commission, fourth clean landing.

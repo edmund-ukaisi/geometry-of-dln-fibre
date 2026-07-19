@@ -147,3 +147,23 @@ shape with a DIFFERENT accumulator payload (edge/d_center data), not a verbatim 
 still sells single-ψ (refuted; retire-note owed with coverage's next touch);
 chartBridge_buildTree docstring (EngineObligations:35-52) describes the STRUCK spine-fold
 carrier plan (rewrite owed at the move-at-landing batch); reuse-index sorry-count corrected.
+
+---
+## Entry 4 (tick 214, office-routed — pnp-slot): the slot-stability hypothesis
+
+**Prediction (tick 208, written pre-check):** substitution-in-place ⟹ a divisor's flat
+coordinate = its immutable birth corner ⟹ the mechanism = one immutable per-divisor field
+with congruence maintenance (conf ~0.7 implied by commissioning the cheap-mechanism framing).
+**Territory (the cert):** T-slot = YES — proved-by-page-read + exact-sim across every
+transition kind; the ONLY u-slot writes are births into fresh corners. HIT, fully.
+**The half I did NOT predict** (asked as a question, honestly): recoverability from divProfile
+= NO — exact witness: the same profile born at different corners in different leaves (the
+θ-multiplicity surfacing at the slot level!); so the field is NECESSARY, not just convenient.
+**Coherence bonus:** the case-1(2) rescale-and-rename-in-place IS the R-b α_d gauge seen from
+the slot side — two independent certs (ψ-mix, slot-stability) describing one object.
+**What it changes:** the carrier remainder is now FULLY sized: divBirthCoord (immutable,
+birth-corner arithmetic (layer,cleared,cleared), congruence maintenance) + qNodeOf assembly
+per the spec — small + intricate-but-mapped. divCoord's real content finally lands as an
+injective map (births at distinct diagonal corners). Score: hit on the mechanism; the
+question-not-prediction on recoverability was the right epistemic posture (it was genuinely
+open — and NO).
