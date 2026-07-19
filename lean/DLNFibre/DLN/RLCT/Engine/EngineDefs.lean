@@ -202,10 +202,13 @@ def StepRel {M : Fin (L + 1) → ℕ} (n : StepData M) (e : Edge M) : Prop :=
 /-- **Full monomialisation** (B'): each leaf's ANALYTIC (`t̃=0`) divisor exponent equals `Mval` of
 its rank profile, AND that profile is ADMISSIBLE (`divProfile k ∈ Adm M`; note `∈ Adm` gives
 last-component-`0`, so `t̃ = min = 0` — the analytic read-off IS over `t̃=0` divisors, for free). PLUS
-the B' COHERENCE TIE: the analytic enumeration is EXACTLY the `t̃=0` sublist of the FULL ledger — each
-analytic divisor matches a `t̃=0` full divisor, and every `t̃=0` full divisor is matched (so
-`terminalExponents` captures all `t̃=0` exponents; nothing missed, nothing spurious). The leaf chain
-is enforced at type strength by `LeafData.bChain`. -/
+the B' COHERENCE TIE (VALUE/SUPPORT level): each analytic divisor's `(divExp, divProfile)` matches a
+`t̃=0` full divisor, and every `t̃=0` full divisor is matched — so the analytic side and the `t̃=0`
+full sublist have EQUAL VALUE-SUPPORT. C2/C3 forget multiplicity (duplicate values may collapse);
+the `leafOfState` construction IS a genuine index sublist, but the PREDICATE promises only set-level
+equality — enough for the support-only `terminalExponents` min (nothing missed, nothing spurious),
+not for a multiplicity-sensitive consumer. The leaf chain is enforced at type strength by
+`LeafData.bChain`. -/
 def IsFullMonomialization {M : Fin (L + 1) → ℕ} (t : ResolutionTree M) : Prop :=
   ∀ l ∈ ResolutionTree.leaves t,
     (∀ k : Fin l.numDiv, l.divExp k = (Mval M (l.divProfile k)).toNat ∧ l.divProfile k ∈ Adm M) ∧
