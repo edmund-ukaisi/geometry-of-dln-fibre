@@ -2418,3 +2418,16 @@ Coverage's acceptance criterion = provability of its own 3 Props against the rec
 MEANWHILE t04 GOES on reify-Clearable (front-loaded) + sub-gap-1 (needed either fork,
 spine-safe). Budget watch: if interface+sub-gap-1 eat into D's budget, carrier build may move
 to coverage/t05 post-ratification — t04 goes straight to D.
+
+## 2026-07-19 tick 170: cartographer-3 pass MERGED (b4ba2b2b8); census refresh executed
+The D-arc reuse index is banked (5 consumption-scoped families with grep-verified decl pins;
+the chooser/minimality family = t04's pull-ordering target; whole kit confirmed SORRY-FREE),
+7 dead-route additions, o5 naming forwarding-pointers + two-carriers disambiguation. Validator
+0 errors. Its two load-bearing findings EXECUTED by controller: (1) census refresh — the "two
+live holes = monomialization_terminates + region_glue" framing was staled by the E assembly;
+landmark-cards + banked-families refreshed to the honest form (two live ANALYTIC holes =
+chartBridge_buildTree + o5_realization; R2/R3 CONVERGE at chartBridge_buildTree; monomialization
+_terminates assembled; region_glue a proven composition); (2) the cert→Lean name-drift table
+(STEP1→step1_dominates, WeakDec→WeakDecInv, MvalBoundaryInv = theorem not def) rides the reuse
+index t04 already reads. Also fixed in-tree: PivotCoverFold.lean:8 stale "bodies are sorry"
+docstring (theorems are proven). Cartographer-3 dissolved with thanks.

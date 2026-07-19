@@ -76,7 +76,11 @@ source (ticks 9, 14). **The six `needs` nodes FLIPPED `adjudicated → stated` a
 flip (tick 37)** — the restructure landed and the predicates are correctly stated (validator warnings
 15 → 9). `engine_box_threshold_finite` now carries only the two live holes
 (`monomialization_terminates`, `region_glue`); its flip to clean-three IS the hbox event the mint
-re-point waits on.
+re-point waits on. [REFRESH 2026-07-19, tick 170: STALE after the E assembly —
+`monomialization_terminates` is ASSEMBLED (no longer bare) and `region_glue` is a PROVEN
+composition through `region_glue_of_chartBridge`; the two live analytic holes are now
+`chartBridge_buildTree` (EngineObligations:52) + `o5_realization` (:63); R2 and R3 CONVERGE at
+`chartBridge_buildTree`. The hbox event = those two flipping clean-three.]
 
 **Witnesses / whys.** Battery 15 scripts: 13 guards SURVIVE, 2 naked-weight kills FIRE
 (`w-naked-weight-111`, `w-naked-weight-4444`) — the zero-slack lesson's anchor. Why a landmark:

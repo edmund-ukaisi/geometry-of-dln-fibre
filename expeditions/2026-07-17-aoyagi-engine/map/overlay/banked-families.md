@@ -10,11 +10,15 @@ R1–R6** (recon cert §5 roadmap). Each rung lists the families it consumes wit
 2026-07-18): LIGHT ≤ 40 · MEDIUM 40–150 · HEAVY > 150. The full whitelist + the heavy-cone re-home
 is in [[import-hygiene]].
 
-**Rung → hole map.** R1/R2 discharge `monomialization_terminates` (`EngineObligations.lean:182`,
-sorry `:184`); R3 discharges `region_glue` (`EngineObligations.lean:244`, sorry `:248`); R5 flips
-`engine_box_threshold_finite` → `hbox` → repoints `aoyagi_learning_coefficient`. The two live holes
-are the ONLY engine-cone sorries besides the `canonicalResolution224` @[blueprint] forecast
-(`CanonicalWitness224.lean:130`, expected). Census: [[dead-routes]] § fossil census (24 total tree-wide).
+**Rung → hole map.** [REFRESHED 2026-07-19, tick 170 — post-E-assembly.]
+`monomialization_terminates` is ASSEMBLED (EngineObligations:72; 4 conjuncts proven clean-three);
+`region_glue` is a PROVEN composition (`region_glue_of_chartBridge … hbridge`, :131). The two
+live ANALYTIC holes are `chartBridge_buildTree` (:52, ← the chart-emission carrier + coverage's
+3-Prop tide) and `o5_realization` (:63, ← D§ii/iii from cert-o5-realization §§3-4) — R2 and R3
+CONVERGE at `chartBridge_buildTree`. R5 flips `engine_box_threshold_finite` → `hbox` → repoints
+`aoyagi_learning_coefficient`. These two + the `canonicalResolution224` @[blueprint] forecast
+(`CanonicalWitness224.lean:135`, off-cone, closes as a coverage corollary at (2,2,4)) are the
+ONLY engine-cone sorries. Census: [[dead-routes]] § fossil census.
 
 ---
 

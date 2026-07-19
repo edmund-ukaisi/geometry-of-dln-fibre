@@ -4,8 +4,8 @@ import DLNFibre.DLN.RLCT.Engine.PivotCover
 /-!
 # `DLNFibre.DLN.RLCT.Engine.PivotCoverFold` — T3 rung 2 (THE FOLD): SCOPING SKELETON
 
-**Blueprint spine: statements are forecasts; this is a STATEMENT-FIRST scoping pass — bodies are
-`sorry`, held for the combined (rung-1 fidelity + rung-2 statement) review. No proof grind yet.**
+**Blueprint spine: statement-first pass, since PROVEN — all four fold theorems carry proofs
+(the combined rung-1 fidelity + rung-2 statement review passed; see cert-cov-rungs12).**
 
 Rung 1 (`PivotCover.lean`) proved the per-blow-up atom: the `d` max-modulus pivot charts of one
 origin blow-up cover the cube. Rung 2 folds that atom up the resolution tree to `ChartBridge`'s
