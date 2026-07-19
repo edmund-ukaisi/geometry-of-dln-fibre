@@ -2267,3 +2267,18 @@ COVERAGE's (path induction, telescoping per-edge monomial factors) — runnable 
 D. Asked coverage to confirm (a)/(b) + name the MINIMAL carrier surface, so the requirement
 rides the architect map and unblocks at the E-merge, not after D. (If confirmed (b), the
 "3 Props ← o5" gating in earlier notes is CORRECTED to "3 Props ← accumulator".)
+
+### Tick-162 addendum: within-node ψ-mix watch-point (coverage) — (i) expected, emission authoritative
+Coverage confirms its modules already accept the Q1b gauge shape (ψ typed as a general
+homeomorphism ⊇ unipotent; unimodularity enters via LeafJacobianWith's det bound). Watch-point
+it raised: node_pivotCover_of_atom_sheared uses ONE ψ across a node's edges, but merge edges
+carry ψ=id while d-pivot edges carry the Schur gauge — a mixed node would need per-edge ψ_e.
+Expected resolution (i): merges are LEDGER-only edges (localSub=id, no geometric content); the
+COVER family = the d_center pivot family sharing the node's single gauge; id-edges are extras
+under the ⋃. Falls out of the banked design (pnp-atlas cert + page-pin-centers) but the EMISSION
+is authoritative — added to the architect carrier-map item: expose per-node edge/ψ structure so
+(i) is checkable by inspection. Coverage holds the (ii) per-edge relaxation in reserve, not
+built speculatively. ARCHITECT CARRIER-MAP ITEM (accumulating, for t03's E batch or the t04
+brief): (1) path-accumulator / fold surface for leaf charts; (2) per-edge β/ψ exposure (minimal
+surface per coverage's pending (a)/(b) answer); (3) per-node edge classification (cover-family
+vs ledger-only) making the ψ-mix inspectable.
