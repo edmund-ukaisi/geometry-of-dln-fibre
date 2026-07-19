@@ -4749,3 +4749,14 @@ footprint unchanged (probed — after two self-inflicted namespace slips, the re
 gotcha). Coverage woken for the a.e.-inj survey with the session-depth off-ramp named
 (survey light + its own; the BUILD re-homeable on its survey if it's at ceiling). The
 endgame census: 3 geometric holes + the stranded dichotomy, all owned, all cert-backed.
+
+### Tick-301 addendum: pnp-fold's value battery merged — "prod ∘ chartMap = diagonal" now machine-verified at depth 4
+a8807f5b1 merged: value_threaded_verify.py (exit-0) — Part A threads the b-chain through the
+SAME depth-4 scenario (all 6 states pass: loss = ∑b², b₁ squarefree terminal product,
+residual terminal-free) — the named input loss-t15's (3b) must prove is now SYMBOLICALLY
+VERIFIED on the real recursion; Part B exhibits the three divergent exponents on one run
+(det z⁴ / value power-1 / loss power-2 — non-derivability concrete); Part C shows on actual
+matrices exactly what α clears (the off-diagonal incidence entries the det never sees). The
+(3b) rulings stand unchanged (one skeleton, two instances, driver optional). NOTE: the
+stranded-divisor dichotomy charge (tick 300) crossed this delivery — it's pnp-fold's next
+wake; the leaf-instantiation slot stays open for it.
