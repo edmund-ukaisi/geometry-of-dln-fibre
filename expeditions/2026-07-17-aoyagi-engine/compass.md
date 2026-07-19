@@ -187,8 +187,16 @@ over banked substrate.
    gloss): discharging hbox + repointing canonical → _gen yields the UNCONDITIONAL CLEAN-THREE
    aoyagi_learning_coefficient — it kills the sorryAx of the 5 skeleton rungs. It does NOT delete
    cited_aoyagi_dln: the cite was NEVER in the λ cone (grep: only absence-asserting docstrings);
-   it lives in the OUT-OF-SCOPE RlctPayoff layer (needs minAdm=codim — the next expedition's
-   runway). "Kills the cite for free" was headline-inflation; struck everywhere. GUARDS (seat B):
+   it lives in the OUT-OF-SCOPE RlctPayoff layer. [CORRECTED 2026-07-19, elder-alt1 territory
+   read: the old parenthetical "(needs minAdm=codim — the next expedition's runway)" was STALE —
+   minAdm = cCodim = codimRepCanonical(fibre) is BANKED axiom-clean (minAdm_eq_cCodim,
+   MinAdmCCodim:315, AxCheck:1174; Brick A). The cite's actual residue after the hbox flip =
+   (i) instantiate the interface's opaque rlct with the concrete rlctAt (design change),
+   (ii) loss↔routeMCore localization glue, (iii) nbhd bookkeeping. Direction: divergence half
+   = rlct UPPER bound (easy); hbox/finiteness = the LOWER bound (the hard singular-locus half —
+   the engine's coverage IS the runway's hard part). θ/order stays big (meromorphic
+   continuation). See strategy/altitude-2026-07-19.md §3 as amended.]
+   "Kills the cite for free" was headline-inflation; struck everywhere. GUARDS (seat B):
    _gen's clean-three rests on a #print DIAGNOSTIC (AxCheck:913), confirmed-by-discipline not
    build-enforced — an ENFORCED axiom-gate installs at R5; L=1 reaches the unsuffixed theorem via
    a SEPARATE fold (not _gen). RUNGS ADOPTED: R1 = the FAITHFUL carrier NOW — full-T in the State
@@ -398,3 +406,11 @@ over banked substrate.
   Weakest hypotheses that suffice, never weaker than the analytic consumer needs (bedrock: usable
   form). An in-file nice-instance witness is necessary, never sufficient; the adversarial hunt is the
   gate.
+
+- CONTROLLER ALTITUDE (operator steer, 2026-07-19): spend real budget on high-level
+  strategising and comprehension of the picture, not only recon/de-risking — the controller's
+  between-gates function is understanding. Instrument: an altitude note at each phase
+  transition (expeditions/.../strategy/); findings integrated WITH their place in the
+  ledger/geometry picture (see altitude-2026-07-19.md §1 — the two-face taste-rule: when a
+  statement mixes a ledger quantifier with a geometric predicate, check which face it lives
+  on). The close synthesis starts from the altitude notes, not the journal chronology.

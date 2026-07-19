@@ -84,6 +84,18 @@ cited bound). The controller judges against this taste and holds precedence — 
 Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific ones here as they are found
 (the ReLU programme's proof-specific notes were intentionally not ported — they were about a different theory).
 
+- **Reducing a nested dependent `match h : e with` to a chosen branch — the split-chain FAILS in a
+  reduced context; use explicit `split` + `Option.some.inj (heq ▸ hyp)`.** For a `horacle`-style equation
+  `theDef … = <branch>` where `theDef` unfolds to `match hmin : x.min? with | some t => match hf : g t with …`
+  and the match binders (`hmin`/`hf`) SHADOW same-named local hypotheses, the banked chain
+  `split <;> simp_all only [reduceCtorEq, Option.some.injEq]; all_goals (try subst_vars); all_goals (try (split <;> simp_all …))`
+  (proven for `MvalBoundaryInv_conOracle_stepChildren`) does NOT close when the local context has FEWER
+  hypotheses than that template — the inner `split` gets swallowed by `try` and `simp only [hmin]` can't
+  rewrite the scrutinee under the shadowing binder. WORKING idiom (`NumDivInv_conOracle_stepChildren`,
+  2026-07-19): drop the chain and do explicit nested `split`, naming the pattern var + the split equation
+  with `rename_i target' heq`, then reconcile the shadowed scrutinee to the local hyp with
+  `obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)`; recurse for the inner match; close the
+  `none` branches with `exact absurd (heq ▸ hmin) (by simp)`.
 - **Verify ABSENCE before declaring a lemma a phantom (and rebuilding it).** When a needed lemma seems
   missing, a `grep` for the exact name is NOT enough — check variant names (`integral_` vs `integrable_`,
   `_le_` vs `_lt_`, `norm` vs `nnorm`, argument order) AND check our own `Foundations/` before concluding

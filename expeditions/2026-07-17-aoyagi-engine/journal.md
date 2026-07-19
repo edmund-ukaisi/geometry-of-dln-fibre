@@ -2710,3 +2710,218 @@ PROVEN; ~100-150 LoC remain); carrier spec revised (field 3: α_e source frames,
 spine path-fold STRUCK as moot — ratified from both sides). AxCheck wiring committed
 build-verified (leaves_numDiv_le_flatDim MUST-clean-three). pnp-psi dissolved with thanks —
 three pnp commissions this expedition, all landed with distinction.
+
+## 2026-07-19 tick 188: §3 DONE SORRY-FREE — clearable_tStar clean-three (merged + probed)
+t05's §3 arc landed ahead of its report (branch pushed; merged here): O5Realization.lean now
+proves the envelope-splice end-to-end — **clearable_of_minimizer** (every Mval-minimizer of Adm
+is Clearable) and **clearable_tStar** (the banked achiever tStar is Clearable), controller-
+probed = exactly [propext, Classical.choice, Quot.sound]. Cert §3's four steps are now Lean:
+t04's salvage supplied prefix_forces_env (the hard strong induction); t05 closed the Fin/
+admBound friction, the weak-decrease seam, the strict Mval drop, and the final contradiction.
+o5_core's remaining distance = §4 ONLY (the steering realization: Clearable(tStar) ⟹ tStar
+realized as a t̃=0 leaf divisor — the pull-ordering brick reusing LiveHeadDom/minimality).
+Per RULINGS, t05 PAUSES before §4 for the pnp-o5-class coordination through controller — its
+pause-report with the precise brick questions is the trigger to spawn the consult seat.
+Coverage-t08: re-typing batch commissioned (tick 187), no push yet — expected mid-arc.
+
+## 2026-07-19 tick 189: §3 report reconciled — four rulings (reviewer, wiring, composition, §4 GO)
+t05's §3 report confirms the tick-188 merge (statement card + Codex-first discipline + the
+gotchas delta appended to lean/CLAUDE.md). RULINGS: (1) rev-s3 SPAWNED — fidelity audit on the
+4 card points + the SEAM-GENUINENESS check (t04's placeholder seam completed by t05 — verify
+the completed proof proves the CERT's claim, not a weakened statement that happens to close) +
+the Clearable cross-check battery's non-vacuity; (2) O5Realization wired into AxCheck (both
+headlines MUST-clean-three), build in background; (3) COMPOSITION = MOVE-AT-LANDING: at §4
+completion o5_core moves to O5Realization as a proven theorem, the EngineConstruction sorry
+deletes, EngineObligations gains the import (no cycle), the watch line moves — one atomic
+batch, full-batch gate; (4) **§4 GO NOW, pause ruling REVISED**: the pause existed to route the
+brick through the cert AUTHOR, who died with the VM — a fresh consult seat would read the same
+cert t05 can; t05 IS the consumer §4 was written for. Tripwire replaces pause: brick fights
+beyond a couple honest attempts → STOP, consult spawned THEN with the precise sticking point.
+Scope pin: the steering path for tStar ONLY (minimizer-only; general Clearable-Adm = R7).
+t05's queue: §4 → carrier (after coverage's re-typing batch merges; ψ verdict + α_e revision
+in its inbox). Both crux holes now have zero coordination gates in front of their owners.
+
+## 2026-07-19 tick 190: §4 SPECIFY merged — o5_core_realized proven modulo tStar_realized (THE crux)
+t05's SPECIFY landed (982c657f3): o5_core_realized (the move-at-landing target) is PROVEN
+modulo the single sorried crux tStar_realized — the arithmetic chain divExp = Mval(profile).
+toNat = Mval(tStar).toNat = minAdm composes off the capstone + Mval_tStar_eq; controller probe
+confirms +sorryAx enters via tStar_realized ONLY. HONEST SCOPE (accepted as a finding): tStar_
+realized is the engine's hardest single proof — NEW machinery needed (no ∃-a-leaf pattern
+exists over buildTree; all banked patterns are ∀-over-leaves): (1) the path-existence ∃-lemma
+(WF-induction exhibiting the R(tStar)-steered path), (2) the anchor-descent invariant
+(base/maintenance/termination), (3) the pull-ordering brick (reuses LiveHeadDom/chooser kit).
+A fresh multi-hundred-line dedicated arc. RULINGS: no interleaving (the deep arc gets
+unfragmented budget); carrier co-design RESTRUCTURED to proposal-then-checkpoint (coverage
+drafts the q/t_geo interface doc post-batch; t05 confirms-or-counters at a banked boundary —
+design session → checkpoint review); fused-WF-induction suggestion (the ∃-path induction IS
+the invariant-maintenance induction per the cert — try fused first); bank-aggressively +
+ceiling-honesty (each of the 3 pieces banks independently; consolidate-and-hand-off beats a
+degraded grind — the t02/t03 pattern is the norm, not failure). Tripwire stands.
+
+### Tick-190 addendum: O5Realization AxCheck wiring — build-verified green (bundling note)
+The background verification build completed green (8802 jobs; clearable_* watch lines print
+clean-three). Bookkeeping accuracy: the wiring edit itself rode into the tick-190 commit
+(722ebcfdd) via its `git add -A` — committed + pushed there, not in a dedicated commit as the
+message implied. Wiring state: CORRECT in HEAD, verified. (Minor lesson re-learned: `git add
+-A` on journal commits sweeps pending tree edits — scope adds when a verification is pending.)
+
+## 2026-07-19 tick 191: rev-s3 VERDICT — §3 SURVIVED (6/6 PASS); provenance corrected
+The §3 fidelity audit: ALL PASS. Highlights: the Lean saturation-form Clearable proved
+equivalent to the cert's primary form THREE independent ways (hand-proof both directions;
+the reviewer's own from-scratch 9967-scan, 0 mismatches, non-vacuous; hypothesis-neutral Codex
+proof); the ex-placeholder seam verified as a REAL equality of the actual Mval summands (not
+weakened-to-close); hmin genuineness confirmed (real consequence of the banked inf' identity);
+minimizer-only scope + naming pins honored; a Codex false-positive flag settled AGAINST Codex
+via sim ground truth (the birth-layer exemption is faithful). ONE MINOR FINDING (provenance,
+non-blocking, FIXED this tick): the reify commit's "64024-profile cross-verification" cited a
+script that was never committed — the equivalence is true but the cited witness didn't exist
+in-repo; statement card now carries the correction pointing at the review's committed evidence.
+(New failure-class label for the lessons pass: unreproducible-evidence citation.) Peripheral:
+tStar_le_tPrev/tStar_le_Msucc carry a misleading tStar_ prefix (generic-Adm lemmas) →
+close-phase rename list. rev-s3 dissolved with thanks. §3 now stands REVIEWED as well as
+proven — the o5 lane's only open item is the tStar_realized arc (t05, in flight).
+
+## 2026-07-19 tick 192: t05 ceiling call at the SPECIFY boundary — split adopted (t06 on the crux; t05 keeps the carrier)
+t05 invoked ruling #4 (ceiling honesty) exactly as designed: four clean-three arcs carried
+(decision package / sub-gap-1 / §3 / §4-SPECIFY), the deep arc mapped BEFORE the ceiling
+(threads/12-realization/tstar-realized-handoff.md, merged: target verbatim, reuse machinery
+with verified line numbers, the fused-induction plan, 3 named risks, battery ground truth,
+the pending Codex design consult's landing spot). Its honest reasoning: grinding the engine's
+hardest proof degraded risks a WRONG anchor-descent design — worse than one re-grounding arc.
+SPLIT ADOPTED (its option b): **architect-t06 spawned** on tStar_realized ONLY (fresh budget,
+own worktree t06-s4, O5Realization.lean only, upstream edits routed through controller — no
+file collision with t05); **t05 stays ON scoped to the carrier co-design** (idle-warm, no
+grinding, until coverage's batch + interface proposal land; the one bounded arc it's uniquely
+grounded for; honest-budget escape hatch pre-agreed). The succession discipline is now the
+expedition's signature move: 4 handoffs, zero losses, every ceiling called at a banked
+boundary. Board: t06 (the crux) ∥ coverage-t08 (re-typing batch) ∥ t05 (warm, carrier) ∥
+rev-s3 dissolved.
+
+## 2026-07-19 tick 194: re-typing batch implemented (WIP e849a4b11); (D)-deferred approved w/ landing pin
+coverage-t08's actual state (the idle was build-waiting, now WIP-banked per nudge): the batch is
+IMPLEMENTED and re-elaborating green (8632/8894 mid-flight, 0 errors): ChartBridge = the flat
+atlas with (A) cover + (B) 8 per-piece props + (C) exponent-agreement; chartBridge_of_pieces →
+pure bundling (χ dropped, With-variants DELETED, consumer-free confirmed); region_glue
+destructure re-routed through (C), both proven glue lemmas reused VERBATIM; the witness + all
+EngineObligations re-elaborate UNEDITED — the ripple confined exactly as the decision package's
+cost map predicted. ITS FLAGGED DECISION APPROVED: (D) landed as documented-deferred (pinned-D1
+content in the docstring; encoding at the carrier phase; additive def-only touch, consumers
+project opaquely) — the natural reading of the elder's content-now/encoding-deferred amendment,
+and it keeps geometricLeafPaths behind the carrier per the ratified ordering. THE LANDING PIN
+(new gate item, task #10): (D) must be IN the type BEFORE chartBridge_buildTree's discharge —
+a proven hole against a (D)-less type would close with the honest-name tie missing; cordon
+re-checks. Interim docstring form pinned ("a monomialising cover whose exponents agree with t").
+Remaining on the batch: AxCheck footprint confirmation (the watch set grew since its branch
+cut — sync noted) → final commit → the q/t_geo interface PROPOSAL (t05's carrier trigger).
+
+## 2026-07-19 tick 195: ALTITUDE PASS (operator steer) — the picture, comprehended and banked
+Operator: "spend time and tokens on high level strategising and understanding of the picture,
+not just recon or de-risking." Executed as a durable artifact: strategy/altitude-2026-07-19.md.
+Its content, compressed: (1) THE STRUCTURAL IDEA — the recursion's two faces (ledger =
+symmetric-quotient combinatorics, where termination/coherence/admissibility/minimizer live;
+atlas = the geometric fan-out the integral reads), with the corrected architecture's two
+explicit joints ((C) exponent-agreement = the only ledger consult; (D) fidelity = the
+this-tree tie); EVERY major event of the expedition was a conflation instance — the four
+defects, the type crux, the ψ-mix, the placeholders — yielding the portable taste-rule:
+a statement mixing a ledger quantifier with a geometric predicate must declare its face.
+(2) The two remaining cruxes are the IRREDUCIBLE CROSS-FACE core (∃-path = ledger quantifier
+with geometric content; carrier = the ledger→geometry functor) — the residue is right, the
+sea rose over bedrock. (3) A strategic AUDIT owed at the hbox flip: with two-sided
+box-threshold control (finiteness at C/2 + the banked divergence below), cited_aoyagi_dln's
+residual content may reduce to a Watanabe-side zeta-bridge (NOT Aoyagi-shaped) — potentially
+re-scoping the next expedition from "reproduce the λ computation" to "prove the bridge";
+kill-condition named (the divergence half's box-family may be too weak — check its exact
+statement). (4) Sequencing re-derived from the picture (R7+R4 = the completeness pair; R6 =
+scope extension, MORE valuable if (3) pans out). (5) Posture correction adopted + a compass
+standing-counsel line added (altitude notes at phase transitions; findings placed in the
+picture, not only blocked/blocking). Board unchanged: t06 (crux) ∥ cov08 (batch verification)
+∥ t05 (warm).
+
+## 2026-07-19 tick 196: CALIBRATION INSTRUMENT ADOPTED (operator steer) — entry 1 run; two consults fired
+Operator: some ticks = the controller asking questions of the codebase, expectation written
+FIRST, checked against territory; some routed to cartographer/elders. INSTRUMENT:
+strategy/calibration-ledger.md (predict → territory → verdict → what-it-changes). ENTRY 1 run
+(the flip-audit preview): 4 predictions on the divergence half's shape, then the actual
+statements read. Score 3/4 — the MISS instructive: the two halves do NOT share an integral
+(divergence: |routeMCore| over cubeBox ε; finiteness: frobSq∘prod over paramsBoxM, meeting
+routeMCore only THROUGH routeMCore_le_matBox + the hfin consumer) — the two-sided reading
+SURVIVES REFINED at the routeMCore local integral, modulo a domain-bridge check (cubeBox-vs-
+routeMBaseNbhd at small ε; T=1-vs-ε). New facts banked: divergence holds AT the threshold
+(≥ not >); the divergence half assumes hMpos (width positivity — the spine's width-free
+generality does NOT extend there). The cited_aoyagi_dln residue refines to: localization glue
++ zeta-bridge — neither Aoyagi-shaped; flip-audit checklist seeded. CONSULTS FIRED per the
+steer: cartographer-4 (targeted pass #3 — the carrier-adjacent reuse index BEFORE t05's arc +
+two controller calibration questions CQ1/CQ2 to verify [no existing localSub fold; leafPaths
+as the t_geo template]); elder-alt1 (stern audit of the controller's OWN comprehension: is the
+ledger/geometry factorization faithful-or-just-so [with a concrete discrimination test]; the
+zeta-bridge conjecture against the ACTUAL RlctInterface axiom [flagged: the controller has not
+re-read it — the next unchecked expectation, named honestly]; posture/selling scrub).
+
+## 2026-07-19 tick 197: tStar_realized FALSE-AS-STATED (zero widths) — instance #6; hMpos ruling
+t06's stop-and-surface (the PROVE step exposing a SPECIFY fidelity gap — the system working as
+designed): the achievability direction is FALSE at zero widths — M=![2,2,0]: tStar=(2,0),
+minAdm=0, but widthMinUpto(2)=0 fires the rollover guard instantly, the anchor cannot descend,
+realized t̃=0 = {(0,0)} only; M=![2,0,2] even empties the t̃=0 set. Verified integer-sim + a
+hand-trace of the ACTUAL conOracle. Root: the cert §4 battery (847 instances, B6) ran positive
+widths only; the Lean SPECIFY dropped the regime hypothesis. IMPACT: the ⊇/attainment chain
+(o5_core → o5_realization → the assembly's attainment conjunct) is false at zero-width M;
+the ⊆ chain (minAdm ≤, IsFullMonomialization) is width-free and UNAFFECTED — the SAME
+asymmetry calibration entry 1 recorded one tick earlier (the divergence half's hMpos): the
+attainment/tightness LAYER needs positivity; the upper-bound layer does not. The instrument
+earned its keep immediately. RULINGS: hypothesis = hMpos : ∀ i, 0 < M i (VERBATIM the
+divergence half's form — zero bridge lemmas at the flip); t06 proves IN-FILE only (no
+cross-file ripple now); the downstream threading JOINS the move-at-landing batch (one atomic
+re-signature, full-batch gate); the flip-site question (payoff positivity / hbox's ∀M
+survival) = controller's calibration entry 2, verified before the landing batch; caveat
+docstrings next to claims w/ the ![2,2,0] witness. Codex design refinement approved (3-phase
+invariant + LowCover; the pull brick is NOT step1_dominates — the handoff's reuse line
+superseded). leafOfState_carries merged. Counter increments to 6 WITH the fix's merge.
+
+## 2026-07-19 tick 198: calibration entry 2 — the flip site read; landing batch CONFIRMED SAFE
+Entry 2 (predict-then-check on the payoff/flip site): the _gen headline ALREADY carries
+hpos : ∀ s, r < H s, and hbox is consumed PER-INSTANCE (RouteMBoxThresholdFinite (fun s =>
+H s − r)) — NOT the "∀M" of the running shorthand (an instructive miss: slogan vs signature).
+Consequence: threading hMpos through the attainment chain at the move-at-landing batch is
+FREE at the flip — the fit witness derives 0 < H s − r from its existing hpos; no zero-width
+side-case exists anywhere. t06's decision-ask (b) definitively closed. Also merged: t06's
+second ruling-independent green (childLeaves_subset — the existential navigator) + its note
+that the landed s4-structure consult INDEPENDENTLY re-derived the positivity finding
+(M=(1,1,0) counterexample; three legs now) and resolved the inner-induction worry (anchor
+pulled last = carried by the OUTER conRel WF descent; no new domination lemma — the brick
+shrinks). The §4 arc has zero remaining design unknowns; t06 executing the decomposition.
+
+## 2026-07-19 tick 200: ELDER-ALT1 AUDIT IN — comprehension corrected on three axes; all amendments executed
+Q1: the ledger/geometry taste-rule DISCRIMINATES (three-statement test passed, incl. separating
+the false/true forms of IsFullMonomialization) — but §1's universal was FALSE (Def-3/FIX-A/p.15
+are single-face); altitude §1 re-scoped to the cross-face events. Q2: the meeting-point reading
+verified transcription-accurate; BUT the entry-1 conclusion was NOT territory-checked (the
+exact drift the ledger polices, inside the ledger) — elder read the actual axioms:
+minAdm=cCodim=codim BANKED (compass fork-11 parenthetical was stale → corrected);
+rlctAt definitional; residue re-listed (interface-instantiation + localization + nbhd).
+DIRECTION CORRECTION (the sharp one): divergence = rlct UPPER bound (easy); hbox = the LOWER
+bound (the hard singular-locus half, = the RLCT-runway kill-condition) — the altitude note had
+undersold its own case while mis-crediting the banked half; §3 rewritten. θ/order carve-out
+added. Q3: §2's internal inconsistency fixed (single-face-done scoped to the spine cone;
+R4/R7 open); five selling/self-reassurance lines cut. The elder's own mid-audit
+self-correction (predicted a missing residue item, found it banked, recorded) — the
+calibration discipline modeled by the auditor. Ledger addendum written (process-miss + the
+mark-unchecked convention adopted). elder-alt1 dissolved with thanks — the audit-the-
+controller pattern is now proven valuable; it stays in the comprehension cadence.
+
+## 2026-07-19 tick 201: cartographer-4 pass MERGED; calibration entry 3 (office-routed) — two SPLITs
+The carrier-adjacent reuse index is banked (every id-emission site + reuse target pinned at
+file:line; 4 dead-route additions; naming fixes incl. the ChartBridge-def location). CQ
+verdicts: BOTH SPLIT — (CQ1) the construction-side accumulator is absent as expected, BUT two
+proven fold-of-localSubs SPEC recursions exist (leafPaths + leafPathImages families), already
+consumed by the cover proof → the carrier POPULATES localSubs, builds NO fold; (CQ2) leafPaths
+is the template SHAPE but its payload is the composite function, not edge lists → 
+geometricLeafPaths = sibling recursion with an edge/d_center payload. CLASS CONFIRMED
+three-for-three across entries 1-3: every calibration miss is signature-vs-slogan (right
+object, wrong payload/quantifier) — "check the SIGNATURE first" is now the ledger's standing
+first question. Drift-risks banked + routed: ShearReconcile's single-ψ docstring (refuted —
+retire-note owed at coverage's next touch); chartBridge_buildTree's docstring (describes the
+STRUCK spine-fold plan — rewrite owed at the move-at-landing batch); the reuse-index
+sorry-count corrected in-card. Recalibration relayed to t05's wake queue (fold-exists +
+payload-shape + the docstring debt). cartographer-4 + elder-alt1 dissolved — the first full
+office-routed calibration round complete; the instrument's yield so far: one direction
+correction, one staled compass line, two arc-shape recalibrations, one process convention.

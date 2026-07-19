@@ -196,7 +196,9 @@ sorried) via `cert-o5-realization.md` §§3–4. **The whole kit is banked sorry
 = 0 sorries (verified `grep`, 2026-07-19); the coverage kit = 0 real sorries (the `sorry` token in
 `PivotCoverFold.lean:8` is a STALE docstring line, not a proof hole — `node_pivotCover_of_atom` IS proven).
 Every pin `file:line` grep-verified against the live tree at HEAD `da6567505`. All five families live in
-`Engine/`. **The cert→Lean vocabulary map is the reuse's crux** (cert names ≠ Lean names in several places,
+`Engine/`. **[cartographer-4 correction, HEAD `0ae14ade9`: `EngineConstruction.lean` now has 1 sorry —
+`o5_core` (`:2611`), the original hole, pending the move-at-landing; the (a)-(d) REUSE KIT itself stays
+0-sorry. See [[dead-routes]] fossil-sorry census update + § CARRIER-ADJACENT (e).]** **The cert→Lean vocabulary map is the reuse's crux** (cert names ≠ Lean names in several places,
 flagged inline). t04's ONE genuine new brick is `o5_realization`'s §4 descent case (the intra-layer
 pull-ordering) — everything below is REUSE, not rebuild.*
 
@@ -295,3 +297,124 @@ prerequisite coverage's 3 Props consume — the carrier's per-edge fields MUST l
   makes `l.chartMap` the real fold so `hχ` holds BY CONSTRUCTION.
 - **Near-miss / stale:** `PivotCoverFold.lean:8` docstring still says "bodies are `sorry`, held for review" —
   STALE; the theorem is proven. Do not read it as a live hole.
+
+---
+
+# CARRIER-ADJACENT REUSE INDEX (cartographer-4, 2026-07-19)
+
+*Consumption-scoped for architect-t05's CHART-EMISSION carrier arc (task #8): the decls the carrier
+POPULATES or REUSES to make `l.chartMap` the real root→leaf fold and to line the per-edge `localSub`s
+up with the coverage atom. Distinct from R1's LEDGER carrier ([[naming]] two-carriers). Every pin
+`file:line` grep-verified at HEAD `0ae14ade9`. **The carrier's final form is R-b (tick 187): per-edge
+`localSub_e = β̃_e = β_e ∘ α_e⁻¹` — a det-1 SOURCE reparam whose images equal the pure-β images, so
+the PURE atom applies and the sheared (ψ) variant retires; the spine path-fold is STRUCK moot; the
+coordinate split `q` must be CONCRETE.** ([[dead-routes]] single-ψ / spine-path-fold kills.)*
+
+**SYNC NOTE — indexes the PRE-batch state.** coverage-t08's re-typing batch (`ChartBridge` → flat
+virtual-leaf atlas, WIP `e849a4b11`) is **NOT merged** at this HEAD (verified: `LeafPullbackWith`/
+`LeafJacobianWith` + the `χ` parameter of `chartBridge_of_pieces` are still present — tick-194's batch
+deletes them). Pins below are the current tree; the post-batch delta is flagged inline where it moves.
+
+## (a) `ChartSubst` — the per-edge chart surface (populate `localSub`, no sibling bundle)
+
+- **Structure `ChartSubst`** — `ResolutionTree.lean:65`. Fields, in anonymous-ctor order
+  `⟨localSub, runLen, mergeIdx, jacDivCount, jacPow⟩`: `localSub : Params M → Params M` (`:67` — the
+  carrier's TARGET field, currently `id`), `runLen` (`:71`), `mergeIdx` (`:76`), `jacDivCount` (`:78`),
+  `jacPow : Fin jacDivCount → ℕ` (`:82`, construction-side Jacobian accounting — the certificate's
+  Jacobian content lives in `LeafJacobian`'s existential, NOT here). `StepCase` (`:53`):
+  `case11`/`case12`/`case2`/`rollover`.
+- **Emission points — where `localSub` is currently `id`** (the carrier replaces these with `β̃_e`):
+  - LIVE via `conOracle` (`EngineConstruction.lean:2090`; dispatch: rollover `:2093`, case1 `:2112`,
+    case2 `:2119`):
+    - `case1Decision` (`:2028`) — the ONE case-1 node emits **both** edges: case-1(1) merge
+      `⟨id, runLen, f.val, 0, Fin.elim0⟩` (`:2041`) + case-1(2) split `⟨id, runLen, f.val, 0,
+      Fin.elim0⟩` (`:2042`). This is the u-blow-up node (pnp-psi T1: `localSub` = the genuine
+      `d_ij = u·d'_ij`, `ψ=id` but `β≠id`).
+    - `case2Decision` (`:1938`) — `⟨id, 0, 0, 0, Fin.elim0⟩` (`:1941`).
+    - `rolloverDecision` (`:1919`) — `⟨id, 0, 0, 0, Fin.elim0⟩` (`:1922`). **CHARTLESS: `localSub`
+      stays `id`** ([[dead-routes]] rollover-chart kill); the carrier does NOT give it geometry.
+  - OFF the `conOracle` path (standalone building blocks, also emit `id`; the carrier need not touch
+    unless reused): `case11Decision` (`:1986`, ctor `:1999`), `case12Decision` (`:1958`, ctor `:1962`).
+    `case1Decision` INLINES both edges rather than calling these two.
+  - `leafOfState` (`:1754`) — leaf `chartMap := id` at `:1766` and `:1782` (both `dite` branches). The
+    carrier makes this the root→leaf fold. Reuse-index (d) "leafOfState.chartMap = id today" CONFIRMED.
+  - Hand-witnesses (NOT construction decisions — the carrier leaves them unless the (2,2,4) forecast is
+    discharged): `CanonicalWitness224.lean` (`localSub`/`chartMap := id` at `:39,:54,:149,:163,…`),
+    `CoRank2Spike.lean:39,:94`.
+
+## (b) The `leafPaths` / `leafPathImages` fold family — the t_geo template (ALREADY BUILT — see CQ1/CQ2)
+
+*The fold-of-`localSub`s MACHINERY the carrier reuses. It is NOT a construction accumulator — it is a
+SPEC recursion over an already-built tree; the carrier populates the `localSub`s it reads.*
+
+- **`leafPaths` (`ResolutionTree.lean:218`) + `edgesLeafPaths` (`:223`)** — type `(acc : Params M →
+  Params M) → ResolutionTree M → List (LeafData M × (Params M → Params M))`; recursion `acc ∘
+  s.localSub` (`:226`). Pairs each leaf with the **COMPOSITE FOLD** of its root→leaf `localSub`s — NOT
+  the edge list. The bundle's coherence clause equates this composite to `l.chartMap`.
+- **`leafPathImages` (`PivotCoverFold.lean:57`) + `edgesImages` (`:61`)** — `ResolutionTree M → Set
+  (Params M)`; the image-union fold `s.localSub '' leafPathImages c ∪ …` (`:63`) `= leafPaths id t`
+  images (`leafPathImages_branch`, `:69`). **This is the clause-(A) cover engine.**
+- Bridge helpers connecting the two: `imgAcc` (`:122`), `imgEdgesAcc` (`:132`), `leafPaths_mapFst`/
+  `edgesLeafPaths_mapFst` (used `:170`); `OwnCovers` (`:91`), `ownCovers_branch` (`:99`).
+- **t_geo analog (`geometricLeafPaths`, coverage-future, NOT in the tree):** tick 185 — a DIRECT analog
+  of THIS recursion SHAPE; `d_center` computable from `t` (case-1 `= runLen·resCols + 1` off the edge's
+  `ChartSubst` + node `StepData`). It must accumulate the edge/`d_center` DATA (a different `acc`), not
+  reuse `leafPaths` verbatim (which folds the composite function). See CQ2.
+
+## (c) The concrete `q` — `node_pivotCover_of_atom`'s coordinate-split shape (what the carrier must match)
+
+- **`node_pivotCover_of_atom` (`PivotCoverFold.lean:187`)** — the per-node cover atom. Its hypotheses
+  are what the carrier's concrete data must instantiate:
+  - `q : Params M ≃ₜ (Fin d → ℝ) × E` — center coords × spectators; **`q` is a HYPOTHESIS, no concrete
+    def in the tree** (grep-confirmed). tick 185: the carrier must supply `q` CONCRETE (companion of
+    the β field), not leave it existential.
+  - `pivotOf : Edge M → Fin d` (also a hypothesis, no concrete def); `hbij` = the FULL family (every
+    `i : Fin d` realized — the architect's `StepEmit`/`pivotComplete` amendment, `PivotCoverFold.lean:177`;
+    fewer than `d` pivots leaves the corner gap `corner_chart_not_cover`).
+  - `hloc : localSub w = q.symm (Prod.map (pivotChart (pivotOf e)) id (q w))` (`:192`) — **the exact
+    shape `β̃_e` must equal** (pure, no ψ, under R-b). `hdom : childRegion e = q ⁻¹' (pivotChartDom
+    (pivotOf e) R ×ˢ univ)` (`:194`); `childRegion` also a hypothesis.
+  - `d` = center dim: case-1 `J₁·(M^{(S+1)}−J)+1` (p.16); case-2 `(M(S)−J)·(M^{(S+1)}−J)` (p.19)
+    (`PivotCoverFold.lean:184-185`) — the `d_center` family data the carrier supplies per node.
+
+## (d) `pivotChart` + product-effect + the gauge atoms (`α_d`'s inverse-Schur target)
+
+- **`pivotChart` (`PivotCover.lean:43`)** `= fun k => if k=i then u i else u i * u k`; **`pivotChartDom`
+  (`:49`)**.
+- **Product-effect (image cover):** `iUnion_pivotChart_image_eq_cubeBox` (`:108`, the `=` form) built on
+  `cubeBox_subset_iUnion_pivotChart_image` (`:62`); `corner_chart_not_cover` (`:129`, full-family
+  necessity). This is what `node_pivotCover_of_atom` consumes at `:209`.
+- **JACOBIAN — no standalone det lemma in `PivotCover`.** `det Dβ = u i^(d-1)` is DOCSTRING-ONLY
+  (`:39-41`); the `|det Dβ| = ∏|u|^{divExp−1}` obligation lands in **`LeafJacobian`** (`EngineDefs.lean:58`,
+  the area-formula existential `Dβ`), NOT here. The carrier's Jacobian duty is a `LeafJacobian` witness.
+- **`ShearReconcile` gauge atoms:** `ownCover_transport` (`:31`), `node_pivotCover_of_atom_sheared`
+  (`:42`; `hloc` with `ψ`, `:47-48`). **R-b RETIRES this variant to `ψ = .refl`** (tick 187): `α_e`'s
+  inverse-Schur `α_e⁻¹` is chosen so `β̃_e = β_e ∘ α_e⁻¹` matches (c)'s PURE `hloc` (q-conjugated
+  `pivotChart`, no ψ); `|det Dα| = 1` preserves Jacobians; images identical to pure-β. **DRIFT (report
+  item): the `ShearReconcile` docstring (`:6-18`) still asserts "single-ψ is the right model" — refuted
+  by pnp-psi T2; the sheared variant is now a retired shape, not the model.**
+
+## (e) `FlatCubeLeaf` + `LeafData` fields — PRE-batch (see SYNC NOTE)
+
+- **`flatCubeLeafData` (`FlatCubeLeaf.lean:30`)** — the leaf-emission smart-constructor: `srcBox =
+  paramsEquivFlat ⁻¹' cubeBox (flatDim M) R`, `chartMap` a FREE field (ψ∘β shape lives in `LeafJacobian`,
+  so a gauge factor needs no field change). **`flatCubeLeafData_perLeafClause` (`:49`)** proves the
+  8-conjunct per-leaf clause: 5 FREE (`MeasurableSet`, bounded-in-flat-cube, `Injective` div/res,
+  `Disjoint`) + 3 FED (a.e.-`InjOn`, `LeafPullback`, `LeafJacobian`). Added `d61acf80f`; **not yet
+  imported/wired into `buildTree`** (standalone infra).
+- **`LeafData` (`ResolutionTree.lean:128`)** — current 18 fields: `numDiv`/`divExp`/`cleared`/
+  `divProfile` (t̃=0 analytic) + `fullNumDiv`/`fullDivExp`/`fullDivProfile` (full ledger) + `numB`/`bExp`/
+  `bChain` + `chartMap`/`srcBox`/`resRank`/`divCoord`/`resCoord`. **POST-batch delta** (WIP `e849a4b11`,
+  tick 194): `ChartBridge` becomes the flat virtual-leaf atlas — (A) cover + (B) 8 per-piece props +
+  (C) exponent-agreement; `chartBridge_of_pieces` → pure bundling (`χ` dropped, `With`-variants deleted);
+  (D) landed documented-deferred, and the **gate (task #10): (D) must be IN the type BEFORE
+  `chartBridge_buildTree`'s discharge**.
+- **`ChartBridge` def = `EngineDefs.lean:75`** (a `Prop`), consumed by `chartBridge_buildTree`
+  (`EngineObligations.lean:50`) + the `resolutionOf`-form (`:123`). **NAMING DRIFT: [[naming]] pins
+  `ChartBridge` to `EngineObligations.lean` — stale; the def is in `EngineDefs`.** (Fixed in [[naming]].)
+- **DRIFT (report item): `chartBridge_buildTree`'s docstring (`EngineObligations.lean:35-52`) still
+  describes the STRUCK carrier plan** — "thread a path-accumulator through `buildTree`" / "leafOfState.
+  chartMap must be the root→leaf localSub fold." The ratified design (ticks 184/187/194) is spine-
+  UNTOUCHED (the ledger spine is `chartMap`-blind), atlas realized via an auxiliary geometric tree
+  `t_geo` (proof-internal), clause (A) via the (b) fold; the flat virtual-leaf re-typing replaces the
+  threading mechanism. Docstring is read-only for this office — flagged for the owning seat.
