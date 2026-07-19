@@ -3409,3 +3409,20 @@ SAME shared ledger data; the resCoord clauses are vacuous on the pieces too. Thi
 ledger-carries-exponents / atlas-carries-charts split doing its work at the assembly — the
 joints behaving exactly as the corrected architecture promised. Tide order unchanged;
 pieces 1-2 unaffected by the real-ification (verified both sides).
+
+## 2026-07-19 tick 234: rev-reach VERDICT — sub-arc SURVIVED 6/6; t07 honors
+All six PASS with the strong-form checks: the dite-fallback traced by the reviewer ITSELF
+through the append maintenance (every on-cone divisor provably takes the real branch); the
+.get composition's load-bearing NoDup verified established; the freshness clause correctly
+named as the cert's inductive strengthening. Three precision items banked: (1) CO-LOCATION —
+the real region_glue consumption reads the clauses from the ATLAS pieces (the ledger-leaf
+theorem discharges them there via the atlas-shares-ledger-coords design, which is honestly
+journaled and NOT baked into any Lean name — verified); (2) HONEST CONTEXT for the cordon:
+2 of the 3 fed hyps are VACUOUS at built leaves (resRank=0) — only divCoord-injectivity is
+genuine content; disjointness has no real test until resRank>0 leaves exist (recorded, not a
+regression); (3) PROCESS — reviewer worktrees cut from a stale origin ref (the fetch lag);
+future reviewer setups include an explicit `git fetch` first (adopted for briefs). Codex leg
+concurred (no gap/circularity). **t07 released WITH HONORS** — a single-commission seat that
+delivered its bounded sub-arc exactly to spec: the invariant, the real-ification with zero
+spine disturbance, the convergence theorem, 3/3 greens. rev-reach dissolved. THE BOARD:
+coverage's tide is the expedition's sole remaining work.
