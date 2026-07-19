@@ -3304,3 +3304,19 @@ declared: geoChartMap → geometricLeafPaths materialization → the atlas List 
 ChartBridge [gate #10] → the retirement flags [#15] — "the tide that flips chartBridge_
 buildTree — the last sorryAx." The expedition waits on exactly TWO greens from t06
 (divBirthCoord ripple; qEdgeOf wrapper), then the tide, then the flip.
+
+## 2026-07-19 tick 222: carrier CORE landed (divBirthCoord threaded, spine undisturbed); sequencing staged
+t06's staged execution delivered exactly as ruled: the field on BOTH carriers, births snoc
+(layer,cleared), verbatim-carry congruences, toStepData transport, all constructor sites incl.
+the witnesses — NOT in RootLedger, so stepUpdate/StepRel/base/IsFullMonomialization literally
+untouched; the protected set green AT EVERY STEP (no spine proof fought — the ledger-core-only
+read holding). Remaining: the divCoord-injectivity half (birth-corner reachability bounds +
+pairwise-distinct corners — a NumDivInv-style sub-arc) + possibly qEdgeOf. TWO SEAM QUESTIONS
+routed to coverage for immediate answer: (a) qEdgeOf wrapper vs direct qOfCenter consumption;
+(b) THE SEQUENCING ONE — do the tide's per-piece divCoord-injectivity clauses need the CONCRETE
+birth-corner map (⟹ the sub-arc is tide-critical) or does the abstract numDiv≤flatDim
+injectivity suffice (⟹ off-path, fresh seat, t06 honors)? Controller's read: likely
+tide-critical (per-piece injectivity = distinct-birth-corners) — coverage answers with clause
+citations. t06's budget: real-but-not-unlimited, honest; defaults set (clear-headed + critical
+= its sub-arc; else handoff at this clean banked state). QNodeChart wiring confirmed done
+(tick 220). Awaiting: t06's full-gate verbatim result + coverage's (a)/(b).
