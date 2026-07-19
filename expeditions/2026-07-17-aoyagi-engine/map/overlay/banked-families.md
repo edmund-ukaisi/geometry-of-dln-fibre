@@ -10,6 +10,11 @@ R1–R6** (recon cert §5 roadmap). Each rung lists the families it consumes wit
 2026-07-18): LIGHT ≤ 40 · MEDIUM 40–150 · HEAVY > 150. The full whitelist + the heavy-cone re-home
 is in [[import-hygiene]].
 
+**PAPER ANCHORS (operator fidelity-steer, 2026-07-19).** Each family here anchors to a `worked.tex`
+§/line; the anchor table + the documented-deviation registry (Def-3, case-2 raw-width, p.15-chain,
+realization-gap, instance-#9 three-ledger split) is [[paper-anchors]]. Posture: the paper's structure
+outranks the module DAG's convenience; an unanchorable banked family is a stray to flag, not launder.
+
 **Rung → hole map.** [REFRESHED 2026-07-19, tick 170 — post-E-assembly.]
 `monomialization_terminates` is ASSEMBLED (EngineObligations:72; 4 conjuncts proven clean-three);
 `region_glue` is a PROVEN composition (`region_glue_of_chartBridge … hbridge`, :131). The two

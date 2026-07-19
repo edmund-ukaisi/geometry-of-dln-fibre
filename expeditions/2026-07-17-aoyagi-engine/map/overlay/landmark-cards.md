@@ -20,6 +20,18 @@ the engine has ONE analytic hole: `chartBridge_buildTree` (`EngineObligations.le
 `o5_realization` went clean-three (`:72`). See [[wiring-endgame]] pass #5 + [[STATUS]] for the current
 hole ladder.]** — see [[banked-families]] for the R1–R6 consumption map.
 
+**PAPER ANCHORS (operator fidelity-steer, 2026-07-19 — the paper is the active fidelity touchstone;
+paper structure outranks the module DAG).** Each landmark's `worked.tex` anchor + deviation status is in
+[[paper-anchors]]; inline for the 8:
+1. mint-repoint → §clean `worked.tex:707-726` + `aoyagiLambda` `:858-860`.
+2. hbox-root → the resolution route `:171-199` + boxed `rlct_core=½·min M_{s,k}` `:537` (finiteness half).
+3. engine-route → §blowup `:468-526` (the recursive `(S,J)` blow-up).
+4. resolution-tree → inductive invariant `:475-490` + Cases 1&2 `:499-520`. *Deviations: T-C (case-2), p.15-chain, coupled-`diag(b)` support-necessity `:631-649`.*
+5. coverage-theorem → structural cover lower bound `:564-567`.
+6. exponent-ledger-bridge → `M_{s,k}` `:531-533` + `:537` + `=Mval=codim` `:540` + Lemma 3 `:668-694`. *Deviation: T-D/F-1 (Def-3).*
+7. theorem4-localization → Thm 4 `:437-467`.
+8. rr4-precedent → `(3,3,4)` coupled-binding RRR `:623-630` + Thm 1 `:224-242`.
+
 ---
 
 ## 1. `mint-repoint` — the destination (root, `stated`)
