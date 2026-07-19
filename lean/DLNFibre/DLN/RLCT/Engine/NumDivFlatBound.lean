@@ -203,11 +203,19 @@ theorem NumDivInv_conOracle_stepChildren {M : Fin (L + 1) → ℕ} (s : ConState
           have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
               (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
               (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
-            -- CRUX-2 (isolated): reduce conOracle's nested dependent `match hmin`/`match hf` to the
-            -- case-1 branch. The template `MvalBoundaryInv_conOracle_stepChildren`'s split-chain
-            -- does not close here (fewer context hyps); dependent-match reduction under the shadowed
-            -- `hmin`/`hf` binders. Codex-consult pending.
-            sorry
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
           rw [horacle] at hc
           simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
             List.not_mem_nil, or_false] at hc
