@@ -2471,3 +2471,20 @@ atlas IS the geometric-leaf atlas). Then an ELDER GATE on the type change (skele
 same-tick. Armchair note banked for the exchange: a PIECEWISE chartMap gluing the family fails
 the per-leaf Props as typed too (per-piece divCoord vs the record's one). If t04 instead finds
 a sound mechanism under the frozen type, the joint note says so and no gate fires.
+
+## 2026-07-19 tick 174: (c) reify-Clearable MERGED; t04 inbox-lag caught and corrected
+t04's (c) green merged (e2bacc60b): Engine/ClearableReify.lean — the Clearable predicate
+(cert §1 saturation form, cross-verified against the b/clear primary form over 64024 admissible
+profiles, 0 mismatches), realizedProfiles (= P(M)), and the SORRIED library-surface theorem
+realizedProfiles_eq_clearableAdm (docstring cites defect #4; 0<L genuinely needed — P=∅ at L=0
+while the clearable cone is nonempty; wired via AxCheck so no aggregator edit). +sorryAx
+isolated to the R7 hole — controller-probed. The 3 rev-spine nits done (docstring-only).
+Protected set re-verified clean-three by the seat with probe outputs + spot-checked here.
+The elder-gate7 honest-name debt is CLEARED: the library now TYPES what its tree realizes.
+PROCESS CATCH: t04's report said "awaiting your steer" on the fork — it had NOT swept its
+inbox (the tick-169 ruling, tick-171 probe binding, and coverage's TWO negotiation messages
+incl. its joint-note half all undelivered-in-effect). Sweep order sent with the backlog
+summarized and the work order pinned: (i) respond to coverage's joint-note half FIRST (the
+whole chart lane waits on the exchange), (ii) sub-gap-1, (iii) only then (b). The
+sweep-every-revival discipline needs re-emphasis in future seat briefs — a seat can burn a
+full turn productively yet leave a peer blocked on an unanswered exchange.
