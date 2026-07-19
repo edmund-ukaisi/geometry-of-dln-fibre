@@ -3454,3 +3454,19 @@ too-weak/vacuous scan). CARTOGRAPHER-5 convened on the map+wirings (the endgame 
 verified from the imports not memory; the stale-reference sweep incl. the struck-design
 vocabulary; THE DISCHARGE-BATCH WIRING CHECKLIST with file:line pins). Both read the CURRENT
 tree (the stale-ref lesson in both briefs).
+
+## 2026-07-19 tick 239: STOP-AND-SURFACE at the cover — the per-edge/per-node q conflation (entry 8)
+Coverage's cover-assembly grounding caught the field-lock's Q4 error BEFORE building: the
+cover atom needs ONE per-NODE q (dim d_center, the full family — the cert's own language);
+qEdgeOf's per-edge q's (dims 1 vs runLen·resCols at case-1 siblings) cannot feed it; per-edge
+sub-covers would reopen the mixed-sector gap. A COLLECTIVE miss (t06 decided, controller
+relayed, coverage accepted, gate-9's partition language ambiguous) — post-mortemed as ledger
+entry 8 (a NEW miss class: two structures on one index set; the lesson — enumerate which
+structures ride a per-X-or-per-Y answer). ADJUDICATED: option (a) confirmed in principle —
+qNodeOf is construction-side (the concatenated per-case selector; injectivity = exactly
+DivBirthInv territory: same-layer u-corner col < J ≤ block cols, earlier-layer different s;
+qOfCenter absorbs the fix UNCHANGED — parametric design paying again); coverage REWORKS
+pieces 1-2 against the assumed qNodeOf signature NOW (small: a q-swap; the per-edge emission
+stays as partition bookkeeping); the CARRIER SEAT spawns at elder-alt2's verdict (mid-read on
+this exact seam — its Q2(b) may add structure to the spec; one office-latency buys a
+no-re-fork spec). The cover build HELD. Cost contained: no proof wasted.

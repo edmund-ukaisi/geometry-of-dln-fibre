@@ -273,3 +273,26 @@ quietly doesn't extend to the (D) landing (the slogan-vs-signature class, 5th in
 verification's scope inherited beyond its regime). P7a/P7c: OPEN — verify at the landing/cordon.
 **What it changes:** one pre-staged line in coverage's (D) batch (both files are its — relayed);
 zero schedule impact BECAUSE caught pre-landing.
+
+---
+## Entry 8 (tick 239, seat-surfaced): the per-edge/per-node q conflation — the first DESIGN-class miss
+
+**Not a prediction entry — a miss POST-MORTEM (the ledger records misses wherever found).**
+The seam-Q4 field-lock decided qNodeOf's factor is the PER-EDGE center dim; t06 built qEdgeOf
+to it; the controller relayed it; coverage locked to it; gate-9's "per-edge partition"
+amendment was ambiguous between EMISSION (per-edge, correct) and the COVER's q (per-NODE,
+missed). Coverage's cover-assembly grounding caught it: node_pivotCover_of_atom takes ONE q
+of dim d_center (the full family; cert-psi-mix's "⋃ over the FULL family sharing one q" —
+the per-edge things are the GAUGES). Sibling edges' different-dim qEdgeOf's cannot feed one
+cover atom; per-edge sub-covers reopen the exact mixed-sector gap R-b closed.
+**Class:** NOT slogan-for-signature — a new class: TWO STRUCTURES ON THE SAME INDEX SET
+(emission-partition vs cover-family) conflated because both are "per-edge-flavored". Four
+parties missed it; the assembly's GROUNDING caught it (the verifier hierarchy again — certs <
+gates < the build).
+**Cost:** small — pieces 1-2 rework (a q-swap), qNodeOf = a new bounded wrapper (qOfCenter is
+parametric — t06's design absorbs the fix without change), injectivity via DivBirthInv
+(t07's invariant supplies exactly the u-corner-vs-block distinctness). No proof wasted; the
+cover build was HELD pre-waste.
+**Lesson:** when a design question asks "per-X or per-Y?", enumerate WHICH STRUCTURES ride
+the answer (here: the emission, the gauges, the q, the counts — four structures, not one
+answer) — a composite question answered as one bit is a conflation waiting to fire.
