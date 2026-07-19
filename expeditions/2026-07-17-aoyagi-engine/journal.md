@@ -3426,3 +3426,15 @@ concurred (no gap/circularity). **t07 released WITH HONORS** — a single-commis
 delivered its bounded sub-arc exactly to spec: the invariant, the real-ification with zero
 spine disturbance, the convergence theorem, 3/3 greens. rev-reach dissolved. THE BOARD:
 coverage's tide is the expedition's sole remaining work.
+
+## 2026-07-19 tick 236: IDLE-STALL caught (by the OPERATOR) — coverage woken; the guard institutionalized
+The operator asked "I don't see any agent running?" — and was right: coverage-t08 had been
+idle-stalled ~an hour (its "continuing with the atlas materialization" was turn-end INTENT;
+idle seats resume only on a message; the controller was waiting for its green while it waited
+for a wake — a mutual-wait deadlock). Worktree verified clean at piece 2; nothing lost but
+wall-clock. WOKEN with the resume order + the explicit-marker protocol ("WAITING FOR WAKE" at
+any continuing-intent turn end). THE GUARD INSTITUTIONALIZED in the heartbeat protocol: at
+every drift-glance, idle + clean tree + continuing-intent = STALLED → send the wake. (The
+t04 mailbox saga was the same substrate lesson from the other side: turns and messages are the
+only clock; nothing runs between them.) Operator vigilance > controller drift-glance this time
+— logged plainly.

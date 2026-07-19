@@ -68,4 +68,9 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 
 Teammate reports + operator messages wake you automatically — don't poll. This heartbeat is a long
 (≥20 min) idle pulse; on an idle wake with nothing new, drift-glance and re-sleep.
+IDLE-STALL GUARD (operator-caught, tick 236): a seat's "continuing…" at turn-end is an INTENT,
+not a state — idle seats resume ONLY on a message. At every drift-glance: if a live-lane seat is
+idle with a CLEAN tree and its last report declared continuing-intent → SEND THE WAKE (idle +
+clean + continuing = stalled, not working). Seats are briefed to end such turns with an explicit
+"WAITING FOR WAKE".
 Stop at CLOSE, or when the operator pauses.
