@@ -64,10 +64,16 @@ level-`r_S` divisor never reaches `t̃ = 0`. The safe minimizer fact `minAdm ∈
 (the value the payoff needs) is `o5_realization`, SEPARATE and PROVED (cert §3); this SET equality is
 the honest full realization surface. `0 < L` is REQUIRED (at `L = 0` the built tree is a single leaf
 with no divisors, so `realizedProfiles = ∅`, while the clearable cone is `{()}` — the statement is
-genuinely false at `L = 0`). **Proof is R7**: `⊇` via the descent invariant (cert §4), `⊆` via the
-strand obstruction (cert §2) + `leaf_mem_Adm`; reify-now lands the STATEMENT only (a type is not
-defeasible; a docstring is). AxCheck: `+sorryAx` until R7. -/
-theorem realizedProfiles_eq_clearableAdm (M : Fin (L + 1) → ℕ) (_hL : 0 < L) :
+genuinely false at `L = 0`). **POSITIVE WIDTHS ALSO REQUIRED** (`hMpos : ∀ i, 0 < M i`; caveat next to
+the claim, rev-s4 escalation): `Clearable` is width-free, but REALIZATION is not — at a zero width the
+`⊇` direction fails. Witness `M = ![2,2,0]`: `tStar M = (2,0)` is `Clearable` but never realized (the
+zero last-width forces immediate rollover, `realizedProfiles = {(0,0)}`), so `Clearable-Adm ⊄
+realizedProfiles`. Same mechanism as `tStar_realized`/`o5_realization`'s `hMpos`. **Proof is R7**: `⊇`
+via the descent invariant (cert §4), `⊆` via the strand obstruction (cert §2) + `leaf_mem_Adm`;
+reify-now lands the STATEMENT only (a type is not defeasible; a docstring is). AxCheck: `+sorryAx`
+until R7. -/
+theorem realizedProfiles_eq_clearableAdm (M : Fin (L + 1) → ℕ) (_hL : 0 < L)
+    (_hMpos : ∀ i, 0 < M i) :
     realizedProfiles M = { a | a ∈ Adm M ∧ Clearable M a } := by
   sorry
 
