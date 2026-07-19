@@ -2203,3 +2203,17 @@ architect resolution. Its o5-independent InjOn core banked (pivotChart_ae_injOn,
 Engine/PivotInjOn.lean — merge with its next batch). ChartBridge's split state: image-cover
 BANKED; 5 free clauses BANKED; InjOn core BANKED; LeafPullback/LeafJacobian = the o5-fed pair
 (the monomialization identity itself — correctly refused to improvise).
+
+## 2026-07-19 tick 160: Q1b RESOLVED — single-ψ faithful as ONE unipotent gauge (merged 28e320328)
+pnp-atlas's Q1b cert (cert-single-psi.md + battery + converged Codex; exact 2×2/3×3/4×4): the
+per-node C′/P/Q composite's net effect is the SINGLE Schur-complement gauge
+d_ij ↦ d_ij − d_i1·d_1j (+ C row-mix) — det=1, unit-triangular, ONE unipotent map. The
+load-bearing internal structure: displacement-rank ≥ 2 (Schur update + row-mix independent
+already at 2×2), so ψ is NOT one elementary transvection. CHART-SLOT CONSTRAINT (the one design
+pin, relayed to coverage): type the ψ slot as a general variable-dependent unipotent/unimodular
+map (the compass region-glue shape) — one ψ per node then suffices; typing it as an elementary
+shear would force the ordered ψ_Q;ψ_P composition. Extra pins: case-1(1) merge edges carry ψ=id;
+the same-side (P·Q)·D product is non-unipotent AND not the faithful action (two-sided P·D·Q is)
+— trap ruled out. Refines cert-shear-gauge.md. Leaf chartMap = fold of per-node single gauges —
+consistent with the tick-159 fold-form pin. Coverage's skeleton ψ-typing unblocked; pnp-atlas
+standing warm. Both pnp seats now idle-warm with full context (o5: realization; atlas: gauges).
