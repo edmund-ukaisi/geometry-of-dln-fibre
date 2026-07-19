@@ -2152,3 +2152,21 @@ its t̃=0 discipline binds read-off-adjacent statements). pnp-atlas WOKEN on Q1b
 factorization fidelity) — now load-bearing since the coverage lane consumes the answer;
 flag-immediately instruction if the single-ψ form is infidelitous. Navigator convening NOTED for
 E-landing (the true phase transition: spine → coverage-critical); not convened early.
+
+## 2026-07-19 tick 157: E-wire interface finding — monomialization_terminates FALSE at L=0; hL ripple ruled
+t03 surfaced (correctly, per make-interface-changes-deliberately): CanonicalResolution's base
+conjunct forces the root to STEP, but at L=0 conRoot terminates immediately (leaf, not branch) —
+monomialization_terminates was FALSE-AS-STATED at L=0. Named as the THIRD instance of the
+obligation-statement class (standing counsel incremented). The fix: hL : 0 < L on
+monomialization_terminates, rippling through resolutionOf + 6 projections + region_glue +
+engine_box_threshold_finite + canonicalResolution224 (~8 decls / 3 files + AxCheck signatures).
+Threading verified by seat: the DLN flip site supplies 1≤L/2≤L; canonicalResolution224 is L=2.
+hL = the nondegenerate-chain hypothesis (honest, Aoyagi scope), DISTINCT from width-positivity
+(route (B) proved unnecessary — do not blur). RULING: t03 absorbs the FULL ripple in ONE atomic
+batch (no mixed-signature staging), conditions: (1) one batch + full aggregator green; (2)
+re-probe the protected set (canonicalResolution224_arithmetic, region_glue_of_chartBridge,
+isFullMonomialization capstone, minAdm ≤) — report the four probe OUTPUTS; (3) R5-flip coherence
+check — after engine_box_threshold_finite gains hL, the hbox Prop's binder shape as consumed at
+the _gen flip site must remain typeable (an unconditioned ∀L stranded anywhere = a SECOND
+interface decision, surface first); (4) balloon tripwire >~12 decls / 4th file = stop-and-surface.
+Sequencing: reify-Clearable → hL ripple + E → D§ii/iii.

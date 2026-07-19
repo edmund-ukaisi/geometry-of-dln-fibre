@@ -372,9 +372,12 @@ over banked substrate.
   holds; what λ reads off geometrically), THEN transcribe; build the uniform object and DERIVE the
   cases, not the reverse. When a case-by-case grind feels authoritative but shapeless, stop and
   re-derive the global structure.
-- OBLIGATION-STATEMENT DISCIPLINE (2nd instance, 2026-07-18): TWICE a region_glue obligation was
+- OBLIGATION-STATEMENT DISCIPLINE (3rd instance, 2026-07-19): THRICE an obligation was
   FALSE-AS-STATED for want of a hypothesis the true construction supplies FREELY — (1) the resRank/2
-  Morse threshold (resRank fold), (2) srcBox boundedness/measurability. Common root: an obligation
+  Morse threshold (resRank fold), (2) srcBox boundedness/measurability, (3) monomialization_terminates
+  at L=0 (the base conjunct forces the root to STEP; at L=0 conRoot is a leaf — found by t03 at the
+  E-wire, fixed by the hL : 0<L ripple, tick 157; hL is the nondegenerate-chain hypothesis, distinct
+  from width-positivity which route (B) proved unnecessary). Common root: an obligation
   quantifying over an ABSTRACT carrier field (a bare exponent list, a bare Set) inherits a gap the
   real object (a genuine Morse residual, a bounded chart box) always closes. Both were caught by a
   DECORRELATED counterexample, NOT the in-file satisfiability witness — the witness used a benign
