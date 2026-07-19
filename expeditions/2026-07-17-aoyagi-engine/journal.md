@@ -4891,3 +4891,19 @@ standalone full-ledger lemma against the cleaned motive (Inv-det + DivBirthInv o
 case-2 birth first to establish the pattern, the motive/conclusion restatement deferred to
 t10's field + the headline text (merging origin on their appearance). The board's one real
 grind is in motion on the correct statement.
+
+## 2026-07-19 tick 308: loss-t15's PHASE 2+3a COMPLETE — LeafPullback reduced to the ONE named crux
+Merged (c059bfdb2) + probed clean-three: the α gauge is FULLY BUILT (det-1 via
+LinearMap.det_conj + the banked shear atoms; the srcBox bound via the shear-independence
+machinery) and THE LOSS-ALGEBRA LAYER IS CLOSED HOLE-FREE — LeafDiagFrob (the named input
+Prop: frobSq = Σ((∏z)·rᵢ)² with a unit witness and an hi-bound) + leafPullback_of_diagFrob
+(resRank=0 ⟹ LeafPullback, residualCore ≥ 1 = lo) + the resRank-zero transfer through the
+gauge atlas. GeoAlphaGauge = exactly ONE sorry: leafDiagFrob_geoAtlasNorm — the (3b) value
+crux, precisely named. The conRoot binder check passed (the standing rule held).
+DIRECTION SET: design-now/build-later — Inv_val's statement + the per-case value-maintenance
+signatures draft NOW from §7 + thread-19 (its framing corrected: TWO certs one skeleton,
+no cert wait remains); the walk instantiation mirrors t14's landed step-case pattern (the
+shape-check discipline); the (B) wiring pre-staged; merge t10's imminent field push.
+THE HOLE CENSUS NOW: t14's step-case maintenance (the one real grind, in flight) +
+leafDiagFrob (spec-complete, sequenced) + inj-t16's three steps (in flight) + t10's
+restatement batch (in flight). Everything else on the atlas face is PROVEN.
