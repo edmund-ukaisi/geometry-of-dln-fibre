@@ -3768,3 +3768,9 @@ unchanged, :115 one-liner, drop :108-114). t10 had meanwhile BANKED fix-independ
 imageCover coherence hypothesis) — folds into the batch. Fill ~120 LoC as scoped; the hbij
 tiling link stays the flagged hard step. BOARD: t10 executing; t11 phase 1; t09 on
 RealCNodeFacts; coverage idle-by-design (assembly go awaits the builders).
+
+### Tick-257 addendum: t10 ack — R=1 confirmed by silence (its stated default = my intent)
+t10 reconciled the two steers correctly: msg-3 (fix (a), 0∈U, R=1 self-cover, atom untouched)
+governs; the msg-2 R>1/bounded-atom gifts were the superseded V⊆U path's. At R=1 the node
+cover IS the banked atom verbatim (pivotChartDom i 1 = cubeBox d 1). No countermand sent —
+t10's default is the intent. Executing; reports at the full-batch gate.
