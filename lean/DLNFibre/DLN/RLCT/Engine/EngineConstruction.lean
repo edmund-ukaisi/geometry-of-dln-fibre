@@ -2511,4 +2511,46 @@ theorem isFullMonomialization_buildTree_conRoot {L : ℕ} (M : Fin (L + 1) → �
   leaves_isFullMono hL conRoot OracleInv_conRoot BoundaryFlat_conRoot MvalCoh_conRoot
     T0Bound_conRoot NumDivFlatPos_conRoot
 
+/-- **Every leaf of the built tree has `resRank = 0`** — the construction emits only `leafOfState`
+leaves, whose Morse-residual rank is `0` (both `dite` branches). So `terminalExponents` reads only the
+divisor exponents (no residual term). -/
+theorem leaves_resRank_zero {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) :
+    ∀ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s), l.resRank = 0 := by
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    intro l hl
+    cases hoc : conOracle M s with
+    | terminal l' hleaf =>
+      rw [buildTree_terminal M (conOracle M) s l' hleaf hoc] at hl
+      simp only [ResolutionTree.leaves, List.mem_singleton] at hl
+      subst hl
+      rw [conOracle_terminal_leaf s hoc]
+      unfold leafOfState; split <;> rfl
+    | step node children hnode hlayer hstep =>
+      rw [buildTree_step M (conOracle M) s node children hoc] at hl
+      rw [ResolutionTree.leaves, edgesLeaves_eq, List.mem_flatMap] at hl
+      obtain ⟨e, he, hle⟩ := hl
+      rw [List.mem_map] at he
+      obtain ⟨c, hc, rfl⟩ := he
+      exact ih c.child c.hdesc l hle
+
+/-- **`minAdm` lower-bounds every terminal exponent** (`CanonicalResolution`'s exponent-hook §i): each
+terminal exponent is `(Mval M a).toNat` for an admissible `a` (`IsFullMonomialization`), hence `≥
+minAdm M = (inf_{Adm} Mval).toNat`; the residual part is empty (`leaves_resRank_zero`). -/
+theorem minAdm_le_terminalExponents {L : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+    ∀ e ∈ ResolutionTree.terminalExponents (buildTree M (conOracle M) (conRoot : ConState L)),
+      minAdm M ≤ e := by
+  intro e he
+  rw [ResolutionTree.terminalExponents, List.mem_flatMap] at he
+  obtain ⟨l, hlmem, he⟩ := he
+  rw [List.mem_append] at he
+  have hrr : l.resRank = 0 := leaves_resRank_zero conRoot l hlmem
+  rcases he with he | he
+  · rw [List.mem_map] at he
+    obtain ⟨k, _, rfl⟩ := he
+    obtain ⟨hexp, hadm⟩ := (isFullMonomialization_buildTree_conRoot M hL l hlmem).1 k
+    rw [hexp, minAdm]
+    exact Int.toNat_le_toNat (Finset.inf'_le (Mval M) hadm)
+  · rw [hrr] at he; simp at he
+
 end DLNFibre.DLN.RLCT.Engine
