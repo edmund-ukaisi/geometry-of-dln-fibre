@@ -343,25 +343,34 @@ theorem childLeaves_subset (M : Fin (L + 1) → ℕ) (s : ConState L) {node : St
 anchor-descent along the `R(tStar)` steering path). MINIMIZER-ONLY: this is `tStar`, not general
 `Clearable-Adm` (= R7). The `t̃ = 0` is automatic (`tStar ∈ Adm`, last coord `0`).
 
-CRUX (sorried, the §4 construction-tracing brick): trace the `R(tStar)` root→leaf path in
-`buildTree M (conOracle M) conRoot` (following the case-1(1)/1(2) selection per the steering rule),
-maintain the anchor-descent invariant, and read `tStar` off the terminal leaf. Reuses `LiveHeadDom` /
-`chooserTotalOnChain_of_sameLevel` / `step1_dominates` (reuse index (b)). Tripwire: if the pull-ordering
-brick fights beyond a couple honest attempts, STOP + report for a consult seat. -/
-theorem tStar_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+**POSITIVE WIDTHS ARE REQUIRED** (`hMpos : ∀ i, 0 < M i`; caveat next to the claim): the achievability
+half is FALSE at a zero width. Witness `M = ![2,2,0]`: `tStar M = (2,0)` but `widthMinUpto M 2 = 0`
+forces an immediate rollover at layer 1, so the built tree's only `t̃ = 0` divisor is `(0,0)` — `(2,0)`
+is never realized (verified: integer sim + the Lean `conOracle` trace; two decorrelated Codex consults
+independently found the same, with witness `![1,1,0]`). This matches the divergence half's `hMpos`
+(`RouteMAchieverFullHNoFree`), the attainment/tightness layer that needs positive widths throughout;
+the `⊆` lower bound (`minAdm_le_terminalExponents`) stays width-free.
+
+CRUX (sorried, the §4 construction-tracing arc): the `conRel`-WF leaf fold along the `R(tStar)`
+steering path, maintaining the 3-phase `SteerInv` (`pre`/`anchored`/`done`, with the level-coverage
+clause forcing the anchor's pull at exactly `cleared = tStar^S`), reading `tStar` off the terminal
+leaf. Tripwire: if the level-coverage / phase-maintenance fights, STOP + report. -/
+theorem tStar_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) (hMpos : ∀ i, 0 < M i) :
     ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
       ∃ k : Fin l.numDiv, l.divProfile k = tStar M := by
   sorry
 
 /-- **`o5_core`, realized** (cert §3 + §4 composed): `minAdm M` is a divisor exponent of a leaf of the
 built tree. The MOVE-AT-LANDING target — when this lands, o5_core moves here from `EngineConstruction`
-(its sorry deleted) and `o5_realization` (`EngineObligations`) consumes it. PROVEN modulo the §4 crux
-`tStar_realized`: the realized `tStar` leaf divisor has `divExp = (Mval M tStar).toNat = minAdm M`
-(`IsFullMonomialization` read-off + `Mval_tStar_eq`). -/
-theorem o5_core_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
+(its sorry deleted) and `o5_realization` (`EngineObligations`) consumes it. Needs `hMpos` (the
+achievability half is false at a zero width — see `tStar_realized`; the downstream re-signature joins
+the move-at-landing batch). PROVEN modulo the §4 crux `tStar_realized`: the realized `tStar` leaf
+divisor has `divExp = (Mval M tStar).toNat = minAdm M` (`IsFullMonomialization` read-off +
+`Mval_tStar_eq`). -/
+theorem o5_core_realized (M : Fin (L + 1) → ℕ) (hL : 0 < L) (hMpos : ∀ i, 0 < M i) :
     ∃ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) (conRoot : ConState L)),
       ∃ k : Fin l.numDiv, l.divExp k = minAdm M := by
-  obtain ⟨l, hl, k, hk⟩ := tStar_realized M hL
+  obtain ⟨l, hl, k, hk⟩ := tStar_realized M hL hMpos
   refine ⟨l, hl, k, ?_⟩
   have hexp := ((isFullMonomialization_buildTree_conRoot M hL l hl).1 k).1
   rw [hexp, hk, Mval_tStar_eq]
