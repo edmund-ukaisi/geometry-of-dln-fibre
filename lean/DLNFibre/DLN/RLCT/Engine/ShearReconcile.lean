@@ -1,4 +1,7 @@
 import DLNFibre.DLN.RLCT.Engine.PivotCoverFold
+import Mathlib.LinearAlgebra.Transvection.Basic
+import Mathlib.Analysis.Calculus.FDeriv.Mul
+import Mathlib.Analysis.Calculus.FDeriv.Prod
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.ShearReconcile` — the shear reconciliation lemma (rung 3)
@@ -148,5 +151,56 @@ def elemShearHomeomorph (a b c : Fin d) (hab : a ≠ b) (hac : a ≠ c) :
     change Continuous (fun x : Fin d → ℝ => Function.update x a (x a + x b * x c))
     exact (continuous_id).update a
       ((continuous_apply a).add ((continuous_apply b).mul (continuous_apply c)))
+
+/-- `elemShear` as an additive-single shift: `elemShear a b c x = x + (−x_b·x_c) • eₐ`. The form the
+fderiv reads (a rank-1 perturbation of the identity along `eₐ`). -/
+theorem elemShear_eq_add_single (a b c : Fin d) :
+    elemShear a b c = fun x => x + (-(x b * x c)) • (Pi.single a 1 : Fin d → ℝ) := by
+  funext x k
+  simp only [elemShear, Function.update_apply, Pi.add_apply, Pi.smul_apply, Pi.single_apply,
+    smul_eq_mul]
+  by_cases hk : k = a <;> simp [hk, sub_eq_add_neg]
+
+/-- The derivative covector of `elemShear` at `x`: `h ↦ −(x_b·h_c + x_c·h_b)` (the product rule on
+`−x_b·x_c`). It vanishes on `eₐ` (both sources `b`, `c` differ from `a`). -/
+noncomputable def elemShearCovec (b c : Fin d) (x : Fin d → ℝ) : (Fin d → ℝ) →L[ℝ] ℝ :=
+  -(x b • ContinuousLinearMap.proj c + x c • ContinuousLinearMap.proj b)
+
+/-- The Fréchet derivative of `elemShear` at `x`: `id + covec ⊗ eₐ` — a transvection. -/
+noncomputable def elemShearDeriv (a b c : Fin d) (x : Fin d → ℝ) :
+    (Fin d → ℝ) →L[ℝ] (Fin d → ℝ) :=
+  ContinuousLinearMap.id ℝ (Fin d → ℝ) + (elemShearCovec b c x).smulRight (Pi.single a 1)
+
+/-- `elemShear` is Fréchet-differentiable with derivative `elemShearDeriv`. -/
+theorem elemShear_hasFDerivAt (a b c : Fin d) (x : Fin d → ℝ) :
+    HasFDerivAt (elemShear a b c) (elemShearDeriv a b c x) x := by
+  rw [elemShear_eq_add_single]
+  have hb := (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin d => ℝ) b).hasFDerivAt (x := x)
+  have hc := (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin d => ℝ) c).hasFDerivAt (x := x)
+  have hres := (hasFDerivAt_id x).add ((hb.mul hc).neg.smul_const (Pi.single a 1 : Fin d → ℝ))
+  simpa only [elemShearDeriv, elemShearCovec, ContinuousLinearMap.proj_apply, id_eq] using hres
+
+/-- The determinant of `elemShearDeriv` is `1` (a transvection with vanishing covector-on-`eₐ`). -/
+theorem elemShearDeriv_det (a b c : Fin d) (hab : a ≠ b) (hac : a ≠ c) (x : Fin d → ℝ) :
+    (elemShearDeriv a b c x).det = 1 := by
+  have hcovec0 : elemShearCovec b c x (Pi.single a 1) = 0 := by
+    simp only [elemShearCovec, ContinuousLinearMap.neg_apply, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.proj_apply,
+      Pi.single_apply, smul_eq_mul]
+    rw [if_neg (Ne.symm hac), if_neg (Ne.symm hab)]; ring
+  have htr : (elemShearDeriv a b c x).toLinearMap
+      = LinearMap.transvection (elemShearCovec b c x).toLinearMap (Pi.single a 1) := by
+    ext h
+    simp [elemShearDeriv, LinearMap.transvection.apply]
+  change LinearMap.det (elemShearDeriv a b c x).toLinearMap = 1
+  rw [htr, LinearMap.transvection.det]
+  simpa using hcovec0
+
+/-- **The elementary Schur shear has Jacobian determinant of modulus 1** — the R-b det-1 fact:
+`|det Dα_d| = 1`, so under `β̃_e = β_e ∘ α_e⁻¹` the monomial Jacobian is unchanged
+(`cert-psi-mix` §R-b). `α_u = .refl` gives `|det| = 1` trivially. -/
+theorem abs_det_fderiv_elemShear (a b c : Fin d) (hab : a ≠ b) (hac : a ≠ c) (x : Fin d → ℝ) :
+    |(fderiv ℝ (elemShear a b c) x).det| = 1 := by
+  rw [(elemShear_hasFDerivAt a b c x).fderiv, elemShearDeriv_det a b c hab hac x, abs_one]
 
 end DLNFibre.DLN.RLCT.Engine
