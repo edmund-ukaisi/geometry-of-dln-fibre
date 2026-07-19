@@ -554,6 +554,110 @@ theorem cNodeOf_eq_realCNode_of_facts (M : Fin (L + 1) → ℕ) (node : StepData
     cNodeOf M node hd = realCNode M node hd :=
   cNodeOf_eq_realCNode M node hd (realCNode_injective_of_facts M node hd H)
 
+/-- `chooseMinData` on a `toStepData` node is the state's `chooseMin` (the ledgers coincide). -/
+theorem chooseMinData_toStepData (M : Fin (L + 1) → ℕ) (s : ConState L) (rr rc target : ℕ) :
+    chooseMinData (s.toStepData M rr rc) target = chooseMin s target := rfl
+
+/-- **`cNodeOf = realCNode` at every built-tree branch node** (`DivBirthInv`-only — the case-1
+branch itself supplies the chooser, so no `OracleInv` is needed): the fidelity capstone, one
+`conOracle` walk. Rollover ⟹ dim-0 (vacuous inj); case-2 ⟹ `nodeOccMin = none` (vacuous facts);
+case-1 ⟹ the merged divisor's corner validity + freshness off `DivBirthInv`, block-fit from the occ
+bounds + the case-1 node shape. This is what coverage's cover-correctness consumes. -/
+theorem cNodeOf_eq_realCNode_of_conOracle {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (dinv : DivBirthInv M s) (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hd : dCenterOfNode M node ≤ flatDim M) :
+    cNodeOf M node hd = realCNode M node hd := by
+  obtain ⟨hvalid, -, hfresh, -⟩ := dinv
+  by_cases h1 : L ≤ s.layer
+  · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
+    rw [buildTree_terminal M (conOracle M) s (leafOfState M s) (leafOfState_rootLedger M s)
+      horacle] at htree
+    exact absurd htree (by simp)
+  · have hlive : s.layer < L := not_le.mp h1
+    have hL1 : s.layer + 1 < L + 1 := by omega
+    by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · -- rollover: dim-0, vacuous injectivity
+      have horacle : conOracle M s = rolloverDecision M s (le_of_lt hlive) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
+      obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
+      exact cNodeOf_eq_realCNode M _ hd
+        (realCNode_injective_of_dCenterOfNode_zero M _ hd (dCenterOfNode_rollover M s 0 0 hlive h2))
+    · have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · -- case-2: `nodeOccMin = none` ⟹ `RealCNodeFacts` vacuous
+        have horacle : conOracle M s = case2Decision M s
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
+        obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
+        refine cNodeOf_eq_realCNode_of_facts M _ hd (fun target htgt => ?_)
+        exact absurd ((nodeOccMin_toStepData M s _ _ ▸ htgt).symm.trans hmin) (by simp)
+      · -- case-1: read the corner facts off `DivBirthInv`
+        rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle M s = oracleTerminal M s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [buildTree_terminal M (conOracle M) s (leafOfState M s)
+            (leafOfState_rootLedger M s) horacle] at htree
+          exact absurd htree (by simp)
+        · have htbounds : s.cleared + 1 ≤ target ∧ target + 1 ≤ widthMinUpto M s.layer := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              rw [hdt] at hc0; exact hc0
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          obtain ⟨hlb, hub⟩ := htbounds
+          have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
+          rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
+          obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
+          refine cNodeOf_eq_realCNode_of_facts M _ hd (fun target' htgt => ?_)
+          obtain rfl : target = target' :=
+            Option.some.inj (hmin.symm.trans (nodeOccMin_toStepData M s _ _ ▸ htgt))
+          refine ⟨f, chooseMinData_toStepData M s _ _ target ▸ hf, ?_⟩
+          obtain ⟨hL, hrow, hcol⟩ := hvalid f
+          have hrowf : (s.divBirthCoord f).2 < M (⟨(s.divBirthCoord f).1, hL⟩ : Fin L).castSucc :=
+            hrow _ (by simp)
+          have hcolf : (s.divBirthCoord f).2 < M (⟨(s.divBirthCoord f).1, hL⟩ : Fin L).succ :=
+            hcol _ (by simp)
+          have hwc : widthMinUpto M s.layer ≤ M (⟨s.layer, hlive⟩ : Fin L).castSucc :=
+            widthMinUpto_le _ (by simp)
+          have hws : widthMinUpto M (s.layer + 1) ≤ M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) :=
+            widthMinUpto_le _ (by simp)
+          refine ⟨hL, hrowf, hcolf, hfresh f, hlive, ?_, ?_⟩
+          · show s.cleared + (target - s.cleared) ≤ M (⟨s.layer, hlive⟩ : Fin L).castSucc
+            omega
+          · show s.cleared + (M ⟨s.layer + 1, hL1⟩ - s.cleared) ≤ M (⟨s.layer, hlive⟩ : Fin L).succ
+            have hbridge :
+                M (⟨s.layer, hlive⟩ : Fin L).succ = M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) := rfl
+            omega
+
 /-! ## The q-det lemma: `qOfCenter` is linear (its fderiv is a fixed continuous linear equiv)
 
 The blow-up chart conjugates by `qOfCenter` (`geoChartMap = q.symm ∘ (pivotChart × id) ∘ q`). For
