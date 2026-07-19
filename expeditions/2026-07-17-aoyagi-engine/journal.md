@@ -3276,3 +3276,20 @@ re-prove the canonical name + the #guard_msgs gate — zero new mathematics, one
 rewrite the "one-exact fill" docstring doesn't mention. R5 checklist updated in priorities.
 The calibration instrument's running score: 4/4 misses in one class (slogan-for-signature),
 each caught pre-execution — the ledger's first-question convention is carrying its weight.
+
+## 2026-07-19 tick 220: qOfCenter GREEN FIRST-TRY (clean-three, merged+wired); the field-lock EXECUTED
+t06's first carrier green: Engine/QNodeChart.lean — centerPerm (trap B: Equiv.ofInjective +
+sumCompl + the Fintype.card bookkeeping), qOfCenter (paramsEquivFlatCLE.toHomeomorph ∘
+piCongrLeft ∘ sumArrowHomeomorphProdArrow — traps C/D dodged as the spec advised), and
+dCenterOfEdge. All five t05-named traps navigated on the FIRST attempt — the trap-annotated
+spec earning its keep. THE FIELD-LOCK executed in one pass as designed: (1) qOfCenter is
+PARAMETRIC in the center selector (the node/edge enters only through c — elder-gate9's
+u-coord-as-parameter, exactly; doesn't block on divBirthCoord); (2) divBirthCoord = a StepData/
+ConState field, accessor typed; (3) dCenterOfEdge is THE consumable; (4) PER-EDGE keying
+decided (coverage's provisional qNodeOf g.node → qEdgeOf g.node g.edge — its GeoChart already
+stores the edge). Answers forwarded; coverage locking. QNodeChart wired into AxCheck
+(controller side, verifying). divBirthCoord ruled PROCEED (the honest ~19-site/6-file scope
+flag answered): the T1b-class pattern + two staging refinements — the mechanical ripple banks
+as its OWN commit before the injectivity discharge; the T1c revert-tripwire (checkout-clean on
+balloon/spine-fight, no half-cascade); canonicalResolution224_arithmetic explicitly in the
+re-probe set (the witness file is in the ripple). Then qEdgeOf = coverage's trigger.
