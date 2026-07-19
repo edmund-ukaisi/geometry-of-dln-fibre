@@ -1,7 +1,7 @@
 # STATUS — 2026-07-17-aoyagi-engine
 
-updated: 2026-07-19 (cartographer-6, tick 265+ — full endgame rewrite; the 2026-07-17 version
-pre-dated the entire endgame)
+updated: 2026-07-19 (cartographer-6, tick 289 — endgame rewrite + placement-check refresh; the
+2026-07-17 version pre-dated the entire endgame)
 
 ## the one-line position
 
@@ -9,9 +9,12 @@ The engine has ONE analytic hole left: `chartBridge_buildTree` (`EngineObligatio
 other conjunct of `monomialization_terminates` is clean-three; `o5_realization` closed (t06 s4);
 `region_glue` is a proven composition awaiting only the bridge. Discharging `chartBridge_buildTree`
 flips `engine_box_threshold_finite` → `hbox` → repoints `aoyagi_learning_coefficient` (the mint). The
-discharge is the `geoAtlas` fed to `chartBridge_of_pieces`; the geo-atlas lane owes: cover (t10),
-per-pivot emission fix (finding 3), fold regrouping+instantiation (finding 2 cocycle), and clause (D)
-landing.
+discharge routes through the (D) R-split (tick 289, projection-enforced): a HIGH `ChartBridgeFaithful`
+module proves the faithful A∧B∧C∧D over `geoAtlas`, and `chartBridge_buildTree` fills as its projection.
+The geo-atlas lane now owes only: the fold-Jacobian cocycle (`geoAtlas_fold_det`, task #43) and clause
+(D) statement + node-walk (task #44). DONE since tick 265: cover (clean-three, tick 288), per-pivot
+emission fix (task #35), fold-spine gate-wiring. Placement VERIFIED clean import-add, no cycle
+(wiring-endgame §2e).
 
 ## landmarks (8 carried)
 
@@ -38,32 +41,36 @@ landing.
   ✔ fold-Jacobian SPINE [BANKED sorry-free, GATE-WIRED @13b86217a] GeoJacobianSpec (`geoChartMap_fderiv_det`
       per-edge atom) + GeoJacobianFold (`abs_det_fderiv_foldr_comp` parametric fold); AxCheck:12 import +
       5 watch lines (was a gate-orphan at the carto6 snapshot; closed post-snapshot).
-  ▶ cover (clause A) [IN FLIGHT — t10] `geoAtlas_imageCover` (GeoCoverSpec.lean:38 sorry); 0∈U reshape.
-  ⧗ fold cocycle regrouping + instantiation [GATED — finding 2] pnp-fold cert running (the 3 per-case
-      intermediate-point substitution identities) + task #30 (regroup onto source-w ledger).
-  ⧗ per-pivot divCoord/divExp emission fix [PENDING — finding 3, task #35] geoAtlas inherits the leaf's
-      divCoord; each fan-out copy needs its OWN pivot's exceptional coord. Transfers to t11 post-t10.
+  ✔ cover (clause A) [DONE, clean-three, tick 288] `geoAtlas_imageCover` (GeoCoverSpec.lean:370); 0∈U reshape.
+  ✔ per-pivot divCoord/divExp emission fix [DONE — task #35 FINAL] the parametric-gauge seam-fix
+      (geoChartMap = (β∘S)∘g, S concrete, g det-1 slot); co-folds chartMap + per-pivot ledger.
+  ▶ fold cocycle regrouping [IN FLIGHT — task #43] `geoAtlas_fold_det` (GeoLeafJacobian.lean:35 sorry) —
+      the finding-2 regrouping cocycle over the banked atoms (`geoChartMap_swap_fderiv_det` + the fold).
+  ▶ clause (D) statement + node-walk [IN FLIGHT — task #44] statement-gate first; dCenterOfEdge-GATED
+      phrasing (tick 262 rollover counter-sign). Lands in the HIGH ChartBridgeFaithful module (R-split).
   ⧗ LeafPullback [NOT built] loss-factorization; pnp-loss commissioned (residualCore-leak kill-condition).
-  ⧗ clause (D) landing [GATE — task #10] (D) must be IN the ChartBridge type BEFORE the discharge;
-      dCenterOfEdge-GATED phrasing (tick 262 rollover counter-sign).
 
-## discharge → mint ladder (post-hole)
+## discharge → mint ladder (post-hole) — the (D) R-split, projection-enforced (tick 289)
 
-  ⧗ t12-assembly seat [spawns at t10 merge] (D) + `chartBridge_of_pieces` discharge + the mechanical
-      import/watch-flip batch (wiring-endgame §2). Coverage contributes its nodes_cNode walk.
-  ⧗ AxCheck watch flips [staged] chartBridge_buildTree / monomialization_terminates /
-      engine_box_threshold_finite / region_glue → clean-three (canonicalResolution224 does NOT flip —
-      separate (2,2,4) sorry).
-  ⧗ mint re-point [staged, ~10 lines] land bare `aoyagi_learning_coefficient` on `_gen` (avoid the 3
-      legacy Skeleton stubs); enforced axiom-gate.
+  ⧗ ChartBridgeFaithful.lean [NEW HIGH module] `def ChartBridgeFaithful` (A∧B∧C∧D) +
+      `chartBridgeFaithful_buildTree` discharge + `toChartBridge` projection. Placement VERIFIED clean
+      import-add, no cycle (wiring-endgame §2e).
+  ⧗ EngineObligations gains `import ChartBridgeFaithful`; `chartBridge_buildTree := (…).toChartBridge`
+      (+ hMpos signature widening). CORDON: a direct A∧B∧C fill is a fidelity regression.
+  ⧗ AxCheck watch flips chartBridge_buildTree / monomialization_terminates / engine_box_threshold_finite /
+      region_glue → clean-three; NEW watch `chartBridgeFaithful_buildTree` MUST-clean-three
+      (canonicalResolution224 does NOT flip — separate (2,2,4) sorry).
+  ⧗ mint re-point [staged, ~10 lines] land bare `aoyagi_learning_coefficient` on `_gen`; enforced
+      axiom-gate (R5 #guard_msgs, extended to chartBridgeFaithful_buildTree).
   ⧗ cordon census [just-before-PR].
 
-## engine-cone sorry census (4, grep-verified HEAD c342c55fb)
+## engine-cone sorry census (grep-verified HEAD aac2dc391, tick 289)
 
   - `EngineObligations.lean:53` — `chartBridge_buildTree` (THE hole; the gate's one live +sorryAx for the spine).
+  - `GeoLeafJacobian.lean:35` — `geoAtlas_fold_det` (fold cocycle #43; GATE-ORPHAN so off the build footprint).
   - `ClearableReify.lean:78` — `realizedProfiles_eq_clearableAdm` (R7 reify-now; +sorryAx until R7, expected).
   - `CanonicalWitness224.lean:135` — `canonicalResolution224` (2,2,4) ChartBridge conjunct (separate forecast).
-  - `GeoCoverSpec.lean:38` — `geoAtlas_imageCover` (t10; GATE-ORPHAN, so off the build's +sorryAx footprint).
+  - (`GeoCoverSpec.lean` cover sorry CLOSED tick 288; plus any live (D)-draft sorry from task #44.)
 
 ## deferred / off-critical-path
 
