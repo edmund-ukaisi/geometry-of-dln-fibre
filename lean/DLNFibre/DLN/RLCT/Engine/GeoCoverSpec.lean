@@ -194,6 +194,64 @@ theorem leafOfState_srcBox (s : ConState L) :
     (leafOfState M s).srcBox = ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 := by
   unfold leafOfState; split <;> rfl
 
+/-- **A `conOracle` step has a nonempty child list** — every step branch (rollover / case-1 / case-2)
+emits ≥1 child; the terminal branches are not steps. Needed for the `dCenterOfNode = 0` (chartless)
+node in the cover: the identity passthrough of one covering child carries the flat cube. -/
+theorem conOracle_step_children_ne_nil (s : ConState L) (node : StepData M)
+    (children : List (StepChild M s)) {hn hl hs}
+    (hoc : conOracle M s = ConDecision.step node children hn hl hs) : children ≠ [] := by
+  by_cases h1 : L ≤ s.layer
+  · rw [conOracle, dif_pos h1] at hoc; exact absurd hoc (by simp [oracleTerminal])
+  · by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hoc
+      have h := congrArg ConDecision.stepChildren hoc
+      simp only [rolloverDecision, ConDecision.stepChildren] at h
+      rw [← h]; exact List.cons_ne_nil _ _
+    · have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+      have hL1 : s.layer + 1 < L + 1 := by omega
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · have horacle : conOracle M s = case2Decision M s
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]; split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hoc
+        have h := congrArg ConDecision.stepChildren hoc
+        simp only [case2Decision, ConDecision.stepChildren] at h
+        rw [← h]; exact List.cons_ne_nil _ _
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle M s = oracleTerminal M s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [horacle] at hoc; exact absurd hoc (by simp [oracleTerminal])
+        · have hgt : s.cleared < target := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0; have := Option.some.inj hk0; omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'; obtain rfl : f' = f := Option.some.inj (hf' ▸ hf); rfl
+              · rename_i hf'; exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq; exact absurd (heq ▸ hmin) (by simp)
+          rw [horacle] at hoc
+          have h := congrArg ConDecision.stepChildren hoc
+          simp only [case1Decision, ConDecision.stepChildren] at h
+          rw [← h]; exact List.cons_ne_nil _ _
+
 /-- **The flat cube is covered by the geometric tree's leaf-path images** (reachability induction on
 the built tree). Terminal: the leaf's `srcBox` is the flat cube. Step: the node's `dCenterOfNode`
 pivot charts self-cover the flat cube (`node_selfCover`), each pivot realised by a fanned edge whose
@@ -235,8 +293,23 @@ theorem flatCube_subset_leafPathImages :
         refine Set.iUnion_subset (fun j => ?_)
         exact fannedEdges_covers acc node hdle j.1 j.2 0 _ hchildcov (Nat.zero_le _)
           (by rw [Nat.zero_add, hsum]; exact j.2)
-      · -- chartless (rollover) node: `dCenterOfNode = 0`, the child passes the cube through `id`.
-        sorry
+      · -- chartless node (`dCenterOfNode = 0`: rollover or zero-block case-2): all edges are
+        -- chartless, so the identity passthrough of the first (covering) child carries the flat cube.
+        have hdz : dCenterOfNode M node = 0 := by omega
+        obtain ⟨c₀, cs, hcons⟩ :=
+          List.exists_cons_of_ne_nil (conOracle_step_children_ne_nil s node children hoc)
+        subst hcons
+        have he0 : dCenterOfEdge node
+            (Edge.mk c₀.ecase c₀.esubst (buildTree M (conOracle M) c₀.child)) = 0 := by
+          rw [hdz] at hsum; simp only [List.map_cons, List.sum_cons] at hsum; omega
+        rw [List.map_cons, fannedEdges, if_pos he0]
+        refine Set.subset_iUnion₂_of_subset
+          (Edge.mk c₀.ecase { c₀.esubst with localSub := id }
+            (tGeo acc (buildTree M (conOracle M) c₀.child)))
+          (List.mem_append_left _ (List.mem_singleton_self _)) ?_
+        simp only [Edge.subst, Edge.child, Set.image_id]
+        exact hchildcov (Edge.mk c₀.ecase c₀.esubst (buildTree M (conOracle M) c₀.child))
+          (by rw [List.map_cons]; exact List.mem_cons_self ..) acc
 
 /-- **Coherence bridge**: the atlas image-union equals the geometric tree's leaf-path images (each
 `tGeo id t` leaf's baked `chartMap` is its `leafPaths id` composite, `tGeo_coherence`). -/
