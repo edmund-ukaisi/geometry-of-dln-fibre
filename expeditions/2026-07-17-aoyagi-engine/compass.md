@@ -332,6 +332,18 @@ over banked substrate.
    false promise). GUARD: statement now, PROOF at R7 — reify-now must not pull the
    descent-invariant proof onto the spine.
 
+14. **The geoAtlas emission co-folds ledger and geometry — one recursion, not a reconciliation**
+    (elder charge-1, 2026-07-19). WHY: geoAtlas's `{lc.1 with chartMap := lc.2}` override inherits
+    the ledger leaf's divCoord/divExp while overriding geometry — two structures reconciled after
+    the fact, and the drift has fired TWICE (finding-3 per-pivot divCoord; the finRange-0 rollover
+    drop). RULING: #35 IS the unification (NOT a separate refactor — file-lock churn vs in-flight
+    t10/t11; the parametric fold is already construction-stable): geometricLeafPaths emits, per
+    path, ONE record whose chartMap AND per-pivot divCoord/divExp all derive from the same path
+    fold; geoAtlas reads it. Then the finding-2 cocycle is near-definitional maintenance of that
+    recursion, not a theorem against a mismatch. GUARD: gate #35's STATEMENT on co-folding; a
+    per-pivot divExp bolted on as another override perpetuates the seam and keeps the wall (R1)
+    a hard theorem — reject it. TIMING: post-t10 (file-lock).
+
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
 - `engine-route` — founding route; its gate is the first live test of the harness.
@@ -423,3 +435,30 @@ over banked substrate.
   ledger/geometry picture (see altitude-2026-07-19.md §1 — the two-face taste-rule: when a
   statement mixes a ledger quantifier with a geometric predicate, check which face it lives
   on). The close synthesis starts from the altitude notes, not the journal chronology.
+- OPEN CERT KILL-CONDITIONS, un-adjudicated (elder charge-1, 2026-07-19): (i) fold-regrouping
+  cocycle (pnp-fold) — the coordinate substitution through the child fold, not the exponent
+  arithmetic; (ii) LeafPullback residualCore-leak (pnp-loss) — extra fold divisor-vanishing in
+  the LOSS that cannot absorb into a bounded-below residualCore falsifies LeafPullback as
+  stated. NEITHER LeafJacobian's fold-det nor LeafPullback is TRUSTED until its decorrelated
+  cert returns empty of counterexamples; a green build over a sorried LeafPullback is NOT the
+  gate. The power-counting shape is right (² in the loss / divExp−1 in the Jacobian);
+  satisfiability over the real atlas is the frontier.
+- (D) IS MANDATORY-IN-TYPE BEFORE THE DISCHARGE (gate #10, hard; elder charge-1): the committed
+  body is A∧B∧C; without (D), ChartBridge's name/docstring ("t's resolution charts") overclaims
+  its content ("a monomialising cover with matching exponents"). (D) is near-definitional over
+  geoAtlas (buck-stops chartMap = fold). Required form: dCenterOfEdge-GATED (id at 0-factor
+  edges; an ungated "every case2 edge blows up a real pivot" is FALSE at resCols=0). Reject any
+  "discharge A∧B∧C, add (D) later".
+- CHARTBRIDGE TYPE FLIP VERIFY (in-flight, on critical path; elder charge-1): the committed
+  type carries V⊆U (EngineDefs:99), UNPROVABLE over geoAtlas at L≥2 (tick 255). The 0∈U
+  weakening (#31) is in t10's un-merged batch. chartBridge_buildTree must NOT be discharged
+  until the 0∈U form lands in the TYPE (not only the region_glue consumer).
+- RUNWAY HANDOFF (elder charge-1 Q4): the capstone leaves ChartBridge as a STANDALONE reusable
+  resolution certificate + a NAMED two-sided critical-exponent statement (finiteness ∧
+  divergence ⟹ exponent = minAdm/2, routeMCore local integral) + the domain-bridge lemmas
+  (cubeBox ε↔routeMBaseNbhd, T=1↔ε). The engine's coverage IS the runway's hard part (the
+  singular-locus LOWER bound). θ/order is NOT delivered (meromorphic continuation gap) — no
+  mint framing may imply it is.
+- resRank-VACUITY CHECK owed (elder R5b, non-blocking): confirm resRank>0 fires at SOME spine
+  leaf; if never, NAME the Morse clauses "carried-for-generality" (honest) — do not present
+  them as load-bearing.

@@ -3986,3 +3986,33 @@ The untimed run completed: LAKE-EXIT:0, zero errors, all new watch lines exactly
 abs_det_fderiv_foldr_comp, geoChartMap_differentiable). GeoJacobianFold import wired —
 no gate-orphans among the new modules. The watch-line commit that waited three build
 attempts (two timeout-killed, one mid-merge-invalidated) is banked on a REAL exit code.
+
+## 2026-07-19 tick 268: ELDER CHARGE-1 MEMO — verdict "right objects, one mis-factored seam, two open certs"; all bindings applied
+The standing elder's first pass answered the operator's worry precisely: the ATOMS are
+rising-sea (the parametric fold; GeoChart's buck-stops design; the two-face factorization
+"worth carrying to future resolution formalisations") — the spiky risk is CONCENTRATED at the
+geoAtlas emission seam and two un-adjudicated kill-conditions. Bindings applied THIS TICK:
+- COMPASS FORK 14 (applied verbatim): #35 = the ledger/geometry CO-FOLDED unification (one
+  record per path, chartMap + per-pivot divCoord/divExp from the SAME fold), statement-gated;
+  a bolted-on override is rejected — the third drift would be self-inflicted. Payoff: the
+  finding-2 cocycle becomes near-definitional maintenance of one recursion. t11 re-briefed.
+- STANDING COUNSEL +5 bullets (applied verbatim): the two open cert kill-conditions (neither
+  LeafJacobian's fold-det nor LeafPullback TRUSTED until decorrelated certs return empty — a
+  green build over a sorried LeafPullback is NOT the gate); (D) mandatory-IN-TYPE,
+  dCenterOfEdge-gated, "discharge A∧B∧C add (D) later" pre-rejected (task #10 hardened); the
+  V⊆U→0∈U TYPE-flip verify pinned to t10's merge gate (the committed type is currently
+  UNFILLABLE — the weakening lives only in t10's unmerged batch); the RUNWAY HANDOFF spec
+  (ChartBridge as standalone resolution certificate + the named two-sided critical-exponent
+  statement + domain bridges; θ explicitly NOT delivered — no mint framing may imply it);
+  the resRank-vacuity check (task #42 — if Morse never fires on the spine, name it
+  carried-for-generality).
+- Q2 ADOPTED: t11 promotes the acc-GENERALIZED leaf-read to the design NOW (entry-9 lesson;
+  the passthrough forwards acc). Phase-2 already acc-agnostic — cost ~zero.
+- PNP-LOSS SPAWNED NOW (was queued): the elder ranked the LeafPullback residualCore-leak the
+  single biggest UNPROBED conceptual risk — adjudication (holds / holds-with-conditions /
+  FALSE-with-witness) of "each divisor factors out of prod EXACTLY linearly; the residual
+  carries no divisor factor, Morse-bounded below," depth-≥2 composites, sympy-verified,
+  including the resRank=0 constant-lower-bound case (the spine's likely real case).
+Elder confirmed sound/keep: the id-passthrough, the 0∈U local form, LeafPullback's uniform-²
+shape (loss-order vs Jacobian-order — deliberately not the ½-confound), finding-1's conRoot
+specialization. Two offices' memos now pending: carto-standing (wiring) + the two pnp certs.
