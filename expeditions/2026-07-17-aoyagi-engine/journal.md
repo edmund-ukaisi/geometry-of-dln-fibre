@@ -2740,3 +2740,20 @@ beyond a couple honest attempts → STOP, consult spawned THEN with the precise 
 Scope pin: the steering path for tStar ONLY (minimizer-only; general Clearable-Adm = R7).
 t05's queue: §4 → carrier (after coverage's re-typing batch merges; ψ verdict + α_e revision
 in its inbox). Both crux holes now have zero coordination gates in front of their owners.
+
+## 2026-07-19 tick 190: §4 SPECIFY merged — o5_core_realized proven modulo tStar_realized (THE crux)
+t05's SPECIFY landed (982c657f3): o5_core_realized (the move-at-landing target) is PROVEN
+modulo the single sorried crux tStar_realized — the arithmetic chain divExp = Mval(profile).
+toNat = Mval(tStar).toNat = minAdm composes off the capstone + Mval_tStar_eq; controller probe
+confirms +sorryAx enters via tStar_realized ONLY. HONEST SCOPE (accepted as a finding): tStar_
+realized is the engine's hardest single proof — NEW machinery needed (no ∃-a-leaf pattern
+exists over buildTree; all banked patterns are ∀-over-leaves): (1) the path-existence ∃-lemma
+(WF-induction exhibiting the R(tStar)-steered path), (2) the anchor-descent invariant
+(base/maintenance/termination), (3) the pull-ordering brick (reuses LiveHeadDom/chooser kit).
+A fresh multi-hundred-line dedicated arc. RULINGS: no interleaving (the deep arc gets
+unfragmented budget); carrier co-design RESTRUCTURED to proposal-then-checkpoint (coverage
+drafts the q/t_geo interface doc post-batch; t05 confirms-or-counters at a banked boundary —
+design session → checkpoint review); fused-WF-induction suggestion (the ∃-path induction IS
+the invariant-maintenance induction per the cert — try fused first); bank-aggressively +
+ceiling-honesty (each of the 3 pieces banks independently; consolidate-and-hand-off beats a
+degraded grind — the t02/t03 pattern is the norm, not failure). Tripwire stands.
