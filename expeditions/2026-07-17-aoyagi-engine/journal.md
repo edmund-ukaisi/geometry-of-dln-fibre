@@ -2685,3 +2685,28 @@ assignment SKIPPED (moot)** — sub-gap-1 COMPLETE on the construction side; atl
 divCoord/injectivity is coverage's, consuming this invariant; (3) GO §3 (Codex-first,
 reuse-index, salvage evaluated); §4 still pauses for pnp-o5 routing. Gotchas-delta invited if
 the direct crack differs from the ledger idiom.
+
+## 2026-07-19 tick 187: ψ ADJUDICATION IN (R-b decisive); re-typing batch commissioned; wiring banked
+pnp-psi's cert merged (threads/15-psi-adjudication/): **T1 YES** — the u-pivot is load-bearing
+(Aoyagi's case-1 center includes u, the +1 in d_center, pp.15-16 verbatim; the 1(1) chart
+uniquely covers the u-max-modulus sector, POSITIVE MEASURE; its localSub is the genuine
+u-blow-up d_ij = u·d'_ij — ψ=id but β≠id). The tick-113/162 "(i) ledger-only extra" escape is
+FALSE — corrected on the record (the earlier "merge edges carry no gauge" was half-right: no
+GAUGE, but real geometry). R2 Leg-1 corroborates for the pure-β family (it included the u-pivot
+symmetrically) and was silent on the ψ-mix — the confound resolved exactly. **T2 NO** — no
+single per-node ψ (u forces id, d forces Schur, frame-robust; distinct d-pivots carry conjugate
+≠ equal gauges). The challenge's gap CONFIRMED + diagnosed as FUNDAMENTAL to target-side
+gauges: **R-a (per-edge target ψ_e) is UNSOUND** (cover obligation FALSE; 1176 interior misses
+at R=10; Codex witness (⅓,⅓,⅓,⅓,⅙) re-verified) — the held reserve is DEAD, registered.
+**ROUTE R-b RATIFIED**: localSub_e = β̃_e = β_e ∘ α_e⁻¹, det-1 gauge in the SOURCE; chart
+images = pure-β images (verified identical) ⟹ the PURE node_pivotCover_of_atom applies (the
+sheared variant retires to ψ=.refl); |det Dα|=1 preserves Jacobians; monomials preserved.
+Scope caveat banked: d-coordinate gap first at d_center≥5; u-obstruction from d_center=2.
+Owed Lean (coverage lane, cert-specified): concrete α_e frames + the domain-reparam identity.
+ORCHESTRATION: coverage-t08 COMMISSIONED on the re-typing batch NOW (EngineDefs.ChartBridge +
+wiring + destructure + witness, atomic, full-batch gate, exclusive file ownership; t05 stays
+out until merge). t05: §3 in flight (salvage ADOPTED — t04's exploration had prefix_forces_env
+PROVEN; ~100-150 LoC remain); carrier spec revised (field 3: α_e source frames, not target ψ;
+spine path-fold STRUCK as moot — ratified from both sides). AxCheck wiring committed
+build-verified (leaves_numDiv_le_flatDim MUST-clean-three). pnp-psi dissolved with thanks —
+three pnp commissions this expedition, all landed with distinction.
