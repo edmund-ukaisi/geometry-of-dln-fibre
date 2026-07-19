@@ -3520,3 +3520,33 @@ qNodeOf-docstring flagged for rename — SUPERSEDED-BY-EVENTS annotation: carto5
 the tick-239 per-node REVERSAL; t09 is building qNodeOf (node-keyed) NOW, so those docstrings
 are becoming correct again — do NOT rename (the pass was right at its base, one tick stale at
 delivery; noted, no fault). banked-families' false With-variant sync note corrected by the pass.
+
+## 2026-07-19 tick 242: ELDER-ALT2 VERDICT — Q1 pairing CONFIRMED; Q2(b) = THE FINDING (unified w/ tick-239)
+Q1: the controller's corrected power-counting IS the code's (LeafPullback: divisor coords at
+power 2, the multiplicity in the JACOBIAN ∏|x|^{divExp−1}; per-chart threshold c' < divExp_k/2
+∧ c' < resRank/2; binding = minAdm/2 via (C)) — the rightness call certifies the explanation.
+Q2(a): the consumption side (region_glue ← (A)(B)(C)) traced SOUND AND COMPLETE.
+**Q2(b) — THE FINDING (Codex-sharpened, elder-verified against qEdgeOf): the constructed
+charts CANNOT satisfy LeafJacobian as built.** Two layers: (1) the CONSTRUCTION DEFECT —
+case-1's center DIMENSION is m+1 (ONE blow-up of (u, d_1..d_m); case11/case12 = its two chart
+FAMILIES) but dCenterOfEdge reified the chart COUNT (1 / m) as the dimension: the case11 chart
+= pivotChart on Fin 1 = the IDENTITY (Jacobian 1) where the ledger bumps by m — the |u|^m
+factor ABSENT, unrecoverable (ψ bounded-unit can't change vanishing order); (2) the UNBUILT
+ACCUMULATION — the banked det atom is per-single-blow-up (|u|^{d−1}); the required exponent is
+the LEDGER-ACCUMULATED divExp; the fold lemma (PivotCover:41-42's own admitted gap) was never
+built; LeafJacobian is a FED hypothesis everywhere. **THE UNIFICATION: repair (a) = the
+tick-239 per-node correction** — the case-1 center (m+1)-dim for BOTH edges with pivots over
+all m+1 directions IS dCenterOfNode = 1 + runLen·resCols = t09's IN-FLIGHT spec; with t09's
+qNodeOf, the per-pivot single-step Jacobians become |z|^m — matching the elder's chart-by-chart
+computation (u-chart |u|^m; d_j-chart |d_j|^m) AUTOMATICALLY. The cover-side and Jacobian-side
+catches were one defect seen from two consumers. **REPAIR (b) = THE REMAINING NEW WALL: the
+fold-Jacobian induction** — |det D(path-fold)| = ∏|z_k|^{E_k−1} with E = the stepUpdate ledger,
+by path induction + chain rule through the substitutions (u↦u,d↦u·d' / u↦d_j·u',d↦d_j·d'),
++ the q-linearity/det-1 lemma (qOfCenter IS linear — reachable, unproven). Elder sizing:
+comparable to the L2/D1 new-module wall, NOT bounded plumbing. Q3 flags: (D) is DOWNSTREAM of
+(B) (don't read gate #10 as the last obstacle); the EO:44-58 caveat must NOT be retired until
+the Jacobian work lands (it is the most accurate statement of the owed work — task #15
+amended); the Morse machinery is exercised only vacuously at resRank=0 (noted); the name-teeth
+warning (discharging against the current charts would overclaim) — MOOT under the repair path.
+The underlying Aoyagi MATH is CORRECT throughout — a formalisation construction defect + one
+genuine new module. The design note's "both det inputs banked" was an undercount — corrected.
