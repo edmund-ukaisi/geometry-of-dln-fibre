@@ -4278,3 +4278,16 @@ for ANY det-1 gauge g; merged c810c7e90, probed clean-three). With clm_involutiv
 consumes is banked: on t10's merge the lane is pure wiring + the cocycle maintenance,
 parametric-in-det-1-g — zero rework at α-instantiation. 5-step build order updated to the
 (β∘S)∘g shape. The seat is as prepped as a seat can be; one trigger.
+
+## 2026-07-19 tick 278: t10 second bank — the tiling RESTRUCTURE landed; signature FROZEN; two gates converging
+t10's ecdef7dd1 merged: the hybrid ruling executed — fannedEdges_pivot_mem as a STANDALONE
+List.mem-level lemma (unsealed, away from the iUnion body), fannedEdges_covers now applies
+it cleanly. The residual friction moved INTO the lemma's yes-case (the ↑p Fin→ℕ coercion
+HO-factoring mem_map — a coercion-aware List idiom owed, fresh-eyes per the hybrid). Sorry 2
+(the conOracle rollover singleton-child fact) t10 attempts post-gate — its own domain.
+SIGNATURE FREEZE DECLARED (and recorded): geoAtlas_imageCover's headline is FINAL (0∈U
+countersigned; geoAtlas = leaves (tGeo id t); htree carried) — the EngineObligations:53
+pre-wiring can key on the cover half; the fold half waits on #35's landed shape. The
+per-edge code comment carries the (D) dCenterOfEdge-gated note + acc-unchanged/+0 as
+required. TWO gate builds converging (t10's worktree at 8676/8684; my integration gate
+mid-tail) — the merge pushes on MINE (authoritative for the integration tree).
