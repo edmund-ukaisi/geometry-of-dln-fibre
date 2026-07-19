@@ -3383,3 +3383,18 @@ the spec anticipated (births snoc a corner distinct from all stored — slot-cer
 UNCONDITIONAL (hlive unneeded). Clean-three probes verbatim. AxCheck wiring in background.
 Next: step 2 — the spine-adjacent divCoord real-ification, full protected-set re-probe gated.
 The convergence: t07 at 1/3; coverage mid atlas-materialization.
+
+## 2026-07-19 tick 232: t07 SUB-ARC COMPLETE — the convergence deliverable is PROVEN
+Steps 2+3 merged (70331a786) + controller-probed: leafOfState.divCoord is REAL-IFIED (the
+genuine dite-guarded birth-corner map birthFlatCoord ∘ t0Indices.get — the placeholder finally
+retired with its real content, the arc that began at sub-gap-1); the injectivity chain
+(flatIdx_corner_inj sigma/HEq → birthFlatCoord_injective → leafOfState_divCoord_injective) +
+the vacuous resCoord/disjoint discharges (resRank=0, honestly marked) compose into
+**leaves_chart_clauses_conRoot** = EXACTLY the three fed hypotheses (hdcInj/hrcInj/hdisj,
+RegionGluePerLeaf:123) for every built leaf — clean-three, watch-lined. The protected set
+re-probed verbatim intact against the modified leafOfState (the one spine-adjacent edit of the
+sub-arc). Coverage notified: the convergence is one `exact` at its assembly. rev-reach spawned
+(consumer fidelity; dite-fallback honesty [never fires on the cone]; vacuity honesty; the
+.get/NoDup injectivity composition; freshness-vs-cert). t07 holds warm pending the verdict +
+the assembly. THE BOARD: ONE lane remains — coverage's tide (atlas materialization → cover
+fold → Props → clauses → the discharge). Everything else on the chart hole is DONE.
