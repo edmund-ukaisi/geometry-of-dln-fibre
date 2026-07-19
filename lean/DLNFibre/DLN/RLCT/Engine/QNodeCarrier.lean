@@ -396,6 +396,92 @@ theorem realCNode_injective (M : Fin (L + 1) → ℕ) (node : StepData M)
   · exact absurd a.isLt (by have := dCenterOfNode_zero_rollover M node h1 h2; omega)
   · exact (finCongr (dCenterOfNode_nonterminal M node h1 h2)).injective (hci _ hab)
 
+/-! ## `centerSelCase` injectivity (the u-corner ∉ d-block geometry) -/
+
+/-- **`flatCoordOf` is val-level injective across layers**: equal flat coords have equal `(s, i, j)`
+values (the `FlatIdx` sigma constructor recovers the layer + both cells). The uniform fact behind
+the `u`-corner ∉ `d`-block disjointness (same-layer AND cross-layer at once). -/
+theorem flatCoordOf_val_inj {M : Fin (L + 1) → ℕ} {s s' : Fin L}
+    {i : Fin (M s.castSucc)} {j : Fin (M s.succ)} {i' : Fin (M s'.castSucc)} {j' : Fin (M s'.succ)}
+    (h : flatCoordOf M s i j = flatCoordOf M s' i' j') :
+    (s : ℕ) = s' ∧ (i : ℕ) = i' ∧ (j : ℕ) = j' := by
+  unfold flatCoordOf at h
+  have hsig : (⟨⟨s, i⟩, j⟩ : FlatIdx M) = ⟨⟨s', i'⟩, j'⟩ :=
+    (Fintype.equivFin (FlatIdx M)).injective h
+  obtain ⟨hq, hj⟩ := Sigma.mk.inj_iff.mp hsig
+  obtain ⟨hs, hi⟩ := Sigma.mk.inj_iff.mp hq
+  have hss : (s : ℕ) = s' := congrArg Fin.val hs
+  refine ⟨hss, ?_, ?_⟩
+  · have hM : M s.castSucc = M s'.castSucc := congrArg (fun t : Fin L => M t.castSucc) hs
+    simpa using (Fin.heq_ext_iff hM).mp hi
+  · have hM : M s.succ = M s'.succ := congrArg (fun t : Fin L => M t.succ) hs
+    simpa using (Fin.heq_ext_iff hM).mp hj
+
+/-- **The `u`-corner is disjoint from the case-1(2) `d`-block** (the fidelity heart): the merged
+divisor's birth corner `(a, b, b)` cannot equal a block cell `(layer, cleared+r, cleared+c)`.
+By `flatCoordOf_val_inj` a coincidence forces `a = layer`, whence freshness gives `b < cleared`, but
+the block row is `b = cleared + r ≥ cleared` — contradiction. -/
+theorem uCornerSel_ne_resBlockOrFallback (M : Fin (L + 1) → ℕ) (node : StepData M) (target : ℕ)
+    (f : Fin node.numDiv) (hf : chooseMinData node target = some f)
+    (hLf : (node.divBirthCoord f).1 < L)
+    (hrowf : (node.divBirthCoord f).2 < M (⟨(node.divBirthCoord f).1, hLf⟩ : Fin L).castSucc)
+    (hcolf : (node.divBirthCoord f).2 < M (⟨(node.divBirthCoord f).1, hLf⟩ : Fin L).succ)
+    (hfresh : (node.divBirthCoord f).1 = node.layer → (node.divBirthCoord f).2 < node.cleared)
+    (hblk : ∃ hs : node.layer < L,
+        node.cleared + (target - node.cleared) ≤ M (⟨node.layer, hs⟩ : Fin L).castSucc ∧
+        node.cleared + node.resCols ≤ M (⟨node.layer, hs⟩ : Fin L).succ)
+    (hd1 : 1 ≤ flatDim M) (hdb : (target - node.cleared) * node.resCols ≤ flatDim M)
+    (i : Fin 1) (j : Fin ((target - node.cleared) * node.resCols)) :
+    uCornerSel M node target hd1 i ≠
+      resBlockOrFallback M node.layer node.cleared (target - node.cleared) node.resCols hdb j := by
+  have hu : uCornerSel M node target hd1 i = flatCoordOf M ⟨(node.divBirthCoord f).1, hLf⟩
+      ⟨(node.divBirthCoord f).2, hrowf⟩ ⟨(node.divBirthCoord f).2, hcolf⟩ := by
+    simp only [uCornerSel, hf]
+    rw [dif_pos hLf, dif_pos ⟨hrowf, hcolf⟩]
+  have hr : resBlockOrFallback M node.layer node.cleared (target - node.cleared) node.resCols hdb j
+      = flatCoordOf M ⟨node.layer, hblk.choose⟩
+        ⟨node.cleared + (finProdFinEquiv.symm j).1, by
+          have := (finProdFinEquiv.symm j).1.isLt; have := hblk.choose_spec.1; omega⟩
+        ⟨node.cleared + (finProdFinEquiv.symm j).2, by
+          have := (finProdFinEquiv.symm j).2.isLt; have := hblk.choose_spec.2; omega⟩ := by
+    rw [resBlockOrFallback, dif_pos hblk, resBlockCenterIndices]
+  rw [hu, hr]
+  intro heq
+  obtain ⟨ha, hb, -⟩ := flatCoordOf_val_inj heq
+  have hfr : (node.divBirthCoord f).2 < node.cleared := hfresh ha
+  have hb' : (node.divBirthCoord f).2 = node.cleared + (finProdFinEquiv.symm j).1 := hb
+  omega
+
+/-- **`centerSelCase` is injective** on-cone: case-2 = the injective residual block; case-1 =
+`Fin.append` of the `u`-corner (`Fin 1`, trivially injective) and the injective `d`-block, with
+disjoint ranges (`uCornerSel_ne_resBlockOrFallback`). The `some`-case hypotheses are the reachable
+cone's corner-validity, freshness, block-fit, and chooser-success facts. -/
+theorem centerSelCase_injective (M : Fin (L + 1) → ℕ) (node : StepData M) (occ : Option ℕ)
+    (hd : occ.elim (node.resRows * node.resCols)
+      (fun t => 1 + (t - node.cleared) * node.resCols) ≤ flatDim M)
+    (H : ∀ target, occ = some target → ∃ f : Fin node.numDiv, chooseMinData node target = some f ∧
+        ∃ hLf : (node.divBirthCoord f).1 < L,
+          (node.divBirthCoord f).2 < M (⟨(node.divBirthCoord f).1, hLf⟩ : Fin L).castSucc ∧
+          (node.divBirthCoord f).2 < M (⟨(node.divBirthCoord f).1, hLf⟩ : Fin L).succ ∧
+          ((node.divBirthCoord f).1 = node.layer → (node.divBirthCoord f).2 < node.cleared) ∧
+          ∃ hs : node.layer < L,
+            node.cleared + (target - node.cleared) ≤ M (⟨node.layer, hs⟩ : Fin L).castSucc ∧
+            node.cleared + node.resCols ≤ M (⟨node.layer, hs⟩ : Fin L).succ) :
+    Function.Injective (centerSelCase M node occ hd) := by
+  cases occ with
+  | none =>
+      exact resBlockOrFallback_injective M node.layer node.cleared node.resRows node.resCols hd
+  | some target =>
+      obtain ⟨f, hf, hLf, hrowf, hcolf, hfresh, hs, hbrow, hbcol⟩ := H target rfl
+      show Function.Injective (Fin.append _ _)
+      rw [Fin.append_injective_iff]
+      refine ⟨fun a b _ => Subsingleton.elim a b,
+        resBlockOrFallback_injective M node.layer node.cleared (target - node.cleared)
+          node.resCols _,
+        fun a b => ?_⟩
+      exact uCornerSel_ne_resBlockOrFallback M node target f hf hLf hrowf hcolf hfresh
+        ⟨hs, hbrow, hbcol⟩ _ _ a b
+
 /-- **The center selector with a global injectivity fallback**: `realCNode` when it is injective
 (the reachable cone — `realCNode_injective_of_divBirthInv`), else the canonical `Fin.castLE`. Total
 and INJECTIVE for every node, so `qNodeOf` is always a well-formed `Homeomorph`. -/
@@ -419,6 +505,39 @@ noncomputable def qNodeOf (M : Fin (L + 1) → ℕ) (node : StepData M)
     (hd : dCenterOfNode M node ≤ flatDim M) :
     Params M ≃ₜ (Fin (dCenterOfNode M node) → ℝ) × (Fin (flatDim M - dCenterOfNode M node) → ℝ) :=
   qOfCenter M (cNodeOf M node hd) (cNodeOf_injective M node hd)
+
+/-! ## Fidelity: on the reachable cone `cNodeOf = realCNode` (the intended coordinates) -/
+
+/-- The per-`some`-target corner/block/chooser facts `centerSelCase_injective` needs — bundled so
+the reachability supply (`DivBirthInv` validity/freshness + `OracleInv` chooser-totality + fit)
+is a single hypothesis for coverage's tree walk. -/
+def RealCNodeFacts (M : Fin (L + 1) → ℕ) (node : StepData M) : Prop :=
+  ∀ target, nodeOccMin M node = some target → ∃ f : Fin node.numDiv,
+    chooseMinData node target = some f ∧
+    ∃ hLf : (node.divBirthCoord f).1 < L,
+      (node.divBirthCoord f).2 < M (⟨(node.divBirthCoord f).1, hLf⟩ : Fin L).castSucc ∧
+      (node.divBirthCoord f).2 < M (⟨(node.divBirthCoord f).1, hLf⟩ : Fin L).succ ∧
+      ((node.divBirthCoord f).1 = node.layer → (node.divBirthCoord f).2 < node.cleared) ∧
+      ∃ hs : node.layer < L,
+        node.cleared + (target - node.cleared) ≤ M (⟨node.layer, hs⟩ : Fin L).castSucc ∧
+        node.cleared + node.resCols ≤ M (⟨node.layer, hs⟩ : Fin L).succ
+
+/-- **`realCNode` is injective given the on-cone facts** (`centerSelCase_injective` for every `hd'`,
+fed into `realCNode_injective`). -/
+theorem realCNode_injective_of_facts (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (hd : dCenterOfNode M node ≤ flatDim M) (H : RealCNodeFacts M node) :
+    Function.Injective (realCNode M node hd) :=
+  realCNode_injective M node hd (fun _ => centerSelCase_injective M node (nodeOccMin M node) _ H)
+
+/-- **`cNodeOf = realCNode` on the reachable cone**: `realCNode` injective ⟹ the classical fallback
+guard resolves to `realCNode`, so `cNodeOf` (hence `qNodeOf`) names the intended blow-up coords —
+the fidelity of the per-node cover. -/
+theorem cNodeOf_eq_realCNode (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (hd : dCenterOfNode M node ≤ flatDim M) (H : RealCNodeFacts M node) :
+    cNodeOf M node hd = realCNode M node hd := by
+  classical
+  unfold cNodeOf
+  rw [if_pos (realCNode_injective_of_facts M node hd H)]
 
 /-! ## The q-det lemma: `qOfCenter` is linear (its fderiv is a fixed continuous linear equiv)
 
