@@ -3563,3 +3563,19 @@ module (#21, owner pending coverage's budget answer) → LeafPullback's fold-sha
 the (D)+clauses assembly → the discharge. The operator's request for this call was
 prescient — without it the tide would have hit the Jacobian wall at the LAST piece with the
 defect baked into the built atlas.
+
+## 2026-07-19 tick 243: the fold-module plan SET — coverage SPECIFIES, a fresh seat PROVES
+Coverage's budget answer (honest, reasoned): HAND OFF task #21 — at extreme session depth a
+hard new induction's take-with-tripwire most likely ends in handoff-after-thrash; a clean
+handoff now is strictly cheaper. Its contribution = the SPECIFY artifact (the statement +
+sorried path-induction skeleton + the substitution-table accumulation + the consumed atoms
+pinned) once t09's q-det lands — the t05→t06 SPECIFY/PROVE split that landed tStar_realized,
+applied by the seat that knows the geometry to the seat with fresh capacity. SEQUENCE: t09
+(qNodeOf + q-det, in flight) → coverage's SPECIFY → t10 spawns (the PROVE grind).
+LEAFPULLBACK FLAGGED OPEN (coverage's shape-check): a DIFFERENT obligation (uniform power-2;
+the accumulated fold powers must absorb into residualCore — the analytic loss-pullback side),
+owner TBD; deliberately NOT armchair-resolved (the earlier power-counting lesson); assigned to
+t10's brief as SIZE-AND-REPORT (it holds the same substitution table). Q3 acks recorded
+(fold BEFORE (D)/discharge; the EO caveat retirement deferred). Coverage WAITING-FOR-WAKE
+(for t09's q-det). The endgame's remaining ladder: t09 → SPECIFY → t10's fold module (+ the
+LeafPullback sizing) → the (D)+clauses assembly → the discharge → the flip.
