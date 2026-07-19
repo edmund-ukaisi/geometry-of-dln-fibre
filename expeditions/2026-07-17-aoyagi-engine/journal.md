@@ -3774,3 +3774,20 @@ t10 reconciled the two steers correctly: msg-3 (fix (a), 0∈U, R=1 self-cover, 
 governs; the msg-2 R>1/bounded-atom gifts were the superseded V⊆U path's. At R=1 the node
 cover IS the banked atom verbatim (pivotChartDom i 1 = cubeBox d 1). No countermand sent —
 t10's default is the intent. Executing; reports at the full-batch gate.
+
+## 2026-07-19 tick 258: operator comprehension pulse — t09 dim-0 merged+probed; navigator-4 convened; deep state re-verify
+Operator asked for a post-compaction reread + deep self-review + updated state image +
+parallelisation audit. Territory re-verified ON DISK (not from memory): (i) Engine sorry
+census = EngineObligations:53 (THE hole) + ClearableReify:78 (R7) + CanonicalWitness224:135
+(off-cone witness) + the two SPECIFY fill-targets (GeoCoverSpec:38 / GeoJacobianSpec:37) —
+matches the cordon expectation exactly; (ii) t10/t11 have NO commits yet (mid-arc, consistent
+with reports; t10's banked greens are uncommitted working-tree edits); (iii) t09 had pushed
+ee9c5934e — the dim-0/rollover resolution, by WEAKEST-HYPOTHESIS refactor (capstone takes
+Function.Injective directly; vacuous supplier realCNode_injective_of_dCenterOfNode_zero for
+terminal/rollover; remaining supply = case-1 only). MERGED + probed: cNodeOf_eq_realCNode and
+the new supplier BOTH clean-three. Calibration entry 9 logged (partial hit: vacuity insight
+right, location wrong — the lesson: restructure the statement, don't case-split the proof).
+navigator-4 CONVENED (office, read-only) on the operator-requested parallelisation audit
+(width, conflicts, t11-stall contingency, gate-ladder verification, distance calibration).
+Map STATUS.md noted stale (updated 2026-07-17; landmarks pre-date the endgame) — a
+cartographer refresh rides the next office cadence, journal stays authoritative meanwhile.

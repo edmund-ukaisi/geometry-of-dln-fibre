@@ -296,3 +296,21 @@ cover build was HELD pre-waste.
 **Lesson:** when a design question asks "per-X or per-Y?", enumerate WHICH STRUCTURES ride
 the answer (here: the emission, the gauges, the q, the counts — four structures, not one
 answer) — a composite question answered as one bit is a conflation waiting to fire.
+
+## Entry 9 (tick 258) — the dim-0 rollover discharge shape [self-checked]
+QUESTION: how would t09 resolve the rollover edge case (dim-0 nodes, realCNode empty) in
+the fidelity capstone?
+EXPECTATION (relayed to t09 at assignment, ~70%): a dim-0 SHORT-CIRCUIT branch inside
+cNodeOf_eq_realCNode (a vacuous-dim node names no coordinates — definitional), vs ~30% a
+nodeOccMin = none discharge added to RealCNodeFacts.
+TERRITORY (commit ee9c5934e): NEITHER exactly — t09 WEAKENED THE HYPOTHESIS instead:
+cNodeOf_eq_realCNode now takes `Function.Injective (realCNode …)` directly, with TWO
+suppliers (realCNode_injective_of_facts for case-1/case-2; a new vacuous
+realCNode_injective_of_dCenterOfNode_zero for terminal/rollover). No branch added to the
+capstone, no facts-side discharge; the remaining reachability supply shrinks to case-1 only.
+VERDICT: partial hit (the vacuous-at-dim-0 INSIGHT was right; the LOCATION was wrong — I
+put the case split inside the theorem, t09 moved it into the hypothesis).
+WHAT IT CHANGES: prefer WEAKEST-HYPOTHESIS refactors over in-proof case discharges when an
+edge case is vacuous — the theorem stays uniform, the case split lives in cheap suppliers,
+and consumers pick the supplier per node class. Same lesson-family as the pointwise realCNode
+crack: restructure the STATEMENT so the hard case dissolves, don't fight it in the proof.
