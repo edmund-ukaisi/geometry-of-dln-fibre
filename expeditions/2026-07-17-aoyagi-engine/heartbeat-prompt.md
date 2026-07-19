@@ -8,18 +8,19 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: ENDGAME CONVERGENCE. A+B+C+D§i PROVEN+merged+REVIEWED (isFullMonomialization_
-  buildTree_conRoot + minAdm ≤, clean-three ×2 controller-probed; rev-spine SURVIVED 10/10).
-  Realization gap SETTLED (defect #4: ⊇ Adm FALSE, P=Clearable-Adm; minAdm ∈ PROVED at cert —
-  elder-gate7 ratified reshape + R7 + reify-now). IN FLIGHT: **t03's atomic hL-ripple + E batch**
-  (L=0 false-as-stated → hL threads ~8 decls/3 files; 4 conditions incl. protected-set re-probes
-  + R5-flip coherence) — then t03 honors + **t04 spawn** (brief accumulated in journal ticks
-  158/161/162/163: chart-emission carrier spec FIRST [4-part per-edge surface, unblocks
-  coverage's parallel 3-Prop tide] → D§ii/iii [cert §§3-4: envelope-splice + steering; naming
-  pin minAdm_mem_*] → reify-Clearable + close nits). Coverage lane COMPLETE-and-idle (wiring
-  skeleton chartBridge_of_pieces PROVEN; wake at carrier green). pnp-o5/pnp-atlas warm (context
-  consults). NAVIGATOR convenes at E-merge (phase transition). Then: R2 gate → hbox flip →
-  mint repoint + ENFORCED axiom-gate → cordon → close.
+- phase: THE TWO HOLES. E LANDED (monomialization_terminates ASSEMBLED, tick 165; +sorryAx via
+  exactly chartBridge_buildTree + o5_realization; R2/R3 CONVERGE at chartBridge_buildTree —
+  census refreshed tick 170). t03 honors (3rd zero-loss succession). navigator-3 executed ×5
+  (R2 probe fired early; gates pinned executable: R5 = #guard_msgs; PR framing = R4/R6/R7 owed).
+  R2 PROBE DONE (tick 171): cover MATH sound (4 legs + Codex + full kill-set); hbij (full
+  per-node family) MANDATORY (majority of deep nodes); route-(ii) dead. LIVE CRUX (tick 172):
+  frozen ChartBridge ⋃-ledger-leaves type likely FALSE-AS-STATED (ledger tree = symmetric
+  quotient of the geometric fan-out tree) — t04↔coverage DIRECT negotiation authorized; STOP
+  pre-authorized; joint note must be DECISION-READY (corrected type + cost map + pp.15-21
+  fidelity) → elder gate same-tick. IN FLIGHT: **t04** (reify-Clearable + sub-gap-1 divCoord
+  [in progress, worktree verified] → carrier post-ratification → D§ii/iii = THE long pole,
+  budget-protected). pnp-o5 idle (2 commissions landed; warm consult). Coverage idle-correct.
+  Then: holes flip → hbox flip → mint repoint + #guard_msgs gate → cordon → signal-and-wait PR.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
