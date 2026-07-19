@@ -482,6 +482,29 @@ theorem ledgerMonomial_stepAppendAdvance (M : Fin (L + 1) → ℕ) (s : ConState
       simp [ConState.stepAppendAdvance]
     rw [hexp]
 
+/-- **The geometric spectator step** (cert §3, case-2 / the non-`mergeIdx` divisors of case-1): if
+every divisor's diagonal `birthFlatCoord s k` is a SPECTATOR of the new chart `B = geoChartMapNorm g`
+(not a center cell of `B`, and not `B`'s diagonal target), then the incoming ledger pulls back
+UNCHANGED: `ledgerMonomial s (B w) = ledgerMonomial s w`. Via the (α) `geoChartMap_flat_spectator` +
+the swap relabel `flatSwapCLE_apply_flat` (the swap fixes a cell distinct from both its targets). The
+two disjointness hypotheses are the construction-freshness content, discharged per case from
+`DivBirthInv` + `realCNode`/`resBlockCenterIndices` structure (the isolated crux of the geometric half). -/
+theorem ledgerMonomial_comp_spectator (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (g : GeoChart M) (w : Params M) (hd : dCenterOfNode M g.node ≤ flatDim M)
+    (hp : g.pivot < dCenterOfNode M g.node)
+    (hspec : ∀ (k : Fin s.numDiv) (i : Fin (dCenterOfNode M g.node)),
+      cNodeOf M g.node hd i ≠ birthFlatCoord M s k h)
+    (hdt : ∀ k : Fin s.numDiv,
+      birthFlatCoord M s k h ≠ diagTargetOf M g.node g.edge (by omega)) :
+    ledgerMonomial M s h (geoChartMapNorm (fun _ => id) g w) = ledgerMonomial M s h w := by
+  rw [ledgerMonomial, ledgerMonomial]
+  refine Finset.prod_congr rfl (fun k _ => ?_)
+  congr 2
+  rw [geoChartMapNorm_apply_oncone g w hd hp,
+    geoChartMap_flat_spectator g _ hd hp (birthFlatCoord M s k h) (fun i => hspec k i),
+    flatSwapCLE_apply_flat,
+    Equiv.swap_apply_of_ne_of_ne (hspec k ⟨g.pivot, hp⟩).symm (hdt k)]
+
 /-- **The weak no-stranded fact** (team-lead sharpening, pnp-fold adjudicating): a stranded (t̃ ≠ 0)
 divisor has exponent `1`, so its ledger factor `|z|^{1−1} = 1` is harmless. Threaded as an open
 hypothesis until pnp-fold's dichotomy (strong all-t̃=0 / this weak form / false-with-witness) returns. -/
