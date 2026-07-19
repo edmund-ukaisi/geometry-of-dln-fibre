@@ -411,6 +411,17 @@ weak). -/
 the tail (`≥ S`). At the terminal layer `cut a L q = a` on every coord. -/
 def cut (a : Fin L → ℕ) (S q : ℕ) : Fin L → ℕ := fun p => if (p : ℕ) < S then a p else q
 
+/-- **Rollover re-index of a landed anchor**: `cut a m (a^m) = cut a (m+1) (a^m)` — the flat tail
+value `a^m` becomes the frozen coord `m` at the next layer (the new coord `m` reads `a m` either way). -/
+theorem cut_succ_self (a : Fin L → ℕ) {m : ℕ} (hm : m < L) :
+    cut a m (a ⟨m, hm⟩) = cut a (m + 1) (a ⟨m, hm⟩) := by
+  funext p; unfold cut
+  by_cases hp : (p : ℕ) < m
+  · rw [if_pos hp, if_pos (by omega)]
+  · by_cases hp1 : (p : ℕ) < m + 1
+    · rw [if_neg hp, if_pos hp1]; exact congrArg a (Fin.ext (by omega : m = (p : ℕ)))
+    · rw [if_neg hp, if_neg hp1]
+
 /-- **Phase 1 — pre-birth**: the head is the running-min envelope, `cleared` has not passed `a^layer`,
 and every level below `cleared` is occupied (the diagonal being laid down; no anchor yet). -/
 def SteerPre (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (s : ConState L) : Prop :=
@@ -521,7 +532,57 @@ theorem exists_steered_child (M : Fin (L + 1) → ℕ) (a : Fin L → ℕ) (ha :
       unfold conOracle; rw [dif_neg h1, dif_pos h2]]
     refine ⟨_, List.mem_singleton_self _, ?_⟩
     show SteerPre M a s.stepRollover ∨ SteerAnchored M a s.stepRollover ∨ SteerDone a s.stepRollover
-    sorry
+    obtain ⟨-, hdec, hlast⟩ := (Finset.mem_filter.1 ha).2
+    have ham : a ⟨s.layer, hlt⟩ ≤ widthMinUpto M (s.layer + 1) := adm_le_widthMinUpto M a ha ⟨s.layer, hlt⟩
+    have hdecm : ∀ (h : s.layer + 1 < L), a ⟨s.layer + 1, h⟩ ≤ a ⟨s.layer, hlt⟩ := fun h =>
+      hdec ⟨s.layer, hlt⟩ ⟨s.layer + 1, h⟩ (Fin.mk_le_mk.mpr (Nat.le_succ _))
+    rcases hphase with hpre | hanch | hdone
+    · -- PRE: `a^m = envelope` forced by `widthMinUpto(m+1) ≤ cleared ≤ a^m ≤ widthMinUpto(m+1)`.
+      obtain ⟨_, henv, hcl_le, -⟩ := hpre
+      have haeq : a ⟨s.layer, hlt⟩ = widthMinUpto M (s.layer + 1) :=
+        le_antisymm ham (le_trans h2 hcl_le)
+      have hmL : s.layer + 1 < L := by
+        rcases Nat.lt_or_ge (s.layer + 1) L with h | h
+        · exact h
+        · exfalso
+          have hz : a ⟨s.layer, hlt⟩ = 0 := hlast _ (by omega : s.layer = L - 1)
+          have hpos := widthMinUpto_pos hMpos (s.layer + 1)
+          omega
+      refine Or.inl ⟨hmL, ?_, Nat.zero_le _, fun q hq => absurd hq (Nat.not_lt_zero _)⟩
+      intro i hi
+      by_cases him : (i : ℕ) < s.layer
+      · exact henv i him
+      · have hisl : (i : ℕ) < s.layer + 1 := hi
+        have hie : i = ⟨s.layer, hlt⟩ := Fin.ext (by omega : (i : ℕ) = s.layer)
+        rw [hie, runMinWidth_eq_widthMinUpto]; exact haeq
+    · -- ANCHORED: pending impossible (suffix `< envelope`); landed → pending/landed at `m+1`, or done.
+      obtain ⟨_, hsuf, hcov, A, q, hAprof, hAq, hqge, hqlt, hlp⟩ := hanch
+      have hsufm : a ⟨s.layer, hlt⟩ < widthMinUpto M (s.layer + 1) := hsuf ⟨s.layer, hlt⟩ (le_refl _)
+      have hland : q = a ⟨s.layer, hlt⟩ := by
+        rcases hlp with hl | ⟨_, -, -, hcl⟩
+        · exact hl
+        · exact absurd (le_trans h2 hcl) (not_le.mpr hsufm)
+      by_cases hmL : s.layer + 1 < L
+      · refine Or.inr (Or.inl ⟨hmL, fun i hi => hsuf i (by have : s.layer + 1 ≤ (i : ℕ) := hi; omega),
+          ?_, A, a ⟨s.layer, hlt⟩, ?_, ?_, hdecm hmL, hsufm, ?_⟩)
+        · intro q' hq'; exact hcov q' (le_trans hq' (hdecm hmL))
+        · show s.divProfile A = _; rw [hAprof, hland]; exact cut_succ_self a hlt
+        · show s.divTilde A = _; rw [hAq, hland]
+        · rcases lt_or_eq_of_le (hdecm hmL) with hlt' | heq'
+          · exact Or.inr ⟨(by omega : s.layer + 1 - 1 < L),
+              congrArg a (Fin.ext (by omega : s.layer = s.layer + 1 - 1)), hlt', Nat.zero_le _⟩
+          · exact Or.inl heq'.symm
+      · have hmlL : s.layer + 1 = L := by omega
+        refine Or.inr (Or.inr ⟨(by omega : L ≤ s.layer + 1), A, ?_, ?_⟩)
+        · show s.divProfile A = a
+          rw [hAprof, hland]
+          funext p; unfold cut
+          by_cases hp : (p : ℕ) < s.layer
+          · rw [if_pos hp]
+          · rw [if_neg hp]
+            exact congrArg a (Fin.ext (by have := p.isLt; omega : s.layer = (p : ℕ)))
+        · show s.divTilde A = 0; rw [hAq, hland]; exact hlast _ (by omega : s.layer = L - 1)
+    · exact absurd hdone.1 (by omega)
   · have hcap : s.cleared < layerCap M :=
       lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap M _)
     rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
