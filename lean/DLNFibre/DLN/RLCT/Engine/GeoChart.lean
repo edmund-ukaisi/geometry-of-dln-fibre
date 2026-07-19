@@ -50,4 +50,26 @@ noncomputable def geoChartMap (g : GeoChart M) : Params M → Params M :=
     else id
   else id
 
+/-! **The geometric fan-out leaf paths** (amendment 1: EDGE-DRIVEN). Mirrors `ResolutionTree.leafPaths`
+but at each edge fans out over the edge's `dCenterOfEdge` pivot family, composing `geoChartMap` onto
+each child composite — one `(leaf, root→leaf composite)` pair per (leaf × pivot-choice sequence). The
+atlas is `geometricLeafPaths id t`. The per-edge child is recursed ONCE (with `id`) and the fan-out +
+`acc`-composition is a post-`map` (keeps the recursion structural). `geoChartMap` is COMPUTED — buck-stops. -/
+mutual
+/-- Geometric fan-out leaf paths of a subtree (see the section note above). -/
+noncomputable def geometricLeafPaths (acc : Params M → Params M) :
+    ResolutionTree M → List (LeafData M × (Params M → Params M))
+  | .leaf l => [(l, acc)]
+  | .branch n edges => geomEdges acc n edges
+/-- Companion of `geometricLeafPaths` over an edge list (per-edge pivot fan-out). -/
+noncomputable def geomEdges (acc : Params M → Params M) (n : StepData M) :
+    List (Edge M) → List (LeafData M × (Params M → Params M))
+  | [] => []
+  | .mk c s ch :: es =>
+      ((geometricLeafPaths id ch).flatMap fun lc =>
+          (List.finRange (dCenterOfEdge n (Edge.mk c s ch))).map fun p =>
+            (lc.1, acc ∘ geoChartMap ⟨n, Edge.mk c s ch, (p : ℕ)⟩ ∘ lc.2))
+        ++ geomEdges acc n es
+end
+
 end DLNFibre.DLN.RLCT.Engine
