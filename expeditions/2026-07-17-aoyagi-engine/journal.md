@@ -4441,3 +4441,19 @@ relayed to t10 verbatim); t10 applies it to :155, probes geoAtlas_imageCover cle
 pushes — and clause (A) is proven END-TO-END over the normalized atlas. Record note: the
 verify-catches-then-fixes pattern (t10) beat the diagnose-then-rebrief pattern (me) by one
 message cycle — the seat with the file wins the race, as it should.
+
+## 2026-07-19 tick 286: t14 STOP-AND-SURFACE — the locked headline was FALSE at generic s; (A) ruled, already-settled
+t14 checked provability BEFORE grinding (the correct opening move) and found the locked
+geoAtlas_fold_det ∀s-form FALSE: the fold accumulates charts only from s DOWNWARD while the
+leaf ledger carries s's PRE-BORN divisors — witness: terminal s, numDiv=1, divExp=2 ⟹
+chartMap = id, LHS = 1 vs RHS = 0 at w = 0. Deeper: the naive form cannot even be its own
+induction MOTIVE (WF base cases are terminal states with divisors); the true motive is the
+adopted ledger-threaded cocycle (true at terminal s — incoming ledger in acc, born-below
+product empty), with conRoot the specialization (L=1, acc=id). The design had conRoot right
+in THREE places (finding-1's ruling, the addendum, the docstring) — only the Lean binder
+drifted. RULED (A): specialize to conRoot; no new elder gate (transcription of a settled
+ruling); correction + witness → addendum §t14; NO counter tick (SPECIFY target, not the
+obligation type); the formalized disproof tripwire → off-path owed (not now). Calibration
+entry 11 logged (the design-correct/transcription-stale miss class; binder-vs-design diff
+added to the statement gate; provability-check-first goes in formaliser briefs as standard).
+t14 GO: corrected headline → the two handoff sub-lemmas → the cocycle maintenance.

@@ -334,3 +334,20 @@ cover's disjointness story should survive). The option is at least well-formed i
 WHAT IT CHANGES: nothing yet (the ruling is the elder's); confidence that the fix is a
 small chart-side edit rather than an emission rewrite rises. Entry class: model-of-the-
 construction verification — 1/1 this arc.
+
+## Entry 11 (tick 286) — the design-correct / transcription-stale miss class [event-driven]
+EVENT: t14's pre-grind provability check found the LOCKED fold headline FALSE at generic s
+(witness: a terminal s with a pre-born divisor — chartMap = id, LHS = 1, RHS = 0 at w = 0).
+WHAT THE LAYERS MISSED: finding-1's ruling, the addendum's own text, AND the docstring all
+said conRoot — the DESIGN was right in three places; only the Lean binder (∀ s) drifted. My
+tick-263 gate, the elder audits, and t11's lock all reviewed the DESIGN artifacts and passed;
+none re-read the binder against them. Same family as the stale hDescent arm (a settled
+ruling not transcribed) — but here the drift was INSIDE the freshly-written statement, not
+legacy code.
+WHAT IT CHANGES: (i) the statement gate must include a BINDER-vs-DESIGN diff (read the ∀s/
+hypotheses against the design doc's scope line — 30 seconds); (ii) t14's habit — check
+provability BEFORE grinding, hunt a witness for the negation at the boundary cases (terminal
+states, empty folds) — is the correct last line and goes in the formaliser briefs as
+standard; (iii) the sorry-mask pattern (tick 284) and this are the SAME week's lesson from
+two sides: a sorried statement is invisible to green builds AND to design review — only
+provability checks and integration gates see it.
