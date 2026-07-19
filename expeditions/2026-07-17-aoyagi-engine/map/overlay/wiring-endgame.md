@@ -64,27 +64,61 @@ aggregator warns at `DLNFibre.lean:273-275`).
 ### 1a. Gate-orphan sweep (charge #2) — the CURRENT orphans
 
 Pass #4's two orphans are FIXED: `PivotInjOn` + `ChartBridgeWiring` were wired into `AxCheck` at
-tick 241 (`063212ecf`, watch lines `AxCheck.lean:1329-1330`). SIX modules now escape the gate:
+tick 241 (`063212ecf`, watch lines `AxCheck.lean:1329-1330`).
+
+**⚠ FOLD-SPINE ORPHAN — CLOSED (amend, cartographer-6 follow-up, 2026-07-19).** The fold-Jacobian
+spine (`GeoJacobianFold` + `GeoJacobianSpec`) was wired at commit **`13b86217a`** ("axcheck: watch
+fidelity capstone + fold-Jacobian spine — import + 5 MUST-clean-three lines; verified LAKE-EXIT:0"),
+which landed AFTER this office's worktree snapshot. Current HEAD (`6eb312dbe`, tick 269) has `import
+DLNFibre.DLN.RLCT.Engine.GeoJacobianFold` at `AxCheck:12` (pulls GeoJacobianSpec transitively) + watch
+lines for `geoChartMap_fderiv_det`/`_offcone`, `abs_det_fderiv_foldr_comp`, `geoChartMap_differentiable`,
+`cNodeOf_eq_realCNode_of_conOracle`. **The underlying catch was still real** — journal tick 265 CLAIMED
+the wiring before the commit existed (the edit sat uncommitted pending build verification until tick 267;
+tick-265 commit `3c5789b59` had an empty AxCheck diffstat). Pattern for the journal: say "edited, commit
+pending gate" when that is the truth, not "added".
+
+Remaining orphans (current HEAD `6eb312dbe`, tick 269):
 
 | module | reachable from aggregator? | sorry? | disposition |
 |---|---|---|---|
-| **GeoJacobianFold** | **NO — ORPHAN** (imported by nothing) | sorry-free | ⚠ the fold spine escapes the gate — SHOULD be wired |
-| **GeoJacobianSpec** | **NO** (only GeoJacobianFold, itself orphan) | sorry-free | ⚠ same; wiring GeoJacobianFold pulls it in |
-| **GeoCoverSpec** | **NO — ORPHAN** | `:38` sorry (t10) | EXPECTED-WIP; wire at discharge (its sorry then shows +sorryAx) |
-| **CoRank2Spike** | **NO — ORPHAN** | sorry-free | the (3,3,4) de-risk spike; standalone, historically un-wired |
-| **FlatCubeLeaf** | **NO — ORPHAN** | sorry-free | banked leaf-clause infra, "not yet wired into buildTree" |
-| **PivotLeafClauses** | **NO** (only FlatCubeLeaf, itself orphan) | sorry-free | consumed only by the orphan FlatCubeLeaf |
+| **GeoCoverSpec** | **NO — ORPHAN** | `:38` sorry (t10) | EXPECTED-WIP (t10's fill-target); wire at discharge (its sorry then shows +sorryAx) |
+| **CoRank2Spike** | **NO — ORPHAN** | sorry-free | SUPERSEDED → cordon (see below) |
+| **FlatCubeLeaf** | **NO — ORPHAN** | sorry-free | SUPERSEDED → cordon (see below) |
+| **PivotLeafClauses** | **NO** (only FlatCubeLeaf, itself orphan) | sorry-free | PARTIAL banked-to-wire (srcBox pair) + partial cordon (see below) |
 
-⚠ **The fold-Jacobian spine (`GeoJacobianSpec` + `GeoJacobianFold`) is a gate-orphan.** Its banked
-sorry-free content (`geoChartMap_fderiv_det`, `geoChartMap_fderiv_det_offcone`,
-`abs_det_fderiv_foldr_comp`, `geoChartMap_differentiable`) does NOT ride `lake build DLNFibre` — a break
-or a `sorry` slipped in escapes the gate, exactly the failure the aggregator warns about. **This
-CONTRADICTS journal tick 265** ("AxCheck: import + 4 watch lines added for the spine — gate-orphan
-prevention, carto5's lesson"): the tick-265 commit `3c5789b59` did NOT touch `AxCheck.lean` (empty
-diffstat), and the live `AxCheck` has no `GeoJacobianFold` import and no `geoChartMap_fderiv_det` /
-`abs_det_fderiv_foldr_comp` `#print` watch. FIX (owed by the discharge/assembly seat, or a one-line
-infra commit): `import DLNFibre.DLN.RLCT.Engine.GeoJacobianFold` into `AxCheck` + two `#print axioms`
-watch lines. (This is flagged, not silently fixed — cartographer is read-only on `lean/`.)
+### 1a-bis. Disposition of the three legacy orphans (charge follow-up — PROPOSE, don't wire)
+
+*Wiring lands with the discharge batch; this is the proposal for the t12-assembly / #15 seat.*
+
+- **CoRank2Spike → SUPERSEDED-to-cordon (join #15).** The rung-2C (3,3,4) coordinate-injectivity
+  de-risk spike (`corank2Leaf` + `_divCoord_injective`/`_resCoord_injective`/`_disjoint_coords`/`_fits`).
+  Its de-risk is SERVED: the general, proven `leaves_chart_clauses_conRoot` (DivBirthReach) is the real
+  thing. NO module imports it — the only tree hit for "corank2" is `Validate/Case334RouteStep.lean`'s
+  `pivotWitness4422_corank2` (an UNRELATED (4,4,2,2)-route pivot witness, not this module). Retire unless
+  the team wants a concrete (3,3,4) coordinate GUARD kept green (then wire minimally, `rr4-precedent`-style).
+
+- **FlatCubeLeaf → SUPERSEDED-to-cordon (join #15).** The pre-geoAtlas per-leaf machinery.
+  `flatCubeLeafData` (the leaf smart-constructor) is called by NOTHING — the real leaf constructor is
+  `leafOfState` (EngineConstruction) and the atlas pieces are `geoAtlas`'s `{ lc.1 with chartMap := lc.2 }`
+  (GeoChart:100). `flatCubeLeafData_perLeafClause` bundles the 8 clauses for a `flatCubeLeafData` leaf,
+  but the discharge assembles the 8 clauses PER geoAtlas PIECE from DivBirthReach (coords) + PivotInjOn
+  (a.e.-InjOn) + the fold Jacobian (LeafJacobian) + the srcBox pair below — not via this bundle. geoAtlas
+  superseded it.
+
+- **PivotLeafClauses → PARTIAL banked-to-wire.** Consumed today ONLY by the superseded FlatCubeLeaf, but
+  it holds ONE load-bearing pair the discharge NEEDS: `flatCubeSrcBox_measurableSet` + `flatCubeSrcBox_bounded`
+  (`:35,:41`) prove the two clause-(B) FREE clauses (`MeasurableSet srcBox` + bounded-in-flat-cube) that
+  `leaves_chart_clauses_conRoot` does NOT cover — and NO live gate-reachable module proves srcBox
+  measurability otherwise (`leaves_srcBox_nonempty` gives nonempty, not measurable). These apply DIRECTLY:
+  every geoAtlas piece inherits `leafOfState`'s `srcBox = paramsEquivFlat ⁻¹' cubeBox` (the exact shape
+  these helpers target). So at discharge: WIRE PivotLeafClauses (re-home the srcBox pair under the
+  discharge's import, replacing FlatCubeLeaf as the consumer). Its OTHER decls are superseded — the coord
+  helpers (`coords_disjoint_of_ne`/`coord_clauses`) DUPLICATE DivBirthReach's coordinate clauses; the
+  `q`-preimage helpers (`qPreimageSrcBox_measurableSet`/`measurableSet_pivotChartDom`) target the OLD
+  `node_pivotCover_of_atom` childRegion shape (superseded by geoAtlas) and are consumed by nothing. Net:
+  keep the srcBox pair (banked-to-wire), cordon the rest with FlatCubeLeaf. (If the discharge instead
+  re-derives srcBox measurability inline, the whole module joins the cordon — the t12-assembly seat
+  decides at discharge which srcBox route it takes.)
 
 ## 2. The `chartBridge_buildTree` discharge — WIRING CHECKLIST (the operative deliverable)
 

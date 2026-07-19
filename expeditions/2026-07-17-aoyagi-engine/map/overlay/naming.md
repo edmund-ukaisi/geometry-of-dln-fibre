@@ -168,5 +168,6 @@ wiring-endgame §3 sweep, which is now wrong on `qNodeOf`) stay resolvable.*
   `EngineConstruction` is stale — the decl is gone; `EngineConstruction.lean` is 0-sorry again.
 
 - **fold-Jacobian spine decls (t11):** `geoChartMap_fderiv_det` (`GeoJacobianSpec.lean:95`, per-edge
-  atom), `abs_det_fderiv_foldr_comp` (`GeoJacobianFold.lean:60`, parametric fold). ⚠ these live in
-  GATE-ORPHAN modules (not in AxCheck's closure) — [[wiring-endgame]] §1a.
+  atom), `abs_det_fderiv_foldr_comp` (`GeoJacobianFold.lean:60`, parametric fold). GATE-WIRED at
+  `13b86217a` (AxCheck:12 import + watch lines; was a gate-orphan at the carto6 snapshot) —
+  [[wiring-endgame]] §1a.
