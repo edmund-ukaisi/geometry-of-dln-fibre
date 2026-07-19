@@ -374,4 +374,37 @@ theorem geoAtlas_absdet_foldr (t : ResolutionTree M) (c : LeafData M) (hc : c �
   obtain ⟨cs, hcs⟩ := geoAtlas_mem_leafPathsList t c hc
   exact ⟨cs, hcs, tGeo_absdet_foldrList t w (c, cs) hcs⟩
 
+/-! ## Per-edge atom in `geoChartMapNorm` form (the `foldrCompAbsDet` factors) -/
+
+/-- **The per-edge det of the normalized chart** (on-cone): `|det D(geoChartMapNorm (fun _ => id) g) y|
+= |z_{diagTargetOf}(y)|^{dCN − 1}` — the banked per-edge atom read through the diagonal-normalizing swap
+(`geoChartMap_swap_fderiv_det` + the `β∘S` reduction). Each `foldrCompAbsDet` factor is this. -/
+theorem geoChartMapNorm_fderiv_det (g : GeoChart M) (w : Params M)
+    (hd : dCenterOfNode M g.node ≤ flatDim M) (hp : g.pivot < dCenterOfNode M g.node) :
+    |(fderiv ℝ (geoChartMapNorm (fun _ => id) g) w).det|
+      = |paramsEquivFlat M w (diagTargetOf M g.node g.edge (by omega))|
+          ^ (dCenterOfNode M g.node - 1) := by
+  have hfun : geoChartMapNorm (fun _ => id) g
+      = geoChartMap (dCenterOfNode M) (qNodeOf M) g ∘
+          ⇑(flatSwapCLE M (cNodeOf M g.node hd (⟨g.pivot, hp⟩ : Fin (dCenterOfNode M g.node)))
+            (diagTargetOf M g.node g.edge (by omega))) := by
+    funext x; rw [geoChartMapNorm_apply_oncone g x hd hp]; rfl
+  rw [hfun, geoChartMap_swap_fderiv_det g w hd hp]
+
+/-- **The per-edge det off-cone / out-of-range**: `geoChartMapNorm (fun _ => id) g = id`, so its
+Fréchet-derivative determinant has modulus `1` (the `id`-passthrough / rollover factor). -/
+theorem geoChartMapNorm_fderiv_det_offcone (g : GeoChart M) (w : Params M)
+    (h : ¬ (dCenterOfNode M g.node ≤ flatDim M ∧ g.pivot < dCenterOfNode M g.node)) :
+    |(fderiv ℝ (geoChartMapNorm (fun _ => id) g) w).det| = 1 := by
+  have hid : geoChartMapNorm (fun _ => id) g = id := by
+    unfold geoChartMapNorm
+    split_ifs with hd hp
+    · exact absurd ⟨hd, hp⟩ h
+    · rfl
+    · rfl
+  rw [hid, fderiv_id]
+  rw [show (ContinuousLinearMap.id ℝ (Params M)).det
+      = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+  simp [LinearMap.det_id]
+
 end DLNFibre.DLN.RLCT.Engine
