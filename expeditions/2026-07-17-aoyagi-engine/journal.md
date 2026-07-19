@@ -3250,3 +3250,11 @@ remainder spec + the slot cert + the seam notes + CenterIndices inherited); cove
 as its seam counterpart (GeoChart field-lock at qNodeOf's first green). The endgame:
 t06's carrier → coverage's tide → chartBridge_buildTree → hbox flips clean-three → R5 mint
 repoint + #guard_msgs enforced gate → cordon → the signal-and-wait PR.
+
+### Tick-218 addendum: coverage's 4 field-lock questions forwarded PRE-design to t06
+Coverage pre-staged its seam questions (qNodeOf's argument keying; divBirthCoord's record +
+accessor; count-helper dedup; and THE type-shape one — per-EDGE d_center factor vs node sum,
+which constrains node-indexed-with-edge-parameter vs edge-indexed-outright). Forwarded to t06
+NOW so the surface is DESIGNED with the consumer's questions in view (lock-after-green →
+design-with-questions — cheaper). t06 answers all four in its first qNodeOf green's report;
+one-pass field-lock via controller as planned.
