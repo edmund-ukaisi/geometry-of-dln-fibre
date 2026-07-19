@@ -5094,3 +5094,17 @@ large objects). EXECUTED:
   mathematical necessity + the independently-buildable lines.
 - NAVIGATOR pass queued for the audits' return (fresh convene): parallelization of the
   build-list + the current board.
+
+## 2026-07-19 tick 318: the PAPER-ANCHOR INDEX is in the map — no unanchored strays
+carto-standing's charge-3 merged (dcb3d4e0d): map/overlay/paper-anchors.md — every landmark
+and banked family carries a worked.tex anchor; the documented-deviation REGISTRY (the known
+four typo-fixes + instance #9's three-ledger split) with per-card consumption rows (a
+deviation on a card is legitimate ONLY as a registry entry); the measure-theory scaffold
+(srcBox/null-sets/hbij/Haar) anchored-AS-scaffold honestly (realizing the boxed S2 monomial
+rule, not passed off as Aoyagi objects). THE FINDING: NO genuine unanchored stray — and the
+steer's own worked example (the analytic Jacobian) is already corrected in the tree, so the
+map confirms the steer arrived already-internalized on the math side. ONE WATCH recorded
+(not a stray): the ledger/atlas split is formalisation structuring absent from the paper's
+single-tree presentation — faithful (the symmetric quotient) but flagged for re-derivation
+from the math if any future ruling on it leads with build-convenience. The map is now a
+standing fidelity instrument.
