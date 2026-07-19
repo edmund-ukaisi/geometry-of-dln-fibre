@@ -35,8 +35,9 @@ immutable birth corner, via the recomputed Def-4 chooser `chooseMinData`) `++` t
 (`resBlockCenterIndices`); case-2 = the block alone. Injectivity is total via a classical fallback
 (off the reachable cone the intended selector may collide; there we fall back to `Fin.castLE`), so
 `qNodeOf` is a well-formed `Homeomorph` for every node; the ON-CONE fidelity (that the fallback is
-not taken — the intended selector IS injective) is `cNodeOf_eq_realCNode`, given `RealCNodeFacts`
-(the per-node corner/block/chooser facts the reachable cone's `DivBirthInv`/`OracleInv` supply).
+not taken — the intended selector IS injective) is `cNodeOf_eq_realCNode`, and per subtree-root
+`cNodeOf_eq_realCNode_of_conOracle` reads its `RealCNodeFacts` off `DivBirthInv` alone (the case-1
+oracle branch supplies the chooser, so `OracleInv` never enters).
 -/
 
 namespace DLNFibre.DLN.RLCT.Engine
@@ -483,7 +484,7 @@ theorem centerSelCase_injective (M : Fin (L + 1) → ℕ) (node : StepData M) (o
         ⟨hs, hbrow, hbcol⟩ _ _ a b
 
 /-- **The center selector with a global injectivity fallback**: `realCNode` when it is injective
-(the reachable cone — `realCNode_injective_of_divBirthInv`), else the canonical `Fin.castLE`. Total
+(the reachable cone — `cNodeOf_eq_realCNode_of_conOracle`), else the canonical `Fin.castLE`. Total
 and INJECTIVE for every node, so `qNodeOf` is always a well-formed `Homeomorph`. -/
 noncomputable def cNodeOf (M : Fin (L + 1) → ℕ) (node : StepData M)
     (hd : dCenterOfNode M node ≤ flatDim M) : Fin (dCenterOfNode M node) → Fin (flatDim M) := by
@@ -509,8 +510,8 @@ noncomputable def qNodeOf (M : Fin (L + 1) → ℕ) (node : StepData M)
 /-! ## Fidelity: on the reachable cone `cNodeOf = realCNode` (the intended coordinates) -/
 
 /-- The per-`some`-target corner/block/chooser facts `centerSelCase_injective` needs — bundled so
-the reachability supply (`DivBirthInv` validity/freshness + `OracleInv` chooser-totality + fit)
-is a single hypothesis for coverage's tree walk. -/
+the reachability supply (`DivBirthInv` validity/freshness + the case-1 branch's own chooser + block
+fit) is a single hypothesis for coverage's tree walk. -/
 def RealCNodeFacts (M : Fin (L + 1) → ℕ) (node : StepData M) : Prop :=
   ∀ target, nodeOccMin M node = some target → ∃ f : Fin node.numDiv,
     chooseMinData node target = some f ∧
@@ -558,13 +559,13 @@ theorem cNodeOf_eq_realCNode_of_facts (M : Fin (L + 1) → ℕ) (node : StepData
 theorem chooseMinData_toStepData (M : Fin (L + 1) → ℕ) (s : ConState L) (rr rc target : ℕ) :
     chooseMinData (s.toStepData M rr rc) target = chooseMin s target := rfl
 
-/-- **`cNodeOf = realCNode` at every built-tree branch node** (`DivBirthInv`-only — the case-1
-branch itself supplies the chooser, so no `OracleInv` is needed): the fidelity capstone, one
-`conOracle` walk. Rollover ⟹ dim-0 (vacuous inj); case-2 ⟹ `nodeOccMin = none` (vacuous facts);
-case-1 ⟹ the merged divisor's corner validity + freshness off `DivBirthInv`, block-fit from the occ
-bounds + the case-1 node shape. Consumer: the ASSEMBLY (clause (D)'s fidelity — the atlas charts
-being the INTENDED blow-up coords), reached by threading `DivBirthInv` through the oracle fold (the
-`leaves_chart_clauses` template in `DivBirthReach`); not on the fold-Jacobian critical path. -/
+/-- **`cNodeOf = realCNode` at a built-tree subtree-root node** (the node `buildTree … s` emits at
+`s`; `DivBirthInv`-only — the case-1 branch itself supplies the chooser, so no `OracleInv` is
+needed): one `conOracle` step-dispatch. Rollover ⟹ dim-0 (vacuous inj); case-2 ⟹ `nodeOccMin = none`
+(vacuous facts); case-1 ⟹ the merged divisor's corner validity + freshness off `DivBirthInv`,
+block-fit from the occ bounds + the case-1 node shape. The all-nodes lift is coverage's WF walk over
+`ConState` (its clause-(D) `nodes_cNode_eq_realCNode`, threading `DivBirthInv` the way
+`leaves_chart_clauses` does), consuming this as the per-node atom; off the fold-Jacobian path. -/
 theorem cNodeOf_eq_realCNode_of_conOracle {M : Fin (L + 1) → ℕ} (s : ConState L)
     (dinv : DivBirthInv M s) (node : StepData M) (edges : List (Edge M))
     (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
@@ -659,6 +660,111 @@ theorem cNodeOf_eq_realCNode_of_conOracle {M : Fin (L + 1) → ℕ} (s : ConStat
             have hbridge :
                 M (⟨s.layer, hlive⟩ : Fin L).succ = M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) := rfl
             omega
+
+/-! ## Case-2 inner fidelity: the residual block is geometric (fallback not taken) -/
+
+/-- **`resBlockOrFallback` takes its geometric branch** when the block fits: it equals
+`resBlockCenterIndices` (not the `Fin.castLE` fallback). The reduction atom behind case-2 fidelity —
+`centerSelCase_injective`'s case-2 arm is unconditional, so the `cNodeOf = realCNode` headline alone
+does NOT certify the block is `resBlockCenterIndices`; this does, given the on-cone fit. -/
+theorem resBlockOrFallback_eq_resBlockCenterIndices (M : Fin (L + 1) → ℕ) (s J rows cols : ℕ)
+    (hd : rows * cols ≤ flatDim M) (hs : s < L)
+    (hrow : J + rows ≤ M (⟨s, hs⟩ : Fin L).castSucc) (hcol : J + cols ≤ M (⟨s, hs⟩ : Fin L).succ) :
+    resBlockOrFallback M s J rows cols hd = resBlockCenterIndices M ⟨s, hs⟩ J rows cols hrow hcol :=
+    by
+  unfold resBlockOrFallback
+  rw [dif_pos ⟨hs, hrow, hcol⟩]
+
+/-- **Case-2 inner fidelity, on-cone**: at a built-tree case-2 subtree-root node (`nodeOccMin =
+none`, `¬` rollover), the residual selector IS the geometric `resBlockCenterIndices` — the fallback
+never fires (the case-2 block `[J, J+resRows)×[J, J+resCols)` fits inside the layer's matrix).
+With `cNodeOf_eq_realCNode_of_conOracle` this certifies "names the intended blow-up coords" for
+case-2 as well as case-1. (Rollover nodes are dim-0 — nothing to name — and case-1 is certified by
+the `u`-corner ++ `d`-block route already.) -/
+theorem centerSelCase_none_geometric_of_conOracle {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared) (hocc : nodeOccMin M node = none)
+    (hd : node.resRows * node.resCols ≤ flatDim M) :
+    ∃ (hs : node.layer < L)
+      (hrow : node.cleared + node.resRows ≤ M (⟨node.layer, hs⟩ : Fin L).castSucc)
+      (hcol : node.cleared + node.resCols ≤ M (⟨node.layer, hs⟩ : Fin L).succ),
+      resBlockOrFallback M node.layer node.cleared node.resRows node.resCols hd
+        = resBlockCenterIndices M ⟨node.layer, hs⟩ node.cleared node.resRows node.resCols hrow hcol
+      := by
+  by_cases h1 : L ≤ s.layer
+  · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
+    rw [buildTree_terminal M (conOracle M) s (leafOfState M s) (leafOfState_rootLedger M s)
+      horacle] at htree
+    exact absurd htree (by simp)
+  · have hlive : s.layer < L := not_le.mp h1
+    have hL1 : s.layer + 1 < L + 1 := by omega
+    have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp hnr
+    have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+    rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+        if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+        then some (s.divTilde k) else none)).min? with _ | target
+    · -- case-2: the block fits
+      have horacle : conOracle M s = case2Decision M s
+          (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared) hcap := by
+        unfold conOracle; rw [dif_neg h1, dif_neg hnr]
+        split <;> simp_all only [reduceCtorEq]
+      rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
+      obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
+      have hwc : widthMinUpto M s.layer ≤ M (⟨s.layer, hlive⟩ : Fin L).castSucc :=
+        widthMinUpto_le _ (by simp)
+      have hws : widthMinUpto M (s.layer + 1) ≤ M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) :=
+        widthMinUpto_le _ (by simp)
+      have hmono : widthMinUpto M (s.layer + 1) ≤ widthMinUpto M s.layer :=
+        widthMinUpto_mono M (Nat.le_succ _)
+      have hrow : s.cleared + (widthMinUpto M s.layer - s.cleared) ≤
+          M (⟨s.layer, hlive⟩ : Fin L).castSucc := by omega
+      have hcol : s.cleared + (M ⟨s.layer + 1, hL1⟩ - s.cleared) ≤
+          M (⟨s.layer, hlive⟩ : Fin L).succ := by
+        have hbridge :
+            M (⟨s.layer, hlive⟩ : Fin L).succ = M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) := rfl
+        omega
+      exact ⟨hlive, hrow, hcol,
+        resBlockOrFallback_eq_resBlockCenterIndices M s.layer s.cleared _ _ hd hlive hrow hcol⟩
+    · -- case-1 / chooser-fallback: both contradict `htree` (leaf) or `hocc` (`nodeOccMin = some`)
+      rcases hf : chooseMin s target with _ | f
+      · have horacle : conOracle M s = oracleTerminal M s := by
+          unfold conOracle; rw [dif_neg h1, dif_neg hnr]
+          split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+          all_goals (try subst_vars)
+          all_goals (try (split <;> simp_all only [reduceCtorEq]))
+        rw [buildTree_terminal M (conOracle M) s (leafOfState M s)
+          (leafOfState_rootLedger M s) horacle] at htree
+        exact absurd htree (by simp)
+      · have hgt : s.cleared < target := by
+          obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff.mp hmin
+          rw [List.mem_filterMap] at hmemtar
+          obtain ⟨k0, -, hk0⟩ := hmemtar
+          by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+              s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+          · rw [if_pos hc0] at hk0
+            have hdt : s.divTilde k0 = target := Option.some.inj hk0
+            omega
+          · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+        have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+            (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+          unfold conOracle
+          rw [dif_neg h1, dif_neg hnr]
+          split
+          · rename_i target' heq
+            obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+            split
+            · rename_i f' hf'
+              obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+              rfl
+            · rename_i hf'
+              exact absurd (hf' ▸ hf) (by simp)
+          · rename_i heq
+            exact absurd (heq ▸ hmin) (by simp)
+        rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
+        obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
+        exact absurd (hocc.symm.trans ((nodeOccMin_toStepData M s _ _).trans hmin)) (by simp)
 
 /-! ## The q-det lemma: `qOfCenter` is linear (its fderiv is a fixed continuous linear equiv)
 
