@@ -510,6 +510,19 @@ over banked substrate.
   (cubeBox ε↔routeMBaseNbhd, T=1↔ε). The engine's coverage IS the runway's hard part (the
   singular-locus LOWER bound). θ/order is NOT delivered (meromorphic continuation gap) — no
   mint framing may imply it is.
+- THE THREE-LEDGER SPLIT (elder charge-5, 2026-07-19; instance #9 — the stranded-divisor
+  dichotomy is FALSE, cert-stranded-dichotomy: reachable terminals carry t̃>0 divisors with
+  divExp>1 that the fold blows up). The JACOBIAN (LeafJacobian β-det) reads the FULL ledger
+  (fullDivCoord/fullDivExp); the LOSS (LeafPullback ∏divCoord²), (C) exponent-agreement, and
+  the RLCT pole read the ANALYTIC (t̃=0) ledger. The cocycle already proves the full-ledger
+  form (zero maintenance rework). region_glue survives via a THIN wrapper: |det|_full ≤
+  |det|_analytic · K_R (stranded factor bounded on srcBox, E_s≥1; analytic⊥stranded from
+  fullDivCoord injective), reducing to the existing analytic finiteness — hbox needs
+  FINITENESS, not the exact pole (RLCT-inertness §4 = next-expedition, out of scope).
+  fullDivCoord injective is load-bearing (the factorization, from divBirthCoord injective);
+  fullDivCoord ⊥ resCoord is carried-for-generality (load-bearing at resRank>0 per Codex's
+  Morse-entanglement counterexample; VACUOUS at the spine's proven resRank=0). Field naming
+  makes the split un-elidable (Jacobian → full*, loss/C → analytic*).
 - resRank=0 IS PROVEN at every spine leaf (leaves_resRank_zero, EngineConstruction:2545 —
   the construction fully diagonalizes, Aoyagi's diag(b)). Freeze resRank=0 safely; the Morse
   clauses (resRank>0 branch of RegionGluePerLeaf, the (C) 0<resRank implication,

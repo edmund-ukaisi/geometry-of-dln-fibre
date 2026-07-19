@@ -4845,3 +4845,25 @@ charge-5 restatement the terminal case SIMPLIFIES (Inv-det at the leaf IS the fu
 statement — no bridge lemma at all). The §3 maintenance + the fan×WF plumbing (t14's
 current work, "right rather than fast") are unaffected. The wall's remaining shape: the
 walk + maintenance (t14, in flight) + the restated headline text (elder charge-5, pending).
+
+## 2026-07-19 tick 306: ELDER CHARGE-5 RULING — the THREE-LEDGER SPLIT adopted; t10 REACTIVATED on the restatement batch
+The ruling (verified against LeafData's actual fields + RegionGluePerLeaf's actual hdetβ
+consumption): ADOPT the full-ledger restatement, instance #9. THE KEY RELIEF (Q-a): hbox
+needs FINITENESS, not the exact pole — so region_glue survives via a THIN WRAPPER at the
+one hdetβ step: |det|_full = ∏_analytic·∏_stranded (from fullDivCoord injective) ≤
+K_R·|det|_analytic on the box (E_s ≥ 1), reducing to the EXISTING proven finiteness; the
+model-bound core reused unchanged. The pole-shift/inertness analysis is EXPLICITLY fenced
+out (next-expedition scope — the rlct exact-value runway). Q-b: fullDivCoord as a SEPARATE
+field beside the analytic (mirroring the existing full*/analytic pattern); mechanical
+ripple; the compat lemma divCoord = fullDivCoord ∘ analyticToFull rides the existing
+coherence tie. Q-c: TWO facts, DIFFERENT loads — fullDivCoord INJECTIVE is load-bearing
+(the factorization; from divBirthCoord injective, the leaves walk already full-indexed);
+⊥resCoord is carried-for-generality (Codex's Morse-entanglement is a resRank>0 phenomenon;
+VACUOUS at the spine's proven resRank=0). Q-d: counter 8→9 rides the batch; the naming
+makes the split UN-ELIDABLE (Jacobian clause literally names full*, loss/C name analytic* —
+the "c.divExp = s.divExp" trap barred structurally). EXACT clause text supplied.
+EXECUTION: compass bullet applied verbatim; T10 REACTIVATED (fresh off hold; its
+wheelhouse) on a TWO-PUSH batch — the type change FIRST and FAST (three sibling seats
+rebase on it), then the clauses + wrapper + counter, full gate. File fences pinned
+(GeoLeafJacobian stays t14's — it restates its own headline on the new field). t14's
+maintenance unaffected throughout (full-ledger by design — the hedge that keeps paying).
