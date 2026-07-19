@@ -4269,3 +4269,12 @@ so the wake can't omit it. Its LeafPullback-owner preference (a FRESH loss-seat 
 {α}→squeeze proof; decorrelated, write-disjoint) is AGREED — under the parametric form the
 squeeze comes unhurried at α-instantiation; the loss-seat spawns then. Its 5-step build
 order survives with step 1 re-read as the (β∘S)∘g definition. Gate build still running.
+
+### Tick-277 addendum 2: crossed-message hazard SELF-RESOLVED — t11 adopted the parametric form + banked the transparency atom
+The refinement reached t11 (the tick-277 pin is moot): parametric-gauge form adopted, and one
+more pre-merge atom banked — abs_det_fderiv_comp_det_one_gauge (|det D(C∘g)| = |det D C∘g|
+for ANY det-1 gauge g; merged c810c7e90, probed clean-three). With clm_involutive_abs_det_one
+(S) + abs_det_fderiv_elemShear (α) + clm_det_comp, EVERY det atom #35's Jacobian side
+consumes is banked: on t10's merge the lane is pure wiring + the cocycle maintenance,
+parametric-in-det-1-g — zero rework at α-instantiation. 5-step build order updated to the
+(β∘S)∘g shape. The seat is as prepped as a seat can be; one trigger.
