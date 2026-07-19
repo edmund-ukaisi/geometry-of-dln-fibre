@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Engine.GeoCoverSpec
 import DLNFibre.DLN.RLCT.Engine.GeoLeafJacobian
 import DLNFibre.DLN.RLCT.Engine.GeoLeafLedger
+import DLNFibre.DLN.RLCT.Engine.GeoInjFold
 import DLNFibre.DLN.RLCT.Engine.NodesCNodeWalk
 
 /-!
@@ -83,12 +84,12 @@ theorem chartBridgeFaithful_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L)
     ChartBridgeFaithful M (buildTree M (conOracle M) (conRoot : ConState L)) :=
   ⟨geoAtlas (buildTree M (conOracle M) conRoot),
     ⟨geoAtlas_imageCover (buildTree M (conOracle M) conRoot) conRoot rfl,
-      -- (B) per-piece props: the 5 ledger props from the bridge (`geoAtlas_leaf_ledgerProps`); the
-      -- 3 geometric props remain — a.e.-injectivity (mine, survey-first), `LeafPullback`
-      -- (loss-seat's α gauge), `LeafJacobian` (t14's `geoAtlas_fold_det` bundle).
+      -- (B) per-piece props: the 5 ledger props from the bridge (`geoAtlas_leaf_ledgerProps`) + the
+      -- a.e.-injectivity clause (`geoAtlas_leaf_ae_injOn`, `GeoInjFold`); the 2 remaining geometric
+      -- props are `LeafPullback` (loss-seat's α gauge) and `LeafJacobian` (t14's fold bundle).
       (fun c hc =>
         let ⟨hmeas, hbdd, hdiv, hres, hdisj, _, _⟩ := geoAtlas_leaf_ledgerProps c hc
-        ⟨hmeas, hbdd, hdiv, hres, hdisj, sorry, sorry, sorry⟩),
+        ⟨hmeas, hbdd, hdiv, hres, hdisj, geoAtlas_leaf_ae_injOn c hc, sorry, sorry⟩),
       -- (C) exponent agreement — from the bridge:
       (fun c hc =>
         let ⟨_, _, _, _, _, hexpDiv, hexpRes⟩ := geoAtlas_leaf_ledgerProps c hc
