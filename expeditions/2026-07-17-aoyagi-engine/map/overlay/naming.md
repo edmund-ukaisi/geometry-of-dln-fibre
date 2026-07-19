@@ -128,3 +128,45 @@ decl (flagged) — the reuse index [[banked-families]] § D-ARC has the full pin
     not `node_pivotCover_of_atom`'s existential;
   - **per-node `d_center` family data** (case-1 `= runLen·resCols + 1`, case-2 `= (M(S)−J)·(M^{(S+1)}−J)`).
   The positive reuse index for all of this is [[banked-families]] § CARRIER-ADJACENT (cartographer-4).
+
+## Endgame forwarding pointers (cartographer-6, 2026-07-19, HEAD `c342c55fb`)
+
+*The center-split / d_center naming CHURNED node → edge → node across the endgame; both keyings now
+coexist with distinct roles. Recording the live homes so old references (and the pass-#4
+wiring-endgame §3 sweep, which is now wrong on `qNodeOf`) stay resolvable.*
+
+- **`qNodeOf` — LIVE, per-NODE (`QNodeCarrier.lean:505`).** The center-split `Homeomorph` all the
+  node's pivots share (per-node cover ruling, elder-gate9). Consumed by `geoChartMap`/`geoAtlas`
+  (`GeoChart.lean`) + the fold Jacobian. **⚠ CORRECTS pass-#4 [[wiring-endgame]] §3**, which listed
+  "`qNodeOf` (node-keyed; landed edge-keyed) → rename → `qOfCenter` + `qEdgeOf`" — that is STALE:
+  `qNodeOf` was RE-ADOPTED node-keyed (t09) and is the form the tree consumes. Do not treat `qNodeOf`
+  as struck.
+- **`qEdgeOf` — LIVE, per-EDGE (`QNodeChart.lean:110`).** Keyed on `dCenterOfEdge node e`. Coexists with
+  `qNodeOf`; it is NOT a rename target of `qNodeOf` (different granularity). The per-node cover ruling
+  made `qNodeOf` the consumed one; `qEdgeOf` remains as the per-edge companion.
+- **`qOfCenter` (`QNodeChart.lean:53`) / `qOfCenterCLE` (`QNodeCarrier.lean:781`).** The parametric
+  center-split given an injective selector `c` — homeomorph form / CLE (linear) form. `qOfCenterCLE` is
+  the fold Jacobian's conjugation input (fderiv reads it as a fixed CLE); `qNodeOf` is `qOfCenter`
+  instantiated at the node's `cNodeOf` selector.
+- **`dCenterOfEdge` (`QNodeChart.lean:64`) vs `dCenterOfNode` (`QNodeCarrier.lean:62`).** Per-edge count
+  (drives the fan-out partition in `geomEdges`) vs per-node total (keys `qNodeOf`). Tie:
+  `dCenterOfNode_edgeSum` (`QNodeCarrier.lean:117`, `Σ_e dCenterOfEdge = dCenterOfNode` on built branch
+  nodes). NOT interchangeable.
+- **`cNodeOf`** (in `QNodeCarrier.lean`) — the injective flat-coordinate selector the node blows up
+  (`Fin dCenterOfNode → Fin flatDim`); `cNodeOf_injective` load-bearing. The earlier per-edge
+  `dCenterOfEdge`-keyed `q` design is superseded here (the per-node cover shares one `cNodeOf`/`qNodeOf`).
+
+- **single-per-node `ψ` — RETIRED (R-b source reparam).** `node_pivotCover_of_atom_sheared`
+  (`ShearReconcile.lean:42`) survives ONLY at `ψ = .refl`; the "single-`ψ` covers a mixed node" reading
+  is DEAD (pnp-psi T2). **⚠ DRIFT still in the tree:** `ShearReconcile.lean:32-35` still asserts
+  "single-`ψ` is the right model" — CONTRADICTED by its own RETIRE NOTE at `:13-20`. Flagged for the
+  owner (read-only for this office). See [[dead-routes]] carrier-arc kills.
+
+- **`o5_core` — DELETED (move-at-landing done, tick 189 ruling #3).** Was `EngineConstruction.lean:~2607`
+  (sorry `:2611`). Its proven replacement is `o5_core_realized` / `tStar_realized`
+  (`O5Realization.lean:882` / `:869`), clean-three. Any reference to `o5_core` in
+  `EngineConstruction` is stale — the decl is gone; `EngineConstruction.lean` is 0-sorry again.
+
+- **fold-Jacobian spine decls (t11):** `geoChartMap_fderiv_det` (`GeoJacobianSpec.lean:95`, per-edge
+  atom), `abs_det_fderiv_foldr_comp` (`GeoJacobianFold.lean:60`, parametric fold). ⚠ these live in
+  GATE-ORPHAN modules (not in AxCheck's closure) — [[wiring-endgame]] §1a.

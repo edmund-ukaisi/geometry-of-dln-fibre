@@ -1,192 +1,218 @@
-# Overlay — wiring-endgame (cartographer-5, pass #4: MAP + WIRINGS)
+# Overlay — wiring-endgame (cartographer-6, pass #5: REFRESH vs the current tree)
 
-*Convened 2026-07-19 (journal tick 238), OPERATOR-requested, before the discharge batch. The endgame's
-module graph + the `chartBridge_buildTree` discharge wiring checklist, verified FROM THE IMPORTS at
-branch `expedition/aoyagi-engine--carto5` @ `64fe1a7f2` (= origin/expedition/aoyagi-engine tick 238),
-NOT from memory. The remaining engine debt is ONE hole, ONE lane: `chartBridge_buildTree` (o5_realization
-went clean-three at tick 218). Coverage-t08's tide is the sole path to the flip.*
+*Convened 2026-07-19 (journal tick 265+, standing cartographer office, OPERATOR-requested). Pass #4
+(cartographer-5) was verified at tick 238 (`64fe1a7f2`) and PREDATES two landings navigator-4 flagged:
+the **0∈U cover reshape** (task #31) and the **geoAtlas reshape** (GeoChart / GeoJacobian / GeoCover
+split). This pass re-verifies FROM THE LIVE TREE at HEAD `c342c55fb` (tick 265 addendum), NOT from
+memory or from pass #4. What changed since pass #4: (1) the two gate-orphans pass #4 flagged
+(`PivotInjOn` / `ChartBridgeWiring`) were WIRED at tick 241 — no longer orphans; (2) `o5_realization`
+went clean-three (its crux `o5_core_realized` landed, t06 s4) — the last hole of
+`monomialization_terminates` is `chartBridge_buildTree` ALONE; (3) `o5_core` was DELETED from
+`EngineConstruction` (move-at-landing done) — that file is 0-sorry again; (4) the discharge suppliers
+reshaped into the geo-atlas family (`GeoChart`/`geoAtlas`, `GeoCoverSpec`, `GeoJacobianSpec`/`Fold`);
+(5) FOUR new gate-orphans appeared (the fold-Jacobian spine + the cover SPECIFY + FlatCubeLeaf chain).*
 
 ## 0. The one-line state
 
 `monomialization_terminates` / `engine_box_threshold_finite` are `+sorryAx` via **EXACTLY**
-`chartBridge_buildTree` (`EngineObligations.lean:51-53`, a `sorry`). Discharging it flips the hbox event
-the R5 mint re-point waits on. The discharge is `chartBridge_of_pieces` fed the coverage atlas — the
-suppliers exist, but four of them are OUTSIDE `EngineObligations`' current import closure (two are
-gate-orphans reachable from nothing).
+`chartBridge_buildTree` (`EngineObligations.lean:53`, a bare `sorry`). Discharging it flips the hbox
+event the R5 mint re-point waits on. The discharge is `chartBridge_of_pieces` fed the **`geoAtlas`**
+(GeoChart) — but the geo-atlas lane still owes: the clause-(A) cover (`geoAtlas_imageCover`,
+`GeoCoverSpec.lean:38` sorry, t10 in flight), the per-pivot `divCoord`/`divExp` emission fix
+(finding 3, task #35, un-implemented), the fold-Jacobian regrouping+instantiation (finding 2 cocycle,
+pnp-fold cert running + task #30), and clause (D) landing in the type (task #10). The construction-stable
+Jacobian SPINE is banked sorry-free but currently **escapes the gate** (see §1b).
 
-## 1. The endgame module import/consumption graph
+## 1. The endgame module import/consumption graph (current tree)
 
-**Aggregator closure path:** `DLNFibre.lean:741` → `AxCheck.lean`. `AxCheck.lean:1-8` imports (direct):
-CanonicalWitness224, EngineDriver, ClearableReify, NumDivFlatBound, O5Realization, QNodeChart, GeoChart,
-DivBirthReach. Also `DLNFibre.lean:1479` imports `Engine.PivotCover` direct. The green-gate is
-`lake build DLNFibre` = this transitive closure (aggregator note `DLNFibre.lean:273-275`).
+**Aggregator closure path:** `DLNFibre.lean:741` → `AxCheck.lean`. `AxCheck.lean:1-11` imports (direct,
+Engine): CanonicalWitness224, EngineDriver, ClearableReify, NumDivFlatBound, O5Realization, QNodeChart,
+GeoChart, DivBirthReach, **PivotInjOn (:9)**, **ChartBridgeWiring (:10)**, **QNodeCarrier (:11)**. Also
+`DLNFibre.lean:1474/1479` import Engine.EngineDefs + Engine.PivotCover direct. The green-gate is
+`lake build DLNFibre` = this transitive closure ONLY (the `DLNFibre` lib has NO `globs` in
+`lakefile.toml` — it builds the root module's imports, so a module imported by nothing ESCAPES the gate;
+aggregator warns at `DLNFibre.lean:273-275`).
 
-**Import edges of the 10 named modules** (`X → Y` = X imports Y; grep-verified `^import`):
+**Import edges of the Engine modules** (`X → Y` = X imports Y; grep-verified `^import`, HEAD `c342c55fb`):
 
-    ShearReconcile   → PivotCoverFold                    (+ Mathlib FDeriv/Transvection/Determinant)
-    PivotInjOn       → PivotCover                        (+ Mathlib.MeasureTheory.Constructions.Pi)
-    ChartBridgeWiring→ EngineDefs
-    GeoChart         → QNodeChart, ShearReconcile
-    QNodeChart       → CenterIndices                     (+ ParamsFlatLinear, Homeomorph.Lemmas)
-    CenterIndices    → EngineConstruction
-    DivBirthReach    → NumDivFlatBound
-    NumDivFlatBound  → EngineConstruction
-    ClearableReify   → EngineConstruction
-    O5Realization    → ClearableReify, NumDivFlatBound
+    CanonicalWitness224 → EngineDefs
+    ChartBridgeWiring   → EngineDefs
+    ClearableReify      → EngineConstruction
+    CoRank2Spike        → EngineDefs
+    CenterIndices       → EngineConstruction
+    DivBirthReach       → NumDivFlatBound
+    EngineConstruction  → EngineDefs
+    EngineDefs          → ResolutionTree (+ Validate.RouteMBoxReduction, RouteMLayerSplit)
+    EngineDriver        → EngineObligations
+    EngineObligations   → EngineDefs, EngineConstruction, O5Realization, RegionGlueAssembly
+    FlatCubeLeaf        → PivotLeafClauses
+    GeoChart            → QNodeChart, ShearReconcile, QNodeCarrier
+    GeoCoverSpec        → GeoChart
+    GeoJacobianSpec     → GeoChart (+ Validate.RouteMConjBlock)
+    GeoJacobianFold     → GeoJacobianSpec
+    NumDivFlatBound     → EngineConstruction
+    O5Realization       → ClearableReify, NumDivFlatBound
+    PivotCoverFold      → EngineDefs, PivotCover
+    PivotInjOn          → PivotCover
+    PivotLeafClauses    → EngineDefs, PivotCover
+    QNodeCarrier        → QNodeChart, DivBirthReach
+    QNodeChart          → CenterIndices
+    RegionGlueAssembly  → RegionGluePerLeaf, RegionGlueGlobalize
+    RegionGluePerLeaf   → EngineDefs
+    ShearReconcile      → PivotCoverFold
 
-    (support: EngineConstruction→EngineDefs→ResolutionTree; PivotCoverFold→EngineDefs,PivotCover;
-     EngineObligations→EngineDefs,EngineConstruction,O5Realization,RegionGlueAssembly;
-     EngineDriver→EngineObligations; PivotLeafClauses→EngineDefs,PivotCover [consumed by FlatCubeLeaf])
+### 1a. Gate-orphan sweep (charge #2) — the CURRENT orphans
 
-**Reachability of the 10 from the aggregator (gate-coverage):**
+Pass #4's two orphans are FIXED: `PivotInjOn` + `ChartBridgeWiring` were wired into `AxCheck` at
+tick 241 (`063212ecf`, watch lines `AxCheck.lean:1329-1330`). SIX modules now escape the gate:
 
-| module | in `DLNFibre` closure? | path / consumers |
-|---|---|---|
-| GeoChart | YES | `AxCheck:7` direct |
-| QNodeChart | YES | `AxCheck:6` direct + GeoChart→QNodeChart |
-| CenterIndices | YES | QNodeChart→CenterIndices |
-| ShearReconcile | YES | GeoChart→ShearReconcile |
-| DivBirthReach | YES | `AxCheck:8` direct |
-| NumDivFlatBound | YES | `AxCheck:4` direct + DivBirthReach→ + O5Realization→ |
-| ClearableReify | YES | `AxCheck:3` direct + O5Realization→ |
-| O5Realization | YES | `AxCheck:5` direct + EngineDriver→EngineObligations→O5Realization |
-| **PivotInjOn** | **NO — ORPHAN** | NO consumer anywhere in the tree; escapes `lake build DLNFibre` |
-| **ChartBridgeWiring** | **NO — ORPHAN** | NO consumer anywhere in the tree; escapes `lake build DLNFibre` |
+| module | reachable from aggregator? | sorry? | disposition |
+|---|---|---|---|
+| **GeoJacobianFold** | **NO — ORPHAN** (imported by nothing) | sorry-free | ⚠ the fold spine escapes the gate — SHOULD be wired |
+| **GeoJacobianSpec** | **NO** (only GeoJacobianFold, itself orphan) | sorry-free | ⚠ same; wiring GeoJacobianFold pulls it in |
+| **GeoCoverSpec** | **NO — ORPHAN** | `:38` sorry (t10) | EXPECTED-WIP; wire at discharge (its sorry then shows +sorryAx) |
+| **CoRank2Spike** | **NO — ORPHAN** | sorry-free | the (3,3,4) de-risk spike; standalone, historically un-wired |
+| **FlatCubeLeaf** | **NO — ORPHAN** | sorry-free | banked leaf-clause infra, "not yet wired into buildTree" |
+| **PivotLeafClauses** | **NO** (only FlatCubeLeaf, itself orphan) | sorry-free | consumed only by the orphan FlatCubeLeaf |
 
-⚠ **Two gate-orphans.** `PivotInjOn` and `ChartBridgeWiring` are imported by NOTHING — neither in
-`AxCheck` nor the aggregator nor any Engine module. Both are sorry-free today (verified), but a break or
-sorry in either escapes the green-gate until the discharge pulls them in (exactly the failure the
-aggregator warns about at `DLNFibre.lean:273-275`). The discharge batch fixes this by importing both
-(see §2). Until then they are direct-build-only.
+⚠ **The fold-Jacobian spine (`GeoJacobianSpec` + `GeoJacobianFold`) is a gate-orphan.** Its banked
+sorry-free content (`geoChartMap_fderiv_det`, `geoChartMap_fderiv_det_offcone`,
+`abs_det_fderiv_foldr_comp`, `geoChartMap_differentiable`) does NOT ride `lake build DLNFibre` — a break
+or a `sorry` slipped in escapes the gate, exactly the failure the aggregator warns about. **This
+CONTRADICTS journal tick 265** ("AxCheck: import + 4 watch lines added for the spine — gate-orphan
+prevention, carto5's lesson"): the tick-265 commit `3c5789b59` did NOT touch `AxCheck.lean` (empty
+diffstat), and the live `AxCheck` has no `GeoJacobianFold` import and no `geoChartMap_fderiv_det` /
+`abs_det_fderiv_foldr_comp` `#print` watch. FIX (owed by the discharge/assembly seat, or a one-line
+infra commit): `import DLNFibre.DLN.RLCT.Engine.GeoJacobianFold` into `AxCheck` + two `#print axioms`
+watch lines. (This is flagged, not silently fixed — cartographer is read-only on `lean/`.)
 
 ## 2. The `chartBridge_buildTree` discharge — WIRING CHECKLIST (the operative deliverable)
 
-The discharge fills the sorry at `EngineObligations.lean:51-53` via `chartBridge_of_pieces`
-(`ChartBridgeWiring.lean:27-41`), which bundles `ChartBridge M t` from `atlas + himg (A) + hleaf (B, 8
-per-piece clauses) + hexp (C)`. Piece-suppliers and their homes:
+The discharge fills `EngineObligations.lean:53` via `chartBridge_of_pieces`
+(`ChartBridgeWiring.lean:27-41`) fed the `geoAtlas` (`GeoChart.lean:100`). `chartBridge_of_pieces`
+bundles `⟨atlas, himg, hleaf, hexp⟩` = clauses (A)∧(B)∧(C) (NO (D) — see §2c). Piece-suppliers and
+homes:
 
 | discharge input | supplier decl | home (file:line) | in EO closure now? |
 |---|---|---|---|
-| `chartBridge_of_pieces` (the bundler) | `chartBridge_of_pieces` | ChartBridgeWiring.lean:27 | **NO** |
-| `atlas` + cover (A) + LeafPullback/LeafJacobian (B) + hexp (C) | `geometricLeafPaths`/`geoChartMap` + coverage tide (task #8, in flight) | GeoChart.lean:45,60 | **NO** |
-| cover-fold per-node atom | `node_pivotCover_of_atom` / `_sheared` + `reparam_image` | PivotCoverFold.lean:187 / ShearReconcile.lean:59,108 | **NO** (via GeoChart) |
-| (B) coord clauses: divCoord/resCoord inj + disjoint | `leaves_chart_clauses_conRoot` | DivBirthReach.lean:325 | **NO** |
-| (B) a.e.-InjOn `∃N null, InjOn chartMap` | `pivotChart_ae_injOn` (transported) | PivotInjOn.lean:47 | **NO** |
-| numDiv ≤ flatDim (underpins injective divCoord) | `leaves_numDiv_le_flatDim` | NumDivFlatBound.lean:262 | YES (via O5Realization→NumDivFlatBound) |
+| the bundler | `chartBridge_of_pieces` | ChartBridgeWiring.lean:27 | **NO** |
+| the atlas | `geoAtlas` | GeoChart.lean:100 | **NO** |
+| (A) image-cover | `geoAtlas_imageCover` (**sorry**, t10) | GeoCoverSpec.lean:33 | **NO** |
+| (B) coord clauses: divCoord/resCoord inj + disjoint (per BUILT leaf) | `leaves_chart_clauses_conRoot` | DivBirthReach.lean:325 | **NO** (reachable via GeoChart→QNodeCarrier→DivBirthReach) |
+| (B) a.e.-InjOn | `pivotChart_ae_injOn` (transported to the piece) | PivotInjOn.lean:47 | **NO** |
+| (B) `LeafJacobian` `\|det Dβ\|` | `geoChartMap_fderiv_det` + fold `abs_det_fderiv_foldr_comp` | GeoJacobianSpec.lean:95 / GeoJacobianFold.lean:60 | **NO** (orphan spine) |
+| (B) `LeafPullback` | not yet built (loss-factorization; pnp-loss commissioned) | — | — |
+| numDiv ≤ flatDim (underpins injective divCoord) | `leaves_numDiv_le_flatDim` | NumDivFlatBound.lean | YES (via O5Realization→NumDivFlatBound) |
 
-### 2a. Import additions into `EngineObligations` (the four) — ORDERED
+### 2a. Import additions into `EngineObligations` (or the coverage helper) — ORDERED
 
-The proof site is `chartBridge_buildTree` in `EngineObligations.lean`. (If the discharge is instead
-staged in a coverage helper module that EngineObligations imports, these four must be reachable from THAT
-module — the set is the same.) None of the four are in EO's current closure {EngineDefs,
-EngineConstruction, O5Realization, RegionGlueAssembly}:
+The proof site is `chartBridge_buildTree` (`EngineObligations.lean:51-53`). EO's current closure is
+{EngineDefs, EngineConstruction, O5Realization, RegionGlueAssembly}. The discharge needs (import into EO,
+or into the coverage helper module that EO then imports — same set):
 
-1. `import DLNFibre.DLN.RLCT.Engine.ChartBridgeWiring`  — `chartBridge_of_pieces`.
-2. `import DLNFibre.DLN.RLCT.Engine.GeoChart`  — atlas + cover + LeafPullback/LeafJacobian; transitively
-   pulls QNodeChart, CenterIndices, ShearReconcile, PivotCoverFold.
-3. `import DLNFibre.DLN.RLCT.Engine.DivBirthReach`  — `leaves_chart_clauses_conRoot`; pulls NumDivFlatBound
-   (already reachable).
-4. `import DLNFibre.DLN.RLCT.Engine.PivotInjOn`  — `pivotChart_ae_injOn`; pulls
-   Mathlib.MeasureTheory.Constructions.Pi.
+1. `Engine.ChartBridgeWiring` — `chartBridge_of_pieces`.
+2. `Engine.GeoChart` — `geoAtlas`; transitively pulls QNodeChart, CenterIndices, ShearReconcile,
+   PivotCoverFold, QNodeCarrier, DivBirthReach, NumDivFlatBound.
+3. `Engine.GeoCoverSpec` — `geoAtlas_imageCover` (clause A). **[NEW vs pass #4 — pass #4 listed the
+   pre-geoAtlas suppliers; the cover is now its own SPECIFY module.]**
+4. `Engine.GeoJacobianFold` — `abs_det_fderiv_foldr_comp` + (transitively) `geoChartMap_fderiv_det`,
+   for the `LeafJacobian` clause. **[NEW vs pass #4.]** Wiring this ALSO closes the fold-spine
+   gate-orphan (§1a).
+5. `Engine.DivBirthReach` — `leaves_chart_clauses_conRoot` (transitively reachable via GeoChart, but
+   import explicitly for the (B) coord clauses).
+6. `Engine.PivotInjOn` — `pivotChart_ae_injOn` (transitively reachable via GeoChart→ShearReconcile→
+   PivotCoverFold→PivotCover, but PivotInjOn's `_ae_injOn` transport is the direct supplier).
 
-⚠ **Import-hygiene note (ratified whitelist rule, [[import-hygiene]]).** Adding GeoChart drags the
-analysis-heavy ShearReconcile cone (Mathlib FDeriv/Transvection/Determinant) into the currently-LIGHT
-EngineObligations (31 transitive). Weight bump expected; the discharge commit owes a controller docstring
-note per the rule, OR the discharge is homed in a coverage module (keeping EO light) that EngineDriver's
-lane already pays for. Judge at discharge time.
+⚠ **Import-hygiene note (ratified whitelist rule, [[import-hygiene]]).** GeoChart drags the
+analysis-heavy ShearReconcile/PivotCover cone (Mathlib FDeriv/Transvection/Determinant) into the
+currently-LIGHT EngineObligations. Weight bump expected; the discharge commit owes a controller
+docstring note per the rule, OR the discharge is homed in a coverage module (keeping EO light) that
+EngineDriver's lane already pays for. Judge at discharge time.
 
-### 2b. AxCheck watch flips — `+sorryAx` → MUST-clean-three
+### 2b. AxCheck watch flips — `+sorryAx` → MUST-clean-three (CURRENT line numbers)
 
-These four `#print axioms` lines change disposition when the discharge lands (rewrite the adjacent prose
-too):
+When the discharge lands, these `#print axioms` lines change disposition (rewrite the adjacent prose):
 
-- `AxCheck.lean:1302` `Engine.chartBridge_buildTree` — comment `-- +sorryAx (← T3 coverage lane)` → clean-three.
-- `AxCheck.lean:1307` `Engine.monomialization_terminates` — `-- +sorryAx via EXACTLY chartBridge_buildTree` → clean-three.
-- `AxCheck.lean:1299` `Engine.engine_box_threshold_finite` — prose 1296-1298 ("this line flipping to clean-three IS the hbox event the mint re-point waits on") → clean-three.
-- `AxCheck.lean:1295` `Engine.region_glue` — prose 1291-1294 (`+sorryAx` through the `resolutionOf` type) → clean-three.
-- **VERIFY (not asserted):** `AxCheck.lean:1285` `Engine.canonicalResolution224` — "EXPECTS sorryAx until
-  the P8 tide lands (its ChartBridge conjunct sorried)". Confirm whether the (2,2,4) witness's ChartBridge
-  conjunct shares the `chartBridge_buildTree` discharge or is a SEPARATE concrete-witness sorry; only then
-  decide if this line also flips.
+- `AxCheck.lean:1305` `Engine.chartBridge_buildTree` — `-- +sorryAx (← T3 coverage lane)` → clean-three.
+- `AxCheck.lean:1310` `Engine.monomialization_terminates` — `-- +sorryAx via EXACTLY chartBridge_buildTree` → clean-three.
+- `AxCheck.lean:1302` `Engine.engine_box_threshold_finite` — prose `:1299-1301` ("this line flipping to clean-three IS the hbox event the mint re-point waits on") → clean-three.
+- `AxCheck.lean:1298` `Engine.region_glue` — prose `:1294-1297` (`+sorryAx` THROUGH THE TYPE via `resolutionOf`'s `.choose`, which carries the two named holes) → clean-three.
+- **DOES NOT FLIP:** `AxCheck.lean:1288` `Engine.canonicalResolution224` — this EXPECTS `+sorryAx` via
+  its OWN separate sorry (`CanonicalWitness224.lean:135`, an inline `by sorry` for the (2,2,4)
+  ChartBridge conjunct), which does NOT share `chartBridge_buildTree`. RESOLVED (pass #4 left this a
+  VERIFY): it is a SEPARATE concrete-witness sorry; it closes as the (2,2,4) cover corollary (the "P8
+  tide"), NEVER auto-flips with the generic discharge (journal tick 261 confirms).
 
-Regression guards that MUST STAY clean-three (unchanged by the discharge): o5_realization (`:1306`),
-isFullMonomialization_buildTree_conRoot (`:1310`), minAdm_le_terminalExponents (`:1311`),
-leaves_numDiv_le_flatDim (`:1314`), qOfCenter (`:1317`), DivBirthInv_conOracle_stepChildren (`:1320`),
-leaves_chart_clauses_conRoot (`:1323`), clearable_of_minimizer/`_tStar` (`:1326-1327`),
-tStar_realized/o5_core_realized (`:1330-1331`).
+Regression guards that MUST STAY clean-three (unchanged by the discharge), CURRENT line numbers:
+`region_glue_of_chartBridge` (`:1293`), `o5_realization` (`:1309` — now clean-three, was +sorryAx via
+o5_core), `isFullMonomialization_buildTree_conRoot` (`:1313`), `minAdm_le_terminalExponents` (`:1314`),
+`leaves_numDiv_le_flatDim` (`:1317`), `qOfCenter` (`:1320`), `DivBirthInv_conOracle_stepChildren`
+(`:1323`), `leaves_chart_clauses_conRoot` (`:1326`), `pivotChart_ae_injOn`/`chartBridge_of_pieces`
+(`:1329-1330`), `qNodeOf`/`dCenterOfNode_edgeSum` (`:1333-1334`), `qOfCenter_hasFDerivAt` (`:1337`),
+`clearable_of_minimizer`/`clearable_tStar` (`:1340-1341`), `tStar_realized`/`o5_core_realized`
+(`:1344-1345`). EXPECTS `+sorryAx` until R7: `realizedProfiles_eq_clearableAdm` (`:1350`).
 
-### 2c. The clause (D) gate (task #10) — HONEST STATE (the dispatch's "already pre-staged" is NOT accurate)
+### 2c. The clause (D) gate (task #10) — HONEST STATE (still un-landed)
 
 - (D) is **NOT** in the `ChartBridge` def body. `EngineDefs.lean:96-109` is only conjuncts (A)∧(B)∧(C).
 - (D) exists as **prose only** — `EngineDefs.lean:86-95` ("HONEST FORM (the (D)-less window)… GATE
   (cordon-checked): (D) must be IN this type BEFORE `chartBridge_buildTree`'s discharge lands").
 - `chartBridge_of_pieces` (`ChartBridgeWiring.lean:27-41`) bundles only A/B/C: `⟨atlas, himg, hleaf,
-  hexp⟩` — there is NO (D) argument pre-staged.
-- The dispatch's "the (D)-conjunct + destructure line (already pre-staged, cite it)" — the only stable
-  destructure is `monomialization_terminates`'s assembly `⟨…, chartBridge_buildTree M hL, …⟩`
-  (`EngineObligations.lean:94-100`, the ChartBridge slot at `:98`). That line is (D)-**agnostic** and needs
-  NO change when (D) lands additively. There is no other pre-staged (D). **Cartographer read: (D) is
-  un-landed content, not pre-staged code.** Task #10 is genuinely open.
-- When (D) lands (additive, def-only touch; `region_glue` + the CanonicalResolution projection are
+  hexp⟩` — there is NO (D) argument pre-staged. **Task #10 is genuinely OPEN** (un-landed content, not
+  pre-staged code).
+- **⚠ dCenterOfEdge-GATED (D) obligation (journal tick 262, coverage's rollover counter-sign — MUST be
+  in the t12-assembly brief).** (D)'s "intended chart at edge `e`" must be **`dCenterOfEdge`-GATED**:
+  identity at `dCenterOfEdge = 0` (rollover OR a degenerate 0-factor case12/case2 — e.g. `resCols = 0`),
+  a pivot-fan at `dCenterOfEdge ≥ 1`. (D) must **NOT** assert that every case12/case2 edge blows up a
+  real pivot (`resCols = 0` falsifies that). The three-way consistency (geoChartMap's `dite`, the
+  id-passthrough at a chartless edge, and the intended chart all agree at a 0-count blow-up) is the
+  fidelity ground; it rests on `dCenterOfEdge` counting correctly (the already-closed elder defect
+  chain — no new assumption). Coverage builds its nodes-walk + (D) statement to the gated form.
+- When (D) lands (additive, def-only touch; `region_glue` + the `CanonicalResolution` projection are
   agnostic — `EngineDefs.lean:94`):
-  (i) add the 4th conjunct to `ChartBridge` (`EngineDefs.lean:~109`) — the geometricLeafPaths fidelity
-      (each piece's `chartMap` = the real `β∘ψ` fold of a `t`-path, not an opaque map);
+  (i) add the 4th conjunct to `ChartBridge` (`EngineDefs.lean:~109`) — the `geometricLeafPaths` fidelity
+      (each piece's `chartMap` = the real `β∘ψ` geometric fold of a `t`-path, `dCenterOfEdge`-gated);
   (ii) add the 4th arg `hfid` to `chartBridge_of_pieces` + `⟨atlas, himg, hleaf, hexp, hfid⟩`
       (`ChartBridgeWiring.lean:27-41`);
-  (iii) the discharge must supply `hfid`.
+  (iii) the discharge must supply `hfid`;
+  (iv) **`region_glue_of_chartBridge`'s destructure gains a slot.** `RegionGlueAssembly.lean:107`
+      currently destructures `⟨atlas, ⟨U, hUopen, hUlocus, hUcover⟩, hleaf, hexp⟩` (the 0∈U cover
+      shape — already LANDED, see §2d). When (D) is added as a 5th `∃`-conjunct this becomes
+      `⟨atlas, ⟨…⟩, hleaf, hexp, _hfid⟩` (region_glue does NOT consume (D), so `_`-ignore it). This is
+      the "destructure arity edit" the assembly seat must not miss.
 
-### 2d. Retirement flags (task #15)
+### 2d. The 0∈U cover reshape — LANDED (charge: the reshape pass #4 predates)
 
-**(a) PivotCoverFold spine-fold — SURGICAL retire (do NOT delete the file).** The tree-fold statements
-target the SUPERSEDED cover shape `⋃ l ∈ leaves t, l.chartMap '' l.srcBox` via `e.subst.localSub` (the
-struck spine-localSub design); on the constructed tree every `e.subst.localSub = id`, so the fold collapses
-to `⋃ e, leafPathImages e.child` and carries no geometry. The current type's (A) clause is the flat-atlas
-`⋃ c ∈ atlas, c.chartMap '' c.srcBox` (`EngineDefs.lean:98-100`), built by GeoChart's own
-`geometricLeafPaths`. RETIRE (no external consumer):
-  - `leafPathImages`/`edgesImages` (`PivotCoverFold.lean:57-64`)
-  - `leafPathImages_branch` (`:69-86`)
-  - `OwnCovers` (`:91-92`), `ownCovers_branch` (`:99-110`)
-  - `imgAcc`/`imgEdgesAcc` (`:122-144`), `leafPathImages_eq_biUnion_leafPaths` (`:148-151`)
-  - `leafPaths_mapFst`/`edgesLeafPaths_mapFst` (`:156-171`)
-  - `chartBridge_imageCover_of_ownCovers` (`:224-239`) — produces the wrong (superseded) clause shape.
+Clause (A) is now the OPEN-NEIGHBOURHOOD-of-the-zero-locus form, consistent across the type, the
+bundler, the cover SPECIFY, and the consumer:
+- `EngineDefs.lean:98-100` (in `ChartBridge`): `∃ U, IsOpen U ∧ {A ∈ paramsBoxM M 1 | frobSq(prod M
+  A)=0} ⊆ U ∧ U ⊆ ⋃ c ∈ atlas, c.chartMap '' c.srcBox`.
+- `GeoCoverSpec.lean:33-37` (`geoAtlas_imageCover`, the SPECIFY, `sorry` t10) — same shape, plus
+  `htree : t = buildTree M (conOracle M) s` (pins the conOracle relatives).
+- `RegionGlueAssembly.lean:107` destructures it; `:34` `exists_small_paramsBox_subset_open` consumes
+  `0 ∈ U` (extracted at `:111-115` via `h0locus`: `0` is in the zero-locus since `prod M 0 = 0` for
+  `L ≥ 1`). `region_glue_of_chartBridge` is PROVEN clean-three consuming this shape.
+So the 0∈U reshape is fully wired on the assembly side — no pending edit there EXCEPT the additive (D)
+slot (§2c(iv)).
 
-**KEEP** `node_pivotCover_of_atom` (`:187-218`) — LIVE: consumed by `ShearReconcile`
-(`node_pivotCover_of_atom_sheared` `:59`, used at ψ=refl) + `PivotLeafClauses`; the per-node
-pivot-completeness atom the flat-atlas cover reuses via `reparam_image` (`ShearReconcile.lean:108`).
-Coupling: `ShearReconcile.lean:30` docstring names `leafPathImages`/`ownCovers_branch` — update that line
-when they retire.
+## 3. Dead/stale reference sweep — CURRENT drift (diff-then-judge)
 
-**(b) EngineObligations caveat — REWRITE (current span `39-50`, not `40-49`).** The block describes the
-STRUCK design: "PLACEHOLDER charts / coherence clause `p.1.chartMap = p.2` holds trivially / edges must
-carry real `localSub`s / `leafOfState.chartMap` = root→leaf `localSub` fold (thread a path-accumulator
-through `buildTree`)". The new type is the flat virtual-leaf atlas (GeoChart `geometricLeafPaths` →
-`chartBridge_of_pieces`); there is NO coherence clause `chartMap = χ` (`ChartBridgeWiring.lean:11-12`), and
-the ledger spine stays `chartMap`-blind BY DESIGN (atlas decoupled from `leaves t`). Rewrite to: the fill
-is the atlas, the placeholder `leafOfState.chartMap = id` is fine, the spine needs no chart content. (The
-"STABLE under carrier change" sentence at `:46-49` is correct — it strengthens.) This rewrite absorbs the
-lone LIVE-Lean `path-accumulator` reference (`EngineObligations.lean:46`).
-
-## 3. Dead/stale reference sweep (design vocabulary)
-
-| struck design | LIVE Lean hits | correction owed |
+| struck design | LIVE Lean hits (current) | correction owed |
 |---|---|---|
-| `qNodeOf` (node-keyed; landed edge-keyed) | `CenterIndices.lean:9`, `:14` (docstrings) | rename → `qOfCenter` (parametric, QNodeChart.lean:53) + `qEdgeOf` (per-edge, `:110`); `q_node`/`centerSplit` → same |
-| `path-accumulator` (spine fold) | `EngineObligations.lean:46` only | folds into the caveat rewrite (2b) |
-| `single ψ` (single-per-node gauge) | `ShearReconcile.lean:20`, `:30-35` | already flagged by RETIRE NOTE `ShearReconcile.lean:13-21`; `:30-35` provenance mention goes moot with the spine-fold retire |
-| With-variants (`LeafPullbackWith`/`LeafJacobianWith`, `χ` param) | **NONE in live Lean** (re-typing batch merged) | corrected the stale card banked-families.md:313-316 (this pass) |
-| target-side gauge / "carrier populates ChartSubst.localSub" | **NONE** (clean) | — |
+| chartBridge_buildTree docstring = STRUCK placeholder-carrier plan | `EngineObligations.lean:39-50` ("PLACEHOLDER charts / every edge's localSub = id / leafOfState.chartMap = id / thread a path-accumulator through buildTree") | STILL STALE. The ratified design (ticks 184/187/194 + geoAtlas) is spine-`chartMap`-blind; charts live on `geoAtlas` (proof-internal geometric tree), NOT threaded into `leafOfState.chartMap`. Flagged for the discharge seat (read-only for this office). |
+| single-per-node ψ "is the right model" | `ShearReconcile.lean:32-35` (asserts "single-`ψ` is the right model") | STILL STALE — the module's own RETIRE NOTE (`:13-20`) refutes it (pnp-psi T2; R-b adopted; `_sheared` used only at `ψ=.refl`). Self-contradicting docstring; flag for the owner. |
+| pass-#4 §3 sweep: "qNodeOf (node-keyed) STRUCK → rename to qOfCenter/qEdgeOf" | — | **CONTRADICTED by the current tree** (see [[naming]]): `qNodeOf` is LIVE and node-keyed (`QNodeCarrier.lean:505`), the form GeoChart's `geoAtlas`/fold CONSUME. The pass-#4 dead-route entry for qNodeOf is itself now stale — superseded here. |
+| GeoJacobianSpec `∀ t` fold-det SPECIFY (finding 1) | RETIRED from the tree (the top-level SPECIFY sorry `GeoJacobianSpec:37` is GONE — deferred at tick 260) | recorded as a trap in [[dead-routes]] (geo-atlas emission-defect family). |
 
-Historical-only (leave as record): `qNodeOf`/`path-accumulator`/`single-ψ`/With-variants in expedition
-thread specs, RULINGS, journal, and Codex logs (`threads/**`). These are the archive, not stale code.
+## 4. Predecessor-card corrections (diff-then-judge)
 
-Stale line-number cross-refs inside PivotCoverFold docstrings (moot once the spine-fold retires; fold into
-that commit): `:12` cites `EngineDefs.lean:76` (actual image-cover clause `:98-100`); `:223` cites
-`EngineObligations.lean:65` (actual `coverage_theorem` `:133-135`); `:184`/`:38` cite
-`EngineConstruction.lean:286`.
-
-## 4. Predecessor-card correction (diff-then-judge)
-
-`banked-families.md:313-316` SYNC NOTE (cartographer-4, HEAD `0ae14ade9`) claimed coverage-t08's
-re-typing batch is "NOT merged" with `LeafPullbackWith`/`LeafJacobianWith` + the `χ` parameter "still
-present". FALSE at this HEAD: the current `ChartBridgeWiring.lean` (read in full) has no With-variants and
-`chartBridge_of_pieces` has no `χ`. Corrected in this pass (marked superseded, not silently rewritten).
+- **pass #4 §0 "one hole, one lane"** was accurate at tick 238 (chartBridge_buildTree) and STAYS
+  accurate — but o5_realization is now clean-three (was flagged there as "went clean-three at tick
+  218"; now the AxCheck line `:1309` reads clean-three with `o5_core_realized` landed). Consistent.
+- **pass #4 §2b's line numbers** (1285/1295/1299/1302/1307) are STALE by ~3-8 lines after the tick-265
+  spine watch-block additions; §2b above carries the current numbers (1288/1298/1302/1305/1310).
+- **pass #4 §1 orphan table** (PivotInjOn/ChartBridgeWiring = ORPHAN) is SUPERSEDED — both wired at
+  tick 241; the current orphans are the six in §1a.
+- **[[banked-families]] D-ARC (a) "EngineConstruction = 1 sorry (o5_core :2611)"** is STALE:
+  `o5_core` is DELETED (move-at-landing done, tick 189 ruling #3 executed); `EngineConstruction` is
+  0-sorry. Corrected in [[banked-families]] this pass.

@@ -196,9 +196,11 @@ sorried) via `cert-o5-realization.md` §§3–4. **The whole kit is banked sorry
 = 0 sorries (verified `grep`, 2026-07-19); the coverage kit = 0 real sorries (the `sorry` token in
 `PivotCoverFold.lean:8` is a STALE docstring line, not a proof hole — `node_pivotCover_of_atom` IS proven).
 Every pin `file:line` grep-verified against the live tree at HEAD `da6567505`. All five families live in
-`Engine/`. **[cartographer-4 correction, HEAD `0ae14ade9`: `EngineConstruction.lean` now has 1 sorry —
-`o5_core` (`:2611`), the original hole, pending the move-at-landing; the (a)-(d) REUSE KIT itself stays
-0-sorry. See [[dead-routes]] fossil-sorry census update + § CARRIER-ADJACENT (e).]** **The cert→Lean vocabulary map is the reuse's crux** (cert names ≠ Lean names in several places,
+`Engine/`. **[cartographer-6 correction, HEAD `c342c55fb`: `EngineConstruction.lean` is BACK to 0 sorries
+— `o5_core` was DELETED (move-at-landing executed, tick 189 ruling #3); its proven replacement
+`o5_core_realized`/`tStar_realized` live in `O5Realization.lean` and are clean-three. The cartographer-4
+"now has 1 sorry (o5_core :2611)" note is SUPERSEDED. See § ENDGAME below + [[dead-routes]] census.]**
+**The cert→Lean vocabulary map is the reuse's crux** (cert names ≠ Lean names in several places,
 flagged inline). t04's ONE genuine new brick is `o5_realization`'s §4 descent case (the intra-layer
 pull-ordering) — everything below is REUSE, not rebuild.*
 
@@ -427,3 +429,89 @@ SPEC recursion over an already-built tree; the carrier populates the `localSub`s
   UNTOUCHED (the ledger spine is `chartMap`-blind), atlas realized via an auxiliary geometric tree
   `t_geo` (proof-internal), clause (A) via the (b) fold; the flat virtual-leaf re-typing replaces the
   threading mechanism. Docstring is read-only for this office — flagged for the owning seat.
+
+---
+
+# ENDGAME BANKED-FAMILY CARDS (cartographer-6, 2026-07-19, HEAD `c342c55fb`)
+
+*The four families minted during the endgame arc (ticks ~220-265) that a discharge/assembly seat
+CONSUMES rather than rebuilds. Every pin `file:line` grep-verified against the live tree. These sit
+BELOW the D-ARC reuse index (which the o5 arc consumed) — they are the coverage/carrier/fold substrate
+`chartBridge_buildTree` consumes. The endgame module graph + the discharge checklist is [[wiring-endgame]]
+pass #5.*
+
+## CARRIER family — `QNodeCarrier.lean` (t09; 736 LoC, 0-sorry, reviewed BEDROCK)
+
+*The per-NODE center split the cover + fold-Jacobian both consume. "Per-node cover ruling" (elder-gate9):
+ONE `q` of dimension `dCenterOfNode node`, shared by all the node's `dCenterOfEdge` pivots.*
+
+- `dCenterOfNode` (`:62`) — the per-node total center dim; `dCenterOfNode_edgeSum` (`:117`,
+  `Σ_e dCenterOfEdge = dCenterOfNode` on built branch nodes — the hbij tiling the fan-out partition
+  rides); `dCenterOfNode_le_flatDim` (`:217`, on-cone bound). All conOracle-relative (built-tree only).
+- `qNodeOf` (`:505`) — the per-node center-split `Homeomorph` (`Params M ≃ₜ (Fin (dCN node) → ℝ) ×
+  (Fin (flatDim − dCN node) → ℝ)`), on the reachable cone. THE `q` `geoAtlas`/`geoChartMap` consume.
+- `qOfCenterCLE` (`:781`) — the CLE (linear) form of the split, given an injective selector; the fold
+  Jacobian's conjugation input (fderiv reads it as a fixed CLE). `qOfCenter_hasFDerivAt` clean-three.
+- `cNodeOf` (in this file) — the injective flat-coordinate selector (`Fin dCenterOfNode → Fin flatDim`)
+  the node blows up; injectivity `cNodeOf_injective` load-bearing for the per-piece divCoord.
+- **Watch pins (AxCheck MUST-clean-three):** `qNodeOf`, `dCenterOfNode_edgeSum` (`:1333-1334`),
+  `qOfCenter_hasFDerivAt` (`:1337`). **Reviewed PASS-with-notes, all notes discharged (tick 264).**
+
+## DIVBIRTH-REACHABILITY family — `DivBirthReach.lean` (t07; 0-sorry)
+
+*The birth-corner invariant threaded through the oracle, delivering the per-leaf coordinate clauses (B).*
+
+- `DivBirthInv` (`:54`) + `CornerValid` (`:47`) — the reachability invariant (each divisor's birth
+  corner is valid). Roots/maintenance: `DivBirthInv_conRoot` (`:61`), `_stepCase11` (`:69`),
+  `_stepRollover` (`:75`), `_stepAppendAdvance` (`:91`); THREADED by `DivBirthInv_conOracle_stepChildren`
+  (`:136`, a THEOREM — the fold's engine, AxCheck `:1323`).
+- `birthFlatCoord_injective` (`:244`) + `flatIdx_corner_inj` (`:227`) — the flat-coordinate injectivity.
+- `leafOfState_{resRank_zero,divCoord_injective,resCoord_injective,disjoint}` (`:256,263,275,285`) — the
+  per-leaf clause atoms.
+- **`leaves_chart_clauses` (`:299`) + `leaves_chart_clauses_conRoot` (`:325`)** — the convergence
+  deliverable: the three per-piece coordinate hypotheses (divCoord/resCoord injective + disjoint) for
+  EVERY built leaf. This is the (B)-coords supplier the discharge feeds `chartBridge_of_pieces`. AxCheck
+  `:1326` MUST-clean-three.
+
+## GEO-ATLAS family — `GeoChart.lean` + `GeoCoverSpec.lean` (t08/t10; the atlas producer + cover)
+
+*The flat virtual-leaf atlas realized under elder-gate9 (per-edge emission + buck-stops geometry).
+⚠ carries TWO known EMISSION DEFECTS — recorded as traps in [[dead-routes]] § geo-atlas emission.*
+
+- `GeoChart` (structure, `GeoChart.lean:32`) — node-derived DATA only (`node`, `edge`, `pivot`); no free
+  geometry (buck-stops: a fabricated atlas can't satisfy fidelity).
+- `geoChartMap` (`:54`) — the COMPUTED per-node chart `β`: on-cone the `qNodeOf`-conjugated `pivotChart`
+  on the node's full center, off-cone `id` (totality fallback).
+- `geometricLeafPaths`/`geomEdges` (`:71,:77`, mutual) — EDGE-DRIVEN fan-out: each edge emits its
+  `dCenterOfEdge` charts, assigned a GLOBAL pivot into the node's `dCenterOfNode` via a running `offset`
+  (the hbij partition). ⚠ chartless edges (`dCenterOfEdge = 0`) forward `acc` UNCHANGED (id-passthrough,
+  tick 262 fix — WITHOUT it the whole child subtree was dropped below the first rollover).
+- `geoAtlas` (`:100`) — `(geometricLeafPaths (dCenterOfNode M) (qNodeOf M) id t).map (fun lc =>
+  { lc.1 with chartMap := lc.2 })`. **The `List (LeafData M)` the corrected `ChartBridge` quantifies
+  over.** ⚠ EMISSION DEFECT (finding 3, task #35): every fan-out copy of a leaf inherits the SAME
+  `leaf.divCoord`, but each copy blows up its OWN pivot's exceptional coord — so `LeafJacobian` fails for
+  non-birth-corner pieces. FIX (un-implemented): re-derive each piece's `divCoord`/`divExp` per-pivot,
+  PER-CASE (case2 `resRows·resCols`; case12 inherits+adds; case11 emits none — updates the ancestor).
+- `geoAtlas_imageCover` (`GeoCoverSpec.lean:33`, **sorry**, t10) — clause (A): open neighbourhood of the
+  zero-locus ⊆ ⋃ atlas images; carries `htree : t = buildTree M (conOracle M) s`. Recipe:
+  `threads/10-coverage/cover-specify.md`. Pins: `q = qNodeOf`, `hbij = dCenterOfNode_edgeSum`,
+  `hd = dCenterOfNode_le_flatDim`, headline `chartBridge_imageCover_of_ownCovers` over a `tGeo` reshape.
+
+## FOLD-JACOBIAN SPINE family — `GeoJacobianSpec.lean` + `GeoJacobianFold.lean` (t11; sorry-free, ⚠ GATE-ORPHAN)
+
+*The construction-stable Jacobian workhorse the `LeafJacobian` clause consumes. BANKED sorry-free but
+NOT wired into AxCheck — escapes `lake build DLNFibre` (see [[wiring-endgame]] §1a; wiring
+`GeoJacobianFold` into AxCheck closes the orphan + pulls GeoJacobianSpec).*
+
+- `geoChartMap_fderiv_det` (`GeoJacobianSpec.lean:95`) — the PER-EDGE det atom (on-cone):
+  `|det D(geoChartMap g) w| = |z_{cNodeOf(node)(pivot)}(w)|^{dCenterOfNode − 1}`, via q-conjugation
+  (`conjBlock_abs_det` from `RouteMConjBlock`) + `pivotChartDeriv_det`. `_offcone` (`:135`) = det 1 for
+  the id-passthrough edges. Support lemmas `centerPerm_symm_inl` (`:62`), `qOfCenterCLE_fst_apply` (`:73`).
+- `abs_det_fderiv_foldr_comp` (`GeoJacobianFold.lean:60`) — the PARAMETRIC chain-rule fold: for a list of
+  `Differentiable` maps, `|det D(foldr comp)| = ∏ per-factor det moduli at the intermediate fold points`.
+  Stated abstract-over-the-path so it survives the emission churn. Support: `clm_det_comp` (`:32`),
+  `foldrCompAbsDet` (`:40`), `foldr_comp_differentiable` (`:45`), `geoChartMap_differentiable` (`:91`).
+- **GATED remainder (NOT banked):** (i) the cocycle REGROUPING of the intermediate-point factors onto
+  the source-`w` per-piece ledger (finding 2; pnp-fold cert running; the 3 per-case substitution
+  identities) + (ii) instantiation against the fixed atlas + per-pivot ledger (task #30/#35). Chain rule
+  alone carries NO `stepUpdate` reindexing — this is the wall's true mechanism (journal tick 260/263).

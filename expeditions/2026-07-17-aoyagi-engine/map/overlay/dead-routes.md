@@ -225,3 +225,53 @@ positive reuse.*
   to a specific banked composition, `fails-on-fake` met) + the (D) documented-deferred landing (task #10:
   (D) in the type BEFORE `chartBridge_buildTree`'s discharge, else a proven hole closes with the honest-name
   tie missing).
+
+---
+
+## GEO-ATLAS EMISSION DEFECTS + FOLD KILLS (cartographer-6, 2026-07-19) — endgame traps
+
+*Two EMISSION DEFECTS in the `geoAtlas`/`geometricLeafPaths` family + the fold-Jacobian's refuted
+`∀t` scope. Both defects were caught at STATEMENTS/FILLS (zero proof-effort wasted); recorded here so
+the discharge/assembly seat does not re-walk them. Positive reuse: [[banked-families]] § GEO-ATLAS +
+FOLD-JACOBIAN SPINE.*
+
+- **The fold-det `∀ t` SPECIFY headline — REFUTED (finding 1, t11 tick 260).** `|det D(path-fold)| =
+  ∏_k |z_{divCoord k}|^{divExp k − 1}` for ALL `t` is FALSE: at `t = .leaf l` the composite is `id`
+  (det 1) while the RHS is a nonconstant monomial whenever `numDiv ≥ 1` and some `divExp k ≥ 2`. The
+  cover SPECIFY carried `htree : t = buildTree … s`; the fold one omitted it — and even `htree` at an
+  arbitrary `s` is insufficient (a non-root `s` already carries un-blown divisors). **Use instead:** the
+  RE-SCOPED conRoot form + the per-PATH ledger (the base case J(root-leaf)=1=1 is what MAKES the
+  ∀-shape true — finding-1's falsity was the GLOBAL leaf ledger; the per-path ledger heals it, tick 263).
+  The `GeoJacobianSpec:37` top-level sorry is GONE (deferred; only the per-edge atom banked).
+
+- **geoAtlas inherits the leaf's `divCoord` — LeafJacobian UNSATISFIABLE for fan-out pieces (finding 3,
+  task #35, UN-IMPLEMENTED).** `geoAtlas` sets each piece to `{ leaf with chartMap := composite }`, so
+  every fan-out copy of a leaf shares the SAME `leaf.divCoord`; but each copy's exceptional coordinate is
+  its OWN pivot (`cNodeOf` injective), so `LeafJacobian`'s `|det Dβ| = ∏_k |z_{divCoord k}|^{divExp k−1}`
+  (fixed `divCoord`) fails for every non-birth-corner piece. This is a LAYER-HARDENING gap (the
+  EngineDefs clause-(B) note already calls for per-pivot `divCoord`; the emission never implemented it —
+  no counter tick). **Use instead:** re-derive each piece's `divCoord`/`divExp` PER-PIVOT, PER-CASE
+  (case2 `resRows·resCols`; case12 inherits+adds; case11 emits NO new divisor — updates the ancestor's
+  birth corner), never a uniform `dCenterOfNode` number (tick 263). Ownership: transfers to t11 after
+  t10's GeoChart batch lands (hard file-conflict risk while t10 reshapes GeoChart).
+
+- **Chartless-edge finRange-0 subtree DROP — REFUTED as an emission BUG (t10 finding #2, tick 261/262).**
+  `geomEdges` (`GeoChart.lean:82-84`) fans each edge over `finRange (dCenterOfEdge …)`; a chartless edge
+  (`dCenterOfEdge = 0`: rollover, or a degenerate 0-factor case12/case2) gives `finRange 0 = []`, and the
+  `flatMap` then DROPS the WHOLE child subtree — below the first rollover the atlas VANISHED on any
+  multi-layer tree (load-bearing for a NON-EMPTY atlas, not just completeness). **Use instead:** the
+  ID-PASSTHROUGH (tick 262, coverage counter-signed sound+faithful+necessary): a chartless branch
+  forwards `acc` UNCHANGED + `offset + 0` (a 0-count blow-up IS an identity — geoChartMap's `dite`, the
+  passthrough, and the intended chart all agree). **DURABLE OBLIGATION (must be in the t12-assembly
+  brief):** clause (D)'s "intended chart at edge `e`" must be **`dCenterOfEdge`-GATED** — id at 0,
+  pivot-fan at ≥1; (D) must NOT assert every case12/case2 edge blows up a real pivot (`resCols = 0`
+  falsifies it). [[wiring-endgame]] §2c.
+
+- **The ledger↔geometry match by chain-rule + atoms alone — INSUFFICIENT (finding 2, the wall's true
+  mechanism, tick 260/263).** Chain rule over the fold yields per-node factors at INTERMEDIATE points
+  indexed by PATH pivots; matching that to the leaf's source-`w` ledger divisors with accumulated
+  exponents needs a one-step relative-Jacobian COCYCLE telescoping from `conRoot = 1` — the `stepUpdate`
+  reindexing is content the chain rule does not carry (stronger than the map-fidelity clause (D)). **Use
+  instead:** the parametric fold `abs_det_fderiv_foldr_comp` (banked, construction-stable) + the
+  cert-backed 3-per-case regrouping (pnp-fold cert running; task #30). NOT a 2nd PROVE seat before the
+  cert.
