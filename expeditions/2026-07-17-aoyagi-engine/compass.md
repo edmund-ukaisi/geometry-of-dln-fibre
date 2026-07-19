@@ -332,17 +332,31 @@ over banked substrate.
    false promise). GUARD: statement now, PROOF at R7 — reify-now must not pull the
    descent-invariant proof onto the spine.
 
-14. **The geoAtlas emission co-folds ledger and geometry — one recursion, not a reconciliation**
-    (elder charge-1, 2026-07-19). WHY: geoAtlas's `{lc.1 with chartMap := lc.2}` override inherits
-    the ledger leaf's divCoord/divExp while overriding geometry — two structures reconciled after
-    the fact, and the drift has fired TWICE (finding-3 per-pivot divCoord; the finRange-0 rollover
-    drop). RULING: #35 IS the unification (NOT a separate refactor — file-lock churn vs in-flight
-    t10/t11; the parametric fold is already construction-stable): geometricLeafPaths emits, per
-    path, ONE record whose chartMap AND per-pivot divCoord/divExp all derive from the same path
-    fold; geoAtlas reads it. Then the finding-2 cocycle is near-definitional maintenance of that
-    recursion, not a theorem against a mismatch. GUARD: gate #35's STATEMENT on co-folding; a
-    per-pivot divExp bolted on as another override perpetuates the seam and keeps the wall (R1)
-    a hard theorem — reject it. TIMING: post-t10 (file-lock).
+14. (AMENDED, elder charge-2, 2026-07-19 — SUPERSEDED by fork 15). The emission-seam drift is
+    healed NOT by co-folding a per-piece ledger but by DIAGONAL-NORMALIZATION (fork 15): once
+    the geometry births every divisor at its state-level divBirthCoord diagonal, the state-level
+    leaf divCoord/divExp is CORRECT for every fan-out chart — so per-pivot divCoord/divExp
+    (finding-3) DISSOLVES, `{lc.1 with chartMap := lc.2}` is consistent (no drift), and the
+    child stays SHARED. #35 reshaped per fork 15. (Original charge-1 text in git history.)
+
+15. **Diagonal-normalization: the fan-out births every divisor at its divBirthCoord diagonal**
+    (elder charge-2 ruling, 2026-07-19; pnp-fold cert §4 + Aoyagi worked §blowup + a verified
+    cover-preservation proof). WHY: Aoyagi's u_{s,k} is ONE abstract coordinate per divisor
+    (worked.tex:483-508); the reification's bug is birth-cell (chart-local pivot) ≠ reference-cell
+    (state-level divBirthCoord diagonal), cert §4's J_Φ = L·(z_diag/z_pivot)^b. FIX: compose the
+    cube-invariant source swap S_pivot = (cNodeOf(pivot) ↔ divBirthCoord diagonal) into
+    geoChartMap. PROVEN: cover preserved (full-cube srcBox is swap-invariant, cubeBox = univ.pi
+    Icc; clause-(A) superset route unchanged); |det S|=1 (t11 atom reused via a thin wrapper);
+    swaps compose cleanly (deeper pivots un-cleared ⊥ ancestor cleared diagonals, DivBirthInv
+    freshness). CONSEQUENCES: finding-3 DISSOLVES (state-level ledger correct for all charts);
+    kill-condition dissolves (birth=reference=diagonal); shared child preserved (symmetric
+    quotient intact). REJECTED (ii) child-relabeling (un-shares child, destroys the quotient —
+    patch-on-patch); (iii) terminality (cert-refuted). #35 RESHAPED = the diagonal swap + the
+    swap-composition-clean proof (from banked freshness), NOT a per-piece ledger co-fold.
+    LOAD-BEARING VERIFY (base audited hardest): t10 re-checks the cover proof threads S
+    (full-cube superset route available; pivotChartDom internal tiling threads S or routes
+    through the superset). GUARD: pnp-loss must run against the NORMALIZED charts (Q-c: the
+    off-diagonal contagion hits ∏z² identically; one fix serves both).
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
@@ -462,3 +476,8 @@ over banked substrate.
 - resRank-VACUITY CHECK owed (elder R5b, non-blocking): confirm resRank>0 fires at SOME spine
   leaf; if never, NAME the Morse clauses "carried-for-generality" (honest) — do not present
   them as load-bearing.
+- THE COCYCLE IS THE FOLD-DET MAINTENANCE FORM (pnp-fold §2): |det D(Φ'∘B)| = L(B(w))·|det DB|,
+  threading the incoming ledger through each chart, innermost-first — NOT the subtree-relative
+  pieceLedger (case-1 inheritance references a divisor born outside the subtree; n-outermost
+  induction doesn't close). Under diagonal-normalization the per-case algebra IS the cert's
+  verified diagonal-control scenario (birth=reference); no off-diagonal discrepancy remains.

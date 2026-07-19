@@ -4125,3 +4125,28 @@ membership line (standalone List.mem-level lemma with explicit binders, provable
 simp, applied — never fight change inline against sealed defs; the t09 lesson); hand off to
 fresh eyes if it survives that. Heads-up given: the elder's charge-2 outcome may touch
 geoChartMap post-merge (cover images permutation-invariant — statement unaffected).
+
+## 2026-07-19 tick 273: ELDER CHARGE-2 RULING — DIAGONAL-NORMALIZATION ADOPTED (fork 15); the endgame SHRINKS
+The ruling (verified on disk against worked.tex §blowup + the defs, not asserted): ADOPT (i).
+THE FIDELITY FINDING: Aoyagi's u_{s,k} is ONE abstract chart-local coordinate per divisor —
+she has NO diagonal-vs-off-diagonal distinction; that was OUR reification artifact (naming
+divisors by flat matrix cells). The reification is free to pick a canonical cell per divisor
+via a |det|=1 swap; (i) picks divBirthCoord globally — faithful (isomorphic) AND the choice
+preserving the ledger as a symmetric quotient. REJECTED: (ii) child-relabeling (un-shares the
+child, destroys the quotient — patch-on-patch); (iii) terminality (cert-refuted).
+PROVEN in the ruling (against the defs): cover preserved (srcBox = full flat cube =
+swap-invariant; the (A) superset route unchanged VERBATIM); atom preserved (|det S|=1; thin
+wrapper); swaps compose cleanly (deeper un-cleared pivots ⊥ ancestor cleared diagonals —
+discharged from BANKED DivBirthInv freshness; the one (i)-specific obligation).
+CONSEQUENCES: finding-3 DISSOLVES (no per-pivot ledger fields — the state-level ledger is
+correct for every copy once birth = reference = diagonal); the kill-condition dissolves at
+the root; charge-1's R2 seam heals WITHOUT the co-fold (fork 14 AMENDED/superseded, fork 15
+ADDED, the cocycle standing-counsel bullet added — all applied verbatim). Q-c: the
+off-diagonal contagion hits the LOSS identically → PNP-LOSS RE-POINTED at the normalized
+charts (running on current charts would corrupt its monomial and mask the leak it hunts;
+current-construction results kept as a contagion-confirming appendix).
+NET (elder's calibration note, recorded): the ruling REMOVES an owed rung (the per-pivot
+ledger), replaces it with a |det|=1 swap discharged from banked freshness, and leaves t09's
+carrier + t11's spine UNTOUCHED. Third time this arc: the correction made the theory SMALLER.
+#35 re-tasked; t11 briefed (design prep GO — additive statements draftable now; build still
+gates on t10's merge); t10 owes the post-swap cover VERIFY (elder: superset route available).
