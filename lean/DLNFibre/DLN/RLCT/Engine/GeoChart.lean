@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Engine.QNodeChart
 import DLNFibre.DLN.RLCT.Engine.ShearReconcile
 import DLNFibre.DLN.RLCT.Engine.QNodeCarrier
+import DLNFibre.DLN.RLCT.Engine.FlatSwap
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.GeoChart` — the geometric fan-out atlas (coverage tide, post-gate9)
@@ -86,6 +87,23 @@ noncomputable def geoChartMap (dCN : StepData M → ℕ) (qN : QNodeFam M dCN)
     if hp : g.pivot < dCN g.node then
       let q := qN g.node hd
       fun w => q.symm (Prod.map (pivotChart ⟨g.pivot, hp⟩) id (q w))
+    else id
+  else id
+
+/-- **The diagonal-NORMALIZED per-node chart** (fork-15): `(β ∘ S) ∘ (gauge g)` — the pure blow-up `β`
+(`geoChartMap`) post-composed with the source swap `S = flatSwapCLE (cNodeOf pivot) (diagTargetOf)` (which
+relocates the exceptional divisor to the ledger's `divBirthCoord` diagonal, `|det S| = 1`, cube-invariant)
+and a COMPOSABLE det-1 source-gauge SLOT `gauge` (instantiated `fun _ => id` for the cover/Jacobian;
+the R-b incidence shear `α` fills it later for `LeafPullback` — a parametric fill, no redefinition
+ripple). Off-cone / out-of-range: `id` (the target is unused there). This is the atlas chart the
+diagonal-normalized `tGeo`/`geoAtlas` fan out. -/
+noncomputable def geoChartMapNorm (gauge : GeoChart M → Params M → Params M) (g : GeoChart M) :
+    Params M → Params M :=
+  if hd : dCenterOfNode M g.node ≤ flatDim M then
+    if hp : g.pivot < dCenterOfNode M g.node then
+      geoChartMap (dCenterOfNode M) (qNodeOf M) g ∘
+        ⇑(flatSwapCLE M (cNodeOf M g.node hd ⟨g.pivot, hp⟩)
+            (diagTargetOf M g.node g.edge (by omega))) ∘ gauge g
     else id
   else id
 
