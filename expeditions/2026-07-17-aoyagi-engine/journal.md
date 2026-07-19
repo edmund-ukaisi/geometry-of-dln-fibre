@@ -2907,3 +2907,21 @@ self-correction (predicted a missing residue item, found it banked, recorded) �
 calibration discipline modeled by the auditor. Ledger addendum written (process-miss + the
 mark-unchecked convention adopted). elder-alt1 dissolved with thanks — the audit-the-
 controller pattern is now proven valuable; it stays in the comprehension cadence.
+
+## 2026-07-19 tick 201: cartographer-4 pass MERGED; calibration entry 3 (office-routed) — two SPLITs
+The carrier-adjacent reuse index is banked (every id-emission site + reuse target pinned at
+file:line; 4 dead-route additions; naming fixes incl. the ChartBridge-def location). CQ
+verdicts: BOTH SPLIT — (CQ1) the construction-side accumulator is absent as expected, BUT two
+proven fold-of-localSubs SPEC recursions exist (leafPaths + leafPathImages families), already
+consumed by the cover proof → the carrier POPULATES localSubs, builds NO fold; (CQ2) leafPaths
+is the template SHAPE but its payload is the composite function, not edge lists → 
+geometricLeafPaths = sibling recursion with an edge/d_center payload. CLASS CONFIRMED
+three-for-three across entries 1-3: every calibration miss is signature-vs-slogan (right
+object, wrong payload/quantifier) — "check the SIGNATURE first" is now the ledger's standing
+first question. Drift-risks banked + routed: ShearReconcile's single-ψ docstring (refuted —
+retire-note owed at coverage's next touch); chartBridge_buildTree's docstring (describes the
+STRUCK spine-fold plan — rewrite owed at the move-at-landing batch); the reuse-index
+sorry-count corrected in-card. Recalibration relayed to t05's wake queue (fold-exists +
+payload-shape + the docstring debt). cartographer-4 + elder-alt1 dissolved — the first full
+office-routed calibration round complete; the instrument's yield so far: one direction
+correction, one staled compass line, two arc-shape recalibrations, one process convention.
