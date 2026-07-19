@@ -83,6 +83,28 @@ theorem geoChartMap_on_cone (node : StepData M) (edge : Edge M) (pivot : ℕ)
   unfold geoChartMap
   rw [dif_pos hd, dif_pos hp]
 
+/-- **On the reachable cone, the diagonal-NORMALIZED chart `geoChartMapNorm (fun _ => id)` is
+`(β-pivotChart) ∘ S`** — the pure blow-up post-composed with the cube-invariant source swap `S`
+(`gauge = id`, so the composable slot is the identity). Both `dite`s discharge; `∘ id` collapses. -/
+theorem geoChartMapNorm_id_on_cone (node : StepData M) (edge : Edge M) (pivot : ℕ)
+    (hd : dCenterOfNode M node ≤ flatDim M) (hp : pivot < dCenterOfNode M node) :
+    geoChartMapNorm (fun _ => id) ⟨node, edge, pivot⟩
+      = (fun w => (qNodeOf M node hd).symm (Prod.map (pivotChart ⟨pivot, hp⟩) id (qNodeOf M node hd w)))
+          ∘ ⇑(flatSwapCLE M (cNodeOf M node hd ⟨pivot, hp⟩)
+                (diagTargetOf M node edge (by omega))) := by
+  unfold geoChartMapNorm
+  rw [dif_pos hd, dif_pos hp, geoChartMap_on_cone node edge pivot hd hp]
+  rfl
+
+/-- **The flat cube sits inside its image under the cube-invariant swap `S`** (of any superset of the
+cube): `S` is an involution mapping the cube onto itself, so `cube = S '' cube ⊆ S '' T`. This is the
+S-absorption the diagonal-normalized cover needs — the swap does not shrink a covering set's image. -/
+theorem cubeBox_subset_flatSwap_image (p d : Fin (flatDim M)) {T : Set (Params M)}
+    (hT : ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 ⊆ T) :
+    ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) 1 ⊆ ⇑(flatSwapCLE M p d) '' T := fun x hx =>
+  ⟨flatSwapCLE M p d x, hT ((flatSwapCLE_mem_cube_iff M p d 1 x).mpr hx),
+    flatSwapCLE_involutive M p d x⟩
+
 /-- **The R = 1 node self-cover**: at a node on the reachable cone, the `dCenterOfNode`-many
 `qNodeOf`-conjugated pivot charts, applied to the flat cube, cover the flat cube. The center coords
 tile the cube by the R=1 self-cover; the spectator cube passes through; `qOfCenter_preimage_cubeBox`
@@ -135,7 +157,7 @@ theorem fannedEdges_pivot_mem (acc : Params M → Params M) (n : StepData M) (i 
       offset ≤ i → i < offset + (edges.map (dCenterOfEdge n)).sum →
       ∃ (c : StepCase) (s : ChartSubst M) (ch : ResolutionTree M),
         Edge.mk c s ch ∈ edges ∧
-        Edge.mk c { s with localSub := geoChartMap (dCenterOfNode M) (qNodeOf M) ⟨n, Edge.mk c s ch, i⟩ } (tGeo (acc ∘ geoChartMap (dCenterOfNode M) (qNodeOf M) ⟨n, Edge.mk c s ch, i⟩) ch)
+        Edge.mk c { s with localSub := geoChartMapNorm (fun _ => id) ⟨n, Edge.mk c s ch, i⟩ } (tGeo (acc ∘ geoChartMapNorm (fun _ => id) ⟨n, Edge.mk c s ch, i⟩) ch)
           ∈ fannedEdges acc n offset edges := by
   intro offset edges
   induction edges generalizing offset with
@@ -152,8 +174,9 @@ theorem fannedEdges_pivot_mem (acc : Params M → Params M) (n : StepData M) (i 
       -- pivot-fan `(finRange d).map (fun p => …offset + ↑p…)`, picking `p = ⟨i-offset, hp⟩` (then
       -- `offset + (i-offset) = i`). The `↑p` (Fin→ℕ) coercion makes `mem_map`/`simp` HO-factor the map
       -- as `((finRange d).map ↑).map …`, so the `∃` reindexes to `ℕ` and the witness type won't align.
-      -- MATH TRIVIAL; needs the coercion-aware List idiom (fresh-eyes per controller). Everything else
-      -- (the tail recursion here, and `fannedEdges_covers` applying this lemma) is green.
+      -- MATH TRIVIAL; needs the coercion-aware List idiom (fresh-eyes per controller). The member edge
+      -- and the fanned edges now BOTH carry `geoChartMapNorm (fun _ => id)` (post-#35 wiring), so the
+      -- witness structure is unchanged; everything else (tail recursion, `fannedEdges_covers`) is green.
       sorry
     · have hlo' : offset + dCenterOfEdge n (Edge.mk c s ch) ≤ i := by omega
       have hhi' : i < offset + dCenterOfEdge n (Edge.mk c s ch)
@@ -169,8 +192,10 @@ section
 attribute [local irreducible] geoChartMap tGeo qNodeOf qOfCenter centerPerm
 
 /-- **The offset tiling (hbij)**: the pivot-`i` chart's image of the flat cube sits inside the
-fanned-edge union — the fanned edge realising `i` (`fannedEdges_pivot_mem`) has `localSub = geoChartMap
-⟨n,e,i⟩ = (geoChartMap_on_cone)` the pivot-`i` chart, and its child covers the flat cube by IH. -/
+fanned-edge union — the fanned edge realising `i` (`fannedEdges_pivot_mem`) has `localSub =
+geoChartMapNorm (fun _ => id) ⟨n,e,i⟩ = (β-pivotChart-i) ∘ S` (`geoChartMapNorm_id_on_cone`), and
+`S` is cube-invariant, so its image swallows the child's cover of the flat cube by IH
+(`cubeBox_subset_flatSwap_image`) — the swap does not shrink the covered set. -/
 theorem fannedEdges_covers (acc : Params M → Params M) (n : StepData M)
     (hd : dCenterOfNode M n ≤ flatDim M) (i : ℕ) (hi : i < dCenterOfNode M n)
     (offset : ℕ) (edges : List (Edge M))
@@ -184,8 +209,9 @@ theorem fannedEdges_covers (acc : Params M → Params M) (n : StepData M)
   refine Set.subset_iUnion₂_of_subset (t := fun (e : Edge M)
       (_ : e ∈ fannedEdges acc n offset edges) => e.subst.localSub '' leafPathImages e.child)
     _ hfmem ?_
-  simp only [Edge.subst, Edge.child, geoChartMap_on_cone n (Edge.mk c' s' ch') i hd hi]
-  exact Set.image_mono (hcov (Edge.mk c' s' ch') hmemedge _)
+  simp only [Edge.subst, Edge.child]
+  rw [geoChartMapNorm_id_on_cone n (Edge.mk c' s' ch') i hd hi, Set.image_comp]
+  exact Set.image_mono (cubeBox_subset_flatSwap_image _ _ (hcov (Edge.mk c' s' ch') hmemedge _))
 
 end
 
