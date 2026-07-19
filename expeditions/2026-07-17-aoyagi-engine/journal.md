@@ -4771,3 +4771,13 @@ Cost priced at bridge-scale. GRIND-GO issued with: the preimage-null atom FIRST 
 green; a provability-check of the InjOn statement's N-form against EngineDefs' exact clause;
 the off-ramp standing mid-build. When this lands, the (B) holes are down to LeafPullback
 (loss-t15) + LeafJacobian (t14) — the two cert-scripted instances of the one skeleton.
+
+### Tick-302 addendum: t14's one-step cocycle merged; over-hold corrected — the maintenance is NO-REGRET
+1df0a8065 merged + probed: geoChartMapNorm_cocycle_step (|det D(acc∘B)| = |det D acc (B w)|
+· the atom — cert §2's core) clean-three. t14 held EVERYTHING for the stranded fact; ruling
+corrects to a PARTIAL hold: the 4-case maintenance grinds NOW (no-regret under every
+dichotomy outcome — STRONG/WEAK add one bridge lemma; FALSE restates the headline over the
+FULL ledger, which consumes the SAME maintenance), only the terminal bridge (full→analytic)
+waits. Holding correct lines hostage to a fact that only touches their final consumer
+inverts the dependency. pnp-fold's dichotomy = the one outstanding adjudication; watch its
+pickup next drift glance (the charge may have crossed its battery delivery).
