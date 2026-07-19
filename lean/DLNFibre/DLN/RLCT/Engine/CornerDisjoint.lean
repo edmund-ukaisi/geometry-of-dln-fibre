@@ -338,7 +338,7 @@ theorem case1_node_eq {M : Fin (L + 1) → ℕ} (s : ConState L)
           exact absurd (heq ▸ hmin) (by simp)
       rw [buildTree_step M (conOracle M) s _ _ horacle] at htree
       obtain ⟨rfl, -⟩ := ResolutionTree.branch.inj htree
-      -- now `node = s.toStepData …`; `nodeOccMin node = some target'`, and `hocc` gives `target = target'`
+      -- now `node = s.toStepData …`; `hocc` (via `nodeOccMin_toStepData`) gives `target = target'`
       rw [nodeOccMin_toStepData] at hocc
       obtain rfl : target = target' := Option.some.inj (hocc.symm.trans hmin)
       exact ⟨f, hlive, hf, rfl⟩
@@ -417,5 +417,134 @@ theorem diagTargetOf_case11_eq_birthFlatCoord {M : Fin (L + 1) → ℕ} (s : Con
       exact absurd ⟨hrowc _ (by simp), hcolc _ (by simp)⟩ hcontra
   · rename_i hcontra
     exact absurd ⟨hmerge ▸ f.isLt, by rw [hidx]; exact hL⟩ hcontra
+
+/-! ## Case-1 spectator: an old divisor `k ≠ f` avoids the whole center (`u`-corner ++ `d`-block) -/
+
+/-- **`centerSelCase` at `occ = some target` is the `u`-corner ⧺ `d`-block append** (with `occ` a
+VARIABLE so `subst` reduces the `match`), transporting the dependent dimension by `Fin.cast`. The
+case-1 analogue of `centerSelCase_none_eq_resBlockOrFallback`. -/
+theorem centerSelCase_some_eq_append {M : Fin (L + 1) → ℕ} (node : StepData M) (occ : Option ℕ)
+    (target : ℕ) (hocc : occ = some target)
+    (hd' : occ.elim (node.resRows * node.resCols)
+      (fun t => 1 + (t - node.cleared) * node.resCols) ≤ flatDim M)
+    (hu : 1 ≤ flatDim M) (hdd : (target - node.cleared) * node.resCols ≤ flatDim M)
+    (hdimeq : occ.elim (node.resRows * node.resCols)
+      (fun t => 1 + (t - node.cleared) * node.resCols) = 1 + (target - node.cleared) * node.resCols)
+    (j : Fin (occ.elim (node.resRows * node.resCols)
+      (fun t => 1 + (t - node.cleared) * node.resCols))) :
+    centerSelCase M node occ hd' j
+      = Fin.append (uCornerSel M node target hu)
+          (resBlockOrFallback M node.layer node.cleared (target - node.cleared) node.resCols hdd)
+          (Fin.cast hdimeq j) := by
+  subst hocc; rfl
+
+/-- **At a case-1 node, `realCNode` is the `u`-corner ⧺ `d`-block append** at an index of the same
+underlying value as the input. Feeds the `Fin.addCases` split in `case1_spectator`. -/
+theorem realCNode_case1_append {M : Fin (L + 1) → ℕ} (node : StepData M)
+    (h1 : ¬ L ≤ node.layer) (h2 : ¬ widthMinUpto M (node.layer + 1) ≤ node.cleared)
+    (target : ℕ) (hocc : nodeOccMin M node = some target)
+    (hd : dCenterOfNode M node ≤ flatDim M) (hu : 1 ≤ flatDim M)
+    (hdd : (target - node.cleared) * node.resCols ≤ flatDim M) (i : Fin (dCenterOfNode M node)) :
+    ∃ idx : Fin (1 + (target - node.cleared) * node.resCols), (idx : ℕ) = (i : ℕ) ∧
+      realCNode M node hd i
+        = Fin.append (uCornerSel M node target hu)
+            (resBlockOrFallback M node.layer node.cleared (target - node.cleared) node.resCols hdd)
+            idx := by
+  have hdimeq : (nodeOccMin M node).elim (node.resRows * node.resCols)
+      (fun t => 1 + (t - node.cleared) * node.resCols)
+      = 1 + (target - node.cleared) * node.resCols := by rw [hocc]; rfl
+  refine ⟨Fin.cast hdimeq (finCongr (dCenterOfNode_nonterminal M node h1 h2) i), by simp, ?_⟩
+  simp only [realCNode, dif_neg h1, dif_neg h2]
+  rw [centerSelCase_some_eq_append node (nodeOccMin M node) target hocc _ hu hdd hdimeq]
+
+/-- **The case-1 `d`-block fits the layer's matrix**: at a reachable case-1 node the residual block
+`[cleared, cleared+(target−cleared)) × [cleared, cleared+resCols)` sits inside the layer's matrix
+(`target < widthMinUpto layer ≤ M castSucc`; `cleared < widthMinUpto (layer+1) ≤ M succ`). Lets the
+`d`-block selector take its geometric branch (`resBlockCenterIndices`, not the fallback). -/
+theorem case1_dblock_fit {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (target : ℕ) (hocc : nodeOccMin M node = some target) :
+    ∃ hs : node.layer < L,
+      node.cleared + (target - node.cleared) ≤ M (⟨node.layer, hs⟩ : Fin L).castSucc ∧
+      node.cleared + node.resCols ≤ M (⟨node.layer, hs⟩ : Fin L).succ := by
+  obtain ⟨f, hlive, hf, rfl⟩ := case1_node_eq s node edges htree hnr target hocc
+  have hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+      if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+      then some (s.divTilde k) else none)).min? = some target :=
+    (nodeOccMin_toStepData M s _ _).symm.trans hocc
+  obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff.mp hmin
+  rw [List.mem_filterMap] at hmemtar
+  obtain ⟨k0, -, hk0⟩ := hmemtar
+  have htbounds : s.cleared + 1 ≤ target ∧ target + 1 ≤ widthMinUpto M s.layer := by
+    by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧ s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+    · rw [if_pos hc0] at hk0
+      have hdt : s.divTilde k0 = target := Option.some.inj hk0
+      rw [hdt] at hc0; exact hc0
+    · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+  obtain ⟨hlb, hub⟩ := htbounds
+  have hlt1 : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp hnr
+  refine ⟨hlive, ?_, ?_⟩
+  · have hwc : widthMinUpto M s.layer ≤ M (⟨s.layer, hlive⟩ : Fin L).castSucc :=
+      widthMinUpto_le _ (by simp)
+    show s.cleared + (target - s.cleared) ≤ M (⟨s.layer, hlive⟩ : Fin L).castSucc
+    omega
+  · have hbridge : M (⟨s.layer, hlive⟩ : Fin L).succ
+        = M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) := rfl
+    have hws : widthMinUpto M (s.layer + 1) ≤ M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) :=
+      widthMinUpto_le _ (by simp)
+    show s.cleared + (M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) - s.cleared)
+        ≤ M (⟨s.layer, hlive⟩ : Fin L).succ
+    rw [hbridge]; omega
+
+/-- **case-1 spectator** (the merge-peeled disjointness): at a reachable case-1 node, every OLD
+divisor `k ≠ f` (the non-merge divisors, `f = chooseMin s target`) is a spectator of the WHOLE
+center — distinct from both the `u`-corner (which is `birthFlatCoord s f`, avoided by injectivity)
+and every `d`-block cell (freshness/layer). The case-1 analogue of `case2_spectator`, restricted to
+`k ≠ f` (for `k = f` the `u`-corner coincides — `uCornerSel_eq_birthFlatCoord`). -/
+theorem case1_spectator {M : Fin (L + 1) → ℕ} (s : ConState L) (dinv : DivBirthInv M s)
+    (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (target : ℕ) (hocc : nodeOccMin M node = some target)
+    (h : 0 < flatDim M) (hd : dCenterOfNode M node ≤ flatDim M)
+    (f : Fin s.numDiv) (hf : chooseMin s target = some f) :
+    ∀ (k : Fin s.numDiv), k ≠ f → ∀ (i : Fin (dCenterOfNode M node)),
+      cNodeOf M node hd i ≠ birthFlatCoord M s k h := by
+  intro k hkf i
+  obtain ⟨hlayer, hcleared⟩ := step_node_layer_cleared s node edges htree
+  have hlive : s.layer < L := layer_lt_of_branch s node edges htree
+  have h1 : ¬ L ≤ node.layer := by rw [hlayer]; exact not_le.mpr hlive
+  have h2 : ¬ widthMinUpto M (node.layer + 1) ≤ node.cleared := by rw [hlayer, hcleared]; exact hnr
+  have hdim1 : dCenterOfNode M node = 1 + (target - node.cleared) * node.resCols := by
+    rw [dCenterOfNode_nonterminal M node h1 h2, hocc]; rfl
+  have hu : 1 ≤ flatDim M := h
+  have hdd : (target - node.cleared) * node.resCols ≤ flatDim M := by omega
+  rw [cNodeOf_eq_realCNode_of_conOracle s dinv node edges htree hd]
+  obtain ⟨idx, -, heq⟩ := realCNode_case1_append node h1 h2 target hocc hd hu hdd i
+  rw [heq]
+  induction idx using Fin.addCases with
+  | left l =>
+      rw [Fin.append_left]
+      obtain ⟨f', hf', huval⟩ :=
+        uCornerSel_eq_birthFlatCoord s dinv node edges htree hnr target hocc h hu l
+      obtain rfl : f' = f := Option.some.inj (hf'.symm.trans hf)
+      rw [huval]
+      exact (birthFlatCoord_ne_of_ne dinv h hkf).symm
+  | right r =>
+      rw [Fin.append_right]
+      obtain ⟨hs, hrowD, hcolD⟩ := case1_dblock_fit s node edges htree hnr target hocc
+      have hval : resBlockOrFallback M node.layer node.cleared (target - node.cleared)
+            node.resCols hdd r
+          = resBlockCenterIndices M ⟨node.layer, hs⟩ node.cleared (target - node.cleared)
+            node.resCols hrowD hcolD r := by
+        rw [resBlockOrFallback_eq_resBlockCenterIndices M node.layer node.cleared
+          (target - node.cleared) node.resCols hdd hs hrowD hcolD]
+      rw [hval]
+      simp only [resBlockCenterIndices]
+      refine (birthFlatCoord_ne_diag_layer_cell s dinv h k (sf := ⟨node.layer, hs⟩) hlayer
+        ?_ _ _).symm
+      omega
 
 end DLNFibre.DLN.RLCT.Engine
