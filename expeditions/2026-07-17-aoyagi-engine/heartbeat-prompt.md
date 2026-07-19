@@ -49,7 +49,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
    review-to-equilibrium.
 3. Office cadence: ~60 commits or ~4 h activity since last pass → convene; phase transition →
    navigator mandatory; route adoption / skeleton revision → elder + gate.
-4. Flush before yielding. In-repo only — never `~/.claude` global memory; remind teammates.
+4. COMPREHENSION CADENCE (operator, 2026-07-19): every ~5 ticks — and at every phase
+   transition — run a CALIBRATION ENTRY: pick a load-bearing question about the territory,
+   write the mathematical EXPECTATION first (with confidences), then read the actual Lean,
+   record hit/miss + what-it-changes in strategy/calibration-ledger.md. An idle pulse with
+   nothing to integrate IS the natural slot (drift-glance tick → calibration tick). Roughly
+   every third question routes through an office instead of self-checked: cartographer for
+   map/reuse expectations, elder for direction/comprehension audits (the elder may audit the
+   controller's own strategy artifacts — invited, not resisted). Altitude note per phase
+   transition (strategy/); the close synthesis reads the ledger + altitude notes first, the
+   journal chronology second. Misses are the product — record them plainly.
+5. Flush before yielding. In-repo only — never `~/.claude` global memory; remind teammates.
 
 Teammate reports + operator messages wake you automatically — don't poll. This heartbeat is a long
 (≥20 min) idle pulse; on an idle wake with nothing new, drift-glance and re-sleep.
