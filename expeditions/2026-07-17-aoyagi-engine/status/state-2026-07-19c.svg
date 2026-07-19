@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1330" viewBox="0 0 1180 1330" font-family="ui-sans-serif, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#57606a" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1180" height="1330" fill="#ffffff"/>
+
+  <text x="40" y="42" font-size="21" font-weight="700" fill="#1f2328">State of the mathematics — expedition aoyagi-engine</text>
+  <text x="40" y="64" font-size="13" fill="#57606a">2026-07-19 night, tick 229 · Engine census: 3 sorries (1 live hole · 1 owed · 1 corollary)</text>
+  <g font-size="12.5">
+    <rect x="736" y="30" width="14" height="14" rx="3" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="756" y="42" fill="#1f2328">PROVED, clean-three</text>
+    <rect x="906" y="30" width="14" height="14" rx="3" fill="#fff3d1" stroke="#9a6700" stroke-width="1.5"/><text x="926" y="42" fill="#1f2328">assembled · named hole</text>
+    <rect x="736" y="52" width="14" height="14" rx="3" fill="#fde8e8" stroke="#c93c37" stroke-width="1.5"/><text x="756" y="64" fill="#1f2328">★ the live front</text>
+    <rect x="906" y="52" width="14" height="14" rx="3" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/><text x="926" y="64" fill="#1f2328">sorried statement (owed)</text>
+  </g>
+
+  <!-- destination -->
+  <rect x="270" y="86" width="640" height="78" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="2"/>
+  <text x="590" y="112" text-anchor="middle" font-size="15.5" font-weight="700" fill="#1f2328">aoyagi_learning_coefficient — THE DESTINATION (DLN application layer)</text>
+  <g font-size="12.5" fill="#1f2328">
+    <text x="590" y="134" text-anchor="middle">✓ _gen (L≥2) clean-three on hbox · ✓ L=1 endpoint · ✓ the ∀L≥1 mint wrapper PRE-STAGED</text>
+    <text x="590" y="152" text-anchor="middle" fill="#57606a">mint mechanics territory-checked: rewrite the stale hDescent arm → the direct engine composition</text>
+  </g>
+  <line x1="590" y1="164" x2="590" y2="196" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <!-- hbox -->
+  <rect x="290" y="200" width="600" height="64" rx="8" fill="#fff3d1" stroke="#9a6700" stroke-width="2"/>
+  <text x="590" y="224" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2328">hbox = engine_box_threshold_finite (M) (hL) (hMpos)</text>
+  <text x="590" y="244" text-anchor="middle" font-size="12.5" fill="#1f2328">+sorryAx via chartBridge_buildTree ALONE · flips clean-three when the tide lands</text>
+  <line x1="590" y1="264" x2="590" y2="296" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <!-- library boundary band -->
+  <rect x="40" y="300" width="1100" height="40" rx="6" fill="#dbeafe" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="590" y="325" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e50a0">▼ AOYAGI'S LIBRARY — the free-standing resolution mechanism (network-free) ▼</text>
+
+  <!-- monomialization_terminates -->
+  <rect x="140" y="360" width="900" height="150" rx="8" fill="#fff3d1" stroke="#9a6700" stroke-width="2"/>
+  <text x="590" y="384" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2328">monomialization_terminates (hL, hMpos) — 5 of 6 conjuncts PROVED</text>
+  <g font-size="12.5">
+    <rect x="165" y="398" width="130" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="230" y="415" text-anchor="middle" fill="#1f2328">✓ base</text>
+    <rect x="305" y="398" width="130" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="370" y="415" text-anchor="middle" fill="#1f2328">✓ StepRel-all</text>
+    <rect x="445" y="398" width="250" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="570" y="415" text-anchor="middle" fill="#1f2328">✓ IsFullMonomialization</text>
+    <rect x="705" y="398" width="150" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="780" y="415" text-anchor="middle" fill="#1f2328">✓ minAdm ≤</text>
+    <rect x="865" y="398" width="150" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="940" y="415" text-anchor="middle" fill="#1f2328">✓ o5_realization ★</text>
+    <text x="590" y="446" text-anchor="middle" font-size="12" font-weight="600" fill="#1a7f37">★ NEW: the REALIZATION HOLE CLOSED — tStar_realized (the engine's hardest proof: steered path +</text>
+    <text x="590" y="463" text-anchor="middle" font-size="12" font-weight="600" fill="#1a7f37">anchor descent + LowCover pull), audited 6/6; the minimizing stratum is PROVABLY attained at t̃=0</text>
+    <text x="590" y="485" text-anchor="middle" font-size="12" fill="#57606a">hMpos threaded (the attainment LAYER is positive-width; the ⊆ layer width-free) · counter at 6 · all audits green</text>
+  </g>
+  <line x1="590" y1="510" x2="590" y2="540" stroke="#c93c37" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- THE LIVE FRONT -->
+  <rect x="60" y="546" width="1060" height="300" rx="8" fill="#fde8e8" stroke="#c93c37" stroke-width="2.5"/>
+  <text x="590" y="572" text-anchor="middle" font-size="15" font-weight="700" fill="#c93c37">★ THE LAST HOLE — chartBridge_buildTree · TWO LANES CONVERGING NOW</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="598" font-weight="700">LANE 1 — coverage-t08's TIDE (the geometry assembly):</text>
+    <text x="80" y="618">✓ GeoChart {node, edge, pivot} — geometry COMPUTED from node data + banked atoms (no free fields)</text>
+    <text x="80" y="636">✓ geoChartMap (the per-edge chart via qEdgeOf + pivotChart) · ✓ geometricLeafPaths (edge-driven fan-out)</text>
+    <text x="80" y="654" fill="#c93c37" font-weight="600">▶ next: atlas materialization → cover fold (the PURE proven atom, via reparam_image) → 3 Props →</text>
+    <text x="80" y="672" fill="#c93c37" font-weight="600">&#160;&#160;clauses (A)/(C)/(D) into ChartBridge [gate: (D) in the type BEFORE discharge] → the full-batch gate</text>
+    <text x="80" y="696" font-weight="700">LANE 2 — t07's reachability sub-arc (parallel; converges at the assembly):</text>
+    <text x="80" y="716">✓ DivBirthInv (birth-corner validity + freshness/injectivity, threaded through the oracle)</text>
+    <text x="80" y="734" fill="#c93c37" font-weight="600">▶ next: real-ify divCoord (the birth-corner map) → discharge the 3 fed hypotheses (hdcInj/hrcInj/hdisj)</text>
+    <text x="80" y="762" font-weight="600">Everything the lanes consume is ALREADY PROVEN: the cover atom + fold (4/4) · the domain-reparam</text>
+    <text x="80" y="780" font-weight="600">identity (gauge doesn't move covers) · both Jacobian dets (|det Dα|=1, |det Dβ|=|u|^{d-1}) · the InjOn</text>
+    <text x="80" y="798" font-weight="600">atom · qOfCenter/qEdgeOf (all 5 traps, first-try) · the immutable birth-corner mechanism (slot cert)</text>
+    <text x="80" y="826" fill="#57606a">The cover MATHEMATICS was verified sound in advance (the R2 probe: 4 adversarial legs, full kill-set) —</text>
+    <text x="80" y="843" fill="#57606a">what remains is assembly of proven parts, not open mathematics.</text>
+  </g>
+
+  <!-- off-path + defects row -->
+  <rect x="60" y="872" width="520" height="118" rx="8" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/>
+  <text x="80" y="896" font-size="13" font-weight="700" fill="#1f2328">Owed off-path (sequenced, never cut):</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="80" y="916">○ R7: P = Clearable-Adm proof (statement TYPED + hMpos-hardened)</text>
+    <text x="80" y="933">○ the (2,2,4) witness conjunct (closes as a tide corollary)</text>
+    <text x="80" y="950">○ R4 genDivExp propagation · R6 the regular peel</text>
+    <text x="80" y="967">○ flip-audit: the cited-axiom residue (zeta-bridge re-scope question)</text>
+  </g>
+  <rect x="600" y="872" width="520" height="118" rx="8" fill="#f6f8fa" stroke="#8250df" stroke-width="1.5"/>
+  <text x="620" y="896" font-size="13" font-weight="700" fill="#8250df">Paper-defect ledger: 4 verified + the type-level instance</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="620" y="916">① Def-3 broken · ② p.20 raw-width (FIX-A) · ③ p.15 comparability</text>
+    <text x="620" y="933">④ realization gap (P = Clearable-Adm ⊊ Adm; the min SURVIVES —</text>
+    <text x="620" y="950">&#160;&#160;&#160;now a clean-three THEOREM, not just a battery fact)</text>
+    <text x="620" y="967">obligation-statement counter: 6 · positivity caveats in cert+ledger</text>
+  </g>
+
+  <!-- the two-layer picture -->
+  <rect x="60" y="1006" width="1060" height="96" rx="8" fill="#eef4fb" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="80" y="1030" font-size="13" font-weight="700" fill="#1e50a0">The picture (altitude note, elder-audited): the recursion's two faces, with two explicit joints</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="1052">LEDGER (profiles/exponents; the symmetric quotient) — DONE clean-three: termination, coherence, ⊆-admissibility,</text>
+    <text x="80" y="1070">attainment. ATLAS (charts/gauges/covers) — all atoms proven; the tide assembles. Joints: (C) exponent-agreement</text>
+    <text x="80" y="1088">(landed) · (D) fidelity (content pinned, lands with the tide). Attainment layer = positive-width; ⊆ layer = width-free.</text>
+  </g>
+
+  <!-- gates footer -->
+  <text x="80" y="1140" font-size="12.5" font-weight="600" fill="#1f2328">Gate ladder (every rung territory-checked in the calibration ledger):</text>
+  <text x="80" y="1160" font-size="12" fill="#57606a">tide + sub-arc converge at chartBridge_of_pieces → the hole fills (full-batch gate) → hbox flips clean-three</text>
+  <text x="80" y="1178" font-size="12" fill="#57606a">→ R5 mint (the pre-staged wrapper; rewrite the stale hDescent arm) + #guard_msgs ENFORCED axiom-gate</text>
+  <text x="80" y="1196" font-size="12" fill="#57606a">→ cordon (census pre-checked: bounded, no surprises) → signal-and-wait PR (body names R4/R6/R7 owed)</text>
+  <text x="80" y="1228" font-size="11.5" fill="#57606a">Seats: t02→t07 = 7 clean successions, every ceiling called at a banked boundary · calibration ledger: 6 entries,</text>
+  <text x="80" y="1246" font-size="11.5" fill="#57606a">the one miss-class (slogan-for-signature) caught 4/4 pre-execution · distance: ~1-2 seat-arcs to the PR</text>
+  <text x="80" y="1278" font-size="11.5" fill="#57606a">snapshot artifact — safe to delete; the journal is the record</text>
+</svg>
