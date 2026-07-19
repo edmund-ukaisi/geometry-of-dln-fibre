@@ -71,3 +71,40 @@ quirk + two pin moves.*
   ledger fields. The obligation projection names (`case_step_invariant`, `reduction_layer`,
   `coverage_theorem`, `exponent_ledger_bridge`, `resolutionOf`/`resolutionOf_spec`) are stable
   anchors; their statements are not. Re-verify at the next pass.
+
+## D-arc vocabulary (cartographer-3, 2026-07-19) — cert/journal terms → Lean names
+
+*The o5/D arc's prose vocabulary and where it lands in the tree. Several cert names differ from the Lean
+decl (flagged) — the reuse index [[banked-families]] § D-ARC has the full pin table.*
+
+- **"o5-∈" / "o5 realization" / "minAdm ∈ terminalExponents"** → the `@[blueprint]` sorried theorem
+  `o5_realization` (`EngineObligations.lean:63`), t04's hole. FUTURE proven name: the
+  `minAdm_mem_terminalExponents`-class (naming pin, elder-gate7 tick 152) — **NEVER** `profileSet_eq_Adm`,
+  `*_complete`, or `*_eq_Adm` (⊇ Adm is FALSE, [[dead-routes]] ledger #4). Its `.1` is the attainment half of
+  slot 5 (paired with the PROVEN lower bound `minAdm_le_terminalExponents`, `EngineConstruction.lean:2540`,
+  consumed at `EngineObligations.lean:79`); its `.2` is slot 6 (live attainment at a nonempty srcBox).
+- **"the two holes" / "the two named holes"** → `chartBridge_buildTree` (`EngineObligations.lean:52`) +
+  `o5_realization` (`:63`). NOT "monomialization_terminates + region_glue" (that framing is stale post-tick-165;
+  [[dead-routes]] census update).
+- **"STEP1"** (cert-compchain-o4 §6, cert-o5 §4) → `step1_dominates` (`EngineConstruction.lean:904`).
+  **"WeakDec"** (both certs) → `WeakDecInv` (`:540`). **"MvalBoundaryInv" reachability** → the THEOREM
+  `MvalBoundaryInv_conOracle_stepChildren` (`:2261`), not a def.
+- **"Clearable" (about to be reified)** → elder-gate7 tick 152 REIFY-NOW: t04 lands the `Clearable` predicate
+  (cert-o5 §1 boxed form) + a SORRIED library-surface theorem `P(M) = Clearable-Adm(M)` (typed honest name;
+  docstring cites ledger #4; AxCheck watch `+sorryAx` until R7). It is NEVER an `IsFullMonomialization`
+  conjunct — statement now, proof at R7 (task #27). Not yet in the tree as of HEAD `da6567505`.
+
+## The two carriers — DISAMBIGUATION (cartographer-3, 2026-07-19)
+
+*"Carrier" is overloaded across the map; two DISTINCT objects, do not conflate.*
+
+- **LEDGER carrier (R1)** — the faithful `RootLedger`/full-`T`/`genDivExp` node-data that the μ-descent + the
+  divisor/profile bookkeeping read. Landed as the A→C spine (`ConState`, `RootLedger`, `stepUpdate`,
+  `leafOfState` divisor fields). This is what (a)–(d) of the reuse index bank.
+- **CHART-EMISSION carrier (R2 pre-rung, t04's FIRST item)** — the per-edge chart surface: real `localSub`s
+  (not `id`) on each decision + a path-accumulator threading the root→leaf `localSub` fold into
+  `leafOfState.chartMap` (journal tick 163 4-part spec). `ChartSubst` ALREADY IS the per-edge surface
+  (`localSub` + `jacDivCount`/`jacPow`) — populate it, no sibling bundle (t04-handoff §3). This is the R2/R3
+  prerequisite the coverage kit ((e)) consumes; navigator-3 (tick 168 E) made it an EXPLICIT R2 pre-rung in the
+  ladder, distinct from R1's ledger carrier. The spine is provably `chartMap`-blind, so populating charts leaves
+  the (a)–(d) reuse kit and the two named-hole types unchanged.

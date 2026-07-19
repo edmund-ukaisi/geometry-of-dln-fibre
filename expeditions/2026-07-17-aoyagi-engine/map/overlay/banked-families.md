@@ -182,3 +182,112 @@ CoV `routeMLayerBoxIntegral_rr4_eq` (`:177`). See [[landmark-cards]] `rr4-preced
 precedent ONLY** — the inner SchurCore/front-peel core walls at depth ≥ 3 (`:12–21`), so it does NOT
 precedent the L=3 (2,2,2,2) case-1(1) merge (task #7). NOTE: shorthand "RR4.lean" = this file (no bare
 `RR4.lean`).
+
+---
+
+# D-ARC REUSE INDEX (cartographer-3, 2026-07-19)
+
+*The construction kit t04 CONSUMES to fill `o5_realization` (`EngineObligations.lean:63`, `@[blueprint]`
+sorried) via `cert-o5-realization.md` §§3–4. **The whole kit is banked sorry-free** — `EngineConstruction.lean`
+= 0 sorries (verified `grep`, 2026-07-19); the coverage kit = 0 real sorries (the `sorry` token in
+`PivotCoverFold.lean:8` is a STALE docstring line, not a proof hole — `node_pivotCover_of_atom` IS proven).
+Every pin `file:line` grep-verified against the live tree at HEAD `da6567505`. All five families live in
+`Engine/`. **The cert→Lean vocabulary map is the reuse's crux** (cert names ≠ Lean names in several places,
+flagged inline). t04's ONE genuine new brick is `o5_realization`'s §4 descent case (the intra-layer
+pull-ordering) — everything below is REUSE, not rebuild.*
+
+## (a) The invariant kit — `EngineConstruction.lean`, all sorry-free
+
+The o4/o5 state invariants + their per-transition maintenance + the reachability threading. The steering
+descent invariant (cert §4) is maintained by CONJOINING these across the same three step-transitions.
+
+- **Defs:** `SameLevelChainInv` (`:625`), `FlatTail` (`:650`), `WeakDecInv` (`:540` — **cert/handoff call it
+  `WeakDec`; Lean name is `WeakDecInv`**), `WidthBound` (`:872`), `LiveHeadDom` (`:886`), `BoundaryFlat`
+  (`:1422`), `T0Bound` (`:1490`), `NumDivFlatPos` (`:1588`), `MvalCoh` (`:1365`). The settled-fields bundle is
+  the STRUCTURE `StateInvariant` (`:92`, layer/cleared/live-width — distinct from the o4 defs above).
+- **Maintenance ×3 transitions** (rollover / case-1(1) `stepCase11` / append-advance `stepAppendAdvance`
+  [+`_case12`]): `LiveHeadDom_step{Rollover,AppendAdvance,AppendAdvance_case12,Case11}` (`:1011,1041,1078,1123`);
+  `SameLevelChainInv_step{Rollover,Case11,AppendAdvance,AppendAdvance_case12}` (`:1167,1175,1218,1264`);
+  `BoundaryFlat_step{Rollover,Case11,AppendAdvance}` (`:1429,1441,1462`); `T0Bound_step{Rollover,Case11,
+  AppendAdvance}` (`:1495,1500,1527`); `NumDivFlatPos_step{Rollover,Case11,AppendAdvance}` (`:1591,1594,1597`);
+  `MvalCoh_{stepRollover,stepAppendAdvance,case11child}` (`:1376,1383,1395`). Roots: `{BoundaryFlat,MvalCoh,
+  T0Bound,NumDivFlatPos}_conRoot` (`:2493,2496,2499,2502`).
+- **Reachability threading (the fold's engine):** `MvalBoundaryInv_conOracle_stepChildren` (`:2261` — a THEOREM
+  name, NOT a def) threads `BoundaryFlat ∧ MvalCoh` through EVERY `conOracle` step-child (case-2 via the
+  telescoping identity, case-1 via the delta + BoundaryFlat). This is the pattern t04's §4 anchor-descent
+  invariant re-uses: prove per-transition maintenance, thread through `conOracle`, fold at leaves.
+- **Consumes:** `LiveHeadDom` case-1 maintenance CONSUMES chooser minimality (see (b)); `LiveHeadDom < Mrun(S)`
+  guard is load-bearing (stranded pairs at level `= r_S` are OUT of scope — that is exactly why full-chain
+  fails and `SameLevelChainInv`/`LiveHeadDom` survive; [[dead-routes]] minimality-free + full-chain kills).
+- **Near-miss:** there is NO global `WidthBound`/full-comparability invariant — both are FALSE at interior
+  bottlenecks ([[dead-routes]]). `WidthBound` is the LIVE-restricted bound only.
+
+## (b) The chooser / minimality family — `EngineConstruction.lean`, sorry-free
+
+**THE family t04's pull-ordering brick reuses** (cert §4 flagged brick ↔ cert-compchain-o4 §§6–7). Maps the
+cert's "STEP1 / minimality" prose to Lean:
+
+- `IsEligibleMinimalChoice s k runLen` (`:275`) — the eligibility+minimality predicate (`1 ≤ runLen ∧
+  divTilde k = cleared+runLen ∧ ∀ k' at that level, divProfile k ≤ divProfile k'`).
+- `chooseMin s target` (`:1818`) + `chooseMin_spec` (`:1830`) — the Def-4-least chooser + its read-off
+  (returned divisor is at `target` AND componentwise-≤ all same-level divisors).
+- `chooserTotalOnChain_of_sameLevel` (`:1861`) — o2 min-existence: on a `SameLevelChainInv` state the chooser
+  never falls back (`ChooserTotalOnChain`, `:1852`). Helper `le_of_comparable_sum_le` (`:1842`, ∑-min ⟹
+  componentwise-min on a chain).
+- **`step1_dominates` (`:904` — cert calls this "STEP1"; Lean name is `step1_dominates`)** — the residual's
+  core: at a case-1 node every level-`ℓ` divisor dominates every level-`≤J` divisor. Consumes `LiveHeadDom` +
+  `FlatTail` + `WeakDecInv` + `divProfile_tail_eq_tilde` (`:893`). This is the exact lemma cert-o5 §4's descent
+  case ("A lands at exactly `a^S`, Def-4-least at its level") transcribes.
+- **Minimality is LOAD-BEARING** (cert-compchain-o4 Part 7): a non-minimal pick breaks `SameLevelChainInv` at
+  `(2,2,3,3,2)`. Do not build the descent invariant "minimality-free" ([[dead-routes]]).
+
+## (c) The Mval family — `EngineConstruction.lean` + `EngineDefs.lean`, sorry-free
+
+§3's envelope-splice is ALGEBRAIC over these (same flavor as the banked telescoping/delta):
+
+- `Mval_setTail_runMinWidth` (`:741`) — the case-2 telescoping identity `Mval(setTail layer cleared
+  runMinWidth) = (widthMinUpto layer − cleared)(M(layer+1) − cleared)` (head terms die by
+  `widthMinUpto_succ`, tail by constancy; ℤ then `.toNat`).
+- `Mval_setTail_delta` (`:806`) — the case-1 tail-write delta `(τ−J)(M^(l+1)−J)`, faithful under `BoundaryFlat`.
+- `MvalCoh` (`:1365`) is the ℤ-EQUALITY form `(divExp k : ℤ) = Mval` (NOT `.toNat`); `MvalCoh.toNat` (`:1370`)
+  derives the `IsFullMonomialization` read-off. **Keep deltas over ℤ, cast at the leaf** (t04-handoff §4).
+- Primitives: `runMinWidth` (`EngineDefs.lean:91`), `widthMinUpto` (`EngineDefs.lean:98`); helpers
+  `widthMinUpto_succ` (`:693`), `runMinWidth_eq_widthMinUpto` (`:657`), `runMinWidth_antitone` (`:677`),
+  `setTail_of_le` (`:631`).
+- **Envelope-splice reuse (§3):** Steps 1–2 (each envelope term = 0; non-envelope prefix > 0) are exactly the
+  factor-vanishing pattern of `Mval_setTail_runMinWidth`; Step 3 (splice `b`) is an `Adm`-membership +
+  term-by-term `Mval` comparison — tractable with these lemmas + `leaf_mem_Adm` machinery (d), no new algebra.
+
+## (d) The leaf / fold family — `EngineConstruction.lean` (+ `ResolutionTree.lean`), sorry-free
+
+The A→C spine (task #21–23) that folds invariants to leaves; t04 reads terminal divisors off it.
+
+- `leaves_isFullMono` (`:2461`) — the WF-induction fold (OracleInv+MvalCoh to leaves → `IsFullMonomialization`).
+- `leafOfState` (`:1754`) + `t0Indices` (`:1719`) — the leaf constructor; analytic side = the `t̃=0` sublist.
+  `leafOfState_rootLedger` (`:1790`). **Placeholder-chart caveat: `leafOfState.chartMap = id` today** — the
+  REAL fold is t04's carrier work (see [[naming]] carrier disambiguation).
+- `leaf_mem_Adm` (`:1313`), `_single` (`:1334`), `_t0` (`:1552`) — the `P ⊆ Adm` direction (needs `0 < L`).
+- `leaves_resRank_zero` (`:2517`) — every leaf has `resRank = 0`, so `terminalExponents` (`ResolutionTree.lean:284`)
+  = the `divExp` lists only (the residual `[]`). **This is the reduction t04's §ii uses**: `minAdm ∈
+  terminalExponents ⟺ ∃ leaf `l`, ∃ analytic `k`, `l.divExp k = minAdm`** (t04-handoff §2).
+- `conRoot_steps` (`:2561`) — the base wireability (root steps for genuine `M`); `leaves` (`ResolutionTree.lean:195`).
+- **`srcBox.Nonempty` (slot 6):** `leafOfState`'s srcBox = `paramsEquivFlat ⁻¹' cubeBox 1` — nonempty (cube at
+  radius 1, needs `0 ≤ 1`); cheap (t04-handoff §2).
+
+## (e) The coverage kit — `Engine/`, sorry-free (feeds `chartBridge_buildTree`, the SIBLING hole; carrier must line up)
+
+*Not t04's hole (that is `o5_realization`), but t04's CARRIER (the real `localSub`s + chart fold) is the
+prerequisite coverage's 3 Props consume — the carrier's per-edge fields MUST line up with these signatures.*
+
+- `pivotChart` atom (`PivotCover.lean:43`) + `pivotChartDom` (`:49`); a.e.-InjOn `pivotChart_ae_injOn`
+  (`PivotInjOn.lean:47`, from `pivotChart_injOn` `:25` + `pivotChart_exceptional_null` `:40`).
+- `node_pivotCover_of_atom` (`PivotCoverFold.lean:187`) — per-node cover from the pivot atom; the SHEARED
+  variant `node_pivotCover_of_atom_sheared` (`ShearReconcile.lean:42`) carries the extra `ψ : Params M ≃ₜ
+  Params M` gauge (the Q1b single-ψ; `ψ = id` on ledger-only case-1(1) merge edges). **Carrier constraint:**
+  each edge's `localSub` must equal `ψ (q.symm (Prod.map (pivotChart (pivotOf e)) id (q ·)))` for these to
+  apply — this is the shape t04's carrier emits (t04-handoff §3; journal tick 163 4-part spec).
+- `chartBridge_of_pieces` (`ChartBridgeWiring.lean:59`) — **PROVEN implication** (the o5-fed Props enter as
+  typed hypotheses over a fold-form `χ` parameter; `hχ : l.chartMap = χ l` bridges to the record). t04's carrier
+  makes `l.chartMap` the real fold so `hχ` holds BY CONSTRUCTION.
+- **Near-miss / stale:** `PivotCoverFold.lean:8` docstring still says "bodies are `sorry`, held for review" —
+  STALE; the theorem is proven. Do not read it as a live hole.
