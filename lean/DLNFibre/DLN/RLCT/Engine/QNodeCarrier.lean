@@ -562,7 +562,9 @@ theorem chooseMinData_toStepData (M : Fin (L + 1) → ℕ) (s : ConState L) (rr 
 branch itself supplies the chooser, so no `OracleInv` is needed): the fidelity capstone, one
 `conOracle` walk. Rollover ⟹ dim-0 (vacuous inj); case-2 ⟹ `nodeOccMin = none` (vacuous facts);
 case-1 ⟹ the merged divisor's corner validity + freshness off `DivBirthInv`, block-fit from the occ
-bounds + the case-1 node shape. This is what coverage's cover-correctness consumes. -/
+bounds + the case-1 node shape. Consumer: the ASSEMBLY (clause (D)'s fidelity — the atlas charts
+being the INTENDED blow-up coords), reached by threading `DivBirthInv` through the oracle fold (the
+`leaves_chart_clauses` template in `DivBirthReach`); not on the fold-Jacobian critical path. -/
 theorem cNodeOf_eq_realCNode_of_conOracle {M : Fin (L + 1) → ℕ} (s : ConState L)
     (dinv : DivBirthInv M s) (node : StepData M) (edges : List (Edge M))
     (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)

@@ -209,6 +209,15 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   at the inequality; supply `Module.Finite ℝ (EuclideanSpace ℝ (Fin k))` explicitly via
   `Module.Finite.equiv (WithLp.linearEquiv 2 ℝ (Fin k → ℝ)).symm`. Recurs in any `EuclideanSpace` finrank /
   subspace-dimension counting (the D-C dimension-counting family).
+- **A `def : Fin (someDef …) → X` built by `unfold someDef; split_ifs` (dependent DIMENSION) wraps its
+  body in an `Eq.mpr`/cast on the FUNCTION TYPE — so `Function.Injective`/property proofs about it hit the
+  dependent-cast wall** (`convert` leaves a `HEq (Eq.mpr … f) g`; `simp [id_eq]`/`eqRec_heq` don't close
+  it cleanly). FIX (confirmed, `QNodeCarrier.realCNode`, `t09`): redefine POINTWISE — `fun i => if h₁ …
+  then absurd i.isLt (by have := dim_zero_lemma; omega) else … else body (finCongr (dim_eq …) i)`. Every
+  branch outputs the codomain `X` (dim-0 branches discharge via `i.isLt` + `omega` from a `someDef = 0`
+  reduction lemma; the non-trivial branch casts the INPUT index by `finCongr dim_eq`, not the whole
+  function). Then injectivity is `(finCongr _).injective (bodyInjective …)` — no `Eq.mpr` in sight. The
+  general move: push the dependent cast from the function type onto the `Fin` index via `finCongr`.
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
