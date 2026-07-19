@@ -4207,3 +4207,17 @@ region_glue_of_chartBridge MUST-clean-three through the EngineDefs type edit) ru
 background. On its green: push → t11's file-lock trigger FIRES (the reshaped #35 + charge-3
 outcome pending from the elder). t10 meanwhile still grinding the 2 tracked sorries
 (GeoCoverSpec mtime 19:37). The choke point is dissolving.
+
+### Tick-275 addendum: pnp-loss re-point adjudicated — TWO leaks, TWO fixes; the S/α question factually settled
+Cert §6 merged (6d7d4edf5): the off-diagonal contagion HITS THE LOSS identically (mechanism:
+the max-modulus blow-up scales the block by z_P ⟹ frobSq = z_P²·unit; current divCoord names
+z_D ⟹ residualCore = (z_P/z_D)²·unit — vanishes at z_P=0 AND unbounded at z_D=0: BOTH squeeze
+bounds break; under fork-15, residualCore = unit). THE STRUCTURAL ANSWER: one fix does NOT
+serve both — the JACOBIAN is det-1-blind to the Schur (needs ONLY the fork-15 swap); the LOSS
+is not (Frobenius changes under Q,P — needs the swap AND the incidence/Q,P Schur shear).
+LeafJacobian: S. LeafPullback: S+α. The cert's primary verdict was ALREADY the
+diagonal-normalized adjudication (its hunt used birth=reference throughout) — scope now
+correctly stated. Forwarded to elder charge-3 with the remaining ruling cleanly factored:
+S+α in one GeoChart pass (one surgery while the file is open; condition-2 coherence) vs
+S-first (unblocks the Jacobian lane; α before LeafPullback's builder, who doesn't exist
+yet). Gate build for t10's merge still running.
