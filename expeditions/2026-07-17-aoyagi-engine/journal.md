@@ -3969,3 +3969,13 @@ FIRST CHARGES FIRED:
   must not miss it); gate-orphan sweep; map/STATUS.md rewrite (pre-dated the endgame);
   banked-family cards + forwarding pointers (carrier / DivBirth / geo-atlas incl. both
   emission-defect traps / fold-spine); diff-then-judge. Commits on carto6 branch.
+
+## 2026-07-19 tick 267: idle-pulse drift glance — t10 status ping (banking order unexecuted ~40min)
+No seat pushes since tick 265. t10 hasn't banked despite the tick-261 order — plausibly
+mid-re-green (the passthrough `if` invalidates tGeo_coherence + downstream, so its earlier
+greens partially un-greened), but the fix-independent set (4-file weakening, R=1 chain)
+shouldn't be affected — three-way status ping sent (push greens now / ETA if re-greening /
+surface if the passthrough or hbij fights). AxCheck consolidated verify still replaying.
+pnp-fold, elder-standing, carto-standing all mid-first-pass (no memos yet). Comprehension
+cadence: satisfied this window by the two standing-office passes in flight; next
+self-calibration entry at the next empty idle pulse.
