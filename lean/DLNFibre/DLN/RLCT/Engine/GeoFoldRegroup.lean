@@ -407,4 +407,31 @@ theorem geoChartMapNorm_fderiv_det_offcone (g : GeoChart M) (w : Params M)
       = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
   simp [LinearMap.det_id]
 
+/-! ## The one-step cocycle (determinant half) — cert §2 -/
+
+/-- **Chain-rule determinant split** on `Params M`: `|det D(f ∘ g) w| = |det Df (g w)| · |det Dg w|`
+for differentiable `f`, `g`. The general (no-gauge) form of `abs_det_fderiv_comp_det_one_gauge`. -/
+theorem abs_det_fderiv_comp (f g : Params M → Params M) (hf : Differentiable ℝ f)
+    (hg : Differentiable ℝ g) (w : Params M) :
+    |(fderiv ℝ (f ∘ g) w).det| = |(fderiv ℝ f (g w)).det| * |(fderiv ℝ g w).det| := by
+  have hgw : HasFDerivAt g (fderiv ℝ g w) w := (hg w).hasFDerivAt
+  have hfgw : HasFDerivAt f (fderiv ℝ f (g w)) (g w) := (hf (g w)).hasFDerivAt
+  have hcomp : HasFDerivAt (f ∘ g) ((fderiv ℝ f (g w)).comp (fderiv ℝ g w)) w := hfgw.comp w hgw
+  rw [hcomp.fderiv, clm_det_comp, abs_mul]
+
+/-- **The one-step cocycle** (cert §2, determinant half): adding an on-cone edge chart `B =
+geoChartMapNorm (fun _ => id) g` at the innermost position to an accumulated fold `acc` multiplies the
+Jacobian modulus by the edge atom `|z_{diagTargetOf}(w)|^{dCN−1}` read at the SOURCE `w`, times `acc`'s
+Jacobian modulus read at the INTERMEDIATE point `B w`. The ledger-threading of the intermediate factor
+`|det D acc (B w)|` (the §3 per-case work) is what supplies the case-1(2) inheritance locally. -/
+theorem geoChartMapNorm_cocycle_step (acc : Params M → Params M) (hacc : Differentiable ℝ acc)
+    (g : GeoChart M) (w : Params M) (hd : dCenterOfNode M g.node ≤ flatDim M)
+    (hp : g.pivot < dCenterOfNode M g.node) :
+    |(fderiv ℝ (acc ∘ geoChartMapNorm (fun _ => id) g) w).det|
+      = |(fderiv ℝ acc (geoChartMapNorm (fun _ => id) g w)).det|
+        * |paramsEquivFlat M w (diagTargetOf M g.node g.edge (by omega))|
+            ^ (dCenterOfNode M g.node - 1) := by
+  rw [abs_det_fderiv_comp acc _ hacc (geoChartMapNorm_differentiable g) w,
+    geoChartMapNorm_fderiv_det g w hd hp]
+
 end DLNFibre.DLN.RLCT.Engine
