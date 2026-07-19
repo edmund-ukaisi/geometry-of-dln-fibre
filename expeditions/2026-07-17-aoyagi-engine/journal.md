@@ -4804,3 +4804,12 @@ The background full-aggregator build it flagged closed GREEN (8914 jobs, exit 0,
 the bridge + the orphan imports). Warm-answerable status acknowledged; the answer desk is
 staffed. Its wake's net: the gate realized, the discharge at exactly 3 geometric holes,
 the third surveyed-and-handed. Nothing owed.
+
+## 2026-07-19 tick 304: heartbeat — all four lanes hot; loss-t15's α det-1 PROVEN and merged
+Drift glance at 22:14: every lane's files touched within the last 4 minutes. Merged
+loss-t15's two greens (69e6527fb): alphaGauge_abs_det_one PROVEN clean-three (the α gauge
+is det-1 — LeafJacobian's transparency to α is now a theorem, not a design note) + the
+(iii) infra (conjugation-of-fold flat-read + untouched-coord). In flight: pnp-fold WRITING
+cert-stranded-dichotomy.md (the outstanding adjudication, being drafted); t14's
+GeoFoldRegroup at 28k and growing (the 4-case maintenance); inj-t16 orienting in its
+worktree. No stalls, no rulings owed. The endgame is grinding.
