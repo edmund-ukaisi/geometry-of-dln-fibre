@@ -110,6 +110,49 @@ pinned to the simulator-validated dispatch, matching fork 13(Q3).
 - No `honestly / importantly / fundamentally / of course / simply / clearly / obviously / the whole
   point is` in either spine file.
 
+## Supplement (builder's worry-list, items 8-10) — all PASS
+
+**8. Genuine-tree — PASS.** The capstone (`EngineConstruction.lean:2509-2512`) is
+`IsFullMonomialization (buildTree M (conOracle M) conRoot)` — the REAL `conOracle` dispatch
+(`:2090`), not a trivial/terminal stand-in. For a genuine `M` (`M 0, M 1 ≥ 1`), `classify`/`conOracle`
+at `conRoot` (`numDiv=0`) takes the case-2 branch (`occ = []` ⟹ `min? = none`; not rollover since
+`widthMinUpto 1 = min(M0,M1) ≥ 1 > cleared`), so the first step is genuine and the tree is a
+non-trivial `branch`. The theorem is additionally robust to the off-cone `chooseMin = none` fallback
+(it holds even if that fired, via `leaves_isFullMono`'s terminal branch), and on the reachable cone
+the fallback never fires (`chooserTotalOnChain_of_sameLevel` from `SameLevelChainInv`). Not a vacuous
+object.
+
+**9. Non-vacuity — PASS.**
+(a) A concrete nonempty-analytic witness exists: `CanonicalWitness224.lean` builds `tree224` for
+`M=(2,2,4)` with `numDiv_leaf224 : leaf224.numDiv = 1` (rfl), `divExp = 4`,
+`terminalExponents_tree224 = [4]`, `minAdm_M224 = 4`, and `canonicalResolution224_arithmetic` proving
+the full `CanonicalResolution` arithmetic including `srcBox.Nonempty` — so the predicate has real
+content on a genuine DLN. (This is a hand-built satisfiability witness mirroring the case-2 emission,
+a separate object from `buildTree conOracle`; combined with item 8 it establishes both that the
+predicate is contentful and that the constructed tree is non-trivial.) Empty analytic sides at
+t̃>0-only leaves remain legitimately allowed (fork 12(b)), so the universally-quantified statement is
+the correct shape.
+(b) The `leafOfState` `flatDim = 0` `dite` branch is discharged by a PROOF, not an assumption:
+`flatDim_pos_of_append` (`:1571`) proves `0 < flatDim M` from an append firing (`Nat.mul_pos` on the
+two widths forced `≥ 1` by the guard `cleared < widthMinUpto (layer+1)`, then `single_le_sum`), which
+feeds `NumDivFlatPos_stepAppendAdvance`; `NumDivFlatPos` is threaded from `NumDivFlatPos_conRoot`
+(vacuous) through the reachability. In `leafOfState_isFullMono`'s else branch (`:2395-2397`),
+`0 < flatDim` is contradicted from any full divisor `j` via `hnf`, so `flatDim = 0 ⟹ numDiv = 0 ⟹`
+no divisor exists at all (subsumes "no t̃=0 divisor") — the empty analytic side is faithful. Genuine
+proof.
+
+**10. Non-circularity of the case-1 `Mval` delta — PASS.** `Mval_setTail_delta` (`:806`) has one call
+site (`:2341`). Its `hbdry` precondition is supplied there (`:2336`) by `hbf hlive f …` — the PARENT
+`BoundaryFlat` invariant (a hypothesis of `MvalBoundaryInv_conOracle_stepChildren`, threaded from
+`BoundaryFlat_conRoot` via reachability), NOT assumed at the leaf; its `hflat` precondition comes from
+`divProfile_tail_eq_tilde` off `inv.ft`/`inv.wd`. Circle check: the `BoundaryFlat_step*` maintenance
+lemmas (`:1429`, `:1441`, `:1462`) do NOT reference `Mval` or the delta lemma (grep empty). So the
+dependency is acyclic: the delta consumes `BoundaryFlat`; `BoundaryFlat`'s own maintenance is pure
+profile/`tilde` facts, independent of the delta. Within the joint step the child's `BoundaryFlat` is
+proven by `BoundaryFlat_stepCase11` (no delta) while the child's `MvalCoh` uses the delta with the
+parent's `hbf` — a clean DAG, no feedback. (Codex's Q3 leg independently confirmed `divExp` is not a
+definitional alias of `Mval`.)
+
 ## Bedrock
 
 No `sorry`, `axiom`, `native_decide`, or `unsafe` in `EngineDefs.lean` / `EngineConstruction.lean`.
