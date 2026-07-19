@@ -3003,3 +3003,29 @@ path-accumulator from t05 — GeoChart's/moot respectively). Carrier size honest
 from "just data" to "centerSplit + data", still bounded-within-budget. elder-gate9
 supplemented mid-audit with the addendum's division as the Q3 object. The decision surface
 remains one question (§8 + the division), one gate, both seats' final positions in.
+
+## 2026-07-19 tick 206: ELDER-GATE9 VERDICT — RATIFY sibling-GeoChart + 2 binding AMENDs; BOTH BUILDS GO
+The aligned-seats blind spot was REAL and concrete: both seats reasoned per-NODE; the tree is
+per-EDGE — the case-1 node emits TWO edges with DIFFERENT children (case11→child11 merge;
+case12→stepAppendAdvance split, EngineConstruction:2041-2044) and the pivot family PARTITIONS:
+case11 = exactly the 1 u-chart; case12 = the runLen·resCols d-family; case2 = resRows·resCols;
+rollover = 0. Node d_center = the SUM; per-edge d_center emission would double-count u (the
+off-by-one class of the original undershoot). hbij = the disjoint union; edge-driven
+geometricLeafPaths makes child-routing automatic. AMEND 2 (buck-stops): GeoChart geometry is
+DEFINED from node data + banked atoms (geometricLeafPaths COMPUTES β̃_e per edge by applying
+pivotChart(pivotOf e) + the Schur unipotent to node-derived data) — free function fields would
+let a fabricated atlas satisfy (D) internally (the abstract-carrier-field class, instance #5's
+cousin). FIDELITY (Q1b): id-edges are honest under the quotient reading (13(Q3): the
+substitution is the geometric WITNESS, not the statement) CONTINGENT on (D) landing (#10) AND
+the struck spine-fold machinery being retired (FLAGS, land in the fill batch: PivotCoverFold's
+localSub fold + "over leaves" cover statements go vacuous with id-edges — the trivial-cover
+trap; the EngineObligations:40-49 stale caveat). Q1c: UNIFORM u-geometry (data in GeoChart;
+uniqueness = the count; a spine/atlas split would re-introduce the entanglement the re-typing
+removed). Q3: no orphaned piece; CENTER-INDEX SETTLED BY INSPECTION — derivable (pure
+arithmetic on (layer,cleared,resRows,resCols,M) against the FlatIdx sigma, ParamsFlat:67-71)
+but NOT exposed (divCoord placeholder) ⟹ t05's arc = the small bounded centerIndices helper;
+ownership refined: t05 = centerIndices (arithmetic), coverage = centerSplit (the Homeomorph
+built from it). BOTH BUILDS GO (t05: centerIndices + per-edge counts + pivot enumeration;
+coverage: α_e + GeoChart def under amendment-2 NOW, centerSplit at centerIndices-landing,
+then geometricLeafPaths/(D)/Props/cover). elder-gate9 dissolved — its per-edge catch and
+buck-stops pin are exactly what the gate-on-aligned-seats convention exists for.
