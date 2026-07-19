@@ -3633,3 +3633,17 @@ edgeSum) → geoAtlas. Coverage re-pointed at the tick-247 ruling (crossed): the
 now → t10; the fold SPECIFY at q-det → t11. Remaining to the discharge: t09's q-det + #26;
 the two SPECIFYs; t10's cover (medium); t11's fold-Jacobian (the wall); LeafPullback's sizing
 (t11's report item); the (D)+clauses assembly; the discharge batch per carto5's checklist.
+
+## 2026-07-19 tick 250: cover SPECIFY merged — t10 SPAWNED (the medium lane of the closing pair)
+Coverage's SPECIFY (c877ea169): the structural decisions DECIDED with reasons (the tGeo
+fan-out-TREE route — bake composites into leaves, geoChartMap onto edges, reuse the banked
+tree-fold verbatim vs a List route that re-derives it; the flat-cube srcBox — the SUPERSET
+direction makes clause (A) free-side and the measurable/bounded clauses the banked FlatCubeLeaf
+ones); the exact pins for every hypothesis; the tGeo recursion shape; 6 owed PROVE sub-steps;
++ Engine/GeoCoverSpec.lean = the VALIDATED fill-target (geoAtlas_imageCover, one tracked
+sorry, typechecks green). The one non-mechanical link flagged: the hbij offset-bijection from
+edgeSum. T10 SPAWNED on it (medium; the retirement-flagged PivotCoverFold decls fenced off in
+the brief; the SPECIFY's decisions stand unless a build step FALSIFIES one — truth-signal).
+The closing pair's second lane (t11, the fold-Jacobian wall) awaits t09's q-det → coverage's
+fold SPECIFY. Board: t09 (q-det #27 + #26) ∥ t10 (the cover) ∥ coverage (warm, the fold
+SPECIFY next).
