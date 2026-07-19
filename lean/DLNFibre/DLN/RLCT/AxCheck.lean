@@ -5,6 +5,7 @@ import DLNFibre.DLN.RLCT.Engine.NumDivFlatBound
 import DLNFibre.DLN.RLCT.Engine.O5Realization
 import DLNFibre.DLN.RLCT.Engine.QNodeChart
 import DLNFibre.DLN.RLCT.Engine.GeoChart
+import DLNFibre.DLN.RLCT.Engine.DivBirthReach
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1314,6 +1315,9 @@ open DLNFibre.DLN.RLCT
 -- Carrier remainder (tick 220): the concrete coordinate-split Homeomorph (parametric in the
 -- center selector; per-edge keying per elder-gate9 amendment 1). MUST stay clean-three:
 #print axioms Engine.qOfCenter
+-- Reachability sub-arc (t07): the birth-corner invariant threaded through the oracle.
+-- MUST stay clean-three:
+#print axioms Engine.DivBirthInv_conOracle_stepChildren
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
