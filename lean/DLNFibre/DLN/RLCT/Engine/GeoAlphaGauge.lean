@@ -318,6 +318,80 @@ noncomputable def geoAtlasNorm (gauge : GeoChart M → Params M → Params M) (t
     List (LeafData M) :=
   ResolutionTree.leaves (tGeoG gauge id t)
 
+/-! ### `tGeoG` preserves the leaf ledger `resRank` (`resRank = 0` transfer) -/
+
+/-- `edgesLeaves` distributes over list append. -/
+theorem edgesLeaves_append (l1 l2 : List (Edge M)) :
+    ResolutionTree.edgesLeaves (l1 ++ l2)
+      = ResolutionTree.edgesLeaves l1 ++ ResolutionTree.edgesLeaves l2 := by
+  induction l1 with
+  | nil => simp [ResolutionTree.edgesLeaves]
+  | cons e es ih =>
+      obtain ⟨c, s, ch⟩ := e
+      simp only [List.cons_append, ResolutionTree.edgesLeaves, ih, List.append_assoc]
+
+/-- `edgesLeaves` of a `.mk`-built mapped edge-list is the `flatMap` of the child leaves. -/
+theorem edgesLeaves_mapMk {α : Type*} (g : α → StepCase) (sub : α → ChartSubst M)
+    (chi : α → ResolutionTree M) (l : List α) :
+    ResolutionTree.edgesLeaves (l.map fun a => Edge.mk (g a) (sub a) (chi a))
+      = l.flatMap fun a => ResolutionTree.leaves (chi a) := by
+  induction l with
+  | nil => simp [ResolutionTree.edgesLeaves]
+  | cons a as ih =>
+      simp only [List.map_cons, ResolutionTree.edgesLeaves, ih, List.flatMap_cons]
+
+mutual
+/-- **`tGeoG` preserves leaf `resRank`**: every `tGeoG gauge acc t` leaf's `resRank` occurs among
+the `resRank`s of `t`'s leaves (`tGeoG` only rewrites `chartMap`). -/
+theorem tGeoG_leaves_resRank (gauge : GeoChart M → Params M → Params M)
+    (acc : Params M → Params M) :
+    ∀ t : ResolutionTree M, ∀ l ∈ ResolutionTree.leaves (tGeoG gauge acc t),
+      l.resRank ∈ (ResolutionTree.leaves t).map (·.resRank)
+  | .leaf l₀ => by
+      intro l hl
+      rw [tGeoG] at hl
+      simp only [ResolutionTree.leaves, List.mem_singleton] at hl
+      subst hl
+      simp [ResolutionTree.leaves]
+  | .branch n edges => by
+      intro l hl
+      rw [tGeoG] at hl
+      simp only [ResolutionTree.leaves] at hl ⊢
+      exact fannedEdgesG_leaves_resRank gauge acc n 0 edges l hl
+/-- Companion of `tGeoG_leaves_resRank` over an edge list. -/
+theorem fannedEdgesG_leaves_resRank (gauge : GeoChart M → Params M → Params M)
+    (acc : Params M → Params M) (n : StepData M) (offset : ℕ) :
+    ∀ edges : List (Edge M),
+      ∀ l ∈ ResolutionTree.edgesLeaves (fannedEdgesG gauge acc n offset edges),
+        l.resRank ∈ (ResolutionTree.edgesLeaves edges).map (·.resRank)
+  | [] => by intro l hl; rw [fannedEdgesG] at hl; simp [ResolutionTree.edgesLeaves] at hl
+  | .mk c s ch :: es => by
+      intro l hl
+      rw [fannedEdgesG, edgesLeaves_append, List.mem_append] at hl
+      simp only [ResolutionTree.edgesLeaves, List.map_append, List.mem_append]
+      rcases hl with hl | hl
+      · left
+        by_cases hz : dCenterOfEdge n (Edge.mk c s ch) = 0
+        · rw [if_pos hz] at hl
+          simp only [ResolutionTree.edgesLeaves, List.append_nil] at hl
+          exact tGeoG_leaves_resRank gauge acc ch l hl
+        · rw [if_neg hz, edgesLeaves_mapMk, List.mem_flatMap] at hl
+          obtain ⟨p, _, hl⟩ := hl
+          exact tGeoG_leaves_resRank gauge _ ch l hl
+      · exact Or.inr (fannedEdgesG_leaves_resRank gauge acc n
+          (offset + dCenterOfEdge n (Edge.mk c s ch)) es l hl)
+end
+
+/-- **`resRank = 0` at every α-atlas leaf** (transfer of `leaves_resRank_zero` through `tGeoG`). -/
+theorem geoAtlasNorm_resRank_zero (gauge : GeoChart M → Params M → Params M) (s : ConState L)
+    (l : LeafData M) (hl : l ∈ geoAtlasNorm gauge (buildTree M (conOracle M) s)) :
+    l.resRank = 0 := by
+  have hmem := tGeoG_leaves_resRank gauge id (buildTree M (conOracle M) s) l hl
+  rw [List.mem_map] at hmem
+  obtain ⟨l₀, hl₀, hres⟩ := hmem
+  rw [← hres]
+  exact leaves_resRank_zero s l₀ hl₀
+
 /-- The intermediate-point det product of a list of valid interior-cell shears is `1` (each factor
 is det-1 everywhere). -/
 theorem foldrCompAbsDet_flatElemShear
@@ -439,9 +513,9 @@ theorem alphaGauge_srcBox_bounded (g : GeoChart M) {R : ℝ} (hR : 0 ≤ R) :
 the loss-side reading of `prod ∘ chartMap = diagonal(monomial chain)`. It asserts, on `srcBox`, that
 `frobSq(prod(chartMap w)) = Σᵢ (D · rᵢ)²` where `D = ∏_k z_{divCoord k}(w)` is the terminal-divisor
 product and the `rᵢ` are the divisibility-chain **ratios** `bᵢ/b₁` (polynomials, by the `bChain`
-monotonicity: `b₁ | bᵢ`); one ratio is `1` (the `b₁ = D` diagonal entry itself); and the ratios are
-uniformly bounded on the bounded `srcBox` (the leaf's flat cube). This is exactly the diagonalization
-the α gauge is designed to realize (`residualSchurShear` clears the residual so `prod` is diagonal);
+monotone `b₁ | bᵢ`); one ratio is `1` (the `b₁ = D` diagonal entry itself); and the ratios are
+uniformly bounded on the bounded `srcBox` (the leaf's flat cube). This is the diagonalization the α
+gauge is designed to realize (`residualSchurShear` clears the residual so `prod` is diagonal);
 supplied by the shared fold invariant, NOT proven here (the loss-VALUE analog of t14's Jacobian
 `geoAtlas_fold_det`). -/
 def LeafDiagFrob (l : LeafData (L := L) M) : Prop :=
@@ -474,6 +548,19 @@ theorem leafPullback_of_diagFrob (l : LeafData (L := L) M)
   · rw [residualBaseForm, if_pos hr, mul_one]
     exact le_trans (hbd w hw) (le_max_left _ _)
 
+/-- **The geometric crux (PHASE 3b), routed to pnp-fold's shared invariant** — NOT proven in this
+seat. `prod ∘ chartMap` diagonalizes to the leaf's monomial `b`-chain at every α-atlas leaf: the
+loss-VALUE analog of t14's Jacobian `geoAtlas_fold_det`. It is the SAME state↔geometry induction
+through `buildTree`'s `stepUpdate` — the value version (the partial fold's `prod` equals the state's
+partial monomial form) whose derivative shadow t14 proves. The α gauge (`residualSchurShear`, det-1
++ srcBox-bounded, PROVEN here) is exactly what makes the residual clear so `prod` is diagonal; this
+lemma asserts the geometry realizes it. Supplied by the shared fold cert; the single remaining
+`sorry` of the loss lane. -/
+theorem leafDiagFrob_geoAtlasNorm (l : LeafData M)
+    (hl : l ∈ geoAtlasNorm (alphaGauge (M := M)) (buildTree M (conOracle M) conRoot)) :
+    LeafDiagFrob l := by
+  sorry
+
 /-- **(iv) LeafPullback over the α-atlas** (PHASE 3, the loss squeeze): every leaf of the
 α-normalized built atlas satisfies the loss factorization `frobSq(prod(chartMap w)) =
 ∏ z_{divCoord}²·residualCore` with `0 < lo ≤ residualCore/baseForm ≤ hi`. On the spine `resRank = 0`
@@ -481,15 +568,14 @@ theorem leafPullback_of_diagFrob (l : LeafData (L := L) M)
 constant-bound case; `l3_compose_and_diagb.py` §II).
 
 STRUCTURE (design note §2 / elder ruling): the loss-algebra half is `leafPullback_of_diagFrob`
-(PROVEN above). The crux is the geometry half `LeafDiagFrob` (the loss-VALUE analog of t14's Jacobian
-`geoAtlas_fold_det`, strictly deeper — no `prod ∘ chart` infrastructure exists), routed to pnp-fold's
-shared state↔geometry invariant; it enters here as the single named input `leafDiagFrob_geoAtlasNorm`
-plus the `resRank = 0` transfer `geoAtlasNorm_resRank_zero`. -/
+(PROVEN above) and the `resRank = 0` transfer is `geoAtlasNorm_resRank_zero` (PROVEN). The one
+remaining input is the geometry half `leafDiagFrob_geoAtlasNorm` (the loss-VALUE analog of t14's
+Jacobian `geoAtlas_fold_det`, strictly deeper — no `prod ∘ chart` infrastructure exists), routed to
+pnp-fold's shared state↔geometry invariant. -/
 theorem leafPullback_geoAtlasNorm (l : LeafData M)
-    (hl : l ∈ geoAtlasNorm (alphaGauge (M := M)) (buildTree M (conOracle M) conRoot))
-    (hdiag : LeafDiagFrob l)
-    (hr : l.resRank = 0) :
+    (hl : l ∈ geoAtlasNorm (alphaGauge (M := M)) (buildTree M (conOracle M) conRoot)) :
     LeafPullback l :=
-  leafPullback_of_diagFrob l hdiag hr
+  leafPullback_of_diagFrob l (leafDiagFrob_geoAtlasNorm l hl)
+    (geoAtlasNorm_resRank_zero (alphaGauge (M := M)) conRoot l hl)
 
 end DLNFibre.DLN.RLCT.Engine
