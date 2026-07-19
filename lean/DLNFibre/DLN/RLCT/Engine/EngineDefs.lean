@@ -65,25 +65,44 @@ def LeafJacobian (l : LeafData (L := L) M) : Prop :=
     (∀ v ∈ β '' l.srcBox, ψsymm (ψ v) = v ∧ ψ (ψsymm v) = v ∧
       HasFDerivAt ψ (Dψ v) v ∧ lo ≤ |(Dψ v).det| ∧ |(Dψ v).det| ≤ hi)
 
-/-- **The CoV bridge** (fork 8, repaired). The atlas covers an UPSTAIRS-open neighbourhood of the
-zero locus via chart IMAGES; every leaf chart has a MEASURABLE, BOUNDED-in-flat-cube source box
-(elder-ratified strengthening — an unbounded `srcBox` provably breaks `region_glue`'s per-coordinate
-threshold, glue-lane counterexample), injective/disjoint divisor & Morse coordinates (finding 5), is
-A.E.-INJECTIVE off a null set (finding 6 — a blow-up chart is not injective on the exceptional
-fibre), and satisfies `LeafPullback` + `LeafJacobian`; and each leaf's `chartMap` is the DERIVED
-fold of its root→leaf edge substitutions (coherence). -/
+/-- **The CoV bridge — flat virtual-leaf atlas** (fork 13(o5) type correction, elder-gate8). The old
+`⋃ l ∈ leaves t` shape asserted ONE chart per LEDGER leaf; but the ledger tree is the symmetric
+QUOTIENT of the geometric fan-out (one ledger leaf stands for a node's full `d_center` pivot family),
+and a single per-leaf `chartMap`/`divCoord` cannot carry a family of pivots blowing up different flat
+coordinates. The corrected carrier is a FLAT ATLAS: an explicit `List (LeafData M)` of geometric chart
+pieces ("virtual leaves"), each with its OWN `chartMap`/`srcBox`/`divCoord`/`divExp`, decoupled from
+`leaves t`. LEDGER/ATLAS SPLIT: the ledger (`leaves t`, via `terminalExponents`) carries EXPONENTS; the
+atlas carries CHARTS — no clause here reads a ledger leaf's `chartMap`. Clauses:
+* (A) IMAGE-COVER over the atlas pieces — an UPSTAIRS-open neighbourhood of the zero-locus inside
+  `⋃ c ∈ atlas` (chart IMAGES; a measurable, bounded source box each);
+* (B) the eight per-piece clauses — measurable + bounded-in-flat-cube `srcBox`, injective/disjoint
+  divisor & Morse coordinates (finding 5), a.e.-injectivity off a null set (finding 6 — a blow-up chart
+  is not injective on the exceptional fibre), `LeafPullback` + `LeafJacobian`; each reads the piece's
+  OWN chart, so per-pivot `divCoord` dissolves the frozen type's piecewise failure;
+* (C) EXPONENT-AGREEMENT — each piece's `divExp` and positive `resRank` lie in `terminalExponents t`
+  (LOAD-BEARING: the atlas is decoupled from `leaves t`, so this replaces the old automatic
+  `flatMap`-over-`leaves t` routing, feeding exactly the two threshold hypotheses of
+  `leaf_chart_image_lintegral_lt_top`).
+DEFERRED clause (D) — fidelity coherence (NOT consumed by `region_glue`; elder-pinned CONTENT, encoding
+deferred to me for the carrier phase): each atlas piece's `chartMap` is the REAL `β∘ψ` geometric fold
+of a `t`-path (a `geometricLeafPaths t` analog + the banked `pivotChart`/gauge atoms — never an opaque
+`Params M → Params M`; two-sided honesty: provable over the constructed atlas, false on a generic one).
+It lands additively with the carrier (a def-only touch; `region_glue` and the `CanonicalResolution`
+projection are agnostic to it). -/
 def ChartBridge (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop :=
-  (∃ U : Set (Params M), IsOpen U ∧
-      {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} ⊆ U ∧
-      U ⊆ ⋃ l ∈ ResolutionTree.leaves t, l.chartMap '' l.srcBox) ∧
-    (∀ l ∈ ResolutionTree.leaves t,
-      MeasurableSet l.srcBox ∧
-        (∃ R : ℝ, 0 < R ∧ l.srcBox ⊆ ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R) ∧
-        Function.Injective l.divCoord ∧ Function.Injective l.resCoord ∧
-        Disjoint (Set.range l.divCoord) (Set.range l.resCoord) ∧
-        (∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn l.chartMap (l.srcBox \ N)) ∧
-        LeafPullback l ∧ LeafJacobian l) ∧
-    (∀ p ∈ ResolutionTree.leafPaths (id : Params M → Params M) t, p.1.chartMap = p.2)
+  ∃ atlas : List (LeafData M),
+    (∃ U : Set (Params M), IsOpen U ∧
+        {A : Params M | A ∈ paramsBoxM M 1 ∧ frobSq (prod M A) = 0} ⊆ U ∧
+        U ⊆ ⋃ c ∈ atlas, c.chartMap '' c.srcBox) ∧
+    (∀ c ∈ atlas,
+      MeasurableSet c.srcBox ∧
+        (∃ R : ℝ, 0 < R ∧ c.srcBox ⊆ ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R) ∧
+        Function.Injective c.divCoord ∧ Function.Injective c.resCoord ∧
+        Disjoint (Set.range c.divCoord) (Set.range c.resCoord) ∧
+        (∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn c.chartMap (c.srcBox \ N)) ∧
+        LeafPullback c ∧ LeafJacobian c) ∧
+    (∀ c ∈ atlas, (∀ k : Fin c.numDiv, c.divExp k ∈ ResolutionTree.terminalExponents t) ∧
+      (0 < c.resRank → c.resRank ∈ ResolutionTree.terminalExponents t))
 
 /-- **The running-min corank** `M(i+1) = min(M⁽¹⁾ … M⁽ⁱ⁺¹⁾)` at head index `p` (0-indexed, so the
 1-indexed layer `i = p+1`): the min of the widths `M 0 … M p.succ`. FIX-A (below) caps the Case-2

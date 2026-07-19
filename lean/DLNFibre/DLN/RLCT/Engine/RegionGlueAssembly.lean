@@ -103,7 +103,8 @@ theorem region_glue_of_chartBridge {L : ℕ} {M : Fin (L + 1) → ℕ} (t : Reso
     exact (show IsCompact (cubeBox (flatDim M) 1) by
       rw [cubeBox]; exact isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
   · -- c' > 0, L ≥ 1
-    obtain ⟨⟨U, hUopen, hUlocus, hUcover⟩, hleaf, -⟩ := hbridge
+    -- Flat virtual-leaf atlas: the atlas + (A) cover, (B) per-piece props, (C) exponents.
+    obtain ⟨atlas, ⟨U, hUopen, hUlocus, hUcover⟩, hleaf, hexp⟩ := hbridge
     have h0box : (0 : Params M) ∈ paramsBoxM M 1 := fun s i j => by
       have h0 : (0 : Params M) s i j = 0 := rfl
       rw [h0, Set.mem_Icc]; norm_num
@@ -112,18 +113,17 @@ theorem region_glue_of_chartBridge {L : ℕ} {M : Fin (L + 1) → ℕ} (t : Reso
         rw [prod_zero_glue M hLpos]; unfold frobSq
         exact Finset.sum_eq_zero (fun i _ => Finset.sum_eq_zero (fun j _ => by simp))⟩
     obtain ⟨ε, hε, hεU⟩ := exists_small_paramsBox_subset_open hUopen (hUlocus h0locus)
-    have Hleaf : ∀ l ∈ ResolutionTree.leaves t, ∫⁻ A in l.chartMap '' l.srcBox,
+    -- Each atlas piece has finite chart-image integral; the thresholds route through clause (C).
+    have Hleaf : ∀ c ∈ atlas, ∫⁻ A in c.chartMap '' c.srcBox,
         ENNReal.ofReal (frobSq (prod M A) ^ (-c')) < ⊤ := by
-      intro l hl
-      obtain ⟨hsrcM, hbdd, hdcInj, hrcInj, hdisj, hnull, hlp, hlj⟩ := hleaf l hl
-      refine leaf_chart_image_lintegral_lt_top l c' hcpos hsrcM hbdd hdcInj hrcInj hdisj hnull hlp hlj
-        (fun k => hrat _ (List.mem_flatMap.mpr ⟨l, hl, List.mem_append.mpr (Or.inl
-          (List.mem_map.mpr ⟨k, List.mem_finRange k, rfl⟩))⟩))
-        (fun hpos => hrat _ (List.mem_flatMap.mpr ⟨l, hl, List.mem_append.mpr (Or.inr (by
-          rw [if_pos hpos]; exact List.mem_singleton.mpr rfl))⟩))
+      intro c hc
+      obtain ⟨hsrcM, hbdd, hdcInj, hrcInj, hdisj, hnull, hlp, hlj⟩ := hleaf c hc
+      obtain ⟨hdivmem, hresmem⟩ := hexp c hc
+      exact leaf_chart_image_lintegral_lt_top c c' hcpos hsrcM hbdd hdcInj hrcInj hdisj hnull hlp
+        hlj (fun k => hrat _ (hdivmem k)) (fun hpos => hrat _ (hresmem hpos))
     refine routeMLayerBoxIntegral_lt_top_of_small_box M c' ε hε ?_
     rw [routeMLayerBoxIntegral]
     exact lt_of_le_of_lt (lintegral_mono_set (hεU.trans hUcover))
-      (lintegral_leaves_cover_lt_top c' (ResolutionTree.leaves t) Hleaf)
+      (lintegral_leaves_cover_lt_top c' atlas Hleaf)
 
 end DLNFibre.DLN.RLCT.Engine
