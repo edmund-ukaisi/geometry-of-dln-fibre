@@ -3979,3 +3979,10 @@ surface if the passthrough or hbij fights). AxCheck consolidated verify still re
 pnp-fold, elder-standing, carto-standing all mid-first-pass (no memos yet). Comprehension
 cadence: satisfied this window by the two standing-office passes in flight; next
 self-calibration entry at the next empty idle pulse.
+
+### Tick-267 addendum: consolidated AxCheck verify GREEN (true lake exit 0) — watch batch committed
+The untimed run completed: LAKE-EXIT:0, zero errors, all new watch lines exactly clean-three
+(the t09 fidelity capstone + the t11 fold spine: geoChartMap_fderiv_det/_offcone,
+abs_det_fderiv_foldr_comp, geoChartMap_differentiable). GeoJacobianFold import wired —
+no gate-orphans among the new modules. The watch-line commit that waited three build
+attempts (two timeout-killed, one mid-merge-invalidated) is banked on a REAL exit code.
