@@ -4834,3 +4834,14 @@ distinction can't elide silently — the trap WAS "c.divExp = s.divExp"). t14 to
 (zero rework — the hedge pays in full); the leaf instantiation + headline restatement land
 on the ruling. The cert-first discipline's biggest save yet: a 200-line induction toward a
 false theorem, prevented.
+
+### Tick-305 addendum: t14's transcription progress merged; the WeakNoStrand crossing corrected
+a59d40e89 merged (green): ledgerMonomial + base, the one-step cocycle wiring, and the
+WeakNoStrand-conditional bridge — built BEFORE the dichotomy verdict reached the seat
+(crossed). Correction relayed: WeakNoStrand is FALSE on the reachable cone (the M=(2,3)
+witness has a stranded exp-2 divisor), so the bridge stays a conditional artifact the
+headline never routes through; the walk's motive drops the weak-fact thread; and under the
+charge-5 restatement the terminal case SIMPLIFIES (Inv-det at the leaf IS the full-ledger
+statement — no bridge lemma at all). The §3 maintenance + the fan×WF plumbing (t14's
+current work, "right rather than fast") are unaffected. The wall's remaining shape: the
+walk + maintenance (t14, in flight) + the restated headline text (elder charge-5, pending).
