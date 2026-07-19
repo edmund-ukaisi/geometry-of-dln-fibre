@@ -4717,3 +4717,20 @@ the abstraction only if it falls out); loss-t15 — (3b) IS YOURS, after t14's w
 (mirror/instantiate the template; α-carrying maintenance per §7; thread-19 + §7 = the
 complete value-side spec, no new certs owed). The endgame's proof plan is now closed under
 specification: every remaining sorry has an owner, a cert, and a walk template.
+
+## 2026-07-19 tick 300: THE STRANDED-DIVISOR GAP — t14's provability check catches a cert omission at the leaf assembly
+The catch: the cert's leaf assembly asserts c.numDiv = s.numDiv, but leafOfState FILTERS to
+the t̃=0 analytic divisors, and leaf_mem_Adm_single's own docstring (EngineConstruction:1338)
+says reachable terminals CAN carry t̃>0 stranded divisors. The geometric fold produces one
+factor per FULL divisor — so a stranded divisor with fullDivExp > 1 makes the analytic-ledger
+headline FALSE (and the same gap hits chartBridge's LeafJacobian clause expedition-wide).
+CONTROLLER SHARPENING (accepted into t14's plan): a stranded divisor with exponent 1 is
+HARMLESS (|z|^0 = 1) — the needed fact is the WEAK form (stranded ⟹ divExp = 1), far more
+plausible than all-t̃=0 (exponents grow only through case-11 merges IF merging re-steps the
+tail — but case-2 births at resRows·resCols > 1 possible, so the oracle's actual behavior
+decides). T14's HEDGE APPROVED: build the full-ledger cocycle Inv over s.numDiv (TRUE
+regardless — matches the fold; the cert's maintenance transcribes verbatim); the gap
+isolated to the final leaf instantiation, slot left open. PNP-FOLD CHARGED on the
+dichotomy: STRONG (all t̃=0) / WEAK (stranded ⟹ exp 1) / FALSE (witness + the honest
+restatement, which would go to the elder expedition-wide). The provability-check-first
+discipline delivers again — the third statement-level catch before a wasted grind.
