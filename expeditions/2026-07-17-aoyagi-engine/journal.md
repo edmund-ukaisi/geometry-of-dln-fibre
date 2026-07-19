@@ -3689,3 +3689,16 @@ foundations fix-independent, no regret); coverage validating in one parallel pas
 repair vs cheaper banked routes (b) the (B)/(D)/fold-lane interactions (my check: t11
 unaffected — no ownCovers_branch in its lane). The SPECIFY gets a dated childRegion-correction
 addendum at landing. Tripwire next-checkpoint: the hbij tiling.
+
+### Tick-254 addendum: coverage's validation — the fix is NECESSARY; the re-proof is small
+The author-validation upgrades t10's repair from right to FORCED: no fold-side rescue exists
+(univ ⊄ any bounded set — the atom's hdom must change); the re-proof moves exactly TWO spots
+(the spectator factor + the :215 membership line; the pivot half and both downstream fold
+lemmas are generic over childRegion — untouched). Two design gifts relayed to t10: the
+CARRIER-AGNOSTIC atom shape (abstract spectator S + Sopen params, not a hardcoded cube — the
+atom's E stays abstract) and the single-R>1 calibration pin (open-atom vs closed-V; srcBox =
+flatCube R, radius-safe since the threshold is local at the divisor; the treatment INHERITED
+from the center-coord design). Interaction greps: t11's lane has ZERO cover-path references
+(unaffected, confirmed); childRegion is proof-internal to clause (A) — no type change
+anywhere. The falsified pin's whole blast radius: one atom signature + ~2 lines + the
+srcBox radius. t10 building through.
