@@ -357,6 +357,20 @@ over banked substrate.
     (full-cube superset route available; pivotChartDom internal tiling threads S or routes
     through the superset). GUARD: pnp-loss must run against the NORMALIZED charts (Q-c: the
     off-diagonal contagion hits ∏z² identically; one fix serves both).
+    (AMENDED, elder charge-3, 2026-07-19 — the normalization extends from S to the full Q,P.)
+    The per-edge normalization g_e = Aoyagi's regular Q,P has TWO det-1 aspects, BOTH making
+    the pure-β geometry match the proven-faithful ledger: (S) the diagonal-placement
+    PERMUTATION (LeafJacobian regrouping — charge 2) and (α) the incidence SHEAR (elemShear;
+    LeafPullback residual squeeze — pnp-loss cert: the Jacobian is det-1-blind to α, the
+    LOSS is not). #35 builds the FULL g_e∘β (= the deferred "localSub = ψ∘β", ψ = g_e) in
+    ONE pass with a coherent transformed srcBox' = g_e⁻¹(cube): the image = β(cube) is
+    UNCHANGED (cover preserved, clause A), srcBox' bounded by R(1+R) (clause B), the squeeze
+    holds on it (cert lo=(3−√5)/2, hi=(3+√5)/2; lo=1 at resRank=0). REJECT two-pass (S then
+    α): a shear does NOT preserve the cube, so the domain would re-shape twice, re-opening
+    cover+bound each time. Composition-cleanliness (S and α step-local to the current block,
+    disjoint from ancestor cleared diagonals) is charge-2's obligation generalized to a
+    det-1 gauge — same DivBirthInv freshness. α is det-1 so LeafJacobian's fold-det is
+    UNAFFECTED; α touches only LeafPullback.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
@@ -478,9 +492,14 @@ over banked substrate.
   (cubeBox ε↔routeMBaseNbhd, T=1↔ε). The engine's coverage IS the runway's hard part (the
   singular-locus LOWER bound). θ/order is NOT delivered (meromorphic continuation gap) — no
   mint framing may imply it is.
-- resRank-VACUITY CHECK owed (elder R5b, non-blocking): confirm resRank>0 fires at SOME spine
-  leaf; if never, NAME the Morse clauses "carried-for-generality" (honest) — do not present
-  them as load-bearing.
+- resRank=0 IS PROVEN at every spine leaf (leaves_resRank_zero, EngineConstruction:2545 —
+  the construction fully diagonalizes, Aoyagi's diag(b)). Freeze resRank=0 safely; the Morse
+  clauses (resRank>0 branch of RegionGluePerLeaf, the (C) 0<resRank implication,
+  baseForm=‖z‖²) are VACUOUS-ON-SPINE — carried for the per-leaf lemma's generality, named
+  as such, never load-bearing on the value path. Task #42 CLOSED (elder charge-3; supersedes
+  the R5b check). α (the incidence gauge) is what makes the GEOMETRY realize the ledger's
+  resRank=0 — load-bearing even at resRank=0 (pure-β leaves the residual undiagonalized);
+  no circularity (ledger asserts resRank=0; LeafPullback+α proves the geometry realizes it).
 - THE COCYCLE IS THE FOLD-DET MAINTENANCE FORM (pnp-fold §2): |det D(Φ'∘B)| = L(B(w))·|det DB|,
   threading the incoming ledger through each chart, innermost-first — NOT the subtree-relative
   pieceLedger (case-1 inheritance references a divisor born outside the subtree; n-outermost

@@ -4221,3 +4221,26 @@ correctly stated. Forwarded to elder charge-3 with the remaining ruling cleanly 
 S+α in one GeoChart pass (one surgery while the file is open; condition-2 coherence) vs
 S-first (unblocks the Jacobian lane; α before LeafPullback's builder, who doesn't exist
 yet). Gate build for t10's merge still running.
+
+## 2026-07-19 tick 276: ELDER CHARGE-3 RULING — #35 FINAL: the full normalized chart (β+S+α) in ONE pass; resRank=0 PROVEN, #42 CLOSED
+The ruling (two on-disk facts decisive, both controller-verified):
+Q-a: S and α are DISTINCT MAPS (permutation vs det-1 shear) but ONE normalization — Aoyagi's
+per-edge regular Q,P (worked.tex:509,518: the "1" at the diagonal IS S; the incidence-clearing
+shear IS α). BUILD TOGETHER — the decisive argument is the srcBox: S preserves the cube, α
+does NOT; one pass settles ONE coherent transformed domain srcBox' = g_e⁻¹(cube) on which the
+cover (image = β(cube), UNCHANGED) and the squeeze both hold; two-pass re-shapes the domain
+twice, re-opening clause A + clause B each time. This executes the deferred R2-pre-rung
+"localSub = ψ∘β" with ψ = S∘α on ShearReconcile's banked atoms. Composition-cleanliness =
+charge-2's obligation generalized to a det-1 gauge, same DivBirthInv freshness; α is det-1 so
+the Jacobian side is UNTOUCHED ({β+S+fold} → LeafJacobian; {α} → LeafPullback ONLY).
+Q-b: resRank=0 is PROVEN at every spine leaf — leaves_resRank_zero (EngineConstruction:2545,
+verified on disk this tick): the construction already fully diagonalizes (Aoyagi's diag(b)
+terminal). #42 CLOSED the third way (neither vacuous-risk nor load-bearing-risk: a proven
+ledger fact); the Morse clauses named carried-for-generality; the cert's resCoord-transform
+obligation VACUOUS on-spine; lo=1 in the squeeze. No circularity: the ledger ASSERTS
+resRank=0, LeafPullback+α proves the geometry REALIZES it — α load-bearing even at resRank=0.
+APPLIED: fork-15 amendment + the resRank standing-counsel bullet (verbatim); #35 re-tasked
+FINAL; #42 completed; t11 re-briefed (trigger unchanged: the t10 merge gate, still running;
+LeafPullback-squeeze ownership decided at its landing). The three certs + three elder charges
+have now converged on ONE construction change with a settled spec — the endgame's remaining
+unknowns are down to the two builders' execution.
