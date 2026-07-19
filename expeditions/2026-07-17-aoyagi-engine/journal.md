@@ -4362,3 +4362,19 @@ dCenterOfEdge-gating and states the chartless class correctly (rollover + degene
 zero-block case-2 — not rollover alone). Fresh-eyes-t13 already spawned (its worktree
 pre-dates this docstring-only commit; disjoint lines — trivial merge at fold-in). t10
 confirmed holding GeoCoverSpec, idle-correct on the step-3 trigger.
+
+## 2026-07-19 tick 282: DIAGONAL-NORMALIZATION IS LIVE — step 2 landed with ZERO new reds; step 3 re-shaped to a verify pass
+t11's 5234947bc merged (fast-forward) + built on integration: geoChartMapNorm = (β∘S)∘id
+wired into fannedEdges/tGeo — every fan-out chart now births its exceptional divisor at the
+divBirthCoord DIAGONAL. The construction fix that three certs and three elder charges
+converged on is IN THE TREE. Better than the choreography planned: NO new reds — GeoChart
+fully green (tGeo_coherence structural in localSub, held), GeoCoverSpec green modulo the
+PRE-EXISTING :133 only (the S-composition is image-cube compatible; the elder's
+cover-preservation argument held as proven, not just as argued). Step 3 to t10 RE-SHAPED:
+a read/CONFIRM verify (the image-invariance threads on the wired tree) instead of a
+re-green — one report line. :133 stays fresh-eyes-t13's (writing against the pre-wiring
+base; the lemma TEXT is unchanged, the explicit-witness idiom expected to survive the map
+body change; controller handles the rebase; t10's verify asked to flag if the wired :133
+needs anything beyond pre-S discharge + S cube-invariance). t11 CONTINUING on the §2
+cocycle maintenance → the LeafJacobian discharge (the wall's last piece), stacking locally.
+Toolkit note: FlatSwap.lean split (cycle-break) landed with its reason in the docstring.
