@@ -240,3 +240,36 @@ caught in-flight this time).
 **What it changes:** the cordon's census base is CURRENT and small: 3 Engine (2 close with the
 tide + the corollary; 1 = R7 owed), the Skeleton fossils orphan at mint, ~21 others enumerated
 for LIVE-vs-fossil classification. No surprises; the cordon is a bounded pass.
+
+---
+## Entry 7 (tick 233): the (D)-landing shape — will "additive, no re-ripple" survive contact?
+
+**Question.** Gate #10 requires clause (D) IN the ChartBridge type before the discharge. The
+re-typing batch claimed adding (D) later is "a def-only touch: consumers project ChartBridge
+opaquely... no re-ripple — VERIFIED by this build". Will that hold at the actual landing?
+
+**Predictions (written before looking):**
+- P7a (conf 0.75): (D) lands as a fourth conjunct pinning the atlas to the geometricLeafPaths
+  fold (each piece's chartMap = a fold composite of t's edges — the fails-on-fake form).
+- P7b (conf 0.7): the no-re-ripple claim holds ONLY IF region_glue_of_chartBridge's destructure
+  is arity-robust — if the batch wrote an `obtain ⟨atlas, h1, h2, h3⟩`-style FIXED-ARITY
+  pattern, adding a conjunct BREAKS it (one line, but a re-elaboration of the proven glue
+  composition — exactly what the full-batch gate exists to catch). My guess: the destructure
+  IS fixed-arity (anonymous-constructor style) and the landing will touch that one line.
+- P7c (conf 0.6): gate #10's cordon check is greppable (the conjunct present in EngineDefs
+  before EngineObligations:53's sorry is replaced).
+
+**Territory.** (next)
+**Territory** (tick 233): ChartBridge (EngineDefs:96) = ∃ atlas, (A) ∧ (B) ∧ (C) — a
+THREE-conjunct existential body. region_glue_of_chartBridge's consumption
+(RegionGlueAssembly:107) = `obtain ⟨atlas, ⟨U, hUopen, hUlocus, hUcover⟩, hleaf, hexp⟩` —
+a FIXED-ARITY anonymous-constructor pattern.
+
+**Verdicts:** P7b **HIT** — the destructure is fixed-arity, so the (D) landing WILL break that
+one line (a trivial `, -⟩`-style edit + the glue's re-elaboration, which the full-batch gate
+covers — but the batch should PLAN the line, not discover it as a build break). The re-typing
+batch's "no re-ripple, VERIFIED by this build" was verified for a (D)-LESS world — the claim
+quietly doesn't extend to the (D) landing (the slogan-vs-signature class, 5th instance: a
+verification's scope inherited beyond its regime). P7a/P7c: OPEN — verify at the landing/cordon.
+**What it changes:** one pre-staged line in coverage's (D) batch (both files are its — relayed);
+zero schedule impact BECAUSE caught pre-landing.
