@@ -5015,3 +5015,19 @@ architect-t11 (the fold spine + normalization). THE WORKING SET after cleanup:
   the spec author for inj-t16's build; one-question wakes only; the projection-fill
   capstone offer stands. Everything else terminated. Task list pruned implicitly (the
   completed tasks stand as the record).
+
+## 2026-07-19 tick 314: cleanup complete (7/7 clean shutdowns); the ELDER'S POSTURE UPDATE ratified into the compass
+All seven stand-downs approved and terminated; task #21 reassigned to t14 (its true owner).
+THE ELDER'S UNSOLICITED POSTURE UPDATE (an operator steer reached it directly: (1) the paper
+as the active touchstone; (2) math-necessity over Lean-progress): ratified on the merits —
+it is CLAUDE.md's own disposition ("fidelity to HER mechanism is the bar") applied more
+actively, and the elder's self-audit is the honest kind: the VINDICATION (worked.tex:492-494
+gives the Jacobian over ALL divisors — the paper catches instance #9 on sight; "does this
+match the paper's stated form?" is now the standing first question) + the OWNED register
+drift (charges 4/6 were justified leading with Lean cost; both re-derived and SURVIVING on
+faithfulness grounds — R7 is right because the STATE carries the paper's divisors
+first-class so the leaf need not duplicate them, not because it is Lean-cheap) + the forward
+line (the remaining hard parts are BUILT not shortcut; the exact-RLCT value is next-
+expedition SCOPING, not avoidance). Both proposed standing-counsel entries applied verbatim.
+Working set after cleanup: t10/t16/t17 active, t14/t15 resting-with-owed, elder+carto
+standing, coverage answer desk.

@@ -510,6 +510,26 @@ over banked substrate.
   (cubeBox ε↔routeMBaseNbhd, T=1↔ε). The engine's coverage IS the runway's hard part (the
   singular-locus LOWER bound). θ/order is NOT delivered (meromorphic continuation gap) — no
   mint framing may imply it is.
+- THE PAPER IS THE ACTIVE FIDELITY TOUCHSTONE (operator steer, 2026-07-19). At every
+  route/statement judgment ask explicitly: is this within Aoyagi's mathematical scope, or
+  have we strayed? — and CITE the page (theory/aoyagi-2023-reproduction/aoyagi-2023-worked.tex
+  + the preprint images). The paper's typos are acknowledged (Def-3, case-2 raw-width, the
+  p.15 chain, the realization gap) and the mechanism stands; a deviation must be a DOCUMENTED
+  typo-fix, never a silent Lean-convenience. Provenance: the analytic-only Jacobian (instance
+  #9) was a stray the paper catches on sight — worked.tex:492-494 gives ∏_{s,k}
+  u_{s,k}^{M_{s,k}−1} over ALL exceptional divisors; the t̃=0 filter was ours. STANDING FIRST
+  QUESTION at a Jacobian/loss/exponent judgment: does this match the paper's stated form?
+- MATHEMATICAL NECESSITY IS THE BAR, NOT LEAN-BUILD PROGRESS (operator steer, 2026-07-19).
+  Judge a shape by whether the MATH necessitates it — elegant, correct, right level of
+  generality — with Lean cost (ripple/rebase/build-green) a SECONDARY tiebreaker, never the
+  deciding factor over a more-faithful or more-general form. When a ruling's justification
+  leads with "zero ripple / unblocks the build," STOP and re-derive from the math; state the
+  faithful ground if it survives (charge-6 R7: right because the STATE carries the paper's
+  divisors first-class, the leaf need not duplicate them — not because it is Lean-cheap). Do
+  not avoid the hard part; build the general machinery the paper's proof-moves dictate (the
+  rising sea). The remaining hard parts (fold cocycle, α squeeze, all-nodes fidelity) are
+  BUILT, not shortcut; the exact-RLCT-value is the next expedition's hard part (scoping, not
+  avoidance).
 - THE THREE-LEDGER SPLIT (elder charge-5, 2026-07-19; instance #9 — the stranded-divisor
   dichotomy is FALSE, cert-stranded-dichotomy: reachable terminals carry t̃>0 divisors with
   divExp>1 that the fold blows up). The JACOBIAN (LeafJacobian β-det) reads the FULL ledger
