@@ -3838,3 +3838,36 @@ lean/CLAUDE.md). AxCheck rebuild verifying in background (the first "EXIT:0" was
 not lake's — the pipe-gating self-bug again; re-gated properly). Board: t10 (batch+fill,
 tracker shows the weakening + first fill chunk done, push pending) ∥ t11 (invariant design) ∥
 rev-carrier ∥ navigator-4.
+
+## 2026-07-19 tick 261: the big convergence tick — nav pass #4, rev-carrier PASS-with-notes, t10's rollover catch, all rulings out
+NAVIGATOR-4 (pass #4, logged): width RIGHT; three adopted actions — (1) t10 banks greens to
+its BRANCH immediately (0 commits ahead was pure durability risk; banking ≠ merging, the
+full-batch gate untouched); (2) assembly ownership DECIDED NOW, not at rendezvous: a fresh
+seat (t12-assembly) spawns at t10's merge for (D)+assembly, coverage contributes its
+volunteered nodes_cNode_eq_realCNode walk, controller keeps the mechanical discharge batch;
+(3) the EngineObligations:53 skeleton pre-wiring (P3 statement-lock) keys on FROZEN
+fill-target signatures — t10 asked to declare its freeze at push; t11's waits on the
+re-scope gate. Also adopted: mint-arm rewrite folds into the mint batch (~10 lines,
+flip-independent); cordon census stays just-before-PR; #15 stays elder-deferred; R7 noted as
+t09's natural post-spine home. t11-stall tripwire pinned: phase-3 reindex not closing in ~1
+arc → pnp certificate (cert-first, never a 2nd PROVE seat). Wiring-endgame checklist needs a
+tick-255+ refresh (cartographer next pass); canonicalResolution224:135 confirmed a SEPARATE
+sorry (closes as the (2,2,4) cover corollary, never auto-flips).
+REV-CARRIER: PASS-with-notes on t09's package (soundness PASS all headlines; Codex converged,
+no new defect; 4 statement cards delivered — merged 2e6564a4a). Notes → t09 MINI-ARC (task
+#36): the case-2 inner-fidelity lemma (resBlockOrFallback = resBlockCenterIndices on-cone —
+the "intended coords" reading currently fully certified only for case-1), the headline
+docstring scope fix (per-subtree-root, not "every branch node"), doc rot.
+T10 FINDING #2 (real emission bug, its own catch): chartless edges (dCenterOfEdge = 0,
+rollovers) fan into finRange 0 = [] — child subtrees silently DROPPED; the cover fails at
+every layer transition and cascades. Fix ACCEPTED in-lane: id-passthrough in fannedEdges
+(faithful chartless geometry; geoChartMap at a rollover pivot is already id). Coverage
+counter-signing the treatment in parallel (gates the merge, not the build). Emission-defect
+count in this family now TWO (t11's per-pivot divCoord + t10's rollover drop) — both caught
+at statements/fills, zero proof-effort wasted on either.
+T11 rulings: (b) = GO Phase-2 NOW but PARAMETRIC in the path (off-cone atom covers t10's new
+id edges; the parametric-design pattern that has absorbed every correction); (a) reaffirmed
+(per-pivot fix after t10 lands — the file is churning under TWO t10 reshapes now).
+LeafPullback report ADOPTED: sequenced after finding-3 + a pnp adjudication of the
+loss-factorization kill-condition (the residualCore-leak trap — a lower-squeeze-breaking
+divisor leak would falsify LeafPullback as stated); pnp-loss commissioned when queue clears.
