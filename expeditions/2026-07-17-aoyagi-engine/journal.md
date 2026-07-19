@@ -3293,3 +3293,14 @@ flag answered): the T1b-class pattern + two staging refinements — the mechanic
 as its OWN commit before the injectivity discharge; the T1c revert-tripwire (checkout-clean on
 balloon/spine-fight, no half-cascade); canonicalResolution224_arithmetic explicitly in the
 re-probe set (the witness file is in the ripple). Then qEdgeOf = coverage's trigger.
+
+## 2026-07-19 tick 221: GeoChart fields LOCKED (7eb8cd8c2 merged) — the seam is CLOSED on paper
+Coverage locked against all four answers: GeoChart = { node, edge, pivot : ℕ } — NO free
+geometry (the buck-stops teeth structural); keying qEdgeOf(node, edge); β_e's pivotChart index
+Fin (dCenterOfEdge node edge) matching q's factor DIRECTLY; the u-coord handled inside t06's
+wrapper, read uniformly (amendment 3). Both remaining design pins RESOLVED. Its tide order
+declared: geoChartMap → geometricLeafPaths materialization → the atlas List → the cover fold
+(pure atom via reparam_image) → the 3 Props (both det inputs banked) → (A)/(C)/(D) into
+ChartBridge [gate #10] → the retirement flags [#15] — "the tide that flips chartBridge_
+buildTree — the last sorryAx." The expedition waits on exactly TWO greens from t06
+(divBirthCoord ripple; qEdgeOf wrapper), then the tide, then the flip.
