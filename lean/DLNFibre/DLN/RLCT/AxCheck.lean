@@ -9,6 +9,7 @@ import DLNFibre.DLN.RLCT.Engine.DivBirthReach
 import DLNFibre.DLN.RLCT.Engine.PivotInjOn
 import DLNFibre.DLN.RLCT.Engine.ChartBridgeWiring
 import DLNFibre.DLN.RLCT.Engine.QNodeCarrier
+import DLNFibre.DLN.RLCT.Engine.GeoJacobianFold
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1335,6 +1336,17 @@ open DLNFibre.DLN.RLCT
 -- The q-det lemma (t09): qOfCenter's linearity exposed as CLE + pointwise fderiv — the fold
 -- module's conjugation input. MUST stay clean-three:
 #print axioms Engine.qOfCenter_hasFDerivAt
+-- The fidelity capstone (t09 #26): at every reachable branch node, cNodeOf = realCNode —
+-- the charts name the INTENDED blow-up coordinates (DivBirthInv-only supply; the assembly's
+-- clause-(D) fidelity input). MUST stay clean-three:
+#print axioms Engine.cNodeOf_eq_realCNode_of_conOracle
+-- The fold-Jacobian construction-stable spine (t11): the per-edge det atom (on-cone; the
+-- off-cone totalisation gives det 1) + the PARAMETRIC chain-rule fold (survives atlas-emission
+-- churn; the regrouping + instantiation are the gated remainder). MUST stay clean-three:
+#print axioms Engine.geoChartMap_fderiv_det
+#print axioms Engine.geoChartMap_fderiv_det_offcone
+#print axioms Engine.abs_det_fderiv_foldr_comp
+#print axioms Engine.geoChartMap_differentiable
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
