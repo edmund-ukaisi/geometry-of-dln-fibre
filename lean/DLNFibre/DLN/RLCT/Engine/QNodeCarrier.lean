@@ -382,4 +382,51 @@ noncomputable def qNodeOf (M : Fin (L + 1) → ℕ) (node : StepData M)
     Params M ≃ₜ (Fin (dCenterOfNode M node) → ℝ) × (Fin (flatDim M - dCenterOfNode M node) → ℝ) :=
   qOfCenter M (cNodeOf M node hd) (cNodeOf_injective M node hd)
 
+/-! ## The q-det lemma: `qOfCenter` is linear (its fderiv is a fixed continuous linear equiv)
+
+The blow-up chart conjugates by `qOfCenter` (`geoChartMap = q.symm ∘ (pivotChart × id) ∘ q`). For
+the downstream fold-Jacobian induction the conjugation preserves `|det D|` — but ONLY because `q` is
+LINEAR (`fderiv q = q`, then `det (q.symm ∘ A ∘ q) = det A`). `qOfCenter` is built from a CLE
+(`paramsEquivFlatCLE`) and two linear reindexings (`piCongrLeft`, `sumArrowProdArrow`); this section
+exposes it as a `ContinuousLinearEquiv` and records the `HasFDerivAt` (fwd + symm) the fold uses. -/
+
+/-- **`qOfCenter` as a continuous linear equivalence** (its linearity, made explicit): the same
+composition as `qOfCenter`, but through the `ContinuousLinearEquiv` of each piece — the CLE
+`paramsEquivFlatCLE`, then the finite-dim reindexing `piCongrLeft (centerPerm)` and the regrouping
+`sumArrowLequivProdArrow`. -/
+noncomputable def qOfCenterCLE (M : Fin (L + 1) → ℕ) {d : ℕ} (c : Fin d → Fin (flatDim M))
+    (hinj : Function.Injective c) :
+    Params M ≃L[ℝ] (Fin d → ℝ) × (Fin (flatDim M - d) → ℝ) :=
+  (paramsEquivFlatCLE M).trans
+    (((LinearEquiv.piCongrLeft ℝ (fun _ : Fin d ⊕ Fin (flatDim M - d) => ℝ)
+          (centerPerm M c hinj)).toContinuousLinearEquiv).trans
+      ((LinearEquiv.sumArrowLequivProdArrow (Fin d) (Fin (flatDim M - d)) ℝ ℝ)
+        |>.toContinuousLinearEquiv))
+
+/-- `qOfCenter` and `qOfCenterCLE` are the same underlying map (the pieces share their `Equiv`s). -/
+theorem qOfCenter_coe_cle (M : Fin (L + 1) → ℕ) {d : ℕ} (c : Fin d → Fin (flatDim M))
+    (hinj : Function.Injective c) :
+    ⇑(qOfCenter M c hinj) = ⇑(qOfCenterCLE M c hinj) := rfl
+
+/-- **The q-det lemma (`HasFDerivAt` form)**: `qOfCenter` is Fréchet-differentiable with derivative
+the fixed continuous linear equiv `qOfCenterCLE` — so conjugating by it preserves `|det D|` (the
+fold's conjugation step). -/
+theorem qOfCenter_hasFDerivAt (M : Fin (L + 1) → ℕ) {d : ℕ} (c : Fin d → Fin (flatDim M))
+    (hinj : Function.Injective c) (x : Params M) :
+    HasFDerivAt (qOfCenter M c hinj)
+      ((qOfCenterCLE M c hinj : Params M →L[ℝ] (Fin d → ℝ) × (Fin (flatDim M - d) → ℝ))) x := by
+  rw [qOfCenter_coe_cle]
+  exact (qOfCenterCLE M c hinj).hasFDerivAt
+
+/-- **The q-det lemma (`symm` form)**: `qOfCenter.symm` is Fréchet-differentiable with derivative
+the fixed continuous linear equiv `qOfCenterCLE.symm` — the other half of the conjugation. -/
+theorem qOfCenter_symm_hasFDerivAt (M : Fin (L + 1) → ℕ) {d : ℕ} (c : Fin d → Fin (flatDim M))
+    (hinj : Function.Injective c) (y : (Fin d → ℝ) × (Fin (flatDim M - d) → ℝ)) :
+    HasFDerivAt (qOfCenter M c hinj).symm
+      ((qOfCenterCLE M c hinj).symm :
+        (Fin d → ℝ) × (Fin (flatDim M - d) → ℝ) →L[ℝ] Params M) y := by
+  have hsymm : ⇑(qOfCenter M c hinj).symm = ⇑(qOfCenterCLE M c hinj).symm := rfl
+  rw [hsymm]
+  exact (qOfCenterCLE M c hinj).symm.hasFDerivAt
+
 end DLNFibre.DLN.RLCT.Engine
