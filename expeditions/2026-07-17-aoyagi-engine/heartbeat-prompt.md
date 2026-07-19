@@ -8,19 +8,21 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: THE TWO HOLES. E LANDED (monomialization_terminates ASSEMBLED, tick 165; +sorryAx via
-  exactly chartBridge_buildTree + o5_realization; R2/R3 CONVERGE at chartBridge_buildTree —
-  census refreshed tick 170). t03 honors (3rd zero-loss succession). navigator-3 executed ×5
-  (R2 probe fired early; gates pinned executable: R5 = #guard_msgs; PR framing = R4/R6/R7 owed).
-  R2 PROBE DONE (tick 171): cover MATH sound (4 legs + Codex + full kill-set); hbij (full
-  per-node family) MANDATORY (majority of deep nodes); route-(ii) dead. LIVE CRUX (tick 172):
-  frozen ChartBridge ⋃-ledger-leaves type likely FALSE-AS-STATED (ledger tree = symmetric
-  quotient of the geometric fan-out tree) — t04↔coverage DIRECT negotiation authorized; STOP
-  pre-authorized; joint note must be DECISION-READY (corrected type + cost map + pp.15-21
-  fidelity) → elder gate same-tick. IN FLIGHT: **t04** (reify-Clearable + sub-gap-1 divCoord
-  [in progress, worktree verified] → carrier post-ratification → D§ii/iii = THE long pole,
-  budget-protected). pnp-o5 idle (2 commissions landed; warm consult). Coverage idle-correct.
-  Then: holes flip → hbox flip → mint repoint + #guard_msgs gate → cordon → signal-and-wait PR.
+- phase: THE TWO HOLES, post-VM-restart-#2 (tick 177: FULL team substrate lost; banked state
+  intact; ~1 arc cost). Census (kernel-verified): 4 Engine sorries — chartBridge_buildTree
+  (★ TYPE CRUX: frozen ⋃-ledger-leaves unfillable, ledger tree = symmetric quotient of the
+  geometric fan-out; R2 probe: cover MATH sound, full per-node family MANDATORY, route-(ii)
+  dead), o5_core (★ realization: cert §§3-4, both halves certified; §3 exploration salvaged),
+  realizedProfiles_eq_clearableAdm (=R7, owed), canonicalResolution224 witness (off-cone
+  corollary). SOLE ACTIVE SEAT: **architect-t05** (t01-r2; receipt-confirmed, boundary
+  discipline adopted) on: (1) the ChartBridge DECISION PACKAGE solo-drafted from the banked
+  record (threads/11-construction/decision-package-chartbridge-type.md; key read =
+  region_glue_of_chartBridge's consumption shape) → coverage-successor COUNTER-SIGN → elder
+  gate; (2) sub-gap-1 (divCoord injectivity, battery-first) — parallel; (3) §3 dedicated pass;
+  (4) §4 PAUSES for pnp-o5 (respawn-on-need) via controller. RULINGS-t04.md = the standing
+  rulings file (binds successors); comms lesson standard: turn-boundary discipline + rulings
+  file hedge. Then: holes flip → hbox clean-three → mint repoint + #guard_msgs ENFORCED gate →
+  cordon (reconcile ALL 4 sorries) → signal-and-wait PR (body names R4/R6/R7 owed).
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
