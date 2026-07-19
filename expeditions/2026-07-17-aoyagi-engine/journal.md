@@ -3621,3 +3621,15 @@ Coverage's take-with-tripwire alternative declined on its own earlier ceiling si
 structural parts it flags are where the tripwire would fire; its SPECIFYs outvalue its grind
 at this depth). The endgame's final roster forming: t09 (q-det + #26) → coverage's two
 SPECIFYs → t10 ∥ t11 → the discharge batch.
+
+## 2026-07-19 tick 248: geoAtlas BANKED — the concrete flat atlas EXISTS
+0b3dfbc3a merged: the instantiation ((dCN,qN) := the real pair, defeq-clean) + **geoAtlas** —
+one LeafData piece per geometric path: the ledger leaf's data (so leaves_chart_clauses_conRoot
+discharges the coordinate bundle per piece) + chartMap = the geometric β-fold composite. THIS
+IS the List (LeafData M) the corrected ChartBridge quantifies over — the object at the end of
+the whole type-correction arc, now concrete, green, 0 sorries. The full chain: GeoChart →
+geoChartMap (β via qNodeOf) → geometricLeafPaths (edge-driven, the offset partition riding
+edgeSum) → geoAtlas. Coverage re-pointed at the tick-247 ruling (crossed): the cover SPECIFY
+now → t10; the fold SPECIFY at q-det → t11. Remaining to the discharge: t09's q-det + #26;
+the two SPECIFYs; t10's cover (medium); t11's fold-Jacobian (the wall); LeafPullback's sizing
+(t11's report item); the (D)+clauses assembly; the discharge batch per carto5's checklist.
