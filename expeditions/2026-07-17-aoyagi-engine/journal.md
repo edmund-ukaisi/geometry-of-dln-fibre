@@ -2488,3 +2488,17 @@ summarized and the work order pinned: (i) respond to coverage's joint-note half 
 whole chart lane waits on the exchange), (ii) sub-gap-1, (iii) only then (b). The
 sweep-every-revival discipline needs re-emphasis in future seat briefs — a seat can burn a
 full turn productively yet leave a peer blocked on an unanswered exchange.
+
+## 2026-07-19 tick 175: o5 scaffold MERGED (crux isolated to o5_core); t04 message-delivery pattern
+t04's (b) scaffold merged (6f0151313) + verified: o5_realization is PROVEN modulo the single
+sorried crux o5_core (∃ leaf, ∃ k, divExp k = minAdm) — leaves_srcBox_nonempty proven, Part 1
+reduced to Part 2 via flatMap+append; monomialization_terminates now +sorryAx via EXACTLY
+chartBridge_buildTree + o5_core (probe-confirmed). The planned route matches the cert (banked
+tStar achiever + §3 Clearable + §4 steering). PROCESS: t04's report AGAIN said "awaiting your
+steer" — 2nd consecutive miss of the tick-169 ruling + coverage's negotiation messages. Cannot
+distinguish inbox-not-swept from delivery failure from here; the ruling re-sent a THIRD time,
+INLINE and complete (fork B + pin + probe binding + coverage's waiting joint-note half), with
+an explicit confirm-receipt demand. If the next t04 report still shows no receipt → treat as
+INFRA and switch channels (a RULINGS file on integration it must pull, or task-system notes).
+Its §3 plan approved as scoped (decorrelated algebra first, Codex-first, §4 pauses for pnp-o5
+via controller). Order pinned: negotiation reply → sub-gap-1 → §3.
