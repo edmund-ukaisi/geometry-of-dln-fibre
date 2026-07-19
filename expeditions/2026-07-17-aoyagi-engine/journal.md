@@ -2563,3 +2563,27 @@ both now standard. Anticipatory pin sent: the region_glue_of_chartBridge consump
 (structural leaf-indexing vs destructured countable-family) determines most of the corrected
 type's cost map. Board: t05 sole active seat; coverage successor spawns at package-ready;
 pnp-o5 respawn-on-need. Post-restart reconstitution COMPLETE at a cost of ~1 re-grounding arc.
+
+## 2026-07-19 tick 180: DECISION PACKAGE DELIVERED (c15efda2a merged) — dual ratification fired
+t05's package is decision-ready and code-grounded: the corrected ChartBridge = a FLAT
+VIRTUAL-LEAF ATLAS (∃ atlas : List (LeafData M), cover ∧ 8 per-piece props ∧ exponent-agreement
+∧ fidelity coherence) — each piece carries its OWN divCoord/divExp/chartMap/srcBox, dissolving
+the piecewise failure. THE LOAD-BEARING VERIFICATION (against live code, not recall): both
+proven glue lemmas are atlas-index-agnostic — leaf_chart_image_lintegral_lt_top is ∀ LeafData
+(RegionGluePerLeaf:119) and lintegral_leaves_cover_lt_top is ∀ List(LeafData) plain-List
+induction (RegionGlueAssembly:51) — so the flat atlas reuses BOTH verbatim; region_glue_of_
+chartBridge discards coherence and needs only cover + per-piece finiteness + the exponent
+route. Rejected alternatives priced (grouped-by-leaf: double union for no gain; fold-form:
+re-states both glue lemmas). Cost concentrates in 3 sites (~70 lines); watch NAMES unchanged;
+the (2,2,4) witness conjunct already off-cone-sorried. Fidelity: the paper's atlas IS the
+geometric fan-out; the frozen chartMap was the quotient projection — the correction is MORE
+faithful. Open sub-decision: clause (D) shape (D1 fold-form recommended, exact Lean shape
+deferred to coverage). No Lean re-typed (bar holds).
+SUB-GAP-1 BATTERY GREEN: numDiv ≤ flatDim holds (mechanism kill-set + 1360-instance sweep;
+TIGHT exactly at all-1s widths); leaf + additive forms both true; t05 GOES on the Lean grind.
+RATIFICATION FIRED IN PARALLEL: coverage-t08 spawned (fresh seat, own worktree cov08; first
+commission = adversarial COUNTER-SIGN: 3-Prop provability per piece, fold-machinery fit vs the
+carrier surface + ψ-mix, skeleton re-typing check, (D) recommendation, name-what-you-can't-
+prove) + elder-gate8 convened (false-as-stated verdict; correction-not-weakening esp. the
+exponent-agreement/λ-meaning tie; (D) pin depth; re-elaboration gate sufficiency; naming
+scrub; instance-count drift check). Controller ratifies on both verdicts.
