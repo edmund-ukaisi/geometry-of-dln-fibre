@@ -189,15 +189,23 @@ folded into a theorem name. **Depends on:** Bundle 1 (the codimension value).
 
 **Deferred seam — the θ analytic-multiplicity (future expedition).** The `aoyagi-full` expedition
 proved the learning coefficient **value** $\lambda = $ `aoyagiLambda` (the four headlines, S2-free) but
-NOT the RLCT **multiplicity** $m = \theta$ — the pole ORDER at $-\lambda$, the paper's number of
-top-dimensional components $\theta = a(\ell-a)+1$. The earlier Lean placeholder (`aoyagiTheta_eq`, a
-bare `sorry`) resting on the `opaque monomialOrderAnalytic` + the `monomial_rlct.2` axiom conjunct was
-**excised** (Stage B, `genm-excise`) rather than sorry-carried — a placeholder on an opaque is not
-honest content (standing-decision-6). The `aoyagiTheta` *definition* survives; the geometric $\theta$
-lives combinatorially in Bundle 1 `(C,θ)`. What remains: bind the **analytic** pole-multiplicity of the
-DLN zeta at $-\lambda$ to that combinatorial $\theta$. Statement + kill-condition:
+NOT the RLCT **multiplicity** — the pole ORDER at $-\lambda$, Aoyagi's
+$r_{\mathrm{order}} = a(\ell-a)+1$ (her Lemma 5). **TWO DISTINCT θ-INVARIANTS — do not conflate**
+(non-identity machine-verified 2026-07-19): Aoyagi's $r_{\mathrm{order}} = a(\ell-a)+1$ (the RLCT
+pole order, a binding-branch count) is **NOT** this repo's Bundle-1 $\theta_{\mathrm{geo}} =$
+`numTop`/`cTheta` $= \binom{m}{|\delta|}$ (the number of top-dimensional components of
+$\bar\Sigma^r$). Witness: at $d=(2,2,2,2,2)$, `cTheta` $= \binom{4}{2} = 6$ while
+$a(\ell-a)+1 = 2\cdot 2+1 = 5$ — they coincide at small cases by accident. The earlier Lean
+placeholder (`aoyagiTheta_eq`, a bare `sorry`) resting on the `opaque monomialOrderAnalytic` + the
+`monomial_rlct.2` axiom conjunct was **excised** (Stage B, `genm-excise`) rather than sorry-carried —
+a placeholder on an opaque is not honest content (standing-decision-6). The `aoyagiTheta`
+*definition* survives; the **combinatorial** $r_{\mathrm{order}}$ count (Lemmas 4–5, the two-envelope
+binding-branch count — no analytics) is a live build item (expedition aoyagi-engine build-list #2).
+What remains beyond it: bind the **analytic** pole-multiplicity of the DLN zeta at $-\lambda$ to
+$a(\ell-a)+1$ — **never to `numTop`** (the mint guard). Statement + kill-condition:
 [`cards/theta-analytic-multiplicity-seam.md`](expeditions/2026-06-20-aoyagi-full/cards/theta-analytic-multiplicity-seam.md).
-The value ($\lambda$) headline does not need it.
+The value ($\lambda$) headline does not need it. See
+`docs/expositions/notes/theta-invariants-non-identity.md`.
 
 ## Dependency sketch
 

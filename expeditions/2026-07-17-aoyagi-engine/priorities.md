@@ -37,9 +37,15 @@ payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds e
    MECHANISM PINNED (navigator-3): `#guard_msgs in #print axioms <headline>`
    — the build FAILS if the axiom set drifts from [propext, Classical.choice, Quot.sound];
    a bare #print is diagnostic-by-another-name and does not satisfy R5. PR FRAMING PIN
-   (precision): the spine PR delivers the unconditional λ theorem clean-three; it is NOT
-   full-mechanism-complete — the PR body co-locates "R4 (genDivExp propagation) + R6 (regular
-   peel) + R7 (⊇ Clearable-Adm completeness) explicitly owed post-spine". CORDON NOTE: the
+   (precision, amended tick 324): the spine PR delivers the unconditional λ theorem clean-three;
+   it is NOT full-mechanism-complete — the PR body co-locates "R4 (genDivExp propagation) + R7
+   (⊇ Clearable-Adm completeness) + zero-width layer-collapse explicitly owed post-spine".
+   [R6 REMOVED from the owed list — elder charge-8 retraction: the general-L r>0 regular VALUE
+   is BUILT sorry-free via the front-pivot gauge, AxCheck:923.] MINT GUARD (the θ non-identity,
+   machine-verified 6≠5 at (2,2,2,2,2)): the headline is the VALUE λ only — no theorem name,
+   docstring, or PR text may state or imply that numTop/cTheta is the RLCT multiplicity; the
+   deferred θ-analytic seam binds to a(ℓ−a)+1, never numTop
+   (docs/expositions/notes/theta-invariants-non-identity.md). CORDON NOTE: the
    census reconciles ALL Engine sorries, incl. canonicalResolution224's witness (off-cone,
    closes as a coverage corollary specialised to (2,2,4)) — not just the two cone holes.
 6. R6 — Lemma 2 + Theorem 3 (the regular peel) — OWED FIRST-CLASS (both council seats; "value
