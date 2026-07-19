@@ -158,4 +158,216 @@ theorem cle_quasiMeasurePreserving {X Y : Type*}
     ContinuousLinearEquiv.isAddHaarMeasure_map e volume
   exact Measure.absolutelyContinuous_isAddHaarMeasure (Measure.map e volume) volume
 
+/-! ## Transport through the flattening: CLEs touching `Params M` are quasi-measure-preserving
+
+`Params M` (a `Matrix` pi) has no `IsAddHaarMeasure`/`BorelSpace` instance, so `cle_quasiMeasurePreserving`
+does not apply to CLEs with `Params M` as (co)domain. But `paramsEquivFlat` is measure-preserving
+(`measurePreserving_paramsEquivFlat`), and its CLE form has the same underlying map
+(`paramsEquivFlatCLE_coe`); conjugating a Params-CLE by it produces a CLE between the clean flat
+spaces, whose QMP transports back. -/
+
+variable {L : ℕ} {M : Fin (L + 1) → ℕ}
+
+/-- The flattening CLE is measure-preserving (`measurePreserving_paramsEquivFlat`, transported to the
+`ContinuousLinearEquiv` form by the coercion agreement). -/
+theorem paramsEquivFlatCLE_measurePreserving (M : Fin (L + 1) → ℕ) :
+    MeasurePreserving ⇑(paramsEquivFlatCLE M) (volume : Measure (Params M)) volume := by
+  have h := measurePreserving_paramsEquivFlat M
+  rwa [← paramsEquivFlatCLE_coe M] at h
+
+/-- The CLE flattening's inverse has the same underlying map as the `MeasurableEquiv`'s inverse (both
+are the unique inverse of the shared forward map). -/
+theorem paramsEquivFlatCLE_symm_coe (M : Fin (L + 1) → ℕ) :
+    ⇑(paramsEquivFlatCLE M).symm = ⇑(paramsEquivFlat M).symm := by
+  funext y
+  apply (paramsEquivFlat M).injective
+  rw [(paramsEquivFlat M).apply_symm_apply, ← paramsEquivFlatCLE_coe M,
+    (paramsEquivFlatCLE M).apply_symm_apply]
+
+/-- The flattening CLE is QMP. -/
+theorem paramsEquivFlatCLE_qmp (M : Fin (L + 1) → ℕ) :
+    Measure.QuasiMeasurePreserving ⇑(paramsEquivFlatCLE M) (volume : Measure (Params M)) volume :=
+  (paramsEquivFlatCLE_measurePreserving M).quasiMeasurePreserving
+
+/-- The inverse flattening CLE is QMP (`MeasurableEquiv.quasiMeasurePreserving_symm`, transported
+through the coe agreement and `map_eq`). -/
+theorem paramsEquivFlatCLE_symm_qmp (M : Fin (L + 1) → ℕ) :
+    Measure.QuasiMeasurePreserving ⇑(paramsEquivFlatCLE M).symm
+      (volume : Measure (Fin (flatDim M) → ℝ)) (volume : Measure (Params M)) := by
+  have h := MeasurableEquiv.quasiMeasurePreserving_symm (volume : Measure (Params M))
+    (paramsEquivFlat M)
+  rw [(measurePreserving_paramsEquivFlat M).map_eq] at h
+  rwa [paramsEquivFlatCLE_symm_coe M]
+
+/-- **A CLE with `Params M` as domain is QMP** (clean codomain): conjugate by the flattening. -/
+theorem cle_qmp_of_params_dom {Y : Type*}
+    [NormedAddCommGroup Y] [NormedSpace ℝ Y] [MeasureSpace Y] [BorelSpace Y]
+    [(volume : Measure Y).IsAddHaarMeasure] [LocallyCompactSpace Y] [SecondCountableTopology Y]
+    (e : Params M ≃L[ℝ] Y) :
+    Measure.QuasiMeasurePreserving (⇑e) (volume : Measure (Params M)) volume := by
+  have hcomp := (cle_quasiMeasurePreserving ((paramsEquivFlatCLE M).symm.trans e)).comp
+    (paramsEquivFlatCLE_qmp M)
+  have hEq : ⇑((paramsEquivFlatCLE M).symm.trans e) ∘ ⇑(paramsEquivFlatCLE M) = ⇑e := by
+    funext w
+    simp only [Function.comp_apply, ContinuousLinearEquiv.trans_apply,
+      ContinuousLinearEquiv.symm_apply_apply]
+  rwa [hEq] at hcomp
+
+/-- **A CLE with `Params M` as codomain is QMP** (clean domain): conjugate by the flattening. -/
+theorem cle_qmp_of_params_cod {X : Type*}
+    [NormedAddCommGroup X] [NormedSpace ℝ X] [MeasureSpace X] [BorelSpace X]
+    [(volume : Measure X).IsAddHaarMeasure] [LocallyCompactSpace X] [SecondCountableTopology X]
+    (e : X ≃L[ℝ] Params M) :
+    Measure.QuasiMeasurePreserving (⇑e) (volume : Measure X) (volume : Measure (Params M)) := by
+  have hcomp := (paramsEquivFlatCLE_symm_qmp M).comp
+    (cle_quasiMeasurePreserving (e.trans (paramsEquivFlatCLE M)))
+  have hEq : ⇑(paramsEquivFlatCLE M).symm ∘ ⇑(e.trans (paramsEquivFlatCLE M)) = ⇑e := by
+    funext w
+    simp only [Function.comp_apply, ContinuousLinearEquiv.trans_apply,
+      ContinuousLinearEquiv.symm_apply_apply]
+  rwa [hEq] at hcomp
+
+/-- **A CLE `Params M ≃L Params M` is QMP**: conjugate both ends by the flattening. -/
+theorem cle_qmp_of_params_both (e : Params M ≃L[ℝ] Params M) :
+    Measure.QuasiMeasurePreserving (⇑e) (volume : Measure (Params M)) volume := by
+  have hcomp := ((paramsEquivFlatCLE_symm_qmp M).comp
+    (cle_quasiMeasurePreserving
+      ((paramsEquivFlatCLE M).symm.trans (e.trans (paramsEquivFlatCLE M))))).comp
+    (paramsEquivFlatCLE_qmp M)
+  have hEq : (⇑(paramsEquivFlatCLE M).symm ∘
+      ⇑((paramsEquivFlatCLE M).symm.trans (e.trans (paramsEquivFlatCLE M)))) ∘
+      ⇑(paramsEquivFlatCLE M) = ⇑e := by
+    funext w
+    simp only [Function.comp_apply, ContinuousLinearEquiv.trans_apply,
+      ContinuousLinearEquiv.symm_apply_apply]
+  rwa [hEq] at hcomp
+
+/-! ## The composition step and the per-factor properties -/
+
+/-- **The a.e.-injectivity composition step**: if `f` is QMP and both `f`, `g` are injective off a null
+set, then `g ∘ f` is injective off the accumulated null set `Nf ∪ f⁻¹ Ng` (the second piece is null
+*because* `f` is QMP — this is where `preimage_null` is used). -/
+theorem comp_ae_injOn {α β γ : Type*} [MeasureSpace α] [MeasureSpace β]
+    {f : α → β} {g : β → γ}
+    (hfQMP : Measure.QuasiMeasurePreserving f volume volume)
+    (hf : ∃ N : Set α, volume N = 0 ∧ Set.InjOn f (Set.univ \ N))
+    (hg : ∃ N : Set β, volume N = 0 ∧ Set.InjOn g (Set.univ \ N)) :
+    ∃ N : Set α, volume N = 0 ∧ Set.InjOn (g ∘ f) (Set.univ \ N) := by
+  obtain ⟨Nf, hNf0, hNfInj⟩ := hf
+  obtain ⟨Ng, hNg0, hNgInj⟩ := hg
+  refine ⟨Nf ∪ f ⁻¹' Ng, measure_union_null hNf0 (hfQMP.preimage_null hNg0), ?_⟩
+  intro x hx y hy hxy
+  rw [Set.mem_diff] at hx hy
+  obtain ⟨-, hxN⟩ := hx
+  obtain ⟨-, hyN⟩ := hy
+  rw [Set.mem_union, not_or, Set.mem_preimage] at hxN hyN
+  obtain ⟨hxNf, hxNg⟩ := hxN
+  obtain ⟨hyNf, hyNg⟩ := hyN
+  have hfeq : f x = f y :=
+    hNgInj ⟨Set.mem_univ _, hxNg⟩ ⟨Set.mem_univ _, hyNg⟩ hxy
+  exact hNfInj ⟨Set.mem_univ _, hxNf⟩ ⟨Set.mem_univ _, hyNf⟩ hfeq
+
+/-- A bijective map (given as a `Function.Injective` witness) is injective off the null set `∅`. -/
+theorem ae_injOn_of_injective {α β : Type*} [MeasureSpace α] {f : α → β}
+    (hf : Function.Injective f) : ∃ N : Set α, volume N = 0 ∧ Set.InjOn f (Set.univ \ N) :=
+  ⟨∅, measure_empty, hf.injOn⟩
+
+/-! ### `Prod.map (pivotChart i) id` is QMP and injective off its exceptional hyperplane -/
+
+/-- `Prod.map (pivotChart i) id` is QMP on the split space (`Measure.map_prod_map` + AC of the product,
+using `pivotChart_quasiMeasurePreserving`). -/
+theorem pivotChart_prod_qmp {d k : ℕ} (i : Fin d) :
+    Measure.QuasiMeasurePreserving (Prod.map (pivotChart i) (id : (Fin k → ℝ) → Fin k → ℝ))
+      (volume : Measure ((Fin d → ℝ) × (Fin k → ℝ))) volume := by
+  refine ⟨(pivotChart_measurable i).prodMap measurable_id, ?_⟩
+  rw [Measure.volume_eq_prod,
+    ← Measure.map_prod_map _ _ (pivotChart_measurable i) measurable_id]
+  exact (pivotChart_quasiMeasurePreserving i).absolutelyContinuous.prod
+    (Measure.QuasiMeasurePreserving.id volume).absolutelyContinuous
+
+/-- `Prod.map (pivotChart i) id` is injective off the null hyperplane `{p | p.1 i = 0}` (the first
+factor is `pivotChart_injOn` off `{u i = 0}`, the second is the identity). -/
+theorem pivotChart_prod_ae_injOn {d k : ℕ} (i : Fin d) :
+    ∃ N : Set ((Fin d → ℝ) × (Fin k → ℝ)), volume N = 0 ∧
+      Set.InjOn (Prod.map (pivotChart i) (id : (Fin k → ℝ) → Fin k → ℝ)) (Set.univ \ N) := by
+  refine ⟨{p | p.1 i = 0}, ?_, ?_⟩
+  · have hset : {p : (Fin d → ℝ) × (Fin k → ℝ) | p.1 i = 0}
+        = {u : Fin d → ℝ | u i = 0} ×ˢ (Set.univ : Set (Fin k → ℝ)) := by
+      ext p; simp
+    rw [hset, Measure.volume_eq_prod, Measure.prod_prod, pivotChart_exceptional_null i, zero_mul]
+  · intro p hp p' hp' hpp
+    rw [Set.mem_diff] at hp hp'
+    simp only [Set.mem_univ, true_and, Set.mem_setOf_eq] at hp hp'
+    obtain ⟨u, v⟩ := p; obtain ⟨u', v'⟩ := p'
+    simp only [Prod.map, id_eq, Prod.mk.injEq] at hpp
+    exact Prod.ext (pivotChart_injOn i hp hp' hpp.1) hpp.2
+
+/-! ### The blow-up conjugators `qNodeOf`, `flatSwapCLE` are QMP -/
+
+/-- The per-node center split `qNodeOf` is QMP (it is `qOfCenterCLE`, a CLE `Params M ≃L product`). -/
+theorem qNodeOf_qmp (node : StepData M) (hd : dCenterOfNode M node ≤ flatDim M) :
+    Measure.QuasiMeasurePreserving ⇑(qNodeOf M node hd) (volume : Measure (Params M)) volume := by
+  have hcoe : ⇑(qNodeOf M node hd)
+      = ⇑(qOfCenterCLE M (cNodeOf M node hd) (cNodeOf_injective M node hd)) :=
+    qOfCenter_coe_cle M _ _
+  rw [hcoe]; exact cle_qmp_of_params_dom _
+
+/-- The inverse per-node center split `(qNodeOf).symm` is QMP. -/
+theorem qNodeOf_symm_qmp (node : StepData M) (hd : dCenterOfNode M node ≤ flatDim M) :
+    Measure.QuasiMeasurePreserving ⇑(qNodeOf M node hd).symm volume (volume : Measure (Params M)) := by
+  have hcoe : ⇑(qNodeOf M node hd).symm
+      = ⇑(qOfCenterCLE M (cNodeOf M node hd) (cNodeOf_injective M node hd)).symm := rfl
+  rw [hcoe]; exact cle_qmp_of_params_cod _
+
+/-- The diagonal-normalization source swap `flatSwapCLE` is QMP. -/
+theorem flatSwapCLE_qmp (p d : Fin (flatDim M)) :
+    Measure.QuasiMeasurePreserving ⇑(flatSwapCLE M p d) (volume : Measure (Params M)) volume :=
+  cle_qmp_of_params_both (flatSwapCLE M p d)
+
+/-! ### The per-factor properties of `geoChartMapNorm (fun _ => id) g` -/
+
+/-- **Each per-edge factor is QMP**: off-cone it is `id`; on-cone it is
+`q.symm ∘ (pivotChart × id) ∘ q ∘ S`, a composition of QMP maps. -/
+theorem geoChartMapNorm_id_qmp (g : GeoChart M) :
+    Measure.QuasiMeasurePreserving (geoChartMapNorm (fun _ => id) g)
+      (volume : Measure (Params M)) volume := by
+  obtain ⟨node, edge, pivot⟩ := g
+  by_cases hd : dCenterOfNode M node ≤ flatDim M
+  · by_cases hp : pivot < dCenterOfNode M node
+    · rw [geoChartMapNorm_id_on_cone node edge pivot hd hp]
+      exact (((qNodeOf_symm_qmp node hd).comp
+        ((pivotChart_prod_qmp ⟨pivot, hp⟩).comp (qNodeOf_qmp node hd)))).comp
+        (flatSwapCLE_qmp _ _)
+    · simp only [geoChartMapNorm, dif_pos hd, dif_neg hp]
+      exact Measure.QuasiMeasurePreserving.id volume
+  · simp only [geoChartMapNorm, dif_neg hd]
+    exact Measure.QuasiMeasurePreserving.id volume
+
+/-- **Each per-edge factor is injective off a null set**: off-cone it is `id` (null set `∅`); on-cone
+it is `q.symm ∘ (pivotChart × id) ∘ q ∘ S` with `q`, `q.symm`, `S` bijective and the middle factor
+injective off its exceptional hyperplane, so `comp_ae_injOn` accumulates the null set. -/
+theorem geoChartMapNorm_id_ae_injOn (g : GeoChart M) :
+    ∃ N : Set (Params M), volume N = 0 ∧
+      Set.InjOn (geoChartMapNorm (fun _ => id) g) (Set.univ \ N) := by
+  obtain ⟨node, edge, pivot⟩ := g
+  by_cases hd : dCenterOfNode M node ≤ flatDim M
+  · by_cases hp : pivot < dCenterOfNode M node
+    · rw [geoChartMapNorm_id_on_cone node edge pivot hd hp]
+      -- β = q.symm ∘ (pivotChart × id) ∘ q ∘ S
+      have hqS := comp_ae_injOn (flatSwapCLE_qmp _ _)
+        (ae_injOn_of_injective (flatSwapCLE M (cNodeOf M node hd ⟨pivot, hp⟩)
+          (diagTargetOf M node edge (by omega))).injective)
+        (ae_injOn_of_injective (qNodeOf M node hd).injective)
+      have hPqS := comp_ae_injOn ((qNodeOf_qmp node hd).comp (flatSwapCLE_qmp _ _))
+        hqS (pivotChart_prod_ae_injOn ⟨pivot, hp⟩)
+      have hβ := comp_ae_injOn
+        (((pivotChart_prod_qmp ⟨pivot, hp⟩).comp (qNodeOf_qmp node hd)).comp
+          (flatSwapCLE_qmp _ _))
+        hPqS (ae_injOn_of_injective (qNodeOf M node hd).symm.injective)
+      exact hβ
+    · simp only [geoChartMapNorm, dif_pos hd, dif_neg hp]
+      exact ae_injOn_of_injective Function.injective_id
+  · simp only [geoChartMapNorm, dif_neg hd]
+    exact ae_injOn_of_injective Function.injective_id
+
 end DLNFibre.DLN.RLCT.Engine
