@@ -2386,3 +2386,12 @@ PR body must co-locate "R4+R6+R7 owed post-spine"); census note (3 Engine sorrie
 holes + canonicalResolution224's off-cone witness, closes as a coverage corollary — cordon
 reconciles ALL). Distance: ~4-6 seat-arcs to the spine PR. Top risk: D squeezed to a t05
 handoff (hence the reify front-load + tripwire). Next navigator trigger: cadence or hbox flip.
+
+### Tick-168 addendum: navigator-3 dissolved; cartographer-3 spawned (pass #2, the reuse index)
+Navigator office closed (verdict executed in full). Cartographer pass #2 fired per its
+amendment B: banked-family cards for the Engine kit (invariants / chooser-minimality [t04's
+pull-ordering reuse target] / Mval / leaf-fold / coverage), dead-route additions (7 kills from
+this arc incl. ⊇Adm, raw-p.20, global-WidthBound, absorb-rollover, positivity-hyp, D-first),
+o5 naming forwarding-pointers + the two-carriers disambiguation. Own-worktree mandate EXPLICIT
+in the brief (this seat class caused the branch-hijack incident); validator gated on grep
+'0 error'. Binds via ratification at merge.
