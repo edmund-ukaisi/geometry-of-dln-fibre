@@ -3910,3 +3910,14 @@ kill-condition = a composite det ≠ the per-piece ledger monomial; extends cert
 (per-node) to the FOLD; runs parallel, no file locks. Sequence: t10 lands → #35 ∥ cert →
 skeleton → grind. Board: t09 mini-arc; t10 batch (gate cleared); t11 Phase-2 parametric;
 pnp-fold; AxCheck untimed verify still running.
+
+## 2026-07-19 tick 264: t09 mini-arc merged+probed — the review loop closed; the seat retires COMPLETE
+Merged 23a48258c, probed clean-three: resBlockOrFallback_eq_resBlockCenterIndices (the
+reduction atom) + centerSelCase_none_geometric_of_conOracle (on-cone case-2 blocks FIT —
+J+resRows ≤ M⁽ˢ⁾, J+resCols = M⁽ˢ⁺¹⁾ — so the castLE fallback never fires) + the headline
+re-probed. rev-carrier's sharpest note is CLOSED: "names the intended blow-up coords" is now
+certified for BOTH cases, not just case-1. Docstring scope fixed (per-subtree-root), doc rot
+retired. QNodeCarrier final: 736 LoC, 0 sorries, every headline clean-three, reviewed
+PASS-with-notes with all notes discharged. Task #36 done. The full review loop
+(build → independent review → notes → closure) completed within one day of the module's
+birth — the carrier is BEDROCK now. t09 retired complete.
