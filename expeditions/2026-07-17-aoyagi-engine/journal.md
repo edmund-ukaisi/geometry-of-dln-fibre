@@ -2129,3 +2129,15 @@ oracleTerminal fallback (vacuous-object class); (9) non-vacuity — analytic sid
 empty (witness file check) + the flatDim=0 dite branch carried by NumDivFlatPos as PROOF not
 assumption; (10) case-1 delta/BoundaryFlat circle check (precondition supplied by reachability
 at call sites; maintenance must not consume the delta lemma). Codex-leg weighting: 10 or 9(b).
+
+## 2026-07-19 tick 155: D§i merged + probe-verified; D§ii/iii assigned to t03; rulings restated
+t03 landed D§i at a clean stopping point: minAdm_le_terminalExponents (the exponent-hook LOWER
+bound) + leaves_resRank_zero — merged (f6e90030b), module rebuilt, forced probe = exactly the
+clean three. Of CanonicalResolution's 6 conjuncts, 4 now PROVEN + wire-ready (IsFullMono,
+StepRel-all, base, minAdm ≤); remaining = ChartBridge (T3) + minAdm ∈ / live-attainment
+(D§ii/iii). Footprint gate intact per seat + spot-check (EngineObligations doesn't import
+EngineConstruction yet; monomialization_terminates still the single bare sorry; watch lines
+unchanged). RULINGS RESTATED (3rd crossing — mailbox latency, not disagreement): E = (a)
+assemble now w/ named holes; D§ii/iii = t03's (critical path; cert reduces it to ONE clearable
+minimizer) with the scope guard — no mid-D generalization toward ⊇ Clearable-Adm (that's R7;
+the D machinery reuses there). Reify-now + naming pin re-pointed. Order: E-wire → D§ii/iii.
