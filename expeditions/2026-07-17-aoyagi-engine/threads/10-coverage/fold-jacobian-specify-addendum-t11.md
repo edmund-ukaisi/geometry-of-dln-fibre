@@ -162,3 +162,39 @@ atom:** both gauges are det-neutral — `|det S| = 1` (`clm_involutive_abs_det_o
 (`abs_det_fderiv_elemShear`, banked) — so the per-edge det through `geoChartMap ∘ S ∘ α` is
 `|z_diag|^{dCN−1} · 1 · 1` by the chain rule (`clm_det_comp`), unchanged. Cert condition (2) (gauges compose
 coherently: `chartMap`, `srcBox` AND `resCoord` all transformed across the fold) is a #35/construction concern.
+
+## FINAL SCOPE — elder charge-3 ruling (option (a), ONE PASS). Settled.
+
+`geoChartMap_e` becomes the FULL normalized per-edge step **β + S + α** in ONE pass (S = the
+diagonal-placement permutation, `clm_involutive_abs_det_one`; α = the incidence shear
+`ShearReconcile.elemShear`), with the coherent transformed source box `srcBox' = g_e⁻¹(cube)`,
+`g_e = S ∘ α`. The decisive `srcBox` argument: S preserves the cube but α does NOT, so the coherence
+identity `(β ∘ g_e)(srcBox') = β(cube)` keeps the IMAGE unchanged (cover preserved verbatim, clause A)
+while `srcBox' ⊆ cube` of radius `R(1+R)` keeps clause B — one pass, not two (two-pass re-shapes the
+domain twice, re-opening cover+bound each time). This is the R2-pre-rung "localSub = ψ∘β" plan executed
+with `ψ = S ∘ α`.
+
+**CLAUSE FACTORING (the Jacobian side is untouched):** `|det D(β ∘ S ∘ α)| = |det Dβ| · 1 · 1` — α is
+PURELY LeafPullback's concern. The split:
+- **`{β + S + the cocycle fold}` → LeafJacobian** — my scoped work, unchanged (the per-edge atom reads
+  `z_diag` through S; the §2 cocycle maintenance against the STATE-LEVEL ledger closes it).
+- **`{α}` → the LeafPullback squeeze** — build-against-spec (cert-specified exact `lo/hi`; `lo = 1` at
+  `resRank = 0`). OWNER decided at my #35 landing (me or a fresh loss-seat).
+
+**`resRank = 0` is PROVEN** (`leaves_resRank_zero`, `EngineConstruction:2545`): the spine fully
+diagonalizes (Aoyagi's `diag(b)` terminal). Consequences: the cert's "transform `resCoord`" coherence is
+VACUOUS on the spine (`resCoord` empty); `baseForm = 1`, `lo = 1` in the squeeze; the Morse clauses are
+carried-for-generality. **No-circularity (docstrings):** the LEDGER asserts `resRank = 0` (proven);
+LeafPullback + α proves the GEOMETRY realizes it — α is load-bearing precisely to make the pure-β
+residual actually diagonalize.
+
+**Composition-cleanliness:** charge-2's obligation generalized to a det-1 gauge, discharged from the SAME
+`DivBirthInv` freshness (S and α are step-local to the current block, disjoint from ancestor cleared
+diagonals — effectively disjoint supports within a step; the within-step order is an implementation
+detail against the cert's coherence identity).
+
+**Build order on t10's merge:** (1) `geoChartMap` ← β+S+α with `srcBox' = g_e⁻¹(cube)` (GeoChart, +the
+coherence identity `(β∘g_e)(srcBox') = β(cube)`); (2) the composition-clean lemma (DivBirthInv freshness);
+(3) the per-edge wrapper (`|det D(β∘S∘α)| = |z_diag|^{dCN−1}` via the banked det-neutral atoms + `clm_det_comp`);
+(4) §0 chart-action against the normalized `geoChartMap`; (5) the §2 cocycle maintenance → LeafJacobian.
+Then re-green coordination with t10's post-swap cover VERIFY.
