@@ -2249,3 +2249,21 @@ assumption. (10) delta/BoundaryFlat is an acyclic DAG: one call site, hbdry = th
 invariant via reachability; BoundaryFlat maintenance greps clean of Mval/delta — no feedback;
 Codex independently confirmed divExp is not an Mval alias. Review COMPLETE: SURVIVED, 3 low
 notes, zero blocking. rev-spine's seat dissolved with thanks.
+
+## 2026-07-19 tick 162: ChartBridge wiring skeleton PROVEN + merged; ownership pin fired
+coverage-t07 over-delivered on (a): chartBridge_of_pieces is a PROVEN implication (no sorry —
+the o5-fed Props enter as typed HYPOTHESES over the fold-form χ parameter; leafPullback/
+leafJacobian _eq_with rfl-bridges at χ = chartMap; coherence hypothesis hχ bridges to the
+record). Merged @ 9a7a3087b; controller probe = exactly the clean three. Anti-vacuity pin
+respected (nothing reads the placeholder fields); χ-parametrization survives either
+architect resolution; no hL exposure. COVERAGE LANE BUILDABLE-NOW STATE: complete — atom, fold
++ image-cover headline, free clauses, smart-constructor, ψ reconciliation, InjOn atom, wiring
+skeleton. Sole remaining content = the 3 fed Props over the REAL charts.
+OWNERSHIP PIN FIRED (deadlock prophylaxis): coverage frames the 3 Props as "standing by for
+o5's concrete charts" — but staged-D (t04) is the LEDGER realization (profiles/exponents), not
+chart geometry. My read: what coverage needs is the ARCHITECT's chart-emission carrier (the
+path-accumulator exposing per-edge β/ψ so the leaf fold is computable), and the 3 Props stay
+COVERAGE's (path induction, telescoping per-edge monomial factors) — runnable IN PARALLEL with
+D. Asked coverage to confirm (a)/(b) + name the MINIMAL carrier surface, so the requirement
+rides the architect map and unblocks at the E-merge, not after D. (If confirmed (b), the
+"3 Props ← o5" gating in earlier notes is CORRECTED to "3 Props ← accumulator".)
