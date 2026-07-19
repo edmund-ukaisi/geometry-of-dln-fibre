@@ -2723,3 +2723,20 @@ realized as a t̃=0 leaf divisor — the pull-ordering brick reusing LiveHeadDom
 Per RULINGS, t05 PAUSES before §4 for the pnp-o5-class coordination through controller — its
 pause-report with the precise brick questions is the trigger to spawn the consult seat.
 Coverage-t08: re-typing batch commissioned (tick 187), no push yet — expected mid-arc.
+
+## 2026-07-19 tick 189: §3 report reconciled — four rulings (reviewer, wiring, composition, §4 GO)
+t05's §3 report confirms the tick-188 merge (statement card + Codex-first discipline + the
+gotchas delta appended to lean/CLAUDE.md). RULINGS: (1) rev-s3 SPAWNED — fidelity audit on the
+4 card points + the SEAM-GENUINENESS check (t04's placeholder seam completed by t05 — verify
+the completed proof proves the CERT's claim, not a weakened statement that happens to close) +
+the Clearable cross-check battery's non-vacuity; (2) O5Realization wired into AxCheck (both
+headlines MUST-clean-three), build in background; (3) COMPOSITION = MOVE-AT-LANDING: at §4
+completion o5_core moves to O5Realization as a proven theorem, the EngineConstruction sorry
+deletes, EngineObligations gains the import (no cycle), the watch line moves — one atomic
+batch, full-batch gate; (4) **§4 GO NOW, pause ruling REVISED**: the pause existed to route the
+brick through the cert AUTHOR, who died with the VM — a fresh consult seat would read the same
+cert t05 can; t05 IS the consumer §4 was written for. Tripwire replaces pause: brick fights
+beyond a couple honest attempts → STOP, consult spawned THEN with the precise sticking point.
+Scope pin: the steering path for tStar ONLY (minimizer-only; general Clearable-Adm = R7).
+t05's queue: §4 → carrier (after coverage's re-typing batch merges; ψ verdict + α_e revision
+in its inbox). Both crux holes now have zero coordination gates in front of their owners.
