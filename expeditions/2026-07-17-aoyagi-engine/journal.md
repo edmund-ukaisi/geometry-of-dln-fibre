@@ -2925,3 +2925,22 @@ sorry-count corrected in-card. Recalibration relayed to t05's wake queue (fold-e
 payload-shape + the docstring debt). cartographer-4 + elder-alt1 dissolved — the first full
 office-routed calibration round complete; the instrument's yield so far: one direction
 correction, one staled compass line, two arc-shape recalibrations, one process convention.
+
+## 2026-07-19 tick 202: RE-TYPING BATCH MERGED + VERIFIED — the corrected ChartBridge is REAL
+coverage-t08's batch (5d583a5ee) landed under the full-batch gate: full build 8894 jobs exit-0;
+AxCheck forced-fresh — every watched root at its expected footprint (the critical no-reopen:
+region_glue_of_chartBridge EXACTLY clean-three, controller re-probed [namespace gotcha
+recurred: Engine.*, 4th instance of the probe-namespace class]; the five must-clean lines all
+clean; the seven expected +sorryAx unchanged). The four sites landed as forecast: ChartBridge
+= the flat virtual-leaf atlas ((A)+(B)+(C), ledger/atlas-split docstring, (D)-deferred with
+pinned content recorded); chartBridge_of_pieces = pure bundling (χ dropped, With-variants
+deleted); region_glue destructure (C)-routed with both glue lemmas verbatim; witness +
+EngineObligations re-elaborated UNEDITED — the (D)-additive no-re-ripple claim VERIFIED by
+this very build. Instance #5's fix is now EXECUTED (the type-level false-as-stated corrected
+in the tree). File ownership released. OWNERSHIP CORRECTION issued (collision averted):
+coverage's "next = the carrier (task #8)" — NO: #8 is t05's (fork-B); coverage's next = the
+q/t_geo INTERFACE PROPOSAL doc (t05's wake trigger), then post-carrier: t_geo +
+geometricLeafPaths + (D) [gate #10] + α_e lemmas + the 3 Props + the cover. ShearReconcile
+docstring debt routed to its next own-file batch. The chart lane's sequence is now: proposal
+→ t05 checkpoint + carrier → coverage's closing tide — while t06 runs the SteerInv
+decomposition (6b+6c done per the task board).
