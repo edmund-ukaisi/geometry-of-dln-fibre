@@ -3550,3 +3550,16 @@ amended); the Morse machinery is exercised only vacuously at resRank=0 (noted); 
 warning (discharging against the current charts would overclaim) — MOOT under the repair path.
 The underlying Aoyagi MATH is CORRECT throughout — a formalisation construction defect + one
 genuine new module. The design note's "both det inputs banked" was an undercount — corrected.
+
+### Tick-242 addendum: the verdict EXECUTED — amendments routed, the last wall named as a task
+t09 amended mid-arc (the small q-det addition — qOfCenter's linearity ⟹ det-neutrality, the
+fold induction's load-bearing input; its spec otherwise DOUBLY confirmed). Coverage briefed
+(the LeafJacobian re-size + the budget question BEFORE it starts the fold module; the (D)-is-
+downstream-of-(B) sequencing; the EO-caveat retirement deferred — task #15 amended).
+Task #21 created: THE FOLD-JACOBIAN MODULE — the expedition's last genuine wall, sized
+honestly (L2/D1-class), the underlying math elder-verified correct. The endgame's true shape
+after the rightness call: t09's qNodeOf (in flight, doubly-confirmed) → the fold-Jacobian
+module (#21, owner pending coverage's budget answer) → LeafPullback's fold-shape check →
+the (D)+clauses assembly → the discharge. The operator's request for this call was
+prescient — without it the tide would have hit the Jacobian wall at the LAST piece with the
+defect baked into the built atlas.
