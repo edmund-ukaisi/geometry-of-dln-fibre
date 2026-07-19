@@ -4631,3 +4631,19 @@ maintenance in LEAN-READY shapes keyed to t14's atom names, the sympy verificati
 to a depth-3 mixed-case threaded run, and the induction-skeleton transcription notes. The
 shape-check pin: t14 glances at coverage's in-flight ledger bridge before writing its own
 list walk (no gratuitous divergence between the two walks).
+
+## 2026-07-19 tick 294: THE R-SPLIT GATE IS REALIZED — chartBridge_buildTree IS the projection; the crux hole re-localized to (B)(C)
+Coverage's wiring batch merged (97b3ca115) + controller-probed: the crux is NO LONGER a bare
+sorry — chartBridge_buildTree = (chartBridgeFaithful_buildTree M hL hMpos).toChartBridge,
+putting (D) fidelity (the proven node-walk + the atlas tie) ON THE PAYOFF'S PROOF CONE. The
++sorryAx footprint UNCHANGED (routes through the faithful (B)(C) — no regression); the
+projection mechanism clean-three; region_glue_of_chartBridge (protected) untouched
+clean-three. The hMpos ripple threaded (one batch, counter #8 as staged). The EO import
+closed the 3 gate-orphans. FULL aggregator green on the seat (8912 jobs) — and note its
+verification discipline: it caught its own background task's "failed" as grep-exit-1-on-
+zero-errors (the pipe-gating class, spotted BY a seat this time — the lesson propagated).
+AxCheck: projection MUST-clean-three + the faithful theorem DIAGNOSTIC (flips at discharge)
++ the cordon note; background verify running. The endgame's hole census is now: TWO sorries
+in chartBridgeFaithful_buildTree ((B) props + (C) exponents), fed by the four owned lanes
+(t14 det-fold + pnp-fold cert ∥ coverage bridge ∥ loss-t15 α ∥ a.e.-inj survey). Coverage
+GO'd on the bridge (its crossed decision-ask answered — tick 291's ruling re-relayed).
