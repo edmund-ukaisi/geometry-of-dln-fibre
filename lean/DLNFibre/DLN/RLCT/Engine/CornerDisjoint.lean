@@ -3,29 +3,30 @@ import DLNFibre.DLN.RLCT.Engine.GeoChart
 /-!
 # `DLNFibre.DLN.RLCT.Engine.CornerDisjoint` — the corner-disjointness pair (t17)
 
-The construction-freshness content that discharges `ledgerMonomial_comp_spectator`'s two disjointness
-hypotheses (`GeoFoldRegroup.lean`, t14). At a reachable step node emitted at state `s`, an OLD
-divisor's diagonal cell `birthFlatCoord M s k h` (the `flatCoordOf`-diagonal `(a, b, b)` of the
-stored birth corner `(a, b) = s.divBirthCoord k`) is:
+The construction-freshness content that discharges `ledgerMonomial_comp_spectator`'s two
+disjointness hypotheses (`GeoFoldRegroup.lean`, t14). At a reachable step node emitted at state `s`,
+an OLD divisor's diagonal cell `birthFlatCoord M s k h` (the `flatCoordOf`-diagonal `(a, b, b)` of
+the stored birth corner `(a, b) = s.divBirthCoord k`) is:
 
-* **(a) a SPECTATOR** of the node's chart — not one of the node's center cells `cNodeOf M node hd`; and
+* **(a) a SPECTATOR** of the node's chart — not a center cell `cNodeOf M node hd i`; and
 * **(b) ≠ the node's `diagTargetOf`** — distinct from the diagonal the new edge chart reads.
 
 **The geometric heart is one atom** (`birthFlatCoord_ne_diag_layer_cell`): an old divisor's diagonal
-never lands on a cell `(s.layer, row, col)` with `row ≥ s.cleared`. If it did, `flatCoordOf`-injectivity
-(`flatCoordOf_val_inj`) forces the birth layer `a = s.layer` and `b = row`, but `DivBirthInv` FRESHNESS
-(a corner at the current layer has `b < cleared`, `DivBirthReach:16`) gives `b < s.cleared ≤ row = b`.
-The residual-block cells (case-2 / the case-1(2) `d`-block) and the fresh `(layer, cleared)` corner
-(the case-2 / case-1(2) `diagTargetOf`) are all such cells, so the atom covers them uniformly.
+never lands on a cell `(s.layer, row, col)` with `row ≥ s.cleared`. If it did, `flatCoordOf`-
+injectivity (`flatCoordOf_val_inj`) forces the birth layer `a = s.layer` and `b = row`, but
+`DivBirthInv` FRESHNESS (a corner at the current layer has `b < cleared`, `DivBirthReach:16`) gives
+`b < s.cleared ≤ row = b`. The residual-block cells (case-2 / the case-1(2) `d`-block) and the fresh
+`(layer, cleared)` corner (the case-2 / case-1(2) `diagTargetOf`) are all such cells, so the atom
+covers them uniformly.
 
 **Case split on the node class** (`nodeOccMin`):
 * **case-2** (`nodeOccMin = none`): the center is the full residual block; EVERY old divisor is a
   spectator, and the `diagTargetOf` is the fresh corner — so the full-quantifier `hspec`/`hdt` that
   `ledgerMonomial_comp_spectator` consumes hold VERBATIM (`case2_spectator`, `case2_diagTarget`).
-* **case-1** (`nodeOccMin = some target`): the center ALSO contains the `u`-corner, which IS the merged
-  divisor `f = chooseMin`'s own diagonal (`uCornerSel = birthFlatCoord s f`); likewise the case-1(1)
-  edge's `diagTargetOf`. So the full-quantifier form is FALSE for `k = f`; the disjointness holds only
-  for the OTHER divisors (`k ≠ f`), supplied here for the merge-peeled maintenance (t14's lane).
+* **case-1** (`nodeOccMin = some target`): the center ALSO contains the `u`-corner, which IS the
+  merged divisor `f = chooseMin`'s own diagonal (`uCornerSel = birthFlatCoord s f`); likewise the
+  case-1(1) edge's `diagTargetOf`. So the full-quantifier form is FALSE for `k = f`; the
+  disjointness holds only for the OTHER divisors (`k ≠ f`), for the merge-peeled maintenance (t14).
 * **rollover / terminal**: `dCenterOfNode = 0`, no center, `hspec` vacuous.
 -/
 
@@ -38,9 +39,9 @@ variable {L : ℕ}
 /-! ## The `birthFlatCoord = flatCoordOf`-diagonal reduction (local, `DivBirthReach`-only) -/
 
 /-- **On a valid corner, `birthFlatCoord` is the `flatCoordOf`-diagonal** `(a, b, b)` of the stored
-birth corner `(a, b) = s.divBirthCoord k`. Local re-derivation of the GeoFoldRegroup `(β)`-kernel from
-`birthFlatCoord_of_valid` + `flatCoordOf`'s definition (avoids importing t14's module — GeoFoldRegroup
-will consume THIS file, not the reverse). -/
+birth corner `(a, b) = s.divBirthCoord k`. Local re-derivation of the GeoFoldRegroup `(β)`-kernel
+from `birthFlatCoord_of_valid` + `flatCoordOf`'s definition (avoids importing t14's module —
+GeoFoldRegroup will consume THIS file, not the reverse). -/
 theorem birthFlatCoord_eq_flatCoordOf' (M : Fin (L + 1) → ℕ) (s : ConState L) (k : Fin s.numDiv)
     (h : 0 < flatDim M) (hv : CornerValid M (s.divBirthCoord k)) :
     ∃ (hL : (s.divBirthCoord k).1 < L)
@@ -55,8 +56,9 @@ theorem birthFlatCoord_eq_flatCoordOf' (M : Fin (L + 1) → ℕ) (s : ConState L
 /-! ## The geometric atom: an old divisor's diagonal avoids the layer's `col ≥ cleared` cells -/
 
 /-- **The corner-disjointness atom** (the fidelity heart): an OLD divisor's diagonal
-`birthFlatCoord M s k h = (a, b, b)` never equals a cell `(s.layer, row, col)` whose ROW is at or above
-the cleared count (`s.cleared ≤ row`). By `flatCoordOf_val_inj` a coincidence forces `a = s.layer` and
+`birthFlatCoord M s k h = (a, b, b)` never equals a cell `(s.layer, row, col)` whose ROW is at or
+above the cleared count (`s.cleared ≤ row`). By `flatCoordOf_val_inj` a coincidence forces
+`a = s.layer` and
 `b = row`; then `DivBirthInv` freshness gives `b < s.cleared ≤ row = b` — contradiction. Both the
 residual-block cells and the fresh `(layer, cleared)` corner are such cells (`row = cleared + r ≥
 cleared`, resp. `row = cleared`), so this single atom serves case-2 spectator + both `diagTargetOf`
@@ -81,8 +83,8 @@ theorem birthFlatCoord_ne_diag_layer_cell {M : Fin (L + 1) → ℕ} (s : ConStat
 /-! ## The injectivity atom (distinct divisors, distinct diagonals) -/
 
 /-- **Distinct old divisors have distinct diagonals** — the `k ≠ f` disjointness (`birthFlatCoord`
-injective under `DivBirthInv`). Behind the case-1 `u`-corner spectator for the non-merge divisors: the
-`u`-corner IS `birthFlatCoord s f`, so an old divisor `k ≠ f` avoids it. -/
+injective under `DivBirthInv`). Behind the case-1 `u`-corner spectator for the non-merge divisors:
+the `u`-corner IS `birthFlatCoord s f`, so an old divisor `k ≠ f` avoids it. -/
 theorem birthFlatCoord_ne_of_ne {M : Fin (L + 1) → ℕ} {s : ConState L} (dinv : DivBirthInv M s)
     (h : 0 < flatDim M) {k f : Fin s.numDiv} (hkf : k ≠ f) :
     birthFlatCoord M s k h ≠ birthFlatCoord M s f h := fun heq =>
@@ -109,8 +111,8 @@ theorem step_node_layer_cleared {M : Fin (L + 1) → ℕ} (s : ConState L)
 /-! ## The case-2 center reduction: every center cell is a residual-block cell -/
 
 /-- **`centerSelCase` at `occ = none` is `resBlockOrFallback`** — with `occ` a VARIABLE (so `subst`
-reduces the `match`), transporting the dependent dimension by `Fin.cast`. The bridge that lets a node
-whose `nodeOccMin` is only propositionally `none` reduce its selector to the residual block. -/
+reduces the `match`), transporting the dependent dimension by `Fin.cast`. The bridge that lets a
+node whose `nodeOccMin` is only propositionally `none` reduce its selector to the residual block. -/
 theorem centerSelCase_none_eq_resBlockOrFallback {M : Fin (L + 1) → ℕ} (node : StepData M)
     (occ : Option ℕ) (hocc : occ = none)
     (hd' : occ.elim (node.resRows * node.resCols)
@@ -124,8 +126,8 @@ theorem centerSelCase_none_eq_resBlockOrFallback {M : Fin (L + 1) → ℕ} (node
           (hdimeq ▸ hd') (Fin.cast hdimeq j) := by
   subst hocc; rfl
 
-/-- **At a case-2 node, `realCNode` lands in the residual block** — its value at any center index is a
-`resBlockCenterIndices` cell (`realCNode = centerSelCase (nodeOccMin) ∘ finCongr`, and at `occ = none`
+/-- **At a case-2 node, `realCNode` lands in the residual block** — its value at any center index is
+a `resBlockCenterIndices` cell (`realCNode = centerSelCase (nodeOccMin) ∘ finCongr`, at `occ = none`
 `centerSelCase = resBlockOrFallback = resBlockCenterIndices` on-cone). The `finCongr` transports the
 node's `dCenterOfNode`-index to the block's `resRows·resCols`-index. -/
 theorem realCNode_case2_mem {M : Fin (L + 1) → ℕ} (node : StepData M)
@@ -170,9 +172,9 @@ theorem layer_lt_of_branch {M : Fin (L + 1) → ℕ} (s : ConState L)
 
 /-- **case-2 `hspec`** (t14's `ledgerMonomial_comp_spectator` first hypothesis, VERBATIM): at a
 reachable case-2 node (`nodeOccMin = none`), EVERY old divisor's diagonal is a spectator of the
-node's chart — distinct from every center cell `cNodeOf M node hd i`. The center is the full residual
-block (`realCNode_case2_mem`), and every old divisor avoids it (`birthFlatCoord_ne_diag_layer_cell`:
-freshness/layer). -/
+node's chart — distinct from every center cell `cNodeOf M node hd i`. The center is the full
+residual block (`realCNode_case2_mem`), and every old divisor avoids it
+(`birthFlatCoord_ne_diag_layer_cell`: freshness/layer). -/
 theorem case2_spectator {M : Fin (L + 1) → ℕ} (s : ConState L) (dinv : DivBirthInv M s)
     (node : StepData M) (edges : List (Edge M))
     (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
@@ -197,5 +199,61 @@ theorem case2_spectator {M : Fin (L + 1) → ℕ} (s : ConState L) (dinv : DivBi
   refine (birthFlatCoord_ne_diag_layer_cell s dinv h k (sf := ⟨node.layer, hs⟩) hlayer
     ?_ _ _).symm
   rw [hcleared]; exact Nat.le_add_right _ _
+
+/-- **The fresh corner `(layer, cleared)` fits the layer's matrix** — its column `cleared` is below
+both adjacent widths. Non-rollover (`hnr`) gives `cleared < widthMinUpto (layer+1) ≤ widthMinUpto
+layer ≤ M⁽ˡᵃʸᵉʳ⁾` (row) and `≤ M⁽ˡᵃʸᵉʳ⁺¹⁾` (column). The dite side-conditions `diagTargetOf`'s fresh
+branch needs. -/
+theorem fresh_corner_bounds {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared) :
+    ∃ hlive : s.layer < L,
+      s.cleared < M (⟨s.layer, hlive⟩ : Fin L).castSucc ∧
+      s.cleared < M (⟨s.layer, hlive⟩ : Fin L).succ := by
+  have hlive : s.layer < L := layer_lt_of_branch s node edges htree
+  have hlt1 : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp hnr
+  refine ⟨hlive, ?_, ?_⟩
+  · have hmono : widthMinUpto M (s.layer + 1) ≤ widthMinUpto M s.layer :=
+      widthMinUpto_mono M (Nat.le_succ _)
+    have hwc : widthMinUpto M s.layer ≤ M (⟨s.layer, hlive⟩ : Fin L).castSucc :=
+      widthMinUpto_le _ (by simp)
+    omega
+  · have hbridge : M (⟨s.layer, hlive⟩ : Fin L).succ
+        = M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) := rfl
+    have hws : widthMinUpto M (s.layer + 1) ≤ M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) :=
+      widthMinUpto_le _ (by simp)
+    rw [hbridge]; omega
+
+/-- **case-2 `hdt`** (t14's `ledgerMonomial_comp_spectator` second hypothesis, VERBATIM): at a
+reachable case-2 node, every old divisor's diagonal is distinct from the edge's `diagTargetOf`. For
+a non-`case11` edge the target is the fresh `(layer, cleared)` diagonal (the dites succeed on-cone,
+`fresh_corner_bounds`), and every old divisor avoids it (`birthFlatCoord_ne_diag_layer_cell`, row =
+`cleared`). -/
+theorem case2_diagTarget {M : Fin (L + 1) → ℕ} (s : ConState L) (dinv : DivBirthInv M s)
+    (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (h : 0 < flatDim M) (hd1 : 1 ≤ flatDim M)
+    (e : Edge M) (hec : e.case ≠ StepCase.case11) :
+    ∀ k : Fin s.numDiv, birthFlatCoord M s k h ≠ diagTargetOf M node e hd1 := by
+  intro k
+  obtain ⟨hlayer, hcleared⟩ := step_node_layer_cleared s node edges htree
+  obtain ⟨hlive, hcc, hcs⟩ := fresh_corner_bounds s node edges htree hnr
+  have hlv : node.layer < L := by rw [hlayer]; exact hlive
+  have hfe : (⟨node.layer, hlv⟩ : Fin L) = ⟨s.layer, hlive⟩ := Fin.ext hlayer
+  have hcc' : node.cleared < M (⟨node.layer, hlv⟩ : Fin L).castSucc := by
+    rw [hfe, hcleared]; exact hcc
+  have hcs' : node.cleared < M (⟨node.layer, hlv⟩ : Fin L).succ := by
+    rw [hfe, hcleared]; exact hcs
+  have hdtred : diagTargetOf M node e hd1
+      = flatCoordOf M ⟨node.layer, hlv⟩ ⟨node.cleared, hcc'⟩ ⟨node.cleared, hcs'⟩ := by
+    unfold diagTargetOf
+    split
+    · rename_i hc11; exact absurd hc11 hec
+    · rw [dif_pos hlv, dif_pos ⟨hcc', hcs'⟩]
+  rw [hdtred]
+  exact birthFlatCoord_ne_diag_layer_cell s dinv h k (sf := ⟨node.layer, hlv⟩) hlayer
+    hcleared.ge hcc' hcs'
 
 end DLNFibre.DLN.RLCT.Engine
