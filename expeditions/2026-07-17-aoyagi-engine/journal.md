@@ -2185,3 +2185,21 @@ splitting §3 from reify or from §4 would shear the D context across seats for 
 verify + merge → NAVIGATOR convenes (the spine→coverage phase transition) → spawn t04 into the
 clean t01-r2. The seat-succession pattern (t02→t03) repeats by design, not accident: bank
 everything, map the tail, hand off at the ceiling.
+
+## 2026-07-19 tick 159: coverage survey — PLACEHOLDER-CHART trap caught pre-freeze; skeleton GO
+coverage-t07 resumed on the landed spine (its 5 modules green against it) and surfaced the
+load-bearing carrier fact: leafOfState fills chart slots with PLACEHOLDERS (chartMap := id,
+flat-cube srcBox) for totality; the REAL leaf chart = the root→leaf FOLD of the edges'
+localSubs (path context only buildTree has). A ChartBridge hole stated against the leaf fields
+as built would constrain id-charts — FALSE-AS-STATED, the 4th obligation-statement instance in
+the making, caught BEFORE the E batch froze the hole's type. HEADS-UP sent to t03 with the two
+honest resolutions ((i) path-accumulator through buildTree filling slots for real, if it fits
+budget; (ii) hole quantifies the fold in its statement + accumulator on the t04 map); its pick
+routes back to coverage. COVERAGE RULINGS: GO on the wiring skeleton chartBridge_of_pieces
+(fed Props as typed holes — closes when o5 lands); chart-flow read CONFIRMED; ANTI-VACUITY PIN:
+every fed Prop + skeleton states against the FOLD-FORM chart (explicit def or parameter), never
+the placeholder fields; skeleton parametrized by the leaf-chart assignment survives either
+architect resolution. Its o5-independent InjOn core banked (pivotChart_ae_injOn, da4a2742a,
+Engine/PivotInjOn.lean — merge with its next batch). ChartBridge's split state: image-cover
+BANKED; 5 free clauses BANKED; InjOn core BANKED; LeafPullback/LeafJacobian = the o5-fed pair
+(the monomialization identity itself — correctly refused to improvise).
