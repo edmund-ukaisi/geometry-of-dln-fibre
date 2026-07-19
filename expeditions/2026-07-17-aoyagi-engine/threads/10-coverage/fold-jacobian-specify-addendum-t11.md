@@ -60,72 +60,70 @@ per-pivot `divExp` computed from the case, not a single `dCenterOfNode`-derived 
 proof (images only) is unaffected; but clause (C) (`divExp ∈ terminalExponents t`) must be re-verified for the
 per-pivot pieces at assembly (the per-pivot `divExp` values must lie in `terminalExponents`).
 
-## Finding-2 — the tree-walk invariant (the cocycle). STATEMENT to gate.
+## Finding-2 — the maintenance invariant. CERT-CORRECTED (pnp-fold, `threads/18-fold-regroup/cert-fold-regroup.md`).
 
-**Shape: structural induction on `t`, motive GENERALIZED over `acc`** (elder ruling, ADOPTED now — not
-deferred to a post-t10 definitional check). t10's rollover/chartless `id`-passthrough FORWARDS `acc` (does not
-reset to `id`), so the `acc = id` motive may not be definitionally clean at every reachable node; discovering
-that mid-grind is the entry-9 failure mode the weakest-hypothesis lesson exists to prevent. Since the Phase-2
-fold `abs_det_fderiv_foldr_comp` is already `acc`-agnostic (a forwarded `acc` is extra leading factors; a
-rollover's `id`-passthrough contributes `|det D(id)| = 1` via the off-cone atom), generalizing costs nothing
-and removes the risk. Motive:
+The regrouping cert is back (7/7 sympy, Codex-blind agreement). The three per-case exponent identities are
+CONFIRMED (case-2 clean; case-1(1) re-merges onto the mergeIdx diagonal birth corner; case-1(2) inherits
+`divExp(mergeIdx)+runLen·resCols`). Two STATEMENT-LEVEL corrections to the shape gated earlier, plus a binding
+kill-condition — all caught pre-grind (the cert did its job).
 
-    Inv(t): ∀ acc, Differentiable ℝ acc → ∀ lc ∈ geometricLeafPaths … acc t, ∀ w,
-              |det D(lc.2) w| = |det D(acc) (pathFold t lc w)| · <per-piece monomial>(w)
+**CORRECTION 1 — state the invariant as the relative-Jacobian COCYCLE, not the subtree-relative `pieceLedger`
+motive above.** My addendum's structural-induction-on-`t` (node `n` OUTERMOST, subtree-relative ledger) does
+NOT close case-1(1)/(2): the inherited/merged divisor `mergeIdx` is born OUTSIDE the subtree, so a
+subtree-relative ledger cannot carry its inheritance. This lands back on the ORIGINAL finding-2 framing (the
+one-step relative-Jacobian cocycle telescoping from `conRoot = 1`); the addendum's subtree refinement was the
+wrong turn. The closable form (cert §2), adding a chart `B` (center `C`, pivot `p`) at the INNERMOST position to
+a composite `Φ'` whose ledger monomial is `L`:
 
-where `pathFold t lc` is the geoChartMap composition (so `lc.2 = acc ∘ pathFold t lc`) and `<per-piece
-monomial>(w) = ∏_{k : Fin (pieceLedger lc).numDiv} |z_{pieceLedger lc |>.divCoord k}(w)| ^ ((pieceLedger lc).divExp k − 1)`
-with `pieceLedger lc` the finding-3 co-folded per-piece ledger.
+    |det D(Φ' ∘ B)| w = L(B w) · |det DB| w = L(B w) · |z_p(w)|^{|C| − 1}      (chain rule + the banked atom)
 
-**The headline** (finding-1 re-scope) is the `acc = id` specialization: `|det D(id) (…)| = 1`, giving
-`|det D(lc.2) w| = <per-piece monomial>(w)` for `lc ∈ geometricLeafPaths … id (buildTree M (conOracle M) (conRoot M))`.
+The three `stepUpdate` cases are then ELEMENTARY substitution algebra on `L(B w)` (the incoming ledger pulled
+back through `B`), with `b := runLen·resCols`:
+- **birth (case-2):** ledger cells are spectators of `B` ⟹ `L(B w) = L(w)`; append the fresh factor `|z_p(w)|^{b_birth − 1}`.
+- **merge (case-1(1)):** `p = μ` is `B`'s pivot ⟹ `L(B w) = L(w)`; new atom `|z_μ|^b`; `μ`-exponent `(D−1)+b = (D+b)−1`.
+- **split (case-1(2)):** `B` sends `z_μ ↦ z_p·z_μ`, so `L(B w)` turns `|z_μ|^{D−1}` into `|z_p·z_μ|^{D−1}`; times
+  the new atom `|z_p|^b` gives `|z_μ|^{D−1}·|z_p|^{(D+b)−1}` — the OLD divisor `μ` (exp `D`) and the NEW divisor
+  `p` (exp `D+b`), exactly `stepUpdate.case12`.
 
-- **Base `t = .leaf l`:** `lc = (l, acc)`, `lc.2 = acc`, `pathFold = id`. LHS `= |det D(acc) w|`; RHS `= |det D(acc)(id w)| · <monomial>`. The piece's path has NO blow-ups, so `pieceLedger` is EMPTY ⟹ `<monomial> = 1`, and the identity is `|det D(acc) w| = |det D(acc) w| · 1`. ✓ (Finding-3's per-piece ledger is load-bearing: the leaf's *global* `divExp` would break the base; the *per-path* ledger makes it `1`.) At `acc = id`, `J(root-leaf) = 1`.
+The `L(B w)` pullback is where the case-1(2) inheritance becomes LOCAL — this is the honest content of "cocycle
+telescoping from `conRoot = 1`", stronger than chain-rule + atoms (chain rule carries no `stepUpdate` info).
+This cocycle is **construction-INDEPENDENT** (my Phase-2 `abs_det_fderiv_foldr_comp` style — a ledger-threaded
+`foldr` over the chart list) and is SAFE to adopt under every construction-fix option. It supersedes the
+subtree-relative motive and the `acc`-generalization above (which was for the outermost-on-`t` induction; the
+cocycle folds innermost-first and threads `acc` as `Φ'`'s outermost prefix).
 
-- **Step `t = .branch n edges`:** a path `lc` factors as `lc.2 = geoChartMap ⟨n, edge, offset+p⟩ ∘ lc'.2` for a
-  child path `lc'` of `ch`. Then
+**CORRECTION 2 — case-1(2)'s inherited `divExp(mergeIdx) − 1` is NON-LOCAL** (cert §3). It is NOT realized at the
+case-1(2) node's own atom (which carries only `|z_p|^{runLen·resCols}`). It is realized at `mergeIdx`'s ANCESTOR
+birth atom, whose read of the u-corner `z_μ` sees the case-1(2) node's scaling `z_μ ↦ z_p·z_μ` and so spawns
+`z_p^{divExp(mergeIdx)−1}` — captured exactly by the `L(B w)` pullback of split above. The addendum's row-3
+"comes from the [case-1(2)] intermediate-point substitution" was the wrong attribution.
 
-      |det D(lc.2) w| = |det D(geoChartMap ⟨n,edge,offset+p⟩) (lc'.2 w)|   -- per-edge atom, banked
-                        · |det D(lc'.2) w|                                  -- IH on ch
+### KILL-CONDITION (cert §4) — BINDING, gate item upstream of #35
 
-  The IH gives the child per-piece monomial at `w`; the atom
-  (`geoChartMap_fderiv_det` / `_offcone`) gives `|z_{cNodeOf n (offset+p)}(lc'.2 w)| ^ (dCenterOfNode n − 1)` —
-  at the INTERMEDIATE point `lc'.2 w`. The step closes iff the atom's intermediate-point factor **regroups**
-  onto the source-`w` per-piece ledger delta:
+The identity **FAILS** on the current shared-child `geometricLeafPaths` for a fan-out copy that births a
+NON-terminal divisor at an OFF-diagonal pivot cell. Exact discrepancy: `J_Φ = L · (z_diag / z_pivot)^{runLen·resCols}`
+— the merge/split power lands on the mergeIdx DIAGONAL birth corner `z_{divBirthCoord(mergeIdx)}` (the state-level
+u-corner every descendant references), not on the off-diagonal pivot the per-pivot ledger names. So **per-pivot
+`divCoord` (finding-3) is NECESSARY but NOT SUFFICIENT** — a descendant's u-corner reference is `divBirthCoord`
+(state-level, diagonal) and cannot be made per-pivot; an off-diagonal non-terminal copy's `|det Dβ|` is a
+two-cell monomial no single-cell `divExp` can express. Terminal off-diagonal fan-out charts are FINE.
 
-### THE REGROUPING LEMMA (the cert-needed crux, per `stepUpdate` case)
+**Scoped condition (the sharp line):** the fold-Jacobian holds iff every divisor a descendant references is born
+at its `divBirthCoord` diagonal — equivalently, off-diagonal fan-out charts are TERMINAL. HOLD #35's final shape:
+the construction fix that secures this is elder-adjudicated now (options: diagonal-normalization — compose the
+pivot↔diagonal transposition into `geoChartMap`, `|det swap| = 1` so my atom is untouched, ledger stays
+state-level, shared child honest; vs per-copy child-relabeling; vs proving off-diagonal-non-terminal
+unreachable). The Lean statement must carry this (a `DivBirthInv` extension: geometric birth pivot of any
+subsequently-referenced divisor `= divBirthCoord` diagonal) OR the construction must enforce it.
 
-    |z_{cNodeOf n (offset+p)}(lc'.2 w)| ^ (dCenterOfNode n − 1)
-      = (the source-w monomial of the ledger delta from parent-of-`ch` to `n`)
+## Fill-target status (blocked on the #35 construction-fix ruling)
 
-matched against `stepUpdate` (`EngineDefs:150-177`). The exponent arithmetic already checks out against my atom:
-
-| case | edge `dCenterOfEdge` | node `dCenterOfNode` | atom exponent (`dCN − 1`) | `stepUpdate` delta | match |
-|---|---|---|---|---|---|
-| case-2 | `resRows·resCols` | `resRows·resCols` | `resRows·resCols − 1` | new pivot `divExp = resRows·resCols` ⟹ `−1` | **CLEAN** (direct) |
-| case-1(1) `u` | `1` | `1 + runLen·resCols` | `runLen·resCols` | `divExp(mergeIdx) += runLen·resCols` | **re-merge** onto ancestor `mergeIdx` |
-| case-1(2) `d` | `runLen·resCols` | `1 + runLen·resCols` | `runLen·resCols` | new pivot `divExp = divExp(mergeIdx) + runLen·resCols` | **inherited-threading**: the `divExp(mergeIdx) − 1` "inherited M−1" must come from the intermediate-point substitution |
-
-So the exponent LEDGER matches my atom in all three cases. The OPEN part is the intermediate-point
-COORDINATE substitution — which source coordinate `z_{cNodeOf n (offset+p)}(lc'.2 w)` lands on, through the
-child fold `lc'.2`, and that the "inherited M−1" (case-1(2)) and the re-merge onto the ancestor birth corner
-(case-1(1)) thread correctly. The elder's substitution table (`fold-jacobian-specify.md` §crux;
-`cert-psi-mix.md` §R-b confirms per-node exponent-preservation but NOT the fold regrouping) SKETCHES these
-(u-chart `u↦u, d_a↦u·d'_a`; d_j-chart `u↦d_j·u', d_a↦d_j·d'_a`) but does not give the formal per-case
-intermediate-point identity.
-
-**CERT REQUEST (per team-lead's offer).** Before stating the three regrouping-lemma cases faithfully, commission
-a pen-and-paper certificate making the elder's table formal-precise: for each `stepUpdate` case, the exact
-identity `z_{cNodeOf n (offset+p)}(childComposite w) = <explicit source-w monomial>` (which coordinates the
-child fold `lc'.2` moves the node pivot onto, and that the re-merge/inheritance exponents sum as tabulated).
-This is the o5 pattern (cert → build). It is the sole non-mechanical link; the base, the per-edge atom, the
-chain rule, and the exponent arithmetic are all in hand.
-
-## Validated fill-target (blocked on finding-3 + the cert)
-
-The elaborating Lean skeleton (a new `Engine/GeoJacobianFold.lean`: the re-scoped headline + `Inv` def + base +
-step-via-atom + the sorried regrouping lemma) is deferred to AFTER (a) finding-3's per-piece ledger lands (so
-`pieceLedger` is a real def, not a placeholder — the headline cannot elaborate correctly over the current
-per-leaf `divCoord`) and (b) the cert pins the regrouping identity. Stating a sorried headline over the current
-(false, per-leaf-`divCoord`) `geoAtlas` would be a sorry under a wrong statement. The banked per-edge atom
-(`Engine/GeoJacobianSpec.lean`, sorry-free, axiom-clean) is the step's consumed lemma and is construction-stable.
+The elaborating skeleton (a new `Engine/GeoJacobianFold.lean` extension: the re-scoped headline + the §2 cocycle
++ its three birth/merge/split maintenance lemmas + the §4 scoped-condition hypothesis) is deferred to AFTER (a)
+t10's GeoChart batch + the elder's #35 construction-fix ruling (the kill-condition determines whether the
+`geoChartMap` chart action, hence the §0 chart-action lemma feeding the maintenance, changes — e.g.
+diagonal-normalization alters `geoChartMap`), and (b) the per-piece ledger lands. The cocycle FORM is safe to
+adopt now (construction-independent); the §0 chart-action lemma and the per-case maintenance wait for the ruling
+(a bare statement over the current `geometricLeafPaths` would be false per §4). The banked spine — per-edge atom
+(`GeoJacobianSpec.lean`) + parametric fold (`GeoJacobianFold.lean`) — is the maintenance's consumed machinery
+and is construction-stable.
