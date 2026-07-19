@@ -31,14 +31,25 @@ product `= 1 = |det id|`). Codex sharpened: `buildTree … s` at an *arbitrary* 
 `geoAtlas` currently sets each piece to `{ leaf with chartMap := composite }`, so every fan-out copy of a
 leaf shares the leaf's `divCoord`/`divExp`; but the fan-out over `p : Fin (dCenterOfEdge …)` gives each copy
 a distinct exceptional coordinate `cNodeOf … (offset+p)` (`cNodeOf` injective). So `LeafJacobian`/`LeafPullback`
-(which read the piece's `divCoord`) fail for every non-birth-corner piece. The corrected `ChartBridge` design
-already calls for per-pivot `divCoord` (`EngineDefs` clause-(B) note). The fix (in `GeoChart.lean`,
-architect-t10's file until its clause-(A) batch lands) must re-derive **each geometric piece's ledger from its
-path pivots**:
+(which read the piece's `divCoord`) fail for every non-birth-corner piece.
+
+**#35 IS THE SEAM-FIX UNIFICATION (elder ruling, compass fork 14) — NOT a bolted-on override.** The elder
+diagnosed the emission seam as MIS-FACTORED: the ledger (`{lc.1 …}`) and the geometry (`chartMap := lc.2`) are
+two structures reconciled after the fact, which is the root of BOTH drift defects (finding-1 falsity and
+finding-3 mismatch). The fix is to correct the SEAM itself, not to add a per-pivot `divCoord` override on top
+of `{lc.1 with chartMap := lc.2}` (a bolted-on override is GATED-REJECTED at review). Concretely:
+`geometricLeafPaths` emits, per path, **ONE record whose `chartMap` AND per-pivot `divCoord`/`divExp` all
+derive from the SAME path fold**; `geoAtlas` just reads that record. The payoff is direct: the finding-2
+cocycle then becomes **near-definitional maintenance of that one recursion** (each fold step extends `chartMap`
+by `geoChartMap` AND the ledger by the step's pivot in lockstep), instead of a reconciliation theorem against a
+possible ledger↔geometry mismatch — the wall gets structurally smaller. The co-folded per-path ledger:
 
 - `divCoord (piece) = ` the birth-corner flat coords `cNodeOf n_j (pivot_j)` of the divisors born on the piece's
-  root→leaf path (one per path level that births/merges a divisor);
+  root→leaf path (one per path level that births/merges a divisor) — emitted by the SAME recursion that builds
+  `chartMap`, so they cannot drift;
 - `divExp (piece) = ` the **accumulated** exponents (per `stepUpdate`), NOT a uniform value.
+
+Sequenced: only after t10's countersigned clause-(A) batch lands (`GeoChart.lean` ownership; do NOT edit before).
 
 **Design-note-(i) answer (co-design with finding-2):** the per-EDGE Jacobian exponent is *uniform*
 (`dCenterOfNode n − 1`, from `geoChartMap_fderiv_det`), but the per-PIVOT `divExp` is *not* uniform — it
@@ -51,35 +62,25 @@ per-pivot pieces at assembly (the per-pivot `divExp` values must lie in `termina
 
 ## Finding-2 — the tree-walk invariant (the cocycle). STATEMENT to gate.
 
-**Shape: structural induction on `t` at `acc = id`** (mirrors `geometricLeafPaths`' own recursion; the child is
-always recursed with `id`, so the motive fixes `acc = id`).
+**Shape: structural induction on `t`, motive GENERALIZED over `acc`** (elder ruling, ADOPTED now — not
+deferred to a post-t10 definitional check). t10's rollover/chartless `id`-passthrough FORWARDS `acc` (does not
+reset to `id`), so the `acc = id` motive may not be definitionally clean at every reachable node; discovering
+that mid-grind is the entry-9 failure mode the weakest-hypothesis lesson exists to prevent. Since the Phase-2
+fold `abs_det_fderiv_foldr_comp` is already `acc`-agnostic (a forwarded `acc` is extra leading factors; a
+rollover's `id`-passthrough contributes `|det D(id)| = 1` via the off-cone atom), generalizing costs nothing
+and removes the risk. Motive:
 
-**`acc`-motive robustness (team-lead flag, post-gate).** The `acc = id` motive is clean for the CURRENT
-`geometricLeafPaths` (every child recurses at `id`; `acc` is only a same-node prefix, `id` at the root call).
-t10's rollover/chartless `id`-passthrough FORWARDS `acc` (does not reset to `id`), so at instantiation VERIFY
-(don't assume) that every node reachable from an `id` root call still receives `acc = id`. If that is not
-definitionally clean after t10's reshape, GENERALIZE the motive over `acc` with a composition clause:
-
-    Inv(t): ∀ acc, ∀ lc ∈ geometricLeafPaths … acc t, ∀ w,
+    Inv(t): ∀ acc, Differentiable ℝ acc → ∀ lc ∈ geometricLeafPaths … acc t, ∀ w,
               |det D(lc.2) w| = |det D(acc) (pathFold t lc w)| · <per-piece monomial>(w)
 
-(the `acc = id` headline is the `|det D(id)| = 1` specialization). This is de-risked: the Phase-2 parametric
-fold `abs_det_fderiv_foldr_comp` is ALREADY `acc`-agnostic (it folds an arbitrary map list, so a forwarded
-`acc` is just extra leading factors — a rollover's `id`-passthrough contributes `|det D(id)| = 1` via the
-off-cone atom), so the fold MECHANICS survive any threading; only the leaf-read STATEMENT needs the `acc`
-clause. Decision (id-motive vs acc-generalized) is deferred to the check against t10's landed threading.
+where `pathFold t lc` is the geoChartMap composition (so `lc.2 = acc ∘ pathFold t lc`) and `<per-piece
+monomial>(w) = ∏_{k : Fin (pieceLedger lc).numDiv} |z_{pieceLedger lc |>.divCoord k}(w)| ^ ((pieceLedger lc).divExp k − 1)`
+with `pieceLedger lc` the finding-3 co-folded per-piece ledger.
 
-Motive `Inv(t)`: for every `lc ∈ geometricLeafPaths (dCenterOfNode M) (qNodeOf M) id t` and every `w`,
+**The headline** (finding-1 re-scope) is the `acc = id` specialization: `|det D(id) (…)| = 1`, giving
+`|det D(lc.2) w| = <per-piece monomial>(w)` for `lc ∈ geometricLeafPaths … id (buildTree M (conOracle M) (conRoot M))`.
 
-    |det D(lc.2) w| = ∏_{k : Fin (pieceLedger lc).numDiv}
-                        |z_{pieceLedger lc |>.divCoord k}(w)| ^ ((pieceLedger lc).divExp k − 1)
-
-where `pieceLedger lc` is the finding-3 per-piece ledger (path pivots + accumulated exponents).
-
-- **Base `t = .leaf l`:** `lc = (l, id)`, `lc.2 = id`, LHS `= 1`. The piece's path has NO blow-ups, so
-  `pieceLedger` is EMPTY ⟹ RHS `= 1`. ✓ (This is exactly why finding-3's per-piece ledger is load-bearing: the
-  leaf's *global* `divExp` would break the base, the *per-path* ledger makes it `1 = 1`.) `J(conRoot)` in the
-  team-lead framing = this base.
+- **Base `t = .leaf l`:** `lc = (l, acc)`, `lc.2 = acc`, `pathFold = id`. LHS `= |det D(acc) w|`; RHS `= |det D(acc)(id w)| · <monomial>`. The piece's path has NO blow-ups, so `pieceLedger` is EMPTY ⟹ `<monomial> = 1`, and the identity is `|det D(acc) w| = |det D(acc) w| · 1`. ✓ (Finding-3's per-piece ledger is load-bearing: the leaf's *global* `divExp` would break the base; the *per-path* ledger makes it `1`.) At `acc = id`, `J(root-leaf) = 1`.
 
 - **Step `t = .branch n edges`:** a path `lc` factors as `lc.2 = geoChartMap ⟨n, edge, offset+p⟩ ∘ lc'.2` for a
   child path `lc'` of `ch`. Then
