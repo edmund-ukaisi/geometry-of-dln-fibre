@@ -2104,3 +2104,18 @@ NumDivFlatPos carried it; 0<L the only guard, forced by Adm's last-=0 clause). R
 monomialization_terminates: ChartBridge (T3, the coverage lane) + D (o5-∈ exponent hooks) + E
 (assemble). t03 now reading the realization cert for D; reify-now item (Clearable + statement)
 in its inbox, crossed with its report — nudged. Elder-gate7 idle (office dissolved).
+
+## 2026-07-19 tick 154: E-footprint decision (a); reviewer interception; rev-spine commissioned
+t03's milestone report (A+B+C complete, aggregator green, clean-three — matches my tick-153
+independent verification). TWO RULINGS: (1) footprint = (a) ASSEMBLE E NOW — typed/sorried/wired
+skeleton discipline; conditions: each hole its OWN NAMED sorried declaration (ChartBridge ← T3;
+o5 hooks ii/iii ← #24) so #print attributes holes to named sources; AxCheck expected-state
+updated (monomialization_terminates +sorryAx via exactly those two; headline stays MUST-clean;
+Clearable statement joins watch at reification); the lower-bound (i) banks CLEAN FIRST (spine,
+not hole); caveats-next-to-claims docstring. (2) t03 announced spawning its own fidelity
+reviewer — INTERCEPTED: reviewers are CONTROLLER-spawned (decorrelation: the auditor is briefed
+from durable artifacts, not by the audited seat). rev-spine commissioned by controller instead:
+7-item checklist (statement fidelity vs fork 12(b); no smuggled completeness [defect #4]; FIX-A
+implementation; invariant-kit fidelity vs cert-compchain-o4; guard honesty 0<L; at-exhaustion
+guard structurally shared with classify; wording scrub) + one decorrelated Codex leg; deliverable
+threads/13-spine-review/review-spine-abc.md, propose-never-act.
