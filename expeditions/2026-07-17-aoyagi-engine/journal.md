@@ -5156,3 +5156,20 @@ plus the reusable atoms (the freshness heart, the injectivity contrapositive, th
 realCNode→residual-block reduction). Case-1's A/B/C atoms next (the heavier Fin.append
 reduction); the atoms-only ruling re-confirmed across the crossing. The maintenance's
 case-2 leg is now fully supplied; t14's next-arc assembly shortens again.
+
+## 2026-07-19 tick 321: R7 GATE GREEN (pushed); scout-lr1's sweep in; THE θ NON-IDENTITY MACHINE-VERIFIED (6 ≠ 5)
+THE GATE: LAKE-EXIT:0, region_glue_of_chartBridge exactly clean-three through the R7 clause
++ wrapper; chartBridge_buildTree's footprint unchanged — the full stack PUSHED (the R7
+batch, disj-t17's case-2 pair, the scout sweep, ticks 320+). Tasks #58/#59 effectively
+closed on the integration side (t10's own confirm rides).
+SCOUT-LR1's blind sweep (merged 0f3b4af20): STRONG convergence with the elder (the
+combinatorial-order gap = the elder's Flag A exactly; the spine = not-avoidance; the
+tool-boundary fencing right) + THE DECORRELATION PAYOFF — the θ NON-IDENTITY headline the
+elder's channel did not produce, and I VERIFIED IT COMPUTABLY this tick: at M=(2,2,2,2,2),
+qipM=4/qipS=10 ⟹ a=3, δ=−2 ⟹ cTheta = C(4,2) = 6 ≠ 5 = a(ℓ−a)+1 (Aoyagi's pole order).
+LR's component count and Aoyagi's RLCT multiplicity are DIFFERENT INVARIANTS coinciding at
+small cases by accident — ROADMAP Bundle 4's conflation is a real fidelity error; the
+deferred θ-analytic seam must bind to a(ℓ−a)+1, NEVER numTop. Also scout-unique: the
+zero-width hpos narrowing (its top avoidance; the layer-collapse route), the M1/M2/M10
+built-narrower list, the monomial_rlct docstring hygiene. ELDER CHARGE-8 fired: reconcile
+the four divergences → the FINAL build-list → the navigator convenes on its return.
