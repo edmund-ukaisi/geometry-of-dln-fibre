@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1250" viewBox="0 0 1180 1250" font-family="ui-sans-serif, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#57606a" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1180" height="1250" fill="#ffffff"/>
+
+  <!-- title + legend -->
+  <text x="40" y="42" font-size="21" font-weight="700" fill="#1f2328">State of the mathematics — expedition aoyagi-engine</text>
+  <text x="40" y="64" font-size="13" fill="#57606a">2026-07-19, tick 179 · census kernel-verified: 4 Engine sorries</text>
+  <g font-size="12.5">
+    <rect x="736" y="30" width="14" height="14" rx="3" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="756" y="42" fill="#1f2328">PROVED, clean-three</text>
+    <rect x="906" y="30" width="14" height="14" rx="3" fill="#fff3d1" stroke="#9a6700" stroke-width="1.5"/><text x="926" y="42" fill="#1f2328">assembled · named holes</text>
+    <rect x="736" y="52" width="14" height="14" rx="3" fill="#fde8e8" stroke="#c93c37" stroke-width="1.5"/><text x="756" y="64" fill="#1f2328">★ live crux</text>
+    <rect x="906" y="52" width="14" height="14" rx="3" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/><text x="926" y="64" fill="#1f2328">sorried statement (owed)</text>
+  </g>
+
+  <!-- destination -->
+  <rect x="270" y="86" width="640" height="78" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="2"/>
+  <text x="590" y="112" text-anchor="middle" font-size="15.5" font-weight="700" fill="#1f2328">aoyagi_learning_coefficient — THE DESTINATION (DLN application layer)</text>
+  <g font-size="12.5" fill="#1f2328">
+    <text x="590" y="134" text-anchor="middle">✓ _gen (L≥2) clean-three, conditional only on hbox &#160;·&#160; ✓ L=1 fold banked &#160;·&#160; ✓ ≤-half banked</text>
+    <text x="590" y="152" text-anchor="middle" fill="#57606a">cited_aoyagi_dln lives in the payoff layer — never inside the λ cone</text>
+  </g>
+  <line x1="590" y1="164" x2="590" y2="196" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <!-- hbox -->
+  <rect x="290" y="200" width="600" height="64" rx="8" fill="#fff3d1" stroke="#9a6700" stroke-width="2"/>
+  <text x="590" y="224" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2328">hbox = engine_box_threshold_finite</text>
+  <text x="590" y="244" text-anchor="middle" font-size="12.5" fill="#1f2328">+sorryAx via exactly the two crux holes below · flips clean-three when both close</text>
+
+  <!-- region_glue side node -->
+  <rect x="60" y="200" width="190" height="64" rx="8" fill="#d1f0dc" stroke="#1a7f37" stroke-width="2"/>
+  <text x="155" y="224" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">region_glue ✓</text>
+  <text x="155" y="242" text-anchor="middle" font-size="11.5" fill="#1f2328">proven composition;</text>
+  <text x="155" y="257" text-anchor="middle" font-size="11.5" fill="#1f2328">R3 converges into HOLE 1</text>
+  <line x1="250" y1="232" x2="286" y2="232" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="590" y1="264" x2="590" y2="296" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <!-- library boundary band -->
+  <rect x="40" y="300" width="1100" height="40" rx="6" fill="#dbeafe" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="590" y="325" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e50a0">▼ AOYAGI'S LIBRARY — the free-standing resolution mechanism (network-free) · everything below this line ▼</text>
+
+  <!-- monomialization_terminates -->
+  <rect x="140" y="360" width="900" height="128" rx="8" fill="#fff3d1" stroke="#9a6700" stroke-width="2"/>
+  <text x="590" y="384" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2328">monomialization_terminates (hL : 0 &lt; L) — ASSEMBLED · 4 of 6 conjuncts proved</text>
+  <g font-size="12.5">
+    <rect x="170" y="398" width="200" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="270" y="415" text-anchor="middle" fill="#1f2328">✓ base (conRoot_steps)</text>
+    <rect x="380" y="398" width="150" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="455" y="415" text-anchor="middle" fill="#1f2328">✓ StepRel-all</text>
+    <rect x="540" y="398" width="280" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="680" y="415" text-anchor="middle" fill="#1f2328">✓ IsFullMonomialization (capstone)</text>
+    <rect x="830" y="398" width="180" height="26" rx="13" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="920" y="415" text-anchor="middle" fill="#1f2328">✓ minAdm ≤ (D§i)</text>
+    <text x="590" y="446" text-anchor="middle" font-size="12" fill="#1f2328">invariant kit ✓: LiveHeadDom · FlatTail · WeakDec · WidthBound-live · BoundaryFlat · T0Bound · NumDivFlatPos + MvalCoh(ℤ)</text>
+    <text x="590" y="468" text-anchor="middle" font-size="12" fill="#57606a">all M, no width-positivity · independently reviewed 10/10 (rev-spine) · protected set re-probed clean-three at every merge</text>
+  </g>
+  <line x1="370" y1="488" x2="330" y2="524" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+  <line x1="810" y1="488" x2="850" y2="524" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <!-- HOLE 1 -->
+  <rect x="60" y="530" width="520" height="270" rx="8" fill="#fde8e8" stroke="#c93c37" stroke-width="2.5"/>
+  <text x="320" y="556" text-anchor="middle" font-size="14.5" font-weight="700" fill="#c93c37">★ HOLE 1 — chartBridge_buildTree (THE TYPE CRUX)</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="580">Finding: the frozen type unions ONE chart per LEDGER leaf, but the ledger</text>
+    <text x="80" y="597">tree is the symmetric quotient of the geometric fan-out tree — each node</text>
+    <text x="80" y="614">stands for its full d_center pivot family. One chart per leaf undershoots.</text>
+    <text x="80" y="638" font-weight="600">R2 probe (decorrelated, 4 legs + Codex + full kill-set):</text>
+    <text x="80" y="655">· cover MATHEMATICS verified sound — no undershoot in the intended atlas</text>
+    <text x="80" y="672">· full per-node family MANDATORY (majority of deep-instance nodes)</text>
+    <text x="80" y="689">· deriving cover from invariants REFUTED (dead route)</text>
+    <text x="80" y="713" font-weight="600">Ready ✓: wiring skeleton · image-cover fold · InjOn atom · ψ-gauge cert</text>
+    <text x="80" y="737" font-weight="600" fill="#c93c37">Next: decision package (type + cost map) → coverage counter-sign</text>
+    <text x="80" y="754" font-weight="600" fill="#c93c37">→ elder gate → carrier (per-edge β/ψ + per-NODE families) → 3 fed Props</text>
+    <text x="80" y="778" fill="#57606a">owner: architect-t05 (drafting) · then a fresh coverage seat</text>
+  </g>
+
+  <!-- HOLE 2 -->
+  <rect x="600" y="530" width="520" height="270" rx="8" fill="#fde8e8" stroke="#c93c37" stroke-width="2.5"/>
+  <text x="860" y="556" text-anchor="middle" font-size="14.5" font-weight="700" fill="#c93c37">★ HOLE 2 — o5_core (THE REALIZATION CRUX)</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="620" y="580">Statement: some t̃=0 leaf divisor attains divExp = minAdm.</text>
+    <text x="620" y="597">o5_realization is PROVEN modulo this one fact (plumbing discharged).</text>
+    <text x="620" y="621" font-weight="600">Certified basis (pnp-o5 cert, two-way Codex + 847-instance battery):</text>
+    <text x="620" y="638">· §3 envelope-splice: every Mval-minimizer is Clearable (paper-proved,</text>
+    <text x="620" y="655">&#160;&#160;4 transcribable steps; 207-line Lean exploration salvaged)</text>
+    <text x="620" y="672">· §4 steering + anchor descent: any Clearable profile is realized in the</text>
+    <text x="620" y="689">&#160;&#160;BUILT tree; one flagged brick (pull-ordering) reuses banked LiveHeadDom ✓</text>
+    <text x="620" y="713" font-weight="600">Context: ⊇ Adm is FALSE (defect #4) — target is minimizer-only;</text>
+    <text x="620" y="730">the λ formula survives via the min-bridge (P ⊆ Adm ✓ + minAdm ∈ P).</text>
+    <text x="620" y="754" font-weight="600" fill="#c93c37">Next: §3 dedicated pass (t05) → §4 brick (t05 + pnp-o5 consult)</text>
+    <text x="620" y="778" fill="#57606a">owner: architect-t05 · naming pin: minAdm_mem_terminalExponents-class</text>
+  </g>
+
+  <!-- off-path strip -->
+  <rect x="60" y="826" width="1060" height="88" rx="8" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/>
+  <text x="80" y="850" font-size="13" font-weight="700" fill="#1f2328">Owed off the critical path (sequenced, never scope-cut):</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="872">○ realizedProfiles_eq_clearableAdm — Clearable is TYPED ✓ (the library's honest name); proof = R7 (steering + descent invariant, certified)</text>
+    <text x="80" y="890">○ canonicalResolution224 witness conjunct — closes as a coverage corollary at (2,2,4) &#160;·&#160; R4 genDivExp propagation &#160;·&#160; R6 Lemma-2/Thm-3 regular peel</text>
+  </g>
+
+  <!-- defect ledger strip -->
+  <rect x="60" y="930" width="1060" height="86" rx="8" fill="#f6f8fa" stroke="#8250df" stroke-width="1.5"/>
+  <text x="80" y="954" font-size="13" font-weight="700" fill="#8250df">Paper-defect ledger — 4 verified, corrected forms adopted throughout the Lean:</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="976">① Def-3 broken as printed &#160;·&#160; ② p.20 case-2 label uses raw width (FIX-A: cap at running-min) &#160;·&#160; ③ p.15 full total-comparability FALSE at interior bottlenecks</text>
+    <text x="80" y="994">④ realization gap: t̃=0 leaves realize Clearable-Adm ⊊ Adm (~24% of instances) — the read-off's minimum SURVIVES because every minimizer is Clearable</text>
+  </g>
+
+  <!-- live lanes -->
+  <rect x="60" y="1032" width="1060" height="108" rx="8" fill="#eef4fb" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="80" y="1056" font-size="13" font-weight="700" fill="#1e50a0">Live board (post-VM-restart #2 — substrate rebuilt, banked state intact, ~1 arc cost):</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="1078">architect-t05 (sole active seat): decision package + sub-gap-1 (injective divCoord, battery-first) → §3 → §4</text>
+    <text x="80" y="1096">coverage successor: spawns at package-ready (counter-sign = provability of its 3 Props) &#160;·&#160; pnp-o5: respawn-on-need at §4</text>
+    <text x="80" y="1114">standing rulings file: threads/11-construction/RULINGS-t04.md &#160;·&#160; reuse index: map/overlay/banked-families.md § D-ARC</text>
+  </g>
+
+  <!-- gates footer -->
+  <text x="80" y="1172" font-size="12.5" font-weight="600" fill="#1f2328">Gate ladder to the PR:</text>
+  <text x="80" y="1192" font-size="12" fill="#57606a">counter-sign → elder gate (type) → carrier green → coverage tide + §3/§4 → both holes flip → hbox clean-three</text>
+  <text x="80" y="1210" font-size="12" fill="#57606a">→ mint repoint + #guard_msgs ENFORCED axiom-gate → cordon (all 4 sorries reconciled) → signal-and-wait PR (names R4/R6/R7 owed)</text>
+  <text x="80" y="1236" font-size="11.5" fill="#57606a">Estimated distance: ~4–6 seat-arcs · top risk: the o5 §4 arc depth · snapshot artifact — safe to delete; the journal is the record</text>
+</svg>

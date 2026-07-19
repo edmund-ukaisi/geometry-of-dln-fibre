@@ -2551,3 +2551,121 @@ restart: EXACTLY 4 Engine sorries — chartBridge_buildTree (EngineObligations:5
 (EngineConstruction:2611), realizedProfiles_eq_clearableAdm (ClearableReify:72, =R7),
 canonicalResolution224's witness conjunct (CanonicalWitness224:135, off-cone corollary).
 Matches the map exactly. Operator-facing state visual regenerated this tick (inline chart).
+
+## 2026-07-19 tick 178: t05 receipt CONFIRMED — reconstitution complete, comms discipline landed
+t05's first check-in is the model form: explicit receipt, inbox-sweep reported ("exactly one
+message — your spawn brief"), synced clean (0bfbeafc3), aggregator green, all reads done,
+census cross-verified (4 sorries, matches), plan == rulings (sub-gap-1 battery-first + package
+grounding in parallel; solo draft + coverage counter-sign understood; §4 held for pnp-o5
+routing; turn-boundary discipline adopted explicitly). The t04 comms saga is closed: cause was
+one-giant-turn delivery starvation, cure = boundary discipline + the RULINGS file pattern —
+both now standard. Anticipatory pin sent: the region_glue_of_chartBridge consumption read
+(structural leaf-indexing vs destructured countable-family) determines most of the corrected
+type's cost map. Board: t05 sole active seat; coverage successor spawns at package-ready;
+pnp-o5 respawn-on-need. Post-restart reconstitution COMPLETE at a cost of ~1 re-grounding arc.
+
+## 2026-07-19 tick 180: DECISION PACKAGE DELIVERED (c15efda2a merged) — dual ratification fired
+t05's package is decision-ready and code-grounded: the corrected ChartBridge = a FLAT
+VIRTUAL-LEAF ATLAS (∃ atlas : List (LeafData M), cover ∧ 8 per-piece props ∧ exponent-agreement
+∧ fidelity coherence) — each piece carries its OWN divCoord/divExp/chartMap/srcBox, dissolving
+the piecewise failure. THE LOAD-BEARING VERIFICATION (against live code, not recall): both
+proven glue lemmas are atlas-index-agnostic — leaf_chart_image_lintegral_lt_top is ∀ LeafData
+(RegionGluePerLeaf:119) and lintegral_leaves_cover_lt_top is ∀ List(LeafData) plain-List
+induction (RegionGlueAssembly:51) — so the flat atlas reuses BOTH verbatim; region_glue_of_
+chartBridge discards coherence and needs only cover + per-piece finiteness + the exponent
+route. Rejected alternatives priced (grouped-by-leaf: double union for no gain; fold-form:
+re-states both glue lemmas). Cost concentrates in 3 sites (~70 lines); watch NAMES unchanged;
+the (2,2,4) witness conjunct already off-cone-sorried. Fidelity: the paper's atlas IS the
+geometric fan-out; the frozen chartMap was the quotient projection — the correction is MORE
+faithful. Open sub-decision: clause (D) shape (D1 fold-form recommended, exact Lean shape
+deferred to coverage). No Lean re-typed (bar holds).
+SUB-GAP-1 BATTERY GREEN: numDiv ≤ flatDim holds (mechanism kill-set + 1360-instance sweep;
+TIGHT exactly at all-1s widths); leaf + additive forms both true; t05 GOES on the Lean grind.
+RATIFICATION FIRED IN PARALLEL: coverage-t08 spawned (fresh seat, own worktree cov08; first
+commission = adversarial COUNTER-SIGN: 3-Prop provability per piece, fold-machinery fit vs the
+carrier surface + ψ-mix, skeleton re-typing check, (D) recommendation, name-what-you-can't-
+prove) + elder-gate8 convened (false-as-stated verdict; correction-not-weakening esp. the
+exponent-agreement/λ-meaning tie; (D) pin depth; re-elaboration gate sufficiency; naming
+scrub; instance-count drift check). Controller ratifies on both verdicts.
+
+## 2026-07-19 tick 181: ELDER-GATE8 — RATIFY + 2 AMENDs; counsel counter fixed (my error owned)
+Q1 RATIFY, verified end-to-end against live code: (a) the frozen type is unfillable-by-the-
+faithful-construction (structural: quotient leaves < geometric charts at d_center≥3; LeafJacobian
+ties det to ONE divCoord) — PRECISION PIN: "unfillable + fidelity-false", never "proven
+¬ChartBridge"; (b) flat List(LeafData) is the honest correction (both glue lemmas verified
+index-agnostic at their statements; rejections sound); (c) CORRECTION NOT WEAKENING — clause (C)
+is load-bearing (replaces the automatic flatMap threshold-routing; feeds exactly the two
+per-leaf-lemma hyps); the λ read-off is PRESERVED (terminalExponents stays over leaves t; the
+atlas is a covering device pinned into terminalExponents by (C), never a λ-carrier); BONUS: the
+new type reads nothing off ledger chartMap fields — retires the tick-159 id-chart problem
+(ledger carries exponents, atlas carries charts). Q2: D1 RATIFIED as direction; AMEND — (D1) is
+THE SOLE TIE between ledger and atlas halves (under-rated as "insurance"): pin CONTENT now
+(quantify t's actual geometric paths; fold = real β∘ψ from banked atoms; never opaque), defer
+only encoding; counter-sign criterion = provable-over-real AND fails-on-fake (D2 = the
+visible-progress trap). Q3a AMEND: verification gate = FULL batch (full build + AxCheck all
+watched roots + (2,2,4) witness re-elaboration) — the "sole gate" framing struck (stale-olean
+masking; package §6.4 adopted over §3). Q3b: "MORE faithful… not merely" selling struck; docstring
+conventions pinned. STERN FLAG EXECUTED: the obligation-statement counter had drifted 3 ways
+(counsel=3 STALE, controller dispatch=4-mislabeled [#3 is L=0, #4 is the id-charts near-miss —
+MY error, owned], package=5 CORRECT). Counsel incremented to 5 with the near-miss convention +
+counter-hygiene rule (verify against the entry; increment in the fix's own commit). Coverage
+counter-sign refined mid-flight (D1 two-sided criterion + the exponents/charts split). Awaiting
+counter-sign → consolidated ratification → t05 executes under the full-batch gate.
+
+## 2026-07-19 tick 182: sub-gap-1 recalibrated + scaffold merged; divCoord-defer ruled; elder dissolved
+t05's scaffold merged (0040ffefe: Engine/NumDivFlatBound.lean spine-isolated, not wired —
+sum_widthMinUpto_le_flatDim + widthMinUpto_le PROVEN; leaves_numDiv_le_flatDim sorried
+LIVE-frontier with the accounting plan). FINDING 1 (difficulty recalibration, accepted): the
+bare bound is not locally inductive (append does numDiv+1 needing strict <) and is TIGHT at
+all-1s — the correct uniform object is the EXACT accounting invariant numDiv ≤ ∑_{i<layer}
+widthMinUpto(i+1) + cleared with companion cleared ≤ widthMinUpto(layer+1) (~150-250 LoC;
+the MvalBoundaryInv threading pattern is the template; controller note sent: the companion's
+rollover maintenance must use the guard's own shared comparison). FINDING 2 (scope interaction,
+ruled): under the ratified corrected type ChartBridge reads the ATLAS pieces' divCoord, not
+leafOfState's — the ledger-leaf assignment change is MOOT there; DEFER APPROVED (avoids a spine
+edit the corrected type strands); the invariant itself is needed under BOTH types (atlas pieces
+inherit numDiv) and proceeds. Gate8 amendments relayed to t05 as binding-at-execution (D1
+content, full-batch gate, selling scrub). elder-gate8 dissolved. Remaining before execution:
+the coverage-t08 counter-sign.
+
+## 2026-07-19 tick 184: COUNTER-SIGN IN — type RATIFICATION COMPLETE; single-ψ challenge routed
+coverage-t08's counter-sign merged (5d54f2a26): COUNTER-SIGN the flat virtual-leaf atlas. Per
+item: (1) per-piece divCoord is a PRECONDITION for 3-Prop provability (the frozen type made
+LeafPullback/LeafJacobian unfillable); (2) its banked fold produces clause (A) VERBATIM with the
+atlas realized as leaves of an auxiliary GEOMETRIC tree t_geo (proof-internal; spine untouched;
+consistent with the sub-gap-3 pin) — realization flag folded into the carrier design; (3)
+re-typing SIMPLER than priced (χ drops; the With-variants deletable, verified consumer-free);
+(4) D1-flat encoding recommended (fold-fidelity, no t_geo in the type) + amendment: D1
+references the geometric fan-out, not the quotient. RATIFICATION CONSOLIDATED → t05: type
+ADOPTED with all amendments binding (D1 content + t_geo realization + full-batch gate + naming
+scrub); execution order = finish the accounting invariant first, then type change + carrier as
+one interlocked arc.
+THE NEW DECORRELATED FINDING (fold-machinery, NOT type — does not reopen ratification):
+coverage's Codex leg (hypothesis withheld) challenges the tick-162 "(i)" expectation — claims
+(a) no single per-node ψ exists (u-pivot ψ=id vs d-pivot Schur), (b) the u-pivot is
+GEOMETRICALLY load-bearing (uniquely covers the u-axis {D=0,u≠0} — refuting the ledger-only-
+extra escape; R2 Leg-1's every-proper-subset-undershoots appears to corroborate, pending an
+exact check of whether Leg-1's family included the u-pivot), (c) a det-1 gap witness for
+independently-sheared sectors. If true: node_pivotCover_of_atom_sheared (single-ψ) is
+insufficient at case-1 nodes; fixes = the held per-edge ψ_e reserve (R-a) or Codex's
+source-reparameterization β̃=β∘α⁻¹ keeping images fixed (R-b, pure atom applies). ADJUDICATION
+COMMISSIONED: pnp-psi (fresh seat, own worktree) — T1 (u-pivot load-bearing?) + T2 (single-ψ
+factorization?) by exact algebra incl. the Leg-1 battery check, then R-a/R-b pricing against
+the carrier spec; extra-careful decorrelation (the challenge itself is Codex-sourced). The
+carrier's per-edge ψ typing is compatible with every outcome — t05 unblocked regardless.
+
+## 2026-07-19 tick 185: counter-sign consolidated w/ gate (90add9f82 merged); q-concrete requirement
+coverage-t08 folded the elder amendments: WITHDREW its own D1-flat for the elder's pinned D1
+with the honest reason (under-tied — anchored the fold to the ledger but let the PATH float;
+the D2-wearing-D1's-name hole) and counter-signed the pinned form as PROVABLE: (i)
+geometricLeafPaths t buildable (d_center computable from t: case-1 = runLen·resCols+1 off the
+edge's ChartSubst + node StepData; direct analog of the banked leafPaths recursion); (ii) the
+real β∘ψ fold non-opaque MODULO one named dependency — **the coordinate split q must be
+CONCRETE in the carrier** (not the atom's existential) — logged + relayed to t05 as a carrier
+requirement (companion of the β field); (iii) fails-on-fake met (the fold equation pins
+chartMap to a specific banked composition). Both elder checks PASS against its 3-Prop work
+(clause (C) feeds exactly hdivExp/hres at RegionGluePerLeaf:127-128, orthogonal to the Props;
+the ledger/atlas split verified at ResolutionTree:284-286). SEPARABILITY banked: D1 is
+definitional coherence (holds under any gauge structure); the single-ψ finding bites only the
+COVER PROOF (clause A) — D1 out of the blast radius under every pnp-psi outcome. Coverage told:
+hold tide planning until the ψ cert lands (pnp-psi already running — spawned pre-fold).
