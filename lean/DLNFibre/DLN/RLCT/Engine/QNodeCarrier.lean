@@ -529,15 +529,30 @@ theorem realCNode_injective_of_facts (M : Fin (L + 1) → ℕ) (node : StepData 
     Function.Injective (realCNode M node hd) :=
   realCNode_injective M node hd (fun _ => centerSelCase_injective M node (nodeOccMin M node) _ H)
 
+/-- **`realCNode` is injective at a dim-0 node** (terminal/rollover): empty domain, vacuous — needs
+NO `RealCNodeFacts`, so the reachability supply shrinks to the case-1/case-2 (non-`0`) nodes. -/
+theorem realCNode_injective_of_dCenterOfNode_zero (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (hd : dCenterOfNode M node ≤ flatDim M) (hz : dCenterOfNode M node = 0) :
+    Function.Injective (realCNode M node hd) := fun a _ _ => by
+  have := a.isLt; omega
+
 /-- **`cNodeOf = realCNode` on the reachable cone**: `realCNode` injective ⟹ the classical fallback
 guard resolves to `realCNode`, so `cNodeOf` (hence `qNodeOf`) names the intended blow-up coords —
-the fidelity of the per-node cover. -/
+the fidelity of the per-node cover. Weakest form (takes the injectivity directly): supply it via
+`realCNode_injective_of_facts` (case-1/case-2) or `realCNode_injective_of_dCenterOfNode_zero`
+(terminal/rollover). -/
 theorem cNodeOf_eq_realCNode (M : Fin (L + 1) → ℕ) (node : StepData M)
-    (hd : dCenterOfNode M node ≤ flatDim M) (H : RealCNodeFacts M node) :
+    (hd : dCenterOfNode M node ≤ flatDim M) (hinj : Function.Injective (realCNode M node hd)) :
     cNodeOf M node hd = realCNode M node hd := by
   classical
   unfold cNodeOf
-  rw [if_pos (realCNode_injective_of_facts M node hd H)]
+  rw [if_pos hinj]
+
+/-- `cNodeOf = realCNode` from the on-cone facts (the convenience composition). -/
+theorem cNodeOf_eq_realCNode_of_facts (M : Fin (L + 1) → ℕ) (node : StepData M)
+    (hd : dCenterOfNode M node ≤ flatDim M) (H : RealCNodeFacts M node) :
+    cNodeOf M node hd = realCNode M node hd :=
+  cNodeOf_eq_realCNode M node hd (realCNode_injective_of_facts M node hd H)
 
 /-! ## The q-det lemma: `qOfCenter` is linear (its fderiv is a fixed continuous linear equiv)
 
