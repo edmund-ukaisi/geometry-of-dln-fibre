@@ -10,6 +10,7 @@ import DLNFibre.DLN.RLCT.Engine.PivotInjOn
 import DLNFibre.DLN.RLCT.Engine.ChartBridgeWiring
 import DLNFibre.DLN.RLCT.Engine.QNodeCarrier
 import DLNFibre.DLN.RLCT.Engine.GeoJacobianFold
+import DLNFibre.DLN.RLCT.Engine.GeoCoverSpec
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1347,6 +1348,10 @@ open DLNFibre.DLN.RLCT
 #print axioms Engine.geoChartMap_fderiv_det_offcone
 #print axioms Engine.abs_det_fderiv_foldr_comp
 #print axioms Engine.geoChartMap_differentiable
+-- THE COVER (t10 + fresh-eyes-t13, tick 288): clause (A) proven END-TO-END over the
+-- diagonal-normalized atlas — 0∈U ⊆ flatCube 1 ⊆ the atlas images, via the R=1 self-cover,
+-- the hbij tiling, the rollover passthrough, and the S-absorption. MUST stay clean-three:
+#print axioms Engine.geoAtlas_imageCover
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
 -- MUST stay clean-three:
 #print axioms Engine.clearable_of_minimizer
