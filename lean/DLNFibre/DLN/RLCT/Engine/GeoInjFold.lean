@@ -370,4 +370,75 @@ theorem geoChartMapNorm_id_ae_injOn (g : GeoChart M) :
   · simp only [geoChartMapNorm, dif_neg hd]
     exact ae_injOn_of_injective Function.injective_id
 
+/-! ## The fold: every `geoAtlas` leaf `chartMap` is injective off a null set
+
+Mirroring `GeoLeafLedger.tGeo_leaf_update`: a mutual induction over `tGeo`/`fannedEdges` threading the
+invariant "`acc` is QMP and injective off a null set". At a leaf `chartMap = acc` (the invariant IS the
+conclusion); at a fanned edge `acc` becomes `acc ∘ geoChartMapNorm _`, and the invariant is maintained
+by `comp_ae_injOn` (injectivity) and `QuasiMeasurePreserving.comp` (QMP); chartless edges keep
+`acc`. -/
+
+mutual
+/-- Every `tGeo acc t` leaf `chartMap` is injective off a null set, given `acc` QMP + injective off
+a null set. -/
+theorem tGeo_ae_injOn (acc : Params M → Params M)
+    (haccQMP : Measure.QuasiMeasurePreserving acc (volume : Measure (Params M)) volume)
+    (haccInj : ∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn acc (Set.univ \ N)) :
+    ∀ t : ResolutionTree M, ∀ c ∈ ResolutionTree.leaves (tGeo acc t),
+      ∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn c.chartMap (Set.univ \ N)
+  | .leaf l => by
+      intro c hc
+      rw [tGeo, ResolutionTree.leaves, List.mem_singleton] at hc
+      subst hc
+      exact haccInj
+  | .branch n edges => by
+      intro c hc
+      rw [tGeo, ResolutionTree.leaves] at hc
+      exact fannedEdges_ae_injOn acc haccQMP haccInj n 0 edges c hc
+/-- Companion of `tGeo_ae_injOn` over an edge list. -/
+theorem fannedEdges_ae_injOn (acc : Params M → Params M)
+    (haccQMP : Measure.QuasiMeasurePreserving acc (volume : Measure (Params M)) volume)
+    (haccInj : ∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn acc (Set.univ \ N))
+    (n : StepData M) (offset : ℕ) :
+    ∀ edges : List (Edge M),
+      ∀ c ∈ ResolutionTree.edgesLeaves (fannedEdges acc n offset edges),
+        ∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn c.chartMap (Set.univ \ N)
+  | [] => by intro c hc; rw [fannedEdges] at hc; cases hc
+  | .mk ec esub ch :: rest => by
+      intro c hc
+      rw [fannedEdges, edgesLeaves_append, List.mem_append] at hc
+      rcases hc with hc | hc
+      · by_cases hz : dCenterOfEdge n (Edge.mk ec esub ch) = 0
+        · rw [if_pos hz] at hc
+          simp only [ResolutionTree.edgesLeaves, List.append_nil] at hc
+          exact tGeo_ae_injOn acc haccQMP haccInj ch c hc
+        · rw [if_neg hz, edgesLeaves_mapMk, List.mem_flatMap] at hc
+          obtain ⟨p, _, hcp⟩ := hc
+          refine tGeo_ae_injOn
+            (acc ∘ geoChartMapNorm (fun _ => id)
+              ⟨n, Edge.mk ec esub ch, offset + (p : ℕ)⟩) ?_ ?_ ch c hcp
+          · exact haccQMP.comp (geoChartMapNorm_id_qmp _)
+          · exact comp_ae_injOn (geoChartMapNorm_id_qmp _)
+              (geoChartMapNorm_id_ae_injOn _) haccInj
+      · exact fannedEdges_ae_injOn acc haccQMP haccInj n
+          (offset + dCenterOfEdge n (Edge.mk ec esub ch)) rest c hc
+end
+
+/-- **Every `geoAtlas t` piece's `chartMap` is injective off a null set** (the `acc = id`
+specialization of `tGeo_ae_injOn`). -/
+theorem geoAtlas_ae_injOn (t : ResolutionTree M) (c : LeafData M) (hc : c ∈ geoAtlas t) :
+    ∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn c.chartMap (Set.univ \ N) := by
+  rw [geoAtlas] at hc
+  exact tGeo_ae_injOn id (Measure.QuasiMeasurePreserving.id volume)
+    (ae_injOn_of_injective Function.injective_id) t c hc
+
+/-- **The `ChartBridge` a.e.-injectivity clause for every built-tree `geoAtlas` piece**: injective
+off a null set on the source box (restrict the `univ \ N` form to `srcBox \ N`). This discharges the
+first of the three geometric `(B)` clauses of `chartBridgeFaithful_buildTree`. -/
+theorem geoAtlas_leaf_ae_injOn (c : LeafData M)
+    (hc : c ∈ geoAtlas (buildTree M (conOracle M) (conRoot : ConState L))) :
+    ∃ N : Set (Params M), volume N = 0 ∧ Set.InjOn c.chartMap (c.srcBox \ N) := by
+  obtain ⟨N, hN0, hNInj⟩ := geoAtlas_ae_injOn _ c hc
+  exact ⟨N, hN0, hNInj.mono (Set.diff_subset_diff_left (Set.subset_univ c.srcBox))⟩
+
 end DLNFibre.DLN.RLCT.Engine
