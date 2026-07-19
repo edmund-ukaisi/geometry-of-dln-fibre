@@ -5058,3 +5058,16 @@ paying. RULED (for the resting t14): case-2 pair VERBATIM to the banked hypothes
 ATOMS ONLY (the k≠mergeIdx spectator + the two positive coherences) — no pre-built peeled
 wrapper (t14's maintenance shape unfixed; atoms compose into any prod_congr). inj-t16's
 shutdown confirmed clean. Live: t10 (R7 batch) ∥ disj-t17 (executing).
+
+## 2026-07-19 tick 316: roster cleanup round 2 — coverage-t08 + the legacy offices stood down; t14/t15 kept (owed work, imminent triggers)
+Operator flagged five more idles. STOOD DOWN: coverage-t08 (the answer-desk period passed
+without a question — the specs/cards carry it; the projection-fill folds into the controller
+discharge batch as it offered; one of the deepest seat ledgers of the expedition),
+elder-alt2 + cartographer-5 (legacy one-shot offices, functions carried by the standing
+seats since tick 266). KEPT with cause: architect-t14 (owed = the case-12 variant + the walk
+assembly; its trigger is disj-t17's landing — in build NOW, likely within the hour; its
+context on its own 33k-line module is the fastest path through the walk) and loss-t15
+(owed = the Inv_val maintenance + instantiation; triggers on t14's walk; its design notes
+are complete but the build mirrors t14's plumbing as it lands). Both are parked-with-owed-
+work, not stale — the distinction the first cleanup drew. If the operator prefers them
+cycled to fresh seats at their triggers instead, the specs support it (succession-ready).
