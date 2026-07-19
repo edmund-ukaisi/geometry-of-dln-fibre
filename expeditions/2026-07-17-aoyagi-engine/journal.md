@@ -4702,3 +4702,18 @@ section (the scope note crossed the cert's write-up — follow-up sent; its pull
 already a value-level computation, so the addendum decides (3b)'s owner cheaply). ALSO: the
 R-split gate AxCheck watch committed on a true green (LAKE-EXIT:0; projection clean-three
 in-gate; the faithful theorem's diagnostic line live).
+
+## 2026-07-19 tick 299: §7 — TWO certs, ONE skeleton; (3b) ownership decided
+pnp-fold's value-delta addendum merged (e2de0b6d2): the det is NOT derivable from the value
+invariant (three divergent exponent structures under birth + k re-merges, machine-checked:
+det accumulates 3+k; the value b-chain stays squarefree power-1; the loss stays uniform
+power-2) — matching thread-19's own "LeafPullback and LeafJacobian do not share the fold
+induction." What IS shared: the entire induction SKELETON (walk, dispatch, DivBirthInv
+threading, the flat_* reads) and the acc-threaded FORM; the value payload adds the residual
+block, the b-chain, and the α gauge in maintenance (det-1-blind vs not — thread-19 §6
+again). §3 now marks per-step value-carrying/det-only/shared. RULINGS: t14 — the reusable
+driver is OPTIONAL, never at the critical path's cost (concrete det instance first; take
+the abstraction only if it falls out); loss-t15 — (3b) IS YOURS, after t14's walk lands
+(mirror/instantiate the template; α-carrying maintenance per §7; thread-19 + §7 = the
+complete value-side spec, no new certs owed). The endgame's proof plan is now closed under
+specification: every remaining sorry has an owner, a cert, and a walk template.
