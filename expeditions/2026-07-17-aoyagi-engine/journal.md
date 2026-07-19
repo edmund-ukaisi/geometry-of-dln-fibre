@@ -4546,3 +4546,21 @@ clean-three, merged (a03586a8a). Ruling amended cheaply: the artifact exists and
 KEPT as the tripwire module (the executable-witness pattern; a ∀s regression is now
 structurally impossible to miss). The (A) ruling re-relayed; t14 EXECUTING: conRoot headline
 → the two handoff sub-lemmas → the cocycle. t14 is the expedition's sole critical path.
+
+## 2026-07-19 tick 290: carto placement check — CLEAN IMPORT-ADD (no cycle); the discharge mechanics fully pinned
+carto-standing's charge-2 merged (f2cca8786 → a4b53bc32): EngineObligations gains
+`import ChartBridgeFaithful` DIRECTLY — GeoChart's transitive cone bottoms out at
+EngineConstruction/EngineDefs (below EO); consumers (EngineDriver ← only AxCheck;
+CanonicalWitness224 ← only AxCheck; CoRank2Spike ← nothing) all above/outside; grep-verified
+whole tree. The R-split is FIDELITY-forced (projection-enforcement), not cycle-forced at the
+discharge site — the low TYPE still can't carry (D); the discharge goes high cleanly (a
+diamond over EngineConstruction, not a cycle). DECL-LEVEL SPEC now in wiring-endgame §2e:
+ChartBridgeFaithful.lean {def A∧B∧C∧D, chartBridgeFaithful_buildTree, .toChartBridge
+projection}; EO's fill = (…).toChartBridge. SIGNATURE RIPPLE FOUND: the faithful discharge
+needs hMpos ⟹ chartBridge_buildTree GAINS hMpos, monomialization_terminates:98 threads it —
+folded into counter-instance #8's batch (one instance, one batch; relayed to coverage).
+BONUS: the import closes THREE gate-orphans free (GeoCoverSpec/GeoLeafJacobian/GeoDiagSwap
+enter via EngineDriver→EO). Checklist refreshed with both watches + the projection cordon +
+the #guard_msgs extension + current line numbers; STATUS.md to the R-split ladder;
+GeoCoverSpec:8 doc-rot → coverage's batch. No duplicate-spawn artifacts found. The entire
+discharge is now specified to the LINE — it executes the moment t14's fold lands.
