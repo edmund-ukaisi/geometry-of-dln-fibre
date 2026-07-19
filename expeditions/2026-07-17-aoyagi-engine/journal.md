@@ -2324,3 +2324,21 @@ placement opinion, defeq traps). NAVIGATOR-3 CONVENED (mandated at phase transit
 o5 arc; executable gate list; calibration + top schedule risk). t04 spawns after t03's
 handoff-map push + stand-down confirmation. (Also: the cd-trap recurred on this very tick's
 first journal attempt — lean/ cwd persisted from the probe; redone from root.)
+
+## 2026-07-19 tick 166: t03 STOOD DOWN (5fff06dc9 merged); handoff complete; hole-type answer relayed
+t03's final batch: chartBridge_buildTree typed OPTION (ii)-lite — the hole stays
+`ChartBridge M (buildTree (conOracle M) conRoot)` reading the LEAF FIELDS, docstring naming the
+placeholder situation + carrier prerequisite. Its reasoning (recorded as the settled why): the
+accumulator alone would fix only the COHERENCE clause (trivially fine today — all edge localSubs
+are id); cover/LeafPullback/LeafJacobian need the REAL blow-up charts regardless — the same
+carrier work; and the type is stable because the spine provably never reads chartMap. Relayed
+to coverage: ZERO rework — its hχ : l.chartMap = χ l bridge is exactly the post-carrier provable
+joint; plan unchanged (wake at carrier green). MERGED + verified (assembly +sorryAx via the two
+named holes; capstone clean-three). THE t04 HANDOFF MAP banked in t03's message + statement card
+(threads/11-construction/): the two hole types verbatim; D-package order (a) carrier (real
+localSubs on case2/case1/rollover decisions + chartMap = path-fold via WF.fix accumulator; spine
+provably chartMap-blind) → (b) o5_realization (cert §§3-4; pull-ordering brick ← LiveHeadDom kit;
+naming pin) → (c) reify-Clearable + watch line; 4 local subtleties (per-branch horacle idiom for
+dependent match; finRange-in-match whnf; 0<L defeq 1≤L; terminalExponents = divExp lists via
+leaves_resRank_zero). t03's tide: 14 commits, A+B+C+D§i+E, zero walls. Seat dissolved WITH
+HONORS. t04 spawn holds for navigator-3's A-verdict (t04 order) — one office-latency, by design.
