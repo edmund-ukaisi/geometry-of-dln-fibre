@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Engine.CanonicalWitness224
 import DLNFibre.DLN.RLCT.Engine.EngineDriver
 import DLNFibre.DLN.RLCT.Engine.ClearableReify
+import DLNFibre.DLN.RLCT.Engine.NumDivFlatBound
 import DLNFibre.DLN.RLCT.Validate.Case111
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
 import DLNFibre.DLN.RLCT.Validate.Case212
@@ -1305,6 +1306,9 @@ open DLNFibre.DLN.RLCT
 -- Classical.choice, Quot.sound] (a `sorryAx` here means the spine re-opened):
 #print axioms Engine.isFullMonomialization_buildTree_conRoot
 #print axioms Engine.minAdm_le_terminalExponents
+-- Sub-gap-1 (tick 186): every buildTree leaf has numDiv ≤ flatDim — the divisor-accounting
+-- invariant (budget + companion, threaded through conOracle). MUST stay clean-three:
+#print axioms Engine.leaves_numDiv_le_flatDim
 -- REIFY-NOW (elder-gate7, compass 13(o5-IN)): the honest realized-stratum surface
 -- `realizedProfiles M = { a ∈ Adm M : Clearable a }` — the library's TYPED name for what the tree's
 -- `t̃=0` read-off realizes (NOT `= Adm`; the completeness is a verified read-off defect #4). STATEMENT
