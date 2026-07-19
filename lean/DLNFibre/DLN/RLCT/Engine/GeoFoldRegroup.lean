@@ -434,4 +434,44 @@ theorem geoChartMapNorm_cocycle_step (acc : Params M → Params M) (hacc : Diffe
   rw [abs_det_fderiv_comp acc _ hacc (geoChartMapNorm_differentiable g) w,
     geoChartMapNorm_fderiv_det g w hd hp]
 
+/-! ## The full-ledger monomial + the terminal bridge to the analytic (`leafOfState`) product -/
+
+/-- **The full-ledger monomial** `L(s)(w) := ∏_{k : s.numDiv} |z_{birthFlatCoord s k}(w)|^{s.divExp k − 1}`
+— over ALL divisors of `s` (not just the t̃=0 analytic ones). This is the cocycle invariant's RHS
+(`Inv(acc, s) : |det D acc w| = ledgerMonomial s w`); the fold covers every full-divisor birth/merge, so
+it is what the Jacobian equals. -/
+noncomputable def ledgerMonomial (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (w : Params M) : ℝ :=
+  ∏ k : Fin s.numDiv, |paramsEquivFlat M w (birthFlatCoord M s k h)| ^ (s.divExp k - 1)
+
+/-- **The weak no-stranded fact** (team-lead sharpening, pnp-fold adjudicating): a stranded (t̃ ≠ 0)
+divisor has exponent `1`, so its ledger factor `|z|^{1−1} = 1` is harmless. Threaded as an open
+hypothesis until pnp-fold's dichotomy (strong all-t̃=0 / this weak form / false-with-witness) returns. -/
+def WeakNoStrand {L : ℕ} (s : ConState L) : Prop :=
+  ∀ k : Fin s.numDiv, s.divTilde k ≠ 0 → s.divExp k = 1
+
+/-- **The terminal bridge**: at a terminal state `s`, the full-ledger monomial equals the ANALYTIC
+`leafOfState` product (headline RHS) — the stranded (t̃ ≠ 0) divisors drop out because `WeakNoStrand`
+gives them exponent `1` (factor `|z|^0 = 1`). Reindexes the t̃=0 sublist (`t0Indices`) to `Finset.univ`
+via `List.prod_toFinset` + `Finset.prod_subset`. This is the ONLY place the no-stranded gap enters. -/
+theorem leafOfState_prod_eq_ledgerMonomial (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (w : Params M) (hweak : WeakNoStrand s) :
+    (∏ k : Fin (leafOfState M s).numDiv,
+        |paramsEquivFlat M w ((leafOfState M s).divCoord k)| ^ ((leafOfState M s).divExp k - 1))
+      = ledgerMonomial M s h w := by
+  have hnodup : (t0Indices s).Nodup :=
+    (List.nodup_finRange s.numDiv).filter (fun k => decide (s.divTilde k = 0))
+  rw [ledgerMonomial, leafOfState, dif_pos h]
+  simp only [List.get_eq_getElem]
+  rw [Fin.prod_univ_fun_getElem (t0Indices s)
+        (fun k => |paramsEquivFlat M w (birthFlatCoord M s k h)| ^ (s.divExp k - 1)),
+    ← List.prod_toFinset _ hnodup]
+  have htf : (t0Indices s).toFinset = Finset.univ.filter (fun k => s.divTilde k = 0) := by
+    ext k
+    simp only [List.mem_toFinset, mem_t0Indices, Finset.mem_filter, Finset.mem_univ, true_and]
+  rw [htf]
+  refine Finset.prod_subset (Finset.filter_subset _ _) (fun k _ hk => ?_)
+  have hne : s.divTilde k ≠ 0 := fun h0 => hk (Finset.mem_filter.mpr ⟨Finset.mem_univ k, h0⟩)
+  rw [hweak k hne]; simp
+
 end DLNFibre.DLN.RLCT.Engine
