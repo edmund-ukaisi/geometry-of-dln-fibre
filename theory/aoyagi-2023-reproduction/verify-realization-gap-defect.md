@@ -110,3 +110,12 @@ o5-∈ realization certificate's scoped scan, cross-validated against the origin
   witness cross-checked on it independently of the pnp-o5 reimplementation.
 - decorrelated Codex (hypothesis withheld): `threads/12-realization/codex/realization-{prompt,answer}.md`.
 - cert: `threads/12-realization/cert-o5-realization.md`; scope counts: `threads/12-realization/scope-counts.md`.
+
+## Positivity caveat (added 2026-07-19, rev-s4 escalation)
+The characterization `P(M) = Clearable-Adm(M)` and the "EXACT" language above hold in the
+POSITIVE-WIDTH regime (∀ i, 0 < M i) — the battery's scan universe. At zero widths the ⊇
+direction fails by the rollover-guard mechanism (exact witness ![2,2,0]: realizedProfiles =
+{(0,0)} but (1,0),(2,0) ∈ Clearable-Adm; see the §4 review, threads/18-s4-review/). Clearable
+itself is width-free; REALIZATION is not. Every formal statement of the characterization
+(including the R7 target realizedProfiles_eq_clearableAdm) carries hMpos. The λ-formula
+consequences are unaffected (DLN reduced widths are positive at the payoff site).
