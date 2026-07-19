@@ -16,14 +16,16 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   ChartBridge (flat virtual-leaf atlas) is LANDED (re-typing batch, ripple as forecast); the
   ψ-route = R-b source-reparam (target-gauge UNSOUND — pnp-psi); slot-stability = YES (immutable
   divBirthCoord, pnp-slot); the carrier is BUILT (CenterIndices + qOfCenter + divBirthCoord
-  field + qEdgeOf, all clean-three, spine undisturbed). TWO PARALLEL LANES converge at
-  chartBridge_of_pieces: **coverage-t08's TIDE** (GeoChart+geoChartMap+geometricLeafPaths
-  banked; next: atlas materialization → cover fold → 3 Props [hdcInj/hrcInj/hdisj as FED hyps]
-  → (A)/(C)/(D) [gate #10: (D) IN the type pre-discharge] → flags #15 → the full-batch
-  discharge gate) ∥ **t07's reachability sub-arc** (DivBirthInv → real-ify divCoord →
-  discharge the 3 fed hyps; NumDivFlatBound = the template). Seats t02-t06 all retired with
-  honors (7 clean successions). Engine census: 3 sorries (the hole, R7-owed, the witness
-  corollary). THEN: hbox flips → R5 mint (the PRE-STAGED prestage wrapper — REWRITE its stale
+  field + qEdgeOf, all clean-three, spine undisturbed). THE REACHABILITY SUB-ARC IS COMPLETE +
+  AUDITED 6/6 (t07, honors): divCoord REAL-IFIED (the genuine birth-corner map);
+  **leaves_chart_clauses_conRoot** delivers the 3 per-piece coordinate hyps as ONE clean-three
+  theorem (consumed by one `exact` at the assembly; 2 of 3 vacuous at resRank=0 leaves —
+  honest-context noted). ONE LANE REMAINS: **coverage-t08's TIDE** (GeoChart+geoChartMap+
+  geometricLeafPaths banked; IN FLIGHT: atlas materialization [pieces = ledger coords +
+  geometric chartMap] → cover fold → 3 Props → (A)/(C)/(D) [gate #10; the (D) landing FULLY
+  PRE-STAGED incl. the RegionGlueAssembly:107 fixed-arity destructure line — entry 7] → flags
+  #15 → the full-batch discharge gate). Seats t02-t07 ALL retired with honors (8 clean
+  successions). Engine census: 3 sorries (the hole, R7-owed, the witness corollary). THEN: hbox flips → R5 mint (the PRE-STAGED prestage wrapper — REWRITE its stale
   hDescent arm to the direct _gen+engine composition, calibration entry 5) + #guard_msgs
   ENFORCED gate → cordon (census entry 6: bounded, no surprises) → signal-and-wait PR
   (body names R4/R6/R7 owed). Calibration ledger: 6 entries; the miss-class = slogan-for-
