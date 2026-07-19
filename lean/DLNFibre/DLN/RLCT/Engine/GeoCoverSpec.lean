@@ -149,9 +149,10 @@ theorem biUnion_list_map {α β γ : Type*} (l : List α) (fn : α → β) (F : 
 
 /-- **The offset tiling — MEMBERSHIP form (hbij, List-level)**: every global pivot `i` in the node's
 range is realised by a fanned edge — the edge owning `i` (via the `dCenterOfNode_edgeSum` offset
-partition), with the pivot-`i` `geoChartMap`. Stated + proved at the `List.mem` level (induction on the
-edge list + `rw [fannedEdges]`), AWAY from the `iUnion` body, so the heavy `geoChartMap`/`tGeo` are only
-rewritten syntactically (no whnf/defeq fight). -/
+partition), with the pivot-`i` diagonal-normalized chart `geoChartMapNorm (fun _ => id)` (the wired
+emission). Stated + proved at the `List.mem` level (induction on the edge list + `rw [fannedEdges]`),
+AWAY from the `iUnion` body, so the heavy chart/`tGeo` are only rewritten syntactically (no whnf/defeq
+fight). -/
 theorem fannedEdges_pivot_mem (acc : Params M → Params M) (n : StepData M) (i : ℕ) :
     ∀ (offset : ℕ) (edges : List (Edge M)),
       offset ≤ i → i < offset + (edges.map (dCenterOfEdge n)).sum →
@@ -170,14 +171,20 @@ theorem fannedEdges_pivot_mem (acc : Params M → Params M) (n : StepData M) (i 
       have hp : i - offset < dCenterOfEdge n (Edge.mk c s ch) := by omega
       have hi' : offset + (i - offset) = i := by omega
       refine ⟨c, s, ch, List.mem_cons_self .., ?_⟩
-      -- TACTICAL HOLE (t10, isolated to this List-level line): the fanned edge at pivot `i` is in the
-      -- pivot-fan `(finRange d).map (fun p => …offset + ↑p…)`, picking `p = ⟨i-offset, hp⟩` (then
-      -- `offset + (i-offset) = i`). The `↑p` (Fin→ℕ) coercion makes `mem_map`/`simp` HO-factor the map
-      -- as `((finRange d).map ↑).map …`, so the `∃` reindexes to `ℕ` and the witness type won't align.
-      -- MATH TRIVIAL; needs the coercion-aware List idiom (fresh-eyes per controller). The member edge
-      -- and the fanned edges now BOTH carry `geoChartMapNorm (fun _ => id)` (post-#35 wiring), so the
-      -- witness structure is unchanged; everything else (tail recursion, `fannedEdges_covers`) is green.
-      sorry
+      -- The pivot `i` (in this edge's range) is realised by the fanned edge for pivot `i` (fresh-eyes'
+      -- idiom, map-agnostic — the localSub is `geoChartMapNorm (fun _ => id)` here). KEY: the `↑p`
+      -- (Fin→ℕ) coercion in the def is lifted OUT of the pivot-fan map, so the fan elaborates to
+      -- `map F (finRange d >>= fun a => pure ↑a)` — the index list is a `List ℕ`. Hence the outer
+      -- `mem_map` witness must be `i - offset : ℕ` (NOT the Fin); the `Fin ⟨i-offset, hp⟩` only realises
+      -- the inner bind-membership `i - offset ∈ (finRange d >>= …)`. `hi'` then rewrites `offset + (i -
+      -- offset)` back to `i` on the fanned edge.
+      rw [fannedEdges, if_neg hne]
+      refine List.mem_append_left _ ?_
+      rw [List.mem_map]
+      refine ⟨i - offset, ?_, ?_⟩
+      · rw [List.bind_eq_flatMap, List.mem_flatMap]
+        exact ⟨⟨i - offset, hp⟩, List.mem_finRange _, List.mem_singleton_self _⟩
+      · simp only [hi']
     · have hlo' : offset + dCenterOfEdge n (Edge.mk c s ch) ≤ i := by omega
       have hhi' : i < offset + dCenterOfEdge n (Edge.mk c s ch)
           + (es.map (dCenterOfEdge n)).sum := by
