@@ -3136,3 +3136,19 @@ one-line fold-in if slot-stability holds; count helpers; per-case shapes; the ga
 honors. REMAINDER EXECUTOR deliberately open: t06 may absorb it post-landing-batch (fresh-ish,
 full engine context, already in the files) vs t07 — decided on t06's post-batch budget signal
 + the slot cert. The carrier is now: selector DONE / assembly SPEC'D / u-coord ADJUDICATING.
+
+## 2026-07-19 tick 212: t05 STOOD DOWN (six arcs, highest honors); t06 landing-batch crossing resolved; rev-s4 spawned
+t05's close: the t07 carrier-spec delivered (7474494d5, merged — the complete assembly incl.
+CenterIndices as the inherited foundation with extend-or-absorb left to the executor; the
+u-pivot parameterized on pnp-slot; the qNodeOf assembly plan; the gate). Seat ledger: the
+decision package, sub-gap-1, §3, §4-SPECIFY+handoff, the interface review (§8 adopted), the
+injective selector + spec — six arcs, zero degraded pushes, two build-step catches that
+outran a cert and a gate. The succession pattern's defining seat. t06's landing report
+crossed the tick-209 GO (resolved: the batch is t06's, the spec + the closed decision-ask #2
+are in its inbox; the EngineObligations:40-49 docstring explicitly fenced OFF its batch —
+single-owner-per-debt, it's task #15/coverage's). Its §4 statement card merged; **rev-s4
+spawned** (fidelity: minimizer-only statement; hMpos genuinely-needed [self-trace the
+![2,2,0] witness]; SteerInv/LowCover fidelity + NON-VACUITY [the phases genuinely transition;
+the pull brick consumes LevelCoverage, not assumes]; the fold's ∃-direction; in-file-only
+verification; wording). The optional t06-absorbs-carrier-remainder question queued for its
+post-batch budget signal.
