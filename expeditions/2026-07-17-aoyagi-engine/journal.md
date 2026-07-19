@@ -2669,3 +2669,19 @@ the ledger/atlas split verified at ResolutionTree:284-286). SEPARABILITY banked:
 definitional coherence (holds under any gauge structure); the single-ψ finding bites only the
 COVER PROOF (clause A) — D1 out of the blast radius under every pnp-psi outcome. Coverage told:
 hold tide planning until the ψ cert lands (pnp-psi already running — spawned pre-fold).
+
+## 2026-07-19 tick 186: SUB-GAP-1 COMPLETE — leaves_numDiv_le_flatDim clean-three (6c47d27ac merged)
+t05's milestone: the divisor-accounting invariant FULLY PROVEN — NumDivInv (budget
+∑_{i<layer} MSp1 + cleared; companion cleared ≤ MSp1; layer ≤ L; terminal cleared=0) threaded
+through conOracle on the MvalBoundaryInv template; the state-level corollary holds at EVERY
+reachable state (no chooser-totality needed — survives the off-cone terminal); the case-1
+horacle dependent-match crux cracked directly (explicit reduction equations, split +
+Option.some.inj) when Codex was slow. Controller probe: exactly the clean three. RULINGS:
+(1) wiring = the ClearableReify pattern (AxCheck import + MUST-clean-three watch line) — edit
+applied, verification build RUNNING (uncommitted until green; two earlier attempts died to
+stacked timeouts); (2) ratification relayed (tick-184 crossed its turn again — boundary
+discipline means it lands at this revival): corrected type ADOPTED ⟹ **leafOfState.divCoord
+assignment SKIPPED (moot)** — sub-gap-1 COMPLETE on the construction side; atlas-piece
+divCoord/injectivity is coverage's, consuming this invariant; (3) GO §3 (Codex-first,
+reuse-index, salvage evaluated); §4 still pauses for pnp-o5 routing. Gotchas-delta invited if
+the direct crack differs from the ledger idiom.
