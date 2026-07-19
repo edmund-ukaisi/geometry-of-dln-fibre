@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Engine.EngineDefs
 import DLNFibre.DLN.RLCT.Engine.EngineConstruction
 import DLNFibre.DLN.RLCT.Engine.O5Realization
 import DLNFibre.DLN.RLCT.Engine.RegionGlueAssembly
+import DLNFibre.DLN.RLCT.Engine.ChartBridgeFaithful
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.EngineObligations` — the engine's obligations
@@ -33,24 +34,22 @@ variable {L : ℕ}
 
 /-! ## The two named holes (their own sorried declarations, attributed to their fill sources) -/
 
-/-- **ChartBridge for the built tree** (map: `coverage-theorem`; the T3 coverage lane fills this).
-The CoV atlas over `buildTree (conOracle M) conRoot`. A `@[blueprint]` FORECAST.
+/-- **ChartBridge for the built tree** (map: `coverage-theorem`; the T3 coverage lane).
+The CoV atlas over `buildTree (conOracle M) conRoot`, obtained as the drop-(D) PROJECTION of the
+faithful discharge `chartBridgeFaithful_buildTree` (R-split, elder charge-4). So clause (D) — the
+geometric-chart fidelity — is on THIS theorem's proof CONE (undroppable), not merely in a type: the
+projection `.toChartBridge` forgets (D) for `region_glue`, but the discharge PROVED it.
 
-**CAVEAT — the chart-emission carrier is a PREREQUISITE (t04/coverage item).** The current
-construction emits PLACEHOLDER charts: every edge's `ChartSubst.localSub = id` and
-`leafOfState.chartMap = id`. So the coherence clause `p.1.chartMap = p.2` holds trivially (`id = id`),
-but the COVER / `LeafPullback` / `LeafJacobian` clauses — the REAL blow-up geometry (monomial×unit
-pullback, `|det Dβ| = ∏|u|^{divExp−1}`, the singular-locus cover) — are NOT satisfiable against `id`
-charts. This hole is FILLABLE only after the chart-emission carrier lands: the edges must carry the
-real blow-up `localSub`s and `leafOfState.chartMap` must be the root→leaf `localSub` fold (thread a
-path-accumulator through `buildTree`). The TREE def and the CHART-INDEPENDENT spine
-(`isFullMonomialization_buildTree_conRoot`, `StepRel`, base, `minAdm ≤`) are STABLE under that carrier
-change (they read only the divisor/full ledger, never `chartMap`), so this type does not move — only
-the construction's chart content becomes real. The ONE analytic hole (AxCheck:
-`monomialization_terminates` `+sorryAx` via this + `o5_realization`). -/
-@[blueprint] theorem chartBridge_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L) :
-    ChartBridge M (buildTree M (conOracle M) (conRoot : ConState L)) := by
-  sorry
+FRONTIER: `chartBridgeFaithful_buildTree` proves (A) cover (`geoAtlas_imageCover`, green) + (D)
+fidelity (`rfl` + the all-nodes lift `nodes_cNode_eq_realCNode`) outright; the remaining `(B)∧(C)`
+per-piece props/exponents over `geoAtlas` are its two frontier sorries (ledger props + exponents via a
+`geoAtlas`-leaf↔ledger bridge; a.e.-injectivity + `LeafPullback` geometric; `LeafJacobian` = t14's
+`geoAtlas_fold_det`). The analytic hole of `monomialization_terminates` (`+sorryAx`) routes through
+here (now via `chartBridgeFaithful_buildTree`) + `o5_realization`. -/
+@[blueprint] theorem chartBridge_buildTree (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hMpos : ∀ i, 0 < M i) :
+    ChartBridge M (buildTree M (conOracle M) (conRoot : ConState L)) :=
+  (chartBridgeFaithful_buildTree M hL hMpos).toChartBridge
 
 /-- **o5 realization** (map: `o5-realization`; D§ii/iii fills, from pnp-o5 cert §3–4). `minAdm M` is a
 terminal exponent of the built tree (a clearable minimizer is realized — the ATTAINMENT half; the
@@ -95,7 +94,7 @@ the claim. Requires `0 < L` (base conjunct false at `L = 0`). -/
     isFullMonomialization_buildTree_conRoot M hL,
     stepRel_all_of_buildTree M (conOracle M) conRoot,
     base_of_buildTree M (conOracle M) conRoot rfl rfl (conRoot_steps hL),
-    chartBridge_buildTree M hL,
+    chartBridge_buildTree M hL hMpos,
     ⟨minAdm_le_terminalExponents M hL, (o5_realization M hL hMpos).1⟩,
     (o5_realization M hL hMpos).2⟩
 

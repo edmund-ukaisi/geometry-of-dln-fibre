@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Engine.GeoCoverSpec
+import DLNFibre.DLN.RLCT.Engine.GeoLeafJacobian
 import DLNFibre.DLN.RLCT.Engine.NodesCNodeWalk
 
 /-!
@@ -19,7 +20,7 @@ CONE through the PROJECTION — strictly stronger than the old in-type form (und
   proof is the ALL-NODES LIFT (t09's `cNodeOf_eq_realCNode_of_conOracle`, Card-3 deferred item 2),
   i.e. `nodes_cNode_eq_realCNode`.
 * `ChartBridgeFaithful M t` — `ChartBridge`'s `(A)∧(B)∧(C)` body over the SAME witnessing atlas,
-  conjoined with `ChartBridgeFidelity`. `chartBridgeFaithful_imp_chartBridge` projects it to
+  conjoined with `ChartBridgeFidelity`. `ChartBridgeFaithful.toChartBridge` projects it to
   `ChartBridge` (what `region_glue` consumes, destructure-and-discard, clean-three).
 * `chartBridgeFaithful_buildTree` — the faithful discharge over the built tree. THE PROJECTION IS
   THE GATE (elder Q-a): when `chartBridge_buildTree` (`EngineObligations`) is filled, its proof term
@@ -62,19 +63,22 @@ def ChartBridgeFaithful (M : Fin (L + 1) → ℕ) (t : ResolutionTree M) : Prop 
     ChartBridgeFidelity M t atlas
 
 /-- **The projection is the gate**: `ChartBridgeFaithful` weakens to `ChartBridge` (drop clause
-(D)) — what `region_glue` consumes. Definitional: the `(A)∧(B)∧(C)` body is copied verbatim. -/
-theorem chartBridgeFaithful_imp_chartBridge (t : ResolutionTree M)
+(D)) — what `region_glue` consumes. Definitional: the `(A)∧(B)∧(C)` body is copied verbatim. Named
+`ChartBridgeFaithful.toChartBridge` (drop-D) so `h.toChartBridge` reads as the projection. -/
+theorem ChartBridgeFaithful.toChartBridge (t : ResolutionTree M)
     (h : ChartBridgeFaithful M t) : ChartBridge M t :=
   let ⟨atlas, hABC, _⟩ := h; ⟨atlas, hABC⟩
 
 /-- **The faithful discharge over the built tree** (the R-split gate object). (A) cover is
 `geoAtlas_imageCover` (green, t10); clause (D) is fully PROVEN — conjunct 1 is `rfl`, conjunct 2 is
-the all-nodes lift `nodes_cNode_eq_realCNode`. The one remaining ingredient is the `(B)∧(C)`
-per-piece props/exponents over `geoAtlas`; its geometric core (`LeafJacobian`) is t14's
-`geoAtlas_fold_det`. PLANNED DISCHARGE (same commit as the fill, in `EngineObligations`, elder Q-a):
-`chartBridge_buildTree` becomes the projection `⟨atlas, hABC⟩` of this via
-`chartBridgeFaithful_imp_chartBridge`. -/
-theorem chartBridgeFaithful_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L) :
+the all-nodes lift `nodes_cNode_eq_realCNode`. The remaining ingredient is the `(B)∧(C)` per-piece
+props/exponents over `geoAtlas` (the two frontier sorries): the ledger props + exponents via a
+`geoAtlas`-leaf↔ledger bridge, a.e.-injectivity + `LeafPullback` (geometric), and `LeafJacobian` =
+t14's `geoAtlas_fold_det`. `hMpos` is threaded (the `(B)∧(C)` fill needs positive widths, as
+`o5_realization`/the cover do); currently unused by the proven `(A)`/(D) parts.
+`chartBridge_buildTree` is its `toChartBridge` projection, so (D) is on the payoff's proof cone. -/
+theorem chartBridgeFaithful_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L)
+    (_hMpos : ∀ i, 0 < M i) :
     ChartBridgeFaithful M (buildTree M (conOracle M) (conRoot : ConState L)) :=
   ⟨geoAtlas (buildTree M (conOracle M) conRoot),
     ⟨geoAtlas_imageCover (buildTree M (conOracle M) conRoot) conRoot rfl,
