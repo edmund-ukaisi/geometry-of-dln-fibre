@@ -170,6 +170,33 @@ theorem schurCells_ne (node : StepData M) (rows cols : ℕ) :
       rw [Fin.mk.injEq] at hi; omega
   · exact (List.not_mem_nil hmem).elim
 
+/-- **Conjugation of the fold**: the flat read of `residualSchurShear` is the fold of the bare
+`elemShear`s on the flat coordinates (the inner `paramsEquivFlat`/`.symm` pairs cancel). -/
+theorem residualSchur_flat_read (node : StepData M) (rows cols : ℕ) (w : Params M) :
+    paramsEquivFlat M (residualSchurShear node rows cols w)
+      = ((schurCells node rows cols).map fun abc => elemShear abc.1 abc.2.1 abc.2.2).foldr
+          (· ∘ ·) id (paramsEquivFlat M w) := by
+  rw [residualSchurShear, schurMaps]
+  induction schurCells node rows cols with
+  | nil => rfl
+  | cons abc rest ih =>
+    rw [List.map_cons, List.map_cons, List.foldr_cons, List.foldr_cons, Function.comp_apply,
+      Function.comp_apply, flatElemShear_flat_read, ih]
+
+/-- **Coordinates that are never a shear's target `a` are unchanged by the fold** (each `elemShear`
+only updates its own `a`). The independence workhorse: the pivot row/col coordinates (never an
+interior `a`) pass through the interior-block Schur fold untouched. -/
+theorem elemShearFold_fixed
+    (cells : List (Fin (flatDim M) × Fin (flatDim M) × Fin (flatDim M)))
+    (X : Fin (flatDim M) → ℝ) (k : Fin (flatDim M)) (hk : ∀ abc ∈ cells, abc.1 ≠ k) :
+    (cells.map fun abc => elemShear abc.1 abc.2.1 abc.2.2).foldr (· ∘ ·) id X k = X k := by
+  induction cells with
+  | nil => rfl
+  | cons abc rest ih =>
+    rw [List.map_cons, List.foldr_cons, Function.comp_apply, elemShear,
+      Function.update_of_ne (Ne.symm (hk abc List.mem_cons_self))]
+    exact ih (fun a ha => hk a (List.mem_cons_of_mem abc ha))
+
 /-- **The α source-gauge** (the incidence/Q,P Schur; `cert-psi-mix` §R-b): edge-class dispatch —
 `id` on the case-1(1) merge (`α_u = refl`) and rollover; the interior residual Schur fold on the
 case-1(2) d-family (`rows = runLen`) and case-2 (`rows = resRows`) residual births. Feeds the
