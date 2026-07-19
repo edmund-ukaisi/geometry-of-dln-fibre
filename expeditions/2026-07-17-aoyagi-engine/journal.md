@@ -4980,3 +4980,13 @@ reduced to the ONE grounded disjointness pair; its fresh-seat call ACCEPTED at t
 boundary → DISJ-T17 SPAWNED (the fresh-eyes single-target pattern; t14's grounding as spec;
 interface-matching verbatim; t09/coverage warm-answerable one question each). t14 rests;
 returns for the case-12 variant + the walk assembly.
+
+### Tick-312 addendum: loss-t15's consumer side merged clean-three — the value crux fully consumer-closed
+GeoInvVal.lean merged (f76139a7f) + probed: frobSq_of_diagonal (Aoyagi's leaf Σb² read,
+standalone reusable) + leafDiagFrob_of_prodDiag (the leaf-discharge bridge: prod = diag(dvec)
+with the ratio properties ⟹ LeafDiagFrob ⟹ LeafPullback via the proven squeeze). The loss
+lane's frontier = exactly ONE sorry, reduced to the Inv_val walk over t14's template — the
+four maintenance proofs + the leaf instantiation, both mirrors. Everything downstream of
+"prod = diag(b) at the leaf" is CLOSED. The board's two hard clauses now both terminate in
+pre-built consumer machinery waiting on the ONE shared walk. Idles all correct (t14 resting
+as ruled; t10's R7 GO in its inbox; loss-t15 on the t14 trigger).
