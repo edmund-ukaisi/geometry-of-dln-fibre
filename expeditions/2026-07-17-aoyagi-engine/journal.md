@@ -3161,3 +3161,14 @@ core; (3) GeoChart record fields pinned PROVISIONALLY against the qNodeOf signat
 t05's t07-carrier-spec (its ask was addressed to the retired t05 — re-pointed at the spec doc;
 final field-lock at the remainder-executor's first green). The seam counterpart (t06-post-batch
 vs t07) announced when decided.
+
+### Tick-212 final: t05's remainder spec merged (d5f1f89c2); seat CLOSED
+The final spec supersedes the t07-spec (merged-selector update): the qNodeOf assembly plan
+with the executor's TRAPS NAMED (the totality dite-fallback [reachable-only]; the permutation-
+from-injective-selector + Fintype.card complement bookkeeping = where the intricacy
+concentrates; the Matrix.module/NormedSpace diamond → stay on the CLE, split flat-side;
+arrowCongr continuity via continuous_pi); the u-coord one-liner under slot-stability; count
+helpers; per-case shapes; the gate. Coverage re-pointed at the new doc. architect-t05 formally
+OVER-AND-OUT — six arcs, six greens, the two truth-signal catches, the pattern-defining seat.
+Awaiting: t06's landing batch + budget signal; pnp-slot's verdict; rev-s4's audit;
+coverage's det atom.
