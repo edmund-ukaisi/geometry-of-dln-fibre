@@ -2217,3 +2217,22 @@ the same-side (P·Q)·D product is non-unipotent AND not the faithful action (tw
 — trap ruled out. Refines cert-shear-gauge.md. Leaf chartMap = fold of per-node single gauges —
 consistent with the tick-159 fold-form pin. Coverage's skeleton ψ-typing unblocked; pnp-atlas
 standing warm. Both pnp seats now idle-warm with full context (o5: realization; atlas: gauges).
+
+## 2026-07-19 tick 161: rev-spine VERDICT — A+B+C SURVIVED (merged); 3 low findings → close-phase
+Independent fidelity+bedrock audit of the spine (7-item checklist + the builder worry-list
+supplement + hypothesis-withheld Codex): ALL PASS. Highlights: the ∈Adm conjunct verified as
+the SAFE P⊆Adm direction with a Codex countermodel confirming the distinction; FIX-A verified
+end-to-end (no raw-p.20-label path exists; case-2 exponent FORCED = (runmin−J)(M^{S+1}−J) via
+the telescoping lemma); at-exhaustion guard verified STRUCTURALLY pinned (shares the
+widthMinUpto def with classify, same expression — not a lookalike copy); no smuggled
+completeness anywhere; non-vacuity for genuine M (M0,M1≥1 ⟹ the root steps case-2).
+INTERACTION NOTE (no contradiction): rev-spine observes the CAPSTONE is vacuously true at L=0
+(leaf conjuncts over empty Fin 0) while t03's L=0 finding was about CanonicalResolution's BASE
+conjunct (forces a step — genuinely false at L=0); hL is needed inside leaf_mem_Adm_t0 + at the
+assembly, kept uniformly. THREE LOW FINDINGS → close-phase list (none blocking, t04 brief):
+(1) EngineDefs:205 docstring "EXACTLY the t̃=0 sublist" → scope to value/support-set equality
+(C2+C3 give set equality, not index bijection; the construction IS a genuine sublist, the
+STATEMENT promises less); (2) 0<L docstring framing (vacuous at top, needed inside — say so);
+(3) drop "just" at EngineConstruction:724. Reviewer caveat on record: rev-spine did NOT re-run
+#print (no .olean in its worktree) — covered by controller probes at ticks 153/155. rev-spine's
+commission complete.
