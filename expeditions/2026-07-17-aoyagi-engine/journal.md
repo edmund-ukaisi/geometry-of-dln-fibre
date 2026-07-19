@@ -3232,3 +3232,21 @@ single-dependency system: qNodeOf green → coverage's tide (geoChartMap, materi
 fold, Props, (A)/(C)/(D) [gate #10], the retirement flags [#15]) → chartBridge_buildTree →
 hbox. THE SOLE IN-FLIGHT WORK: t06's landing batch (+ the R7-statement fix). The executor
 decision fires at its report.
+
+## 2026-07-19 tick 218: ★★ THE REALIZATION HOLE IS CLOSED — o5_realization CLEAN-THREE ★★
+t06's move-at-landing batch merged (dc95d8a2e) + controller-verified: **o5_realization =
+exactly [propext, Classical.choice, Quot.sound]** (was +sorryAx via o5_core since the E
+assembly); monomialization_terminates AND engine_box_threshold_finite now +sorryAx via
+**chartBridge_buildTree ALONE**. All 5 spec points executed: o5_core deleted (0 refs); hMpos
+threaded o5_realization→…→engine_box_threshold_finite with the fit witness deriving it from
+its own hpos (calibration entry 2's prediction, enacted); AxCheck rewritten (o5_realization/
+tStar_realized/o5_core_realized MUST-clean-three; the one-hole comment); the zero-width
+docstrings; the compass counter → 6 in the same commit (hygiene held); + the rev-s4 escalation
+fix (realizedProfiles_eq_clearableAdm gains hMpos). Scope held (4 files + AxCheck + compass);
+the #15 docstring correctly left to its owner. THE ENGINE'S REMAINING DEBT: one hole, one lane.
+EXECUTOR DECIDED: t06 takes the carrier remainder (budget signal honest-and-solid; the o5
+lane landed without thrash) — commissioned with the complete self-contained spec (t05's
+remainder spec + the slot cert + the seam notes + CenterIndices inherited); coverage announced
+as its seam counterpart (GeoChart field-lock at qNodeOf's first green). The endgame:
+t06's carrier → coverage's tide → chartBridge_buildTree → hbox flips clean-three → R5 mint
+repoint + #guard_msgs enforced gate → cordon → the signal-and-wait PR.
