@@ -5576,3 +5576,23 @@ co-read, which the crash had swallowed), architect-t14 (executes the ruled encor
 resid-free payload interior + drafts case statements while parked on the elder ruling).
 Cross-lane file guards restated in both formaliser briefs. Carto-standing NOT yet respawned
 (no pending charge; re-convene at the next wiring pass or discharge).
+
+## 2026-07-20 tick 343: elder rulings ×3 — gauge-gen counter-signed (corrected bundle), cover confirmed, resid = (B)
+The respawned elder answered all three charges, paper-grounded throughout. (1) Gauge-
+generalize COUNTER-SIGNED as the RIGHT OBJECT (one spine, id + α as thin instantiations;
+realizes fork-15's founding g-slot paying for the hypotheses explicitly; P6 — the
+standalone alternative would duplicate the buildTree walk). WITH A LOAD-BEARING CORRECTION
+to both my brief and the predecessor's ruling text: "α fixes the divisor-diagonal cells" is
+FALSE as written — schurCells writes the interior-diagonal FUTURE-pivot cells; α fixes only
+born diagonals (≤ J) + pivot row/col. The bundle is READS-BASED: fixes the threaded state's
+ledger-read set. My brief's stop-and-surface tripwire fired IN ADVANCE via the elder's disk
+read rather than at t14's grind — the co-read doing exactly its job. Conditions ratified:
+atoms-first probe gating the walk; AxCheck double-gate id+α; name=content. (2) Cover:
+keep-disk confirmed; shrunken-U' faithful — the RLCT is a GERM at 0 (Def 1 + Thm 4 cited);
+caveat: per-edge threading ⟹ cover-preservation WALK down tGeoG (resRank_zero pattern), not
+a global precompose; fallback = t10 direct re-run. (3) RESID = (B) recursive-by-walk,
+decisive: D_{J+1} IS the recursion in the paper; no residual-entry closed form exists;
+(A)'s 2×2 was a worked instance (the visible-progress trap named). Non-circularity verified
+on loss-t15's code (resid never read at a leaf). BOTH seats relayed + unparked; compass
+fork 15 FOURTH amendment applied (elder's proposed text, read-only honored). loss-t15's
+payload gate now reduces to my binder-vs-design diff.
