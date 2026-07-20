@@ -7078,3 +7078,41 @@ Scope AFFIRMED unchanged (general RLCT-ideal library; Lemma 1 core to sequence f
 θ/analytic in-scope). HELD: the corrected + priced operator package waits on elder-ready +
 navigator pricing (consolidate at the honest ceiling; operator not watching real-time, launch
 operator-gated, so no rush to a half-package).
+
+## 2026-07-20 tick 418: convergence — compass committed, navigator pricing homed, operator decision package assembled at the honest ceiling
+All three charged seats reported + closed. pnp-ideal: hygiene done (SUPERSEDED banner on
+equality_rigorous; peel-identity+structure_v2 named as the corroborating pair; equality_rigorous
+de-cited) + coupled-endgame probe stub §5a (HELD, cold-pickup spec + kill-condition named);
+standing by. elder: "compass ready" — folded the VERIFIED result as a fork-16 addendum
+(committed 838033059, compass.md-only on the ready signal); direction read HOLDS with the
+shallow-instance calibration AS the ruling (out of chart cul-de-sac YES, hard part mapped YES,
+tractable-in-general NOT YET — coupled width≥3 is the gate); scope affirmed; FULL COMPACTION
+DELIBERATELY DEFERRED to the follow-up's opening (sound — don't compact live material mid-close;
+the targeted addendum keeps compass current without a premature big pass). navigator-7: pass #10
+full pricing, homed under strategy/navigator-10-followup-pricing.md.
+
+NAVIGATOR #10 KEY FINDINGS (in the pricing note): (1) route i is M-CLASS not L — telescoping
+drops the reduction from the naive-one-shot L (walls) to a clean depth-INDUCTION; the follow-up
+is a focused M research expedition for SCOPE A (widths≤2 clean), +L for SCOPE B (general
+coupled). (2) THE TALLEST POLE = the peel-identity depth induction (proven exact at (2,2,2,2),
+rides a clean induction over the geoAtlas tree); everything downstream rides BANKED infra
+(monomialThreshold, rlctAt_mono, the cover, minAdm_eq_cCodim, the #8 generic engine). (3) NEW
+de-risking finding — the LeafPullback-SALVAGE: cert §2's `frobSq=m²·‖U‖²` with `‖U‖²≥U[0,0]²=1`
+IS LeafPullback's content (residualCore≥1) WITHOUT diagonalizing, so #8's "refuted-as-stated" is
+refuted only over the DIAGONALIZING α, ACHIEVABLE over the a-shear/peel α. Forks the spine:
+ROUTE i-a (discharge LeafPullback over the corrected α, engine UNCHANGED, less surgery) vs ROUTE
+i-b (Lemma 1 + monomial rule, Aoyagi-faithful, elder's preference). CONTROLLER FLAG carried: i-a
+is the navigator's INFERENCE from (2,2,2,2) U[0,0]=1; the all-charts residualCore≥1 confirm +
+the direction-check (does i-a deliver what hbox needs) is the gate — verify-at-open, do NOT
+commit the "less surgery" estimate before the i-a/i-b settle. (4) RISK-FREE PRE-STAGE: b-chain
+(grep-empty, R4-small) + the i-a/i-b settle + the Lemma-1 direction pin — all cannot-be-wasted.
+
+RECOMMENDED SCOPE (navigator + elder aligned, razor held): LAUNCH SCOPE A (widths≤2 clean
+recursion) as the near-term M deliverable; declare SCOPE B (coupled diag(b)) + θ-order +
+analytic-pole IN-SCOPE-STAGED (the general RLCT-ideal library); Lemma 1/peel identity = the core
+to SEQUENCE first, never a scope-out. Operator owns: A-now vs A+B-committed (the +L coupled
+cost), and the launch itself (operator-gated). Package surfaced to the operator this tick.
+Expedition now at its clean close-shape: deliverable banked+verified (L≤2 unconditional, gen-L
+conditional), verdict verified, compass current, follow-up priced. Owed-at-close (unchanged):
+close synthesis (elder co-read), the post-spine items (R7 completeness, (2,2,4) witness,
+R4-small, zero-width(b)) named in any PR body; the compaction pass at the follow-up's open.
