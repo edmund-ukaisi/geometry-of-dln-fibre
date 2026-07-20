@@ -6302,3 +6302,24 @@ HOLDING (not idle) — pre-drafting forms 2/3 + the decisive 3-vs-2 finding (doe
 only the pivot cross or the whole block?). Offered the elder a pnp seat for a decorrelated
 minimality check (codex down) if it wants one. This is the hole's one design fork; the
 seven-catch floor + all tools stand — only the residual-carrying is at stake.
+
+## 2026-07-20 tick 383: elder ruled carry=OPTION 2 (full D_J); a DEEPER pivot-row/col pre-question → pnp-diag
+Elder's fork ruling: (a) structure load-bearing, option C insufficient (loss-t15 correct;
+elder owns the refinement — C right for the READ, incomplete for the RESULT). (b) MINIMAL
+FAITHFUL CARRY = OPTION 2: the full residual block D_J in incidence form as a Prop (Aoyagi's
+induction object, worked.tex:482/509-519). Option 1 over-built (cleared+trailing already
+handled by diagonal+associativity; only D_J needs carry); option 3 insufficient AS CARRY
+(discards the interior = D_{J+1} = next step's hypothesis) — but option 3's pivot-cross IS
+the per-step PROOF ECONOMY inside option 2. So: carry the full block, prove each step
+pivot-cross-locally. (c) THE DEEPER PRE-QUESTION (elder surfaced, could reshape the TARGET):
+residualSchurShear is INTERIOR-ONLY (schurCells > cleared, GeoAlphaGauge:128-144) — after α
+the PIVOT ROW/COL ratios a,b remain nonzero, but the paper's leaf is EXACTLY diagonal
+(worked.tex:487-489). Either a mechanism clears them (STRONG LEAD: loss-t15's OWN dropped-row
+zeroing — pivot row J drops when it rolls past the shrinking running min; ties to
+leaves_resRank_zero) OR alphaGauge is INCOMPLETE (missing Lg/Rg pivot Q,P — a construction
+gap). PNP-DIAG dispatched (codex down): Q1 minimality (option 2 vs 3) + Q2 THE mechanism
+(which of (i) rank-drop / (i-b) product / (ii) α-gap) with the ripple assessment — (i) =
+proof obligation only, all banked stands; (ii) = alphaGauge change rippling to walk-t20's
+jacobian + t14's cover. loss-t15 pre-drafts form-2's D_J-carry + the settled old-row/interior
+maintenance; the off-diagonal-at-cleared-rows clause HELD pending the mechanism verdict.
+This is the last truth-value adjudication of the expedition.
