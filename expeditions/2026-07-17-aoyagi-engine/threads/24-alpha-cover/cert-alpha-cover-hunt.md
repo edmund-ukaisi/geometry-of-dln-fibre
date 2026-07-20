@@ -115,15 +115,68 @@ decision that opens the gap. The compass tick-343 ruling (2) "keep-disk + shrunk
 0)" does **not** hold as stated: because α is threaded **per-edge**, the α-atlas image is NOT
 `α(id-cover-nbhd)`, and 0 is a limit of gap points, so no shrunken U' works.
 
-## Close
+## 7. REPLAY — the ENLARGED-CUBE route (elder round-3 cover ruling): VERDICT = **COVERS**
 
-- **Firmest result**: single-node truth-value (the elder's exact kill-condition) is DECISIVELY GAP —
-  `y = t·(1,1,1,1)` uncovered for all `t ∈ (0,1]`, all 4 pivots, `w_p11 = 2` (exact); the α-shear
-  obstruction `2t² ≤ t²` is false. Full-tree lift confirmed for `M = (2,2,2)`.
-- **Most likely to break it**: a deeper `α` writing a root schur cell to `≈ 2` — ruled out for `(2,2,2)`
-  (children are identity/spectator on `p11`); general-M full-tree exhaustiveness is Speculation.
-- **Next construction / consult that would settle the open part**: (i) formal check that no deeper node's
-  `schurCells` contains an ancestor's cleared schur cell (DivBirthInv freshness, the compass's own
-  "born ≤ J, α writes > J" — should give the general-M lift directly); (ii) the controller's synthesis
-  choice: revert to `srcBox = α⁻¹(cube)` per-edge (§6, sound) vs another realization of the α-cover.
-  (Codex consult skipped — codex is DOWN env-wide; this seat is the decorrelated instrument.)
+The gap of §1–§5 is a `srcBox = cube(1)` fact. The elder's round-3 route keeps `srcBox` a cube but
+**enlarges its radius per node** and never composes the α's (the collection lemma is dead — `α₀∘C₁ ≠
+C₁∘α₀`, pnp-collect `cert-collection-lemma.md`). Thread a scalar radius down the tree,
+`ρ_{n+1} = ρ_n(1+ρ_n)`; `srcBox_leaf = cube(ρ_leaf)`.
+
+**The node-local induction (abstract, rests on two BANKED atoms; no commutation).** `Cₙ = βₙ∘Sₙ`.
+`Cover(n, ρ)`: `cube(ρ) ⊆ ⋃_{leaves under n} (chartMap n→leaf) '' cube(ρ_leaf)`, from
+- (a) `cube(ρ) ⊆ ⋃_p Cₙ,ₚ(cube(ρ))` — id self-cover at radius `ρ` (`node_selfCover`, GeoCoverSpec.lean:112,
+  scale-covariant via `iUnion_pivotChart_image_eq_cubeBox` ∀R≥0);
+- (b) `cube(ρ) ⊆ αₙ(cube(ρ(1+ρ)))` — from the banked inverse-shear bound `residualSchurShear_srcBox`
+  (GeoAlphaGauge.lean:441: `αₙ(w)∈cube(R) ⟹ w∈cube(R(1+R))`), αₙ a homeomorphism;
+- (c) `cube(ρ(1+ρ)) ⊆ (child-map)(cube(ρ_leaf))` — IH `Cover(child, ρ(1+ρ))`;
+
+compose by monotonicity: `cube(ρ) ⊆ ⋃_p (Cₙ,ₚ∘αₙ∘child-map)(cube(ρ_leaf))`. **αₙ is absorbed by the
+radius bump at its own node; the composite order is preserved, so `αₙ` is never slid past a deeper `Cⱼ`
+— commutation is not used.** Both atoms (a),(b) are already proven in Lean.
+
+**Gate 1 — 2×2 single node, `cube(1) ⊆ ⋃_pivot chartMap_α '' cube(2)`** (`/tmp/replay_gate1.py`,
+exact). Every §4 gap point is now COVERED (diagonal, near-diagonal, sign patterns `+--+`/`++--`,
+tiny-off-diagonal); the max-modulus pivot always works; **300/300 random `cube(1)` targets covered, worst
+preimage modulus exactly `2` = `R(1+R)` (bound tight at the diagonal).**
+
+**Gate 2 — the (3,3,3) layer-0 spine (pnp-collect's kill instance), radii `1→2→6`, `srcBox_leaf =
+cube(6)`** (`/tmp/replay_gate2.py`, exact 9-coordinate model with the true `α/S/β` reads). The
+node-local construction (max-modulus pivots, invert `C₀`→`α₀⁻¹`→`C₁`→`α₁⁻¹` in composite order) yields,
+for every target: `chartMap(w) = y` **exactly** and `w ∈ cube(6)`. All kill-set classes (full-diagonal at
+`t∈{1,½,1/100}`, near-diagonal, the pnp-collect support point, checker signs) pass; **200/200 random
+`cube(1)` targets pass; worst preimage modulus `9/5 < 6`** (the radius budget is loose — the actual reach
+is tighter). The exact configuration where the collection lemma failed now covers node-locally.
+
+**Gate 3 — depth stress, 4×4 layer-0 spine, radii `1→2→6→42`** (`/tmp/replay_gate3.py`): 122 `cube(1)`
+targets, map-exact, all `w ∈ cube(42)`, worst modulus `2`. The compounding `ρ_{n+1}=ρ_n(1+ρ_n)` grows
+super-exponentially but is FINITE per leaf (bumps only at nontrivial-α nodes), so each leaf's
+`srcBox = cube(ρ_leaf)` is bounded and the finite tree has a uniform `R = max_leaf ρ_leaf` — the fork-15
+"∃R, srcBox ⊆ flatCube R" requirement holds.
+
+**Claim (3) confirmed — same-layer α-overlap is IRRELEVANT under node-locality.** The overlap is real:
+`(α₀∘C₁ − C₁∘α₀)` at cell `(2,2)` `= −x₀₁x₀₂x₁₀x₂₀ + x₀₁x₁₀x₂₂ + x₀₂x₁₁x₂₀ − x₀₂x₂₀ ≢ 0` (matches
+pnp-collect §2). Yet the node-local cover is map-exact on every target, because it keeps the composite
+**order** and bumps the radius — it never needs `α₀∘C₁ = C₁∘α₀`.
+
+**VERDICT: COVERS — the enlarged-cube route is RATIFIED.** The α-atlas with `srcBox_leaf = cube(ρ_leaf)`
+and the radius thread `ρ_{n+1}=ρ_n(1+ρ_n)` (root `ρ_0 = 1`) covers the open neighbourhood `cube(ρ_0)` of
+`0`. Clause (A) holds. Legs: `/tmp/replay_gate{1,2,3}.py`.
+
+**For the formaliser (t14 batch, task #4).** Three pieces: (i) generalize `node_selfCover` to radius `R`
+(the `iUnion_pivotChart_image` atom is already ∀R); (ii) rearrange `residualSchurShear_srcBox` to the ⊇
+form `cube(R) ⊆ αₙ '' cube(R(1+R))` (αₙ homeomorph); (iii) the radius-threaded reachability induction
+(the `flatCube_subset_leafPathImages` analog with a per-node `ρ` accumulator and `αₙ` inserted before the
+child recursion — `srcBox_leaf = cube(ρ_leaf)`). No commutation lemma is needed anywhere.
+
+## Close (updated after the replay)
+
+- **Firmest result**: the `srcBox=cube(1)` cover is FALSE (§1–5, exact, GAP), and the **enlarged-cube
+  route COVERS** (§7): node-local, radius `ρ_{n+1}=ρ_n(1+ρ_n)`, verified exact on the 2×2 node, the
+  (3,3,3) spine (pnp-collect's kill instance), and a 4×4 depth stress; it rests on two already-banked Lean
+  atoms and needs no α-commutation.
+- **Most likely to break it**: none found for the ratified route — the two atoms are proven and the
+  induction is monotone. The one thing to keep honest: the radius is a SUFFICIENT (loose) bound; the
+  formal induction must thread `ρ` per node, not assume a uniform radius.
+- **Next**: hand to t14 for the three-piece formalisation above; the §6 `srcBox = α⁻¹(cube)` fallback is
+  no longer needed (the enlarged-cube route keeps the disk `srcBox = cube`, only its radius grows).
+  (Codex skipped — down env-wide; this seat is the decorrelated instrument.)
