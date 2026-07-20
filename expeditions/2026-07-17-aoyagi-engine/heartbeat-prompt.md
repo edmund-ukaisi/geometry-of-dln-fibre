@@ -44,8 +44,9 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 0. Verify placement: `.claude/worktrees/aoyagi-engine/root`, branch `expedition/aoyagi-engine`
    (controller.md resp. 0). Recover first if not.
 1. Re-ground if fresh/compacted/unsure: **`charter.md` FIRST** (the invariant core — goals, objects,
-   progress bar, math-warnings), THEN expedition.md § State bundle — this file, priorities, map/STATUS.md,
-   compass (history), journal tail, threads. The charter overrides any stale framing in the history docs.
+   progress bar, math-warnings), THEN the State bundle — this file, map/STATUS.md, compass (history),
+   journal tail, threads. (`priorities.md` is RETIRED for this expedition — a forwarding stub only;
+   ranking lives in the map, current focus in this memo.) The charter overrides any stale framing.
 2. Tick: ingest → re-anchor (brief + compass) → triage priorities → delegate (briefs via template
    + `scripts/expedition brief`) → integrate (journal append + map + STATUS) → surface →
    review-to-equilibrium.

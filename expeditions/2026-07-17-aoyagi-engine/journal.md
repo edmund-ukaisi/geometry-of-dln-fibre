@@ -7204,3 +7204,34 @@ charter-authority pointer-head to compass.md + drive the deep compaction (≤2pg
 ratify/own charter.md going forward (I bootstrapped the initial). DEFERRED to post-object-decision:
 re-rooting map/claims.yaml on the abstract objects. Owed to the operator THIS turn: explain the math for
 the two joint decisions (Q1 object list + full generality; Q2 the coupled resolution's legal construction).
+
+## 2026-07-20 tick 421: dev-branch + cite-confound investigation (operator-directed, pre-merge); priorities RETIRED; Q2 locked
+Operator flagged (a) reuse value of dev's factored objects, (b) worry that merging dev re-confuses
+goals (L&R ≠ Aoyagi; the recurring "fall back to cited_aoyagi_dln" drift). Investigated both.
+- **The branch split** (merge-base 2026-06-25): OUR branch = the RLCT/Aoyagi side (rlctAt, R0/R1,
+  monomial rule, the deliverable); dev = a large determinantal/rank-locus + quiver geometry we LACK
+  (Core/RingTheory/Determinantal/{Strata,Dimension,Schur,LocalTriviality,Atlas,AtlasTransition},
+  TopDimMinPrimes*, rankStratumCodim=(p−r)(q−r)). Neither subsumes the other; the follow-up needs both.
+- **The cite confound — RESOLVED, dev hygiene is GOOD.** OUR cite `cited_aoyagi_dln` = a FIELD of
+  RlctInterface (carried hypothesis, not a global axiom), full rlct=½·codim equality, consumed only by
+  the out-of-scope RlctPayoff layer. DEV's cite is BETTER-factored: two `@[cited]` axioms —
+  `cited_watanabe_upper` (universal upper, genuinely external) + `cited_aoyagi_lower` (the DLN-specific
+  LOWER bound = EXACTLY what our resolution A+B+C must PROVE), cordoned (scripts/cited accounts them),
+  rlctGlobal BUILT (opaque-map axiom retired). CRUCIAL leak-check: dev's Determinantal/ geometry imports
+  the RLCT cite ZERO times (0/7 files); Dimension.lean's docstring states the determinantal codim is
+  "Proved, zero-cited ... the only cited results are the RLCT bricks, which live on the DLN side." So the
+  geometry we'd reuse is CITE-FREE and explicitly separated from the RLCT cite.
+- **Merge verdict (for the operator's decision):** SAFE w.r.t. the cite — reuse dev's determinantal
+  RESULTS (proved, cite-free); the goal becomes CRISP: PROVE `cited_aoyagi_lower` via Aoyagi's
+  resolution and DELETE it (cited_watanabe_upper stays, external). The drift to name in the charter:
+  "never fall back to cited_aoyagi_lower/_dln — it is the L&R VALUE cite, the thing we PROVE." The
+  distraction to refuse: L&R quiver-REP THEORY as a subject (we consume its determinantal-geometry
+  outputs, not its theory). Proposed to the operator as new charter §3 warnings (elder folds on decision).
+- **priorities.md RETIRED** (operator "retire priority too yes") → forwarding tombstone; function folded
+  into charter (what) + heartbeat Memo (state) + map (ranking). Heartbeat step-1 bundle updated. Harness
+  policy's generic priorities-as-taste-ledger left untouched (retired for THIS expedition only).
+- **Q2 LOCKED** (operator "we are definitely following Aoyagi"): the coupled corank≥2 resolution is
+  Aoyagi's own Cases 1&2 (read from the paper images, since worked.tex only references them) — transcribe
+  HER choice + verify her claimed monomialisation; not an invention of ours.
+LIVE operator decisions: the branch call (build off dev to inherit the cite-free determinantal geometry
++ bring our RLCT work across) + reading Aoyagi's coupled pages together.
