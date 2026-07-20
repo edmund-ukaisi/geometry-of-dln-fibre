@@ -6961,3 +6961,18 @@ Compass compaction owed at follow-up open (elder owns; file ~690 lines, past cha
 bloat IS the tactical-patching drift made visible). Protocol note to elder: signal "compass
 ready" (it went idle without it; I judged the entry complete + committed). pnp-ideal depth-3
 verdict = the next gate.
+
+## 2026-07-20 tick 414: elder guard — "core/long-pole" is SEQUENCING not SCOPE (binds the follow-up decision package)
+Elder affirmed the scope synthesis + added the anti-re-drift guard: "Lemma 1 is the core" is
+a SEQUENCING statement (build/probe first), NEVER a SCOPE statement (scope-out the rest). The
+recurrence test binds every NAMED piece of the honest RLCT library — monomial-ideal/Newton
+machinery, resolution change-of-variables, θ, the analytic/germ foundation: any "not the
+core / falls-out / skip-it" on a named piece is the old failure mode → surface, never adopt
+silently. This is the compass's SCOPE-vs-SEQUENCING razor (retired for SCOPE, legitimate only
+for what LANDS FIRST) applied to the follow-up's library. CARRIED as a binding constraint on
+the operator's follow-up DECISION PACKAGE: present the follow-up scope as "build the general
+RLCT-ideal library (incl. θ/analytic, math-necessity)"; Lemma 1 = load-bearing core to
+sequence/probe first, NOT the scope. θ/analytic-in-scope = a real scope expansion (operator's
+launch+boundary call). Protocol settled (elder signals "compass ready"; controller commits
+per-file). Nothing pending (compass clean). pnp-ideal depth-3 verdict = the gate; on landing,
+elder folds the ACTUAL verdict (route-i telescopes / route-ii walls) + drives the compaction.
