@@ -507,6 +507,105 @@ theorem alphaGauge_srcBox_bounded (g : GeoChart M) {R : ℝ} (hR : 0 ≤ R) :
       simp only [alphaGauge, hc] at hw'
       exact residualSchurShear_srcBox _ _ _ hR w hw'
 
+/-! ## Parametric templates for the α completion (Lg/Rg cross-cell folds)
+
+The α-completion to Aoyagi's full Q,P adds pivot-column (`Lg`, ≤S-local) and pivot-row (`Rg`,
+cross-layer into S+1) `flatElemShear` cells to the interior Schur fold; the exact cells come from
+pnp-rg's completed-α achiever (thread 24 cell-write trace). These three lemmas are the
+FORM-INDEPENDENT templates the completed gauge instantiates — generic over ANY valid `flatElemShear`
+cell list (`a ≠ b`, `a ≠ c` per cell). The first two generalize the interior-only
+`residualSchur_flat_read` / `residualSchurShear_abs_det_one` (the completed gauge is one fold over
+`interior ++ Lg ++ Rg` cells). `elemShearFold_srcBox_bound` is the NEW compounding preimage bound
+the cross-writing needs: once the pivot cross is WRITTEN, `schurCells_snd_ne`'s disjointness (tight
+`R(1+R)`) no longer applies, so the bound compounds to a finite iterate of `g R = R(1+R)` — and
+`∃ R' > 0` is all the ChartBridge `(B)` clause needs. -/
+
+/-- Generic flat read of a `flatElemShear` fold (generalizes `residualSchur_flat_read` to any cell
+list): the inner `paramsEquivFlat`/`.symm` pairs cancel to the bare `elemShear` fold. -/
+theorem foldFlatElemShear_flat_read
+    (cells : List (Fin (flatDim M) × Fin (flatDim M) × Fin (flatDim M))) (w : Params M) :
+    paramsEquivFlat M
+        ((cells.map fun abc => flatElemShear abc.1 abc.2.1 abc.2.2).foldr (· ∘ ·) id w)
+      = (cells.map fun abc => elemShear abc.1 abc.2.1 abc.2.2).foldr (· ∘ ·) id
+          (paramsEquivFlat M w) := by
+  induction cells with
+  | nil => rfl
+  | cons abc rest ih =>
+    rw [List.map_cons, List.map_cons, List.foldr_cons, List.foldr_cons, Function.comp_apply,
+      Function.comp_apply, flatElemShear_flat_read, ih]
+
+/-- Generic det-1 of a `flatElemShear` fold (generalizes `residualSchurShear_abs_det_one` to any
+valid cell list): a composition of det-1 `flatElemShear`s is det-1. -/
+theorem foldFlatElemShear_abs_det_one
+    (cells : List (Fin (flatDim M) × Fin (flatDim M) × Fin (flatDim M)))
+    (hne : ∀ abc ∈ cells, abc.1 ≠ abc.2.1 ∧ abc.1 ≠ abc.2.2) (w : Params M) :
+    |(fderiv ℝ ((cells.map fun abc => flatElemShear abc.1 abc.2.1 abc.2.2).foldr (· ∘ ·) id)
+        w).det| = 1 := by
+  rw [abs_det_fderiv_foldr_comp _
+      (by
+        intro f hf
+        rw [List.mem_map] at hf
+        obtain ⟨abc, _, rfl⟩ := hf
+        exact flatElemShear_differentiable abc.1 abc.2.1 abc.2.2) w]
+  exact foldrCompAbsDet_flatElemShear _ hne w
+
+/-- **The compounding preimage bound for an arbitrary `elemShear` fold** (the α-completion's new
+srcBox lemma). For a fold of valid `elemShear` cells, if every output flat coordinate has modulus
+`≤ R` then every input coordinate is bounded by a finite `R'`. Unlike `residualSchurShear_srcBox`,
+this makes NO disjointness assumption (the completed fold WRITES the pivot cross), so it applies to
+the full Q,P gauge; `∃ R' > 0` is exactly what the `(B)` clause needs. Proof: induction on the fold;
+peeling one cell `(a,b,c)` (`a ≠ b`, `a ≠ c`) inflates the bound at most by `g R = R(1+R)` — the two
+sources `b,c` pass through unchanged, so `|X a| ≤ |output a| + |X b|·|X c| ≤ R + R·R`. -/
+theorem elemShearFold_srcBox_bound
+    (cells : List (Fin (flatDim M) × Fin (flatDim M) × Fin (flatDim M))) :
+    (∀ abc ∈ cells, abc.1 ≠ abc.2.1 ∧ abc.1 ≠ abc.2.2) → ∀ R : ℝ, 0 ≤ R →
+      ∃ R' : ℝ, 0 ≤ R' ∧ ∀ X : Fin (flatDim M) → ℝ,
+        (∀ k, |(cells.map fun abc => elemShear abc.1 abc.2.1 abc.2.2).foldr (· ∘ ·) id X k| ≤ R) →
+          ∀ k, |X k| ≤ R' := by
+  induction cells with
+  | nil => intro _ R hR; exact ⟨R, hR, fun X hX k => hX k⟩
+  | cons abc rest ih =>
+    intro hne R hR
+    obtain ⟨hb, hc⟩ := hne abc List.mem_cons_self
+    have hrest : ∀ x ∈ rest, x.1 ≠ x.2.1 ∧ x.1 ≠ x.2.2 :=
+      fun x hx => hne x (List.mem_cons_of_mem abc hx)
+    obtain ⟨R', hR'nonneg, hR'⟩ := ih hrest (R * (1 + R)) (mul_nonneg hR (by linarith))
+    refine ⟨R', hR'nonneg, fun X hX => ?_⟩
+    have hXe : ∀ k, |elemShear abc.1 abc.2.1 abc.2.2
+        ((rest.map fun q => elemShear q.1 q.2.1 q.2.2).foldr (· ∘ ·) id X) k| ≤ R := by
+      intro k
+      have h := hX k
+      rwa [List.map_cons, List.foldr_cons, Function.comp_apply] at h
+    have hYbound : ∀ k, |(rest.map fun q => elemShear q.1 q.2.1 q.2.2).foldr (· ∘ ·) id X k|
+        ≤ R * (1 + R) := by
+      intro k
+      by_cases hk : k = abc.1
+      · subst hk
+        have e := hXe abc.1
+        rw [elemShear, Function.update_self] at e
+        have s1 : |(rest.map fun q => elemShear q.1 q.2.1 q.2.2).foldr (· ∘ ·) id X abc.2.1|
+            ≤ R := by
+          have h := hXe abc.2.1
+          rwa [elemShear, Function.update_of_ne (Ne.symm hb)] at h
+        have s2 : |(rest.map fun q => elemShear q.1 q.2.1 q.2.2).foldr (· ∘ ·) id X abc.2.2|
+            ≤ R := by
+          have h := hXe abc.2.2
+          rwa [elemShear, Function.update_of_ne (Ne.symm hc)] at h
+        set Y := (rest.map fun q => elemShear q.1 q.2.1 q.2.2).foldr (· ∘ ·) id X with hYdef
+        have habs : |Y abc.2.1 * Y abc.2.2| ≤ R * R := by
+          rw [abs_mul]; exact mul_le_mul s1 s2 (abs_nonneg _) hR
+        have hsplit : Y abc.1
+            = (Y abc.1 - Y abc.2.1 * Y abc.2.2) + Y abc.2.1 * Y abc.2.2 := by ring
+        calc |Y abc.1|
+            = |(Y abc.1 - Y abc.2.1 * Y abc.2.2) + Y abc.2.1 * Y abc.2.2| := by rw [← hsplit]
+          _ ≤ |Y abc.1 - Y abc.2.1 * Y abc.2.2| + |Y abc.2.1 * Y abc.2.2| := abs_add_le _ _
+          _ ≤ R + R * R := add_le_add e habs
+          _ = R * (1 + R) := by ring
+      · have h := hXe k
+        rw [elemShear, Function.update_of_ne hk] at h
+        nlinarith [h, mul_nonneg hR hR]
+    exact hR' X hYbound
+
 /-! ## PHASE 3a — the loss-algebra reduction (the named `prod = diagonal` input) -/
 
 /-- **The named geometric input** (PHASE 3b, routed to pnp-fold's shared state↔geometry invariant):
