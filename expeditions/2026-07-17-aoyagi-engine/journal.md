@@ -5989,3 +5989,246 @@ already exist on integration — merge + reuse). t14's seat reduced to EXACTLY O
 the clearedOf answer (fourth, canonical ask; three crossings documented) — then parks for
 the pnp-collect verdict (srcBox def batch + 2b re-bank). Mint isolation gate GREEN
 (LAKE-EXIT:0, 0 errors); the combined gate over full integration running.
+
+## 2026-07-20 tick 365: COLLECTION LEMMA KILLED (exact, same-layer); 2a re-routes node-local; 2d verified SAFE
+pnp-collect's verdict, exact and decisive (cert 61f07d0fc): at M=(3,3,3)'s layer-0 spine,
+nodes 0 (3×3) and 1 (2×2) are BOTH nontrivial-α at the SAME layer, and α₀'s write set
+{(1,1),(1,2),(2,1),(2,2)} is EXACTLY β₁'s center — the maps do not commute; an in-cube
+witness separates chartMap_leaf from chartMap_id∘gAcc at cell (1,2); 0/36 pivot pairs
+hold. FRAME CORRECTIONS: the kill is SAME-layer (the elder's different-layers spec
+over-specified — cross-layer provably commutes); the thin-blocks escape is false; strict
+minimum M=(3,3), L=1. CONSEQUENCE: the gAcc-threaded srcBox def is DEAD (the factoring IS
+the lemma); the elder's own fallback becomes the route — NODE-LOCAL PARAMETRIZED-TARGET
+COVER (children cover the parent's α_n⁻¹(cube) target). Elder charged with the round-3 def
+ruling (recursion shape, what survives of the proven id-cover skeleton, cost class,
+clause-(A)-unchanged check, touchstone: node-local ≈ Aoyagi's actual per-step geometry?).
+THE USE-TWICE SPLIT (the cert's second gift): the Jacobian |det| transparency SURVIVES on
+a weaker precondition — S relocates every β's det-read to the block corner, which NO α
+targets (verified all 36 pairs) — so walk-t20's 2d lane proceeds UNCHANGED, grounded on
+"corner ∉ interior-α-support" + the CornerDisjoint kit, with an explicit warning never to
+reach for the (false) map-level identity. The map-level and det-level claims are now
+formally decoupled. The truth-gate discipline scores again: the def died on paper, not in
+a half-built Lean module.
+
+## 2026-07-20 tick 366: COMBINED GATE GREEN — the full integrated endgame state verified
+The fresh AxCheck gate over the complete integration state (carto docs + mint arm rewrite
++ t14's encore incl. GeoAtlasTransfer) returned LAKE-EXIT:0, zero errors. Verdicts:
+toChartBridge + region_glue_of_chartBridge exactly clean-three (the MUSTs);
+geoAtlasNorm_leaf_ledgerProps + geoAtlasNorm_leaf_ae_injOn clean-three (the new 2b/2c
+probes); chartBridgeFaithful_buildTree +sorryAx (the honest three owed: leafDiagFrob +
+cover + jacobian); prestage +sorryAx via the engine (the mint fit-proof live);
+aoyagi_learning_coefficient_gen clean-three (the relocation target ready). The integration
+branch is a verified point-of-record for the whole endgame architecture: the α-atlas
+witness-swap, the transfers, the mint pre-stage. Remaining to the discharge: loss-t15's
+bank + four cases (blocked on t14's clearedOf), walk-t20's jacobian walk, the node-local
+cover (elder round-3 ruling in flight).
+
+## 2026-07-20 tick 367: clearedOf REASSIGNED to loss-t15 self-serve; the terminal-frontier subtlety framed
+t14 silent on clearedOf after four asks (~20 min) — executed the stated fallback: my own
+construction read (calibration entry 17). THE FIND: the naive forms all fail at a boundary
+— the TERMINAL state arrives via rollover with cleared = 0, so a current-layer frontier
+leaves hall unsatisfiable at every leaf; but the terminal rollover is NON-CONTAMINATING
+(no matrix L exists; prefixCol caps), so layer L-1's completed frontier — widthMinUpto M L
+= the all-widths running min (inclusive ≤ pinned, EngineDefs:154) — honestly persists into
+the leaf, while mid-walk rollovers contaminate and reset (leg-ii verified). Candidate set
+(A: terminal-persist / B: general non-contaminating / C: running-total control) + a full
+state-trace battery protocol handed to loss-t15 — it owns every instrument; t14's answer
+demoted to a cross-check. The lane is UNBLOCKED without waiting on anyone. Elder round-3
+cover ruling still in flight; walk-t20 merged integration and is on its five steps.
+
+## 2026-07-20 tick 368: elder round-3 ruling — the ENLARGED-CUBE route; replay gate dispatched; fork 15 fifth amendment
+The elder OWNED its collection miss (assumed different-layers disjointness; the same-layer
+spine with nested α-supports is exactly where commutation dies) and re-framed the death as
+a FIDELITY signal — the global composite was the un-faithful trick; beauty-as-instrument.
+THE RULING: enlarged-cube node-local cover — thread a scalar RADIUS (ρ_{n+1} = ρ_n(1+ρ_n)),
+per node (i) α_n''cube(ρ_{n+1}) ⊇ cube(ρ_n) from the BANKED inverse-shear bound, (ii) the
+id node_selfCover at ρ_n (the underlying atom holds at any R, PivotCover:109 — trivial
+generalization); srcBox_leaf = cube(ρ_leaf); the α's never compose, so the same-layer
+overlap that killed the collection is IRRELEVANT. Clause (A) unchanged; cost MODERATE
+(radius-threaded tiling induction — the only new content); 2b/2c re-bank over cube(ρ_leaf);
+2d + the loss walk pointwise-untouched (loss bounds re-domain to the finite ρ_leaf; ρ
+finite at finite depth — flagged). Touchstone: node-local per-step IS Aoyagi's per-Case
+blow-up geometry (worked.tex:499-519) — the route is a fidelity GAIN. Use-twice split
+confirmed formally (corner ∉ interior-α-support, 36/36 — 2d stands). GATE dispatched:
+pnp-cover reopened to REPLAY its own kill under the enlarged cube ((3,3) + the (3,3,3)
+same-layer spine at ρ 1→2→6) — covers ⟹ the route ratifies and the 2a build commissions;
+residual gap ⟹ sheared-target fallback. Compass fork 15 carries the FIFTH amendment (the
+complete srcBox arc: deviation refuted → pullback refuted → enlarged-cube ruled).
+
+## 2026-07-20 tick 369: clearedOf ANSWERED (t14, cited) — converges with the terminal-frontier analysis; value lane fully unblocked
+t14 broke its silence with the full cited answer, sent direct to loss-t15: (a) the CLEARED
+count = s.cleared per-layer (resets; my running-total control REFUTED by concrete
+overshoot, 4 vs 2 at the (3,2,3) leaf); (b) dropped s i ⟺ i ≥ widthMinUpto M s.layer
+(index pinned via resRows = widthMinUpto M s.layer − cleared, GeoFoldRegroup:1129;
+antitone ⟹ drops accumulate); (c) the LEAF reads cleared as ¬dropped (the terminal is
+(L,0)) = my candidate (A)'s terminal-persist — the calibration-17 contaminating/non-
+contaminating distinction confirmed by the construction authority; frame bridge = the
+shared top sub-frame via divBirthCoord = (layer,cleared). CONVERGENCE across three
+independent derivations (elder's three-object semantics, my construction read, t14's
+ledger forms) — loss-t15 runs ONE battery validation pass over t14's form (every rollover
+boundary + terminal, both M's), then PINS + BANKS + opens the four-case grind. t14
+route-corrected (its 2a framing was a round stale — enlarged-cube, not sheared-targets)
+and PARKED for the pnp replay verdict → its srcBox radius batch.
+
+## 2026-07-20 tick 370: REPLAY PASSES ALL THREE GATES — the 2a design arc CLOSES; t14 commissioned two-phase
+pnp-cover's replay (cert §7, exact-rational): GATE 1 — every old gap point covers at ρ=2,
+the R(1+R) bound TIGHT at the diagonal; GATE 2 — the (3,3,3) collection-kill spine covers
+node-locally at radii 1→2→6 (the exact spot where the collection died); GATE 3 — 4×4
+depth-stress exact at radii to 42 (compounding super-exponential but finite per leaf; the
+fork-15 ∃R clause satisfied on a finite tree). Same-layer overlap CONFIRMED irrelevant:
+the cover keeps composite order and bumps radius — commutation never needed. KEY
+SIMPLIFICATION over the elder's framing: srcBox STAYS A CUBE — only the radius threads
+(no gAcc, no pullback; the disk def was wrong only in its radius). The route rests on two
+banked atoms (node_selfCover ∀R + the inverse-shear bound ⊇-rearranged); the only new
+content is the radius-threaded reachability induction. t14 COMMISSIONED TWO-PHASE:
+Phase 1 now (the two atoms + the statement-level design diff incl. the tGeoG-signature
+consumer enumeration — GeoAlphaGauge edit region restricted to the shear-bound section);
+Phase 2 (the tGeoG change + imageCover fill + 2b re-bank + wiring) SEQUENCED behind
+walk-t20's and loss-t15's landings — a signature change now would re-type two live lanes,
+and the cover is the last owed sorry regardless. pnp-cover closed with double honors.
+THE 2a DESIGN ARC IS OVER: three rounds, two exact refutations, one ratified route — all
+before any cover Lean existed.
+
+## 2026-07-20 tick 371: clearedOf DERIVED (battery exit-0) — the dropped predicate is ROLLOVER-AWARE; the bank proceeds
+loss-t15's state-trace battery (clearedof_walk_trace.py, 59b7500a2 — symbolic row/col
+reduction with rollover contamination, every state of (2,2,2) + (3,2,3)): CLEARED = my
+candidate (A) confirmed (terminal-persist; the running-total control overflows M(0)
+mid-walk). THE FIND: DROPPED needs a ROLLOVER-AWARE threshold — dropThreshold s = if
+widthMinUpto M (s.layer+1) ≤ s.cleared then widthMinUpto M (s.layer+1) else widthMinUpto
+M s.layer — whose switching condition IS the oracle's rollover guard verbatim. Both
+simpler forms refuted one-state-off in opposite directions: t14's (i ≥ widthMinUpto
+s.layer) MISSES the rollover node itself (breaking rollover maintenance — an unmarked zero
+row can't propagate under option C); the eager layer+1 form fires a state EARLY (false
+while the row is still residual). dropped == zero-rows EXACTLY at all 14 traced states;
+hcov/hdisj at terminal. Honest caveat scoped correctly: the linear trace can't see bmon
+VALUES — the four-case maintenance re-confirms in Lean (the ratified tripwire covers it).
+BOTH bank gates satisfied (stamp + clearedOf) — loss-t15 BANKING the full unit now per the
+standing pre-authorization (prefixColFin + prodPrefix + InvVal3 + bmonOf(≤) + clearedOf(A)
++ dropped(rollover-aware) + amended leaf discharge + prefix=full lemma + vacuous base);
+the four-case grind opens on its green. Elder FYI-confirm riding (the drop-at-layer-
+completion fidelity read); walk-t20 mid-2d-A per the board.
+
+## 2026-07-20 tick 371b: elder confirmed the rollover-aware form (paper-pinned) — the payload design is CLOSED
+worked.tex:486's "when J reaches M(S+1) the layer is done" IS the drop moment — the
+rollover-aware threshold nails the exact node both simpler forms miss, and its switching
+condition = the oracle guard verbatim is the construction-derived pin (precision-3
+discipline). Consistent with the width-drop ruling (dropped accumulates monotonically;
+the threshold pins each row's join state). The battery's 14-state dropped==zero-rows IS
+the width-drop leg the elder asked for — passed. Bank hedge removed; the payload design
+(after seven gate catches across five rounds) is CLOSED. What remains on the value lane
+is pure proof: the bank green, then the four maintenance cases, then the walk.
+
+## 2026-07-20 tick 372: t14 Phase-1 atoms banked; A-vs-C RULED C (uniform ρ_max override) + Phase 1.5
+t14 banked the Phase-1 atom set sorry-free (1492703b2): the R≥1 node self-cover (⊇ form)
++ the surjectivity chain up to cubeBox_subset_alphaGauge_image (the ⊇ inverse-shear) — the
+per-node content of the radius induction, all with the design record cited. Its design
+diff posed A (thread ρ in tGeoG — exact per-leaf radius, mirrors the id induction
+verbatim, but re-types BOTH live lanes) vs C (uniform ρ_max override in geoAtlasNorm's def
+only — tGeoG untouched). RULED C, my call (both faithful; the elder's ruling is agnostic —
+the per-node ρ lives proof-side either way): protect the live lanes. t14's base-case
+caveat pulled FORWARD as PHASE 1.5 (now, while parked): re-confirm the terminal case under
+ρ_max ⊋ ρ_path — expected to close by image monotonicity (enlarging srcBox only grows
+acc''srcBox); if it resists, A is the pre-priced fallback eaten at the sequenced Phase-2
+point. Noted: C's .map override adds a shallow mem_map ripple to loss-t15's membership
+hypotheses (flagged at Phase-2 GO, not mid-bank); (D)₁ stays rfl. FILE COORDINATION:
+t14's atoms and walk-t20's walk are append-vs-append in GeoAtlasTransfer.lean on different
+branches — decl list sent to walk-t20 (avoid collisions; exact-duplicate relocations
+dedup'd by me at the union merge).
+
+## 2026-07-20 tick 373: THE PAYLOAD UNIT BANKED (clean-three, zero sorries) + MERGED; the four-case grind OPENS
+loss-t15 banked the complete value-walk payload (614f02e83; merged to integration
+acbc27b8e; gate running): prodPrefix + the prefix=full cast bridge, resolvedRows(A) /
+rollover-aware dropThreshold / clearedOf / droppedOf, bmonOf(≤), the THREE-STATE
+prefix-based InvVal3 (option C), the vacuous conRoot base, and the three-state leaf
+discharge carrying the width-drop fix — all [propext, Classical.choice, Quot.sound], zero
+sorries. The FALSE two-state non-prefix InvVal is DELETED. Seven design catches, zero
+wasted grind — the lane's design phase is over; what opened is the FOUR-CASE GRIND (task
+#21): case-2 FIRST (the ratified tripwire case — the α-Schur must establish newly-cleared
+= bmon from the exposed prodPrefix values; walls ⟹ stop-and-surface), case-11/rollover
+riding the α=id gift on t14's reads verbatim, then the walk instantiation. COORDINATION:
+its fannedG copies are now the CANONICAL ones on integration; walk-t20 instructed to
+merge, drop its verbatim duplicates, and import GeoInvValWalk (acyclic direction) — the
+aggregator clash dies before existing. Board: t14 on Phase 1.5, walk-t20 on 2d-B,
+loss-t15 on case-2 — all three owed sorries now have active, fully-de-risked builds.
+
+## 2026-07-20 tick 374: Phase 1.5 PASS — Option C fully de-risked; my acc-read corrected; Phase-2 content pinned
+t14's base-case check (973e3dde1, merged): the terminal containment closes by PURE CUBE
+MONOTONICITY — with a correction to MY tick-372 read: leafPathImages(.leaf l) = l.srcBox
+(PivotCoverFold:58) — the leaf chartMap is NEVER applied (charts enter only at branch
+localSubs; GeoCoverSpec:306's terminal case is literally cube ⊆ srcBox). No acc anywhere.
+Atoms banked sorry-free (cubeBox_subset_cubeBox, flatCube_subset_flatCube). THE REAL
+PHASE-2 SUBTLETY it isolated: the existing leafPathImages coherence reads the TREE srcBox
+= cube(1) — the refuted α-gap domain — so the C-override needs a radius-parametrized
+leafPathImages_ρmax (leaf ↦ cube(ρ_max)) + its coherence to the override atlas + the
+radius-threaded induction over it; tGeoG stays UNTOUCHED (both walks safe). NO Option-A
+fallback needed. Phase-2 = one new def + coherence + the induction, per-node atoms all
+banked. t14 parked for the Phase-2 GO (trigger: both walks landing). t14's branch merged
+to integration so walk-t20's next merge sees the full GeoAtlasTransfer state and resolves
+the append-union locally.
+
+## 2026-07-20 tick 375: the four-case grind scoped honestly — NEW prod-transform infra is the bulk; steer issued
+loss-t15's pre-dive scoping (the honest-scale discipline): nothing exists for
+prod-under-chart — t14's read suite tracks individual FLAT coordinates and collapses to a
+scalar det; the value walk must track how the PREFIX PRODUCT's entries move, needing a new
+prodAux↔flat-coords bridge + per-entry chart transport (the design note's "strictly
+deeper" made concrete). Its tripwire read: option C HOLDS on statement-truth (the parent
+exposes unresolved rows as concrete prodPrefix values; the clearing COMPUTES newly-cleared
+= bmon·e_J from the exposed residual + the α-Schur — no carried block needed); the work is
+computation, not re-design. Scale: multi-arc, comparable to t14's four stages — the
+expedition's critical path now runs through this build, as it must (it IS the one
+mathematical hole). STEER: solo on the bridge NOW with a LIGHT statement gate (the
+indexing/frame risk class has bitten seven times — post the bridge statements first);
+co-builder decision DEFERRED to the bridge green with walk-t20 as the plan (closest
+sibling build; natural case split: t15 takes the heavy α-Schur clearing pair, t20 the
+α=id pair + the instantiation). The fannedG question was moot (crossed — already
+canonical). Board: three lanes grinding, zero open design questions.
+
+## 2026-07-20 tick 376: THE 2d MISSION SORRY IS CLOSED — geoAtlasNorm_leaf_leafJacobian filled sorry-free
+walk-t20 landed 2d-B + 2d-C in one push: geoAtlasNorm_cocycle (the gauge-parametric walk
+over tGeoG, generic in the reads-based bundle; rollover reuses the id atom verbatim;
+case-11/rollover free via the α=id gift; case-2/case-12 through the mechanism wrapper) and
+the FILL — geoAtlasNorm_leaf_leafJacobian instantiated at alphaGauge/conRoot/id, the
+refine mirroring the id version exactly. CONFINEMENT PERFECT: two files touched
+(GeoAtlasTransfer +504/-51, AxCheck +17); GeoFoldRegroup / GeoLeafJacobian / GeoAlphaGauge
+/ ChartBridgeFaithful byte-UNTOUCHED — the one-spine constraint discharged as designed.
+The faithful discharge now routes through TWO owed sources: leafDiagFrob_geoAtlasNorm
+(loss-t15's walk — the mathematical hole) + geoAtlasNorm_imageCover (t14's Phase-2 cover,
+fully de-risked). Its AxCheck double-gate is building; the landing sequence: gate
+footprints → its own fannedG dedup (merge integration, drop duplicates, import the
+canonical GeoInvValWalk) → push → my merge + full gate. Then walk-t20 rotates into the
+co-builder slot on loss-t15's four-case split. From three owed sorries to two in one arc,
+with zero collateral surface.
+
+## 2026-07-20 tick 377: bridge gate ruled — shapes 1-3 GO; the t̃-identity named as the pre-crux check
+loss-t15's light gate on the prodAux↔flat bridge: shapes 1-3 approved (entry↔flat atom,
+prefix recursion, layer-matrix read lift — grounded + cited); crux-4 approved with a
+MID-BUILD MICRO-GATE (post the pinned statement before grinding — the tick-286 class lives
+at "pinned during the build"); frames (a)/(b) confirmed. THE DIFF'S CATCH — point (c)'s
+old-row pullback hides a named requirement: OLD-ROW FILTER STABILITY needs the fresh
+divisor's clearing level to equal its birth step EXACTLY (t̃_new = J; the proven bound
+:146-148 gives only ≤). If case-12's split-born divisor can land t̃ < J, old rows' bmon
+filters gain a factor while their values stay spectator-fixed — InvVal3 fails on old rows
+(would-be catch #8). REQUIRED before crux 4: the identity as a lemma (DivBirthInv
+freshness the natural home) or a battery trace of every fresh divisor's t̃ at three M's,
+for BOTH birth cases. Sequence: shape 1 bank → t̃-check → shapes 2-3 → case2. The lane's
+gate discipline continues to front-load every risk the grind would otherwise hit blind.
+
+## 2026-07-20 tick 378: 2d COMPLETE + double-gate PASS; BANK-NOW issued (VM risk); fidelity reviewer spawned
+walk-t20 reported 2d done: geoAtlasNorm_leaf_leafJacobian sorry-free clean-three, the R7
+Jacobian transfer to the faithful α atlas discharged. Double-gate (targeted #print axioms —
+the full AxCheck timed at 590s on the heavy RouteM Validate tail, 8528/8549, 0 errors,
+unrelated; canonical full gate runs integration-side): α side clean-three (leafJacobian,
+cocycle, ledgerProps, ae_injOn); id side UNCHANGED clean-three (GeoFoldRegroup/GeoLeafJacobian
+git-confirmed byte-untouched — one spine held); toChartBridge clean-three (the MUST);
+chartBridgeFaithful_buildTree sorryAx now routes through TWO owed sources only (leafDiagFrob
++ imageCover) — the jacobian source GONE. Two files, +453 net Lean, matching estimate; no
+tripwire fired. TWO CONTROLLER ACTIONS: (1) the work was GREEN BUT UNCOMMITTED — issued a
+hard BANK-NOW (commit+push as-is before dedup; the policy Q re-answered definitively:
+own-branch push = banking, pre-authorized; the two VM deaths make uncommitted green work the
+one unacceptable state). (2) spawned rev-jac for the fidelity check walk-t20 correctly
+requested (does the reads-neutral bundle honestly hold — α genuinely fixes the child ledger
+reads, not assumed away; + one-spine-real + axiom-honesty + the α-is-Aoyagi's-chart
+touchstone). Statement card filed (card-geoAtlasNorm-leaf-leafJacobian.md). ONE OWED SORRY
+of substance remains on the payoff cone (leafDiagFrob_geoAtlasNorm, loss-t15) + t14's
+de-risked cover. Co-builder rotation (walk-t20 → loss-t15's four-case split) fires after its
+bank + the rev-jac verdict.

@@ -493,3 +493,24 @@ obligation; the DECORRELATED HUNT did. The compass counsel (coverage's cover = a
 claim; the gate reads a decorrelated hunt, never an in-house witness) is not redundancy —
 it is the only instrument class that fired. Corollary now applied forward: the collection
 lemma's gate refuses the shallow (2,2,2)/single-α confirmation for the same reason.
+
+## Entry 17 (tick 367, 2026-07-20) — the terminal-frontier subtlety (controller construction read)
+**Question.** With t14 silent on clearedOf (4 asks), derive the frontier semantics myself.
+Expectation walking in: the elder's reset-per-layer + loss-t15's leaf discharge (hall = all
+rows resolved at a leaf) compose cleanly.
+**Finding.** They DON'T compose naively: the terminal state arrives via rollover with
+cleared = 0 (dispatch checks layer = L first; matrices are 0..L-1), so a current-layer
+frontier marks NOTHING cleared at every leaf — hall unsatisfiable. The rescue is a
+distinction neither prior ruling named: CONTAMINATING vs NON-CONTAMINATING rollovers. A
+mid-walk rollover S→S+1 (S+1 < L) brings matrix S+1 into the prefix and honestly resets
+the frontier (the elder's precision-2, leg-ii verified). The TERMINAL rollover into layer
+L brings no new matrix (prefixCol caps at L) — layer L-1's completed frontier
+(= widthMinUpto M L = the all-widths running min) honestly PERSISTS into the leaf.
+**Action.** Candidate set (A/B/C) + a full state-trace battery protocol handed to
+loss-t15, self-serve — the lane unblocks without waiting on t14. widthMinUpto's inclusive
+≤ pinned from the def (EngineDefs:154) en route.
+**Lesson (provisional until the battery rules).** Two individually-correct rulings (reset
+semantics; leaf-discharge shape) can still fail to COMPOSE at a boundary state neither was
+examined at — the boundary here being the terminal rollover. Same family as entry 15
+(boundary-only verification), dual direction: there the interior was untested; here the
+final boundary was.

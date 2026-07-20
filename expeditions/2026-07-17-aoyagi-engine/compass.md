@@ -437,6 +437,27 @@ over banked substrate.
     M_{s,k} :530-533); (A)'s 2×2 was a worked instance — a def on it would be the
     visible-progress trap. Content sits at the per-cell α-Schur clearing; InvVal vacuous at
     un-resolved cells + leaves (resid never read at a leaf), teeth at cleared cells.
+    (AMENDED 5th, the 2a cover arc concluded, tick 368.) The srcBox story's full record:
+    (i) the disk's srcBox = cube DEVIATION from the design's g⁻¹(cube) was REFUTED —
+    pnp-cover's exact gap (y=(t,t,t,t); every pivot's preimage needs coord 2; open gap
+    region around the diagonal; clause (A) FALSE over cube). (ii) The gAcc-threaded
+    pullback def was REFUTED — pnp-collect killed the COLLECTION LEMMA (chartMap_α ≠
+    chartMap_id∘gAcc; same-layer spine witness at (3,3,3): α₀'s interior = β₁'s center,
+    nested supports; cross-layer commutes, same-layer does not; the elder owned the
+    different-layers over-spec). Its death is a FIDELITY signal: the global composite was
+    the trick the paper never makes. (iii) THE ROUTE (elder round 3): ENLARGED-CUBE —
+    thread a scalar RADIUS, ρ_{n+1} = ρ_n(1+ρ_n); per node α_n''cube(ρ_{n+1}) ⊇ cube(ρ_n)
+    (the banked inverse-shear bound) then id node_selfCover at ρ_n (the banked atom
+    iUnion_pivotChart_image_eq_cubeBox holds at any R, PivotCover:109); srcBox_leaf =
+    cube(ρ_leaf); the α's are NEVER composed — the same-layer overlap is irrelevant.
+    Clause (A) unchanged (∃U). Touchstone: node-local per-step IS Aoyagi's geometry (each
+    Case blows up its own locus, worked.tex:499-519; the RLCT is a germ, :132-149).
+    USE-TWICE SPLIT (formally decoupled, do not conflate): the map-level collection is
+    DEAD; the det-level transparency is ALIVE on its own weaker precondition (S relocates
+    every β's det-read to the block corner (cleared,cleared); schurCells are strictly
+    interior — the corner is never in any α's support; verified 36/36) — Stage 2d stands.
+    GATE: pnp-cover replays the kill instances under the enlarged cube ((3,3) + the
+    (3,3,3) spine at ρ = 1→2→6) before the 2a build commits.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
