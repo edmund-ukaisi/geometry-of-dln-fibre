@@ -514,3 +514,35 @@ semantics; leaf-discharge shape) can still fail to COMPOSE at a boundary state n
 examined at — the boundary here being the terminal rollover. Same family as entry 15
 (boundary-only verification), dual direction: there the interior was untested; here the
 final boundary was.
+
+## Entry 18 (tick 380, 2026-07-20) — the cordon census: what sorries remain after the two owed close?
+**Question.** When leafDiagFrob_geoAtlasNorm + geoAtlasNorm_imageCover close, what sorries
+remain in DLNFibre/DLN/RLCT/, and is every one accounted for by the cordon plan?
+**Expectation (before grep).**
+- ENGINE cone (must be fully accounted): ClearableReify:78 (R7 completeness, owed
+  post-spine — reifies now, proof later) + CanonicalWitness224:135 (off-cone (2,2,4)
+  witness) = 2, both PLANNED. Confidence 0.85.
+- SKELETON: 3 fossils (:1094/:1140/:1197) — die at the mint relocation (mint-t19's plan).
+  Confidence 0.9.
+- VALIDATE: MANY (the L2/RouteM/Deepest scaffolds — exploratory, off the payoff cone) —
+  guess ~20-25 files. These do NOT block the λ theorem (not on its cone); the cordon names
+  them as pre-existing scaffold, not expedition-introduced. Confidence 0.6 on the count.
+- Net after the two close: the payoff cone (aoyagi_learning_coefficient_gen + its deps) is
+  sorry-FREE; the remaining sorries are all either owed-post-spine (R7), off-cone (224 +
+  Validate scaffolds), or fossils (Skeleton, die at mint). Confidence 0.8.
+**Verdict (after grep).** Cleaner than feared — census fully accounted.
+- ENGINE: 4 sorries now (CanonicalWitness224, ClearableReify, GeoAlphaGauge =
+  leafDiagFrob_geoAtlasNorm [loss-t15 owed], GeoAtlasTransfer = geoAtlasNorm_imageCover
+  [t14 owed]). After the two owed close → EXACTLY 2 (ClearableReify + CanonicalWitness224),
+  both planned. HIT (0.85). 
+- SKELETON: 3 fossils. HIT (0.9).
+- VALIDATE: 9 files (not 20-25 — I over-counted; the tick-341 census counted docstring
+  "sorry" mentions, not terms). Downward miss, benign — fewer to cordon.
+- DECISIVE off-cone proof already in hand: aoyagi_learning_coefficient_gen is gate-verified
+  CLEAN-THREE, so NONE of the Validate/Skeleton/224 sorries are on the λ cone (else it would
+  carry sorryAx). The payoff cone is provably sorry-free modulo the two owed. HIT (0.8).
+**Action.** The cordon census (PR-time) enumerates: 2 Engine owed-post-spine/off-cone + 3
+Skeleton fossils (die at mint relocation) + 9 Validate scaffold files (pre-existing,
+off-cone). The PR body's "owed" paragraph names R7 (ClearableReify) + the (2,2,4) witness;
+the Validate/Skeleton items are pre-existing-scaffold / fossil, not expedition-introduced.
+Pre-staged so the census is a checklist, not a discovery, at PR time.
