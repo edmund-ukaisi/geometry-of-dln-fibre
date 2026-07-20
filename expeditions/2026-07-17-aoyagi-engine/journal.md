@@ -6360,3 +6360,27 @@ diagonal); (3) walk-t20 + t14 conclusions survive, proofs redo AFTER the fix —
 rebuild against an unratified gauge). Bounded (construction completion, not redesign) but a
 real setback — named plainly. Navigator to re-sequence the rebuild once the elder rules the
 fix shape. GeoInvValMaint aggregator-wired stands.
+
+## 2026-07-20 tick 386: elder RATIFIED the α fix (fidelity gain); prefix SURVIVES; pnp-rg on the Rg shape; lanes sequenced
+Elder ratified + owned: the fork-15 α OBJECT was right, the Lean was an UNDER-implementation
+(interior Schur only; det-1 omissions ⟹ latent through 4 passes). (a) FIDELITY: completing to
+full Q,P is a GAIN, not redesign. (b) FRAME: Rg belongs to the SAME edge, genuinely
+cross-layer (compensates C^{(S+1)} → Rg⁻¹·C^{(S+1)}), so LOCALITY weakens to "≤S + the
+S/(S+1) interface" — faithful (the strong locality was the under-implementation's artifact).
+CRITICAL RELIEF: the PREFIX RE-BASE SURVIVES — Rg (col op) PRESERVES cleared rows
+(i<J: (i,J)=0 ⟹ (i,j) stays 0); prod=prefix·trailing is associativity; leaf prefix=prod. So
+loss-t15's form-2 ends + prefix/bmon/clearedOf machinery STAND; only leg-(ii)'s contamination
+expression changes + task #14's locality bridge re-proves in the weakened interface form. (c)
+PAUSE #21 confirmed. THE EXACT Rg per-edge SHAPE → pnp-rg (spawned): the collection-lemma-class
+kill-condition — does the same-edge Rg's C^{(S+1)}-write overlap the NEXT edge's writes
+(⟹ interface/rollover-edge placement) or edge-disjoint (⟹ same-edge)? + confirm the completed α
+makes prod EXACTLY diagonal at (2,2,2)/(2,2,2,2). OWNERSHIP: loss-t15 owns the α completion
+(task #22) — Lg-remainder (single-layer, easy) NOW; Rg HELD for pnp-rg — then the cascade
+back to its own maintenance. walk-t20 (leafJacobian PROOFS: schurCells_snd_ne +
+elemShearFold-independence go FALSE, rebuild; CONCLUSION survives det-1) + t14 (cover srcBox
+constant + locality redo; CONCLUSION survives) HELD — briefed, no rebuild against an
+unratified gauge. Phase-1 atoms (t14) + form-2 ends (loss-t15) gauge-independent, STAND.
+SEQUENCE (elder): complete α → re-prove det/cover/leafJacobian → re-establish interface-locality
+bridge → value maintenance on corrected support → residualCore≥1 → LeafPullback closes.
+Navigator to price/parallelize the rebuild cascade once pnp-rg's shape lands. Bounded
+(construction completion) — named plainly, not a redesign.
