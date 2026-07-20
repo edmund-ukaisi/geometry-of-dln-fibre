@@ -6117,3 +6117,20 @@ the threshold pins each row's join state). The battery's 14-state dropped==zero-
 the width-drop leg the elder asked for — passed. Bank hedge removed; the payload design
 (after seven gate catches across five rounds) is CLOSED. What remains on the value lane
 is pure proof: the bank green, then the four maintenance cases, then the walk.
+
+## 2026-07-20 tick 372: t14 Phase-1 atoms banked; A-vs-C RULED C (uniform ρ_max override) + Phase 1.5
+t14 banked the Phase-1 atom set sorry-free (1492703b2): the R≥1 node self-cover (⊇ form)
++ the surjectivity chain up to cubeBox_subset_alphaGauge_image (the ⊇ inverse-shear) — the
+per-node content of the radius induction, all with the design record cited. Its design
+diff posed A (thread ρ in tGeoG — exact per-leaf radius, mirrors the id induction
+verbatim, but re-types BOTH live lanes) vs C (uniform ρ_max override in geoAtlasNorm's def
+only — tGeoG untouched). RULED C, my call (both faithful; the elder's ruling is agnostic —
+the per-node ρ lives proof-side either way): protect the live lanes. t14's base-case
+caveat pulled FORWARD as PHASE 1.5 (now, while parked): re-confirm the terminal case under
+ρ_max ⊋ ρ_path — expected to close by image monotonicity (enlarging srcBox only grows
+acc''srcBox); if it resists, A is the pre-priced fallback eaten at the sequenced Phase-2
+point. Noted: C's .map override adds a shallow mem_map ripple to loss-t15's membership
+hypotheses (flagged at Phase-2 GO, not mid-bank); (D)₁ stays rfl. FILE COORDINATION:
+t14's atoms and walk-t20's walk are append-vs-append in GeoAtlasTransfer.lean on different
+branches — decl list sent to walk-t20 (avoid collisions; exact-duplicate relocations
+dedup'd by me at the union merge).
