@@ -39,3 +39,17 @@ the trail is local):
   (2,2,3,3,2) — the eligible sets at L≤3 are too shallow to expose the dependence. When a
   hypothesis seems droppable, escalate the instance DEPTH before believing it. Caught by the
   claimant itself in finalization. (pnp o4 cert Part 7, 2026-07-18)
+- **DIAGNOSE-FIRST, don't race to solve (operator standing rule, 2026-07-20).** When the operator
+  asks "what is the issue / why is X / what's the right solution," they want to UNDERSTAND it first —
+  diagnose, report, and WAIT for their steer before touching code. I raced on the cordon slowness:
+  asked "what's the right solution," I immediately implemented a prune (broke a caller → mis-diagnosed
+  → left a 99.9%-CPU zombie audit). The fix wasn't even validated as a fix. Report the diagnosis + the
+  known-vs-unknown, then stop. **Why:** racing manufactures churn + wrong fixes + hides the fact that
+  the issue isn't understood; the operator's question IS the work at that moment, not the patch.
+- **Don't conclude from a KILLED/unfinished run (2026-07-20).** I claimed "the prune didn't fix the
+  perf" from an audit I killed at 8:32 while it was still running — a lower bound, not a measurement.
+  Both the 32-min and 8-min cordon runs were killed unfinished, so there is NO before/after timing.
+  A killed run bounds-below, it does not measure; let it complete (or don't claim the delta). Same
+  reasoning-from-incomplete-data family as the shallow-instance confound above.
+- **TaskStop kills the wrapper, not the detached child (2026-07-20).** A 32-min `cordon-audit`
+  survived its task's TaskStop, burning a core. For a runaway build/audit, `pkill` the process.
