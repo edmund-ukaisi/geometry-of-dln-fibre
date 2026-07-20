@@ -971,6 +971,86 @@ theorem ledger_det_maintenance_rollover (M : Fin (L + 1) → ℕ) (s : ConState 
     ∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s.stepRollover h w := by
   intro w; rw [ledgerMonomial_stepRollover]; exact haccdet w
 
+/-- **The case-1 u-corner sits at center index 0** and equals the merge divisor's diagonal: at a
+reachable case-1 node, `cNodeOf M node hd ⟨0⟩ = birthFlatCoord M s f h` (`realCNode_case1_append` puts
+the `u`-corner at the left of the append, `uCornerSel_eq_birthFlatCoord` identifies it). The
+walk-supplied cell fact for `hpivcell` (case-11, pivot 0) / `hucell` (case-12, `i₀ = ⟨0⟩ ≠ pivot`). -/
+theorem cNode_index0_eq_birthFlatCoord (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (dinv : DivBirthInv M s) (node : StepData M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (target : ℕ) (hocc : nodeOccMin M node = some target) (h : 0 < flatDim M)
+    (hd : dCenterOfNode M node ≤ flatDim M) (h0 : 0 < dCenterOfNode M node)
+    (f : Fin s.numDiv) (hf : chooseMin s target = some f) :
+    cNodeOf M node hd (⟨0, h0⟩ : Fin (dCenterOfNode M node)) = birthFlatCoord M s f h := by
+  rw [cNodeOf_eq_realCNode_of_conOracle s dinv node edges htree hd]
+  have hlive := layer_lt_of_branch s node edges htree
+  obtain ⟨hlayer, hcleared⟩ := step_node_layer_cleared s node edges htree
+  have h1 : ¬ L ≤ node.layer := by rw [hlayer]; exact not_le.mpr hlive
+  have h2 : ¬ widthMinUpto M (node.layer + 1) ≤ node.cleared := by rw [hlayer, hcleared]; exact hnr
+  have hu : 1 ≤ flatDim M := h
+  have hdim : dCenterOfNode M node = 1 + (target - node.cleared) * node.resCols := by
+    rw [dCenterOfNode_nonterminal M node h1 h2, hocc]; rfl
+  have hdd : (target - node.cleared) * node.resCols ≤ flatDim M := by omega
+  obtain ⟨idx, hidxval, heq⟩ := realCNode_case1_append node h1 h2 target hocc hd hu hdd ⟨0, h0⟩
+  rw [heq]
+  have hidx0 : idx = Fin.castAdd ((target - node.cleared) * node.resCols) (⟨0, Nat.one_pos⟩ : Fin 1) :=
+    Fin.ext (by simpa using hidxval)
+  rw [hidx0, Fin.append_left]
+  obtain ⟨f', hf', huval⟩ :=
+    uCornerSel_eq_birthFlatCoord s dinv node edges htree hnr target hocc h hu ⟨0, Nat.one_pos⟩
+  obtain rfl : f' = f := Option.some.inj (hf'.symm.trans hf)
+  exact huval
+
+/-- `edgesLeaves` of a `.mk`-built mapped edge-list is the `flatMap` of the per-element children
+(local copy — GeoLeafLedger's `edgesLeaves_mapMk` is not in this module's import closure). -/
+theorem edgesLeaves_mapMk_fold {α : Type*} (g : α → StepCase) (sub : α → ChartSubst M)
+    (chi : α → ResolutionTree M) (l : List α) :
+    ResolutionTree.edgesLeaves (l.map (fun a => Edge.mk (g a) (sub a) (chi a)))
+      = l.flatMap (fun a => ResolutionTree.leaves (chi a)) := by
+  induction l with
+  | nil => simp [ResolutionTree.edgesLeaves]
+  | cons a as ih => simp only [List.map_cons, ResolutionTree.edgesLeaves, ih, List.flatMap_cons]
+
+/-- **Charted single-edge fan decomposition**: a leaf of the fan of ONE charted edge sits under one
+pivot chart `acc ∘ geoChartMapNorm ⟨n, e, offset + pp⟩`. -/
+theorem mem_edgesLeaves_fanned_charted (acc : Params M → Params M) (n : StepData M) (offset : ℕ)
+    (ec : StepCase) (esub : ChartSubst M) (ch : ResolutionTree M) (c : LeafData M)
+    (hz : dCenterOfEdge n (Edge.mk ec esub ch) ≠ 0)
+    (hc : c ∈ ResolutionTree.edgesLeaves (fannedEdges acc n offset [Edge.mk ec esub ch])) :
+    ∃ pp : ℕ, pp < dCenterOfEdge n (Edge.mk ec esub ch) ∧
+      c ∈ ResolutionTree.leaves
+        (tGeo (acc ∘ geoChartMapNorm (fun _ => id) ⟨n, Edge.mk ec esub ch, offset + pp⟩) ch) := by
+  rw [fannedEdges, edgesLeaves_eq, List.flatMap_append, ← edgesLeaves_eq, ← edgesLeaves_eq,
+    List.mem_append] at hc
+  rcases hc with hc | hc
+  · rw [if_neg hz, edgesLeaves_mapMk_fold, List.mem_flatMap] at hc
+    obtain ⟨pp, hppmem, hcp⟩ := hc
+    refine ⟨pp, ?_, hcp⟩
+    rw [List.bind_eq_flatMap, List.mem_flatMap] at hppmem
+    obtain ⟨a, -, ha⟩ := hppmem
+    rw [List.mem_pure] at ha
+    have hai := a.isLt
+    omega
+  · rw [show fannedEdges acc n (offset + dCenterOfEdge n (Edge.mk ec esub ch)) ([] : List (Edge M))
+        = [] from rfl] at hc
+    simp [ResolutionTree.edgesLeaves] at hc
+
+/-- **Chartless single-edge fan decomposition** (rollover): the ONE identity edge forwards `acc`. -/
+theorem mem_edgesLeaves_fanned_chartless (acc : Params M → Params M) (n : StepData M) (offset : ℕ)
+    (ec : StepCase) (esub : ChartSubst M) (ch : ResolutionTree M) (c : LeafData M)
+    (hz : dCenterOfEdge n (Edge.mk ec esub ch) = 0)
+    (hc : c ∈ ResolutionTree.edgesLeaves (fannedEdges acc n offset [Edge.mk ec esub ch])) :
+    c ∈ ResolutionTree.leaves (tGeo acc ch) := by
+  rw [fannedEdges, edgesLeaves_eq, List.flatMap_append, ← edgesLeaves_eq, ← edgesLeaves_eq,
+    List.mem_append] at hc
+  rcases hc with hc | hc
+  · rw [if_pos hz] at hc
+    simpa [ResolutionTree.edgesLeaves] using hc
+  · rw [show fannedEdges acc n (offset + dCenterOfEdge n (Edge.mk ec esub ch)) ([] : List (Edge M))
+        = [] from rfl] at hc
+    simp [ResolutionTree.edgesLeaves] at hc
+
 /-- **The weak no-stranded fact, expressed on a leaf's FULL ledger fields** (so it threads through the
 `leaves` of `buildTree` without a separate reachability predicate). For `leafOfState s` this is
 defeq to `WeakNoStrand s`. -/
@@ -984,7 +1064,7 @@ geometric atlas leaf `p` of the subtree from `s` has a full-divisor-coord map `f
 (witness `fc := birthFlatCoord` over the leaf's terminal state). The headline is `s = conRoot`, `acc = id`
 (`ledgerMonomial_conRoot`). No `WeakNoStrand` — the full ledger is what the fold equals (dichotomy=FALSE). -/
 theorem geoAtlas_cocycle (h : 0 < flatDim M) :
-    ∀ (s : ConState L), DivBirthInv M s →
+    ∀ (s : ConState L), DivBirthInv M s → DivExpPos s →
       ∀ (acc : Params M → Params M), Differentiable ℝ acc →
         (∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) →
         ∀ p ∈ ResolutionTree.leaves (tGeo acc (buildTree M (conOracle M) s)),
@@ -994,17 +1074,259 @@ theorem geoAtlas_cocycle (h : 0 < flatDim M) :
   intro s
   induction s using (conRel_wf M).induction with
   | _ s ih =>
-    intro inv acc haccdiff haccdet p hp
-    cases hoc : conOracle M s with
-    | terminal l' hleaf =>
-      have hbt : buildTree M (conOracle M) s = ResolutionTree.leaf (leafOfState M s) := by
-        rw [buildTree_terminal M (conOracle M) s l' hleaf hoc, conOracle_terminal_leaf s hoc]
-      rw [hbt, tGeo] at hp
+    intro inv expinv acc haccdiff haccdet p hp
+    -- The terminal closer (used at `L ≤ layer` and the chooser fall-back).
+    have close_terminal : conOracle M s = oracleTerminal M s →
+        ∃ fc : Fin p.fullNumDiv → Fin (flatDim M), ∀ w,
+          |(fderiv ℝ p.chartMap w).det|
+            = ∏ j : Fin p.fullNumDiv, |paramsEquivFlat M w (fc j)| ^ (p.fullDivExp j - 1) := by
+      intro hos
+      rw [buildTree_terminal M (conOracle M) s (leafOfState M s) (leafOfState_rootLedger M s) hos,
+        tGeo] at hp
       simp only [ResolutionTree.leaves, List.mem_singleton] at hp
       subst hp
       rw [leafOfState, dif_pos h]
       exact ⟨fun j => birthFlatCoord M s j h, fun w => by rw [haccdet w, ledgerMonomial]⟩
-    | step node children hnode hlayer hstep =>
-      sorry
+    by_cases h1 : L ≤ s.layer
+    · exact close_terminal (by unfold conOracle; rw [dif_pos h1])
+    · have hlive : s.layer < L := not_le.mp h1
+      have hL1 : s.layer + 1 < L + 1 := by omega
+      by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+      · -- ROLLOVER: chartless, ledger-neutral.
+        have horacle : conOracle M s = rolloverDecision M s (le_of_lt hlive) h2 := by
+          unfold conOracle; rw [dif_neg h1, dif_pos h2]
+        rw [buildTree_step M (conOracle M) s (s.toStepData M 0 0)
+            [⟨StepCase.rollover, ⟨id, 0, 0, 0, Fin.elim0⟩, s.stepRollover,
+              conRel_stepRollover M s (le_of_lt hlive)⟩] horacle, tGeo,
+          ResolutionTree.leaves] at hp
+        simp only [List.map_cons, List.map_nil] at hp
+        have hpmem := mem_edgesLeaves_fanned_chartless acc (s.toStepData M 0 0) 0
+          StepCase.rollover ⟨id, 0, 0, 0, Fin.elim0⟩ (buildTree M (conOracle M) s.stepRollover) p
+          rfl hp
+        exact ih s.stepRollover (conRel_stepRollover M s (le_of_lt hlive))
+          (DivBirthInv_stepRollover s inv) (DivExpPos_stepRollover s expinv) acc haccdiff
+          (ledger_det_maintenance_rollover M s h acc haccdet) p hpmem
+      · have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp h2
+        have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+        have hrr1 : 1 ≤ widthMinUpto M s.layer - s.cleared := by
+          have hmono : widthMinUpto M (s.layer + 1) ≤ widthMinUpto M s.layer :=
+            widthMinUpto_mono M (Nat.le_succ _)
+          omega
+        have hrc1 : 1 ≤ M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) - s.cleared := by
+          have hws : widthMinUpto M (s.layer + 1) ≤ M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) :=
+            widthMinUpto_le _ (by simp)
+          omega
+        rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+            if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+            then some (s.divTilde k) else none)).min? with _ | target
+        · -- CASE-2: full residual block birth.
+          have horacle : conOracle M s = case2Decision M s
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared) hcap := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]; split <;> simp_all only [reduceCtorEq]
+          rw [buildTree_step M (conOracle M) s
+              (s.toStepData M (widthMinUpto M s.layer - s.cleared)
+                (M ⟨s.layer + 1, hL1⟩ - s.cleared))
+              [⟨StepCase.case2, ⟨id, 0, 0, 0, Fin.elim0⟩,
+                s.stepAppendAdvance ((widthMinUpto M s.layer - s.cleared)
+                  * (M ⟨s.layer + 1, hL1⟩ - s.cleared)) (fun p => runMinWidth M p),
+                conRel_stepAppendAdvance M s _ _ hcap⟩] horacle, tGeo,
+            ResolutionTree.leaves] at hp
+          simp only [List.map_cons, List.map_nil] at hp
+          set node := s.toStepData M (widthMinUpto M s.layer - s.cleared)
+            (M ⟨s.layer + 1, hL1⟩ - s.cleared) with hnode_def
+          set child2 := s.stepAppendAdvance ((widthMinUpto M s.layer - s.cleared)
+            * (M ⟨s.layer + 1, hL1⟩ - s.cleared)) (fun p => runMinWidth M p) with hchild2_def
+          have htree : buildTree M (conOracle M) s = ResolutionTree.branch node
+              [Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩ (buildTree M (conOracle M) child2)] :=
+            buildTree_step M (conOracle M) s node
+              [⟨StepCase.case2, ⟨id, 0, 0, 0, Fin.elim0⟩, child2,
+                conRel_stepAppendAdvance M s _ _ hcap⟩] horacle
+          have hocc : nodeOccMin M node = none := by rw [nodeOccMin_toStepData]; exact hmin
+          have hdim : dCenterOfNode M node = node.resRows * node.resCols :=
+            dCenterOfNode_case2 M s _ _ hlive h2 hmin
+          have hz : dCenterOfEdge node
+              (Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child2)) ≠ 0 := by
+            show node.resRows * node.resCols ≠ 0
+            have : node.resRows * node.resCols = (widthMinUpto M s.layer - s.cleared)
+              * (M ⟨s.layer + 1, hL1⟩ - s.cleared) := rfl
+            rw [this]; exact Nat.mul_ne_zero (by omega) (by omega)
+          obtain ⟨pp, hpplt, hpmem⟩ := mem_edgesLeaves_fanned_charted acc node 0
+            StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩ (buildTree M (conOracle M) child2) p hz hp
+          set g : GeoChart M := ⟨node, Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩
+            (buildTree M (conOracle M) child2), 0 + pp⟩ with hg_def
+          have hd : dCenterOfNode M g.node ≤ flatDim M := dCenterOfNode_le_flatDim s node _ htree
+          have hpiv : g.pivot < dCenterOfNode M g.node := by
+            show 0 + pp < dCenterOfNode M node
+            have hde : dCenterOfEdge node (Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child2)) = node.resRows * node.resCols := rfl
+            rw [Nat.zero_add, hdim, ← hde]; exact hpplt
+          exact ih child2 (conRel_stepAppendAdvance M s _ _ hcap)
+            (DivBirthInv_stepAppendAdvance s _ _ hlive hlt inv)
+            (DivExpPos_stepAppendAdvance s _ _
+              (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))) expinv)
+            (acc ∘ geoChartMapNorm (fun _ => id) g)
+            (haccdiff.comp (geoChartMapNorm_differentiable g))
+            (ledger_det_maintenance_case2 M s h inv g _ htree h2 hocc rfl hd hpiv
+              (fun p => runMinWidth M p) acc haccdiff haccdet) p hpmem
+        · -- CASE-1 (or chooser fall-back terminal).
+          rcases hf : chooseMin s target with _ | f
+          · -- chooser fall-back → terminal
+            refine close_terminal ?_
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          · -- CASE-1 blow-up (merge + split children).
+            have hgt : s.cleared < target := by
+              obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+              rw [List.mem_filterMap] at hmemtar
+              obtain ⟨k0, -, hk0⟩ := hmemtar
+              by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                  s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+              · rw [if_pos hc0] at hk0
+                have hdt : s.divTilde k0 = target := Option.some.inj hk0
+                have := hc0.1; omega
+              · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+            set node := s.toStepData M (widthMinUpto M s.layer - s.cleared)
+              (M ⟨s.layer + 1, hL1⟩ - s.cleared) with hnode_def
+            set child11 : ConState L := ⟨s.layer, s.cleared, s.numDiv,
+              (fun k => if (k : ℕ) = f.val
+                then s.divExp k + (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+                else s.divExp k),
+              Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+              s.numGen, s.genDivExp, s.divBirthCoord⟩ with hchild11_def
+            set child12 := s.stepAppendAdvance
+              (s.divExp f + (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared))
+              (s.divProfile f) with hchild12_def
+            have helig : s.divTilde f = s.cleared + (target - s.cleared) := by
+              rw [(chooseMin_spec s target hf).1]; omega
+            have hdesc11 : conRel M child11 s :=
+              conRel_of_exp_change M (s.stepCase11 f) s _ s.numGen s.genDivExp
+                (conRel_stepCase11 M s f hlive (by rw [(chooseMin_spec s target hf).1]; omega))
+            have hdesc12 : conRel M child12 s :=
+              conRel_stepAppendAdvance M s _ _ hcap
+            have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+                (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+                (not_le.mp h1) (by omega) helig hcap := by
+              unfold conOracle
+              rw [dif_neg h1, dif_neg h2]
+              split
+              · rename_i target' heq
+                obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+                split
+                · rename_i f' hf'
+                  obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                  rfl
+                · rename_i hf'; exact absurd (hf' ▸ hf) (by simp)
+              · rename_i heq; exact absurd (heq ▸ hmin) (by simp)
+            have htree : buildTree M (conOracle M) s = ResolutionTree.branch node
+                [Edge.mk StepCase.case11 ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11),
+                  Edge.mk StepCase.case12 ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child12)] :=
+              buildTree_step M (conOracle M) s node
+                [⟨StepCase.case11, ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩, child11, hdesc11⟩,
+                  ⟨StepCase.case12, ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩, child12,
+                    hdesc12⟩] horacle
+            have hocc : nodeOccMin M node = some target := by
+              rw [nodeOccMin_toStepData]; exact hmin
+            have hd : dCenterOfNode M node ≤ flatDim M := dCenterOfNode_le_flatDim s node _ htree
+            have hde1 : dCenterOfEdge node (Edge.mk StepCase.case11
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child11)) = 1 := rfl
+            have hde2 : dCenterOfEdge node (Edge.mk StepCase.case12
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child12))
+                = (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared) := rfl
+            have hncol : node.resCols = M ⟨s.layer + 1, hL1⟩ - s.cleared := rfl
+            have hsum : dCenterOfNode M node
+                = 1 + (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared) :=
+              dCenterOfNode_case1 M s _ _ target hlive h2 hmin
+            have hsum2 : dCenterOfNode M node
+                = dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩ (buildTree M (conOracle M) child11))
+                  + dCenterOfEdge node (Edge.mk StepCase.case12
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child12)) := by rw [hde1, hde2]; exact hsum
+            have hb : dCenterOfNode M node
+                = (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared) + 1 := by
+              rw [hsum]; exact Nat.add_comm _ _
+            have h0 : 0 < dCenterOfNode M node := by rw [hb]; exact Nat.succ_pos _
+            have hcell0 : cNodeOf M node hd (⟨0, h0⟩ : Fin (dCenterOfNode M node))
+                = birthFlatCoord M s f h :=
+              cNode_index0_eq_birthFlatCoord M s inv node _ htree h2 target hocc h hd h0 f hf
+            rw [htree, tGeo, ResolutionTree.leaves, fannedEdges, edgesLeaves_eq,
+              List.flatMap_append, ← edgesLeaves_eq, ← edgesLeaves_eq, List.mem_append] at hp
+            rcases hp with hp1 | hp2
+            · -- the case-1(1) MERGE edge (pivot `0`).
+              rw [if_neg (show dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11)) ≠ 0 from one_ne_zero),
+                edgesLeaves_mapMk_fold, List.mem_flatMap] at hp1
+              obtain ⟨pp, hppmem, hcp⟩ := hp1
+              have hpp0 : pp = 0 := by
+                rw [List.bind_eq_flatMap, List.mem_flatMap] at hppmem
+                obtain ⟨a, -, ha⟩ := hppmem
+                rw [List.mem_pure] at ha
+                have hai : (a : ℕ) < 1 := a.isLt
+                omega
+              set g1 : GeoChart M := ⟨node, Edge.mk StepCase.case11
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child11), 0 + pp⟩ with hg1_def
+              have hpiv1 : g1.pivot < dCenterOfNode M g1.node := by
+                show 0 + pp < dCenterOfNode M node; rw [hpp0]; simpa using h0
+              have hpivcell : cNodeOf M g1.node hd (⟨g1.pivot, hpiv1⟩ : Fin (dCenterOfNode M g1.node))
+                  = birthFlatCoord M s f h := by
+                rw [show (⟨g1.pivot, hpiv1⟩ : Fin (dCenterOfNode M node)) = ⟨0, h0⟩ from
+                  Fin.ext (by show 0 + pp = 0; rw [hpp0])]
+                exact hcell0
+              exact ih child11 hdesc11 (DivBirthInv_stepCase11 s f inv)
+                (DivExpPos_bumpedExp s f _ expinv)
+                (acc ∘ geoChartMapNorm (fun _ => id) g1)
+                (haccdiff.comp (geoChartMapNorm_differentiable g1))
+                (ledger_det_maintenance_case11 M s h inv g1 _ htree h2 rfl f (expinv f) rfl
+                  target hocc hf _ hb hd hpiv1 hpivcell acc haccdiff haccdet) p hcp
+            · -- the case-1(2) SPLIT edge (pivot `≥ 1`).
+              have hz2 : dCenterOfEdge node (Edge.mk StepCase.case12
+                  ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                  (buildTree M (conOracle M) child12)) ≠ 0 := by
+                rw [hde2]; exact Nat.mul_ne_zero (by omega) (by omega)
+              obtain ⟨pp, hpplt, hcp⟩ := mem_edgesLeaves_fanned_charted acc node
+                (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                  ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                  (buildTree M (conOracle M) child11)))
+                StepCase.case12 ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child12) p hz2 hp2
+              set g2 : GeoChart M := ⟨node, Edge.mk StepCase.case12
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child12),
+                (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                  ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                  (buildTree M (conOracle M) child11))) + pp⟩ with hg2_def
+              have hpiv2 : g2.pivot < dCenterOfNode M g2.node := by
+                show (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11))) + pp < dCenterOfNode M node
+                rw [hsum2, hde1]; omega
+              have hucell : ∃ i : Fin (dCenterOfNode M g2.node),
+                  i ≠ (⟨g2.pivot, hpiv2⟩ : Fin (dCenterOfNode M g2.node))
+                  ∧ cNodeOf M g2.node hd i = birthFlatCoord M s f h := by
+                refine ⟨⟨0, h0⟩, ?_, hcell0⟩
+                intro hcontra
+                have hval : (0 : ℕ) = g2.pivot := congrArg Fin.val hcontra
+                have hpv : g2.pivot = (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11))) + pp := rfl
+                rw [hpv, hde1] at hval; omega
+              exact ih child12 hdesc12 (DivBirthInv_stepAppendAdvance s _ _ hlive hlt inv)
+                (DivExpPos_stepAppendAdvance s _ _
+                  (le_add_left (Nat.one_le_iff_ne_zero.mpr
+                    (Nat.mul_ne_zero (by omega) (by omega)))) expinv)
+                (acc ∘ geoChartMapNorm (fun _ => id) g2)
+                (haccdiff.comp (geoChartMapNorm_differentiable g2))
+                (ledger_det_maintenance_case12 M s h inv g2 _ htree h2 rfl f (expinv f)
+                  target hocc hf _ hb hd hpiv2 hucell (s.divProfile f) acc haccdiff haccdet) p hcp
 
 end DLNFibre.DLN.RLCT.Engine
