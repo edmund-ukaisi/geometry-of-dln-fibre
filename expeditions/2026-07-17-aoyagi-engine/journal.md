@@ -5414,3 +5414,13 @@ lambdaCore_eq_zero_iff (the characterization, via a Fin.reverseInduction cascade
 converse) probed clean-three. t18's seat is now delivery-complete pending its final gate
 report. t14 grinding stage 3 (the module at 64.7k). Working set: two grinding seats, two
 offices, one parked.
+
+### Tick-335 addendum: t18's crossed report reconciled; the seat retired with honors
+Its report explained the private-fix rationale (its full-lib gate caught the clash its
+standalone grep missed — owning the "ripple near-impossible" call honestly); the
+reconciliation supersedes it (public-canonical on integration, verified green across the
+affected importers; its running gate tests a superseded state — mooted). SEAT RETIRED WITH
+HONORS: both lanes delivered — the tie block, the scoped band identity, the selector,
+the zero-width CHARACTERIZATION. The independent-lane fan-out is now FULLY harvested
+(lanes 2-rung/3/4/6 done, 5 deferred-by-plan, #69 registered). The board: t14 (stage 3)
+∥ loss-t15 (parked) ∥ the offices. The spine is the only live front.
