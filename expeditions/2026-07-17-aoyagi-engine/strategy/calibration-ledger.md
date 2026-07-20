@@ -462,3 +462,27 @@ verification sits at a degenerate boundary (empty trailing product, terminal sta
 case), the interior is UNTESTED regardless of how many instruments agree. Add to statement
 gates: "name the state at which each supporting verification was run; if all coincide,
 demand one interior instance."
+
+## Entry 16 (tick 360, 2026-07-20) — THE MISS: tick-341 keep-cube ruling REFUTED by pnp-cover
+**What happened.** At t14's statement gate (tick 341) the disk showed tGeoG inheriting
+srcBox = cube where fork-15's design said srcBox = g⁻¹(cube). I ruled KEEP-THE-DISK on two
+grounds: (a) changing tGeoG collides with loss-t15's live walk; (b) "no math need — (B)'s
+bound is trivially cube-satisfied". pnp-cover's exact hunt refuted the ruling: clause (A)
+is FALSE over cube (open gap region around the diagonal; every pivot's preimage of
+y=(t,t,t,t) needs a source coordinate of 2). The design clause was LOAD-BEARING — it
+carried the image-invariance obligation the cover transfer needed; the disk's deviation
+silently dropped it, and (b) looked only at the (B) bound, never asking what (A) needed.
+**Why it was missed.** "Disk wins over design text" was applied as a default. The right
+question was: which of design/disk carries a PROOF OBLIGATION consumed elsewhere? The
+design's srcBox = g⁻¹(cube) existed precisely to make the cover g-image-invariant (fork 15
+says so verbatim); overriding it required re-deriving the cover, which the elder's
+too-glib open-homeo pricing (its own recorded miss) appeared to supply. Grounds (a) was
+also over-priced (the elder later showed the walk core is domain-agnostic).
+**What saved it.** The layered instruments: t14's stop-and-surface (the ρ-shrink failing),
+the elder's refutation of the spectator route + its demand for a decorrelated hunt, and
+pnp-cover's exact witness — all BEFORE any cover code was written. Cost: a bounded re-bank
+of 2b/2c; zero wasted cover-grind.
+**Lesson.** When disk deviates from design, neither wins by default: enumerate the proof
+obligations each side carries (grep the design clause's WHY — fork 15 stated it) and check
+who consumes them. A deviation that "only" changes a definition can silently drop an
+invariant another clause was designed to provide.

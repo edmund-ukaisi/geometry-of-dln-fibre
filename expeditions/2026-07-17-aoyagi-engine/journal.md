@@ -5898,3 +5898,22 @@ InvValC is false there. BINDING PRE-BANK: one width-drop battery leg ((3,2,3) or
 (2,2,3,2)) + the three-state fold-in + the leaf-cutoff re-check — the fifth statement-level
 defect candidate this lane's gate has run down pre-grind. t14's clearedOf spec updated to
 the two-component form (current-J resets + running-min drops, widthMinUpto-expressible).
+
+## 2026-07-20 tick 360: GAP FOUND — clause (A) FALSE over cube; the tick-341 ruling refuted; srcBox reverts
+pnp-cover's verdict, exact-rational (400/400 cross-check, no float): the α-atlas over
+srcBox=cube does NOT cover any 0-nbhd. The elder's kill point performed exactly: y=(t,t,t,t)
+has for EVERY pivot the same unique preimage w=(t,1,1,2) — w_p11=2 outside the cube, all
+t∈(0,1]; obstruction = the shear inequality failing as 2t²≤t² on the diagonal; the gap is
+an OPEN region around the diagonal; the shear cell is common to all four charts. Full-tree
+lift confirmed at (2,2,2) ⟹ hbox's ∀-M is killed by this one M. The fallback CONFIRMED
+sound by the same seat: srcBox = α⁻¹(cube) reverts the image to (β∘S)''cube = the proven
+id-cover (the kill point re-covered). CONSEQUENCES: my tick-341 keep-cube ruling REFUTED
+(calibration entry 16 — the design clause was load-bearing; "disk wins" applied as a
+default where the design's WHY carried the cover's proof obligation); fork-15's original
+srcBox = g⁻¹(cube) restored as the target; 2a collapses BACK to the trivial
+image-invariance transfer once the def lands. DISPATCHED: elder to ratify the reversion +
+rule the PULLBACK DEF SHAPE (per-edge gauge threading — the exact tGeoG recursion; the α
+batch's last design decision; statement-gated before t14 grinds); t14 held on srcBox edits
+meanwhile (2d + clearedOf unaffected, continue); loss-t15's bounds re-domain later
+(walk core pointwise — untouched). The truth-gate discipline paid in full: the gap was
+found by a decorrelated exact hunt BEFORE any cover code existed.
