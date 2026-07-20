@@ -712,3 +712,39 @@ left in the dir + folded into "5 batteries all exit-0").
    the δ=ρ tie is DERIVED from the blow-up (not reverse-engineered to force divisibility — the
    confound I was hunting). Prefer the most-adversarial exact check (the mechanism identity)
    over the aggregate pass-count.
+
+## Entry 24 (2026-07-20, tick 419) — the deliverable/follow-up MIS-FRAMING (operator-caught): re-derived work sold as new, follow-up over-scoped
+**The question I should have asked (but didn't) before framing the deliverable + follow-up**:
+what is the axiom footprint of the TOP headline `aoyagi_learning_coefficient`, and what is its
+SOLE open rung? I never wrote this expectation down — I reasoned from the recent expedition's
+local frame instead. That omission IS the miss.
+**Implicit belief I was carrying** (~high confidence, unexamined): the L2-unconditional corollary
+I banked was a real deliverable ("the floor / teeth"), and the follow-up was "build the general
+RLCT-ideal library" (a large new build).
+**Actual** (operator-flagged, confirmed against the territory): (a) the FULL L=2 headline was
+already clean-three weeks ago (HeadlineL2Assembly.lean:88, 2026-06-30/07-06) — my
+`_L2_unconditional` (HeadlineConditionalSpine.lean:93) proves the IDENTICAL statement, a
+re-derivation; (b) the general-L UPPER bound was already unconditional weeks ago
+(HeadlineGenBounds.lean:143, 2026-07-09); (c) the full headline is assembled and reduces to ONE
+open rung — the general-L LOWER bound = `RouteMBoxThresholdFinite` at L≥3 (proven at L=2). The
+"library" is ~built; the gap is one rung.
+**MISS (large, and the operator caught it, not me or an office)**: I sold re-derived / already-
+built content as the achievement and over-scoped the remainder. This is the visible-progress /
+name-results-for-what-they-are trap in its purest form — the exact disposition failure CLAUDE.md
+foregrounds, and the exact shape of the operator's repeated cul-de-sac question (which I kept
+answering at the strategy level while committing the error at the object level).
+**Root cause**: no re-grounding in the FULL banked state before framing. The comprehension
+cadence's own instrument (read the actual Lean, write the expectation first) would have caught it
+— I ran calibration entries on the ideal-probe territory but never on "what does the top headline
+actually still owe." Local-frame reasoning under a long expedition drifts from the global state.
+**What it changes**:
+1. Follow-up RE-SCOPED: formalize the ONE open rung (L≥3 box-finiteness via the ideal
+   peel-identity telescoping), riding banked infra — NOT a library build. Likely a focused
+   formalisation, maybe not even a full new expedition.
+2. Deliverable RE-NAMED honestly: this expedition's real output is (a) the chart-route category
+   no-go (proven), (b) the ideal reframe + the L=3 telescoping cert (on paper). The L2
+   "teeth" is a re-derivation, not the floor. The floor is the weeks-old banked headline.
+3. STANDING CHECK added: before framing any "deliverable" or "follow-up scope," run
+   `#print axioms <top-headline>` (force-recompiled) + identify its sole open rung(s). Re-ground
+   globally, not from the active thread. (Pairs with entry 23's exit-0≠content-true: verify the
+   kernel truth of the HEADLINE state, not just the local artifact.)

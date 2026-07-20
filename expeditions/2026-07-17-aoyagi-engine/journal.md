@@ -7129,3 +7129,38 @@ purely sequencing (near-term-together vs clean-first-then-coupled) + launch timi
 fold + package already said "in-scope-staged, never scoped out"; this fixes only the knob
 phrasing. elder folds navigator-7's boundary numbers as SEQUENCING (not scope) into the
 compaction at follow-up open. Next: status-snapshot SVG (decision-state, corrected framing).
+
+## 2026-07-20 tick 419: OPERATOR RECALIBRATION — re-derived already-proven L2 + over-scoped the follow-up; the real gap is ONE rung (owned)
+The operator flagged two facts, both CONFIRMED against the territory: (1) "L≤2 proven weeks
+ago — you might have re-derived it": YES — aoyagi_learning_coefficient_L2
+(Validate/HeadlineL2Assembly.lean:88) is the FULL L=2 headline (⨅ = aoyagiLambda), clean-three,
+landed 2026-06-30 / closed 2026-07-06. My aoyagi_learning_coefficient_L2_unconditional
+(Validate/HeadlineConditionalSpine.lean:93) proves the IDENTICAL statement via a different route
+(gen engine + box-finiteness discharge). A re-derivation. (2) "the RLCT upper bound also proven
+weeks ago": YES — aoyagi_learning_coefficient_gen_le (Validate/HeadlineGenBounds.lean:143) is the
+UNCONDITIONAL general-L upper bound (⨅ ≤ aoyagiLambda, all L≥2, no gate), 2026-07-09.
+
+THE OPERATOR'S DEEPER POINT (correct): "we're in a loop without building the hard part; I
+thought the full aoyagi machinery/library is already built." The accurate state: the full
+headline aoyagi_learning_coefficient (Skeleton.lean:1680) is stated unconditionally and its
+ENTIRE scaffold is assembled; per AxCheck.lean:192 it carries ONE sorryAx = the general-L LOWER
+bound (the ≥ half). aoyagi_learning_coefficient_gen (HeadlineGenAssembly.lean:64) is that same
+equality clean-three MODULO one hypothesis hbox = RouteMBoxThresholdFinite. So: the library IS
+largely built; the SOLE open hard part = discharge RouteMBoxThresholdFinite at L≥3 (proven at
+L=2 by routeMBoxThresholdFinite_mnp; open L≥3). ONE rung, not a library.
+
+OWNED (the mis-framing, no defence): I banked the L2 re-derivation and framed it TO THE OPERATOR
+as "the deliverable floor / unconditional teeth," and framed the follow-up as "build the general
+RLCT-ideal library" — over-claiming re-derived/already-built work + over-scoping the remainder.
+Root cause: I reasoned from the recent expedition's LOCAL frame (α-atlas → conditional spine →
+ideal probe) WITHOUT re-grounding in the FULL banked state (what's already clean-three; what is
+the SOLE open rung). I never ran the "axiom footprint of the top headline + its one open rung"
+check before framing the deliverable/follow-up — the exact re-grounding the comprehension cadence
+exists to force, and the operator caught it instead. The genuine (narrower, real) output of this
+expedition: (a) PROVING the chart route is category-false (a no-go that saves future effort),
+(b) the ideal-route reframe + the L=3 (2,2,2,2) telescoping cert — ON PAPER, not yet in Lean.
+The Lean rung is still open. RECALIBRATED follow-up: formalize the ONE open rung (L≥3
+box-finiteness via the ideal peel-identity telescoping), riding the banked machinery — NOT a new
+library. Verification build in flight (kernel-truth footprints: base=sorryAx, gen/gen_le/L2=clean)
+to give the operator ground truth. Operator asked whether to point next work directly at the L=3
+rung (holding until they confirm). Elder to revisit the compass "build the library" scope framing.
