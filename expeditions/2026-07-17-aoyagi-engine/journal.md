@@ -5842,3 +5842,23 @@ corrected + unblocked with the reads-based bundle re-quoted + the α=id-on-case1
 gift (two atoms free). Its stage-4 AxCheck gate in flight; commit rides it. Nudged: the
 clearedOf answer (gates loss-t15's grind) is a knowledge answer — owed at next pause.
 Elder now holds: the 2a spectator-disjointness + the loss-t15 gate stamp (battery legs).
+
+## 2026-07-20 tick 357: 2a is a TRUTH-VALUE, not a transfer — pnp-cover dispatched; tick-341 ruling conditionally re-opened
+The elder's alert (owning its own too-glib open-homeo pricing): whether the α-charts over
+srcBox = cube cover a 0-nbhd at corank ≥ 2 is GENUINELY OPEN — the one new geometric
+content in the α batch, and coverage is the named hard part. Its refutation of t14's
+spectator route (on disk): schurCells is a PROPER SUBSET of the center block — the interior
+— so α shears exactly the ratio coords the pivot cover needs at radius 1; the sheared boxes
+may GAP near sector boundaries. Per the compass standing counsel (coverage cover = a
+universal claim requiring a decorrelated hunt, never an in-house witness) + codex down:
+PNP-COVER dispatched (witness seat, sympy-exact, hunt-cert §5 form) — kill point
+y=(t,t,t,t) at the 2×2 corank-2 block first, then the sector-boundary kill-set; secondary:
+confirm the α⁻¹(cube) fallback's image-invariance reading. MY TICK-341 KEEP-CUBE RULING IS
+CONDITIONALLY RE-OPENED, gated on the verdict: gap ⟹ srcBox := α⁻¹(cube) (tGeoG leaf-def
+change + 2b/2c re-bank [elder prices bounded: ∀-gauge/leaf-update-based] + loss-t15 bounds
+re-domain [walk core pointwise, domain-agnostic — the tick-341 collision concern was
+over-priced]); no-gap ⟹ keep cube + commission the sector-union mini-arc. EITHER WAY the
+cover is NOT banked as a "transfer" — the elder's line, adopted. t14 directed: build no
+cover route; 2a stays an owed sorry through its stage-4 gate with honest three-source
+AxCheck expectations. Meanwhile the task board shows loss-t15's battery legs (#16) and the
+clearedOf extraction (#11) COMPLETED — its bundle report expected next.
