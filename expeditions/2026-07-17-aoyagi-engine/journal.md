@@ -5632,3 +5632,21 @@ CLEAN-THREE ✓ (the mint re-point's target is ready); canonical aoyagi_learning
 still +sorryAx (expected until mint). The stage-4b integration is now verified both sides
 (t14's full build was 8700+/8917 zero-errors pre-crash; this gate exercises the cone).
 Doubled-gate discipline satisfied; the push already banked during crash recovery.
+
+## 2026-07-20 tick 345: long-range recon + parallelisation audit launched (operator-directed)
+Two read-only seats spawned on the operator's ask, no collision with the live lanes:
+NAVIGATOR-6 (office, fresh) — charge 1: endgame path resolution verified against the DISK
+(mint mechanics: the stale hDescent arm's exact shape + the #guard_msgs viability + the
+enforced-gate decl list; cordon census enumerated NOW incl. the three Skeleton fossils'
+identities + the #15 flags, each classified pre-stageable vs discharge-gated; hidden
+sequencing constraints in the discharge→hbox→mint→cordon→PR ladder); charge 2: the
+parallelisation audit — eight candidate independent lines priced for true independence
+(file-collision vs the live surfaces), value, and critical-path placement; top 2-3
+commissions flagged; the standing hard-part-avoidance check runs over the endgame plan.
+SCOUT-LR2 — the runway map: per post-spine target (native-λ route incl. the zeta/pole-order
+layer gap + whether the singular-locus LOWER bound falls out of o5_realization's attained
+leaf; the θ-analytic seam / task #69's tree-binding; R6 re-priced given the built
+front-pivot + α machinery; R7 completeness vs the landed SteerInv suite; zero-width (b) +
+R4-small scope), each with disk-vs-paper cites, gap-as-statements, cost class, and
+kill-condition; one recommended next-expedition central question. Deliverable:
+threads/22-long-range/scout-lr2-runway.md.
