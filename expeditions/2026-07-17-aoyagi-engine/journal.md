@@ -6995,3 +6995,14 @@ aoyagi_learning_coefficient_of_boxThresholdFinite (on satisfiable hbox, clean-th
 L≤2 via routeMBoxThresholdFinite_mnp, in-file; "is it vacuous?" = proven NO) + refuted-as-stated
 labeling. Force-recompile of both theorems confirming clean-three on the merged/re-wired state
 (running). mint-t19 stood down with honors. pnp-ideal depth-3 verdict = the gate.
+
+## 2026-07-20 tick 415b: deliverable VERIFIED clean-three on the re-wired state (both theorems, force-recompiled)
+Force-recompile #print (olean deleted, rebuilt EXIT=0, scratch #print): BOTH theorems clean-three
+on the merged/re-wired integration state — aoyagi_learning_coefficient_of_boxThresholdFinite
+[propext, Classical.choice, Quot.sound] (∀L≥1, modulo satisfiable hbox) AND
+aoyagi_learning_coefficient_L2_unconditional [propext, Classical.choice, Quot.sound] with NO
+sorryAx (genuinely unconditional L≤2 — hbox discharged via routeMBoxThresholdFinite_mnp). The
+durable deliverable is VERIFIED: L≤2 unconditional clean-three; general-L conditional on the
+satisfiable box-finiteness (L≥3 = the ideal-level follow-up). KEEP reconciliation complete;
+mint contribution closed honest with teeth. pnp-ideal depth-3 verdict = the remaining gate
+(follow-up reachability + the operator's cul-de-sac evidence).
