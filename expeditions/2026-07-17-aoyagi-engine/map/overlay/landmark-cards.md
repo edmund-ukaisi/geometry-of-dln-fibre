@@ -96,6 +96,12 @@ re-point waits on. [REFRESH 2026-07-19, tick 170: STALE after the E assembly —
 composition through `region_glue_of_chartBridge`; the two live analytic holes are now
 `chartBridge_buildTree` (EngineObligations:52) + `o5_realization` (:63); R2 and R3 CONVERGE at
 `chartBridge_buildTree`. The hbox event = those two flipping clean-three.]
+[REFRESH 2026-07-20, carto tick 348: `o5_realization` is now CLOSED clean-three (t06 s4) — the
+engine's ONE live analytic hole is `chartBridge_buildTree` (`EngineObligations:49-52`), now the
+drop-(D) PROJECTION of `chartBridgeFaithful_buildTree` whose single sorry is the `LeafPullback`
+conjunct (`ChartBridgeFaithful:92`, routing to `leafDiagFrob_geoAtlasNorm`, `GeoAlphaGauge:562`).
+The hbox event = that ONE flipping clean-three. See [[banked-families]] § FINAL-ARC cards +
+[[STATUS]] banner.]
 
 **Witnesses / whys.** Battery 15 scripts: 13 guards SURVIVE, 2 naked-weight kills FIRE
 (`w-naked-weight-111`, `w-naked-weight-4444`) — the zero-slack lesson's anchor. Why a landmark:
@@ -148,6 +154,14 @@ was a WEAK conjunct the univ atlas satisfied (`g-chartscover-vacuity`); it is no
 cleared, tick 51). Making the monomial assertions TRUE over the constructed atlas is still R2's
 burden — council #3 gate: the ChartBridge PROOF + a DECORRELATED atlas-closure probe (pen-and-paper,
 never the builder).
+[REFRESH 2026-07-20, carto tick 348: the ChartBridge PROOF has LARGELY LANDED over `geoAtlas`. Cover
+(clause A) clean-three (`geoAtlas_imageCover`, tick 288); the fold-Jacobian cocycle + `LeafJacobian`
+conjunct closed clean-three (`geoAtlas_fold_det`/`geoAtlas_leaf_leafJacobian`, ticks 336–338); ledger
+props + (C) exponents + a.e.-injectivity proven. The atlas-closure probe fired (tick 168). The SINGLE
+remaining piece is the `LeafPullback` conjunct (`ChartBridgeFaithful:92`) via `leafDiagFrob_geoAtlasNorm`
+(`GeoAlphaGauge:562`, loss-t15's value walk). IN FLIGHT: the α-atlas witness-swap (elder tick 340)
+re-points the faithful witness to `geoAtlasNorm alphaGauge` — Aoyagi's normalized integration chart.
+Line pins `:219`/`:184` are drifted; see [[banked-families]] § FINAL-ARC + [[STATUS]] banner.]
 
 **Residual scope (honest, parked).** angular/non-coordinate centers for instances other than
 (2,2,2,2); 3rd+ nested blow-ups for instances other than (2,2,2); the (2,3,2,2)/(4,4,4,4)
