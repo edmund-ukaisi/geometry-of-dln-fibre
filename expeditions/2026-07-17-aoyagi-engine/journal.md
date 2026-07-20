@@ -6198,3 +6198,17 @@ footprints → its own fannedG dedup (merge integration, drop duplicates, import
 canonical GeoInvValWalk) → push → my merge + full gate. Then walk-t20 rotates into the
 co-builder slot on loss-t15's four-case split. From three owed sorries to two in one arc,
 with zero collateral surface.
+
+## 2026-07-20 tick 377: bridge gate ruled — shapes 1-3 GO; the t̃-identity named as the pre-crux check
+loss-t15's light gate on the prodAux↔flat bridge: shapes 1-3 approved (entry↔flat atom,
+prefix recursion, layer-matrix read lift — grounded + cited); crux-4 approved with a
+MID-BUILD MICRO-GATE (post the pinned statement before grinding — the tick-286 class lives
+at "pinned during the build"); frames (a)/(b) confirmed. THE DIFF'S CATCH — point (c)'s
+old-row pullback hides a named requirement: OLD-ROW FILTER STABILITY needs the fresh
+divisor's clearing level to equal its birth step EXACTLY (t̃_new = J; the proven bound
+:146-148 gives only ≤). If case-12's split-born divisor can land t̃ < J, old rows' bmon
+filters gain a factor while their values stay spectator-fixed — InvVal3 fails on old rows
+(would-be catch #8). REQUIRED before crux 4: the identity as a lemma (DivBirthInv
+freshness the natural home) or a battery trace of every fresh divisor's t̃ at three M's,
+for BOTH birth cases. Sequence: shape 1 bank → t̃-check → shapes 2-3 → case2. The lane's
+gate discipline continues to front-load every risk the grind would otherwise hit blind.
