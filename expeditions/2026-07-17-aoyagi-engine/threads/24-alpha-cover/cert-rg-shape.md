@@ -149,6 +149,51 @@ order (flagged, not adjudicated here).
   for a forward coupling — the `Q₂` must be assembled and applied as **one** row-reparam of `C^{(S+1)}`
   at the layer transition, in the root-first frame.
 
+## 6. Addendum (team-lead follow-ups): the (J,J) check, the clear_pivot oracle, and Lg
+
+Three load-bearing follow-ups, all exact (`battery/rg_oracle_jj.py` + the clean `alpha_Lg + Rg + β`
+node; import of loss-t15's `clearedof_walk_trace.clear_pivot` as the acceptance oracle).
+
+**(J,J) is FIXED by every factor — reads-neutrality for the fresh divisor survives.** For every node
+`(S,c)` at `M=(2,2,2)`, `(3,2,3)`, `(2,2,2,2)` (both Lg forms tested): the pivot corner `(S,c,c)` is
+**not in the written-cell set of interior-Schur, Lg, or Rg.** It is only the β blow-up **source** `u`
+(β sets `old_{(c,c)} = u`, identity on the source). The fresh divisor of case-2/case-1(2) is born at
+`(layer,cleared)=(J,J)` with `birthFlatCoord = (J,J)`; since no factor writes it, the ledger's birth read
+is unchanged. **`alphaGauge_ledgerMonomial_neutral` for the fresh divisor survives — CONFIRMED.** (This
+is walk-t20's reading verified: `(J,J)` is the shear SOURCE, never a target.)
+
+**Acceptance-oracle match + dropped rows genuinely zeroed.** loss-t15's `clear_pivot` (full row+col
+Gaussian reduction on the accumulated prefix — itself **root-first**: `P₀=C⁰`, clear, rollover
+`P·C^{(S+1)}`, clear …) is the acceptance oracle. The clean completed α (`alpha_Lg` subsuming the
+interior Schur, `+ Rg` forward, `+ β`) reproduces the oracle's diagonal **structure** at `M=(2,2,2)`
+(diag, polynomial, correct b-chain) and `M=(3,2,3)` (**row 2 genuinely ZERO** — dropped, not merely
+rank-deficient — and polynomial) — **but only root-first**; leaf-first fails (§2–§3). So the oracle
+*confirms* both (b) *and* the order kill: even the team-lead's own oracle is root-first. (The oracle's
+own diagonal is rational — it omits β; the completed α with β is polynomial. They agree on the
+row-structure: which rows diagonal, which zero.)
+
+**Lg is layer-`S`-local, NOT cross-cell to `C^{(S-1)}`.** loss-t15 (`lg_form_specify.py` CHECK A) proved
+the pivot cross `(a,b)` is irreducible by any within-block *source reparam* and left the exact Lg cells
+to this seat. Exact-algebra determination: the working pivot-column clear writes **layer-`S` cells
+`(i,j)`, `i>c`, `j≥c`** (the pivot column `(i,c)` + interior). The proposed **cross-cell→`C^{(S-1)}`**
+form (the transpose of `Rg`) does **NOT** monomialize in *either* order (refuted, `rg_oracle_jj.py`) —
+so Lg does **not** reach the adjacent lower layer. **Caveat for the flatElemShear form:** the layer-`S`
+pivot-column clear as a matrix op **divides by the corner** (`f = x_{(i,c)}/x_{(c,c)}`), so it is *not*
+a single div-free `flatElemShear` like `residualSchurShear` (the column is not a cell-product, so no
+interior-style shear clears it) — loss-t15's "cross-cell" intuition is right *for the div-free form*,
+but the target is **within layer `S`** (an already-processed block / the corner), not `S-1`. The exact
+div-free realization is entangled with the β-normalization order and the root-first frame (see the
+parallelization note below), and is **not** settled here.
+
+**Parallelization (can Lg ship separately from the Rg-overlap ruling?) — PARTIALLY.** Deliverable now,
+order-independent: (i) the Lg write-**support** is layer-`S`-local (`i>c`, `j≥c`), NOT `C^{(S-1)}`;
+(ii) `(J,J)` fixed by Lg; (iii) Lg alone is order-neutral (self-contained in layer `S`). **NOT
+deliverable as a finalized gauge cell yet**: the div-free `flatElemShear` realization of the
+pivot-column clear is unresolved (it is neither `residualSchurShear`-style interior nor the refuted
+`→S-1`), and the whole completion monomializes only **root-first**, so Lg's disjointness/composition
+must be stated in the root-first frame that the `Rg` order-fix establishes. So the `Rg` order resolution
+(§4) is a shared prerequisite; do **not** start Tier-1 Lg on the `→S-1` assumption (refuted).
+
 ## Close
 
 - **Firmest result**: the completed α (Aoyagi Q,P, forward cross-layer `Rg`) monomializes `prod` to the
