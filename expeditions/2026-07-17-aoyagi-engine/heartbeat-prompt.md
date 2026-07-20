@@ -8,22 +8,18 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: THE FOUR-LANE FRONTIER (ticks 288-294). DONE clean-three: the LEDGER face; the
-  carrier (t09, reviewed); the COVER (geoAtlas_imageCover end-to-end, tick 288, AxCheck-
-  watched); diagonal-normalization LIVE (fork 15, (β∘S)∘g gauge slot at id); the (D) R-SPLIT
-  GATE REALIZED (tick 294: chartBridge_buildTree IS the projection of
-  chartBridgeFaithful_buildTree — fidelity on the payoff's cone; projection clean-three;
-  cordon: a direct A∧B∧C fill is a fidelity regression). THE HOLE CENSUS: TWO sorries in
-  chartBridgeFaithful_buildTree ((B) props + (C) exponents) + geoAtlas_fold_det's cocycle.
-  FOUR OWNED LANES: t14 det-fold now, holds at boundary for pnp-fold's ledger-accumulation
-  cert (the threaded invariant, Lean-ready shapes) ∥ coverage: the geoAtlas↔ledger BRIDGE
-  (keystone → 4 props + (C)), then a.e.-inj SURVEY-first ∥ loss-t15: α design note PHASE-
-  GATED → the LeafPullback squeeze (pnp-loss cert = spec; additive modules only) ∥ t10 holds.
-  Retired w/ honors: t02-t11, t13. Standing: elder (4 charges), carto (2), pnp-fold/loss warm.
-  THEN: (B)(C) close → faithful discharge → hbox flips → mint (stale arm + #guard_msgs incl.
-  the faithful theorem) → cordon (census: the 2 + Skeleton fossils + CanonicalWitness224
-  separate) → signal-and-wait PR. Statement-gate rule: binder-vs-design diff (entry 11);
-  provability-check-first in every formaliser brief.
+- phase: ENDGAME, TWO LANES (ticks 336-340). THE LAST WALL FELL: geoAtlas_cocycle +
+  geoAtlas_fold_det + the R7 LeafJacobian bundle all clean-three (t14 stages 1-4, banked).
+  chartBridgeFaithful_buildTree = ONE sorry (:82 LeafPullback ← leafDiagFrob_geoAtlasNorm).
+  LANE 1 loss-t15: the InvVal value walk (both ENDS proven; remaining = payload pin + base
+  + 4 maintenance cases + instantiation, banked per stage). LANE 2 t14 encore (task #75):
+  the α-atlas TRANSFER batch — elder RULED (tick 340, fork 15 3rd amendment): witness swaps
+  to geoAtlasNorm alphaGauge t (= Aoyagi's chart, worked.tex:487-518; LeafPullback-at-id
+  FALSE); (D)₁ amends; 4 explicit transfer lemmas (cover/ledger/ae-inj/Jacobian); statement
+  gate posted to controller pre-fill. THEN: both lanes land → faithful discharge → hbox →
+  mint (stale hDescent arm + #guard_msgs + θ MINT GUARD) → cordon census → signal-wait PR.
+  Standing: elder + carto (long-running). Gates in flight: integration AxCheck + t14 full
+  build; the stage-4b push HELD on their green. Statement-gate rule: binder-vs-design diff.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue

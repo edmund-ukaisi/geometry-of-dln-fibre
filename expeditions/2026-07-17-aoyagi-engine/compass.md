@@ -390,6 +390,33 @@ over banked substrate.
     ancestor cleared diagonals) is charge-2's obligation generalized to a det-1 gauge — same
     DivBirthInv freshness. Parametrize the gauge (where the correction flows), keep
     pivotChart fixed (charge-1 principle).
+    (AMENDED 3rd, elder atlas-seam ruling, 2026-07-20 tick 340.) The "parametric fill, NO
+    redefinition ripple" clause did NOT survive contact: t14 proved the fold/props/ae-inj
+    inventory CONCRETE-AT-id (geoAtlas = leaves (tGeo id t)), not g-parametric — so the α
+    instantiation is NOT free. RULING (a) WITNESS-SWAP + EXPLICIT TRANSFER: the faithful
+    witness is `geoAtlasNorm alphaGauge t` — the α atlas IS Aoyagi's integration chart
+    (normal crossings F = Σb_i² reached ONLY after the regular Q,P normalization clears each
+    D_J'' to [[1,O],[O,D_{J+1}]], worked.tex:487-489, 509, 518; the id atlas is the
+    un-faithful fork-15 placeholder; LeafPullback-at-id FALSE). (D)₁ amends to
+    `atlas = geoAtlasNorm alphaGauge t` — names her chart, MORE faithful, no existential
+    loosening (the parametric ∃-det-1-g form REJECTED: a generic g need not clear the
+    interior). Four transfers, each priced sound: cover (image-invariance, α bijective),
+    ledger props (g touches geometry only; geoAtlasNorm_resRank_zero is the pattern), ae-inj
+    (injective homeomorph + inj-t16 comp helpers), LeafJacobian (α fixes the divisor
+    diagonal cells — acts only on the interior residual sub-block, GeoAlphaGauge:123-126 —
+    so the monomial transfers pointwise; det-1 at :428). REJECT (b) slot-flip (reopens t14's
+    closed arc on an unpriced re-elaboration bet; silent name-content drift). The projection
+    gate is UNCHANGED (region_glue is atlas-agnostic; toChartBridge structure intact).
+    (ADDENDUM, tick 341, t14's statement gate.) A second fork-15 clause did not survive
+    contact with the disk: "srcBox = g⁻¹(cube)" was never realized — tGeoG's leaf case
+    INHERITS srcBox = cube. RULED: keep the disk def (changing tGeoG mid-walk collides with
+    loss-t15's live lane; (B)'s bound is trivially cube-satisfied); the cover transfer is
+    therefore NOT image-invariance but the open-homeo argument (α open homeo fixing 0; a
+    shrunken U' ∋ 0 suffices — clause (A) demands only ∃ U). The α-fold also threads α
+    PER-EDGE, so the LeafJacobian transfer mechanism (gauge-generalize the cocycle over an
+    explicit "det-1 + divisor-diagonal-fixing" hypothesis bundle vs a standalone comparison
+    on top) went to the elder for counter-sign (t14 prices the refactor light; tripwire =
+    stage-1/2 atom probe, fall back to standalone on friction).
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

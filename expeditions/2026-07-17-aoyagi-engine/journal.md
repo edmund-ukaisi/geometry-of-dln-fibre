@@ -5459,3 +5459,103 @@ Inv_val on GeoFoldRegroup's structure with the value payload; the leaf-discharge
 already proven, so the walk's terminal plugs in and LeafPullback closes end-to-end. The
 faithful discharge's remaining sorries: the LeafJacobian bundle (t14's 4b, in flight) +
 LeafPullback (loss-t15, now building). BOTH are on final approach.
+
+### Tick-337 addendum: loss-t15's pre-sink checkpoint — ENTRY-WISE ruled; solo with staging
+Its scope reality confirmed §7's prediction (one skeleton, two payloads — the value walk is
+a from-scratch matrix build, only the skeleton + reads transfer; multi-arc). THE ENCODING
+RULED: (b) entry-wise — the flat-action reads are per-entry so the maintenance proves
+entry-wise facts natively; the cert's battery verified entry-wise (the block form was
+presentational); the matrix-block instance friction (the gotchas ledger's HMul/reindex
+diamonds) never fires; the leaf assembly is direct into the proven bridge. Rider 2's
+abstract interface was the unknown-shape default; the landed maintenance makes entry-wise
+the shape-matched choice; the block form stays a derivable corollary. SOLO with t14's exact
+staging discipline (scaffold → ends → per-case banked greens; per-case tripwire; the
+co-builder option re-opening at every boundary — t14 the natural one post-4b). Scaffold GO.
+
+## 2026-07-20 tick 338: STAGE 4 COMPLETE — the R7 LeafJacobian DISCHARGED; the faithful discharge at ONE sorry
+Merged locally (07852e12c, push rides the gate): geoAtlas_leaf_leafJacobian PROVEN
+clean-three for every atlas piece — all 10 conjuncts (the rfl coherences at the exposed
+terminal state; injectivity via birthFlatCoord; the ≥1 conjunct via DivExpPos, the
+watch-item never firing; Disjoint vacuous; the det identity from the cocycle) — and
+ChartBridgeFaithful's R7 sorry FILLED. The file now carries EXACTLY ONE sorry (:82,
+LeafPullback — loss-t15's, in staged build). The enabling move recorded: the cocycle
+strengthened to EXPOSE the leaf's reachable terminal state (step case passed through
+unchanged — the low-risk claim held). t14's four-stage arc is COMPLETE from its side:
+stages 1-4 all banked + probed, axiom-clean three throughout, on the exact staging
+discipline ruled at tick 329. Integration gate running (t14's own full build also in
+flight — the doubled-gate discipline); push + t14's honors ride the green.
+
+## 2026-07-20 tick 339: calibration 13 — THE ATLAS SEAM (id vs α) caught pre-collision; elder charged
+Drift-glance: loss-t15 ACTIVE (commit f14c2fa42, leaf end of the value walk PROVEN — InvVal
+at a cleared leaf collapses to diagonal(bmon) → leafDiagFrob_of_prodDiag; remaining = base +
+4 maintenance cases + walk instantiation, staged). Both gates still compiling (integration
+AxCheck + t14's full build). Used the idle window for calibration entry 13 (the seam probe):
+PARTIAL MISS, and the miss is the product — t14's whole proven (B)/(C) inventory is over the
+id-gauge atlas (geoAtlas = leaves (tGeo id t)); LeafPullback arrives over the α atlas
+(geoAtlasNorm alphaGauge); clause (D)₁ pins atlas = geoAtlas t by rfl; LeafPullback at id is
+likely FALSE. One witness must satisfy ALL conjuncts ⟹ the assembly needs a (D)₁ amendment
++ a transfer batch (cover image-invariance, ledger preservation, ae-inj through the det-1
+shear, Jacobian det-1-transparency — the last REQUIRES α to fix the div coordinates: check).
+The pre-staged wiring note named only the cover transfer — underpriced. Elder charged with
+the statement ruling ((a) witness-swap + transfers vs (b) slot-flip; my lean (a)) + the
+paper-touchstone read (is the α-sheared chart the chart Aoyagi integrates over?). The
+tick-284 sorry-mask lesson applied FORWARD: the gate statement gets ruled before the lanes
+collide, not after. Transfer batch is loss-t15-independent — can start once ruled.
+
+## 2026-07-20 tick 340: elder RULED the seam — (a) witness-swap; the α atlas IS Aoyagi's chart; t14 encore commissioned
+Elder ruling (paper-grounded, decisive): the faithful witness is geoAtlasNorm alphaGauge t.
+Touchstone: Aoyagi integrates over the NORMALIZED chart — normal crossings F = Σb_i² is
+reached only after the regular Q,P normalization clears each D_J'' (worked.tex:487-489,
+509, 518); the id atlas is the fork-15 placeholder, LeafPullback-at-id FALSE. So the
+amended (D)₁ (atlas = geoAtlasNorm alphaGauge t) is MORE faithful — it names her chart.
+(b) slot-flip REJECTED (reopens t14's concrete-at-id closed arc on an unpriced
+re-elaboration bet; name-content drift); ∃-det-1-gauge form REJECTED (fidelity loosening —
+a generic g need not clear the interior). Four transfers each priced sound; the elder
+VERIFIED the load-bearing one on disk: α acts only on the interior residual sub-block
+(GeoAlphaGauge:123-126), fixes the divisor diagonal cells, det-1 (:428) — the Jacobian
+monomial transfers pointwise. Projection gate unchanged (region_glue atlas-agnostic).
+RATIFIED; compass fork 15 carries a THIRD amendment (the "no redefinition ripple" clause
+did not survive contact — t14 proved concrete-at-id, not g-parametric; recorded plainly).
+COMMISSIONED: t14 encore (task #75) — statement gate first (binder-vs-design diff +
+consumer grep, posted to me pre-fill), then the four named transfer lemmas (new module),
+then the re-wire (LeafPullback slot consumes leafPullback_geoAtlasNorm directly; the
+pre-staged wiring comment superseded), AxCheck gates + cordon-note rewording. Starts after
+its in-flight full build reports. File-collision guard vs loss-t15 set (GeoAlphaGauge tail
+comment only). Navigator pricing SKIPPED with reason: the elder priced each transfer; the
+parallelisation is evident (transfer batch ∥ loss walk, disjoint files); the registered
+discharge-time navigator convene stands. Both gates still compiling; push still held.
+
+## 2026-07-20 tick 340b: codex DOWN env-wide (verified); payload pin ruled a statement gate
+loss-t15 surfaced codex unavailable (hang on `codex doctor`/`--version`) rather than
+fabricating a decorrelated opinion — correct per policy. VERIFIED from the controller
+shell: `timeout 15 codex --version` hangs updating an ssh git dependency
+(aisi-inspect-tools), exit 124 — ENV-WIDE, not seat-local. Recorded so no seat retries;
+pen-and-paper seats' own consults are affected until it heals. HEDGE replacing the lost
+decorrelation: loss-t15's concrete payload pin (cleared/bmon/resid as functions of the
+ConState ledger — the def that gates the multi-arc four-case grind) is now a STATEMENT
+GATE: posted to me + elder co-read (the standing seat holds the paper touchstone and just
+verified the α design on disk). Its design conclusion accepted meanwhile: entry-wise
+maintenance rides the IH without re-expanding prod (mirrors the det walk's scalar
+structure); resid is (s,w)-derivable (path-determined fold); option A closed-form-per-cell
+approved. Its tripwire stands (not-ledger-derivable ⟹ statement-first surface).
+
+## 2026-07-20 tick 341: t14 statement gate POSTED + ruled; two more design-vs-disk finds
+t14 posted the transfer-batch statement gate before filling (the discipline working as
+built): type diff APPROVED (contained to ChartBridgeFaithful.lean; ChartBridge ∃-atlas
+agnostic so no downstream type change; region_glue confirmed unaffected; (D)₁ rfl again
+after the amendment). Its full build 8701/8917 zero-errors, all stage-4 consumers green.
+TWO LOAD-BEARING FILL FINDS (both would have been silent grind-walls without the gate):
+(a) fork 15's "srcBox = g⁻¹(cube)" was NEVER REALIZED — tGeoG leaf inherits srcBox = cube;
+so the elder's cover pricing (image-invariance) is off-disk. RULED: keep the disk def (a
+tGeoG change collides with loss-t15's live walk; no math need); cover via the open-homeo
+argument (α open homeo fixing 0; shrunken U' suffices — (A) demands only ∃ U ∋ 0); the
+likely new atom is the INVERSE-shear bound (same pattern as alphaGauge_srcBox_bounded).
+Correction sent to the elder w/ a touchstone check (does the paper need a specific chart-
+domain shape, or is any 0-nbhd faithful? — my read: the RLCT is local, any U serves).
+(b) the α-fold threads α PER-EDGE ⟹ the LeafJacobian transfer is per-edge commutation;
+t14 recommends GAUGE-GENERALIZING its cocycle (explicit det-1 + divisor-diagonal-fixing
+hypothesis bundle; id and α instantiate; refactor priced light by the owner) over a
+standalone comparison. HELD for elder counter-sign (mechanism inside its ruling's
+territory: touches the banked arc) — t14 proceeds meanwhile on the amendment + transfers
+1-3 + (b) signatures-only pre-stage. Tripwire set: atom-refactor probe, fall back on
+friction. Compass fork 15 addendum recorded.

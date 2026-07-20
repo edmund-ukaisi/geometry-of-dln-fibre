@@ -24,6 +24,20 @@ open scoped BigOperators
 
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
+/-- The `conRoot` base of the cocycle: `|det D id| = 1 = ledgerMonomial conRoot`. -/
+private theorem id_det_conRoot (h : 0 < flatDim M) (w : Params M) :
+    |(fderiv ℝ (id : Params M → Params M) w).det| = ledgerMonomial M (conRoot : ConState L) h w := by
+  rw [ledgerMonomial_conRoot, fderiv_id, show (ContinuousLinearMap.id ℝ (Params M)).det
+      = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+  simp [LinearMap.det_id]
+
+/-- `|det|` of the identity chart is `1` (the `ψ = id` gauge of the fold's `LeafJacobian`). -/
+private theorem abs_det_id_one :
+    |(ContinuousLinearMap.id ℝ (Params M)).det| = 1 := by
+  rw [show (ContinuousLinearMap.id ℝ (Params M)).det
+      = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+  simp [LinearMap.det_id]
+
 /-- **The fold-Jacobian headline** (finding-2, over the normalized built atlas): every geometric atlas
 piece's chart determinant is the FULL-LEDGER monomial — the R7 `LeafJacobian` β-det identity conjunct
 (β := chartMap, ψ := id), with the full-divisor coordinate map `fc` carried EXISTENTIALLY.
@@ -38,19 +52,43 @@ statement corrections landed here, both machine-forced:
   corrected to the FULL ledger (`c.fullNumDiv`/`c.fullDivExp`).
 
 Proof = `geoAtlas_cocycle` (the acc + incoming-ledger-threaded cocycle over generic `s` under
-`DivBirthInv`/`DivExpPos`, `GeoFoldRegroup`) instantiated at `conRoot`/`id` with the empty incoming
-ledger (`ledgerMonomial_conRoot`, `|det D id| = 1`). -/
+`DivBirthInv`/`DivExpPos`, `GeoFoldRegroup`) instantiated at `conRoot`/`id`; the exposed terminal state
+`s'` supplies `fc := birthFlatCoord M s'`. -/
 theorem geoAtlas_fold_det (h : 0 < flatDim M) (c : LeafData M)
     (hc : c ∈ geoAtlas (buildTree M (conOracle M) (conRoot : ConState L))) :
     ∃ fc : Fin c.fullNumDiv → Fin (flatDim M), ∀ w : Params M,
       |(fderiv ℝ c.chartMap w).det|
         = ∏ j : Fin c.fullNumDiv, |paramsEquivFlat M w (fc j)| ^ (c.fullDivExp j - 1) := by
-  refine geoAtlas_cocycle h conRoot DivBirthInv_conRoot DivExpPos_conRoot id differentiable_id
-    (fun w => ?_) c hc
-  rw [ledgerMonomial_conRoot]
-  change |(fderiv ℝ (id : Params M → Params M) w).det| = 1
-  rw [fderiv_id, show (ContinuousLinearMap.id ℝ (Params M)).det
-      = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
-  simp [LinearMap.det_id]
+  obtain ⟨s', _, _, _, hshape, hident⟩ :=
+    geoAtlas_cocycle h conRoot DivBirthInv_conRoot DivExpPos_conRoot id differentiable_id
+      (id_det_conRoot h) c hc
+  rw [hshape, leafOfState, dif_pos h]
+  exact ⟨fun j => birthFlatCoord M s' j h, fun w => by rw [hident w, ledgerMonomial]⟩
+
+/-- **The R7 `LeafJacobian` discharge over the geometric atlas** (elder charge-6 / R7). Every
+`geoAtlas` piece `c` (over `conRoot`) satisfies the full-ledger `LeafJacobian`: `β := c.chartMap`,
+`ψ := id` (`lo = hi = 1`, det-1), the full coordinate map `fc := birthFlatCoord M s'` and the analytic
+embedding `emb := (t0Indices s').get` at the leaf's reachable terminal state `s'` (exposed by
+`geoAtlas_cocycle`). The identity conjunct is the cocycle's `|det D chartMap| = ledgerMonomial s'`; the
+`∀ j, 1 ≤ fullDivExp j` conjunct is `DivExpPos s'` (PROVABLE — every born divisor's exponent is `≥ 1`,
+`resRows ≥ 1` at every non-rollover node; NO zero-block case-2, so the watch-item does not fire). Fills
+the R7 second frontier of `chartBridgeFaithful_buildTree`. -/
+theorem geoAtlas_leaf_leafJacobian (h : 0 < flatDim M) (c : LeafData M)
+    (hc : c ∈ geoAtlas (buildTree M (conOracle M) (conRoot : ConState L))) :
+    LeafJacobian c := by
+  obtain ⟨s', hinv', hexp', hdiff, hshape, hident⟩ :=
+    geoAtlas_cocycle h conRoot DivBirthInv_conRoot DivExpPos_conRoot id differentiable_id
+      (id_det_conRoot h) c hc
+  have hget : Function.Injective (t0Indices s').get :=
+    ((List.nodup_finRange s'.numDiv).filter _).injective_get
+  rw [hshape, leafOfState, dif_pos h]
+  refine ⟨c.chartMap, id, id, fun w => fderiv ℝ c.chartMap w,
+    fun _ => ContinuousLinearMap.id ℝ (Params M), 1, 1,
+    fun j => birthFlatCoord M s' j h, fun i => (t0Indices s').get i,
+    one_pos, birthFlatCoord_injective hinv', hget, fun k => rfl, fun k => rfl, fun j => hexp' j,
+    ?_, fun w _ => rfl, fun w _ => ⟨(hdiff w).hasFDerivAt, by rw [hident w, ledgerMonomial]⟩,
+    fun v _ => ⟨rfl, rfl, hasFDerivAt_id v, abs_det_id_one.ge, abs_det_id_one.le⟩⟩
+  rw [Set.range_eq_empty (f := (Fin.elim0 : Fin 0 → Fin (flatDim M)))]
+  exact disjoint_bot_right
 
 end DLNFibre.DLN.RLCT.Engine
