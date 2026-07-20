@@ -6009,3 +6009,16 @@ targets (verified all 36 pairs) — so walk-t20's 2d lane proceeds UNCHANGED, gr
 reach for the (false) map-level identity. The map-level and det-level claims are now
 formally decoupled. The truth-gate discipline scores again: the def died on paper, not in
 a half-built Lean module.
+
+## 2026-07-20 tick 366: COMBINED GATE GREEN — the full integrated endgame state verified
+The fresh AxCheck gate over the complete integration state (carto docs + mint arm rewrite
++ t14's encore incl. GeoAtlasTransfer) returned LAKE-EXIT:0, zero errors. Verdicts:
+toChartBridge + region_glue_of_chartBridge exactly clean-three (the MUSTs);
+geoAtlasNorm_leaf_ledgerProps + geoAtlasNorm_leaf_ae_injOn clean-three (the new 2b/2c
+probes); chartBridgeFaithful_buildTree +sorryAx (the honest three owed: leafDiagFrob +
+cover + jacobian); prestage +sorryAx via the engine (the mint fit-proof live);
+aoyagi_learning_coefficient_gen clean-three (the relocation target ready). The integration
+branch is a verified point-of-record for the whole endgame architecture: the α-atlas
+witness-swap, the transfers, the mint pre-stage. Remaining to the discharge: loss-t15's
+bank + four cases (blocked on t14's clearedOf), walk-t20's jacobian walk, the node-local
+cover (elder round-3 ruling in flight).
