@@ -7325,3 +7325,27 @@ from the Engine + un-wire it; re-gate to green: full build + cordon gate + #prin
 deliverable + cited_aoyagi_lower_ax + dev's determinantal keystones) on a staging branch
 (expedition/aoyagi-engine--integrate), keeping main clean; controller supervises + ratifies + the doc
 reconcile (elder). Recovery tag premerge-dev-2026-07-20 stands. Setting up the handoff next.
+
+## 2026-07-20 tick 426: dev-merge integration GREEN + controller-CALIBRATED; elder ratification in flight; push pending
+Integrator drove stages 4-6 to GREEN (committed 10c5d3f35, local/unpushed; stood down). CONTROLLER
+CALIBRATION (ground-truth, not the "done" claim): build EXIT=0 (8958 jobs); `scripts/sorries` = 25
+sorry / 0 #exit / 0 native_decide / 3 axiom (the 3 = declared cites; +0 from this work); re-#printed
+`aoyagi_learning_coefficient_{gen,L2,gen_le}` over fresh oleans = ALL clean-three [propext,
+Classical.choice, Quot.sound]. ✓ Integrator's cite verification (accepted): `cited_aoyagi_lower_ax` is
+the SINGLE in-library Aoyagi kill-target; env has exactly 3 @[cited]+located axioms (lower [kill] +
+watanabe_upper [external] + local_zeta_pole [off-path]); cordon-test 26/0; chart Engine un-wired (0
+modules reachable from aggregator; files stay bannered). 6 files, +18/-190 (net -172, mostly dead
+chart-Engine deletion). 2 integrator surprises, both handled honestly + within the diagnosed surface:
+(1) ConditionalSpine reached _gen transitively via L1Mint→Engine.EngineDriver → fixed by direct
+`import HeadlineGenAssembly` (Engine-free); (2) relocated-lemma requalify hit 3 sites (RouteMSJCorank
+Survival + D1HChartRank), not the cert's predicted 2. NET: the dev merge is sound — disjoint stacks
+merged clean; the deliverable stays clean-three; dev's cite-free determinantal geometry is in-tree.
+FLAG (real regression, follow-up not blocker): the ENFORCING full-env `scripts/cordon` is
+pathologically slow post-merge (>32min, killed — merge ~doubled the audited env). Verdict structurally
+DETERMINED (UNACCOUNTED=∅: 3 axioms all located; LEAKS=∅: 0 blueprint in kept build) + confirmed via
+#print axioms + cordon-test, so not a blocker; needs leak-walk-memoization / scoped-audit (follow-up).
+REMAINING (stage 6 close): elder charged to ratify the cordon+cite unification + AUTHOR the two charter
+§3 boundaries (prove-cited_aoyagi_lower-never-cite; reuse-determinantal-geometry-not-L&R-theory) +
+reconcile citation-cordon.md (union-kept both cordons → trim to ours) + record the cordon-runtime
+follow-up. On the elder's "ready": I commit its charter edits + PUSH (banks the whole integration to
+origin; recovery tag stands until then).
