@@ -3,8 +3,17 @@
 **Seat**: pen-and-paper (pnp-ideal), expedition 2026-07-17-aoyagi-engine. One sharp truth-value,
 adjudicated adversarially: does the per-chart ideal reduction `⟨(∏_s C^{(s)})∘chart⟩ = ⟨b_i⟩` hold at
 DEPTH 3 (L=3, M=(2,2,2,2)), telescoping through the layers, or WALL at the depth-≥3 SchurCore
-boundary? Exact `sympy` only (`battery/ideal_*.py`, all exit-0; MC never used). Codex DOWN env-wide —
-sole decorrelated instrument. Builds on `verify-r1-shortcut.md` (the LOSS-level depth-recursion,
+boundary? Exact `sympy` only; MC never used. Codex DOWN env-wide — sole decorrelated instrument.
+
+**Load-bearing evidence (exit-0 ≠ content-true; named explicitly).** The verdict rests on TWO
+mutually-corroborating exact batteries: `battery/ideal_peel_identity.py` (the exact single-layer matrix
+identity, with `δ→ρ` being literally the `{δ=u=v=0}` blow-up in the ρ-chart — so the tie is *derived*,
+not reverse-engineered) and `battery/ideal_structure_v2.py` (the composed endpoint, both inclusions,
+RLCT 3/2). `battery/ideal_lemma1_direction.py` is the fidelity pin (§6); `battery/ideal_coupled_partialrank.py`
+is the coupled-boundary probe (§5). **`battery/ideal_equality_rigorous.py` is SUPERSEDED** — it has a
+free-δ bug (does not apply the blow-up tie `δ=ρ`) and PRINTS the opposite of the headline; it is kept
+only as a cautionary data point that the `δ=ρ` tie is load-bearing (drop it and the equality fails).
+Do not cite it as corroboration. Builds on `verify-r1-shortcut.md` (the LOSS-level depth-recursion,
 2026-06-23), `threads/19-loss-factorization/cert-loss-factorization.md`, `threads/24-alpha-cover/
 cert-full-value-walk.md` (the α-chart is category-impossible ⟹ the reduction is IDEAL-level).
 Pinned to `worked.tex:153-197` (Lemma 1 + the boxed S2 rule), `worked.tex:340-410` (Lemma 2 /
@@ -122,6 +131,32 @@ diag(b). It nonetheless **monomializes** (the `T`-block reduces cleanly via gene
 the coupling **raises** the threshold `3/2 → 2 = ½·Mval`), corroborated exactly by
 `verify-r1-shortcut.md` + its decorrelated Codex leg. **Coupled ≠ walled.**
 
+## 5a. Coupled-endgame probe plan (STUB — HELD, not started; width-≥3 scope is operator-gated)
+
+If the operator scopes any layer with `min(M¹,M²) ≥ 3` into the follow-up, the open leg is a **full
+Gröbner monomial endpoint** for the coupled diag(b) branch at the ideal level. It is *not started* (the
+value 2 is already certified; only the ideal-level *monomialization* mechanism is open). What a full
+settle at the smallest witness (3,3,2,2) `t=(2,1,0)`, `Mval=4`, target RLCT 2, would need:
+
+1. **Continue the coupled recursion past `ideal_coupled_partialrank.py`.** That script stops at the
+   residual ideal after the `{C³=0}` blow-up + rank-1 chart, whose Gröbner basis still carries
+   `det T` and the `δ(r₀t₀₁−r₁t₀₀)` cross-terms (i.e. genuinely coupled, not yet monomial). Apply the
+   generic-`T` unit shears (`t₀₀'=t₀₀+p·t₀₁`, etc. — a coordinate change, det 1) and re-Gröbner; expect
+   the `T`-block to reduce to unit×(exceptional monomials), leaving a `δ`-carrying constrained core.
+2. **Resolve the residual `δ`-core.** The `δ²‖R·C³‖²` term shares `C³`; after the `C³`-blow-up it should
+   present as `⟨εB₁, εB₂, δE, δεF⟩` (Codex's Newton form). Verify via localized Gröbner (Rabinowitsch:
+   invert `ε, δ`-units where nonzero) that this reaches a **normal-crossing monomial ideal**, and
+   compute the Newton-minimum → residual RLCT `1+1 = 2`; combine with the radial `ε`-divisor ratio
+   `4/2 = 2` for `min(2,2)=2`.
+3. **Confirm no lower-binding sub-chart.** The coupled recursion re-enters on a *constrained* core
+   (`diag(E₂,δ)·free`); check the sub-strata don't produce a divisor ratio `< 2` (the cover lower
+   bound, `verify-r1-shortcut` Q4, is the structural guarantee — re-verify at the ideal level here).
+
+Deliverable would be: `⟨∏C∘chart⟩ = ⟨monomial ideal⟩` for the coupled branch, both inclusions, at the
+ideal level — the coupled analogue of §2. Kill-condition: if step 2's residual ideal is NOT
+monomializable by any unit×blow-up sequence (a genuine non-toric obstruction surviving the `C³`
+blow-up), THAT would be the real wall — but §5 + the prior Codex Newton computation give no sign of it.
+
 ## 6. FIDELITY PIN — Lemma 1 direction (`worked.tex:156`) is BACKWARDS — `battery/ideal_lemma1_direction.py`
 
 `worked.tex:153-156` prints Aoyagi Lemma 1 as: `G∈J=⟨F⟩ ⟹ rlct(ΣG²) ≥ rlct(ΣF²)`. The correct
@@ -161,6 +196,7 @@ direction is **`≤`**. Concrete 1-D certificate: `F=u`, `G=u²` (so `G=u·u ∈
   those branches need Aoyagi's coupled diag(b) — still monomializing (§5), but a heavier build. If the
   follow-up's scope is (2,2,2,2)/all-widths-≤2, the clean disjoint recursion is complete.
 - **Next construction / consult:** (i) confirm the follow-up's target dimension-vector scope (all
-  widths ≤ 2 ⟹ clean; any width ≥ 3 ⟹ some branch coupled); (ii) if coupled branches are in scope,
-  reconstruct the diag(b) recursion to a monomial endpoint at the ideal level (§5 sketched it; a full
-  Gröbner endpoint at (3,3,2,2) would settle it). Codex skipped — down env-wide.
+  widths ≤ 2 ⟹ clean; any width ≥ 3 ⟹ some branch coupled) — this is the **operator's launch call**;
+  (ii) the coupled diag(b) monomial endpoint at the ideal level is **HELD** pending that scope call —
+  the probe plan is stubbed in §5a for a cold pick-up (do not start it unless width ≥ 3 is scoped in).
+  Codex skipped — down env-wide.

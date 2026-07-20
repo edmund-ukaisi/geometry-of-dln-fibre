@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
 """
+!!! SUPERSEDED-BY ideal_structure_v2.py  (do NOT cite as corroboration of the headline). !!!
+!!! BUG: this script leaves the incidence coordinate delta FREE at the intermediate peels    !!!
+!!! (incidence_sub sets F[1,1]=al*(a*b+dl) with dl free) and never applies the {delta=u=v=0}  !!!
+!!! blow-up tie delta=rho.  Consequently the bottom-row entries are NOT divisible by the rho   !!!
+!!! factors and it PRINTS "ideal equality: False" -- the OPPOSITE of the true result.          !!!
+!!! It exits 0 but its content is WRONG.  The correct version (ideal_structure_v2.py) ties      !!!
+!!! delta=rho and gets every entry divisible by the full m, U[0,0]=1, RLCT 3/2.                 !!!
+!!! KEEP ONLY as a cautionary data point: the delta=rho tie (from the blow-up) is LOAD-BEARING; !!!
+!!! drop it (free delta) and the ideal equality fails.  The exact single-layer derivation of    !!!
+!!! that tie is ideal_peel_identity.py (delta->rho IS the {delta=u=v=0} blow-up, not assumed).  !!!
+
 RIGOROUS ideal equality  <prod C o chart> = <m>  (both inclusions), exact.
 
 Carry the FULL composed product matrix through the nested depth-recursion charts,
