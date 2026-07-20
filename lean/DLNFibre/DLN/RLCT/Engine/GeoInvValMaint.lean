@@ -86,4 +86,25 @@ theorem invVal3f2_conRoot (cleared dropped : ConState L → Fin (M 0) → Prop)
   fun w i j => ⟨fun hc => absurd hc (hcl i), fun hd => absurd hd (hdr i),
     fun _ _ => (hres w i j).symm⟩
 
+/-! ## Old-row maintenance tools (resD-independent — the cleared-clause bmon pullback) -/
+
+/-- **The α gauge fixes every child divisor's birth-diagonal read** (entry-level; the per-read inside
+walk-t20's `alphaGauge_ledgerMonomial_neutral`, extracted for the value bmon pullback): `id` on
+case-1(1)/rollover; the interior Schur fold fixes birth diagonals on case-1(2)/case-2 (they sit at
+row `< cleared`, disjoint from the schurCells at row `≥ cleared+1`). -/
+theorem alphaGauge_fixes_birthFlatCoord (g : GeoChart M) (child : ConState L) (h : 0 < flatDim M)
+    (dinv : DivBirthInv M child) (hlayer : g.node.layer = child.layer)
+    (hcleared : child.cleared ≤ g.node.cleared + 1) (k : Fin child.numDiv) (w : Params M) :
+    paramsEquivFlat M (alphaGauge (M := M) g w) (birthFlatCoord M child k h)
+      = paramsEquivFlat M w (birthFlatCoord M child k h) := by
+  rcases hce : g.edge.case with _ | _ | _ | _
+  · simp only [alphaGauge, hce, id_eq]
+  · simp only [alphaGauge, hce]
+    exact residualSchurShear_fixes_of_not_mem g.node _ _ _
+      (schurCells_fst_ne_birthFlatCoord g.node _ _ child h dinv k hlayer hcleared) w
+  · simp only [alphaGauge, hce]
+    exact residualSchurShear_fixes_of_not_mem g.node _ _ _
+      (schurCells_fst_ne_birthFlatCoord g.node _ _ child h dinv k hlayer hcleared) w
+  · simp only [alphaGauge, hce, id_eq]
+
 end DLNFibre.DLN.RLCT.Engine
