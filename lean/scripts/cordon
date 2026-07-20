@@ -100,13 +100,19 @@ def is_located(path):
 
 def is_tagged(lines, lineno, col):
     """Is the axiom at (lineno, col) preceded by an `@[cited …]` attribute (same-line prefix, or the
-    immediately-preceding non-blank line)?"""
-    if CITED_RE.search(lines[lineno][:col]):
+    immediately-preceding non-blank line)? The attribute match must NOT itself sit inside a comment /
+    string / backtick (else a comment or docstring mentioning `@[cited]` right above an untagged axiom
+    would mask it — a false negative). Uses the same `skipped()` filter as the axiom scan."""
+    m = CITED_RE.search(lines[lineno][:col])
+    if m and not skipped(lines, lineno, lines[lineno], m.start()):
         return True
     j = lineno - 1
     while j >= 0 and lines[j].strip() == "":
         j -= 1
-    return j >= 0 and CITED_RE.search(lines[j]) is not None
+    if j < 0:
+        return False
+    m = CITED_RE.search(lines[j])
+    return m is not None and not skipped(lines, j, lines[j], m.start())
 
 
 def collect_lean_files(root, tree):
