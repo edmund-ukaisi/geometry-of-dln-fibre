@@ -30,11 +30,25 @@ over banked substrate.
    divisor-sharing coupling is tracked through every chart. Same content as fork 3. The
    predecessor's own tracked-coupling route (`routeMBoxThresholdFinite_of_decoratedDescent`,
    conditional on `DecoratedDescent`, AxCheck:1006) is the insight this engine constructivizes.
-3. **Divisor-sharing data is mandatory in the tree — bound at TYPE strength.** WHY: at corank ≥ 2
-   the carried monomials couple; threshold-only summaries provably break. The tree datatype carries
-   divisor-support as TYPED FIELDS (a flattening "simplification" is a type error, not only a
-   battery failure — P1). Witnesses: `battery/g-coupled-binding-334.py` (minAdm(3,3,4)=8, coupled
-   path only), `battery/g-delta-flatten.py`.
+3. (AMENDED, elder charge-10, 2026-07-20 — DERIVED-not-transported, cert-r4-sharing;
+   stern-scrutiny passed via Codex decorrelation + the coupling-retained check). WHY UNCHANGED:
+   at corank≥2 the carried monomials couple; a per-row-multiplicity FLATTEN provably breaks
+   (g-delta-flatten; g-coupled-binding-334 minAdm(3,3,4)=8 coupled-only). REVISION of the
+   literal "typed FIELDS": the sharing is a TYPED DERIVED FUNCTION of the typed per-divisor
+   divProfile field — solving Aoyagi's b-recursion (worked.tex:484) gives b_i = ∏_{t̃_k<i} u_k
+   (squarefree), so support(row i) = {k : divTilde k < i} is divProfile-determined.
+   genDivExp/numGen DROP as primitive fields (duplicate divProfile-determined data — charge-6);
+   bExp becomes a def, bChain a theorem (discharging the deferred b-chain population). HONORS
+   THE WHY: coupling stays typed, per-divisor, full-identity (divProfile carries the full
+   T-vector; shared-vs-split have DIFFERENT divProfile fingerprints, so the flatten-kill is
+   avoided; the (3,3,4) corank-2 coupling is CAPTURED as a length-2 equal run, load-bearing).
+   KILL (non-divisor-free residual) CLOSED by LeafPullback's 0<lo + the bExp_spec tripwire.
+   SIZE re-priced LARGE→SMALL (~1 module + ~10 mechanical constructor edits; no Finset
+   transport) — the LARGE priced a transport the math does not require. R4 moves from
+   post-spine LARGE to a SMALL item executable at the discharge batch. GUARD: bExp_spec stays
+   an executable invariant (fires if a step desyncs divProfile from the chain level); no
+   consumer reads INTERNAL-state support today (region_glue blind; GeoAlphaGauge needs only
+   Monotone) — if one ever does, re-examine internal residual-divisor-freeness.
 4. **Def 3 as printed is broken** (verified typo). Use the geometric `½·min_t Mval(t)`.
    Witness: `battery/g-def3-broken.py`.
 5. **The engine's sole output is hbox** — one Prop (`RouteMBoxReduction.lean:165`, verified

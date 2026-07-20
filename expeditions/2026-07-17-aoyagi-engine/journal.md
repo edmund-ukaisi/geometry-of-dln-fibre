@@ -5322,3 +5322,20 @@ that's the grain, the handoff option re-opening at every banked boundary, per-st
 ~half an arc. The mega-grind is converted to the staged pattern. pnp-r4's shutdown confirmed
 clean. Board: t14 (staged assembly) ∥ theta-t18 (grinding (b)+lane-4) ∥ loss-t15 (parked) ∥
 elder (charges 9+10 queued) ∥ carto warm.
+
+## 2026-07-20 tick 330: FORK 3 AMENDED — the derived-not-transported ratification (stern scrutiny recorded and passed)
+The elder treated the R4 re-price as the HIGHEST-SUSPICION class (a simplification of a named
+hard part) and scrutinized on four axes, all clearing: (1) the coupling is RETAINED (the
+(3,3,4) corank-2 coupling captured as a length-2 equal run, load-bearing; the shared-vs-split
+discrimination preserved via distinct divProfile fingerprints — the flatten-kill does not
+fire); (2) the SMALL is EARNED not unprobed (the exact b-recursion solve; the LARGE priced a
+Finset transport the mathematics does not require — "not a shortcut around the hard part,
+but the discovery that the hard part was never necessary"); (3) the decorrelated instrument
+converged (blind Codex re-derived everything and added the folded-in qualification); (4) the
+contract is honored with only redundancy dropped. FORK 3 AMENDED verbatim (compass): the
+sharing is a TYPED DERIVED FUNCTION of divProfile; genDivExp/numGen drop; bExp/bChain become
+def/theorem; the bExp_spec guard stays executable; the no-internal-consumer caveat recorded.
+BUILD-LIST: item 7 (R4) moves to SMALL-at-the-discharge-batch (with the standard
+design-cert-estimate caveat: the constructor edits touch witnesses; confirm at build). The
+post-spine LARGE count is now ZERO. Charge-9 (the envelope-band) still owed — next from the
+elder.
