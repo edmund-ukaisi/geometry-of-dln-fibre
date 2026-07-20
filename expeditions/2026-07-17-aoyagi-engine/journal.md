@@ -7116,3 +7116,16 @@ Expedition now at its clean close-shape: deliverable banked+verified (L≤2 unco
 conditional), verdict verified, compass current, follow-up priced. Owed-at-close (unchanged):
 close synthesis (elder co-read), the post-spine items (R7 completeness, (2,2,4) witness,
 R4-small, zero-width(b)) named in any PR body; the compaction pass at the follow-up's open.
+
+## 2026-07-20 tick 418b: sequencing-vs-scope precision fix (elder-caught) sent to operator; compass bank confirmed on origin
+elder's "ready: bank fork-16 now" crossed my tick-418 commit (838033059, compass.md-only,
+CONFIRMED on origin); compaction stays a separate later commit at follow-up open. elder flagged
+a real imprecision in MY operator decision-knob: I framed "A-now vs A+B-committed (the +L coupled
+cost)" — reads as if B's INCLUSION were the choice. CORRECTED to the operator: the coupled
+width≥3 case (Aoyagi's corank≥2 real mechanism) is IN SCOPE non-negotiably (fidelity, RISING-SEA
+guard); navigator-7's +L prices the SEQUENCE (when the coupled probe lands), NEVER whether to
+include it. A clean-only "RLCT library" is off the table by the MATH, not the budget. The knob is
+purely sequencing (near-term-together vs clean-first-then-coupled) + launch timing. My compass
+fold + package already said "in-scope-staged, never scoped out"; this fixes only the knob
+phrasing. elder folds navigator-7's boundary numbers as SEQUENCING (not scope) into the
+compaction at follow-up open. Next: status-snapshot SVG (decision-state, corrected framing).
