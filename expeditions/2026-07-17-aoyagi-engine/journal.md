@@ -6134,3 +6134,19 @@ hypotheses (flagged at Phase-2 GO, not mid-bank); (D)₁ stays rfl. FILE COORDIN
 t14's atoms and walk-t20's walk are append-vs-append in GeoAtlasTransfer.lean on different
 branches — decl list sent to walk-t20 (avoid collisions; exact-duplicate relocations
 dedup'd by me at the union merge).
+
+## 2026-07-20 tick 373: THE PAYLOAD UNIT BANKED (clean-three, zero sorries) + MERGED; the four-case grind OPENS
+loss-t15 banked the complete value-walk payload (614f02e83; merged to integration
+acbc27b8e; gate running): prodPrefix + the prefix=full cast bridge, resolvedRows(A) /
+rollover-aware dropThreshold / clearedOf / droppedOf, bmonOf(≤), the THREE-STATE
+prefix-based InvVal3 (option C), the vacuous conRoot base, and the three-state leaf
+discharge carrying the width-drop fix — all [propext, Classical.choice, Quot.sound], zero
+sorries. The FALSE two-state non-prefix InvVal is DELETED. Seven design catches, zero
+wasted grind — the lane's design phase is over; what opened is the FOUR-CASE GRIND (task
+#21): case-2 FIRST (the ratified tripwire case — the α-Schur must establish newly-cleared
+= bmon from the exposed prodPrefix values; walls ⟹ stop-and-surface), case-11/rollover
+riding the α=id gift on t14's reads verbatim, then the walk instantiation. COORDINATION:
+its fannedG copies are now the CANONICAL ones on integration; walk-t20 instructed to
+merge, drop its verbatim duplicates, and import GeoInvValWalk (acyclic direction) — the
+aggregator clash dies before existing. Board: t14 on Phase 1.5, walk-t20 on 2d-B,
+loss-t15 on case-2 — all three owed sorries now have active, fully-de-risked builds.
