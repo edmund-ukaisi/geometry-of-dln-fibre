@@ -6281,3 +6281,24 @@ cite as its own step: z_fresh's coord = birthFlatCoord child (fresh) = (s.layer,
 via divBirthCoord snoc (EngineConstruction:190-193) — the tick-286 binder class lives there.
 Delegated the fidelity-escalation channel to loss-t15↔elder directly (co-reading this lane).
 loss-t15 grinding the hole. Canonical 2d gate still rebuilding.
+
+## 2026-07-20 tick 382: THE HOLE'S FIDELITY FORK — option C insufficient for row-J RESULT; minimal-carry ruling sought
+loss-t15 worked the crux-4 transport concretely and named the blocker (the ratified
+tripwire firing): the α-Schur READS a,b from the exposed residual values fine, but the
+row-J RESULT = bmon·e_J requires the residual block to BE in incidence form
+[[1,a],[b,ab+ρ]] — Lg·M·Rg → [[1,0],[0,ρ]] only holds for that STRUCTURE, and the form is
+NOT derivable from the pointwise exposed values at an intermediate state (the acc-confounder:
+the parent invariant says nothing about unresolved residual rows; the full prefix can't be
+row-J decomposed via it). So the incidence STRUCTURE is load-bearing — option C
+(expose-values-only) is too weak. Routed to the elder (it ratified C; this refines its
+"values stay exposed to read a,b" model — the read is fine, the RESULT needs structure).
+CONTROLLER PUSH: rule the MINIMAL FAITHFUL carry, not reflexively the heaviest — three
+forms lightest-first: (3) PIVOT-CROSS only (row J's Schur touches only pivot row/col; ρ +
+(J+1,J+1) feed D_{J+1} not row J — may need only the pivot-cross incidence), (2) incidence-
+form CHARACTERIZATION Prop (structural, provable-by-construction, no matrix field), (1) full
+fold resid:=prod∘foldToState (loss-t15's fallback, heaviest). The carry strengthens InvVal3
+(re-opened gate; leaf/base survive per my read, maintenance gains the obligation). loss-t15
+HOLDING (not idle) — pre-drafting forms 2/3 + the decisive 3-vs-2 finding (does row-J need
+only the pivot cross or the whole block?). Offered the elder a pnp seat for a decorrelated
+minimality check (codex down) if it wants one. This is the hole's one design fork; the
+seven-catch floor + all tools stand — only the residual-carrying is at stake.
