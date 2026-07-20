@@ -7349,3 +7349,24 @@ REMAINING (stage 6 close): elder charged to ratify the cordon+cite unification +
 reconcile citation-cordon.md (union-kept both cordons → trim to ours) + record the cordon-runtime
 follow-up. On the elder's "ready": I commit its charter edits + PUSH (banks the whole integration to
 origin; recovery tag stands until then).
+
+## 2026-07-20 tick 431: cordon-perf RECALIBRATION (owned) — mis-diagnosed + over-invested; corrected criterion
+Elder ratified + charter §3 boundaries committed (f383c478e). Q1 signaling done (Engine/RETIRED.md +
+all 4 sorry-carrying Engine files bannered). CALIBRATION MISS (own it): I diagnosed the >32min cordon
+slowness as the blueprint-leak walk + wrote a boundary-prune (notUpstream). The prune is SOUND
+(cordon-test 26/0, leak fixtures still caught) and correct for the blueprint-walk axis (kept — the new
+phase's @[blueprint] skeletons need it scalable), BUT it did NOT fix scripts/cordon: the re-run audited
+8+ min. So the blueprint walk was NOT the (sole) culprit — the bigger cost is the OTHER unpruned
+full-graph walks (collectAxiomsBatch and/or the env.constants enumeration in scopedDecls, which also
+traverse all of Mathlib). I over-invested chasing "make scripts/cordon fast" — a FOLLOW-UP, not an
+integration blocker — and my "push when scripts/cordon lands fast-green" criterion was WRONG.
+ALSO: TaskStop kills the task wrapper, NOT the detached child — a 32-min cordon-audit zombie survived
+b4zhxdszc's stop, burning a core; force-pkill'd it + the 8-min run. (Lesson: pkill the process, not
+just TaskStop, for a runaway build/audit.)
+CORRECTED push-gate (scripts/cordon SPEED is NOT a gate): the integration is green by build-green
+(8958/8964 jobs) + deliverable clean-three (re-#printed) + cordon-test 26/0 (mechanism) + cite-structural
+(3 @[cited]+located axioms, UNACCOUNTED/LOCATION/LEAKS = ∅ by construction) + census 25/3. scripts/cordon's
+VERDICT is green, just slow. FOLLOW-UP (scoped, not in-context): profile which cordon check is slow +
+prune/optimize the full-graph walks (collectAxiomsBatch, scopedDecls) at the first-party boundary, as the
+blueprint walk now is. REMAINING push-gate = lr-survival reviewer (does dev's L&R geometry survive the
+merge, clean) — running; push held for its verdict.
