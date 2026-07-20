@@ -5444,3 +5444,18 @@ STAGE 4 (t14, in flight): the headline wiring (geoAtlas_fold_det = the cocycle a
 conRoot/id) + the R7 ∃-discharge (the ≥1 conjunct PROVABLE via DivExpPos — the watch-item
 resolved positively). Then: loss-t15's mirror → the faithful discharge (the projection) →
 hbox → mint → cordon → PR.
+
+## 2026-07-20 tick 337: STAGE 4a — geoAtlas_fold_det CLOSED (the mission sorry PROVEN); loss-t15 woken on the landed walk
+Merged (f9e30fc69) + controller-probed: geoAtlas_fold_det depends on exactly [propext,
+Classical.choice, Quot.sound] — THE NAMED MISSION SORRY of the fold lane is PROVEN, restated
+to the R7 full-ledger ∃-form, downstream re-greened (ChartBridgeFaithful, the Disproof
+module). t14 on 4b: strengthening the cocycle's conclusion to LeafJacobian directly (LOW
+risk — the step case passes through; only the terminal rebuilds the 10-conjunct bundle,
+with every conjunct's supply named: β:=acc, ψ:=id lo=hi=1, fc:=birthFlatCoord,
+emb:=t0Indices.get, the rfl coherences on the dif_pos branch, injectivity via
+birthFlatCoord_injective, ≥1 via DivExpPos, Disjoint vacuous; half-arc tripwire on the
+leafOfState defeq). LOSS-T15 WOKEN — its trigger (the landed walk template) fired: build
+Inv_val on GeoFoldRegroup's structure with the value payload; the leaf-discharge bridge is
+already proven, so the walk's terminal plugs in and LeafPullback closes end-to-end. The
+faithful discharge's remaining sorries: the LeafJacobian bundle (t14's 4b, in flight) +
+LeafPullback (loss-t15, now building). BOTH are on final approach.
