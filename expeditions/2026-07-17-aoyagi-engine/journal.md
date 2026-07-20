@@ -6903,3 +6903,21 @@ ideal route genuinely tractable or another optimistic headline?). Following thro
 assessment to the operator ("probe the ideal route's closability before trusting it") with the
 actual probe. navigator #10 at pnp-ideal's verdict → the concrete follow-up spine. elder charge
 closed (co-reads the close synthesis; provisional-mid-reckoning lesson affirmed).
+
+## 2026-07-20 tick 411: hbox satisfiability PROVEN (L=2 unconditional witness) — the deliverable is stronger than framed
+mint-t19: the hbox hypothesis is not just "Aoyagi-says-so" satisfiable — it's PROVEN by a
+concrete clean-three witness routeMBoxThresholdFinite_mnp (RouteMSchurRectCapB.lean:453,
+sorry-free, force-#print clean-three, discharge-AGNOSTIC: SchurCore recursion, no chart-CoV).
+So box-finiteness holds UNCONDITIONALLY for the entire L=2 (m,n,p) family — it's what makes
+aoyagi_learning_coefficient_L2 / aoyagi_rrr_222 unconditional. UPGRADED PICTURE (a real
+correction to the bleaker "all conditional on the unbuilt hard part" I gave the operator):
+the deliverable is aoyagi = C/2 UNCONDITIONAL at L≤2 (concrete, banked) + CONDITIONAL on
+box-finiteness at general L (proven at L=2, owed at L≥3 via the ideal-level follow-up). Not a
+vacuous conditional — a proven base case + a route-agnostic general-L extension. RULED
+(statement-hygiene, my call; elder ruled the substance + co-reads at close): KEEP the
+full-headline ∀L≥1 spine (aoyagi_learning_coefficient_of_boxThresholdFinite = _gen[L≥2] +
+L1[L=1] on hbox); SINGLE-INSTANCE hbox (weakest sufficient, not ∀M); ADD the L=2-UNCONDITIONAL
+COROLLARY (discharge hbox via routeMBoxThresholdFinite_mnp → aoyagi=C/2 unconditional clean-three
+at L≤2) + the non-vacuity docstring witness (bedrock witness-in-file). mint-t19 banks it +
+does the refuted-as-stated labeling + stands down. This is the best answer to "is it vacuous?":
+no — it closes CONCRETELY at L≤2. pnp-ideal probing the L≥3 ideal route (depth-3) meanwhile.
