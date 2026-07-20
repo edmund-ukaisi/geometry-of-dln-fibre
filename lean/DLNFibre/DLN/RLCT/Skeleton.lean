@@ -1442,14 +1442,9 @@ private theorem Useq_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : �
     · positivity
     · rfl
 
-/-- The block bound `admBound j ≤ M⁽ʲ⁺¹⁾` (the index-0 `min(M⁰,M¹) ≤ M¹`). -/
-private theorem admBound_le_Msucc (M : Fin (L + 1) → ℕ) (j : Fin L) : admBound M j ≤ M j.succ := by
-  unfold admBound; split
-  · rename_i h0
-    have hs : j.succ = (1 : Fin (L + 1)) := by
-      apply Fin.ext; rw [Fin.val_succ, h0, Fin.val_one', Nat.mod_eq_of_lt (by omega)]
-    rw [hs]; exact min_le_right _ _
-  · exact le_refl _
+-- (admBound_le_Msucc now lives in Foundations/Lambda.lean as the public canonical form,
+-- verbatim-identical statement; the private duplicate here was deleted at the tick-334
+-- clash fix — uses below resolve to the imported lemma.)
 
 /-- The level sequence is bounded by the widths: `u_i ≤ M⁽ⁱ⁾` (the block bound). -/
 private theorem Useq_le_M (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (i : ℕ)
