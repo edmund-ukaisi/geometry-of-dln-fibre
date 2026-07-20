@@ -1,6 +1,6 @@
 import DLNFibre.Core.Analysis.RLCT.Zeta
 import DLNFibre.Core.Analysis.RLCT.Local
-import DLNFibre.Core.Meta.Cited
+import Meta.Cordon
 import Mathlib.Analysis.Meromorphic.Order
 import Mathlib.Analysis.Analytic.Basic
 
@@ -11,7 +11,7 @@ The single cited monument the zeta-pole RLCT definition rests on. Everything els
 foundation is **built** (the zeta integral + its convergence, `RLCT.Zeta`; the local RLCT
 `rlctAt`, `RLCT.Local`; the regional threshold, `RLCT.Integrability`; the real↔complex codim
 transfer, in `Core`) or **proved**; this file isolates the one external analytic result, as a
-`@[cited]` `axiom` on the citation cordon (`DLNFibre.Core.Meta.Cited`; module name ends in `Cited`
+`@[cited]` `axiom` on the citation cordon (`Meta.Cordon`; module name ends in `Cited`
 ⟹ the location check passes).
 
 ## The monument — stated LOCALLY (certificate §7.5)

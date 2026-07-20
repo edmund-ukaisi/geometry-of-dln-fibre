@@ -9,7 +9,7 @@ mechanism, both riding Lean's own kernel dependency graph (`collectAxioms` / `ge
 `#print axioms` engine and the constant-reference graph):
 
 * **Cited accounting.** Any external result one *cites* — here the Aoyagi `rlct = ½·codim` DLN
-  equality (`RlctInterface.cited_aoyagi_dln`) — is a Lean `axiom` tagged `@[cited "<source>"]`.
+  lower bound (`cited_aoyagi_lower_ax`, in `DLN/RLCT/AoyagiCited.lean`) — is a Lean `axiom` tagged `@[cited "<source>"]`.
   DLNFibre's definition of done is **NOT zero-cite**: that Aoyagi equality is a *legitimate* cited
   interface (Watanabe's universal bound + Aoyagi's exact DLN computation), so the gate here certifies
   **proved modulo declared citations** — no *unaccounted* axiom has crept in, every cite is tagged and
@@ -150,7 +150,7 @@ last component is exactly `"Cited"` (the generic `…/Cited.lean` convention); t
 named cite files that don't fit that shape. Extend here (only here) when a new located cite file is
 introduced (e.g. `DLNFibre.DLN.RlctInterface` if the Aoyagi cite is not moved to a `…Cited` module). -/
 def citedFileAllowlist : List Name :=
-  [`CordonFixtures.FixtureCited, `FixtureCited]
+  [`CordonFixtures.FixtureCited, `FixtureCited, `DLNFibre.DLN.RLCT.AoyagiCited]
 
 /-- **The located-cite rule.** A cited axiom must be declared in a *located cite file*: either its
 source-module's last component is exactly `"Cited"` (the generic `…/Cited.lean` convention), or the

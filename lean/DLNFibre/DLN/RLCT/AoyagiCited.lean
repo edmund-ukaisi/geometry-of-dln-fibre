@@ -1,5 +1,5 @@
 import DLNFibre.DLN.RlctPayoff
-import DLNFibre.Core.Meta.Cited
+import Meta.Cordon
 
 /-!
 # `DLNFibre.DLN.RLCT.AoyagiCited` — the DLN RLCT cites, on the citation cordon
@@ -7,7 +7,7 @@ import DLNFibre.Core.Meta.Cited
 The **located cite file** for the DLN RLCT payoff (the citation cordon's first real user): the
 genuinely-analytic monuments the payoff rests on, declared as `@[cited]` `axiom`s (so Lean's kernel
 tracks them and `scripts/cited` accounts them), in one `…Cited.lean` file (the cordon's location
-invariant). Cordon mechanism: `DLNFibre.Core.Meta.Cited`, `docs/policies/citation-cordon.md`.
+invariant). Cordon mechanism: `Meta.Cordon`, `docs/policies/citation-cordon.md`.
 
 The analytic content the DLN payoff needs is **two bounds** bracketing the **built** global RLCT
 `RLCT.rlctGlobal (lossDLN d B)` (Def 8.1(i), `Core.Analysis.RLCT.Global` — a cite-free `sSup` of
@@ -33,7 +33,7 @@ The generic `RlctRealInterface` structure (cite visible in the *type*) stays in
 cordon enforces. Both name the same two bounds on `rlctGlobal`; `name = content` throughout.
 -/
 
-open DLNFibre.Meta.Cited
+open Meta.Cordon
 
 -- The `@[cited "…"]` custom attribute grammar trips Mathlib's whitespace linter with a spurious
 -- "extra space" at the string position (the source has a single space). Disable it here (this file
