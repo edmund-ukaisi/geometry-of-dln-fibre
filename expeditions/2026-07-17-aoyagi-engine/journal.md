@@ -5310,3 +5310,15 @@ disruptive at build time. Batteries: the (3,3,4) corank-2 coupling = a length-2 
 (load-bearing), the depth-3 rollover branch, the support identity at every state — exit-0.
 pnp-r4 retired with honors; the §2.3 Lean-ready shapes await the discharge-batch builder,
 gated on elder charge-10.
+
+## 2026-07-20 tick 329: the step assembly RULED — t14 continues, STAGED into four bankable greens
+t14's report: the terminal-closed R7 restatement banked (the correctness-critical shape fix);
+the remaining step @580 fully planned (coherences+reductions / 4-case maintenance / the
+fannedEdges walk / the ∃-discharge), every atom banked, ~250 coherence-heavy lines. Its
+continue-vs-handoff ask RULED: T14 CONTINUES — its context on its own module and atoms is
+uniquely load-bearing for composition work; a fresh seat re-derives at cost + misread risk —
+but STAGED: four bankable greens, each pushed+probed, one case at a time in stage 2 if
+that's the grain, the handoff option re-opening at every banked boundary, per-stage tripwire
+~half an arc. The mega-grind is converted to the staged pattern. pnp-r4's shutdown confirmed
+clean. Board: t14 (staged assembly) ∥ theta-t18 (grinding (b)+lane-4) ∥ loss-t15 (parked) ∥
+elder (charges 9+10 queued) ∥ carto warm.
