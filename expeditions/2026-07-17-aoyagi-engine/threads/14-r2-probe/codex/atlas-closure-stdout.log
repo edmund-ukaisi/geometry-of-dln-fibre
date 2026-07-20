@@ -1,0 +1,210 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+Installed 85 packages in 344ms
+OpenAI Codex v0.144.6
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/t12-pnp-o5
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f7801-f064-7a02-b82c-119d43155b65
+--------
+user
+<task>
+Independent adversarial review of a resolution-of-singularities COVER argument (Aoyagi 2023, deep
+linear networks). Try to BREAK it; do not trust my framing beyond the exact definitions.
+
+SETUP. A recursion builds a tree of blow-ups. Fix a width vector M=(M^1,...,M^{L+1}), running-min
+r_S = min(M^1..M^S). Each internal tree node is ONE blow-up of a smooth coordinate CENTER of
+codimension d_center:
+  - "Case 1" node: d_center = J1*(M^{S+1}-J) + 1  (a J1×(M^{S+1}-J) block of residual entries + one
+    divisor coordinate u).
+  - "Case 2" node: d_center = (r_S - J)*(M^{S+1}-J)  (a residual block, no u).
+A codim-d blow-up of the ambient at a coordinate center is covered by its d STANDARD AFFINE PIVOT
+CHARTS in the max-modulus normalization:
+    pivotChart_i(u)_k = u_i           (k = i)
+                      = u_i * u_k      (k != i),   domain {|u_i|<=R, |u_k|<=1 (k!=i)}.
+Each per-node chart is then post-composed with a per-node unit-triangular UNIPOTENT gauge ψ (a
+Schur-complement/shear: d_ij -> d_ij - d_i1*d_1j on the residual interior, det Dψ = 1, ψ a
+polynomial bijection). So the per-node local map is  ψ ∘ (pivotChart embedded in the ambient).
+The tree's LEAF charts are the root->leaf COMPOSITIONS of these per-node maps. The claim to be
+covered ("image-cover"): the union of leaf-chart images contains a neighbourhood of the zero-locus
+{prod(M,A)=0} inside the unit box.
+
+A SEPARATE combinatorial fact (established elsewhere, take as given): the recursion also tracks a
+"profile" (a symmetric quotient) and emits, per Case-1 node, only TWO representative children (a
+"1(1)" u-pivot chart and a "1(2)" corner d-pivot chart); the other d_center-2 block-pivot charts are
+NOT separately emitted as profile-children (they collapse to the same profile). At interior width
+bottlenecks (r_S drops below r_2 at an interior layer) some admissible rank strata are "stranded":
+they are never cleared to the deepest (t̃=0) profile, appearing only at t̃>0 leaves.
+
+QUESTIONS (adjudicate each independently; compute where useful):
+1. Does the FULL d_center pivot family image = the cube [-R,R]^{d_center} exactly (cover + bounded)?
+   Give the argument. Does a PROPER sub-family (e.g. only the u-pivot + the corner d-pivot, i.e. 2 of
+   d_center charts) still cover, or is there a point/direction it misses? Exhibit any miss.
+2. Does post-composing the unipotent gauge ψ PRESERVE the image-cover (does ψ∘family still cover a
+   neighbourhood of the target)? Any way ψ could create a gap?
+3. Does the root->leaf COMPOSITION (fold) preserve the cover, given each node covers its region?
+4. The stranding: are the stranded strata's POINTS geometrically UNCOVERED (a real image-cover gap),
+   or are they covered by some (t̃>0) leaf chart whose image still contains them (so only the
+   deepest-monomialization read, not the cover, is affected)? Which?
+5. BOTTOM LINE: is the image-cover SOUND? If it depends on a precondition, name the single most
+   load-bearing one. If emitting only the 2 representative charts per node (not the full d_center
+   family) is what the constructed tree actually does, what exactly breaks and where?
+</task>
+
+<output_contract>
+Per question: verdict + the decisive argument or counterexample. Mark [PROVED]/[COMPUTED]/[CONJECTURED].
+End with the single load-bearing precondition for the cover to hold, and whether the 2-representative
+emission suffices. Keep it tight.
+</output_contract>
+
+<grounding_rules>
+- Use ONLY the definitions above; compute exactly (integer/rational) if useful. State any interpretation.
+- Distinguish COMPUTED from CONJECTURED. Do not defer to my framing; I withhold my own conclusion.
+</grounding_rules>
+
+codex
+I’ll treat “cover” as an image statement in the stated ambient coordinates, and separate that from coverage after a legitimate coordinate change. The distinction is decisive for the gauge and the fold.
+codex
+Interpretation: \(R>0\), and “cover” refers to actual ambient-coordinate images, not merely profile classes.
+
+1. **Full pivot family: yes. Proper subfamily: generally no.** [PROVED]
+
+For pivot \(i\), its image is
+\[
+C_i=\{x\in[-R,R]^d:\ |x_k|\le |x_i|\ \forall k\}.
+\]
+Indeed, \(x_i=u_i\) and \(u_k=x_k/x_i\). Every nonzero \(x\) belongs to \(C_i\) for an index attaining \(\max_k|x_k|\); zero belongs to every chart. Hence
+\[
+\bigcup_{i=1}^d C_i=[-R,R]^d
+\]
+exactly, and every image is bounded by \(R\).
+
+For a proper index set \(I\), choose \(j\notin I\). Then
+\[
+x=\varepsilon e_j,\qquad 0<\varepsilon\le R,
+\]
+belongs to no \(C_i\), \(i\in I\). Thus the subfamily contains no neighbourhood of zero.
+
+Consequently, the two representative charts fail whenever \(d_{\rm center}>2\). For Case 1 this means
+\[
+J_1(M^{S+1}-J)>1.
+\]
+If \(d_{\rm center}=2\), the two charts happen to be the full family.
+
+2. **A gauge preserves the transformed cover, but not automatically the same fixed box or target.** [PROVED]/[COMPUTED]
+
+For any family \(f_i\),
+\[
+\bigcup_i(\psi\circ f_i)(D_i)
+=\psi\!\left(\bigcup_i f_i(D_i)\right).
+\]
+Thus a polynomial-bijective triangular \(\psi\) creates no internal gap: a neighbourhood of \(T\) becomes a neighbourhood of \(\psi(T)\).
+
+However, covering the unchanged target \(T\) requires target/region compatibility—e.g. \(\psi(T)=T\) and appropriate bounds. Bijectivity and \(\det D\psi=1\) alone do not preserve the cube. For example, with \(R=1\),
+\[
+\psi(x,y,z)=(x,y,z-xy),
+\]
+the point \(p=(3/4,3/4,3/4)\) is not in \(\psi([-1,1]^3)\), since
+\[
+\psi^{-1}(p)=(3/4,3/4,21/16).
+\]
+Whether this affects the stated product-zero locus cannot be decided without its transformation law under \(\psi\).
+
+3. **Yes, provided the covers are compatible node-by-node.** [PROVED]
+
+If children \(b_i:X_i\to X_v\) satisfy
+\[
+X_v\subseteq\bigcup_i b_i(X_i),
+\]
+and descendants cover every \(X_i\), then for the accumulated parent map \(F_v\),
+\[
+F_v(X_v)\subseteq\bigcup_i F_v(b_i(X_i)),
+\]
+and induction gives the leaf cover. Injectivity is unnecessary. Folding cannot repair a failed local cover, however: descendants remain inside their parent-chart images.
+
+4. **Stranding alone does not uncover points.** [PROVED]
+
+A \(t̃>0\) leaf is still a leaf chart. If stranded strata remain in such leaves, their points remain covered; only the claim that every point reaches a \(t̃=0\) monomialized profile fails. A gap arises only if \(t̃>0\) leaves are discarded, or if representative-chart omission already destroyed geometric coverage.
+
+5. **Bottom line.**
+
+The load-bearing precondition is:
+
+> At every internal node, the emitted **geometric** children—not merely their profile classes—must cover the node’s entire relevant coordinate neighbourhood.
+
+The full \(d_{\rm center}\)-pivot family satisfies this. Two representatives do not suffice when \(d_{\rm center}>2\): every omitted pivot \(j\) leaves the directions \(\varepsilon e_j\) uncovered arbitrarily close to the center. Profile equivalence does not identify these actual image points. The failure occurs immediately in the parent-to-children cover step and persists through all descendants, unless the missing charts are restored via explicit symmetry-translated copies.
+tokens used
+16,960
+Interpretation: \(R>0\), and “cover” refers to actual ambient-coordinate images, not merely profile classes.
+
+1. **Full pivot family: yes. Proper subfamily: generally no.** [PROVED]
+
+For pivot \(i\), its image is
+\[
+C_i=\{x\in[-R,R]^d:\ |x_k|\le |x_i|\ \forall k\}.
+\]
+Indeed, \(x_i=u_i\) and \(u_k=x_k/x_i\). Every nonzero \(x\) belongs to \(C_i\) for an index attaining \(\max_k|x_k|\); zero belongs to every chart. Hence
+\[
+\bigcup_{i=1}^d C_i=[-R,R]^d
+\]
+exactly, and every image is bounded by \(R\).
+
+For a proper index set \(I\), choose \(j\notin I\). Then
+\[
+x=\varepsilon e_j,\qquad 0<\varepsilon\le R,
+\]
+belongs to no \(C_i\), \(i\in I\). Thus the subfamily contains no neighbourhood of zero.
+
+Consequently, the two representative charts fail whenever \(d_{\rm center}>2\). For Case 1 this means
+\[
+J_1(M^{S+1}-J)>1.
+\]
+If \(d_{\rm center}=2\), the two charts happen to be the full family.
+
+2. **A gauge preserves the transformed cover, but not automatically the same fixed box or target.** [PROVED]/[COMPUTED]
+
+For any family \(f_i\),
+\[
+\bigcup_i(\psi\circ f_i)(D_i)
+=\psi\!\left(\bigcup_i f_i(D_i)\right).
+\]
+Thus a polynomial-bijective triangular \(\psi\) creates no internal gap: a neighbourhood of \(T\) becomes a neighbourhood of \(\psi(T)\).
+
+However, covering the unchanged target \(T\) requires target/region compatibility—e.g. \(\psi(T)=T\) and appropriate bounds. Bijectivity and \(\det D\psi=1\) alone do not preserve the cube. For example, with \(R=1\),
+\[
+\psi(x,y,z)=(x,y,z-xy),
+\]
+the point \(p=(3/4,3/4,3/4)\) is not in \(\psi([-1,1]^3)\), since
+\[
+\psi^{-1}(p)=(3/4,3/4,21/16).
+\]
+Whether this affects the stated product-zero locus cannot be decided without its transformation law under \(\psi\).
+
+3. **Yes, provided the covers are compatible node-by-node.** [PROVED]
+
+If children \(b_i:X_i\to X_v\) satisfy
+\[
+X_v\subseteq\bigcup_i b_i(X_i),
+\]
+and descendants cover every \(X_i\), then for the accumulated parent map \(F_v\),
+\[
+F_v(X_v)\subseteq\bigcup_i F_v(b_i(X_i)),
+\]
+and induction gives the leaf cover. Injectivity is unnecessary. Folding cannot repair a failed local cover, however: descendants remain inside their parent-chart images.
+
+4. **Stranding alone does not uncover points.** [PROVED]
+
+A \(t̃>0\) leaf is still a leaf chart. If stranded strata remain in such leaves, their points remain covered; only the claim that every point reaches a \(t̃=0\) monomialized profile fails. A gap arises only if \(t̃>0\) leaves are discarded, or if representative-chart omission already destroyed geometric coverage.
+
+5. **Bottom line.**
+
+The load-bearing precondition is:
+
+> At every internal node, the emitted **geometric** children—not merely their profile classes—must cover the node’s entire relevant coordinate neighbourhood.
+
+The full \(d_{\rm center}\)-pivot family satisfies this. Two representatives do not suffice when \(d_{\rm center}>2\): every omitted pivot \(j\) leaves the directions \(\varepsilon e_j\) uncovered arbitrarily close to the center. Profile equivalence does not identify these actual image points. The failure occurs immediately in the parent-to-children cover step and persists through all descendants, unless the missing charts are restored via explicit symmetry-translated copies.

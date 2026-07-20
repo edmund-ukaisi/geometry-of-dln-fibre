@@ -1,0 +1,146 @@
+<!-- COMPASS — the fork-history (WHY + how-we-know). Charter.md is the invariant core (WHAT); read it FIRST.
+     Elder is sole author; controller commits. May grow; compacted deliberately. Target ≤2 pages.
+     COMPACTED 2026-07-20 (post-checkpoint) to the CURRENT frame: objects A–E, ideal-level.
+     The retired chart Engine's internals are HISTORY (journal ticks ≤340, RETIRED.md, git), not truth. -->
+
+# Compass — aoyagi-engine
+
+## The live question (current frame)
+Build **Aoyagi's resolution machinery as reusable objects A–E at full generality** (charter §1). The
+RLCT LOWER bound is **IDEAL-level** — the chart route is a proven category-dead end (F1). The
+destination `aoyagi_learning_coefficient` unconditional is a corollary/test, not the objective.
+**The hard part, named and front-and-centre: the COUPLED corank ≥ 2 resolution** (Object B, width ≥ 3) —
+the case the chart drifts, the MVP shortcuts, and the per-layer recursion were all routes AROUND, each
+failing late. It holds its own lane and is never scoped to a footnote.
+
+## The load-bearing strategic picture — the RLCT lower bound is a three-part ideal composite
+1. **RESOLUTION [Object B]** — the blow-up monomialises `⟨∏C⟩ = ⟨diag(b)⟩`; the `b_i` are monomials in
+   the exceptional coords. `rlct⟨b_i⟩ = ½·min M_{s,k}` is the min over THESE divisors.
+2. **LEMMA 1 — ideal-RLCT domination [Object A, category-NEW, Mathlib-absent]** — `⟨∏C⟩=⟨b_i⟩ ⟹
+   Σ(∏C)² ≍ Σb_i²` locally ⟹ integral comparison (worked.tex:153–158). REPLACES the category-wrong
+   chart-diagonalisation. The `≤`/`≥` structure is elementary in outline; **the full-generality Lean
+   statement (both directions) is the workhorse to build** (do NOT pre-price it "elementary" — see counsel).
+3. **DIVISIBILITY-CHAIN NORMAL CROSSING [Object B, established]** — `b_1|b_2|…|b_M` (worked.tex:484) ⟹
+   `Σb_i² = dominant²·(unit ≥ 1)` per leaf ⟹ `rlct = ½·min` directly. Claimed toric-trivial (single
+   dominant monomial) — VERIFIED only in the clean regime; UNVERIFIED at coupled corank≥2.
+Objects C (monomial-ideal ½·min) and D (codim = minAdm = cCodim, θ, perm-inv; banked) feed the read-off.
+
+## Settled forks, WITH WHY
+**F1. The chart route is a GOAL-LEVEL category error — why we are ideal-level (SOUND, settled).**
+Every `(∏C)ᵢⱼ` is a nonzero poly; any a.e.-injective/det-1 chart has open image; a nonzero poly is ≢0
+on a dense open set; exact diagonalisation forces ≡0 (a non-open, det-0 projection). So NO det-1/
+a.e.-inj map diagonalises the loss on an open set. Survived long because the gap is det-1 (invisible to
+Jacobian + cover); only the value LOWER bound sees it — the value lane + decorrelated pnp caught it, the
+order-blind det lane would have shipped green over an unbuildable spine. Witnesses:
+`cert-full-value-walk §6` (+6 batteries), `cert-exactly-diagonal-mechanism`, `cert-collection-lemma`.
+CONSEQUENCE: the ideal reframe is forced; the chart Engine is RETIRED (charter §3, RETIRED.md).
+
+**F2. `⟨∏C⟩ = ⟨diag(b)⟩` transfers as an IDEAL fact — the salvaged truth (SOUND).** Unimodular Q,P are
+ideal-preserving (worked.tex:375–390), a standard fact; so the InvVal3/prefix/b-chain REDUCTION the
+chart route computed (Q1-verified end-to-end at 4 M's) is the IDEAL identity, NOT a chart identity — it
+transfers to Object B unchanged. (The specific `diag(b)` SHAPE at COUPLED instances is part of the B
+frontier, not yet verified — F4.)
+
+**F3. Clean (uncoupled, width ≤ 2) telescopes — VERIFIED; the honest boundary (SOUND, scope-bounded).**
+At (2,2,2,2): the per-chart ideal reduction is an EXACT symbolic matrix identity at depth-2 AND depth-3;
+`δ=ρ` is DERIVED from the blow-up (mechanism depth-blind); RLCT 3/2 = ½·min. Controller-verified against
+the batteries. EVIDENCE HYGIENE (do not inherit the gap): cite the PEEL IDENTITY (exact) + `structure_v2`,
+NOT "5 batteries" — `ideal_equality_rigorous.py` exits 0 while PRINTING a superseded free-δ intermediate
+(exit-0 ≠ content-true). BOUNDARY: (2,2,2,2) is all-width-≤2, the CLEAN shallowest instance, exercises NO
+coupling. "Tractable in general" is EARNED only here; coupled width≥3 is the gate for any tractability
+pricing. FIRST LANDING = clean recursion; NEXT PROBE = coupled diag(b) at width≥3 (load-bearing).
+
+**F4. The coupling at corank ≥ 2 is REAL — flatten-style decompositions provably break (SOUND
+obstruction; Object-B constraint).** At corank≥2 the carried monomials couple (the `b_i` share divisors
+via `b_1|…|b_M`). A per-row-multiplicity FLATTEN — treating each `b_i`'s exponent independently — loses
+the shared-divisor structure and returns the WRONG min. Witnessed exactly: `minAdm(3,3,4)=8` is achieved
+COUPLED-ONLY (`battery/g-coupled-binding-334.py`; the (3,3,4) coupling = two coupled/equal divisors,
+load-bearing); a flatten breaks (`battery/g-delta-flatten.py`). WARNING: any flatten/split of the coupled
+ideal is a dead route — Object B must reproduce the coupled diag(b), not decompose it row-wise.
+
+**F5. Aoyagi is the fidelity touchstone; Q2 LOCKED (tick 421).** The coupled resolution is her own
+Cases 1&2 (read from the paper images; worked.tex references them): transcribe HER choice + verify her
+claimed monomialisation — not our invention. At each route/statement ask "within Aoyagi's scope?" and
+cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-convenience.
+
+## Paper-fidelity ledger (documented Aoyagi typos; the mechanism stands)
+- **Def-3 broken** (verified typo) — use the geometric `½·min_t Mval(t)`. Witness `battery/g-def3-broken.py`.
+- **Lemma 1 direction**: worked.tex:156 prints `≥`; the correct/used direction is `≤` (`rlctAt_mono`) —
+  harmless for the equality use.
+- **Case-2 raw-width vs running-min (UNCERTAIN — FLAG for pen-and-paper at Object B).** p.20's Case-2
+  head-reset labels on the RAW width while the exponent uses the RUNNING-MIN; at non-monotone widths
+  they CONFLICT with the paper's own p.22 formula (6-vs-4 at (2,2,3,2)). KERNEL (frame-independent,
+  Def-3-class): Aoyagi's Case-2 as printed is inconsistent at non-monotone widths — do NOT transcribe
+  the p.20 label rule as printed; a faithful Object-B rendering of Case 2 at (2,2,3,2) must resolve which
+  quantity governs the `b`-exponents. UNCERTAIN: whether a separate "label" even EXISTS in the ideal
+  route (the retired Engine carried a T-label distinct from the exponent; the ideal route may read
+  exponents directly, dissolving the fork), and whether FIX-A (cap at running-min) is the correct
+  ideal-level resolution — FIX-A was validated only in the retired oracle/simulator. Ledger:
+  `theory/aoyagi-2023-reproduction/verify-case2-rawwidth-defect.md`. RE-ADJUDICATE when B renders Case 2.
+- **Realization "profile-set ⊇ Adm" (Engine-tree artifact; surviving kernel banked).** The paper's
+  implicit stratum-completeness (the resolution realises every admissible profile) is FALSE for the
+  built tree — but this was a property of the Engine's leaf-profile-set, which does NOT exist in the
+  ideal route (it reads min over the `b_i` directly). The SURVIVING TRUTH: the min IS achieved
+  (`minAdm ∈ P`, proved), so `rlct = ½·minAdm` stands = Object D (`minAdm=cCodim`, banked). Ledger:
+  `verify-realization-gap-defect.md`. Not carried as a live constraint; recorded so the truth is not re-derived.
+
+## The honest gap — coupled-B, stated plainly (front-and-centre)
+- **KNOW:** clean regime exact (F3); `⟨∏C⟩=⟨diag(b)⟩` transfers as an ideal fact (F2); the coupling is
+  real and flatten breaks (F4); minAdm = cCodim banked (D); the category error forces the ideal route (F1).
+- **DON'T HAVE (the new math):** (a) Lemma 1 in Lean at full generality, both directions [A]; (b) the
+  COUPLED diag(b) at corank≥2 verified to depth — the exact `b`-vector Aoyagi's Cases 1&2 produce when
+  the `b_i` share divisors ((3,3,2,2),(3,3,4)), and that the ideal route reproduces it [B — the frontier];
+  (c) the monomial-ideal RLCT in the coupled/general case [C]; (d) order ρ / zeta-pole [E].
+- The coupled case is Aoyagi's ACTUAL content and the historical dodge-point. BUILD it; do not route around
+  it, do not pre-declare it tractable. This gap is the thing the compaction must keep unmissable.
+
+## Standing counsel (rising-sea)
+- **BUILD THE RIGHT OBJECT — DO NOT MINIMUM-VIABLE IT (operator, 2026-07-20; the elder's own
+  recalibration).** The whole α-chart programme tried to reach the lower bound WITHOUT building the
+  ideal machinery Mathlib lacks; the category error is the PROOF a chart cannot dodge it. The elder ALSO
+  drifted — characterising the follow-up as "just Lemma 1, toric-trivial, elementary ≥," an unverified
+  clean headline of exactly the falsified shape. DURABLE: build the RLCT-ideal-and-resolution library as
+  a proper STANDALONE GENERAL library (rlct as ideal/germ invariant; Lemma 1 both directions +
+  ideal-inclusion monotonicity; monomial-ideal RLCT / Newton in full generality; the resolution CoV; the
+  analytic/zeta foundation for ρ) — to full generality from the START, not a patch to unblock a headline.
+  DLN-specific simplifications (toric-triviality, the explicit tree) FALL OUT downstream; scoping the
+  object BY them is the error. NEITHER avoid the hard part NOR avoid the large build.
+- **KILL-SET ADEQUACY.** Every pre-committed kill set must exercise each KNOWN failure mechanism
+  (interior-bottleneck width-drop; L≥4 non-monotone depth). A green pre-committed battery is NEVER
+  sufficient for a universal claim — the gate reads a DECORRELATED hunt. Provenance: "clean telescopes"
+  ⇏ "coupled tractable" is the shallow-instance confound that has bitten this expedition repeatedly (an
+  "== Adm at all 4" kill sat green while false at 84/351 — all 4 instances bottleneck-free).
+- **MATHEMATICAL SENSE OVER CASE ANALYSIS (operator).** Understand the mechanism at conceptual altitude
+  (iterated blow-ups monomialising the ideal, ONE uniform idea whose "cases" are charts) THEN transcribe;
+  build the uniform object and DERIVE the cases. When a case-grind feels authoritative but shapeless, stop.
+- **MATHEMATICAL NECESSITY IS THE BAR, not Lean-build progress (operator).** Judge a shape by whether the
+  MATH necessitates it; Lean cost is a secondary tiebreaker. When a ruling leads with "zero ripple /
+  unblocks the build," STOP and re-derive from the math.
+- **DECORRELATED GATES.** In-house nice-instance witnesses MASKED gaps repeatedly (resRank fold; srcBox
+  boundedness; the realization gap — caught by pnp's independent scan, not the battery). The GATE reads an
+  independent seat, never the builder. An in-file witness is necessary, never sufficient.
+- **Survey banked state before commissioning anything** (3 redundant commissions on a prior run). Reuse
+  dev's determinantal RESULTS for D; keep the RLCT-ideal work on the DLN side (the cite lives there).
+
+## Landmarks (A–E frame; ≤9 — why these)
+- **Object A** (Lemma 1 ideal-RLCT invariance) — the category-NEW workhorse; the missing half of the lower bound.
+- **Object B** (`⟨∏C⟩=⟨diag(b)⟩`) — the geometric heart; **coupled corank≥2 = the hard part**, holds a lane.
+- **Object C** (monomial-ideal ½·min) — largely built (clean); coupled/general owed with B.
+- **Object D** (codim = minAdm = cCodim, θ, perm-inv) — banked in `Core` (+ dev merge).
+- **`cited_aoyagi_lower_ax`** — the kill-target; the destination made concrete (prove via A+B+C, delete).
+- **category-no-go (F1)** — why the ideal route; the retired chart Engine's tombstone (RETIRED.md).
+- **(2,2,2,2)-clean-telescoping** — the verified clean landing (peel identity + structure_v2).
+- **(3,3,4) / (3,3,2,2)** — the coupled frontier probe (minAdm=8 coupled-only).
+
+## History — retired chart Engine (POINTERS ONLY; not truth)
+The chart Engine's internal design is JOURNAL/GIT HISTORY — do NOT rebuild against it. Retired as
+DEAD-ROUTE ARTIFACTS (chart-atlas constructions with no ideal-frame analogue; their frame-independent
+CONTENT lives in A–E, above): `IsFullMonomialization` / `ChartBridge` / `region_glue` (the chart→integral
+interface → replaced by A + C + the resolution CoV); `terminalExponents` / `divExp` / `divProfile` /
+`genDivExp` / `divTilde` (per-node exponent-ledger fields → the `b_i` exponents / min = minAdm, Objects
+C/D); the resolution-tree carrier + edge-labelled sharing + `StepRel` / `stepUpdate`; the Q5
+banked-RLCT-transport route; the full-mechanism R1–R7 rungs; the coverage theorem + theorem4-localization
++ region-glue division-of-labor; the concrete monomialization oracle; diagonal-normalization; the α-atlas
+`LeafPullback` / `geoAtlasNorm`; the two-lane / hbox / mint-PR endgame. See journal ticks ≤340, RETIRED.md.
+SALVAGE correct kernel-checked det/tree pieces into Object B by re-importing the specific module, never by
+resurrecting a chart hole (charter §3).

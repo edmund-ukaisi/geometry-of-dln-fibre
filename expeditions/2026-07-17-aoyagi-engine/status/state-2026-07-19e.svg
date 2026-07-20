@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1360" viewBox="0 0 1180 1360" font-family="ui-sans-serif, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#57606a" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1180" height="1360" fill="#ffffff"/>
+
+  <text x="40" y="42" font-size="21" font-weight="700" fill="#1f2328">State of the mathematics — expedition aoyagi-engine</text>
+  <text x="40" y="64" font-size="13" fill="#57606a">2026-07-19 late night, tick 249 · the elder rightness call re-sized the endgame — honestly reflected below</text>
+  <g font-size="12.5">
+    <rect x="736" y="30" width="14" height="14" rx="3" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="756" y="42" fill="#1f2328">PROVED, clean-three</text>
+    <rect x="906" y="30" width="14" height="14" rx="3" fill="#fff3d1" stroke="#9a6700" stroke-width="1.5"/><text x="926" y="42" fill="#1f2328">assembled · named hole</text>
+    <rect x="736" y="52" width="14" height="14" rx="3" fill="#fde8e8" stroke="#c93c37" stroke-width="1.5"/><text x="756" y="64" fill="#1f2328">★ the live front</text>
+    <rect x="906" y="52" width="14" height="14" rx="3" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/><text x="926" y="64" fill="#1f2328">sorried / owed</text>
+  </g>
+
+  <!-- destination + hbox compressed -->
+  <rect x="140" y="86" width="900" height="66" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="2"/>
+  <text x="590" y="110" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2328">aoyagi_learning_coefficient ← hbox = engine_box_threshold_finite (hL, hMpos)</text>
+  <text x="590" y="132" text-anchor="middle" font-size="12.5" fill="#1f2328">✓ _gen clean-three · ✓ L=1 · ✓ mint wrapper pre-staged (stale arm mapped) · hbox +sorryAx via chartBridge_buildTree ALONE</text>
+  <line x1="590" y1="152" x2="590" y2="180" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <rect x="40" y="184" width="1100" height="36" rx="6" fill="#dbeafe" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="590" y="207" text-anchor="middle" font-size="13" font-weight="700" fill="#1e50a0">▼ AOYAGI'S LIBRARY (network-free) · the LEDGER face: DONE clean-three · the ATLAS face: below ▼</text>
+
+  <!-- ledger done strip -->
+  <rect x="140" y="240" width="900" height="64" rx="8" fill="#d1f0dc" stroke="#1a7f37" stroke-width="2"/>
+  <text x="590" y="264" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">THE LEDGER FACE — COMPLETE: termination · coherence · ⊆-admissibility · ATTAINMENT (o5 closed, audited)</text>
+  <text x="590" y="286" text-anchor="middle" font-size="12" fill="#1f2328">monomialization_terminates: 5/6 conjuncts proven · sorryAx via the ONE chart hole · protected set intact through every merge</text>
+  <line x1="590" y1="304" x2="590" y2="332" stroke="#c93c37" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- THE LIVE FRONT -->
+  <rect x="60" y="338" width="1060" height="420" rx="8" fill="#fde8e8" stroke="#c93c37" stroke-width="2.5"/>
+  <text x="590" y="364" text-anchor="middle" font-size="15" font-weight="700" fill="#c93c37">★ THE CHART HOLE — re-sized by the elder rightness call (the operator-requested audit that mattered)</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="390" font-weight="700">WHAT THE AUDIT FOUND (elder-alt2, Q2b — Codex-sharpened, verified):</text>
+    <text x="80" y="410">· The center-dimension DEFECT: case-1's blow-up center is (m+1)-dim (u + the d-block); the per-edge keying had</text>
+    <text x="80" y="428">&#160;&#160;reified the chart COUNT (1 / m) as the dimension — the case11 chart's Jacobian degenerated to 1. UNIFIED with</text>
+    <text x="80" y="446">&#160;&#160;the cover-side catch (same defect, two consumers) → FIXED: t09's per-node carrier (below). ✓</text>
+    <text x="80" y="464">· The UNBUILT ACCUMULATION: the banked det atom is per-single-blow-up; LeafJacobian needs the LEDGER-accumulated</text>
+    <text x="80" y="482">&#160;&#160;exponent — the fold lemma was never built (the code's own docstring admitted it). = THE LAST WALL (real module).</text>
+    <text x="80" y="500">· The underlying Aoyagi MATH verified correct chart-by-chart; the consumption side certified sound+complete.</text>
+    <text x="80" y="526" font-weight="700">SINCE THE AUDIT — the repair's first half is DONE:</text>
+    <text x="80" y="546">✓ t09's carrier: qNodeOf (the per-node (m+1)-dim split) + dCenterOfNode + the edge-sum + totality — clean-three</text>
+    <text x="80" y="564">✓ geoAtlas CONCRETE: the flat virtual-leaf atlas (ledger data + geometric fold per piece) — the corrected type's</text>
+    <text x="80" y="582">&#160;&#160;object now EXISTS, green · the seam validated DEFEQ-CLEAN (the parametrization payoff)</text>
+    <text x="80" y="600">✓ the coordinate bundle per piece = one `exact` (leaves_chart_clauses_conRoot) · the gate-orphans wired+watched</text>
+    <text x="80" y="626" font-weight="700" fill="#c93c37">THE CLOSING PLAN (two SPECIFYs → two parallel fresh builders → the discharge):</text>
+    <text x="80" y="646" fill="#c93c37">▶ t09: the q-det lemma (in flight — gates the fold SPECIFY) + the on-cone fidelity lemma</text>
+    <text x="80" y="664" fill="#c93c37">▶ coverage writes both SPECIFYs (its geometry context distilled; its honest ceiling respected)</text>
+    <text x="80" y="682" fill="#c93c37">▶ t10 ∥ t11: the COVER (medium — every hypothesis has an exact-match banked lemma) ∥ the FOLD-JACOBIAN</text>
+    <text x="80" y="700" fill="#c93c37">&#160;&#160;(the wall: path induction + chain rule through the substitutions; full fresh budget) + LeafPullback sizing</text>
+    <text x="80" y="718" fill="#c93c37">▶ then: clause (D) + the assembly (pre-staged to the line) → the discharge (carto5's wiring checklist)</text>
+    <text x="80" y="744" fill="#57606a">Sequencing pin (elder): (D) is DOWNSTREAM of the Jacobian satisfiability — the wall comes first.</text>
+  </g>
+
+  <!-- off-path + defects -->
+  <rect x="60" y="784" width="520" height="112" rx="8" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/>
+  <text x="80" y="808" font-size="13" font-weight="700" fill="#1f2328">Owed off-path (sequenced, never cut):</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="80" y="828">○ R7 completeness proof (statement typed, hMpos-hardened)</text>
+    <text x="80" y="845">○ LeafPullback's discharge shape (t11 sizes-and-reports)</text>
+    <text x="80" y="862">○ R4 genDivExp · R6 regular peel · the witness corollary</text>
+    <text x="80" y="879">○ flip-audit: the cited-axiom residue (zeta-bridge question)</text>
+  </g>
+  <rect x="600" y="784" width="520" height="112" rx="8" fill="#f6f8fa" stroke="#8250df" stroke-width="1.5"/>
+  <text x="620" y="808" font-size="13" font-weight="700" fill="#8250df">Ledgers (all audited):</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="620" y="828">paper defects: 4 verified + the type-level instance (all corrected)</text>
+    <text x="620" y="845">obligation-statement counter: 6 · calibration entries: 8</text>
+    <text x="620" y="862">miss-classes: slogan-for-signature (5/5 caught pre-execution) +</text>
+    <text x="620" y="879">two-structures-one-index (the per-edge/per-node conflation, entry 8)</text>
+  </g>
+
+  <!-- the picture -->
+  <rect x="60" y="912" width="1060" height="112" rx="8" fill="#eef4fb" stroke="#1e50a0" stroke-width="1.5"/>
+  <text x="80" y="936" font-size="13" font-weight="700" fill="#1e50a0">The picture (elder-audited twice): the two faces, their joints, and where the work concentrated</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="958">The LEDGER face closed first (the symmetric quotient: profiles, exponents, attainment — all clean-three). The ATLAS</text>
+    <text x="80" y="976">face's atoms all exist; what remains is the ACCUMULATION — folding per-blow-up facts into per-leaf identities along</text>
+    <text x="80" y="994">the tree. Every late defect lived at a JOINT (count-vs-dimension, emission-vs-cover, single-vs-accumulated) — the</text>
+    <text x="80" y="1012">cross-face seams, exactly where the altitude note predicted the irreducible work would be.</text>
+  </g>
+
+  <!-- gates -->
+  <text x="80" y="1064" font-size="12.5" font-weight="600" fill="#1f2328">Gate ladder (unchanged, every rung pre-checked):</text>
+  <text x="80" y="1084" font-size="12" fill="#57606a">t09's lemmas → the SPECIFYs → t10 ∥ t11 → (D) + assembly → the discharge (wiring checklist banked) → hbox flips</text>
+  <text x="80" y="1102" font-size="12" fill="#57606a">clean-three → mint (stale arm mapped) + #guard_msgs enforced gate → cordon (census: 3 Engine sorries) → PR</text>
+  <text x="80" y="1140" font-size="12.5" font-weight="600" fill="#1f2328">Honest distance revision:</text>
+  <text x="80" y="1160" font-size="12" fill="#57606a">Snapshot d said "~1 seat-arc"; the rightness call found the fold-Jacobian wall UNDER that estimate — the true</text>
+  <text x="80" y="1178" font-size="12" fill="#57606a">distance is ~2-4 seat-arcs (the wall is a genuine new module; the cover is medium; the rest is assembly). The</text>
+  <text x="80" y="1196" font-size="12" fill="#57606a">audit cost one tick and saved the tide from discovering the wall at its LAST piece with the defect baked in.</text>
+  <text x="80" y="1228" font-size="11.5" fill="#57606a">Seats: t02-t07 retired w/ honors · t09 active (carrier) · coverage-t08 = the SPECIFY seat · t10/t11 = the closing builders</text>
+  <text x="80" y="1246" font-size="11.5" fill="#57606a">snapshot artifact — safe to delete; the journal is the record</text>
+</svg>

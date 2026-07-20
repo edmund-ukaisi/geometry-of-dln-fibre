@@ -1,0 +1,55 @@
+# Lessons — aoyagi-engine (append; promote-or-decay at close)
+
+Inherited at genesis (predecessor + retro, already promoted into policy/brief — recorded here so
+the trail is local):
+- Truth witness at pin time (obligation-2: false for days, killed by a one-line integral).
+- Exact-steps-only where the budget is tight (every lossy split was false at binding cells).
+- Survey banked state before commissioning (3 redundant commissions in the predecessor).
+- Verify a teammate actually stopped before spawning a successor (checkpoint ≠ stop).
+- Non-isolated spawned subagents must never git-op a shared tree (a `reset --hard` destroyed live
+  work once); explicit worktrees per seat here.
+- Verify formulas against the paper PAGE IMAGE, never extracted text (a false "typo" came from
+  garbled extraction; a real typo [Def 3] survived it).
+- Pin lemmas by STATEMENT, not name-vibes: the compass pinned `MinAdmMono` for threshold
+  preservation; the correct pin is the minAdm-as-minimum property (inf'_le class) — opposite
+  direction. Caught at covdesign D2 before any formaliser grabbed it. (2026-07-17)
+- A monomial-only exhaustiveness hunt is VACUOUS for blow-up coverage claims (extremal valuations
+  are non-monomial/incidence); gates need coord-changed + weighted-center tiers. (covdesign D4)
+- A "coordinate-changed" hunt WITHOUT shear-exposing the product-vanishing conditions is as vacuous
+  as a monomial hunt — the hunter must fix the instrument before trusting it (hunt-t03 caught the
+  spec's false-pass and replaced grid sampling with an exact continuous-weight LP). (2026-07-17)
+- Python RAW strings keep backslashes: an rf"..." map edit wrote literal \" into claims.yaml,
+  breaking the parse — banked broken because the pre-commit hook was NOT installed in the worktree
+  (hooks need core.hooksPath per checkout). Hook now installed; validate after EVERY map edit.
+  Caught by the reviewer, not by me. (2026-07-17)
+- An `inferInstance` probe WITHOUT surveying imports is not evidence of a missing instance: the
+  "Params not normed" blocker was closed weeks ago by a 0-sorry module consumed in 13 files
+  (ParamsFlatLinear); the probe ran importless and a false "hard fact" nearly forced a route. The
+  survey-first rule applies to INSTANCES, not just lemmas. (seat B catch, 2026-07-17)
+- An elder-RATIFIED amendment is not landed until a grep/reviewer CONFIRMS it in the statement:
+  the resRank fold was ratified at rev-1, recorded in compass, and still absent from
+  terminalExponents — caught only by the fresh round's counterexample. Ratification ≠ landing;
+  verify amendments like any other claim. (cert-carrier-review, 2026-07-17)
+- A relation that never reads the CHILD certifies nothing about transitions: StepRel read only
+  the parent + case tag, so any child exponent passed — and the in-file witness "passing" was a
+  symptom of the weakness, not evidence of the design. When a predicate is justified BY a specific
+  equation (the case-1(1) merge), grep that the equation's variables actually appear. (2026-07-17)
+- A "hypothesis-free" green on SHALLOW instances is a confound: the "minimality-free
+  SameLevelChainInv" claim passed all L≤3 tests and was REFUTED at the minimal L=4 instance
+  (2,2,3,3,2) — the eligible sets at L≤3 are too shallow to expose the dependence. When a
+  hypothesis seems droppable, escalate the instance DEPTH before believing it. Caught by the
+  claimant itself in finalization. (pnp o4 cert Part 7, 2026-07-18)
+- **DIAGNOSE-FIRST, don't race to solve (operator standing rule, 2026-07-20).** When the operator
+  asks "what is the issue / why is X / what's the right solution," they want to UNDERSTAND it first —
+  diagnose, report, and WAIT for their steer before touching code. I raced on the cordon slowness:
+  asked "what's the right solution," I immediately implemented a prune (broke a caller → mis-diagnosed
+  → left a 99.9%-CPU zombie audit). The fix wasn't even validated as a fix. Report the diagnosis + the
+  known-vs-unknown, then stop. **Why:** racing manufactures churn + wrong fixes + hides the fact that
+  the issue isn't understood; the operator's question IS the work at that moment, not the patch.
+- **Don't conclude from a KILLED/unfinished run (2026-07-20).** I claimed "the prune didn't fix the
+  perf" from an audit I killed at 8:32 while it was still running — a lower bound, not a measurement.
+  Both the 32-min and 8-min cordon runs were killed unfinished, so there is NO before/after timing.
+  A killed run bounds-below, it does not measure; let it complete (or don't claim the delta). Same
+  reasoning-from-incomplete-data family as the shallow-instance confound above.
+- **TaskStop kills the wrapper, not the detached child (2026-07-20).** A 32-min `cordon-audit`
+  survived its task's TaskStop, burning a core. For a runaway build/audit, `pkill` the process.

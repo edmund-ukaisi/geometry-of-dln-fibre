@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1500" viewBox="0 0 1240 1500" font-family="ui-sans-serif, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#57606a" stroke-width="1.6"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1240" height="1500" fill="#ffffff"/>
+
+  <text x="40" y="40" font-size="21" font-weight="700" fill="#1f2328">Aoyagi-engine — the mathematical joints (detailed map)</text>
+  <text x="40" y="62" font-size="13" fill="#57606a">2026-07-20, tick 401 · organized by mathematical seam, not by task · the order-kill reckoning · payoff cone = 2 live holes</text>
+
+  <!-- legend -->
+  <g font-size="12">
+    <rect x="40" y="80" width="13" height="13" rx="3" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.4"/><text x="58" y="91" fill="#1f2328">clean-three (proved)</text>
+    <rect x="205" y="80" width="13" height="13" rx="3" fill="#cfe6ff" stroke="#0969da" stroke-width="1.4"/><text x="223" y="91" fill="#1f2328">clean-three CONDITIONAL (banking)</text>
+    <rect x="455" y="80" width="13" height="13" rx="3" fill="#fff3d1" stroke="#9a6700" stroke-width="1.4"/><text x="473" y="91" fill="#1f2328">ruled · design closed · in flight</text>
+    <rect x="690" y="80" width="13" height="13" rx="3" fill="#fde0d3" stroke="#bc4c00" stroke-width="1.4"/><text x="708" y="91" fill="#1f2328">THE FRACTURE (faithful-mandatory, re-scoped)</text>
+    <rect x="990" y="80" width="13" height="13" rx="3" fill="#efe6fb" stroke="#8250df" stroke-width="1.4"/><text x="1008" y="91" fill="#1f2328">cited boundary / off-cone</text>
+  </g>
+
+  <!-- Destination -->
+  <rect x="360" y="112" width="520" height="52" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="2"/>
+  <text x="620" y="134" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2328">DESTINATION · λ(DLN square-Frobenius loss) = C/2</text>
+  <text x="620" y="152" text-anchor="middle" font-size="12" fill="#57606a">C = geometric codimension (ours, new content) · the "mildly singular" payoff</text>
+
+  <!-- Joint A: payoff interface -->
+  <rect x="300" y="184" width="640" height="46" rx="8" fill="#efe6fb" stroke="#8250df" stroke-width="1.6"/>
+  <text x="620" y="204" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">JOINT A — the payoff interface:  rlct = ½·codim   [CITED, out of scope]</text>
+  <text x="620" y="221" text-anchor="middle" font-size="11.5" fill="#57606a">Watanabe (rlct ≤ ½codim) + Aoyagi (exact DLN) · the ½ equality is the expedition BOUNDARY, never in the λ proof cone</text>
+  <line x1="620" y1="230" x2="620" y2="252" stroke="#57606a" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- Joint B: RLCT assembly (conditional) -->
+  <rect x="230" y="254" width="780" height="86" rx="8" fill="#cfe6ff" stroke="#0969da" stroke-width="2"/>
+  <text x="620" y="276" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">JOINT B — the RLCT assembly:  aoyagi = inf_(optimalSet) rlctAt = ofReal(aoyagiLambda)   [clean-three CONDITIONAL]</text>
+  <text x="620" y="296" text-anchor="middle" font-size="12" fill="#1f2328">region_glue → engine box-threshold-finite (hbox) → _gen → the mint.  ORDER-INDEPENDENT (all sits ABOVE the atlas).</text>
+  <text x="620" y="314" text-anchor="middle" font-size="12" fill="#1f2328">BANKING NOW as the durable deliverable: "given chartBridgeFaithful (its 2 frontiers), aoyagi = C/2", clean-three modulo the</text>
+  <text x="620" y="331" text-anchor="middle" font-size="12" fill="#1f2328">hypothesis (mint-t19; bypasses resolutionOf so no baked-in sorryAx).  Value-only headline — the θ mint-guard holds.</text>
+  <line x1="620" y1="340" x2="620" y2="362" stroke="#57606a" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- Joint C: the atlas (container) -->
+  <rect x="90" y="364" width="1060" height="330" rx="10" fill="#fbfdff" stroke="#1f2328" stroke-width="1.8"/>
+  <text x="620" y="388" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2328">JOINT C — the FAITHFUL ATLAS  (chartBridgeFaithful over buildTree)  ·  where the mathematics lives · 4 faces</text>
+  <text x="620" y="406" text-anchor="middle" font-size="11.5" fill="#57606a">the resolution-of-singularities charts; the payoff cone bottoms out here — 2 of the 4 faces are the live holes</text>
+
+  <!-- C1 ledger -->
+  <rect x="112" y="420" width="250" height="120" rx="8" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.6"/>
+  <text x="237" y="440" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2328">C1 · LEDGER / combinatorics</text>
+  <g font-size="11" fill="#1f2328">
+    <text x="126" y="461">termination · admissibility ·</text>
+    <text x="126" y="478">o5_realization (min ∈ terminal)</text>
+    <text x="126" y="495">DivBirthInv · the resolution tree</text>
+    <text x="126" y="516" font-weight="700" fill="#1a7f37">CLEAN-THREE — the engine</text>
+    <text x="126" y="532" font-size="10.5" fill="#57606a">network-free, page-pinned forward-S</text>
+  </g>
+
+  <!-- C2 jacobian -->
+  <rect x="374" y="420" width="250" height="120" rx="8" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.6"/>
+  <text x="499" y="440" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2328">C2 · JACOBIAN</text>
+  <g font-size="11" fill="#1f2328">
+    <text x="388" y="461">|det D(chart fold)| =</text>
+    <text x="388" y="478">∏ |z_divCoord|^(E−1)</text>
+    <text x="388" y="495">the fold-regroup cocycle</text>
+    <text x="388" y="516" font-weight="700" fill="#1a7f37">CLEAN-THREE</text>
+    <text x="388" y="532" font-size="10.5" fill="#57606a">ORDER-BLIND (det=∏) — survives</text>
+  </g>
+
+  <!-- C3 cover -->
+  <rect x="636" y="420" width="250" height="120" rx="8" fill="#fff3d1" stroke="#9a6700" stroke-width="1.6"/>
+  <text x="761" y="440" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2328">C3 · COVER (clause A)</text>
+  <g font-size="11" fill="#1f2328">
+    <text x="650" y="461">images cover a nbhd of 0</text>
+    <text x="650" y="478">id-atlas: CLEAN-THREE ✓</text>
+    <text x="650" y="495">α-atlas: ENLARGED-CUBE route</text>
+    <text x="650" y="512" font-size="10.5">ρ↦ρ(1+ρ); replay-confirmed exact</text>
+    <text x="650" y="530" font-weight="700" fill="#9a6700">ruled · build re-scoped</text>
+  </g>
+
+  <!-- C4 value -->
+  <rect x="898" y="420" width="230" height="120" rx="8" fill="#fde0d3" stroke="#bc4c00" stroke-width="2"/>
+  <text x="1013" y="440" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2328">C4 · VALUE (LeafPullback)</text>
+  <g font-size="11" fill="#1f2328">
+    <text x="912" y="461">frobSq(prod∘chart) =</text>
+    <text x="912" y="478">D²·residualCore, core ≥ 1</text>
+    <text x="912" y="495">the four-case InvVal walk</text>
+    <text x="912" y="512" font-weight="700" fill="#bc4c00">the genuine new proof —</text>
+    <text x="912" y="529" font-weight="700" fill="#bc4c00">NEVER BUILT · re-scoped</text>
+  </g>
+
+  <!-- the asymmetry callout inside C -->
+  <rect x="112" y="556" width="1016" height="120" rx="8" fill="#fff8f0" stroke="#bc4c00" stroke-width="1.4"/>
+  <text x="620" y="577" text-anchor="middle" font-size="12.5" font-weight="700" fill="#bc4c00">THE ASYMMETRY (the deep joint — why the fracture stayed hidden through 4 green ratification passes)</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="126" y="598">C2 (Jacobian) is ORDER-BLIND — |det| = ∏|det Cᵢ| regardless of composition order.  C3 (cover) is IMAGE-based — a set, order-tolerant.</text>
+    <text x="126" y="617">So C1+C2+C3 all passed GREEN / clean-three over a chart fold that was BOTH leaf-first AND α-under-implemented.  A green build would have shipped.</text>
+    <text x="126" y="636">Only C4 (the loss LOWER BOUND) reads the actual diagonal — it is the SOLE order- and gauge-sensitive consumer.  It is the true gate,</text>
+    <text x="126" y="655">and building it is what surfaced the fracture below.  Lesson (calibration 15/16/19/20): a clean build is necessary, never sufficient;</text>
+    <text x="126" y="672">the value-sensitive consumer + the decorrelated hunt are the instruments — and here they caught a WRONG-RLCT spine before it shipped.</text>
+  </g>
+
+  <line x1="761" y1="694" x2="761" y2="720" stroke="#bc4c00" stroke-width="1.8" marker-end="url(#ar)"/>
+  <text x="775" y="712" font-size="11" fill="#bc4c00">C3(α) &amp; C4 both stand on ↓</text>
+
+  <!-- Joint D: the gauge fracture -->
+  <rect x="150" y="722" width="940" height="250" rx="10" fill="#fde0d3" stroke="#bc4c00" stroke-width="2.5"/>
+  <text x="620" y="745" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2328">JOINT D — the GAUGE  (α = Aoyagi's Q,P normalization)  ·  THE FRACTURE  ·  faithful-mandatory, re-scoped to a follow-up</text>
+
+  <rect x="172" y="760" width="430" height="94" rx="8" fill="#ffffff" stroke="#bc4c00" stroke-width="1.4"/>
+  <text x="387" y="780" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2328">D1 · α UNDER-IMPLEMENTED</text>
+  <g font-size="11" fill="#1f2328">
+    <text x="186" y="800">Lean α (residualSchurShear) = INTERIOR Schur only.</text>
+    <text x="186" y="817">Missing the pivot-column Lg + pivot-row Rg of the</text>
+    <text x="186" y="834">full Q,P.  Both det-1 → invisible to C2/C3, visible</text>
+    <text x="186" y="850">only to C4.  (pnp-diag · exact witness at (2,2,2))</text>
+  </g>
+
+  <rect x="638" y="760" width="430" height="94" rx="8" fill="#ffffff" stroke="#bc4c00" stroke-width="1.4"/>
+  <text x="853" y="780" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2328">D2 · ORDER: root-first vs leaf-first</text>
+  <g font-size="11" fill="#1f2328">
+    <text x="652" y="800">Aoyagi reduces ROOT-first (layer 0 first; each layer</text>
+    <text x="652" y="817">absorbs Q₂⁻¹ before processing).  Lean fold is</text>
+    <text x="652" y="834">LEAF-first → the Schur complements differ →</text>
+    <text x="652" y="850">a genuinely WRONG RLCT.  (pnp-rg · exhaustive)</text>
+  </g>
+
+  <rect x="172" y="864" width="896" height="92" rx="8" fill="#fff8f0" stroke="#bc4c00" stroke-width="1.6"/>
+  <text x="620" y="884" text-anchor="middle" font-size="12.5" font-weight="700" fill="#bc4c00">D1 ⊗ D2 are COUPLED — one linchpin fixes both</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="186" y="904">Completing α to the full Q,P DECOUPLES the deeper residual from the pivot cross.  That single move: (a) makes C4's leaf exactly</text>
+    <text x="186" y="922">diagonal (residualCore ≥ 1 holds), AND (b) collapses C2's root-first cocycle from exponential-compounding (L) to a clean per-layer</text>
+    <text x="186" y="940">suffix sum (M).  So the α completion is the SHARED linchpin — and it is NATIVE to a root-first-from-the-start build, never in-place.</text>
+  </g>
+
+  <line x1="620" y1="972" x2="620" y2="996" stroke="#57606a" stroke-width="1.6" marker-end="url(#ar)"/>
+
+  <!-- The decision -->
+  <rect x="150" y="998" width="940" height="150" rx="10" fill="#f6f8fa" stroke="#1f2328" stroke-width="1.8"/>
+  <text x="620" y="1020" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">THE CALL (unanimous: elder · navigator · the value-lane design · every pen-and-paper seat)</text>
+  <g font-size="11.5" fill="#1f2328">
+    <text x="170" y="1042">1. BANK the CONDITIONAL SPINE now (Joint B) — the entire engine + architecture, clean-three above the atlas, the 2 frontiers honestly named.</text>
+    <text x="170" y="1061">2. RE-SCOPE Joint D + C3(α) + C4 to a FOCUSED follow-up that builds root-first + α-complete FROM THE START.  In-place is strictly</text>
+    <text x="186" y="1079">worse-ordered (it must thrash through a wrong intermediate or land one un-bisectable commit, AND re-open the merged/gated payoff cone).</text>
+    <text x="170" y="1098">3. The master probe (pnp-full, running) SIZES the follow-up — tractable native-M if clean; deeper-scoped if a 3rd issue (the Lg det-1</text>
+    <text x="186" y="1116">realization wrinkle is the candidate).  It no longer gates re-scope-vs-in-place; that is decided.</text>
+    <text x="170" y="1136" font-weight="700">OPERATOR-GATED: launching the follow-up expedition (new scope).  The bank + the re-scope roadmap proceed regardless.</text>
+  </g>
+
+  <!-- off-cone strip -->
+  <rect x="150" y="1162" width="940" height="66" rx="8" fill="#efe6fb" stroke="#8250df" stroke-width="1.4"/>
+  <text x="620" y="1183" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2328">OFF-CONE (not on the λ proof cone — owed post-spine, named in the PR body)</text>
+  <g font-size="11" fill="#1f2328">
+    <text x="170" y="1203">ClearableReify (R7 ⊇ Clearable-Adm completeness, reified) · CanonicalWitness224 ((2,2,4) hand-built witness) · R4-small · zero-width(b)</text>
+    <text x="170" y="1220">— the aoyagi_gen headline is gate-verified clean-three, which PROVES none of these sit on the λ cone (else it would carry sorryAx).</text>
+  </g>
+
+  <!-- ops footer -->
+  <rect x="150" y="1242" width="940" height="96" rx="8" fill="#ffffff" stroke="#d0d7de" stroke-width="1.3"/>
+  <text x="170" y="1263" font-size="12" font-weight="700" fill="#57606a">LIVE STATE (tick 401)</text>
+  <g font-size="11" fill="#57606a">
+    <text x="170" y="1283">Payoff-cone bare sorries = 2 (C4 value GeoAlphaGauge:leafDiagFrob · C3α cover GeoAtlasTransfer:imageCover).  Off-cone = 2 (R7 · 224).</text>
+    <text x="170" y="1301">Conditional spine (Joint B): statement gate passed [resolutionOf-bypass], ~15-line fill in flight (mint-t19).  pnp-full master probe running.</text>
+    <text x="170" y="1319">All value/gauge lanes HELD (nothing built in the wrong frame).  loss-t15's value design closed + battery-validated root-first — the follow-up spec.</text>
+  </g>
+</svg>

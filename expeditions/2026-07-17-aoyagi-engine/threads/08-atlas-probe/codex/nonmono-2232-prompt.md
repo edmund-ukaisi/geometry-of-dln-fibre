@@ -1,0 +1,66 @@
+<task>
+Decorrelated second-mathematician check on Aoyagi 2023 (Section 5) at ONE instance. Reason from the
+construction below from scratch; exact integer reasoning only; do NOT look anything up.
+
+SETUP. Depth L=3, reduced widths (M^1,M^2,M^3,M^4)=(2,2,3,2) -- NOTE M^3=3 > M^2=2 (a width INCREASE
+in the interior). Variable matrices C^(1) (2x2), C^(2) (2x3), C^(3) (3x2), all entries independent
+reals at the origin. Ideal J = entries of P = C^(1)C^(2)C^(3) (2x2). Known: minAdm(2,2,3,2)=3, where
+  minAdm(M0)=0; minAdm(M0,M1)=M0*M1;
+  minAdm(M0,M1,M2,...) = min over 0<=t<=min(M0,M1) of (M0-t)(M1-t) + minAdm(t,M2,...).
+
+AOYAGI'S CONSTRUCTION (transcribed from pages 14-22; take as given). Double induction on (S,J).
+M(S)=min{M^s : s<=S} (running-min). Each exceptional divisor coordinate u carries a FULL vector
+T=(t^1,...,t^L) in N^L, running-min tilde_t=min_j t^j, and a Jacobian exponent M (its divisor power
+is M-1). A "total comparability" invariant (Def 4) is CLAIMED to hold throughout: every pair of
+T-vectors is comparable componentwise. Update/creation rules (verbatim page pins):
+  * Layer S=1 produces, for each rank level r=0,1,...,M(2)-1, a divisor T=(r,r,...,r) (all L
+    components r), M=(M^1-r)(M^2-r).
+  * CASE 1 (a partial run of equal consecutive b's above J; b_i = prod_{tilde_t=i-1} u * b_{i-1}):
+    b_{J+1}=...=b_{J+J1} != b_{J+J1+1} with a NONEMPTY divisor set at level tilde_t=J+J1. FIX the
+    divisor u at that level whose FULL T is <= every other such divisor's T (Def 4 minimality). Two
+    charts:
+      - 1(1): mutate that fixed u: set tail t^(S..L):=J (head t^(1..S-1) UNCHANGED); M += J1*(M^{S+1}-J).
+              Does not advance J.
+      - 1(2): create a NEW u: head t^(1..S-1) := the fixed parent's head (INHERITED); tail t^(S..L):=J;
+              M = parentM + J1*(M^{S+1}-J). Advance J (or S).
+  * CASE 2 (full run to M(S), no divisor at intermediate levels above J): create a NEW u with
+      head t^(i) := M^{(i+1)}  for i=1..S-1   <-- RAW width M^{(i+1)}, NOT the running-min M(i+1);
+      tail t^(S..L) := J;  M = (M(S)-J)*(M^{S+1}-J). Advance J (or S).
+  (When J reaches min(M(S),M^{S+1}) the layer ends and S advances; J resets to 0 for the new layer.)
+Terminal (S=L+1): ideal = <diag(b_1,...)>. LCT candidate = (1/2)*min{ M : tilde_t=0 } over leaf
+divisors, with M = (M^1-t^1)(M^2-t^1) + sum_{j=2}^L (t^{j-1}-t^j)(M^{j+1}-t^j).
+
+The paper's "admissible" profile set Adm(M) (the nested-rank profiles that minAdm ranges over) consists
+of WEAKLY-DECREASING t^1>=t^2>=...>=t^L=0 with t^1<=min(M^1,M^2), t^j<=min(t^{j-1}, M^{j+1}).
+
+YOUR QUESTIONS:
+
+Q1 (WEAK-DECREASE AT A LEAF). Run the construction at (2,2,3,2) to termination, following the chart
+branches. Because M^3=3>M^2=2, a Case-2 event at layer S=3 sets head (t^1,t^2):=(M^2,M^3)=(2,3), which
+is NOT weakly decreasing. QUESTION: does any EMITTED LEAF divisor have a raw T-vector that is NOT weakly
+decreasing (some t^j < t^{j+1})? If yes, exhibit it: the full T, its tilde_t, its M, and the node (S,J)
+where it was created. If it occurs only at tilde_t>0 divisors, say so; if it occurs at a tilde_t=0
+divisor, that is the sharpest case -- flag it.
+
+Q2 (t~=0 ONLY?). Does every emitted leaf carry ONLY divisors with tilde_t=0? Or do leaves also carry
+divisors with tilde_t>0 (e.g. small-M divisors born at deeper layers)? List, for one representative
+leaf, ALL its divisors with their (T, tilde_t, M), separating tilde_t=0 from tilde_t>0.
+
+Q3 (NO UNDERSHOOT / KILL). Is min over emitted tilde_t=0 leaf divisors of M equal to 3 = minAdm? Is
+there any tilde_t=0 leaf divisor whose raw T is NOT in Adm(2,2,3,2) (i.e. not weakly-decreasing, or
+violating the block bounds)? Report the min, the achieving profile(s), and any tilde_t=0 leaf divisor
+not in Adm.
+</task>
+
+<output_contract>
+Three sections Q1, Q2, Q3. In Q1 state clearly whether a non-weakly-decreasing raw T reaches a leaf and
+whether at tilde_t=0 or only tilde_t>0. In Q2 give one leaf's full divisor list split by tilde_t. In Q3
+give the tilde_t=0 minimum and any tilde_t=0 leaf divisor not in Adm. End with a one-line verdict for
+each of Q1/Q2/Q3. Then 3 lines "MOST LIKELY WRONG" per question. Exact arithmetic; flag inference vs
+computation; if the S=1->2 boot or divisor persistence is not forced by the transcription, say so.
+</output_contract>
+
+<grounding_rules>
+Reason only from the construction above + elementary exact algebra. Flag INFER vs COMPUTE. Do not
+invent a rule where the transcription is silent -- say so. Do not appeal to known results for the value.
+</grounding_rules>
