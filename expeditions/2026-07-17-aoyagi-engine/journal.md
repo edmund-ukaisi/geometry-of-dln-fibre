@@ -6939,3 +6939,25 @@ Lemma 1 (the follow-up). mint-t19 stood down with honors (mint done right — en
 forced-green). Refuted-as-stated labeling on ChartBridgeFaithful/GeoAlphaGauge still owed (a
 doc-pointer; fold into the cordon/close). pnp-ideal depth-3 probe still running (the follow-up
 reachability gate + the operator's cul-de-sac evidence).
+
+## 2026-07-20 tick 413: compass-ownership workflow live — elder authored the RISING-SEA amendment (committed)
+Operator authorized the elder to EDIT compass.md directly (its author-of-record; keeper role);
+controller commits + branch discipline; recorded in the heartbeat memo (don't edit compass
+myself). The elder immediately authored the RISING-SEA standing-counsel entry (106378fe8,
+committed per-file on the new workflow) — its OWN recalibration on the operator's steer:
+the recurring "ratified→false→rescope" chain has ONE root (the α-chart programme avoided the
+hard ideal-level object); the elder OWNS that it drifted into the same trap (the
+"toric-trivial/just-Lemma-1/elementary" runway framing = a minimum-viable unverified headline);
+RECALIBRATION: the follow-up BUILDS the RLCT-ideal-and-resolution interface as a proper
+standalone GENERAL library (rlct ideal/germ invariant; Lemma 1 both directions; monomial-ideal/
+Newton RLCT; resolution CoV; + θ/analytic foundation reconsidered IN-scope, retiring the
+Lean-cost fences), to full generality from the start — NOT a patch; the DLN simplifications
+fall out; the probe is a CHECK on a committed build, never a scope-gate. Endpoint: discharge
+the cited rlct=½codim → aoyagi UNCONDITIONAL. SCOPE SYNTHESIS (mine, relayed): elder's
+object-scope + navigator-9's critical-path reconcile — build the general object, Lemma 1 is its
+load-bearing core, pnp-ideal checks the core. The θ/analytic-in-scope is a real (maximal-push,
+operator-aligned) scope expansion → surface to the operator in the follow-up decision package.
+Compass compaction owed at follow-up open (elder owns; file ~690 lines, past charter — the
+bloat IS the tactical-patching drift made visible). Protocol note to elder: signal "compass
+ready" (it went idle without it; I judged the entry complete + committed). pnp-ideal depth-3
+verdict = the next gate.
