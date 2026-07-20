@@ -6528,3 +6528,21 @@ fold direction with the clearedOf frontier — the maintenance may SIMPLIFY). CA
 it shipped GREEN over an order-blind det headline — the "clean build necessary not sufficient
 / decorrelated hunt is the gate" discipline WORKED, a process success. Compass owes a fork-15
 amendment (elder folds it when the route lands). pnp-rg stood down (3 certs = the backbone).
+
+## 2026-07-20 tick 393: loss-t15's value-lane read CONVERGES on re-thread + strengthens reachability (isolability)
+loss-t15 (value-lane designer, independent of the elder's fidelity ruling) recommends
+root-first via RE-THREAD acc — CONVERGING with the elder. Its LOAD-BEARING new argument:
+root-first makes the InvVal3 maintenance ISOLABLE — acc_child = C_edge ∘ acc_s ⟹ the child
+chart is OUTERMOST, acting on the partially-reduced point Y = acc_s w, so maintenance =
+"one chart's action on the prefix" (exactly the telescoping InvVal3 was built for). Leaf-first
+buried the child chart innermost (non-isolable) — loss-t15 identifies this as likely THE
+deeper reason the value didn't telescope. So the value lane is plausibly MORE tractable in
+the corrected frame, not just re-verified — a real positive for reachability. Also confirmed:
+prefix does NOT flip (root-first aligns ≤S-prefix with Aoyagi's layer-0-first); det/fc/emb
+(t14's Jacobian) re-thread-transparent (product commutes; ledger-derived). Relayed to
+navigator-7 as reachability input (two of three lanes better than "everything re-verifies";
+pivot remains t14's cocycle-flip probe; value-lane simplification strengthens the
+mirror-case "closable this expedition"). loss-t15 approved to re-run prefix_rebase_gate.py
+under root-first (design confirmation, cheap) while holding the Lean build. Two independent
+seats (elder=fidelity, loss-t15=ergonomics) converge on re-thread — high confidence in the
+route. Awaiting t14's probe verdict + navigator-7's reachability call.
