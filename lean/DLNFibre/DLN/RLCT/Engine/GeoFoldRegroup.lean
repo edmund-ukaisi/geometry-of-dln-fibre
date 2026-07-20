@@ -1058,35 +1058,37 @@ def WeakNoStrandLeaf {L : ℕ} {M : Fin (L + 1) → ℕ} (l : LeafData M) : Prop
   ∀ k : Fin l.fullNumDiv, tildeOf (l.fullDivProfile k) ≠ 0 → l.fullDivExp k = 1
 
 /-- **The fold-Jacobian cocycle** (the WF walk, `Inv(acc, s)` threaded down `buildTree`, FULL-LEDGER
-form — R7). Given the incoming invariant `|det D acc w| = ledgerMonomial s w` + `DivBirthInv M s`, every
-geometric atlas leaf `p` of the subtree from `s` has a full-divisor-coord map `fc` with
-`|det D p.chartMap w| = ∏_j |z_{fc j}(w)|^{p.fullDivExp j − 1}` — the R7 `LeafJacobian` identity conjunct
-(witness `fc := birthFlatCoord` over the leaf's terminal state). The headline is `s = conRoot`, `acc = id`
-(`ledgerMonomial_conRoot`). No `WeakNoStrand` — the full ledger is what the fold equals (dichotomy=FALSE). -/
+form — R7). Given the incoming invariant `|det D acc w| = ledgerMonomial s w` + `DivBirthInv`/`DivExpPos`,
+every geometric atlas leaf `p` of the subtree from `s` is `leafOfState`-shaped at its OWN reachable
+terminal state `s'` (which the walk EXPOSES, carrying `DivBirthInv M s'`/`DivExpPos s'`), with
+`|det D p.chartMap w| = ledgerMonomial M s' h w` — i.e. the full-ledger monomial over `s'`'s divisors.
+Exposing `s'` lets the caller reconstruct the R7 `LeafJacobian` witness `fc := birthFlatCoord M s'` +
+`emb := (t0Indices s').get` with all conjuncts (see `geoAtlas_fold_det`, `geoAtlas_leaf_leafJacobian`).
+The headline is `s = conRoot`, `acc = id` (`ledgerMonomial_conRoot`). No `WeakNoStrand` — the full ledger
+is what the fold equals (dichotomy=FALSE). -/
 theorem geoAtlas_cocycle (h : 0 < flatDim M) :
     ∀ (s : ConState L), DivBirthInv M s → DivExpPos s →
       ∀ (acc : Params M → Params M), Differentiable ℝ acc →
         (∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) →
         ∀ p ∈ ResolutionTree.leaves (tGeo acc (buildTree M (conOracle M) s)),
-          ∃ fc : Fin p.fullNumDiv → Fin (flatDim M), ∀ w,
-            |(fderiv ℝ p.chartMap w).det|
-              = ∏ j : Fin p.fullNumDiv, |paramsEquivFlat M w (fc j)| ^ (p.fullDivExp j - 1) := by
+          ∃ s' : ConState L, DivBirthInv M s' ∧ DivExpPos s' ∧ Differentiable ℝ p.chartMap ∧
+            p = { leafOfState M s' with chartMap := p.chartMap } ∧
+            ∀ w, |(fderiv ℝ p.chartMap w).det| = ledgerMonomial M s' h w := by
   intro s
   induction s using (conRel_wf M).induction with
   | _ s ih =>
     intro inv expinv acc haccdiff haccdet p hp
     -- The terminal closer (used at `L ≤ layer` and the chooser fall-back).
     have close_terminal : conOracle M s = oracleTerminal M s →
-        ∃ fc : Fin p.fullNumDiv → Fin (flatDim M), ∀ w,
-          |(fderiv ℝ p.chartMap w).det|
-            = ∏ j : Fin p.fullNumDiv, |paramsEquivFlat M w (fc j)| ^ (p.fullDivExp j - 1) := by
+        ∃ s' : ConState L, DivBirthInv M s' ∧ DivExpPos s' ∧ Differentiable ℝ p.chartMap ∧
+          p = { leafOfState M s' with chartMap := p.chartMap } ∧
+          ∀ w, |(fderiv ℝ p.chartMap w).det| = ledgerMonomial M s' h w := by
       intro hos
       rw [buildTree_terminal M (conOracle M) s (leafOfState M s) (leafOfState_rootLedger M s) hos,
         tGeo] at hp
       simp only [ResolutionTree.leaves, List.mem_singleton] at hp
       subst hp
-      rw [leafOfState, dif_pos h]
-      exact ⟨fun j => birthFlatCoord M s j h, fun w => by rw [haccdet w, ledgerMonomial]⟩
+      exact ⟨s, inv, expinv, haccdiff, rfl, haccdet⟩
     by_cases h1 : L ≤ s.layer
     · exact close_terminal (by unfold conOracle; rw [dif_pos h1])
     · have hlive : s.layer < L := not_le.mp h1
