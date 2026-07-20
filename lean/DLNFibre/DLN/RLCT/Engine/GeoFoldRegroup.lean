@@ -631,6 +631,346 @@ theorem diagTargetOf_noncase11_eq_fresh (M : Fin (L + 1) → ℕ) (node : StepDa
   · rename_i hc11; exact absurd hc11 hec
   · rw [dif_pos hlv, dif_pos ⟨hcc, hcs⟩]
 
+/-! ## The divisor-exponent positivity invariant `DivExpPos`
+
+The case-1(1)/case-1(2) ledger arithmetic `(e + b) − 1 = (e − 1) + b` needs `e = s.divExp f ≥ 1`
+for the merged divisor. This is a genuine reachability fact: `resRows = widthMinUpto layer − cleared
+≥ 1` (widthMinUpto antitone) and `resCols = M⁽ˡᵃʸᵉʳ⁺¹⁾ − cleared ≥ 1` at every non-rollover node,
+so a case-2 birth appends `resRows·resCols ≥ 1` and a case-1(2) birth appends `divExp f + runLen·
+resCols ≥ runLen·resCols ≥ 1` — both UNCONDITIONALLY `≥ 1`. `DivExpPos` threads this (mirroring
+`DivBirthInv`), so the case-1 maintenance can consume `1 ≤ s.divExp f`. -/
+
+/-- Every live divisor's exponent is `≥ 1`. -/
+def DivExpPos {L : ℕ} (s : ConState L) : Prop := ∀ k : Fin s.numDiv, 1 ≤ s.divExp k
+
+/-- `DivExpPos` at the root (`numDiv = 0`): vacuous. -/
+theorem DivExpPos_conRoot : DivExpPos (conRoot : ConState L) := fun k => k.elim0
+
+/-- Rollover carries the exponent ledger verbatim. -/
+theorem DivExpPos_stepRollover (s : ConState L) (h : DivExpPos s) : DivExpPos s.stepRollover := h
+
+/-- A birth appends exponent `e`; given `1 ≤ e` the positivity is preserved (carried divisors by IH,
+the fresh one by `he`). -/
+theorem DivExpPos_stepAppendAdvance (s : ConState L) (e : ℕ) (t₀ : Fin L → ℕ) (he : 1 ≤ e)
+    (h : DivExpPos s) : DivExpPos (s.stepAppendAdvance e t₀) := by
+  intro k
+  induction k using Fin.lastCases with
+  | last => simpa [ConState.stepAppendAdvance, Fin.snoc_last] using he
+  | cast j => simpa [ConState.stepAppendAdvance, Fin.snoc_castSucc] using h j
+
+/-- The case-1(1) bumped-exponent child only grows exponents, so positivity is preserved. -/
+theorem DivExpPos_bumpedExp (s : ConState L) (f : Fin s.numDiv) (b : ℕ) (h : DivExpPos s) :
+    DivExpPos (⟨s.layer, s.cleared, s.numDiv,
+        (fun k => if (k : ℕ) = f.val then s.divExp k + b else s.divExp k),
+        Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+        s.numGen, s.genDivExp, s.divBirthCoord⟩ : ConState L) := by
+  intro k
+  show 1 ≤ (if (k : ℕ) = f.val then s.divExp k + b else s.divExp k)
+  split
+  · exact le_trans (h k) (Nat.le_add_right _ _)
+  · exact h k
+
+/-- **The case-1(1) bumped-exponent ledger delta**: the merge child bumps divisor `f`'s exponent by
+`b`, so the full-ledger monomial gains the factor `|z_{birthFlatCoord s f}(w)|^b` (using `1 ≤ divExp f`
+for `(divExp f + b) − 1 = b + (divExp f − 1)`). The case-1(1) analogue of `ledgerMonomial_stepAppend
+Advance`, but on the merge cell rather than a fresh one. `birthFlatCoord`/`numDiv` are shared with `s`
+(only `divExp`/`divProfile` change), so the divisor cells are `birthFlatCoord M s k h` throughout. -/
+theorem ledgerMonomial_bumpedExp_delta (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (f : Fin s.numDiv) (b : ℕ) (w : Params M) (hexpf : 1 ≤ s.divExp f) :
+    ledgerMonomial M (⟨s.layer, s.cleared, s.numDiv,
+        (fun k => if (k : ℕ) = f.val then s.divExp k + b else s.divExp k),
+        Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+        s.numGen, s.genDivExp, s.divBirthCoord⟩ : ConState L) h w
+      = |paramsEquivFlat M w (birthFlatCoord M s f h)| ^ b * ledgerMonomial M s h w := by
+  rw [ledgerMonomial, ledgerMonomial]
+  show (∏ k : Fin s.numDiv, |paramsEquivFlat M w (birthFlatCoord M s k h)|
+      ^ ((if (k : ℕ) = f.val then s.divExp k + b else s.divExp k) - 1))
+    = |paramsEquivFlat M w (birthFlatCoord M s f h)| ^ b
+      * ∏ k : Fin s.numDiv, |paramsEquivFlat M w (birthFlatCoord M s k h)| ^ (s.divExp k - 1)
+  rw [← Finset.mul_prod_erase Finset.univ
+      (fun k : Fin s.numDiv => |paramsEquivFlat M w (birthFlatCoord M s k h)|
+        ^ ((if (k : ℕ) = f.val then s.divExp k + b else s.divExp k) - 1)) (Finset.mem_univ f),
+    ← Finset.mul_prod_erase Finset.univ
+      (fun k : Fin s.numDiv => |paramsEquivFlat M w (birthFlatCoord M s k h)| ^ (s.divExp k - 1))
+      (Finset.mem_univ f),
+    Finset.prod_congr rfl (fun k hk => by
+      rw [if_neg (fun heq => (Finset.ne_of_mem_erase hk) (Fin.ext heq))])]
+  simp only [if_true]
+  rw [show s.divExp f + b - 1 = b + (s.divExp f - 1) by omega, pow_add]
+  ring
+
+/-- **`DivExpPos` maintenance through `conOracle`'s step-children** (mirrors
+`DivBirthInv_conOracle_stepChildren`): each birth appends an exponent `≥ 1` from the node's residual
+dims, the merge bumps, rollover carries. -/
+theorem DivExpPos_conOracle_stepChildren {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (inv : DivExpPos s) (c : StepChild M s) (hc : c ∈ (conOracle M s).stepChildren) :
+    DivExpPos c.child := by
+  by_cases h1 : L ≤ s.layer
+  · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+  · have hlive : s.layer < L := not_le.mp h1
+    by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
+      subst hc
+      exact DivExpPos_stepRollover s inv
+    · have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+      -- the birth-exponent factors are both `≥ 1` (widthMinUpto antitone + `widthMinUpto ≤ M`).
+      have hrow1 : 1 ≤ widthMinUpto M s.layer - s.cleared := by
+        have hmono : widthMinUpto M (s.layer + 1) ≤ widthMinUpto M s.layer :=
+          widthMinUpto_mono M (Nat.le_succ _)
+        omega
+      have hcol1 : 1 ≤ M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) - s.cleared := by
+        have hws : widthMinUpto M (s.layer + 1) ≤ M (⟨s.layer + 1, by omega⟩ : Fin (L + 1)) :=
+          widthMinUpto_le _ (by simp)
+        omega
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · -- case-2
+        have horacle : conOracle M s = case2Decision M s
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hc
+        subst hc
+        exact DivExpPos_stepAppendAdvance s _ _ (Nat.one_le_iff_ne_zero.mpr
+          (Nat.mul_ne_zero (by omega) (by omega))) inv
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle M s = oracleTerminal M s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [horacle] at hc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+        · -- case-1 (children: bumpedExp merge, then stepAppendAdvance split)
+          have hgt : s.cleared < target := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
+          rw [horacle] at hc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hc
+          rcases hc with rfl | rfl
+          · exact DivExpPos_bumpedExp s f _ inv
+          · exact DivExpPos_stepAppendAdvance s _ _
+              (le_add_left (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega)))) inv
+
+/-! ## Stage-2 per-case maintenance (`Inv(acc, s) → Inv(acc ∘ B, child)`, one case at a time)
+
+For a fanned charted edge `B = geoChartMapNorm (fun _ => id) g` at a reachable step node
+(`buildTree M (conOracle M) s = branch g.node edges`), each lemma closes cert §3's identity
+`|det D (acc ∘ B) w| = ledgerMonomial M child h w`. The shared spine (all four):
+
+    |det D (acc ∘ B) w| = |det D acc (B w)| · |z_d(w)|^{dCN−1}     [geoChartMapNorm_cocycle_step]
+                        = L(s)(B w) · |z_d(w)|^{dCN−1}             [haccdet at (B w)]
+                        = L(child)(w)                              [the per-case §3 identity]
+
+with `d = diagTargetOf g.node g.edge`. Cases differ only in the last step: the reads for `L(s)(B w)`
+(spectator / pivot-free / center-scale), the coherence `d = birthFlatCoord child …`, and the ledger
+delta (`stepAppendAdvance` / bumpedExp / rollover). -/
+
+/-- **case-2 maintenance** (`nodeOccMin = none`; the kit's verbatim spectator leg). The new full block
+appends ONE divisor of exponent `resRows·resCols = dCenterOfNode g.node` at the fresh corner; every old
+divisor is a spectator (`case2_spectator`/`case2_diagTarget` → `ledgerMonomial_comp_spectator`), and the
+atom's `z_{diagTargetOf}` IS the fresh divisor's diagonal (stage-1 coherences). -/
+theorem ledger_det_maintenance_case2 (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (inv : DivBirthInv M s) (g : GeoChart M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch g.node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (hocc : nodeOccMin M g.node = none) (hce : g.edge.case = StepCase.case2)
+    (hd : dCenterOfNode M g.node ≤ flatDim M) (hp : g.pivot < dCenterOfNode M g.node)
+    (t₀ : Fin L → ℕ) (acc : Params M → Params M) (hacc : Differentiable ℝ acc)
+    (haccdet : ∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) :
+    ∀ w, |(fderiv ℝ (acc ∘ geoChartMapNorm (fun _ => id) g) w).det|
+      = ledgerMonomial M (s.stepAppendAdvance (g.node.resRows * g.node.resCols) t₀) h w := by
+  have hd1 : 1 ≤ flatDim M := h
+  have hce_ne11 : g.edge.case ≠ StepCase.case11 := by rw [hce]; exact fun heq => StepCase.noConfusion heq
+  obtain ⟨hlayer, hcleared⟩ := step_node_layer_cleared s g.node edges htree
+  -- dCenterOfNode reduction (case-2 = full residual block).
+  have hlive : s.layer < L := layer_lt_of_branch s g.node edges htree
+  have h1 : ¬ L ≤ g.node.layer := by rw [hlayer]; exact not_le.mpr hlive
+  have h2 : ¬ widthMinUpto M (g.node.layer + 1) ≤ g.node.cleared := by rw [hlayer, hcleared]; exact hnr
+  have hdim : dCenterOfNode M g.node = g.node.resRows * g.node.resCols := by
+    rw [dCenterOfNode_nonterminal M g.node h1 h2, hocc]; rfl
+  -- The fresh corner fits the layer's matrix (at both `s.layer` and `g.node.layer`).
+  obtain ⟨hlive2, hcc, hcs⟩ := fresh_corner_bounds s g.node edges htree hnr
+  have hlv : g.node.layer < L := by rw [hlayer]; exact hlive2
+  have hfe : (⟨g.node.layer, hlv⟩ : Fin L) = ⟨s.layer, hlive2⟩ := Fin.ext hlayer
+  have hcc' : g.node.cleared < M (⟨g.node.layer, hlv⟩ : Fin L).castSucc := by rw [hfe, hcleared]; exact hcc
+  have hcs' : g.node.cleared < M (⟨g.node.layer, hlv⟩ : Fin L).succ := by rw [hfe, hcleared]; exact hcs
+  -- Coherence: the atom cell IS the fresh divisor's diagonal.
+  have hdt_eq : diagTargetOf M g.node g.edge hd1
+      = birthFlatCoord M (s.stepAppendAdvance (g.node.resRows * g.node.resCols) t₀)
+          (Fin.last s.numDiv) h := by
+    rw [diagTargetOf_noncase11_eq_fresh M g.node g.edge hd1 hce_ne11 hlv hcc' hcs',
+      birthFlatCoord_stepAppendAdvance_last M s h (g.node.resRows * g.node.resCols) t₀ hlive2 hcc hcs]
+    exact flatCoordOf_congr (Fin.ext hlayer) hcleared hcleared
+  -- The old ledger is a spectator of the new chart.
+  have hspecfix : ∀ w, ledgerMonomial M s h (geoChartMapNorm (fun _ => id) g w) = ledgerMonomial M s h w :=
+    fun w => ledgerMonomial_comp_spectator M s h g w hd hp
+      (case2_spectator s inv g.node edges htree hnr hocc h hd)
+      (case2_diagTarget s inv g.node edges htree hnr h hd1 g.edge hce_ne11)
+  intro w
+  rw [geoChartMapNorm_cocycle_step acc hacc g w hd hp, haccdet _, hspecfix w,
+    ledgerMonomial_stepAppendAdvance M s h (g.node.resRows * g.node.resCols) t₀ w, hdt_eq, hdim]
+
+/-- **case-1(1) maintenance** (`nodeOccMin = some target`, the MERGE edge). The merge cell is the
+chosen divisor `f`'s diagonal (`diagTargetOf_case11_eq_birthFlatCoord`), which is ALSO the fan-out
+pivot cell (`hpivcell`) — so `f`'s read is pivot-FREE and every other divisor is a spectator
+(`case1_spectator`/`case2_diagTarget` → `ledgerMonomial_eq_of_reads`). The atom `|z_{bfc s f}|^{dCN−1}`
+= `|z_{bfc s f}|^b` re-merges onto `f`'s diagonal, matching the `bumpedExp` ledger delta (needs
+`1 ≤ divExp f` from `DivExpPos`). -/
+theorem ledger_det_maintenance_case11 (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (inv : DivBirthInv M s) (g : GeoChart M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch g.node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (hce : g.edge.case = StepCase.case11)
+    (f : Fin s.numDiv) (hexpf : 1 ≤ s.divExp f) (hmerge : g.edge.subst.mergeIdx = (f : ℕ))
+    (target : ℕ) (hocc : nodeOccMin M g.node = some target) (hf : chooseMin s target = some f)
+    (b : ℕ) (hb : dCenterOfNode M g.node = b + 1)
+    (hd : dCenterOfNode M g.node ≤ flatDim M) (hp : g.pivot < dCenterOfNode M g.node)
+    (hpivcell : cNodeOf M g.node hd (⟨g.pivot, hp⟩ : Fin (dCenterOfNode M g.node))
+      = birthFlatCoord M s f h)
+    (acc : Params M → Params M) (hacc : Differentiable ℝ acc)
+    (haccdet : ∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) :
+    ∀ w, |(fderiv ℝ (acc ∘ geoChartMapNorm (fun _ => id) g) w).det|
+      = ledgerMonomial M (⟨s.layer, s.cleared, s.numDiv,
+          (fun k => if (k : ℕ) = f.val then s.divExp k + b else s.divExp k),
+          Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+          s.numGen, s.genDivExp, s.divBirthCoord⟩ : ConState L) h w := by
+  have hd1 : 1 ≤ flatDim M := h
+  have hdt_eq : diagTargetOf M g.node g.edge hd1 = birthFlatCoord M s f h :=
+    diagTargetOf_case11_eq_birthFlatCoord s inv g.node edges htree hnr target hocc h hd1
+      g.edge hce f hmerge
+  intro w
+  -- Every divisor's diagonal read is fixed: `f` pivot-free, the rest spectators.
+  have hreads : ∀ k : Fin s.numDiv,
+      paramsEquivFlat M (geoChartMapNorm (fun _ => id) g w) (birthFlatCoord M s k h)
+        = paramsEquivFlat M w (birthFlatCoord M s k h) := by
+    intro k
+    by_cases hkf : k = f
+    · subst hkf
+      rw [geoChartMapNorm_apply_oncone g w hd hp]
+      conv_lhs => rw [← hpivcell]
+      rw [geoChartMap_flat_pivot g _ hd hp, flatSwapCLE_apply_flat, Equiv.swap_apply_left, hdt_eq]
+    · have hspec_k := case1_spectator s inv g.node edges htree hnr target hocc h hd f hf k hkf
+      rw [geoChartMapNorm_apply_oncone g w hd hp,
+        geoChartMap_flat_spectator g _ hd hp (birthFlatCoord M s k h) (fun i => hspec_k i),
+        flatSwapCLE_apply_flat,
+        Equiv.swap_apply_of_ne_of_ne (hspec_k ⟨g.pivot, hp⟩).symm
+          (fun heq => birthFlatCoord_ne_of_ne inv h hkf (heq.trans hdt_eq))]
+  rw [geoChartMapNorm_cocycle_step acc hacc g w hd hp, haccdet _,
+    ledgerMonomial_eq_of_reads M s h (geoChartMapNorm (fun _ => id) g) w (fun k => hreads k),
+    ledgerMonomial_bumpedExp_delta M s h f b w hexpf, hdt_eq,
+    show dCenterOfNode M g.node - 1 = b by omega]
+  ring
+
+/-- **case-1(2) maintenance** (`nodeOccMin = some target`, the SPLIT edge). The split births a fresh
+divisor at exponent `divExp f + b` (`b = dCenterOfNode − 1`); the atom cell `diagTargetOf` is that
+fresh divisor's diagonal (stage-1 coherences), while the old divisor `f`'s u-corner is a NON-pivot
+center cell SCALED by the exceptional value (`geoChartMap_flat_center` at the u-corner index `hucell`)
+— spawning the case-1(2) inheritance `|z_d|^{divExp f − 1}` (`ledgerMonomial_center_of_reads`). The
+inheritance plus the atom `b` recombine to `(divExp f + b) − 1` (needs `1 ≤ divExp f`). -/
+theorem ledger_det_maintenance_case12 (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (inv : DivBirthInv M s) (g : GeoChart M) (edges : List (Edge M))
+    (htree : buildTree M (conOracle M) s = ResolutionTree.branch g.node edges)
+    (hnr : ¬ widthMinUpto M (s.layer + 1) ≤ s.cleared)
+    (hce : g.edge.case = StepCase.case12)
+    (f : Fin s.numDiv) (hexpf : 1 ≤ s.divExp f)
+    (target : ℕ) (hocc : nodeOccMin M g.node = some target) (hf : chooseMin s target = some f)
+    (b : ℕ) (hb : dCenterOfNode M g.node = b + 1)
+    (hd : dCenterOfNode M g.node ≤ flatDim M) (hp : g.pivot < dCenterOfNode M g.node)
+    (hucell : ∃ i : Fin (dCenterOfNode M g.node), i ≠ (⟨g.pivot, hp⟩ : Fin (dCenterOfNode M g.node))
+      ∧ cNodeOf M g.node hd i = birthFlatCoord M s f h)
+    (t₀ : Fin L → ℕ) (acc : Params M → Params M) (hacc : Differentiable ℝ acc)
+    (haccdet : ∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) :
+    ∀ w, |(fderiv ℝ (acc ∘ geoChartMapNorm (fun _ => id) g) w).det|
+      = ledgerMonomial M (s.stepAppendAdvance (s.divExp f + b) t₀) h w := by
+  have hd1 : 1 ≤ flatDim M := h
+  have hce_ne11 : g.edge.case ≠ StepCase.case11 := by rw [hce]; exact fun hh => StepCase.noConfusion hh
+  obtain ⟨hlayer, hcleared⟩ := step_node_layer_cleared s g.node edges htree
+  obtain ⟨hlive2, hcc, hcs⟩ := fresh_corner_bounds s g.node edges htree hnr
+  have hlv : g.node.layer < L := by rw [hlayer]; exact hlive2
+  have hfe : (⟨g.node.layer, hlv⟩ : Fin L) = ⟨s.layer, hlive2⟩ := Fin.ext hlayer
+  have hcc' : g.node.cleared < M (⟨g.node.layer, hlv⟩ : Fin L).castSucc := by rw [hfe, hcleared]; exact hcc
+  have hcs' : g.node.cleared < M (⟨g.node.layer, hlv⟩ : Fin L).succ := by rw [hfe, hcleared]; exact hcs
+  -- Coherence: the atom cell IS the fresh divisor's diagonal.
+  have hdt_eq : diagTargetOf M g.node g.edge hd1
+      = birthFlatCoord M (s.stepAppendAdvance (s.divExp f + b) t₀) (Fin.last s.numDiv) h := by
+    rw [diagTargetOf_noncase11_eq_fresh M g.node g.edge hd1 hce_ne11 hlv hcc' hcs',
+      birthFlatCoord_stepAppendAdvance_last M s h (s.divExp f + b) t₀ hlive2 hcc hcs]
+    exact flatCoordOf_congr (Fin.ext hlayer) hcleared hcleared
+  obtain ⟨i₀, hi₀ne, hi₀eq⟩ := hucell
+  intro w
+  -- The u-corner cell of `f` is SCALED by the exceptional value `z_d`.
+  have hread_f : paramsEquivFlat M (geoChartMapNorm (fun _ => id) g w) (birthFlatCoord M s f h)
+      = paramsEquivFlat M w (diagTargetOf M g.node g.edge hd1)
+        * paramsEquivFlat M w (birthFlatCoord M s f h) := by
+    rw [geoChartMapNorm_apply_oncone g w hd hp]
+    conv_lhs => rw [← hi₀eq]
+    rw [geoChartMap_flat_center g _ hd hp i₀ hi₀ne, flatSwapCLE_apply_flat, flatSwapCLE_apply_flat,
+      Equiv.swap_apply_left,
+      Equiv.swap_apply_of_ne_of_ne (fun heq => hi₀ne (cNodeOf_injective M g.node hd heq))
+        (fun heq => case2_diagTarget s inv g.node edges htree hnr h hd1 g.edge hce_ne11 f
+          (hi₀eq ▸ heq)),
+      hi₀eq]
+  -- Every OTHER divisor is a spectator.
+  have hreads_spec : ∀ k : Fin s.numDiv, k ≠ f →
+      paramsEquivFlat M (geoChartMapNorm (fun _ => id) g w) (birthFlatCoord M s k h)
+        = paramsEquivFlat M w (birthFlatCoord M s k h) := by
+    intro k hkf
+    have hspec_k := case1_spectator s inv g.node edges htree hnr target hocc h hd f hf k hkf
+    rw [geoChartMapNorm_apply_oncone g w hd hp,
+      geoChartMap_flat_spectator g _ hd hp (birthFlatCoord M s k h) (fun i => hspec_k i),
+      flatSwapCLE_apply_flat,
+      Equiv.swap_apply_of_ne_of_ne (hspec_k ⟨g.pivot, hp⟩).symm
+        (case2_diagTarget s inv g.node edges htree hnr h hd1 g.edge hce_ne11 k)]
+  rw [geoChartMapNorm_cocycle_step acc hacc g w hd hp, haccdet _,
+    ledgerMonomial_center_of_reads M s h (geoChartMapNorm (fun _ => id) g) w f
+      (diagTargetOf M g.node g.edge hd1) hread_f hreads_spec,
+    ledgerMonomial_stepAppendAdvance M s h (s.divExp f + b) t₀ w, ← hdt_eq,
+    show dCenterOfNode M g.node - 1 = b by omega,
+    show s.divExp f + b - 1 = s.divExp f - 1 + b by omega, pow_add]
+  ring
+
+/-- **rollover maintenance** (the chartless edge). A rollover fans to a CHARTLESS edge (`localSub :=
+id`, `acc' = acc`) and carries the ledger verbatim (`ledgerMonomial_stepRollover`), so the incoming
+invariant transfers unchanged. -/
+theorem ledger_det_maintenance_rollover (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (acc : Params M → Params M)
+    (haccdet : ∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) :
+    ∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s.stepRollover h w := by
+  intro w; rw [ledgerMonomial_stepRollover]; exact haccdet w
+
 /-- **The weak no-stranded fact, expressed on a leaf's FULL ledger fields** (so it threads through the
 `leaves` of `buildTree` without a separate reachability predicate). For `leafOfState s` this is
 defeq to `WeakNoStrand s`. -/
