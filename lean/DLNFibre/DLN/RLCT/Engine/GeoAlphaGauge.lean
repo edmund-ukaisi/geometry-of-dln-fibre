@@ -655,6 +655,12 @@ partial monomial form) whose derivative shadow t14 proves. The α gauge (`residu
 + srcBox-bounded, PROVEN here) is exactly what makes the residual clear so `prod` is diagonal; this
 lemma asserts the geometry realizes it. Supplied by the shared fold cert; the single remaining
 `sorry` of the loss lane. -/
+-- REFUTED-AS-STATED (#3a, cert-full-value-walk §6): the chart-CoV `LeafPullback` value half. The
+-- goal-level no-go shows NO det-1 chart makes the residual core bounded below / diagonal on an
+-- open set (it → 0; diagonalization needs a det-0 projection) — category-false for ALL charts,
+-- not just this α gauge. So this `sorry` is NOT a fillable frontier: the honest lower bound is
+-- IDEAL-LEVEL (Aoyagi Lemma 1 over the banked resolution), the follow-up's target. See
+-- `aoyagi_learning_coefficient_gen` (the honest engine, on the box-finiteness Prop).
 theorem leafDiagFrob_geoAtlasNorm (l : LeafData M)
     (hl : l ∈ geoAtlasNorm (alphaGauge (M := M)) (buildTree M (conOracle M) conRoot)) :
     LeafDiagFrob l := by

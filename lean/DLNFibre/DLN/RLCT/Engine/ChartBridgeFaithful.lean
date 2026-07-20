@@ -100,6 +100,10 @@ theorem chartBridgeFaithful_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L)
         let ⟨hmeas, hbdd, hdiv, hres, hdisj, _, _⟩ :=
           geoAtlasNorm_leaf_ledgerProps (alphaGauge (M := M)) c hc
         ⟨hmeas, hbdd, hdiv, hres, hdisj, geoAtlasNorm_leaf_ae_injOn c hc,
+          -- REFUTED-AS-STATED (#3a, cert-full-value-walk §6): this `LeafPullback`
+          -- conjunct routes through `leafDiagFrob_geoAtlasNorm`'s `sorry` — the chart-CoV
+          -- value half, category-false for ALL charts (no chart bounds the residual core
+          -- below on an open set), not fillable. Honest lower bound = ideal-level (Lemma 1).
           leafPullback_geoAtlasNorm c hc,
           geoAtlasNorm_leaf_leafJacobian (flatDim_pos_of_append _hL
             (show (0 : ℕ) < widthMinUpto M (0 + 1) by
