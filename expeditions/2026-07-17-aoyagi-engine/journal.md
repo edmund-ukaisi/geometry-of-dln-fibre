@@ -6107,3 +6107,13 @@ standing pre-authorization (prefixColFin + prodPrefix + InvVal3 + bmonOf(≤) + 
 + dropped(rollover-aware) + amended leaf discharge + prefix=full lemma + vacuous base);
 the four-case grind opens on its green. Elder FYI-confirm riding (the drop-at-layer-
 completion fidelity read); walk-t20 mid-2d-A per the board.
+
+## 2026-07-20 tick 371b: elder confirmed the rollover-aware form (paper-pinned) — the payload design is CLOSED
+worked.tex:486's "when J reaches M(S+1) the layer is done" IS the drop moment — the
+rollover-aware threshold nails the exact node both simpler forms miss, and its switching
+condition = the oracle guard verbatim is the construction-derived pin (precision-3
+discipline). Consistent with the width-drop ruling (dropped accumulates monotonically;
+the threshold pins each row's join state). The battery's 14-state dropped==zero-rows IS
+the width-drop leg the elder asked for — passed. Bank hedge removed; the payload design
+(after seven gate catches across five rounds) is CLOSED. What remains on the value lane
+is pure proof: the bank green, then the four maintenance cases, then the walk.
