@@ -407,6 +407,16 @@ over banked substrate.
     so the monomial transfers pointwise; det-1 at :428). REJECT (b) slot-flip (reopens t14's
     closed arc on an unpriced re-elaboration bet; silent name-content drift). The projection
     gate is UNCHANGED (region_glue is atlas-agnostic; toChartBridge structure intact).
+    (ADDENDUM, tick 341, t14's statement gate.) A second fork-15 clause did not survive
+    contact with the disk: "srcBox = g⁻¹(cube)" was never realized — tGeoG's leaf case
+    INHERITS srcBox = cube. RULED: keep the disk def (changing tGeoG mid-walk collides with
+    loss-t15's live lane; (B)'s bound is trivially cube-satisfied); the cover transfer is
+    therefore NOT image-invariance but the open-homeo argument (α open homeo fixing 0; a
+    shrunken U' ∋ 0 suffices — clause (A) demands only ∃ U). The α-fold also threads α
+    PER-EDGE, so the LeafJacobian transfer mechanism (gauge-generalize the cocycle over an
+    explicit "det-1 + divisor-diagonal-fixing" hypothesis bundle vs a standalone comparison
+    on top) went to the elder for counter-sign (t14 prices the refactor light; tripwire =
+    stage-1/2 atom probe, fall back to standalone on friction).
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.

@@ -5538,3 +5538,24 @@ verified the α design on disk). Its design conclusion accepted meanwhile: entry
 maintenance rides the IH without re-expanding prod (mirrors the det walk's scalar
 structure); resid is (s,w)-derivable (path-determined fold); option A closed-form-per-cell
 approved. Its tripwire stands (not-ledger-derivable ⟹ statement-first surface).
+
+## 2026-07-20 tick 341: t14 statement gate POSTED + ruled; two more design-vs-disk finds
+t14 posted the transfer-batch statement gate before filling (the discipline working as
+built): type diff APPROVED (contained to ChartBridgeFaithful.lean; ChartBridge ∃-atlas
+agnostic so no downstream type change; region_glue confirmed unaffected; (D)₁ rfl again
+after the amendment). Its full build 8701/8917 zero-errors, all stage-4 consumers green.
+TWO LOAD-BEARING FILL FINDS (both would have been silent grind-walls without the gate):
+(a) fork 15's "srcBox = g⁻¹(cube)" was NEVER REALIZED — tGeoG leaf inherits srcBox = cube;
+so the elder's cover pricing (image-invariance) is off-disk. RULED: keep the disk def (a
+tGeoG change collides with loss-t15's live walk; no math need); cover via the open-homeo
+argument (α open homeo fixing 0; shrunken U' suffices — (A) demands only ∃ U ∋ 0); the
+likely new atom is the INVERSE-shear bound (same pattern as alphaGauge_srcBox_bounded).
+Correction sent to the elder w/ a touchstone check (does the paper need a specific chart-
+domain shape, or is any 0-nbhd faithful? — my read: the RLCT is local, any U serves).
+(b) the α-fold threads α PER-EDGE ⟹ the LeafJacobian transfer is per-edge commutation;
+t14 recommends GAUGE-GENERALIZING its cocycle (explicit det-1 + divisor-diagonal-fixing
+hypothesis bundle; id and α instantiate; refactor priced light by the owner) over a
+standalone comparison. HELD for elder counter-sign (mechanism inside its ruling's
+territory: touches the banked arc) — t14 proceeds meanwhile on the amendment + transfers
+1-3 + (b) signatures-only pre-stage. Tripwire set: atom-refactor probe, fall back on
+friction. Compass fork 15 addendum recorded.
