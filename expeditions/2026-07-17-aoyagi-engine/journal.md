@@ -5808,3 +5808,18 @@ s.layer + 1 (matrices 0..s.layer per the locality read; branches only at s.layer
 layer_lt_of_branch; terminal discharges via the leaf lemma prefix = prod). loss-t15 pins
 off prodAux's recursion; elder stamps with the battery legs. bmonOf/base/flags survive
 verbatim; the bank waits on legs + stamp + t14's clearedOf.
+
+## 2026-07-20 tick 355: carto doc batch merged + sanity-built; two flags routed to t14
+Carto-standing delivered task #9 (six files, doc-only, delimiter-verified): the durable
+EngineObligations FRONTIER caveat (one frontier sorry = LeafPullback ← GeoAlphaGauge:562,
+wording stable across the in-flight re-wire) + the header fix (:13-17 no longer lists o5 as
+open — a right scope extension: leaving it would contradict the same file's new caveat);
+STATUS.md superseded-banner + true-cone block (with a precision correction to MY charge
+wording, accepted: chartBridge_buildTree is the drop-(D) PROJECTION, not "closed" — only
+geoAtlas_fold_det is closed); ShearReconcile drift-flags closed (the retire-note governs);
+the :82→:92 erratum recorded; final-arc banked-family cards + forwarding pointers (incl.
+GeoInvVal name clarification and a GeoAtlasTransfer placeholder). Merged (dde56c0e8),
+pushed, sanity build GREEN (LAKE-EXIT:0). Two doc-vs-disk flags on t14's surfaces routed to
+its stage 4: ChartBridgeFaithful:74-81 "two frontier sorries" (one now) and
+GeoLeafJacobian:14-18 "the one sorry below" (closed). Carto standing by; full STATUS
+rewrite reserved for the lanes' landing.
