@@ -7235,3 +7235,29 @@ goals (L&R ≠ Aoyagi; the recurring "fall back to cited_aoyagi_dln" drift). Inv
   HER choice + verify her claimed monomialisation; not an invention of ours.
 LIVE operator decisions: the branch call (build off dev to inherit the cite-free determinantal geometry
 + bring our RLCT work across) + reading Aoyagi's coupled pages together.
+
+## 2026-07-20 tick 422: phase-init merge ATTEMPTED → ABORTED (reconciliation is a sub-project, not a mechanical merge); clean state restored
+Operator gave go for the phase-INIT only (merge + prep, then discuss before the phase in earnest).
+Ran `git merge --no-commit origin/dev`. merge-tree preview had shown 11 text conflicts (docs +
+aggregator + lakefile + cordon tests) — small. But mid-resolution the reconciliation revealed a
+SEMANTIC dual-evolution the text preview did NOT show:
+- **DUAL CITATION CORDON.** BOTH branches independently built a cordon. OURS = `Meta.*`
+  (Meta/Cordon.lean + CordonAudit + CordonClean/CordonLeak fixtures + scripts/cordon + blueprint
+  attrs), last-touched 2026-07-15 — NEWER, branch-unique. DEV's = `DLNFibre.Core.Meta.*`
+  (Core/Meta/CordonAudit + Cited.lean + scripts/cited), 2026-07-02 — dev-unique. My preview
+  assumption "dev has the cordon, we don't → take dev's" was WRONG; I'd taken dev's cordon
+  files/fixtures via --theirs, which would DROP our newer cordon.
+- **Hidden interdependency:** dev's cite axioms (cited_watanabe_upper/lower) are tagged by DEV's
+  cordon's @[cited] attribute; keeping our newer cordon + dev's cite content needs re-tagging, or
+  the cite ACCOUNTING silently breaks (a cite → unaccounted / gate red). Not a text conflict — a
+  semantic one.
+- Plus the known 8 Core-module API drift (our RLCT imports vs dev's changed Core).
+DECISION: ABORTED the merge (restored clean a5d6a29d7) rather than force a resolution on an
+incomplete understanding and risk dropping the newer cordon / breaking the cite gate. This is the
+disposition working (careful; don't drop; observe-before-theorise; resist move-fast) — the preview
+UNDER-scoped the entanglement, and mid-merge discovery is exactly when to stop + re-plan, not push.
+RE-APPROACH (proposed to operator): the merge needs a RECONCILIATION-MAPPING pass FIRST (decorrelated
+scout + cartographer) — which cordon wins + why; how dev's cite content's @[cited] tags reconcile to
+the chosen cordon; the 8-Core-module drift surface — producing a per-component reconciliation plan, so
+the merge is a PLANNED execution, not discovery-as-you-go. This is the "come back to discuss" arriving
+during init because init revealed the reconciliation is a real sub-project. Tasks 36-41 hold behind it.
