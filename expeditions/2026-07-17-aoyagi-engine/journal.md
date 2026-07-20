@@ -5770,3 +5770,25 @@ not the payload. BANK HELD until the elder's prefix ruling; the re-base is a nea
 change to the validated defs. Q2b (the clearedOf frontier map — the M(0)-row ↔
 (layer,pivot) correspondence across rollovers) routed to t14 as a narrow next-pause
 question. The pin waits on exactly TWO items: elder prefix ruling + t14 frontier map.
+
+## 2026-07-20 tick 353: elder RATIFIED the prefix re-base (two unsoundnesses fixed); gate = two legs on the abstract battery
+The elder's correctness ruling: the catch is CORRECT (full-product cleared rows = b_i·(raw
+trailing row), diagonal only at the terminal, worked.tex:478-489); the prefix re-base is
+FAITHFUL and STRICTLY more correct on TWO counts — the cleared cells AND the residual read
+(the full product's residual region is contaminated by the trailing; only the prefix
+exposes her actual D_J, worked.tex:482 — so the a,b clearing reads were aimed at the wrong
+object too). Three-factor-MATRIX alternative REJECTED (the trailing is associativity, not
+content). THREE BINDING PRECISIONS relayed: the leaf lemma states prefix=prod via empty
+trailing; rollover is invariant-safe PRECISELY because cleared:=0 (raw rows come in
+un-constrained — the load-bearing dependency, docstring-mandated); prodPrefix = prodAux at
+the processed-layer count with the index pinned off the construction. GATE dispatched with
+the instrument corrected (the elder didn't know the battery is abstract): BOTH legs on the
+abstract battery at its nonempty-trailing intermediate state ((i) prefix cleared rows
+diagonal; (ii) full-product cleared rows NOT diagonal — one leg alone inconclusive) + the
+structural bridge to OUR construction (the chart-locality read: layer-S charts write only
+layer-≤S flat coords, cited lines). Leg-(i)-fails ⟹ STOP, three-factor-matrix fallback.
+CALIBRATION ENTRY 15 recorded (elder-directed): the miss's anatomy — every instrument that
+touched the ratified claim evaluated it at the degenerate boundary (empty trailing);
+statement gates now demand "name the state each verification ran at; if all coincide,
+demand one interior instance". MEANWHILE (task board): t14's Stage 1 (the (D)₁ amendment)
+and Stage 3 (the re-wire) are COMPLETE, Stage 4 in progress — the witness-swap is landing.
