@@ -5939,3 +5939,18 @@ the relocation plan execute-ready (threads/23-mint/mint-relocation-plan.md) incl
 staleness flags. Integration AxCheck gate running. mint-t19 PARKED as the relocation's
 executor at discharge. (3) pnp-cover stood down with honors — the hunt-cert form is now
 the house standard for coverage claims.
+
+## 2026-07-20 tick 362: t14 encore MERGED (gate PASS both sides); two crossings corrected
+t14's stage-4 gate passed on its branch (toChartBridge + region_glue clean-three;
+chartBridgeFaithful +sorryAx via the honest THREE owed; payoff footprints unchanged; 2b/2c
+added as AxCheck probes, clean-three; 0 errors) — encore merged (aa4a65ff9): the
+witness-swap amendment + GeoAtlasTransfer (2b/2c) + the re-wire + cordon rewording are now
+INTEGRATION state. A fresh combined gate will run once the in-flight mint gate returns
+(the mint gate's scope predates this merge — superseded as the final word, kept as the
+isolation check). TWO CROSSINGS corrected at t14: (1) the srcBox reversion is DECIDED (the
+gap cert), not an "if" — only the def shape pends; its 2b-rebank/2c-robust scoping
+confirmed correct. (2) clearedOf BEFORE 2d — the priority escalation re-pressed; loss-t15
+remains the expedition's only person-parked seat. Roster: mint-t19 parked (relocation
+executor), pnp-cover closed, navigator parked (Stage-3-join trigger = now arguably FIRING
+— the re-wire is merged; convene the navigator gate-verification pass after the combined
+gate greens), elder holds the def-shape ruling.
