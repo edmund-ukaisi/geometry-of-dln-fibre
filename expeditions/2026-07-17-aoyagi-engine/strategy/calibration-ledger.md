@@ -574,3 +574,27 @@ not a Jacobian one. (Ties to threads 18/19 W1/W3 which SAID the math needs the Q
 gap was Lean-implementation vs stated-math, undetected because the sensitive consumer came
 last.) Bounded fix (construction completion, conclusions survive, proofs redo) — but a real
 setback, named plainly.
+
+## Entry 20 (tick 392, 2026-07-20) — VINDICATION: the discipline caught a wrong-RLCT before it shipped green
+**The event.** Two nested structural findings (α gap → order kill) surfaced from the VALUE
+lane's concrete build, both invisible to the det/cover/image consumers. The order kill is the
+sharpest: the Lean tree (leaf-first) with even a completed α computes a genuinely WRONG RLCT
+(different b-chain — the Schur complements depend on Aoyagi's coupled root-first order,
+worked.tex:375-390). The DET lane is order-blind — geoAtlas_fold_det would have shipped GREEN,
+clean-three, over a wrong-RLCT spine. AxCheck would have passed. rev-jac's Jacobian fidelity
+PASS was real but det-scoped.
+**Why it was caught.** The value lane (loss-t15) reads the OBJECT (the RLCT via the loss
+lower bound), not a green light; and the decorrelated pnp seats (pnp-diag α gap, pnp-rg order
+kill) adjudicated the truth-values the det/image instruments were structurally blind to.
+**The lesson, now demonstrated not just asserted.** "A green build is necessary, never
+sufficient" (bedrock.md) and "coverage's cover is a universal claim requiring a decorrelated
+hunt, never an in-house witness" (compass) — these are not process ceremony; they are the
+ONLY instruments that could catch an order-dependent fidelity error under an order-blind
+headline. The controller's earlier calibration misses (15/16/19 — all "verified against the
+first/cheapest consumer, not the value-sensitive one") were the SAME class; entry 20 is the
+payoff of finally routing every fidelity claim through the value-sensitive consumer + the
+decorrelated hunt. A PROCESS SUCCESS: the fidelity error was caught before it shipped, at the
+cost of a bounded rework, not after a false "done."
+**Forward.** The fix is faithful-mandatory + bounded (re-thread root-first, elder-ruled);
+whether it lands this expedition is navigator-7's cost call (gated on t14's cocycle-flip
+mirror-vs-rebuild probe). Either way the corrected fold + value lane are the real deliverable.

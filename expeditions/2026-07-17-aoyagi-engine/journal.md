@@ -6505,3 +6505,26 @@ t14 HELD (don't build in the leaf-first frame). pnp-rg stood down with honors (3
 decorrelated backbone). Templates + ledger merged (02f3422fb, order-blind, survive). This is
 the honest inflection point — named plainly; the reachability judgment is the elder's + the
 navigator's to inform, the operator's if it turns on scope.
+
+## 2026-07-20 tick 392: elder RATIFIED — root-first fidelity-MANDATORY; RE-THREAD (not reorient); probe commissioned
+Elder ruling (page-verified, decisive): (a) root-first IS Aoyagi's genuine order
+(worked.tex:375-390 — layer S+1 absorbs Q'₂⁻¹ from the ≤S reduction BEFORE processing; the
+Schur complements C^{(s)} DEPEND on the coupled order ⟹ leaf-first = WRONG RLCT, not a
+relabeling; pnp-rg's exhaustive search is the concrete confirmation). Fidelity-MANDATORY —
+shipping leaf-first is not an option (ugly in the exact bedrock sense — unfaithful). (b)
+RE-THREAD (geoChartMapNorm ∘ acc), NOT reorient: re-thread is LOCAL to the geometric fold
+lane (ledger/oracle/tree/DivBirthInv page-pinned to increasing S, UNTOUCHED); reorient
+ripples that whole stack — rejected. (c) BOUNDED not a redesign (the construction bulk
+untouched; rework = re-thread the fold [mirror] + complete α root-first + the value lane
+[already the open frontier]); destination unchanged; closability = the navigator's COST call.
+TRIPWIRE: flip geoAtlas_cocycle FIRST as the probe — ledger-threading lemmas mirror
+mechanically (det monomial order-independent ∏) or fundamentally rebuild? RATIFIED. COMMISSIONED:
+t14 runs the cocycle-flip PROBE (scratch, measurement-only, mirror-vs-rebuild + effort);
+navigator-7 given the route + told to condition the reachability call on the probe outcome
+(mirror → plausibly this-expedition; rebuild → likely re-scope); loss-t15 works the prefix-
+DIRECTION design note under root-first (my read: ≤S stays the prefix, root-first ALIGNS the
+fold direction with the clearedOf frontier — the maintenance may SIMPLIFY). CALIBRATION 20
+(the VINDICATION, elder-named): the value lane + decorrelated pnp caught a wrong-RLCT before
+it shipped GREEN over an order-blind det headline — the "clean build necessary not sufficient
+/ decorrelated hunt is the gate" discipline WORKED, a process success. Compass owes a fork-15
+amendment (elder folds it when the route lands). pnp-rg stood down (3 certs = the backbone).
