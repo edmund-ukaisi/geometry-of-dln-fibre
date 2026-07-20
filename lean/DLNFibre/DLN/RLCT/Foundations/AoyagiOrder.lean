@@ -162,7 +162,8 @@ Lemma 5 counts the binding branch-vectors pinned between the two partial-sum env
 `H̃_j ↦ j − a` and `H̃'_j ↦ min(j, ℓ−a)`, and the region between them (over `j = 0,…,ℓ`) is a
 parallelogram of base `a` and height `ℓ−a` — `a(ℓ−a)` lattice cells; together with the single
 terminal branch this is `θ = a(ℓ−a)+1`. We record the cardinality identity on the equinumerous
-`a × (ℓ−a)` box.
+`a × (ℓ−a)` box. (The literal reduced band total `∑_{j=0}^{ℓ} (min(j, ℓ−a) − (j−a))` equals
+`a(ℓ−a)` as well — the box is the equinumerous, cleaner object.)
 
 SCOPE (post-spine follow-on): identifying this count with Aoyagi's actual resolution
 binding-branch multiplicity needs the Case-1(2) `J`-increment (resolution-tree bookkeeping), and
