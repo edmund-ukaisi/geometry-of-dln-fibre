@@ -5686,3 +5686,27 @@ obstruction is new. [5] zero-width(b): arithmetic DONE (Lambda:259), analytic co
 NEXT-EXPEDITION CENTRAL QUESTION (scout's rec): discharge cited_aoyagi_dln natively;
 highest-risk assumption = the real↔complex analytic-set bridge — adversarially test on a
 non-square r>0 instance at opening recon. Awaiting navigator-6 to combine into commissions.
+
+## 2026-07-20 tick 348: navigator pass #6 — THE MINT-DAG CATCH; R5 re-sequenced; two idle-capacity lines commissioned
+Navigator-6 delivered both charges disk-verified. THE HEADLINE (contradicts the R5 pin +
+calibration entry 5): the in-place mint is UNFILLABLE — Skeleton.lean imports only BGEngine
+(below the engine), so re-proving the canonical there via _gen + engine_box_threshold_finite
+is an import cycle. The mint is a RELOCATION: (i) prestage L≥2 arm → the engine route
+(HeadlineL1Mint:87, import EngineDriver, verified acyclic) — pre-stageable NOW
+sorry-tolerant; (ii) at discharge DELETE Skeleton:1680 + re-mint the canonical in
+HeadlineL1Mint; (iii) repoint aoyagi_rrr (RRR:93, the ONLY term-consumer, imported by
+nothing) via _L2 + rrrLambda_eq — upgrading it to clean-three; (iv) prune the 3 Skeleton
+rungs AFTER relocation (identified: deepest_regular_core_normal_form :1094,
+rlctAt_deepest_le_of_optimal :1140, resolution_charts :1197 — general-L, consumed only via
+the 5-rung route; fossils-in-waiting); (v) #guard_msgs (verified in-tree) on the relocated
+canonical. R5 re-sequenced in priorities.md. OTHER VERDICTS: Stage 3 = the real two-lane
+rendezvous (blocked on BOTH t14's transfers and t15's :562); consumer surface minimal
+(only EngineDriver imports EngineObligations); CanonicalWitness224 confirmed off-cone,
+discharge-gated; EngineObligations caveat stale (two→one); ShearReconcile ALREADY fixed;
+R4 confirmed NOT independent (genDivExp read at GeoFoldRegroup:666+ [t14's surface], bChain
+at GeoAlphaGauge:515 [t15's]) — discharge-gated; R7 independent but held post-spine per the
+compass guard; θ items fenced. HARD-PART-AVOIDANCE: both lanes clean; the one quiet
+route-around was the mint's mis-estimate — now surfaced and priced. ERRATUM: tick-338 wrote
+ChartBridgeFaithful:82; the disk is :92. COMMISSIONED: mint-t19 (task #8: arm rewrite
+sorry-tolerant + the relocation plan doc; hard no-touch list) + carto-standing respawned
+(task #9: the doc batch + standing wiring pass). Navigator parked until the Stage-3 join.
