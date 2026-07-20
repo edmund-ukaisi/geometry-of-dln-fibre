@@ -505,6 +505,30 @@ theorem ledgerMonomial_comp_spectator (M : Fin (L + 1) → ℕ) (s : ConState L)
     flatSwapCLE_apply_flat,
     Equiv.swap_apply_of_ne_of_ne (hspec k ⟨g.pivot, hp⟩).symm (hdt k)]
 
+/-- **The center-scale ledger step** (cert §3, case-1(2)): reads-based. If a chart `B` scales exactly
+one divisor `f`'s diagonal by `z_d` (`z_{bfc f}(B w) = z_d(w) · z_{bfc f}(w)` — the u-corner scaling,
+`geoChartMap_flat_center` + the swap) and fixes every other divisor's diagonal, then the incoming ledger
+pulls back with the split-off factor `|z_d(w)|^{divExp f − 1}` (the case-1(2) inheritance made local). -/
+theorem ledgerMonomial_center_of_reads (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (B : Params M → Params M) (w : Params M) (f : Fin s.numDiv) (d : Fin (flatDim M))
+    (hf : paramsEquivFlat M (B w) (birthFlatCoord M s f h)
+        = paramsEquivFlat M w d * paramsEquivFlat M w (birthFlatCoord M s f h))
+    (hspec : ∀ k : Fin s.numDiv, k ≠ f →
+        paramsEquivFlat M (B w) (birthFlatCoord M s k h)
+          = paramsEquivFlat M w (birthFlatCoord M s k h)) :
+    ledgerMonomial M s h (B w)
+      = |paramsEquivFlat M w d| ^ (s.divExp f - 1) * ledgerMonomial M s h w := by
+  rw [ledgerMonomial, ledgerMonomial,
+    ← Finset.mul_prod_erase Finset.univ
+      (fun k => |paramsEquivFlat M (B w) (birthFlatCoord M s k h)| ^ (s.divExp k - 1))
+      (Finset.mem_univ f),
+    ← Finset.mul_prod_erase Finset.univ
+      (fun k => |paramsEquivFlat M w (birthFlatCoord M s k h)| ^ (s.divExp k - 1))
+      (Finset.mem_univ f),
+    hf, abs_mul, mul_pow,
+    Finset.prod_congr rfl (fun k hk => by rw [hspec k (Finset.ne_of_mem_erase hk)])]
+  ring
+
 /-- **The weak no-stranded fact** (team-lead sharpening, pnp-fold adjudicating): a stranded (t̃ ≠ 0)
 divisor has exponent `1`, so its ledger factor `|z|^{1−1} = 1` is harmless. Threaded as an open
 hypothesis until pnp-fold's dichotomy (strong all-t̃=0 / this weak form / false-with-witness) returns. -/
@@ -547,41 +571,33 @@ defeq to `WeakNoStrand s`. -/
 def WeakNoStrandLeaf {L : ℕ} {M : Fin (L + 1) → ℕ} (l : LeafData M) : Prop :=
   ∀ k : Fin l.fullNumDiv, tildeOf (l.fullDivProfile k) ≠ 0 → l.fullDivExp k = 1
 
-/-- **The fold-Jacobian cocycle** (the WF walk, `Inv(acc, s)` threaded down `buildTree`). Given the
-incoming full-ledger invariant `|det D acc w| = ledgerMonomial s w`, `DivBirthInv M s`, and the weak
-no-stranded fact on the terminal leaves, every geometric atlas leaf of the subtree from `s` has the
-analytic headline determinant. The headline is the `s = conRoot`, `acc = id` instance. -/
+/-- **The fold-Jacobian cocycle** (the WF walk, `Inv(acc, s)` threaded down `buildTree`, FULL-LEDGER
+form — R7). Given the incoming invariant `|det D acc w| = ledgerMonomial s w` + `DivBirthInv M s`, every
+geometric atlas leaf `p` of the subtree from `s` has a full-divisor-coord map `fc` with
+`|det D p.chartMap w| = ∏_j |z_{fc j}(w)|^{p.fullDivExp j − 1}` — the R7 `LeafJacobian` identity conjunct
+(witness `fc := birthFlatCoord` over the leaf's terminal state). The headline is `s = conRoot`, `acc = id`
+(`ledgerMonomial_conRoot`). No `WeakNoStrand` — the full ledger is what the fold equals (dichotomy=FALSE). -/
 theorem geoAtlas_cocycle (h : 0 < flatDim M) :
     ∀ (s : ConState L), DivBirthInv M s →
-      (∀ l ∈ ResolutionTree.leaves (buildTree M (conOracle M) s), WeakNoStrandLeaf l) →
       ∀ (acc : Params M → Params M), Differentiable ℝ acc →
         (∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) →
-        ∀ p ∈ ResolutionTree.leaves (tGeo acc (buildTree M (conOracle M) s)), ∀ w,
-          |(fderiv ℝ p.chartMap w).det|
-            = ∏ k : Fin p.numDiv, |paramsEquivFlat M w (p.divCoord k)| ^ (p.divExp k - 1) := by
+        ∀ p ∈ ResolutionTree.leaves (tGeo acc (buildTree M (conOracle M) s)),
+          ∃ fc : Fin p.fullNumDiv → Fin (flatDim M), ∀ w,
+            |(fderiv ℝ p.chartMap w).det|
+              = ∏ j : Fin p.fullNumDiv, |paramsEquivFlat M w (fc j)| ^ (p.fullDivExp j - 1) := by
   intro s
   induction s using (conRel_wf M).induction with
   | _ s ih =>
-    intro inv hweak acc haccdiff haccdet p hp w
+    intro inv acc haccdiff haccdet p hp
     cases hoc : conOracle M s with
     | terminal l' hleaf =>
       have hbt : buildTree M (conOracle M) s = ResolutionTree.leaf (leafOfState M s) := by
         rw [buildTree_terminal M (conOracle M) s l' hleaf hoc, conOracle_terminal_leaf s hoc]
-      have hmem : leafOfState M s ∈ ResolutionTree.leaves (buildTree M (conOracle M) s) := by
-        rw [hbt]; exact List.mem_singleton.mpr rfl
-      have hws : WeakNoStrand s := by
-        intro k hk
-        have hwl := hweak (leafOfState M s) hmem
-        unfold WeakNoStrandLeaf at hwl
-        rw [leafOfState, dif_pos h] at hwl
-        exact hwl k hk
       rw [hbt, tGeo] at hp
       simp only [ResolutionTree.leaves, List.mem_singleton] at hp
       subst hp
-      show |(fderiv ℝ acc w).det|
-        = ∏ k : Fin (leafOfState M s).numDiv,
-            |paramsEquivFlat M w ((leafOfState M s).divCoord k)| ^ ((leafOfState M s).divExp k - 1)
-      rw [haccdet w, ← leafOfState_prod_eq_ledgerMonomial M s h w hws]
+      rw [leafOfState, dif_pos h]
+      exact ⟨fun j => birthFlatCoord M s j h, fun w => by rw [haccdet w, ledgerMonomial]⟩
     | step node children hnode hlayer hstep =>
       sorry
 
