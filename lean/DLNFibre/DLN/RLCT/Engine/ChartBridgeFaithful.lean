@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Engine.GeoCoverSpec
 import DLNFibre.DLN.RLCT.Engine.GeoLeafJacobian
 import DLNFibre.DLN.RLCT.Engine.GeoLeafLedger
 import DLNFibre.DLN.RLCT.Engine.GeoInjFold
+import DLNFibre.DLN.RLCT.Engine.GeoAtlasTransfer
 import DLNFibre.DLN.RLCT.Engine.NodesCNodeWalk
 
 /-!
@@ -14,12 +15,15 @@ in the import DAG, and `ChartBridge` is pinned low by `CanonicalResolution`/`Eng
 (D) lives here as a HIGH-level predicate plus a faithful discharge, and enters the payoff's proof
 CONE through the PROJECTION — strictly stronger than the old in-type form (undroppable).
 
-* `ChartBridgeFidelity M t atlas` — two-sided honesty. (1) `atlas = geoAtlas t`: the atlas IS the
-  gated geometric fan-out (each chart the `geoChartMapNorm` fold, `id` at `dCenterOfEdge = 0`
-  implicit through `fannedEdges`, `diagTargetOf`-relocated — false on a generic atlas). (2) every
-  internal node's center selector is the INTENDED one, `cNodeOf = realCNode` (blows up the
-  ledger-born coords, not the injectivity fallback — false on a non-faithful tree). Conjunct 2's
-  proof is the ALL-NODES LIFT (t09's `cNodeOf_eq_realCNode_of_conOracle`, Card-3 deferred item 2),
+* `ChartBridgeFidelity M t atlas` — two-sided honesty. (1) `atlas = geoAtlasNorm alphaGauge t`: the
+  atlas IS the α-normalized geometric fan-out (each chart the `geoChartMapNorm alphaGauge` fold — the
+  diagonal-placement permutation `S` AND the incidence Schur gauge `α`, Aoyagi's integration chart
+  reached only after the regular Q,P normalization; `id` at `dCenterOfEdge = 0` through
+  `fannedEdgesG`, `diagTargetOf`-relocated — false on a generic atlas). The α witness supersedes the
+  fork-15 id placeholder (atlas-seam ruling, compass fork 15 third amendment: `LeafPullback`-at-id is
+  false). (2) every internal node's center selector is the INTENDED one, `cNodeOf = realCNode` (blows
+  up the ledger-born coords, not the injectivity fallback — false on a non-faithful tree). Conjunct
+  2's proof is the ALL-NODES LIFT (t09's `cNodeOf_eq_realCNode_of_conOracle`, Card-3 deferred item 2),
   i.e. `nodes_cNode_eq_realCNode`.
 * `ChartBridgeFaithful M t` — `ChartBridge`'s `(A)∧(B)∧(C)` body over the SAME witnessing atlas,
   conjoined with `ChartBridgeFidelity`. `ChartBridgeFaithful.toChartBridge` projects it to
@@ -37,12 +41,13 @@ open MeasureTheory Set
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
 /-- **Clause (D) fidelity** (two-sided honesty; R-split high-level predicate). Conjunct 1 pins the
-atlas to the gated geometric fan-out `geoAtlas t` (false on a generic atlas); conjunct 2 is the
-all-nodes lift `cNodeOf = realCNode` (intended coords, not the fallback — false on a non-faithful
-tree). -/
+atlas to the α-normalized geometric fan-out `geoAtlasNorm alphaGauge t` — Aoyagi's integration chart
+(the diagonal-placement permutation composed with the incidence Schur gauge `α`), NOT the fork-15 id
+placeholder (atlas-seam ruling; false on a generic atlas). Conjunct 2 is the all-nodes lift
+`cNodeOf = realCNode` (intended coords, not the fallback — false on a non-faithful tree). -/
 def ChartBridgeFidelity (M : Fin (L + 1) → ℕ) (t : ResolutionTree M)
     (atlas : List (LeafData M)) : Prop :=
-  atlas = geoAtlas t ∧
+  atlas = geoAtlasNorm (alphaGauge (M := M)) t ∧
     (∀ n ∈ ResolutionTree.nodes t, ∀ hd : dCenterOfNode M n ≤ flatDim M,
         cNodeOf M n hd = realCNode M n hd)
 
@@ -71,31 +76,38 @@ theorem ChartBridgeFaithful.toChartBridge (t : ResolutionTree M)
     (h : ChartBridgeFaithful M t) : ChartBridge M t :=
   let ⟨atlas, hABC, _⟩ := h; ⟨atlas, hABC⟩
 
-/-- **The faithful discharge over the built tree** (the R-split gate object). (A) cover is
-`geoAtlas_imageCover` (green, t10); clause (D) is fully PROVEN — conjunct 1 is `rfl`, conjunct 2 is
-the all-nodes lift `nodes_cNode_eq_realCNode`. The remaining ingredient is the `(B)∧(C)` per-piece
-props/exponents over `geoAtlas` (the two frontier sorries): the ledger props + exponents via a
-`geoAtlas`-leaf↔ledger bridge, a.e.-injectivity + `LeafPullback` (geometric), and `LeafJacobian` =
-t14's `geoAtlas_fold_det`. `hMpos` is threaded (the `(B)∧(C)` fill needs positive widths, as
-`o5_realization`/the cover do); currently unused by the proven `(A)`/(D) parts.
+/-- **The faithful discharge over the built tree** (the R-split gate object), over the α-normalized
+atlas `geoAtlasNorm alphaGauge` (atlas-seam ruling — Aoyagi's integration chart). Clause (D) is fully
+PROVEN — conjunct 1 is `rfl` (the witness IS `geoAtlasNorm alphaGauge (buildTree …)`), conjunct 2 is
+the all-nodes lift `nodes_cNode_eq_realCNode`. The `(B)`/`(C)` props transfer to the α atlas
+(`GeoAtlasTransfer`): ledger props + exponents (`geoAtlasNorm_leaf_ledgerProps`, verbatim from the
+original leaf — the α gauge touches only `chartMap`), a.e.-injectivity (`geoAtlasNorm_leaf_ae_injOn`, α
+an injective QMP homeomorph), `LeafPullback` = loss-t15's `leafPullback_geoAtlasNorm` (its `sorry` is
+`leafDiagFrob_geoAtlasNorm`). TWO transfer-owed frontiers: clause (A) `geoAtlasNorm_imageCover` (cover
+open-homeo route, SURFACED) and `LeafJacobian` = `geoAtlasNorm_leaf_leafJacobian` (gauge-generalized
+cocycle, pending elder counter-sign). `hMpos` is threaded for `LeafJacobian`'s positive-width need.
 `chartBridge_buildTree` is its `toChartBridge` projection, so (D) is on the payoff's proof cone. -/
 theorem chartBridgeFaithful_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L)
     (_hMpos : ∀ i, 0 < M i) :
     ChartBridgeFaithful M (buildTree M (conOracle M) (conRoot : ConState L)) :=
-  ⟨geoAtlas (buildTree M (conOracle M) conRoot),
-    ⟨geoAtlas_imageCover (buildTree M (conOracle M) conRoot) conRoot rfl,
-      -- (B) per-piece props: the 5 ledger props from the bridge (`geoAtlas_leaf_ledgerProps`) + the
-      -- a.e.-injectivity clause (`geoAtlas_leaf_ae_injOn`, `GeoInjFold`); the 2 remaining geometric
-      -- props are `LeafPullback` (loss-seat's α gauge) and `LeafJacobian` (t14's fold bundle).
+  ⟨geoAtlasNorm (alphaGauge (M := M)) (buildTree M (conOracle M) conRoot),
+    ⟨geoAtlasNorm_imageCover (buildTree M (conOracle M) conRoot) conRoot rfl,
+      -- (B) per-piece props over the α atlas: the 5 ledger props (`geoAtlasNorm_leaf_ledgerProps`) +
+      -- a.e.-injectivity (`geoAtlasNorm_leaf_ae_injOn`); `LeafPullback` = loss-t15's
+      -- `leafPullback_geoAtlasNorm` DIRECTLY (same atlas — membership definitional); `LeafJacobian` =
+      -- the α-atlas transfer `geoAtlasNorm_leaf_leafJacobian`.
       (fun c hc =>
-        let ⟨hmeas, hbdd, hdiv, hres, hdisj, _, _⟩ := geoAtlas_leaf_ledgerProps c hc
-        ⟨hmeas, hbdd, hdiv, hres, hdisj, geoAtlas_leaf_ae_injOn c hc, sorry,
-          geoAtlas_leaf_leafJacobian (flatDim_pos_of_append _hL
+        let ⟨hmeas, hbdd, hdiv, hres, hdisj, _, _⟩ :=
+          geoAtlasNorm_leaf_ledgerProps (alphaGauge (M := M)) c hc
+        ⟨hmeas, hbdd, hdiv, hres, hdisj, geoAtlasNorm_leaf_ae_injOn c hc,
+          leafPullback_geoAtlasNorm c hc,
+          geoAtlasNorm_leaf_leafJacobian (flatDim_pos_of_append _hL
             (show (0 : ℕ) < widthMinUpto M (0 + 1) by
               rw [widthMinUpto, Finset.lt_inf'_iff]; exact fun i _ => _hMpos i)) c hc⟩),
-      -- (C) exponent agreement — from the bridge:
+      -- (C) exponent agreement — from the α-atlas ledger transfer:
       (fun c hc =>
-        let ⟨_, _, _, _, _, hexpDiv, hexpRes⟩ := geoAtlas_leaf_ledgerProps c hc
+        let ⟨_, _, _, _, _, hexpDiv, hexpRes⟩ :=
+          geoAtlasNorm_leaf_ledgerProps (alphaGauge (M := M)) c hc
         ⟨hexpDiv, hexpRes⟩)⟩,
     rfl,
     nodes_cNode_eq_realCNode conRoot DivBirthInv_conRoot⟩
