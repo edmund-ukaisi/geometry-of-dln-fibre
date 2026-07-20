@@ -260,3 +260,47 @@ bmon = clearing-level indexing confirmed. Team-lead gate verdicts + the resolved
 Bank order (one unit, on elder one-liner + clearedOf): InvValC + bmonOf + clearedOf + vacuous base → then
 the four maintenance greens → then the walk instantiation (mirrors geoAtlas_cocycle over tGeoG alphaGauge,
 using the banked mem_edgesLeaves_fannedG_{charted,chartless}).
+
+---
+
+## RESOLUTION 2 2026-07-20 (elder STAMP + prefix re-base + width-drop three-state)
+
+The elder RATIFIED the prefix re-base (my intermediate-state catch confirmed correct — it fixes TWO
+unsoundnesses: the full-prod cleared rows AND the residual a,b reads are both contaminated by the raw
+trailing factor). Gate passed: battery/prefix_rebase_gate.py (leg i prefix cleared rows diagonal; leg ii
+full cleared rows NOT diagonal) + the cited chart-locality bridge. reset-vs-accumulate crux = THREE
+objects: (1) clearedOf-as-COUNT resets per layer (worked.tex:486); (2) bmon ACCUMULATES (worked.tex:484,
+b_i^{(S+1)} = b_i^{(S)}·new-u); (3) leaf diagonal = the FINAL layer's complete clearing. Cleared rows sit
+in the shared TOP sub-frame (M(0)-row i = M(S)-frame row i for i ≤ J) — no reindex.
+
+- **PREFIX re-base:** InvVal reads prodPrefix s (acc w) = prodAux M (acc w) (prefixCol s), the front
+  block diag(b)·[[E_J,O],[O,D_J]], NOT the full prod. Validated: prefixColFin/prodPrefix/InvVal
+  (dependent j : Fin (M (prefixCol s))) elaborate; leaf lemma (prefix=full at terminal ⟹ prodPrefix=prod)
+  technique = generalize the index to a var → subst → rfl (validated). prefixCol pinned off prodAux's
+  recursion (candidate min (s.layer+1) L; exact form couples with clearedOf — t14).
+
+- **WIDTH-DROP → THREE-STATE (elder binding pre-bank, battery/width_drop_leg.py exit-0):** at (3,2,3)
+  running_min=2, rank(prod)=2, row 2 is a DROPPED zero row but bmon there = u0·u1·u2 ≠ 0. So the M(last)
+  cutoff would count a nonzero bmon at a zero row ⟹ InvVal FALSE there unless row 2 is DROPPED. The row
+  classification is THREE-STATE (validated builds):
+    def InvVal3 (cleared dropped : ConState L → Fin (M 0) → Prop) [Dec×2] (bmon) (acc) (s) :=
+      ∀ w i j, (cleared s i → prodPrefix … i j = if (i:ℕ)=(j:ℕ) then bmon s w i else 0)
+             ∧ (dropped s i → prodPrefix … i j = 0)
+  CLEARED (bmon, count resets per layer) / DROPPED (0, i ≥ running-min, accumulates never un-drops) /
+  UNRESOLVED (exposed). cleared ⟂ dropped.
+
+- **Amended leaf discharge (VALIDATED, SUPERSEDES the banked two-state leafDiagFrob_of_invVal_leaf):**
+  dvec := (if cleared s_leaf i then bmon s_leaf w i else 0); dropped rows give dvec=0 so the M(last)
+  cutoff's extra terms vanish (frobSq_of_diagonal untouched). Hyps: hcov (∀ i, cleared ∨ dropped — holds
+  at a monomialized leaf where resolvedCount = running-min), hdisj (dropped → ¬cleared). Composes with the
+  proven leafDiagFrob_of_prodDiag.
+
+- **Concrete cleared/dropped (needs t14's TWO-COMPONENT clearedOf):**
+  cleared s i := (i:ℕ) < resolvedCount s (running total ≤ running-min; count resets per layer, rows
+  accumulate); dropped s i := (i:ℕ) ≥ widthMinUpto M (<index for s>) (rank ceiling; widthMinUpto exists
+  in EngineConstruction). At a leaf resolvedCount = running-min ⟹ hcov + hdisj hold.
+
+**Bank waits on exactly t14's two-component clearedOf** (cleared count/frontier + dropped threshold +
+the exact widthMinUpto index). Elder stamp + width-drop leg in hand. All components validated: InvVal3,
+bmonOf(≤), amended leaf discharge, prodPrefix (shape + leaf-lemma technique), vacuous base,
+tGeoG fan-decomposition (banked). Then: bank the unit → four maintenance greens → walk instantiation.
