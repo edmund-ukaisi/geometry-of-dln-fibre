@@ -486,3 +486,10 @@ of 2b/2c; zero wasted cover-grind.
 obligations each side carries (grep the design clause's WHY — fork 15 stated it) and check
 who consumes them. A deviation that "only" changes a definition can silently drop an
 invariant another clause was designed to provide.
+**Entry 16 addendum (tick 363, elder-directed multi-party record).** The same deviation
+defeated TWO independent ratifications: the controller's tick-341 keep-cube AND the elder's
+charge-2 open-homeo/shrunken-U' — neither instrument caught the dropped image-invariance
+obligation; the DECORRELATED HUNT did. The compass counsel (coverage's cover = a universal
+claim; the gate reads a decorrelated hunt, never an in-house witness) is not redundancy —
+it is the only instrument class that fired. Corollary now applied forward: the collection
+lemma's gate refuses the shallow (2,2,2)/single-α confirmation for the same reason.

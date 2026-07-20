@@ -5954,3 +5954,21 @@ remains the expedition's only person-parked seat. Roster: mint-t19 parked (reloc
 executor), pnp-cover closed, navigator parked (Stage-3-join trigger = now arguably FIRING
 — the re-wire is merged; convene the navigator gate-verification pass after the combined
 gate greens), elder holds the def-shape ruling.
+
+## 2026-07-20 tick 363: def shape RULED — thread gAcc; the COLLECTION LEMMA is the new content; pnp-collect dispatched
+Elder ratified the reversion (fork-15's original clause restored; multi-party calibration
+addendum recorded — BOTH ratifying instruments missed the same drop; only the decorrelated
+hunt fired). THE DEF: tGeoG threads a second accumulator gAcc (per edge gAcc ∘ alphaGauge
+g); srcBox_leaf := gAcc⁻¹(cube). Clause (A) then reduces to the trivial id-cover transfer
+VIA the COLLECTION LEMMA — chartMap_α,leaf = chartMap_id,leaf ∘ gAcc (interleaved α's
+collect to one inner composite) — which holds iff disjoint support survives the blow-up
+interleaving (freshness EXTENDED from the ledger to the full geometric support). The
+(2,2,2) confirmation is single-α — REFUSED as the gate (the exact shallow-instance
+confound that masked the srcBox gap). PNP-COLLECT dispatched: hunt two α's overlapping
+through a β (the case-1 u-corner's earlier-layer read = prime kill candidate) at the
+minimal M with ≥2 interleaved nontrivial α's; if NO reachable M has them, prove THAT
+structural claim (stronger verdict). Verify-once-use-twice: the same disjointness
+precondition feeds t14's 2d reads-based bundle — coordinated. RE-OPEN SET cited to t14
+(2b srcBox-line-only; 2c domain via gAcc-homeomorphism + inverse-shear bound; 2d
+unaffected-pointwise; resRank trivial; loss-t15 bounds-only). t14's def commit GATED on
+the pnp verdict; its order stands: clearedOf FIRST.
