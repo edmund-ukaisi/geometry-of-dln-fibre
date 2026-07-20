@@ -659,3 +659,16 @@ Mathlib-absent, + ⟨∏C⟩=⟨b_i⟩ + monomial RLCT). Recorded in-repo (autho
 memory is superseded (not edited, per policy). The runway-target kill-condition PREDICTED this
 ("lower bound needs singular structure; smooth/chart gives only upper") — confirmed, then the
 LOCATION corrected from chart-coverage to ideal.
+
+**CORRECTION (same tick, elder self-corrected).** "Runway OVERTURNED / lower bound is ideal
+NOT coverage" is TOO STRONG — the elder over-corrected in its #3 message and retracted. The
+accurate reframe: the cover/resolution is KEPT (the structural half — the current leaf-first
+tree IS the resolution, monomializing to the b_i); Lemma 1 (ideal domination) is the NEW half
+that the chart-diagonalization was a category-wrong stand-in for. So the runway is EXTENDED,
+not overturned: cover-kept + Lemma-1-added + divisibility-chain-toric-trivial (no extra
+blow-ups). And the honest bank conditions on the ABSTRACT hbox (satisfiable via Lemma 1), NOT
+a chart-CoV ChartBridge — pnp-full's no-go is GOAL-level, so chart-CoV LeafPullback is refuted
+for ALL charts, making any chart-CoV-conditioned bank vacuous (the vacuity sits one level above
+where navigator first placed it). Meta-note: I propagated the elder's over-correction into this
+entry before it retracted — a reminder to mark office rulings provisional until the office
+confirms, especially mid-reckoning.

@@ -6812,3 +6812,27 @@ target structure); follow-up = a RESEARCH expedition on the ideal-RLCT lower bou
 22 (the vacuity catch + ideal resolution + runway reframe). Compass amendment owed (elder
 drafting: category finding + runway reframe + fork-15 closure). Convene navigator #9 at the
 elder's mechanism ruling → the follow-up's opening brief. pnp-full stood down (4 certs).
+
+## 2026-07-20 tick 407: honest-bank precision (condition on ABSTRACT hbox, not chart-CoV) + mechanism adopted (cover KEPT)
+navigator-7 verified (verify-before-relying closed): the GENERIC engine already exists —
+region_glue_of_chartBridge (RegionGlueAssembly:84) takes (t, hbridge : ChartBridge) as
+HYPOTHESES; the chain ChartBridge→finiteness→mint→aoyagi is already parametric. The REFUTED
+link is coverage_theorem (EngineObligations:138-140 = ChartBridge M (resolutionOf...), the
+specific-atlas discharge via resolutionOf_spec) — NOT the engine. Elder delivered the
+MECHANISM (a): a 3-part composite — (1) resolution/cover KEPT (the current tree IS the
+resolution, monomializes to b_i), (2) LEMMA 1 ideal DOMINATION [NEW workhorse: ∑prod² ≍ ∑b_i²
+via ⟨prod_ij⟩=⟨b_i⟩; replaces chart-diagonalization; worked.tex:153-158], (3) divisibility-chain
+→ rlct(∑b_i²)=½·min M_{s,k} [banked S1 monomial finiteness]. TORIC-TRIVIAL, NO extra blow-ups.
+Elder SELF-CORRECTED its #3 "cover moot" → cover KEPT (my original instinct right); runway
+EXTENDED not overturned (cover-kept structural half + Lemma-1 new half). PRECISION I added:
+pnp-full's no-go is GOAL-level ⟹ chart-CoV LeafPullback refuted for ALL charts ⟹ conditioning
+on ANY chart-CoV ChartBridge (incl navigator's `ChartBridge M (resolutionOf M)`) is VACUOUS.
+So the honest hypothesis must be the ABSTRACT hbox (RouteMBoxThresholdFinite, discharge-agnostic,
+satisfiable via Lemma 1) — likely aoyagi_learning_coefficient_gen ALREADY IS the honest
+deliverable, making the chartBridgeFaithful-spine DELETABLE. Sent mint-t19 (condition on hbox,
+check _gen suffices, satisfiability is the gate) + elder (confirm hbox is the faithful abstract
+hypothesis + does _gen-on-hbox give the VALUE). Corrected calibration 22's over-stated
+"overturned" → "extended, cover kept" (propagated the elder's since-retracted over-correction —
+noted: mark office rulings provisional mid-reckoning). Follow-up central piece = Lemma 1 over the
+banked resolution. Compass amendment owed (elder drafting). navigator #9 prices the follow-up
+at the honest-hypothesis confirm.
