@@ -5710,3 +5710,21 @@ route-around was the mint's mis-estimate — now surfaced and priced. ERRATUM: t
 ChartBridgeFaithful:82; the disk is :92. COMMISSIONED: mint-t19 (task #8: arm rewrite
 sorry-tolerant + the relocation plan doc; hard no-touch list) + carto-standing respawned
 (task #9: the doc batch + standing wiring pass). Navigator parked until the Stage-3 join.
+
+## 2026-07-20 tick 349: payload gate round 2 — the fold-tie catch; option C approved; frontier = the real gap
+loss-t15's concrete pin surfaced the statement-level finish: (Q1) ruling (B) ITSELF makes a
+ledger-typed resid field impossible (D_J = prod ∘ fold, not a function of s — the fold-tie),
+so the "carried field" realizes as EXPOSED VALUES: InvValC constrains cleared cells only
+(diagonal = bmon), un-resolved cells stay readable as prod M (acc w) — the elder's
+"exposed to read a,b" precision made literal. Bonus: the conRoot base becomes VACUOUS
+(nothing cleared), dissolving the base-touches-resid blocker; the leaf discharge composes
+unchanged (validated). APPROVED with the ratified tripwire (first clearing case walls ⟹
+fall back to resid := prod ∘ foldToState); elder fast-confirm riding in parallel — the
+banked-unit commit gates on it. (Q2a) bmon convention PINNED: R4-cert canonical form
+(1-based chain index, strict <; position p ↔ index p+1 ⟹ filter divTilde ≤ p);
+loss-t15's draft flagged ONE SHORT under the pin — the battery arbitrates numerically at
+two M's before commit. (Q2b) clearedOf (the cross-layer diagonal frontier — s.cleared
+resets at rollover; resolved stays resolved) is THE remaining gap: derive from the
+battery's own PART-C state-trace model, test running-total vs divTilde-count shapes
+ledger-wise; narrow residual to t14 via me if the lift isn't clean. Four-case grind stays
+gated on the frontier addendum (a wrong model poisons all four cases).
