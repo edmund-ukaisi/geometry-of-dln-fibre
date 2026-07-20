@@ -5862,3 +5862,20 @@ cover is NOT banked as a "transfer" — the elder's line, adopted. t14 directed:
 cover route; 2a stays an owed sorry through its stage-4 gate with honest three-source
 AxCheck expectations. Meanwhile the task board shows loss-t15's battery legs (#16) and the
 clearedOf extraction (#11) COMPLETED — its bundle report expected next.
+
+## 2026-07-20 tick 358: THE GATE PASSES — both battery legs exact; the re-base is empirically + structurally grounded
+loss-t15's bundle: at an intermediate state (M(S)=3, J=2, nonempty raw trailing), LEG (i)
+prefix cleared rows exactly diagonal; LEG (ii) full-product cleared-row off-diagonals all
+nonzero with the contamination EXACTLY b_i·(raw trailing entry) — the falsity and the fix
+both witnessed, sympy-exact, banked (battery/prefix_rebase_gate.py, 9d1a996c1); the
+structural bridge cited in the battery comments. Three precisions accepted verbatim.
+Relayed to the elder for the STAMP. THE ONE REMAINING STATEMENT-LEVEL CRUX (loss-t15's
+coupling catch, routed to the elder as paper-semantics + t14 as ledger-form):
+RESET-vs-ACCUMULATE — prodPrefix_{S+1} = prodPrefix_S·C^{(S+1)} contaminates earlier-layer
+cleared rows with raw C rows, so either the new layer's Q,P RE-diagonalizes them (clearedOf
+resets; the b-recursion b^{(S+1)} = u·b^{(S)} reading as exactly this re-clearing; the leaf's
+full diagonal from the final layer's complete pass) or clearedOf accumulates — plus the
+frame question (the battery's M(S)-frame vs the Lean prod's M(0) rows). Gates the four-case
+grind ONLY; the stamp/re-base are leg-independent of it. loss-t15 idle = legitimate park on
+stamp + clearedOf (both in flight). Board: t14's stage-4 gate compiling; mint-t19 mid-arm;
+pnp-cover hunting.
