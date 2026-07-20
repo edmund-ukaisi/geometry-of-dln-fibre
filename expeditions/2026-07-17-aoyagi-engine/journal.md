@@ -7370,3 +7370,28 @@ VERDICT is green, just slow. FOLLOW-UP (scoped, not in-context): profile which c
 prune/optimize the full-graph walks (collectAxiomsBatch, scopedDecls) at the first-party boundary, as the
 blueprint walk now is. REMAINING push-gate = lr-survival reviewer (does dev's L&R geometry survive the
 merge, clean) — running; push held for its verdict.
+
+## 2026-07-20 tick 432+: lr-survival SURVIVE-CLEAN → merge pushed; cordon LEANER-REFACTOR integrated + verified
+lr-survival verdict = SURVIVE-CLEAN (47 L&R/Core results clean-three, census 25 no-growth, reachability
+confirmed); dev-merge integration pushed to origin (5f0700e27). Then operator-driven cordon REDESIGN
+(diagnose-first): the whole-env `cordon-audit` executable was (a) pathologically slow (>8min Mathlib-wide
+walk) and (b) LATENTLY OVER-STRICT for expedition mode (its Check-1 audited every imported decl w/o
+excluding sorried skeletons → would red on an imported @[blueprint] hole). Replaced with a CONE-CORRECT
+per-root design: `#assert_banked_clean` (auditDecl native collectAxioms + bounded blueprintDepsOf, asserts
+per root) wired into AxCheck over 314 clean roots (5 live-frontier-sorry roots kept as informational
+#print axioms + TRACKED-OPEN); source-grep `scripts/cordon` (cite LOCATION/TAG + native_decide ban +
+blueprint census); DELETED collectAxiomsBatch/collectBlueprintBatch + Meta/CordonAudit.lean +
+scripts/CordonGate.lean + the cordon-audit exe. Delegated to formaliser cordon-lean (isolated worktree),
+FF-integrated commit 408ace6b4. CONTROLLER GROUND-TRUTH VERIFY (not trusting the teammate green): Tier-1
+seams clean (0 live refs to deleted symbols); partition EXACT (314 assert / 5 informational = the recon
+set, no masking); Tier-3 gate SOUND (genuinely throws, not vacuous; 2 non-blocking grep follow-ups →
+task #45); Tier-2 authoritative ROOT build GREEN (8958 jobs, 0 error) with all 4 deliverables FORMALISED
+(clean-three) + 5 dirty roots as expected + 0 assertions fired. TIMING: full root build 12m16s
+(AxCheck-dominated); grep 1.5s; steady-state cache-hit ≈ 0 marginal.
+CALIBRATION MISS (own it): I told the operator "7s baseline, gate near-free" — that 7s was a CACHED
+DIAGNOSTIC REPLAY, not real elaboration; real AxCheck re-elab = ~12.4min (collectAxioms 2-4s × 314
+per-root). NOT a regression (old #print axioms did the same); net build-time ≈ 0 + deletes the 8min exe.
+The 12min is per-root REDUNDANCY → a cone-correct BATCHED axiom walk would cut it to ~20s (task #44,
+OPTIONAL, awaiting operator nod). SHELL FALSE-ALARM: the bg build task reported "exit 1" purely because
+its last cmd `grep -c 'error:'` returns 1 on ZERO matches — build was green; never put `grep -c` last in
+a chain whose exit code matters (sharper form of the memo's grep-exit-code guard).
