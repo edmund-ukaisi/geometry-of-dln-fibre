@@ -10,8 +10,10 @@ Feeds the navigator's parallelization pricing. Steer: consume pnp-rg's achiever 
 pnp-diag (`cert-exactly-diagonal-mechanism.md`) proved `alphaGauge = residualSchurShear` is
 interior-Schur only: it does `interior ↦ interior − b·a` but leaves the pivot cross `(a,b)`, so
 `prod ∘ chartMap` is NOT diagonal at a leaf and `residualCore` hits 0 (LeafPullback lower bound
-FALSE). The fix completes α to Aoyagi's full Q,P: **pivot-column clear (Lg, ≤S-local, cross-cell —
-NOT a within-node `schurCells` addition, confirmed `battery/lg_form_specify.py`)** + **pivot-row clear
+FALSE). The fix completes α to Aoyagi's full Q,P: **pivot-column clear (Lg, LAYER-S-local — cells
+`i>c, j≥c` per pnp-rg #24; cross-cell beyond the normalized 2×2 block but NOT cross-node/S−1: my
+SPECIFY `lg_form_specify.py` was right that it's cross-cell but over-read the destination as ≤S/S−1 —
+the achiever rules it layer-S, vindicating the original "within layer S" framing)** + **pivot-row clear
 (Rg, cross-layer into S+1)**. Acceptance criterion (my consumer spec, team-lead-accepted): each
 normalized block becomes `[[1,0],[0,ρ]]`, so `prod = diag` and `residualCore = 1 + Σρ² ≥ 1`. The
 **acceptance oracle** is my own `battery/clearedof_walk_trace.py`'s `clear_pivot` (encodes the full
@@ -20,7 +22,7 @@ row+col reduction incl. genuinely-zero dropped rows); the corrected α must matc
 ## The change, in one line
 
 `residualSchurShear node rows cols` (a foldr of interior `flatElemShear`s over `schurCells`) gains two
-more families of cells: the Lg pivot-column cells (writing ≤S / output-side coords) and the Rg
+more families of cells: the Lg pivot-column cells (writing LAYER-S coords, `i>c, j≥c`) and the Rg
 pivot-row cells (writing layer-S+1 coords). The cross cells become **written** targets, not read-only
 sources — which is what flips the independence lemmas.
 

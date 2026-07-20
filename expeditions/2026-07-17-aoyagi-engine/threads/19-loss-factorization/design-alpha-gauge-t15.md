@@ -146,13 +146,17 @@ add to `schurCells`") NOW, with **Rg** (pivot-row, cross-layer into S+1) HELD fo
   `[[1,0],[0,ρ]]`** so the product is diagonal with a surviving `(0,0)=1`.
 
 **Consequence for the build.** The "same-layer analog of the interior Schur, add to `schurCells`"
-framing is imprecise: Lg is a cross-node shear into the *output-side / ≤S* region (structurally like
-Rg but toward ≤S rather than S+1, so it stays ≤S-local and does NOT break the S/S+1 interface — the
-locality-preservation team-lead/elder asserted). Its exact target cells (layer-S vs layer-S−1, and
-the det-1 realization) are entangled with the achiever chart and must be **co-derived with Rg** for
-consistency — this is pnp-rg's task #23 (build completed-α, confirm leaf diagonal). Building Lg blind
-risks a wrong det-1 realization, a wrong layer (breaking locality), or Lg/Rg inconsistency. Plan:
-consume #23's achiever for the exact Lg cells, then build (Lean scaffolding ready — `flatElemShear`
+framing needed the layer settled: Lg is cross-cell (beyond the normalized 2×2 block) — CHECK A's
+within-block irreducibility is right. **UPDATE (pnp-rg #24 achiever ruling): Lg is LAYER-S-local —
+cells `i>c, j≥c`, all on the node's own layer S, NOT cross-node to S−1 (my earlier "cross-node into
+the ≤S/output-side region" over-read the destination). This vindicates the original "within layer S"
+framing and is cleaner for locality (layer-S ⊂ ≤S, so the `schurCells_fst_ne_birthFlatCoord` Lg
+disjointness stays ≤S-clean and re-provable).** The one open wrinkle is Lg's DIV-FREE det-1
+realization (pnp-full item #3): my `foldFlatElemShear_abs_det_one` template assumes each cell is a
+`flatElemShear` transvection (`a≠b, a≠c`); if the layer-S pivot-column clear is not a clean
+transvection (the corner-normalization self-reference CHECK A flagged), it needs a companion det-1
+atom — pnp-full is checking exactly this. Plan: consume #24's achiever for the exact Lg cells, then
+build (Lean scaffolding ready — `flatElemShear`
 atom, `foldrCompAbsDet` det-1 template, the `schurCells`/fold pattern). Form-independent prep
 available meanwhile: the consumer-rebuild ledger (`schurCells_snd_ne` + `elemShearFold_*`
 independence go FALSE; det-1/srcBox proofs redo; walk-t20 `alphaGauge_ledgerMonomial_neutral` deps).
