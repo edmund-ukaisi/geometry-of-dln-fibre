@@ -5371,3 +5371,17 @@ Stage-1 merged (dea4d487d) + probed clean-three: the fresh-divisor diagonal cohe
 boundary passed on schedule. t14 already into stage 2 (the module at 44.9k, touched this
 minute); theta-t18 in Lambda.lean (lane 4's collapse). No stalls, no rulings owed. The
 walk's remaining stages: the 4-case maintenance → the fannedEdges walk → the ∃-discharge.
+
+## 2026-07-20 tick 333: theta-t18's BOTH LANES delivered — Aoyagi's order has honest content; the zero-width collapse banked
+Merged (305cd9341) + probed: the Lemma-3 tie block (Aval_sub_min at [propext, Quot.sound] —
+leaner than clean-three), the scoped envelope-band identity aoyagiTheta_eq_orderBox_card_succ
+(θ = |a×(ℓ−a) box| + 1, docstring-scoped per the charge-9 teeth, the non-identity guard in
+the module docstring, ground-truth #guards θ(2,2)=1/(2,1)=2/(3,1)=3/(4,2)=5), the selector +
+a-convention well-definedness, AND lane 4's lambdaCore_eq_zero_of_exists_width_zero + the
+corollary (at a zero reduced width, λ = the regular Morse block alone — the singular core
+drops). The bare aoyagiTheta def has CONTENT for the first time since the excision.
+STRENGTHENINGS ruled: the lane-4 IFF taken (the optional-stretch condition met; characterized
+over asserted); the literal band-sum declined (the box form is the cleaner object; one
+equinumerosity docstring line). On the iff + t18's full-lib gate: the seat closes. Build-list
+items 3/4/6 DONE, item 2's rung DONE (delivery = #69 post-spine), item 5 deferred-by-plan.
+The independent-lane fan-out is nearly fully harvested in under three hours.
