@@ -18,7 +18,7 @@ i.e. inverting the deep pivot minor `detΔ = ΔPdeep d r` over the chart-closure
 `O(Σ^r) = sweepSigmaRing` does not drop the Krull dimension.
 
 Discharged via the LANDED reducible-ring no-drop
-`Core.AffineLocalizationNoDrop.ringKrullDim_localizationAway_eq_of_avoids_top_prime` at the prime
+`Core.Dimension.ringKrullDim_localizationAway_eq_of_avoids_top_prime` at the prime
 `p₀ = P / I_eq` of `O(Σ^r)`, where:
 
 - `P = partitionIdeal d r m₀` for a *minimising* Kostant partition `m₀` — a corner-`r` top minimal
@@ -43,7 +43,7 @@ No global rank-raising / density theorem, no `I_eq = I_le` ideal equality.
 
 namespace DLNFibre.Core
 
-open Matrix MvPolynomial Ideal
+open Matrix MvPolynomial Ideal Dimension
 
 universe u
 
@@ -130,7 +130,7 @@ over the chart-closure coordinate ring `O(Σ^r) = sweepSigmaRing` does not drop 
 
 The exact source no-drop that `Core.ChartSweepWiring.sweep_of_localizedChartAlgEquiv` consumes,
 anchored on the rank-exactly-`r` ring (no wrapper restate). -/
-theorem ringKrullDim_localizationAway_chartDsig_eq [IsAlgClosed k] [CharZero k]
+theorem ringKrullDim_localizationAway_chartDsig_eq [CharZero k] [Infinite k]
     (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1))

@@ -72,7 +72,7 @@ hypothesis-tag token, the harness-root + paper-source paths, one or two domain e
 
 ## 5. git
 `git init`; working branch `dev`; add your `origin` remote. Do not push without an explicit instruction
-(the operator performs merges and the `dev → master` promotion).
+(the operator performs merges and the `dev → main` promotion).
 
 ## 6. Verify (the green gate for the scaffold)
 - `cd lean && source ~/.elan/env && lake exe cache get && lake build` → green (stubs compile).

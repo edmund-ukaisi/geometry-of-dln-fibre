@@ -2,7 +2,7 @@ import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.DeterminantalStratumDim
 import DLNFibre.Core.FibreCodim
 import DLNFibre.Core.FibreHeightDirect
-import DLNFibre.Core.AffineDomainDimension
+import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.OrbitTangentCotangent
 
 /-!
@@ -29,7 +29,7 @@ module claims the full identity.
 
 namespace DLNFibre.Core
 
-open Matrix MvPolynomial Ideal
+open Matrix MvPolynomial Ideal Dimension
 
 universe u
 
@@ -79,7 +79,7 @@ theorem ringKrullDim_quotient_vanishingIdeal_stratum_eq_delta [IsAlgClosed k] [C
 
 /-! ## The base-stratum closed-point height: `height m = δ` for any maximal ideal of `O(Mat^{≤r})`
 
-By equidimensionality at a closed point (`OrbitTangentCotangent.height_eq_ringKrullDim_of_isMaximal_fintype`,
+By equidimensionality at a closed point (`Dimension.height_eq_ringKrullDim_of_isMaximal_fintype`,
 `Fintype`-indexed) and the base Krull dimension `= δ` just established: every maximal ideal of the
 irreducible base `O(Mat^{≤r})` has height `δ`. The base-side input to the going-down/00OM easy
 direction. -/

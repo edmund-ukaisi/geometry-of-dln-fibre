@@ -1,0 +1,79 @@
+/-
+Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
+-/
+import DLNFibre.Core.RingTheory.Localization.Overlap
+import DLNFibre.Core.RingTheory.Determinantal.Basic
+import Mathlib.RingTheory.Localization.Away.Basic
+import Mathlib.LinearAlgebra.Matrix.MvPolynomial
+
+/-!
+# `DLNFibre.Core.FibreBundleTransition` — the transition cocycle on chart overlaps (B3-3)
+
+Thread 18 (`Core.FibreBundlePerMinor`) built the genuine per-minor open cover of `Mat^{=r}` plus the
+per-minor `GL_r × Mat × Mat` chart family, but explicitly did **not** build the **transition
+coherence** on chart overlaps — so it stopped short of `locallyTrivial`.
+
+This module supplies the missing rung at the level the brief specifies — a **genuine cocycle datum
+at the ring/localization level**, not the existential `GL × GL` base-change transport.
+
+## What is built (honest scope)
+
+The **abstract** transition cocycle for a principal-open cover of `Spec R` over an arbitrary
+`CommRing R` — `awayOverlap`/`awayOverlapTransition` + the three pairwise cocycle laws, the
+single-chart restriction `awayOverlapTransition_restrict_left`/`chartToSwappedOverlap`, and the
+triple-overlap cocycle `awayTriple_cocycle` — now lives in
+[`DLNFibre.Core.RingTheory.Localization.Overlap`](RingTheory/Localization/Overlap.lean) (bare
+`Localization` namespace, the Mathlib-mirror home for these general localization combinators).
+
+This module **instantiates** that abstract cocycle at the per-minor cover of `Mat^{=r}`. Over the
+coordinate ring `R = MvPolynomial (Fin p × Fin q) k` of the ambient matrix space, each per-minor
+chart `minorChart s t = {M | the (s,t) minor is invertible}` is the **principal open**
+`D(detMinorPoly s t)` cut by the minor-determinant polynomial `Matrix.detMinorPoly s t` (its
+evaluation at a point `M` is `(M.submatrix s t).det`, `Matrix.eval_detMinorPoly`), which now lives in
+[`DLNFibre.Core.RingTheory.Determinantal.Basic`](RingTheory/Determinantal/Basic.lean) (bare `Matrix`
+namespace, the Mathlib-mirror home for the generic-matrix minor polynomial + the determinantal
+ideal). On the overlap `D(f) ∩ D(g)` of two charts (`f = detMinorPoly s t`, `g = detMinorPoly s' t'`),
+the two iterated localizations are canonically identified by `minorChartTransition` =
+`Localization.awayOverlapTransition` at the two minor polynomials — the genuine per-minor instance of
+the abstract base-space cocycle.
+
+## What is NOT built (disclaimed — the deeper rung)
+
+This is the cocycle on the **ambient affine-space** principal-open cover (`R = O(Mat)`). It does
+**not** identify these ambient overlap transitions with the **deep Schur-chart** localized
+`AlgEquiv` `Core.chartLocalizedAlgEquiv` (`e_β : Away chartDsig ≃ₐ[k] Away chartGfib`), which lives
+in localized *chart* coordinates and is built (~250 LoC) only at the top-left pivot of a single
+`(d, r)`. Connecting the two — a per-pivot transport identifying each `e_{s,t}` with the ambient
+principal-open presentation — is the remaining work, and re-deriving `e_β` per pivot is a separate
+multi-module build. Accordingly the bundle is **not** named `locallyTrivial`: this is the genuine
+base-space transition cocycle, with the Schur-chart comparison honestly deferred.
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
+namespace DLNFibre.Core
+
+open MvPolynomial Matrix Localization
+
+/-! ## Instantiation at the per-minor charts of `Mat^{=r}` -/
+
+section MinorChart
+
+variable {k : Type} [Field k] {p q r : ℕ}
+
+/-- **The per-minor charts are principal opens, and their overlaps carry the transition cocycle.**
+For two pivot positions `(s, t)`, `(s', t')`, the overlap `minorChart s t ∩ minorChart s' t'` is the
+principal open `D(detMinorPoly s t · detMinorPoly s' t')` of the matrix coordinate ring, and the two
+iterated localizations (localize at one minor then the other) are canonically identified by the
+transition `AlgEquiv` `awayOverlapTransition (detMinorPoly s t) (detMinorPoly s' t')`. This
+instantiates the abstract base-space cocycle at the genuine per-minor cover of `Mat^{=r}`. -/
+noncomputable def minorChartTransition (s : Fin r → Fin p) (t : Fin r → Fin q)
+    (s' : Fin r → Fin p) (t' : Fin r → Fin q) :
+    awayOverlap (detMinorPoly (R := k) s t) (detMinorPoly (R := k) s' t')
+      ≃ₐ[MvPolynomial (Fin p × Fin q) k]
+        awayOverlap (detMinorPoly (R := k) s' t') (detMinorPoly (R := k) s t) :=
+  awayOverlapTransition (detMinorPoly s t) (detMinorPoly s' t')
+
+end MinorChart
+
+end DLNFibre.Core

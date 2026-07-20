@@ -1,0 +1,23 @@
+**Findings**
+
+1. The cited axiom is under-specified enough to be false as stated. In [Cited.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Cited.lean:83), `U` is an arbitrary `Set`, with no `x₀ ∈ U`, no openness/relative compactness, and no relation between `U` and `φ`. But [Zeta.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Zeta.lean:48) defines `ζ` by integrating over all of `φ`’s support, while [Integrability.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Integrability.lean:43) computes the threshold on all of `U`. So `s₀ = - integrabilityThreshold K U` can fail in both directions. The paper’s local statement uses a relatively compact open neighbourhood of `x` precisely to avoid this issue, not an arbitrary set; see [main.tex](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/source/main.tex:1804).
+
+2. `largestPole` is not actually formalized. The conclusion in [Cited.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Cited.lean:88) gives one negative rational pole `s₀` with order `m₀` and `s₀ = -threshold`; it does not say every other pole has real part `≤ s₀`, nor that all poles are negative reals/rationals. So [Pair.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Pair.lean:87) overnames the witness.
+
+3. You need a pole-regime / nontriviality guard. [Integrability.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Integrability.lean:27) already notes that `integrabilityThreshold` is junk `0` on unbounded admissible sets, and [Basic.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Basic.lean:21) notes the `Real.zero_rpow` convention. Without “`U` is a sufficiently small nbhd of `x₀` and `K` is not locally zero there”, the axiom is inconsistent on trivial cases.
+
+**Your 7 points**
+
+1. **Sign:** correct. [Zeta.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Zeta.lean:42) uses `K^s`; [Basic.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Basic.lean:39) uses `K^{-c}`. So `s = -c`, and `s₀ = -threshold` gives `λ := -s₀ = threshold`. No hidden minus.
+
+2. **Pole-order encoding:** correct. `meromorphicOrderAt` is valued in `WithTop ℤ`; negative order means a pole / convergence to infinity, zero means nonzero finite limit, positive means zero, and `(z - z₀)^n` has order `n`. So “pole of order `m₀`” is exactly `meromorphicOrderAt Z s₀ = -m₀` with `m₀ ≥ 1`. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Meromorphic/Order.html))
+
+3. **Bundling `s₀ = -rlct`:** yes, that should stay bundled at your current boundary. It is not a consequence of bare `MeromorphicOn`. If you wanted to derive it, you would need another analytic monument: a Landau/Mellin boundary theorem plus the local equivalence between the smooth-cutoff zeta and your indicator-based threshold. So your practical claim is right.
+
+4. **Factor `1/2`:** no second half. The half is already in the choice of loss `K = ‖\cdot‖²`. The zeta extraction is `λ = -s₀`, not `λ = (-s₀)/2`.
+
+5. **`m` vs component count `θ`:** safe. `RLCTPair.poleOrder` is just the order of the selected pole. Nothing in [Pair.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/Core/Analysis/RLCT/Pair.lean:132) ties it to a geometric count, and the repo already separates them in [ThetaOrderDistinction.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/rlct-r2b/lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean:4).
+
+6. **Smooth `φ` vs indicator `1_U`:** not safe yet as formalized. It becomes safe only after you encode locality: at minimum `x₀ ∈ U`, `U` a sufficiently small relatively compact open nbhd, and a relation like `support φ ⊆ U` with `φ > 0` near `x₀`. Right now `φ` and `U` are independent, so the claimed agreement on the maximal pole is not formally justified.
+
+7. **Other load-bearing missing pieces:** the three above are the important ones. If you fix only one thing, fix locality. If you fix two, add actual maximality of `s₀`. If you fix three, also add a nontriviality/pole-regime assumption. Until then, `largestPole` is too strong a name; `selectedPole` would be honest.

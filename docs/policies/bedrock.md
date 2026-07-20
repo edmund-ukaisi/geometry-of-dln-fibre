@@ -166,4 +166,5 @@ necessary, never sufficient; the judgement takes precedence). An independent **t
 standing, decorrelated review function — surfacing overclaims, holes, *and the right extensions* — which the
 controller integrates and holds precedence over. Working summaries are in
 [`../../CLAUDE.md`](../../CLAUDE.md) and [`../../lean/CLAUDE.md`](../../lean/CLAUDE.md). In-repo kin:
-[`precision.md`](precision.md) · [`review.md`](review.md) · [`expedition.md`](expedition.md).
+[`precision.md`](precision.md) · [`review.md`](review.md) · [`expedition.md`](expedition.md) ·
+[`library-building.md`](library-building.md).

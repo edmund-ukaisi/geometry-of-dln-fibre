@@ -44,6 +44,9 @@
   a refuted/superseded node retires its hole in the same commit — a stale hole misdirects the
   brick-closing gradient (the false-bridge lesson).
   *The map is not the territory*: the kernel is the territory; the map's contracts keep it honest.
+- Zero `sorry` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
+- **`axiom` is allowed ONLY for a declared cite** — an `@[cited "<source>"]` axiom in a located
+  `…Cited.lean` file (see the citation cordon below). Any other axiom is a violation.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
 - **`lake build` / `scripts/lb` exit-0 can MASK a `sorryAx` via a stale olean cache.** If an edit does not
   invalidate a `.olean` (a downstream-only change, an edit Lean's incremental compiler deems irrelevant), a
@@ -67,6 +70,18 @@
   form in the most foundational file and delete private duplicates (uses resolve to the import) — not
   privatize the new one (timid, keeps the duplication). (Caught `Lambda.admBound_le_Msucc` vs
   `Skeleton`'s private copy, 2026-07-20; two independent fixes reconciled to public-canonical.)
+
+## Citation cordon (the Proved-vs-Cited gate)
+- Cited external results are `@[cited "<source>"]` `axiom`s in located `…Cited.lean` files; the kernel
+  tracks every axiom via `collectAxioms`, and the gate is `collectAxioms − {propext, Classical.choice,
+  Quot.sound} − @[cited] = ∅`. Full mechanism + declare-a-cite workflow:
+  [`../docs/policies/citation-cordon.md`](../docs/policies/citation-cordon.md).
+- **`scripts/cited`** — the ENFORCING gate (nonzero exit on any UNACCOUNTED / LOCATION violation),
+  sibling to the informational `scripts/sorries`. `scripts/cited --manifest` prints the per-source
+  cite map. **`#audit_cited foo`** — the in-file report (mirrors `#print axioms`), the inner loop.
+  **`scripts/cited-test`** — battle-tests the cordon against `tests/CordonFixtures.lean`.
+- Forget-proof: forgetting the tag doesn't hide a cite (the raw axiom still lands in UNACCOUNTED → red
+  gate). Green = "no unaccounted axiom", NOT a whole-TCB audit; a human still reviews the source string.
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —
@@ -159,6 +174,8 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   to get the instance). A lemma stated with `⅟M` carries a typeclass `[Invertible M]` that a per-point
   integrand can't supply; the `M⁻¹` form is a plain function, integrand-usable. (`frobSq_schur_split_inv`,
   `genm-sjcarrier6`.)
+  shown the problem. Cost two build cycles on the monic-positioning module (now
+  `Core/Dimension/Catenary.lean`).
 - **No off-the-shelf rank-normal-form / "equal rank ⟹ equivalent matrices" in v4.29.** Built at the
   linear-map level in `Core.FibreNormalForm` (`exists_conj`, `exists_baseChange_of_rank_eq`): for a
   rank-`r` `f : (Fin n → k) →ₗ (Fin m → k)`, restrict to `fU : U ≃ range f` (`U` a `ker`-complement,
@@ -225,6 +242,28 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   reduction lemma; the non-trivial branch casts the INPUT index by `finCongr dim_eq`, not the whole
   function). Then injectivity is `(finCongr _).injective (bodyInjective …)` — no `Eq.mpr` in sight. The
   general move: push the dependent cast from the function type onto the `Fin` index via `finCongr`.
+- **RLCT / measure-theory analysis gotchas (from `Core.Analysis.RLCT.SumSq`, sum-of-squares RLCT).**
+  - **No ball-version polar reduction in v4.29.** Only the *global* `MeasureTheory.integrable_fun_norm_addHaar`
+    (`Integrable (f ∘ ‖·‖) μ ↔ IntegrableOn (fun y ↦ y^(dim E - 1) • f y) (Ioi 0)`) exists. For a
+    *local-at-0 / ball* threshold, cut off with a radial indicator `f := (Ioo 0 R).indicator (·^s)`;
+    for `s < 0` this makes `f ∘ ‖·‖` **pointwise equal** (not just a.e.) to `(ball 0 R).indicator (‖·‖^s)`
+    (the `x=0` point agrees via `Real.zero_rpow (s ≠ 0)`), sidestepping the sphere/`{0}` null-set bookkeeping.
+    Then `integrable_indicator_iff` / `integrableOn_indicator_iff` (`indicator s f` on `t` ↔ `f` on `s ∩ t`)
+    reduce to `intervalIntegral.integrableOn_Ioo_rpow_iff (ht : 0 < t)` (`x^s` on `Ioo 0 t` ↔ `-1 < s`).
+    (Codex hallucinated a `radial_ball_iff` repo lemma and a ball-version `integrableOn_fun_norm_addHaar`
+    — neither exists; verify before trusting.)
+  - **`intervalIntegral.integrableOn_Ioo_rpow_iff`** lives in the `intervalIntegral` namespace (bare name unknown).
+  - **`Set.indicator_of_notMem`** (v4.29 renamed `not_mem` → `notMem`); `Set.indicator_of_mem` unchanged.
+  - **`EuclideanSpace.measurableEquiv` is deprecated → `MeasurableEquiv.toLp 2 (ι → ℝ)`** (Pi → Euclidean;
+    `.symm` for Euclidean → Pi, coercion `= WithLp.ofLp`, `rfl`). Volume transport:
+    `PiLp.volume_preserving_ofLp ι : MeasurePreserving ofLp volume volume` (`.map_eq` for `volume.map ofLp = volume`).
+    Filter transport (`𝓝 0 ↦ 𝓝 0`): `(WithLp.linearEquiv 2 ℝ (ι→ℝ)).toContinuousLinearEquiv.toHomeomorph.map_nhds_eq 0`.
+    `IntegrableAtFilter` transports through `ofLp` via `MeasurableEmbedding.integrableAtFilter_map_iff`.
+    This carries a `rlctAt`/local-integrability question between the Pi type `Fin n → ℝ` (where `sumSq`/`rlctAt`
+    live) and `EuclideanSpace ℝ (Fin n)` (where `‖·‖` = ℓ², so the polar lemma applies); volumes agree,
+    only the norm instance differs.
+  - **`Real.rpow` at `0`:** `0^neg = 0` (`Real.zero_rpow (h : s ≠ 0)`), so a negative-power germ is `0`
+    *at* the zero, and any divergence must come from the punctured neighbourhood, never the value at `0`.
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of

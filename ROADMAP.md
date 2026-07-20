@@ -2,8 +2,7 @@
 
 The programme-level map: the destination, the bundles of work toward it, and what each depends on. Written
 to be elementary; pick up a **bundle** only when it is *whole-in-reach*, rather than nibbling one lemma at a
-time. This is a **first cut**; the `core-quiver-engine` expedition sharpens the ladder and, via an opening recon,
-resolves the load-bearing unknown (what Mathlib already provides). Update at each expedition close.
+time. Update at each expedition close.
 
 ## The destination, plainly
 
@@ -36,13 +35,14 @@ multiplication map $\operatorname{mult}(A_\ast)=A_N\cdots A_1$, we want, in hone
 
 Everything above "rlct" is **network-free** → `DLNFibre.Core`. The loss + RLCT payoff → `DLNFibre.DLN`.
 
-## Top open question (resolve first)
+## What Mathlib provides (resolved)
 
 **What does Mathlib already provide?** Quiver representations, the type-A / `A_n` story, Gabriel's theorem,
 `Ext` for quiver reps / representations of a category, equivariant cohomology. The answer decides how much of
 the engine is *reuse* vs *build-from-scratch* — and the build-from-scratch part *is* the reusable asset, so
-getting its API right is high-value. **The `core-quiver-engine` expedition's opening recon resolves this.**
-Until it lands, the reachability tags below are estimates.
+getting its API right is high-value. **Resolved** (the Bundle sections below record the outcome): Mathlib
+had no type-A Gabriel classification, no `Ext`-codimension for these representations, and no orbit-closure
+order for the chains — the engine was built from scratch as `DLNFibre.Core`.
 
 ## The bundles
 
@@ -117,6 +117,86 @@ application). **Still Cited (out of scope):** `rlct = ½·codim` (Aoyagi/Watanab
 `rlct_lossDLN_eq_half_cCodim_add_shift` rests on ONLY the Cited Aoyagi `RlctInterface` — the destination
 `rlct = C/2` is realized (geometric half zero-cite; only the Aoyagi `rlct = ½·codim` equality Cited). Full record:
 `expeditions/2026-06-23-fibre-codim/synthesis.md`.
+
+**Aoyagi closed form recovered def-by-def (expedition `fibre-codim`, 2026-06-25).** `DLN.Aoyagi.ClosedForm`:
+`codimRepCanonical_fibre_eq_two_paperLambda` — `codim(mult⁻¹ B) = 2·paperLambda`, with `paperLambda` Aoyagi
+Thm 2's displayed λ at *her own* Definition-3 active-set size `paperEll` (certified the unique solution of her
+Definition-3 conditions; the paper's `(ℓ−1)→ℓ` misprint corrected). Zero-cite, axiom-clean.
+
+**Type-universe lift (Core) — roadmapped, low priority.** The codim/θ geometric results sit at `k : Type`
+(universe 0; covers ℝ/ℂ/`AlgebraicClosure ℚ`). Lift `Core.FibreCodimFinal`, the Schur-side no-drop, and the
+chart machinery (`Core.ChartLocalizedAlgEquiv`) to `Type u`. Mechanical refactor, no new math; unblocks
+fully-general statements. Deferred behind the θ side.
+
+**θ / top-component side + rest of Lemma 4.6 — CLOSED (expedition `theta-components`, 2026-06-26).** Full
+record: `expeditions/2026-06-25-theta-components/synthesis.md`. The substantive mathematics is **Proved,
+unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
+- **Fibre θ-count, arbitrary rank-`r` `B`** — `numTop(mult⁻¹ B) = cTheta(d−r) = C(m,|δ|)` for ANY `B` with
+  `B.rank = r`: `Core.FibreThetaCountArbitrary.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_of_rank`
+  (`Type 0`). The normal-form case `E_r` is
+  `Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` (the `TopDimMinPrimes` count chain
+  through the chart `e`, reducedness-free via `detΔ`-unit; `Monotone d` + rank + Kostant-nonempty hyps);
+  the same-rank transport `ncard_topDimMinPrimes_fibre_eq_of_rank_eq` (`mult⁻¹ B` a `GL×GL` translate of
+  `mult⁻¹ E_r` ⟹ iso ⟹ equal count) lifts it to arbitrary `B`. Resolves #54. (The transport proof goes
+  directly via `exists_baseChange_of_rank_eq` + `image_smul_fibre` + `vanishingIdeal_image_smul` +
+  quotient-equiv + radical-insensitivity — `reducedFibre_baseChangeHomogeneous` is morally the same
+  homogeneity but is not the literal proof dependency. Generality added in PR #11 review round 1.)
+- **θ-formula finding (precision):** three distinct invariants — the component count `C(m,|δ|)` (Lean
+  `cTheta`), Aoyagi's SLT pole order `a(ℓ−a)+1`, and LR's *printed* rlcm `a(ℓ−a)` (= θ−1, **off by one** vs
+  LR's own definition; correct rlcm = Aoyagi's). Agree iff `|δ| ≤ 1`, diverge for `|δ| ≥ 2` (witness
+  `(2,2,2,2,2)` r=0: 6/5/4). The `rlct = C/2` story is unaffected. Written up:
+  `docs/expositions/theta-invariants-distinction.md`. **An off-by-one in LR's printed rlcm — operator may
+  wish to raise an erratum/correspondence.**
+- **Generic smoothness of the fibre — FULLY UNCONDITIONAL** (`Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent`,
+  `[IsAlgClosed k]`): a fibre top component is an fp domain over an alg-closed field, hence generically
+  smooth (`IsSmoothAt k ⊥`); lifted via the C1 localization-recovers-component bridge. The OrbitSmooth/orbit-iso
+  route was unnecessary for smoothness. Chart-level form: `isSmoothAt_chartDsig_topComponent_nonvacuous`
+  (smooth on a NONEMPTY basic open `D(h)`, `¬IsNilpotent h`) — the stronger, non-vacuous statement; the
+  weaker `exists_isSmoothAt_chartDsig_unconditional` (smooth on *some* basic open, incidence with the chosen
+  component not certified) is superseded by it. Full component-incidence `D(h)∩V(I)≠∅` is residual 5.
+- **Σ̄^r component ↔ orbit labeling — unconditional** (`exists_sigma_topComponent_orbitRingEquiv`): the first
+  genuine "label a top component by an orbit ring".
+- **Bundle — the per-pivot local-product atlas over the rank-`=r` open** (`Core.FibreBundleLocallyTrivialFull.reducedFibre_pivotLocalProductAtlasOnRankOpen`):
+  scheme open-cover by the per-pivot Schur charts + the cover→`PivotDatum` bridge (`pivotOfCover`, PR #11
+  C1) connecting a covering chart to its trivialization + trivializations into the standard fibre `SchurLoc
+  ⊗ sweepFibreRing` + the base-side overlap-restricted transition (`overlapRestrict` /
+  `chartOverlapTransition_restrict`, PR #11 C2) + the intertwining (`e_β` cancels) + the k-point rank-tie.
+  Honestly **NOT** `locallyTrivial`. The `transitionFactors` field is a common-target cancellation (NOT an
+  overlap cocycle — corrected in C2); the full overlap-restricted *trivialization* cocycle is a residual.
+- **`e` (fibre-component↔orbit), localized chart transport — rung 1** (`Core.FibreComponentOrbitIso.schurComponent_chartQuotientEquiv`).
+- **Reusable spin-outs:** `mvPolynomialAwayMapTensorAlgEquiv`, `exists_invertible_minor_of_rank` (Mathlib
+  v4.29 gap: rank-`r` ⟹ invertible `r×r` minor), the `awayOverlap`/`awayTriple` cocycle engine,
+  `localizationAtPrimeQuotientAlgEquiv`, `Algebra.Smooth.tensorProduct`,
+  `isSmoothAt_bot_of_finitePresentation_domain`.
+
+**Roadmapped residuals (deferred at the honest ceiling — all genuinely non-trivial / off-critical-path;
+items 4–5 are the honest residuals surfaced by the PR #11 owner review):**
+1. **Bundle → bare scheme-theoretic `locallyTrivial`:** the prime-level **residue-field-rank bridge**
+   (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) is now **LANDED** — S1
+   `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` (fibration-geometry), as a
+   set-of-primes identity. What remains toward a bare scheme-theoretic `locallyTrivial` is the over-base
+   **projection compatibility** + the overlap-gluing cocycle (R1) — see the fibration-geometry close
+   section below.
+2. **`e` → full localized iso:** rung 1 (`schurComponent_chartQuotientEquiv`) + the assembled CONDITIONAL
+   headline `exists_localized_schurComponent_fullOrbitEquiv_of` are landed (axiom-clean); the open input is
+   the typed Prop `LocalizedChartDescent` — the chart→sigma→orbit descent of `(Away chartDsig)⧸chartComponentIdeal`
+   to `Away Δ (orbitRing (realizerD m))`. Reassessed as a **multi-tide sub-wall** (D1: bridge the keystone
+   `Φ` and the chart `e_β` so the W1/chartE lemmas apply; extract the localization-quotient AlgEquiv; W0
+   descent), off every critical path (smoothness is unconditional without it), consumed by nothing. NOTE: the
+   *global* / *shifted-orbit* shapes are FALSE — only the localized full-`d`-orbit form is reachable; two dead
+   consumers relabeled as superseded scaffolding.
+3. **Type-universe lift** (Core, `k : Type 0 → Type u`): mechanical, deferred.
+4. **Bundle full overlap *trivialization* cocycle** (PR #11 C2 residual): the atlas has the base-side
+   overlap-restricted transition (`overlapRestrict`); the full overlap-restricted *trivialization* cocycle
+   square needs a target-side localization comparison `targetOverlapTransition` — the per-pivot chart map is
+   only a `k`-algebra (gauge) map, not `sweepSigmaRing`-algebra, so the localization-subsingleton trick
+   fails. Genuinely new/heavy; the current `transitionFactors` is honestly a common-target cancellation.
+5. **Smoothness full component-incidence** (PR #11 C4 residual): the chart-smoothness witness is non-vacuous
+   (`isSmoothAt_chartDsig_topComponent_nonvacuous`: `D(h) ≠ ∅`), but full incidence `D(h) ∩ V(I) ≠ ∅` (the
+   smooth open meets the chosen top component) needs faithfully-flat lying-over of `includeRight :
+   sweepFibreRing → SchurLoc ⊗_k sweepFibreRing` — needs `Module.FaithfullyFlat` (not TC-discoverable:
+   `Module.Free k SchurLoc` + `Nontrivial` + a tensor-orientation flip). The `sweepFibreRing`-level
+   `isSmoothAt_sweepFibre_topComponent` IS per-component; only the chart-level transport drops incidence.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
@@ -206,6 +286,122 @@ $a(\ell-a)+1$ — **never to `numTop`** (the mint guard). Statement + kill-condi
 [`cards/theta-analytic-multiplicity-seam.md`](expeditions/2026-06-20-aoyagi-full/cards/theta-analytic-multiplicity-seam.md).
 The value ($\lambda$) headline does not need it. See
 `docs/expositions/notes/theta-invariants-non-identity.md`.
+### Bundle 4b — generic RLCT foundation (LARGELY LANDED · expedition `rlct-foundation`, 2026-07-06)
+
+**Status: the headline honesty win is BANKED.** The payoff no longer leans on an opaque assumed
+`rlct : Loss → ℝ`: that map (`rlctReal`) is **retired**, and the payoff now reads a **defined, cite-free**
+invariant. RLCT is **not** DLN-specific — only Aoyagi's computation is — so the foundation lives in `Core`,
+outside `DLN`. (The caveat at the end of this bundle predicted exactly this first slice — "value-only
+integrability threshold + core invariances + quadratic block `λ=c/2` + axiom retirement is the headline
+honesty win"; that is now done.)
+
+**LANDED (cite-free unless noted; `Core/Analysis/RLCT/` + `DLN/`).**
+- **Citation cordon** (`@[cited]` attribute + the forget-proof `scripts/cited` accounting gate; `CITED=3`) —
+  every cited axiom named + located, and a cite's *non-vacuity* is a build-time obligation (round-7 lesson).
+- **Local RLCT value** `rlctAt K x = sSup{c≥0 : K^{-c} loc-integrable at x}` (`Local.lean`, Def 8.1(ii)) + the
+  **regional** threshold `integrabilityThreshold K U` (`Integrability.lean`).
+- **Global RLCT** `rlctGlobal K = sSup{c≥0 : ∀x, K^{-c} loc-integrable}` (`Global.lean`, Def 8.1(i)); the
+  `rlctGlobal ≤ rlctAt` half + the inf-over-zero-locus characterization (Prop 8.3(iii)) as a clean conditional.
+- **Local zeta pair** `ζ_{K,φ}(s)=∫K^s φ` with cite-free convergence for `Re s>0` (`Zeta.lean`); the ONE
+  bundled **continuation monument** (`Cited.lean`, Atiyah 1970 + Saito/SLT): meromorphic continuation, poles
+  ⊂ ℚ_{<0}, largest pole `= −rlctAt K x₀` of order `m`; `RLCTPair (λ,m)` + Link 1 `λ = rlctAt` (`Pair.lean`).
+  `m` is **define-only** (pole order, NOT the DLN `θ` — that boundary is now stated, not smuggled). Cite
+  non-vacuity proven by the axiom-clean witness `zetaSetupSq` (`Witness.lean`, K=x²).
+- **Smooth quadratic block** `rlctAt(∑ᵢxᵢ²) 0 = C/2` (`SumSq.lean`, `rlctAt_sumSq`, `C≥1`) + the reusable ball
+  threshold `integrableOn_ball_norm_rpow_iff` (‖x‖^s integrable on a ball ⟺ `-dim < s`).
+- **Payoff rewired** onto `rlctGlobal` (`DLN/RlctPayoff`, `DLN/RLCT/AoyagiCited`) via Watanabe-upper +
+  Aoyagi-lower; `rlctReal` **retired**. The payoff's `#print axioms` = std-3 + those two DLN bounds ONLY (the
+  ζ-continuation cite is off the value path — it enriches `(λ,m)` only).
+- **Foundation validated (R9, in PR #23):** the payoff's central object now carries an in-file witness
+  `rlctGlobal (sumSq C) = C/2` (`GlobalWitness`); the regular-point lemma
+  `localAdmissibleExponents K x = Set.Ici 0` (`K` cont., `K x ≠ 0` — no `0≤K` needed) records "regular point
+  ⟹ no pole" (`RegularPoint`); the `RLCT.Global.rlctAt = RLCT.rlctAt` `rfl` bridge closes the two-copies fork
+  (`GlobalBridge`); local down-set + germ-monotonicity (`LocalMono`); the power rule
+  `rlctAt (K^k) x = rlctAt K x / k` (`k≥1`, no `BddAbove`; hardens the "no second ½" trap — `PowerRule`); and
+  on-cite positivity `rlctAt S.K S.x₀ > 0` + the `zetaSetupSq.K = sumSq 1` coherence (cite-free `rlctAt = 1/2`
+  = cited `(rlctPair).lam` — `CiteCoherence`). Cite-free items std-3; the two on-cite items carry ONLY
+  `cited_local_zeta_pole` (off the payoff path).
+
+**REMAINS (roadmap; all off the payoff's critical path). Structured as the designed follow-on
+`rlct-invariance` (PR #23 reviewer addendum; operator scope call — roadmap, not scope-creep into the close-out
+PR). Deliverable = a complete invariance calculus for `rlctAt`/`rlctGlobal`, the substrate the eventual `K_B`
+constant-rank bridge consumes.**
+
+*Layer-completion — ✅ **LANDED (R9, in PR #23; see the LANDED block above)**: A (`rlctGlobal` witness),
+A1 (regular-point), B1 (`rfl` bridge), B2 (down-set + germ-monotonicity), B4 (power rule), B5 (on-cite
+positivity) + the coherence check. The one hardening item held back to the follow-on:*
+- **Bounded-unit invariance** `0<c₁≤U≤c₂` near `x` ⟹ `rlctAt (U·K) x = rlctAt K x` (B3) — two-sided
+  domination; the germ-invariance calculus proper (new substrate, not completion of what's staked). The first
+  lemma the Bridge-B discharge / germ surgery reach for.
+
+*The follow-on's analytic rungs (each a genuine build):*
+- **Fubini additivity** (LR Prop 8.3(iv)) `rlctAt (K₁(x)+K₂(y)) (x₀,y₀) = rlctAt K₁ x₀ + rlctAt K₂ y₀` for
+  nonnegative product germs — with `rlctAt_sumSq` it evaluates any `Σqᵢ² + core` germ; the `≥` direction is not
+  AM-GM-cheap. The single most valuable next analytic theorem.
+- **`rlctAt` diffeo-invariance** `rlctAt K (φ x) = rlctAt (K∘φ) x` (local C¹ diffeo, `det φ'≠0`) — BUILDABLE
+  (`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul` present).
+- **Bridge B F1** (regional↔local unconditional, ball/box: the `hSubThreshold`/cap analytic core) + the
+  **`hGlue`** reverse inequality (Prop 8.3(iii) as an equality where the payoff lives; de-risked by the witness).
+- **Invariance suite tail** (two-sided-comparability · spectator · sum-of-squares-generator), the
+  **normal-crossing atlas** + product pole formula, 1-D Mellin, and the cited **equivalences** (zeta-pole ↔
+  threshold ↔ volume-asymptotic).
+
+*The eventual consumer (monument-adjacent — a genuine gap, not this follow-on):*
+- **Constant-rank / Morse–Bott normal form** → `rlctAt K_B (smooth fibre pt) = C/2`: v4.29 has inverse+implicit
+  FT but NO constant-rank theorem / Morse lemma (verified). Once built, the payoff's cited bracket becomes a
+  computation `rlctGlobal(K_B) = nReg/2 + rlct(core)` with no new analytic machinery. The payoff does not need
+  it today (it rides the global cites).
+- **Namespace unification** — bare-`RLCT` (`Fin n→ℝ`) vs polymorphic `RLCT.Global`; includes the `rfl` bridge
+  above, and a re-check of joint cite consistency once the two `rlctAt`s become interchangeable. A safe refactor.
+
+_The Canonical-definitions / BUILD / CITE lists below were the original plan; the LANDED list above is the
+shipped state (they overlap — treat the LANDED/REMAINS split as authoritative)._
+
+**Canonical definitions (generic, in `Core`).**
+- **Value, via the integrability threshold** (Lean-friendly; the repo already has `rlctAt` / `rlctAtOn` /
+  `weightedThreshold` to build on): `λ_x(K) = sup { c ≥ 0 : K^{-c} is locally integrable near x }`. Fibre value
+  `λ_Z(K) = inf_{x∈Z} λ_x(K)`.
+- **Full pair, via the local zeta pole** (the honest multiplicity story): `ζ_x(z) = ∫_U K^z φ`, meromorphically
+  continued; `λ_x` = location of the largest pole on the negative real axis, `m_x` = its **order**. `RLCTPair K x
+  = (λ_x, m_x)`. **Honesty point:** `m` is *pole order*, not a combinatorial count — so calling the DLN `θ`
+  (currently `#` top-dim components, Bundle 1) a "multiplicity" requires either a theorem (count = pole order) or
+  a citation. The foundation forces that boundary to be stated.
+- **Ideal / sum-of-squares form:** `λ_x(f_1,…,f_s) = λ_x(Σ fᵢ²)`, with **generator invariance** (same local
+  analytic ideal ⟹ same RLCT), proved for the value via two-sided comparability `C₁ Σfᵢ² ≤ Σgⱼ² ≤ C₂ Σfᵢ²`.
+
+**BUILD (detail-at-scale — real RLCT theorems, far short of re-proving Aoyagi):** germ invariance · bounded-
+positive-unit invariance · two-sided-comparability invariance (value) · smooth-prior/cutoff invariance · local-
+diffeo / analytic-coordinate-change invariance · spectator-variable invariance · sum-of-squares generator
+invariance · the **smooth quadratic block** `λ_0(x_1²+…+x_c²) = c/2` · monomial integrability thresholds · 1-D
+Mellin continuation `∫ t^{az+b} φ(t) dt` · product normal-crossing ζ-continuation + pole formula
+`λ = min_{aᵢ>0} (bᵢ+1)/aᵢ`, `m = #{ i : (bᵢ+1)/aᵢ = λ }` (denominator `2aᵢ` for squared losses) · normal-crossing
+**atlas** theorem (combine finitely many chart certificates; global value = min over charts, global order = max
+attaining, with the noncancellation hypotheses).
+
+**CITE (monuments — quarantined in a small generic `Core/.../RLCT/Cited.lean`):** meromorphic continuation of
+local ζ for arbitrary real-analytic loss · equivalence zeta-pole RLCT ↔ integrability-threshold RLCT ↔
+volume-asymptotic RLCT · general resolution / principalization existence · general pole-order-from-resolution.
+**DLN-specific cites (under `DLNFibre/DLN/RLCT`):** Aoyagi's `λ` computation · Aoyagi's `θ` / pole-order · the
+Watanabe codimension upper bound (if retained as a separate inequality).
+
+**Module split:**
+```text
+Core/Analysis/RLCT/{Basic, Integrability, Local, Zeta, Cited, Pair, Bridge, Witness, Global, SumSq}.lean
+DLN/{RlctPayoff, RlctPayoffGeneral}.lean · DLN/RLCT/{AoyagiCited, BundleShiftDischarge}.lean   -- shipped
+```
+**Honest payoff reading (the boundary, now realized):** *defined* `rlctGlobal` (Def 8.1(i), cite-free);
+*defined* `K_B(A) = ‖A_N…A_1 − B‖_F²`; *proved* `Z_B = K_B^{-1}(0) = mult^{-1}(B)`; *proved* `codim_ℝ(Z_B)` =
+the Core algebraic codimension; *cited* Watanabe-upper + Aoyagi-lower: `rlctGlobal(K_B) = codim_ℝ(Z_B)/2`;
+*therefore* the L&R/Aoyagi `rlct = C/2`. The opaque assumed map is gone; those two DLN bounds are the only
+value-path cites (the ζ-continuation monument enriches `(λ,m)` only, off the value path).
+
+**Caveat — domain risk:** this is real-analysis (ζ, Mellin, integrability, meromorphic continuation), unlike the
+algebraic-geometry work so far; **Mathlib analysis coverage is the unknown.** Pick this up **recon-first** (map
+coverage + lock the build-vs-cite boundary), and scope the first slice tight — the **value-only integrability
+threshold + the core invariances + the quadratic block `λ=c/2` + axiom retirement** is the headline honesty win;
+defer the zeta-pole *multiplicity* and the full normal-crossing *atlas* (where the analysis monuments cluster).
+Connects to the existing `rlct-runway-target` note (kill-condition: a singular-locus lower bound — the smooth
+locus alone gives only an upper bound).
 
 ## Dependency sketch
 
@@ -269,6 +465,93 @@ change making teammate isolation produce genuine nested worktrees from a worktre
 cheap; it does not grant a worktree-controller parallel teammates. **Acceptance:** a controller that is
 not on the main checkout can still run teammates in genuinely isolated, parallel worktrees (via (ii) or
 (iii)).
+
+## fibration-geometry expedition (closed 2026-06-27) — status + residuals
+
+**Landed (all bedrock: green, sorry-free, axiom-clean, hardener-cleared).** The DLN reduced fibre
+family over the rank-`= r` open is, **chartwise over the in-chart Schur ring `SchurLoc`**, an honest
+over-base local product with flatness:
+
+- **S1** `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` — `rankROpen` IS the
+  residue-field rank-`= r` locus (set-of-primes identity).
+- **S2 / S2c** `FibreSmoothBlock` / `FibreSmoothBlockExists` — the smooth-block certificate (Kähler `Ω`
+  free, `rank(Ω) + codim = ambient`), hypothesis-free under the Kostant gate
+  (`exists_topComponent_smoothBlock_certificate`; generic engine `topDimMinPrimes_nonempty`). The
+  RLCT-runway upper-bound local model.
+- **S3** `FibreFlatness` — cheap-flatness verdict + localization/standard-model/`UniversallyOpen` facts.
+- **S4 / S4b** `FibreLocallyTrivial` / `FibreOverBaseTriv` — the `SchurLoc`-linear (over-base)
+  trivialization `Away(chartDsigAt) ≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` (over the honest
+  structure map, non-circular) + chartwise flatness over `SchurLoc`.
+- **S5** `FibreBundleHeadline` — the capstone `reducedFibre_existsOverBaseProductChartAt_rankEq`.
+
+Exposition: `expeditions/2026-06-27-fibration-geometry/expositions/fibration-geometry.md`.
+
+**Residuals (roadmap; sequence as listed — items 1–4 are genuinely reachable; item 5 is the genuine
+wall, the next expedition):**
+
+1. **Projection compatibility** — that the in-chart structure map
+   `schurToDsigAt : SchurLoc → Away(chartDsigAt s t)` is the pullback of `mult`'s projection from the
+   target/base rank-chart. (`SchurLoc` is the in-chart base direction; `Away(chartDsigAt s t)` is the
+   *source/total* chart, already `≅ SchurLoc ⊗ fibre` — so this is NOT a "`SchurLoc ≅ sweepSigmaRing|chart`"
+   bridge, which would lose the fibre.) This compatibility is what lets the chartwise `SchurLoc`-flatness
+   read as genuine fibre-family flatness over the base. A real build, **ahead of** R1.
+2. **R1 — `targetOverlapTransition`** (the overlap-gluing cocycle). Assembles the per-chart data into a
+   single global `Flat π` / fibre-bundle morphism over all of `rankROpen`. After projection compatibility.
+3. **S2b — conormal companion** `I/I²` free of rank `= codim` (the RLCT-relevant dual of S2's Kähler
+   side; conormal exact sequence + rank additivity). A real build.
+4. **S1 in-file non-vacuity `example`** (a concrete `P ∈ rankROpen` in the achievable regime) — a
+   bedrock-hygiene nicety.
+5. **Singular-locus split / RLCT lower bound** (→ the next expedition): the smooth-block gives only the
+   `rlct ≤ ½·codim` upper-bound local model; the equality needs a singular-locus lower bound
+   (`rlct ≥ ½·codim` everywhere). This is the wall the `rlct = ½·codim` Cited axiom rests on; teed up,
+   not closed.
+
+## Open edges — headline results not yet fully general (relative to L&R)
+
+The [formalisation-status table](README.md#formalisation-status) marks **one** row short of the paper's full
+generality (field generality, Gap 2). Gap 1 (below) is now **closed**. What remains:
+
+### Gap 1 — geometric `θ` for the fibre `mult⁻¹(B)` at non-monotone `d` — ✅ **CLOSED** (expedition `rlct-foundation`, 2026-07-06)
+- **Was:** `#comp(mult⁻¹(B)) = cTheta(d−r)` proved **only for `Monotone d`**
+  (`ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`, via the sorted Schur/localization chart).
+- **Now (arbitrary `d`):** `Core.FibreThetaCountUnconditional.ncard_topDimMinPrimes_fibre_eq_numTop`
+  (+`_of_rank`) — the fibre top-dim component count `= numTop d r` for arbitrary `d`; and the closed form
+  `Core.CThetaSortClosedForm` → `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_sort` (+`_of_rank`)
+  `= cTheta((d∘Tuple.sort d) − r)`. The **only** added hypothesis is the rank-feasibility `hr : ∀ i, r ≤ d i`
+  (disclosed); `Monotone d` is **gone**. Under `Monotone d` the sort recovers the old `cTheta(d−r)` headline.
+  Non-vacuity: witnesses on the non-monotone `d = ![1,2,1]` (`decide`, over `AlgebraicClosure ℚ`) — a vector
+  unstatable under the old gate. The *rank-locus* count `#comp(Σ̄ʳ) = numTop d r` was already arbitrary-`d`
+  (`numTop_eq_ncard_topComponents`).
+- **Route (as this section predicted):** the Monotone-free `numTop_comp_sort` reroute + the already-landed
+  perm-invariance (no new cite; the anticipated *geometric* fibration transfer was **not** needed —
+  perm-invariance sufficed once the count chain was traced to be `Monotone`-free but for one cosmetic E0 step).
+  `[IsAlgClosed]` + `Type 0` remain — those are Gap 2, not this gap.
+
+### Gap 2 — field generality (an *unrealized* generality, not a mathematical restriction)
+The algebraic theorems carry `[CharZero] [Infinite]` (codim), plus `[IsAlgClosed]` + universe `Type 0`
+(counts); L&R state everything over an arbitrary field and **prove that generality on purpose**
+(`thm:base_field` §3.4 + Voigt's lemma: orbit reps are 0/1 partial-permutation matrices over the prime
+field, every orbit is `G/H` for split-connected `G = ∏ GLᵈⁱ`, hence geometrically irreducible;
+`codim(O_M) = dim Ext¹` with the Ext-dims combinatorial). So `C`, `θ` are field-independent — each Lean
+hypothesis is a **proof-route artifact**, not a truth condition. The codim theorems **already hold over any
+char-0 infinite field** (ℚ, ℝ, ℚ_p); the remaining pieces, by value/cost:
+- **(a) Counts over non-closed char-0 fields (ℝ, ℚ)** — `thm:base_field` is the tool: prove over `k̄`,
+  transport by the split-orbit-closure geometric-irreducibility bijection. Needs absolute irreducibility of
+  `orbitRankLocus` + a base-change bijection of top-dim minimal primes. Expedition-scale but bounded;
+  removes `[IsAlgClosed]` for counts.
+- **(b) Positive characteristic (drop `[CharZero]`)** — reprove `codim(O_M) = dim Ext¹` char-free via
+  `dim(orbit) = dim G − dim Stab`, `Stab = Aut(M) =` unit group of `End(M)` (smooth in every char) + the
+  Euler form; localized to the Voigt layer, medium effort. Gives char-`p` infinite fields.
+- **(c) Finite fields (drop `[Infinite]`)** — `[Infinite]` is baked into the *definition*
+  `codimRepCanonical = height(vanishingIdeal(coord '' Z))` (wrong object over finite `k`); needs a
+  scheme-theoretic redefinition + re-proving every codim theorem. Largest lift.
+Orthogonal to the DLN payoff (over ℝ/ℂ) → low priority.
+
+### Gaps 3–4 (minor)
+- **Explicit-formula syntactic shape:** `cValue` is proved `= codim`, not rendered in thm:main-codim's exact
+  `(m/2){S̃/m}(1−{S̃/m}) − …` fractional-part form. Semantically equivalent; the `θ` binomial is verbatim.
+- **Gabriel finiteness:** the orbit ↔ Kostant bijection is proved; "finitely many orbits" is not stated as a
+  `Finite`/`Fintype` theorem (implicit — the index `kostantPartitions` is a `Finset` by construction).
 
 ## Convention
 

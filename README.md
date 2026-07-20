@@ -25,6 +25,54 @@ and concludes that the real log-canonical threshold of the square-Frobenius loss
 networks are "mildly singular." A full map is in
 [`docs/expositions/paper-digest/high-level-overview.md`](docs/expositions/paper-digest/high-level-overview.md).
 
+## Formalisation status
+
+Verified against the Lean **source** (theorem signatures, not docstrings) on `dev` — the algebraic
+headline results (@ `f5c1c6b7`, Phase 1) plus the **RLCT foundation** merged via PR #23 (`0863fccf`),
+which is what the `rlct` and fibre-`θ` rows reflect (the payoff now reads the **defined** `rlctGlobal`,
+and the fibre component-count drops `Monotone d`). Integrity: **zero `sorry` / `admit`** in
+`lean/DLNFibre/**`; the only axioms are the
+cordon-accounted `@[cited]` monuments (`scripts/cited`: `CITED=3` — Watanabe-upper, Aoyagi-lower, and the
+local ζ-continuation). Legend: ✅ Proved · 🟡 Proved (scoped beyond the paper) · 🔵 Cited (an explicit
+interface/hypothesis, not a global axiom).
+
+| Paper result | | Generality vs paper | Lean name |
+|---|:--:|---|---|
+| `codim Σ̄ʳ = C` (geometric) | ✅ | arbitrary `d`; char-0 + infinite field (incl. ℝ) | `codimRepCanonical_productRankLocusLE_eq_cCodim` |
+| `codim mult⁻¹(B) = C + δ` (geometric) | ✅ | arbitrary `d`; `B.rank = r` | `codimRepCanonical_fibre_eq_cCodim_add_shift` |
+| `C` = QIP min, `θ` = #minimisers | ✅ | monotone → arbitrary `d,r` | `cCodim_eq_qipMin`, `qipNumMinimisers_eq_cTheta` |
+| Explicit closed form for `C`, `θ` | ✅ ᵃ | arbitrary `d,r` | `qipMin_eq_cValue`, `cTheta` |
+| Poincaré series + `P_d = Σ qᶜᵒᵈⁱᵐ P_m` | ✅ | general `N` | `thm55`, `fivegon` |
+| `θ` combinatorial (`= C(m, \|δ\|)`) | ✅ | arbitrary `d` | `cTheta`, `numTop` |
+| `θ` = #top-dim irreducible components | ✅ | arbitrary `d` (rank locus + fibre) | `numTop_eq_ncard_topComponents`, `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_sort` |
+| Permutation invariance of `(C,θ)` (Cor 5.10) | ✅ | arbitrary `σ`, `d` | `cCodim_comp_perm`, `numTop_comp_perm` |
+| `rlct(Kᴰᴸᴺ_B) = ½·codim mult⁻¹(B)` | 🔵 / ✅ ᶜ | on the **defined** `rlctGlobal` (Def 8.1(i)); opaque map retired | `rlct_lossDLN_eq_half_codimFibre_of_transfer` |
+
+*ᵃ* proved *equal to* the codimension, and the `θ` binomial matches verbatim, but the exact
+fractional-part `{S̃/m}` syntactic shape of the paper's formula is not reproduced. &nbsp;
+*ᶜ* the RLCT is now the **defined, cite-free** `rlctGlobal` (paper Def 8.1(i)) — the opaque assumed `rlct`
+map is **retired** (expedition `rlct-foundation`). Everything but the two analytic bounds is Proved (including
+the paper's own algebraic step, Aoyagi's `λ = ½·codim`); the payoff's only value-path cites are those two
+bounds (Watanabe-upper + Aoyagi-lower). The `r=0` headline's `#print axioms` = std-3 + those two cites only.
+
+**Proof-route notes** — how the Lean relates to L&R's methods (same statements, sometimes different means):
+
+- **Poincaré series:** L&R prove it via equivariant cohomology (the projective–injective longest-root
+  fact); the Lean proof is **purely combinatorial** — Durfee-square + q-orthogonality + PEEL induction.
+- **QIP:** `cCodim` / `numTop` are *defined* as the min / #minimisers of the Cor-3.5 quadratic form over
+  Kostant partitions; equality to the paper's quadratic integer program is a **theorem** (`le_antisymm`,
+  hard direction = the horizontal-lace minimiser), not a definitional restatement.
+- **codim = C:** rests on the **Voigt discharge** (`Core.VoigtDischarge`: geometric codim of an orbit
+  closure = expected codim `dim Ext¹`), proved unconditionally in char 0.
+- **θ = #components:** the combinatorial count and the geometric top-dim-component count of the *actual*
+  rank-locus ideal are reconciled by a proven **catenarity bridge**.
+- **rlct:** the RLCT is a **defined** invariant `rlctGlobal K = sSup{c≥0 : ∀x, K^{-c} loc-integrable}`
+  (Def 8.1(i), cite-free) — the opaque assumed map is retired. The paper's own new algebraic step (Aoyagi's
+  `λ = ½·codim`) is **Proved**; only the two analytic bounds are Cited — labelled `_via_aoyagi` / `cited_*`.
+
+*Open edges and generalization routes (field generality) are tracked in
+[`ROADMAP.md`](ROADMAP.md). Re-verify this table against the Lean source — not docstrings — when updating.*
+
 ## Layout
 
 ```
@@ -61,7 +109,9 @@ that depends on it. `Core` must never import `DLN`.
    (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`; cwd = this repo root).
 3. Spawn thread teammates (explore / formalisation / infra) per the brief; spawn reviewers to audit.
 4. Run the controller tick each turn: recover → ingest → re-anchor → triage → delegate → integrate → surface → review-to-equilibrium.
-5. Close: final integration, synthesis pass, commit on the expedition branch, signal-and-wait before any PR.
+5. Close: final integration, synthesis pass, commit on the expedition branch, then open the close PR (≤ 1
+   per expedition, controller-authorized per [`CLAUDE.md`](CLAUDE.md) § Branch discipline); merging is
+   operator-gated.
 
 ## Lean
 

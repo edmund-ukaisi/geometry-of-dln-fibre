@@ -1,4 +1,4 @@
-import DLNFibre.Core.MatrixKaehler
+import DLNFibre.Core.RingTheory.Derivation.Matrix
 import DLNFibre.Core.MultComorphism
 import Mathlib.Algebra.MvPolynomial.PDeriv
 
@@ -13,8 +13,9 @@ module computes that partial derivative in **closed form**.
 The multiplication map `mult` is a degree-`N` ordered product `A_{N-1} ⋯ A₀`. Differentiating with
 respect to the entries of the single factor `A_i` lands, by the product (Leibniz) rule, on that
 factor alone. Splitting `mult = (suffix `A_{N-1} ⋯ A_i`) · (prefix `A_{i-1} ⋯ A₀`)` at `i` and
-applying the entrywise matrix-product Leibniz (`Core.MatrixKaehler.derivMatrix_mul_apply`) twice
-gives, for the partial derivative `pderiv ⟨i, s, t⟩` (a `Derivation`):
+applying the entrywise matrix-product Leibniz (`derivMatrix_mul_apply`, in
+`Core.RingTheory.Derivation.Matrix`) twice gives, for the partial derivative `pderiv ⟨i, s, t⟩`
+(a `Derivation`):
 
   `pderiv ⟨i,s,t⟩ (multPoly d r c) = (suffix `·s`-column entry) · (prefix `t·`-row entry)`,
 

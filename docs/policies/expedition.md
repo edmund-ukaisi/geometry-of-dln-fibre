@@ -98,6 +98,12 @@ its question in-window (P2, P3).
     (all teammates share one) — isolation becomes nominal. When that happens, run teammates **serially**
     in the shared worktree (one active editor at a time): the centralized-merge integrity still holds, but
     the parallelism is lost.
+    in the shared worktree under a **one-builder/committer-at-a-time rule**: at most one agent building or
+    committing at once (a second concurrent `lake build` corrupts the shared `.lake`; two commits race the
+    git index); a read-only auditor (no build, no commit) may run alongside the one builder; and rungs
+    touching the same file serialize. The centralized-merge integrity still holds, but the parallelism is lost. (a past Stage-3 run: the controller was launched in a worktree, so all
+    teammates shared it; the inherently sequential P1→P2→P3 chain made serial fine. Launch the controller
+    from the main checkout to get true isolation.)
 - **The controller is the sole merger.** Teammates commit only to their own worktree branches; the
   controller is the only agent that integrates — `fetch → merge → resolve conflicts → green-gate
   (build) → commit`. This gives **one coherent integration state the controller alone owns** (so
@@ -328,6 +334,8 @@ committed tree intact throughout. The shape that holds:
 - the expedition cannot CLOSE without a final controller integration deciding *close*.
 - a critical reviewer finding floors a review-to-equilibrium loop.
 - one blocking signal-and-wait: the close-phase PR — the expedition record (map + journal + Lean) becomes a shared artefact.
+- the **bedrock check is run by an independent `hardener`** ([`../../.agent-team/roles/hardener.md`](../../.agent-team/roles/hardener.md)), not only the controller — a decorrelated principles/taste pass (distinct from the correctness audit) at each gate and at step-back, surfacing overclaims, holes-vs-extensions, *and the right extensions* (→ Just-Do-It if within reach, else roadmap). The controller integrates its findings and holds precedence; a critical hardener finding floors a loop like a reviewer finding.
+- one blocking signal-and-wait: the close-phase PR **merge** — opening the close PR (≤ 1 per expedition) is controller-authorized, but the merge, at which the expedition record (exposition + synthesis + Lean) lands as a shared artefact, is operator-gated (see [`../../CLAUDE.md`](../../CLAUDE.md) § Branch discipline).
 
 ## Files
 
@@ -440,6 +448,26 @@ Teammate reports + operator messages wake you automatically — don't poll. This
 Stop at CLOSE, or when the operator pauses.
 ````
 
+### The heartbeat (scheduled tick)
+
+The loop prompt is fired by a **scheduled heartbeat** so an unattended expedition keeps advancing on its own:
+a **durable hourly cron** (`CronCreate`, prompt *"Controller tick — run ONE tick per `<exp>/loop-prompt.md`"*),
+or `/loop`. It is the **operator-away autonomous driver** — *not* a substitute for event wakes: teammate
+completions and operator messages already wake the controller automatically, and while you are actively driving
+in-session you don't wait on it. The heartbeat exists to cover the genuinely-**idle** gaps (waiting on nothing
+the harness will notify you about, or between units of work when the operator is away) so the expedition does
+not stall.
+
+- **An idle firing is a checkpoint, not a no-op.** When the tick fires with nothing new since the last, that is
+  exactly the moment to **regroup, orient, and check in**: re-ground (`priorities.md` / `synthesis.md` /
+  `threads.md`), drift-glance against `brief.md`, look in on in-flight teammates / open PRs / the build state,
+  and surface anything operator-facing — then re-sleep. Treat idle time as orientation time.
+- **Cadence + hygiene.** Pick an **off-minute** (not `:00`/`:30`: schedulers across the fleet fire on the round
+  minute, so an off-minute avoids self-inflicted synchronized load). Make it **durable** only if it must survive
+  a session restart, and note the **~7-day auto-expiry** (re-arm a longer-running expedition). **Stop the cron at
+  close** — and when several expeditions run in parallel, leave the *other* expeditions' heartbeats alone (touch
+  only your own).
+
 ## Close
 
 Final controller integration → the calibration delta (predicted vs actual on the major nodes, into
@@ -450,6 +478,33 @@ expedition branch → signal-and-wait before opening the close PR. The deliverab
 record itself: the map (with its battery and anchors), the journal, and the formalised claims.
 Reader-facing write-ups, when wanted, are commissioned by the operator separately — they are not a
 standing close obligation.
+Final controller integration → finalise the exposition(s) (the human/paper-facing
+deliverable) and a last internal `synthesis.md` pass → commit on the expedition branch →
+open the close PR (≤ 1 per expedition, controller-authorized per
+[`../../CLAUDE.md`](../../CLAUDE.md) § Branch discipline), then signal-and-wait for the
+operator-gated merge. The exposition is the markdown chunk that feeds the
+paper; the formalised claims are its anchors.
+
+## Expositions
+
+`expeditions/<id>/expositions/` holds the **human-facing** docs — the legibility deliverable
+(purpose and the correct > elegant > efficient ordering: [`writing-style.md`](writing-style.md)).
+They are distinct from `synthesis.md`, the controller's *internal* ledger that assumes repo
+context.
+
+- **Controller-curated, by taste.** The controller starts a doc when a reader-facing piece
+  coheres — the whole expedition, a sub-result, or a cluster of threads. Not one per thread; the
+  expedition has at least one, and a sub-unit earns its own only when rich enough.
+- **Draft docs are fluid.** While `status: draft`, the controller may freely restructure a doc —
+  including a massive refactor (split / merge / rewrite) — as understanding improves. Do not be
+  precious about draft structure.
+- **Stable docs are protected.** Once the **operator marks a doc `status: stable`** (read and
+  blessed), the controller treats it as fixed: additive or careful edits only, no churn. A
+  massive refactor of a stable doc requires the operator to re-open it (`stable` → `draft`).
+- **Cadence.** Create or update at result-crystallisation (a claim verified + formalised +
+  reviewed) and at close — not every STEP_BACK.
+- **Promotion.** When a topic matures across expeditions, a stable exposition is synthesised into
+  the cross-expedition library `theory/expositions/<topic>.md`.
 
 ## Anti-patterns
 

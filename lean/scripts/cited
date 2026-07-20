@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# cited — the citation-cordon repo gate (ENFORCING: nonzero exit on any violation).
+#
+#   docs/policies/citation-cordon.md   (the mechanism + the declare-a-cite workflow)
+#
+# Sibling to `scripts/sorries` (which is informational, always exit 0). This one is the GATE:
+# it FAILS the build if any public `DLNFibre` declaration rests on an untagged, non-foundational
+# axiom (UNACCOUNTED ≠ ∅) or any `DLNFibre` cite axiom is not `@[cited]` + in a `…Cited.lean` file.
+#
+# Runs `lake exe cited-audit` (built via the shared-store throttle `lb`). Pass-through args go to the
+# executable, e.g.  `scripts/cited --manifest`  prints the per-source cite manifest (informational).
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LEAN_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$LEAN_DIR"
+
+# Build the executable (and its imported env) through the throttled shared-store build.
+"$SCRIPT_DIR/lb" cited-audit >&2
+
+source "$HOME/.elan/env" 2>/dev/null || true
+exec lake exe cited-audit "$@"

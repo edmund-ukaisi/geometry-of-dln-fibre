@@ -33,7 +33,7 @@ internal; the domain / dimension `δ` follow from `Sd` being a polynomial locali
 
 namespace DLNFibre.Core
 
-open Matrix MvPolynomial
+open Matrix MvPolynomial Dimension
 
 universe u
 

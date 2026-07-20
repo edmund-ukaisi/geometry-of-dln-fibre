@@ -1,0 +1,16 @@
+**(A)** Verdict: injectivity-free **YES**.  
+This is forced by the stated signatures: `pivotDatumOfMemBasicOpen` takes only `hmem : p ∈ basicOpen (chartDsigAt d r s t)` and extracts `Injective s ∧ Injective t` internally via lemma #4. Injectivity is still needed to build `PivotDatum`, but it is not an explicit or hidden argument in the selector inputs as described. Caveat: this assumes no typeclass/implicit argument to `chartDsigAt`, `basicOpen`, or the atlas field itself carries selector injectivity; your provided signatures do not show one.
+
+**(B)** Verdict: genuine equality, but definitionally shallow.  
+Forced by the definitions as stated: `pivotElt I := chartDsigAt d r I.s I.t`, and `pivotDatumOfSelectors` sets `.s := s`, `.t := t`, so `pivotElt (...) = chartDsigAt d r s t` is legitimately `rfl`. It is not a theorem about determinants or quotients; it is packaging correctness. But it does assert the produced `PivotDatum` localizes at exactly the same sweepSigmaRing element as the chart, because both sides are definitionally the same quotient element.
+
+**(C)** Verdict: non-vacuity **YES in the intended nonempty rank-exactly setting**, with edge cases.  
+The non-vacuity argument depends on a fact not verified from your description: existence of a point in `productRankLocus d r` whose product matrix has rank exactly `r`, plus a rank theorem saying some injective `r × r` minor is nonzero at that point. Given such a point `x`, its coordinate/maximal ideal should not contain the corresponding `chartDsigAt s t`, so `basicOpen(chartDsigAt s t)` is inhabited. This is exactly why using rank-EXACTLY-`r` matters.
+
+Edge cases: for `r = 0`, the determinant is `1`, so the basic open is the whole spectrum if the quotient ring is nontrivial; that is non-vacuous but somewhat degenerate, and injectivity of empty selectors is automatic. If `sweepSigma` is empty, then `vanishingIdeal(∅)` is typically top, the quotient is the zero ring, and every basic open is empty; then lemma #4 is vacuous. That would be an honest scope condition: the headline should not imply non-vacuity without assuming/proving the rank-exactly locus is nonempty for the relevant dimensions and field/realizability hypotheses.
+
+**(D)** Verdict: row/column usage **YES**, subject to the stated Mathlib semantics.  
+Forced by your stated `submatrix s t` convention: row `i` of `submatrix s t` is `fun col => multPoly d (s i) (t col)`, so `s i = s j` gives equal rows and justifies `det_zero_of_row_eq`. Similarly, `t i = t j` gives equal columns and justifies `det_zero_of_column_eq`. Caveat only if Mathlib’s lemma argument order or `submatrix` indexing differs from the description.
+
+**(E)** Overall: the honesty claim is **defensible with a scope caveat**.  
+The PR really does derive selector injectivity from chart membership, and the `pivotElt = chartDsigAt` equality is genuine as a packaging/definition correctness statement in `sweepSigmaRing`. The main overclaim to rewrite is non-vacuity: it is not guaranteed merely by the formal lemma signatures. The PR should explicitly say that the mechanism is non-vacuous on inhabited rank-exactly charts, or separately prove that `sweepSigma` has a rank-`r` point and that some injective minor is nonzero there. Empty rank locus and the degenerate `r = 0` case should be acknowledged rather than hidden under the headline.

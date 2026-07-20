@@ -1,6 +1,7 @@
 import DLNFibre.Core.OrbitCodim
 import DLNFibre.Core.Orbit
 import DLNFibre.Core.NullstellensatzCodim
+import DLNFibre.Core.AlgebraicGeometry.Group.Orbit.Basic
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 import Mathlib.LinearAlgebra.Matrix.Adjugate
@@ -362,24 +363,48 @@ theorem vanishingIdeal_range_orbitMap_eq_ker [Infinite k] {d : Fin (N + 1) → �
     show MvPolynomial.aeval (orbitMap M P) g = 0
     rw [MvPolynomial.aeval_eq_eval, ← evalGroupRing_orbitPullback M P g, hg', map_zero]
 
+/-! ## The abstract carrier instance: the DLN matrix-tuple is one `AffineGVariety` -/
+
+/-- **The DLN matrix-tuple as an abstract affine-`G`-variety.** The carrier instance with ambient
+coordinate index `ρ = RepCoord d`, group coordinate ring `R = 𝒪(G_d) = groupRing d` (a domain,
+`groupRing_isDomain`), and orbit-coordinate family `fρ = genericOrbitCoord M`. Its abstract pullback
+`(dlnOrbit M).pullback = aeval (genericOrbitCoord M) = orbitPullback M` is definitionally the DLN
+orbit-map pullback. This is the first instance of the abstract orbit-as-image irreducibility engine
+(`Core.AlgebraicGeometry.Group.Orbit.Basic`). -/
+noncomputable def dlnOrbit {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
+    AlgebraicGeometry.Group.Orbit.AffineGVariety k where
+  ρ := RepCoord d
+  R := groupRing (k := k) d
+  fρ := genericOrbitCoord M
+
+/-- The abstract pullback of the DLN carrier instance is the DLN orbit-map pullback (by `rfl`). -/
+theorem dlnOrbit_pullback {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
+    (dlnOrbit M).pullback = orbitPullback M := rfl
+
 /-! ## The headline: the orbit `O_M` is Zariski-irreducible (its vanishing ideal is prime) -/
 
 /-- **The orbit is Zariski-irreducible (L1).** The vanishing ideal of the `G_d`-orbit `O_M ⊆
 RepCoord d → k` is **prime**: `O_M` is the image of the irreducible group `G_d` under the polynomial
 orbit map `μ_M`, so `vanishingIdeal O_M = ker μ_M^*` (`vanishingIdeal_range_orbitMap_eq_ker`) is a
-kernel into the domain `𝒪(G_d) = Localization.Away Δ` (`groupRing_isDomain`), hence prime
-(`RingHom.ker_isPrime`). The foundation L0/L1/L3/L6 stand on. -/
-theorem isPrime_vanishingIdeal_orbitSet [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+kernel into the domain `𝒪(G_d) = Localization.Away Δ` (`groupRing_isDomain`), hence prime. Derived
+from the abstract orbit-as-image engine: `vanishingIdeal O_M = ker (dlnOrbit M).pullback`
+(the orbit↔kernel bridge), which is prime by `AffineGVariety.isPrime_ker_pullback`. The foundation
+L0/L1/L3/L6 stand on. -/
+theorem isPrime_vanishingIdeal_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     (MvPolynomial.vanishingIdeal k (orbitSet M) :
       Ideal (MvPolynomial (RepCoord d) k)).IsPrime := by
-  rw [← range_orbitMap, vanishingIdeal_range_orbitMap_eq_ker]
-  exact RingHom.ker_isPrime (orbitPullback M).toRingHom
+  refine (dlnOrbit M).isPrime_vanishingIdeal_of_eq_ker ?_
+  have hbridge : MvPolynomial.vanishingIdeal k (orbitSet M)
+      = RingHom.ker (orbitPullback M).toRingHom := by
+    rw [← range_orbitMap, vanishingIdeal_range_orbitMap_eq_ker]
+  rw [dlnOrbit_pullback]
+  exact hbridge
 
 /-- **The orbit is Zariski-irreducible (L1, point-space form).** `O_M` is Zariski-irreducible in the
 sense of the L0 dictionary (`IsZariskiIrreducible`), i.e. its image in `Spec` is irreducible — the
 direct consumer for the L0 codimension bridge. -/
-theorem isZariskiIrreducible_orbitSet [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem isZariskiIrreducible_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     IsZariskiIrreducible (orbitSet M) :=
   (isZariskiIrreducible_iff_isPrime_vanishingIdeal (orbitSet M)).mpr
@@ -389,14 +414,19 @@ section Witness
 
 /-! ## Non-vacuity witness
 
-The `(2,2,2)/ℚ` full-rank witness `tupleWitnessQ` (`ℚ` is not algebraically closed, so the headline
-needs `IsAlgClosed`; the orbit-set and pullback objects, which do not, are exercised here on the
-concrete tuple). -/
+The `(2,2,2)/ℚ` full-rank witness `tupleWitnessQ` (`ℚ` is infinite, so the primeness headline now
+fires here — it needs only `[Infinite k]`, not `[IsAlgClosed k]`; the orbit-set and pullback objects
+are exercised on the concrete tuple). -/
 
 /-- The orbit set of the `(2,2,2)/ℚ` witness contains the witness's own flattening — the orbit is
 inhabited (`P = 1`). The orbit objects are non-vacuous on a concrete matrix tuple. -/
 example : canonicalCoord dWitness tupleWitnessQ ∈ orbitSet tupleWitnessQ :=
   ⟨tupleWitnessQ, ⟨1, one_smul _ _⟩, rfl⟩
+
+/-- The primeness headline now fires on the `(2,2,2)/ℚ` witness (`ℚ` is infinite): the orbit's
+vanishing ideal is prime, with no algebraic-closedness hypothesis. -/
+example : (MvPolynomial.vanishingIdeal ℚ (orbitSet tupleWitnessQ)).IsPrime :=
+  isPrime_vanishingIdeal_orbitSet tupleWitnessQ
 
 /-- The orbit map of the witness, evaluated at the identity base change, is the witness's own
 flattening. -/

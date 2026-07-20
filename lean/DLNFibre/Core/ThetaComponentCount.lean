@@ -28,8 +28,9 @@ distinct partitions ⟹ distinct rank patterns ⟹ distinct orbit closures ⟹ d
 the pen-and-paper (★) certificate. So the unconditional built content is the realizer infrastructure
 + injectivity; the count headline is gated.
 
-**Typeclass.** `[IsAlgClosed k] [CharZero k]` — inherited from the Voigt codim (the geometric reading
-`codimRepCanonical = codimForm`) + the Nullstellensatz primality. **Dependency rule:** `Core` only.
+**Typeclass.** `[CharZero k] [Infinite k]` — `[CharZero k]` from the Voigt codim (the geometric reading
+`codimRepCanonical = codimForm`; no algebraic closedness), `[Infinite k]` from the orbit-ideal
+primality. **Dependency rule:** `Core` only.
 -/
 
 namespace DLNFibre.Core
@@ -170,7 +171,7 @@ theorem rank_mult_realizerD {d : Fin (N + 1) → ℕ} {r : ℕ}
 /-- **The realizer's geometric codim is `codimForm`.** `codimRepCanonical (Ō_{realizerD m})` has
 `.toNat = codimForm N (extendℤ m)` — the per-partition geometric reading transported to the
 realizer over `d`. -/
-theorem codimRepCanonical_orbitRankLocus_realizerD [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_orbitRankLocus_realizerD [CharZero k]
     {d : Fin (N + 1) → ℕ} {r : ℕ}
     {m : Fin (N + 1) × Fin (N + 1) → ℕ} (hm : m ∈ kostantPartitions d r) :
     ((codimRepCanonical (orbitRankLocus (realizerD (k := k) hm))).toNat : ℤ)
@@ -294,7 +295,7 @@ top-dimensional ones) is the content delivered by the gating hypotheses `hLowerB
 `bijOn_partitionIdeal_topComponents_of`, not asserted here: `cCodim` is a fixed combinatorial integer
 (the min over corner-`r` *orbits*), independent of the minimal primes, so this is a genuine Spec-side
 subset, not an alias of the bijection's image. -/
-def topComponents [IsAlgClosed k] [CharZero k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+def topComponents [CharZero k] [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     (h : (kostantPartitions d r).Nonempty) :
     Set (Ideal (MvPolynomial (RepCoord d) k)) :=
   {p | p ∈ (sigmaIdeal (k := k) d r).minimalPrimes ∧ p.height = (cCodim d r h).toNat}
@@ -337,7 +338,7 @@ corner-`≤ r` orbit has codim `≥ cCodim`, so a minimising realizer is globall
 bijection from the minimising Kostant partitions (counted by `numTop`) onto the top-dimensional
 components of `Σ̄^r`. The injectivity is unconditional (`partition_eq_of_rankPattern_realizerD_eq`);
 the minimising property in `SurjOn` is *derived* from the top-dimensional height, not assumed. -/
-theorem bijOn_partitionIdeal_topComponents_of [IsAlgClosed k] [CharZero k]
+theorem bijOn_partitionIdeal_topComponents_of [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (hLowerBound : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       ((cCodim d r h).toNat : ℕ∞) ≤ codimRepCanonical (orbitRankLocus M'))
@@ -421,7 +422,7 @@ two unbuilt `Core` lemmas — the corner-monotonicity of `cCodim` and the Gabrie
 of a corner-`r` Kostant partition — recorded in the module roadmap. The realizer infrastructure and
 the bijection's **injectivity** are proved unconditionally; `MapsTo`/`SurjOn` are reduced to
 `hLowerBound`/`hRecover`. -/
-theorem numTop_eq_ncard_topComponents_of [IsAlgClosed k] [CharZero k]
+theorem numTop_eq_ncard_topComponents_of [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (hLowerBound : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       ((cCodim d r h).toNat : ℕ∞) ≤ codimRepCanonical (orbitRankLocus M'))
@@ -435,7 +436,8 @@ section Witness
 
 /-! ## Non-vacuity witness — `(2,2,2)`, `r = 0`, over `AlgebraicClosure ℚ`
 
-The `(2,2,2)` zero-product locus `Σ̄^0` (`[IsAlgClosed] [CharZero]`). The minimiser `mMin`
+The `(2,2,2)` zero-product locus `Σ̄^0` over the witness field `AlgebraicClosure ℚ`
+(`[IsAlgClosed] [CharZero]`; the headline itself needs only `[CharZero] [Infinite]`). The minimiser `mMin`
 (`Core.CTheta`, the `(1,1)`-orbit, `codimForm = 3 = cCodim`) is in `minimisingPartitions`, and its
 `partitionIdeal` is the orbit ideal of the realizer over `d` — a member of the corner-`0` family
 `orbitIdeals d222 0`. The injectivity half of the bijection (unconditional) and the realizer

@@ -155,40 +155,6 @@ theorem endpointGauge_last {N : ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
   unfold endpointGauge
   rw [dif_neg Fin.last_pos.ne', dif_pos rfl]; rfl
 
-/-! ## The Schur-complement normal-form identity
-
-The pivot-cell factorization, abstractly: for a block matrix `M = [[Δ, B12], [B21, B22]]` over a
-commutative ring with `Δ` invertible and `B22 = B21 Δ⁻¹ B12` (the rank-`r` / fibre condition),
-`L⁻¹ · M · H⁻¹ = diag(I_r, 0)`, where `L = [[I,0],[B21 Δ⁻¹,I]]`, `H = [[Δ,B12],[0,I]]` (so
-`L⁻¹ = [[I,0],[−B21 Δ⁻¹,I]]`, `H⁻¹ = [[Δ⁻¹,−Δ⁻¹ B12],[0,I]]`). The matrix heart of the chart
-normalization; network-free, over any `CommRing`. -/
-
-/-- **Schur-complement normal form** (block form). With `Δ` invertible and the Schur relation
-`B22 = B21 Δ⁻¹ B12`, the lower/upper unitriangular conjugation collapses `M` to `diag(I_r, 0)`. -/
-theorem schurComplement_normal_form {R : Type*} [CommRing R] {r s t : ℕ}
-    (Δ : Matrix (Fin r) (Fin r) R) (B12 : Matrix (Fin r) (Fin t) R)
-    (B21 : Matrix (Fin s) (Fin r) R) (hΔ : IsUnit Δ.det) :
-    (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) R) (0 : Matrix (Fin r) (Fin s) R)
-        (-(B21 * Δ⁻¹)) (1 : Matrix (Fin s) (Fin s) R))
-      * (Matrix.fromBlocks Δ B12 B21 (B21 * Δ⁻¹ * B12))
-      * (Matrix.fromBlocks Δ⁻¹ (-(Δ⁻¹ * B12)) (0 : Matrix (Fin t) (Fin r) R)
-          (1 : Matrix (Fin t) (Fin t) R))
-      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) R) 0 0 0 := by
-  have hinv : Δ * Δ⁻¹ = 1 := Matrix.mul_nonsing_inv Δ hΔ
-  have hinv' : Δ⁻¹ * Δ = 1 := Matrix.nonsing_inv_mul Δ hΔ
-  have c1 : B21 * Δ⁻¹ * Δ = B21 := by rw [Matrix.mul_assoc, hinv', Matrix.mul_one]
-  have c2 : Δ * (Δ⁻¹ * B12) = B12 := by rw [← Matrix.mul_assoc, hinv, Matrix.one_mul]
-  rw [Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj.mpr]
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · simp only [Matrix.one_mul, Matrix.zero_mul, add_zero, Matrix.mul_zero, hinv]
-  · simp only [Matrix.one_mul, Matrix.zero_mul, add_zero, Matrix.mul_one, Matrix.mul_neg, c2,
-      neg_add_cancel]
-  · rw [Matrix.mul_zero, add_zero, Matrix.one_mul, Matrix.neg_mul, c1, Matrix.add_mul,
-      Matrix.neg_mul, neg_add_cancel]
-  · rw [Matrix.mul_one, Matrix.one_mul, Matrix.neg_mul, c1, Matrix.one_mul, Matrix.add_mul,
-      Matrix.neg_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc B21 Δ⁻¹ B12]
-    abel
-
 end DLNFibre.Core
 
 /-- Non-vacuity witness: at `(q,p,r) = (2,2,1)` over `ℚ`, the `1×1` pivot block over `SchurLoc` is

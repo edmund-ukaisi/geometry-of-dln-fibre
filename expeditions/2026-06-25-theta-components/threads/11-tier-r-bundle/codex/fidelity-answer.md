@@ -1,0 +1,11 @@
+**POINT 1**
+
+**VERDICT: correct, with only geometric-vacuity caveats.**  
+The algebra isomorphism is mathematically valid unconditionally: localization commutes with base change, and no hypotheses such as `f ≠ 0`, `F` flat, `F ≠ 0`, or finite `ι` are needed. Since `k` is a field, flatness is automatic anyway, but the localization-base-change statement itself is more general. Under the standard polynomial base-change equivalence, `MvPolynomial.map (algebraMap k F) f` corresponds exactly to `f ⊗ 1`, up to the orientation convention of the chosen equivalence. Degenerate cases do not break the isomorphism: if `f = 0`, both sides are the zero ring; if `F` is the zero algebra, both sides are again zero; if `f` is a unit, both sides reduce to ordinary polynomial base change. The caveat is interpretive: when `f = 0` or `F = 0`, the associated principal open is empty/zero, so a geometric “chart” statement may be vacuous, but the AlgEquiv is still correct.
+
+**POINT 2**
+
+**VERDICT: B4 is mathematically correct as stated; the headline “locally trivial” is an overclaim unless translated charts/open cover are actually constructed.**  
+For 2(a), one top-left chart plus rank-orbit transitivity is a valid strategy toward local triviality, because one could transport the chart by the `GL_m × GL_n` action, but it is not itself the same thing as proving a Zariski open cover with compatible product trivializations. If the formalisation only contains the single chart and fibrewise/base homogeneity, then “locally trivial over `Mat^{=r}`” is too strong as a theorem name/docstring. Minimal honest wording: “single-chart trivialization plus rank-orbit fibre homogeneity,” or “base-change homogeneous over the rank-`r` stratum.”  
+For 2(b), yes: with vertices indexed by `Fin (N+2)`, even `N = 0` gives `Fin 2`, so the endpoints are `0` and `1`; the zero-arrow/constant-identity pathology belongs to a `Fin (N+1)`-style setup, not this one. The hypothesis `0 ≠ last` is therefore automatically and contentfully satisfied here.  
+For 2(c), yes: over a field, rank is the complete invariant for two-sided equivalence of matrices under `GL(d_last) × GL(d_0)`. The produced base change with `P_last = eL`, `P_0 = eR⁻¹`, and all inner units equal to `1` is exactly the expected realization, since equivariance leaves only the two endpoint factors after telescoping.
