@@ -6165,3 +6165,20 @@ fallback needed. Phase-2 = one new def + coherence + the induction, per-node ato
 banked. t14 parked for the Phase-2 GO (trigger: both walks landing). t14's branch merged
 to integration so walk-t20's next merge sees the full GeoAtlasTransfer state and resolves
 the append-union locally.
+
+## 2026-07-20 tick 375: the four-case grind scoped honestly — NEW prod-transform infra is the bulk; steer issued
+loss-t15's pre-dive scoping (the honest-scale discipline): nothing exists for
+prod-under-chart — t14's read suite tracks individual FLAT coordinates and collapses to a
+scalar det; the value walk must track how the PREFIX PRODUCT's entries move, needing a new
+prodAux↔flat-coords bridge + per-entry chart transport (the design note's "strictly
+deeper" made concrete). Its tripwire read: option C HOLDS on statement-truth (the parent
+exposes unresolved rows as concrete prodPrefix values; the clearing COMPUTES newly-cleared
+= bmon·e_J from the exposed residual + the α-Schur — no carried block needed); the work is
+computation, not re-design. Scale: multi-arc, comparable to t14's four stages — the
+expedition's critical path now runs through this build, as it must (it IS the one
+mathematical hole). STEER: solo on the bridge NOW with a LIGHT statement gate (the
+indexing/frame risk class has bitten seven times — post the bridge statements first);
+co-builder decision DEFERRED to the bridge green with walk-t20 as the plan (closest
+sibling build; natural case split: t15 takes the heavy α-Schur clearing pair, t20 the
+α=id pair + the instantiation). The fannedG question was moot (crossed — already
+canonical). Board: three lanes grinding, zero open design questions.
