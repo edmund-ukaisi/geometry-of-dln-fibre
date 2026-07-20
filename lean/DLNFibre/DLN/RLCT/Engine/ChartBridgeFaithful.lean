@@ -89,7 +89,10 @@ theorem chartBridgeFaithful_buildTree (M : Fin (L + 1) → ℕ) (_hL : 0 < L)
       -- props are `LeafPullback` (loss-seat's α gauge) and `LeafJacobian` (t14's fold bundle).
       (fun c hc =>
         let ⟨hmeas, hbdd, hdiv, hres, hdisj, _, _⟩ := geoAtlas_leaf_ledgerProps c hc
-        ⟨hmeas, hbdd, hdiv, hres, hdisj, geoAtlas_leaf_ae_injOn c hc, sorry, sorry⟩),
+        ⟨hmeas, hbdd, hdiv, hres, hdisj, geoAtlas_leaf_ae_injOn c hc, sorry,
+          geoAtlas_leaf_leafJacobian (flatDim_pos_of_append _hL
+            (show (0 : ℕ) < widthMinUpto M (0 + 1) by
+              rw [widthMinUpto, Finset.lt_inf'_iff]; exact fun i _ => _hMpos i)) c hc⟩),
       -- (C) exponent agreement — from the bridge:
       (fun c hc =>
         let ⟨_, _, _, _, _, hexpDiv, hexpRes⟩ := geoAtlas_leaf_ledgerProps c hc
