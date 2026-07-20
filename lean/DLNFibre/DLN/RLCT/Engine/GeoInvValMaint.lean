@@ -89,7 +89,7 @@ theorem invVal3f2_conRoot (cleared dropped : ConState L → Fin (M 0) → Prop)
 /-! ## Old-row maintenance tools (resD-independent — the cleared-clause bmon pullback) -/
 
 /-- **The α gauge fixes every child divisor's birth-diagonal read** (entry-level; the per-read inside
-walk-t20's `alphaGauge_ledgerMonomial_neutral`, extracted for the value bmon pullback): `id` on
+walk-t20's `alphaGauge_ledgerMonomial_neutral`, for the value bmon pullback): `id` on
 case-1(1)/rollover; the interior Schur fold fixes birth diagonals on case-1(2)/case-2 (they sit at
 row `< cleared`, disjoint from the schurCells at row `≥ cleared+1`). -/
 theorem alphaGauge_fixes_birthFlatCoord (g : GeoChart M) (child : ConState L) (h : 0 < flatDim M)
