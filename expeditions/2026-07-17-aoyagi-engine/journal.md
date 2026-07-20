@@ -6035,3 +6035,22 @@ the leaf, while mid-walk rollovers contaminate and reset (leg-ii verified). Cand
 state-trace battery protocol handed to loss-t15 — it owns every instrument; t14's answer
 demoted to a cross-check. The lane is UNBLOCKED without waiting on anyone. Elder round-3
 cover ruling still in flight; walk-t20 merged integration and is on its five steps.
+
+## 2026-07-20 tick 368: elder round-3 ruling — the ENLARGED-CUBE route; replay gate dispatched; fork 15 fifth amendment
+The elder OWNED its collection miss (assumed different-layers disjointness; the same-layer
+spine with nested α-supports is exactly where commutation dies) and re-framed the death as
+a FIDELITY signal — the global composite was the un-faithful trick; beauty-as-instrument.
+THE RULING: enlarged-cube node-local cover — thread a scalar RADIUS (ρ_{n+1} = ρ_n(1+ρ_n)),
+per node (i) α_n''cube(ρ_{n+1}) ⊇ cube(ρ_n) from the BANKED inverse-shear bound, (ii) the
+id node_selfCover at ρ_n (the underlying atom holds at any R, PivotCover:109 — trivial
+generalization); srcBox_leaf = cube(ρ_leaf); the α's never compose, so the same-layer
+overlap that killed the collection is IRRELEVANT. Clause (A) unchanged; cost MODERATE
+(radius-threaded tiling induction — the only new content); 2b/2c re-bank over cube(ρ_leaf);
+2d + the loss walk pointwise-untouched (loss bounds re-domain to the finite ρ_leaf; ρ
+finite at finite depth — flagged). Touchstone: node-local per-step IS Aoyagi's per-Case
+blow-up geometry (worked.tex:499-519) — the route is a fidelity GAIN. Use-twice split
+confirmed formally (corner ∉ interior-α-support, 36/36 — 2d stands). GATE dispatched:
+pnp-cover reopened to REPLAY its own kill under the enlarged cube ((3,3) + the (3,3,3)
+same-layer spine at ρ 1→2→6) — covers ⟹ the route ratifies and the 2a build commissions;
+residual gap ⟹ sheared-target fallback. Compass fork 15 carries the FIFTH amendment (the
+complete srcBox arc: deviation refuted → pullback refuted → enlarged-cube ruled).
