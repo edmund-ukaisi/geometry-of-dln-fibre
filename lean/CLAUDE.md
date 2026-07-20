@@ -60,6 +60,13 @@
   integration-ready, green-gate the FULL `lake build DLNFibre`** (or at least `rg` your new top-level names
   against the siblings you'll sit beside). Reuse shared anchor constants by `import`ing the module that owns
   them, don't re-declare. (Caught `RouteM222Det` re-defining `RouteM222StructAdm`'s `t222`, 2026-06-27.)
+  **The clash-grep must cover ALL new top-level names in EVERY touched file, not just the new module's** —
+  a helper added to an EXISTING file (e.g. a `Foundations/` lemma) clashes with a sibling's `private` copy
+  of the same fact just as readily, and `private` on the sibling does NOT protect you (the public import
+  wins the name and the sibling's declaration errors). Resolution preference: keep ONE public canonical
+  form in the most foundational file and delete private duplicates (uses resolve to the import) — not
+  privatize the new one (timid, keeps the duplication). (Caught `Lambda.admBound_le_Msucc` vs
+  `Skeleton`'s private copy, 2026-07-20; two independent fixes reconciled to public-canonical.)
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —
