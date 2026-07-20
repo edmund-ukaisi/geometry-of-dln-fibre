@@ -25,7 +25,7 @@ open scoped BigOperators
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
 /-- **The value invariant `Inv_val`** (abstract in the partial-diagonal family `partialDiag`, per
-rider 2 — the concrete block encoding `diag(b(s))·[[E_J,O],[O,D_J]]` is pinned during the build): the
+rider 2 — the block encoding `diag(b(s))·[[E_J,O],[O,D_J]]` is pinned during the build): the
 acc-threaded prod-diagonalization. `prod M (acc w) = partialDiag s w` at the state `s` the fold
 reaches. Base `partialDiag conRoot w = prod M w` (raw product); the four per-`stepUpdate`-case
 maintenance advances one clearing step (the α Schur clears one residual column/block); the terminal
