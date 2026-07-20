@@ -6444,3 +6444,20 @@ NOTE for the elder (α designer): its "Lg single-layer easy" ease-estimate was o
 FRAME holds (Lg ≤S-local, Rg the interface — the locality-preservation ruling stands); no
 re-ruling needed — it'll ratify pnp-rg's co-derived Lg+Rg shape. Only the per-edge Lg+Rg
 placement is open; the fix (full Q,P) + acceptance oracle (clear_pivot) are pinned.
+
+## 2026-07-20 tick 389: rebuild ledger delivered (sequencing spine); #23 done (fix exists), #24 (exact cells) in flight
+loss-t15's consumer-rebuild ledger (exact Lean lemmas classified survive/change/false):
+GeoAlphaGauge — schurCells_ne/pairwise/flat_read + elemShearFold_* SURVIVE (interior),
+det-1 (residualSchurShear/alphaGauge_abs_det_one) CONCLUSION survives (Lg/Rg unipotent),
+srcBox bound CHANGES (compounds past R(1+R), pnp-cover radius-thread structure survives).
+GeoAtlasTransfer (walk-t20) — residualSchurShear_fixes_of_not_mem statement survives
+(exclude new targets), schurCells_fst_ne_birthFlatCoord LOAD-BEARING SPLIT (Lg ≤S clean;
+Rg S+1 = the locality question, task #24), alphaGauge_ledgerMonomial_neutral CONCLUSION at
+risk for Rg/S+1 vs later births. GeoInvValMaint (loss-t15) — alphaGauge_fixes_birthFlatCoord
+same Rg dependency; oncone α-factor reshapes (form survives). leafJacobian det-1-transparent
+(conclusion survives). SEQUENCING: Lg (≤S clean) → Rg (waits #24 overlap) → walk-t20 redo →
+value maintenance re-opens. Told loss-t15 to BANK the ledger as a thread doc (navigator
+prices off it) + pre-stage the Lg build PARAMETRIC in the target cells (instantiate on #24 —
+front-loads the ≤S-clean Lg, form-independent). STATUS clarified: pnp-rg #23 (leaf diagonal —
+fix WORKS) done; #24 (exact per-edge Lg/Rg placement + C^{S+1} overlap) IN FLIGHT — the exact
+cells come with #24. Navigator convene fires at #24's landing (the elder-ruled trigger).
