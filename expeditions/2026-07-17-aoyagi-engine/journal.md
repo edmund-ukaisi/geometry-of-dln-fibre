@@ -5650,3 +5650,19 @@ front-pivot + α machinery; R7 completeness vs the landed SteerInv suite; zero-w
 R4-small scope), each with disk-vs-paper cites, gap-as-statements, cost class, and
 kill-condition; one recommended next-expedition central question. Deliverable:
 threads/22-long-range/scout-lr2-runway.md.
+
+## 2026-07-20 tick 346: loss-t15 harvested the resid-free interior; binder diff on the four cases = PASS w/ 4 flags
+loss-t15 (report crossed the relays): banked green clean-three (a8fb8a166) — the tGeoG walk
+plumbing (mem_edgesLeaves_fannedG_charted/chartless, the α-atlas analogs of t14's id-gauge
+fan decomposition; note: the value walk needs NO differentiability lemmas — it tracks prod
+VALUES, a real simplification vs the det walk). Its four maintenance statements + walk
+headline drafted t14-aligned (design addendum §IV). MY BINDER-VS-DESIGN DIFF: PASS —
+direction/threading/children exact vs ledger_det_maintenance_* (case-2 and case-12 children
+verbatim; rollover acc-unchanged; conRoot headline scope) — with FOUR flags sent before
+statement commit: (1) missing `h : 0 < flatDim M` binder (its own hpivcell/hucell use it);
+(2) hexpf dropped — confirm droppable or walk-supply via DivExpPos, no mid-grind re-lock;
+(3) case-11 child must be t14's EXACT bumpedExp literal, not the "<placeholder>" (the
+tick-286 class); (4) "α = id at case-11" is a PROOF OBLIGATION to verify against
+alphaGauge's per-edge def, not a statement assumption. Wake sent (its three inbox relays +
+this verdict unblock the full lane: statements → hybrid payload+base → the last gate post →
+the four-case grind). Recon seats (navigator-6, scout-lr2) still out.
