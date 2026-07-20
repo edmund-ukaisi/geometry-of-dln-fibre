@@ -1,4 +1,4 @@
-import DLNFibre.DLN.RLCT.Engine.GeoDiagSwap
+import DLNFibre.DLN.RLCT.Engine.GeoFoldRegroup
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.GeoLeafJacobian` — the fold-Jacobian headline over the normalized atlas (t11)
@@ -25,21 +25,32 @@ open scoped BigOperators
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
 /-- **The fold-Jacobian headline** (finding-2, over the normalized built atlas): every geometric atlas
-piece's chart determinant is the ledger monomial. This is `LeafJacobian`'s β-det clause (β := chartMap,
-ψ := id). Proof = the banked composite-det (`abs_det_fderiv_foldr_comp`) + per-edge diagonal read
-(`geoChartMap_swap_fderiv_det`) + the cert §1 regrouping cocycle (the tracked `sorry`).
+piece's chart determinant is the FULL-LEDGER monomial — the R7 `LeafJacobian` β-det identity conjunct
+(β := chartMap, ψ := id), with the full-divisor coordinate map `fc` carried EXISTENTIALLY.
 
-**SCOPE = `conRoot`** (t14 correction, team-lead ruling (A), 2026-07-19; addendum §t14). The predecessor's
-locked binder `(s : ConState L)` was FALSE at generic `s`: a terminal `s` carrying an analytic divisor of
-exponent ≥ 2 gives a single-leaf atlas with `chartMap = id`, so `|det D id w| = 1` while the RHS vanishes
-at `w = 0` (machine-checked, `GeoLeafJacobianDisproof.geoAtlas_fold_det_generic_false`). The honest scope
-(finding-1; docstring line 9; addendum lines 23-27) is `conRoot`, where `numDiv = 0` and the full fold
-blows up every divisor. The internal induction is the acc + incoming-ledger-threaded cocycle over generic
-`s` under `DivBirthInv` (cert §2); `conRoot` instantiates it with the empty incoming ledger. -/
-theorem geoAtlas_fold_det (c : LeafData M)
-    (hc : c ∈ geoAtlas (buildTree M (conOracle M) (conRoot : ConState L))) (w : Params M) :
-    |(fderiv ℝ c.chartMap w).det|
-      = ∏ k : Fin c.numDiv, |paramsEquivFlat M w (c.divCoord k)| ^ (c.divExp k - 1) := by
-  sorry
+**SCOPE = `conRoot`; FORM = full ledger** (t14, team-lead ruling (A) + charge-6/R7, 2026-07-19..20). Two
+statement corrections landed here, both machine-forced:
+* the predecessor's locked binder `(s : ConState L)` was FALSE at generic `s` (a terminal `s` with an
+  analytic divisor of exponent ≥ 2 gives a single-leaf `chartMap = id`, so `|det D id| = 1 ≠ 0 = RHS`
+  at `w = 0`; `GeoLeafJacobianDisproof.geoAtlas_fold_det_generic_false`) — corrected to `conRoot`;
+* the analytic RHS (`c.numDiv`/`c.divExp`) was FALSE (reachable terminals carry stranded `t̃>0` divisors
+  of `divExp > 1` that the geometric fold DOES blow up; `cert-stranded-dichotomy`, witness `M=(2,3)`) —
+  corrected to the FULL ledger (`c.fullNumDiv`/`c.fullDivExp`).
+
+Proof = `geoAtlas_cocycle` (the acc + incoming-ledger-threaded cocycle over generic `s` under
+`DivBirthInv`/`DivExpPos`, `GeoFoldRegroup`) instantiated at `conRoot`/`id` with the empty incoming
+ledger (`ledgerMonomial_conRoot`, `|det D id| = 1`). -/
+theorem geoAtlas_fold_det (h : 0 < flatDim M) (c : LeafData M)
+    (hc : c ∈ geoAtlas (buildTree M (conOracle M) (conRoot : ConState L))) :
+    ∃ fc : Fin c.fullNumDiv → Fin (flatDim M), ∀ w : Params M,
+      |(fderiv ℝ c.chartMap w).det|
+        = ∏ j : Fin c.fullNumDiv, |paramsEquivFlat M w (fc j)| ^ (c.fullDivExp j - 1) := by
+  refine geoAtlas_cocycle h conRoot DivBirthInv_conRoot DivExpPos_conRoot id differentiable_id
+    (fun w => ?_) c hc
+  rw [ledgerMonomial_conRoot]
+  change |(fderiv ℝ (id : Params M → Params M) w).det| = 1
+  rw [fderiv_id, show (ContinuousLinearMap.id ℝ (Params M)).det
+      = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+  simp [LinearMap.det_id]
 
 end DLNFibre.DLN.RLCT.Engine
