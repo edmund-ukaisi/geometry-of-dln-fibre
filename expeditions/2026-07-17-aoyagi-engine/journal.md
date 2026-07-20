@@ -5524,3 +5524,17 @@ its in-flight full build reports. File-collision guard vs loss-t15 set (GeoAlpha
 comment only). Navigator pricing SKIPPED with reason: the elder priced each transfer; the
 parallelisation is evident (transfer batch ∥ loss walk, disjoint files); the registered
 discharge-time navigator convene stands. Both gates still compiling; push still held.
+
+## 2026-07-20 tick 340b: codex DOWN env-wide (verified); payload pin ruled a statement gate
+loss-t15 surfaced codex unavailable (hang on `codex doctor`/`--version`) rather than
+fabricating a decorrelated opinion — correct per policy. VERIFIED from the controller
+shell: `timeout 15 codex --version` hangs updating an ssh git dependency
+(aisi-inspect-tools), exit 124 — ENV-WIDE, not seat-local. Recorded so no seat retries;
+pen-and-paper seats' own consults are affected until it heals. HEDGE replacing the lost
+decorrelation: loss-t15's concrete payload pin (cleared/bmon/resid as functions of the
+ConState ledger — the def that gates the multi-arc four-case grind) is now a STATEMENT
+GATE: posted to me + elder co-read (the standing seat holds the paper touchstone and just
+verified the α design on disk). Its design conclusion accepted meanwhile: entry-wise
+maintenance rides the IH without re-expanding prod (mirrors the det walk's scalar
+structure); resid is (s,w)-derivable (path-determined fold); option A closed-form-per-cell
+approved. Its tripwire stands (not-ledger-derivable ⟹ statement-first surface).
