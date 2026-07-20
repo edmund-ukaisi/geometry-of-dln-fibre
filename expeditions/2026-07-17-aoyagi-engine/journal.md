@@ -5612,3 +5612,12 @@ BMON INDEXING corrected + confirmed: the chain accumulates by CLEARING level t̃
 :484; R4 cert's support(row i) = {k : divTilde k < i}), coord from divBirthCoord — the
 diagonal-position ↔ clearing-level reindexing named as a diff point for the payload gate.
 loss-t15 GO on ruling-robust tGeoG walk infrastructure meanwhile (additive, no collisions).
+
+## 2026-07-20 tick 343c: elder confirmed the hybrid (paper-cited); loss-t15 full GO
+Both parts confirmed fast: the factored scaling u IS the paper's own u-extraction (d-block
+= u·d', worked.tex:504-508, :513) — "A-scaling" is her move, not option-A drift; the Lg/Rg
+shear on [[1,a],[b,ab+ρ]] → [[1,0],[0,ρ]], D_{J+1}=ρ, is exactly her incidence Q,P step
+reading a,b. Precision recorded for the payload docstring: "vacuous at un-resolved cells"
+= no InvVal CONSTRAINT (values stay exposed for the clearing to read); fully vacuous only
+at leaves. resid = first-class carried field, not elidable. loss-t15 relayed full GO; the
+payload def remains gated on my binder-vs-design diff.
