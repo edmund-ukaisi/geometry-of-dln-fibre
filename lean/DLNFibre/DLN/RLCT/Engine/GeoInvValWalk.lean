@@ -72,4 +72,56 @@ theorem leafDiagFrob_of_invVal_leaf
   have := hinv w i j
   rwa [if_pos (hall i)] at this
 
+/-! ## The α-atlas walk infrastructure (`tGeoG` fan-decomposition, resid-independent)
+
+The value walk threads `InvVal` down `buildTree` over the α-normalized atlas `tGeoG alphaGauge`, so
+it needs the `tGeoG`/`fannedEdgesG` analogs of t14's `tGeo`/`fannedEdges` fan-decomposition lemmas
+(`GeoFoldRegroup.mem_edgesLeaves_fanned_{charted,chartless}`, hardcoded to gauge `fun _ => id`).
+These are pure tree-structure plumbing — independent of the `InvVal` payload
+(`cleared`/`bmon`/`resid`) — so they land regardless of the resid encoding ruling. They mirror t14's
+proofs with the `gauge` threaded (`geoChartMapNorm gauge` / `tGeoG gauge` for the id forms). -/
+
+/-- **Charted single-edge fan decomposition** (α-atlas): the `tGeoG` analog of
+`mem_edgesLeaves_fanned_charted`. A leaf of the fan of ONE charted edge (`dCenterOfEdge ≠ 0`) sits
+under one pivot chart `acc ∘ geoChartMapNorm gauge ⟨n, e, offset + pp⟩`. -/
+theorem mem_edgesLeaves_fannedG_charted (gauge : GeoChart M → Params M → Params M)
+    (acc : Params M → Params M) (n : StepData M) (offset : ℕ)
+    (ec : StepCase) (esub : ChartSubst M) (ch : ResolutionTree M) (c : LeafData M)
+    (hz : dCenterOfEdge n (Edge.mk ec esub ch) ≠ 0)
+    (hc : c ∈ ResolutionTree.edgesLeaves (fannedEdgesG gauge acc n offset [Edge.mk ec esub ch])) :
+    ∃ pp : ℕ, pp < dCenterOfEdge n (Edge.mk ec esub ch) ∧
+      c ∈ ResolutionTree.leaves
+        (tGeoG gauge (acc ∘ geoChartMapNorm gauge ⟨n, Edge.mk ec esub ch, offset + pp⟩) ch) := by
+  rw [fannedEdgesG, edgesLeaves_eq, List.flatMap_append, ← edgesLeaves_eq, ← edgesLeaves_eq,
+    List.mem_append] at hc
+  rcases hc with hc | hc
+  · rw [if_neg hz, edgesLeaves_mapMk, List.mem_flatMap] at hc
+    obtain ⟨pp, hppmem, hcp⟩ := hc
+    refine ⟨pp, ?_, hcp⟩
+    rw [List.bind_eq_flatMap, List.mem_flatMap] at hppmem
+    obtain ⟨a, -, ha⟩ := hppmem
+    rw [List.mem_pure] at ha
+    have hai := a.isLt
+    omega
+  · rw [show fannedEdgesG gauge acc n (offset + dCenterOfEdge n (Edge.mk ec esub ch))
+        ([] : List (Edge M)) = [] from rfl] at hc
+    simp [ResolutionTree.edgesLeaves] at hc
+
+/-- **Chartless single-edge fan decomposition** (α-atlas, rollover): the `tGeoG` analog of
+`mem_edgesLeaves_fanned_chartless`. The ONE identity edge (`dCenterOfEdge = 0`) forwards `acc`. -/
+theorem mem_edgesLeaves_fannedG_chartless (gauge : GeoChart M → Params M → Params M)
+    (acc : Params M → Params M) (n : StepData M) (offset : ℕ)
+    (ec : StepCase) (esub : ChartSubst M) (ch : ResolutionTree M) (c : LeafData M)
+    (hz : dCenterOfEdge n (Edge.mk ec esub ch) = 0)
+    (hc : c ∈ ResolutionTree.edgesLeaves (fannedEdgesG gauge acc n offset [Edge.mk ec esub ch])) :
+    c ∈ ResolutionTree.leaves (tGeoG gauge acc ch) := by
+  rw [fannedEdgesG, edgesLeaves_eq, List.flatMap_append, ← edgesLeaves_eq, ← edgesLeaves_eq,
+    List.mem_append] at hc
+  rcases hc with hc | hc
+  · rw [if_pos hz] at hc
+    simpa [ResolutionTree.edgesLeaves] using hc
+  · rw [show fannedEdgesG gauge acc n (offset + dCenterOfEdge n (Edge.mk ec esub ch))
+        ([] : List (Edge M)) = [] from rfl] at hc
+    simp [ResolutionTree.edgesLeaves] at hc
+
 end DLNFibre.DLN.RLCT.Engine
