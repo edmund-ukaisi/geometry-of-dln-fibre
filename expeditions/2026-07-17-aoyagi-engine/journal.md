@@ -5339,3 +5339,18 @@ BUILD-LIST: item 7 (R4) moves to SMALL-at-the-discharge-batch (with the standard
 design-cert-estimate caveat: the constructor edits touch witnesses; confirm at build). The
 post-spine LARGE count is now ZERO. Charge-9 (the envelope-band) still owed — next from the
 elder.
+
+## 2026-07-20 tick 331: CHARGE-9 RULING (re-sent after the elder's owned delivery miss) — the envelope-band shadow SHIPS with precision teeth
+The elder owned a process miss (its first charge-9 answer went to text output, not
+SendMessage — teammates only see tool messages; the nudge caught it). THE RULING: SHIP the
+scoped envelope-band identity — genuine non-vacuous content, "the elementary geometric heart
+of Lemma 5," which "does not become more true when layer-3 lands"; deferring an independent
+honest result for no gain is the OPPOSITE of the rising sea. THE PRECISION TEETH (binding):
+the name reads as the band arithmetic (no aoyagiTheta_eq-flavored name that reads as "the
+order count is proved"); BOTH deferrals STATED not omitted (the tree-dependent binding-branch
+identification; the analytic pole order); and — the load-bearing structural point —
+BUILD-LIST ITEM 2 STAYS OPEN: the shadow is a NAMED RUNG, not the delivery; item 2 delivers
+only when the tree-binding identification lands as the registered post-spine follow-on
+(task #69, created — a live obligation, not a docstring aspiration). t18 relayed the GO with
+the teeth verbatim; all three blocks grind to completion. The split is dependency-forced
+(layer 3 consumes the engine's tree) — right-scoping, not avoidance.
