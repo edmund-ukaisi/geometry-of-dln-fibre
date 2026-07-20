@@ -5471,3 +5471,16 @@ abstract interface was the unknown-shape default; the landed maintenance makes e
 the shape-matched choice; the block form stays a derivable corollary. SOLO with t14's exact
 staging discipline (scaffold → ends → per-case banked greens; per-case tripwire; the
 co-builder option re-opening at every boundary — t14 the natural one post-4b). Scaffold GO.
+
+## 2026-07-20 tick 338: STAGE 4 COMPLETE — the R7 LeafJacobian DISCHARGED; the faithful discharge at ONE sorry
+Merged locally (07852e12c, push rides the gate): geoAtlas_leaf_leafJacobian PROVEN
+clean-three for every atlas piece — all 10 conjuncts (the rfl coherences at the exposed
+terminal state; injectivity via birthFlatCoord; the ≥1 conjunct via DivExpPos, the
+watch-item never firing; Disjoint vacuous; the det identity from the cocycle) — and
+ChartBridgeFaithful's R7 sorry FILLED. The file now carries EXACTLY ONE sorry (:82,
+LeafPullback — loss-t15's, in staged build). The enabling move recorded: the cocycle
+strengthened to EXPOSE the leaf's reachable terminal state (step case passed through
+unchanged — the low-risk claim held). t14's four-stage arc is COMPLETE from its side:
+stages 1-4 all banked + probed, axiom-clean three throughout, on the exact staging
+discipline ruled at tick 329. Integration gate running (t14's own full build also in
+flight — the doubled-gate discipline); push + t14's honors ride the green.
