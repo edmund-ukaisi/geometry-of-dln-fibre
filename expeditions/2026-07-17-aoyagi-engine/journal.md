@@ -5402,3 +5402,15 @@ canonical home; the identical statement resolves to the import), Skeleton + GeoF
 rebuilt green. LESSON (standing): when a seat declares its full-lib gate in flight, HOLD
 the merge for its confirm — or run the full-lib check integration-side before pushing.
 t14 on stage 3 (the walk); the wall is two stages from closed.
+
+## 2026-07-20 tick 335: the TWO independent clash fixes reconciled — public-canonical wins; the lane-4 IFF banked
+t18's push carried its own clash fix (making ITS Lambda lemma private — conservative,
+keeps the duplication) which would have BROKEN my integration fix (Skeleton's duplicate
+already deleted; its uses resolve to the public Lambda form). Caught by inspecting BEFORE
+merging (the lesson from one tick ago applied immediately); reconciled to the un-duplicated
+shape: Lambda's admBound_le_Msucc PUBLIC canonical, the reconciliation note in its
+docstring; Skeleton + AoyagiOrder rebuilt green. ALSO BANKED: the lane-4 IFF —
+lambdaCore_eq_zero_iff (the characterization, via a Fin.reverseInduction cascade for the
+converse) probed clean-three. t18's seat is now delivery-complete pending its final gate
+report. t14 grinding stage 3 (the module at 64.7k). Working set: two grinding seats, two
+offices, one parked.
