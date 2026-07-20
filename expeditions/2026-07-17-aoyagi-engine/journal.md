@@ -6182,3 +6182,19 @@ co-builder decision DEFERRED to the bridge green with walk-t20 as the plan (clos
 sibling build; natural case split: t15 takes the heavy α-Schur clearing pair, t20 the
 α=id pair + the instantiation). The fannedG question was moot (crossed — already
 canonical). Board: three lanes grinding, zero open design questions.
+
+## 2026-07-20 tick 376: THE 2d MISSION SORRY IS CLOSED — geoAtlasNorm_leaf_leafJacobian filled sorry-free
+walk-t20 landed 2d-B + 2d-C in one push: geoAtlasNorm_cocycle (the gauge-parametric walk
+over tGeoG, generic in the reads-based bundle; rollover reuses the id atom verbatim;
+case-11/rollover free via the α=id gift; case-2/case-12 through the mechanism wrapper) and
+the FILL — geoAtlasNorm_leaf_leafJacobian instantiated at alphaGauge/conRoot/id, the
+refine mirroring the id version exactly. CONFINEMENT PERFECT: two files touched
+(GeoAtlasTransfer +504/-51, AxCheck +17); GeoFoldRegroup / GeoLeafJacobian / GeoAlphaGauge
+/ ChartBridgeFaithful byte-UNTOUCHED — the one-spine constraint discharged as designed.
+The faithful discharge now routes through TWO owed sources: leafDiagFrob_geoAtlasNorm
+(loss-t15's walk — the mathematical hole) + geoAtlasNorm_imageCover (t14's Phase-2 cover,
+fully de-risked). Its AxCheck double-gate is building; the landing sequence: gate
+footprints → its own fannedG dedup (merge integration, drop duplicates, import the
+canonical GeoInvValWalk) → push → my merge + full gate. Then walk-t20 rotates into the
+co-builder slot on loss-t15's four-case split. From three owed sorries to two in one arc,
+with zero collateral surface.
