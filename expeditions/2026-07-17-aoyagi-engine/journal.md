@@ -5281,3 +5281,22 @@ right honest content, with the tree-dependent identification a NAMED post-spine 
 my lean — or too little to call the item delivered). ALSO BANKED: lane-6's AxCheck hygiene
 (the rebuild green; 11 stale expectations rewritten historical; the banner resolved on the
 verified zero-footprint fact). Both controller lanes of the navigator disposition complete.
+
+## 2026-07-20 tick 328: t14's cocycle RESTATED (terminal closed on R7 form); the R4 CERT prices "balloons" DOWN TO SMALL
+MERGED (a2eae18d8): t14's two greens — ledgerMonomial_center_of_reads (the case-1(2)
+center-scale ledger step, probed clean-three; the geometric half's second leg after the
+spectator step) AND geoAtlas_cocycle restated to the R7 full-ledger ∃-form with the TERMINAL
+CASE CLOSED (the fold headline's endgame shape is now the built shape). t14's arc: the
+four-case maintenance assembly + the fan×WF walk remain.
+THE PNP-R4 CERT (merged; sympy exit-0; blind Codex converged): THE HEADLINE — solving the
+b-recursion gives b_i = ∏_{t̃_k<i} u_k (squarefree per row), so the sharing data is DERIVED
+from divProfile (carried first-class since R1): support = {k : divTilde k < i}, bExp a
+DEFINITION, bChain a THEOREM (discharging the deferred placeholder for free), genDivExp/
+numGen dropped as duplicating primitives, the propagation collapsing to two already-owned
+facts. The kill-condition (residual divisor-freeness — the ⟨x,uy⟩ vs ⟨ux,uy⟩ rlct witness)
+is ALREADY closed by LeafPullback's 0<lo. SIZE: R4 re-priced LARGE→SMALL (~1 module + ~10
+mechanical edits). The navigator's shadow-the-design call paid off completely — the
+"second cost center" dissolves on inspection. CAVEAT: revises fork 3's literal typed-FIELDS
+wording (honoring its WHY — the coupling stays typed/per-divisor via divProfile) → ELDER
+CHARGE-10 ratification queued (behind charge-9). If ratified: R4 moves to a SMALL
+discharge-batch item; the post-spine list shrinks to R7 + zero-width(b).
