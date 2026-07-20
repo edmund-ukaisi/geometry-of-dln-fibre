@@ -6606,3 +6606,24 @@ pre-scope-decision). SURFACED the operator scope decision (push full-close vs
 bank-conditional+re-scope). Priorities inflection banner added. pnp-rg stood down (backbone
 of the α/order reckoning). All build lanes held; the DESIGN side (loss-t15's value lane) is
 banked + survives either path. navigator #8 convenes at the probe landing.
+
+## 2026-07-20 tick 397: navigator #7 FINAL sharpened → bank + RE-SCOPE (default); M-vs-L scratch commissioned
+navigator-7 sharpened its call: bank the conditional spine + RE-SCOPE the fold rebuild to a
+focused ROOT-FIRST-FROM-THE-START follow-up (default). DECISIVE REFRAME (answers my Q3): the
+cocycle re-derives root-first REGARDLESS of in-place vs fresh — re-threading in place SAVES
+NOTHING and ADDS the payoff-cone re-open + fighting the direction-locked leaf-first lemmas.
+The correct-order construction is the one we WANT; a leaf-first scaffold under runway is the
+patch-on-patch trap. A fresh follow-up reuses everything untouched (ledger/oracle/tree/
+DivBirthInv, α cells #24, rebuild ledger, loss-t15's battery-validated root-first value
+design, gauge-independent cover atoms) and re-derives the FOLD root-first deliberately with
+the value lane a first-class consumer from the start (surfacing any 3rd issue EARLY, before
+any bank). In-place-this-expedition requires ALL of: (a) M scratch + clean closed form, (b)
+value telescoping confirmed on a real build-START (refuted 3× before), (c) operator accepts
+the cone re-open under runway — P(all) low → default RE-SCOPE. COMMISSIONED t14's M-vs-L
+scratch (risk-free-under-both: prices the follow-up cocycle + the marginal in-place datum).
+loss-t15's meanwhile done (banked 9c60efd80): prefix STAYS ≤s (battery), re-base OBJECT
+frame-independent / maintenance PROOF relaxes root-first (isolable), shapes order-blind — the
+follow-up spec. Decision package assembling for the operator: pnp-full verdict (third-issue
+hunt) + t14 M-vs-L + navigator's sharpened re-scope recommendation; I surface the COMPLETE
+package when both land (not drip-fed). All build lanes held; the design side is closed +
+survives either path. navigator #8 at the pnp-full landing.
