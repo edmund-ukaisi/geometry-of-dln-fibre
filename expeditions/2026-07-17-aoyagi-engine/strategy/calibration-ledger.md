@@ -407,3 +407,32 @@ batch (cover image-invariance; ledger preservation through tGeoG — resRank-zer
 already proven, pattern exists; ae-inj through the det-1 shear — inj-t16's comp helpers;
 Jacobian det-1-transparency — needs α to FIX the div coordinates, check). Charged the elder
 NOW (tick 339) rather than at lane completion — the tick-284 lesson applied forward.
+
+## Entry 14 (tick 350, 2026-07-20) — what does stepRollover do to the ledger? (serves Q2b, the frontier)
+**Question.** The clearedOf frontier model needs rollover semantics. What does stepRollover
+actually change, and does a layer complete at exactly cleared = widthMinUpto M (layer+1)?
+**Expectation (before reading).**
+- 0.80: stepRollover sets layer := layer+1, cleared := 0.
+- 0.70: ALL divisor fields (numDiv, divExp, divTilde, divProfile / birth data) unchanged —
+  consistent with t14's rollover-neutral det maintenance (ledgerMonomial_stepRollover).
+- 0.75: the walk increments cleared by 1 per clearing step and re-checks the guard each
+  node, so at rollover cleared = widthMinUpto M (layer+1) EXACTLY (first hit, no overshoot).
+- Consequence if all hold: the running-total frontier IS ledger-expressible with no history:
+  resolvedCount s = Σ_{ℓ' < s.layer} widthMinUpto M (ℓ'+1) + s.cleared — the completed-layer
+  counts are M-derivable constants, not state history. This would hand loss-t15 a clean
+  clearedOf candidate.
+**Verdict (after reading).** 3/3 HITS + two construction facts worth more than the hits.
+- stepRollover (EngineConstruction:197-198): ⟨layer+1, 0, numDiv, divExp, divProfile,
+  numGen, genDivExp, divBirthCoord⟩ — full ledger carry, exactly as expected (0.80/0.70 ✓).
+- The dispatch (:1926): rollover fires at widthMinUpto M (layer+1) ≤ cleared, checked per
+  node; clearing steps advance cleared by exactly 1 from 0 — first hit is EQUALITY (0.75 ✓).
+- FACT 1 (the nuance the frontier model must respect): case-11 does NOT advance cleared
+  (t14's child literal keeps s.cleared) — the re-merge works at an EXISTING divisor's
+  diagonal; only case-2/case-12 (stepAppendAdvance) advance the frontier.
+- FACT 2: stepAppendAdvance snocs divBirthCoord with (s.layer, s.cleared) (:190-193) — the
+  birth coordinate IS the (layer, within-layer-pivot) pair; and tildeOf(setTail layer
+  cleared T) ≤ cleared (:146-148) — clearing levels are bounded by the birth-time frontier.
+**What it changes.** The running-total candidate resolvedCount = Σ_{ℓ'<layer}
+widthMinUpto(ℓ'+1) + cleared is ledger-expressible (no history needed) — BUT the map from
+the count to WHICH Fin (M 0) positions (the reindexing) is the real remaining content, and
+any model must respect fact 1. Facts handed to loss-t15 for the clearedOf derivation.
