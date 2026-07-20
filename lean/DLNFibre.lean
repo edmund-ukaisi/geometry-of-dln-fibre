@@ -1481,3 +1481,7 @@ import DLNFibre.DLN.RLCT.Engine.PivotCover
 -- Loss value-walk maintenance (downstream of GeoAtlasTransfer): the InvVal3 four-case walk that
 -- closes leafDiagFrob_geoAtlasNorm. Re-homed here (not GeoAlphaGauge, upstream) — see module docstring.
 import DLNFibre.DLN.RLCT.Engine.GeoInvValMaint
+-- The CONDITIONAL SPINE (durable deliverable): aoyagi = C/2 given chartBridgeFaithful_buildTree's
+-- two frontiers — clean-three modulo the hypothesis, self-contained #guard_msgs gate. Bypasses
+-- resolutionOf (no baked-in sorryAx). Discharges to unconditional by `exact chartBridgeFaithful_buildTree`.
+import DLNFibre.DLN.RLCT.Validate.HeadlineConditionalSpine
