@@ -37,12 +37,16 @@ red); (ii) add it to `CordonGate.parseArgs` default imports (belt+suspenders); (
 example from `cited_aoyagi_dln` to `cited_aoyagi_lower_ax`. Keep our `CordonClean`/`CordonLeak` fixtures.
 
 **3. Cite adoption + placement.** Dev's cite axioms (`cited_watanabe_upper_ax`, `cited_aoyagi_lower_ax`,
-`cited_local_zeta_pole`) keep their `@[cited "…"]` tags UNEDITED (shared attribute name). Repoint the 2 cite
-files' cordon import/open: `import DLNFibre.Core.Meta.Cited` → the surviving cordon module (+ `open`).
-Retire-ours (`cited_aoyagi_dln`) is AUTOMATIC (dev's migrated `RlctPayoff` overwrites ours). **PLACEMENT
-TASTE DECISION (operator/elder, cert §2c): option (A) — move our attribute module to
-`DLNFibre.Core.Meta.Cordon`** (dev's self-auditing placement + our superset code), so the cordon is under
-the gate it enforces and cite files import it naturally. Recommended; pending operator confirm.
+`cited_local_zeta_pole`) keep their `@[cited "…"]` tags UNEDITED (shared attribute name). Retire-ours
+(`cited_aoyagi_dln`) is AUTOMATIC (dev's migrated `RlctPayoff` overwrites ours). **PLACEMENT — DECIDED:
+option B (operator, 2026-07-20).** Keep our `Meta.Cordon` EXTERNAL (unchanged); repoint dev's 2 cite files
+to import it across the lib boundary: `import DLNFibre.Core.Meta.Cited` → `import Meta.Cordon` (+ `open
+Meta.Cordon` in `AoyagiCited.lean`). NO module move; the lakefile keeps our `Meta` lib stanza as-is.
+Rationale (corrects the earlier "self-auditing is safer"): self-auditing buys ~nothing — the cordon's
+correctness is its behavioural fixtures (`CordonClean`/`CordonLeak`), not being under the sorry-gate; and
+the math library's soundness is independent of the tooling's internals (a cited axiom's kernel footprint is
+itself, never the attribute module's code). Tooling stays OUTSIDE the math library, per the operator's
+instinct. (The §1d port-list still applies: `AoyagiCited` → `citedFileAllowlist` + default import.)
 
 **4. Core-drift fix.** Near-zero (weakenings are instance-compatible). Only the relocated `Matrix.*` lemmas
 (`RankMinors.lean`) need a one-line `open Matrix`/requalify in any KEPT file that calls them bare —

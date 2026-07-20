@@ -7287,3 +7287,16 @@ FINALIZED PLAN: threads/26-dev-merge-reconcile/merge-plan.md (6 gated stages; sa
 DECISION surfaced to operator/elder (cert §2c): cordon-module PLACEMENT — option (A, recommended) move our
 Meta.Cordon → DLNFibre.Core.Meta.Cordon (dev's self-auditing placement + our superset code). Awaiting
 operator approval of the plan + the placement call before executing.
+
+## 2026-07-20 tick 424: operator APPROVED the plan; placement DECIDED = B (cordon stays external); reoriented; beginning execution
+Operator approved the merge plan + corrected my placement recommendation: DECISION B — keep the
+cordon EXTERNAL (not option A). I owned the correction: "self-auditing is safer" was a weak argument
+(the cordon's correctness is its behavioural fixtures, not the sorry-gate; and the math library's
+soundness is independent of the tooling's internals — a cited axiom's kernel footprint is itself, not
+the attribute module's code). So the tooling stays outside the math lib per the operator's instinct;
+dev's 2 cite files import Meta.Cordon across the boundary; NO module move (also less work than A).
+REORIENT (operator asked "reorient first"): re-read charter (frame intact — objects A–E, progress bar,
+math-warnings; cited_aoyagi_lower is the named target the merge sets up); state clean on
+expedition/aoyagi-engine @ ca0ffe0cf; RECOVERY POINT tagged premerge-dev-2026-07-20 → ca0ffe0cf
+(git reset --hard restores if the merge goes wrong); origin/dev @ 334e7f963. merge-plan.md stage-3
+updated to B. Beginning stage 1 (git merge origin/dev + resolve the 11 conflicts per the plan).
