@@ -6425,3 +6425,22 @@ gated on pnp-rg's cross-layer-Rg ⊥ later-birth-corners disjointness (the (J,J)
 seats: loss-t15 (α completion), pnp-rg (exact Rg per-edge shape + (J,J) + clear_pivot
 confirmation). walk-t20 + t14 parked with the rebuild checklist (tick 386b). The fix is fully
 specified (full Q,P, oracle in hand); only the per-edge Rg placement is open.
+
+## 2026-07-20 tick 388: Lg is CROSS-CELL (not within-node) — co-derive Lg+Rg via pnp-rg; loss-t15 builds the rebuild ledger
+loss-t15 specified before writing Lean (battery lg_form_specify.py, 237fe4861): Lg is NOT a
+within-node schurCells addition (my + the elder's "single-layer easy Lg-remainder" framing
+was imprecise) — the pivot cross N[0,1]=a, N[1,0]=b are BARE source coords, no within-(a,b,δ)
+det-1 map zeroes them, so Lg is CROSS-CELL (reads one block's cross, writes an ADJACENT
+block, into ≤S — locality-preserving, ONLY Rg touches S/S+1; consistent with the elder's
+ruling). Fix target re-confirmed: interior-α → residualCore=0 at (1,0,0,0,−1,0); full Q,P →
+blocks [[1,0],[0,ρ]], residualCore=1+(∏ρ)²≥1. STEER: (a) loss-t15 CONSUMES pnp-rg's
+completed-α as the achiever for BOTH Lg + Rg cells — NOT build its own (decorrelation: builder
+≠ checker; + seam consistency: co-derive from one source). pnp-rg's brief SHARPENED — its
+completed-α is the achiever for both; cell-write trace names Lg's ≤S cross-cell target + Rg's
+S+1 placement + the (J,J) fix, confirmed via clear_pivot. loss-t15 HOLDS the Lean α build for
+pnp-rg's spec; MEANWHILE builds the form-independent CONSUMER-REBUILD LEDGER (the FALSE lemmas
++ det-1/srcBox redo + dependency order) — feeds the navigator's parallelization pricing.
+NOTE for the elder (α designer): its "Lg single-layer easy" ease-estimate was off, but its
+FRAME holds (Lg ≤S-local, Rg the interface — the locality-preservation ruling stands); no
+re-ruling needed — it'll ratify pnp-rg's co-derived Lg+Rg shape. Only the per-edge Lg+Rg
+placement is open; the fix (full Q,P) + acceptance oracle (clear_pivot) are pinned.
