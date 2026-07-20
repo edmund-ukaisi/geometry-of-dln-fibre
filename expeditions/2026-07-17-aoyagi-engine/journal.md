@@ -6150,3 +6150,18 @@ its fannedG copies are now the CANONICAL ones on integration; walk-t20 instructe
 merge, drop its verbatim duplicates, and import GeoInvValWalk (acyclic direction) — the
 aggregator clash dies before existing. Board: t14 on Phase 1.5, walk-t20 on 2d-B,
 loss-t15 on case-2 — all three owed sorries now have active, fully-de-risked builds.
+
+## 2026-07-20 tick 374: Phase 1.5 PASS — Option C fully de-risked; my acc-read corrected; Phase-2 content pinned
+t14's base-case check (973e3dde1, merged): the terminal containment closes by PURE CUBE
+MONOTONICITY — with a correction to MY tick-372 read: leafPathImages(.leaf l) = l.srcBox
+(PivotCoverFold:58) — the leaf chartMap is NEVER applied (charts enter only at branch
+localSubs; GeoCoverSpec:306's terminal case is literally cube ⊆ srcBox). No acc anywhere.
+Atoms banked sorry-free (cubeBox_subset_cubeBox, flatCube_subset_flatCube). THE REAL
+PHASE-2 SUBTLETY it isolated: the existing leafPathImages coherence reads the TREE srcBox
+= cube(1) — the refuted α-gap domain — so the C-override needs a radius-parametrized
+leafPathImages_ρmax (leaf ↦ cube(ρ_max)) + its coherence to the override atlas + the
+radius-threaded induction over it; tGeoG stays UNTOUCHED (both walks safe). NO Option-A
+fallback needed. Phase-2 = one new def + coherence + the induction, per-node atoms all
+banked. t14 parked for the Phase-2 GO (trigger: both walks landing). t14's branch merged
+to integration so walk-t20's next merge sees the full GeoAtlasTransfer state and resolves
+the append-union locally.
