@@ -6232,3 +6232,18 @@ touchstone). Statement card filed (card-geoAtlasNorm-leaf-leafJacobian.md). ONE 
 of substance remains on the payoff cone (leafDiagFrob_geoAtlasNorm, loss-t15) + t14's
 de-risked cover. Co-builder rotation (walk-t20 → loss-t15's four-case split) fires after its
 bank + the rev-jac verdict.
+
+## 2026-07-20 tick 379: 2d FULLY LANDED + merged to integration; canonical gate running
+walk-t20 completed the landing sequence: banked (5a81aa036 walk+fill+gate; 715b29e6e
+merge+dedup), pushed (715b29e6e), self-deduped (disjoint-union merge with t14's 2a
+Phase-1 atoms — uniq -d clean; DELETED its fannedG copies, imported the canonical
+GeoInvValWalk, acyclicity verified), post-merge re-probe holding all footprints. MERGED to
+integration (901c2f51a); the canonical full AxCheck gate running untimed (the RouteM
+Validate tail that timed at 590s its side). Post-merge footprints: geoAtlasNorm_leaf_
+leafJacobian + geoAtlasNorm_cocycle clean-three; the id side unchanged clean-three;
+toChartBridge clean-three; chartBridgeFaithful_buildTree sorryAx via TWO owed sources only.
+The jacobian source is GONE from the payoff cone. Co-builder rotation HELD on two
+conditions (rev-jac verdict clearing walk-t20's own work + loss-t15 reaching a split point)
+— standard hygiene not to rotate a seat before its work is independently cleared. THE
+PAYOFF CONE NOW: one owed sorry of substance (leafDiagFrob_geoAtlasNorm, loss-t15's
+critical-path value walk) + t14's de-risked Phase-2 cover (geoAtlasNorm_imageCover).
