@@ -373,3 +373,37 @@ as the earlier instances (a specification written to intent, refuted by the mech
 build's import graph). No proof wasted; surfaced before the first cycle.
 **Lesson:** a gate that names WHERE a fidelity lands (a module/type) must be checked against the
 import DAG at ruling time — "put X in type T" is unfillable if T sits below X's dependencies.
+
+## Entry 13 (tick 339, 2026-07-20) — the LeafPullback seam: will it mate?
+**Question.** When loss-t15 closes `leafDiagFrob_geoAtlasNorm` (GeoAlphaGauge:562), does
+ChartBridgeFaithful:82 discharge by pure composition, or is there a statement-shape mismatch
+(per-piece quantification, geoAtlas vs geoAtlasNorm, α-wrapper) needing new glue?
+**Expectation (before reading).**
+- 0.80: the :82 sorry supplies a per-piece `LeafPullback c` conjunct for pieces of the SAME
+  atlas the buildTree walk emits; the chain is leafDiagFrob_geoAtlasNorm → per-piece
+  `LeafDiagFrob` → `leafPullback_of_diagFrob` → `LeafPullback`.
+- 0.75: mates with NO new glue beyond what GeoAlphaGauge already exports (geoAtlasNorm was
+  defined there precisely as the α-composed atlas).
+- 0.50: a small adapter (norm-piece ↔ emitted-piece identification) exists already; if not,
+  it is a one-lemma gap, not a redesign.
+**Risk probed.** The tick-284 class: a sorried statement going stale invisibly (here :82 has
+been sorried since the R-split; loss-t15 builds against GeoAlphaGauge's frontier, not :82).
+**Verdict (after reading).** PARTIAL MISS — and the miss is the product.
+- The 0.75 "no new glue" clause: MISS. The seam does NOT mate purely. `geoAtlas t =
+  leaves (tGeo id t)` (gauge pinned to id); `geoAtlasNorm alphaGauge t = leaves (tGeoG
+  alphaGauge id t)` — DIFFERENT atlases (same images/ledgers; different chartMap/srcBox).
+- Sharper than expected: t14's ENTIRE proven inventory (ledgerProps, ae_injOn,
+  leafJacobian — no `tGeoG` anywhere in GeoFoldRegroup) is over the id atlas; LeafPullback
+  arrives over the α atlas; clause (D) conjunct 1 pins `atlas = geoAtlas t` by `rfl`.
+  LeafPullback at g = id is likely FALSE (the α gauge exists because the residual does not
+  clear at id) — so the witness must move to the α atlas, which breaks (D)₁ as stated.
+- The 0.50 "adapter named" clause: HIT — GeoAlphaGauge's pre-staged wiring note names the
+  `geoAtlas`/`geoAtlasNorm alphaGauge` cover-transfer lemma, "landed after both lanes". But
+  the note names only the COVER transfer; the ledger-props/ae-inj/LeafJacobian transfers +
+  the (D)₁ amendment are unpriced.
+**What it changes.** The assembly is not a plug: it needs (i) a (D)₁ statement amendment
+(the cordoned, AxCheck-watched R-split gate — statement-first + elder eyes), (ii) a transfer
+batch (cover image-invariance; ledger preservation through tGeoG — resRank-zero transfer
+already proven, pattern exists; ae-inj through the det-1 shear — inj-t16's comp helpers;
+Jacobian det-1-transparency — needs α to FIX the div coordinates, check). Charged the elder
+NOW (tick 339) rather than at lane completion — the tick-284 lesson applied forward.
