@@ -6855,3 +6855,29 @@ reflects the true final state: the α/order/category reckoning, the ideal-level 
 scope, fork-15 closure. Awaiting mint-t19's honest-hypothesis confirm (does _gen-on-hbox
 suffice / is the chartBridgeFaithful-spine deletable) + navigator #9 (follow-up pricing) +
 the operator's launch call.
+
+## 2026-07-20 tick 409: elder double-confirm (_gen-on-hbox = honest deliverable, delete vacuous spine) + OPERATOR strategic question
+Elder CONFIRMED both: (i) hbox is satisfiable/discharge-agnostic/non-vacuous (= ∀c'<minAdm/2
+box integral <⊤; dischargeable by the follow-up's Lemma-1 route; min M_{s,k}=minAdm banked);
+(ii) _gen already encodes the VALUE C/2 — it composes hbox (lower half) with the BANKED
+divergence achiever (upper half, 0-sorry) + minAdm_eq_cCodim → rlct=minAdm/2=C/2. So
+_gen-on-hbox IS the complete honest engine; the chartBridgeFaithful-conditioned spine is
+VACUOUS (chart-CoV ChartBridge unsatisfiable, goal-level) → DELETE (dispatched to mint-t19;
+I un-wire the aggregator). Deliverable = _gen (clean-three) + banked resolution + the
+page-grounded "hbox discharge is ideal-level Lemma 1" note.
+
+OPERATOR STRATEGIC QUESTION (mid-turn): is the recurring "ratified→false→re-scope" pattern a
+cul-de-sac from avoiding the hard part / not building objects to full generality? is the
+ideal-level back-and-forth one such instance? — Delivered an honest assessment (not
+reassurance): YES the recurrence is real + the category error IS a framework-level cul-de-sac
+(chart approach to an ideal-level goal = an attempt to route around the hard, Mathlib-absent
+ideal-RLCT interface); the elder's own calibration-21 note said this ("chart framework
+generating chart-shaped fixes"). NUANCE: partly normal hard-problem friction; the value-lane +
+decorrelated-pnp gate caught each falsity BEFORE shipping (self-correcting, if expensive). KEY:
+the MATH is not at risk (Aoyagi proved C/2); the risk is FORMALIZATION-tractability of the
+ideal route — and the confident "follow-up is just Lemma 1, toric-trivial, bounded" headline is
+UNVERIFIED and is exactly the confound-candidate the pattern predicts. CORRECTIVE (operator's
+instinct is right): the follow-up must BUILD the ideal-RLCT object (Lemma 1 + machinery) as a
+real standalone library to full generality FROM THE START — not as a patch — AND probe its
+closability with decorrelated rigor before trusting the clean headline. Assessment recorded for
+the close synthesis.
