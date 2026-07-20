@@ -40,4 +40,35 @@ theorem geoChartMapNorm_alpha_apply_oncone (g : GeoChart M) (w : Params M)
   simp only [Function.comp_apply]
   exact geoChartMapNorm_apply_oncone ⟨node, edge, pivot⟩ (alphaGauge ⟨node, edge, pivot⟩ w) hd hp
 
+/-! ## Form 2: the D_J-carry invariant (elder ruling — carry the residual block, incidence form) -/
+
+/-- **`InvVal3f2`** (elder ruling, the CARRY): `InvVal3` + a THIRD clause carrying the
+residual block `D_J` at un-resolved cells (`resD`, parametric; instantiated with the incidence-form
+`D_J`, Aoyagi's induction object worked.tex:482/509-519; NOT the opaque foldToState). The
+cleared/dropped clauses are UNCHANGED (first two conjuncts = `InvVal3`); the residual carry is the
+new content the row-J transport consumes (α-Schur reads `D_J`'s pivot-cross; the interior feeds the
+next `D`). HELD SLOT: the row-J cleared off-diagonal at the pivot's LIVE columns (pnp-diag verdict
+pending — interior-α + column-drop leave the live-col a-ratios). -/
+def InvVal3f2 (cleared dropped : ConState L → Fin (M 0) → Prop)
+    [∀ s i, Decidable (cleared s i)] [∀ s i, Decidable (dropped s i)]
+    (bmon : ConState L → Params M → Fin (M 0) → ℝ)
+    (resD : (s : ConState L) → Params M → Fin (M 0) → Fin (M (prefixColFin s)) → ℝ)
+    (acc : Params M → Params M) (s : ConState L) : Prop :=
+  ∀ (w : Params M) (i : Fin (M 0)) (j : Fin (M (prefixColFin s))),
+    (cleared s i → prodPrefix s (acc w) i j = if (i : ℕ) = (j : ℕ) then bmon s w i else 0) ∧
+    (dropped s i → prodPrefix s (acc w) i j = 0) ∧
+    (¬ cleared s i → ¬ dropped s i → prodPrefix s (acc w) i j = resD s w i j)
+
+/-- **Form-2 projects to the three-state `InvVal3`** (drop the `resD` conjunct). So the proven
+three-state consumer side — the leaf discharge `leafDiagFrob_of_invVal3_leaf`, the width-drop fix —
+applies verbatim: the D_J carry is a pure STRENGTHENING, costing nothing downstream. -/
+theorem invVal3f2_to_invVal3 (cleared dropped : ConState L → Fin (M 0) → Prop)
+    [∀ s i, Decidable (cleared s i)] [∀ s i, Decidable (dropped s i)]
+    (bmon : ConState L → Params M → Fin (M 0) → ℝ)
+    (resD : (s : ConState L) → Params M → Fin (M 0) → Fin (M (prefixColFin s)) → ℝ)
+    (acc : Params M → Params M) (s : ConState L)
+    (h : InvVal3f2 cleared dropped bmon resD acc s) :
+    InvVal3 cleared dropped bmon acc s :=
+  fun w i j => ⟨(h w i j).1, (h w i j).2.1⟩
+
 end DLNFibre.DLN.RLCT.Engine
