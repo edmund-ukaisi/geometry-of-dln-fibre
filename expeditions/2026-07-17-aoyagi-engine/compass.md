@@ -477,6 +477,38 @@ over banked substrate.
     it TRANSFERS unchanged to the ideal route; (iii) LeafPullback re-shapes (the
     residualCore-over-det-1-chart bound is category-false). worked.tex:153–158 (Lemma 1),
     :475–490 (∑b_i²), :537 (½·min).
+    (ADDENDUM, depth-3 ideal-reduction probe — VERIFIED, 2026-07-20; answers the RISING-SEA
+    guard (i) — "probe the toric-trivial/tractability claim before trusting it".) The per-chart
+    ideal reduction TELESCOPES at M=(2,2,2,2) — CONTROLLER-VERIFIED against the batteries, not
+    exit-0-trusted (cert-ideal-reduction-depth3, 768e7d5). VERIFIED: the single-layer peel is an
+    EXACT symbolic matrix identity at depth-2 AND depth-3; the δ→ρ substitution IS the blow-up of
+    {δ=u=v=0} in the ρ-chart, so δ=ρ is DERIVED from the blow-up (not reverse-engineered) — the
+    mechanism is depth-BLIND; both inclusions hold (structure_v2, U[0,0]=1 unit); RLCT 3/2 =
+    ½·min Mval. The depth-≥3 SchurCore wall (navigator-flagged) is real ONLY for the naive
+    one-shot; the depth RECURSION sidesteps it. EVIDENCE HYGIENE (do NOT inherit the gap): cite the
+    PEEL IDENTITY (exact) + structure_v2 as the corroborating pair, NOT "5 batteries" —
+    ideal_equality_rigorous.py exits 0 while PRINTING the opposite of the headline (a superseded
+    free-δ intermediate; exit-0 ≠ content-true; count reconciliation pending). FIDELITY CATCH:
+    worked.tex:156 prints Lemma 1 as `≥`; the correct/used direction is `≤` (rlctAt_mono) — a
+    paper typo, harmless for the equality use, joins the Def-3 / raw-width ledger.
+    THE HONEST BOUNDARY (scope-shaping, earned): clean-DISJOINT telescoping is a
+    rank-1/full-in-smaller-dim property; (2,2,2,2) is ALL-width-≤2, the CLEAN (uncoupled),
+    SHALLOWEST instance. Aoyagi's REAL content — the COUPLED diag(b) at corank≥2 — first appears
+    at a layer with min≥3 (e.g. (3,3,2,2), (3,3,4)); it still monomializes (CLAIMED value 2) and
+    does NOT wall, but is not disjoint (heavier) and is NOT YET verified to this depth.
+    DIRECTION RULING (elder, answering the operator's cul-de-sac question): we ARE out of the
+    CHART cul-de-sac — the ideal reframe was the correct response to the category no-go, and the
+    naive-one-shot wall is now shown avoidable by the recursion; the hard part is MAPPED. BUT
+    "tractable IN GENERAL" is EARNED only for the clean case — (2,2,2,2) exercises NO coupling, so
+    treating "clean telescopes" as "the follow-up is tractable" would be the shallow-instance
+    confound (KILL-SET ADEQUACY) that has bitten this expedition repeatedly. The coupled width≥3
+    case is the REAL hard part (fidelity to her mechanism) and the gate for any "tractable"
+    pricing — a FIRST-CLASS next probe (a genuine coupling instance, e.g. (3,3,2,2)/(3,3,4)),
+    sequenced after the clean landing, NEVER scoped out. FOLLOW-UP SCOPE (affirmed, sequencing-vs-
+    scope razor carried): BUILD the general RLCT-ideal library (Lemma 1 ideal-domination +
+    monomial-ideal RLCT + divisibility-chain; θ/analytic in-scope per RISING-SEA) — the scope;
+    FIRST LANDING = the (2,2,2,2)-clean recursion; NEXT PROBE = the coupled diag(b) at width≥3
+    (load-bearing, not optional). Lemma 1 = the core to SEQUENCE first, NOT a scope-out of the rest.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
