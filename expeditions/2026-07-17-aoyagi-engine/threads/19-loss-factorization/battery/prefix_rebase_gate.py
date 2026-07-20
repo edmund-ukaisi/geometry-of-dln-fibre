@@ -104,6 +104,17 @@ def run():
 # associativity (Loss.lean:33). The case-11 u-corner touch of an earlier layer is pivot-FREE
 # (z_mu(Bw)=z_mu(w), t14's case-11 read), so it does NOT disturb the already-cleared earlier-layer
 # prefix rows. This is the abstract-to-construction bridge for the two legs above.
+#
+# ROOT-FIRST REFINEMENT (2026-07-20, elder re-thread ruling; design-prefix-direction-rootfirst-t15.md).
+# The two legs are ORDER-INDEPENDENT (they test the front·trailing split given a well-formed front).
+# The composition order enters only the BRIDGE: does acc_s w yield the correctly-reduced front? Under
+# the ruled re-thread (root-first, geoChartMapNorm ∘ acc), YES cleanly — the ancestor charts are all at
+# layers <= S and reduce them in Aoyagi's layer-0-first order, so prodPrefix(acc_s w) IS the reduced
+# front (clearedof_walk_trace.py, the root-first model, confirms cleared rows = b_i·e_i at every state).
+# The prefix re-base OBJECT (read prodPrefix, not full prod) STAYS (this split is frame-independent);
+# what relaxes under root-first is the MAINTENANCE proof — the child chart becomes outermost
+# (C_edge (acc_s w)), so each step isolates one chart's action on the prefix (the leaf-first burial
+# acc_s (C_edge w) that forced the gymnastics is gone).
 # ---------------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
