@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1300" viewBox="0 0 1180 1300" font-family="ui-sans-serif, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="#57606a" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1180" height="1300" fill="#ffffff"/>
+
+  <text x="40" y="42" font-size="21" font-weight="700" fill="#1f2328">State of the mathematics — expedition aoyagi-engine</text>
+  <text x="40" y="64" font-size="13" fill="#57606a">2026-07-20 morning, tick 342 · THE LAST WALL FELL · one mathematical hole remains</text>
+  <g font-size="12.5">
+    <rect x="736" y="30" width="14" height="14" rx="3" fill="#d1f0dc" stroke="#1a7f37" stroke-width="1.5"/><text x="756" y="42" fill="#1f2328">PROVED, clean-three</text>
+    <rect x="906" y="30" width="14" height="14" rx="3" fill="#fff3d1" stroke="#9a6700" stroke-width="1.5"/><text x="926" y="42" fill="#1f2328">ruled · in flight</text>
+    <rect x="736" y="52" width="14" height="14" rx="3" fill="#fde8e8" stroke="#c93c37" stroke-width="1.5"/><text x="756" y="64" fill="#1f2328">★ the live holes</text>
+    <rect x="906" y="52" width="14" height="14" rx="3" fill="#f0f2f4" stroke="#57606a" stroke-width="1.5"/><text x="926" y="64" fill="#1f2328">owed / next expedition</text>
+  </g>
+
+  <!-- destination -->
+  <rect x="140" y="86" width="900" height="70" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="2"/>
+  <text x="590" y="110" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f2328">aoyagi_learning_coefficient ← hbox ← chartBridge_buildTree = the PROJECTION (live on disk)</text>
+  <text x="590" y="132" text-anchor="middle" font-size="12.5" fill="#1f2328">EngineObligations:52 already reads (chartBridgeFaithful_buildTree …).toChartBridge — no sorry of its own.</text>
+  <text x="590" y="148" text-anchor="middle" font-size="12.5" fill="#1f2328">The whole payoff cone now bottoms out in ONE mathematical statement (grep-verified this morning).</text>
+  <line x1="590" y1="156" x2="590" y2="182" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <!-- proven strip -->
+  <rect x="60" y="186" width="1060" height="188" rx="8" fill="#d1f0dc" stroke="#1a7f37" stroke-width="2"/>
+  <text x="590" y="210" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">PROVEN CLEAN-THREE — new since the last snapshot: the wall itself</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="234">✓ THE FOLD-JACOBIAN COCYCLE (the named last wall, t14 ticks 336-337): |det D(leaf chart)| = the FULL-ledger</text>
+    <text x="96" y="252">monomial ∏|z_diag|^(E−1) — the acc-threaded invariant through the whole tree walk (terminal / rollover / case-2 / case-1),</text>
+    <text x="96" y="270">with two machine-forced statement corrections banked as tripwires (conRoot scope; full vs analytic ledger)</text>
+    <text x="80" y="290">✓ The R7 LeafJacobian BUNDLE over every built-atlas piece — all 10 conjuncts; DivExpPos made the exp ≥ 1 clause unconditional</text>
+    <text x="80" y="310">✓ Everything that feeds it: the cover (A) · (D) fidelity both conjuncts · the ledger bridge (5 (B)-props + all of (C)) ·</text>
+    <text x="96" y="328">a.e.-injectivity (inj-t16) · the corner-disjointness kit (disj-t17) · the α gauge det-1 + bounded (loss-t15)</text>
+    <text x="80" y="348">✓ The VALUE walk's two ENDS (loss-t15): all-cleared InvVal collapses to prod = diagonal(b-monomials) → LeafDiagFrob;</text>
+    <text x="96" y="366">θ lane banked: Aoyagi pole order a(ℓ−a)+1 ≢ component count numTop (6≠5 witness) — the MINT GUARD stands</text>
+  </g>
+  <line x1="590" y1="374" x2="590" y2="398" stroke="#c93c37" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- live holes -->
+  <rect x="60" y="404" width="1060" height="170" rx="8" fill="#fde8e8" stroke="#c93c37" stroke-width="2.5"/>
+  <text x="590" y="428" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">THE LIVE HOLES — one mathematical, one wiring (sorry census grep-verified at HEAD 60cce328e)</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="452">★ leafDiagFrob_geoAtlasNorm (GeoAlphaGauge:562) — THE one mathematical hole. The InvVal VALUE walk: prod ∘ chartMap</text>
+    <text x="96" y="470">diagonalizes to the leaf's b-chain — the loss-VALUE analog of the PROVEN det cocycle, same induction, matrix entries</text>
+    <text x="96" y="488">for scalars. Remaining: payload pin (bmon/cleared PINNED; resid encoding A-vs-B at the elder co-read) + base +</text>
+    <text x="96" y="506">4 maintenance cases + walk instantiation — staged, each banked green. This is the bulk grind left in the expedition.</text>
+    <text x="80" y="530">★ ChartBridgeFaithful:92 — the (B) LeafPullback slot (wiring): after the witness-swap it consumes the already-written</text>
+    <text x="96" y="548">leafPullback_geoAtlasNorm directly; its sorryAx then routes through the mathematical hole above and NOTHING else.</text>
+  </g>
+  <line x1="590" y1="574" x2="590" y2="598" stroke="#9a6700" stroke-width="1.8" marker-end="url(#arr)"/>
+
+  <!-- in flight / ruled -->
+  <rect x="60" y="604" width="1060" height="240" rx="8" fill="#fff3d1" stroke="#9a6700" stroke-width="2"/>
+  <text x="590" y="628" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">RULED &amp; IN FLIGHT — the atlas seam (calibration entry 13 caught it BEFORE the lanes collided)</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="652">THE SEAM: t14's proven inventory lives over the id-gauge atlas; LeafPullback arrives over the α-gauge atlas —</text>
+    <text x="96" y="670">different atlases (same images/ledgers, different chartMap/srcBox); LeafPullback at id is FALSE.</text>
+    <text x="80" y="692">ELDER RULED (fork 15, 3rd amendment): WITNESS-SWAP — the α atlas IS Aoyagi's integration chart (normal crossings</text>
+    <text x="96" y="710">F = Σb_i² only after the Q,P normalization, worked.tex:487-518). (D)₁ amends to atlas = geoAtlasNorm alphaGauge t:</text>
+    <text x="96" y="728">MORE faithful, names her chart. Four transfer lemmas, each priced sound (cover / ledger / ae-inj / Jacobian).</text>
+    <text x="80" y="750">▶ t14 ENCORE (respawned, statement gate passed): the (D)₁ amendment + transfers — cover via open-homeo (srcBox=cube</text>
+    <text x="96" y="768">on disk, a 2nd design-vs-disk find) · Jacobian mechanism (gauge-generalize vs on-top) at elder counter-sign</text>
+    <text x="80" y="790">▶ loss-t15 (respawned): pre-building the resid-free payload + drafting the 4 case statements while parked on the ruling</text>
+    <text x="80" y="812">▶ elder-standing (respawned fresh from durable artifacts): 3 charges — (b) counter-sign · cover touchstone · resid A-vs-B</text>
+    <text x="80" y="832">⚠ codex DOWN env-wide (verified) — the elder co-read replaces decorrelation; statement gates tightened accordingly</text>
+  </g>
+  <line x1="590" y1="844" x2="590" y2="868" stroke="#57606a" stroke-width="1.6" marker-end="url(#arr)"/>
+
+  <!-- then ladder -->
+  <rect x="60" y="874" width="1060" height="120" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="1.6"/>
+  <text x="590" y="898" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2328">THEN (scripted, in order — nothing here is mathematical risk)</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="922">1. Both lanes land → the faithful discharge assembles (projection already live) → hbox flips clean-three</text>
+    <text x="80" y="942">2. MINT: rewrite the stale hDescent arm → land aoyagi_learning_coefficient on _gen · #guard_msgs-ENFORCED axiom gate</text>
+    <text x="96" y="960">(incl. chartBridgeFaithful_buildTree) · the θ mint-guard (headline is the VALUE λ only; the seam binds to a(ℓ−a)+1)</text>
+    <text x="80" y="980">3. Cordon census (Skeleton 3 fossils · CanonicalWitness224 (2,2,4) · #15 flags) → signal-and-wait PR</text>
+  </g>
+
+  <!-- owed strip -->
+  <rect x="60" y="1010" width="1060" height="120" rx="8" fill="#f0f2f4" stroke="#57606a" stroke-width="1.6"/>
+  <text x="590" y="1034" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">OWED POST-SPINE (named in the PR body, not blocking the λ theorem)</text>
+  <g font-size="12" fill="#1f2328">
+    <text x="80" y="1058">R4 sharing propagation (re-priced SMALL: support is DERIVED from divTilde, not transported) · R7 ⊇ Clearable-Adm</text>
+    <text x="80" y="1078">completeness proof (statement reified, ClearableReify:78) · zero-width layer-collapse (b) · R6 regular peel (cost-probe-gated)</text>
+    <text x="80" y="1098">· the RLCT-payoff runway: replace the cited rlct = ½·codim by Aoyagi's native λ — the NEXT expedition's question</text>
+  </g>
+
+  <!-- ops footer -->
+  <rect x="60" y="1146" width="1060" height="108" rx="8" fill="#ffffff" stroke="#d0d7de" stroke-width="1.4"/>
+  <text x="80" y="1170" font-size="12.5" font-weight="700" fill="#57606a">OPERATIONS</text>
+  <g font-size="12" fill="#57606a">
+    <text x="80" y="1192">Survived TWO VM deaths: every banked artifact intact on disk (10-worktree sweep); sessions were the only loss.</text>
+    <text x="80" y="1212">Held stage-4b stack PUSHED to origin (banking now beats holding); integration AxCheck gate re-running in background.</text>
+    <text x="80" y="1232">Seats: t14 + loss-t15 + elder respawned and active · carto respawn due (STATUS.md is a tick-289 fossil) · calibration ledger at entry 13.</text>
+  </g>
+</svg>
