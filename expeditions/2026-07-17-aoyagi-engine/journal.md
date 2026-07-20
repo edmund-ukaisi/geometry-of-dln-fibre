@@ -5354,3 +5354,13 @@ only when the tree-binding identification lands as the registered post-spine fol
 (task #69, created — a live obligation, not a docstring aspiration). t18 relayed the GO with
 the teeth verbatim; all three blocks grind to completion. The split is dependency-forced
 (layer 3 consumes the engine's tree) — right-scoping, not avoidance.
+
+### Tick-331 addendum: t14 executing stage 1; two grounding facts worth the record
+The staged ruling accepted; stage 1 (pure coherences) in flight. Its grounding notes carry
+two load-bearing facts: (1) resCols ≥ 1 at every non-rollover node (cleared < widthMinUpto ≤
+M^{layer+1}) — so case-11/12 edges are ALWAYS charted, and the only chartless corners are
+rollover + case-2-with-resRows-0; (2) both chartless corners are LEDGER-NEUTRAL (the append
+exponent is 0 ⟹ the fresh factor is |z|^0 = 1) — which naturally dissolves the R7 ≥1
+watch-item's worry at the source (an exp-0 appended divisor contributes exactly nothing to
+either side). The child-state dispatch pinned (child11 = bumpedExp in the DECISION, not
+stepCase11 — a subtle constructor fact worth having written down). Stage-1 push expected.
