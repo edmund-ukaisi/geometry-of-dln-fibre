@@ -155,4 +155,34 @@ example : aoyagiTheta 2 1 = 2 := by decide
 example : aoyagiTheta 3 1 = 3 := by decide
 example : aoyagiTheta 4 2 = 5 := by decide
 
+/-! ## The count `θ = a(ℓ−a)+1` as a lattice-box cardinality (Lemma 5, scoped)
+
+Lemma 5 counts the binding branch-vectors pinned between the two partial-sum envelopes
+`H̃_j`, `H̃'_j` (worked.tex:733-750). Reduced to the abstract `(ℓ,a)` data, the two envelopes are
+`H̃_j ↦ j − a` and `H̃'_j ↦ min(j, ℓ−a)`, and the region between them (over `j = 0,…,ℓ`) is a
+parallelogram of base `a` and height `ℓ−a` — `a(ℓ−a)` lattice cells; together with the single
+terminal branch this is `θ = a(ℓ−a)+1`. We record the cardinality identity on the equinumerous
+`a × (ℓ−a)` box.
+
+SCOPE (post-spine follow-on): identifying this count with Aoyagi's actual resolution
+binding-branch multiplicity needs the Case-1(2) `J`-increment (resolution-tree bookkeeping), and
+identifying it with the analytic pole order needs meromorphic continuation — both out of scope
+here. The name below claims **only** the lattice identity `θ = |a×(ℓ−a) box| + 1`. -/
+
+/-- The `a × (ℓ−a)` lattice box; its cardinality is the area between the reduced two-envelope
+family (`= a(ℓ−a)`). -/
+def orderBox (ℓ a : ℕ) : Finset (ℕ × ℕ) := Finset.Icc 1 a ×ˢ Finset.Icc 1 (ℓ - a)
+
+/-- The `a × (ℓ−a)` box has `a(ℓ−a)` cells (holds for all `ℓ, a`; at `a > ℓ` both sides are `0`). -/
+theorem orderBox_card (ℓ a : ℕ) : (orderBox ℓ a).card = a * (ℓ - a) := by
+  rw [orderBox, Finset.card_product, Nat.card_Icc, Nat.card_Icc, Nat.add_sub_cancel,
+    Nat.add_sub_cancel]
+
+/-- **`θ = a(ℓ−a)+1` as a lattice count**: `aoyagiTheta ℓ a` is one more than the number of cells of
+the `a × (ℓ−a)` box (the reduced two-envelope band's area). See the section note for what this does
+**not** claim (the resolution binding-branch count; the analytic pole order). -/
+theorem aoyagiTheta_eq_orderBox_card_succ (ℓ a : ℕ) :
+    aoyagiTheta ℓ a = (orderBox ℓ a).card + 1 := by
+  rw [aoyagiTheta, orderBox_card]
+
 end DLNFibre.DLN.RLCT
