@@ -5792,3 +5792,19 @@ touched the ratified claim evaluated it at the degenerate boundary (empty traili
 statement gates now demand "name the state each verification ran at; if all coincide,
 demand one interior instance". MEANWHILE (task board): t14's Stage 1 (the (D)₁ amendment)
 and Stage 3 (the re-wire) are COMPLETE, Stage 4 in progress — the witness-swap is landing.
+
+## 2026-07-20 tick 354: the structural bridge LANDED (cited) — locality read validates the re-base; prefixCol wrinkle
+loss-t15 settled the chart-locality question by reading the flat-coordinate layout: every
+chart at a layer-S node writes ONLY layer-≤S flat coords (flatCoordOf's layer arg,
+CenterIndices:30-32; case-2 cells at node.layer :52-58; case-1 u-corner at the merge
+divisor's BIRTH layer ≤ node.layer, QNodeCarrier:438-441, + d-block :472-484; spectators
+fixed GeoFoldRegroup:135; swap + α shear within ≤ node.layer, GeoAlphaGauge:135). Subtlety:
+case-11's earlier-layer u-corner touch is pivot-FREE — cleared prefix rows undisturbed. So
+prod = prefix·(raw trailing) holds on OUR disk by locality + associativity — the gate's
+structural-bridge half DONE; the two abstract-battery legs remain. THE WRINKLE (honest cost
+of reading her actual object): prodPrefix has a DEPENDENT column type M(prefixCol s) — the
+re-based j binder is s-dependent. Candidate pin relayed both directions: prefixCol s =
+s.layer + 1 (matrices 0..s.layer per the locality read; branches only at s.layer < L by
+layer_lt_of_branch; terminal discharges via the leaf lemma prefix = prod). loss-t15 pins
+off prodAux's recursion; elder stamps with the battery legs. bmonOf/base/flags survive
+verbatim; the bank waits on legs + stamp + t14's clearedOf.
