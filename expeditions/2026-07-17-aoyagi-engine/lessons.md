@@ -53,3 +53,13 @@ the trail is local):
   reasoning-from-incomplete-data family as the shallow-instance confound above.
 - **TaskStop kills the wrapper, not the detached child (2026-07-20).** A 32-min `cordon-audit`
   survived its task's TaskStop, burning a core. For a runaway build/audit, `pkill` the process.
+- **ADJUDICATION IS NOT THE BUILD — pin the shape, then build (operator-caught, 2026-07-20).** Instances
+  NEVER prove a ∀-general statement; a sequence of pen-and-paper adjudications ("verify one more instance")
+  is the avoidance dressed as diligence — the exact shape of the coupled-B dodge across expeditions. RULE:
+  adjudicate only enough to pin the SHAPE (e.g. single-divisibility-chain vs multi-generator ideal); once
+  the shape is determined, the ARCHITECT + FORMALISERS BUILD — the ∀-statement as an honestly-named FRONTIER
+  LEAF (a proof target), not adjudicated-away with more instances. A pnp result that WOULD spawn "one more
+  instance" instead spawns the build. **Why:** instances characterize, the build proves; a loop of
+  characterizations never reaches the theorem. Guard against BOTH failure modes — adjudicate-forever (dodge)
+  AND build-on-one-instance (shallow-instance confound); the correct dose is "exactly enough to pin the
+  shape, then build." (Operator: "are your fresh teammates dodging the hard part … yet another adjudication?")
