@@ -5752,3 +5752,21 @@ prod cleared rows diagonal? (expect NO) (b) prefix cleared rows diagonal = bmon?
 YES) (c) trailing = raw untouched layers? Grind stays gated on ruling + verdicts. The
 banked leaf-end and the four statement SHAPES survive either outcome; what changes is the
 object InvVal reads (prod → prodPrefix) — caught at the statement gate, zero grind wasted.
+
+## 2026-07-20 tick 352: last-gate crossing corrected — the tripwire does NOT cover the three-factor issue; bank held
+loss-t15's last-gate post (written pre-crossing) closed Q1/Q2a and all four binder flags
+cleanly — h added; hexpf kept (walk-supplies via DivExpPos_conOracle_stepChildren:705);
+case-11 child pinned to t14's exact literal; and flag 4 is a GIFT: alphaGauge is
+DEFINITIONALLY id on case-11/rollover edges (GeoAlphaGauge:282-283), so those value cases
+reuse t14's id-gauge reads verbatim — relayed to t14 for its 2d probe too (two of four
+atoms instantiate with zero new content). bmonOf fixed to ≤ on four-way agreement (my pin,
+R4 cert, position-0=terminal, abstract battery) — no Python arbiter port (the battery is
+ABSTRACT, not a construction trace: my tick-351 numeric check CANNOT run as asked;
+superseded by the structural chart-locality read, with the elder). CRITICAL CORRECTION
+sent: its closing "the intermediate-state concern is covered by the case-2 tripwire" is
+WRONG — a false invariant cannot be rescued by a fallback that asserts the same false
+cleared-rows-diagonal on the same full product; the fix is the OBJECT (prod → prodPrefix),
+not the payload. BANK HELD until the elder's prefix ruling; the re-base is a near-one-token
+change to the validated defs. Q2b (the clearedOf frontier map — the M(0)-row ↔
+(layer,pivot) correspondence across rollovers) routed to t14 as a narrow next-pause
+question. The pin waits on exactly TWO items: elder prefix ruling + t14 frontier map.
