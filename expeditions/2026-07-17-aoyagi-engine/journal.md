@@ -5424,3 +5424,23 @@ HONORS: both lanes delivered — the tie block, the scoped band identity, the se
 the zero-width CHARACTERIZATION. The independent-lane fan-out is now FULLY harvested
 (lanes 2-rung/3/4/6 done, 5 deferred-by-plan, #69 registered). The board: t14 (stage 3)
 ∥ loss-t15 (parked) ∥ the offices. The spine is the only live front.
+
+## 2026-07-20 tick 336: ★★ THE LAST WALL IS DISCHARGED ★★ — geoAtlas_cocycle SORRY-FREE, CLEAN-THREE
+Stage 3 merged (bed64761d) + CONTROLLER-PROBED: geoAtlas_cocycle depends on exactly
+[propext, Classical.choice, Quot.sound]. The fold-Jacobian regrouping cocycle — THE WALL
+since the elder finding at tick 242, the "L2/D1-class" multi-arc induction, the one genuinely
+hard proof the whole endgame funneled through — is CLOSED. The walk's final structure: the
+concrete conOracle re-dispatch (the DivBirthInv walk's own template), four branches
+(terminal / rollover chartless-neutral / case-2 single-fan / case-1 two-edge split), each
+fan-decompose → the stage-2 maintenance → the child ih; the ℕ-lifted fan index handled by
+the banked idiom; the arithmetic on edge-atoms (omega can't decompose products — noted).
+The lineage that closed it, for the record: the elder's Q2b finding → t11's atoms + the
+parametric fold + the normalization + the locked headline → pnp-fold's four certs (the
+regrouping identities, the threaded invariant, the value delta, the stranded dichotomy) →
+the R7 clause + t10's wrapper → t09's carrier + the fidelity chain → t07's walk template →
+disj-t17's kit → t14's four staged greens. Eleven seats, six elder charges, zero conceptual
+slop at depth.
+STAGE 4 (t14, in flight): the headline wiring (geoAtlas_fold_det = the cocycle at
+conRoot/id) + the R7 ∃-discharge (the ≥1 conjunct PROVABLE via DivExpPos — the watch-item
+resolved positively). Then: loss-t15's mirror → the faithful discharge (the projection) →
+hbox → mint → cordon → PR.
