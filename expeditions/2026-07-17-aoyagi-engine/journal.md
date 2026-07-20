@@ -6384,3 +6384,26 @@ SEQUENCE (elder): complete α → re-prove det/cover/leafJacobian → re-establi
 bridge → value maintenance on corrected support → residualCore≥1 → LeafPullback closes.
 Navigator to price/parallelize the rebuild cascade once pnp-rg's shape lands. Bounded
 (construction completion) — named plainly, not a redesign.
+
+## 2026-07-20 tick 386b: α-completion REBUILD SURFACE inventoried (both seats) — pre-staged for the GO
+Consolidated the exact re-check surface so the corrected-α GO is a checklist:
+LOSS-T15 (owns α completion, GeoAlphaGauge): alphaGauge/residualSchurShear def (add Lg-remainder
++ Rg); alphaGauge_abs_det_one (extend the 4-case split to the fuller composition — Lg/Rg
+flatElemShears, det-1 rides); alphaGauge_ledgerMonomial_neutral (the ONE real reads-neutrality
+rebuild — schurCells_fst_ne_birthFlatCoord survives verbatim, add Lg/Rg-fix-birth analogs +
+the (J,J)-fixed fact pnp-rg pins).
+WALK-T20 (leafJacobian PROOFS, GeoAtlasTransfer): GAUGE-AGNOSTIC bundle consumers
+(geoAtlasNorm_cocycle / gauge_det_maintenance_wrapper / geoAtlasNorm_leaf_leafJacobian) DON'T
+rebuild — re-discharge the same bundle; hgdiff/hgdet1 survive; schurCells_snd_ne +
+elemShearFold-independence go FALSE (cross now written), rebuild.
+T14 (2a atoms, GeoAtlasTransfer — all `unfold alphaGauge; split`, mechanical): RE-CHECK =
+alphaGauge_{qmp,injective,surjective,differentiable} (extend to Lg∘residual∘Rg, ride
+foldrComp_*); cubeBox_subset_alphaGauge_image (srcBox constant re-derives at the new ρ(1+ρ)
+compounding); geoChartMapNorm_alpha_{qmp,ae_injOn} + geoAtlasNorm_leaf_ae_injOn (2c) +
+residualSchurShear_fixes_of_not_mem (2d) — reads-support widens, re-check disjointness.
+GAUGE-INDEPENDENT, STAND (both seats): node_selfCover_ge, qOfCenter_preimage_cubeBox_R,
+pivotChartDom/cube self-cover, cubeBox monotonicity, flatElemShear/foldrComp/elemShear atoms,
+2b geoAtlasNorm_leaf_ledgerProps (srcBox/ledger-only), loss-t15's form-2 ends + prefix machinery.
+NET: bounded, mostly mechanical; concentrated in the α-def-dependent atoms + the one real
+reads-neutrality rework. Both seats parked with these briefs; GO fires on loss-t15's completion
++ pnp-rg's Rg shape. Navigator prices the parallelization at the shape ruling.
