@@ -31,6 +31,9 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   the frozen ref "succeeded" — the placement check must check the BRANCH, not just the cwd).
 - Obligations STATED (tick 37); case-step-lemmas faithful-flip waits on the full-fidelity items.
 - Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
+- COMPASS OWNERSHIP (operator, 2026-07-20): the ELDER edits compass.md directly (its author-of-record,
+  keeper role); the CONTROLLER commits + pushes (branch discipline) — do NOT edit compass.md yourself,
+  commit the elder's edits (git add compass.md only, on the elder's "ready" signal).
 - CONTROLLER SHELL GUARDS (recurring self-bugs): NEVER gate a chain on `validate | tail` (tail
   masks the exit code — bank only via a grep-for-'0 error' gate); the hooksPath was dangling
   (pointed at the MAIN checkout's absent scripts/hooks — repointed to THIS worktree's, verified
