@@ -6921,3 +6921,21 @@ COROLLARY (discharge hbox via routeMBoxThresholdFinite_mnp → aoyagi=C/2 uncond
 at L≤2) + the non-vacuity docstring witness (bedrock witness-in-file). mint-t19 banks it +
 does the refuted-as-stated labeling + stands down. This is the best answer to "is it vacuous?":
 no — it closes CONCRETELY at L≤2. pnp-ideal probing the L≥3 ideal route (depth-3) meanwhile.
+
+## 2026-07-20 tick 412: conditional-spine wrapper DELETED + un-wired; deliverable = {_gen, L2, L1} banked; integration-verified
+mint-t19 deleted HeadlineConditionalSpine.lean (following my earlier prefer-delete; my later
+KEEP+corollary ruling crossed it — accepted the delete, no fault: the pieces the KEEP wanted
+ALREADY EXIST banked). I merged the delete + UN-WIRED the aggregator import (my surface — the
+dangling import removed, replaced with a note recording the honest pieces). Integration-side
+force-recompile #print (deleted HeadlineGenAssembly.olean, rebuilt EXIT=0, scratch #print):
+aoyagi_learning_coefficient_gen = [propext, Classical.choice, Quot.sound] — clean-three,
+CONFIRMED on the merged/un-wired state. THE HONEST DELIVERABLE (final form, all banked
+clean-three): aoyagi_learning_coefficient_gen (general-L, on the satisfiable hbox; documented
+in HeadlineGenAssembly as THE honest engine — composes hbox lower-half + banked divergence
+upper-half + minAdm_eq_cCodim ⟹ ½·cCodim = C/2) + aoyagi_learning_coefficient_L2 (UNCONDITIONAL
+L=2, hbox discharged by routeMBoxThresholdFinite_mnp) + aoyagi_learning_coefficient_L1
+(unconditional L=1). NO vacuous conditional stands. hbox's general-L discharge = ideal-level
+Lemma 1 (the follow-up). mint-t19 stood down with honors (mint done right — ended honest, not
+forced-green). Refuted-as-stated labeling on ChartBridgeFaithful/GeoAlphaGauge still owed (a
+doc-pointer; fold into the cordon/close). pnp-ideal depth-3 probe still running (the follow-up
+reachability gate + the operator's cul-de-sac evidence).
