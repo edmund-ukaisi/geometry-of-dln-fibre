@@ -58,11 +58,16 @@ This module provides:
 * the `@[cited "<source>"]` **parametric attribute** (source string as structured data);
 * the `@[blueprint]` **tag attribute** (a plain tag on any declaration — `def`s included);
 * one reusable **cited core** (`auditDecl`) computing the `UNACCOUNTED` / `CITED` / non-foundational
-  sets, and the **blueprint traversal** (`collectBlueprintBatch` / `blueprintDepsOf`);
-* the in-file `#audit_cited foo` and `#audit_blueprint foo` commands (mirror `#print axioms`).
+  sets, and the slim, first-party-bounded, per-root **blueprint-leak walk** (`blueprintDepsOf`);
+* the in-file report commands `#audit_cited foo` / `#audit_blueprint foo` (mirror `#print axioms`);
+* the enforcing gate command `#assert_banked_clean foo` — same footprint emission, but it *asserts*
+  (`UNACCOUNTED = ∅` and, unless `foo` is itself a forecast, no `@[blueprint]` leak), so a violation
+  reddens the build.
 
-The repo gate (`scripts/cordon` / `lake exe cordon-audit`) is a thin env-reading frontend over the same
-core (`Meta.CordonAudit`). Policy: `docs/policies/citation-cordon.md`.
+The repo gate has two halves, both riding Lean's native per-root engines (no whole-environment walk):
+`#assert_banked_clean` over the registered roots in `DLNFibre/DLN/RLCT/AxCheck.lean` (the axiom /
+blueprint-leak gate, via `collectAxioms` + `blueprintDepsOf`), and the source-level grep `scripts/cordon`
+(cite LOCATION + `native_decide` ban + blueprint census). Policy: `docs/policies/citation-cordon.md`.
 -/
 
 open Lean Elab Command
@@ -193,7 +198,7 @@ structure AuditResult where
 /-- Is this decl proved modulo declared citations? (`unaccounted = ∅`.) -/
 def AuditResult.ok (r : AuditResult) : Bool := r.unaccounted.isEmpty
 
-/-! ### The constant-reference edge set (shared by both walks)
+/-! ### The constant-reference edge set (the blueprint-leak walk)
 
 `getUsedConstants` on the type (and value, per declaration kind) is the kernel's constant-reference
 graph — the same edges `collectAxioms` follows for axioms, generalised to *all* constants for the
@@ -212,71 +217,15 @@ def usedConstantsOf (ci : ConstantInfo) : Array Name :=
   | .recInfo v    => v.type.getUsedConstants
   | .inductInfo v => v.type.getUsedConstants ++ v.ctors.toArray
 
-/-! ### Batched axiom collection (one shared traversal over many roots)
+/-! ### The blueprint-leak walk (per-root, first-party-bounded)
 
-`Lean.collectAxioms` starts a fresh `visited` set per call, so auditing a whole library decl-by-decl
-re-traverses the shared (Mathlib) dependency graph once per declaration — O(decls × depth), far too
-slow for the repo gate. `collectAxiomsBatch` traverses from *all* roots with a **single** shared
-`visited` set, so each constant is visited once total — O(reachable constants). The result is the
-*union* of the roots' transitive axioms; per-root attribution (for a violation listing) is a separate,
-rarely-needed pass. Same completeness as `collectAxioms` (same kernel constant graph). -/
-
-/-- One shared traversal collecting the union of transitive axioms of all `roots`. Iterative
-(explicit worklist) so it is not `partial` — `visited` bounds it (each constant pushed once). -/
-def collectAxiomsBatch (env : Environment) (roots : Array Name) : Array Name := Id.run do
-  let kenv := env.checked.get
-  let mut visited : NameSet := {}
-  let mut axioms : Array Name := #[]
-  let mut stack : Array Name := roots
-  while h : stack.size > 0 do
-    let c := stack[stack.size - 1]
-    stack := stack.pop
-    unless visited.contains c do
-      visited := visited.insert c
-      match kenv.find? c with
-      | some (.axiomInfo v) =>
-        axioms := axioms.push c
-        stack := stack ++ v.type.getUsedConstants
-      | some (.defnInfo v)   => stack := (stack ++ v.type.getUsedConstants) ++ v.value.getUsedConstants
-      | some (.thmInfo v)    => stack := (stack ++ v.type.getUsedConstants) ++ v.value.getUsedConstants
-      | some (.opaqueInfo v) => stack := (stack ++ v.type.getUsedConstants) ++ v.value.getUsedConstants
-      | some (.quotInfo _)   => pure ()
-      | some (.ctorInfo v)   => stack := stack ++ v.type.getUsedConstants
-      | some (.recInfo v)    => stack := stack ++ v.type.getUsedConstants
-      | some (.inductInfo v) => stack := (stack ++ v.type.getUsedConstants) ++ v.ctors.toArray
-      | none                 => pure ()
-  pure axioms
-
-/-! ### Batched blueprint collection (the leak walk)
-
-The blueprint analogue of `collectAxiomsBatch`, over the full constant-reference graph. Each traversal
-descends *through* forecast nodes (a forecast whose own proof rests on a deeper forecast is reported
-too — completeness), collecting every `@[blueprint]`-tagged constant reachable from the (non-forecast)
-roots. `collectBlueprintBatch` gives the union over all roots in one shared traversal (the fast, green
-path); `blueprintDepsOf` gives per-root attribution (the rare red path). -/
-
-/-- The union of `@[blueprint]`-tagged constants reachable from any of `roots`, in one shared
-traversal (O(reachable constants)). The roots themselves are excluded from the result (a root is a
-*banked* decl whose forecast dependencies we want). Iterative so it is not `partial`. -/
-def collectBlueprintBatch (env : Environment) (roots : Array Name) : Array Name := Id.run do
-  let rootSet : NameSet := roots.foldl (·.insert ·) {}
-  let mut visited : NameSet := {}
-  let mut found : Array Name := #[]
-  let mut stack : Array Name := roots
-  while h : stack.size > 0 do
-    let c := stack[stack.size - 1]
-    stack := stack.pop
-    unless visited.contains c do
-      visited := visited.insert c
-      if isBlueprint env c && !rootSet.contains c then
-        found := found.push c
-      -- BOUNDARY PRUNE (perf): descend only from first-party constants; an upstream (Mathlib/core)
-      -- constant is a dead-end for blueprint-reachability. Keeps the walk O(first-party graph).
-      if notUpstream env c then
-        match env.find? c with
-        | some ci => stack := stack ++ usedConstantsOf ci
-        | none => pure ()
-  pure (found.qsort Name.lt)
+`blueprintDepsOf` walks the full constant-reference graph from one banked root and collects every
+`@[blueprint]`-tagged constant it transitively reaches (`root` itself excluded). It descends *through*
+forecast nodes (a forecast whose own proof rests on a deeper forecast is reported too — completeness),
+and PRUNES at the first-party boundary (`notUpstream`): an upstream (Mathlib/core) constant can never
+reach a first-party forecast, so the walk stays `O(first-party graph)` rather than `O(reachable
+Mathlib)`. This is the slim, per-root, bounded traversal used by both `#audit_blueprint` and the
+`#assert_banked_clean` gate. -/
 
 /-- The `@[blueprint]`-tagged constants in `root`'s transitive constant dependencies (`root` itself
 excluded — per-root attribution for the leak listing). Iterative; sorted. -/
@@ -295,7 +244,8 @@ def blueprintDepsOf (env : Environment) (root : Name) : Array Name := Id.run do
       visited := visited.insert c
       if isBlueprint env c then
         found := found.push c
-      -- BOUNDARY PRUNE (perf): see `collectBlueprintBatch`.
+      -- BOUNDARY PRUNE (perf): descend only from first-party constants; an upstream (Mathlib/core)
+      -- constant is a dead-end for blueprint-reachability. Keeps the walk O(first-party graph).
       if notUpstream env c then
         match env.find? c with
         | some ci => stack := stack ++ usedConstantsOf ci
@@ -376,6 +326,46 @@ def elabAuditBlueprint : CommandElab
         let items := deps.toList.map MessageData.ofConstName
         logInfo m!"'{c}' LEAKS @[blueprint] forecasts: {MessageData.joinSep items ", "}\n\
            → a banked result must not rest on a forecast: prove/ban them, or `@[blueprint]` this decl."
+  | _ => throwUnsupportedSyntax
+
+/-! ## Frontend 3 — the `#assert_banked_clean foo` GATE command (asserts, not merely reports)
+
+The enforcing gate, run per registered root (in `DLNFibre/DLN/RLCT/AxCheck.lean`). It reuses the exact
+report of `#audit_cited` (so the build log still carries the `#print axioms` footprint) but turns the
+two invariants into build-failing assertions. It rides Lean's native `collectAxioms` engine per root
+(near-free) — there is no whole-environment traversal. **Cite LOCATION is not checked here** (`auditDecl`
+accounts any `@[cited]` axiom regardless of where it lives); that half is the source-level grep gate
+`scripts/cordon`. -/
+
+/-- **`#assert_banked_clean foo`** — the enforcing per-root gate. For each resolved constant `c`:
+* emit `c`'s cited footprint (`logInfo`), same as `#audit_cited`;
+* GATE 1 — if `c` rests on an UNACCOUNTED axiom (non-foundational, not `@[cited]`), `throwError` naming
+  them (a sneaked-in `sorry`/`native_decide` surfaces here as `sorryAx`/a generated axiom → red build);
+* GATE 2 — unless `c` is itself a `@[blueprint]` forecast (a forecast may rest on forecasts), if `c`
+  transitively rests on any `@[blueprint]` forecast, `throwError` naming the leaked forecasts. -/
+syntax (name := assertBankedCleanCmd) "#assert_banked_clean " ident : command
+
+@[command_elab assertBankedCleanCmd]
+def elabAssertBankedClean : CommandElab
+  | `(#assert_banked_clean $id:ident) => do
+    let cs ← liftCoreM <| realizeGlobalConstWithInfos id
+    let env ← getEnv
+    for c in cs do
+      let r ← auditDecl c
+      -- Keep the human-readable footprint (what `#print axioms` would give) in the build log.
+      logInfo r.toMessageData
+      -- GATE 1: no unaccounted axiom (the accounted-axioms cordon).
+      unless r.unaccounted.isEmpty do
+        let bad := r.unaccounted.toList.map MessageData.ofConstName
+        throwError m!"'{c}' rests on UNACCOUNTED axiom(s): {MessageData.joinSep bad ", "}\n\
+           → prove each, or `@[cited \"…\"]` it and locate it in a `…Cited.lean` file."
+      -- GATE 2: a banked decl must not rest on a `@[blueprint]` forecast (a forecast itself may).
+      unless isBlueprint env c do
+        let leaks := blueprintDepsOf env c
+        unless leaks.isEmpty do
+          let items := leaks.toList.map MessageData.ofConstName
+          throwError m!"'{c}' LEAKS @[blueprint] forecast(s): {MessageData.joinSep items ", "}\n\
+             → a banked result must not rest on a forecast: prove/ban them, or `@[blueprint]` this decl."
   | _ => throwUnsupportedSyntax
 
 end Meta.Cordon

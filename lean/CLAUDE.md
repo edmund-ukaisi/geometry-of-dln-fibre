@@ -73,15 +73,23 @@
 
 ## Citation cordon (the Proved-vs-Cited gate)
 - Cited external results are `@[cited "<source>"]` `axiom`s in located `…Cited.lean` files; the kernel
-  tracks every axiom via `collectAxioms`, and the gate is `collectAxioms − {propext, Classical.choice,
-  Quot.sound} − @[cited] = ∅`. Full mechanism + declare-a-cite workflow:
+  tracks every axiom via `collectAxioms`, and the accounting is `collectAxioms − {propext,
+  Classical.choice, Quot.sound} − @[cited] = ∅`. Full mechanism + declare-a-cite workflow:
   [`../docs/policies/citation-cordon.md`](../docs/policies/citation-cordon.md).
-- **`scripts/cited`** — the ENFORCING gate (nonzero exit on any UNACCOUNTED / LOCATION violation),
-  sibling to the informational `scripts/sorries`. `scripts/cited --manifest` prints the per-source
-  cite map. **`#audit_cited foo`** — the in-file report (mirrors `#print axioms`), the inner loop.
-  **`scripts/cited-test`** — battle-tests the cordon against `tests/CordonFixtures.lean`.
+- **Two-part gate, per-root (no whole-env walk):**
+  - **`#assert_banked_clean X`** — the SOUNDNESS gate, a `Meta.Cordon` command run over the roots in
+    `DLNFibre/DLN/RLCT/AxCheck.lean`. Rides Lean's `collectAxioms` per root: asserts `UNACCOUNTED = ∅`
+    and (unless `X` is a `@[blueprint]` forecast) no forecast leak. Does NOT check cite location.
+    A root that legitimately carries a live-frontier `sorryAx` keeps `#print axioms X` + a
+    `-- TRACKED-OPEN` comment instead (informational, not gated).
+  - **`scripts/cordon`** — the SOURCE gate (python grep, sibling to `scripts/sorries`; nonzero exit on
+    violation): cite LOCATION/TAG over `DLNFibre/**` + a `native_decide` ban + a blueprint census.
+  - **`#audit_cited foo` / `#audit_blueprint foo`** — the in-file reports (mirror `#print axioms`), the
+    inner loop. **`scripts/cordon-test`** — battle-tests BOTH gate halves against `tests/*`.
 - Forget-proof: forgetting the tag doesn't hide a cite (the raw axiom still lands in UNACCOUNTED → red
-  gate). Green = "no unaccounted axiom", NOT a whole-TCB audit; a human still reviews the source string.
+  `#assert_banked_clean`). Green = "no unaccounted axiom, all cites located, no forecast leak", NOT a
+  whole-TCB audit; a human still reviews the source string. (The whole-env `cordon-audit` executable +
+  `Meta.CordonAudit` were deleted 2026-07-20 — the per-root gate replaces the slow Mathlib-wide walk.)
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —

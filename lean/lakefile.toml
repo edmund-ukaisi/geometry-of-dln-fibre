@@ -20,23 +20,18 @@ name = "DLNFibre"
 # ── The citation-cordon TOOLING (additive; NOT a default target) ─────────────────────────────────
 # A sibling library OUTSIDE the DLNFibre math library (which stays tooling-free). These stanzas add
 # new targets only — `defaultTargets = ["DLNFibre"]` is unchanged, so `lake build` / `scripts/lb`
-# with no args, and the live expedition build, are unperturbed. Built explicitly by `scripts/cordon`
-# and `scripts/cordon-test`. Policy: docs/policies/citation-cordon.md.
+# with no args, and the live expedition build, are unperturbed. Built explicitly by `scripts/cordon-test`.
+# Policy: docs/policies/citation-cordon.md.
 
-# `Meta.Cordon` = the `@[cited]` + `@[blueprint]` attributes + `auditDecl` core + the blueprint walk +
-# `#audit_cited` / `#audit_blueprint`; `Meta.CordonAudit` = the env-reading gate. srcDir defaults to
-# `.` (the `lean/` dir), so the modules are `lean/Meta/{Cordon,CordonAudit}.lean`.
+# `Meta.Cordon` = the `@[cited]` + `@[blueprint]` attributes + `auditDecl` core + the per-root
+# blueprint-leak walk + the `#audit_cited` / `#audit_blueprint` reports + the `#assert_banked_clean`
+# gate command. srcDir defaults to `.` (the `lean/` dir), so the module is `lean/Meta/Cordon.lean`.
+# (The whole-environment gate executable `cordon-audit` / `Meta.CordonAudit` was deleted 2026-07-20 in
+# favour of the per-root `#assert_banked_clean` gate in `DLNFibre/DLN/RLCT/AxCheck.lean` + the grep
+# gate `scripts/cordon`; DLNFibre imports `Meta.Cordon` via `AxCheck`.)
 [[lean_lib]]
 name = "Meta"
-globs = ["Meta.Cordon", "Meta.CordonAudit"]
-
-# The citation-cordon gate executable (`lake exe cordon-audit`); wrapper `scripts/cordon`.
-# Root lives in `scripts/CordonGate.lean`; imports `Meta.CordonAudit`.
-[[lean_exe]]
-name = "cordon-audit"
-srcDir = "scripts"
-root = "CordonGate"
-supportInterpreter = true
+globs = ["Meta.Cordon"]
 
 # Adversarial cordon fixtures (the SPEC — known-expected verdicts). A SEPARATE library in bare
 # namespaces (`CordonFixtures` / `CordonClean` / `CordonLeak`), in modules whose names have no

@@ -32,8 +32,8 @@ headline results (@ `f5c1c6b7`, Phase 1) plus the **RLCT foundation** merged via
 which is what the `rlct` and fibre-`θ` rows reflect (the payoff now reads the **defined** `rlctGlobal`,
 and the fibre component-count drops `Monotone d`). Integrity: **zero `sorry` / `admit`** in
 `lean/DLNFibre/**`; the only axioms are the
-cordon-accounted `@[cited]` monuments (`scripts/cited`: `CITED=3` — Watanabe-upper, Aoyagi-lower, and the
-local ζ-continuation). Legend: ✅ Proved · 🟡 Proved (scoped beyond the paper) · 🔵 Cited (an explicit
+cordon-accounted `@[cited]` monuments (`scripts/cordon` + the per-root `#assert_banked_clean` gate:
+`CITED=3` — Watanabe-upper, Aoyagi-lower, and the local ζ-continuation). Legend: ✅ Proved · 🟡 Proved (scoped beyond the paper) · 🔵 Cited (an explicit
 interface/hypothesis, not a global axiom).
 
 | Paper result | | Generality vs paper | Lean name |

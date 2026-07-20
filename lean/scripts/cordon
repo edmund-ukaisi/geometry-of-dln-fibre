@@ -1,36 +1,191 @@
-#!/usr/bin/env bash
-# cordon — the citation-cordon repo gate (ENFORCING: nonzero exit on any violation).
-#
-#   docs/policies/citation-cordon.md   (the mechanism + the blueprint extension)
-#
-# Sibling to `scripts/sorries` (informational, always exit 0). This one is the GATE: it FAILS the build
-# if any DLNFibre declaration (scope = module provenance `DLNFibre`) rests on an untagged,
-# non-foundational axiom (UNACCOUNTED ≠ ∅), any in-scope cite axiom is not `@[cited]` + in a located
-# cite file (LOCATION ≠ ∅), or any banked (non-`@[blueprint]`) decl transitively rests on a
-# `@[blueprint]` forecast (LEAKS ≠ ∅).
-#
-# UNLIKE the sibling `qs` gate, this does NOT pass `--max-cites 0`: DLNFibre's definition of done is
-# proved-modulo-declared-cites, NOT zero-cite — the Aoyagi RLCT interface is a *legitimate* cite. So a
-# green gate here means "no unaccounted axiom, all cites located, no blueprint leak" (declared cites are
-# fine). Pass `--max-cites N` yourself to impose a ceiling.
-#
-# Runs `lake exe cordon-audit` (built via the shared-store throttle `lb`). Builds BOTH the math lib (the
-# runtime `importModules DLNFibre` target) AND the exe. Pass-through args go to the executable, e.g.
-# `scripts/cordon --manifest` prints the per-source cite manifest (informational).
-#
-# All args are forwarded, including `--json <outfile>` (writes the machine-readable report the map
-# validator consumes; human output + exit code unchanged). For a mapped expedition the suggested output
-# is `<exp>/map/survey/cordon.json`, e.g.
-#   scripts/cordon --json ../expeditions/<exp>/map/survey/cordon.json
-set -euo pipefail
+#!/usr/bin/env python3
+"""cordon — the citation-cordon SOURCE-LEVEL grep gate (ENFORCING: nonzero exit on any violation).
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LEAN_DIR="$(dirname "$SCRIPT_DIR")"
-cd "$LEAN_DIR"
+    docs/policies/citation-cordon.md   (the mechanism + the per-root soundness gate)
 
-# Build the math lib (the runtime import target) AND the executable through the throttled shared-store
-# build — one slot, both targets.
-"$SCRIPT_DIR/lb" DLNFibre cordon-audit >&2
+Sibling to `scripts/sorries` (informational, always exit 0). This is a GATE: it scans the DLNFibre
+source tree (`DLNFibre/**/*.lean` + `DLNFibre.lean`) and HARD-FAILS (nonzero exit) on either:
 
-source "$HOME/.elan/env" 2>/dev/null || true
-exec lake exe cordon-audit "$@"
+  LOCATION+TAG   — an `axiom` declaration that is NOT both (a) in a located cite file (path ends in
+                   `Cited.lean`, or basename in the allowlist {AoyagiCited, FixtureCited}) AND
+                   (b) carrying an `@[cited "…"]` attribute (same line, or the immediately-preceding
+                   attribute line). A stray/untagged axiom, or a `@[cited]` axiom in the wrong file, fails.
+  NATIVE_DECIDE  — any `native_decide` token (outside comments/strings). Banned — use `decide +kernel`.
+
+It also PRINTS (informational, does NOT fail the gate) a census of `@[blueprint]` forecast tag sites.
+
+This is only HALF the cordon. The axiom / blueprint-leak SOUNDNESS gate is the per-root command
+`#assert_banked_clean` in `DLNFibre/DLN/RLCT/AxCheck.lean`, which rides Lean's native `collectAxioms`
+engine (a sneaked-in `sorry`/`native_decide` surfaces there as an UNACCOUNTED axiom → red build). This
+grep only enforces cite LOCATION (which `#assert_banked_clean` deliberately does not check) + the
+`native_decide` source ban + the blueprint census.
+
+Reuses `scripts/sorries`' comment/string-skipping machinery, so prose that merely mentions "axiom" /
+"native_decide" in a doc comment or string literal is not flagged.
+
+Usage: scripts/cordon [TREE]
+  TREE — optional directory to scan instead of the repo DLNFibre tree (the cordon-test grep-half points
+         this at a temporary fixture tree). Default: the repo's `DLNFibre/**` + `DLNFibre.lean`.
+"""
+
+import glob
+import os
+import re
+import sys
+
+# A located cite file: path ends in `Cited.lean`, or its basename (minus `.lean`) is allowlisted.
+LOCATED_ALLOWLIST = {"AoyagiCited", "FixtureCited"}
+
+# A real `axiom` declaration: the keyword followed by an identifier (skips prose like "axiom-clean",
+# `axiom"`, "axiom is DELETED" is caught by the comment filter, not here).
+AXIOM_RE = re.compile(r"(?<![`\w])axiom\s+(?P<name>[A-Za-z_][A-Za-z0-9_'!?.]*)")
+NATIVE_RE = re.compile(r"(?<![`\w])native_decide\b")
+BLUEPRINT_RE = re.compile(r"@\[\s*blueprint\b")
+CITED_RE = re.compile(r"@\[\s*cited\b")
+
+
+def block_comment_depth_at(lines, lineno, col):
+    """Track /- -/ nesting depth at a specific (lineno, col) position (copied from scripts/sorries)."""
+    depth = 0
+    for i in range(lineno + 1):
+        j = 0
+        text = lines[i]
+        end = col if i == lineno else len(text)
+        while j < end:
+            if text[j:j + 2] == "--" and depth == 0:
+                break
+            if text[j:j + 2] == "/-":
+                depth += 1
+                j += 2
+            elif text[j:j + 2] == "-/":
+                depth = max(depth - 1, 0)
+                j += 2
+            else:
+                j += 1
+    return depth
+
+
+def in_string_literal(line, col):
+    """Heuristic: is column `col` inside a "..."-delimited string literal? (copied from scripts/sorries)."""
+    depth = 0
+    i = 0
+    while i < col and i < len(line):
+        c = line[i]
+        if c == "\\":
+            i += 2
+            continue
+        if c == '"':
+            depth ^= 1
+        i += 1
+    return depth == 1
+
+
+def skipped(lines, lineno, line, col):
+    """Skip a token that sits inside a line/block comment, a string literal, or a backtick-quote."""
+    if line.lstrip().startswith("--"):
+        return True
+    if block_comment_depth_at(lines, lineno, col) > 0:
+        return True
+    if in_string_literal(line, col):
+        return True
+    if col > 0 and line[col - 1] == "`":
+        return True
+    return False
+
+
+def is_located(path):
+    base = os.path.basename(path)
+    return base.endswith("Cited.lean") or base[:-5] in LOCATED_ALLOWLIST
+
+
+def is_tagged(lines, lineno, col):
+    """Is the axiom at (lineno, col) preceded by an `@[cited …]` attribute (same-line prefix, or the
+    immediately-preceding non-blank line)?"""
+    if CITED_RE.search(lines[lineno][:col]):
+        return True
+    j = lineno - 1
+    while j >= 0 and lines[j].strip() == "":
+        j -= 1
+    return j >= 0 and CITED_RE.search(lines[j]) is not None
+
+
+def collect_lean_files(root, tree):
+    if tree is not None:
+        return sorted(glob.glob(f"{tree}/**/*.lean", recursive=True))
+    return sorted(f for pat in ["DLNFibre/**/*.lean", "DLNFibre.lean"]
+                  for f in glob.glob(f"{root}/{pat}", recursive=True))
+
+
+def supports_color():
+    return hasattr(sys.stdout, "isatty") and sys.stdout.isatty()
+
+
+def main():
+    tree = sys.argv[1] if len(sys.argv) > 1 else None
+    # `root` = the `lean/` dir (parent of this script's dir); the DLNFibre tree lives under it.
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    lean_files = collect_lean_files(root, tree)
+
+    use_color = supports_color()
+    RED = "\033[31m" if use_color else ""
+    RESET = "\033[0m" if use_color else ""
+
+    violations = []          # (relpath, lineno, kind, detail)
+    blueprint_sites = []     # (relpath, lineno, text)
+    n_axioms = 0
+
+    for filepath in lean_files:
+        relpath = os.path.relpath(filepath, tree if tree is not None else root)
+        with open(filepath) as f:
+            lines = f.readlines()
+
+        for i, line in enumerate(lines):
+            for m in AXIOM_RE.finditer(line):
+                if skipped(lines, i, line, m.start()):
+                    continue
+                n_axioms += 1
+                name = m.group("name")
+                located = is_located(filepath)
+                tagged = is_tagged(lines, i, m.start())
+                if not (located and tagged):
+                    if not located and not tagged:
+                        reason = "not in a located cite file AND missing @[cited]"
+                    elif not located:
+                        reason = "MISPLACED: @[cited] but not in a located cite file (…Cited.lean)"
+                    else:
+                        reason = "UNTAGGED: in a located cite file but missing @[cited \"…\"]"
+                    violations.append((relpath, i + 1, f"axiom `{name}`", reason))
+
+            for m in NATIVE_RE.finditer(line):
+                if skipped(lines, i, line, m.start()):
+                    continue
+                violations.append((relpath, i + 1, "native_decide", "banned — use `decide +kernel`"))
+
+            for m in BLUEPRINT_RE.finditer(line):
+                if skipped(lines, i, line, m.start()):
+                    continue
+                blueprint_sites.append((relpath, i + 1, line.strip()))
+
+    # ── Blueprint census (informational) ──────────────────────────────────────────────────────────
+    print(f"-- @[blueprint] forecast tag sites ({len(blueprint_sites)}) --")
+    for (rp, ln, _txt) in blueprint_sites:
+        print(f"    {rp}:{ln}")
+
+    # ── Violations ────────────────────────────────────────────────────────────────────────────────
+    if violations:
+        print(f"\n{RED}cordon: {len(violations)} violation(s){RESET}", file=sys.stderr)
+        for (rp, ln, kind, reason) in violations:
+            print(f"  {rp}:{ln}  {kind} — {reason}", file=sys.stderr)
+        print("  → prove it / add `@[cited \"…\"]` + move to a `…Cited.lean` file / drop the `native_decide`.",
+              file=sys.stderr)
+
+    n_native = sum(1 for v in violations if v[2] == "native_decide")
+    n_loc = sum(1 for v in violations if v[2] != "native_decide")
+    status = "FAIL" if violations else "OK"
+    print(f"\ncordon(grep): {status} — {len(lean_files)} files, {n_axioms} axiom decl(s), "
+          f"{len(blueprint_sites)} blueprint site(s); LOCATION/TAG violations={n_loc}, native_decide={n_native}.")
+    sys.exit(1 if violations else 0)
+
+
+if __name__ == "__main__":
+    main()

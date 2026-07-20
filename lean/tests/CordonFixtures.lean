@@ -1,5 +1,4 @@
 import Meta.Cordon
-import Meta.CordonAudit
 import FixtureCited
 
 /-!
@@ -8,32 +7,31 @@ import FixtureCited
 These decls have **known-expected verdicts**; they are the proof the cordon actually catches
 violations (a cordon unproven to catch (c)/(d)/(h) is worthless). They live in a **separate namespace**
 `CordonFixtures` / `CordonLeak` / `CordonClean` (bare, NOT `DLNFibre`) and in modules whose names have
-no `DLNFibre` prefix, so the real gate — which audits module provenance `DLNFibre` — never sees the
-*intentional* violations here. The test harness (`scripts/cordon-test`) runs
-`cordon-audit --import CordonFixtures --ns CordonFixtures --ns FixtureCited` and asserts the verdicts
-below, including that (c)/(d)/(f)/(h) FAIL the gate (nonzero exit).
+no `DLNFibre` prefix, so the real gate never sees the *intentional* violations here. The test harness
+(`scripts/cordon-test`) exercises the two gate halves against these fixtures:
 
-Cited-cordon verdict map (asserted by the harness):
-* `(a)` `fullyProved` — FORMALISED (UNACCOUNTED = ∅, CITED = ∅);
-* `(b)` `usesCite` — CITED[src] (UNACCOUNTED = ∅, CITED = {citedFixtureAxiom});
-* `(c)` `usesUntagged` — UNACCOUNTED = {untaggedFixtureAxiom}, gate FAILS;
-* `(d)` `misplacedCitedAxiom` — a `@[cited]` axiom NOT in a located cite file → LOCATION violation;
+* the **per-root soundness gate** `#assert_banked_clean` (in `Meta.Cordon`), run over the fixture decls
+  from scratch modules — it must SUCCEED on the clean cited decl and FAIL (naming the offender) on the
+  untagged-axiom / opaque-hidden / blueprint-leak consumers;
+* the **source-level grep gate** `scripts/cordon`, run over a fixture tree — it must FAIL naming an
+  untagged/misplaced axiom and a `native_decide`.
+
+Cited-cordon verdict map (`#assert_banked_clean <decl>`):
+* `(a)` `fullyProved` — FORMALISED (UNACCOUNTED = ∅, CITED = ∅) → succeeds;
+* `(b)` `usesCite` — CITED[src] (UNACCOUNTED = ∅) → succeeds (a declared cite is permitted);
+* `(c)` `usesUntagged` — UNACCOUNTED = {untaggedFixtureAxiom} → FAILS;
+* `(d)` `misplacedCitedAxiom` — a `@[cited]` axiom NOT in a located cite file → a LOCATION violation of
+  the GREP gate (`#assert_banked_clean` accounts it, since it is tagged — location is not its job);
 * `(e)` `transitiveCite` — CITED (kernel transitivity: it uses `usesCite` which uses the cite);
-* `(f)` `opaqueHider`/`usesOpaque` — an axiom hidden in an `opaque`'s value → still UNACCOUNTED (the
-  batch traverses `opaqueInfo.value`).
+* `(f)` `opaqueHider`/`usesOpaque` — an axiom hidden in an `opaque`'s value → still UNACCOUNTED (Lean's
+  `collectAxioms` traverses `opaqueInfo.value`), so `#assert_banked_clean usesOpaque` FAILS.
 
 Blueprint-leak verdict map:
 * `(g)` `blueprintForecast` — a `@[blueprint]` *def* (a forecast on a non-axiom);
-* `(h)` `bankedUsesBlueprint` — a banked theorem resting on `blueprintForecast` → BLUEPRINT-LEAK, FAILS;
+* `(h)` `bankedUsesBlueprint` — a banked theorem resting on `blueprintForecast` → `#assert_banked_clean`
+  FAILS (banked consumes a forecast);
 * `(i)` `blueprintInternal` — a `@[blueprint]` theorem resting on `blueprintForecast` → NOT a leak
   (blueprint-internal consumption is permitted; a forecast may rest on a forecast).
-
-The whole namespace is a violating set (it deliberately contains (c), (d), (f), (h)); running the gate
-over it must exit nonzero with `UNACCOUNTED=5 CITED=2 LOCATION=3 LEAKS=1`. UNACCOUNTED (5): the two
-untagged axioms (`untaggedFixtureAxiom`, `hiddenFixtureAxiom`) + the three decls resting on them
-(`usesUntagged`, `opaqueHider`, `usesOpaque`). CITED (2): the located cite + the misplaced cite.
-LOCATION (3): the two untagged axioms + the misplaced cited axiom (the located cite in `FixtureCited`
-is in scope and passes). LEAKS (1): `bankedUsesBlueprint` resting on the forecast `blueprintForecast`.
 -/
 
 open Meta.Cordon
@@ -83,16 +81,16 @@ theorem usesMisplaced : 0 + 5 = 5 := misplacedCitedAxiom 5
 
 /-! ### (f) An axiom hidden behind an `opaque` value → STILL UNACCOUNTED
 
-The completeness of the custom `collectAxiomsBatch` is the load-bearing claim (a missed traversal case
-= a false green). `opaque` is the subtle case: its value is stored but the constant is irreducible.
-The batch reads `opaqueInfo.value`'s used constants, so an axiom in that value is NOT concealed. -/
+The completeness of Lean's `collectAxioms` is the load-bearing claim. `opaque` is the subtle case: its
+value is stored but the constant is irreducible. `collectAxioms` reads `opaqueInfo.value`'s used
+constants, so an axiom in that value is NOT concealed. -/
 
 /-- (f) An untagged axiom (a proof), hidden inside an `opaque` value's erased Prop component. -/
 axiom hiddenFixtureAxiom : True
 
 /-- (f) An `opaque` definition carrying the hidden axiom in its (proof) component. Code generation
-erases the Prop proof, but `collectAxioms` / `collectAxiomsBatch` read the *kernel* term of
-`opaqueInfo.value`, so the opacity does not conceal the axiom. -/
+erases the Prop proof, but `collectAxioms` reads the *kernel* term of `opaqueInfo.value`, so the
+opacity does not conceal the axiom. -/
 opaque opaqueHider : {_n : Nat // True} := ⟨3, hiddenFixtureAxiom⟩
 
 /-- (f) A theorem using the opaque → transitively UNACCOUNTED (the hidden axiom surfaces through the
