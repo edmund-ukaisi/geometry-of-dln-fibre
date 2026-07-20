@@ -1,7 +1,30 @@
 # STATUS — 2026-07-17-aoyagi-engine
 
+> **⚠ SUPERSEDED (2026-07-20, carto-standing — tick 348 doc-refresh).** The body below is the
+> tick-289 snapshot and is a FOSSIL in two places: it calls `chartBridge_buildTree` the one raw
+> analytic hole at `EngineObligations.lean:53`, and lists `geoAtlas_fold_det` as in-flight. Both
+> are stale. CURRENT POSITION (disk-verified, HEAD across ticks 336–348):
+>
+> - **The cone's live sorries are now TWO, both downstream of `chartBridge_buildTree`:**
+>   `leafDiagFrob_geoAtlasNorm` (`GeoAlphaGauge.lean:562` — loss-t15's value walk) and the
+>   `LeafPullback` conjunct of `chartBridgeFaithful_buildTree` (`ChartBridgeFaithful.lean:92`,
+>   which consumes the former). `LeafPullback` is the SINGLE remaining frontier sorry of the
+>   faithful discharge.
+> - `chartBridge_buildTree` is **no longer a raw hole** — it is the drop-(D) PROJECTION
+>   `(chartBridgeFaithful_buildTree …).toChartBridge` (`EngineObligations.lean:49-52`).
+> - `geoAtlas_fold_det` (the fold-Jacobian cocycle) CLOSED clean-three at **tick 337**; the
+>   `LeafJacobian` conjunct is discharged (**tick 338**); `o5_realization` closed (t06 s4).
+> - **IN FLIGHT:** the α-atlas witness-swap (elder ruling **tick 340**) — the faithful witness
+>   re-points to `geoAtlasNorm (alphaGauge …)`, with four transfer lemmas + the R-split stage-3
+>   re-wire; loss-t15's value walk fills `leafDiagFrob_geoAtlasNorm`.
+> - **MINT:** a RELOCATION ladder (NOT in-place) per the re-sequenced R5 (navigator-6, **tick 348**)
+>   — `Skeleton` imports below the engine, so the canonical name relocates to `HeadlineL1Mint`.
+> - Endgame detail: journal **ticks 336–348**. The FULL STATUS rewrite waits for the two live
+>   lanes (loss walk + witness-swap) to land.
+
 updated: 2026-07-19 (cartographer-6, tick 289 — endgame rewrite + placement-check refresh; the
-2026-07-17 version pre-dated the entire endgame)
+2026-07-17 version pre-dated the entire endgame). SUPERSEDED banner added 2026-07-20 (carto-standing,
+tick 348) — see banner above; full rewrite deferred to the lanes landing.
 
 ## the one-line position
 

@@ -15,15 +15,17 @@ is in [[import-hygiene]].
 realization-gap, instance-#9 three-ledger split) is [[paper-anchors]]. Posture: the paper's structure
 outranks the module DAG's convenience; an unanchorable banked family is a stray to flag, not launder.
 
-**Rung → hole map.** [REFRESHED 2026-07-19, tick 170 — post-E-assembly.]
-`monomialization_terminates` is ASSEMBLED (EngineObligations:72; 4 conjuncts proven clean-three);
-`region_glue` is a PROVEN composition (`region_glue_of_chartBridge … hbridge`, :131). The two
-live ANALYTIC holes are `chartBridge_buildTree` (:52, ← the chart-emission carrier + coverage's
-3-Prop tide) and `o5_realization` (:63, ← D§ii/iii from cert-o5-realization §§3-4) — R2 and R3
-CONVERGE at `chartBridge_buildTree`. R5 flips `engine_box_threshold_finite` → `hbox` → repoints
-`aoyagi_learning_coefficient`. These two + the `canonicalResolution224` @[blueprint] forecast
-(`CanonicalWitness224.lean:135`, off-cone, closes as a coverage corollary at (2,2,4)) are the
-ONLY engine-cone sorries. Census: [[dead-routes]] § fossil census.
+**Rung → hole map.** [REFRESHED 2026-07-20, carto tick 348 — post-fold-close; supersedes the
+tick-170 form.] `monomialization_terminates` is ASSEMBLED; five of six conjuncts proven clean-three
+(incl. `o5_realization`, closed t06 s4 — NO LONGER a hole). `region_glue` is a PROVEN composition
+(`region_glue_of_chartBridge … hbridge`). The ONE live ANALYTIC hole is `chartBridge_buildTree`
+(EngineObligations:49-52) — now the drop-(D) PROJECTION of `chartBridgeFaithful_buildTree`, whose
+single sorry is the `LeafPullback` conjunct (`ChartBridgeFaithful.lean:92`), routing to
+`leafDiagFrob_geoAtlasNorm` (`GeoAlphaGauge.lean:562`, loss-t15's value walk). R5 flips
+`engine_box_threshold_finite` → `hbox` → RELOCATES (not in-place) `aoyagi_learning_coefficient` to
+`HeadlineL1Mint` (nav-6 tick 348). Other engine-cone sorries: `canonicalResolution224`
+(`CanonicalWitness224.lean:135`, off-cone, (2,2,4) coverage corollary) + `ClearableReify.lean:78`
+(R7 reify-now, expected until R7). Census: [[dead-routes]] § fossil census.
 
 ---
 
@@ -493,14 +495,17 @@ ONE `q` of dimension `dCenterOfNode node`, shared by all the node's `dCenterOfEd
   tick 262 fix — WITHOUT it the whole child subtree was dropped below the first rollover).
 - `geoAtlas` (`:100`) — `(geometricLeafPaths (dCenterOfNode M) (qNodeOf M) id t).map (fun lc =>
   { lc.1 with chartMap := lc.2 })`. **The `List (LeafData M)` the corrected `ChartBridge` quantifies
-  over.** ⚠ EMISSION DEFECT (finding 3, task #35): every fan-out copy of a leaf inherits the SAME
-  `leaf.divCoord`, but each copy blows up its OWN pivot's exceptional coord — so `LeafJacobian` fails for
-  non-birth-corner pieces. FIX (un-implemented): re-derive each piece's `divCoord`/`divExp` per-pivot,
-  PER-CASE (case2 `resRows·resCols`; case12 inherits+adds; case11 emits none — updates the ancestor).
-- `geoAtlas_imageCover` (`GeoCoverSpec.lean:33`, **sorry**, t10) — clause (A): open neighbourhood of the
-  zero-locus ⊆ ⋃ atlas images; carries `htree : t = buildTree M (conOracle M) s`. Recipe:
-  `threads/10-coverage/cover-specify.md`. Pins: `q = qNodeOf`, `hbij = dCenterOfNode_edgeSum`,
-  `hd = dCenterOfNode_le_flatDim`, headline `chartBridge_imageCover_of_ownCovers` over a `tGeo` reshape.
+  over.** ✔ EMISSION DEFECT (finding 3, task #35) — **DISSOLVED (fork 15, carto tick 348).** Under
+  diagonal-normalization the fan-out births every divisor at its `divBirthCoord` diagonal, so the
+  state-level `divCoord`/`divExp` is correct for every fan-out chart; the per-pivot re-derivation is
+  no longer needed and `LeafJacobian` holds (`geoAtlas_leaf_leafJacobian`, closed tick 338). See
+  compass fork 15 + the FOLD-REGROUP / LEAF-JACOBIAN final-arc cards below.
+- `geoAtlas_imageCover` (`GeoCoverSpec.lean:370`, **PROVEN clean-three tick 288**; was `:33` sorry) —
+  clause (A): open neighbourhood of the zero-locus ⊆ ⋃ atlas images (0∈U reshape, obligation-statement
+  instance #7). Recipe: `threads/10-coverage/cover-specify.md`. Pins: `q = qNodeOf`, `hbij =
+  dCenterOfNode_edgeSum`, `hd = dCenterOfNode_le_flatDim`. (Witness-swap note: the α-atlas cover
+  transfer re-proves this over `geoAtlasNorm alphaGauge` via open-homeo/shrunken-U′ — see the coming
+  GeoAtlasTransfer forwarding card.)
 
 ## FOLD-JACOBIAN SPINE family — `GeoJacobianSpec.lean` + `GeoJacobianFold.lean` (t11; sorry-free, GATE-WIRED @13b86217a)
 
@@ -516,7 +521,109 @@ lines). Was a gate-orphan at the carto6 snapshot; closed post-snapshot (see [[wi
   `Differentiable` maps, `|det D(foldr comp)| = ∏ per-factor det moduli at the intermediate fold points`.
   Stated abstract-over-the-path so it survives the emission churn. Support: `clm_det_comp` (`:32`),
   `foldrCompAbsDet` (`:40`), `foldr_comp_differentiable` (`:45`), `geoChartMap_differentiable` (`:91`).
-- **GATED remainder (NOT banked):** (i) the cocycle REGROUPING of the intermediate-point factors onto
-  the source-`w` per-piece ledger (finding 2; pnp-fold cert running; the 3 per-case substitution
-  identities) + (ii) instantiation against the fixed atlas + per-pivot ledger (task #30/#35). Chain rule
-  alone carries NO `stepUpdate` reindexing — this is the wall's true mechanism (journal tick 260/263).
+- **GATED remainder — NOW CLOSED (carto tick 348; was "NOT banked").** (i) the cocycle REGROUPING of
+  the intermediate-point factors onto the source-`w` per-piece ledger LANDED clean-three at **tick 336**
+  (`geoAtlas_cocycle`, `GeoFoldRegroup.lean:1069` — the wall) and strengthened to `geoAtlas_fold_det`
+  (**tick 337**) + `geoAtlas_leaf_leafJacobian` (**tick 338**, the `LeafJacobian` conjunct); (ii) the
+  per-pivot-ledger emission concern DISSOLVED under fork-15 diagonal-normalization (see the GEO-ATLAS
+  card's struck defect note). See the FINAL-ARC cards below (FOLD-REGROUP COCYCLE + LEAF-JACOBIAN CLOSE).
+
+# FINAL-ARC BANKED-FAMILY CARDS (carto-standing, 2026-07-20, ticks 336–348, HEAD `f4fa30be5`)
+
+*The families minted in the discharge arc — the fold cocycle (the wall, closed tick 336), the
+LeafJacobian close, the loss value-walk consumer side, the R-split faithful discharge, and the
+coming witness-swap transfer batch. Every `file:line` grep-verified against the live tree. These sit
+BELOW the tick-265 endgame cards and are what the remaining discharge (loss walk + witness-swap →
+`chartBridge_buildTree` → hbox → mint) consumes.*
+
+## FOLD-REGROUP COCYCLE family — `GeoFoldRegroup.lean` (t14 + pnp-fold; 1334 LoC, 0-sorry) — THE WALL, CLOSED tick 336
+
+*The relative-Jacobian cocycle threading the incoming ledger through each chart innermost-first (the
+fold-det maintenance form, pnp-fold §2). The one genuinely hard endgame proof; funneled ~11 seats.*
+
+- `geoAtlas_cocycle` (`:1069`) — **the headline**: `|det D(foldr-comp chart)| = ledgerMonomial`
+  threaded through the built tree. Closed clean-three tick 336 (controller-probed `[propext,
+  Classical.choice, Quot.sound]`).
+- The four per-case maintenance theorems the walk dispatches: `ledger_det_maintenance_case2` (`:805`),
+  `_case11` (`:852`), `_case12` (`:903`), `_rollover` (`:968`).
+- `ledgerMonomial` suite — `_conRoot` (`:565`, base), `_stepRollover` (`:457`), `_stepAppendAdvance`
+  (`:463`), `_comp_spectator` (`:493`), `_center_of_reads` (`:513`), `_bumpedExp_delta` (`:678`),
+  `_eq_of_reads` (`:584`, reads-based — the gauge bundle's discharge hook, tick 343); `leafOfState_prod_
+  eq_ledgerMonomial` (`:543`).
+- `geoChartMapNorm` cocycle atoms — `_fderiv_det` (`:383`), `_fderiv_det_offcone` (`:397`),
+  `_cocycle_step` (`:428`), `abs_det_fderiv_comp` (`:415`); `birthFlatCoord_eq_flatCoordOf` (`:168`),
+  `birthFlatCoord_stepAppendAdvance_last` (`:596`), `diagTargetOf_noncase11_eq_fresh` (`:623`).
+- `DivExpPos` suite (`≥1` exponent positivity, the R7 ∃-conjunct supply) — `_conRoot` (`:647`),
+  `_stepRollover` (`:650`), `_stepAppendAdvance` (`:654`), `_bumpedExp` (`:662`),
+  `_conOracle_stepChildren` (`:705`).
+- Fan-decomposition helpers the walk rides: `mem_edgesLeaves_fanned_charted` (`:1017`),
+  `_chartless` (`:1040`), `edgesLeafPathsList_*` (`:260,271,281`), `tGeo_absdet_foldrList` (`:339`),
+  `geoAtlas_absdet_foldr` (`:371`).
+
+## LEAF-JACOBIAN CLOSE — `GeoLeafJacobian.lean` (t14; 94 LoC, 0 proof-sorries) — CLOSED ticks 337–338
+
+*The `LeafJacobian` conjunct discharge, strengthened from the cocycle to expose the leaf's reachable
+terminal state (the low-risk step-through claim held).*
+
+- `geoAtlas_fold_det` (`:57`) — the fold-det at `conRoot`/`id`, R7 full-ledger ∃-form; closed
+  clean-three tick 337.
+- `geoAtlas_leaf_leafJacobian` (`:76`) — the per-piece `LeafJacobian` bundle (10 conjuncts: β:=acc,
+  ψ:=id lo=hi=1, fc:=birthFlatCoord, emb:=t0Indices.get, injectivity, ≥1 via `DivExpPos`, Disjoint
+  vacuous, det from the cocycle); closed tick 338. THIS is what `chartBridgeFaithful_buildTree`'s
+  `LeafJacobian` slot consumes (`ChartBridgeFaithful.lean:93`).
+- ⚠ **DRIFT (flag, not owned by this office):** the module docstring `:14-18` still calls the cocycle
+  induction "the one `sorry` below (LIVE-frontier)" — STALE; there is no proof-position sorry in the
+  file (`geoAtlas_fold_det` is closed). Flag to the owner. Counterpart: `GeoLeafJacobianDisproof.lean:34`
+  `geoAtlas_fold_det_generic_false` (the generic-`t` negative result — why the walk is buildTree-specific).
+
+## LOSS VALUE-WALK family — `GeoAlphaGauge.lean` + `GeoInvVal.lean` (loss-t15; the `LeafPullback` lane) — ONE FRONTIER SORRY
+
+*The α incidence-gauge + the value-walk consumer side. The engine's SINGLE remaining +sorryAx frontier.*
+
+- α gauge (PROVEN, `GeoAlphaGauge.lean`): `residualSchurShear_abs_det_one` (`:410`),
+  `alphaGauge_abs_det_one` (`:427`, det-1), `residualSchurShear_srcBox`/`alphaGauge_srcBox_bounded`
+  (`:441,:484`, bounded), `geoAtlasNorm_resRank_zero` (`:386`, resRank=0 transferred through `tGeoG`).
+- loss algebra (PROVEN): `leafPullback_of_diagFrob` (`:536`) — `LeafDiagFrob → LeafPullback` on the
+  cleared diagonal; `leafPullback_geoAtlasNorm` (`:575`) — assembles it from the geometry half +
+  resRank-zero.
+- consumer side (PROVEN, t14-INDEPENDENT, `GeoInvVal.lean`, 0-sorry): `frobSq_of_diagonal` (`:36`),
+  `leafDiagFrob_of_prodDiag` (`:61`) — the leaf-discharge bridge `LeafProdDiag → LeafDiagFrob`.
+- ▶ **THE FRONTIER (loss-t15, in-flight):** `leafDiagFrob_geoAtlasNorm` (`GeoAlphaGauge.lean:562`,
+  **sorry**) — `prod ∘ chartMap` diagonalizes to the `b`-chain at every α-atlas leaf (the loss-VALUE
+  analog of `geoAtlas_fold_det`). Fills via the `Inv_val` value walk (hybrid A-scaling × B-recursive-
+  ratio, elder tick 343c; four maintenance proofs + walk instantiation, mirroring t14's step plumbing).
+  This is the engine cone's one live analytic hole.
+
+## FAITHFUL DISCHARGE (R-split) — `ChartBridgeFaithful.lean` (elder charge-4; 103 LoC, 1 sorry)
+
+*The HIGH module that proves the faithful A∧B∧C∧D over the atlas; `chartBridge_buildTree` is its
+drop-(D) projection (so (D) fidelity is on the payoff's proof cone, undroppable).*
+
+- `ChartBridgeFidelity` (`:43`) + `ChartBridgeFaithful` (`:52`, def A∧B∧C∧D) — the R-split predicates.
+- `ChartBridgeFaithful.toChartBridge` (`:70`) — the projection (drop (D)); `region_glue` consumes this.
+- `chartBridgeFaithful_buildTree` (`:82`) — the discharge. PROVEN: (A) `geoAtlas_imageCover`, (D) `rfl`
+  + `nodes_cNode_eq_realCNode`, the 5 (B) ledger props + (C) `geoAtlas_leaf_ledgerProps`, a.e.-inj
+  `geoAtlas_leaf_ae_injOn`, `LeafJacobian` `geoAtlas_leaf_leafJacobian`. **ONE sorry (`:92`)** — the
+  `LeafPullback` conjunct (consumes the LOSS VALUE-WALK frontier above).
+- FORWARDING: `EngineObligations.chartBridge_buildTree` (`:49-52`) `:= (…).toChartBridge` — a projection,
+  NOT a raw hole. AxCheck watch flips both to clean-three at discharge (+ `chartBridgeFaithful_buildTree`
+  MUST-clean-three; cordon: a direct A∧B∧C fill is a fidelity regression).
+- ⚠ **DRIFT (flag, not owned):** the `chartBridgeFaithful_buildTree` docstring (`:74-81`) still says
+  "the two frontier sorries" — STALE (ONE now, the `LeafPullback` conjunct). On the stage-3 re-wire's
+  no-touch surface; flag to the discharge seat (the EngineObligations caveat was refreshed carto tick-348).
+
+## FORWARDING POINTER — `GeoAtlasTransfer` (COMING; not yet on disk) — the witness-swap transfer batch
+
+*The α-atlas witness-swap (elder ruling tick 340, R-split stage 3) re-points the faithful witness from
+`geoAtlas` (id, fork-15 placeholder — `LeafPullback`-at-id FALSE) to `geoAtlasNorm (alphaGauge …)` —
+Aoyagi's actual integration chart. Four transfer lemmas, each elder-priced sound (tick 340/343):*
+- COVER — via the open-homeo / shrunken-U′ argument (α open homeo fixing 0; NOT image-invariance —
+  `srcBox = cube` was never `g⁻¹(cube)`, tick 341 find (a)); a cover-preservation walk down `tGeoG`.
+- LEDGER PROPS — g touches geometry only (`geoAtlasNorm_resRank_zero` is the pattern).
+- a.e.-INJECTIVITY — injective homeomorph + inj comp helpers.
+- LeafJacobian — GAUGE-GENERALIZE the cocycle+atoms over an explicit bundle (gauge differentiable ∧
+  `|det D|=1` ∧ fixes the threaded-state ledger reads; id + α both instantiate — the reads-based
+  bundle, tick 343, corrected from "fixes all diagonals" which is FALSE). Tripwire: atoms-first probe.
+- Landing target file name not yet fixed (the charge referenced "GeoAtlasTransfer"); when it lands,
+  card it here and add a [[naming]] forwarding pointer. Blocked on BOTH t14's transfers and t15's `:562`
+  (Stage 3 = the two-lane rendezvous, nav-6 tick 348).
