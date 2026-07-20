@@ -6627,3 +6627,19 @@ follow-up spec. Decision package assembling for the operator: pnp-full verdict (
 hunt) + t14 M-vs-L + navigator's sharpened re-scope recommendation; I surface the COMPLETE
 package when both land (not drip-fed). All build lanes held; the design side is closed +
 survives either path. navigator #8 at the pnp-full landing.
+
+## 2026-07-20 tick 398: loss-t15 integrated Lg correction (follow-up spec); item-#3 sharpened to a 3-way for pnp-full
+loss-t15 absorbed pnp-rg's Lg correction into the banked spec docs (merged afabe7d0f) —
+Bayesian update: its SPECIFY CHECK A (Lg cross-cell / pivot-cross irreducible within the 2×2
+block) was RIGHT; the DESTINATION over-read (→S-1) corrected to LAYER-S-local (pnp-rg's
+achiever), which is CLEANER (layer-S ⊂ ≤S ⟹ its schurCells_fst_ne_birthFlatCoord Lg
+disjointness stays ≤S-clean). Its load-bearing FLAG (it built the det-1 template): the
+pivot-column clear, if realized as the corner self-reference x_a ↦ x_a − x_a·x_corner (a=b),
+is a SCALING (det≠1), NOT a flatElemShear transvection — so foldFlatElemShear_abs_det_one
+does NOT cover it. Relayed to pnp-full as a sharpened 3-WAY item #3: (A) transvection
+[template-covered, clean] / (B) det-1-not-transvection [one companion atom, bounded] / (C)
+only the self-referential scaling [det≠1/non-polynomial ⟹ issue #3, re-scope-confirming].
+This is the concrete form of pnp-rg §6's "divides by the corner." Ties directly to the
+template contract. loss-t15 holding correct; design closed + order-blind + banked. Decision
+package still assembling: pnp-full (now with A/B/C item #3) + t14 M-vs-L + navigator re-scope
+recommendation → operator scope call. Lanes held.
