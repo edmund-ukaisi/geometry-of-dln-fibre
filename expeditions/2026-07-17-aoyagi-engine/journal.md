@@ -6746,3 +6746,28 @@ fidelity by the value-sensitive consumer, not the cheapest). The close synthesis
 Held calibration 21 + the carto map-refresh for the close (post pnp-full + operator launch call —
 mapping a state about to finalize is premature). Awaiting pnp-full's verdict + the operator's
 follow-up-launch call.
+
+## 2026-07-20 tick 404: ISSUE #3 — the chart-diagonalization CATEGORY ERROR; re-scope confirmed + follow-up reshaped
+pnp-full's verdict (the deepest finding of the expedition): completing α to the Q,P AS A CHART
+is a CATEGORY ERROR — |det D chartMap| = 0 (the diagonalizing shear coefficient is
+coordinate-dependent → chart Jacobian degenerates; verified both orders at (2,2,2)/(2,2,2,2)).
+Diagonalization ⊥ chart-validity for this α-family; Aoyagi's Q,P are IDEAL-level unimodular,
+NOT diffeomorphisms — the RLCT lower bound (residualCore ≥ 1) is NOT chart-gauge-achievable,
+needs the ideal structure or extra blow-ups. #3b: leaf-first is CORRECT for the det (root-first
+breaks the ledgerMonomial) — so the root-first re-thread was a category-wrong symptom-chase;
+the banked leaf-first engine/Jacobian/cover STAY, the REBUILD-L cost EVAPORATES. Q1: the
+four-case maintenance holds as a REDUCTION at all 4 M's (width-drop verified) — value CONTENT
+sound; only the chart-free REALIZATION is open. RESHAPES THE FOLLOW-UP: NOT a mechanical
+re-thread/rebuild cascade — a FOCUSED RESEARCH sub-problem (the RLCT lower-bound mechanism,
+ideal/blow-ups, the hard direction the runway memory flagged), standing on the UNTOUCHED banked
+leaf-first engine + the conditional spine. Cleaner structure (no re-thread, no cone re-open),
+deeper content. ROUTED: elder (rule the mechanism = the follow-up's central question: does
+Aoyagi get the lower bound ideal-level or via extra blow-ups? does LeafPullback's statement
+need re-shaping? does the follow-up avoid root-first entirely per #3b?) + navigator-7 re-convene
+#8 (scope as research follow-up, not L/M rebuild; the REBUILD-L evaporates). pnp-full stood
+down with honors (4 certs = the decorrelated backbone). CALIBRATION 21 (the category-error
+lesson: verify an imported operation lives in the target's CATEGORY, not just that it's
+algebraically right — ideal-unimodular ≠ chart-unimodular; no consumer-check catches a category
+error, only the "is it even a chart?" probe). Conditional spine UNAFFECTED (abstracts this as
+the hypothesis). Surface to operator: re-scope is now the ONLY correct path + the follow-up is
+a focused lower-bound research problem.

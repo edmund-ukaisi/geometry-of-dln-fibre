@@ -598,3 +598,34 @@ cost of a bounded rework, not after a false "done."
 **Forward.** The fix is faithful-mandatory + bounded (re-thread root-first, elder-ruled);
 whether it lands this expedition is navigator-7's cost call (gated on t14's cocycle-flip
 mirror-vs-rebuild probe). Either way the corrected fold + value lane are the real deliverable.
+
+## Entry 21 (tick 404, 2026-07-20) — ISSUE #3: the chart-diagonalization CATEGORY ERROR (the deepest fidelity lesson)
+**The finding (pnp-full, exact, both orders, 4 M's).** Completing α to Aoyagi's full Q,P AS
+A CHART is a CATEGORY ERROR: to diagonalize the loss you must zero the pivot cross, but that
+cell IS the shear coefficient, and clearing it needs a COORDINATE-DEPENDENT (ratio)
+coefficient — so the CHART map's Jacobian degenerates (|det D chartMap| = 0, a
+dimension-reducing projection). Diagonalization ⊥ chart-validity (det-1 + a.e.-inj) for this
+α-family. Aoyagi's Q,P are unimodular as IDEAL-level operations (SL over the function field),
+NOT as diffeomorphisms of parameter space. So the RLCT LOWER bound (residualCore ≥ 1) is NOT
+obtainable by any det-1 chart-gauge diagonalization — it needs the ideal structure or extra
+blow-ups.
+**Why it matters / what it retired.** The entire α-completion + root-first re-thread arc
+(ticks 385-401) was chasing a chart-fix for something that is not a chart operation. #3b
+confirmed the corollary: leaf-first was CORRECT for the det (root-first breaks it) — so the
+root-first re-thread was a symptom-chase. The banked leaf-first engine/Jacobian/cover STAY
+correct; the REBUILD-L cocycle cost EVAPORATES. The value lane's design (four-case
+maintenance) is sound AS A REDUCTION (Q1, all 4 M's) — the target structure is known; only the
+chart-free realization is open.
+**The lesson (deepest of the run, generalizes the 15/16/19/20 family).** The prior misses were
+"verified against the cheapest consumer." This is one level deeper: the whole APPROACH
+(diagonalize-the-loss-via-a-chart-gauge) was CATEGORY-wrong, and no consumer-level check would
+have caught it — only asking "is this object even a chart?" (the det-0 probe) does. When a
+construction imports an operation from the source mathematics (Aoyagi's Q,P), verify it lives
+in the SAME CATEGORY as the target slot (chart / diffeomorphism), not just that it "does the
+right thing" algebraically. Ideal-unimodular ≠ chart-unimodular. The decorrelated exact-algebra
+hunt (does the Jacobian vanish?) is the instrument that exposes a category error; no green build
+or consumer-fidelity pass can.
+**Forward.** Conditional spine (banked, verified) is the honest deliverable, untouched. The
+follow-up narrows to the RLCT lower-bound MECHANISM (ideal / blow-ups) — elder ruling in flight
+= its central question. Cleaner in structure (no re-thread, no cone re-open) but deeper in
+content (a real new mechanism). Re-scope is now not just right but the ONLY correct path.
