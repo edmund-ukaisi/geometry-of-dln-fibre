@@ -6771,3 +6771,24 @@ algebraically right — ideal-unimodular ≠ chart-unimodular; no consumer-check
 error, only the "is it even a chart?" probe). Conditional spine UNAFFECTED (abstracts this as
 the hypothesis). Surface to operator: re-scope is now the ONLY correct path + the follow-up is
 a focused lower-bound research problem.
+
+## 2026-07-20 tick 405: issue #3 CLOSED airtight — the goal-level no-go (nonzero-poly ⟹ no chart diagonalizes)
+pnp-full's final piece: A/B/C = (C), via a GOAL-LEVEL argument that makes the no-go
+categorical (cert §6, aec313727, banked; batteries fvw_chart/lg/lg2/value/value_widthdrop/
+hits0.py). THE ARGUMENT: each (prod)_ij is a NONZERO polynomial; any chart (diffeo /
+a.e.-inj) has OPEN image; a nonzero poly is nonzero on a dense open set; so (prod)_ij ∘
+chartMap ≢ 0 for ANY chart; exact diagonalization forces ≡ 0 ⟹ non-open (measure-zero) image
+= projection (det 0). So NO det-1 map of ANY kind diagonalizes on an open set — (A)
+transvection-product + (B) companion-atom BOTH ruled out at the goal level, not by atom
+choice. loss-t15's template correctly built + scoped, just not applicable (the operation
+isn't a det-1 gauge). This DEFINITIVELY answers two of the three elder sub-questions:
+(b) LeafPullback's "0<lo≤residualCore over a det-1 chart" is CATEGORICALLY FALSE for this
+atlas — the lower bound is not a chart-CoV statement; (c) the follow-up avoids root-first
+entirely (leaf-first correct for the det). Remaining elder ruling: (a) THE mechanism —
+ideal-level (Newton polyhedron / resolved-ideal structure) vs extra blow-ups — = the
+follow-up's central mathematical question. pnp-full CLOSED with honors (4 certs = the
+decorrelated backbone). Cert merged + banked. The reckoning is essentially complete: the
+durable deliverable (conditional spine, verified clean-three) stands; the follow-up is a
+focused lower-bound research problem on the untouched banked leaf-first engine; re-scope is
+the only correct path. Awaiting the elder's mechanism ruling + navigator-8's follow-up scope
++ the operator's launch call.
