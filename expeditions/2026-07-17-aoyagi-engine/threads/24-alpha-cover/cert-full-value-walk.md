@@ -158,7 +158,47 @@ projection. **The value lane cannot get `residualCore ≥ lo > 0` from any α of
   which are real blow-ups with `det = monomial`, resolving the product-vanishing singularity) — NOT
   from unimodular Q,P folded into the source-gauge slot.
 
-## 6. Close
+## 6. ADDENDUM — the A/B/C trichotomy on the pivot-column clear (loss-t15's sharpening)
+
+loss-t15's det-1 template `foldFlatElemShear_abs_det_one` covers TRANSVECTIONS `x_a ↦ x_a − x_b·x_c`
+(`a≠b, a≠c`, bilinear, det-1). The sharpened question: does the layer-S pivot-column clear (cells
+`i>c`, `j≥c`) admit **(A)** a genuine-transvection realization (template-covered), **(B)** a det-1
+non-transvection form (one companion atom), or **(C)** only self-referential scaling / corner-division
+(det≠1 → 4th obligation)?
+
+**Answer: (C), and it is not a matter of finding a cleverer atom.** Two levels:
+
+- **Atom level.** The pivot-column clear splits into (i) the `j>c` cells `x_{(i,j)} ↦ x_{(i,j)} −
+  (x_{(i,c)}/x_{(c,c)})·x_{(c,j)}` — a **rational-coefficient** shear, `a≠b`, det-1 (form B), but NOT a
+  `flatElemShear` (the coefficient is a ratio, not a coord product); and (ii) the `j=c` cell
+  `x_{(i,c)} ↦ x_{(i,c)} − (x_{(i,c)}/x_{(c,c)})·x_{(c,c)} = 0` — the **self-referential** `a=b` op that
+  zeroes the cell (form C). The (ii) piece is unavoidable if the pivot column must be cleared, because
+  the cleared cell IS the coefficient.
+
+- **Why no atom choice escapes (C) — the airtight invariance no-go.** Whether the pivot column *must*
+  be cleared reduces to: can any det-1 α make `prod` diagonal on an OPEN set? **No.** Each off-diagonal
+  `(prod)_{ij}` is a **nonzero polynomial** on the param space. A chart (diffeomorphism, or any
+  a.e.-injective map) has **open image**; a nonzero polynomial is nonzero on a dense open set; so
+  `(prod)_{ij} ∘ chartMap ≢ 0` for ANY chart. Exact diagonalization forces `(prod)_{ij}∘chartMap ≡ 0`,
+  which requires a map with **non-open (measure-zero) image** — a projection. The completed-α reduction
+  achieves diagonalization precisely by having measure-zero image (`det = 0`, §1); no transvection
+  product (A), rational-shear atom (B), or any det-1 map can. **(A) and (B) are ruled out at the goal
+  level, not just for this atom.** Same argument kills the weaker `residualCore ≥ lo` target under the
+  current architecture: `InvVal3`'s cleared-clause demands `prodPrefix` EXACTLY diagonal, and
+  `frobSq(prod)` has box-interior zeros with divisor corners `≠0` (§4), so no open-image chart bounds
+  `residualCore` below.
+
+So loss-t15's template is correctly built and correctly scoped — it is simply not applicable, because
+the operation the value lane needs is not a det-1 gauge at all. **(C) confirmed; issue #3 stands; the
+fix is a re-scope (ideal-level lower bound / genuine extra blow-ups), not a companion atom.**
+
+## 6a. Battery co-location (reproducibility)
+
+`battery/`: `fvw_chart.py` (composite `|det|` classification), `fvw_lg.py` (atom dets), `fvw_lg2.py`
+(joint cross-layer dets), `fvw_value.py` + `fvw_value_widthdrop.py` (InvVal3 walk, 4 M's incl.
+width-drop), `fvw_hits0.py` (interior-only box-zero witness). All exit-0.
+
+## 7. Close
 
 - **Firmest result**: `|det D chartMap| = 0` for the completed α (exact, both node orders, both eval
   orders, `M=(2,2,2)/(2,2,2,2)`; atom- and joint-level corroboration at more shapes). The completed α
