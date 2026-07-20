@@ -117,3 +117,42 @@ seam) and PHASE 3a (reduce LeafPullback to the named input `prod ∘ chartMap = 
 loss-algebra layer). Surface 3b as the crux: it is the loss-VALUE fidelity result, co-located with
 the coverage/clause-D lane, and should be co-designed there rather than bridged silently inside the α
 seat. This keeps every landed layer hole-free and names the remaining crux for what it is.
+
+---
+
+## RESOLUTION ADDENDUM (2026-07-20, task #22 α-completion SPECIFY, loss-t15)
+
+**Context.** pnp-diag's cert (`threads/24-alpha-cover/cert-exactly-diagonal-mechanism.md`) proved the
+interior-Schur α is INCOMPLETE: `residualSchurShear` does `interior ↦ interior − b·a` but leaves the
+pivot cross `(a,b)` in place, so `prod ∘ chartMap` is NOT diagonal at a `(2,2,2)`/`(2,2,2,2)` leaf and
+`residualCore` hits 0 (LeafPullback lower bound FALSE). Elder ratified the fix (complete α to Aoyagi's
+full Q,P); team-lead assigned me the **Lg-remainder** (pivot-column clear, framed "same-layer, easy,
+add to `schurCells`") NOW, with **Rg** (pivot-row, cross-layer into S+1) HELD for pnp-rg.
+
+**SPECIFY finding (battery `battery/lg_form_specify.py`, exact sympy, exit-0):**
+
+- **CHECK A — the pivot cross is IRREDUCIBLE within one normalized block.** The normalized blow-up
+  block is `N = [[1,a],[b, a·b+δ]]` with source coords `(a,b,δ)`; the current Lean α is exactly the
+  interior part (`δ = old_interior − a·b`). The off-diagonals `N[0,1]=a`, `N[1,0]=b` are the *bare
+  source coords* (onto ℝ) — no within-`(a,b,δ)` det-1 reparametrization can force them to 0. So the
+  pivot cross cannot be cleared inside a single block: **Lg (and Rg) are CROSS-CELL** — they read the
+  pivot cross of one block and write cells of an *adjacent* block, exactly like h5's Rg
+  (`C2_00 = g0 − a·c210`, reads layer-S `a`, writes layer-S+1). This is NOT a within-node addition to
+  `schurCells` (which only folds layer-S interior transvections).
+- **CHECK B — fix target confirmed.** Interior-α only: `prod` of normalized blocks `[[1,a],[b,ρ]]` is
+  non-diagonal, `residualCore = 0` at the cert witness `(a1,b1,r1,a2,b2,r2)=(1,0,0,0,−1,0)`. Full Q,P:
+  blocks → `[[1,0],[0,ρ]]`, `prod = diag(1, ∏ρ)`, `residualCore = 1 + (∏ρ)² ≥ 1` (min over the box =
+  1). So the acceptance criterion for the Lean fix is precisely: **each normalized block becomes
+  `[[1,0],[0,ρ]]`** so the product is diagonal with a surviving `(0,0)=1`.
+
+**Consequence for the build.** The "same-layer analog of the interior Schur, add to `schurCells`"
+framing is imprecise: Lg is a cross-node shear into the *output-side / ≤S* region (structurally like
+Rg but toward ≤S rather than S+1, so it stays ≤S-local and does NOT break the S/S+1 interface — the
+locality-preservation team-lead/elder asserted). Its exact target cells (layer-S vs layer-S−1, and
+the det-1 realization) are entangled with the achiever chart and must be **co-derived with Rg** for
+consistency — this is pnp-rg's task #23 (build completed-α, confirm leaf diagonal). Building Lg blind
+risks a wrong det-1 realization, a wrong layer (breaking locality), or Lg/Rg inconsistency. Plan:
+consume #23's achiever for the exact Lg cells, then build (Lean scaffolding ready — `flatElemShear`
+atom, `foldrCompAbsDet` det-1 template, the `schurCells`/fold pattern). Form-independent prep
+available meanwhile: the consumer-rebuild ledger (`schurCells_snd_ne` + `elemShearFold_*`
+independence go FALSE; det-1/srcBox proofs redo; walk-t20 `alphaGauge_ledgerMonomial_neutral` deps).
