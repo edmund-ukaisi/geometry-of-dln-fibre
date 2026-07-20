@@ -5385,3 +5385,20 @@ over asserted); the literal band-sum declined (the box form is the cleaner objec
 equinumerosity docstring line). On the iff + t18's full-lib gate: the seat closes. Build-list
 items 3/4/6 DONE, item 2's rung DONE (delivery = #69 post-spine), item 5 deferred-by-plan.
 The independent-lane fan-out is nearly fully harvested in under three hours.
+
+## 2026-07-20 tick 334: t14 STAGE 2 banked (DivExpPos resolves the R7 watch-item POSITIVELY) — and an integration clash, owned and fixed
+STAGE 2 merged (4ab7ded73): the four per-case maintenance lemmas + DivExpPos — a genuine
+reachability find NEEDED for the case-1 arithmetic ((e+b)−1 = (e−1)+b needs e ≥ 1), holding
+UNCONDITIONALLY (resRows ≥ 1 via widthMinUpto antitone + resCols ≥ 1) — which RESOLVES the
+R7 ≥1 watch-item the GOOD way: the conjunct is PROVABLE, not droppable (there is NO
+zero-block case-2; the only chartless edge is rollover). DivExpPos_conRoot probes as
+AXIOM-FREE (depends on nothing — pure structural). The case-12 center-scale landed first
+try. Two walk-supplied cell facts pinned for stage 3.
+THE CLASH (owned): my t18 merge JUMPED its in-flight full-lib gate — Lambda's new PUBLIC
+admBound_le_Msucc collided with Skeleton's PRIVATE verbatim-identical copy (the exact
+cross-module class lean/CLAUDE.md warns the closure-build can't catch; t18's running gate
+existed to catch it). FIX: Skeleton's private duplicate DELETED (Foundations is the
+canonical home; the identical statement resolves to the import), Skeleton + GeoFoldRegroup
+rebuilt green. LESSON (standing): when a seat declares its full-lib gate in flight, HOLD
+the merge for its confirm — or run the full-lib check integration-side before pushing.
+t14 on stage 3 (the walk); the wall is two stages from closed.
