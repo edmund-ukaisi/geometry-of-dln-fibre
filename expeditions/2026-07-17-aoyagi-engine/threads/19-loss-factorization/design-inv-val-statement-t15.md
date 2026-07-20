@@ -304,3 +304,43 @@ in the shared TOP sub-frame (M(0)-row i = M(S)-frame row i for i ≤ J) — no r
 the exact widthMinUpto index). Elder stamp + width-drop leg in hand. All components validated: InvVal3,
 bmonOf(≤), amended leaf discharge, prodPrefix (shape + leaf-lemma technique), vacuous base,
 tGeoG fan-decomposition (banked). Then: bank the unit → four maintenance greens → walk instantiation.
+
+---
+
+## RESOLUTION 3 2026-07-20 (crux-4 tripwire fired; elder ruled FORM 2 — carry D_J incidence)
+
+The payload unit banked + MERGED. clearedOf DERIVED (my battery + t14's cited answer converged; elder
+confirmed the rollover-aware dropThreshold). Grinding crux-4 (residualRow_pivot_eq_bmon, the prod-under-
+chart transport) surfaced the ratified tripwire: OPTION C IS INSUFFICIENT for the new pivot row — the
+α-Schur clearing's RESULT (row=bmon) needs the residual block's INCIDENCE STRUCTURE, which option C
+exposes as VALUES but does not carry (the acc-confounder blocks deriving it from the raw layer product).
+
+ELDER RULING (fidelity fork): (a) structure IS load-bearing, option C insufficient (finding correct);
+(b) CARRY = FORM 2 — the full residual block D_J in incidence form as a Prop (Aoyagi's induction object,
+worked.tex:482/509-519). NOT form 1 (foldToState, over-built — cleared rows + trailing already handled by
+InvVal3 diagonal + prefix associativity). NOT form 3 as the CARRY (discards the interior = D_{J+1}, the
+next step's hypothesis). Form 3's pivot-cross is the per-step PROOF ECONOMY inside form 2.
+
+FORM-2 PRE-DRAFT (VALIDATED — elaborates): InvVal3f2 = InvVal3 + a third clause carrying D_J at
+un-resolved cells:
+  ∀ w i j, (cleared → prodPrefix = if i=j then bmon else 0) ∧ (dropped → prodPrefix = 0)
+         ∧ (¬cleared → ¬dropped → prodPrefix s (acc w) i j = resD s w i j)
+with `resD : (s) → Params → Fin(M 0) → Fin(M (prefixColFin s)) → ℝ` (dependent j; parametric,
+instantiated with the incidence-form structural D_J). SURVIVAL: leaf UNCHANGED (resD clause vacuous at
+all-cleared — validated); base trivial (resD conRoot := prod M w = D_0); only maintenance gains the
+residual obligation. MAINTENANCE: OLD rows settled (spectator reads + t̃-identity); INTERIOR settled
+(D_J → D_{J+1} via the α-Schur, form-3 pivot-cross economy); the whole-D_J carry needed (interior =
+D_{J+1}).
+
+⚠ OPEN SLOT — HELD for pnp-diag (codex down): residualSchurShear is INTERIOR-ONLY (schurCells
+node.cleared+1.., GeoAlphaGauge:128-144), so α leaves the pivot row/col ratios a,b NONZERO — but the
+paper's leaf is exactly diagonal. Mechanism verdict pending: either (i) a drop clears them (row J is
+CLEARED not dropped, so it must be the COLUMN side — cols>J beyond the shrinking min, a column-drop
+analog of dropThreshold) OR (ii) alphaGauge is incomplete (missing Lg/Rg — construction gap → alphaGauge
+changes, re-plan). DO NOT finalize InvVal3's off-diagonal-at-row-J clause until pnp-diag rules.
+
+Bank order (on pnp-diag's off-diagonal verdict): finalize form-2 InvVal3f2 + resD incidence instantiation
+→ old-row + interior maintenance (settled) → the pivot-row/col clearing (the open slot) → the four cases →
+walk instantiation → RE-HOME leafDiagFrob_geoAtlasNorm to GeoInvValMaint (controller wiring). Banked so
+far above the payload: layerEntry_eq_flat, prefixColFin_val_of_live, geoChartMapNorm_alpha_apply_oncone
+(new module GeoInvValMaint, downstream of GeoAtlasTransfer — needs DLNFibre.lean wiring).
