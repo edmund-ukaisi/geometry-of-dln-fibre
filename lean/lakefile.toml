@@ -24,11 +24,13 @@ name = "DLNFibre"
 # Policy: docs/policies/citation-cordon.md.
 
 # `Meta.Cordon` = the `@[cited]` + `@[blueprint]` attributes + `auditDecl` core + the per-root
-# blueprint-leak walk + the `#audit_cited` / `#audit_blueprint` reports + the `#assert_banked_clean`
-# gate command. srcDir defaults to `.` (the `lean/` dir), so the module is `lean/Meta/Cordon.lean`.
-# (The whole-environment gate executable `cordon-audit` / `Meta.CordonAudit` was deleted 2026-07-20 in
-# favour of the per-root `#assert_banked_clean` gate in `DLNFibre/DLN/RLCT/AxCheck.lean` + the grep
-# gate `scripts/cordon`; DLNFibre imports `Meta.Cordon` via `AxCheck`.)
+# blueprint-leak walk + the batched `collectAxiomsBatch` / `collectBlueprintBatch` collectors + the
+# `#audit_cited` / `#audit_blueprint` reports + the `#assert_banked_clean` (per-root) and
+# `#assert_banked_clean_batch` (batched) gate commands. srcDir defaults to `.` (the `lean/` dir), so
+# the module is `lean/Meta/Cordon.lean`. (The whole-environment gate executable `cordon-audit` /
+# `Meta.CordonAudit` was deleted 2026-07-20 in favour of the `#assert_banked_clean_batch` gate in
+# `DLNFibre/DLN/RLCT/AxCheck.lean` + the grep gate `scripts/cordon`; DLNFibre imports `Meta.Cordon`
+# via `AxCheck`.)
 [[lean_lib]]
 name = "Meta"
 globs = ["Meta.Cordon"]

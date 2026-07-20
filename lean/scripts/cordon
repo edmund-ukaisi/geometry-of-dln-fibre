@@ -14,11 +14,12 @@ source tree (`DLNFibre/**/*.lean` + `DLNFibre.lean`) and HARD-FAILS (nonzero exi
 
 It also PRINTS (informational, does NOT fail the gate) a census of `@[blueprint]` forecast tag sites.
 
-This is only HALF the cordon. The axiom / blueprint-leak SOUNDNESS gate is the per-root command
-`#assert_banked_clean` in `DLNFibre/DLN/RLCT/AxCheck.lean`, which rides Lean's native `collectAxioms`
-engine (a sneaked-in `sorry`/`native_decide` surfaces there as an UNACCOUNTED axiom → red build). This
-grep only enforces cite LOCATION (which `#assert_banked_clean` deliberately does not check) + the
-`native_decide` source ban + the blueprint census.
+This is only HALF the cordon. The axiom / blueprint-leak SOUNDNESS gate is the batched command
+`#assert_banked_clean_batch` in `DLNFibre/DLN/RLCT/AxCheck.lean` (one shared-`visited` walk over all
+roots; per-root `#assert_banked_clean` still exists for the inner loop / fixtures), which rides Lean's
+native `collectAxioms` engine (a sneaked-in `sorry`/`native_decide` surfaces there as an UNACCOUNTED
+axiom → red build). This grep only enforces cite LOCATION (which the assert gate deliberately does not
+check) + the `native_decide` source ban + the blueprint census.
 
 Reuses `scripts/sorries`' comment/string-skipping machinery, so prose that merely mentions "axiom" /
 "native_decide" in a doc comment or string literal is not flagged.

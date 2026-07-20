@@ -59,15 +59,20 @@ This module provides:
 * the `@[blueprint]` **tag attribute** (a plain tag on any declaration — `def`s included);
 * one reusable **cited core** (`auditDecl`) computing the `UNACCOUNTED` / `CITED` / non-foundational
   sets, and the slim, first-party-bounded, per-root **blueprint-leak walk** (`blueprintDepsOf`);
+* **batched (shared-`visited`) collectors** `collectAxiomsBatch` / `collectBlueprintBatch` — one walk
+  over an explicit root list, each shared constant visited once (O(reachable) not O(roots × depth));
 * the in-file report commands `#audit_cited foo` / `#audit_blueprint foo` (mirror `#print axioms`);
-* the enforcing gate command `#assert_banked_clean foo` — same footprint emission, but it *asserts*
-  (`UNACCOUNTED = ∅` and, unless `foo` is itself a forecast, no `@[blueprint]` leak), so a violation
-  reddens the build.
+* the enforcing gate commands `#assert_banked_clean foo` (per-root — same footprint emission, but it
+  *asserts* `UNACCOUNTED = ∅` and, unless `foo` is itself a forecast, no `@[blueprint]` leak) and
+  `#assert_banked_clean_batch [foo, …]` (the same two invariants over a list, in ONE batched walk — a
+  pure speedup; on a red union it falls back to per-root attribution to name the culprit).
 
-The repo gate has two halves, both riding Lean's native per-root engines (no whole-environment walk):
-`#assert_banked_clean` over the registered roots in `DLNFibre/DLN/RLCT/AxCheck.lean` (the axiom /
-blueprint-leak gate, via `collectAxioms` + `blueprintDepsOf`), and the source-level grep `scripts/cordon`
-(cite LOCATION + `native_decide` ban + blueprint census). Policy: `docs/policies/citation-cordon.md`.
+The repo gate has two halves, both riding Lean's native constant-graph engines (no whole-environment
+walk): `#assert_banked_clean_batch` over the registered roots in `DLNFibre/DLN/RLCT/AxCheck.lean` (the
+axiom / blueprint-leak gate, via `collectAxiomsBatch` + `collectBlueprintBatch`, with per-root
+`collectAxioms` + `blueprintDepsOf` attribution on a red gate), and the source-level grep
+`scripts/cordon` (cite LOCATION + `native_decide` ban + blueprint census). Policy:
+`docs/policies/citation-cordon.md`.
 -/
 
 open Lean Elab Command
@@ -216,6 +221,77 @@ def usedConstantsOf (ci : ConstantInfo) : Array Name :=
   | .ctorInfo v   => v.type.getUsedConstants
   | .recInfo v    => v.type.getUsedConstants
   | .inductInfo v => v.type.getUsedConstants ++ v.ctors.toArray
+
+/-! ### Batched axiom collection (one shared traversal over many roots)
+
+`Lean.collectAxioms` starts a fresh `visited` set per call, so auditing a whole gate root-by-root
+re-traverses the shared (Mathlib) dependency graph once per root — O(roots × depth), the ~12-min cost
+of the per-root `#assert_banked_clean` gate. `collectAxiomsBatch` traverses from *all* roots with a
+**single** shared `visited` set, so each constant is visited once total — O(reachable constants). The
+result is the *union* of the roots' transitive axioms; per-root attribution (for a violation listing)
+is a separate, rarely-needed pass taken only on a red gate. It reads `env.checked.get` (the kernel
+env, exactly as `Lean.collectAxioms` does) and mirrors that engine's per-kind traversal arm-for-arm,
+so completeness is identical to `collectAxioms` (same kernel constant graph, `opaque` values included).
+**Cone-correct:** seeded ONLY by the explicit `roots` — no whole-environment enumeration. -/
+
+/-- One shared traversal collecting the union of transitive axioms of all `roots`. Iterative
+(explicit worklist) so it is not `partial` — `visited` bounds it (each constant pushed once). Matches
+`Lean.collectAxioms`'s kernel-env, per-`ConstantInfo`-kind traversal exactly. -/
+def collectAxiomsBatch (env : Environment) (roots : Array Name) : Array Name := Id.run do
+  let kenv := env.checked.get
+  let mut visited : NameSet := {}
+  let mut axioms : Array Name := #[]
+  let mut stack : Array Name := roots
+  while h : stack.size > 0 do
+    let c := stack[stack.size - 1]
+    stack := stack.pop
+    unless visited.contains c do
+      visited := visited.insert c
+      match kenv.find? c with
+      | some (.axiomInfo v) =>
+        axioms := axioms.push c
+        stack := stack ++ v.type.getUsedConstants
+      | some (.defnInfo v)   => stack := (stack ++ v.type.getUsedConstants) ++ v.value.getUsedConstants
+      | some (.thmInfo v)    => stack := (stack ++ v.type.getUsedConstants) ++ v.value.getUsedConstants
+      | some (.opaqueInfo v) => stack := (stack ++ v.type.getUsedConstants) ++ v.value.getUsedConstants
+      | some (.quotInfo _)   => pure ()
+      | some (.ctorInfo v)   => stack := stack ++ v.type.getUsedConstants
+      | some (.recInfo v)    => stack := stack ++ v.type.getUsedConstants
+      | some (.inductInfo v) => stack := (stack ++ v.type.getUsedConstants) ++ v.ctors.toArray
+      | none                 => pure ()
+  pure axioms
+
+/-! ### Batched blueprint collection (the leak walk)
+
+The blueprint analogue of `collectAxiomsBatch`, over the full constant-reference graph. Each traversal
+descends *through* forecast nodes (a forecast whose own proof rests on a deeper forecast is reported
+too — completeness), collecting every `@[blueprint]`-tagged constant reachable from the (non-forecast)
+roots. `collectBlueprintBatch` gives the union over all roots in one shared traversal (the fast, green
+path); `blueprintDepsOf` gives per-root attribution (the rare red path). Same first-party
+`notUpstream` prune as `blueprintDepsOf`. **Cone-correct:** seeded ONLY by the explicit `roots`. -/
+
+/-- The union of `@[blueprint]`-tagged constants reachable from any of `roots`, in one shared
+traversal (O(reachable first-party constants)). The roots themselves are excluded from the result (a
+root is a *banked* decl whose forecast dependencies we want). Iterative so it is not `partial`. -/
+def collectBlueprintBatch (env : Environment) (roots : Array Name) : Array Name := Id.run do
+  let rootSet : NameSet := roots.foldl (·.insert ·) {}
+  let mut visited : NameSet := {}
+  let mut found : Array Name := #[]
+  let mut stack : Array Name := roots
+  while h : stack.size > 0 do
+    let c := stack[stack.size - 1]
+    stack := stack.pop
+    unless visited.contains c do
+      visited := visited.insert c
+      if isBlueprint env c && !rootSet.contains c then
+        found := found.push c
+      -- BOUNDARY PRUNE (perf): descend only from first-party constants; an upstream (Mathlib/core)
+      -- constant is a dead-end for blueprint-reachability. Keeps the walk O(first-party graph).
+      if notUpstream env c then
+        match env.find? c with
+        | some ci => stack := stack ++ usedConstantsOf ci
+        | none => pure ()
+  pure (found.qsort Name.lt)
 
 /-! ### The blueprint-leak walk (per-root, first-party-bounded)
 
@@ -366,6 +442,79 @@ def elabAssertBankedClean : CommandElab
           let items := leaks.toList.map MessageData.ofConstName
           throwError m!"'{c}' LEAKS @[blueprint] forecast(s): {MessageData.joinSep items ", "}\n\
              → a banked result must not rest on a forecast: prove/ban them, or `@[blueprint]` this decl."
+  | _ => throwUnsupportedSyntax
+
+/-! ## Frontend 4 — the `#assert_banked_clean_batch [ … ]` BATCHED GATE (one shared walk)
+
+The per-root `#assert_banked_clean` above runs `collectAxioms` (a fresh `visited` set) once per root,
+so a gate over hundreds of roots re-walks the shared Mathlib subgraph once per root — the ~12-min cost
+of the RLCT `AxCheck` gate. `#assert_banked_clean_batch` asserts the **same** two invariants over a
+list of roots but via ONE shared-`visited` traversal (`collectAxiomsBatch` / `collectBlueprintBatch`):
+each shared constant is visited once total. This is a **pure speedup** — identical kernel graph,
+identical axiom/forecast sets, identical verdict — only the redundant re-walking is removed.
+
+* FAST PATH (the green case): compute the *union* of the roots' transitive axioms and of their
+  reachable forecasts in two batched walks; if the union has no unaccounted axiom AND no leaked
+  forecast, `logInfo` a one-line summary and PASS. (No per-root footprint is emitted — that is the
+  saving; individual footprints for specific deliverables are recorded by separate `#print axioms`.)
+* SLOW PATH (the rare red case): the union is dirty, so run the per-root `auditDecl` / `blueprintDepsOf`
+  attribution to name WHICH root owns the offending axiom/forecast, then `throwError`. Per-root cost is
+  acceptable here — it runs only on a red gate.
+
+Forget-proof, unchanged: a sneaked-in `sorry`/`native_decide`/untagged axiom on any root lands in the
+union (kernel completeness), reddens the gate, and the slow path names the culprit root. -/
+
+/-- **`#assert_banked_clean_batch [a, b, …]`** — the batched per-list gate. Resolves every ident (an
+unknown name errors — never silently dropped), then asserts, over ONE shared traversal, that the
+*union* of the roots' transitive axioms rests only on `FOUNDATIONAL ∪ @[cited]` and that no banked root
+leaks a `@[blueprint]` forecast. On a clean union it emits a one-line summary; on a dirty union it
+falls back to per-root attribution and `throwError`s naming the offending root → axiom/forecast. -/
+syntax (name := assertBankedCleanBatchCmd) "#assert_banked_clean_batch " "[" ident,*,? "]" : command
+
+@[command_elab assertBankedCleanBatchCmd]
+def elabAssertBankedCleanBatch : CommandElab
+  | `(#assert_banked_clean_batch [ $ids,* ]) => do
+    let env ← getEnv
+    -- Resolve every ident to its constant(s); an unknown name errors here (not silently dropped).
+    let mut roots : Array Name := #[]
+    for id in ids.getElems do
+      let cs ← liftCoreM <| realizeGlobalConstWithInfos id
+      for c in cs do
+        roots := roots.push c
+    -- FAST PATH — two batched (shared-`visited`) walks over the explicit roots.
+    let axUnion := collectAxiomsBatch env roots
+    let unaccounted := (axUnion.filter (fun a => !isFoundational a && !isCited env a)).qsort Name.lt
+    -- Blueprint leak: a *banked* root must not reach a forecast; exclude roots that are themselves
+    -- forecasts (a forecast may rest on forecasts) before the union walk.
+    let bankedRoots := roots.filter (fun r => !isBlueprint env r)
+    let bpUnion := collectBlueprintBatch env bankedRoots
+    if unaccounted.isEmpty && bpUnion.isEmpty then
+      logInfo m!"{roots.size} roots banked-clean (union rests only on foundational + cited)"
+    else
+      -- SLOW PATH — the union is dirty; per-root attribution names the owning root(s).
+      let mut msgs : Array MessageData := #[]
+      for r in roots do
+        let res ← auditDecl r
+        unless res.unaccounted.isEmpty do
+          let bad := res.unaccounted.toList.map MessageData.ofConstName
+          msgs := msgs.push m!"'{r}' rests on UNACCOUNTED axiom(s): {MessageData.joinSep bad ", "}"
+      for r in bankedRoots do
+        let leaks := blueprintDepsOf env r
+        unless leaks.isEmpty do
+          let items := leaks.toList.map MessageData.ofConstName
+          msgs := msgs.push m!"'{r}' LEAKS @[blueprint] forecast(s): {MessageData.joinSep items ", "}"
+      if msgs.isEmpty then
+        -- Defensive: the union was dirty but no single root reproduced it (should be impossible —
+        -- the union is ⋃ per-root). Report the union so the gate never silently passes.
+        let bad := unaccounted.toList.map MessageData.ofConstName
+        let leaks := bpUnion.toList.map MessageData.ofConstName
+        throwError m!"#assert_banked_clean_batch FAILED (union dirty, unattributed):\n\
+           UNACCOUNTED union: {MessageData.joinSep bad ", "}\n\
+           @[blueprint] leak union: {MessageData.joinSep leaks ", "}"
+      else
+        throwError m!"#assert_banked_clean_batch FAILED:\n{MessageData.joinSep msgs.toList "\n"}\n\
+           → prove each, or `@[cited \"…\"]` an axiom and locate it in a `…Cited.lean` file, or \
+           `@[blueprint]` the consumer of a forecast."
   | _ => throwUnsupportedSyntax
 
 end Meta.Cordon

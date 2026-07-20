@@ -14,6 +14,9 @@
 #     (ii)  FAILS naming the unaccounted axiom on the untagged-axiom consumer (usesUntagged);
 #     (iii) FAILS naming the unaccounted axiom on the opaque-hidden consumer (usesOpaque);
 #     (iv)  FAILS naming the leaked forecast on the blueprint-leak consumer (CordonLeak.bankedLeak);
+#     (iv-b/c/d) the BATCHED gate `#assert_banked_clean_batch [..]`: a clean list PASSES with the union
+#            summary; a dirty list (untagged axiom / blueprint leak) FAILS via slow-path attribution
+#            naming the CULPRIT ROOT + the offending axiom/forecast (the batch is forget-proof too);
 #     (v)   still REJECTS `@[cited]` on a non-axiom, and `@[cited ""]` (empty source) at elaboration.
 #
 #   PART 2 — the source-level grep gate `scripts/cordon`, run over a fixture tree:
@@ -58,6 +61,16 @@ LEAN
   rm -f "$scratch"
 }
 
+# Run `#assert_banked_clean_batch [<decls>]` in a scratch module with the given imports; sets OUT, CODE.
+assert_batch() { # assert_batch <import-lines> <comma-separated-decls>
+  local scratch; scratch="$(mktemp --suffix=.lean)"
+  { echo "import Meta.Cordon"; printf '%s\n' "$1"; echo "#assert_banked_clean_batch [$2]"; } > "$scratch"
+  set +e
+  OUT="$(lake env lean "$scratch" 2>&1)"; CODE=$?
+  set -e
+  rm -f "$scratch"
+}
+
 echo "== PART 1 — the per-root #assert_banked_clean soundness gate =="
 
 echo "-- (i) clean cited decl SUCCEEDS (a declared cite is permitted) --"
@@ -85,6 +98,26 @@ echo "$OUT"
 check_exit "blueprint-leak consumer fails" 1 "$CODE"
 check "labels it a LEAK" "LEAK" "$OUT"
 check "names the leaked forecast" "CordonLeak.forecast" "$OUT"
+
+echo "-- (iv-b) BATCH gate: a clean list PASSES with the union summary --"
+assert_batch "import CordonClean" "CordonClean.cleanUsesCite"
+echo "$OUT"
+check_exit "batch clean list passes" 0 "$CODE"
+check "batch emits the union summary" "banked-clean (union rests only on foundational + cited)" "$OUT"
+
+echo "-- (iv-c) BATCH gate: a list with an untagged-axiom root FAILS naming the culprit ROOT + axiom --"
+assert_batch $'import CordonClean\nimport CordonFixtures' "CordonClean.cleanUsesCite, CordonFixtures.usesUntagged"
+echo "$OUT"
+check_exit "batch dirty list fails" 1 "$CODE"
+check "batch names the culprit root" "CordonFixtures.usesUntagged" "$OUT"
+check "batch names the unaccounted axiom" "untaggedFixtureAxiom" "$OUT"
+
+echo "-- (iv-d) BATCH gate: a list with a blueprint-leak root FAILS naming the culprit ROOT + forecast --"
+assert_batch "import CordonLeak" "CordonLeak.bankedLeak"
+echo "$OUT"
+check_exit "batch blueprint-leak fails" 1 "$CODE"
+check "batch labels it a LEAK" "LEAK" "$OUT"
+check "batch names the leaked forecast" "CordonLeak.forecast" "$OUT"
 
 echo "-- (v) elaboration rejections unchanged --"
 SCRATCH="$(mktemp --suffix=.lean)"
