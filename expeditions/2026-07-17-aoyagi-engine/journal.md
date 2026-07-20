@@ -6686,3 +6686,25 @@ recommendation surfaced; navigator #8 sizes it at pnp-full's landing → becomes
 opening brief. All value/cover lanes held; the design side banked + survives. The order kill
 was caught before shipping a green-but-wrong-RLCT spine — the expedition's real deliverable
 is the honest conditional spine + the corrected-order follow-up roadmap.
+
+## 2026-07-20 tick 401: conditional-spine statement gate APPROVED — the resolutionOf-bypass catch
+mint-t19 posted the conditional-spine statement gate (HeadlineConditionalSpine.lean,
+signature builds clean): theorem aoyagi_learning_coefficient_of_chartBridgeFaithful (hCBF :
+the literal ∀M-quantified chartBridgeFaithful_buildTree form) … : (⨅ w ∈ optimalSet H B,
+rlctAt H (dlnLoss H B) w) = ofReal(aoyagiLambda H r). THE LOAD-BEARING CATCH (why the gate
+earned its keep): the chain CANNOT route through engine_box_threshold_finite — that pulls
+its bridge from resolutionOf := monomialization_terminates.choose, which BAKES the
+chartBridge_buildTree sorry into its DEFINITION's proof term; a hypothesis can't strip a
+sorry from a different def, so a naive conditional would STILL carry sorryAx (not honestly
+clean-three). FIX (correct): re-derive box-finiteness DIRECTLY over buildTree M (conOracle M)
+conRoot via region_glue_of_chartBridge ((hCBF M …).toChartBridge) [clean-three, ChartBridge
+a hypothesis] + minAdm_le_terminalExponents [clean-three], bypassing resolutionOf — mirrors
+engine_box_threshold_finite but swaps the two resolutionOf-tainted terms for concrete-tree
+clean forms; o5_realization already clean-three ⟹ chartBridgeFaithful_buildTree is genuinely
+the SINGLE abstracted hole. APPROVED + GO with 4 confirm-flags: (1) conclusion = _gen's exact
+canonical form; (2) hCBF binder-order = chartBridgeFaithful_buildTree verbatim (follow-up
+discharge = one `exact`); (3) FORCE-RECOMPILE #print axioms mandatory (olean-masking lesson);
+(4) gate self-contained (not AxCheck). Hypothesis chosen faithful-full so conditional→
+unconditional at the follow-up's landing is `exact chartBridgeFaithful_buildTree`. Conclusion
+VALUE-only (MINT GUARD respected). ~15-line fill + gate in flight. This is the durable banked
+deliverable — stands regardless of the follow-up. pnp-full still the master verdict (running).
