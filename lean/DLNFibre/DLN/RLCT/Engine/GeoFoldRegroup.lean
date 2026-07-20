@@ -505,6 +505,30 @@ theorem ledgerMonomial_comp_spectator (M : Fin (L + 1) → ℕ) (s : ConState L)
     flatSwapCLE_apply_flat,
     Equiv.swap_apply_of_ne_of_ne (hspec k ⟨g.pivot, hp⟩).symm (hdt k)]
 
+/-- **The center-scale ledger step** (cert §3, case-1(2)): reads-based. If a chart `B` scales exactly
+one divisor `f`'s diagonal by `z_d` (`z_{bfc f}(B w) = z_d(w) · z_{bfc f}(w)` — the u-corner scaling,
+`geoChartMap_flat_center` + the swap) and fixes every other divisor's diagonal, then the incoming ledger
+pulls back with the split-off factor `|z_d(w)|^{divExp f − 1}` (the case-1(2) inheritance made local). -/
+theorem ledgerMonomial_center_of_reads (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (B : Params M → Params M) (w : Params M) (f : Fin s.numDiv) (d : Fin (flatDim M))
+    (hf : paramsEquivFlat M (B w) (birthFlatCoord M s f h)
+        = paramsEquivFlat M w d * paramsEquivFlat M w (birthFlatCoord M s f h))
+    (hspec : ∀ k : Fin s.numDiv, k ≠ f →
+        paramsEquivFlat M (B w) (birthFlatCoord M s k h)
+          = paramsEquivFlat M w (birthFlatCoord M s k h)) :
+    ledgerMonomial M s h (B w)
+      = |paramsEquivFlat M w d| ^ (s.divExp f - 1) * ledgerMonomial M s h w := by
+  rw [ledgerMonomial, ledgerMonomial,
+    ← Finset.mul_prod_erase Finset.univ
+      (fun k => |paramsEquivFlat M (B w) (birthFlatCoord M s k h)| ^ (s.divExp k - 1))
+      (Finset.mem_univ f),
+    ← Finset.mul_prod_erase Finset.univ
+      (fun k => |paramsEquivFlat M w (birthFlatCoord M s k h)| ^ (s.divExp k - 1))
+      (Finset.mem_univ f),
+    hf, abs_mul, mul_pow,
+    Finset.prod_congr rfl (fun k hk => by rw [hspec k (Finset.ne_of_mem_erase hk)])]
+  ring
+
 /-- **The weak no-stranded fact** (team-lead sharpening, pnp-fold adjudicating): a stranded (t̃ ≠ 0)
 divisor has exponent `1`, so its ledger factor `|z|^{1−1} = 1` is harmless. Threaded as an open
 hypothesis until pnp-fold's dichotomy (strong all-t̃=0 / this weak form / false-with-witness) returns. -/
