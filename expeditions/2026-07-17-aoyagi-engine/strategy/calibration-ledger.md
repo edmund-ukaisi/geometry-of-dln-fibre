@@ -629,3 +629,33 @@ or consumer-fidelity pass can.
 follow-up narrows to the RLCT lower-bound MECHANISM (ideal / blow-ups) — elder ruling in flight
 = its central question. Cleaner in structure (no re-thread, no cone re-open) but deeper in
 content (a real new mechanism). Re-scope is now not just right but the ONLY correct path.
+
+## Entry 22 (tick 406, 2026-07-20) — the VACUITY catch + the ideal-level resolution + the runway reframe
+**The vacuity catch (navigator-8, time-sensitive).** The conditional spine mint-t19 banked
+(tick 402) conditioned on hCBF = chartBridgeFaithful_buildTree — the SPECIFIC α-atlas
+satisfies ChartBridgeFaithful, incl. LeafPullback over it. #3a proves LeafPullback-over-α is
+category-FALSE. So hCBF is a REFUTED hypothesis; `hCBF → aoyagi` is vacuously true (ex-falso),
+and the "one exact away" seam is DEAD (chartBridgeFaithful_buildTree is unprovable-as-stated).
+I had represented it to the operator as "the durable deliverable, one exact from
+unconditional" — WRONG; corrected. The honest bank conditions on the ABSTRACT Prop
+(hbox / generic ChartBridge — satisfiable by a FUTURE atlas), which is aoyagi_gen essentially.
+Re-base in flight (mint-t19).
+**Why it matters (the meta-lesson, deeper than "cheapest consumer").** A conditional whose
+hypothesis is known-false is not progress — it's the visible-progress trap wearing a
+clean-three badge. Banking `refuted → goal` LOOKS like "the engine minus one lemma" but the
+lemma is category-impossible for the named object. RULE: before banking a conditional as
+"near-complete," check the hypothesis is SATISFIABLE (by the named object, or honestly by a
+future one) — a clean-three conditional on an unsatisfiable hypothesis is vacuous.
+**The ideal-level resolution (elder, page-grounded).** The RLCT lower bound is Lemma 1
+(worked.tex:153-158) — ideal-RLCT-invariance; the Q,P are ideal-preserving unimodular
+reductions, NOT charts. Chart-diagonalization is category-wrong (pnp-full). The lower bound is
+IDEAL-level (⟨∏C⟩=⟨b_i⟩ → rlct⟨b_i⟩ → ½·min M_{s,k}), not chart-coverage.
+**RUNWAY REFRAME (overturns the runway memory).** rlct-runway-target.md said "coverage / the
+singular-locus lower bound IS the runway's hard part." OVERTURNED: the lower bound is
+IDEAL-LEVEL (Lemma 1 + monomial ideal), NOT chart-coverage — a det-1 chart is a smooth reparam
+and structurally CANNOT manufacture a lower bound on the singularity (Watanabe's chart route
+gives only the UPPER bound). The runway's true hard part = the ideal-RLCT machinery (Lemma 1,
+Mathlib-absent, + ⟨∏C⟩=⟨b_i⟩ + monomial RLCT). Recorded in-repo (authoritative); the global
+memory is superseded (not edited, per policy). The runway-target kill-condition PREDICTED this
+("lower bound needs singular structure; smooth/chart gives only upper") — confirmed, then the
+LOCATION corrected from chart-coverage to ideal.

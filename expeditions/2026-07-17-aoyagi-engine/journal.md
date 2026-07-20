@@ -6792,3 +6792,23 @@ durable deliverable (conditional spine, verified clean-three) stands; the follow
 focused lower-bound research problem on the untouched banked leaf-first engine; re-scope is
 the only correct path. Awaiting the elder's mechanism ruling + navigator-8's follow-up scope
 + the operator's launch call.
+
+## 2026-07-20 tick 406: VACUITY catch on the spine (re-base in flight) + ideal-level ruling + runway reframe
+navigator-8 §1 (time-sensitive, load-bearing): the mint-t19 conditional spine conditions on
+chartBridgeFaithful (α-atlas satisfies LeafPullback) = a REFUTED hypothesis (#3a category-
+false) ⟹ vacuous ex-falso conditional; the "one exact away" seam is DEAD. I mis-represented
+it to the operator; CORRECTING. Sent mint-t19 the URGENT re-base: condition on the ABSTRACT
+Prop (hbox / generic ChartBridge — satisfiable by a FUTURE atlas), NOT the α-atlas; gate check
+= confirm the coverage/region_glue chain consumes ChartBridge GENERICALLY; label
+chartBridgeFaithful_buildTree's LeafPullback REFUTED-as-stated (not a fillable sorry). ELDER
+RATIFIED the ideal-level resolution (Lemma 1, worked.tex:153-158 — RLCT depends only on the
+ideal; Q,P are ideal-preserving unimodular reductions, NOT charts; ⟨∏C⟩=⟨b_i⟩ →
+rlct(Σb_i²)=½·min M_{s,k}) + corrected "keep the cover" (MOOT under route i, Lemma 1 is
+algebraic; kept only under route ii extra-blow-ups) + the RUNWAY REFRAME (the lower bound is
+IDEAL-level, not chart-coverage — overturns the runway memory; the true hard part is the
+ideal-RLCT machinery). navigator-8 disposition ADOPTED whole: re-thread/REBUILD-L MOOT; banked
+leaf-first engine NO CHANGE; tasks #21/#22 retire/re-scope (value content = the follow-up's
+target structure); follow-up = a RESEARCH expedition on the ideal-RLCT lower bound. CALIBRATION
+22 (the vacuity catch + ideal resolution + runway reframe). Compass amendment owed (elder
+drafting: category finding + runway reframe + fork-15 closure). Convene navigator #9 at the
+elder's mechanism ruling → the follow-up's opening brief. pnp-full stood down (4 certs).
