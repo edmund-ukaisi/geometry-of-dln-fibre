@@ -6407,3 +6407,21 @@ pivotChartDom/cube self-cover, cubeBox monotonicity, flatElemShear/foldrComp/ele
 NET: bounded, mostly mechanical; concentrated in the α-def-dependent atoms + the one real
 reads-neutrality rework. Both seats parked with these briefs; GO fires on loss-t15's completion
 + pnp-rg's Rg shape. Navigator prices the parallelization at the shape ruling.
+
+## 2026-07-20 tick 387: pnp-diag closed — ALL 3 column classes need full Q,P; clear_pivot is the acceptance oracle
+pnp-diag's per-column adjudication (cert §4b, battery q2_columns.py): all THREE classes of
+row J are (d), broader than framed — LIVE cols (j>J) need Rg [(2,2,2): (0,1)=u·a≠0, exact];
+CLEARED cols (j<J) need the Lg-remainder [(4,3,4): (1,0)≠0 — interior-α clears NO pivot
+column]; DROPPED rows/cols need the full reduction [(4,3,4): dropped row 3 is a linear combo
+of 0-2, NONZERO, not a zero row]. THE CLARIFYING FIND: the 3-state "dropped=0" is a
+CONSEQUENCE of the full Q,P — under interior-α rank-deficiency = linear dependence, not zero
+rows; loss-t15's clearedof_walk_trace.py clear_pivot (full row+col reduction) IS the
+acceptance oracle for the corrected gauge. (c) clearedOf-retiming REFUTED — no medium-ripple
+escape; task #22 (full Q,P) necessary in full, task #21 pause right. pnp-diag STOOD DOWN
+(mechanism fully adjudicated across two certs). OWNERSHIP CONFIRMED: loss-t15 owns α
+completion — Lg-remainder NOW, Rg on pnp-rg's shape; its consumer spec = the acceptance
+criterion; its alphaGauge_fixes_birthFlatCoord (:95) is the most-exposed artifact, re-verify
+gated on pnp-rg's cross-layer-Rg ⊥ later-birth-corners disjointness (the (J,J) check). Live
+seats: loss-t15 (α completion), pnp-rg (exact Rg per-edge shape + (J,J) + clear_pivot
+confirmation). walk-t20 + t14 parked with the rebuild checklist (tick 386b). The fix is fully
+specified (full Q,P, oracle in hand); only the per-edge Rg placement is open.
