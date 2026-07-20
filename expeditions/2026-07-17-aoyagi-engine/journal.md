@@ -6461,3 +6461,21 @@ prices off it) + pre-stage the Lg build PARAMETRIC in the target cells (instanti
 front-loads the ≤S-clean Lg, form-independent). STATUS clarified: pnp-rg #23 (leaf diagonal —
 fix WORKS) done; #24 (exact per-edge Lg/Rg placement + C^{S+1} overlap) IN FLIGHT — the exact
 cells come with #24. Navigator convene fires at #24's landing (the elder-ruled trigger).
+
+## 2026-07-20 tick 390: tiered rebuild ledger banked; pursuing the Lg-cells-now parallelization split
+loss-t15 banked the tiered rebuild ledger (threads/24-alpha-cover/rebuild-ledger-alpha-
+completion-t15.md, 5a99c1642): Tier 0 (pnp-rg cell-write) → Tier 1 (GeoAlphaGauge: Lg/Rg
+folds, det-1 extend, srcBox constant) → Tier 2 (GeoAtlasTransfer: fixes_of_not_mem,
+qmp/inj/surj/image, schurCells_fst_ne_birthFlatCoord [Lg clean/Rg gated],
+ledgerMonomial_neutral [Rg gated]) → Tier 3 (leafJacobian det-1-transparency, ae-inj,
+imageCover, alphaGauge_fixes_birthFlatCoord [Rg gated], oncone) → Tier 4 (task #21 re-opens
+→ leafDiagFrob closes → LeafPullback). It caught that the 2c/2a lanes ALSO consume α via
+the qmp/inj/surj family (conclusions survive det-1, constants grow). KEY PARALLELIZATION
+(loss-t15): Lg (Tier-1 pivot-col + ≤S disjointness) is buildable the moment the Lg cells are
+named — does NOT wait on #24's Rg-overlap. ACTED: asked pnp-rg to deliver the Lg cells NOW
+as a partial verdict (≤S-local, determined by #23's leaf-diagonal α, independent of the
+#24 Rg trace); if clean, loss-t15 starts Tier-1 Lg in parallel while Rg + birth-neutrality
+wait on #24. Navigator convene HELD for #24's full landing (per the elder trigger — it prices
+the CONCRETE rebuild incl. Rg placement then; the tier structure + critical path are already
+clear from the ledger, so premature to convene now). Critical path: #24 Rg → Rg build →
+birth-neutrality re-verify → value lane.
