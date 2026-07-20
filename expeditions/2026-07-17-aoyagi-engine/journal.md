@@ -5728,3 +5728,27 @@ resets at rollover; resolved stays resolved) is THE remaining gap: derive from t
 battery's own PART-C state-trace model, test running-total vs divTilde-count shapes
 ledger-wise; narrow residual to t14 via me if the lift isn't clean. Four-case grind stays
 gated on the frontier addendum (a wrong model poisons all four cases).
+
+## 2026-07-20 tick 351: THE INTERMEDIATE-STATE CATCH — entry-wise InvVal challenged at mid-walk; prefix re-base candidate
+Two landings. (1) Elder CONFIRMED option C, strengthened: a ConState-typed resid field
+would be UNSOUND, not merely redundant — D_J is FOLD-determined (the paper's residual is an
+object of the transforms, worked.tex:482/485), so the field misrepresents the dependency;
+dropping it is MORE faithful (same lesson family as calibration entry 4: the ledger under-
+determines the geometric object). Q1 fully closed. Off-by-one: loss-t15's own R4-cert
+resolution (filter divTilde ≤ (i:ℕ), 0-based) CONVERGES with my pinned convention — settled.
+(2) THE DEEP CATCH (loss-t15, gate round 3 — the statement gate's third and deepest catch
+on this lane): the entry-wise "cleared rows of prod are DIAGONAL" is likely FALSE at
+INTERMEDIATE states — the three-factor threaded form (cert §7, worked.tex:475-490) has a
+trailing RAW-remaining-layers factor ∏_{s>S}C^{(s)}, so cleared row i of the FULL product
+= b_i · (row i of trailing) ≠ b_i·e_i for generic w. Entry-wise-diagonal has only ever been
+true (and only ever battery-verified) at the LEAF, where the trailing factor is empty —
+which is exactly why the banked leaf discharge never caught it. CANDIDATE RESOLUTION
+(mine, elder ruling in flight): RE-BASE InvValC on the PREFIX product (layers ≤ s.layer at
+the transformed parameters = the diag(b)·[E_J O; O D_J] two-factor object): entry-wise
+survives, option C intact (D_J exposed for the a,b reads), rollover becomes the honest
+reindex (prodPrefix·C^{(S+1)}), leaf composes unchanged (prefix = full there). DECISIVE
+BATTERY CHECK dispatched to loss-t15: at mid-layer states of the PART-C trace, (a) full-
+prod cleared rows diagonal? (expect NO) (b) prefix cleared rows diagonal = bmon? (expect
+YES) (c) trailing = raw untouched layers? Grind stays gated on ruling + verdicts. The
+banked leaf-end and the four statement SHAPES survive either outcome; what changes is the
+object InvVal reads (prod → prodPrefix) — caught at the statement gate, zero grind wasted.
