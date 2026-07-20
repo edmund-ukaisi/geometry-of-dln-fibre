@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Engine.GeoDiagSwap
 import DLNFibre.DLN.RLCT.Engine.DivBirthReach
+import DLNFibre.DLN.RLCT.Engine.CornerDisjoint
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.GeoFoldRegroup` — the fold-Jacobian regrouping cocycle machinery (t14)
@@ -564,6 +565,71 @@ theorem leafOfState_prod_eq_ledgerMonomial (M : Fin (L + 1) → ℕ) (s : ConSta
 theorem ledgerMonomial_conRoot (M : Fin (L + 1) → ℕ) (h : 0 < flatDim M) (w : Params M) :
     ledgerMonomial M (conRoot : ConState L) h w = 1 := by
   simp [ledgerMonomial, conRoot]
+
+/-! ## Stage-1 coherences (pure, no tree walk): fresh-divisor diagonal + reads-neutrality
+
+The three walk-free bridges the four-case maintenance (§3) consumes:
+* `ledgerMonomial_eq_of_reads` — if a chart fixes EVERY divisor's diagonal read, the ledger pulls
+  back unchanged (reads-based spectator form; case-1(1) uses it, `f`'s cell being pivot-FREE);
+* `birthFlatCoord_stepAppendAdvance_last` — the FRESH divisor a birth appends sits on its
+  birth-corner diagonal `(layer, cleared, cleared)` (`stepAppendAdvance` snocs `(layer, cleared)`);
+* `diagTargetOf_noncase11_eq_fresh` — a non-`case11` edge's `diagTargetOf` IS that same fresh corner
+  (the kit's internal `hdtred`, exposed). Together: `diagTargetOf = birthFlatCoord child (Fin.last)`,
+  so the atom's `|z_{diagTargetOf}|^{dCN−1}` is the ledger's fresh factor `|z_{fresh}|^{e−1}`. -/
+
+/-- **Reads-neutrality of the ledger**: if a chart `B` fixes every divisor's diagonal read
+`z_{birthFlatCoord s k}`, then the full-ledger monomial pulls back unchanged. The reads-based partner
+of `ledgerMonomial_comp_spectator` — case-1(1) supplies the per-`k` reads (the merge cell `f` is
+pivot-FREE, the rest spectators) rather than the two disjointness hypotheses. -/
+theorem ledgerMonomial_eq_of_reads (M : Fin (L + 1) → ℕ) (s : ConState L) (h : 0 < flatDim M)
+    (B : Params M → Params M) (w : Params M)
+    (hread : ∀ k : Fin s.numDiv,
+      paramsEquivFlat M (B w) (birthFlatCoord M s k h)
+        = paramsEquivFlat M w (birthFlatCoord M s k h)) :
+    ledgerMonomial M s h (B w) = ledgerMonomial M s h w := by
+  rw [ledgerMonomial, ledgerMonomial]
+  exact Finset.prod_congr rfl (fun k _ => by rw [hread k])
+
+/-- **The fresh appended divisor sits on its birth-corner diagonal**: `stepAppendAdvance e t₀` snocs
+the divisor born at corner `(layer, cleared)`, so its `birthFlatCoord` at the new `Fin.last` index is
+the diagonal `flatCoordOf (layer, cleared, cleared)` — given the fresh corner fits the layer matrix. -/
+theorem birthFlatCoord_stepAppendAdvance_last (M : Fin (L + 1) → ℕ) (s : ConState L)
+    (h : 0 < flatDim M) (e : ℕ) (t₀ : Fin L → ℕ) (hlive : s.layer < L)
+    (hcc : s.cleared < M (⟨s.layer, hlive⟩ : Fin L).castSucc)
+    (hcs : s.cleared < M (⟨s.layer, hlive⟩ : Fin L).succ) :
+    birthFlatCoord M (s.stepAppendAdvance e t₀) (Fin.last s.numDiv) h
+      = flatCoordOf M ⟨s.layer, hlive⟩ ⟨s.cleared, hcc⟩ ⟨s.cleared, hcs⟩ := by
+  have hbc : (s.stepAppendAdvance e t₀).divBirthCoord (Fin.last s.numDiv)
+      = (s.layer, s.cleared) := by
+    simp [ConState.stepAppendAdvance, Fin.snoc_last]
+  have hv : CornerValid M ((s.stepAppendAdvance e t₀).divBirthCoord (Fin.last s.numDiv)) := by
+    rw [hbc]
+    refine ⟨hlive, ?_, ?_⟩
+    · intro i hi
+      have : i = (⟨s.layer, hlive⟩ : Fin L).castSucc := Fin.ext (by simpa using hi)
+      rw [this]; exact hcc
+    · intro i hi
+      have : i = (⟨s.layer, hlive⟩ : Fin L).succ := Fin.ext (by simpa [Fin.succ] using hi)
+      rw [this]; exact hcs
+  obtain ⟨hL, hi, hj, heq⟩ := birthFlatCoord_eq_flatCoordOf M (s.stepAppendAdvance e t₀)
+    (Fin.last s.numDiv) h hv
+  rw [heq]
+  exact flatCoordOf_congr (Fin.ext (by simp [hbc])) (by simp [hbc]) (by simp [hbc])
+
+/-- **A non-`case11` edge's `diagTargetOf` is the fresh `(layer, cleared)` corner** (the kit's internal
+`hdtred`, exposed as a lemma): both `case12` and `case2` name the diagonal of the just-born divisor.
+Pairs with `birthFlatCoord_stepAppendAdvance_last` to identify the atom's `z_{diagTargetOf}` with the
+ledger's fresh factor `z_{birthFlatCoord child (Fin.last)}`. -/
+theorem diagTargetOf_noncase11_eq_fresh (M : Fin (L + 1) → ℕ) (node : StepData M) (e : Edge M)
+    (hd1 : 1 ≤ flatDim M) (hec : e.case ≠ StepCase.case11) (hlv : node.layer < L)
+    (hcc : node.cleared < M (⟨node.layer, hlv⟩ : Fin L).castSucc)
+    (hcs : node.cleared < M (⟨node.layer, hlv⟩ : Fin L).succ) :
+    diagTargetOf M node e hd1
+      = flatCoordOf M ⟨node.layer, hlv⟩ ⟨node.cleared, hcc⟩ ⟨node.cleared, hcs⟩ := by
+  unfold diagTargetOf
+  split
+  · rename_i hc11; exact absurd hc11 hec
+  · rw [dif_pos hlv, dif_pos ⟨hcc, hcs⟩]
 
 /-- **The weak no-stranded fact, expressed on a leaf's FULL ledger fields** (so it threads through the
 `leaves` of `buildTree` without a separate reachability predicate). For `leafOfState s` this is
