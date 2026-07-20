@@ -10,18 +10,19 @@ prod-diagonalization invariant `Inv_val(acc, s)` down `buildTree`, mirroring t14
 payload. The terminal case gives `prod = diagonal(b)` and plugs into the PROVEN
 `GeoInvVal.leafDiagFrob_of_prodDiag`, closing `leafDiagFrob_geoAtlasNorm`.
 
-**Encoding = ENTRY-WISE** (team-lead steer (b), 2026-07-20): the invariant is per prod-entry,
-matching the per-entry (α) reads (`geoChartMap_flat_*`) and the cert's entry-wise value battery, and
-sidestepping matrix-block instance friction. A `cleared s i` diagonal position carries its
-`b`-monomial `bmon s w i` (the `z_{birthFlatCoord}` product per chain level); a cleared off-diagonal
-cell is `0`; an uncleared cell is the residual read `resid s w i j`. At terminal `s` every position
-is cleared ⟹ `prod = diagonal(bmon)` ⟹ `leafDiagFrob_of_prodDiag` (the block form
-`diag(b)·[[E,O],[O,D]]` is a presentational corollary, not built — the bridge is the only consumer).
+**Encoding = PREFIX-based, THREE-STATE** (elder-ratified 2026-07-20, `clearedof_walk_trace.py`,
+`prefix_rebase_gate.py`, `width_drop_leg.py`). The invariant reads `prodPrefix s (acc w)` — Aoyagi's
+FRONT block `diag(b)·[[E_J,O],[O,D_J]]` (layers `0..s.layer`), NOT the full `prod` (whose cleared
+rows carry the raw trailing factor `∏_{s>S}C`, FALSE at intermediate states). Per prod-prefix-entry,
+each diagonal position `i` is in one of THREE states: CLEARED (`clearedOf`, carries its `b`-monomial
+`bmonOf`), DROPPED (`droppedOf`, zero — rank drop, `i ≥` the running-min width), or UNRESOLVED (no
+constraint — its value is first-class EXPOSED for the clearing step to read). At a terminal
+`prodPrefix = prod` and every position is cleared-or-dropped ⟹ `prod = diagonal(bmon)` ⟹
+`leafDiagFrob_of_prodDiag`.
 
-**STAGING (t14 discipline):** scaffold (elaborating, sorried) → the ends (base + leaf-discharge) +
-reused reads → the four matrix-maintenance cases as SEPARATE banked greens, pushed each. Reusable
-t14 reads + fan helpers + this seat's `leafDiagFrob_of_prodDiag`/`frobSq_of_diagonal` compose
-(import foundation confirmed).
+**STAGING (t14 discipline):** the payload defs + base + leaf-discharge (this file's banked unit) →
+the four matrix-maintenance cases as SEPARATE banked greens → the walk instantiation mirroring
+`geoAtlas_cocycle` over `tGeoG alphaGauge` (using the fan-decomposition lemmas below).
 -/
 
 namespace DLNFibre.DLN.RLCT.Engine
@@ -31,46 +32,134 @@ open scoped BigOperators
 
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
-/-- **The value invariant `Inv_val`** (ENTRY-WISE, team-lead steer (b)): the acc-threaded
-prod-diagonalization, per prod-entry. `cleared s i` marks the diagonal positions the fold to `s` has
-resolved; a cleared diagonal cell carries its `b`-monomial `bmon s w i`, a cleared off-diagonal cell
-is `0`, an uncleared cell is the residual read `resid s w i j`. The three payload fields
-(`cleared`/`bmon`/`resid`) are pinned during the build (`bmon` = the `z_{birthFlatCoord}` chain
-product; `cleared`/`resid` from the ledger + the residual-coord reads). Base (`conRoot`): nothing
-cleared, `resid = prod M w` (raw); maintenance: each step clears one diagonal position (α Schur);
-terminal: all cleared ⟹ `prod = diagonal(bmon)`. -/
-def InvVal (cleared : ConState L → Fin (M 0) → Prop) [∀ s i, Decidable (cleared s i)]
-    (bmon : ConState L → Params M → Fin (M 0) → ℝ)
-    (resid : ConState L → Params M → Fin (M 0) → Fin (M (Fin.last L)) → ℝ)
-    (acc : Params M → Params M) (s : ConState L) : Prop :=
-  ∀ (w : Params M) (i : Fin (M 0)) (j : Fin (M (Fin.last L))),
-    prod M (acc w) i j
-      = if cleared s i then (if (i : ℕ) = (j : ℕ) then bmon s w i else 0) else resid s w i j
+/-! ## The prefix object (prefix re-base, elder-ratified) -/
 
-/-- **Leaf discharge** (the terminal case → `LeafDiagFrob`, PROVEN structure): at a leaf `l` whose
-state `s_leaf` has EVERY diagonal position cleared (`hall`), `InvVal` collapses to
-`prod M (l.chartMap w) i j = if (i:ℕ)=(j:ℕ) then bmon s_leaf w i else 0` — the exact input of PROVEN
-`leafDiagFrob_of_prodDiag`. Given the `b`-monomial factorization (`hbmon`: `bmon = (∏ divCoord)·ρ`,
-counted) and the ratio properties (`hone`/`hbd`), this yields `LeafDiagFrob l`. The residual `resid`
-is unused here (vacuous once all cleared), matching team-lead's leaf-assembly reason (iv). -/
-theorem leafDiagFrob_of_invVal_leaf
-    (cleared : ConState L → Fin (M 0) → Prop) [∀ s i, Decidable (cleared s i)]
+/-- **The prefix column index** `min (s.layer+1) L`: `prodPrefix` covers layers `0..s.layer` (capped
+at all `L` layers). At a terminal (`layer = L`) it is `Fin.last L`. -/
+def prefixColFin (s : ConState L) : Fin (L + 1) := ⟨min (s.layer + 1) L, by omega⟩
+
+/-- **The prefix product** `prodAux M A (prefixColFin s)` — Aoyagi's front block
+`diag(b)·[[E_J,O],[O,D_J]]` (layers `0..s.layer` at the transformed params). The full `prod`'s
+trailing factor is cut off (elder: the full product's cleared rows are contaminated by it; the
+prefix's are not). -/
+noncomputable def prodPrefix (s : ConState L) (A : Params M) :
+    Matrix (Fin (M 0)) (Fin (M (prefixColFin s))) ℝ :=
+  prodAux M A (prefixColFin s) (prefixColFin s).isLt
+
+/-- `prodAux` at the last index IS `prod` (generalize-index → subst → rfl). -/
+theorem prodAux_last_eq_prod {k : Fin (L + 1)} (A : Params M) (hk : k = Fin.last L) :
+    prodAux M A (k : ℕ) k.isLt = hk ▸ prod M A := by subst hk; rfl
+
+/-- **Prefix = full at a terminal** (`prefixColFin s = Fin.last L`): the trailing is empty, so
+`prodPrefix s = prod` (associativity realized — the leaf discharge composes unchanged). -/
+theorem prodPrefix_eq_prod (s : ConState L) (A : Params M) (hlast : prefixColFin s = Fin.last L) :
+    prodPrefix s A = hlast ▸ prod M A := by
+  unfold prodPrefix; exact prodAux_last_eq_prod A hlast
+
+/-! ## The three-state row classification + `b`-monomial (battery `clearedof_walk_trace.py`) -/
+
+/-- **resolvedRows** (candidate A): the count of cleared diagonal rows — the current layer's
+`cleared` mid-walk (resets per layer; the incoming raw layer contaminates the earlier rows), the
+full running-min `widthMinUpto M L` at a terminal (final-layer clearing persists). -/
+def resolvedRows (s : ConState L) : ℕ := if s.layer = L then widthMinUpto M L else s.cleared
+
+/-- **CLEARED**: diagonal row `i < resolvedRows` carries its `b`-monomial. -/
+def clearedOf (s : ConState L) (i : Fin (M 0)) : Prop := (i : ℕ) < resolvedRows (M := M) s
+
+/-- **The dropped threshold** (ROLLOVER-AWARE): the rank ceiling exposed so far —
+`widthMinUpto M (s.layer+1)` once the rollover guard `widthMinUpto M (s.layer+1) ≤ s.cleared` fires
+(the narrow layer's bottleneck is reached), else the persisted `widthMinUpto M s.layer`. Fires the
+drop at the rollover NODE (rollover maintenance then propagates `row = 0`). -/
+def dropThreshold (s : ConState L) : ℕ :=
+  if widthMinUpto M (s.layer + 1) ≤ s.cleared then widthMinUpto M (s.layer + 1)
+  else widthMinUpto M s.layer
+
+/-- **DROPPED**: row `i` beyond the rank ceiling is zero (rank drop; accumulates, never undrops). -/
+def droppedOf (s : ConState L) (i : Fin (M 0)) : Prop := dropThreshold (M := M) s ≤ (i : ℕ)
+
+instance clearedOf_decidable (s : ConState L) (i : Fin (M 0)) :
+    Decidable (clearedOf (M := M) s i) := by unfold clearedOf; infer_instance
+instance droppedOf_decidable (s : ConState L) (i : Fin (M 0)) :
+    Decidable (droppedOf (M := M) s i) := by unfold droppedOf; infer_instance
+
+/-- **bmon** (ledger-closed A-scaling; battery-fixed filter `≤`): 0-based position `p` = 1-based
+chain index `p+1`, so `b_{p+1} = ∏_{t̃ ≤ p} z_{birthFlatCoord}`. -/
+noncomputable def bmonOf (h : 0 < flatDim M) (s : ConState L) (w : Params M) (p : Fin (M 0)) : ℝ :=
+  ∏ k ∈ Finset.univ.filter (fun k : Fin s.numDiv => s.divTilde k ≤ (p : ℕ)),
+    paramsEquivFlat M w (birthFlatCoord M s k h)
+
+/-- **The value invariant `InvVal3`** (prefix-based, THREE-STATE; option C). CLEARED rows are
+diagonal `= bmon`; DROPPED rows are zero; UNRESOLVED rows are first-class EXPOSED (no constraint —
+their values `prodPrefix i j` are read directly by the clearing step). Parametric in
+`cleared`/`dropped`/`bmon` (instantiated with `clearedOf`/`droppedOf`/`bmonOf` at the headline). -/
+def InvVal3 (cleared dropped : ConState L → Fin (M 0) → Prop)
+    [∀ s i, Decidable (cleared s i)] [∀ s i, Decidable (dropped s i)]
     (bmon : ConState L → Params M → Fin (M 0) → ℝ)
-    (resid : ConState L → Params M → Fin (M 0) → Fin (M (Fin.last L)) → ℝ)
+    (acc : Params M → Params M) (s : ConState L) : Prop :=
+  ∀ (w : Params M) (i : Fin (M 0)) (j : Fin (M (prefixColFin s))),
+    (cleared s i → prodPrefix s (acc w) i j = if (i : ℕ) = (j : ℕ) then bmon s w i else 0) ∧
+    (dropped s i → prodPrefix s (acc w) i j = 0)
+
+/-- **Vacuous base at `conRoot`** (option C base is trivially true — nothing cleared or dropped). -/
+theorem invVal3_conRoot (cleared dropped : ConState L → Fin (M 0) → Prop)
+    [∀ s i, Decidable (cleared s i)] [∀ s i, Decidable (dropped s i)]
+    (bmon : ConState L → Params M → Fin (M 0) → ℝ)
+    (hcl : ∀ i : Fin (M 0), ¬ cleared (conRoot : ConState L) i)
+    (hdr : ∀ i : Fin (M 0), ¬ dropped (conRoot : ConState L) i) :
+    InvVal3 cleared dropped bmon id (conRoot : ConState L) :=
+  fun _ i _ => ⟨fun hc => absurd hc (hcl i), fun hd => absurd hd (hdr i)⟩
+
+/-! ## The three-state leaf discharge (`InvVal3` at a terminal → `LeafDiagFrob`) -/
+
+/-- **`prodAux` entry = `prod` entry at the last index** (bound index `k`, cast on the column;
+subst → rfl). -/
+theorem prodAux_last_entry (A : Params M) {k : Fin (L + 1)} (hk : k = Fin.last L)
+    (i : Fin (M 0)) (j : Fin (M k)) :
+    prodAux M A (k : ℕ) k.isLt i j = prod M A i (Fin.cast (congrArg M hk) j) := by
+  subst hk; rfl
+
+/-- **`prodPrefix` entry = `prod` entry at a terminal** (`prefixColFin s = Fin.last L`, cast on the
+column index). The cast bridge the leaf discharge uses. -/
+theorem prodPrefix_entry_eq_prod (s : ConState L) (A : Params M)
+    (hlast : prefixColFin s = Fin.last L)
+    (i : Fin (M 0)) (j : Fin (M (prefixColFin s))) :
+    prodPrefix s A i j = prod M A i (Fin.cast (congrArg M hlast) j) := by
+  unfold prodPrefix; exact prodAux_last_entry A hlast i j
+
+/-- **The three-state leaf discharge**: at a terminal leaf (`hlast`), `InvVal3` (every row cleared
+or dropped `hcov`; disjoint `hdisj`) collapses `prod` to the diagonal `dvec := if cleared then bmon
+else 0`: CLEARED rows carry `bmon`, DROPPED rows are `0` (width-drop fix; the `M(last)` cutoff extra
+terms vanish). Feeds the PROVEN `leafDiagFrob_of_prodDiag`. -/
+theorem leafDiagFrob_of_invVal3_leaf
+    (cleared dropped : ConState L → Fin (M 0) → Prop)
+    [∀ s i, Decidable (cleared s i)] [∀ s i, Decidable (dropped s i)]
+    (bmon : ConState L → Params M → Fin (M 0) → ℝ)
     (l : LeafData M) (s_leaf : ConState L)
-    (hinv : InvVal cleared bmon resid l.chartMap s_leaf)
-    (hall : ∀ i : Fin (M 0), cleared s_leaf i)
+    (hlast : prefixColFin s_leaf = Fin.last L)
+    (hinv : InvVal3 cleared dropped bmon l.chartMap s_leaf)
+    (hcov : ∀ i : Fin (M 0), cleared s_leaf i ∨ dropped s_leaf i)
+    (hdisj : ∀ i : Fin (M 0), dropped s_leaf i → ¬ cleared s_leaf i)
     (ρ : Params M → Fin (M 0) → ℝ) (hi : ℝ)
     (hbmon : ∀ w ∈ l.srcBox, ∀ i : Fin (M 0),
-      (if (i : ℕ) < M (Fin.last L) then bmon s_leaf w i else 0)
+      (if (i : ℕ) < M (Fin.last L) then (if cleared s_leaf i then bmon s_leaf w i else 0) else 0)
         = (∏ k : Fin l.numDiv, paramsEquivFlat M w (l.divCoord k)) * ρ w i)
     (hone : ∀ w ∈ l.srcBox, ∃ i : Fin (M 0), ρ w i = 1)
     (hbd : ∀ w ∈ l.srcBox, ∑ i : Fin (M 0), (ρ w i) ^ 2 ≤ hi) :
     LeafDiagFrob l := by
-  refine leafDiagFrob_of_prodDiag l (fun w i => bmon s_leaf w i) ρ hi ?_ hbmon hone hbd
+  refine leafDiagFrob_of_prodDiag l
+    (fun w i => if cleared s_leaf i then bmon s_leaf w i else 0) ρ hi ?_ hbmon hone hbd
   intro w _ i j
-  have := hinv w i j
-  rwa [if_pos (hall i)] at this
+  simp only []                                    -- beta-reduce the dvec lambda
+  -- move to the prefix frame: j ↦ j' : Fin (M (prefixColFin s_leaf)), via prodPrefix_entry_eq_prod
+  set j' : Fin (M (prefixColFin s_leaf)) := Fin.cast (congrArg M hlast.symm) j with hj'
+  have hval : (j' : ℕ) = (j : ℕ) := by rw [hj', Fin.coe_cast]
+  have hcast : Fin.cast (congrArg M hlast) j' = j := by apply Fin.ext; rw [Fin.coe_cast]; exact hval
+  have hpp : prodPrefix s_leaf (l.chartMap w) i j' = prod M (l.chartMap w) i j := by
+    rw [prodPrefix_entry_eq_prod s_leaf (l.chartMap w) hlast i j', hcast]
+  rw [← hpp]
+  rcases hcov i with hc | hd
+  · rw [(hinv w i j').1 hc, hval, if_pos hc]
+  · rw [(hinv w i j').2 hd, if_neg (hdisj i hd)]; simp
 
 /-! ## The α-atlas walk infrastructure (`tGeoG` fan-decomposition, resid-independent)
 
