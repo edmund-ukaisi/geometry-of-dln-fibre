@@ -71,4 +71,19 @@ theorem invVal3f2_to_invVal3 (cleared dropped : ConState L → Fin (M 0) → Pro
     InvVal3 cleared dropped bmon acc s :=
   fun w i j => ⟨(h w i j).1, (h w i j).2.1⟩
 
+/-- **Form-2 base at `conRoot`**: nothing cleared or dropped, and the whole prefix is the un-resolved
+`D_0` (`resD conRoot = prodPrefix conRoot ∘ id`), so the residual clause is `rfl`. Trivial under the
+D_J carry — `D_0` is the raw prefix product, Aoyagi's induction start. -/
+theorem invVal3f2_conRoot (cleared dropped : ConState L → Fin (M 0) → Prop)
+    [∀ s i, Decidable (cleared s i)] [∀ s i, Decidable (dropped s i)]
+    (bmon : ConState L → Params M → Fin (M 0) → ℝ)
+    (resD : (s : ConState L) → Params M → Fin (M 0) → Fin (M (prefixColFin s)) → ℝ)
+    (hcl : ∀ i : Fin (M 0), ¬ cleared (conRoot : ConState L) i)
+    (hdr : ∀ i : Fin (M 0), ¬ dropped (conRoot : ConState L) i)
+    (hres : ∀ (w : Params M) (i : Fin (M 0)) (j : Fin (M (prefixColFin (conRoot : ConState L)))),
+      resD (conRoot : ConState L) w i j = prodPrefix (conRoot : ConState L) (id w) i j) :
+    InvVal3f2 cleared dropped bmon resD id (conRoot : ConState L) :=
+  fun w i j => ⟨fun hc => absurd hc (hcl i), fun hd => absurd hd (hdr i),
+    fun _ _ => (hres w i j).symm⟩
+
 end DLNFibre.DLN.RLCT.Engine
