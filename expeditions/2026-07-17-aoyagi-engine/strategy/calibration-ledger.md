@@ -436,3 +436,29 @@ actually change, and does a layer complete at exactly cleared = widthMinUpto M (
 widthMinUpto(ℓ'+1) + cleared is ledger-expressible (no history needed) — BUT the map from
 the count to WHICH Fin (M 0) positions (the reindexing) is the real remaining content, and
 any model must respect fact 1. Facts handed to loss-t15 for the clearedOf derivation.
+
+## Entry 15 (tick 353, 2026-07-20) — THE MISS: entry-wise-full InvVal ratified false (elder-directed entry)
+**What happened.** At the value-walk design gate (~tick 340) I ruled the entry-wise steer
+(b): "cleared cells of prod M (acc w) diagonal = bmon". The elder co-ratified; the leaf
+discharge proved green; the shape survived TWO more gate rounds (payload def, option-C).
+loss-t15's third-round provability check then showed it FALSE at intermediate states: the
+paper's invariant is the three-factor form (worked.tex:478-479) with a RAW trailing
+∏_{s>S}C factor, so full-product cleared rows are b_i·(trailing row), not diagonal —
+diagonal only at the leaf (trailing empty), which is exactly where all prior verification
+(the banked leaf discharge, the abstract battery's terminal reads) had looked. Worse (the
+elder's Q3): the full product's residual region is CONTAMINATED by the trailing, so the
+clearing's a,b reads were also aimed at the wrong object. Two unsoundnesses in a ratified
+statement.
+**Why it was missed.** Every instrument that touched the claim (leaf discharge, terminal
+battery reads, my design ruling, the elder's confirm) evaluated it ONLY where the trailing
+factor vanishes. The obligation-statement class: a statement that is true on the boundary
+you tested and false in the interior you never entered. Same family as the tick-286
+generic-s falsity (true at the tested scope, false one binder wider).
+**What saved it.** The seat's own provability-check-before-grinding (entry-11 discipline)
+— it derived the intermediate form from the cert BEFORE grinding case-2 against a false
+target. Zero Lean wasted; the fix (prodPrefix re-base) is near-one-token on the defs.
+**Lesson.** When ratifying an invariant, ask WHERE it has been evaluated: if every
+verification sits at a degenerate boundary (empty trailing product, terminal state, zero
+case), the interior is UNTESTED regardless of how many instruments agree. Add to statement
+gates: "name the state at which each supporting verification was run; if all coincide,
+demand one interior instance."
