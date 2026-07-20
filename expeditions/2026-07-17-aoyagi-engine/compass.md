@@ -491,6 +491,43 @@ over banked substrate.
   precedent (SchurCore walls at depth ≥ 3). Honest form: the composition is 0-sorry.
 
 ## Standing counsel
+- **RISING SEA — BUILD THE RIGHT OBJECT, DO NOT MINIMUM-VIABLE IT (operator steer, 2026-07-20;
+  the elder's OWN recalibration, and it governs the RUNWAY REFRAME entry below).** The recurring
+  "ratified → found false → rescope" chain of this endgame (atlas seam, cover-over-cube,
+  collection lemma, leaf-first/root-first order kill, category error) has ONE root, and the
+  operator named it: the entire α-chart programme was an attempt to reach the RLCT lower bound
+  WITHOUT building the hard object the mathematics dictates — the ideal-level RLCT machinery
+  (Lemma 1 + ideal-RLCT invariance + the monomial-ideal / Newton-polyhedron computation + the
+  resolution change-of-variables), which Mathlib lacks entirely. The category error is the PROOF
+  that a chart cannot dodge it. AND THE ELDER DRIFTED INTO THE SAME TRAP: the runway-reframe
+  entry below characterizes the follow-up as "just Lemma 1, TORIC-TRIVIAL, no extra blow-ups,
+  the ≥ direction elementary" — a minimum-viable, UNVERIFIED clean headline of exactly the shape
+  falsified repeatedly this arc; the controller flagged we are "reasoning confidently about an
+  object we have not built," and the operator is right that this is the drive-to-minimum trap in
+  the elder's own voice. RECALIBRATION (durable): the follow-up BUILDS the RLCT-ideal-and-
+  resolution interface as a proper STANDALONE GENERAL LIBRARY — rlct as an ideal/germ invariant;
+  Lemma 1 (both directions) + ideal-inclusion monotonicity; the monomial-ideal RLCT (Newton
+  polyhedron, in full generality); the resolution / blow-up change-of-variables; and (RECONSIDER
+  as in-scope, NOT fenced) the analytic/zeta foundation the RLCT and the ORDER θ rest on. To full
+  generality, from the START — not a patch to unblock hbox. The DLN-specific simplifications
+  (the divisibility-chain toric-triviality; the explicit resolution tree) FALL OUT downstream —
+  they are NOT the scope, and scoping the follow-up BY them ("just Lemma 1") is the error. The
+  disposition, restated because the standing MATH-NECESSITY counsel (below) did not prevent the
+  drift: NEITHER avoid the hard part NOR avoid the large build — if the math says the right object
+  is ideal-level, or wants proper analytic-manifold/resolution machinery, BUILD IT; the
+  closability/tractability probe is a CHECK on a build we have committed to, NEVER a gate that
+  scopes the object down. ENDPOINT: the built RLCT library DISCHARGES the cited Aoyagi equality
+  (rlct = ½·codim) — `aoyagi_learning_coefficient` UNCONDITIONAL, the live-question destination
+  (top of file), not a permanent cite. GUARDS: (i) the "toric-trivial / no extra blow-ups /
+  elementary ≥" claims in the runway-reframe are UNVERIFIED — probe with decorrelated exact-algebra
+  at the KNOWN failure cases (non-monotone / interior-bottleneck, KILL-SET ADEQUACY below) BEFORE
+  any "bounded/well-scoped" is trusted; the clean headline is not taken on faith. (ii) θ + the
+  analytic foundation: reassess against the math — the zeta/meromorphic machinery that yields rlct
+  yields θ; the "not Mathlib-adjacent / out of scope" fences (non-local invariants; RUNWAY HANDOFF)
+  are Lean-COST fences, and MATH-NECESSITY retires a Lean-cost fence when the honest theory includes
+  the object. (iii) COMPASS HYGIENE: this file is ~690 lines, far past its ≤2-page charter — the
+  bloat is itself the tactical-patching drift made visible; a compaction pass (settled forks →
+  gestalt + pointers; retire concluded tactical chains) is owed at the follow-up's opening.
 - **RUNWAY REFRAME (2026-07-20, elder; supersedes the "coverage IS the runway's hard part"
   reading in the rlct-runway-target + C2a memories).** The RLCT LOWER bound is IDEAL-LEVEL, a
   THREE-part composite; only the middle is category-new: (1) RESOLUTION [KEPT — this
