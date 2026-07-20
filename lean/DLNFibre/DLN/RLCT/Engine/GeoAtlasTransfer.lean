@@ -206,6 +206,16 @@ theorem foldrComp_injective (maps : List (Params M → Params M))
     rw [List.foldr_cons]
     exact (hmaps f List.mem_cons_self).comp (ih fun g hg => hmaps g (List.mem_cons_of_mem f hg))
 
+/-- A `foldr (· ∘ ·) id` of differentiable maps is differentiable. -/
+theorem foldrComp_differentiable (maps : List (Params M → Params M))
+    (hmaps : ∀ f ∈ maps, Differentiable ℝ f) :
+    Differentiable ℝ (maps.foldr (· ∘ ·) id) := by
+  induction maps with
+  | nil => exact differentiable_id
+  | cons f rest ih =>
+    rw [List.foldr_cons]
+    exact (hmaps f List.mem_cons_self).comp (ih fun g hg => hmaps g (List.mem_cons_of_mem f hg))
+
 /-- **The interior-block Schur fold is QMP** — a composition of QMP `flatElemShear`s
 (`schurCells_ne` supplies the side conditions). -/
 theorem residualSchurShear_qmp (node : StepData M) (rows cols : ℕ) :
@@ -409,6 +419,40 @@ theorem geoAtlasNorm_leaf_leafJacobian (h : 0 < flatDim M) (c : LeafData M)
     (hc : c ∈ geoAtlasNorm (alphaGauge (M := M))
       (buildTree M (conOracle M) (conRoot : ConState L))) :
     LeafJacobian c := by
-  sorry -- transfer owed: geoAtlasNorm_leaf_leafJacobian (gauge-generalized cocycle; counter-sign held)
+  sorry -- transfer owed: geoAtlasNorm_leaf_leafJacobian (gauge-generalized cocycle; walk in progress)
+
+/-! ## 2d de-risking atoms (LeafJacobian gauge-generalization, tick-343 reads-based bundle)
+
+The atoms-first probe (POSITIVE): the id maintenance atoms (`GeoFoldRegroup.ledger_det_maintenance_*`)
+are generic in `acc`, so the gauge version is a THIN wrapper — `acc ∘ B^α = (acc ∘ B^id) ∘ α`
+(`geoChartMapNorm_eq_id_comp_gauge_on_cone`), split by `abs_det_fderiv_comp`, `|det α| = 1`
+(`alphaGauge_abs_det_one`), the id atom at point `α w`, then the reads-based neutrality
+`ledgerMonomial child (α w) = ledgerMonomial child w` (α fixes the child's birth-diagonal read set;
+the tick-343 correction — α writes interior FUTURE-pivot cells `> J`, fixes born diagonals `≤ J`). The
+two reusable atoms below feed the wrapper + the neutrality. -/
+
+/-- **`alphaGauge g` is differentiable** — `id` (case-1(1)/rollover) or the interior Schur fold (each a
+`flatElemShear`, differentiable everywhere). Needed for the chain-rule split in the gauge cocycle. -/
+theorem alphaGauge_differentiable (g : GeoChart M) :
+    Differentiable ℝ (alphaGauge (M := M) g) := by
+  unfold alphaGauge
+  split
+  · exact differentiable_id
+  · exact differentiable_id
+  all_goals
+    · rw [residualSchurShear, schurMaps]
+      refine foldrComp_differentiable _ (fun f hf => ?_)
+      rw [List.mem_map] at hf
+      obtain ⟨abc, _, rfl⟩ := hf
+      exact flatElemShear_differentiable abc.1 abc.2.1 abc.2.2
+
+/-- **A flat coordinate not written by the interior Schur fold is fixed** (the reads-neutrality
+workhorse): if `k` is never a `schurCells` target `a`, then `z_k(residualSchurShear w) = z_k(w)`
+(`elemShearFold_fixed` via the conjugation flat read `residualSchur_flat_read`). -/
+theorem residualSchurShear_fixes_of_not_mem (node : StepData M) (rows cols : ℕ)
+    (k : Fin (flatDim M)) (hk : ∀ abc ∈ schurCells node rows cols, abc.1 ≠ k) (w : Params M) :
+    paramsEquivFlat M (residualSchurShear node rows cols w) k = paramsEquivFlat M w k := by
+  rw [residualSchur_flat_read]
+  exact elemShearFold_fixed (schurCells node rows cols) (paramsEquivFlat M w) k hk
 
 end DLNFibre.DLN.RLCT.Engine
