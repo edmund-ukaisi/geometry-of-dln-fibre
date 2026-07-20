@@ -7395,3 +7395,33 @@ The 12min is per-root REDUNDANCY → a cone-correct BATCHED axiom walk would cut
 OPTIONAL, awaiting operator nod). SHELL FALSE-ALARM: the bg build task reported "exit 1" purely because
 its last cmd `grep -c 'error:'` returns 1 on ZERO matches — build was green; never put `grep -c` last in
 a chain whose exit code matters (sharper form of the memo's grep-exit-code guard).
+
+## 2026-07-20 tick 433+: BLUEPRINT PIPELINE opened + operator VM-rotation handoff (DURABLE — read on resume)
+Object-list generality AGREED with operator (charter §1 objects A–E stand; the "PROVISIONAL" tag comes
+off only on the operator's explicit confirm — held for their return). DoD clarified: still
+`aoyagi_learning_coefficient` clean-three, BUT the VALUE is in the objects, not the headline.
+**The FOUR blueprint bars** (operator-set acceptance criteria for the A–E blueprint; being folded into the
+charter by the elder — recorded here in case the elder draft is lost to the rotation):
+  1. GENERALITY — independent observer, shown the object cold, agrees it's a natural object at the RIGHT
+     generality (weakest hypotheses that suffice, usable form); fails if the only motivation is "the headline needs it".
+  2. STRIKE-ABLE LEAVES — every leaf bottoms out at a statement we'd bet true + can sketch (proof-ENGINEERING,
+     not new math); open math is ISOLATED + honestly NAMED a frontier leaf, never disguised.
+  3. COMPLETENESS / RISING SEA — blueprint the WHOLE object, not the headline's slice; a complete blueprint
+     DISSOLVES critical-path guessing (leaves parallelise; can't mis-identify a path you build all of).
+  4. MATHEMATICAL SOUNDNESS / "no smell" — every STATEMENT is sound (true, correctly quantified, name=content),
+     VERIFIED not assumed. Distinct from #2 (#2 = proof tractable; #4 = statement correct). A sorry with a wrong
+     statement misleads.
+**THE crux (operator, named):** coupled corank≥2 is the hard part AVOIDED for multiple expeditions (chart
+drifts / MVP / per-layer recursion were all routes around it). The bars exist to force it into the open
+(#3 un-dodgeable, #2 un-disguisable, steering docs un-decayable).
+**Pipeline:** elder (understand banked + steer: compact compass, finalize §1, fold the 4 bars, transferability
+sort) → pen-and-paper on the coupled corank≥2 FRONTIER (the new math; close the gap the elder surfaces) →
+architect (A–E typed sorried skeletons to the 4 bars; A/C/D can start once §1 lands, B's frontier leaves wait
+on the pnp) → check-vs-4-bars (reviewer + Codex + controller). RECONVENE OPERATOR at blueprint
+READY-TO-AUTOFORMALISE — do NOT run the big autoformalise-strike autonomously; §1-tag / bars / blueprint-sign-off
+are operator-confirm gates held for their return.
+**IN-FLIGHT AT ROTATION (re-dispatch from these notes + the elder brief if their worktree work didn't survive):**
+elder `ab414ff…` (compaction/§1/4-bars/transferability — isolated worktree, drafts-not-commits); cordon-batch
+`ae112f3…` (batch the axiom gate 12min→~20s + before/after timing — isolated worktree, commits-to-its-branch-not-pushed,
+integrate on report); review task #46 (comprehensive cordon review, blocked on batching). Cordon leaner-refactor
++ #45 hardening already banked to origin (8722f773d).

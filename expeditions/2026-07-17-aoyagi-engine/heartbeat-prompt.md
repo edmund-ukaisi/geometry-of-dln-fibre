@@ -12,11 +12,14 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **CHECKPOINT / FRESH START (2026-07-20)** after the second chart-route drift (α-atlas
-  `LeafPullback` category-false). The prior ENDGAME/two-lanes/hbox/mint/PR framing is SUPERSEDED (see
-  `priorities.md`); do not re-adopt it. The new phase is **NOT yet started** — current work is the
-  operator joint-decision on the charter §1 object list. Do NOT dispatch build seats or re-open the chart
-  route until that lands and the elder re-charters the compass.
+- phase: **BLUEPRINT PIPELINE (2026-07-20)** — object-list generality AGREED (charter §1; elder is
+  finalizing §1 + compacting the compass + folding the FOUR blueprint bars: generality / strike-able-leaves /
+  completeness-rising-sea / mathematical-soundness). Pipeline: elder → pen-and-paper on the **coupled corank≥2
+  frontier** (THE hard part avoided for multiple expeditions) → architect (A–E typed sorried skeletons to the
+  4 bars) → check-vs-bars. Prior Engine/two-lane/hbox/mint framing SUPERSEDED — do not re-adopt.
+  **RECONVENE THE OPERATOR at BLUEPRINT-READY-TO-AUTOFORMALISE** (operator rotated the VM ~2026-07-20 = the
+  agreed come-back point); hold §1-tag removal / the 4 bars / blueprint-meets-bar sign-off + the big
+  autoformalise-strike for their return. Full pipeline + the 4 bars + in-flight-seat status: journal tick 433+.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
