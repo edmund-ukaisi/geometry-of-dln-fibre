@@ -6643,3 +6643,25 @@ This is the concrete form of pnp-rg §6's "divides by the corner." Ties directly
 template contract. loss-t15 holding correct; design closed + order-blind + banked. Decision
 package still assembling: pnp-full (now with A/B/C item #3) + t14 M-vs-L + navigator re-scope
 recommendation → operator scope call. Lanes held.
+
+## 2026-07-20 tick 399: t14 M-vs-L = M-CONDITIONAL-on-α-decoupling; the two probes COUPLE (pnp-full resolves both)
+t14's M-vs-L scratch (symbolic, /tmp): CONDITIONAL, and the deciding-factor find is the
+higher-value result. Under the CURRENT incomplete α (blow-up scaling only) the root-first
+telescoping COMPOUNDS exponentially (source-coord powers 1,1,2,4 on a 4-deep same-layer
+chain — each edge's atom read at its accumulated point picks up shallower coords
+multiplicatively) ⟹ L. But that compounding is an ARTIFACT of the missing Rg/Lg: the
+completed α's Q,P DECOUPLES the deeper residual D_{J+1} from pivot J's row/col, so within-
+layer compounding COLLAPSES to per-layer-linear (b^{(S+1)}=u·b^{(S)}) ⟹ the regrouping is a
+clean per-divisor SUFFIX SUM ⟹ M (cleaner than cert §1 — linear not compounding; drops
+comp_spectator/center_of_reads). VERDICT: M if completed-α decoupling holds (t14's lean,
+paper-grounded — Q,P residual-clearing IS what removes the coupling), L if compounding
+survives. THE COUPLING (key for navigator #8): the decoupling question IS pnp-full's
+territory (item #1 value-walk + item #3 Lg-realization determine it), so pnp-full's verdict
+RESOLVES t14's M-vs-L as a corollary — CLEAN ⟹ decoupling ⟹ value-telescopes AND cocycle-M
+(optimistic); ISSUE-#3 ⟹ re-scope. ONE decoupling question drives both probes. REINFORCES
+fresh-over-in-place: M is NATIVE to a root-first-from-the-start build (α present from the
+start → suffix-sum directly); in-place would re-thread into the CURRENT incomplete-α
+L-compounding first. So if pnp-full clean, the FOLLOW-UP is well-scoped + TRACTABLE (M
+cocycle + isolable value + decoupled α, native) — re-scope = a clean bounded rebuild, not a
+slog. t14's α-gated re-measure HELD (fires when completed α lands). The α completion is the
+SHARED LINCHPIN of both lanes. Await pnp-full (the master verdict) → navigator #8 → operator.
