@@ -407,3 +407,89 @@ batch (cover image-invariance; ledger preservation through tGeoG — resRank-zer
 already proven, pattern exists; ae-inj through the det-1 shear — inj-t16's comp helpers;
 Jacobian det-1-transparency — needs α to FIX the div coordinates, check). Charged the elder
 NOW (tick 339) rather than at lane completion — the tick-284 lesson applied forward.
+
+## Entry 14 (tick 350, 2026-07-20) — what does stepRollover do to the ledger? (serves Q2b, the frontier)
+**Question.** The clearedOf frontier model needs rollover semantics. What does stepRollover
+actually change, and does a layer complete at exactly cleared = widthMinUpto M (layer+1)?
+**Expectation (before reading).**
+- 0.80: stepRollover sets layer := layer+1, cleared := 0.
+- 0.70: ALL divisor fields (numDiv, divExp, divTilde, divProfile / birth data) unchanged —
+  consistent with t14's rollover-neutral det maintenance (ledgerMonomial_stepRollover).
+- 0.75: the walk increments cleared by 1 per clearing step and re-checks the guard each
+  node, so at rollover cleared = widthMinUpto M (layer+1) EXACTLY (first hit, no overshoot).
+- Consequence if all hold: the running-total frontier IS ledger-expressible with no history:
+  resolvedCount s = Σ_{ℓ' < s.layer} widthMinUpto M (ℓ'+1) + s.cleared — the completed-layer
+  counts are M-derivable constants, not state history. This would hand loss-t15 a clean
+  clearedOf candidate.
+**Verdict (after reading).** 3/3 HITS + two construction facts worth more than the hits.
+- stepRollover (EngineConstruction:197-198): ⟨layer+1, 0, numDiv, divExp, divProfile,
+  numGen, genDivExp, divBirthCoord⟩ — full ledger carry, exactly as expected (0.80/0.70 ✓).
+- The dispatch (:1926): rollover fires at widthMinUpto M (layer+1) ≤ cleared, checked per
+  node; clearing steps advance cleared by exactly 1 from 0 — first hit is EQUALITY (0.75 ✓).
+- FACT 1 (the nuance the frontier model must respect): case-11 does NOT advance cleared
+  (t14's child literal keeps s.cleared) — the re-merge works at an EXISTING divisor's
+  diagonal; only case-2/case-12 (stepAppendAdvance) advance the frontier.
+- FACT 2: stepAppendAdvance snocs divBirthCoord with (s.layer, s.cleared) (:190-193) — the
+  birth coordinate IS the (layer, within-layer-pivot) pair; and tildeOf(setTail layer
+  cleared T) ≤ cleared (:146-148) — clearing levels are bounded by the birth-time frontier.
+**What it changes.** The running-total candidate resolvedCount = Σ_{ℓ'<layer}
+widthMinUpto(ℓ'+1) + cleared is ledger-expressible (no history needed) — BUT the map from
+the count to WHICH Fin (M 0) positions (the reindexing) is the real remaining content, and
+any model must respect fact 1. Facts handed to loss-t15 for the clearedOf derivation.
+
+## Entry 15 (tick 353, 2026-07-20) — THE MISS: entry-wise-full InvVal ratified false (elder-directed entry)
+**What happened.** At the value-walk design gate (~tick 340) I ruled the entry-wise steer
+(b): "cleared cells of prod M (acc w) diagonal = bmon". The elder co-ratified; the leaf
+discharge proved green; the shape survived TWO more gate rounds (payload def, option-C).
+loss-t15's third-round provability check then showed it FALSE at intermediate states: the
+paper's invariant is the three-factor form (worked.tex:478-479) with a RAW trailing
+∏_{s>S}C factor, so full-product cleared rows are b_i·(trailing row), not diagonal —
+diagonal only at the leaf (trailing empty), which is exactly where all prior verification
+(the banked leaf discharge, the abstract battery's terminal reads) had looked. Worse (the
+elder's Q3): the full product's residual region is CONTAMINATED by the trailing, so the
+clearing's a,b reads were also aimed at the wrong object. Two unsoundnesses in a ratified
+statement.
+**Why it was missed.** Every instrument that touched the claim (leaf discharge, terminal
+battery reads, my design ruling, the elder's confirm) evaluated it ONLY where the trailing
+factor vanishes. The obligation-statement class: a statement that is true on the boundary
+you tested and false in the interior you never entered. Same family as the tick-286
+generic-s falsity (true at the tested scope, false one binder wider).
+**What saved it.** The seat's own provability-check-before-grinding (entry-11 discipline)
+— it derived the intermediate form from the cert BEFORE grinding case-2 against a false
+target. Zero Lean wasted; the fix (prodPrefix re-base) is near-one-token on the defs.
+**Lesson.** When ratifying an invariant, ask WHERE it has been evaluated: if every
+verification sits at a degenerate boundary (empty trailing product, terminal state, zero
+case), the interior is UNTESTED regardless of how many instruments agree. Add to statement
+gates: "name the state at which each supporting verification was run; if all coincide,
+demand one interior instance."
+
+## Entry 16 (tick 360, 2026-07-20) — THE MISS: tick-341 keep-cube ruling REFUTED by pnp-cover
+**What happened.** At t14's statement gate (tick 341) the disk showed tGeoG inheriting
+srcBox = cube where fork-15's design said srcBox = g⁻¹(cube). I ruled KEEP-THE-DISK on two
+grounds: (a) changing tGeoG collides with loss-t15's live walk; (b) "no math need — (B)'s
+bound is trivially cube-satisfied". pnp-cover's exact hunt refuted the ruling: clause (A)
+is FALSE over cube (open gap region around the diagonal; every pivot's preimage of
+y=(t,t,t,t) needs a source coordinate of 2). The design clause was LOAD-BEARING — it
+carried the image-invariance obligation the cover transfer needed; the disk's deviation
+silently dropped it, and (b) looked only at the (B) bound, never asking what (A) needed.
+**Why it was missed.** "Disk wins over design text" was applied as a default. The right
+question was: which of design/disk carries a PROOF OBLIGATION consumed elsewhere? The
+design's srcBox = g⁻¹(cube) existed precisely to make the cover g-image-invariant (fork 15
+says so verbatim); overriding it required re-deriving the cover, which the elder's
+too-glib open-homeo pricing (its own recorded miss) appeared to supply. Grounds (a) was
+also over-priced (the elder later showed the walk core is domain-agnostic).
+**What saved it.** The layered instruments: t14's stop-and-surface (the ρ-shrink failing),
+the elder's refutation of the spectator route + its demand for a decorrelated hunt, and
+pnp-cover's exact witness — all BEFORE any cover code was written. Cost: a bounded re-bank
+of 2b/2c; zero wasted cover-grind.
+**Lesson.** When disk deviates from design, neither wins by default: enumerate the proof
+obligations each side carries (grep the design clause's WHY — fork 15 stated it) and check
+who consumes them. A deviation that "only" changes a definition can silently drop an
+invariant another clause was designed to provide.
+**Entry 16 addendum (tick 363, elder-directed multi-party record).** The same deviation
+defeated TWO independent ratifications: the controller's tick-341 keep-cube AND the elder's
+charge-2 open-homeo/shrunken-U' — neither instrument caught the dropped image-invariance
+obligation; the DECORRELATED HUNT did. The compass counsel (coverage's cover = a universal
+claim; the gate reads a decorrelated hunt, never an in-house witness) is not redundancy —
+it is the only instrument class that fired. Corollary now applied forward: the collection
+lemma's gate refuses the shallow (2,2,2)/single-α confirmation for the same reason.

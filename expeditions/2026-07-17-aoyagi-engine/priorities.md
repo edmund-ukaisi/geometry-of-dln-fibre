@@ -34,6 +34,19 @@ payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds e
    (HeadlineL1Mint) — but its L≥2 arm consumes hDescent : DecoratedDescent (STALE vs the fork-6
    tombstone): REWRITE that arm to the direct _gen + engine_box_threshold_finite composition
    (the EngineDriver fit-witness shape); never resurrect DecoratedDescent.
+   RE-SEQUENCED (navigator-6, tick 348 — the in-place framing is UNFILLABLE): Skeleton.lean
+   imports only BGEngine (below the engine), so "re-prove the canonical in place via the
+   prestage" is an import cycle. THE RELOCATION LADDER: (i) rewrite the prestage's L≥2 arm
+   (HeadlineL1Mint:87) to `_gen + engine_box_threshold_finite` (import EngineDriver — verified
+   no cycle), drop hDescent [pre-stageable NOW, sorry-tolerant]; (ii) at discharge: DELETE
+   Skeleton:1680 and re-mint the canonical name in HeadlineL1Mint (the rewritten prestage IS
+   the new canonical, carrying the L=1/L≥2 fold); (iii) repoint aoyagi_rrr (RRR:93, the ONLY
+   term-consumer of the unsuffixed name; RRR imported by nothing) via
+   aoyagi_learning_coefficient_L2 + rrrLambda_eq — upgrades it to clean-three; (iv) prune the
+   3 Skeleton rungs (:1094/:1140/:1197) + the product/deepest_point_reduction orphans — AFTER
+   the relocation, never before; (v) the #guard_msgs gate on the RELOCATED canonical +
+   chartBridgeFaithful_buildTree (#guard_msgs verified in-tree, Lambda:97-109). The DELETE is
+   destructive — execute only when the discharge is imminent.
    MECHANISM PINNED (navigator-3): `#guard_msgs in #print axioms <headline>`
    — the build FAILS if the axiom set drifts from [propext, Classical.choice, Quot.sound];
    a bare #print is diagnostic-by-another-name and does not satisfy R5. PR FRAMING PIN
@@ -51,7 +64,12 @@ payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds e
 6. R6 — Lemma 2 + Theorem 3 (the regular peel) — OWED FIRST-CLASS (both council seats; "value
    lane suffices" struck as the retired razor), post-spine, off critical path, COST-PROBE-GATED
    (SchurCore depth-≥3 wall, rr4-precedent); operator scope confirmation surfaced. θ + Eqs (1)-(5)
-   stay out.
+   stay out. RECONCILIATION (tick 347, scout-lr2 flagged an apparent contradiction with the R5
+   pin's "[R6 REMOVED from the owed list]"): both are correct — the R5 bracket removes R6 from
+   the PR BODY's owed list only (the general-L r>0 regular VALUE is built sorry-free, AxCheck:923,
+   so the λ theorem lacks nothing); THIS item keeps the R6 OBJECT (the Lemma 2 + Thm 3 structural
+   transcription) owed post-spine. Scout-lr2 re-priced it M–L; the depth-≥3 SchurCore wall was
+   sidestepped by the value route, not climbed.
 7. R7 — the ⊇ Clearable-Adm completeness PROOF (elder-gate7 ratified, 2026-07-19) — OWED
    FIRST-CLASS, post-spine (R6 treatment). A theorem ABOUT the constructed object (paper-
    correcting: the 4th read-off defect), not a component OF her mechanism — hence sequencing,

@@ -10,11 +10,11 @@ import DLNFibre.DLN.RLCT.Engine.ChartBridgeFaithful
 **Blueprint spine: statements are forecasts; churn is normal; the blueprint consumption rules
 apply.** The transform-only Aoyagi engine's obligation THEOREMS. `monomialization_terminates` is now
 ASSEMBLED from the construction spine (`EngineConstruction`): its resolution tree is
-`buildTree (conOracle M) conRoot`, and four of `CanonicalResolution`'s six conjuncts are PROVEN
+`buildTree (conOracle M) conRoot`, and five of `CanonicalResolution`'s six conjuncts are PROVEN
 clean-three (`isFullMonomialization_buildTree_conRoot`, `stepRel_all_of_buildTree`,
-`base_of_buildTree`, `minAdm_le_terminalExponents`). The TWO remaining conjuncts are their OWN NAMED
-sorried holes: `chartBridge_buildTree` (← T3 coverage lane) and `o5_realization` (← D§ii/iii, from
-pnp-o5 cert §3–4). The rest are projections of `resolutionOf_spec`.
+`base_of_buildTree`, `minAdm_le_terminalExponents`, and `o5_realization` — closed t06 s4, D§ii/iii
+from pnp-o5 cert §3–4). The ONE remaining conjunct is its OWN NAMED sorried hole:
+`chartBridge_buildTree` (← T3 coverage lane). The rest are projections of `resolutionOf_spec`.
 
 **`0 < L` is REQUIRED** (nondegenerate chain): at `L = 0` the root terminates immediately, so
 `CanonicalResolution`'s base conjunct (a `branch`-rooted tree) is false — `monomialization_terminates`
@@ -40,12 +40,18 @@ faithful discharge `chartBridgeFaithful_buildTree` (R-split, elder charge-4). So
 geometric-chart fidelity — is on THIS theorem's proof CONE (undroppable), not merely in a type: the
 projection `.toChartBridge` forgets (D) for `region_glue`, but the discharge PROVED it.
 
-FRONTIER: `chartBridgeFaithful_buildTree` proves (A) cover (`geoAtlas_imageCover`, green) + (D)
-fidelity (`rfl` + the all-nodes lift `nodes_cNode_eq_realCNode`) outright; the remaining `(B)∧(C)`
-per-piece props/exponents over `geoAtlas` are its two frontier sorries (ledger props + exponents via a
-`geoAtlas`-leaf↔ledger bridge; a.e.-injectivity + `LeafPullback` geometric; `LeafJacobian` = t14's
-`geoAtlas_fold_det`). The analytic hole of `monomialization_terminates` (`+sorryAx`) routes through
-here (now via `chartBridgeFaithful_buildTree`) + `o5_realization`. -/
+FRONTIER (ONE sorry, tick 336–338): `chartBridgeFaithful_buildTree` proves (A) cover
+(`geoAtlas_imageCover`, green) + (D) fidelity (`rfl` + the all-nodes lift `nodes_cNode_eq_realCNode`)
++ the 5 (B) ledger props + (C) exponents (`geoAtlas_leaf_ledgerProps`) + a.e.-injectivity
+(`geoAtlas_leaf_ae_injOn`) + `LeafJacobian` (t14's `geoAtlas_fold_det`, closed tick 337) outright. The
+SINGLE remaining frontier sorry is the **`LeafPullback` conjunct** (the loss factorization): it is
+filled by `leafPullback_geoAtlasNorm`, whose one open input is `leafDiagFrob_geoAtlasNorm`
+(`GeoAlphaGauge.lean:562` — loss-t15's value walk, the loss-VALUE analog of the fold Jacobian). The
+in-flight witness-swap (elder tick 340, R-split stage 3) re-points the witness atlas to
+`geoAtlasNorm (alphaGauge …)`; the frontier is UNCHANGED by that re-wire — it stays the `LeafPullback`
+conjunct via `leafDiagFrob_geoAtlasNorm`. The analytic hole of `monomialization_terminates`
+(`+sorryAx`) routes through here alone (via `chartBridgeFaithful_buildTree`'s `LeafPullback` sorry);
+`o5_realization` is clean-three (t06 s4, see below). -/
 @[blueprint] theorem chartBridge_buildTree (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (hMpos : ∀ i, 0 < M i) :
     ChartBridge M (buildTree M (conOracle M) (conRoot : ConState L)) :=

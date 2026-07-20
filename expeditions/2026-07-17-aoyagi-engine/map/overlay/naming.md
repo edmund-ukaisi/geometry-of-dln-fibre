@@ -86,6 +86,13 @@ quirk + two pin moves.*
 
 ## D-arc vocabulary (cartographer-3, 2026-07-19) — cert/journal terms → Lean names
 
+> **⚠ STALE on `o5_realization` (carto tick 348).** This section predates the o5 close. `o5_realization`
+> is now CLEAN-THREE (t06 s4) — it is NO LONGER a hole. So "t04's hole" (below) and "the two named
+> holes → chartBridge + o5" are superseded: the engine's ONE live analytic hole is `chartBridge_buildTree`
+> (via the `LeafPullback` conjunct). The line pins (`:52`/`:63`) have also drifted (chartBridge is now
+> `:49-52`, the drop-(D) projection). See the Final-arc forwarding pointers below + [[banked-families]]
+> § Rung → hole map (refreshed). The cert/journal→Lean *name* mappings below remain valid.
+
 *The o5/D arc's prose vocabulary and where it lands in the tree. Several cert names differ from the Lean
 decl (flagged) — the reuse index [[banked-families]] § D-ARC has the full pin table.*
 
@@ -157,10 +164,13 @@ wiring-endgame §3 sweep, which is now wrong on `qNodeOf`) stay resolvable.*
   `dCenterOfEdge`-keyed `q` design is superseded here (the per-node cover shares one `cNodeOf`/`qNodeOf`).
 
 - **single-per-node `ψ` — RETIRED (R-b source reparam).** `node_pivotCover_of_atom_sheared`
-  (`ShearReconcile.lean:42`) survives ONLY at `ψ = .refl`; the "single-`ψ` covers a mixed node" reading
-  is DEAD (pnp-psi T2). **⚠ DRIFT still in the tree:** `ShearReconcile.lean:32-35` still asserts
-  "single-`ψ` is the right model" — CONTRADICTED by its own RETIRE NOTE at `:13-20`. Flagged for the
-  owner (read-only for this office). See [[dead-routes]] carrier-arc kills.
+  (`ShearReconcile.lean:59`) survives ONLY at `ψ = .refl`; the "single-`ψ` covers a mixed node" reading
+  is DEAD (pnp-psi T2). **DRIFT RESOLVED (carto, tick 348; nav-6 "ALREADY fixed").** The earlier flag
+  (`:32-35` self-contradicting the model) is CLOSED: the module's RETIRE NOTE (`:13-21`) explicitly
+  GOVERNS the provenance docstring below it — `:21` reads "The docstring below is kept for provenance;
+  read it through this note." So the `:30-35` "single-`ψ` is the right model" text is retained
+  provenance under a governing retire-note, not an unmanaged contradiction; no owner action owed. See
+  [[dead-routes]] carrier-arc kills.
 
 - **`o5_core` — DELETED (move-at-landing done, tick 189 ruling #3).** Was `EngineConstruction.lean:~2607`
   (sorry `:2611`). Its proven replacement is `o5_core_realized` / `tStar_realized`
@@ -171,3 +181,24 @@ wiring-endgame §3 sweep, which is now wrong on `qNodeOf`) stay resolvable.*
   atom), `abs_det_fderiv_foldr_comp` (`GeoJacobianFold.lean:60`, parametric fold). GATE-WIRED at
   `13b86217a` (AxCheck:12 import + watch lines; was a gate-orphan at the carto6 snapshot) —
   [[wiring-endgame]] §1a.
+
+## Final-arc forwarding pointers (carto-standing, 2026-07-20, ticks 336–348)
+
+- **"GeoInvValWalk" → `GeoInvVal.lean` (name clarification).** Journal/charge references to a
+  "GeoInvValWalk" module resolve to `Engine/GeoInvVal.lean` (loss-t15, PHASE 3b) — the `Inv_val`
+  value-invariant home. Its t14-INDEPENDENT consumer side is LANDED (0-sorry): `frobSq_of_diagonal`
+  (`:36`), `leafDiagFrob_of_prodDiag` (`:61`). The `Inv_val` statement + four maintenance signatures
+  land there once t14's walk fixes the shared plumbing (still in flight).
+- **`geoAtlas_cocycle` / `geoAtlas_fold_det` (`GeoFoldRegroup.lean:1069` / `GeoLeafJacobian.lean:57`).**
+  The fold-Jacobian wall, closed ticks 336–337. `geoAtlas_fold_det` is the cocycle STRENGTHENED to the
+  R7 full-ledger ∃-form at `conRoot`/`id`; `geoAtlas_leaf_leafJacobian` (`GeoLeafJacobian.lean:76`) is
+  the per-piece `LeafJacobian` bundle (tick 338). Supersedes the retired `GeoJacobianSpec:37` SPECIFY
+  sorry (deferred tick 260, gone). The four maintenance theorems: `ledger_det_maintenance_{case2,
+  case11,case12,rollover}` (`GeoFoldRegroup.lean:805/852/903/968`).
+- **"GeoAtlasTransfer" — NOT YET ON DISK (placeholder name).** The witness-swap transfer batch
+  (α-atlas, R-split stage 3) has no landed module yet; the file name is not fixed. When it lands, add
+  the forwarding pointer here and card it in [[banked-families]] (FINAL-ARC § FORWARDING POINTER).
+- **Witness atlas: `geoAtlas` (id) → `geoAtlasNorm (alphaGauge …)` (in flight).** The faithful witness
+  re-points from the fork-15 id placeholder to Aoyagi's normalized chart (elder tick 340). References
+  to the discharge "over `geoAtlas`" are the pre-swap form; post-swap the atlas is `geoAtlasNorm
+  alphaGauge` (α = `residualSchurShear`, `GeoAlphaGauge.lean`).

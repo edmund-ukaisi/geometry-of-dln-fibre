@@ -324,10 +324,15 @@ reopen at the faithful level fails the build, not just the eyeball).
 
 | struck design | LIVE Lean hits (current) | correction owed |
 |---|---|---|
-| chartBridge_buildTree docstring = STRUCK placeholder-carrier plan | `EngineObligations.lean:39-50` ("PLACEHOLDER charts / every edge's localSub = id / leafOfState.chartMap = id / thread a path-accumulator through buildTree") | STILL STALE. The ratified design (ticks 184/187/194 + geoAtlas) is spine-`chartMap`-blind; charts live on `geoAtlas` (proof-internal geometric tree), NOT threaded into `leafOfState.chartMap`. Flagged for the discharge seat (read-only for this office). |
-| single-per-node ψ "is the right model" | `ShearReconcile.lean:32-35` (asserts "single-`ψ` is the right model") | STILL STALE — the module's own RETIRE NOTE (`:13-20`) refutes it (pnp-psi T2; R-b adopted; `_sheared` used only at `ψ=.refl`). Self-contradicting docstring; flag for the owner. |
+| chartBridge_buildTree docstring = STRUCK placeholder-carrier plan | — (no placeholder text on disk) | **RESOLVED (carto, tick 348).** The "PLACEHOLDER charts / localSub = id / leafOfState.chartMap = id / path-accumulator" docstring is GONE — replaced by the R-split projection docstring (tick 289) and refreshed carto tick-348 (`EngineObligations.lean:37-52`: `chartBridge_buildTree := (chartBridgeFaithful_buildTree …).toChartBridge`, frontier = the `LeafPullback` conjunct). grep-verified: no placeholder/`localSub = id` string remains. |
+| single-per-node ψ "is the right model" | `ShearReconcile.lean:30-35` (provenance docstring) | **RESOLVED (carto, tick 348; nav-6 "ALREADY fixed").** Not an unmanaged self-contradiction: the module's RETIRE NOTE (`:13-21`) GOVERNS the provenance docstring — `:21` reads "The docstring below is kept for provenance; read it through this note." Retained-provenance-under-a-governing-note; no owner action owed. (pnp-psi T2; R-b adopted; `_sheared` used only at `ψ=.refl`, `:59`.) |
 | pass-#4 §3 sweep: "qNodeOf (node-keyed) STRUCK → rename to qOfCenter/qEdgeOf" | — | **CONTRADICTED by the current tree** (see [[naming]]): `qNodeOf` is LIVE and node-keyed (`QNodeCarrier.lean:505`), the form GeoChart's `geoAtlas`/fold CONSUME. The pass-#4 dead-route entry for qNodeOf is itself now stale — superseded here. |
 | GeoJacobianSpec `∀ t` fold-det SPECIFY (finding 1) | RETIRED from the tree (the top-level SPECIFY sorry `GeoJacobianSpec:37` is GONE — deferred at tick 260) | recorded as a trap in [[dead-routes]] (geo-atlas emission-defect family). |
+
+**ERRATUM (carto, tick 348).** Journal tick-338 wrote the faithful discharge's remaining sorry as
+`ChartBridgeFaithful:82`; the disk sorry is `ChartBridgeFaithful.lean:92` (the `LeafPullback`
+conjunct). `:82` is `theorem chartBridgeFaithful_buildTree`'s signature line; the sorry sits in its
+proof body at `:92`. (Recorded by nav-6, tick 348; grep-verified.)
 
 ## 4. Predecessor-card corrections (diff-then-judge)
 

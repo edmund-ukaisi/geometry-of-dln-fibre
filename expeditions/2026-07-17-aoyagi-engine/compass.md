@@ -417,6 +417,26 @@ over banked substrate.
     explicit "det-1 + divisor-diagonal-fixing" hypothesis bundle vs a standalone comparison
     on top) went to the elder for counter-sign (t14 prices the refactor light; tripwire =
     stage-1/2 atom probe, fall back to standalone on friction).
+    (AMENDED 4th, elder co-read tick 343, three finds ratified.) (1) LeafJacobian transfer =
+    GAUGE-GENERALIZE the cocycle+atoms over an EXPLICIT bundle: gauge differentiable ∧
+    |det D|=1 ∧ fixes the THREADED-state ledger reads (born-divisor birthFlatCoords + pivot
+    row/col) — NOT "fixes all diagonals" (FALSE: α writes interior-diagonal future-pivot
+    cells, schurCells GeoAlphaGauge:133-143; α discharges the bundle via DivBirthInv
+    freshness — born ≤ J, α writes > J). id + α both instantiate; realizes fork-15's
+    founding g-slot with the hypotheses paid for explicitly; NOT the rejected slot-flip
+    (id instance kept, consumers unbroken). TRIPWIRE: probe stage-1/2 atoms first
+    (ledgerMonomial_eq_of_reads:584 is already reads-based), gate the ~260-line walk on the
+    probe; AxCheck DOUBLE-GATE id+α. (2) COVER: keep-disk (srcBox = cube BOTH atlases,
+    tGeoG leaf :295); clause (A) via open-homeo/shrunken-U' (α open, fixes 0; clause A
+    demands only ∃ open U ∋ 0). Per-edge threading ⟹ NOT a global precompose — realize as a
+    cover-preservation walk down tGeoG (geoAtlasNorm_resRank_zero:386 pattern); fallback =
+    t10 direct re-run with α inserted. TOUCHSTONE: any 0-nbhd faithful — the RLCT is a GERM
+    at 0 (Def 1 worked.tex:130-149; Thm 4 origin-reduction :435-454). (3) RESID = (B)
+    recursive-by-walk: Aoyagi's D_{J+1} is DEFINED from D_J by the Q,P step (worked.tex:
+    509-510, 518-519); no residual-entry closed form exists in the paper (only b_i :484,
+    M_{s,k} :530-533); (A)'s 2×2 was a worked instance — a def on it would be the
+    visible-progress trap. Content sits at the per-cell α-Schur clearing; InvVal vacuous at
+    un-resolved cells + leaves (resid never read at a leaf), teeth at cleared cells.
 
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
