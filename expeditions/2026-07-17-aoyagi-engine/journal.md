@@ -5823,3 +5823,22 @@ pushed, sanity build GREEN (LAKE-EXIT:0). Two doc-vs-disk flags on t14's surface
 its stage 4: ChartBridgeFaithful:74-81 "two frontier sorries" (one now) and
 GeoLeafJacobian:14-18 "the one sorry below" (closed). Carto standing by; full STATUS
 rewrite reserved for the lanes' landing.
+
+## 2026-07-20 tick 356: t14 encore — 4 stages banked; the honest 1→3; the 2a cover wall surfaced
+t14's respawn executed the ruled encore: STAGE 1 (the (D)₁ amendment + witness-swap, cordon
+held), 2b (ledger props ∀-gauge via tGeoG_leaf_update, SORRY-FREE), 2c (ae-inj via the
+elemShear/flatElemShear/residualSchurShear QMP atom chain + the on-cone id∘gauge
+factorization, SORRY-FREE), 3 (the REWIRE: LeafPullback consumed DIRECTLY from
+leafPullback_geoAtlasNorm — the seam that started this arc is closed at the wiring level).
+New module GeoAtlasTransfer.lean. HONEST COUNT: chartBridgeFaithful's sorryAx now routes
+through THREE sources (leafDiagFrob + the re-opened cover + jacobian transfers) — up from 1
+BECAUSE the witness moved to the faithful atlas: the id-atlas cover/jacobian were proofs
+about the unfaithful object. Final batch returns to 1. STAGE 2a STOP-AND-SURFACED (the
+brief's tripwire firing correctly): the quantitative shrink FAILS — α''cube(1) ⊇ cube(ρ),
+ρ=(√5−1)/2, but node_selfCover needs radius 1 (pivotChart ratios); the viable route is
+α-AS-SPECTATOR in the cover frame (schurCells ⊥ the cover's read cells) — with the elder.
+STAGE 2d: t14's "counter-sign pending" was STALE (the tick-343 relay is in its inbox) —
+corrected + unblocked with the reads-based bundle re-quoted + the α=id-on-case11/rollover
+gift (two atoms free). Its stage-4 AxCheck gate in flight; commit rides it. Nudged: the
+clearedOf answer (gates loss-t15's grind) is a knowledge answer — owed at next pause.
+Elder now holds: the 2a spectator-disjointness + the loss-t15 gate stamp (battery legs).
