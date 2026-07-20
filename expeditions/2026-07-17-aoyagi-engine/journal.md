@@ -6976,3 +6976,22 @@ sequence/probe first, NOT the scope. θ/analytic-in-scope = a real scope expansi
 launch+boundary call). Protocol settled (elder signals "compass ready"; controller commits
 per-file). Nothing pending (compass clean). pnp-ideal depth-3 verdict = the gate; on landing,
 elder folds the ACTUAL verdict (route-i telescopes / route-ii walls) + drives the compaction.
+
+## 2026-07-20 tick 415: RULED KEEP reconciled — spine restored + aggregator RE-WIRED (the L2-unconditional teeth)
+mint-t19 re-reversed to the RULED KEEP (its intermediate delete VOIDED): restored+enhanced
+HeadlineConditionalSpine.lean (e929bba61) + labeling (5236d2e46). Merged (ce3c8f293) + RE-WIRED
+the aggregator import (undoing my tick-412 un-wire; docstring now reflects the kept spine +
+teeth). THE THRASH (delete → I accepted+un-wired tick-412 → restore per RULED KEEP → re-wire)
+was MY CROSSED INSTRUCTION: tick-410 "prefer delete" vs tick-411 "RULED KEEP" — mint-t19 acted
+on prefer-delete (crossing the KEEP), I compounded it by accepting the delete, then the KEEP
+(the actual ruling) reasserted. Owned. Net cost: ~2 ticks of churn, no lost work (git
+delete→restore clean). CALIBRATION note (fold to ledger): a controller "lean/prefer" issued
+BEFORE a ruling can be acted on as if it were the ruling — when I later RULE the opposite, the
+seat may already be executing the lean; mark leans as PROVISIONAL ("leaning X, not yet ruled")
+so they aren't actioned as decisions (same family as the office-provisional-mid-reckoning
+lesson, now controller-side). END STATE (the stronger deliverable): full ∀L≥1 spine
+aoyagi_learning_coefficient_of_boxThresholdFinite (on satisfiable hbox, clean-three modulo it)
++ aoyagi_learning_coefficient_L2_unconditional (the TEETH — proven UNCONDITIONAL clean-three at
+L≤2 via routeMBoxThresholdFinite_mnp, in-file; "is it vacuous?" = proven NO) + refuted-as-stated
+labeling. Force-recompile of both theorems confirming clean-three on the merged/re-wired state
+(running). mint-t19 stood down with honors. pnp-ideal depth-3 verdict = the gate.
