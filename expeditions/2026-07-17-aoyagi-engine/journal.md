@@ -6323,3 +6323,18 @@ proof obligation only, all banked stands; (ii) = alphaGauge change rippling to w
 jacobian + t14's cover. loss-t15 pre-drafts form-2's D_J-carry + the settled old-row/interior
 maintenance; the off-diagonal-at-cleared-rows clause HELD pending the mechanism verdict.
 This is the last truth-value adjudication of the expedition.
+
+## 2026-07-20 tick 384b: form-2 pre-draft validated; the mechanism question sharpened to the LIVE-COLUMN subcase
+loss-t15's form-2 pre-draft (InvVal3f2 = InvVal3 + a third clause carrying the incidence-form
+D_J at un-resolved cells, resD parametric — NOT opaque foldToState): shape validated
+(elaborates), leaf-vacuous + base-trivial (conRoot resD = D_0 = raw prod) survivals checked,
+settled/open split correct (D_J carry + old-row + interior settled; off-diagonal HELD).
+3-vs-2 aligns with the elder (carry whole D_J, prove pivot-cross-local). loss-t15 SHARPENED
+the mechanism question: row J is CLEARED not dropped, so if a,b clear by dropping it's the
+COLUMN side. My sharpening relayed to pnp-diag: cols split into cleared (j<J, already 0),
+dropped (j>running_min, column-drop analog of the row dropThreshold), and the HARD SUBCASE —
+LIVE cols (J<j<running_min) whose row-J a-ratios are cleared by NEITHER interior-α NOR
+column-drop. pnp-diag now adjudicating that exactly: (a) blow-up structurally zero / (b)
+bmon-absorbed / (c) exactly-diagonal only at the leaf ⟹ clearedOf timing reshapes / (d)
+α gap needing Rg. (c)/(d) reshape the invariant or the gauge; (a)/(b) keep the pre-draft.
+loss-t15's concrete row-J build is the cross-check. This is THE crux of the last hole.
