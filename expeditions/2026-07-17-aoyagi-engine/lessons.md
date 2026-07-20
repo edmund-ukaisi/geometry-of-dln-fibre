@@ -63,3 +63,11 @@ the trail is local):
   characterizations never reaches the theorem. Guard against BOTH failure modes — adjudicate-forever (dodge)
   AND build-on-one-instance (shallow-instance confound); the correct dose is "exactly enough to pin the
   shape, then build." (Operator: "are your fresh teammates dodging the hard part … yet another adjudication?")
+- **Don't race to process-cleanup on a "killed" signal — the operator may be relaunching (2026-07-20).**
+  On a `cordon-batch` "killed by user" task-notification I applied the detached-orphan-survives-kill lesson
+  and killed the `lean`/`lake` procs in its worktree to free cores for the architect — but the operator was
+  simultaneously RE-INSTRUCTING the same teammate to continue; my kill may have interrupted its
+  operator-directed build. A "killed" agent is NOT necessarily abandoned — the operator may relaunch/redirect
+  it. Note orphans and WAIT (the `scripts/lb` semaphore caps runaway workers anyway); do NOT rabbit-hole into
+  process forensics + killing. When the operator is actively managing a teammate, go hands-off: no cross-talk,
+  no touching its worktree/procs. Same stay-out-of-the-grind + diagnose-first-don't-race family.
