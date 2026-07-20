@@ -5917,3 +5917,25 @@ batch's last design decision; statement-gated before t14 grinds); t14 held on sr
 meanwhile (2d + clearedOf unaffected, continue); loss-t15's bounds re-domain later
 (walk core pointwise — untouched). The truth-gate discipline paid in full: the gap was
 found by a decorrelated exact hunt BEFORE any cover code existed.
+
+## 2026-07-20 tick 361: width-drop defect REAL + fixed (InvVal3); mint arm banked + merged; the lane's one blocker = clearedOf
+Three landings. (1) loss-t15's width-drop leg (battery/width_drop_leg.py, exit-0): the
+defect is REAL at M=(3,2,3) — running-min 2, rank 2, row 2 DROPPED with bmon = u0·u1·u2 ≠ 0
+under the M(last)=3 cutoff ⟹ the two-state form counts a nonzero bmon at a zero row. (My
+(2,2,3,2) candidate does NOT exhibit it — M(0)=min there; (3,2,3) with M(0)>min bites.)
+FIX VALIDATED: InvVal3 three-state (CLEARED bmon / DROPPED 0 / UNRESOLVED exposed,
+cleared ⟂ dropped) + the AMENDED leaf discharge (dvec := if cleared then bmon else 0 —
+dropped rows vanish, frobSq_of_diagonal untouched, NO cutoff change needed; supersedes the
+banked two-state lemma, correct only at constant width). The FIFTH gate catch on this lane
+is confirmed and closed pre-grind. Bank waits on EXACTLY ONE item: t14's two-component
+clearedOf (resolvedCount ledger form + the dropped threshold's widthMinUpto INDEX + the
+leaf identity resolvedCount = running-min). t14 priority-escalated: answer before any
+other seat work — loss-t15 is the only parked-on-a-person seat in the expedition.
+(2) mint-t19 task #8 DONE + MERGED (737ec8131): the prestage L≥2 arm is the direct engine
+composition (+sorryAx via the ONE hole, flips at discharge); the DecoratedDescent tie
+SEVERED (dead RouteMSJMint import dropped); gen_of_descent orphaned-logged-not-deleted;
+the relocation plan execute-ready (threads/23-mint/mint-relocation-plan.md) incl. the
+:1094/:1140/:1197 fossil identities (resolution_charts already a pure fossil) + AxCheck
+staleness flags. Integration AxCheck gate running. mint-t19 PARKED as the relocation's
+executor at discharge. (3) pnp-cover stood down with honors — the hunt-cert form is now
+the house standard for coverage claims.
