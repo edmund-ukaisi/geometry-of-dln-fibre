@@ -6708,3 +6708,25 @@ discharge = one `exact`); (3) FORCE-RECOMPILE #print axioms mandatory (olean-mas
 unconditional at the follow-up's landing is `exact chartBridgeFaithful_buildTree`. Conclusion
 VALUE-only (MINT GUARD respected). ~15-line fill + gate in flight. This is the durable banked
 deliverable — stands regardless of the follow-up. pnp-full still the master verdict (running).
+
+## 2026-07-20 tick 402: THE CONDITIONAL SPINE LANDED (clean-three modulo hCBF) — the durable deliverable banked
+mint-t19 landed aoyagi_learning_coefficient_of_chartBridgeFaithful (HeadlineConditionalSpine.lean,
+88 lines, sorry-free): (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ofReal(aoyagiLambda H r)
+GIVEN hCBF (the literal chartBridgeFaithful_buildTree statement). FORCE-RECOMPILED axiom
+footprint [propext, Classical.choice, Quot.sound] — NO sorryAx. All 4 confirm-flags nailed:
+(1) conclusion = _gen's VERBATIM (enforced by `exact _gen`); (2) hCBF binder-order =
+chartBridgeFaithful_buildTree EXACTLY (`example := chartBridgeFaithful_buildTree` typechecks →
+follow-up discharge is verbatim `exact`); (3) force-recompiled #print, no sorryAx; (4)
+self-contained #guard_msgs gate in-file (build fails on drift). The resolutionOf-BYPASS held:
+L≥2 arm builds hbox via region_glue_of_chartBridge (buildTree (H−r) …) ((hCBF …).toChartBridge)
++ minAdm_le_terminalExponents over the CONCRETE tree, never touching resolutionOf (which bakes
+the chartBridge_buildTree sorry into its def) — so genuinely clean-three-modulo-hCBF, not
+silently sorryAx-carrying. MERGED (4f4d8460f) + WIRED into DLNFibre.lean (aggregator, my
+surface; docstring notes the bypass + the `exact` discharge seam). Integration-side
+force-recompile #print running (masking-lesson belt-and-braces). THE DURABLE DELIVERABLE is
+banked: the honest conditional λ theorem — the whole engine + architecture + assembly,
+clean-three above the atlas, the 2 atlas frontiers (cover + value) as the explicit hypothesis;
+it becomes UNCONDITIONAL by one `exact chartBridgeFaithful_buildTree` when the follow-up proves
+it. Stands regardless of the rework. task #28 done; mint-t19 stood down (its prestage +
+relocation plan + this spine = the complete mint handoff to the follow-up). pnp-full still
+running (sizes the follow-up).
