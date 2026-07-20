@@ -57,6 +57,14 @@ theorem layerEntry_eq_flat (A : Params M) (s : Fin L)
 at all `L` layers). At a terminal (`layer = L`) it is `Fin.last L`. -/
 def prefixColFin (s : ConState L) : Fin (L + 1) := ⟨min (s.layer + 1) L, by omega⟩
 
+/-- At a live (branch) state (`s.layer < L`) the prefix boundary is exactly `s.layer + 1` — so
+`prodPrefix` covers layers `0..s.layer` inclusive, the last being layer `s.layer` (the step's chart
+layer). A transport tool for the four-case maintenance. -/
+theorem prefixColFin_val_of_live (s : ConState L) (hlive : s.layer < L) :
+    (prefixColFin s : ℕ) = s.layer + 1 := by
+  show min (s.layer + 1) L = s.layer + 1
+  omega
+
 /-- **The prefix product** `prodAux M A (prefixColFin s)` — Aoyagi's front block
 `diag(b)·[[E_J,O],[O,D_J]]` (layers `0..s.layer` at the transformed params). The full `prod`'s
 trailing factor is cut off (elder: the full product's cleared rows are contaminated by it; the
