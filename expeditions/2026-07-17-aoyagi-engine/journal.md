@@ -6264,3 +6264,20 @@ practice, id keeps its own cocycle — statement card corrected (name=content fo
 (b) merge-window transient non-build was the resolution window, not a defect — CONFIRMED
 715b29e6e (certified content) is an ancestor of integration HEAD (merge-base verified). 2d
 is fidelity-cleared. rev-jac closed. Canonical gate still rebuilding (RouteM tail).
+
+## 2026-07-20 tick 381: crux-4 micro-gate PASSED — the hole's exact statement ruled; GO on the transport
+loss-t15 posted residualRow_pivot_eq_bmon's exact statement (extracted from a validated
+case2 scaffold, not paraphrased). VERIFIED + APPROVED: it is the correct specialization of
+the CHILD InvVal3 cleared-row clause to the new row i.val = s.cleared (row J IS cleared in
+the child — stepAppendAdvance increments cleared, so s.cleared < resolvedRows child); the
+RHS bmon child at row J includes the fresh divisor via t̃_new = J (point c); prodPrefix
+child = prodPrefix s defeq. Transport framing SOUND: blow-up extracts z_fresh (= the fresh
+divisor's birthFlatCoord = (s.layer, s.cleared)), which enters bmon at exactly row J; α-Schur
+clears the off-diagonal; read via shapes 1-2. RULINGS: (i) hInv-not-needed-for-row-J
+approved to proceed WITH a sub-tripwire (if row J needs the parent residual-block structure,
+name the invariant carrying it — don't assume-absent); (ii) prefer the ATOMIC transport
+lemma (case12 reuse — it also establishes a new cleared row; + reviewability). LYNCHPIN to
+cite as its own step: z_fresh's coord = birthFlatCoord child (fresh) = (s.layer, s.cleared)
+via divBirthCoord snoc (EngineConstruction:190-193) — the tick-286 binder class lives there.
+Delegated the fidelity-escalation channel to loss-t15↔elder directly (co-reading this lane).
+loss-t15 grinding the hole. Canonical 2d gate still rebuilding.
