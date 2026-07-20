@@ -6069,3 +6069,22 @@ ledger forms) — loss-t15 runs ONE battery validation pass over t14's form (eve
 boundary + terminal, both M's), then PINS + BANKS + opens the four-case grind. t14
 route-corrected (its 2a framing was a round stale — enlarged-cube, not sheared-targets)
 and PARKED for the pnp replay verdict → its srcBox radius batch.
+
+## 2026-07-20 tick 370: REPLAY PASSES ALL THREE GATES — the 2a design arc CLOSES; t14 commissioned two-phase
+pnp-cover's replay (cert §7, exact-rational): GATE 1 — every old gap point covers at ρ=2,
+the R(1+R) bound TIGHT at the diagonal; GATE 2 — the (3,3,3) collection-kill spine covers
+node-locally at radii 1→2→6 (the exact spot where the collection died); GATE 3 — 4×4
+depth-stress exact at radii to 42 (compounding super-exponential but finite per leaf; the
+fork-15 ∃R clause satisfied on a finite tree). Same-layer overlap CONFIRMED irrelevant:
+the cover keeps composite order and bumps radius — commutation never needed. KEY
+SIMPLIFICATION over the elder's framing: srcBox STAYS A CUBE — only the radius threads
+(no gAcc, no pullback; the disk def was wrong only in its radius). The route rests on two
+banked atoms (node_selfCover ∀R + the inverse-shear bound ⊇-rearranged); the only new
+content is the radius-threaded reachability induction. t14 COMMISSIONED TWO-PHASE:
+Phase 1 now (the two atoms + the statement-level design diff incl. the tGeoG-signature
+consumer enumeration — GeoAlphaGauge edit region restricted to the shear-bound section);
+Phase 2 (the tGeoG change + imageCover fill + 2b re-bank + wiring) SEQUENCED behind
+walk-t20's and loss-t15's landings — a signature change now would re-type two live lanes,
+and the cover is the last owed sorry regardless. pnp-cover closed with double honors.
+THE 2a DESIGN ARC IS OVER: three rounds, two exact refutations, one ratified route — all
+before any cover Lean existed.
