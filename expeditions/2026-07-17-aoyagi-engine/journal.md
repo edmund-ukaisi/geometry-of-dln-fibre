@@ -6022,3 +6022,16 @@ branch is a verified point-of-record for the whole endgame architecture: the α-
 witness-swap, the transfers, the mint pre-stage. Remaining to the discharge: loss-t15's
 bank + four cases (blocked on t14's clearedOf), walk-t20's jacobian walk, the node-local
 cover (elder round-3 ruling in flight).
+
+## 2026-07-20 tick 367: clearedOf REASSIGNED to loss-t15 self-serve; the terminal-frontier subtlety framed
+t14 silent on clearedOf after four asks (~20 min) — executed the stated fallback: my own
+construction read (calibration entry 17). THE FIND: the naive forms all fail at a boundary
+— the TERMINAL state arrives via rollover with cleared = 0, so a current-layer frontier
+leaves hall unsatisfiable at every leaf; but the terminal rollover is NON-CONTAMINATING
+(no matrix L exists; prefixCol caps), so layer L-1's completed frontier — widthMinUpto M L
+= the all-widths running min (inclusive ≤ pinned, EngineDefs:154) — honestly persists into
+the leaf, while mid-walk rollovers contaminate and reset (leg-ii verified). Candidate set
+(A: terminal-persist / B: general non-contaminating / C: running-total control) + a full
+state-trace battery protocol handed to loss-t15 — it owns every instrument; t14's answer
+demoted to a cross-check. The lane is UNBLOCKED without waiting on anyone. Elder round-3
+cover ruling still in flight; walk-t20 merged integration and is on its five steps.
