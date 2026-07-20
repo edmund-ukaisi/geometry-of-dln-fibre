@@ -22,9 +22,16 @@ no cover — pointwise / srcBox-independent.
 ## How it is proved (one spine, two instantiations)
 - `geoAtlasNorm_cocycle` — the **gauge-parametric** fold-Jacobian cocycle over `tGeoG`,
   generic in a gauge bundle `(hgdiff : differentiable) ∧ (hgdet1 : |det Dg|=1) ∧
-  (hgreads : reads-neutral)`. `geoAtlas_cocycle` (id) and this (alphaGauge) both instantiate
-  it — the elder-counter-signed "one spine, thin instantiations" (tick 343). The id side
-  (`geoAtlas_cocycle`/`geoAtlas_fold_det`/`geoAtlas_leaf_leafJacobian`) is **byte-unchanged**.
+  (hgreads : reads-neutral)`, instantiated at `alphaGauge`. **The shared spine is the
+  maintenance ATOMS** (`ledger_det_maintenance_*`, reused verbatim via
+  `gauge_det_maintenance_wrapper`), not one walk: there are TWO parallel walk skeletons
+  (`geoAtlas_cocycle` over `tGeo`; `geoAtlasNorm_cocycle` over `tGeoG`). `geoAtlasNorm_cocycle`
+  is a genuine gauge generalization, but in practice only `alphaGauge` is instantiated — the
+  id side keeps its own `geoAtlas_cocycle` rather than being re-derived from the general form
+  (rev-jac CHECK-3 framing correction to the earlier "instantiated at both" wording). The id
+  side (`geoAtlas_cocycle`/`geoAtlas_fold_det`/`geoAtlas_leaf_leafJacobian`) is **byte-unchanged**
+  (git-confirmed) — the one-spine constraint (id side untouched) holds regardless of the
+  framing nuance.
 - `gauge_det_maintenance_wrapper` — lifts an id maintenance conclusion to the gauge atlas:
   on-cone factor (`geoChartMapNorm_eq_id_comp_gauge_on_cone`) → chain-rule det split
   (`abs_det_fderiv_comp`) → det-1 (`alphaGauge_abs_det_one`) → reads-neutrality.

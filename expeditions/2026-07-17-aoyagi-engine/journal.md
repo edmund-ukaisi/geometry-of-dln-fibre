@@ -6247,3 +6247,20 @@ conditions (rev-jac verdict clearing walk-t20's own work + loss-t15 reaching a s
 — standard hygiene not to rotate a seat before its work is independently cleared. THE
 PAYOFF CONE NOW: one owed sorry of substance (leafDiagFrob_geoAtlasNorm, loss-t15's
 critical-path value walk) + t14's de-risked Phase-2 cover (geoAtlasNorm_imageCover).
+
+## 2026-07-20 tick 380: rev-jac PASS-WITH-NOTES on 2d — no fidelity gap; the reads-neutral bundle proved to ground
+rev-jac's fidelity verdict on geoAtlasNorm_leaf_leafJacobian: PASS-WITH-NOTES, no gap
+(built the module itself + direct #print axioms — the right rigor with codex down). CHECK 1
+(the key one): the reads-neutral bundle is HONEST — hgreads discharged by
+alphaGauge_ledgerMonomial_neutral traced to ground (ledgerMonomial_eq_of_reads is a genuine
+non-vacuous prod_congr; case11/rollover=id honestly; case2/case12 via the ~10-line
+schurCells_fst_ne_birthFlatCoord ← birthFlatCoord_ne_diag_layer_cell, a REAL DivBirthInv-
+freshness theorem, not axiomatized; disjointness non-vacuous, covers old AND fresh
+divisors). CHECK 2: full R7 predicate, no weakening. CHECK 4: names Aoyagi's α chart. CHECK
+5: clean-three exactly, PROVABLY independent of the two owed sorries (no sorryAx). TWO NOTES
+actioned: (a) CHECK-3 framing — "instantiated at both id+α" OVERSTATED; honest form = shared
+MAINTENANCE ATOMS (the wrapper) + two parallel walk skeletons, only α instantiated in
+practice, id keeps its own cocycle — statement card corrected (name=content for the mint);
+(b) merge-window transient non-build was the resolution window, not a defect — CONFIRMED
+715b29e6e (certified content) is an ancestor of integration HEAD (merge-base verified). 2d
+is fidelity-cleared. rev-jac closed. Canonical gate still rebuilding (RouteM tail).
