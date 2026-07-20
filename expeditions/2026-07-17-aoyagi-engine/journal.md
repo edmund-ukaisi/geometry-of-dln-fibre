@@ -5596,3 +5596,19 @@ decisive: D_{J+1} IS the recursion in the paper; no residual-entry closed form e
 on loss-t15's code (resid never read at a leaf). BOTH seats relayed + unparked; compass
 fork 15 FOURTH amendment applied (elder's proposed text, read-only honored). loss-t15's
 payload gate now reduces to my binder-vs-design diff.
+
+## 2026-07-20 tick 343b: loss-t15 crossed the ruling — independent CONVERGENCE on not-pure-A; hybrid refinement
+loss-t15's respawn analysis (written before my relay reached it) independently fired the
+resid tripwire: pure (A) is not honest — the residual's ratio entries (ab+ρ) are genuine
+polynomials, the deepening fold's partial product; only the SCALING u is ledger-derivable.
+Its refinement: HYBRID = A-scaling (derivable monomial) × B-recursive-ratio, with a
+DISCRIMINATING TEST sharper than the ruling's grounds: the α-Schur clearing shears
+(Lg/Rg) READ the pivot row/col ratio values, so the payload must EXPOSE the ratio block —
+killing cleared-cells-only encodings outright. Two decorrelated reads (elder from the
+paper, seat from the battery) converging on the same verdict is the assurance codex-down
+had cost. Ruled the hybrid WITHIN (B) (factors structure out of the recursion; never
+closed-forms the ratio entries — the rejection's target), elder fast-confirm in flight.
+BMON INDEXING corrected + confirmed: the chain accumulates by CLEARING level t̃ (worked.tex
+:484; R4 cert's support(row i) = {k : divTilde k < i}), coord from divBirthCoord — the
+diagonal-position ↔ clearing-level reindexing named as a diff point for the payload gate.
+loss-t15 GO on ruling-robust tGeoG walk infrastructure meanwhile (additive, no collisions).
