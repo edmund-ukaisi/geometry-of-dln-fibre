@@ -143,6 +143,17 @@ def sourceModule? (env : Environment) (n : Name) : Option Name :=
   | some idx => env.header.moduleNames[idx.toNat]?
   | none => env.header.mainModule
 
+/-- First-party test for the blueprint-leak prune. `n` is first-party iff its source module is NOT an
+upstream library (`Mathlib` / `Lean` / `Std` / `Init` / `Batteries` / `Aesop` / `Qq`). An upstream
+constant is never `@[blueprint]` and cannot transitively reach a first-party forecast (imports point
+first-party → upstream, never back), so the leak walk PRUNES it — keeping the walk `O(first-party
+graph)` rather than `O(reachable Mathlib)` (the post-merge blow-up fix). Conservative for soundness: a
+constant with no source module is treated as first-party (descended, never pruned). -/
+def notUpstream (env : Environment) (n : Name) : Bool :=
+  match sourceModule? env n with
+  | some m => !([`Mathlib, `Lean, `Std, `Init, `Batteries, `Aesop, `Qq].any (·.isPrefixOf m))
+  | none => true
+
 /-- **The located-cite allowlist** (explicit + extensible, in one place). A cited axiom must be
 declared in one of these files (matched by exact *module name*, not a filesystem path — module
 provenance is what the `Environment` gives us). The default rule below also accepts any module whose
@@ -259,9 +270,12 @@ def collectBlueprintBatch (env : Environment) (roots : Array Name) : Array Name 
       visited := visited.insert c
       if isBlueprint env c && !rootSet.contains c then
         found := found.push c
-      match env.find? c with
-      | some ci => stack := stack ++ usedConstantsOf ci
-      | none => pure ()
+      -- BOUNDARY PRUNE (perf): descend only from first-party constants; an upstream (Mathlib/core)
+      -- constant is a dead-end for blueprint-reachability. Keeps the walk O(first-party graph).
+      if notUpstream env c then
+        match env.find? c with
+        | some ci => stack := stack ++ usedConstantsOf ci
+        | none => pure ()
   pure (found.qsort Name.lt)
 
 /-- The `@[blueprint]`-tagged constants in `root`'s transitive constant dependencies (`root` itself
@@ -281,9 +295,11 @@ def blueprintDepsOf (env : Environment) (root : Name) : Array Name := Id.run do
       visited := visited.insert c
       if isBlueprint env c then
         found := found.push c
-      match env.find? c with
-      | some ci => stack := stack ++ usedConstantsOf ci
-      | none => pure ()
+      -- BOUNDARY PRUNE (perf): see `collectBlueprintBatch`.
+      if notUpstream env c then
+        match env.find? c with
+        | some ci => stack := stack ++ usedConstantsOf ci
+        | none => pure ()
   pure (found.qsort Name.lt)
 
 /-- **The reusable audit core (DRY).** For a declaration, `collectAxioms` its transitive axiom set,

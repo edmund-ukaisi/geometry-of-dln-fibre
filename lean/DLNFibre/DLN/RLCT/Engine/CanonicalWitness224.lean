@@ -1,3 +1,4 @@
+-- ⛔ RETIRED CHART ROUTE (off-cone fossil) — DO NOT FILL THE sorrys here. See ./RETIRED.md + charter.md §3.
 import DLNFibre.DLN.RLCT.Engine.EngineDefs
 
 /-!
