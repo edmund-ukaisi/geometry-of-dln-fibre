@@ -1478,3 +1478,6 @@ import DLNFibre.DLN.RLCT.Engine.EngineDefs
 import DLNFibre.DLN.RLCT.Foundations.FlatNodeHomogeneity
 -- T3 coverage rung 1: the per-blow-up pivot-chart covering atom (+ the corner ¬-theorem).
 import DLNFibre.DLN.RLCT.Engine.PivotCover
+-- Loss value-walk maintenance (downstream of GeoAtlasTransfer): the InvVal3 four-case walk that
+-- closes leafDiagFrob_geoAtlasNorm. Re-homed here (not GeoAlphaGauge, upstream) — see module docstring.
+import DLNFibre.DLN.RLCT.Engine.GeoInvValMaint

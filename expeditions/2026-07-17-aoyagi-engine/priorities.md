@@ -77,5 +77,17 @@ payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds e
    named sorried library-surface theorem; never an IsFullMonomialization conjunct); the proof
    (steering rule + anchor descent invariant + the pull-ordering brick, cert-o5-realization §4)
    lands here. Basis: threads/12-realization/cert-o5-realization.md.
+DISCHARGE-LADDER WIRING (loss-t15 architecture finding, tick 384 — the value walk's HOME):
+GeoAtlasTransfer imports GeoInvValWalk (for canonical fannedG), so the InvVal3 walk lives in
+GeoInvValMaint, DOWNSTREAM of GeoAtlasTransfer. But leafDiagFrob_geoAtlasNorm is a sorry in
+GeoAlphaGauge, UPSTREAM — it CANNOT be filled in place. AT CLOSE (part of the discharge
+assembly, before hbox flips): RE-HOME leafDiagFrob_geoAtlasNorm + leafPullback_geoAtlasNorm
+to GeoInvValMaint (or a thin module downstream of both), and RE-POINT ChartBridgeFaithful's
+LeafPullback consumption to the InvVal3-backed version. This edits ChartBridgeFaithful (the
+R-split module) — re-run the AxCheck gate after (toChartBridge MUST stay clean-three;
+chartBridgeFaithful_buildTree sorryAx → geoAtlasNorm_imageCover only once the walk lands).
+GeoInvValMaint added to the aggregator (tick 384). Sequencing: value walk green → re-home →
+cover green → both owed closed → hbox → mint relocation (mint-t19).
+
 Parked: mint-repoint mechanics live inside R5; cartographer pass #2 (reuse index + do-not-enter
 register + import-hygiene proposal) lands asynchronously and binds via ratification.
