@@ -6088,3 +6088,22 @@ walk-t20's and loss-t15's landings — a signature change now would re-type two 
 and the cover is the last owed sorry regardless. pnp-cover closed with double honors.
 THE 2a DESIGN ARC IS OVER: three rounds, two exact refutations, one ratified route — all
 before any cover Lean existed.
+
+## 2026-07-20 tick 371: clearedOf DERIVED (battery exit-0) — the dropped predicate is ROLLOVER-AWARE; the bank proceeds
+loss-t15's state-trace battery (clearedof_walk_trace.py, 59b7500a2 — symbolic row/col
+reduction with rollover contamination, every state of (2,2,2) + (3,2,3)): CLEARED = my
+candidate (A) confirmed (terminal-persist; the running-total control overflows M(0)
+mid-walk). THE FIND: DROPPED needs a ROLLOVER-AWARE threshold — dropThreshold s = if
+widthMinUpto M (s.layer+1) ≤ s.cleared then widthMinUpto M (s.layer+1) else widthMinUpto
+M s.layer — whose switching condition IS the oracle's rollover guard verbatim. Both
+simpler forms refuted one-state-off in opposite directions: t14's (i ≥ widthMinUpto
+s.layer) MISSES the rollover node itself (breaking rollover maintenance — an unmarked zero
+row can't propagate under option C); the eager layer+1 form fires a state EARLY (false
+while the row is still residual). dropped == zero-rows EXACTLY at all 14 traced states;
+hcov/hdisj at terminal. Honest caveat scoped correctly: the linear trace can't see bmon
+VALUES — the four-case maintenance re-confirms in Lean (the ratified tripwire covers it).
+BOTH bank gates satisfied (stamp + clearedOf) — loss-t15 BANKING the full unit now per the
+standing pre-authorization (prefixColFin + prodPrefix + InvVal3 + bmonOf(≤) + clearedOf(A)
++ dropped(rollover-aware) + amended leaf discharge + prefix=full lemma + vacuous base);
+the four-case grind opens on its green. Elder FYI-confirm riding (the drop-at-layer-
+completion fidelity read); walk-t20 mid-2d-A per the board.
