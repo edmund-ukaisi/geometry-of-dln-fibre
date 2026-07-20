@@ -132,6 +132,46 @@ homeo); their PROOFS and the `srcBox` constant need redoing over the new gauge; 
 become false and must be rebuilt; the VALUE lane genuinely requires the new gauge and is currently
 blocked at exactly this point.
 
+## 4b. ADDENDUM — the per-column split of row J (team-lead live input; `/tmp/q2_columns.py`)
+
+loss-t15's per-column decomposition of row `J = s.cleared` is a sound *decomposition*, but under the
+interior-only α the *disposition* is (d) for **all three** column classes, not just the live one. Key
+refinement: `prodPrefix` at the state where row `J` becomes cleared is a **single transformed layer**
+(`prefixColFin` covers layers `0..S`; for these instances layer `S` alone), so the live-column subcase
+is testable uncontaminated.
+
+**Live columns `J < j < running_min` — (d), cleanest at `(2,2,2)`.** Row `0`, `running_min = 2`, so `j=1`
+is the ONLY off-diagonal (no cleared-cols since `J=0`, no dropped-cols since width `= running_min = 2`).
+At the clearing state `(layer 0, cleared 1)`, `prodPrefix = ` transformed `C^{(0)} = u·[[1,a],[b,ρ]]`,
+row `0 = [u, u·a]`, so `(0,1) = u·a ≠ 0` (exact: `−a00_0²·a00_1·(a00_1·a01_0−a01_1)`). Nonzero at the
+clearing step AND at the leaf. This is a *pure* live-column test, and it is (d):
+- **(a) blow-up structural-zero — NO.** Pre-α (pure β) `(0,1)` is already nonzero; β only scales.
+- **(b) bmon absorbs — NO.** `(0,1) = a·(0,0)` is proportional to the diagonal value but sits at a genuine
+  off-diagonal position `(0,1)`; `InvVal3`'s cleared-clause (`i≠j ⟹ =0`) is violated by `a·bmon ≠ 0`.
+- **(c) eventually drops / clearedOf retiming — NO.** In `(2,2,2)` `running_min = 2` is constant, so
+  `j=1` never drops and `(0,1)` is nonzero at the leaf. In general the immediately-super-diagonal live
+  column `j = J+1` persists whenever `running_min > J+1`, and (see below) the drop-zeroing itself needs
+  the full Q,P. Retiming `clearedOf` does not rescue it.
+- **(d) needs `Rg = [[1,−a],[0,1]]` — CONFIRMED.**
+
+**Cleared columns `j < J` — ALSO (d) (needs `Lg`), contra the "already 0" assumption.** The interior-α
+clears NO pivot column (`Lg` is the omitted part). `(4,3,4)`, row `1`: `(1,0)` NONZERO at both the
+clearing step (`prodPrefix = C^{(0)}`) and the leaf. So the cleared-column entries are *not* zero from
+prior clearing — they need `Lg`.
+
+**Dropped columns/rows `j ≥ running_min` — ALSO (d) (no column-drop under interior-α).** `(4,3,4)`
+(`running_min 3`, full width `4`), row `1`: `(1,3)` NONZERO at the leaf. And the dropped-ROW clause
+fails: row `3` has nonzero entries (`rank(prod) = 3`, so row `3` is a linear combination of rows `0–2`,
+NOT a zero row). The "dropped = 0" of the three-state `InvVal3` is a consequence of the full Q,P
+normalization (as the `clearedof_walk_trace.py` battery's `clear_pivot` = full row+col reduction
+encodes); under interior-α rank deficiency shows up as linear dependence, not zero rows.
+
+**Net for the split:** live-col = (d), cleared-col = (d, needs `Lg`), dropped-col/row = (d, the
+drop-zeroing needs full Q,P). The entire off-diagonal of row `J` (plus the dropped-row zeroing) requires
+Aoyagi's Q,P; the interior-only α produces neither the diagonalization nor the drop-zeroing. This is the
+largest-ripple branch (d), and it confirms the §4 fix (`alphaGauge → Q,P`) is necessary in full, not a
+corner patch.
+
 ## 5. Close
 
 - **Firmest result**: (Q1) full block minimal / pivot-cross-only killed — exact witness §1. (Q2)
