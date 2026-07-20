@@ -51,7 +51,12 @@ payoff layer's — never in the λ cone). Scope-vs-sequencing discipline binds e
 6. R6 — Lemma 2 + Theorem 3 (the regular peel) — OWED FIRST-CLASS (both council seats; "value
    lane suffices" struck as the retired razor), post-spine, off critical path, COST-PROBE-GATED
    (SchurCore depth-≥3 wall, rr4-precedent); operator scope confirmation surfaced. θ + Eqs (1)-(5)
-   stay out.
+   stay out. RECONCILIATION (tick 347, scout-lr2 flagged an apparent contradiction with the R5
+   pin's "[R6 REMOVED from the owed list]"): both are correct — the R5 bracket removes R6 from
+   the PR BODY's owed list only (the general-L r>0 regular VALUE is built sorry-free, AxCheck:923,
+   so the λ theorem lacks nothing); THIS item keeps the R6 OBJECT (the Lemma 2 + Thm 3 structural
+   transcription) owed post-spine. Scout-lr2 re-priced it M–L; the depth-≥3 SchurCore wall was
+   sidestepped by the value route, not climbed.
 7. R7 — the ⊇ Clearable-Adm completeness PROOF (elder-gate7 ratified, 2026-07-19) — OWED
    FIRST-CLASS, post-spine (R6 treatment). A theorem ABOUT the constructed object (paper-
    correcting: the 4th read-off defect), not a component OF her mechanism — hence sequencing,

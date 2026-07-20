@@ -5666,3 +5666,23 @@ tick-286 class); (4) "α = id at case-11" is a PROOF OBLIGATION to verify agains
 alphaGauge's per-edge def, not a statement assumption. Wake sent (its three inbox relays +
 this verdict unblock the full lane: statements → hybrid payload+base → the last gate post →
 the four-case grind). Recon seats (navigator-6, scout-lr2) still out.
+
+## 2026-07-20 tick 347: scout-lr2 runway map LANDED — the engine IS the native-λ route; cite discharge re-priced M
+Deliverable committed (threads/22-long-range/scout-lr2-runway.md, 3f803c34c). THE RE-FRAME:
+the next expedition's target was mis-remembered as distant — in fact the value cone already
+IS Aoyagi-native: the headline is rlct(dlnLoss) = ofReal(aoyagiLambda) via her resolution
+(no zeta/pole layer anywhere in the value cone — rlctAt is the sup-of-finite-c form; the
+zeta layer exists only behind the θ-side rlctOrderAt), and the runway memory's kill-
+condition (the singular-locus LOWER bound) is BUILT — o5_realization clean-three IS the
+attained-minimum leaf. The global-memory note rlct-runway-target.md is therefore STALE
+(retire/re-home at close per policy). PER-TARGET pricing: [1] native cite discharge M (not
+XL): interface instantiation + dlnLoss↔routeMCore localization glue + nbhd bookkeeping;
+the arithmetic core (minAdm_eq_cCodim) banked. [2] θ seam: tree-binding M (task #69);
+analytic pole XL greenfield (meromorphic continuation absent from Mathlib). [3] R6: doc
+TENSION found and RECONCILED in priorities.md (R5-pin bracket = PR-owed list only; the
+OBJECT stays owed post-spine, M–L, wall sidestepped not climbed). [4] R7 completeness S–M —
+the HARD half (⊇, descent) is LANDED (realize_aux general in a); only the ⊆ strand
+obstruction is new. [5] zero-width(b): arithmetic DONE (Lambda:259), analytic collapse S.
+NEXT-EXPEDITION CENTRAL QUESTION (scout's rec): discharge cited_aoyagi_dln natively;
+highest-risk assumption = the real↔complex analytic-set bridge — adversarially test on a
+non-square r>0 instance at opening recon. Awaiting navigator-6 to combine into commissions.
