@@ -6730,3 +6730,19 @@ it becomes UNCONDITIONAL by one `exact chartBridgeFaithful_buildTree` when the f
 it. Stands regardless of the rework. task #28 done; mint-t19 stood down (its prestage +
 relocation plan + this spine = the complete mint handoff to the follow-up). pnp-full still
 running (sizes the follow-up).
+
+## 2026-07-20 tick 403: conditional spine integration-VERIFIED clean-three; phase-transition altitude note written
+Integration-side force-recompile #print (deleted olean, lake env lean scratch) CONFIRMS
+aoyagi_learning_coefficient_of_chartBridgeFaithful = [propext, Classical.choice, Quot.sound]
+on the MERGED state — clean-three-modulo-hCBF, no sorryAx, integration-verified (not just the
+seat's branch). The durable deliverable is fully banked + verified. Idle-pulse otherwise
+(pnp-full master probe still running — big end-to-end sympy over 4 M's, not stalled). Used the
+slot for the heartbeat-prescribed PHASE-TRANSITION ALTITUDE NOTE (strategy/altitude-2026-07-20.md):
+the close-the-spine → bank-conditional+re-scope transition at altitude — why it's progress not
+retreat (the durable spine is the whole engine clean-three above the atlas; the fault was caught
+by design via the order-blind/value-sensitive ASYMMETRY; the follow-up is tractable native-M);
+the handoff (design closed, gauge target pinned, mint ready, owed items); the meta-lesson (gate
+fidelity by the value-sensitive consumer, not the cheapest). The close synthesis reads it first.
+Held calibration 21 + the carto map-refresh for the close (post pnp-full + operator launch call —
+mapping a state about to finalize is premature). Awaiting pnp-full's verdict + the operator's
+follow-up-launch call.
