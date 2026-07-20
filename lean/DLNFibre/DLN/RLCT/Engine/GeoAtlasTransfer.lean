@@ -591,4 +591,27 @@ theorem cubeBox_subset_alphaGauge_image (g : GeoChart M) {R : ℝ} (hR : 0 ≤ R
   show alphaGauge (M := M) g x ∈ ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R
   rw [hx]; exact hy
 
+/-! ### Phase 1.5: the leaf base-case monotonicity (Option C confirmation)
+
+The reachability-induction leaf base case is `cube(ρ_leaf) ⊆ leafPathImages(…leaf…)`, and
+`leafPathImages (.leaf l) = l.srcBox` (`PivotCoverFold`, NO `chartMap` applied — the fold's charts
+enter only at branch `localSub`s). So the base case is `cube(ρ_leaf) ⊆ srcBox_leaf`, which under the
+enlarged-cube leaf (`srcBox_leaf = cube(ρ_max)`, `ρ_leaf ≤ ρ_max`) closes by cube monotonicity below.
+(Simpler than an `acc''srcBox` step — `acc` is never applied at the leaf.) -/
+
+/-- **The cube is monotone in its radius** — the leaf base-case step. -/
+theorem cubeBox_subset_cubeBox {d : ℕ} {R R' : ℝ} (hR : R ≤ R') :
+    cubeBox d R ⊆ cubeBox d R' := by
+  intro x hx
+  rw [cubeBox, Set.mem_pi] at hx ⊢
+  intro k hk
+  have hxk := Set.mem_Icc.mp (hx k hk)
+  exact Set.mem_Icc.mpr ⟨by linarith [hxk.1], by linarith [hxk.2]⟩
+
+/-- **The flat cube is monotone in its radius** (the preimage form used at atlas leaves). -/
+theorem flatCube_subset_flatCube {R R' : ℝ} (hR : R ≤ R') :
+    ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R
+      ⊆ ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R' :=
+  Set.preimage_mono (cubeBox_subset_cubeBox hR)
+
 end DLNFibre.DLN.RLCT.Engine
