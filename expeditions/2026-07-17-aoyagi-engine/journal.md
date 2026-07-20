@@ -6212,3 +6212,23 @@ filters gain a factor while their values stay spectator-fixed — InvVal3 fails 
 freshness the natural home) or a battery trace of every fresh divisor's t̃ at three M's,
 for BOTH birth cases. Sequence: shape 1 bank → t̃-check → shapes 2-3 → case2. The lane's
 gate discipline continues to front-load every risk the grind would otherwise hit blind.
+
+## 2026-07-20 tick 378: 2d COMPLETE + double-gate PASS; BANK-NOW issued (VM risk); fidelity reviewer spawned
+walk-t20 reported 2d done: geoAtlasNorm_leaf_leafJacobian sorry-free clean-three, the R7
+Jacobian transfer to the faithful α atlas discharged. Double-gate (targeted #print axioms —
+the full AxCheck timed at 590s on the heavy RouteM Validate tail, 8528/8549, 0 errors,
+unrelated; canonical full gate runs integration-side): α side clean-three (leafJacobian,
+cocycle, ledgerProps, ae_injOn); id side UNCHANGED clean-three (GeoFoldRegroup/GeoLeafJacobian
+git-confirmed byte-untouched — one spine held); toChartBridge clean-three (the MUST);
+chartBridgeFaithful_buildTree sorryAx now routes through TWO owed sources only (leafDiagFrob
++ imageCover) — the jacobian source GONE. Two files, +453 net Lean, matching estimate; no
+tripwire fired. TWO CONTROLLER ACTIONS: (1) the work was GREEN BUT UNCOMMITTED — issued a
+hard BANK-NOW (commit+push as-is before dedup; the policy Q re-answered definitively:
+own-branch push = banking, pre-authorized; the two VM deaths make uncommitted green work the
+one unacceptable state). (2) spawned rev-jac for the fidelity check walk-t20 correctly
+requested (does the reads-neutral bundle honestly hold — α genuinely fixes the child ledger
+reads, not assumed away; + one-spine-real + axiom-honesty + the α-is-Aoyagi's-chart
+touchstone). Statement card filed (card-geoAtlasNorm-leaf-leafJacobian.md). ONE OWED SORRY
+of substance remains on the payoff cone (leafDiagFrob_geoAtlasNorm, loss-t15) + t14's
+de-risked cover. Co-builder rotation (walk-t20 → loss-t15's four-case split) fires after its
+bank + the rev-jac verdict.
