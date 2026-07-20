@@ -6836,3 +6836,22 @@ hypothesis + does _gen-on-hbox give the VALUE). Corrected calibration 22's over-
 noted: mark office rulings provisional mid-reckoning). Follow-up central piece = Lemma 1 over the
 banked resolution. Compass amendment owed (elder drafting). navigator #9 prices the follow-up
 at the honest-hypothesis confirm.
+
+## 2026-07-20 tick 408: compass amendment APPLIED — fork 15 CLOSED + runway reframe (resolution-kept/chart-CoV-moot)
+Elder delivered the paste-ready compass amendment with the DEFINITIVE disambiguation
+(resolving its own flip-flop): "cover moot" was imprecise — the RESOLUTION (blow-up tree →
+b_i divisors) is KEPT (Lemma 1 FEEDS it; ½·min M_{s,k} is the min over its divisors); only the
+residualCore-over-a-det-1-CHART piece is MOOT (the category error). APPLIED to compass.md:
+(1) fork 15 gets the CLOSED paragraph (goal-level category error; leaf-first correct for the
+det, root-first re-thread dropped; InvVal3 = the ⟨prod⟩=⟨b_i⟩ ideal-generation fact, transfers
+unchanged; LeafPullback re-shapes); (2) standing counsel gets the RUNWAY REFRAME — the 3-part
+composite (RESOLUTION kept / LEMMA 1 new workhorse, Mathlib-absent / divisibility-chain
+toric-trivial → no extra blow-ups), superseding the "coverage IS the lower bound" reading of
+the rlct-runway-target + C2a memories (HALF-right: resolution is the structural half kept;
+Lemma 1 is the missing half). Honest spine = aoyagi_gen on hbox (the α-conditioned form
+retired as refuted-hypothesis). Elder charge on the arc CLOSED (stood down with honors;
+re-convene at the follow-up opening / invited to the close synthesis). The durable record now
+reflects the true final state: the α/order/category reckoning, the ideal-level follow-up
+scope, fork-15 closure. Awaiting mint-t19's honest-hypothesis confirm (does _gen-on-hbox
+suffice / is the chartBridgeFaithful-spine deletable) + navigator #9 (follow-up pricing) +
+the operator's launch call.

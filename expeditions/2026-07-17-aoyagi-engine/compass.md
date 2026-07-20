@@ -459,6 +459,25 @@ over banked substrate.
     GATE: pnp-cover replays the kill instances under the enlarged cube ((3,3) + the
     (3,3,3) spine at ρ = 1→2→6) before the 2a build commits.
 
+16. **Fork 15 — CLOSED (elder ratification, 2026-07-20, the α-cover/value arc).** The
+    completed-α-as-chart is a GOAL-LEVEL CATEGORY ERROR, not an atom-choice bug: each
+    (prod)_ij is a nonzero polynomial; any chart (diffeo / a.e.-injective) has open image; a
+    nonzero poly is nonzero on a dense open set; so (prod)_ij∘chart ≢ 0 for ANY chart, whereas
+    exact diagonalization forces ≡ 0 (a non-open, det-0 projection). So NO det-1/a.e.-inj map
+    diagonalizes the loss on an open set — the value lower bound is NOT a chart
+    change-of-variables. WHY IT SURVIVED SO LONG: the gap is det-1 (invisible to the Jacobian
+    + cover); only the value LOWER bound sees it, and the value lane (loss-t15) + decorrelated
+    pnp (cert-full-value-walk §6 + 6 batteries; cert-rg-shape; cert-exactly-diagonal-mechanism;
+    cert-collection-lemma) caught it — the order-blind det lane would have shipped green over a
+    wrong/unbuildable spine. CONSEQUENCES: (i) leaf-first is CORRECT for the det
+    (geoAtlas_fold_det/leafJacobian, clean-three) — the root-first re-thread is DROPPED (it only
+    ever served the category-wrong diagonalization); (ii) the InvVal3 / prefix / b-chain
+    REDUCTION content is SOUND (Q1-verified end-to-end at 4 M's) but is the IDEAL-GENERATION fact
+    ⟨prod⟩=⟨b_i⟩ (unimodular Q,P are ideal-preserving, worked.tex:375–390), NOT a chart identity —
+    it TRANSFERS unchanged to the ideal route; (iii) LeafPullback re-shapes (the
+    residualCore-over-det-1-chart bound is category-false). worked.tex:153–158 (Lemma 1),
+    :475–490 (∑b_i²), :537 (½·min).
+
 ## Landmarks (8; elder-ratified) — why these
 - `mint-repoint` — the destination. · `hbox-root` — the one owed Prop.
 - `engine-route` — founding route; its gate is the first live test of the harness.
@@ -472,6 +491,26 @@ over banked substrate.
   precedent (SchurCore walls at depth ≥ 3). Honest form: the composition is 0-sorry.
 
 ## Standing counsel
+- **RUNWAY REFRAME (2026-07-20, elder; supersedes the "coverage IS the runway's hard part"
+  reading in the rlct-runway-target + C2a memories).** The RLCT LOWER bound is IDEAL-LEVEL, a
+  THREE-part composite; only the middle is category-new: (1) RESOLUTION [KEPT — this
+  expedition's banked deliverable]: the leaf-first blow-up tree monomializes, producing the b_i
+  as monomials in the exceptional u-coords (the divisors); cover/Jacobian/ledger serve it, and
+  computing rlct⟨b_i⟩ = ½·min M_{s,k} is the min over THESE divisors (Lemma 1 FEEDS the
+  resolution, does not bypass it). (2) LEMMA 1 — ideal-RLCT domination [NEW, the workhorse;
+  Mathlib-absent]: ⟨prod_ij⟩=⟨b_i⟩ ⟹ ∑prod_ij² ≍ ∑b_i² pointwise-locally ⟹ integral comparison
+  (worked.tex:153–158 + fnote:161–165; the ≥ direction is elementary — ideal-inclusion →
+  pointwise domination → integral comparison); REPLACES the category-wrong chart-diagonalization.
+  (3) DIVISIBILITY-CHAIN NORMAL CROSSING [established]: b_1|b_2|…|b_M (worked.tex:484) ⟹ ∑b_i² =
+  dominant²·(unit≥1) per leaf ⟹ rlct = ½·min M_{s,k} directly; TORIC-TRIVIAL (single dominant
+  monomial, not a multi-face Newton polyhedron) ⟹ NO extra blow-ups (route ii unneeded; route i
+  faithful AND complete). So "coverage IS the lower bound" was HALF-right: the RESOLUTION is the
+  structural half (KEPT); Lemma 1 is the missing half; only the residualCore-over-a-det-1-CHART
+  piece is MOOT (the category error). Disambiguation matters: RESOLUTION kept, chart-CoV moot.
+  The follow-up's central problem = Lemma 1, over the banked resolution + the transferred
+  ⟨prod⟩=⟨b_i⟩ + the monomial-ideal ½·min. THE HONEST SPINE: aoyagi_learning_coefficient_gen on
+  hbox (clean-three) — abstracts the lower bound as the hypothesis; the α-conditioned
+  chartBridgeFaithful form was on a REFUTED hypothesis (goal-level chart no-go) and is retired.
 - Fund the general chart-tree CoV composer as a library lane (P8) — typed consumers exist.
 - Battery gaps CLOSED (covdesign D1): g-glue-lossy-vs-exact.py, g-pivot-conull.py,
   + g-coverage-sharing-killcond.py (mis-tracked sharing invents a spurious low-ratio divisor —
