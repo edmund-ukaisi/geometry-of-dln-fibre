@@ -6338,3 +6338,25 @@ column-drop. pnp-diag now adjudicating that exactly: (a) blow-up structurally ze
 bmon-absorbed / (c) exactly-diagonal only at the leaf ⟹ clearedOf timing reshapes / (d)
 α gap needing Rg. (c)/(d) reshape the invariant or the gauge; (a)/(b) keep the pre-draft.
 loss-t15's concrete row-J build is the cross-check. This is THE crux of the last hole.
+
+## 2026-07-20 tick 385: THE α GAP — pnp-diag rules mechanism (ii), a REAL construction gap; value lane paused
+pnp-diag verdict (cert-exactly-diagonal-mechanism.md): Q1 option 2 minimal (option 3 KILLED,
+exact 3×3 witness); Q2 = (ii) REAL — alphaGauge = residualSchurShear is interior-Schur ONLY,
+omits the pivot-column Lg-remainder + pivot-row Rg (Aoyagi's full Q,P). Exact: at (2,2,2)/
+(2,2,2,2) prod NOT diagonal at leaf (surviving off-diag in cert); running-min 2 ⟹ no drops ⟹
+all rows must clear ⟹ InvVal3 cleared clause FALSE. Both (i) mechanisms ruled out. RIPPLE:
+frobSq = D²·residualCore still factors (D clean); only the LOWER BOUND fails (residualCore→0,
+W3 leak; box-shrink dead non-toric); fix FORCES residualCore = 1+Σratios² ≥ 1. det-1/cover/
+leafJacobian CONCLUSIONS survive (Q,P det-1), PROOFS + srcBox redo; schurCells_snd_ne +
+elemShearFold-independence become FALSE (cross written, S+1 touched). WHY LATENT through 4
+passes (calibration 19): the missing factors are unipotent DET-1 — invisible to every
+consumer before the value lane (Jacobian det-blind, cover image-blind, rev-jac CHECK-4
+confirmed name+interior not full Q,P); ONLY the LeafPullback lower bound sees it. ACTIONS:
+(1) elder to RATIFY + rule the fix shape — esp. the CROSS-LAYER Rg (touches S+1 — may change
+the LOCALITY property both walks rely on; the load-bearing shape question); (2) loss-t15
+PAUSED task #21 (maintenance reads α's support) — form-2 ENDS + all design STAND
+(gauge-independent; the design was never wrong, the gauge under it under-realizes the
+diagonal); (3) walk-t20 + t14 conclusions survive, proofs redo AFTER the fix — HELD (no
+rebuild against an unratified gauge). Bounded (construction completion, not redesign) but a
+real setback — named plainly. Navigator to re-sequence the rebuild once the elder rules the
+fix shape. GeoInvValMaint aggregator-wired stands.

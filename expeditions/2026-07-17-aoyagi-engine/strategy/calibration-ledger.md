@@ -546,3 +546,31 @@ Skeleton fossils (die at mint relocation) + 9 Validate scaffold files (pre-exist
 off-cone). The PR body's "owed" paragraph names R7 (ClearableReify) + the (2,2,4) witness;
 the Validate/Skeleton items are pre-existing-scaffold / fossil, not expedition-introduced.
 Pre-staged so the census is a checklist, not a discovery, at PR time.
+
+## Entry 19 (tick 385, 2026-07-20) — THE α GAP: ratified-faithful but under-implemented; the biggest endgame miss
+**What happened.** alphaGauge was ratified as "Aoyagi's normalized integration chart" at the
+atlas-seam ruling (fork 15, tick 340) and re-affirmed through the witness-swap, transfers,
+and rev-jac's fidelity PASS on the Jacobian. But the Lean α (residualSchurShear) implements
+only the INTERIOR Schur complement — it omits the pivot-column Lg-remainder and the pivot-row
+Rg of the paper's full Q,P. So it does NOT reach the exactly-diagonal leaf; residualCore can
+hit 0 (the LeafPullback lower bound is false over it). pnp-diag caught it (mechanism ii,
+exact witness at (2,2,2)) only when loss-t15's value-walk build forced the concrete question
+"does α actually clear the pivot cross?"
+**Why it stayed latent through FOUR ratification/review passes.** The two missing factors are
+unipotent DET-1. Every consumer built before the value lane is BLIND to them: the Jacobian
+(det-based — walk-t20 + rev-jac PASS), the cover (image-based — pnp-cover), the ledger
+props/ae-inj (structural). The ONLY consumer that sees the gap is the LeafPullback LOWER
+bound — the value lane, built last. So "α = Aoyagi's chart" passed every gate whose
+instrument couldn't distinguish the incomplete α from the complete one.
+**The miss (mine + the elder's + rev-jac's).** We verified "α is faithful" against the
+FIRST/cheapest consumers (det, image), not against the consumer most SENSITIVE to what α
+must do (the value lower bound). rev-jac's CHECK-4 "α = Aoyagi's chart" confirmed the NAME
+and the interior-Schur, not the full Q,P — it couldn't, from the Jacobian.
+**Lesson.** When a construction is ratified "faithful to X," identify the consumer most
+sensitive to X and verify the IMPLEMENTATION against THAT, not the first/cheapest one. A
+det-1 omission is invisible to every det/measure/image consumer and visible only to a
+value/lower-bound consumer — so a gauge's faithfulness must be gated by a value witness,
+not a Jacobian one. (Ties to threads 18/19 W1/W3 which SAID the math needs the Q,P — the
+gap was Lean-implementation vs stated-math, undetected because the sensitive consumer came
+last.) Bounded fix (construction completion, conclusions survive, proofs redo) — but a real
+setback, named plainly.
