@@ -5459,3 +5459,15 @@ Inv_val on GeoFoldRegroup's structure with the value payload; the leaf-discharge
 already proven, so the walk's terminal plugs in and LeafPullback closes end-to-end. The
 faithful discharge's remaining sorries: the LeafJacobian bundle (t14's 4b, in flight) +
 LeafPullback (loss-t15, now building). BOTH are on final approach.
+
+### Tick-337 addendum: loss-t15's pre-sink checkpoint — ENTRY-WISE ruled; solo with staging
+Its scope reality confirmed §7's prediction (one skeleton, two payloads — the value walk is
+a from-scratch matrix build, only the skeleton + reads transfer; multi-arc). THE ENCODING
+RULED: (b) entry-wise — the flat-action reads are per-entry so the maintenance proves
+entry-wise facts natively; the cert's battery verified entry-wise (the block form was
+presentational); the matrix-block instance friction (the gotchas ledger's HMul/reindex
+diamonds) never fires; the leaf assembly is direct into the proven bridge. Rider 2's
+abstract interface was the unknown-shape default; the landed maintenance makes entry-wise
+the shape-matched choice; the block form stays a derivable corollary. SOLO with t14's exact
+staging discipline (scaffold → ends → per-case banked greens; per-case tripwire; the
+co-builder option re-opening at every boundary — t14 the natural one post-4b). Scaffold GO.
