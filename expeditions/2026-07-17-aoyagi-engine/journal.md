@@ -5989,3 +5989,23 @@ already exist on integration — merge + reuse). t14's seat reduced to EXACTLY O
 the clearedOf answer (fourth, canonical ask; three crossings documented) — then parks for
 the pnp-collect verdict (srcBox def batch + 2b re-bank). Mint isolation gate GREEN
 (LAKE-EXIT:0, 0 errors); the combined gate over full integration running.
+
+## 2026-07-20 tick 365: COLLECTION LEMMA KILLED (exact, same-layer); 2a re-routes node-local; 2d verified SAFE
+pnp-collect's verdict, exact and decisive (cert 61f07d0fc): at M=(3,3,3)'s layer-0 spine,
+nodes 0 (3×3) and 1 (2×2) are BOTH nontrivial-α at the SAME layer, and α₀'s write set
+{(1,1),(1,2),(2,1),(2,2)} is EXACTLY β₁'s center — the maps do not commute; an in-cube
+witness separates chartMap_leaf from chartMap_id∘gAcc at cell (1,2); 0/36 pivot pairs
+hold. FRAME CORRECTIONS: the kill is SAME-layer (the elder's different-layers spec
+over-specified — cross-layer provably commutes); the thin-blocks escape is false; strict
+minimum M=(3,3), L=1. CONSEQUENCE: the gAcc-threaded srcBox def is DEAD (the factoring IS
+the lemma); the elder's own fallback becomes the route — NODE-LOCAL PARAMETRIZED-TARGET
+COVER (children cover the parent's α_n⁻¹(cube) target). Elder charged with the round-3 def
+ruling (recursion shape, what survives of the proven id-cover skeleton, cost class,
+clause-(A)-unchanged check, touchstone: node-local ≈ Aoyagi's actual per-step geometry?).
+THE USE-TWICE SPLIT (the cert's second gift): the Jacobian |det| transparency SURVIVES on
+a weaker precondition — S relocates every β's det-read to the block corner, which NO α
+targets (verified all 36 pairs) — so walk-t20's 2d lane proceeds UNCHANGED, grounded on
+"corner ∉ interior-α-support" + the CornerDisjoint kit, with an explicit warning never to
+reach for the (false) map-level identity. The map-level and det-level claims are now
+formally decoupled. The truth-gate discipline scores again: the def died on paper, not in
+a half-built Lean module.
