@@ -5621,3 +5621,14 @@ reading a,b. Precision recorded for the payload docstring: "vacuous at un-resolv
 = no InvVal CONSTRAINT (values stay exposed for the clearing to read); fully vacuous only
 at leaves. resid = first-class carried field, not elidable. loss-t15 relayed full GO; the
 payload def remains gated on my binder-vs-design diff.
+
+## 2026-07-20 tick 344: INTEGRATION GATE GREEN — the stage-4b merge fully verified integration-side
+The relaunched AxCheck gate completed: LAKE-EXIT:0, zero errors. Watch verdicts exactly as
+required: region_glue_of_chartBridge CLEAN-THREE ✓; ChartBridgeFaithful.toChartBridge
+CLEAN-THREE ✓ (the two MUSTs); chartBridge_buildTree / chartBridgeFaithful_buildTree /
+engine_box_threshold_finite / monomialization_terminates all diagnostic [+sorryAx] routing
+through the ONE hole (expected until the value walk lands); aoyagi_learning_coefficient_gen
+CLEAN-THREE ✓ (the mint re-point's target is ready); canonical aoyagi_learning_coefficient
+still +sorryAx (expected until mint). The stage-4b integration is now verified both sides
+(t14's full build was 8700+/8917 zero-errors pre-crash; this gate exercises the cone).
+Doubled-gate discipline satisfied; the push already banked during crash recovery.
