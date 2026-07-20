@@ -6665,3 +6665,24 @@ L-compounding first. So if pnp-full clean, the FOLLOW-UP is well-scoped + TRACTA
 cocycle + isolable value + decoupled α, native) — re-scope = a clean bounded rebuild, not a
 slog. t14's α-gated re-measure HELD (fires when completed α lands). The α completion is the
 SHARED LINCHPIN of both lanes. Await pnp-full (the master verdict) → navigator #8 → operator.
+
+## 2026-07-20 tick 400: navigator-7 RETIRES in-place (both→re-scope); conditional-spine bank COMMISSIONED
+navigator-7 sharpened: the coupling RETIRES the marginal-in-place branch — in-place is
+STRICTLY-WORSE-ORDERING (the two fixes have no clean incremental order: root-first+incomplete-α
+= t14's L-compounding; leaf-first+completed-α = pnp-rg's non-diagonal kill; in-place must
+thrash a bad intermediate or land one un-bisectable atomic commit), whereas a fresh build is
+BORN at root-first+completed-α → suffix-sum M directly. So BOTH probe outcomes → RE-SCOPE;
+pnp-full now SIZES the follow-up (tractable native-M if clean; deeper-scoped if issue-#3), it
+no longer gates re-scope-vs-in-place. pnp-full = master verdict (t14-M + value-telescoping
+corollaries; the α-gate means no independent pre-probe t14 datum — hold everything behind
+pnp-full). Recommendation FIRMER than #7 + UNANIMOUS (elder fidelity/route + navigator
+bank+re-scope + loss-t15 design-closed + all pnp findings). ADOPTED. COMMISSIONED the durable
+close-out: mint-t19 banks the CONDITIONAL SPINE (aoyagi = C/2 given chartBridgeFaithful's 2
+frontiers — cover + value — clean-three + #guard_msgs gate; the order-independent chain above
+the atlas; the prestage arm already engine-routed tick 384). That's wanted under all outcomes,
+banking now during the async operator gap; task #28; statement-gate first. The follow-up
+EXPEDITION LAUNCH is operator-gated (new expedition = scope/resource) — firm re-scope
+recommendation surfaced; navigator #8 sizes it at pnp-full's landing → becomes the follow-up's
+opening brief. All value/cover lanes held; the design side banked + survives. The order kill
+was caught before shipping a green-but-wrong-RLCT spine — the expedition's real deliverable
+is the honest conditional spine + the corrected-order follow-up roadmap.
