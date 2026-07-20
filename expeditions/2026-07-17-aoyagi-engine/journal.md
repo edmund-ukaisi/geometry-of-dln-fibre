@@ -5300,3 +5300,13 @@ mechanical edits). The navigator's shadow-the-design call paid off completely �
 wording (honoring its WHY — the coupling stays typed/per-divisor via divProfile) → ELDER
 CHARGE-10 ratification queued (behind charge-9). If ratified: R4 moves to a SMALL
 discharge-batch item; the post-spine list shrinks to R7 + zero-width(b).
+
+### Tick-328 addendum: pnp-r4's report (crossed the merge) — TWO details for the R4 builder's record
+(1) The CURRENT genDivExp propagation is a demonstrably-WRONG PLACEHOLDER — stepAppendAdvance
+sets a new divisor's column to 0 (EngineConstruction:192) — so R4 REPLACES it, never proves
+it (the cert's design makes the replacement a deletion + a definition). (2) The COHERE
+fallback (keep the field + prove the coherence tie) stands if the drop-refactor is
+disruptive at build time. Batteries: the (3,3,4) corank-2 coupling = a length-2 equal run
+(load-bearing), the depth-3 rollover branch, the support identity at every state — exit-0.
+pnp-r4 retired with honors; the §2.3 Lean-ready shapes await the discharge-batch builder,
+gated on elder charge-10.
