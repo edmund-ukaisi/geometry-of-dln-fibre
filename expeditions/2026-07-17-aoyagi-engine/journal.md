@@ -5559,3 +5559,20 @@ standalone comparison. HELD for elder counter-sign (mechanism inside its ruling'
 territory: touches the banked arc) — t14 proceeds meanwhile on the amendment + transfers
 1-3 + (b) signatures-only pre-stage. Tripwire set: atom-refactor probe, fall back on
 friction. Compass fork 15 addendum recorded.
+
+## 2026-07-20 tick 342: VM DIED AGAIN — recovery: pushed the held stack, respawned the three live seats
+The VM restarted a second time; /tmp wiped, both build gates killed mid-run, ALL teammate
+sessions dead (seat names unroutable — team substrate reset). LOSSES: sessions only. On-disk
+sweep: every banked artifact intact (t14-regroup-wt clean at 12589f776 — the encore had NOT
+started, statement gate was analysis-only; loss-t15-wt clean at f14c2fa42 + one untracked
+scratch note; all other seats quiescent at completed arcs). RECOVERY: (1) the held stage-4b
+stack PUSHED to origin (5c3896f8c tip; ten commits incl. the merge + ticks 338-341 — with
+the VM dying twice, banking beats holding; the gate re-runs post-push, fix-forward if red);
+(2) integration AxCheck gate RELAUNCHED in background; (3) respawned fresh: elder-standing
+(office, from durable artifacts — carries the THREE pending charges: (b)-mechanism
+counter-sign, srcBox pricing correction + cover touchstone, and loss-t15's resid A-vs-B
+co-read, which the crash had swallowed), architect-t14 (executes the ruled encore: amendment
++ transfers 2a-2c now, 2d signatures-only pending counter-sign), loss-t15 (pre-builds the
+resid-free payload interior + drafts case statements while parked on the elder ruling).
+Cross-lane file guards restated in both formaliser briefs. Carto-standing NOT yet respawned
+(no pending charge; re-convene at the next wiring pass or discharge).
