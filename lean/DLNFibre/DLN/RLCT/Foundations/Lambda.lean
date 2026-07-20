@@ -130,8 +130,10 @@ theorem succ_eq_one_of_val_zero (j : Fin L) (h : j.val = 0) : j.succ = (1 : Fin 
   omega
 
 /-- `admBound M j ≤ M^{j+1}`: at `j = 0` it is `min(M⁰,M¹) ≤ M¹ = M^{j+1}`; else it is `M^{j+1}`.
-(Module-private: `Skeleton` has its own private `admBound_le_Msucc`; this avoids the name clash.) -/
-private theorem admBound_le_Msucc (M : Fin (L + 1) → ℕ) (j : Fin L) : admBound M j ≤ M j.succ := by
+(PUBLIC canonical form — Skeleton's former private duplicate was deleted at the tick-334 clash
+fix; its uses resolve to this lemma. The two seats' independent clash fixes were reconciled to
+this un-duplicated shape at tick 335.) -/
+theorem admBound_le_Msucc (M : Fin (L + 1) → ℕ) (j : Fin L) : admBound M j ≤ M j.succ := by
   unfold admBound
   split
   · next h => rw [succ_eq_one_of_val_zero j h]; exact min_le_right _ _
