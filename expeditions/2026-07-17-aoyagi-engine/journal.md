@@ -7261,3 +7261,29 @@ scout + cartographer) — which cordon wins + why; how dev's cite content's @[ci
 the chosen cordon; the 8-Core-module drift surface — producing a per-component reconciliation plan, so
 the merge is a PLANNED execution, not discovery-as-you-go. This is the "come back to discuss" arriving
 during init because init revealed the reconciliation is a real sub-project. Tasks 36-41 hold behind it.
+
+## 2026-07-20 tick 423: recon-merge map landed + controller-VERIFIED; finalized merge plan of record; one taste decision to operator
+recon-merge (scout) delivered cert-reconciliation-map.md (committed). It CORRECTED my framing in a
+de-risking direction + I verified the crux: our branch touched NONE of the 8 Core modules / RlctPayoff
+(diff empty), both cordons register the IDENTICAL `cited` attribute (git-confirmed). Net picture: the
+two branches built DISJOINT RLCT stacks → the merge is superset-selection + dead-stack retirement, not
+a proof merge.
+- Core drift ≈ near-zero: dev's 8-module changes are hypothesis WEAKENINGS ([IsAlgClosed]→[Infinite],
+  instance-compatible via CharZero.infinite) + RELOCATIONS (6 lemmas → Core/Matrix/RankMinors.lean,
+  namespace Matrix), not renames/deletions.
+- Cordon: standardise on OURS (Meta.Cordon — strict superset: blueprint guard + #audit_blueprint +
+  --json map-integration + module-provenance scoping that SUBSUMES dev's namespace special-case). Forced
+  single pick (dup `cited` registration). Port-list = 3 tiny items (AoyagiCited allowlist entry + default
+  import + docstring repoint). Keep our CordonClean/CordonLeak fixtures.
+- Cite: shared attribute NAME → dev's @[cited] tags need NO edit; repoint 2 cite-file imports; retire-ours
+  (cited_aoyagi_dln) AUTOMATIC (dev's migrated RlctPayoff wins). THE KILL-TARGET = cited_aoyagi_lower_ax,
+  ONE named @[cited] axiom in ONE located file; rlctGlobal BUILT cite-free + codim_ℝ=codim_K PROVED. The
+  tidiest possible "prove it, never cite it" runway.
+- Breakage ≈ S if archive the Engine (the plan): drop 287 aggregator imports + decide GramFullRank/
+  CommonPivotL2 fate (self-contained / 1-line). KEEP ⇒ M + contradicts charter.
+- 11 textual conflicts, per-file resolutions pinned (cert §4).
+FINALIZED PLAN: threads/26-dev-merge-reconcile/merge-plan.md (6 gated stages; safety = tag pre-merge tip
++ push-only-when-green; controller-driven given the small surface, integrator on standby). THE ONE TASTE
+DECISION surfaced to operator/elder (cert §2c): cordon-module PLACEMENT — option (A, recommended) move our
+Meta.Cordon → DLNFibre.Core.Meta.Cordon (dev's self-auditing placement + our superset code). Awaiting
+operator approval of the plan + the placement call before executing.
