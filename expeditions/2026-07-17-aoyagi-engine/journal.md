@@ -6479,3 +6479,29 @@ wait on #24. Navigator convene HELD for #24's full landing (per the elder trigge
 the CONCRETE rebuild incl. Rg placement then; the tier structure + critical path are already
 clear from the ledger, so premature to convene now). Critical path: #24 Rg → Rg build →
 birth-neutrality re-verify → value lane.
+
+## 2026-07-20 tick 391: THE ORDER KILL — completed α correct but ONLY root-first; Lean tree is leaf-first
+pnp-rg's #24 (cert-rg-shape.md, 47ffbe3f4) — the biggest structural finding, subsuming the α
+gap: (b) the completed α (elder's Q,P: pivot-col Lg + pivot-row Rg forward S→S+1) IS CORRECT,
+monomializes prod to the EXACT Aoyagi b-chain (divisors = layer determinants) at (2,2,2)/
+(2,2,2,2). BUT ONLY ROOT-FIRST (layer 0 to the source first, Aoyagi's reduction). The Lean
+tree is LEAF-FIRST (tGeoG: acc ∘ geoChartMapNorm, deepest first; conRoot.layer=0 +
+stepRollover=layer+1). EXHAUSTIVE search {sign}×{coupling}×{order}: NO leaf-first config is
+clean+faithful — leaf-first-clean gives a DIFFERENT b-chain ⟹ WRONG RLCT. Diagnosis: the
+collection-lemma kill gone CROSS-LAYER — α at layer S writes ALL of C^{(S+1)}, which the
+descendant layer-(S+1) owns; leaf-first runs the descendant FIRST, so the Rg write lands after
+C^{(S+1)} is consumed. No spine edge (case-step/rollover) carries a forward coupling preceding
+its descendants. FIX = composition-ORDER change: (1) re-thread tGeoG geoChartMapNorm ∘ acc
+(root-first) or (2) reorient tree root = layer L-1. RIPPLE: DET lane order-BLIND (fold_det +
+both leafJacobians CONCLUSIONS survive); cover/srcBox + value lane re-verify; the ~260-line
+cocycle WALK is threaded leaf-first (proof-flip risk on the payoff cone). PATTERN NOTE: the
+value lane surfaced TWO latent structural issues in two ticks (α gap, order) — both invisible
+to the det/cover/image consumers, visible only to the value lower bound. ROUTED: elder
+(ratify root-first fidelity + rule re-thread vs reorient + the payoff-cone proof-flip risk) +
+navigator-7 CONVENED (price the rework per route S/M/L/XL + THE REACHABILITY CALL: is the
+spine still closable this expedition, or bank-conditional + re-scope the value lane to a
+follow-up? + is a THIRD probe warranted before committing the rework?). loss-t15 + walk-t20 +
+t14 HELD (don't build in the leaf-first frame). pnp-rg stood down with honors (3 certs = the
+decorrelated backbone). Templates + ledger merged (02f3422fb, order-blind, survive). This is
+the honest inflection point — named plainly; the reachability judgment is the elder's + the
+navigator's to inform, the operator's if it turns on scope.
