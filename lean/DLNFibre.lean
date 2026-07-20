@@ -23,17 +23,10 @@ import DLNFibre.Core.CThetaDropM
 import DLNFibre.Core.CThetaValue
 import DLNFibre.Core.CThetaThetaBridge
 -- Voigt-discharge / geometric-codimension Core engine (PR #4, merged to dev).
-import DLNFibre.Core.IntegralDimension
 import DLNFibre.Core.PolynomialDimension
-import DLNFibre.Core.NoetherMonicPositioning
 import DLNFibre.Core.NullstellensatzCodim
-import DLNFibre.Core.AffineDomainDimension
-import DLNFibre.Core.FlatQuasiFiniteHeight
-import DLNFibre.Core.SmoothLocalRelativeDimension
-import DLNFibre.Core.SmoothPointRegular
 import DLNFibre.Core.PolynomialCurveLimit
 import DLNFibre.Core.OrbitVariety
-import DLNFibre.Core.CotangentJacobian
 import DLNFibre.Core.BoxMoveDegeneration
 import DLNFibre.Core.RankLocusClosed
 import DLNFibre.Core.BoxMoveGeneral
@@ -42,10 +35,8 @@ import DLNFibre.Core.OrbitClosure
 import DLNFibre.Core.OrbitPullbackDim
 import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.AffineNoetherRank
-import DLNFibre.Core.JacobianTrdeg
 import DLNFibre.Core.OrbitImageDim
 import DLNFibre.Core.OrbitDifferential
-import DLNFibre.Core.MatrixKaehler
 import DLNFibre.Core.OrbitDifferentialRank
 import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.VoigtDischarge
@@ -102,7 +93,6 @@ import DLNFibre.Core.FibreNormalForm
 -- Determinantal pivot-chart presentation (rank-chart build G2-1): the Schur rank criterion
 -- rank (fromBlocks Δ B12 B21 B22) = card m ↔ B22 = B21·Δ⁻¹·B12, the explicit chart parametrization
 -- Mat^{rk=r}∩U ≅ GL_r × Mat × Mat, + reusable block-diag rank additivity. Feeds G2-3 (the Schur AlgEquiv).
-import DLNFibre.Core.DeterminantalChart
 -- Bordered Schur minor (G2-2 sub-rung 1): det [[Δ,u],[v,d]] = d·detΔ − v·adjΔ·u over ANY CommRing
 -- (universal-coefficient route, no invertible pivot), and the Schur expression = an (r+1)-minor ⟹
 -- vanishes on Mat^{rk≤r}. The generator-free handle for the localized base presentation (dodges
@@ -110,9 +100,7 @@ import DLNFibre.Core.DeterminantalChart
 import DLNFibre.Core.DeterminantalChartRing
 -- ker of a multivariate aeval = the graph ideal (reusable, arbitrary index type), + the elimination
 -- quotient equiv + graph-ideal primality. The generator-free elimination engine (G2-2).
-import DLNFibre.Core.MvPolynomialKerAeval
 -- Height of a block graph ideal over a field = #eliminated vars (catenary). The `height J = C` engine (G2-2).
-import DLNFibre.Core.GraphIdealHeight
 -- Reindex + detΔ-localization bridge for the determinantal base: repCoordReindex, blockAlgEquiv
 -- (A_eng ≃ MvPolynomial B22block (MvPolynomial SchurVar k)), blockAlgEquiv_detPivot (detΔ ↦ C detSchurS).
 -- The reindex/detΔ infra feeding the final localized-base presentation (G2-2 D2).
@@ -193,7 +181,6 @@ import DLNFibre.Core.ClosureBridge
 -- (diag(I_r,0) rank; rank=0 iff 0; block-diagonal rank-additivity).
 import DLNFibre.Core.RankNormalFormDim
 -- rung-1 chart-membership iff: rank(mult A) ≤ r ⟺ Schur block = 0 on detΔ≠0.
-import DLNFibre.Core.SchurChartIff
 -- rung-3 +δ: varietyDim W = varietyDim F + card ι from a coordinate-ring AlgEquiv (domain-free).
 import DLNFibre.Core.VarietyDimPolyExtension
 -- rung-2a chart normalization: L⁻¹·M·H⁻¹ = diag(I_r,0) over k + factor_chart_matrix (L·E·H = M).
@@ -203,13 +190,11 @@ import DLNFibre.Core.ChartRetraction
 -- rung-2 set-level chart bijection Σ^r∩U_Δ ≅ base × F, both directions (round-trip).
 import DLNFibre.Core.ChartBijection
 -- no-drop ≤ half: ringKrullDim(localization) ≤ ringKrullDim of the ring.
-import DLNFibre.Core.LocalizationKrullDim
 -- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
 -- (gaugeEquiv(endpointGauge)(multPoly) = L⁻¹·multPoly·H⁻¹).
 import DLNFibre.Core.ChartGaugeNormalize
 -- no-drop machinery (shared by step-4/5): affine-domain dim(D[1/g])=dim D + the abstract
 -- no-drop dim(R[1/g])=dim R when g avoids a top prime of a reducible Noetherian R.
-import DLNFibre.Core.AffineLocalizationNoDrop
 -- route-3 dimension-arithmetic wrapper (localized chart AlgEquiv + the two no-drops).
 import DLNFibre.Core.ChartLocalizedPolyDim
 -- schur-side no-drop input (dim(P[1/gfib]) = dim P for P a polynomial extension of O(F)).
@@ -1467,20 +1452,16 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
--- L=1 Aoyagi headline endpoint (unconditional, regular Morse) + the #108 ∀L≥1 case-split pre-stage
--- (`aoyagi_learning_coefficient_prestage`, carrying the single `hDescent : DecoratedDescent` hypothesis).
+-- L=1 Aoyagi headline endpoint (`aoyagi_learning_coefficient_L1`, unconditional, regular Morse).
+-- (The Engine-based `_prestage` wrapper was dropped with the Engine archive, 2026-07-20.)
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
--- Engine (aoyagi-engine expedition): carrier-facing definitions, explicit per single-writer
--- convention (already transitively present via RLCT.AxCheck → EngineObligations).
-import DLNFibre.DLN.RLCT.Engine.EngineDefs
+-- [archive Engine 2026-07-20] The α-atlas chart Engine (`DLN/RLCT/Engine/**`) is UN-WIRED from the
+-- build (charter §3, category-false / DO-NOT-FILL). Files stay in-repo, imported by nothing → they
+-- drop out of the sorry census. Removed here: `Engine.EngineDefs`, `Engine.PivotCover`,
+-- `Engine.GeoInvValMaint`.
 -- Light all-layer homogeneity closure (re-homed from D1L2ExplicitCoreProducer, 2026-07-18;
--- ~3x build-time cut for the region-glue lane).
+-- ~3x build-time cut for the region-glue lane). KEPT (Foundations, not Engine).
 import DLNFibre.DLN.RLCT.Foundations.FlatNodeHomogeneity
--- T3 coverage rung 1: the per-blow-up pivot-chart covering atom (+ the corner ¬-theorem).
-import DLNFibre.DLN.RLCT.Engine.PivotCover
--- Loss value-walk maintenance (downstream of GeoAtlasTransfer): the InvVal3 four-case walk that
--- closes leafDiagFrob_geoAtlasNorm. Re-homed here (not GeoAlphaGauge, upstream) — see module docstring.
-import DLNFibre.DLN.RLCT.Engine.GeoInvValMaint
 -- The CONDITIONAL SPINE (durable deliverable, RULED KEEP): aoyagi_learning_coefficient_of_boxThresholdFinite
 -- = the full ∀L≥1 headline (aoyagi = C/2) given hbox : RouteMBoxThresholdFinite (fun s => H s − r) —
 -- the ROUTE-AGNOSTIC, SATISFIABLE box-finiteness Prop (NOT the α-atlas chartBridgeFaithful, whose

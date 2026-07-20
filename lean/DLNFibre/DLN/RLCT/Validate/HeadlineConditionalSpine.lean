@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.HeadlineL1Mint
+import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 
 set_option linter.style.longLine false

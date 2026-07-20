@@ -96,7 +96,7 @@ theorem corank_survival_ae {b m D : ℕ} (Zdeep : Matrix (Fin m) (Fin D) ℝ) (h
   -- `b ≥ 1`: extract `b` independent rows/cols of `Zdeep` (the achievability witness).
   obtain ⟨c, rfl⟩ : ∃ c, b = c + 1 := ⟨b - 1, by omega⟩
   obtain ⟨er, ec, her, hec, hdet⟩ :=
-    Core.exists_submatrix_det_ne_zero_of_le_rank Zdeep (r := c) hb
+    Matrix.exists_submatrix_det_ne_zero_of_le_rank Zdeep (r := c) hb
   -- the polynomial `P` = the `ec`-minor of the generic `A · Zdeep`
   set Agen : Matrix (Fin (c + 1)) (Fin m) (MvPolynomial (Fin (c + 1) × Fin m) ℝ) :=
     Matrix.of (fun i j ↦ X (i, j)) with hAgen
@@ -153,7 +153,7 @@ theorem corank_survival_ae {b m D : ℕ} (Zdeep : Matrix (Fin m) (Fin D) ℝ) (h
   -- if rank `< c+1`, the `ec`-minor would vanish (contradiction)
   by_contra hlt
   rw [not_le] at hlt
-  exact hA (Core.submatrix_det_eq_zero_of_rank_le (A := Matrix.of A * Zdeep) (r := c)
+  exact hA (Matrix.submatrix_det_eq_zero_of_rank_le (A := Matrix.of A * Zdeep) (r := c)
     (by omega) id ec)
 
 end DLNFibre.DLN.RLCT

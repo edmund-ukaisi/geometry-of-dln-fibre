@@ -625,7 +625,7 @@ theorem exists_minor_of_le_rank {p q m : ℕ} (A : Matrix (Fin p) (Fin q) ℝ) (
   | zero =>
       refine ⟨Fin.elim0, Fin.elim0, fun a => a.elim0, fun a => a.elim0, ?_⟩
       rw [Matrix.det_eq_one_of_card_eq_zero (by simp)]; exact one_ne_zero
-  | succ k => exact DLNFibre.Core.exists_submatrix_det_ne_zero_of_le_rank A hm
+  | succ k => exact Matrix.exists_submatrix_det_ne_zero_of_le_rank A hm
 
 /-- **#229 — the invertible `nReg`-minor of the flat Jacobian.** At an optimal `v` (`prod v = B`,
 `rank B = r`), there are injective index maps `er` (selected loss entries) and `ec` (selected flat
