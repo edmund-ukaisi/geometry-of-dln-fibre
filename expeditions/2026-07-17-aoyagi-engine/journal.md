@@ -6881,3 +6881,25 @@ instinct is right): the follow-up must BUILD the ideal-RLCT object (Lemma 1 + ma
 real standalone library to full generality FROM THE START — not as a patch — AND probe its
 closability with decorrelated rigor before trusting the clean headline. Assessment recorded for
 the close synthesis.
+
+## 2026-07-20 tick 410: honest deliverable landed (hbox spine merged); navigator #9 follow-up brief; depth-3 ideal probe COMMISSIONED
+mint-t19's honest re-base MERGED (f44e365e2): aoyagi_learning_coefficient_of_boxThresholdFinite
+on hbox (route-agnostic, force-#print clean-three); the vacuous chartBridgeFaithful form is
+gone; aggregator docstring corrected (dead α-seam removed). Gate-check confirmed: _gen IS the
+L≥2 honest deliverable (conditions on hbox generically; bypasses the α-atlas-bound
+coverage_theorem/engine_box_threshold_finite). mint-t19 taking the refuted-as-stated labeling
+(ChartBridgeFaithful/GeoAlphaGauge, doc-pointers to cert §6), then stands down.
+NAVIGATOR #9 (follow-up opening brief): a WELL-SCOPED RESEARCH expedition, ONE hard theorem B
+(the per-chart ideal reduction ⟨∏C∘chart⟩=⟨b_i⟩, depth-≥3 SchurCore wall = long pole/risk) on
+HEAVY banked reuse (the leaf-first engine/cover/exponents/o5/minAdm_eq_cCodim/#8-engine KEPT,
+NOT re-threaded; only the per-chart finiteness INPUT re-routes: Hleaf ← B+C+D; C rides banked
+rlctAt_mono, D rides banked monomialThreshold). Recommendation: de-risk B with a depth-3 probe
+BEFORE the Lean spine + a Lemma-1-direction fidelity check. ADOPTED. COMMISSIONED the depth-3
+probe (pnp-ideal, decorrelated): ⟨∏C∘chart⟩=⟨b_i⟩ at L=3/(2,2,2,2), both inclusions exact,
+depth-2-vs-3 comparison, the Lemma-1-direction pin — telescopes (route i tractable) vs walls
+(route ii fork). This is the make-or-break datum for the follow-up's reachability + the
+operator's launch call + the DIRECT EVIDENCE on the operator's cul-de-sac question (is the
+ideal route genuinely tractable or another optimistic headline?). Following through on my
+assessment to the operator ("probe the ideal route's closability before trusting it") with the
+actual probe. navigator #10 at pnp-ideal's verdict → the concrete follow-up spine. elder charge
+closed (co-reads the close synthesis; provisional-mid-reckoning lesson affirmed).
