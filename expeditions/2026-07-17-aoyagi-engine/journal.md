@@ -5484,3 +5484,20 @@ unchanged — the low-risk claim held). t14's four-stage arc is COMPLETE from it
 stages 1-4 all banked + probed, axiom-clean three throughout, on the exact staging
 discipline ruled at tick 329. Integration gate running (t14's own full build also in
 flight — the doubled-gate discipline); push + t14's honors ride the green.
+
+## 2026-07-20 tick 339: calibration 13 — THE ATLAS SEAM (id vs α) caught pre-collision; elder charged
+Drift-glance: loss-t15 ACTIVE (commit f14c2fa42, leaf end of the value walk PROVEN — InvVal
+at a cleared leaf collapses to diagonal(bmon) → leafDiagFrob_of_prodDiag; remaining = base +
+4 maintenance cases + walk instantiation, staged). Both gates still compiling (integration
+AxCheck + t14's full build). Used the idle window for calibration entry 13 (the seam probe):
+PARTIAL MISS, and the miss is the product — t14's whole proven (B)/(C) inventory is over the
+id-gauge atlas (geoAtlas = leaves (tGeo id t)); LeafPullback arrives over the α atlas
+(geoAtlasNorm alphaGauge); clause (D)₁ pins atlas = geoAtlas t by rfl; LeafPullback at id is
+likely FALSE. One witness must satisfy ALL conjuncts ⟹ the assembly needs a (D)₁ amendment
++ a transfer batch (cover image-invariance, ledger preservation, ae-inj through the det-1
+shear, Jacobian det-1-transparency — the last REQUIRES α to fix the div coordinates: check).
+The pre-staged wiring note named only the cover transfer — underpriced. Elder charged with
+the statement ruling ((a) witness-swap + transfers vs (b) slot-flip; my lean (a)) + the
+paper-touchstone read (is the α-sheared chart the chart Aoyagi integrates over?). The
+tick-284 sorry-mask lesson applied FORWARD: the gate statement gets ruled before the lanes
+collide, not after. Transfer batch is loss-t15-independent — can start once ruled.
