@@ -1,5 +1,24 @@
 # Priorities — aoyagi-engine (council #3 roadmap ADOPTED, 2026-07-18; full-mechanism framing)
 
+## ⚑ INFLECTION (tick 396) — ORDER KILL → SPLIT DELIVERABLE (operator scope decision pending)
+The value lane surfaced a fidelity-MANDATORY order fix: the completed α monomializes only
+ROOT-FIRST; the Lean tree is LEAF-FIRST (pnp-rg cert-rg-shape). Leaf-first = WRONG RLCT
+(elder page-verified, worked.tex:375-390). Fix = re-thread tGeoG root-first (elder-ruled;
+route 2 reorient rejected XL). t14's probe: the cocycle re-thread is REBUILD-L (telescoping
+re-derives; det conclusion order-blind survives). navigator-7 pass #7 RECOMMENDS + I ENDORSE:
+(1) BANK the CONDITIONAL spine now (aoyagi = C/2 conditional on chartBridgeFaithful's two
+frontiers — cover :823 + value :661; everything above the atlas is clean-three, order-
+independent, survives) — durable, cannot be lost; (2) THIRD PROBE (pnp-full, running) — full
+value walk + det ledger-SHAPE + the Lg-div-free wrinkle end-to-end over completed-α+root-first
+at 4 M's, hunting issue #3; (3) likely RE-SCOPE the value lane + order fix to a FOCUSED
+follow-up that builds root-first + α-complete FROM THE START (no patch-on-patch, no payoff-cone
+re-open). DECISION CRITERION: full unconditional closes THIS expedition ONLY IF probe clean AND
+combined rebuild + never-built value lane land within runway; base rate favors bank+follow-up.
+OPERATOR SCOPE CALL SURFACED (push full-close vs bank-conditional+re-scope). All build lanes
+HELD. The math is settled (fix mandatory, bounded, destination unchanged); the question is WHERE
+the value lane closes. Process WIN: a green-but-wrong-RLCT spine was caught before shipping.
+
+
 The library is the artifact; the learning coefficient theorem is the destination. Path A is the
 SOLE critical path (fork 11): hbox = coverage (R2) + region_glue (R3) → the UNCONDITIONAL
 CLEAN-THREE headline (kills the 5 skeleton-rung sorryAx; cited_aoyagi_dln is the out-of-scope

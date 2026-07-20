@@ -6585,3 +6585,24 @@ spine + corrected-order roadmap; value lane + order fix to a focused follow-up) 
 navigator-7's structured call to recommend + the OPERATOR's to decide (a scope/honest-ceiling
 decision). I SURFACE navigator-7's recommendation to the operator once it lands. All lanes
 held. t14's probe was the right measurement — it's what the whole call turns on.
+
+## 2026-07-20 tick 396: navigator #7 = SPLIT deliverable (bank conditional + probe-gate + likely re-scope); operator scope call surfaced
+navigator-7 pass #7 (two-channel): Route 1 (re-thread) accepted, route 2 (reorient) dropped
+(XL, re-opens the state spine + mint). REACHABILITY = bank the conditional spine NOW +
+probe-gate + be ready to re-scope the value lane to a follow-up; full unconditional close
+this expedition is NOT the base-rate bet (REBUILD-L cocycle + never-built four-case value
+lane + TWO open cone holes [cover :823, value :661] + the 3-prior-value-boundary-miss
+pattern). Route 1 shares its crux (Rg⊥birth = alphaGauge_fixes_birthFlatCoord) with the α
+completion → ONE combined pass. PAYOFF-CONE risk flagged: the ledgerMonomial birth-coord
+SHAPE under root-first is UNVERIFIED (the dual-spectator). pnp-rg follow-ups: (J,J) CLEAN
+(fresh-divisor read survives); oracle re-confirms root-first; Lg = LAYER-S-LOCAL not
+cross-cell→S-1 (refuted loss-t15's read); the Lg div-free flatElemShear realization is
+UNRESOLVED (divides by the corner — a possible 4th obligation). ADOPTED navigator's SPLIT +
+commissioned the THIRD PROBE (pnp-full, fresh/decorrelated): full value walk + det
+ledger-shape + the Lg wrinkle end-to-end over completed-α+root-first at 4 M's, hunting issue
+#3, BEFORE any Lean commit. HELD the re-thread commit behind the probe (if re-scope, the
+follow-up may build root-first NATIVELY, not re-thread-in-place — don't spend the L rebuild
+pre-scope-decision). SURFACED the operator scope decision (push full-close vs
+bank-conditional+re-scope). Priorities inflection banner added. pnp-rg stood down (backbone
+of the α/order reckoning). All build lanes held; the DESIGN side (loss-t15's value lane) is
+banked + survives either path. navigator #8 convenes at the probe landing.
