@@ -129,22 +129,21 @@ theorem succ_eq_one_of_val_zero (j : Fin L) (h : j.val = 0) : j.succ = (1 : Fin 
   rw [Fin.val_succ, h]
   omega
 
-/-- `admBound M j ≤ M^{j+1}`: at `j = 0` it is `min(M⁰,M¹) ≤ M¹ = M^{j+1}`; else it is `M^{j+1}`. -/
-theorem admBound_le_Msucc (M : Fin (L + 1) → ℕ) (j : Fin L) : admBound M j ≤ M j.succ := by
+/-- `admBound M j ≤ M^{j+1}`: at `j = 0` it is `min(M⁰,M¹) ≤ M¹ = M^{j+1}`; else it is `M^{j+1}`.
+(Module-private: `Skeleton` has its own private `admBound_le_Msucc`; this avoids the name clash.) -/
+private theorem admBound_le_Msucc (M : Fin (L + 1) → ℕ) (j : Fin L) : admBound M j ≤ M j.succ := by
   unfold admBound
   split
   · next h => rw [succ_eq_one_of_val_zero j h]; exact min_le_right _ _
   · next h => exact le_refl _
 
-/-- Every summand of `Mval` is a product of two nonnegatives on the admissible cone, so `Mval ≥ 0`
-there: `tPrev − Tⱼ ≥ 0` (weak-decrease, and `T₀ ≤ min(M⁰,M¹) ≤ M⁰`) and `M^{j+1} − Tⱼ ≥ 0`
+/-- Each summand of `Mval` is a product of two nonnegatives on the admissible cone:
+`tPrev − Tⱼ ≥ 0` (weak-decrease, and `T₀ ≤ min(M⁰,M¹) ≤ M⁰`) and `M^{j+1} − Tⱼ ≥ 0`
 (`Tⱼ ≤ admBound ≤ M^{j+1}`). -/
-theorem Mval_nonneg_of_mem_Adm (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
-    0 ≤ Mval M T := by
+theorem Mval_term_nonneg (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (j : Fin L) :
+    0 ≤ (tPrev M T j - (T j : ℤ)) * ((M j.succ : ℤ) - (T j : ℤ)) := by
   rw [Adm, mem_filter] at hT
   obtain ⟨-, hbound, hdec, -⟩ := hT
-  apply Finset.sum_nonneg
-  intro j _
   apply mul_nonneg
   · -- `0 ≤ tPrev M T j − T j`
     rw [sub_nonneg]
@@ -164,6 +163,11 @@ theorem Mval_nonneg_of_mem_Adm (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT
   · -- `0 ≤ M j.succ − T j`
     rw [sub_nonneg]
     exact_mod_cast le_trans (hbound j) (admBound_le_Msucc M j)
+
+/-- `Mval ≥ 0` on the admissible cone (each summand is nonnegative). -/
+theorem Mval_nonneg_of_mem_Adm (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) :
+    0 ≤ Mval M T :=
+  Finset.sum_nonneg (fun j _ => Mval_term_nonneg M T hT j)
 
 /-- Running prefix-minimum `min(M⁰,…,M^{j+1})` (over indices `i ≤ j.succ`): the witness that
 realises `Mval = 0` at a zero reduced width. -/
@@ -259,6 +263,62 @@ theorem lambdaCore_eq_zero_of_exists_width_zero (M : Fin (L + 1) → ℕ) (hz : 
         _ = 0 := Mval_runMin_eq_zero M hz
     · exact Finset.le_inf' _ _ (fun T hT => Mval_nonneg_of_mem_Adm M T hT)
   unfold lambdaCore; rw [hmin]; simp
+
+/-- **Converse** (needs `0 < L`): `lambdaCore M = 0 ⟹ ∃ s, M s = 0`. Contrapositive — all-positive
+widths force `Mval > 0` on the whole cone: at a `Mval`-minimiser `T` every summand vanishes, so a
+downward cascade (`Fin.reverseInduction` from `T` last `= 0`) gives `T ≡ 0`, whence the first
+summand is `M⁰·M¹ > 0`, a contradiction. (At `L = 0` the empty `Mval` is `0` regardless, so `0 < L`
+is needed.) Brute-force verified alongside the forward direction. -/
+theorem exists_width_zero_of_lambdaCore_eq_zero (hL : 0 < L) (M : Fin (L + 1) → ℕ)
+    (h : lambdaCore M = 0) : ∃ s, M s = 0 := by
+  by_contra hcon
+  push_neg at hcon
+  have hpos : ∀ s, 0 < M s := fun s => Nat.pos_of_ne_zero (hcon s)
+  have hinf : (Adm M).inf' (Adm_nonempty M) (Mval M) = 0 := by
+    unfold lambdaCore at h
+    have h2 := (mul_eq_zero.mp h).resolve_left (by norm_num)
+    exact_mod_cast h2
+  obtain ⟨T, hT, hTval⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+  rw [hinf] at hTval
+  have hterms : ∀ j : Fin L, (tPrev M T j - (T j : ℤ)) * ((M j.succ : ℤ) - (T j : ℤ)) = 0 := by
+    have hsum : ∑ j : Fin L, (tPrev M T j - (T j : ℤ)) * ((M j.succ : ℤ) - (T j : ℤ)) = 0 :=
+      hTval.symm
+    have hz := (Finset.sum_eq_zero_iff_of_nonneg
+      (fun j _ => Mval_term_nonneg M T hT j)).mp hsum
+    exact fun j => hz j (Finset.mem_univ j)
+  rw [Adm, mem_filter] at hT
+  obtain ⟨-, -, -, hlast⟩ := hT
+  obtain ⟨n, rfl⟩ : ∃ n, L = n + 1 := ⟨L - 1, by omega⟩
+  have hzero : ∀ j : Fin (n + 1), T j = 0 := by
+    refine Fin.reverseInduction ?_ ?_
+    · exact hlast (Fin.last n) (by simp)
+    · intro i hi
+      have ht := hterms i.succ
+      rw [hi] at ht
+      have htp : tPrev M T i.succ = (T i.castSucc : ℤ) := by
+        unfold tPrev
+        rw [if_neg (show i.succ.val ≠ 0 by rw [Fin.val_succ]; omega)]
+        congr 2
+      rw [htp] at ht
+      simp only [Nat.cast_zero, sub_zero] at ht
+      have hmpos : (0 : ℤ) < (M i.succ.succ : ℤ) := by exact_mod_cast hpos _
+      rcases mul_eq_zero.mp ht with h0 | h0
+      · exact_mod_cast h0
+      · exact absurd h0 hmpos.ne'
+  have ht0 := hterms 0
+  rw [hzero 0] at ht0
+  have htp0 : tPrev M T 0 = (M 0 : ℤ) := by unfold tPrev; rw [if_pos (by simp)]
+  rw [htp0] at ht0
+  simp only [Nat.cast_zero, sub_zero] at ht0
+  have hpp : (0 : ℤ) < (M 0 : ℤ) * (M (Fin.succ 0) : ℤ) :=
+    mul_pos (by exact_mod_cast hpos 0) (by exact_mod_cast hpos _)
+  rw [ht0] at hpp
+  exact absurd hpp (lt_irrefl 0)
+
+/-- **Characterisation** (`0 < L`): the singular core vanishes exactly at a zero reduced width. -/
+theorem lambdaCore_eq_zero_iff (hL : 0 < L) (M : Fin (L + 1) → ℕ) :
+    lambdaCore M = 0 ↔ ∃ s, M s = 0 :=
+  ⟨exists_width_zero_of_lambdaCore_eq_zero hL M, lambdaCore_eq_zero_of_exists_width_zero M⟩
 
 /-- **`aoyagiLambda` at a zero reduced width**: if `H s ≤ r` for some `s` (a layer at rank `≤ r`,
 so `M^{(s)} = H^{(s)} − r = 0`) then `aoyagiLambda` degenerates to the regular Morse block alone
