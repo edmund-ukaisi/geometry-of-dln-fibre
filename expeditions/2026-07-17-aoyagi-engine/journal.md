@@ -5264,3 +5264,20 @@ terminal case direct — ledgerMonomial IS the RHS) → the R7 ∃-discharge per
 landing. THE BOARD: t14 (the last hard arc) ∥ theta-t18 (statement card pending) ∥ pnp-r4
 (the design cert) ∥ loss-t15 (trigger: t14) ∥ the offices. Everything else is done or owed
 post-spine.
+
+## 2026-07-20 tick 327: theta-t18's statement card gated — (b)+lane-4 GRIND; (c) one-beat elder check; lane-6 hygiene banked
+The card (sympy + exhaustive brute-force throughout): (b) the Lemma-3 tie via the master
+identity Aval_sub_min (Aval − min = ℓ²(b−a)(b−a+1) — min, tie, AND exact-minimisers in one
+ring lemma; the real M10 gap); LANE 4: lambdaCore = 0 ⟺ ∃ zero width (9324 vectors
+exhaustive; the prefix-min witness; the meaningful corollary — the singular core vanishes,
+only the regular Morse block remains); the non-identity guard docstring; the (ℓ,a) selector
+kept abstract (the Def-3 binding stays out, consistent). ALL GO'd on the single pass.
+(c) THE SCOPING FINDING (a real catch): the EXACT binding-branch count consumes the
+Case-1(2) J-increment = RESOLUTION-TREE bookkeeping — the elder's "elementary" sizing priced
+only the arithmetic shadow. t18's proposal: ship the width-independent envelope-band shadow
+(bandTotal = a(ℓ−a), the Lemma-5 parallelogram; aoyagiTheta = bandTotal + 1) with the
+precisely-scoped docstring. HELD ONE BEAT for elder charge-9 (fidelity: is the shadow the
+right honest content, with the tree-dependent identification a NAMED post-spine follow-on —
+my lean — or too little to call the item delivered). ALSO BANKED: lane-6's AxCheck hygiene
+(the rebuild green; 11 stale expectations rewritten historical; the banner resolved on the
+verified zero-footprint fact). Both controller lanes of the navigator disposition complete.
