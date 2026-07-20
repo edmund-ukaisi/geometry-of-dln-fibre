@@ -7006,3 +7006,48 @@ durable deliverable is VERIFIED: L≤2 unconditional clean-three; general-L cond
 satisfiable box-finiteness (L≥3 = the ideal-level follow-up). KEEP reconciliation complete;
 mint contribution closed honest with teeth. pnp-ideal depth-3 verdict = the remaining gate
 (follow-up reachability + the operator's cul-de-sac evidence).
+
+## 2026-07-20 tick 416: pnp-ideal depth-3 verdict = TELESCOPES — controller-VERIFIED against the batteries (math sound; one evidence-hygiene gap; Lemma-1 pin confirmed)
+THE GATE LANDED. pnp-ideal (cert-ideal-reduction-depth3.md, 768e7d5): the per-chart IDEAL
+reduction TELESCOPES for M=(2,2,2,2) — `⟨C¹C²C³∘chart⟩ = ⟨α₀ρ₀α₁ρ₁αF⟩` (monomial), both
+inclusions, RLCT 3/2 = ½·min Mval. NO depth-≥3 SchurCore wall (the navigator's flagged wall is
+real ONLY for the naive ONE-SHOT, which the depth recursion does not use). Scoped caveat
+(honest boundary): clean-DISJOINT telescoping is a rank-1/full-in-smaller-dim property; every
+branch of (2,2,2,2) is clean (no coupling when all widths ≤2); genuine partial rank-drop
+(first at a layer with min≥3, e.g. (3,3,2,2)) reproduces Aoyagi's COUPLED diag(b) — still
+monomializes (value 2, §5), does NOT wall, but not disjoint.
+
+CONTROLLER VERIFICATION (did NOT trust the headline — make-or-break verdict + the operator's
+found-out-late concern demand observe-before-theorise). Ran the batteries myself:
+- **DECISIVE (`ideal_peel_identity.py`): the single-layer peel is an EXACT SYMBOLIC MATRIX
+  IDENTITY** at depth-2 (tail=I) AND depth-3 (tail=C3 generic): `C1·C2·tail∘chart ==
+  α·ρ·[[1,0],[b,1]]·[[ξ,η],[r,s]]·tail` = True. The `δ→ρ` substitution IS the blow-up of
+  `{δ=u=v=0}` in the ρ-chart (`{delta:rho, u:rho·xi, v:rho·eta}`) — so the δ=ρ tie is DERIVED
+  FROM THE BLOW-UP, not reverse-engineered (the confound I was hunting). L=[[1,0],[b,1]] det=1
+  (unit, stripped); residual = fresh product one factor shorter. This is the mechanism, sound.
+- **`ideal_structure_v2.py`**: composed product, every entry divisible by m=True, U[0,0]=1
+  (unit) ⟹ both inclusions, RLCT 3/2 MATCH=True (both depths).
+- **`ideal_depth_recursion.py`**: corner = fresh blow-up coord (unit) at every depth; no wall.
+- **Lemma-1 direction pin CONFIRMED** (`ideal_lemma1_direction.py`): worked.tex:156 prints
+  `G∈J ⟹ rlct(ΣG²) ≥ rlct(ΣF²)` — BACKWARDS; correct is `≤` (cert: F=u, G=u²∈⟨u⟩,
+  rlct(u⁴)=1/4 < 1/2=rlct(u²)). Lean `rlctAt_mono` (≤) is right. Harmless for the equality
+  use (both inclusions ⟹ =); the one-sided print should flip. A genuine fidelity catch.
+- **ONE EVIDENCE-HYGIENE GAP (surfaced, not fatal)**: the cert cites "5 batteries, all
+  exit-0" as corroboration, but `ideal_equality_rigorous.py` (09:29, superseded intermediate)
+  PRINTS THE OPPOSITE of the headline (⊆ False, equality False) — it left δ FREE at the
+  intermediate incidence steps instead of applying the blow-up's δ=ρ. The seat DIAGNOSED and
+  FIXED this (structure_diagnose 09:30 → structure_v2 09:32) but left the buggy script in the
+  battery dir and folded its exit-0 into the "all exit-0" count. EXIT-0 ≠ BATTERY-CONTENT-TRUE
+  (the green-≠-correct trap, in battery form). Not a math error — but the framing overstates
+  corroboration and would trip the follow-up. → pnp-ideal to annotate/remove the superseded
+  script + reconcile the count to "3 corroborating + 1 superseded-buggy + Lemma-1 pin".
+
+VERDICT ON THE VERDICT: **math SOUND, telescoping REAL, tie DERIVED, both inclusions HOLD,
+RLCT matches, boundary honestly mapped.** This is the concrete evidence on the operator's
+cul-de-sac question: NOT a cul-de-sac from avoiding the hard part — the ideal-level pivot was
+the CORRECT reframe after the α-chart was proven category-impossible, and the hard part
+(depth-≥3 recursion) is now MAPPED and tractable for the (2,2,2,2)-class target, with the
+width≥3 coupled boundary precisely located (not avoided). NEXT: relay to elder (fold into
+compass, author-of-record); convene navigator #10 (price the concrete follow-up spine, route i
+= telescopes); pnp-ideal evidence-hygiene fix + HOLD the coupled (3,3,2,2) endpoint for the
+follow-up scope decision (operator-gated); assemble + surface the operator's decision package.

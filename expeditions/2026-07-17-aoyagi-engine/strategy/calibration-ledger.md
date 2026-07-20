@@ -672,3 +672,43 @@ for ALL charts, making any chart-CoV-conditioned bank vacuous (the vacuity sits 
 where navigator first placed it). Meta-note: I propagated the elder's over-correction into this
 entry before it retracted — a reminder to mark office rulings provisional until the office
 confirms, especially mid-reckoning.
+
+## Entry 23 (2026-07-20, tick 416) — the depth-3 ideal-reduction probe: TELESCOPE-vs-WALL + the verification meta
+**The load-bearing question** (the make-or-break gate): does the per-chart IDEAL reduction
+`⟨∏C∘chart⟩=⟨b_i⟩` telescope through the layers at depth 3 (M=(2,2,2,2)), or WALL at the
+SchurCore depth-≥3 boundary the navigator flagged?
+**Expectation written BEFORE reading the verdict** (my prior, honestly): ~60% telescopes /
+~40% walls. Lean-to-telescope because the LOSS-level depth recursion (verify-r1-shortcut,
+Codex-corroborated) already worked and unimodular ideal ops are "easier" than loss
+diagonalization; but the navigator's flagged SchurCore wall was real evidence toward a wall,
+and I'd been burned by found-late faults twice this run (α under-implementation, leaf-first
+order), so I held genuine uncertainty and refused to pre-commit the follow-up.
+Second expectation: the cert would be internally clean (trusted seat, batteries committed
+exit-0) — I'd relay the headline after a light read (~85% confidence it was clean).
+**Actual**: TELESCOPES, cleanly, depth-blind. The wall was a ONE-SHOT artifact (naive
+iterated-block-elim + one blow-up, already refuted L≥3); the depth recursion sidesteps it —
+each peel is an EXACT single-layer symbolic matrix identity, corner a fresh unit at every
+depth. AND: the cert was NOT internally clean — `ideal_equality_rigorous.py` (exit-0) prints
+the OPPOSITE of the headline (a superseded free-δ intermediate the seat fixed 3 min later but
+left in the dir + folded into "5 batteries all exit-0").
+**HIT / MISS**:
+- HIT (telescope prior, ~60%): leaned the right way; the mechanism is CLEANER than I expected
+  (an exact depth-blind identity, not a case-by-case grind). The SchurCore-wall fear was
+  miscalibrated — it was never a wall for the recursion, only for the one-shot.
+- MISS (cert-internally-clean prior, ~85%): the cert had an unreconciled internal
+  contradiction. Caught ONLY because I read the battery CONTENT, not the exit codes — the
+  make-or-break stakes + the operator's found-late concern forced observe-before-theorise.
+**What it changes**:
+1. The follow-up is TRACTABLE (route i telescopes), not a slog. The concrete cul-de-sac
+   evidence: NOT avoiding the hard part — the ideal reframe was the CORRECT response to the
+   α-chart category no-go, and the depth-≥3 hard part is now MAPPED (all-widths-≤2 clean;
+   width≥3 = Aoyagi coupled diag(b), monomializes, heavier, does NOT wall). Boundary located,
+   not dodged.
+2. Verification discipline REINFORCED (this is altitude-07-20's meta-lesson recurring):
+   green-build ≠ correct becomes EXIT-0 ≠ battery-content-TRUE. Even a trusted decorrelated
+   seat's cert needs a battery-CONTENT read on a make-or-break verdict — the exit code is the
+   floor, the printed True/False is the claim, and the two diverged here. The decisive check
+   was the EXACT symbolic peel identity (not the composed numeric checks), because it proved
+   the δ=ρ tie is DERIVED from the blow-up (not reverse-engineered to force divisibility — the
+   confound I was hunting). Prefer the most-adversarial exact check (the mechanism identity)
+   over the aggregate pass-count.
