@@ -455,4 +455,140 @@ theorem residualSchurShear_fixes_of_not_mem (node : StepData M) (rows cols : ℕ
   rw [residualSchur_flat_read]
   exact elemShearFold_fixed (schurCells node rows cols) (paramsEquivFlat M w) k hk
 
+/-! ## 2a Phase-1 atoms: the ENLARGED-CUBE cover (radius thread ρ_{n+1} = ρ_n(1+ρ_n), root ρ_0 = 1)
+
+Design record: compass fork 15 amendment 5 + the elder's round-3 ruling + cert §7
+(`threads/24-alpha-cover/cert-alpha-cover-hunt.md`). The `srcBox=cube(1)` cover is FALSE (the gap
+point `y=(t,t,t,t)`); the enlarged-cube route KEEPS the cube and only grows its radius — the α's are
+NEVER composed (no `gAcc` pullback). Two Phase-1 atoms + the surjectivity/inverse-shear rearrangement;
+the `tGeoG` radius thread + the reachability induction + the `2b` re-bank are Phase-2 (sequenced after
+walk-t20 + loss-t15 land, to avoid re-typing their live lanes). -/
+
+/-- **The pivot chart domain sits in the cube at radius `R ≥ 1`** (the ratios are `≤ 1 ≤ R`). -/
+theorem pivotChartDom_subset_cubeBox {d : ℕ} (i : Fin d) {R : ℝ} (hR : 1 ≤ R) :
+    pivotChartDom i R ⊆ cubeBox d R := by
+  intro u hu
+  obtain ⟨hui, hratio⟩ := hu
+  rw [cubeBox, Set.mem_pi]
+  intro k _
+  rw [Set.mem_Icc, ← abs_le]
+  by_cases hk : k = i
+  · subst hk; exact hui
+  · exact le_trans (hratio k hk) hR
+
+/-- **The pivot charts self-cover the cube at radius `R ≥ 1`** — the `∀R` domain self-cover
+(`cubeBox_subset_iUnion_pivotChart_image`) with the domains widened to the full cube (`R ≥ 1`, so the
+ratio bound `≤ 1` is absorbed). -/
+theorem cubeBox_subset_iUnion_pivotChart_image_cubeBox {d : ℕ} (hd : 0 < d) {R : ℝ} (hR : 1 ≤ R) :
+    cubeBox d R ⊆ ⋃ i : Fin d, pivotChart i '' cubeBox d R :=
+  (cubeBox_subset_iUnion_pivotChart_image hd (le_trans zero_le_one hR)).trans
+    (Set.iUnion_mono fun i => Set.image_mono (pivotChartDom_subset_cubeBox i hR))
+
+/-- **The center split preserves the cube at any radius `R`** (`qOfCenter_preimage_cubeBox`
+generalized off `R = 1` — the split just reindexes flat coordinates by `centerPerm`, and the cube
+`[-R,R]^N` is permutation-invariant). -/
+theorem qOfCenter_preimage_cubeBox_R {d : ℕ} (c : Fin d → Fin (flatDim M))
+    (hinj : Function.Injective c) {R : ℝ} :
+    (qOfCenter M c hinj) ⁻¹' (cubeBox d R ×ˢ cubeBox (flatDim M - d) R)
+      = ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R := by
+  ext w
+  simp only [Set.mem_preimage, Set.mem_prod, cubeBox, Set.mem_pi, Set.mem_univ, true_implies,
+    Set.mem_Icc, ← abs_le, qOfCenter, Homeomorph.trans_apply,
+    Homeomorph.sumArrowHomeomorphProdArrow_apply, Function.comp_apply,
+    Homeomorph.piCongrLeft_apply, Equiv.piCongrLeft'_symm, Equiv.symm_symm,
+    Equiv.piCongrLeft'_apply, ContinuousLinearEquiv.coe_toHomeomorph, paramsEquivFlatCLE_coe]
+  set e := centerPerm M c hinj with he
+  clear_value e
+  rw [e.forall_congr_left (p := fun a => |(paramsEquivFlat M) w a| ≤ R), Sum.forall]
+
+/-- **The R ≥ 1 node self-cover** (⊇ form): at a reachable node, the `dCenterOfNode`-many
+`qNodeOf`-conjugated pivot charts, applied to the flat cube of radius `R`, cover it. Mirror of
+`node_selfCover` at general `R ≥ 1` (the center coords tile by the `R ≥ 1` self-cover, the spectator
+cube passes through, `qOfCenter_preimage_cubeBox_R` transports back). The radius-threaded tiling
+induction (Phase-2) folds this at each node's own `ρ_n`. -/
+theorem node_selfCover_ge (node : StepData M) (hd : dCenterOfNode M node ≤ flatDim M)
+    (hdpos : 0 < dCenterOfNode M node) {R : ℝ} (hR : 1 ≤ R) :
+    ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R ⊆
+      ⋃ (i : Fin (dCenterOfNode M node)),
+        (fun w => (qNodeOf M node hd).symm (Prod.map (pivotChart i) id (qNodeOf M node hd w)))
+          '' (⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R) := by
+  have hqc : (qNodeOf M node hd) ⁻¹'
+      (cubeBox (dCenterOfNode M node) R ×ˢ cubeBox (flatDim M - dCenterOfNode M node) R)
+      = ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R := by
+    rw [qNodeOf]
+    exact qOfCenter_preimage_cubeBox_R (cNodeOf M node hd) (cNodeOf_injective M node hd)
+  rw [← hqc]
+  have key : ∀ i : Fin (dCenterOfNode M node),
+      (fun w => (qNodeOf M node hd).symm (Prod.map (pivotChart i) id (qNodeOf M node hd w)))
+          '' ((qNodeOf M node hd) ⁻¹'
+              (cubeBox (dCenterOfNode M node) R ×ˢ cubeBox (flatDim M - dCenterOfNode M node) R))
+        = (qNodeOf M node hd).symm ''
+            ((pivotChart i '' cubeBox (dCenterOfNode M node) R)
+              ×ˢ cubeBox (flatDim M - dCenterOfNode M node) R) := by
+    intro i
+    rw [show (fun w => (qNodeOf M node hd).symm (Prod.map (pivotChart i) id (qNodeOf M node hd w)))
+          = ⇑(qNodeOf M node hd).symm ∘ (Prod.map (pivotChart i) id) ∘ ⇑(qNodeOf M node hd) from rfl,
+      Set.image_comp, Set.image_comp, (qNodeOf M node hd).image_preimage, Set.prodMap_image_prod,
+      Set.image_id]
+  simp_rw [key]
+  rw [← Set.image_iUnion, ← Set.iUnion_prod_const, ← Homeomorph.image_symm]
+  exact Set.image_mono (Set.prod_mono
+    (cubeBox_subset_iUnion_pivotChart_image_cubeBox hdpos hR) (le_refl _))
+
+/-! ### Surjectivity of the α gauge + the ⊇ inverse-shear rearrangement -/
+
+/-- A `foldr (· ∘ ·) id` of surjective maps is surjective. -/
+theorem foldrComp_surjective (maps : List (Params M → Params M))
+    (hmaps : ∀ f ∈ maps, Function.Surjective f) :
+    Function.Surjective (maps.foldr (· ∘ ·) id) := by
+  induction maps with
+  | nil => exact Function.surjective_id
+  | cons f rest ih =>
+    rw [List.foldr_cons]
+    exact (hmaps f List.mem_cons_self).comp (ih fun g hg => hmaps g (List.mem_cons_of_mem f hg))
+
+/-- **`flatElemShear a b c` is surjective** (given `a ≠ b`, `a ≠ c`): a conjugate of the bijective
+`elemShearHomeomorph`. -/
+theorem flatElemShear_surjective (a b c : Fin (flatDim M)) (hab : a ≠ b) (hac : a ≠ c) :
+    Function.Surjective (flatElemShear (M := M) a b c) := fun y => by
+  obtain ⟨z, hz⟩ := (elemShearHomeomorph a b c hab hac).surjective (paramsEquivFlat M y)
+  have hz' : elemShear a b c z = paramsEquivFlat M y := hz
+  exact ⟨(paramsEquivFlat M).symm z, by
+    rw [flatElemShear, (paramsEquivFlat M).apply_symm_apply, hz',
+      (paramsEquivFlat M).symm_apply_apply]⟩
+
+/-- **The interior-block Schur fold is surjective** — a composition of surjective `flatElemShear`s. -/
+theorem residualSchurShear_surjective (node : StepData M) (rows cols : ℕ) :
+    Function.Surjective (residualSchurShear node rows cols) := by
+  rw [residualSchurShear, schurMaps]
+  refine foldrComp_surjective _ (fun f hf => ?_)
+  rw [List.mem_map] at hf
+  obtain ⟨abc, hmem, rfl⟩ := hf
+  obtain ⟨hab, hac⟩ := schurCells_ne node rows cols abc hmem
+  exact flatElemShear_surjective abc.1 abc.2.1 abc.2.2 hab hac
+
+/-- **`alphaGauge g` is surjective** — `id` or the surjective interior Schur fold. -/
+theorem alphaGauge_surjective (g : GeoChart M) :
+    Function.Surjective (alphaGauge (M := M) g) := by
+  unfold alphaGauge
+  split
+  · exact Function.surjective_id
+  · exact Function.surjective_id
+  · exact residualSchurShear_surjective _ _ _
+  · exact residualSchurShear_surjective _ _ _
+
+/-- **The ⊇ inverse-shear rearrangement** (the enlarged-cube cover's α step): the flat cube of radius
+`R` sits inside the `alphaGauge g`-image of the cube of radius `R·(1+R)`. From
+`alphaGauge_srcBox_bounded` (`α⁻¹'(cube R) ⊆ cube(R(1+R))`) + surjectivity: `cube R = α''(α⁻¹'(cube R))
+⊆ α''(cube(R(1+R)))`. This is what lets a child covering `cube(ρ_{n+1})`, `ρ_{n+1}=ρ_n(1+ρ_n)`, cover
+`cube(ρ_n)` through the innermost α. -/
+theorem cubeBox_subset_alphaGauge_image (g : GeoChart M) {R : ℝ} (hR : 0 ≤ R) :
+    ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R ⊆
+      alphaGauge (M := M) g '' (⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) (R * (1 + R))) := by
+  intro y hy
+  obtain ⟨x, hx⟩ := alphaGauge_surjective g y
+  refine ⟨x, alphaGauge_srcBox_bounded g hR ?_, hx⟩
+  show alphaGauge (M := M) g x ∈ ⇑(paramsEquivFlat M) ⁻¹' cubeBox (flatDim M) R
+  rw [hx]; exact hy
+
 end DLNFibre.DLN.RLCT.Engine
