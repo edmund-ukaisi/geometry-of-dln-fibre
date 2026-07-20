@@ -5972,3 +5972,20 @@ precondition feeds t14's 2d reads-based bundle — coordinated. RE-OPEN SET cite
 (2b srcBox-line-only; 2c domain via gAcc-homeomorphism + inverse-shear bound; 2d
 unaffected-pointwise; resRank trivial; loss-t15 bounds-only). t14's def commit GATED on
 the pnp verdict; its order stands: clearedOf FIRST.
+
+## 2026-07-20 tick 364: 2d probe PASS (thin wrapper — better than priced); walk handed to walk-t20; clearedOf made t14's sole item
+t14's atoms-first probe delivered the best-case mechanism: the id maintenance atoms are
+GENERIC in acc, so the α maintenance is a THIN WRAPPER — on-cone factorization
+(B^α = B^id∘α) → abs_det_fderiv_comp → the id atom at α w → det-1 → READS-NEUTRALITY
+(the ONE new proof: α fixes the child's birth diagonals ≤ J, writes only > J — the
+tick-343 corrected bundle doing exactly its job). De-risking atoms banked sorry-free
+(72e864821): foldrComp/alphaGauge differentiability + residualSchurShear_fixes_of_not_mem.
+t14 declined the ~300-400-line walk at the tail of a long context (thrash risk vs the
+1334-line payoff-load-bearing cocycle — solid-over-visible, the right call) and handed off
+a complete five-step spec. WALK-T20 spawned on it (branch from t14's tip; wrapper-cocycle
+preferred over in-place if any friction; the id side must stay compiling UNCHANGED —
+that's the one-spine constraint that matters; step-3 note: loss-t15's fannedG helpers
+already exist on integration — merge + reuse). t14's seat reduced to EXACTLY ONE item —
+the clearedOf answer (fourth, canonical ask; three crossings documented) — then parks for
+the pnp-collect verdict (srcBox def batch + 2b re-bank). Mint isolation gate GREEN
+(LAKE-EXIT:0, 0 errors); the combined gate over full integration running.
