@@ -32,6 +32,25 @@ open scoped BigOperators
 
 variable {L : ℕ} {M : Fin (L + 1) → ℕ}
 
+/-! ## The prodAux↔flat-coords bridge (value-maintenance foundation, gate shape 1) -/
+
+/-- **Shape 1 — atomic layer read**: a layer-matrix entry IS its flat coordinate,
+`A s i j = z_{flatCoordOf s i j}(A)`. The `paramsEquivFlat` decode (mirrors the Validate
+`paramsEquivFlat_apply_equivFin`, re-proved here to keep the value-walk chain's deps in Foundations,
+not Validate). The foundation the maintenance uses to read prod entries as flat coords. -/
+theorem layerEntry_eq_flat (A : Params M) (s : Fin L)
+    (i : Fin (M s.castSucc)) (j : Fin (M s.succ)) :
+    A s i j = paramsEquivFlat M A (flatCoordOf M s i j) := by
+  rw [flatCoordOf]
+  symm
+  unfold paramsEquivFlat
+  erw [MeasurableEquiv.trans_apply, MeasurableEquiv.trans_apply]
+  simp only [MeasurableEquiv.coe_piCurry_symm]
+  erw [Equiv.arrowCongr_apply]
+  simp only [Function.comp_apply]
+  erw [Equiv.symm_apply_apply]
+  rfl
+
 /-! ## The prefix object (prefix re-base, elder-ratified) -/
 
 /-- **The prefix column index** `min (s.layer+1) L`: `prodPrefix` covers layers `0..s.layer` (capped
