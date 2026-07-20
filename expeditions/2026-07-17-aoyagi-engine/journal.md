@@ -5879,3 +5879,22 @@ frame question (the battery's M(S)-frame vs the Lean prod's M(0) rows). Gates th
 grind ONLY; the stamp/re-base are leg-independent of it. loss-t15 idle = legitimate park on
 stamp + clearedOf (both in flight). Board: t14's stage-4 gate compiling; mint-t19 mid-arm;
 pnp-cover hunting.
+
+## 2026-07-20 tick 359: STAMP GRANTED; reset-vs-accumulate = THREE objects; the WIDTH-DROP caution binds the bank
+Elder stamped the re-base (both legs praised; the battery+proof-bridge substitution
+"stronger than a trace"). The crux resolved as THREE objects: clearedOf-COUNT resets per
+layer (worked.tex:486); bmon ACCUMULATES (:484 — re-clearing at S+1 multiplies in the new
+u); leaf = the final layer's complete clearing with accumulated b's. FRAME: cleared rows
+live in the shared top sub-frame (no reindex); the bridge owes only DROPPED rows (beyond
+the running min → zero). THE LOAD-BEARING CAUTION (the elder earning the seat): the gate
+battery ran CONSTANT-WIDTH — the interior-bottleneck width-drop class (compass 12(b)'s
+(2,2,3,2) family) is UNVERIFIED, and two claims are paper-derived only: dropped-row zeroing
+(accumulates, never un-drops) and the LEAF CUTOFF — the banked leaf lemma cuts at M(last)
+but the paper's diagonal has min-of-ALL-widths entries; at min-in-the-middle (3,2,3) these
+differ and either bmon vanishes on [min,last) (verify) or the statement is wrong there.
+Concretely: without a three-state row classification (CLEARED bmon-resets / DROPPED
+zero-accumulates / UNRESOLVED exposed), `hall` is unsatisfiable at every width-drop leaf OR
+InvValC is false there. BINDING PRE-BANK: one width-drop battery leg ((3,2,3) or
+(2,2,3,2)) + the three-state fold-in + the leaf-cutoff re-check — the fifth statement-level
+defect candidate this lane's gate has run down pre-grind. t14's clearedOf spec updated to
+the two-component form (current-J resets + running-min drops, widthMinUpto-expressible).
