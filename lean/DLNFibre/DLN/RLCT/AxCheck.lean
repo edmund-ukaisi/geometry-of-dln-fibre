@@ -1355,18 +1355,21 @@ open DLNFibre.DLN.RLCT
 -- atlas). MUST stay clean-three:
 #print axioms Engine.geoAtlas_imageCover
 -- THE α-ATLAS TRANSFERS (t14 encore, atlas-seam ruling): the faithful witness is now
--- `geoAtlasNorm alphaGauge` (Aoyagi's integration chart). The two SORRY-FREE transfers (ledger props
--- + a.e.-injectivity) MUST stay clean-three:
+-- `geoAtlasNorm alphaGauge` (Aoyagi's integration chart). The SORRY-FREE transfers (ledger props +
+-- a.e.-injectivity + the R7 LeafJacobian) MUST stay clean-three:
 #print axioms Engine.geoAtlasNorm_leaf_ledgerProps
 #print axioms Engine.geoAtlasNorm_leaf_ae_injOn
+-- THE R7 LeafJacobian TRANSFER (walk-t20, 2d gauge cocycle, tick-343 counter-signed): the
+-- gauge-generalized `geoAtlasNorm_cocycle` instantiated at `alphaGauge`/`conRoot`/`id` (id maintenance
+-- atoms reused through the reads-neutral wrapper). LANDED sorry-free — MUST stay clean-three:
+#print axioms Engine.geoAtlasNorm_leaf_leafJacobian
 -- THE R-SPLIT GATE (coverage, tick 294; α-atlas amendment, t14 encore): chartBridge_buildTree IS the
 -- projection of the faithful theorem — a direct A∧B∧C fill is a fidelity regression (the cordon
 -- note). The projection mechanism MUST stay clean-three; the faithful theorem is DIAGNOSTIC
--- (+sorryAx). Over the α atlas its sorryAx routes through THREE owed sources — leafDiagFrob_geoAtlasNorm
--- (loss-t15's LeafPullback value-crux), geoAtlasNorm_imageCover (clause-(A) cover, TRUTH-GATED on the
--- pnp-cover verdict), and geoAtlasNorm_leaf_leafJacobian (the gauge-generalized cocycle, tick-343
--- counter-signed). It FLIPS to MUST-route-through-leafDiagFrob-ONLY when the cover + jacobian transfers
--- land (the final batch):
+-- (+sorryAx). Over the α atlas its sorryAx now routes through TWO owed sources — leafDiagFrob_geoAtlasNorm
+-- (loss-t15's LeafPullback value-crux) and geoAtlasNorm_imageCover (clause-(A) cover, TRUTH-GATED on the
+-- pnp-cover verdict); the R7 LeafJacobian transfer LANDED (walk-t20, 2d). It FLIPS to
+-- MUST-route-through-leafDiagFrob-ONLY when the cover transfer lands (the final batch):
 #print axioms Engine.ChartBridgeFaithful.toChartBridge
 #print axioms Engine.chartBridgeFaithful_buildTree
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.

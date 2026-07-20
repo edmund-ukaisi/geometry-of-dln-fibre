@@ -1,6 +1,8 @@
 import DLNFibre.DLN.RLCT.Engine.GeoAlphaGauge
 import DLNFibre.DLN.RLCT.Engine.GeoLeafLedger
 import DLNFibre.DLN.RLCT.Engine.GeoInjFold
+import DLNFibre.DLN.RLCT.Engine.GeoFoldRegroup
+import DLNFibre.DLN.RLCT.Engine.GeoInvValWalk
 
 /-!
 # `DLNFibre.DLN.RLCT.Engine.GeoAtlasTransfer` — the id-atlas → α-atlas transfer batch (t14 encore)
@@ -381,6 +383,420 @@ theorem geoAtlasNorm_leaf_ae_injOn (c : LeafData M)
   obtain ⟨N, hN0, hNInj⟩ := geoAtlasNorm_alpha_ae_injOn _ c hc
   exact ⟨N, hN0, hNInj.mono (Set.diff_subset_diff_left (Set.subset_univ c.srcBox))⟩
 
+/-! ## The gauge-parametric fold-Jacobian cocycle (2d walk, tick-343 reads-based bundle)
+
+The `LeafJacobian` transfer to the α atlas. The id-atlas cocycle (`GeoFoldRegroup.geoAtlas_cocycle`)
+walks `tGeo acc`; the α atlas is `tGeoG alphaGauge id`. We build the GAUGE-PARAMETRIC cocycle
+`geoAtlasNorm_cocycle` over `tGeoG gauge acc` for any gauge satisfying a three-part bundle
+(differentiable · det-1 · reads-neutral), then instantiate at `alphaGauge` — the id maintenance atoms
+(`ledger_det_maintenance_*`, generic in `acc`) are reused verbatim via a thin gauge wrapper; the one new
+proof is reads-neutrality (α fixes the child's birth diagonals). The id atlas is untouched (one spine:
+the maintenance mechanism is shared; the walk skeleton mirrors, since `tGeoG ≠ tGeo` as constants). -/
+
+/-- **`alphaGauge g` is differentiable** — `id` (case-1(1)/rollover) or the interior Schur fold (each a
+`flatElemShear`, differentiable everywhere). Needed for the chain-rule split in the gauge cocycle. -/
+theorem alphaGauge_differentiable (g : GeoChart M) :
+    Differentiable ℝ (alphaGauge (M := M) g) := by
+  unfold alphaGauge
+  split
+  · exact differentiable_id
+  · exact differentiable_id
+  all_goals
+    · rw [residualSchurShear, schurMaps]
+      refine foldrComp_differentiable _ (fun f hf => ?_)
+      rw [List.mem_map] at hf
+      obtain ⟨abc, _, rfl⟩ := hf
+      exact flatElemShear_differentiable abc.1 abc.2.1 abc.2.2
+
+/-- **A flat coordinate not written by the interior Schur fold is fixed** (the reads-neutrality
+workhorse): if `k` is never a `schurCells` target `a`, then `z_k(residualSchurShear w) = z_k(w)`
+(`elemShearFold_fixed` via the conjugation flat read `residualSchur_flat_read`). -/
+theorem residualSchurShear_fixes_of_not_mem (node : StepData M) (rows cols : ℕ)
+    (k : Fin (flatDim M)) (hk : ∀ abc ∈ schurCells node rows cols, abc.1 ≠ k) (w : Params M) :
+    paramsEquivFlat M (residualSchurShear node rows cols w) k = paramsEquivFlat M w k := by
+  rw [residualSchur_flat_read]
+  exact elemShearFold_fixed (schurCells node rows cols) (paramsEquivFlat M w) k hk
+
+/-- **The reads-neutrality disjointness** (the ONE new proof of the 2d walk): at a step node whose
+layer/cleared match a child state `child` (`node.layer = child.layer`, `child.cleared ≤ node.cleared + 1`
+— true for the case-2 / case-1(2) births, `child.cleared = node.cleared + 1`), every interior Schur-shear
+target `abc.1` (a cell at row `≥ node.cleared + 1` on the node's layer) is distinct from every child
+divisor's birth diagonal `birthFlatCoord M child k h`. Direct from `birthFlatCoord_ne_diag_layer_cell`
+(`DivBirthInv M child` freshness: a divisor at the current layer has cleared-coord `< child.cleared ≤
+node.cleared + 1 ≤ row`). -/
+theorem schurCells_fst_ne_birthFlatCoord (node : StepData M) (rows cols : ℕ) (child : ConState L)
+    (h : 0 < flatDim M) (dinv : DivBirthInv M child) (k : Fin child.numDiv)
+    (hlayer : node.layer = child.layer) (hcleared : child.cleared ≤ node.cleared + 1) :
+    ∀ abc ∈ schurCells node rows cols, abc.1 ≠ birthFlatCoord M child k h := by
+  intro abc hmem heq
+  rw [schurCells] at hmem
+  split at hmem
+  · rename_i hguard
+    rw [List.mem_flatMap] at hmem
+    obtain ⟨i', -, hmem⟩ := hmem
+    rw [List.mem_map] at hmem
+    obtain ⟨j', -, rfl⟩ := hmem
+    exact birthFlatCoord_ne_diag_layer_cell child dinv h k
+      (sf := ⟨node.layer, hguard.choose⟩) hlayer
+      (by have := i'.isLt; omega)
+      (by have := i'.isLt; have := hguard.choose_spec.1; omega)
+      (by have := j'.isLt; have := hguard.choose_spec.2; omega) heq.symm
+  · exact (List.not_mem_nil hmem).elim
+
+/-- **α reads-neutrality of the ledger monomial**: `alphaGauge g` fixes every child divisor's birth-
+diagonal read, so the full-ledger monomial pulls back unchanged. `id` on the case-1(1) merge / rollover
+(reads trivial); the interior Schur fold on case-1(2)/case-2 (`residualSchurShear_fixes_of_not_mem` +
+`schurCells_fst_ne_birthFlatCoord`). Discharges the cocycle's `hgreads` bundle for `alphaGauge`. -/
+theorem alphaGauge_ledgerMonomial_neutral (g : GeoChart M) (child : ConState L) (h : 0 < flatDim M)
+    (dinv : DivBirthInv M child) (hlayer : g.node.layer = child.layer)
+    (hcleared : child.cleared ≤ g.node.cleared + 1) (w : Params M) :
+    ledgerMonomial M child h (alphaGauge (M := M) g w) = ledgerMonomial M child h w := by
+  refine ledgerMonomial_eq_of_reads M child h (alphaGauge (M := M) g) w (fun k => ?_)
+  rcases hce : g.edge.case with _ | _ | _ | _
+  · simp only [alphaGauge, hce, id_eq]
+  · simp only [alphaGauge, hce]
+    exact residualSchurShear_fixes_of_not_mem g.node _ _ _
+      (schurCells_fst_ne_birthFlatCoord g.node _ _ child h dinv k hlayer hcleared) w
+  · simp only [alphaGauge, hce]
+    exact residualSchurShear_fixes_of_not_mem g.node _ _ _
+      (schurCells_fst_ne_birthFlatCoord g.node _ _ child h dinv k hlayer hcleared) w
+  · simp only [alphaGauge, hce, id_eq]
+
+/-- **`geoChartMapNorm gauge g` is differentiable** given `gauge g` differentiable — on-cone it is the
+banked id-factor `∘ gauge g` (`geoChartMapNorm_eq_id_comp_gauge_on_cone`), off-cone / out-of-range it is
+`id`. The gauge-parametric analog of `geoChartMapNorm_differentiable`. -/
+theorem geoChartMapNorm_gauge_differentiable (gauge : GeoChart M → Params M → Params M) (g : GeoChart M)
+    (hg : Differentiable ℝ (gauge g)) : Differentiable ℝ (geoChartMapNorm gauge g) := by
+  obtain ⟨node, edge, pivot⟩ := g
+  by_cases hd : dCenterOfNode M node ≤ flatDim M
+  · by_cases hp : pivot < dCenterOfNode M node
+    · rw [geoChartMapNorm_eq_id_comp_gauge_on_cone gauge node edge pivot hd hp]
+      exact (geoChartMapNorm_differentiable _).comp hg
+    · simp only [geoChartMapNorm, dif_pos hd, dif_neg hp]; exact differentiable_id
+  · simp only [geoChartMapNorm, dif_neg hd]; exact differentiable_id
+
+/-- **The gauge maintenance wrapper** (the 2d mechanism): lift an id-atlas maintenance conclusion
+`|det D(acc ∘ B^id) w| = ledgerMonomial child w` to the gauge atlas
+`|det D(acc ∘ B^gauge) w| = ledgerMonomial child w`. Via the on-cone factorization `B^gauge = B^id ∘
+gauge g` (`geoChartMapNorm_eq_id_comp_gauge_on_cone`, associativity), the chain-rule det split
+(`abs_det_fderiv_comp`), `|det D(gauge g)| = 1`, and reads-neutrality of the ledger. One spine: every case
+reuses the (generic-in-`acc`) `ledger_det_maintenance_*` atom, wrapped identically. -/
+theorem gauge_det_maintenance_wrapper (gauge : GeoChart M → Params M → Params M)
+    (g : GeoChart M) (child : ConState L) (h : 0 < flatDim M) (acc : Params M → Params M)
+    (hd : dCenterOfNode M g.node ≤ flatDim M) (hp : g.pivot < dCenterOfNode M g.node)
+    (haccdiff : Differentiable ℝ acc) (hgaugediff : Differentiable ℝ (gauge g))
+    (hgaugedet1 : ∀ w, |(fderiv ℝ (gauge g) w).det| = 1)
+    (hreads : ∀ w, ledgerMonomial M child h (gauge g w) = ledgerMonomial M child h w)
+    (hidmaint : ∀ w, |(fderiv ℝ (acc ∘ geoChartMapNorm (fun _ => id) g) w).det|
+        = ledgerMonomial M child h w) :
+    ∀ w, |(fderiv ℝ (acc ∘ geoChartMapNorm gauge g) w).det| = ledgerMonomial M child h w := by
+  intro w
+  rw [show acc ∘ geoChartMapNorm gauge g
+        = (acc ∘ geoChartMapNorm (fun _ => id) g) ∘ gauge g from by
+      obtain ⟨node, edge, pivot⟩ := g
+      rw [geoChartMapNorm_eq_id_comp_gauge_on_cone gauge node edge pivot hd hp]; rfl,
+    abs_det_fderiv_comp _ _ (haccdiff.comp (geoChartMapNorm_differentiable _)) hgaugediff w,
+    hidmaint (gauge g w), hgaugedet1 w, mul_one, hreads w]
+
+/-- **The gauge-parametric fold-Jacobian cocycle** (2d walk — the α-atlas analog of
+`GeoFoldRegroup.geoAtlas_cocycle`, over `tGeoG gauge acc`). Given a gauge with the reads-based bundle
+(`hgdiff` differentiable · `hgdet1` det-1 · `hgreads` reads-neutral), the incoming invariant
+`|det D acc w| = ledgerMonomial s w` + `DivBirthInv`/`DivExpPos`, every `tGeoG gauge acc` leaf `p` of the
+subtree from `s` is `leafOfState`-shaped at its own reachable terminal `s'` (exposed), with
+`|det D p.chartMap w| = ledgerMonomial s' w`. `id` and `alphaGauge` both instantiate; the id maintenance
+atoms are reused verbatim through `gauge_det_maintenance_wrapper` (rollover needs no gauge). -/
+theorem geoAtlasNorm_cocycle (h : 0 < flatDim M)
+    (gauge : GeoChart M → Params M → Params M)
+    (hgdiff : ∀ g, Differentiable ℝ (gauge g))
+    (hgdet1 : ∀ g w, |(fderiv ℝ (gauge g) w).det| = 1)
+    (hgreads : ∀ (g : GeoChart M) (child : ConState L), DivBirthInv M child →
+      g.node.layer = child.layer → child.cleared ≤ g.node.cleared + 1 →
+      ∀ w, ledgerMonomial M child h (gauge g w) = ledgerMonomial M child h w) :
+    ∀ (s : ConState L), DivBirthInv M s → DivExpPos s →
+      ∀ (acc : Params M → Params M), Differentiable ℝ acc →
+        (∀ w, |(fderiv ℝ acc w).det| = ledgerMonomial M s h w) →
+        ∀ p ∈ ResolutionTree.leaves (tGeoG gauge acc (buildTree M (conOracle M) s)),
+          ∃ s' : ConState L, DivBirthInv M s' ∧ DivExpPos s' ∧ Differentiable ℝ p.chartMap ∧
+            p = { leafOfState M s' with chartMap := p.chartMap } ∧
+            ∀ w, |(fderiv ℝ p.chartMap w).det| = ledgerMonomial M s' h w := by
+  intro s
+  induction s using (conRel_wf M).induction with
+  | _ s ih =>
+    intro inv expinv acc haccdiff haccdet p hp
+    have close_terminal : conOracle M s = oracleTerminal M s →
+        ∃ s' : ConState L, DivBirthInv M s' ∧ DivExpPos s' ∧ Differentiable ℝ p.chartMap ∧
+          p = { leafOfState M s' with chartMap := p.chartMap } ∧
+          ∀ w, |(fderiv ℝ p.chartMap w).det| = ledgerMonomial M s' h w := by
+      intro hos
+      rw [buildTree_terminal M (conOracle M) s (leafOfState M s) (leafOfState_rootLedger M s) hos,
+        tGeoG] at hp
+      simp only [ResolutionTree.leaves, List.mem_singleton] at hp
+      subst hp
+      exact ⟨s, inv, expinv, haccdiff, rfl, haccdet⟩
+    by_cases h1 : L ≤ s.layer
+    · exact close_terminal (by unfold conOracle; rw [dif_pos h1])
+    · have hlive : s.layer < L := not_le.mp h1
+      have hL1 : s.layer + 1 < L + 1 := by omega
+      by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+      · -- ROLLOVER: chartless, ledger-neutral (no gauge — `acc` unchanged).
+        have horacle : conOracle M s = rolloverDecision M s (le_of_lt hlive) h2 := by
+          unfold conOracle; rw [dif_neg h1, dif_pos h2]
+        rw [buildTree_step M (conOracle M) s (s.toStepData M 0 0)
+            [⟨StepCase.rollover, ⟨id, 0, 0, 0, Fin.elim0⟩, s.stepRollover,
+              conRel_stepRollover M s (le_of_lt hlive)⟩] horacle, tGeoG,
+          ResolutionTree.leaves] at hp
+        simp only [List.map_cons, List.map_nil] at hp
+        have hpmem := mem_edgesLeaves_fannedG_chartless gauge acc (s.toStepData M 0 0) 0
+          StepCase.rollover ⟨id, 0, 0, 0, Fin.elim0⟩ (buildTree M (conOracle M) s.stepRollover) p
+          rfl hp
+        exact ih s.stepRollover (conRel_stepRollover M s (le_of_lt hlive))
+          (DivBirthInv_stepRollover s inv) (DivExpPos_stepRollover s expinv) acc haccdiff
+          (ledger_det_maintenance_rollover M s h acc haccdet) p hpmem
+      · have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp h2
+        have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+        have hrr1 : 1 ≤ widthMinUpto M s.layer - s.cleared := by
+          have hmono : widthMinUpto M (s.layer + 1) ≤ widthMinUpto M s.layer :=
+            widthMinUpto_mono M (Nat.le_succ _)
+          omega
+        have hrc1 : 1 ≤ M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) - s.cleared := by
+          have hws : widthMinUpto M (s.layer + 1) ≤ M (⟨s.layer + 1, hL1⟩ : Fin (L + 1)) :=
+            widthMinUpto_le _ (by simp)
+          omega
+        rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+            if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+            then some (s.divTilde k) else none)).min? with _ | target
+        · -- CASE-2: full residual block birth.
+          have horacle : conOracle M s = case2Decision M s
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared) hcap := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]; split <;> simp_all only [reduceCtorEq]
+          rw [buildTree_step M (conOracle M) s
+              (s.toStepData M (widthMinUpto M s.layer - s.cleared)
+                (M ⟨s.layer + 1, hL1⟩ - s.cleared))
+              [⟨StepCase.case2, ⟨id, 0, 0, 0, Fin.elim0⟩,
+                s.stepAppendAdvance ((widthMinUpto M s.layer - s.cleared)
+                  * (M ⟨s.layer + 1, hL1⟩ - s.cleared)) (fun p => runMinWidth M p),
+                conRel_stepAppendAdvance M s _ _ hcap⟩] horacle, tGeoG,
+            ResolutionTree.leaves] at hp
+          simp only [List.map_cons, List.map_nil] at hp
+          set node := s.toStepData M (widthMinUpto M s.layer - s.cleared)
+            (M ⟨s.layer + 1, hL1⟩ - s.cleared) with hnode_def
+          set child2 := s.stepAppendAdvance ((widthMinUpto M s.layer - s.cleared)
+            * (M ⟨s.layer + 1, hL1⟩ - s.cleared)) (fun p => runMinWidth M p) with hchild2_def
+          have htree : buildTree M (conOracle M) s = ResolutionTree.branch node
+              [Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩ (buildTree M (conOracle M) child2)] :=
+            buildTree_step M (conOracle M) s node
+              [⟨StepCase.case2, ⟨id, 0, 0, 0, Fin.elim0⟩, child2,
+                conRel_stepAppendAdvance M s _ _ hcap⟩] horacle
+          have hocc : nodeOccMin M node = none := by rw [nodeOccMin_toStepData]; exact hmin
+          have hdim : dCenterOfNode M node = node.resRows * node.resCols :=
+            dCenterOfNode_case2 M s _ _ hlive h2 hmin
+          have hz : dCenterOfEdge node
+              (Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child2)) ≠ 0 := by
+            show node.resRows * node.resCols ≠ 0
+            have : node.resRows * node.resCols = (widthMinUpto M s.layer - s.cleared)
+              * (M ⟨s.layer + 1, hL1⟩ - s.cleared) := rfl
+            rw [this]; exact Nat.mul_ne_zero (by omega) (by omega)
+          obtain ⟨pp, hpplt, hpmem⟩ := mem_edgesLeaves_fannedG_charted gauge acc node 0
+            StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩ (buildTree M (conOracle M) child2) p hz hp
+          set g : GeoChart M := ⟨node, Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩
+            (buildTree M (conOracle M) child2), 0 + pp⟩ with hg_def
+          have hd : dCenterOfNode M g.node ≤ flatDim M := dCenterOfNode_le_flatDim s node _ htree
+          have hpiv : g.pivot < dCenterOfNode M g.node := by
+            show 0 + pp < dCenterOfNode M node
+            have hde : dCenterOfEdge node (Edge.mk StepCase.case2 ⟨id, 0, 0, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child2)) = node.resRows * node.resCols := rfl
+            rw [Nat.zero_add, hdim, ← hde]; exact hpplt
+          obtain ⟨hnl, hnc⟩ := step_node_layer_cleared s g.node _ htree
+          have hc2l : child2.layer = s.layer := by simp only [hchild2_def, ConState.stepAppendAdvance]
+          have hc2c : child2.cleared = s.cleared + 1 := by
+            simp only [hchild2_def, ConState.stepAppendAdvance]
+          exact ih child2 (conRel_stepAppendAdvance M s _ _ hcap)
+            (DivBirthInv_stepAppendAdvance s _ _ hlive hlt inv)
+            (DivExpPos_stepAppendAdvance s _ _
+              (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))) expinv)
+            (acc ∘ geoChartMapNorm gauge g)
+            (haccdiff.comp (geoChartMapNorm_gauge_differentiable gauge g (hgdiff g)))
+            (gauge_det_maintenance_wrapper gauge g child2 h acc hd hpiv haccdiff (hgdiff g)
+              (fun w => hgdet1 g w)
+              (hgreads g child2 (DivBirthInv_stepAppendAdvance s _ _ hlive hlt inv)
+                (by omega) (by omega))
+              (ledger_det_maintenance_case2 M s h inv g _ htree h2 hocc rfl hd hpiv
+                (fun p => runMinWidth M p) acc haccdiff haccdet)) p hpmem
+        · -- CASE-1 (or chooser fall-back terminal).
+          rcases hf : chooseMin s target with _ | f
+          · refine close_terminal ?_
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          · -- CASE-1 blow-up (merge + split children).
+            have hgt : s.cleared < target := by
+              obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+              rw [List.mem_filterMap] at hmemtar
+              obtain ⟨k0, -, hk0⟩ := hmemtar
+              by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                  s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+              · rw [if_pos hc0] at hk0
+                have hdt : s.divTilde k0 = target := Option.some.inj hk0
+                have := hc0.1; omega
+              · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+            set node := s.toStepData M (widthMinUpto M s.layer - s.cleared)
+              (M ⟨s.layer + 1, hL1⟩ - s.cleared) with hnode_def
+            set child11 : ConState L := ⟨s.layer, s.cleared, s.numDiv,
+              (fun k => if (k : ℕ) = f.val
+                then s.divExp k + (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+                else s.divExp k),
+              Function.update s.divProfile f (setTail s.layer s.cleared (s.divProfile f)),
+              s.numGen, s.genDivExp, s.divBirthCoord⟩ with hchild11_def
+            set child12 := s.stepAppendAdvance
+              (s.divExp f + (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared))
+              (s.divProfile f) with hchild12_def
+            have helig : s.divTilde f = s.cleared + (target - s.cleared) := by
+              rw [(chooseMin_spec s target hf).1]; omega
+            have hdesc11 : conRel M child11 s :=
+              conRel_of_exp_change M (s.stepCase11 f) s _ s.numGen s.genDivExp
+                (conRel_stepCase11 M s f hlive (by rw [(chooseMin_spec s target hf).1]; omega))
+            have hdesc12 : conRel M child12 s :=
+              conRel_stepAppendAdvance M s _ _ hcap
+            have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+                (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, hL1⟩ - s.cleared)
+                (not_le.mp h1) (by omega) helig hcap := by
+              unfold conOracle
+              rw [dif_neg h1, dif_neg h2]
+              split
+              · rename_i target' heq
+                obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+                split
+                · rename_i f' hf'
+                  obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                  rfl
+                · rename_i hf'; exact absurd (hf' ▸ hf) (by simp)
+              · rename_i heq; exact absurd (heq ▸ hmin) (by simp)
+            have htree : buildTree M (conOracle M) s = ResolutionTree.branch node
+                [Edge.mk StepCase.case11 ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11),
+                  Edge.mk StepCase.case12 ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child12)] :=
+              buildTree_step M (conOracle M) s node
+                [⟨StepCase.case11, ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩, child11, hdesc11⟩,
+                  ⟨StepCase.case12, ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩, child12,
+                    hdesc12⟩] horacle
+            have hocc : nodeOccMin M node = some target := by
+              rw [nodeOccMin_toStepData]; exact hmin
+            have hd : dCenterOfNode M node ≤ flatDim M := dCenterOfNode_le_flatDim s node _ htree
+            have hde1 : dCenterOfEdge node (Edge.mk StepCase.case11
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child11)) = 1 := rfl
+            have hde2 : dCenterOfEdge node (Edge.mk StepCase.case12
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child12))
+                = (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared) := rfl
+            have hncol : node.resCols = M ⟨s.layer + 1, hL1⟩ - s.cleared := rfl
+            have hsum : dCenterOfNode M node
+                = 1 + (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared) :=
+              dCenterOfNode_case1 M s _ _ target hlive h2 hmin
+            have hsum2 : dCenterOfNode M node
+                = dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩ (buildTree M (conOracle M) child11))
+                  + dCenterOfEdge node (Edge.mk StepCase.case12
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child12)) := by rw [hde1, hde2]; exact hsum
+            have hb : dCenterOfNode M node
+                = (target - s.cleared) * (M ⟨s.layer + 1, hL1⟩ - s.cleared) + 1 := by
+              rw [hsum]; exact Nat.add_comm _ _
+            have h0 : 0 < dCenterOfNode M node := by rw [hb]; exact Nat.succ_pos _
+            have hcell0 : cNodeOf M node hd (⟨0, h0⟩ : Fin (dCenterOfNode M node))
+                = birthFlatCoord M s f h :=
+              cNode_index0_eq_birthFlatCoord M s inv node _ htree h2 target hocc h hd h0 f hf
+            have hnl : node.layer = s.layer ∧ node.cleared = s.cleared :=
+              step_node_layer_cleared s node _ htree
+            rw [htree, tGeoG, ResolutionTree.leaves, fannedEdgesG, edgesLeaves_eq,
+              List.flatMap_append, ← edgesLeaves_eq, ← edgesLeaves_eq, List.mem_append] at hp
+            rcases hp with hp1 | hp2
+            · -- the case-1(1) MERGE edge (pivot `0`).
+              rw [if_neg (show dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11)) ≠ 0 from one_ne_zero),
+                edgesLeaves_mapMk, List.mem_flatMap] at hp1
+              obtain ⟨pp, hppmem, hcp⟩ := hp1
+              have hpp0 : pp = 0 := by
+                rw [List.bind_eq_flatMap, List.mem_flatMap] at hppmem
+                obtain ⟨a, -, ha⟩ := hppmem
+                rw [List.mem_pure] at ha
+                have hai : (a : ℕ) < 1 := a.isLt
+                omega
+              set g1 : GeoChart M := ⟨node, Edge.mk StepCase.case11
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child11), 0 + pp⟩ with hg1_def
+              have hpiv1 : g1.pivot < dCenterOfNode M g1.node := by
+                show 0 + pp < dCenterOfNode M node; rw [hpp0]; simpa using h0
+              have hpivcell : cNodeOf M g1.node hd (⟨g1.pivot, hpiv1⟩ : Fin (dCenterOfNode M g1.node))
+                  = birthFlatCoord M s f h := by
+                rw [show (⟨g1.pivot, hpiv1⟩ : Fin (dCenterOfNode M node)) = ⟨0, h0⟩ from
+                  Fin.ext (by show 0 + pp = 0; rw [hpp0])]
+                exact hcell0
+              exact ih child11 hdesc11 (DivBirthInv_stepCase11 s f inv)
+                (DivExpPos_bumpedExp s f _ expinv)
+                (acc ∘ geoChartMapNorm gauge g1)
+                (haccdiff.comp (geoChartMapNorm_gauge_differentiable gauge g1 (hgdiff g1)))
+                (gauge_det_maintenance_wrapper gauge g1 child11 h acc hd hpiv1 haccdiff (hgdiff g1)
+                  (fun w => hgdet1 g1 w)
+                  (hgreads g1 child11 (DivBirthInv_stepCase11 s f inv)
+                    (by rw [hnl.1]) (by rw [hnl.2]; exact Nat.le_succ _))
+                  (ledger_det_maintenance_case11 M s h inv g1 _ htree h2 rfl f (expinv f) rfl
+                    target hocc hf _ hb hd hpiv1 hpivcell acc haccdiff haccdet)) p hcp
+            · -- the case-1(2) SPLIT edge (pivot `≥ 1`).
+              have hz2 : dCenterOfEdge node (Edge.mk StepCase.case12
+                  ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                  (buildTree M (conOracle M) child12)) ≠ 0 := by
+                rw [hde2]; exact Nat.mul_ne_zero (by omega) (by omega)
+              obtain ⟨pp, hpplt, hcp⟩ := mem_edgesLeaves_fannedG_charted gauge acc node
+                (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                  ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                  (buildTree M (conOracle M) child11)))
+                StepCase.case12 ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child12) p hz2 hp2
+              set g2 : GeoChart M := ⟨node, Edge.mk StepCase.case12
+                ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                (buildTree M (conOracle M) child12),
+                (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                  ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                  (buildTree M (conOracle M) child11))) + pp⟩ with hg2_def
+              have hpiv2 : g2.pivot < dCenterOfNode M g2.node := by
+                show (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11))) + pp < dCenterOfNode M node
+                rw [hsum2, hde1]; omega
+              have hucell : ∃ i : Fin (dCenterOfNode M g2.node),
+                  i ≠ (⟨g2.pivot, hpiv2⟩ : Fin (dCenterOfNode M g2.node))
+                  ∧ cNodeOf M g2.node hd i = birthFlatCoord M s f h := by
+                refine ⟨⟨0, h0⟩, ?_, hcell0⟩
+                intro hcontra
+                have hval : (0 : ℕ) = g2.pivot := congrArg Fin.val hcontra
+                have hpv : g2.pivot = (0 + dCenterOfEdge node (Edge.mk StepCase.case11
+                    ⟨id, target - s.cleared, f.val, 0, Fin.elim0⟩
+                    (buildTree M (conOracle M) child11))) + pp := rfl
+                rw [hpv, hde1] at hval; omega
+              obtain ⟨hnl2, hnc2⟩ := step_node_layer_cleared s g2.node _ htree
+              have hc12l : child12.layer = s.layer := by
+                simp only [hchild12_def, ConState.stepAppendAdvance]
+              have hc12c : child12.cleared = s.cleared + 1 := by
+                simp only [hchild12_def, ConState.stepAppendAdvance]
+              exact ih child12 hdesc12 (DivBirthInv_stepAppendAdvance s _ _ hlive hlt inv)
+                (DivExpPos_stepAppendAdvance s _ _
+                  (le_add_left (Nat.one_le_iff_ne_zero.mpr
+                    (Nat.mul_ne_zero (by omega) (by omega)))) expinv)
+                (acc ∘ geoChartMapNorm gauge g2)
+                (haccdiff.comp (geoChartMapNorm_gauge_differentiable gauge g2 (hgdiff g2)))
+                (gauge_det_maintenance_wrapper gauge g2 child12 h acc hd hpiv2 haccdiff (hgdiff g2)
+                  (fun w => hgdet1 g2 w)
+                  (hgreads g2 child12 (DivBirthInv_stepAppendAdvance s _ _ hlive hlt inv)
+                    (by omega) (by omega))
+                  (ledger_det_maintenance_case12 M s h inv g2 _ htree h2 rfl f (expinv f)
+                    target hocc hf _ hb hd hpiv2 hucell (s.divProfile f) acc haccdiff haccdet)) p hcp
+
 /-! ## The two owed transfers (frontier)
 
 Two `(B)`/`(A)` conjuncts of the faithful discharge are NOT clean mirrors of their id-atlas forms and
@@ -406,54 +822,46 @@ theorem geoAtlasNorm_imageCover (t : ResolutionTree M) (s : ConState L)
       U ⊆ ⋃ c ∈ geoAtlasNorm (alphaGauge (M := M)) t, c.chartMap '' c.srcBox := by
   sorry -- transfer owed: geoAtlasNorm_imageCover (cover open-homeo route; SURFACED, route pending)
 
-/-- **The R7 `LeafJacobian` discharge over the α atlas — TRANSFER OWED** (mechanism pending elder
-counter-sign, fork 15 (b)). t14's id-atlas `geoAtlas_leaf_leafJacobian` rides `geoAtlas_cocycle` (the
-relative-Jacobian cocycle over `tGeo`, PROVEN concrete-at-id). The α fold threads `alphaGauge` PER-EDGE,
-so the transfer is a per-edge det-1 commutation: the recommended mechanism GAUGE-GENERALIZES
-`geoAtlas_cocycle` over an explicit "det-1 + divisor-diagonal-fixing gauge" hypothesis bundle (id and α
-both instantiate — `alphaGauge_abs_det_one` is the det-1 side, and α fixes the divisor diagonal cells,
-`GeoAlphaGauge` interior-only action). The bundle refactor + instantiation are HELD for the elder
-counter-sign (the mechanism touches the banked cocycle arc); until then this is a signature pre-stage.
-The fallback (if the atom refactor is not light): a standalone α-vs-id comparison lemma on top. -/
+/-- **The R7 `LeafJacobian` discharge over the α atlas** (2d walk — the transfer, DISCHARGED). Every
+`geoAtlasNorm alphaGauge` piece `c` (over `conRoot`) satisfies the full-ledger `LeafJacobian`, exactly as
+the id-atlas `geoAtlas_leaf_leafJacobian` does — instantiate `geoAtlasNorm_cocycle` at `conRoot`/`id`
+with the `alphaGauge` bundle (`alphaGauge_differentiable` · `alphaGauge_abs_det_one` ·
+`alphaGauge_ledgerMonomial_neutral`). The witness (`β := c.chartMap`, `ψ := id`, `fc := birthFlatCoord s'`,
+`emb := (t0Indices s').get`) and every conjunct are the id-atlas ones — the α gauge only reparametrizes
+the source, leaving the full-ledger monomial identity intact. Fills the R7 `LeafJacobian` frontier of
+`chartBridgeFaithful_buildTree` over the faithful (α-normalized) atlas. -/
 theorem geoAtlasNorm_leaf_leafJacobian (h : 0 < flatDim M) (c : LeafData M)
     (hc : c ∈ geoAtlasNorm (alphaGauge (M := M))
       (buildTree M (conOracle M) (conRoot : ConState L))) :
     LeafJacobian c := by
-  sorry -- transfer owed: geoAtlasNorm_leaf_leafJacobian (gauge-generalized cocycle; walk in progress)
-
-/-! ## 2d de-risking atoms (LeafJacobian gauge-generalization, tick-343 reads-based bundle)
-
-The atoms-first probe (POSITIVE): the id maintenance atoms (`GeoFoldRegroup.ledger_det_maintenance_*`)
-are generic in `acc`, so the gauge version is a THIN wrapper — `acc ∘ B^α = (acc ∘ B^id) ∘ α`
-(`geoChartMapNorm_eq_id_comp_gauge_on_cone`), split by `abs_det_fderiv_comp`, `|det α| = 1`
-(`alphaGauge_abs_det_one`), the id atom at point `α w`, then the reads-based neutrality
-`ledgerMonomial child (α w) = ledgerMonomial child w` (α fixes the child's birth-diagonal read set;
-the tick-343 correction — α writes interior FUTURE-pivot cells `> J`, fixes born diagonals `≤ J`). The
-two reusable atoms below feed the wrapper + the neutrality. -/
-
-/-- **`alphaGauge g` is differentiable** — `id` (case-1(1)/rollover) or the interior Schur fold (each a
-`flatElemShear`, differentiable everywhere). Needed for the chain-rule split in the gauge cocycle. -/
-theorem alphaGauge_differentiable (g : GeoChart M) :
-    Differentiable ℝ (alphaGauge (M := M) g) := by
-  unfold alphaGauge
-  split
-  · exact differentiable_id
-  · exact differentiable_id
-  all_goals
-    · rw [residualSchurShear, schurMaps]
-      refine foldrComp_differentiable _ (fun f hf => ?_)
-      rw [List.mem_map] at hf
-      obtain ⟨abc, _, rfl⟩ := hf
-      exact flatElemShear_differentiable abc.1 abc.2.1 abc.2.2
-
-/-- **A flat coordinate not written by the interior Schur fold is fixed** (the reads-neutrality
-workhorse): if `k` is never a `schurCells` target `a`, then `z_k(residualSchurShear w) = z_k(w)`
-(`elemShearFold_fixed` via the conjugation flat read `residualSchur_flat_read`). -/
-theorem residualSchurShear_fixes_of_not_mem (node : StepData M) (rows cols : ℕ)
-    (k : Fin (flatDim M)) (hk : ∀ abc ∈ schurCells node rows cols, abc.1 ≠ k) (w : Params M) :
-    paramsEquivFlat M (residualSchurShear node rows cols w) k = paramsEquivFlat M w k := by
-  rw [residualSchur_flat_read]
-  exact elemShearFold_fixed (schurCells node rows cols) (paramsEquivFlat M w) k hk
+  have id_det : ∀ w, |(fderiv ℝ (id : Params M → Params M) w).det|
+      = ledgerMonomial M (conRoot : ConState L) h w := by
+    intro w
+    rw [ledgerMonomial_conRoot, fderiv_id, show (ContinuousLinearMap.id ℝ (Params M)).det
+        = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+    simp [LinearMap.det_id]
+  have abs_det_id : |(ContinuousLinearMap.id ℝ (Params M)).det| = 1 := by
+    rw [show (ContinuousLinearMap.id ℝ (Params M)).det
+        = LinearMap.det (ContinuousLinearMap.id ℝ (Params M)).toLinearMap from rfl]
+    simp [LinearMap.det_id]
+  rw [geoAtlasNorm] at hc
+  obtain ⟨s', hinv', hexp', hdiff, hshape, hident⟩ :=
+    geoAtlasNorm_cocycle h alphaGauge alphaGauge_differentiable
+      (fun g w => alphaGauge_abs_det_one g w)
+      (fun g child dinv hlayer hcleared w =>
+        alphaGauge_ledgerMonomial_neutral g child h dinv hlayer hcleared w)
+      conRoot DivBirthInv_conRoot DivExpPos_conRoot id differentiable_id id_det c hc
+  have hget : Function.Injective (t0Indices s').get :=
+    ((List.nodup_finRange s'.numDiv).filter _).injective_get
+  rw [hshape, leafOfState, dif_pos h]
+  refine ⟨c.chartMap, id, id, fun w => fderiv ℝ c.chartMap w,
+    fun _ => ContinuousLinearMap.id ℝ (Params M), 1, 1,
+    fun j => birthFlatCoord M s' j h, fun i => (t0Indices s').get i,
+    one_pos, birthFlatCoord_injective hinv', hget, fun k => rfl, fun k => rfl, fun j => hexp' j,
+    ?_, fun w _ => rfl, fun w _ => ⟨(hdiff w).hasFDerivAt, by rw [hident w, ledgerMonomial]⟩,
+    fun v _ => ⟨rfl, rfl, hasFDerivAt_id v, abs_det_id.ge, abs_det_id.le⟩⟩
+  rw [Set.range_eq_empty (f := (Fin.elim0 : Fin 0 → Fin (flatDim M)))]
+  exact disjoint_bot_right
 
 /-! ## 2a Phase-1 atoms: the ENLARGED-CUBE cover (radius thread ρ_{n+1} = ρ_n(1+ρ_n), root ρ_0 = 1)
 
