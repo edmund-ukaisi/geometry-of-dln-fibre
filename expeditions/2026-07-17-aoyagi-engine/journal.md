@@ -7051,3 +7051,30 @@ width≥3 coupled boundary precisely located (not avoided). NEXT: relay to elder
 compass, author-of-record); convene navigator #10 (price the concrete follow-up spine, route i
 = telescopes); pnp-ideal evidence-hygiene fix + HOLD the coupled (3,3,2,2) endpoint for the
 follow-up scope decision (operator-gated); assemble + surface the operator's decision package.
+
+## 2026-07-20 tick 417 (drift-glance): pnp-ideal hygiene closed; elder folded verdict + SHARPENED the tractability read (a correction I owe the operator)
+Drift-glance on the three charged seats. pnp-ideal: LOOP CLOSED (645dc9938, pushed) — marked
+ideal_equality_rigorous.py SUPERSEDED (free-δ bug), named the peel-identity + structure_v2
+corroborating pair, stubbed the coupled-endgame probe plan (HELD). Charge actioned correctly.
+navigator-7: pricing in flight (no commit yet — normal for a pricing note). elder: folded the
+verified verdict into compass (working-tree edit, +32 lines, UNCOMMITTED — awaiting its "ready"
+signal; compaction pass not yet in the diff, so likely still working; I do NOT commit compass
+without the signal).
+
+THE ELDER'S SHARPENING (the stern voice, and a genuine correction to MY operator surface —
+recalibration to carry). I told the operator "the hard part is mapped and tractable for the
+(2,2,2,2)-class target." The elder's DIRECTION RULING sharpens: we ARE out of the CHART
+cul-de-sac (ideal reframe correct; naive-one-shot wall shown avoidable by the recursion — that
+part of my read holds), BUT "tractable IN GENERAL" is EARNED ONLY for the CLEAN case. (2,2,2,2)
+is all-width-≤2 = the SHALLOWEST, UNCOUPLED instance; it exercises NO coupling. Aoyagi's REAL
+content — the coupled diag(b) at corank≥2 (first at a layer min≥3, e.g. (3,3,2,2)/(3,3,4)) — is
+CLAIMED-monomializing (value 2), NOT verified to this depth. Treating "clean telescopes" as "the
+follow-up is tractable" is the KILL-SET-ADEQUACY confound that has bitten this expedition
+repeatedly (the exact shape of the operator's cul-de-sac question). CORRECTED cul-de-sac answer
+(to carry into the operator package): out of the chart cul-de-sac, hard part MAPPED — but the
+coupled width≥3 case is the REAL hard part / fidelity-to-her-mechanism, a FIRST-CLASS next probe
+(sequenced after the clean landing, NEVER scoped out), and the GATE for any "tractable" pricing.
+Scope AFFIRMED unchanged (general RLCT-ideal library; Lemma 1 core to sequence first;
+θ/analytic in-scope). HELD: the corrected + priced operator package waits on elder-ready +
+navigator pricing (consolidate at the honest ceiling; operator not watching real-time, launch
+operator-gated, so no rush to a half-package).
