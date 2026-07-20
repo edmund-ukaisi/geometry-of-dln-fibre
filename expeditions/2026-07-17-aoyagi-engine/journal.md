@@ -6563,3 +6563,25 @@ call, pivoting on t14's cocycle-flip mirror-vs-rebuild probe (a Lean-PORT-cost q
 battery doesn't bear on — battery proves the DESIGN, probe measures the PORT). Did NOT
 re-interrupt navigator-7 (it has the isolability input; the battery strengthens the design
 side but its pivot stays t14's probe). Awaiting t14's probe + navigator-7's call.
+
+## 2026-07-20 tick 395: cocycle-flip probe = REBUILD-L; reachability call to navigator-7; re-scope likely
+t14's probe: the root-first re-thread of geoAtlas_cocycle is a REBUILD (not a mechanical
+mirror), effort L. Concrete: root-first inverts the read-points — the new OUTERMOST edge
+reads its atom at the accumulated point z_d(acc w), picking up ancestor scalings ABSENT from
+the per-step ledger delta, so the clean per-step invariant is inconsistent root-first and the
+cert §1 telescoping (the cocycle's core content, the multi-arc "one sorry") RE-DERIVES;
+ledgerMonomial_comp_spectator/_center_of_reads do NOT transfer (they read the old ledger
+under a new INNER edge; root-first has none). Det CONCLUSION survives (order-blind) — pure
+proof-effort. t14 offered a timeboxed M-vs-L scratch (root-first drops comp_spectator/
+center_of_reads, so the telescoping MIGHT close at M) — HELD pending navigator-7 (only run
+if M-vs-L flips the call). ROUTED to navigator-7 to finalize CHARGE-2 reachability with: the
+full cascade (1 L/M cocycle + ~4 M: α-completion + value [simplified/battery-validated] +
+cover + transfer re-verify), the PAYOFF-CONE RE-OPEN RISK (the cocycle is merged/gated/
+rev-jac-PASSed — re-deriving re-opens 2d + rev-jac), and THE PATTERN (2 latent issues in 2
+ticks — is a FOCUSED follow-up that builds root-first + α-complete FROM THE START cleaner
+than patching a leaf-first construction in place?). My honest lean: REBUILD-L + the full
+cascade + the payoff-cone risk + the pattern point toward RE-SCOPE (bank the conditional
+spine + corrected-order roadmap; value lane + order fix to a focused follow-up) — but that's
+navigator-7's structured call to recommend + the OPERATOR's to decide (a scope/honest-ceiling
+decision). I SURFACE navigator-7's recommendation to the operator once it lands. All lanes
+held. t14's probe was the right measurement — it's what the whole call turns on.
