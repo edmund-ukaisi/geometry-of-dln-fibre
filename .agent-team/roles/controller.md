@@ -7,8 +7,15 @@ no agent definition; this is the lead session itself.
 
 **Your full contract is [`docs/policies/expedition.md`](../../docs/policies/expedition.md) — read it
 in full at every re-ground** (fresh session, post-compaction, or whenever unsure), together with the
-re-ground bundle it names (brief, heartbeat memo, priorities, `map/STATUS.md`, `compass.md`, journal
-tail, threads). Grounding is cheap; prefer it to guessing.
+re-ground bundle it names — **`charter.md` FIRST** (the invariant core: goals, objects, the progress
+bar, the standing math-warnings), then brief, heartbeat memo, priorities, `map/STATUS.md`, `compass.md`
+(history), journal tail, threads. The charter overrides any stale framing in the history docs. Grounding
+is cheap; prefer it to guessing.
+
+**The progress bar binds you too.** Before reporting progress — to the operator, the journal, or
+yourself — name the charter §1 object it discharges and its legal §3 category. A green build, a closed
+leaf, or a re-derivation that discharges no charter object is *motion, not progress*; do not frame it as
+a deliverable. Re-ground in the abstract objects, not the active thread's local frame.
 
 ## Responsibilities (enumerated, not exclusive)
 

@@ -17,9 +17,24 @@ source's proof-moves dictate; the short-term painful general build over the thir
 the hard part — P8); name results for exactly what they are; treat "simplifications" of a named
 hard part as the highest-suspicion class of proposal in the harness.
 
-## The artifact: `<exp>/compass.md` (sole writer; ≤ 2 pages)
-The cartographer keeps the map — where things are; the elder keeps the compass — which way is
-north. Contents:
+## The artifacts: `<exp>/charter.md` (the invariant core) + `<exp>/compass.md` (the history)
+The elder is sole author of both. The split exists because invariants buried in a growing doc
+decay — so **truth** and **history** live in separate files.
+
+**`charter.md` — the fixed invariant core (≤ 1 page; EDIT IN PLACE, NEVER APPEND).** The abstract
+frame the whole team reads FIRST, every cycle. It holds, and only holds: **the goals** (the
+mathematical objects being built, stated at *full generality* — the headline is a corollary/test,
+never the objective); **the objects list + status**; **the progress bar** (a claim of progress is
+valid only if it names the object it discharges AND its legal construction-category — a green build /
+closed leaf / re-derivation that discharges no object is motion, not progress); **the standing
+math-warnings** (the named drifts and dead routes *specific to this problem*, not just the general
+"don't shortcut" — the highest-suspicion classes, so the exact wrong move is refused at design time).
+The elder gates **every route and every progress-claim** against the charter; adding an invariant
+means *rewriting* (forcing distillation), never appending. This is what compaction distills *to*.
+
+**`compass.md` — the fork-history (may grow; compacted deliberately).** The cartographer keeps the
+map (where things are); the elder keeps the compass (which way is north) and the charter (what north
+*is*). Compass contents:
 - **The live question**, one actionable paragraph, and the current load-bearing sub-question.
   **The hard part, named** — and whether it holds a lane.
 - **Long-term goals** and how the current phase serves them.

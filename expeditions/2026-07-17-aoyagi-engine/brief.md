@@ -1,5 +1,12 @@
 # Expedition: aoyagi-engine — Aoyagi's mechanism as a standalone library; destination = the learning coefficient theorem
 
+> **SUPERSEDED-IN-PART (2026-07-20 checkpoint — read `charter.md` FIRST).** The library-as-artifact
+> goal below stands. But: the learning-coefficient theorem is now a **corollary/test, NOT the
+> destination** (steering by it drove the chart-route drift); `hbox` is the **analytic shadow of
+> charter Object B**, not "Path A"; and the four layers A–D are re-stated as the charter's abstract
+> objects (built at full generality). Where this brief says "destination = the headline" or "Path A =
+> hbox adapter," the charter overrides. This brief is the genesis record; `charter.md` is the current frame.
+
 **Central question (REFRAMED by operator, 2026-07-18 — this framing has PRIORITY).** Build
 **Aoyagi's resolution-of-singularities mechanism (her 2023 DLN paper) FULLY and FAITHFULLY as a
 free-standing Lean library** — her objects, her invariants (sharing/support INCLUDED, never

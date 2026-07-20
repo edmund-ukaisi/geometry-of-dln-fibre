@@ -1,3 +1,11 @@
+-- ⛔ RETIRED CHART ROUTE — DO NOT FILL THE `sorry`s IN THIS MODULE. ⛔
+-- This is the α source-gauge of the abandoned CHART route. Its `LeafPullback` / value hole
+-- (`leafDiagFrob_geoAtlasNorm`, ~:667) is CATEGORY-FALSE for ALL det-1 charts (no chart bounds the
+-- residual core; diagonalising a generic product needs a det-0 projection). It looks fillable and is
+-- not — it drove the second expedition drift. See `expeditions/.../charter.md` §3. The replacement is
+-- charter Object B (the IDEAL-level resolution `⟨∏C⟩ = ⟨diag bᵢ⟩`); reusable tree/det pieces are
+-- salvaged into B deliberately, NEVER by closing a chart hole. Off the deliverable path (nothing the
+-- proven headline needs imports this).
 import DLNFibre.DLN.RLCT.Engine.GeoChart
 import DLNFibre.DLN.RLCT.Engine.EngineDefs
 import DLNFibre.DLN.RLCT.Engine.GeoJacobianFold

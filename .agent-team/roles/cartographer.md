@@ -20,8 +20,10 @@ indexes that rotted — the burden of a long expedition is retrieval and status,
   `expedition rename` maintains them), tombstones for decayed detail.
 
 ## The pass (per convening)
-1. **Orient** — read STATUS, `compass.md`, and the map overview; hold the gestalt of where the
-   expedition is before touching any cell. A cartographer who only diffs never understands.
+1. **Orient** — read the elder's `charter.md` FIRST (the invariant frame: goals, objects, the progress
+   bar), then STATUS, `compass.md`, and the map overview; hold the gestalt of where the expedition is
+   before touching any cell. A cartographer who only diffs never understands. Map integrity is judged
+   against the charter objects — a cell that looks banked but discharges no charter object is drift-risk.
 2. **Survey + validate** (mechanical): refresh/inspect the computed layer; run the validator.
 3. **Diff** computed against curated: what is newly banked, renamed, orphaned, dead, contradicted.
 4. **Understand the diff** — light archaeology, asking your own questions: read the certs, commits,

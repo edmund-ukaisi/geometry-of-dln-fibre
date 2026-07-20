@@ -8,10 +8,15 @@ Agent definition:
 States results at exact precision — the Lean name and statement denote exactly what
 is proved ([`../../docs/policies/precision.md`](../../docs/policies/precision.md)); the
 load-bearing reduction (e.g. deriving the codimension formula from the orbit-Ext computation) is a target to
-attempt, not a hypothesis to assume away. **Before any Lean work, read
+attempt, not a hypothesis to assume away. **Before any Lean work, read the expedition's `charter.md` AND
 [`../../lean/CLAUDE.md`](../../lean/CLAUDE.md) explicitly** — a nested `CLAUDE.md` loads
 only on-demand (when a file under `lean/` is touched), not at spawn and not after
-`/compact`, so don't assume the build/Mathlib conventions are already in context. **Builds to bedrock, not
+`/compact`, so don't assume the build/Mathlib conventions are already in context.
+**A `sorry` is not a to-do list.** Fill only holes that discharge a charter §1 object via a legal
+construction-category; the charter names DO-NOT-FILL holes (category-false / off-path — e.g. a
+diagonalising chart's value hole) that *look* fillable and are not. An attractive open `sorry` that
+discharges no charter object, or that no legal category can close, is a trap — STOP and surface it,
+do not close it to make the census shrink. **Builds to bedrock, not
 just to green** ([`../../docs/policies/bedrock.md`](../../docs/policies/bedrock.md)): a sorry-free, axiom-clean
 build is the floor — commit in-file witnesses for non-vacuity, carry the weakest hypotheses, prefer a
 characterization to a bare assertion, and fence every cited/assumed step. **Works from the certificate

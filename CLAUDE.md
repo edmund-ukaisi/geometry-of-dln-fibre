@@ -121,6 +121,15 @@ Persistent context lives **in-repo**: this file, the policies in `docs/policies/
 (`synthesis.md` / statement cards / `thread.md`), `ROADMAP.md`, and `lean/CLAUDE.md`. Save conventions and
 decisions there.
 
+**Charter (the invariant core — read it first).** An active expedition keeps its *fixed* invariants in
+`<exp>/charter.md`: the goals (the mathematical objects being built, stated at full generality), the
+objects list, **the bar for calling something progress**, and the standing math-warnings (the named
+drifts / dead routes for *this* problem). Every role — controller, elder, navigator, cartographer, and
+every dispatched seat — reads it FIRST and gates against it. The journal and compass are *history* and
+decay as they grow; the charter is edit-in-place, never-append, ≤1 page, and is what compaction distills
+*to*. It exists because passive warnings buried in growing logs decay and the same dead-end gets re-entered
+(twice, here) — so the invariants get their own small file that is loaded every cycle, not read once.
+
 **Do NOT write to global Claude memory (`~/.claude/**/memory/`).** It pollutes other workspaces and is
 invisible to collaborators reading the repo. This binds the controller **and every teammate** — the harness
 may prompt you to save a memory there; do not. If a teammate writes one, the controller deletes it and

@@ -7164,3 +7164,43 @@ box-finiteness via the ideal peel-identity telescoping), riding the banked machi
 library. Verification build in flight (kernel-truth footprints: base=sorryAx, gen/gen_le/L2=clean)
 to give the operator ground truth. Operator asked whether to point next work directly at the L=3
 rung (holding until they confirm). Elder to revisit the compass "build the library" scope framing.
+
+## 2026-07-20 tick 420: CHECKPOINT / FRESH-START UPLIFT — the charter mechanism + neutralise the drift-pulls (operator-directed)
+Operator directive: make this a checkpoint + fresh start; action the durability mechanism; reason
+through how each role (incl. future controller) reads the files; neutralise the attractive-but-off-goal
+pulls (incl. Lean holes). NEW PHASE NOT STARTED (object list being decided with the operator).
+DIAGNOSIS driving it: we drifted into the SAME chart-route dead-end TWICE despite scaffolds + a
+SPECIFIC warning (worked.tex gnote). Root cause: the goal is an ABSTRACT object (ideal invariant /
+resolution), but every harness progress-signal (green build, closed leaf, gate, footprint) measures
+CONCRETE per-layer/chart work; a category-wrong-but-locally-correct construction passes every gate
+(they check correctness, not CATEGORY) and registers as progress; the warnings that would catch it
+were PASSIVE (one line in a 900-line doc, read once) and no role held the abstract-object frame at
+decision time.
+THE UPLIFT (all committed this tick):
+- **charter.md** (NEW, elder-owned, ≤1pg, edit-in-place/never-append): §0 the frame (objects primary,
+  headline a corollary/test); §1 the objects DAG (PROVISIONAL — finalising with operator); §2 the
+  progress bar (name the object + legal category, else it's motion not progress); §3 standing
+  math-warnings (the category error; the 4 legal step-types; the gnote antidote; Route D2 DROPPED;
+  the retired α-atlas holes DO-NOT-FILL); §4 durability. This is what compaction distills TO.
+- **CLAUDE.md** (always-loaded): domain-agnostic charter hook (Memory §) — the invariant core lives in
+  charter.md; read first; gate against it; logs are history and decay, the charter survives.
+- **heartbeat-prompt.md**: Memo rewritten (killed the stale ENDGAME/two-lanes/hbox/mint/PR block that
+  pulled to the drift) → charter read #0 + checkpoint state + the progress bar; protocol step 1 =
+  charter FIRST; ELDER OWNERSHIP now covers charter + compass.
+- **priorities.md**: the R1–R7 chart-route roadmap SUPERSEDED → checkpoint framing (see charter; new
+  phase not started; don't re-open chart route or dispatch build seats until object list decided).
+- **role files**: elder re-chartered (charter = its primary FIXED artifact, gates routes AND
+  progress-claims against §1–§3; compass demoted to fork-history); controller (charter first in
+  re-ground bundle + the progress bar binds me); formaliser ("a sorry is not a to-do list" + DO-NOT-FILL);
+  navigator/cartographer (charter first; position/map judged vs charter objects); brief template
+  (charter FIRST for every dispatched seat).
+- **Lean banners**: top-of-file ⛔ RETIRED CHART ROUTE / DO-NOT-FILL on GeoAlphaGauge, ChartBridgeFaithful,
+  GeoAtlasTransfer (comment-only, no build impact) — the category-false attractive holes
+  (leafDiagFrob_geoAtlasNorm, LeafPullback, geoAtlasNorm_imageCover), pointing to charter §3. Confirmed
+  the deliverable imports NONE of the chart Engine (off-path fossils).
+- **brief.md**: superseding head (headline now secondary; hbox = shadow of Object B; charter overrides).
+FLAGGED to the elder (its first re-chartered tasks, NOT done by me per ELDER OWNERSHIP): (i) add a
+charter-authority pointer-head to compass.md + drive the deep compaction (≤2pg fork-history); (ii)
+ratify/own charter.md going forward (I bootstrapped the initial). DEFERRED to post-object-decision:
+re-rooting map/claims.yaml on the abstract objects. Owed to the operator THIS turn: explain the math for
+the two joint decisions (Q1 object list + full generality; Q2 the coupled resolution's legal construction).

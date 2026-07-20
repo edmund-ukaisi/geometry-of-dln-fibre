@@ -15,6 +15,11 @@ worktree, the gates, the report shape.
 > **Target:** `<one stated, scoped deliverable — a statement to prove / a doc to write / a claim to adjudicate>`.
 >
 > **What you must know (generated — run `scripts/expedition brief <node-id> --resolution 3`; paste or attach):**
+> - **The charter (`<exp>/charter.md`) — READ IT FIRST.** The goals (the objects being built at full
+>   generality; the headline is a corollary/test), the objects list, **the progress bar**, and the standing
+>   math-warnings (the named drifts / dead routes / DO-NOT-FILL holes for this problem). Your target below is
+>   a means to a charter object — name which one. If your work fits none of the charter's legal
+>   construction-categories, or would fill a DO-NOT-FILL hole, STOP and surface it.
 > - **Standing decisions touching this question** — the settled forks + one-line whys (from the elder's
 >   `compass.md` + the map). If your work contradicts one, STOP and surface it — do not build around it.
 > - **Battery members relevant to your target** — the executable witnesses your claims must survive.

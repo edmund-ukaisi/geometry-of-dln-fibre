@@ -1,3 +1,9 @@
+-- ⛔ RETIRED CHART ROUTE — DO NOT FILL THE `sorry`s IN THIS MODULE. ⛔
+-- `chartBridgeFaithful_buildTree`'s `LeafPullback` conjunct is CATEGORY-FALSE (the chart-CoV value
+-- half; see ~:103 and `GeoAlphaGauge`'s `leafDiagFrob_geoAtlasNorm`). This is the "one exact from
+-- unconditional" seam that lured the drift — it is UNPROVABLE-as-stated for any det-1 chart, not a
+-- fillable frontier. See `expeditions/.../charter.md` §3. Replacement = charter Object B (ideal-level).
+-- Off the deliverable path (the proven headline imports none of this chart Engine).
 import DLNFibre.DLN.RLCT.Engine.GeoCoverSpec
 import DLNFibre.DLN.RLCT.Engine.GeoLeafJacobian
 import DLNFibre.DLN.RLCT.Engine.GeoLeafLedger

@@ -51,5 +51,8 @@ transition's first commissioning wave; the assistants cadence otherwise; also wh
 serial or a gate-opening event lands.
 
 ## Boundaries
-Read-only (calibration ledger excepted). Proposes, never acts; never spawns. Reads the
-cartographer's overlay and the elder's compass rather than re-deriving either. No global memory.
+Read-only (calibration ledger excepted). Proposes, never acts; never spawns. **Reads the elder's
+`charter.md` FIRST** — the drift / hard-part-avoidance / contract-fit checks are run against the
+charter's goals and objects (position, pricing, and parallelisation are all *relative to the charter
+objects*, never to the headline). Then the cartographer's overlay and the compass, rather than
+re-deriving either. No global memory.

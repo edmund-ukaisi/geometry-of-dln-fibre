@@ -8,18 +8,17 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- phase: ENDGAME, TWO LANES (ticks 336-340). THE LAST WALL FELL: geoAtlas_cocycle +
-  geoAtlas_fold_det + the R7 LeafJacobian bundle all clean-three (t14 stages 1-4, banked).
-  chartBridgeFaithful_buildTree = ONE sorry (:82 LeafPullback ← leafDiagFrob_geoAtlasNorm).
-  LANE 1 loss-t15: the InvVal value walk (both ENDS proven; remaining = payload pin + base
-  + 4 maintenance cases + instantiation, banked per stage). LANE 2 t14 encore (task #75):
-  the α-atlas TRANSFER batch — elder RULED (tick 340, fork 15 3rd amendment): witness swaps
-  to geoAtlasNorm alphaGauge t (= Aoyagi's chart, worked.tex:487-518; LeafPullback-at-id
-  FALSE); (D)₁ amends; 4 explicit transfer lemmas (cover/ledger/ae-inj/Jacobian); statement
-  gate posted to controller pre-fill. THEN: both lanes land → faithful discharge → hbox →
-  mint (stale hDescent arm + #guard_msgs + θ MINT GUARD) → cordon census → signal-wait PR.
-  Standing: elder + carto (long-running). Gates in flight: integration AxCheck + t14 full
-  build; the stage-4b push HELD on their green. Statement-gate rule: binder-vs-design diff.
+- **READ `charter.md` FIRST, every wake** — it is the fixed invariant core (goals = Aoyagi's machinery
+  as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
+  Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
+  the goal frame — the charter is.
+- phase: **CHECKPOINT / FRESH START (2026-07-20)** after the second chart-route drift (α-atlas
+  `LeafPullback` category-false). The prior ENDGAME/two-lanes/hbox/mint/PR framing is SUPERSEDED (see
+  `priorities.md`); do not re-adopt it. The new phase is **NOT yet started** — current work is the
+  operator joint-decision on the charter §1 object list. Do NOT dispatch build seats or re-open the chart
+  route until that lands and the elder re-charters the compass.
+- **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
+  §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
@@ -31,9 +30,11 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   the frozen ref "succeeded" — the placement check must check the BRANCH, not just the cwd).
 - Obligations STATED (tick 37); case-step-lemmas faithful-flip waits on the full-fidelity items.
 - Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
-- COMPASS OWNERSHIP (operator, 2026-07-20): the ELDER edits compass.md directly (its author-of-record,
-  keeper role); the CONTROLLER commits + pushes (branch discipline) — do NOT edit compass.md yourself,
-  commit the elder's edits (git add compass.md only, on the elder's "ready" signal).
+- ELDER OWNERSHIP (operator, 2026-07-20): the ELDER authors both `charter.md` (the fixed invariant core)
+  and `compass.md` (the fork-history); the CONTROLLER commits + pushes (branch discipline) — do NOT edit
+  either yourself, commit the elder's edits (git add that file only, on the elder's "ready" signal). The
+  charter is edit-in-place / never-append / ≤1pg; the compass is the growing history and owes a deep
+  compaction pass (elder's first re-chartered task).
 - CONTROLLER SHELL GUARDS (recurring self-bugs): NEVER gate a chain on `validate | tail` (tail
   masks the exit code — bank only via a grep-for-'0 error' gate); the hooksPath was dangling
   (pointed at the MAIN checkout's absent scripts/hooks — repointed to THIS worktree's, verified
@@ -42,8 +43,9 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 ## Protocol (per wake)
 0. Verify placement: `.claude/worktrees/aoyagi-engine/root`, branch `expedition/aoyagi-engine`
    (controller.md resp. 0). Recover first if not.
-1. Re-ground if fresh/compacted/unsure: expedition.md § State bundle — brief, this file,
-   priorities, map/STATUS.md, compass, journal tail, threads.
+1. Re-ground if fresh/compacted/unsure: **`charter.md` FIRST** (the invariant core — goals, objects,
+   progress bar, math-warnings), THEN expedition.md § State bundle — this file, priorities, map/STATUS.md,
+   compass (history), journal tail, threads. The charter overrides any stale framing in the history docs.
 2. Tick: ingest → re-anchor (brief + compass) → triage priorities → delegate (briefs via template
    + `scripts/expedition brief`) → integrate (journal append + map + STATUS) → surface →
    review-to-equilibrium.

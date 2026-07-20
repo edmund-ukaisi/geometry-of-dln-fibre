@@ -1,3 +1,8 @@
+-- ⛔ RETIRED CHART ROUTE — DO NOT FILL THE `sorry`s IN THIS MODULE. ⛔
+-- The id→α atlas transfer of the abandoned chart route; `geoAtlasNorm_imageCover` (~:823, "transfer
+-- owed / route pending") LOOKS like a fillable plumbing hole but belongs to the category-false chart
+-- cover — closing it is not progress. See `expeditions/.../charter.md` §3. Replacement = charter
+-- Object B (ideal-level). Off the deliverable path.
 import DLNFibre.DLN.RLCT.Engine.GeoAlphaGauge
 import DLNFibre.DLN.RLCT.Engine.GeoLeafLedger
 import DLNFibre.DLN.RLCT.Engine.GeoInjFold
