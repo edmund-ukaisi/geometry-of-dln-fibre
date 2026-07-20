@@ -5501,3 +5501,26 @@ the statement ruling ((a) witness-swap + transfers vs (b) slot-flip; my lean (a)
 paper-touchstone read (is the α-sheared chart the chart Aoyagi integrates over?). The
 tick-284 sorry-mask lesson applied FORWARD: the gate statement gets ruled before the lanes
 collide, not after. Transfer batch is loss-t15-independent — can start once ruled.
+
+## 2026-07-20 tick 340: elder RULED the seam — (a) witness-swap; the α atlas IS Aoyagi's chart; t14 encore commissioned
+Elder ruling (paper-grounded, decisive): the faithful witness is geoAtlasNorm alphaGauge t.
+Touchstone: Aoyagi integrates over the NORMALIZED chart — normal crossings F = Σb_i² is
+reached only after the regular Q,P normalization clears each D_J'' (worked.tex:487-489,
+509, 518); the id atlas is the fork-15 placeholder, LeafPullback-at-id FALSE. So the
+amended (D)₁ (atlas = geoAtlasNorm alphaGauge t) is MORE faithful — it names her chart.
+(b) slot-flip REJECTED (reopens t14's concrete-at-id closed arc on an unpriced
+re-elaboration bet; name-content drift); ∃-det-1-gauge form REJECTED (fidelity loosening —
+a generic g need not clear the interior). Four transfers each priced sound; the elder
+VERIFIED the load-bearing one on disk: α acts only on the interior residual sub-block
+(GeoAlphaGauge:123-126), fixes the divisor diagonal cells, det-1 (:428) — the Jacobian
+monomial transfers pointwise. Projection gate unchanged (region_glue atlas-agnostic).
+RATIFIED; compass fork 15 carries a THIRD amendment (the "no redefinition ripple" clause
+did not survive contact — t14 proved concrete-at-id, not g-parametric; recorded plainly).
+COMMISSIONED: t14 encore (task #75) — statement gate first (binder-vs-design diff +
+consumer grep, posted to me pre-fill), then the four named transfer lemmas (new module),
+then the re-wire (LeafPullback slot consumes leafPullback_geoAtlasNorm directly; the
+pre-staged wiring comment superseded), AxCheck gates + cordon-note rewording. Starts after
+its in-flight full build reports. File-collision guard vs loss-t15 set (GeoAlphaGauge tail
+comment only). Navigator pricing SKIPPED with reason: the elder priced each transfer; the
+parallelisation is evident (transfer batch ∥ loss walk, disjoint files); the registered
+discharge-time navigator convene stands. Both gates still compiling; push still held.
