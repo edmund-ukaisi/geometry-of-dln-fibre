@@ -186,7 +186,7 @@ Reading the output:
 * `+ monomial_rlct` — **RETIRED (2026-07-09): the library is now S2-FREE.** The `monomial_rlct` axiom
   is DELETED — its threshold conjunct is the proven `monomialThreshold_eq_iInf_axisRatio`, its analytic
   order-multiplicity conjunct a deferred seam (`cards/theta-analytic-multiplicity-seam.md`). NO result
-  carries it any more. ⚠ Per-result comments BELOW that still read `[…, monomial_rlct]` / "cited S2
+  carries it any more. RESOLVED (tick 324, verified: ZERO `monomial_rlct` in the actual `#print axioms` output of the full AxCheck run — every footprint below is S2-free). Per-result comments below that read `[…, monomial_rlct]` / "cited S2
   axiom" are SUPERSEDED (those results are now clean-three) — trust the emitted `#print axioms` output,
   not the stale expectation prose; a full comment sweep is a minor batched follow-on.
 * `sorryAx` — an unproven rung underneath. **Expected** on `aoyagi_learning_coefficient` until the
@@ -214,7 +214,7 @@ open DLNFibre.DLN.RLCT
 
 -- (2,2,2) ≤-direction cover headline (#80, the hard half) — carries `monomial_rlct`, the PERMITTED S2
 -- citation (the threshold value rests on S2 via the box-divergence atom). Must be
--- [propext, Classical.choice, Quot.sound, monomial_rlct] — NO `sorryAx`. (Contrast dlnLoss222 above,
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`) — NO `sorryAx`. (Contrast dlnLoss222 above,
 -- which must stay monomial_rlct-FREE: the S2-dependence enters here, in the singular cover.)
 #print axioms rlctAtOn_myF222_le
 
@@ -224,13 +224,13 @@ open DLNFibre.DLN.RLCT
 #print axioms rlctAtOn_myF222_ge'
 
 -- (2,2,2) `=` value (#80) — `le_antisymm` of the ≥ (clean) + the ≤ (monomial_rlct). Must be
--- [propext, Classical.choice, Quot.sound, monomial_rlct] — NO `sorryAx` (the only citation enters via
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`) — NO `sorryAx` (the only citation enters via
 -- the ≤-half; the ≥-content is citation-free).
 #print axioms rlctAtOn_myF222_eq
 
 -- (2,2,2) network headline (#107, ladder 3/3) — `rlctAt (dlnLoss H222) deepest222 = 3/2`, via the
 -- m.p. transport ∘ the loss-identity seam ∘ the `=` value. Same axiom profile as `_eq`:
--- [propext, Classical.choice, Quot.sound, monomial_rlct], NO `sorryAx`.
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`), NO `sorryAx`.
 #print axioms case222_rlct
 
 -- R1-LOWER ∀M-(1,1)-smeared front fact (`prodAux_frontScalarShear_cancel`, the cert's biggest-risk piece) —
@@ -354,7 +354,7 @@ open DLNFibre.DLN.RLCT
 
 -- ★ R1-LOWER VALUE LEG CLOSED ∀M at L=2 (the interior TRICHOTOMY assembled) — `routeMCore_box_diverges_
 -- achiever_L2` (M : Fin 3 → ℕ) must be CLEAN modulo the single cited S2 axiom, i.e.
--- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`. It combines the interior
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`), no `sorryAx`. It combines the interior
 -- `0 < deepRank` atom (`routeMCore_box_diverges_interiorLive`) + the deepRank=0 handler
 -- (`routeMCore_box_diverges_eDeepRank0`, E-fixed-pivot chart, det EXACTLY single-axis |u_p|^{minAdm−1},
 -- cov PURE monomial) + the smeared branch + the clean-branch hNo (derived IN-BRANCH from the clean
@@ -367,7 +367,7 @@ open DLNFibre.DLN.RLCT
 
 -- ★ GENERAL-`L` INTERIOR box-divergence atom (the general-`L` lift of `routeMCore_box_diverges_interiorLive`
 -- above) — `routeMCore_box_diverges_interiorLiveGen` must be CLEAN modulo the single cited S2 axiom, i.e.
--- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx` (identical to the L=2 analog). Its
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`), no `sorryAx` (identical to the L=2 analog). Its
 -- `NodeAchieverChart` bundle `interiorLiveNodeChartGen` must be CLEAN-THREE [propext, Classical.choice,
 -- Quot.sound]: the staggered staircase-conjugated leaf Jacobian (`DtotGen_abs_det`, det `∏|det K_s|^{r_s+c_s}`)
 -- + the general-`L` injOn/analytic legs carry no cited bound (the S2 dependence enters only in the
@@ -379,7 +379,7 @@ open DLNFibre.DLN.RLCT
 -- atom above into the achiever-dispatch spine's `hInterior` slot. `interiorLiveGen_hInterior_of_deepRank_pos`
 -- (the `∀ _ : 2 ≤ L`-shaped consumer form) + `routeMCore_box_diverges_interiorLiveGen_of_deepRank_pos`
 -- (the uncurried atom application) must inherit the atom's footprint exactly:
--- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`. The `deepRank M = 0` sub-stratum
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`), no `sorryAx`. The `deepRank M = 0` sub-stratum
 -- (L ≥ 3) is the remaining general-`L` interior gap (banked at L = 2 only via `eDeepRank0`).
 #print axioms interiorLiveGen_hInterior_of_deepRank_pos
 #print axioms routeMCore_box_diverges_interiorLiveGen_of_deepRank_pos
@@ -389,7 +389,7 @@ open DLNFibre.DLN.RLCT
 -- eDeepRank0Gen` (the E-block re-pivot chart `eDeepRank0NodeChartGen` box divergence, chart boundary
 -- `k` aligned to the InteriorDrop pivot `p* = k+1`) + its `∀ _ : 2 ≤ L`-shaped consumer
 -- `interiorLiveGen_hInterior_of_deepRank_zero` must be CLEAN modulo the single cited S2 axiom:
--- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`.
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`), no `sorryAx`.
 #print axioms routeMCore_box_diverges_eDeepRank0Gen
 #print axioms interiorLiveGen_hInterior_of_deepRank_zero
 
@@ -397,7 +397,7 @@ open DLNFibre.DLN.RLCT
 -- `interiorLiveGen_hInterior` combines the two deepRank sub-strata (`interiorLiveGen_hInterior_of_
 -- deepRank_pos` + `_of_deepRank_zero`, cased via `Nat.eq_zero_or_pos`) into the spine's `hInterior`
 -- slot `∀ _ : 2 ≤ L, InteriorDrop M → BoxDiverges M c' ε`, unconditionally on `InteriorDrop`. Must
--- inherit both atoms' footprint: [propext, Classical.choice, Quot.sound, monomial_rlct], no sorry.
+-- inherit both atoms' footprint: [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`), no sorry.
 #print axioms interiorLiveGen_hInterior
 
 -- ★ GENERAL-`L` BOUNDARY-SMEARED `hSmeared` OBLIGATION ∀L (the smeared counterpart of the interior
@@ -412,7 +412,7 @@ open DLNFibre.DLN.RLCT
 -- `routeMCore_box_diverges_achiever_full` feeds the dispatch spine its two open slot-dischargers
 -- (`interiorLiveGen_hInterior` + `hSmeared_smearedClose`), the clean branch handled in-spine. Given
 -- `hNo : NoInteriorBothDrop M` + the clean structural side-conditions, the achiever box integral
--- diverges for EVERY `L`. Must be [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`:
+-- diverges for EVERY `L`. Must be [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`), no `sorryAx`:
 -- the single permitted S2 citation enters through the interior slot; the smeared slot is clean-three
 -- and the spine adds none of its own.
 #print axioms routeMCore_box_diverges_achiever_full
@@ -423,7 +423,7 @@ open DLNFibre.DLN.RLCT
 #print axioms noInteriorBothDrop_of_not_interiorDrop
 
 -- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
--- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],
+-- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`),
 -- no `sorryAx`. `r1_resolution_interface_L2` = `rlctAtOn(dlnLoss M 0) 0 = ofReal(lambdaCore M)`
 -- ∀ nondeg M:Fin3, assembled from `achiever_L2` (R1-LOWER) + `routeMBoxThresholdFinite_mnp` (R1-UPPER)
 -- as the two `routeMLayerCover_of_atoms` atoms + the value lane. On wiring,
@@ -435,7 +435,7 @@ open DLNFibre.DLN.RLCT
 -- core `dlnLoss M 0` at the origin has local RLCT `ofReal(lambdaCore M)`. `hNo` is DROPPED — discharged
 -- inside the achiever (`routeMCore_box_diverges_achiever_full'`) by the `InteriorDrop`/bridge case split.
 -- Conditional ONLY on `hbox` (the open R1-UPPER box-finiteness wall). Must be
--- [propext, Classical.choice, Quot.sound, monomial_rlct] — S2 still enters via the interior/value lane;
+-- [propext, Classical.choice, Quot.sound] (historical: pre-retirement this line also expected `monomial_rlct`) — S2 still enters via the interior/value lane;
 -- the bridge adds none. No `sorryAx`.
 #print axioms r1_resolution_general
 
