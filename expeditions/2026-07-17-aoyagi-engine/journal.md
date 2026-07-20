@@ -6054,3 +6054,18 @@ pnp-cover reopened to REPLAY its own kill under the enlarged cube ((3,3) + the (
 same-layer spine at ρ 1→2→6) — covers ⟹ the route ratifies and the 2a build commissions;
 residual gap ⟹ sheared-target fallback. Compass fork 15 carries the FIFTH amendment (the
 complete srcBox arc: deviation refuted → pullback refuted → enlarged-cube ruled).
+
+## 2026-07-20 tick 369: clearedOf ANSWERED (t14, cited) — converges with the terminal-frontier analysis; value lane fully unblocked
+t14 broke its silence with the full cited answer, sent direct to loss-t15: (a) the CLEARED
+count = s.cleared per-layer (resets; my running-total control REFUTED by concrete
+overshoot, 4 vs 2 at the (3,2,3) leaf); (b) dropped s i ⟺ i ≥ widthMinUpto M s.layer
+(index pinned via resRows = widthMinUpto M s.layer − cleared, GeoFoldRegroup:1129;
+antitone ⟹ drops accumulate); (c) the LEAF reads cleared as ¬dropped (the terminal is
+(L,0)) = my candidate (A)'s terminal-persist — the calibration-17 contaminating/non-
+contaminating distinction confirmed by the construction authority; frame bridge = the
+shared top sub-frame via divBirthCoord = (layer,cleared). CONVERGENCE across three
+independent derivations (elder's three-object semantics, my construction read, t14's
+ledger forms) — loss-t15 runs ONE battery validation pass over t14's form (every rollover
+boundary + terminal, both M's), then PINS + BANKS + opens the four-case grind. t14
+route-corrected (its 2a framing was a round stale — enlarged-cube, not sheared-targets)
+and PARKED for the pnp replay verdict → its srcBox radius batch.
