@@ -6546,3 +6546,20 @@ mirror-case "closable this expedition"). loss-t15 approved to re-run prefix_reba
 under root-first (design confirmation, cheap) while holding the Lean build. Two independent
 seats (elder=fidelity, loss-t15=ergonomics) converge on re-thread — high confidence in the
 route. Awaiting t14's probe verdict + navigator-7's reachability call.
+
+## 2026-07-20 tick 394: THIRD route confirmation — the acceptance-oracle battery ALREADY models root-first
+loss-t15 re-ran clearedof_walk_trace.py (the battery that DERIVED clearedOf/dropThreshold/
+bmon + whose clear_pivot is the acceptance oracle): it ALREADY MODELS ROOT-FIRST (P = C0,
+clear layer-0, roll in C1, … — layer 0 reduced first, prefix accumulating the low-layer
+front). clearedOf/dropped/bmon/prefix all PASS at every state of (2,2,2)/(3,2,3) in that
+frame. So the value-lane design was validated in the root-first frame ALL ALONG — root-first
+re-thread ALIGNS Lean with the design's native frame; leaf-first was the mismatch that walled
+the value maintenance. Prefix confirmed NOT-flipping (root-first front = low layers = ≤S
+prefix, by design). THIRD independent route confirmation (elder=fidelity/worked.tex;
+loss-t15 isolability=ergonomics; loss-t15 battery=validated-in-frame) — the route (re-thread)
+is DECIDED with high confidence. Clarified to loss-t15 that its "waiting on elder's route
+ruling" was stale (elder ruled tick 392); the ONLY open item is navigator-7's COST/reachability
+call, pivoting on t14's cocycle-flip mirror-vs-rebuild probe (a Lean-PORT-cost question the
+battery doesn't bear on — battery proves the DESIGN, probe measures the PORT). Did NOT
+re-interrupt navigator-7 (it has the isolability input; the battery strengthens the design
+side but its pivot stays t14's probe). Awaiting t14's probe + navigator-7's call.
