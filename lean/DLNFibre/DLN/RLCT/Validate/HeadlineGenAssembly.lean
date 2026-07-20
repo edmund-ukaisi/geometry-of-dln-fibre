@@ -51,7 +51,16 @@ learning-coefficient infimum `⨅ w ∈ optimalSet, rlctAt (dlnLoss B) w` equals
 3. Value side: `aoyagi_learning_coefficient_frontPivot_front` (front normal form fed the recovered
    value ▸ the arithmetic recombination `reg_shift_add_core_eq_aoyagiLambda`).
 
-`aoyagiLambda H r` is `B`-free, so the WLOG transport is value-free on the right. -/
+`aoyagiLambda H r` is `B`-free, so the WLOG transport is value-free on the right.
+
+**This is THE honest generic engine for the value `C/2`** (`hbox = (□)` is the SINGLE open half).
+It already composes `(□)` (the RLCT lower-bound half) with the BANKED divergence achiever
+(`routeMCore_box_diverges_achiever_full'`, the upper-bound half, sorry-free) and `minAdm_eq_cCodim`, so
+the value is `rlct = ½·minAdm = ½·cCodim = C/2`. `(□)`'s discharge is IDEAL-LEVEL (Aoyagi Lemma 1 over
+the banked resolution), NOT a chart change-of-variables — the α-atlas chart-CoV route is
+category-refuted for ALL charts (`cert-full-value-walk` §6), so no `ChartBridgeFaithful`-conditioned
+restatement is non-vacuous; `(□)` itself is the satisfiable hypothesis (proven clean-three at `L = 2`
+by `routeMBoxThresholdFinite_mnp`, the general-`L` case being the ideal-level follow-up). -/
 theorem aoyagi_learning_coefficient_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
