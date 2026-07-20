@@ -578,12 +578,12 @@ theorem leafPullback_geoAtlasNorm (l : LeafData M)
   leafPullback_of_diagFrob l (leafDiagFrob_geoAtlasNorm l hl)
     (geoAtlasNorm_resRank_zero (alphaGauge (M := M)) conRoot l hl)
 
-/- **(B)-discharge wiring (pre-stage, `design-inv-val-statement-t15.md` §5).** Once the loss lane
-closes (`leafDiagFrob_geoAtlasNorm` filled via the `Inv_val` walk),
-`chartBridgeFaithful_buildTree`'s
-(B) `sorry` consumes the `LeafPullback c` conjunct per atlas piece from `leafPullback_geoAtlasNorm`
-(modulo the `geoAtlas`/`geoAtlasNorm alphaGauge` cover-transfer lemma, landed after both lanes). The
-ready wiring line for the (B) `∀ c ∈ atlas, … ∧ LeafPullback c ∧ …` slot is
-`leafPullback_geoAtlasNorm c (by …transfer membership…)`. -/
+/- **(B)-discharge wiring — LANDED (t14 encore, atlas-seam ruling).** The pre-staged plan here is
+SUPERSEDED: `chartBridgeFaithful_buildTree` now witnesses `geoAtlasNorm alphaGauge` DIRECTLY (the
+faithful atlas), so its `(B)` `LeafPullback` slot consumes `leafPullback_geoAtlasNorm c hc` with NO
+cover-transfer lemma needed — membership in the α atlas is definitional (the `(B)` quantifier ranges
+over `geoAtlasNorm alphaGauge (buildTree …)`, exactly this lemma's hypothesis). The remaining loss-lane
+`sorry` on the value path is `leafDiagFrob_geoAtlasNorm` (above); the ledger/ae-inj `(B)`/`(C)` props
+transfer via `Engine.GeoAtlasTransfer`. -/
 
 end DLNFibre.DLN.RLCT.Engine

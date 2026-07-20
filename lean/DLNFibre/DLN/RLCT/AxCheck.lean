@@ -1348,14 +1348,25 @@ open DLNFibre.DLN.RLCT
 #print axioms Engine.geoChartMap_fderiv_det_offcone
 #print axioms Engine.abs_det_fderiv_foldr_comp
 #print axioms Engine.geoChartMap_differentiable
--- THE COVER (t10 + fresh-eyes-t13, tick 288): clause (A) proven END-TO-END over the
--- diagonal-normalized atlas — 0∈U ⊆ flatCube 1 ⊆ the atlas images, via the R=1 self-cover,
--- the hbij tiling, the rollover passthrough, and the S-absorption. MUST stay clean-three:
+-- THE COVER over the ID atlas (t10 + fresh-eyes-t13, tick 288): clause (A) proven END-TO-END over
+-- the diagonal-normalized ID-gauge atlas — 0∈U ⊆ flatCube 1 ⊆ the atlas images, via the R=1
+-- self-cover, the hbij tiling, the rollover passthrough, and the S-absorption. Still banked (the
+-- ID-atlas cover); no longer the one CONSUMED by the faithful discharge (that now witnesses the α
+-- atlas). MUST stay clean-three:
 #print axioms Engine.geoAtlas_imageCover
--- THE R-SPLIT GATE (coverage, tick 294): chartBridge_buildTree IS the projection of the
--- faithful theorem — a direct A∧B∧C fill is a fidelity regression (the cordon note). The
--- projection mechanism MUST stay clean-three; the faithful theorem is DIAGNOSTIC
--- (+sorryAx via its (B)(C) frontier) and FLIPS to MUST-clean-three at the discharge:
+-- THE α-ATLAS TRANSFERS (t14 encore, atlas-seam ruling): the faithful witness is now
+-- `geoAtlasNorm alphaGauge` (Aoyagi's integration chart). The two SORRY-FREE transfers (ledger props
+-- + a.e.-injectivity) MUST stay clean-three:
+#print axioms Engine.geoAtlasNorm_leaf_ledgerProps
+#print axioms Engine.geoAtlasNorm_leaf_ae_injOn
+-- THE R-SPLIT GATE (coverage, tick 294; α-atlas amendment, t14 encore): chartBridge_buildTree IS the
+-- projection of the faithful theorem — a direct A∧B∧C fill is a fidelity regression (the cordon
+-- note). The projection mechanism MUST stay clean-three; the faithful theorem is DIAGNOSTIC
+-- (+sorryAx). Over the α atlas its sorryAx routes through THREE owed sources — leafDiagFrob_geoAtlasNorm
+-- (loss-t15's LeafPullback value-crux), geoAtlasNorm_imageCover (clause-(A) cover, TRUTH-GATED on the
+-- pnp-cover verdict), and geoAtlasNorm_leaf_leafJacobian (the gauge-generalized cocycle, tick-343
+-- counter-signed). It FLIPS to MUST-route-through-leafDiagFrob-ONLY when the cover + jacobian transfers
+-- land (the final batch):
 #print axioms Engine.ChartBridgeFaithful.toChartBridge
 #print axioms Engine.chartBridgeFaithful_buildTree
 -- o5_core §3 (tick 188): the envelope-splice — every Mval-minimizer is Clearable; tStar instance.
