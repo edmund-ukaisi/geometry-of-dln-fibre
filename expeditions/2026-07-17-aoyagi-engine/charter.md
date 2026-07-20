@@ -54,6 +54,20 @@ category before reporting progress; the elder gates every route and every progre
   Its `sorry`s (`LeafPullback`, `leafDiagFrob_geoAtlasNorm`, `geoAtlasNorm_imageCover`) are category-false
   or off-path. **DO NOT FILL THEM.** Object B (ideal-level) is the replacement; reusable tree/det pieces
   are salvaged into B deliberately, never by closing a chart hole.
+- **The cite is not the proof (the "fall back to the cite" drift, named).** The one in-library kill-target
+  is `cited_aoyagi_lower_ax` (`AoyagiCited.lean`: ½·codim ≤ rlctGlobal(lossDLN) — the DLN lower/finiteness
+  half). GOAL: PROVE it via Objects A+B+C and DELETE it (`rlctGlobal` is already built cite-free; the opaque
+  `rlctReal` is retired). Citing it — or reporting any payoff that rests on it — discharges NO §1 object; it
+  is motion, not progress. `cited_watanabe_upper_ax` is the DLN upper = the origin DIVERGENCE (banked) + R0;
+  so it is a PROOF-TARGET candidate, NOT settled-external — RESOLVE whether it reduces to the banked
+  divergence via the localization glue (⟹ kill it too; leaving a provable claim axiomatised is the MVP drift)
+  or genuinely needs Watanabe's UNIVERSAL theorem (a separate general object, cited only if a later scope
+  adopts it). Endpoint: `aoyagi_learning_coefficient` with NO Aoyagi/Watanabe axiom. `cited_local_zeta_pole`: off-path.
+- **Reuse RESULTS; do not adopt a new SUBJECT.** Dev's determinantal-geometry results
+  (`Core/RingTheory/Determinantal/*`, cite-free) are reused for Object D (codim). Do NOT take up L&R's
+  quiver-representation THEORY (Gabriel / orbit-closures / Ext-codim / the (C,θ) fibre-geometry) as a subject
+  to build — the paper's OTHER programme, outside the RLCT-value scope; D uses only its already-built Core
+  results, and E's order ρ is the RLCT/zeta-pole multiplicity (§1 E), NOT the quiver (C,θ)-count.
 
 ## §4  Durability
 Read first, every cycle, by every role. Elder is sole author (holds the abstract-object frame; gates
