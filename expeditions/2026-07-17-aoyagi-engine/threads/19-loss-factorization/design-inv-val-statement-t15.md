@@ -220,3 +220,43 @@ pivot row/col (finding I) — their PROOFS wait on the resid encoding. case-1(1)
 cleared cells + spectator reads — closest to resid-free, but case-1(1)'s "no b-power change" still needs
 resid unchanged on the (unchanged) residual, so it too reads resid's transformation. The base at conRoot
 is entirely resid (nothing cleared).
+
+---
+
+## RESOLUTION 2026-07-20 (rulings landed) — option C, bmon ≤, four flags, clearedOf → t14
+
+The elder ruled resid = (B) recursive-by-walk and CONFIRMED the hybrid (A-scaling = the paper's
+u-extraction, worked.tex:504-508/:513; B-recursive-ratio; the Lg/Rg step IS her Q,P incidence step).
+bmon = clearing-level indexing confirmed. Team-lead gate verdicts + the resolved payload:
+
+- **Q1 → OPTION C APPROVED.** resid=D_J is fold-tied (no ledger closed form, ruling B), so a
+  `ConState→…`-typed resid field cannot hold it. The invariant constrains ONLY cleared cells; un-resolved
+  values are first-class EXPOSED (= `prod M (acc w)`, readable by the clearing step) — the elder's
+  "no constraint there; values stay exposed to read a,b". The conRoot base is VACUOUS (nothing cleared).
+  Ratified TRIPWIRE: at the FIRST clearing case (case-2), if establishing newly-cleared = bmon from the
+  exposed prod + α-Schur walls without a carried parent block, STOP → fall back to
+  `resid := prod ∘ foldToState` (the heavier form). Commit of the banked unit holds for the elder's
+  one-liner confirming the C-realization (its wording was "carried field").
+
+- **THE PAYLOAD (validated, final):**
+  - `InvValC cleared bmon acc s := ∀ w i j, cleared s i → prod M (acc w) i j = if (i:ℕ)=(j:ℕ) then bmon s w i else 0`
+  - `bmonOf h s w p := ∏ k ∈ univ.filter (fun k => s.divTilde k ≤ (p:ℕ)), paramsEquivFlat M w (birthFlatCoord M s k h)`
+    — filter FIXED to `≤` (Q2a): 0-based position p = 1-based chain index p+1; `b_{p+1} = ∏_{t̃<p+1} = ∏_{t̃≤p}`;
+    four derivations agree (team-lead chain-index, R4 cert `b_i=∏_{t̃<i}`, position-0=terminal, battery bchain).
+  - `invValC_conRoot` (vacuous base), `leafDiagFrob_of_invValC_leaf` (composes with proven `leafDiagFrob_of_prodDiag`).
+
+- **Binder-diff PASS + four flags RESOLVED:** (1) `h : 0 < flatDim M` added; (2) `hexpf : 1 ≤ s.divExp f`
+  kept in case-11/12 (walk supplies via `DivExpPos_conOracle_stepChildren`, GeoFoldRegroup:705);
+  (3) case-11 child = t14's exact bumpedExp literal (GeoFoldRegroup:866-869); (4) "α=id at case-11" is
+  DEFINITIONAL (`alphaGauge` = `case11 => id` / `rollover => id`, GeoAlphaGauge:282-283) — so
+  `geoChartMapNorm alphaGauge g = geoChartMapNorm (fun _ => id) g` on case-11/rollover edges (t14's reads
+  reuse there), not an assumption.
+
+- **Q2b → OPEN, routed to t14.** `clearedOf s (i : Fin (M 0))` — which M(0) diagonal rows are diagonal-final
+  at state s, as a ledger function. Not derivable from the certs/batteries (abstract value battery doesn't
+  trace the M(0) frontier; R4's [E_J O;O D_J] is in layer-S's M(S)-frame). Candidates: (i) running total
+  `Σ_{completed ℓ'} widthMinUpto M (ℓ'+1) + s.cleared`; (ii) divTilde-based. **Gates the four-case grind.**
+
+Bank order (one unit, on elder one-liner + clearedOf): InvValC + bmonOf + clearedOf + vacuous base → then
+the four maintenance greens → then the walk instantiation (mirrors geoAtlas_cocycle over tGeoG alphaGauge,
+using the banked mem_edgesLeaves_fannedG_{charted,chartless}).
