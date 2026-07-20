@@ -7300,3 +7300,28 @@ math-warnings; cited_aoyagi_lower is the named target the merge sets up); state 
 expedition/aoyagi-engine @ ca0ffe0cf; RECOVERY POINT tagged premerge-dev-2026-07-20 → ca0ffe0cf
 (git reset --hard restores if the merge goes wrong); origin/dev @ 334e7f963. merge-plan.md stage-3
 updated to B. Beginning stage 1 (git merge origin/dev + resolve the 11 conflicts per the plan).
+
+## 2026-07-20 tick 425: stages 1-3 done (local); green-gate diagnosis — Core-drift small, archive non-trivial + scope CORRECTED
+STAGE 1 (merge + 11 conflicts) committed c6b25cac2; STAGE 2+3 (cordon+cite unify) committed 52068e1a1
+(both LOCAL/unpushed per push-only-when-green). dev's determinantal geometry now in-tree.
+GREEN-GATE build (full scripts/lb DLNFibre) = RED, diagnosed:
+- **Core-drift = 15 DROPPABLE stale aggregator imports.** dev did a Core REORGANISATION (flat
+  Core.{IntegralDimension, NoetherMonicPositioning→Dimension.Catenary, CotangentJacobian→RingTheory.
+  MvPolynomial.CotangentJacobian, MatrixKaehler, JacobianTrdeg, DeterminantalChart, SchurChartIff, …}
+  relocated into Core/Dimension/* + Core/RingTheory/*). Our --ours aggregator kept the 15 OLD flat
+  names → missing-file build error. VERIFIED SAFE TO DROP: no KEPT file imports the 15 (only the
+  aggregator + the chart Engine); dev's relocated versions carry the content (unioned in via dev's
+  new-path imports). Not real drift — orphaned imports.
+- **ARCHIVE is NON-TRIVIAL (cert oversimplified) + scope CORRECTED.** The cert framed "archive
+  DLN/RLCT/** (287 imports)" — but that would drop KEPT charter objects (R0/R1 reductions, C monomial
+  rule, rlctAt, the deliverable). Corrected scope: archive the chart ENGINE ONLY (DLN/RLCT/Engine),
+  keep the rest. BUT the Engine is NOT a clean leaf: HeadlineL1Mint.lean (deliverable path, via
+  ConditionalSpine) + AxCheck.lean import it (likely vestigial — old mint-relocation / chart-bridge
+  #print). So archiving needs DISENTANGLING the kept deliverable from the Engine first, then un-wire
+  (files stay in-repo, un-built, bannered = archive-not-delete). "don't drop" catch: caught the cert's
+  blanket scope before it dropped the reductions/monomial-rule.
+PLAN: dispatch an INTEGRATOR seat for stages 4-6 (drop the 15 stale imports; disentangle L1Mint/AxCheck
+from the Engine + un-wire it; re-gate to green: full build + cordon gate + #print axioms on the
+deliverable + cited_aoyagi_lower_ax + dev's determinantal keystones) on a staging branch
+(expedition/aoyagi-engine--integrate), keeping main clean; controller supervises + ratifies + the doc
+reconcile (elder). Recovery tag premerge-dev-2026-07-20 stands. Setting up the handoff next.
