@@ -8974,3 +8974,15 @@ generalize blockBlowupMap to 𝕜 + drop the guard + M4/M9 fall out downstream �
 dedup). M6 re-priced S→M deferred-not-rejected; M10 stays runway (no promise in the tree). Register
 re-pricings ride the bake-integration event-touch. The seat's session tally: M1/M2/M8/M3, the P2
 composite, M13, the register sweep, three specify-stage stops — zero wasted builds.
+
+## 2026-07-21: SEAT-API STANDS DOWN — nine units integrated; M10 banked-unmerged by the bedrock bar
+M6 (translateChart/translateResolution — the x₀-general transport, promised generality, M8's API
+earning its keep in its own proof) MERGED clean-three. M10 (Resolution.restrict/union) landed in a
+SECOND message crossing (finished before the countermand arrived — no fault) and stays
+BANKED-UNMERGED on its branch per the countermand's own provision: unpromised surface does not enter
+Core on cleanliness alone; the register records it "landed-on-branch, integration deferred awaiting
+a promise." STAND-DOWN ACCEPTED. The seat's session: nine integrated units, the register-wide
+ground-truth sweep (8 flips, 3 nuancings), four specify-stage stops with zero wasted builds, one
+banked extra. Re-task trigger: the post-bake M4+M9 upstreaming unit. The register's hygiene arc is
+CLOSED — everything S/M-file-disjoint is done or shaped; what remains anywhere in the expedition is
+the monument's eight leaves, the post-bake unit, and the named runway.
