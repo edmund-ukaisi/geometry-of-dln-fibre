@@ -14,19 +14,19 @@ Imports: `Core.Aoyagi.OrderCount` + `DLN.RLCT.Foundations.Lambda` + `DLN.Aoyagi.
 > **Claim (θ-attachment).** The banded count equals the landed closed-form value:
 > `bandCount ℓ a = aoyagiTheta ℓ a`, unconditionally (both `a(ℓ−a)+1`).
 >
-> - **Lean:** `DLNFibre.DLN.Aoyagi.bandCount_eq_aoyagiTheta` (`…/OrderBinding.lean` @ `<sha>`)
-> - **Gloss.** `bandCount ℓ a = aoyagiTheta ℓ a`. Proof `rw [bandCount_eq, aoyagiTheta]`.
+> - **Lean:** `DLNFibre.DLN.Aoyagi.bandCount_eq_aoyagiTheta` (`…/OrderBinding.lean` @ `04da7648a`)
+> - **Gloss.** `bandCount ℓ a = aoyagiTheta ℓ a`. Proof `simp only [bandCount_eq, aoyagiTheta]`.
 > - **Proved.** Unconditional. This is where the θ-name enters the E-lane (K3: Tier 1 stays neutral).
 > - **Cited.** none.
 > - **Deferred.** the identification of this count with Aoyagi's RLCT/zeta-pole multiplicity `ρ`
 >   (P6.2, pnp-gated — task #39; elder's max-crossing-number hypothesis). NOT claimed in any name/docstring.
-> - **Status.** sorry-free.
+> - **Status.** sorry-free (build-confirmed, axiom-clean).
 
 > **Claim (certified instantiation, pin (a)).** At the certified Def-3 selector objects,
 > `thetaCount d r = aoyagiTheta (ell d r) (residueA d r).toNat`, where
 > `thetaCount d r := bandCount (ell d r) (residueA d r).toNat`.
 >
-> - **Lean:** `DLNFibre.DLN.Aoyagi.thetaCount` / `thetaCount_eq_aoyagiTheta` (`…/OrderBinding.lean` @ `<sha>`)
+> - **Lean:** `DLNFibre.DLN.Aoyagi.thetaCount` / `thetaCount_eq_aoyagiTheta` (`…/OrderBinding.lean` @ `04da7648a`)
 > - **Gloss.** The banded count at the certified `(ell d r, residueA d r)` equals `aoyagiTheta` there.
 > - **Proved.** Immediate from `bandCount_eq_aoyagiTheta` (unconditional — no `residueA ≤ ell` bound
 >   needed; the value identity holds for all naturals). Pin (a) discharged: parameters are the certified
@@ -35,7 +35,7 @@ Imports: `Core.Aoyagi.OrderCount` + `DLN.RLCT.Foundations.Lambda` + `DLN.Aoyagi.
 > - **Deferred.** the ρ-identification (as above); the through-selector VALUE gates
 >   (`thetaCount ![2,2,2] 0 = 1`) need `ell`/`residueA` instance lemmas (`ell`/`residueA` are
 >   `noncomputable`) — flagged for a follow-on, not built here.
-> - **Status.** sorry-free.
+> - **Status.** sorry-free (build-confirmed, axiom-clean).
 
 **K1 ground-truth gates** (build-enforced, computable `aoyagiTheta` at the certified `(ℓ,a)`; RRR
 table): `aoyagiTheta 2 2 = 1` [(2,2,2) & (3,3,4) → (ℓ,a)=(2,2)], `aoyagiTheta 2 1 = 2` [(2,1,2)],
