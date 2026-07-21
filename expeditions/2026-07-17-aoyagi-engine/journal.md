@@ -7774,3 +7774,20 @@ full-aggregator rebuild + its fidelity reviewer (rev-monument-adapter) land firs
 WHAT REMAINS OF THE ENTIRE EXPEDITION: leaf 3 (atlas CoV, mon-cov) + the geometric atlas construction
 (analytic charts + two-sided ideal identity + Jacobian certificate + hcover BUILD) — the coupled
 ideal-route geometry, the named mountain, nothing else.
+
+## 2026-07-21: MONUMENT 1 FALLS — the atlas CoV theorem LANDED sorry-free; ONE sorry remains in the library
+mon-cov landed rlctAt_sumSqFam_eq_iInf_charts clean-three, exactly on the convergent sketch (≤ via the
+new InjOn-off-null area formula; ≥ via off-origin S2 + compact subcover + a.e.-cover subadditivity), and
+the ENGINE VALUE CHAIN went clean-three AUTOMATICALLY: two_mul_rlctAt_eq_divisorMin → divisorMin_eq_cCodim
+→ two_mul_rlctAt_eq_cCodim (2·rlct = cCodim, the resolution-level ½·codim headline) — all four banked.
+Reusable infra delivered: Core/Aoyagi/AreaFormula.lean (the Waypoint-owed InjOn-off-null lintegral
+equality, general); off-origin Object-C convergence (codex's large-origin-box simplification); the
+subcover assembly. The seat left its work UNCOMMITTED (mis-read the push rule as role-boundary) —
+controller committed+pushed at handoff (137066277), then merged (one empty-side conflict my union script
+mishandled — mon-cov's deliberate deletion of a batch-superseded informational #print; resolved to its
+deletion; lesson: union-resolvers must handle empty sides). AreaFormula wired into the aggregator.
+THE LIBRARY NOW CARRIES ONE SORRY: exists_coreResolution's geometric obligation (∃ res, AtlasRealizes) —
+the coupled ideal-route atlas + hcover BUILD. Everything else in the destination's cone is proven.
+Fidelity reviewer (rev-cov-fidelity) spawned per the seat's request (statement vs min-over-charts;
+unconsumed-field smell check; the allOnesResolution instantiation numbers; AxCheck banking sanity).
+Ground-truth root build running; push on green.
