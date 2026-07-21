@@ -179,7 +179,19 @@ def Case1Preservation : Prop :=
     {b : (Fin D → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin D → ℝ) → ℝ}
     {q : Fin M → Fin nR → (Fin D → ℝ) → ℝ} {V : Set (Fin D → ℝ)},
     IsOpen V → (0 : Fin D → ℝ) ∈ V → StepInv F g b resid q V → 2 ≤ nR →
-    ∀ _branch : Bool, StepInvChild F g V
+    -- BOTH children, `branch`-DISTINGUISHED (rev-leaves FIX 3): `true` = 1(1) merge (δ = 0, no fresh
+    -- exceptional coordinate); `false` = 1(2) split (δ = 1, a fresh exceptional coordinate). The
+    -- child dominant carries the elder-ratified per-path law `b' = u_p^δ · (b ∘ σ)` (`u_p` FRESH,
+    -- `δ = [J=0] ∈ {0,1}`) — so one branch-independent witness canNOT discharge both branches.
+    ∀ branch : Bool,
+    ∃ (p : Fin D) (sh : (Fin D → ℝ) → (Fin D → ℝ)) (Vchart : Set (Fin D → ℝ))
+      (b' : (Fin D → ℝ) → ℝ) (nR' : ℕ) (resid' : Fin nR' → (Fin D → ℝ) → ℝ)
+      (q' : Fin M → Fin nR' → (Fin D → ℝ) → ℝ),
+      AnalyticOnNhd ℝ sh Set.univ ∧ sh 0 = 0 ∧ (∀ u, jacDet sh u = 1) ∧ CenterCoordAligned sh p ∧
+        IsOpen Vchart ∧ (0 : Fin D → ℝ) ∈ Vchart ∧
+        (∀ u, b' u = (u p) ^ (if branch then 0 else 1) * b (sh (blowupMap p u))) ∧
+        StepInv F (fun u ↦ g (sh (blowupMap p u))) b' resid' q'
+          ((fun u ↦ sh (blowupMap p u)) ⁻¹' V ∩ Vchart)
 
 /-- **L3 — a case-2 step preserves the interior `StepInv` (the CLEAN regime, width ≤ 2).** The
 residual telescopes; divisibility is carried by the witness law (module §L3/L4). Region-quantified;
@@ -191,12 +203,13 @@ theorem case2_preserves_stepInv : Case2Preservation := by
 
 /-- **L4 — a case-1 (coupled corank ≥ 2) step preserves the interior `StepInv`. ⟨THE WALL⟩** The
 frontier this expedition must build (charter §1.B — the coupled `diag(b)` recursion dodged for
-multiple expeditions). Produces BOTH the 1(1) and 1(2) children with a STRICTLY SMALLER residual
-(`nR' < nR` — the cleared pending pivot; recursion progress). The wall is the coupled DIVISIBILITY at
-corank ≥ 2 (`2 ≤ nR`): the residual entries share divisors, and proving the coupled shear ∘ blow-up
-keeps `⟨entries⟩ ⊆ ⟨b'⟩` with the EXACT `/u^δ` quotient is the genuine new proof-engineering. NO
-Bézout (born only at the terminal, `terminal_bezout`). The pnp-case1 seat's certificate refines THIS
-PROOF, not this statement. -/
+multiple expeditions). Produces BOTH the 1(1) merge and 1(2) split children (`branch`-distinguished by
+the elder-ratified per-path law `b' = u_p^δ·(b∘σ)`, `δ = [1(2) split]`). The wall is the coupled
+DIVISIBILITY at corank ≥ 2 (`2 ≤ nR`): the residual entries share divisors, and proving the coupled
+shear ∘ blow-up keeps `⟨entries⟩ ⊆ ⟨b'⟩` with the EXACT `/u_p^δ` quotient is the genuine new
+proof-engineering. NO Bézout (born only at the terminal, `terminal_bezout`); NO residual-size measure
+(termination rides the built tree's WF). The pnp-case1 certificate refines THIS PROOF, not this
+statement. -/
 @[blueprint]
 theorem case1_preserves_stepInv : Case1Preservation := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled corank≥2 divisibility⟩
@@ -209,24 +222,29 @@ leaf). See `terminal_bezout`. -/
 def TerminalBezout : Prop :=
   ∀ {M D : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} {g : (Fin D → ℝ) → (Fin D → ℝ)}
     {b : (Fin D → ℝ) → ℝ} {q : Fin M → Fin 1 → (Fin D → ℝ) → ℝ} {V : Set (Fin D → ℝ)},
+    IsOpen V → (0 : Fin D → ℝ) ∈ V →                                -- V is a NEIGHBOURHOOD of 0 (FIX 1)
     StepInv F g b (fun _ : Fin 1 ↦ 1) q V →                         -- terminal: residual trivial
     ∀ (i₀ : Fin M) (unit : (Fin D → ℝ) → ℝ),
-      ContinuousAt unit 0 → unit 0 ≠ 0 → (∀ u ∈ V, (F i₀ ∘ g) u = b u * unit u) →  -- cleared pivot
+      ContinuousOn unit V → unit 0 ≠ 0 → (∀ u ∈ V, (F i₀ ∘ g) u = b u * unit u) →  -- cleared pivot
     ∃ (V' : Set (Fin D → ℝ)) (r : Fin M → (Fin D → ℝ) → ℝ),
       IsOpen V' ∧ (0 : Fin D → ℝ) ∈ V' ∧ V' ⊆ V ∧
       PrincipalInv F g b (fun i ↦ q i 0) r V'
 
 /-- **The NEW leaf — the Bézout / principality is BORN at the terminal node.** At a terminal state
-(`S = L`, `J ≥ 1`; residual trivial) the cleared pivot supplies an entry `(F i₀∘g) = b·unit` with
-`unit 0 ≠ 0` (`b_{k₀} = Σ (U⁻¹)_{1i}(V⁻¹)_{j1}·(∏C∘g)_ij`, pnp §c). On the open `V' = V ∩ {unit ≠ 0}`
-this inverts to the Bézout `b = (1/unit)·(F i₀∘g)`, upgrading the interior `StepInv` (divisibility) to
-the terminal `PrincipalInv` (both). This is where principality comes from — it does NOT hold interior
-(pnp-case1). Region-quantified (the region shrinks to `V'`, still open `∋ 0`).
+(`S = L`, `J ≥ 1`; residual trivial), with `V` an OPEN neighbourhood of `0` (FIX 1 — the hypotheses
+now make `V` a neighbourhood, so the conclusion's `IsOpen V' ∧ 0 ∈ V' ∧ V' ⊆ V` is reachable; without
+`IsOpen V ∧ 0 ∈ V` the statement was FALSE, e.g. `V = {u | 0 < u 0}`), the cleared pivot supplies an
+entry `(F i₀∘g) = b·unit` with `unit 0 ≠ 0` (`b_{k₀} = Σ (U⁻¹)_{1i}(V⁻¹)_{j1}·(∏C∘g)_ij`, pnp §c). On
+the open `V' = V ∩ {unit ≠ 0}` this inverts to the Bézout `b = (1/unit)·(F i₀∘g)`, upgrading the
+interior `StepInv` (divisibility) to the terminal `PrincipalInv` (both). Principality does NOT hold
+interior (pnp-case1). Region-quantified (the region shrinks to `V'`, still open `∋ 0`).
 
-**(elder D2)** The `unit⁻¹` continuity is the NAMED STANDARD LEMMA `ContinuousAt.inv₀` (a continuous
-function nonzero at a point has a continuous reciprocal there — the scalar case of the continuous
-inverse of a nonsingular continuous matrix `U, V` on a region), NOT an assumption: `V'` is the open
-set where `unit ≠ 0` and `(1/unit)` is continuous there by that lemma. -/
+**Route (rev-leaves + elder D2/D2').** `unit` here IS the divisibility quotient `q i₀ 0` on `{b ≠ 0}`
+(from `StepInv`), so `r i₀ = 1/(q i₀ 0)` riding `StepInv`'s `ContinuousOn q`; the `unit⁻¹` continuity
+is the NAMED STANDARD LEMMA `ContinuousOn.inv₀` (continuous + nonzero on a set ⟹ continuous
+reciprocal — the scalar case of the continuous inverse of the nonsingular continuous cofactors `U, V`
+on a region), NOT an assumption. `V'` is the open `V ∩ {unit ≠ 0}` (open since `ContinuousOn unit V`
+on open `V`), `∋ 0` since `unit 0 ≠ 0`. -/
 @[blueprint]
 theorem terminal_bezout : TerminalBezout := by
   -- map: B-terminal-bezout (cleared-pivot entry = b·unit, unit 0 ≠ 0 ⇒ invert to Bézout on {unit≠0})
