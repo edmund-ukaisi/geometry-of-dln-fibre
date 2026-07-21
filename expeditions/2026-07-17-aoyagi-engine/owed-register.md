@@ -225,3 +225,47 @@ solo authorship — it is the author + ground-truther pair, and it took one full
 
 EVENT: sweep pass 1 (seat-api, force-elaborated): 8 status corrections, 3 nuancings, 0 new owed
 items. The status column is henceforth calibrated by sweep-pairing.
+
+---
+
+## §4 EVENT-UPDATE — 2026-07-21 evening (elder-authored; the repair-rounds day + the parallelisability audit)
+
+STATUS CHANGES: **NEW M17** — IgnoresCoords/Deg1SupportedOn + the closed equivalence bridges
+(update-invariance canonical; agreement/zeroing as derived lemmas; the M14-interaction docstring flag
+carried) — LANDED (repair rounds). **NEW P13** — canonCenter (the DLN-side canonical center/pivot
+assignment from (S, J, esubst, d); the L7 road) — OPEN, M, strike-able, IN-FLIGHT follow-round;
+kill-condition DISCHARGED (thread-40 STABLE: rollover slot-stability, both remnant orientations;
+two discharge conditions banked — merge pivots return the BIRTH slot, cross-layer legitimate;
+the runMinWidth row bound). **M6 → LANDED. M13 → LANDED. M10 → BANKED-UNMERGED** (91f8e016e in
+branch history; merge at the next hygiene window). **M4+M9 → the consolidated post-bake unit.**
+**P2-composite → LANDED.** §0 guardrail appended: the PER-FIELD SEVERANCE PRINCIPLE (every free
+field on a quantified structure is its own severance axis; the audit is per-field, never
+per-statement) + the 4-AXIS WITNESS BANK as the standing regression set (content = Σw²/free-center;
+size = d=![1,2,1]; path = all-charts-one-path; coordinate = the same-coordinate atlas). §3 event:
+the (A′)-reversal arc (shape → assumed-delivery → stated-invariant, with the falsification witness);
+sweep-1 corrections applied; thread-40 STABLE.
+
+## §5 PARALLELISABILITY (operator charge 2026-07-21; elder-classified, register-side)
+
+- **O2 / the 8 leaves** — MONUMENT-GATED (it IS the pipeline). Sub-item: **P13 def-drafting =
+  PARALLEL-NOW** (a new data-only file + traversal verification); its reachesLeaf WIRING =
+  monument-gated.
+- **O4 loss-side transport** — PARALLEL-POST-BAKE (math monument-independent, all substrate banked,
+  M; the FILE is bake-touched — seat-ready the moment the bake lands).
+- **P6 combinatorial θ** — **READY-OPTION, OPERATOR GATE (§1-E)**: M-priced post-foldState,
+  file-disjoint ⟹ parallel-now IF OPENED; the analytic pole-order half stays monument-class.
+  Elder recommendation: the best breadth-per-seat on the board if E re-opens — the operator's call.
+- **P8/O7a φ-form Def-1** — PARALLEL-NOW (fully file-disjoint, S/M standard material; the
+  lowest-risk independent seat available).
+- **P3's #44 general normal form** — PARALLEL-NOW-CAPABLE, RUNWAY-RECOMMENDED (L-priced, serves the
+  r>0 lane only; wants a pnp certificate first — the wall's own lesson; do not open casually).
+- **P3 remainder** — MONUMENT-GATED → runway. **P12 bridge** — PARALLEL-NOW-CAPABLE as COLD PREP,
+  RUNWAY-RECOMMENDED (thread-40 removed its last near-term consumer).
+- **M4+M9 unit** — PARALLEL-POST-BAKE (one quiet window; touches the wall's toolkit imports).
+- **M11** — PARALLEL-NOW-CAPABLE (M, low priority). **M7/M10-merge/P9/P10** — RUNWAY-ONLY.
+- **M14/M15/M16** — MONUMENT-GATED (the staged locks themselves).
+
+THE SUMMARY LINE (elder): the genuinely seat-ready parallel set TODAY is small and honest — P13's
+def-drafting, P8, and (post-bake) O4 + the M4/M9 unit; P6 is the one big READY OPTION and it is the
+operator's to open; everything else parallelisable is runway that should not jump the queue. "The
+board's scarcity is not seats — it is the wall, and the wall is correctly not waiting on any of this."
