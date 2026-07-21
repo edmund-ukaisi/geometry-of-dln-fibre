@@ -8336,3 +8336,24 @@ only two honest shapes; all four hardening-round refutations were one disease: Q
 FROM PROVENANCE. Compass entry applied (the principle + the go-to-the-construction corollary).
 arch-C renders with nothing further pending; rev-leaves round-4 lands on its output; then the wave
 go-signals.
+
+## 2026-07-21: THREAD-37 WIRING MAP COMPLETE + MERGED — the paper hands the wave its playbook
+scout-mine's sweep banked (wiring-map.md + codex; pp.14–26 image-verified; refreshed against the
+edge-indexed baseline). TOP FINDS ROUTED: B1 → seat-L4 (the L4 fold is PRINTED, pp.17/18/21: the
+exact identity P·diag(b)·D_J·C = u·diag(b′)·D‴_J·C′ with P = diag(b′)·(unipotent col-clear)·diag(b′)⁻¹
+= Q̂ verbatim; q′=(φ*q)/u^δ exact division — the seat transcribes, not re-derives; suggested 3-lemma
+decomposition sent). B3/B4 + THE p.19 TRANSPOSE BOUNDARY → arch-C (the traversal IS the edge data;
+at rollover J+1>M(S+1) the residual collapses to a vector WITH A TRANSPOSE — the fold must carry it
+as a named branch or documented degenerate, never implicit; scout's "most likely to bite next").
+S1 corroborated for free (the block-center exponent arithmetic reproduces her printed increments —
+the reshape is paper-faithful). A1 corroborated with a codex-independent reachable witness (one
+advancing run hits both wrong-δ states of the old coding). C4 → hygiene (O5 has a general-L proof
+skeleton: p.23 completing-the-square + Lemma 3 p.24 — transcribe-able, off kill-path). C1 → summit
+plan (Watanabe-upper = the EASY half: one min-attaining chart; BOTH cites deletable together at the
+monument+CoV — as the charter names). terminal_bezout p.22-grounded (non-vacuous). D1–D4 paper-SILENT
+obligations named (the CoV min-realization, the cover-as-measure-statement, the Bézout inversion
+form, per-step a.e.-injectivity — OURS; prices the wave honestly). CROSS-CUT confirmed: A1 + the
+free-atlas falsity + the case-2-b′-note were ONE root cause; the edge-indexed baseline adopts the
+paper's own frame. COMMISSIONED: scout-mine's (3,3,4) end-to-end EdgeSpec traversal check (paper's
+(S,J,t̃,center,pivot,δ) table vs the fold's edge data, incl. the transpose boundary) — the
+decorrelated gate probe on arch-C's render, per the elder's constructibility ask.
