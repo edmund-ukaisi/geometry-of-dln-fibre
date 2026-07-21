@@ -9251,3 +9251,35 @@ ContinuousOn.inv₀; L1 via the Fin-1 repackaging, fwd cofactor = q / bwd = r. M
 verified present at the pin. Controller confirmed: proceed (terminal_bezout first), standing
 gates restated (kill-set in-file, force-elaborated clean-three, sorries+cordon per commit,
 push-on-commit, stop-on-suspect on any statement pressure).
+
+## 2026-07-21 (controller) — nav-13 coupling flag on the E-lane: the layering fork + AxCheck as a second single-writer file
+
+The navigator (invited flag, read-only, ground-truthed at tip) found the third lane's disjointness
+CONDITIONAL: the register's default P6 substrate (TreePath / FoldProduced.leafOf / divExp) is
+entirely DLN-side — FoldProduced.leafOf is defined in MonumentAtlas.lean (:143–156), the file the
+bake is actively rewriting; the tree + divExp live in DLN/RLCT/Engine. A tree-enumeration count
+cannot live in Core (Core never imports DLN) and would sit in the monument's read-cone mid-bake.
+Confirmed disjoint on the build axis: Core/Aoyagi/Order.lean + OrderCount are leaf modules
+(nothing imports them — no rebuild thrash). Second flag: AxCheck.lean (the cordon roots registry)
+is a single-writer file alongside the aggregator — all root registrations contend there.
+
+**Controller disposition (adopted):**
+- **Three-tier split directed to seat-E** (mandatory SPECIFY output #0): Tier 1 = Core/OrderCount,
+  the Lemma-4 characterisation + count = a(ℓ−a)+1 over ABSTRACT parameters (pure banded-interval
+  combinatorics; the mathematical weight; disjoint NOW). Tier 2 = thin DLN binding at the
+  certified ClosedForm objects + the aoyagiTheta identity (imports ClosedForm + Lambda ONLY;
+  MonumentAtlas off-limits — Lambda.lean is not in the bake's write set). Tier 3 = the
+  tree-ledger binding (FoldProduced/leafOf/divExp) DEFERRED until the bake locks FoldProduced;
+  controller signals. Stop-on-suspect if Lemma 4's characterisation obstructs the abstraction.
+- **Elder consulted on the pin interaction**: pins (a) certified-parameters and (c) ledger-fact
+  λ-correspondence read as binding at Tiers 2/3, Tier 1's abstract parameters = Core-purity not a
+  pin violation, severance audit on the COMPOSITE, θ-naming reserved to the bound Tier-2
+  statement (K3-adjacent). Elder to confirm-or-correct before seat-E's statements freeze; if the
+  elder rules the headline must be born one-piece DLN-side, the fallback is re-sequencing seat-E
+  behind the bake, not splitting.
+- **AxCheck.lean declared controller-only** (like the aggregator): seats propose root
+  registrations in landing reports; controller registers at integration. Communicated to seat-E;
+  binds all seats.
+
+nav-13's triggers unchanged (full fan-out at bake integration incl. the Deg1SupportedOn-in-
+PrincipalInv check; mandatory joint at DLN-lane → canonCenter); returned to idle.
