@@ -7842,3 +7842,14 @@ wall, content HELD). PNP-SHEAR PIN dispatched in parallel (thread 33): adjudicat
 only / (b) shears-in-g / (c) mixed-at-coupled — gates leaves 3–5's statements; the v4.2 record already
 accommodates (b) via unit/hjac, so this is certificate-prose + statement-shaping, not a record change.
 Setpoint unchanged (summit, no cites); the ladder adapts — the closed loop working as specified.
+
+## 2026-07-21: (B) ladder fix — the cast wall dodged structurally; leaf-2 (general-D blow-up) approved as the bottom rung
+mon-geo banked the d=(1,2) reductions (mult_d12, flatDim_d12; pushed e79967a38) then hit the DOCUMENTED
+opaque-width cast wall: reusing the literal-Fin-2 blowupResolution2 at Fin (flatDim ![1,2]) — propositionally
+=2, syntactically distinct — would need a whole-Resolution reindex transport (the "cost two tides" class).
+THRASH-STOP applied correctly: characterized, not ground. THE FIX (approved): build leaf-2 NATIVELY over
+general Fin D — the coordinate-centre blow-up Resolution with the universal Jacobian det (w i)^(D-1) —
+then (B) = pure instantiation at D = flatDim ![1,2] (universal lemma ⟹ no transport). Leaf-2 is the shared
+atom for BOTH (B) and the monument's per-step blow-up geometry; folds rung (A) in; bounded (~80-150 lines,
+not research-grade). Sequencing: leaf-2 → (B) instantiation → (C) skeleton (pnp-shear pin shapes leaves
+3-5 meanwhile). The cover subtlety (bounded spectators for compact doms) pre-flagged for leaf-2's cover.
