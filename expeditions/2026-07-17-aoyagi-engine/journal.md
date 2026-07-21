@@ -9614,3 +9614,22 @@ codex artifacts banked (21ad95d85). carto-standing did not survive the VM death 
 cartographer convened under the standing name (5-area housekeeping brief: witness attachment,
 cards/overlay, P6-split pointers, map/STATUS freshness, orphan sweep; incl. the thread-41
 numbering collision flag).
+
+## 2026-07-21 (controller) — P6.2 shape RATIFIED with the elder's GLOBAL-minAdm pin; landed boxedOrder VALIDATED
+
+Elder ratification in: the max-over-charts shape + the two incidence lemmas (UPPER/ATTAINMENT)
++ the monument-deferred analytic seam — K4's equality landing on the lemma pair as the transfer
+ruling said it must. **The elder's own pin (a wrong-object trap the certificate made visible):
+the filter must be the GLOBAL minAdm, not the chart-local minimum** — the landed boxedOrder
+counts LOCAL min-attainers, and on a non-binding chart (chartMin > minAdm) its local count is
+≥ 1 while the global count is 0, so max-over-charts-of-boxedOrder is the WRONG object; the P6.2
+statement counts per-chart #{a ∈ bindingAxes : jac a + 1 = GLOBAL minAdm} (the counts agree on
+binding charts, where the max is realized). Corollary FOR the landed def: the t̃=0 sharpening
+VALIDATES boxedOrder as landed (bindingAxes already terminal-only; [2,2,5] confirms at ρ-level
+what the annotation pass verified at value-level) — P6.2's new content = the atlas max with the
+global filter + the two incidence lemmas, nothing else. Kill-set pinned ([2,2,2,2,2] with the
+must-not-prove-via-cardinality teeth; [2,2,5]; the five ground truths; loose-lattice
+reclassification noted). Tiering: seat-E proposes (Core-purity split expected), elder checks.
+Register/bank updates at the elder's next event-touch (the K4-transfer vindication chain
+recorded as the designed example). seat-E relayed the full shape; sequence = Tier-2 arithmetic
+first, then the tiering proposal.
