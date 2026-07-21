@@ -7970,3 +7970,30 @@ axiom cone) is COVERED BY THE BATCH: two_mul_rlctAt_coreGen_d12 is IN the 341-ro
 #assert_banked_clean_batch and the batch passed green — UNACCOUNTED = ∅ IS the kernel check (clean-three,
 no ClearableReify leak). The first-SINGULAR-instance milestone remains OPEN — it arrives with the general
 construction (or an N=2 instance rung if the wave wants one; noted for the navigator's wave planning).
+
+## 2026-07-21: BOTH PNP VERDICTS IN — the invariant SPLITS (leaf 3/4/5 reshape); the cover CONFIRMS (leaf 7)
+PNP-CASE1 (thread-34): HOLDS-WITH-CONDITIONS — PrincipalInv splits into (D) divisibility (a genuine
+per-step invariant, ∀-general, explicit witness law q'_ij = (φ*q_ij)/u^δ, b'₁ = u^δ·φ*b₁, projection
+cofactor Q̂ unipotent) and (B) Bézout/principality (FALSE at the root and every interior state — at
+S<L the pending tail vanishes at the deepest point ⟹ Bézout ⟹ 0=1; BORN at terminal S=L ∧ J≥1). The
+sketched per-step leaf 4 preserves a property false at the root — vacuous induction. Re-scope: StepInv
+(region-quantified, divisibility-only) + separate terminal_bezout; PrincipalInv assembled TERMINALLY at
+leaf 5. Decorrelated codex converged incl. an independent impossibility proof; in-tree corroboration
+thread-28 + worked.tex:659. THE INTERIOR-STATE MANDATE PAID: the navigator's ledger prediction
+("boundary-only verification most likely to fire on L3/L4/L5") fired exactly there, and the mandated
+interior instance caught the false statement BEFORE the skeleton reified it. arch-C STOPPED on those
+leaf shapes and reshaped per its brief; elder delta-ratification requested (statement change on a
+ratified ladder). Controller re-ran case1_witness_334.py — EXIT 0.
+PNP-COVER (thread-35): CONSTRUCTIBLE-AS-SPECIFIED — leaf 7 stands as sketched; cite stays off the
+table, no re-decompose. FULL cover (empty escape) via argmax routing + polynomial shear inverses; atoms
+= the LANDED OriginBlowup base case; dom_p = closed box in resolved coords (compact free; composition
+distorts the image, never the domain); spectators = cubeBox × cubeBox, never pivotDomain × univ. Lean
+shape: prove the STRONGER inclusion, close hcover by diff_eq_empty ▸ measure_empty (the landed idiom).
+Salvage authorised (charter §3, pure set-cover kernel-checked): GeoCoverSpec fold + PivotCover general-R
++ ShearReconcile. Real work = R=1→R-parametric fold (the no-inflation trick DIES at shear bound 2) +
+record bridge. Sharpest shared risk relayed to arch-C: the INHERITED "next center is a coordinate block
+in sheared coords at EVERY constructor" condition rides with the StepInv leaves — now an explicit named
+hypothesis there, not implicit. Controller re-ran cover_334.py — EXIT 0.
+BANKED: threads/34 + 35 copied from the seats' pushed branches (af45a…/a596f…), thread-34 certificate.md
+controller-banked from the seat's message. EVENT-TRIGGER: navigator pass #12 condition fired (a pnp
+verdict reshaped leaf statements) — #12 runs when arch-C lands, before ANY wave seat is commissioned.
