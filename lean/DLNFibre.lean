@@ -1582,3 +1582,11 @@ import DLNFibre.Core.Aoyagi.InvariantRestriction
 import DLNFibre.Core.Aoyagi.StepInvShearChild
 import DLNFibre.Core.Aoyagi.PrincipalInv
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
+
+-- Object E Tier 1 (P6.1, elder-ratified 2026-07-21): banded-interval combinatorics — bandWidth/bandCount,
+-- the a(ℓ−a)+1 arithmetic (perJCard_eq_paper = the p.26 fidelity anchor). Count/multiplicity
+-- identifications deferred (P6.2 pnp-gated); θ-name enters at Tier 2 only.
+import DLNFibre.Core.Aoyagi.OrderCount
+-- Object E Tier 2: the θ-attachment (bandCount = aoyagiTheta, unconditional) + the certified-selector
+-- instantiation thetaCount d r (pin (a): paperEll/residueA). ρ-identification stays P6.2-deferred.
+import DLNFibre.DLN.Aoyagi.OrderBinding

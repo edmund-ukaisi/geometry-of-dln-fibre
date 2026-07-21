@@ -81,6 +81,27 @@ instantiates at `flatDim d` with NO cast transport (the opaque-width wall dissol
   for the pure origin case, spectator-free).
 - D=2 cousins live under `…2` names in `BlowupResolution.lean` (4 renamed at integration — [[naming]]).
 
+## CORE LEAVES — L1 + terminal_bezout (`Core/Aoyagi/PrincipalInv.lean`; 0-sorry, REVIEWED)
+
+*The monument's leaves 1–2, PROVEN + rev-core SURVIVED (2026-07-21). Nodes `b-leaf1-regionrepresents`
++ `b-principalinv`. With these down, 2 of the monument's 8 leaves are closed (cone 8→6). Cards:
+[../../threads/42-core-leaves/statement-cards.md]; reviewer artifacts `threads/40-rev-core/codex/`.*
+
+- `terminal_bezout : TerminalBezout` (`PrincipalInv.lean:318`) — principality is BORN terminally: a
+  cleared pivot `(F i₀∘g)=b·unit`, `unit 0 ≠ 0`, inverts on the shrunk open `V' = V ∩ {unit≠0}` to
+  upgrade `StepInv` (divisibility) to terminal `PrincipalInv` (divisibility + Bézout). Unconditional;
+  `unit⁻¹`-continuity via `ContinuousOn.inv₀` (named, NOT assumed). Kill `km_terminal_bezout`: the
+  genuinely-vanishing `b=u₀` + proper shrink dropping `u₀=−1`.
+- `principalInv_regionRepresents` (L1, `PrincipalInv.lean:123`) — a terminal `PrincipalInv` yields BOTH
+  `RegionRepresents` inclusions the Object-B charts need (`⟨F∘g⟩=⟨b⟩` on the region, the `M'=1`
+  compression), region-quantified — no germ. Genuine interface conversion (not an rfl-alias). Consumer
+  wiring elaborates at the driver `exists_atlasRealizesExponents` :809–813 (hfwd/hbwd).
+- **Trap (consumer, recorded at review):** the leaf residual must be LITERALLY `Fin 1` with value `≡1`
+  (defeq-only blocks the wiring); the cleared pivot must be a SINGLE generator (not a germ/combination)
+  — supplying `i₀`/`unit` is L5's "born terminally" obligation via `terminal_edge_stepInv`.
+- Carrier: `b-principalinv` also homes the M17 predicates `IgnoresCoords`/`Deg1SupportedOn` (the
+  size-axis guard — see [[severance-witnesses]]).
+
 ## SALVAGE ADAPTER — the monument's combinatorial half (`DLN/Aoyagi/RecursionAdapter.lean`; 0-sorry)
 
 *mon-rec; elder-ratified salvage (C1/C2/C3); rev-monument-adapter SURVIVED (seam weakened to
@@ -117,11 +138,27 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
 - D: `Resolution.divisorMin_eq_cCodim` + the banked `minAdm = cCodim` chain (pre-phase Core +
   dev's cite-free determinantal geometry) + `qipMin_eq_minAdm` (adapter). Guards:
   `battery/g-minadm-groundtruth.py`, `battery/g-def3-broken.py`.
-- E interface slice (content DEFERRED per charter §1.E): `one_le_boxedOrder`
-  (`Core/Aoyagi/Order.lean:62`); the θ≠ρ distinction `numTop_d22222_ne_aoyagiPoleOrder`
-  (`DLN/Aoyagi/ThetaOrderDistinction.lean:195`, with `aoyagiPoleOrder` `:53`).
+- E (charter §1-E **OPENED-SCOPED**, operator 2026-07-21 — no longer DEFERRED): interface
+  `one_le_boxedOrder` (`Core/Aoyagi/Order.lean:62`) + the θ≠ρ distinction
+  `numTop_d22222_ne_aoyagiPoleOrder` (`DLN/Aoyagi/ThetaOrderDistinction.lean:195`; `aoyagiPoleOrder`
+  def `:53`). **P6.1 LANDED** (`Core/Aoyagi/OrderCount.lean`, sorry-free: `bandCount_eq`,
+  `perJCard_eq_paper`, `envHi_sub_envLo`, `bandWidth_sum` — band arithmetic `a(ℓ−a)+1`; node
+  `e-p61-band-arithmetic`, card [../../threads/41-order-count/statement-card-tier1.md]). **P6.2
+  ADJUDICATED** (pnp, node `e-p62-count-identification`): ρ = deepest-stratum MAX-CROSSING of terminal
+  (t̃=0) global-minAdm divisors = `a(ℓ−a)+1` — NOT the naive minimiser count ([2,2,2,2,2]: six tight
+  minimisers, ρ=5; card [../../threads/41-rho-count-object/certificate.md]). Guard:
+  `battery/rho_battery.py` (guards BOTH E nodes; `_edgespec_traversal_334.py` is its runner-skipped
+  helper). The analytic zeta-pole seam stays the named monument-class deferral.
 
 ## In-flight (NOT banked — do not consume as substrate)
 
-- `DLN/Aoyagi/GeometricAtlasD12.lean` (seat-d12, rung B): `mult_d12`/`flatDim_d12` banked-in-file;
-  **GATE-ORPHAN** (imported by nothing) until the seat wires it into the aggregator.
+- `DLN/Aoyagi/GeometricAtlasD12.lean` (rung B, node `b-rung-d12`): **now LANDED** — gate-orphan
+  RESOLVED, wired + batch-banked (341); `exists_atlasRealizesExponents_d12` + `two_mul_rlctAt_coreGen_d12`
+  (the first cite-free LC instance) both clean-three. No longer an in-flight caveat.
+- `DLN/Aoyagi/MonumentAtlas.lean` (rung C, nodes `b-leaf34..b-leaf8`): the 8-leaf skeleton — TYPED,
+  wired, SORRIED (gate = elaboration + battery, NOT sorry-free). `case1_preserves_stepInv` = THE WALL
+  (`b-leaf34`, seat-L4, in-flight). Leaves re-stated per [[severance-witnesses]]; the NEW
+  `terminal_edge_stepInv` + canonCenter round take the cone 6→7 (full 9 when baked). Do NOT read a
+  sorried leaf as banked.
+- `canonCenter` round (arch-C, branch `expedition/aoyagi-engine-rung-c`, gated-UNCOMMITTED — expected
+  in-flight): lifts L7's coordinate axis bridge-free (thread-40 STABLE). Not on origin until arch-C commits.

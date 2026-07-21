@@ -9307,3 +9307,502 @@ inheriting the DLN instances' good behavior."
 
 seat-E cleared to freeze; SPECIFY expected next (Tier-1 statements + edge probes; Tier-2
 bindings; Tier-3 named-deferred), then the elder's pass.
+
+## 2026-07-21 (controller) — RUNG-C REPAIR ROUND INTEGRATED: the monument skeleton is statement-hardened on the expedition branch
+
+arch-C's green re-gate (e818c6f24) merged; **controller re-derived the evidence** (not the
+report): full build GREEN (8987 jobs); sorry census = EXACTLY the 8-leaf cone in the two live
+files (6 MonumentAtlas leaves at :610/:639/:692/:721/:757/:784 + L1 :129 + terminal_bezout :311;
+the 35 global count is the known fossil census); cordon-all BOTH halves passed (source gate +
+batched soundness); drivers carry [propext, sorryAx, Classical.choice, Quot.sound] (the live
+frontier), the learning-coefficient headline family clean-three. Round content: L3/L4 fixed
+(FoldStepInvAt re-statement, center-exact Deg1SupportedOn), L6 fixed (hfold), L5 strengthened
+(FoldProduced ∧ FoldRealizes, reachesLeaf, path-collision dies), L7 honest bridge-gated
+(coordinate witness survives by design pending canonCenter). arch-C's FIX-2 deviation ACCEPTED
+(self-contained surjective FoldRealizes; leafOf coupling deferred to canonCenter — verified
+sound, no consumer until then).
+
+**Post-integration choreography (adapted from wall-first on arch-C's proceed-on-silence):**
+arch-C already dispatched the canonCenter follow-round (def-level, its boundary, my STABLE-path
+pre-authorization) — ACCEPTED: it un-gates L7 and its writes don't touch the L4 leaf body; the
+wall develops IN PARALLEL in its own worktree (nav-13's parallel-dev/serial-integrate rule),
+integration serialized behind canonCenter's landing at arch-C's gate. seat-core gets the rebase
+signal (its file gained +75 upstream lines BETWEEN its two frozen statements — additive, both
+statements intact at :123/:309). nav-13's bake-integration fan-out trigger FIRES now.
+
+## 2026-07-21 (controller) — TWO LEAVES LANDED (L1 + terminal_bezout): cone 8 → 6; seat-E SPECIFY in with a fidelity refinement
+
+**seat-core's landing VERIFIED AND INTEGRATED** (fast-forward to 549a1c01a after its clean rebase;
+pushed). Controller re-derivation: statement-lock mechanically confirmed (diff removes EXACTLY the
+two sorry lines; adds only proof bodies + two private km_* kill-set theorems); module force-rebuilt
+(touch + lb, 8261 jobs green); BOTH theorems force-elaborated clean-three. terminal_bezout: at the
+terminal StepInv with cleared pivot, principality is BORN on the shrunk open V′ = V ∩ {unit ≠ 0}
+(Bézout witness = the inverted unit at i₀) — the thread-34 split's terminal half, now theorem. L1:
+PrincipalInv ⟹ RegionRepresents both ways (q forward, r backward). Kill-set exercised in-file
+end-to-end (terminal shape D=M=1 with a genuinely-vanishing b, PROPER V′ shrink, L1 consuming the
+output). Its statement cards banked inline in the thread mail; fidelity-review slot stays OWED
+(batched with the wall's review round — nothing consumes these leaves until L5's fold + the driver
+swap). **The monument cone is now 6.**
+
+**arch-C pinned L4's consumed surface** (FoldStepInvAt + StepInv/fold* / Deg1SupportedOn +
+TreeEdge/TreePath; NOT FoldProduced/FoldRealizes/reachesLeaf/hfold) and steered canonCenter's
+write set OFF FoldProduced (leafOf coupling deferred — not needed for the L7 coordinate lift,
+which rides distinct-branches → distinct slots → distinct coordinates). canonCenter ∥ L4-wire
+parallel-dev is therefore statement-safe by construction; arch-C checks the seat's exact
+touched-def set at the gate.
+
+**seat-E SPECIFY received** (branch pushed; Core/Aoyagi/OrderCount.lean elaborates green,
+3 theorems + 8 examples sorried). Its Lemma-4/5 reading is page-image-grounded and came with
+THREE fidelity findings, the sharp one being #2: **a(ℓ−a)+1 is NOT any clean single band
+cardinality** — the per-j sum overcounts, the union is width-dependent; only the band AREA
+∑ min(j,a,ℓ−a,ℓ−j) = a(ℓ−a) is intrinsic, and Lemma 4's envelope+increment condition is
+SUFFICIENT-only (satisfied by all C(ℓ,a) arrangements). Honest Tier-1 headline per seat-E:
+`bandCount := area + 1` with `bandCount_eq : bandCount = a(ℓ−a)+1` as banded-interval ARITHMETIC,
+with BOTH identifications (bandCount ↔ true count of RLCT-attaining branch vectors — Lemma 5's
+loose two-sided argument; count ↔ analytic pole multiplicity) explicitly DEFERRED and docstring-
+named. Corroborated by verify-repro-s4s5.md. Kill-set values all verified incl. the elder's
+edge corners (a=0, ℓ=1) and the tree-ρ ground truths ((2,2,2)→1, (3,3,4)→1, (2,2,2,2)→3; the
+naive Adm-minimiser count diverges from ρ at 6 instances — Lambda.lean's warning confirmed).
+**Ratification question routed to the elder**: does bandCount_eq-with-deferred-identifications
+satisfy K4/K3, or does the elder want the set-cardinality form (which needs a pnp certificate to
+pin the exact count-set the paper leaves loose)? seat-E proceeds meanwhile on the two
+framing-independent lemmas (bandWidth_sum, perJCard_eq_paper — the fidelity anchor).
+
+## 2026-07-21 (controller) — post-compaction re-ground: policies re-read; nav pass #14; elder ratifies Tier-1 + P6 SPLITS (P6.1/P6.2); pnp-order charged on the count-object
+
+**Operator directive executed:** all expedition policy docs re-read (expedition, expedition-map,
+principles P1–P9, bedrock, precision, review, library-building, statement-cards,
+worktree-branch-hygiene, codex-consultation) + full territory cross-check. Heartbeat memo's stale
+phase line (BLUEPRINT-v3) replaced with the LEAF-PROVING LANE state.
+
+**nav-13 pass #14 (full fan-out at the integrated tip), all verdicts banked:**
+- Mandated check PASS: the bake's PrincipalInv diff = exactly one +75 insertion hunk at :180;
+  both seat-core statements byte-intact (L1 unmoved :123; terminal_bezout 234→311 mechanical).
+- Q1 canonCenter ∥ L4 SAFE, proven structurally: L4's statement consumes ONLY FoldStepInvAt
+  (:481, pure step-invariant side — no FoldProduced/leafOf/reachesLeaf); canonCenter's surface is
+  entirely provenance-side. GATE-CHECK adopted for canonCenter integration: diff must stay
+  confined to {canonCenter, reachesLeaf/FoldRealizes, L7} and NOT touch
+  {FoldStepInvAt, StepInv, fold*, Deg1SupportedOn, case-leaves}. (arch-C independently guarded
+  the same boundary in its SPECIFY confirmation: TreePath-level pin clause, TreeEdge/
+  FoldStepInvAt/FoldProduced untouched; canonCenter reconstructs the coordinate from the
+  combinatorial (S,J) birth corner via tupIdxEquiv — bridge-free by construction.)
+- Q2 lane order ADOPTED: canonCenter → L4 → L3 (paired with L4, one reviewer pass for both
+  case-leaves) → L5 (the assembly hinge = the true long-pole) → L6+L8 (free order) → L7 (tail).
+  No second MonumentAtlas parallel unit exists (single-writer serial); the real concurrency is
+  off-file (seat-core DONE, seat-E, pnp). File-split contingency NOT worth it (L3 is minutes; L5
+  is the hinge regardless).
+- Q3 seat-E Tier-2 contention NONE (Lambda.lean @41ae531a4, ClosedForm @c1650d0b4 — frozen, in
+  no live write set). Tier-3's un-defer trigger = FoldProduced locks = the DLN-lane → canonCenter
+  joint (nav's mandatory joint; three events fold into one trigger).
+
+**Elder ratification of seat-E's Tier-1: RATIFIED AS SPECIFIED.** Finding 2 credited ("caught MY
+K4 assuming more precision than the paper has"). Ruling: bandCount_eq satisfies K4 at this rung
+(no masquerade; arithmetic named as arithmetic; both identifications deferred + docstring-named);
+K4's full-equality demand TRANSFERS to the second rung. **P6 SPLITS: P6.1 (band arithmetic, IN
+BUILD, ratified) / P6.2 (count-identification, PNP-GATED).** The elder's starting hypothesis for
+P6.2: the count-object = the MAX-CROSSING NUMBER (worked.tex:182's boxed ρ = max_u #{binding
+divisors at one point}) — reconciles the [3,3,1,1] naive-divergence, Lemma 4's sufficiency-only
+character, and Lemma 5's loose two-sided shape in one stroke. Finding-2 looseness recorded as an
+argument-shape fidelity note (graduates to the defect ledger only if the pnp finds a printed
+value wrong, witness attached).
+
+**pnp-order CHARGED (standing seat resumed per operator instruction):** pin the exact
+count-object over the tree/atlas (make "meeting at one point" precise; binding/co-crossing
+structure), verify ρ = a(ℓ−a)+1 EXACTLY both directions; kill-set = the six naive-divergent
+instances + banked tree-ρ ground truths; page-fidelity vs pp.23–26 + worked.tex:182; exact
+algebra; certificate + batteries; no Lean. seat-E told: Tier 1 proceeds in full; Tier 2's FINAL
+headline shape freezes only post-pnp signal.
+
+**Policy-vs-practice notes from the re-read (deliberate, operator-sanctioned deviations):**
+(i) offices run as STANDING long-lived seats (operator 2026-07-19 + 2026-07-21) vs the policy's
+convened-fresh default — retained context is the operator's chosen trade; (ii) priorities.md
+retired for this expedition (ranking lives in the map + memo). Flagged for the close lessons
+pass, not for change now. Kill-set-adequacy rule (expedition-map) noted as binding on the E-lane's
+eventual universal claims — the elder's divergent-instance kill-set already satisfies it by
+construction.
+
+## 2026-07-21 (controller) — THE WALL'S STOP-ON-SUSPECT: terminal-reaching edges break L4's Deg1 conjunct (the FIFTH severance instance); fix (a) routed
+
+seat-L4's SPECIFY (statement-lock discipline) fired a kernel-verified stop-on-suspect: TreeEdge/
+isCase1 never constrain `ed.nextState.layer`, so the L4 leaf's quantifier admits TERMINAL-REACHING
+case-1 edges — there foldResid (p.extend ed) = const 1 (the M′=1 collapse) and
+`Deg1SupportedOn (const 1) C'` is FALSE for every C' (fails at u=0; sorry-free refutation
+threads/L4-case1-core/terminal_deg1_gap.lean @ 98367c3d3 on its branch). The leaf's docstring
+(:586–591, "the trivial unit branch") was mistaken — that branch is false, not trivial. The leaf
+AS GATED is unprovable. **Taxonomy: the FIFTH severance instance — a NEW axis, the LAYER field's
+terminal range** (per-field audit covered content/size/path/coordinate; the layer field's boundary
+value escaped). The probe goes to the regression bank.
+
+**Disposition (controller):** fix (a) — add the non-terminal guard `ed.nextState.layer < N` to
+the L4 leaf (and L3 if arch-C's same-shape check confirms; likely, same TreeEdge quantification).
+Rationale: the leaf's honest scope is the INTERIOR step; the terminal transition is
+terminal_bezout's job at L5's fold — and terminal_bezout is PROVEN as of today, so the delegation
+orphan-checks clean. Fix (b) (canonCenter/reachesLeaf closes it) RULED OUT on insulation grounds —
+the step-invariant side must never consume provenance machinery (the boundary arch-C + nav
+independently established). Fix (c) (special-case FoldStepInvAt at the terminal residual) rejected
+— weakens the invariant globally. Routed: elder ratification requested (+ the taxonomy event for
+the compass bank); arch-C prices + implements, folded into the canonCenter bake round (same file,
+one revision batch, contract-9 re-gate with the probe as witness). seat-L4 proceeds on the
+NON-TERMINAL content meanwhile against a local private guard in the exact canonical form —
+no wall time lost; one rebase expected carrying canonCenter + the revised statements.
+
+## 2026-07-21 (controller) — P6.1 Tier-1 INTEGRATED; elder ratifies fix (a) WITH RIDER (the named terminal-edge transport)
+
+**P6.1 Tier-1 integrated** (seat-E's 46f12b577 merged; OrderCount wired into the aggregator with
+the deferred-identifications docstring; controller re-derivation: full build green 8988 jobs,
+name-clash grep empty, force-elaborated bandCount_eq + bandWidth_sum clean-three /
+perJCard_eq_paper [propext, Quot.sound], cordon OK, census unchanged). Object E's first content
+lands: perJCard_eq_paper (the p.26 fidelity anchor), bandWidth_sum (band area = a(ℓ−a) via the
+double-count), bandCount_eq (the headline arithmetic), K1 + edge-corner kill-set by decide.
+seat-E → statement card, then Tier 2 (arithmetic binding, neutral framing until the pnp pins ρ).
+
+**Elder ratifies fix (a) WITH A RIDER — the delegation gap named:** terminal_bezout CONSUMES the
+terminal-state StepInv (resid ≡ 1); it does not PROVE the interior→terminal transition (parent
+Deg1-supported StepInv at layer < N ⟹ child unit-residual StepInv across the LAST edge). With the
+guard, that transition leaves the case leaves' scope — but it must land as a NAMED obligation:
+`terminal_edge_stepInv` (a small lemma beside terminal_bezout in L5's consumption) or an
+explicitly docstring-named L5 inline step. Expected EASY (unit-residual is strictly weaker — the
+quotient absorbs into q′; same strict-transform algebra with the residual collapsed) — "easy earns
+a name, not an omission; a silent delegation here is precisely how the sixth probe would find us."
+(b)/(c) rejections confirmed. L3 same-shape: presumed CONFIRM (the collapse is case-blind; at
+N = 1 a case-2 edge reaches terminal immediately — the smallest networks are the boundary's own
+witnesses). **Refined severance principle for the guardrails (elder):** "audit each free field,
+AND each field's boundary values — a field constrained everywhere but at its range's endpoint is
+severed at the endpoint." The terminal_deg1_gap probe = the boundary-axis exemplar in the witness
+bank. arch-C's canonCenter bake round now carries: canonCenter + reachesLeaf pin + L7 lift + the
+L4/L3 non-terminal guards + the terminal_edge_stepInv obligation (as a leaf or named L5 step) +
+docstring corrections; contract-9 re-gate with the probe as regression witness.
+
+## 2026-07-21 (controller) — canonCenter round LOCKED (5 items, cone 8→9); M4 import-DAG obstruction → additive escape; L4 probing conjunct-2
+
+**arch-C locked the round** (elder ratification satisfied, no bake-hold; seat renders, arch-C
+gates + bakes): (1) canonCenter + reachesLeaf pin + L7 lift; (2) L3+L4 non-terminal guards
+(`ed.nextState.layer < N` — L3 same-shape VERIFIED by both arch-C and seat-L4 independently);
+(3) **terminal_edge_stepInv as a NEW LEAF-LEMMA** (the rider's named obligation; case-blind;
+parent FoldStepInvAt ⟹ child unit-residual StepInv, NO Deg1 in the conclusion — const 1 isn't
+Deg1, which is the point; parent interiority self-implied since Deg1 fails on terminal parents);
+(4) the :586–591 docstring correction; (5) the terminal_deg1_gap probe banked as the LAYER-axis
+witness. **The invariant chain is now complete and honest: L3/L4 interior Deg1 preservation →
+terminal_edge_stepInv (last-edge transport) → terminal_bezout (upgrade to PrincipalInv).**
+CONE GROWS DELIBERATELY: MonumentAtlas 6→7, full 8→9 — named in advance so the census doesn't
+false-alarm.
+
+**seat-core M4 stop-on-suspect + disposition:** the naive derivation is blocked by the import DAG
+(OriginBlowup strictly UPSTREAM of BlockBlowup; jacDet_blowupMap self-consumed + an AxCheck root
+— a body-level rewrite would need a cycle). Controller option (a)+: the dedup content lands
+ADDITIVELY DOWNSTREAM — a new unconditional corollary in BlockBlowup (the origin law for ALL D,
+derived from jacDet_blockBlowupMap + blockBlowupMap_univ; records the hD:2≤D redundancy finding
+in the tree), cross-refs both ways, OriginBlowup untouched. Option (b) (import restructure, true
+relocation) ROADMAPPED post-lane — non-additive, wrong time mid-monument-lane. M9 approved at
+seat-core's strict-weakest per-lemma targets (MulOneClass pointwise / CommSemiring comb /
+Mul-One on defs; continuity stays ℝ; rfl bridges validated first; uniform-CommRing rejected as
+decorative).
+
+**seat-L4 pre-proof verification (endorsed):** before Lean investment it is numerically checking
+conjunct-2 (the child Deg1 re-factorization) at (3,3,4) — the case12 concern: a pivot that is an
+EXISTING d-block residual coord would pull back to a unit child entry (the same unit-vs-degree-1
+mechanism, on an INTERIOR edge). If the battery shows it → second stop-on-suspect (statement
+defect in anchor (v), routes to elder+arch-C); if fresh-exceptional-always → GO with the battery
+as witness. Develops in a separate Case1Wire.lean (parallel-dev vehicle); the leaf fill lands at
+integration.
+
+## 2026-07-21 (controller) — Tier-1 hardening integrated (width-independence); Tier-2 GO clarified (zero-rework core)
+
+seat-E's hardening increment merged + verified (module rebuild green; envHi_sub_envLo
+force-elaborated [propext, Quot.sound]): the p.25 envelopes over FREE (P, M) with
+**envHi_sub_envLo — H̃′_j − H̃_j = bandWidth ℓ a j, the P-and-M cancellation** — the "why the
+order depends only on (ℓ,a)" fact and the Tier-1↔Tier-2 bridge (Tier 2 instantiates the certified
+selector; the terminal equality H̃_ℓ = H̃′_ℓ = 0 is what needs Def-3 consistency there). Statement
+card banked at threads/41-order-count/. Layer-filling of exactly the P6.1 shape.
+
+**Tier-2 GO sharpened (third relay to seat-E — inbox-backlog flag raised):** the arithmetic layer
+(bandCount = aoyagiTheta + the certified instantiation) has ZERO rework risk under any P6.2
+outcome — both sides are in-tree a(ℓ−a)+1 arithmetic; the pnp decides what the COUNT MEANS, not
+what these values equal. Only the INTERPRETIVE layer (names/docstrings claiming "= multiplicity")
+waits on task #39. seat-E builds Tier 2 now under pin (a) + K1 build-gates + K3-neutral naming.
+
+## 2026-07-21 (controller) — rev-core verdict SURVIVED: the two Core leaves reviewed; cards banked; L5 obligations routed
+
+rev-core's decorrelated review of terminal_bezout + principalInv_regionRepresents: **SURVIVED** —
+fidelity (hypothesis-by-hypothesis vs Cards A/B + the thread-34 certificate; the Fin-1 ≡1 terminal
+encoding faithful and slightly STRONGER than bare S=L∧J≥1), precision (names = content, no hidden
+Cited/Assumed; StepInv's unused vanishing conjunct correctly carried as interface, not decorative),
+non-vacuity (km fires the real mechanism: genuinely-vanishing b, PROPER V′ shrink), circularity
+(RegionRepresents = genuine interface conversion, NOT an rfl-alias — Codex concurred), consumer-fit
+(L1's driver wiring already elaborates at :809–813). Gates re-run by the reviewer independently;
+Codex xhigh converged by its own route (artifacts threads/40-rev-core/codex/).
+
+Integration of the verdict: (i) the ONE LOW finding fixed directly — the openness-necessity
+docstring example conflated hypotheses ({0<u₀} illustrates 0∈V, not openness; V={0} is the
+openness witness — found independently by reviewer AND Codex); both counterexamples now correctly
+attributed, prose-only change, module rebuilt green (8261 jobs). (ii) Cards A/B banked as
+sorry-free+REVIEWED at threads/42-core-leaves/statement-cards.md, with the reviewer's consumer
+obligations recorded: L5's body must supply a LITERALLY-Fin-1 unit residual (defeq-to-Fin-1
+blocks the wiring) and a SINGLE-generator cleared pivot (i₀/unit = L5's "born terminally"
+obligation). (iii) Both obligations routed to arch-C — into the round's L5 docstring corrections
+AND as a shape-check on terminal_edge_stepInv (its conclusion should hand L5 exactly these two).
+(iv) rev-core stood down (done → report + stand down; a fresh seat convenes if a later batch
+needs one).
+
+## 2026-07-21 (controller) — L4 conjunct-2 CLEARED by its own battery (no second gap); M9 probe green; a message-crossing pattern noted
+
+**seat-L4 retracts the conjunct-2 flag, battery-confirmed:** the ∃C' flexibility handles the
+pivot-factor entries — under the strict transform a pivot-factor residual entry re-factors on its
+DEEPER coord (parent [u₀·u₂, u₁·u₃], C={0,1}, pivot=0 → child [u₂, u₁·u₃], degree-1 on
+C'={1,2}); residual entries are PRODUCTS (deeper coefficient × one center coord), never bare
+units — the earlier worry forgot the deeper coefficient. This IS the elder's ratified A′/v
+re-factoring, now with a concrete battery witness. Net: the ONLY genuine defect in the case
+leaves was the terminal branch (fix (a) in the locked round). seat-L4 develops the non-terminal
+proof in Case1Wire.lean, starting at the FIX-RESID per-entry identity (conjunct-1's crux).
+
+**seat-core:** M9 probe green ([Mul R]/[One R] Gen defs + rfl bridges + MulOneClass/CommSemiring
+lemmas + byte-identical ℝ re-derivation by defeq — zero risk to the frozen atoms). Disposition
+resent (crossing): M9 GO as adjudicated; M4 = (a)+ (the additive unconditional corollary lands
+DOWNSTREAM in BlockBlowup + two-way cross-refs; OriginBlowup untouched; (b) roadmapped).
+
+**Operational note:** second seat today composing a hold while my disposition sat undelivered/
+undrained (seat-E ×2, seat-core ×1). Pattern reads as inbox-drain timing, not substrate loss —
+seats reminded to drain before holding; watching for a genuine delivery failure.
+
+## 2026-07-21 (controller) — the review→architecture loop closes: terminal_edge_stepInv reshaped BEFORE bake (the literal-Fin-1 wiring blocker)
+
+arch-C ran the requested shape-check of terminal_edge_stepInv against TerminalBezout's actual
+input (PrincipalInv.lean:289–298) and CAUGHT the exact defect class rev-core's consumer-fit pass
+predicted: the locked shape produced only obligation (1), and typed it on
+`foldResid (p.extend ed)` — a `Fin (foldNR …)`-typed object NOT defeq to the literal
+`fun _ : Fin 1 ↦ 1` that TerminalBezout consumes (the wiring blocker named in the review).
+REFINED before any bake: terminal_edge_stepInv's conclusion is now (1) the LITERAL Fin-1 unit
+StepInv ∧ (2) the single-generator cleared pivot (i₀, unit, ContinuousOn, unit 0 ≠ 0,
+(F i₀∘g) = b·unit) — matching TerminalBezout's input EXACTLY. L5's wire becomes:
+terminal_edge_stepInv + isOpen/zero_mem_foldRegion → terminal_bezout → PrincipalInv. The two
+rev-core obligations land in L5's docstring as named binds. Chain of catches today: seat-L4's
+probe (the statement was false terminally) → elder's rider (the transport needed a name) →
+rev-core's obligations (the types must be literal) → arch-C's shape-check (they weren't) — four
+layers, each catching what the previous could not see, all before one line of L5's proof exists.
+
+Also verified by arch-C: canonCenter's write-set DISJOINT from L4 via git-diff (touched =
+cornerToFlat/canonPivotOf/canonCenterOf/IsRealBranch + docstrings; the step-invariant side
+untouched) — NO L4 rebase from the coordinate work, as predicted. arch-C holds the bake for the
+FULL round (canonCenter + guards + terminal_edge_stepInv + L5 docstring binds), then the full
+re-gate (cone 8→9 named; coordinate + layer witness deaths; write-set; build/cordon) + bake.
+
+## 2026-07-21 (controller, heartbeat tick) — ρ PINNED AND VERIFIED: the elder's max-crossing CONFIRMED, twice sharpened; stall caught; calibration 28 HIT
+
+**P6.2's pnp-gate DISCHARGED.** pnp-order's certificate (threads/41-rho-count-object/, merged
+0abb4c8e1): **ρ = deepest-stratum MAX-CROSSING = max over charts of #{terminal (t̃=0) exceptional
+divisors with M_{s,k} = minAdm co-crossing}; ρ = a(ℓ−a)+1 EXACT both directions** — 993 cores
+(L∈{2,3,4}), zero mismatches, all 5 ground truths, blind Codex xhigh convergent.
+**Controller re-ran rho_battery.py from the branch: EXIT 0** (the verify-cited-scripts gate).
+The printed formula is CORRECT — no fidelity-ledger graduation; finding-2 = proof-shape only.
+Sharpenings: (1) the t̃=0 restriction is LOAD-BEARING (72/993 cores overcount without it;
+[2,2,5] witness — boxedOrder must count terminal divisors only, page-22's candidate rule);
+(2) a GENUINE incidence gap — [2,2,2,2,2]: SIX tight-lattice minimisers, ρ = 5 (profile
+(1,1,1,0) never co-crosses) — max-crossing is STRICTLY the right object, no minimiser
+cardinality equals it; (3) seat-E's six divergent instances re-classified as loose-lattice
+artifacts (tight [3,3,1,1] naive = 1). P6.2's owed content: TWO branch-incidence lemmas —
+UPPER + eq-(1)/(2) ATTAINMENT (Codex: not derivable from the minimiser count). Analytic
+identification stays monument-deferred. Routed: elder (shape ratification + register + bank),
+seat-E (t̃=0 binds boxedOrder — check the landed interface; Tier-2 arithmetic unaffected;
+P6.2 renders post-ratification), pnp-order stood down (task #39 COMPLETE).
+
+**The idle-stall guard caught a real stall:** arch-C's render seat was idle with TWO dispatches
+queued (the round's remaining render). Wake sent by arch-C on my drift-glance ping — the
+monument lane's critical path resumes. **Calibration entry 28: HIT** (the oracle's case-step
+constructor keeps layer LITERALLY unchanged, :190/:198 — fix (a)'s guard discharge at L5 is
+rfl-adjacent; the last pricing uncertainty on the guards half removed). rev-core's stray
+codex artifacts banked (21ad95d85). carto-standing did not survive the VM death — fresh
+cartographer convened under the standing name (5-area housekeeping brief: witness attachment,
+cards/overlay, P6-split pointers, map/STATUS freshness, orphan sweep; incl. the thread-41
+numbering collision flag).
+
+## 2026-07-21 (controller) — P6.2 shape RATIFIED with the elder's GLOBAL-minAdm pin; landed boxedOrder VALIDATED
+
+Elder ratification in: the max-over-charts shape + the two incidence lemmas (UPPER/ATTAINMENT)
++ the monument-deferred analytic seam — K4's equality landing on the lemma pair as the transfer
+ruling said it must. **The elder's own pin (a wrong-object trap the certificate made visible):
+the filter must be the GLOBAL minAdm, not the chart-local minimum** — the landed boxedOrder
+counts LOCAL min-attainers, and on a non-binding chart (chartMin > minAdm) its local count is
+≥ 1 while the global count is 0, so max-over-charts-of-boxedOrder is the WRONG object; the P6.2
+statement counts per-chart #{a ∈ bindingAxes : jac a + 1 = GLOBAL minAdm} (the counts agree on
+binding charts, where the max is realized). Corollary FOR the landed def: the t̃=0 sharpening
+VALIDATES boxedOrder as landed (bindingAxes already terminal-only; [2,2,5] confirms at ρ-level
+what the annotation pass verified at value-level) — P6.2's new content = the atlas max with the
+global filter + the two incidence lemmas, nothing else. Kill-set pinned ([2,2,2,2,2] with the
+must-not-prove-via-cardinality teeth; [2,2,5]; the five ground truths; loose-lattice
+reclassification noted). Tiering: seat-E proposes (Core-purity split expected), elder checks.
+Register/bank updates at the elder's next event-touch (the K4-transfer vindication chain
+recorded as the designed example). seat-E relayed the full shape; sequence = Tier-2 arithmetic
+first, then the tiering proposal.
+
+## 2026-07-21 (controller) — carto pass #1 dispositioned; the map's curated layer re-rooted to the evening state (my pen)
+
+carto-standing's first pass (ground-truthed at HEAD; the frame: the whole curated map was midday-
+stale — 195 commits un-mapped; mechanical layer clean, validator 0 errors, 19/19 batteries).
+**Controller executed the claims.yaml refresh (highest-value items 4a/4b):** the stale PROPOSED
+banner dropped; object-e → OPENED-SCOPED with owner seat-E; NEW nodes e-p61-band-arithmetic
+(status proven, lean bandCount_eq, the two cards as evidence, rho_battery as guard) and
+e-p62-count-identification (status adjudicated, the elder-pinned max-crossing prop incl. the
+GLOBAL-minAdm filter, certificate as evidence); b-principalinv → frozen (thread-34 split noted;
+terminal_bezout proven+reviewed); b-leaf1 → proven (rev-core SURVIVED); b-leaf34 → stated with
+owner seat-L4 (statement-hardening history + the round's guards/terminal_edge_stepInv named).
+Validator 0 errors (1 pre-existing b-ladder C2 warning); STATUS.md regenerated by the tool.
+Landmark flips DEFERRED to the elder (proposes) — cap is 9, adds need demotions.
+
+**Dispositions to carto (GO within its overlay/battery pen):** 1a graduate rho_battery +
+edgespec to map/battery/ with guards/provenance headers; 1b the five-axis severance exemplar
+card (pointers, exemplars stay in threads/); 2a Core-leaves family card + Object-E slice
+refresh; 2b the thread-41 collision = naming pointer, NO rename; 3b E-references refresh;
+3c the aoyagiPoleOrder line-pin (:53→:48). SEQUENCED: 3a naming pointer waits on the elder's
+register event-update. CONFIRMED to carto: ThetaOrderDistinction.lean is the right home of the
+θ≠ρ distinction (my earlier "Lambda.lean:93 warning" reference was the VALUE's location, not the
+warning's — no missing file). 5c seat-core nudged to push its core2 branch ref (banking).
+
+## 2026-07-21 (controller) — the gate holds the bake: terminal_edge_stepInv rendered STALE (bare form); contract-vs-lemma-count latitude issued
+
+arch-C's gate caught the render deviating from the locked shape: terminal_edge_stepInv came back
+with the bare `foldResid` residual (no literal Fin-1 unit, no i₀/unit) — EXACTLY the wiring
+blocker rev-core predicted and the shape-check refinement removed; the seat defended the bare
+form (preference divergence or missed message). The rest of the round is clean: guards on BOTH
+leaves (:683/:713), canonCenter gated, write-set discipline held, census 7 = the named cone.
+arch-C ruled the refined form to the seat with reasons + invited pushback; bake HELD.
+
+**Controller latitude to arch-C:** the LOCK is the consumer contract, not the lemma count — L5
+must wire into TerminalBezout with no defeq surgery (literal `fun _ : Fin 1 ↦ 1` StepInv) and
+with the pivot (i₀, unit) delivered. Bare-lemma + a PROVEN repackaging bridge satisfying the same
+composite contract is acceptable at arch-C's discretion, with the gate exercising the ACTUAL
+wiring (an `example` feeding the output into TerminalBezout — consumer-fit made executable).
+Escalation to controller only if the seat disputes the contract itself.
+
+## 2026-07-21 (controller) — THE WALL'S CRUX BEATS IN THE REAL DEFS: foldResid_stepMap_eq_pivot_mul banked sorry-free
+
+seat-L4 banked the δ=1 divisibility crux ON THE CONCRETE FOLD DEFINITIONS (Case1Wire.lean @
+f4b762cf0, its branch): `foldResid p j (stepMap u) = u_pivot · foldResid p j (quotmap u)` —
+proven via Deg1SupportedOn's IgnoresCoords (the coefficient agrees at stepMap-u vs quotmap-u off
+center) + the FIX-A enabler blockBlowupMap_shear_center_eq (+ edgeShear_keeps_pivot). No sorry.
+**This is the transfer moment: the abstract StepInvShearChild core works against the real
+foldResid/stepMap/edgeShear machinery** — the wall's remaining work is assembly (intro edge +
+htnt, dispatch edgeδ, conjunct-1 via the crux, conjunct-2 via the surviving-C′, terminal via the
+guard), mechanical per the seat's plan. Its green-gate re-runs on the rebased tip (its build sat
+queued on the 2-slot semaphore at 8400+/8450 with zero genuine errors). Hold-for-rebase is
+CORRECT (the guarded statement exists only post-bake); the rebase-ready signal fires at my
+integration of arch-C's baked round. Semaphore contention noted (three seats + controller
+queueing today) — priority order affirmed: the render seat's authoritative gate build first,
+controller gates second, seat re-confirmations third.
+
+## 2026-07-21 (controller) — E-LANE TIER 2 INTEGRATED: the θ-attachment is banked, batch-gated, clean-three
+
+**Both E-lane tiers now live on the expedition branch, controller-gated:** the full-tree build
+GREEN (8989 jobs — INCLUDING the AxCheck batch gate over the three newly registered roots:
+bandCount_eq, bandCount_eq_aoyagiTheta, thetaCount_eq_aoyagiTheta), cordon both halves OK, and
+after merging seat-E's post-build lint delta the OrderBinding module was FORCE-REBUILT (touch +
+lb, 3916 jobs) + all four probes re-elaborated clean-three. OrderBinding wired into the
+aggregator with the P6.2-deferral docstring. Two independent sensors agree (my warm-tree gate +
+seat-E's cold-worktree build with its own force-elaborated probes). The θ-name is now legally
+attached: bandCount = aoyagiTheta unconditionally, thetaCount d r = the certified pin-(a)
+instantiation, K1 ground truths build-enforced. The ρ-identification and the analytic seam
+remain named deferrals — the AxCheck comment fences them.
+
+**seat-E protocol fix (4th inbox-drain miss):** its Tier-2 confirmation again asked for the
+P6.2 shape sent twice already, and held "genuinely blocked" while an UNBLOCKED action (the P6.2
+tiering proposal) sat in its inbox. New standing requirement for seat-E: drain inbox before
+composing; open every report with a one-line ack of the latest controller message. Its next
+action restated a third time: the TIERING PROPOSAL for the two incidence lemmas (UPPER +
+ATTAINMENT) against the elder-ratified shape — not waiting on any further signal.
+
+## 2026-07-21 (controller) — attribution note on 5072882dc + carto shared-tree protocol
+
+Commit 5072882dc's message says feat(E/P6.1-T2) but ALSO carries three CARTOGRAPHER deliverables
+that were staged in the shared root tree when my commit ran: map/battery/rho_battery.py +
+_edgespec_traversal_334.py (GO item 1a — graduated with `# guards: e-p61/e-p62` +
+provenance headers) and map/overlay/severance-witnesses.md (GO item 1b — the five-axis
+witness-bank index carrying the elder's per-field principle + the boundary-value refinement).
+Content REVIEWED and approved retroactively — exactly the dispositioned items, well-formed.
+Protocol fix to carto: in the shared root tree, either COMMIT your own overlay/battery work
+(single-writer files, your pen) with your own message, or leave it UNSTAGED and report —
+staged-not-committed work gets swept into the next controller commit with wrong attribution.
+
+## 2026-07-21 (controller) — carto GO batch verified-landed; attribution corrected (a commit RACE, not staging negligence); P6.2 tiering routed
+
+carto-standing's batch: 1a/1b/2a/2b/3b all landed + blob-verified (battery run = 20 scripts,
+rho_battery SURVIVES guarding both E nodes, helper correctly skipped, kills still fire; validator
+0 errors). 3c self-corrected as a NO-OP (its own pass-1 misread — the :53 pin was right).
+One accepted extra: banked-families' in-flight section refreshed (the d12 gate-orphan line was a
+live contradiction with claims.yaml's proven status). ATTRIBUTION CORRECTION to my earlier note:
+the 5072882dc sweep was a commit RACE (my commit ran between carto's add and its commit), not
+staged-and-abandoned files — protocol refined to ATOMIC add+commit in the shared tree for both
+of us; my explicit-path adds stay.
+
+P6.2 tiering (seat-E's proposal — Tier-1e atlas-max API / abstract-core incidence lemmas with an
+honest EXTRACTION-RISK flag / Tier-3 tree realization) routed to the elder with the extraction
+risk framed as the decision point + per-field pins requested for the abstract predicate's own
+fields (ℓ=1/a=0 corners, profile-length, rank-bound). Tier-1e CLEARED to land meanwhile
+(zero-risk scaffold = the elder's global-target pin reified); seat-E also STARTED the de-risk
+numerics (abstract co-occurrence predicate + rho_battery extension, no Lean until the ruling).
+seat-E's independent boxedOrder check concurred with the elder's validation (t̃=0 = atlas-side
+realization property) — banked.
+
+## 2026-07-21 (controller) — elder APPROVES the P6.2 tiering; the decorrelated pnp pass made a HARD GATE for UPPER; four prospective pins
+
+Elder ruling relayed to seat-E in full: (1) tiering approved; Tier-1e "exemplary" (the filter-pin
+reified as API; boxedOrder = chartOrderAt c c.chartMin = the special case pointing at the general
+object); ONE docstring pin — atlasOrder is VALUE-NEUTRAL API, reads as ρ only at the global-min
+target AND under Tier-3's realization; ATTAINMENT's constructive half may proceed on the battery
+alone. (2) The de-risk tightened into a HARD GATE: seat-E drafts + extends the battery itself,
+but UPPER's Lean build waits for pnp-order's MANDATORY decorrelated confirmation of the abstract
+predicate (batteries necessary-never-sufficient; this abstraction already produced the six
+loose-lattice artifacts once). Sequencing: draft → pnp charge (controller, on the draft's
+arrival) → Lean. (3) Four prospective per-field pins for the abstract predicate: tight lattice
+BY HYPOTHESIS; 1 ≤ a ≤ ℓ carried (never silently extend the formula's domain) + ℓ=1 and L=ℓ
+corners + named empty-class behavior; co-occurrence = a predicate on FINSETS (order-free, no
+sequence axis, K2); the minimising target = a carried value hypothesized to be the lattice
+minimum, never locally recomputed. (4) The elder's commendation of seat-E's two-instrument
+concurrence, inbox discipline, extraction-risk honesty, and de-risk instinct relayed to its
+thread as asked. PENDING pnp-order charge: fires when seat-E's draft lands.
+
+## 2026-07-21 (controller) — P6.2 EXTRACTION RESOLVED: ρ = max CHAIN (not antichain); the hard half turns Core-pure; pnp confirmation charged
+
+seat-E's de-risk battery (chain_vs_antichain_battery.py, 1018 cores L≤4, zero mismatches incl.
+[2,2,2,2,2]) resolved the extraction question and CORRECTED the certificate's flagged
+speculation: **ρ = max CHAIN of binding minimiser profiles under the componentwise ≤** — the
+certificate's "max antichain of co-occurring profiles" (pnp-order's own "Speculation, register
+as such") is the Dilworth-DUAL of the truth. Binding minimisers on one branch are NESTED (the
+recursion's exponent accumulation); at [2,2,2,2,2] the six binding profiles have longest chain 5,
+(1,1,1,0) ⊀ (2,1,0,0) breaking any 6-chain. The certificate's VERIFIED facts stand; the
+proof-structure note refines.
+
+**Consequence — the revised tiering (strictly better):** UPPER + ATTAINMENT collapse into ONE
+Core-pure poset identity `maxChain(bindingMinimisers ℓ a) = a(ℓ−a)+1` (no tree anywhere; ties to
+the landed bandCount_eq); the Tier-3 residue shrinks to the chart↔chain realization (each leaf's
+binding set IS a chain; some leaf attains the max — FoldProduced-gated). Routed: elder checking
+the correction + revised tiering + one pin-reconciliation (its pin (c) "order-free" vs a chain's
+per-instance-proven comparability — read as K2-consistent, elder rules); **pnp-order RESUMED on
+the elder's hard gate** — decorrelated from-scratch confirmation of the chain reading (both
+directions, its own instruments) + the nesting MECHANISM pinned Lean-buildably + its certificate
+note amended (its pen). seat-E: atlasOrder API proceeds (cleared); battery extension to pin the
+binding-minimiser poset characterisation (the render's numeric contract); the max-chain Lean
+render HOLDS for elder pass + pnp confirmation. The de-risk sequence did exactly what it was
+built for: the abstraction question answered and the certificate upgraded before one line of
+Lean was at risk.
+
+## 2026-07-21 (controller) — THE canonCenter ROUND BAKED GREEN: L7 BRIDGE-FREE — the summit's cone carries NO bridge caveat
+
+arch-C's authoritative re-gate on d174f1f41 (merged; controller gate re-derivation running):
+build 8449; cone = EXACTLY 9 (#audit_blueprint: 8 leaves + terminal_edge_stepInv); cordon OK;
+write-set disjoint from L4 except the sanctioned guards; MonumentAtlas census 7. Contents:
+**(1) L7 LIFTED TO HONEST BRIDGE-FREE** — canonCenter pins each branch's blow-up coordinate from
+the paper's (S,J,mergeIdx,d) slot bookkeeping, NO card↔sum bridge; the coordinate-axis witness
+DIES. `exists_coreResolution_via_monument` now closes BRIDGE-FREE: no destination change, the
+operator scope-packet dissolves to FYI (the STABLE-path plan's happy outcome). (2) fix (a)
+CLOSED (both leaves guarded; the layer-axis probe banked). (3) terminal_edge_stepInv with the
+consumer contract MET — verified TWO decorrelated ways (the seat's permanent in-file example +
+arch-C's gate scratch); the literal Fin-1 Pi.one residual unifies with TerminalBezout:293
+verbatim. Bonus catch: the SEAT caught a scalar-vs-function bug in arch-C's spec ((1:ℝ) → Pi.one)
+— the gate's teeth cut both ways. (4) THE SEVERANCE TAXONOMY IS COMPLETE:
+content/size/path/coordinate/layer, one exemplar each, banked.
+
+**On controller-gate green:** push; fire seat-L4's rebase-ready signal (the wall assembles +
+lands, queuing at arch-C's gate); convene nav-13 (the MANDATORY DLN-lane → canonCenter joint —
+incl. the FoldProduced-lock adjudication: the leafOf coupling was deferred OUT of the round, L7
+lifted without it — is it dead scope or still owed? nav ground-truths; Tier-3's release hangs on
+it); convene carto (bake-integration trigger: cone transitions + L7 banner + the severance
+coordinate row bridge-gated→closed).

@@ -126,7 +126,14 @@ theorem principalInv_regionRepresents (F : Fin M → (Fin D → ℝ) → ℝ)
     RegionRepresents (fun i ↦ F i ∘ g) (fun _ : Fin 1 ↦ b) V ∧
       RegionRepresents (fun _ : Fin 1 ↦ b) (fun i ↦ F i ∘ g) V := by
   -- map: B-L1-principalInv-to-region (divisibility ⇒ fwd inclusion; Bézout ⇒ bwd inclusion)
-  sorry
+  obtain ⟨hqcont, hrcont, hdiv, hbez⟩ := h
+  refine ⟨?_, ?_⟩
+  · -- forward `⟨F∘g⟩ ⊆ ⟨b⟩`: the divisibility quotient `q` is the (`Fin 1`-collapsed) cofactor
+    refine ⟨fun i _ ↦ q i, fun i _ ↦ hqcont i, fun u hu i ↦ ?_⟩
+    rw [Fin.sum_univ_one]
+    exact hdiv u hu i
+  · -- backward `⟨b⟩ ⊆ ⟨F∘g⟩`: the Bézout coefficients `r` are the cofactors
+    exact ⟨fun _ j ↦ r j, fun _ j ↦ hrcont j, fun u hu _ ↦ hbez u hu⟩
 
 /-! ## Step vocabulary (the network-free pieces the DLN edge-indexed leaves L3/L4 consume)
 
@@ -180,6 +187,81 @@ def SupportedOn {nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (S : Fin
     (∀ (j : Fin nR) (i : Fin D), ContinuousOn (c j i) V) ∧
     (∀ (j : Fin nR), ∀ u ∈ V, resid j u = ∑ i ∈ S, c j i u * u i)
 
+/-- **`c` ignores the `S`-coordinates on `V`** (the elder-canonical center-disjointness form,
+`Function.update`-native): changing any single `S`-coordinate of a point of `V` leaves `c` unchanged, so
+`c` reads only the spectators (coords outside `S`). Finest-grained / constructor-friendly; the agreement
+form (`ignoresCoords_univ_iff_agree`) and the center-zeroing form (`ignoresCoords_centerZero`) are DERIVED.
+
+**Future-proofing (M14/L6 staged region-lock).** The update ⟺ agreement equivalence uses that the update
+path stays in the region — free on `V = Set.univ` (the current `foldRegion`); when the M14/L6 lock makes
+regions bounded, a non-rectangular `V` makes update-invariance strictly WEAKER, and the AGREEMENT form
+becomes the honest carrier — this equivalence lemma then gains a rectangularity hypothesis. -/
+def IgnoresCoords (c : (Fin D → ℝ) → ℝ) (S : Finset (Fin D)) (V : Set (Fin D → ℝ)) : Prop :=
+  ∀ w ∈ V, ∀ m ∈ S, ∀ t : ℝ, c (Function.update w m t) = c w
+
+/-- **Center-exact degree-1 support** — strengthens `SupportedOn` (which it strictly subsumes: drop the
+`IgnoresCoords` conjunct). Each `resid j = ∑_{i ∈ S} c i · u i` on `V`, with the coefficients `c i`
+continuous on `V` AND ignoring the `S`-coordinates. This is EXACTLY the condition under which the δ=1
+`blockBlowupCoordQuot` substitution equals the strict transform (each residual monomial carries EXACTLY
+one center factor); ideal-membership (`SupportedOn`) alone is too weak — its free coefficients admit an
+over-large center (the `d=![1,2,1]`, `center={0,1,2}` witness) where the substitution over-divides. -/
+def Deg1SupportedOn {nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (S : Finset (Fin D))
+    (V : Set (Fin D → ℝ)) : Prop :=
+  ∀ j, ∃ c : Fin D → (Fin D → ℝ) → ℝ,
+    (∀ i, ContinuousOn (c i) V) ∧
+    (∀ u ∈ V, resid j u = ∑ i ∈ S, c i u * u i) ∧
+    (∀ i, IgnoresCoords (c i) S V)
+
+/-- **Agreement form of `IgnoresCoords`** (derived, on `V = univ`): `c` ignoring `S` ⟺ `c` agrees on any
+two points that agree off `S`. Buildable by `Finset` induction transforming one point into the other by
+single `S`-updates (the region caveat is vacuous at `V = univ`; see the `IgnoresCoords` docstring). -/
+theorem ignoresCoords_univ_iff_agree (c : (Fin D → ℝ) → ℝ) (S : Finset (Fin D)) :
+    IgnoresCoords c S Set.univ ↔ ∀ u v, (∀ s, s ∉ S → u s = v s) → c u = c v := by
+  constructor
+  · intro H u v hagree
+    have key : ∀ T : Finset (Fin D), T ⊆ S →
+        c u = c (fun i => if i ∈ T then v i else u i) := by
+      intro T
+      induction T using Finset.induction with
+      | empty =>
+        intro _
+        have h0 : (fun i => if i ∈ (∅ : Finset (Fin D)) then v i else u i) = u := by
+          funext i; simp
+        rw [h0]
+      | insert a T ha IH =>
+        intro hsub
+        have haS : a ∈ S := hsub (Finset.mem_insert_self a T)
+        have hTS : T ⊆ S := (Finset.subset_insert a T).trans hsub
+        have hmix : (fun i => if i ∈ insert a T then v i else u i)
+            = Function.update (fun i => if i ∈ T then v i else u i) a (v a) := by
+          funext i
+          by_cases hia : i = a
+          · subst hia; simp
+          · rw [Function.update_of_ne hia]
+            simp [Finset.mem_insert, hia]
+        rw [hmix, H _ (Set.mem_univ _) a haS (v a)]
+        exact IH hTS
+    have hkey := key S (Finset.Subset.refl S)
+    have hSv : (fun i => if i ∈ S then v i else u i) = v := by
+      funext i
+      by_cases hiS : i ∈ S
+      · simp [hiS]
+      · simp [hiS, hagree i hiS]
+    rwa [hSv] at hkey
+  · intro H w _ m hm t
+    apply H
+    intro s hs
+    have hsm : s ≠ m := by rintro rfl; exact hs hm
+    exact Function.update_of_ne hsm t w
+
+/-- **Center-zeroing form of `IgnoresCoords`** (derived constructor lemma, on `V = univ`): an
+`S`-ignoring `c` is unchanged when the `S`-coordinates are zeroed. -/
+theorem ignoresCoords_centerZero {c : (Fin D → ℝ) → ℝ} {S : Finset (Fin D)}
+    (h : IgnoresCoords c S Set.univ) (u : Fin D → ℝ) :
+    c u = c (fun i ↦ if i ∈ S then 0 else u i) := by
+  rw [ignoresCoords_univ_iff_agree] at h
+  exact h u _ (fun s hs => by simp [hs])
+
 /-- **One recursion child** conforming to an `EdgeSpec` at pivot `p`, landing in the NEXT edge's block
 `childSpec` (elder A/B + seat-L4): the CONSTRUCTION supplies the unipotent shear `sh`
 (Jacobian-exactly-1), the child region (pullback of the parent region ∩ a chart domain — no implicit
@@ -223,8 +305,10 @@ def TerminalBezout : Prop :=
       PrincipalInv F g b (fun i ↦ q i 0) r V'
 
 /-- **The NEW leaf — Bézout / principality is BORN at the terminal node.** At a terminal state
-(`S = L`, `J ≥ 1`; residual trivial), with `V` an OPEN neighbourhood of `0` (else FALSE, e.g.
-`V = {u | 0 < u 0}`), the cleared pivot supplies `(F i₀∘g) = b·unit` with `unit 0 ≠ 0`
+(`S = L`, `J ≥ 1`; residual trivial), with `V` an OPEN neighbourhood of `0` — both halves
+load-bearing: without `0 ∈ V` it is FALSE (e.g. `V = {u | 0 < u 0}`), and without openness it is
+FALSE (e.g. `V = {0}`: no open `V' ⊆ {0}` contains `0`) — the cleared pivot supplies
+`(F i₀∘g) = b·unit` with `unit 0 ≠ 0`
 (`b_{k₀} = Σ (U⁻¹)_{1i}(V⁻¹)_{j1}·(∏C∘g)_ij`, pnp §c). On the open `V' = V ∩ {unit ≠ 0}` this inverts
 to `b = (1/unit)·(F i₀∘g)`, upgrading `StepInv` (divisibility) to the terminal `PrincipalInv` (both).
 Consistent with S3: the terminal `b = ∏u` vanishes at `0` (`J ≥ 1`), so the entry `b·unit` vanishes
@@ -233,6 +317,65 @@ D2), NOT an assumption. Region-quantified (shrinks to the open `V' ∋ 0`). -/
 @[blueprint]
 theorem terminal_bezout : TerminalBezout := by
   -- map: B-terminal-bezout (cleared-pivot entry = b·unit, unit 0 ≠ 0 ⇒ invert to Bézout on {unit≠0})
-  sorry
+  classical
+  intro M D F g b q V hV hV0 hstep i₀ unit hunitc hunit0 huniteq
+  obtain ⟨hqc, _hvanish, hdiv⟩ := hstep
+  -- The shrunk region `V' = V ∩ {unit ≠ 0}` is open ( contains `0` since `unit 0 ≠ 0`).
+  have hVopen : IsOpen (V ∩ {u | unit u ≠ 0}) := hunitc.isOpen_inter_preimage hV isOpen_ne
+  refine ⟨V ∩ {u | unit u ≠ 0}, fun i ↦ if i = i₀ then (fun u ↦ (unit u)⁻¹) else 0,
+    hVopen, ⟨hV0, hunit0⟩, Set.inter_subset_left, ?_, ?_, ?_, ?_⟩
+  · -- divisibility quotients `q ·` stay continuous on the smaller region
+    exact fun i ↦ (hqc i 0).mono Set.inter_subset_left
+  · -- Bézout coefficient: `(unit)⁻¹` at `i₀` (continuous since `unit ≠ 0` on `V'`), `0` elsewhere
+    intro i
+    change ContinuousOn (if i = i₀ then (fun u ↦ (unit u)⁻¹) else (0 : (Fin D → ℝ) → ℝ))
+      (V ∩ {u | unit u ≠ 0})
+    split_ifs with h
+    · exact (hunitc.mono Set.inter_subset_left).inv₀ (fun u hu ↦ hu.2)
+    · exact continuousOn_const
+  · -- divisibility `(Fᵢ∘g) = q i 0 · b`: the `Fin 1` residual sum collapses (`resid ≡ 1`)
+    intro u hu i
+    have hd := hdiv u hu.1 i
+    simp only [Fin.sum_univ_one, Pi.one_apply, mul_one] at hd
+    exact hd
+  · -- Bézout `b = (unit)⁻¹ · (F i₀∘g)` on `V'`, using `(F i₀∘g) = b·unit` and `unit ≠ 0`
+    intro u hu
+    have hne : unit u ≠ 0 := hu.2
+    rw [Finset.sum_eq_single i₀ (fun j _ hj ↦ by simp [hj])
+      (fun h ↦ absurd (Finset.mem_univ i₀) h)]
+    change b u = (if i₀ = i₀ then (fun u ↦ (unit u)⁻¹) else (0 : (Fin D → ℝ) → ℝ)) u * (F i₀ ∘ g) u
+    rw [if_pos rfl, huniteq u hu.1, mul_comm (b u) (unit u), ← mul_assoc, inv_mul_cancel₀ hne,
+      one_mul]
+
+/-! ## Kill-set — both leaves exercised on a concrete terminal-shaped instance -/
+
+/-- **Kill-set (non-vacuity) — `terminal_bezout` fires at a genuine terminal shape** (`D = M = 1`):
+dominant `b = u₀` vanishing at `0`, cleared-pivot factor `unit = 1 + u₀` with `unit 0 = 1 ≠ 0`, so
+the shrink `V' = univ ∩ {unit ≠ 0}` is genuinely proper (it drops `u₀ = -1`). -/
+private theorem km_terminal_bezout :
+    ∃ (V' : Set (Fin 1 → ℝ)) (r : Fin 1 → (Fin 1 → ℝ) → ℝ),
+      IsOpen V' ∧ (0 : Fin 1 → ℝ) ∈ V' ∧ V' ⊆ Set.univ ∧
+      PrincipalInv (fun (_ : Fin 1) (u : Fin 1 → ℝ) ↦ u 0 * (1 + u 0)) id
+        (fun u : Fin 1 → ℝ ↦ u 0) (fun (_ : Fin 1) (u : Fin 1 → ℝ) ↦ 1 + u 0) r V' := by
+  have hcont : ContinuousOn (fun u : Fin 1 → ℝ ↦ 1 + u 0) Set.univ :=
+    (continuous_const.add (continuous_apply 0)).continuousOn
+  refine terminal_bezout (q := fun _ _ u ↦ 1 + u 0) (V := Set.univ) isOpen_univ (Set.mem_univ _)
+    ⟨fun _ _ ↦ hcont, fun i ↦ ?_, fun u _ i ↦ ?_⟩ 0 (fun u ↦ 1 + u 0) hcont ?_ (fun u _ ↦ ?_)
+  · simp
+  · simp [Fin.sum_univ_one]; ring
+  · simp
+  · simp [mul_comm]
+
+/-- **Kill-set (composition) — L1 consumes `terminal_bezout`'s output.** The terminal `PrincipalInv`
+built above yields both region-ideal inclusions between `⟨F∘g⟩` and the singleton `⟨b⟩`. -/
+private theorem km_principalInv_regionRepresents :
+    ∃ V' : Set (Fin 1 → ℝ),
+      RegionRepresents
+          (fun i : Fin 1 ↦ (fun (_ : Fin 1) (u : Fin 1 → ℝ) ↦ u 0 * (1 + u 0)) i ∘ id)
+          (fun _ : Fin 1 ↦ fun u : Fin 1 → ℝ ↦ u 0) V' ∧
+        RegionRepresents (fun _ : Fin 1 ↦ fun u : Fin 1 → ℝ ↦ u 0)
+          (fun i : Fin 1 ↦ (fun (_ : Fin 1) (u : Fin 1 → ℝ) ↦ u 0 * (1 + u 0)) i ∘ id) V' := by
+  obtain ⟨V', r, _, _, _, hP⟩ := km_terminal_bezout
+  exact ⟨V', principalInv_regionRepresents _ _ _ _ _ _ hP⟩
 
 end DLNFibre.Core.Aoyagi
