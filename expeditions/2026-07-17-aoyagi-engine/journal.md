@@ -7823,3 +7823,22 @@ STATE: the destination is ONE theorem away — ∃ res : Resolution (coreGen d e
 d res (the coupled ideal-route atlas: analytic g + two-sided dom-wide ideal identity + Jacobian
 certificate + hcover BUILD + the seam's two exponent clauses). Everything else in
 aoyagi_learning_coefficient_via_engine's cone is PROVEN, asserted on every build, and fidelity-reviewed.
+
+## 2026-07-21: HONEST RECALIBRATION — the geometric obligation is a multi-tide monument; ladder re-scoped
+mon-geo (with decorrelated codex, ~5% single-tide odds) recalibrated: the final leaf's two halves are both
+research-grade Lean builds — (1) the coupled corank≥2 ideal identity as dependent-width matrix
+factorisation (the actual monument, as the charter always said) and (2) general-d reasoning over the
+salvaged tree's WellFounded.fix. The thread-31 certificate's MATH stands; its LEAN-cost pricing was
+optimistic, and its "pure-monomial g, unit ≡ 1" per-chart claim is now FLAGGED (codex blindspot: coupled
+Schur reduction uses det-1 SHEARS — the Q,P may enter g itself, not just the cofactors; thread-27's
+unipotent Q₁,Q₂ are the evidence pointer). NO fake progress: the seat banked BlowupResolution.lean (a
+REAL blow-up inhabiting every Chart field, clean-three — merged + wired) + an 8-leaf decomposition with
+a genuine simplification (hchain ⟹ principality ⟹ M'=1: per-entry divisibility + a Bézout combination,
+NOT full diag(b)). Seat pushed on commit (the hardened role file worked, first try).
+CONTROLLER RUNGS SET: (B) FIRST — d=(1,2) end-to-end (the first genuine discharge of the geometric
+obligation on a real singular instance; exercises record+seam+value; ~150–250 lines, L⁻¹-composition the
+contained risk) → then (C) the 8-leaf skeleton (blueprint discipline on the monument; leaves 3–5 = the
+wall, content HELD). PNP-SHEAR PIN dispatched in parallel (thread 33): adjudicate (a) generator-changes-
+only / (b) shears-in-g / (c) mixed-at-coupled — gates leaves 3–5's statements; the v4.2 record already
+accommodates (b) via unit/hjac, so this is certificate-prose + statement-shaping, not a record change.
+Setpoint unchanged (summit, no cites); the ladder adapts — the closed loop working as specified.
