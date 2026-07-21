@@ -7621,3 +7621,22 @@ homeomorphism — e(u)=u|u| is homeomorphic-not-analytic, coreGen=u|u| provably 
 flatten class (banked paramsEquivFlat is linear) or the joint-∃ form. v4.2 dispatched (this + the elder's
 two nits). Bar-clearing sequence: v4.2 → controller ground-truth elaboration + kill-path → elder one-line
 diff nod → BAR CLEARS → integrate + strike opening.
+
+## 2026-07-21: THE BAR CLEARS — blueprint A–E verified to equilibrium; INTEGRATED; STRIKE PHASE OPENS
+v4.2 (093475db3) cleared all three channels: (1) elder ratified end-to-end (he_lin verified required-on-
+monument + true-on-flatten + correctly-absent-from-coreReduction); (2) codex 3 rounds to equilibrium
+(final round: all fixes mechanically confirmed, fresh attack found no new break); (3) controller
+ground-truth: closure 3753 jobs green + kill-path [propext, sorryAx, Classical.choice, Quot.sound]
+cite-free on my own sensor. THE VERIFY-TO-EQUILIBRIUM LOOP CONVERGED: v3 structural kills → v4 hypothesis
+kills → v4.1 one quantifier → v4.2 clean. The blueprint says what the mathematics says.
+INTEGRATED: merged architect/aoyagi-v3 into expedition (4 blueprint commits); aggregator wired (6 imports);
+ROOT BUILD GREEN (8964 jobs); cordon OK (3 cites, 36 blueprint sites, 0 violations). 16 statement-locked
+frontier/strike leaves (A=6, C=3, B=4, corollary=3); D+E fully PROVED already.
+STRIKE OPENS (elder's confirmed lane plan; the operator's parallelisation-as-regularisation steer):
+- pnp-monument DISPATCHED (lane 5): the ∀-general Cases-1&2 construction certifying to the 093475db3
+  record verbatim + Case-2 re-adjudication (elder's conditions) — the hard part, on the page, un-dodgeable.
+- Opening formaliser wave (next): SEAT-A (waypoint/A-floor: IdealInvariance's 6 leaves + analytic-zero-null
+  helper + wrlctAt API + area-formula CoV pair); SEAT-C (lane 2, longest pole: MonomialRLCT's 3 leaves);
+  SEAT-BRIDGE (lane 4, shortest per calibration: corollary's 3 leaves — the ℝ≥0∞→ℝ carrier hop + banked
+  flatten adapters). Lane 3 (B per-chart value) queues behind the waypoint; the atlas-min ≥ queues behind
+  the monument cert. BANKING DISCIPLINE per landed leaf: prove → drop @[blueprint] → append to AxCheck batch.
