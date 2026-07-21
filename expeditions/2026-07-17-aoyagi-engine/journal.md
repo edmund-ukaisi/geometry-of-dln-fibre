@@ -8594,3 +8594,25 @@ P2; P5 (Lemma 2) DISCHARGED-equivalent (RankNormalForm/Schur, pointers verified)
 expedition's runway headline; the INVERSE list confirmed complete; Watanabe-upper re-confirmed not
 separately owed. Wave-tail seats per the register: the bridge seat (P2) then P1; O4 (non-monotone d)
 post-monument. O8 DISCHARGED, O9 LANDED.
+
+## 2026-07-21: ROUND-5 PASSES — THE WAVE OPENS
+rev-leaves' verdict: the round-4 blocker (free state) is CLOSED — foldG/foldB/foldResid/foldRegion
+read off the path by structural recursion, no free F/b/resid to instantiate; the |S|=1 refutation
+DEAD (F pinned to coreGen; hsupp excludes the trivial residual — machine-verified ¬SupportedOn
+(const 1) {0}, and at the root hsupp forces center = univ); the /u_pivot exactness verified
+(round5_hsupp.lean, banked). Elder checks #1 (ideal-membership both leaves) + #3 (L6 hard lock
+verbatim) PASS. TWO LIVE FINDINGS, routed not gating: (1) MUST-VERIFY at the wall — ed.shearφ is
+FREE (CenterCoordAligned dropped in round-5): a bad φ could mix spectator content into center coords
+at deeper states, breaking δ=1 divisibility (root-SAVED — center=univ; deeper-OPEN, no confirmed
+refutation) — seat-L4's FIRST CHECKPOINT, it owns the mechanism (either a shear-alignment constraint
+returns via stop-on-suspect, or prove reachable residuals stay center-supported through the shear);
+(2) elder check #2 PARTIAL — a REAL terminal gap: foldNR never shrinks, terminal foldNR ≫ 1 vs
+terminal_bezout's Fin 1 — the exact-clear refinement (elder pre-blessed as stand-in-(b)'s upgrade) is
+REQUIRED on L5's critical path (not L3/L4's); plus the padding named-risk docstrings are missing on
+the leaves. L7's pivot-tie deferral re-confirmed (runway; its seat inherits the known gap).
+No exploit path (foldResid is pinned DATA); the driver coherent; root non-vacuity satisfiable.
+THE WAVE: L3 GO → seat-w0l3; THE WALL GO → seat-L4 (shear checkpoint first); arch-C next-touch
+bundle (foldNR exact-clear upgrade + M5 spurious-hd + the padding named-risk docstrings) — L5
+commissions after it lands; L8 after the first leaves land; L7 last (the bridge gap). seat-api
+running the M-items concurrently. Five statement-hardening rounds, five severance classes dead,
+and the proving begins.
