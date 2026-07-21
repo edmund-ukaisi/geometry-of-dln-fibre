@@ -9217,3 +9217,24 @@ memory rule.
 **Pipeline unchanged and live:** FIX-2-combinatorial render → arch-C whole-round re-gate → bake →
 controller integration → wall-first serial MonumentAtlas lane; seat-core mid-work on
 L1 + terminal_bezout.
+
+## 2026-07-21 (controller) — E-opening round 2: charter §1-E committed; the elder's ratification pins forwarded to seat-E
+
+The elder discharged both duties in one pass:
+- **Charter §1-E replaced** (elder's pen, this commit): DEPRIORITISED-kept-in-reach → **OPENED,
+  SCOPED** — operator verbatim + Rising-Sea rationale in the charter; combinatorial half IN BUILD,
+  analytic pole-order half monument-class DEFERRED; statements gated through elder ratification.
+- **Ratification pins set in advance** (forwarded to seat-E as a brief supplement): severance
+  audit surface = the PARAMETERS not the domain — (ℓ,a,M*) must be the certified ClosedForm
+  objects (paperEll/shiftedSorted/residueA), envelopes from the certified selection, "corresponds
+  to λ" = the owned ledger fact (divExp = minAdm), never a fresh predicate. Kill-conditions
+  K1–K4: build-enforced ground truths θ(2,2,2)=1 / θ(2,1,2)=2 / θ(2,2,2,2)=3 + (3,3,4);
+  the (T-F) totality trap auto-rejects any total-comparability lean (Def 4's order is
+  componentwise); name discipline holds the ThetaOrderDistinction wall between count and
+  multiplicity; two-sidedness — the EQUALITY (Lemma 5's union bound AND the eq-(1)/(2) attaining
+  construction; per the elder's pp.25–26 holdings the characterisation is envelope T̃ ≤ T ≤ T̃′ +
+  the increment condition H_{j−1}−H_j+M^{(S_{j+1})} ∈ {M−1,M}, count = banded interval sum;
+  a ≤-only statement fails name=content).
+- **Target shape** (elder): `thetaCount d = aoyagiTheta …` — a COUNT proved equal to a VALUE
+  already landed (Lambda.lean:93). The elder's framing matches the operator's: a harvest over
+  built machinery, not a fresh expedition.

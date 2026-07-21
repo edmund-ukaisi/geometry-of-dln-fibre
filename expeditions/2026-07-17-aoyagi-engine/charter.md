@@ -51,9 +51,13 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   permutation-invariance (type-A quiver / Ext). STATUS: banked in `Core` (`minAdm_eq_cCodim` axiom-clean;
   θ unconditional) — reinforced by dev's cite-free determinantal geometry.
 - **E. Analytic order ρ** (Aoyagi Lemmas 4–5): the RLCT / zeta-pole MULTIPLICITY — **NOT** the quiver
-  (C,θ)-count. STATUS: unbuilt seam. **DEPRIORITISED but KEPT IN REACH** (operator, 2026-07-20): her
-  order falls out of the SAME A–D machinery, so E stays a named reachable node (interface sketched,
-  completeness holds); its content build is deferred, never boxed out.
+  (C,θ)-count. STATUS: **OPENED, SCOPED** (operator, 2026-07-21: "we build machineries, wisely, and
+  understanding. So go. Build it." — the Rising-Sea expectation that the surrounding machinery may
+  dissolve the headline's remaining hardness, recorded as the opening's rationale). The COMBINATORIAL
+  half — θ = a(ℓ−a)+1 via Lemma 4's two-condition count over the built tree/foldState spine (register
+  P6, re-priced M) — is IN BUILD; the ANALYTIC pole-order identification (zeta multiplicity — Mathlib
+  lacks meromorphic continuation) remains monument-class, explicitly DEFERRED: the opening is scoped,
+  not total. Statements pass elder ratification before any proving.
 - Reductions R0/R1 (deepest point; product reduction → core): BUILT (bookkeeping).
 - **Corollary/test:** `aoyagi_learning_coefficient = C/2`; `hbox` is its analytic shadow, never a
   separate goal — it falls out of A+B (or is decided false by them).
