@@ -161,6 +161,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 import DLNFibre.Core.Aoyagi.IdealInvariance
+import DLNFibre.Core.Aoyagi.MonomialRLCT
 import Meta.Cordon
 
 /-!
@@ -1302,6 +1303,16 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.Core.Aoyagi.wrlctAt_one,
   DLNFibre.Core.Aoyagi.wrlctAt_sumSqFam_le_of_germRepresents,
   DLNFibre.Core.Aoyagi.wrlctAt_sumSqFam_eq_of_germ_eq,
+-- ★ Object C — the monomial-ideal RLCT (S2 boxed rule), seat-C @ expedition/aoyagi-engine. All three
+-- clean-three [propext, Classical.choice, Quot.sound], sorry-free (forced #print axioms verified):
+--  * `exists_unit_sumSqFam_monomial` — the chain collapse `∑ bₖ² = b_{k₀}²·U` (exactly as locked);
+--  * `monomialSumSq_wrlctAt_eq` — the S2 boxed threshold `wrlctAt = min_d (h_d+1)/(2 k_d)`;
+--  * `monomialSumSq_two_mul_wrlctAt_eq_min` — the DLN unit-multiplicity form `2·wrlctAt = min (h_d+1)`.
+-- Leaves 2/3 carry `Measurable unit` (controller-BLESSED statement delta; without it `wrlctAt` collapses
+-- to 0 for a non-measurable `unit` — same defect class as the A-chain `hWmeas`). S2-FREE (no `monomial_rlct`).
+  DLNFibre.Core.Aoyagi.exists_unit_sumSqFam_monomial,
+  DLNFibre.Core.Aoyagi.monomialSumSq_wrlctAt_eq,
+  DLNFibre.Core.Aoyagi.monomialSumSq_two_mul_wrlctAt_eq_min,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from
