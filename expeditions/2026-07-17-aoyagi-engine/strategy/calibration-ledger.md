@@ -797,3 +797,18 @@ ContinuousAt-vs-ContinuousOn — controller re-confirmed vs the Lean text, PLUS 
 missing IsOpen V / 0 ∈ V pair in the same statement; the D3-gap driver-hypothesis accounting) — the
 reification gate should have included a hypothesis-suffices check per leaf (do each leaf's hypotheses
 discharge its conclusion?) and a driver-signature-vs-canonical diff.
+
+## Entry 26 (2026-07-21, controller) — pre-landing check: does the tree expose center/pivot?
+Q (load-bearing for the imminent foldState render landing): does the salvaged combinatorial tree
+carry the coordinate-level center/pivot data the elder's locked TreeEdge interface declares, or must
+the render DERIVE them? EXPECTATION (pre-read): ConState is combinatorial-only (widths/layer/cleared/
+ledgers), no center/pivot Finset — derivation required, via the flatten indexing (0.75).
+ACTUAL: HIT — ConState = {layer S, cleared J, numDiv, divExp, divProfile, numGen, genDivExp}
+(EngineConstruction.lean:43). No coordinate data. So ed.center : Finset (Fin (flatDim d)) and
+ed.pivot are RENDER-DEFINED from (S, J, d) — the ONE implementation-owned piece the locked text does
+not pin, hence the one drift-capable spot in an otherwise verbatim landing.
+STRATEGY DELTA: the integration gate gains an explicit check — the rendered ed.center.card/pivot
+along the (3,3,4) traversal must reproduce the traversal battery's center-codim table (codims
+9/4/1 at S=1; the 1×2 codim-2 at S=2; pivot kinds per case). Sharpener sent to arch-C mid-gate.
+The general lesson repeats entry-25's: locked TEXT pins statements; DERIVED DATA in the
+implementation still needs its own regression witness.
