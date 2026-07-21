@@ -7592,3 +7592,19 @@ independent audit. Kill-path re-verified cite-free; closure green; census 16. EN
 diff-verify (pre-committed) + targeted codex round-3 (mechanical rejection of both old counterexample
 classes; one more hard adversarial attempt at the load-bearing iInf equality; the W-deletion audit; the
 measure-preservation-not-lost check on ≃ₜ). On both PASS → bar CLEARS → strike opens (#3).
+
+## 2026-07-21: elder diff-verify — B RATIFIED; full blueprint A–E RATIFIED (channel 1 of the endgame)
+Elder verified the v4.1 diff exact: D1 landed (re-ran its own counterexample — chart B now rejected
+exactly where it cheated: bwd coefficient 1/v not ContinuousOn at (2,0); genuine blow-up charts still
+certify globally); D2 landed with an APPROVED weakening (InjOn on nbhd\excep vs global — weakest-
+hypotheses-correct); D3 landed; the LocallyNullZerosW DELETION ruled SOUND + an improvement (junk lives
+at {K=0}; where W=0 both sides vanish symmetrically; the old form carried a spurious W≠0-a.e. hypothesis
+— bar-i violation removed); both codex fixes verified REQUIRED. TRUTH RE-AUDIT: both directions of
+rlctAt_sumSqFam_eq_iInf_charts now have complete proof sketches from the fields alone (≥: per-point
+sub-min + compact finite subcover + area-formula subadditivity, no injectivity; ≤: argmin-chart
+divergence transport via restored InjOn CoV) — honest heavy engineering, no new math, NO DODGE. Bar (iv)
+clears at the elder. Two non-blocking nits (stale docstring; spare hGmeas on the ≤). STRIKE PLAN
+confirmed; LANE-5 pnp UNGATED (its gate was the dom-wide record) with two brief-content conditions
+(certificate target = the f8db23000 record verbatim; Case-2 raw-width re-adjudication per F5).
+REMAINING BAR: codex round-3 (running) + controller ground-truth elaboration at integration.
+"The blueprint now says what the mathematics says: the certificates cover what the cover covers."
