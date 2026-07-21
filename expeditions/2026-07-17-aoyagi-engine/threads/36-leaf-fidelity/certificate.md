@@ -55,3 +55,17 @@ HELD on the anchoring.
   `hfold : FoldProduced d e atlas`, and FoldProduced's `hdom_ball` clause excludes the dom = {0}
   degeneracy — the anchored statements cannot be fed the degenerate atlas.
 - Cone re-verified = exactly the 8 leaves; O9 atoms off-cone; batch-341 + cordon green.
+
+## KERNEL-CHECK ROUND (rev-leaves, post-elder-ruling; controller re-ran both, EXIT 0)
+- `elder_refute.lean` — **¬ Case2Preservation, machine-proven** (the elder's |S|=1 witness: F =
+  coordinates, spec center {0}, δ=1; blockBlowupMap {0} 0 = id ⟹ σ = sh; child StepInv forces sh ≡ 0
+  on the u₀=0 slice; the slice-derivative kills e₁ ⟹ det Dsh(0) = 0 ≠ 1 — closed WITHOUT the inverse
+  function theorem). The free-standing Case-2 ∀-(state,spec) form is FALSE, proven.
+- `case1_rescue.lean` — **the round-3 (A) Case-1 half is RETRACTED**: the misaligned-spec witness is
+  RESCUED by a jacDet-1 rotation ((x₀,x₁,x₂) ↦ (x₀,x₂,−x₁) makes 2u₀u₂ ↦ −2u₀²u₁ ∈ ⟨u₀²⟩, `by
+  ring`). The |S|=1 killer requires card = 1, excluded by Case-1's 2 ≤ card guard. **Case-1's
+  free-standing form is UNRESOLVED** — shears rescue every witness tried. Edge-indexing of BOTH
+  remains ratified on constructibility + provenance grounds (hbranch_len unsatisfiability; the
+  closing principle), NOT on a Case-1 falsity claim — docstrings must not overclaim.
+- Calibration note: the shear slot does REAL algebraic work beyond the paper's row/column clears
+  (relayed to seat-L4 as a construction asset).

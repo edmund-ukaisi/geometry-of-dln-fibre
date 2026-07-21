@@ -8297,3 +8297,127 @@ arch-C (the edge-indexing + card-tie round, elder's refutations as new gate prob
 elder's specific ask: the card-tie must be CONSTRUCTIBLE BY THE FOLD). Stagger completed: seat-L4 +
 scout-mine resumed (elder explicit: L4's δ-agnostic core = the real-state algebra, valid under
 edge-indexing). All four seats live again.
+
+## 2026-07-21: ROUND-3 VERDICT — (A) confirms edge-indexing (2nd refutation family); (B) NEW: L7 needs σ-provenance
+rev-leaves round-3 (crossed with the elder's ruling; humbling-note accepted — this round it checked
+fidelity-to-the-LAW): the anchor is real progress (both round-2 refutations die; L8 sound via
+hjac_mem/onto + hsurj, NO pivot tie needed there; S3 non-vacuity Lean-checked; the forced-distinct-
+pivots collapse PROOF-DEAD; Case2's pinned b'-law closes its round-2 gap; terminal_bezout stands).
+TWO blockers: (A) the ∀-(state,spec) Props admit MISALIGNED specs — witness (D=3): parent b=u₀,
+resid=(u₂,u₂) ⟹ F₀=2u₀u₂; spec center={0,1}, δ=1 ⟹ b'=u₀², and 2u₀u₂ ∉ ⟨u₀²⟩; thread-34's own
+q'-law goes non-polynomial (1/u₀) — the parent is a non-real state the cert excludes but the Prop
+admits. SAME DISEASE as the elder's Σw² refutation, independently found — "interfaces quantified
+looser than the fold's actual guarantees." The in-flight edge-indexing fixes it; both refutation
+families become gate probes. (B) NEW — L7 is NOT provable from FoldProduced: it constrains only
+counts/exponents/surjectivity, never GeoStep.σ/pivot/center (atlas.jac is a FREE field); a
+right-count right-exponent WRONG-PIVOT atlas passes FoldProduced yet cannot cover (kernel-checked:
+a single-pivot blow-up omits the (0,ε) direction). This AMENDS the elder's "L7 needs no tie"
+(the proof-internal-routing reading implicitly assumed the atlas is the fold's own — the linkage
+disease one level up). RESOLUTION PROPOSED (elder re-ratification requested): σ-provenance via the
+EDGE-SPEC thread (GeoStep.center/pivot = the branch's spec data; atlas.jac tied to the accumulated
+|center|−1 ledger) — Aoyagi-side, NO flatDim bridge (the runway ruling stands), trivially
+constructible by the fold. Relayed to arch-C mid-render. round3.lean probes banked (thread-36).
+SEAT STATE: L4 + L7 held (the two blockers); L8 + L3 clear-modulo-render (their statements change
+shape in the render: card-tie / edge-indexing). All four seats live; w0l3 on O9 proofs + L3 re-price;
+seat-L4 on the real-state core algebra (survives edge-indexing per the elder).
+
+## 2026-07-21: σ-PROVENANCE RATIFIED — the hardening loop closes on a principle
+The elder ratified rev-leaves' L7 amendment AGAINST ITSELF ("I quantified L7 over ∀-FoldProduced-
+atlases while tacitly reasoning about THE fold's atlas — the same severed-linkage disease I had just
+diagnosed at L3/L4, one level up. Owned; the round-3 layer caught it because the layers are
+decorrelated, which is the system working"). Resolution ratified on four points: pure provenance
+(the fold records its own per-step center/pivot through the SAME EdgeSpec spine — one data spine,
+no second mechanism; + the accumulated |center|−1 jac ledger-tie, killing the by-hand-jac degeneracy
+at the root); Aoyagi-side (card↔sum runway untouched); exactly L7's argmax handle; L8 unchanged.
+Riders relayed to arch-C: (i) card-tie carried-or-derived, no clause multiplication; (ii) the CLOSING
+PRINCIPLE into the docstring — every ∀-statement whose instances come from the fold either carries
+instance-reconstructing provenance (L7's road) or is edge/reachability-indexed (L3/L4's road); the
+only two honest shapes; all four hardening-round refutations were one disease: QUANTIFICATION SEVERED
+FROM PROVENANCE. Compass entry applied (the principle + the go-to-the-construction corollary).
+arch-C renders with nothing further pending; rev-leaves round-4 lands on its output; then the wave
+go-signals.
+
+## 2026-07-21: THREAD-37 WIRING MAP COMPLETE + MERGED — the paper hands the wave its playbook
+scout-mine's sweep banked (wiring-map.md + codex; pp.14–26 image-verified; refreshed against the
+edge-indexed baseline). TOP FINDS ROUTED: B1 → seat-L4 (the L4 fold is PRINTED, pp.17/18/21: the
+exact identity P·diag(b)·D_J·C = u·diag(b′)·D‴_J·C′ with P = diag(b′)·(unipotent col-clear)·diag(b′)⁻¹
+= Q̂ verbatim; q′=(φ*q)/u^δ exact division — the seat transcribes, not re-derives; suggested 3-lemma
+decomposition sent). B3/B4 + THE p.19 TRANSPOSE BOUNDARY → arch-C (the traversal IS the edge data;
+at rollover J+1>M(S+1) the residual collapses to a vector WITH A TRANSPOSE — the fold must carry it
+as a named branch or documented degenerate, never implicit; scout's "most likely to bite next").
+S1 corroborated for free (the block-center exponent arithmetic reproduces her printed increments —
+the reshape is paper-faithful). A1 corroborated with a codex-independent reachable witness (one
+advancing run hits both wrong-δ states of the old coding). C4 → hygiene (O5 has a general-L proof
+skeleton: p.23 completing-the-square + Lemma 3 p.24 — transcribe-able, off kill-path). C1 → summit
+plan (Watanabe-upper = the EASY half: one min-attaining chart; BOTH cites deletable together at the
+monument+CoV — as the charter names). terminal_bezout p.22-grounded (non-vacuous). D1–D4 paper-SILENT
+obligations named (the CoV min-realization, the cover-as-measure-statement, the Bézout inversion
+form, per-step a.e.-injectivity — OURS; prices the wave honestly). CROSS-CUT confirmed: A1 + the
+free-atlas falsity + the case-2-b′-note were ONE root cause; the edge-indexed baseline adopts the
+paper's own frame. COMMISSIONED: scout-mine's (3,3,4) end-to-end EdgeSpec traversal check (paper's
+(S,J,t̃,center,pivot,δ) table vs the fold's edge data, incl. the transpose boundary) — the
+decorrelated gate probe on arch-C's render, per the elder's constructibility ask.
+
+## 2026-07-21: WALL CORE #1 LANDED — BlockDivision (the exact-division heart), controller-verified clean-three
+seat-L4 delivered core piece #1 sorry-free: Core/Aoyagi/BlockDivision.lean (5 theorems, ~90 LoC) —
+blockBlowupMap_center_eq (center coords = w_p × EXACT polynomial quotient), spectator_eq (j∉S
+unchanged — W2 formal), quotient continuity/analyticity, blockBlowup_center_comb_eq (center-supported
+residual combinations inherit the w_p factor = the residual-level division). MERGED + aggregator
+wired; controller ground-truth: build 0 errors, cordon green, spot axioms = clean-three. TWO seat
+flags: (1) the block-center shape matters for the ALGEBRA (spectators survive at w_p=0 — naive
+junk-division does NOT discharge δ=1; the residual must BE the geometric center block) — the seat
+independently landed on the elder's edge-indexing ruling from the algebra side; (2) LAZY-WITNESS
+residual-collapse still open at the abstract StepInv level (resid'→Fin-1-trivial + q'=whole-quotient
+is type-legal; the guards don't close it) — RELAYED to arch-C mid-render: the edge-indexed BlockChild
+must pin the CHILD RESIDUAL (length + center-block identity) as spec-supplied/fold-pinned — the
+closing principle applied to the child residual. Seat proceeds to core #2 (the Q̂ conjugation
+machinery, ~120–180 LoC, codex consult on the abstract shape first); #3 (one-center-two-pivots)
+waits on the render.
+
+## 2026-07-21: KERNEL-CHECK ROUND — ¬Case2Preservation PROVEN; the Case-1 half honestly RETRACTED
+rev-leaves machine-checked the elder's refutation: Case2Preservation's free-standing form is FALSE,
+kernel-proven (elder_refute.lean; the jacDet-vs-hyperplane argument closed via the slice derivative,
+no IFT). AND self-corrected: its round-3 Case-1 claim is RETRACTED — the witness is SHEAR-RESCUED
+(case1_rescue.lean: a jacDet-1 rotation makes the over-divided entry exactly divisible, by ring);
+Case-1's free-standing form is UNRESOLVED (no witness survives all shears). Both probes controller
+re-run EXIT 0, banked thread-36, certificate updated. PRECISION RELAY to arch-C: the render's
+docstrings say Case-2 refuted / Case-1 unresolved / both edge-indexed for constructibility +
+provenance — never a Case-1 falsity overclaim. ASSET RELAY to seat-L4: the shear slot does real
+algebraic work (aligning residual coupling with the pivot direction) — the free-standing Case-1 form
+might even be true, so the edge-indexed real-state proof has MORE room than worst case. The review
+layer retracting its own finding under sharper checking, unprompted, is the calibration culture
+working — recorded as such.
+
+## 2026-07-21: TRAVERSAL GATE GREEN — the edge-indexed fold is paper-faithful end-to-end on (3,3,4)
+scout-mine's commissioned gate banked (edgespec_traversal_334.py; controller re-ran EXIT 0; merged).
+The fold reproduces Aoyagi's (S,J,t̃) transition system on the coupled flagship: 5 leaves, 26 edges;
+six exact assertion classes ALL PASS — MvalCoh; the printed Case-1(1)/Case-2 exponent increments;
+δ=[J=0] uniform across sub-cases (A1's fix positively verified per Case-1 node); rollover exactly at
+J=M(S+1) (the transpose boundary fires where p.19 says); center codim = block dims (S1); headline
+rlct guards incl. non-monotone. The traversal reproduces the compass landmark exactly (the
+(1,1)→(1,0) M=8 merge at S=2; minAdm=8, rlct=4). CONFIRMING SUB-FIND: the fold's Case-2 head is the
+RUNNING-MIN, a documented CORRECT deviation from the printed p.20 raw-width label (the scout's
+simulator tripped at non-monotone (2,1,2) until adopting the fold's head — MvalCoh then
+UNCONDITIONAL) — the compass T-E resolution positively confirmed on a live traversal; docstring note
+sent to arch-C so no future seat "fixes" it back toward the paper. NET: the render's EdgeSpec design
+is faithful; its last external gate is green; arch-C proceeds to landing. scout-mine's dispatch
+(sweep + gate) fully complete.
+
+## 2026-07-21: EDGE-INDEXING RENDER INTEGRATED — the statements reach their honest final shape
+Merged cff7f9241. CONTROLLER GROUND-TRUTH: build 0 errors; batch-341 green; cordon green; driver cone
+= EXACTLY the 8 leaves — now visibly with L3/L4 DLN-SIDE (DLN.Aoyagi.case1/2_preserves_stepInv,
+edge-indexed over stepEdges(buildTree); δ = decide(edge.cleared = 0) off the edge; SupportedOn
+singular-support link; child centers DETERMINED per case; the child residual length+support-pinned to
+childCenter — the residual-collapse witness is TYPE-ILLEGAL now); Core keeps the network-free
+vocabulary + the closing-principle docstring. FoldProduced: hbranch_len GONE, hstep_block + hjac_tie
+(jac = the accumulated ledger, not free — kills the wrong-pivot atlas) + hcard_tie. PROBE FLIPS
+(controller re-run): elder_refute now FAILS (the free-standing Prop it refuted no longer exists —
+the honest resolution of a true refutation: the statement moved, not patched); l4probe_refute FAILS
+(S3); root_probe elaborates. PRECISION verified in the docstrings: Case-2 free-standing
+kernel-refuted / Case-1 unresolved / both edge-indexed for constructibility+provenance; running-min
+head = documented T-E deviation with a do-not-fix note; p.19 transpose = the rollover edge documented
+as the degenerate off the case filters. The flatDim card↔sum bridge documented in-file as runway.
+FOUR review rounds + two elder rulings + one kernel refutation exchange + a traversal gate, and the
+skeleton's statements now match the paper on every load-bearing move with every known refutation
+class dead. DISPATCHED: rev-leaves ROUND-4 (the wave-gating final pass); sync notes to seat-w0l3
+(O9 proofs onto the merged tip) + seat-L4 (core #3 unblocks on round-4 PASS).

@@ -48,7 +48,22 @@ forces the two children distinct — one witness package cannot discharge both (
 flagged). Pivot-kind (existing-exceptional vs fresh) is the branch semantic; no ledger machinery.
 
 W1 (no T-comparability transcription anywhere). Rollover is only-at-exhaustion (R4; under the M'=1
-compression the `b`-truncation is invisible — only the residual re-binds).
+compression the `b`-truncation is invisible — only the residual re-binds, incl. the p.19 transpose
+boundary where the residual collapses to a single transposed row/col — handled DLN-side as a rollover
+edge, `MonumentAtlas`).
+
+## THE CLOSING PRINCIPLE (the disease named — so the wave seats stop rediscovering it)
+
+Every `∀`-statement whose intended instances come from the fold must EITHER
+  **(a)** carry PROVENANCE that reconstructs the instance (L7's road — `FoldProduced`; and here the
+  preservation leaves' `SupportedOn` link + edge-`δ` link), OR
+  **(b)** be EDGE / REACHABILITY-INDEXED (L3/L4's road — quantify over `buildTree`'s edges, the state
+  = the fold's own accumulated state at that edge).
+These are the ONLY two honest shapes. The hardening-round failures — the constant family (S3), the
+kernel-refuted Σw² Case-2 spectator-support witness, the `hbranch_len` unconstructibility, the
+wrong-pivot atlas — are ONE disease: **quantification severed from provenance.** (The Case-1 `2u₀u₂`
+witness was shear-RESCUED, so Case-1's universal form is UNRESOLVED, not refuted — edge-indexed for
+constructibility, not falsity.)
 -/
 
 open MeasureTheory Set Filter Topology RLCT
@@ -113,12 +128,22 @@ theorem principalInv_regionRepresents (F : Fin M → (Fin D → ℝ) → ℝ)
   -- map: B-L1-principalInv-to-region (divisibility ⇒ fwd inclusion; Bézout ⇒ bwd inclusion)
   sorry
 
-/-! ## L3 / L4 — one recursion step preserves the interior `StepInv`
+/-! ## Step vocabulary (the network-free pieces the DLN edge-indexed leaves L3/L4 consume)
 
 `σ = sh ∘ blockBlowupMap spec.center p` (block-center blow-up ∘ unipotent shear). `sh` is
 Jacobian-exactly-1 (`∀ u, jacDet sh u = 1`), so `|det Dσ| = |det D(blockBlowupMap …)|` is a pure
 `|S|`-center monomial, `unit ≡ 1` (feeds L6). The `EdgeSpec` (δ + center) is supplied by the fold per
-tree edge; the child dominant law `b' = u_p^δ · (b∘σ)`, `δ = spec.δ = [J=0]`. -/
+tree edge; the child dominant law `b' = u_p^δ · (b∘σ)`, `δ = spec.δ = [J=0]`.
+
+**The preservation LEAVES themselves live DLN-side** (`DLN.Aoyagi.MonumentAtlas`, EDGE-INDEXED over
+`buildTree`'s edges — elder ruling). The free-standing `∀-(state, spec)` **Case-2** form is
+KERNEL-REFUTED (`thread-36/elder_refute.lean`: `¬ Case2Preservation` sorry-free — `jacDet ≡ 1` for
+`|S|=1` vs the hyperplane-vanishing the child law demands). The free-standing **Case-1** form is
+UNRESOLVED, not known-false (rev-leaves' `2u₀u₂` witness is shear-RESCUED, `case1_rescue.lean`); it is
+edge-indexed for CONSTRUCTIBILITY + provenance-honesty (the linkage-severance class + `hbranch_len`'s
+constructibility failure + the closing principle), NOT a claimed refutation. Core keeps only the
+vocabulary (`StepInv`, `BlockChild`, `EdgeSpec`, `blockBlowupMap`, `SupportedOn`, `PrincipalInv`,
+`terminal_bezout`). -/
 
 /-- **A per-edge spec** (elder A): what the fold reads off a `buildTree` edge — `δ = [J=0]` (off the
 salvaged `ConState.cleared`) and the blow-up center `S`. δ and the center are one package (S1's
@@ -136,66 +161,44 @@ def CenterCoordAligned {D : ℕ} (sh : (Fin D → ℝ) → (Fin D → ℝ)) (S :
     Prop :=
   Set.InjOn (fun u ↦ sh (blockBlowupMap S p u)) (Set.univ \ {w : Fin D → ℝ | w p = 0})
 
-/-- **One recursion child** conforming to an `EdgeSpec` at pivot `p` (elder A/B): the CONSTRUCTION
-supplies the unipotent shear `sh` (Jacobian-exactly-1), the child region (the pullback of the parent
-region intersected with a chart domain — no implicit shrinking, D1), and the child `StepInv` for
-`σ = sh ∘ blockBlowupMap spec.center p`, with the dominant law `b' = u_p^(if δ then 1 else 0)·(b∘σ)`
-(δ = spec.δ = [J=0], UNIFORM across sub-cases — S2). `pivot ∈ spec.center` is imposed by the caller. -/
+/-- **The singular-support provenance link** (elder ii; the concrete "the spec's center COVERS the
+state's singular support"): the residual family depends only on the center coordinates — changing a
+SPECTATOR coordinate `d ∉ S` leaves every `residⱼ` unchanged on `V`. For a fold state this holds by
+construction (the uncleared block lives in the center). It is what the block blow-up needs: each center
+coordinate gains the pivot factor, so `residⱼ ∘ (blockBlowupMap S p)` is divisible by `u_p` — the child
+divisibility. It is EXACTLY what the elder's kernel-refuted Σw² Case-2 witness violates (its residual
+depends on a spectator). The preservation leaves (DLN, edge-indexed) carry it. -/
+def SupportedOn {nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (S : Finset (Fin D))
+    (V : Set (Fin D → ℝ)) : Prop :=
+  ∀ (j : Fin nR) (u : Fin D → ℝ), u ∈ V → ∀ (d : Fin D), d ∉ S → ∀ t : ℝ,
+    resid j (Function.update u d t) = resid j u
+
+/-- **One recursion child** conforming to an `EdgeSpec` at pivot `p`, landing in the NEXT edge's block
+`childSpec` (elder A/B + seat-L4): the CONSTRUCTION supplies the unipotent shear `sh`
+(Jacobian-exactly-1), the child region (pullback of the parent region ∩ a chart domain — no implicit
+shrinking, D1), and the child `StepInv` for `σ = sh ∘ blockBlowupMap spec.center p`, with the dominant
+law `b' = u_p^(if δ then 1 else 0)·(b∘σ)` (δ = spec.δ = [J=0], UNIFORM across sub-cases — S2).
+
+**The child residual is PINNED, not existential-free (seat-L4 — the closing principle applied to the
+residual):** its length is `childCenter.card` (the NEXT step's block, fold-supplied — for a case-1
+reduction the caller sets `childCenter = spec.center.erase p`) and it is `SupportedOn childCenter` — so
+a residual-COLLAPSE lazy witness (`resid' → (fun _ : Fin 1 ↦ 1)` with `q'` the whole quotient) is
+TYPE-ILLEGAL for a coupled next-block (`card ≥ 2`), and a spectator-supported free family is excluded.
+The child residual is PART OF the instance the fold reconstructs (it is the next step's center block);
+seat-L4's `BlockDivision` pins its exact entries. -/
 def BlockChild (F : Fin M → (Fin D → ℝ) → ℝ) (g : (Fin D → ℝ) → (Fin D → ℝ))
-    (b : (Fin D → ℝ) → ℝ) (V : Set (Fin D → ℝ)) (spec : EdgeSpec D) (p : Fin D) : Prop :=
+    (b : (Fin D → ℝ) → ℝ) (V : Set (Fin D → ℝ)) (spec : EdgeSpec D) (p : Fin D)
+    (childCenter : Finset (Fin D)) : Prop :=
   ∃ (sh : (Fin D → ℝ) → (Fin D → ℝ)) (Vchart : Set (Fin D → ℝ)) (b' : (Fin D → ℝ) → ℝ)
-    (nR' : ℕ) (resid' : Fin nR' → (Fin D → ℝ) → ℝ) (q' : Fin M → Fin nR' → (Fin D → ℝ) → ℝ),
+    (resid' : Fin childCenter.card → (Fin D → ℝ) → ℝ)
+    (q' : Fin M → Fin childCenter.card → (Fin D → ℝ) → ℝ),
     AnalyticOnNhd ℝ sh Set.univ ∧ sh 0 = 0 ∧ (∀ u, jacDet sh u = 1) ∧
       CenterCoordAligned sh spec.center p ∧ IsOpen Vchart ∧ (0 : Fin D → ℝ) ∈ Vchart ∧
       (∀ u, b' u = (u p) ^ (if spec.δ then 1 else 0) * b (sh (blockBlowupMap spec.center p u))) ∧
+      SupportedOn resid' childCenter
+        ((fun u ↦ sh (blockBlowupMap spec.center p u)) ⁻¹' V ∩ Vchart) ∧
       StepInv F (fun u ↦ g (sh (blockBlowupMap spec.center p u))) b' resid' q'
         ((fun u ↦ sh (blockBlowupMap spec.center p u)) ⁻¹' V ∩ Vchart)
-
-/-- **The case-2 one-step preservation obligation** (the Prop `case2_preserves_stepInv` proves; the
-hypothesis the fold `leaf_stepInv_of_path` (L5) consumes). For an edge spec with a NONEMPTY center, a
-case-2 (append) edge produces ONE child conforming to the spec at a center pivot. `0 < D` (elder C:
-`|S| = 1` is a legitimate step; center-size bounds live in the spec, never the ambient). -/
-def Case2Preservation : Prop :=
-  ∀ {M D : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} {g : (Fin D → ℝ) → (Fin D → ℝ)}
-    {b : (Fin D → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin D → ℝ) → ℝ}
-    {q : Fin M → Fin nR → (Fin D → ℝ) → ℝ} {V : Set (Fin D → ℝ)},
-    IsOpen V → (0 : Fin D → ℝ) ∈ V → StepInv F g b resid q V → 0 < D →
-    ∀ spec : EdgeSpec D, spec.center.Nonempty →
-    ∃ p : Fin D, p ∈ spec.center ∧ BlockChild F g b V spec p
-
-/-- **The case-1 (coupled corank ≥ 2) one-step preservation obligation** (the Prop
-`case1_preserves_stepInv` proves; the hypothesis L5 consumes). For an edge spec whose center has
-`≥ 2` coordinates, a case-1 step produces TWO children at DISTINCT pivots of the ONE center (elder B:
-`p_merge` at the existing exceptional, `p_split` at a `d`-entry) — `p_merge ≠ p_split` forces the two
-children distinct (no single witness discharges both). `0 < D` (elder C). -/
-def Case1Preservation : Prop :=
-  ∀ {M D : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} {g : (Fin D → ℝ) → (Fin D → ℝ)}
-    {b : (Fin D → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin D → ℝ) → ℝ}
-    {q : Fin M → Fin nR → (Fin D → ℝ) → ℝ} {V : Set (Fin D → ℝ)},
-    IsOpen V → (0 : Fin D → ℝ) ∈ V → StepInv F g b resid q V → 2 ≤ nR → 0 < D →
-    ∀ spec : EdgeSpec D, 2 ≤ spec.center.card →
-    ∃ (p_merge p_split : Fin D),
-      p_merge ∈ spec.center ∧ p_split ∈ spec.center ∧ p_merge ≠ p_split ∧
-        BlockChild F g b V spec p_merge ∧ BlockChild F g b V spec p_split
-
-/-- **L3 — a case-2 step preserves the interior `StepInv` (the CLEAN regime, width ≤ 2).** The
-residual telescopes; divisibility (+ vanishing) carried by the block-center witness law. NO Bézout
-(false interior — pnp-case1). -/
-@[blueprint]
-theorem case2_preserves_stepInv : Case2Preservation := by
-  -- map: B-L3-case2-preserves-stepInv (telescoping divisibility; b'=u_p^δ·(b∘σ), block-center σ)
-  sorry
-
-/-- **L4 — a case-1 (coupled corank ≥ 2) step preserves the interior `StepInv`. ⟨THE WALL⟩** The
-frontier this expedition must build (charter §1.B — the coupled `diag(b)` recursion). Produces the
-1(1) merge + 1(2) split children at distinct pivots of one center. The wall is the coupled
-DIVISIBILITY at corank ≥ 2 (the residual entries share divisors; proving the coupled block-center
-blow-up ∘ shear keeps `⟨entries⟩ ⊆ ⟨b'⟩` with the exact `u_p^δ` factor). The pnp-case1 certificate
-refines THIS PROOF, not this statement. -/
-@[blueprint]
-theorem case1_preserves_stepInv : Case1Preservation := by
-  -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled corank≥2 block-center divisibility⟩
-  sorry
 
 /-! ## `terminal_bezout` — principality is BORN at the terminal node -/
 
