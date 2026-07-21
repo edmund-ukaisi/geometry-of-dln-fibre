@@ -7955,3 +7955,18 @@ boundary-only-verification class is the one most likely to fire on L3/L4/L5 ⟹ 
 interior-state (mid-recursion, non-terminal, coupled) instance. Hygiene re-sequenced (Monotone-d
 post-wave-open elder-gated; MonomialBox/O7a idle-fill; O5 docstrings tail). Charter §1.A/§1.C staleness
 queued to the elder. Navigator pass #12 mandatory at the (C)→wave transition.
+
+## 2026-07-21: rev-d12 PASS + AN OWNED CORRECTION — d=(1,2) is the REGULAR case, not singular
+The rung-(B) statements are faithful (all four dispatch questions VERIFIED: exact body-instantiation;
+the genuine ℝ-valued rlctAt, not a codim mislabel — the CITE-FREE geometric direction; the conjugation
+transport sound; the seam non-vacuous with real witnesses). F1 (CONTROLLER OWNS THIS): I relayed rung
+(B) as "the first genuinely singular instance" — WRONG. d=(1,2) is the REGULAR case: K = a²+b² is a
+nondegenerate quadratic, rlct = 1 = flatDim/2 is exactly the regular value; DLN singularities start at
+N ≥ 2. The instance's true value: the first END-TO-END RUN of the machinery (record → seam → adapter →
+engine value) and the smallest instance exercising the origin blow-up. Docstrings + map node corrected;
+this journal entry is the prominent correction of my own relay. F2 applied (the minAdm=2 decide example
+surfaces the numeral; rlct = 1 readable next to the claim). The reviewer's un-runnable sensor (the
+axiom cone) is COVERED BY THE BATCH: two_mul_rlctAt_coreGen_d12 is IN the 341-root
+#assert_banked_clean_batch and the batch passed green — UNACCOUNTED = ∅ IS the kernel check (clean-three,
+no ClearableReify leak). The first-SINGULAR-instance milestone remains OPEN — it arrives with the general
+construction (or an N=2 instance rung if the wave wants one; noted for the navigator's wave planning).

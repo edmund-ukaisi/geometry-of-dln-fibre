@@ -5,7 +5,7 @@ import DLNFibre.DLN.Aoyagi.LearningCoefficient
 # `DLN.Aoyagi.GeometricAtlasD12` — rung (B): the geometric obligation for `d = (1,2)`
 
 The FIRST genuine end-to-end discharge of the geometric obligation
-`∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res` on a real singular DLN instance —
+`∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res` on the smallest instance non-trivially exercising the origin blow-up (flatDim ≥ 2); NOTE it is the REGULAR case (rev-d12 F1) —
 `d = ![1,2]`, `N = 1`. Here `mult` is the single 2×1 layer, and (via the linear flatten `e`) the
 flattened core family `coreGen ![1,2] e` is the coordinate family `coordFam (flatDim ![1,2])`
 precomposed with a linear coordinate change `Φ`. So the universal origin blow-up
@@ -13,7 +13,7 @@ precomposed with a linear coordinate change `Φ`. So the universal origin blow-u
 `Resolution (coreGen ![1,2] e) 0`; and its charts' exponents (`jac a + 1 = flatDim - 1 + 1 = 2 =
 minAdm ![1,2]`) realise the built tree's terminal spectrum.
 
-This proves the BODY of `exists_coreResolution`'s `sorry` at the first genuinely singular instance
+This proves the BODY of `exists_coreResolution`'s `sorry` at the first end-to-end instance (the REGULAR case — rev-d12 F1)
 (`d = ![1,2]`); it does NOT remove the `∀ d` library sorry. It also derives the first fully-proven
 DLN learning-coefficient instance through the engine: `2·rlctAt (∑ coreGenᵢ²) 0 = cCodim ![1,2] 0`.
 
@@ -239,7 +239,7 @@ zero-product core `∑ (coreGen ![1,2] e)ᵢ²` admits a certified resolution at
 blow-up of `ℝ^flatDim`, conjugated by the linear coordinate change `Φ` that turns the coordinate
 family into `coreGen ![1,2] e`) whose binding-axis exponents realise the built tree's terminal
 spectrum (`jac a + 1 = flatDim - 1 + 1 = 2 = minAdm ![1,2]`). This discharges the BODY of
-`exists_coreResolution`'s `sorry` at the first genuinely singular DLN instance. -/
+`exists_coreResolution`'s `sorry` at the first end-to-end run of the machinery (rev-d12 F1: d=(1,2) is the REGULAR case — K is a nondegenerate quadratic, rlct = flatDim/2; DLN singularities start at N ≥ 2). -/
 theorem exists_atlasRealizesExponents_d12
     (e : (Fin (flatDim ![1, 2]) → ℝ) ≃ₜ Tuple (k := ℝ) ![1, 2]) (he_lin : IsLinearMap ℝ ⇑e) :
     ∃ res : Resolution (coreGen ![1, 2] e) 0, AtlasRealizesExponents ![1, 2] res := by
@@ -300,3 +300,7 @@ theorem two_mul_rlctAt_coreGen_d12
   exact res.two_mul_rlctAt_eq_cCodim ![1, 2] hd h hne hlb hattain
 
 end DLNFibre.DLN.Aoyagi
+
+/-- The value surfaced (rev-d12 F2, "values live next to claims"): the codimension at `![1,2]` is `2`,
+so the headline reads `2·rlct = 2`, i.e. `rlct = 1` — the REGULAR value (`flatDim/2`). -/
+example : minAdm ![1, 2] = 2 := by decide
