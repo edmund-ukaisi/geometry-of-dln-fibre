@@ -1,4 +1,5 @@
 import DLNFibre.Core.Aoyagi.PrincipalInv
+import DLNFibre.Core.Aoyagi.PathAtoms
 import DLNFibre.Core.Aoyagi.ConjResolution
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
 
@@ -154,70 +155,229 @@ def FoldProduced {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
       atlas.jac c a = ((atlas.steps c).map (fun s => s.jexp a)).sum) ∧
     (∀ c, (bindingAxes (atlas.bexp c)).card = (leafOf c).numDiv)
 
-/-! ## L3 / L4 — the EDGE-INDEXED one-step preservations (DLN-side; elder ruling)
+/-! ## The foldState monument spine (round-5 RESHAPE; elder-locked) — `TreePath` + the coupled fold
 
-The free-standing `∀-(state, spec)` form is not honest (`Core.PrincipalInv` closing principle):
-Case-2's is KERNEL-REFUTED (`thread-36/elder_refute.lean`, `¬ Case2Preservation` sorry-free); Case-1's
-is UNRESOLVED (shear-rescued, `case1_rescue.lean`) — BOTH edge-indexed for CONSTRUCTIBILITY +
-provenance-honesty, not because Case-1 is known false. Each leaf quantifies over a `buildTree` edge;
-`δ = spec.δ = [J=0]` is read off the edge's `cleared` count (`conOracle`/`ConState`; UNIFORM across
-sub-cases — thread-37 traversal-verified on (3,3,4), 26 edges). The state carries the `SupportedOn`
-provenance link (`Core`: center covers the residual's support). Child block-`center`s are DETERMINED
-(no leaf freedom): case-2 keeps `spec.center`; case-1 reduces to `spec.center.erase p` per pivot —
-seat-L4's residual pin, which makes the residual-collapse witness type-illegal for a coupled block.
+**The foldState recursion MERGES the two honest shapes** (`Core.PrincipalInv` closing principle, roads
+(a)+(b)): a `TreePath` is a root→node path of `buildTree d (conOracle d) conRoot`, and the resolved
+state at that node — the accumulated coordinate change `foldG`, the dominant monomial `foldB`, the
+residual family `foldResid`, and the certificate region `foldRegion` — is READ OFF the path BY
+DEFINITION (structural recursion), NOT quantified as a free `(state, spec)`. Provenance is therefore
+DEFINITIONAL: the four dead refutations the free-standing `∀-(state, spec)` form admitted — the
+constant family (S3), the kernel-refuted Σw² Case-2 spectator-support witness, the `|S|=1`/`sh=id`
+lazy witness, and the `SupportedOn`-severance — ALL die BY DEFINITION, because there is no free state
+or residual to adversarially instantiate: the fold's own accumulated data is the only state, and the
+residual is `foldResid p`, pinned. The one-step preservation leaves become `FoldStepInv d e p →
+FoldStepInv d e (p.extend ed)`, indexed by the path (road (b)) whose data IS the fold (road (a)).
 
-The **Case-2 profile head is the RUNNING-MIN** (`runMinWidth`), a documented CORRECT deviation from the
-paper's printed p.20 raw-width head-reset (compass T-E; keeps `MvalCoh` UNCONDITIONAL — thread-37 cert);
-inherited via `conOracle`, do not "fix" back toward the paper. The **p.19 transpose boundary** (rollover
-at `J = M(S+1)`, the residual collapses to a transposed row/col) is a ROLLOVER edge: `localSub = id`, no
-blow-up — the residual re-binds, a documented degenerate carried by the child `resid'` (R4), NOT a
-blow-up step; it is off the `case2`/`case11`/`case12` filters of these two leaves by construction. -/
+The per-edge shear `σ = sh ∘ blockBlowupMap S p` (elder S1) is carried as the `shearφ` field of a
+`TreeEdge` (the Q/Schur Let-block φ); its Jacobian-exactly-1 property (`hshear`, shear-pin thread 33)
+and origin-fixing (`hshear0`) travel with the edge. `edgeδ = [J=0]` is read OFF the state
+(`conState.cleared`), UNIFORM across sub-cases (S2), never the edge kind.
 
-/-- **L3 (edge-indexed) — a case-2 edge of the built tree preserves `StepInv`** into the SAME block
-`spec.center` (append regime). `δ` read off the edge; `SupportedOn` links the center to the residual
-support (the elder's kernel-refuted free-standing Σw² witness fails this). CLEAN regime. -/
-def Case2Preservation (d : Fin (N + 1) → ℕ) : Prop :=
-  ∀ ne ∈ ResolutionTree.stepEdges (buildTree d (conOracle d) (conRoot : ConState N)),
-    ne.2.case = StepCase.case2 →
-    ∀ {Dd Mgen : ℕ} {F : Fin Mgen → (Fin Dd → ℝ) → ℝ} {g : (Fin Dd → ℝ) → (Fin Dd → ℝ)}
-      {b : (Fin Dd → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin Dd → ℝ) → ℝ}
-      {q : Fin Mgen → Fin nR → (Fin Dd → ℝ) → ℝ} {V : Set (Fin Dd → ℝ)}
-      (spec : EdgeSpec Dd) (p : Fin Dd),
-      spec.δ = decide (ne.1.cleared = 0) → p ∈ spec.center → spec.center.Nonempty →
-      IsOpen V → (0 : Fin Dd → ℝ) ∈ V → StepInv F g b resid q V → 0 < Dd →
-      SupportedOn resid spec.center V →
-      BlockChild F g b V spec p spec.center
+**IMPLEMENTATION NOTES (total, proof-free DATA defs; flagged for the fidelity review):**
+* `TreePath.step`/`extend` carry `shearφ` as a 6th field (beyond the locked 5): the fold's
+  `stepMap d ed` provably needs the shear to survive `extend` — else `foldG (p.extend ed) = foldG p ∘
+  stepMap d ed` is FALSE for a non-identity shear — so the shear is stored on the path, not only the
+  edge. `TreePath.step` stores only the DATA `shearφ`, not the `hshear`/`hshear0` proofs (the path is
+  proof-free; the leaves receive the proofs via `ed : TreeEdge d p`).
+* `foldNR` child counts are STAND-INS: case-2 APPENDS one (`+1`, via `Fin.snoc`); case-1/rollover keep
+  the parent count (the exact clear = `center.card` refinement is deferred). `foldResid`'s case-2
+  appended entry is the coordinate `u ↦ u_pivot` (a total stand-in for the Schur/clear closed form —
+  NEVER a division / exactness choice, per the design guard); the carried entries are the pullback
+  `foldResid p ∘ stepMap`.
+* `edgeChartDom = Set.univ`, so `foldRegion ≡ Set.univ` (open, ∋ 0 — provable WITHOUT shear continuity,
+  which is not a stored field); the terminal region-shrink (D2') is deferred to L5 / `terminal_bezout`.
+* `terminal_bezout` stays the untouched Core theorem (`Core.Aoyagi.terminal_bezout : TerminalBezout`);
+  re-anchoring it to the foldState was not needed — L5 consumes it directly. -/
 
-/-- **L4 (edge-indexed) — a case-1 edge of the built tree preserves `StepInv`. ⟨THE WALL⟩** ONE center,
-TWO distinct pivots (`p_merge` at the existing exceptional, `p_split` at a `d`-entry — elder B), each
-reducing to `spec.center.erase p`. The wall is the coupled DIVISIBILITY at corank ≥ 2 (`2 ≤ card`) with
-the exact `u_p^δ` factor; seat-L4's `BlockDivision` core (exact division; the `2u₀u₂` shear-rescue)
-supplies the proof. `SupportedOn` + the edge-`δ` + the DETERMINED child centers close the linkage the
-free-standing form severed. -/
-def Case1Preservation (d : Fin (N + 1) → ℕ) : Prop :=
-  ∀ ne ∈ ResolutionTree.stepEdges (buildTree d (conOracle d) (conRoot : ConState N)),
-    (ne.2.case = StepCase.case11 ∨ ne.2.case = StepCase.case12) →
-    ∀ {Dd Mgen : ℕ} {F : Fin Mgen → (Fin Dd → ℝ) → ℝ} {g : (Fin Dd → ℝ) → (Fin Dd → ℝ)}
-      {b : (Fin Dd → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin Dd → ℝ) → ℝ}
-      {q : Fin Mgen → Fin nR → (Fin Dd → ℝ) → ℝ} {V : Set (Fin Dd → ℝ)}
-      (spec : EdgeSpec Dd),
-      spec.δ = decide (ne.1.cleared = 0) → 2 ≤ spec.center.card → 2 ≤ nR →
-      IsOpen V → (0 : Fin Dd → ℝ) ∈ V → StepInv F g b resid q V → 0 < Dd →
-      SupportedOn resid spec.center V →
-      ∃ (p_merge p_split : Fin Dd),
-        p_merge ∈ spec.center ∧ p_split ∈ spec.center ∧ p_merge ≠ p_split ∧
-          BlockChild F g b V spec p_merge (spec.center.erase p_merge) ∧
-          BlockChild F g b V spec p_split (spec.center.erase p_split)
+/-- A root→node path of `buildTree d (conOracle d) (conRoot : ConState N)`: `root` at the top; a
+`step` carrying one edge's data (`center`, `pivot`, `case`, the child `nextState`, and the unipotent
+shear displacement `shearφ`). -/
+inductive TreePath (d : Fin (N + 1) → ℕ) : Type where
+  | root : TreePath d
+  | step (p : TreePath d) (center : Finset (Fin (flatDim d))) (pivot : Fin (flatDim d))
+      (case : StepCase) (nextState : ConState N)
+      (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) : TreePath d
 
-/-- **L3 — case-2 preserves `StepInv` (edge-indexed).** -/
+/-- The construction state at a path node (`root ↦ conRoot`; a step ↦ its recorded `nextState`). -/
+def TreePath.conState {d : Fin (N + 1) → ℕ} : TreePath d → ConState N
+  | .root => conRoot
+  | .step _ _ _ _ s _ => s
+
+/-- An outgoing edge at a path node `p`: the blow-up `center`/`pivot` (`pivot ∈ center`), the step
+`case`, the child `nextState`, and the unipotent shear `shearφ` of the Q/Schur closed form —
+Jacobian-exactly-1 (`hshear`) and origin-fixing (`hshear0`), the shear-pin certificate carried as
+edge data (elder S1). -/
+structure TreeEdge (d : Fin (N + 1) → ℕ) (p : TreePath d) where
+  /-- The blow-up center `S ⊆ Fin (flatDim d)`. -/
+  center : Finset (Fin (flatDim d))
+  /-- The blow-up pivot (the exceptional axis). -/
+  pivot : Fin (flatDim d)
+  /-- The pivot lies in the center. -/
+  hpivot : pivot ∈ center
+  /-- Which branch of the `(S,J)` step this edge realises. -/
+  case : StepCase
+  /-- The child construction state. -/
+  nextState : ConState N
+  /-- The unipotent shear displacement (the Q/Schur Let-block φ). -/
+  shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)
+  /-- The shear is Jacobian-exactly-1 (shear-pin, thread 33). -/
+  hshear : ∀ u, jacDet (blockShear shearφ) u = 1
+  /-- The shear displacement fixes the origin. -/
+  hshear0 : shearφ 0 = 0
+
+/-- The edge realises a case-2 (full-block append) step. -/
+def TreeEdge.isCase2 {d : Fin (N + 1) → ℕ} {p : TreePath d} (ed : TreeEdge d p) : Prop :=
+  ed.case = StepCase.case2
+
+/-- The edge realises a case-1 (`11` merge or `12` split) step. -/
+def TreeEdge.isCase1 {d : Fin (N + 1) → ℕ} {p : TreePath d} (ed : TreeEdge d p) : Prop :=
+  ed.case = StepCase.case11 ∨ ed.case = StepCase.case12
+
+/-- The edge realises a rollover (layer-advance) step. -/
+def TreeEdge.isRollover {d : Fin (N + 1) → ℕ} {p : TreePath d} (ed : TreeEdge d p) : Prop :=
+  ed.case = StepCase.rollover
+
+/-- Extend a path by one edge. Keeps `shearφ` (see the section note); drops the edge proof fields. -/
+def TreePath.extend {d : Fin (N + 1) → ℕ} (p : TreePath d) (ed : TreeEdge d p) : TreePath d :=
+  TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ
+
+/-- `δ = [J = 0]` — read OFF the node state's cleared count (never the edge kind). -/
+def edgeδ (d : Fin (N + 1) → ℕ) (p : TreePath d) : Bool := decide (p.conState.cleared = 0)
+
+/-- The step shear `sh = blockShear φ` (unipotent, Jacobian-exactly-1). -/
+def edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
+  blockShear ed.shearφ
+
+/-- The step map on stored edge data: `blockShear φ ∘ blockBlowupMap center pivot` (the fold uses this
+form so the defining equations hold on the raw `TreePath.step` fields). -/
+def stepMapRaw (d : Fin (N + 1) → ℕ) (center : Finset (Fin (flatDim d))) (pivot : Fin (flatDim d))
+    (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) :
+    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
+  blockShear shearφ ∘ blockBlowupMap center pivot
+
+/-- One step's coordinate change: shear ∘ block-center blow-up. -/
+def stepMap (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
+  edgeShear d ed ∘ blockBlowupMap ed.center ed.pivot
+
+/-- **Def-lemma** — `jacDet (edgeShear d ed) u = 1` (the shear-pin, immediate from `hshear`). -/
+theorem jacDet_edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
+    (u : Fin (flatDim d) → ℝ) : jacDet (edgeShear d ed) u = 1 := ed.hshear u
+
+/-- **Def-lemma** — `stepMap d ed 0 = 0` (the step map fixes the origin). -/
+theorem stepMap_zero (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    stepMap d ed 0 = 0 := by
+  change edgeShear d ed (blockBlowupMap ed.center ed.pivot 0) = 0
+  rw [blockBlowupMap_zero]
+  exact blockShear_zero ed.shearφ ed.hshear0
+
+/-- The accumulated coordinate change along a path (`root ↦ id`; `p.extend ed ↦ foldG p ∘ stepMap`). -/
+def foldG (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    TreePath d → ((Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ))
+  | .root => id
+  | .step p center pivot _ _ shearφ => foldG d e p ∘ stepMapRaw d center pivot shearφ
+
+/-- The accumulated dominant monomial along a path (`root ↦ 1`; step ↦ `u_pivot^δ ·` the pullback). -/
+def foldB (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    TreePath d → ((Fin (flatDim d) → ℝ) → ℝ)
+  | .root => fun _ => 1
+  | .step p center pivot _ _ shearφ => fun u =>
+      (u pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMapRaw d center pivot shearφ u)
+
+/-- The residual family length along a path (`root ↦ d_N·d_0`; case-2 appends one; else unchanged). -/
+def foldNR (d : Fin (N + 1) → ℕ) : TreePath d → ℕ
+  | .root => d (Fin.last N) * d 0
+  | .step p _ _ StepCase.case2 _ _ => foldNR d p + 1
+  | .step p _ _ StepCase.case11 _ _ => foldNR d p
+  | .step p _ _ StepCase.case12 _ _ => foldNR d p
+  | .step p _ _ StepCase.rollover _ _ => foldNR d p
+
+/-- The residual family along a path (`root ↦ coreGen d e`; case-2 appends the coordinate `u_pivot`;
+else the pullback `foldResid p ∘ stepMap` — the Schur/clear closed form is a total stand-in here, never
+a division/exactness choice: that belongs to the `∃q` of `FoldStepInv`, not this DATA def). -/
+noncomputable def foldResid (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    (p : TreePath d) → (Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ)
+  | .root => coreGen d e
+  | .step p center pivot StepCase.case2 _ shearφ =>
+      Fin.snoc (fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u))
+        (fun u => u pivot)
+  | .step p center pivot StepCase.case11 _ shearφ =>
+      fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u)
+  | .step p center pivot StepCase.case12 _ shearφ =>
+      fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u)
+  | .step p center pivot StepCase.rollover _ shearφ =>
+      fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u)
+
+/-- A total open certificate domain per edge (`Set.univ` stand-in — the D2' shrink is deferred). -/
+def edgeChartDom (d : Fin (N + 1) → ℕ) {p : TreePath d} (_ed : TreeEdge d p) :
+    Set (Fin (flatDim d) → ℝ) := Set.univ
+
+/-- The accumulated certificate region along a path (`root ↦ univ`; step ↦ pullback ∩ chart dom). -/
+def foldRegion (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    TreePath d → Set (Fin (flatDim d) → ℝ)
+  | .root => Set.univ
+  | .step p center pivot _ _ shearφ =>
+      stepMapRaw d center pivot shearφ ⁻¹' foldRegion d e p ∩ Set.univ
+
+/-- `foldRegion ≡ Set.univ` (the `edgeChartDom = univ` stand-in). -/
+theorem foldRegion_eq_univ {d : Fin (N + 1) → ℕ} (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    ∀ p : TreePath d, foldRegion d e p = Set.univ
+  | .root => rfl
+  | .step p center pivot _ _ shearφ => by
+      change stepMapRaw d center pivot shearφ ⁻¹' foldRegion d e p ∩ Set.univ = Set.univ
+      rw [foldRegion_eq_univ e p, Set.preimage_univ, Set.inter_univ]
+
+/-- `foldRegion` is open. -/
+theorem isOpen_foldRegion (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) : IsOpen (foldRegion d e p) := by
+  rw [foldRegion_eq_univ]; exact isOpen_univ
+
+/-- `foldRegion` contains the origin. -/
+theorem zero_mem_foldRegion (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) : (0 : Fin (flatDim d) → ℝ) ∈ foldRegion d e p := by
+  rw [foldRegion_eq_univ]; exact Set.mem_univ _
+
+/-- **The foldState step invariant at a path node** (the merged-roads form): a divisibility witness
+`q` for the accumulated `StepInv (coreGen) (foldG p) (foldB p) (foldResid p) q (foldRegion p)`. The
+state IS the fold's own accumulated data — no free state/residual to instantiate. -/
+def FoldStepInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) : Prop :=
+  ∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
+    StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)
+
+/-! ## L3 / L4 — the foldState one-step preservations (DLN-side; elder-locked round-5)
+
+The free-standing `∀-(state, spec)` form was not honest (`Core.PrincipalInv` closing principle) — its
+four refutations (constant, Σw², `|S|=1`, `SupportedOn`-gap) all die BY DEFINITION in the foldState
+form (there is no free state or residual to instantiate; the state IS `foldG`/`foldB`/`foldResid p`).
+Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the path node
+and one outgoing edge. `δ = [J=0]` is read off `p.conState.cleared` (`edgeδ`, UNIFORM across sub-cases).
+Rollover is off the `isCase2`/`isCase1` filters by construction (a ledger relabel, `localSub = id`). -/
+
+/-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). -/
 @[blueprint]
-theorem case2_preserves_stepInv (d : Fin (N + 1) → ℕ) : Case2Preservation d := by
-  -- map: B-L3-case2-preserves-stepInv (edge-indexed; block-center append, δ=[J=0], SupportedOn link)
+theorem case2_preserves_stepInv
+    {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e)
+    (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
+    (hinv : FoldStepInv d e p) :
+    FoldStepInv d e (p.extend ed) := by
+  -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state)
   sorry
 
-/-- **L4 — case-1 preserves `StepInv` (edge-indexed). ⟨THE WALL⟩** -/
+/-- **L4 — a case-1 edge preserves the foldState invariant. ⟨THE WALL⟩** The coupled block-center
+divisibility at corank ≥ 2 with the exact `u_p^δ` factor; seat-L4's `BlockDivision` core (exact
+division; the `2u₀u₂` shear-rescue) supplies the proof. ONE center, the merge/split pivots handled
+inside the fold — no free `∀`-branch, no `p_merge`/`p_split` in the statement. -/
 @[blueprint]
-theorem case1_preserves_stepInv (d : Fin (N + 1) → ℕ) : Case1Preservation d := by
+theorem case1_preserves_stepInv
+    {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e)
+    (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
+    (hinv : FoldStepInv d e p) :
+    FoldStepInv d e (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
   sorry
 
@@ -259,13 +419,17 @@ sits inside the FINAL shrunken region, never a pre-shrink one. The `srcBox`-seam
 @[blueprint]
 theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0)
-    (he_lin : IsLinearMap ℝ ⇑e)
-    (hcase2 : Case2Preservation d) (hcase1 : Case1Preservation d) (hterm : TerminalBezout) :
+    (he_lin : IsLinearMap ℝ ⇑e) :
     ∃ atlas : GeoAtlasData d e, FoldProduced d e atlas ∧
       ∀ c : Fin atlas.n, ∃ q r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ,
         PrincipalInv (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r (atlas.region c) := by
-  -- map: B-L5-path-fold (fold StepInv via L3/L4 along tree branches; terminal_bezout at each leaf;
-  --      emits the FoldProduced provenance record of the construction)
+  -- map: B-L5-path-fold (fold FoldStepInv via the foldState leaves along tree branches;
+  --      terminal_bezout at each leaf; emits the FoldProduced provenance record of the construction)
+  -- Reference the foldState one-step leaves + terminal_bezout: the fold consumes these, so they sit
+  -- on the monument cone (records them for #audit_blueprint even while the fold body is sorried).
+  have _hc2 := case2_preserves_stepInv (d := d)
+  have _hc1 := case1_preserves_stepInv (d := d)
+  have _hterm : TerminalBezout := terminal_bezout
   sorry
 
 /-! ## L6 — the chart geometry: assemble a certified `Chart` from a branch -/
@@ -357,7 +521,6 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d
     ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res := by
   -- L5: the geometric atlas + its FoldProduced provenance + per-chart terminal PrincipalInv.
   obtain ⟨atlas, hfold, hprin⟩ := leaf_stepInv_of_path d hd hN hpos e he0 he_lin
-    (case2_preserves_stepInv d) (case1_preserves_stepInv d) terminal_bezout
   -- Per chart: L1 (ideal) then L6 (assemble the certified Chart), matching the atlas's data.
   have hchart : ∀ c : Fin atlas.n, ∃ chart : Chart (coreGen d e) 0,
       chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
