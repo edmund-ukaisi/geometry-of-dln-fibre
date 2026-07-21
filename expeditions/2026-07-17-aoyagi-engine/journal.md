@@ -7750,3 +7750,11 @@ terminal exponents → sorry-free hlb∧hattain via the three salvage theorems +
 bridge); C1 pre-verified (build log: zero Geo*/ChartBridge*/Canonical in the closure; ClearableReify
 transitive-import flagged — fossil off all salvage cones, controller re-audit at integration); C2
 anchors = the two defect-witness decide-checks vs the decorrelated battery.
+
+## 2026-07-21: OPERATOR DECISION — hcover = BUILD (cite off the table)
+The pre-noted build-vs-cite decision point is CLOSED by the operator, explicitly: prove the cover for the
+SPECIFIC explicit DLN atlas (max-pivot-sector partition over the concrete recursion charts, certificate
+residual (I)). A Hironaka-properness cite is REMOVED as an option — if the assembly walls, the move is a
+different decomposition or surfacing the obstruction, never an axiom. Relayed to mon-rec (the cover
+conjunct is a build-target with no escape hatch; staged accordingly). The endpoint stands at full
+strength: aoyagi_learning_coefficient with NO new cite of any kind.
