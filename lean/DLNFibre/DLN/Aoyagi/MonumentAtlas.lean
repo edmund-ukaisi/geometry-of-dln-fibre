@@ -126,12 +126,17 @@ L8). `FoldProduced` RECORDS what L5's fold constructs — DEFINITIONAL bookkeepi
   axis (feeds L8 clause (ii));
 * `hdom_ball` — each source domain contains a nontrivial ball (kills the `dom = {0}` degeneracy; weaker
   than fixing a radius, so D2'-compatible with the terminal region-shrink);
-* `hbranch_len` — the branch's step-count is `leafOf c`'s divisor count (ties `gmap c`'s block-center
-  blow-ups to the real tree branch's depth, so the max-pivot cover routing (L7) has its handle and the
-  all-one-step degeneracy is excluded). The finer pivot↔`divCoord` tie is deferred: `LeafData.divCoord`
-  lives in the Engine's `RLCT.flatDim` (= `Fintype.card (FlatIdx d)`) while the atlas is over the
-  `Aoyagi.flatDim` (= `∑ dᵢ₊₁·dᵢ`) — reconciling the two is a separate coordinate bridge (the landed
-  `AtlasRealizesExponents` seam likewise stays at the ℕ-valued `divExp`, never `divCoord`). -/
+* **σ-PROVENANCE (rev-leaves round-3 B; elder-ratified):** `hstep_block` — every step IS a genuine
+  block-center blow-up (`pivot ∈ center`, `jexp = (|center|−1)` at the pivot, `0` off it), and
+  `hjac_tie` — `atlas.jac` is the ACCUMULATED step-ledger `∑ steps s.jexp`, NOT a free field. Together
+  they kill the wrong-pivot / hand-set-`jac` atlas (Lean-confirmed to miss whole directions) that the
+  count-only provenance admitted: `jac` can no longer be dialled to match a leaf it does not geometrically
+  realise. Aoyagi-side (no `RLCT.flatDim`↔`Aoyagi.flatDim` card↔sum bridge — that stays next-expedition
+  runway; the landed `AtlasRealizesExponents` seam likewise stays at ℕ-valued `divExp`, never `divCoord`).
+* `hcard_tie` — `(bindingAxes bexp).card = leafOf.numDiv` (elder ii; ℕ-valued, merge/rollover-immune,
+  replacing the UNSATISFIABLE `steps.length = numDiv` — a Case-1(1) merge is a genuine block blow-up that
+  births NO divisor, so a branch's step-count exceeds its `t̃=0` divisor count). With `hjac_mem`/`hjac_onto`
+  it does the anti-degeneracy work for L8. -/
 def FoldProduced {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (atlas : GeoAtlasData d e) : Prop :=
   ∃ leafOf : Fin atlas.n → LeafData d,
@@ -143,7 +148,78 @@ def FoldProduced {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
     (∀ (c : Fin atlas.n) (k : Fin (leafOf c).numDiv),
       ∃ a : Fin (flatDim d), a ∈ bindingAxes (atlas.bexp c) ∧ atlas.jac c a + 1 = (leafOf c).divExp k) ∧
     (∀ c, ∃ R : ℝ, 0 < R ∧ Metric.closedBall (0 : Fin (flatDim d) → ℝ) R ⊆ atlas.dom c) ∧
-    (∀ c, (atlas.steps c).length = (leafOf c).numDiv)
+    (∀ (c : Fin atlas.n) (s : GeoStep (flatDim d)), s ∈ atlas.steps c →
+      s.pivot ∈ s.center ∧ ∀ a, s.jexp a = if a = s.pivot then s.center.card - 1 else 0) ∧
+    (∀ (c : Fin atlas.n) (a : Fin (flatDim d)),
+      atlas.jac c a = ((atlas.steps c).map (fun s => s.jexp a)).sum) ∧
+    (∀ c, (bindingAxes (atlas.bexp c)).card = (leafOf c).numDiv)
+
+/-! ## L3 / L4 — the EDGE-INDEXED one-step preservations (DLN-side; elder ruling)
+
+The free-standing `∀-(state, spec)` form is not honest (`Core.PrincipalInv` closing principle):
+Case-2's is KERNEL-REFUTED (`thread-36/elder_refute.lean`, `¬ Case2Preservation` sorry-free); Case-1's
+is UNRESOLVED (shear-rescued, `case1_rescue.lean`) — BOTH edge-indexed for CONSTRUCTIBILITY +
+provenance-honesty, not because Case-1 is known false. Each leaf quantifies over a `buildTree` edge;
+`δ = spec.δ = [J=0]` is read off the edge's `cleared` count (`conOracle`/`ConState`; UNIFORM across
+sub-cases — thread-37 traversal-verified on (3,3,4), 26 edges). The state carries the `SupportedOn`
+provenance link (`Core`: center covers the residual's support). Child block-`center`s are DETERMINED
+(no leaf freedom): case-2 keeps `spec.center`; case-1 reduces to `spec.center.erase p` per pivot —
+seat-L4's residual pin, which makes the residual-collapse witness type-illegal for a coupled block.
+
+The **Case-2 profile head is the RUNNING-MIN** (`runMinWidth`), a documented CORRECT deviation from the
+paper's printed p.20 raw-width head-reset (compass T-E; keeps `MvalCoh` UNCONDITIONAL — thread-37 cert);
+inherited via `conOracle`, do not "fix" back toward the paper. The **p.19 transpose boundary** (rollover
+at `J = M(S+1)`, the residual collapses to a transposed row/col) is a ROLLOVER edge: `localSub = id`, no
+blow-up — the residual re-binds, a documented degenerate carried by the child `resid'` (R4), NOT a
+blow-up step; it is off the `case2`/`case11`/`case12` filters of these two leaves by construction. -/
+
+/-- **L3 (edge-indexed) — a case-2 edge of the built tree preserves `StepInv`** into the SAME block
+`spec.center` (append regime). `δ` read off the edge; `SupportedOn` links the center to the residual
+support (the elder's kernel-refuted free-standing Σw² witness fails this). CLEAN regime. -/
+def Case2Preservation (d : Fin (N + 1) → ℕ) : Prop :=
+  ∀ ne ∈ ResolutionTree.stepEdges (buildTree d (conOracle d) (conRoot : ConState N)),
+    ne.2.case = StepCase.case2 →
+    ∀ {Dd Mgen : ℕ} {F : Fin Mgen → (Fin Dd → ℝ) → ℝ} {g : (Fin Dd → ℝ) → (Fin Dd → ℝ)}
+      {b : (Fin Dd → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin Dd → ℝ) → ℝ}
+      {q : Fin Mgen → Fin nR → (Fin Dd → ℝ) → ℝ} {V : Set (Fin Dd → ℝ)}
+      (spec : EdgeSpec Dd) (p : Fin Dd),
+      spec.δ = decide (ne.1.cleared = 0) → p ∈ spec.center → spec.center.Nonempty →
+      IsOpen V → (0 : Fin Dd → ℝ) ∈ V → StepInv F g b resid q V → 0 < Dd →
+      SupportedOn resid spec.center V →
+      BlockChild F g b V spec p spec.center
+
+/-- **L4 (edge-indexed) — a case-1 edge of the built tree preserves `StepInv`. ⟨THE WALL⟩** ONE center,
+TWO distinct pivots (`p_merge` at the existing exceptional, `p_split` at a `d`-entry — elder B), each
+reducing to `spec.center.erase p`. The wall is the coupled DIVISIBILITY at corank ≥ 2 (`2 ≤ card`) with
+the exact `u_p^δ` factor; seat-L4's `BlockDivision` core (exact division; the `2u₀u₂` shear-rescue)
+supplies the proof. `SupportedOn` + the edge-`δ` + the DETERMINED child centers close the linkage the
+free-standing form severed. -/
+def Case1Preservation (d : Fin (N + 1) → ℕ) : Prop :=
+  ∀ ne ∈ ResolutionTree.stepEdges (buildTree d (conOracle d) (conRoot : ConState N)),
+    (ne.2.case = StepCase.case11 ∨ ne.2.case = StepCase.case12) →
+    ∀ {Dd Mgen : ℕ} {F : Fin Mgen → (Fin Dd → ℝ) → ℝ} {g : (Fin Dd → ℝ) → (Fin Dd → ℝ)}
+      {b : (Fin Dd → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin Dd → ℝ) → ℝ}
+      {q : Fin Mgen → Fin nR → (Fin Dd → ℝ) → ℝ} {V : Set (Fin Dd → ℝ)}
+      (spec : EdgeSpec Dd),
+      spec.δ = decide (ne.1.cleared = 0) → 2 ≤ spec.center.card → 2 ≤ nR →
+      IsOpen V → (0 : Fin Dd → ℝ) ∈ V → StepInv F g b resid q V → 0 < Dd →
+      SupportedOn resid spec.center V →
+      ∃ (p_merge p_split : Fin Dd),
+        p_merge ∈ spec.center ∧ p_split ∈ spec.center ∧ p_merge ≠ p_split ∧
+          BlockChild F g b V spec p_merge (spec.center.erase p_merge) ∧
+          BlockChild F g b V spec p_split (spec.center.erase p_split)
+
+/-- **L3 — case-2 preserves `StepInv` (edge-indexed).** -/
+@[blueprint]
+theorem case2_preserves_stepInv (d : Fin (N + 1) → ℕ) : Case2Preservation d := by
+  -- map: B-L3-case2-preserves-stepInv (edge-indexed; block-center append, δ=[J=0], SupportedOn link)
+  sorry
+
+/-- **L4 — case-1 preserves `StepInv` (edge-indexed). ⟨THE WALL⟩** -/
+@[blueprint]
+theorem case1_preserves_stepInv (d : Fin (N + 1) → ℕ) : Case1Preservation d := by
+  -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
+  sorry
 
 /-! ## L5 — the path fold: `StepInv` folded to per-chart terminal `PrincipalInv`
 
@@ -184,7 +260,7 @@ sits inside the FINAL shrunken region, never a pre-shrink one. The `srcBox`-seam
 theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0)
     (he_lin : IsLinearMap ℝ ⇑e)
-    (hcase2 : Case2Preservation) (hcase1 : Case1Preservation) (hterm : TerminalBezout) :
+    (hcase2 : Case2Preservation d) (hcase1 : Case1Preservation d) (hterm : TerminalBezout) :
     ∃ atlas : GeoAtlasData d e, FoldProduced d e atlas ∧
       ∀ c : Fin atlas.n, ∃ q r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ,
         PrincipalInv (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r (atlas.region c) := by
@@ -281,7 +357,7 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d
     ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res := by
   -- L5: the geometric atlas + its FoldProduced provenance + per-chart terminal PrincipalInv.
   obtain ⟨atlas, hfold, hprin⟩ := leaf_stepInv_of_path d hd hN hpos e he0 he_lin
-    case2_preserves_stepInv case1_preserves_stepInv terminal_bezout
+    (case2_preserves_stepInv d) (case1_preserves_stepInv d) terminal_bezout
   -- Per chart: L1 (ideal) then L6 (assemble the certified Chart), matching the atlas's data.
   have hchart : ∀ c : Fin atlas.n, ∃ chart : Chart (coreGen d e) 0,
       chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
