@@ -9974,3 +9974,20 @@ The fold's uniform story: enter (subsumption; root at N=1) → per-clear preserv
 terminal_bezout — every arrow named. arch-C implements the four-piece round (guards + LastLayerInv
 & preservation [elder pass first] + re-parented transport + the C′ pin). seat-E relayed the two
 render facts (the fence discharges via properness ~free; Tier-3 rides the banked DivChain).
+
+## 2026-07-22 (controller, heartbeat tick) — LastLayerInv draft in; the composition flag (transport: named leaf vs superseded) to the elder's pass
+
+Tick: placement + cron verified; all mail processed. arch-C's LastLayerInv STATEMENT DRAFT
+arrived (composed pre-extension-ruling — crossing; the re-parent is ruled and in its queue):
+the mixed invariant over the banked IgnoresCoords ((D)-divisibility ∧ per-slot center-linear OR
+unit-nonvanishing disjunction over Fin (foldNR)), lastLayer_clear_preserves guarded at
+parent.layer + 1 = N (ALL S=L edges incl. the rollover), FoldStepInvAt → LastLayerInv subsumption
+DEFINITIONAL at zero cleared slots (no bridge leaf), cone delta +1. Routed to the elder's
+per-field pass TOGETHER WITH arch-C's surviving composition flag, sharpened: at the rollover the
+fold's own data collapses the residual (foldNR → 1, resid → const 1 — the first stop-on-suspect's
+branch), so the open content at the M′=1 handoff is the PIVOT EXTRACTION — (a) the re-parented
+transport as its own named leaf (every arrow named; the consumer-fit example survives) vs (b) the
+preservation lemma's rollover branch + terminal_bezout directly (uniform, transport retired as
+true-but-dead). No wrong-theorem risk either way — only seat-L3T's assignment hangs on it. My
+weak preference (a) stated; the elder pins it in the pass; arch-C holds the render for the
+verdict.
