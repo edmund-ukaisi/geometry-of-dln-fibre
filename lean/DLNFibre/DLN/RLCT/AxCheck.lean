@@ -1374,10 +1374,13 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 #print axioms DLNFibre.DLN.Aoyagi.aoyagi_learning_coefficient_via_engine
 #print axioms DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_divisorMin
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
--- Rung (C) DRIVER (tracked-open): re-proves the full `exists_coreResolution` statement with its
+-- Rung (C) DRIVER (tracked-open): re-proves `exists_coreResolution`'s CONCLUSION with its
 -- `sorryAx` cone = EXACTLY the 8 monument leaves (L1/L3/L4/terminal_bezout/L5/L6/L7/L8,
--- `MonumentAtlas`/`PrincipalInv`) — never the Skeleton/ClearableReify sorries. The summit goes
--- clean-three the day the leaves land and this driver replaces the in-place sorry.
+-- `MonumentAtlas`/`PrincipalInv`) — never the Skeleton/ClearableReify sorries. ACCOUNTING
+-- (navigator #12): the driver carries TWO hypotheses the canonical statement does not
+-- (`StructuralChainResidual`, `PivotOrderingK0` — the elder-D3 named gaps), so the summit needs
+-- the 8 leaves PLUS the D3 discharges (StructuralChainResidual is elder-graded strike-able via the
+-- thread-31 closed form; PivotOrderingK0 follows) before this driver replaces the in-place sorry.
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution_via_monument
 
 -- Payoff DELIVERABLES — individual clean-three footprints preserved (also asserted in the

@@ -776,3 +776,24 @@ in StepInv is exactly what makes hideal_bwd feed, independently re-deriving the 
 check against the actual Lean. Strategy delta: leaf 1 is honestly TWO lemmas (fwd trivial-embed from
 divisibility; bwd = terminal_bezout × chain-division); the b_{k₀}-vs-family seam goes in the L1 seat
 brief so a wave seat doesn't trip on it.
+
+## Entry 25 (2026-07-21, navigator #12 — controller-filed) — rung (C) reification: one tide that absorbed two pnp verdicts + D1–D4 mid-tide [event-driven]
+FORECAST (pre-tide): rung C = one arch-C reification tide (type + wire the 8-leaf skeleton toward the
+driver; gate = elaboration + cone + no landed statement changed).
+ACTUAL: HIT on the landing (merge clean; driver cone = exactly the 8 leaves; batch-341 + cordon green;
+gate passed — navigator verified against git), but the tide ABSORBED THREE mid-tide statement reshapes
+without a re-spin: the pnp-case1 split (per-step PrincipalInv is FALSE interior → StepInv
+divisibility-only + terminal_bezout), the pnp-cover confirm (L7 stronger-inclusion), and the elder
+D1–D4 shaping. arch-C stopped-on-suspect at the L3/L4/L5 leaf shapes and reshaped in place.
+WHAT IT CHANGES / LESSON: a reification tide's cost is dominated not by the TYPING but by the
+statement-CORRECTNESS reshapes it absorbs — and those were cheap HERE only because the pnp
+pre-adjudications ran FIRST (the split was known before arch-C reified). The interior-state mandate
+(navigator #11 ledger counsel: "boundary-only verification most likely to fire on L3/L4/L5") PAID
+EXACTLY — it caught the false per-step PrincipalInv before the skeleton reified it. True cost model
+forward: reification tide + N decorrelated pnp pre-adjudications = the reshape-safe reify; price a
+reify by how many statement-shapes are still UN-pre-adjudicated, not by binder count. Residual: the
+reify banked TWO under-adjudicated statement-shapes that pass #12 caught (terminal_bezout
+ContinuousAt-vs-ContinuousOn — controller re-confirmed vs the Lean text, PLUS a controller-found
+missing IsOpen V / 0 ∈ V pair in the same statement; the D3-gap driver-hypothesis accounting) — the
+reification gate should have included a hypothesis-suffices check per leaf (do each leaf's hypotheses
+discharge its conclusion?) and a driver-signature-vs-canonical diff.

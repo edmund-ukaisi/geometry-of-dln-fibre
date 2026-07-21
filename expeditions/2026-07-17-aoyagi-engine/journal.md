@@ -8034,3 +8034,32 @@ StepInvChild ∀_branch:Bool collapse; dropped nR'<nR progress measure). NAVIGAT
 pre-wave, event-trigger fired earlier) — COMMISSIONED this tick. Wave commissioning WAITS on both.
 (Process note, recorded live: the first journal-append of this entry silently no-op'd — heredoc ran
 from lean/ cwd; the commit landed without it. The queued-without-recording class, caught same-tick.)
+
+## 2026-07-21: NAVIGATOR PASS #12 (pre-wave, mandatory) — gate PASS; wave re-sequenced; 2 red flags
+GATE: PASS (navigator re-derived vs git: integration touched exactly 3 files; merge = pure addition;
+dedup = exactly the 4 decls; sorry census = exactly the 8 leaves; driver composes with no own sorry).
+HARD-PART: conditional pass — L4 gets its OWN dedicated seat (never bundled with L3; a shared seat is
+the dodge in disguise), strongest brief (statement-lock, stop-on-suspect, interior-state kill-set).
+WAVE COMPOSITION ADOPTED (disposition: accept all 7 numbered items): W0 build-once substrate (per-step
+geometric atoms + pathMap composition lemmas, @[blueprint] waypoints) PAIRED with L3 in one seat (M);
+W1 = L4 dedicated (L, highest variance); W2 CONCURRENT with W1 = L5 (L; takes preservations as
+hypotheses, buildable at T=0 — the prior sketch's parking of L5 in wave 3 was a FALSE SERIALIZATION)
++ L7 (M–L, cheaper than priced: the pnp-cover salvage is sorry-free kernel-checked); W3 fill = L6 (M,
+rides W0), L8+D3-discharge one combinatorial seat (M), terminal_bezout+L1 one seat (S–M). Peak ~4
+seats. Decorrelated pathwise-coherence hunt (the historically-MASKED srcBox class) SHADOWS L5/L7 from
+the start — gate on the hunt, not the builder's grid.
+RED FLAG #1 (ACCOUNTING): the driver carries hchainR/hpivot (the D3 gaps) which canonical
+exists_coreResolution does NOT — the summit = 8 leaves + StructuralChainResidual discharge (⟹
+PivotOrderingK0), NOT "8 leaves". Grep-confirmed undischargeable-nowhere. AxCheck comment corrected
+this tick; the discharge is FOLDED INTO the L8 combinatorial seat (same tree ledger).
+RED FLAG #2 (STATEMENT): terminal_bezout as reified is UNPROVABLE — hypothesis `ContinuousAt unit 0`
+cannot yield PrincipalInv's `ContinuousOn (r i) V'` (continuity at a point gives continuity on NO
+neighbourhood; the forced r i₀ = 1/unit breaks it; the elder's own D2 citation ContinuousAt.inv₀ is
+insufficient for the stated conclusion). CONTROLLER RE-CONFIRMED vs the Lean text AND found a second
+gap in the same statement: the conclusion `IsOpen V' ∧ 0 ∈ V' ∧ V' ⊆ V` is unreachable without
+`IsOpen V` / `0 ∈ V` hypotheses (both absent). FIX (batched): ContinuousOn unit V + IsOpen V + 0 ∈ V;
+docstring D2 → ContinuousOn.inv₀. HELD for one batch with rev-leaves' findings (mid-review on this
+exact file) → ONE statement-fix commit → ONE elder delta (D2 re-ratification) → rebuild → commission.
+L1 RE-POINTED: post-reification L1 = pure Fin-1 singleton repackaging (price S); the b_{k₀}-vs-family
+seam moved to L6's brief (M'=1 compression, definitional via monoOf). Ledger entry 25 filed
+(navigator text + controller addendum). WAVE REMAINS HELD on rev-leaves.
