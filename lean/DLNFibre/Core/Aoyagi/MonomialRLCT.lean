@@ -1070,7 +1070,9 @@ binding-axis `inf'` reindexes bijectively along `σ` (a binding axis `d'` of `ke
 `σ (σ.symm d')` of a binding axis of `kexp ∘ σ`, with the same ratio), so the two minima agree by
 `le_antisymm` of the two `inf'_le`/`le_inf'` bounds. The threshold companion to `conjResolution`'s
 chart-relabel transport (the register's M13): an outside user permuting `Fin D` coordinates now has
-the invariance for the Newton threshold itself, not only for the resolution charts. -/
+the invariance for the Newton threshold itself, not only for the resolution charts. It also
+pre-commutes the threshold for the non-monotone-`d` leaf-level transport (owed-register O4): the
+loss-side permutation transport needs the threshold side to already be relabel-invariant. -/
 theorem monomialThreshold_reindex {D : ℕ} (kexp h : Fin D → ℕ) (σ : Fin D ≃ Fin D)
     (hne : (bindingAxes kexp).Nonempty) (hne' : (bindingAxes (kexp ∘ σ)).Nonempty) :
     monomialThreshold (kexp ∘ σ) (h ∘ σ) hne' = monomialThreshold kexp h hne := by
