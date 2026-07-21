@@ -12,22 +12,19 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **BLUEPRINT-v3 → VERIFY-TO-EQUILIBRIUM → STRIKE (operator go 2026-07-21, operator AWAY).** The
-  operator delegated the blueprint sign-off to the verification process: build v3 (enriched spec = journal
-  tick 43x; architect, PUSH-on-commit), then cross-check from MULTIPLE angles, MULTIPLE times — (i) paper-
-  fidelity review vs worked.tex + page images, (ii) an independent Codex COUNTEREXAMPLE HUNT on every
-  frontier statement (the v2 killer: unconstrained CoV/Jacobian + axis-only C — hunt that class hardest),
-  (iii) elder ratification vs charter §0–§3, (iv) build green + kill-path cite-free + cordon green.
-  Iterate architect↔checks until NO load-bearing finding survives; only then OPEN THE STRIKE PHASE
-  (map/claims re-root on A–E at opening; parallel tides on strike-able leaves; frontier seats on frontier
-  leaves under the pin-the-shape-then-build stopping rule). AT OPENING run the LONG-RANGE PARALLELISATION
-  SCOUT (operator steer 2026-07-21): map which lines are genuinely INDEPENDENT (→ parallel seats — thread
-  independence is REGULARISING, each line keeps the others honest) vs which share substrate (→ build the
-  shared part ONCE as its own thread + intermediate @[blueprint] waypoints between the Mathlib floor and
-  the leaves — valuable, but forecasts are scaffolding NEVER gospel: verify before designing around one). Do NOT stall waiting for the operator at
-  blueprint-ready — that gate is delegated. STILL operator-gated: PR merge, dev→main, destination/DoD
-  changes; §1-FINAL tag comes off on their recorded confirm (pending). VM died 2026-07-21: fresh VM,
-  losses + recovery = journal tick 43x; unpushed agent branches are NOT banked — every seat pushes on commit.
+- phase: **LEAF-PROVING LANE (post rung-C integration, 2026-07-21).** The monument skeleton is
+  statement-hardened + integrated (tip aff7c8399+); cone = 6 MonumentAtlas leaves (L1+terminal_bezout
+  PROVEN, verified, merged). SERIAL MonumentAtlas order (nav pass #14): canonCenter (in flight,
+  arch-C) → L4/WALL (in flight, seat-L4, parallel-dev own worktree) → L3 (pair with L4) → L5 (the
+  assembly hinge) → L6+L8 → L7 (tail; needs canonCenter + L5). GATE-CHECK at canonCenter
+  integration: diff confined to provenance side (canonCenter/reachesLeaf/FoldRealizes/L7), must NOT
+  touch FoldStepInvAt/StepInv/fold*/Deg1SupportedOn/case-leaves. E-LANE (operator-opened 2026-07-21):
+  three tiers; Tier 1 band-arithmetic RATIFIED (seat-E proving); P6.2 count-identification PNP-GATED
+  (elder hypothesis: count-object = max-crossing ρ, worked.tex:182); Tier 3 defer lifts when
+  FoldProduced locks (= the DLN-lane → canonCenter joint, ALSO seat-E Tier-3 release + nav joint).
+  Final wiring swap of exists_coreResolution's fossil sorry AFTER all 8 leaves. STILL operator-gated:
+  PR merge, dev→main, destination/DoD changes. Operator standing instruction 2026-07-21: thorough
+  briefs ALWAYS; resume standing seats with retained context over fresh spawns.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.

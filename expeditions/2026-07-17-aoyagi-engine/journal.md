@@ -9367,3 +9367,56 @@ naive Adm-minimiser count diverges from ρ at 6 instances — Lambda.lean's warn
 satisfy K4/K3, or does the elder want the set-cardinality form (which needs a pnp certificate to
 pin the exact count-set the paper leaves loose)? seat-E proceeds meanwhile on the two
 framing-independent lemmas (bandWidth_sum, perJCard_eq_paper — the fidelity anchor).
+
+## 2026-07-21 (controller) — post-compaction re-ground: policies re-read; nav pass #14; elder ratifies Tier-1 + P6 SPLITS (P6.1/P6.2); pnp-order charged on the count-object
+
+**Operator directive executed:** all expedition policy docs re-read (expedition, expedition-map,
+principles P1–P9, bedrock, precision, review, library-building, statement-cards,
+worktree-branch-hygiene, codex-consultation) + full territory cross-check. Heartbeat memo's stale
+phase line (BLUEPRINT-v3) replaced with the LEAF-PROVING LANE state.
+
+**nav-13 pass #14 (full fan-out at the integrated tip), all verdicts banked:**
+- Mandated check PASS: the bake's PrincipalInv diff = exactly one +75 insertion hunk at :180;
+  both seat-core statements byte-intact (L1 unmoved :123; terminal_bezout 234→311 mechanical).
+- Q1 canonCenter ∥ L4 SAFE, proven structurally: L4's statement consumes ONLY FoldStepInvAt
+  (:481, pure step-invariant side — no FoldProduced/leafOf/reachesLeaf); canonCenter's surface is
+  entirely provenance-side. GATE-CHECK adopted for canonCenter integration: diff must stay
+  confined to {canonCenter, reachesLeaf/FoldRealizes, L7} and NOT touch
+  {FoldStepInvAt, StepInv, fold*, Deg1SupportedOn, case-leaves}. (arch-C independently guarded
+  the same boundary in its SPECIFY confirmation: TreePath-level pin clause, TreeEdge/
+  FoldStepInvAt/FoldProduced untouched; canonCenter reconstructs the coordinate from the
+  combinatorial (S,J) birth corner via tupIdxEquiv — bridge-free by construction.)
+- Q2 lane order ADOPTED: canonCenter → L4 → L3 (paired with L4, one reviewer pass for both
+  case-leaves) → L5 (the assembly hinge = the true long-pole) → L6+L8 (free order) → L7 (tail).
+  No second MonumentAtlas parallel unit exists (single-writer serial); the real concurrency is
+  off-file (seat-core DONE, seat-E, pnp). File-split contingency NOT worth it (L3 is minutes; L5
+  is the hinge regardless).
+- Q3 seat-E Tier-2 contention NONE (Lambda.lean @41ae531a4, ClosedForm @c1650d0b4 — frozen, in
+  no live write set). Tier-3's un-defer trigger = FoldProduced locks = the DLN-lane → canonCenter
+  joint (nav's mandatory joint; three events fold into one trigger).
+
+**Elder ratification of seat-E's Tier-1: RATIFIED AS SPECIFIED.** Finding 2 credited ("caught MY
+K4 assuming more precision than the paper has"). Ruling: bandCount_eq satisfies K4 at this rung
+(no masquerade; arithmetic named as arithmetic; both identifications deferred + docstring-named);
+K4's full-equality demand TRANSFERS to the second rung. **P6 SPLITS: P6.1 (band arithmetic, IN
+BUILD, ratified) / P6.2 (count-identification, PNP-GATED).** The elder's starting hypothesis for
+P6.2: the count-object = the MAX-CROSSING NUMBER (worked.tex:182's boxed ρ = max_u #{binding
+divisors at one point}) — reconciles the [3,3,1,1] naive-divergence, Lemma 4's sufficiency-only
+character, and Lemma 5's loose two-sided shape in one stroke. Finding-2 looseness recorded as an
+argument-shape fidelity note (graduates to the defect ledger only if the pnp finds a printed
+value wrong, witness attached).
+
+**pnp-order CHARGED (standing seat resumed per operator instruction):** pin the exact
+count-object over the tree/atlas (make "meeting at one point" precise; binding/co-crossing
+structure), verify ρ = a(ℓ−a)+1 EXACTLY both directions; kill-set = the six naive-divergent
+instances + banked tree-ρ ground truths; page-fidelity vs pp.23–26 + worked.tex:182; exact
+algebra; certificate + batteries; no Lean. seat-E told: Tier 1 proceeds in full; Tier 2's FINAL
+headline shape freezes only post-pnp signal.
+
+**Policy-vs-practice notes from the re-read (deliberate, operator-sanctioned deviations):**
+(i) offices run as STANDING long-lived seats (operator 2026-07-19 + 2026-07-21) vs the policy's
+convened-fresh default — retained context is the operator's chosen trade; (ii) priorities.md
+retired for this expedition (ranking lives in the map + memo). Flagged for the close lessons
+pass, not for change now. Kill-set-adequacy rule (expedition-map) noted as binding on the E-lane's
+eventual universal claims — the elder's divergent-instance kill-set already satisfies it by
+construction.
