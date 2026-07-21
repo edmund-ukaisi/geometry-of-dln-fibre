@@ -7758,3 +7758,19 @@ residual (I)). A Hironaka-properness cite is REMOVED as an option — if the ass
 different decomposition or surfacing the obstruction, never an axiom. Relayed to mon-rec (the cover
 conjunct is a build-target with no escape hatch; staged accordingly). The endpoint stands at full
 strength: aoyagi_learning_coefficient with NO new cite of any kind.
+
+## 2026-07-21: (A) ADAPTER LANDED — the monument's combinatorial half discharged; the sorry SHARPENED
+mon-rec landed RecursionAdapter.lean (green, clean-three): AtlasRealizes d res → hlb ∧ hattain sorry-free,
+riding the three salvage theorems + the qipMin=minAdm=cCodim bridge; C2 anchors as decide-checks
+(![2,2,3,2]→3 running-min, ![2,2,1,1]→1, ![3,3,4]→8, ![4,4,4]→12 — all match the decorrelated battery).
+exists_coreResolution's statement UNCHANGED; its proof now reduces to the PURE GEOMETRIC obligation
+∃ res, AtlasRealizes d res — net sorries added ZERO (one sorry swapped for a sharper-scoped one). Kill-path
+preserved (sorryAx = the geometric obligation only; NO fossil leak, NO cite). C3 held: reported as
+BOOKKEEPING, zero coupled-geometric progress. The seat independently re-discovered the AxCheck namespace
+typo (already fixed at tip pre-7b44aad5c — its base predates; merge reconciles trivially). PENDING at
+integration (controller): merge + wire ResolutionInhabited into the aggregator + the elder's C1 re-audit
+(re-derive the 4 salvage roots' footprints on the MERGED tree) + ground-truth build; the seat's own
+full-aggregator rebuild + its fidelity reviewer (rev-monument-adapter) land first.
+WHAT REMAINS OF THE ENTIRE EXPEDITION: leaf 3 (atlas CoV, mon-cov) + the geometric atlas construction
+(analytic charts + two-sided ideal identity + Jacobian certificate + hcover BUILD) — the coupled
+ideal-route geometry, the named mountain, nothing else.
