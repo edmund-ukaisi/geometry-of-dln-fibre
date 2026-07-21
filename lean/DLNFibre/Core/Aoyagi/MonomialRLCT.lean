@@ -1020,22 +1020,22 @@ theorem monomialSumSq_wLocalAdmissible_eq {M D : ℕ} {e : Fin M → Fin D → �
 
 /-! ## The unweighted (classical) monomial-ideal RLCT (owed-register M1) -/
 
-/-- **Object C, classical (unweighted) form — the monomial-ideal RLCT.** The plain local RLCT (weight
-`W ≡ 1`, no Jacobian weight, `h = 0`) of the sum-of-squares of a monomial family whose exponents form
-a divisibility chain (dominant generator `b_{k₀}`, `hchain : e k₀ ≤ e k` pointwise) at the origin is
-the boxed minimum over the dominant monomial's binding axes:
+/-- **Object C, classical (unweighted) form — the monomial-ideal RLCT.** The plain local RLCT
+(weight `W ≡ 1`, no Jacobian weight, `h = 0`) of the sum-of-squares of a monomial family whose
+exponents form a divisibility chain (dominant generator `b_{k₀}`, `hchain : e k₀ ≤ e k` pointwise)
+at the origin is the boxed minimum over the dominant monomial's binding axes:
 `rlctAt (∑ₖ bₖ²) 0 = min_{d : e_{k₀ d} > 0} 1 / (2 · e_{k₀ d})`
 (`= monomialThreshold (e k₀) 0 hbind`). This is the classical result — the RLCT / real
-log-canonical threshold of a principal monomial ideal is `min_d 1/(2·order_d)` — read off the weighted
-rule `monomialSumSq_wrlctAt_eq` through `wrlctAt_one` (which identifies the weight-`1` weighted RLCT
-with the unweighted `rlctAt`).
+log-canonical threshold of a principal monomial ideal is `min_d 1/(2·order_d)` — read off the
+weighted rule `monomialSumSq_wrlctAt_eq` through `wrlctAt_one` (which identifies the weight-`1`
+weighted RLCT with the unweighted `rlctAt`).
 
-The `DivChain` hypothesis (`hchain`) is load-bearing and NOT a technical convenience: it is exactly the
-**principal normal-crossing** condition making `⟨b₁,…,b_M⟩ = ⟨b_{k₀}⟩`, so the sum collapses to the
-single dominant monomial `b_{k₀}` whose coordinate orders `e_{k₀ d}` ARE the Newton data. Without it
-the axis reading is false — the coupled family `b = (u₀u₁², u₀²u₁)` has threshold `2/3`, not the axis
-value `1` (`not_divChain_coupled_example` guards it out). `hbind` (a binding axis exists) is the
-singular regime; at a regular point the RLCT is `+∞`, out of scope.
+The `DivChain` hypothesis (`hchain`) is load-bearing and NOT a technical convenience: it is exactly
+the **principal normal-crossing** condition making `⟨b₁,…,b_M⟩ = ⟨b_{k₀}⟩`, so the sum collapses to
+the single dominant monomial `b_{k₀}` whose coordinate orders `e_{k₀ d}` ARE the Newton data.
+Without it the axis reading is false — the coupled family `b = (u₀u₁², u₀²u₁)` has threshold `2/3`,
+not the axis value `1` (`not_divChain_coupled_example` guards it out). `hbind` (a binding axis
+exists) is the singular regime; at a regular point the RLCT is `+∞`, out of scope.
 
 Example (single variable, `b = u²`): `rlctAt (fun u ↦ (u 0)⁴) 0 = 1/4`, since
 `∫ |u|^{-4c} du` converges near `0` iff `c < 1/4` (see the kill-set `example` below). -/
@@ -1060,5 +1060,40 @@ example :
     rlctAt (sumSqFam (monomialFam (![![1, 1], ![2, 2]] : Fin 2 → Fin 2 → ℕ))) 0
       = monomialThreshold (![![1, 1], ![2, 2]] (0 : Fin 2)) (fun _ ↦ 0) (by decide) :=
   monomialSumSq_rlctAt_eq (k₀ := 0) (by decide) (by decide)
+
+/-! ## The boxed threshold is coordinate-relabel invariant (owed-register M13) -/
+
+/-- **`monomialThreshold` is invariant under a coordinate relabelling.** For a permutation
+`σ : Fin D ≃ Fin D`, relabelling both the exponent vector and the Jacobian weights by `σ` leaves the
+boxed threshold unchanged: `monomialThreshold (kexp ∘ σ) (h ∘ σ) = monomialThreshold kexp h`. The
+binding-axis `inf'` reindexes bijectively along `σ` (a binding axis `d'` of `kexp` is the image
+`σ (σ.symm d')` of a binding axis of `kexp ∘ σ`, with the same ratio), so the two minima agree by
+`le_antisymm` of the two `inf'_le`/`le_inf'` bounds. The threshold companion to `conjResolution`'s
+chart-relabel transport (the register's M13): an outside user permuting `Fin D` coordinates now has
+the invariance for the Newton threshold itself, not only for the resolution charts. -/
+theorem monomialThreshold_reindex {D : ℕ} (kexp h : Fin D → ℕ) (σ : Fin D ≃ Fin D)
+    (hne : (bindingAxes kexp).Nonempty) (hne' : (bindingAxes (kexp ∘ σ)).Nonempty) :
+    monomialThreshold (kexp ∘ σ) (h ∘ σ) hne' = monomialThreshold kexp h hne := by
+  have hmem_iff : ∀ P : Fin D → ℕ, ∀ d, d ∈ bindingAxes P ↔ 0 < P d := fun P d ↦ by
+    simp [bindingAxes]
+  unfold monomialThreshold
+  refine le_antisymm (Finset.le_inf' _ _ (fun d' hd' ↦ ?_)) (Finset.le_inf' _ _ (fun d hd ↦ ?_))
+  · have hmem : σ.symm d' ∈ bindingAxes (kexp ∘ σ) := by
+      rw [hmem_iff]
+      simpa [Function.comp_apply, Equiv.apply_symm_apply] using (hmem_iff kexp d').1 hd'
+    exact le_trans (Finset.inf'_le _ hmem)
+      (le_of_eq (by simp [Function.comp_apply, Equiv.apply_symm_apply]))
+  · have hmem : σ d ∈ bindingAxes kexp := by
+      rw [hmem_iff]
+      simpa [Function.comp_apply] using (hmem_iff (kexp ∘ σ) d).1 hd
+    exact le_trans (Finset.inf'_le _ hmem) (le_of_eq (by simp [Function.comp_apply]))
+
+/-- Kill-set: `monomialThreshold` of `(kexp, h) = (![1,2], ![3,5])` equals that of its swap-relabel
+`(![2,1], ![5,3])` — both `min(4/2, 6/4) = 3/2`, reached at the opposite axis. -/
+example :
+    monomialThreshold ((![1, 2] : Fin 2 → ℕ) ∘ Equiv.swap 0 1)
+        ((![3, 5] : Fin 2 → ℕ) ∘ Equiv.swap 0 1) (by decide)
+      = monomialThreshold (![1, 2] : Fin 2 → ℕ) ![3, 5] (by decide) :=
+  monomialThreshold_reindex (![1, 2]) (![3, 5]) (Equiv.swap 0 1) (by decide) (by decide)
 
 end DLNFibre.Core.Aoyagi
