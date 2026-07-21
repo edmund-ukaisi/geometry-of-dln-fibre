@@ -8373,3 +8373,17 @@ must pin the CHILD RESIDUAL (length + center-block identity) as spec-supplied/fo
 closing principle applied to the child residual. Seat proceeds to core #2 (the Q̂ conjugation
 machinery, ~120–180 LoC, codex consult on the abstract shape first); #3 (one-center-two-pivots)
 waits on the render.
+
+## 2026-07-21: KERNEL-CHECK ROUND — ¬Case2Preservation PROVEN; the Case-1 half honestly RETRACTED
+rev-leaves machine-checked the elder's refutation: Case2Preservation's free-standing form is FALSE,
+kernel-proven (elder_refute.lean; the jacDet-vs-hyperplane argument closed via the slice derivative,
+no IFT). AND self-corrected: its round-3 Case-1 claim is RETRACTED — the witness is SHEAR-RESCUED
+(case1_rescue.lean: a jacDet-1 rotation makes the over-divided entry exactly divisible, by ring);
+Case-1's free-standing form is UNRESOLVED (no witness survives all shears). Both probes controller
+re-run EXIT 0, banked thread-36, certificate updated. PRECISION RELAY to arch-C: the render's
+docstrings say Case-2 refuted / Case-1 unresolved / both edge-indexed for constructibility +
+provenance — never a Case-1 falsity overclaim. ASSET RELAY to seat-L4: the shear slot does real
+algebraic work (aligning residual coupling with the pivot direction) — the free-standing Case-1 form
+might even be true, so the edge-indexed real-state proof has MORE room than worst case. The review
+layer retracting its own finding under sharper checking, unprompted, is the calibration culture
+working — recorded as such.
