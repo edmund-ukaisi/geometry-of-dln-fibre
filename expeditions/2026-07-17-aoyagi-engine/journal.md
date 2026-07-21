@@ -10019,3 +10019,22 @@ shape sent — the pivot extraction is the real content; the Fin-1 side rides th
 definitionally); seat-L4's offer accepted (L4 + the preservation lemma post-bake); seat-E's A/B
 fork + the pin-relocation question queued at the elder (the a-subsets identification:
 |bindingMinimisers| = C(ℓ,a), the classic poset, cell-count rank — Option B recommended).
+
+## 2026-07-22 (controller) — OPTION B RULED: the canonical a-subsets poset IS the paper's object; the pins CONCENTRATE at the Tier-3 iso
+
+The elder's second pin, ruled with page verification: Lemma 4's increment condition IS the
+a-subset structure — the canonical (ℓ,a) poset "is not an abstraction CHOICE — it is what the
+paper's object has been all along, and P6.1's banded arithmetic is its rank-generating
+structure." The relocation question answered with its honest name: a CONCENTRATION, not a
+dissolution — all three guards (tight lattice, carried target, binding filter) become explicit
+named DOMAIN hypotheses of the ONE Tier-3 realization iso, "the single most audited statement in
+the E-lane." Two sharpenings the canonical object buys: (1) Tier-1 is TOTAL in (ℓ, a ≤ ℓ) — no
+a-fence (a = 0 gives the singleton poset, chainHeight 1, trivially the formula; totality itself
+is evidence B is right; the paper's 1 ≤ a lives at Tier 2/3); (2) the MATHLIB SURVEY PIN —
+YoungDiagram (Mathlib.Combinatorics.Young.*) + Order.height/chainHeight must be surveyed before
+any hand-rolled poset (the register's own lesson applied prospectively); if absent, build-it
+stands and the chainHeight theorem is expected to be "one of the most citable stand-alone
+theorems this expedition produces." seat-E: render GO (survey → skeleton → six-check → prove);
+Tier-3 scaffold un-held on the fixed vocabulary. Both elder pins of the pass now ruled — the
+E-lane carries the monument's architecture: canonical Core object, one concentrated seam, every
+hypothesis named at the seam.
