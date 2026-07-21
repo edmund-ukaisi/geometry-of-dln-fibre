@@ -8523,3 +8523,23 @@ Package with the elder; arch-C holds all locked-leaf edits; the added gate = the
 refutation dies against the bound form. PROCESS NOTE: five severance classes, five catches, each one
 gate earlier than the last — the fifth by the ARCHITECT's own verification before review. The
 verification stack is now in front of the defect curve.
+
+## 2026-07-21: ELDER RULES (B) — the SupportedOn hypothesis, ideal-membership form, uniform on both leaves
+The ruling, force-ordered: (1) FIDELITY — center-covers-residual-support IS what "blow up along
+{d_ij=0}" means (her center is by definition the residual block's coordinates, pp.16/19); the
+hypothesis states the construction's definitional truth and L5 discharges it for free; (2) the
+data/proof split-rule survives (TreeEdge stays data-only; (A)'s proof-carrying edge type would smear
+obligations onto every constructor and sit on the proof-free def-path); (3) (A) would bake in a
+bridge-blocked constraint — the fabricated-body setup; (4) one stroke closes the headline + stand-in
+(c). TWO LOCKED SHARPENINGS: (i) the IDEAL-MEMBERSHIP form (each resid entry = a center-coordinate
+combination with continuous/polynomial coefficients — every monomial contains a center variable, so
+resid∘stepMap gains u_pivot EXACTLY; the weaker vanishing form does not deliver the division);
+(ii) UNIFORM case-1 + case-2 (the root edge is case-2 δ=1 — same mechanism; true at every real edge).
+ALL ratify-as-is items RATIFIED (ratio-not-Dvd; doc-block containment; shearφ data-only). STAND-INS:
+(b) named-risk + the round-5 TRIPWIRE (the L3 proof must use the padding slot as the absorbed cleared
+entry, nothing else); (c) closed by (B); (d) staged + the L6 HARD LOCK recorded NOW (Chart.nbhd =
+the terminal_bezout-shrunk V′, never univ — the gate REFUSES an nbhd=univ L6 render; docstring
+sentence added in the application); (e) accepted without the wrapper. Relayed to arch-C with the
+application gate (δ=1 refutation dies; the ROOT EDGE still instantiates — coreGen entries must BE
+center-combinations at the root center, the satisfiability check). Then: integration + full build +
+AxCheck; rev-leaves round-5 with three specific checks.
