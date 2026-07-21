@@ -7501,3 +7501,19 @@ pending); (2) controller codex COUNTEREXAMPLE HUNT (thread 30, /tmp/aoyagi-v3-re
 instrument that killed v2; (3) elder-v3 ratification vs charter + rulings on (f)1–4 + strike-order/
 parallelisation read. Aggregator NOT wired until the bar clears (architect concurs). Sorry-count note:
 raw tokens 19 vs claimed 15 — counting delegated to the hunt (target 5).
+
+## 2026-07-21: codex hunt verdict on v3 — FAILS the bar (round 3 needed); the loop is working
+Channel (2) of the verification bar returned (thread 30, answer banked): **v3 has false frontier
+statements** — a DIFFERENT defect class than v2 (bar doing its job). (1) KILL, controller-reverified:
+`rlctAt_mono_of_ae_le` + both one-sided ideal-invariance lemmas FALSE — the KNOWN junk-0 hazard
+(negPow 0^{-c}=0; K vanishing on a half-line: rlct(K)=1/4 > 1/10=rlct(K') under domination K≤K').
+Fix: a.e.-nonzero guard on the dominated side (application-dischargeable). This hazard is DOCUMENTED in
+citation-cordon.md ("junk value inverts inequality hypotheses") — repair brief must point seats at the
+known-hazards notes. (2) CoV hcover too weak (g=(x,xy): preimages escape; eventual-cover ⇏ local
+filter-surjectivity). Fix: field `𝓝 x₀ ≤ Filter.map g (𝓝 0)`. (3) Single-chart existence UNFAITHFUL —
+the (1,2) blow-up needs both charts (paper = min over an atlas); design question (f)1 is now ANSWERED by
+arithmetic: ATLAS-MIN form required. + check F is tied to coreLoss in the existence statement.
+(4) Architect OVERCLAIM: no_unit_forces_axis_jac_coupled is sorried (report said proved); real sorry
+count 14 not 15 — teammate-report calibration miss, caught by the decorrelated channel. POSITIVE: C's
+chain-guarded monomial rule VERIFIED SOUND (v2's C-defect genuinely fixed); D/E clean.
+HOLD: consolidate with elder-v3 + the architect's own reviewer, then ONE repair brief (no drip-feed).
