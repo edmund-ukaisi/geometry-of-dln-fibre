@@ -8297,3 +8297,26 @@ arch-C (the edge-indexing + card-tie round, elder's refutations as new gate prob
 elder's specific ask: the card-tie must be CONSTRUCTIBLE BY THE FOLD). Stagger completed: seat-L4 +
 scout-mine resumed (elder explicit: L4's δ-agnostic core = the real-state algebra, valid under
 edge-indexing). All four seats live again.
+
+## 2026-07-21: ROUND-3 VERDICT — (A) confirms edge-indexing (2nd refutation family); (B) NEW: L7 needs σ-provenance
+rev-leaves round-3 (crossed with the elder's ruling; humbling-note accepted — this round it checked
+fidelity-to-the-LAW): the anchor is real progress (both round-2 refutations die; L8 sound via
+hjac_mem/onto + hsurj, NO pivot tie needed there; S3 non-vacuity Lean-checked; the forced-distinct-
+pivots collapse PROOF-DEAD; Case2's pinned b'-law closes its round-2 gap; terminal_bezout stands).
+TWO blockers: (A) the ∀-(state,spec) Props admit MISALIGNED specs — witness (D=3): parent b=u₀,
+resid=(u₂,u₂) ⟹ F₀=2u₀u₂; spec center={0,1}, δ=1 ⟹ b'=u₀², and 2u₀u₂ ∉ ⟨u₀²⟩; thread-34's own
+q'-law goes non-polynomial (1/u₀) — the parent is a non-real state the cert excludes but the Prop
+admits. SAME DISEASE as the elder's Σw² refutation, independently found — "interfaces quantified
+looser than the fold's actual guarantees." The in-flight edge-indexing fixes it; both refutation
+families become gate probes. (B) NEW — L7 is NOT provable from FoldProduced: it constrains only
+counts/exponents/surjectivity, never GeoStep.σ/pivot/center (atlas.jac is a FREE field); a
+right-count right-exponent WRONG-PIVOT atlas passes FoldProduced yet cannot cover (kernel-checked:
+a single-pivot blow-up omits the (0,ε) direction). This AMENDS the elder's "L7 needs no tie"
+(the proof-internal-routing reading implicitly assumed the atlas is the fold's own — the linkage
+disease one level up). RESOLUTION PROPOSED (elder re-ratification requested): σ-provenance via the
+EDGE-SPEC thread (GeoStep.center/pivot = the branch's spec data; atlas.jac tied to the accumulated
+|center|−1 ledger) — Aoyagi-side, NO flatDim bridge (the runway ruling stands), trivially
+constructible by the fold. Relayed to arch-C mid-render. round3.lean probes banked (thread-36).
+SEAT STATE: L4 + L7 held (the two blockers); L8 + L3 clear-modulo-render (their statements change
+shape in the render: card-tie / edge-indexing). All four seats live; w0l3 on O9 proofs + L3 re-price;
+seat-L4 on the real-state core algebra (survives edge-indexing per the elder).
