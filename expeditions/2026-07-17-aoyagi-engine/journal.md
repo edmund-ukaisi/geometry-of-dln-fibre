@@ -8811,3 +8811,10 @@ matching Core's B∘S lemmas — the order-skew that L3's task-#20 was grinding 
 merged + certificate banked. THE WALL'S CONSUME-GATE IS LIFTED; seat-L4 commits fully to the
 flipped-order proof. All seven items + five anchors + the full regression set now converge on ONE
 render → ONE elder pass → ONE integration. The design phase of the monument ends here.
+
+## 2026-07-21: SEAT-API FIDELITY — hygiene PASS on all four (recorded on receipt)
+rev-leaves: M1/M2/M8/M3 all match their register claims verbatim; both named checks HOLD (M2's bare
+V'⊆V is TRUE as stated — sorry-free, cannot poison consumers; M1 is exactly the W≡1/h=0 corollary,
+name=content, DivChain guard visible with the coupled counterexample in-docstring); leak-check CLEAN
+(removed-line count = 0 on all three appended-to files). Nothing for the elder to gate — a clean
+register event-update at the next ping.
