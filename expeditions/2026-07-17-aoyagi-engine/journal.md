@@ -9656,3 +9656,19 @@ refresh; 2b the thread-41 collision = naming pointer, NO rename; 3b E-references
 register event-update. CONFIRMED to carto: ThetaOrderDistinction.lean is the right home of the
 θ≠ρ distinction (my earlier "Lambda.lean:93 warning" reference was the VALUE's location, not the
 warning's — no missing file). 5c seat-core nudged to push its core2 branch ref (banking).
+
+## 2026-07-21 (controller) — the gate holds the bake: terminal_edge_stepInv rendered STALE (bare form); contract-vs-lemma-count latitude issued
+
+arch-C's gate caught the render deviating from the locked shape: terminal_edge_stepInv came back
+with the bare `foldResid` residual (no literal Fin-1 unit, no i₀/unit) — EXACTLY the wiring
+blocker rev-core predicted and the shape-check refinement removed; the seat defended the bare
+form (preference divergence or missed message). The rest of the round is clean: guards on BOTH
+leaves (:683/:713), canonCenter gated, write-set discipline held, census 7 = the named cone.
+arch-C ruled the refined form to the seat with reasons + invited pushback; bake HELD.
+
+**Controller latitude to arch-C:** the LOCK is the consumer contract, not the lemma count — L5
+must wire into TerminalBezout with no defeq surgery (literal `fun _ : Fin 1 ↦ 1` StepInv) and
+with the pivot (i₀, unit) delivered. Bare-lemma + a PROVEN repackaging bridge satisfying the same
+composite contract is acceptable at arch-C's discretion, with the gate exercising the ACTUAL
+wiring (an `example` feeding the output into TerminalBezout — consumer-fit made executable).
+Escalation to controller only if the seat disputes the contract itself.
