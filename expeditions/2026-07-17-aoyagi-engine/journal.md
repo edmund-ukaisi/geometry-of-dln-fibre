@@ -7997,3 +7997,19 @@ hypothesis there, not implicit. Controller re-ran cover_334.py — EXIT 0.
 BANKED: threads/34 + 35 copied from the seats' pushed branches (af45a…/a596f…), thread-34 certificate.md
 controller-banked from the seat's message. EVENT-TRIGGER: navigator pass #12 condition fired (a pnp
 verdict reshaped leaf statements) — #12 runs when arch-C lands, before ANY wave seat is commissioned.
+
+## 2026-07-21: ELDER DELTA-RATIFICATION — RATIFY the StepInv/terminal_bezout split (recorded on receipt)
+The elder independently RE-DERIVED the impossibility (pending-tail quotients vanish at the deepest
+point; divide the Bézout identity by b_{k₀}, pass to 0: 1=0) and verified fidelity against the PAGE
+IMAGES: p.15's inductive statement is the ideal identity WITH the pending tail (never principality);
+principality appears only at the terminal p.22 display; the pnp's Q̂ = diag(b')·Q₁⁻¹·diag(b')⁻¹
+reproduces the paper's printed P (pp.18/21) VERBATIM. Root instance non-vacuous; leaf-1 feed
+reconstructed both directions — no lost strength. Ruling: the re-scope is a fidelity CORRECTION toward
+the paper, not a weakening. Four shaping conditions relayed to arch-C: (D1) explicit child region in
+L3/L4 (pullback ∩ chart domain, no implicit shrinking); (D2) U,V local-inverse continuity as a NAMED
+lemma in terminal_bezout; (D3) the two honest gaps as NAMED leaf hypotheses — the ∀-L chain residual
+graded STRIKE-ABLE not frontier (discharge route known: thread-31 closed form), both gaps must close or
+be explicitly carried at LEAF-5's fold (the sequence gate); (D4) a fidelity docstring at StepInv
+(p.15/p.22/thread-28/worked.tex:659/Q̂=P-conjugate). Kill-set adequacy confirmed (coupling, depth,
+non-monotone widths). Compass fidelity-ledger entry applied (elder-authored substance, controller
+commit). arch-C has all three messages (split + cover-confirm + D1–D4).

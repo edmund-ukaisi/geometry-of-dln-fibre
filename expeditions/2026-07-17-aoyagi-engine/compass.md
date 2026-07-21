@@ -90,6 +90,18 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   (`minAdm ∈ P`, proved), so `rlct = ½·minAdm` stands = Object D (`minAdm=cCodim`, banked). Ledger:
   `verify-realization-gap-defect.md`. Not carried as a live constraint; recorded so the truth is not re-derived.
 
+- **Per-step principality — the invariant SPLITS (thread-34; elder delta-ratified 2026-07-21).** The
+  sketched per-step `PrincipalInv` (divisibility + Bézout bundled) is statement-FALSE at the root and
+  every interior state: with a pending tail (S<L) every quotient vanishes at the deepest point, so a
+  Bézout identity forces 0=1 by continuity; principality is BORN terminally (S=L ∧ J≥1). This is the
+  paper's own structure (elder image-verified: p.15 inductive statement = the ideal identity WITH the
+  pending tail, never principality; principality only at the terminal p.22 display; the pnp's cofactor
+  Q̂ = diag(b')·Q₁⁻¹·diag(b')⁻¹ reproduces the printed P of pp.18/21 verbatim). The formal shape:
+  per-step `StepInv` (region-quantified, divisibility-only, chain) + terminal `terminal_bezout`;
+  `PrincipalInv` assembled terminally at the path fold. Recorded as a fidelity CORRECTION toward the
+  paper (elder D4). Witnesses: `threads/34-case1-invariant/` (certificate + 3 batteries, controller
+  re-run green); corroboration thread-28 + worked.tex:659.
+
 ## The honest gap — coupled-B, stated plainly (front-and-centre)
 - **KNOW:** clean regime exact (F3); `⟨∏C⟩=⟨diag(b)⟩` transfers as an ideal fact (F2); the coupling is
   real and flatten breaks (F4); minAdm = cCodim banked (D); the category error forces the ideal route (F1).
