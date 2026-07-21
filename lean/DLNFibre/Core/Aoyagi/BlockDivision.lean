@@ -86,4 +86,19 @@ theorem blockBlowup_center_comb_eq {n : ℕ} (S : Finset (Fin D)) (p : Fin D)
   rw [blockBlowupMap_center_eq S p (hk a)]
   ring
 
+/-- **Continuity of the divided-residual quotient** — the child `StepInv` quotient
+`∑ a, (cₐ∘σ)·quot(kₐ)` is `ContinuousOn` the child region when the coefficients `cₐ` are
+`ContinuousOn` the parent region `V` and `σ = blockBlowupMap S p` maps the child region into `V`.
+This is the continuity half the child `StepInv` needs (`q'` `ContinuousOn`); with
+`blockBlowup_center_comb_eq` it delivers the full δ=1 child divisibility for a residual pinned to a
+center-coordinate combination. -/
+theorem continuousOn_blockBlowup_center_quot {n : ℕ} (S : Finset (Fin D)) (p : Fin D)
+    (c : Fin n → (Fin D → ℝ) → ℝ) (k : Fin n → Fin D) {V W : Set (Fin D → ℝ)}
+    (hc : ∀ a, ContinuousOn (c a) V) (hmaps : Set.MapsTo (blockBlowupMap S p) W V) :
+    ContinuousOn
+      (fun w ↦ ∑ a, c a (blockBlowupMap S p w) * blockBlowupCoordQuot p (k a) w) W := by
+  refine continuousOn_finset_sum _ (fun a _ ↦ ?_)
+  exact ((hc a).comp (continuous_blockBlowupMap S p).continuousOn hmaps).mul
+    (continuous_blockBlowupCoordQuot p (k a)).continuousOn
+
 end DLNFibre.Core.Aoyagi
