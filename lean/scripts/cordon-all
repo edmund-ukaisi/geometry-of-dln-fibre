@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# cordon-all — run BOTH halves of the citation cordon in ONE command, so a single "cordon passed"
+# signal means BOTH halves held:
+#
+#   (1) the SOURCE grep gate  — `scripts/cordon` (cite LOCATION/TAG + `native_decide` ban + census);
+#   (2) the SOUNDNESS gate    — the `#assert_banked_clean_batch` over the registered roots in
+#                               `DLNFibre/DLN/RLCT/AxCheck.lean`, which elaborates when that module is
+#                               built (batched axiom + blueprint-leak walk; a sneaked-in
+#                               `sorry`/`native_decide`/untagged axiom reddens it).
+#
+#   docs/policies/citation-cordon.md   (the mechanism + why BOTH halves are needed)
+#
+# A green build alone does NOT establish cite LOCATION; a green grep alone does NOT establish
+# axiom/forecast cleanliness. This runs both and exits nonzero if EITHER fails.
+#
+# The soundness half BUILDS `DLNFibre.DLN.RLCT.AxCheck` (heavy — minutes, the full RLCT cone). Pass
+# `--grep-only` to run just the fast grep half (e.g. a pre-commit hook, when the full build runs in CI).
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LEAN_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$LEAN_DIR"
+source "$HOME/.elan/env" 2>/dev/null || true
+
+grep_only=0
+[ "${1:-}" = "--grep-only" ] && grep_only=1
+
+echo "== cordon-all (1/2): source grep gate (scripts/cordon) =="
+python3 "$SCRIPT_DIR/cordon"
+
+if [ "$grep_only" = 1 ]; then
+  echo ""
+  echo "cordon-all: grep half OK (--grep-only). SOUNDNESS half SKIPPED — build DLNFibre.DLN.RLCT.AxCheck"
+  echo "           (or drop --grep-only) for the axiom / blueprint-leak gate before trusting 'cordon passed'."
+  exit 0
+fi
+
+echo ""
+echo "== cordon-all (2/2): batched axiom / blueprint-leak soundness gate (building AxCheck) =="
+"$SCRIPT_DIR/lb" DLNFibre.DLN.RLCT.AxCheck
+
+echo ""
+echo "cordon-all: BOTH halves passed — source grep (location/tag/native_decide) + batched soundness gate."

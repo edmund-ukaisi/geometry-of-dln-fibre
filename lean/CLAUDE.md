@@ -76,20 +76,26 @@
   tracks every axiom via `collectAxioms`, and the accounting is `collectAxioms − {propext,
   Classical.choice, Quot.sound} − @[cited] = ∅`. Full mechanism + declare-a-cite workflow:
   [`../docs/policies/citation-cordon.md`](../docs/policies/citation-cordon.md).
-- **Two-part gate, per-root (no whole-env walk):**
-  - **`#assert_banked_clean X`** — the SOUNDNESS gate, a `Meta.Cordon` command run over the roots in
-    `DLNFibre/DLN/RLCT/AxCheck.lean`. Rides Lean's `collectAxioms` per root: asserts `UNACCOUNTED = ∅`
-    and (unless `X` is a `@[blueprint]` forecast) no forecast leak. Does NOT check cite location.
-    A root that legitimately carries a live-frontier `sorryAx` keeps `#print axioms X` + a
-    `-- TRACKED-OPEN` comment instead (informational, not gated).
+- **Two-part gate (no whole-env walk); run BOTH via `scripts/cordon-all` (a green build alone ≠ located
+  cites; a green grep alone ≠ axiom/forecast clean):**
+  - **`#assert_banked_clean_batch [X, …]`** — the SOUNDNESS gate, a `Meta.Cordon` command over the roots
+    registered in `DLNFibre/DLN/RLCT/AxCheck.lean` in ONE shared-`visited` `collectAxioms` walk (the
+    former per-root gate re-walked Mathlib once per root: ~12 min → seconds). Asserts the union rests
+    only on `{propext, Classical.choice, Quot.sound} ∪ @[cited]` and no banked root leaks a
+    `@[blueprint]` forecast; on a red union it attributes the culprit root per-root. Per-root
+    `#assert_banked_clean X` remains for the inner loop / fixtures. SCOPE: enforces "no unaccounted axiom
+    UNDER THE REGISTERED ROOTS" — completeness relies on keeping that registry current. Does NOT check
+    cite location. A root that legitimately carries a live-frontier `sorryAx` keeps `#print axioms X` +
+    a `-- TRACKED-OPEN` comment instead (informational, not gated).
   - **`scripts/cordon`** — the SOURCE gate (python grep, sibling to `scripts/sorries`; nonzero exit on
     violation): cite LOCATION/TAG over `DLNFibre/**` + a `native_decide` ban + a blueprint census.
+    Errors on a 0-files scope (no vacuous green).
   - **`#audit_cited foo` / `#audit_blueprint foo`** — the in-file reports (mirror `#print axioms`), the
     inner loop. **`scripts/cordon-test`** — battle-tests BOTH gate halves against `tests/*`.
 - Forget-proof: forgetting the tag doesn't hide a cite (the raw axiom still lands in UNACCOUNTED → red
-  `#assert_banked_clean`). Green = "no unaccounted axiom, all cites located, no forecast leak", NOT a
+  gate). Green = "no unaccounted axiom under the roots, all cites located, no forecast leak", NOT a
   whole-TCB audit; a human still reviews the source string. (The whole-env `cordon-audit` executable +
-  `Meta.CordonAudit` were deleted 2026-07-20 — the per-root gate replaces the slow Mathlib-wide walk.)
+  `Meta.CordonAudit` were deleted 2026-07-20 — the batched root gate replaces the slow Mathlib-wide walk.)
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —

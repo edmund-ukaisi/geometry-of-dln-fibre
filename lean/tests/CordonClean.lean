@@ -9,11 +9,14 @@ that (i) rests on no unaccounted axiom, (ii) uses a properly located+tagged cite
 banked decl resting on a forecast is **green** — even with a cite present (`CITED=1`). This is the key
 difference from the sibling `qs` harness, whose green requires `CITED=0`.
 
-The harness (`scripts/cordon-test`) runs `cordon-audit --import CordonClean --ns CordonClean` and
-asserts exit 0 with `UNACCOUNTED=0 CITED=1 LOCATION=0 LEAKS=0`:
-* `cleanProved` — FORMALISED;
-* `cleanUsesCite` — uses the located cite `citedFixtureAxiom` → CITED=1, still green (the DoD permits
-  declared cites, mirroring the legitimate Aoyagi RLCT interface);
+The harness (`scripts/cordon-test`) runs the soundness gate `#assert_banked_clean_batch
+[CordonClean.cleanUsesCite]` (and per-root `#assert_banked_clean`) from a scratch module and asserts it
+PASSES (exit 0) with the union summary — the batch also names the cited-source set in use here
+(`Fixture Source B`). (The old whole-environment `cordon-audit` executable and its `--import` / `--ns` flags were deleted
+2026-07-20; the gate is now the in-build `#assert_banked_clean[_batch]` + the `scripts/cordon` grep.)
+* `cleanProved` — FORMALISED (UNACCOUNTED = ∅, no cite);
+* `cleanUsesCite` — uses the located cite `citedFixtureAxiom` → CITED (one cite), still green (the DoD
+  permits declared cites, mirroring the legitimate Aoyagi RLCT interface);
 * `cleanForecast` / `cleanForecastInternal` — a forecast and a blueprint-internal consumer → no LEAK
   (the consumer is itself `@[blueprint]`, and nothing *banked* rests on the forecast).
 -/

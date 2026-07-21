@@ -161,8 +161,11 @@ into the stored survey.
 
 ## Cordon → validate (contract 12)
 
-`expedition validate` consumes `survey/cordon.json` if present (emitted by the
-Lean side's cordon/blueprint-leak gate — separately commissioned). Schema:
+`expedition validate` consumes `survey/cordon.json` if present. CAVEAT (2026-07-20): the whole-env
+`cordon-audit` executable that produced `cordon.json` was DELETED — the cordon now enforces in-build via
+the batched `#assert_banked_clean_batch` root gate (`DLN/RLCT/AxCheck.lean`) + the `scripts/cordon`
+source grep (run both via `scripts/cordon-all`). No `cordon.json` producer is currently wired, so this
+consumer is INERT until one is (if ever). Schema (retained for the day a producer returns):
 
 ```json
 {

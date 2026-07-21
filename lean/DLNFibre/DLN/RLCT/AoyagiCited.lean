@@ -6,8 +6,9 @@ import Meta.Cordon
 
 The **located cite file** for the DLN RLCT payoff (the citation cordon's first real user): the
 genuinely-analytic monuments the payoff rests on, declared as `@[cited]` `axiom`s (so Lean's kernel
-tracks them and `scripts/cited` accounts them), in one `…Cited.lean` file (the cordon's location
-invariant). Cordon mechanism: `Meta.Cordon`, `docs/policies/citation-cordon.md`.
+tracks them and the `#assert_banked_clean` gate accounts them; `scripts/cordon` enforces their
+location), in one `…Cited.lean` file (the cordon's location invariant). Cordon mechanism: `Meta.Cordon`,
+`docs/policies/citation-cordon.md`.
 
 The analytic content the DLN payoff needs is **two bounds** bracketing the **built** global RLCT
 `RLCT.rlctGlobal (lossDLN d B)` (Def 8.1(i), `Core.Analysis.RLCT.Global` — a cite-free `sSup` of
@@ -81,7 +82,7 @@ noncomputable def aoyagiRlctRealInterface (d : Fin (N + 1) → ℕ) : RlctRealIn
 /-! ## The cordon's first classified DLN payoff
 
 `rlct_lossDLN_zero_eq_half_cCodim_aoyagi` is the corner-`0` payoff at the **built** global RLCT:
-`rlctGlobal(K^DLN_0) = C/2`. `#audit_cited` / `scripts/cited` classify it as `CITED[Watanabe,
+`rlctGlobal(K^DLN_0) = C/2`. `#audit_cited` classifies it as `CITED[Watanabe,
 Aoyagi]` — the two located `@[cited]` axioms above, nothing unaccounted; the built `rlctGlobal`
 contributes no axiom (it is cite-free, and the local zeta-pole continuation cite is off this path). -/
 

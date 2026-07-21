@@ -207,9 +207,10 @@ materialized view; a views/ directory of stale renders is the rot surface this d
     anchors a banked node (proven/frozen/landed) is an ERROR — the banked-never-depends-on-a-forecast
     rule, kernel-grounded; unmatched leaks and unaccounted axioms are warnings; located cites are not
     flagged (cite-permissive). NOTE (2026-07-20): the whole-env `cordon-audit` exe that produced
-    `cordon.json` was deleted; the cordon now enforces in-build via the per-root `#assert_banked_clean`
-    gate (`DLN/RLCT/AxCheck.lean`) + the `scripts/cordon` source grep, so this map-lint step is inert
-    until a new `cordon.json` producer is wired (if ever).
+    `cordon.json` was deleted; the cordon now enforces in-build via the batched
+    `#assert_banked_clean_batch` root gate (`DLN/RLCT/AxCheck.lean`) + the `scripts/cordon` source grep
+    (both via `scripts/cordon-all`), so this map-lint step is inert until a new `cordon.json` producer is
+    wired (if ever).
 
 ## Ownership and operations
 

@@ -14,12 +14,25 @@ source tree (`DLNFibre/**/*.lean` + `DLNFibre.lean`) and HARD-FAILS (nonzero exi
 
 It also PRINTS (informational, does NOT fail the gate) a census of `@[blueprint]` forecast tag sites.
 
-This is only HALF the cordon. The axiom / blueprint-leak SOUNDNESS gate is the batched command
+This is only HALF the cordon — a green `scripts/cordon` alone does NOT establish axiom / blueprint
+cleanliness. The axiom / blueprint-leak SOUNDNESS gate is the batched command
 `#assert_banked_clean_batch` in `DLNFibre/DLN/RLCT/AxCheck.lean` (one shared-`visited` walk over all
 roots; per-root `#assert_banked_clean` still exists for the inner loop / fixtures), which rides Lean's
 native `collectAxioms` engine (a sneaked-in `sorry`/`native_decide` surfaces there as an UNACCOUNTED
 axiom → red build). This grep only enforces cite LOCATION (which the assert gate deliberately does not
 check) + the `native_decide` source ban + the blueprint census.
+
+  ┌─ "CORDON PASSED" REQUIRES BOTH HALVES ────────────────────────────────────────────────────────┐
+  │ (1) this grep gate — `scripts/cordon` (cite LOCATION/TAG + native_decide ban), AND             │
+  │ (2) the soundness gate — the `#assert_banked_clean_batch` in `AxCheck.lean`, which runs as part │
+  │     of the full `DLNFibre` build (`scripts/lb DLNFibre.DLN.RLCT.AxCheck`).                      │
+  │ Run BOTH in one shot with `scripts/cordon-all`. A green build alone does not establish cite     │
+  │ LOCATION; a green grep alone does not establish axiom/forecast cleanliness.                     │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+SCOPE (soundness half): `#assert_banked_clean_batch` enforces "no unaccounted axiom UNDER THE
+REGISTERED ROOTS", not "every banked declaration is clean" — its completeness relies on the AxCheck
+root registry being kept current. This grep half is whole-tree for the LOCATION/native_decide checks.
 
 Reuses `scripts/sorries`' comment/string-skipping machinery, so prose that merely mentions "axiom" /
 "native_decide" in a doc comment or string literal is not flagged.
@@ -39,20 +52,42 @@ LOCATED_ALLOWLIST = {"AoyagiCited", "FixtureCited"}
 
 # A real `axiom` declaration: the keyword followed by an identifier (skips prose like "axiom-clean",
 # `axiom"`, "axiom is DELETED" is caught by the comment filter, not here).
-AXIOM_RE = re.compile(r"(?<![`\w])axiom\s+(?P<name>[A-Za-z_][A-Za-z0-9_'!?.]*)")
+# The name class is UNICODE-aware (`\w` matches Lean's Greek/letterlike/subscript identifier chars —
+# e.g. `axiom ψ`, `axiom ψ₀` — plus the ident-continuation punctuation `' ! ? .`). An ASCII-only class
+# silently MISSES a valid unicode-named axiom → a false negative (a real cite that never reddens).
+_IDENT = r"[\w'!?][\w'!?.]*"
+AXIOM_RE = re.compile(r"(?<![`\w])axiom\s+(?P<name>" + _IDENT + r")")
 NATIVE_RE = re.compile(r"(?<![`\w])native_decide\b")
 BLUEPRINT_RE = re.compile(r"@\[\s*blueprint\b")
 CITED_RE = re.compile(r"@\[\s*cited\b")
+# A declaration-introducing keyword. Used to decide whether an `@[cited]` on a line is CONSUMED by a
+# declaration on that same line (so it cannot also tag an axiom on the *next* line).
+DECL_RE = re.compile(
+    r"(?<![`\w])(axiom|def|theorem|lemma|abbrev|instance|example|structure|inductive|class|opaque)(?![\w'])")
 
 
 def block_comment_depth_at(lines, lineno, col):
-    """Track /- -/ nesting depth at a specific (lineno, col) position (copied from scripts/sorries)."""
+    """Track /- -/ nesting depth at a specific (lineno, col) position.
+
+    STRING-AWARE: a `/-` / `-/` / `--` occurring inside a `"…"` string literal is NOT a comment
+    delimiter (e.g. `def marker := "/-"` must not open a block comment that swallows following
+    declarations). String state is tracked per line at bracket depth 0 (matching the sibling per-line
+    `in_string_literal` heuristic); inside a block comment (`depth > 0`) a `"` is plain comment text."""
     depth = 0
     for i in range(lineno + 1):
         j = 0
         text = lines[i]
         end = col if i == lineno else len(text)
+        in_string = False  # per-line at depth 0 (Lean string literals are effectively single-line here)
         while j < end:
+            if in_string:
+                if text[j] == "\\":
+                    j += 2
+                    continue
+                if text[j] == '"':
+                    in_string = False
+                j += 1
+                continue
             if text[j:j + 2] == "--" and depth == 0:
                 break
             if text[j:j + 2] == "/-":
@@ -61,6 +96,9 @@ def block_comment_depth_at(lines, lineno, col):
             elif text[j:j + 2] == "-/":
                 depth = max(depth - 1, 0)
                 j += 2
+            elif depth == 0 and text[j] == '"':
+                in_string = True
+                j += 1
             else:
                 j += 1
     return depth
@@ -103,7 +141,12 @@ def is_tagged(lines, lineno, col):
     """Is the axiom at (lineno, col) preceded by an `@[cited …]` attribute (same-line prefix, or the
     immediately-preceding non-blank line)? The attribute match must NOT itself sit inside a comment /
     string / backtick (else a comment or docstring mentioning `@[cited]` right above an untagged axiom
-    would mask it — a false negative). Uses the same `skipped()` filter as the axiom scan."""
+    would mask it — a false negative). Uses the same `skipped()` filter as the axiom scan.
+
+    A preceding-line `@[cited]` counts ONLY IF it is not already CONSUMED by a declaration on that same
+    line: `@[cited "s"] axiom foo` on line j tags `foo` (same line), so a bare `axiom bar` on line j+1
+    is UNTAGGED and must not read as tagged (else an untagged axiom right after a tagged one passes —
+    a false negative). Detect consumption as a decl keyword occurring after the `@[cited]` on line j."""
     m = CITED_RE.search(lines[lineno][:col])
     if m and not skipped(lines, lineno, lines[lineno], m.start()):
         return True
@@ -113,7 +156,14 @@ def is_tagged(lines, lineno, col):
     if j < 0:
         return False
     m = CITED_RE.search(lines[j])
-    return m is not None and not skipped(lines, j, lines[j], m.start())
+    if m is None or skipped(lines, j, lines[j], m.start()):
+        return False
+    # The `@[cited]` is consumed by a same-line declaration iff a decl keyword appears after it (and is
+    # not itself inside a comment/string). If so, it tags THAT decl, not the axiom on the next line.
+    dm = DECL_RE.search(lines[j], m.end())
+    if dm is not None and not skipped(lines, j, lines[j], dm.start()):
+        return False
+    return True
 
 
 def collect_lean_files(root, tree):
@@ -132,6 +182,14 @@ def main():
     # `root` = the `lean/` dir (parent of this script's dir); the DLNFibre tree lives under it.
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     lean_files = collect_lean_files(root, tree)
+
+    # VACUOUS-GREEN GUARD: scanning zero files is never a real pass — a mistyped/nonexistent TREE, or a
+    # scope that matched nothing, would otherwise exit 0 ("scanned nothing, found nothing"). Reject it.
+    if not lean_files:
+        scope = tree if tree is not None else f"{root}/DLNFibre"
+        print(f"cordon(grep): ERROR — scanned 0 .lean files under {scope} "
+              f"(empty/nonexistent scope is not a pass).", file=sys.stderr)
+        sys.exit(2)
 
     use_color = supports_color()
     RED = "\033[31m" if use_color else ""

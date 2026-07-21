@@ -176,7 +176,15 @@ def citedFileAllowlist : List Name :=
 /-- **The located-cite rule.** A cited axiom must be declared in a *located cite file*: either its
 source-module's last component is exactly `"Cited"` (the generic `…/Cited.lean` convention), or the
 whole source-module name is in `citedFileAllowlist`. Module identity (not a source path) is the clean
-in-Lean invariant. This is the *location* half of the gate's tag+location invariant. -/
+in-Lean invariant. This is the *location* half of the gate's tag+location invariant.
+
+NOTE (mechanism reconciliation): the ENFORCING location check is done by the source-level grep
+`scripts/cordon` (keyed on the file *name* — ends in `Cited.lean`, or basename in `{AoyagiCited,
+FixtureCited}`), NOT by this function. `isInCitedFile`/`citedFileAllowlist` are the in-Lean, module-name
+form of the same rule; they are currently unused by the enforcing gate (the batch `#assert_banked_clean`
+deliberately does not check location — see the batch command's docstring), kept as the reusable in-Lean
+predicate should a future in-build location gate want it. If a new located cite file is added, update
+BOTH lists (this `citedFileAllowlist` AND `scripts/cordon`'s `LOCATED_ALLOWLIST`). -/
 def isInCitedFile (env : Environment) (n : Name) : Bool :=
   match sourceModule? env n with
   | some m =>
@@ -330,7 +338,9 @@ def blueprintDepsOf (env : Environment) (root : Name) : Array Name := Id.run do
 
 /-- **The reusable audit core (DRY).** For a declaration, `collectAxioms` its transitive axiom set,
 subtract the foundational allowlist, split the remainder into `@[cited]` (accounted) vs `unaccounted`.
-The single source of truth for both the `#audit_cited` command and the `cordon-audit` executable. -/
+The single source of truth for the `#audit_cited` report and the per-root `#assert_banked_clean` gate
+(the batch gate uses the shared `collectAxiomsBatch` for its union, falling back to this per root on a
+red gate for attribution). -/
 def auditDecl [Monad m] [MonadEnv m] (decl : Name) : m AuditResult := do
   let env ← getEnv
   let axs ← collectAxioms decl
@@ -481,6 +491,11 @@ def elabAssertBankedCleanBatch : CommandElab
       let cs ← liftCoreM <| realizeGlobalConstWithInfos id
       for c in cs do
         roots := roots.push c
+    -- VACUOUS-GREEN GUARD: an EMPTY root list is never a real pass — "0 roots banked-clean" would
+    -- exit green while checking nothing. A gate over no roots is a misconfiguration, so error.
+    if roots.isEmpty then
+      throwError "#assert_banked_clean_batch: EMPTY root list — a gate over zero roots checks nothing \
+        and must not pass silently. List at least one root."
     -- FAST PATH — two batched (shared-`visited`) walks over the explicit roots.
     let axUnion := collectAxiomsBatch env roots
     let unaccounted := (axUnion.filter (fun a => !isFoundational a && !isCited env a)).qsort Name.lt
@@ -489,7 +504,18 @@ def elabAssertBankedCleanBatch : CommandElab
     let bankedRoots := roots.filter (fun r => !isBlueprint env r)
     let bpUnion := collectBlueprintBatch env bankedRoots
     if unaccounted.isEmpty && bpUnion.isEmpty then
-      logInfo m!"{roots.size} roots banked-clean (union rests only on foundational + cited)"
+      -- The cited-SOURCE SET in the union (dedup'd) — mitigates the per-root cite-profile loss: if any
+      -- root silently acquires a dependency on a permitted cite, the set names it (a clean-three root
+      -- turning cited becomes visible here, even though the batch drops per-root footprints).
+      let citedSrcs := (axUnion.filterMap (getCitedSource? env)).qsort
+        (fun a b => compare a b == Ordering.lt)
+      let mut distinct : Array String := #[]
+      for s in citedSrcs do
+        unless distinct.contains s do distinct := distinct.push s
+      let citeLine :=
+        if distinct.isEmpty then m!" — no cites in use"
+        else m!" — cites in use: {String.intercalate ", " distinct.toList}"
+      logInfo m!"{roots.size} roots banked-clean (union rests only on foundational + cited){citeLine}"
     else
       -- SLOW PATH — the union is dirty; per-root attribution names the owning root(s).
       let mut msgs : Array MessageData := #[]

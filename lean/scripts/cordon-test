@@ -15,13 +15,20 @@
 #     (iii) FAILS naming the unaccounted axiom on the opaque-hidden consumer (usesOpaque);
 #     (iv)  FAILS naming the leaked forecast on the blueprint-leak consumer (CordonLeak.bankedLeak);
 #     (iv-b/c/d) the BATCHED gate `#assert_banked_clean_batch [..]`: a clean list PASSES with the union
-#            summary; a dirty list (untagged axiom / blueprint leak) FAILS via slow-path attribution
-#            naming the CULPRIT ROOT + the offending axiom/forecast (the batch is forget-proof too);
+#            summary (which also names the cited-SOURCE set in use); a dirty list (untagged axiom /
+#            blueprint leak) FAILS via slow-path attribution naming the CULPRIT ROOT + the offending
+#            axiom/forecast (the batch is forget-proof too);
+#     (iv-e) the batch FAST-PATH surfaces an OPAQUE-hidden axiom (guards `collectAxiomsBatch`'s opaque arm);
+#     (iv-f) an EMPTY root list ERRORS (a gate over zero roots must not pass green);
 #     (v)   still REJECTS `@[cited]` on a non-axiom, and `@[cited ""]` (empty source) at elaboration.
 #
 #   PART 2 — the source-level grep gate `scripts/cordon`, run over a fixture tree:
 #     (vi)  FAILS naming an untagged axiom, a misplaced cited axiom, and a `native_decide`;
-#     (vii) PASSES a tree whose only axiom is located + tagged.
+#     (vii) PASSES a tree whose only axiom is located + tagged;
+#     (viii–x) the source-scanner FALSE-NEGATIVE regressions (external review 2026-07-20): a UNICODE-named
+#            axiom is detected [1a]; a consumed same-line `@[cited]` does NOT tag the next axiom [1b]; a
+#            `/-` inside a string literal does NOT comment out later axioms [1c];
+#     (xi)  an empty/nonexistent scope (0 files scanned) ERRORS (not a vacuous green).
 #
 # Exits 0 iff every assertion holds. Deterministic. (Break any gate and this test goes red.)
 set -euo pipefail
@@ -99,11 +106,14 @@ check_exit "blueprint-leak consumer fails" 1 "$CODE"
 check "labels it a LEAK" "LEAK" "$OUT"
 check "names the leaked forecast" "CordonLeak.forecast" "$OUT"
 
-echo "-- (iv-b) BATCH gate: a clean list PASSES with the union summary --"
+echo "-- (iv-b) BATCH gate: a clean list PASSES with the union summary + the cited-source SET --"
 assert_batch "import CordonClean" "CordonClean.cleanUsesCite"
 echo "$OUT"
 check_exit "batch clean list passes" 0 "$CODE"
 check "batch emits the union summary" "banked-clean (union rests only on foundational + cited)" "$OUT"
+# The summary also names the cited SOURCE set in the union (mitigates the per-root cite-profile loss:
+# a clean-three root that silently acquires a cite dependency becomes visible in this set).
+check "batch summary names the cite in use" "cites in use: Fixture Source B" "$OUT"
 
 echo "-- (iv-c) BATCH gate: a list with an untagged-axiom root FAILS naming the culprit ROOT + axiom --"
 assert_batch $'import CordonClean\nimport CordonFixtures' "CordonClean.cleanUsesCite, CordonFixtures.usesUntagged"
@@ -118,6 +128,21 @@ echo "$OUT"
 check_exit "batch blueprint-leak fails" 1 "$CODE"
 check "batch labels it a LEAK" "LEAK" "$OUT"
 check "batch names the leaked forecast" "CordonLeak.forecast" "$OUT"
+
+echo "-- (iv-e) BATCH FAST-PATH opaque arm: [usesOpaque] FAILS (guards collectAxiomsBatch's opaque value) --"
+# The opaque-hidden axiom must surface through the BATCH union walk, not only the per-root path: if
+# `collectAxiomsBatch` failed to descend into `opaqueInfo.value`, the union would be clean and the batch
+# would (wrongly) print the green summary. Asserting the batch FAILS here is the guard on that arm.
+assert_batch "import CordonFixtures" "CordonFixtures.usesOpaque"
+echo "$OUT"
+check_exit "batch fails on the opaque-hidden axiom" 1 "$CODE"
+check "batch names the opaque-hidden axiom" "hiddenFixtureAxiom" "$OUT"
+
+echo "-- (iv-f) BATCH gate: an EMPTY root list ERRORS (a gate over zero roots must not pass green) --"
+assert_batch "import CordonClean" ""
+echo "$OUT"
+check_exit "batch empty root list errors" 1 "$CODE"
+check "batch empty-list message" "EMPTY root list" "$OUT"
 
 echo "-- (v) elaboration rejections unchanged --"
 SCRATCH="$(mktemp --suffix=.lean)"
@@ -188,6 +213,67 @@ set -e
 echo "$OUT_OK"
 check_exit "grep gate passes a clean located+tagged tree" 0 "$CODE_OK"
 rm -rf "$TREE2"
+
+# ── Regression tests for the source-scanner FALSE NEGATIVES (external review, 2026-07-20) ──────────
+# Each targets a specific pre-fix false negative: without its fix the tree scans GREEN (the axiom is
+# not detected / reads as tagged / is hidden behind a fake block comment), so the check_exit below
+# RED-fails under the old code and passes after.
+
+echo "-- (viii) [1a] grep DETECTS a UNICODE-named axiom (ASCII-only regex missed \`axiom ψ\`) --"
+TREE3="$(mktemp -d)"
+printf 'axiom \xcf\x88 : True\n' > "$TREE3/UnicodeAx.lean"   # ψ = U+03C8, untagged + not located
+set +e
+OUT_U="$(python3 "$SCRIPT_DIR/cordon" "$TREE3" 2>&1)"; CODE_U=$?
+set -e
+echo "$OUT_U"
+check_exit "grep fails on a unicode-named untagged axiom" 1 "$CODE_U"
+check "grep flags the unicode-axiom file" "UnicodeAx.lean" "$OUT_U"
+rm -rf "$TREE3"
+
+echo "-- (ix) [1b] grep does NOT let a consumed same-line @[cited] tag the NEXT axiom --"
+TREE4="$(mktemp -d)"
+# `@[cited]` is CONSUMED by fooCited on its own line; barUntagged (next line, located file) is UNTAGGED.
+cat > "$TREE4/FooCited.lean" <<'LEAN'
+@[cited "Fixture Source B"] axiom fooCited : True
+axiom barUntagged : True
+LEAN
+set +e
+OUT_C="$(python3 "$SCRIPT_DIR/cordon" "$TREE4" 2>&1)"; CODE_C=$?
+set -e
+echo "$OUT_C"
+check_exit "grep fails on the untagged axiom after a tagged one" 1 "$CODE_C"
+check "grep names the untagged next-line axiom" "barUntagged" "$OUT_C"
+check "grep labels it UNTAGGED" "UNTAGGED" "$OUT_C"
+rm -rf "$TREE4"
+
+echo "-- (x) [1c] grep is STRING-AWARE: a \`/-\` inside a string does not comment out later axioms --"
+TREE5="$(mktemp -d)"
+cat > "$TREE5/StringSlashAx.lean" <<'LEAN'
+def marker := "/-"
+axiom afterStringAx : True
+LEAN
+set +e
+OUT_S="$(python3 "$SCRIPT_DIR/cordon" "$TREE5" 2>&1)"; CODE_S=$?
+set -e
+echo "$OUT_S"
+check_exit "grep fails on an axiom after a string containing /-" 1 "$CODE_S"
+check "grep names the axiom after the string" "afterStringAx" "$OUT_S"
+rm -rf "$TREE5"
+
+echo "-- (xi) [vacuous-green] grep ERRORS on an empty/nonexistent scope (0 files scanned) --"
+set +e
+OUT_E0="$(python3 "$SCRIPT_DIR/cordon" "/tmp/cordon-nonexistent-$$-$RANDOM" 2>&1)"; CODE_E0=$?
+set -e
+echo "$OUT_E0"
+check_exit "grep errors on a nonexistent tree" 2 "$CODE_E0"
+check "grep names the zero-files error" "scanned 0 .lean files" "$OUT_E0"
+TREE6="$(mktemp -d)"   # exists but contains no .lean files
+set +e
+OUT_E1="$(python3 "$SCRIPT_DIR/cordon" "$TREE6" 2>&1)"; CODE_E1=$?
+set -e
+echo "$OUT_E1"
+check_exit "grep errors on an empty existing tree" 2 "$CODE_E1"
+rm -rf "$TREE6"
 
 echo ""
 echo "cordon-test: $pass passed, $fail failed."

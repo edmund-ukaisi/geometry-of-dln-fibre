@@ -296,7 +296,7 @@ integrability threshold + core invariances + quadratic block `λ=c/2` + axiom re
 honesty win"; that is now done.)
 
 **LANDED (cite-free unless noted; `Core/Analysis/RLCT/` + `DLN/`).**
-- **Citation cordon** (`@[cited]` attribute + the forget-proof per-root `#assert_banked_clean` gate + the `scripts/cordon` source grep; `CITED=3`) —
+- **Citation cordon** (`@[cited]` attribute + the forget-proof batched `#assert_banked_clean_batch` root gate + the `scripts/cordon` source grep, both via `scripts/cordon-all`; `CITED=3`) —
   every cited axiom named + located, and a cite's *non-vacuity* is a build-time obligation (round-7 lesson).
 - **Local RLCT value** `rlctAt K x = sSup{c≥0 : K^{-c} loc-integrable at x}` (`Local.lean`, Def 8.1(ii)) + the
   **regional** threshold `integrabilityThreshold K U` (`Integrability.lean`).

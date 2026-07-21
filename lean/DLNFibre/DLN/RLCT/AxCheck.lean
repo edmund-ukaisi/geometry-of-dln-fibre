@@ -192,10 +192,18 @@ open Meta.Cordon
 `#assert_banked_clean_batch` (Meta.Cordon) asserts the SAME two invariants the per-root
 `#assert_banked_clean` did — union of the roots' transitive axioms rests only on
 `{propext, Classical.choice, Quot.sound}` ∪ `@[cited]`, and no banked root leaks a
-`@[blueprint]` forecast — but over ONE shared-`visited` traversal instead of 314 fresh
+`@[blueprint]` forecast — but over ONE shared-`visited` traversal instead of 313 distinct-root fresh
 `collectAxioms` walks. Pure speedup: identical kernel graph, identical verdict; the
 ~12-min per-root gate drops to seconds. On a red union it falls back to per-root
 attribution and names the culprit root → axiom/forecast.
+
+SCOPE (what green here does and does NOT mean). This gate enforces "no unaccounted axiom UNDER THE
+REGISTERED ROOTS below" — the union of the transitive axioms of exactly the roots listed. It does NOT
+independently establish "every banked declaration in the library is clean": a banked result that is
+never listed here is not checked (the Python grep half is location-only, and does not fail on `sorry`).
+Completeness therefore relies on THIS root registry being kept current — a new load-bearing headline
+must be added to the list below. (Green also does not check cite LOCATION — that is `scripts/cordon` —
+nor the honesty/consistency of a cite's source string, which is a human review.)
 
 The per-result comments below record WHY each root is gated and its expected axiom profile
 (clean-three unless noted). The batch emits only a union summary, so the individually-
@@ -295,10 +303,9 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   deepestPoint_lastBlock_front_rank,
   deepest_gauge_construction_L2_ofBundle,
 
--- L2 gauge-construction at general L — `deepest_gauge_construction` dispatches L<3 to the clean-three
--- `_L2` witness and carries the #120-tracked L≥3-arm sorries (the grouped recursive diffeo, RESEARCH-RISK
--- roadmapped). Expected `sorryAx` until #120 closes; tracked here so the day it goes clean is visible.
-  deepest_gauge_construction,
+-- (NOTE: `deepest_gauge_construction` — the general-L gauge construction — is gated below, at its
+-- #120-CLOSED comment, where the accurate clean-three profile is recorded. The earlier duplicate here
+-- (with a now-stale "expected sorryAx" note) was removed 2026-07-20; the batch dedups anyway.)
 
 -- D1 (rung 2/5) (★)-deliverer engine — the analytic quasi-split RLCT lower bound (network-free,
 -- reusable; sidesteps the full Gromoll–Meyer Morse lemma via quasi-split-by-constant-comparison). Must be
