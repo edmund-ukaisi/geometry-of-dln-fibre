@@ -15,7 +15,7 @@ Imports: `Core.Aoyagi.OrderCount` + `DLN.RLCT.Foundations.Lambda` + `DLN.Aoyagi.
 > `bandCount ℓ a = aoyagiTheta ℓ a`, unconditionally (both `a(ℓ−a)+1`).
 >
 > - **Lean:** `DLNFibre.DLN.Aoyagi.bandCount_eq_aoyagiTheta` (`…/OrderBinding.lean` @ `04da7648a`)
-> - **Gloss.** `bandCount ℓ a = aoyagiTheta ℓ a`. Proof `rw [bandCount_eq, aoyagiTheta]`.
+> - **Gloss.** `bandCount ℓ a = aoyagiTheta ℓ a`. Proof `simp only [bandCount_eq, aoyagiTheta]`.
 > - **Proved.** Unconditional. This is where the θ-name enters the E-lane (K3: Tier 1 stays neutral).
 > - **Cited.** none.
 > - **Deferred.** the identification of this count with Aoyagi's RLCT/zeta-pole multiplicity `ρ`
