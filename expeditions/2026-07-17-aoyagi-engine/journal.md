@@ -7899,3 +7899,23 @@ gate verification from outside (banking counts, card states), calibration-ledger
 (3) cartographer FIRST convening — the overdue re-root (claims.yaml.proposed on the A–E frame, STATUS
 rewrite, forwarding pointers for the phase's renames, diff-then-judge archive). seat-d12 grinds rung (B)
 in parallel.
+
+## 2026-07-21: ELDER TRIPLE RULING — (C) may reify under conditions; the shear pin CONFIRMED BY THE PAPER'S OWN LANGUAGE
+Item 1 (the route gate): 8-leaf PrincipalInv ladder RATIFIED-WITH-CONDITIONS — the M'=1 reduction
+verified SOUND+FAITHFUL at the record level (RegionRepresents with a singleton family IS divisibility +
+Bézout; the value layer reads only the dominant monomial; nothing lost vs the paper's diagonalisation);
+leaves 3–5 mirror the paper's own induction with the wall graded honestly. REIFICATION CONDITIONS for
+(C): (1) region quantifiers — PrincipalInv on nbhd with ContinuousOn witnesses, NO germ-at-0 slippage
+(the D1 lesson); (2) leaf-6 states g = shears∘blow-ups with unit := 1 (never "monomial map"), pivot-1
+assumption documented with the w⁻¹-fallback line; (3) leaf-5's tree fold stays inside the C1 import
+boundary; (4) a docstring line making the M'=1 compression VISIBLE (diag(b) recovered from the path
+ledger, compressed by the chain). Item 2: the shear pin CONFIRMED against pp.16–21 images — the paper
+ITSELF enacts the split (Q-side: "transform the variables" = coordinate changes; P-side: only inside
+ideal displays = forced cofactors; P's printed b-ratio entries are polynomial BECAUSE of the chain —
+exactly the record's vanishing-allowed cofactor shape); the pivot-1 residual image-supported (the
+literal "1" in the factored blocks). Item 3: landed objects PASS (blowupResolution's exact max-pivot
+cover proof READ and correct; the seam exactly-sufficient); NIT deferred to a hygiene pass:
+AtlasRealizesExponents → AtlasRealizesMinimizer (tighter name post-weakening; renaming mid-flight would
+churn seat-d12). Housekeeping verified moot: the reproduction-pass deliverables were already banked at
+854655c5c (diff-identical to the elder's copies). Elder's meta-verdict: the post-salvage ladder
+adaptation has been "exemplary closed-loop behaviour."
