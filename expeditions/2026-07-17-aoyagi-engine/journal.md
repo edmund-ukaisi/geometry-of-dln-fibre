@@ -8484,3 +8484,135 @@ residual decision = the render in flight); its BlockDivision 6th theorem (contin
 center_quot — the child-quotient continuity) + witnesses merged, build green. The wall seat's full
 toolkit is now banked: BlockDivision (6) + WeightedCofactor (5+def) + O9 (2) + PathAtoms (15) — every
 atom the printed playbook needs, sorry-free, waiting on one render.
+
+## 2026-07-21: THE foldState RENDER LANDS (gate-green, uncommitted) — stand-ins become the review focus
+foldstate-render (arch-C's sub-seat) delivered: the full spine in MonumentAtlas.lean (+228/−65; the
+old edge-indexed Props deleted; L5 re-wired; both drivers sorry-free; 6 forecast leaves carry the
+sorries; module build green, cordon green, cone = exactly the leaf set, root FoldStepInv non-vacuity
+mostly proven via Kronecker). ONE LOUD DEVIATION: TreePath.step/extend carries a 6th field shearφ —
+justified (the locked foldG defining equation is FALSE for non-identity shears without it; φ≡id
+would vacuate the shear apparatus). FIVE TOTAL STAND-INS flagged honestly: hshear0 extra; foldNR
+case-1/rollover keep parent count (exact clear deferred); foldResid case-2 append = bare pivot
+coordinate (vs the Schur closed form; split-rule honored — no division); edgeChartDom = univ ⟹
+foldRegion ≡ univ (D2' shrink deferred; consistent while terminal_bezout stays Core-anchored); and
+terminal_bezout NOT re-anchored (a DIRECT deviation from the locked text). Full-tree/AxCheck runs hit
+its 10-min sandbox cap (no errors before timeout) — left to controller integration. IT DID NOT
+COMMIT/PUSH — arch-C ordered to SECURE FIRST, verify second. The verification focus is now exactly
+the stand-in defs: the leaves' sorries are forecast, and stand-in defining equations are the one
+thing that could make the leaf statements FALSE (about the wrong object) — the failure direction is
+unprovable-not-vacuous (safer than hypothesis-weakness), but a wasted wall seat all the same.
+PIPELINE: arch-C verification (text-match + the calibration-26 center/pivot derivation check vs the
+traversal table + per-stand-in assessment) → ONE elder delta-ratification package (shearφ + stand-ins
++ the terminal_bezout anchoring question) → controller integration + full build + batch → rev-leaves
+round-5 → the wave.
+
+## 2026-07-21: ROUND-5 VERIFICATION — arch-C catches the FIFTH severance class itself (free center); elder ruling pending
+The render verified (text-match confirmed; cone = the 8 leaves; module green post tip-merge; banked
+80f2dc2cd). THE FIND — arch-C's own verification, before any external review: TreeEdge's center/pivot
+as FREE FIELDS make the case-1 (δ=1) leaf REFUTABLE — a center not covering coreGen∘foldG's support
+leaves a spectator live at u_pivot=0 while b' vanishes ⇒ no continuous q' ⇒ child false from a true
+parent. The linkage-severance disease re-entering on the CENTER axis after the state axis was fold-
+bound — calibration-26's drift point realized precisely (the fold-DETERMINED center couldn't be given
+a def body: the flatDim bridge + the depth>1 foldG-transform block it, so the render honestly kept
+fields + a documented spec — and the free field is exactly the leak). Options to the elder: (A) bake
+center-covers-support validity into TreeEdge; (B) carry SupportedOn (foldResid p) ed.center as a leaf
+hypothesis (L5's fold supplies it by nature). One fix also closes stand-in-(c)'s exactness. RATIFY-AS-
+IS recommendations relayed: the b-RATIO (ℝ-Dvd is vacuous); the center/pivot doc-block containment;
+shearφ data-only; the four stand-ins keep-now/upgrade-later with D2'-shrink named as REQUIRED-on-L6.
+Package with the elder; arch-C holds all locked-leaf edits; the added gate = the free-center
+refutation dies against the bound form. PROCESS NOTE: five severance classes, five catches, each one
+gate earlier than the last — the fifth by the ARCHITECT's own verification before review. The
+verification stack is now in front of the defect curve.
+
+## 2026-07-21: ELDER RULES (B) — the SupportedOn hypothesis, ideal-membership form, uniform on both leaves
+The ruling, force-ordered: (1) FIDELITY — center-covers-residual-support IS what "blow up along
+{d_ij=0}" means (her center is by definition the residual block's coordinates, pp.16/19); the
+hypothesis states the construction's definitional truth and L5 discharges it for free; (2) the
+data/proof split-rule survives (TreeEdge stays data-only; (A)'s proof-carrying edge type would smear
+obligations onto every constructor and sit on the proof-free def-path); (3) (A) would bake in a
+bridge-blocked constraint — the fabricated-body setup; (4) one stroke closes the headline + stand-in
+(c). TWO LOCKED SHARPENINGS: (i) the IDEAL-MEMBERSHIP form (each resid entry = a center-coordinate
+combination with continuous/polynomial coefficients — every monomial contains a center variable, so
+resid∘stepMap gains u_pivot EXACTLY; the weaker vanishing form does not deliver the division);
+(ii) UNIFORM case-1 + case-2 (the root edge is case-2 δ=1 — same mechanism; true at every real edge).
+ALL ratify-as-is items RATIFIED (ratio-not-Dvd; doc-block containment; shearφ data-only). STAND-INS:
+(b) named-risk + the round-5 TRIPWIRE (the L3 proof must use the padding slot as the absorbed cleared
+entry, nothing else); (c) closed by (B); (d) staged + the L6 HARD LOCK recorded NOW (Chart.nbhd =
+the terminal_bezout-shrunk V′, never univ — the gate REFUSES an nbhd=univ L6 render; docstring
+sentence added in the application); (e) accepted without the wrapper. Relayed to arch-C with the
+application gate (δ=1 refutation dies; the ROOT EDGE still instantiates — coreGen entries must BE
+center-combinations at the root center, the satisfiability check). Then: integration + full build +
+AxCheck; rev-leaves round-5 with three specific checks.
+
+## 2026-07-21: (B) APPLIED + INTEGRATED — the foldState skeleton is complete and severance-free
+arch-C's application merged (bb3614e4c). CONTROLLER GROUND-TRUTH: build 0 errors; batch-341 green;
+cordon clean; cone = EXACTLY the 8 leaves (case1/case2 in their foldState form). THE APPLICATION:
+SupportedOn restated to the IDEAL-MEMBERSHIP form (resid ∈ ⟨u_i : i ∈ center⟩ with continuous
+coefficients — the exactness-carrying form); hsupp on BOTH leaves; the render's "die by definition"
+overclaim corrected (the SupportedOn-gap dies by HYPOTHESIS, not definition — precision); the L6
+nbhd-never-univ HARD LOCK docstring in place. Lean-verified at arch-C's gate and accepted: the δ=1
+free-center refutation dies EXACTLY at the failed hypothesis (¬SupportedOn for a spectator residual
+with a non-covering center); the ROOT edge satisfies hsupp (coreGen-style entries are in the
+coordinate ideal — degree ≥ 1 homogeneous). ALL FIVE severance classes now provably dead: four by
+the foldState state-binding, the fifth by hsupp. The monument skeleton stands: a foldState recursion
+spine (defs, total, proof-free), 8 sorried leaves with sound statements, a sorry-free driver whose
+cone is exactly those leaves, and the complete atom layer beneath. DISPATCHED: rev-leaves ROUND-5
+(the wave gate) with the elder's three named checks.
+
+## 2026-07-21: OPERATOR COMMISSION — the standing OWED-REGISTER audit (elder office extended)
+Operator charge (verbatim intent): an "owed math" (insufficient generality + incomplete object API)
+and "owed paper results" (statements Aoyagi proved that we may shortsightedly not include) audit
+against the built AND planned objects — a STANDING office keeping context. Charged to elder-v3
+(extends its comprehension office; it holds the O1–O9 audit, the image passes, and every ruling).
+TWO AXES: (1) owed math — per-module generality sweep (ℝ-pinned vs CommRing; artifact guards like
+the old 2≤D vs the |S|-general block form; origin-pinned vs at-a-point; spurious hypotheses beyond
+the hd exclusion) + API completeness (simp lemmas/constructors/transport lemmas/the obvious
+corollaries a Mathlib reviewer demands); (2) owed paper results — the complete Aoyagi theorem
+inventory diffed against charter §1 + ROADMAP + the leaves, each miss priced and recommended
+(now / wave-tail / runway / out-of-scope-with-why), seeded from O1–O9 + the known baseline (O5's
+p.23 skeleton; the r>0 lane; Object E's price under the foldState spine; the Watanabe-upper pairing;
+HER headline in HER generality vs our DLN instantiation) + the inverse check (the paper-silent list
+completeness — it prices the wave). DELIVERABLE: the living register
+(expeditions/2026-07-17-aoyagi-engine/owed-register.md, elder-authored, controller-committed),
+full pass NOW (before wave-tail planning), event-updates at integrations, feeds the close synthesis
++ next-expedition runway. Read-only vs the live wave EXCEPT statement-level finds on live leaves
+(stop-on-suspect). The charter's build-vs-cite discrimination governs recommendations.
+
+## 2026-07-21: THE OWED-REGISTER FIRST PASS LANDS — 28 entries; two finds act NOW
+The elder's living register banked (owed-register.md; elder-authored, controller-committed; event-
+update cadence armed). HEADLINES: M5 — spurious Monotone d on L5/L8 binders (grep-verified
+unconsumed; the leaf-binder ruling's class) — routed to arch-C fix-at-next-touch + rev-leaves as a
+known round-5 item. M2 — StepInv.mono/PrincipalInv.mono restriction lemmas — NOT wave-tail: the
+L5/L6 wiring genuinely needs them (terminal_bezout shrinks, L6 consumes) — the API seat commissions
+NOW alongside round-5. M1 (the unweighted monomial-rule corollary — the library's most citable
+statement, one rewrite from the landed C rule), M8 (RegionRepresents composition/restriction API),
+M3 (pathMap_append + list-jacDet — the fold's induction wants both) ride the same seat. PAPER AXIS:
+P2/O5 re-priced M (ClosedForm.lean already carries lambdaCore/residueA + a bridge-in-progress; the
+p.23 skeleton); P1 = Theorem-1/RRR at r=0 becomes a cheap engine-derived external deliverable after
+P2; P5 (Lemma 2) DISCHARGED-equivalent (RankNormalForm/Schur, pointers verified); P6 (combinatorial
+θ) re-priced L→M by the foldState economics (E's re-open starts there); P3+P10 = the follow-on
+expedition's runway headline; the INVERSE list confirmed complete; Watanabe-upper re-confirmed not
+separately owed. Wave-tail seats per the register: the bridge seat (P2) then P1; O4 (non-monotone d)
+post-monument. O8 DISCHARGED, O9 LANDED.
+
+## 2026-07-21: ROUND-5 PASSES — THE WAVE OPENS
+rev-leaves' verdict: the round-4 blocker (free state) is CLOSED — foldG/foldB/foldResid/foldRegion
+read off the path by structural recursion, no free F/b/resid to instantiate; the |S|=1 refutation
+DEAD (F pinned to coreGen; hsupp excludes the trivial residual — machine-verified ¬SupportedOn
+(const 1) {0}, and at the root hsupp forces center = univ); the /u_pivot exactness verified
+(round5_hsupp.lean, banked). Elder checks #1 (ideal-membership both leaves) + #3 (L6 hard lock
+verbatim) PASS. TWO LIVE FINDINGS, routed not gating: (1) MUST-VERIFY at the wall — ed.shearφ is
+FREE (CenterCoordAligned dropped in round-5): a bad φ could mix spectator content into center coords
+at deeper states, breaking δ=1 divisibility (root-SAVED — center=univ; deeper-OPEN, no confirmed
+refutation) — seat-L4's FIRST CHECKPOINT, it owns the mechanism (either a shear-alignment constraint
+returns via stop-on-suspect, or prove reachable residuals stay center-supported through the shear);
+(2) elder check #2 PARTIAL — a REAL terminal gap: foldNR never shrinks, terminal foldNR ≫ 1 vs
+terminal_bezout's Fin 1 — the exact-clear refinement (elder pre-blessed as stand-in-(b)'s upgrade) is
+REQUIRED on L5's critical path (not L3/L4's); plus the padding named-risk docstrings are missing on
+the leaves. L7's pivot-tie deferral re-confirmed (runway; its seat inherits the known gap).
+No exploit path (foldResid is pinned DATA); the driver coherent; root non-vacuity satisfiable.
+THE WAVE: L3 GO → seat-w0l3; THE WALL GO → seat-L4 (shear checkpoint first); arch-C next-touch
+bundle (foldNR exact-clear upgrade + M5 spurious-hd + the padding named-risk docstrings) — L5
+commissions after it lands; L8 after the first leaves land; L7 last (the bridge gap). seat-api
+running the M-items concurrently. Five statement-hardening rounds, five severance classes dead,
+and the proving begins.
