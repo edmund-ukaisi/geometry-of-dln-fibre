@@ -9902,3 +9902,24 @@ THE TREE) + two-way doc cross-refs (OriginBlowup prose-only). Task-28's stale bl
 corrected; no seat-api duplication (never dispatched this session). carto: 3a landed + the
 overlay's certificate pointers annotated to read THROUGH the chain correction (accepted
 drift-prevention); its 10th-landmark datum was a mid-flight read — the settled set is 9.
+
+## 2026-07-21 (controller) — ELDER RULES FIX (2): LastLayerInv; the interior/terminal frontier redrawn where the mathematics draws it
+
+The ruling, complete: fix (2) — "the units born by S=L clears are EXACTLY what terminal_bezout
+consumes; Deg1's honest domain was always the interior; we had drawn the frontier at the type's
+endpoint N when the MATHEMATICS draws it at the last layer's first clear." Fix (1) rejected (a
+guard leaving L5's traversal uncovered = fix (2) missing its second half); (3) rejected
+(invasive, no fidelity gain). DESIGN RULED: ONE mixed LastLayerInv (divisibility persisting — the
+banked conjunct-1 crux feeds it — + per-slot disjunction center-linear/unit-form-nonvanishing) +
+ONE preservation lemma as J advances; terminal_bezout UNCHANGED (any unit slot at J ≥ 1 supplies
+its hypothesis verbatim); interior leaves guarded on the CHILD's layer < N−1; ALL layer-(N−1)
+edges routed uniformly (incl. the exempt 1(1) — the mixed form subsumes pure Deg1; a
+sub-case-discriminating guard would be a new free-axis invitation). The C′ pin: at S < L the
+re-factoring target is the DEEPER BLOCK (matching canonCenter's derivation — and exactly why
+Deg1 holds interiorly). LastLayerInv's statement goes to the elder's pass BEFORE render (per-slot
+disjunction = quantified data, full audit). TAXONOMY refined text authored: "audit each free
+field; its range ENDPOINTS; and its DYNAMICS-DISTINGUISHED boundary values — a type-boundary
+guard does not fence a mechanism boundary." Six axes: content, size, path, coordinate,
+layer-endpoint, layer-last-interior. arch-C priced + implementing (cone delta named in advance,
+up to +2); seat-L4 holds (its wall closes against a statement finally true on every admitted
+branch); seat-L3T's transport unchanged, L3 hold continues.
