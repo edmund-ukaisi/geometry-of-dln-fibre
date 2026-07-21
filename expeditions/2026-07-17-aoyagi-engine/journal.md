@@ -8272,3 +8272,28 @@ atlas) — the flatDim coordinate bridge is a named owed item; (b) BlockChild al
 rev-leaves round-3 (diff-scoped: the amended statements, esp. hypothesis-suffices on EdgeSpec/
 BlockChild/FoldProduced + the two residuals); elder post-hoc ratification (S3 clause — the one
 shape it did NOT pre-ratify — + the branch-length-tie adequacy ruling).
+
+## 2026-07-21: ELDER POST-HOC — S3 RATIFIED; NEW REFUTATION ⟹ EDGE-INDEXING (the structural exit); hbranch_len UNSATISFIABLE
+S3 ratified AS PLACED (in StepInv: root-true, σ0-preserved, terminal-consistent; correctly omitted
+from PrincipalInv where derivable — "an invariant restated as a hypothesis at every consumer is the
+same fact scattered"). NEW STOP-ON-SUSPECT (the elder, verifying its own ratification): the
+∀-(state,spec) Props are STILL FALSE — refutation: f = w₀²+w₁², g=id, b=1 (S3 holds) paired with a
+singleton-center δ=1 spec: |S|=1 ⟹ σ a local diffeo ⟹ discrete zero set vs the forced
+hyperplane-vanishing. MECHANISM NAMED: the spec's center must cover the state's singular support;
+∀-state × ∀-spec SEVERS the link the fold maintains. Second unlinked-pair refutation — "the M'=1
+compression discards exactly the structure that makes the step true; each patch re-admits a sharper
+probe." THE RULING (stop universalizing): L3/L4 go EDGE-INDEXED over buildTree's edges with the
+fold's own accumulated states (reachability-by-construction = L5's induction hypothesis); the
+preservation leaves move DLN-SIDE (Core keeps the network-free vocabulary); the wall's content
+unchanged. The elder OWNED its share ("per-spec-per-edge" adjudicated without making the linkage a
+statement requirement). ALSO: FoldProduced's hbranch_len is UNSATISFIABLE (not weak) — every
+merge-containing branch (incl. the flagship (3,3,4) binding branch) falsifies it (merges are genuine
+block blow-ups, Jacobian ≠ 1, but birth NO divisor; numDiv indexes only t̃=0) — as rendered L5 was
+unprovable. FIX: the card-tie (bindingAxes bexp).card = numDiv (merge/rollover-immune, true by
+squarefree-b₁ ↔ the t̃=0 ledger); L7 keeps FoldProduced but needs no tie; flatDim card↔sum bridge =
+NEXT-EXPEDITION RUNWAY (value-level suffices on the kill-path — record, don't build). DISPATCHED:
+arch-C (the edge-indexing + card-tie round, elder's refutations as new gate probes); rev-leaves
+(round-3 re-scoped: kernel-check the Σw² refutations NOW, hold the rest for the amended statements;
+elder's specific ask: the card-tie must be CONSTRUCTIBLE BY THE FOLD). Stagger completed: seat-L4 +
+scout-mine resumed (elder explicit: L4's δ-agnostic core = the real-state algebra, valid under
+edge-indexing). All four seats live again.
