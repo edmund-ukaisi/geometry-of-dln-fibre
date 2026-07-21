@@ -8558,3 +8558,22 @@ the foldState state-binding, the fifth by hsupp. The monument skeleton stands: a
 spine (defs, total, proof-free), 8 sorried leaves with sound statements, a sorry-free driver whose
 cone is exactly those leaves, and the complete atom layer beneath. DISPATCHED: rev-leaves ROUND-5
 (the wave gate) with the elder's three named checks.
+
+## 2026-07-21: OPERATOR COMMISSION — the standing OWED-REGISTER audit (elder office extended)
+Operator charge (verbatim intent): an "owed math" (insufficient generality + incomplete object API)
+and "owed paper results" (statements Aoyagi proved that we may shortsightedly not include) audit
+against the built AND planned objects — a STANDING office keeping context. Charged to elder-v3
+(extends its comprehension office; it holds the O1–O9 audit, the image passes, and every ruling).
+TWO AXES: (1) owed math — per-module generality sweep (ℝ-pinned vs CommRing; artifact guards like
+the old 2≤D vs the |S|-general block form; origin-pinned vs at-a-point; spurious hypotheses beyond
+the hd exclusion) + API completeness (simp lemmas/constructors/transport lemmas/the obvious
+corollaries a Mathlib reviewer demands); (2) owed paper results — the complete Aoyagi theorem
+inventory diffed against charter §1 + ROADMAP + the leaves, each miss priced and recommended
+(now / wave-tail / runway / out-of-scope-with-why), seeded from O1–O9 + the known baseline (O5's
+p.23 skeleton; the r>0 lane; Object E's price under the foldState spine; the Watanabe-upper pairing;
+HER headline in HER generality vs our DLN instantiation) + the inverse check (the paper-silent list
+completeness — it prices the wave). DELIVERABLE: the living register
+(expeditions/2026-07-17-aoyagi-engine/owed-register.md, elder-authored, controller-committed),
+full pass NOW (before wave-tail planning), event-updates at integrations, feeds the close synthesis
++ next-expedition runway. Read-only vs the live wave EXCEPT statement-level finds on live leaves
+(stop-on-suspect). The charter's build-vs-cite discrimination governs recommendations.
