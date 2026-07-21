@@ -1347,7 +1347,7 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- shrinks this cone; the summit goes clean-three the day both monuments land.
 #print axioms DLNFibre.DLN.Aoyagi.aoyagi_learning_coefficient_via_engine
 #print axioms DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_divisorMin
-#print axioms DLNFibre.Core.Aoyagi.exists_coreResolution
+#print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
 
 -- Payoff DELIVERABLES — individual clean-three footprints preserved (also asserted in the
 -- batch above). Each must print `[propext, Classical.choice, Quot.sound]`.
