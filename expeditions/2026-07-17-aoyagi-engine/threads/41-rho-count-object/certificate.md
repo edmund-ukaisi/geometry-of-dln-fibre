@@ -68,8 +68,18 @@ enumeration alone cannot prove them. This is precisely what the tree battery ver
   leaf-incidence lemmas: (i) UPPER — no branch carries more than a(ℓ−a)+1 co-crossing t̃=0 minimisers;
   (ii) ATTAINMENT — the eq-(1)/(2) construction (pp.25-26) builds a branch with exactly a(ℓ−a)+1. Both
   are branch/recursion-incidence facts (Lemma 4's envelope+increment characterises which minimisers can
-  co-occur on one branch), NOT re-derivable from the minimiser count. (Speculation, register as such:
-  the UPPER bound is the harder half — it is the paper's loose per-j band sum done tightly, i.e. the
-  max antichain of co-occurring binding profiles on a single root-to-leaf path.)
+  co-occur on one branch), NOT re-derivable from the minimiser count.
+- **[AMENDED 2026-07-21 — the UPPER bound is a CHAIN, not an antichain; my earlier speculation was the
+  Dilworth DUAL and is REFUTED.]** Confirmed by an independent decorrelated computation (see the sibling
+  `chain_confirmation.md` + `chain_battery.py`, EXIT 0, 993 cores): on every branch the binding
+  minimisers present are pairwise componentwise-COMPARABLE (a CHAIN — incomparable profiles cannot co-occur
+  in one chart, so antichains are irrelevant); ρ = max-CHAIN length of the binding-minimiser poset. The
+  poset has a UNIQUE min T̃ / max T̃' (the Lemma-4 envelope endpoints) and is GRADED BY RANK — every
+  maximal T̃→T̃' chain has length exactly a(ℓ−a)+1 (the height), so max-chain = a(ℓ−a)+1 = ρ. The grading
+  is by a recursively-defined rank (the inversion / Young a×(ℓ−a)-cell count), NOT by profile
+  coordinate-sum: coord-sum grading fails when a cover jumps several units (degenerate widths e.g. [1,1,2,1],
+  and unbalanced ones e.g. [2,2,4,3] where L1(T̃'−T̃)=2 ≠ a(ℓ−a)=1). The Lean-facing UPPER lemma is thus:
+  the binding-minimiser poset is graded of height a(ℓ−a)+1 (⟹ max-chain = a(ℓ−a)+1); ATTAINMENT is the
+  eq-(1)/(2) branch realising a full T̃→T̃' chain.
 - The analytic identification (combinatorial max-crossing = zeta pole multiplicity) remains the named
   monument-class deferral (no pole-order operation in Mathlib) — unchanged by this certificate.
