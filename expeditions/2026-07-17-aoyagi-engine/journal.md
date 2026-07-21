@@ -7870,3 +7870,17 @@ battery PASS). Guidance relayed to mon-geo: state the composition, unit := 1 by 
 carry the projections; PrincipalInv tracks the shear-composition; leaf-2 unaffected (pure blow-up atoms).
 Residual (non-blocking, in-cert): the pivot-normalizes-to-1 assumption — holds structurally, and even
 its failure only pushes w⁻¹ into cofactors; the record holds regardless.
+
+## 2026-07-21: LEAF-2 INTEGRATED — the universal blow-up atlas is in-tree; mon-geo's tide closed
+blowupResolution (hD : 2 ≤ D) : Resolution (coordFam D) 0 — the general-D max-pivot atlas resolving the
+maximal-ideal singularity, every Chart field discharged, clean-three; the universal jacDet_blowupMap
+(w i)^(D-1) via BlockTriangular.det; the EXACT argmax sector cover (residual-(I) content for the pure
+origin case, spectator-free). Universal-in-D ⟹ instantiates at flatDim d with NO transport — the
+cardinality wall is dissolved by design. Integration surfaced 4 name-cousin clashes between the D=2 and
+general blow-up files (same names, different constants — mon-geo's clash-grep predated the D=2 wiring);
+resolved by …2-renames in the D=2 file (per CLAUDE.md: the general file is the canonical home). ROOT
+GREEN (8977 jobs, 334 roots, cordon clean). mon-geo's tide CLOSED at its context budget — an exemplary
+tide: honest recalibration, the shared atom banked universal, the wall dissolved structurally, (B)
+cleanly teed up. Fresh seat dispatched for rung (B): instantiate at D = flatDim ![1,2] + the coreGen
+linearity iso L + the seam (o5_core_realized + minAdm ![1,2]=2 decide) — the first end-to-end discharge
+of the geometric obligation's body on a real singular instance.
