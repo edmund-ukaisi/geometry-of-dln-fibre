@@ -9307,3 +9307,25 @@ inheriting the DLN instances' good behavior."
 
 seat-E cleared to freeze; SPECIFY expected next (Tier-1 statements + edge probes; Tier-2
 bindings; Tier-3 named-deferred), then the elder's pass.
+
+## 2026-07-21 (controller) — RUNG-C REPAIR ROUND INTEGRATED: the monument skeleton is statement-hardened on the expedition branch
+
+arch-C's green re-gate (e818c6f24) merged; **controller re-derived the evidence** (not the
+report): full build GREEN (8987 jobs); sorry census = EXACTLY the 8-leaf cone in the two live
+files (6 MonumentAtlas leaves at :610/:639/:692/:721/:757/:784 + L1 :129 + terminal_bezout :311;
+the 35 global count is the known fossil census); cordon-all BOTH halves passed (source gate +
+batched soundness); drivers carry [propext, sorryAx, Classical.choice, Quot.sound] (the live
+frontier), the learning-coefficient headline family clean-three. Round content: L3/L4 fixed
+(FoldStepInvAt re-statement, center-exact Deg1SupportedOn), L6 fixed (hfold), L5 strengthened
+(FoldProduced ∧ FoldRealizes, reachesLeaf, path-collision dies), L7 honest bridge-gated
+(coordinate witness survives by design pending canonCenter). arch-C's FIX-2 deviation ACCEPTED
+(self-contained surjective FoldRealizes; leafOf coupling deferred to canonCenter — verified
+sound, no consumer until then).
+
+**Post-integration choreography (adapted from wall-first on arch-C's proceed-on-silence):**
+arch-C already dispatched the canonCenter follow-round (def-level, its boundary, my STABLE-path
+pre-authorization) — ACCEPTED: it un-gates L7 and its writes don't touch the L4 leaf body; the
+wall develops IN PARALLEL in its own worktree (nav-13's parallel-dev/serial-integrate rule),
+integration serialized behind canonCenter's landing at arch-C's gate. seat-core gets the rebase
+signal (its file gained +75 upstream lines BETWEEN its two frozen statements — additive, both
+statements intact at :123/:309). nav-13's bake-integration fan-out trigger FIRES now.
