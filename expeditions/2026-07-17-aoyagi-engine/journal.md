@@ -8543,3 +8543,18 @@ sentence added in the application); (e) accepted without the wrapper. Relayed to
 application gate (δ=1 refutation dies; the ROOT EDGE still instantiates — coreGen entries must BE
 center-combinations at the root center, the satisfiability check). Then: integration + full build +
 AxCheck; rev-leaves round-5 with three specific checks.
+
+## 2026-07-21: (B) APPLIED + INTEGRATED — the foldState skeleton is complete and severance-free
+arch-C's application merged (bb3614e4c). CONTROLLER GROUND-TRUTH: build 0 errors; batch-341 green;
+cordon clean; cone = EXACTLY the 8 leaves (case1/case2 in their foldState form). THE APPLICATION:
+SupportedOn restated to the IDEAL-MEMBERSHIP form (resid ∈ ⟨u_i : i ∈ center⟩ with continuous
+coefficients — the exactness-carrying form); hsupp on BOTH leaves; the render's "die by definition"
+overclaim corrected (the SupportedOn-gap dies by HYPOTHESIS, not definition — precision); the L6
+nbhd-never-univ HARD LOCK docstring in place. Lean-verified at arch-C's gate and accepted: the δ=1
+free-center refutation dies EXACTLY at the failed hypothesis (¬SupportedOn for a spectator residual
+with a non-covering center); the ROOT edge satisfies hsupp (coreGen-style entries are in the
+coordinate ideal — degree ≥ 1 homogeneous). ALL FIVE severance classes now provably dead: four by
+the foldState state-binding, the fifth by hsupp. The monument skeleton stands: a foldState recursion
+spine (defs, total, proof-free), 8 sorried leaves with sound statements, a sorry-free driver whose
+cone is exactly those leaves, and the complete atom layer beneath. DISPATCHED: rev-leaves ROUND-5
+(the wave gate) with the elder's three named checks.
