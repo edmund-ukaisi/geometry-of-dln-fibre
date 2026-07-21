@@ -105,3 +105,29 @@ children (the `(1,1)/4 → (1,0)/8` merge, δ=1); (3,3,2,2) deep; (2,2,3,2) non-
 
 The render lands off `f975fa6a1`; arch-C reconciles the tip skew at verification. RE-SYNC this branch
 only AFTER the integration merge + the controller's sync note — not before.
+
+## PROOF BODY — ready to wire (gate LIFTED 2026-07-21; FIX-A confirmed blind by pnp-order)
+
+The abstract core is PROVEN (`Core/Aoyagi/StepInvShearChild.lean`): `stepInv_delta1_shear_child`
+(δ=1, the wall) + `stepInv_delta0_pullback_child` (δ=0). The DLN leaf
+`DLN.Aoyagi.case1_preserves_stepInv` is then MECHANICAL glue over the amended (flipped) DATA defs:
+
+    intro ne hmem hcase1 … (spec/edge data) hsupp hinv
+    obtain ⟨q, hq⟩ := hinv                          -- parent StepInv from FoldStepInv d e p
+    by_cases hδ : edgeδ d p
+    · -- δ=1: refine ⟨_, ?_⟩; the FoldStepInv(child) StepInv-goal defeq-matches the lemma output when
+      --   foldG(child)=foldG p ∘ (blockBlowupMap center pivot ∘ edgeShear)   [FLIPPED stepMap]
+      --   foldB(child)=u_pivot·(foldB p∘stepMap),  foldResid(child)=the blockBlowupCoordQuot combo.
+      exact ⟨_, stepInv_delta1_shear_child hq hsupp
+              (edgeShear analytic ⟹ Continuous) (edgeShearRaw_zero …) (ed.hshear_pivot)⟩
+    · -- δ=0: pure pullback (order-independent), foldResid(child)=foldResid p∘stepMap.
+      exact ⟨_, stepInv_delta0_pullback_child hq (stepMap continuous) (stepMap 0 = 0)⟩
+
+RECONCILIATION (the only non-defeq point): the amended `foldResid`(δ=1) closed form must match the
+lemma's `resid'_j = ∑_{i∈center} c j i (σ·)·blockBlowupCoordQuot pivot i (sh ·)`. Per the elder's
+ratified anchor (A/v) — **center-degree-1 multilinearity**: each `foldResid p` entry is a LITERAL
+single center coordinate (`c j i = δ` per entry), so `resid'_j` re-factors as a single CHILD-center
+coordinate (`quot = 1` at the cleared pivot, `= w_i` else) — "the Let-block child re-factors in the
+child center". If arch-C renders `foldResid`(δ=1) AS this combination, the glue is `exact`; else a
+one-line `show`/`simp` reconciliation. Verified at (3,3,4) case11: `case1_core_exactdiv_killset.py`
+(E4 tie), `case1_positive_witness.py`. Wire-up = minutes post-rebase.
