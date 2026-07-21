@@ -20,7 +20,11 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   (iii) elder ratification vs charter §0–§3, (iv) build green + kill-path cite-free + cordon green.
   Iterate architect↔checks until NO load-bearing finding survives; only then OPEN THE STRIKE PHASE
   (map/claims re-root on A–E at opening; parallel tides on strike-able leaves; frontier seats on frontier
-  leaves under the pin-the-shape-then-build stopping rule). Do NOT stall waiting for the operator at
+  leaves under the pin-the-shape-then-build stopping rule). AT OPENING run the LONG-RANGE PARALLELISATION
+  SCOUT (operator steer 2026-07-21): map which lines are genuinely INDEPENDENT (→ parallel seats — thread
+  independence is REGULARISING, each line keeps the others honest) vs which share substrate (→ build the
+  shared part ONCE as its own thread + intermediate @[blueprint] waypoints between the Mathlib floor and
+  the leaves — valuable, but forecasts are scaffolding NEVER gospel: verify before designing around one). Do NOT stall waiting for the operator at
   blueprint-ready — that gate is delegated. STILL operator-gated: PR merge, dev→main, destination/DoD
   changes; §1-FINAL tag comes off on their recorded confirm (pending). VM died 2026-07-21: fresh VM,
   losses + recovery = journal tick 43x; unpushed agent branches are NOT banked — every seat pushes on commit.

@@ -7463,3 +7463,14 @@ VM — re-armed (hourly :17, durable, job e2c75658; 7-day auto-expiry) and the h
 self-heals (step 0 verifies CronList and re-arms if absent). Still operator-gated: PR merge, dev→main,
 destination/DoD. IN FLIGHT: architect-v3 (enriched spec, push-on-commit); fresh-VM calibration build
 re-running after the store-lock fix (pre-warm too narrow → missing .hash writes; unlock→build→re-lock).
+
+## 2026-07-21: operator parting steer — parallelisation-as-regularisation (strike-phase opening directive)
+The blueprint's multiple objects = real parallelisation opportunity, and thread INDEPENDENCE is itself
+REGULARISING (independent lines cannot lean on each other's unproven work; each keeps the others honest —
+per-thread decorrelation; the payoff of bar (iii)). Where the rising sea has SHARED parts: intermediate
+@[blueprint] waypoint forecasts between the Mathlib floor and the blueprint leaves are VALUABLE (build the
+shared object once, as its own thread) — but forecasts are scaffolding, NEVER gospel (do not design around
+an unverified forecast as settled; the cordon's leak-guard holds the hard edge, taste holds the soft edge).
+AT STRIKE-PHASE OPENING: a LONG-RANGE navigator/scout pass over the verified blueprint maps independent
+lines (→ parallel seats) vs shared substrate (→ shared-foundation thread + waypoints). Encoded in the memo
+phase line.
