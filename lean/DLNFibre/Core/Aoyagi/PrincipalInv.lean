@@ -210,16 +210,50 @@ two points that agree off `S`. Buildable by `Finset` induction transforming one 
 single `S`-updates (the region caveat is vacuous at `V = univ`; see the `IgnoresCoords` docstring). -/
 theorem ignoresCoords_univ_iff_agree (c : (Fin D → ℝ) → ℝ) (S : Finset (Fin D)) :
     IgnoresCoords c S Set.univ ↔ ∀ u v, (∀ s, s ∉ S → u s = v s) → c u = c v := by
-  -- map: B-ignoresCoords-agree (← immediate via update-off-S; → Finset.induction over S)
-  sorry
+  constructor
+  · intro H u v hagree
+    have key : ∀ T : Finset (Fin D), T ⊆ S →
+        c u = c (fun i => if i ∈ T then v i else u i) := by
+      intro T
+      induction T using Finset.induction with
+      | empty =>
+        intro _
+        have h0 : (fun i => if i ∈ (∅ : Finset (Fin D)) then v i else u i) = u := by
+          funext i; simp
+        rw [h0]
+      | insert a T ha IH =>
+        intro hsub
+        have haS : a ∈ S := hsub (Finset.mem_insert_self a T)
+        have hTS : T ⊆ S := (Finset.subset_insert a T).trans hsub
+        have hmix : (fun i => if i ∈ insert a T then v i else u i)
+            = Function.update (fun i => if i ∈ T then v i else u i) a (v a) := by
+          funext i
+          by_cases hia : i = a
+          · subst hia; simp
+          · rw [Function.update_of_ne hia]
+            simp [Finset.mem_insert, hia]
+        rw [hmix, H _ (Set.mem_univ _) a haS (v a)]
+        exact IH hTS
+    have hkey := key S (Finset.Subset.refl S)
+    have hSv : (fun i => if i ∈ S then v i else u i) = v := by
+      funext i
+      by_cases hiS : i ∈ S
+      · simp [hiS]
+      · simp [hiS, hagree i hiS]
+    rwa [hSv] at hkey
+  · intro H w _ m hm t
+    apply H
+    intro s hs
+    have hsm : s ≠ m := by rintro rfl; exact hs hm
+    exact Function.update_of_ne hsm t w
 
 /-- **Center-zeroing form of `IgnoresCoords`** (derived constructor lemma, on `V = univ`): an
 `S`-ignoring `c` is unchanged when the `S`-coordinates are zeroed. -/
 theorem ignoresCoords_centerZero {c : (Fin D → ℝ) → ℝ} {S : Finset (Fin D)}
     (h : IgnoresCoords c S Set.univ) (u : Fin D → ℝ) :
     c u = c (fun i ↦ if i ∈ S then 0 else u i) := by
-  -- map: B-ignoresCoords-zero (iterate the S-updates zeroing each center coord; from the agreement form)
-  sorry
+  rw [ignoresCoords_univ_iff_agree] at h
+  exact h u _ (fun s hs => by simp [hs])
 
 /-- **One recursion child** conforming to an `EdgeSpec` at pivot `p`, landing in the NEXT edge's block
 `childSpec` (elder A/B + seat-L4): the CONSTRUCTION supplies the unipotent shear `sh`
