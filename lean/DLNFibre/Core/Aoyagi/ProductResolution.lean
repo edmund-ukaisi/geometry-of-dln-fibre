@@ -660,43 +660,4 @@ theorem no_unit_forces_axis_jac_coupled :
     exact hpoly.congr' hkey.symm
   exact hw0 (tendsto_nhds_unique hlim1 hlim2)
 
-/-! ## Resolution restriction / union API (owed-register M10)
-
-The multi-stage-resolution API: shrink the covered neighbourhood, or combine two atlases at the same
-deepest point. The kill-path builds one atlas directly (no consumer yet), but any staged/refined
-resolution reuse wants these. Both are immediate from the cover being monotone in the chart family
-and in `U`. -/
-
-/-- **Restrict the covered neighbourhood.** Any nbhd `V ⊆ U` of `x₀` is still covered by the same
-atlas (the uncovered set only shrinks): `V \ ⋃charts ⊆ U \ ⋃charts` is null. -/
-noncomputable def Resolution.restrict {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
-    (res : Resolution F x₀) {V : Set (Fin D → ℝ)} (hV : V ∈ 𝓝 x₀) (hVU : V ⊆ res.U) :
-    Resolution F x₀ where
-  numCharts := res.numCharts
-  charts := res.charts
-  hne := res.hne
-  U := V
-  hU := hV
-  hcover := measure_mono_null (Set.diff_subset_diff_left hVU) res.hcover
-
-/-- **Union of two atlases** at the same deepest point `x₀`: concatenate the chart families
-(`Fin.append`) and keep `res₁`'s covered neighbourhood. Adding `res₂`'s charts only enlarges the
-covered image, so `res₁.U \ ⋃(both) ⊆ res₁.U \ ⋃res₁` stays null. -/
-noncomputable def Resolution.union {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
-    (res₁ res₂ : Resolution F x₀) : Resolution F x₀ where
-  numCharts := res₁.numCharts + res₂.numCharts
-  charts := Fin.append res₁.charts res₂.charts
-  hne := by
-    obtain ⟨i, -⟩ := res₁.hne
-    exact ⟨Fin.castAdd res₂.numCharts i, Finset.mem_univ _⟩
-  U := res₁.U
-  hU := res₁.hU
-  hcover := by
-    have hsub : (⋃ c₁, (res₁.charts c₁).g '' (res₁.charts c₁).dom)
-        ⊆ ⋃ c, (Fin.append res₁.charts res₂.charts c).g ''
-            (Fin.append res₁.charts res₂.charts c).dom :=
-      Set.iUnion_subset (fun c₁ ↦ Set.subset_iUnion_of_subset (Fin.castAdd res₂.numCharts c₁)
-        (le_of_eq (by rw [Fin.append_left])))
-    exact measure_mono_null (Set.diff_subset_diff_right hsub) res₁.hcover
-
 end DLNFibre.Core.Aoyagi
