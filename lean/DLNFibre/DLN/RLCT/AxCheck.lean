@@ -1352,6 +1352,7 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- DLN cites (`cited_aoyagi_lower_ax`/`cited_watanabe_upper_ax`) are NOT invoked (the kill-path). The
 -- summit goes clean-three the day `exists_coreResolution` lands.
 #print axioms DLNFibre.DLN.Aoyagi.aoyagi_learning_coefficient_via_engine
+#print axioms DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_divisorMin
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
 
 -- Payoff DELIVERABLES — individual clean-three footprints preserved (also asserted in the

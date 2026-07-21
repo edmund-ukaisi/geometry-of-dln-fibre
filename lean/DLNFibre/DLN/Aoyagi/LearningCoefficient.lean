@@ -1,4 +1,5 @@
 import DLNFibre.Core.Aoyagi.Engine
+import DLNFibre.DLN.Aoyagi.RecursionAdapter
 import DLNFibre.DLN.RlctPayoff
 import DLNFibre.DLN.RLCT.Foundations.GlobalHomog
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
@@ -275,7 +276,14 @@ theorem exists_coreResolution (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 
       (∃ (c : Fin res.numCharts) (a : Fin (flatDim d)),
         a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) ∧
         ((res.charts c).jac a + 1 : ℤ) = qipMin d hne) := by
-  -- map: DLN-existence (Hironaka + coupled diag(b) ATLAS + Lemma-3 min-attainment; F concrete)
+  -- The COMBINATORIAL conjuncts (hlb/hattain) are discharged by the salvage adapter
+  -- (`RecursionAdapter.exists_hlb_hattain_of_exists_atlasRealizesExponents`, riding the axiom-clean
+  -- Engine combinatorics `minAdm_le_terminalExponents` + `o5_core_realized` + the
+  -- `minAdm = cCodim = qipMin` bridge). The sole RESIDUAL is now the GEOMETRIC obligation: an atlas
+  -- realizing the built tree's exponents exists.
+  refine exists_hlb_hattain_of_exists_atlasRealizesExponents d hd hN hpos hne ?_
+  -- map: DLN-existence-GEOMETRIC (the coupled ideal-route atlas `res : Resolution (coreGen d e) 0`
+  -- with `AtlasRealizesExponents d res`; charter §1.B, the coupled monument + `hcover` BUILD)
   sorry
 
 /-- **The learning coefficient `rlct(K^DLN_0) = C/2`, VIA THE ENGINE (the corollary/test).** For a

@@ -1,0 +1,13 @@
+1. SOUND  
+[Fact] Clause (ii) is nonvacuous: `o5_core_realized` supplies a leaf divisor, and (ii) forces a genuine chart binding axis with that value. The seam implies `hlb ∧ hattain`, hence `res.divisorMin = qipMin`. If the separate change-of-variables theorem is sound, `2·rlctAt = res.divisorMin`; therefore no seam-satisfying genuine resolution can give a wrong intrinsic value. [Inference] An incorrect Engine tree would make the residual existence claim false, rather than change `rlctAt`. This conclusion remains conditional on the separate CoV frontier.
+
+2. OVER-CONSTRAINED  
+[Fact] The adapter needs only realization of the single minimizing `(l,k)`, whereas clause (ii) demands every leaf divisor. The two stated Engine theorems provide no geometric exhaustivity result. Moreover, “each chart is a leaf” supports clause (i), but clause (ii) requires the converse: every Engine leaf divisor must have a chart-axis representative. [Inference] A permitted countermodel shape is terminal values `{m,n}` with `m<n` and atlas binding support `{m}`: `hlb`, `hattain`, and clause (i) hold, but clause (ii) fails at `n`. This is not a concrete `coreGen` counterexample; achievability by the real atlas depends on an unstated leaf-surjectivity theorem.
+
+3. SOUND  
+[Fact] Clause (i), `minAdm_le_terminalExponents`, and `qipMin_eq_minAdm` give `hlb`, with the `ℕ→ℤ` cast preserving order. Positive widths and `o5_core_realized` provide `l,k` with `divExp k = minAdm`; clause (ii) supplies the required chart axis. Chaining those equalities with the bridge gives `hattain`. No derivation gap appears under the stated hypotheses.
+
+4. GAP  
+[Fact] `AtlasRealizes` equates only supports of natural-number exponent values; it records no chart–leaf map, multiplicities, divisor identities, profiles, coordinates, or compatibility of geometric maps with Engine steps. One chart axis can represent arbitrarily many distinct leaves carrying the same value, and axes may match unrelated leaves. Thus it is adequate for the numerical minimum theorem but does not formalize the stronger claim that “the geometric charts realize the built resolution tree.” [Inference] A name such as `TerminalExponentSupportMatches` would accurately describe the existing predicate.
+
+Most important escalation: clause (ii)’s unused all-leaf surjectivity needs either a structural geometric proof or weakening to realization of the minimizing exponent.
