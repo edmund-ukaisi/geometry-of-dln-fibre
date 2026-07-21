@@ -9472,3 +9472,36 @@ severed at the endpoint." The terminal_deg1_gap probe = the boundary-axis exempl
 bank. arch-C's canonCenter bake round now carries: canonCenter + reachesLeaf pin + L7 lift + the
 L4/L3 non-terminal guards + the terminal_edge_stepInv obligation (as a leaf or named L5 step) +
 docstring corrections; contract-9 re-gate with the probe as regression witness.
+
+## 2026-07-21 (controller) — canonCenter round LOCKED (5 items, cone 8→9); M4 import-DAG obstruction → additive escape; L4 probing conjunct-2
+
+**arch-C locked the round** (elder ratification satisfied, no bake-hold; seat renders, arch-C
+gates + bakes): (1) canonCenter + reachesLeaf pin + L7 lift; (2) L3+L4 non-terminal guards
+(`ed.nextState.layer < N` — L3 same-shape VERIFIED by both arch-C and seat-L4 independently);
+(3) **terminal_edge_stepInv as a NEW LEAF-LEMMA** (the rider's named obligation; case-blind;
+parent FoldStepInvAt ⟹ child unit-residual StepInv, NO Deg1 in the conclusion — const 1 isn't
+Deg1, which is the point; parent interiority self-implied since Deg1 fails on terminal parents);
+(4) the :586–591 docstring correction; (5) the terminal_deg1_gap probe banked as the LAYER-axis
+witness. **The invariant chain is now complete and honest: L3/L4 interior Deg1 preservation →
+terminal_edge_stepInv (last-edge transport) → terminal_bezout (upgrade to PrincipalInv).**
+CONE GROWS DELIBERATELY: MonumentAtlas 6→7, full 8→9 — named in advance so the census doesn't
+false-alarm.
+
+**seat-core M4 stop-on-suspect + disposition:** the naive derivation is blocked by the import DAG
+(OriginBlowup strictly UPSTREAM of BlockBlowup; jacDet_blowupMap self-consumed + an AxCheck root
+— a body-level rewrite would need a cycle). Controller option (a)+: the dedup content lands
+ADDITIVELY DOWNSTREAM — a new unconditional corollary in BlockBlowup (the origin law for ALL D,
+derived from jacDet_blockBlowupMap + blockBlowupMap_univ; records the hD:2≤D redundancy finding
+in the tree), cross-refs both ways, OriginBlowup untouched. Option (b) (import restructure, true
+relocation) ROADMAPPED post-lane — non-additive, wrong time mid-monument-lane. M9 approved at
+seat-core's strict-weakest per-lemma targets (MulOneClass pointwise / CommSemiring comb /
+Mul-One on defs; continuity stays ℝ; rfl bridges validated first; uniform-CommRing rejected as
+decorative).
+
+**seat-L4 pre-proof verification (endorsed):** before Lean investment it is numerically checking
+conjunct-2 (the child Deg1 re-factorization) at (3,3,4) — the case12 concern: a pivot that is an
+EXISTING d-block residual coord would pull back to a unit child entry (the same unit-vs-degree-1
+mechanism, on an INTERIOR edge). If the battery shows it → second stop-on-suspect (statement
+defect in anchor (v), routes to elder+arch-C); if fresh-exceptional-always → GO with the battery
+as witness. Develops in a separate Case1Wire.lean (parallel-dev vehicle); the leaf fill lands at
+integration.
