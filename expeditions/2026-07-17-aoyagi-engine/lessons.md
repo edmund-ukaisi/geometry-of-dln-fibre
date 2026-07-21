@@ -71,3 +71,13 @@ the trail is local):
   it. Note orphans and WAIT (the `scripts/lb` semaphore caps runaway workers anyway); do NOT rabbit-hole into
   process forensics + killing. When the operator is actively managing a teammate, go hands-off: no cross-talk,
   no touching its worktree/procs. Same stay-out-of-the-grind + diagnose-first-don't-race family.
+- **An unpushed agent branch is NOT banked — the VM death cost us the blueprint (2026-07-21).** Teammate
+  briefs said "commit on your branch, do NOT push (the controller integrates)". The VM died; every unpushed
+  worktree branch vanished — including the architect's entire A–E blueprint (~430 LoC + its repair,
+  2f9ddd66b/84871a088). Branch pushes are PRE-AUTHORIZED (standing instruction) — withholding them bought
+  nothing and risked everything. RULE: any teammate producing a substantial artifact (a module, a cert with
+  batteries, >~50 LoC) pushes its worktree branch to origin ON COMMIT — integration review is unchanged
+  (the controller still gates what enters the expedition branch); the push is a BACKUP, not an integration.
+  Controller: put "push your branch" in every build-seat brief; on receiving a report, verify the branch is
+  on origin before relying on it. (Mitigation that saved us this time: a pre-death flush banked the
+  integrated cordon chain + all certs; only the never-pushed architect branch died.)

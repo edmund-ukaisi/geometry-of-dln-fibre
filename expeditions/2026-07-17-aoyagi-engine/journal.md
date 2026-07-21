@@ -7425,3 +7425,30 @@ elder `ab414ff…` (compaction/§1/4-bars/transferability — isolated worktree,
 `ae112f3…` (batch the axiom gate 12min→~20s + before/after timing — isolated worktree, commits-to-its-branch-not-pushed,
 integrate on report); review task #46 (comprehensive cordon review, blocked on batching). Cordon leaner-refactor
 + #45 hardening already banked to origin (8722f773d).
+
+## 2026-07-21 tick 43x: VM DIED → fresh-VM reorientation — loss inventory + the codex-vs-rev-fidelity adjudication
+VM died mid-flight; new VM, fresh clone, all worktrees gone. A pre-death flush banked nearly everything to
+origin (tip a6fe364a1). **SURVIVED on origin:** the FULL cordon chain (leaner refactor 408ace6b4 → #45
+hardening 8722f773d → batched gate a35c61323 → 3-review hardening 8a6f232c1, cordon-test 42/42 — note its
+message says "pending controller AxCheck-build calibration", still owed on this VM); elder charter/compass
+(2d2131a68); pnp thread-27 (130b266b5) + thread-28 (a6fe364a1) certs+batteries; thread-29 codex consult
+prompt+answer (1986be19d); all lessons; the 69-branch origin cleanup. **LOST:** (1) THE BLUEPRINT Lean
+modules — the architect's worktree branch (2f9ddd66b original, 84871a088 repaired) was never pushed;
+~430 LoC + repair gone. (2) The tier-3 uncaptured worktrees (integrate-phip4, genm-deepcov-review, 3 bare
+agent worktrees) + all tier-4 dirty uncommitted work — flagged pre-rotation, died uncaptured. (3) cordon-harden's
+branch (content INTEGRATED in 8a6f232c1 first — nothing lost).
+**ADJUDICATION (controller, arithmetic checked): codex FAIL (1986be19d) BEATS rev-fidelity PASS.** The v2
+repair fixed vacuity/circularity but RELOCATED the dodge: `properMapRlctInvariance` asserts the CoV rlct
+equality for an UNCONSTRAINED g (no properness/actual-Jacobian/atlas certificate) and C's axis-only boxed
+rule misses coupled Newton valuations. Counterexample (verified by hand): N=1, d=(1,2), g=(xy²,x²y) —
+ideal_identity/vanish/divisor_spec/side-conditions ALL hold, but weighted threshold = 2/3 (∫r·r²·r^{-6c}dr
+⟹ c<2/3) vs rlct(coreLoss)=1 and axis-ratios=1; |det Dg|=3x²y² ≠ jacWeight(1,1). Also: existence false at
+zero-width (Gqip=0 unreachable by jac+1∈ℕ+); corollary never obtains res (B's existence off the cone); E
+placeholder. SO: the lost v2 was NOT sign-off-ready — the loss is scaffolding that needed v3 rework anyway;
+ALL design intelligence (architect reports + rev-fidelity R1/R2 + codex defect list) survives in-context +
+on-origin. **BLUEPRINT v3 SPEC (the enriched rebuild):** atlas-level resolution certificate with ACTUAL
+Jacobian data (certified field, not asserted weight); principal-normal-crossing condition or the genuine
+Newton-polyhedron rule for C; nondegeneracy hypotheses on existence; divisor_spec weakened to min-attainment
+(R1); closed wrapper corollary (obtain res + discharge regularity internally, R2); A/D structure KEEP (B
+non-vacuous ideal_identity, D combinatorial bridge via Core cCodim_eq_qipMin, transfer DERIVED — all three
+reviews agree these are right). Fresh-VM infra: mathlib store rebuilding (lake-store-setup rev 8a178386).
