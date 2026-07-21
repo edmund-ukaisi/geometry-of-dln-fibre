@@ -492,7 +492,17 @@ outside the center, so the UNCONDITIONAL form is undischargeable; the `δ=1` gua
 center-support link is both needed (the strict-transform division) and true. It is the construction's
 DEFINITIONAL truth at δ=1 — `coreGen` entries lie in ⟨layer-1 coords⟩ (each = Σ layer-1-coord ·
 deeper-cofactor) so the layer-1 center discharges it — so L5 supplies it for free; no spurious-hypothesis
-smell. Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the
+smell.
+
+**DEFECT (rev-rungc-fidelity, CONFIRMED): the above reasoning is UNSOUND — `hsupp` as `SupportedOn`
+(ideal membership) is MONOTONE in the center, so it admits over-large centers (not just the layer-1
+one), for which the δ=1 substitution over-divides and BOTH leaves are FALSE-AS-STATED.** The
+"layer-1 center discharges it" is true but does not exclude the bad centers the `∀ ed` also ranges over.
+Witness + repair: see the L4 leaf docstring below and the thread-36 statement card. `hsupp` must be
+strengthened to center-EXACT degree-1 (or `ed.center` pinned). L6/L7 carry the analogous free-field
+defect (`GeoAtlasData.jac` / `FoldProduced` coverage). Elder re-statement routed; leaves HELD.
+
+Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the
 path node and one outgoing edge; `δ = [J=0]` off `p.conState.cleared` (`edgeδ`, UNIFORM across
 sub-cases). Rollover is off the `isCase2`/`isCase1` filters by construction (`localSub = id`).
 
@@ -531,12 +541,26 @@ so `∘ blockBlowupMap` gains `u_p`). ONE center, the merge/split pivots handled
 (as case-2 — S3 via `hinv` + `stepMap_zero`, divisibility pullback-structural, `hsupp` consumed). NB
 `CenterCoordAligned` is NOT the division mechanism: injectivity ≠ divisibility-preservation (seat-L4
 `shear_gap.lean` — an injective `φbad` that BREAKS the δ=1 division), so it stays a geometry/injectivity
-field for L6/L7; the exact `u_p` division rides `hsupp` + `BlockDivision`. **(A′)** the δ=1 `foldResid`
-strict transform is the `blockBlowupCoordQuot` substitution stand-in; degree-1-preservation (each
-residual entry a single center coordinate × a center-disjoint tail) = the re-factoring content of THIS
-wall, NOT an additional frontier item (the elder's knowing downgrade of the no-obligation want — no
-reviewer should read the substitution/factored gap as an unnoticed defect). Anchor (v) — the case11
-re-factoring check at (3,3,4) — verifies exactly this, discharged at seat-L4's wire-up reconciliation. -/
+field for L6/L7; the exact `u_p` division rides `hsupp` + `BlockDivision`.
+
+**FALSE-AS-STATED — CONFIRMED FIDELITY DEFECT (rev-rungc-fidelity, 2026-07-21; see the thread-36
+statement card).** The former **(A′)** claim ("degree-1-preservation = the re-factoring content of THIS
+wall, not an additional frontier item; no reviewer should read the substitution/factored gap as an
+unnoticed defect") is **RETRACTED — it is FALSIFIED.** A deferrable proof obligation must be
+true-but-unproven; this leaf is FALSE (a counterexample satisfies EVERY hypothesis), so no proof exists.
+Machine-checked witness: `N=2`, `d = ![1,2,1]` (`coreGen 0 = u₀u₂ + u₁u₃`), `p = root`, `ed` with
+`center = {0,1,2}`, `pivot = 0`, `shearφ = 0`. `hsupp` holds (`u₀u₂+u₁u₃ ∈ ⟨u₀,u₁,u₂⟩`, ideal-membership
+is MONOTONE in the center), `hcase1`/`hcase2` and `hinv` hold — yet at `u = (2,1,1,-1)`:
+`(coreGen 0 ∘ foldG) = u₀²u₂ + u₀u₁u₃ = 2` while `foldB · foldResid = u₀·(u₂+u₁u₃) = 0`, so
+`StepInv`'s divisor clause `(F∘g) = ∑ q·(b·resid)` is unsatisfiable. **Root cause:** `hsupp`
+(`SupportedOn` = ideal membership: each residual monomial has ≥1 center factor) is TOO WEAK — the
+substitution stand-in (`blockBlowupCoordQuot`, divides the pivot ONCE) equals the strict transform only
+under **center-degree-1** (each monomial has EXACTLY one center factor). The intended layer-1 center
+`{0,1}` is center-degree-1, but ideal-membership admits the over-large `{0,1,2}` too. **Degree-1 is a
+MISSING HYPOTHESIS, not proof content.** Repair (elder re-statement call — routed): strengthen `hsupp`
+to center-exact degree-1 (each `resid_j = ∑_{i∈center} c_{ji}·u_i`, coeffs center-independent), OR pin
+`ed.center` to the construction's layer center (the coordinate bridge, now shown NOT deferrable for
+L3/L4). The composition intent survives (L5 only supplies layer centers); the LEAF is over-general. -/
 @[blueprint]
 theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)

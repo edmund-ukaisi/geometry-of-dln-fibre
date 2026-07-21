@@ -2,7 +2,49 @@
 
 Commit SHA: **`27ef12c25`** (branch `expedition/aoyagi-engine-rung-c`, parent `3b03fe375`).
 Gate for this thread = **elaboration + cone-shape, NOT sorry-free** (a typed/sorried/wired forecast
-ladder; the 8 leaves are the frontier, L4 the wall). Bump the SHA at controller integration.
+ladder). Bump the SHA at controller integration.
+
+---
+
+## ⚠ FIDELITY REVIEW — BROKEN (rev-rungc-fidelity, 2026-07-21; decorrelated Codex + machine-checked)
+
+The MECHANICAL gate passes (build green 8449; `#audit_blueprint` both drivers rest on exactly the 8
+leaves; `#print axioms` = `[propext, sorryAx, Classical.choice, Quot.sound]`; cordon OK). The CONTENT
+does not: **L3, L4, L6, L7 are FALSE-AS-STATED**; L5, L8 are under-claims. Independently re-derived by
+the architect (StepInv divisor `= b·resid`; `TreeEdge.center` is a FREE field; `hsupp` = ideal
+membership is monotone in the center) and machine-checked against the real `blockBlowupMap`/
+`blockBlowupCoordQuot`.
+
+**Root cause (single).** Structural fields the construction FIXES are left FREE/unpinned in the leaf
+hypotheses, and the guarding hypotheses are too weak to exclude the bad instances:
+- **L3/L4** — `ed.center` free; `hsupp` = `SupportedOn` (ideal membership: each residual monomial has
+  ≥1 center factor) is MONOTONE in the center. Witness `N=2`, `d=![1,2,1]` (`coreGen 0 = u₀u₂+u₁u₃`),
+  `center={0,1,2}`, `pivot=0`, `shearφ=0`: `hsupp`+`hcase`+`hinv` all hold, but at `u=(2,1,1,-1)`
+  `(F∘foldG)=u₀²u₂+u₀u₁u₃=2` while `foldB·foldResid=u₀(u₂+u₁u₃)=0` — divisor clause unsatisfiable. The
+  δ=1 substitution equals the strict transform only under **center-degree-1** (each monomial EXACTLY one
+  center factor); ideal membership admits the over-large `{0,1,2}`. **(A′) is falsified: degree-1 is a
+  MISSING HYPOTHESIS, not deferrable proof content.**
+- **L6** — `GeoAtlasData.jac` free, not tied to `gmap`'s actual Jacobian; L6 takes a bare atlas (no
+  `FoldProduced`), so `chart.hjac` (`|jacDet gmap| = jacWeight(jac)·|unit|`) is unsatisfiable for a
+  mismatched `jac`. L6 HARD LOCK (`nbhd ≠ univ`) is a render-time check, NOT a statement property.
+- **L7** — `FoldProduced` has NO chart-image coverage clause; a single-pivot `blockBlowupMap` atlas
+  satisfies every clause yet its charts' images miss a ball about 0 → no compact ball-cover.
+
+**Repair (elder re-statement call — ROUTED, leaves HELD, statements unchanged pending ruling):**
+strengthen `hsupp` to center-exact degree-1 (`resid_j = ∑_{i∈center} c_{ji}·u_i`, coeffs
+center-independent) OR pin `ed.center` to the construction's layer center; add `FoldProduced` (or the
+explicit `jac = ∑ steps.jexp` tie) to L6 and a coverage clause to `FoldProduced` for L7. The coordinate
+bridge (thought deferrable) is NOT deferrable for L3/L4/L6/L7. **The composition intent SURVIVES** — L5
+only ever supplies layer centers / real charts; the leaves are OVER-GENERAL, not a dead route.
+
+**FAITHFUL (verified):** L1 `principalInv_regionRepresents`; `terminal_bezout`; item-7 edge-analyticity
+(`analyticOnNhd_edgeShear`/`_stepMap`/`continuous_stepMap` true + unconditional; dropping foldG-analyticity
+leaves no gap). L8 matches `AtlasRealizesExponents` (Type 0, no universe mask) but is a re-read of
+`FoldProduced`, not the exponent-realization content itself.
+
+Artefacts: Codex prompt/answer under `…/threads/36-leaf-fidelity/codex/fidelity-{prompt,answer}.md`.
+The cards below record the leaves AS RENDERED (pre-repair); the ⚠ status supersedes their "kill"/
+"faithful" annotations for L3/L4/L6/L7.
 
 ---
 
@@ -23,7 +65,9 @@ ladder; the 8 leaves are the frontier, L4 the wall). Bump the SHA at controller 
 >   Quot.sound]` (the `sorryAx` is the leaf set; no unaccounted axiom, no `native_decide`).
 > - **Assumed / Forecast.** the 8 leaves (Cards 1–8). Nothing else.
 > - **Cited.** none new (rests on the banked adapter + Engine combinatorics, axiom-clean).
-> - **Status.** REIFIED (skeleton green, cone = 8). Fidelity review REQUESTED (controller-spawned).
+> - **Status.** Skeleton REIFIED (green, cone = 8) but **content BROKEN** — see the ⚠ FIDELITY REVIEW
+>   banner above. The driver's REDUCTION to the 8 leaves is sound Lean; 4 of the 8 leaves it reduces to
+>   are false-as-stated, so the driver cannot be discharged until they are re-stated (elder call routed).
 
 ---
 
