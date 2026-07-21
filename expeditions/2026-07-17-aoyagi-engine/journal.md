@@ -8131,3 +8131,29 @@ DISPATCHED: rev-leaves resumed for the DIFF-SCOPED re-verification (equilibrium 
 Case1Preservation); W0+L3 SEAT COMMISSIONED (the wave's first seat — substrate atoms + the clean-case
 preservation; statement-locked signatures first so seat-L4 builds against them). L4/L5/L7 seats + the
 coherence hunt follow on rev-leaves' clean re-check.
+
+## 2026-07-21: ROUND-2 RE-CHECK — four fixes PASS; NEW BLOCKING: L7/L8 FALSE (free atlas); L4 SEAT OPENS
+rev-leaves' diff-scoped re-verification: all four fixes PASS with block-reasons verified (the old
+¬TerminalBezout witness dies at exactly `0 ∈ V`; the Case1Preservation collapse is jointly-
+unsatisfiable-dead — two children genuinely forced). NEW BLOCKING (its hypothesis-suffices sweep on
+the changed statements): **L7 and L8 are FALSE as stated** — both take a FREE `atlas : GeoAtlasData`
+with no tie to the fold/tree. Lean refutations (controller re-ran, EXIT 0, banked thread-36):
+l7probe (degenerate atlas: n=1, steps=[], gmap=id, dom={0} — no ball in {0});
+l8probe (adversarial jac = sum+1 vs single_le_sum). Root cause: the fold's guarantees never reach
+L7/L8 through a bare atlas; FIX-2's correct deletion exposed that the false chain hypothesis had been
+L8's ONLY (wrong) tree-link; arch-C's case-2-b'-law note was a symptom. rev-leaves owned missing L7 in
+round 1 (statement was unchanged then — the free-atlas class needed the hypothesis-suffices lens the
+reification gate now mandates). DISPATCHED: arch-C — anchor the atlas via a PROVENANCE PREDICATE
+(FoldProduced: chart↔branch correspondence, σ-list/ledger provenance, final-region domains), L5
+concludes it, L7/L8 hypothesize it; controller steer: definitional bookkeeping only, do NOT fold the
+cover proof into L5 (preserves the two-concurrent-poles wave shape); any non-definitional clause =
+an honestly-named new leaf, surfaced not buried. Gate: l7/l8 refutations must DIE; PrincipalInv.lean
+untouchable (L3/L4 sound). AxCheck stale D3 comment fixed (mine — the accounting note now records the
+excision). SEAT-L4 COMMISSIONED (the wall, dedicated): statement verified sound twice; thread-34
+playbook + branch-δ-law; interior-state kill-set (3,3,4)/(3,3,2,2)/(2,2,3,2); statement-lock +
+stop-on-suspect; W0 consume-don't-block. seat-w0l3 running (task list shows a forming D=0 flag on
+Case2Preservation — awaiting its report, not preempting). L5/L7/L8 seats HELD on the anchoring.
+ALSO COMMISSIONED (operator): scout-mine (the long-range paper-mining sweep — the "Aoyagi already
+showed the way" pattern, both directions, wiring map) + elder-v3 standing charge (the comprehension-
+level comb, decorrelated from the scout; O-audit refresh; stop-on-suspect on anything touching
+reified statements).
