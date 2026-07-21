@@ -7884,3 +7884,18 @@ tide: honest recalibration, the shared atom banked universal, the wall dissolved
 cleanly teed up. Fresh seat dispatched for rung (B): instantiate at D = flatDim ![1,2] + the coreGen
 linearity iso L + the seam (o5_core_realized + minAdm ![1,2]=2 decide) — the first end-to-end discharge
 of the geometric obligation's body on a real singular instance.
+
+## 2026-07-21: OFFICE ROUND (operator-prompted; audits due/overdue by the cadence)
+Honest audit-timeline: ELDER = standing (elder-v3 resumable, context-carrying — but its last engagement
+PREDATES the recalibration; the 8-leaf/PrincipalInv ladder is a route adoption that had NOT passed its
+gate). NAVIGATOR = never convened this phase (cadence lapsed several times over). CARTOGRAPHER = never
+convened this phase; the map re-root queued at strike opening was never executed — claims.yaml/STATUS
+are pre-checkpoint stale (position carried in journal+tasks, decaying as the charter warns).
+DISPATCHED: (1) elder ROUTE GATE on the 8-leaf PrincipalInv decomposition (before rung (C) reifies it)
++ shear-pin-vs-paper-images cross-check (it has poppler) + smell test of OriginBlowup/
+AtlasRealizesExponents; (2) navigator FIRST convening — position vs the §2 progress bar, the post-(C)
+parallelisation plan (which leaves parallel, pnp pre-adjudication of walls 4/7, hygiene sequencing),
+gate verification from outside (banking counts, card states), calibration-ledger pattern read;
+(3) cartographer FIRST convening — the overdue re-root (claims.yaml.proposed on the A–E frame, STATUS
+rewrite, forwarding pointers for the phase's renames, diff-then-judge archive). seat-d12 grinds rung (B)
+in parallel.
