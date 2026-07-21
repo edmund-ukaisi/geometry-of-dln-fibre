@@ -1341,6 +1341,10 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- ⟹ the leaf's hlb ∧ hattain, riding the salvaged Engine combinatorics + the qipMin=minAdm=cCodim
 -- bridge. Clean-three; the fossil ClearableReify sorry is OFF this cone (controller C1 re-audit).
   DLNFibre.DLN.Aoyagi.hlb_hattain_of_atlasRealizesExponents,
+-- ★ RUNG (B) — the d=(1,2) end-to-end discharge (seat-d12): the geometric obligation's BODY satisfiable
+-- at the first singular instance + THE FIRST PROVEN LC INSTANCE through the new machinery (cite-free).
+  DLNFibre.DLN.Aoyagi.exists_atlasRealizesExponents_d12,
+  DLNFibre.DLN.Aoyagi.two_mul_rlctAt_coreGen_d12,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from

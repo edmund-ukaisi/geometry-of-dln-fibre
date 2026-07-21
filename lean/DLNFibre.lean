@@ -1572,3 +1572,4 @@ import DLNFibre.Core.Aoyagi.AreaFormula
 import DLNFibre.Core.Aoyagi.ResolutionInhabited
 import DLNFibre.Core.Aoyagi.BlowupResolution
 import DLNFibre.Core.Aoyagi.OriginBlowup
+import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
