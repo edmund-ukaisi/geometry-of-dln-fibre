@@ -167,6 +167,7 @@ import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.Core.Aoyagi.BlowupResolution
 import DLNFibre.Core.Aoyagi.ResolutionInhabited
+import DLNFibre.DLN.Aoyagi.OrderBinding
 import Meta.Cordon
 
 /-!
@@ -1357,6 +1358,13 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.Core.Aoyagi.blowupResolution2,
   DLNFibre.Core.Aoyagi.allOnesResolution,
   DLNFibre.Core.Aoyagi.idResolution,
+-- Object E / P6.1 (operator-opened 2026-07-21, elder-ratified): the banded-interval arithmetic
+-- and its θ-attachment at the certified selector. Must stay clean-three. The ρ-identification
+-- (P6.2: max-crossing over terminal divisors, two incidence lemmas) and the analytic pole seam
+-- are DEFERRED and never smuggled in here.
+  DLNFibre.Core.Aoyagi.OrderCount.bandCount_eq,
+  DLNFibre.DLN.Aoyagi.bandCount_eq_aoyagiTheta,
+  DLNFibre.DLN.Aoyagi.thetaCount_eq_aoyagiTheta,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from

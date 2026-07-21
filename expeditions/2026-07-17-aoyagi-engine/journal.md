@@ -9688,3 +9688,23 @@ CORRECT (the guarded statement exists only post-bake); the rebase-ready signal f
 integration of arch-C's baked round. Semaphore contention noted (three seats + controller
 queueing today) — priority order affirmed: the render seat's authoritative gate build first,
 controller gates second, seat re-confirmations third.
+
+## 2026-07-21 (controller) — E-LANE TIER 2 INTEGRATED: the θ-attachment is banked, batch-gated, clean-three
+
+**Both E-lane tiers now live on the expedition branch, controller-gated:** the full-tree build
+GREEN (8989 jobs — INCLUDING the AxCheck batch gate over the three newly registered roots:
+bandCount_eq, bandCount_eq_aoyagiTheta, thetaCount_eq_aoyagiTheta), cordon both halves OK, and
+after merging seat-E's post-build lint delta the OrderBinding module was FORCE-REBUILT (touch +
+lb, 3916 jobs) + all four probes re-elaborated clean-three. OrderBinding wired into the
+aggregator with the P6.2-deferral docstring. Two independent sensors agree (my warm-tree gate +
+seat-E's cold-worktree build with its own force-elaborated probes). The θ-name is now legally
+attached: bandCount = aoyagiTheta unconditionally, thetaCount d r = the certified pin-(a)
+instantiation, K1 ground truths build-enforced. The ρ-identification and the analytic seam
+remain named deferrals — the AxCheck comment fences them.
+
+**seat-E protocol fix (4th inbox-drain miss):** its Tier-2 confirmation again asked for the
+P6.2 shape sent twice already, and held "genuinely blocked" while an UNBLOCKED action (the P6.2
+tiering proposal) sat in its inbox. New standing requirement for seat-E: drain inbox before
+composing; open every report with a one-line ack of the latest controller message. Its next
+action restated a third time: the TIERING PROPOSAL for the two incidence lemmas (UPPER +
+ATTAINMENT) against the elder-ratified shape — not waiting on any further signal.

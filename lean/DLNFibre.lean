@@ -1587,3 +1587,6 @@ import DLNFibre.DLN.Aoyagi.MonumentAtlas
 -- the a(ℓ−a)+1 arithmetic (perJCard_eq_paper = the p.26 fidelity anchor). Count/multiplicity
 -- identifications deferred (P6.2 pnp-gated); θ-name enters at Tier 2 only.
 import DLNFibre.Core.Aoyagi.OrderCount
+-- Object E Tier 2: the θ-attachment (bandCount = aoyagiTheta, unconditional) + the certified-selector
+-- instantiation thetaCount d r (pin (a): paperEll/residueA). ρ-identification stays P6.2-deferred.
+import DLNFibre.DLN.Aoyagi.OrderBinding

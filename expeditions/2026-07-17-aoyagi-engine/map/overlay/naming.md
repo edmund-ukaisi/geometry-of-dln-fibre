@@ -60,6 +60,24 @@ current).*
 `overlay/archive/{banked-families,dead-routes,landmark-cards,paper-anchors,import-hygiene,wiring-endgame}-chart-era.md`.
 The live paper-fidelity registry is now **compass.md § Paper-fidelity ledger** (elder-owned).
 
+### Thread-dir numbering — collision disambiguation (carto pass #2, 2026-07-21 evening)
+
+Two `threads/41-*` dirs coexist (suffix-disambiguated, the established convention here —
+`16-`/`18-`/`19-`/`40-` all have the same shape). **NO rename** (expensive post-merge; both are
+committed/merged — `41-rho-count-object` merged at `0abb4c8e1`). A pointer resolves it:
+
+- **`threads/41-order-count/`** — seat-E (lean-formaliser), branch `expedition/aoyagi-engine-E`.
+  **P6.1** band arithmetic, node `e-p61-band-arithmetic` (`Core/Aoyagi/OrderCount.lean`); Tier-1
+  statement card.
+- **`threads/41-rho-count-object/`** — pnp (decorrelated), branch `thread/41-rho-count-object`.
+  **P6.2** ρ count-identification, node `e-p62-count-identification`; the deepest-stratum max-crossing
+  certificate + `rho_battery.py` (now graduated to `battery/` with `_edgespec_traversal_334.py` as its
+  runner-skipped helper).
+
+The SEMANTIC `P6 → P6.1 / P6.2` split pointer waits on the elder's owed-register event-update (the
+register text is the elder's pen); the node ids above are already in `claims.yaml` (controller,
+evening refresh) and are the grounded references meanwhile.
+
 ## ═══ chart-era pointers below (HISTORICAL — read through RETIRED.md) ═══
 
 *Created pass #1; **REFRESHED pass #2 (2026-07-18)**: the council-adopted restructure has LANDED
