@@ -8240,3 +8240,16 @@ resumes into the wall (both earlier resumes re-failed within minutes — thrashi
 controller tick at 15:52 tests capacity with ONE resume (arch-C, critical path), then staggers the
 rest one at a time. No new spawns until all four are stable. Lesson reinforced: push-on-commit +
 the securing sweep meant the overload cost ZERO work — only latency.
+
+## 2026-07-21 ~15:45: RECOVERY — arch-C back + AMENDMENT BANKED (248c34615); staggered resumes underway
+arch-C acked the capacity-test resume, recovered cleanly from the controller-secured WIP, and BANKED
+the FULL amendment round on its branch: S1 (block-center blockBlowupMap, full-ambient gone), S2
+(EdgeSpec with δ=[J=0] uniform + one-center-two-forced-distinct-pivots), S3 (StepInv deepest-point
+vanishing), 0<D both Props, FoldProduced anchoring for L7/L8. Driver cone re-audited = the leaf set
+(O9 atom correctly OFF-cone). It is finishing the probe-flip verification (S3-updated root_probe;
+l4probe_refute + l7probe + l8probe must die) + cordon — full gate report pending. seat-w0l3 resumed
+(finish jacDet_blockShear → O9 PROOFS lane in arch-C's BlockBlowup.lean, arch-C keeps signatures →
+re-price L3 against the amended statement). Stagger tick re-armed (16:06) for seat-L4 + scout-mine
+if stability holds. NEXT at arch-C's gate report: controller ground-truth (build/batch/cordon/cone +
+all four probe-flips re-run MYSELF) → merge → rev-leaves round-3 (diff-scoped) → elder post-hoc
+ratification of the rendering → wave go-signals against statements that finally match the paper.
