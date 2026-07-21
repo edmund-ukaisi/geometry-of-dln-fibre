@@ -9101,3 +9101,20 @@ change) and (b) (summit conditional on a named bridge dependency = destination-a
 what "the 8 leaves land" delivers — the decision-ready packet goes to the operator after the check +
 the elder's analysis return; per the autonomy rule this is wait-for-explicit-go territory if (c)/(d)
 don't dissolve it. The wall's rebase signal follows the subset bake's green re-gate.
+
+## 2026-07-21: THE (a)-RULING — bank the combinatorial strengthening, banner the bridge-gate, surface the destination
+The decorrelated check closed by CONVERGENCE (the render seat independently hit the same wall via
+the oracle's localSub-placeholder route; its ∅-center witness = the all-charts-one-x witness in
+another dress). CONTROLLER RULING, split where the authority splits: (a)'s RENDER is authorized
+(ladder-level — a real strengthening: the collision witness dies at combinatorial branch-membership;
+the residual named honestly: L7 = "false-as-stated-pending-bridge," joining edgeCenter's deferral);
+the DESTINATION CHOICE — bridge in-scope vs summit-modulo-named-dependency — is the OPERATOR's
+(wait-for-explicit-go: it decides what "the 8 leaves land" delivers), packet prepared on the elder's
+analysis return (the P12-corrected bridge cost — the cross-namespace tie alone — is its load-bearing
+number; option (c)'s feasibility rides the same return). THE HONEST GATE DESIGN: the coordinate-
+coverage witness (all-charts-one-x) is EXPECTED TO SURVIVE the re-gate and gets banked as THE
+bridge-gate witness — its survival IS the record of what's deferred. The whole round (re-statement +
+FIX 1 + FIX 2-combinatorial) bakes with the bridge-gated card line: "the driver's cone rests on L7,
+whose coordinate-coverage soundness is gated on the Engine↔Aoyagi flatDim bridge — the operator's
+scope ruling pending." No further L7-dependent work schedules until the operator rules; NOTHING ELSE
+WAITS — the wall's rebase signal follows the bake's green report.
