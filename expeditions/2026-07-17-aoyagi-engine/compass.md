@@ -134,6 +134,17 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   (EdgeSpec) serves both roads; do not multiply clauses beyond need (the card-tie may be derivable
   from the ledger-tie + squarefree).
 
+- **The per-field severance audit (elder, 2026-07-21, after the (A′) reversal).** hsupp closed the
+  center's CONTENT axis (support ⊆ center); its ⊆-monotonicity left the SIZE axis open — an
+  over-large center passes ideal-membership while the substitution form over-divides (the d=![1,2,1]
+  witness, THE center-size-axis regression). The (A′) ruling's reachability argument audited the PATH
+  axis and missed the CENTER FIELD's freedom — the disease's sixth instance, the elder's second
+  personal axis-miss. THE PRINCIPLE, now a standing guardrail: **every free field on a quantified
+  structure is its own severance axis — the audit is per-field, never per-statement.** The repair:
+  hsupp′ = center-EXACT degree-1 (coefficients center-independent, the agreement form) REPLACING
+  hsupp; degree-1 re-established per-node inside L5's fold (the re-factoring content, now a stated
+  obligation).
+
 ## The honest gap — coupled-B, stated plainly (front-and-centre)
 - **KNOW:** clean regime exact (F3); `⟨∏C⟩=⟨diag(b)⟩` transfers as an ideal fact (F2); the coupling is
   real and flatten breaks (F4); minAdm = cCodim banked (D); the category error forces the ideal route (F1).

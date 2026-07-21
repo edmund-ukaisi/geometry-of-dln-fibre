@@ -9010,3 +9010,21 @@ INTEGRATION HELD. Verified faithful: L1, terminal_bezout, item-7. The system not
 caught by its OWN mandated post-bake review before integration — the fifth consecutive
 statement-defect caught before any proof investment, and the first one caught AFTER a "final" ruling,
 which is exactly why the review runs after the bake and not only before it.
+
+## 2026-07-21: THE RE-RULING — (i) hsupp′ REPLACES hsupp; the per-field audit principle enters the guardrails
+The elder verified the witness end-to-end before ruling (the pullback u₀²u₂ + u₀u₁u₃ — MIXED
+u₀-orders; the substitution divides the first monomial twice), owned the blind spot precisely ("I
+audited the PATH axis and not the CENTER FIELD's freedom — my second personal axis-miss"), and ruled:
+hsupp′ = the center-EXACT degree-1 form REPLACING hsupp (strict subsumption ⟹ one clause), the
+AGREEMENT-form encoding (two-point center-independence — supersedes update-invariance; choice-free);
+(ii) REJECTED with the bridge-risk ruled explicitly (the layer partition is Finset-definable from d,
+but the k-step re-coordinatization slot-bookkeeping is the fabrication trap — (ii) collapses into
+(i)); under (i) the substitution form is CORRECT ON ITS HYPOTHESES (no representation round);
+FoldStepInv unchanged ⟹ degree-1 re-established per-node inside L5 (the propagation disposition,
+made explicit in the render GO with a surface-back instruction if L5's induction can't be stated
+without a carried clause). RESTORATIONS ordered from the ratified record: L6's jac ledger-tie,
+L7's coverage/provenance clauses (the foldState rework had dropped ratified text); L5/L8 fixed same
+round. The d=![1,2,1] witness = THE center-size-axis regression, banked beside the Σw² content-axis
+family. THE GUARDRAIL (register + leaf-file + compass, applied): "every free field on a quantified
+structure is its own severance axis — the audit is per-field, never per-statement." arch-C renders;
+integration stays held; then — the elder's words — "render, re-gate, and THEN the wall."
