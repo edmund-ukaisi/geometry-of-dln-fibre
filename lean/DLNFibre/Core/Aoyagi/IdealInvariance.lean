@@ -75,6 +75,18 @@ def GermRepresents {m p : ℕ} (G : Fin p → (Fin n → ℝ) → ℝ)
     (∀ i j, ContinuousAt (a i j) x) ∧
     (∀ᶠ w in 𝓝 x, ∀ i, G i w = ∑ j, a i j w * F j w)
 
+/-- **Region ideal membership** `Gᵢ ∈ ⟨F⟩` **on a set `V`** by a representation whose coefficients
+are continuous ON `V`: `Gᵢ = ∑ⱼ aᵢⱼ · Fⱼ` for all `u ∈ V`. The DOM-WIDE strengthening of
+`GermRepresents` (which binds only the germ at a point) — required by Object B's charts so the ideal
+identity holds throughout a chart's domain, not merely at its origin (else a chart could cover far
+regions where the identity fails). For polynomial/analytic `F, G` the cofactors are polynomial, hence
+continuous on any `V`. -/
+def RegionRepresents {m p : ℕ} (G : Fin p → (Fin n → ℝ) → ℝ)
+    (F : Fin m → (Fin n → ℝ) → ℝ) (V : Set (Fin n → ℝ)) : Prop :=
+  ∃ a : Fin p → Fin m → (Fin n → ℝ) → ℝ,
+    (∀ i j, ContinuousOn (a i j) V) ∧
+    (∀ u ∈ V, ∀ i, G i u = ∑ j, a i j u * F j u)
+
 /-- **The junk-`0` guard.** `LocallyNullZeros K x`: the zero set of `K` is null on some neighbourhood
 of `x`. REQUIRED because the banked `negPow` is `Real.rpow` with `0^(-c) = 0` — a *total* ℝ-proxy of
 an ℝ∪{∞} invariant whose junk value at a zero INFLATES `rlctAt` when `{K = 0}` has positive measure
@@ -181,40 +193,41 @@ theorem wrlctAt_one {K : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ} :
   -- map: A-weight-one (W ≡ 1 collapses to the unweighted admissible set)
   sorry
 
-/-- The weighted junk-`0` guard: the zero set of `w ↦ W w · K w` is locally null (`W · K` is what the
-weighted `negPow` acts on; the same `Real.rpow` junk-`0` hazard applies to the weighted integrand). -/
-def LocallyNullZerosW (W K : (Fin n → ℝ) → ℝ) (x : Fin n → ℝ) : Prop :=
-  ∃ s ∈ 𝓝 x, volume ({w | W w * K w = 0} ∩ s) = 0
-
 /-- **Object A (weighted ≤).** Weighted ideal-invariance: multiplying the pointwise comparison
 `∑ Gᵢ² ≤ C · ∑ Fⱼ²` by the nonnegative weight `W` preserves it, so the weighted RLCTs compare the
-same way — junk-guarded by `hWGnull` (the weighted integrand's zero set locally null). The form
-Object B's change-of-variables consumes. -/
+same way. The weighted integrand is `W · K^(-c)` (NOT `(W·K)^(-c)`) — its `Real.rpow` junk-`0` comes
+from `K^(-c)` at `{K=0}` (independent of `W`), so the guard is `LocallyNullZeros (sumSqFam G)`
+(`hGnull`, on `K`, not on `W·K`). Needs `W` and the families measurable (`hWmeas`, `hGFmeas`; without
+measurability a Vitali-modulated continuous-at-`0`-only coefficient breaks the RHS admissible set).
+The form Object B's change-of-variables consumes. -/
 @[blueprint]
 theorem wrlctAt_sumSqFam_le_of_germRepresents {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
     {G : Fin p → (Fin n → ℝ) → ℝ} {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
+    (hWmeas : Measurable W) (hFmeas : ∀ j, Measurable (F j)) (hGmeas : ∀ i, Measurable (G i))
     (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w) (h : GermRepresents G F x)
-    (hWGnull : LocallyNullZerosW W (sumSqFam G) x)
+    (hGnull : LocallyNullZeros (sumSqFam G) x)
     (hbdd : BddAbove (wLocalAdmissibleExponents W (sumSqFam F) x)) :
     wrlctAt W (sumSqFam G) x ≤ wrlctAt W (sumSqFam F) x := by
-  -- map: A-weighted (nonneg-weight preserves the domination; junk-guarded weighted mono)
+  -- map: A-weighted (nonneg-weight preserves the domination; junk-guarded weighted mono; W·K^(-c))
   sorry
 
 /-- **Object A (weighted =), two-sided — the form Object B's value consumes.** With coinciding germ
-ideals (`hGF`/`hFG`) and both weighted zero sets locally null, the weighted RLCTs are equal:
-`le_antisymm` of the two weighted junk-guarded containments. Object B has both `hideal_fwd`/
-`hideal_bwd`, so the engine rides this TRUE two-sided form (not a one-sided assumption). -/
+ideals (`hGF`/`hFG`), both sum-of-squares zero sets locally null, and `W`/families measurable, the
+weighted RLCTs are equal: `le_antisymm` of the two weighted junk-guarded containments. Object B has
+both `hideal_fwd`/`hideal_bwd`, so the engine rides this TRUE two-sided form (not a one-sided
+assumption). -/
 @[blueprint]
 theorem wrlctAt_sumSqFam_eq_of_germ_eq {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
     {G : Fin p → (Fin n → ℝ) → ℝ} {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
+    (hWmeas : Measurable W) (hFmeas : ∀ j, Measurable (F j)) (hGmeas : ∀ i, Measurable (G i))
     (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w)
-    (hWGnull : LocallyNullZerosW W (sumSqFam G) x) (hWFnull : LocallyNullZerosW W (sumSqFam F) x)
+    (hGnull : LocallyNullZeros (sumSqFam G) x) (hFnull : LocallyNullZeros (sumSqFam F) x)
     (hGbdd : BddAbove (wLocalAdmissibleExponents W (sumSqFam G) x))
     (hFbdd : BddAbove (wLocalAdmissibleExponents W (sumSqFam F) x))
     (hGF : GermRepresents G F x) (hFG : GermRepresents F G x) :
     wrlctAt W (sumSqFam G) x = wrlctAt W (sumSqFam F) x :=
   -- map: A-weighted-two-sided (le_antisymm of both weighted junk-guarded containments)
-  le_antisymm (wrlctAt_sumSqFam_le_of_germRepresents hW hGF hWGnull hFbdd)
-    (wrlctAt_sumSqFam_le_of_germRepresents hW hFG hWFnull hGbdd)
+  le_antisymm (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hFmeas hGmeas hW hGF hGnull hFbdd)
+    (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hGmeas hFmeas hW hFG hFnull hGbdd)
 
 end DLNFibre.Core.Aoyagi

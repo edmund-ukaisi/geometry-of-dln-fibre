@@ -42,18 +42,20 @@ def flatDim (d : Fin (N + 1) → ℕ) : ℕ := ∑ i : Fin N, d i.succ * d i.cas
 coordinates `u`). The entries of the multiplication map — Aoyagi's core `∏ C`, worked.tex:120–128.
 Definable and concrete (no existential family). -/
 noncomputable def coreGen (d : Fin (N + 1) → ℕ)
-    (e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d) :
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ :=
   fun k u ↦ (mult d (e u)) (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2
 
-/-- **FRONTIER leaf (bookkeeping) — the measure-preserving flatten exists.** `Rep_d ≃ᵐ ℝ^flatDim`
-sending the deepest tuple `0` to `0`, volume-preserving (a coordinate reindexing of a product of
-matrix spaces). Rides the banked flatten machinery (`ParamsFlat`-style); named as a bookkeeping leaf
-(R0), not a hidden gap. -/
+/-- **FRONTIER leaf (bookkeeping) — the measure-preserving flatten exists.** A **homeomorphism**
+`Rep_d ≃ₜ ℝ^flatDim` (continuous both ways — REQUIRED for rlct locality: a merely measure-preserving,
+discontinuous bijection would break the `𝓝`-local transport, so a bare `MeasurableEquiv` is
+insufficient), sending the deepest tuple `0` to `0`, volume-preserving (a coordinate reindexing of a
+product of matrix spaces). Rides the banked flatten machinery (`ParamsFlat`, which carries the
+continuity theorems); named as a bookkeeping leaf (R0), not a hidden gap. -/
 @[blueprint]
 theorem exists_flatten (d : Fin (N + 1) → ℕ) :
-    ∃ e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d, MeasurePreserving e ∧ e 0 = 0 := by
-  -- map: DLN-flatten (measure-preserving coordinate reindexing Rep_d ≃ᵐ ℝ^flatDim; R0 bookkeeping)
+    ∃ e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d, MeasurePreserving e ∧ e 0 = 0 := by
+  -- map: DLN-flatten (measure-preserving coordinate reindexing Rep_d ≃ₜ ℝ^flatDim; R0 bookkeeping)
   sorry
 
 /-- **FRONTIER leaf — the deepest-point + flatten + carrier reduction.** `rlctGlobal (lossDLN d 0) =
@@ -66,7 +68,7 @@ Frobenius identity `‖M‖²_F = ∑ Mᵢⱼ²`), and (iii) the ℝ≥0∞→�
 content named here (`RLCT.Global.rlctGlobal` on `Rep_d` ↔ `RLCT.rlctAt` on `ℝ^flatDim`). -/
 @[blueprint]
 theorem coreReduction (d : Fin (N + 1) → ℕ) (hN : 0 < N)
-    (e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d) (hemp : MeasurePreserving e) (he0 : e 0 = 0) :
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (hemp : MeasurePreserving e) (he0 : e 0 = 0) :
     RLCT.Global.rlctGlobal (lossDLN d 0) = RLCT.rlctAt (sumSqFam (coreGen d e)) 0 := by
   -- map: DLN-reduction (Thm4 deepest ∘ flatten ∘ Frobenius ∘ carrier bridge ℝ≥0∞→ℝ)
   sorry
@@ -79,11 +81,13 @@ across all charts — realise the QIP spectrum with **min-attainment** (Object D
 Aoyagi's Hironaka construction with the explicit coupled `diag(b)` recursion for corank ≥ 2
 (worked.tex:475–520; the genuine frontier this expedition must build, charter §1.B); the
 min-attainment is Aoyagi's Lemma 3 minimisation (worked.tex:529–542). `F = coreGen d e` is concrete.
-This is the single genuine-mathematics frontier leaf of the blueprint (the reduction is bookkeeping). -/
+The `he0 : e 0 = 0` guard is REQUIRED: without it a translated flatten (`e u = u + 1`) makes `coreGen`
+not vanish at `0`, so no resolution at `0` exists and the `∃` would be false. This is the single
+genuine-mathematics frontier leaf of the blueprint (the reduction is bookkeeping). -/
 @[blueprint]
 theorem exists_coreResolution (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (hne : (qipFeasible d).Nonempty)
-    (e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d) :
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) :
     ∃ res : Resolution (coreGen d e) 0,
       (∀ (c : Fin res.numCharts) (a : Fin (flatDim d)),
         a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) →
@@ -108,7 +112,7 @@ theorem aoyagi_learning_coefficient_via_engine (d : Fin (N + 1) → ℕ) (hd : M
     (hpos : ∀ k, 0 < d k) (h : (kostantPartitions d 0).Nonempty) (hne : (qipFeasible d).Nonempty) :
     RLCT.Global.rlctGlobal (lossDLN d 0) = ((cCodim d 0 h).toNat : ℝ) / 2 := by
   obtain ⟨e, hemp, he0⟩ := exists_flatten d
-  obtain ⟨res, hlb, hattain⟩ := exists_coreResolution d hd hN hpos hne e
+  obtain ⟨res, hlb, hattain⟩ := exists_coreResolution d hd hN hpos hne e he0
   have hred : RLCT.Global.rlctGlobal (lossDLN d 0) = RLCT.rlctAt (sumSqFam (coreGen d e)) 0 :=
     coreReduction d hN e hemp he0
   have heng : 2 * RLCT.rlctAt (sumSqFam (coreGen d e)) 0 = ((cCodim d 0 h).toNat : ℝ) :=
