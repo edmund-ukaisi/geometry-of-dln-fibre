@@ -8902,3 +8902,22 @@ FIX-A-era tree). The elder corrects the register from the sweep's evidence table
 buried in the find: the P1/P2 landings mean the EXTERNAL-FACING deliverables (the printed-Theorem-2
 closed form + the classical L=2 value with its fidelity-certified ℓ) have existed for a month —
 the payoff exposition can cite them TODAY.
+
+## 2026-07-21: THE ELDER OWNS THE REGISTER MISS PRECISELY — corrections authored, guardrail added
+The ownership, in its words: "I did not merely under-survey — I OPENED ClosedForm.lean, saw the
+apparatus in the first ~120 lines, wrote 'the remaining owed = the end-to-end equality,' and never
+grepped below my head-cut for exactly that equality (it sat at :227). And RRR.lean was outside the
+brief's module list — but an auditor's corpus is THE TREE, not the brief's list." Paste-ready
+register edits authored (P2 + O5 → LANDED, one item; P1 → LANDED; the wave-tail P1/P2 seat
+recommendation WITHDRAWN — the allocation reduces to the already-done API seat unless the sweep
+surfaces more; the P2-residual micro-entry = the composite corollary in flight). NEW §0 GUARDRAIL:
+"Every status in this register is a READING until ground-truthed against the tree — the auditor's
+corpus is the tree, not any brief's module list. Full-tree grep for the entry's target statement is
+the minimum bar before OPEN is written." Sweep division confirmed (evidence = seat-api's, corrections
+= the elder's, applied at the sweep's landing per its batching instruction); it wants O1's finding
+FIRST ("if the atlas equality is weeks-landed, the engine's remaining sorried surface is narrower
+than every status line I have written since round-5"). O4 expectation pre-registered: NARROWS (the
+loss-side rlctGlobal permutation transport is what sorting cannot cover), doesn't close. Its closing
+note, worth the record: the register's first pass produced real value AND a demonstrated failure
+mode in the same document — which is why the operator made it a STANDING office; "the office now
+has its own regression witness."
