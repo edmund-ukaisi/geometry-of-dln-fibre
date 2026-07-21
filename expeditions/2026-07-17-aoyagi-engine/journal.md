@@ -7549,3 +7549,17 @@ iInf; guard sufficiency; ∀ᶠ guard statement; coreGen faithfulness; BANKED-SI
 deepest_le_of_homogeneous_core + ParamsFlat; atlas inhabitation audit) + elder re-ratification of B
 (record fidelity to min-over-charts; lost-field check e.g. per-chart injectivity; residual rulings;
 strike-order confirmation). Aggregator still held.
+
+## 2026-07-21: codex round-2 — v4 FAILS but the loop is CONVERGING (structure settled; statement-hygiene remains)
+Four verified kills, ALL missing-hypothesis bugs (no structural dodge remains): (1) atlas CoV — dom not
+tied to chart origins; remote-branch counterexample g=(s(1−s),st) covers U from s≈1 while wrlctAt-at-0
+sees s≈0: 3/4≠1; fix = ε-ball-at-origin filter cover (the compact-fibre property). (2) exists_coreResolution
+omits e 0 = 0 (translated flatten ⟹ no Resolution exists ⟹ ∃ false). (3) coreReduction accepts a
+DISCONTINUOUS measure-preserving flatten (junk locality break: 1/2≠0); fix = continuity (banked ParamsFlat
+HAS the continuity theorems). (4) weighted-A ≤/eq missing measurability (non-measurable family: 1/2≠0);
++ docstring inaccuracy (integrand is W·K^{-c} not (WK)^{-c}). POSITIVES (verified): two-chart blow-up
+INHABITS the record; unweighted A statements + two-sided eq SOUND; guard-∀ᶠ SOUND; coreGen faithful
+(indexing + lossDLN trace agreement). BANKED-REUSE AUDIT: paramsEquivFlat is GENERAL-WIDTH (good) but
+transpose/direction/defeq deltas + zero-pres unpackaged + NOTHING in the corollary's import cone — reuse
+is commentary, not composition; the adapters are strike-able work. HOLD for elder re-ratification →
+ONE consolidated v5 brief (statement-hygiene pass; structure frozen).
