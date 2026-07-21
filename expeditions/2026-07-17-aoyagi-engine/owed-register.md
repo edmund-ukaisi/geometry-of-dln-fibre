@@ -10,6 +10,12 @@ changes; feeds the close-phase synthesis and the next-expedition runway.
 statement soundness is rev-leaves' lane — this register is about MISSING BREADTH. Interaction with the
 live wave is read-only EXCEPT statement-level generality defects on a live leaf (stop-on-suspect).
 
+**Sweep-pairing (standing, learned 2026-07-21):** every status in this register is a READING until
+ground-truthed against the tree — the auditor's corpus is the tree, not any brief's module list;
+full-tree grep for the entry's target statement is the minimum bar before OPEN is written. The
+office's form is the PAIR: the elder authors, seat-api ground-truths. Evidence for sweep 1:
+[threads/39-register-sweep/sweep-1-evidence.md](threads/39-register-sweep/sweep-1-evidence.md).
+
 Entry format: `id — what is owed — wires at — class — price (S/M/L; strike-able/frontier/runway) —
 recommendation — status`.
 
@@ -186,3 +192,36 @@ both cites die together at the monument (re-confirmed; nothing else is owed ther
   O9 landed-in-strike, O5/O6 re-priced; M1–M16, P1–P12 opened. Wave-tail recommendations for the
   briefs: **M1, M2, M8, M3 (API units) + P2/O5 (the printed-form bridge) + P1-at-r=0 (the RRR
   instance)**; M5 flagged fix-at-next-touch.
+
+---
+
+## §3 CORRECTIONS — sweep 1 (elder-authored 2026-07-21; evidence: threads/39-register-sweep/)
+
+STATUS FLIPS: **O1 → LANDED** (rlctAt_sumSqFam_eq_iInf_charts :540, sorry-free axiom-clean — the
+full min-over-charts equality given a Resolution). **M12 → DISCHARGED** (consumed transitively
+inside O1's clean cone). **O9 → FULLY LANDED** (both pinned proofs; the "two remain" was stale).
+**O5/P2 → LANDED** (2026-06-25, pre-register; miss recorded — five clean-three theorems incl. the
+paperLambda/Def-3-ℓ fidelity closure; Monotone-d resolved in-file via shiftedSorted; the composite
+cCodim_eq_two_lambdaCore appended this wave as the P2-residual micro-entry, now LANDED).
+**P1 → LANDED** (pre-register; miss recorded — conditional only on the general monument obligations,
+inheriting the #44 sorry, visible in its statement: LANDED-as-stated is honest, and nobody reads it
+as P3-progress). **M1/M2/M8/M3 → LANDED** (this wave).
+
+NUANCINGS: **P3/O3** — the L1/L2/gen-front gauge-slice normal forms ARE BUILT; residual = the one
+general #44 sorry (Skeleton:1087) + the r>0 transport (iv). **P12** — residual SHRUNK and pinned:
+the RLCT-internal card=sum equality exists and is consumed; the absent piece is the CROSS-NAMESPACE
+bridge specifically. **O4** — residual PINNED to the leaf-level transport only (:286); the value
+side is already sort-invariant; the loss-side rlctGlobal permutation transport is the whole
+remaining content.
+
+THE NET LINE (replacing all prior summaries): **the engine's genuinely-open surface = O2 — the
+eight monument leaves, including THE WALL — plus the named runway. Nothing else. Every wave-tail
+unit this register recommended was already landed when recommended.**
+
+THE META-FACT, one honest sentence: the first pass's value was the NAMING (the M-series, the inverse
+list, the re-pricings — several of which the sweep then found already satisfied because the names
+made them findable); its status column was systematically stale; the office's correct form was never
+solo authorship — it is the author + ground-truther pair, and it took one full cycle to learn that.
+
+EVENT: sweep pass 1 (seat-api, force-elaborated): 8 status corrections, 3 nuancings, 0 new owed
+items. The status column is henceforth calibrated by sweep-pairing.
