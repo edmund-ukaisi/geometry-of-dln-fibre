@@ -305,8 +305,10 @@ def TerminalBezout : Prop :=
       PrincipalInv F g b (fun i ↦ q i 0) r V'
 
 /-- **The NEW leaf — Bézout / principality is BORN at the terminal node.** At a terminal state
-(`S = L`, `J ≥ 1`; residual trivial), with `V` an OPEN neighbourhood of `0` (else FALSE, e.g.
-`V = {u | 0 < u 0}`), the cleared pivot supplies `(F i₀∘g) = b·unit` with `unit 0 ≠ 0`
+(`S = L`, `J ≥ 1`; residual trivial), with `V` an OPEN neighbourhood of `0` — both halves
+load-bearing: without `0 ∈ V` it is FALSE (e.g. `V = {u | 0 < u 0}`), and without openness it is
+FALSE (e.g. `V = {0}`: no open `V' ⊆ {0}` contains `0`) — the cleared pivot supplies
+`(F i₀∘g) = b·unit` with `unit 0 ≠ 0`
 (`b_{k₀} = Σ (U⁻¹)_{1i}(V⁻¹)_{j1}·(∏C∘g)_ij`, pnp §c). On the open `V' = V ∩ {unit ≠ 0}` this inverts
 to `b = (1/unit)·(F i₀∘g)`, upgrading `StepInv` (divisibility) to the terminal `PrincipalInv` (both).
 Consistent with S3: the terminal `b = ∏u` vanishes at `0` (`J ≥ 1`), so the entry `b·unit` vanishes

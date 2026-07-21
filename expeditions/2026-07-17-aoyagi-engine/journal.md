@@ -9520,3 +9520,26 @@ card banked at threads/41-order-count/. Layer-filling of exactly the P6.1 shape.
 outcome — both sides are in-tree a(ℓ−a)+1 arithmetic; the pnp decides what the COUNT MEANS, not
 what these values equal. Only the INTERPRETIVE layer (names/docstrings claiming "= multiplicity")
 waits on task #39. seat-E builds Tier 2 now under pin (a) + K1 build-gates + K3-neutral naming.
+
+## 2026-07-21 (controller) — rev-core verdict SURVIVED: the two Core leaves reviewed; cards banked; L5 obligations routed
+
+rev-core's decorrelated review of terminal_bezout + principalInv_regionRepresents: **SURVIVED** —
+fidelity (hypothesis-by-hypothesis vs Cards A/B + the thread-34 certificate; the Fin-1 ≡1 terminal
+encoding faithful and slightly STRONGER than bare S=L∧J≥1), precision (names = content, no hidden
+Cited/Assumed; StepInv's unused vanishing conjunct correctly carried as interface, not decorative),
+non-vacuity (km fires the real mechanism: genuinely-vanishing b, PROPER V′ shrink), circularity
+(RegionRepresents = genuine interface conversion, NOT an rfl-alias — Codex concurred), consumer-fit
+(L1's driver wiring already elaborates at :809–813). Gates re-run by the reviewer independently;
+Codex xhigh converged by its own route (artifacts threads/40-rev-core/codex/).
+
+Integration of the verdict: (i) the ONE LOW finding fixed directly — the openness-necessity
+docstring example conflated hypotheses ({0<u₀} illustrates 0∈V, not openness; V={0} is the
+openness witness — found independently by reviewer AND Codex); both counterexamples now correctly
+attributed, prose-only change, module rebuilt green (8261 jobs). (ii) Cards A/B banked as
+sorry-free+REVIEWED at threads/42-core-leaves/statement-cards.md, with the reviewer's consumer
+obligations recorded: L5's body must supply a LITERALLY-Fin-1 unit residual (defeq-to-Fin-1
+blocks the wiring) and a SINGLE-generator cleared pivot (i₀/unit = L5's "born terminally"
+obligation). (iii) Both obligations routed to arch-C — into the round's L5 docstring corrections
+AND as a shape-check on terminal_edge_stepInv (its conclusion should hand L5 exactly these two).
+(iv) rev-core stood down (done → report + stand down; a fresh seat convenes if a later batch
+needs one).
