@@ -9283,3 +9283,27 @@ is a single-writer file alongside the aggregator — all root registrations cont
 
 nav-13's triggers unchanged (full fan-out at bake integration incl. the Deg1SupportedOn-in-
 PrincipalInv check; mandatory joint at DLN-lane → canonCenter); returned to idle.
+
+## 2026-07-21 (controller) — elder RULING: the E-lane three-tier split CONFIRMED; tier-binding map issued
+
+The elder confirmed the split (no re-sequencing behind the bake): "the split IS the rising-sea
+shape — build the general object, let the application instantiate"; it honors Core-never-imports-
+DLN and converts a file-collision wait into a working seat. The settling distinction, on record:
+severance is quantification severed from provenance ON A STATEMENT THAT CLAIMS THE APPLICATION'S
+CONTENT — Tier 1 claims none (abstract parameters + complete hypotheses = bar-(i) generality);
+the free-parameter axis becomes a severance axis exactly where the θ-name attaches (Tier 2).
+
+**Tier-binding map (forwarded to seat-E; the freeze standard):** K2 componentwise-order → Tier 1;
+K4 equality → Tier 1; K3 name discipline → all tiers (θ enters at Tier 2 only; order/multiplicity
+nowhere); K1 ground truths → Tier 2 (build-enforced on the instantiated statement); pin (a)
+certified parameters → Tier 2 (paperEll/shiftedSorted/residueA, never free naturals); pin (c)
+ledger fact → Tier 3 (behind FoldProduced's lock).
+
+**Elder addition — Tier 1's own kill-set:** weakest structural hypotheses stated (0 ≤ a ≤ ℓ−1,
+sorted-profile well-formedness); probed at ABSTRACT edge instances before Tier 2 instantiates —
+the a = 0 and ℓ = 1 edges specifically (the Lemma-3 A(a−1) domain subtlety the paper handles
+silently). "The general lemma earns its generality by surviving its own corners, not by
+inheriting the DLN instances' good behavior."
+
+seat-E cleared to freeze; SPECIFY expected next (Tier-1 statements + edge probes; Tier-2
+bindings; Tier-3 named-deferred), then the elder's pass.
