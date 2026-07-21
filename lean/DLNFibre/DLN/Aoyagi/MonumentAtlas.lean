@@ -1,5 +1,6 @@
 import DLNFibre.Core.Aoyagi.PrincipalInv
 import DLNFibre.Core.Aoyagi.PathAtoms
+import DLNFibre.Core.Aoyagi.BlockDivision
 import DLNFibre.Core.Aoyagi.ConjResolution
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
 
@@ -230,6 +231,12 @@ structure TreeEdge (d : Fin (N + 1) → ℕ) (p : TreePath d) where
   hshear : ∀ u, jacDet (blockShear shearφ) u = 1
   /-- The shear displacement fixes the origin. -/
   hshear0 : shearφ 0 = 0
+  /-- **The shear keeps the pivot coordinate** (elder φ-ruling; the shears' exceptional-coords-untouched
+  fact, shear-pin-certified): with `B∘S` (blow-up OUTERMOST) this is what makes the δ=1 strict transform
+  well-defined — the pivot coordinate is never written by the shear, so the blow-up's `u_pivot` factor on
+  a center coordinate is the only one, and its removal (`blockBlowupCoordQuot`) is exact. Replaces the
+  withdrawn `hshear_center`. -/
+  hshear_pivot : ∀ v, (blockShear shearφ) v pivot = v pivot
 
 /-- The edge realises a case-2 (full-block append) step. -/
 def TreeEdge.isCase2 {d : Fin (N + 1) → ℕ} {p : TreePath d} (ed : TreeEdge d p) : Prop :=
@@ -261,6 +268,18 @@ construction must meet, checkable against thread-37's (3,3,4) battery once the c
 * (3,3,4) table: S=1 case-2 appends have center codims 9, 4, 1; S=2 the 1×2 block has a codim-2 center;
   the case-1(1) merge at (S=2, J=0) has center = {d-block ∪ old-u} with pivot = the old-u coord; the
   1(2) split pivots at a fresh d-entry.
+* **ROOT CENTER = the LAYER-1 block, NOT `univ`** (anchor (iv), elder): the paper's root step blows up
+  the FIRST-layer block only; deeper-layer coordinates are SPECTATORS. Each `coreGen` entry is a
+  cross-layer product with EXACTLY ONE layer-1 factor, so it gains `u_pivot`-order exactly 1 ⟹ ONE
+  division balances (entries order `d` vs `b'·resid' = u_p·(order d−1) = order d`). `center = univ` is
+  correct ONLY when the current layer is the whole space (the `d=(1,2)` instance — why `blowupResolution`
+  was right there), NOT for general `d`. At (3,3,4) the root layer-1 block is `d_1·d_0 = 9` coords
+  (matches the S=1 codim-9 append), spectators = `d_2·d_1 = 12`. CORRECTION to earlier round-5 prose:
+  "`hsupp` forces root center = `univ`" was WRONG — `hsupp` is IDEAL-membership, and `coreGen` entries
+  ARE in ⟨layer-1 coords⟩, so the LAYER-1 center discharges `hsupp` at the root. NOTHING here hardcodes
+  `center = univ` at the root: `center` is a free `TreeEdge` field and L5's (sorried) root-edge
+  construction must set it to the layer-1 block (computed once the RLCT↔Aoyagi bridge lands; documented
+  here as the intended value + hand-check meanwhile).
 
 NOT FABRICATED into `edgeCenter`/`edgePivot` DEFS here: the map from the engine's `RLCT.flatDim`
 divisor coordinates to `Aoyagi.flatDim d` is the deferred coordinate bridge (next-expedition runway;
@@ -295,18 +314,19 @@ def edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   edgeShearRaw d ed.case ed.shearφ
 
-/-- The step map on stored edge data: `edgeShearRaw case φ ∘ blockBlowupMap center pivot` (the fold
-uses this form so the defining equations hold on the raw `TreePath.step` fields, per-case). -/
+/-- The step map on stored edge data: `blockBlowupMap center pivot ∘ edgeShearRaw case φ` — blow-up
+OUTERMOST (thread-34's order; elder φ-ruling 2026-07-21). The fold uses this form so the defining
+equations hold on the raw `TreePath.step` fields, per-case. -/
 def stepMapRaw (d : Fin (N + 1) → ℕ) (cse : StepCase) (center : Finset (Fin (flatDim d)))
     (pivot : Fin (flatDim d)) (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
-  edgeShearRaw d cse shearφ ∘ blockBlowupMap center pivot
+  blockBlowupMap center pivot ∘ edgeShearRaw d cse shearφ
 
-/-- One step's coordinate change: (per-case) shear ∘ block-center blow-up. Equals
+/-- One step's coordinate change: block-center blow-up ∘ (per-case) shear (blow-up OUTERMOST). Equals
 `stepMapRaw d ed.case ed.center ed.pivot ed.shearφ` definitionally. -/
 def stepMap (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
-  edgeShear d ed ∘ blockBlowupMap ed.center ed.pivot
+  blockBlowupMap ed.center ed.pivot ∘ edgeShear d ed
 
 /-- **Def-lemma** — `jacDet (edgeShear d ed) u = 1` (shear-pin): `id` at merge/rollover (`jacDet_id`),
 `blockShear` elsewhere (`hshear`). -/
@@ -315,12 +335,12 @@ theorem jacDet_edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEd
   unfold edgeShear edgeShearRaw
   split <;> first | exact jacDet_id u | exact ed.hshear u
 
-/-- **Def-lemma** — `stepMap d ed 0 = 0` (the step map fixes the origin). -/
+/-- **Def-lemma** — `stepMap d ed 0 = 0` (the step map fixes the origin; blow-up ∘ shear both fix `0`). -/
 theorem stepMap_zero (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
     stepMap d ed 0 = 0 := by
-  change edgeShear d ed (blockBlowupMap ed.center ed.pivot 0) = 0
-  rw [blockBlowupMap_zero]
-  exact edgeShearRaw_zero d ed.case ed.shearφ ed.hshear0
+  change blockBlowupMap ed.center ed.pivot (edgeShear d ed 0) = 0
+  rw [show edgeShear d ed 0 = 0 from edgeShearRaw_zero d ed.case ed.shearφ ed.hshear0,
+    blockBlowupMap_zero]
 
 /-- The accumulated coordinate change along a path (`root ↦ id`; `p.extend ed ↦ foldG p ∘ stepMap`). -/
 def foldG (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
@@ -344,24 +364,44 @@ def foldNR (d : Fin (N + 1) → ℕ) : TreePath d → ℕ
   | .root => d (Fin.last N) * d 0
   | .step p _ _ _ nextState _ => if N ≤ nextState.layer then 1 else foldNR d p
 
-/-- The residual family along a path (rev-leaves check-#2 EXACT-CLEAR). `root ↦ coreGen d e`; a
-TERMINAL-reaching step (`N ≤ nextState.layer`) collapses to the M'=1 unit `fun _ ↦ 1` (`terminal_bezout`
-consumes this); a non-terminal step carries the pullback `foldResid p ∘ stepMap` at full width. Total,
-proof-free, never a division/exactness choice: that belongs to the `∃q` of `FoldStepInv`, not this DATA
-def. -/
+/-- The residual family along a path (rev-leaves check-#2 EXACT-CLEAR + FIX-RESID δ=1 strict transform).
+`root ↦ coreGen d e`; a TERMINAL-reaching step (`N ≤ nextState.layer`) collapses to the M'=1 unit
+`fun _ ↦ 1`. A NON-terminal step: at **δ=0** (`¬ edgeδ`) the pure pullback `foldResid p ∘ stepMap`
+(b' carries no `u_pivot`, order balances); at **δ=1** (`edgeδ`) the STRICT TRANSFORM — the blow-up
+substitution's `u_pivot` factor is removed via `BlockDivision.blockBlowupCoordQuot` (pivot→1, other
+center coords→their value), applied to the SHEARED point (blow-up is outermost, `B∘S`), so
+`b'·resid' = u_pivot¹·(…) = entry` and the child quotient law is `q' = q ∘ σ` — NO division on the
+witness (the codex `u₀ = q'·u₀²` witness dies: `resid = v_pivot ⟹ strict = 1`).
+
+**DESIGN-GUARD AMENDED (elder, verbatim):** "division-by-monomial in a def is banned; the total
+closed-form quotient of a center coordinate under its own blow-up is data." (`blockBlowupCoordQuot` is
+that datum: for `j ∈ center\{p}` the strict transform is `v_j`, for `j = p` it is `1`.)
+
+**Thread-34 addendum:** thread-34's certificate bookkept the division on the q-side; mathematically
+equivalent — the elder corrects it to the resid-side because the data/proof split demands it.
+
+**CAVEAT (flagged for the elder pass):** this substitution form removes `u_pivot` to the residual's
+FULL center-degree; it equals the needed `÷u_pivot¹` exactly when each residual entry is
+center-degree-1 (a single center coordinate × a spectator/tail — the "v_j / 1" regime). The factored
+Let-block form `(blockBlowupCoordQuot on the center factor)·(tail ∘ stepMap)` is realized here for the
+tail-free center-coordinate case; a nontrivial tail evaluated at the full blow-up (rather than the
+quotient) needs `foldResid` to CARRY the (center-factor, tail) factorization — a representation change
+deferred to the elder's ruling on the residual's center-degree invariant. -/
 noncomputable def foldResid (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     (p : TreePath d) → (Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ)
   | .root => coreGen d e
-  -- A TERMINAL-reaching step collapses the residual to the M'=1 unit (`fun _ ↦ 1`, ignoring the index
-  -- — a constant, so it types at ANY width, no cast). A non-terminal step carries the pullback at full
-  -- width; the per-case ATOM the seat fires is selected by the case-aware `stepMapRaw` (case-1(1) sh=id
-  -- ⇒ `blockBlowup_center_comb_eq`; case-1(2)/case-2 ⇒ `weightedCofactor_transport`; rollover = reindex).
-  -- The `Fin.cast (if_neg h)` re-types the full-width index (never quotient-by-u_p — that's the ∃q).
   | .step p center pivot cse nextState shearφ =>
       if h : N ≤ nextState.layer then
         fun _ => 1
       else
-        fun j u => foldResid d e p (Fin.cast (if_neg h) j) (stepMapRaw d cse center pivot shearφ u)
+        fun j u =>
+          if edgeδ d p then
+            -- δ=1 STRICT TRANSFORM: remove the blow-up's `u_pivot` via `blockBlowupCoordQuot` (data).
+            foldResid d e p (Fin.cast (if_neg h) j)
+              (fun k => blockBlowupCoordQuot pivot k (edgeShearRaw d cse shearφ u))
+          else
+            -- δ=0: pure pullback (order balances; no `u_pivot` in b').
+            foldResid d e p (Fin.cast (if_neg h) j) (stepMapRaw d cse center pivot shearφ u)
 
 /-- A total open certificate domain per edge (`Set.univ` stand-in — the D2' shrink is deferred). -/
 def edgeChartDom (d : Fin (N + 1) → ℕ) {p : TreePath d} (_ed : TreeEdge d p) :
@@ -416,11 +456,13 @@ of its four refutations (constant, Σw², `|S|=1` on the STATE axis) die BY DEFI
 form (there is no free state or residual to instantiate; the state IS `foldG`/`foldB`/`foldResid p`).
 The FOURTH — the `SupportedOn`-gap on the CENTER axis — does NOT die by definition: `ed.center` is a
 free field of `TreeEdge` (the coordinate derivation is bridge-blocked), so a center not covering the
-state's support re-admits the `δ=1` refutation. It is closed by the EXPLICIT hypothesis `hsupp :
-SupportedOn (foldResid d e p) ed.center (foldRegion d e p)` (elder round-5 ruling (B)+(i), ideal-
-membership form) on BOTH leaves (ruling (ii): the root edge is case-2 `δ=1`, so case-2 needs it too).
-The hypothesis is the construction's DEFINITIONAL truth — Aoyagi's center IS the residual block's
-coordinates (pp. 16/19) — so L5 discharges it for free at every real fold edge; no spurious-hypothesis
+state's support re-admits the `δ=1` refutation. It is closed by the EXPLICIT hypothesis `hsupp`, now
+**δ-CONDITIONAL** (elder ruling, FIX-RESID bundle): `edgeδ d p = true → SupportedOn (foldResid d e p)
+ed.center (foldRegion d e p)`. Rationale: at δ=0 the residual vector includes cleared-slot PULLBACKS
+outside the center, so the UNCONDITIONAL form is undischargeable; the `δ=1` guard is exactly where the
+center-support link is both needed (the strict-transform division) and true. It is the construction's
+DEFINITIONAL truth at δ=1 — `coreGen` entries lie in ⟨layer-1 coords⟩ (each = Σ layer-1-coord ·
+deeper-cofactor) so the layer-1 center discharges it — so L5 supplies it for free; no spurious-hypothesis
 smell. Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the
 path node and one outgoing edge; `δ = [J=0]` off `p.conState.cleared` (`edgeδ`, UNIFORM across
 sub-cases). Rollover is off the `isCase2`/`isCase1` filters by construction (`localSub = id`).
@@ -445,7 +487,7 @@ theorem case2_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
-    (hsupp : SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
+    (hsupp : edgeδ d p = true → SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
     (hinv : FoldStepInv d e p) :
     FoldStepInv d e (p.extend ed) := by
   -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state; hsupp closes center)
@@ -466,7 +508,7 @@ theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
-    (hsupp : SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
+    (hsupp : edgeδ d p = true → SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
     (hinv : FoldStepInv d e p) :
     FoldStepInv d e (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
@@ -612,7 +654,7 @@ the leaves: L5 (`leaf_stepInv_of_path`) supplies the atlas + per-chart terminal 
 match. Generalizes the LANDED `exists_atlasRealizesExponents_d12` from `d = ![1,2]` to all `d`.
 `@[blueprint]` — it rests on the (still-forecast) leaves; strikes to banked when they land. -/
 @[blueprint]
-theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
+theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e) :
     ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res := by
@@ -674,6 +716,6 @@ theorem exists_coreResolution_via_monument (d : Fin (N + 1) → ℕ) (hd : Monot
         a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) ∧
         ((res.charts c).jac a + 1 : ℤ) = qipMin d hne) := by
   refine exists_hlb_hattain_of_exists_atlasRealizesExponents d hd hN hpos hne ?_
-  exact exists_atlasRealizesExponents d hd hN hpos e he0 he_lin
+  exact exists_atlasRealizesExponents d hN hpos e he0 he_lin
 
 end DLNFibre.DLN.Aoyagi
