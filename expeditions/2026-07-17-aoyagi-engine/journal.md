@@ -7678,3 +7678,21 @@ unaffected); elder post-hoc delta-ratification queued with the ledger items. Fre
 (content twice-verified in the blueprint reviews; only the hypothesis is new). Seat proceeds to bank
 (AxCheck batch + de-blueprint + push). Wave-2 hygiene queued: MonomialBox Core-lift + DLN dedup
 (RouteMSJMonomialLower/Case222Cover duplication, forced by Core↛DLN today).
+
+## 2026-07-21: WAVE-1 INTEGRATION — A + C + corollary-reduction all LANDED; five leaves from the summit
+Three seats merged (union-resolved AxCheck appends), Waypoint + GlobalHomog wired into the aggregator
+(combined tip 6eea1429d, local pending ground-truth green): OBJECT A sorry-free (Lemma 1 two-sided +
+weighted, 6 leaves + 2 headlines, all as locked — the category-NEW workhorse is PROVEN); OBJECT C
+sorry-free (the S2 boxed rule; Measurable-unit delta blessed); COROLLARY REDUCTION sorry-free
+(exists_flatten built directly for Tuple via piCurry reindex; the Frobenius identity; coreReduction
+proven SOUND-AS-LOCKED — internal canonical-flatten + m.p.-homeo transport, no he_lin needed; the owed
+ℝ≥0∞ carrier hop DISSOLVED into membership bridges + the rfl GlobalBridge). NEW REUSABLE:
+Foundations/GlobalHomog.lean (rlctGlobal_comp_homeomorph + rlctGlobal_eq_rlctAt_zero_of_homogeneous —
+network-generic, rides banked deepest_le_of_homogeneous_core). Waypoint's zero-set helper WRAPPED the
+existing MvPolynomial.volume_zeroSet_eq_zero (survey-first discipline held). 14 roots banked into the
+batch (→321+ asserted). CENSUS: A=C=Engine=Order=corollary-reduction 0 sorries; REMAINING = B's 4
+(per-chart value, the negative guard, the atlas-min ≥ CoV, +1) + exists_coreResolution (the monument
+discharge, certificate in-tree). Ground-truth root build of the combined tree queued behind the
+semaphore (seats' redundant confirmation builds hold the slots — waited rather than killed, per the
+process-cleanup lesson). ON GREEN: push + dispatch SEAT-B (the final lane), + elder convening (ledger
+items + C-delta + A/C-landing ratification + the bridge's _root_ disambiguation eyeball).
