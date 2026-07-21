@@ -74,15 +74,34 @@ The p.19 transpose rollover (`J+1 > M(S+1)`, residual collapses to a vector/its 
 the FOLD (L5/arch-C), NOT this step lemma — the rollover edge has `localSub = id`, no blow-up. If the
 transition algebra seems to need it, STOP and report (per the controller's explicit warning).
 
-## Open, pending the render
+## Confirmed render shapes (arch-C answers — all three as predicted)
 
-1. Exact defs of `foldG`/`foldB`/`foldResid`/`foldRegion` + the per-edge `σ` (does the fold expose
-   `σ = sh∘blockBlowupMap center pivot` with `sh` = the case shear? confirm the `sh` slot for 1(2)).
-2. Is `foldResid (child)` literally the center-coordinate block (so `blockBlowup_center_comb_eq` applies
-   verbatim), or a `WeightedCofactor`-transported form (needs `weightedCofactor_transport`)? The 1(1)
-   vs 1(2) split above predicts: 1(1) direct, 1(2) via transport.
-3. The `hratio` divisibility witness (`foldB a = c·foldB d` on supp) — supplied by the b-chain
-   `b_i = ∏_{t̃<i} u` closed form; confirm the fold exposes it.
+1. **`edgeShear` = per-case explicit form**: `id` at `case11`/rollover, `blockShear` (Schur) at
+   `case12`/`case2`. So `σ = edgeShear ∘ blockBlowupMap center pivot`; `jacDet_blockShear` (PathAtoms)
+   fires where the shear is live (case12/case2), and `jacDet σ = jacDet (blockBlowupMap …)` reduces to
+   `1`·O9 at case11 via `jacDet_comp` + `jacDet_id`/`jacDet_blockShear`.
+2. **`foldResid (child)` = per-case explicit match-branch** (closed-form, NEVER a quotient): LITERAL
+   center-block at `case11` ⟹ `blockBlowup_center_comb_eq` verbatim (direct `u_p` factor); Q̂-TRANSPORTED
+   at `case12` ⟹ `weightedCofactor_transport` (the Schur identity `Hpre = U·Hnext` gives the child block).
+   This IS the 1(1)-direct / 1(2)-transported split above.
+3. **`foldB_dvd_of_le`** (the ∏-prefix ratio `foldB a = (∏-ratio)·foldB d` for the chain order) is
+   exposed — it is exactly the `hratio` divisibility witness the `CommRing` commutation
+   (`diagonal_mul_eq_weightedCofactor_mul_diagonal`) consumes. `c a d := ` the exposed prefix ratio.
+
+⟹ the transition proof is now MECHANICAL per case:
+- `case11` (δ from edge, merge pivot ∈ center): `σ = blockBlowupMap center p_merge` (`sh=id`); child
+  `StepInv` divisibility by `blockBlowup_center_comb_eq` on the literal center-block `foldResid`; child
+  `q'` continuity by `continuousOn_blockBlowup_center_quot`; S3 by `σ 0 = 0`.
+- `case12` (split pivot = d-entry): `σ = blockShear φ ∘ blockBlowupMap center p_split`; child `foldResid`
+  = `weightedCofactor_transport` image; the `u_p` factor from `blockBlowupMap_center_eq`; Q̂ continuity
+  from `continuousOn_weightedCofactor`; unipotent/=I from `weightedCofactor_unitLower`/`_eq_one`.
+- geometry (`CenterCoordAligned`, `jacDet σ = 1`): O9 `injOn_blockBlowupMap` + `injective_blockShear`;
+  `jacDet_comp` + `jacDet_blockShear` + O9 `jacDet_blockBlowupMap`.
 
 Kill-set instances to exercise once written (from `edgespec_traversal_334.py`): (3,3,4) S=2 J=0 both
 children (the `(1,1)/4 → (1,0)/8` merge, δ=1); (3,3,2,2) deep; (2,2,3,2) non-monotone.
+
+## Merge-ordering (controller note)
+
+The render lands off `f975fa6a1`; arch-C reconciles the tip skew at verification. RE-SYNC this branch
+only AFTER the integration merge + the controller's sync note — not before.
