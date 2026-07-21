@@ -502,7 +502,7 @@ node's state (`ecase`/`child` matched; the child's `esubst` = `runLen`/`mergeIdx
 witness), and the terminal state emits the leaf. It reads NO `center`/`pivot`/`shearφ` — the oracle
 emits none (`ConState` is combinatorial; `StepChild.esubst.localSub = id` placeholder).
 
-**Severance taxonomy — four free-field axes, one exemplar each** (elder guardrail, the L3/L4 note): a
+**Severance taxonomy — five free-field axes, one exemplar each** (elder guardrail, the L3/L4 note): a
 free field on a quantified structure is a severance axis, so the audit is per-FIELD.
 * CONTENT — the constant / `Σw²` spectator-support residuals — dies by the `foldResid p` pin (no free
   residual to instantiate).
@@ -511,9 +511,16 @@ free field on a quantified structure is a severance axis, so the audit is per-FI
   distinct leaves force distinct combinatorial branches, so a surjective `leafOf` (`FoldProduced`) plus
   `reachesLeaf` forbids the collision.
 * COORDINATE — every chart blowing up the SAME coordinate `x`, so all `gmap` images concentrate on `x`
-  and the ball's `y`-directions stay uncovered — is NOT killed here: `reachesLeaf` is combinatorial and
-  `foldG` reads the unpinned `center`/`pivot`/`shearφ`, while `FoldProduced` stays ℕ-valued `divExp`,
-  never `divCoord`. This is L7's bridge-gated coordinate-coverage residual (see `leafPath_compactCover`).
+  and the ball's `y`-directions stay uncovered — DIES via the canonCenter pin (rung C follow-round): the
+  step `center`/`pivot` are pinned in `IsRealBranch` to `canonCenterOf`/`canonPivotOf`, functions of the
+  combinatorial `(layer, cleared, mergeIdx)`, so distinct real branches walk DISTINCT residual blocks —
+  the geometry can no longer concentrate on one coordinate. This LIFTS L7 bridge-free (statement TRUE;
+  proof sorried) — see `canonCenterOf` and `leafPath_compactCover`.
+* LAYER — a FREE `ed : TreeEdge` admits `N ≤ ed.nextState.layer` (terminal-reaching), where
+  `foldResid (p.extend ed) = fun _ ↦ 1` and `Deg1SupportedOn (const 1) C'` is FALSE, so the L3/L4
+  conclusion is unsatisfiable there (`terminal_deg1_gap`, seat-L4 probe) — dies via fix (a): the
+  guard `ed.nextState.layer < N` on `case1`/`case2_preserves_stepInv` restricts them to the interior
+  step, and `terminal_edge_stepInv` carries the terminal transition (bare unit-residual `StepInv`).
 -/
 
 /-- The construction decision at a state terminates emitting leaf `l` (combinatorial leaf-match). -/
@@ -522,18 +529,81 @@ def decisionEmitsLeaf {L : ℕ} {M : Fin (L + 1) → ℕ} {s : ConState L} :
   | .terminal l' _, l => l' = l
   | .step _ _ _ _ _, _ => False
 
-/-- **A real root→node branch of `buildTree d (conOracle d) conRoot`** — COMBINATORIAL: each step's
-`(case, nextState)` is one of the oracle's `stepChildren` at the parent node's state (`ecase`/`child`
-matched; the matched child's `esubst` = `runLen`/`mergeIdx` is the witness). Reads NO
-`center`/`pivot`/`shearφ` (the oracle emits none). -/
+/-! ### canonCenter — the bridge-free canonical slot assignment (rung C follow-round; coordinator (a))
+
+The Aoyagi coordinate of a resolution step, reconstructed from the COMBINATORIAL state `(layer, cleared)`
++ the edge's `mergeIdx` via `tupIdxEquiv` — NOT the engine `divCoord` (which the oracle never emits), so
+BRIDGE-FREE. `ConState.divBirthCoord` (the IMMUTABLE birth corner, the `d‴→d` stability) and
+`widthMinUpto` (the running-min row bound) are already carried by the engine. Pinning each edge's
+center/pivot to these canonical slots (in `IsRealBranch`) forces distinct real branches to walk DISTINCT
+residual blocks, which KILLS the all-charts-one-coordinate (COORDINATE-axis) severance and lifts L7
+bridge-free (statement TRUE; proof still sorried).
+
+Flat/Aoyagi orientation (load-bearing — the "column-remnant transpose"): a `tupIdx d` entry is
+`(layer i, row : Fin d_{i+1}, col : Fin d_i)`, but the engine's residual `(resRows, resCols)` (decision
+sites) are `resRows = widthMinUpto d layer − cleared` (running-min) and `resCols = d(layer+1) − cleared`
+(raw). So the engine `resRows` maps to the flat COL axis (`Fin d_layer`) and `resCols` to the flat ROW
+axis (`Fin d_{layer+1}`). Hence `canonCenter` caps the flat COL by `widthMinUpto` (running-min) and the
+flat ROW is the raw remnant (automatic in `Fin d_{layer+1}`). `|center| = resRows·resCols` = the birth
+`divExp`, so it is consistent with `FoldProduced.hstep_block` (`jexp = |center|−1`); `FoldProduced`'s
+`jac`/`divExp` are UNTOUCHED (the elder's accumulated `{9,8,4}` = birth block-sizes + merge additions;
+the `9,4,1` here are the birth block SIZES, a different quantity, consistent not contradictory). -/
+
+/-- The flat coordinate of the diagonal corner `(S, J, J)` of the layer-`S` block; `none` off-cone
+(`S ≥ N` or `J` out of the block). `Option` handles totality with no nonempty junk. -/
+noncomputable def cornerToFlat (d : Fin (N + 1) → ℕ) (S J : ℕ) : Option (Fin (flatDim d)) :=
+  if hS : S < N then
+    let i : Fin N := ⟨S, hS⟩
+    if hr : J < d i.succ then
+      if hc : J < d i.castSucc then some (tupIdxEquiv d ⟨⟨i, ⟨J, hr⟩⟩, ⟨J, hc⟩⟩) else none
+    else none
+  else none
+
+/-- The canonical pivot of an edge: a case-1(1) MERGE returns the REUSED divisor's IMMUTABLE birth corner
+`s.divBirthCoord mergeIdx` (discharge cond (1)); a case-1(2)/case-2 NEW pivot is the current
+`(layer, cleared, cleared)` corner (the diagonal, transpose-invariant); a rollover has no blow-up. -/
+noncomputable def canonPivotOf (d : Fin (N + 1) → ℕ) (s : ConState N) (sc : StepChild d s) :
+    Option (Fin (flatDim d)) :=
+  match sc.ecase with
+  | StepCase.case11 =>
+      if hm : sc.esubst.mergeIdx < s.numDiv then
+        let bc := s.divBirthCoord ⟨sc.esubst.mergeIdx, hm⟩
+        cornerToFlat d bc.1 bc.2
+      else none
+  | StepCase.case12 => cornerToFlat d s.layer s.cleared
+  | StepCase.case2 => cornerToFlat d s.layer s.cleared
+  | StepCase.rollover => none
+
+/-- The canonical center of an edge: the layer-`s.layer` residual BLOCK in flat coordinates — flat rows
+`≥ cleared` (the raw column-remnant, automatic in `Fin d_{layer+1}`) and flat cols
+`∈ [cleared, widthMinUpto d layer)` (the running-min ROW bound, discharge cond (2); note the transpose).
+`∅` for a rollover (no blow-up) / off-cone. -/
+noncomputable def canonCenterOf (d : Fin (N + 1) → ℕ) (s : ConState N) (sc : StepChild d s) :
+    Finset (Fin (flatDim d)) :=
+  match sc.ecase with
+  | StepCase.rollover => ∅
+  | _ => (Finset.univ.filter (fun q : tupIdx d =>
+      (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+        (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d)
+
+/-- **A real root→node branch of `buildTree d (conOracle d) conRoot`** — COMBINATORIAL branch-membership
+PLUS the canonical coordinate PIN. Each step's `(case, nextState)` is one of the oracle's `stepChildren`
+at the parent node's state (`ecase`/`child` matched; the matched child's `esubst` = `runLen`/`mergeIdx`
+is the witness), AND the step's stored `center`/`pivot` equal the canonical slots (`canonCenterOf` /
+`canonPivotOf` of that edge — the coordinate pin that lifts L7 bridge-free; the shear `shearφ` is unread,
+a rollover leaves `pivot` unconstrained via `canonPivotOf = none`). -/
 def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ} : TreePath d → Prop
   | .root => True
-  | .step p _ _ cse nextState _ =>
+  | .step p center pivot cse nextState _ =>
       p.IsRealBranch ∧
-        ∃ sc ∈ (conOracle d p.conState).stepChildren, sc.ecase = cse ∧ sc.child = nextState
+        ∃ sc ∈ (conOracle d p.conState).stepChildren,
+          sc.ecase = cse ∧ sc.child = nextState ∧
+            center = canonCenterOf d p.conState sc ∧
+            (∀ piv, canonPivotOf d p.conState sc = some piv → piv = pivot)
 
-/-- **The path reaches the leaf** — a real branch whose terminal state emits `l`. Ties chart `c`'s fold
-to the tree leaf its branch reaches; the coordinate-level coverage this would give L7 is bridge-gated. -/
+/-- **The path reaches the leaf** — a real branch (now also coordinate-pinned via `canonCenterOf`) whose
+terminal state emits `l`. Ties chart `c`'s fold to the tree leaf its branch reaches; the coordinate pin
+in `IsRealBranch` gives L7 the distinct-blocks-per-branch coverage bridge-free. -/
 def TreePath.reachesLeaf {N : ℕ} {d : Fin (N + 1) → ℕ} (p : TreePath d) (l : LeafData d) : Prop :=
   p.IsRealBranch ∧ decisionEmitsLeaf (conOracle d p.conState) l
 
@@ -546,10 +616,13 @@ The SURJECTIVITY conjunct is what makes `reachesLeaf` kill the all-charts-one-pa
 a collision atlas (all charts sharing one branch `p₀`) forces `leafOf` CONSTANT (`reachesLeaf p₀ l ⟺
 l = ` the unique leaf `p₀` reaches), which is not surjective once the tree branches. WITHOUT the
 conjunct the collision survives — `FoldProduced` sees only leaves, never paths, so a decoupled `leafOf`
-could be surjective there yet constant here (fidelity fix, rung C FIX 2; flagged to arch-C for the bake).
-The all-charts-one-coordinate (COORDINATE-axis) severance is NOT killed — it uses distinct real branches
-(surjective) all blowing up one coordinate; that is L7's bridge-gated residual (taxonomy note above and
-`leafPath_compactCover`). -/
+could be surjective there yet constant here (fidelity fix, rung C FIX 2).
+The all-charts-one-coordinate (COORDINATE-axis) severance is now ALSO killed — `reachesLeaf`'s
+`IsRealBranch` pins each step's `center`/`pivot` to `canonCenterOf`/`canonPivotOf` (rung C follow-round),
+so distinct real branches walk distinct residual blocks; the geometry can no longer concentrate on one
+coordinate, and L7 is bridge-free (see the taxonomy note, `canonCenterOf`, and `leafPath_compactCover`).
+The leafOf coupling `FoldRealizes ↔ FoldProduced` is DEFERRED (not needed for the coordinate lift, which
+rides `FoldRealizes`'s own surjective `leafOf`; coupling would touch the locked `FoldProduced`). -/
 def FoldRealizes {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (atlas : GeoAtlasData d e) : Prop :=
   ∃ (pathOf : Fin atlas.n → TreePath d) (leafOf : Fin atlas.n → LeafData d),
@@ -583,13 +656,16 @@ Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`,
 path node and one outgoing edge; `δ = [J=0]` off `p.conState.cleared` (`edgeδ`, UNIFORM across
 sub-cases). Rollover is off the `isCase2`/`isCase1` filters by construction (`localSub = id`).
 
-**EXACT-CLEAR (rev-leaves check-#2).** `foldResid (p.extend ed)` dispatches on the terminal guard
-`N ≤ ed.nextState.layer`: a TERMINAL-reaching step collapses to the M'=1 unit `fun _ ↦ 1`, else the
-full-width pullback. For a REALIZED case-1/case-2 edge the child keeps `layer < N` (only rollover
-advances to `N`), so the terminal branch is vacuous and the proof uses the pullback branch; but `ed`
-is quantified freely, so the proof must still discharge the guard (`if_neg` from `¬(N ≤ nextState.layer)`,
-or the trivial unit branch). The earlier `Fin.snoc` case-2 append is subsumed — full-width until the
-terminal collapse. -/
+**EXACT-CLEAR (rev-leaves check-#2) + fix (a) — the terminal branch is REACHABLE, not vacuous.**
+`foldResid (p.extend ed)` dispatches on the terminal guard `N ≤ ed.nextState.layer`: a TERMINAL-reaching
+step collapses to the M'=1 unit `fun _ ↦ 1`, else the full-width pullback. `ed` is quantified FREELY, so
+a case-1/case-2 edge CAN reach terminal (`isCase1`/`isCase2` do not constrain `nextState.layer`; e.g. at
+`N=1` a case-2 edge is terminal at once) — and THERE `Deg1SupportedOn (fun _ ↦ 1) C'` is FALSE (const 1
+is not degree-1), so the leaf conclusion `∃ C', FoldStepInvAt C' (p.extend ed)` is UNSATISFIABLE. Hence
+the earlier "terminal branch is vacuous" was WRONG (seat-L4 probe, the LAYER-axis severance witness): the
+case leaves REQUIRE the guard `ed.nextState.layer < N`, and the interior→terminal transport is a SEPARATE
+leaf, `terminal_edge_stepInv` (bare unit-residual `StepInv`, then `terminal_bezout` upgrades at L5). The
+earlier `Fin.snoc` case-2 append is subsumed — full-width until the terminal collapse. -/
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). The
 false-as-stated `hsupp` (ideal-membership, monotone in the center) is RETIRED; the fidelity fix is the
@@ -604,6 +680,7 @@ theorem case2_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
+    (hlayer : ed.nextState.layer < N)
     (hinv : FoldStepInvAt d e ed.center p) :
     ∃ C' : Finset (Fin (flatDim d)), FoldStepInvAt d e C' (p.extend ed) := by
   -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state; Deg1 carries center)
@@ -633,10 +710,64 @@ theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
+    (hlayer : ed.nextState.layer < N)
     (hinv : FoldStepInvAt d e ed.center p) :
     ∃ C' : Finset (Fin (flatDim d)), FoldStepInvAt d e C' (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
   sorry
+
+/-- **The terminal-edge transport (elder rider to fix (a)).** With the `ed.nextState.layer < N` guard,
+L3/L4 EXCLUDE the terminal transition, so the last (terminal-reaching) edge's interior→terminal transport
+is uncovered (`terminal_bezout` CONSUMES the terminal data, it does not PRODUCE it). This leaf produces it
+in EXACTLY `Core.Aoyagi.TerminalBezout`'s input shape (PrincipalInv.lean:289–298): the CONJUNCTION of
+* (1) the bare `StepInv` with the LITERAL `Fin 1` unit residual `fun _ ↦ (1:ℝ)` — NOT `foldResid`/`foldNR`,
+  since `foldNR (p.extend ed) = if N ≤ nextState.layer then 1 else …` does NOT reduce defeq-to-`1` for a
+  free edge, which would BLOCK the `terminal_bezout` wiring (rev-core obligation 1). At a terminal edge the
+  residual IS the M'=1 unit, so the literal form is faithful. No `Deg1SupportedOn` (const 1 is not
+  degree-1 — that omission is the point);
+* (2) the single "born-terminally" generator `i₀`/`unit`: `(coreGen i₀ ∘ foldG) = foldB · unit` on the
+  region, with `unit 0 ≠ 0` (rev-core obligation 2, the cleared-pivot datum).
+L5 feeds (1)+(2) + `isOpen_foldRegion`/`zero_mem_foldRegion` into `terminal_bezout`, which upgrades to the
+terminal `PrincipalInv`. CASE-BLIND (covers rollover AND the `N=1` case-2 edge that reaches terminal at
+once). Parent interiority is IMPLIED by `FoldStepInvAt ed.center p` (`Deg1SupportedOn` fails on a terminal
+parent). Elder: "easy — the unit residual is strictly weaker, the whole quotient absorbs into `q′`, the
+same strict-transform algebra with the residual collapsed." -/
+@[blueprint]
+theorem terminal_edge_stepInv
+    {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
+    (hinv : FoldStepInvAt d e ed.center p) :
+    ∃ (q : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ)
+      (i₀ : Fin (d (Fin.last N) * d 0)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
+      StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
+          (fun _ : Fin 1 ↦ (1 : (Fin (flatDim d) → ℝ) → ℝ)) q (foldRegion d e (p.extend ed))
+        ∧ ContinuousOn unit (foldRegion d e (p.extend ed))
+        ∧ unit 0 ≠ 0
+        ∧ (∀ u ∈ foldRegion d e (p.extend ed),
+            (coreGen d e i₀ ∘ foldG d e (p.extend ed)) u = foldB d e (p.extend ed) u * unit u) := by
+  -- map: B-L4t-terminal-edge-stepInv ((1) Fin-1 unit-residual StepInv + (2) born-terminally pivot = TerminalBezout input; L5 → terminal_bezout)
+  sorry
+
+/-- **Consumer-fit regression (rev-core / coordinator).** The `terminal_edge_stepInv` output feeds
+`terminal_bezout` (+ `isOpen_foldRegion` / `zero_mem_foldRegion`) into the terminal `PrincipalInv`,
+ELABORATING with NO defeq surgery — the literal `Fin 1` unit residual (`Pi.one`) matches
+`TerminalBezout`'s input verbatim (PrincipalInv.lean:293). A permanent, executable check that L5's
+terminal wiring actually fits (statement TRUE without proving the leaf — the `example` is discharged by
+the leaf + `terminal_bezout`, both sorried upstream, so it is a WIRING regression, not new content). -/
+example (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
+    (hinv : FoldStepInvAt d e ed.center p) :
+    ∃ (b₁ r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ)
+      (V' : Set (Fin (flatDim d) → ℝ)),
+      IsOpen V' ∧ (0 : Fin (flatDim d) → ℝ) ∈ V' ∧ V' ⊆ foldRegion d e (p.extend ed) ∧
+        PrincipalInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed)) b₁ r V' := by
+  obtain ⟨q, i₀, unit, hSI, hcont, hne, heq⟩ := terminal_edge_stepInv d hN hpos e p ed hterm hinv
+  obtain ⟨V', r, hVopen, hV0, hVsub, hPI⟩ :=
+    terminal_bezout (isOpen_foldRegion d e (p.extend ed)) (zero_mem_foldRegion d e (p.extend ed))
+      hSI i₀ unit hcont hne heq
+  exact ⟨fun i ↦ q i 0, r, V', hVopen, hV0, hVsub, hPI⟩
 
 /-! ## L5 — the path fold: `StepInv` folded to per-chart terminal `PrincipalInv`
 
@@ -659,18 +790,31 @@ them).** Two Props were originally carried here as `∀ d`-hypotheses ("D3 named
 
 /-- **L5 — the path fold produces the geometric atlas.** Folding the interior `StepInv` from the
 trivial root state (`g = id`, `b = 1`, residual `= coreGen`) down each root→leaf branch of the built
-tree, via the one-step preservations (`case2_preserves_stepInv`, `case1_preserves_stepInv`) at each
-edge, reaching the terminal state where `terminal_bezout` upgrades divisibility to the terminal
-`PrincipalInv` (both directions). Produces a `GeoAtlasData` that (a) satisfies `FoldProduced` — the
+tree, via the one-step preservations (`case2_preserves_stepInv`, `case1_preserves_stepInv`, each now
+guarded to the INTERIOR by `ed.nextState.layer < N`) at each interior edge, then crossing the final
+terminal-reaching edge via `terminal_edge_stepInv` (the bare unit-residual `StepInv`), reaching the
+terminal state where `terminal_bezout` upgrades divisibility to the terminal `PrincipalInv` (both
+directions). Produces a `GeoAtlasData` that (a) satisfies `FoldProduced` — the
 provenance RECORD of its own construction (one chart per tree leaf, exponents read off the ledger,
 pivots = the leaf's `divCoord`, doms nontrivial), cheap since L5 builds exactly that — (a′) satisfies
 `FoldRealizes` (each chart's map is the accumulated `foldG` of its REAL tree branch reaching its leaf —
-combinatorial branch-membership; the coordinate-level coverage L7 would take from it is bridge-gated) —
-and (b) carries the terminal `PrincipalInv` for each chart's path map on its region.
+combinatorial branch-membership PLUS the canonical coordinate pin `canonCenterOf`/`canonPivotOf`, which
+gives L7 its coverage bridge-free) — and (b) carries the terminal `PrincipalInv` for each chart's map.
 
-Hypotheses = the three one-step obligations (L3/L4/`terminal_bezout`) ONLY (the two former D3 gaps
-dissolved — see the section note). **Region-shrink ordering (elder D2', the no-implicit-shrinking
-discipline at assembly):** `terminal_bezout` legitimately SHRINKS each chart's region to
+Hypotheses = the four one-step obligations (L3/L4/`terminal_edge_stepInv`/`terminal_bezout`) ONLY (the
+two former D3 gaps dissolved — see the section note).
+
+**Consumer obligations on L5's body (rev-core, its Core-leaf review SURVIVED).** When the fold reaches a
+leaf and hands the terminal edge to `terminal_bezout`: (1) the residual passed MUST be the LITERAL
+`fun _ : Fin 1 ↦ 1` (value ≡ 1, `Fin 1`-typed — `foldNR` at a terminal edge must reduce to `1` so the
+types match `terminal_bezout`'s `q : … → Fin 1 → …`), supplied by `terminal_edge_stepInv` conjunct (1);
+(2) the cleared pivot arrives as a single generator `(coreGen i₀ ∘ g) = b · unit` with `unit 0 ≠ 0` (the
+born-terminally datum), supplied by `terminal_edge_stepInv` conjunct (2). `isOpen_foldRegion` /
+`zero_mem_foldRegion` give the open-`V`-∋-0 inputs; `terminal_bezout` then consumes all and returns the
+terminal `PrincipalInv`.
+
+**Region-shrink ordering (elder D2', the no-implicit-shrinking discipline at assembly):**
+`terminal_bezout` legitimately SHRINKS each chart's region to
 `V ∩ {q i₀ ≠ 0}`, so the fold must choose each chart's compact `dom` / open `region` AFTER all
 per-step and terminal shrinkings — the emitted `atlas.dom c ⊆ atlas.region c` (a `GeoAtlasData` field)
 sits inside the FINAL shrunken region, never a pre-shrink one. The `srcBox`-seam pathwise coherence
@@ -688,6 +832,7 @@ theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hN : 0 < N)
   -- on the monument cone (records them for #audit_blueprint even while the fold body is sorried).
   have _hc2 := case2_preserves_stepInv (d := d)
   have _hc1 := case1_preserves_stepInv (d := d)
+  have _hterm_edge := terminal_edge_stepInv (d := d)
   have _hterm : TerminalBezout := terminal_bezout
   sorry
 
@@ -734,19 +879,17 @@ generalized R = 1 → R-parametric (the no-inflation trick dies once shears give
 closes the record `hcover` by `Set.diff_eq_empty.2 hsub ▸ measure_empty` (the landed `OriginBlowup`
 idiom, the `S = univ` single-level instance of the block cover).
 
-**BRIDGE-GATED (FIX 2, elder/coordinator (a)).** The FULL cover above is a COORDINATE-level fact —
-WHICH coordinate each chart blows up — that neither `FoldProduced` (ℕ-valued `divExp`, never `divCoord`)
-nor the COMBINATORIAL `FoldRealizes`/`reachesLeaf` (`hreal`; `center`/`pivot`/`shearφ` unread) pins. The
-all-charts-one-coordinate atlas (every `gmap c` concentrated on a single coordinate `x`, the ball's
-`y`-directions uncovered) passes BOTH hypotheses yet falsifies this `⋃`. So L7 is HONEST
-FALSE-AS-STATED-PENDING-BRIDGE: it closes once the Engine↔Aoyagi coordinate bridge (`edgeCenter`,
-deferred; the center/pivot spec §) lands and pins each real branch's blow-up coordinate to the leaf's
-`divCoord`.
-* The (c)-road — `canonCenter`, the paper's DLN-side slot bookkeeping computed from `(S, J, mergeIdx, d)`
-  (NOT the engine `divCoord`) — had its rollover slot-transfer checkpoint return STABLE, so it is the
-  SCHEDULED follow-round; the gate lifts bridge-free there (not this bake), pinning each real branch's
-  blow-up coordinate without the Engine↔Aoyagi bridge.
-* Nothing about L7 blocks the wall (L4), L3, L5's proof-content, L6, or L8 — this banner is the
+**BRIDGE-FREE (rung C canonCenter follow-round; coordinator (a) — LIFTED).** The FULL cover above is a
+COORDINATE-level fact (WHICH coordinate each chart blows up). It is now PINNED bridge-free: `hreal`
+(`FoldRealizes`) carries `reachesLeaf`, whose `IsRealBranch` pins each real branch's step `center`/`pivot`
+to `canonCenterOf`/`canonPivotOf` — the canonical Aoyagi slots reconstructed from the COMBINATORIAL
+`(layer, cleared, mergeIdx)` via `tupIdxEquiv` (`ConState.divBirthCoord` for the merge slot,
+`widthMinUpto` for the running-min row bound), NOT the engine `divCoord`, and with no card↔sum bridge.
+Distinct real branches (surjective `leafOf`) therefore walk DISTINCT residual blocks, so the
+all-charts-one-coordinate atlas (which formerly passed both hypotheses and falsified the `⋃`) is now
+EXCLUDED. The statement is TRUE-AS-STATED bridge-free; the proof of the tiling (the coverage computation
+over the canonical block assignment) stays sorried.
+* Nothing about L7 blocks the wall (L4), L3, L5's proof-content, L6, or L8 — this note is the
   coordinate-coverage residual ONLY; do not over-read it. -/
 @[blueprint]
 theorem leafPath_compactCover (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
@@ -813,7 +956,7 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     exact leafPath_chartGeometry d e atlas c hfold hfwd hbwd
   choose charts hg hdom _hnbhd hbexp hjac using hchart
   -- L7: the full cover of a ball by the charts' domain images (rides FoldProduced + FoldRealizes;
-  --      the coordinate-level coverage is bridge-gated — see the L7 banner).
+  --      the coordinate coverage is now bridge-free via the canonCenter pin — see the L7 banner).
   obtain ⟨ρ, hρ, hcov⟩ := leafPath_compactCover d e atlas hfold hreal
   -- L8: the exponent match (rides the FoldProduced provenance).
   obtain ⟨hspec_lb, hspec_attain⟩ :=
