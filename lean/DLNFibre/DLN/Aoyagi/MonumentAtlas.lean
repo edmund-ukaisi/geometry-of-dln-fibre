@@ -53,6 +53,9 @@ a.e.-injective off the exceptional monomial's zero set (the coordinate blocks). 
 structure GeoStep (D : ℕ) where
   /-- The step coordinate change (unipotent shear ∘ monomial blow-up). -/
   σ : (Fin D → ℝ) → (Fin D → ℝ)
+  /-- The blow-up pivot coordinate of this step (the exceptional axis). Recorded so provenance can tie
+  the branch's pivots to the leaf's `divCoord` (the coordinate-block coherence, `CenterCoordAligned`). -/
+  pivot : Fin D
   /-- The step's Jacobian monomial exponent. -/
   jexp : Fin D → ℕ
   /-- `σ` is analytic (a polynomial map). -/
@@ -105,6 +108,37 @@ def GeoAtlasData.gmap {d : Fin (N + 1) → ℕ} {e : (Fin (flatDim d) → ℝ) �
     (a : GeoAtlasData d e) (c : Fin a.n) : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   pathMap ((a.steps c).map GeoStep.σ)
 
+/-- **The fold-provenance predicate (rev-leaves round-2 anchor).** The structural bridge tying a
+`GeoAtlasData` to `buildTree d (conOracle d) conRoot` — WITHOUT it, `leafPath_compactCover` (L7) and
+`leafPath_realizesExponents` (L8) are FALSE as `∀ atlas` statements (a bare atlas carries no
+tree/fold link: the degenerate `n=1, steps=[], dom={0}` breaks L7; adversarial `jac := Σ+1` breaks
+L8). `FoldProduced` RECORDS what L5's fold constructs — DEFINITIONAL bookkeeping only, NOT the cover
+(that stays L7's proof obligation) and NOT the `∈ terminalExponents` lift (that stays L8's):
+
+* `leafOf` — the chart↔leaf correspondence into the tree's leaves (`hmem`), SURJECTIVE (`hsurj`: every
+  leaf, in particular the `minAdm`-attainer, gets a chart);
+* `hjac_mem` / `hjac_onto` — the exponent read-off: each binding-axis `jac a + 1` IS one of `leafOf c`'s
+  divisor exponents (kills the adversarial `jac`), and every divisor exponent is realised by some binding
+  axis (feeds L8 clause (ii));
+* `hdom_ball` — each source domain contains a nontrivial ball (kills the `dom = {0}` degeneracy; weaker
+  than fixing a radius, so D2'-compatible with the terminal region-shrink);
+* `hpivots` — the branch's step pivots ARE `leafOf c`'s exceptional coordinates `divCoord` (the
+  `CenterCoordAligned` coherence at the atlas level; ties `gmap c`'s blow-ups to the real tree branch, so
+  the max-pivot cover routing (L7) has its handle and the all-one-pivot degeneracy is excluded). -/
+def FoldProduced {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (atlas : GeoAtlasData d e) : Prop :=
+  ∃ leafOf : Fin atlas.n → LeafData d,
+    (∀ c, leafOf c ∈ ResolutionTree.leaves (buildTree d (conOracle d) (conRoot : ConState N))) ∧
+    (∀ l ∈ ResolutionTree.leaves (buildTree d (conOracle d) (conRoot : ConState N)),
+      ∃ c, leafOf c = l) ∧
+    (∀ (c : Fin atlas.n) (a : Fin (flatDim d)), a ∈ bindingAxes (atlas.bexp c) →
+      ∃ k : Fin (leafOf c).numDiv, atlas.jac c a + 1 = (leafOf c).divExp k) ∧
+    (∀ (c : Fin atlas.n) (k : Fin (leafOf c).numDiv),
+      ∃ a : Fin (flatDim d), a ∈ bindingAxes (atlas.bexp c) ∧ atlas.jac c a + 1 = (leafOf c).divExp k) ∧
+    (∀ c, ∃ R : ℝ, 0 < R ∧ Metric.closedBall (0 : Fin (flatDim d) → ℝ) R ⊆ atlas.dom c) ∧
+    (∀ c, (atlas.steps c).map GeoStep.pivot
+      = (List.finRange (leafOf c).numDiv).map (leafOf c).divCoord)
+
 /-! ## L5 — the path fold: `StepInv` folded to per-chart terminal `PrincipalInv`
 
 **DISSOLVED named gaps (rev-leaves FIX 2 + FIX 5; elder second delta — recorded so no one re-invents
@@ -128,8 +162,10 @@ them).** Two Props were originally carried here as `∀ d`-hypotheses ("D3 named
 trivial root state (`g = id`, `b = 1`, residual `= coreGen`) down each root→leaf branch of the built
 tree, via the one-step preservations (`case2_preserves_stepInv`, `case1_preserves_stepInv`) at each
 edge, reaching the terminal state where `terminal_bezout` upgrades divisibility to the terminal
-`PrincipalInv` (both directions). Produces a `GeoAtlasData` whose every chart carries the terminal
-`PrincipalInv` for its path map on its region.
+`PrincipalInv` (both directions). Produces a `GeoAtlasData` that (a) satisfies `FoldProduced` — the
+provenance RECORD of its own construction (one chart per tree leaf, exponents read off the ledger,
+pivots = the leaf's `divCoord`, doms nontrivial), cheap since L5 builds exactly that — and (b) carries
+the terminal `PrincipalInv` for each chart's path map on its region.
 
 Hypotheses = the three one-step obligations (L3/L4/`terminal_bezout`) ONLY (the two former D3 gaps
 dissolved — see the section note). **Region-shrink ordering (elder D2', the no-implicit-shrinking
@@ -143,10 +179,11 @@ theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0
     (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0)
     (he_lin : IsLinearMap ℝ ⇑e)
     (hcase2 : Case2Preservation) (hcase1 : Case1Preservation) (hterm : TerminalBezout) :
-    ∃ atlas : GeoAtlasData d e,
+    ∃ atlas : GeoAtlasData d e, FoldProduced d e atlas ∧
       ∀ c : Fin atlas.n, ∃ q r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ,
         PrincipalInv (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r (atlas.region c) := by
-  -- map: B-L5-path-fold (fold StepInv via L3/L4 along tree branches; terminal_bezout at each leaf)
+  -- map: B-L5-path-fold (fold StepInv via L3/L4 along tree branches; terminal_bezout at each leaf;
+  --      emits the FoldProduced provenance record of the construction)
   sorry
 
 /-! ## L6 — the chart geometry: assemble a certified `Chart` from a branch -/
