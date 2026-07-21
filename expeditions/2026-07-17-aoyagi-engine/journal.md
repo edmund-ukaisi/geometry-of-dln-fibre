@@ -9708,3 +9708,15 @@ tiering proposal) sat in its inbox. New standing requirement for seat-E: drain i
 composing; open every report with a one-line ack of the latest controller message. Its next
 action restated a third time: the TIERING PROPOSAL for the two incidence lemmas (UPPER +
 ATTAINMENT) against the elder-ratified shape — not waiting on any further signal.
+
+## 2026-07-21 (controller) — attribution note on 5072882dc + carto shared-tree protocol
+
+Commit 5072882dc's message says feat(E/P6.1-T2) but ALSO carries three CARTOGRAPHER deliverables
+that were staged in the shared root tree when my commit ran: map/battery/rho_battery.py +
+_edgespec_traversal_334.py (GO item 1a — graduated with `# guards: e-p61/e-p62` +
+provenance headers) and map/overlay/severance-witnesses.md (GO item 1b — the five-axis
+witness-bank index carrying the elder's per-field principle + the boundary-value refinement).
+Content REVIEWED and approved retroactively — exactly the dispositioned items, well-formed.
+Protocol fix to carto: in the shared root tree, either COMMIT your own overlay/battery work
+(single-writer files, your pen) with your own message, or leave it UNSTAGED and report —
+staged-not-committed work gets swept into the next controller commit with wrong attribution.
