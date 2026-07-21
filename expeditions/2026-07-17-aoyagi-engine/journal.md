@@ -8626,3 +8626,22 @@ I don't exempt my own binders. Uniformity is not a bar-(i) value; weakest-hypoth
 later (if a wall proof wants one) = a normal small round, cheaper than certain noise in the wall
 seat's context. Rides arch-C's next-touch bundle; the foldNR exact-clear diff + this trim go to the
 elder as ONE verification pass. Register M5 entry extended at next event-touch.
+
+## 2026-07-21: L3 STOP-ON-SUSPECT — the φ-alignment hole made CONCRETE; one ruling closes both leaves
+seat-w0l3, proving L3's δ=1 branch, found the round-5 must-verify's missing witness: φ :=
+Pi.single c (w_s²) (c ∈ center\{pivot}, s a spectator) is ADMISSIBLE (jacDet ≡ 1 — single nilpotent
+off-diagonal; φ0 = 0) yet injects u_s² into a center coordinate at {u_pivot=0}, killing the δ=1
+division — case-2 interior with a spectator REFUTES the leaf under a free shearφ (hsupp is
+φ-independent and still holds; no child q' exists). THREE REGIMES pinned: δ=0 closes (pure
+pullback); δ=1 at center=univ closes for ANY φ (the root); δ=1 with a spectator refutes free-φ but
+closes at φ=0 — the gap is precisely the shear, not the blow-up. rev-leaves' round-5 structural flag
+made concrete (it searched case-1/deep; case-2-interior + φ-freedom sufficed). THE FIX (elder
+adjudicating, ONE ruling for both leaves, riding arch-C's bundle): hshear_center — the shear injects
+nothing into center coords across the exceptional locus — Aoyagi-true via the shear-pin's hkeep/hread
+(her Q/Schur shears never mix spectators into the center); placement = TreeEdge proof-field (the
+constraint is stateable in the edge's OWN data — no bridge, unlike the (B)-excluded center-validity)
+vs leaf-hypothesis à la hsupp. DISPATCHED: seat-w0l3 lands δ=0 + root-δ=1 helpers + banks the
+refutation probe + states its division helpers over an abstract halign; seat-L4's rescue-direction
+CLOSED (don't spend), its traversal-table check re-pointed at verifying the REAL per-edge φ's satisfy
+hshear_center (the constructive discharge L5 needs), core #3 proceeds over the abstract hypothesis.
+The stop-on-suspect discipline priced this at hours, not a burned seat.
