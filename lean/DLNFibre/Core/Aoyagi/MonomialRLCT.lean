@@ -82,13 +82,37 @@ theorem not_divChain_coupled_example :
 `DivChain` with minimal generator `b_{k₀}`, `∑ₖ bₖ² = b_{k₀}² · U` where `U(u) = ∑ₖ (bₖ/b_{k₀})²` is
 continuous with `U 0 = #{k : b_k = b_{k₀}} ≥ 1 > 0` (each `bₖ/b_{k₀}` is a monomial with nonnegative
 exponents, vanishing at `0` unless `bₖ = b_{k₀}`). Polynomial bookkeeping; no new mathematics. -/
-@[blueprint]
 theorem exists_unit_sumSqFam_monomial {M D : ℕ} {e : Fin M → Fin D → ℕ} {k₀ : Fin M}
     (hchain : ∀ k d, e k₀ d ≤ e k d) :
     ∃ U : (Fin D → ℝ) → ℝ, ContinuousAt U 0 ∧ 0 < U 0 ∧
       ∀ u, sumSqFam (monomialFam e) u = (monomialFam e k₀ u) ^ 2 * U u := by
-  -- map: C-collapse (∑ bₖ² = b_{k₀}²·U under the chain; U continuous, U 0 ≥ 1)
-  sorry
+  classical
+  -- `U u = ∑ₖ (bₖ/b_{k₀})²` where `bₖ/b_{k₀} = ∏_d u_d^(e k d − e k₀ d)` (an honest monomial:
+  -- the exponents are `≥ 0` by the chain). At `0` only the `k₀` term survives, giving `U 0 ≥ 1`.
+  refine ⟨fun u ↦ ∑ k, (∏ d, (u d) ^ (e k d - e k₀ d)) ^ 2, ?_, ?_, ?_⟩
+  · -- `U` is a polynomial, hence continuous.
+    refine Continuous.continuousAt ?_
+    refine continuous_finset_sum _ (fun k _ ↦ ?_)
+    exact (continuous_finset_prod _ (fun d _ ↦ (continuous_apply d).pow _)).pow 2
+  · -- `0 < U 0`: the `k₀` summand is `1`, all summands are `≥ 0`.
+    refine Finset.sum_pos' (fun k _ ↦ sq_nonneg _) ⟨k₀, Finset.mem_univ k₀, ?_⟩
+    have h1 : (∏ d, (0 : Fin D → ℝ) d ^ (e k₀ d - e k₀ d)) = 1 := by
+      refine Finset.prod_eq_one (fun d _ ↦ ?_)
+      rw [Nat.sub_self, pow_zero]
+    rw [h1]; norm_num
+  · -- the collapse identity, term by term.
+    intro u
+    simp only [sumSqFam, monomialFam]
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun k _ ↦ ?_)
+    rw [← mul_pow]
+    congr 1
+    rw [← Finset.prod_mul_distrib]
+    refine Finset.prod_congr rfl (fun d _ ↦ ?_)
+    rw [← pow_add]
+    congr 1
+    have := hchain k d
+    omega
 
 /-- **Object C — the monomial RLCT (S2 boxed rule; the analytic frontier leaf).** For a monomial
 family whose exponents form a divisibility chain with minimal generator `b_{k₀}`, against a Jacobian
