@@ -10108,3 +10108,27 @@ FoldStepInvAt + LastLayerInv's left disjunct; subsumption survives — both side
 everything else untouched); the render continues shape-unaffected with the clause site PARAMETRIC
 so the ruling lands as a one-line swap; pre-gating in progress; the origin-value countermodel
 (c ≡ 1) becomes the seventh regression witness. ONE bake when the test + Codex verdict land.
+
+## 2026-07-22 (controller) — the Codex verdict: conjunct-B false via TWO mechanisms; the fork (invariant form vs fifth shear field) with the elder; seat-L4's fidelity input requested
+
+seat-L3T's second Codex check CONFIRMS case2's conjunct (B) false-as-stated — and the
+countermodel (D=2, shear u_i ↦ u_i + u_p, LEGAL under all four TreeEdge shear fields; parent
+resid = u_p + u_i, valid Deg1) reveals TWO mechanisms: (1) the ESCALATION TEST resolves AGAINST
+the minimal clause — vanishing-at-0 cannot induct (the strict transform of c_p·u_p is c_p∘σ·1:
+a VALUE condition cannot produce the child's FORM condition; ideal membership c_p ∈ ⟨deeper⟩
+self-propagates under composition, vanishing does not — S3's genesis repeating exactly as
+pre-flagged); (2) SHEAR MIXING is NEW — a legal shear mixes T = center∖{pivot} with the pivot,
+breaking child-Deg1 independent of any coefficient clause. Codex's minimal repair: carry the
+invariant on the STRICT-TRANSFORMED residual on T (Deg1SupportedOn (resid∘quotMap) T —
+invariant-in-prepared-coordinates; C′ = T works at both δ; arguably what the paper's Let-block
+bookkeeping IS). THE FORK with the elder: (A) the form-redesign + the born-terminally pivot
+content as a separate tracked datum (one design closing BOTH leaves' defects, feeding hcleared
+naturally) vs (B) a FIFTH TreeEdge shear field (T-block-preserving) + the ideal clause.
+**seat-L4's decorrelated fidelity input requested**: what do the actual Q̂-shears do on T, per
+the Let-blocks (the (3,3,4) instances passed with REAL shears — name what the real objects
+satisfy). seat-L3T banks the fork-stable halves (the case-BLIND divisibility lemma serving L3
+AND L4's conjunct A via the unified product identity; the terminal unit lemma) — honest,
+reusable, no fabrication. arch-C: the parametric site widens from clause to CONJUNCT (its
+pre-verdict AnchorClause prep covers mechanism 1 only — the queue carries the update); bake
+still held for the elder's fork ruling. Both leaves' defects now have banked countermodels —
+the seventh axis (ANCHOR-VALUE) plus the shear-mixing witness join the regression bank.
