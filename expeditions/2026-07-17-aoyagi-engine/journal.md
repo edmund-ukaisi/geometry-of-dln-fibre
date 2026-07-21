@@ -9505,3 +9505,18 @@ mechanism, on an INTERIOR edge). If the battery shows it → second stop-on-susp
 defect in anchor (v), routes to elder+arch-C); if fresh-exceptional-always → GO with the battery
 as witness. Develops in a separate Case1Wire.lean (parallel-dev vehicle); the leaf fill lands at
 integration.
+
+## 2026-07-21 (controller) — Tier-1 hardening integrated (width-independence); Tier-2 GO clarified (zero-rework core)
+
+seat-E's hardening increment merged + verified (module rebuild green; envHi_sub_envLo
+force-elaborated [propext, Quot.sound]): the p.25 envelopes over FREE (P, M) with
+**envHi_sub_envLo — H̃′_j − H̃_j = bandWidth ℓ a j, the P-and-M cancellation** — the "why the
+order depends only on (ℓ,a)" fact and the Tier-1↔Tier-2 bridge (Tier 2 instantiates the certified
+selector; the terminal equality H̃_ℓ = H̃′_ℓ = 0 is what needs Def-3 consistency there). Statement
+card banked at threads/41-order-count/. Layer-filling of exactly the P6.1 shape.
+
+**Tier-2 GO sharpened (third relay to seat-E — inbox-backlog flag raised):** the arithmetic layer
+(bandCount = aoyagiTheta + the certified instantiation) has ZERO rework risk under any P6.2
+outcome — both sides are in-tree a(ℓ−a)+1 arithmetic; the pnp decides what the COUNT MEANS, not
+what these values equal. Only the INTERPRETIVE layer (names/docstrings claiming "= multiplicity")
+waits on task #39. seat-E builds Tier 2 now under pin (a) + K1 build-gates + K3-neutral naming.
