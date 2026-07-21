@@ -7791,3 +7791,20 @@ the coupled ideal-route atlas + hcover BUILD. Everything else in the destination
 Fidelity reviewer (rev-cov-fidelity) spawned per the seat's request (statement vs min-over-charts;
 unconsumed-field smell check; the allOnesResolution instantiation numbers; AxCheck banking sanity).
 Ground-truth root build running; push on green.
+
+## 2026-07-21: monument-1 fidelity PASS (both reviewers now green) — one integration pass pending
+rev-cov-fidelity: PASS, cases checked, decorrelated Codex agreed. STRENGTHS recorded: (1) the theorem's
+weight is the ACTUAL |det Dg| (jacWeightFn), not the declared jacWeight — hjac only bridges at proof
+time, so a false jac declaration cannot game the value; (2) NO dead record field (≤/≥/value legs jointly
+consume everything; hunit_mult legitimately downstream in the value theorem only — the CoV is MORE
+general than the record demands); (3) the engine headline avoids the rlct-really-codim trap (genuine
+integrability-threshold rlctAt, proved via the landed S2 computation, S2-free, composed with D's bridge);
+(4) banking correct (batch assertion strictly stronger than the superseded informational print).
+FIDELITY NUANCE to co-locate: the amplitude/prior nonvanishing (the paper's φ) is folded into unit/hjac
+(hunit_ne) — the standard SLT φ(w*)>0 setting; a docstring note goes on the engine headline at
+integration. RANK-1 follow-up (witness not reachable at the reviewed commit) RESOLVES via the pending
+mon-rec merge (ResolutionInhabited rides in). rev-monument-adapter: SURVIVED earlier, with two applied
+precision escalations (seam weakened to only-the-minimizer — the geometric obligation is now STRICTLY
+weaker; AtlasRealizesExponents rename). INTEGRATION PASS (on mon-rec's final green): merge + wire
+ResolutionInhabited + C1 re-audit + bank the adapter theorem + O5:865 docstring fix + amplitude note +
+statement card → reviewed + ground-truth + push.
