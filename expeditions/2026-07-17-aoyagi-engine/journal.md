@@ -9923,3 +9923,36 @@ guard does not fence a mechanism boundary." Six axes: content, size, path, coord
 layer-endpoint, layer-last-interior. arch-C priced + implementing (cone delta named in advance,
 up to +2); seat-L4 holds (its wall closes against a statement finally true on every admitted
 branch); seat-L3T's transport unchanged, L3 hold continues.
+
+## 2026-07-21 (controller) — integration sweep GREEN (M4+M9+Tier-1e); pnp enrichments confirmed; the LastLayerInv design fork routed for the ruling extension
+
+**All gates green, everything banked:** M4+M9 full-tree build (8989 jobs) + probes (the Gen family,
+the rederived ℝ atoms, jacDet_blowupMap_unconditional — all clean-three; the AxCheck root
+re-confirmed post-docstring); Tier-1e incremental build + probes (atlasOrder /
+boxedOrder_eq_chartOrderAt / chartOrderAt_le_atlasOrder clean-three); the render-contract battery
+re-run from the root: ALL CONTRACT CHECKS PASS (controller execution). carto's landmark refresh
+closed the three-way alignment (compass == claims == cards; kill-cite → summit,
+b-leaf2 → b-principalinv, the four demotions' homes cited) + chain_battery graduated (e-p62 now
+double-guarded, both SURVIVE on run). Tasks: M4/M9/Tier-1e integration complete.
+
+**pnp's enrichments, both CONFIRMED (EXIT 0, folded into its thread):** (1) the b-chain IS the
+per-branch nesting mechanism (thread-31's closed form b_i = ∏u gives b₁|b₂|…; factor-containment
+totally nested by t̃; 22190 nonempty leaves, 0 non-chains) — the (T-F) coda's mechanism verified
+and the CHEAPEST Tier-3 Lean route named: DivChain/b-chain, already banked. (2) The fence
+adjudicated exactly: minMval ≥ 1 is the exact boundary AND automatic on genuine cores ({∏C=0}
+proper ⟹ codim ≥ 1); no further hypothesis on the non-degenerate domain; the degenerate side is
+width-0 configs only. seat-E's UPPER = "the binding poset is graded of height a(ℓ−a)+1";
+grading = inversion/Young-cell rank (NOT coord-sum).
+
+**The design fork (routed to the elder for a ruling extension):** arch-C's pricing flagged that
+fix (2) NECESSARILY touches terminal_edge_stepInv — its Deg1-parent hypothesis is unsatisfiable
+at the real terminal transition (the rollover's S=L parent carries units), so the leaf as stated
+is vacuous where L5 needs it; the OUTPUT (1)∧(2) survives verbatim either way. The fork:
+the elder's exposed LastLayerInv + per-clear preservation + re-parented transport (each step
+NAMED and gated — my read: the elder's own "easy earns a name" cuts against the alternative)
+VS arch-C's segment-widen (transport's parent = the last S<L Deg1 node, all S=L clears crossed
+INTERNALLY — less surface, but the per-clear step becomes a silent internal delegation). Plus two
+render details for the ruling: the guard as `layer + 1 < N` (ℕ-truncation trap) and the N = 1
+degenerate (no interior at all — the whole fold is last-layer + terminal). seat-L3T FULLY held
+(both targets) pending the extension; seat-L4 holds; the wall's divisibility crux unaffected
+throughout.
