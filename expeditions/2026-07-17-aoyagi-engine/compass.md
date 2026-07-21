@@ -81,9 +81,8 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   corrupt `hlb`/`hattain`; at the witness widths (2,2,3,2) the defect divisor is NON-BINDING. The earlier
   hypothesis that the fork dissolves in the ideal route (no separate T-label) is CONFIRMED. Witnesses:
   `g-monument-mval-instances.py`, `verify-case2-rawwidth-defect.md`,
-  `threads/31-monument-construction/certificate.md` §d. Optional residual (image-only): the p.20 page
-  image was not re-read (no PDF tooling in the seat); the structural conclusion is image-independent —
-  reconfirm only if the monument's Case-2 rendering ever reads a label off the page.
+  `threads/31-monument-construction/certificate.md` §d. Image residual CLOSED (elder pass
+  2026-07-21): p.20 confirmed — raw-width head-reset printed, Case-1(2) inherits (p.17); worked.tex (T-E).
 - **Realization "profile-set ⊇ Adm" (Engine-tree artifact; surviving kernel banked).** The paper's
   implicit stratum-completeness (the resolution realises every admissible profile) is FALSE for the
   built tree — but this was a property of the Engine's leaf-profile-set, which does NOT exist in the

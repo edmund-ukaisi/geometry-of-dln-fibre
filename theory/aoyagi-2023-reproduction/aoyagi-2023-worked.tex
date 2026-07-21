@@ -18,17 +18,27 @@
 %       \gnote{...}  geometric reformulation (codim S(t)=Mval bridge)
 %       \qmark{...}  open question / to-verify (exact-arithmetic check)
 %
-%  Status: WORK IN PROGRESS. Sections filled top-to-bottom.
+%  Status: all sections filled.
 %   [x] 0  Notation + reading guide
 %   [x] 1  Model, loss, RLCT framework (Def 1, Lemma 1, Def 2)
 %   [x] 2  The two theorems (Thm 1 = RRR/L=2, Thm 2 = general-L) + Def 3
 %   [x] 3.1 Theorem 3  (product reduction / iterated block elimination)
-%   [ ] 3.2 Theorem 4  (reduction to the deepest singular point)   <- next
-%   [ ] 3.3 The recursive blow-up (Cases 1 & 2) — THE MOUNTAIN      <- next
-%   [ ] 3.4 The candidate thresholds M_{s,k} and the min            <- next
-%   [ ] 4  Lemmas 3–5 (arithmetic minimisation + order theta)
-%   [ ] 5  The RRR (L=2) specialisation, packaged                   <- for deliverable 3
-%   [ ] 6  Typos / underspecifications, collected
+%   [x] 3.2 Theorem 4  (reduction to the deepest singular point)
+%   [x] 3.3 The recursive blow-up (Cases 1 & 2) — THE MOUNTAIN
+%   [x] 3.4 The candidate thresholds M_{s,k} and the min
+%   [x] 4  Lemmas 3–5 (arithmetic minimisation + order theta)
+%   [x] 5  The RRR (L=2) specialisation, packaged
+%   [x] 6  Typos / underspecifications, collected
+%
+%  2026-07-21 ELDER ANNOTATION PASS (strike-wave generation folded in):
+%   - "Lean status" \fnote{}s added at each theorem/lemma: what is now PROVEN
+%     sorry-free at the expedition tip vs paper-claimed vs deferred.
+%   - FULL PAGE-IMAGE VERIFICATION of pp.14--22 done this pass (poppler on root;
+%     the seats lacked PDF tooling): the inductive statement + b_i closed form +
+%     Jacobian ledger (p.15), Case-1 exponents (pp.16--17), Case-2 label + exponent
+%     + the T-profile totality display (pp.19--20), the M_{s,k} formula + t~=0
+%     read-off (p.22) are all IMAGE-CONFIRMED against this document. New ledger
+%     items (T-E), (T-F); see also verify-owed-math-audit.md (the owed-math list).
 % =====================================================================
 \documentclass[11pt]{article}
 \usepackage{amsmath,amssymb,amsthm,mathtools,bm}
@@ -164,6 +174,30 @@ also what equates the loss-RLCT with the Kullback-RLCT. \emph{Must be proven}
 inequality is the elementary direction (an inclusion of ideals gives a pointwise
 domination $\sum G^2\le c\sum F^2$ locally, hence the integral comparison).}
 
+\fnote{\textbf{Lean status (strike wave 1, 2026-07-21): PROVEN, sorry-free.}
+Object A landed in \texttt{Core.Aoyagi.IdealInvariance}: the one-sided
+$\le$ (\texttt{rlctAt\_sumSqFam\_le\_of\_germRepresents}), the two-sided equality
+(\texttt{rlctAt\_sumSqFam\_eq\_of\_germ\_eq}), and the \emph{weighted} forms
+(\texttt{wrlctAt\_*}) that the resolution change-of-variables consumes. Two
+statement-level guards were REQUIRED beyond the paper's prose, both elder-adjudicated
+with counterexamples: (i) the \emph{junk-$0$ guard} \texttt{LocallyNullZeros} --- Lean's
+\texttt{rpow} has $0^{-c}=0$, so a positive-measure zero set of $\sum G_i^2$ would
+\emph{inflate} the Lean threshold (false without the guard; dischargeable for
+polynomial/analytic families, \texttt{Waypoint.locallyNullZeros\_sumSqFam\_of\_polynomial});
+(ii) measurability of the weight and the dominated family (a Vitali-modulated
+continuous-at-$x$-only cofactor otherwise annihilates one admissible set). Germ ideal
+membership is encoded as an explicit representation (\texttt{GermRepresents}, coefficients
+continuous at $x$; dom-wide \texttt{RegionRepresents} for the resolution charts).}
+
+\gnote{\textbf{Why Lemma 1 is load-bearing, exactly (thread-27, exact algebra).} The
+recursion's unit transforms $Q,P$ are \emph{non-orthogonal}, so the Frobenius norm is NOT
+preserved: after the resolution the pulled-back loss is \emph{not literally} $\sum b_i^2$
+--- it is a sum of squares of elements \emph{generating the same ideal}. Verified exactly
+at the coupled instance $(3,3,4)$ (\texttt{g-coupled-334-diagb.py}). Without Lemma~1 the
+whole diagonalisation chain computes the threshold of the wrong function; with it, only
+the ideal matters. This is the precise sense in which the ideal route replaces the dead
+chart route.}
+
 \begin{definition}[Aoyagi Def.\ 2]
 $\norm{C}=\sqrt{\sum_{ij}|c_{ij}|^2}$ and $\ideal{C}=\ideal{\{c_{ij}\}}$.
 \end{definition}
@@ -187,6 +221,23 @@ monomial$\times$unit, the Jacobian being a monomial, the charts covering, and th
 $\min$ over charts being realised by the joint integral) is on our side. In Lean,
 S2 is \texttt{monomial\_rlct}: $\texttt{monomialThreshold}\,d\,k\,h
 =\min_j (h_j+1)/(2k_j)$.}
+
+\fnote{\textbf{Lean status (strike wave 1, 2026-07-21): the per-chart boxed rule is
+now a THEOREM, not a citation.} Object C landed sorry-free
+(\texttt{Core.Aoyagi.MonomialRLCT}): \texttt{monomialSumSq\_wrlctAt\_eq} proves
+$\mathrm{wrlct}(W,\sum b_k^2)=\min_{d:\,k_d>0}(h_d{+}1)/(2k_d)$ for a monomial family
+under the \emph{divisibility chain} $b_{k_0}\mid b_k$ (Aoyagi's own invariant, the
+principal-normal-crossing hypothesis) against $W=\text{(monomial)}\times\text{(unit)}$,
+and \texttt{monomialSumSq\_two\_mul\_wrlctAt\_eq\_min} gives the DLN unit-multiplicity
+integer form $2\rlct=\min(h_d{+}1)$. The chain hypothesis is load-bearing: the coupled
+family $(u_0u_1^2,\,u_0^2u_1)$ has axis value $1$ but true threshold $2/3$, and is
+\emph{excluded} (\texttt{not\_divChain\_coupled\_example}). Guards: \texttt{Measurable
+unit} (delta-ratified) $+$ the junk-$0$ guard. What remains OPEN of this boxed display
+is exactly its \emph{atlas} half --- the ``$\min$ over charts $U$'' --- the sorried
+frontier leaf \texttt{rlctAt\_sumSqFam\_eq\_iInf\_charts}
+(\texttt{Core.Aoyagi.ProductResolution}); the per-chart value
+\texttt{Chart.two\_mul\_wrlctAt\_eq\_chartMin} and the wired
+\texttt{Resolution.two\_mul\_rlctAt\_eq\_divisorMin} are proven modulo that leaf.}
 
 \gnote{Read the boxed rule with $k_j\equiv1$ (every exceptional divisor of a
 \emph{smooth} centre along which a sum of squares vanishes has order exactly $2$)
@@ -312,6 +363,17 @@ with $m_1\le\cdots\le m_{\ell+1}$ the $\ell+1$ smallest reduced widths and $q$ t
 balanced $\ell$-part split of $P=\sum m_k$ --- this is \texttt{lambdaCore} and is
 far more formalisable than the printed expression.}
 
+\fnote{\textbf{Lean status (2026-07-21).} The wired, cite-free form is
+\texttt{aoyagi\_learning\_coefficient\_via\_engine} (\texttt{DLN.Aoyagi.LearningCoefficient}):
+$\mathrm{rlctGlobal}(\texttt{lossDLN}\,d\,0)=\texttt{cCodim}/2$ at the zero-product fibre,
+for monotone positive widths, routed entirely through the engine (A$+$B$+$C$+$D) with
+NEITHER \texttt{cited\_aoyagi\_lower\_ax} NOR \texttt{cited\_watanabe\_upper\_ax} on its
+cone. Its axiom cone is clean-three $+$ \texttt{sorryAx} from exactly two leaves (the
+min-over-charts CoV; the monument) --- when those close, the DLN lower-bound cite dies.
+Named scope boundaries: $B=0$ (general $r$ = Skeleton lane, open); \texttt{Monotone d}
+(non-monotone via banked permutation-invariance = a future leaf); the printed-Thm-2-form
+equivalence (owed item O5).}
+
 \begin{example}[equal widths]
 If $M^{(1)}=\cdots=M^{(L+1)}$ then $\ell=L$, $\Ms-1<\tfrac{L+1}{L}M^{(1)}\le\Ms$,
 $a=(L+1)M^{(1)}-(\Ms-1)L$, and
@@ -423,6 +485,18 @@ step, $B$ is gone and the entire remaining problem is the \emph{core}
 $\rlct_0\langle\prod_s C^{(s)}\rangle$ at the origin on reduced widths $M^{(s)}$.
 \textbf{All of \S\ref{sec:resolution} is about this core.}}
 
+\fnote{\textbf{Lean status (strike wave 1, 2026-07-21): $r=0$ path LANDED; general
+$r$ open, off the kill-path.} At the zero-product fibre ($B=0$, $r=0$) there is no
+regular block and \eqref{eq:thm3-split} degenerates to the identity: the landed,
+sorry-free \texttt{coreReduction} (\texttt{DLN.Aoyagi.LearningCoefficient}) proves
+$\mathrm{rlctGlobal}(\texttt{lossDLN}\,d\,0)=\mathrm{rlctAt}(\sum(\texttt{coreGen})_i^2)\,0$
+via the linear measure-preserving flatten (\texttt{exists\_flatten}, PROVEN), the
+Frobenius identity \texttt{lossDLN\_zero\_eq\_coreLoss}, and the
+$\mathbb R_{\ge0}^\infty\!\to\!\mathbb R$ carrier bridge. The \emph{general-$r$}
+Theorem~3 (the gauge-slice normal form, Skeleton \texttt{product\_reduction} /
+obligation \#44) remains a tracked-open sorry on the older $\mathrm{dlnLoss}$ carrier
+--- consciously deprioritised: the charter corollary is the zero fibre.}
+
 % =====================================================================
 \section{Proof, part II + III: deepest point and the recursive blow-up}
 \label{sec:resolution}
@@ -465,6 +539,19 @@ survives the re-scope; it is what collapses the headline's $\inf_{w\in\mathrm{fi
 to $\rlct_0$. (It does \emph{not}, by itself, give the value --- that is the
 resolution below.)}
 
+\fnote{\textbf{Lean status (strike wave 1, 2026-07-21): the corollary's instance is
+PROVEN; the paper's general form is not formalised.} The landed
+\texttt{Foundations.GlobalHomog} proves (i) invariance of the global and local RLCT
+under a measure-preserving homeomorphism (no linearity, no homogeneity), and (ii)
+\texttt{rlctGlobal\_eq\_rlctAt\_zero\_of\_homogeneous}: for continuous nonnegative $F$
+homogeneous of degree $D$ in \emph{all} variables, $\mathrm{rlctGlobal}\,F=
+\mathrm{rlctAt}\,F\,0$ --- riding the proven \texttt{deepest\_le\_of\_homogeneous\_core}
+and closing the deepest-point step for the $B=0$ loss. Theorem~4 \emph{as printed}
+(homogeneity in a sub-block $w_1,\dots,w_j$ only, arbitrary admissible $\varphi$) is
+NOT formalised and nothing on the kill-path needs it; the paper's statement is
+image-confirmed (p.14, this pass) but its proof (via [22]) is not reproduced --- our
+build proves its own instance independently. Named scope boundary, not a hidden gap.}
+
 \subsection{The recursive blow-up and the candidate thresholds}\label{ssec:blowup}
 
 \emph{(Written from images p.14--p.22. This is the mountain and the exact locus of
@@ -489,12 +576,35 @@ $\langle\prod_s C^{(s)}\rangle=\langle\operatorname{diag}(b_1,\dots,b_{M(L+1)})\
 and $\norm{\prod_s C^{(s)}}^2$ is (in these coordinates) $\sum_i b_i^2$, a sum of
 squared monomials --- normal crossing.
 
+\tflag{(T-F, image-verified 2026-07-21) \textbf{The paper's inductive statement claims
+MORE than transcribed above --- and the extra claim is false.} The p.15 display (re-derived
+at each case, pp.16/17/20) additionally asserts pairwise comparability of the carried
+profiles: ``$T_{s,k}\le T_{s',k'}$ or $T_{s,k}\ge T_{s',k'}$'' for all pairs. This
+totality is FALSE in general: at widths $(2,2,1,1)$ the profiles $(1,1,1)$ and $(2,1,0)$
+are componentwise-incomparable (both $\Mval=1$; \texttt{g-monument-mval-instances.py}).
+We deliberately do NOT carry it in the invariant here --- see the fidelity note at
+\S\ref{sec:minimisation} for why nothing downstream needs it (the $\min$ needs no total
+order; the $b$-chain, which does the work, is ordered by construction).}
+
 \paragraph{The Jacobian.} Each exceptional divisor $u_{s,k}$ carries Jacobian power
 $M_{s,k}-1$ (p.15): the change-of-variables determinant is
 $\prod_{s,k}u_{s,k}^{\,M_{s,k}-1}\,du_{s,k}$ times the residual differentials. So in
 the boxed S2 rule, $k_j\equiv1$ (each $b_i$ is a product of the $u$'s, the loss
 $\sum b_i^2$ vanishes to order $2$ along each $u_{s,k}=0$) and $h_j=M_{s,k}-1$; the
 ratio for divisor $u_{s,k}$ is $(h+1)/(2k)=M_{s,k}/2$.
+
+\fnote{\textbf{Image-confirmed + the record correspondence (elder pass, 2026-07-21).}
+The p.15 Jacobian-ledger display ($\prod u_{s,k}^{M_{s,k}-1}du_{s,k}$) and the $b_i$
+recursion $b_0=1$, $b_i=\big(\prod_{\tilde t_{s,k}=i-1}u_{s,k}\big)b_{i-1}$ are now
+IMAGE-VERIFIED against the page. Unrolling gives the thread-31 $\forall$-general closed
+form $b_i=\prod_{\tilde t_{s,k}<i}u_{s,k}$ (structural induction, certificate \S b),
+whence $b_1\mid b_2\mid\cdots\mid b_{M}$ \emph{by construction} --- the divisibility
+chain that is the Lean record's \texttt{hchain} and the hypothesis under which Object~C's
+boxed rule is a theorem. The Lean \texttt{Chart} record separates the two exponent
+ledgers the paper interleaves: \texttt{bexp} (the loss-side monomial exponents, here
+$k_j\equiv1$ on binding axes $=$ \texttt{hunit\_mult}) vs \texttt{jac} (the
+Jacobian-side $h_j=M_{s,k}-1$, certified against the actual $|\!\det Dg|$ by
+\texttt{hjac}); conflating them was a v2-blueprint defect, killed by counterexample.}
 
 \paragraph{The step (Cases 1 \& 2).} At $(S,J)$, look at the equal run of the
 $b$-sequence above $J$:
@@ -519,10 +629,39 @@ block. Blow up $\{d_{ij}=0\ (J{<}i\le M(S),\ J{<}j\le M^{(S+1)})\}$. The chart
 $D_J''\to\begin{psmallmatrix}1&O\\O&D_{J+1}\end{psmallmatrix}$, advancing $J$ (or $S$).
 \end{itemize}
 
-\tflag{(T-C, to pin) The Case-2 exponent prints $M'_{S,J+1}=(M(S)-J)(M^{(S+1)}-J)$
-(image p.20). The prior expedition reconciled a printed Case-2 formula; the
-diagnostics say it is non-binding ($2\rlct\le M^{(i)}M^{(j)}$, never attains the
-min). \emph{Status: image-pinned here; non-bindingness to re-confirm on the R1 pass.}}
+\tflag{(T-C, PINNED --- elder image pass 2026-07-21) The Case-2 exponent
+$M'_{S,J+1}=(M(S)-J)(M^{(S+1)}-J)$ is confirmed against the p.20 image, and the
+Case-1 exponents $M'_{s,k}=M_{s,k}+J_1(M^{(S+1)}-J)$ (Case 1(1), p.16) and
+$M'_{S,J+1}=M_{s,k}+J_1(M^{(S+1)}-J)$ (Case 1(2), p.17) likewise. Non-bindingness of
+the Case-2 divisor at the flagged instance is battery-verified
+(\texttt{g-monument-mval-instances.py}, ``(2,2,3,2) defect non-binding'' PASS).}
+
+\tflag{(T-E, image-CONFIRMED 2026-07-21) \textbf{The Case-2 head-reset label is RAW-width
+--- and asymmetric with Case 1(2).} p.20 prints $t^{(i)}_{S,J+1}=M^{(i+1)}$ for $i<S$
+(the RAW width), while Case 1(2) at p.17 prints $t^{(i)}_{S,J+1}=t^{(i)}_{s,k}$
+(INHERITED from the factored divisor). At non-monotone widths the raw label conflicts
+with the paper's own p.22 formula --- the defect ledgered in
+\texttt{verify-case2-rawwidth-defect.md}, previously text-only, now confirmed on the
+page image. RESOLUTION (thread-31, structural): the ideal-route Lean record carries
+\emph{no label field at all} (only \texttt{bexp} + \texttt{jac}); the exponent
+accumulation is governed by the RUNNING-MIN $M(S)$, so the defect has no formal
+representation to corrupt; at the witness $(2,2,3,2)$ the defect divisor is
+non-binding. The p.20-image residual of the compass Case-2 ledger entry is CLOSED.}
+
+\gnote{\textbf{The coupled mechanism is VERIFIED, and the single chain SURVIVES
+(threads 27/28, exact algebra + Gr\"obner + decorrelated Codex).} The genuinely
+coupled corank-$(2,2)$ instance $(3,3,4)$, $t=(1,0)$, $\Mval=8$ (coupled-only
+minimiser --- no clean peel reaches it): the peel$+$radial$+$join mechanism produces
+exactly the $\operatorname{diag}(b)$ of this recursion with $\rlct=4=\tfrac12\Mval$
+(\texttt{g-coupled-334-diagb.py}). Two independent shared deep factors do NOT break
+principality: at $(4,4,4)$, $t=(2,0)$ (two corank-2 blocks) and the $L=4$ separated
+instance $(3,3,3,2,2)$, $t=(2,2,1,0)$, the terminal chart's ideal is again a single
+principal chain (corner-join restores principality; \emph{intermediate} charts can be
+non-principal --- the chain is a TERMINAL-chart invariant), verified by Gr\"obner
+ideal-equality, not coefficient-matching. So the paper's single-chain inductive
+invariant survives every kill-instance the expedition could construct; the flagged
+open end is documented in the thread-28 certificate (deeper mixed instances), folded
+into the monument seat's obligations.}
 
 \subsection{The candidate thresholds and the value}\label{ssec:candidates}
 
@@ -543,6 +682,20 @@ general-$L$). So $\rlct_{\mathrm{core}}=\tfrac12\min_t\codim S(t)=\tfrac12\Mval_
 \emph{direct min over per-branch full-codimension divisor exponents}. \textbf{There
 is no $\min\{mk/2,\,n/2+\text{child}\}$ per-layer RLCT recursion} --- that was the
 build's drift.}
+
+\fnote{\textbf{Lean status (2026-07-21): the read-off layer is built; the two remaining
+sorries are exactly this display's two halves.} The $\tilde t_{s,k}=0$ restriction is
+\texttt{bindingAxes} (positive exponents of the dominant $b_{k_0}$); the per-chart min is
+\texttt{Chart.chartMin}; the atlas min is \texttt{Resolution.divisorMin}; and Object D's
+bridge $\texttt{divisorMin}=\texttt{qipMin}=\texttt{cCodim}$ is PROVED
+(\texttt{Core.Aoyagi.Engine.divisorMin\_eq\_cCodim}, min-attainment form). The whole
+engine's remaining sorried surface is: (1) the min-over-charts change-of-variables
+\texttt{rlctAt\_sumSqFam\_eq\_iInf\_charts} (the boxed equality itself), and (2)
+\texttt{exists\_coreResolution} (that THIS recursion, at coupled corank $\ge2$, inhabits
+the certified atlas record for the concrete flattened core --- the monument; its
+combinatorial half, $\Mval$-attainment across leaves, is salvaged kernel-checked from the
+retired Engine's tree under elder conditions C1--C2; the geometric fields are the true
+remaining build).}
 
 \paragraph{R1 design verdict (\#18; \texttt{verify-r1-shortcut.md}, decorrelated +
 Codex, exact).} The design-\S8 \emph{one-shot} shortcut (iterated block-elim to the
@@ -665,15 +818,19 @@ $\rlct_{\mathrm{core}}=\tfrac12\min_t M_{s,k}$. Turning this into the closed for
 Theorem~\ref{thm:main} is two nested minimisations: an \emph{inner} balance within a fixed selected set
 (Lemma~3), and the \emph{outer} selection of the set itself (Definition~3 / the $\ell+1$ smallest widths).
 
-\emph{Fidelity note (documented paper defect, 2026-07-21): the rank-profiles carried by the recursion are
-NOT totally comparable, contrary to the paper's implicit reading --- at widths $(2,2,1,1)$ the profiles
-$(1,1,1)$ and $(2,1,0)$ are componentwise-incomparable with equal $\Mval=1$ (witness
-\texttt{g-monument-mval-instances.py}; found by a decorrelated consult, verified by three independent
-runs). No conclusion above depends on totality: the minimisation is over the \emph{set} of admissible
-profiles (a $\min$ needs no total order on its index set), and the divisibility chain $b_1\mid\cdots\mid
-b_M$ --- Aoyagi's own invariant, which does the real work --- is ordered by construction and survives.
-Only an argument leaning on profile comparability itself would be unsound; the formalisation's record
-carries no profile field at all (thread-31 certificate \S d).}
+\emph{Fidelity note (documented paper defect, 2026-07-21; wording sharpened after the elder's page-image
+pass): the rank-profiles carried by the recursion are NOT totally comparable, contrary to the paper's
+EXPLICIT claim --- the totality ``$T_{s,k}\le T_{s',k'}$ or $T_{s,k}\ge T_{s',k'}$'' is a displayed part
+of the inductive statement (p.15) and is re-derived in each case (pp.16/17/20), not merely an implicit
+reading. It is false: at widths $(2,2,1,1)$ the profiles $(1,1,1)$ and $(2,1,0)$ are
+componentwise-incomparable with equal $\Mval=1$ (witness \texttt{g-monument-mval-instances.py}; found by
+a decorrelated consult, verified by three independent runs). No conclusion above depends on totality: the
+minimisation is over the \emph{set} of admissible profiles (a $\min$ needs no total order on its index
+set), and the divisibility chain $b_1\mid\cdots\mid b_M$ --- Aoyagi's own invariant, which does the real
+work --- is ordered by construction and survives. Only an argument leaning on profile comparability
+itself would be unsound; the formalisation's record carries no profile field at all (thread-31
+certificate \S d). Ledger item (T-F); claim-site cross-reference at the inductive statement,
+\S\ref{ssec:blowup}.}
 
 \subsection{Lemma 3: the within-set balance (image-confirmed p.24)}\label{ssec:lemma3}
 
@@ -702,6 +859,14 @@ $A(a)=a\ell(\ell-a)$ is \emph{correct} (\texttt{verify-arith-groundtruth.md} Che
 ``typo'' (T-B) was retracted after reading p.24. Domain subtlety only: $A(a-1)$ needs $a\ge1$; at $a=0$
 the lone admissible $b=0$ still gives $0=a\ell(\ell-a)|_{a=0}$.}
 
+\fnote{\textbf{Lean status (2026-07-21).} In the engine, Lemma~3's role is carried by the
+\emph{min-attainment} obligations of the resolution record (elder v2-defect-4 form): every binding
+divisor's integer exponent is $\ge\texttt{qipMin}$ and some chart's divisor attains it
+(\texttt{hlb}/\texttt{hattain} in \texttt{exists\_coreResolution}); the banked QIP layer
+(\texttt{cCodim\_eq\_qipMin}, \texttt{minAdm\_eq\_cCodim}) then closes the loop to the codimension. The
+salvaged Engine combinatorics (\texttt{minAdm\_le\_terminalExponents}, \texttt{o5\_core\_realized},
+kernel-checked at all widths) is the adapter-side discharge of exactly these two obligations.}
+
 \subsection{The set selection and the closed form}
 
 The outer minimisation chooses $\mathcal M$ (hence $\ell$). Geometrically (\S\ref{ssec:candidates}) it is
@@ -725,6 +890,16 @@ P/\ell\rceil\}$, $\sum_iq_i=P$). Then
 \]
 This equals the bracketed closed form above for every width vector (exact enumeration $L\le4$ $+$ sampled
 $L=5,6$; \texttt{verify-def3-underspec.md} Check~4), and is \texttt{lambdaCore} in Lean.
+
+\fnote{\textbf{Lean status + an honestly-owed equivalence (2026-07-21).} The engine's landed headline
+speaks in $\texttt{cCodim}$ (the geometric/QIP codimension): $\mathrm{rlctGlobal}=\texttt{cCodim}/2$
+modulo the two named sorries. The chain $\texttt{cCodim}=\texttt{qipMin}=\texttt{minAdm}$ is PROVEN.
+What is NOT proven $\forall(L,M)$ is the identification of $\texttt{cCodim}$ with the \emph{printed}
+Theorem-2 expression (equivalently with this clean $q^2-m^2$ form): that equivalence is
+exact-enumeration-verified ($L\le6$, bounded widths) only --- the (F-1) \emph{still-owed theorem}. It is
+a purely combinatorial integer-program identity, consciously deferred: the destination names $C=$ the
+codimension, which IS \texttt{cCodim}; the printed form is downstream exposition. Ranked in
+\texttt{verify-owed-math-audit.md} (item O5).}
 \fnote{\textbf{Why this is the Lean primitive, not Def.~3.} (i) \emph{Total}: the $\ell+1$ smallest widths
 and a balanced split exist for \emph{every} width vector, where Def.~3's inequalities are empty on the
 majority ($105/216$ at $L{=}2$; \S\ref{def:Mset}). (ii) \emph{Permutation-invariant}: $\Mval(t)$ singles
@@ -761,6 +936,15 @@ $J$-increment, giving $\rorder\le a(\ell-a)+1$, and an explicit local-coordinate
 \gnote{This is the \emph{combinatorial} order --- a count of binding branches (for $\ell=1$,
 $a=1$, it is $1$; the unique minimiser). Equating it to the \emph{analytic} pole multiplicity is the step
 that needs meromorphic continuation, which Mathlib lacks.}
+
+\fnote{\textbf{Lean status (2026-07-21): deferred per charter \S1-E, seams named.} Built:
+\texttt{boxedOrder} (the per-chart count of min-attaining binding divisors) with
+\texttt{one\_le\_boxedOrder} PROVEN, and the closed-form count \texttt{aoyagiPoleOrder}
+$=a(\ell-a)+1$ + the count-vs-order distinction (\texttt{ThetaOrderDistinction}: $\rorder\neq$
+the fibre component count \texttt{numTop}). NOT built, honestly named: (i) the combinatorial identity
+boxedOrder-aggregate $=a(\ell-a)+1$ (needs the Lemma-3 $(\ell,a)$-balancing tie to the record); (ii)
+the analytic identification with the zeta pole multiplicity (no pole-order operation exists to state it
+against). E stays a reachable node; its content build is deferred, never boxed out.}
 \fnote{\textbf{Deliverable A2 ($\rorder$, secondary).} Land the combinatorial $\rorder=a(\ell-a)+1$ fully
 (same $(\ell,a)$ data as $\rlct$, a clean count). The \emph{analytic} identity ``combinatorial count $=$
 pole multiplicity'' is the named at-risk seam (brief standing decision~6): it rides inside the S2 interface
@@ -888,20 +1072,43 @@ $\tfrac14\min(A/\ell^2)=\tfrac{a(\ell-a)}{4\ell}$ --- consistent.
 $/\ell^2$ explicitly; guard $A(a-1)$ with $a\ge1$ (invalid at $a=0$).
 \emph{Process lesson:} the false ``typo'' was a text-extraction artifact --- verify
 every formula against the page image, never the \texttt{.txt}.}
-\item[(T-C)] \textbf{Case-2 exponent} (\S\ref{sec:resolution}, to pin on the
-resolution pass from the images): the prior expedition reconciled a printed Case-2
-formula; the diagnostics say it is non-binding ($2\rlct\le M^{(i)}M^{(j)}$, never
-attains the min). Pin the exact symbol against p.19--20 images and confirm
-non-binding.
-\item[] \emph{(further items as the resolution pass surfaces them)}
+\item[(T-C)] \textbf{Case-2 exponent --- PINNED (elder image pass 2026-07-21).}
+$M'_{S,J+1}=(M(S)-J)(M^{(S+1)}-J)$ confirmed against the p.20 image (and the Case-1
+exponents against pp.16--17); non-bindingness at the flagged instance battery-verified
+(\texttt{g-monument-mval-instances.py}: ``(2,2,3,2) defect non-binding'' PASS).
+\item[(T-E)] \textbf{Case-2 head-reset label is RAW-width --- image-CONFIRMED
+(2026-07-21), ideal-route immune.} p.20 prints $t^{(i)}_{S,J+1}=M^{(i+1)}$ (raw), Case
+1(2) at p.17 prints $t^{(i)}_{S,J+1}=t^{(i)}_{s,k}$ (inherited) --- an asymmetry that at
+non-monotone widths contradicts the paper's own p.22 formula
+(\texttt{verify-case2-rawwidth-defect.md}). The Lean record carries no label field
+(only \texttt{bexp}/\texttt{jac}); running-min governs the accumulation; the defect has
+no formal representation. The formerly-open page-image residual is CLOSED.
+\item[(T-F)] \textbf{T-profile totality claim is FALSE --- image-verified (2026-07-21).}
+The inductive statement's display ``$T_{s,k}\le T_{s',k'}$ or $T_{s,k}\ge T_{s',k'}$''
+(p.15, re-derived pp.16/17/20) fails at widths $(2,2,1,1)$: profiles $(1,1,1)$ and
+$(2,1,0)$ are incomparable, both $\Mval=1$ (\texttt{g-monument-mval-instances.py}).
+Nothing downstream needs totality (the $\min$ is over a set; the $b$-chain is ordered by
+construction and survives --- threads 27/28); the record stores no profiles. Claim-site
+notes at \S\ref{ssec:blowup} and \S\ref{sec:minimisation}.
+\item[] \emph{(further items as they surface; the ranked owed-math list lives in
+\texttt{verify-owed-math-audit.md})}
 \end{enumerate}
 
-\medskip\noindent\textbf{Verification status.} The \emph{formula level} (Thm~1=Thm~2$|_{L=2}$,
-the three Thm~2 rewrites, the equal-width example vs.\ ground truth $(2,2,2)\to3/2$,
-$(2,2,2,2)\to3/2$, $(2,1,2)\to1$, the Thm~3 prefactor, Lemma~3) is \textbf{red-team
-PASS} (\texttt{verify-arith}, sympy + decorrelated Codex). \textbf{Not yet certified:}
-the \emph{level lift} --- Theorem~4, the Case-1/2 blow-up construction, the
-$\Mval=\codim$ bridge, and that $\rlct_{\mathrm{core}}=\tfrac12\min_t\Mval(t)$. That
-is the real risk and lives in \S\ref{sec:resolution} + R1 (task \#18).
+\medskip\noindent\textbf{Verification status (updated 2026-07-21, elder pass).} The
+\emph{formula level} (Thm~1=Thm~2$|_{L=2}$, the three Thm~2 rewrites, the equal-width
+example vs.\ ground truth, the Thm~3 prefactor, Lemma~3) is \textbf{red-team PASS}
+(\texttt{verify-arith}, sympy + decorrelated Codex). The \emph{page-image level} is now
+closed for every load-bearing site: pp.14--22 image-verified this pass (Thm~4 statement,
+inductive statement + $b_i$ + Jacobian ledger, Case-1/2 exponents and labels, the
+$M_{s,k}$ formula and $\tilde t=0$ read-off), p.08 (T-D) and p.24 (N-1) earlier;
+pp.25--26 red-team-verified (\texttt{verify-repro-s4s5.md}); only the $\rorder$-side
+Case-1(2) increment fine-bookkeeping remains image-referenced (deferred with E). The
+\emph{level lift} is now largely IN LEAN, sorry-free at the expedition tip: Lemma~1
+two-sided$+$weighted (A), the guarded boxed rule (C), the QIP/codim bridge (D), the
+deepest-point$+$flatten reduction for the $B=0$ corollary (GlobalHomog), the per-chart
+value and negative guards (B, partial). \textbf{Remaining owed mathematics}: exactly two
+sorries --- the min-over-charts change-of-variables and the coupled-atlas existence
+(the monument) --- plus the consciously-deferred items ranked in
+\texttt{verify-owed-math-audit.md}.
 
 \end{document}
