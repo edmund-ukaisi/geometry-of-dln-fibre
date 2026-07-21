@@ -45,13 +45,13 @@ noncomputable def thetaCount (d : Fin (N + 1) → ℕ) (r : ℕ) : ℕ :=
   bandCount (ell d r) (residueA d r).toNat
 
 /-- **Certified instantiation** (pin (a)): the banded count at the certified selector objects equals
-the landed `aoyagiTheta` at those objects. Immediate from the unconditional `bandCount_eq_aoyagiTheta`
-(no `residueA ≤ ell` bound needed — the value identity holds for all naturals). -/
+the landed `aoyagiTheta` there. Immediate from the unconditional `bandCount_eq_aoyagiTheta` (no
+`residueA ≤ ell` bound needed — the value identity holds for all naturals). -/
 theorem thetaCount_eq_aoyagiTheta (d : Fin (N + 1) → ℕ) (r : ℕ) :
     thetaCount d r = aoyagiTheta (ell d r) (residueA d r).toNat :=
   bandCount_eq_aoyagiTheta _ _
 
-/-! ## K1 ground-truth gates (build-enforced, on the computable `aoyagiTheta` at the certified `(ℓ,a)`)
+/-! ## K1 ground-truth gates (build-enforced; computable `aoyagiTheta` at the certified `(ℓ,a)`)
 
 The certified selectors `ell`/`residueA` are `noncomputable`, so these gate the θ-VALUES at the
 Def-3 `(ℓ, a)` of each width vector (RRR table, `verify-repro-s4s5.md`); `thetaCount_eq_aoyagiTheta`
