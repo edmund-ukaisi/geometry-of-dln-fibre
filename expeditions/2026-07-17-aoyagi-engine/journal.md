@@ -8661,3 +8661,21 @@ the POSITIVE witness banked beside the refutation; the register event-entry at i
 The spine bundle is now THREE items, one commit, one elder verification pass: foldNR exact-clear +
 the binder trims + hshear_center. Both leaf seats re-pointed (w0l3 wires L3 on the landing; seat-L4
 runs the positive-witness check as the LAST gate before the constraint bakes in, then core #3).
+
+## 2026-07-21: THE WALL CHECKPOINT LANDS — two pre-bake refinements race to the elder
+seat-L4's checkpoint (kernel witness shear_gap.lean + battery, pushed 7599d99c8) CONVERGES with the
+L3 refutation on the hole and ADDS two findings that must precede the bake: (1) the ruled
+hshear_center is a VANISHING form — but the δ=1 division needs a CONTINUOUS QUOTIENT, and shearφ is
+a free function field: hyperplane-vanishing does not deliver it. The fix's final form should be the
+IDEAL-MEMBERSHIP sibling (φ's center displacements ∈ ⟨center coords⟩ — seat-L4's FIX-B), by the
+elder's OWN SupportedOn sharpening principle applied back to its own ruling. The positive witness is
+already in hand: the fold's real Schur displacements are PRODUCTS of center coords (∈ ⟨u_pivot²⟩).
+(2) a possible COMPOSITION-ORDER FIDELITY INVERSION: the render's stepMap = edgeShear∘blockBlowupMap
+(shear outermost, per thread-33's pin) vs thread-34's certificate order blow-up∘shear — the two
+banked certificates DISAGREE; if her true order is blow-up-outermost, the fix is an ORDER FLIP
+(FIX-A) needing no constraint field at all. Also settled: CenterCoordAligned is NOT a fix (its φbad
+is injective off the locus yet breaks divisibility — injectivity ≠ divisibility-preservation; one
+docstring line so nobody re-reaches for it). DISPATCHED: elder supplemental ruling (sharpen-vs-flip,
+adjudicated from the pages; codex decorrelation on offer); arch-C HOLDS item 3 (items 1-2 proceed;
+the stepMap defining equation is the touch-point either way). The wall proof is mechanical per the
+skeleton once the shear is constrained — the seat's words, and its atoms are all banked.
