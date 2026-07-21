@@ -160,6 +160,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJOrderedRootsMeasurable
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigenframe
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
+import DLNFibre.Core.Aoyagi.IdealInvariance
 import Meta.Cordon
 
 /-!
@@ -1288,6 +1289,19 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- Clean-three. (The Engine-based `_prestage` wrapper + the whole `Engine.*` axiom-diagnostic block that
 -- followed were dropped with the α-atlas chart Engine archive, 2026-07-20 — charter §3.)
   DLNFibre.DLN.RLCT.aoyagi_learning_coefficient_L1,
+
+-- ★ OBJECT A — RLCT ideal-invariance (Aoyagi Lemma 1), TWO-SIDED, LANDED sorry-free (aoyagi-engine,
+-- SEAT-A). The six struck leaves (Cauchy–Schwarz domination, junk-guarded germ-monotonicity, positive
+-- scaling, and the (un)weighted `≤` wiring) + the two two-sided `=` headlines. All must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound]: pure Mathlib measure-theory / rpow, NO cite, NO `sorryAx`.
+  DLNFibre.Core.Aoyagi.eventually_sumSqFam_le_of_germRepresents,
+  DLNFibre.Core.Aoyagi.rlctAt_mono_of_eventually_le,
+  DLNFibre.Core.Aoyagi.rlctAt_const_mul,
+  DLNFibre.Core.Aoyagi.rlctAt_sumSqFam_le_of_germRepresents,
+  DLNFibre.Core.Aoyagi.rlctAt_sumSqFam_eq_of_germ_eq,
+  DLNFibre.Core.Aoyagi.wrlctAt_one,
+  DLNFibre.Core.Aoyagi.wrlctAt_sumSqFam_le_of_germRepresents,
+  DLNFibre.Core.Aoyagi.wrlctAt_sumSqFam_eq_of_germ_eq,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from
