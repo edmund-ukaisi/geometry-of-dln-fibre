@@ -9118,3 +9118,21 @@ FIX 1 + FIX 2-combinatorial) bakes with the bridge-gated card line: "the driver'
 whose coordinate-coverage soundness is gated on the Engine↔Aoyagi flatDim bridge — the operator's
 scope ruling pending." No further L7-dependent work schedules until the operator rules; NOTHING ELSE
 WAITS — the wall's rebase signal follows the bake's green report.
+
+## 2026-07-21: THE (c)-ROAD — the bridge may not be needed; the checkpoint runs; the packet goes conditional
+The elder's analysis for the operator packet DISSOLVES the conflation at the finding's root: the
+bridge-blocked tie was the ENGINE's divCoord; the tie L7 actually needs is the paper's OWN slot
+bookkeeping — her pivots/centers are CONCRETE MATRIX SLOTS with stable flat-coordinate assignment
+(the static layer partition, Finset-definable from d; her d″′→d renaming writes reduced blocks into
+the SAME layer's sub-slots; rollover transfers into the NEXT layer's). canonCenter : (S, J,
+esubst-mergeIdx, d) → Finset — DLN-side, data-only, from branch data the oracle ALREADY carries.
+The (ii)-teeth RESTORE at the canonical assignment; the same-coordinate witness DIES against genuine
+per-step pivot diversity (the (J+1,J+1) walk — what her atlas actually has). PRICE: M, strike-able;
+THE ONE KILL-CONDITION: rollover slot-transfer stability — pnp-order resumed on it (the pages'
+transpose boundary + the (3,3,4) traversal table + exact slot-tracking through the Q-transfer;
+thread-40). SEQUENCING: the (a)-bake proceeds unchanged (a subset of (c)'s final form — additive);
+on STABLE, canonCenter renders as the follow-round, L7's banner lifts bridge-free, and the OPERATOR
+PACKET DISSOLVES TO AN FYI (the summit stays unconditional); on UNSTABLE, the packet goes as the
+destination decision with (a)-as-baked standing. The severance taxonomy gains its FOURTH axis:
+content, size, path, COORDINATE — one banked witness each. (b) assessed: destination-adjacent,
+reaches the operator only on checkpoint failure.
