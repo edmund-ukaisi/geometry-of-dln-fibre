@@ -8439,3 +8439,32 @@ stranding terminal_bezout. rev-leaves adjudicates: does edge-indexed reachabilit
 canonical residual, or does BlockChild need resid' DETERMINED (= the child-center coordinate block,
 no existential)? One clause for arch-C if needed — batched into the round-4 verdict. Core #3 waits on
 round-4 + w0l3's O9; the seat meanwhile hardens #2 with the §4 (2,2,1) certificate-tie battery.
+
+## 2026-07-21: ROUND-4 ISSUE PROCESSED → THE ELDER LOCKS THE STATEMENT AT THE SOURCE (foldState recursion)
+rev-leaves round-4: ISSUE — the render edge-indexed only δ; state/center/Dd stayed free; the |S|=1
+refutation survives, made UNCONDITIONAL (the root edge of every positive-width buildTree is (case2,
+cleared=0) — Case2Preservation d false for ALL DLN d; banked case2_edge_refute.lean, controller
+re-ran EXIT 0); plus the docstring's road-(b) claim = name≠content. Its concurrent adjudication of
+seat-L4's sharpening: resid' must be DETERMINED (canonical Schur-reduced child), not ∃-with-length+
+support (the strict-transform lazy witness threads to an unreachable terminal). seat-w0l3's L3
+re-price independently re-derived the same blocker (the abstract state lacks residual u_p-
+divisibility; (case-2, δ=1) is REAL — the root edge itself). THE ELDER'S RULING closes the
+interpretation gap by WRITING THE EXACT TEXT: OPTION (1), concrete foldState recursion — TreePath/
+TreeEdge/edgeδ(off the STATE)/edgeShear/stepMap pinned interface; foldG/foldB/foldResid/foldRegion
+as total proof-free defining equations (THE SPLIT-RULE: data in defs, proof in leaves via one ∃q;
+design guard: no defining equation may need a proof term); FoldStepInv; the verbatim leaf statement
+(F = coreGen d e, D = flatDim d FIXED; hd:Monotone EXCLUDED as spurious; hN/hpos/he0/he_lin kept,
+each with its reason). STRUCTURAL DIVIDENDS: no ∀branch (the tree's edges ARE the branching — the
+collapse concern dissolves); resid'-determined SUBSUMED (a defining equation); L5 = path-induction
+emitting FoldProduced from the same spine. "The wall is now exactly one sentence: prove the concrete
+transition at case-1 edges — Aoyagi's Cases 1&2, at her own states, and nothing else." arch-C
+rendering verbatim (GO sent, gates incl. case2_edge_refute death + traversal-battery edge-data
+regression + root non-vacuity via Kronecker).
+ALSO THIS TICK: O9 MERGED + VERIFIED clean-three post-rebuild (jacDet/injOn blockBlowupMap — the
+critical-path atoms DONE; sensor note owned: my first probe read STALE OLEANS after a silently
+failed cd — w0l3's force-elaborated reading was correct; the cd-failure-masks-build class joins the
+shell-guards list). W0 PathAtoms fully sorry-free integrated (+ the centerCoordAligned univ-instance
+skew fix, general-S upgrade queued to w0l3). Wall cores #1+#2 banked earlier. Seats: w0l3 idle-fill
+(the Fintype instance-clash gotcha → lean/CLAUDE.md) then first in line for L3 post-render; seat-L4
+holds for the rendered statement (core #3 next); rev-leaves round-5 verifies against the elder's
+verbatim text.
