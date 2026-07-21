@@ -1578,5 +1578,6 @@ import DLNFibre.Core.Aoyagi.BlockBlowup
 import DLNFibre.Core.Aoyagi.BlockDivision
 import DLNFibre.Core.Aoyagi.WeightedCofactor
 import DLNFibre.Core.Aoyagi.PathAtoms
+import DLNFibre.Core.Aoyagi.InvariantRestriction
 import DLNFibre.Core.Aoyagi.PrincipalInv
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
