@@ -497,4 +497,100 @@ theorem wLocalAdmissibleExponents_sumSqFam_eq_of_germ_eq {m p : ℕ} {W : (Fin n
       (hsumGmeas.const_mul (C + 1)) hW hbound' hFnull
     rwa [wLocalAdmissibleExponents_const_mul hC'pos] at hsub
 
+/-! ## `RegionRepresents` composition / restriction / transport API (owed-register M8)
+
+The reusable API a consumer of `RegionRepresents` reaches for: reflexivity (a family represents
+itself), restriction to a subregion, transitivity (the coefficient matrices multiply), and transport
+across functions that agree on the region. This makes `RegionRepresents _ _ V` behave like a preorder
+of "germ-ideal containment on `V`", closed under the region-shrinking and function-substitution the
+charts of Object B perform. -/
+
+/-- **`RegionRepresents` is reflexive** — every family represents itself on any region, via the
+identity coefficient matrix `aᵢⱼ = [i = j]`. -/
+theorem RegionRepresents.refl {m : ℕ} (F : Fin m → (Fin n → ℝ) → ℝ) (V : Set (Fin n → ℝ)) :
+    RegionRepresents F F V := by
+  classical
+  refine ⟨fun i j _ ↦ if i = j then 1 else 0, fun _ _ ↦ continuousOn_const, fun u _ i ↦ ?_⟩
+  simp [Finset.sum_ite_eq]
+
+/-- **`RegionRepresents` restricts to a subregion.** For `V' ⊆ V`, a representation on `V` restricts
+to one on `V'`: the same cofactors witness it, their continuity restricts (`ContinuousOn.mono`), and
+the pointwise identity holds on the smaller region. Weakest hypothesis is `V' ⊆ V` alone. -/
+theorem RegionRepresents.mono {m p : ℕ} {G : Fin p → (Fin n → ℝ) → ℝ}
+    {F : Fin m → (Fin n → ℝ) → ℝ} {V V' : Set (Fin n → ℝ)}
+    (h : RegionRepresents G F V) (hsub : V' ⊆ V) : RegionRepresents G F V' := by
+  obtain ⟨a, ha, heq⟩ := h
+  exact ⟨a, fun i j ↦ (ha i j).mono hsub, fun u hu i ↦ heq u (hsub hu) i⟩
+
+/-- **`RegionRepresents` is transitive — the cofactor matrices multiply.** If `G` is represented by
+`F` and `F` by `H` on the same region `V`, then `G` is represented by `H`, with product cofactors
+`cᵢₗ = ∑ⱼ aᵢⱼ · bⱼₗ`. Continuity of the product cofactor is `ContinuousOn.mul` + `continuousOn_finset_sum`;
+the identity is the Fubini reindexing `∑ₗ(∑ⱼ aᵢⱼbⱼₗ)Hₗ = ∑ⱼ aᵢⱼ(∑ₗ bⱼₗHₗ) = ∑ⱼ aᵢⱼFⱼ = Gᵢ`. -/
+theorem RegionRepresents.trans {m p q : ℕ} {G : Fin p → (Fin n → ℝ) → ℝ}
+    {F : Fin m → (Fin n → ℝ) → ℝ} {H : Fin q → (Fin n → ℝ) → ℝ} {V : Set (Fin n → ℝ)}
+    (hGF : RegionRepresents G F V) (hFH : RegionRepresents F H V) :
+    RegionRepresents G H V := by
+  obtain ⟨a, ha, hGeq⟩ := hGF
+  obtain ⟨b, hb, hFeq⟩ := hFH
+  refine ⟨fun i l u ↦ ∑ j, a i j u * b j l u,
+    fun i l ↦ continuousOn_finset_sum _ (fun j _ ↦ (ha i j).mul (hb j l)), fun u hu i ↦ ?_⟩
+  calc G i u = ∑ j, a i j u * F j u := hGeq u hu i
+    _ = ∑ j, a i j u * ∑ l, b j l u * H l u := by
+        exact Finset.sum_congr rfl (fun j _ ↦ by rw [hFeq u hu j])
+    _ = ∑ j, ∑ l, a i j u * (b j l u * H l u) := by
+        exact Finset.sum_congr rfl (fun j _ ↦ by rw [Finset.mul_sum])
+    _ = ∑ l, ∑ j, a i j u * (b j l u * H l u) := Finset.sum_comm
+    _ = ∑ l, (∑ j, a i j u * b j l u) * H l u := by
+        refine Finset.sum_congr rfl (fun l _ ↦ ?_)
+        rw [Finset.sum_mul]; exact Finset.sum_congr rfl (fun j _ ↦ by ring)
+
+/-- **`RegionRepresents` transports across functions agreeing on the region.** If `G` is represented
+by `F` on `V`, and `G'`/`F'` agree with `G`/`F` pointwise on `V` (`Set.EqOn` per family member), then
+`G'` is represented by `F'` on `V` — with the same cofactors, since the identity is read only at
+points of `V`. -/
+theorem RegionRepresents.of_eqOn {m p : ℕ} {G G' : Fin p → (Fin n → ℝ) → ℝ}
+    {F F' : Fin m → (Fin n → ℝ) → ℝ} {V : Set (Fin n → ℝ)}
+    (h : RegionRepresents G F V)
+    (hG : ∀ i, Set.EqOn (G' i) (G i) V) (hF : ∀ j, Set.EqOn (F' j) (F j) V) :
+    RegionRepresents G' F' V := by
+  obtain ⟨a, ha, heq⟩ := h
+  refine ⟨a, ha, fun u hu i ↦ ?_⟩
+  rw [hG i hu, heq u hu i]
+  exact Finset.sum_congr rfl (fun j _ ↦ by rw [hF j hu])
+
+/-! ### Kill-set — each API lemma exercised on a concrete non-trivial instance -/
+
+/-- The base two-step chain: `G = 6u₀` represented by `F = 2u₀` (genuine cofactor `3`), and
+`F = 2u₀` represented by `H = u₀` (genuine cofactor `2`). -/
+private theorem km8_GF :
+    RegionRepresents (![fun u ↦ 6 * u 0] : Fin 1 → (Fin 1 → ℝ) → ℝ) (![fun u ↦ 2 * u 0]) Set.univ :=
+  ⟨fun _ _ _ ↦ 3, fun _ _ ↦ continuousOn_const, fun u _ i ↦ by fin_cases i; simp; ring⟩
+
+private theorem km8_FH :
+    RegionRepresents (![fun u ↦ 2 * u 0] : Fin 1 → (Fin 1 → ℝ) → ℝ) (![fun u ↦ u 0]) Set.univ :=
+  ⟨fun _ _ _ ↦ 2, fun _ _ ↦ continuousOn_const, fun u _ i ↦ by fin_cases i; simp⟩
+
+/-- `RegionRepresents.refl` exercised on a concrete family. -/
+example : RegionRepresents (![fun u ↦ u 0] : Fin 1 → (Fin 1 → ℝ) → ℝ) (![fun u ↦ u 0]) Set.univ :=
+  RegionRepresents.refl _ _
+
+/-- `RegionRepresents.trans` — composes `G←F` and `F←H` into `G←H` (cofactor `6`). -/
+example :
+    RegionRepresents (![fun u ↦ 6 * u 0] : Fin 1 → (Fin 1 → ℝ) → ℝ) (![fun u ↦ u 0]) Set.univ :=
+  km8_GF.trans km8_FH
+
+/-- `RegionRepresents.mono` — restricts the composed representation to the unit ball. -/
+example :
+    RegionRepresents (![fun u ↦ 6 * u 0] : Fin 1 → (Fin 1 → ℝ) → ℝ) (![fun u ↦ u 0])
+      (Metric.ball 0 1) :=
+  (km8_GF.trans km8_FH).mono (Set.subset_univ _)
+
+/-- `RegionRepresents.of_eqOn` — transports the source `G = 6u₀` to `G'` that agrees with it on the
+region (here on all of `univ`), keeping the same cofactors. -/
+example :
+    RegionRepresents (![fun u ↦ 3 * (2 * u 0)] : Fin 1 → (Fin 1 → ℝ) → ℝ) (![fun u ↦ u 0])
+      Set.univ :=
+  (km8_GF.trans km8_FH).of_eqOn (fun i ↦ by fin_cases i; intro u _; simp; ring)
+    (fun j ↦ by fin_cases j; exact fun u _ ↦ rfl)
+
 end DLNFibre.Core.Aoyagi
