@@ -10064,3 +10064,25 @@ survey pin went unfulfilled (BoxPart is hand-rolled). Ordered: run the survey, v
 with the skeleton to the elder's six-check pass; its trap-relocation claim (cell-count =
 coord-sum IN BOX COORDS; the profile-encoding trap → Tier-3 kill-set) flagged for explicit
 adjudication. The proved rank machinery (rankBP_le + strictMono, axiom-clean) stands regardless.
+
+## 2026-07-22 (controller) — PENDING SEVENTH INSTANCE: the coefficient-at-origin field (conjunct B, ANY layer); the bake HELD for it
+
+seat-L3T's second finding (Codex decorrelation in flight): the interior leaves' conjunct (B) has
+the S=L fragility at EVERY layer — the δ=1 child residual's value at 0 = the PARENT's
+pivot-coefficient at 0; child-Deg1 forces it to vanish; Deg1SupportedOn's coefficients are only
+IgnoresCoords-constrained, so c_pivot(0) is a FREE FIELD and an adversarial c_pivot ≡ 1
+manufactures the bare-unit failure at any interior layer. The real fold's coefficients are
+deeper-coordinate PRODUCTS (vanish at 0) — which is exactly why seat-L4's battery witnesses
+passed: they were CONSTRUCTION parents; the free statement admits more. (Its FIRST finding —
+the old transport's conjunct (2) underivable at both δ, with a clean Codex countermodel — is
+MOOT-in-the-right-way: the ruled hcleared hypothesis is the fix, now vindicated a FOURTH time.)
+
+**Disposition:** the render CONTINUES, the BAKE HOLDS for the adjudication (arch-C flagged —
+the preservation/transport/guard designs are unaffected; the candidate amendment is ONE clause
+on the invariant family's Deg1 side: coefficients vanish-at-0, or the sharper deeper-supported
+"pivot-fresh" form, rippling to Deg1SupportedOn/FoldStepInvAt/LastLayerInv's left disjunct —
+cheaper folded into THIS round than an eighth). The elder is pre-adjudicating (three questions
+posed: which clause; the S3-vanishing interaction; seventh AXIS vs the sixth's layer-free
+generalisation). The trigger = seat-L3T's Codex verdict. seat-L3T: banking plan endorsed (the
+conjunct-1 lemma + the unified conjunct-A product identity — honest under every fix); the ack
+protocol made a hard requirement (third reminder — reports against unread holds twice).
