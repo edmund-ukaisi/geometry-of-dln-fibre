@@ -102,6 +102,26 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   paper (elder D4). Witnesses: `threads/34-case1-invariant/` (certificate + 3 batteries, controller
   re-run green); corroboration thread-28 + worked.tex:659.
 
+- **The step map is a BLOCK-CENTER blow-up with spectators — full-ambient was a mis-reification
+  (elder comb S1, 2026-07-21).** Aoyagi's interior blow-ups multiply only CENTER coordinates by the
+  pivot (Case-1 center = {d-block ∪ u_{s,k}} p.16; Case-2 = the d-block p.19; Jacobian ledger
+  u^{|center|−1}, p.15); spectators are untouched, and a shear cannot undo spectator multiplication.
+  The reified σ = sh ∘ blowupMap (full-ambient) forced jac+1 = flatDim per step — at (3,3,4) it
+  demands 21 where the ledger says {9,8,4}: L8 unsatisfiable, terminal_bezout wedged. MASKED by the
+  d=(1,2) landing (center = whole space there — the shallow-instance confound, compass F3, verbatim).
+  The original codex leaf-2 spec SAID `centerCoordFam m spectators`; the landed OriginBlowup knowingly
+  did the spectator-free case and the omission leaked into the statement shape. Fix: the
+  center-parametric `blockBlowupMap` atom (O9) + re-point the three Core Props + L7's cover atom.
+- **δ is a STATE property ([J=0]), never a branch property (elder comb S2 + scout-mine certificate
+  regression, 2026-07-21).** The paper's Let-blocks (pp.16/17/20) are uniform across 1(1)/1(2)/2: the
+  u-factor multiplies the run starting at J+1, so the dominant gains it iff J = 0 — for BOTH Case-1
+  children. The reified `if branch then 0 else 1` (installed to satisfy the collapse fix) contradicted
+  the paper, the thread-34 certificate (line 16, verbatim δ=[J=0]), and its own docstring — false at
+  every interior 1(2)-J≥1 state, weak at (J=0)-1(1). The true branch discriminator is PIVOT-KIND +
+  residual re-binding (one center, two chart-pivots — 1(1) at the old u_{s,k}, 1(2) at a fresh
+  d-entry). LESSON: fix a collapse by pinning the TRUE law, not A law — an invented discriminator
+  passes the collapse test while breaking fidelity.
+
 ## The honest gap — coupled-B, stated plainly (front-and-centre)
 - **KNOW:** clean regime exact (F3); `⟨∏C⟩=⟨diag(b)⟩` transfers as an ideal fact (F2); the coupling is
   real and flatten breaks (F4); minAdm = cCodim banked (D); the category error forces the ideal route (F1).

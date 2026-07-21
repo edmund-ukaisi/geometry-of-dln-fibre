@@ -8157,3 +8157,33 @@ ALSO COMMISSIONED (operator): scout-mine (the long-range paper-mining sweep — 
 showed the way" pattern, both directions, wiring map) + elder-v3 standing charge (the comprehension-
 level comb, decorrelated from the scout; O-audit refresh; stop-on-suspect on anything touching
 reified statements).
+
+## 2026-07-21: THE OPERATOR'S CHARGE FIRES — elder comb + scout converge: TWO more "Aoyagi showed the way" defects (S1/S2)
+The operator-commissioned comb (elder, decorrelated from scout-mine) delivered within hours, and the
+two sensors CONVERGED on the wall's statement: S2 — the δ-law `if branch then 0 else 1` is pinned to
+the WRONG discriminator: the paper (pp.16/17/20 image-verified twice), the thread-34 certificate
+(line 16, verbatim), and the statement's own docstring all give δ = [J=0], a STATE property uniform
+across both Case-1 children (and Case-2); the code is FALSE at every interior 1(2)-J≥1 state.
+Provenance: the collapse fix reached for `branch` as a δ-proxy because M'=1 erased J from the
+signature — an INVENTED law that passed the collapse test while breaking fidelity. S1 (the elder's
+own find, the deeper one) — all three preservation Props hard-code the FULL-AMBIENT blowupMap where
+Aoyagi's interior blow-ups are BLOCK-CENTER-with-spectators (u^{|center|−1} ledger, p.15): at (3,3,4)
+the shape forces jac+1 = 21 where the ledger says {9,8,4} — L8 unsatisfiable, terminal_bezout wedged.
+MASKED by d=(1,2) (no spectators there): the shallow-instance confound firing EXACTLY as the
+coverage-claim lesson predicted; the original codex leaf-2 spec had said centerCoordFam WITH
+spectators — the landed spectator-free OriginBlowup leaked its omission into the statement shape.
+ALSO from the comb: R3 (one center, TWO chart-pivots — build both branches from one construction);
+R4 (rollover only-at-exhaustion; under M'=1 the b-truncation is INVISIBLE — the historical interior-
+bottleneck dissolves in b, survives only in resid); R5–R7 (terminal unit indexing; L8 negative info;
+L7 = ours alone, the paper has NO cover machinery); Watanabe-upper answered (her boxed rule is a
+per-chart EQUALITY — O1 subsumes both halves; Lemma 2 bites only in the r>0 lane); O-audit delta
+(NEW O9 = blockBlowupMap; O5 downgraded — p.23 completing-the-square; O8 partially discharged);
+W1–W4 brief warnings (T-comparability trap; center-size vs ambient; rollover guard; regions are ours).
+DISPATCHED: arch-C — ONE enlarged amendment round (S1 re-point to blockBlowupMap + S2 δstate
+parameter with branch = pivot-kind/resid-shape + D-positivity + the in-flight FoldProduced anchoring);
+seat-w0l3 — O9 atom signatures as the new critical path (L3 wiring held; D=0 authorization
+superseded); seat-L4 — leaf-bound work paused per the elder's hold, redirected to the standalone
+δ-agnostic core (exact-division over block-centers; Q̂ machinery; R3 design). Compass fidelity-ledger
+entries applied (S1 + S2 with the pin-the-TRUE-law lesson). The charge's tally: SIX instances now of
+the paper having already shown the way — and these two caught at the statement gate, before the wall
+seat had bound a single proof line to them.
