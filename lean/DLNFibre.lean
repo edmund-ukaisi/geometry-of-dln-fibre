@@ -1570,3 +1570,4 @@ import DLNFibre.Core.Aoyagi.Waypoint
 import DLNFibre.DLN.RLCT.Foundations.GlobalHomog
 import DLNFibre.Core.Aoyagi.AreaFormula
 import DLNFibre.Core.Aoyagi.ResolutionInhabited
+import DLNFibre.Core.Aoyagi.BlowupResolution
