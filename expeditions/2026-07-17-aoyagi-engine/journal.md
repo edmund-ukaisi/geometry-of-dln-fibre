@@ -8387,3 +8387,18 @@ algebraic work (aligning residual coupling with the pivot direction) — the fre
 might even be true, so the edge-indexed real-state proof has MORE room than worst case. The review
 layer retracting its own finding under sharper checking, unprompted, is the calibration culture
 working — recorded as such.
+
+## 2026-07-21: TRAVERSAL GATE GREEN — the edge-indexed fold is paper-faithful end-to-end on (3,3,4)
+scout-mine's commissioned gate banked (edgespec_traversal_334.py; controller re-ran EXIT 0; merged).
+The fold reproduces Aoyagi's (S,J,t̃) transition system on the coupled flagship: 5 leaves, 26 edges;
+six exact assertion classes ALL PASS — MvalCoh; the printed Case-1(1)/Case-2 exponent increments;
+δ=[J=0] uniform across sub-cases (A1's fix positively verified per Case-1 node); rollover exactly at
+J=M(S+1) (the transpose boundary fires where p.19 says); center codim = block dims (S1); headline
+rlct guards incl. non-monotone. The traversal reproduces the compass landmark exactly (the
+(1,1)→(1,0) M=8 merge at S=2; minAdm=8, rlct=4). CONFIRMING SUB-FIND: the fold's Case-2 head is the
+RUNNING-MIN, a documented CORRECT deviation from the printed p.20 raw-width label (the scout's
+simulator tripped at non-monotone (2,1,2) until adopting the fold's head — MvalCoh then
+UNCONDITIONAL) — the compass T-E resolution positively confirmed on a live traversal; docstring note
+sent to arch-C so no future seat "fixes" it back toward the paper. NET: the render's EdgeSpec design
+is faithful; its last external gate is green; arch-C proceeds to landing. scout-mine's dispatch
+(sweep + gate) fully complete.
