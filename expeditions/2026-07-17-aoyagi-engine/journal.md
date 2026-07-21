@@ -8818,3 +8818,21 @@ V'⊆V is TRUE as stated — sorry-free, cannot poison consumers; M1 is exactly 
 name=content, DivChain guard visible with the coupled counterexample in-docstring); leak-check CLEAN
 (removed-line count = 0 on all three appended-to files). Nothing for the elder to gate — a clean
 register event-update at the next ping.
+
+## 2026-07-21: ★ THE WALL'S HEART IS PROVEN ★ — stepInv_delta1_shear_child, sorry-free, clean-three
+seat-L4 landed Core/Aoyagi/StepInvShearChild.lean: **the coupled corank≥2 Case-1 δ=1 divisibility —
+the statement this project dodged for MULTIPLE EXPEDITIONS — is now a THEOREM** (controller-verified
+clean-three post-merge, aggregator-wired at 08ddcd8c1, cordon green). stepInv_delta1_shear_child:
+from a parent StepInv with center-supported residual (hsupp ideal-membership) + a pivot-keeping
+shear + the blow-up-outermost σ (FIX-A), the child StepInv holds with b′ = u_pivot·(b∘σ), resid′ the
+strict transform (FIX-RESID), q′ = q∘σ — the u_pivot balances structurally, exact division, no
+localization. Plus stepInv_delta0_pullback_child (δ=0). Built ABSTRACT against the ruled design: the
+DLN leaf instantiation = intro the edge, dispatch on edgeδ, `exact` the matching child lemma with
+the fold's data — MECHANICAL, pending only the six-piece render (the pnp-order gate was already
+lifted; crossed messages). The wall's full core is banked & green: BlockDivision (+FIX-A enablers),
+WeightedCofactor (Q̂), StepInvShearChild (both branches), the refutation + positive-witness
+regression set. What remains of the monument is assembly: render → elder pass → integration → two
+leaf instantiations → L5's path induction → L6/L7/L8. THE MATHEMATICS OF THE WALL IS DONE.
+(Process note, recorded live: the first journal append of this entry no-op'd — the cd-drift class
+AGAIN; the commit 08ddcd8c1 carried only the aggregator wiring. The shell-guard needs pwd baked into
+every journal append — adopted henceforth: absolute-path cd prefix on all journal writes.)
