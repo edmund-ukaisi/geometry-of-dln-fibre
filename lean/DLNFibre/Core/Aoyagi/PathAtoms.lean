@@ -121,72 +121,77 @@ theorem jacDet_blockShear (φ : (Fin D → ℝ) → (Fin D → ℝ)) (keep : Fin
     jacDet (blockShear φ) u = 1 := by
   classical
   set L : (Fin D → ℝ) →L[ℝ] (Fin D → ℝ) := fderiv ℝ φ u with hL
+  have hφ_at : HasFDerivAt φ L u := (hφ_diff u).hasFDerivAt
   -- The Jacobian of `blockShear φ = id + φ` is `id + L`.
-  have hfd : HasFDerivAt (blockShear φ) (ContinuousLinearMap.id ℝ (Fin D → ℝ) + L) u := by
-    simpa [blockShear] using (hasFDerivAt_id u).add (hφ_diff u).hasFDerivAt
+  have hfd : fderiv ℝ (blockShear φ) u = ContinuousLinearMap.id ℝ (Fin D → ℝ) + L := by
+    rw [hL, show blockShear φ = (id : (Fin D → ℝ) → (Fin D → ℝ)) + φ from rfl,
+      fderiv_add differentiableAt_id (hφ_diff u), fderiv_id]
   -- Row vanishing: `keep a ⇒ (L v) a = 0` (`φ · a` is the constant 0).
   have hrow : ∀ (a : Fin D), keep a → ∀ v, (L v) a = 0 := by
     intro a hka v
-    have hpa : HasFDerivAt (fun w ↦ φ w a) ((ContinuousLinearMap.proj a).comp L) u :=
-      (ContinuousLinearMap.proj a).hasFDerivAt.comp u (hφ_diff u).hasFDerivAt
+    have hpa : HasFDerivAt (fun w ↦ φ w a)
+        ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin D ↦ ℝ) a).comp L) u :=
+      (hasFDerivAt_apply (𝕜 := ℝ) a (φ u)).comp u hφ_at
     have hzero : (fun w ↦ φ w a) = fun _ ↦ (0 : ℝ) := funext fun w ↦ hkeep w a hka
-    have hpa0 : HasFDerivAt (fun w : Fin D → ℝ ↦ φ w a) 0 u := by
-      rw [hzero]; exact hasFDerivAt_const 0 u
-    have hcomp0 : (ContinuousLinearMap.proj a).comp L = 0 := hpa.unique hpa0
-    simpa using congrArg (fun T : (Fin D → ℝ) →L[ℝ] ℝ ↦ T v) hcomp0
+    have hpa0 : HasFDerivAt (fun w : Fin D → ℝ ↦ φ w a) (0 : (Fin D → ℝ) →L[ℝ] ℝ) u := by
+      rw [hzero]; exact hasFDerivAt_const (𝕜 := ℝ) (0 : ℝ) u
+    have hcomp0 := hpa.unique hpa0
+    have hv0 := congrArg (fun T : (Fin D → ℝ) →L[ℝ] ℝ ↦ T v) hcomp0
+    simpa using hv0
   -- Column vanishing: `¬keep c ⇒ L (e_c) = 0` (`φ` is constant along the `c`-direction).
-  have hcol : ∀ (c : Fin D), ¬ keep c → L (Pi.single c (1 : ℝ)) = 0 := by
+  have hcol : ∀ (c : Fin D), ¬ keep c → L (Pi.single c 1 : Fin D → ℝ) = 0 := by
     intro c hc
-    have hconst : (fun t : ℝ ↦ φ (u + t • Pi.single c (1 : ℝ))) = fun _ ↦ φ u := by
+    set v : Fin D → ℝ := Pi.single c 1 with hv
+    have hconst : (fun t : ℝ ↦ φ (u + t • v)) = fun _ ↦ φ u := by
       funext t
       refine hread _ _ (fun i hi ↦ ?_)
       have hic : i ≠ c := by rintro rfl; exact hc hi
-      simp [Pi.single_apply, hic]
-    have hg : HasDerivAt (fun t : ℝ ↦ u + t • Pi.single c (1 : ℝ)) (Pi.single c (1 : ℝ)) 0 := by
-      simpa using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single c (1 : ℝ))).const_add u
-    have hφat : HasFDerivAt φ L ((fun t : ℝ ↦ u + t • Pi.single c (1 : ℝ)) 0) := by
-      simpa using (hφ_diff u).hasFDerivAt
-    have hd2 : HasDerivAt (fun t : ℝ ↦ φ (u + t • Pi.single c (1 : ℝ)))
-        (L (Pi.single c (1 : ℝ))) 0 := hφat.comp_hasDerivAt 0 hg
-    have hd1 : HasDerivAt (fun t : ℝ ↦ φ (u + t • Pi.single c (1 : ℝ))) 0 0 := by
+      simp [hv, hic]
+    have hg : HasDerivAt (fun t : ℝ ↦ u + t • v) v 0 := by
+      simpa using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add u
+    have hφat0 : HasFDerivAt φ L ((fun t : ℝ ↦ u + t • v) 0) := by simpa using hφ_at
+    have hd2 : HasDerivAt (fun t : ℝ ↦ φ (u + t • v)) (L v) 0 := hφat0.comp_hasDerivAt 0 hg
+    have hd1 : HasDerivAt (fun t : ℝ ↦ φ (u + t • v)) 0 0 := by
       rw [hconst]; exact hasDerivAt_const 0 (φ u)
     exact hd2.unique hd1
-  -- Pass to the matrix and split by the `keep` block function.
+  -- Pass to the matrix and split by the `keep` block function (clean rows/cols at `b = 1`).
   unfold jacDet
-  rw [hfd.fderiv,
+  rw [hfd,
     ← LinearMap.det_toMatrix' (ContinuousLinearMap.id ℝ (Fin D → ℝ) + L).toLinearMap]
   set M := LinearMap.toMatrix' (ContinuousLinearMap.id ℝ (Fin D → ℝ) + L).toLinearMap with hM
-  set b : Fin D → ℕ := fun a ↦ if keep a then 0 else 1 with hb
-  have hMentry : ∀ a c, M a c = (if a = c then (1 : ℝ) else 0) + (L (Pi.single c (1 : ℝ))) a := by
+  set b : Fin D → ℕ := fun a ↦ if keep a then 1 else 0 with hb
+  have hMentry : ∀ a c, M a c
+      = (if a = c then (1 : ℝ) else 0) + (L (Pi.single c 1 : Fin D → ℝ)) a := by
     intro a c
     rw [hM, LinearMap.toMatrix'_apply]
-    change ((ContinuousLinearMap.id ℝ (Fin D → ℝ) + L) (Pi.single c (1 : ℝ))) a = _
-    rw [ContinuousLinearMap.add_apply, Pi.add_apply, ContinuousLinearMap.id_apply,
-      Pi.single_apply]
+    show ((ContinuousLinearMap.id ℝ (Fin D → ℝ) + L) (Pi.single c 1 : Fin D → ℝ)) a = _
+    rw [ContinuousLinearMap.add_apply, Pi.add_apply, ContinuousLinearMap.id_apply]
+    simp only [Pi.single_apply]
   -- On any diagonal block the `L`-entry vanishes (row if `keep`, column if not).
-  have hNblock : ∀ a c, b a = b c → (L (Pi.single c (1 : ℝ))) a = 0 := by
+  have hNblock : ∀ a c, b a = b c → (L (Pi.single c 1 : Fin D → ℝ)) a = 0 := by
     intro a c hbac
     by_cases hka : keep a
     · exact hrow a hka _
     · have hkc : ¬ keep c := by
         intro h
-        rw [hb] at hbac
-        simp only [hka, if_false, h, if_true] at hbac
-      rw [hcol c hkc]; rfl
+        have hba : b a = 0 := by simp [hb, hka]
+        have hbc : b c = 1 := by simp [hb, h]
+        omega
+      simp [hcol c hkc]
   have hbt : M.BlockTriangular b := by
     intro a c hlt
     have hka : keep a := by
       by_contra h
-      have hbc : b c ≤ 1 := by rw [hb]; dsimp only; split <;> simp
-      rw [hb] at hlt; simp only [h, if_false] at hlt; omega
+      have hba : b a = 0 := by simp [hb, h]
+      omega
     have hac : a ≠ c := fun h ↦ by subst h; exact lt_irrefl _ hlt
     rw [hMentry, if_neg hac, zero_add, hrow a hka]
   rw [hbt.det]
   refine Finset.prod_eq_one (fun k _ ↦ ?_)
   have hblk : M.toSquareBlock b k = 1 := by
     ext p q
-    rw [Matrix.toSquareBlock_def, hMentry, hNblock ↑p ↑q (by rw [p.2, q.2]), add_zero,
-      Matrix.one_apply]
+    rw [Matrix.toSquareBlock_def, Matrix.of_apply, hMentry,
+      hNblock ↑p ↑q (by rw [p.2, q.2]), add_zero, Matrix.one_apply]
     simp [Subtype.ext_iff]
   rw [hblk, Matrix.det_one]
 
