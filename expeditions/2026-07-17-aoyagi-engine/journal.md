@@ -8092,3 +8092,23 @@ the counterexamples must FAIL against fixed statements, the root witness must st
 elder-v3 resumed with the second delta (D2' region+ContinuousOn shape; D3-a re-state-or-drop ruling +
 D3-b inline discharge). Wave commissioning HELD until the fixes land + elder ratifies. The review
 layer worked: both defects caught at the statement gate, zero seat-hours burned on unprovable leaves.
+
+## 2026-07-21: ELDER SECOND DELTA — D2' RATIFIED; StructuralChainResidual OUTRIGHT FALSE (elder witness)
+Both amendments ratified, recorded on receipt. D2' (IsOpen V + 0 ∈ V + ContinuousOn unit V, lemma
+ContinuousOn.inv₀, ContinuousAt retained only to pin the value by density) = the honest provable
+shape; the elder OWNED its side ("I ratified the shape without re-inspecting the reified text — the
+same germ-vs-region defect class as my own v3/v4 findings"). RIDER: terminal_bezout legitimately
+shrinks its region, so L5's fold chooses each Chart's compact dom AFTER all shrinkings — the
+no-implicit-shrinking discipline applied at assembly; stated explicitly in L5.
+D3 gap-(a): the elder supplied an IMMEDIATE falsity witness from the thread-33 shear certificate —
+the (3,3,4) BINDING leaf carries exponents {9, 8, 4}, 8 ∤ 9: the scalar ∣-totality fails WITHIN one
+real leaf. "Scalar exponent-totality is the excised T-profile defect wearing ℕ-clothing — the min
+needs no total order, full stop." RULING: drop-if-unconsumed (expectation: L5/L8 consume no
+cross-divisor comparability); if any residual survives, its correct object is the PER-PATH monomial
+law (b'₁ = u^δ·φ*b₁, fresh u; prefix-chain in exponent VECTORS; terminal b₁ squarefree) — likely
+dissolving into StepInvChild; record the dissolution in L5's docstring. D3 gap-(b): inline discharge
+ratified; any genuine dominance selection = pointwise-≤ vector minimality, never scalar argmin.
+Relayed to arch-C mid-fix (upgrades FIX 2 from test-then-decide to known-false + drop-if-unconsumed;
+adds the D2' assembly-ordering rider). Battery still runs for decorrelation. The layered review
+worked twice over: the reviewer refuted in Lean what the ratification had passed on shape, and the
+elder then falsified from banked certificate data what the reviewer had flagged on structure.
