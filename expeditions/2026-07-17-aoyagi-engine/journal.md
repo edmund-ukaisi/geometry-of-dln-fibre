@@ -9152,3 +9152,22 @@ graduates from surviving-as-record to dying-as-regression; the Engine↔Aoyagi b
 next-expedition runway; **the operator packet dissolves to an FYI — the summit stays unconditional.**
 The elder's conflation-dissolution and its checkpoint-first discipline carried the day: the question
 that looked destination-sized this afternoon closed as an M-priced data definition by evening.
+
+## 2026-07-21: NAVIGATOR #13 — the fan-out is a LANE, not a fan; one parallel seat launches now
+The ground truth that reshapes the choreography: THE 8 LEAVES ARE NOT 8 FILES — six sorries live in
+MonumentAtlas.lean alone; the dominant constraint is SAME-FILE WRITE CONTENTION, and the only genuine
+cross-worktree axis is Core-vs-DLN. VERDICTS APPLIED: (1) my planned "twin rebase signals" are
+AMENDED — parallel DEVELOPMENT, SERIAL INTEGRATION: the WALL writes MonumentAtlas first, L3 rebases
+onto the wall's landed commit and integrates second (negative EV on simultaneous twin-writes: a
+helper-clash at the endgame re-gate + a muddied wall-reviewer signal, to save minutes); (2) L5 is
+ORDERING-FREE vs the L3/L4 proofs (integrable against their sorried statements — the driver cone
+stays honest) but same-file ⟹ the single-writer lane, not a second worktree; (3) canonCenter is the
+LANE'S TAIL before L7, not a parallel seat; (4) the ONE risk-free parallel-now unit — L1 +
+terminal_bezout in Core/PrincipalInv (file-disjoint, statements verified-faithful in rounds 2/3/5,
+needed under either bake outcome) — LAUNCHES NOW (seat-core commissioned); (5) seat-api's unit
+integrates in a quiescent window AFTER the blockBlowupMap-consuming leaves land; (6) the CONTINGENCY
+(one-shot extraction of the leaf STATEMENTS into a defs module ⟹ genuine per-leaf worktrees) is held
+as a deliberate single step if the DLN lane becomes the long pole; (7) the reviewer-shadow guardrail:
+rev-leaves stays DEDICATED to the wall — the Core seat's fidelity check takes a later slot. Ledger
+entry 27 filed (statement-risk dominates proof-risk; price by un-audited free fields). Hard-part
+check CONFIRMED (the wall first; nothing steals its seat, its file, or its reviewer).

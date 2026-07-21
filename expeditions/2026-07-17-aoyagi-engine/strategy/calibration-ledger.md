@@ -812,3 +812,18 @@ along the (3,3,4) traversal must reproduce the traversal battery's center-codim 
 9/4/1 at S=1; the 1×2 codim-2 at S=2; pivot kinds per case). Sharpener sent to arch-C mid-gate.
 The general lesson repeats entry-25's: locked TEXT pins statements; DERIVED DATA in the
 implementation still needs its own regression witness.
+
+## Entry 27 (2026-07-21, navigator #13 — controller-filed) — statement-risk dominates proof-risk in a foldState monument
+FORECAST (Entry 25, rung C): a reification tide + N pnp pre-adjudications, then the leaf-proving
+WAVE. ACTUAL: the wave never launched as planned — the statement-hardening arc ran a full day
+(round-5 → seven severance classes → the (A′) reversal, FALSIFIED after a "final" ruling → repair
+bake → FIX-1/FIX-2 → the L7 bridge-dependence scare → the canonCenter checkpoint). The wall's PROOF,
+once its statement was locked, landed in ONE seat (StepInvShearChild, sorry-free). WHAT IT TEACHES:
+for a quantified-skeleton monument the cost meter is the count of UN-AUDITED FREE FIELDS on
+quantified structures (the per-field severance axis), not sorry-count or binder-count. Each
+severance axis cost ≈ one render+gate cycle; the proving was the cheap tail. Extends Entry 25 one
+level: price by un-audited free fields; the (A′) reversal proves even a post-"final-ruling"
+statement can hide an un-audited axis (CENTER-SIZE, after CONTENT was closed). FORWARD PRICING
+RULE: budget the decorrelated per-field audit as the DOMINANT line item of any foldState/skeleton
+leaf; treat "minutes to wire" as the honest cost of the PROOF only, never of the leaf, until every
+free field has a regression witness.
