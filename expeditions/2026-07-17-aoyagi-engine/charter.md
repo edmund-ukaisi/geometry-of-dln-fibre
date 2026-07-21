@@ -34,15 +34,19 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
 
 ## §1  The objects (the goals). FINAL — operator-confirmed 2026-07-21.
 - **A. RLCT ideal-invariance (Aoyagi Lemma 1), TWO-SIDED.** `rlct(Σfᵢ²)` depends only on the ideal `⟨fᵢ⟩`
-  (both inclusions). Foundational — legalises every ideal-preserving step. STATUS: the ≤ direction banked
-  (`rlctAt_mono`); the two-sided ideal-only dependence is OPEN and Mathlib-absent.
+  (both inclusions). Foundational — legalises every ideal-preserving step. STATUS: LANDED sorry-free (wave 1) — two-sided + weighted
+  (`rlctAt/wrlctAt_sumSqFam_eq_of_germ_eq`, `Core.Aoyagi.IdealInvariance`), junk-0-guarded
+  (`LocallyNullZeros`; Lean's `rpow 0^(−c)=0` demands it — guards dischargeable for
+  polynomial/analytic families, `Waypoint`).
 - **B. The product-ideal resolution** `⟨∏C⟩ = ⟨diag(b₁,…,b_M)⟩` (Aoyagi Cases 1&2, *regular* Q,P). The
   geometric heart. TWO regimes: **clean** (width ≤ 2 — telescopes; verified exact at (2,2,2,2), incl.
   depth-3) and **COUPLED corank ≥ 2** (width ≥ 3 — the b_i share divisors; **the frontier this project
   has dodged for multiple expeditions**). STATUS: clean verified; coupled UNBUILT. **NOT OPTIONAL — the
   case fidelity to Aoyagi's mechanism requires; never scoped out, never a footnote.**
-- **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: largely
-  built (clean); the coupled/general computation owed alongside B.
+- **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: LANDED sorry-free (wave 1) —
+  the S2 boxed rule is a THEOREM under Aoyagi's own divisibility chain (`DivChain` guard excludes
+  the coupled counterexample; `Measurable unit` delta), `Core.Aoyagi.MonomialRLCT`. The coupled
+  case's remaining owed part is B's alone (the atlas min-over-charts CoV + the monument), not C's.
 - **D. Codimension geometry** `codim{∏C=0} = minAdm = cCodim`, θ (top-component count),
   permutation-invariance (type-A quiver / Ext). STATUS: banked in `Core` (`minAdm_eq_cCodim` axiom-clean;
   θ unconditional) — reinforced by dev's cite-free determinantal geometry.
