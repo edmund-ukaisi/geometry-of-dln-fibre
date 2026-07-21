@@ -8468,3 +8468,19 @@ skew fix, general-S upgrade queued to w0l3). Wall cores #1+#2 banked earlier. Se
 (the Fintype instance-clash gotcha → lean/CLAUDE.md) then first in line for L3 post-render; seat-L4
 holds for the rendered statement (core #3 next); rev-leaves round-5 verifies against the elder's
 verbatim text.
+
+## 2026-07-21: THE 4TH REFUTATION (SupportedOn gap) — arrives already dead; seat-L4 fully unblocked
+seat-L4 kernel-checked the FOURTH refutation of the abstract-hypothesis road: SupportedOn admits
+non-vanishing residuals (1+u₀ — supported + continuous, but the δ=1 child divisibility fails:
+u_p-order 1 vs 2, the quotient (1+u₀)/u₀ non-continuous; battery + sorry-free Lean witness, merged
+at threads/L4-case1-core/). CONFIRMED-CLASS — and SUPERSEDED ON ARRIVAL: the elder's foldState form
+makes foldResid a DEFINING EQUATION (the concrete Let-block child — analytic, vanishing, center-
+structured by construction), which is the seat's own recommended fix taken to its limit. The four
+refutations now read as one sequence — constant-family (S3), Σw² spectator-support, misaligned-spec/
+non-polynomial q', non-vanishing residual — each a facet of quantification-severed-from-provenance,
+each dead by definition under the concrete states. supportedon_gap joins arch-C's gate probes.
+UNBLOCKS: seat-L4's two holds both resolved (O9 was ALREADY merged+clean-three — stale info; the
+residual decision = the render in flight); its BlockDivision 6th theorem (continuousOn_blockBlowup_
+center_quot — the child-quotient continuity) + witnesses merged, build green. The wall seat's full
+toolkit is now banked: BlockDivision (6) + WeightedCofactor (5+def) + O9 (2) + PathAtoms (15) — every
+atom the printed playbook needs, sorry-free, waiting on one render.
