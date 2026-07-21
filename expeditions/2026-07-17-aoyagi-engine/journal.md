@@ -7738,3 +7738,15 @@ discipline (the adapter = BOOKKEEPING discharging hlb/hattain, zero frontier pro
 record-shape test. Compass History edit applied + pushed (the salvaged PREDICATE distinguished from its
 retired bundle-role — future audits won't trip). The remaining mountain is the real one: the coupled
 analytic geometry (RegionRepresents + hjac + hg_inj + hcover at corank≥2).
+
+## 2026-07-21: (B) record-shape test PASSES — the v4.2 record is inhabitable, kernel-checked
+mon-rec landed ResolutionInhabited.lean (green, clean-three): allOnesResolution D inhabits the record
+(pure-monomial, g=id) with EVERY Chart field typechecking first-pass, and divisorMin composes on the
+real term sorry-free — the record is NOT over-constrained; the cheap-catch insurance returns "no
+defect". Honest scope held: this is the CLEAN end (§2: a shape test, not monument progress); the fuller
+coreGen scalar-chain DECLINED by controller (gold-plating; the adapter + geometric build exercise that
+path on the real target). mon-rec proceeds to (A): the AtlasRealizes seam (charts realize the tree's
+terminal exponents → sorry-free hlb∧hattain via the three salvage theorems + the minAdm=cCodim=qipMin
+bridge); C1 pre-verified (build log: zero Geo*/ChartBridge*/Canonical in the closure; ClearableReify
+transitive-import flagged — fossil off all salvage cones, controller re-audit at integration); C2
+anchors = the two defect-witness decide-checks vs the decorrelated battery.
