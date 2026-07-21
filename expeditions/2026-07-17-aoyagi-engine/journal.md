@@ -9672,3 +9672,19 @@ with the pivot (i₀, unit) delivered. Bare-lemma + a PROVEN repackaging bridge 
 composite contract is acceptable at arch-C's discretion, with the gate exercising the ACTUAL
 wiring (an `example` feeding the output into TerminalBezout — consumer-fit made executable).
 Escalation to controller only if the seat disputes the contract itself.
+
+## 2026-07-21 (controller) — THE WALL'S CRUX BEATS IN THE REAL DEFS: foldResid_stepMap_eq_pivot_mul banked sorry-free
+
+seat-L4 banked the δ=1 divisibility crux ON THE CONCRETE FOLD DEFINITIONS (Case1Wire.lean @
+f4b762cf0, its branch): `foldResid p j (stepMap u) = u_pivot · foldResid p j (quotmap u)` —
+proven via Deg1SupportedOn's IgnoresCoords (the coefficient agrees at stepMap-u vs quotmap-u off
+center) + the FIX-A enabler blockBlowupMap_shear_center_eq (+ edgeShear_keeps_pivot). No sorry.
+**This is the transfer moment: the abstract StepInvShearChild core works against the real
+foldResid/stepMap/edgeShear machinery** — the wall's remaining work is assembly (intro edge +
+htnt, dispatch edgeδ, conjunct-1 via the crux, conjunct-2 via the surviving-C′, terminal via the
+guard), mechanical per the seat's plan. Its green-gate re-runs on the rebased tip (its build sat
+queued on the 2-slot semaphore at 8400+/8450 with zero genuine errors). Hold-for-rebase is
+CORRECT (the guarded statement exists only post-bake); the rebase-ready signal fires at my
+integration of arch-C's baked round. Semaphore contention noted (three seats + controller
+queueing today) — priority order affirmed: the render seat's authoritative gate build first,
+controller gates second, seat re-confirmations third.
