@@ -9740,3 +9740,21 @@ fields (ℓ=1/a=0 corners, profile-length, rank-bound). Tier-1e CLEARED to land 
 numerics (abstract co-occurrence predicate + rho_battery extension, no Lean until the ruling).
 seat-E's independent boxedOrder check concurred with the elder's validation (t̃=0 = atlas-side
 realization property) — banked.
+
+## 2026-07-21 (controller) — elder APPROVES the P6.2 tiering; the decorrelated pnp pass made a HARD GATE for UPPER; four prospective pins
+
+Elder ruling relayed to seat-E in full: (1) tiering approved; Tier-1e "exemplary" (the filter-pin
+reified as API; boxedOrder = chartOrderAt c c.chartMin = the special case pointing at the general
+object); ONE docstring pin — atlasOrder is VALUE-NEUTRAL API, reads as ρ only at the global-min
+target AND under Tier-3's realization; ATTAINMENT's constructive half may proceed on the battery
+alone. (2) The de-risk tightened into a HARD GATE: seat-E drafts + extends the battery itself,
+but UPPER's Lean build waits for pnp-order's MANDATORY decorrelated confirmation of the abstract
+predicate (batteries necessary-never-sufficient; this abstraction already produced the six
+loose-lattice artifacts once). Sequencing: draft → pnp charge (controller, on the draft's
+arrival) → Lean. (3) Four prospective per-field pins for the abstract predicate: tight lattice
+BY HYPOTHESIS; 1 ≤ a ≤ ℓ carried (never silently extend the formula's domain) + ℓ=1 and L=ℓ
+corners + named empty-class behavior; co-occurrence = a predicate on FINSETS (order-free, no
+sequence axis, K2); the minimising target = a carried value hypothesized to be the lattice
+minimum, never locally recomputed. (4) The elder's commendation of seat-E's two-instrument
+concurrence, inbox discipline, extraction-risk honesty, and de-risk instinct relayed to its
+thread as asked. PENDING pnp-order charge: fires when seat-E's draft lands.
