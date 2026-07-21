@@ -7474,3 +7474,13 @@ an unverified forecast as settled; the cordon's leak-guard holds the hard edge, 
 AT STRIKE-PHASE OPENING: a LONG-RANGE navigator/scout pass over the verified blueprint maps independent
 lines (→ parallel seats) vs shared substrate (→ shared-foundation thread + waypoints). Encoded in the memo
 phase line.
+
+## 2026-07-21: fresh-VM ground-truth calibration GREEN — the cordon chapter closes
+Full DLNFibre build at tip: 8958 jobs, 0 errors (after the store-lock fix: pre-warm too narrow → missing
+.hash writes on locked store; unlock→build→re-lock; store re-locked after). Hardened batched gate verdict:
+"313 roots banked-clean (union rests only on foundational + cited) — no cites in use" (post-dedup 313 ✓,
+F3 cited-source-set output ✓ — the asserted roots' union carries ZERO cited axioms; the cites live only on
+the AoyagiCited payoff theorems, outside the asserted set). 4 deliverables clean-three; 5 dirty roots
+exactly the tracked-open set; 0 gate throwErrors. Grep half: OK (808 files, 3 located cites, 14 blueprint
+sites, 0 violations). The two-part hardened cordon is calibrated on this VM — the pending-calibration note
+on 8a6f232c1 is DISCHARGED. Cordon chapter CLOSED; remaining foreground = blueprint v3 (architect running).
