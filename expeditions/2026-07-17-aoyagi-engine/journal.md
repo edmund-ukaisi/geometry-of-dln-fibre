@@ -9136,3 +9136,19 @@ PACKET DISSOLVES TO AN FYI (the summit stays unconditional); on UNSTABLE, the pa
 destination decision with (a)-as-baked standing. The severance taxonomy gains its FOURTH axis:
 content, size, path, COORDINATE — one banked witness each. (b) assessed: destination-adjacent,
 reaches the operator only on checkpoint failure.
+
+## 2026-07-21: STABLE — the checkpoint passes; the destination question DISSOLVES; the summit stays unconditional
+pnp-order's thread-40 verdict (three decorrelated instruments; controller re-ran the battery EXIT 0;
+merged): the flat-slot assignment is STABLE at rollover. The mechanism: the Q-transfer is a LEFT
+row-recombination — values mix earlier-layer content, SLOT ADDRESSES are preserved; the transpose
+applies to the VANISHING layer-S remnant (absorbed into the last b-entry), never to C^(S+1); the
+running-min truncation keeps the top contiguous M(S+1) rows. Verified at five width shapes incl.
+the genuine column-remnant transpose case and the row-truncation case; codex blind-concurred ("no
+width configuration produces a failure"). TWO DISCHARGE CONDITIONS for the canonCenter def: merge
+pivots return the BIRTH slot (legitimately cross-layer — mergeIdx load-bearing); the running-min row
+bound (the standing T-E discipline). CONSEQUENCE: the (c)-road is CONFIRMED — canonCenter renders as
+the follow-round after the current bake; L7's banner lifts BRIDGE-FREE; the all-charts-one-x witness
+graduates from surviving-as-record to dying-as-regression; the Engine↔Aoyagi bridge STAYS
+next-expedition runway; **the operator packet dissolves to an FYI — the summit stays unconditional.**
+The elder's conflation-dissolution and its checkpoint-first discipline carried the day: the question
+that looked destination-sized this afternoon closed as an M-priced data definition by evening.
