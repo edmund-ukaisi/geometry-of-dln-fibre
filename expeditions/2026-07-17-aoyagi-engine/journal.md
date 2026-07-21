@@ -8187,3 +8187,24 @@ superseded); seat-L4 — leaf-bound work paused per the elder's hold, redirected
 entries applied (S1 + S2 with the pin-the-TRUE-law lesson). The charge's tally: SIX instances now of
 the paper having already shown the way — and these two caught at the statement gate, before the wall
 seat had bound a single proof line to them.
+
+## 2026-07-21: ELDER δ-ADJUDICATION (formal) — the edge-spec design ratified; relayed to arch-C
+The formal ruling (converged with the comb's S2 + the scout — decorrelation complete): (1) NO frame
+convention rescues δ=[branch] — the elder independently checked the rebasings (active-block-leader
+gives (1,1); global-dominant gives ([J=0],[J=0]); nothing yields the coded (0,1)); the coded law is
+FALSE as a ∀-statement. (2) The honest carrier of [J=0] is EDGE-SUPPLIED DATA from L5's fold (the
+salvaged ConState carries cleared = J) — my δstate candidate endorsed with a strengthening: thread
+the small EDGE SPEC (δ + center S + pivot-kind), because S1's center comes from the same source AND
+an unparametrized ∃-child admits LAZY WITNESSES post-block-fix (|S|=1 / sh=id children trivially
+satisfying bare preservation — silently relocating the monument into L5, a bar-(iii) regression the
+full-ambient shape only accidentally prevented). Pure-∃-δ named as weak-not-unsound fallback
+(divisibility downward-closed) but re-opens the hole — spec form recommended. (3) 1(1) IS A GENUINE
+BLOW-UP (ruling on the open question): the center includes the old u_{s,k}; 1(1) = blockBlowupMap
+pivoted AT it (arithmetic witness: |S|−1 reproduces the printed 1(1) exponent increment M' = M +
+J₁(M^(S+1)−J) on the nose); 1(2) = the SAME center pivoted at a d-entry. Collapse-proof branch shape:
+ONE shared center, TWO FORCED-DISTINCT pivots; pivot-kind = the branch semantic. (4) D-hyps: 0 < D
+BOTH Props, NOT 2 ≤ D (a |S|=1 center is a legitimate paper step; size bounds live in the per-edge
+spec, where genuine coupled Case-1 gives |S| ≥ 3; spec-feasibility subsumes D-conditions once landed).
+Relayed to arch-C as the settled design (supersedes my coarser δstate-Bool relay). seat-L4's
+standalone core unaffected and directly serves the amended shape; w0l3's O9 atom spec confirmed
+|S|-general incl. |S|=1.
