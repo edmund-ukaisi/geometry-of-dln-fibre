@@ -180,11 +180,16 @@ and origin-fixing (`hshear0`) travel with the edge. `edgeδ = [J=0]` is read OFF
   stepMap d ed` is FALSE for a non-identity shear — so the shear is stored on the path, not only the
   edge. `TreePath.step` stores only the DATA `shearφ`, not the `hshear`/`hshear0` proofs (the path is
   proof-free; the leaves receive the proofs via `ed : TreeEdge d p`).
-* `foldNR` child counts are STAND-INS: case-2 APPENDS one (`+1`, via `Fin.snoc`); case-1/rollover keep
-  the parent count (the exact clear = `center.card` refinement is deferred). `foldResid`'s case-2
-  appended entry is the coordinate `u ↦ u_pivot` (a total stand-in for the Schur/clear closed form —
-  NEVER a division / exactness choice, per the design guard); the carried entries are the pullback
-  `foldResid p ∘ stepMap`.
+* `foldNR`/`foldResid` implement the rev-leaves check-#2 EXACT-CLEAR: `root ↦ d_N·d_0`; a step reaching a
+  TERMINAL child (`N ≤ nextState.layer`, the oracle's leaf guard) collapses to `foldNR = 1`,
+  `foldResid = fun _ ↦ 1` — the M'=1 unit `terminal_bezout` consumes. A NON-terminal step carries the
+  residual at full width (`foldResid p ∘ stepMap`, cast by `Fin.cast (if_neg h)`); the per-case ATOM the
+  seat fires is selected by the case-aware `stepMapRaw` (case-1(1) sh=id ⇒ `blockBlowup_center_comb_eq`;
+  case-1(2)/case-2 ⇒ `weightedCofactor_transport`; rollover = reindex). Total, proof-free, NEVER a
+  division / exactness choice (that belongs to the `∃q`). The terminal residual is a CONSTANT (`fun _ ↦ 1`
+  ignores the index), so it types at any width with no cast; `foldNR root` is a bare arm so it is
+  `d_N·d_0` DEFINITIONALLY. (The per-case count deltas of the earlier stand-in — case-2 `Fin.snoc` +1 —
+  are SUBSUMED: the residual is carried full-width until the terminal collapse, a cleaner total model.)
 * `edgeChartDom = Set.univ`, so `foldRegion ≡ Set.univ` (open, ∋ 0 — provable WITHOUT shear continuity,
   which is not a stored field); the terminal region-shrink (D2') is deferred to L5 / `terminal_bezout`.
 * `terminal_bezout` stays the untouched Core theorem (`Core.Aoyagi.terminal_bezout : TerminalBezout`);
@@ -330,35 +335,33 @@ def foldB (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple 
   | .step p center pivot cse _ shearφ => fun u =>
       (u pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMapRaw d cse center pivot shearφ u)
 
-/-- The residual family length along a path (`root ↦ d_N·d_0`; case-2 appends one; else unchanged). -/
+/-- The residual family length along a path (rev-leaves check-#2 EXACT-CLEAR). `root ↦ d_N·d_0`; a step
+reaching a TERMINAL child (`N ≤ nextState.layer`, the oracle's leaf guard) collapses to `1` — the
+M'=1 unit `terminal_bezout` consumes (`StepInv … (fun _ : Fin 1 ↦ 1) …`); a non-terminal step carries
+the residual at full width (the pullback, progressively absorbed into `foldB`). Root is a bare arm so
+`foldNR root = d_N·d_0` DEFINITIONALLY (root non-vacuity `q = Kronecker` still elaborates). -/
 def foldNR (d : Fin (N + 1) → ℕ) : TreePath d → ℕ
   | .root => d (Fin.last N) * d 0
-  | .step p _ _ StepCase.case2 _ _ => foldNR d p + 1
-  | .step p _ _ StepCase.case11 _ _ => foldNR d p
-  | .step p _ _ StepCase.case12 _ _ => foldNR d p
-  | .step p _ _ StepCase.rollover _ _ => foldNR d p
+  | .step p _ _ _ nextState _ => if N ≤ nextState.layer then 1 else foldNR d p
 
-/-- The residual family along a path (`root ↦ coreGen d e`; case-2 appends the coordinate `u_pivot`;
-else the pullback `foldResid p ∘ stepMap` — the Schur/clear closed form is a total stand-in here, never
-a division/exactness choice: that belongs to the `∃q` of `FoldStepInv`, not this DATA def). -/
+/-- The residual family along a path (rev-leaves check-#2 EXACT-CLEAR). `root ↦ coreGen d e`; a
+TERMINAL-reaching step (`N ≤ nextState.layer`) collapses to the M'=1 unit `fun _ ↦ 1` (`terminal_bezout`
+consumes this); a non-terminal step carries the pullback `foldResid p ∘ stepMap` at full width. Total,
+proof-free, never a division/exactness choice: that belongs to the `∃q` of `FoldStepInv`, not this DATA
+def. -/
 noncomputable def foldResid (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     (p : TreePath d) → (Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ)
   | .root => coreGen d e
-  -- case-2 (full-block APPEND): pullback carried entries + snoc the new block coordinate `u_pivot`.
-  --   Seat-L4 fires `WeightedCofactor.weightedCofactor_transport` on the carried entries.
-  | .step p center pivot StepCase.case2 _ shearφ =>
-      Fin.snoc (fun j u => foldResid d e p j (stepMapRaw d StepCase.case2 center pivot shearφ u))
-        (fun u => u pivot)
-  -- case-1(1) MERGE (sh = id): pullback through `blockBlowupMap` alone — seat-L4 fires
-  --   `BlockDivision.blockBlowup_center_comb_eq` (exact `/u_p`, `blockBlowupCoordQuot`). Never quotient-by-u_p.
-  | .step p center pivot StepCase.case11 _ shearφ =>
-      fun j u => foldResid d e p j (stepMapRaw d StepCase.case11 center pivot shearφ u)
-  -- case-1(2) SPLIT: pullback through shear ∘ blow-up — seat-L4 fires `weightedCofactor_transport`.
-  | .step p center pivot StepCase.case12 _ shearφ =>
-      fun j u => foldResid d e p j (stepMapRaw d StepCase.case12 center pivot shearφ u)
-  -- rollover (sh = id): reindex/absorb (p.19 transpose boundary), no blow-up content.
-  | .step p center pivot StepCase.rollover _ shearφ =>
-      fun j u => foldResid d e p j (stepMapRaw d StepCase.rollover center pivot shearφ u)
+  -- A TERMINAL-reaching step collapses the residual to the M'=1 unit (`fun _ ↦ 1`, ignoring the index
+  -- — a constant, so it types at ANY width, no cast). A non-terminal step carries the pullback at full
+  -- width; the per-case ATOM the seat fires is selected by the case-aware `stepMapRaw` (case-1(1) sh=id
+  -- ⇒ `blockBlowup_center_comb_eq`; case-1(2)/case-2 ⇒ `weightedCofactor_transport`; rollover = reindex).
+  -- The `Fin.cast (if_neg h)` re-types the full-width index (never quotient-by-u_p — that's the ∃q).
+  | .step p center pivot cse nextState shearφ =>
+      if h : N ≤ nextState.layer then
+        fun _ => 1
+      else
+        fun j u => foldResid d e p (Fin.cast (if_neg h) j) (stepMapRaw d cse center pivot shearφ u)
 
 /-- A total open certificate domain per edge (`Set.univ` stand-in — the D2' shrink is deferred). -/
 def edgeChartDom (d : Fin (N + 1) → ℕ) {p : TreePath d} (_ed : TreeEdge d p) :
@@ -420,15 +423,27 @@ The hypothesis is the construction's DEFINITIONAL truth — Aoyagi's center IS t
 coordinates (pp. 16/19) — so L5 discharges it for free at every real fold edge; no spurious-hypothesis
 smell. Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the
 path node and one outgoing edge; `δ = [J=0]` off `p.conState.cleared` (`edgeδ`, UNIFORM across
-sub-cases). Rollover is off the `isCase2`/`isCase1` filters by construction (`localSub = id`). -/
+sub-cases). Rollover is off the `isCase2`/`isCase1` filters by construction (`localSub = id`).
+
+**EXACT-CLEAR (rev-leaves check-#2).** `foldResid (p.extend ed)` dispatches on the terminal guard
+`N ≤ ed.nextState.layer`: a TERMINAL-reaching step collapses to the M'=1 unit `fun _ ↦ 1`, else the
+full-width pullback. For a REALIZED case-1/case-2 edge the child keeps `layer < N` (only rollover
+advances to `N`), so the terminal branch is vacuous and the proof uses the pullback branch; but `ed`
+is quantified freely, so the proof must still discharge the guard (`if_neg` from `¬(N ≤ nextState.layer)`,
+or the trivial unit branch). The earlier `Fin.snoc` case-2 append is subsumed — full-width until the
+terminal collapse. -/
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). `hsupp` (the
 center covers `foldResid p`'s support, ideal-membership form) is REQUIRED even here — the root edge is
-case-2 `δ=1`, where a non-covering center refutes the plain statement (elder ruling (ii)). -/
+case-2 `δ=1`, where a non-covering center refutes the plain statement (elder ruling (ii)). WEAKEST
+HYPOTHESES (elder trim): NO `he0`/`he_lin` — the child's S3 vanishing is inherited from `hinv` via
+`stepMap_zero`, the step divisibility is pullback-structural, and `hsupp` is CONSUMED (not proved), so
+the root-anchored `e 0 = 0` / linearity are never read here (they stay on L5, which establishes the root
+state). Carrying them for uniformity would be the carried-where-not-consumed smell. -/
 @[blueprint]
 theorem case2_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
     (hsupp : SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
     (hinv : FoldStepInv d e p) :
@@ -441,11 +456,15 @@ divisibility at corank ≥ 2 with the exact `u_p^δ` factor; seat-L4's `BlockDiv
 division; the `2u₀u₂` shear-rescue) supplies the proof. `hsupp` (the ideal-membership center-support
 link) is what delivers the exact `u_p` division (each `foldResid p` monomial carries a center variable,
 so `∘ blockBlowupMap` gains `u_p`). ONE center, the merge/split pivots handled inside the fold — no free
-`∀`-branch, no `p_merge`/`p_split` in the statement. -/
+`∀`-branch, no `p_merge`/`p_split` in the statement. WEAKEST HYPOTHESES (elder trim): NO `he0`/`he_lin`
+(as case-2 — S3 via `hinv` + `stepMap_zero`, divisibility pullback-structural, `hsupp` consumed). NB
+`CenterCoordAligned` is NOT the division mechanism: injectivity ≠ divisibility-preservation (seat-L4
+`shear_gap.lean` — an injective `φbad` that BREAKS the δ=1 division), so it stays a geometry/injectivity
+field for L6/L7; the exact `u_p` division rides `hsupp` + `BlockDivision`. -/
 @[blueprint]
 theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
     (hsupp : SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
     (hinv : FoldStepInv d e p) :
@@ -489,7 +508,7 @@ per-step and terminal shrinkings — the emitted `atlas.dom c ⊆ atlas.region c
 sits inside the FINAL shrunken region, never a pre-shrink one. The `srcBox`-seam pathwise coherence
 (module docstring) is the decorrelated-check gate riding the `CenterCoordAligned` fields. -/
 @[blueprint]
-theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
+theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0)
     (he_lin : IsLinearMap ℝ ⇑e) :
     ∃ atlas : GeoAtlasData d e, FoldProduced d e atlas ∧
@@ -568,7 +587,7 @@ terminal spectrum). Uses the per-path monomial law, NOT the former false `Struct
 (see the L5 dissolution note). Generalizes the LANDED `exists_atlasRealizesExponents_d12` match
 (`jac a + 1 = flatDim − 1 + 1 = 2 = minAdm ![1,2]`) to general `d`. -/
 @[blueprint]
-theorem leafPath_realizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
+theorem leafPath_realizesExponents (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (atlas : GeoAtlasData d e)
     (hfold : FoldProduced d e atlas) :
     (∀ (c : Fin atlas.n) (a : Fin (flatDim d)), a ∈ bindingAxes (atlas.bexp c) →
@@ -598,7 +617,7 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e) :
     ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res := by
   -- L5: the geometric atlas + its FoldProduced provenance + per-chart terminal PrincipalInv.
-  obtain ⟨atlas, hfold, hprin⟩ := leaf_stepInv_of_path d hd hN hpos e he0 he_lin
+  obtain ⟨atlas, hfold, hprin⟩ := leaf_stepInv_of_path d hN hpos e he0 he_lin
   -- Per chart: L1 (ideal) then L6 (assemble the certified Chart), matching the atlas's data.
   have hchart : ∀ c : Fin atlas.n, ∃ chart : Chart (coreGen d e) 0,
       chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
@@ -614,7 +633,7 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d
   obtain ⟨ρ, hρ, hcov⟩ := leafPath_compactCover d e atlas hfold
   -- L8: the exponent match (rides the FoldProduced provenance).
   obtain ⟨hspec_lb, hspec_attain⟩ :=
-    leafPath_realizesExponents d hd hN hpos e atlas hfold
+    leafPath_realizesExponents d hN hpos e atlas hfold
   -- assemble the Resolution.
   haveI : Nonempty (Fin atlas.n) := ⟨⟨0, atlas.hn⟩⟩
   refine ⟨⟨atlas.n, charts, Finset.univ_nonempty, Metric.ball 0 ρ, Metric.ball_mem_nhds 0 hρ, ?_⟩,
