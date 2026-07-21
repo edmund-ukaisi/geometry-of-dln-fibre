@@ -299,4 +299,94 @@ theorem abs_jacDet_shear_comp_blowup (hD : 2 ≤ D) (sh : (Fin D → ℝ) → (F
   show |jacDet (sh ∘ blowupMap p) u| = |u p| ^ (D - 1)
   rw [hcomp, hsh_jac, one_mul, jacDet_blowupMap hD, abs_pow]
 
+/-! ## `pathMap` append + the list-product Jacobian (owed-register M3)
+
+The branch-decomposition atoms the fold's path induction consumes: `pathMap` of a concatenation is
+the composition of the two `pathMap`s (head = outermost, so the prefix `l₁` acts on the outside),
+and the resulting Jacobian is the product of the per-step Jacobians evaluated at the successive
+partial compositions along the orbit. -/
+
+/-- **`pathMap` splits over concatenation.** `pathMap (l₁ ++ l₂) = pathMap l₁ ∘ pathMap l₂` — the
+prefix's steps are the OUTER maps (head = outermost). The composition analogue of `List.foldr` over
+`++`; lets the fold peel a branch into prefix ∘ suffix. -/
+theorem pathMap_append (l₁ l₂ : List ((Fin D → ℝ) → (Fin D → ℝ))) :
+    pathMap (l₁ ++ l₂) = pathMap l₁ ∘ pathMap l₂ := by
+  induction l₁ with
+  | nil => rfl
+  | cons σ rest ih =>
+    rw [List.cons_append, pathMap_cons, pathMap_cons, ih, Function.comp_assoc]
+
+/-- **The `pathMap` Jacobian splits over concatenation.** `jacDet (pathMap (l₁ ++ l₂)) u =
+jacDet (pathMap l₁) (pathMap l₂ u) · jacDet (pathMap l₂) u`, given differentiability at the relevant
+points. The append analogue of `jacDet_pathMap_cons`; the form the fold's prefix/suffix induction
+consumes directly (peel any prefix, not only a single head step). -/
+theorem jacDet_pathMap_append (l₁ l₂ : List ((Fin D → ℝ) → (Fin D → ℝ))) (u : Fin D → ℝ)
+    (h₁ : DifferentiableAt ℝ (pathMap l₁) (pathMap l₂ u))
+    (h₂ : DifferentiableAt ℝ (pathMap l₂) u) :
+    jacDet (pathMap (l₁ ++ l₂)) u
+      = jacDet (pathMap l₁) (pathMap l₂ u) * jacDet (pathMap l₂) u := by
+  rw [pathMap_append]
+  exact jacDet_comp u h₁ h₂
+
+/-- **The absolute-value append form** — the monomial fold consumes `|det|` (each factor a pure
+blow-up monomial). -/
+theorem abs_jacDet_pathMap_append (l₁ l₂ : List ((Fin D → ℝ) → (Fin D → ℝ))) (u : Fin D → ℝ)
+    (h₁ : DifferentiableAt ℝ (pathMap l₁) (pathMap l₂ u))
+    (h₂ : DifferentiableAt ℝ (pathMap l₂) u) :
+    |jacDet (pathMap (l₁ ++ l₂)) u|
+      = |jacDet (pathMap l₁) (pathMap l₂ u)| * |jacDet (pathMap l₂) u| := by
+  rw [jacDet_pathMap_append l₁ l₂ u h₁ h₂, abs_mul]
+
+/-- **The list-product Jacobian along a branch.** `jacDet (pathMap l) u` is the product, over the
+positions `k` of the list, of the `k`-th step's Jacobian `jacDet (l.get k)` evaluated at the partial
+composition of the DEEPER steps `pathMap (l.drop (k+1)) u`. Iterates `jacDet_pathMap_cons` by list
+induction; the differentiability hypothesis is the per-step `Differentiable ℝ σ` the substrate
+carries (`differentiable_pathMap` discharges the tail factor). This is the `|det D(pathMap branch)|`
+= product of per-step blow-up monomials the monument's L6 reads off. -/
+theorem jacDet_pathMap_eq_prod (l : List ((Fin D → ℝ) → (Fin D → ℝ)))
+    (hl : ∀ σ ∈ l, Differentiable ℝ σ) (u : Fin D → ℝ) :
+    jacDet (pathMap l) u
+      = ∏ k : Fin l.length, jacDet (l.get k) (pathMap (l.drop (k.1 + 1)) u) := by
+  induction l with
+  | nil =>
+    simp only [List.length_nil, Finset.univ_eq_empty, Finset.prod_empty, pathMap_nil]
+    exact jacDet_id u
+  | cons σ rest ih =>
+    have hσ : Differentiable ℝ σ := hl σ List.mem_cons_self
+    have hrest : ∀ τ ∈ rest, Differentiable ℝ τ := fun τ hτ ↦ hl τ (List.mem_cons_of_mem σ hτ)
+    -- Split the head factor off the (cons-length) product; `Fin.prod_univ_succ` unifies the
+    -- `Fin (σ :: rest).length = Fin (rest.length + 1)` length by defeq as a TERM (a `rw` cannot,
+    -- because the `Finset.univ` `Fintype` instances differ syntactically).
+    have hsplit :
+        (∏ k : Fin (σ :: rest).length,
+            jacDet ((σ :: rest).get k) (pathMap ((σ :: rest).drop (k.1 + 1)) u))
+          = jacDet ((σ :: rest).get 0) (pathMap ((σ :: rest).drop 1) u)
+            * ∏ k : Fin rest.length,
+                jacDet ((σ :: rest).get k.succ) (pathMap ((σ :: rest).drop (k.succ.1 + 1)) u) :=
+      Fin.prod_univ_succ _
+    rw [jacDet_pathMap_cons σ rest u (hσ (pathMap rest u))
+        (differentiable_pathMap rest hrest u), ih hrest, hsplit]
+    -- Both factors now match by defeq: head `(σ::rest).get 0 = σ`, `.drop 1 = rest`; and each tail
+    -- factor `(σ::rest).get k.succ = rest.get k`, `.drop (k.succ+1) = rest.drop (k+1)` (the cons
+    -- `get`/`drop` laws hold definitionally). `congr 1` discharges both.
+    congr 1
+
+/-! ### Kill-set — `pathMap_append` on a 2+1 list; the list product on a concrete blow-up branch -/
+
+/-- `pathMap_append` on a 2+1 list: the prefix `[f, g]` composes (as the outer maps) with `[h]`. -/
+example (f g h : (Fin D → ℝ) → (Fin D → ℝ)) :
+    pathMap ([f, g] ++ [h]) = pathMap [f, g] ∘ pathMap [h] :=
+  pathMap_append [f, g] [h]
+
+/-- `jacDet_pathMap_eq_prod` on a concrete 2-step branch of blow-ups (each differentiable via
+`differentiable_blowupMap`): the total branch Jacobian is the product of the two per-step factors,
+evaluated at the successive partial compositions. -/
+example (p : Fin D) (u : Fin D → ℝ) :
+    jacDet (pathMap [blowupMap p, blowupMap p]) u
+      = ∏ k : Fin [blowupMap p, blowupMap p].length,
+          jacDet ([blowupMap p, blowupMap p].get k)
+            (pathMap ([blowupMap p, blowupMap p].drop (k.1 + 1)) u) :=
+  jacDet_pathMap_eq_prod [blowupMap p, blowupMap p]
+    (fun σ hσ ↦ by fin_cases hσ <;> exact differentiable_blowupMap p) u
+
 end DLNFibre.Core.Aoyagi
