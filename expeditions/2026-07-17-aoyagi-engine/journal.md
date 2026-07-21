@@ -8718,3 +8718,28 @@ wrong-for-L5 object); w0l3 paused on residual-shape work, shear-side continues, 
 integration. No battery re-run needed (DLN-side only; Engine untouched — arch-C + seat concur).
 PENDING: the elder's one pass → my integration + full build + AxCheck → L3 wires; pnp-order
 (blind decorrelation) gates the WALL's consumption of the flip.
+
+## 2026-07-21: THE SECOND OBSTRUCTION (codex, φ-independent) — the pullback resid is FALSE AT THE ROOT; integration HELD
+seat-L4's codex decorrelation confirmed the shear break AND found the deeper one: the δ=1 data defs
+give b′ the extra u_pivot while foldResid(child) is a PURE PULLBACK — but center-supported residuals
+ALREADY gain u_pivot under the blow-up, so b′·resid′ carries u_p² vs the entries' u_p¹: the ∃q
+provably cannot absorb it (q′ = 1/u_p forced — stand-in (c)'s named risk MATERIALIZED,
+φ-independent, hits case11 too). The elder's one-pass RATIFICATION CROSSED with this finding — its
+design-call verification used exactly the refuted identity (q′ = (q∘σ)/u_p^δ "the wall undiluted");
+CONTROLLER-VERIFIED the refutation AT THE ROOT EDGE before acting: root resid = coreGen, center =
+univ ⟹ every resid′_j has u_p-order exactly d while the target ideal has order ≥ d+1 — order-d
+content ∉ an order-(d+1) ideal, ∀N. The bundled leaf is FALSE at the fold's own base case.
+INTEGRATION HELD (the elder's proceed superseded by newer information — surgical supplement sent:
+what survives = items 2/3/4, hsupp-RETAIN + the δ-CONDITIONAL amendment (which composes: δ=0 no
+division no support; δ=1 hsupp feeds the strict transform), hd drop, the L3-rebase endorsement;
+what re-rules = the foldResid δ=1 defining equation → the STRICT TRANSFORM / Let-block child form,
+under which q′ = q∘σ EXACTLY — no division in the witness, the division wholly in the data def via
+the blockBlowupCoordQuot total-quotient route (the design-guard question: foldResid only ever
+transforms center-coordinate pullbacks under hsupp — the closure check is the elder's)). arch-C
+drafts the Let-block per-case equations in parallel; the codex minimal witness joins the refutation
+family; δ=0 unaffected. ALSO delivered in the crossed pass and SURVIVING: the elder's δ-conditional
+hsupp amendment (at δ=0 the residual vector includes cleared-slot pullbacks whose b-variables are
+exceptional coords outside the center — unconditional SupportedOn would be undischargeable), the
+design-call's M'=1-COMPANION reading (the fixed-width pullback model = the paper's variable-width
+bookkeeping compressed into ConState; docstring rider), and "my criterion was always consumption,
+never role" on hd. The verification stack is now catching errors in ITS OWN rulings within the hour.
