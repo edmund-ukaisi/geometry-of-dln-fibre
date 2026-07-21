@@ -164,6 +164,8 @@ import DLNFibre.Core.Aoyagi.IdealInvariance
 import DLNFibre.Core.Aoyagi.MonomialRLCT
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
 import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
+import DLNFibre.Core.Aoyagi.BlowupResolution
+import DLNFibre.Core.Aoyagi.ResolutionInhabited
 import Meta.Cordon
 
 /-!
@@ -1346,6 +1348,14 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- at the first singular instance + THE FIRST PROVEN LC INSTANCE through the new machinery (cite-free).
   DLNFibre.DLN.Aoyagi.exists_atlasRealizesExponents_d12,
   DLNFibre.DLN.Aoyagi.two_mul_rlctAt_coreGen_d12,
+-- ★ The geometric ATOMS (navigator gate-audit catch: wired but previously un-gated — a leaf-2-cone
+-- regression would have shipped green): the universal blow-up + its Jacobian det, the D=2 instance,
+-- and the two record inhabitation witnesses.
+  DLNFibre.Core.Aoyagi.blowupResolution,
+  DLNFibre.Core.Aoyagi.jacDet_blowupMap,
+  DLNFibre.Core.Aoyagi.blowupResolution2,
+  DLNFibre.Core.Aoyagi.allOnesResolution,
+  DLNFibre.Core.Aoyagi.idResolution,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from

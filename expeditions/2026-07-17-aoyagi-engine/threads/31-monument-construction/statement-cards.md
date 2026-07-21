@@ -25,7 +25,7 @@ based on `a7db69705`). Bump the SHA at integration.
 >   `minAdm d` (`Engine.o5_core_realized`) — and transports them across the realization seam to the
 >   `Chart`/`Resolution` vocabulary, using the bridge `qipMin d = minAdm d`
 >   (`minAdm_eq_cCodim` ∘ `cCodim_eq_qipMin`).
-> - **Proved.** `AtlasRealizes d res → hlb ∧ hattain`, sorry-free, axiom cone
+> - **Proved.** `AtlasRealizesExponents d res → hlb ∧ hattain`, sorry-free, axiom cone
 >   `[propext, Classical.choice, Quot.sound]`. The bridge `qipMin_eq_minAdm` (`qipMin d = minAdm d`
 >   as `ℤ`, monotone `d`) is proved here too. Kill-set anchors reconciled with the decorrelated
 >   `g-monument-mval-instances.py` battery: `minAdm ![2,2,3,2] = 3` (running-min, NOT raw `6`),
@@ -48,7 +48,7 @@ based on `a7db69705`). Bump the SHA at integration.
 >   ratification: reuse the audited-green Engine closure (never a `Geo*`/`ChartBridge*` module), wire
 >   via the `AtlasRealizes` seam. Import boundary C1 verified (O5Realization closure builds 0
 >   `Geo*`/`Canonical*` modules).
-> - **Status.** sorry-free (awaiting fidelity review).
+> - **Status.** REVIEWED (rev-monument-adapter SURVIVED, 2026-07-21; two escalations applied: only-the-minimizer weakening + the AtlasRealizesExponents rename; integrated).
 
 ---
 
@@ -73,4 +73,4 @@ based on `a7db69705`). Bump the SHA at integration.
 > - **Cited.** none.
 > - **Deferred.** the coupled corank-≥2 inhabitation (`g` a genuine blow-up, not `id`) — the monument;
 >   this card is the CLEAN end (positive inhabitation test), NOT that.
-> - **Status.** sorry-free (awaiting fidelity review).
+> - **Status.** REVIEWED (covered by the adapter review + rev-cov-fidelity's inhabitation audit, 2026-07-21; integrated).

@@ -41,7 +41,7 @@
 > - **Deferred.** none for THIS leaf. (Separately, the *existence* of a certified atlas for the DLN
 >   loss — `exists_coreResolution` — is a distinct monument and remains a `sorry` in the DLN layer;
 >   it is NOT part of this theorem, which takes `res` as a hypothesis.)
-> - **Status.** sorry-free (`#print axioms` = `[propext, Classical.choice, Quot.sound]`).
+> - **Status.** REVIEWED (rev-cov-fidelity PASS, 2026-07-21; `#print axioms` = `[propext, Classical.choice, Quot.sound]`; integrated at the expedition tip).
 
 ## Downstream footprints (verified clean-three, `#print axioms`)
 

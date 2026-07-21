@@ -7935,3 +7935,23 @@ arithmetic; the conjugation transport; no quiet seam changes). Seat again left w
 handoff ("leaf executor" reading) — secured by controller; the push-rule wording may need one more turn
 of the screw at the next role-file pass. NEXT: (C) reification under the elder's 4 conditions +
 navigator's parallelisation plan (both offices still out).
+
+## 2026-07-21: NAVIGATOR PASS #11 (first of the phase) — accepted in full; Phase-0 dispatched
+Position: NO DRIFT (every landing named its §1 object; C3 held on the adapter) — with the honest sharp
+edge: ZERO Lean has yet touched coupled corank≥2; everything in B's column is clean-regime substrate;
+leaf-4 is the first contact, so the wave staffs L4 FIRST and its burn-down (not leaf count) is the
+success metric. FALSE-SERIALIZATION CAUGHT: (C) gated on the elder only (since RATIFIED) — and seat-d12
+has ALSO landed, so even leaf-8's statement confirms now. GATE AUDIT: batch verified 334 own-count ✓;
+BANKING GAP found (blowupResolution/jacDet/blowupResolution2/allOnesResolution/idResolution wired but
+un-gated) — CLOSED this commit (+5 entries); CARD-STATE MISS found (d526a2e67 claimed "card → reviewed"
+but the sed silently no-op'd; verified via git show --stat) — cards fixed this commit with verified
+anchors; the sed-without-verify class noted. RECORD-KEEPING correction: the owed elder ratifications DID
+run (the convening response: C-delta RATIFIED; A machine-diffed zero-drift; coreReduction he_lin-freedom
+sound; _root_ binding clean ×4; GlobalHomog natural) — the journal had queued them without recording
+completion; recorded NOW. Phrasing nit adopted: E = "stated interface proved, content deferred" (never
+"E fully proved"). LEDGER counsel adopted for (C)'s statement gate: price Lean cost from STATEMENT SHAPE
+(casts/transports/WF.fix/dependent widths), never the math outline; universalize statements; the
+boundary-only-verification class is the one most likely to fire on L3/L4/L5 ⟹ pnp-case1 MUST include an
+interior-state (mid-recursion, non-terminal, coupled) instance. Hygiene re-sequenced (Monotone-d
+post-wave-open elder-gated; MonomialBox/O7a idle-fill; O5 docstrings tail). Charter §1.A/§1.C staleness
+queued to the elder. Navigator pass #12 mandatory at the (C)→wave transition.
