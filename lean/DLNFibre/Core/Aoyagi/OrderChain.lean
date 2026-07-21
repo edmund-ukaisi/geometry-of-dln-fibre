@@ -61,19 +61,36 @@ theorem rankBP_strictMono {a : ℕ} {f g : Fin a → ℕ} (h : f < g) : rankBP a
 /-- **UPPER** (Lemma 5 bound): every chain of `BoxPart` has at most `a(ℓ−a)+1` elements — `rankBP`
 is a strict-monotone rank into `[0, a(ℓ−a)]`, so a chain injects into `a(ℓ−a)+1` rank values. -/
 theorem chainHeight_boxPart_le (ℓ a : ℕ) :
-    (BoxPart ℓ a).chainHeight (· < ·) ≤ (a * (ℓ - a) + 1 : ℕ∞) := by
-  sorry
+    (BoxPart ℓ a).chainHeight (· < ·) ≤ ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) := by
+  rw [Set.chainHeight_eq_iSup]
+  refine iSup_le ?_
+  rintro ⟨t, htsub, htchain⟩
+  have hinj : Set.InjOn (rankBP a) t := by
+    intro x hx y hy hxy
+    by_contra hne
+    rcases htchain hx hy hne with h | h
+    · exact absurd hxy (ne_of_lt (rankBP_strictMono h))
+    · exact absurd hxy.symm (ne_of_lt (rankBP_strictMono h))
+  have hsub : rankBP a '' t ⊆ ↑(Finset.range (a * (ℓ - a) + 1)) := by
+    rintro _ ⟨x, hx, rfl⟩
+    simp only [Finset.coe_range, Set.mem_Iio]
+    have := rankBP_le (htsub hx)
+    omega
+  calc t.encard = (rankBP a '' t).encard := (hinj.encard_image).symm
+    _ ≤ (↑(Finset.range (a * (ℓ - a) + 1)) : Set ℕ).encard := Set.encard_mono hsub
+    _ = ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) := by
+        rw [Set.encard_coe_eq_coe_finsetCard, Finset.card_range]
 
 /-- **ATTAINMENT** (Lemma 5 construction, Aoyagi eq-(1)/(2)): the staircase realises a chain of
 `a(ℓ−a)+1` box partitions, so the chain height is at least `a(ℓ−a)+1` (for `a ≤ ℓ`). -/
 theorem le_chainHeight_boxPart (ℓ a : ℕ) (ha : a ≤ ℓ) :
-    (a * (ℓ - a) + 1 : ℕ∞) ≤ (BoxPart ℓ a).chainHeight (· < ·) := by
+    ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) ≤ (BoxPart ℓ a).chainHeight (· < ·) := by
   sorry
 
 /-- **Tier-1 headline (P6.2)**: the binding-minimiser box poset has `Set.chainHeight = a(ℓ−a)+1`
 (for `a ≤ ℓ`). The count is a CHAIN height, not an antichain/cardinality (pnp-confirmed). -/
 theorem chainHeight_boxPart (ℓ a : ℕ) (ha : a ≤ ℓ) :
-    (BoxPart ℓ a).chainHeight (· < ·) = (a * (ℓ - a) + 1 : ℕ∞) :=
+    (BoxPart ℓ a).chainHeight (· < ·) = ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) :=
   le_antisymm (chainHeight_boxPart_le ℓ a) (le_chainHeight_boxPart ℓ a ha)
 
 /-! ## Kill-set ground truths (the headline's values at the K1 + corner `(ℓ, a)`)
