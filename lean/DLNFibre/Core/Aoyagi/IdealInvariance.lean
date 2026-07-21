@@ -350,6 +350,51 @@ theorem wrlctAt_const_mul {W K : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ} {C
   unfold wrlctAt
   rw [wLocalAdmissibleExponents_const_mul hC]
 
+/-- **The weighted admissible set is monotone under eventual domination, junk-guarded.** If `0 ≤ W`
+and `0 ≤ K ≤ K'` near `x` (with `K`'s zero set locally null), then every exponent admissible for `K`
+against `W` is admissible for `K'`. This is the set-level core of `wrlctAt_mono_of_eventually_le`,
+exposed so the two-sided version can conclude *set equality* (hence a `wrlctAt` equality with NO
+`BddAbove` hypothesis). -/
+theorem wLocalAdmissibleExponents_subset_of_eventually_le {W K K' : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
+    (hWmeas : Measurable W) (hK'meas : Measurable K')
+    (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w)
+    (hbound : ∀ᶠ w in 𝓝 x, 0 ≤ K w ∧ K w ≤ K' w)
+    (hKnull : LocallyNullZeros K x) :
+    wLocalAdmissibleExponents W K x ⊆ wLocalAdmissibleExponents W K' x := by
+  rintro c ⟨hc0, s₁, hs₁mem, hs₁int⟩
+  refine ⟨hc0, ?_⟩
+  obtain ⟨sI, hsIsub, hsIopen, hxsI⟩ := mem_nhds_iff.1 hs₁mem
+  obtain ⟨tB, htBbound, htBopen, hxtB⟩ := eventually_nhds_iff.1 hbound
+  obtain ⟨tW, htWnn, htWopen, hxtW⟩ := eventually_nhds_iff.1 hW
+  obtain ⟨sN, hsNmem, hsNnull⟩ := hKnull
+  obtain ⟨sN', hsN'sub, hsN'open, hxsN'⟩ := mem_nhds_iff.1 hsNmem
+  refine ⟨sI ∩ tB ∩ tW ∩ sN',
+    (((hsIopen.inter htBopen).inter htWopen).inter hsN'open).mem_nhds
+      ⟨⟨⟨hxsI, hxtB⟩, hxtW⟩, hxsN'⟩, ?_⟩
+  have hVmeas : MeasurableSet (sI ∩ tB ∩ tW ∩ sN') :=
+    (((hsIopen.inter htBopen).inter htWopen).inter hsN'open).measurableSet
+  have hdomint : IntegrableOn (fun w ↦ W w * negPow K c w) (sI ∩ tB ∩ tW ∩ sN') :=
+    hs₁int.mono_set fun y hy ↦ hsIsub hy.1.1.1
+  refine Integrable.mono' hdomint
+    ((hWmeas.mul (measurable_negPow hK'meas c)).aestronglyMeasurable) ?_
+  refine ae_le_of_forall_mem_diff_null (Z := {w | K w = 0}) hVmeas ?_ ?_
+  · exact measure_mono_null
+      (inter_subset_inter (Subset.refl _) (fun y hy ↦ hsN'sub hy.2)) hsNnull
+  · intro w hwV hwZ
+    have hwtB : w ∈ tB := hwV.1.1.2
+    have hwtW : w ∈ tW := hwV.1.2
+    obtain ⟨hK0le, hKle⟩ := htBbound w hwtB
+    have hWnn : 0 ≤ W w := htWnn w hwtW
+    have hKne : K w ≠ 0 := hwZ
+    have hKpos : 0 < K w := lt_of_le_of_ne hK0le hKne.symm
+    have hK'pos : 0 < K' w := lt_of_lt_of_le hKpos hKle
+    have hpow : negPow K' c w ≤ negPow K c w := by
+      simp only [negPow_apply]
+      exact Real.rpow_le_rpow_of_nonpos hKpos hKle (by linarith)
+    have hpow'nn : 0 ≤ negPow K' c w := negPow_nonneg hK'pos.le c
+    rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hWnn hpow'nn)]
+    exact mul_le_mul_of_nonneg_left hpow hWnn
+
 /-- Weighted germ-monotonicity of `wrlctAt` under an eventual domination, junk-guarded — the
 weighted analogue of `rlctAt_mono_of_eventually_le`. The nonnegative weight `W` preserves the a.e.
 domination off the null zero set `{K = 0}` (`hKnull`). -/
@@ -360,40 +405,7 @@ theorem wrlctAt_mono_of_eventually_le {W K K' : (Fin n → ℝ) → ℝ} {x : Fi
     (hKnull : LocallyNullZeros K x)
     (hbdd : BddAbove (wLocalAdmissibleExponents W K' x)) :
     wrlctAt W K x ≤ wrlctAt W K' x := by
-  have hsub : wLocalAdmissibleExponents W K x ⊆ wLocalAdmissibleExponents W K' x := by
-    rintro c ⟨hc0, s₁, hs₁mem, hs₁int⟩
-    refine ⟨hc0, ?_⟩
-    obtain ⟨sI, hsIsub, hsIopen, hxsI⟩ := mem_nhds_iff.1 hs₁mem
-    obtain ⟨tB, htBbound, htBopen, hxtB⟩ := eventually_nhds_iff.1 hbound
-    obtain ⟨tW, htWnn, htWopen, hxtW⟩ := eventually_nhds_iff.1 hW
-    obtain ⟨sN, hsNmem, hsNnull⟩ := hKnull
-    obtain ⟨sN', hsN'sub, hsN'open, hxsN'⟩ := mem_nhds_iff.1 hsNmem
-    refine ⟨sI ∩ tB ∩ tW ∩ sN',
-      (((hsIopen.inter htBopen).inter htWopen).inter hsN'open).mem_nhds
-        ⟨⟨⟨hxsI, hxtB⟩, hxtW⟩, hxsN'⟩, ?_⟩
-    have hVmeas : MeasurableSet (sI ∩ tB ∩ tW ∩ sN') :=
-      (((hsIopen.inter htBopen).inter htWopen).inter hsN'open).measurableSet
-    have hdomint : IntegrableOn (fun w ↦ W w * negPow K c w) (sI ∩ tB ∩ tW ∩ sN') :=
-      hs₁int.mono_set fun y hy ↦ hsIsub hy.1.1.1
-    refine Integrable.mono' hdomint
-      ((hWmeas.mul (measurable_negPow hK'meas c)).aestronglyMeasurable) ?_
-    refine ae_le_of_forall_mem_diff_null (Z := {w | K w = 0}) hVmeas ?_ ?_
-    · exact measure_mono_null
-        (inter_subset_inter (Subset.refl _) (fun y hy ↦ hsN'sub hy.2)) hsNnull
-    · intro w hwV hwZ
-      have hwtB : w ∈ tB := hwV.1.1.2
-      have hwtW : w ∈ tW := hwV.1.2
-      obtain ⟨hK0le, hKle⟩ := htBbound w hwtB
-      have hWnn : 0 ≤ W w := htWnn w hwtW
-      have hKne : K w ≠ 0 := hwZ
-      have hKpos : 0 < K w := lt_of_le_of_ne hK0le hKne.symm
-      have hK'pos : 0 < K' w := lt_of_lt_of_le hKpos hKle
-      have hpow : negPow K' c w ≤ negPow K c w := by
-        simp only [negPow_apply]
-        exact Real.rpow_le_rpow_of_nonpos hKpos hKle (by linarith)
-      have hpow'nn : 0 ≤ negPow K' c w := negPow_nonneg hK'pos.le c
-      rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg hWnn hpow'nn)]
-      exact mul_le_mul_of_nonneg_left hpow hWnn
+  have hsub := wLocalAdmissibleExponents_subset_of_eventually_le hWmeas hK'meas hW hbound hKnull
   rcases (wLocalAdmissibleExponents W K x).eq_empty_or_nonempty with hAe | hAne
   · unfold wrlctAt
     rw [hAe, Real.sSup_empty]
@@ -446,5 +458,43 @@ theorem wrlctAt_sumSqFam_eq_of_germ_eq {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
   -- map: A-weighted-two-sided (le_antisymm of both weighted junk-guarded containments)
   le_antisymm (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hFmeas hW hGF hGnull hFbdd)
     (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hGmeas hW hFG hFnull hGbdd)
+
+/-- **Object A (weighted, set form) — the weighted admissible sets coincide under equal germ ideals.**
+The bdd-free strengthening of `wrlctAt_sumSqFam_eq_of_germ_eq`: from the two-way domination the two
+weighted admissible-exponent sets are EQUAL (each is squeezed into a positive-constant multiple of
+the other, which leaves the set unchanged). Consumers get the `wrlctAt` equality by `sSup`-congruence
+and `BddAbove` transfer for free — no boundedness hypothesis needed. -/
+theorem wLocalAdmissibleExponents_sumSqFam_eq_of_germ_eq {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
+    {G : Fin p → (Fin n → ℝ) → ℝ} {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
+    (hWmeas : Measurable W) (hFmeas : ∀ j, Measurable (F j)) (hGmeas : ∀ i, Measurable (G i))
+    (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w)
+    (hGnull : LocallyNullZeros (sumSqFam G) x) (hFnull : LocallyNullZeros (sumSqFam F) x)
+    (hGF : GermRepresents G F x) (hFG : GermRepresents F G x) :
+    wLocalAdmissibleExponents W (sumSqFam G) x = wLocalAdmissibleExponents W (sumSqFam F) x := by
+  have hsumGmeas : Measurable (sumSqFam G) :=
+    Finset.measurable_sum Finset.univ fun i _ ↦ (hGmeas i).pow_const 2
+  have hsumFmeas : Measurable (sumSqFam F) :=
+    Finset.measurable_sum Finset.univ fun j _ ↦ (hFmeas j).pow_const 2
+  apply Set.Subset.antisymm
+  · obtain ⟨C, hC0, hCbound⟩ := eventually_sumSqFam_le_of_germRepresents hGF
+    have hC'pos : (0 : ℝ) < C + 1 := by linarith
+    have hbound' : ∀ᶠ w in 𝓝 x,
+        0 ≤ sumSqFam G w ∧ sumSqFam G w ≤ (C + 1) * sumSqFam F w := by
+      filter_upwards [hCbound] with w hw
+      exact ⟨sumSqFam_nonneg G w,
+        hw.trans (mul_le_mul_of_nonneg_right (by linarith) (sumSqFam_nonneg F w))⟩
+    have hsub := wLocalAdmissibleExponents_subset_of_eventually_le hWmeas
+      (hsumFmeas.const_mul (C + 1)) hW hbound' hGnull
+    rwa [wLocalAdmissibleExponents_const_mul hC'pos] at hsub
+  · obtain ⟨C, hC0, hCbound⟩ := eventually_sumSqFam_le_of_germRepresents hFG
+    have hC'pos : (0 : ℝ) < C + 1 := by linarith
+    have hbound' : ∀ᶠ w in 𝓝 x,
+        0 ≤ sumSqFam F w ∧ sumSqFam F w ≤ (C + 1) * sumSqFam G w := by
+      filter_upwards [hCbound] with w hw
+      exact ⟨sumSqFam_nonneg F w,
+        hw.trans (mul_le_mul_of_nonneg_right (by linarith) (sumSqFam_nonneg G w))⟩
+    have hsub := wLocalAdmissibleExponents_subset_of_eventually_le hWmeas
+      (hsumGmeas.const_mul (C + 1)) hW hbound' hFnull
+    rwa [wLocalAdmissibleExponents_const_mul hC'pos] at hsub
 
 end DLNFibre.Core.Aoyagi

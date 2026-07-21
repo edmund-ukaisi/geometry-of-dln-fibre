@@ -1,7 +1,11 @@
 import DLNFibre.Core.Aoyagi.IdealInvariance
 import DLNFibre.Core.Aoyagi.MonomialRLCT
+import DLNFibre.Core.Aoyagi.Waypoint
 import Mathlib.Analysis.Analytic.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
+import Mathlib.Analysis.Calculus.FDeriv.Analytic
+import Mathlib.Analysis.Calculus.ContDiff.Basic
+import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.LinearAlgebra.Determinant
 import Meta.Cordon
 
@@ -181,17 +185,135 @@ theorem rlctAt_sumSqFam_le_chart {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ :
   rw [rlctAt_sumSqFam_eq_iInf_charts res]
   exact Finset.inf'_le _ (Finset.mem_univ c)
 
+/-! ### Shared discharge helpers for the per-chart value (leaf 1) -/
+
+/-- `RegionRepresents` on an open set gives `GermRepresents` at any interior point: the coefficients
+are `ContinuousAt` (interior + `ContinuousOn`), and the representation holds eventually (the open set
+is a neighbourhood). The dom-wide → germ-at-origin bridge Object B's charts ride into Object A. -/
+lemma RegionRepresents.germRepresents_of_isOpen {p q : ℕ}
+    {G : Fin p → (Fin D → ℝ) → ℝ} {H : Fin q → (Fin D → ℝ) → ℝ}
+    {V : Set (Fin D → ℝ)} {x : Fin D → ℝ}
+    (h : RegionRepresents G H V) (hV : IsOpen V) (hx : x ∈ V) :
+    GermRepresents G H x := by
+  obtain ⟨a, hcont, hrep⟩ := h
+  refine ⟨a, fun i j ↦ (hcont i j).continuousAt (hV.mem_nhds hx), ?_⟩
+  filter_upwards [hV.mem_nhds hx] with u hu using hrep u hu
+
+/-- The zero set of a monomial family's sum-of-squares is locally null: the dominant generator
+`b_{k₀} = ∏_d u_d^(e k₀ d)` is a nonzero polynomial (a monic monomial), so `{∑ bₖ² = 0} ⊆ {b_{k₀}=0}`
+is null (`volume_zeroSet_eq_zero`). No binding-axis hypothesis needed (an empty exponent gives the
+constant `1`, whose zero set is empty). -/
+lemma locallyNullZeros_sumSqFam_monomialFam {p : ℕ} (e : Fin p → Fin D → ℕ) (k₀ : Fin p)
+    (x : Fin D → ℝ) :
+    LocallyNullZeros (sumSqFam (monomialFam e)) x := by
+  refine locallyNullZeros_sumSqFam_of_polynomial k₀
+    (∏ d, MvPolynomial.X d ^ (e k₀ d)) ?_ ?_
+  · rw [Finset.prod_ne_zero_iff]
+    exact fun d _ ↦ pow_ne_zero _ (MvPolynomial.X_ne_zero d)
+  · intro w; simp only [monomialFam, map_prod, map_pow, MvPolynomial.eval_X]
+
+/-- The zero set of a monomial `∏_d u_d^(e k₀ d)` itself is `volume`-null. -/
+lemma volume_monomialFam_zeroSet {p : ℕ} (e : Fin p → Fin D → ℕ) (k₀ : Fin p) :
+    volume {u : Fin D → ℝ | monomialFam e k₀ u = 0} = 0 := by
+  have hset : {u : Fin D → ℝ | monomialFam e k₀ u = 0}
+      = {u | MvPolynomial.eval u (∏ d, MvPolynomial.X d ^ (e k₀ d)) = 0} := by
+    ext u; simp only [Set.mem_setOf_eq, monomialFam, map_prod, map_pow, MvPolynomial.eval_X]
+  rw [hset]
+  exact MvPolynomial.volume_zeroSet_eq_zero _
+    (by rw [Finset.prod_ne_zero_iff]; exact fun d _ ↦ pow_ne_zero _ (MvPolynomial.X_ne_zero d))
+
+/-- The Jacobian weight `|det Dg|` of an analytic chart is continuous (analytic ⟹ `C¹` ⟹ `fderiv`
+continuous; `det` is continuous on `E →L E`), hence measurable. -/
+lemma Chart.continuous_jacWeightFn {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) : Continuous c.jacWeightFn := by
+  have hcd : ContDiff ℝ 1 c.g :=
+    contDiffOn_univ.mp (c.hg_analytic.contDiffOn_of_completeSpace)
+  have hfder : Continuous (fun u ↦ fderiv ℝ c.g u) := hcd.continuous_fderiv one_ne_zero
+  have hdet : Continuous (fun u ↦ (fderiv ℝ c.g u).det) :=
+    ContinuousLinearMap.continuous_det.comp hfder
+  have heq : c.jacWeightFn = fun u ↦ |(fderiv ℝ c.g u).det| := by
+    funext u; rfl
+  rw [heq]; exact hdet.abs
+
 /-- **STRIKE-ABLE/FRONTIER — per-chart value.** In each chart, the weighted RLCT of the pulled-back
 loss equals `½·(⨅ binding (jac d + 1))` (chart-local): Object A's weighted two-sided ideal invariance
 (`hideal_fwd`/`hideal_bwd`, under the nonnegative weight `|det Dg_c| ≥ 0`) transports the pulled-back
 generators to the diagonal monomials, and Object C's boxed rule under the chain `hchain` + unit
 multiplicity `hunit_mult` gives the integer divisor min. -/
-@[blueprint]
 theorem Chart.two_mul_wrlctAt_eq_chartMin {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
     (c : Chart F x₀) :
     2 * wrlctAt c.jacWeightFn (sumSqFam (fun i ↦ F i ∘ c.g)) 0 = c.chartMin := by
   -- map: B-chart-value (weighted-A ideal invariance ∘ C-dln-unit-multiplicity, per chart)
-  sorry
+  classical
+  -- `0 ∈ nbhd` (open), so `nbhd ∈ 𝓝 0`; the certificates hold on `nbhd`.
+  have h0nbhd : (0 : Fin D → ℝ) ∈ c.nbhd := c.hdom_sub c.hdom_zero
+  have hnbhd_mem : c.nbhd ∈ 𝓝 (0 : Fin D → ℝ) := c.hnbhd_open.mem_nhds h0nbhd
+  -- The weight `W = |det Dg|` is continuous (hence measurable) and nonnegative.
+  have hWcont : Continuous c.jacWeightFn := c.continuous_jacWeightFn
+  have hWmeas : Measurable c.jacWeightFn := hWcont.measurable
+  have hWnn : ∀ᶠ w in 𝓝 (0 : Fin D → ℝ), 0 ≤ c.jacWeightFn w :=
+    Filter.Eventually.of_forall (fun w ↦ abs_nonneg _)
+  -- measurabilities of the two generator families
+  have hGmeas : ∀ i, Measurable (fun u ↦ (F i ∘ c.g) u) :=
+    fun i ↦ (c.hFmeas i).comp c.hg_cont.measurable
+  have hMmeas : ∀ j, Measurable (monomialFam c.bexp j) := by
+    intro j; unfold monomialFam; fun_prop
+  -- germ-ideal identities (dom-wide → germ at origin)
+  have hGF : GermRepresents (fun i ↦ F i ∘ c.g) (monomialFam c.bexp) 0 :=
+    c.hideal_fwd.germRepresents_of_isOpen c.hnbhd_open h0nbhd
+  have hFG : GermRepresents (monomialFam c.bexp) (fun i ↦ F i ∘ c.g) 0 :=
+    c.hideal_bwd.germRepresents_of_isOpen c.hnbhd_open h0nbhd
+  -- nullness of the two sum-of-squares zero sets at `0`
+  have hFnull : LocallyNullZeros (sumSqFam (monomialFam c.bexp)) 0 :=
+    locallyNullZeros_sumSqFam_monomialFam c.bexp c.k₀ 0
+  have hGnull : LocallyNullZeros (sumSqFam (fun i ↦ F i ∘ c.g)) 0 := by
+    obtain ⟨a, _hacont, harep⟩ := c.hideal_bwd
+    refine ⟨c.nbhd, hnbhd_mem, measure_mono_null ?_ (volume_monomialFam_zeroSet c.bexp c.k₀)⟩
+    intro u hu
+    have hu0 : u ∈ {w | sumSqFam (fun i ↦ F i ∘ c.g) w = 0} := hu.1
+    have hall : ∀ i, (F i ∘ c.g) u = 0 :=
+      fun i ↦ sumSqFam_zeroSet_subset (fun i ↦ F i ∘ c.g) i hu0
+    show monomialFam c.bexp c.k₀ u = 0
+    rw [harep u hu.2 c.k₀]
+    refine Finset.sum_eq_zero (fun i _ ↦ ?_)
+    show a c.k₀ i u * (F i ∘ c.g) u = 0
+    rw [hall i, mul_zero]
+  -- the weighted admissible sets coincide (Object A, set form) ⟹ the `wrlctAt`s coincide
+  have hset := wLocalAdmissibleExponents_sumSqFam_eq_of_germ_eq
+    (W := c.jacWeightFn) hWmeas hMmeas hGmeas hWnn hGnull hFnull hGF hFG
+  have hval : wrlctAt c.jacWeightFn (sumSqFam (fun i ↦ F i ∘ c.g)) 0
+      = wrlctAt c.jacWeightFn (sumSqFam (monomialFam c.bexp)) 0 := by
+    unfold wrlctAt; rw [hset]
+  -- the measurable Jacobian-unit factor `um = |unit|` (extended measurably off `nbhd`)
+  set um : (Fin D → ℝ) → ℝ := Set.piecewise c.nbhd (fun u ↦ |c.unit u|) (fun _ ↦ 1) with hum
+  have hum_eq : ∀ u ∈ c.nbhd, um u = |c.unit u| :=
+    fun u hu ↦ Set.piecewise_eq_of_mem _ _ _ hu
+  have hcabsOn : ContinuousOn (fun u ↦ |c.unit u|) c.nbhd := c.hunit_cont.abs
+  have hum_meas : Measurable um := by
+    apply measurable_of_isOpen
+    intro t ht
+    obtain ⟨v, v_open, hv⟩ : ∃ v : Set (Fin D → ℝ), IsOpen v ∧
+        (fun u ↦ |c.unit u|) ⁻¹' t ∩ c.nbhd = v ∩ c.nbhd :=
+      continuousOn_iff'.1 hcabsOn t ht
+    rw [hum, Set.piecewise_preimage, Set.ite, hv]
+    exact (v_open.measurableSet.inter c.hnbhd_open.measurableSet).union
+      ((measurable_const ht.measurableSet).diff c.hnbhd_open.measurableSet)
+  have hum_ev : um =ᶠ[𝓝 0] fun u ↦ |c.unit u| := by
+    filter_upwards [hnbhd_mem] with u hu using hum_eq u hu
+  have hum_cont : ContinuousAt um 0 :=
+    ((c.hunit_cont.continuousAt hnbhd_mem).abs).congr hum_ev.symm
+  have hum0 : um 0 ≠ 0 := by
+    rw [hum_eq 0 h0nbhd]; exact abs_ne_zero.mpr (c.hunit_ne 0 h0nbhd)
+  -- the Jacobian certificate, in the `W = jacWeight jac · um` form Object C consumes
+  have hW_eq : ∀ᶠ u in 𝓝 (0 : Fin D → ℝ),
+      c.jacWeightFn u = jacWeight c.jac u * um u := by
+    filter_upwards [hnbhd_mem] with u hu
+    show |jacDet c.g u| = jacWeight c.jac u * um u
+    rw [c.hjac u hu, hum_eq u hu]
+  -- assemble: value invariance ∘ Object C's boxed rule
+  rw [Chart.chartMin, hval]
+  exact monomialSumSq_two_mul_wrlctAt_eq_min c.hchain c.hbind c.hunit_mult
+    hum_cont hum0 hum_meas hW_eq
 
 /-- **Object B — the resolution value `2·rlctAt (∑Fᵢ²) x₀ = divisorMin` (min over charts).** Wired:
 the min-over-charts CoV (`rlctAt_sumSqFam_eq_iInf_charts`, frontier leaf) followed by the per-chart
@@ -203,7 +325,17 @@ theorem Resolution.two_mul_rlctAt_eq_divisorMin {F : Fin M → (Fin D → ℝ) �
     (res : Resolution F x₀) :
     2 * rlctAt (sumSqFam F) x₀ = res.divisorMin := by
   -- map: B-value (min-over-charts CoV ∘ per-chart value); 2·min = min of 2·(each)
-  sorry
+  rw [rlctAt_sumSqFam_eq_iInf_charts res, Resolution.divisorMin]
+  -- `2·min` distributes over the atlas `inf'` (`2 ≥ 0` monotone), then each chart's per-chart value.
+  have hg : ∀ x y : ℝ, 2 * (x ⊓ y) = 2 * x ⊓ 2 * y := by
+    intro x y
+    rcases le_total x y with hxy | hxy
+    · rw [inf_of_le_left hxy, inf_of_le_left (by linarith : 2 * x ≤ 2 * y)]
+    · rw [inf_of_le_right hxy, inf_of_le_right (by linarith : 2 * y ≤ 2 * x)]
+  rw [Finset.comp_inf'_eq_inf'_comp res.hne (fun x : ℝ ↦ 2 * x) hg]
+  refine Finset.inf'_congr res.hne rfl (fun c _ ↦ ?_)
+  simp only [Function.comp_apply]
+  exact (res.charts c).two_mul_wrlctAt_eq_chartMin
 
 /-! ## The negative-example guard (v2 defect 1), a provable arithmetic obstruction
 
@@ -219,13 +351,47 @@ the punctured neighbourhood the identity forces `w u = 3|u₀||u₁|`, whose lim
 contradicting `w 0 ≠ 0` by continuity. So a `Chart` for the coupled chart `(u₀u₁², u₀²u₁)` cannot
 carry the false axis exponent `jac = ![1,1]` — the certificate pins the honest `![2,2]`. The
 statement is TRUE (a `tendsto`/continuity argument); left as a `sorry` leaf here (guard, not on the
-value path). -/
-@[blueprint]
+value path). LANDED sorry-free (aoyagi-engine, SEAT-B). -/
 theorem no_unit_forces_axis_jac_coupled :
     ¬ ∃ w : (Fin 2 → ℝ) → ℝ, ContinuousAt w 0 ∧ w 0 ≠ 0 ∧
       (∀ᶠ u in 𝓝 (0 : Fin 2 → ℝ),
         3 * jacWeight (D := 2) ![2, 2] u = jacWeight ![1, 1] u * w u) := by
   -- map: B-negative-guard (the Jacobian certificate forbids v2's false axis exponent; tendsto arg)
-  sorry
+  rintro ⟨w, hwc, hw0, hev⟩
+  -- The diagonal curve `γ t = (t, t)` sends `0 ↦ 0`, continuously.
+  set γ : ℝ → (Fin 2 → ℝ) := fun t ↦ fun _ ↦ t with hγ
+  have hγ0 : γ 0 = 0 := by funext i; simp [hγ]
+  have hγc : Continuous γ := by
+    rw [hγ]; exact continuous_pi (fun _ ↦ continuous_id)
+  have hγtend : Filter.Tendsto γ (𝓝 (0 : ℝ)) (𝓝 (0 : Fin 2 → ℝ)) :=
+    hγc.tendsto' 0 0 hγ0
+  -- Pull the eventual identity back along the curve.
+  have hevγ : ∀ᶠ t in 𝓝 (0 : ℝ),
+      3 * jacWeight (D := 2) ![2, 2] (γ t) = jacWeight ![1, 1] (γ t) * w (γ t) :=
+    hγtend.eventually hev
+  -- On the punctured neighbourhood, `t ≠ 0`, so the identity solves to `w (γ t) = 3 t²`.
+  have hkey : (fun t ↦ w (γ t)) =ᶠ[𝓝[≠] (0 : ℝ)] fun t ↦ 3 * t ^ 2 := by
+    have hne : ∀ᶠ t in 𝓝[≠] (0 : ℝ), t ≠ 0 := self_mem_nhdsWithin
+    filter_upwards [hevγ.filter_mono nhdsWithin_le_nhds, hne] with t hid ht
+    -- evaluate the two monomials on the curve
+    have h22 : jacWeight (D := 2) ![2, 2] (γ t) = t ^ 2 * t ^ 2 := by
+      simp [jacWeight, Fin.prod_univ_two, hγ, sq_abs]
+    have h11 : jacWeight (D := 2) ![1, 1] (γ t) = t * t := by
+      simp [jacWeight, Fin.prod_univ_two, hγ, pow_one, abs_mul_abs_self]
+    rw [h22, h11] at hid
+    have htt : t * t ≠ 0 := mul_ne_zero ht ht
+    -- `3·t²·t² = (t·t)·w`, cancel the nonzero `t·t`
+    have hstep : t * t * w (γ t) = t * t * (3 * t ^ 2) := by linear_combination -hid
+    exact mul_left_cancel₀ htt hstep
+  -- limit uniqueness: `w ∘ γ → w 0` (continuity) and `w ∘ γ → 0` (the `3t²` germ) on `𝓝[≠] 0`.
+  have hlim1 : Filter.Tendsto (fun t ↦ w (γ t)) (𝓝[≠] (0 : ℝ)) (𝓝 (w 0)) :=
+    hwc.tendsto.comp (hγtend.mono_left nhdsWithin_le_nhds)
+  have hlim2 : Filter.Tendsto (fun t ↦ w (γ t)) (𝓝[≠] (0 : ℝ)) (𝓝 0) := by
+    have hpoly : Filter.Tendsto (fun t : ℝ ↦ 3 * t ^ 2) (𝓝[≠] 0) (𝓝 0) := by
+      have h : Filter.Tendsto (fun t : ℝ ↦ 3 * t ^ 2) (𝓝 0) (𝓝 0) := by
+        simpa using (continuous_const.mul (continuous_pow 2)).tendsto (0 : ℝ)
+      exact h.mono_left nhdsWithin_le_nhds
+    exact hpoly.congr' hkey.symm
+  exact hw0 (tendsto_nhds_unique hlim1 hlim2)
 
 end DLNFibre.Core.Aoyagi
