@@ -1314,15 +1314,21 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.Core.Aoyagi.exists_unit_sumSqFam_monomial,
   DLNFibre.Core.Aoyagi.monomialSumSq_wrlctAt_eq,
   DLNFibre.Core.Aoyagi.monomialSumSq_two_mul_wrlctAt_eq_min,
--- ★ OBJECT B — the product-ideal resolution (aoyagi-engine, SEAT-B). The two per-chart leaves whose
--- cones are self-contained (sorry-free): the per-chart value `Chart.two_mul_wrlctAt_eq_chartMin`
--- (Object-A weighted set-eq ∘ Object-C boxed rule, per chart) and the negative guard
--- `no_unit_forces_axis_jac_coupled` (a `tendsto`/continuity obstruction). Both CLEAN-THREE
--- [propext, Classical.choice, Quot.sound], S2-FREE, no `sorryAx`. The atlas CoV
--- `rlctAt_sumSqFam_eq_iInf_charts` + its consumers (`Resolution.two_mul_rlctAt_eq_divisorMin`,
--- `_eq_cCodim`) remain live-frontier (carry `sorryAx` from the CoV leaf), so are NOT gated here.
+-- ★ OBJECT B — the product-ideal resolution (aoyagi-engine, SEAT-B + monument seat). The per-chart
+-- value `Chart.two_mul_wrlctAt_eq_chartMin` (Object-A weighted set-eq ∘ Object-C boxed rule, per
+-- chart) and the negative guard `no_unit_forces_axis_jac_coupled` (a `tendsto`/continuity
+-- obstruction). The atlas change-of-variables `rlctAt_sumSqFam_eq_iInf_charts` (MONUMENT: InjOn-off-
+-- null area formula ∘ off-origin Object-C convergence ∘ compact finite subcover) is now LANDED, so
+-- its consumers `Resolution.two_mul_rlctAt_eq_divisorMin`, `divisorMin_eq_cCodim`, and the engine
+-- value headline `two_mul_rlctAt_eq_cCodim` are all CLEAN-THREE [propext, Classical.choice,
+-- Quot.sound], S2-FREE, no `sorryAx` — gated here. (`res` and the QIP min-attainment are hypotheses,
+-- not `exists_coreResolution`, so the value chain never touches the resolution-existence monument.)
   DLNFibre.Core.Aoyagi.Chart.two_mul_wrlctAt_eq_chartMin,
   DLNFibre.Core.Aoyagi.no_unit_forces_axis_jac_coupled,
+  DLNFibre.Core.Aoyagi.rlctAt_sumSqFam_eq_iInf_charts,
+  DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_divisorMin,
+  DLNFibre.Core.Aoyagi.Resolution.divisorMin_eq_cCodim,
+  DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_cCodim,
 -- Aoyagi ENGINE corollary — the SEAT-BRIDGE (lane-4) reduction leaves. `coreReduction`
 -- (`rlctGlobal (lossDLN d 0) = rlctAt (∑coreGenᵢ²) 0`, the deepest-point ∘ flatten ∘ homeo-invariance
 -- reduction), `exists_flatten` (the LINEAR m.p. origin-fixing homeomorphic flatten), and the Frobenius
@@ -1340,13 +1346,16 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 #print axioms DLNFibre.DLN.RLCT.headSplit_domination
 #print axioms DLNFibre.DLN.RLCT.deeperFlag_spineToCore
 #print axioms DLNFibre.DLN.RLCT.deeperFlag_shell_le
--- Aoyagi-ENGINE summit (SEAT-B): the value-via-engine headline + the atlas-value consumers. Carry
--- `sorryAx` from exactly the two remaining Object-B monuments — the atlas CoV
--- `rlctAt_sumSqFam_eq_iInf_charts` and the resolution existence `exists_coreResolution`; the DLN cites
--- (`cited_aoyagi_lower_ax`/`cited_watanabe_upper_ax`) are NOT invoked (the kill-path). Each landed leaf
--- shrinks this cone; the summit goes clean-three the day both monuments land.
+-- Aoyagi-ENGINE summit (SEAT-B + monument seat): the value-via-engine headline. With the atlas CoV
+-- `rlctAt_sumSqFam_eq_iInf_charts` now LANDED (gated in the batch above), the summit carries `sorryAx`
+-- from EXACTLY ONE remaining Object-B monument — the resolution existence `exists_coreResolution`; the
+-- DLN cites (`cited_aoyagi_lower_ax`/`cited_watanabe_upper_ax`) are NOT invoked (the kill-path). The
+-- summit goes clean-three the day `exists_coreResolution` lands.
 #print axioms DLNFibre.DLN.Aoyagi.aoyagi_learning_coefficient_via_engine
+<<<<<<< HEAD
 #print axioms DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_divisorMin
+=======
+>>>>>>> 137066277
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
 
 -- Payoff DELIVERABLES — individual clean-three footprints preserved (also asserted in the

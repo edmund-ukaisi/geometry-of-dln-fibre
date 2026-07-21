@@ -1,6 +1,7 @@
 import DLNFibre.Core.Aoyagi.IdealInvariance
 import DLNFibre.Core.Aoyagi.MonomialRLCT
 import DLNFibre.Core.Aoyagi.Waypoint
+import DLNFibre.Core.Aoyagi.AreaFormula
 import Mathlib.Analysis.Analytic.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Analytic
@@ -154,36 +155,11 @@ noncomputable def Resolution.divisorMin {F : Fin M → (Fin D → ℝ) → ℝ} 
     (res : Resolution F x₀) : ℝ :=
   Finset.univ.inf' res.hne (fun c ↦ (res.charts c).chartMin)
 
-/-! ## The change-of-variables (min over charts) and the value (WIRED, one named analytic leaf) -/
+/-! ## The change-of-variables (min over charts) and the value
 
-/-- **FRONTIER leaf — the proper-map change-of-variables for the RLCT, MIN OVER CHARTS.** For the
-certified atlas, `rlctAt (∑Fᵢ²) x₀ = min_c wrlctAt |det Dg_c| (∑(Fᵢ∘g_c)²) 0`. The substitution
-`∫ K^(-c) = ∑_c ∫_{dom c} (K∘g_c)^(-c) |det Dg_c|` (Aoyagi's proper CoV, worked.tex:173–177) splits
-over the covering atlas (`hcover` over the compact `dom`, the localized no-escape content), so the
-local threshold at `x₀` is the minimum of the per-chart weighted thresholds at their origins
-(worked.tex:178, the `min over charts`). The named residual: the pushforward integrability and the
-partition of the neighbourhood over the atlas' compact domains. A single chart gives only `≤`. -/
-@[blueprint]
-theorem rlctAt_sumSqFam_eq_iInf_charts {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
-    (res : Resolution F x₀) :
-    rlctAt (sumSqFam F) x₀
-      = Finset.univ.inf' res.hne
-          (fun c ↦ wrlctAt (res.charts c).jacWeightFn
-            (sumSqFam (fun i ↦ F i ∘ (res.charts c).g)) 0) := by
-  -- map: B-cov (proper-map change-of-variables; MIN over the covering atlas, worked.tex:173-178,488)
-  sorry
-
-/-- **STRIKE-ABLE — one chart gives an upper bound.** For any single chart, `rlctAt (∑Fᵢ²) x₀ ≤
-wrlctAt |det Dg_c| (∑(Fᵢ∘g_c)²) 0`: a change-of-variables on one chart's image bounds the local
-threshold above (the chart need not be the binding one). The always-valid direction, from the
-min-over-charts equality (`Finset.inf'_le`). -/
-@[blueprint]
-theorem rlctAt_sumSqFam_le_chart {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
-    (res : Resolution F x₀) (c : Fin res.numCharts) :
-    rlctAt (sumSqFam F) x₀
-      ≤ wrlctAt (res.charts c).jacWeightFn (sumSqFam (fun i ↦ F i ∘ (res.charts c).g)) 0 := by
-  rw [rlctAt_sumSqFam_eq_iInf_charts res]
-  exact Finset.inf'_le _ (Finset.mem_univ c)
+The atlas change-of-variables `rlctAt_sumSqFam_eq_iInf_charts` and the always-valid single-chart
+bound `rlctAt_sumSqFam_le_chart` are proven **below** (`## The atlas change-of-variables …`), after
+the per-chart set form and the two CoV legs they ride. -/
 
 /-! ### Shared discharge helpers for the per-chart value (leaf 1) -/
 
@@ -315,12 +291,302 @@ theorem Chart.two_mul_wrlctAt_eq_chartMin {F : Fin M → (Fin D → ℝ) → ℝ
   exact monomialSumSq_two_mul_wrlctAt_eq_min c.hchain c.hbind c.hunit_mult
     hum_cont hum0 hum_meas hW_eq
 
+/-! ### Per-chart set form and per-point machinery (the atlas CoV substrate) -/
+
+/-- The chart's Jacobian weight `|det Dg|` factors as `jacWeight jac · unit` on a neighbourhood of any
+`p ∈ nbhd`, with the (measurably extended) `|unit|` continuous and nonzero at `p`. The dom-wide
+`hjac` certificate, packaged in the `jacWeight · unit` form Object C consumes, at an arbitrary base
+point of the region (not just the origin). -/
+theorem Chart.jacWeight_form_at {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) {p : Fin D → ℝ} (hp : p ∈ c.nbhd) :
+    ∃ unit : (Fin D → ℝ) → ℝ, ContinuousAt unit p ∧ unit p ≠ 0 ∧ Measurable unit ∧
+      ∀ᶠ u in 𝓝 p, c.jacWeightFn u = jacWeight c.jac u * unit u := by
+  classical
+  have hnbhd_mem : c.nbhd ∈ 𝓝 p := c.hnbhd_open.mem_nhds hp
+  set um : (Fin D → ℝ) → ℝ := Set.piecewise c.nbhd (fun u ↦ |c.unit u|) (fun _ ↦ 1) with hum
+  have hum_eq : ∀ u ∈ c.nbhd, um u = |c.unit u| :=
+    fun u hu ↦ Set.piecewise_eq_of_mem _ _ _ hu
+  have hcabsOn : ContinuousOn (fun u ↦ |c.unit u|) c.nbhd := c.hunit_cont.abs
+  have hum_meas : Measurable um := by
+    apply measurable_of_isOpen
+    intro t ht
+    obtain ⟨v, v_open, hv⟩ : ∃ v : Set (Fin D → ℝ), IsOpen v ∧
+        (fun u ↦ |c.unit u|) ⁻¹' t ∩ c.nbhd = v ∩ c.nbhd :=
+      continuousOn_iff'.1 hcabsOn t ht
+    rw [hum, Set.piecewise_preimage, Set.ite, hv]
+    exact (v_open.measurableSet.inter c.hnbhd_open.measurableSet).union
+      ((measurable_const ht.measurableSet).diff c.hnbhd_open.measurableSet)
+  refine ⟨um, ?_, ?_, hum_meas, ?_⟩
+  · have hum_ev : um =ᶠ[𝓝 p] fun u ↦ |c.unit u| := by
+      filter_upwards [hnbhd_mem] with u hu using hum_eq u hu
+    exact ((c.hunit_cont.continuousAt hnbhd_mem).abs).congr hum_ev.symm
+  · rw [hum_eq p hp]; exact abs_ne_zero.mpr (c.hunit_ne p hp)
+  · filter_upwards [hnbhd_mem] with u hu
+    show |jacDet c.g u| = jacWeight c.jac u * um u
+    rw [c.hjac u hu, hum_eq u hu]
+
+/-- **Object A at a base point of the region.** The weighted admissible sets of the pulled-back loss
+`∑ (Fᵢ∘g)²` and of the diagonal monomial sum `∑ bₖ²` coincide at any `p ∈ nbhd` — the germ ideals
+agree there (`RegionRepresents` both ways, via `germRepresents_of_isOpen`), and the junk-`0` guards
+discharge as in the origin case (the polynomial-zero-set nullity). Legalises replacing the loss by
+its monomial normal form pointwise across the chart domain. -/
+theorem Chart.wLocalAdmissible_swap {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) {p : Fin D → ℝ} (hp : p ∈ c.nbhd) :
+    wLocalAdmissibleExponents c.jacWeightFn (sumSqFam (fun i ↦ F i ∘ c.g)) p
+      = wLocalAdmissibleExponents c.jacWeightFn (sumSqFam (monomialFam c.bexp)) p := by
+  have hnbhd_mem : c.nbhd ∈ 𝓝 p := c.hnbhd_open.mem_nhds hp
+  have hWmeas : Measurable c.jacWeightFn := c.continuous_jacWeightFn.measurable
+  have hMmeas : ∀ j, Measurable (monomialFam c.bexp j) := by
+    intro j; unfold monomialFam; fun_prop
+  have hGmeas : ∀ i, Measurable (fun u ↦ (F i ∘ c.g) u) :=
+    fun i ↦ (c.hFmeas i).comp c.hg_cont.measurable
+  have hWnn : ∀ᶠ w in 𝓝 p, 0 ≤ c.jacWeightFn w :=
+    Filter.Eventually.of_forall (fun w ↦ abs_nonneg _)
+  have hGF : GermRepresents (fun i ↦ F i ∘ c.g) (monomialFam c.bexp) p :=
+    c.hideal_fwd.germRepresents_of_isOpen c.hnbhd_open hp
+  have hFG : GermRepresents (monomialFam c.bexp) (fun i ↦ F i ∘ c.g) p :=
+    c.hideal_bwd.germRepresents_of_isOpen c.hnbhd_open hp
+  have hFnull : LocallyNullZeros (sumSqFam (monomialFam c.bexp)) p :=
+    locallyNullZeros_sumSqFam_monomialFam c.bexp c.k₀ p
+  have hGnull : LocallyNullZeros (sumSqFam (fun i ↦ F i ∘ c.g)) p := by
+    obtain ⟨a, _hacont, harep⟩ := c.hideal_bwd
+    refine ⟨c.nbhd, hnbhd_mem, measure_mono_null ?_ (volume_monomialFam_zeroSet c.bexp c.k₀)⟩
+    intro u hu
+    have hu0 : u ∈ {w | sumSqFam (fun i ↦ F i ∘ c.g) w = 0} := hu.1
+    have hall : ∀ i, (F i ∘ c.g) u = 0 :=
+      fun i ↦ sumSqFam_zeroSet_subset (fun i ↦ F i ∘ c.g) i hu0
+    show monomialFam c.bexp c.k₀ u = 0
+    rw [harep u hu.2 c.k₀]
+    refine Finset.sum_eq_zero (fun i _ ↦ ?_)
+    show a c.k₀ i u * (F i ∘ c.g) u = 0
+    rw [hall i, mul_zero]
+  exact wLocalAdmissibleExponents_sumSqFam_eq_of_germ_eq hWmeas hMmeas hGmeas hWnn hGnull hFnull
+    hGF hFG
+
+/-- **Per-chart set form.** The chart's weighted admissible set at the origin is exactly `[0, T)`,
+`T` its boxed threshold: Object-A-at-`0` swaps the loss for its monomial normal form, and the origin
+S2 rule (`monomialSumSq_wLocalAdmissible_eq`) reads off the `Ico`. -/
+theorem Chart.wLocalAdmissibleExponents_eq_Ico {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) :
+    wLocalAdmissibleExponents c.jacWeightFn (sumSqFam (fun i ↦ F i ∘ c.g)) 0
+      = Set.Ico 0 (monomialThreshold (c.bexp c.k₀) c.jac c.hbind) := by
+  have h0 : (0 : Fin D → ℝ) ∈ c.nbhd := c.hdom_sub c.hdom_zero
+  obtain ⟨unit, hunit_cont, hunit0, hunitmeas, hW⟩ := c.jacWeight_form_at h0
+  rw [c.wLocalAdmissible_swap h0]
+  exact monomialSumSq_wLocalAdmissible_eq c.hchain c.hbind hunit_cont hunit0 hunitmeas hW
+
+/-- The chart's weighted RLCT is its boxed threshold `T` (`sSup [0,T) = T`, `T > 0`). -/
+theorem Chart.wrlctAt_eq_threshold {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) :
+    wrlctAt c.jacWeightFn (sumSqFam (fun i ↦ F i ∘ c.g)) 0
+      = monomialThreshold (c.bexp c.k₀) c.jac c.hbind := by
+  unfold wrlctAt
+  rw [c.wLocalAdmissibleExponents_eq_Ico, csSup_Ico (monomialThreshold_pos _ _ _)]
+
+/-- **Per-point convergence (the `≥`-leg input).** At any `p ∈ nbhd`, an exponent below the chart's
+boxed threshold `T` is weighted-admissible for the pulled-back loss: Object-A-at-`p` reduces to the
+monomial normal form, and the off-origin convergence engine
+(`monomialSumSq_integrableAtFilter_of_lt`) handles the base point `p` (worst singularity at `0`, so
+`c < T` suffices everywhere). -/
+theorem Chart.integrableAtFilter_of_lt {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) {p : Fin D → ℝ} (hp : p ∈ c.nbhd) {cc : ℝ}
+    (hlt : cc < monomialThreshold (c.bexp c.k₀) c.jac c.hbind) (hc0 : 0 ≤ cc) :
+    IntegrableAtFilter (fun u ↦ c.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ c.g)) cc u)
+      (𝓝 p) := by
+  obtain ⟨unit, hunit_cont, hunit0, hunitmeas, hW⟩ := c.jacWeight_form_at hp
+  have hβ := (monomial_forall_neg_one_lt_iff_lt_threshold c.bexp c.jac c.k₀ c.hbind cc).mpr hlt
+  have hP2 : IntegrableAtFilter
+      (fun u ↦ c.jacWeightFn u * negPow (sumSqFam (monomialFam c.bexp)) cc u) (𝓝 p) :=
+    monomialSumSq_integrableAtFilter_of_lt c.hchain hβ hunit_cont hunit0 hunitmeas hW
+  have hmem : cc ∈ wLocalAdmissibleExponents c.jacWeightFn (sumSqFam (monomialFam c.bexp)) p :=
+    ⟨hc0, hP2⟩
+  have hmem' : cc ∈ wLocalAdmissibleExponents c.jacWeightFn (sumSqFam (fun i ↦ F i ∘ c.g)) p := by
+    rw [c.wLocalAdmissible_swap hp]; exact hmem
+  exact hmem'.2
+
+/-- **The per-chart `≤` leg (single-chart change-of-variables).** Every exponent locally admissible
+for the loss at `x₀` is weighted-admissible for the pulled-back loss at the chart origin: a small
+source ball `s ⊆ g⁻¹ s₀ ∩ nbhd` has `g '' s ⊆ s₀`, and the InjOn-off-null area formula
+(`AreaFormula`) turns `∫_s |det Dg|·(K∘g)^(-c)` into `∫_{g '' s} K^(-c) ≤ ∫_{s₀} K^(-c) < ∞`. -/
+theorem Chart.mem_wLocalAdmissible_of_localAdmissible {F : Fin M → (Fin D → ℝ) → ℝ}
+    {x₀ : Fin D → ℝ} (c : Chart F x₀) {cc : ℝ}
+    (hmem : cc ∈ localAdmissibleExponents (sumSqFam F) x₀) :
+    cc ∈ wLocalAdmissibleExponents c.jacWeightFn (sumSqFam (fun i ↦ F i ∘ c.g)) 0 := by
+  obtain ⟨hc0, s₀, hs₀mem, hs₀int⟩ := hmem
+  refine ⟨hc0, ?_⟩
+  have hnbhd0 : c.nbhd ∈ 𝓝 (0 : Fin D → ℝ) := c.hnbhd_open.mem_nhds (c.hdom_sub c.hdom_zero)
+  have hg0mem : c.g ⁻¹' s₀ ∈ 𝓝 (0 : Fin D → ℝ) :=
+    (c.hg_cont.continuousAt).preimage_mem_nhds (show s₀ ∈ 𝓝 (c.g 0) by rw [c.hg0]; exact hs₀mem)
+  obtain ⟨ε, hε, hεsub⟩ := Metric.mem_nhds_iff.1 (Filter.inter_mem hg0mem hnbhd0)
+  set s := Metric.ball (0 : Fin D → ℝ) ε with hsdef
+  have hsmeas : MeasurableSet s := measurableSet_ball
+  have hgs_sub : c.g '' s ⊆ s₀ := by
+    rintro y ⟨u, hu, rfl⟩; exact (hεsub hu).1
+  have hs_nbhd : s ⊆ c.nbhd := fun u hu ↦ (hεsub hu).2
+  have hgdiff : Differentiable ℝ c.g := differentiableOn_univ.mp c.hg_analytic.differentiableOn
+  have hg_inj_s : Set.InjOn c.g (s \ c.excep) :=
+    c.hg_inj.mono (Set.diff_subset_diff_left hs_nbhd)
+  have hInt_meas :
+      Measurable (fun u ↦ c.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ c.g)) cc u) := by
+    have h2 : Measurable (sumSqFam (fun i ↦ F i ∘ c.g)) := by
+      unfold sumSqFam
+      exact Finset.measurable_sum _ (fun i _ ↦ ((c.hFmeas i).comp c.hg_cont.measurable).pow_const 2)
+    exact c.continuous_jacWeightFn.measurable.mul (measurable_negPow h2 cc)
+  have hInt_nonneg :
+      ∀ u, 0 ≤ c.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ c.g)) cc u :=
+    fun u ↦ mul_nonneg (abs_nonneg _) (negPow_nonneg (sumSqFam_nonneg _ _) cc)
+  -- convert the source integrand to the image integrand via the area formula.
+  have hpt : ∀ u, ENNReal.ofReal (c.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ c.g)) cc u)
+      = ENNReal.ofReal |(fderiv ℝ c.g u).det|
+        * ENNReal.ofReal (negPow (sumSqFam F) cc (c.g u)) := by
+    intro u
+    rw [show c.jacWeightFn u = |(fderiv ℝ c.g u).det| from rfl,
+      show negPow (sumSqFam (fun i ↦ F i ∘ c.g)) cc u = negPow (sumSqFam F) cc (c.g u) from by
+        simp only [negPow_apply, sumSqFam, Function.comp_apply],
+      ENNReal.ofReal_mul (abs_nonneg _)]
+  have key : (∫⁻ u in s, ENNReal.ofReal
+        (c.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ c.g)) cc u))
+      = ∫⁻ x in c.g '' s, ENNReal.ofReal (negPow (sumSqFam F) cc x) := by
+    simp_rw [hpt]
+    rw [← lintegral_image_eq_lintegral_abs_det_fderiv_mul_of_injOn_off_null volume hsmeas hgdiff
+        c.hexcep_meas c.hexcep_null hg_inj_s (fun x ↦ ENNReal.ofReal (negPow (sumSqFam F) cc x))]
+  have hfin : (∫⁻ u in s, ENNReal.ofReal
+        (c.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ c.g)) cc u)) < ⊤ := by
+    rw [key]
+    calc ∫⁻ x in c.g '' s, ENNReal.ofReal (negPow (sumSqFam F) cc x)
+        ≤ ∫⁻ x in s₀, ENNReal.ofReal (negPow (sumSqFam F) cc x) := lintegral_mono_set hgs_sub
+      _ < ⊤ := hs₀int.setLIntegral_lt_top
+  exact ⟨s, Metric.ball_mem_nhds 0 hε, hInt_meas.aestronglyMeasurable,
+    (hasFiniteIntegral_iff_ofReal (ae_of_all _ hInt_nonneg)).mpr hfin⟩
+
+/-! ## The atlas change-of-variables (min over charts) — the landed leaf -/
+
+/-- **The atlas `≥` leg.** If `cc` is below every chart's boxed threshold, it is locally admissible
+for the loss at `x₀`. Each chart's compact domain is integrable (per-point local integrability from
+`Chart.integrableAtFilter_of_lt` + `LocallyIntegrableOn.integrableOn_isCompact`); the InjOn-off-null
+area formula pushes each `∫_{dom_c} |det Dg_c|·(K∘g_c)^(-c)` down to `∫_{g_c '' dom_c} K^(-c)`; and
+the a.e.-cover `hcover` (subadditivity over the finite atlas union, no injectivity across charts)
+transfers integrability onto a neighbourhood `U` of `x₀`. -/
+theorem Resolution.mem_localAdmissible_of_lt {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (res : Resolution F x₀) {cc : ℝ} (hc0 : 0 ≤ cc)
+    (hlt : ∀ c, cc < monomialThreshold ((res.charts c).bexp (res.charts c).k₀)
+      (res.charts c).jac (res.charts c).hbind) :
+    cc ∈ localAdmissibleExponents (sumSqFam F) x₀ := by
+  refine ⟨hc0, ?_⟩
+  -- each chart's image is integrable, via the area formula from the compact-domain integrability.
+  have step1 : ∀ c, IntegrableOn (negPow (sumSqFam F) cc)
+      ((res.charts c).g '' (res.charts c).dom) := by
+    intro c
+    set cc' := res.charts c with hcc'
+    have hgdiff : Differentiable ℝ cc'.g := differentiableOn_univ.mp cc'.hg_analytic.differentiableOn
+    have hdommeas : MeasurableSet cc'.dom := cc'.hdom_compact.measurableSet
+    have hg_inj_dom : Set.InjOn cc'.g (cc'.dom \ cc'.excep) :=
+      cc'.hg_inj.mono (Set.diff_subset_diff_left cc'.hdom_sub)
+    -- compact-domain integrability of the pulled-back weighted loss.
+    have hdom_int : IntegrableOn
+        (fun u ↦ cc'.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ cc'.g)) cc u) cc'.dom := by
+      apply LocallyIntegrableOn.integrableOn_isCompact ?_ cc'.hdom_compact
+      intro p hp
+      exact IntegrableAtFilter.filter_mono nhdsWithin_le_nhds
+        (cc'.integrableAtFilter_of_lt (cc'.hdom_sub hp) (hlt c) hc0)
+    -- push down through the area formula, get a finite image lintegral.
+    have hpt : ∀ u, ENNReal.ofReal |(fderiv ℝ cc'.g u).det|
+          * ENNReal.ofReal (negPow (sumSqFam F) cc (cc'.g u))
+        = ENNReal.ofReal (cc'.jacWeightFn u * negPow (sumSqFam (fun i ↦ F i ∘ cc'.g)) cc u) := by
+      intro u
+      rw [show cc'.jacWeightFn u = |(fderiv ℝ cc'.g u).det| from rfl,
+        show negPow (sumSqFam (fun i ↦ F i ∘ cc'.g)) cc u = negPow (sumSqFam F) cc (cc'.g u) from by
+          simp only [negPow_apply, sumSqFam, Function.comp_apply],
+        ENNReal.ofReal_mul (abs_nonneg _)]
+    have hfin : ∫⁻ x in cc'.g '' cc'.dom, ENNReal.ofReal (negPow (sumSqFam F) cc x) < ⊤ := by
+      rw [lintegral_image_eq_lintegral_abs_det_fderiv_mul_of_injOn_off_null volume hdommeas hgdiff
+        cc'.hexcep_meas cc'.hexcep_null hg_inj_dom
+        (fun x ↦ ENNReal.ofReal (negPow (sumSqFam F) cc x))]
+      simp_rw [hpt]
+      exact hdom_int.setLIntegral_lt_top
+    have hKmeas : Measurable (sumSqFam F) := by
+      unfold sumSqFam
+      exact Finset.measurable_sum _ (fun i _ ↦ (cc'.hFmeas i).pow_const 2)
+    have hnn : ∀ x, 0 ≤ negPow (sumSqFam F) cc x :=
+      fun x ↦ negPow_nonneg (sumSqFam_nonneg _ _) cc
+    exact ⟨(measurable_negPow hKmeas cc).aestronglyMeasurable,
+      (hasFiniteIntegral_iff_ofReal (ae_of_all _ hnn)).mpr hfin⟩
+  -- assemble over the finite atlas union and transfer onto `U` via `hcover`.
+  set uc : Set (Fin D → ℝ) := ⋃ c, (res.charts c).g '' (res.charts c).dom with hucdef
+  have hunion : IntegrableOn (negPow (sumSqFam F) cc) uc :=
+    integrableOn_finite_iUnion.mpr step1
+  set Uc : Set (Fin D → ℝ) := res.U ∩ uc with hUcdef
+  have hUeq : res.U =ᵐ[volume] Uc := by
+    rw [ae_eq_set]
+    refine ⟨measure_mono_null ?_ res.hcover, measure_mono_null ?_ (measure_empty (μ := volume))⟩
+    · intro x hx
+      refine ⟨hx.1, fun hxuc ↦ hx.2 ?_⟩
+      rw [hUcdef]; exact Set.mem_inter hx.1 hxuc
+    · intro x hx
+      have hxUc : x ∈ Uc := hx.1
+      rw [hUcdef] at hxUc
+      exact absurd hxUc.1 hx.2
+  have hUcint : IntegrableOn (negPow (sumSqFam F) cc) Uc := by
+    rw [hUcdef]; exact hunion.mono_set Set.inter_subset_right
+  exact ⟨res.U, res.hU, hUcint.congr_set_ae hUeq⟩
+
+/-- **The atlas change-of-variables (min over charts) — LANDED.** For the certified atlas,
+`rlctAt (∑Fᵢ²) x₀ = min_c wrlctAt |det Dg_c| (∑(Fᵢ∘g_c)²) 0`. The local admissible set at `x₀` equals
+`[0, R)` with `R = min_c T_c` the atlas minimum of the per-chart boxed thresholds: the `≤` leg
+(`Chart.mem_wLocalAdmissible_of_localAdmissible`) shows admissibility at `x₀` forces `cc < T_c` in
+every chart; the `≥` leg (`Resolution.mem_localAdmissible_of_lt`) shows `cc < R` is admissible. Then
+`rlctAt = sSup [0, R) = R` and each `wrlctAt_c = T_c`, so the `inf'` is `R` (worked.tex:178, the
+`min over charts`). -/
+theorem rlctAt_sumSqFam_eq_iInf_charts {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (res : Resolution F x₀) :
+    rlctAt (sumSqFam F) x₀
+      = Finset.univ.inf' res.hne
+          (fun c ↦ wrlctAt (res.charts c).jacWeightFn
+            (sumSqFam (fun i ↦ F i ∘ (res.charts c).g)) 0) := by
+  have hval : ∀ c, wrlctAt (res.charts c).jacWeightFn
+        (sumSqFam (fun i ↦ F i ∘ (res.charts c).g)) 0
+      = monomialThreshold ((res.charts c).bexp (res.charts c).k₀)
+          (res.charts c).jac (res.charts c).hbind :=
+    fun c ↦ (res.charts c).wrlctAt_eq_threshold
+  rw [Finset.inf'_congr res.hne rfl (fun c _ ↦ hval c)]
+  set R := Finset.univ.inf' res.hne
+    (fun c ↦ monomialThreshold ((res.charts c).bexp (res.charts c).k₀)
+      (res.charts c).jac (res.charts c).hbind) with hRdef
+  have hRpos : 0 < R := by
+    rw [hRdef, Finset.lt_inf'_iff]; exact fun c _ ↦ monomialThreshold_pos _ _ _
+  have hset : localAdmissibleExponents (sumSqFam F) x₀ = Set.Ico 0 R := by
+    ext cc
+    constructor
+    · intro hmem
+      rw [Set.mem_Ico]
+      refine ⟨hmem.1, ?_⟩
+      rw [hRdef, Finset.lt_inf'_iff]
+      intro c _
+      have hmemc := (res.charts c).mem_wLocalAdmissible_of_localAdmissible hmem
+      rw [(res.charts c).wLocalAdmissibleExponents_eq_Ico, Set.mem_Ico] at hmemc
+      exact hmemc.2
+    · intro hmem
+      rw [Set.mem_Ico] at hmem
+      refine res.mem_localAdmissible_of_lt hmem.1 (fun c ↦ ?_)
+      rw [hRdef, Finset.lt_inf'_iff] at hmem
+      exact hmem.2 c (Finset.mem_univ c)
+  rw [rlctAt_def, hset, csSup_Ico hRpos]
+
+/-- **STRIKE-ABLE — one chart gives an upper bound.** For any single chart, `rlctAt (∑Fᵢ²) x₀ ≤
+wrlctAt |det Dg_c| (∑(Fᵢ∘g_c)²) 0`: the always-valid direction of the min-over-charts equality
+(`Finset.inf'_le`). -/
+theorem rlctAt_sumSqFam_le_chart {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (res : Resolution F x₀) (c : Fin res.numCharts) :
+    rlctAt (sumSqFam F) x₀
+      ≤ wrlctAt (res.charts c).jacWeightFn (sumSqFam (fun i ↦ F i ∘ (res.charts c).g)) 0 := by
+  rw [rlctAt_sumSqFam_eq_iInf_charts res]
+  exact Finset.inf'_le _ (Finset.mem_univ c)
+
 /-- **Object B — the resolution value `2·rlctAt (∑Fᵢ²) x₀ = divisorMin` (min over charts).** Wired:
-the min-over-charts CoV (`rlctAt_sumSqFam_eq_iInf_charts`, frontier leaf) followed by the per-chart
+the min-over-charts CoV (`rlctAt_sumSqFam_eq_iInf_charts`) followed by the per-chart
 integer value (`Chart.two_mul_wrlctAt_eq_chartMin`, weighted-A ∘ C). The `transfer` is thus
 **derived**, never assumed; and the min over charts — the half of defect 1 that killed the
 single-chart draft — is on the page. -/
-@[blueprint]
 theorem Resolution.two_mul_rlctAt_eq_divisorMin {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
     (res : Resolution F x₀) :
     2 * rlctAt (sumSqFam F) x₀ = res.divisorMin := by

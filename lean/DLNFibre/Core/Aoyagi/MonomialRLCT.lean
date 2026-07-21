@@ -656,4 +656,366 @@ theorem monomialSumSq_two_mul_wrlctAt_eq_min {M D : ℕ} {e : Fin M → Fin D �
   push_cast
   ring
 
+/-! ## Off-origin Object C (the per-point convergence engine for the atlas `≥` leg)
+
+The atlas change-of-variables (`Core.Aoyagi.ProductResolution`) needs, for its `≥` (atlas-min) leg,
+the local integrability of the pulled-back weighted loss **at every point of a chart's compact
+domain**, not merely at the chart origin. The loss's worst singularity is at `0` (the active axes at
+`p ≠ 0` are a *subset* of those at `0`), so an exponent below the *origin* threshold is admissible at
+every `p`. These lemmas package that convergence half of the S2 rule **at an arbitrary base point
+`p`** (the divergence half stays a `0`-phenomenon), plus the set-form of the origin rule the atlas
+reads off. All additive to the landed origin case above. -/
+
+/-- **The boxed-min inequality, arithmetic form.** Every axis exponent of the reduced monomial germ
+exceeds `−1` iff `c` is below the boxed threshold: `(∀ d, -1 < h_d − 2·(e k₀ d)·c) ↔ c < T`. This is
+the `hexp_iff` step of the origin rule, exposed standalone (pure `monomialThreshold`/`bindingAxes`
+arithmetic — no integration): binding axes give the `(h_d+1)/(2 e_{k₀ d})` ratios, non-binding axes
+(`e k₀ d = 0`) are automatically `> −1` since `h_d ≥ 0`. -/
+theorem monomial_forall_neg_one_lt_iff_lt_threshold {M D : ℕ} (e : Fin M → Fin D → ℕ)
+    (h : Fin D → ℕ) (k₀ : Fin M) (hbind : (bindingAxes (e k₀)).Nonempty) (c : ℝ) :
+    (∀ d, -1 < (h d : ℝ) - 2 * (e k₀ d : ℝ) * c) ↔ c < monomialThreshold (e k₀) h hbind := by
+  have hmembind : ∀ d, d ∈ bindingAxes (e k₀) ↔ 0 < e k₀ d := fun d => by simp [bindingAxes]
+  unfold monomialThreshold
+  rw [Finset.lt_inf'_iff]
+  constructor
+  · intro hall d hd
+    have hd' : 0 < e k₀ d := (hmembind d).mp hd
+    have hev0 : (0 : ℝ) < 2 * (e k₀ d : ℝ) := by
+      have : (0 : ℝ) < (e k₀ d : ℝ) := by exact_mod_cast hd'
+      linarith
+    have := hall d
+    rw [lt_div_iff₀ hev0]; nlinarith [this]
+  · intro hall d
+    by_cases hd : d ∈ bindingAxes (e k₀)
+    · have hd' : 0 < e k₀ d := (hmembind d).mp hd
+      have hev0 : (0 : ℝ) < 2 * (e k₀ d : ℝ) := by
+        have : (0 : ℝ) < (e k₀ d : ℝ) := by exact_mod_cast hd'
+        linarith
+      have := hall d hd
+      rw [lt_div_iff₀ hev0] at this
+      nlinarith [this]
+    · have h0 : e k₀ d = 0 := by
+        by_contra hne; exact hd ((hmembind d).mpr (Nat.pos_of_ne_zero hne))
+      rw [h0]; push_cast
+      have : (0 : ℝ) ≤ (h d : ℝ) := Nat.cast_nonneg _
+      simp only [mul_zero, zero_mul, sub_zero]; linarith
+
+/-- **Strengthened chain-collapse unit** (`Continuous U` + `1 ≤ U`, globally). The
+`exists_unit_sumSqFam_monomial` witness `U u = ∑ₖ (bₖ/b_{k₀})²` is a polynomial (hence continuous
+*everywhere*, not just at `0`) and satisfies `U u ≥ 1` at *every* `u` (the `k₀` summand is the
+constant `1`). The off-origin convergence engine needs `U` positive and continuous at an arbitrary
+base point `p`, which these global facts supply. -/
+theorem exists_unit_sumSqFam_monomial_strong {M D : ℕ} {e : Fin M → Fin D → ℕ} {k₀ : Fin M}
+    (hchain : ∀ k d, e k₀ d ≤ e k d) :
+    ∃ U : (Fin D → ℝ) → ℝ, Continuous U ∧ (∀ u, 1 ≤ U u) ∧
+      ∀ u, sumSqFam (monomialFam e) u = (monomialFam e k₀ u) ^ 2 * U u := by
+  classical
+  refine ⟨fun u ↦ ∑ k, (∏ d, (u d) ^ (e k d - e k₀ d)) ^ 2, ?_, ?_, ?_⟩
+  · refine continuous_finset_sum _ (fun k _ ↦ ?_)
+    exact (continuous_finset_prod _ (fun d _ ↦ (continuous_apply d).pow _)).pow 2
+  · intro u
+    -- the `k₀` summand equals `1`; the rest are `≥ 0`.
+    have hk₀ : (∏ d, (u d) ^ (e k₀ d - e k₀ d)) ^ 2 = 1 := by
+      have : (∏ d, (u d) ^ (e k₀ d - e k₀ d)) = 1 :=
+        Finset.prod_eq_one (fun d _ ↦ by rw [Nat.sub_self, pow_zero])
+      rw [this, one_pow]
+    calc (1 : ℝ) = (∏ d, (u d) ^ (e k₀ d - e k₀ d)) ^ 2 := hk₀.symm
+      _ ≤ ∑ k, (∏ d, (u d) ^ (e k d - e k₀ d)) ^ 2 :=
+          Finset.single_le_sum (f := fun k ↦ (∏ d, (u d) ^ (e k d - e k₀ d)) ^ 2)
+            (fun k _ ↦ sq_nonneg _) (Finset.mem_univ k₀)
+  · intro u
+    simp only [sumSqFam, monomialFam]
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun k _ ↦ ?_)
+    rw [← mul_pow]
+    congr 1
+    rw [← Finset.prod_mul_distrib]
+    refine Finset.prod_congr rfl (fun d _ ↦ ?_)
+    rw [← pow_add]
+    congr 1
+    have := hchain k d
+    omega
+
+/-- **The boxed threshold is positive.** Each binding-axis ratio `(h_d+1)/(2·(e k₀ d))` is `> 0`
+(`h_d + 1 ≥ 1` and `e k₀ d ≥ 1` on binding axes), so their `inf'` is `> 0`. -/
+theorem monomialThreshold_pos {D : ℕ} (kexp h : Fin D → ℕ) (hne : (bindingAxes kexp).Nonempty) :
+    0 < monomialThreshold kexp h hne := by
+  unfold monomialThreshold
+  rw [Finset.lt_inf'_iff]
+  intro d hd
+  have hd' : 0 < kexp d := by simpa [bindingAxes] using hd
+  have : (0 : ℝ) < (kexp d : ℝ) := by exact_mod_cast hd'
+  positivity
+
+/-- **Off-origin Object C — the per-point convergence engine.** For an exponent `c` below the
+*origin* boxed threshold (encoded as `∀ d, -1 < h_d − 2·(e k₀ d)·c`, i.e. every axis exponent of the
+reduced monomial germ exceeds `−1`), the weighted pulled-back loss `W · (∑ bₖ²)^(-c)` is integrable
+on a neighbourhood of **any** base point `p` (not just the origin). The mechanism: the loss collapses
+to `b_{k₀}²·U` (`U` continuous, `≥ 1`), so off the coordinate hyperplanes the integrand is
+`V·∏_d |u_d|^{h_d − 2 c·e_{k₀ d}}` with `V = unit·U^{-c}` bounded near `p`; the pure power product is
+integrable on a *large origin-centred symmetric box containing `p`* (every axis exponent `> −1`,
+`prodRpow_boxSymm_lt_top`), and a ball around `p` sits inside it. This is the convergence half of the
+S2 rule at an arbitrary base point — the divergence (worst-singularity) half stays a `0`-phenomenon
+(`monomialSumSq_not_integrableAtFilter_of_exists_le`). `Measurable unit` is load-bearing (the
+integrand's a.e.-strong-measurability, exactly as the origin rule). -/
+theorem monomialSumSq_integrableAtFilter_of_lt {M D : ℕ} {e : Fin M → Fin D → ℕ} {h : Fin D → ℕ}
+    {W unit : (Fin D → ℝ) → ℝ} {k₀ : Fin M} {p : Fin D → ℝ} {c : ℝ}
+    (hchain : ∀ k d, e k₀ d ≤ e k d)
+    (hβ : ∀ d, -1 < (h d : ℝ) - 2 * (e k₀ d : ℝ) * c)
+    (hunit : ContinuousAt unit p) (hunit0 : unit p ≠ 0) (hunitmeas : Measurable unit)
+    (hW : ∀ᶠ u in 𝓝 p, W u = jacWeight h u * unit u) :
+    IntegrableAtFilter (fun u ↦ W u * negPow (sumSqFam (monomialFam e)) c u) (𝓝 p) := by
+  classical
+  obtain ⟨U, hUcont, hU1, hUeq⟩ := exists_unit_sumSqFam_monomial_strong hchain
+  set K := sumSqFam (monomialFam e) with hKdef
+  set ev : Fin D → ℝ := fun d ↦ (h d : ℝ) - 2 * (e k₀ d : ℝ) * c with hev
+  have hKmeas : Measurable K := by rw [hKdef]; unfold sumSqFam monomialFam; fun_prop
+  have hUpos : ∀ u, 0 < U u := fun u ↦ lt_of_lt_of_le one_pos (hU1 u)
+  have hVcont : ContinuousAt (fun u ↦ unit u * (U u) ^ (-c)) p :=
+    hunit.mul ((Real.continuousAt_rpow_const _ _ (Or.inl (ne_of_gt (hUpos p)))).comp
+      hUcont.continuousAt)
+  have hVabs_cont : ContinuousAt (fun u ↦ |unit u * (U u) ^ (-c)|) p :=
+    continuous_abs.continuousAt.comp hVcont
+  set mono : (Fin D → ℝ) → ℝ :=
+    fun u ↦ jacWeight h u * ((monomialFam e k₀ u) ^ 2) ^ (-c) with hmonodef
+  have hmono_meas : Measurable mono := by
+    rw [hmonodef]; simp only [jacWeight, monomialFam]; fun_prop
+  have hmono_nonneg : ∀ u, 0 ≤ mono u := fun u ↦ by
+    rw [hmonodef]
+    exact mul_nonneg (Finset.prod_nonneg (fun d _ ↦ pow_nonneg (abs_nonneg _) _))
+      (Real.rpow_nonneg (sq_nonneg _) _)
+  -- coordinate hyperplanes are null, so `mono` factors into a pure `rpow`-product a.e.
+  have hnull : ∀ d : Fin D, volume {u : Fin D → ℝ | u d = 0} = 0 := by
+    intro d
+    have hset : {u : Fin D → ℝ | u d = 0}
+        = Set.univ.pi (fun i ↦ if i = d then ({0} : Set ℝ) else Set.univ) := by
+      ext u
+      simp only [Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
+      constructor
+      · intro hud i; split_ifs with hi
+        · rw [hi]; exact hud
+        · trivial
+      · intro hall; have := hall d; simpa using this
+    rw [hset, volume_pi_pi]
+    exact Finset.prod_eq_zero (Finset.mem_univ d) (by simp)
+  have hae_nonzero : ∀ᵐ u : Fin D → ℝ ∂volume, ∀ d, u d ≠ 0 := by
+    rw [ae_all_iff]; intro d; rw [ae_iff]; simpa using hnull d
+  have hfactor : ∀ u : Fin D → ℝ, (∀ d, u d ≠ 0) → mono u = ∏ d, |u d| ^ (ev d) := by
+    intro u hu
+    rw [hmonodef]; simp only [jacWeight, monomialFam, hev]
+    rw [show ((∏ d, (u d) ^ (e k₀ d))) ^ 2 = ∏ d, |u d| ^ (2 * e k₀ d) from ?_]
+    · rw [← Real.finset_prod_rpow _ _ (fun d _ ↦ pow_nonneg (abs_nonneg _) _) (-c),
+        ← Finset.prod_mul_distrib]
+      refine Finset.prod_congr rfl (fun d _ ↦ ?_)
+      rw [← Real.rpow_natCast (|u d|) (h d), ← Real.rpow_natCast (|u d|) (2 * e k₀ d),
+        ← Real.rpow_mul (abs_nonneg _), ← Real.rpow_add (by rw [abs_pos]; exact hu d)]
+      congr 1; push_cast; ring
+    · rw [← Finset.prod_pow]
+      refine Finset.prod_congr rfl (fun d _ ↦ ?_)
+      rw [pow_right_comm, ← sq_abs, ← pow_mul]
+  have hmono_g_ae : mono =ᵐ[volume] (fun u ↦ ∏ d, |u d| ^ (ev d)) := by
+    filter_upwards [hae_nonzero] with u hu using hfactor u hu
+  -- a large origin-centred symmetric box `(−R, R)^D` containing `p`.
+  set R : ℝ := (∑ d, |p d|) + 1 with hRdef
+  have hR : 0 < R := by
+    have : (0 : ℝ) ≤ ∑ d, |p d| := Finset.sum_nonneg (fun d _ ↦ abs_nonneg _)
+    rw [hRdef]; linarith
+  have hpR : ∀ d, |p d| < R := by
+    intro d
+    have hle : |p d| ≤ ∑ d, |p d| :=
+      Finset.single_le_sum (f := fun d ↦ |p d|) (fun i _ ↦ abs_nonneg _) (Finset.mem_univ d)
+    rw [hRdef]; linarith
+  set box : Set (Fin D → ℝ) := Set.univ.pi (fun _ : Fin D ↦ Set.Ioo (-R) R) with hboxdef
+  have hofReal_ae : (fun u ↦ ENNReal.ofReal (mono u))
+      =ᵐ[volume] (fun u ↦ ENNReal.ofReal (∏ d, |u d| ^ (ev d))) :=
+    hmono_g_ae.mono (fun u hu ↦ congrArg ENNReal.ofReal hu)
+  have hbig : ∫⁻ u in box, ENNReal.ofReal (mono u) < ⊤ := by
+    rw [hboxdef, lintegral_congr_ae (ae_restrict_of_ae hofReal_ae)]
+    exact MonomialBox.prodRpow_boxSymm_lt_top hR ev hβ
+  have hbox_mem : box ∈ 𝓝 p := by
+    refine IsOpen.mem_nhds (isOpen_set_pi Set.finite_univ (fun _ _ ↦ isOpen_Ioo)) ?_
+    simp only [hboxdef, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Ioo]
+    intro d
+    have := hpR d; rw [abs_lt] at this; exact ⟨this.1, this.2⟩
+  -- upper bound `M` for `|V|` near `p`; a ball `B ⊆ box ∩ {W-model} ∩ {|V|<M}`.
+  set Mub : ℝ := |unit p * (U p) ^ (-c)| + 1 with hMubdef
+  have hVub : ∀ᶠ u in 𝓝 p, |unit u * (U u) ^ (-c)| < Mub := by
+    filter_upwards [hVabs_cont.eventually (Iio_mem_nhds (lt_add_one _))]
+      with u hu using Set.mem_Iio.mp hu
+  obtain ⟨ε, hε, hεsub⟩ :=
+    Metric.mem_nhds_iff.1 (Filter.inter_mem hbox_mem (Filter.inter_mem hW hVub))
+  set B := Metric.ball p ε with hBdef
+  have hBmeas : MeasurableSet B := measurableSet_ball
+  have hmono_intB : IntegrableOn mono B := by
+    refine ⟨hmono_meas.aestronglyMeasurable, ?_⟩
+    rw [hasFiniteIntegral_iff_ofReal (ae_of_all _ (fun u ↦ hmono_nonneg u))]
+    calc ∫⁻ u in B, ENNReal.ofReal (mono u)
+        ≤ ∫⁻ u in box, ENNReal.ofReal (mono u) :=
+          lintegral_mono_set (fun u hu ↦ (hεsub hu).1)
+      _ < ⊤ := hbig
+  refine ⟨B, Metric.ball_mem_nhds p hε, ?_⟩
+  refine (hmono_intB.const_mul Mub).mono' ?_ ?_
+  · have haem : (fun u ↦ W u * negPow K c u)
+        =ᵐ[volume.restrict B] (fun u ↦ jacWeight h u * unit u * negPow K c u) := by
+      refine (ae_restrict_iff' hBmeas).mpr (ae_of_all _ (fun u hu ↦ ?_))
+      show W u * negPow K c u = jacWeight h u * unit u * negPow K c u
+      rw [(hεsub hu).2.1]
+    refine AEStronglyMeasurable.congr ?_ haem.symm
+    have hjacmeas : Measurable (fun u : Fin D → ℝ ↦ ∏ d, |u d| ^ (h d)) := by fun_prop
+    have : Measurable (fun u ↦ jacWeight h u * unit u * negPow K c u) := by
+      unfold jacWeight
+      exact (hjacmeas.mul hunitmeas).mul (measurable_negPow hKmeas c)
+    exact this.aestronglyMeasurable
+  · refine (ae_restrict_iff' hBmeas).mpr (ae_of_all _ (fun u hu ↦ ?_))
+    have hb := hεsub hu
+    have hWu : W u = jacWeight h u * unit u := hb.2.1
+    have hUu : 0 < U u := hUpos u
+    have hVu : |unit u * (U u) ^ (-c)| < Mub := hb.2.2
+    have hival : W u * negPow K c u = mono u * (unit u * (U u) ^ (-c)) := by
+      rw [hmonodef, negPow_apply, hWu, hUeq u, Real.mul_rpow (sq_nonneg _) (le_of_lt hUu)]; ring
+    rw [Real.norm_eq_abs, hival, abs_mul, abs_of_nonneg (hmono_nonneg u)]
+    calc mono u * |unit u * (U u) ^ (-c)| ≤ mono u * Mub :=
+          mul_le_mul_of_nonneg_left (le_of_lt hVu) (hmono_nonneg u)
+      _ = Mub * mono u := by ring
+
+/-- **Origin divergence (the worst-singularity half).** If some axis exponent of the reduced monomial
+germ is `≤ −1` (`h d₀ − 2·(e k₀ d₀)·c ≤ −1`), the weighted loss `W · (∑ bₖ²)^(-c)` is **not**
+integrable on any neighbourhood of the origin. The singularity along that axis is genuinely
+non-integrable at `0` (box divergence, `prodRpow_boxSymm_eq_top`): any integrable neighbourhood would
+force the divergent box lintegral finite. This is a `0`-phenomenon (at `p ≠ 0` an axis with `p_d ≠ 0`
+is not singular), the divergence complement of `monomialSumSq_integrableAtFilter_of_lt`. -/
+theorem monomialSumSq_not_integrableAtFilter_of_exists_le {M D : ℕ} {e : Fin M → Fin D → ℕ}
+    {h : Fin D → ℕ} {W unit : (Fin D → ℝ) → ℝ} {k₀ : Fin M} {c : ℝ} {d₀ : Fin D}
+    (hchain : ∀ k d, e k₀ d ≤ e k d)
+    (hd₀ : (h d₀ : ℝ) - 2 * (e k₀ d₀ : ℝ) * c ≤ -1)
+    (hunit : ContinuousAt unit 0) (hunit0 : unit 0 ≠ 0)
+    (hW : ∀ᶠ u in 𝓝 (0 : Fin D → ℝ), W u = jacWeight h u * unit u) :
+    ¬ IntegrableAtFilter (fun u ↦ W u * negPow (sumSqFam (monomialFam e)) c u) (𝓝 0) := by
+  classical
+  intro hint
+  obtain ⟨U, hUcont, hU1, hUeq⟩ := exists_unit_sumSqFam_monomial_strong hchain
+  set K := sumSqFam (monomialFam e) with hKdef
+  set ev : Fin D → ℝ := fun d ↦ (h d : ℝ) - 2 * (e k₀ d : ℝ) * c with hev
+  have hUpos : ∀ u, 0 < U u := fun u ↦ lt_of_lt_of_le one_pos (hU1 u)
+  have hUpos_ev : ∀ᶠ u in 𝓝 (0 : Fin D → ℝ), 0 < U u := Filter.Eventually.of_forall hUpos
+  have hVcont : ContinuousAt (fun u ↦ unit u * (U u) ^ (-c)) 0 :=
+    hunit.mul ((Real.continuousAt_rpow_const _ _ (Or.inl (ne_of_gt (hUpos 0)))).comp
+      hUcont.continuousAt)
+  have hUcpos : (0 : ℝ) < (U 0) ^ (-c) := Real.rpow_pos_of_pos (hUpos 0) _
+  have hV0abs : (0 : ℝ) < |unit 0 * (U 0) ^ (-c)| :=
+    abs_pos.mpr (mul_ne_zero hunit0 (ne_of_gt hUcpos))
+  have hVabs_cont : ContinuousAt (fun u ↦ |unit u * (U u) ^ (-c)|) 0 :=
+    continuous_abs.continuousAt.comp hVcont
+  set mono : (Fin D → ℝ) → ℝ :=
+    fun u ↦ jacWeight h u * ((monomialFam e k₀ u) ^ 2) ^ (-c) with hmonodef
+  have hmono_meas : Measurable mono := by
+    rw [hmonodef]; simp only [jacWeight, monomialFam]; fun_prop
+  have hmono_nonneg : ∀ u, 0 ≤ mono u := fun u ↦ by
+    rw [hmonodef]
+    exact mul_nonneg (Finset.prod_nonneg (fun d _ ↦ pow_nonneg (abs_nonneg _) _))
+      (Real.rpow_nonneg (sq_nonneg _) _)
+  have hnull : ∀ d : Fin D, volume {u : Fin D → ℝ | u d = 0} = 0 := by
+    intro d
+    have hset : {u : Fin D → ℝ | u d = 0}
+        = Set.univ.pi (fun i ↦ if i = d then ({0} : Set ℝ) else Set.univ) := by
+      ext u
+      simp only [Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
+      constructor
+      · intro hud i; split_ifs with hi
+        · rw [hi]; exact hud
+        · trivial
+      · intro hall; have := hall d; simpa using this
+    rw [hset, volume_pi_pi]
+    exact Finset.prod_eq_zero (Finset.mem_univ d) (by simp)
+  have hae_nonzero : ∀ᵐ u : Fin D → ℝ ∂volume, ∀ d, u d ≠ 0 := by
+    rw [ae_all_iff]; intro d; rw [ae_iff]; simpa using hnull d
+  have hfactor : ∀ u : Fin D → ℝ, (∀ d, u d ≠ 0) → mono u = ∏ d, |u d| ^ (ev d) := by
+    intro u hu
+    rw [hmonodef]; simp only [jacWeight, monomialFam, hev]
+    rw [show ((∏ d, (u d) ^ (e k₀ d))) ^ 2 = ∏ d, |u d| ^ (2 * e k₀ d) from ?_]
+    · rw [← Real.finset_prod_rpow _ _ (fun d _ ↦ pow_nonneg (abs_nonneg _) _) (-c),
+        ← Finset.prod_mul_distrib]
+      refine Finset.prod_congr rfl (fun d _ ↦ ?_)
+      rw [← Real.rpow_natCast (|u d|) (h d), ← Real.rpow_natCast (|u d|) (2 * e k₀ d),
+        ← Real.rpow_mul (abs_nonneg _), ← Real.rpow_add (by rw [abs_pos]; exact hu d)]
+      congr 1; push_cast; ring
+    · rw [← Finset.prod_pow]
+      refine Finset.prod_congr rfl (fun d _ ↦ ?_)
+      rw [pow_right_comm, ← sq_abs, ← pow_mul]
+  have hmono_g_ae : mono =ᵐ[volume] (fun u ↦ ∏ d, |u d| ^ (ev d)) := by
+    filter_upwards [hae_nonzero] with u hu using hfactor u hu
+  -- extract an integrable box; lower-bound `|V|` there; deduce `mono` integrable on the box.
+  obtain ⟨s, hs, hsint⟩ := hint
+  have hhalf : |unit 0 * (U 0) ^ (-c)| / 2 < |unit 0 * (U 0) ^ (-c)| := by linarith
+  have hVlb : ∀ᶠ u in 𝓝 (0 : Fin D → ℝ),
+      |unit 0 * (U 0) ^ (-c)| / 2 < |unit u * (U u) ^ (-c)| := by
+    filter_upwards [hVabs_cont.eventually (Ioi_mem_nhds hhalf)]
+      with u hu using Set.mem_Ioi.mp hu
+  obtain ⟨ε, hε, hεsub⟩ :=
+    MonomialBox.exists_boxSymm_subset
+      (Filter.inter_mem hs (Filter.inter_mem hW (Filter.inter_mem hUpos_ev hVlb)))
+  set B := Set.univ.pi (fun _ : Fin D => Set.Ioo (-ε) ε) with hBdef
+  have hBmeas : MeasurableSet B := MeasurableSet.univ_pi (fun _ ↦ measurableSet_Ioo)
+  have hintB : IntegrableOn (fun u ↦ W u * negPow K c u) B :=
+    hsint.mono_set (fun u hu ↦ (hεsub hu).1)
+  set m := |unit 0 * (U 0) ^ (-c)| / 2 with hmdef
+  have hmpos : 0 < m := by rw [hmdef]; linarith
+  have hmono_intB : IntegrableOn mono B := by
+    refine (hintB.abs.const_mul (1 / m)).mono' hmono_meas.aestronglyMeasurable ?_
+    refine (ae_restrict_iff' hBmeas).mpr (ae_of_all _ (fun u hu ↦ ?_))
+    have hb := hεsub hu
+    have hWu : W u = jacWeight h u * unit u := hb.2.1
+    have hUu : 0 < U u := hb.2.2.1
+    have hVu : m < |unit u * (U u) ^ (-c)| := hb.2.2.2
+    have hival : W u * negPow K c u = mono u * (unit u * (U u) ^ (-c)) := by
+      rw [hmonodef, negPow_apply, hWu, hUeq u, Real.mul_rpow (sq_nonneg _) (le_of_lt hUu)]; ring
+    have h1 : mono u * m ≤ mono u * |unit u * (U u) ^ (-c)| :=
+      mul_le_mul_of_nonneg_left (le_of_lt hVu) (hmono_nonneg u)
+    rw [Real.norm_eq_abs, abs_of_nonneg (hmono_nonneg u), hival, abs_mul,
+      abs_of_nonneg (hmono_nonneg u)]
+    rw [show (1 : ℝ) / m * (mono u * |unit u * (U u) ^ (-c)|)
+          = (mono u * |unit u * (U u) ^ (-c)|) / m from by ring, le_div_iff₀ hmpos]
+    linarith [h1]
+  -- but the box lintegral of `mono` diverges (axis `d₀`), a contradiction.
+  have hofReal_ae : (fun u ↦ ENNReal.ofReal (mono u))
+      =ᵐ[volume] (fun u ↦ ENNReal.ofReal (∏ d, |u d| ^ (ev d))) :=
+    hmono_g_ae.mono (fun u hu ↦ congrArg ENNReal.ofReal hu)
+  have hfin : (∫⁻ u in B, ENNReal.ofReal (mono u)) < ⊤ := by
+    have h2 := hmono_intB.2
+    rw [hasFiniteIntegral_iff_ofReal (ae_of_all _ (fun u ↦ hmono_nonneg u))] at h2
+    exact h2
+  rw [hBdef, lintegral_congr_ae (ae_restrict_of_ae hofReal_ae),
+    MonomialBox.prodRpow_boxSymm_eq_top hε ev d₀ hd₀] at hfin
+  exact absurd hfin (lt_irrefl _)
+
+/-- **Origin S2 rule, set form.** The weighted admissible-exponent set of a chain monomial-sum at the
+origin is exactly `[0, T)` with `T` the boxed threshold: convergence for `c < T`
+(`monomialSumSq_integrableAtFilter_of_lt` at `p = 0`) and divergence for `c ≥ T`
+(`monomialSumSq_not_integrableAtFilter_of_exists_le`). The set-level strengthening of the landed
+value rule `monomialSumSq_wrlctAt_eq`; it is what Object B's atlas reads off per chart (the exact
+`Ico` gives `BddAbove`, `T > 0`, and the `c < T ⟺ c` admissible equivalence in one object). -/
+theorem monomialSumSq_wLocalAdmissible_eq {M D : ℕ} {e : Fin M → Fin D → ℕ} {h : Fin D → ℕ}
+    {W unit : (Fin D → ℝ) → ℝ} {k₀ : Fin M}
+    (hchain : ∀ k d, e k₀ d ≤ e k d) (hbind : (bindingAxes (e k₀)).Nonempty)
+    (hunit : ContinuousAt unit 0) (hunit0 : unit 0 ≠ 0) (hunitmeas : Measurable unit)
+    (hW : ∀ᶠ u in 𝓝 (0 : Fin D → ℝ), W u = jacWeight h u * unit u) :
+    wLocalAdmissibleExponents W (sumSqFam (monomialFam e)) 0
+      = Set.Ico 0 (monomialThreshold (e k₀) h hbind) := by
+  ext c
+  simp only [wLocalAdmissibleExponents, Set.mem_setOf_eq, Set.mem_Ico]
+  constructor
+  · rintro ⟨hc0, hint⟩
+    refine ⟨hc0, ?_⟩
+    by_contra hge
+    rw [not_lt] at hge
+    have hnotall : ¬ (∀ d, -1 < (h d : ℝ) - 2 * (e k₀ d : ℝ) * c) := fun hall ↦
+      absurd ((monomial_forall_neg_one_lt_iff_lt_threshold e h k₀ hbind c).mp hall) (not_lt.mpr hge)
+    push_neg at hnotall
+    obtain ⟨d₀, hd₀⟩ := hnotall
+    exact monomialSumSq_not_integrableAtFilter_of_exists_le hchain hd₀ hunit hunit0 hW hint
+  · rintro ⟨hc0, hlt⟩
+    refine ⟨hc0, ?_⟩
+    have hβ := (monomial_forall_neg_one_lt_iff_lt_threshold e h k₀ hbind c).mpr hlt
+    exact monomialSumSq_integrableAtFilter_of_lt hchain hβ hunit hunit0 hunitmeas hW
+
 end DLNFibre.Core.Aoyagi
