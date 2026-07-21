@@ -130,4 +130,83 @@ noncomputable def conjResolution {D M₁ M₂ : ℕ} {G : Fin M₁ → (Fin D �
     rw [hunion, ← Set.image_diff Φ.symm.injective,
       Measure.addHaar_image_continuousLinearEquiv, res.hcover, mul_zero]
 
+/-! ## Translation transport — moving the deepest point (owed-register M6)
+
+`conjResolution` transports across a linear coordinate change but stays base-pointed at `0`.
+`Chart`/`Resolution` are `x₀`-general; this section supplies the missing companion — the translation
+transport moving a resolution AT `x₀` to one at `0` for the translated family `Fᵢ ∘ (· + x₀)`. The
+chart map becomes `g' = (· − x₀) ∘ g` (so `g' 0 = 0` and `F'ᵢ ∘ g' = Fᵢ ∘ g` — the pulled-back
+generators and every certificate are UNCHANGED, since a translation is Jacobian-`1` and cancels).
+Reuses `RegionRepresents.of_eqOn` for the ideal-identity transport. -/
+
+/-- **Chart translation.** Transport a chart of `F` at `x₀` to a chart of `fun i ↦ Fᵢ ∘ (· + x₀)` at
+`0`, via `g' := (· − x₀) ∘ g`. The pulled-back generators `F'ᵢ ∘ g' = Fᵢ ∘ g` are unchanged, so all
+exponent / Jacobian / ideal data carries over verbatim (translation is Jacobian-`1`). -/
+noncomputable def translateChart {D M : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} (x₀ : Fin D → ℝ)
+    (c : Chart F x₀) : Chart (fun i ↦ fun u ↦ F i (u + x₀)) (0 : Fin D → ℝ) where
+  g := fun w ↦ c.g w - x₀
+  hg0 := by simp [c.hg0]
+  hg_cont := c.hg_cont.sub continuous_const
+  hg_analytic := c.hg_analytic.sub analyticOnNhd_const
+  hFmeas := fun i ↦ (c.hFmeas i).comp (by fun_prop)
+  dom := c.dom
+  hdom_compact := c.hdom_compact
+  hdom_zero := c.hdom_zero
+  nbhd := c.nbhd
+  hnbhd_open := c.hnbhd_open
+  hdom_sub := c.hdom_sub
+  excep := c.excep
+  hexcep_meas := c.hexcep_meas
+  hexcep_null := c.hexcep_null
+  hg_inj := sub_left_injective.comp_injOn c.hg_inj
+  M' := c.M'
+  bexp := c.bexp
+  k₀ := c.k₀
+  hchain := c.hchain
+  hbind := c.hbind
+  hunit_mult := c.hunit_mult
+  jac := c.jac
+  unit := c.unit
+  hunit_cont := c.hunit_cont
+  hunit_ne := c.hunit_ne
+  hjac := by
+    intro u hu
+    have hj : jacDet (fun w ↦ c.g w - x₀) u = jacDet c.g u := by
+      unfold jacDet; rw [fderiv_sub_const]
+    rw [hj]; exact c.hjac u hu
+  hideal_fwd := by
+    refine c.hideal_fwd.of_eqOn (fun i u _ ↦ ?_) (fun j ↦ Set.eqOn_refl _ _)
+    show F i (c.g u - x₀ + x₀) = F i (c.g u)
+    rw [sub_add_cancel]
+  hideal_bwd := by
+    refine c.hideal_bwd.of_eqOn (fun j ↦ Set.eqOn_refl _ _) (fun i u _ ↦ ?_)
+    show F i (c.g u - x₀ + x₀) = F i (c.g u)
+    rw [sub_add_cancel]
+
+/-- **Resolution translation.** Transport `Resolution F x₀` to
+`Resolution (fun i ↦ Fᵢ ∘ (· + x₀)) 0` — the companion of `conjResolution` that moves the deepest
+point to the origin (the register's M6: closes the `x₀`-generality gap the resolution API left). -/
+noncomputable def translateResolution {D M : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} (x₀ : Fin D → ℝ)
+    (res : Resolution F x₀) : Resolution (fun i ↦ fun u ↦ F i (u + x₀)) (0 : Fin D → ℝ) where
+  numCharts := res.numCharts
+  charts := fun c ↦ translateChart x₀ (res.charts c)
+  hne := res.hne
+  U := (fun y ↦ y - x₀) '' res.U
+  hU := by simpa using (Homeomorph.subRight x₀).isOpenMap.image_mem_nhds res.hU
+  hcover := by
+    have hunion : ⋃ c, (translateChart x₀ (res.charts c)).g ''
+        (translateChart x₀ (res.charts c)).dom
+        = (fun y ↦ y - x₀) '' (⋃ c, (res.charts c).g '' (res.charts c).dom) := by
+      rw [Set.image_iUnion]
+      refine Set.iUnion_congr (fun c ↦ ?_)
+      change (fun w ↦ (res.charts c).g w - x₀) '' (res.charts c).dom
+        = (fun y ↦ y - x₀) '' ((res.charts c).g '' (res.charts c).dom)
+      rw [Set.image_image]
+    rw [hunion, ← Set.image_diff sub_left_injective,
+      show (fun y : Fin D → ℝ ↦ y - x₀)
+            '' (res.U \ ⋃ c, (res.charts c).g '' (res.charts c).dom)
+          = (fun y ↦ y + x₀) ⁻¹' (res.U \ ⋃ c, (res.charts c).g '' (res.charts c).dom) from by
+        ext y; simp [sub_eq_iff_eq_add], measure_preimage_add_right]
+    exact res.hcover
+
 end DLNFibre.Core.Aoyagi
