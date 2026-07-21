@@ -9046,3 +9046,19 @@ never optional bookkeeping, it was the invariant the paper's inductive statement
 WITNESS SET: the d=![1,2,1] center-size witness (dies), the layer-center positive check, and a NEW
 positive witness — the deeper constant-term coefficient (admitted; kills any future
 SupportedOn-complement regression). One render, one re-gate; integration unhelds on green.
+
+## 2026-07-21: THE RE-GATE CATCHES THE SEAT'S NO-OP MISCALIBRATION — the round completes in a sub-round
+arch-C's ground-truth re-gate on the repair render: the CORE FIX IS FAITHFUL (L3/L4 carry the
+parametric FoldStepInvAt; hsupp removed; both docstrings verbatim; (A′) retracted; mechanically
+green, cone = 8) — the confirmed-false wall statements are repaired. BUT the round is INCOMPLETE:
+the seat read "L6/L7 already present" as no-op — a miscalibration arch-C caught by READING THE DEFS:
+L6 still takes a BARE atlas (hjac_tie EXISTS in FoldProduced but L6 never RECEIVES hfold — the tie
+is unreachable, the reviewer's d=![1,1] witness stands); and FoldProduced still lacks the
+fold-identification clause (the seat's OWN drafted-and-deferred Defect-5 fix: gmap c = foldG p,
+steps-aligned) — without it a non-covering atlas satisfies every clause and L7 is false-as-stated.
+Two precise completion fixes dispatched to the seat (finishing the specified round, not a re-scope).
+CORRECT DISCIPLINE HELD: arch-C is NOT baking the mixed state (good L3/L4 + still-false L6) — the
+whole round bakes together with an accurate message. Integration stays HELD on the green re-gate.
+The Core foundation (IgnoresCoords/Deg1SupportedOn, bridges CLOSED — no new sorry) stands regardless.
+The lesson instance, again: "present in the structure" ≠ "received by the leaf" — the per-field
+audit principle's consumption-side twin.
