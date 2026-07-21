@@ -9420,3 +9420,28 @@ retired for this expedition (ranking lives in the map + memo). Flagged for the c
 pass, not for change now. Kill-set-adequacy rule (expedition-map) noted as binding on the E-lane's
 eventual universal claims — the elder's divergent-instance kill-set already satisfies it by
 construction.
+
+## 2026-07-21 (controller) — THE WALL'S STOP-ON-SUSPECT: terminal-reaching edges break L4's Deg1 conjunct (the FIFTH severance instance); fix (a) routed
+
+seat-L4's SPECIFY (statement-lock discipline) fired a kernel-verified stop-on-suspect: TreeEdge/
+isCase1 never constrain `ed.nextState.layer`, so the L4 leaf's quantifier admits TERMINAL-REACHING
+case-1 edges — there foldResid (p.extend ed) = const 1 (the M′=1 collapse) and
+`Deg1SupportedOn (const 1) C'` is FALSE for every C' (fails at u=0; sorry-free refutation
+threads/L4-case1-core/terminal_deg1_gap.lean @ 98367c3d3 on its branch). The leaf's docstring
+(:586–591, "the trivial unit branch") was mistaken — that branch is false, not trivial. The leaf
+AS GATED is unprovable. **Taxonomy: the FIFTH severance instance — a NEW axis, the LAYER field's
+terminal range** (per-field audit covered content/size/path/coordinate; the layer field's boundary
+value escaped). The probe goes to the regression bank.
+
+**Disposition (controller):** fix (a) — add the non-terminal guard `ed.nextState.layer < N` to
+the L4 leaf (and L3 if arch-C's same-shape check confirms; likely, same TreeEdge quantification).
+Rationale: the leaf's honest scope is the INTERIOR step; the terminal transition is
+terminal_bezout's job at L5's fold — and terminal_bezout is PROVEN as of today, so the delegation
+orphan-checks clean. Fix (b) (canonCenter/reachesLeaf closes it) RULED OUT on insulation grounds —
+the step-invariant side must never consume provenance machinery (the boundary arch-C + nav
+independently established). Fix (c) (special-case FoldStepInvAt at the terminal residual) rejected
+— weakens the invariant globally. Routed: elder ratification requested (+ the taxonomy event for
+the compass bank); arch-C prices + implements, folded into the canonCenter bake round (same file,
+one revision batch, contract-9 re-gate with the probe as witness). seat-L4 proceeds on the
+NON-TERMINAL content meanwhile against a local private guard in the exact canonical form —
+no wall time lost; one rebase expected carrying canonCenter + the revised statements.
