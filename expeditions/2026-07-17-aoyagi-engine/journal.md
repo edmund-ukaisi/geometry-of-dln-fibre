@@ -8884,3 +8884,21 @@ gate a chain on a grep that may legitimately match nothing). THE STATE: every st
 set is locked, probe-hardened, page-anchored, and carries a complete hypothesis set. Seven items,
 one bake, then: integration → the two mechanical leaf instantiations → L5 → L6/L7/L8. In the
 elder's words: bake it, and let the wall seat climb.
+
+## 2026-07-21: STOP-ON-GROUND-TRUTH — P1/P2 were ALREADY LANDED (a month ago); the register-wide sweep commissioned
+seat-api, before building its P2 assignment, re-derived on a fresh worktree and found BOTH targets
+landed 2026-06-24/25 (force-elaborated clean-three, not commit-message trust): P2 = ClosedForm.lean's
+full bridge suite INCLUDING the paperLambda/Definition-3-ℓ fidelity closure (certified paperEll);
+Monotone-d resolved in-file (shiftedSorted — no hypothesis, no asymmetry); P1 = Validate/RRR.lean
+(the L=2 instance conditional only on the general monument obligations; the (2,2,2)→3/2 and
+(2,1,2)→1 instances fully sorry-free; #guard_msgs ground truths at build). The register's P1/P2
+"OPEN" was STALE — the paper-axis diffed the paper against the PLAN but under-surveyed the LANDED
+tree (the survey-before-commissioning lesson at the audit level). NO duplicate was built — the seat
+stopped, exactly the discipline. REDIRECTED: (a) the one genuine micro-gap (the composite
+(cCodim : ℚ) = 2·lambdaCore corollary) + (b) a REGISTER-WIDE ground-truth sweep — every entry's
+status verified against the tree (special attention: O1's "IN STRIKE" vs the weeks-landed atlas CoV
+equality — what genuinely remains; O4 vs the shiftedSorted machinery; the M-hygiene items vs the
+FIX-A-era tree). The elder corrects the register from the sweep's evidence table. NOTE the upside
+buried in the find: the P1/P2 landings mean the EXTERNAL-FACING deliverables (the printed-Theorem-2
+closed form + the classical L=2 value with its fidelity-certified ℓ) have existed for a month —
+the payoff exposition can cite them TODAY.
