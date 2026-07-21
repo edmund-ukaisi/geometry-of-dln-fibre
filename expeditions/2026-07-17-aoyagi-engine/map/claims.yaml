@@ -1,9 +1,8 @@
-# PROPOSED full rewrite (cartographer, 2026-07-21, tip 70a8ec6cf) — the RE-ROOT on the A–E frame.
-# Single curated writer of claims.yaml is the CONTROLLER: apply by replacing claims.yaml with this
-# body (drop the .proposed banner). The chart-Engine-era map it replaces is archived verbatim in
-# git history (claims.yaml @ 70a8ec6cf) and its node-id dispositions are in overlay/naming.md
-# § "Chart-era node ids". Landmark field: elder proposes / controller sets — the 9 below mirror
-# compass § Landmarks rendered into the map; adjust on elder counsel.
+# The A–E-frame map (re-rooted 2026-07-21 midday; chart-era map archived at claims.yaml @ 70a8ec6cf,
+# node-id dispositions in overlay/naming.md § "Chart-era node ids"). Single curated writer: the
+# CONTROLLER. Landmarks: elder proposes / controller sets (cap 9).
+# Evening refresh (controller, post carto pass #1): Core leaves proven+reviewed, Object E opened
+# (P6.1 landed / P6.2 pinned), monument round statuses — see journal 2026-07-21 evening entries.
 
 meta:
   expedition: 2026-07-17-aoyagi-engine
@@ -104,16 +103,55 @@ nodes:
 
   - id: object-e
     kind: claim
-    title: "Object E: analytic order ρ — interface slice proven; content build DEFERRED (in reach)"
+    title: "Object E: analytic order ρ — OPENED-SCOPED (operator 2026-07-21); combinatorial half in build"
     prop: |
       1 ≤ boxedOrder (Order.lean interface) + the θ ≠ ρ distinction: numTop(2,2,2,2,2) = 6 ≠
-      aoyagiPoleOrder — the pole MULTIPLICITY is not the quiver count. Zeta-pole content deferred.
+      aoyagiPoleOrder — the pole MULTIPLICITY is not the quiver count. Content build: P6.1 (band
+      arithmetic) LANDED; P6.2 (ρ-identification) statement-shaping; analytic zeta seam deferred.
     lean: DLNFibre.DLN.Aoyagi.numTop_d22222_ne_aoyagiPoleOrder
     status: stated
     tier: new
-    owner: "parked: deferred per charter §1.E (operator 2026-07-20) — same A–D machinery, kept a named reachable node"
+    owner: seat-E
+    edges:
+      - {type: needs, to: e-p61-band-arithmetic}
+      - {type: needs, to: e-p62-count-identification}
     evidence: [lean/DLNFibre/Core/Aoyagi/Order.lean, lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean]
-    notes: "blueprint's E slice proven; the ρ CONTENT (Lemmas 4–5 / zeta-pole multiplicity) is the deferred part — never boxed out"
+    notes: "charter §1-E OPENED-SCOPED; the analytic pole identification stays the named monument-class deferral"
+
+  - id: e-p61-band-arithmetic
+    kind: claim
+    title: "P6.1: banded-interval arithmetic — bandCount ℓ a = a(ℓ−a)+1, unconditional; θ-attachment at the certified selector"
+    prop: |
+      bandWidth/perJCard/envelopes over free (P,M): perJCard_eq_paper (p.26 fidelity anchor),
+      envHi_sub_envLo (width-independence: P,M cancel), bandWidth_sum (area = a(ℓ−a)),
+      bandCount_eq; Tier 2: bandCount = aoyagiTheta + thetaCount d r at (paperEll, residueA).
+      Count/multiplicity identifications DEFERRED to P6.2 — named in docstrings, never asserted.
+    lean: DLNFibre.Core.Aoyagi.OrderCount.bandCount_eq
+    status: proven
+    tier: new
+    owner: seat-E
+    edges: [{type: discharges, to: object-e}]
+    kill: expeditions/2026-07-17-aoyagi-engine/threads/41-rho-count-object/rho_battery.py
+    evidence:
+      - expeditions/2026-07-17-aoyagi-engine/threads/41-order-count/statement-card-tier1.md
+      - expeditions/2026-07-17-aoyagi-engine/threads/41-order-count/statement-card-tier2.md
+    notes: "elder-ratified framing (K4 at this rung = no-masquerade); Tier-2 binding merged, controller gate in flight"
+
+  - id: e-p62-count-identification
+    kind: claim
+    title: "P6.2: ρ = deepest-stratum MAX-CROSSING of terminal (t̃=0) global-minAdm divisors = a(ℓ−a)+1"
+    prop: |
+      ρ = max over charts of #{a ∈ bindingAxes : jac a + 1 = GLOBAL minAdm} (elder pin: global
+      filter, never chart-local). Owes TWO incidence lemmas: UPPER (no chart > a(ℓ−a)+1
+      co-crossing terminal minimisers) + ATTAINMENT (pp.25–26 eq-(1)/(2)). NOT a minimiser
+      cardinality ([2,2,2,2,2]: six tight minimisers, ρ = 5). Analytic pole seam stays deferred.
+    status: adjudicated
+    tier: new
+    owner: seat-E
+    edges: [{type: discharges, to: object-e}, {type: needs, to: e-p61-band-arithmetic}]
+    kill: expeditions/2026-07-17-aoyagi-engine/threads/41-rho-count-object/rho_battery.py
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/41-rho-count-object/certificate.md]
+    notes: "pnp-gate DISCHARGED (993 cores exact, controller re-ran EXIT 0, blind Codex convergent); statement-shaping under the elder's ratified shape; kill-set [2,2,2,2,2]+[2,2,5]+ground truths"
 
   # ── Object B's landed halves ──────────────────────────────────────────────────────────────
 
@@ -215,36 +253,41 @@ nodes:
 
   - id: b-principalinv
     kind: notion
-    title: "PrincipalInv: the path invariant (b₁-divisibility + Bézout witness along the recursion)"
-    status: proposed
+    title: "PrincipalInv + StepInv: the path invariants (divisibility along the recursion; principality BORN terminally)"
+    status: frozen
     tier: new
-    owner: "parked: shaped by the shear pin (corrected-(a)); lands with the 8-leaf skeleton (rung C)"
+    owner: seat-core
+    lean: DLNFibre.Core.Aoyagi.PrincipalInv
     edges:
       - {type: needs, to: b-record}
     evidence:
-      - expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md
       - expeditions/2026-07-17-aoyagi-engine/threads/33-shear-pin/certificate.md
+      - expeditions/2026-07-17-aoyagi-engine/threads/34-case1-invariant/certificate.md
+      - expeditions/2026-07-17-aoyagi-engine/threads/42-core-leaves/statement-cards.md
     kill: battery/g-delta-flatten.py
-    notes: "M'=1 via principality; tracks the shear-composition (g = shears ∘ blow-ups, unit ≡ 1, |det Dg| = jacWeight EXACTLY; cofactors carry the det-0 projections)"
+    notes: "thread-34 split: StepInv (divisibility-only, interior) / PrincipalInv (terminal). terminal_bezout PROVEN+reviewed (principality born at the cleared pivot, V′-shrink). M17 predicates (IgnoresCoords/Deg1SupportedOn) live here too."
 
   - id: b-leaf1-regionrepresents
     kind: claim
-    title: "leaf 1: PrincipalInv ⟹ both RegionRepresents directions"
-    status: conjectured
+    title: "leaf 1: PrincipalInv ⟹ both RegionRepresents directions — PROVEN + reviewed"
+    lean: DLNFibre.Core.Aoyagi.principalInv_regionRepresents
+    status: proven
     tier: new
-    owner: "parked: skeleton rung (C); codex confidence high × very-high"
+    owner: seat-core
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "divisibility + Bézout witnesses give the two-sided dom-wide ideal identity"
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/42-core-leaves/statement-cards.md]
+    notes: "clean-three; rev-core SURVIVED (incl. non-circularity + consumer-fit at the driver :809–813); with terminal_bezout, 2 of the monument's 8 leaves are down (cone 6)"
 
   - id: b-leaf34-case-steps
     kind: claim
-    title: "leaves 3–4: Case-2 / coupled Case-1 steps preserve PrincipalInv — THE WALL"
-    status: conjectured
+    title: "leaves 3–4: Case-2 / coupled Case-1 steps preserve FoldStepInvAt (interior) — THE WALL"
+    lean: DLNFibre.DLN.Aoyagi.case1_preserves_stepInv
+    status: stated
     tier: new
-    owner: "parked: content HELD until skeleton; the coupled corank≥2 dependent-width factorisation"
+    owner: seat-L4
     edges: [{type: conjectured-toward, to: b-ladder}]
     kill: battery/g-coupled-binding-334.py
-    notes: "case1 = maximum-difficulty leaf (codex); the charter's named mountain — never MVP'd, never scoped out"
+    notes: "statement-hardened (5 severance rounds); TERMINAL-branch defect caught by seat-L4's probe (layer-axis) → non-terminal guards + the NEW terminal_edge_stepInv leaf in the canonCenter round (cone 6→7; full 9 when baked). Wall mechanics validated vs the proven StepInvShearChild core; proof in flight (Case1Wire parallel-dev)."
 
   - id: b-leaf5-path-fold
     kind: claim
