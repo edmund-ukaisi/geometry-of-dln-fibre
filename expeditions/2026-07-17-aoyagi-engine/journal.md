@@ -8645,3 +8645,19 @@ refutation probe + states its division helpers over an abstract halign; seat-L4'
 CLOSED (don't spend), its traversal-table check re-pointed at verifying the REAL per-edge φ's satisfy
 hshear_center (the constructive discharge L5 needs), core #3 proceeds over the abstract hypothesis.
 The stop-on-suspect discipline priced this at hours, not a burned seat.
+
+## 2026-07-21: φ-RULING — hshear_center as the third TreeEdge proof-field; the classification principle named
+The elder ratified seat-w0l3's fix at placement (i), re-deriving the refutation independently
+((σu)_c = u_pivot·u_c + u_s² passes every edge certificate, kills the quotient) and confirming
+fidelity against the shear-pin (her Q/Schur shears' center-into-center writes carry u_pivot;
+spectator-reads land in spectator-writes or the cofactor side, never in g — the constraint IS her
+hkeep/hread structure at its one load-bearing locus). THE CLASSIFICATION PRINCIPLE, now explicit
+(it has been doing the work all round): EDGE-OWN data → edge proof-fields (hshear/hshear0/
+hshear_center); STATE-LINKED facts → leaf hypotheses supplied by the fold (hsupp — the unique one;
+keep the distinction crisp, uniformity is not a value). Placement (i)'s dividends: the wall reads
+the fact off the edge directly, and adversarial probe-edges die at CONSTRUCTION (untypeable — the
+strongest death). Riders: pivot-inclusive quantifier accepted; seat-L4's real-φ traversal check =
+the POSITIVE witness banked beside the refutation; the register event-entry at integration.
+The spine bundle is now THREE items, one commit, one elder verification pass: foldNR exact-clear +
+the binder trims + hshear_center. Both leaf seats re-pointed (w0l3 wires L3 on the landing; seat-L4
+runs the positive-witness check as the LAST gate before the constraint bakes in, then core #3).
