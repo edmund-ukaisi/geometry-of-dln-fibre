@@ -1574,5 +1574,6 @@ import DLNFibre.Core.Aoyagi.BlowupResolution
 import DLNFibre.Core.Aoyagi.OriginBlowup
 import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
 import DLNFibre.Core.Aoyagi.ConjResolution
+import DLNFibre.Core.Aoyagi.BlockBlowup
 import DLNFibre.Core.Aoyagi.PrincipalInv
 import DLNFibre.DLN.Aoyagi.MonumentAtlas

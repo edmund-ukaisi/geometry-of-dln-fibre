@@ -8253,3 +8253,22 @@ re-price L3 against the amended statement). Stagger tick re-armed (16:06) for se
 if stability holds. NEXT at arch-C's gate report: controller ground-truth (build/batch/cordon/cone +
 all four probe-flips re-run MYSELF) → merge → rev-leaves round-3 (diff-scoped) → elder post-hoc
 ratification of the rendering → wave go-signals against statements that finally match the paper.
+
+## 2026-07-21: AMENDMENT INTEGRATED — the skeleton now matches the paper; ground-truth green
+Merged 248c34615 + aggregator wired (BlockBlowup). CONTROLLER GROUND-TRUTH: build 0 errors; batch 341
+banked-clean; cordon green (29 blueprint sites); driver cone = EXACTLY the 8 leaves (O9 off-cone);
+l4probe_refute DIES (S3 clause works — kernel-verified); root_probe (S3-updated) lives; L7/L8
+anchoring verified by DIRECT READING (hfold : FoldProduced with hdom_ball kills the degenerate atlas;
+the old l7/l8 probes are self-contained historical artifacts — noted in the certificate so nobody
+mistakes their continued compilation for a failed flip). THE AMENDED DESIGN as landed: EdgeSpec
+(δ=[J=0] + center) per edge; BlockChild (σ = sh∘blockBlowupMap, b' = u_p^δ·(b∘σ) uniform);
+Case1Preservation = one center, two forced-distinct pivots, 0<D, 2≤card; StepInv += deepest-point
+vanishing; StepInvChild removed; FoldProduced (leafOf surjection + jac read-off + dom-ball +
+branch-length tie) anchors L5→L7/L8. ARCH-C'S TWO FLAGGED RESIDUALS (routed to round-3 + elder):
+(a) the pivot↔divCoord structural tie DROPPED — RLCT.flatDim (card) vs Aoyagi.flatDim (sum) not
+defeq; branch-LENGTH tie substituted (excludes all-one-step degeneracy, NOT a same-length wrong-pivot
+atlas) — the flatDim coordinate bridge is a named owed item; (b) BlockChild allows sh = id
+(legitimate trivial shear; anti-laziness rides the block-center σ + the b'-law). DISPATCHING:
+rev-leaves round-3 (diff-scoped: the amended statements, esp. hypothesis-suffices on EdgeSpec/
+BlockChild/FoldProduced + the two residuals); elder post-hoc ratification (S3 clause — the one
+shape it did NOT pre-ratify — + the branch-length-tie adequacy ruling).
