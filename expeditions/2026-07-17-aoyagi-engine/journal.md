@@ -8921,3 +8921,21 @@ loss-side rlctGlobal permutation transport is what sorting cannot cover), doesn'
 note, worth the record: the register's first pass produced real value AND a demonstrated failure
 mode in the same document — which is why the operator made it a STANDING office; "the office now
 has its own regression witness."
+
+## 2026-07-21: THE SWEEP TABLE — O1 IS LANDED; the engine's open surface = the 8 leaves + runway, exactly
+seat-api's register-wide ground-truth (fresh worktree, force-elaborated): SIX STALE (O1 — the atlas
+min-over-charts CoV equality is SORRY-FREE at ProductResolution:540, not "in strike"; M12 discharged
+transitively inside O1's clean cone; O9 fully landed — both pinned proofs; plus the already-found
+P1/P2/O5 and this wave's M-units), THREE PARTIAL (P3: the L1/L2/gen-front gauge slices ARE built,
+only the general #44 sorry + the r>0 transport remain; P12: the RLCT-internal card=sum EXISTS — the
+cross-namespace bridge is the only absent piece, residual smaller than "runway"; O4: the VALUE side
+is already sort-invariant via shiftedSorted — the residual is the leaf-level transport only, the
+elder's narrows-not-closes prediction exact), everything else CONFIRMED-as-stated (O2 live: the 8
+sorries enumerated; the hygiene/staged/runway entries verified present-or-absent as written).
+NET, in one line: **every recommended wave-tail unit was already landed; the genuinely-open work is
+the monument's 8 leaves and the named runway.** The elder authors the corrections from the table
+(banked beside the register at its delivery). seat-api GO on M4 (deprecate-by-derivation of the old
+jacDet_blowupMap + the 2≤D artifact audit) + M9 (BlockDivision CommRing lift) — its own suggestion,
+S-priced, file-disjoint from the bake. The composite corollary cCodim_eq_two_lambdaCore merged
+earlier (8e368ba83). The day's arc: the register was written, used, caught stale by its first
+consumer, swept, and corrected — inside six hours, with zero duplicate work built.
