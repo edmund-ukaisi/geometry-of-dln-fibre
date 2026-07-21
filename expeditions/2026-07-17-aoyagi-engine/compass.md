@@ -75,6 +75,11 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   profiles — profiles have NO record field, so the false claim has no formal representation to corrupt.
   The b-chain `b₁|…|b_M` is Aoyagi's own invariant and SURVIVES; only the profile-comparability reading
   dies. Recorded so the monument seat does not transcribe it.
+  **CODA (2026-07-21, threads/41 + the chain battery):** the excised display's truth is PER-BRANCH —
+  the recursion's exponent accumulation nests same-branch divisors (the b-chain IS the profile
+  nesting), so the printed "T ≤ T′ or T ≥ T′" is the per-branch invariant missing its quantifier,
+  and ρ = max chain of binding minimisers is its correct form. The GLOBAL reading remains false
+  ((2,2,1,1)); the defect entry stands; the coda completes it.
 - **Case-2 raw-width vs running-min — CLOSED (thread-31; was UNCERTAIN).** Resolved structurally: the
   ideal-route record carries NO rank-profile label field (only `bexp` + `jac`), the exponent accumulation
   is governed by the RUNNING-MIN, so the p.20 raw-width head-reset label has no representation that could
@@ -159,6 +164,12 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   it, do not pre-declare it tractable. This gap is the thing the compaction must keep unmissable.
 
 ## Standing counsel (rising-sea)
+- **THE PER-FIELD + BOUNDARY AUDIT (refined 2026-07-21, the layer-axis event):** audit each free
+  field AND each field's range boundaries — a field constrained everywhere but at its range's
+  endpoint is severed at the endpoint. Axes to date: content, size, path, coordinate,
+  layer-boundary. The witness bank (overlay/severance-witnesses.md; register §6) holds one
+  exemplar per axis; every fold-sourced ∀-statement re-checks against all five before its render
+  freezes.
 - **BUILD THE RIGHT OBJECT — DO NOT MINIMUM-VIABLE IT (operator, 2026-07-20; the elder's own
   recalibration).** The whole α-chart programme tried to reach the lower bound WITHOUT building the
   ideal machinery Mathlib lacks; the category error is the PROOF a chart cannot dodge it. The elder ALSO

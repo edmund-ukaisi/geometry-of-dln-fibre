@@ -9827,3 +9827,26 @@ nav-13 mandatory joint (DLN-lane → canonCenter: FoldProduced-lock adjudication
 coupling was deferred OUT of the round and L7 lifted without it: dead scope or owed? Tier-3's
 release hangs on the verdict; + the post-bake parallel picture); carto-standing bake trigger
 (cone 6→7 transition, L7 banner, severance coordinate row → closed, STATUS already regenerated).
+
+## 2026-07-21 (controller) — the elder's bookkeeping batch APPLIED (register P6-split + §6; compass coda + counsel); landmark item bounced on a set-divergence
+
+Applied and committed (the elder's pen, controller's commit): owed-register — O6 → P6.1/P6.2
+cross-refs; the P6 entry SPLIT (P6.1 LANDED both tiers, batch-gated / P6.2 pnp-gate DISCHARGED,
+object pinned = max CHAIN, statement-shaping under the six-check contract); §6 event-update (the
+witness bank adds [2,2,2,2,2] + [2,2,5] + the loose-vs-tight reclassification; the boundary-value
+principle refinement as authoritative text; the K4-transfer vindication chain as the designed
+example). Compass — the (T-F) CODA appended to the fidelity-ledger entry (the display's truth is
+per-branch; ρ = max chain is its correct form; the global defect stands); the per-field+boundary
+audit counsel line added to Standing counsel. The cartographer's 3a naming pointer is UNBLOCKED
+(binds to the register's P6.2 text).
+
+**Item (5) BOUNCED for one re-proposal round:** the elder's demotion target
+"(2,2,2,2)-clean-telescoping" is not among the map's actual nine landmarks — the compass shortlist
+and the rendered map set have DIVERGED (a drift item: the map header claims to mirror the compass).
+The elder reconciles (which set is authoritative) + re-proposes the demotion; I set the fields then.
+
+**Also this round:** arch-C armed all three gate conditions (the L5 coupling tripwire; the L4
+base-ancestry check with reject-and-rebase; landing-sound serial integration); seat-L3T spawned on
+the {L3 + terminal_edge_stepInv} one-step batch (own worktree, parallel-dev, statement-lock,
+Case1Wire's crux technique referenced); seat-E's Tier-3 released (develop now, integrate
+post-leaf-stabilization); the live cone corrected to 7 per nav's ground truth.
