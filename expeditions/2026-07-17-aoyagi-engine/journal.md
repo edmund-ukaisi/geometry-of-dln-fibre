@@ -9585,3 +9585,32 @@ cornerToFlat/canonPivotOf/canonCenterOf/IsRealBranch + docstrings; the step-inva
 untouched) — NO L4 rebase from the coordinate work, as predicted. arch-C holds the bake for the
 FULL round (canonCenter + guards + terminal_edge_stepInv + L5 docstring binds), then the full
 re-gate (cone 8→9 named; coordinate + layer witness deaths; write-set; build/cordon) + bake.
+
+## 2026-07-21 (controller, heartbeat tick) — ρ PINNED AND VERIFIED: the elder's max-crossing CONFIRMED, twice sharpened; stall caught; calibration 28 HIT
+
+**P6.2's pnp-gate DISCHARGED.** pnp-order's certificate (threads/41-rho-count-object/, merged
+0abb4c8e1): **ρ = deepest-stratum MAX-CROSSING = max over charts of #{terminal (t̃=0) exceptional
+divisors with M_{s,k} = minAdm co-crossing}; ρ = a(ℓ−a)+1 EXACT both directions** — 993 cores
+(L∈{2,3,4}), zero mismatches, all 5 ground truths, blind Codex xhigh convergent.
+**Controller re-ran rho_battery.py from the branch: EXIT 0** (the verify-cited-scripts gate).
+The printed formula is CORRECT — no fidelity-ledger graduation; finding-2 = proof-shape only.
+Sharpenings: (1) the t̃=0 restriction is LOAD-BEARING (72/993 cores overcount without it;
+[2,2,5] witness — boxedOrder must count terminal divisors only, page-22's candidate rule);
+(2) a GENUINE incidence gap — [2,2,2,2,2]: SIX tight-lattice minimisers, ρ = 5 (profile
+(1,1,1,0) never co-crosses) — max-crossing is STRICTLY the right object, no minimiser
+cardinality equals it; (3) seat-E's six divergent instances re-classified as loose-lattice
+artifacts (tight [3,3,1,1] naive = 1). P6.2's owed content: TWO branch-incidence lemmas —
+UPPER + eq-(1)/(2) ATTAINMENT (Codex: not derivable from the minimiser count). Analytic
+identification stays monument-deferred. Routed: elder (shape ratification + register + bank),
+seat-E (t̃=0 binds boxedOrder — check the landed interface; Tier-2 arithmetic unaffected;
+P6.2 renders post-ratification), pnp-order stood down (task #39 COMPLETE).
+
+**The idle-stall guard caught a real stall:** arch-C's render seat was idle with TWO dispatches
+queued (the round's remaining render). Wake sent by arch-C on my drift-glance ping — the
+monument lane's critical path resumes. **Calibration entry 28: HIT** (the oracle's case-step
+constructor keeps layer LITERALLY unchanged, :190/:198 — fix (a)'s guard discharge at L5 is
+rfl-adjacent; the last pricing uncertainty on the guards half removed). rev-core's stray
+codex artifacts banked (21ad95d85). carto-standing did not survive the VM death — fresh
+cartographer convened under the standing name (5-area housekeeping brief: witness attachment,
+cards/overlay, P6-split pointers, map/STATUS freshness, orphan sweep; incl. the thread-41
+numbering collision flag).
