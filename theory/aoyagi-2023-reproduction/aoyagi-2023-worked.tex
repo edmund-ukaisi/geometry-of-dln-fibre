@@ -665,6 +665,16 @@ $\rlct_{\mathrm{core}}=\tfrac12\min_t M_{s,k}$. Turning this into the closed for
 Theorem~\ref{thm:main} is two nested minimisations: an \emph{inner} balance within a fixed selected set
 (Lemma~3), and the \emph{outer} selection of the set itself (Definition~3 / the $\ell+1$ smallest widths).
 
+\emph{Fidelity note (documented paper defect, 2026-07-21): the rank-profiles carried by the recursion are
+NOT totally comparable, contrary to the paper's implicit reading --- at widths $(2,2,1,1)$ the profiles
+$(1,1,1)$ and $(2,1,0)$ are componentwise-incomparable with equal $\Mval=1$ (witness
+\texttt{g-monument-mval-instances.py}; found by a decorrelated consult, verified by three independent
+runs). No conclusion above depends on totality: the minimisation is over the \emph{set} of admissible
+profiles (a $\min$ needs no total order on its index set), and the divisibility chain $b_1\mid\cdots\mid
+b_M$ --- Aoyagi's own invariant, which does the real work --- is ordered by construction and survives.
+Only an argument leaning on profile comparability itself would be unsound; the formalisation's record
+carries no profile field at all (thread-31 certificate \S d).}
+
 \subsection{Lemma 3: the within-set balance (image-confirmed p.24)}\label{ssec:lemma3}
 
 Fix the selected set $\mathcal M=\{M^{(S_1)},\dots,M^{(S_{\ell+1})}\}$, $P:=\sum_k M^{(S_k)}$, and recall
