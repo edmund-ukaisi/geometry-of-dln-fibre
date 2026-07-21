@@ -9783,3 +9783,26 @@ binding-minimiser poset characterisation (the render's numeric contract); the ma
 render HOLDS for elder pass + pnp confirmation. The de-risk sequence did exactly what it was
 built for: the abstraction question answered and the certificate upgraded before one line of
 Lean was at risk.
+
+## 2026-07-21 (controller) — THE canonCenter ROUND BAKED GREEN: L7 BRIDGE-FREE — the summit's cone carries NO bridge caveat
+
+arch-C's authoritative re-gate on d174f1f41 (merged; controller gate re-derivation running):
+build 8449; cone = EXACTLY 9 (#audit_blueprint: 8 leaves + terminal_edge_stepInv); cordon OK;
+write-set disjoint from L4 except the sanctioned guards; MonumentAtlas census 7. Contents:
+**(1) L7 LIFTED TO HONEST BRIDGE-FREE** — canonCenter pins each branch's blow-up coordinate from
+the paper's (S,J,mergeIdx,d) slot bookkeeping, NO card↔sum bridge; the coordinate-axis witness
+DIES. `exists_coreResolution_via_monument` now closes BRIDGE-FREE: no destination change, the
+operator scope-packet dissolves to FYI (the STABLE-path plan's happy outcome). (2) fix (a)
+CLOSED (both leaves guarded; the layer-axis probe banked). (3) terminal_edge_stepInv with the
+consumer contract MET — verified TWO decorrelated ways (the seat's permanent in-file example +
+arch-C's gate scratch); the literal Fin-1 Pi.one residual unifies with TerminalBezout:293
+verbatim. Bonus catch: the SEAT caught a scalar-vs-function bug in arch-C's spec ((1:ℝ) → Pi.one)
+— the gate's teeth cut both ways. (4) THE SEVERANCE TAXONOMY IS COMPLETE:
+content/size/path/coordinate/layer, one exemplar each, banked.
+
+**On controller-gate green:** push; fire seat-L4's rebase-ready signal (the wall assembles +
+lands, queuing at arch-C's gate); convene nav-13 (the MANDATORY DLN-lane → canonCenter joint —
+incl. the FoldProduced-lock adjudication: the leafOf coupling was deferred OUT of the round, L7
+lifted without it — is it dead scope or still owed? nav ground-truths; Tier-3's release hangs on
+it); convene carto (bake-integration trigger: cone transitions + L7 banner + the severance
+coordinate row bridge-gated→closed).
