@@ -237,6 +237,10 @@ structure TreeEdge (d : Fin (N + 1) → ℕ) (p : TreePath d) where
   a center coordinate is the only one, and its removal (`blockBlowupCoordQuot`) is exact. Replaces the
   withdrawn `hshear_center`. -/
   hshear_pivot : ∀ v, (blockShear shearφ) v pivot = v pivot
+  /-- **The shear is analytic** (seat-w0l3; elder-ratified). The Q/Schur φ is polynomial, so the shear
+  is analytic (⟹ continuous). One field, three consumers: δ=0's `q′=q∘σ` continuity, δ=1's
+  strict-transform quotient continuity, and L6's `Chart.hg_analytic`. Matches `GeoStep.hσ_an`'s shape. -/
+  hshear_analytic : AnalyticOnNhd ℝ shearφ Set.univ
 
 /-- The edge realises a case-2 (full-block append) step. -/
 def TreeEdge.isCase2 {d : Fin (N + 1) → ℕ} {p : TreePath d} (ed : TreeEdge d p) : Prop :=
@@ -342,6 +346,28 @@ theorem stepMap_zero (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d
   rw [show edgeShear d ed 0 = 0 from edgeShearRaw_zero d ed.case ed.shearφ ed.hshear0,
     blockBlowupMap_zero]
 
+/-- **Def-lemma** — `edgeShear d ed` is analytic (`id` at merge/rollover; `blockShear` via
+`hshear_analytic`). -/
+theorem analyticOnNhd_edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    AnalyticOnNhd ℝ (edgeShear d ed) Set.univ := by
+  unfold edgeShear edgeShearRaw
+  split <;>
+    first
+      | exact analyticOnNhd_id
+      | exact analyticOnNhd_blockShear ed.shearφ ed.hshear_analytic
+
+/-- **Def-lemma** — `stepMap d ed` is analytic (`blockBlowupMap` polynomial ∘ analytic shear, `B∘S`). -/
+theorem analyticOnNhd_stepMap (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    AnalyticOnNhd ℝ (stepMap d ed) Set.univ :=
+  (analyticOnNhd_blockBlowupMap ed.center ed.pivot).comp (analyticOnNhd_edgeShear d ed)
+    (Set.mapsTo_univ _ _)
+
+/-- **Def-lemma** — `stepMap d ed` is continuous (from analytic). Feeds δ=0's `q′=q∘σ` continuity, δ=1's
+strict-transform quotient continuity, and L6's `hg_analytic`. -/
+theorem continuous_stepMap (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    Continuous (stepMap d ed) :=
+  continuousOn_univ.mp (analyticOnNhd_stepMap d ed).continuousOn
+
 /-- The accumulated coordinate change along a path (`root ↦ id`; `p.extend ed ↦ foldG p ∘ stepMap`). -/
 def foldG (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     TreePath d → ((Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ))
@@ -380,13 +406,16 @@ that datum: for `j ∈ center\{p}` the strict transform is `v_j`, for `j = p` it
 **Thread-34 addendum:** thread-34's certificate bookkept the division on the q-side; mathematically
 equivalent — the elder corrects it to the resid-side because the data/proof split demands it.
 
-**CAVEAT (flagged for the elder pass):** this substitution form removes `u_pivot` to the residual's
-FULL center-degree; it equals the needed `÷u_pivot¹` exactly when each residual entry is
-center-degree-1 (a single center coordinate × a spectator/tail — the "v_j / 1" regime). The factored
-Let-block form `(blockBlowupCoordQuot on the center factor)·(tail ∘ stepMap)` is realized here for the
-tail-free center-coordinate case; a nontrivial tail evaluated at the full blow-up (rather than the
-quotient) needs `foldResid` to CARRY the (center-factor, tail) factorization — a representation change
-deferred to the elder's ruling on the residual's center-degree invariant. -/
+**ELDER RULING (A′), degree-1 obligation:** this substitution form equals the factored strict transform
+exactly under center-degree-1 (each residual entry = a single center coordinate × a center-disjoint tail
+— the "v_j / 1" regime). The elder RULED (A′): the substitution STANDS; **degree-1-preservation =
+the re-factoring content of L3/L4, not an additional frontier item** (the child re-factors in the child
+center — the proof content moves nowhere, only the accounting of where it lives moves). Structural
+soundness: `foldResid` is total on `TreePath` and every `TreePath` is a real path (built from the
+construction), so there are NO expressible unreachable degree-≥2 states to junk on. Anchor (v) verifies
+the discharge: the case11 re-factoring check at (3,3,4), reconciled by seat-L4's wire-up recipe when the
+wall lands. (The alternative (A″) — a `foldResid` representation carrying `(center-factor, tail)` — was
+NOT taken; no representation redesign.) -/
 noncomputable def foldResid (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     (p : TreePath d) → (Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ)
   | .root => coreGen d e
@@ -502,7 +531,12 @@ so `∘ blockBlowupMap` gains `u_p`). ONE center, the merge/split pivots handled
 (as case-2 — S3 via `hinv` + `stepMap_zero`, divisibility pullback-structural, `hsupp` consumed). NB
 `CenterCoordAligned` is NOT the division mechanism: injectivity ≠ divisibility-preservation (seat-L4
 `shear_gap.lean` — an injective `φbad` that BREAKS the δ=1 division), so it stays a geometry/injectivity
-field for L6/L7; the exact `u_p` division rides `hsupp` + `BlockDivision`. -/
+field for L6/L7; the exact `u_p` division rides `hsupp` + `BlockDivision`. **(A′)** the δ=1 `foldResid`
+strict transform is the `blockBlowupCoordQuot` substitution stand-in; degree-1-preservation (each
+residual entry a single center coordinate × a center-disjoint tail) = the re-factoring content of THIS
+wall, NOT an additional frontier item (the elder's knowing downgrade of the no-obligation want — no
+reviewer should read the substitution/factored gap as an unnoticed defect). Anchor (v) — the case11
+re-factoring check at (3,3,4) — verifies exactly this, discharged at seat-L4's wire-up reconciliation. -/
 @[blueprint]
 theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
