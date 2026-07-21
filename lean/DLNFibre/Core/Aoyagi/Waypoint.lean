@@ -38,7 +38,7 @@ form is known: (a) the **weighted non-injective subadditive** integral bound
 the `g ≡ 1` case); (b) the **InjOn-off-null** relaxation of the equality forms (Mathlib requires
 `InjOn f s` on all of `s`; an a.e.-injective refinement restricts to `s` minus the null branch set
 and absorbs the null image difference). Building a speculative wrapper for an unspecified consumer
-risks a wrong statement, so the reachable deliverable here is the verified catalogue + this boundary.
+risks a wrong statement, so the reachable deliverable is the verified catalogue + this boundary.
 -/
 
 open MeasureTheory Set
