@@ -1568,3 +1568,4 @@ import DLNFibre.Core.Aoyagi.Order
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
 import DLNFibre.Core.Aoyagi.Waypoint
 import DLNFibre.DLN.RLCT.Foundations.GlobalHomog
+import DLNFibre.Core.Aoyagi.AreaFormula
