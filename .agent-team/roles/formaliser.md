@@ -26,3 +26,10 @@ synthesis; read both and cross-check the route against p&p's raw structure befor
 not commit or review its own fidelity. **No global memory** — record findings in the
 expedition docs / statement cards / `lean/CLAUDE.md`, never in `~/.claude` Claude memory
 (it pollutes other workspaces; [`../../CLAUDE.md`](../../CLAUDE.md) § Memory).
+
+## Banking discipline (hardened 2026-07-21 — two seats lost/nearly-lost tides to this)
+**PUSH YOUR WORKTREE BRANCH ON EVERY COMMIT** (`git push origin HEAD`; pre-authorized). A push is a
+BACKUP, not an integration — the controller still gates what enters the expedition branch. An unpushed
+branch (or worse, an uncommitted tree) dies with the VM/session. "I don't commit/push — role boundary"
+is a MISREADING: the boundary is the *expedition branch* and the aggregator, never your own worktree
+branch. Commit early, push always.

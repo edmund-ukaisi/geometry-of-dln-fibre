@@ -7808,3 +7808,18 @@ precision escalations (seam weakened to only-the-minimizer — the geometric obl
 weaker; AtlasRealizesExponents rename). INTEGRATION PASS (on mon-rec's final green): merge + wire
 ResolutionInhabited + C1 re-audit + bank the adapter theorem + O5:865 docstring fix + amplitude note +
 statement card → reviewed + ground-truth + push.
+
+## 2026-07-21: MON-REC INTEGRATED — C1 re-audit PERFECT; the library stands at ONE sorry, verified end-to-end
+Full integration pass complete (merge 0fcb0526f + wiring + banking + docstring fixes + card→reviewed):
+ground-truth GREEN (8975 jobs, 334 roots banked-clean, cordon 17 blueprint sites 0 violations). C1
+RE-AUDIT on the merged tree (elder's condition, controller-executed): all FOUR salvage roots clean-three
+— NO ClearableReify leak; the adapter seam clean-three; exists_coreResolution + the summit carry sorryAx
+from EXACTLY the geometric obligation (the CoV leaf is OUT of the cone — landed). The kernel-checked
+witness (ResolutionInhabited) is now IN-TREE, closing rev-cov-fidelity's rank-1 non-vacuity gap.
+PROCESS HARDENING: mon-rec was the SECOND seat to leave its tide unpushed (uncommitted even) despite the
+brief — the push-on-commit rule moved from brief-text into .agent-team/roles/formaliser.md (brief-text
+decays under long tides; role files are read at dispatch).
+STATE: the destination is ONE theorem away — ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents
+d res (the coupled ideal-route atlas: analytic g + two-sided dom-wide ideal identity + Jacobian
+certificate + hcover BUILD + the seam's two exponent clauses). Everything else in
+aoyagi_learning_coefficient_via_engine's cone is PROVEN, asserted on every build, and fidelity-reviewed.
