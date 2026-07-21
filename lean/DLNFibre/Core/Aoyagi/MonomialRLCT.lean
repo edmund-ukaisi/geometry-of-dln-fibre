@@ -407,8 +407,12 @@ origin is the boxed threshold `min_{d : k_d>0} (h_d+1)/(2 k_d)` on the dominant 
 method permits citing; here it is a `@[blueprint]` frontier leaf with a TRUE statement (the
 monomial-integral / Newton computation for a single normal-crossing monomial times a unit). The
 `DivChain` hypothesis is load-bearing: it is what makes the axis exponents `e k₀` the genuine orders
-and excludes the coupled counterexample (`not_divChain_coupled_example`). -/
-@[blueprint]
+and excludes the coupled counterexample (`not_divChain_coupled_example`).
+
+`Measurable unit` is load-bearing: `wrlctAt` reads `IntegrableAtFilter`, which requires
+`AEStronglyMeasurable`; a non-measurable `unit` continuous only at `0` would make `W` non-measurable
+on every neighbourhood, collapsing `wrlctAt` to `0`. It matches the sibling `hWmeas` in
+`IdealInvariance` and holds trivially for the resolution charts (`unit ≡ 1` per chart). -/
 theorem monomialSumSq_wrlctAt_eq {M D : ℕ} {e : Fin M → Fin D → ℕ} {h : Fin D → ℕ}
     {W unit : (Fin D → ℝ) → ℝ} {k₀ : Fin M}
     (hchain : ∀ k d, e k₀ d ≤ e k d)
@@ -627,7 +631,6 @@ theorem monomialSumSq_wrlctAt_eq {M D : ℕ} {e : Fin M → Fin D → ℕ} {h : 
 **unit multiplicity** (`e k₀ d = 1` on the binding axes — the DLN case, worked.tex:495), the boxed
 threshold is `½ · min` of the integer divisor exponents `h_d + 1`, so `2·wrlctAt = ⨅ binding (h_d+1)`.
 This is the integer min-of-divisor-exponents Object D bridges to `qipMin`/`cCodim`. -/
-@[blueprint]
 theorem monomialSumSq_two_mul_wrlctAt_eq_min {M D : ℕ} {e : Fin M → Fin D → ℕ} {h : Fin D → ℕ}
     {W unit : (Fin D → ℝ) → ℝ} {k₀ : Fin M}
     (hchain : ∀ k d, e k₀ d ≤ e k d)
