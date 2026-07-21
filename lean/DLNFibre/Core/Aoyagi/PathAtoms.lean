@@ -275,12 +275,17 @@ theorem injOn_comp_diff {f g : (Fin D → ℝ) → (Fin D → ℝ)} {Ef Eg : Set
   exact hg ⟨Set.mem_univ _, fun h ↦ hx.2 (Or.inl h)⟩
     ⟨Set.mem_univ _, fun h ↦ hy.2 (Or.inl h)⟩ hgxy
 
-/-- **The `CenterCoordAligned` constructor.** For a GLOBALLY injective shear `sh` (e.g. any
-`blockShear`), `sh ∘ blowupMap p` is injective off `{u_p = 0}` — the pnp-cover coherence field of a
-`StepInvChild`. (Injectivity of `sh` composed with `injOn_blowupMap p`.) -/
+/-- **The `CenterCoordAligned` constructor — the `S = univ` instance.** For a GLOBALLY injective
+shear `sh` (e.g. any `blockShear`), `sh ∘ blockBlowupMap univ p = sh ∘ blowupMap p` is injective off
+`{u_p = 0}` — the pnp-cover coherence field. (Injectivity of `sh` composed with `injOn_blowupMap p`,
+transported across `blockBlowupMap_univ`.) The general-`S` constructor rides `injOn_blockBlowupMap`
+(the O9 atom) once proven — controller integration note, 2026-07-21: this univ-instance restatement
+resolves the merge-skew against the block-form `CenterCoordAligned`; seat-w0l3 generalizes with O9. -/
 theorem centerCoordAligned_of_injective (sh : (Fin D → ℝ) → (Fin D → ℝ)) (p : Fin D)
-    (hsh : Function.Injective sh) : CenterCoordAligned sh p := by
-  show Set.InjOn (fun u ↦ sh (blowupMap p u)) (Set.univ \ {w : Fin D → ℝ | w p = 0})
+    (hsh : Function.Injective sh) : CenterCoordAligned sh Finset.univ p := by
+  show Set.InjOn (fun u ↦ sh (blockBlowupMap Finset.univ p u))
+    (Set.univ \ {w : Fin D → ℝ | w p = 0})
+  simp only [blockBlowupMap_univ]
   exact hsh.injOn.comp (injOn_blowupMap p) (Set.mapsTo_univ _ _)
 
 /-! ## the shear ∘ blow-up step: `|det|` is the pure blow-up monomial (unit ≡ 1) -/
