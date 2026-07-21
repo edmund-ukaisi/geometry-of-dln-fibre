@@ -9543,3 +9543,23 @@ obligation). (iii) Both obligations routed to arch-C — into the round's L5 doc
 AND as a shape-check on terminal_edge_stepInv (its conclusion should hand L5 exactly these two).
 (iv) rev-core stood down (done → report + stand down; a fresh seat convenes if a later batch
 needs one).
+
+## 2026-07-21 (controller) — L4 conjunct-2 CLEARED by its own battery (no second gap); M9 probe green; a message-crossing pattern noted
+
+**seat-L4 retracts the conjunct-2 flag, battery-confirmed:** the ∃C' flexibility handles the
+pivot-factor entries — under the strict transform a pivot-factor residual entry re-factors on its
+DEEPER coord (parent [u₀·u₂, u₁·u₃], C={0,1}, pivot=0 → child [u₂, u₁·u₃], degree-1 on
+C'={1,2}); residual entries are PRODUCTS (deeper coefficient × one center coord), never bare
+units — the earlier worry forgot the deeper coefficient. This IS the elder's ratified A′/v
+re-factoring, now with a concrete battery witness. Net: the ONLY genuine defect in the case
+leaves was the terminal branch (fix (a) in the locked round). seat-L4 develops the non-terminal
+proof in Case1Wire.lean, starting at the FIX-RESID per-entry identity (conjunct-1's crux).
+
+**seat-core:** M9 probe green ([Mul R]/[One R] Gen defs + rfl bridges + MulOneClass/CommSemiring
+lemmas + byte-identical ℝ re-derivation by defeq — zero risk to the frozen atoms). Disposition
+resent (crossing): M9 GO as adjudicated; M4 = (a)+ (the additive unconditional corollary lands
+DOWNSTREAM in BlockBlowup + two-way cross-refs; OriginBlowup untouched; (b) roadmapped).
+
+**Operational note:** second seat today composing a hold while my disposition sat undelivered/
+undrained (seat-E ×2, seat-core ×1). Pattern reads as inbox-drain timing, not substrate loss —
+seats reminded to drain before holding; watching for a genuine delivery failure.
