@@ -9238,3 +9238,16 @@ The elder discharged both duties in one pass:
 - **Target shape** (elder): `thetaCount d = aoyagiTheta …` — a COUNT proved equal to a VALUE
   already landed (Lambda.lean:93). The elder's framing matches the operator's: a harvest over
   built machinery, not a fresh expedition.
+
+## 2026-07-21 (controller) — seat-core SPECIFY checkpoint: statements frozen-unchanged, proving
+
+seat-core reports its worktree up (branch expedition/aoyagi-engine-core off 54302a0e6, shared
+store linked, baseline PrincipalInv builds with the expected 2 sorries) and BOTH target
+statements FROZEN & UNCHANGED from the in-tree skeleton — the statement-lock holds, no fresh
+elder pass needed (ratified at skeleton render). Routes as certified (thread-34): terminal_bezout
+via V′ = V ∩ {unit ≠ 0} (ContinuousOn.isOpen_inter_preimage + isOpen_ne), divisibility from the
+StepInv chain (Fin.sum_univ_one collapse), Bézout witness r = if i=i₀ then unit⁻¹ else 0 with
+ContinuousOn.inv₀; L1 via the Fin-1 repackaging, fwd cofactor = q / bwd = r. Mathlib names
+verified present at the pin. Controller confirmed: proceed (terminal_bezout first), standing
+gates restated (kill-set in-file, force-elaborated clean-three, sorries+cordon per commit,
+push-on-commit, stop-on-suspect on any statement pressure).
