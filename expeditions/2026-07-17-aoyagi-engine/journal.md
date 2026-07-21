@@ -8208,3 +8208,20 @@ spec, where genuine coupled Case-1 gives |S| ≥ 3; spec-feasibility subsumes D-
 Relayed to arch-C as the settled design (supersedes my coarser δstate-Bool relay). seat-L4's
 standalone core unaffected and directly serves the amended shape; w0l3's O9 atom spec confirmed
 |S|-general incl. |S|=1.
+
+## 2026-07-21: API OVERLOAD (2 seats down, both recovered) + S3 — seat-L4's kernel refutation (the 4th sensor)
+Transient 529 overload killed scout-mine (nothing banked — resumed with BANK-FIRST orders; wiring map
+was transcript-only, the near-miss noted) and seat-L4 (banked BEFORE dying — push-on-commit paid:
+d61ef7bd5). seat-L4's banked artifact is a KERNEL-CHECKED `example : ¬ Case1Preservation` (sorry-free)
+— defect S3, and it SURVIVES the edge-spec amendment: at any δ=1 child, b'(0) = 0 + the forced
+0 ∈ Vchart make the child StepInv demand (F i∘g)(0) = 0, which the reified StepInv does not provide
+(counterexample: constant generators). The missing invariant is DEEPEST-POINT VANISHING
+(∀ i, (F i∘g) 0 = 0) — true at the root (coreGen vanishes; R0/R1), trivially preserved (σ0 = 0),
+terminal-consistent (b vanishes there, unit does not) — and it is the pnp-case1 pending-tail
+mechanism wearing its positive face: the fact that kills interior Bézout is the fact δ=1
+preservation NEEDS. FOUR independent sensors have now hit the frozen wall statement: the scout
+(paper δ-law), the elder (paper + block-centers + rebasing checks), the banked thread-34 certificate,
+and seat-L4 (the only FORMAL one). Folded into arch-C's round: the StepInv clause + root_probe
+witness update (constant family dies — replace with a vanishing family) + the refutation joins the
+probe-flip gate. Refutation copied to threads/36-leaf-fidelity/l4probe_refute.lean. NO NEW SPAWNS
+until capacity stabilizes; failed seats resumed with bank-early orders.
