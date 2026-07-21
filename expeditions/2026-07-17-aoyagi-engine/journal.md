@@ -8852,3 +8852,17 @@ module = the abstract core for BOTH leaves; w0l3's L3 = case-2 instantiation + f
 root center, region/edgeδ plumbing, kill-set); seat-L4's L4 = case-1 instantiation (Q̂ for the
 coupled re-factoring). w0l3 GO on the mechanical sum-split meanwhile. After hshear_analytic, every
 sorried leaf has a complete hypothesis set and a banked toolkit — the last known unbuildability.
+
+## 2026-07-21: hshear_analytic RATIFIED — "the last known unbuildability in the leaf set" closes
+The elder's rider ruling, verified against every standing classification: edge-own → edge
+proof-field; universally dischargeable (her φ's are polynomial — Polynomial-analyticity at every
+real edge); one field, three consumers (no separate continuity field — analyticity subsumes);
+matches the ratified GeoStep.hσ_an shape; off the def-path. Its round-5 sweep had flagged the
+missing analyticity as an L6 debt — w0l3 found the sharper fact (LEAF-level unbuildability: the
+leaves quantify over TreeEdge and cannot reach per-instance discharge). THE REGISTER NOTE, recorded
+with the elder's weight: "this closes the LAST KNOWN UNBUILDABILITY in the leaf set — after this
+field, every sorried leaf has a complete hypothesis set and a banked toolkit. That is the wave's
+true opening line, and it was reached the right way: statement-locked, probe-hardened,
+page-anchored, with every hole caught before a seat burned on it." Seven pieces at the render seat;
+the pipeline from here: render → arch-C anchors (i)–(v) → elder one-pass → controller integration →
+the leaf instantiations on the proven abstract core.
