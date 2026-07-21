@@ -759,3 +759,20 @@ lane-4 piece. BONUS: rlctAtOn_comp_homeomorph is banked (Case222Lemma2) — the 
 already available once codex-fix (e) packages the flatten as a homeomorphism; lane 4 = ONE carrier hop +
 adapters, smaller than budgeted. Strategy delta: lane 4 may be the SHORTEST lane, not a long one —
 re-rank at strike opening.
+
+## 2026-07-21 (controller, autonomous stretch) — leaf-1 seam calibration (post-split)
+Q (load-bearing for the wave): does the LANDED RegionRepresents match what the ratified
+StepInv/terminal_bezout split produces at leaf 1? EXPECTATION (pre-read): one predicate carrying BOTH
+directions on nbhd (0.8); ContinuousOn cofactors, vanishing allowed, pointwise-on-V not germ (0.85);
+lead = the bexp monomial (0.7).
+ACTUAL (IdealInvariance.lean:84 + ProductResolution.lean:112–116): PARTIAL MISS on shape —
+RegionRepresents is SINGLE-direction (G repr. by F, coefficient matrix a i j); the record carries TWO
+fields (hideal_fwd/hideal_bwd). HIT on the region form (ContinuousOn + ∀ u ∈ V pointwise). NUANCE
+CAUGHT (the entry's real yield): the record's identity is against `monomialFam bexp` — the FULL
+M-family diag(b), not the single b_{k₀} that StepInv tracks. The bridge: fwd needs only ONE family
+member (a i k₀ = q_i, rest 0 — divisibility by b_{k₀} suffices); bwd needs monomial_j = (b_j/b_{k₀})
+· (terminal-Bézout combination), where b_j/b_{k₀} is polynomial BY THE CHAIN — so the chain hypothesis
+in StepInv is exactly what makes hideal_bwd feed, independently re-deriving the elder's leaf-1-feed
+check against the actual Lean. Strategy delta: leaf 1 is honestly TWO lemmas (fwd trivial-embed from
+divisibility; bwd = terminal_bezout × chain-division); the b_{k₀}-vs-family seam goes in the L1 seat
+brief so a wave seat doesn't trip on it.
