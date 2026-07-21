@@ -64,3 +64,17 @@ only at the terminal chart.
 - Two-of-more charts modeled; pivot-ordering (`k₀` rendering) needed for the Lean statement.
 - Suggested boundary-marker lemma: `bezout_iff_terminal` (`b₁ ∈ ⟨entries⟩ ⇔ S=L ∧ J≥1`) to
   force terminal-only scoping in the skeleton.
+
+## ADDENDUM (elder-ordered, 2026-07-21) — the division's BOOKKEEPING SIDE is corrected; the law survives
+This certificate's witness law places the exact division on the WITNESS side: q′ = (φ*q)/u^δ with
+b′ = u^δ·φ*b and the residual carried implicitly. Under the foldState data/proof split (the elder's
+design guard), the division belongs on the RESIDUAL side: **resid′ = the strict transform
+(the per-case Let-block closed forms — for center coordinates, blockBlowupCoordQuot, which is data),
+and the witness law becomes q′ = q∘σ — no division on the witness at all.** The two bookkeepings are
+mathematically equivalent (the u^δ factor sits in resid′ instead of q′); the EXACTNESS content —
+this certificate's central finding — is unchanged and remains the load-bearing fact. Also corrected
+in the same round: the composition ORDER (see thread-33's addendum — the per-step atom is
+blockBlowupMap ∘ shear, blow-up outermost, THIS certificate's β∘σ_shear order, which the elder
+adjudicated as the paper-faithful one; thread-33's opposite grouping was the initialization
+artifact). Elder rulings in the journal, 2026-07-21 (FIX-A + FIX-RESID — "one mechanism, two
+halves").

@@ -8743,3 +8743,22 @@ exceptional coords outside the center — unconditional SupportedOn would be und
 design-call's M'=1-COMPANION reading (the fixed-width pullback model = the paper's variable-width
 bookkeeping compressed into ConState; docstring rider), and "my criterion was always consumption,
 never role" on hd. The verification stack is now catching errors in ITS OWN rulings within the hour.
+
+## 2026-07-21: FIX-RESID RULED — (A) via the quotient-function vehicle; the wall shrinks; the elder owns its miss
+The ruling: δ=1 child residual = the STRICT TRANSFORM defined by the per-case Let-block closed forms
+(division-free by construction — the d′-entries ARE the new chart coordinates; blockBlowupCoordQuot
+is DATA: v_j for j ∈ center\{p}, 1 at the pivot). THE GUARD REFINED, principled: "division-by-
+monomial in a def is banned; the total closed-form quotient of a center coordinate under its own
+blow-up is data." δ=0 keeps the pullback; the uniform-else count stands; FIX-A + FIX-RESID = one
+mechanism, two halves (pivot-keeping makes the strict transform well-defined). THE PLEASING
+CONSEQUENCE: q′ = q∘σ — no division on the witness anywhere; "every hard ∃ this round was hiding a
+wrong def; this was the last one" — the wall's content is now the per-case pullback identity
+resid_j∘σ = u_p·resid′_j (WeightedCofactor + BlockDivision; "mechanical is now plausible").
+The elder OWNED the verification miss plainly ("I checked the algebraic shape and not the u_p-order
+balance — the codex decorrelation caught what my pass did not; the parallel-instruments design paid
+for itself twice in one round"). Thread-34 corrected by ADDENDUM (the division's bookkeeping side:
+q-side → resid-side; the exactness content unchanged; its β∘σ order vindicated). Three verification
+anchors locked for arch-C's draft (the codex witness closes with q′=1; the (3,3,4) case11 battery;
+the root edge — controller-checked: orders balance d vs d ✓). All prior ratifications stand incl.
+the δ-conditional hsupp (triply vindicated). ONE bundle, ONE elder pass on arch-C's draft; then
+integration; then L3 wires and the wall proof opens on defs that are, at last, the paper's own.
