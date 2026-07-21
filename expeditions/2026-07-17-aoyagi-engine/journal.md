@@ -8357,3 +8357,19 @@ free-atlas falsity + the case-2-b′-note were ONE root cause; the edge-indexed 
 paper's own frame. COMMISSIONED: scout-mine's (3,3,4) end-to-end EdgeSpec traversal check (paper's
 (S,J,t̃,center,pivot,δ) table vs the fold's edge data, incl. the transpose boundary) — the
 decorrelated gate probe on arch-C's render, per the elder's constructibility ask.
+
+## 2026-07-21: WALL CORE #1 LANDED — BlockDivision (the exact-division heart), controller-verified clean-three
+seat-L4 delivered core piece #1 sorry-free: Core/Aoyagi/BlockDivision.lean (5 theorems, ~90 LoC) —
+blockBlowupMap_center_eq (center coords = w_p × EXACT polynomial quotient), spectator_eq (j∉S
+unchanged — W2 formal), quotient continuity/analyticity, blockBlowup_center_comb_eq (center-supported
+residual combinations inherit the w_p factor = the residual-level division). MERGED + aggregator
+wired; controller ground-truth: build 0 errors, cordon green, spot axioms = clean-three. TWO seat
+flags: (1) the block-center shape matters for the ALGEBRA (spectators survive at w_p=0 — naive
+junk-division does NOT discharge δ=1; the residual must BE the geometric center block) — the seat
+independently landed on the elder's edge-indexing ruling from the algebra side; (2) LAZY-WITNESS
+residual-collapse still open at the abstract StepInv level (resid'→Fin-1-trivial + q'=whole-quotient
+is type-legal; the guards don't close it) — RELAYED to arch-C mid-render: the edge-indexed BlockChild
+must pin the CHILD RESIDUAL (length + center-block identity) as spec-supplied/fold-pinned — the
+closing principle applied to the child residual. Seat proceeds to core #2 (the Q̂ conjugation
+machinery, ~120–180 LoC, codex consult on the abstract shape first); #3 (one-center-two-pivots)
+waits on the render.
