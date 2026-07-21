@@ -1576,5 +1576,6 @@ import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
 import DLNFibre.Core.Aoyagi.ConjResolution
 import DLNFibre.Core.Aoyagi.BlockBlowup
 import DLNFibre.Core.Aoyagi.BlockDivision
+import DLNFibre.Core.Aoyagi.WeightedCofactor
 import DLNFibre.Core.Aoyagi.PrincipalInv
 import DLNFibre.DLN.Aoyagi.MonumentAtlas

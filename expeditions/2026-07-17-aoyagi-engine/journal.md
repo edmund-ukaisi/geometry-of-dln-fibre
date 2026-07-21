@@ -8421,3 +8421,21 @@ FOUR review rounds + two elder rulings + one kernel refutation exchange + a trav
 skeleton's statements now match the paper on every load-bearing move with every known refutation
 class dead. DISPATCHED: rev-leaves ROUND-4 (the wave-gating final pass); sync notes to seat-w0l3
 (O9 proofs onto the merged tip) + seat-L4 (core #3 unblocks on round-4 PASS).
+
+## 2026-07-21: WALL CORE #2 LANDED — WeightedCofactor (Q̂), inverse-free; the residual-pin question sharpened
+seat-L4 delivered core #2 sorry-free: Core/Aoyagi/WeightedCofactor.lean — the thread-34 Q̂ as an
+INVERSE-FREE atom (codex-corroborated design: Q̂ defined entrywise c·R with c the continuous
+divisibility ratio — no diag(b)⁻¹ junk, b vanishes at 0). Five theorems: the commutation
+diag(b)·R = Q̂·diag(b) (pointwise ratio witnesses, no inverse); ContinuousOn; the residual transport
+diag(b)·Hpre = Q̂·(diag(b)·Hnext) from the Schur identity (the row-quotient regeneration); unipotent-
+preserved; = I at 0. No determinant/inverse anywhere. MERGED + wired; controller ground-truth: build
+0 errors, cordon green, both load-bearing theorems clean-three. Both δ-agnostic step-algebra atoms
+(#1 exact-division, #2 Q̂) now banked — the wall's proof playbook is becoming library.
+KEY RELAY routed to round-4 (live): the render pins the child residual by LENGTH+SUPPORT; seat-L4
+(codex-confirmed) argues a strict-transform-pullback residual can satisfy both while dodging the
+canonical Schur-reduced Hnext (Q̂ is load-bearing exactly for the canonical passage Hpre = R·Hnext, a
+LEFT row-op a per-entry pullback cannot produce) — under-determining the fold's state and possibly
+stranding terminal_bezout. rev-leaves adjudicates: does edge-indexed reachability already force the
+canonical residual, or does BlockChild need resid' DETERMINED (= the child-center coordinate block,
+no existential)? One clause for arch-C if needed — batched into the round-4 verdict. Core #3 waits on
+round-4 + w0l3's O9; the seat meanwhile hardens #2 with the §4 (2,2,1) certificate-tie battery.
