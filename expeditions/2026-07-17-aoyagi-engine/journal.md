@@ -9758,3 +9758,28 @@ sequence axis, K2); the minimising target = a carried value hypothesized to be t
 minimum, never locally recomputed. (4) The elder's commendation of seat-E's two-instrument
 concurrence, inbox discipline, extraction-risk honesty, and de-risk instinct relayed to its
 thread as asked. PENDING pnp-order charge: fires when seat-E's draft lands.
+
+## 2026-07-21 (controller) — P6.2 EXTRACTION RESOLVED: ρ = max CHAIN (not antichain); the hard half turns Core-pure; pnp confirmation charged
+
+seat-E's de-risk battery (chain_vs_antichain_battery.py, 1018 cores L≤4, zero mismatches incl.
+[2,2,2,2,2]) resolved the extraction question and CORRECTED the certificate's flagged
+speculation: **ρ = max CHAIN of binding minimiser profiles under the componentwise ≤** — the
+certificate's "max antichain of co-occurring profiles" (pnp-order's own "Speculation, register
+as such") is the Dilworth-DUAL of the truth. Binding minimisers on one branch are NESTED (the
+recursion's exponent accumulation); at [2,2,2,2,2] the six binding profiles have longest chain 5,
+(1,1,1,0) ⊀ (2,1,0,0) breaking any 6-chain. The certificate's VERIFIED facts stand; the
+proof-structure note refines.
+
+**Consequence — the revised tiering (strictly better):** UPPER + ATTAINMENT collapse into ONE
+Core-pure poset identity `maxChain(bindingMinimisers ℓ a) = a(ℓ−a)+1` (no tree anywhere; ties to
+the landed bandCount_eq); the Tier-3 residue shrinks to the chart↔chain realization (each leaf's
+binding set IS a chain; some leaf attains the max — FoldProduced-gated). Routed: elder checking
+the correction + revised tiering + one pin-reconciliation (its pin (c) "order-free" vs a chain's
+per-instance-proven comparability — read as K2-consistent, elder rules); **pnp-order RESUMED on
+the elder's hard gate** — decorrelated from-scratch confirmation of the chain reading (both
+directions, its own instruments) + the nesting MECHANISM pinned Lean-buildably + its certificate
+note amended (its pen). seat-E: atlasOrder API proceeds (cleared); battery extension to pin the
+binding-minimiser poset characterisation (the render's numeric contract); the max-chain Lean
+render HOLDS for elder pass + pnp confirmation. The de-risk sequence did exactly what it was
+built for: the abstraction question answered and the certificate upgraded before one line of
+Lean was at risk.
