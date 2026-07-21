@@ -7696,3 +7696,15 @@ discharge, certificate in-tree). Ground-truth root build of the combined tree qu
 semaphore (seats' redundant confirmation builds hold the slots — waited rather than killed, per the
 process-cleanup lesson). ON GREEN: push + dispatch SEAT-B (the final lane), + elder convening (ledger
 items + C-delta + A/C-landing ratification + the bridge's _root_ disambiguation eyeball).
+
+## 2026-07-21: SEAT-B honest partial — the sorried surface is now EXACTLY the two monuments; both dispatched
+Seat-B landed 3/5 (per-chart value clean-three via A∘C — the wiring the whole blueprint was built for;
+the negative guard; divisorMin wired to a single dependency) + reusable A-API; NO statement suspects; the
+kill-path now carries sorryAx from EXACTLY leaf 3 (atlas CoV) + leaf 5 (the recursion) and NO cites — the
+summit goes clean-three the day both land. Seat-B correctly priced the remainder as dedicated builds and
+named the owed infrastructure: (leaf 3) the InjOn-off-null area-formula relaxation + off-origin Object C
++ compact finite-subcover assembly; (leaf 5) the full Cases-1&2 recursion per the thread-31 certificate.
+Merged (union AxCheck; tip 40c27b2d1 local, ground-truth build running). DISPATCHED IN PARALLEL (independent
+lines): mon-cov (the atlas CoV theorem, staged: 3 reusable infrastructure pieces then the assembly) +
+mon-rec (the recursion construction, staged 1–5 per the certificate playbook, T-profile ledger warning
+embedded, hcover build-vs-cite decision point pre-noted). Both push-on-commit, both report per stage.
