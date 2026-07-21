@@ -8700,3 +8700,21 @@ PROOF layer now — its φbad is pivot-keeping, the edge constructs, the divisio
 Codex decorrelation on the narrow order question commissioned (non-blocking bake; gates the WALL's
 consumption — the substitution-direction class where our own two certificates disagreed earns a
 second instrument). Both leaf seats re-pointed; the wall SIMPLIFIES (structural factor × BlockDivision).
+
+## 2026-07-21: FIX-A BUNDLE RENDERED (e9608bbf4) — elder one-pass + two rulings pending; L3-race call MADE
+arch-C rendered + self-verified the four items (build/cone green; terminal foldNR=1 defeq; root
+non-vacuity). The defining equations: foldNR/foldResid with the UNIFORM terminal guard (full-width
+pullback until N ≤ nextState.layer → collapse to the Fin-1 unit — subsuming the per-case snoc;
+design call to the elder); stepMap = B∘S; hshear_pivot; the trims. THREE FLAGS DISPOSED:
+(1) hsupp → the elder WITH my analysis attached (RETAIN: the flip makes the CENTER COORDS
+structurally divisible, but that transfers to the residual only THROUGH center-support — resid∘B∘S
+∈ ⟨v_pivot⟩ requires resid ∈ ⟨center coords⟩; a spectator-content residual still refutes at
+{v_pivot=0}; the original free-center refutation was about the residual's content, not the shear —
+the flip killed the SHEAR hole, hsupp kills the CENTER hole, two severances two closures; the
+fidelity framing is order-independent); (2) hd on exists_atlasRealizesExponents → drop, M5-criterion
+(consumption, not driver-status) — elder confirm requested; (3) L3-race → MY CALL MADE: integrate
+item 1 + rebase the seat (the old foldResid never reaches terminal=1 — a proof against it targets a
+wrong-for-L5 object); w0l3 paused on residual-shape work, shear-side continues, rebase at
+integration. No battery re-run needed (DLN-side only; Engine untouched — arch-C + seat concur).
+PENDING: the elder's one pass → my integration + full build + AxCheck → L3 wires; pnp-order
+(blind decorrelation) gates the WALL's consumption of the flip.
