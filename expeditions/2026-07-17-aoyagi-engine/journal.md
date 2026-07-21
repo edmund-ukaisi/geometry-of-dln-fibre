@@ -7724,3 +7724,17 @@ adapter importing ONLY the audited-green closure, never a fossil module) + the G
 — PRE-ENDORSED pending ELDER ROUTE RATIFICATION (charter §3/RETIRED.md bless salvage; adoption gated).
 hcover build-vs-cite stays open until the build meets it on evidence. The thread-31 certificate stands
 as the MATH playbook; only its Lean-realization stage is superseded by reuse.
+
+## 2026-07-21: elder RATIFIES the salvage route (definition-level verification) — conditions C1/C2/C3 relayed
+Elder read IsFullMonomialization (EngineDefs:268) + the three salvage theorems directly: purely
+ledger-combinatorial; the F1-killed chart content is the SEPARATE ChartBridge conjunct, untouched by the
+salvage — compass-F2's pre-blessed "salvaged truth". "Rebuilding 4000 kernel-checked lines to avoid a
+retired NAMESPACE would be exactly the timidity-disguised-as-rigor failure mode." CONDITIONS (relayed to
+mon-rec): C1 import boundary (green closure only, never ChartBridge/CanonicalResolution/Geo*; controller
+re-derives the 4 salvage roots' footprints at integration); C2 kill-set extension — BOTH defect witnesses
+(2,2,3,2) + (2,2,1,1) checked vs the decorrelated battery, not Engine-derived numbers; C3 progress-bar
+discipline (the adapter = BOOKKEEPING discharging hlb/hattain, zero frontier progress) + hcover deferral
+= sequencing only (a cite would be a DoD change → operator-gated). Route (B) re-ratified as the honest
+record-shape test. Compass History edit applied + pushed (the salvaged PREDICATE distinguished from its
+retired bundle-role — future audits won't trip). The remaining mountain is the real one: the coupled
+analytic geometry (RegionRepresents + hjac + hg_inj + hcover at corank≥2).
