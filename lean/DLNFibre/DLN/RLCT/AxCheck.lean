@@ -162,6 +162,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJMeasurableEigendecomp
 import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 import DLNFibre.Core.Aoyagi.IdealInvariance
 import DLNFibre.Core.Aoyagi.MonomialRLCT
+import DLNFibre.DLN.Aoyagi.LearningCoefficient
 import Meta.Cordon
 
 /-!
@@ -1313,6 +1314,14 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.Core.Aoyagi.exists_unit_sumSqFam_monomial,
   DLNFibre.Core.Aoyagi.monomialSumSq_wrlctAt_eq,
   DLNFibre.Core.Aoyagi.monomialSumSq_two_mul_wrlctAt_eq_min,
+-- Aoyagi ENGINE corollary — the SEAT-BRIDGE (lane-4) reduction leaves. `coreReduction`
+-- (`rlctGlobal (lossDLN d 0) = rlctAt (∑coreGenᵢ²) 0`, the deepest-point ∘ flatten ∘ homeo-invariance
+-- reduction), `exists_flatten` (the LINEAR m.p. origin-fixing homeomorphic flatten), and the Frobenius
+-- flatten identity `lossDLN_zero_eq_coreLoss`. All three clean-three [propext, Classical.choice,
+-- Quot.sound], S2-FREE, no `sorryAx` — the value path avoids `exists_coreResolution` (the monument).
+  DLNFibre.DLN.Aoyagi.exists_flatten,
+  DLNFibre.DLN.Aoyagi.lossDLN_zero_eq_coreLoss,
+  DLNFibre.DLN.Aoyagi.coreReduction,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from
