@@ -7484,3 +7484,20 @@ the AoyagiCited payoff theorems, outside the asserted set). 4 deliverables clean
 exactly the tracked-open set; 0 gate throwErrors. Grep half: OK (808 files, 3 located cites, 14 blueprint
 sites, 0 violations). The two-part hardened cordon is calibrated on this VM — the pending-calibration note
 on 8a6f232c1 is DISCHARGED. Cordon chapter CLOSED; remaining foreground = blueprint v3 (architect running).
+
+## 2026-07-21: blueprint v3 DELIVERED (architect/aoyagi-v3 @ ddffd0526, PUSHED) — verification bar running
+v3 report: all six v2 defects addressed by STATEMENT design — Resolution record certifies hg0/analytic/
+hcover/inj-off-null-excep + the JACOBIAN CERTIFICATE (|det Dg| = jacWeight·|unit|, unit 0 ≠ 0); C guarded
+by the divisibility chain; existence guarded 0<N, d>0; divisor obligations = min-attainment; corollary
+OBTAINS res (B on the cone); E = combinatorial def + proved lemma, analytic seam named in prose. Negative
+guards PROVED in-file (not_divChain_coupled_example — excludes the v2 killer b=(u₀u₁²,u₀²u₁);
+no_unit_forces_axis_jac_coupled). D FULLY PROVED (divisorMin_eq_cCodim, zero sorries); E zero sorries.
+Kill-path cite-free (architect-run #print). Closure elaborates green (3753 jobs); cordon OK (32 blueprint
+sites). Controller spot-checks: branch on origin ✓ (push-on-commit worked), cert fields present ✓, base =
+cc9e5f191 (docs-only divergence, clean integration). Open design questions (f)1–4 recorded in the report
+(single-chart vs atlas-min; ae-mono leaf; axes↔divisors modeling; flatten bundling) — elder to rule.
+VERIFICATION BAR RUNNING (3 decorrelated channels): (1) architect's own spawned fidelity reviewer (relay
+pending); (2) controller codex COUNTEREXAMPLE HUNT (thread 30, /tmp/aoyagi-v3-review @ ddffd0526) — the
+instrument that killed v2; (3) elder-v3 ratification vs charter + rulings on (f)1–4 + strike-order/
+parallelisation read. Aggregator NOT wired until the bar clears (architect concurs). Sorry-count note:
+raw tokens 19 vs claimed 15 — counting delegated to the hunt (target 5).
