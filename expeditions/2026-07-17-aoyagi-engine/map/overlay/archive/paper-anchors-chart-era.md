@@ -1,3 +1,8 @@
+> **ARCHIVED (re-root #1, 2026-07-21).** Chart-Engine-era overlay, kept verbatim for salvage
+> archaeology ONLY — its "live/in-flight" framing is NOT current. The live overlay is one
+> directory up; the route is retired (`lean/DLNFibre/DLN/RLCT/Engine/RETIRED.md`, charter §3,
+> compass F1).
+
 # Overlay — paper anchors (cartographer-6, 2026-07-19, operator fidelity-steer pass)
 
 *Every landmark + banked family carries a PAPER ANCHOR: the `worked.tex` §/line (and preprint page) it

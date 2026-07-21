@@ -1,3 +1,8 @@
+> **ARCHIVED (re-root #1, 2026-07-21).** Chart-Engine-era overlay, kept verbatim for salvage
+> archaeology ONLY — its "live/in-flight" framing is NOT current. The live overlay is one
+> directory up; the route is retired (`lean/DLNFibre/DLN/RLCT/Engine/RETIRED.md`, charter §3,
+> compass F1).
+
 # Overlay — wiring-endgame (cartographer-6, pass #5 + placement addendum)
 
 *ADDENDUM (tick 289, elder charge-4 — assembly placement check): §2e added (the (D) R-split mechanics,
