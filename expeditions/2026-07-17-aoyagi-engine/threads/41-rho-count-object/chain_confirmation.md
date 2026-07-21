@@ -41,6 +41,33 @@ together in any chart, so Dilworth duality is wrong here." Warned that unique bo
 (gave a counterexample) and that "coordinate-sum is a rank only if every cover increases the sum by exactly
 1; sparse profile posets can have covers that jump several units." Exact match to the battery's findings.
 
+## Enrichment 1 — the (T-F) coda: the b-chain divisibility IS the per-branch nesting (`enrich_battery.py` E1)
+The p.15 "T ≤ T′ or T ≥ T′" totality display is the ledgered (T-F) defect — FALSE globally (witness (2,2,1,1),
+compass) — but TRUE PER-BRANCH, and that per-branch invariant is exactly what makes ρ a chain-length. The
+mechanism is the banked b-chain: thread-31's closed form b_i = ∏_{t̃_{s,k}<i} u_{s,k} gives b₁|b₂|… by
+construction, and the factor-containment {i : u_{s,k} | b_i} = {i : i > t̃_{s,k}} is TOTALLY nested by t̃
+(verified). So exponent accumulation nests same-branch divisors: **co-crossing ⟺ same-branch ⟺ nested ⟺
+chain** — the display printed without its per-branch quantifier. Verified: 22190 nonempty leaves, 0
+non-chains. This ties the chain reading to machinery the expedition already banked (b-chain / DivChain) —
+the cheapest Lean route for the eventual Tier-3 realization. Coda now recorded in `compass.md` (T-F entry).
+
+## Enrichment 2 — the non-degenerate domain: minMval ≥ 1 is the exact fence (`enrich_battery.py` E2)
+seat-E's abstract battery holds 769/775 with 6 minMval=0 degenerate exceptions; proposed domain
+`non-degenerate ⟺ all reduced widths positive ⟺ lambdaCore ≠ 0 ⟺ minMval ≥ 1` (in-tree
+`lambdaCore_eq_zero_iff`). Independent adjudication (Def-3 CHECK-0 selector, not crude max-ℓ):
+- **(i) minMval ≥ 1 is the exact boundary.** For EVERY positive-width core in the 993-core scan,
+  minMval ≥ 1 (min found = 1) — and the GEOMETRIC reason is clean: {∏C = 0} is a proper subvariety (∏C is
+  a nonzero polynomial map), so codim ≥ 1, so minMval ≥ 1. Thus on genuine cores the fence holds
+  AUTOMATICALLY; there is no positive-width exception.
+- **(ii) On the non-degenerate domain the chain identity holds with NO further hypothesis** (0 identity
+  failures over 993 positive-width cores).
+- **(iii) The degenerate side is minMval = 0 ⟺ a reduced width is 0** (a rank-deficient layer, r = H^(s)):
+  no binding stratum, rlct_core = 0, so ρ and the max-chain do not refer to a real pole — they need not
+  agree, and minMval ≥ 1 is the right fence. My scan hits minMval = 0 ONLY when a width is 0 (212 such
+  degenerate configs). Reconciliation: seat-E's 6 positive-parameter exceptions are this same
+  reduced-width-0 boundary seen in the abstract (ℓ,a) parameterization; both confirm the fence
+  `minMval ≥ 1 ⟺ positive reduced widths`.
+
 ## Consequence for P6.2 (seat-E may Lean-build)
 The UPPER lemma is: **the binding-minimiser poset is graded of height a(ℓ−a)+1** (⟹ max-chain = a(ℓ−a)+1),
 with ATTAINMENT the eq-(1)/(2) maximal chain. This is a poset/combinatorics statement over the abstract
