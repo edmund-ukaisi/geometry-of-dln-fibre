@@ -10086,3 +10086,25 @@ posed: which clause; the S3-vanishing interaction; seventh AXIS vs the sixth's l
 generalisation). The trigger = seat-L3T's Codex verdict. seat-L3T: banking plan endorsed (the
 conjunct-1 lemma + the unified conjunct-A product identity — honest under every fix); the ack
 protocol made a hard requirement (third reminder — reports against unread holds twice).
+
+## 2026-07-22 (controller) — the seventh pre-adjudicated: ANCHOR-VALUE axis named; the escalation test charged; the round poised to bake once
+
+The elder's pre-adjudication: (a) DEFAULT CLAUSE = vanishing-at-0 on the Deg1 coefficients, with a
+MECHANICAL escalation condition charged to seat-L3T (does vanishing self-propagate through the
+re-factoring child-coefficient algebra? if the induction needs more — S3's own too-weak-to-induct
+genesis — the clause escalates to IDEAL-MEMBERSHIP c ∈ ⟨deeper coords⟩); TRAP caught in my
+candidate framing: "deeper-supported via IgnoresCoords" does NOT close the countermodel (constants
+ignore everything). (b) The S3 hierarchy is STRICT one level down (coefficient-vanishing ⟹
+entry-vanishing, never conversely); S3 stays; a one-line implication lemma prevents duplication;
+"one fact wearing three depths" (pnp interior-Bézout impossibility → S3 → coefficients) goes in
+the docstring. (c) THE SEVENTH AXIS NAMED: **anchor-value** — audit a function-valued field's
+VALUE AT THE DISTINGUISHED POINT, not only its support; instances six and seven are one mechanism
+at construction-level and statement-level; the counsel made precise: "batteries validate
+constructions, never free statements' fields." hcleared vindicated a FOURTH time — "the wave's
+highest-paying single hypothesis."
+
+arch-C: amendment priced surgical (one clause on Deg1SupportedOn + Deg1SupportedSlot, rippling to
+FoldStepInvAt + LastLayerInv's left disjunct; subsumption survives — both sides gain the clause;
+everything else untouched); the render continues shape-unaffected with the clause site PARAMETRIC
+so the ruling lands as a one-line swap; pre-gating in progress; the origin-value countermodel
+(c ≡ 1) becomes the seventh regression witness. ONE bake when the test + Codex verdict land.
