@@ -74,7 +74,7 @@ theorem qipMin_eq_minAdm (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N
 /-- **The adapter (bookkeeping).** Given the realization seam, the two combinatorial conjuncts of
 `exists_coreResolution` — `hlb` and `hattain` against `qipMin d` — hold, sorry-free. `hlb` rides
 `minAdm_le_terminalExponents`; `hattain` rides `o5_core_realized`; both via `qipMin_eq_minAdm`. Zero
-geometric content — the geometry lives entirely in `AtlasRealizes`, which is a hypothesis here. -/
+geometric content — the geometry lives entirely in `AtlasRealizesExponents`, which is a hypothesis here. -/
 theorem hlb_hattain_of_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (h : (kostantPartitions d 0).Nonempty) (hne : (qipFeasible d).Nonempty)
     {F : Fin Mgen → (Fin D → ℝ) → ℝ} (res : Resolution F (0 : Fin D → ℝ))

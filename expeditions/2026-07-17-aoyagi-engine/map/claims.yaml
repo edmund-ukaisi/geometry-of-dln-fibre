@@ -1,217 +1,347 @@
+# PROPOSED full rewrite (cartographer, 2026-07-21, tip 70a8ec6cf) — the RE-ROOT on the A–E frame.
+# Single curated writer of claims.yaml is the CONTROLLER: apply by replacing claims.yaml with this
+# body (drop the .proposed banner). The chart-Engine-era map it replaces is archived verbatim in
+# git history (claims.yaml @ 70a8ec6cf) and its node-id dispositions are in overlay/naming.md
+# § "Chart-era node ids". Landmark field: elder proposes / controller sets — the 9 below mirror
+# compass § Landmarks rendered into the map; adjust on elder counsel.
+
 meta:
   expedition: 2026-07-17-aoyagi-engine
-  roots: [mint-repoint]
-  updated: 2026-07-17
+  roots: [aoyagi-summit, object-a, object-b, object-c, object-d, object-e]
+  updated: 2026-07-21
 
 nodes:
-  - id: mint-repoint
-    kind: claim
-    title: "unconditional mint: aoyagi_learning_coefficient = gen ∘ hbox + L1 fold"
-    prop: |
-      (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r),
-      for B.rank = r, 1 ≤ L, r < H s all s — no Aoyagi hypothesis, clean-three.
-    lean: aoyagi_learning_coefficient
-    status: stated
-    tier: new
-    owner: "parked: until hbox-root lands (consumer stack proven; wiring only)"
-    landmark: true
-    edges:
-      - {type: needs, to: hbox-root}
-    evidence: [lean/DLNFibre/DLN/RLCT/Validate/HeadlineGenAssembly.lean]
-    notes: "gen-headline proven conditional solely on hbox; legacy Skeleton stubs re-point at mint"
 
-  - id: hbox-root
-    kind: claim
-    title: "(□) ∀-M box-threshold finiteness, native"
-    prop: |
-      ∀ M, RouteMBoxThresholdFinite M — i.e. ∀ c' < minAdm(M)/2,
-      routeMLayerBoxIntegral M c' 1 < ⊤. No carried/cited Aoyagi Prop.
-    lean: RouteMBoxThresholdFinite
-    status: stated
-    tier: new
-    owner: engine-route
-    landmark: true
-    edges:
-      - {type: discharges, to: mint-repoint}
-    evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMBoxReduction.lean]
-    notes: "the engine's SOLE output Prop; interface confirmed by reuse audit"
+  # ── the summit (corollary/test — charter §0: steer by the objects, not this) ──────────────
 
-  - id: engine-route
-    kind: route
-    title: "transform-only Aoyagi engine: reduce → tree → coverage → thresholds"
-    lean: engine_box_threshold_finite
-    status: adopted
+  - id: aoyagi-summit
+    kind: claim
+    title: "summit: rlctGlobal(lossDLN d 0) = cCodim/2, via the engine (corollary/test)"
+    prop: |
+      RLCT.Global.rlctGlobal (lossDLN d 0) = ((cCodim d 0 h).toNat : ℝ) / 2, for monotone d,
+      0 < N, positive widths, Kostant/QIP nonempty — NO Aoyagi cite invoked (value derived).
+    lean: DLNFibre.DLN.Aoyagi.aoyagi_learning_coefficient_via_engine
+    status: stated
     tier: new
     owner: controller
     landmark: true
     edges:
-      - {type: needs, to: reduction-layer}
-      - {type: needs, to: resolution-tree}
-      - {type: needs, to: case-step-lemmas}
-      - {type: needs, to: monomialization-termination}
-      - {type: needs, to: coverage-theorem}
-      - {type: needs, to: exponent-ledger-bridge}
-      - {type: needs, to: region-glue}
-      - {type: discharges, to: hbox-root}
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/architecture-cert.md]
-    notes: "ADOPTED 2026-07-17: council 2x ADOPT + skeleton elaborates (fit example vs _gen) + battery 12-green + fork-6 TOMBSTONE (decorated-descent-route superseded)"
+      - {type: needs, to: object-b}
+      - {type: needs, to: corollary-reduction}
+      - {type: needs, to: b-value-cov}
+      - {type: needs, to: object-d}
+    evidence: [lean/DLNFibre/DLN/Aoyagi/LearningCoefficient.lean, lean/DLNFibre/DLN/RLCT/AxCheck.lean]
+    notes: "proof COMPOSED; +sorryAx from EXACTLY exists_coreResolution (AxCheck:1358 informational print); flips clean-three the day object-b lands"
+
+  # ── the charter §1 objects ────────────────────────────────────────────────────────────────
+
+  - id: object-a
+    kind: claim
+    title: "Object A: RLCT ideal-invariance (Aoyagi Lemma 1), two-sided + weighted — PROVEN"
+    prop: |
+      Germ-equal generated ideals give equal rlctAt/wrlctAt: both inclusions via
+      Cauchy–Schwarz domination + junk-guarded germ-monotonicity (LocallyNullZeros guard).
+    lean: DLNFibre.Core.Aoyagi.rlctAt_sumSqFam_eq_of_germ_eq
+    status: proven
+    tier: new
+    owner: "parked: LANDED (seat-A, wave 1); category-NEW workhorse, Mathlib-absent"
+    landmark: true
+    evidence: [lean/DLNFibre/Core/Aoyagi/IdealInvariance.lean, lean/DLNFibre/Core/Aoyagi/Waypoint.lean]
+    notes: "6 leaves + 2 headlines batch-gated; weighted twin wrlctAt_sumSqFam_eq_of_germ_eq; wLocal set-eq feeds B's per-chart value"
+
+  - id: object-b
+    kind: claim
+    title: "Object B: the product-ideal resolution atlas exists (coupled corank≥2) — THE frontier"
+    prop: |
+      ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res — the coupled ideal-route
+      atlas: analytic g, two-sided dom-wide ideal identity ⟨∏C⟩=⟨diag(b)⟩, Jacobian certificate,
+      hcover BUILD (operator: cite off the table), + the seam's two exponent clauses.
+    lean: DLNFibre.DLN.Aoyagi.exists_coreResolution
+    status: stated
+    tier: new
+    owner: mon-geo-lane
+    landmark: true
+    kill: battery/g-coupled-binding-334.py
+    edges:
+      - {type: needs, to: b-record}
+      - {type: needs, to: b-ladder}
+      - {type: needs, to: salvage-adapter}
+      - {type: discharges, to: aoyagi-summit}
+    evidence:
+      - lean/DLNFibre/DLN/Aoyagi/LearningCoefficient.lean
+      - expeditions/2026-07-17-aoyagi-engine/threads/31-monument-construction/certificate.md
+      - expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md
+    notes: "the ONE library sorry (LearningCoefficient.lean:287); combinatorial half discharged by the adapter — residual is PURELY geometric; multi-tide monument (mon-geo+codex ~5% single-tide)"
+
+  - id: object-c
+    kind: claim
+    title: "Object C: monomial-ideal RLCT = min (h+1)/(2k) under DivChain (S2 boxed rule) — PROVEN"
+    prop: |
+      Under the divisibility chain (DivChain) + Measurable unit: chain collapse ∑bₖ² = b_{k₀}²·U,
+      wrlctAt = min_d (h_d+1)/(2k_d), and the DLN unit-multiplicity form 2·wrlctAt = min (h_d+1).
+    lean: DLNFibre.Core.Aoyagi.monomialSumSq_wrlctAt_eq
+    status: proven
+    tier: new
+    owner: "parked: LANDED (seat-C, wave 1); wave-2 hygiene queued (MonomialBox Core-lift + DLN dedup)"
+    landmark: true
+    evidence: [lean/DLNFibre/Core/Aoyagi/MonomialRLCT.lean]
+    notes: "GUARDED form, not blanket-general (not_divChain_coupled_example = the honest boundary); Measurable-unit delta controller-blessed (junk-0 defect class); charter's coupled/general computation rides B"
+
+  - id: object-d
+    kind: claim
+    title: "Object D: codim = minAdm = cCodim = qipMin, θ, perm-invariance — BANKED"
+    prop: |
+      The combinatorial codimension chain: minAdm = cCodim (axiom-clean, + dev's cite-free
+      determinantal geometry), qipMin = minAdm (adapter bridge), θ top-component count, perm-inv.
+    lean: DLNFibre.Core.Aoyagi.Resolution.divisorMin_eq_cCodim
+    status: proven
+    tier: new
+    owner: "parked: banked (pre-phase + dev merge + adapter bridge)"
+    landmark: true
+    kill: battery/g-minadm-groundtruth.py
+    evidence: [lean/DLNFibre/Core/Aoyagi/Engine.lean, lean/DLNFibre/DLN/Aoyagi/RecursionAdapter.lean]
+    notes: "qipMin_eq_minAdm (RecursionAdapter:69); Def-3 typo governed by g-def3-broken (use geometric ½·min Mval)"
+
+  - id: object-e
+    kind: claim
+    title: "Object E: analytic order ρ — interface slice proven; content build DEFERRED (in reach)"
+    prop: |
+      1 ≤ boxedOrder (Order.lean interface) + the θ ≠ ρ distinction: numTop(2,2,2,2,2) = 6 ≠
+      aoyagiPoleOrder — the pole MULTIPLICITY is not the quiver count. Zeta-pole content deferred.
+    lean: DLNFibre.DLN.Aoyagi.numTop_d22222_ne_aoyagiPoleOrder
+    status: stated
+    tier: new
+    owner: "parked: deferred per charter §1.E (operator 2026-07-20) — same A–D machinery, kept a named reachable node"
+    evidence: [lean/DLNFibre/Core/Aoyagi/Order.lean, lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean]
+    notes: "blueprint's E slice proven; the ρ CONTENT (Lemmas 4–5 / zeta-pole multiplicity) is the deferred part — never boxed out"
+
+  # ── Object B's landed halves ──────────────────────────────────────────────────────────────
+
+  - id: b-record
+    kind: notion
+    title: "the Chart/Resolution record (v4.2) — verified to equilibrium, inhabited"
+    lean: DLNFibre.Core.Aoyagi.Resolution
+    status: frozen
+    tier: new
+    owner: "parked: frozen at v4.2 (093475db3); shear pin confirmed NO change needed"
+    evidence:
+      - lean/DLNFibre/Core/Aoyagi/ProductResolution.lean
+      - lean/DLNFibre/Core/Aoyagi/ResolutionInhabited.lean
+      - expeditions/2026-07-17-aoyagi-engine/threads/33-shear-pin/certificate.md
+    notes: "3 codex rounds + elder + controller ground-truth (v3→v4→v4.1→v4.2); inhabited rank-1 (allOnesResolution) + real blow-up (blowupResolution); he_lin required-on-monument verified"
+
+  - id: b-value-cov
+    kind: claim
+    title: "monument 1: atlas CoV + engine value chain 2·rlctAt = divisorMin = cCodim — PROVEN"
+    prop: |
+      rlctAt(∑Fᵢ²) = ⨅ charts (atlas CoV: InjOn-off-null area formula ∘ off-origin C ∘ compact
+      subcover); per-chart value = A∘C; ∘ D: two_mul_rlctAt_eq_cCodim. res + min-attainment are
+      HYPOTHESES — the value chain never touches exists_coreResolution.
+    lean: DLNFibre.Core.Aoyagi.rlctAt_sumSqFam_eq_iInf_charts
+    status: proven
+    tier: new
+    owner: "parked: LANDED (mon-cov + seat-B); rev-cov-fidelity PASS"
+    landmark: true
+    edges:
+      - {type: needs, to: b-record}
+      - {type: needs, to: object-a}
+      - {type: needs, to: object-c}
+    evidence: [lean/DLNFibre/Core/Aoyagi/ProductResolution.lean, lean/DLNFibre/Core/Aoyagi/AreaFormula.lean]
+    notes: "weight is the ACTUAL |det Dg| (jacWeightFn) — a false jac declaration cannot game the value; negative guard no_unit_forces_axis_jac_coupled; amplitude/φ folded into unit/hjac (docstring note landed)"
+
+  - id: salvage-adapter
+    kind: claim
+    title: "the salvage adapter: AtlasRealizesExponents ⟹ hlb ∧ hattain — PROVEN (bookkeeping)"
+    prop: |
+      An atlas realizing the salvaged Engine tree's terminal exponents yields both QIP conjuncts
+      of exists_coreResolution, via minAdm_le_terminalExponents + o5_core_realized +
+      qipMin = minAdm = cCodim. Elder-ratified C1 (import boundary, re-audited at integration) /
+      C2 (defect witnesses vs decorrelated battery) / C3 (bookkeeping, zero frontier progress).
+    lean: DLNFibre.DLN.Aoyagi.hlb_hattain_of_atlasRealizesExponents
+    status: proven
+    tier: new
+    owner: "parked: LANDED (mon-rec); rev-monument-adapter SURVIVED (2 precision escalations applied)"
+    edges:
+      - {type: discharges, to: object-b}
+    evidence:
+      - lean/DLNFibre/DLN/Aoyagi/RecursionAdapter.lean
+      - theory/aoyagi-2023-reproduction/g-monument-mval-instances.py
+    notes: "seam weakened to only-the-minimizer (geometric obligation STRICTLY weaker); C2 decide-anchors (2,2,3,2)→3, (2,2,1,1)→1, (3,3,4)→8, (4,4,4)→12"
+
+  # ── the live frontier ladder (mon-geo recalibration + codex 8-leaf decomposition) ─────────
+
+  - id: b-ladder
+    kind: route
+    title: "the monument ladder: leaf-2 → rung-(B) d12 → 8-leaf PrincipalInv skeleton"
+    status: adopted
+    tier: new
+    owner: controller
+    edges:
+      - {type: needs, to: b-leaf2-blowup-atlas}
+      - {type: needs, to: b-rung-d12}
+      - {type: needs, to: b-principalinv}
+      - {type: discharges, to: object-b}
+    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md]
+    notes: "controller rungs set post-recalibration (journal 2026-07-21); M'=1 simplification (hchain ⟹ principal): per-entry divisibility + Bézout, NOT full diag(b); leaves 3–5 = the coupled wall, content HELD until skeleton"
+
+  - id: b-leaf2-blowup-atlas
+    kind: claim
+    title: "leaf 2: the universal general-D origin blow-up Resolution — PROVEN (the shared atom)"
+    prop: |
+      blowupResolution (hD : 2 ≤ D) : Resolution (coordFam D) 0 — max-pivot atlas, universal
+      Jacobian det (w i)^(D−1), EXACT argmax sector cover (spectator-free origin case).
+    lean: DLNFibre.Core.Aoyagi.blowupResolution
+    status: proven
+    tier: new
+    owner: "parked: LANDED (mon-geo tide, closed exemplary); universal-in-D ⟹ no cast transport"
+    landmark: true
+    evidence: [lean/DLNFibre/Core/Aoyagi/OriginBlowup.lean, lean/DLNFibre/Core/Aoyagi/BlowupResolution.lean]
+    notes: "dissolves the opaque-width cast wall BY DESIGN; D=2 cousins …2-renamed (see overlay/naming.md); shared atom for rung-(B) AND the monument's per-step blow-up geometry"
+
+  - id: b-rung-d12
+    kind: claim
+    title: "rung (B): d=(1,2) end-to-end discharge of the geometric obligation's body"
+    prop: |
+      The obligation's body at d = ![1,2]: instantiate blowupResolution at D = flatDim ![1,2],
+      compose the coreGen linearity iso L, seam via o5_core_realized + minAdm ![1,2] = 2 (decide).
+    status: proven
+    tier: new
+    owner: seat-d12
+    lean: DLNFibre.DLN.Aoyagi.exists_atlasRealizesExponents_d12
+    edges:
+      - {type: needs, to: b-leaf2-blowup-atlas}
+    evidence: [lean/DLNFibre/DLN/Aoyagi/GeometricAtlasD12.lean]
+    notes: "LANDED (post-carto-snapshot): both theorems clean-three (exists_atlasRealizesExponents_d12 + two_mul_rlctAt_coreGen_d12 = the first proven LC instance, cite-free); wired + batch-banked (341); gate-orphan RESOLVED; rev-d12 fidelity in flight"
+
+  - id: b-principalinv
+    kind: notion
+    title: "PrincipalInv: the path invariant (b₁-divisibility + Bézout witness along the recursion)"
+    status: proposed
+    tier: new
+    owner: "parked: shaped by the shear pin (corrected-(a)); lands with the 8-leaf skeleton (rung C)"
+    edges:
+      - {type: needs, to: b-record}
+    evidence:
+      - expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md
+      - expeditions/2026-07-17-aoyagi-engine/threads/33-shear-pin/certificate.md
+    kill: battery/g-delta-flatten.py
+    notes: "M'=1 via principality; tracks the shear-composition (g = shears ∘ blow-ups, unit ≡ 1, |det Dg| = jacWeight EXACTLY; cofactors carry the det-0 projections)"
+
+  - id: b-leaf1-regionrepresents
+    kind: claim
+    title: "leaf 1: PrincipalInv ⟹ both RegionRepresents directions"
+    status: conjectured
+    tier: new
+    owner: "parked: skeleton rung (C); codex confidence high × very-high"
+    edges: [{type: conjectured-toward, to: b-ladder}]
+    notes: "divisibility + Bézout witnesses give the two-sided dom-wide ideal identity"
+
+  - id: b-leaf34-case-steps
+    kind: claim
+    title: "leaves 3–4: Case-2 / coupled Case-1 steps preserve PrincipalInv — THE WALL"
+    status: conjectured
+    tier: new
+    owner: "parked: content HELD until skeleton; the coupled corank≥2 dependent-width factorisation"
+    edges: [{type: conjectured-toward, to: b-ladder}]
+    kill: battery/g-coupled-binding-334.py
+    notes: "case1 = maximum-difficulty leaf (codex); the charter's named mountain — never MVP'd, never scoped out"
+
+  - id: b-leaf5-path-fold
+    kind: claim
+    title: "leaf 5: fold the one-step invariants along a root-to-leaf path"
+    status: conjectured
+    tier: new
+    owner: "parked: skeleton rung (C); general-d reasoning over the salvaged tree's WellFounded.fix"
+    edges: [{type: conjectured-toward, to: b-ladder}]
+    notes: "the second research-grade half of the recalibration (mon-geo): induction over the built tree at general d"
+
+  - id: b-leaf6-chart-geometry
+    kind: claim
+    title: "leaf 6: path map analytic, origin-fixing, a.e.-injective, ledger Jacobian, squarefree b₁"
+    status: conjectured
+    tier: new
+    owner: "parked: skeleton rung (C); statements gated by the shear pin (resolved corrected-(a))"
+    edges: [{type: conjectured-toward, to: b-ladder}]
+    notes: "unit ≡ 1 STANDS (chain rule over det-1 shears ∘ blow-ups); pivot-normalizes-to-1 residual is non-blocking (in-cert)"
+
+  - id: b-leaf7-compact-cover
+    kind: claim
+    title: "leaf 7: hcover — a.e. compact atlas cover of a ball, BUILD (operator: no cite)"
+    prop: "∃ ρ > 0, volume (ball 0 ρ \\ ⋃ p, g p '' dom p) = 0 — max-pivot-sector partition"
+    status: conjectured
+    tier: new
+    owner: "parked: skeleton rung (C); Hironaka-properness cite REMOVED as an option (operator 2026-07-21)"
+    edges: [{type: conjectured-toward, to: b-ladder}]
+    notes: "spectator coords must be bounded (compact doms) — the likely Lean bite, pre-flagged; leaf-2's argmax sector cover is the origin-case precedent"
+
+  - id: b-leaf8-realizes-exponents
+    kind: claim
+    title: "leaf 8: binding axes ↔ terminal t̃=0 divisors; jac+1 = divExp (the seam clauses)"
+    status: conjectured
+    tier: new
+    owner: "parked: skeleton rung (C); consumes the salvage adapter's seam shape"
+    edges: [{type: conjectured-toward, to: b-ladder}]
+    notes: "bindingAxes = {t̃=0 divisors} exactly implements the paper's read-off restriction (thread-31 fidelity win)"
+
+  # ── the reduction + the kill-target ───────────────────────────────────────────────────────
+
+  - id: corollary-reduction
+    kind: claim
+    title: "the corollary reduction: rlctGlobal(lossDLN) = rlctAt(∑coreGenᵢ²) 0 — PROVEN"
+    prop: |
+      exists_flatten (LINEAR m.p. origin-fixing homeo flatten) + the Frobenius identity
+      lossDLN_zero_eq_coreLoss + coreReduction (deepest-point ∘ homogeneity ∘ homeo-invariance).
+    lean: DLNFibre.DLN.Aoyagi.coreReduction
+    status: proven
+    tier: new
+    owner: "parked: LANDED (seat-bridge, wave 1)"
+    landmark: true
+    edges: [{type: discharges, to: aoyagi-summit}]
+    evidence: [lean/DLNFibre/DLN/Aoyagi/LearningCoefficient.lean, lean/DLNFibre/DLN/RLCT/Foundations/GlobalHomog.lean]
+    notes: "NEW REUSABLE GlobalHomog (rlctGlobal_comp_homeomorph + rlctGlobal_eq_rlctAt_zero_of_homogeneous, network-generic); ℝ≥0∞ carrier hop DISSOLVED into membership bridges"
+
+  - id: kill-cite
+    kind: claim
+    title: "DELETE cited_aoyagi_lower_ax — the charter kill-target (close-phase)"
+    status: conjectured
+    tier: new
+    owner: "parked: until object-b lands (summit clean-three); then consumer audit + deletion"
+    landmark: true
+    edges: [{type: needs, to: aoyagi-summit}]
+    evidence: [lean/DLNFibre/DLN/RLCT/AoyagiCited.lean]
+    notes: "summit already avoids the cite (kill-path verified); deletion = consumer re-home; cited_watanabe_upper_ax = separate proof-target CANDIDATE (charter §3), not settled-external"
+
+  # ── dead-route registry (exits with forwarding — trails, not destinations) ────────────────
+
+  - id: chart-engine-retired
+    kind: route
+    title: "RETIRED: the α-atlas chart Engine (category-FALSE value holes; second drift)"
+    status: retired
+    tier: new
+    owner: "parked: parts-bin (un-wired, un-built); salvage via specific-module re-import only"
+    edges: [{type: forwarded-to, to: object-b}]
+    evidence:
+      - lean/DLNFibre/DLN/RLCT/Engine/RETIRED.md
+      - expeditions/2026-07-17-aoyagi-engine/charter.md
+    notes: "no det-1/a.e.-inj chart diagonalises the loss on an open set (compass F1); combinatorial kernel SALVAGED via the adapter (C1 boundary); do NOT fill its sorries — overlay/dead-routes.md"
 
   - id: naked-weight-route
     kind: route
     title: "REFUTED: naked Jacobian-weight residual obligations (integrate-early)"
     status: refuted
     tier: new
-    owner: "parked: refuted at genesis; kept as trail + battery anchor"
+    owner: "parked: refuted at genesis; battery anchor"
     kill: battery/w-naked-weight-111.py
-    edges:
-      - {type: forwarded-to, to: engine-route}
+    edges: [{type: forwarded-to, to: object-b}]
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/architecture-cert.md]
-    notes: "false on legal cuts, not merely hard; the zero-slack lesson's anchor"
+    notes: "false on legal cuts, not merely hard; the zero-slack lesson's anchor (also w-naked-weight-4444)"
 
   - id: decorated-descent-route
     kind: route
     title: "SUPERSEDED: the predecessor's conditional decorated route to hbox"
     status: superseded
     tier: new
-    owner: "parked: tombstoned at adoption (fork 6); trail only"
-    edges:
-      - {type: forwarded-to, to: engine-route}
+    owner: "parked: tombstoned at genesis adoption (fork 6); trail only"
+    edges: [{type: forwarded-to, to: chart-engine-retired}]
     evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMSJDecoratedRec.lean]
-    notes: "witnessing DecoratedDescent would re-import the refuted decorated-peel object (architect fit report); tombstoned in the Lean docstring; one live spine per fork"
-
-  - id: resolution-tree
-    kind: notion
-    title: "the pp.14-22 chart-tree datatype: monomials + divisibility chain + SHARING maps"
-    status: validated
-    tier: new
-    owner: architect
-    landmark: true
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    notes: "COMBINED RESTRUCTURE (elder ruling 2): ONE gated event — edge-vs-node carrier shape at COUNCIL OF TWO (mandate: inductive+edge labels, State/StateInvariant split, lex termination, chart-map placement; four GIVENS fixed: ChartBridge content+witnesses, image-cover/upstairs openness, tStar-realization sub-obligation, the openness statement defect). r2 VALIDATE marked superseded+incomplete (missed the vacuity). Fresh review round owed on the result. Prior pending note: ChartsCover→ChartBridge; LeafData gains chartMap/srcBox/resRank(+orders, Morse normal form per Codex); canonicalResolution_224 must be REBUILT with real charts (its atlas conjunct rode the vacuity). VALIDATED (review r2, 2026-07-17): C1+C2 fixed and reviewer-verified (junk/bare/incomparable leaves provably rejected; projections honest). bChain=Monotone IS the divisibility chain; support faithful; IsFullMonomialization + typed bChain carry the leaf-chain condition. FRESH ROUND (threads/05-carrier-review/cert-carrier-review.md, 2026-07-17): CARRIER VALIDATED (edge-labelled shape, ledger-only edge data, coherence clause, witness-split footprints forced-checked, circularity clean); obligation PREDICATES held at adjudicated — 2 CRITICAL statement defects (StepRel never reads e.child, drops the case-1(1) merge; region_glue missing the elder-ratified resRank fold + transport inapplicable on the singular factor) + 5 major gaps; repair commissioned; six-obligation flip waits on the r2 re-check. T1 FULL-T RESTRUCTURE (2026-07-18, T1b/T1b-ii/T1c, reviewer-validated): divProfile full-T PRIMITIVE across StepData/LeafData/RootLedger/ConState with t̃ DERIVED (tildeOf=min); genDivExp multiplicity field (support = nonzero locus); page-pinned T-update rule in stepUpdate"
-
-  - id: gendivexp-support-redesign
-    kind: notion
-    title: "genDivExp multiplicity ledger: support = nonzero locus; Finset-embedding transport becomes arithmetic"
-    status: adopted
-    tier: new
-    owner: architect
-    notes: "Elder-ratified NAMED rung (2026-07-18, rung-1 stop-and-surface): support propagation across per-divisor re-indexing balloons (Codex-confirmed; compass second cost center), so rung-1 StepRel is faithful for the exponent/clearing ledger only. This rung redesigns support as genDivExp : Fin numGen → Fin numDiv → ℕ (support = nonzero locus — a STRENGTHENING: recovers multiplicities the binary Finset drops) and restores propagation faithfulness. KILL-CONDITION: g-coupled-binding-334 + g-delta-flatten re-checked against the redesigned support. Guard until then: coupling-breaking is held by the exact LeafPullback identity, NOT propagation; case-2's parent-side support read suffices for the certificate. NOT finiteness-load-bearing; never delays the long pole."
-    edges:
-      - {type: needs, to: resolution-tree}
-
-  - id: case-step-lemmas
-    kind: claim
-    title: "Case 1(1)/1(2)/2 steps preserve the inductive invariant (paper pp.15-22)"
-    lean: case_step_invariant
-    prop: |
-      StepRel = the FAITHFUL ledger equality: rootLedger(child) = stepUpdate(parent, case, subst),
-      with both-case eligibility (in-range + t̃ = cleared + runLen, p.15) and the page-pinned
-      per-case exponent + full-T divProfile updates (pp.16-21). Faithful for the exponent/clearing/
-      T ledger; genDivExp propagation + chooser proofs = T4.
-    status: validated
-    tier: established
-    owner: "parked: statements at skeleton; tides after route adoption"
-    edges:
-      - {type: needs, to: resolution-tree}
-    notes: "PROVED PROJECTION of the bundle. CAVEAT (rev r2): the Lean conjuncts are case FOOTPRINTS (divisor existence/support/level), not the ideal-preservation identity — that is the construction tide's burden. r2 SCOPE (2026-07-18): StepRel is a per-edge existence-CONSISTENCY check (existential child index) — sound for finiteness (driver never consumes it), INSUFFICIENT for full transition-faithfulness (dummy-divisor schema); strengthening to typed stepUpdate (child ledger = its output) is the construction tide FIRST DELIVERABLE, elder to ratify. RUNG-1 UPDATE (2026-07-18): StepRel RE-POINTED to the faithful ledger equality rootLedger(child) = stepUpdate(parent, case, subst) — the existential child-read is RETIRED; stepUpdate page-verified (elder, pp.16-21) with the case-2 cleared advance CORRECTED to += 1 (truth-witness catch, elder + reviewer CONVERGENT independently); faithful for the exponent/clearing ledger, support propagation deferred to gendivexp-support-redesign; eligibility conjunct (p.15) landing with the fix. T1-CONSOLIDATED VALIDATE (2026-07-18, cert-t1-consolidated): faithful carrier + eligibility landed and reviewer-verified (own decide re-derivation of the pnp traces; Codex faithful); status → validated"
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md, theory/aoyagi-2023-reproduction/aoyagi-2023-worked.tex]
-
-  - id: monomialization-termination
-    kind: claim
-    title: "the recursion terminates at S=L+1 in a full monomial diagonal"
-    lean: monomialization_terminates
-    prop: "⟨∏ C⟩ = ⟨diag(b_1..b_{M(L+1)})⟩ at S=L+1; b_i a divisibility chain"
-    status: stated
-    tier: established
-    owner: "parked: transcription after adoption"
-    edges:
-      - {type: needs, to: resolution-tree}
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-
-  - id: coverage-theorem
-    kind: claim
-    title: "THE HARD PART: charts cover; no untracked chart has a smaller ratio"
-    lean: coverage_theorem
-    prop: |
-      The tree's chart images cover a box-neighborhood of the zero locus (non-deepest points
-      via IH/domination), and the candidate set {M_{s,k}} is exhaustive: every exceptional
-      divisor's ratio ≥ the tracked minimum. WITHOUT invoking rlct=c* (circularity guard).
-    status: stated
-    tier: new
-    owner: coverage-design
-    landmark: true
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-    kill: battery/g-coverage-sharing-killcond.py
-    notes: "adjudicated (cert-d3): new content = per-blow-up local covering lemma + general-M support atlas; >=-leg no-undershoot automatic (inf-property); corank>=2 sub-case fiddliest. (t03: 5 decorrelated legs, 0 undershoots incl. sheared-incidence LP + Codex angular family; scope stated in threads/03-hunt/hunt-cert.md §5 — cite THAT, never blanket 'established'; residual: angular beyond (2,2,2,2), 3rd+ blowups, (4,4,4,4) full, optional D-module lct check). Case-2 divisors CAN BIND (g-case2-exponent.py). Proof = the per-(S,J) ledger induction (cert-d3). ATLAS-PROBE (threads/08-atlas-probe, 2026-07-18, decorrelated + Codex-replayed): NO undershoot at (2,2,2)/(3,3,4) — 5 empty adversarial legs; the BINDING DIVISOR IS NON-TORIC (coordinate-weight LP loose: 4>3, 9>8) so the coverage proof CANNOT be Newton/toric — it must run the blow-up construction itself; and it must instantiate the FULL residual-d pivot-chart cover, NOT a corner-only chart (explicit gap otherwise). Next leg queued: the (2,2,2,2) closure check (tie-break + depth-3 coverage at once)"
-
-  - id: exponent-ledger-bridge
-    kind: claim
-    title: "chart exponents M_{s,k} land on the banked minAdm forms (Lemma 3 bridge)"
-    lean: exponent_ledger_bridge
-    prop: |
-      ½·min{M_{s,k} : t̃=0} = ½·minAdm(M) via the closed-form minimization; matches the
-      banked QIP family and Mval=codim arithmetic.
-    status: stated
-    tier: new
-    owner: "parked: survey-first; consume banked, never rebuild"
-    landmark: true
-    notes: "Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)"
-    evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerSplit.lean, lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankRec.lean]
-
-  - id: region-glue
-    kind: claim
-    title: "box covers + deepest-point/IH reduction glue chart-local reads to hbox"
-    lean: region_glue
-    prop: "finite subcover of the box; non-deepest points dominated via the arity IH"
-    status: validated
-    tier: new
-    owner: "parked: tools banked (S1Cover, RouteMCoverLemmas, null disposals)"
-    evidence: [lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean]
-    kill: battery/g-leaf-chain-separation.py
-    kill: battery/g-chartscover-vacuity.py
-    notes: "PLACEHOLDER REFUTED-AS-STATED (lane 2 vacuity witness) — held at adjudicated until the ChartBridge signature lands. ADOPTED FIX (council #2 + Q5(b)): ChartBridge per-leaf; the region_glue tide = the banked local-homeomorph transport (rlctAtOn_boundedUnit_localHomeomorph — family verified FULLY sorry-free, cartographer #1) + the ONE homogeneity scaling-bridge lemma. Original r2 caveat: the chart<->monomial-integrand CoV bridge is absent from the skeleton — expect signature refinement (added hypotheses) at its tide; the analytic sorry owns it. ASSEMBLY only. SEPARATED leaf form CONFIRMED exact (divisibility chain => single dominant monomial x unit; no support dependence); load-bearing precondition = IsFullMonomialization. Witnessed: g-glue-lossy-vs-exact, g-pivot-conull, g-leaf-chain-separation. r2 residuals (non-blocking): srcBox.Nonempty weaker than nonempty-interior (strengthen when the tide builds the attaining leaf); analytic sufficiency is an inference until the sanctioned hole fills; ψ∘β constructibility on the exceptional fibre reviewer-VERIFIED (ψ regular gauge/shear, singular vanishing entirely in β). GLUE-LANE TRIPWIRE (2026-07-18, counterexampled seat+Codex): region_glue UNPROVABLE from ChartBridge without srcBox MEASURABLE+BOUNDED (L=1 M=(2,1) unbounded sector chart satisfies every clause, integral diverges on the allowed range) — strengthening applied by the construction seat, discharge at rung 4; kill = battery/g-glue-unbounded-srcbox.py (owed). Route note pending elder: per-leaf read by AREA FORMULA (needs only the det upper bound), scaling bridge for globalization; nonempty-interior confirmed unneeded. STATUS NOTE: schema lacks a discharged status — validated is the ceiling; the DISCHARGE fact (2026-07-18, 63753153c): the sorry replaced by the fidelity-VALIDATED one-liner; the ANALYTIC content is clean-three via the generic region_glue_of_chartBridge (AxCheck MUST-BE-CLEAN-THREE watch); the projection region_glue is +sorryAx BY TYPE (resolutionOf = choose of the construction hole — sole documented source), the same mechanism as the driver headline. The commission instruction 'region_glue must be clean-three' was WRONG (controller error, architect surfaced-not-forced)"
-
-  - id: reduction-layer
-    kind: claim
-    title: "Lemma 2 / Theorem 3: rank-r peel to the reduced chain, region-uniform"
-    lean: reduction_layer
-    prop: |
-      Unit-triangular P1,P2 with P1(∏A)P2 = diag(C1, ∏C), C1 regular; RLCT split
-      = regular prefactor + λ⟨∏C⟩; pivot regularity region-ized via co-null covers.
-    status: stated
-    tier: established
-    owner: "parked: transcription; banked shear/pivot analogues"
-    notes: "Lean shape post-repair: a PROVED PROJECTION of the CanonicalResolution bundle; the construction hole is monomialization_terminates (many-to-one hole↔node)"
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/00-genesis/paper-read-cert.md]
-
-  - id: theorem4-localization
-    kind: claim
-    title: "the non-deepest EXACT reduction (Thm-4 role): to a smaller arity-IH instance"
-    prop: |
-      A non-deepest neighborhood reduces, by an EXACT RLCT-preserving CoV (never a
-      reweighted-residual bound), to a strictly-smaller instance; threshold preservation is
-      nReg + minAdm(M') >= minAdm(M) via the minAdm-as-minimum property (inf'_le /
-      minAdm_le_Mval class) — NOT MinAdmMono (opposite direction; formaliser trap).
-      Deepest domination is ALREADY BANKED hypothesis-free: deepest_le_of_homogeneous_core
-      (DeepestMinRlct.lean:157). Far points via the exact homogeneity-scaling CoV.
-    status: adjudicated
-    kill: battery/g-glue-lossy-vs-exact.py
-    tier: established
-    owner: coverage-design
-    landmark: true
-    edges:
-      - {type: conjectured-toward, to: region-glue}
-    evidence: [expeditions/2026-07-17-aoyagi-engine/threads/02-covdesign/cert-d2-theorem4-localization.md]
-    notes: "DISSOLVE adjudicated + SHAPE-CHECK CONFIRMED at (2,2,4) (lane 1: pure homogeneity domination via deepest_le_of_homogeneous_core, degree 2L; no chain-IH wanted). OPEN LEG unchanged: L>=3 coupled non-origin via the banked domination"
-
-  - id: rr4-precedent
-    kind: claim
-    title: "the (r,r,4) family: the whole engine end-to-end, banked (guard/precedent)"
-    status: adjudicated
-    tier: new
-    owner: "parked: guard node; cartographer pins decl names at first pass"
-    landmark: true
-    edges:
-      - {type: conjectured-toward, to: engine-route}
-    evidence: [lean/DLNFibre/DLN/RLCT/Validate/RouteMBoxThresholdRR4.lean]
-    notes: "OUTER plumbing precedent only (composition 0-sorry); inner SchurCore walls at depth>=3 (RR4.lean:12-21)"
+    notes: "witnessing DecoratedDescent re-imports the refuted decorated-peel object; tombstoned in the Lean docstring"

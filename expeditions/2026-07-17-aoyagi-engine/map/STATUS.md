@@ -8,7 +8,7 @@ archived: overlay/archive/, claims @ 70a8ec6cf^. Applies once controller lands c
 THE LIBRARY CARRIES ONE SORRY: `exists_coreResolution`'s geometric obligation
 (`LearningCoefficient.lean:287` — ∃ res, AtlasRealizesExponents d res: the coupled corank≥2
 ideal-route atlas + hcover BUILD). Everything else in the summit's cone is PROVEN: root green
-8977 jobs, 334 roots batch-asserted clean-three, cordon clean, DLN cites NOT invoked (kill-path).
+8977 jobs, 341 roots batch-asserted clean-three, cordon clean, DLN cites NOT invoked (kill-path).
 `aoyagi_learning_coefficient_via_engine` flips clean-three the day that sorry lands.
 
 ## landmarks (9 proposed)

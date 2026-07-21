@@ -616,7 +616,7 @@ continuous, `0`-nonvanishing unit `w` satisfies `3·jacWeight ![2,2] = jacWeight
 the punctured neighbourhood the identity forces `w u = 3|u₀||u₁|`, whose limit at `0` is `0`,
 contradicting `w 0 ≠ 0` by continuity. So a `Chart` for the coupled chart `(u₀u₁², u₀²u₁)` cannot
 carry the false axis exponent `jac = ![1,1]` — the certificate pins the honest `![2,2]`. The
-statement is TRUE (a `tendsto`/continuity argument); left as a `sorry` leaf here (guard, not on the
+statement is TRUE (a `tendsto`/continuity argument); landed sorry-free (mon-cov; docstring refreshed post-landing) here (guard, not on the
 value path). LANDED sorry-free (aoyagi-engine, SEAT-B). -/
 theorem no_unit_forces_axis_jac_coupled :
     ¬ ∃ w : (Fin 2 → ℝ) → ℝ, ContinuousAt w 0 ∧ w 0 ≠ 0 ∧
