@@ -12,14 +12,18 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **BLUEPRINT PIPELINE (2026-07-20)** — object-list generality AGREED (charter §1; elder is
-  finalizing §1 + compacting the compass + folding the FOUR blueprint bars: generality / strike-able-leaves /
-  completeness-rising-sea / mathematical-soundness). Pipeline: elder → pen-and-paper on the **coupled corank≥2
-  frontier** (THE hard part avoided for multiple expeditions) → architect (A–E typed sorried skeletons to the
-  4 bars) → check-vs-bars. Prior Engine/two-lane/hbox/mint framing SUPERSEDED — do not re-adopt.
-  **RECONVENE THE OPERATOR at BLUEPRINT-READY-TO-AUTOFORMALISE** (operator rotated the VM ~2026-07-20 = the
-  agreed come-back point); hold §1-tag removal / the 4 bars / blueprint-meets-bar sign-off + the big
-  autoformalise-strike for their return. Full pipeline + the 4 bars + in-flight-seat status: journal tick 433+.
+- phase: **BLUEPRINT-v3 → VERIFY-TO-EQUILIBRIUM → STRIKE (operator go 2026-07-21, operator AWAY).** The
+  operator delegated the blueprint sign-off to the verification process: build v3 (enriched spec = journal
+  tick 43x; architect, PUSH-on-commit), then cross-check from MULTIPLE angles, MULTIPLE times — (i) paper-
+  fidelity review vs worked.tex + page images, (ii) an independent Codex COUNTEREXAMPLE HUNT on every
+  frontier statement (the v2 killer: unconstrained CoV/Jacobian + axis-only C — hunt that class hardest),
+  (iii) elder ratification vs charter §0–§3, (iv) build green + kill-path cite-free + cordon green.
+  Iterate architect↔checks until NO load-bearing finding survives; only then OPEN THE STRIKE PHASE
+  (map/claims re-root on A–E at opening; parallel tides on strike-able leaves; frontier seats on frontier
+  leaves under the pin-the-shape-then-build stopping rule). Do NOT stall waiting for the operator at
+  blueprint-ready — that gate is delegated. STILL operator-gated: PR merge, dev→main, destination/DoD
+  changes; §1-FINAL tag comes off on their recorded confirm (pending). VM died 2026-07-21: fresh VM,
+  losses + recovery = journal tick 43x; unpushed agent branches are NOT banked — every seat pushes on commit.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
