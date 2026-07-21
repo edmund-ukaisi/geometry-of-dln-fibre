@@ -8939,3 +8939,15 @@ jacDet_blowupMap + the 2≤D artifact audit) + M9 (BlockDivision CommRing lift) 
 S-priced, file-disjoint from the bake. The composite corollary cCodim_eq_two_lambdaCore merged
 earlier (8e368ba83). The day's arc: the register was written, used, caught stale by its first
 consumer, swept, and corrected — inside six hours, with zero duplicate work built.
+
+## 2026-07-21: M4 STOP-ON-SUSPECT — inverted-DAG assumption; deferred post-bake with the honest redesign
+seat-api's SPECIFY found the register's M4 direction assumed the opposite import DAG: BlockBlowup
+imports OriginBlowup (the special-case atom is UPSTREAM of the general one — blockBlowupMap_univ
+consumes blowupMap), so deprecate-by-derivation from the general form requires a cycle; and the only
+honest dedup routes (edit BlockBlowup, or extract a shared BlockTriangular.det core upstream and
+re-point BOTH) touch the bake-locked file. DEFERRED with the correct post-bake shape: the shared-core
+extraction + both atoms consuming it + the 2≤D guard dropped in the same stroke. USEFUL FINDING
+banked meanwhile: the 2≤D guard IS an artifact (jacDet_blockBlowupMap needs only p ∈ S — |S|-general
+incl. |S|=1 → w_p^0 = 1; the general form carries no dimension guard). Register re-scope (M4:
+S-file-disjoint → S-but-needs-BlockBlowup, post-bake) rides the bake-integration event-touch.
+seat-api proceeds on M9 (genuinely standalone).
