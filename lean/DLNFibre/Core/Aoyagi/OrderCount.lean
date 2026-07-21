@@ -124,17 +124,21 @@ private theorem sum_Icc_linear (ℓ m : ℕ) (hm : 2 * m ≤ ℓ) :
     ring
 
 /-- The **band area** `∑_{j=0}^{ℓ} W_j = a(ℓ−a)` — the width-independent arithmetic core
-(Aoyagi p.26). The endpoint widths `W_0 = W_ℓ = 0` make the range choice immaterial. Proof:
-double-count `W_j = #{i∈[1,m] : i ≤ j ∧ i ≤ ℓ−j}` (with `m = min(a,ℓ−a)`), swap the two sums, and
-count `#{j : i ≤ j ≤ ℓ−i} = ℓ+1−2i`, giving `∑_{i=1}^{m}(ℓ+1−2i) = m(ℓ−m) = a(ℓ−a)`. -/
-theorem bandWidth_sum (ℓ a : ℕ) (ha : a ≤ ℓ) :
+(Aoyagi p.26), UNCONDITIONAL in `a` (for `a > ℓ` both sides are `0` via `ℕ`-truncation). The
+endpoint widths `W_0 = W_ℓ = 0` make the range choice immaterial. Proof: double-count
+`W_j = #{i∈[1,m] : i ≤ j ∧ i ≤ ℓ−j}` (with `m = min(a,ℓ−a)`), swap the two sums, and count
+`#{j : i ≤ j ≤ ℓ−i} = ℓ+1−2i`, giving `∑_{i=1}^{m}(ℓ+1−2i) = m(ℓ−m) = a(ℓ−a)`. -/
+theorem bandWidth_sum (ℓ a : ℕ) :
     ∑ j ∈ Finset.range (ℓ + 1), bandWidth ℓ a j = a * (ℓ - a) := by
   set m := min a (ℓ - a) with hm
   have hmle : 2 * m ≤ ℓ := by omega
   have htarget : a * (ℓ - a) = m * (ℓ - m) := by
-    rcases le_total a (ℓ - a) with h | h
-    · rw [hm, min_eq_left h]
-    · rw [hm, min_eq_right h, Nat.sub_sub_self ha]; ring
+    rcases le_total a ℓ with hal | hal
+    · rcases le_total a (ℓ - a) with h | h
+      · rw [hm, min_eq_left h]
+      · rw [hm, min_eq_right h, Nat.sub_sub_self hal]; ring
+    · have h0 : ℓ - a = 0 := Nat.sub_eq_zero_of_le hal
+      rw [h0, hm, h0]; simp
   rw [htarget, ← sum_Icc_linear ℓ m hmle]
   have hstep : ∀ j ∈ Finset.range (ℓ + 1),
       bandWidth ℓ a j = ∑ i ∈ Finset.Icc 1 m, (if i ≤ j ∧ i ≤ ℓ - j then 1 else 0) := by
@@ -157,9 +161,9 @@ claimed equal to the geometric/analytic multiplicity (see the module seam note).
 def bandCount (ℓ a : ℕ) : ℕ := (∑ j ∈ Finset.range (ℓ + 1), bandWidth ℓ a j) + 1
 
 /-- **Tier-1 headline**: the banded-interval count is `a(ℓ−a)+1` (Aoyagi Lemma 5's value, as pure
-banded-interval arithmetic; for `a ≤ ℓ`). -/
-theorem bandCount_eq (ℓ a : ℕ) (ha : a ≤ ℓ) : bandCount ℓ a = a * (ℓ - a) + 1 := by
-  unfold bandCount; rw [bandWidth_sum ℓ a ha]
+banded-interval arithmetic; UNCONDITIONAL in `a`). -/
+theorem bandCount_eq (ℓ a : ℕ) : bandCount ℓ a = a * (ℓ - a) + 1 := by
+  unfold bandCount; rw [bandWidth_sum ℓ a]
 
 /-! ## Kill-set: build-enforced ground truths (abstract `(ℓ, a)` values) -/
 

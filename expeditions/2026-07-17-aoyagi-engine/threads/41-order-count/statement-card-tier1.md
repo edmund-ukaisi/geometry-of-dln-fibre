@@ -39,8 +39,9 @@ Seat: seat-E (lean-formaliser). Branch `expedition/aoyagi-engine-E`. Module
 > - **Status.** sorry-free.
 
 > **Claim (band-area core).** The sum of the band widths is `a(ℓ−a)`:
-> `∑_{j=0}^{ℓ} min(j, a, ℓ−a, ℓ−j) = a(ℓ−a)` (for `a ≤ ℓ`). Width-independent — the shared
-> partial-sum term `∑_{l=1}^{j+1} M^{(S_l)}` and the integer `M = M*` cancel in `H̃'_j − H̃_j`.
+> `∑_{j=0}^{ℓ} min(j, a, ℓ−a, ℓ−j) = a(ℓ−a)` — **UNCONDITIONAL in `a`** (for `a > ℓ` both sides are
+> `0` via `ℕ`-truncation). Width-independent — the shared partial-sum term `∑_{l=1}^{j+1} M^{(S_l)}`
+> and the integer `M = M*` cancel in `H̃'_j − H̃_j`.
 >
 > - **Lean:** `DLNFibre.Core.Aoyagi.OrderCount.bandWidth_sum`
 >   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `8163e9ebe`)
