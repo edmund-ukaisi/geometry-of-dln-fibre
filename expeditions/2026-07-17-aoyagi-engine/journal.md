@@ -9329,3 +9329,41 @@ wall develops IN PARALLEL in its own worktree (nav-13's parallel-dev/serial-inte
 integration serialized behind canonCenter's landing at arch-C's gate. seat-core gets the rebase
 signal (its file gained +75 upstream lines BETWEEN its two frozen statements — additive, both
 statements intact at :123/:309). nav-13's bake-integration fan-out trigger FIRES now.
+
+## 2026-07-21 (controller) — TWO LEAVES LANDED (L1 + terminal_bezout): cone 8 → 6; seat-E SPECIFY in with a fidelity refinement
+
+**seat-core's landing VERIFIED AND INTEGRATED** (fast-forward to 549a1c01a after its clean rebase;
+pushed). Controller re-derivation: statement-lock mechanically confirmed (diff removes EXACTLY the
+two sorry lines; adds only proof bodies + two private km_* kill-set theorems); module force-rebuilt
+(touch + lb, 8261 jobs green); BOTH theorems force-elaborated clean-three. terminal_bezout: at the
+terminal StepInv with cleared pivot, principality is BORN on the shrunk open V′ = V ∩ {unit ≠ 0}
+(Bézout witness = the inverted unit at i₀) — the thread-34 split's terminal half, now theorem. L1:
+PrincipalInv ⟹ RegionRepresents both ways (q forward, r backward). Kill-set exercised in-file
+end-to-end (terminal shape D=M=1 with a genuinely-vanishing b, PROPER V′ shrink, L1 consuming the
+output). Its statement cards banked inline in the thread mail; fidelity-review slot stays OWED
+(batched with the wall's review round — nothing consumes these leaves until L5's fold + the driver
+swap). **The monument cone is now 6.**
+
+**arch-C pinned L4's consumed surface** (FoldStepInvAt + StepInv/fold* / Deg1SupportedOn +
+TreeEdge/TreePath; NOT FoldProduced/FoldRealizes/reachesLeaf/hfold) and steered canonCenter's
+write set OFF FoldProduced (leafOf coupling deferred — not needed for the L7 coordinate lift,
+which rides distinct-branches → distinct slots → distinct coordinates). canonCenter ∥ L4-wire
+parallel-dev is therefore statement-safe by construction; arch-C checks the seat's exact
+touched-def set at the gate.
+
+**seat-E SPECIFY received** (branch pushed; Core/Aoyagi/OrderCount.lean elaborates green,
+3 theorems + 8 examples sorried). Its Lemma-4/5 reading is page-image-grounded and came with
+THREE fidelity findings, the sharp one being #2: **a(ℓ−a)+1 is NOT any clean single band
+cardinality** — the per-j sum overcounts, the union is width-dependent; only the band AREA
+∑ min(j,a,ℓ−a,ℓ−j) = a(ℓ−a) is intrinsic, and Lemma 4's envelope+increment condition is
+SUFFICIENT-only (satisfied by all C(ℓ,a) arrangements). Honest Tier-1 headline per seat-E:
+`bandCount := area + 1` with `bandCount_eq : bandCount = a(ℓ−a)+1` as banded-interval ARITHMETIC,
+with BOTH identifications (bandCount ↔ true count of RLCT-attaining branch vectors — Lemma 5's
+loose two-sided argument; count ↔ analytic pole multiplicity) explicitly DEFERRED and docstring-
+named. Corroborated by verify-repro-s4s5.md. Kill-set values all verified incl. the elder's
+edge corners (a=0, ℓ=1) and the tree-ρ ground truths ((2,2,2)→1, (3,3,4)→1, (2,2,2,2)→3; the
+naive Adm-minimiser count diverges from ρ at 6 instances — Lambda.lean's warning confirmed).
+**Ratification question routed to the elder**: does bandCount_eq-with-deferred-identifications
+satisfy K4/K3, or does the elder want the set-cardinality form (which needs a pnp certificate to
+pin the exact count-set the paper leaves loose)? seat-E proceeds meanwhile on the two
+framing-independent lemmas (bandWidth_sum, perJCard_eq_paper — the fidelity anchor).
