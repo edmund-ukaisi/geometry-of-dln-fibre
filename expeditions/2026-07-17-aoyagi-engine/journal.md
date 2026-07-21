@@ -7708,3 +7708,19 @@ Merged (union AxCheck; tip 40c27b2d1 local, ground-truth build running). DISPATC
 lines): mon-cov (the atlas CoV theorem, staged: 3 reusable infrastructure pieces then the assembly) +
 mon-rec (the recursion construction, staged 1–5 per the certificate playbook, T-profile ledger warning
 embedded, hcover build-vs-cite decision point pre-noted). Both push-on-commit, both report per stage.
+
+## 2026-07-21: mon-rec survey-first catch — the monument's combinatorial half ALREADY EXISTS (salvage, don't rebuild)
+mon-rec ground-truthed before building: the retired Engine's kernel-checked combinatorics carry the
+monument's combinatorial conjuncts AXIOM-CLEAN at all widths — minAdm_le_terminalExponents (= hlb),
+o5_core_realized (= hattain), isFullMonomialization_buildTree_conRoot, + the minAdm_eq_cCodim bridge;
+the O5Realization closure builds green (2721 jobs) with the one ClearableReify fossil audited OFF all
+four cones. Certificate Stage-1 as written would DUPLICATE ~4000 lines (the redundant-commission trap;
+decorrelated codex warned exactly this). ALSO: the Chart/Resolution record has NEVER been inhabited in
+Lean — untested. FORK surfaced → CONTROLLER ENDORSED (B)-then-(A): (B) THIS TIDE = clean-instance record
+inhabitation (scalar chain d≡1, linear g — honestly the CLEAN end, leaf stays sorried) to de-risk the
+record shape before the geometric build sinks weeks; (A) = salvage-adapter (Engine combinatorics via an
+adapter importing ONLY the audited-green closure, never a fossil module) + the GEOMETRIC inhabitation
+(the true monument: analytic g + two-sided ideal identity + hjac + hg_inj + hcover at coupled corank≥2)
+— PRE-ENDORSED pending ELDER ROUTE RATIFICATION (charter §3/RETIRED.md bless salvage; adoption gated).
+hcover build-vs-cite stays open until the build meets it on evidence. The thread-31 certificate stands
+as the MATH playbook; only its Lean-realization stage is superseded by reuse.
