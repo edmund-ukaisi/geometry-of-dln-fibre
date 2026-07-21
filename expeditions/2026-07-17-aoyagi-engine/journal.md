@@ -9563,3 +9563,25 @@ DOWNSTREAM in BlockBlowup + two-way cross-refs; OriginBlowup untouched; (b) road
 **Operational note:** second seat today composing a hold while my disposition sat undelivered/
 undrained (seat-E ×2, seat-core ×1). Pattern reads as inbox-drain timing, not substrate loss —
 seats reminded to drain before holding; watching for a genuine delivery failure.
+
+## 2026-07-21 (controller) — the review→architecture loop closes: terminal_edge_stepInv reshaped BEFORE bake (the literal-Fin-1 wiring blocker)
+
+arch-C ran the requested shape-check of terminal_edge_stepInv against TerminalBezout's actual
+input (PrincipalInv.lean:289–298) and CAUGHT the exact defect class rev-core's consumer-fit pass
+predicted: the locked shape produced only obligation (1), and typed it on
+`foldResid (p.extend ed)` — a `Fin (foldNR …)`-typed object NOT defeq to the literal
+`fun _ : Fin 1 ↦ 1` that TerminalBezout consumes (the wiring blocker named in the review).
+REFINED before any bake: terminal_edge_stepInv's conclusion is now (1) the LITERAL Fin-1 unit
+StepInv ∧ (2) the single-generator cleared pivot (i₀, unit, ContinuousOn, unit 0 ≠ 0,
+(F i₀∘g) = b·unit) — matching TerminalBezout's input EXACTLY. L5's wire becomes:
+terminal_edge_stepInv + isOpen/zero_mem_foldRegion → terminal_bezout → PrincipalInv. The two
+rev-core obligations land in L5's docstring as named binds. Chain of catches today: seat-L4's
+probe (the statement was false terminally) → elder's rider (the transport needed a name) →
+rev-core's obligations (the types must be literal) → arch-C's shape-check (they weren't) — four
+layers, each catching what the previous could not see, all before one line of L5's proof exists.
+
+Also verified by arch-C: canonCenter's write-set DISJOINT from L4 via git-diff (touched =
+cornerToFlat/canonPivotOf/canonCenterOf/IsRealBranch + docstrings; the step-invariant side
+untouched) — NO L4 rebase from the coordinate work, as predicted. arch-C holds the bake for the
+FULL round (canonCenter + guards + terminal_edge_stepInv + L5 docstring binds), then the full
+re-gate (cone 8→9 named; coordinate + layer witness deaths; write-set; build/cordon) + bake.
