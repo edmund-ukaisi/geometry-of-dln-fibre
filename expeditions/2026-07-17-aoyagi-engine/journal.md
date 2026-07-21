@@ -7640,3 +7640,27 @@ STRIKE OPENS (elder's confirmed lane plan; the operator's parallelisation-as-reg
   SEAT-BRIDGE (lane 4, shortest per calibration: corollary's 3 leaves — the ℝ≥0∞→ℝ carrier hop + banked
   flatten adapters). Lane 3 (B per-chart value) queues behind the waypoint; the atlas-min ≥ queues behind
   the monument cert. BANKING DISCIPLINE per landed leaf: prove → drop @[blueprint] → append to AxCheck batch.
+
+## 2026-07-21: MONUMENT CERTIFICATE — YES-with-gaps(named); the hard part has its ∀-general construction
+pnp-monument (thread 31, banked; battery ALL-PASS re-run by controller): Aoyagi's Cases-1&2 recursion
+INHABITS the v4.2 record at FULL generality (all L, all positive widths, monotone + non-monotone), by
+STRUCTURAL INDUCTION on the recursion (the ∀-form, not instances — the stopping-rule discipline held).
+Firmest: the threshold-based closed form b_i = ∏_{t̃<i} u gives hchain/hbind/hunit_mult per step-type;
+the jac-vs-bexp separation (repeated divisors accumulate JACOBIAN exponent, never loss exponent); pure-
+monomial g with unit ≡ 1; cofactors = unimodular Q,P entries ContinuousOn (may vanish — the record is
+right to demand only continuity); hlb via the running-min envelope. FIDELITY WIN: bindingAxes = {t̃=0
+divisors} exactly implements the paper's read-off restriction. TWO named residuals, both = the named
+content of existing frontier leaves: (I) the compact-atlas a.e.-cover assembly (max-pivot-sector
+partition) — CONTROLLER DECISION POINT pre-noted: if the formaliser walls on a Hironaka-properness
+interface, the charter's monument test applies (general Hironaka = CITE; the explicit DLN atlas cover =
+BUILD — the recursion's charts are concrete, so build is the default expectation); (II) hattain
+minimiser-realisation — safer; discharge route named (every QIP minimiser is envelope-clearable; a
+Lean-checkable envelope-replacement inequality rides Object D). CASE-2 F5 RE-ADJUDICATED: the record has
+NO label field (only bexp+jac); running-min governs; the paper defect cannot corrupt hlb/hattain; at
+(2,2,3,2) the defect divisor is non-binding (exp 4 > qipMin 3). FLAG: no PDF tooling in the seat's
+worktree — page-image confirmation optional (structural conclusion image-independent); ledger item.
+NEW PAPER DEFECT (codex-found, battery-verified): Aoyagi's T-profile total-comparability claim FALSE at
+(2,2,1,1) ((1,1,1) vs (2,1,0) incomparable, both Mval 1) — the record structurally avoids it (hchain is
+on threshold-based b-monomials, not profiles). → fidelity-ledger entries for the elder's next convening.
+Frame re-confirmed: Frobenius NOT preserved ⟹ the record's RegionRepresents + weighted-A routing is
+forced; the chart route stays category-dead. Instance cross-checks exact (27/28 reproduced).
