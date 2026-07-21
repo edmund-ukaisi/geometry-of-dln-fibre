@@ -46,12 +46,14 @@ variable {D : ℕ}
 /-- **jacDet is multiplicative under composition (the chain rule).** `jacDet (f ∘ g) u =
 jacDet f (g u) · jacDet g u`, given differentiability at the relevant points. The single step of the
 `pathMap` Jacobian product. -/
-@[blueprint]
 theorem jacDet_comp {f g : (Fin D → ℝ) → (Fin D → ℝ)} (u : Fin D → ℝ)
     (hf : DifferentiableAt ℝ f (g u)) (hg : DifferentiableAt ℝ g u) :
     jacDet (f ∘ g) u = jacDet f (g u) * jacDet g u := by
-  -- map: W0-jacDet-comp (fderiv_comp + LinearMap.det_comp)
-  sorry
+  unfold jacDet
+  rw [fderiv_comp u hf hg]
+  rw [show ((fderiv ℝ f (g u)).comp (fderiv ℝ g u)).toLinearMap
+      = (fderiv ℝ f (g u)).toLinearMap.comp (fderiv ℝ g u).toLinearMap from rfl,
+    LinearMap.det_comp]
 
 /-! ## The unipotent block shear (`blockShear`) — shear-pin, thread 33 -/
 
@@ -66,48 +68,47 @@ def blockShearInv (φ : (Fin D → ℝ) → (Fin D → ℝ)) : (Fin D → ℝ) �
   fun v ↦ v - φ v
 
 /-- **The block shear fixes the origin** when the displacement does. -/
-@[blueprint]
 theorem blockShear_zero (φ : (Fin D → ℝ) → (Fin D → ℝ)) (hφ0 : φ 0 = 0) :
     blockShear φ 0 = 0 := by
-  -- map: W0-blockShear-zero
-  sorry
+  simp [blockShear, hφ0]
 
 /-- **The block shear is analytic** when the displacement is (`id + φ`). -/
-@[blueprint]
 theorem analyticOnNhd_blockShear (φ : (Fin D → ℝ) → (Fin D → ℝ))
     (hφ : AnalyticOnNhd ℝ φ Set.univ) :
     AnalyticOnNhd ℝ (blockShear φ) Set.univ := by
-  -- map: W0-analyticOnNhd-blockShear
-  sorry
+  have hid : AnalyticOnNhd ℝ (fun u : Fin D → ℝ ↦ u) Set.univ := analyticOnNhd_id
+  exact hid.add hφ
 
 /-- **`blockShearInv` is a left inverse of `blockShear`** when `φ` keeps and reads only the kept
 coordinates: `blockShearInv φ (blockShear φ u) = u`. -/
-@[blueprint]
 theorem blockShearInv_leftInverse (φ : (Fin D → ℝ) → (Fin D → ℝ)) (keep : Fin D → Prop)
     (hkeep : ∀ u i, keep i → φ u i = 0)
     (hread : ∀ u v : Fin D → ℝ, (∀ i, keep i → u i = v i) → φ u = φ v) :
     Function.LeftInverse (blockShearInv φ) (blockShear φ) := by
-  -- map: W0-blockShearInv-leftInverse
-  sorry
+  intro u
+  have h : φ (u + φ u) = φ u :=
+    hread (u + φ u) u (fun i hi ↦ by simp [hkeep u i hi])
+  show (u + φ u) - φ (u + φ u) = u
+  rw [h, add_sub_cancel_right]
 
 /-- **`blockShearInv` is a right inverse of `blockShear`** (same hypotheses) — so `blockShear φ` is
 a bijection with polynomial inverse `blockShearInv φ`. -/
-@[blueprint]
 theorem blockShearInv_rightInverse (φ : (Fin D → ℝ) → (Fin D → ℝ)) (keep : Fin D → Prop)
     (hkeep : ∀ u i, keep i → φ u i = 0)
     (hread : ∀ u v : Fin D → ℝ, (∀ i, keep i → u i = v i) → φ u = φ v) :
     Function.RightInverse (blockShearInv φ) (blockShear φ) := by
-  -- map: W0-blockShearInv-rightInverse
-  sorry
+  intro v
+  have h : φ (v - φ v) = φ v :=
+    hread (v - φ v) v (fun i hi ↦ by simp [hkeep v i hi])
+  show (v - φ v) + φ (v - φ v) = v
+  rw [h, sub_add_cancel]
 
 /-- **The block shear is injective** (it is a bijection with polynomial inverse). -/
-@[blueprint]
 theorem injective_blockShear (φ : (Fin D → ℝ) → (Fin D → ℝ)) (keep : Fin D → Prop)
     (hkeep : ∀ u i, keep i → φ u i = 0)
     (hread : ∀ u v : Fin D → ℝ, (∀ i, keep i → u i = v i) → φ u = φ v) :
-    Function.Injective (blockShear φ) := by
-  -- map: W0-injective-blockShear
-  sorry
+    Function.Injective (blockShear φ) :=
+  (blockShearInv_leftInverse φ keep hkeep hread).injective
 
 /-- **The block shear's Jacobian determinant is exactly 1** (the shear-pin, thread 33): the fderiv
 is block-triangular (`hkeep` kills the kept rows of `Dφ`; `hread` kills the non-kept columns), with
@@ -126,59 +127,63 @@ theorem jacDet_blockShear (φ : (Fin D → ℝ) → (Fin D → ℝ)) (keep : Fin
 
 /-- **`blowupMap p` is differentiable** (a polynomial map; from `analyticOnNhd_blowupMap`). The form
 `jacDet_comp` consumes when composing a step's blow-up. -/
-@[blueprint]
-theorem differentiable_blowupMap (p : Fin D) : Differentiable ℝ (blowupMap p) := by
-  -- map: W0-differentiable-blowupMap
-  sorry
+theorem differentiable_blowupMap (p : Fin D) : Differentiable ℝ (blowupMap p) :=
+  differentiableOn_univ.mp (analyticOnNhd_blowupMap p).differentiableOn
 
 /-! ## pathMap composition atoms -/
 
 /-- **`pathMap` fixes the origin** when every step does. -/
-@[blueprint]
 theorem pathMap_zero (l : List ((Fin D → ℝ) → (Fin D → ℝ)))
     (hl : ∀ σ ∈ l, σ 0 = 0) : pathMap l 0 = 0 := by
-  -- map: W0-pathMap-zero
-  sorry
+  induction l with
+  | nil => rfl
+  | cons σ rest ih =>
+    have hrest : pathMap rest 0 = 0 := ih (fun τ hτ ↦ hl τ (List.mem_cons.mpr (Or.inr hτ)))
+    show σ (pathMap rest 0) = 0
+    rw [hrest]; exact hl σ (List.mem_cons.mpr (Or.inl rfl))
 
 /-- **`pathMap` of a list of analytic maps is analytic.** -/
-@[blueprint]
 theorem analyticOnNhd_pathMap (l : List ((Fin D → ℝ) → (Fin D → ℝ)))
     (hl : ∀ σ ∈ l, AnalyticOnNhd ℝ σ Set.univ) :
     AnalyticOnNhd ℝ (pathMap l) Set.univ := by
-  -- map: W0-analyticOnNhd-pathMap
-  sorry
+  induction l with
+  | nil => exact analyticOnNhd_id
+  | cons σ rest ih =>
+    have hrest := ih (fun τ hτ ↦ hl τ (List.mem_cons.mpr (Or.inr hτ)))
+    have hσ := hl σ (List.mem_cons.mpr (Or.inl rfl))
+    exact hσ.comp hrest (Set.mapsTo_univ _ _)
 
 /-- **`pathMap` of a list of differentiable maps is differentiable** (to feed the chain rule). -/
-@[blueprint]
 theorem differentiable_pathMap (l : List ((Fin D → ℝ) → (Fin D → ℝ)))
     (hl : ∀ σ ∈ l, Differentiable ℝ σ) : Differentiable ℝ (pathMap l) := by
-  -- map: W0-differentiable-pathMap
-  sorry
+  induction l with
+  | nil => exact differentiable_id
+  | cons σ rest ih =>
+    have hrest := ih (fun τ hτ ↦ hl τ (List.mem_cons.mpr (Or.inr hτ)))
+    have hσ := hl σ (List.mem_cons.mpr (Or.inl rfl))
+    exact hσ.comp hrest
 
 /-- **The `pathMap` Jacobian chain-rule step.** `jacDet (pathMap (σ :: rest)) u =
 jacDet σ (pathMap rest u) · jacDet (pathMap rest) u`. Iterating this is the "`jacDet (pathMap l) =
 ∏ per-step jacDets along the orbit`" product (each factor evaluated at the partial composition). -/
-@[blueprint]
 theorem jacDet_pathMap_cons (σ : (Fin D → ℝ) → (Fin D → ℝ))
     (rest : List ((Fin D → ℝ) → (Fin D → ℝ))) (u : Fin D → ℝ)
     (hσ : DifferentiableAt ℝ σ (pathMap rest u))
     (hrest : DifferentiableAt ℝ (pathMap rest) u) :
     jacDet (pathMap (σ :: rest)) u
       = jacDet σ (pathMap rest u) * jacDet (pathMap rest) u := by
-  -- map: W0-jacDet-pathMap-cons (chain rule along the list)
-  sorry
+  rw [pathMap_cons]
+  exact jacDet_comp u hσ hrest
 
 /-- **The absolute-value `pathMap` Jacobian chain-rule step** — the form the monomial fold consumes
 (`|det D(pathMap)|` is the product of the per-step `|det|`s, each a pure blow-up monomial). -/
-@[blueprint]
 theorem abs_jacDet_pathMap_cons (σ : (Fin D → ℝ) → (Fin D → ℝ))
     (rest : List ((Fin D → ℝ) → (Fin D → ℝ))) (u : Fin D → ℝ)
     (hσ : DifferentiableAt ℝ σ (pathMap rest u))
     (hrest : DifferentiableAt ℝ (pathMap rest) u) :
     |jacDet (pathMap (σ :: rest)) u|
       = |jacDet σ (pathMap rest u)| * |jacDet (pathMap rest) u| := by
-  -- map: W0-abs-jacDet-pathMap-cons
-  sorry
+  rw [jacDet_pathMap_cons σ rest u hσ hrest, abs_mul]
 
 /-! ## a.e.-injective composition + `CenterCoordAligned` -/
 
@@ -186,21 +191,25 @@ theorem abs_jacDet_pathMap_cons (σ : (Fin D → ℝ) → (Fin D → ℝ))
 `g` is injective off `Eg`, then `f ∘ g` is injective off `Eg ∪ g⁻¹' Ef`. Combined with the nullity
 of the two pieces (`volume Eg = 0`, `volume (g⁻¹' Ef) = 0` — supplied by the caller from the
 concrete polynomial structure, `measure_union_null`), this gives a.e.-injectivity of a branch. -/
-@[blueprint]
 theorem injOn_comp_diff {f g : (Fin D → ℝ) → (Fin D → ℝ)} {Ef Eg : Set (Fin D → ℝ)}
     (hf : Set.InjOn f (Set.univ \ Ef)) (hg : Set.InjOn g (Set.univ \ Eg)) :
     Set.InjOn (f ∘ g) (Set.univ \ (Eg ∪ g ⁻¹' Ef)) := by
-  -- map: W0-injOn-comp-diff
-  sorry
+  intro x hx y hy hxy
+  have hxg : g x ∈ Set.univ \ Ef :=
+    ⟨Set.mem_univ _, fun h ↦ hx.2 (Or.inr h)⟩
+  have hyg : g y ∈ Set.univ \ Ef :=
+    ⟨Set.mem_univ _, fun h ↦ hy.2 (Or.inr h)⟩
+  have hgxy : g x = g y := hf hxg hyg hxy
+  exact hg ⟨Set.mem_univ _, fun h ↦ hx.2 (Or.inl h)⟩
+    ⟨Set.mem_univ _, fun h ↦ hy.2 (Or.inl h)⟩ hgxy
 
 /-- **The `CenterCoordAligned` constructor.** For a GLOBALLY injective shear `sh` (e.g. any
 `blockShear`), `sh ∘ blowupMap p` is injective off `{u_p = 0}` — the pnp-cover coherence field of a
 `StepInvChild`. (Injectivity of `sh` composed with `injOn_blowupMap p`.) -/
-@[blueprint]
 theorem centerCoordAligned_of_injective (sh : (Fin D → ℝ) → (Fin D → ℝ)) (p : Fin D)
     (hsh : Function.Injective sh) : CenterCoordAligned sh p := by
-  -- map: W0-centerCoordAligned-of-injective
-  sorry
+  show Set.InjOn (fun u ↦ sh (blowupMap p u)) (Set.univ \ {w : Fin D → ℝ | w p = 0})
+  exact hsh.injOn.comp (injOn_blowupMap p) (Set.mapsTo_univ _ _)
 
 /-! ## the shear ∘ blow-up step: `|det|` is the pure blow-up monomial (unit ≡ 1) -/
 
@@ -208,11 +217,13 @@ theorem centerCoordAligned_of_injective (sh : (Fin D → ℝ) → (Fin D → ℝ
 shear-pin): `|jacDet (fun u ↦ sh (blowupMap p u)) u| = |u p| ^ (D-1)`, given the shear's
 `jacDet sh = 1`. This is the per-step `GeoStep.hσ_jac` content; the total-branch monomial is the
 `pathMap` product of these (`abs_jacDet_pathMap_cons`) — assembled downstream (L6). -/
-@[blueprint]
 theorem abs_jacDet_shear_comp_blowup (hD : 2 ≤ D) (sh : (Fin D → ℝ) → (Fin D → ℝ)) (p : Fin D)
     (hsh_diff : Differentiable ℝ sh) (hsh_jac : ∀ w, jacDet sh w = 1) (u : Fin D → ℝ) :
     |jacDet (fun u ↦ sh (blowupMap p u)) u| = |u p| ^ (D - 1) := by
-  -- map: W0-abs-jacDet-shear-comp-blowup (chain rule; shear det 1; jacDet_blowupMap)
-  sorry
+  have hcomp : jacDet (sh ∘ blowupMap p) u
+      = jacDet sh (blowupMap p u) * jacDet (blowupMap p) u :=
+    jacDet_comp u (hsh_diff (blowupMap p u)) (differentiable_blowupMap p u)
+  show |jacDet (sh ∘ blowupMap p) u| = |u p| ^ (D - 1)
+  rw [hcomp, hsh_jac, one_mul, jacDet_blowupMap hD, abs_pow]
 
 end DLNFibre.Core.Aoyagi
