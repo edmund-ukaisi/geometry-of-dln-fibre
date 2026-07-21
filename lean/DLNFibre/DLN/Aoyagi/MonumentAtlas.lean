@@ -242,49 +242,93 @@ def TreeEdge.isRollover {d : Fin (N + 1) → ℕ} {p : TreePath d} (ed : TreeEdg
 def TreePath.extend {d : Fin (N + 1) → ℕ} (p : TreePath d) (ed : TreeEdge d p) : TreePath d :=
   TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ
 
+/-! ### Center/pivot spec (seat-L4 drift-guard; controller calibration 26)
+
+`ConState` is purely COMBINATORIAL (`layer S`, `cleared J`, `numDiv`, `divExp`, `divProfile`, …); it
+carries NO coordinate-level center/pivot. So `TreeEdge.center`/`.pivot` — kept as the elder-locked
+structure FIELDS — are NOT yet pinned to the construction. The INTENDED derivation (the spec the
+construction must meet, checkable against thread-37's (3,3,4) battery once the coordinate bridge lands):
+
+* `edgeCenter d S J` = the flat indices (in `Aoyagi.flatDim d`, decoded via `tupIdxEquiv`) of the
+  layer-`S` residual block with row, col ≥ `J`;
+* `edgePivot` = the merged old-`u` exceptional coordinate (case-1(1)) / a fresh `d`-entry (case-1(2) /
+  case-2);
+* (3,3,4) table: S=1 case-2 appends have center codims 9, 4, 1; S=2 the 1×2 block has a codim-2 center;
+  the case-1(1) merge at (S=2, J=0) has center = {d-block ∪ old-u} with pivot = the old-u coord; the
+  1(2) split pivots at a fresh d-entry.
+
+NOT FABRICATED into `edgeCenter`/`edgePivot` DEFS here: the map from the engine's `RLCT.flatDim`
+divisor coordinates to `Aoyagi.flatDim d` is the deferred coordinate bridge (next-expedition runway;
+flagged in `FoldProduced` + memory). A def body written without that bridge would be a name≠content
+violation. Until it lands, the leaves quantify over ALL `ed` (free center/pivot) — the STRONGEST form
+(the seat must handle every center, including the construction's); pinning `ed.center = edgeCenter …`
+is the implementation-owned refinement that awaits the bridge. -/
+
 /-- `δ = [J = 0]` — read OFF the node state's cleared count (never the edge kind). -/
 def edgeδ (d : Fin (N + 1) → ℕ) (p : TreePath d) : Bool := decide (p.conState.cleared = 0)
 
-/-- The step shear `sh = blockShear φ` (unipotent, Jacobian-exactly-1). -/
-def edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
-    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
-  blockShear ed.shearφ
-
-/-- The step map on stored edge data: `blockShear φ ∘ blockBlowupMap center pivot` (the fold uses this
-form so the defining equations hold on the raw `TreePath.step` fields). -/
-def stepMapRaw (d : Fin (N + 1) → ℕ) (center : Finset (Fin (flatDim d))) (pivot : Fin (flatDim d))
+/-- **The per-case step shear** (seat-L4 consumer pin): `sh = id` at a case-1(1) MERGE edge and at a
+ROLLOVER edge (the merge substitutes into the existing exceptional / the rollover is a ledger relabel,
+both `localSub = id`, seat-L4 §4 cert); `sh = blockShear φ` at a case-1(2) SPLIT and a case-2 append
+(the Q/Schur closed form). Keyed off the case so the seat can rewrite `edgeShear → id` from the tag. -/
+def edgeShearRaw (d : Fin (N + 1) → ℕ) (cse : StepCase)
     (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
-  blockShear shearφ ∘ blockBlowupMap center pivot
+  match cse with
+  | StepCase.case11 => id
+  | StepCase.rollover => id
+  | _ => blockShear shearφ
 
-/-- One step's coordinate change: shear ∘ block-center blow-up. -/
+/-- `edgeShearRaw` fixes the origin when the displacement does (`id 0 = 0` / `blockShear_zero`). -/
+theorem edgeShearRaw_zero (d : Fin (N + 1) → ℕ) (cse : StepCase)
+    (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) (h0 : shearφ 0 = 0) :
+    edgeShearRaw d cse shearφ 0 = 0 := by
+  cases cse <;> first | rfl | exact blockShear_zero shearφ h0
+
+/-- The step shear at an edge (`= edgeShearRaw` on the edge's case + φ). -/
+def edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
+  edgeShearRaw d ed.case ed.shearφ
+
+/-- The step map on stored edge data: `edgeShearRaw case φ ∘ blockBlowupMap center pivot` (the fold
+uses this form so the defining equations hold on the raw `TreePath.step` fields, per-case). -/
+def stepMapRaw (d : Fin (N + 1) → ℕ) (cse : StepCase) (center : Finset (Fin (flatDim d)))
+    (pivot : Fin (flatDim d)) (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) :
+    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
+  edgeShearRaw d cse shearφ ∘ blockBlowupMap center pivot
+
+/-- One step's coordinate change: (per-case) shear ∘ block-center blow-up. Equals
+`stepMapRaw d ed.case ed.center ed.pivot ed.shearφ` definitionally. -/
 def stepMap (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   edgeShear d ed ∘ blockBlowupMap ed.center ed.pivot
 
-/-- **Def-lemma** — `jacDet (edgeShear d ed) u = 1` (the shear-pin, immediate from `hshear`). -/
+/-- **Def-lemma** — `jacDet (edgeShear d ed) u = 1` (shear-pin): `id` at merge/rollover (`jacDet_id`),
+`blockShear` elsewhere (`hshear`). -/
 theorem jacDet_edgeShear (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
-    (u : Fin (flatDim d) → ℝ) : jacDet (edgeShear d ed) u = 1 := ed.hshear u
+    (u : Fin (flatDim d) → ℝ) : jacDet (edgeShear d ed) u = 1 := by
+  unfold edgeShear edgeShearRaw
+  split <;> first | exact jacDet_id u | exact ed.hshear u
 
 /-- **Def-lemma** — `stepMap d ed 0 = 0` (the step map fixes the origin). -/
 theorem stepMap_zero (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
     stepMap d ed 0 = 0 := by
   change edgeShear d ed (blockBlowupMap ed.center ed.pivot 0) = 0
   rw [blockBlowupMap_zero]
-  exact blockShear_zero ed.shearφ ed.hshear0
+  exact edgeShearRaw_zero d ed.case ed.shearφ ed.hshear0
 
 /-- The accumulated coordinate change along a path (`root ↦ id`; `p.extend ed ↦ foldG p ∘ stepMap`). -/
 def foldG (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     TreePath d → ((Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ))
   | .root => id
-  | .step p center pivot _ _ shearφ => foldG d e p ∘ stepMapRaw d center pivot shearφ
+  | .step p center pivot cse _ shearφ => foldG d e p ∘ stepMapRaw d cse center pivot shearφ
 
 /-- The accumulated dominant monomial along a path (`root ↦ 1`; step ↦ `u_pivot^δ ·` the pullback). -/
 def foldB (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     TreePath d → ((Fin (flatDim d) → ℝ) → ℝ)
   | .root => fun _ => 1
-  | .step p center pivot _ _ shearφ => fun u =>
-      (u pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMapRaw d center pivot shearφ u)
+  | .step p center pivot cse _ shearφ => fun u =>
+      (u pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMapRaw d cse center pivot shearφ u)
 
 /-- The residual family length along a path (`root ↦ d_N·d_0`; case-2 appends one; else unchanged). -/
 def foldNR (d : Fin (N + 1) → ℕ) : TreePath d → ℕ
@@ -300,15 +344,21 @@ a division/exactness choice: that belongs to the `∃q` of `FoldStepInv`, not th
 noncomputable def foldResid (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     (p : TreePath d) → (Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ)
   | .root => coreGen d e
+  -- case-2 (full-block APPEND): pullback carried entries + snoc the new block coordinate `u_pivot`.
+  --   Seat-L4 fires `WeightedCofactor.weightedCofactor_transport` on the carried entries.
   | .step p center pivot StepCase.case2 _ shearφ =>
-      Fin.snoc (fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u))
+      Fin.snoc (fun j u => foldResid d e p j (stepMapRaw d StepCase.case2 center pivot shearφ u))
         (fun u => u pivot)
+  -- case-1(1) MERGE (sh = id): pullback through `blockBlowupMap` alone — seat-L4 fires
+  --   `BlockDivision.blockBlowup_center_comb_eq` (exact `/u_p`, `blockBlowupCoordQuot`). Never quotient-by-u_p.
   | .step p center pivot StepCase.case11 _ shearφ =>
-      fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u)
+      fun j u => foldResid d e p j (stepMapRaw d StepCase.case11 center pivot shearφ u)
+  -- case-1(2) SPLIT: pullback through shear ∘ blow-up — seat-L4 fires `weightedCofactor_transport`.
   | .step p center pivot StepCase.case12 _ shearφ =>
-      fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u)
+      fun j u => foldResid d e p j (stepMapRaw d StepCase.case12 center pivot shearφ u)
+  -- rollover (sh = id): reindex/absorb (p.19 transpose boundary), no blow-up content.
   | .step p center pivot StepCase.rollover _ shearφ =>
-      fun j u => foldResid d e p j (stepMapRaw d center pivot shearφ u)
+      fun j u => foldResid d e p j (stepMapRaw d StepCase.rollover center pivot shearφ u)
 
 /-- A total open certificate domain per edge (`Set.univ` stand-in — the D2' shrink is deferred). -/
 def edgeChartDom (d : Fin (N + 1) → ℕ) {p : TreePath d} (_ed : TreeEdge d p) :
@@ -318,15 +368,15 @@ def edgeChartDom (d : Fin (N + 1) → ℕ) {p : TreePath d} (_ed : TreeEdge d p)
 def foldRegion (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     TreePath d → Set (Fin (flatDim d) → ℝ)
   | .root => Set.univ
-  | .step p center pivot _ _ shearφ =>
-      stepMapRaw d center pivot shearφ ⁻¹' foldRegion d e p ∩ Set.univ
+  | .step p center pivot cse _ shearφ =>
+      stepMapRaw d cse center pivot shearφ ⁻¹' foldRegion d e p ∩ Set.univ
 
 /-- `foldRegion ≡ Set.univ` (the `edgeChartDom = univ` stand-in). -/
 theorem foldRegion_eq_univ {d : Fin (N + 1) → ℕ} (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     ∀ p : TreePath d, foldRegion d e p = Set.univ
   | .root => rfl
-  | .step p center pivot _ _ shearφ => by
-      change stepMapRaw d center pivot shearφ ⁻¹' foldRegion d e p ∩ Set.univ = Set.univ
+  | .step p center pivot cse _ shearφ => by
+      change stepMapRaw d cse center pivot shearφ ⁻¹' foldRegion d e p ∩ Set.univ = Set.univ
       rw [foldRegion_eq_univ e p, Set.preimage_univ, Set.inter_univ]
 
 /-- `foldRegion` is open. -/
@@ -338,6 +388,15 @@ theorem isOpen_foldRegion (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
 theorem zero_mem_foldRegion (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) : (0 : Fin (flatDim d) → ℝ) ∈ foldRegion d e p := by
   rw [foldRegion_eq_univ]; exact Set.mem_univ _
+
+/-- **The b-chain one-step ratio (seat-L4 consumer, `hratio`).** `foldB (p.extend ed) = u_pivot^δ ·
+(foldB p ∘ stepMap)`, `δ = edgeδ d p ∈ {0,1}`. This is the exact ratio the generalized-CommRing Q̂
+commutation consumes; iterated along a path it is the prefix-monomial structure `b = ∏_edges u_pivot^δ`.
+(A `Dvd` Prop over ℝ-valued `foldB` would be vacuous — the honest content is this ratio.) -/
+theorem foldB_extend_eq (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (u : Fin (flatDim d) → ℝ) :
+    foldB d e (p.extend ed) u
+      = (u ed.pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMap d ed u) := rfl
 
 /-- **The foldState step invariant at a path node** (the merged-roads form): a divisibility witness
 `q` for the accumulated `StepInv (coreGen) (foldG p) (foldB p) (foldResid p) q (foldRegion p)`. The
