@@ -85,7 +85,7 @@ theorem analyticOnNhd_blowupMap2 (i : Fin 2) :
     rw [this]; exact (hproj i).mul (hproj j)
 
 /-- The exceptional locus `{wᵢ = 0}` has volume zero (a coordinate hyperplane). -/
-theorem volume_blowup_excep (i : Fin 2) :
+theorem volume_blowup_excep2 (i : Fin 2) :
     volume {w : Fin 2 → ℝ | w i = 0} = 0 := by
   have hset : {w : Fin 2 → ℝ | w i = 0}
       = {w | MvPolynomial.eval w (MvPolynomial.X i) = 0} := by
@@ -110,12 +110,12 @@ theorem injOn_blowupMap2 (i : Fin 2) :
     exact mul_left_cancel₀ hw'i hprod
 
 /-- The single blow-up monomial `b₁ = wᵢ`. -/
-theorem monomialFam_blowup_bexp (i : Fin 2) (w : Fin 2 → ℝ) :
+theorem monomialFam_blowup_bexp2 (i : Fin 2) (w : Fin 2 → ℝ) :
     monomialFam (fun (_ : Fin 1) (j : Fin 2) ↦ if j = i then 1 else 0) 0 w = w i := by
   fin_cases i <;> simp [monomialFam]
 
 /-- The Jacobian weight of the exponent `jac j = [j = i]` is `|wᵢ|`. -/
-theorem jacWeight_blowup_jac (i : Fin 2) (w : Fin 2 → ℝ) :
+theorem jacWeight_blowup_jac2 (i : Fin 2) (w : Fin 2 → ℝ) :
     jacWeight (fun j : Fin 2 ↦ if j = i then 1 else 0) w = |w i| := by
   fin_cases i <;> simp [jacWeight]
 
@@ -140,7 +140,7 @@ noncomputable def blowupChart2 (i : Fin 2) : Chart coordFam2 (0 : Fin 2 → ℝ)
   hexcep_meas := by
     have : {w : Fin 2 → ℝ | w i = 0} = (fun w ↦ w i) ⁻¹' {0} := rfl
     rw [this]; exact (measurable_pi_apply i) (measurableSet_singleton 0)
-  hexcep_null := volume_blowup_excep i
+  hexcep_null := volume_blowup_excep2 i
   hg_inj := injOn_blowupMap2 i
   M' := 1
   bexp := fun _ j ↦ if j = i then 1 else 0
@@ -159,7 +159,7 @@ noncomputable def blowupChart2 (i : Fin 2) : Chart coordFam2 (0 : Fin 2 → ℝ)
   hunit_ne := fun _ _ ↦ one_ne_zero
   hjac := by
     intro u _
-    rw [jacDet_blowupMap2, jacWeight_blowup_jac, abs_one, mul_one]
+    rw [jacDet_blowupMap2, jacWeight_blowup_jac2, abs_one, mul_one]
   hideal_fwd := by
     refine ⟨fun k _ u ↦ if k = i then 1 else u k, ?_, ?_⟩
     · intro k _
@@ -167,7 +167,7 @@ noncomputable def blowupChart2 (i : Fin 2) : Chart coordFam2 (0 : Fin 2 → ℝ)
       · simp only [hk, if_pos]; exact continuousOn_const
       · simp only [if_neg hk]; exact (continuous_apply k).continuousOn
     · intro u _ k
-      rw [Fin.sum_univ_one, monomialFam_blowup_bexp]
+      rw [Fin.sum_univ_one, monomialFam_blowup_bexp2]
       by_cases hk : k = i <;>
         simp [coordFam2, blowupMap2, Function.comp, hk, mul_comm]
   hideal_bwd := by
