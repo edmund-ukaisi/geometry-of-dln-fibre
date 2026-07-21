@@ -8013,3 +8013,24 @@ be explicitly carried at LEAF-5's fold (the sequence gate); (D4) a fidelity docs
 (p.15/p.22/thread-28/worked.tex:659/Q̂=P-conjugate). Kill-set adequacy confirmed (coupling, depth,
 non-monotone widths). Compass fidelity-ledger entry applied (elder-authored substance, controller
 commit). arch-C has all three messages (split + cover-confirm + D1–D4).
+
+## 2026-07-21: RUNG (C) LANDED + INTEGRATED — the 8-leaf monument skeleton is reified
+arch-C delivered on `expedition/aoyagi-engine-rung-c` (444e6830c): ConjResolution (Core-lift of the
+rung-(B) transport, SORRY-FREE), PrincipalInv.lean (StepInv/PrincipalInv/pathMap + L1/L3/L4/
+terminal_bezout), MonumentAtlas.lean (GeoStep/GeoAtlasData + L5–L8 + the composition driver).
+Both pnp verdicts + elder D1–D4 absorbed MID-TIDE (stopped on L3/L4/L5 as sketched, reshaped to
+StepInv divisibility-only + terminal_bezout per the ratified split; L7 kept per pnp-cover with the
+stronger-inclusion shape). The driver `exists_coreResolution_via_monument` re-proves the full
+`exists_coreResolution` statement sorry-free-modulo-leaves. CONTROLLER GROUND-TRUTH (re-derived, not
+believed): merge clean; aggregator wired (3 imports, single-writer); CORE-LIFT dedup done (4 dup decls
+deleted from GeometricAtlasD12 + import; rev-d12 review already closed); AxCheck driver print added;
+full build EXIT 0; batch 341 banked-clean green; cordon OK (825 files, 27 blueprint sites, 0
+violations); probe re-ran #audit_blueprint MYSELF: driver cone = EXACTLY {L1,L3,L4,terminal_bezout,
+L5,L6,L7,L8}, axioms [propext, sorryAx, Classical.choice, Quot.sound]. arch-C's handoffs: (1) imports
+DONE; (2) dedup DONE; (3) the in-place-sorry↔driver cycle — endpoint-canonicalization question queued
+to the elder's summit call (both statements coexist; the day the leaves land, promote or reorg); (4)
+fidelity reviewer on leaf statements — COMMISSIONED this tick (three arch-C smells: unused hne;
+StepInvChild ∀_branch:Bool collapse; dropped nR'<nR progress measure). NAVIGATOR PASS #12 (mandatory
+pre-wave, event-trigger fired earlier) — COMMISSIONED this tick. Wave commissioning WAITS on both.
+(Process note, recorded live: the first journal-append of this entry silently no-op'd — heredoc ran
+from lean/ cwd; the commit landed without it. The queued-without-recording class, caught same-tick.)
