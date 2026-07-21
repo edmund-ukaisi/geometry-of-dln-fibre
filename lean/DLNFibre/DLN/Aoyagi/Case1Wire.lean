@@ -21,12 +21,12 @@ variable {N : ℕ}
 `hshear_pivot`) at case12/case2. The uniform fact the FIX-A center-division consumes. -/
 theorem edgeShear_keeps_pivot (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (u : Fin (flatDim d) → ℝ) : edgeShear d ed u ed.pivot = u ed.pivot := by
-  unfold edgeShear edgeShearRaw
-  split
-  · rfl
-  · rfl
-  · exact ed.hshear_pivot u
-  · exact ed.hshear_pivot u
+  change edgeShearRaw d ed.case ed.shearφ u ed.pivot = u ed.pivot
+  cases ed.case
+  · rfl                       -- case11: `id`
+  · exact ed.hshear_pivot u   -- case12: `blockShear`
+  · exact ed.hshear_pivot u   -- case2:  `blockShear`
+  · rfl                       -- rollover: `id`
 
 /-- **The FIX-RESID per-entry identity (the wall's δ=1 crux).** For a `Deg1SupportedOn` parent residual
 (center `ed.center`), the parent residual pulled back through `stepMap` (blow-up OUTERMOST) factors as
@@ -50,8 +50,9 @@ theorem foldResid_stepMap_eq_pivot_mul (d : Fin (N + 1) → ℕ)
   have hagree : ∀ s, s ∉ ed.center → σu s = qm s := by
     intro s hs
     have hsp : s ≠ ed.pivot := fun h ↦ hs (h ▸ ed.hpivot)
-    rw [hσu_eq s, blockBlowupMap, hqm, blockBlowupCoordQuot]
-    simp [hsp, hs]
+    rw [hσu_eq s, blockBlowupMap_spectator_eq ed.center ed.hpivot hs (edgeShear d ed u), hqm]
+    change edgeShear d ed u s = (if s = ed.pivot then (1 : ℝ) else edgeShear d ed u s)
+    rw [if_neg hsp]
   -- the Deg1 witness for entry `j`
   obtain ⟨c, _hc, hrepr, hign⟩ := hdeg1 j
   have hmem : ∀ w : Fin (flatDim d) → ℝ, w ∈ foldRegion d e p := by
