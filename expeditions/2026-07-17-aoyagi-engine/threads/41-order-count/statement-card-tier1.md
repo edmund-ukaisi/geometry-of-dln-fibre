@@ -12,7 +12,7 @@ Seat: seat-E (lean-formaliser). Branch `expedition/aoyagi-engine-E`. Module
 > three-range piecewise cardinality (for `a ≤ ℓ`, `j ≤ ℓ`).
 >
 > - **Lean:** `DLNFibre.Core.Aoyagi.OrderCount.perJCard_eq_paper`
->   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `46f12b577`)
+>   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `8163e9ebe`)
 > - **Gloss.** `perJCard ℓ a j = perJCardPaper ℓ a j`, where `perJCard = min(min j a)(min(ℓ−a)(ℓ−j)) + 1`
 >   and `perJCardPaper` is the verbatim p.26 piecewise: `j+1` for `j ≤ min{a,ℓ−a}`; `min{a,ℓ−a}+1`
 >   for `min{a,ℓ−a} < j ≤ max{a,ℓ−a}`; `min{a,ℓ−a}+1+max{a,ℓ−a}−j` for `max{a,ℓ−a} < j ≤ ℓ`.
@@ -22,12 +22,28 @@ Seat: seat-E (lean-formaliser). Branch `expedition/aoyagi-engine-E`. Module
 > - **Deferred.** none.
 > - **Status.** sorry-free.
 
+> **Claim (width-independence, p.25 envelopes).** For `a ≤ ℓ`, `j ≤ ℓ`, ANY partial-sum data
+> `P : ℕ → ℤ`, and ANY integer `M`, the two Aoyagi-p.25 envelopes satisfy
+> `H̃'_j − H̃_j = min(j, a, ℓ−a, ℓ−j)` — the shared `P j` and the integer `M` cancel.
+>
+> - **Lean:** `DLNFibre.Core.Aoyagi.OrderCount.envHi_sub_envLo`
+>   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `8163e9ebe`)
+> - **Gloss.** `envHi P M ℓ a j − envLo P M a j = (bandWidth ℓ a j : ℤ)`, `envLo`/`envHi` the verbatim
+>   two-piece p.25 envelopes.
+> - **Proved.** Unconditional on `a ≤ ℓ`, `j ≤ ℓ`, over free `(P, M)` (`by_cases` on the two envelope
+>   conditions; each branch `ring` after `bandWidth`-value by `omega`). Axiom-clean `[propext, Quot.sound]`.
+> - **Assumed.** `a ≤ ℓ`, `j ≤ ℓ`.
+> - **Cited / Deferred.** none. (This is the Tier-1↔Tier-2 bridge: Tier 2 instantiates `P, M` with the
+>   certified selector objects; only then is the terminal equality `H̃_ℓ = H̃'_ℓ = 0` a theorem — it
+>   needs the Def-3 consistency `P, M*, a`.)
+> - **Status.** sorry-free.
+
 > **Claim (band-area core).** The sum of the band widths is `a(ℓ−a)`:
 > `∑_{j=0}^{ℓ} min(j, a, ℓ−a, ℓ−j) = a(ℓ−a)` (for `a ≤ ℓ`). Width-independent — the shared
 > partial-sum term `∑_{l=1}^{j+1} M^{(S_l)}` and the integer `M = M*` cancel in `H̃'_j − H̃_j`.
 >
 > - **Lean:** `DLNFibre.Core.Aoyagi.OrderCount.bandWidth_sum`
->   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `46f12b577`)
+>   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `8163e9ebe`)
 > - **Gloss.** `∑ j ∈ Finset.range (ℓ+1), bandWidth ℓ a j = a * (ℓ − a)`, `bandWidth` the `min`-of-four.
 > - **Proved.** Unconditional on `a ≤ ℓ`. Proof: double-count `bandWidth = #{i∈[1,m] : i≤j ∧ i≤ℓ−j}`
 >   with `m = min(a, ℓ−a)`, `Finset.sum_comm`, inner count `#{j : i≤j≤ℓ−i} = ℓ+1−2i`, and the helper
@@ -42,7 +58,7 @@ Seat: seat-E (lean-formaliser). Branch `expedition/aoyagi-engine-E`. Module
 > single terminal branch, the Case-1(2) `J`-increment).
 >
 > - **Lean:** `DLNFibre.Core.Aoyagi.OrderCount.bandCount_eq`
->   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `46f12b577`)
+>   (`lean/DLNFibre/Core/Aoyagi/OrderCount.lean` @ `8163e9ebe`)
 > - **Gloss.** `bandCount ℓ a = a * (ℓ − a) + 1`.
 > - **Proved.** Unconditional on `a ≤ ℓ` (immediate from `bandWidth_sum`). Kill-set by `decide` on the
 >   DEFINITION: `bandCount 2 2 = 1`, `2 1 = 2`, `3 2 = 3`, `4 2 = 5`; edges `1 0 = 1`, `1 1 = 1`,
