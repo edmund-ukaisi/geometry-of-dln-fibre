@@ -8320,3 +8320,19 @@ constructible by the fold. Relayed to arch-C mid-render. round3.lean probes bank
 SEAT STATE: L4 + L7 held (the two blockers); L8 + L3 clear-modulo-render (their statements change
 shape in the render: card-tie / edge-indexing). All four seats live; w0l3 on O9 proofs + L3 re-price;
 seat-L4 on the real-state core algebra (survives edge-indexing per the elder).
+
+## 2026-07-21: σ-PROVENANCE RATIFIED — the hardening loop closes on a principle
+The elder ratified rev-leaves' L7 amendment AGAINST ITSELF ("I quantified L7 over ∀-FoldProduced-
+atlases while tacitly reasoning about THE fold's atlas — the same severed-linkage disease I had just
+diagnosed at L3/L4, one level up. Owned; the round-3 layer caught it because the layers are
+decorrelated, which is the system working"). Resolution ratified on four points: pure provenance
+(the fold records its own per-step center/pivot through the SAME EdgeSpec spine — one data spine,
+no second mechanism; + the accumulated |center|−1 jac ledger-tie, killing the by-hand-jac degeneracy
+at the root); Aoyagi-side (card↔sum runway untouched); exactly L7's argmax handle; L8 unchanged.
+Riders relayed to arch-C: (i) card-tie carried-or-derived, no clause multiplication; (ii) the CLOSING
+PRINCIPLE into the docstring — every ∀-statement whose instances come from the fold either carries
+instance-reconstructing provenance (L7's road) or is edge/reachability-indexed (L3/L4's road); the
+only two honest shapes; all four hardening-round refutations were one disease: QUANTIFICATION SEVERED
+FROM PROVENANCE. Compass entry applied (the principle + the go-to-the-construction corollary).
+arch-C renders with nothing further pending; rev-leaves round-4 lands on its output; then the wave
+go-signals.

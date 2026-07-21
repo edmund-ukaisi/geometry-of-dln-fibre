@@ -122,6 +122,18 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   d-entry). LESSON: fix a collapse by pinning the TRUE law, not A law — an invented discriminator
   passes the collapse test while breaking fidelity.
 
+- **The closing principle of the statement-hardening rounds (elder, 2026-07-21): quantification
+  severed from provenance is THE disease.** Every ∀-statement whose intended instances come from the
+  fold must either (a) carry provenance that reconstructs the instance (L7's road — FoldProduced with
+  the σ/center/pivot spine + the jac ledger-tie), or (b) be edge/reachability-indexed (L3/L4's road —
+  the tree's own edges, the fold's own states). These are the only two honest shapes. Every refutation
+  of the hardening cycle — the constant family (S3), the Σw² spectator support, the misaligned-spec
+  q'-law non-polynomiality, the wrong-pivot atlas — was this one disease. Corollary already observed
+  twice: the M'=1 compression discards structure that makes steps true; patching the free-standing
+  form re-admits sharper probes — go to the construction, don't patch the universal. ONE data spine
+  (EdgeSpec) serves both roads; do not multiply clauses beyond need (the card-tie may be derivable
+  from the ledger-tie + squarefree).
+
 ## The honest gap — coupled-B, stated plainly (front-and-centre)
 - **KNOW:** clean regime exact (F3); `⟨∏C⟩=⟨diag(b)⟩` transfers as an ideal fact (F2); the coupling is
   real and flatten breaks (F4); minAdm = cCodim banked (D); the category error forces the ideal route (F1).
