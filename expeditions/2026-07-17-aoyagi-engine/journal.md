@@ -8616,3 +8616,13 @@ bundle (foldNR exact-clear upgrade + M5 spurious-hd + the padding named-risk doc
 commissions after it lands; L8 after the first leaves land; L7 last (the bridge gap). seat-api
 running the M-items concurrently. Five statement-hardening rounds, five severance classes dead,
 and the proving begins.
+
+## 2026-07-21: ELDER TRIM RULING (recorded on receipt) — he0/he_lin off the case leaves
+Ruling: TRIM he0/he_lin from the two case leaves (KEEP hN/hpos — the defect-3 guards; he0/he_lin
+STAY on L5 + the drivers where genuinely root-anchored: he0 consumed once at L5's base case,
+he_lin discharges the root residual's polynomial coefficients). The elder self-applied its own
+discipline: "caution that survives a consumption audit becomes the carried-where-not-consumed smell;
+I don't exempt my own binders. Uniformity is not a bar-(i) value; weakest-hypotheses is." Re-adding
+later (if a wall proof wants one) = a normal small round, cheaper than certain noise in the wall
+seat's context. Rides arch-C's next-touch bundle; the foldNR exact-clear diff + this trim go to the
+elder as ONE verification pass. Register M5 entry extended at next event-touch.
