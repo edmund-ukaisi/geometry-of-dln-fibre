@@ -5,7 +5,9 @@ import Mathlib.Tactic
 /-!
 # `Core.Aoyagi.OrderCount` — Aoyagi Lemmas 4–5: the banded-interval combinatorics (Tier 1, abstract)
 
-**SPECIFY skeleton — statements only, `sorry` bodies, awaiting elder ratification. NOT proved.**
+**PROVED sorry-free (Tier-1 body); framing awaiting the elder's ratification pass.** The band-area
+arithmetic (`bandWidth_sum`, `bandCount_eq`) and the p.26 fidelity anchor (`perJCard_eq_paper`) are
+axiom-clean `[propext, Classical.choice, Quot.sound]`; the honest seams below are NOT asserted.
 
 Aoyagi (2023) pp.25–26 counts the binding branch-vectors that attain the RLCT by a two-envelope,
 two-condition characterisation (Lemma 4) and a two-sided (union upper bound + explicit
@@ -61,13 +63,55 @@ def perJCardPaper (ℓ a j : ℕ) : ℕ :=
 piecewise form (for `a ≤ ℓ`, `j ≤ ℓ`). -/
 theorem perJCard_eq_paper (ℓ a j : ℕ) (ha : a ≤ ℓ) (hj : j ≤ ℓ) :
     perJCard ℓ a j = perJCardPaper ℓ a j := by
-  sorry
+  simp only [perJCard, perJCardPaper, bandWidth]
+  split_ifs <;> omega
+
+/-- Arithmetic helper: `∑_{i=1}^{m} (ℓ+1−2i) = m(ℓ−m)` when `2m ≤ ℓ` (no `ℕ`-truncation). -/
+private theorem sum_Icc_linear (ℓ m : ℕ) (hm : 2 * m ≤ ℓ) :
+    ∑ i ∈ Finset.Icc 1 m, (ℓ + 1 - 2 * i) = m * (ℓ - m) := by
+  induction m with
+  | zero => simp
+  | succ n ih =>
+    have hn : 2 * n ≤ ℓ := by omega
+    rw [Finset.sum_Icc_succ_top (by omega : 1 ≤ n + 1), ih hn]
+    obtain ⟨d, hd⟩ : ∃ d, ℓ = (n + 1) + d := ⟨ℓ - (n + 1), by omega⟩
+    subst hd
+    have h1 : (n + 1 + d) - n = d + 1 := by omega
+    have h2 : (n + 1 + d) + 1 - 2 * (n + 1) = d - n := by omega
+    have h3 : (n + 1 + d) - (n + 1) = d := by omega
+    rw [h1, h2, h3]
+    obtain ⟨e, he⟩ := Nat.le.dest (show n ≤ d by omega)
+    subst he
+    simp only [Nat.add_sub_cancel_left]
+    ring
 
 /-- The **band area** `∑_{j=0}^{ℓ} W_j = a(ℓ−a)` — the width-independent arithmetic core
-(Aoyagi p.26). The endpoint widths `W_0 = W_ℓ = 0` make the range choice immaterial. -/
+(Aoyagi p.26). The endpoint widths `W_0 = W_ℓ = 0` make the range choice immaterial. Proof:
+double-count `W_j = #{i∈[1,m] : i ≤ j ∧ i ≤ ℓ−j}` (with `m = min(a,ℓ−a)`), swap the two sums, and
+count `#{j : i ≤ j ≤ ℓ−i} = ℓ+1−2i`, giving `∑_{i=1}^{m}(ℓ+1−2i) = m(ℓ−m) = a(ℓ−a)`. -/
 theorem bandWidth_sum (ℓ a : ℕ) (ha : a ≤ ℓ) :
     ∑ j ∈ Finset.range (ℓ + 1), bandWidth ℓ a j = a * (ℓ - a) := by
-  sorry
+  set m := min a (ℓ - a) with hm
+  have hmle : 2 * m ≤ ℓ := by omega
+  have htarget : a * (ℓ - a) = m * (ℓ - m) := by
+    rcases le_total a (ℓ - a) with h | h
+    · rw [hm, min_eq_left h]
+    · rw [hm, min_eq_right h, Nat.sub_sub_self ha]; ring
+  rw [htarget, ← sum_Icc_linear ℓ m hmle]
+  have hstep : ∀ j ∈ Finset.range (ℓ + 1),
+      bandWidth ℓ a j = ∑ i ∈ Finset.Icc 1 m, (if i ≤ j ∧ i ≤ ℓ - j then 1 else 0) := by
+    intro j _
+    have hfilter : (Finset.Icc 1 m).filter (fun i => i ≤ j ∧ i ≤ ℓ - j)
+        = Finset.Icc 1 (bandWidth ℓ a j) := by
+      ext i; simp only [Finset.mem_filter, Finset.mem_Icc, bandWidth]; omega
+    rw [← Finset.card_filter, hfilter, Nat.card_Icc]; omega
+  rw [Finset.sum_congr rfl hstep, Finset.sum_comm]
+  refine Finset.sum_congr rfl (fun i hi => ?_)
+  rw [Finset.mem_Icc] at hi
+  have hfilter : (Finset.range (ℓ + 1)).filter (fun j => i ≤ j ∧ i ≤ ℓ - j)
+      = Finset.Icc i (ℓ - i) := by
+    ext j; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]; omega
+  rw [← Finset.card_filter, hfilter, Nat.card_Icc]; omega
 
 /-- The **banded-interval count** `= band area + 1` (the `+1` is the single terminal branch, the
 Case-1(2) `J`-increment; Aoyagi p.26). A neutral arithmetic count over abstract `(ℓ, a)` — NOT
@@ -77,20 +121,22 @@ def bandCount (ℓ a : ℕ) : ℕ := (∑ j ∈ Finset.range (ℓ + 1), bandWidt
 /-- **Tier-1 headline**: the banded-interval count is `a(ℓ−a)+1` (Aoyagi Lemma 5's value, as pure
 banded-interval arithmetic; for `a ≤ ℓ`). -/
 theorem bandCount_eq (ℓ a : ℕ) (ha : a ≤ ℓ) : bandCount ℓ a = a * (ℓ - a) + 1 := by
-  sorry
+  unfold bandCount; rw [bandWidth_sum ℓ a ha]
 
 /-! ## Kill-set: build-enforced ground truths (abstract `(ℓ, a)` values) -/
 
+-- These `decide` the DEFINITION directly (independent of `bandCount_eq`): a mis-defined `bandWidth`
+-- would fail here, not silently agree with the closed form.
 -- Edge corners (elder's Tier-1 kill-set: a = 0 and ℓ = 1 — the Lemma-3 `A(a−1)` domain subtlety).
-example : bandCount 1 0 = 1 := by sorry
-example : bandCount 1 1 = 1 := by sorry
-example : bandCount 5 0 = 1 := by sorry
-example : bandCount 5 5 = 1 := by sorry
+example : bandCount 1 0 = 1 := by decide
+example : bandCount 1 1 = 1 := by decide
+example : bandCount 5 0 = 1 := by decide
+example : bandCount 5 5 = 1 := by decide
 -- The RRR / §2-Example selector values (K1; the (ℓ,a) come from Def-3, bound at Tier 2):
 --   (2,2,2)→(ℓ,a)=(2,2)→1; (2,1,2)→(2,1)→2; (2,2,2,2)→(3,2)→3; ThetaOrderDistinction (4,2)→5.
-example : bandCount 2 2 = 1 := by sorry
-example : bandCount 2 1 = 2 := by sorry
-example : bandCount 3 2 = 3 := by sorry
-example : bandCount 4 2 = 5 := by sorry
+example : bandCount 2 2 = 1 := by decide
+example : bandCount 2 1 = 2 := by decide
+example : bandCount 3 2 = 3 := by decide
+example : bandCount 4 2 = 5 := by decide
 
 end DLNFibre.Core.Aoyagi.OrderCount
