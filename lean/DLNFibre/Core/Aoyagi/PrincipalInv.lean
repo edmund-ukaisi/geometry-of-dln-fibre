@@ -1,52 +1,54 @@
-import DLNFibre.Core.Aoyagi.OriginBlowup
+import DLNFibre.Core.Aoyagi.BlockBlowup
 import Meta.Cordon
 
 /-!
 # `Core.Aoyagi.PrincipalInv` — the path invariant + the algebraic recursion leaves
 
-**BLUEPRINT (aoyagi-engine rung C; RESHAPED per the pnp-case1 verdict, thread 34).** The network-free
-algebraic spine of the coupled product-ideal resolution monument (charter §1.B). Universalized over a
-general ambient dimension `Fin D` and a general generator family `F` (statement gate (iii); the DLN
-driver instantiates `D := flatDim d`, `F := coreGen d e`).
+**BLUEPRINT (aoyagi-engine rung C; RESHAPED per the pnp-case1 + rev-leaves + elder δ-adjudication).**
+The network-free algebraic spine of the coupled product-ideal resolution monument (charter §1.B),
+universalized over a general ambient dimension `Fin D` and generator family `F` (the DLN driver
+instantiates `D := flatDim d`, `F := coreGen d e`).
 
-## Two invariants: the interior `StepInv` (divisibility only) vs the terminal `PrincipalInv` (both)
+## Two invariants: interior `StepInv` (divisibility only) vs terminal `PrincipalInv` (both)
 
-The pnp-case1 verdict (thread 34; decorrelated Codex + an independent impossibility proof + 3
-batteries) established that a per-step invariant CANNOT bundle divisibility **and** Bézout:
+The pnp-case1 verdict established that a per-step invariant CANNOT bundle divisibility AND Bézout:
 
-* **Divisibility (D)** — `⟨(∏C)∘g⟩ ⊆ ⟨b₁⟩`, each entry `= b₁·q` with `q` continuous — IS a genuine
-  per-step invariant (`StepInv`).
-* **Bézout / principality (B)** — `b₁ ∈ ⟨(∏C)∘g⟩` — is **FALSE at the root and every interior state**:
-  at layer `S < L` the pending tail `∏_{s>S}C` vanishes at the deepest point, so every quotient
-  `q_ij(0) = 0`, and a Bézout representation would force `0 = 1` by continuity. Principality is **BORN
-  at the terminal state** (`S = L`, `J ≥ 1`) by the cleared pivot (`terminal_bezout`). In-tree
-  corroboration: thread-28 cert line 73 ("intermediate charts CAN be non-principal"), worked.tex:659
-  ("the chain is a TERMINAL-chart invariant").
+* **Divisibility (D)** — `⟨(∏C)∘g⟩ ⊆ ⟨b₁⟩`, each entry `= b₁·q` — IS per-step preservable (`StepInv`).
+* **Bézout / principality (B)** — is **FALSE at the root and every interior state** (the pending tail
+  vanishes at `0`, forcing every quotient `q(0) = 0`); it is BORN at the TERMINAL node by the cleared
+  pivot (`terminal_bezout`). In-tree corroboration: thread-28 line 73; worked.tex:659.
 
-So a per-step `PrincipalInv`-preservation statement would be a FALSE frontier statement. The reshape:
+`StepInv` carries the **deepest-point vanishing** `(Fᵢ∘g) 0 = 0` (elder S3, kernel-checked): the real
+states always have it (`coreGen i 0 = 0`, the R0/R1 deepest-point reduction), it is preserved by every
+step (`σ 0 = 0`), and δ=1 children genuinely NEED it (the child `b'` vanishes at `0`, so the child
+entry must too). Its positive face is the SAME fact whose negative face defeats interior Bézout.
 
-* `StepInv F g b resid q V` — the **interior** invariant, **divisibility only** (statement gate (ii):
-  an interior/mid-recursion/coupled instance IS this shape). Region-quantified (condition (1)): the
-  quotient `q` is `ContinuousOn V` and the factorization holds `∀ u ∈ V` (`Set.EqOn`, NOT a germ).
-* `PrincipalInv F g b q r V` — the **terminal** invariant, BOTH divisibility `q` and Bézout `r`, the
-  M'=1 compression (`⟨(∏C)∘g⟩ = ⟨b₁⟩`; the full `diag(b₁,…,b_M)` of the path ledger collapses to the
-  single dominant `⟨b₁⟩` — thread-31's closed form, condition (4)). Consumed by
-  `principalInv_regionRepresents` (L1) to make the two `Chart` ideal fields.
+## Step-map shape (elder S1) — BLOCK-CENTER blow-ups with spectators, NOT full-ambient
 
-## The intended matrix realization of `StepInv` (named, not silent — pnp §c, §d)
+Each step is `σ = sh ∘ blockBlowupMap S p`: a unipotent shear `sh` (Jacobian-exactly-1) after the
+**block-center** blow-up (`Core.Aoyagi.BlockBlowup`) — center `S`, pivot `p ∈ S`, spectators FIXED.
+The full-ambient `blowupMap` (`S = univ`) is WRONG for interior steps (W2: the Jacobian exponent is
+`|S|−1` = center-size accumulation, NEVER ambient−1; a shear cannot undo spectator multiplication).
 
-At the geometric state `(g, b, resid, V)` of a `ConState` node `(S, J)`, the pnp's faithful `StepInv`
-is the matrix factorization, on an open `nbhd ∋ 0` (NOT a germ), with `ContinuousOn` cofactors `U, V`,
-`U 0 = V 0 = I`:
+## The δ discriminator (elder S2/A) — a STATE property `[J=0]`, edge-spec-supplied
 
-  `(∏C)∘g = U · (diag b · [[E_J, 0],[0, D_J]] · ∏_{s>S}C) · V`   (i),   `∀ i, b_{k₀} ∣ b_i`   (ii),
+The child dominant obeys `b' = u_p^δ · (b∘σ)` with `δ = [J=0] ∈ {0,1}` a STATE property (thread-34
+cert line 16), UNIFORM across the 1(1)/1(2) sub-cases (and case-2) — NEVER branch-coded (that shape is
+false at every interior 1(2)-`J≥1` state). The preservation Props take a small **per-edge `EdgeSpec`**
+(the fold reads `δ` off the salvaged `ConState.cleared`, and the center `S` off the same edge); this
+also blocks the LAZY-WITNESS hole (`|S|=1` / `sh=id` children satisfying a bare `∃`-child shape and
+silently relocating the monument into L5 — a charter bar-(iii) regression).
 
-plus divisibility-only (iii). The family-level `StepInv` below is that factorization read entrywise:
-`resid` are the `D_J · ∏_{s>S}C` block entries; `q` the `U`-cofactor divided by `b`; and each
-`(Fᵢ∘g) = ∑ⱼ qᵢⱼ·(b·residⱼ) = b·(∑ⱼ qᵢⱼ·residⱼ)` gives (iii). The `U 0 = V 0 = I` cofactor-at-0
-nondegeneracy and the structural chain (ii) at all `L` are pnp §d **named residual assumptions**,
-carried in the `StepInv` witness (the recursion's construction supplies them); the pivot-ordering
-rendering of `k₀` is likewise a §d note. These are the honest gaps, named here, not hidden.
+## Branch distinction (elder S2/B) — ONE center, TWO distinct pivots
+
+The Case-1 center `{d-block ∪ u_{s,k}}` is blown up at TWO distinct pivots: 1(1) merge pivots at the
+existing exceptional `u_{s,k} ∈ S` (a genuine substitution, `|S|−1` = the printed 1(1) increment);
+1(2) split pivots at a `d`-entry (the old `u` transforms as a non-pivot member). `p_merge ≠ p_split`
+forces the two children distinct — one witness package cannot discharge both (the collapse rev-leaves
+flagged). Pivot-kind (existing-exceptional vs fresh) is the branch semantic; no ledger machinery.
+
+W1 (no T-comparability transcription anywhere). Rollover is only-at-exhaustion (R4; under the M'=1
+compression the `b`-truncation is invisible — only the residual re-binds).
 -/
 
 open MeasureTheory Set Filter Topology RLCT
@@ -58,24 +60,15 @@ variable {M D : ℕ}
 
 /-! ## The two invariants -/
 
-/-- **The interior step invariant** — DIVISIBILITY ONLY (pnp-case1: Bézout is NOT per-step
-preservable). On the region `V` the pulled-back family factors through the residual block:
-`(Fᵢ∘g) u = ∑ⱼ qᵢⱼ u · (b u · residⱼ u)` — so every entry is divisible by the dominant monomial `b`
-(quotient `∑ⱼ qᵢⱼ·residⱼ`), i.e. `⟨F∘g⟩ ⊆ ⟨b·resid⟩ ⊆ ⟨b⟩`, with `q` `ContinuousOn V`. This is the
-entrywise reading of the matrix factorization (i)+(iii) (module docstring); `resid` are the residual
-block entries `D_J·∏_{s>S}C`. Region-quantified, interior-expressible (`nR ≥ 2` coupled). NO Bézout
-direction.
-
-**FIDELITY (elder D4, verified against the page images).** Per-step, this IS the paper's INDUCTIVE
-statement — the ideal identity WITH the pending tail `∏_{s>S}C` (Aoyagi p.15), NEVER principality;
-principality appears only at the TERMINAL display (p.22; thread-28 cert line 73; worked.tex:659). The
-projection cofactor `Q̂ = diag(b')·Q₁⁻¹·diag(b')⁻¹` (module §L3/L4) reproduces the paper's printed `P`
-(pp.18/21) verbatim. The re-scope from a per-step `PrincipalInv` to this `StepInv` is a fidelity
-CORRECTION toward the paper, not a weakening. -/
+/-- **The interior step invariant** — DIVISIBILITY ONLY + DEEPEST-POINT VANISHING (pnp-case1 + elder
+S3). On the region `V` the pulled-back family factors through the residual block
+`(Fᵢ∘g) u = ∑ⱼ qᵢⱼ u · (b u · residⱼ u)` (so `⟨F∘g⟩ ⊆ ⟨b⟩`, `q` `ContinuousOn V`), AND every entry
+vanishes at the deepest point `(Fᵢ∘g) 0 = 0`. NO Bézout direction (born only at the terminal). -/
 def StepInv (F : Fin M → (Fin D → ℝ) → ℝ) (g : (Fin D → ℝ) → (Fin D → ℝ))
     (b : (Fin D → ℝ) → ℝ) {nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ)
     (q : Fin M → Fin nR → (Fin D → ℝ) → ℝ) (V : Set (Fin D → ℝ)) : Prop :=
   (∀ i j, ContinuousOn (q i j) V) ∧
+    (∀ i, (F i ∘ g) 0 = 0) ∧
     (∀ u ∈ V, ∀ i, (F i ∘ g) u = ∑ j, q i j u * (b u * resid j u))
 
 /-- **The terminal principal invariant** — BOTH divisibility `q` and Bézout `r`, the M'=1 compression
@@ -88,14 +81,13 @@ def PrincipalInv (F : Fin M → (Fin D → ℝ) → ℝ) (g : (Fin D → ℝ) �
     (∀ u ∈ V, ∀ i, (F i ∘ g) u = q i u * b u) ∧
     (∀ u ∈ V, b u = ∑ i, r i u * (F i ∘ g) u)
 
-/-! ## The path map — the composed shears ∘ blow-ups along a branch -/
+/-! ## The path map — the composed shears ∘ block-center blow-ups along a branch -/
 
 /-- **The path map**: the composition of the per-step coordinate changes `σ` along a root→leaf branch.
-Head = root (outermost, applied last); tail = deeper toward the leaf (innermost). `pathMap [] = id`;
-`pathMap (σ :: rest) = σ ∘ pathMap rest`. Each `σ` is a unipotent shear ∘ monomial blow-up
-(shear-pin certificate, thread 33): NOT a monomial map (from the second blow-up on, the
-residual/next-layer coordinates are sheared), but the shears are Jacobian-exactly-1, so
-`|det D(pathMap)|` is a pure blow-up monomial and the Jacobian `unit ≡ 1`. -/
+Head = root (outermost, applied last); tail = deeper toward the leaf. `pathMap [] = id`;
+`pathMap (σ :: rest) = σ ∘ pathMap rest`. Each `σ = sh ∘ blockBlowupMap S p` is a unipotent shear ∘
+block-center blow-up (shear-pin certificate): NOT a monomial map, but the shears are
+Jacobian-exactly-1, so `|det D(pathMap)|` is a pure block-exceptional monomial and `unit ≡ 1`. -/
 def pathMap : List ((Fin D → ℝ) → (Fin D → ℝ)) → (Fin D → ℝ) → (Fin D → ℝ)
   | [] => id
   | σ :: rest => σ ∘ pathMap rest
@@ -109,10 +101,9 @@ def pathMap : List ((Fin D → ℝ) → (Fin D → ℝ)) → (Fin D → ℝ) →
 /-! ## L1 — `PrincipalInv → RegionRepresents` (both directions) -/
 
 /-- **L1 — the terminal principal invariant gives both region-ideal inclusions.** The divisibility
-quotients `q` and Bézout coefficients `r` of `PrincipalInv` ARE the `RegionRepresents` witnesses for
-the single dominant monomial family `fun _ : Fin 1 ↦ b` — exactly the `hideal_fwd` /`hideal_bwd`
-`Chart` fields. Strike-able (the two representations are `q`/`r` repackaged through the `Fin 1` sum);
-region-quantified throughout (condition (1)). -/
+quotients `q` and Bézout coefficients `r` ARE the `RegionRepresents` witnesses for the single dominant
+monomial family `fun _ : Fin 1 ↦ b` — the `hideal_fwd`/`hideal_bwd` `Chart` fields. Strike-able
+(repackage `q`/`r` through the `Fin 1` sum); region-quantified throughout. -/
 @[blueprint]
 theorem principalInv_regionRepresents (F : Fin M → (Fin D → ℝ) → ℝ)
     (g : (Fin D → ℝ) → (Fin D → ℝ)) (b : (Fin D → ℝ) → ℝ) (q r : Fin M → (Fin D → ℝ) → ℝ)
@@ -124,127 +115,111 @@ theorem principalInv_regionRepresents (F : Fin M → (Fin D → ℝ) → ℝ)
 
 /-! ## L3 / L4 — one recursion step preserves the interior `StepInv`
 
-Each step post-composes the path map with `σ = sh ∘ blowupMap p` (a monomial blow-up at pivot `p`
-followed by a unipotent shear `sh`, shear-pin certificate). The shear is **Jacobian-exactly-1**
-(`hsh_jac`), so `|det Dσ| = |det D(blowupMap p)|` is a pure monomial and the Jacobian `unit ≡ 1` —
-this feeds L6's `hjac`. Both leaves preserve `StepInv` (divisibility only — the pnp-preservable part),
-stated at an ARBITRARY interior state (statement gate (ii)). The witness law (pnp §c): the child
-dominant `b'₁ = u^δ · φ*b₁` with `δ = [J=0]`; child quotients `q'_ij = (φ*q_ij)/u^δ` (the `/u` is
-EXACT — polynomial, no localization); the right col-op `P` + Schur shear compose into `g`; the left
-row-op `Q₁` stays the cofactor (row-scaled `Q̂ = diag(b')·Q₁⁻¹·diag(b')⁻¹`, unipotent, `= I` at `0`,
-off-diagonal MAY vanish). -/
+`σ = sh ∘ blockBlowupMap spec.center p` (block-center blow-up ∘ unipotent shear). `sh` is
+Jacobian-exactly-1 (`∀ u, jacDet sh u = 1`), so `|det Dσ| = |det D(blockBlowupMap …)|` is a pure
+`|S|`-center monomial, `unit ≡ 1` (feeds L6). The `EdgeSpec` (δ + center) is supplied by the fold per
+tree edge; the child dominant law `b' = u_p^δ · (b∘σ)`, `δ = spec.δ = [J=0]`. -/
 
-/-- **The pnp-cover inherited coherence condition** (thread 35 risk note; made EXPLICIT here, not
-implicit): at a step the blow-up center is a COORDINATE BLOCK in the current (sheared) coordinates —
-required at EVERY constructor (incl. join / pivot-zero) for the full cover and the pathwise fold.
-Encoded as: the step map `σ = sh ∘ blowupMap p` is injective off the COORDINATE hyperplane
-`{u_p = 0}` (its exceptional/center locus is that coordinate block). Feeds L6's a.e.-injectivity and
-L7's cover. -/
-def CenterCoordAligned {D : ℕ} (sh : (Fin D → ℝ) → (Fin D → ℝ)) (p : Fin D) : Prop :=
-  Set.InjOn (fun u ↦ sh (blowupMap p u)) (Set.univ \ {w : Fin D → ℝ | w p = 0})
+/-- **A per-edge spec** (elder A): what the fold reads off a `buildTree` edge — `δ = [J=0]` (off the
+salvaged `ConState.cleared`) and the blow-up center `S`. δ and the center are one package (S1's
+`blockBlowupMap` needs the center; δ is never guessed from the state nor branch-coded). -/
+structure EdgeSpec (D : ℕ) where
+  /-- `δ = [J = 0]` — whether the equal run starts at the dominant (a STATE property). -/
+  δ : Bool
+  /-- The blow-up center `S ⊆ Fin D` (block coordinates; spectators are `∉ S`). -/
+  center : Finset (Fin D)
 
-/-- **One recursion child** produced by a one-step preservation: the CONSTRUCTION supplies the step
-map `σ = sh ∘ blowupMap p` (`p` the blow-up pivot, `sh` a unipotent shear — shear-pin certificate),
-the child region — made EXPLICIT (elder D1) as the pullback of the parent region intersected with the
-chart domain, `(σ ⁻¹' V) ∩ Vchart` (no implicit shrinking) — and the child `StepInv`. The shear is
-Jacobian-exactly-1 (`∀ u, jacDet sh u = 1`, so `|det Dσ| = |det D(blowupMap p)|` is a pure monomial,
-`unit ≡ 1` — feeds L6); `CenterCoordAligned sh p` is the pnp-cover coherence (explicit). The residual
-may grow (case-2 append) or shrink (case-1 clear); termination is inherited from the built tree's
-well-foundedness (the geometric fold follows a FINITE branch), NOT a residual measure. -/
-def StepInvChild (F : Fin M → (Fin D → ℝ) → ℝ) (g : (Fin D → ℝ) → (Fin D → ℝ))
-    (V : Set (Fin D → ℝ)) : Prop :=
-  ∃ (p : Fin D) (sh : (Fin D → ℝ) → (Fin D → ℝ)) (Vchart : Set (Fin D → ℝ)) (b' : (Fin D → ℝ) → ℝ)
+/-- **The coordinate-block coherence** (pnp-cover): the step map `σ = sh ∘ blockBlowupMap S p` is
+injective off the pivot hyperplane `{w_p = 0}` — its exceptional/center locus is that coordinate
+block. Feeds L6's a.e.-injectivity and L7's cover. -/
+def CenterCoordAligned {D : ℕ} (sh : (Fin D → ℝ) → (Fin D → ℝ)) (S : Finset (Fin D)) (p : Fin D) :
+    Prop :=
+  Set.InjOn (fun u ↦ sh (blockBlowupMap S p u)) (Set.univ \ {w : Fin D → ℝ | w p = 0})
+
+/-- **One recursion child** conforming to an `EdgeSpec` at pivot `p` (elder A/B): the CONSTRUCTION
+supplies the unipotent shear `sh` (Jacobian-exactly-1), the child region (the pullback of the parent
+region intersected with a chart domain — no implicit shrinking, D1), and the child `StepInv` for
+`σ = sh ∘ blockBlowupMap spec.center p`, with the dominant law `b' = u_p^(if δ then 1 else 0)·(b∘σ)`
+(δ = spec.δ = [J=0], UNIFORM across sub-cases — S2). `pivot ∈ spec.center` is imposed by the caller. -/
+def BlockChild (F : Fin M → (Fin D → ℝ) → ℝ) (g : (Fin D → ℝ) → (Fin D → ℝ))
+    (b : (Fin D → ℝ) → ℝ) (V : Set (Fin D → ℝ)) (spec : EdgeSpec D) (p : Fin D) : Prop :=
+  ∃ (sh : (Fin D → ℝ) → (Fin D → ℝ)) (Vchart : Set (Fin D → ℝ)) (b' : (Fin D → ℝ) → ℝ)
     (nR' : ℕ) (resid' : Fin nR' → (Fin D → ℝ) → ℝ) (q' : Fin M → Fin nR' → (Fin D → ℝ) → ℝ),
-    AnalyticOnNhd ℝ sh Set.univ ∧ sh 0 = 0 ∧ (∀ u, jacDet sh u = 1) ∧ CenterCoordAligned sh p ∧
-      IsOpen Vchart ∧ (0 : Fin D → ℝ) ∈ Vchart ∧
-      StepInv F (fun u ↦ g (sh (blowupMap p u))) b' resid' q'
-        ((fun u ↦ sh (blowupMap p u)) ⁻¹' V ∩ Vchart)
+    AnalyticOnNhd ℝ sh Set.univ ∧ sh 0 = 0 ∧ (∀ u, jacDet sh u = 1) ∧
+      CenterCoordAligned sh spec.center p ∧ IsOpen Vchart ∧ (0 : Fin D → ℝ) ∈ Vchart ∧
+      (∀ u, b' u = (u p) ^ (if spec.δ then 1 else 0) * b (sh (blockBlowupMap spec.center p u))) ∧
+      StepInv F (fun u ↦ g (sh (blockBlowupMap spec.center p u))) b' resid' q'
+        ((fun u ↦ sh (blockBlowupMap spec.center p u)) ⁻¹' V ∩ Vchart)
 
 /-- **The case-2 one-step preservation obligation** (the Prop `case2_preserves_stepInv` proves; the
-hypothesis the fold `leaf_stepInv_of_path` (L5) consumes). A case-2 (append) edge produces ONE
-child. -/
+hypothesis the fold `leaf_stepInv_of_path` (L5) consumes). For an edge spec with a NONEMPTY center, a
+case-2 (append) edge produces ONE child conforming to the spec at a center pivot. `0 < D` (elder C:
+`|S| = 1` is a legitimate step; center-size bounds live in the spec, never the ambient). -/
 def Case2Preservation : Prop :=
   ∀ {M D : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} {g : (Fin D → ℝ) → (Fin D → ℝ)}
     {b : (Fin D → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin D → ℝ) → ℝ}
     {q : Fin M → Fin nR → (Fin D → ℝ) → ℝ} {V : Set (Fin D → ℝ)},
-    IsOpen V → (0 : Fin D → ℝ) ∈ V → StepInv F g b resid q V → StepInvChild F g V
+    IsOpen V → (0 : Fin D → ℝ) ∈ V → StepInv F g b resid q V → 0 < D →
+    ∀ spec : EdgeSpec D, spec.center.Nonempty →
+    ∃ p : Fin D, p ∈ spec.center ∧ BlockChild F g b V spec p
 
 /-- **The case-1 (coupled corank ≥ 2) one-step preservation obligation** (the Prop
-`case1_preserves_stepInv` proves; the hypothesis L5 consumes). A case-1 step forks into the 1(1)
-(merge) and 1(2) (split) child edges — the conclusion produces the child for EACH branch
-(`branch : Bool`, `true` = 1(1) merge, `false` = 1(2) split; the witness law's `δ = [J=0]` differs
-between them). -/
+`case1_preserves_stepInv` proves; the hypothesis L5 consumes). For an edge spec whose center has
+`≥ 2` coordinates, a case-1 step produces TWO children at DISTINCT pivots of the ONE center (elder B:
+`p_merge` at the existing exceptional, `p_split` at a `d`-entry) — `p_merge ≠ p_split` forces the two
+children distinct (no single witness discharges both). `0 < D` (elder C). -/
 def Case1Preservation : Prop :=
   ∀ {M D : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} {g : (Fin D → ℝ) → (Fin D → ℝ)}
     {b : (Fin D → ℝ) → ℝ} {nR : ℕ} {resid : Fin nR → (Fin D → ℝ) → ℝ}
     {q : Fin M → Fin nR → (Fin D → ℝ) → ℝ} {V : Set (Fin D → ℝ)},
-    IsOpen V → (0 : Fin D → ℝ) ∈ V → StepInv F g b resid q V → 2 ≤ nR →
-    -- BOTH children, `branch`-DISTINGUISHED (rev-leaves FIX 3): `true` = 1(1) merge (δ = 0, no fresh
-    -- exceptional coordinate); `false` = 1(2) split (δ = 1, a fresh exceptional coordinate). The
-    -- child dominant carries the elder-ratified per-path law `b' = u_p^δ · (b ∘ σ)` (`u_p` FRESH,
-    -- `δ = [J=0] ∈ {0,1}`) — so one branch-independent witness canNOT discharge both branches.
-    ∀ branch : Bool,
-    ∃ (p : Fin D) (sh : (Fin D → ℝ) → (Fin D → ℝ)) (Vchart : Set (Fin D → ℝ))
-      (b' : (Fin D → ℝ) → ℝ) (nR' : ℕ) (resid' : Fin nR' → (Fin D → ℝ) → ℝ)
-      (q' : Fin M → Fin nR' → (Fin D → ℝ) → ℝ),
-      AnalyticOnNhd ℝ sh Set.univ ∧ sh 0 = 0 ∧ (∀ u, jacDet sh u = 1) ∧ CenterCoordAligned sh p ∧
-        IsOpen Vchart ∧ (0 : Fin D → ℝ) ∈ Vchart ∧
-        (∀ u, b' u = (u p) ^ (if branch then 0 else 1) * b (sh (blowupMap p u))) ∧
-        StepInv F (fun u ↦ g (sh (blowupMap p u))) b' resid' q'
-          ((fun u ↦ sh (blowupMap p u)) ⁻¹' V ∩ Vchart)
+    IsOpen V → (0 : Fin D → ℝ) ∈ V → StepInv F g b resid q V → 2 ≤ nR → 0 < D →
+    ∀ spec : EdgeSpec D, 2 ≤ spec.center.card →
+    ∃ (p_merge p_split : Fin D),
+      p_merge ∈ spec.center ∧ p_split ∈ spec.center ∧ p_merge ≠ p_split ∧
+        BlockChild F g b V spec p_merge ∧ BlockChild F g b V spec p_split
 
 /-- **L3 — a case-2 step preserves the interior `StepInv` (the CLEAN regime, width ≤ 2).** The
-residual telescopes; divisibility is carried by the witness law (module §L3/L4). Region-quantified;
-interior-expressible; NO Bézout claim (that would be false interior — pnp-case1). -/
+residual telescopes; divisibility (+ vanishing) carried by the block-center witness law. NO Bézout
+(false interior — pnp-case1). -/
 @[blueprint]
 theorem case2_preserves_stepInv : Case2Preservation := by
-  -- map: B-L3-case2-preserves-stepInv (telescoping divisibility; witness b'=u^δ·φ*b, q'=(φ*q)/u^δ)
+  -- map: B-L3-case2-preserves-stepInv (telescoping divisibility; b'=u_p^δ·(b∘σ), block-center σ)
   sorry
 
 /-- **L4 — a case-1 (coupled corank ≥ 2) step preserves the interior `StepInv`. ⟨THE WALL⟩** The
-frontier this expedition must build (charter §1.B — the coupled `diag(b)` recursion dodged for
-multiple expeditions). Produces BOTH the 1(1) merge and 1(2) split children (`branch`-distinguished by
-the elder-ratified per-path law `b' = u_p^δ·(b∘σ)`, `δ = [1(2) split]`). The wall is the coupled
-DIVISIBILITY at corank ≥ 2 (`2 ≤ nR`): the residual entries share divisors, and proving the coupled
-shear ∘ blow-up keeps `⟨entries⟩ ⊆ ⟨b'⟩` with the EXACT `/u_p^δ` quotient is the genuine new
-proof-engineering. NO Bézout (born only at the terminal, `terminal_bezout`); NO residual-size measure
-(termination rides the built tree's WF). The pnp-case1 certificate refines THIS PROOF, not this
-statement. -/
+frontier this expedition must build (charter §1.B — the coupled `diag(b)` recursion). Produces the
+1(1) merge + 1(2) split children at distinct pivots of one center. The wall is the coupled
+DIVISIBILITY at corank ≥ 2 (the residual entries share divisors; proving the coupled block-center
+blow-up ∘ shear keeps `⟨entries⟩ ⊆ ⟨b'⟩` with the exact `u_p^δ` factor). The pnp-case1 certificate
+refines THIS PROOF, not this statement. -/
 @[blueprint]
 theorem case1_preserves_stepInv : Case1Preservation := by
-  -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled corank≥2 divisibility⟩
+  -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled corank≥2 block-center divisibility⟩
   sorry
 
-/-! ## `terminal_bezout` — principality is BORN at the terminal node (the pnp-corrected leaf) -/
+/-! ## `terminal_bezout` — principality is BORN at the terminal node -/
 
 /-- **The terminal Bézout obligation** (the Prop `terminal_bezout` proves; L5 consumes it at each
 leaf). See `terminal_bezout`. -/
 def TerminalBezout : Prop :=
   ∀ {M D : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ} {g : (Fin D → ℝ) → (Fin D → ℝ)}
     {b : (Fin D → ℝ) → ℝ} {q : Fin M → Fin 1 → (Fin D → ℝ) → ℝ} {V : Set (Fin D → ℝ)},
-    IsOpen V → (0 : Fin D → ℝ) ∈ V →                                -- V is a NEIGHBOURHOOD of 0 (FIX 1)
-    StepInv F g b (fun _ : Fin 1 ↦ 1) q V →                         -- terminal: residual trivial
+    IsOpen V → (0 : Fin D → ℝ) ∈ V →
+    StepInv F g b (fun _ : Fin 1 ↦ 1) q V →
     ∀ (i₀ : Fin M) (unit : (Fin D → ℝ) → ℝ),
-      ContinuousOn unit V → unit 0 ≠ 0 → (∀ u ∈ V, (F i₀ ∘ g) u = b u * unit u) →  -- cleared pivot
+      ContinuousOn unit V → unit 0 ≠ 0 → (∀ u ∈ V, (F i₀ ∘ g) u = b u * unit u) →
     ∃ (V' : Set (Fin D → ℝ)) (r : Fin M → (Fin D → ℝ) → ℝ),
       IsOpen V' ∧ (0 : Fin D → ℝ) ∈ V' ∧ V' ⊆ V ∧
       PrincipalInv F g b (fun i ↦ q i 0) r V'
 
-/-- **The NEW leaf — the Bézout / principality is BORN at the terminal node.** At a terminal state
-(`S = L`, `J ≥ 1`; residual trivial), with `V` an OPEN neighbourhood of `0` (FIX 1 — the hypotheses
-now make `V` a neighbourhood, so the conclusion's `IsOpen V' ∧ 0 ∈ V' ∧ V' ⊆ V` is reachable; without
-`IsOpen V ∧ 0 ∈ V` the statement was FALSE, e.g. `V = {u | 0 < u 0}`), the cleared pivot supplies an
-entry `(F i₀∘g) = b·unit` with `unit 0 ≠ 0` (`b_{k₀} = Σ (U⁻¹)_{1i}(V⁻¹)_{j1}·(∏C∘g)_ij`, pnp §c). On
-the open `V' = V ∩ {unit ≠ 0}` this inverts to the Bézout `b = (1/unit)·(F i₀∘g)`, upgrading the
-interior `StepInv` (divisibility) to the terminal `PrincipalInv` (both). Principality does NOT hold
-interior (pnp-case1). Region-quantified (the region shrinks to `V'`, still open `∋ 0`).
-
-**Route (rev-leaves + elder D2/D2').** `unit` here IS the divisibility quotient `q i₀ 0` on `{b ≠ 0}`
-(from `StepInv`), so `r i₀ = 1/(q i₀ 0)` riding `StepInv`'s `ContinuousOn q`; the `unit⁻¹` continuity
-is the NAMED STANDARD LEMMA `ContinuousOn.inv₀` (continuous + nonzero on a set ⟹ continuous
-reciprocal — the scalar case of the continuous inverse of the nonsingular continuous cofactors `U, V`
-on a region), NOT an assumption. `V'` is the open `V ∩ {unit ≠ 0}` (open since `ContinuousOn unit V`
-on open `V`), `∋ 0` since `unit 0 ≠ 0`. -/
+/-- **The NEW leaf — Bézout / principality is BORN at the terminal node.** At a terminal state
+(`S = L`, `J ≥ 1`; residual trivial), with `V` an OPEN neighbourhood of `0` (else FALSE, e.g.
+`V = {u | 0 < u 0}`), the cleared pivot supplies `(F i₀∘g) = b·unit` with `unit 0 ≠ 0`
+(`b_{k₀} = Σ (U⁻¹)_{1i}(V⁻¹)_{j1}·(∏C∘g)_ij`, pnp §c). On the open `V' = V ∩ {unit ≠ 0}` this inverts
+to `b = (1/unit)·(F i₀∘g)`, upgrading `StepInv` (divisibility) to the terminal `PrincipalInv` (both).
+Consistent with S3: the terminal `b = ∏u` vanishes at `0` (`J ≥ 1`), so the entry `b·unit` vanishes
+at `0` while `unit 0 ≠ 0` — no tension. `unit⁻¹` continuity is `ContinuousOn.inv₀` (named lemma, elder
+D2), NOT an assumption. Region-quantified (shrinks to the open `V' ∋ 0`). -/
 @[blueprint]
 theorem terminal_bezout : TerminalBezout := by
   -- map: B-terminal-bezout (cleared-pivot entry = b·unit, unit 0 ≠ 0 ⇒ invert to Bézout on {unit≠0})

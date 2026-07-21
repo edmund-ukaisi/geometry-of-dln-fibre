@@ -28,7 +28,7 @@ composition). The controller wires the canonical discharge (either promote this 
 The **pathwise coherence of the sheared tree fold** — the historically-masked `srcBox` seam: that the
 per-branch step maps compose coherently along a root→leaf path, with each next center a coordinate
 block in the accumulated sheared coordinates — is the gate for leaf 5's fold. It rides the explicit
-`CenterCoordAligned` field of each `StepInvChild` (Core) and the per-path monomial law of
+`CenterCoordAligned` field of each `BlockChild` (Core) and the per-path monomial law of
 `Case1Preservation`; it is the point to re-run the decorrelated check before striking leaf 5.
 -/
 
@@ -46,17 +46,21 @@ def monoOf {D : ℕ} (E : Fin D → ℕ) : (Fin D → ℝ) → ℝ := fun u ↦ 
 
 /-! ## The geometric atlas carrier -/
 
-/-- **One geometric recursion step** on `ℝᴰ` (shear-pin certificate): the step map `σ = sh ∘ blowupMap
-p` bundled with its Jacobian exponent `jexp` and the shape certificates. `hσ_jac`: `|det Dσ|` is the
-pure blow-up monomial `jacWeight jexp` (unit ≡ 1 — the shear is Jacobian-exactly-1). `hσ_inj`:
-a.e.-injective off the exceptional monomial's zero set (the coordinate blocks). -/
+/-- **One geometric recursion step** on `ℝᴰ` (shear-pin certificate): the step map
+`σ = sh ∘ blockBlowupMap center pivot` (block-center blow-up ∘ unipotent shear — elder S1, spectators
+`∉ center` FIXED) bundled with its Jacobian exponent `jexp` and the shape certificates. `hσ_jac`:
+`|det Dσ|` is the pure block monomial `jacWeight jexp` (unit ≡ 1 — the shear is Jacobian-exactly-1),
+with exponent `|center|−1` at the pivot (W2: center-size, never ambient−1). `hσ_inj`: a.e.-injective
+off the pivot hyperplane. -/
 structure GeoStep (D : ℕ) where
-  /-- The step coordinate change (unipotent shear ∘ monomial blow-up). -/
+  /-- The step coordinate change (unipotent shear ∘ block-center blow-up). -/
   σ : (Fin D → ℝ) → (Fin D → ℝ)
-  /-- The blow-up pivot coordinate of this step (the exceptional axis). Recorded so provenance can tie
-  the branch's pivots to the leaf's `divCoord` (the coordinate-block coherence, `CenterCoordAligned`). -/
+  /-- The blow-up center `S ⊆ Fin D` of this step (spectators are `∉ center`; elder S1). -/
+  center : Finset (Fin D)
+  /-- The blow-up pivot coordinate of this step (`∈ center`, the exceptional axis). Recorded so
+  provenance ties the branch's pivots to the leaf's `divCoord` (the `CenterCoordAligned` coherence). -/
   pivot : Fin D
-  /-- The step's Jacobian monomial exponent. -/
+  /-- The step's Jacobian monomial exponent (`|center|−1` at the pivot — W2). -/
   jexp : Fin D → ℕ
   /-- `σ` is analytic (a polynomial map). -/
   hσ_an : AnalyticOnNhd ℝ σ Set.univ
@@ -122,9 +126,12 @@ L8). `FoldProduced` RECORDS what L5's fold constructs — DEFINITIONAL bookkeepi
   axis (feeds L8 clause (ii));
 * `hdom_ball` — each source domain contains a nontrivial ball (kills the `dom = {0}` degeneracy; weaker
   than fixing a radius, so D2'-compatible with the terminal region-shrink);
-* `hpivots` — the branch's step pivots ARE `leafOf c`'s exceptional coordinates `divCoord` (the
-  `CenterCoordAligned` coherence at the atlas level; ties `gmap c`'s blow-ups to the real tree branch, so
-  the max-pivot cover routing (L7) has its handle and the all-one-pivot degeneracy is excluded). -/
+* `hbranch_len` — the branch's step-count is `leafOf c`'s divisor count (ties `gmap c`'s block-center
+  blow-ups to the real tree branch's depth, so the max-pivot cover routing (L7) has its handle and the
+  all-one-step degeneracy is excluded). The finer pivot↔`divCoord` tie is deferred: `LeafData.divCoord`
+  lives in the Engine's `RLCT.flatDim` (= `Fintype.card (FlatIdx d)`) while the atlas is over the
+  `Aoyagi.flatDim` (= `∑ dᵢ₊₁·dᵢ`) — reconciling the two is a separate coordinate bridge (the landed
+  `AtlasRealizesExponents` seam likewise stays at the ℕ-valued `divExp`, never `divCoord`). -/
 def FoldProduced {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (atlas : GeoAtlasData d e) : Prop :=
   ∃ leafOf : Fin atlas.n → LeafData d,
@@ -136,8 +143,7 @@ def FoldProduced {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
     (∀ (c : Fin atlas.n) (k : Fin (leafOf c).numDiv),
       ∃ a : Fin (flatDim d), a ∈ bindingAxes (atlas.bexp c) ∧ atlas.jac c a + 1 = (leafOf c).divExp k) ∧
     (∀ c, ∃ R : ℝ, 0 < R ∧ Metric.closedBall (0 : Fin (flatDim d) → ℝ) R ⊆ atlas.dom c) ∧
-    (∀ c, (atlas.steps c).map GeoStep.pivot
-      = (List.finRange (leafOf c).numDiv).map (leafOf c).divCoord)
+    (∀ c, (atlas.steps c).length = (leafOf c).numDiv)
 
 /-! ## L5 — the path fold: `StepInv` folded to per-chart terminal `PrincipalInv`
 
@@ -150,7 +156,7 @@ them).** Two Props were originally carried here as `∀ d`-hypotheses ("D3 named
   re-introduced the paper's EXCISED T-profile total-comparability (worked.tex T-F) in scalar form.
   What thread-31's closed form actually discharges is the PER-PATH MONOMIAL law — `b' = u_p^δ·(b∘σ)`,
   `u_p` FRESH, `δ ∈ {0,1}` — i.e. prefix-divisibility in exponent VECTORS along a branch, which is
-  ALREADY the content of `Case1Preservation`/`StepInvChild`'s witness law (Core) and what L6's
+  ALREADY the content of `Case1Preservation`/`BlockChild`'s witness law (Core) and what L6's
   squarefree-`b₁` and L8's ledger alignment consume. So it dissolves into the invariant; DELETED.
 * `PivotOrderingK0` — a scalar `argmin` over a nonempty finite ℕ-family — is trivially TRUE and was
   never a gap; if a pre-compression step genuinely selects a dominant monomial the honest object is
@@ -211,20 +217,23 @@ theorem leafPath_chartGeometry (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) �
 
 /-! ## L7 — the compact cover (pnp-cover verdict: FULL cover, empty escape) -/
 
-/-- **L7 — the compact cover (STRONGER inclusion form, pnp-cover thread 35).** A ball around the
-origin is FULLY covered (empty escape) by the images of the charts' compact source domains:
-`ball 0 ρ ⊆ ⋃ c, (gmap c) '' (dom c)`. Routing = top-down argmax lift `x ↦ (leaf, resolved w)`; the
-shear inverses are polynomial; each atom is the landed `OriginBlowup.ball_subset_iUnion_blowup_image`,
-generalized R = 1 → R-parametric (the no-inflation trick dies once shears give bound 2 — the
-R-parametric atom + finite-depth box inflation) with bounded spectators (`cubeBox d × cubeBox (N−d)`,
-never `pivotDomain × univ`). The driver closes the record `hcover` by
-`Set.diff_eq_empty.2 hsub ▸ measure_empty` (the landed `OriginBlowup` idiom). -/
+/-- **L7 — the compact cover (STRONGER inclusion form, pnp-cover thread 35).** For a FOLD-PRODUCED
+atlas (`hfold`: the charts are the tree's branches — one per leaf, pivots = the leaf's `divCoord`,
+doms nontrivial), a ball around the origin is FULLY covered (empty escape) by the images of the
+charts' compact source domains: `ball 0 ρ ⊆ ⋃ c, (gmap c) '' (dom c)`. Without `hfold` the statement
+is FALSE (`l7probe`: the degenerate `n=1, steps=[], dom={0}` atlas has union `{0}`). Routing =
+top-down argmax lift `x ↦ (leaf, resolved w)` descending the REAL tree (the `hfold` correspondence);
+the shear inverses are polynomial; each atom is the BLOCK-CENTER bounded-spectator cover
+(`blockBlowupMap`, spectators bounded in a `cubeBox × cubeBox`, never `pivotDomain × univ`),
+generalized R = 1 → R-parametric (the no-inflation trick dies once shears give bound 2). The driver
+closes the record `hcover` by `Set.diff_eq_empty.2 hsub ▸ measure_empty` (the landed `OriginBlowup`
+idiom, the `S = univ` single-level instance of the block cover). -/
 @[blueprint]
 theorem leafPath_compactCover (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (atlas : GeoAtlasData d e) :
+    (atlas : GeoAtlasData d e) (hfold : FoldProduced d e atlas) :
     ∃ ρ : ℝ, 0 < ρ ∧
       Metric.ball (0 : Fin (flatDim d) → ℝ) ρ ⊆ ⋃ c, (atlas.gmap c) '' (atlas.dom c) := by
-  -- map: B-L7-compact-cover (top-down argmax lift; R-parametric OriginBlowup atom; empty escape)
+  -- map: B-L7-compact-cover (fold-provenance argmax lift; R-parametric block-center atom; empty escape)
   sorry
 
 /-! ## L8 — the exponents ↔ ledger match (feeds `AtlasRealizesExponents`) -/
@@ -233,15 +242,17 @@ theorem leafPath_compactCover (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) �
 `AtlasRealizesExponents`, phrased on the atlas's own `bexp`/`jac`: (i) every chart binding-axis
 exponent `jac a + 1` is a terminal exponent of `buildTree d (conOracle d) conRoot`; (ii) every
 `minAdm`-attaining leaf divisor exponent is matched by some chart's binding-axis exponent. This is the
-value-support match (NOT a structural chart↔leaf correspondence — RecursionAdapter). The geometric
-blow-up exponents are linked to the combinatorial divisor exponents by the per-path monomial law
-(`GeoAtlasData.bexp`/`hsqfree` + the `StepInvChild`/`Case1Preservation` witness law) — NOT the former
-false `StructuralChainResidual` (see the L5 dissolution note). Generalizes the LANDED
-`exists_atlasRealizesExponents_d12` match (`jac a + 1 = flatDim − 1 + 1 = 2 = minAdm ![1,2]`) to
-general `d`. -/
+value-support match (NOT a structural chart↔leaf correspondence — RecursionAdapter). For a
+FOLD-PRODUCED atlas (`hfold`), the geometric blow-up exponents are linked to the combinatorial divisor
+exponents through the provenance's read-off (`jac a + 1` IS a `leafOf c` divisor exponent; surjective
+onto leaves) — WITHOUT `hfold` the statement is FALSE (`l8probe`: adversarial `jac := Σ+1` exceeds the
+terminal spectrum). Uses the per-path monomial law, NOT the former false `StructuralChainResidual`
+(see the L5 dissolution note). Generalizes the LANDED `exists_atlasRealizesExponents_d12` match
+(`jac a + 1 = flatDim − 1 + 1 = 2 = minAdm ![1,2]`) to general `d`. -/
 @[blueprint]
 theorem leafPath_realizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
-    (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (atlas : GeoAtlasData d e) :
+    (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (atlas : GeoAtlasData d e)
+    (hfold : FoldProduced d e atlas) :
     (∀ (c : Fin atlas.n) (a : Fin (flatDim d)), a ∈ bindingAxes (atlas.bexp c) →
         (atlas.jac c a + 1) ∈
           ResolutionTree.terminalExponents (buildTree d (conOracle d) (conRoot : ConState N))) ∧
@@ -268,8 +279,8 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d
     (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e) :
     ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res := by
-  -- L5: the geometric atlas + per-chart terminal PrincipalInv (folds L3/L4/terminal_bezout).
-  obtain ⟨atlas, hprin⟩ := leaf_stepInv_of_path d hd hN hpos e he0 he_lin
+  -- L5: the geometric atlas + its FoldProduced provenance + per-chart terminal PrincipalInv.
+  obtain ⟨atlas, hfold, hprin⟩ := leaf_stepInv_of_path d hd hN hpos e he0 he_lin
     case2_preserves_stepInv case1_preserves_stepInv terminal_bezout
   -- Per chart: L1 (ideal) then L6 (assemble the certified Chart), matching the atlas's data.
   have hchart : ∀ c : Fin atlas.n, ∃ chart : Chart (coreGen d e) 0,
@@ -282,11 +293,11 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hd : Monotone d
         (atlas.region c) hpt
     exact leafPath_chartGeometry d e atlas c hfwd hbwd
   choose charts hg hdom _hnbhd hbexp hjac using hchart
-  -- L7: the full cover of a ball by the charts' domain images.
-  obtain ⟨ρ, hρ, hcov⟩ := leafPath_compactCover d e atlas
-  -- L8: the exponent match.
+  -- L7: the full cover of a ball by the charts' domain images (rides the FoldProduced provenance).
+  obtain ⟨ρ, hρ, hcov⟩ := leafPath_compactCover d e atlas hfold
+  -- L8: the exponent match (rides the FoldProduced provenance).
   obtain ⟨hspec_lb, hspec_attain⟩ :=
-    leafPath_realizesExponents d hd hN hpos e atlas
+    leafPath_realizesExponents d hd hN hpos e atlas hfold
   -- assemble the Resolution.
   haveI : Nonempty (Fin atlas.n) := ⟨⟨0, atlas.hn⟩⟩
   refine ⟨⟨atlas.n, charts, Finset.univ_nonempty, Metric.ball 0 ρ, Metric.ball_mem_nhds 0 hρ, ?_⟩,

@@ -2,10 +2,13 @@ import DLNFibre.Core.Aoyagi.PrincipalInv
 open DLNFibre.Core.Aoyagi
 
 /-- ROOT-INSTANCE non-vacuity probe (elder root check: U=V=I, b_{k₀}=1, divisibility into ⟨1⟩).
-    g = id, b ≡ 1, residual = the generators F themselves, q = Kronecker identity. -/
-example {M D : ℕ} (F : Fin M → (Fin D → ℝ) → ℝ) (V : Set (Fin D → ℝ)) :
+    g = id, b ≡ 1, residual = the generators F themselves, q = Kronecker identity.
+    S3 UPDATE: the family must VANISH at 0 (`hF0` — the real `coreGen` does; the old constant witness
+    died under the added deepest-point clause). -/
+example {M D : ℕ} (F : Fin M → (Fin D → ℝ) → ℝ) (V : Set (Fin D → ℝ))
+    (hF0 : ∀ i, F i 0 = 0) :
     StepInv F id (fun _ ↦ 1) F (fun i j _ ↦ if i = j then (1:ℝ) else 0) V := by
-  refine ⟨fun i j => continuousOn_const, ?_⟩
+  refine ⟨fun i j => continuousOn_const, fun i => hF0 i, ?_⟩
   intro u hu i
   simp only [Function.comp_apply, id_eq, one_mul]
   rw [Finset.sum_eq_single i]
