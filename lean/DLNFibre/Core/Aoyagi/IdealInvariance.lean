@@ -116,7 +116,7 @@ private lemma rpow_pos_mul_left {C : ℝ} (hC : 0 < C) (t y : ℝ) :
       ring
     · exact Real.mul_rpow hC.le htpos.le
 
-/-- Multiplying an integrand by a nonzero real constant does not change integrability-at-a-filter. -/
+/-- Multiplying an integrand by a nonzero real constant preserves integrability-at-a-filter. -/
 private lemma integrableAtFilter_const_mul_iff {f : (Fin n → ℝ) → ℝ}
     {l : Filter (Fin n → ℝ)} {D : ℝ} (hD : D ≠ 0) :
     IntegrableAtFilter (fun w ↦ D * f w) l ↔ IntegrableAtFilter f l := by
@@ -153,8 +153,8 @@ lemma localAdmissibleExponents_const_mul {K : (Fin n → ℝ) → ℝ} {x : Fin 
       (Real.rpow_pos_of_pos hC (-c)).ne').2 hint
 
 /-- Shared measure-zero a.e. bound: a pointwise bound holding on `V` off a `volume`-null set `Z ∩ V`
-upgrades to an a.e. bound for `volume.restrict V`. This is the null-zero-set adjustment that lets the
-banked strict-positivity domination go through with only the `LocallyNullZeros` guard. -/
+upgrades to an a.e. bound for `volume.restrict V`. The null-zero-set adjustment that lets the banked
+strict-positivity domination go through with only the `LocallyNullZeros` guard. -/
 private lemma ae_le_of_forall_mem_diff_null {V Z : Set (Fin n → ℝ)}
     {f g : (Fin n → ℝ) → ℝ} (hVmeas : MeasurableSet V) (hZnull : volume (Z ∩ V) = 0)
     (hbd : ∀ w ∈ V, w ∉ Z → ‖f w‖ ≤ g w) :
@@ -350,9 +350,9 @@ theorem wrlctAt_const_mul {W K : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ} {C
   unfold wrlctAt
   rw [wLocalAdmissibleExponents_const_mul hC]
 
-/-- Weighted germ-monotonicity of `wrlctAt` under an eventual domination, junk-guarded — the weighted
-analogue of `rlctAt_mono_of_eventually_le`. The nonnegative weight `W` preserves the a.e. domination
-off the null zero set `{K = 0}` (`hKnull`). -/
+/-- Weighted germ-monotonicity of `wrlctAt` under an eventual domination, junk-guarded — the
+weighted analogue of `rlctAt_mono_of_eventually_le`. The nonnegative weight `W` preserves the a.e.
+domination off the null zero set `{K = 0}` (`hKnull`). -/
 theorem wrlctAt_mono_of_eventually_le {W K K' : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
     (hWmeas : Measurable W) (hK'meas : Measurable K')
     (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w)

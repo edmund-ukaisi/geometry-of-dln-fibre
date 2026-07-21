@@ -11,9 +11,9 @@ formula that Object B's charts ride.
 
 ## (i) Discharging `LocallyNullZeros` for a polynomial generator
 
-The Object A leaves carry `LocallyNullZeros (sumSqFam G) x` as a hypothesis (the junk-`0` guard). For
-the DLN case the generators `Gᵢ` are matrix-product *entries* — evaluations of real polynomials — so
-the guard is discharged, at every point and globally, by the existing Core primitive
+The Object A leaves carry `LocallyNullZeros (sumSqFam G) x` as a hypothesis (the junk-`0` guard).
+For the DLN case the generators `Gᵢ` are matrix-product *entries* — evaluations of real polynomials
+— so the guard is discharged, at every point and globally, by the existing Core primitive
 `MvPolynomial.volume_zeroSet_eq_zero` (a nonzero real polynomial vanishes on a `volume`-null set):
 `{∑ Gⱼ² = 0} ⊆ {Gᵢ = 0} = {eval · P = 0}` is null whenever *one* generator is a nonzero polynomial.
 So the guard is dischargeable, not a hidden hypothesis — as the leaf docstrings promised.
@@ -31,14 +31,14 @@ caught here):
 and, WITHOUT injectivity, the **subadditive measure bound**
 `addHaar_image_le_lintegral_abs_det_fderiv` : `μ (f '' s) ≤ ∫⁻_s |det f'|`.
 
-**Named remainder (owned by Object B's chart lane, not built here).** Two relaxations the B charts may
-need are *not* in these lemmas and are deliberately left to the consuming lane, where the exact form is
-known: (a) the **weighted non-injective subadditive** integral bound `∫⁻_{f''s} g ≤ ∫⁻_s |det f'|·(g∘f)`
-for a general `g` (Mathlib's non-injective `≤` is measure-only, the `g ≡ 1` case); (b) the
-**InjOn-off-null** relaxation of the equality forms (Mathlib requires `InjOn f s` on all of `s`; an
-a.e.-injective refinement restricts to `s` minus the null branch set and absorbs the null image
-difference). Building a speculative wrapper for an unspecified consumer risks a wrong statement, so the
-reachable deliverable here is the verified catalogue + this precise boundary.
+**Named remainder (owned by Object B's chart lane, not built here).** Two relaxations the B charts
+may need are *not* in these lemmas and are deliberately left to the consuming lane, where the exact
+form is known: (a) the **weighted non-injective subadditive** integral bound
+`∫⁻_{f''s} g ≤ ∫⁻_s |det f'|·(g∘f)` for a general `g` (Mathlib's non-injective `≤` is measure-only,
+the `g ≡ 1` case); (b) the **InjOn-off-null** relaxation of the equality forms (Mathlib requires
+`InjOn f s` on all of `s`; an a.e.-injective refinement restricts to `s` minus the null branch set
+and absorbs the null image difference). Building a speculative wrapper for an unspecified consumer
+risks a wrong statement, so the reachable deliverable here is the verified catalogue + this boundary.
 -/
 
 open MeasureTheory Set
@@ -63,8 +63,8 @@ lemma sumSqFam_zeroSet_subset {p : ℕ} (G : Fin p → (Fin n → ℝ) → ℝ) 
 /-- **Discharging `LocallyNullZeros` for a polynomial generator.** If one generator `Gᵢ` equals the
 evaluation of a NONZERO real polynomial `P`, then the sum-of-squares zero set `{∑ Gⱼ² = 0}` is
 `volume`-null — it sits inside `{eval · P = 0}`, null by `MvPolynomial.volume_zeroSet_eq_zero` — so
-`LocallyNullZeros (sumSqFam G) x` holds at every `x` (with the neighbourhood `Set.univ`). This is the
-honest at-use-site discharge of Object A's junk-`0` guard for the DLN/polynomial case. -/
+`LocallyNullZeros (sumSqFam G) x` holds at every `x` (with the neighbourhood `Set.univ`). The honest
+at-use-site discharge of Object A's junk-`0` guard for the DLN/polynomial case. -/
 theorem locallyNullZeros_sumSqFam_of_polynomial {p : ℕ} {G : Fin p → (Fin n → ℝ) → ℝ}
     {x : Fin n → ℝ} (i : Fin p) (P : MvPolynomial (Fin n) ℝ) (hP : P ≠ 0)
     (hGi : ∀ w, G i w = MvPolynomial.eval w P) :
