@@ -408,33 +408,46 @@ def FoldStepInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
 
 /-! ## L3 / L4 — the foldState one-step preservations (DLN-side; elder-locked round-5)
 
-The free-standing `∀-(state, spec)` form was not honest (`Core.PrincipalInv` closing principle) — its
-four refutations (constant, Σw², `|S|=1`, `SupportedOn`-gap) all die BY DEFINITION in the foldState
+The free-standing `∀-(state, spec)` form was not honest (`Core.PrincipalInv` closing principle). Three
+of its four refutations (constant, Σw², `|S|=1` on the STATE axis) die BY DEFINITION in the foldState
 form (there is no free state or residual to instantiate; the state IS `foldG`/`foldB`/`foldResid p`).
-Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the path node
-and one outgoing edge. `δ = [J=0]` is read off `p.conState.cleared` (`edgeδ`, UNIFORM across sub-cases).
-Rollover is off the `isCase2`/`isCase1` filters by construction (a ledger relabel, `localSub = id`). -/
+The FOURTH — the `SupportedOn`-gap on the CENTER axis — does NOT die by definition: `ed.center` is a
+free field of `TreeEdge` (the coordinate derivation is bridge-blocked), so a center not covering the
+state's support re-admits the `δ=1` refutation. It is closed by the EXPLICIT hypothesis `hsupp :
+SupportedOn (foldResid d e p) ed.center (foldRegion d e p)` (elder round-5 ruling (B)+(i), ideal-
+membership form) on BOTH leaves (ruling (ii): the root edge is case-2 `δ=1`, so case-2 needs it too).
+The hypothesis is the construction's DEFINITIONAL truth — Aoyagi's center IS the residual block's
+coordinates (pp. 16/19) — so L5 discharges it for free at every real fold edge; no spurious-hypothesis
+smell. Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the
+path node and one outgoing edge; `δ = [J=0]` off `p.conState.cleared` (`edgeδ`, UNIFORM across
+sub-cases). Rollover is off the `isCase2`/`isCase1` filters by construction (`localSub = id`). -/
 
-/-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). -/
+/-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). `hsupp` (the
+center covers `foldResid p`'s support, ideal-membership form) is REQUIRED even here — the root edge is
+case-2 `δ=1`, where a non-covering center refutes the plain statement (elder ruling (ii)). -/
 @[blueprint]
 theorem case2_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
+    (hsupp : SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
     (hinv : FoldStepInv d e p) :
     FoldStepInv d e (p.extend ed) := by
-  -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state)
+  -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state; hsupp closes center)
   sorry
 
 /-- **L4 — a case-1 edge preserves the foldState invariant. ⟨THE WALL⟩** The coupled block-center
 divisibility at corank ≥ 2 with the exact `u_p^δ` factor; seat-L4's `BlockDivision` core (exact
-division; the `2u₀u₂` shear-rescue) supplies the proof. ONE center, the merge/split pivots handled
-inside the fold — no free `∀`-branch, no `p_merge`/`p_split` in the statement. -/
+division; the `2u₀u₂` shear-rescue) supplies the proof. `hsupp` (the ideal-membership center-support
+link) is what delivers the exact `u_p` division (each `foldResid p` monomial carries a center variable,
+so `∘ blockBlowupMap` gains `u_p`). ONE center, the merge/split pivots handled inside the fold — no free
+`∀`-branch, no `p_merge`/`p_split` in the statement. -/
 @[blueprint]
 theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
+    (hsupp : SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
     (hinv : FoldStepInv d e p) :
     FoldStepInv d e (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
@@ -500,7 +513,13 @@ exceptional coordinates untouched by later shears) and squarefree dominant `b₁
 exponent 1). Given the two region-ideal inclusions (from L1, on the region), it ASSEMBLES a certified
 `Chart (coreGen d e) 0` whose map/domain/region/exponents are the atlas's. The GENUINE content is the
 fold of the per-step geometry (`GeoStep` fields) into the path-map geometry. Region-quantified
-(condition (1)): all certificates on `region c`. -/
+(condition (1)): all certificates on `region c`.
+
+**L6 HARD LOCK (elder-locked, gate-enforced).** `Chart.nbhd` must be the `terminal_bezout`-shrunk `V′`,
+NEVER `univ` — the two-sided ideal identity is LOCAL; `RegionRepresents`-on-`univ` is false in general.
+The gate REFUSES any L6 render with `nbhd = univ`. (`edgeChartDom = univ` in the current foldState
+stand-in is the D2'-deferred region for the SPINE; the Chart this leaf emits must carry the bounded
+shrunk region, not univ.) -/
 @[blueprint]
 theorem leafPath_chartGeometry (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (atlas : GeoAtlasData d e) (c : Fin atlas.n)
