@@ -862,7 +862,7 @@ independently found the same, with witness `![1,1,0]`). This matches the diverge
 (`RouteMAchieverFullHNoFree`), the attainment/tightness layer that needs positive widths throughout;
 the `⊆` lower bound (`minAdm_le_terminalExponents`) stays width-free.
 
-CRUX (sorried, the §4 construction-tracing arc): the `conRel`-WF leaf fold along the `R(tStar)`
+CRUX (PROVED — `tStar_realized` below; docstring was stale, fixed 2026-07-21): the `conRel`-WF leaf fold along the `R(tStar)`
 steering path, maintaining the 3-phase `SteerInv` (`pre`/`anchored`/`done`, with the level-coverage
 clause forcing the anchor's pull at exactly `cleared = tStar^S`), reading `tStar` off the terminal
 leaf. Tripwire: if the level-coverage / phase-maintenance fights, STOP + report. -/

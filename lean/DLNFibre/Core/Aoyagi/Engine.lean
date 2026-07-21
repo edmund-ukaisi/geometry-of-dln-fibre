@@ -80,7 +80,7 @@ theorem Resolution.divisorMin_eq_cCodim {D M : ℕ} {F : Fin M → (Fin D → �
 /-- **The abstract engine value.** For a certified resolution atlas `res` of `∑ Fᵢ²` at the origin
 whose binding divisors satisfy the min-attainment against `qipMin d`, `2·rlctAt (∑ Fᵢ²) 0 = cCodim
 d 0`: Object B's `2·rlct = divisorMin` (min over charts) composed with Object D's bridge
-`divisorMin = cCodim`. This is the `rlct_core = ½·cCodim` value the corollary consumes. -/
+`divisorMin = cCodim`. This is the `rlct_core = ½·cCodim` value the corollary consumes.  Fidelity note: the paper's amplitude/prior φ is folded into the charts' `unit` (nonvanishing on `nbhd` via `hunit_ne`) — the standard SLT setting φ(w*) > 0; the amplitude-nonvanishing assumption lives in the `unit`/`hjac` fields. -/
 theorem Resolution.two_mul_rlctAt_eq_cCodim {D M : ℕ} {F : Fin M → (Fin D → ℝ) → ℝ}
     (res : Resolution F (0 : Fin D → ℝ)) (d : Fin (N + 1) → ℕ) (hd : Monotone d)
     (h : (kostantPartitions d 0).Nonempty) (hq : (qipFeasible d).Nonempty)

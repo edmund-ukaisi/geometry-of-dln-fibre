@@ -1337,6 +1337,10 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.DLN.Aoyagi.exists_flatten,
   DLNFibre.DLN.Aoyagi.lossDLN_zero_eq_coreLoss,
   DLNFibre.DLN.Aoyagi.coreReduction,
+-- ★ The monument's SALVAGE ADAPTER (mon-rec, elder-ratified C1/C2): the exponent-realization seam
+-- ⟹ the leaf's hlb ∧ hattain, riding the salvaged Engine combinatorics + the qipMin=minAdm=cCodim
+-- bridge. Clean-three; the fossil ClearableReify sorry is OFF this cone (controller C1 re-audit).
+  DLNFibre.DLN.Aoyagi.hlb_hattain_of_atlasRealizesExponents,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from
