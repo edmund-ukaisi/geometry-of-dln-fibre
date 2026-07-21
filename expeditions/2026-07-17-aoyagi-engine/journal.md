@@ -8866,3 +8866,21 @@ true opening line, and it was reached the right way: statement-locked, probe-har
 page-anchored, with every hole caught before a seat burned on it." Seven pieces at the render seat;
 the pipeline from here: render → arch-C anchors (i)–(v) → elder one-pass → controller integration →
 the leaf instantiations on the proven abstract core.
+
+## 2026-07-21: (A′) RULED — THE LAST GATE CLEARS; "bake it, and let the wall seat climb"
+The elder's final spine ruling: the substitution form stands; degree-1 preservation folds into
+L3/L4 where it is IDENTICAL to the already-named wall content ("the proof content moves nowhere;
+only my accounting of where it lives moves"). The clean structural fact: foldResid is defined on
+TreePaths and every TreePath is real — no expressible unreachable degree-≥2 states. (A″)'s purity
+was not worth re-opening a spine FIVE INSTRUMENTS converged on. Two cheap conditions: the
+knowing-downgrade docstring line ("degree-1-preservation = the re-factoring content of L3/L4, not an
+additional frontier item") + anchor (v) as the standing verification anchor with seat-L4's
+reconciliation point as rev-leaves' discharge-check site. The register's crux entry amends:
+"delivered by the factored form" → "delivered by the wall's re-factoring proof, knowingly relocated
+(A′)". ALSO: the BlockShearDivision dedup completed (f0314ea56 — w0l3's self-flagged duplicate
+removed; BlockDivision canonical; my first two dedup attempts broke on the cd-drift + grep-empty-
+exit-1 shell classes — both now in the guard list: absolute-path cd prefix on EVERY batch; never
+gate a chain on a grep that may legitimately match nothing). THE STATE: every statement in the leaf
+set is locked, probe-hardened, page-anchored, and carries a complete hypothesis set. Seven items,
+one bake, then: integration → the two mechanical leaf instantiations → L5 → L6/L7/L8. In the
+elder's words: bake it, and let the wall seat climb.
