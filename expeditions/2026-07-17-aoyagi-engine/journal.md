@@ -9078,3 +9078,26 @@ THE TAXONOMY COMPLETES: the severance family now has one regression exemplar per
 this fork). Pipeline: seat renders → arch-C full re-gate → bake → integration un-holds → the twin
 rebase signals → the leaf proofs. The elder's close, for the record: "the wall, at last, on a spine
 whose every field is either data the fold computes or an invariant the fold states."
+
+## 2026-07-21: L7 MAY BE BRIDGE-DEPENDENT — the teeth are oracle-unimplementable; the wall UNBLOCKS anyway
+arch-C stopped the FIX-2 render on a structural finding (ground-truthed on the oracle's API): the
+combinatorial StepChild carries only ecase/esubst/child-ConState — NO center/pivot/shearφ — so the
+elder's per-edge full-record teeth CANNOT be implemented via the oracle; reachesLeaf can pin only
+the combinatorial branch. And combinatorial-only does NOT close L7: the robust counterexample — every
+chart blows up the SAME coordinate x, real combinatorial branches, ℕ-exponents tuned to match —
+passes reachesLeaf + FoldProduced (deliberately divCoord-blind) while all images concentrate on x.
+ROOT CAUSE: L7's coverage is a COORDINATE-level fact; the coordinate information IS the deferred
+card↔sum bridge. L7's honest soundness appears BRIDGE-DEPENDENT — bigger than a shape fork; arch-C
+surfaced rather than papered. THREE TRACKS DISPATCHED: (1) the decorrelated check (option d — is the
+counterexample real; is a bridge-free pivot-pinning possible = option c's feasibility: are the
+resolution's pivots definable directly in Aoyagi-flatDim from the Let-blocks?); (2) the elder's
+(a)/(b)/(c) analysis (note: its own P12 sweep-correction says the bridge residual is SMALLER than
+the runway entry — the cross-namespace tie alone; re-pricing (a) accordingly); (3) THE SOUND-SUBSET
+BAKE — my integration call, superseding whole-round-or-nothing: L3/L4's re-statement + L6's hfold
+are verified faithful and complete in themselves, and THE WALL NEEDS NOTHING FROM L7 — they bake now
+(L7 stays defect-bannered; L5's emission upgrade defers with it, weaker-not-false; FIX 2 does not
+bake — it is what's in question). OPERATOR SURFACING PREPARED: options (a) (bridge in-scope = scope
+change) and (b) (summit conditional on a named bridge dependency = destination-adjacent) both touch
+what "the 8 leaves land" delivers — the decision-ready packet goes to the operator after the check +
+the elder's analysis return; per the autonomy rule this is wait-for-explicit-go territory if (c)/(d)
+don't dissolve it. The wall's rebase signal follows the subset bake's green re-gate.
