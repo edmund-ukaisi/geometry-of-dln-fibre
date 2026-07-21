@@ -145,8 +145,11 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
 ## History — retired chart Engine (POINTERS ONLY; not truth)
 The chart Engine's internal design is JOURNAL/GIT HISTORY — do NOT rebuild against it. Retired as
 DEAD-ROUTE ARTIFACTS (chart-atlas constructions with no ideal-frame analogue; their frame-independent
-CONTENT lives in A–E, above): `IsFullMonomialization` / `ChartBridge` / `region_glue` (the chart→integral
-interface → replaced by A + C + the resolution CoV); `terminalExponents` / `divExp` / `divProfile` /
+CONTENT lives in A–E, above): `ChartBridge` / `region_glue` (the chart→integral
+interface → replaced by A + C + the resolution CoV); `IsFullMonomialization` the PREDICATE
+(EngineDefs:268) is ledger-COMBINATORIAL (divExp = Mval of admissible profiles) and is SALVAGED into
+the Object-B adapter (mon-rec, elder-ratified, conditions C1/C2) — only its bundle-role inside
+`CanonicalResolution`/`ChartBridge` is retired; `terminalExponents` / `divExp` / `divProfile` /
 `genDivExp` / `divTilde` (per-node exponent-ledger fields → the `b_i` exponents / min = minAdm, Objects
 C/D); the resolution-tree carrier + edge-labelled sharing + `StepRel` / `stepUpdate`; the Q5
 banked-RLCT-transport route; the full-mechanism R1–R7 rungs; the coverage theorem + theorem4-localization
