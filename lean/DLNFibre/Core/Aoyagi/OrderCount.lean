@@ -66,7 +66,45 @@ theorem perJCard_eq_paper (ℓ a j : ℕ) (ha : a ≤ ℓ) (hj : j ≤ ℓ) :
   simp only [perJCard, perJCardPaper, bandWidth]
   split_ifs <;> omega
 
-/-- Arithmetic helper: `∑_{i=1}^{m} (ℓ+1−2i) = m(ℓ−m)` when `2m ≤ ℓ` (no `ℕ`-truncation). -/
+/-! ## The two partial-sum envelopes (Aoyagi p.25) and width-independence
+
+The envelopes are stated over a **free** partial-sum function `P : ℕ → ℤ` (`P j = ∑_{l=1}^{j+1}
+M^{(S_l)}`) and a **free** integer `M` (Aoyagi's `M = M*`). Keeping them free is exactly Tier-1
+purity: the width-independence theorem `envHi − envLo = bandWidth` shows `P` and `M` cancel, so the
+per-`j` band width — hence the whole count — depends only on `(ℓ, a)`. Tier 2 instantiates `P, M`
+with the certified selector objects (and only then is the terminal equality `H̃_ℓ = H̃'_ℓ = 0` a
+theorem — it needs the Def-3 consistency `P, M*, a` relations, absent at Tier 1). -/
+
+/-- Aoyagi p.25's **lower envelope** `H̃_j` (two pieces): `P j − jM` for `j ≤ a`, else
+`P j − aM − (j−a)(M−1)`. -/
+def envLo (P : ℕ → ℤ) (M : ℤ) (a j : ℕ) : ℤ :=
+  if j ≤ a then P j - j * M else P j - a * M - (j - a) * (M - 1)
+
+/-- Aoyagi p.25's **upper envelope** `H̃'_j` (two pieces): `P j − j(M−1)` for `j ≤ ℓ−a`, else
+`P j − (ℓ−a)(M−1) − (j−ℓ+a)M`. -/
+def envHi (P : ℕ → ℤ) (M : ℤ) (ℓ a j : ℕ) : ℤ :=
+  if j ≤ ℓ - a then P j - j * (M - 1)
+  else P j - (ℓ - a) * (M - 1) - (j - (ℓ - a)) * M
+
+/-- **Width-independence (the deep fact).** For `a ≤ ℓ`, `j ≤ ℓ`, and ANY partial-sum data `P` and
+integer `M`, the band width `H̃'_j − H̃_j` equals `bandWidth ℓ a j = min(j, a, ℓ−a, ℓ−j)` — the
+shared `P j` and the integer `M` cancel. This is why Aoyagi's order depends only on `(ℓ, a)`. -/
+theorem envHi_sub_envLo (P : ℕ → ℤ) (M : ℤ) (ℓ a j : ℕ) (ha : a ≤ ℓ) (hj : j ≤ ℓ) :
+    envHi P M ℓ a j - envLo P M a j = (bandWidth ℓ a j : ℤ) := by
+  simp only [envLo, envHi]
+  by_cases hja : j ≤ a <;> by_cases hjla : j ≤ ℓ - a
+  · rw [if_pos hjla, if_pos hja]
+    have hbw : bandWidth ℓ a j = j := by simp only [bandWidth]; omega
+    rw [hbw]; ring
+  · rw [if_neg hjla, if_pos hja]
+    have hbw : bandWidth ℓ a j = ℓ - a := by simp only [bandWidth]; omega
+    rw [hbw]; push_cast [Nat.cast_sub ha]; ring
+  · rw [if_pos hjla, if_neg hja]
+    have hbw : bandWidth ℓ a j = a := by simp only [bandWidth]; omega
+    rw [hbw]; ring
+  · rw [if_neg hjla, if_neg hja]
+    have hbw : bandWidth ℓ a j = ℓ - j := by simp only [bandWidth]; omega
+    rw [hbw]; push_cast [Nat.cast_sub hj, Nat.cast_sub ha]; ring
 private theorem sum_Icc_linear (ℓ m : ℕ) (hm : 2 * m ≤ ℓ) :
     ∑ i ∈ Finset.Icc 1 m, (ℓ + 1 - 2 * i) = m * (ℓ - m) := by
   induction m with
