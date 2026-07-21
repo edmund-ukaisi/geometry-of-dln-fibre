@@ -8225,3 +8225,18 @@ and seat-L4 (the only FORMAL one). Folded into arch-C's round: the StepInv claus
 witness update (constant family dies — replace with a vanishing family) + the refutation joins the
 probe-flip gate. Refutation copied to threads/36-leaf-fidelity/l4probe_refute.lean. NO NEW SPAWNS
 until capacity stabilizes; failed seats resumed with bank-early orders.
+
+## 2026-07-21 ~15:30: FULL OVERLOAD POSTURE — 4 seats down on 529s; all work SECURED; staggered recovery armed
+The gateway saturated: scout-mine, seat-w0l3, seat-L4 failed (arch-C silent — presumed down
+mid-round). CONTROLLER SECURING SWEEP (the worktree survey found real value uncommitted): arch-C's
+amendment round IN PROGRESS — a new Core/Aoyagi/BlockBlowup.lean + MonumentAtlas edits — WIP-committed
++ pushed on its branch; seat-w0l3 had BANKED 14/15 PathAtoms proofs (796c33bc5 — all but
+jacDet_blockShear) with the 15th WIP — secured; scout-mine HAD written the partial wiring map after
+the bank-first order but died pre-commit — secured (branch expedition/aoyagi-engine--thread37-paper-
+mining). seat-L4's refutation was already banked. NOTE the coordination fact discovered in securing:
+arch-C started BlockBlowup.lean ITSELF — the O9 atom is being built in two lanes (arch-C + w0l3's
+brief); the recovery tick coordinates dedup (w0l3 reads arch-C's secured file first). RECOVERY: no
+resumes into the wall (both earlier resumes re-failed within minutes — thrashing); a one-shot
+controller tick at 15:52 tests capacity with ONE resume (arch-C, critical path), then staggers the
+rest one at a time. No new spawns until all four are stable. Lesson reinforced: push-on-commit +
+the securing sweep meant the overload cost ZERO work — only latency.
