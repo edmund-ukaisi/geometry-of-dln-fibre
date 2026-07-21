@@ -7517,3 +7517,20 @@ arithmetic: ATLAS-MIN form required. + check F is tied to coreLoss in the existe
 count 14 not 15 — teammate-report calibration miss, caught by the decorrelated channel. POSITIVE: C's
 chain-guarded monomial rule VERIFIED SOUND (v2's C-defect genuinely fixed); D/E clean.
 HOLD: consolidate with elder-v3 + the architect's own reviewer, then ONE repair brief (no drip-feed).
+
+## 2026-07-21: elder RATIFY-WITH-CONDITIONS — channels CONVERGE; v4 repair dispatched (one pass)
+Elder verdict: ROUTE ADOPTED (ideal-A + certified-B + monomial-C + proved-D + deferred-E, cite-free cone);
+three MANDATORY pre-strike conditions. The two decorrelated channels CONVERGED independently on the same
+kills — high confidence: (1) A's junk-0 false statements (elder's counterexample even sharper:
+exp(−1/|w|) ⟹ rlctAt=0; also A-eq is TRUE but wired through the false ≤; the weighted two-sided eq is
+MISSING and is what B consumes); (2) B's single-chart hcover = the §3 chart-dodge THIRD occurrence —
+the unsupported direction is the KILL-TARGET'S ≥, and hcover is likely UNINHABITABLE at coupled corank≥2
+(blow-up charts never cover; codex (1,2): both charts needed; elder: satisfiable exactly where already
+normal-crossing). Ruling on (f)1–4: atlas-ise NOW (answers f1+f3); a.e-fix per counterexample (f2);
+un-bundle flatten/deepest — ride BANKED deepest_le_of_homogeneous_core (DeepestMinRlct.lean:157, proven)
++ ParamsFlat; make F CONCRETE (f4). Elder also mapped the STRIKE ORDER + parallelisation lanes (shared
+wrlctAt-API waypoint thread first; lanes: A-floor / C-S2 (longest pole) / B-cov≤+guards / R0-carrier-
+bridge; coupled-atlas monument gated on pnp) — feeds task #3 directly. v4 REPAIR BRIEF sent to the
+architect (one consolidated pass: A guards+rewire+weighted-eq; B atlas-ise with the (1,2) two-chart
+blow-up as the positive inhabitation test; corollary un-bundle + concrete F; honesty fixes incl. the
+overclaimed sorried guard). Bar re-runs after: codex round-2 + elder re-ratification of B.
