@@ -23,3 +23,10 @@ Fixes commissioned to arch-C (same tick): terminal_bezout +IsOpen V +0∈V +Cont
 StructuralChainResidual falsity-test then re-state-as-vector-chain-or-drop; StepInvChild real branch
 parameter; minors (L4 docstring nR'<nR; PivotOrderingK0 inline discharge; unused hne). Elder second
 delta (D2'/D3 amendments) running in parallel.
+
+## POST-FIX FLIP (controller re-run, 2026-07-21, post-merge ddbecb57e)
+- `smell_probes.lean` now FAILS (EXIT 1: the ¬TerminalBezout construction is type-rejected — `IsOpen V`
+  required). The fix is real. NOTE (arch-C): the literal s2 probe is a tautology ABOUT StepInvChild
+  (unchanged, still compiles standalone); the actual collapse fix lives in `Case1Preservation`'s
+  branch-δ-law conclusion — re-point future kill-witnesses there.
+- `root_probe.lean` still elaborates (EXIT 0) — non-vacuity preserved.

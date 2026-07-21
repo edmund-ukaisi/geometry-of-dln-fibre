@@ -8112,3 +8112,22 @@ Relayed to arch-C mid-fix (upgrades FIX 2 from test-then-decide to known-false +
 adds the D2' assembly-ordering rider). Battery still runs for decorrelation. The layered review
 worked twice over: the reviewer refuted in Lean what the ratification had passed on shape, and the
 elder then falsified from banked certificate data what the reviewer had flagged on structure.
+
+## 2026-07-21: FIDELITY FIXES INTEGRATED — skeleton at equilibrium; WAVE OPENS (W0+L3 first seat)
+arch-C's fixes merged (ddbecb57e). CONTROLLER GROUND-TRUTH (all re-derived): build 0 errors; batch 341
+banked-clean; cordon OK; driver cone STILL exactly the 8 leaves, axioms [propext, sorryAx,
+Classical.choice, Quot.sound]; PROBE-FLIP verified myself — smell_probes now FAILS (¬TerminalBezout
+type-rejected), root_probe still EXIT 0. THE FIXES: terminal_bezout carries IsOpen V + 0∈V +
+ContinuousOn unit V (D2'); StructuralChainResidual CONFIRMED FALSE (battery decorrelation + the elder's
+{9,8,4} witness) and DISSOLVED — deleted from L5/L8/both drivers, driver still elaborates, dissolution
+recorded in L5's docstring (the divisibility content = the per-path monomial law already in
+Case1Preservation's δ-law + GeoAtlasData.bexp/hsqfree); Case1Preservation's conclusion now carries the
+branch-δ-law b' = u_p^(if branch then 0 else 1)·(b∘σ) (1(1) δ=0 / 1(2) δ=1 — one witness can no longer
+serve both branches); PivotOrderingK0 dropped (trivial); minors (nR'<nR docstring, unused hne) done.
+OPEN NOTE accepted as landed (proceed-on-silence): StepInvChild's b' stays unconstrained for case-2
+(the tracking rides the δ-law + bexp); flagged in the W0+L3 brief — if L3's proof or L8 needs a case-2
+b'-law, the seat surfaces it, never silently strengthens.
+DISPATCHED: rev-leaves resumed for the DIFF-SCOPED re-verification (equilibrium check; s2 re-pointed to
+Case1Preservation); W0+L3 SEAT COMMISSIONED (the wave's first seat — substrate atoms + the clean-case
+preservation; statement-locked signatures first so seat-L4 builds against them). L4/L5/L7 seats + the
+coherence hunt follow on rev-leaves' clean re-check.
