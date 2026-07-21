@@ -7664,3 +7664,17 @@ NEW PAPER DEFECT (codex-found, battery-verified): Aoyagi's T-profile total-compa
 on threshold-based b-monomials, not profiles). → fidelity-ledger entries for the elder's next convening.
 Frame re-confirmed: Frobenius NOT preserved ⟹ the record's RegionRepresents + weighted-A routing is
 forced; the chart route stays category-dead. Instance cross-checks exact (27/28 reproduced).
+
+## 2026-07-21: SEAT-C LANDS OBJECT C — the longest pole, sorry-free; statement-lock discipline pays off
+All 3 MonomialRLCT leaves PROVEN (module sorry-free, clean-three forced-#print, cordon green; branch
+bac183921): the unit-factorisation, THE S2 BOXED RULE (the weighted monomial threshold = ⨅ axis ratios
+under the divisibility chain — Object C's genuine analytic pole), and the DLN unit-multiplicity form.
+DISCIPLINE EVENT (the lock working as designed): the seat found locked leaves (2)+(3) FALSE as stated —
+missing `Measurable unit` (ContinuousAt-only admits a non-measurable unit ⟹ IntegrableAtFilter empty ⟹
+wrlctAt junk-0; airtight D=1 counterexample) — the SAME class as the D3 kills (reviews hardened the
+A-chain's hWmeas, missed C's unit). It STOPPED, implemented the minimal fix, and requested the bless.
+CONTROLLER BLESSED `Measurable unit` (weakest: finer than Measurable W, composes, monument's unit ≡ 1
+unaffected); elder post-hoc delta-ratification queued with the ledger items. Fresh fidelity seat DECLINED
+(content twice-verified in the blueprint reviews; only the hypothesis is new). Seat proceeds to bank
+(AxCheck batch + de-blueprint + push). Wave-2 hygiene queued: MonomialBox Core-lift + DLN dedup
+(RouteMSJMonomialLower/Case222Cover duplication, forced by Core↛DLN today).
