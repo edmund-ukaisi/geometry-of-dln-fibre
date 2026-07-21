@@ -7853,3 +7853,20 @@ then (B) = pure instantiation at D = flatDim ![1,2] (universal lemma ⟹ no tran
 atom for BOTH (B) and the monument's per-step blow-up geometry; folds rung (A) in; bounded (~80-150 lines,
 not research-grade). Sequencing: leaf-2 → (B) instantiation → (C) skeleton (pnp-shear pin shapes leaves
 3-5 meanwhile). The cover subtlety (bounded spectators for compact doms) pre-flagged for leaf-2's cover.
+
+## 2026-07-21: SHEAR PIN RESOLVED (thread 33) — corrected-(a); the blindspot closes in the best possible way
+The Q,P role split is PRINCIPLED, not a framing choice: invertible unipotent Schur/column shears (each
+using KEPT coords to shear a DIFFERENT coord — Jacobian EXACTLY 1) ARE source coordinate changes, so
+g = shears ∘ blow-ups (NOT monomial-as-a-map — the formalise seat's flag was right); the det-0
+projection-type row-ops (clearing the coord they're built from) are FORCED to remain RegionRepresents
+cofactors — which is exactly the Frobenius-non-preservation mechanism, now understood at the map level.
+CONSEQUENCE: |det Dg| = jacWeight EXACTLY, unit ≡ 1 STANDS (right conclusion, wrong reason in thread-31 —
+corrected by ADDENDUM, not silent rewrite). Three independent exact routes agree (chain rule; end-to-end
+12×12; codex direct 20×20/21×21, with the sharpening that the c11=1 normalization is itself a blow-up:
+ρ⁸E⁷α³, still pure monomial). NO corank dichotomy (option (c) false — clean (2,2,2) identical structure).
+The v4.2 record needs NO change (hjac/unit, ContinuousOn-with-vanishing cofactors — the field split was
+already exactly right; the verification rounds' hardening pays again). Controller-calibrated (roles
+battery PASS). Guidance relayed to mon-geo: state the composition, unit := 1 by chain rule, cofactors
+carry the projections; PrincipalInv tracks the shear-composition; leaf-2 unaffected (pure blow-up atoms).
+Residual (non-blocking, in-cert): the pivot-normalizes-to-1 assumption — holds structurally, and even
+its failure only pushes w⁻¹ into cofactors; the record holds regardless.
