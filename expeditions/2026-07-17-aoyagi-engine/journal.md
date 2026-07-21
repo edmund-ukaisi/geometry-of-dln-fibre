@@ -8986,3 +8986,27 @@ ground-truth sweep (8 flips, 3 nuancings), four specify-stage stops with zero wa
 banked extra. Re-task trigger: the post-bake M4+M9 upstreaming unit. The register's hygiene arc is
 CLOSED — everything S/M-file-disjoint is done or shaped; what remains anywhere in the expedition is
 the monument's eight leaves, the post-bake unit, and the named runway.
+
+## 2026-07-21: THE (A′) REVERSAL — the bake is mechanically green, content-broken; the SEVENTH severance site
+arch-C's post-bake fidelity review (decorrelated reviewer + codex + its OWN re-derivation +
+machine-checked witness, re-reproduced by the render seat): L3/L4/L6/L7 FALSE-as-stated, L5/L8
+under-claim. THE WITNESS: d=![1,2,1] (coreGen 0 = u₀u₂+u₁u₃), center {0,1,2}, φ=0 — every
+hypothesis holds; (F∘foldG)=2 vs foldB·foldResid=0 at (2,1,1,−1). THE MECHANISM: hsupp is MONOTONE
+in the center (support ⊆ center admits OVER-LARGE centers), and at center-degree ≥2 the substitution
+form over-divides — the severance disease at the center's SIZE axis after (B) closed its CONTENT
+axis. **(A′) IS FALSIFIED — degree-1 is a MISSING HYPOTHESIS, not relocatable proof content** (the
+elder's reachability argument covered foldResid's values, not the center field's freedom). SCOPING:
+seat-L4's abstract core UNAFFECTED (proven about ITS strict-transform residual; the leaves are false
+because the fold's substitution def diverges from it at degree ≥2) — over-general leaves, not a dead
+route. arch-C corrected the record immediately (retracted the (A′) docstring language, bannered the
+defect, changed NO leaf logic — the definition-of-done discipline holding under pressure) and did
+NOT hand a broken bake forward. THE REPAIR PACKAGE with the elder: option (A) center-EXACT degree-1
+hsupp (VERIFIED: kills the witness — u₀u₂ has no center-disjoint linear form; admits the layer
+center — u₂·u₀+u₃·u₁; buildable now) vs bridge-blocked (B); + THE PROPAGATION QUESTION (degree-1 as
+a CARRIED FoldStepInv invariant — the honest form of the old (A′), the leaves proving its
+preservation as a stated obligation — vs per-node re-establishment; all three seats lean CARRY);
++ L6 jac-tie and L7 coverage-clause RESTORATIONS (round-3-era rulings the foldState rework dropped).
+INTEGRATION HELD. Verified faithful: L1, terminal_bezout, item-7. The system note: the bake was
+caught by its OWN mandated post-bake review before integration — the fifth consecutive
+statement-defect caught before any proof investment, and the first one caught AFTER a "final" ruling,
+which is exactly why the review runs after the bake and not only before it.
