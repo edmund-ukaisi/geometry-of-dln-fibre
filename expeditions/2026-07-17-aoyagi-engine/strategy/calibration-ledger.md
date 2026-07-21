@@ -748,3 +748,14 @@ actually still owe." Local-frame reasoning under a long expedition drifts from t
    `#print axioms <top-headline>` (force-recompiled) + identify its sole open rung(s). Re-ground
    globally, not from the active thread. (Pairs with entry 23's exit-0≠content-true: verify the
    kernel truth of the HEADLINE state, not just the local artifact.)
+
+## 2026-07-21 (controller, autonomous stretch) — lane-4 carrier-bridge calibration
+Q (load-bearing for lane 4): does banked GlobalBridge give the carrier bridge coreReduction needs, or is
+the ℝ≥0∞ gap real? EXPECTATION (pre-read): global_rlctAt_eq is an ℝ↔ℝ equality under mild hypotheses
+(0.75); the ENNReal/rlctAtOn bridge is NOT banked and remains lane-4's new content (0.7).
+ACTUAL: HIT + stronger — global_rlctAt_eq is DEFINITIONAL (rfl, no hypotheses; GlobalBridge.lean:41).
+HIT — no rlctAtOn↔rlctAt bridge exists anywhere banked; the ℝ≥0∞ hop is confirmed the one genuinely-new
+lane-4 piece. BONUS: rlctAtOn_comp_homeomorph is banked (Case222Lemma2) — the flatten transport is
+already available once codex-fix (e) packages the flatten as a homeomorphism; lane 4 = ONE carrier hop +
+adapters, smaller than budgeted. Strategy delta: lane 4 may be the SHORTEST lane, not a long one —
+re-rank at strike opening.
