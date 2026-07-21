@@ -8951,3 +8951,15 @@ banked meanwhile: the 2≤D guard IS an artifact (jacDet_blockBlowupMap needs on
 incl. |S|=1 → w_p^0 = 1; the general form carries no dimension guard). Register re-scope (M4:
 S-file-disjoint → S-but-needs-BlockBlowup, post-bake) rides the bake-integration event-touch.
 seat-api proceeds on M9 (genuinely standalone).
+
+## 2026-07-21: M9 blocked by the SAME root — M4+M9 consolidated into ONE post-bake upstreaming unit
+seat-api's SPECIFY: BlockDivision is intrinsically tied to the concrete ℝ-pinned blockBlowupMap
+(unlike WeightedCofactor's map-free abstract algebra — why THAT lift was clean); a CommRing lift
+requires generalizing blockBlowupMap first = a BlockBlowup edit = bake-locked. CONSOLIDATED
+POST-BAKE UNIT (replaces M4+M9 in the register at the next event-touch): generalize blockBlowupMap
+to 𝕜, drop the artifact guard, and both items fall out downstream — one coherent unit, no map
+forking. seat-api proceeded-on-silence to M13 (monomialThreshold reindex API — verified bake-free,
+its own file via M1, append-only; approved; noted the quiet connection to O4's future loss-side
+permutation transport). The pattern of the hour: three consecutive SPECIFY-stage stops, zero build
+investment wasted — the specify-first discipline is the cheapest gate in the pipeline and it is
+carrying the register's staleness without friction.
