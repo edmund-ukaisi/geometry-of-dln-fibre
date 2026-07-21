@@ -123,6 +123,17 @@ The abstract core is PROVEN (`Core/Aoyagi/StepInvShearChild.lean`): `stepInv_del
     · -- δ=0: pure pullback (order-independent), foldResid(child)=foldResid p∘stepMap.
       exact ⟨_, stepInv_delta0_pullback_child hq (stepMap continuous) (stepMap 0 = 0)⟩
 
+HSUPP REPAIR (post-bake fidelity review, 2026-07-21): the ideal-membership `hsupp` is MONOTONE in the
+center, so an over-large center (degree ≥2 residual entry, e.g. `resid = u₁·u₂` via a center-coord
+COEFFICIENT `c₁ = u₂`) satisfies it while the fold's substitution-form `foldResid` over-divides
+(`resid∘σ = u₀²·u₁u₂`, order 2 in the pivot, but the fold divides ONCE). `hsupp` strengthens to the
+CENTER-EXACT degree-1 form: `resid_j = ∑_{k∈center} c j k · u_k` with **center-DISJOINT** coefficients
+(`c` reads no center coord), so each entry is genuinely degree-1 in the center. `stepInv_delta1_shear_child`
+is UNAFFECTED — it defines `resid'` to match and its factorization `u_pivot·resid' = resid∘σ` holds for
+ANY `c` (checked degree-2: exact, no over-division); the leaves were false only because the fold's def
+DIVERGED from the lemma's `resid'` at degree ≥2. The leaf instantiates the lemma with the center-exact
+`c`; the carried degree-1 invariant (if ruled) is the child's re-factored residual — a natural output.
+
 RECONCILIATION (the only non-defeq point): the amended `foldResid`(δ=1) closed form must match the
 lemma's `resid'_j = ∑_{i∈center} c j i (σ·)·blockBlowupCoordQuot pivot i (sh ·)`. Per the elder's
 ratified anchor (A/v) — **center-degree-1 multilinearity**: each `foldResid p` entry is a LITERAL
