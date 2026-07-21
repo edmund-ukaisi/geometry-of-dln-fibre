@@ -81,3 +81,17 @@ the trail is local):
   Controller: put "push your branch" in every build-seat brief; on receiving a report, verify the branch is
   on origin before relying on it. (Mitigation that saved us this time: a pre-death flush banked the
   integrated cordon chain + all certs; only the never-pushed architect branch died.)
+- **Instance work requires a COVERAGE CLAIM; no representativeness without one (operator-caught,
+  2026-07-21).** The d=(1,2) rung was selected as "smallest instance where the machinery runs" but SOLD
+  as "genuinely singular" — false (N=1 coreGen is linear: zero recursion steps, no coupling, no
+  singularity; it validated the record plumbing only). The gap: the kill-set selection discipline
+  (explicit, verified structural criteria for WHICH failure axes an instance exercises) applied to
+  adjudication seats but not to validation rungs. RULE: any instance artifact carries an explicit
+  coverage line — "exercises axes {…}; does NOT exercise {…}" — verified before any representativeness
+  claim; an instance without one is a plumbing test and must be billed as exactly that. COROLLARY: no
+  validation instances on a monument path — generalize from the paper + ∀-certificates, use instances
+  only as falsifiers/satisfiability-witnesses/decide-anchors; the first singular instance falls OUT of
+  the general build as a showcase, never precedes it as a rung. (The expedition's own data concurs: the
+  universal-in-D leaf-2 was CHEAPER than the instance-reuse route it replaced.) **Why:** point analysis
+  without a generality argument overfits — the template teaches the wrong instincts precisely when the
+  instance is unrepresentative, and the mislabel travels further than the artifact.
