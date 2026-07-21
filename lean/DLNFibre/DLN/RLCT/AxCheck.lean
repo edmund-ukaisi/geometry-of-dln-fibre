@@ -164,6 +164,7 @@ import DLNFibre.Core.Aoyagi.IdealInvariance
 import DLNFibre.Core.Aoyagi.MonomialRLCT
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
 import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
+import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.Core.Aoyagi.BlowupResolution
 import DLNFibre.Core.Aoyagi.ResolutionInhabited
 import Meta.Cordon
@@ -1373,6 +1374,11 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 #print axioms DLNFibre.DLN.Aoyagi.aoyagi_learning_coefficient_via_engine
 #print axioms DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_divisorMin
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
+-- Rung (C) DRIVER (tracked-open): re-proves the full `exists_coreResolution` statement with its
+-- `sorryAx` cone = EXACTLY the 8 monument leaves (L1/L3/L4/terminal_bezout/L5/L6/L7/L8,
+-- `MonumentAtlas`/`PrincipalInv`) — never the Skeleton/ClearableReify sorries. The summit goes
+-- clean-three the day the leaves land and this driver replaces the in-place sorry.
+#print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution_via_monument
 
 -- Payoff DELIVERABLES — individual clean-three footprints preserved (also asserted in the
 -- batch above). Each must print `[propext, Classical.choice, Quot.sound]`.
