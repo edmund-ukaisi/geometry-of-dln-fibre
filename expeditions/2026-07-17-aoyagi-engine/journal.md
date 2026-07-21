@@ -9956,3 +9956,21 @@ render details for the ruling: the guard as `layer + 1 < N` (ℕ-truncation trap
 degenerate (no interior at all — the whole fold is last-layer + terminal). seat-L3T FULLY held
 (both targets) pending the extension; seat-L4 holds; the wall's divisibility crux unaffected
 throughout.
+
+## 2026-07-22 (controller, just past midnight) — EXTENSION RULED: EXPOSED LastLayerInv; the N=1 degenerate decides the fork
+
+The elder's extension ruling: arch-C's vacuity gap ACCEPTED (terminal_edge_stepInv re-parents on
+LastLayerInv; output (1)∧(2) unchanged — the consumer-fit survives verbatim). THE FORK RULED for
+the EXPOSED design, on two arguments: (1) the segment form's internal induction needs its motive,
+which IS LastLayerInv demoted to an un-gated proof-local have — "after six instances, an un-gated
+motive inside the exact mechanism that produced instance six is not economy, it is the seventh
+instance's hiding place"; (2) DECISIVELY: at N = 1 the segment form's parent hypothesis is
+unsatisfiable (no interior node) — it breaks at the degenerate or grows a special case,
+re-introducing the boundary disease inside the ruling that answered it; the exposed design covers
+N = 1 BY SUBSUMPTION (the root IS a LastLayerInv state with zero cleared slots). Render details:
+the ADDITION-form guard `layer + 1 < N` is now a STANDING ℕ-render rule; the LANDED d12 instance
+(which IS N = 1) joins the round as the degenerate-routing anchor beside (3,3,4)'s S=2=L edge.
+The fold's uniform story: enter (subsumption; root at N=1) → per-clear preservation → transport →
+terminal_bezout — every arrow named. arch-C implements the four-piece round (guards + LastLayerInv
+& preservation [elder pass first] + re-parented transport + the C′ pin). seat-E relayed the two
+render facts (the fence discharges via properness ~free; Tier-3 rides the banked DivChain).
