@@ -9062,3 +9062,19 @@ whole round bakes together with an accurate message. Integration stays HELD on t
 The Core foundation (IgnoresCoords/Deg1SupportedOn, bridges CLOSED — no new sorry) stands regardless.
 The lesson instance, again: "present in the structure" ≠ "received by the leaf" — the per-field
 audit principle's consumption-side twin.
+
+## 2026-07-21: THE FORK RULED (ii) — the severance taxonomy completes; the repair round closes
+Structural-branch-membership, with the teeth pinned: the branch relation asserts PER-EDGE agreement
+with conOracle's actual dispatch (the full edge record, constructor-per-edge) — "ends at the leaf"
+is the COROLLARY, never the definition. Why (i) died: a free TreePath constrained only at its
+endpoint leaves every interior edge field as an unconstrained severance axis, and conState is
+COMPRESSED (distinct leaf-histories collide at one endpoint) — the per-field audit failing twice.
+(ii) = road (b) applied to the PATH field itself; L7's coverage becomes the paper's own statement
+(the foldG images of the REAL branches cover). The positive discharge free (L5's construction
+receipt — provenance-by-definition). RIDER: the two provenance predicates thread as ONE conjunction
+at one site, docstrings cross-pointed ("provenance is one concept and should read as one").
+THE TAXONOMY COMPLETES: the severance family now has one regression exemplar per axis — CONTENT
+(the Σw²/spectator family), SIZE (d=![1,2,1]), PATH (the all-charts-one-path collision, banked at
+this fork). Pipeline: seat renders → arch-C full re-gate → bake → integration un-holds → the twin
+rebase signals → the leaf proofs. The elder's close, for the record: "the wall, at last, on a spine
+whose every field is either data the fold computes or an invariant the fold states."
