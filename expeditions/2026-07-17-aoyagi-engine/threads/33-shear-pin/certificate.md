@@ -170,3 +170,17 @@ instance somehow left a pivot as a unit `w ≠ 1` (not normalized), the *shear* 
 `L ≥ 4` coupled instance with two independent shared deep factors (thread-27's flagged kill-end),
 recomputing `|det Dg|` end-to-end to confirm no pivot escapes normalization — but the structural
 argument (exceptional coords untouched by shears; `E_J` pivots = identity) already covers it.
+
+## ADDENDUM (elder-ordered, 2026-07-21) — the composition ORDER is corrected; load-bearing conclusions survive
+This certificate's "g = (unipotent shears) ∘ (monomial blow-ups)" — shear OUTERMOST — is a BOUNDARY
+ARTIFACT of the (3,3,4) trace: the INITIALIZATION Schur (a Theorem-3-stage setup elimination)
+precedes the first blow-up in that trace, which grouped the composition shear-first. The recursion's
+PER-STEP atom, adjudicated from the pages (pp.16–21: blow-up substitution THEN the Q-transforms on
+the POST-blow-up primed d′-coordinates; substitutions compose in reverse of temporal order), is
+**blockBlowupMap ∘ edgeShear — blow-up OUTERMOST** (thread-34's order). At r = 0 there is no
+initialization elimination and every atom is B∘S. THE LOAD-BEARING CONCLUSIONS OF THIS CERTIFICATE
+ARE ORDER-INDEPENDENT AND SURVIVE: the shears are Jacobian-exactly-1; unit ≡ 1 for the composed
+Jacobian; exceptional coordinates are never touched by shears (now formalized as the TreeEdge
+hshear_pivot field). Caught by seat-L4's wall checkpoint (the two certificates' order disagreement);
+elder adjudication in the journal, 2026-07-21. A codex decorrelation on the narrow order question
+runs as confirm-before-the-wall-consumes insurance.

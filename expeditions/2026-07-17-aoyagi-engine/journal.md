@@ -8679,3 +8679,24 @@ docstring line so nobody re-reaches for it). DISPATCHED: elder supplemental ruli
 adjudicated from the pages; codex decorrelation on offer); arch-C HOLDS item 3 (items 1-2 proceed;
 the stepMap defining equation is the touch-point either way). The wall proof is mechanical per the
 skeleton once the shear is constrained — the seat's words, and its atoms are all banked.
+
+## 2026-07-21: FIX-A RULED — the order flips; the constraint dissolves; thread-33 corrected by addendum
+The elder adjudicated the order first BECAUSE it moots the sharpening: pp.16–21's temporal sequence
+is blow-up THEN Q-transforms-on-primed-coordinates; substitutions compose in reverse ⟹ the per-step
+atom is blockBlowupMap ∘ edgeShear (BLOW-UP OUTERMOST, thread-34's order — seat-L4's playbook had it
+right). Thread-33's opposite reading = the (3,3,4) initialization-Schur boundary artifact (absent at
+r=0); its load-bearing conclusions are order-independent — corrected by ADDENDUM (applied), never
+rewrite. CONSEQUENCE (elder-verified): under B∘S every parent-frame center coordinate =
+(S v)_pivot·(…) — δ=1 divisibility is STRUCTURAL for any pivot-keeping shear. hshear_center is
+WITHDRAWN (never baked — the hold paid); the single field is hshear_pivot (the shear keeps the
+pivot — her exceptional-coords-untouched fact, shear-pin-certified), which ALSO carries the L6
+Jacobian ledger through the flip. FIX-B recorded in the register as the fallback ruling (the
+elder: seat-L4's under-sharpness analysis "is CORRECT and would have been the ruling had the order
+stood" — the audit principle applied reflexively; the r>0 initialization Schur is the lane where it
+may return). The elder owned the miss ("the order question was not put to me and I did not smell it
+under the render — seat-L4's checkpoint discipline caught what I missed"). THE SPINE ROUND: foldNR +
+trims + THE FLIP + hshear_pivot, one diff, one elder pass. Gates updated (shear_gap dies at the
+PROOF layer now — its φbad is pivot-keeping, the edge constructs, the division goes through).
+Codex decorrelation on the narrow order question commissioned (non-blocking bake; gates the WALL's
+consumption — the substitution-direction class where our own two certificates disagreed earns a
+second instrument). Both leaf seats re-pointed; the wall SIMPLIFIES (structural factor × BlockDivision).
