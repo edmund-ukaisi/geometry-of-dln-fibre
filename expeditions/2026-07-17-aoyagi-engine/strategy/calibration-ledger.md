@@ -827,3 +827,23 @@ statement can hide an un-audited axis (CENTER-SIZE, after CONTENT was closed). F
 RULE: budget the decorrelated per-field audit as the DOMINANT line item of any foldState/skeleton
 leaf; treat "minutes to wire" as the honest cost of the PROOF only, never of the leaf, until every
 free field has a regression witness.
+
+## Entry 28 (2026-07-21, heartbeat tick) — guard dischargeability at the oracle
+
+**Question (load-bearing):** is fix (a)'s guard `ed.nextState.layer < N` dischargeable at L5's
+fold — i.e. does the engine's oracle keep case-1/case-2 children at the parent's layer, with only
+rollover advancing it?
+
+**Expectation (written before reading):** case children keep `layer` unchanged (cleared+1);
+`layer + 1` happens only in the rollover branch. Confidence 85% (elder "by construction" + nav
+"only rollover advances" — neither personally verified until now).
+
+**Territory:** EngineConstruction.lean — the case-step constructor (≈:190) is
+`⟨s.layer, s.cleared + 1, …⟩` (layer LITERALLY unchanged); `ConState.stepRollover` (:198) is the
+sole `s.layer + 1` site (cleared reset to 0). **HIT.**
+
+**What it changes:** the guard's discharge at L5 is `rfl`-adjacent (case child's layer = parent's;
+parent liveness by fold induction) — fix (a) costs the consumer essentially nothing, confirming
+the elder's "dischargeable by construction" and removing the last pricing uncertainty on the
+guards half of the locked round. The guard remains genuinely load-bearing on the FREE TreeEdge
+(the defect was real); it is only its supply that is cheap.
