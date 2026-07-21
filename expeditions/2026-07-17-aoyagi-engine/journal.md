@@ -9991,3 +9991,31 @@ preservation lemma's rollover branch + terminal_bezout directly (uniform, transp
 true-but-dead). No wrong-theorem risk either way — only seat-L3T's assignment hangs on it. My
 weak preference (a) stated; the elder pins it in the pass; arch-C holds the render for the
 verdict.
+
+## 2026-07-22 (controller) — LastLayerInv PASSES with four pins; the composition ruled (a) via the GUARD SPLIT; render GO
+
+**The elder's pass on arch-C's draft: PASSES.** Audit findings for the record: the per-slot ∨ is
+MUTUALLY EXCLUSIVE on any region containing 0 (no ambiguity axis; docstring note); the C = ∅
+fully-cleared corner rides the disjunction fence-free. FOUR PINS: (1) the left disjunct REUSES
+the banked Deg1SupportedOn (anti-felting — one predicate, one audit surface; per-slot variant
+allowed only tied by a proved lemma); (2) IgnoresCoords as drafted, M14 flag carried; (3) cone +1
+— the FoldStepInvAt→LastLayerInv subsumption lands as a PROVED rfl-class lemma, never a sorried
+entry leaf ("definitional content may not wear a sorry"); (4) guards as drafted, exhaustive split
+confirmed.
+
+**The composition flag RULED (a) — and the audit found (b)'s actual GAP:** the (D)-conjunct's
+existential q has NO nonvanishing clause, so at the rollover the parent's unit-slot information
+is NOT carried by ∃C′-LastLayerInv — the pivot extraction terminal_bezout needs would fall into
+the seam BETWEEN the preservation lemma and terminal_bezout: "the exact silent-delegation shape,
+eighth-instance bait." THE GUARD SPLIT dissolves arch-C's duplicate-content worry:
+lastLayer_clear_preserves covers the S=L CLEAR edges ONLY; the ROLLOVER is excluded and owned
+entirely by the re-parented transport (conclusion (1)∧(2) unchanged; NEW ∃-cleared-slot
+hypothesis supplied by L5 from edge data, never width arithmetic in the leaf). End-to-end the
+composition now reads as the certificate's own sentence — divisibility persists, units are born
+by clears, principality is born at the terminal — a named lemma under each clause.
+
+**Dispatches:** arch-C → render GO with all pins; seat-L3T's transport STANDS (the pinned new
+shape sent — the pivot extraction is the real content; the Fin-1 side rides the fold's collapse
+definitionally); seat-L4's offer accepted (L4 + the preservation lemma post-bake); seat-E's A/B
+fork + the pin-relocation question queued at the elder (the a-subsets identification:
+|bindingMinimisers| = C(ℓ,a), the classic poset, cell-count rank — Option B recommended).
