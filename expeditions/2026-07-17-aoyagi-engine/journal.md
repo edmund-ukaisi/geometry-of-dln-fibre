@@ -7608,3 +7608,16 @@ confirmed; LANE-5 pnp UNGATED (its gate was the dom-wide record) with two brief-
 (certificate target = the f8db23000 record verbatim; Case-2 raw-width re-adjudication per F5).
 REMAINING BAR: codex round-3 (running) + controller ground-truth elaboration at integration.
 "The blueprint now says what the mathematics says: the certificates cover what the cover covers."
+
+## 2026-07-21: codex round-3 — everything CONFIRMED-FIXED except ONE new kill; v4.2 dispatched (one statement)
+Round-3 mechanically confirmed all v4.1 fixes: both old counterexample classes REJECTED with exact failing
+fields ((s(1−s),st): dom-wide hideal_bwd forces 1=0 at (1,0) + hg_inj fails on colliding branches;
+(v(u−2),v): continuity at (2,0) forces 1=0); blow-up inhabitation preserved; D2 InjOn-off-null sufficient
+(N≤numCharts a.e.); W-deletion independently confirmed sound; a FRESH adversarial attack found NO new
+break of the central iInf equality (statement-level positive argument: per-point active axes ⊆ origin's,
+sub-min ≥ chartMin). NEW KILL (verified): exists_coreResolution quantifies over EVERY origin-fixing
+homeomorphism — e(u)=u|u| is homeomorphic-not-analytic, coreGen=u|u| provably resolution-less
+(1 ≤ AL²|u| as u→0) ⟹ the ∃ FALSE one quantifier from the truth. FIX: restrict e to the actual LINEAR
+flatten class (banked paramsEquivFlat is linear) or the joint-∃ form. v4.2 dispatched (this + the elder's
+two nits). Bar-clearing sequence: v4.2 → controller ground-truth elaboration + kill-path → elder one-line
+diff nod → BAR CLEARS → integrate + strike opening.
