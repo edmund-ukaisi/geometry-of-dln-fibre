@@ -8402,3 +8402,22 @@ UNCONDITIONAL) — the compass T-E resolution positively confirmed on a live tra
 sent to arch-C so no future seat "fixes" it back toward the paper. NET: the render's EdgeSpec design
 is faithful; its last external gate is green; arch-C proceeds to landing. scout-mine's dispatch
 (sweep + gate) fully complete.
+
+## 2026-07-21: EDGE-INDEXING RENDER INTEGRATED — the statements reach their honest final shape
+Merged cff7f9241. CONTROLLER GROUND-TRUTH: build 0 errors; batch-341 green; cordon green; driver cone
+= EXACTLY the 8 leaves — now visibly with L3/L4 DLN-SIDE (DLN.Aoyagi.case1/2_preserves_stepInv,
+edge-indexed over stepEdges(buildTree); δ = decide(edge.cleared = 0) off the edge; SupportedOn
+singular-support link; child centers DETERMINED per case; the child residual length+support-pinned to
+childCenter — the residual-collapse witness is TYPE-ILLEGAL now); Core keeps the network-free
+vocabulary + the closing-principle docstring. FoldProduced: hbranch_len GONE, hstep_block + hjac_tie
+(jac = the accumulated ledger, not free — kills the wrong-pivot atlas) + hcard_tie. PROBE FLIPS
+(controller re-run): elder_refute now FAILS (the free-standing Prop it refuted no longer exists —
+the honest resolution of a true refutation: the statement moved, not patched); l4probe_refute FAILS
+(S3); root_probe elaborates. PRECISION verified in the docstrings: Case-2 free-standing
+kernel-refuted / Case-1 unresolved / both edge-indexed for constructibility+provenance; running-min
+head = documented T-E deviation with a do-not-fix note; p.19 transpose = the rollover edge documented
+as the degenerate off the case filters. The flatDim card↔sum bridge documented in-file as runway.
+FOUR review rounds + two elder rulings + one kernel refutation exchange + a traversal gate, and the
+skeleton's statements now match the paper on every load-bearing move with every known refutation
+class dead. DISPATCHED: rev-leaves ROUND-4 (the wave-gating final pass); sync notes to seat-w0l3
+(O9 proofs onto the merged tip) + seat-L4 (core #3 unblocks on round-4 PASS).
