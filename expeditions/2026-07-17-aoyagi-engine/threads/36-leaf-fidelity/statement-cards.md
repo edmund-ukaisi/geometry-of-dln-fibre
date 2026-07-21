@@ -1,50 +1,66 @@
 # Statement cards — thread 36 (leaf-fidelity), rung-C monument REIFICATION
 
-Commit SHA: **`27ef12c25`** (branch `expedition/aoyagi-engine-rung-c`, parent `3b03fe375`).
-Gate for this thread = **elaboration + cone-shape, NOT sorry-free** (a typed/sorried/wired forecast
-ladder). Bump the SHA at controller integration.
+Commit SHA: **pending this repair-round bake** (branch `expedition/aoyagi-engine-rung-c`, parent
+`dc658a1bc`). Gate for this thread = **elaboration + cone-shape, NOT sorry-free** (a typed/sorried/wired
+forecast ladder). Bump the SHA at controller integration.
 
 ---
 
-## ⚠ FIDELITY REVIEW — BROKEN (rev-rungc-fidelity, 2026-07-21; decorrelated Codex + machine-checked)
+## FIDELITY: BROKEN (2026-07-21) → REPAIRED except L7-bridge-gated (2026-07-21, same day)
 
-The MECHANICAL gate passes (build green 8449; `#audit_blueprint` both drivers rest on exactly the 8
-leaves; `#print axioms` = `[propext, sorryAx, Classical.choice, Quot.sound]`; cordon OK). The CONTENT
-does not: **L3, L4, L6, L7 are FALSE-AS-STATED**; L5, L8 are under-claims. Independently re-derived by
-the architect (StepInv divisor `= b·resid`; `TreeEdge.center` is a FREE field; `hsupp` = ideal
-membership is monotone in the center) and machine-checked against the real `blockBlowupMap`/
-`blockBlowupCoordQuot`.
+**History.** The first render was mechanically green but content-BROKEN — L3/L4/L6/L7 false-as-stated,
+L5/L8 under-claims (rev-rungc-fidelity, decorrelated Codex + machine-checked; single root cause: the
+construction's FIXED structural fields left FREE in the leaf hypotheses — `ed.center`, `GeoAtlasData.jac`,
+the chart↔path identification — with guards too weak to exclude the bad instances). The elder re-statement
++ two follow fixes repaired all but the coordinate axis:
 
-**Root cause (single).** Structural fields the construction FIXES are left FREE/unpinned in the leaf
-hypotheses, and the guarding hypotheses are too weak to exclude the bad instances:
-- **L3/L4** — `ed.center` free; `hsupp` = `SupportedOn` (ideal membership: each residual monomial has
-  ≥1 center factor) is MONOTONE in the center. Witness `N=2`, `d=![1,2,1]` (`coreGen 0 = u₀u₂+u₁u₃`),
-  `center={0,1,2}`, `pivot=0`, `shearφ=0`: `hsupp`+`hcase`+`hinv` all hold, but at `u=(2,1,1,-1)`
-  `(F∘foldG)=u₀²u₂+u₀u₁u₃=2` while `foldB·foldResid=u₀(u₂+u₁u₃)=0` — divisor clause unsatisfiable. The
-  δ=1 substitution equals the strict transform only under **center-degree-1** (each monomial EXACTLY one
-  center factor); ideal membership admits the over-large `{0,1,2}`. **(A′) is falsified: degree-1 is a
-  MISSING HYPOTHESIS, not deferrable proof content.**
-- **L6** — `GeoAtlasData.jac` free, not tied to `gmap`'s actual Jacobian; L6 takes a bare atlas (no
-  `FoldProduced`), so `chart.hjac` (`|jacDet gmap| = jacWeight(jac)·|unit|`) is unsatisfiable for a
-  mismatched `jac`. L6 HARD LOCK (`nbhd ≠ univ`) is a render-time check, NOT a statement property.
-- **L7** — `FoldProduced` has NO chart-image coverage clause; a single-pivot `blockBlowupMap` atlas
-  satisfies every clause yet its charts' images miss a ball about 0 → no compact ball-cover.
+- **L3/L4 — FIXED (elder re-statement).** The leaves now carry `FoldStepInvAt ed.center p`, whose
+  `Deg1SupportedOn (foldResid p) C` conjunct forces the residual **center-exact degree-1** (each monomial
+  EXACTLY one center factor; Core `Deg1SupportedOn` = `SupportedOn` + coefficients `IgnoresCoords` the
+  center, strictly subsuming ideal-membership). Degree-1 is a CARRIED invariant, NOT deferrable content;
+  the (A′) "no-obligation" framing is retracted. The size-axis witness (`d=![1,2,1]`, `center={0,1,2}`)
+  DIES: `u₀u₂` has no center-disjoint center-linear form. `FoldStepInv := ∃ C, FoldStepInvAt C p`.
+- **L6 — FIXED (FIX 1).** `leafPath_chartGeometry` now takes `hfold : FoldProduced d e atlas`; the
+  Jacobian tie is `FoldProduced.hjac_tie` (`atlas.jac = ∑ steps.jexp`) + `GeoStep.hσ_jac`, so
+  `chart.jac = atlas.jac c` is dischargeable. The bare-atlas false-witness is excluded.
+- **L5 — STRENGTHENED (FIX 2).** L5 now emits `FoldProduced ∧ FoldRealizes` (single conjunction). New
+  `FoldRealizes := ∃ pathOf leafOf, (∀ c, gmap c = foldG (pathOf c) ∧ (pathOf c).reachesLeaf (leafOf c))
+  ∧ (leafOf surjective onto tree leaves)`, with `reachesLeaf` = per-edge structural-branch-membership
+  against `conOracle`'s combinatorial dispatch (`ecase`/`child`, bridge-free) + terminal-leaf match. The
+  **path-axis** collision witness (all charts one branch) DIES via surjectivity (⟹ `leafOf` constant ⟹
+  not surjective once the tree branches). Root non-vacuity: `reachesLeaf root = False` for `0<N`.
+  *Deviation from spec (accepted):* `FoldRealizes` is self-contained (its own `leafOf`) to avoid touching
+  the elder-locked `FoldProduced`; its `leafOf` and `FoldProduced`'s need not coincide — a coupling the
+  `canonCenter` follow-round will add (documented at the def).
+- **L7 — HONEST BRIDGE-GATED (not fixed, correctly labelled).** `leafPath_compactCover` takes both
+  `hfold`/`hreal` and concludes the ball-cover, but the FULL cover is a COORDINATE-level fact (which
+  coordinate each chart blows up) that neither ℕ-valued `FoldProduced` nor the combinatorial `FoldRealizes`
+  pins. The **coordinate-axis** witness (every `gmap c` on one coordinate `x`, `y`-directions uncovered)
+  passes both hypotheses yet falsifies the `⋃` — so L7 is HONEST **false-as-stated-pending-bridge**. It
+  closes when the Engine↔Aoyagi coordinate bridge lands. Decorrelated check (reviewer + Codex) confirmed:
+  the counterexample is real, and L7 is bridge-dependent under the current (free-`GeoAtlasData` +
+  ℕ-exponent-`FoldProduced`) architecture. The (c)-road — **`canonCenter`** (the paper's DLN-side slot
+  bookkeeping from `(S,J,mergeIdx,d)`, NOT the engine `divCoord`) — had its rollover slot-transfer
+  checkpoint return **STABLE**, so it is the scheduled follow-round that lifts L7 bridge-free.
 
-**Repair (elder re-statement call — ROUTED, leaves HELD, statements unchanged pending ruling):**
-strengthen `hsupp` to center-exact degree-1 (`resid_j = ∑_{i∈center} c_{ji}·u_i`, coeffs
-center-independent) OR pin `ed.center` to the construction's layer center; add `FoldProduced` (or the
-explicit `jac = ∑ steps.jexp` tie) to L6 and a coverage clause to `FoldProduced` for L7. The coordinate
-bridge (thought deferrable) is NOT deferrable for L3/L4/L6/L7. **The composition intent SURVIVES** — L5
-only ever supplies layer centers / real charts; the leaves are OVER-GENERAL, not a dead route.
+**MONUMENT BRIDGE-DEPENDENCE.** `exists_coreResolution_via_monument` closes bridge-free EXCEPT L7's
+coordinate-coverage; the driver is "done modulo the `canonCenter` follow-round." L7 is the ONLY
+bridge-dependent leaf — nothing about it blocks the wall (L4), L3, L5's proof-content, L6, or L8.
 
-**FAITHFUL (verified):** L1 `principalInv_regionRepresents`; `terminal_bezout`; item-7 edge-analyticity
-(`analyticOnNhd_edgeShear`/`_stepMap`/`continuous_stepMap` true + unconditional; dropping foldG-analyticity
-leaves no gap). L8 matches `AtlasRealizesExponents` (Type 0, no universe mask) but is a re-read of
-`FoldProduced`, not the exponent-realization content itself.
+**Severance taxonomy (COMPLETE — one exemplar per axis).** content (`Σw²`, kernel-refuted) / size
+(`center={0,1,2}`, dies at `Deg1SupportedOn`) / path (all-charts-one-branch, dies at `FoldRealizes`
+surjectivity) / coordinate (all-charts-one-coordinate, bridge-gated at L7). Each is a free-field
+severance on a distinct axis; the guardrail is the elder line "every free field on a quantified structure
+is its own severance axis — the audit is per-FIELD, never per-statement."
 
-Artefacts: Codex prompt/answer under `…/threads/36-leaf-fidelity/codex/fidelity-{prompt,answer}.md`.
-The cards below record the leaves AS RENDERED (pre-repair); the ⚠ status supersedes their "kill"/
-"faithful" annotations for L3/L4/L6/L7.
+**FAITHFUL (verified):** L1 `principalInv_regionRepresents`; `terminal_bezout`; item-7 edge-analyticity;
+Core `IgnoresCoords`/`Deg1SupportedOn` (sorry-free, bridge lemmas closed). L8 matches
+`AtlasRealizesExponents` (Type 0). Mechanical re-gate at this bake: build green 8449; `#audit_blueprint`
+both drivers rest on exactly the 8 leaves; `#print axioms` = `[propext, sorryAx, Classical.choice,
+Quot.sound]`; cordon OK (0 axiom-viol, 0 native_decide, 27 blueprint sites).
+
+Artefacts: Codex prompt/answer under `…/threads/36-leaf-fidelity/codex/`. The cards below record the
+leaves AS RENDERED; this status banner supersedes their per-leaf annotations.
 
 ---
 

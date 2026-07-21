@@ -470,37 +470,114 @@ theorem foldB_extend_eq (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ)
     foldB d e (p.extend ed) u
       = (u ed.pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMap d ed u) := rfl
 
-/-- **The foldState step invariant at a path node** (the merged-roads form): a divisibility witness
-`q` for the accumulated `StepInv (coreGen) (foldG p) (foldB p) (foldResid p) q (foldRegion p)`. The
-state IS the fold's own accumulated data — no free state/residual to instantiate. -/
+/-- **The foldState step invariant at a path node, PARAMETRIC in the center `C`** (elder re-statement —
+THE FIX for the fidelity defect). Two conjuncts: (1) a divisibility witness `q` for the accumulated
+`StepInv (coreGen) (foldG p) (foldB p) (foldResid p) q (foldRegion p)`; (2) the residual is CENTER-EXACT
+degree-1 supported on `C` — `Deg1SupportedOn (foldResid p) C (foldRegion p)`. Conjunct (2) is exactly
+what the δ=1 `blockBlowupCoordQuot` strict transform needs (each residual monomial carries EXACTLY one
+center factor) and what the old ideal-membership `hsupp` FAILED to force — `SupportedOn` is monotone in
+the center, so it admitted the over-large `d=![1,2,1]`, `center={0,1,2}` witness where the substitution
+over-divides and the leaf is false. Carried through the fold, not re-established per-node. -/
+def FoldStepInvAt {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (C : Finset (Fin (flatDim d))) (p : TreePath d) : Prop :=
+  (∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
+    StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) ∧
+    Deg1SupportedOn (foldResid d e p) C (foldRegion d e p)
+
+/-- **The foldState step invariant** — `∃ C, FoldStepInvAt C p`. Shape → assumed delivery → stated
+obligation: this is the third and final form of the same content — degree-1 was never optional
+bookkeeping; it was the invariant the paper's inductive statement carried all along (the residual IS
+the block matrix). -/
 def FoldStepInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) : Prop :=
-  ∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
-    StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)
+  ∃ C : Finset (Fin (flatDim d)), FoldStepInvAt d e C p
+
+/-! ### The fold-realization predicate — combinatorial branch-membership (FIX 2; elder/coordinator (a))
+
+`FoldRealizes` is the SECOND provenance predicate L5 emits (beside `FoldProduced`): each chart's map
+`gmap c` IS the accumulated coordinate change `foldG` along a REAL root→leaf branch of
+`buildTree d (conOracle d) conRoot`, and that branch reaches the chart's leaf. "Real branch" is
+COMBINATORIAL: each step's `(case, nextState)` is realised by SOME oracle `StepChild` at the parent
+node's state (`ecase`/`child` matched; the child's `esubst` = `runLen`/`mergeIdx` rides along as the
+witness), and the terminal state emits the leaf. It reads NO `center`/`pivot`/`shearφ` — the oracle
+emits none (`ConState` is combinatorial; `StepChild.esubst.localSub = id` placeholder).
+
+**Severance taxonomy — four free-field axes, one exemplar each** (elder guardrail, the L3/L4 note): a
+free field on a quantified structure is a severance axis, so the audit is per-FIELD.
+* CONTENT — the constant / `Σw²` spectator-support residuals — dies by the `foldResid p` pin (no free
+  residual to instantiate).
+* SIZE — the `|S|=1`, `sh=id` lazy witness — dies by the same pin.
+* PATH — the `n` charts all sharing ONE tree branch (the all-charts-one-path collision) — dies HERE:
+  distinct leaves force distinct combinatorial branches, so a surjective `leafOf` (`FoldProduced`) plus
+  `reachesLeaf` forbids the collision.
+* COORDINATE — every chart blowing up the SAME coordinate `x`, so all `gmap` images concentrate on `x`
+  and the ball's `y`-directions stay uncovered — is NOT killed here: `reachesLeaf` is combinatorial and
+  `foldG` reads the unpinned `center`/`pivot`/`shearφ`, while `FoldProduced` stays ℕ-valued `divExp`,
+  never `divCoord`. This is L7's bridge-gated coordinate-coverage residual (see `leafPath_compactCover`).
+-/
+
+/-- The construction decision at a state terminates emitting leaf `l` (combinatorial leaf-match). -/
+def decisionEmitsLeaf {L : ℕ} {M : Fin (L + 1) → ℕ} {s : ConState L} :
+    ConDecision M s → LeafData M → Prop
+  | .terminal l' _, l => l' = l
+  | .step _ _ _ _ _, _ => False
+
+/-- **A real root→node branch of `buildTree d (conOracle d) conRoot`** — COMBINATORIAL: each step's
+`(case, nextState)` is one of the oracle's `stepChildren` at the parent node's state (`ecase`/`child`
+matched; the matched child's `esubst` = `runLen`/`mergeIdx` is the witness). Reads NO
+`center`/`pivot`/`shearφ` (the oracle emits none). -/
+def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ} : TreePath d → Prop
+  | .root => True
+  | .step p _ _ cse nextState _ =>
+      p.IsRealBranch ∧
+        ∃ sc ∈ (conOracle d p.conState).stepChildren, sc.ecase = cse ∧ sc.child = nextState
+
+/-- **The path reaches the leaf** — a real branch whose terminal state emits `l`. Ties chart `c`'s fold
+to the tree leaf its branch reaches; the coordinate-level coverage this would give L7 is bridge-gated. -/
+def TreePath.reachesLeaf {N : ℕ} {d : Fin (N + 1) → ℕ} (p : TreePath d) (l : LeafData d) : Prop :=
+  p.IsRealBranch ∧ decisionEmitsLeaf (conOracle d p.conState) l
+
+/-- **The fold-realization provenance** (L5's second record, beside `FoldProduced`): each chart's map is
+the accumulated `foldG` of a real tree branch (`reachesLeaf`) reaching a leaf, and every tree leaf is
+reached by some chart (`leafOf` SURJECTIVE). Self-contained (its own `pathOf`/`leafOf`) so it threads as
+the single conjunction `FoldProduced ∧ FoldRealizes` without re-opening the elder-locked `FoldProduced`.
+
+The SURJECTIVITY conjunct is what makes `reachesLeaf` kill the all-charts-one-path (PATH-axis) severance:
+a collision atlas (all charts sharing one branch `p₀`) forces `leafOf` CONSTANT (`reachesLeaf p₀ l ⟺
+l = ` the unique leaf `p₀` reaches), which is not surjective once the tree branches. WITHOUT the
+conjunct the collision survives — `FoldProduced` sees only leaves, never paths, so a decoupled `leafOf`
+could be surjective there yet constant here (fidelity fix, rung C FIX 2; flagged to arch-C for the bake).
+The all-charts-one-coordinate (COORDINATE-axis) severance is NOT killed — it uses distinct real branches
+(surjective) all blowing up one coordinate; that is L7's bridge-gated residual (taxonomy note above and
+`leafPath_compactCover`). -/
+def FoldRealizes {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (atlas : GeoAtlasData d e) : Prop :=
+  ∃ (pathOf : Fin atlas.n → TreePath d) (leafOf : Fin atlas.n → LeafData d),
+    (∀ c : Fin atlas.n,
+      atlas.gmap c = foldG d e (pathOf c) ∧ (pathOf c).reachesLeaf (leafOf c)) ∧
+    (∀ l ∈ ResolutionTree.leaves (buildTree d (conOracle d) (conRoot : ConState N)),
+      ∃ c, leafOf c = l)
 
 /-! ## L3 / L4 — the foldState one-step preservations (DLN-side; elder-locked round-5)
 
 The free-standing `∀-(state, spec)` form was not honest (`Core.PrincipalInv` closing principle). Three
 of its four refutations (constant, Σw², `|S|=1` on the STATE axis) die BY DEFINITION in the foldState
 form (there is no free state or residual to instantiate; the state IS `foldG`/`foldB`/`foldResid p`).
-The FOURTH — the `SupportedOn`-gap on the CENTER axis — does NOT die by definition: `ed.center` is a
-free field of `TreeEdge` (the coordinate derivation is bridge-blocked), so a center not covering the
-state's support re-admits the `δ=1` refutation. It is closed by the EXPLICIT hypothesis `hsupp`, now
-**δ-CONDITIONAL** (elder ruling, FIX-RESID bundle): `edgeδ d p = true → SupportedOn (foldResid d e p)
-ed.center (foldRegion d e p)`. Rationale: at δ=0 the residual vector includes cleared-slot PULLBACKS
-outside the center, so the UNCONDITIONAL form is undischargeable; the `δ=1` guard is exactly where the
-center-support link is both needed (the strict-transform division) and true. It is the construction's
-DEFINITIONAL truth at δ=1 — `coreGen` entries lie in ⟨layer-1 coords⟩ (each = Σ layer-1-coord ·
-deeper-cofactor) so the layer-1 center discharges it — so L5 supplies it for free; no spurious-hypothesis
-smell.
+The FOURTH — the CENTER-axis severance — is the one that bit: `ed.center` is a FREE `TreeEdge` field, so
+the leaf `∀`-ranges over ALL centers, and the round-5 `hsupp = SupportedOn` (ideal membership) is
+MONOTONE in the center, admitting over-large ones for which the δ=1 substitution over-divides — the
+CONFIRMED fidelity defect (rev-rungc-fidelity 2026-07-21; machine-checked witness in the L4 docstring).
+It is FIXED by the elder re-statement: the leaves carry `FoldStepInvAt ed.center p`, whose
+`Deg1SupportedOn` conjunct forces the residual center-EXACT degree-1 (each monomial has EXACTLY one
+center factor). That EXCLUDES the bad `{0,1,2}` and admits the construction's layer center, so the δ=1
+`blockBlowupCoordQuot` substitution equals the strict transform. Degree-1 is a CARRIED invariant (a
+`FoldStepInvAt` conjunct each leaf preserves), NOT deferrable proof content — the (A′) "no-obligation"
+framing was falsified and retired.
 
-**DEFECT (rev-rungc-fidelity, CONFIRMED): the above reasoning is UNSOUND — `hsupp` as `SupportedOn`
-(ideal membership) is MONOTONE in the center, so it admits over-large centers (not just the layer-1
-one), for which the δ=1 substitution over-divides and BOTH leaves are FALSE-AS-STATED.** The
-"layer-1 center discharges it" is true but does not exclude the bad centers the `∀ ed` also ranges over.
-Witness + repair: see the L4 leaf docstring below and the thread-36 statement card. `hsupp` must be
-strengthened to center-EXACT degree-1 (or `ed.center` pinned). L6/L7 carry the analogous free-field
-defect (`GeoAtlasData.jac` / `FoldProduced` coverage). Elder re-statement routed; leaves HELD.
+**GUARDRAIL (elder, per the defect):** every free field on a quantified structure is its own severance
+axis — the audit is per-FIELD, never per-statement. (`ed.center` free ⟹ the center severance, fixed by
+`Deg1SupportedOn`; the analogous `GeoAtlasData.jac` free field is the L6/L7 provenance severance,
+carried by `FoldProduced`.)
 
 Each leaf is the one-step `FoldStepInv d e p → FoldStepInv d e (p.extend ed)`, indexed by the
 path node and one outgoing edge; `δ = [J=0]` off `p.conState.cleared` (`edgeδ`, UNIFORM across
@@ -514,61 +591,50 @@ is quantified freely, so the proof must still discharge the guard (`if_neg` from
 or the trivial unit branch). The earlier `Fin.snoc` case-2 append is subsumed — full-width until the
 terminal collapse. -/
 
-/-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). `hsupp` (the
-center covers `foldResid p`'s support, ideal-membership form) is REQUIRED even here — the root edge is
-case-2 `δ=1`, where a non-covering center refutes the plain statement (elder ruling (ii)). WEAKEST
+/-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). The
+false-as-stated `hsupp` (ideal-membership, monotone in the center) is RETIRED; the fidelity fix is the
+carried `FoldStepInvAt ed.center p` hypothesis — its `Deg1SupportedOn` conjunct forces the residual to
+be center-EXACT degree-1 at the edge's own center, excluding the over-large centers that refuted the
+prior statement. The child re-factors in the child center `C'` (the wall's re-factoring content). WEAKEST
 HYPOTHESES (elder trim): NO `he0`/`he_lin` — the child's S3 vanishing is inherited from `hinv` via
-`stepMap_zero`, the step divisibility is pullback-structural, and `hsupp` is CONSUMED (not proved), so
-the root-anchored `e 0 = 0` / linearity are never read here (they stay on L5, which establishes the root
-state). Carrying them for uniformity would be the carried-where-not-consumed smell. -/
+`stepMap_zero`, the step divisibility is pullback-structural, and the degree-1 support is CONSUMED (not
+proved) from `hinv` (root-anchored linearity stays on L5). -/
 @[blueprint]
 theorem case2_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
-    (hsupp : edgeδ d p = true → SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
-    (hinv : FoldStepInv d e p) :
-    FoldStepInv d e (p.extend ed) := by
-  -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state; hsupp closes center)
+    (hinv : FoldStepInvAt d e ed.center p) :
+    ∃ C' : Finset (Fin (flatDim d)), FoldStepInvAt d e C' (p.extend ed) := by
+  -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state; Deg1 carries center)
   sorry
 
 /-- **L4 — a case-1 edge preserves the foldState invariant. ⟨THE WALL⟩** The coupled block-center
 divisibility at corank ≥ 2 with the exact `u_p^δ` factor; seat-L4's `BlockDivision` core (exact
-division; the `2u₀u₂` shear-rescue) supplies the proof. `hsupp` (the ideal-membership center-support
-link) is what delivers the exact `u_p` division (each `foldResid p` monomial carries a center variable,
-so `∘ blockBlowupMap` gains `u_p`). ONE center, the merge/split pivots handled inside the fold — no free
-`∀`-branch, no `p_merge`/`p_split` in the statement. WEAKEST HYPOTHESES (elder trim): NO `he0`/`he_lin`
-(as case-2 — S3 via `hinv` + `stepMap_zero`, divisibility pullback-structural, `hsupp` consumed). NB
-`CenterCoordAligned` is NOT the division mechanism: injectivity ≠ divisibility-preservation (seat-L4
-`shear_gap.lean` — an injective `φbad` that BREAKS the δ=1 division), so it stays a geometry/injectivity
-field for L6/L7; the exact `u_p` division rides `hsupp` + `BlockDivision`.
+division; the `2u₀u₂` shear-rescue) supplies the proof. The fidelity fix (elder re-statement): the
+carried `FoldStepInvAt ed.center p` — its `Deg1SupportedOn` conjunct forces the residual center-EXACT
+degree-1, so the δ=1 `blockBlowupCoordQuot` substitution EQUALS the strict transform (each monomial has
+exactly one center factor); the child re-factors in the child center `C'`. ONE center, the merge/split
+pivots handled inside the fold — no free `∀`-branch, no `p_merge`/`p_split`. NB `CenterCoordAligned` is
+NOT the division mechanism (injectivity ≠ divisibility; seat-L4 `shear_gap.lean`) — it stays a
+geometry/injectivity field for L6/L7. WEAKEST HYPOTHESES: NO `he0`/`he_lin`.
 
-**FALSE-AS-STATED — CONFIRMED FIDELITY DEFECT (rev-rungc-fidelity, 2026-07-21; see the thread-36
-statement card).** The former **(A′)** claim ("degree-1-preservation = the re-factoring content of THIS
-wall, not an additional frontier item; no reviewer should read the substitution/factored gap as an
-unnoticed defect") is **RETRACTED — it is FALSIFIED.** A deferrable proof obligation must be
-true-but-unproven; this leaf is FALSE (a counterexample satisfies EVERY hypothesis), so no proof exists.
-Machine-checked witness: `N=2`, `d = ![1,2,1]` (`coreGen 0 = u₀u₂ + u₁u₃`), `p = root`, `ed` with
-`center = {0,1,2}`, `pivot = 0`, `shearφ = 0`. `hsupp` holds (`u₀u₂+u₁u₃ ∈ ⟨u₀,u₁,u₂⟩`, ideal-membership
-is MONOTONE in the center), `hcase1`/`hcase2` and `hinv` hold — yet at `u = (2,1,1,-1)`:
-`(coreGen 0 ∘ foldG) = u₀²u₂ + u₀u₁u₃ = 2` while `foldB · foldResid = u₀·(u₂+u₁u₃) = 0`, so
-`StepInv`'s divisor clause `(F∘g) = ∑ q·(b·resid)` is unsatisfiable. **Root cause:** `hsupp`
-(`SupportedOn` = ideal membership: each residual monomial has ≥1 center factor) is TOO WEAK — the
-substitution stand-in (`blockBlowupCoordQuot`, divides the pivot ONCE) equals the strict transform only
-under **center-degree-1** (each monomial has EXACTLY one center factor). The intended layer-1 center
-`{0,1}` is center-degree-1, but ideal-membership admits the over-large `{0,1,2}` too. **Degree-1 is a
-MISSING HYPOTHESIS, not proof content.** Repair (elder re-statement call — routed): strengthen `hsupp`
-to center-exact degree-1 (each `resid_j = ∑_{i∈center} c_{ji}·u_i`, coeffs center-independent), OR pin
-`ed.center` to the construction's layer center (the coordinate bridge, now shown NOT deferrable for
-L3/L4). The composition intent survives (L5 only supplies layer centers); the LEAF is over-general. -/
+**Fidelity history (why the statement changed; rev-rungc-fidelity 2026-07-21).** The earlier
+`hsupp = SupportedOn` (ideal membership) was FALSE-AS-STATED: ideal membership is MONOTONE in the center,
+admitting the over-large `d=![1,2,1]`, `center={0,1,2}` witness (`coreGen 0 = u₀u₂+u₁u₃`; at
+`u=(2,1,1,-1)` the pullback is `2` while `b'·resid'=0`) where the `blockBlowupCoordQuot` substitution
+over-divides (it removes the pivot ONCE, exact only at center-degree-1). Degree-1 was a MISSING
+HYPOTHESIS, now supplied structurally by `Deg1SupportedOn` in `FoldStepInvAt` — which the layer-1 center
+`{0,1}` satisfies and the bad `{0,1,2}` does not. The prior (A′) "no additional obligation" framing was
+RETRACTED/falsified (a deferrable obligation must be true-but-unproven; that leaf was false). This is the
+honest re-statement; L5 supplies only layer centers, so the composition intent survives. -/
 @[blueprint]
 theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
-    (hsupp : edgeδ d p = true → SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
-    (hinv : FoldStepInv d e p) :
-    FoldStepInv d e (p.extend ed) := by
+    (hinv : FoldStepInvAt d e ed.center p) :
+    ∃ C' : Finset (Fin (flatDim d)), FoldStepInvAt d e C' (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
   sorry
 
@@ -597,8 +663,10 @@ tree, via the one-step preservations (`case2_preserves_stepInv`, `case1_preserve
 edge, reaching the terminal state where `terminal_bezout` upgrades divisibility to the terminal
 `PrincipalInv` (both directions). Produces a `GeoAtlasData` that (a) satisfies `FoldProduced` — the
 provenance RECORD of its own construction (one chart per tree leaf, exponents read off the ledger,
-pivots = the leaf's `divCoord`, doms nontrivial), cheap since L5 builds exactly that — and (b) carries
-the terminal `PrincipalInv` for each chart's path map on its region.
+pivots = the leaf's `divCoord`, doms nontrivial), cheap since L5 builds exactly that — (a′) satisfies
+`FoldRealizes` (each chart's map is the accumulated `foldG` of its REAL tree branch reaching its leaf —
+combinatorial branch-membership; the coordinate-level coverage L7 would take from it is bridge-gated) —
+and (b) carries the terminal `PrincipalInv` for each chart's path map on its region.
 
 Hypotheses = the three one-step obligations (L3/L4/`terminal_bezout`) ONLY (the two former D3 gaps
 dissolved — see the section note). **Region-shrink ordering (elder D2', the no-implicit-shrinking
@@ -611,7 +679,7 @@ sits inside the FINAL shrunken region, never a pre-shrink one. The `srcBox`-seam
 theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0)
     (he_lin : IsLinearMap ℝ ⇑e) :
-    ∃ atlas : GeoAtlasData d e, FoldProduced d e atlas ∧
+    ∃ atlas : GeoAtlasData d e, FoldProduced d e atlas ∧ FoldRealizes d e atlas ∧
       ∀ c : Fin atlas.n, ∃ q r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ,
         PrincipalInv (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r (atlas.region c) := by
   -- map: B-L5-path-fold (fold FoldStepInv via the foldState leaves along tree branches;
@@ -641,7 +709,7 @@ stand-in is the D2'-deferred region for the SPINE; the Chart this leaf emits mus
 shrunk region, not univ.) -/
 @[blueprint]
 theorem leafPath_chartGeometry (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (atlas : GeoAtlasData d e) (c : Fin atlas.n)
+    (atlas : GeoAtlasData d e) (c : Fin atlas.n) (hfold : FoldProduced d e atlas)
     (hfwd : RegionRepresents (fun i ↦ coreGen d e i ∘ atlas.gmap c)
       (fun _ : Fin 1 ↦ monoOf (atlas.bexp c)) (atlas.region c))
     (hbwd : RegionRepresents (fun _ : Fin 1 ↦ monoOf (atlas.bexp c))
@@ -664,10 +732,25 @@ the shear inverses are polynomial; each atom is the BLOCK-CENTER bounded-spectat
 (`blockBlowupMap`, spectators bounded in a `cubeBox × cubeBox`, never `pivotDomain × univ`),
 generalized R = 1 → R-parametric (the no-inflation trick dies once shears give bound 2). The driver
 closes the record `hcover` by `Set.diff_eq_empty.2 hsub ▸ measure_empty` (the landed `OriginBlowup`
-idiom, the `S = univ` single-level instance of the block cover). -/
+idiom, the `S = univ` single-level instance of the block cover).
+
+**BRIDGE-GATED (FIX 2, elder/coordinator (a)).** The FULL cover above is a COORDINATE-level fact —
+WHICH coordinate each chart blows up — that neither `FoldProduced` (ℕ-valued `divExp`, never `divCoord`)
+nor the COMBINATORIAL `FoldRealizes`/`reachesLeaf` (`hreal`; `center`/`pivot`/`shearφ` unread) pins. The
+all-charts-one-coordinate atlas (every `gmap c` concentrated on a single coordinate `x`, the ball's
+`y`-directions uncovered) passes BOTH hypotheses yet falsifies this `⋃`. So L7 is HONEST
+FALSE-AS-STATED-PENDING-BRIDGE: it closes once the Engine↔Aoyagi coordinate bridge (`edgeCenter`,
+deferred; the center/pivot spec §) lands and pins each real branch's blow-up coordinate to the leaf's
+`divCoord`.
+* The (c)-road — `canonCenter`, the paper's DLN-side slot bookkeeping computed from `(S, J, mergeIdx, d)`
+  (NOT the engine `divCoord`) — had its rollover slot-transfer checkpoint return STABLE, so it is the
+  SCHEDULED follow-round; the gate lifts bridge-free there (not this bake), pinning each real branch's
+  blow-up coordinate without the Engine↔Aoyagi bridge.
+* Nothing about L7 blocks the wall (L4), L3, L5's proof-content, L6, or L8 — this banner is the
+  coordinate-coverage residual ONLY; do not over-read it. -/
 @[blueprint]
 theorem leafPath_compactCover (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (atlas : GeoAtlasData d e) (hfold : FoldProduced d e atlas) :
+    (atlas : GeoAtlasData d e) (hfold : FoldProduced d e atlas) (hreal : FoldRealizes d e atlas) :
     ∃ ρ : ℝ, 0 < ρ ∧
       Metric.ball (0 : Fin (flatDim d) → ℝ) ρ ⊆ ⋃ c, (atlas.gmap c) '' (atlas.dom c) := by
   -- map: B-L7-compact-cover (fold-provenance argmax lift; R-parametric block-center atom; empty escape)
@@ -716,8 +799,8 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e) :
     ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res := by
-  -- L5: the geometric atlas + its FoldProduced provenance + per-chart terminal PrincipalInv.
-  obtain ⟨atlas, hfold, hprin⟩ := leaf_stepInv_of_path d hN hpos e he0 he_lin
+  -- L5: the geometric atlas + its FoldProduced + FoldRealizes provenance + per-chart terminal PrincipalInv.
+  obtain ⟨atlas, hfold, hreal, hprin⟩ := leaf_stepInv_of_path d hN hpos e he0 he_lin
   -- Per chart: L1 (ideal) then L6 (assemble the certified Chart), matching the atlas's data.
   have hchart : ∀ c : Fin atlas.n, ∃ chart : Chart (coreGen d e) 0,
       chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
@@ -727,10 +810,11 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     obtain ⟨hfwd, hbwd⟩ :=
       principalInv_regionRepresents (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r
         (atlas.region c) hpt
-    exact leafPath_chartGeometry d e atlas c hfwd hbwd
+    exact leafPath_chartGeometry d e atlas c hfold hfwd hbwd
   choose charts hg hdom _hnbhd hbexp hjac using hchart
-  -- L7: the full cover of a ball by the charts' domain images (rides the FoldProduced provenance).
-  obtain ⟨ρ, hρ, hcov⟩ := leafPath_compactCover d e atlas hfold
+  -- L7: the full cover of a ball by the charts' domain images (rides FoldProduced + FoldRealizes;
+  --      the coordinate-level coverage is bridge-gated — see the L7 banner).
+  obtain ⟨ρ, hρ, hcov⟩ := leafPath_compactCover d e atlas hfold hreal
   -- L8: the exponent match (rides the FoldProduced provenance).
   obtain ⟨hspec_lb, hspec_attain⟩ :=
     leafPath_realizesExponents d hN hpos e atlas hfold
