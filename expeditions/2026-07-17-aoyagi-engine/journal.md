@@ -10038,3 +10038,29 @@ theorems this expedition produces." seat-E: render GO (survey → skeleton → s
 Tier-3 scaffold un-held on the fixed vocabulary. Both elder pins of the pass now ruled — the
 E-lane carries the monument's architecture: canonical Core object, one concentrated seam, every
 hypothesis named at the seam.
+
+## 2026-07-22 (controller) — the LastLayerInv render DISPATCHED (all pins); seat-L3T's refutation = the third blind convergence; seat-E's skeleton held for the survey pin
+
+**Render dispatched** (arch-C, five pins applied): the guard split in CHILD form
+(lastLayer_clear_preserves at `ed.nextState.layer + 1 = N` — excludes the rollover
+AUTOMATICALLY, structural not clausal; the rollover owned by the transport); the left disjunct
+reuses the family via Deg1SupportedSlot + a proved family-tie lemma; the transport re-parents +
+gains the L5-supplied hcleared ∃-unit-slot hypothesis; the subsumption a PROVED rfl-class lemma
+(cone 9→10 only); the docstring notes. Contract-9 re-gate armed (discriminator battery + both
+anchors + consumer-fit + write-set) → bake → both proof seats rebase once.
+
+**seat-L3T's stop-on-suspect = the THIRD blind convergence on the ruled design:** it RIGOROUSLY
+refuted terminal_edge_stepInv's conjunct (2) from the OLD hypotheses (divisibility + Deg1 at δ=0
+force every quotient to vanish at 0 — no unit with unit 0 ≠ 0 is derivable; the underivability
+argument is the ∃-cleared-slot hypothesis's sharpest justification, ordered BANKED in its
+thread). But it had processed NONE of my three binding messages (both holds + the new shape) —
+hard re-anchor sent; the ack protocol now binds it as it does seat-E. Salvage: its
+conjunct-(1)-only lemma banks if it survives the re-parent; its L3 δ=1 "proceeding" STOPPED
+(the statement is being revised — assembly against it is the wrong theorem).
+
+**seat-E's OrderChain skeleton landed but HELD before the elder pass:** its ack covered the
+two-render-facts message, not the Option-B ruling — the MANDATORY YoungDiagram/chainHeight
+survey pin went unfulfilled (BoxPart is hand-rolled). Ordered: run the survey, verdict travels
+with the skeleton to the elder's six-check pass; its trap-relocation claim (cell-count =
+coord-sum IN BOX COORDS; the profile-encoding trap → Tier-3 kill-set) flagged for explicit
+adjudication. The proved rank machinery (rankBP_le + strictMono, axiom-clean) stands regardless.
