@@ -4,7 +4,7 @@
      History lives in journal.md / compass.md; TRUTH lives here. Compaction distills TO this, never away.
      Checkpoint: 2026-07-20 (fresh start after the second chart-route drift). New phase NOT yet started.
      dev-merge DONE (5f0700e27): dev's cite-free determinantal geometry in-tree; kill-target = cited_aoyagi_lower_ax.
-     §1 marked FINAL (pending operator confirm) — controller removes the tag only on the operator's explicit confirm. -->
+     §1 FINAL — operator-confirmed 2026-07-21 ("detag permitted"); recorded in journal tick 43x+. -->
 
 # Charter — aoyagi-engine
 
@@ -32,7 +32,7 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   the remaining PROOF, (iv) about the STATEMENT — a leaf can be strike-able yet its statement subtly
   false (the worst case; "a sorry with a wrong statement misleads" — fix wrong statements first).
 
-## §1  The objects (the goals). §1 FINAL — pending operator confirm (do not silently de-provisionalize).
+## §1  The objects (the goals). FINAL — operator-confirmed 2026-07-21.
 - **A. RLCT ideal-invariance (Aoyagi Lemma 1), TWO-SIDED.** `rlct(Σfᵢ²)` depends only on the ideal `⟨fᵢ⟩`
   (both inclusions). Foundational — legalises every ideal-preserving step. STATUS: the ≤ direction banked
   (`rlctAt_mono`); the two-sided ideal-only dependence is OPEN and Mathlib-absent.
@@ -47,7 +47,9 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   permutation-invariance (type-A quiver / Ext). STATUS: banked in `Core` (`minAdm_eq_cCodim` axiom-clean;
   θ unconditional) — reinforced by dev's cite-free determinantal geometry.
 - **E. Analytic order ρ** (Aoyagi Lemmas 4–5): the RLCT / zeta-pole MULTIPLICITY — **NOT** the quiver
-  (C,θ)-count. STATUS: unbuilt seam.
+  (C,θ)-count. STATUS: unbuilt seam. **DEPRIORITISED but KEPT IN REACH** (operator, 2026-07-20): her
+  order falls out of the SAME A–D machinery, so E stays a named reachable node (interface sketched,
+  completeness holds); its content build is deferred, never boxed out.
 - Reductions R0/R1 (deepest point; product reduction → core): BUILT (bookkeeping).
 - **Corollary/test:** `aoyagi_learning_coefficient = C/2`; `hbox` is its analytic shadow, never a
   separate goal — it falls out of A+B (or is decided false by them).

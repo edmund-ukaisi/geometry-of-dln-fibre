@@ -7452,3 +7452,14 @@ Newton-polyhedron rule for C; nondegeneracy hypotheses on existence; divisor_spe
 (R1); closed wrapper corollary (obtain res + discharge regularity internally, R2); A/D structure KEEP (B
 non-vacuous ideal_identity, D combinatorial bridge via Core cCodim_eq_qipMin, transfer DERIVED — all three
 reviews agree these are right). Fresh-VM infra: mathlib store rebuilding (lake-store-setup rev 8a178386).
+
+## 2026-07-21 tick 43x+: operator departure — §1 CONFIRMED + de-tagged; heartbeat re-armed self-healing; v3 in flight
+Operator (before stepping away): (1) "detag permitted" — §1 is FINAL, operator-confirmed 2026-07-21;
+controller de-tagged the charter (the header assigns this edit to the controller on the confirm) + folded
+the E deprioritised-but-in-reach framing into §1-E. (2) Blueprint sign-off DELEGATED to the verification
+bar (memo phase line): v3 → paper-fidelity + Codex counterexample-hunt + elder ratification + green gates,
+iterate to equilibrium, then OPEN THE STRIKE PHASE without waiting. (3) Heartbeat cron did not survive the
+VM — re-armed (hourly :17, durable, job e2c75658; 7-day auto-expiry) and the heartbeat protocol now
+self-heals (step 0 verifies CronList and re-arms if absent). Still operator-gated: PR merge, dev→main,
+destination/DoD. IN FLIGHT: architect-v3 (enriched spec, push-on-commit); fresh-VM calibration build
+re-running after the store-lock fix (pre-warm too narrow → missing .hash writes; unlock→build→re-lock).

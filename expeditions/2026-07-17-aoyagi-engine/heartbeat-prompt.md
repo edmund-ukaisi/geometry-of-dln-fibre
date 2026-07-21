@@ -49,7 +49,9 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 
 ## Protocol (per wake)
 0. Verify placement: `.claude/worktrees/aoyagi-engine/root`, branch `expedition/aoyagi-engine`
-   (controller.md resp. 0). Recover first if not.
+   (controller.md resp. 0). Recover first if not. ALSO verify the heartbeat cron is armed (`CronList`) —
+   recurring jobs auto-expire after 7 days and die with a VM; if absent, RE-ARM (hourly, off-minute,
+   durable, this exact prompt). The system must self-heal its own pulse.
 1. Re-ground if fresh/compacted/unsure: **`charter.md` FIRST** (the invariant core — goals, objects,
    progress bar, math-warnings), THEN the State bundle — this file, map/STATUS.md, compass (history),
    journal tail, threads. (`priorities.md` is RETIRED for this expedition — a forwarding stub only;
