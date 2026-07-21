@@ -9873,3 +9873,32 @@ process line: map mirrors compass, divergence = drift item) and the map's fields
 OUT: kill-cite (merged into the summit's story), b-leaf2-blowup-atlas (absorbed into Core-leaves);
 IN: b-principalinv (the Core-leaves banked node — the spine's proven end), object-e. Count 9,
 validator clean, STATUS regenerated. Four demotions each with surviving homes named.
+
+## 2026-07-21 (controller) — THE SIXTH SEVERANCE INSTANCE: S=L clears break Deg1 (a DERIVED boundary the guard missed); M9+M4 merged, gating
+
+**seat-L4's second stop-on-suspect (Codex-corroborated, exact battery @ ef95d3548):** the δ=1
+case1(2) SPLIT at the LAST layer (S=L, Lean layer N−1) leaves a BARE-UNIT child entry — the
+strict transform's pivot factor has no deeper layer to land on — so Deg1SupportedOn is FALSE for
+every C′, and fix-(a)'s `layer < N` guard PASSES the branch (N−1 < N). Non-vacuous ((3,3,4) takes
+the edge at S=2=L). L3/case2 breaks identically (fresh-pivot clear); case1(1) merge exempt. Also
+the anchor-(v) correction: at S<L the honest C′ is the DEEPER BLOCK, not center.erase pivot.
+**Taxonomy: instance six — a DERIVED boundary** (the dynamics' last-interior-layer, one step
+inside the type endpoint the fifth fix fenced; the audit principle refines again: range
+boundaries include the boundaries the DYNAMICS distinguish). Routed: elder ruling among three
+fixes (my + seat-L4's structural read = fix (2): interior leaves guarded to layer < N−1; the
+whole last layer — where units are BORN — joins the terminal-transport story, per thread-34's own
+"principality is terminal" split; fix (1)'s narrow guard alone leaves the S=L steps covered by
+nothing, which L5's fold cannot tolerate); arch-C pricing in parallel (the multi-clear S=L fold
+design detail is theirs). seat-L4's conjunct-1 crux is banked clean-three and survives any fix —
+the wall's divisibility half is DONE. seat-L3T: L3 HELD (wrong theorem as stated); proceeds on
+terminal_edge_stepInv only (statement stands under every candidate fix).
+
+**seat-core: M9 LANDED + M4 (a)+ EXECUTED** (merged; controller full-tree gate running): the
+CommSemiring/MulOneClass Gen family in BlockDivision (7 new declarations at strict-weakest
+settings; the 5 ℝ atoms rederived via rfl bridges — the frozen downstream callers are the
+signature-drift detector, rebuilding now) + jacDet_blowupMap_unconditional in BlockBlowup (the
+origin law for ALL D, deriving from the block machinery; the hD:2≤D redundancy now recorded IN
+THE TREE) + two-way doc cross-refs (OriginBlowup prose-only). Task-28's stale blocked-description
+corrected; no seat-api duplication (never dispatched this session). carto: 3a landed + the
+overlay's certificate pointers annotated to read THROUGH the chain correction (accepted
+drift-prevention); its 10th-landmark datum was a mid-flight read — the settled set is 9.
