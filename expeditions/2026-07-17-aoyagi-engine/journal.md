@@ -9028,3 +9028,21 @@ round. The d=![1,2,1] witness = THE center-size-axis regression, banked beside t
 family. THE GUARDRAIL (register + leaf-file + compass, applied): "every free field on a quantified
 structure is its own severance axis — the audit is per-field, never per-statement." arch-C renders;
 integration stays held; then — the elder's words — "render, re-gate, and THEN the wall."
+
+## 2026-07-21: THE DECISION PACKAGE COMPLETES — carry-parametric + update-canonical; the render has one text
+Two crossed elder rulings consolidated and relayed as ONE final render text: (1) THE PROPAGATION —
+CARRY, in the PARAMETRIC form (FoldStepInvAt C p; FoldStepInv := ∃C; leaves consume at ed.center,
+emit at the child's C′; L5 aligns C′ with the next edge BY CONSTRUCTION — centers flow as
+fold-carried data, the bridge untouched; this resolves the ∃-projection problem a bare invariant
+clause would hit). WHY CARRY, decisively: per-node re-establishment would silently RE-PROVE the
+wall's re-factoring inside L5, duplicated in the wrong module. My relayed per-node reading is
+SUPERSEDED (the correction raced the render — caught in time). (2) THE ENCODING — Function.update
+coordinate-invariance is CANONICAL (agreement + center-zeroing as derived equivalence lemmas), with
+the future-proofing docstring: on bounded non-rectangular regions (the M14/L6 staged lock) the
+AGREEMENT form becomes the honest carrier and the equivalence gains a rectangularity hypothesis —
+written NOW so the upgrade cannot silently weaken the predicate. (3) The record sentence for
+FoldStepInv: "shape → assumed delivery → stated obligation — the third and final form; degree-1 was
+never optional bookkeeping, it was the invariant the paper's inductive statement carried all along."
+WITNESS SET: the d=![1,2,1] center-size witness (dies), the layer-center positive check, and a NEW
+positive witness — the deeper constant-term coefficient (admitted; kills any future
+SupportedOn-complement regression). One render, one re-gate; integration unhelds on green.
