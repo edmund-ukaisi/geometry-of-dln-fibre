@@ -44,3 +44,14 @@ anchor the atlas to the fold (provenance predicate or GeoAtlasData enrichment) �
 `reverify.lean` = the round-2 fix-verification probes. Wave impact: L3/L4 statements SOUND (L4 seat
 commissioned); L5's atlas-producing half sound (statement may gain the provenance clause); L7/L8 seats
 HELD on the anchoring.
+
+## AMENDMENT-ROUND FLIP (controller re-run, post-merge 248c34615)
+- `l4probe_refute.lean` now FAILS (EXIT 1) — the S3 vanishing clause makes its constant-family
+  StepInv premise unsatisfiable. ✓ flip.
+- `root_probe.lean` (S3-updated to a vanishing family) still elaborates. ✓ non-vacuity.
+- `l7probe.lean` / `l8probe.lean` still compile — EXPECTED: they are SELF-CONTAINED (they refute the
+  OLD ∀-atlas Prop taken as a hypothesis, not the named theorems). Kept as historical kill-witnesses.
+  The REAL verification (controller, direct reading): the amended L7/L8 each take
+  `hfold : FoldProduced d e atlas`, and FoldProduced's `hdom_ball` clause excludes the dom = {0}
+  degeneracy — the anchored statements cannot be fed the degenerate atlas.
+- Cone re-verified = exactly the 8 leaves; O9 atoms off-cone; batch-341 + cordon green.

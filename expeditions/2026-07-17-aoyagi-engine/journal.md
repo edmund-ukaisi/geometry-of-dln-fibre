@@ -8157,3 +8157,143 @@ ALSO COMMISSIONED (operator): scout-mine (the long-range paper-mining sweep — 
 showed the way" pattern, both directions, wiring map) + elder-v3 standing charge (the comprehension-
 level comb, decorrelated from the scout; O-audit refresh; stop-on-suspect on anything touching
 reified statements).
+
+## 2026-07-21: THE OPERATOR'S CHARGE FIRES — elder comb + scout converge: TWO more "Aoyagi showed the way" defects (S1/S2)
+The operator-commissioned comb (elder, decorrelated from scout-mine) delivered within hours, and the
+two sensors CONVERGED on the wall's statement: S2 — the δ-law `if branch then 0 else 1` is pinned to
+the WRONG discriminator: the paper (pp.16/17/20 image-verified twice), the thread-34 certificate
+(line 16, verbatim), and the statement's own docstring all give δ = [J=0], a STATE property uniform
+across both Case-1 children (and Case-2); the code is FALSE at every interior 1(2)-J≥1 state.
+Provenance: the collapse fix reached for `branch` as a δ-proxy because M'=1 erased J from the
+signature — an INVENTED law that passed the collapse test while breaking fidelity. S1 (the elder's
+own find, the deeper one) — all three preservation Props hard-code the FULL-AMBIENT blowupMap where
+Aoyagi's interior blow-ups are BLOCK-CENTER-with-spectators (u^{|center|−1} ledger, p.15): at (3,3,4)
+the shape forces jac+1 = 21 where the ledger says {9,8,4} — L8 unsatisfiable, terminal_bezout wedged.
+MASKED by d=(1,2) (no spectators there): the shallow-instance confound firing EXACTLY as the
+coverage-claim lesson predicted; the original codex leaf-2 spec had said centerCoordFam WITH
+spectators — the landed spectator-free OriginBlowup leaked its omission into the statement shape.
+ALSO from the comb: R3 (one center, TWO chart-pivots — build both branches from one construction);
+R4 (rollover only-at-exhaustion; under M'=1 the b-truncation is INVISIBLE — the historical interior-
+bottleneck dissolves in b, survives only in resid); R5–R7 (terminal unit indexing; L8 negative info;
+L7 = ours alone, the paper has NO cover machinery); Watanabe-upper answered (her boxed rule is a
+per-chart EQUALITY — O1 subsumes both halves; Lemma 2 bites only in the r>0 lane); O-audit delta
+(NEW O9 = blockBlowupMap; O5 downgraded — p.23 completing-the-square; O8 partially discharged);
+W1–W4 brief warnings (T-comparability trap; center-size vs ambient; rollover guard; regions are ours).
+DISPATCHED: arch-C — ONE enlarged amendment round (S1 re-point to blockBlowupMap + S2 δstate
+parameter with branch = pivot-kind/resid-shape + D-positivity + the in-flight FoldProduced anchoring);
+seat-w0l3 — O9 atom signatures as the new critical path (L3 wiring held; D=0 authorization
+superseded); seat-L4 — leaf-bound work paused per the elder's hold, redirected to the standalone
+δ-agnostic core (exact-division over block-centers; Q̂ machinery; R3 design). Compass fidelity-ledger
+entries applied (S1 + S2 with the pin-the-TRUE-law lesson). The charge's tally: SIX instances now of
+the paper having already shown the way — and these two caught at the statement gate, before the wall
+seat had bound a single proof line to them.
+
+## 2026-07-21: ELDER δ-ADJUDICATION (formal) — the edge-spec design ratified; relayed to arch-C
+The formal ruling (converged with the comb's S2 + the scout — decorrelation complete): (1) NO frame
+convention rescues δ=[branch] — the elder independently checked the rebasings (active-block-leader
+gives (1,1); global-dominant gives ([J=0],[J=0]); nothing yields the coded (0,1)); the coded law is
+FALSE as a ∀-statement. (2) The honest carrier of [J=0] is EDGE-SUPPLIED DATA from L5's fold (the
+salvaged ConState carries cleared = J) — my δstate candidate endorsed with a strengthening: thread
+the small EDGE SPEC (δ + center S + pivot-kind), because S1's center comes from the same source AND
+an unparametrized ∃-child admits LAZY WITNESSES post-block-fix (|S|=1 / sh=id children trivially
+satisfying bare preservation — silently relocating the monument into L5, a bar-(iii) regression the
+full-ambient shape only accidentally prevented). Pure-∃-δ named as weak-not-unsound fallback
+(divisibility downward-closed) but re-opens the hole — spec form recommended. (3) 1(1) IS A GENUINE
+BLOW-UP (ruling on the open question): the center includes the old u_{s,k}; 1(1) = blockBlowupMap
+pivoted AT it (arithmetic witness: |S|−1 reproduces the printed 1(1) exponent increment M' = M +
+J₁(M^(S+1)−J) on the nose); 1(2) = the SAME center pivoted at a d-entry. Collapse-proof branch shape:
+ONE shared center, TWO FORCED-DISTINCT pivots; pivot-kind = the branch semantic. (4) D-hyps: 0 < D
+BOTH Props, NOT 2 ≤ D (a |S|=1 center is a legitimate paper step; size bounds live in the per-edge
+spec, where genuine coupled Case-1 gives |S| ≥ 3; spec-feasibility subsumes D-conditions once landed).
+Relayed to arch-C as the settled design (supersedes my coarser δstate-Bool relay). seat-L4's
+standalone core unaffected and directly serves the amended shape; w0l3's O9 atom spec confirmed
+|S|-general incl. |S|=1.
+
+## 2026-07-21: API OVERLOAD (2 seats down, both recovered) + S3 — seat-L4's kernel refutation (the 4th sensor)
+Transient 529 overload killed scout-mine (nothing banked — resumed with BANK-FIRST orders; wiring map
+was transcript-only, the near-miss noted) and seat-L4 (banked BEFORE dying — push-on-commit paid:
+d61ef7bd5). seat-L4's banked artifact is a KERNEL-CHECKED `example : ¬ Case1Preservation` (sorry-free)
+— defect S3, and it SURVIVES the edge-spec amendment: at any δ=1 child, b'(0) = 0 + the forced
+0 ∈ Vchart make the child StepInv demand (F i∘g)(0) = 0, which the reified StepInv does not provide
+(counterexample: constant generators). The missing invariant is DEEPEST-POINT VANISHING
+(∀ i, (F i∘g) 0 = 0) — true at the root (coreGen vanishes; R0/R1), trivially preserved (σ0 = 0),
+terminal-consistent (b vanishes there, unit does not) — and it is the pnp-case1 pending-tail
+mechanism wearing its positive face: the fact that kills interior Bézout is the fact δ=1
+preservation NEEDS. FOUR independent sensors have now hit the frozen wall statement: the scout
+(paper δ-law), the elder (paper + block-centers + rebasing checks), the banked thread-34 certificate,
+and seat-L4 (the only FORMAL one). Folded into arch-C's round: the StepInv clause + root_probe
+witness update (constant family dies — replace with a vanishing family) + the refutation joins the
+probe-flip gate. Refutation copied to threads/36-leaf-fidelity/l4probe_refute.lean. NO NEW SPAWNS
+until capacity stabilizes; failed seats resumed with bank-early orders.
+
+## 2026-07-21 ~15:30: FULL OVERLOAD POSTURE — 4 seats down on 529s; all work SECURED; staggered recovery armed
+The gateway saturated: scout-mine, seat-w0l3, seat-L4 failed (arch-C silent — presumed down
+mid-round). CONTROLLER SECURING SWEEP (the worktree survey found real value uncommitted): arch-C's
+amendment round IN PROGRESS — a new Core/Aoyagi/BlockBlowup.lean + MonumentAtlas edits — WIP-committed
++ pushed on its branch; seat-w0l3 had BANKED 14/15 PathAtoms proofs (796c33bc5 — all but
+jacDet_blockShear) with the 15th WIP — secured; scout-mine HAD written the partial wiring map after
+the bank-first order but died pre-commit — secured (branch expedition/aoyagi-engine--thread37-paper-
+mining). seat-L4's refutation was already banked. NOTE the coordination fact discovered in securing:
+arch-C started BlockBlowup.lean ITSELF — the O9 atom is being built in two lanes (arch-C + w0l3's
+brief); the recovery tick coordinates dedup (w0l3 reads arch-C's secured file first). RECOVERY: no
+resumes into the wall (both earlier resumes re-failed within minutes — thrashing); a one-shot
+controller tick at 15:52 tests capacity with ONE resume (arch-C, critical path), then staggers the
+rest one at a time. No new spawns until all four are stable. Lesson reinforced: push-on-commit +
+the securing sweep meant the overload cost ZERO work — only latency.
+
+## 2026-07-21 ~15:45: RECOVERY — arch-C back + AMENDMENT BANKED (248c34615); staggered resumes underway
+arch-C acked the capacity-test resume, recovered cleanly from the controller-secured WIP, and BANKED
+the FULL amendment round on its branch: S1 (block-center blockBlowupMap, full-ambient gone), S2
+(EdgeSpec with δ=[J=0] uniform + one-center-two-forced-distinct-pivots), S3 (StepInv deepest-point
+vanishing), 0<D both Props, FoldProduced anchoring for L7/L8. Driver cone re-audited = the leaf set
+(O9 atom correctly OFF-cone). It is finishing the probe-flip verification (S3-updated root_probe;
+l4probe_refute + l7probe + l8probe must die) + cordon — full gate report pending. seat-w0l3 resumed
+(finish jacDet_blockShear → O9 PROOFS lane in arch-C's BlockBlowup.lean, arch-C keeps signatures →
+re-price L3 against the amended statement). Stagger tick re-armed (16:06) for seat-L4 + scout-mine
+if stability holds. NEXT at arch-C's gate report: controller ground-truth (build/batch/cordon/cone +
+all four probe-flips re-run MYSELF) → merge → rev-leaves round-3 (diff-scoped) → elder post-hoc
+ratification of the rendering → wave go-signals against statements that finally match the paper.
+
+## 2026-07-21: AMENDMENT INTEGRATED — the skeleton now matches the paper; ground-truth green
+Merged 248c34615 + aggregator wired (BlockBlowup). CONTROLLER GROUND-TRUTH: build 0 errors; batch 341
+banked-clean; cordon green (29 blueprint sites); driver cone = EXACTLY the 8 leaves (O9 off-cone);
+l4probe_refute DIES (S3 clause works — kernel-verified); root_probe (S3-updated) lives; L7/L8
+anchoring verified by DIRECT READING (hfold : FoldProduced with hdom_ball kills the degenerate atlas;
+the old l7/l8 probes are self-contained historical artifacts — noted in the certificate so nobody
+mistakes their continued compilation for a failed flip). THE AMENDED DESIGN as landed: EdgeSpec
+(δ=[J=0] + center) per edge; BlockChild (σ = sh∘blockBlowupMap, b' = u_p^δ·(b∘σ) uniform);
+Case1Preservation = one center, two forced-distinct pivots, 0<D, 2≤card; StepInv += deepest-point
+vanishing; StepInvChild removed; FoldProduced (leafOf surjection + jac read-off + dom-ball +
+branch-length tie) anchors L5→L7/L8. ARCH-C'S TWO FLAGGED RESIDUALS (routed to round-3 + elder):
+(a) the pivot↔divCoord structural tie DROPPED — RLCT.flatDim (card) vs Aoyagi.flatDim (sum) not
+defeq; branch-LENGTH tie substituted (excludes all-one-step degeneracy, NOT a same-length wrong-pivot
+atlas) — the flatDim coordinate bridge is a named owed item; (b) BlockChild allows sh = id
+(legitimate trivial shear; anti-laziness rides the block-center σ + the b'-law). DISPATCHING:
+rev-leaves round-3 (diff-scoped: the amended statements, esp. hypothesis-suffices on EdgeSpec/
+BlockChild/FoldProduced + the two residuals); elder post-hoc ratification (S3 clause — the one
+shape it did NOT pre-ratify — + the branch-length-tie adequacy ruling).
+
+## 2026-07-21: ELDER POST-HOC — S3 RATIFIED; NEW REFUTATION ⟹ EDGE-INDEXING (the structural exit); hbranch_len UNSATISFIABLE
+S3 ratified AS PLACED (in StepInv: root-true, σ0-preserved, terminal-consistent; correctly omitted
+from PrincipalInv where derivable — "an invariant restated as a hypothesis at every consumer is the
+same fact scattered"). NEW STOP-ON-SUSPECT (the elder, verifying its own ratification): the
+∀-(state,spec) Props are STILL FALSE — refutation: f = w₀²+w₁², g=id, b=1 (S3 holds) paired with a
+singleton-center δ=1 spec: |S|=1 ⟹ σ a local diffeo ⟹ discrete zero set vs the forced
+hyperplane-vanishing. MECHANISM NAMED: the spec's center must cover the state's singular support;
+∀-state × ∀-spec SEVERS the link the fold maintains. Second unlinked-pair refutation — "the M'=1
+compression discards exactly the structure that makes the step true; each patch re-admits a sharper
+probe." THE RULING (stop universalizing): L3/L4 go EDGE-INDEXED over buildTree's edges with the
+fold's own accumulated states (reachability-by-construction = L5's induction hypothesis); the
+preservation leaves move DLN-SIDE (Core keeps the network-free vocabulary); the wall's content
+unchanged. The elder OWNED its share ("per-spec-per-edge" adjudicated without making the linkage a
+statement requirement). ALSO: FoldProduced's hbranch_len is UNSATISFIABLE (not weak) — every
+merge-containing branch (incl. the flagship (3,3,4) binding branch) falsifies it (merges are genuine
+block blow-ups, Jacobian ≠ 1, but birth NO divisor; numDiv indexes only t̃=0) — as rendered L5 was
+unprovable. FIX: the card-tie (bindingAxes bexp).card = numDiv (merge/rollover-immune, true by
+squarefree-b₁ ↔ the t̃=0 ledger); L7 keeps FoldProduced but needs no tie; flatDim card↔sum bridge =
+NEXT-EXPEDITION RUNWAY (value-level suffices on the kill-path — record, don't build). DISPATCHED:
+arch-C (the edge-indexing + card-tie round, elder's refutations as new gate probes); rev-leaves
+(round-3 re-scoped: kernel-check the Σw² refutations NOW, hold the rest for the amended statements;
+elder's specific ask: the card-tie must be CONSTRUCTIBLE BY THE FOLD). Stagger completed: seat-L4 +
+scout-mine resumed (elder explicit: L4's δ-agnostic core = the real-state algebra, valid under
+edge-indexing). All four seats live again.
