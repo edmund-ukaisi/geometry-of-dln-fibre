@@ -8777,3 +8777,18 @@ beside the codex case11 witness ("the same defect seen from both ends; both die 
 transform" — base-case + interior bracket the class; the root witness doubles as the wrong-center
 detector). Gate anchors now (i)–(iv). Pipeline: arch-C's Let-block draft → elder one-pass →
 integration + full build + AxCheck → L3 rebase+wire → the WALL opens on the paper's own defs.
+
+## 2026-07-21: SEAT-API COMPLETE (M1+M2+M8+M3, +327 LoC, all clean-three) + WALL ENABLERS MERGED
+The register's API half-tide is done: M2 (.mono ×3, weakest form V'⊆V alone); M1
+(monomialSumSq_rlctAt_eq — the unweighted classical monomial-ideal RLCT, the library's most citable
+statement); M8 (RegionRepresents refl/mono/trans/of_eqOn); M3 (pathMap_append + jacDet_pathMap_eq_prod
+— L5's induction vehicle). Controller re-verified M1 + M3-product clean-three post-merge; only
+InvariantRestriction needed aggregator wiring (done earlier). Fidelity review commissioned per the
+seat's audit request (statement-vs-register + its two named notes: the V'⊆V weakest-hyp judgment;
+M1 name=content). ALSO MERGED: seat-L4's FIX-A enabler lemmas (blockBlowupMap_shear_center_eq +
+blockBlowup_shear_center_comb_eq — the complete δ-agnostic delivery of FIX-A+FIX-RESID for any
+pivot-keeping shear, controller-verified clean-three) + the elder-official POSITIVE WITNESS
+(case1_positive_witness.py: the real Schur/P shear class keeps the pivot and keeps center coords in
+⟨u_pivot⟩ under the flipped stepMap — verified at the kill-set shapes; the structural-form
+verification, per-edge φ exposure deferred to L5). The wall's step-algebra is now COMPLETE for the
+amended design; both leaf proofs are mechanical modulo the bundle merge + pnp-order's gate.
