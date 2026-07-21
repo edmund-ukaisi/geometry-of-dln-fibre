@@ -1,9 +1,70 @@
 # Overlay — naming forwarding-pointers (cartographer, curated layer)
 
-*Every rename leaves a pointer here so old references stay resolvable. Created pass #1; **REFRESHED
-pass #2 (2026-07-18)**: the council-adopted restructure has LANDED (tick 37 r2-validate), so pass-#1's
-"Pending (unlanded)" block moved to Landed; added the new-this-expedition modules + the namespace
-quirk + two pin moves.*
+*Every rename leaves a pointer here so old references stay resolvable. Pointers ACCUMULATE — the
+chart-era sections below the re-root marker still resolve old references into the retired
+parts-bin (read them through `Engine/RETIRED.md`; do not treat their "live/in-flight" framing as
+current).*
+
+## ═══ RE-ROOT #1 (2026-07-21, tip 70a8ec6cf) — the A–E frame ═══
+
+### Declaration renames this phase (old → new)
+
+- **`AtlasRealizes` → `AtlasRealizesExponents`** (`DLN/Aoyagi/RecursionAdapter.lean:55`) —
+  rev-monument-adapter precision escalation (77c7b6a39): the seam predicate names exactly what it
+  checks (exponent realization), and clause (ii) was simultaneously WEAKENED to only-the-minimizer
+  (the geometric obligation is STRICTLY weaker than pre-rename references suggest). ⚠ residual:
+  docstring `:77` still says `AtlasRealizes` — flagged for the owner.
+- **`rlctAt_mono_of_ae_le` → `rlctAt_mono_of_eventually_le`** (`Core/Aoyagi/IdealInvariance.lean:213`)
+  — seat-A statement-lock repair: the hypothesis is an EVENTUAL (germ) domination `∀ᶠ`, not an
+  a.e. one. Weighted twin landed as `wrlctAt_mono_of_eventually_le` (`:401`); the set-level form is
+  `wLocalAdmissibleExponents_subset_of_eventually_le` (`:358`). No `_of_ae_le` name survives (grep 0).
+- **D=2 blow-up name-cousins `…2`-renamed** (leaf-2 integration, 70a6c150d + 7f2e83edf; the
+  general `OriginBlowup.lean` owns the bare names — CLAUDE.md: the general file is the canonical home):
+  - `ball_subset_iUnion_blowup_image` (D=2) → `ball_subset_iUnion_blowup2_image`
+  - `jacWeight_blowup_jac` (D=2) → `jacWeight_blowup_jac2`
+  - `monomialFam_blowup_bexp` (D=2) → `monomialFam_blowup_bexp2`
+  - `volume_blowup_excep` (D=2) → `volume_blowup_excep2`
+  Same names in `OriginBlowup.lean` = the GENERAL lemmas (different constants — e.g. general
+  `jacDet_blowupMap` needs `hD : 2 ≤ D`). The rest of `BlowupResolution.lean` was authored with
+  `2`-suffixes (`blowupMap2`, `blowupChart2`, `blowupResolution2`, …), not renamed.
+
+### Headline names (disambiguation — three near-cousins, all live)
+
+- **`aoyagi_learning_coefficient_via_engine`** (`DLN/Aoyagi/LearningCoefficient.lean:299`) — THE
+  summit (A–E frame): `rlctGlobal = cCodim/2`, cite-free value, +sorryAx from the monument only.
+- **`aoyagi_learning_coefficient`** (bare, `Skeleton.lean:1685`) — the OLD chart-era mint anchor
+  (λ = aoyagiLambda form, conditional stack); NOT the summit. Charter §1's "corollary" prose name
+  refers to the summit's content — a close-phase reconciliation call for the controller.
+- **`aoyagi_learning_coefficient_gen` / `_L1` / `_L2`** (`Validate/HeadlineGenAssembly.lean` etc.)
+  — the banked predecessor value lane (hbox-conditional `_gen`; unconditional L=1/L=2 endpoints).
+
+### Chart-era map node ids → disposition (claims.yaml re-root; old yaml @ 70a8ec6cf^ in git)
+
+- `mint-repoint` → **superseded by `aoyagi-summit`** (the mint/hbox wiring never executed; the
+  summit landed as `_via_engine` on the ideal route).
+- `hbox-root` → **retired with the chart engine** (charter §1: hbox is the corollary's analytic
+  shadow — "falls out of A+B or is decided false by them"). No live node; trail = `RouteMBoxReduction`.
+- `engine-route`, `resolution-tree`, `case-step-lemmas`, `monomialization-termination`,
+  `coverage-theorem`, `region-glue`, `gendivexp-support-redesign` → **retired → `chart-engine-retired`**
+  (the dead-route registry entry; salvaged kernel = the adapter's four roots).
+- `exponent-ledger-bridge` → content survives in **`object-d`** (`qipMin_eq_minAdm` +
+  `divisorMin_eq_cCodim`) + the adapter seam.
+- `reduction-layer`, `theorem4-localization` → content survives in **`corollary-reduction`**
+  (deepest-point/homogeneity transport, `GlobalHomog`).
+- `rr4-precedent` → retired guard (outer-plumbing precedent; still on disk,
+  `Validate/RouteMBoxThresholdRR4.lean`).
+- `naked-weight-route`, `decorated-descent-route` → KEPT as exit nodes (battery anchors).
+
+### Files archived at this re-root (verbatim moves, git-tracked)
+
+`overlay/archive/{banked-families,dead-routes,landmark-cards,paper-anchors,import-hygiene,wiring-endgame}-chart-era.md`.
+The live paper-fidelity registry is now **compass.md § Paper-fidelity ledger** (elder-owned).
+
+## ═══ chart-era pointers below (HISTORICAL — read through RETIRED.md) ═══
+
+*Created pass #1; **REFRESHED pass #2 (2026-07-18)**: the council-adopted restructure has LANDED
+(tick 37 r2-validate), so pass-#1's "Pending (unlanded)" block moved to Landed; added the
+new-this-expedition modules + the namespace quirk + two pin moves.*
 
 ## Landed since pass #1 (was "Pending", now in the root tree)
 

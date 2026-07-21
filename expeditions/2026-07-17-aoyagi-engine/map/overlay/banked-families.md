@@ -1,629 +1,127 @@
-# Overlay — banked-family cards (cartographer, curated layer)
+# Overlay — banked-family cards (cartographer, curated layer) — the A–E frame
 
-*The banked substrate the engine CONSUMES (never rebuilds — "survey before commissioning", compass
-standing counsel). **Pass #2 (2026-07-18): REFRESHED + CONSUMPTION-SCOPED by the remaining rungs
-R1–R6** (recon cert §5 roadmap). Each rung lists the families it consumes with PINNED decl names,
-`file:line`, sorry-status, and an import-weight note. Pins RE-VERIFIED by grep against the live tree
-(2026-07-18); drift from pass #1 flagged inline. All paths `lean/DLNFibre/DLN/RLCT/…`.*
+*RE-ROOTED 2026-07-21 (cartographer re-root #1, tip 70a8ec6cf). The chart-Engine-era cards
+(R1–R6 consumption maps, D-arc/carrier/endgame/final-arc indexes) are ARCHIVED VERBATIM at
+[[archive/banked-families-chart-era]] — still the reference for any SALVAGE re-import out of the
+retired `Engine/` parts-bin (RETIRED.md governs). This file cards what the A–E frame consumes.
+Every pin grep-verified against the live tree at 70a8ec6cf. Paths `lean/DLNFibre/…`.*
 
-**Import-weight key** (transitive DLNFibre-internal import count, a build-cost proxy; measured
-2026-07-18): LIGHT ≤ 40 · MEDIUM 40–150 · HEAVY > 150. The full whitelist + the heavy-cone re-home
-is in [[import-hygiene]].
-
-**PAPER ANCHORS (operator fidelity-steer, 2026-07-19).** Each family here anchors to a `worked.tex`
-§/line; the anchor table + the documented-deviation registry (Def-3, case-2 raw-width, p.15-chain,
-realization-gap, instance-#9 three-ledger split) is [[paper-anchors]]. Posture: the paper's structure
-outranks the module DAG's convenience; an unanchorable banked family is a stray to flag, not launder.
-
-**Rung → hole map.** [REFRESHED 2026-07-20, carto tick 348 — post-fold-close; supersedes the
-tick-170 form.] `monomialization_terminates` is ASSEMBLED; five of six conjuncts proven clean-three
-(incl. `o5_realization`, closed t06 s4 — NO LONGER a hole). `region_glue` is a PROVEN composition
-(`region_glue_of_chartBridge … hbridge`). The ONE live ANALYTIC hole is `chartBridge_buildTree`
-(EngineObligations:49-52) — now the drop-(D) PROJECTION of `chartBridgeFaithful_buildTree`, whose
-single sorry is the `LeafPullback` conjunct (`ChartBridgeFaithful.lean:92`), routing to
-`leafDiagFrob_geoAtlasNorm` (`GeoAlphaGauge.lean:562`, loss-t15's value walk). R5 flips
-`engine_box_threshold_finite` → `hbox` → RELOCATES (not in-place) `aoyagi_learning_coefficient` to
-`HeadlineL1Mint` (nav-6 tick 348). Other engine-cone sorries: `canonicalResolution224`
-(`CanonicalWitness224.lean:135`, off-cone, (2,2,4) coverage corollary) + `ClearableReify.lean:78`
-(R7 reify-now, expected until R7). Census: [[dead-routes]] § fossil census.
+**Standing posture (carried over from the operator fidelity-steer):** the PAPER's structure
+outranks the module DAG's convenience; an unanchorable banked family is a stray to flag, not
+launder. The live paper-fidelity ledger is now **compass.md § Paper-fidelity ledger** (elder-owned;
+incl. the two NEW thread-31 defects). The chart-era anchor table is [[archive/paper-anchors-chart-era]].
 
 ---
 
-## R1 — construction carrier + faithful ledger + divisor-chooser (MEDIUM tide)
+## OBJECT A — ideal-RLCT invariance (`Core/Aoyagi/IdealInvariance.lean` + `Waypoint.lean`; 0-sorry)
+
+*The category-NEW workhorse (Mathlib-absent). Landed seat-A, wave 1. All batch-gated clean-three.*
+
+- Headlines: `rlctAt_sumSqFam_eq_of_germ_eq` (`IdealInvariance.lean:289`), weighted twin
+  `wrlctAt_sumSqFam_eq_of_germ_eq` (`:449`).
+- Leaves: `eventually_sumSqFam_le_of_germRepresents` (`:174`, Cauchy–Schwarz domination),
+  `rlctAt_mono_of_eventually_le` (`:213`, junk-guarded germ-monotonicity — **renamed from
+  `rlctAt_mono_of_ae_le`**, see [[naming]]), `rlctAt_const_mul` (`:250`),
+  `rlctAt_sumSqFam_le_of_germRepresents` (`:262`); weighted: `wrlctAt_one` (`:315`),
+  `wrlctAt_const_mul` (`:348`), `wLocalAdmissibleExponents_subset_of_eventually_le` (`:358`),
+  `wrlctAt_mono_of_eventually_le` (`:401`), `wrlctAt_sumSqFam_le_of_germRepresents` (`:422`).
+- Carriers: `GermRepresents` (`:72`), `RegionRepresents` (`:84` — the record's ideal-identity
+  clause consumes this), `LocallyNullZeros` (`:97`, the junk-0 guard), `wLocalAdmissibleExponents`
+  (`:305`).
+- Waypoint helper: `locallyNullZeros_sumSqFam_of_polynomial` (`Waypoint.lean:68`) — WRAPS the
+  existing `MvPolynomial.volume_zeroSet_eq_zero` (survey-first held).
+- **Trap (D3/C-delta class):** admissibility needs MEASURABILITY hypotheses (`hWmeas`,
+  `Measurable unit`) — ContinuousAt-only admits junk-0 collapse. Twice caught at statement-lock.
+
+## OBJECT C — monomial-ideal RLCT (`Core/Aoyagi/MonomialRLCT.lean`; 0-sorry)
+
+*The guarded S2 boxed rule. Landed seat-C. Batch-gated clean-three, S2-FREE (no `monomial_rlct`).*
+
+- `exists_unit_sumSqFam_monomial` — chain collapse `∑bₖ² = b_{k₀}²·U` under `DivChain` (`:54`).
+- `monomialSumSq_wrlctAt_eq` — THE S2 BOXED RULE: `wrlctAt = min_d (h_d+1)/(2k_d)`.
+- `monomialSumSq_two_mul_wrlctAt_eq_min` — DLN unit-multiplicity form `2·wrlctAt = min (h_d+1)`.
+- Honest boundary: `not_divChain_coupled_example` (`:77`) — the coupled counterexample the guard
+  excludes. `Measurable unit` on leaves 2/3 is the controller-BLESSED delta.
+- Carriers consumed everywhere in B: `monomialFam` (`:43`), `jacWeight` (`:48`), `bindingAxes`
+  (`:60`), `monomialThreshold` (`:66`).
+- Wave-2 hygiene owed: MonomialBox Core-lift + DLN dedup (`RouteMSJMonomialLower`/`Case222Cover`
+  duplication, forced by Core↛DLN today).
+
+## OBJECT B record + value (`Core/Aoyagi/ProductResolution.lean` + `Engine.lean` + `AreaFormula.lean`)
+
+*The v4.2 record (verified to equilibrium: v3 structural kills → v4 hypothesis kills → v4.1 one
+quantifier → v4.2 clean; 093475db3) + monument 1. Value chain batch-gated clean-three.*
+
+- Record: `Chart` (`ProductResolution.lean:62`), `Resolution` (`:126`), `jacDet` (`:55`),
+  `Chart.jacWeightFn` (`:142`), `Chart.chartMin` (`:148`), `Resolution.divisorMin` (`:154`).
+  FROZEN; the shear pin (thread 33) confirmed NO field change needed (unit/hjac already right).
+- Per-chart value: `Chart.two_mul_wrlctAt_eq_chartMin` (`:219`) — A∘C, the wiring the blueprint
+  was built for. Negative guard: `no_unit_forces_axis_jac_coupled` (`:621`).
+- **Monument 1 (atlas CoV):** `rlctAt_sumSqFam_eq_iInf_charts` (`:540`) — ≤ via the NEW
+  InjOn-off-null area formula; ≥ via off-origin C + compact subcover + a.e.-cover subadditivity.
+  Fidelity strength (rev-cov-fidelity): the weight is the ACTUAL `|det Dg|` (`jacWeightFn`) — a
+  false `jac` declaration cannot game the value.
+- Value chain: `Resolution.two_mul_rlctAt_eq_divisorMin` (`:590`) → `Resolution.divisorMin_eq_cCodim`
+  (`Engine.lean:45`) → `Resolution.two_mul_rlctAt_eq_cCodim` (`Engine.lean:84`) — `res` + QIP
+  min-attainment are HYPOTHESES; the chain never touches `exists_coreResolution`.
+- Reusable infra: `lintegral_image_eq_lintegral_abs_det_fderiv_mul_of_injOn_off_null`
+  (`AreaFormula.lean:39`) — the Waypoint-owed general InjOn-off-null lintegral CoV.
+- Inhabitation (record-shape tests, kernel-checked): `idResolution`/`allOnesResolution`
+  (`ResolutionInhabited.lean:92,138+`) rank-1; `blowupResolution2` (`BlowupResolution.lean:237`) D=2.
+
+## LEAF-2 — the universal origin blow-up (`Core/Aoyagi/OriginBlowup.lean`; 0-sorry)
+
+*The shared atom for rung (B) AND the monument's per-step blow-up geometry. Universal-in-D ⟹
+instantiates at `flatDim d` with NO cast transport (the opaque-width wall dissolved BY DESIGN).*
+
+- `blowupResolution (hD : 2 ≤ D) : Resolution (coordFam D) 0` (`:290`) — max-pivot atlas, every
+  Chart field discharged.
+- `jacDet_blowupMap` (`:55`) — the universal Jacobian det `(w i)^(D−1)` via `BlockTriangular.det`.
+- `ball_subset_iUnion_blowup_image` (`:259`) — the EXACT argmax sector cover (residual-(I) content
+  for the pure origin case, spectator-free).
+- D=2 cousins live under `…2` names in `BlowupResolution.lean` (4 renamed at integration — [[naming]]).
+
+## SALVAGE ADAPTER — the monument's combinatorial half (`DLN/Aoyagi/RecursionAdapter.lean`; 0-sorry)
+
+*mon-rec; elder-ratified salvage (C1/C2/C3); rev-monument-adapter SURVIVED (seam weakened to
+only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_of_atlasRealizesExponents`.*
+
+- `AtlasRealizesExponents` (`:55`) — the seam predicate (charts realize the salvaged tree's
+  terminal exponents; STRICTLY weaker post-escalation).
+- `qipMin_eq_minAdm` (`:69`) — the D bridge; `hlb_hattain_of_atlasRealizesExponents` (`:78`);
+  `exists_hlb_hattain_of_exists_atlasRealizesExponents` (`:109`) — the leaf-shaped reduction
+  `exists_coreResolution ⟸ ∃ res, AtlasRealizesExponents d res`.
+- Salvage roots (retired-`Engine` combinatorics, C1 import boundary re-audited clean at merge):
+  `minAdm_le_terminalExponents`, `o5_core_realized`, `isFullMonomialization_buildTree_conRoot`,
+  `minAdm_eq_cCodim` bridge. Import ONLY the audited-green closure — never ChartBridge*/Geo*/
+  CanonicalResolution ([[dead-routes]] § retired chart-Engine).
+- C2 anchors (decide-checks vs the decorrelated battery): (2,2,3,2)→3 running-min, (2,2,1,1)→1,
+  (3,3,4)→8, (4,4,4)→12 (`theory/aoyagi-2023-reproduction/g-monument-mval-instances.py`).
+- ⚠ drift flag (owner): docstring `:77` still says `AtlasRealizes` (pre-rename).
+
+## COROLLARY REDUCTION (`DLN/Aoyagi/LearningCoefficient.lean` + `Foundations/GlobalHomog.lean`; summit file)
+
+*Seat-bridge, wave 1. Batch-gated: `exists_flatten`, `lossDLN_zero_eq_coreLoss`, `coreReduction`.*
+
+- `exists_flatten` — the LINEAR m.p. origin-fixing homeomorphic flatten (built directly for
+  `Tuple` via piCurry reindex); `lossDLN_zero_eq_coreLoss` — the Frobenius identity;
+  `coreReduction` — `rlctGlobal (lossDLN d 0) = rlctAt (∑coreGenᵢ²) 0` (deepest-point ∘ flatten
+  ∘ m.p.-homeo transport; no `he_lin` needed internally).
+- NEW REUSABLE, network-generic: `GlobalHomog.lean` — `rlctGlobal_comp_homeomorph` +
+  `rlctGlobal_eq_rlctAt_zero_of_homogeneous` (rides banked `deepest_le_of_homogeneous_core`).
+- The summit `aoyagi_learning_coefficient_via_engine` (`LearningCoefficient.lean:299`) and the
+  frontier `exists_coreResolution` (`:268`, sorry `:287`) live here.
+
+## OBJECT D / E slices
+
+- D: `Resolution.divisorMin_eq_cCodim` + the banked `minAdm = cCodim` chain (pre-phase Core +
+  dev's cite-free determinantal geometry) + `qipMin_eq_minAdm` (adapter). Guards:
+  `battery/g-minadm-groundtruth.py`, `battery/g-def3-broken.py`.
+- E interface slice (content DEFERRED per charter §1.E): `one_le_boxedOrder`
+  (`Core/Aoyagi/Order.lean:62`); the θ≠ρ distinction `numTop_d22222_ne_aoyagiPoleOrder`
+  (`DLN/Aoyagi/ThetaOrderDistinction.lean:195`, with `aoyagiPoleOrder` `:53`).
 
-*Builds the resolution tree into `CanonicalResolution` — the structural half of
-`monomialization_terminates`. Carrier + ledger + termination DONE; the chooser (full-`T`) is the
-open fork-10 un-deferral.*
+## In-flight (NOT banked — do not consume as substrate)
 
-**Consumes (banked, sorry-free):**
-- `minAdm` / `minAdmRec` / `minAdmRec_eq_minAdm` — `Validate/RouteMLayerSplit.lean:51,58,395`. The
-  combinatorial budget; `decide`-computable. LIGHT (RouteMLayerSplit cone = 21).
-- The μ-lex well-founded idiom `ℕ ×ₗ ℕ ×ₗ ℕ` + `InvImage.wf wellFounded_lt` — banked in
-  `Validate/RouteMState.lean` (rung 2A surveyed it before building; no new WF machinery invented).
-  Consumed by `conRel_wf` (`Engine/EngineConstruction.lean`, PROVED clean-three, tick 58). LIGHT (32).
-- `Adm` / `admBound` / `Mval` — `Foundations/Lambda.lean:62,46,41`. The admissible cone (incl. the
-  `j=1` block bound `min(M¹,M²)`, Def 3 p.8). LIGHT.
-
-**Already built this expedition (do NOT rebuild — reuse in place):**
-- `ResolutionTree` / `StepData` / `Edge` / `LeafData` (edge-labelled carrier) —
-  `Engine/ResolutionTree.lean`. Import weight 4 (VERY LIGHT). r2-VALIDATED (tick 37).
-- `RootLedger` + `stepUpdate` (3 cases, page-pinned) + faithful `StepRel := rootLedger e.child =
-  stepUpdate n e.case e.subst` — in `Engine/EngineObligations.lean`. case-2 cleared advance is `+= 1`
-  (p.21 truth-witness catch, tick 46 — NOT `+= resRows`). Eligibility conjunct `t̃(mergeIdx) =
-  cleared + runLen` guards BOTH case-1 charts (tick 56).
-- `ConState` / `StateInvariant` / per-case μ-descent (`conRel_stepCase11` /`_stepAppendAdvance`/
-  `_stepRollover`, all clean-three, tick 59) — `Engine/EngineConstruction.lean`.
-
-**Open — the FAITHFUL carrier lands at R1 NOW (council #3 fork 11, 2026-07-18):** full-`T` in the
-State (t̃ DERIVED from T; T is non-derivable chooser-required data — deferring it is incoherent and
-risks a μ-descent retrofit) + the `genDivExp` multiplicity field, in ONE faithful node-data pass.
-The `EngineConstruction` "stores ONLY what the measure reads" docstring is STRUCK (the retired
-finiteness razor encoded in code). The p.15 minimality tie-break + J₁ gap need full-`T`; propagation
-PROOFS defer to R4. STOP-and-surface if full-`T` `stepUpdate` balloons; divProfile T-settings
-page-verified at build.
-
----
-
-## R2 — coverage / no-smaller-ratio: `ChartBridge` (HARD — the hardest named object)
-
-*The one genuine new proof; landmark `coverage-theorem`. Lives INSIDE `monomialization_terminates`
-(the bundle collapsed the fan-out — the covering CONTENT is in the construction hole, not its own
-tide). Consumes the cover/null toolkit; may NOT consume `rlct=c*` (circularity guard).*
-
-**Consumes (banked, sorry-free):**
-- Finite box covers + measure-zero disposal — `Foundations/S1Cover.lean`, `S1BoxAdditive.lean`,
-  `Validate/RouteMCoverLemmas.lean`, `Validate/RouteMNullSliceCov.lean`. LIGHT-MEDIUM. Load-bearing
-  precondition: the SEPARATED leaf integrand (`IsFullMonomialization`), witnessed
-  `g-leaf-chain-separation`, `g-pivot-conull`.
-- The corank-2 coordinate-index model (`divCoord`/`resCoord` injective + disjoint over `Fin (flatDim
-  M)`) — de-risked at (3,3,4) by `Engine/CoRank2Spike.lean` (rung 2C, tick 58; import weight 31).
-
-**Gate (armed, do NOT skip):** the exhaustiveness hunt (`hunt-cert.md §5`) SURVIVED carrier-independent
-(tick 12; 5 decorrelated legs, 0 undershoots) — no re-run needed, but a monomial-only hunt passes
-vacuously; cite the scope by pointer, never "established". Kill = `g-coverage-sharing-killcond`.
-
----
-
-## R3 — `region_glue` / per-leaf (HARD/MEDIUM — analytic hole)
-
-*Per-leaf area-formula integration → box finiteness, glued over the finite subcover. The per-leaf
-read MECHANISM CHANGED since pass #1 (elder tick 43): the banked local-homeomorph transport is
-BANKED-BUT-UNUSED on this path; the read is now the Mathlib AREA FORMULA. See [[dead-routes]]
-§ transport-on-leaf-path (retired-shape).*
-
-**Consumes (banked, sorry-free):**
-- **Area formula:** `lintegral_image_eq_lintegral_abs_det_fderiv_mul` +
-  `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero` (Mathlib, v4.29 — elder-verified
-  present tick 43). Needs ONLY the UPPER det bound `|det Dφ| ≤ hi·∏|u|^{divExp−1}`.
-- **Flat model read (the per-leaf target):** `model_read_lt_top` —
-  `Validate/RegionGlueModelRead.lean:215` (NEW this expedition, Module A COMPLETE tick 60,
-  clean-three). `∫_cube (∏|x|^e)(∑x²)^{−c'} < ⊤` for `e>−1`, `0<c'<nr/2`; a.e. AM-GM domination via
-  `Measure.pi_hyperplane`. Import weight 27 (LIGHT).
-- **Scaling bridge (globalization):** `lintegral_rpow_neg_smul_bridge` +`lintegral_smul_set` —
-  `Foundations/S1ScalingBridge.lean:88,36` (NEW, tick 40, clean-three, Foundations-grade abstract
-  `F`). LIGHT. NOTE: pass-#1 name `∫_{εK}F^{−c'}=ε^{N−2Lc'}∫_K` is `lintegral_rpow_neg_smul_bridge`.
-- **DLN homogeneity (degree 2L):** `flatNodeLoss_smul` / `dlnLoss_zero_smul` /`prod_smul` —
-  `Validate/D1L2ExplicitCoreProducer.lean`. **⚠ HEAVY (302-file cone).** RegionGlueGlobalize uses
-  only the smul lemmas but drags the whole D1L2 explicit-core producer. RE-HOME candidate — see
-  [[import-hygiene]] § D1L2 worked example. The smul lemmas themselves only need
-  `Foundations/S1NodeFlatHomog.lean` + `Validate/LossHomogeneity.lean` + `ParamsFlatLinear`.
-- **Haar on `Params M`:** `instIsAddHaarMeasureParams` / `instBorelSpaceParamsGlue` —
-  `Engine/RegionGluePerLeaf.lean` (NEW, via `paramsEquivFlatCLE`; volume on `Params M` is NOT
-  auto-Haar — transported from the flat cube). These two instances are ALL that's currently landed
-  in RegionGluePerLeaf — the area-formula theorem itself is Module B, IN FLIGHT (task #2).
-
-**Already built (globalization half, boundedness-independent):**
-- `routeMLayerBoxIntegral_lt_top_of_small_box` + `cubeBox_smul` + `routeMLayerBoxIntegral_eq_flat` —
-  `Engine/RegionGlueGlobalize.lean` (tick 45, clean-three). **⚠ HEAVY (304).** Namespace quirk: lives
-  in `Engine/` but declares `namespace DLNFibre.DLN.RLCT` — see [[naming]].
-- Interface is FROZEN (ChartBridge strengthened: MeasurableSet + bounded-in-flat-cube srcBox, tick
-  46) and abstract-field-gate-CLEARED exactly-sufficient (tick 51 — no third conjunct needed).
-
-**Open:** Module B (per-leaf area formula, `RegionGluePerLeaf`, task #2) → Module C (cover assembly +
-globalize, task #3) → `leaf_chart_image_lintegral_lt_top` → `region_glue_of_chartBridge`.
-
----
-
-## R4 — `genDivExp` PROPAGATION proofs (MEDIUM — fidelity)
-
-*The multiplicity-valued `genDivExp` FIELD now lands at R1 (council #3 fork 11); R4 is the
-sharing-PROPAGATION proofs across per-divisor re-indexing (what balloons — Codex-confirmed tick 44).
-No banked substrate to consume — fresh fidelity work on the carrier.*
-
-**Guard / kill-condition (do NOT ship without):** `g-coupled-binding-334` (minAdm(3,3,4)=8 coupled
-path only) + `g-delta-flatten` (identical multiplicities, different lct) re-checked. The current
-binary `support : Fin numGen → Finset` is a nonzero-locus APPROXIMATION (recon §4); the exact
-`LeafPullback` identity — not propagation — is what breaks coupling for the certificate, so R4 is
-fidelity, not finiteness-load-bearing.
-
----
-
-## R5 — wiring (MECHANICAL) + the enforced axiom-gate
-
-*Discharge `hbox`; repoint the canonical headline → `_gen` → the UNCONDITIONAL CLEAN-THREE
-`aoyagi_learning_coefficient` (kills the sorryAx of the 5 skeleton rungs). **Council #3 precision pin
-(fork 11): this does NOT delete `cited_aoyagi_dln`** — the cite was NEVER in the λ cone (grep: only
-absence-asserting docstrings); it lives in the OUT-OF-SCOPE `RlctPayoff` layer (needs `minAdm=codim`,
-the next expedition's runway). "Kills the cite for free" was headline-inflation, STRUCK. GUARD (seat
-B): `_gen`'s clean-three currently rests on a `#print` DIAGNOSTIC (`AxCheck.lean:913`),
-confirmed-by-discipline not build-enforced — R5 installs an ENFORCED axiom-gate. L=1 reaches the
-unsuffixed theorem via a SEPARATE fold (not `_gen`).*
-
-**Consumes (banked, sorry-free — the whole consumer stack is PROVEN):**
-- `aoyagi_learning_coefficient_gen` — `Validate/HeadlineGenAssembly.lean:55`. Clean-three, conditional
-  SOLELY on `hbox = RouteMBoxThresholdFinite (H−r)` — uses NO `cited_aoyagi_dln`/`monomial_rlct`/
-  `sorryAx` (recon §3, Lean-verified). **⚠ HEAVY (356-file cone = the value lane)** — unavoidable at
-  wiring (the driver must SEE `_gen`); acceptable because R5 builds rarely. `EngineDriver` (359)
-  inherits this.
-- The `≤`-half (achiever divergence): `routeMCore_box_diverges_achiever_full'` —
-  `Validate/RouteMAchieverFullHNoFree.lean:40`, 0-sorry. Folded with the finiteness half by
-  `r1_resolution_general` (`Validate/R1ResolutionGeneral.lean`) into `= ofReal(lambdaCore M)`.
-- Regular-peel / value-shift (Theorem 3): `reg_shift_add_core_eq_aoyagiLambda`
-  (`Validate/DeepestFrontGaugeGen.lean` + consumers), `deepest_le_of_homogeneous_core`
-  (`Validate/DeepestMinRlct.lean:157`, hypothesis-free — Theorem 4 deepest-point).
-- `RouteMBoxThresholdFinite` (hbox predicate) — `Validate/RouteMBoxReduction.lean:165` (verbatim
-  anchor). `engine_box_threshold_finite` (the discharger) — `Engine/EngineDriver.lean:44`
-  (@[blueprint], sorry-free composition; its flip to clean-three IS the hbox event).
-- MINT anchor: `aoyagi_learning_coefficient` bare name at `Skeleton.lean:1685` (legacy stub
-  re-pointing at mint). ⚠ Skeleton.lean carries 3 legacy stub sorries (`:1094,:1140,:1197`) — see
-  [[dead-routes]]; the repoint must land the bare name on `_gen`, not on a stub.
-
----
-
-## R6 — regular-peel transcription (OWED FIRST-CLASS; off critical path, cost-probe-gated)
-
-*Lemma 2 + Theorem 3 (block-diagonalization, Layer A) as first-class library objects. **Council #3
-OVERRODE the recon's "value lane suffices" (fork 11): both seats reject it as the retired razor — the
-value lane gets the NUMBER, not the OBJECT; under fork 10 (build HER mechanism) the peel is OWED.**
-Placed post-spine, off the critical path, COST-PROBE-GATED (the SchurCore depth-≥3 wall,
-`rr4-precedent`), surfaced to the operator for scope confirmation. θ + Eqs (1)–(5) stay out.*
-
-**Consumes:** the value-lane peel (`reg_shift_add_core_eq_aoyagiLambda`, `DeepestFrontGaugeGen`,
-`HeadlineRowColPermWLOG`, `D1Ge*`, all banked sorry-free in `_gen`) computes the shift VALUE, not the
-OBJECT — so R6 builds Lemma 2's Schur-complement CoV + Theorem 3's peel induction as fresh
-object-level work; no banked object-level substrate. Cost-probe first (the SchurCore wall).
-
----
-
-## Worked precedent (the pattern the generic engine reproduces)
-
-`Validate/RouteMBoxThresholdRR4.lean` — the (r,r,4) family end-to-end 0-sorry. Assembly decl
-`routeMBoxThresholdFinite_rr4_of_schurRecStep` (`:219`); threshold match `minAdm_rr4_eq` (`:88`);
-CoV `routeMLayerBoxIntegral_rr4_eq` (`:177`). See [[landmark-cards]] `rr4-precedent`. **OUTER-plumbing
-precedent ONLY** — the inner SchurCore/front-peel core walls at depth ≥ 3 (`:12–21`), so it does NOT
-precedent the L=3 (2,2,2,2) case-1(1) merge (task #7). NOTE: shorthand "RR4.lean" = this file (no bare
-`RR4.lean`).
-
----
-
-# D-ARC REUSE INDEX (cartographer-3, 2026-07-19)
-
-*The construction kit t04 CONSUMES to fill `o5_realization` (`EngineObligations.lean:63`, `@[blueprint]`
-sorried) via `cert-o5-realization.md` §§3–4. **The whole kit is banked sorry-free** — `EngineConstruction.lean`
-= 0 sorries (verified `grep`, 2026-07-19); the coverage kit = 0 real sorries (the `sorry` token in
-`PivotCoverFold.lean:8` is a STALE docstring line, not a proof hole — `node_pivotCover_of_atom` IS proven).
-Every pin `file:line` grep-verified against the live tree at HEAD `da6567505`. All five families live in
-`Engine/`. **[cartographer-6 correction, HEAD `c342c55fb`: `EngineConstruction.lean` is BACK to 0 sorries
-— `o5_core` was DELETED (move-at-landing executed, tick 189 ruling #3); its proven replacement
-`o5_core_realized`/`tStar_realized` live in `O5Realization.lean` and are clean-three. The cartographer-4
-"now has 1 sorry (o5_core :2611)" note is SUPERSEDED. See § ENDGAME below + [[dead-routes]] census.]**
-**The cert→Lean vocabulary map is the reuse's crux** (cert names ≠ Lean names in several places,
-flagged inline). t04's ONE genuine new brick is `o5_realization`'s §4 descent case (the intra-layer
-pull-ordering) — everything below is REUSE, not rebuild.*
-
-## (a) The invariant kit — `EngineConstruction.lean`, all sorry-free
-
-The o4/o5 state invariants + their per-transition maintenance + the reachability threading. The steering
-descent invariant (cert §4) is maintained by CONJOINING these across the same three step-transitions.
-
-- **Defs:** `SameLevelChainInv` (`:625`), `FlatTail` (`:650`), `WeakDecInv` (`:540` — **cert/handoff call it
-  `WeakDec`; Lean name is `WeakDecInv`**), `WidthBound` (`:872`), `LiveHeadDom` (`:886`), `BoundaryFlat`
-  (`:1422`), `T0Bound` (`:1490`), `NumDivFlatPos` (`:1588`), `MvalCoh` (`:1365`). The settled-fields bundle is
-  the STRUCTURE `StateInvariant` (`:92`, layer/cleared/live-width — distinct from the o4 defs above).
-- **Maintenance ×3 transitions** (rollover / case-1(1) `stepCase11` / append-advance `stepAppendAdvance`
-  [+`_case12`]): `LiveHeadDom_step{Rollover,AppendAdvance,AppendAdvance_case12,Case11}` (`:1011,1041,1078,1123`);
-  `SameLevelChainInv_step{Rollover,Case11,AppendAdvance,AppendAdvance_case12}` (`:1167,1175,1218,1264`);
-  `BoundaryFlat_step{Rollover,Case11,AppendAdvance}` (`:1429,1441,1462`); `T0Bound_step{Rollover,Case11,
-  AppendAdvance}` (`:1495,1500,1527`); `NumDivFlatPos_step{Rollover,Case11,AppendAdvance}` (`:1591,1594,1597`);
-  `MvalCoh_{stepRollover,stepAppendAdvance,case11child}` (`:1376,1383,1395`). Roots: `{BoundaryFlat,MvalCoh,
-  T0Bound,NumDivFlatPos}_conRoot` (`:2493,2496,2499,2502`).
-- **Reachability threading (the fold's engine):** `MvalBoundaryInv_conOracle_stepChildren` (`:2261` — a THEOREM
-  name, NOT a def) threads `BoundaryFlat ∧ MvalCoh` through EVERY `conOracle` step-child (case-2 via the
-  telescoping identity, case-1 via the delta + BoundaryFlat). This is the pattern t04's §4 anchor-descent
-  invariant re-uses: prove per-transition maintenance, thread through `conOracle`, fold at leaves.
-- **Consumes:** `LiveHeadDom` case-1 maintenance CONSUMES chooser minimality (see (b)); `LiveHeadDom < Mrun(S)`
-  guard is load-bearing (stranded pairs at level `= r_S` are OUT of scope — that is exactly why full-chain
-  fails and `SameLevelChainInv`/`LiveHeadDom` survive; [[dead-routes]] minimality-free + full-chain kills).
-- **Near-miss:** there is NO global `WidthBound`/full-comparability invariant — both are FALSE at interior
-  bottlenecks ([[dead-routes]]). `WidthBound` is the LIVE-restricted bound only.
-
-## (b) The chooser / minimality family — `EngineConstruction.lean`, sorry-free
-
-**THE family t04's pull-ordering brick reuses** (cert §4 flagged brick ↔ cert-compchain-o4 §§6–7). Maps the
-cert's "STEP1 / minimality" prose to Lean:
-
-- `IsEligibleMinimalChoice s k runLen` (`:275`) — the eligibility+minimality predicate (`1 ≤ runLen ∧
-  divTilde k = cleared+runLen ∧ ∀ k' at that level, divProfile k ≤ divProfile k'`).
-- `chooseMin s target` (`:1818`) + `chooseMin_spec` (`:1830`) — the Def-4-least chooser + its read-off
-  (returned divisor is at `target` AND componentwise-≤ all same-level divisors).
-- `chooserTotalOnChain_of_sameLevel` (`:1861`) — o2 min-existence: on a `SameLevelChainInv` state the chooser
-  never falls back (`ChooserTotalOnChain`, `:1852`). Helper `le_of_comparable_sum_le` (`:1842`, ∑-min ⟹
-  componentwise-min on a chain).
-- **`step1_dominates` (`:904` — cert calls this "STEP1"; Lean name is `step1_dominates`)** — the residual's
-  core: at a case-1 node every level-`ℓ` divisor dominates every level-`≤J` divisor. Consumes `LiveHeadDom` +
-  `FlatTail` + `WeakDecInv` + `divProfile_tail_eq_tilde` (`:893`). This is the exact lemma cert-o5 §4's descent
-  case ("A lands at exactly `a^S`, Def-4-least at its level") transcribes.
-- **Minimality is LOAD-BEARING** (cert-compchain-o4 Part 7): a non-minimal pick breaks `SameLevelChainInv` at
-  `(2,2,3,3,2)`. Do not build the descent invariant "minimality-free" ([[dead-routes]]).
-
-## (c) The Mval family — `EngineConstruction.lean` + `EngineDefs.lean`, sorry-free
-
-§3's envelope-splice is ALGEBRAIC over these (same flavor as the banked telescoping/delta):
-
-- `Mval_setTail_runMinWidth` (`:741`) — the case-2 telescoping identity `Mval(setTail layer cleared
-  runMinWidth) = (widthMinUpto layer − cleared)(M(layer+1) − cleared)` (head terms die by
-  `widthMinUpto_succ`, tail by constancy; ℤ then `.toNat`).
-- `Mval_setTail_delta` (`:806`) — the case-1 tail-write delta `(τ−J)(M^(l+1)−J)`, faithful under `BoundaryFlat`.
-- `MvalCoh` (`:1365`) is the ℤ-EQUALITY form `(divExp k : ℤ) = Mval` (NOT `.toNat`); `MvalCoh.toNat` (`:1370`)
-  derives the `IsFullMonomialization` read-off. **Keep deltas over ℤ, cast at the leaf** (t04-handoff §4).
-- Primitives: `runMinWidth` (`EngineDefs.lean:91`), `widthMinUpto` (`EngineDefs.lean:98`); helpers
-  `widthMinUpto_succ` (`:693`), `runMinWidth_eq_widthMinUpto` (`:657`), `runMinWidth_antitone` (`:677`),
-  `setTail_of_le` (`:631`).
-- **Envelope-splice reuse (§3):** Steps 1–2 (each envelope term = 0; non-envelope prefix > 0) are exactly the
-  factor-vanishing pattern of `Mval_setTail_runMinWidth`; Step 3 (splice `b`) is an `Adm`-membership +
-  term-by-term `Mval` comparison — tractable with these lemmas + `leaf_mem_Adm` machinery (d), no new algebra.
-
-## (d) The leaf / fold family — `EngineConstruction.lean` (+ `ResolutionTree.lean`), sorry-free
-
-The A→C spine (task #21–23) that folds invariants to leaves; t04 reads terminal divisors off it.
-
-- `leaves_isFullMono` (`:2461`) — the WF-induction fold (OracleInv+MvalCoh to leaves → `IsFullMonomialization`).
-- `leafOfState` (`:1754`) + `t0Indices` (`:1719`) — the leaf constructor; analytic side = the `t̃=0` sublist.
-  `leafOfState_rootLedger` (`:1790`). **Placeholder-chart caveat: `leafOfState.chartMap = id` today** — the
-  REAL fold is t04's carrier work (see [[naming]] carrier disambiguation).
-- `leaf_mem_Adm` (`:1313`), `_single` (`:1334`), `_t0` (`:1552`) — the `P ⊆ Adm` direction (needs `0 < L`).
-- `leaves_resRank_zero` (`:2517`) — every leaf has `resRank = 0`, so `terminalExponents` (`ResolutionTree.lean:284`)
-  = the `divExp` lists only (the residual `[]`). **This is the reduction t04's §ii uses**: `minAdm ∈
-  terminalExponents ⟺ ∃ leaf `l`, ∃ analytic `k`, `l.divExp k = minAdm`** (t04-handoff §2).
-- `conRoot_steps` (`:2561`) — the base wireability (root steps for genuine `M`); `leaves` (`ResolutionTree.lean:195`).
-- **`srcBox.Nonempty` (slot 6):** `leafOfState`'s srcBox = `paramsEquivFlat ⁻¹' cubeBox 1` — nonempty (cube at
-  radius 1, needs `0 ≤ 1`); cheap (t04-handoff §2).
-
-## (e) The coverage kit — `Engine/`, sorry-free (feeds `chartBridge_buildTree`, the SIBLING hole; carrier must line up)
-
-*Not t04's hole (that is `o5_realization`), but t04's CARRIER (the real `localSub`s + chart fold) is the
-prerequisite coverage's 3 Props consume — the carrier's per-edge fields MUST line up with these signatures.*
-
-- `pivotChart` atom (`PivotCover.lean:43`) + `pivotChartDom` (`:49`); a.e.-InjOn `pivotChart_ae_injOn`
-  (`PivotInjOn.lean:47`, from `pivotChart_injOn` `:25` + `pivotChart_exceptional_null` `:40`).
-- `node_pivotCover_of_atom` (`PivotCoverFold.lean:187`) — per-node cover from the pivot atom; the SHEARED
-  variant `node_pivotCover_of_atom_sheared` (`ShearReconcile.lean:42`) carries the extra `ψ : Params M ≃ₜ
-  Params M` gauge (the Q1b single-ψ; `ψ = id` on ledger-only case-1(1) merge edges). **Carrier constraint:**
-  each edge's `localSub` must equal `ψ (q.symm (Prod.map (pivotChart (pivotOf e)) id (q ·)))` for these to
-  apply — this is the shape t04's carrier emits (t04-handoff §3; journal tick 163 4-part spec).
-- `chartBridge_of_pieces` (`ChartBridgeWiring.lean:59`) — **PROVEN implication** (the o5-fed Props enter as
-  typed hypotheses over a fold-form `χ` parameter; `hχ : l.chartMap = χ l` bridges to the record). t04's carrier
-  makes `l.chartMap` the real fold so `hχ` holds BY CONSTRUCTION.
-- **Near-miss / stale:** `PivotCoverFold.lean:8` docstring still says "bodies are `sorry`, held for review" —
-  STALE; the theorem is proven. Do not read it as a live hole.
-
----
-
-# CARRIER-ADJACENT REUSE INDEX (cartographer-4, 2026-07-19)
-
-*Consumption-scoped for architect-t05's CHART-EMISSION carrier arc (task #8): the decls the carrier
-POPULATES or REUSES to make `l.chartMap` the real root→leaf fold and to line the per-edge `localSub`s
-up with the coverage atom. Distinct from R1's LEDGER carrier ([[naming]] two-carriers). Every pin
-`file:line` grep-verified at HEAD `0ae14ade9`. **The carrier's final form is R-b (tick 187): per-edge
-`localSub_e = β̃_e = β_e ∘ α_e⁻¹` — a det-1 SOURCE reparam whose images equal the pure-β images, so
-the PURE atom applies and the sheared (ψ) variant retires; the spine path-fold is STRUCK moot; the
-coordinate split `q` must be CONCRETE.** ([[dead-routes]] single-ψ / spine-path-fold kills.)*
-
-**SYNC NOTE — indexes the PRE-batch state.** coverage-t08's re-typing batch (`ChartBridge` → flat
-virtual-leaf atlas, WIP `e849a4b11`) is **NOT merged** at this HEAD (verified: `LeafPullbackWith`/
-`LeafJacobianWith` + the `χ` parameter of `chartBridge_of_pieces` are still present — tick-194's batch
-deletes them). Pins below are the current tree; the post-batch delta is flagged inline where it moves.
-
-> **SUPERSEDED (cartographer-5, 2026-07-19 @ `64fe1a7f2`).** The re-typing batch HAS since merged
-> (task #9 completed). At this HEAD the current `ChartBridgeWiring.lean` (read in full) has NO
-> `LeafPullbackWith`/`LeafJacobianWith` and `chartBridge_of_pieces` has NO `χ` parameter — it bundles the
-> flat atlas `⟨atlas, himg, hleaf, hexp⟩` directly. The With-variants survive only in the historical
-> thread docs / Codex logs. The (a)-section pins below reflect the PRE-batch tree; `leafOfState.divCoord`
-> is also since real-ified (tick 232), though `leafOfState.chartMap = id` remains true BY DESIGN (the
-> ledger spine is `chartMap`-blind; charts live on the atlas pieces). See [[wiring-endgame]] for the
-> current endgame graph + the discharge checklist.
-
-## (a) `ChartSubst` — the per-edge chart surface (populate `localSub`, no sibling bundle)
-
-- **Structure `ChartSubst`** — `ResolutionTree.lean:65`. Fields, in anonymous-ctor order
-  `⟨localSub, runLen, mergeIdx, jacDivCount, jacPow⟩`: `localSub : Params M → Params M` (`:67` — the
-  carrier's TARGET field, currently `id`), `runLen` (`:71`), `mergeIdx` (`:76`), `jacDivCount` (`:78`),
-  `jacPow : Fin jacDivCount → ℕ` (`:82`, construction-side Jacobian accounting — the certificate's
-  Jacobian content lives in `LeafJacobian`'s existential, NOT here). `StepCase` (`:53`):
-  `case11`/`case12`/`case2`/`rollover`.
-- **Emission points — where `localSub` is currently `id`** (the carrier replaces these with `β̃_e`):
-  - LIVE via `conOracle` (`EngineConstruction.lean:2090`; dispatch: rollover `:2093`, case1 `:2112`,
-    case2 `:2119`):
-    - `case1Decision` (`:2028`) — the ONE case-1 node emits **both** edges: case-1(1) merge
-      `⟨id, runLen, f.val, 0, Fin.elim0⟩` (`:2041`) + case-1(2) split `⟨id, runLen, f.val, 0,
-      Fin.elim0⟩` (`:2042`). This is the u-blow-up node (pnp-psi T1: `localSub` = the genuine
-      `d_ij = u·d'_ij`, `ψ=id` but `β≠id`).
-    - `case2Decision` (`:1938`) — `⟨id, 0, 0, 0, Fin.elim0⟩` (`:1941`).
-    - `rolloverDecision` (`:1919`) — `⟨id, 0, 0, 0, Fin.elim0⟩` (`:1922`). **CHARTLESS: `localSub`
-      stays `id`** ([[dead-routes]] rollover-chart kill); the carrier does NOT give it geometry.
-  - OFF the `conOracle` path (standalone building blocks, also emit `id`; the carrier need not touch
-    unless reused): `case11Decision` (`:1986`, ctor `:1999`), `case12Decision` (`:1958`, ctor `:1962`).
-    `case1Decision` INLINES both edges rather than calling these two.
-  - `leafOfState` (`:1754`) — leaf `chartMap := id` at `:1766` and `:1782` (both `dite` branches). The
-    carrier makes this the root→leaf fold. Reuse-index (d) "leafOfState.chartMap = id today" CONFIRMED.
-  - Hand-witnesses (NOT construction decisions — the carrier leaves them unless the (2,2,4) forecast is
-    discharged): `CanonicalWitness224.lean` (`localSub`/`chartMap := id` at `:39,:54,:149,:163,…`),
-    `CoRank2Spike.lean:39,:94`.
-
-## (b) The `leafPaths` / `leafPathImages` fold family — the t_geo template (ALREADY BUILT — see CQ1/CQ2)
-
-*The fold-of-`localSub`s MACHINERY the carrier reuses. It is NOT a construction accumulator — it is a
-SPEC recursion over an already-built tree; the carrier populates the `localSub`s it reads.*
-
-- **`leafPaths` (`ResolutionTree.lean:218`) + `edgesLeafPaths` (`:223`)** — type `(acc : Params M →
-  Params M) → ResolutionTree M → List (LeafData M × (Params M → Params M))`; recursion `acc ∘
-  s.localSub` (`:226`). Pairs each leaf with the **COMPOSITE FOLD** of its root→leaf `localSub`s — NOT
-  the edge list. The bundle's coherence clause equates this composite to `l.chartMap`.
-- **`leafPathImages` (`PivotCoverFold.lean:57`) + `edgesImages` (`:61`)** — `ResolutionTree M → Set
-  (Params M)`; the image-union fold `s.localSub '' leafPathImages c ∪ …` (`:63`) `= leafPaths id t`
-  images (`leafPathImages_branch`, `:69`). **This is the clause-(A) cover engine.**
-- Bridge helpers connecting the two: `imgAcc` (`:122`), `imgEdgesAcc` (`:132`), `leafPaths_mapFst`/
-  `edgesLeafPaths_mapFst` (used `:170`); `OwnCovers` (`:91`), `ownCovers_branch` (`:99`).
-- **t_geo analog (`geometricLeafPaths`, coverage-future, NOT in the tree):** tick 185 — a DIRECT analog
-  of THIS recursion SHAPE; `d_center` computable from `t` (case-1 `= runLen·resCols + 1` off the edge's
-  `ChartSubst` + node `StepData`). It must accumulate the edge/`d_center` DATA (a different `acc`), not
-  reuse `leafPaths` verbatim (which folds the composite function). See CQ2.
-
-## (c) The concrete `q` — `node_pivotCover_of_atom`'s coordinate-split shape (what the carrier must match)
-
-- **`node_pivotCover_of_atom` (`PivotCoverFold.lean:187`)** — the per-node cover atom. Its hypotheses
-  are what the carrier's concrete data must instantiate:
-  - `q : Params M ≃ₜ (Fin d → ℝ) × E` — center coords × spectators; **`q` is a HYPOTHESIS, no concrete
-    def in the tree** (grep-confirmed). tick 185: the carrier must supply `q` CONCRETE (companion of
-    the β field), not leave it existential.
-  - `pivotOf : Edge M → Fin d` (also a hypothesis, no concrete def); `hbij` = the FULL family (every
-    `i : Fin d` realized — the architect's `StepEmit`/`pivotComplete` amendment, `PivotCoverFold.lean:177`;
-    fewer than `d` pivots leaves the corner gap `corner_chart_not_cover`).
-  - `hloc : localSub w = q.symm (Prod.map (pivotChart (pivotOf e)) id (q w))` (`:192`) — **the exact
-    shape `β̃_e` must equal** (pure, no ψ, under R-b). `hdom : childRegion e = q ⁻¹' (pivotChartDom
-    (pivotOf e) R ×ˢ univ)` (`:194`); `childRegion` also a hypothesis.
-  - `d` = center dim: case-1 `J₁·(M^{(S+1)}−J)+1` (p.16); case-2 `(M(S)−J)·(M^{(S+1)}−J)` (p.19)
-    (`PivotCoverFold.lean:184-185`) — the `d_center` family data the carrier supplies per node.
-
-## (d) `pivotChart` + product-effect + the gauge atoms (`α_d`'s inverse-Schur target)
-
-- **`pivotChart` (`PivotCover.lean:43`)** `= fun k => if k=i then u i else u i * u k`; **`pivotChartDom`
-  (`:49`)**.
-- **Product-effect (image cover):** `iUnion_pivotChart_image_eq_cubeBox` (`:108`, the `=` form) built on
-  `cubeBox_subset_iUnion_pivotChart_image` (`:62`); `corner_chart_not_cover` (`:129`, full-family
-  necessity). This is what `node_pivotCover_of_atom` consumes at `:209`.
-- **JACOBIAN — no standalone det lemma in `PivotCover`.** `det Dβ = u i^(d-1)` is DOCSTRING-ONLY
-  (`:39-41`); the `|det Dβ| = ∏|u|^{divExp−1}` obligation lands in **`LeafJacobian`** (`EngineDefs.lean:58`,
-  the area-formula existential `Dβ`), NOT here. The carrier's Jacobian duty is a `LeafJacobian` witness.
-- **`ShearReconcile` gauge atoms:** `ownCover_transport` (`:31`), `node_pivotCover_of_atom_sheared`
-  (`:42`; `hloc` with `ψ`, `:47-48`). **R-b RETIRES this variant to `ψ = .refl`** (tick 187): `α_e`'s
-  inverse-Schur `α_e⁻¹` is chosen so `β̃_e = β_e ∘ α_e⁻¹` matches (c)'s PURE `hloc` (q-conjugated
-  `pivotChart`, no ψ); `|det Dα| = 1` preserves Jacobians; images identical to pure-β. **DRIFT (report
-  item): the `ShearReconcile` docstring (`:6-18`) still asserts "single-ψ is the right model" — refuted
-  by pnp-psi T2; the sheared variant is now a retired shape, not the model.**
-
-## (e) `FlatCubeLeaf` + `LeafData` fields — PRE-batch (see SYNC NOTE)
-
-- **`flatCubeLeafData` (`FlatCubeLeaf.lean:30`)** — the leaf-emission smart-constructor: `srcBox =
-  paramsEquivFlat ⁻¹' cubeBox (flatDim M) R`, `chartMap` a FREE field (ψ∘β shape lives in `LeafJacobian`,
-  so a gauge factor needs no field change). **`flatCubeLeafData_perLeafClause` (`:49`)** proves the
-  8-conjunct per-leaf clause: 5 FREE (`MeasurableSet`, bounded-in-flat-cube, `Injective` div/res,
-  `Disjoint`) + 3 FED (a.e.-`InjOn`, `LeafPullback`, `LeafJacobian`). Added `d61acf80f`; **not yet
-  imported/wired into `buildTree`** (standalone infra).
-- **`LeafData` (`ResolutionTree.lean:128`)** — current 18 fields: `numDiv`/`divExp`/`cleared`/
-  `divProfile` (t̃=0 analytic) + `fullNumDiv`/`fullDivExp`/`fullDivProfile` (full ledger) + `numB`/`bExp`/
-  `bChain` + `chartMap`/`srcBox`/`resRank`/`divCoord`/`resCoord`. **POST-batch delta** (WIP `e849a4b11`,
-  tick 194): `ChartBridge` becomes the flat virtual-leaf atlas — (A) cover + (B) 8 per-piece props +
-  (C) exponent-agreement; `chartBridge_of_pieces` → pure bundling (`χ` dropped, `With`-variants deleted);
-  (D) landed documented-deferred, and the **gate (task #10): (D) must be IN the type BEFORE
-  `chartBridge_buildTree`'s discharge**.
-- **`ChartBridge` def = `EngineDefs.lean:75`** (a `Prop`), consumed by `chartBridge_buildTree`
-  (`EngineObligations.lean:50`) + the `resolutionOf`-form (`:123`). **NAMING DRIFT: [[naming]] pins
-  `ChartBridge` to `EngineObligations.lean` — stale; the def is in `EngineDefs`.** (Fixed in [[naming]].)
-- **DRIFT (report item): `chartBridge_buildTree`'s docstring (`EngineObligations.lean:35-52`) still
-  describes the STRUCK carrier plan** — "thread a path-accumulator through `buildTree`" / "leafOfState.
-  chartMap must be the root→leaf localSub fold." The ratified design (ticks 184/187/194) is spine-
-  UNTOUCHED (the ledger spine is `chartMap`-blind), atlas realized via an auxiliary geometric tree
-  `t_geo` (proof-internal), clause (A) via the (b) fold; the flat virtual-leaf re-typing replaces the
-  threading mechanism. Docstring is read-only for this office — flagged for the owning seat.
-
----
-
-# ENDGAME BANKED-FAMILY CARDS (cartographer-6, 2026-07-19, HEAD `c342c55fb`)
-
-*The four families minted during the endgame arc (ticks ~220-265) that a discharge/assembly seat
-CONSUMES rather than rebuilds. Every pin `file:line` grep-verified against the live tree. These sit
-BELOW the D-ARC reuse index (which the o5 arc consumed) — they are the coverage/carrier/fold substrate
-`chartBridge_buildTree` consumes. The endgame module graph + the discharge checklist is [[wiring-endgame]]
-pass #5.*
-
-## CARRIER family — `QNodeCarrier.lean` (t09; 736 LoC, 0-sorry, reviewed BEDROCK)
-
-*The per-NODE center split the cover + fold-Jacobian both consume. "Per-node cover ruling" (elder-gate9):
-ONE `q` of dimension `dCenterOfNode node`, shared by all the node's `dCenterOfEdge` pivots.*
-
-- `dCenterOfNode` (`:62`) — the per-node total center dim; `dCenterOfNode_edgeSum` (`:117`,
-  `Σ_e dCenterOfEdge = dCenterOfNode` on built branch nodes — the hbij tiling the fan-out partition
-  rides); `dCenterOfNode_le_flatDim` (`:217`, on-cone bound). All conOracle-relative (built-tree only).
-- `qNodeOf` (`:505`) — the per-node center-split `Homeomorph` (`Params M ≃ₜ (Fin (dCN node) → ℝ) ×
-  (Fin (flatDim − dCN node) → ℝ)`), on the reachable cone. THE `q` `geoAtlas`/`geoChartMap` consume.
-- `qOfCenterCLE` (`:781`) — the CLE (linear) form of the split, given an injective selector; the fold
-  Jacobian's conjugation input (fderiv reads it as a fixed CLE). `qOfCenter_hasFDerivAt` clean-three.
-- `cNodeOf` (in this file) — the injective flat-coordinate selector (`Fin dCenterOfNode → Fin flatDim`)
-  the node blows up; injectivity `cNodeOf_injective` load-bearing for the per-piece divCoord.
-- **Watch pins (AxCheck MUST-clean-three):** `qNodeOf`, `dCenterOfNode_edgeSum` (`:1333-1334`),
-  `qOfCenter_hasFDerivAt` (`:1337`). **Reviewed PASS-with-notes, all notes discharged (tick 264).**
-
-## DIVBIRTH-REACHABILITY family — `DivBirthReach.lean` (t07; 0-sorry)
-
-*The birth-corner invariant threaded through the oracle, delivering the per-leaf coordinate clauses (B).*
-
-- `DivBirthInv` (`:54`) + `CornerValid` (`:47`) — the reachability invariant (each divisor's birth
-  corner is valid). Roots/maintenance: `DivBirthInv_conRoot` (`:61`), `_stepCase11` (`:69`),
-  `_stepRollover` (`:75`), `_stepAppendAdvance` (`:91`); THREADED by `DivBirthInv_conOracle_stepChildren`
-  (`:136`, a THEOREM — the fold's engine, AxCheck `:1323`).
-- `birthFlatCoord_injective` (`:244`) + `flatIdx_corner_inj` (`:227`) — the flat-coordinate injectivity.
-- `leafOfState_{resRank_zero,divCoord_injective,resCoord_injective,disjoint}` (`:256,263,275,285`) — the
-  per-leaf clause atoms.
-- **`leaves_chart_clauses` (`:299`) + `leaves_chart_clauses_conRoot` (`:325`)** — the convergence
-  deliverable: the three per-piece coordinate hypotheses (divCoord/resCoord injective + disjoint) for
-  EVERY built leaf. This is the (B)-coords supplier the discharge feeds `chartBridge_of_pieces`. AxCheck
-  `:1326` MUST-clean-three.
-
-## GEO-ATLAS family — `GeoChart.lean` + `GeoCoverSpec.lean` (t08/t10; the atlas producer + cover)
-
-*The flat virtual-leaf atlas realized under elder-gate9 (per-edge emission + buck-stops geometry).
-⚠ carries TWO known EMISSION DEFECTS — recorded as traps in [[dead-routes]] § geo-atlas emission.*
-
-- `GeoChart` (structure, `GeoChart.lean:32`) — node-derived DATA only (`node`, `edge`, `pivot`); no free
-  geometry (buck-stops: a fabricated atlas can't satisfy fidelity).
-- `geoChartMap` (`:54`) — the COMPUTED per-node chart `β`: on-cone the `qNodeOf`-conjugated `pivotChart`
-  on the node's full center, off-cone `id` (totality fallback).
-- `geometricLeafPaths`/`geomEdges` (`:71,:77`, mutual) — EDGE-DRIVEN fan-out: each edge emits its
-  `dCenterOfEdge` charts, assigned a GLOBAL pivot into the node's `dCenterOfNode` via a running `offset`
-  (the hbij partition). ⚠ chartless edges (`dCenterOfEdge = 0`) forward `acc` UNCHANGED (id-passthrough,
-  tick 262 fix — WITHOUT it the whole child subtree was dropped below the first rollover).
-- `geoAtlas` (`:100`) — `(geometricLeafPaths (dCenterOfNode M) (qNodeOf M) id t).map (fun lc =>
-  { lc.1 with chartMap := lc.2 })`. **The `List (LeafData M)` the corrected `ChartBridge` quantifies
-  over.** ✔ EMISSION DEFECT (finding 3, task #35) — **DISSOLVED (fork 15, carto tick 348).** Under
-  diagonal-normalization the fan-out births every divisor at its `divBirthCoord` diagonal, so the
-  state-level `divCoord`/`divExp` is correct for every fan-out chart; the per-pivot re-derivation is
-  no longer needed and `LeafJacobian` holds (`geoAtlas_leaf_leafJacobian`, closed tick 338). See
-  compass fork 15 + the FOLD-REGROUP / LEAF-JACOBIAN final-arc cards below.
-- `geoAtlas_imageCover` (`GeoCoverSpec.lean:370`, **PROVEN clean-three tick 288**; was `:33` sorry) —
-  clause (A): open neighbourhood of the zero-locus ⊆ ⋃ atlas images (0∈U reshape, obligation-statement
-  instance #7). Recipe: `threads/10-coverage/cover-specify.md`. Pins: `q = qNodeOf`, `hbij =
-  dCenterOfNode_edgeSum`, `hd = dCenterOfNode_le_flatDim`. (Witness-swap note: the α-atlas cover
-  transfer re-proves this over `geoAtlasNorm alphaGauge` via open-homeo/shrunken-U′ — see the coming
-  GeoAtlasTransfer forwarding card.)
-
-## FOLD-JACOBIAN SPINE family — `GeoJacobianSpec.lean` + `GeoJacobianFold.lean` (t11; sorry-free, GATE-WIRED @13b86217a)
-
-*The construction-stable Jacobian workhorse the `LeafJacobian` clause consumes. BANKED sorry-free;
-GATE-WIRED at `13b86217a` (AxCheck:12 imports `GeoJacobianFold`, pulling GeoJacobianSpec, + 5 watch
-lines). Was a gate-orphan at the carto6 snapshot; closed post-snapshot (see [[wiring-endgame]] §1a).*
-
-- `geoChartMap_fderiv_det` (`GeoJacobianSpec.lean:95`) — the PER-EDGE det atom (on-cone):
-  `|det D(geoChartMap g) w| = |z_{cNodeOf(node)(pivot)}(w)|^{dCenterOfNode − 1}`, via q-conjugation
-  (`conjBlock_abs_det` from `RouteMConjBlock`) + `pivotChartDeriv_det`. `_offcone` (`:135`) = det 1 for
-  the id-passthrough edges. Support lemmas `centerPerm_symm_inl` (`:62`), `qOfCenterCLE_fst_apply` (`:73`).
-- `abs_det_fderiv_foldr_comp` (`GeoJacobianFold.lean:60`) — the PARAMETRIC chain-rule fold: for a list of
-  `Differentiable` maps, `|det D(foldr comp)| = ∏ per-factor det moduli at the intermediate fold points`.
-  Stated abstract-over-the-path so it survives the emission churn. Support: `clm_det_comp` (`:32`),
-  `foldrCompAbsDet` (`:40`), `foldr_comp_differentiable` (`:45`), `geoChartMap_differentiable` (`:91`).
-- **GATED remainder — NOW CLOSED (carto tick 348; was "NOT banked").** (i) the cocycle REGROUPING of
-  the intermediate-point factors onto the source-`w` per-piece ledger LANDED clean-three at **tick 336**
-  (`geoAtlas_cocycle`, `GeoFoldRegroup.lean:1069` — the wall) and strengthened to `geoAtlas_fold_det`
-  (**tick 337**) + `geoAtlas_leaf_leafJacobian` (**tick 338**, the `LeafJacobian` conjunct); (ii) the
-  per-pivot-ledger emission concern DISSOLVED under fork-15 diagonal-normalization (see the GEO-ATLAS
-  card's struck defect note). See the FINAL-ARC cards below (FOLD-REGROUP COCYCLE + LEAF-JACOBIAN CLOSE).
-
-# FINAL-ARC BANKED-FAMILY CARDS (carto-standing, 2026-07-20, ticks 336–348, HEAD `f4fa30be5`)
-
-*The families minted in the discharge arc — the fold cocycle (the wall, closed tick 336), the
-LeafJacobian close, the loss value-walk consumer side, the R-split faithful discharge, and the
-coming witness-swap transfer batch. Every `file:line` grep-verified against the live tree. These sit
-BELOW the tick-265 endgame cards and are what the remaining discharge (loss walk + witness-swap →
-`chartBridge_buildTree` → hbox → mint) consumes.*
-
-## FOLD-REGROUP COCYCLE family — `GeoFoldRegroup.lean` (t14 + pnp-fold; 1334 LoC, 0-sorry) — THE WALL, CLOSED tick 336
-
-*The relative-Jacobian cocycle threading the incoming ledger through each chart innermost-first (the
-fold-det maintenance form, pnp-fold §2). The one genuinely hard endgame proof; funneled ~11 seats.*
-
-- `geoAtlas_cocycle` (`:1069`) — **the headline**: `|det D(foldr-comp chart)| = ledgerMonomial`
-  threaded through the built tree. Closed clean-three tick 336 (controller-probed `[propext,
-  Classical.choice, Quot.sound]`).
-- The four per-case maintenance theorems the walk dispatches: `ledger_det_maintenance_case2` (`:805`),
-  `_case11` (`:852`), `_case12` (`:903`), `_rollover` (`:968`).
-- `ledgerMonomial` suite — `_conRoot` (`:565`, base), `_stepRollover` (`:457`), `_stepAppendAdvance`
-  (`:463`), `_comp_spectator` (`:493`), `_center_of_reads` (`:513`), `_bumpedExp_delta` (`:678`),
-  `_eq_of_reads` (`:584`, reads-based — the gauge bundle's discharge hook, tick 343); `leafOfState_prod_
-  eq_ledgerMonomial` (`:543`).
-- `geoChartMapNorm` cocycle atoms — `_fderiv_det` (`:383`), `_fderiv_det_offcone` (`:397`),
-  `_cocycle_step` (`:428`), `abs_det_fderiv_comp` (`:415`); `birthFlatCoord_eq_flatCoordOf` (`:168`),
-  `birthFlatCoord_stepAppendAdvance_last` (`:596`), `diagTargetOf_noncase11_eq_fresh` (`:623`).
-- `DivExpPos` suite (`≥1` exponent positivity, the R7 ∃-conjunct supply) — `_conRoot` (`:647`),
-  `_stepRollover` (`:650`), `_stepAppendAdvance` (`:654`), `_bumpedExp` (`:662`),
-  `_conOracle_stepChildren` (`:705`).
-- Fan-decomposition helpers the walk rides: `mem_edgesLeaves_fanned_charted` (`:1017`),
-  `_chartless` (`:1040`), `edgesLeafPathsList_*` (`:260,271,281`), `tGeo_absdet_foldrList` (`:339`),
-  `geoAtlas_absdet_foldr` (`:371`).
-
-## LEAF-JACOBIAN CLOSE — `GeoLeafJacobian.lean` (t14; 94 LoC, 0 proof-sorries) — CLOSED ticks 337–338
-
-*The `LeafJacobian` conjunct discharge, strengthened from the cocycle to expose the leaf's reachable
-terminal state (the low-risk step-through claim held).*
-
-- `geoAtlas_fold_det` (`:57`) — the fold-det at `conRoot`/`id`, R7 full-ledger ∃-form; closed
-  clean-three tick 337.
-- `geoAtlas_leaf_leafJacobian` (`:76`) — the per-piece `LeafJacobian` bundle (10 conjuncts: β:=acc,
-  ψ:=id lo=hi=1, fc:=birthFlatCoord, emb:=t0Indices.get, injectivity, ≥1 via `DivExpPos`, Disjoint
-  vacuous, det from the cocycle); closed tick 338. THIS is what `chartBridgeFaithful_buildTree`'s
-  `LeafJacobian` slot consumes (`ChartBridgeFaithful.lean:93`).
-- ⚠ **DRIFT (flag, not owned by this office):** the module docstring `:14-18` still calls the cocycle
-  induction "the one `sorry` below (LIVE-frontier)" — STALE; there is no proof-position sorry in the
-  file (`geoAtlas_fold_det` is closed). Flag to the owner. Counterpart: `GeoLeafJacobianDisproof.lean:34`
-  `geoAtlas_fold_det_generic_false` (the generic-`t` negative result — why the walk is buildTree-specific).
-
-## LOSS VALUE-WALK family — `GeoAlphaGauge.lean` + `GeoInvVal.lean` (loss-t15; the `LeafPullback` lane) — ONE FRONTIER SORRY
-
-*The α incidence-gauge + the value-walk consumer side. The engine's SINGLE remaining +sorryAx frontier.*
-
-- α gauge (PROVEN, `GeoAlphaGauge.lean`): `residualSchurShear_abs_det_one` (`:410`),
-  `alphaGauge_abs_det_one` (`:427`, det-1), `residualSchurShear_srcBox`/`alphaGauge_srcBox_bounded`
-  (`:441,:484`, bounded), `geoAtlasNorm_resRank_zero` (`:386`, resRank=0 transferred through `tGeoG`).
-- loss algebra (PROVEN): `leafPullback_of_diagFrob` (`:536`) — `LeafDiagFrob → LeafPullback` on the
-  cleared diagonal; `leafPullback_geoAtlasNorm` (`:575`) — assembles it from the geometry half +
-  resRank-zero.
-- consumer side (PROVEN, t14-INDEPENDENT, `GeoInvVal.lean`, 0-sorry): `frobSq_of_diagonal` (`:36`),
-  `leafDiagFrob_of_prodDiag` (`:61`) — the leaf-discharge bridge `LeafProdDiag → LeafDiagFrob`.
-- ▶ **THE FRONTIER (loss-t15, in-flight):** `leafDiagFrob_geoAtlasNorm` (`GeoAlphaGauge.lean:562`,
-  **sorry**) — `prod ∘ chartMap` diagonalizes to the `b`-chain at every α-atlas leaf (the loss-VALUE
-  analog of `geoAtlas_fold_det`). Fills via the `Inv_val` value walk (hybrid A-scaling × B-recursive-
-  ratio, elder tick 343c; four maintenance proofs + walk instantiation, mirroring t14's step plumbing).
-  This is the engine cone's one live analytic hole.
-
-## FAITHFUL DISCHARGE (R-split) — `ChartBridgeFaithful.lean` (elder charge-4; 103 LoC, 1 sorry)
-
-*The HIGH module that proves the faithful A∧B∧C∧D over the atlas; `chartBridge_buildTree` is its
-drop-(D) projection (so (D) fidelity is on the payoff's proof cone, undroppable).*
-
-- `ChartBridgeFidelity` (`:43`) + `ChartBridgeFaithful` (`:52`, def A∧B∧C∧D) — the R-split predicates.
-- `ChartBridgeFaithful.toChartBridge` (`:70`) — the projection (drop (D)); `region_glue` consumes this.
-- `chartBridgeFaithful_buildTree` (`:82`) — the discharge. PROVEN: (A) `geoAtlas_imageCover`, (D) `rfl`
-  + `nodes_cNode_eq_realCNode`, the 5 (B) ledger props + (C) `geoAtlas_leaf_ledgerProps`, a.e.-inj
-  `geoAtlas_leaf_ae_injOn`, `LeafJacobian` `geoAtlas_leaf_leafJacobian`. **ONE sorry (`:92`)** — the
-  `LeafPullback` conjunct (consumes the LOSS VALUE-WALK frontier above).
-- FORWARDING: `EngineObligations.chartBridge_buildTree` (`:49-52`) `:= (…).toChartBridge` — a projection,
-  NOT a raw hole. AxCheck watch flips both to clean-three at discharge (+ `chartBridgeFaithful_buildTree`
-  MUST-clean-three; cordon: a direct A∧B∧C fill is a fidelity regression).
-- ⚠ **DRIFT (flag, not owned):** the `chartBridgeFaithful_buildTree` docstring (`:74-81`) still says
-  "the two frontier sorries" — STALE (ONE now, the `LeafPullback` conjunct). On the stage-3 re-wire's
-  no-touch surface; flag to the discharge seat (the EngineObligations caveat was refreshed carto tick-348).
-
-## FORWARDING POINTER — `GeoAtlasTransfer` (COMING; not yet on disk) — the witness-swap transfer batch
-
-*The α-atlas witness-swap (elder ruling tick 340, R-split stage 3) re-points the faithful witness from
-`geoAtlas` (id, fork-15 placeholder — `LeafPullback`-at-id FALSE) to `geoAtlasNorm (alphaGauge …)` —
-Aoyagi's actual integration chart. Four transfer lemmas, each elder-priced sound (tick 340/343):*
-- COVER — via the open-homeo / shrunken-U′ argument (α open homeo fixing 0; NOT image-invariance —
-  `srcBox = cube` was never `g⁻¹(cube)`, tick 341 find (a)); a cover-preservation walk down `tGeoG`.
-- LEDGER PROPS — g touches geometry only (`geoAtlasNorm_resRank_zero` is the pattern).
-- a.e.-INJECTIVITY — injective homeomorph + inj comp helpers.
-- LeafJacobian — GAUGE-GENERALIZE the cocycle+atoms over an explicit bundle (gauge differentiable ∧
-  `|det D|=1` ∧ fixes the threaded-state ledger reads; id + α both instantiate — the reads-based
-  bundle, tick 343, corrected from "fixes all diagonals" which is FALSE). Tripwire: atoms-first probe.
-- Landing target file name not yet fixed (the charge referenced "GeoAtlasTransfer"); when it lands,
-  card it here and add a [[naming]] forwarding pointer. Blocked on BOTH t14's transfers and t15's `:562`
-  (Stage 3 = the two-lane rendezvous, nav-6 tick 348).
+- `DLN/Aoyagi/GeometricAtlasD12.lean` (seat-d12, rung B): `mult_d12`/`flatDim_d12` banked-in-file;
+  **GATE-ORPHAN** (imported by nothing) until the seat wires it into the aggregator.
