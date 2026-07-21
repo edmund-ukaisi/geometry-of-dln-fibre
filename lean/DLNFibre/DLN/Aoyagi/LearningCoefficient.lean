@@ -5,36 +5,24 @@ import Meta.Cordon
 /-!
 # `DLN.Aoyagi.LearningCoefficient` — the corollary/test: `rlct(K^DLN_0) = C/2` VIA THE ENGINE
 
-**BLUEPRINT (v3).** The learning-coefficient theorem as a **corollary and test** of Objects A–D
-(charter §0: the objects are the goal, this is the test). It routes the value entirely through the
-engine — the certified resolution (B), its monomial rule (C), and the combinatorial bridge (D) — and
-so its axiom cone contains `sorryAx` (the frontier leaves) but **NOT** `cited_aoyagi_lower_ax` nor
-`cited_watanabe_upper_ax`. Proving `aoyagi_learning_coefficient_via_engine` and confirming its
-`#print axioms` is `{propext, sorryAx, Classical.choice, Quot.sound}` is the kill-path for the DLN
-lower-bound cite (charter §3).
+**BLUEPRINT (v3/v4).** The learning-coefficient theorem as a **corollary and test** of Objects A–D
+(charter §0: the objects are the goal). It routes the value entirely through the engine, so its axiom
+cone has `sorryAx` (the frontier leaves) but **NOT** `cited_aoyagi_lower_ax`/`cited_watanabe_upper_ax`.
 
-## The soundness fixes it carries (v2 defects 3 & 5)
+## Soundness fixes carried (v2 defects 3 & 5, and the v4 un-bundling)
 
-* **Defect 5 (obtains the resolution + discharges side conditions internally).** The resolution is
-  OBTAINED from `exists_coreResolution` — B's existence is genuinely on the cone — not taken as a
-  hypothesis. No measurability / a.e.-nonzero analytic side condition is user-facing: they are
-  discharged inside the engine (Object A's germ lemmas consume the resolution's analyticity fields;
-  Object C's unit is `|unit|` from the Jacobian certificate). The user-facing hypotheses are only the
-  genuine ones: `0 < N` (deep network), positive widths `hpos` (nondegeneracy), monotone `d`, and the
-  Kostant/QIP nonemptiness.
-
-* **Defect 3 (nondegeneracy).** `exists_coreResolution` is guarded by `0 < N` and `hpos : ∀ k, 0 < d k`
-  (positive widths); at a degenerate width the QIP minimum can be `0` and no divisor can attain it, so
-  the resolution existence is scoped to the nondegenerate regime (matching the corollary's guards).
-
-## The reduction bundled into existence (Thm 4 + R0)
-
-`exists_coreResolution`'s first conjunct `rlctGlobal (lossDLN d 0) = rlctAt (∑Fᵢ²) 0` is the
-deepest-point reduction (Aoyagi Thm 4, worked.tex:437–458: the origin is the worst point of the
-homogeneous core, so the global RLCT is the local RLCT at `0`) composed with the regular-block/flatten
-bookkeeping R0 (`Rep_d ≃ᵐ ℝᴰ`, measure-preserving, `0 ↦ 0`; at `r = 0` there is no regular block, so
-the core loss *is* `lossDLN d 0` in flat coordinates). Both are "built bookkeeping" (charter §1);
-bundled here as the named reduction conjunct of the existence leaf.
+* **Concrete `F` (no adversarial existential).** The resolved family is the CONCRETE flattened
+  product-map entry family `coreGen d e` (`(∏C)ᵢⱼ` in flat coordinates), not an `∃ F` an adversary
+  could pick to trivially satisfy the conjuncts.
+* **The reduction is a SEPARATE named leaf.** `coreReduction` (the deepest-point Thm 4 + the
+  regular-block/flatten R0 + the ℝ≥0∞→ℝ carrier bridge) is un-bundled from the resolution existence;
+  it rides banked machinery (`deepest_le_of_homogeneous_core`, the measure-preserving flatten). The
+  genuinely-new content it names is the carrier bridge.
+* **Defect 5.** The resolution is OBTAINED from `exists_coreResolution` (B's existence on the cone);
+  no analytic side condition is user-facing.
+* **Defect 3.** `exists_coreResolution` guarded by `0 < N` + positive widths.
+* **Scope (named future leaf).** The `Monotone d` hypothesis is the QIP-side scope; the non-monotone
+  extension rides the banked permutation-invariance of `(C, θ)` — a future leaf, not a hidden gap.
 -/
 
 open MeasureTheory Filter Topology
@@ -45,43 +33,86 @@ namespace DLNFibre.DLN.Aoyagi
 
 variable {N : ℕ}
 
-/-- **FRONTIER leaf (the geometric MONUMENT + R0/Thm-4 reduction) — the core resolution exists.**
-For a genuine deep network (`0 < N`) with positive widths (`hpos`), the zero-product DLN core loss
-`lossDLN d 0`, in flattened coordinates, admits a **certified `Resolution`** (Object B) at the
-deepest point `0`, whose binding divisors realise the QIP spectrum with **min-attainment** (Object D,
-v2 defect 4: `hdiv_lb` no undershoot + `hdiv_attain` some divisor attains `qipMin`). Bundled first
-conjunct: the deepest-point + flatten reduction `rlctGlobal (lossDLN d 0) = rlctAt (∑Fᵢ²) 0`
-(Thm 4 + R0). The resolution's existence is Aoyagi's Hironaka construction with the explicit coupled
-`diag(b)` recursion for corank ≥ 2 (worked.tex:475–520; the genuine frontier this expedition must
-build, per charter §1.B); the min-attainment is Aoyagi's Lemma 3 minimisation (worked.tex:529–542).
-This is the single genuine-mathematics frontier leaf of the whole blueprint. -/
+/-- The **flattened parameter dimension** `∑ᵢ d(i+1)·d(i)` — the number of real coordinates of
+`Rep_d` (a matrix tuple), the source dimension of the resolution charts. -/
+def flatDim (d : Fin (N + 1) → ℕ) : ℕ := ∑ i : Fin N, d i.succ * d i.castSucc
+
+/-- The **concrete flattened core-generator family**: `coreGen d e k u = (∏ C)ᵢⱼ` where `(i,j)` is the
+`k`-th entry of the product `mult d` evaluated at the tuple `e u` (the flatten `e` of the exceptional
+coordinates `u`). The entries of the multiplication map — Aoyagi's core `∏ C`, worked.tex:120–128.
+Definable and concrete (no existential family). -/
+noncomputable def coreGen (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d) :
+    Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ :=
+  fun k u ↦ (mult d (e u)) (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2
+
+/-- **FRONTIER leaf (bookkeeping) — the measure-preserving flatten exists.** `Rep_d ≃ᵐ ℝ^flatDim`
+sending the deepest tuple `0` to `0`, volume-preserving (a coordinate reindexing of a product of
+matrix spaces). Rides the banked flatten machinery (`ParamsFlat`-style); named as a bookkeeping leaf
+(R0), not a hidden gap. -/
+@[blueprint]
+theorem exists_flatten (d : Fin (N + 1) → ℕ) :
+    ∃ e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d, MeasurePreserving e ∧ e 0 = 0 := by
+  -- map: DLN-flatten (measure-preserving coordinate reindexing Rep_d ≃ᵐ ℝ^flatDim; R0 bookkeeping)
+  sorry
+
+/-- **FRONTIER leaf — the deepest-point + flatten + carrier reduction.** `rlctGlobal (lossDLN d 0) =
+rlctAt (∑ (coreGen d e)ᵢ²) 0`: the global RLCT of the zero-product loss equals the local RLCT of the
+flattened core `∑ (∏C)ᵢⱼ²` at the origin. This composes (i) the deepest-point reduction (Aoyagi Thm 4,
+worked.tex:437–458: the origin is the worst point of the homogeneous core — banked
+`deepest_le_of_homogeneous_core`), (ii) the flatten `e` (measure-preserving, `e 0 = 0`; at `r = 0`
+there is no regular block so the flat core loss `∑(coreGen)²` equals `lossDLN d 0 ∘ e` by the
+Frobenius identity `‖M‖²_F = ∑ Mᵢⱼ²`), and (iii) the ℝ≥0∞→ℝ **carrier bridge** — the genuinely-new
+content named here (`RLCT.Global.rlctGlobal` on `Rep_d` ↔ `RLCT.rlctAt` on `ℝ^flatDim`). -/
+@[blueprint]
+theorem coreReduction (d : Fin (N + 1) → ℕ) (hN : 0 < N)
+    (e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d) (hemp : MeasurePreserving e) (he0 : e 0 = 0) :
+    RLCT.Global.rlctGlobal (lossDLN d 0) = RLCT.rlctAt (sumSqFam (coreGen d e)) 0 := by
+  -- map: DLN-reduction (Thm4 deepest ∘ flatten ∘ Frobenius ∘ carrier bridge ℝ≥0∞→ℝ)
+  sorry
+
+/-- **FRONTIER leaf (the geometric MONUMENT) — the core resolution exists.** For a genuine deep
+network (`0 < N`) with positive widths (`hpos`), the flattened zero-product core `∑ (coreGen d e)ᵢ²`
+admits a certified resolution **atlas** (Object B) at the deepest point `0`, whose binding divisors —
+across all charts — realise the QIP spectrum with **min-attainment** (Object D, defect-4 form:
+`hlb` no undershoot + `hattain` some chart's divisor attains `qipMin`). The atlas's existence is
+Aoyagi's Hironaka construction with the explicit coupled `diag(b)` recursion for corank ≥ 2
+(worked.tex:475–520; the genuine frontier this expedition must build, charter §1.B); the
+min-attainment is Aoyagi's Lemma 3 minimisation (worked.tex:529–542). `F = coreGen d e` is concrete.
+This is the single genuine-mathematics frontier leaf of the blueprint (the reduction is bookkeeping). -/
 @[blueprint]
 theorem exists_coreResolution (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
-    (hpos : ∀ k, 0 < d k) (h : (kostantPartitions d 0).Nonempty) (hne : (qipFeasible d).Nonempty) :
-    ∃ (D M : ℕ) (F : Fin M → (Fin D → ℝ) → ℝ) (res : Resolution F 0),
-      RLCT.Global.rlctGlobal (lossDLN d 0) = RLCT.rlctAt (sumSqFam F) 0 ∧
-      (∀ a ∈ bindingAxes (res.bexp res.k₀), qipMin d hne ≤ (res.jac a + 1 : ℤ)) ∧
-      (∃ a ∈ bindingAxes (res.bexp res.k₀), (res.jac a + 1 : ℤ) = qipMin d hne) := by
-  -- map: DLN-existence (Hironaka + coupled diag(b) resolution + Thm4/R0 reduction + Lemma-3 min-attainment)
+    (hpos : ∀ k, 0 < d k) (hne : (qipFeasible d).Nonempty)
+    (e : (Fin (flatDim d) → ℝ) ≃ᵐ Tuple (k := ℝ) d) :
+    ∃ res : Resolution (coreGen d e) 0,
+      (∀ (c : Fin res.numCharts) (a : Fin (flatDim d)),
+        a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) →
+        qipMin d hne ≤ ((res.charts c).jac a + 1 : ℤ)) ∧
+      (∃ (c : Fin res.numCharts) (a : Fin (flatDim d)),
+        a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) ∧
+        ((res.charts c).jac a + 1 : ℤ) = qipMin d hne) := by
+  -- map: DLN-existence (Hironaka + coupled diag(b) ATLAS + Lemma-3 min-attainment; F concrete)
   sorry
 
 /-- **The learning coefficient `rlct(K^DLN_0) = C/2`, VIA THE ENGINE (the corollary/test).** For a
 genuine deep network with positive widths, the global RLCT of the zero-product square-Frobenius DLN
 loss equals half the combinatorial codimension `C = cCodim d 0` — DLNs are mildly singular. Wired:
-the certified resolution from `exists_coreResolution` (its deepest-point/flatten reduction gives
-`rlctGlobal = rlctAt (∑Fᵢ²) 0`), then the engine value `2·rlctAt (∑Fᵢ²) 0 = cCodim d 0`
-(`Resolution.two_mul_rlctAt_eq_cCodim` = Object B's CoV/monomial rule ∘ Object D's QIP bridge). The
-axiom cone is `{propext, sorryAx, Classical.choice, Quot.sound}` — the DLN cites
-`cited_aoyagi_lower_ax`/`cited_watanabe_upper_ax` are NOT invoked (the value is derived, not cited);
-that is the kill-path (charter §3). -/
+the flatten (`exists_flatten`) + the reduction (`coreReduction`: `rlctGlobal = rlctAt (∑coreGenᵢ²) 0`),
+then the engine value `2·rlctAt (∑coreGenᵢ²) 0 = cCodim d 0`
+(`Resolution.two_mul_rlctAt_eq_cCodim` = Object B's atlas-min CoV/monomial rule ∘ Object D's QIP
+bridge), obtaining the resolution from `exists_coreResolution`. The axiom cone is
+`{propext, sorryAx, Classical.choice, Quot.sound}` — the DLN cites are NOT invoked (the value is
+derived, not cited); the kill-path (charter §3). -/
 @[blueprint]
 theorem aoyagi_learning_coefficient_via_engine (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (h : (kostantPartitions d 0).Nonempty) (hne : (qipFeasible d).Nonempty) :
     RLCT.Global.rlctGlobal (lossDLN d 0) = ((cCodim d 0 h).toNat : ℝ) / 2 := by
-  obtain ⟨D, M, F, res, hred, hlb, hattain⟩ := exists_coreResolution d hd hN hpos h hne
-  have heng : 2 * RLCT.rlctAt (sumSqFam F) 0 = ((cCodim d 0 h).toNat : ℝ) :=
+  obtain ⟨e, hemp, he0⟩ := exists_flatten d
+  obtain ⟨res, hlb, hattain⟩ := exists_coreResolution d hd hN hpos hne e
+  have hred : RLCT.Global.rlctGlobal (lossDLN d 0) = RLCT.rlctAt (sumSqFam (coreGen d e)) 0 :=
+    coreReduction d hN e hemp he0
+  have heng : 2 * RLCT.rlctAt (sumSqFam (coreGen d e)) 0 = ((cCodim d 0 h).toNat : ℝ) :=
     res.two_mul_rlctAt_eq_cCodim d hd h hne hlb hattain
-  rw [hred]
-  linarith [heng]
+  rw [hred]; linarith [heng]
 
 end DLNFibre.DLN.Aoyagi

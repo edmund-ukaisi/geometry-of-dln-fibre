@@ -75,6 +75,16 @@ def GermRepresents {m p : ℕ} (G : Fin p → (Fin n → ℝ) → ℝ)
     (∀ i j, ContinuousAt (a i j) x) ∧
     (∀ᶠ w in 𝓝 x, ∀ i, G i w = ∑ j, a i j w * F j w)
 
+/-- **The junk-`0` guard.** `LocallyNullZeros K x`: the zero set of `K` is null on some neighbourhood
+of `x`. REQUIRED because the banked `negPow` is `Real.rpow` with `0^(-c) = 0` — a *total* ℝ-proxy of
+an ℝ∪{∞} invariant whose junk value at a zero INFLATES `rlctAt` when `{K = 0}` has positive measure
+(the documented repo hazard, `docs/policies/citation-cordon.md`; counterexample `K = max(w,0)²`
+raises `rlctAt` above a strictly-dominating germ). For sum-of-squares of polynomial/analytic families
+`{∑ Fᵢ² = 0} = ⋂ᵢ Z(Fᵢ)` is a proper real-analytic subvariety, hence locally null — so this guard is
+dischargeable at every point of use, and it is the honest hypothesis the monotonicity needs. -/
+def LocallyNullZeros (K : (Fin n → ℝ) → ℝ) (x : Fin n → ℝ) : Prop :=
+  ∃ s ∈ 𝓝 x, volume ({w | K w = 0} ∩ s) = 0
+
 /-! ## The strike-able analytic leaves (decomposed, statement-locked) -/
 
 /-- **STRIKE-ABLE leaf — Cauchy–Schwarz + local boundedness.** From a continuous representation
@@ -89,19 +99,20 @@ theorem eventually_sumSqFam_le_of_germRepresents {m p : ℕ} {G : Fin p → (Fin
   -- map: A-domination (Cauchy–Schwarz + continuity boundedness of the coefficient sum)
   sorry
 
-/-- **STRIKE-ABLE leaf — a.e. germ-monotonicity of `rlctAt` (no strict positivity).** If `0 ≤ K` and
-`K ≤ K'` on a neighbourhood of `x` (with `K'` measurable), then `rlctAt K x ≤ rlctAt K' x`. The
-banked `RLCT.localAdmissibleExponents_subset_of_le` is exactly this under the extra `0 < K` near `x`;
-here `K = ∑ Gᵢ²` vanishes on a positive-dimensional germ, so the strict-positivity hypothesis fails
-and the zero locus — a measure-zero real variety — is handled a.e. (`negPow` is `0` at a zero for
-`c > 0`, so the domination `K'^(-c) ≤ K^(-c)` holds off the measure-zero zero set). Standard
-measure-zero proof-engineering; decomposed from the banked lemma, not new mathematics. -/
+/-- **STRIKE-ABLE leaf — germ-monotonicity of `rlctAt` under an eventual domination, junk-guarded.**
+If `0 ≤ K` and `K ≤ K'` on a neighbourhood of `x` (`hbound`, pointwise-eventual), `K'` measurable,
+and `K`'s zero set is locally null (`hKnull` — the junk-`0` guard, WITHOUT which the claim is FALSE:
+`negPow K c` is `0` on `{K=0}`, so a positive-measure zero set of the smaller germ `K` inflates
+`rlctAt K` above `rlctAt K'`), then `rlctAt K x ≤ rlctAt K' x`. Off the null zero set `K > 0` and the
+banked `RLCT.localAdmissibleExponents_subset_of_le`'s a.e. content applies. Standard measure-zero
+proof-engineering; the strict-positivity hypothesis of the banked lemma is replaced by `hKnull`. -/
 @[blueprint]
-theorem rlctAt_mono_of_ae_le {K K' : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
+theorem rlctAt_mono_of_eventually_le {K K' : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
     (hK'meas : Measurable K') (hbound : ∀ᶠ w in 𝓝 x, 0 ≤ K w ∧ K w ≤ K' w)
+    (hKnull : LocallyNullZeros K x)
     (hbdd : BddAbove (localAdmissibleExponents K' x)) :
     rlctAt K x ≤ rlctAt K' x := by
-  -- map: A-mono-ae (drop the 0<K hypothesis of localAdmissibleExponents_subset_of_le; measure-zero)
+  -- map: A-mono (a.e. domination off the null zero set; junk-0 guarded by hKnull)
   sorry
 
 /-- **STRIKE-ABLE leaf — positive scaling leaves `rlctAt` unchanged.** For `C > 0`,
@@ -116,33 +127,39 @@ theorem rlctAt_const_mul {K : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ} {C : 
 /-! ## Object A — the two-sided ideal invariance (WIRED from the leaves) -/
 
 /-- **Object A (≤), Aoyagi Lemma 1, corrected sign.** If every `Gᵢ` lies in `⟨F⟩` at `x`
-(`GermRepresents G F x`), then `rlctAt (∑ Gᵢ²) x ≤ rlctAt (∑ Fⱼ²) x`. Wired: the representation
-gives `∑ Gᵢ² ≤ C · ∑ Fⱼ²` near `x` (domination leaf); a.e. monotonicity gives
-`rlctAt (∑ Gᵢ²) x ≤ rlctAt (C · ∑ Fⱼ²) x`; positive scaling collapses the constant. -/
+(`GermRepresents G F x`) and `∑ Gᵢ²`'s zero set is locally null (`hGnull`, the junk-`0` guard), then
+`rlctAt (∑ Gᵢ²) x ≤ rlctAt (∑ Fⱼ²) x`. Wired: the representation gives `∑ Gᵢ² ≤ C · ∑ Fⱼ²` near `x`
+(domination leaf); junk-guarded monotonicity gives `rlctAt (∑ Gᵢ²) x ≤ rlctAt (C · ∑ Fⱼ²) x`;
+positive scaling collapses the constant. `hGnull` is dischargeable for polynomial/analytic `G`. -/
 @[blueprint]
 theorem rlctAt_sumSqFam_le_of_germRepresents {m p : ℕ} {G : Fin p → (Fin n → ℝ) → ℝ}
     {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
     (hFmeas : ∀ j, Measurable (F j)) (h : GermRepresents G F x)
+    (hGnull : LocallyNullZeros (sumSqFam G) x)
     (hbdd : BddAbove (localAdmissibleExponents (sumSqFam F) x)) :
     rlctAt (sumSqFam G) x ≤ rlctAt (sumSqFam F) x := by
-  -- map: A-main (compose domination + a.e.-mono + scaling)
+  -- map: A-main (domination ∘ junk-guarded mono ∘ scaling)
   sorry
 
 /-- **Object A (=), two-sided ideal invariance.** If the germ ideals coincide (each family lies in
-the other's ideal at `x`), the sum-of-squares RLCTs are equal: `le_antisymm` of the two `≤`
-directions (`rlctAt_sumSqFam_le_of_germRepresents`). This is the foundational statement that
-legalises every ideal-preserving step of Object B. -/
+the other's ideal at `x`) and both sum-of-squares zero sets are locally null (`hGnull`, `hFnull` —
+the junk-`0` guard applied symmetrically), the sum-of-squares RLCTs are equal. Direct two-sided:
+`le_antisymm` of the two junk-guarded containments — the two-way representation makes both `≤`
+directions hold, and the null-zero guards defeat the `negPow`-junk symmetrically. Foundational: it
+legalises every ideal-preserving step of Object B. Both null guards are dischargeable for
+polynomial/analytic families (proper zero sets). -/
 @[blueprint]
 theorem rlctAt_sumSqFam_eq_of_germ_eq {m p : ℕ} {G : Fin p → (Fin n → ℝ) → ℝ}
     {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
     (hGmeas : ∀ i, Measurable (G i)) (hFmeas : ∀ j, Measurable (F j))
+    (hGnull : LocallyNullZeros (sumSqFam G) x) (hFnull : LocallyNullZeros (sumSqFam F) x)
     (hGbdd : BddAbove (localAdmissibleExponents (sumSqFam G) x))
     (hFbdd : BddAbove (localAdmissibleExponents (sumSqFam F) x))
     (hGF : GermRepresents G F x) (hFG : GermRepresents F G x) :
     rlctAt (sumSqFam G) x = rlctAt (sumSqFam F) x :=
-  -- map: A-two-sided (le_antisymm of both containments)
-  le_antisymm (rlctAt_sumSqFam_le_of_germRepresents hFmeas hGF hFbdd)
-    (rlctAt_sumSqFam_le_of_germRepresents hGmeas hFG hGbdd)
+  -- map: A-two-sided (le_antisymm of both junk-guarded containments)
+  le_antisymm (rlctAt_sumSqFam_le_of_germRepresents hFmeas hGF hGnull hFbdd)
+    (rlctAt_sumSqFam_le_of_germRepresents hGmeas hFG hFnull hGbdd)
 
 /-! ## The weighted RLCT `wrlctAt` and its ideal invariance (the CoV carrier for Object B) -/
 
@@ -164,15 +181,40 @@ theorem wrlctAt_one {K : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ} :
   -- map: A-weight-one (W ≡ 1 collapses to the unweighted admissible set)
   sorry
 
+/-- The weighted junk-`0` guard: the zero set of `w ↦ W w · K w` is locally null (`W · K` is what the
+weighted `negPow` acts on; the same `Real.rpow` junk-`0` hazard applies to the weighted integrand). -/
+def LocallyNullZerosW (W K : (Fin n → ℝ) → ℝ) (x : Fin n → ℝ) : Prop :=
+  ∃ s ∈ 𝓝 x, volume ({w | W w * K w = 0} ∩ s) = 0
+
 /-- **Object A (weighted ≤).** Weighted ideal-invariance: multiplying the pointwise comparison
 `∑ Gᵢ² ≤ C · ∑ Fⱼ²` by the nonnegative weight `W` preserves it, so the weighted RLCTs compare the
-same way. This is the form Object B's change-of-variables consumes. -/
+same way — junk-guarded by `hWGnull` (the weighted integrand's zero set locally null). The form
+Object B's change-of-variables consumes. -/
 @[blueprint]
 theorem wrlctAt_sumSqFam_le_of_germRepresents {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
     {G : Fin p → (Fin n → ℝ) → ℝ} {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
-    (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w) (h : GermRepresents G F x) :
+    (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w) (h : GermRepresents G F x)
+    (hWGnull : LocallyNullZerosW W (sumSqFam G) x)
+    (hbdd : BddAbove (wLocalAdmissibleExponents W (sumSqFam F) x)) :
     wrlctAt W (sumSqFam G) x ≤ wrlctAt W (sumSqFam F) x := by
-  -- map: A-weighted (nonneg-weight preserves the domination; a.e.-mono on the weighted integrand)
+  -- map: A-weighted (nonneg-weight preserves the domination; junk-guarded weighted mono)
   sorry
+
+/-- **Object A (weighted =), two-sided — the form Object B's value consumes.** With coinciding germ
+ideals (`hGF`/`hFG`) and both weighted zero sets locally null, the weighted RLCTs are equal:
+`le_antisymm` of the two weighted junk-guarded containments. Object B has both `hideal_fwd`/
+`hideal_bwd`, so the engine rides this TRUE two-sided form (not a one-sided assumption). -/
+@[blueprint]
+theorem wrlctAt_sumSqFam_eq_of_germ_eq {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
+    {G : Fin p → (Fin n → ℝ) → ℝ} {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
+    (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w)
+    (hWGnull : LocallyNullZerosW W (sumSqFam G) x) (hWFnull : LocallyNullZerosW W (sumSqFam F) x)
+    (hGbdd : BddAbove (wLocalAdmissibleExponents W (sumSqFam G) x))
+    (hFbdd : BddAbove (wLocalAdmissibleExponents W (sumSqFam F) x))
+    (hGF : GermRepresents G F x) (hFG : GermRepresents F G x) :
+    wrlctAt W (sumSqFam G) x = wrlctAt W (sumSqFam F) x :=
+  -- map: A-weighted-two-sided (le_antisymm of both weighted junk-guarded containments)
+  le_antisymm (wrlctAt_sumSqFam_le_of_germRepresents hW hGF hWGnull hFbdd)
+    (wrlctAt_sumSqFam_le_of_germRepresents hW hFG hWFnull hGbdd)
 
 end DLNFibre.Core.Aoyagi
