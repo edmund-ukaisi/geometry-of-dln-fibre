@@ -9720,3 +9720,23 @@ Content REVIEWED and approved retroactively — exactly the dispositioned items,
 Protocol fix to carto: in the shared root tree, either COMMIT your own overlay/battery work
 (single-writer files, your pen) with your own message, or leave it UNSTAGED and report —
 staged-not-committed work gets swept into the next controller commit with wrong attribution.
+
+## 2026-07-21 (controller) — carto GO batch verified-landed; attribution corrected (a commit RACE, not staging negligence); P6.2 tiering routed
+
+carto-standing's batch: 1a/1b/2a/2b/3b all landed + blob-verified (battery run = 20 scripts,
+rho_battery SURVIVES guarding both E nodes, helper correctly skipped, kills still fire; validator
+0 errors). 3c self-corrected as a NO-OP (its own pass-1 misread — the :53 pin was right).
+One accepted extra: banked-families' in-flight section refreshed (the d12 gate-orphan line was a
+live contradiction with claims.yaml's proven status). ATTRIBUTION CORRECTION to my earlier note:
+the 5072882dc sweep was a commit RACE (my commit ran between carto's add and its commit), not
+staged-and-abandoned files — protocol refined to ATOMIC add+commit in the shared tree for both
+of us; my explicit-path adds stay.
+
+P6.2 tiering (seat-E's proposal — Tier-1e atlas-max API / abstract-core incidence lemmas with an
+honest EXTRACTION-RISK flag / Tier-3 tree realization) routed to the elder with the extraction
+risk framed as the decision point + per-field pins requested for the abstract predicate's own
+fields (ℓ=1/a=0 corners, profile-length, rank-bound). Tier-1e CLEARED to land meanwhile
+(zero-risk scaffold = the elder's global-target pin reified); seat-E also STARTED the de-risk
+numerics (abstract co-occurrence predicate + rho_battery extension, no Lean until the ruling).
+seat-E's independent boxedOrder check concurred with the elder's validation (t̃=0 = atlas-side
+realization property) — banked.
