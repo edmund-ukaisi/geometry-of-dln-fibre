@@ -163,6 +163,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJHeadSplitFrame
 import DLNFibre.Core.Aoyagi.IdealInvariance
 import DLNFibre.Core.Aoyagi.MonomialRLCT
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
+import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
 import Meta.Cordon
 
 /-!
