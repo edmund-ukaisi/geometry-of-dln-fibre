@@ -101,4 +101,35 @@ theorem continuousOn_blockBlowup_center_quot {n : ℕ} (S : Finset (Fin D)) (p :
   exact ((hc a).comp (continuous_blockBlowupMap S p).continuousOn hmaps).mul
     (continuous_blockBlowupCoordQuot p (k a)).continuousOn
 
+/-! ## FIX-A: blow-up OUTERMOST composed with a pivot-KEEPING shear (elder ruling, 2026-07-21)
+
+The step map is `stepMap = blockBlowupMap S p ∘ sh` (blow-up outermost, thread-34's order), with the
+shear `sh` KEEPING the pivot (`sh u p = u p`, `hsh_pivot`). Then the exact `u_p` factor of every
+center coordinate is STRUCTURAL — for ANY such shear — since the pivot factor comes from the OUTER
+blow-up on the already-sheared point, untouched by the (pivot-keeping) shear. This is the δ-agnostic
+enabler of the elder's FIX-A + FIX-RESID: the strict-transform residual `(resid∘stepMap)/u_p` is the
+`blockBlowupCoordQuot` combination, continuous, no localization. -/
+
+/-- **FIX-A center division** — blow-up outermost ∘ a pivot-keeping shear: for `j ∈ S`,
+`blockBlowupMap S p (sh u) j = u_p · blockBlowupCoordQuot p j (sh u)`, EXACTLY, for ANY `sh` with
+`sh u p = u p`. (The pivot factor is structural — one line from `blockBlowupMap_center_eq`.) -/
+theorem blockBlowupMap_shear_center_eq (S : Finset (Fin D)) (p : Fin D) {j : Fin D} (hj : j ∈ S)
+    (sh : (Fin D → ℝ) → (Fin D → ℝ)) (hsh_pivot : ∀ u, sh u p = u p) (u : Fin D → ℝ) :
+    blockBlowupMap S p (sh u) j = u p * blockBlowupCoordQuot p j (sh u) := by
+  rw [blockBlowupMap_center_eq S p hj (sh u), hsh_pivot u]
+
+/-- **FIX-A residual division** (the strict transform at the residual level) — a center-supported
+residual `∑ a, cₐ·(coord kₐ)` (`kₐ ∈ S`) pulls back through `blockBlowupMap S p ∘ sh` (blow-up
+outermost, `sh` pivot-keeping) to `u_p · (∑ a, cₐ·quot(kₐ))∘(sh)` — the EXACT `/u_p` division for
+the strict-transform child residual, for ANY pivot-keeping shear (the elder's FIX-A). -/
+theorem blockBlowup_shear_center_comb_eq {n : ℕ} (S : Finset (Fin D)) (p : Fin D)
+    (c : Fin n → (Fin D → ℝ) → ℝ) (k : Fin n → Fin D) (hk : ∀ a, k a ∈ S)
+    (sh : (Fin D → ℝ) → (Fin D → ℝ)) (hsh_pivot : ∀ u, sh u p = u p) (u : Fin D → ℝ) :
+    (∑ a, c a (blockBlowupMap S p (sh u)) * blockBlowupMap S p (sh u) (k a))
+      = u p * ∑ a, c a (blockBlowupMap S p (sh u)) * blockBlowupCoordQuot p (k a) (sh u) := by
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun a _ ↦ ?_)
+  rw [blockBlowupMap_shear_center_eq S p (hk a) sh hsh_pivot]
+  ring
+
 end DLNFibre.Core.Aoyagi
