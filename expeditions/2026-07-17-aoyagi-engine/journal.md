@@ -8963,3 +8963,14 @@ its own file via M1, append-only; approved; noted the quiet connection to O4's f
 permutation transport). The pattern of the hour: three consecutive SPECIFY-stage stops, zero build
 investment wasted — the specify-first discipline is the cheapest gate in the pipeline and it is
 carrying the register's staleness without friction.
+
+## 2026-07-21: THE HYGIENE MENU IS EXHAUSTED — seat-api holds warm on the post-bake trigger
+seat-api's consolidated SPECIFY picture: after M13 (the one genuinely-S item, landed), the register's
+hygiene menu is mis-priced or blocked — M4/M9 bake-rooted (the post-bake upstreaming unit); M6
+actually M-priced (a ~28-field translation transport, promised-generality but consumer-less); M10
+≥M speculative. CONTROLLER CALL: hold-with-trigger — no new grinding on consumer-less M-units while
+the bake is imminent; the seat's next assignment IS the post-bake upstreaming unit (its own design:
+generalize blockBlowupMap to 𝕜 + drop the guard + M4/M9 fall out downstream — real consumers, real
+dedup). M6 re-priced S→M deferred-not-rejected; M10 stays runway (no promise in the tree). Register
+re-pricings ride the bake-integration event-touch. The seat's session tally: M1/M2/M8/M3, the P2
+composite, M13, the register sweep, three specify-stage stops — zero wasted builds.
