@@ -9850,3 +9850,26 @@ base-ancestry check with reject-and-rebase; landing-sound serial integration); s
 the {L3 + terminal_edge_stepInv} one-step batch (own worktree, parallel-dev, statement-lock,
 Case1Wire's crux technique referenced); seat-E's Tier-3 released (develop now, integrate
 post-leaf-stabilization); the live cone corrected to 7 per nav's ground truth.
+
+## 2026-07-21 (controller) — THE HARD GATE DISCHARGES: pnp PASS on the chain reading; landmarks reconciled; P6.2 cleared to Lean
+
+**pnp-order's confirmation: PASS** (from-scratch 993-core enumeration, EXIT 0 — controller re-ran
+chain_battery.py independently, EXIT 0; blind Codex convergent; the certificate's speculation
+paragraph amended, verified facts untouched; merged at tip). Confirmed: (A) on EVERY branch the
+binding profiles are pairwise comparable — a chain (0 non-chains/993); (B) ρ = max-chain =
+a(ℓ−a)+1 both directions + ground truths; (C) the antichain reading REFUTED with witnesses
+([2,2,2,2,2]: max-chain 5, max-antichain 2). **The Lean-facing mechanism:** the binding poset has
+unique min/max = the Lemma-4 envelope endpoints and is GRADED BY RANK (every maximal chain has
+length exactly a(ℓ−a)+1) — with THE TRAP flagged by both instruments: the grading is the
+recursive inversion/Young-cell rank, NOT coordinate-sum (counterexamples [1,1,2,1] and [2,2,4,3]
+— covers jump multiple units). seat-E RELEASED to Lean-build under the six-check contract + the
+rank-trap probes as in-file kill-set instances. The mechanism note: on one branch each Case-1
+exponent-accumulation step extends the profile monotonically (tail-writes + running-min head) —
+the tree side of the nesting, Tier-3's eventual content.
+
+**Landmarks reconciled (elder ruling + my field-set):** the compass is the authoritative source;
+BOTH prior sets were stale; the reconciled nine authored into compass § Landmarks (with the
+process line: map mirrors compass, divergence = drift item) and the map's fields set to match —
+OUT: kill-cite (merged into the summit's story), b-leaf2-blowup-atlas (absorbed into Core-leaves);
+IN: b-principalinv (the Core-leaves banked node — the spine's proven end), object-e. Count 9,
+validator clean, STATUS regenerated. Four demotions each with surviving homes named.
