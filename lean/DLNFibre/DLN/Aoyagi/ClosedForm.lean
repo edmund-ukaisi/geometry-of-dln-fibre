@@ -378,6 +378,18 @@ theorem codimFormula_eq_cCodim_add_shift
       cCodim d r h + ((r * (d 0 + d (Fin.last N) - r) : ℕ) : ℤ) := by
   rw [codimFormula, cCodim_eq_aoyagi_cValue hN d r h]
 
+/-- **The engine codimension is twice Aoyagi's printed zero-rank learning coefficient.** The
+combinatorial composite of the two bridge halves `two_lambdaCore_eq_cValue` and
+`cCodim_eq_aoyagi_cValue`: over `ℚ`, the Lehalleur–Rimányi engine's `cCodim` (the QIP-minimised
+`½(Σq² − Σm²)` codimension) equals `2 · lambdaCore`, Aoyagi's Theorem-2 closed form
+`a(ℓ−a)/4ℓ − … + ½Σ MᵢMⱼ`. Holds ∀(L,M) at the weakest hypotheses the two halves carry
+(`hN : 1 ≤ N`, Kostant nonemptiness `h`); no `Monotone d` (the sort is internal to `shiftedSorted`).
+The pure-combinatorial form of the fibre-level `codimRepCanonical_fibre_eq_two_aoyagiLambda`. -/
+theorem cCodim_eq_two_lambdaCore
+    (hN : 1 ≤ N) (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
+    (cCodim d r h : ℚ) = 2 * lambdaCore d r := by
+  rw [two_lambdaCore_eq_cValue d r hN, cCodim_eq_aoyagi_cValue hN d r h]
+
 /-- Codimension of the multiplication fibre, stated directly with Aoyagi's codimension formula.
 `k : Type` (universe 0) matches the Lehalleur–Rimányi engine's central theorem
 (`Core.FibreCodimFinal.codimRepCanonical_fibre_eq_cCodim_add_shift`), which is stated at `Type`. -/
