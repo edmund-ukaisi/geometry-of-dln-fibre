@@ -278,6 +278,19 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
     only the norm instance differs.
   - **`Real.rpow` at `0`:** `0^neg = 0` (`Real.zero_rpow (h : s ≠ 0)`), so a negative-power germ is `0`
     *at* the zero, and any divergence must come from the punctured neighbourhood, never the value at `0`.
+- **`twoBlockTriangular_det` / `BlockTriangular.det` singleton block hits a `Fintype.subtypeEq` vs
+  `Subtype.fintype` instance clash.** Splitting a block-triangular det at `(· = p)` gives a pivot
+  singleton block over `{a // a = p}`; the lemma carries the generic `Subtype.fintype`, but any FRESH
+  synthesis (a separate `have`, or `Matrix.det_unique`) prefers the specialized `Fintype.subtypeEq p`, so
+  `rw`/`simp` on that block's `.det` fails (`did not find pattern …`, or `det_unique` reports
+  `synthesized Fintype.subtypeEq … inferred Subtype.fintype …`). FIX (confirmed, `jacDet_blockBlowupMap`,
+  O9 block-center blow-up, 2026-07-21): split at `(· ≠ p)` instead — both blocks `{a // a ≠ p}` and
+  `{a // ¬ a ≠ p}` use the generic `Subtype.fintype`, no special instance — and to evaluate the singleton
+  block, rewrite the instance-free BLOCK MATRIX to `1` (`M.toSquareBlockProp … = 1` via `ext` +
+  `toMatrix'` entry + `Matrix.one_apply_eq`) then `Matrix.det_one` (generic over the block `Fintype`);
+  never `rw`/`simp` the whole `.det`. The non-pivot block, if diagonal, is `Matrix.diagonal` →
+  `det_diagonal` → `Finset.prod_subtype` over `univ.filter (· ≠ p)` → `prod_ite` + `prod_const` +
+  `card_erase_of_mem`.
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
