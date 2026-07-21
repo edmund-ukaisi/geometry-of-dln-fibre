@@ -82,10 +82,10 @@ Seat: seat-E (lean-formaliser). Branch `expedition/aoyagi-engine-E`. Module
   `ℓ=4,a=2`). Only the band-**area** `∑ bandWidth = a(ℓ−a)` is intrinsic. So Lemma 4's envelope+increment
   (sufficient) is met by all `C(ℓ,a)` step-arrangements (≠ `a(ℓ−a)+1`). Consistent with
   `verify-repro-s4s5.md` (which does not certify a clean single-count).
-- The terminal equality `H̃_ℓ = H̃'_ℓ = 0` needs Def-3 consistency (`P, M*, a` relations) — NOT pure
-  `(ℓ,a)`; so the explicit envelopes (which use the width/`M*` data) belong at **Tier 2**, and the
-  width-independence theorem `H̃'_j − H̃_j = bandWidth ℓ a j` is the Tier-1↔Tier-2 bridge (built when
-  Tier 2 exists).
+- The width-independence theorem `H̃'_j − H̃_j = bandWidth ℓ a j` (`envHi_sub_envLo`) is now BUILT at
+  Tier 1 over FREE `(P, M)` — the Tier-1↔Tier-2 bridge. The terminal equality `H̃_ℓ = H̃'_ℓ = 0` is
+  what still needs Def-3 consistency (`P, M*, a` relations, absent at Tier 1); it rides with Tier 2's
+  instantiation of `P, M` by the certified selector objects.
 
 ## Cross-checks (ground truth)
 
