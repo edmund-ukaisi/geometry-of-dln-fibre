@@ -9445,3 +9445,30 @@ the compass bank); arch-C prices + implements, folded into the canonCenter bake 
 one revision batch, contract-9 re-gate with the probe as witness). seat-L4 proceeds on the
 NON-TERMINAL content meanwhile against a local private guard in the exact canonical form —
 no wall time lost; one rebase expected carrying canonCenter + the revised statements.
+
+## 2026-07-21 (controller) — P6.1 Tier-1 INTEGRATED; elder ratifies fix (a) WITH RIDER (the named terminal-edge transport)
+
+**P6.1 Tier-1 integrated** (seat-E's 46f12b577 merged; OrderCount wired into the aggregator with
+the deferred-identifications docstring; controller re-derivation: full build green 8988 jobs,
+name-clash grep empty, force-elaborated bandCount_eq + bandWidth_sum clean-three /
+perJCard_eq_paper [propext, Quot.sound], cordon OK, census unchanged). Object E's first content
+lands: perJCard_eq_paper (the p.26 fidelity anchor), bandWidth_sum (band area = a(ℓ−a) via the
+double-count), bandCount_eq (the headline arithmetic), K1 + edge-corner kill-set by decide.
+seat-E → statement card, then Tier 2 (arithmetic binding, neutral framing until the pnp pins ρ).
+
+**Elder ratifies fix (a) WITH A RIDER — the delegation gap named:** terminal_bezout CONSUMES the
+terminal-state StepInv (resid ≡ 1); it does not PROVE the interior→terminal transition (parent
+Deg1-supported StepInv at layer < N ⟹ child unit-residual StepInv across the LAST edge). With the
+guard, that transition leaves the case leaves' scope — but it must land as a NAMED obligation:
+`terminal_edge_stepInv` (a small lemma beside terminal_bezout in L5's consumption) or an
+explicitly docstring-named L5 inline step. Expected EASY (unit-residual is strictly weaker — the
+quotient absorbs into q′; same strict-transform algebra with the residual collapsed) — "easy earns
+a name, not an omission; a silent delegation here is precisely how the sixth probe would find us."
+(b)/(c) rejections confirmed. L3 same-shape: presumed CONFIRM (the collapse is case-blind; at
+N = 1 a case-2 edge reaches terminal immediately — the smallest networks are the boundary's own
+witnesses). **Refined severance principle for the guardrails (elder):** "audit each free field,
+AND each field's boundary values — a field constrained everywhere but at its range's endpoint is
+severed at the endpoint." The terminal_deg1_gap probe = the boundary-axis exemplar in the witness
+bank. arch-C's canonCenter bake round now carries: canonCenter + reachesLeaf pin + L7 lift + the
+L4/L3 non-terminal guards + the terminal_edge_stepInv obligation (as a leaf or named L5 step) +
+docstring corrections; contract-9 re-gate with the probe as regression witness.
