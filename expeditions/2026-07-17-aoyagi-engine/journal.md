@@ -7919,3 +7919,19 @@ AtlasRealizesExponents → AtlasRealizesMinimizer (tighter name post-weakening; 
 churn seat-d12). Housekeeping verified moot: the reproduction-pass deliverables were already banked at
 854655c5c (diff-identical to the elder's copies). Elder's meta-verdict: the post-salvage ladder
 adaptation has been "exemplary closed-loop behaviour."
+
+## 2026-07-21: RUNG (B) LANDED — the first proven DLN learning-coefficient instance, cite-free
+seat-d12 delivered both targets clean-three: exists_atlasRealizesExponents_d12 (the geometric
+obligation's BODY at d=![1,2] — the satisfiability tail-risk is DEAD: the ∀-body holds at the first
+singular instance) and two_mul_rlctAt_coreGen_d12 — THE FIRST FULLY-PROVEN DLN LEARNING-COEFFICIENT
+INSTANCE through the new machinery: 2·rlct(∑coreGen²) = cCodim at ![1,2], end-to-end, ZERO cited axioms
+(sanity: K = a²+b², rlct 1, cCodim 2 ✓). The pipeline (record → seam → adapter → engine value) is
+VALIDATED on real singular geometry. Reusable conjResolution/conjChart transport infra delivered (lift
+to Core on 2nd use). One weakest-hypotheses delta: he0 dropped (linearity subsumes it) — documented.
+The L-conjugation risk was contained by an up-front codex API verification. Integrated (merge + wire +
+the two headlines BANKED into the batch); ground-truth build running; rev-d12 fidelity reviewer spawned
+per the seat's request (body-instantiation faithfulness; the honest-value check incl. the by-hand
+arithmetic; the conjugation transport; no quiet seam changes). Seat again left work uncommitted at
+handoff ("leaf executor" reading) — secured by controller; the push-rule wording may need one more turn
+of the screw at the next role-file pass. NEXT: (C) reification under the elder's 4 conditions +
+navigator's parallelisation plan (both offices still out).
