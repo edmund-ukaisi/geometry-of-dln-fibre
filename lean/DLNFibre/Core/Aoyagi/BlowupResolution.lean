@@ -182,7 +182,7 @@ noncomputable def blowupChart2 (i : Fin 2) : Chart coordFam2 (0 : Fin 2 → ℝ)
 
 /-- **The exact max-pivot cover.** The open unit ball is covered by the images of the two blow-up
 charts' unit boxes: at any point the coordinate of maximal absolute value is the pivot. -/
-theorem ball_subset_iUnion_blowup_image :
+theorem ball_subset_iUnion_blowup2_image :
     Metric.ball (0 : Fin 2 → ℝ) 1 ⊆
       ⋃ i : Fin 2, (blowupMap2 i) '' (Metric.closedBall 0 1) := by
   intro w hw
@@ -243,7 +243,7 @@ noncomputable def blowupResolution2 : Resolution coordFam2 (0 : Fin 2 → ℝ) w
   hcover := by
     have hsub : Metric.ball (0 : Fin 2 → ℝ) 1 ⊆
         ⋃ c : Fin 2, (blowupChart2 c).g '' (blowupChart2 c).dom :=
-      ball_subset_iUnion_blowup_image
+      ball_subset_iUnion_blowup2_image
     rw [Set.diff_eq_empty.2 hsub]
     exact measure_empty
 
