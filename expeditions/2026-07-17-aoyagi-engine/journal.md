@@ -7582,3 +7582,13 @@ helper [FIRST shared build] + area-formula CoV pair; LANE 5 pnp GATED on the dom
 to the germ-level record would certify to a spec that admits the dodge). v4.1 BRIEF SENT (D1+D2+D3 +
 codex e0=0 + flatten-continuity + composition-note for lane 4). On v4.1: elder diff-verify + targeted
 codex confirmation of the strengthened D1 statement → bar CLEARS → strike phase opens.
+
+## 2026-07-21: v4.1 delivered (f8db23000) — endgame checks running
+Architect landed D1–D3 + codex fixes as diffs only (3 files, +92/−57): RegionRepresents + dom-wide Chart
+certificates over open nbhd ⊇ dom; injectivity fields restored; measurability threaded + hFmeas into
+Chart; e0=0 + flatten ≃ᵐ→≃ₜ. One JUDGMENT CALL taken: deleted LocallyNullZerosW (junk lives at {K=0}
+regardless of W; W≥0 shared both sides) — controller's read agrees; flagged to BOTH endgame checks for
+independent audit. Kill-path re-verified cite-free; closure green; census 16. ENDGAME RUNNING: elder
+diff-verify (pre-committed) + targeted codex round-3 (mechanical rejection of both old counterexample
+classes; one more hard adversarial attempt at the load-bearing iInf equality; the W-deletion audit; the
+measure-preservation-not-lost check on ≃ₜ). On both PASS → bar CLEARS → strike opens (#3).
