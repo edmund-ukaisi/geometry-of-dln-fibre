@@ -1,3 +1,11 @@
+> **CORRECTION (thread-33 shear pin, 2026-07-21 — decorrelated, battery-verified, controller-calibrated):**
+> this certificate's per-chart claim "pure-monomial `g`, unit ≡ 1" is RIGHT in its conclusion and WRONG in
+> its reason. The unipotent Q,P split principledly: the invertible Schur/column shears (Jacobian exactly 1)
+> ARE source coordinate changes — so `g = (unipotent shears) ∘ (monomial blow-ups)`, NOT a monomial map —
+> while the det-0 projection-type row-ops are forced to stay as `RegionRepresents` cofactors. Because the
+> shears have Jacobian 1, `|det Dg| = jacWeight jac` exactly and `unit ≡ 1` STANDS. No clean/coupled
+> dichotomy; the v4.2 record needs no change. See `../33-shear-pin/certificate.md`.
+
 # Certificate — Aoyagi's Cases-1&2 recursion inhabits the v4.2 `Resolution` record at full generality
 
 Pen-and-paper `pnp-monument` (thread 31, LANE 5), 2026-07-21. Target: the v4.2 Lean record at commit
