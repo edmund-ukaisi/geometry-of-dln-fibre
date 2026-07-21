@@ -37,13 +37,13 @@ why A is stated in both forms and B rides the weighted one.
 
 ## The one genuine analytic leaf (named, not hidden)
 
-`rlctAt_mono_of_ae_le` — germ-monotonicity of `rlctAt` under an a.e. domination `K ≤ K'` near `x`,
-**without** a strict-positivity hypothesis. The banked `RLCT.localAdmissibleExponents_subset_of_le`
-proves exactly this under `0 < K` near `x`; the singular RLCT setting has `K = ∑ Gᵢ²` vanishing on a
-positive-dimensional germ, so the strict-positivity form does not apply and the zero-set (a
-measure-zero real variety) must be handled a.e. This is standard-material proof-engineering
-(measure-zero adjustment of the banked domination), NOT new mathematics — it is the module's single
-strike-able frontier leaf and is decomposed to it explicitly.
+`rlctAt_mono_of_eventually_le` — germ-monotonicity of `rlctAt` under an eventual domination `K ≤ K'`
+near `x`, junk-guarded (`LocallyNullZeros K x`) in place of a strict-positivity hypothesis. The banked
+`RLCT.localAdmissibleExponents_subset_of_le` proves exactly this under `0 < K` near `x`; the singular
+RLCT setting has `K = ∑ Gᵢ²` vanishing on a positive-dimensional germ, so the strict-positivity form
+does not apply and the zero-set (a measure-zero real variety) is handled via the null-zero guard. This
+is standard-material proof-engineering (measure-zero adjustment of the banked domination), NOT new
+mathematics — it is the module's single strike-able frontier leaf, decomposed to it explicitly.
 -/
 
 open MeasureTheory Set Filter Topology RLCT
@@ -197,13 +197,13 @@ theorem wrlctAt_one {K : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ} :
 `∑ Gᵢ² ≤ C · ∑ Fⱼ²` by the nonnegative weight `W` preserves it, so the weighted RLCTs compare the
 same way. The weighted integrand is `W · K^(-c)` (NOT `(W·K)^(-c)`) — its `Real.rpow` junk-`0` comes
 from `K^(-c)` at `{K=0}` (independent of `W`), so the guard is `LocallyNullZeros (sumSqFam G)`
-(`hGnull`, on `K`, not on `W·K`). Needs `W` and the families measurable (`hWmeas`, `hGFmeas`; without
-measurability a Vitali-modulated continuous-at-`0`-only coefficient breaks the RHS admissible set).
-The form Object B's change-of-variables consumes. -/
+(`hGnull`, on `K`, not on `W·K`). Needs `W` and the DENOMINATOR family `F` measurable (`hWmeas`,
+`hFmeas` — the RHS integrand `W·(∑Fⱼ²)^(-c)`; the numerator `G`'s measurability is NOT needed for the
+`≤`, only for the two-sided `eq`, where the roles swap). The form Object B's CoV consumes. -/
 @[blueprint]
 theorem wrlctAt_sumSqFam_le_of_germRepresents {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
     {G : Fin p → (Fin n → ℝ) → ℝ} {F : Fin m → (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}
-    (hWmeas : Measurable W) (hFmeas : ∀ j, Measurable (F j)) (hGmeas : ∀ i, Measurable (G i))
+    (hWmeas : Measurable W) (hFmeas : ∀ j, Measurable (F j))
     (hW : ∀ᶠ w in 𝓝 x, 0 ≤ W w) (h : GermRepresents G F x)
     (hGnull : LocallyNullZeros (sumSqFam G) x)
     (hbdd : BddAbove (wLocalAdmissibleExponents W (sumSqFam F) x)) :
@@ -227,7 +227,7 @@ theorem wrlctAt_sumSqFam_eq_of_germ_eq {m p : ℕ} {W : (Fin n → ℝ) → ℝ}
     (hGF : GermRepresents G F x) (hFG : GermRepresents F G x) :
     wrlctAt W (sumSqFam G) x = wrlctAt W (sumSqFam F) x :=
   -- map: A-weighted-two-sided (le_antisymm of both weighted junk-guarded containments)
-  le_antisymm (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hFmeas hGmeas hW hGF hGnull hFbdd)
-    (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hGmeas hFmeas hW hFG hFnull hGbdd)
+  le_antisymm (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hFmeas hW hGF hGnull hFbdd)
+    (wrlctAt_sumSqFam_le_of_germRepresents hWmeas hGmeas hW hFG hFnull hGbdd)
 
 end DLNFibre.Core.Aoyagi

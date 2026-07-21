@@ -54,8 +54,9 @@ product of matrix spaces). Rides the banked flatten machinery (`ParamsFlat`, whi
 continuity theorems); named as a bookkeeping leaf (R0), not a hidden gap. -/
 @[blueprint]
 theorem exists_flatten (d : Fin (N + 1) → ℕ) :
-    ∃ e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d, MeasurePreserving e ∧ e 0 = 0 := by
-  -- map: DLN-flatten (measure-preserving coordinate reindexing Rep_d ≃ₜ ℝ^flatDim; R0 bookkeeping)
+    ∃ e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d,
+      IsLinearMap ℝ (⇑e) ∧ MeasurePreserving e ∧ e 0 = 0 := by
+  -- map: DLN-flatten (LINEAR measure-preserving coordinate reindexing Rep_d ≃ₜ ℝ^flatDim; R0)
   sorry
 
 /-- **FRONTIER leaf — the deepest-point + flatten + carrier reduction.** `rlctGlobal (lossDLN d 0) =
@@ -81,13 +82,18 @@ across all charts — realise the QIP spectrum with **min-attainment** (Object D
 Aoyagi's Hironaka construction with the explicit coupled `diag(b)` recursion for corank ≥ 2
 (worked.tex:475–520; the genuine frontier this expedition must build, charter §1.B); the
 min-attainment is Aoyagi's Lemma 3 minimisation (worked.tex:529–542). `F = coreGen d e` is concrete.
-The `he0 : e 0 = 0` guard is REQUIRED: without it a translated flatten (`e u = u + 1`) makes `coreGen`
-not vanish at `0`, so no resolution at `0` exists and the `∃` would be false. This is the single
-genuine-mathematics frontier leaf of the blueprint (the reduction is bookkeeping). -/
+Two guards are REQUIRED, each rejecting a verified counterexample: (i) `he0 : e 0 = 0` — else a
+translated flatten (`e u = u + 1`) makes `coreGen` not vanish at `0`, so no resolution at `0` exists;
+(ii) `he_lin : IsLinearMap ℝ ⇑e` — the flatten is a LINEAR reindexing (the banked `paramsEquivFlat` is
+linear), else a non-analytic origin-fixing homeomorphism (`e u = u·|u|` at `d=(1,1)`: `coreGen u = u|u|`)
+makes `coreGen` non-analytic, and no analytic-`g` `Chart` can resolve it (the dom-wide `hideal_bwd` +
+analyticity of `g` force `1 ≤ A·L²·|u| → 0`). This is the single genuine-mathematics frontier leaf of
+the blueprint (the reduction is bookkeeping). -/
 @[blueprint]
 theorem exists_coreResolution (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (hne : (qipFeasible d).Nonempty)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) :
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0)
+    (he_lin : IsLinearMap ℝ (⇑e)) :
     ∃ res : Resolution (coreGen d e) 0,
       (∀ (c : Fin res.numCharts) (a : Fin (flatDim d)),
         a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) →
@@ -111,8 +117,8 @@ derived, not cited); the kill-path (charter §3). -/
 theorem aoyagi_learning_coefficient_via_engine (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (h : (kostantPartitions d 0).Nonempty) (hne : (qipFeasible d).Nonempty) :
     RLCT.Global.rlctGlobal (lossDLN d 0) = ((cCodim d 0 h).toNat : ℝ) / 2 := by
-  obtain ⟨e, hemp, he0⟩ := exists_flatten d
-  obtain ⟨res, hlb, hattain⟩ := exists_coreResolution d hd hN hpos hne e he0
+  obtain ⟨e, he_lin, hemp, he0⟩ := exists_flatten d
+  obtain ⟨res, hlb, hattain⟩ := exists_coreResolution d hd hN hpos hne e he0 he_lin
   have hred : RLCT.Global.rlctGlobal (lossDLN d 0) = RLCT.rlctAt (sumSqFam (coreGen d e)) 0 :=
     coreReduction d hN e hemp he0
   have heng : 2 * RLCT.rlctAt (sumSqFam (coreGen d e)) 0 = ((cCodim d 0 h).toNat : ℝ) :=
