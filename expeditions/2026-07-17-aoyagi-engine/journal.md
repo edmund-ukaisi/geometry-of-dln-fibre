@@ -8063,3 +8063,32 @@ exact file) → ONE statement-fix commit → ONE elder delta (D2 re-ratification
 L1 RE-POINTED: post-reification L1 = pure Fin-1 singleton repackaging (price S); the b_{k₀}-vs-family
 seam moved to L6's brief (M'=1 compression, definitional via monoOf). Ledger entry 25 filed
 (navigator text + controller addendum). WAVE REMAINS HELD on rev-leaves.
+
+## 2026-07-21: REV-LEAVES VERDICT — 2 BLOCKING statement defects + 1 contract fix; wave stays HELD
+The fidelity reviewer (codex xhigh corroborated, Lean probes EXIT 0) on the 8-leaf skeleton:
+BLOCKING #1 — terminal_bezout STATEMENT FALSE, Lean-PROVEN (¬TerminalBezout with V = {u | 0<u 0};
+codex complement V={0}): the missing IsOpen V / 0 ∈ V the controller found is now a theorem-level
+refutation. Refinement of navigator #12's ContinuousAt point: with region hyps added the statement IS
+provable via r i₀ = 1/(q i₀ 0) riding StepInv's ContinuousOn q (ContinuousAt unit 0 only pins the
+value at 0 by density); strengthening to ContinuousOn unit V still adopted (convergent nav+rev rec).
+BLOCKING #2 (NEW, the sharpest) — StructuralChainResidual MIS-REIFIED: arch-C rendered the D3 gap as
+per-leaf SCALAR ∣-comparability of divExp; the thread-31 closed form discharges the MONOMIAL/vector
+prefix-chain, NOT scalar ℕ-divisibility (codex fact); if false at any instance the driver (which takes
+hchainR) is VACUOUS — kills the headline path. It also re-introduces in scalar form the paper's
+EXCISED T-profile total-comparability (worked.tex T-F; the compass ledger entry — the record was
+designed immune by ordering monomials, never scalar summaries). Controller analysis: with M'=1 the
+carried b evolves by the witness law b' = u^δ·φ*b (prefix-divisibility along the path) — already
+StepInvChild's content; the separate global Prop may dissolve. Falsity test commissioned (buildTree is
+noncomputable — the python reproduction battery is the instrument; controller probe confirmed no
+#eval route).
+CONTRACT #3 — StepInvChild ∀ _branch:Bool Lean-PROVEN under-constrained (fun _ => h from ONE child
+discharges it): the two Case-1 children are not forced; branch must parameterize distinguishing
+content. MINORS: L4 docstring nR'<nR overclaim; PivotOrderingK0 trivially TRUE (discharge inline;
+scalar-vs-vector conflation twin of #2); unused hne. PASSES: L1/L3/L5/L6/L7/L8 statements sound
+(L7 matches the pnp-cover cert §c exactly); root non-vacuity PASS; universalization PASS; C1 import
+boundary PASS; D1/D4 PASS.
+DISPATCHED: arch-C resumed with the full fix brief (merge the moved tip first; gate = probes flip:
+the counterexamples must FAIL against fixed statements, the root witness must still elaborate);
+elder-v3 resumed with the second delta (D2' region+ContinuousOn shape; D3-a re-state-or-drop ruling +
+D3-b inline discharge). Wave commissioning HELD until the fixes land + elder ratifies. The review
+layer worked: both defects caught at the statement gate, zero seat-hours burned on unprovable leaves.
