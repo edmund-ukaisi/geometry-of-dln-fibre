@@ -9171,3 +9171,49 @@ as a deliberate single step if the DLN lane becomes the long pole; (7) the revie
 rev-leaves stays DEDICATED to the wall — the Core seat's fidelity check takes a later slot. Ledger
 entry 27 filed (statement-risk dominates proof-risk; price by un-audited free fields). Hard-part
 check CONFIRMED (the wall first; nothing steals its seat, its file, or its reviewer).
+
+---
+
+## 2026-07-21 (controller) — THE §1-E GATE OPENS: Object E's combinatorial half in build
+
+**Operator ruling (verbatim):** "I think we should open it. The typical Rising Sea expectation is
+that if we do the surrounding things, everything around it, including our headline may dissolves
+and becomes easier. We build machineries, wisely, and understanding. So go. Build it."
+
+**Scope of the opening (controller reading, sent to the elder for the charter §1-E update):** the
+COMBINATORIAL half opens — the Lemma-4-style two-condition count of minimum-achieving divisors as
+ℕ-arithmetic over the foldState/tree structures (the elder's L→M re-pricing), binding toward the
+landed `aoyagiTheta` value (Lambda.lean:93, sorry-free). The ANALYTIC pole-order half (count =
+zeta-pole multiplicity) stays monument-class and explicitly deferred — the opening is scoped, not
+total. Rationale recorded: the Rising-Sea expectation that the surrounding machinery
+(min-achiever enumeration over the tree) feeds back into L8/θ-adjacent bookkeeping and may
+dissolve parts of the analytic half.
+
+**Actions:**
+- **seat-E commissioned** (lean-formaliser; branch `expedition/aoyagi-engine-E` off tip, own
+  worktree, push-on-commit). File scope: Core/Aoyagi/Order.lean extensions and/or a new
+  Core/Aoyagi/OrderCount.lean; MonumentAtlas/PrincipalInv/BlockBlowup READ-ONLY (the monument lane
+  and seat-core are live there — nav-13 collision matrix respected: Core-vs-DLN disjoint axis).
+  Discipline: SPECIFY FIRST → elder ratification pass BEFORE proving (E was only
+  interface-sketched; per-field audit runs even at low severance risk); kill-set instances
+  (2,2,2) + (3,3,4) (thread-37 traversal table) + one non-monotone; page-fidelity vs pp.23–26
+  images; stop-on-suspect vs the compass fidelity ledger (T-profile comparability = nearest known
+  trap); force-elaborated clean-three per landing. The E≠(C,θ) conflation warning (charter §3)
+  named in the brief.
+- **elder-v3 resumed** (standing office, context retained) with two duties: (1) charter §1-E
+  status line update — DEPRIORITISED-kept-in-reach → OPENED (combinatorial half in build;
+  analytic half deferred; operator rationale recorded); (2) the P6 statement-ratification duty —
+  seat-E's SPECIFY comes to the elder for the pass, kill-conditions + exact Lemma-4 form pinned
+  there. Register P6 flips READY-OPTION → OPENED-BY-OPERATOR at the elder's next touch.
+
+**OPERATOR STANDING INSTRUCTION (2026-07-21, verbatim):** "From now on, please remember to give
+very detailed briefs to your teammates including those in standing offices. use standing seats
+with the right contexts where possible." — Binding on every commission from here: (a) thorough,
+context-complete briefs for ALL teammates including standing offices; (b) when a task matches a
+standing office's retained context (elder-v3, seat-api, nav, seat-core, seat-E, arch-C…), RESUME
+that seat via SendMessage rather than spawning fresh. Recorded here (in-repo) per the no-global-
+memory rule.
+
+**Pipeline unchanged and live:** FIX-2-combinatorial render → arch-C whole-round re-gate → bake →
+controller integration → wall-first serial MonumentAtlas lane; seat-core mid-work on
+L1 + terminal_bezout.
