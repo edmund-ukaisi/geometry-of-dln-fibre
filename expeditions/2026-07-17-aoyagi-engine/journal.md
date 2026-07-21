@@ -8439,3 +8439,69 @@ stranding terminal_bezout. rev-leaves adjudicates: does edge-indexed reachabilit
 canonical residual, or does BlockChild need resid' DETERMINED (= the child-center coordinate block,
 no existential)? One clause for arch-C if needed — batched into the round-4 verdict. Core #3 waits on
 round-4 + w0l3's O9; the seat meanwhile hardens #2 with the §4 (2,2,1) certificate-tie battery.
+
+## 2026-07-21: ROUND-4 ISSUE PROCESSED → THE ELDER LOCKS THE STATEMENT AT THE SOURCE (foldState recursion)
+rev-leaves round-4: ISSUE — the render edge-indexed only δ; state/center/Dd stayed free; the |S|=1
+refutation survives, made UNCONDITIONAL (the root edge of every positive-width buildTree is (case2,
+cleared=0) — Case2Preservation d false for ALL DLN d; banked case2_edge_refute.lean, controller
+re-ran EXIT 0); plus the docstring's road-(b) claim = name≠content. Its concurrent adjudication of
+seat-L4's sharpening: resid' must be DETERMINED (canonical Schur-reduced child), not ∃-with-length+
+support (the strict-transform lazy witness threads to an unreachable terminal). seat-w0l3's L3
+re-price independently re-derived the same blocker (the abstract state lacks residual u_p-
+divisibility; (case-2, δ=1) is REAL — the root edge itself). THE ELDER'S RULING closes the
+interpretation gap by WRITING THE EXACT TEXT: OPTION (1), concrete foldState recursion — TreePath/
+TreeEdge/edgeδ(off the STATE)/edgeShear/stepMap pinned interface; foldG/foldB/foldResid/foldRegion
+as total proof-free defining equations (THE SPLIT-RULE: data in defs, proof in leaves via one ∃q;
+design guard: no defining equation may need a proof term); FoldStepInv; the verbatim leaf statement
+(F = coreGen d e, D = flatDim d FIXED; hd:Monotone EXCLUDED as spurious; hN/hpos/he0/he_lin kept,
+each with its reason). STRUCTURAL DIVIDENDS: no ∀branch (the tree's edges ARE the branching — the
+collapse concern dissolves); resid'-determined SUBSUMED (a defining equation); L5 = path-induction
+emitting FoldProduced from the same spine. "The wall is now exactly one sentence: prove the concrete
+transition at case-1 edges — Aoyagi's Cases 1&2, at her own states, and nothing else." arch-C
+rendering verbatim (GO sent, gates incl. case2_edge_refute death + traversal-battery edge-data
+regression + root non-vacuity via Kronecker).
+ALSO THIS TICK: O9 MERGED + VERIFIED clean-three post-rebuild (jacDet/injOn blockBlowupMap — the
+critical-path atoms DONE; sensor note owned: my first probe read STALE OLEANS after a silently
+failed cd — w0l3's force-elaborated reading was correct; the cd-failure-masks-build class joins the
+shell-guards list). W0 PathAtoms fully sorry-free integrated (+ the centerCoordAligned univ-instance
+skew fix, general-S upgrade queued to w0l3). Wall cores #1+#2 banked earlier. Seats: w0l3 idle-fill
+(the Fintype instance-clash gotcha → lean/CLAUDE.md) then first in line for L3 post-render; seat-L4
+holds for the rendered statement (core #3 next); rev-leaves round-5 verifies against the elder's
+verbatim text.
+
+## 2026-07-21: THE 4TH REFUTATION (SupportedOn gap) — arrives already dead; seat-L4 fully unblocked
+seat-L4 kernel-checked the FOURTH refutation of the abstract-hypothesis road: SupportedOn admits
+non-vanishing residuals (1+u₀ — supported + continuous, but the δ=1 child divisibility fails:
+u_p-order 1 vs 2, the quotient (1+u₀)/u₀ non-continuous; battery + sorry-free Lean witness, merged
+at threads/L4-case1-core/). CONFIRMED-CLASS — and SUPERSEDED ON ARRIVAL: the elder's foldState form
+makes foldResid a DEFINING EQUATION (the concrete Let-block child — analytic, vanishing, center-
+structured by construction), which is the seat's own recommended fix taken to its limit. The four
+refutations now read as one sequence — constant-family (S3), Σw² spectator-support, misaligned-spec/
+non-polynomial q', non-vanishing residual — each a facet of quantification-severed-from-provenance,
+each dead by definition under the concrete states. supportedon_gap joins arch-C's gate probes.
+UNBLOCKS: seat-L4's two holds both resolved (O9 was ALREADY merged+clean-three — stale info; the
+residual decision = the render in flight); its BlockDivision 6th theorem (continuousOn_blockBlowup_
+center_quot — the child-quotient continuity) + witnesses merged, build green. The wall seat's full
+toolkit is now banked: BlockDivision (6) + WeightedCofactor (5+def) + O9 (2) + PathAtoms (15) — every
+atom the printed playbook needs, sorry-free, waiting on one render.
+
+## 2026-07-21: THE foldState RENDER LANDS (gate-green, uncommitted) — stand-ins become the review focus
+foldstate-render (arch-C's sub-seat) delivered: the full spine in MonumentAtlas.lean (+228/−65; the
+old edge-indexed Props deleted; L5 re-wired; both drivers sorry-free; 6 forecast leaves carry the
+sorries; module build green, cordon green, cone = exactly the leaf set, root FoldStepInv non-vacuity
+mostly proven via Kronecker). ONE LOUD DEVIATION: TreePath.step/extend carries a 6th field shearφ —
+justified (the locked foldG defining equation is FALSE for non-identity shears without it; φ≡id
+would vacuate the shear apparatus). FIVE TOTAL STAND-INS flagged honestly: hshear0 extra; foldNR
+case-1/rollover keep parent count (exact clear deferred); foldResid case-2 append = bare pivot
+coordinate (vs the Schur closed form; split-rule honored — no division); edgeChartDom = univ ⟹
+foldRegion ≡ univ (D2' shrink deferred; consistent while terminal_bezout stays Core-anchored); and
+terminal_bezout NOT re-anchored (a DIRECT deviation from the locked text). Full-tree/AxCheck runs hit
+its 10-min sandbox cap (no errors before timeout) — left to controller integration. IT DID NOT
+COMMIT/PUSH — arch-C ordered to SECURE FIRST, verify second. The verification focus is now exactly
+the stand-in defs: the leaves' sorries are forecast, and stand-in defining equations are the one
+thing that could make the leaf statements FALSE (about the wrong object) — the failure direction is
+unprovable-not-vacuous (safer than hypothesis-weakness), but a wasted wall seat all the same.
+PIPELINE: arch-C verification (text-match + the calibration-26 center/pivot derivation check vs the
+traversal table + per-stand-in assessment) → ONE elder delta-ratification package (shearφ + stand-ins
++ the terminal_bezout anchoring question) → controller integration + full build + batch → rev-leaves
+round-5 → the wave.
