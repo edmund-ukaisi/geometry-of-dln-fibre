@@ -155,10 +155,18 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
 - `DLN/Aoyagi/GeometricAtlasD12.lean` (rung B, node `b-rung-d12`): **now LANDED** — gate-orphan
   RESOLVED, wired + batch-banked (341); `exists_atlasRealizesExponents_d12` + `two_mul_rlctAt_coreGen_d12`
   (the first cite-free LC instance) both clean-three. No longer an in-flight caveat.
-- `DLN/Aoyagi/MonumentAtlas.lean` (rung C, nodes `b-leaf34..b-leaf8`): the 8-leaf skeleton — TYPED,
-  wired, SORRIED (gate = elaboration + battery, NOT sorry-free). `case1_preserves_stepInv` = THE WALL
-  (`b-leaf34`, seat-L4, in-flight). Leaves re-stated per [[severance-witnesses]]; the NEW
-  `terminal_edge_stepInv` + canonCenter round take the cone 6→7 (full 9 when baked). Do NOT read a
-  sorried leaf as banked.
-- `canonCenter` round (arch-C, branch `expedition/aoyagi-engine-rung-c`, gated-UNCOMMITTED — expected
-  in-flight): lifts L7's coordinate axis bridge-free (thread-40 STABLE). Not on origin until arch-C commits.
+- `DLN/Aoyagi/MonumentAtlas.lean` (rung C, nodes `b-leaf34..b-leaf8` + `b-terminal-edge-stepinv`): the
+  monument skeleton — TYPED, wired, SORRIED (gate = elaboration + battery, NOT sorry-free). Leaf set now
+  **9** (8-leaf skeleton + the NEW `terminal_edge_stepInv`, `:736`). Proven: L1 + `terminal_bezout`.
+  Open PROOF QUEUE: `terminal_edge_stepInv` (`b-terminal-edge-stepinv`, elder rider — expected easy,
+  unit-residual strictly weaker) + L3 + **L4 = THE WALL** (`case1_preserves_stepInv`, `b-leaf34`,
+  seat-L4, wall assembly in flight, rebase signal fired) + L5 fold hinge + L6/L8 + L7 tail. Leaves
+  re-stated per [[severance-witnesses]]. Do NOT read a sorried leaf as banked.
+- **canonCenter round — LANDED** (integrated `605497e2a`, no longer uncommitted). What it bought: L7
+  (`leafPath_compactCover`, `b-leaf7`) is now **BRIDGE-FREE** — the coordinate story is canonCenter's
+  own slot bookkeeping `(S,J,mergeIdx,d)` decoded through `tupIdxEquiv` (`LearningCoefficient.lean:138`)
+  / the engine's `divBirthCoord` (`EngineConstruction.lean:62`), NOT the retired card↔sum bridge; the
+  coordinate-axis severance witness dies ([[severance-witnesses]], `d174f1f41`).
+- **leafOf coupling — PENDING-ADJUDICATION** (navigator: dead-scope OR owed; NOT assumed either way):
+  L5's `FoldRealizes` carries its own `leafOf`, distinct from `FoldProduced`'s; whether the two must be
+  coupled (or the gap is dead-scope) is the nav call. Do not consume the coupling as resolved.
