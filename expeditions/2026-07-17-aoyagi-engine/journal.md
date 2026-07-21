@@ -7563,3 +7563,22 @@ INHABITS the record; unweighted A statements + two-sided eq SOUND; guard-∀ᶠ 
 transpose/direction/defeq deltas + zero-pres unpackaged + NOTHING in the corollary's import cone — reuse
 is commentary, not composition; the adapters are strike-able work. HOLD for elder re-ratification →
 ONE consolidated v5 brief (statement-hygiene pass; structure frozen).
+
+## 2026-07-21: elder RE-RATIFY-WITH-CONDITIONS — v4.1 dispatched (statement-hygiene, structure FROZEN)
+Elder: A (unweighted chain re-derived TRUE), C, D, E + corollary architecture RATIFIED; atlas SHAPE stays
+(it defeated the elder's own escape-to-infinity attacks); THREE statement-local blockers, exact fixes,
+with a VELOCITY PRE-COMMITMENT (v4.1 lands exactly D1–D3 ⟹ elder diff-verifies only). CONVERGENCE AGAIN:
+elder D1 (germ-at-0 certificates vs dom-wide cover; counterexample chart g_B=(v(u−2),v) covering via u≈2
+where its ideal identity fails, iInf 1 vs true 3/4) = same defect class as codex's remote-branch kill;
+controller verified the D1 FIX (dom-wide certificates w/ coefficients continuous ON dom) kills BOTH
+(codex's bwd coefficient 1/(1−s) blows at s=1). D1's route stake: germ-only certificates would let a
+far-covering atlas discharge exists_coreResolution BYPASSING the coupled recursion — the dodge inhabitable
+inside the record; dom-wide closes it. D2: per-chart a.e.-injectivity LOST in the v4 refactor (v3 had it);
+≥ needs none (subadditivity) but ≤ needs bounded multiplicity — restore. D3: measurability on the weighted
+chain + hFmeas into Chart + docstring fix. Elder also VERIFIED the banked signatures (deepest_le_of_
+homogeneous_core proven general-N; ParamsFlat general; Skeleton's ≥-leg SORRIED and rightly not
+presupposed) and AMENDED the strike plan (waypoint thread grows: weighted-eq leaves + analytic-zero-null
+helper [FIRST shared build] + area-formula CoV pair; LANE 5 pnp GATED on the dom-wide record — certifying
+to the germ-level record would certify to a spec that admits the dodge). v4.1 BRIEF SENT (D1+D2+D3 +
+codex e0=0 + flatten-continuity + composition-note for lane 4). On v4.1: elder diff-verify + targeted
+codex confirmation of the strengthened D1 statement → bar CLEARS → strike phase opens.
