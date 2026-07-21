@@ -15,11 +15,36 @@ Ranked by load-bearing-ness for the CURRENT wave (L4 first). Known compass/`work
 (Def-3, Lemma-1 direction, T-profile totality T-F, Case-2 raw-width T-E, realization gap, per-step
 principality split) are NOT re-flagged — those are settled. Quarry = NEW finds.
 
+**COVERAGE (sweep COMPLETE).** Page images read: pp.14–26 (Thm 4/Def 4, the full inductive statement,
+Case 1(1)/1(2), Case 2, the terminal compression + M_{s,k} + boxed rule, p.23 completing-the-square,
+Lemmas 3–5). Certificates read: thread-33 (shear-pin), 34 (case1-invariant), 35 (cover-cert), 36
+(leaf-fidelity). `verify-owed-math-audit.md` + compass ledger cross-checked. Decorrelated Codex consult
+(`codex/delta-answer.md`) run on the sharpest question (the δ-law) — independently confirmed δ=[J=0].
+
+**BASELINE REFRESH (2026-07-21, post-merge tip `ae4067369`; folded into the entries below).** The
+controller+elder adjudication landed while this swept: (S1) the step atom is now `blockBlowupMap`
+(block-center + spectators), full-ambient `blowupMap` retired; (S2) = A1, the δ=[J=0] fix, now an
+`EdgeSpec` field; (S3) `StepInv` carries deepest-point vanishing; L3/L4 are now **EDGE-INDEXED over the
+actual `buildTree`** (not ∀-state — the ∀-state form kept admitting sharper refutations; the paper's
+Cases are steps of THE construction, not universal facts), leaves move DLN-side; `FoldProduced`'s tie
+is now `(bindingAxes bexp).card = numDiv`. CONSEQUENCE for this map: the paper's traversal order + the
+per-case (S,J,t̃) transition bookkeeping (pp.15–20) is now **DIRECTLY load-bearing** as the edge-data
+source the fold consumes — items B1/B3/B4 are upgraded from "brief fodder" to "edge-spec source".
+
 ---
 
-## (a) FINDS THAT COULD CHANGE A REIFIED STATEMENT — stop-on-suspect (reported to `main` already)
+## (a) FINDS THAT COULD CHANGE A REIFIED STATEMENT — stop-on-suspect
 
-### A1. ⟨THE WALL⟩ L4 `Case1Preservation` — the child-dominant δ-law is mis-indexed. **[SUSPECT, near-certain]**
+### A1. ⟨THE WALL⟩ L4 `Case1Preservation` — the child-dominant δ-law is mis-indexed. **[ADJUDICATED CONFIRMED → FIXED: `EdgeSpec` δ=[J=0], merged `ae4067369`]**
+> STATUS UPDATE: reported to `main` (2× msgs); the elder's comb converged on it independently (same
+> pp.16/17/20 reading, same [J=0]-vs-branch diagnosis) and went further to S1 (the step-map shape). The
+> decorrelated Codex consult (`codex/delta-answer.md`) derived δ=[J=0] from scratch and exhibited a
+> concrete reachable witness: existing coords x,y with t̃(x)=1,t̃(y)=2 give (b₁,b₂,b₃)=(1,x,xy); at J=0 a
+> length-1 merge with x → (x,x,xy) [(1(1),J=0): true δ=1, hardcode δ=0, WRONG]; advancing to J=1 a
+> length-1 split with fresh z → (x,zx,zxy) [(1(2),J=1): true δ=0, hardcode δ=1, WRONG] — the SAME
+> advancing run hits both erroneous states. Fix banked: δ supplied by the fold from `ConState.cleared`
+> as an `EdgeSpec` field; branch re-pointed to pivot-kind/resid-shape (one-shared-center-two-distinct-
+> pivots), 1(1) a genuine `blockBlowupMap` at the old u_{s,k}. Kept below as the record of the find.
 - **[paper: pp.16–17 (Case 1(1)/1(2)), p.20 (Case 2); + p.15 b_i recursion; worked.tex:598–601,612–627]**
 - *The dominant generator is b₁ = ∏_{t̃_{s,k}=0} u (the smallest in the chain b₁|…|b_M, what `StepInv`
   factors out). Across a Case-1 step with pivot u_p, b₁ picks up u_p (δ=1) iff the pivot's newly-set
@@ -78,6 +103,14 @@ match; L7/L8's free-atlas falsity is already caught + HELD by thread-36 round-2,
   and the one non-unipotent transform (Thm 3's A₁⁻¹, det = (det A₁)^−#) is the r>0 peel — trivial at
   the r=0 deepest point where the whole resolution lives (E_J pivots = identity). So `unit ≡ 1` holds
   ∀ L/width/corank. L6 states g = (unipotent shears)∘(monomial blow-ups), NOT a monomial map.
+- **[S1 corroboration — NEW, confirms `blockBlowupMap` vs full-ambient against the paper.]** The
+  exceptional Jacobian exponent h = M_{s,k}−1 is exactly (block-center codimension)−1, NOT an
+  ambient-dimension count: Case 2 blows up the full residual block {d_ij=0, i,j>J} of codim
+  (M(S)−J)(M^(S+1)−J), and the printed exponent is M′_{S,J+1}=(M(S)−J)(M^(S+1)−J) = that codim (p.20);
+  Case 1(1)'s printed INCREMENT M′_{s,k}−M_{s,k}=J₁(M^(S+1)−J) (p.16) equals the added sub-block codim
+  J₁×(M^(S+1)−J). So the block-center codimension arithmetic reproduces her printed increments — the
+  full-ambient `blowupMap` (retired S1) would give the wrong exponent. Confirms the merged
+  `blockBlowupMap` atom is the faithful shape; feeds `GeoStep.jexp`/`hσ_jac` under the new baseline.
 
 ### B3. L5 fold — the exact roll-over rule (J increments to M(S+1), then S) + the root state.
 - **[paper: p.19 "If J+1 ≤ M(S+1) then J increases by one; if J+1 > M(S+1) then S increases by one";
@@ -86,8 +119,12 @@ match; L7/L8's free-atlas falsity is already caught + HELD by thread-36 round-2,
    terminates at S=L+1. Root: S=J=0, D₀=∏C, b₀=1.*
 - **[status: TRANSCRIBED (image-confirmed) — the running-min M(S) governs exponent accumulation (compass T-E)]**
 - **[wiring: `leaf_stepInv_of_path` (L5) fold order + well-foundedness; the root `StepInv F id 1 coreGen` (root_probe.lean)]**
-- **[action: brief fodder for SEAT-L5.]** Termination rides the FINITE branch (J bounded by M(S+1), S by
-   L+1), NOT a residual measure — matches `StepInvChild`'s docstring. BOUNDARY (p.19): when
+- **[action: EDGE-SPEC SOURCE for the edge-indexed L3/L4/L5 (upgraded from brief fodder).]** Under the
+   merged edge-indexed baseline, the fold generates each `EdgeSpec` from the (S,J,t̃) transition of the
+   corresponding `buildTree` edge; THIS roll-over rule (p.19) + the per-case t̃ assignments (Case 1(1)
+   sets t̃=J on the reused pivot p.16; Case 1(2)/Case 2 set t̃_{S,J+1}=J on the fresh pivot pp.17/20) ARE
+   that transition bookkeeping — the paper is the direct source for the edge data. Termination rides the
+   FINITE branch (J bounded by M(S+1), S by L+1), NOT a residual measure. BOUNDARY (p.19): when
    J+1 > M(S+1) the residual collapses to D_J‴ = (1,0,…,0) or its TRANSPOSE — the roll-over can
    transpose a single-row/col residual; the fold must handle the residual-becomes-a-vector edge.
 
@@ -163,6 +200,22 @@ match; L7/L8's free-atlas falsity is already caught + HELD by thread-36 round-2,
 - **[action: none for the wave.]** The r=0 kill-path needs neither; general-r Thm 2 is the single
    largest additional build (O3), shares no dependency with the kill-path. Named boundary, not a gap.
 
+### C4. O5 (the printed-form / clean q²−m² identity) — the paper HAS a general-L proof: pp.23–24 completing-the-square. **[NEW — elder-flagged, verified independently]**
+- **[paper: p.23 the M_{s,k} completing-the-square; p.24 the 2λ_O assembly + Lemma 3; worked.tex:876–910]**
+- *p.23 rewrites the terminal branch exponent as
+   `M_{s,k} = ½ Σ_{j=1}^{ℓ-1} (F_j − P̄)² + ½ (Σ_{j=1}^{ℓ-1} F_j − ((ℓ-1)/ℓ)·Σ M^(S_j))²`, where P̄ =
+   (Σ_{k=1}^{ℓ+1} M^(S_k))/ℓ is the balanced mean — a genuine sum of squared deviations. Minimising over
+   the branch (the F_j) is then the balanced-split minimisation of Lemma 3 (p.24, min A(b)=aℓ(ℓ−a)),
+   yielding the printed Thm-2 closed form.*
+- **[status: image-VERIFIED this pass (the SOS identity is explicit on p.23); currently O5 is DEFERRED and only exact-enumeration-verified (L≤6, `verify-def3-underspec.md` Check 4) — the (F-1) "still-owed theorem"]**
+- **[wiring: O5 — the `cCodim = ½·Mval_min = clean q²−m² = printed Thm-2` identity ∀(L,M); `lambdaCore_eq_clean`]**
+- **[action: later waypoint — the general-L proof is TRANSCRIBE-ABLE, not enumeration-bound.]** pp.23–24
+   (completing-the-square → balanced-split min via Lemma 3) is the whole skeleton; it converts O5 from
+   "verified by finite enumeration only" to "the paper proves it generally". A clean self-contained
+   pen-and-paper + formalise unit if the operator wants the printed form on the record. Confirms the
+   elder's read. NOT on the kill-path (the destination names C = the codimension = `cCodim`, proved);
+   this is the downstream printed-form exposition.
+
 ---
 
 ## (d) PAPER-SILENT OBLIGATIONS — OURS to prove; the paper gives no lemma/guide here
@@ -198,21 +251,26 @@ match; L7/L8's free-atlas falsity is already caught + HELD by thread-36 round-2,
 - *L7/L8 quantify over a FREE `atlas : GeoAtlasData` with no field tying it to the fold/tree ⟹ FALSE as
    stated (degenerate-atlas + adversarial-jac refutations, thread-36 round-2). The paper's atlas IS the
    fold by construction; the Lean must encode the tie (provenance predicate / `FoldProduced`).*
-- **[status: KNOWN — thread-36 round-2, L7/L8 seats HELD on anchoring; dispatched to arch-C]**
-- **[wiring: `leafPath_compactCover`/`leafPath_realizesExponents` — need an atlas-fold anchor]**
-- **[action: none new — flagging that A1's δ fix and this anchoring both stem from the interior state
-   carrying too little provenance (no J, no fold-link). Consider a single enriched state carrying J +
-   the fold anchor to fix A1, D5, and the arch-C brief together.]**
+- **[status: RESOLVED under the merged baseline — L3/L4 edge-indexed over `buildTree`; `FoldProduced`'s
+   tie is now `(bindingAxes bexp).card = numDiv` (the earlier branch-length tie was unsatisfiable —
+   merges birth no divisors)]**
+- **[wiring: `leafPath_compactCover`/`leafPath_realizesExponents` — anchored to the fold/tree]**
+- **[action: confirmed — A1's δ fix and this anchoring shared ONE root cause (the interior state carried
+   too little provenance: no J, no fold-link); the edge-indexed baseline threads the recursion state +
+   the fold anchor together, which is exactly the paper's own frame (see the cross-cut).]**
 
 ---
 
-## Cross-cut observation (for the controller)
+## Cross-cut observation (for the controller) — CONFIRMED by the merged baseline
 
-A1 (the δ mis-index), D5 (free-atlas falsity), and arch-C's case-2-b′-law open note are the SAME root
+A1 (the δ mis-index), D5 (free-atlas falsity), and arch-C's case-2-b′-law open note were the SAME root
 cause surfacing three times: the reified interior state (`StepInv`/`Case1Preservation`/`GeoAtlasData`)
-carries too little provenance — no recursion index J, no fold-link. The paper's state is (S,J) with a
+carried too little provenance — no recursion index J, no fold-link. The paper's state is (S,J) with a
 fully determined b-ledger; every "which b picks up which pivot / which chart came from which branch"
-question is answered by (S,J) + the b_i = ∏_{t̃<i} u closed form. Threading (S,J) — or at least a J=0
-indicator + a fold anchor — through the interior state would fix A1 and D5 at once and price the fold
-correctly. This is the paper's shortcut the wave keeps re-deriving: **the state is (S,J), and the
-b-ledger is a function of it.**
+question is answered by (S,J) + the b_i = ∏_{t̃<i} u closed form. The merged baseline (`ae4067369`)
+adopted exactly this: edge-indexing L3/L4 over `buildTree` (the fold supplies edge specs from the (S,J,t̃)
+transitions), `EdgeSpec` δ=[J=0] from `ConState.cleared`, and the `FoldProduced` `card = numDiv` tie —
+all three symptoms dissolve into one frame. **This is the paper's shortcut the wave kept re-deriving: the
+state is (S,J), the b-ledger is a function of it, and the Cases are edges of THE construction, not
+universal facts.** The remaining paper-silent obligations (D1–D4) are the genuinely OUR-side proof-
+engineering; the rest is transcription of pp.14–24 against the edge-indexed / block-center baseline.
