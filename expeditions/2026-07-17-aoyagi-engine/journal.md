@@ -9806,3 +9806,24 @@ incl. the FoldProduced-lock adjudication: the leafOf coupling was deferred OUT o
 lifted without it — is it dead scope or still owed? nav ground-truths; Tier-3's release hangs on
 it); convene carto (bake-integration trigger: cone transitions + L7 banner + the severance
 coordinate row bridge-gated→closed).
+
+## 2026-07-21 (controller) — CANONCENTER ROUND INTEGRATED (controller gates green); the dispatch fan fires
+
+Controller gate re-derivation on the merged d174f1f41: full build GREEN (8989 jobs); the driver +
+terminal_edge_stepInv both on the expected live frontier ([propext, sorryAx, Classical.choice,
+Quot.sound]); cordon both halves OK; MonumentAtlas census = 7 (6 leaves + terminal_edge_stepInv)
+— matches arch-C's authoritative gate exactly. Map updated (my pen): L7 flipped to STATED +
+BRIDGE-FREE (banner lifted, lean anchor added); NEW node b-terminal-edge-stepinv (stated, the
+consumer-contract prop, the permanent regression noted); STATUS regenerated.
+
+**The elder's fence pin (final):** two homes — Tier 1 carries abstract `.Nonempty` (plain data
+hypothesis, no fresh predicate); Tier 2 discharges via the owned lambdaCore_eq_zero_iff. The
+fence is genuine mathematics (minMval = 0 ⟹ ρ = 0 while a(ℓ−a)+1 ≥ 1 — the identity NEEDS it).
+Render-pass checklist final at SIX checks. Elder's record note: pin (a) vindicated empirically
+BEFORE Lean ("the prospective audit is paying at the rate the forensic one used to charge").
+
+**Dispatch fan (on this integration):** seat-L4 rebase-ready signal (assemble + land the wall);
+nav-13 mandatory joint (DLN-lane → canonCenter: FoldProduced-lock adjudication — the leafOf
+coupling was deferred OUT of the round and L7 lifted without it: dead scope or owed? Tier-3's
+release hangs on the verdict; + the post-bake parallel picture); carto-standing bake trigger
+(cone 6→7 transition, L7 banner, severance coordinate row → closed, STATUS already regenerated).

@@ -13,7 +13,7 @@ updated: 2026-07-21
   ★ corollary-reduction [proven] the corollary reduction: rlctGlobal(lossDLN) = rlctAt(∑coreGenᵢ²) 0 — PROVEN
   ★ kill-cite [conjectured] DELETE cited_aoyagi_lower_ax — the charter kill-target (close-phase)
 
-## roots (6) — 11 open nodes below
+## roots (6) — 12 open nodes below
   ◦ aoyagi-summit [stated] summit: rlctGlobal(lossDLN d 0) = cCodim/2, via the engine (corollary/test)
   ◦ object-a [proven] Object A: RLCT ideal-invariance (Aoyagi Lemma 1), two-sided + weighted — PROVEN
   ◦ object-b [stated] Object B: the product-ideal resolution atlas exists (coupled corank≥2) — THE frontier
@@ -21,7 +21,7 @@ updated: 2026-07-21
   ◦ object-d [proven] Object D: codim = minAdm = cCodim = qipMin, θ, perm-invariance — BANKED
   ◦ object-e [stated] Object E: analytic order ρ — OPENED-SCOPED (operator 2026-07-21); combinatorial half in build
 
-## live frontier — 2 ready, 9 blocked
+## live frontier — 2 ready, 10 blocked
   ▶ e-p62-count-identification [adjudicated] owner=seat-E
   ▶ b-ladder [adopted] owner=controller
   · aoyagi-summit [stated] owner=controller
@@ -30,6 +30,7 @@ updated: 2026-07-21
   · b-leaf34-case-steps [stated] owner=seat-L4
   · b-leaf5-path-fold [conjectured] owner=parked: skeleton rung (C); general-d reasoning over the salvaged tree's WellFounded.fix
   · b-leaf6-chart-geometry [conjectured] owner=parked: skeleton rung (C); statements gated by the shear pin (resolved corrected-(a))
-  · b-leaf7-compact-cover [conjectured] owner=parked: skeleton rung (C); Hironaka-properness cite REMOVED as an option (operator 2026-07-21)
+  · b-leaf7-compact-cover [stated] owner=parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41
+  · b-terminal-edge-stepinv [stated] owner=parked: proof queue (the elder's rider obligation, born in the canonCenter round; consumer-fit example banked as permanent regression)
   · b-leaf8-realizes-exponents [conjectured] owner=parked: skeleton rung (C); consumes the salvage adapter's seam shape
   · kill-cite [conjectured] owner=parked: until object-b lands (summit clean-three); then consumer audit + deletion
