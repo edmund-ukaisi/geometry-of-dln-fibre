@@ -7534,3 +7534,18 @@ bridge; coupled-atlas monument gated on pnp) — feeds task #3 directly. v4 REPA
 architect (one consolidated pass: A guards+rewire+weighted-eq; B atlas-ise with the (1,2) two-chart
 blow-up as the positive inhabitation test; corollary un-bundle + concrete F; honesty fixes incl. the
 overclaimed sorried guard). Bar re-runs after: codex round-2 + elder re-ratification of B.
+
+## 2026-07-21: v4 delivered (749b336d4, pushed) — bar RE-RUNNING (round 2)
+Architect's v4: all four clusters fixed — A junk-0 guarded (LocallyNullZeros + rename + rewired A-eq +
+ADDED weighted two-sided eq); B ATLAS-ISED (Chart per-chart cert, per-chart properness dropped as
+uninhabitable; Resolution = compact source domains + a.e.-localizing cover; CoV = iInf over charts,
+≤-per-chart PROVED; D/E re-threaded cross-chart); corollary decomposed (CONCRETE coreGen = flattened ∏C
+entries; exists_flatten + coreReduction with the ℝ≥0∞→ℝ carrier bridge named); honesty (guard overclaim
+owned, quantifier fixed, census 16 — controller recount ✓). Its own spawned reviewer independently
+CONVERGED on the single-chart kill (K=x²+y⁴, g=(u,uv): 3/4≠1) — THREE decorrelated instruments, same
+defect. Closure green; cordon OK; kill-path cite-free (re-verified post-rewrite). Controller spot-checks:
+guards/atlas/coreGen present ✓. BAR ROUND 2 RUNNING: codex hunt (adversarial-redundant-chart attack on
+iInf; guard sufficiency; ∀ᶠ guard statement; coreGen faithfulness; BANKED-SIGNATURE check on
+deepest_le_of_homogeneous_core + ParamsFlat; atlas inhabitation audit) + elder re-ratification of B
+(record fidelity to min-over-charts; lost-field check e.g. per-chart injectivity; residual rulings;
+strike-order confirmation). Aggregator still held.
