@@ -33,7 +33,7 @@ namespace DLNFibre.DLN.Aoyagi
 `aoyagiTheta` — both are `a(ℓ−a)+1`, unconditionally. This is where the θ-name enters the E-lane
 (Tier 1 stays name-neutral). -/
 theorem bandCount_eq_aoyagiTheta (ℓ a : ℕ) : bandCount ℓ a = aoyagiTheta ℓ a := by
-  rw [bandCount_eq, aoyagiTheta]
+  simp only [bandCount_eq, aoyagiTheta]
 
 variable {N : ℕ}
 
