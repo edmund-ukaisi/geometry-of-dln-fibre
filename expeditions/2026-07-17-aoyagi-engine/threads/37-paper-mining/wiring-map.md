@@ -261,6 +261,54 @@ match; L7/L8's free-atlas falsity is already caught + HELD by thread-36 round-2,
 
 ---
 
+## CERTIFICATE — the edge-indexed EdgeSpec traversal gate for (3,3,4) (commissioned 2026-07-21)
+
+**Battery:** `edgespec_traversal_334.py` (exact integer/`Fraction`, EXIT 0). **Verdict: the fold's
+edge-indexed generator reproduces Aoyagi's (S,J,t̃) transition system for the coupled RRR core (3,3,4),
+including the p.19 transpose boundary and the only-at-exhaustion guard. NO stop-on-suspect.**
+
+**Decorrelation.** The simulator implements the recursion from my independent page-image reading
+(pp.14–22); the dispatch rule is cross-read against `conOracle` (EngineConstruction.lean:2117) and the
+outputs asserted against the paper's PRINTED formulas. Agreement of the two encodings on the printed
+increments + the (3,3,4) headline is the gate.
+
+**The (3,3,4) full transition table** (paper S = Lean layer+1; profile t=(t⁽¹⁾,t⁽²⁾), t̃=min):
+the S=1 layer runs three Case-2 appends building divisors (0,0)/9, (1,1)/4, (2,2)/1; rollover fires at
+J=3=M(S+1) (transpose boundary); at (S=2,J=0) a **Case-1(1) merge** bumps (1,1)/4 → **(1,0)/8 =
+Mval(1,0)** with δ=[J=0]=1 — exactly the compass landmark "the (1,1)→(1,0) M=8 merge at paper S=2 =
+Lean layer=1" (EngineConstruction.lean:85). minAdm=8, rlct_core=½·8=4. 5 leaves, 26 edges.
+
+**Six assertion classes verified (all PASS, exact arithmetic):**
+1. **MvalCoh** — every divisor's accumulated exponent = Mval(profile) (p.22 M_{s,k} formula), at every edge.
+2. **Case-1(1) increment = J₁·(M^(S+1)−J)** (p.16) and **Case-2 exponent = (M(S)−J)(M^(S+1)−J)** (p.20);
+   the bump exactly closes the Mval-gap of the tail-write.
+3. **δ = [J=0], UNIFORM across sub-cases** (S2) — every non-rollover edge; both edges of a Case-1 node
+   share δ (this is A1's fix, now positively verified on the traversal, not just argued).
+4. **Rollover fires EXACTLY at J = M(S+1) = widthMinUpto(layer+1)** — the p.19 transpose boundary /
+   only-at-exhaustion guard; verified at every rollover edge.
+5. **Center codimension = block dims** (S1): Case-2 center = full (M(S)−J)×(M^(S+1)−J) block; Case-1
+   center = J₁×(M^(S+1)−J) d-subblock + the u-hyperplane — matches `blockBlowupMap`, not full-ambient.
+6. **Headline** — min over terminal t̃=0 divisors = minAdm (over the t_L=0 admissible lattice); rlct = ½·minAdm.
+   Guards PASS: (2,2,2)→3/2, (2,1,2)→1, (2,2,2,2)→3/2, (3,3,2,2)→2, (2,2,3,2) [non-monotone T-E instance].
+
+**Rule-by-rule correspondence to the fold** (`conOracle`): terminal at `L ≤ layer`; rollover at
+`widthMinUpto(layer+1) ≤ cleared` (2119); Case-1 iff an occupied t̃-level lies in `(J, M(S))` with
+`runLen = target − J = J₁` (2122–2143); else Case-2 (2146). Case-1 emits BOTH charts (merge `case11`
+bumps `divExp[f] += runLen·resCols` + tail-writes; split `case12` appends `divExp[f]+runLen·resCols`,
+inherited head + tail-write, advances J) (2055–2103); Case-2 appends `resRows·resCols`, `runMinWidth`
+head + tail J (1965–1980). EdgeSpec `δ = [J=0]` uniform, `σ = sh ∘ blockBlowupMap center p`
+(PrincipalInv.lean rung-c, 126–151).
+
+**A CONFIRMING sub-find (not a suspect): the Case-2 head is the RUNNING-MIN, not the printed raw-width.**
+The simulator first tripped MvalCoh at the non-monotone (2,1,2): profile (2,0) with Mval 4 ≠ divExp 2.
+Cause: I had encoded the Case-2 profile head as `widthMinUpto M p = min(M[0..p])`, but the fold uses
+`runMinWidth M p = min(M[0..p+1])` (EngineDefs.lean:147) — the RUNNING-MIN. With the running-min head the
+profile is (1,0), Mval=2=divExp, and MvalCoh holds. This is precisely the T-E-defect resolution in force:
+the fold deliberately does NOT reproduce the paper's printed p.20 raw-width head-reset `t^(i)=M^(i+1)`
+(defective at non-monotone widths); the running-min head is T-E-immune and makes MvalCoh hold
+UNCONDITIONALLY (verified at the non-monotone (2,1,2), (2,2,3,2), (3,3,2,2)). Fidelity point: the fold's
+head choice is a documented, correct deviation from the printed label (compass T-E ledger), not a defect.
+
 ## Cross-cut observation (for the controller) — CONFIRMED by the merged baseline
 
 A1 (the δ mis-index), D5 (free-atlas falsity), and arch-C's case-2-b′-law open note were the SAME root
