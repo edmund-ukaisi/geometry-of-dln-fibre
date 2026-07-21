@@ -180,6 +180,81 @@ def SupportedOn {nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (S : Fin
     (∀ (j : Fin nR) (i : Fin D), ContinuousOn (c j i) V) ∧
     (∀ (j : Fin nR), ∀ u ∈ V, resid j u = ∑ i ∈ S, c j i u * u i)
 
+/-- **`c` ignores the `S`-coordinates on `V`** (the elder-canonical center-disjointness form,
+`Function.update`-native): changing any single `S`-coordinate of a point of `V` leaves `c` unchanged, so
+`c` reads only the spectators (coords outside `S`). Finest-grained / constructor-friendly; the agreement
+form (`ignoresCoords_univ_iff_agree`) and the center-zeroing form (`ignoresCoords_centerZero`) are DERIVED.
+
+**Future-proofing (M14/L6 staged region-lock).** The update ⟺ agreement equivalence uses that the update
+path stays in the region — free on `V = Set.univ` (the current `foldRegion`); when the M14/L6 lock makes
+regions bounded, a non-rectangular `V` makes update-invariance strictly WEAKER, and the AGREEMENT form
+becomes the honest carrier — this equivalence lemma then gains a rectangularity hypothesis. -/
+def IgnoresCoords (c : (Fin D → ℝ) → ℝ) (S : Finset (Fin D)) (V : Set (Fin D → ℝ)) : Prop :=
+  ∀ w ∈ V, ∀ m ∈ S, ∀ t : ℝ, c (Function.update w m t) = c w
+
+/-- **Center-exact degree-1 support** — strengthens `SupportedOn` (which it strictly subsumes: drop the
+`IgnoresCoords` conjunct). Each `resid j = ∑_{i ∈ S} c i · u i` on `V`, with the coefficients `c i`
+continuous on `V` AND ignoring the `S`-coordinates. This is EXACTLY the condition under which the δ=1
+`blockBlowupCoordQuot` substitution equals the strict transform (each residual monomial carries EXACTLY
+one center factor); ideal-membership (`SupportedOn`) alone is too weak — its free coefficients admit an
+over-large center (the `d=![1,2,1]`, `center={0,1,2}` witness) where the substitution over-divides. -/
+def Deg1SupportedOn {nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (S : Finset (Fin D))
+    (V : Set (Fin D → ℝ)) : Prop :=
+  ∀ j, ∃ c : Fin D → (Fin D → ℝ) → ℝ,
+    (∀ i, ContinuousOn (c i) V) ∧
+    (∀ u ∈ V, resid j u = ∑ i ∈ S, c i u * u i) ∧
+    (∀ i, IgnoresCoords (c i) S V)
+
+/-- **Agreement form of `IgnoresCoords`** (derived, on `V = univ`): `c` ignoring `S` ⟺ `c` agrees on any
+two points that agree off `S`. Buildable by `Finset` induction transforming one point into the other by
+single `S`-updates (the region caveat is vacuous at `V = univ`; see the `IgnoresCoords` docstring). -/
+theorem ignoresCoords_univ_iff_agree (c : (Fin D → ℝ) → ℝ) (S : Finset (Fin D)) :
+    IgnoresCoords c S Set.univ ↔ ∀ u v, (∀ s, s ∉ S → u s = v s) → c u = c v := by
+  constructor
+  · intro H u v hagree
+    have key : ∀ T : Finset (Fin D), T ⊆ S →
+        c u = c (fun i => if i ∈ T then v i else u i) := by
+      intro T
+      induction T using Finset.induction with
+      | empty =>
+        intro _
+        have h0 : (fun i => if i ∈ (∅ : Finset (Fin D)) then v i else u i) = u := by
+          funext i; simp
+        rw [h0]
+      | insert a T ha IH =>
+        intro hsub
+        have haS : a ∈ S := hsub (Finset.mem_insert_self a T)
+        have hTS : T ⊆ S := (Finset.subset_insert a T).trans hsub
+        have hmix : (fun i => if i ∈ insert a T then v i else u i)
+            = Function.update (fun i => if i ∈ T then v i else u i) a (v a) := by
+          funext i
+          by_cases hia : i = a
+          · subst hia; simp
+          · rw [Function.update_of_ne hia]
+            simp [Finset.mem_insert, hia]
+        rw [hmix, H _ (Set.mem_univ _) a haS (v a)]
+        exact IH hTS
+    have hkey := key S (Finset.Subset.refl S)
+    have hSv : (fun i => if i ∈ S then v i else u i) = v := by
+      funext i
+      by_cases hiS : i ∈ S
+      · simp [hiS]
+      · simp [hiS, hagree i hiS]
+    rwa [hSv] at hkey
+  · intro H w _ m hm t
+    apply H
+    intro s hs
+    have hsm : s ≠ m := by rintro rfl; exact hs hm
+    exact Function.update_of_ne hsm t w
+
+/-- **Center-zeroing form of `IgnoresCoords`** (derived constructor lemma, on `V = univ`): an
+`S`-ignoring `c` is unchanged when the `S`-coordinates are zeroed. -/
+theorem ignoresCoords_centerZero {c : (Fin D → ℝ) → ℝ} {S : Finset (Fin D)}
+    (h : IgnoresCoords c S Set.univ) (u : Fin D → ℝ) :
+    c u = c (fun i ↦ if i ∈ S then 0 else u i) := by
+  rw [ignoresCoords_univ_iff_agree] at h
+  exact h u _ (fun s hs => by simp [hs])
+
 /-- **One recursion child** conforming to an `EdgeSpec` at pivot `p`, landing in the NEXT edge's block
 `childSpec` (elder A/B + seat-L4): the CONSTRUCTION supplies the unipotent shear `sh`
 (Jacobian-exactly-1), the child region (pullback of the parent region ∩ a chart domain — no implicit
