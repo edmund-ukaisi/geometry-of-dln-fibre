@@ -8762,3 +8762,18 @@ anchors locked for arch-C's draft (the codex witness closes with q′=1; the (3,
 the root edge — controller-checked: orders balance d vs d ✓). All prior ratifications stand incl.
 the δ-conditional hsupp (triply vindicated). ONE bundle, ONE elder pass on arch-C's draft; then
 integration; then L3 wires and the wall proof opens on defs that are, at last, the paper's own.
+
+## 2026-07-21: ELDER SUPPLEMENT — integration unheld; anchor (iv) catches the ROOT-CENTER assumption
+Two additions bind the draft: (i) the FACTORED-FORM proviso (residual entries as explicit
+center-factor × tail-factor — the strict transform is then pure data; hsupp's existential witnesses
+never enter the def); (ii) ANCHOR (iv) — the paper's ROOT step blows up the LAYER-1 BLOCK only
+(deeper layers = spectators; each coreGen entry has exactly ONE layer-1 factor ⟹ u_p-order exactly
+1 ⟹ one division balances). center = univ at the root is right ONLY when the current layer is the
+whole space (d12 — why blowupResolution was correct there); a univ root-center in the render for
+general d is a WRONG-CENTER defect the draft must fix from the ConState. This also corrects the
+round-5 reasoning "hsupp forces root center = univ" — hsupp is IDEAL-membership and coreGen entries
+ARE in ⟨layer-1 coords⟩; the layer-1 center discharges it. The ROOT-EDGE order witness is banked
+beside the codex case11 witness ("the same defect seen from both ends; both die at the strict
+transform" — base-case + interior bracket the class; the root witness doubles as the wrong-center
+detector). Gate anchors now (i)–(iv). Pipeline: arch-C's Let-block draft → elder one-pass →
+integration + full build + AxCheck → L3 rebase+wire → the WALL opens on the paper's own defs.
