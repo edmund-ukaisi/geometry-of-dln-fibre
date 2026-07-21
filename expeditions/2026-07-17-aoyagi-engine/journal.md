@@ -8484,3 +8484,24 @@ residual decision = the render in flight); its BlockDivision 6th theorem (contin
 center_quot — the child-quotient continuity) + witnesses merged, build green. The wall seat's full
 toolkit is now banked: BlockDivision (6) + WeightedCofactor (5+def) + O9 (2) + PathAtoms (15) — every
 atom the printed playbook needs, sorry-free, waiting on one render.
+
+## 2026-07-21: THE foldState RENDER LANDS (gate-green, uncommitted) — stand-ins become the review focus
+foldstate-render (arch-C's sub-seat) delivered: the full spine in MonumentAtlas.lean (+228/−65; the
+old edge-indexed Props deleted; L5 re-wired; both drivers sorry-free; 6 forecast leaves carry the
+sorries; module build green, cordon green, cone = exactly the leaf set, root FoldStepInv non-vacuity
+mostly proven via Kronecker). ONE LOUD DEVIATION: TreePath.step/extend carries a 6th field shearφ —
+justified (the locked foldG defining equation is FALSE for non-identity shears without it; φ≡id
+would vacuate the shear apparatus). FIVE TOTAL STAND-INS flagged honestly: hshear0 extra; foldNR
+case-1/rollover keep parent count (exact clear deferred); foldResid case-2 append = bare pivot
+coordinate (vs the Schur closed form; split-rule honored — no division); edgeChartDom = univ ⟹
+foldRegion ≡ univ (D2' shrink deferred; consistent while terminal_bezout stays Core-anchored); and
+terminal_bezout NOT re-anchored (a DIRECT deviation from the locked text). Full-tree/AxCheck runs hit
+its 10-min sandbox cap (no errors before timeout) — left to controller integration. IT DID NOT
+COMMIT/PUSH — arch-C ordered to SECURE FIRST, verify second. The verification focus is now exactly
+the stand-in defs: the leaves' sorries are forecast, and stand-in defining equations are the one
+thing that could make the leaf statements FALSE (about the wrong object) — the failure direction is
+unprovable-not-vacuous (safer than hypothesis-weakness), but a wasted wall seat all the same.
+PIPELINE: arch-C verification (text-match + the calibration-26 center/pivot derivation check vs the
+traversal table + per-stand-in assessment) → ONE elder delta-ratification package (shearφ + stand-ins
++ the terminal_bezout anchoring question) → controller integration + full build + batch → rev-leaves
+round-5 → the wave.
