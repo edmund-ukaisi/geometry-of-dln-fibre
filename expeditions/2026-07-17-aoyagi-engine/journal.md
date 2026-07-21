@@ -8505,3 +8505,21 @@ PIPELINE: arch-C verification (text-match + the calibration-26 center/pivot deri
 traversal table + per-stand-in assessment) → ONE elder delta-ratification package (shearφ + stand-ins
 + the terminal_bezout anchoring question) → controller integration + full build + batch → rev-leaves
 round-5 → the wave.
+
+## 2026-07-21: ROUND-5 VERIFICATION — arch-C catches the FIFTH severance class itself (free center); elder ruling pending
+The render verified (text-match confirmed; cone = the 8 leaves; module green post tip-merge; banked
+80f2dc2cd). THE FIND — arch-C's own verification, before any external review: TreeEdge's center/pivot
+as FREE FIELDS make the case-1 (δ=1) leaf REFUTABLE — a center not covering coreGen∘foldG's support
+leaves a spectator live at u_pivot=0 while b' vanishes ⇒ no continuous q' ⇒ child false from a true
+parent. The linkage-severance disease re-entering on the CENTER axis after the state axis was fold-
+bound — calibration-26's drift point realized precisely (the fold-DETERMINED center couldn't be given
+a def body: the flatDim bridge + the depth>1 foldG-transform block it, so the render honestly kept
+fields + a documented spec — and the free field is exactly the leak). Options to the elder: (A) bake
+center-covers-support validity into TreeEdge; (B) carry SupportedOn (foldResid p) ed.center as a leaf
+hypothesis (L5's fold supplies it by nature). One fix also closes stand-in-(c)'s exactness. RATIFY-AS-
+IS recommendations relayed: the b-RATIO (ℝ-Dvd is vacuous); the center/pivot doc-block containment;
+shearφ data-only; the four stand-ins keep-now/upgrade-later with D2'-shrink named as REQUIRED-on-L6.
+Package with the elder; arch-C holds all locked-leaf edits; the added gate = the free-center
+refutation dies against the bound form. PROCESS NOTE: five severance classes, five catches, each one
+gate earlier than the last — the fifth by the ARCHITECT's own verification before review. The
+verification stack is now in front of the defect curve.
