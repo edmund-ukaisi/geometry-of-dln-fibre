@@ -67,16 +67,23 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
 - **Def-3 broken** (verified typo) — use the geometric `½·min_t Mval(t)`. Witness `battery/g-def3-broken.py`.
 - **Lemma 1 direction**: worked.tex:156 prints `≥`; the correct/used direction is `≤` (`rlctAt_mono`) —
   harmless for the equality use.
-- **Case-2 raw-width vs running-min (UNCERTAIN — FLAG for pen-and-paper at Object B).** p.20's Case-2
-  head-reset labels on the RAW width while the exponent uses the RUNNING-MIN; at non-monotone widths
-  they CONFLICT with the paper's own p.22 formula (6-vs-4 at (2,2,3,2)). KERNEL (frame-independent,
-  Def-3-class): Aoyagi's Case-2 as printed is inconsistent at non-monotone widths — do NOT transcribe
-  the p.20 label rule as printed; a faithful Object-B rendering of Case 2 at (2,2,3,2) must resolve which
-  quantity governs the `b`-exponents. UNCERTAIN: whether a separate "label" even EXISTS in the ideal
-  route (the retired Engine carried a T-label distinct from the exponent; the ideal route may read
-  exponents directly, dissolving the fork), and whether FIX-A (cap at running-min) is the correct
-  ideal-level resolution — FIX-A was validated only in the retired oracle/simulator. Ledger:
-  `theory/aoyagi-2023-reproduction/verify-case2-rawwidth-defect.md`. RE-ADJUDICATE when B renders Case 2.
+- **T-profile total-comparability (NEW paper defect, thread-31; Def-3-class).** Aoyagi's claim that the
+  carried `T`-profiles are totally comparable is FALSE: at widths (2,2,1,1) the profiles (1,1,1) and
+  (2,1,0) are componentwise-incomparable, both with Mval = 1. Codex-found, battery-verified
+  (`theory/aoyagi-2023-reproduction/g-monument-mval-instances.py`; controller+elder re-runs green). The
+  v4.2 record is structurally immune: `hchain` orders the threshold-side b-monomials (`bexp`), never
+  profiles — profiles have NO record field, so the false claim has no formal representation to corrupt.
+  The b-chain `b₁|…|b_M` is Aoyagi's own invariant and SURVIVES; only the profile-comparability reading
+  dies. Recorded so the monument seat does not transcribe it.
+- **Case-2 raw-width vs running-min — CLOSED (thread-31; was UNCERTAIN).** Resolved structurally: the
+  ideal-route record carries NO rank-profile label field (only `bexp` + `jac`), the exponent accumulation
+  is governed by the RUNNING-MIN, so the p.20 raw-width head-reset label has no representation that could
+  corrupt `hlb`/`hattain`; at the witness widths (2,2,3,2) the defect divisor is NON-BINDING. The earlier
+  hypothesis that the fork dissolves in the ideal route (no separate T-label) is CONFIRMED. Witnesses:
+  `g-monument-mval-instances.py`, `verify-case2-rawwidth-defect.md`,
+  `threads/31-monument-construction/certificate.md` §d. Optional residual (image-only): the p.20 page
+  image was not re-read (no PDF tooling in the seat); the structural conclusion is image-independent —
+  reconfirm only if the monument's Case-2 rendering ever reads a label off the page.
 - **Realization "profile-set ⊇ Adm" (Engine-tree artifact; surviving kernel banked).** The paper's
   implicit stratum-completeness (the resolution realises every admissible profile) is FALSE for the
   built tree — but this was a property of the Engine's leaf-profile-set, which does NOT exist in the
@@ -87,10 +94,13 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
 ## The honest gap — coupled-B, stated plainly (front-and-centre)
 - **KNOW:** clean regime exact (F3); `⟨∏C⟩=⟨diag(b)⟩` transfers as an ideal fact (F2); the coupling is
   real and flatten breaks (F4); minAdm = cCodim banked (D); the category error forces the ideal route (F1).
-- **DON'T HAVE (the new math):** (a) Lemma 1 in Lean at full generality, both directions [A]; (b) the
-  COUPLED diag(b) at corank≥2 verified to depth — the exact `b`-vector Aoyagi's Cases 1&2 produce when
-  the `b_i` share divisors ((3,3,2,2),(3,3,4)), and that the ideal route reproduces it [B — the frontier];
-  (c) the monomial-ideal RLCT in the coupled/general case [C]; (d) order ρ / zeta-pole [E].
+- **LANDED (strike wave 1, sorry-free at tip):** (a) Lemma 1 both directions + weighted forms,
+  junk-guarded [A]; (c) the guarded S2 monomial rule — `DivChain` excludes the coupled counterexample
+  [C]; the corollary reduction (linear flatten + m.p.-homeo invariance + homogeneous global=local-at-0,
+  `GlobalHomog`). D banked earlier.
+- **DON'T HAVE (the remaining new math):** (b) the COUPLED diag(b) ATLAS at corank≥2 — B's 4 leaves +
+  `exists_coreResolution` (the monument; thread-31 certificate is the playbook); (d) order ρ / zeta-pole
+  [E, deferred per §1-E].
 - The coupled case is Aoyagi's ACTUAL content and the historical dodge-point. BUILD it; do not route around
   it, do not pre-declare it tractable. This gap is the thing the compaction must keep unmissable.
 
@@ -123,9 +133,9 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   dev's determinantal RESULTS for D; keep the RLCT-ideal work on the DLN side (the cite lives there).
 
 ## Landmarks (A–E frame; ≤9 — why these)
-- **Object A** (Lemma 1 ideal-RLCT invariance) — the category-NEW workhorse; the missing half of the lower bound.
+- **Object A** (Lemma 1 ideal-RLCT invariance) — the category-NEW workhorse; the missing half of the lower bound. LANDED (wave 1).
 - **Object B** (`⟨∏C⟩=⟨diag(b)⟩`) — the geometric heart; **coupled corank≥2 = the hard part**, holds a lane.
-- **Object C** (monomial-ideal ½·min) — largely built (clean); coupled/general owed with B.
+- **Object C** (monomial-ideal ½·min) — LANDED (guarded S2; `DivChain` boundary honest).
 - **Object D** (codim = minAdm = cCodim, θ, perm-inv) — banked in `Core` (+ dev merge).
 - **`cited_aoyagi_lower_ax`** — the kill-target; the destination made concrete (prove via A+B+C, delete).
 - **category-no-go (F1)** — why the ideal route; the retired chart Engine's tombstone (RETIRED.md).
