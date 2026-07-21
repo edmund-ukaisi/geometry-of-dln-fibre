@@ -1566,3 +1566,4 @@ import DLNFibre.Core.Aoyagi.ProductResolution
 import DLNFibre.Core.Aoyagi.Engine
 import DLNFibre.Core.Aoyagi.Order
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
+import DLNFibre.Core.Aoyagi.Waypoint
