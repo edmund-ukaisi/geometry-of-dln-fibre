@@ -74,9 +74,16 @@ committed/merged — `41-rho-count-object` merged at `0abb4c8e1`). A pointer res
   certificate + `rho_battery.py` (now graduated to `battery/` with `_edgespec_traversal_334.py` as its
   runner-skipped helper).
 
-The SEMANTIC `P6 → P6.1 / P6.2` split pointer waits on the elder's owed-register event-update (the
-register text is the elder's pen); the node ids above are already in `claims.yaml` (controller,
-evening refresh) and are the grounded references meanwhile.
+**SEMANTIC split `P6 → P6.1 / P6.2` — elder register event-update LANDED `ab106f1a4`.** Old references
+to a single "P6 — Lemmas 4–5, θ = a(ℓ−a)+1" now resolve to two entries (owed-register §2 P6 split + §0 O6):
+- **P6.1** = band arithmetic — LANDED both tiers (`bandCount_eq` + `perJCard_eq_paper`); node
+  `e-p61-band-arithmetic`; dir `threads/41-order-count/`.
+- **P6.2** = count-identification — pnp-gate DISCHARGED, IN-SHAPING; node `e-p62-count-identification`;
+  dir `threads/41-rho-count-object/`. **Object refined:** ρ = deepest-stratum max-crossing = **max CHAIN
+  of binding minimiser profiles under componentwise ≤** (chainHeight). The thread-41 certificate's
+  *antichain* speculation was CORRECTED to a max-CHAIN by seat-E's battery (1018 cores; witness
+  [2,2,2,2,2]) — read that certificate THROUGH this correction; owed-register §2 P6.2 + compass
+  § Paper-fidelity ledger CODA are authoritative.
 
 ## ═══ chart-era pointers below (HISTORICAL — read through RETIRED.md) ═══
 
