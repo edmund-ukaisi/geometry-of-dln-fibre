@@ -8836,3 +8836,19 @@ leaf instantiations → L5's path induction → L6/L7/L8. THE MATHEMATICS OF THE
 (Process note, recorded live: the first journal append of this entry no-op'd — the cd-drift class
 AGAIN; the commit 08ddcd8c1 carried only the aggregator wiring. The shell-guard needs pwd baked into
 every journal append — adopted henceforth: absolute-path cd prefix on all journal writes.)
+
+## 2026-07-21: THE REGULARITY FIELD (w0l3's find) — the bundle's final addition; division of labor pinned
+seat-w0l3, building the δ=0 helper, found TreeEdge.shearφ carries NO regularity — δ=0 continuity,
+δ=1's quotients, and L6's analytic charts all unbuildable without it. THE FIX: hshear_analytic
+(AnalyticOnNhd, the 4th shear proof-field — edge-own per the classification; Aoyagi-faithful, her φ
+is polynomial; one field, three consumers, derived def-lemmas so consumers read
+analyticOnNhd_stepMap/continuous_stepMap/foldG-analytic). Routed: arch-C renders (flagged pending if
+timing crosses), elder ratification rider sent. TWO SEAT CORRECTIONS applied (it was a ruling
+behind): hshear_center is withdrawn (hshear_pivot is the field; under B∘S there is no Hadamard
+point), and the abstract child lemmas it proposed drafting were PROVEN BY SEAT-L4 an hour earlier
+(StepInvShearChild — consume, don't re-derive). DIVISION OF LABOR PINNED EXPLICITLY: seat-L4's
+module = the abstract core for BOTH leaves; w0l3's L3 = case-2 instantiation + fold bookkeeping
+(Fin/cast reductions, the concrete hsupp discharge via coreGen's multilinearity at the layer-1
+root center, region/edgeδ plumbing, kill-set); seat-L4's L4 = case-1 instantiation (Q̂ for the
+coupled re-factoring). w0l3 GO on the mechanical sum-split meanwhile. After hshear_analytic, every
+sorried leaf has a complete hypothesis set and a banked toolkit — the last known unbuildability.
