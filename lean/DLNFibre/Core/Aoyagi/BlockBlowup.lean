@@ -78,21 +78,108 @@ theorem blockBlowupMap_univ (p : Fin D) :
   funext w j
   simp only [blockBlowupMap, blowupMap, Finset.mem_univ, if_true]
 
+/-- The Jacobian `ContinuousLinearMap` of `blockBlowupMap S p` at `w`. -/
+noncomputable def blockBlowupDeriv (S : Finset (Fin D)) (p : Fin D) (w : Fin D → ℝ) :
+    (Fin D → ℝ) →L[ℝ] (Fin D → ℝ) :=
+  ContinuousLinearMap.pi (fun j ↦
+    if j = p then ContinuousLinearMap.proj p
+    else if j ∈ S then (w p) • ContinuousLinearMap.proj j + (w j) • ContinuousLinearMap.proj p
+    else ContinuousLinearMap.proj j)
+
+theorem hasFDerivAt_blockBlowupMap (S : Finset (Fin D)) (p : Fin D) (w : Fin D → ℝ) :
+    HasFDerivAt (blockBlowupMap S p) (blockBlowupDeriv S p w) w := by
+  rw [blockBlowupDeriv, hasFDerivAt_pi]
+  intro j
+  by_cases hj : j = p
+  · have hf : (fun w : Fin D → ℝ ↦ blockBlowupMap S p w j) = fun w ↦ w p := by
+      funext w; simp [blockBlowupMap, hj]
+    rw [hf, if_pos hj]; exact hasFDerivAt_apply p w
+  · by_cases hjS : j ∈ S
+    · have hf : (fun w : Fin D → ℝ ↦ blockBlowupMap S p w j) = fun w ↦ w p * w j := by
+        funext w; simp [blockBlowupMap, hj, hjS]
+      rw [hf, if_neg hj, if_pos hjS]
+      exact (hasFDerivAt_apply p w).mul (hasFDerivAt_apply j w)
+    · have hf : (fun w : Fin D → ℝ ↦ blockBlowupMap S p w j) = fun w ↦ w j := by
+        funext w; simp [blockBlowupMap, hj, hjS]
+      rw [hf, if_neg hj, if_neg hjS]; exact hasFDerivAt_apply j w
+
+/-- The entries of the Jacobian matrix of `blockBlowupMap S p` at `w`. -/
+theorem toMatrix'_blockBlowupDeriv (S : Finset (Fin D)) (p : Fin D) (w : Fin D → ℝ) (a c : Fin D) :
+    LinearMap.toMatrix' (blockBlowupDeriv S p w).toLinearMap a c =
+      if a = p then (if p = c then 1 else 0)
+      else if a ∈ S then (w p * (if a = c then 1 else 0) + w a * (if p = c then 1 else 0))
+      else (if a = c then 1 else 0) := by
+  rw [LinearMap.toMatrix'_apply]
+  by_cases ha : a = p
+  · subst ha; simp [blockBlowupDeriv, Pi.single_apply]
+  · by_cases haS : a ∈ S
+    · simp [blockBlowupDeriv, Pi.single_apply, ha, haS]
+    · simp [blockBlowupDeriv, Pi.single_apply, ha, haS]
+
 /-- **O9 (seat-w0l3) — the block-center Jacobian determinant** `jacDet (blockBlowupMap S p) w =
 (w p)^(|S|−1)`, `|S|`-general (including `|S| = 1`, giving `w_p^0 = 1`). Same `BlockTriangular.det`
 pattern as `jacDet_blowupMap`: the pivot row is its own `1`-block, the `|S|−1` non-pivot center rows
 are `w_p·I`, the spectator rows are `I`. Center-size−1 exponent (W2), never ambient−1. -/
-@[blueprint]
 theorem jacDet_blockBlowupMap {S : Finset (Fin D)} {p : Fin D} (hp : p ∈ S) (w : Fin D → ℝ) :
     jacDet (blockBlowupMap S p) w = (w p) ^ (S.card - 1) := by
-  -- map: B-O9-blockBlowup-jacDet (BlockTriangular.det, center-size−1 exponent)
-  sorry
+  unfold jacDet
+  rw [(hasFDerivAt_blockBlowupMap S p w).fderiv,
+    ← LinearMap.det_toMatrix' (blockBlowupDeriv S p w).toLinearMap]
+  set M := LinearMap.toMatrix' (blockBlowupDeriv S p w).toLinearMap with hMdef
+  -- The pivot row is clean off its diagonal ⇒ two-block-triangular at the `(· ≠ p)` predicate
+  -- (both `≠ p` and `¬ · ≠ p` use the generic `Subtype.fintype`, avoiding a `Fintype.subtypeEq` clash).
+  have htri : ∀ i, ¬ i ≠ p → ∀ j, j ≠ p → M i j = 0 := by
+    intro i hi j hj
+    obtain rfl : i = p := not_not.mp hi
+    rw [hMdef, toMatrix'_blockBlowupDeriv, if_pos rfl, if_neg (fun h ↦ hj h.symm)]
+  rw [M.twoBlockTriangular_det (· ≠ p) htri]
+  -- The non-pivot block `{a ≠ p}` is diagonal `(if a ∈ S then w_p else 1)`, det `= w_p ^ (|S|−1)`.
+  have hb0 : (M.toSquareBlockProp (· ≠ p)).det = (w p) ^ (S.card - 1) := by
+    have hdiag : M.toSquareBlockProp (· ≠ p)
+        = Matrix.diagonal (fun i : {a // a ≠ p} ↦ if (↑i : Fin D) ∈ S then w p else 1) := by
+      ext a b
+      have ha : (↑a : Fin D) ≠ p := a.2
+      have hb : (↑b : Fin D) ≠ p := b.2
+      rw [Matrix.toSquareBlockProp_def, Matrix.of_apply, hMdef, toMatrix'_blockBlowupDeriv,
+        if_neg ha, if_neg (fun h : p = (↑b : Fin D) ↦ hb h.symm), Matrix.diagonal_apply]
+      by_cases hab : a = b
+      · subst hab
+        by_cases haS : (↑a : Fin D) ∈ S <;> simp [haS]
+      · have hab' : (↑a : Fin D) ≠ ↑b := fun h ↦ hab (Subtype.ext h)
+        by_cases haS : (↑a : Fin D) ∈ S <;> simp [haS, hab, hab']
+    rw [hdiag, Matrix.det_diagonal,
+      ← Finset.prod_subtype (Finset.univ.filter (fun a ↦ a ≠ p)) (fun x ↦ by simp)
+        (fun a ↦ if a ∈ S then w p else 1),
+      Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]
+    congr 1
+    rw [show (Finset.univ.filter (fun a ↦ a ≠ p)).filter (fun a ↦ a ∈ S) = S.erase p from ?_,
+      Finset.card_erase_of_mem hp]
+    ext a
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase]
+  -- The pivot block `{a // ¬ a ≠ p}` is the identity (`M p p = 1`); its det is `1`.
+  rw [hb0, show M.toSquareBlockProp (fun i ↦ ¬ i ≠ p) = 1 from ?_, Matrix.det_one, mul_one]
+  ext a b
+  have haa : (↑a : Fin D) = p := not_not.mp a.2
+  have hbb : (↑b : Fin D) = p := not_not.mp b.2
+  have hab : a = b := Subtype.ext (haa.trans hbb.symm)
+  rw [Matrix.toSquareBlockProp_def, Matrix.of_apply, hMdef, toMatrix'_blockBlowupDeriv,
+    haa, hbb, if_pos rfl, if_pos rfl, hab, Matrix.one_apply_eq]
 
 /-- **O9 (seat-w0l3) — block-center a.e.-injectivity** off the pivot hyperplane `{w_p = 0}`. -/
-@[blueprint]
 theorem injOn_blockBlowupMap {S : Finset (Fin D)} {p : Fin D} (hp : p ∈ S) :
     Set.InjOn (blockBlowupMap S p) (Set.univ \ {w : Fin D → ℝ | w p = 0}) := by
-  -- map: B-O9-blockBlowup-injOn (invert off the pivot hyperplane; spectators carry through)
-  sorry
+  intro w hw w' _ heq
+  have hwp : w p ≠ 0 := by simpa using hw.2
+  have hpp : w p = w' p := by
+    have := congrFun heq p; simpa [blockBlowupMap] using this
+  funext j
+  by_cases hj : j = p
+  · rw [hj]; exact hpp
+  · by_cases hjS : j ∈ S
+    · have hprod : w p * w j = w' p * w' j := by
+        have := congrFun heq j; simpa [blockBlowupMap, hj, hjS] using this
+      rw [hpp] at hprod
+      exact mul_left_cancel₀ (hpp ▸ hwp) hprod
+    · have := congrFun heq j; simpa [blockBlowupMap, hj, hjS] using this
 
 end DLNFibre.Core.Aoyagi
