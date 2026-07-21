@@ -8792,3 +8792,22 @@ pivot-keeping shear, controller-verified clean-three) + the elder-official POSIT
 ⟨u_pivot⟩ under the flipped stepMap — verified at the kill-set shapes; the structural-form
 verification, per-edge φ exposure deferred to L5). The wall's step-algebra is now COMPLETE for the
 amended design; both leaf proofs are mechanical modulo the bundle merge + pnp-order's gate.
+
+## 2026-07-21: BOTH FINAL GATES CLEAR — crux (A) ratified ("recognized, not invented") + pnp-order CONFIRMS blind
+THE CRUX RULING: center-degree-1 IS Aoyagi's printed structure — the residual is a coordinate matrix
+× the tail (her d′′′-renaming keeps entries literal current-block coordinates; at the root it is the
+MULTILINEARITY of the matrix product — one entry per layer per monomial, which is also why anchor
+(iv) and the root order-arithmetic balance). DELIVERED BY THE FACTORED FORM, not carried (no field,
+no separate obligation); the leaf's honest content = "the Let-block child RE-FACTORS in the child
+center — the wall by its right name." Caution baked: the tail's center-degree-0 must be STRUCTURAL
+(center-disjoint by shape). Anchor (v): case11 battery confirms the child re-factorization.
+PNP-ORDER: **CONFIRM** — blind derivation locked BEFORE reading the ruling (p.16 blow-up first,
+pp.17-18 Q/P on the post-blow-up d′-entries, the composite factoring the pivot once outside = B∘S);
+sufficiency battery EXIT 0 (controller re-ran): structural division for any pivot-keeping shear,
+φbad harmless-under-B∘S/breaking-under-S∘B (both witnesses reproduced), the real Schur displacement
+pivot-keeping, the Jacobian ledger exact. Codex decorrelated-agrees. CONSUMPTION-SITE FLAG folded
+into the render gate: the flip must land ON MonumentAtlas's stepMap def (still S∘B at the tip),
+matching Core's B∘S lemmas — the order-skew that L3's task-#20 was grinding against. Thread-38
+merged + certificate banked. THE WALL'S CONSUME-GATE IS LIFTED; seat-L4 commits fully to the
+flipped-order proof. All seven items + five anchors + the full regression set now converge on ONE
+render → ONE elder pass → ONE integration. The design phase of the monument ends here.
