@@ -1580,5 +1580,6 @@ import DLNFibre.Core.Aoyagi.WeightedCofactor
 import DLNFibre.Core.Aoyagi.PathAtoms
 import DLNFibre.Core.Aoyagi.InvariantRestriction
 import DLNFibre.Core.Aoyagi.StepInvShearChild
+import DLNFibre.Core.Aoyagi.BlockShearDivision
 import DLNFibre.Core.Aoyagi.PrincipalInv
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
