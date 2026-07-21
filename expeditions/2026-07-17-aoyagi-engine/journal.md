@@ -8577,3 +8577,20 @@ completeness — it prices the wave). DELIVERABLE: the living register
 full pass NOW (before wave-tail planning), event-updates at integrations, feeds the close synthesis
 + next-expedition runway. Read-only vs the live wave EXCEPT statement-level finds on live leaves
 (stop-on-suspect). The charter's build-vs-cite discrimination governs recommendations.
+
+## 2026-07-21: THE OWED-REGISTER FIRST PASS LANDS — 28 entries; two finds act NOW
+The elder's living register banked (owed-register.md; elder-authored, controller-committed; event-
+update cadence armed). HEADLINES: M5 — spurious Monotone d on L5/L8 binders (grep-verified
+unconsumed; the leaf-binder ruling's class) — routed to arch-C fix-at-next-touch + rev-leaves as a
+known round-5 item. M2 — StepInv.mono/PrincipalInv.mono restriction lemmas — NOT wave-tail: the
+L5/L6 wiring genuinely needs them (terminal_bezout shrinks, L6 consumes) — the API seat commissions
+NOW alongside round-5. M1 (the unweighted monomial-rule corollary — the library's most citable
+statement, one rewrite from the landed C rule), M8 (RegionRepresents composition/restriction API),
+M3 (pathMap_append + list-jacDet — the fold's induction wants both) ride the same seat. PAPER AXIS:
+P2/O5 re-priced M (ClosedForm.lean already carries lambdaCore/residueA + a bridge-in-progress; the
+p.23 skeleton); P1 = Theorem-1/RRR at r=0 becomes a cheap engine-derived external deliverable after
+P2; P5 (Lemma 2) DISCHARGED-equivalent (RankNormalForm/Schur, pointers verified); P6 (combinatorial
+θ) re-priced L→M by the foldState economics (E's re-open starts there); P3+P10 = the follow-on
+expedition's runway headline; the INVERSE list confirmed complete; Watanabe-upper re-confirmed not
+separately owed. Wave-tail seats per the register: the bridge seat (P2) then P1; O4 (non-monotone d)
+post-monument. O8 DISCHARGED, O9 LANDED.
