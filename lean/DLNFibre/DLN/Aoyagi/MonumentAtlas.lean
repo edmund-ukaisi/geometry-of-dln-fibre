@@ -894,7 +894,10 @@ theorem realBranch_centerPin {N : ℕ} {d : Fin (N + 1) → ℕ}
     (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
     ∃ sc ∈ (conOracle d p.conState).stepChildren, ed.center = canonCenterOf d p.conState sc := by
   -- map: B-derived-centerpin (ed.center = canonCenterOf, the IsRealBranch center pin)
-  sorry
+  -- Projection of IsRealBranch's step clause: `p.extend ed = .step p ed.center … ed.shearφ`, and the
+  -- step arm's middle conjunct is `∃ sc ∈ stepChildren, … ∧ ed.center = canonCenterOf … ∧ …`.
+  obtain ⟨-, ⟨sc, hsc, -, -, hcenter, -⟩, -⟩ := hbranch
+  exact ⟨sc, hsc, hcenter⟩
 
 /-- Derived: the δ=1 support-cover, case12/case2 ONLY (case11's pivot-mechanism excludes it). -/
 @[blueprint]
