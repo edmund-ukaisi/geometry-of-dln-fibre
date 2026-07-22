@@ -14557,3 +14557,36 @@ the redesign. Lane-local lemma with an explicit hypothesis — no spine def, doe
 ~100-150 lines detail-at-scale (the dependent-matrix reassoc idioms banked in lean/CLAUDE.md apply).
 The elder's preview (exists_flatten = the canonical reindexing) already guarantees (1b) discharges at
 the summit consumption. The abstract-the-uncertain pattern, third use this round.
+
+## 2026-07-23 ~08:40 UTC — ★★ THE DESIGN RULING LANDED + THE RE-OPEN COMMITTED: the faithful N_pivot object
+
+The elder delivered the combined ruling (banked verbatim: threads/design-round-ruling.md + threads/LL/
+elder-lastlayer-verbatim.md). THE FIDELITY VERDICT, verified against worked.tex (:609-627, :443-457,
+:565-567) from its own re-derivation: **Aoyagi's per-step object is a BLOCK blow-up + per-chart regular
+NORMALIZATION — NOT a composite of hypersurface blow-ups.** The faithful step map: per edge =
+blockBlowupMap (fanned pivot ∈ canonCenterOf — KEEP) ∘ N_pivot, a pivot-parametric normalization that
+(i) fixes the chart pivot, (ii) clears the pivot row/col, (iii) recoordinatizes the deeper factor
+A^(S+1) → Q⁻¹-conjugated. canonShearOf = the corner-pivot instance of (i)-(ii) with (iii) MISSING. The
+shear-pin family cannot stay frozen (it encodes the false layer-locality/pivot-independence). My
+composite-lean was corrected (half-right: the recoord is the NORMALIZATION's property; the blow-up is
+BLOCK). The composite = a scoped fallback ONLY (different resolution ⟹ the Object-B↔D bridge would
+re-derive; not faithful; behind a pnp certificate + a further explicit controller call). L1⊥L3 coupling
+RATIFIED (the elder withdrew its orthogonality call; pnp-fan's argument airtight). e-fix BLESSED =
+option (a) pin canonFlatten (the 6th catch confirmed computationally; the summit's exists_flatten IS
+the canonical reindexing — the summit was sound; only sorried ∀-e intermediates were false).
+
+**RE-OPEN COMMITTED (controller executive call, recorded): build the faithful N_pivot.** Path =
+ELABORATE-FIRST: the elder authors a stage-frame brief → pnp-transport elaborates the faithful
+normalization on the (2,2,2,2)+(3,3,4) coupled witnesses at pinned concrete coordinates (acceptance:
+honest_clear reproduces; pnp-fan's escape witness covered AND monomialised) → the elder RATIFIES the
+certificate → authors the Lean verbatim → arch-C renders → one N_pivot bake round. UNTOUCHED: the
+blow-up atom, Objects A/C/D/E, the B↔D bridge, bLedger, payoff isolation, the summit's value soundness.
+
+UNBLOCKED NOW (the ruling's subsidiaries, all dispatched): arch-C's ONE AMENDED STAGING (the canonFlatten
+e-pin on the 2 homogeneity signatures + hpos on the cap [elder: belongs, rides the render] + the
+comp_of_fixing docstring rider + the hparent lastLayer rider — REVISED form: hparent NECESSARY NOT
+SUFFICIENT, carry the conditional GeneratorCleared [seat-LL's Codex subtlety bit] — 3 consumer sites)
+→ my gate → elder delta-read → MERGE (Gap B cleared to merge independent of the shear round). seat-LL
+amending its held twin to the REVISED statement. Cover salvage (b) + Core lemma Q = commissioning next.
+seat-L4C's countermodel + (1b) core proceed. seat-L3T2 builds the homogeneity atoms the moment the
+amended staging merges (the elder confirms stability under N_pivot pending in the brief round).
