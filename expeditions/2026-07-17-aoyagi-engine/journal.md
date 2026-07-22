@@ -13222,3 +13222,22 @@ may become the CanonicalSchurStep definition itself, collapsing ruling B's emiss
 M7's existing lane. (b) conjB :445 — seat-L4 holds OFF its branch (the reshape staging reverts
 both call-sites under the scoped waiver; touching it now would conflict); post-bake it re-closes
 with the declared step-form re-wire.
+
+## 2026-07-23 ~00:40 UTC — stale-base loop CLOSED (arch-C owned + retracted); prepared-form PROVEN → elder
+
+arch-C owned the stale-base finding ("my ff-before-the-round discipline didn't run before the
+grep — a pin current one round ago is stale the next"; lesson banked its side), DISCARDED the
+render seat's wrong-base reshape edit (contained to MonumentAtlas, never staged), ff'd -rung-c
+properly to the CURRENT tip (87127dcb1, confirmed == origin), re-verified the two call sites
+exactly as my grep found, RETRACTED the net-0 accounting, and is running the original corrected
+plan (step-form in + node-form delete + 2 reverts with map tags; census net +2; driver
+footprints VERIFIED-not-assumed at re-gate). The endgame-tempo lesson is now banked on both
+sides of the gate.
+
+Meanwhile seat-L4's prepared-form lemma landed PROVEN (canonShearOf_support: the displacement is
+supported on the strict carve interior — never a corner, never a bare pivot-column entry — the
+R_bad kill as a def-characterized property of the actual construction), forwarded to the elder
+as ruling-B candidate content beside pnp-boost's α/β form, with the positive-value twin on
+offer. The ruling-B menu now has a PROVEN emission-side workhorse — the pin would assert the
+support property of ed.shearφ (emittable for free by this lemma), and boost-readiness derives
+from support-property + the verified b-chain mechanism.
