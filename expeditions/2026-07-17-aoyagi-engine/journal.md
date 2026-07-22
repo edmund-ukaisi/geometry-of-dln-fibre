@@ -10355,3 +10355,15 @@ ALREADY IN ITS QUEUE (reading (ii): foldResid direct, no double-division, pivot 
 dissolves, no re-type). On processing: the body renders → the full gate → THE BAKE. The seats'
 re-coordination correctly held on both ends until the shape was single — the hub discipline
 handling a three-way crossing with zero contradictory instructions delivered.
+
+## 2026-07-22 (controller) — seat-L3T's second landing: BOTH honest halves banked green (the fork-stable floor is complete)
+
+Second landing merged + controller-verified (terminal_edge_unit_stepInv clean-three; module
+green): the fork-stable floor of the whole S=L arc is now COMPLETE — (1) the case-blind interior
+DIVISIBILITY (both leaves, both δ), (2) the terminal unit-residual StepInv (the transport's
+conjunct 1). What remains on its batch is exactly the two conjuncts whose statements the
+rendering round corrects — its framing was two messages stale (compose-before-drain again; the
+ack protocol made non-negotiable), but its WORK was exactly right: it banked precisely the
+pieces that survive every pin. On the bake: it finishes conjunct B (divisibility engine + the
+(ii)-form Deg1 re-factoring) and wires hcleared into the transport — "fast; the machinery is
+now green."
