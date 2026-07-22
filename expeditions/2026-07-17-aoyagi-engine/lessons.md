@@ -146,3 +146,18 @@ the trail is local):
   deliberately relaxed for integration mechanics (seat↔seat channels) — it saved controller hops but is
   also exactly where the crossing/oscillation noise lived; next harness should scope peer channels to a
   declared interface (one topic, one pair, controller cc'd) rather than open-ended.
+
+## The sufficiency check must cross-check STATED hypotheses against every lemma the soundness argument invokes (2026-07-22, hpos miss)
+
+arch-C's derived-lemma sufficiency check ruled realBranch_terminal_edgeδ sound via "terminal ⟹
+rollover ⟹ cleared ≥ 1 ⟹ δ = false by widthMinUpto_pos" — but widthMinUpto_pos requires
+`hpos : ∀ k, 0 < d k`, and the STUB didn't carry it. The argument was right; the statement it
+certified didn't contain the argument's premises. seat-L3T2's SPECIFY (proof-seat stress-test)
+caught it with a concrete counterexample (d 0 = 0). Same family as the free-field and
+cover-sufficiency misses: a checker that reasons about a statement without diffing the
+statement's hypothesis list against the invoked lemmas' hypothesis lists. **Rule: when a
+sufficiency/soundness argument cites a named lemma, list that lemma's hypotheses and check each
+one is present in (or derivable from) the stub's stated hypotheses — mechanically, not from
+memory.** The decorrelated proof-seat read remains the backstop; the elder's degeneracy
+discriminator (does the conclusion degenerate at the boundary the dropped hypothesis excludes?)
+is the fix-once scoping tool.
