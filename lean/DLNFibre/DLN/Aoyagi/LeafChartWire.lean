@@ -74,6 +74,34 @@ theorem continuous_coreGen (d : Fin (N + 1) → ℕ)
   exact (continuous_apply _).comp
     ((continuous_apply _).comp ((continuous_mult d).comp e.continuous))
 
+/-! ## `jacWeight` nullity + continuity (for the `hexcep` legs once the collapse is available)
+
+These pin `{jacWeight h = 0}` as a `volume`-null closed set: it is exactly `{monoOf h = 0}`, a finite
+union of coordinate hyperplanes. They discharge `Chart.hexcep_null`/`hexcep_meas` for the source-side
+exceptional locus `{jacWeight (jac c) = 0}` (which the pivot-preservation collapse identifies with the
+critical set `{jacDet (gmap c) = 0}`). -/
+
+/-- `jacWeight h u = |monoOf h u|`: the Jacobian weight is the absolute value of the monic monomial. -/
+theorem jacWeight_eq_abs_monoOf {D : ℕ} (h : Fin D → ℕ) (u : Fin D → ℝ) :
+    jacWeight h u = |monoOf h u| := by
+  simp only [jacWeight, monoOf, Finset.abs_prod, abs_pow]
+
+/-- The Jacobian weight `u ↦ ∏_d |u_d|^(h_d)` is continuous. -/
+theorem continuous_jacWeight {D : ℕ} (h : Fin D → ℕ) : Continuous (jacWeight h) := by
+  unfold jacWeight
+  exact continuous_finset_prod _
+    (fun d _ ↦ (continuous_pow (h d)).comp (continuous_abs.comp (continuous_apply d)))
+
+/-- The zero set `{jacWeight h = 0}` is `volume`-null — it is `{monoOf h = 0}`, a nonzero monomial's
+zero set (`MvPolynomial.volume_zeroSet_eq_zero` via `monomialFam`). -/
+theorem volume_jacWeight_zeroSet {D : ℕ} (h : Fin D → ℕ) :
+    volume {u : Fin D → ℝ | jacWeight h u = 0} = 0 := by
+  have heq : {u : Fin D → ℝ | jacWeight h u = 0} = {u | monoOf h u = 0} := by
+    ext u
+    simp only [Set.mem_setOf_eq, jacWeight_eq_abs_monoOf, abs_eq_zero]
+  rw [heq]
+  exact volume_monomialFam_zeroSet (fun _ : Fin 1 ↦ h) 0
+
 /-! ## L6 — the chart geometry -/
 
 /-- **L6 — the chart geometry** (statement-identical to `MonumentAtlas.leafPath_chartGeometry`;
