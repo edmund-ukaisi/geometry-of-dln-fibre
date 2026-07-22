@@ -1,6 +1,7 @@
 import DLNFibre.Core.Aoyagi.OrderChain
 import DLNFibre.DLN.RLCT.Foundations.AdmTight
 import DLNFibre.DLN.Aoyagi.ClosedForm
+import DLNFibre.DLN.Aoyagi.OrderRealizeSortedBox
 import Mathlib.GroupTheory.Perm.Sign
 
 /-!
@@ -252,16 +253,25 @@ casts; `boxSubset_card` pins `|A| = a`. -/
 noncomputable def boxSubset (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Finset (Fin L) :=
   Finset.univ.filter (fun i => i.val < ell M 0 ∧ sStep (sortedWidths M) T i = ceilingM M 0)
 
-/-- **THE SORTED-CASE BOX ISO** (SORRIED — frontier; OWNED BY seat-Ecore, branch
-`expedition/aoyagi-engine-Ecore`, module `OrderRealizeSortedBox.lean`): on sorted widths, the
-binding poset is order-isomorphic to `BoxPart(ℓ,a)` via the active-step a-subset + reversed-gap
-encoding (Codex part 1, step 3). The pivotal sub-lemmas (`sStep ∈ {C−1,C}` on binding profiles
-[Aoyagi Lemma 4-5], `|A| = residueA`, enc/dec, both-direction `map_rel_iff`) are seat-Ecore's; the
-controller wires the discharge at integration. `sIncr`/`sStep`/`boxSubset`/`sIncr_nonneg` here are
-its shared floor. -/
+/-- **THE SORTED-CASE BOX ISO** (DISCHARGED via `SortedBox.sortedBox_orderIso`, seat-Ecore's
+upstream module `OrderRealizeSortedBox.lean`): on sorted widths, the binding poset is
+order-isomorphic to `BoxPart(ℓ,a)` via the active-step a-subset + reversed-gap encoding (Codex
+part 1, step 3). The pivotal sub-lemmas (`sStep ∈ {C−1,C}` on binding profiles [Aoyagi Lemma 4-5],
+`|A| = residueA`, enc/dec, both-direction `map_rel_iff`) live in that module. Wiring: the general
+monotone-positive `D`-iso is instantiated at `D = sortedWidths M`, where the three coercion bridges
+hold by `rfl` — `bindingSet (sortedWidths M)` unfolds to the primitive set, `ell M 0 = qipM
+(sortedWidths M)`, and `residueA M 0 = SortedBox.sbResidueA (sortedWidths M)` (both selectors were
+built to match `ClosedForm.{ceilingM,residueA} · 0`). `sIncr`/`sStep`/`boxSubset`/`sIncr_nonneg`
+here remain the shared floor. -/
 theorem bindingSet_sorted_orderIso_boxPart (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
     Nonempty (↥(bindingSet (sortedWidths M)) ≃o ↥(BoxPart (ell M 0) ((residueA M 0).toNat))) := by
-  sorry -- map: enc-sorted-box
+  have hmono : Monotone (sortedWidths M) := by
+    unfold sortedWidths shiftedSorted; exact _root_.Tuple.monotone_sort _
+  have hpos' : ∀ s, 0 < sortedWidths M s := by
+    intro s; unfold sortedWidths shiftedSorted
+    simp only [Function.comp_apply, DLNFibre.Core.dminus, Nat.sub_zero]
+    exact hpos _
+  exact SortedBox.sortedBox_orderIso (sortedWidths M) hmono hpos'
 
 /-- **(3a) THE REALIZATION ISO** — discharged from the transport (c) + the sorted-case box iso, by
 composition. NON-sorried: the frontier is the four obligations above. -/
