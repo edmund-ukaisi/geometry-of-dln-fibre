@@ -698,6 +698,10 @@ theorem stepA_decProfile {a : ℕ} (D : Fin (L + 1) → ℕ) (hmono : Monotone D
 
 /-! ## The order-isomorphism -/
 
+/-- `boxOf` respects finset equality (the card proof is irrelevant). -/
+theorem boxOf_congr {a : ℕ} {A B : Finset (Fin L)} (hAB : A = B) (hA : A.card = a)
+    (hB : B.card = a) : boxOf A hA = boxOf B hB := by subst hAB; rfl
+
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
 order-isomorphic to `BoxPart (qipM D) (sbResidueA D).toNat`. Seat-E instantiates at
 `D = sortedWidths M` to discharge `OrderRealize.bindingSet_sorted_orderIso_boxPart` (all three of
@@ -705,13 +709,61 @@ order-isomorphic to `BoxPart (qipM D) (sbResidueA D).toNat`. Seat-E instantiates
 theorem sortedBox_orderIso (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hpos : ∀ s, 0 < D s) :
     Nonempty (↥{T : Fin L → ℕ | T ∈ Adm D ∧ Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)}
       ≃o ↥(BoxPart (qipM D) ((sbResidueA D).toNat))) := by
-  -- REMAINING ASSEMBLY (profile side is DONE — `binding_le_iff` characterises the order):
-  --  L = 0 (ℓ = qipM D = 0): both sides are singletons; the iso is the unique map.
-  --  L ≥ 1: `enc T := boxOf (stepA D T)` (positions via `Finset.orderEmbOfFin`, `stepA_card`
-  --    gives card = a; `Fin.rev` gaps → antitone + bounded box element), `dec f` builds the
-  --    C-step subset from `f`, the QIP vector `= eOfSupport D (nonzero-set)` (`Gqip_eOfSupport`
-  --    ⟹ binding), and `tOfE`. Monotone both ways: chain `binding_le_iff` with the counting↔box
-  --    duality (`∀c |A∩Iic c| ≥ |B∩Iic c| ⟺ boxOf A ≤ boxOf B`); `OrderIso.ofHomInv`.
-  sorry -- map: enc-sorted-box (assembly)
+  rcases Nat.eq_zero_or_pos (qipM D) with hℓ0 | hℓpos
+  · -- `qipM D = 0 ⟹ L = 0`: both sides are singletons.
+    have hL0 : L = 0 := by
+      by_contra hLne; have : 1 ≤ qipM D := qipM_ge_one D (by omega); omega
+    subst hL0
+    haveI : Subsingleton (Fin 0 → ℕ) := ⟨fun a b => funext fun i => i.elim0⟩
+    haveI : Subsingleton ↥(BoxPart (qipM D) ((sbResidueA D).toNat)) :=
+      ⟨fun g g' => Subtype.ext (funext fun i => by
+        have h1 := g.2.1 i; have h2 := g'.2.1 i; omega)⟩
+    have hbind : (fun _ => 0 : Fin 0 → ℕ) ∈
+        {T : Fin 0 → ℕ | T ∈ Adm D ∧ Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)} :=
+      ⟨zero_mem_Adm D, le_antisymm
+        (Finset.le_inf' _ _ (fun T _ => le_of_eq (congrArg (Mval D) (Subsingleton.elim _ T))))
+        (Finset.inf'_le _ (zero_mem_Adm D))⟩
+    have hbox : (fun _ => 0 : Fin ((sbResidueA D).toNat) → ℕ) ∈
+        BoxPart (qipM D) ((sbResidueA D).toNat) := ⟨fun _ => Nat.zero_le _, fun _ _ _ => le_refl 0⟩
+    haveI : Subsingleton
+        ↥{T : Fin 0 → ℕ | T ∈ Adm D ∧ Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)} :=
+      ⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩
+    exact ⟨⟨⟨fun _ => ⟨_, hbox⟩, fun _ => ⟨_, hbind⟩,
+        fun _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩,
+      fun {a b} =>
+        ⟨fun _ => le_of_eq (Subsingleton.elim a b), fun _ => le_of_eq (Subsingleton.elim _ _)⟩⟩⟩
+  · -- `qipM D ≥ 1`.
+    have hℓL : qipM D ≤ L := qipM_le D
+    have hL : 1 ≤ L := le_trans hℓpos hℓL
+    have haℓ : (sbResidueA D).toNat ≤ qipM D := sbResidueA_toNat_le D hL
+    have hne : (qipFeasible D).Nonempty :=
+      ⟨eOfT D (fun _ => 0), eOfT_mem_qipFeasible D hL (zero_mem_Adm D)⟩
+    have hstepsub : ∀ (T : Fin L → ℕ) (x : Fin L), x ∈ stepA D T → (x : ℕ) < qipM D := by
+      intro T x hx
+      have hxq := Finset.filter_subset (fun i ↦
+        (eOfT D T i : ℤ) + (D i.succ : ℤ) = sbCeil D) (qipLow D) hx
+      simpa [qipLow, Finset.mem_filter] using hxq
+    exact ⟨⟨
+      ⟨fun T => ⟨boxOf (stepA D T.1) (stepA_card D hmono hL hne T.2.1 T.2.2),
+            boxOf_mem (stepA_card D hmono hL hne T.2.1 T.2.2) (fun x hx => hstepsub T.1 x hx)⟩,
+       fun f => ⟨decProfile D f.1 f.2.1 haℓ hℓL,
+            (decProfile_spec D hmono hL f.2.1 f.2.2 haℓ hℓL rfl).1,
+            (decProfile_spec D hmono hL f.2.1 f.2.2 haℓ hℓL rfl).2.1⟩,
+       fun T => Subtype.ext (by
+           have hbm := boxOf_mem (stepA_card D hmono hL hne T.2.1 T.2.2)
+             (fun x hx => hstepsub T.1 x hx)
+           obtain ⟨hmem, hbindd, -⟩ := decProfile_spec D hmono hL hbm.1 hbm.2 haℓ hℓL rfl
+           exact binding_ext D hmono hL hne hmem hbindd T.2.1 T.2.2
+             ((stepA_decProfile D hmono hL hbm.1 hbm.2 haℓ hℓL rfl).trans
+               (boxSubsetOf_boxOf (stepA_card D hmono hL hne T.2.1 T.2.2) haℓ hℓL hbm.1))),
+       fun f => Subtype.ext
+           ((boxOf_congr (stepA_decProfile D hmono hL f.2.1 f.2.2 haℓ hℓL rfl) _ _).trans
+             (boxOf_boxSubsetOf f.2.1 f.2.2 haℓ hℓL))⟩,
+      by
+        intro T T'
+        simp only [Equiv.coe_fn_mk, Subtype.mk_le_mk]
+        rw [boxOf_le_iff, posLE_iff_countDom,
+          ← binding_le_iff D hmono hL hne T.2.1 T.2.2 T'.2.1 T'.2.2]
+        rfl⟩⟩
 
 end DLNFibre.DLN.Aoyagi.SortedBox
