@@ -95,3 +95,41 @@ the trail is local):
   universal-in-D leaf-2 was CHEAPER than the instance-reuse route it replaced.) **Why:** point analysis
   without a generality argument overfits — the template teaches the wrong instincts precisely when the
   instance is unrepresentative, and the mislabel travels further than the artifact.
+- **The free-edge leaf design was the monument's churn engine (process self-audit, operator-prompted,
+  2026-07-22).** The leaves quantify over a free `TreeEdge`; the paper has no free edges. Every one of
+  ~10 statement-defect rounds was the same event: a free field (center extent, pivot placement, shear
+  support, coefficient window, nextState transition) admits an instance the construction never produces;
+  a seat catches it; one of Aoyagi's constraints gets re-derived as a bolted-on hypothesis, at a full
+  catch→ruling→re-bake round each. The field audit's own closure statement names the destination the
+  design should have started from: the pin set is the BRIDGE-FREE SHADOW of `IsRealBranch` — the
+  free-ed generality had no second consumer and converged to construction-pinning anyway. RULE: state
+  proof-carrying skeleton leaves over the CONSTRUCTION's objects (or carry the full construction pin as
+  ONE hypothesis) unless a named second consumer wants the abstraction; speculative per-field generality
+  on a monument path buys adjudication rounds, not reuse. (Cost containment that DID work: statement-lock
+  + stop-on-suspect meant zero proof lines were written against a moved statement.)
+- **Elaborate-then-render beats render-then-adjudicate — the controlled comparison (2026-07-22).** The
+  E-lane had the #42 encoding certificate (a worked template) BEFORE its build: three parallel tracks,
+  every rfl bridge held, zero rework. The monument rendered without a template: ten defect rounds. The
+  pnp-elab retrofit (fold-recursion template: certified Schur step, four transition laws incl. a
+  no-J-advance case nobody had asked about, a simulator reproducing minAdm on four instances, 14
+  pre-mortems) produced in hours what the reactive rounds circled for a day. RULE (operator
+  clarification, now in the role file): pen-and-paper's primary function is ELABORATION — the fully
+  worked template the render seats build from, blind to the Lean — not adjudicating shortcuts around
+  detailed work. Every substantial render unit gets a template first.
+- **Statement authorship belongs to the proof owner; direction to the elder (2026-07-22).** Two defects
+  of the round were in the ELDER's own rendered sentences (the ∀ℓ per-layer form that failed its own
+  induction gate; the earlier amended-pin literal). The division that worked and is now the rule:
+  the elder rules the OBJECT (direction, page fidelity, weakest-that-inducts), the PROOF SEAT locks the
+  exact rendered form, and batteries check both sides (the breaker dies AND the construction's child
+  passes) before anything bakes.
+- **The two-seat render pipeline (architect dictates, render seat types) added hops, not judgment
+  (2026-07-22).** arch-C ↔ foldstate-render: the gate function earned its keep repeatedly (false
+  docstring, stale fragments, transcription drifts), but the split seat contributed hands only, and the
+  message hops between them were where the oscillation/crossing noise lived. Gate checks here are
+  mechanical and objective (build, grep, forced #print, text-vs-ruling diffs) — safe as a second PASS in
+  one seat, with the decorrelated second READ staying in a different seat (elder) and the controller
+  re-verifying at integration. Next harness: one architect seat that renders then gates its own render.
+- **Echo volume is a real cost (2026-07-22).** A meaningful fraction of the round's messages were
+  content-free holds/acks/state-echoes, each resuming an agent for nothing. Ack-protocol exists to
+  prevent LOST messages, not to require ceremonial ones: acknowledge state CHANGES; never resume a
+  correctly-holding seat to tell it it's correctly holding.
