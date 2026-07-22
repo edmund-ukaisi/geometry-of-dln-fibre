@@ -12848,3 +12848,22 @@ comment character-identical; L6 hreal; the driver call-site — three edits exac
 re-gate PASS, consumers build-confirmed insulated). On OK: integrate → seat-L6's ONE-LINE
 landing. Render-lane queue: collapse (delta-read) → multiAffine node-form (text held ready) →
 Assembly first increment. Poll-discipline fix applied: tail WINDOW, not last message.
+
+## 2026-07-22 ~17:45 UTC — seat-L3T2 PLAN COMPLETE (4/4 lanes); lane 4 integrated; shearWithinCarve assigned
+
+**Lane 4 merged (c3c286cd8):** the crux DEDUPE (Case2TransportWire's 35-line standalone re-proof
++ local helper RETIRED → thin delegation to the canonical Case1Wire.foldResid_stepMap_eq_pivot_mul;
+consumers untouched; all three named lemmas re-verified clean-three post-delegation) + the
+GeneratorCleared CONSUME-FIT regression example (lastLayer emit → terminal_edge consume chains
+with no defeq surgery — the one-def discipline holding). Census steady 37.
+
+**seat-L3T2's registered plan is COMPLETE**: 4 lanes, six clean-three theorems (L8 port,
+terminal_edgeδ, terminal_edge_stepInv, cover, descendView, case2_conjA), one honestly-tracked
+sorry (conjB → seat-L4's companion), one counterexample-backed kill-condition banked (the hpos
+record in thread-L3T2.md), one dedupe, one regression example. The successor-seat pattern
+(spawn-from-registered-plan) validated end to end — zero proof lines lost across the handoff.
+
+**NEXT ASSIGNED: realBranch_shearWithinCarve** (stub 5 of 6) — UNHELD since the pin round baked;
+a last-step projection of IsRealBranch's shear conjunct (no hpos, elder-ruled); the
+obtain-projection pattern's third outing. On its close the cone thins to: multiAffine (node-form
+rendering) + the leaf assemblies + L5/L6/L7 + the two library sorries.
