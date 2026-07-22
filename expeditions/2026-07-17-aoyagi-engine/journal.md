@@ -13469,3 +13469,12 @@ post-cascade rev-monument pass (the statement was elder-adjacent-locked + consum
 expectation is now LITERALLY on canonical — CanonicalSchurStep's discharge (canonShearOf_support)
 AND the ShearWithinCarveRaw emission are both proven facts of the concrete construction. L5's
 emission side is fully paved: every IsRealBranch conjunct now has its producer lemma banked.
+
+**Addendum (~07:30): rev-M7 spawned** (seat-L4's routing point accepted over my fold-into-
+rev-monument lean: the author/prover split means neither self-reviews, and the emission goes
+load-bearing at L5's consumption — before the post-cascade pass would run). Scope: def fidelity
+vs the template's certified Schur step + both batteries; emission fidelity incl. the
+non-circular producer carrier; the support/apply twins' consistency + the CanonicalSchurStep-
+discharge shape; the new engine lemma; forced axioms; consumer fit (L5 emission + the boost
+proof's α/β witness); decorrelated Codex. seat-L4's boost ingredient set is now FULLY BANKED on
+canonical (support + apply_interior + hslot + the projection [staging] + the b-chain).
