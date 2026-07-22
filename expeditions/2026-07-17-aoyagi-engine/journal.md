@@ -15038,3 +15038,27 @@ the canonShearOf→canonNormalizationOf rename; pivot ∈ ed.center in all cases
 refinement intact (canonCenterOf untouched by the bake); #2 descent-lane framing intact. Holds for task
 #8 (the induction, in progress at seat-L3T2). The three post-N_p rebases: LL clean; L3T2 two-pattern
 friction (in rework); L4D in flight.
+
+## 2026-07-23 ~19:30 UTC — (a) FAILS: the recoord ESCAPES the S+1 cap — the decisive trace commissioned
+
+seat-L3T2's confinement check FAILED, sharply (def-level, I concur): the recoord writes layer S+1 at
+col = the pivot-ROW index a, and blockCoords caps only the COL axis — a is bounded by d_{S+1}, NOT by
+widthMinUpto(S+1). Whenever d_{S+1} > widthMinUpto(S) (a WIDER next layer — (3,3,4) is in-family!),
+pivot rows ≥ the cap are reachable and the recoord writes OUTSIDE blockCoords(S+1). The wall's
+cap-content at its sharpest: THE PIVOT-ROW-vs-widthMinUpto(S+1) GAP.
+
+THE OPEN QUESTION (potentially the 8th statement-class issue, in the CARRIED invariant): does the
+out-of-cap write PROPAGATE into the child residual's support? If yes — the slot's clause-1 (and the
+carried Deg1SupportedSlot cap shape as the descent consumes it) is FALSE on wide-next-layer real
+branches (fix = a tighter pivot-row bound if one exists, or the slot support set changes). If no — the
+escape cancels/never enters, the cap survives with a cancellation argument in the frontier lemma.
+DUAL-TRACKED: the ELDER adjudicates the slot shape (+ whether §7/the certificate's account is affected
+— its (3,3,4) run checked the pivot exponent, not the child-support cap); pnp-transport runs THE
+DECISIVE TRACE (the exact fold on the smallest WIDE witness reaching the escape on a real branch;
+verdict = in-cap-with-mechanism vs out-of-cap-with-surviving-monomial). seat-L4D's boundary pin waits
+on the verdict (coordinated).
+
+MEANWHILE the lanes move: comp_of_linear LANDED (c9a46c1c3, AoyagiCompLinear.lean — the shared
+helper); seat-L3T2 builds the recoord X-linearity lemma + the slot rework (clause-1 → the named cap
+frontier) + the induction. The faithful object keeps pricing its structure honestly — every reveal
+lands as a named, owned, traced question instead of a hidden hole.
