@@ -14720,3 +14720,33 @@ seat-L3T2's task #6 post-merge (its engine = seat-L4C's banked route: the peel +
 reindexing — I relay the scoped route verbatim at the merge). pnp-transport's task board shows the
 N_pivot certificate COMPLETE — the artifact is not yet on canonical disk; gating on its completion
 report + durable commit (the flush discipline is in its brief; no pre-emptive nag).
+
+## 2026-07-23 ~12:15 UTC — ★★ THE N_p CERTIFICATE: RATIFIABLE (all acceptance green; composite NOT forced) + rev-Q SURVIVED
+
+TWO landings.
+
+(1) pnp-transport's FAITHFUL N_p CERTIFICATE is done + durable (fe28912e7 on -L4C; BANKED on canonical
+6f90307b5; I re-ran 3 witness scripts from the committed tree — all exit 0 with the claimed verdicts).
+THE OBJECT: N_p = the block-elim peel Q₁·C·Q₂ = diag(1,Δ) — the (3,3,4) battery's verified unipotent
+peel = seat-L4C's mult_split — FANNED to any pivot via the pivot-centered Schur reduction (residual
+D'_ij = w_ij − w_ib·w_aj), WITH the deeper recoord A_{S+1}→A_{S+1}·Q₁⁻¹ that canonShearOf omits.
+Corner pivot = canonShearOf + recoord; interior = the pivot-shifted peel. ALL ACCEPTANCE TESTS PASS:
+honest_clear reproduces (boost-readiness True under N_p); the escape witness covered AND monomialised
+(EVERY pivot monomialises — the interior kill-condition does NOT fire); b-chain/M_{s,k} PRESERVED
+(det-1 ⟹ the Jacobian is Aoyagi's exactly — THE COMPOSITE FALLBACK IS NOT FORCED); the recoord
+per-layer-linear (Gap-B stability holds). Belt-and-braces (3,3,4) interior-pivot coupled chart run
+(not deferred): exponent 9 pivot-independent ⟹ the minAdm=8 join chart-invariant. The ε-table restated
+under N_p (§7). Honest decorrelation flag: fresh Codex tooling failure — carried by the banked (3,3,4)
+battery (independent same-b-vector); the elder weighs sufficiency. ELDER CHARGED: ratify → author the
+Lean N_p verbatim (the coupled re-bake round). The residual corank-3 stress = the elder's call.
+
+(2) rev-Q: lemma Q SURVIVED (all fidelity points confirmed; sup-norm-cube instance verified; S=univ
+recovers OriginBlowup and (Q) is STRICTLY STRONGER — correct at D=1 vs OriginBlowup's 2≤D; the max R 1
+hardening TRUE + TIGHT for |S|≥2 with both counterexamples; vacuity clean). One report-only nuance
+(the "forced" docstring wording at the vacuous singleton) → the hygiene list. Verdict banked on the
+expedition branch by rev-Q. Lemma Q is now integrated + reviewed — the L7 foundation is bedrock.
+
+The expedition's central question — is the faithful object buildable without re-deriving the bridge —
+is answered YES on the evidence: N_p preserves Aoyagi's combinatorial ledger exactly. Pending: the
+elder's ratification + delta-read (both queued, sequencing suggested: delta-read first to unblock the
+merge cascade).
