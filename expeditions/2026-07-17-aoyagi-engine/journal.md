@@ -10446,3 +10446,17 @@ automatically (the elder's one-line check requested). Routed render-critical to 
 WITH the advance; the battery = the ADVANCE regression witness) + the elder confirm. The sixth
 independent convergence of the night: the battery, the crux, the elder's pin, and the C′
 discriminator all naming one design.
+
+## 2026-07-22 (controller) — the ADVANCE CONFIRMED + the WINDOW-INDEX precision: (T, D⁺) as ONE window, derived from the SUPPORT's layer
+
+The elder confirms the layer-advance as the child clause's form — and answers the automatic-
+implementation check with a "yes-IF" that is itself a caught-in-time defect: the derived D⁺
+rolls automatically ONLY if indexed off the SUPPORT'S WINDOW — a within-layer clear advances
+the support to the deeper block while conState.layer stays fixed, so `deeperCoords d
+p.conState.layer` as literally rendered would NOT roll at clears and the (T′, D⁺′) pair would
+shear apart ("a mismatched (support, depth) pair is ninth-axis bait of the first order"). THE
+COHERENT FORM: derive BOTH T and D⁺ from ONE window index (the support's layer) so the
+advancement is a single motion — two fields that cannot disagree. arch-C verifies which index
+its render uses (support-side = zero-cost; raw-layer = a one-expression correction), aligns,
+and BAKES. "The sixth independent convergence of the night is the design telling us it is done
+being designed."
