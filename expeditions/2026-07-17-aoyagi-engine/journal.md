@@ -14460,3 +14460,19 @@ independent; hparent; the non-strict pin.
 LANES: seat-L4C grinding the safe base; pnp-fan DONE (certificate banked, dormant); pnp-transport
 re-flushing its witness artifacts; everything shear-touching HOLDS on the ruling. The expedition's
 decisive design round: the faithful step map, once, from the source.
+
+## 2026-07-23 ~06:35 UTC — transport artifacts DURABLE (1f6e5626a) + controller-reproduced; the elder's inputs complete
+
+pnp-transport flushed: committed + pushed on origin/-L4C @ 1f6e5626a (8 files: the certificate + 4
+verify scripts + the Codex triple). Root cause of the earlier absence: written to its (= seat-L4C's)
+worktree WORKING TREE, never committed — and the scripts I'd re-run were the PREDECESSOR's different
+set. Disambiguated. MY REPRODUCTION (from the COMMITTED tree, fresh python3): transport_2222 /
+oracle_trace / honest_clear_2222 all exit 0; the oracle path confirmed programmatically; the honest
+clear yields A1,A2,A3 = True (BOOST-READY) exactly as claimed; the strict-vs-nonstrict chainWeight
+distinction concrete. The finding is as verified as it gets short of the elder's source-derivation.
+
+The elder's ruling inputs are now COMPLETE (both certificates durable + reproduced, the convergence
+frame, the subsidiary queue). Worktree-hygiene flag: pnp-transport committed on seat-L4C's branch while
+it works there (expeditions/-only paths, landed harmless) — seat-L4C told to ff + verify state; noted
+as a near-miss (seats should write in their OWN thread dirs; a lean/-touching collision would have been
+ugly). Everything now waits on ONE thing: the elder's step-map fidelity ruling.
