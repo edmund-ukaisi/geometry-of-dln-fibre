@@ -146,9 +146,25 @@ theorem residueA_le_ell (M : Fin (L + 1) → ℕ) (hℓ : 0 < ell M 0) :
     have hmul : ℓ * (S / ℓ) = S - S % ℓ := by linarith [hdm]
     nlinarith [hmul]
 
-/-- **THE SORTED-CASE BOX ISO** (SORRIED — frontier): on sorted widths, the binding poset is
-order-isomorphic to `BoxPart(ℓ,a)` via the active-step a-subset + reversed-gap encoding (Codex part
-1, step 3). This is where the explicit `enc`/`dec` closed forms live. -/
+/-- Descent increment `eᵢ↑` of a profile on widths `D` (Codex step 3; `t⁰ := D 0`):
+`e₀ = D₀ − T₀`, `eᵢ = Tᵢ₋₁ − Tᵢ`. Over `ℤ` (a difference); `≥ 0` on admissible profiles. -/
+def sIncr (D : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : Fin L) : ℤ :=
+  if i.val = 0 then (D 0 : ℤ) - (T i : ℤ) else (T ⟨i.val - 1, by omega⟩ : ℤ) - (T i : ℤ)
+
+/-- Active step `xᵢ = eᵢ↑ + D_{i+1}` (Codex step 3); on a binding profile `xᵢ ∈ {C−1, C}`. -/
+def sStep (D : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : Fin L) : ℤ :=
+  sIncr D T i + (D i.succ : ℤ)
+
+/-- The a-subset `A(T) ⊆ [ℓ]`: profile indices `i < ℓ` whose active step equals `C = ceilingM`
+(the "M-steps", Codex step 3). Kept as a `Finset (Fin L)` (filtered by `i < ℓ`) to avoid `Fin ℓ`
+casts; `boxSubset_card` pins `|A| = a`. -/
+noncomputable def boxSubset (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Finset (Fin L) :=
+  Finset.univ.filter (fun i => i.val < ell M 0 ∧ sStep (sortedWidths M) T i = ceilingM M 0)
+
+/-- **THE SORTED-CASE BOX ISO** (SORRIED — frontier; sub-skeleton below): on sorted widths, the
+binding poset is order-isomorphic to `BoxPart(ℓ,a)` via the active-step a-subset + reversed-gap
+encoding (Codex part 1, step 3). The explicit `enc`/`dec` closed forms + both-direction
+`map_rel_iff` land across the next tides; `sIncr`/`sStep`/`boxSubset` are the construction data. -/
 theorem bindingSet_sorted_orderIso_boxPart (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
     Nonempty (↥(bindingSet (sortedWidths M)) ≃o ↥(BoxPart (ell M 0) ((residueA M 0).toNat))) := by
   sorry -- map: enc-sorted-box
