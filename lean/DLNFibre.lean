@@ -1619,3 +1619,6 @@ import DLNFibre.DLN.Aoyagi.LeafChartWire
 -- L5FoldSpec: seat-L3T2's L5 SPECIFY — the fold-induction obligation map + the missing-atom
 -- contracts (M1-M7, sorried SPECIFY proposals, LIVE cone). PROVE waves commission off this map.
 import DLNFibre.DLN.Aoyagi.L5FoldSpec
+-- PivotPreservation: seat-L6's M4 (★)-producer atoms — the blow-up half (A1 fixed-points, A2
+-- canonCenterOf disjointness, A3 DivBirthInv along real branches, A2-pkg glue). A4/A5 continue.
+import DLNFibre.DLN.Aoyagi.PivotPreservation
