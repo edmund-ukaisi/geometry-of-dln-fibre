@@ -1060,16 +1060,21 @@ theorem realBranch_terminal_edgeδ {N : ℕ} {d : Fin (N + 1) → ℕ}
       omega
 
 /-- Derived (GAP-3, seat-L4 locked) — **FRONTIER-LEAF-CANDIDATE**: the deepest obligation, gates on the
-elder's Codex C2. The PARENT residual is degree-1 on the parent support (the multi-affine grade). -/
+elder's Codex C2. NODE-form (seat-L4 sufficiency fix): at EVERY real-branch node `p` the residual is
+degree-1 on the node's support (the multi-affine grade). The wall's conjunct-2 and `Case2Wire`'s conjB
+discharge via the CHILD instance `realBranch_multiAffine (p.extend ed) hbranch`; the parent instance is
+`hb` at `p`. Hypothesis is `p.IsRealBranch e` (weakest — `foldResid p` depends only on `p`). The deep
+descent content (residual layer S → degree-1 on S+1 via the case12/case2 δ=1 strict transform) lives
+here; inducts on `p` (node → node). -/
 @[blueprint]
 theorem realBranch_multiAffine {N : ℕ} {d : Fin (N + 1) → ℕ}
     (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    (p : TreePath d) (hb : p.IsRealBranch e) :
     ∀ j, Deg1SupportedSlot d (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p) := by
-  -- map: B-derived-gap3-FRONTIER (parent residual degree-1 on parent support; gates elder Codex C2)
+  -- map: B-derived-gap3-FRONTIER (node-form: parent = hb at p; child = _ (p.extend ed) hbranch; induct on p)
   sorry
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime).
