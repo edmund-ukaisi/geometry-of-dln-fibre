@@ -13265,3 +13265,28 @@ correct; re-validated as hpar + hdesc (+ hcase + hshear), banked ee333b2ca, buil
 I/II/III plan survives verbatim (I: the oracle transition fact cleared+1 ⟹ sl = S+1; III:
 divBirthInv at the parent + step-threading ⟹ child freshness ⟹ the strict-interior guard fails;
 II: read-disjointness). Heads-down on the proof. No suspect.
+
+## 2026-07-23 ~01:45 UTC — A4 COMPLETE (the single-step (★) PROVEN); the A5 rollover finding; reconciliation live
+
+**seat-M4B landed A4 in full (integrated c591099ca, clean-three):** the shear atoms
+(blockShear/edgeShearRaw fixes-of-displacement-zero; clause-III extraction UNCONDITIONAL — the
+foldRegion = univ collapse), the divBirthCoord PERSISTENCE family (per step constructor +
+conOracle, extracted from inside DivBirthInv_conOracle_stepChildren exactly as the handoff
+mapped), and **the SINGLE-STEP (★) PROVEN**: stepMapRaw_fixes_parentLedgerCorner — a real-branch
+step fixes every parent ledger birth-corner (blow-up half = A2-pkg + A3; shear half = A4 +
+persistence). Plus the pathMap list-glue. M4's mathematical heart is DONE; only the A5 glue
+statement remains.
+
+**The A5 binding rule paid again:** the naive branch-level coordinate (★) is FALSE at ROLLOVER
+steps (canonPivotOf = none ⟹ the pin is vacuous ⟹ the stored pivot field is arbitrary and
+deeper blow-ups can move it — harmless to the telescoping only because rollover jexp = 0).
+Caught at statement time, before wiring. Two candidate forms ((A) ledger-corner-restricted
+coordinate atom / (B) jacWeight-level congruence for all i); the RECONCILIATION with seat-L3T2's
+L5Spec §D.3 consumption site is LIVE (two focused questions re-asked after a crossing); my lean
+= (A) as the atom + a thin (B) adapter if the site wants the plug-in shape. seat-M4B builds the
+frame-helpers (needed either way) while holding the statement lock.
+
+**Reshape staging state:** BOTH owner conjB lines verified green first-shot on the staging tree
+(the render seat build-checked each against the freshly-rendered step-form — decorrelated
+verification, not improvisation); the staging should land at net +0. arch-C's six-point re-gate
+next, then the hash.
