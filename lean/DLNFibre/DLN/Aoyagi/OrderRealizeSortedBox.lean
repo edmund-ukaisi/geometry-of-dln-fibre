@@ -413,6 +413,83 @@ theorem boxOf_mem {ℓ a : ℕ} {A : Finset (Fin L)} (h : A.card = a)
       omega
     exact gap_mono h hrev
 
+/-- Count of subset elements `≤ c` equals the number of positions below `c`. -/
+theorem countLE_eq {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) (c : Fin L) :
+    (A ∩ Finset.Iic c).card
+      = (Finset.univ.filter (fun r : Fin a ↦ A.orderEmbOfFin h r ≤ c)).card := by
+  rw [← Finset.card_map (A.orderEmbOfFin h).toEmbedding]
+  congr 1
+  ext x
+  simp only [Finset.mem_inter, Finset.mem_Iic, Finset.mem_map, Finset.mem_filter,
+    Finset.mem_univ, true_and, Function.Embedding.coeFn_mk, RelEmbedding.coe_toEmbedding]
+  constructor
+  · rintro ⟨hxA, hxc⟩
+    have hxim : x ∈ Finset.image (A.orderEmbOfFin h) Finset.univ := by
+      rw [Finset.image_orderEmbOfFin_univ A h]; exact hxA
+    obtain ⟨r, -, hr⟩ := Finset.mem_image.mp hxim
+    exact ⟨r, by rw [hr]; exact hxc, hr⟩
+  · rintro ⟨r, hrc, hr⟩
+    exact ⟨by rw [← hr]; exact A.orderEmbOfFin_mem h r, by rw [← hr]; exact hrc⟩
+
+/-- **Position↔count duality.** `A`'s positions are pointwise `≤` `B`'s iff at every threshold `B`
+has no more elements than `A`. The load-bearing combinatorial lemma of the sorted-box iso. -/
+theorem posLE_iff_countDom {a : ℕ} {A B : Finset (Fin L)} (hA : A.card = a) (hB : B.card = a) :
+    (∀ r : Fin a, A.orderEmbOfFin hA r ≤ B.orderEmbOfFin hB r)
+      ↔ (∀ c : Fin L, (B ∩ Finset.Iic c).card ≤ (A ∩ Finset.Iic c).card) := by
+  constructor
+  · intro hpos c
+    rw [countLE_eq hA c, countLE_eq hB c]
+    apply Finset.card_le_card
+    intro r hr
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr ⊢
+    exact le_trans (hpos r) hr
+  · intro hcount r
+    by_contra hlt
+    rw [not_le] at hlt
+    set c := B.orderEmbOfFin hB r with hc
+    have hBcount : r.val + 1 ≤ (B ∩ Finset.Iic c).card := by
+      rw [countLE_eq hB c]
+      have hsub : Finset.Iic r ⊆ Finset.univ.filter (fun s : Fin a ↦ B.orderEmbOfFin hB s ≤ c) := by
+        intro s hs
+        rw [Finset.mem_Iic] at hs
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and, hc]
+        exact (B.orderEmbOfFin hB).monotone hs
+      calc r.val + 1 = (Finset.Iic r).card := (Fin.card_Iic r).symm
+        _ ≤ _ := Finset.card_le_card hsub
+    have hAcount : (A ∩ Finset.Iic c).card ≤ r.val := by
+      rw [countLE_eq hA c]
+      have hsub : Finset.univ.filter (fun s : Fin a ↦ A.orderEmbOfFin hA s ≤ c)
+          ⊆ Finset.Iio r := by
+        intro s hs
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hs
+        rw [Finset.mem_Iio]
+        have hlt2 : A.orderEmbOfFin hA s < A.orderEmbOfFin hA r :=
+          lt_of_le_of_lt hs (by rw [hc] at hlt; exact hlt)
+        exact (A.orderEmbOfFin hA).lt_iff_lt.mp hlt2
+      calc (Finset.univ.filter (fun s : Fin a ↦ A.orderEmbOfFin hA s ≤ c)).card
+          ≤ (Finset.Iio r).card := Finset.card_le_card hsub
+        _ = r.val := Fin.card_Iio r
+    have := hcount c
+    omega
+
+/-- `boxOf A ≤ boxOf B` (pointwise) iff `A`'s positions dominate `≤` `B`'s. -/
+theorem boxOf_le_iff {a : ℕ} {A B : Finset (Fin L)} (hA : A.card = a) (hB : B.card = a) :
+    boxOf A hA ≤ boxOf B hB ↔ ∀ r : Fin a, A.orderEmbOfFin hA r ≤ B.orderEmbOfFin hB r := by
+  constructor
+  · intro hle r
+    have hthis := Pi.le_def.mp hle (Fin.rev r)
+    simp only [boxOf, Fin.rev_rev] at hthis
+    have hpa := pos_ge hA r.val r.isLt
+    have hpb := pos_ge hB r.val r.isLt
+    simp only [Fin.eta] at hpa hpb
+    rw [Fin.le_def]; omega
+  · intro hpos
+    rw [Pi.le_def]; intro i
+    simp only [boxOf]
+    have hle : (A.orderEmbOfFin hA (Fin.rev i) : Fin L).val
+        ≤ (B.orderEmbOfFin hB (Fin.rev i) : Fin L).val := hpos (Fin.rev i)
+    omega
+
 /-! ## The order-isomorphism -/
 
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
