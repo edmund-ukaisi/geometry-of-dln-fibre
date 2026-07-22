@@ -13318,3 +13318,29 @@ plan verbatim); seat-L4's REMAINING context reserved for the BOOST-READINESS PRO
 owned piece — the R_bad/b-chain/M7-def context it uniquely holds), activating on ruling B.
 conjB: done-in-staging (its :445 line verified green). The successor pattern is now 3-for-3 on
 clean checkpoints.
+
+## 2026-07-23 ~02:55 UTC — RULING B LANDED: CanonicalSchurStep (the monument's LAST statement ruling)
+
+The elder ruled boost-readiness FINAL, opening with the decisive datum: "the M7 lemma is
+decisive — canonShearOf_support being PROVEN lets me author CanonicalSchurStep exactly and makes
+its emission proven-for-free."
+- HOME: **(2), triply-confirmed** (its lean + both blind instruments + the proven M7 property).
+  A CanonicalSchurStep conjunct on IsRealBranch's step arm (PARENT-based); (1)'s carried conjunct
+  rejected as strictly heavier (same shear obligation + invariant-surface growth).
+- CONTENT: **the SUPPORT-form** (write-side strict interior) — kills R_bad (proven), suffices for
+  boost-readiness via the verified b-chain mechanism; the α/β form correctly identified as the
+  DERIVED consequence (boost-readiness itself), not the pin; the positive-value twin DECLINED in
+  the pin (weakest-that-suffices) but SANCTIONED as a banked proof-aid — queued to seat-M7B
+  (canonShearOf_apply_interior, same file, after I/II/III).
+- realBranch_boostReady STANDS as the source-form derived stub; its he_lin-free discharge now
+  grounded: CanonicalSchurStep (from hbranch) + u_p | b_i ⟺ i > J₁ → the boost-center
+  decomposition. seat-L4 proves it post-bake (context reserved for exactly this).
+- SUBSUMPTION FLAG (hygiene follow-up, NOT this round): the strict-interior support subsumes
+  ShearWithinCarveRaw's write clauses (I)+(III); the eventual clean form = CanonicalSchurStep +
+  (II)-read. Queued for the post-cascade window; the interim redundancy is harmless
+  (both proven-emittable).
+- SEQUENCING: after the step-form reshape bakes. Verbatim packet relayed to arch-C.
+
+With this, EVERY statement question on the monument has a final ruling. The render lane's
+remaining queue: reshape staging (at re-gate) → the CanonicalSchurStep round → [assembly
+increments + the hygiene consolidation]. Everything after is proof.
