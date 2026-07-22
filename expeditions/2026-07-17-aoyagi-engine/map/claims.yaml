@@ -70,7 +70,7 @@ nodes:
       - lean/DLNFibre/DLN/Aoyagi/LearningCoefficient.lean
       - expeditions/2026-07-17-aoyagi-engine/threads/31-monument-construction/certificate.md
       - expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md
-    notes: "the monument is a RENDERED skeleton (MonumentAtlas.lean); cone = 10 (8 sorried leaves + 2 drivers exists_atlasRealizesExponents :1134 / exists_coreResolution_via_monument :1186, both PROVED from the leaves, footprint clean-three+sorryAx). L4=THE WALL. Combinatorial half discharged by the adapter; residual PURELY geometric. The final wiring swap replaces the ONE library sorry (LearningCoefficient.lean:287) after the leaves close."
+    notes: "the monument skeleton is CLOSING: drivers PROVED from the leaves; leaves L6+L8 PROVED (primed, L6 reviewed 6/6), terminal_edge PROVED in place, case2 = one conjB one-liner, WALL = boostReady-only (3 instruments converging), lastLayer = seat-L4, L5 = the fold convergence node (FoldSpec map, atoms owned), L7 = next commissioning (nav-13: startable now). The final wiring swap replaces LearningCoefficient:287 via the (B′) MonumentAssembly primed drivers after the leaves close; SUMMIT-RETIRE ceremony registered in the owed-register."
 
   - id: object-c
     kind: claim
@@ -222,7 +222,7 @@ nodes:
       - {type: needs, to: b-principalinv}
       - {type: discharges, to: object-b}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md]
-    notes: "controller rungs set post-recalibration (journal 2026-07-21); M'=1 simplification (hchain ⟹ principal): per-entry divisibility + Bézout, NOT full diag(b). REDIRECT BAKED (9c51289f4, elder second read OK on staging 2080757ea): the 4 step-leaves take ONE hypothesis (p.extend ed).IsRealBranch e; per-field SET (A) SUPERSEDED → 6 named derived lemmas (realBranch_centerPin/cover/descendView/shearWithinCarve/terminal_edgeδ/multiAffine[FRONTIER]); canonCenterOf case11 fixed (birth-corner pivot ∪ J₁ q.2 sub-block, 4 explicit arms); discriminator = kernel-checked DivBirthInv. Cone = 16 live (MonumentAtlas 14 + LC:287 + Case2Delta0). IN FLIGHT: the L6-fix round (elder-authored strengthened shear pin — displacement ≡0 on earlier-cleared pivots; restores (★); additive, leaf-consumers insulated; realBranch_shearWithinCarve held for it)."
+    notes: "FIVE BAKES 2026-07-22 (redirect 9c51289f4; pin d309bca48 clause-III/(★); hpos 0f8310b1a; COLLAPSE 790aed4e9 = FoldRealizes 3rd conjunct |jacDet gmap|=jacWeight(jac) unit≡1, srcBox seam = named L5 obligation; node-form 966959855). Derived stubs 5/6 PROVED clean-three (centerPin/cover/descendView/terminal_edgeδ/shearWithinCarve); multiAffine node-form = SUSPECT (FALSE without he_lin at the ROOT — u³ counterexample, seat-L3T2 SPECIFY; step case he_lin-free; elder reshape ruling pending: he_lin-threading (A) vs carried-invariant STEP-form descent (B, leaned) — the conjB one-liners re-wire either way). Leaves: L6+L8 PROVED (primed wires, L6 REVIEWED 6/6); case2' = conjB one-liner pending; WALL primed = boostReady-only (adjudication: pnp-boost + seat-L4 Codex [TRUE-but-NEEDS-CARRYING, R_bad countermodel] → elder rules form+home). L5: FoldSpec obligation map landed (no suspects; atoms M1-M7; M4 = seat-L6 PivotPreservation; M7 = seat-L4 canonShearOf). (B′) MonumentAssembly adopted (primed drivers; SUMMIT-RETIRE in owed-register); first increment rendering. Case2Delta0 RETIRED (orphan). Cone = 16 live (MonumentAtlas 8 + LC 1 + Case1Wire 2 + L5FoldSpec 5) + 25 fossil = 41."
 
   - id: b-leaf2-blowup-atlas
     kind: claim
@@ -289,7 +289,7 @@ nodes:
     owner: seat-L4
     edges: [{type: conjectured-toward, to: b-ladder}]
     kill: battery/g-coupled-binding-334.py
-    notes: "statement-hardened (5 severance rounds); TERMINAL-branch defect caught by seat-L4's probe (layer-axis) → non-terminal guards. BAKED (b7fa66841): cone 8→10, statement at :861 (supportAt geometric-descend window, C′ PINNED-computed, ∃ dropped). L4 = THE WALL, still stated/sorried, seat-L4. The terminal-branch defect is now handled by TWO leaves: the NEW lastLayer_clear_preserves (:890) + the re-parented terminal_edge_stepInv (:916). Severance taxonomy CLOSED — no free field on the quantified structure ([[severance-witnesses]])."
+    notes: "THE WALL IS ONE HOLE (2026-07-22): case1_preserves_stepInv' PRIMED in Case1Wire — dispatch body clean-three; conjunct-1 δ=0 ✓ (stepInv_child_delta0), δ=1 case12 ✓ (append + Deg1 bridge + cover equality), conjunct-2 ✓ (node-form one-liner); sorryAx flows ONLY through realBranch_boostReady_case11 (see b-boostready). case2_preserves_stepInv' likewise conjA-proven + conjB one-liner in flight (Case2Wire). The MonumentAtlas stubs stay sorried until the (B′) Assembly swap."
 
   - id: b-leaf-lastlayer
     kind: claim
@@ -309,7 +309,7 @@ nodes:
     tier: new
     owner: "parked: skeleton rung (C); general-d reasoning over the salvaged tree's WellFounded.fix"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "the second research-grade half of the recalibration (mon-geo): induction over the built tree at general d. RENDERED+sorried at the bake (b7fa66841, :1014); the 2 drivers PROVE from the 8 leaves (footprint force-elaborated = [propext, sorryAx, Classical.choice, Quot.sound])."
+    notes: "the fold convergence node (nav-13: THE LONGEST LINK). L5FoldSpec obligation map LANDED (seat-L3T2, stop-on-suspect NONE): the spine (FoldStepInvAt → LastLayerInv → terminal → PrincipalInv), IsRealBranch emission rfl-class BY CONSTRUCTION, the (★)-telescoping decomposition of the collapse clause; atoms M1/M2/M3/M5 (seat-L3T2, easy) + M4 (seat-L6, PivotPreservation, fork dissolved) + M7 (seat-L4, canonShearOf) + M6 (held). Consumes the walls; priceable now that every atom has an owner."
 
   - id: b-leaf6-chart-geometry
     kind: claim
@@ -319,7 +319,7 @@ nodes:
     tier: new
     owner: "parked: skeleton rung (C); statements gated by the shear pin (resolved corrected-(a))"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "unit ≡ 1 STANDS (chain rule over det-1 shears ∘ blow-ups); pivot-normalizes-to-1 residual is non-blocking (in-cert). RENDERED+sorried at the bake (b7fa66841, :1049)."
+    notes: "PROVED as the primed twin leafPath_chartGeometry' (LeafChartWire, clean-three, rev-L6 SURVIVED 6/6 + Codex concurring; consumes the FoldRealizes Jacobian-collapse clause via hcollapse = hreal.2.2; chart_of_collapse builds all 28 fields). The MonumentAtlas anchor stays sorried until the (B′) Assembly swap + SUMMIT-RETIRE."
 
   - id: b-leaf7-compact-cover
     kind: claim
@@ -330,19 +330,19 @@ nodes:
     tier: new
     owner: "parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41"
     edges: [{type: conjectured-toward, to: b-ladder}, {type: needs, to: b-terminal-edge-stepinv}]
-    notes: "L7 BRIDGE-FREE stands (:1088 at the bake); the geometric coordinate is the supportAt window (geometric Deg1, descends per clear); canonCenter/ed.center stays the SEPARATE ledger center + division locus, untouched (the wall divides at ed.center, residual degree-1 on supportAt). Spectator-bounds bite still pre-flagged."
+    notes: "L7 BRIDGE-FREE stands; nav-13: STARTABLE NOW (statement-locked, independent of the wall + L5; parked was scheduling, not dependency) — the NEXT COMMISSIONING after M7; research-grade coverage/measure proof, PM-P4 (coverage/termination = build content, not in the paper); highest-variance link with boost. Spectator-bounds bite still pre-flagged."
 
   - id: b-terminal-edge-stepinv
     kind: claim
-    title: "terminal_edge_stepInv: the interior→terminal transport (parent FoldStepInvAt ⟹ child literal-Fin-1 unit StepInv + the born-terminally pivot)"
+    title: "terminal_edge_stepInv: the interior→terminal transport — PROVEN (in place, clean-three)"
     prop: |
       Terminal-reaching edge + parent FoldStepInvAt ⟹ (1) StepInv with the LITERAL fun _ : Fin 1 ↦ 1
       residual ∧ (2) ∃ i₀ unit, ContinuousOn ∧ unit 0 ≠ 0 ∧ (coreGen i₀ ∘ g) = b·unit — matching
       TerminalBezout's input verbatim; the chain L3/L4 (interior) → this (last edge) → terminal_bezout.
     lean: DLNFibre.DLN.Aoyagi.terminal_edge_stepInv
-    status: stated
+    status: proven
     tier: new
-    owner: "parked: proof queue (the elder's rider obligation, born in the canonCenter round; consumer-fit example banked as permanent regression)"
+    owner: "parked: PROVEN (seat-L3T2 lane 1, 2026-07-22 — δ=1 dead branch via realBranch_terminal_edgeδ [hpos alone]; δ=0 re-homed; clean-three, in place in MonumentAtlas)"
     edges: [{type: conjectured-toward, to: b-ladder}]
     notes: "the elder: 'easy earns a name, not an omission' — expected easy (unit-residual strictly weaker; the quotient absorbs into q′); the consumer-fit example elaborates (verified two decorrelated ways). RE-PARENTED at the bake (b7fa66841, :916): now takes LastLayerInv + hcleared (was the canonCenter-round shape); conclusion still verbatim TerminalBezout-input. The chain: L3/L4 interior → lastLayer_clear_preserves → this → terminal_bezout."
 
@@ -354,7 +354,26 @@ nodes:
     tier: new
     owner: "parked: skeleton rung (C); consumes the salvage adapter's seam shape"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "bindingAxes = {t̃=0 divisors} exactly implements the paper's read-off restriction (thread-31 fidelity win). RENDERED+sorried at the bake (b7fa66841, :1109)."
+    notes: "PROVED as the primed twin leafPath_realizesExponents' (LeafGeometryWire, clean-three, first complete leaf; ported to the baked tip by seat-L3T2). The MonumentAtlas anchor stays sorried until the (B′) Assembly swap + SUMMIT-RETIRE. bindingAxes = {t̃=0 divisors} implements the paper's read-off restriction."
+
+  - id: b-boostready
+    kind: claim
+    title: "boost-readiness: parent foldResid is Deg1SupportedOn the case11 boost center — ADJUDICATING"
+    prop: |
+      At a real interior case1(1)-δ=1 edge, Deg1SupportedOn (foldResid p) ed.center (foldRegion p) —
+      the SOURCE form (elder-ruled: feeds the shared crux, case11≡case12 uniformity). TRUE on the
+      fold (instrument 1); form + home (carried invariant vs strengthened shear pin vs derived stub)
+      = the elder's final ruling on both instruments.
+    status: adjudicated
+    tier: new
+    owner: "pnp-boost (instrument 2, running) + elder (final form) → seat-L4 (proof)"
+    kill: expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/case11_boostready_crosscheck.py
+    edges:
+      - {type: needs, to: b-principalinv}
+      - {type: discharges, to: b-leaf34-case-steps}
+    evidence:
+      - expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex/boost-readiness-2222-answer.md
+    notes: "instrument 1 (seat-L4 Codex, decorrelated): TRUE on (2,2,2,2) (A1/A2/A3 pass) but NEEDS-CARRYING under the current coarse pins — countermodel R_bad (unprepared shear, γ not Schur-cleared) satisfies full-support Deg1 + scalar foldB + clauses I-III yet is not boost-ready. Resolutions: (1) carry BChainCompatible; (2) CanonicalSchurStep property clause on IsRealBranch (gate-2 partially reinstated with the honest forcing reason; M7's emission cost sunk). Elder HOLDS for instrument 2 (pnp-boost, blind to instrument 1)."
 
   # ── the reduction + the kill-target ───────────────────────────────────────────────────────
 

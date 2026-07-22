@@ -171,3 +171,15 @@ present in the stub (the hpos instance); (ii) shape: the stub's conclusion insta
 each named consumer actually consumes (node/edge, parent/child, the exact carrier). Where the
 gate-holder cannot verify a consumer's internals, route the shape question to the proof-seat
 consumer BEFORE the mint — the decorrelated proof-seat read caught both instances.
+
+**Third instance (same day — the induction-BASE case): the node-form multiAffine root gap.** The
+elder's node-form ruling certified the statement "inductable (root = coreGen, one factor per
+layer...)" — the root argument NEEDS e linear, and he_lin was in the argument but not the
+statement; seat-L3T2's SPECIFY refuted it with e u = u³ (he0 holds, he_lin fails — the
+counterexample pins the exact missing premise). The rule sharpens: **"inductable" is not a
+shape-check — enumerate the induction's cases (BASE included) and diff each case's premises
+against the stated hypotheses**, exactly as rule (i) does for invoked lemmas. Also the
+architectural lesson: a node-form derived off bare provenance RE-DERIVES the base case,
+silently relocating hypotheses that the carried-invariant formulation keeps where they belong
+(the fold's root, L5). Prefer step-form descent off the carried invariant when consumers already
+hold it.

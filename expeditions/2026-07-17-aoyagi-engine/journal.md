@@ -13079,3 +13079,23 @@ everything the current pins carry yet is not boost-ready. Forwarded to the elder
 HOLD-for-pnp-boost instruction + the gate-2 history note (resolution (2) = partially reinstating
 the exact-shear content, property-style, with the honest forcing reason; M7's emission cost
 largely sunk). The elder rules form + home when instrument 2 lands.
+
+## 2026-07-22 ~21:50 UTC — WAVE 1 INTEGRATED (census 35); node-form multiAffine REFUTED-AS-STATED (he_lin root gap) → elder reshape
+
+**Wave 1 + Case2Wire conjB merged (dd1425f49):** M1/M1′/M2/M3/M5 all clean-three in their FINAL
+homes (MonomialRLCT/PathAtoms/BlockBlowup/MonumentAtlas), the L5FoldSpec contracts flipped to
+sorry-free delegations, and case2_preserves_stepInv' STRUCTURALLY COMPLETE (no local sorry; the
+one sorryAx = the shared multiAffine stub — the seat's own precision note, not overclaimed).
+Census 41 → 35, the day's largest single-merge drop.
+
+**The frontier bit back: realBranch_multiAffine (node-form, baked 966959855 hours ago) is FALSE
+AS STATED** — seat-L3T2's SPECIFY found the induction ROOT case needs e LINEAR (coreGen = mult∘e
+entries; multilinearity requires linearity) and the statement carries no he_lin. Counterexample:
+e u = u³ (homeo, he0 HOLDS — pinning he_lin as the exact missing premise). Step case he_lin-free.
+Consumer tension: the leaves are deliberately he_lin-free and both conjB one-liners consume the
+node-form bare; only L5 carries he_lin (root anchoring, by design). ROUTED TO THE ELDER: (A)
+thread he_lin (breaks the leaves' weakest-hypotheses design) vs (B, seat+controller lean) the
+carried-invariant STEP-form descent (parent hinv slot + edge pins → child slot; he_lin-free;
+node-form retires; the linearity burden stays at L5's root where it lives). Third instance of
+the invoked-premise family — now at an induction BASE; lessons.md sharpened ("inductable" =
+enumerate cases incl. base, diff premises). Boost-readiness adjudication UNDISTURBED (separate).

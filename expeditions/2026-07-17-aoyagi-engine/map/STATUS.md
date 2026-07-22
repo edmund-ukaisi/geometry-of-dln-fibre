@@ -21,9 +21,10 @@ updated: 2026-07-22
   ◦ object-d [proven] Object D: codim = minAdm = cCodim = qipMin, θ, perm-invariance — BANKED
   ◦ object-e [stated] Object E: analytic order ρ — OPENED-SCOPED (operator 2026-07-21); combinatorial half in build
 
-## live frontier — 2 ready, 10 blocked
+## live frontier — 3 ready, 9 blocked
   ▶ object-e [stated] owner=seat-E
   ▶ b-ladder [adopted] owner=controller
+  ▶ b-boostready [adjudicated] owner=pnp-boost (instrument 2, running) + elder (final form) → seat-L4 (proof)
   · aoyagi-summit [stated] owner=controller
   · object-b [stated] owner=mon-geo-lane
   · b-leaf34-case-steps [stated] owner=seat-L4
@@ -31,6 +32,5 @@ updated: 2026-07-22
   · b-leaf5-path-fold [stated] owner=parked: skeleton rung (C); general-d reasoning over the salvaged tree's WellFounded.fix
   · b-leaf6-chart-geometry [stated] owner=parked: skeleton rung (C); statements gated by the shear pin (resolved corrected-(a))
   · b-leaf7-compact-cover [stated] owner=parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41
-  · b-terminal-edge-stepinv [stated] owner=parked: proof queue (the elder's rider obligation, born in the canonCenter round; consumer-fit example banked as permanent regression)
   · b-leaf8-realizes-exponents [stated] owner=parked: skeleton rung (C); consumes the salvage adapter's seam shape
   · kill-cite [conjectured] owner=parked: until object-b lands (summit clean-three); then consumer audit + deletion
