@@ -13822,3 +13822,37 @@ coupling (one-liner vs needs-more), which is DOWNSTREAM of L1 and doesn't gate i
 pnp-coupling continues in parallel. arch-C rendering → gate → delta-read → I relay the pin +
 realBranch_canonShear_eq to seat-L4B (clearing = one-liner) + seat-L3T2 (descent append discharge).
 L1 is the linchpin; once baked, both clearing-side gaps close.
+
+## 2026-07-22 ~20:20 UTC — pnp-coupling RESHAPE (3 distinct facts) + L1 render cycle-catch → relocation
+
+TWO developments.
+
+(1) pnp-coupling's DECORRELATED verdict (exact-fold of the ACTUAL foldResid, d=(2,2,2,2)/(3,3,3,3)/
+(2,3,2,2), Codex-corroborated) REFUTED the coupling I assumed. NOT one shear-pin fix — THREE separate
+structural facts:
+- Gap B (descent append): MULTILINEAR HOMOGENEITY (foldResid deg exactly 1, vanishing at layer=0, per
+  layer ≥ supportLayerOf) — SHEAR-INDEPENDENT (identical traces canonShearOf vs identity). NOT implied
+  by Deg1SupportedSlot. Fix = standalone foldResid lemma (pnp rec, avoids ripple) vs FoldStepInvAt
+  strengthening (elder's call). L1 does NOT touch it.
+- Gap A-div (boostReady): b-chain divisibility — combinatorial, shear-independent (= seat-L4B's half).
+- Gap A-clear (boostReady): Schur γ-clearing — what L1/canonShearOf buys (R_bad-kill), Gap A only.
+Asymmetry certificate: identity shear BREAKS Gap A (A2 fails) but PRESERVES Gap B. So L1 is CONFIRMED
+necessary+correct but scoped to Gap-A-clear. CAVEAT: pnp's Gap-A part is battery-MODEL-based (not
+folded to a real case11 node) — seat-L4B's fold-derived divisibility is the verification (watch the
+i=J₁/u_p-multiplicity boundary). Gap B's shear-independence is exact-fold-SOLID.
+CALIBRATION: I conflated two "needs-more-than-hslot" gaps (append + boostReady-clearing) as both
+shear-coupled — they need DIFFERENT more (homogeneity vs clearing). The decorrelated instrument caught
+my over-claim BEFORE the descent seat wasted a shear-framed proof. frame-in/hypothesis-out earning its
+keep (the append=one-liner claim would have failed). Corrections propagated: arch-C (docstring scope),
+seat-L3T2 (append=homogeneity, held for elder Gap B), elder (Gap B design need), seat-L4B (its
+divisibility = 1 of 2 Gap-A halves + the b-chain soft-spot to watch).
+
+(2) L1 render: arch-C's verify-before-render caught an IMPORT CYCLE — canonShearOf lives in CanonShear
+(which imports MonumentAtlas), so MonumentAtlas can't reference it in IsRealBranch. FIX (blessed,
+controller): relocate canonShearOf + canonShearOf_support UP into MonumentAtlas (before IsRealBranch) —
+verified cycle-free (deps tupIdxEquiv/ConState/flatDim all in MonumentAtlas; no PivotPreservation/
+blockEntryFlat), a PURE refactor (byte-identical def, rehomed), FORCED by the elder's form (no natural
+alternative). M7B fully merged (0 commits ahead of canonical)/dormant + CanonShear complete on canonical
+→ NO M7B coordination needed; the delete collides with nothing. arch-C UNBLOCKED → rendering L1 =
+[relocation] + [3 forms, change-3 canonShearOf_support fallback]; canonShearOf_apply_interior confirmed
+exists (:244). Gate → stage → hash → my gate + elder delta-read. L1 is the additive Gap-A-clearing bake.
