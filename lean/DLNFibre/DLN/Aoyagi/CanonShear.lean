@@ -52,6 +52,21 @@ noncomputable def canonShearOf (d : Fin (N + 1) → ℕ) (s : ConState N) :
         * (u (tupIdxEquiv d ⟨⟨q.1.1, ⟨s.cleared, lt_trans h.2.1 q.1.2.isLt⟩⟩, q.2⟩))
     else 0
 
+/-- **Prepared-form / R_bad-kill (elder-facing candidate for the `CanonicalSchurStep` predicate).**
+`canonShearOf` is SUPPORTED on the layer-`s.layer` carve STRICT interior (`row, col > s.cleared`): a
+nonzero displacement forces the coordinate there. So the shear writes ONLY the Schur cross-term `−γ·β`
+on the interior, never a diagonal/pivot corner nor a bare pivot-column entry — the "γ Schur-cleared"
+structure that EXCLUDES the boost-readiness countermodel `R_bad = Z·B·[[1,β],[γ,u_p]]` (unprepared,
+`γ≠0`, whose center-zeroing leaves `γ·(…)`). This is the write-side content of clauses (I)/(III) and
+the candidate ingredient for the elder's boost-readiness pin (resolution 2). -/
+theorem canonShearOf_support (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)) (hk : canonShearOf d s u k ≠ 0) :
+    (((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
+      s.cleared < (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
+        s.cleared < (((tupIdxEquiv d).symm k).2 : ℕ) := by
+  by_contra h
+  exact hk (by simp only [canonShearOf]; exact dif_neg h)
+
 /-- **M7 emission — `canonShearOf` is within-carve.** At a case12/case2 real-branch edge (node = the
 step, so `node.conState = ed.nextState`, `cleared ≥ 1`, `sl = layer+1`), the raw shear
 `canonShearOf d p.conState` satisfies `ShearWithinCarveRaw`'s three clauses. The clause the shear-pin of
