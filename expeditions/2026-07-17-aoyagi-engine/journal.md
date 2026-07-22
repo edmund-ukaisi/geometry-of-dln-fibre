@@ -14476,3 +14476,30 @@ frame, the subsidiary queue). Worktree-hygiene flag: pnp-transport committed on 
 it works there (expeditions/-only paths, landed harmless) — seat-L4C told to ff + verify state; noted
 as a near-miss (seats should write in their OWN thread dirs; a lean/-touching collision would have been
 ugly). Everything now waits on ONE thing: the elder's step-map fidelity ruling.
+
+## 2026-07-23 ~07:00 UTC — SIXTH statement-class catch: the base needs REINDEXING-e, not he_lin (staged atom false; L5's own base reached)
+
+seat-L4C STOP-ON-SUSPECTED the base atom with an airtight countermodel: d=(1,1,1), e = the unipotent
+[[1,1],[0,1]] on flat coords — satisfies he_lin + MeasurePreserving + he0 (ALL the chain's abstracted
+e-properties), yet coreGen 0 u = u₀u₁ + u₁² fails HomogeneousDeg1On on layerCoords 0 (the u₁² monomial
+survives zeroing; IgnoresCoords fails either way). The base is TRUE only for e = the canonical
+block-respecting REINDEXING (the flatten). he_lin gives degree-1 per TUPLE layer; only a reindexing
+aligns tuple layers with FLAT coords. CONSEQUENCES: (i) the STAGED coreGen_layerHomogeneous (20a9c5e3c,
+bare he_lin — the elder's authored verbatim, faithfully rendered) is FALSE AS STATED — the e-fix joins
+the elder's delta-read; (ii) the certificate's §5 "base sound via he_lin" + my task-#6 framing carried
+the same false premise; (iii) THE DEEPER REACH: L5's own root base (foldResid(root)=coreGen must be
+Deg1SupportedOn blockCoords 0) fails the SAME countermodel — the monument's ∀-e abstraction (he0 +
+he_lin + MeasurePreserving) may have been one property short SINCE THE BEGINNING, masked because no
+proof had reached the root's slot content.
+
+WEAKEST-HONEST OPTIONS (to the elder, in the design round): pin e CONCRETELY at the canonical flatten
+(the summit needs exactly that one e — the ∀-e was a convenience; may SIMPLIFY the chain, aligned with
+one-construction-pin) vs a block-compat hypothesis (vs predicate-proliferation counsel) vs threading the
+equality. DISPOSITIONS: seat-L4C's base grind HELD (correct stop — 4th seat-stop before a false-goal
+grind); it builds the LEAN countermodel witness (kill-battery class) + skips the thr_le prep (serves the
+superseded boundary — no dead-route work); ownership unchanged (dedup of the base home at the ruling);
+arch-C notified (render was faithful; expect a one-atom amendment from the delta-read, not a re-render).
+
+The elder's design round now holds the COMPLETE fidelity picture: the step-map normalization (three-way
+convergence) + the e-abstraction at the base — the two places the encoding under-specified the source.
+One coherent ruling, then one re-bake round.
