@@ -14601,3 +14601,15 @@ Proof = the landed OriginBlowup argmax routing (argmax over S; x_p=0 vs ≠0 cas
 SHEAR-FREE. Scope discipline right: the R=1 atom per pnp-fan's certificate §2.1; the R-parametric fold
 + shear inflation stay with the future L7 fold lane; a cheap general-radius hardening assessed after.
 Signature elaborates green; proceeding to the proof without blocking (within the ratified boundary).
+
+## 2026-07-23 ~09:20 UTC — seat-LL twin amended to the REVISED verbatim; frontiers re-derived (4); δ=0 carry closing in-lane
+
+seat-LL amended LastLayerWire.lean to the elder's REVISED form (hparent + the carried conditional hgen;
+conditional GeneratorCleared output), green, force-pushed WIP-labeled (d8d92380f). Frontiers RE-DERIVED
+against the revised statement (not assumed): (1) conjA δ=1 deg1-extract [Gap-B vanishing cross-link];
+(2) conjunct-2 S=L per-slot disjunction [descent lane]; (3a) the born-unit [the wall's dehomogenisation];
+(3b) the δ=0 GeneratorCleared CARRY — closable in-lane (reindex hgen's nonzero sum through the pullback),
+CLOSING NOW. The carried-conditional shape confirmed clean (conjA unchanged; the vacuous
+case11-at-cleared=0 handled by the conditional output — the elder's payoff exactly). Character-identity
+coordination with arch-C initiated seat-to-seat (binder order hlast/hparent/hinv/hgen/hbranch + the 3
+consumer sites). The lane runs itself; nothing owed from the controller until arch-C's amended staging.
