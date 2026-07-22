@@ -12922,3 +12922,25 @@ PROVE waves commission off the map; nav-13 convenes on friction OR success. Task
 completed (the δ=1 division content banked via case2_conjA/append), #9 deleted (superseded by
 the corrected case11 mechanism — no one-center-two-pivots construction needed), #66 opened (L5
 SPECIFY). Board otherwise: node-form rendering; seat-L6 landing; seat-L4 battery; all lanes owned.
+
+## 2026-07-22 ~19:00 UTC — L6 LANDED SORRY-FREE + INTEGRATED; rev-L6 spawned; node-form delta-read triggered
+
+**L6 IS DONE (integration eb591f357 + wiring/card 7a03aa04d):** seat-L6 landed
+leafPath_chartGeometry' sorry-free — the one-line collapse consumption (hcollapse = hreal.2.2 →
+chart_of_collapse) exactly as staged. Its gate was the model: olean-DELETED forced elaboration
+(not trusting exit-0), the hreal-leak check explicit (L5's sorried producer does NOT enter L6's
+footprint — L6 only assumes hreal). My integration gate re-confirmed: both lemmas CLEAN-THREE on
+canonical, build 0-err, cordon OK, census 36. Statement card banked
+(threads/L6/statement-card.md). **rev-L6 SPAWNED** (fidelity vs the informal claim +
+field-by-field vs the Chart structure + statement-identity vs the baked MonumentAtlas form [the
+Assembly swap depends on it] + the seat's three named checks [excep honesty / nbhd = region HARD
+LOCK / unit ≡ 1 not laundered] + vacuity + forced axioms + decorrelated Codex). Task #62 closed.
+
+**Path-level row: L6 ✓ + L8 ✓** — two of four path leaves fully proved, both consuming
+interfaces (clause III, the collapse) that did not exist this morning. The srcBox seam paid out
+the day it was named.
+
+**Node-form staging 5db02550b delta-read TRIGGERED** (controller-verified raw diff: hypothesis
+swap exact, conclusion byte-identical, hpos carried, docstring = the elder's text, edge-form
+deleted). On OK: the wall's conjunct-2 + Case2Wire's conjB become one-liner-consumable, then the
+Assembly first increment.
