@@ -13290,3 +13290,18 @@ frame-helpers (needed either way) while holding the statement lock.
 (the render seat build-checked each against the freshly-rendered step-form — decorrelated
 verification, not improvisation); the staging should land at net +0. arch-C's six-point re-gate
 next, then the hash.
+
+## 2026-07-23 ~02:05 UTC — the A5 reconciliation CLOSED: (A) atom + (B) adapter, ownership settled
+
+seat-L3T2 answered from its §D.3 consumption site, confirming the atom+adapter split with the
+reasoning sharpened: the telescoping consumes the jacWeight congruence for ALL i INSIDE the M2
+product — a per-i coordinate guard would force a rollover case-split inside the telescoping, so
+the (B) adapter is NEEDED, not optional; and rollovers ARE in the steps list (σ = id since
+blockBlowupMap ∅ = id, jexp = 0), which is exactly why the consumer form must be (B) while the
+TRUE atom is the ledger-corner-restricted (A). DIVISION SETTLED: seat-M4B builds (A) clean (no
+hstep_block baked in) + one flagged sub-fact (canonPivotOf IS a ledger corner at every
+non-rollover step — case11 via divBirthCoord[mergeIdx], case12/case2 via the born divisor's
+birthCoord); seat-L3T2 writes the thin (B) adapter at its site once (A) locks; the locked
+statement routes through me for the L5Spec M4-contract flip. The routed no-silent-adaptation
+exchange worked end to end: producer proposed, the false form was caught at statement time, the
+consumer chose from its actual site, the atom stays clean, the adapter lives with its consumer.
