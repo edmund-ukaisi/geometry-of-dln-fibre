@@ -133,3 +133,16 @@ the trail is local):
   content-free holds/acks/state-echoes, each resuming an agent for nothing. Ack-protocol exists to
   prevent LOST messages, not to require ceremonial ones: acknowledge state CHANGES; never resume a
   correctly-holding seat to tell it it's correctly holding.
+- **Briefs drew on controller memory, not the map's reuse artifact (operator-surfaced, 2026-07-22).**
+  Spawn briefs were in-spirit template-compliant (target, worktree, gates, discipline, report shape) but
+  the what-you-must-know section (CONSUME/STAGED banked lemmas, dead routes, battery members) was
+  hand-composed from the controller's context every time — `scripts/expedition brief <node>` never ran,
+  and no codebase-shape artifact existed to draw from. It worked (e.g. the QIP water-filling pointer that
+  collapsed the sorted-box sub-development came from controller memory) — but that is the controller being
+  lucky-good where the system should be reliable. FIX: the cartographer now owns a maintained
+  CODEBASE-SHAPE artifact (cluster map + dependency arteries + reuse index + frontier line,
+  map/overlay/codebase-shape.md) as the source briefs draw from; use the generated-brief path where map
+  nodes exist. SECOND deviation to note honestly: the template's "no peer-to-peer coordination" was
+  deliberately relaxed for integration mechanics (seat↔seat channels) — it saved controller hops but is
+  also exactly where the crossing/oscillation noise lived; next harness should scope peer channels to a
+  declared interface (one topic, one pair, controller cc'd) rather than open-ended.
