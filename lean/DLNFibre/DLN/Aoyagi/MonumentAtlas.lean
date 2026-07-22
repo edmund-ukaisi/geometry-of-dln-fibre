@@ -962,22 +962,100 @@ theorem realBranch_shearWithinCarve {N : ℕ} {d : Fin (N + 1) → ℕ}
     ShearWithinCarve d e ed := by
   -- map: B-derived-shearwithincarve (last-step projection: hbranch's ShearWithinCarveRaw conjunct at
   --      the last edge is defeq ShearWithinCarve d e ed; seat-L4 (B) landed, no (II) defect)
-  sorry
+  -- `p.extend ed = .step p ed.center … ed.shearφ`; IsRealBranch's step arm's THIRD conjunct is
+  -- `ShearWithinCarveRaw d e (p.extend ed) ed.shearφ`, defeq to `ShearWithinCarve d e ed`.
+  obtain ⟨-, -, hshear⟩ := hbranch
+  exact hshear
 
 /-- Derived: a terminal edge does not divide (`δ=0`) — only a rollover advances the layer. -/
 @[blueprint]
 theorem realBranch_terminal_edgeδ {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
     (hbranch : (p.extend ed).IsRealBranch e) :
     edgeδ d p = false := by
   -- map: B-derived-hδ0 (terminal ⟹ rollover-only advance ⟹ edgeδ=false; widthMinUpto_pos)
-  sorry
+  -- A terminal-reaching edge ADVANCES the layer (child.layer = ed.nextState.layer ≥ N > p.layer);
+  -- only a rollover advances (case11/case12/case2 keep the layer), so the oracle's rollover guard
+  -- `widthMinUpto d (layer+1) ≤ cleared` fired — and `widthMinUpto_pos hpos` gives `cleared ≥ 1`.
+  obtain ⟨-, ⟨sc, hsc, -, hchild, -, -⟩, -⟩ := hbranch
+  suffices h : p.conState.cleared ≠ 0 by
+    simp only [edgeδ, decide_eq_false_iff_not]; exact h
+  by_cases h1 : N ≤ p.conState.layer
+  · -- terminal parent: no children, `hsc` absurd
+    exfalso
+    have horacle : conOracle d p.conState = oracleTerminal d p.conState := by
+      unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hsc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+  · -- child.layer ≥ N > p.conState.layer, so the edge ADVANCED the layer
+    have hchild_adv : p.conState.layer < sc.child.layer := by rw [hchild]; omega
+    by_cases h2 : widthMinUpto d (p.conState.layer + 1) ≤ p.conState.cleared
+    · -- rollover fired: `cleared ≥ widthMinUpto ≥ 1` (`widthMinUpto_pos hpos`)
+      have hpos' := widthMinUpto_pos hpos (p.conState.layer + 1); omega
+    · -- ¬rollover: every emitted child keeps the layer (case1/case2), so it CANNOT advance
+      exfalso
+      have hlive : p.conState.layer < N := not_le.mp h1
+      have hcap : p.conState.cleared < layerCap d :=
+        lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap d _)
+      have hkeep : sc.child.layer = p.conState.layer := by
+        rcases hmin : ((List.finRange p.conState.numDiv).filterMap (fun k =>
+            if p.conState.cleared + 1 ≤ p.conState.divTilde k ∧
+                p.conState.divTilde k + 1 ≤ widthMinUpto d p.conState.layer
+            then some (p.conState.divTilde k) else none)).min? with _ | target
+        · -- occ.min? = none → case-2
+          have horacle : conOracle d p.conState = case2Decision d p.conState
+              (widthMinUpto d p.conState.layer - p.conState.cleared)
+              (d ⟨p.conState.layer + 1, by omega⟩ - p.conState.cleared) hcap := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq]
+          rw [horacle] at hsc
+          simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hsc
+          simp only [hsc, ConState.stepAppendAdvance]
+        · rcases hf : chooseMin p.conState target with _ | f
+          · -- chooseMin = none → fallback terminal, no children
+            exfalso
+            have horacle : conOracle d p.conState = oracleTerminal d p.conState := by
+              unfold conOracle; rw [dif_neg h1, dif_neg h2]
+              split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+              all_goals (try subst_vars)
+              all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+            rw [horacle] at hsc
+            simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+          · -- chooseMin = some f → case-1 (two children), both keep the layer
+            obtain ⟨hmemtar, hminle⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, _, hk0⟩ := hmemtar
+            have htar : p.conState.cleared + 1 ≤ target ∧
+                target + 1 ≤ widthMinUpto d p.conState.layer := by
+              by_cases hc0 : p.conState.cleared + 1 ≤ p.conState.divTilde k0 ∧
+                  p.conState.divTilde k0 + 1 ≤ widthMinUpto d p.conState.layer
+              · rw [if_pos hc0] at hk0
+                have hdt : p.conState.divTilde k0 = target := Option.some.inj hk0
+                omega
+              · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+            have htgt : p.conState.divTilde f = target := (chooseMin_spec p.conState target hf).1
+            have horacle : conOracle d p.conState = case1Decision d p.conState f
+                (target - p.conState.cleared) (widthMinUpto d p.conState.layer - p.conState.cleared)
+                (d ⟨p.conState.layer + 1, by omega⟩ - p.conState.cleared)
+                (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap := by
+              unfold conOracle; rw [dif_neg h1, dif_neg h2]
+              split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+              all_goals (try subst_vars)
+              all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+            rw [horacle] at hsc
+            simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+              List.not_mem_nil, or_false] at hsc
+            rcases hsc with h | h <;>
+              simp only [h, ConState.stepCase11, ConState.stepAppendAdvance]
+      omega
 
 /-- Derived (GAP-3, seat-L4 locked) — **FRONTIER-LEAF-CANDIDATE**: the deepest obligation, gates on the
 elder's Codex C2. The PARENT residual is degree-1 on the parent support (the multi-affine grade). -/
 @[blueprint]
 theorem realBranch_multiAffine {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
     ∀ j, Deg1SupportedSlot d (foldResid d e p) j
@@ -1127,7 +1205,72 @@ theorem terminal_edge_stepInv
         ∧ (∀ u ∈ foldRegion d e (p.extend ed),
             (coreGen d e i₀ ∘ foldG d e (p.extend ed)) u = foldB d e (p.extend ed) u * unit u) := by
   -- map: B-L4t-terminal-edge-stepInv ((1) Fin-1 unit-residual StepInv + (2) born-terminally pivot = TerminalBezout input; L5 → terminal_bezout)
-  sorry
+  -- COLLAPSE: the δ=1 corner is a DEAD branch (realBranch_terminal_edgeδ ⟹ edgeδ = false); the δ=0
+  -- main branch is the pure pullback (`foldB` gains no `u_pivot`), with the residual family collapsed
+  -- into a single continuous `Fin 1` quotient and the born-terminally generator supplied by `hgen`.
+  classical
+  obtain ⟨i₀, qg, hSIg, hgne⟩ := hgen
+  obtain ⟨hqg_cont, hqg_S3, hqg_fact⟩ := hSIg
+  have hguniv : foldRegion d e p = Set.univ := foldRegion_eq_univ e p
+  have hguniv' : foldRegion d e (p.extend ed) = Set.univ := foldRegion_eq_univ e (p.extend ed)
+  -- each residual slot is continuous (from LastLayerInv's per-slot disjunction).
+  have hresid_cont : ∀ j, Continuous (fun u ↦ foldResid d e p j u) := by
+    intro j
+    rcases hinv.2 j with ⟨⟨c, hc, hrepr⟩, _⟩ | ⟨unitj, hunit_cont, _, hunit_eq⟩
+    · have hEq : (fun u ↦ foldResid d e p j u)
+          = fun u ↦ ∑ i ∈ supportAt d p.conState.layer p.conState.cleared, c i u * u i := by
+        funext u; exact hrepr u (by rw [hguniv]; exact Set.mem_univ _)
+      rw [hEq]
+      refine continuous_finset_sum _ (fun i _ ↦ ?_)
+      exact ((continuousOn_univ.mp (by rw [← hguniv]; exact hc i)).mul (continuous_apply i))
+    · have hEq : (fun u ↦ foldResid d e p j u) = unitj := by
+        funext u; exact hunit_eq u (by rw [hguniv]; exact Set.mem_univ _)
+      rw [hEq]; exact continuousOn_univ.mp (by rw [← hguniv]; exact hunit_cont)
+  by_cases hδ : edgeδ d p
+  · -- δ=1 is a DEAD branch: a terminal edge has δ=0 (realBranch_terminal_edgeδ), contradicting hδ.
+    exact absurd (realBranch_terminal_edgeδ hpos e p ed hterm hbranch) (by rw [hδ]; simp)
+  · -- δ=0 (the S=L rollover): pure pullback; born-terminally from hgen.
+    refine ⟨fun i _ u ↦ ∑ j, qg i j (stepMap d ed u) * foldResid d e p j (stepMap d ed u), i₀,
+      fun u ↦ ∑ j, qg i₀ j (stepMap d ed u) * foldResid d e p j (stepMap d ed u), ?_, ?_, ?_, ?_⟩
+    · -- conjunct 1: the Fin-1 unit-residual StepInv
+      refine ⟨fun i _ ↦ ?_, fun i ↦ ?_, fun u _ i ↦ ?_⟩
+      · -- continuity of the collapsed quotient
+        rw [hguniv']
+        refine (continuous_finset_sum _ (fun j _ ↦ ?_)).continuousOn
+        exact ((continuousOn_univ.mp (by rw [← hguniv]; exact hqg_cont i j)).comp
+          (continuous_stepMap d ed)).mul ((hresid_cont j).comp (continuous_stepMap d ed))
+      · -- S3
+        have h1 : (coreGen d e i ∘ foldG d e (p.extend ed)) 0
+            = (coreGen d e i ∘ foldG d e p) (stepMap d ed 0) := rfl
+        rw [h1, stepMap_zero]; exact hqg_S3 i
+      · -- factorization: coreGen i∘foldG(child) = (∑ q·resid)∘σ · (foldB(child)·1)
+        rw [Fin.sum_univ_one]
+        show (coreGen d e i ∘ foldG d e (p.extend ed)) u
+            = (∑ j, qg i j (stepMap d ed u) * foldResid d e p j (stepMap d ed u))
+              * (foldB d e (p.extend ed) u * 1)
+        have hLHS : (coreGen d e i ∘ foldG d e (p.extend ed)) u
+            = (coreGen d e i ∘ foldG d e p) (stepMap d ed u) := rfl
+        rw [hLHS, hqg_fact (stepMap d ed u) (by rw [hguniv]; exact Set.mem_univ _) i,
+          foldB_extend_eq, if_neg hδ, pow_zero, one_mul, mul_one, Finset.sum_mul]
+        exact Finset.sum_congr rfl (fun j _ ↦ by ring)
+    · -- ContinuousOn unit
+      rw [hguniv']
+      refine (continuous_finset_sum _ (fun j _ ↦ ?_)).continuousOn
+      exact ((continuousOn_univ.mp (by rw [← hguniv]; exact hqg_cont i₀ j)).comp
+        (continuous_stepMap d ed)).mul ((hresid_cont j).comp (continuous_stepMap d ed))
+    · -- unit 0 ≠ 0 (from hgen, δ=0 collapse at the origin)
+      show (∑ j, qg i₀ j (stepMap d ed 0) * foldResid d e p j (stepMap d ed 0)) ≠ 0
+      rw [stepMap_zero]; exact hgne
+    · -- the born-terminally equation
+      intro u _
+      show (coreGen d e i₀ ∘ foldG d e (p.extend ed)) u
+          = foldB d e (p.extend ed) u
+            * ∑ j, qg i₀ j (stepMap d ed u) * foldResid d e p j (stepMap d ed u)
+      have hLHS : (coreGen d e i₀ ∘ foldG d e (p.extend ed)) u
+          = (coreGen d e i₀ ∘ foldG d e p) (stepMap d ed u) := rfl
+      rw [hLHS, hqg_fact (stepMap d ed u) (by rw [hguniv]; exact Set.mem_univ _) i₀,
+        foldB_extend_eq, if_neg hδ, pow_zero, one_mul, Finset.mul_sum]
+      exact Finset.sum_congr rfl (fun j _ ↦ by ring)
 
 /-- **Consumer-fit regression (rev-core / coordinator).** The `terminal_edge_stepInv` output feeds
 `terminal_bezout` (+ `isOpen_foldRegion` / `zero_mem_foldRegion`) into the terminal `PrincipalInv`,

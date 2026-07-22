@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
+import DLNFibre.DLN.Aoyagi.Case1Wire
 import DLNFibre.Core.Aoyagi.BlockDivision
 
 /-!
@@ -39,53 +40,18 @@ namespace DLNFibre.DLN.Aoyagi
 
 variable {N : ℕ}
 
-/-- **The edge shear keeps the pivot coordinate** — `id` at case11/rollover, `blockShear` (via
-`hshear_pivot`) at case12/case2. (Same fact as `Case1Wire.edgeShear_keeps_pivot`; standalone here.) -/
-theorem edgeShear_keeps_pivot' (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
-    (u : Fin (flatDim d) → ℝ) : edgeShear d ed u ed.pivot = u ed.pivot := by
-  change edgeShearRaw d ed.case ed.shearφ u ed.pivot = u ed.pivot
-  cases ed.case
-  · rfl
-  · exact ed.hshear_pivot u
-  · exact ed.hshear_pivot u
-  · rfl
-
-/-- **The pivot-factor crux** (seat-L4, re-proved standalone). For a `Deg1SupportedOn` parent residual
-(center `ed.center`), the parent residual pulled back through `stepMap` (blow-up OUTERMOST) factors as
-`u_pivot ·` the residual at the `blockBlowupCoordQuot`-map (the strict transform). DEDUPE with
-`Case1Wire.foldResid_stepMap_eq_pivot_mul` at integration. -/
+/-- **The pivot-factor crux** — DEDUPED (2026-07-22, seat-L3T2): the standalone re-proof and its local
+`edgeShear_keeps_pivot'` helper are RETIRED; this now delegates to the single canonical crux
+`Case1Wire.foldResid_stepMap_eq_pivot_mul`. Kept as a thin alias so the consumers below
+(`foldB_foldResid_extend_interior`, `terminal_edge_unit_stepInv`) are untouched. -/
 theorem foldResid_pullback_pivot_factor (d : Fin (N + 1) → ℕ)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
     (hdeg1 : Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
     (j : Fin (foldNR d p)) (u : Fin (flatDim d) → ℝ) :
     foldResid d e p j (stepMap d ed u)
       = u ed.pivot
-        * foldResid d e p j (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u)) := by
-  classical
-  set qm : Fin (flatDim d) → ℝ := fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u) with hqm
-  set σu : Fin (flatDim d) → ℝ := stepMap d ed u with hσu
-  have hσu_eq : ∀ k, σu k = blockBlowupMap ed.center ed.pivot (edgeShear d ed u) k := fun k ↦ rfl
-  have hagree : ∀ s, s ∉ ed.center → σu s = qm s := by
-    intro s hs
-    have hsp : s ≠ ed.pivot := fun h ↦ hs (h ▸ ed.hpivot)
-    rw [hσu_eq s, blockBlowupMap_spectator_eq ed.center ed.hpivot hs (edgeShear d ed u), hqm]
-    change edgeShear d ed u s = (if s = ed.pivot then (1 : ℝ) else edgeShear d ed u s)
-    rw [if_neg hsp]
-  obtain ⟨c, _hc, hrepr, hign⟩ := hdeg1 j
-  have hmem : ∀ w : Fin (flatDim d) → ℝ, w ∈ foldRegion d e p := by
-    rw [foldRegion_eq_univ]; exact fun w ↦ Set.mem_univ w
-  have hceq : ∀ i, c i σu = c i qm := by
-    intro i
-    have := (ignoresCoords_univ_iff_agree (c i) ed.center)
-    rw [foldRegion_eq_univ] at hign
-    exact (this.mp (hign i)) σu qm hagree
-  rw [hrepr σu (hmem _), hrepr qm (hmem _), Finset.mul_sum]
-  refine Finset.sum_congr rfl (fun i hi ↦ ?_)
-  have hcenter : σu i = u ed.pivot * qm i := by
-    rw [hσu_eq i, hqm]
-    exact blockBlowupMap_shear_center_eq ed.center ed.pivot hi (edgeShear d ed)
-      (edgeShear_keeps_pivot' d ed) u
-  rw [hceq i, hcenter]; ring
+        * foldResid d e p j (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u)) :=
+  foldResid_stepMap_eq_pivot_mul d e ed hdeg1 j u
 
 /-- `foldNR` at an INTERIOR extend collapses to the parent width. -/
 theorem foldNR_extend_interior (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
