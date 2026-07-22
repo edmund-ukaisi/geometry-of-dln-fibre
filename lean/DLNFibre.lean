@@ -1626,3 +1626,7 @@ import DLNFibre.DLN.Aoyagi.PivotPreservation
 -- drivers, anchor-diff-gated) consuming the PROVED wire leaves; sorryAx sources shrink per
 -- increment; the summit's final wiring consumes these; SUMMIT-RETIRE ceremony at the end.
 import DLNFibre.DLN.Aoyagi.MonumentAssembly
+-- CanonShear: M7 — the concrete canonShearOf (Schur-within-carve) + canonShearOf_support (the
+-- CanonicalSchurStep discharge) + the ShearWithinCarveRaw emission (I/II/III proven) + the
+-- conOracle case12/case2 transition lemma. Import AFTER PivotPreservation (consumes it).
+import DLNFibre.DLN.Aoyagi.CanonShear
