@@ -181,4 +181,94 @@ theorem case_child_stepInv_divisibility (d : Fin (N + 1) → ℕ)
       (fun j ↦ q i j (stepMap d ed u)
         * (foldB d e p (stepMap d ed u) * foldResid d e p j (stepMap d ed u)))).symm ▸ rfl
 
+/-- **Continuity of a parent residual entry pulled back through a continuous map**, via the
+`Deg1SupportedOn` representation (each `foldResid p j` is a center-coordinate combination with
+continuous coefficients). Needed to collapse the residual family into a single continuous quotient. -/
+theorem continuous_foldResid_comp (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} {S : Finset (Fin (flatDim d))}
+    (hdeg1 : Deg1SupportedOn (foldResid d e p) S (foldRegion d e p))
+    (j : Fin (foldNR d p)) {F : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)} (hF : Continuous F) :
+    Continuous (fun u ↦ foldResid d e p j (F u)) := by
+  classical
+  obtain ⟨c, hc, hrepr, _⟩ := hdeg1 j
+  have hguniv : foldRegion d e p = Set.univ := foldRegion_eq_univ e p
+  have hEq : (fun u ↦ foldResid d e p j (F u))
+      = fun u ↦ ∑ k ∈ S, c k (F u) * (F u) k := by
+    funext u; rw [hrepr (F u) (by rw [hguniv]; exact Set.mem_univ _)]
+  rw [hEq]
+  refine continuous_finset_sum _ (fun k _ ↦ ?_)
+  exact ((continuousOn_univ.mp (by rw [← hguniv]; exact hc k)).comp hF).mul
+    ((continuous_apply k).comp hF)
+
+/-- **The terminal-edge unit-residual `StepInv`** (the elder's "whole quotient absorbs into q′" HALF of
+`terminal_edge_stepInv` — conjunct (1) ONLY). At a TERMINAL-reaching edge, from the parent `StepInv` +
+`Deg1SupportedOn`, the child `StepInv` holds against the LITERAL `Fin 1` unit residual `fun _ ↦ 1`, with
+the parent residual family collapsed into a single continuous quotient (δ=0: pure pullback; δ=1: the
+`u_pivot` of `foldB` balances the residual's strict-transform factor via the crux). This is the honest,
+stable content that a REPAIRED `terminal_edge_stepInv` keeps; it does NOT produce conjunct (2) (the
+born-terminally `unit 0 ≠ 0` generator), which is false-as-derivable — see the file header. -/
+theorem terminal_edge_unit_stepInv (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (p : TreePath d) (ed : TreeEdge d p)
+    (hterm : N ≤ ed.nextState.layer)
+    (hdeg1 : Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
+    (hSI : ∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
+      StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) :
+    ∃ q : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ,
+      StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
+        (fun _ : Fin 1 ↦ (1 : (Fin (flatDim d) → ℝ) → ℝ)) q (foldRegion d e (p.extend ed)) := by
+  classical
+  obtain ⟨q, hq_cont, hq_S3, hq_fact⟩ := hSI
+  have hguniv : foldRegion d e p = Set.univ := foldRegion_eq_univ e p
+  have hguniv' : foldRegion d e (p.extend ed) = Set.univ := foldRegion_eq_univ e (p.extend ed)
+  -- the argument map: quot-map at δ=1, the step map at δ=0.
+  set argMap : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
+    fun u ↦ if edgeδ d p then (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u))
+            else stepMap d ed u with hargMap
+  have hargCont : Continuous argMap := by
+    by_cases hδ : edgeδ d p
+    · have : argMap = fun u ↦ (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u)) := by
+        funext u; rw [hargMap]; simp only [if_pos hδ]
+      rw [this]
+      exact continuous_pi (fun k ↦
+        (continuous_blockBlowupCoordQuot ed.pivot k).comp
+          (continuousOn_univ.mp (analyticOnNhd_edgeShear d ed).continuousOn))
+    · have : argMap = fun u ↦ stepMap d ed u := by funext u; rw [hargMap]; simp only [if_neg hδ]
+      rw [this]; exact continuous_stepMap d ed
+  refine ⟨fun i _ u ↦ ∑ j, q i j (stepMap d ed u) * foldResid d e p j (argMap u), ?_, ?_, ?_⟩
+  · -- continuity of the collapsed quotient
+    intro i _
+    rw [hguniv']
+    refine (continuous_finset_sum _ (fun j _ ↦ ?_)).continuousOn
+    exact ((continuousOn_univ.mp ((by rw [hguniv] at hq_cont; exact hq_cont i j))).comp
+        (continuous_stepMap d ed)).mul (continuous_foldResid_comp d e hdeg1 j hargCont)
+  · -- child S3
+    intro i
+    have h1 : (coreGen d e i ∘ foldG d e (p.extend ed)) 0
+        = (coreGen d e i ∘ foldG d e p) (stepMap d ed 0) := rfl
+    rw [h1, stepMap_zero]; exact hq_S3 i
+  · -- factorization with the collapsed residual (Fin 1)
+    intro u _ i
+    rw [Fin.sum_univ_one]
+    show (coreGen d e i ∘ foldG d e (p.extend ed)) u
+        = (∑ j, q i j (stepMap d ed u) * foldResid d e p j (argMap u))
+          * (foldB d e (p.extend ed) u * 1)
+    have hLHS : (coreGen d e i ∘ foldG d e (p.extend ed)) u
+        = (coreGen d e i ∘ foldG d e p) (stepMap d ed u) := rfl
+    rw [hLHS, hq_fact (stepMap d ed u) (by rw [hguniv]; exact Set.mem_univ _) i, foldB_extend_eq,
+      mul_one]
+    -- (∑ q·foldB p(σu)·foldResid p(σu)) = (∑ q·foldResid p(argMap))·(u_pivot^δ·foldB p(σu))
+    by_cases hδ : edgeδ d p
+    · -- δ=1: use the crux to turn foldResid p(σu) into u_pivot·foldResid p(quotMap u)
+      have hArg : argMap u = fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u) := by
+        simp only [hargMap]; rw [if_pos hδ]
+      rw [if_pos hδ, pow_one]
+      simp only [hArg, Finset.sum_mul]
+      refine Finset.sum_congr rfl (fun j _ ↦ ?_)
+      rw [foldResid_pullback_pivot_factor d e ed hdeg1 j u]; ring
+    · -- δ=0: pure pullback
+      have hArg : argMap u = stepMap d ed u := by simp only [hargMap]; rw [if_neg hδ]
+      rw [if_neg hδ, pow_zero, one_mul]
+      simp only [hArg, Finset.sum_mul]
+      refine Finset.sum_congr rfl (fun j _ ↦ ?_); ring
+
 end DLNFibre.DLN.Aoyagi
