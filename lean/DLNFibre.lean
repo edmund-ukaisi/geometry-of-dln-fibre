@@ -1594,3 +1594,13 @@ import DLNFibre.DLN.Aoyagi.OrderBinding
 -- P6.2 Tier 1 (elder six-check PASSED 2026-07-22): the chain-height headline — chainHeight(BoxPart ℓ a)
 -- = a(ℓ−a)+1, UNCONDITIONAL. The ρ/multiplicity identification waits at the Tier-3 OrderIso seam.
 import DLNFibre.Core.Aoyagi.OrderChain
+
+-- P6.2 Tier 3 (rev-Elane SURVIVED 2026-07-22): the realization — bindingSet M ≃o BoxPart(ℓ,a) via
+-- sorted-box (QIP water-filling) ∘ bubble-sort transport (mclosure adjacent swaps) ∘ one-swap iso,
+-- and THE FAITHFUL COUNT chainHeight(bindingSet M) = thetaCount M 0. Caveat carried from ClosedForm:
+-- ell = qipM is a certified SURROGATE for Aoyagi's ℓ (yields her λ value; pointwise Card(𝓜)−1 equality
+-- not re-established here). The analytic ρ = pole-order identification stays the deferred monument seam.
+import DLNFibre.DLN.Aoyagi.OrderRealizeSortedBox
+import DLNFibre.DLN.Aoyagi.OrderRealize
+import DLNFibre.DLN.Aoyagi.OrderRealizeSwap
+import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
