@@ -10821,3 +10821,23 @@ reverses the ruling. arch-C freeze-ACKED: both preps warm, no bake/re-point/rend
 the paired lesson — only the RULED form reaches the render seat (it declined to correct its own
 now-stale relay to the seat for the same reason: the seat holds for the pin-relay, not finalizing).
 All lanes now converge on ONE event: the elder's ruling.
+
+## 2026-07-22 (controller) — E-lane: seam upgraded to the SET IDENTITY; 3a scaffold LANDED (one frontier sorry); pass questions to the elder
+
+seat-E's round, controller-verified on the fetched branch (commits present; OrderRealize.lean =
+exactly one sorry; signatures match): (1) the seam REDIRECTED to the set identity —
+`adm_eq_admTight : admTight M = Adm M` PROVED (d07a91caf, via Adm_le_runMin, the cert part-(v)
+induction); minAdm_tight_eq now a one-line corollary; docstring premise corrected to the cert's
+story (Adm EQUALS admTight; the over-loose min(M0,M1)-everywhere lattice is the negative
+certificate); dead clamp scaffolding dropped; all axiom-clean, zero sorry. (2) orientation doc's
+finding-1 corrected-not-deleted (8b96ada03). (3) the Tier-3 **3a scaffold LANDED** (2b7aa88ff,
+DLN/Aoyagi/OrderRealize.lean): `bindingSet` real def; `chainHeight_eq_of_orderIso` PROVED (the
+banked transport contract, now a lemma); `bindingSet_orderIso_boxPart` = THE one frontier sorry,
+deliberately `Nonempty` (the explicit Birkhoff encoding is prove-phase data — the outer signature
+stays real without prematurely fixing a possibly-wrong encoding def); `bindingSet_chainHeight`
+= a(ℓ−a)+1 PROVED modulo the headline (exactly one sorryAx). Unwired — controller integrates at
+closure. ROUTED to the elder (queued BEHIND the window ruling): the four pass questions — the
+(ℓ,a) sorted/unsorted COUPLING (ell sorts M, Adm doesn't — the pass's substantive
+statement-fidelity question), hpos weakness, Core-vs-DLN home, def-site (seat-E leans keep-alias).
+AUTHORIZED now: the Codex design-check on the increments→a-subset→Young encoding (the cert used a
+generic backtracker, not a closed form) — prove-phase HELD until the elder's pass.
