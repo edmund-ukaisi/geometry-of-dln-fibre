@@ -13796,3 +13796,29 @@ traces to descent_delta1_append, a DISTINCT obligation. So the two live proof-si
 why L1-first + pnp-coupling's "one fix" is the lever. The descent is converging: δ=0 done, case11 closing,
 append is the single L1-coupled hold. seat-L3T2 runs anchor-diff + forced #print axioms (sorryAx = append
 only) post-case11, then I wire.
+
+## 2026-07-22 ~19:45 UTC — L1 AUTHORED (elder) → RENDERING (arch-C): the raw shear value-pin
+
+The elder authored L1's form, and its reasoning is the lesson from its own error made structural:
+pin the RAW value `shearφ = canonShearOf d p.conState`, NOT the α/β property — because fragmenting
+the shear into properties (support, within-carve) is exactly what let the vacuous support-pin slip
+through. The raw value-pin is NON-FRAGMENTABLE: every property (clearing via canonShearOf_apply_interior,
+support via canonShearOf_support, α/β value) derives from the one equality. It's symmetric with the
+center/pivot value-pins (three uniform value-pins: center=canonCenterOf, pivot=canonPivotOf,
+shear=canonShearOf) and it's the emission form L5 produces. The elder withdrew its earlier
+pivot-parametrization worry: canonShearOf is pivot-INDEPENDENT → L1 orthogonal to L3's fan, confirmed.
+
+THE FORM (elder-authored verbatim, handed to arch-C): IsRealBranch step-arm 4th conjunct
+CanonicalSchurStep → `shearφ = canonShearOf d p.conState` (ARITY-PRESERVING, so destructures don't
+re-fix); new projection realBranch_canonShear_eq (obtain ⟨-,-,-,heq⟩; exact heq);
+realBranch_canonicalSchurStep RE-DERIVES (rw [heq]; canonShearOf_canonicalSchurStep or inline via
+canonShearOf_support) — statement unchanged, consumers insulated. ADDITIVE (equality ⟹ old
+CanonicalSchurStep via canonShearOf_support), so it fits the recorded one-bake additive exception.
+
+DAMPING NOTE (why render now, not wait for pnp-coupling): L1 is 4x-corroborated AND mechanically
+certain — the clearing discharges from the banked, 7/7-reviewed canonShearOf_apply_interior, which
+pnp-coupling cannot refute (it's a proven lemma). pnp-coupling's remaining value is the DESCENT append
+coupling (one-liner vs needs-more), which is DOWNSTREAM of L1 and doesn't gate it. So L1 renders now;
+pnp-coupling continues in parallel. arch-C rendering → gate → delta-read → I relay the pin +
+realBranch_canonShear_eq to seat-L4B (clearing = one-liner) + seat-L3T2 (descent append discharge).
+L1 is the linchpin; once baked, both clearing-side gaps close.
