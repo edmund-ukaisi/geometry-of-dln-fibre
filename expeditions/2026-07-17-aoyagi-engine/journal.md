@@ -11161,3 +11161,28 @@ investment on a suspect statement. If real: NINTH caught statement defect, and t
 survive INTO a bake — the SPECIFY-before-proof layer catching what the gate's witnesses did not
 (the gate's depth-diverse batteries exercise construction edges; the free-ed hypothesis space is
 bigger — a gate-contract lesson for arch-C when the ruling lands).
+
+## 2026-07-22 (controller) — L3T's (i)/(ii) = the second face, folded to the elder; (c) design ACCEPTED (submonoid route); map pass COMPLETE
+
+Dense batch: (1) **seat-L3T SPECIFY banked** (case2 primed-statement typechecks, ce8107e19) + a
+structural finding corroborating the descend (the δ discriminator ALIGNS with the support layer:
+J=0 ⟹ δ=1 ⟹ parent support = blow-up layer, strict transform; J≥1 ⟹ δ=0 ⟹ parent support =
+deeper layer disjoint from center, pure pullback — the descend is a layer-shift). (2) **L3T's
+(i)/(ii) concerns = the SECOND FACE of the center/support alignment family**: (i) at δ=1
+layerCoords(S) includes already-cleared spectator columns ∉ ed.center — what guarantees the
+residual carries none (or is the honest window the un-cleared REMAINDER — a supportAt-definition
+question)? (ii) the banked crux's IgnoresCoords-ed.center step does not transfer to the
+DeeperMultilinear supportAtᶜ window. FOLDED into the elder's priority ruling as faces 2–3 (face 1
+= L4's pivot-in-child-support); ONE ruling for the family, all four leaves swept. Both proof seats
+hold deep investment; L3T continues Codex on (i)/(ii) + structure work; terminal_edge SPECIFY as
+productive hold. Coordination answered: L4 has NOT cracked the new-invariant crux — (i)/(ii) IS
+the shared sub-wall, in adjudication not construction. (3) **seat-E's (c) design ACCEPTED**: the
+submonoid-closure route (mclosure_swap_castSucc_succ verified at pin; adjacent generators from
+swapBinding_orderIso via rfl; sorted endpoint by rfl; ~40 LoC; 579/579 warrant; Codex red-teamed
+its own recursion out). Build = seat-E's own, post-(a)+(b). The k=0 profile-identity flag relayed
+to seat-Eswap (its iso is now doubly load-bearing: the leaf AND the transport consume it). (4)
+**Map pass COMPLETE**: carto's C landed (305dbea1b — dead-routes: two-clock/shedSlots discard,
+deeperCoords deletion; forward-refs resolve; ⚠ marker on the stale sorry-census header flagged to
+the navigator's lane). Pen protocol settled: carto = the 4 overlay files, controller = claims.yaml.
+(5) seat-Ecore moving through its task ladder (#45 sign bridges DONE, #46 pivotal→profile in
+progress).
