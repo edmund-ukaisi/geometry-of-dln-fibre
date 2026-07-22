@@ -11564,3 +11564,13 @@ water-filling; swap-iso via minimiser-endpoints; transport via mclosure) → int
 rfl bridge holding → SURVIVED review → closure. Remaining E-residue: the analytic ρ = pole-order
 seam (monument-deferred, recorded), the Q3 cluster migration + lint nits (post-monument hygiene
 unit). MONUMENT: still one elder confirm (threshold form) from the complete amendment bake.
+
+## 2026-07-22 (controller) — E-lane arc narrative banked (warm-context close-synthesis input)
+
+seat-E's first-hand integration narrative banked (a1029b5b1, merged to the expedition branch):
+the ladder, the design calls with reasons — notably the import-cycle resolution: TERMINAL-ASSEMBLY
+chosen over the controller-recommended defs-split BECAUSE it touches neither core's delivered
+file (the better-reasoned call; the recommendation was mine, the improvement the seat's) — the
+three rfl-bridge verifications (all rfl ⟹ plumbing, not fidelity), the faithful-count precision
+story, the 1→3-track resourcing shape with zero rework, and the residue ledger. The E-lane is
+fully quiescent: theorem registered, review survived, narrative banked, seats at WAITING FOR WAKE.
