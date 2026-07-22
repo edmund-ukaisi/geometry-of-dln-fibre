@@ -12282,3 +12282,37 @@ anyway); (2) the elder's PRE-bake read needs a fetchable tree — arch-C commits
 labeled STAGING commit to -rung-c; on the elder's OK that commit IS the bake. The elder's packet:
 arch-C's 8 flagged items + the controller's hjac-semantics addition (the L6 lane, riding the same
 pass). Next: the staging hash → I trigger the elder → the read → bake (or apply-and-re-gate).
+
+## 2026-07-22 ~10:50 UTC — STAGING COMMIT LANDED; ELDER SECOND READ TRIGGERED
+
+**Staging commit `2080757ea`** pushed by arch-C to `origin/expedition/aoyagi-engine-rung-c`
+(base `a8438b1fe`; ONE file, `MonumentAtlas.lean`, +164/−46; labeled "[ELDER 2ND-READ
+PENDING, NOT BAKED]"; tree FROZEN). Controller re-verified fetchability + label + single-file
+scope before triggering.
+
+**arch-C re-gate (with the edgeShearRaw 2-line explicit split folded): PASS** — green
+8450/0-err; footprint `[propext, sorryAx, Classical.choice, Quot.sound]` both drivers; cordon
+OK; ZERO `| _ =>` in the file (canonCenterOf + edgeShearRaw both 4-arm explicit); 16
+@[blueprint] (10 + 6 stubs), 14 sorries (8 leaves + 6 derived-lemma stubs); navigator 3 checks
++ free-field re-audit + derived-lemma sufficiency PASS.
+
+**Elder pre-published its five second-read gates at 09:54** (before the staging landed):
+(1) canonCenterOf(case11) = pivot ∪ run-length-J₁ partial block, case11-specific, hpivot
+provable; (2) the shear pin that makes the def-touch dissolution valid (gate-2); (3) leaves
+conditioned on repaired IsRealBranch + derived-lemma discipline, FoldStepInvAt/Deg1SupportedSlot
+untouched; (4) name=content on the residual multi-homogeneity lemma (support-divisible +
+per-layer deg ≤ 1 FROM THE THRESHOLD, not "one factor per active layer"); (5) cordon +
+universe threading of `leaf_stepInv_of_path`.
+
+**Second read TRIGGERED** on `2080757ea` with: the 5 gates as checklist, arch-C's 8 flagged
+items, and ONE controller-added gate-2 checkpoint — the elder's gate wording says "pin
+shearφ = canonShearOf"; the staged form pins per-step shear via the e-param recursion +
+ShearWithinCarveRaw. The elder rules explicitly whether the staged form satisfies the gate-2
+intent. The hjac_tie semantics ruling (L6 lane; elder verified seat-L6's D=2 counterexample
+arithmetic at 10:40 and is reading GeoStep/FoldProduced) rides the same pass but does NOT
+gate the bake verdict.
+
+**Protocol locked:** OK → `2080757ea` IS the bake (no re-commit) → controller verification
+(fetch + merge --no-ff + full build + forced footprints both drivers + cordon + census) →
+push → proof seats wake on FINAL statements. FLAGGED → render applies → arch-C re-gates →
+new staging hash → elder delta-read.
