@@ -60,10 +60,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   LONGEST LINK; §D.3 fully provisioned) → L7 commissioning (startable) → summit swap via primed
   drivers → SUMMIT-RETIRE (elder bless + operator ceremony) → cite-deletion (WITH operator).
   Boost instruments CONVERGED (TRUE+CARRIED, u_p|b_i ⟺ i>J₁; battery banked). Census 36 =
-  ~11 live (+L5' skeleton) + 25 fossil. ELDER: poll TAIL WINDOW (...d30ba3). Dormant: L3T, L6, M4B, M7B, seat-L4.
+  ~11 live (+L5' skeleton) + 25 fossil. ELDER: FRESH instance post-restart (2026-07-23) — in-process teammate; old transcript-poll path STALE; it may reply via normal routing now (verify on first reply). Dormant: L3T, L6, M4B, M7B, seat-L4.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
+- PROCESS-RESTART RECOVERY (2026-07-23 ~01:40): the operator's accidental stop killed all in-flight
+  agents + severed the registry. Disk was INTACT (worktrees + branches survived; seat-L4C's skeleton
+  committed locally → controller pushed 67293aa3c). RE-SPAWNED fresh: elder (convening from durable
+  artifacts — charter/compass/journal; owes the OPERATOR HIGH-LEVEL READ + Gap B verbatim), carto
+  (read + PARALLELIZATION audit), pnp-transport (harvest banked partial codex artifacts first),
+  seat-L4C (verify branch → option-B boundary reshape → hold for certificate). DORMANT holders NOT
+  respawned (seat-L3T2/arch-C/seat-L7/foldstate-render — respawn when their inputs land; their
+  worktrees/branches survived). LESSON: office/seat continuity = durable artifacts + pushed branches,
+  never transcripts; push checkpoints EARLY.
+
 - OPERATOR (2026-07-22): **updates are NOT urgent — finish the task at hand BEFORE answering an update/SVG
   request.** Reground/report/regenerate-DAG at a clean seam, not mid-integration.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).

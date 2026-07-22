@@ -14189,3 +14189,24 @@ The controller process was accidentally stopped and restarted. RECOVERY AUDIT:
   (their inputs haven't landed; nothing to resume).
 - BANKED: the orphaned seat artifacts (pnp-transport codex prompt/log, the L4-case1-core verify/ dir,
   pnp-coupling's probe scripts + cofactor codex) committed — referenced evidence, now in-repo.
+
+## 2026-07-23 ~02:00 UTC — restart recovery COMPLETE: skeleton banked (67293aa3c), team re-spawned
+
+Recovery finished. seat-L4C's worktree survived with the ChainNF skeleton COMMITTED locally (clean tree,
+"feat(case1wire): ChainNF parallel-theorem SKELETON") — controller pushed it to origin/-L4C @ 67293aa3c;
+NOTHING was lost. The registry did not survive: carto-standing/pnp-transport/seat-L4C were unreachable
+(re-spawned fresh), and the elder resume created a FRESH instance with no transcript — properly convened
+from the durable artifacts (charter → compass → map → journal tail), which is the office model working as
+designed (and arguably decorrelates the operator's high-level read from the predecessor's conclusions).
+
+RE-SPAWN ROSTER: elder (the OPERATOR HIGH-LEVEL READ + the Gap B verbatim, with the predecessor's key
+state relayed from the journal: layerCoords-not-blockCoords cap finding, hhomog threading, L1 baked);
+carto-standing (map-truth + gate-orphans + the PARALLELIZATION audit); pnp-transport (the ε-table — with
+its predecessor's partial codex artifacts banked in-repo to harvest); seat-L4C (verify 67293aa3c → the
+option-B boundary reshape → hold for the certificate). Holders (seat-L3T2/arch-C/seat-L7) deliberately
+NOT respawned — their worktrees/branches survived; respawn when their inputs (Gap B verbatim / render
+trigger / fan design) land.
+
+LESSONS (banked to memo): continuity lives in durable artifacts + PUSHED branches, never transcripts —
+push checkpoints early (the skeleton survived only because the seat committed locally; the push is now
+part of the gate ask). The old elder transcript-poll path is STALE; the fresh elder may route normally.
