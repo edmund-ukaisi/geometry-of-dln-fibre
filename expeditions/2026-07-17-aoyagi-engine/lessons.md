@@ -198,3 +198,31 @@ inhabit the domain) or is the wrong shape (if the guard would exclude the intend
 he_lin — reshape instead). seat-L3T2's SPECIFY discipline (refute-before-prove at the
 boundaries) is the enforcement mechanism; three-for-three it caught what the authoring sketch
 glossed.
+
+## A delta-read gate is NOT a closed gate — pair it with PROOF-PRESSURE before claiming "closed" (2026-07-22)
+
+The seven statement bakes each passed an elder delta-read (internal consistency: name=content,
+weakest-hypothesis, the guard-domain family). I called the statement layer CLOSED on that basis. It
+was not. When the proof seats ran the ACTUAL proofs against the baked statements, three grounded
+holes surfaced that every delta-read missed:
+- **boostReady** — the CanonicalSchurStep conjunct is SUPPORT-only (`∀ u k, shearφ u k ≠ 0 → …`),
+  VACUOUSLY true for identity shear. A delta-read checks the conjunct reads sensibly; it does not
+  ask "what is the WEAKEST model satisfying this predicate?" — which is exactly what a proof (or a
+  refutation-minded Codex) does. The predicate admitted R_bad; boostReady is false on it.
+- **L7** — the pivot value-pin (single canonPivotOf) makes the cover statement FALSE (ε·e_q escapes
+  the shared outermost root blow-up). A delta-read verified the pin was consistent; it did not run
+  the cover argument, which needs the pivots FANNED.
+- **descent δ=1** — the strict transform of a hslot-satisfying residual can be the constant 1; the
+  cofactor structure isn't in the hypotheses. Only writing the proof exposed it.
+
+THE PATTERN: a value-pin asymmetry (center/pivot got VALUE pins; the shear got only a SUPPORT pin)
+and an over-pin (pivot pinned to one choice when the cover needs a fan) both READ fine in isolation
+and only fail under proof-pressure. THE RULE: "statement-locked" earns "closed" only after a PROOF
+(or a decorrelated refutation-minded instrument tasked to find the weakest satisfying model) has run
+against it — not after a consistency delta-read alone. Operationally: before declaring a statement
+layer closed, each baked statement must have either (i) a landed proof, or (ii) a SPECIFY from the
+seat that will prove it, confirming the hypotheses suffice against a concrete adversarial model. The
+delta-read is necessary, not sufficient. (Corollary: the frame-in/hypothesis-out decorrelation is
+strong but not immune — the elder + seat-L4's pre-Codex flag CONVERGED on a proof-side reading and
+BOTH missed the vacuity; the third, refutation-tasked instrument (Codex) caught it. Keep a
+refutation-minded instrument in the loop, not only convergence-seeking ones.)
