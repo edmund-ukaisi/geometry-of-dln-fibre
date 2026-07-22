@@ -13433,3 +13433,21 @@ refute-before-prove SPECIFY as the enforcement (3-for-3). arch-C FIRED the one p
 CanonicalSchurStep def + conjunct + pattern fixes + the new projection + boostReady-with-hslot
 (+ docstring refresh) + the hlayer amendment + both call-line pass-throughs. Gate → staging →
 delta-read: THE STAGING THAT CLOSES THE MONUMENT'S STATEMENT LAYER.
+
+## 2026-07-23 ~06:50 UTC — the (B) adapter merged (§D.3 FULLY PROVISIONED); seat-M4B discharged; the closing packet with the render
+
+**The (B) adapter merged (e62722111, clean-three):** jacWeight_congr_of_fixed +
+jacWeight_suffix_invariant — the M4-slot plug-in consuming A5's foldSuffix. With it, the L5
+Jacobian-collapse telescoping (§D.3) is FULLY PROVISIONED: M1/M1′ + M2 + M3 + M5 + A5 + the
+adapter — every atom banked clean-three; L5's assembly consumes, nothing left to invent on that
+chain. The "some"-existence question resolved NOT-NEEDED (the adapter is IsLedgerCorner-
+hypothesized; the bridge is L5's step; case-split style makes isSome definitional) — seat-M4B's
+one potential follow-up dissolves; **seat-M4B DISCHARGED to dormant** (its arc: A4 + persistence
++ single-step (★) + the A5 rollover catch + the locked form + card — zero statement churn).
+
+**The ruling-B packet is FIRED to the render seat** (arch-C; 6 items, 3 files, ONE staging):
+the pin def + conjunct + pattern fix + the new projection + boostReady-with-hslot + the hlayer
+amendment with both call-lines. arch-C's re-gate expects census UNCHANGED + blueprint +1.
+Staging → hash → the elder's four-point delta-read → the bake THAT CLOSES THE STATEMENT LAYER.
+Held for the hash. Remaining proofs after: descent (L3T2, held for hlayer), boostReady (L4,
+prepped w/ drop-test), M7 I/II/III (M7B), lastLayer, L5 assembly, L7.
