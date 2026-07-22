@@ -11,16 +11,16 @@ profiles (`t⁽ʲ⁾ > M⁽ʲ⁺¹⁾`) that spuriously tie the minimum and over
 is definitional.
 
 Def-site + inclusion + nonemptiness + the clamp-membership are PROVED; `minAdm_tight_eq` is proved
-modulo the one engine lemma `Mval_clamp_le` (TRACKED-OPEN, numerically 1628/1628).
+modulo the one engine lemma `Mval_clamp_le` (TRACKED-OPEN, admissible-cone clamp monotonicity).
 
 **The two def-site lemmas (named once, cited forever — elder pin):**
 * `admTight_subset_adm` — the inclusion (`Finset.filter_subset`).
-* `minAdm_tight_eq` — **THE SEAM LEMMA**: the tight lattice's `Mval`-minimum equals the loose `Adm`
-  minimum (hence `minAdm`). This keeps every banked loose-`minAdm` fact (`minAdm_le_terminalExponents`,
-  `o5_core_realized`, the `RecursionAdapter` chain) consumable against tight-side objects without
-  re-proving. Proof: the loose min lower-bounds the tight min (`inf'_mono`, subset), and clamping any
-  `Adm` profile down to `runMin` never raises `Mval` (`Mval_clamp_le`; verified 1628/1628) and lands
-  in `admTight`, so the tight min ≤ the loose min.
+* `minAdm_tight_eq` — **THE SEAM LEMMA**: the tight lattice's `Mval`-minimum equals the loose
+  `Adm` minimum (hence `minAdm`). This keeps every banked loose-`minAdm` fact
+  (`minAdm_le_terminalExponents`, `o5_core_realized`, the `RecursionAdapter` chain) consumable
+  against tight-side objects without re-proving. Proof: the loose min lower-bounds the tight min
+  (`inf'_mono`, subset), and clamping any `Adm` profile down to `runMin` never raises `Mval`
+  (`Mval_clamp_le`) and lands in `admTight`, so the tight min ≤ the loose min.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -45,12 +45,14 @@ theorem admTight_nonempty (M : Fin (L + 1) → ℕ) : (admTight M).Nonempty := b
   rw [admTight, mem_filter]
   exact ⟨zero_mem_Adm M, fun j => Nat.zero_le _⟩
 
-/-- **Clamp does not raise `Mval`**: clamping a profile down to the running-min bound coordinatewise
-never increases `Mval`. TRACKED-OPEN — the seam lemma's engine (the coupled `Mval`-summand analysis
-under a simultaneous coordinate clamp); verified 1628/1628 (`Mval(clamp) ≤ Mval` over all loose-`Adm`
-profiles, L≤3, widths 1..4), statement-locked on the Tier-3 cone. `minAdm_tight_eq` is proved modulo
-this one lemma. -/
-theorem Mval_clamp_le (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) :
+/-- **Clamp does not raise `Mval`** (on the admissible cone): clamping an `Adm` profile down to
+the running-min bound coordinatewise never increases `Mval`. TRACKED-OPEN — the seam lemma's
+engine (the coupled `Mval`-summand analysis under a simultaneous coordinate clamp). The
+`T ∈ Adm M` hypothesis is NECESSARY: unconditionally the inequality is FALSE (e.g. `M=(0,2)`,
+`T=(1)`: `Mval T = −1` but `Mval (clamp) = 0`); it holds exactly on the weak-decreasing/last-zero
+cone — verified 2540/2540 over `Adm` (L≤3, widths 0..4, T 0..4), 11199/81375 fails without
+admissibility. `minAdm_tight_eq` is proved modulo this one lemma. -/
+theorem Mval_clamp_le (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) :
     Mval M (fun j => min (T j) (runMin M j)) ≤ Mval M T := by
   sorry
 
@@ -80,7 +82,7 @@ theorem minAdm_tight_eq (M : Fin (L + 1) → ℕ) :
     calc (admTight M).inf' (admTight_nonempty M) (Mval M)
         ≤ Mval M (fun j => min (T j) (runMin M j)) :=
           Finset.inf'_le _ (clamp_mem_admTight M hT)
-      _ ≤ Mval M T := Mval_clamp_le M T
+      _ ≤ Mval M T := Mval_clamp_le M hT
   · -- loose ≤ tight: fewer profiles ⟹ larger inf (every tight profile is in `Adm`)
     apply Finset.le_inf'
     intro b hb
