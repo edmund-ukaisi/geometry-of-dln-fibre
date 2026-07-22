@@ -12,21 +12,19 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE (A)-ROUND ENDGAME (2026-07-22 early hours).** The monument's design is CLOSED under
-  EIGHT audited severance axes (…anchor-form, frame) after 7 statement defects, ~10 elder rulings,
-  7 blind convergences — "the mathematics is settled and only the writing remains." Awaiting: the
-  render seat's ONE-EXPRESSION correction (T + D⁺ from one support-WINDOW index off
-  (layer,cleared)/canonCenterOf — NEVER raw conState.layer, which shears the pair: disjointness
-  dies + ∅-collapse at N−1) → arch-C's FIFTEEN-point gate (all checks = found-defect regressions)
-  → ONE BAKE → light rebases (body+value, no re-type) → seat-L4 proves L4+LastLayerInv-preservation
-  (crux verbatim; conjunct-B = re-factoring read off the shear-folded form, NO subtraction step),
-  seat-L3T proves L3+transport (divisibility engine + terminal collapse banked green). Cone after
-  bake = 10 named. E-LANE: P6 combinatorial half COMPLETE+registered (bandCount → chainHeight_boxPart
-  [elder-passed, unconditional] → θ-corollary); remaining: Mval_clamp_le (the seam lemma's one hole,
-  seat-E proving w/ Codex de-risk) → pnp encoding cert (task #42, 5 parts) → 3a OrderIso scaffold →
-  elder pass → prove; Tier-3 = (3a) core + (3b) tree-binding, pins concentrated at the iso. Final
-  wiring swap of exists_coreResolution AFTER all leaves. STILL operator-gated: PR merge, dev→main,
-  destination/DoD. Standing: thorough briefs; resume standing seats; ack-protocol on all seats.
+- phase: **THE WINDOW ADJUDICATION (2026-07-22).** The monument holds on ONE event: the resumed elder
+  (address: aelder-standing-3fd49e3017d30ba3 — the standing office DIED at the runtime restart, resumed
+  by transcript ID) ruling on the window predicate after seat-L4's DOUBLE-REVERSAL (descend → false
+  retraction [root-reading misapplied to child] → calibrated re-retraction). The discriminator is
+  vanishing-at-T=0: child = c_p·1 + c_d·(δ−γβ), c_p=c_d=deeper ⟹ T=un-cleared fails Deg1 at the child;
+  T=deeper(=supportAt) holds. supportAt(S,J) delivered explicit/d-definable ((a)-road, NO Engine data).
+  ALL render hops FROZEN (controller→arch-C→seat ruling-gated; tree=neutral base, green 8449; both
+  preps warm). On the ruling: one msg to arch-C → finalize → 15-pt gate → BAKE (cone 8→10 named; live
+  census currently 9 = 7 atlas + Case2Delta0 + summit; ~25 fossil tokens await the close prune).
+  E-LANE: route (a) COMMITTED (adjacent-swap construction, multi-tide build) — seat-E skeletons the 4
+  lemmas + composed iso; elder single pass covers outer shape + skeleton (queued behind the ruling);
+  3a scaffold real @ 2b7aa88ff; seam = SET IDENTITY adm_eq_admTight PROVED. Post-bake: L4+L3T prove
+  their leaves (floors banked green) → L5 → L6+L8 → L7 → final wiring swap → summit clean-three.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
