@@ -14062,3 +14062,34 @@ incrementally, stop-on-suspect, no laundering. I set a GATE: report the SPECIFY 
 at the design checkpoint BEFORE the heavy δ=1-transport proof (catch invariant-shape issues early, like
 the guard-domain family). LESSON banked: verify teammate readings of artifact CONTENT, not existence; fix
 the shell-gate habit.
+
+## 2026-07-23 ~00:05 UTC — boostReady RE-SCOPED to a ChainNF parallel-theorem construction (sub-expedition scale)
+
+seat-L4C's design checkpoint (the gate I set) + a decorrelated Codex xhigh materially re-scoped boostReady.
+Its minimal STABLE invariant is NOT "extra coeffs divisible by pivot" (doesn't induct) but a full termwise
+residual-PATH NORMAL FORM:
+  ChainNF: F_{p,j}(u) = ∑_{τ∈Paths_s(j)} q(u)·∏_{d∈D_s} u_{b_d}^{ε_{s,d}(τ)}   (q ignores active birth coords)
+Divisibility (→ boostReady) is only the case11 COROLLARY. Route = a PARALLEL theorem IsRealBranch p →
+ChainNF p, STANDALONE (proven fresh, does NOT reopen the elder-locked FoldStepInvAt). RULED (a)∥(b), NOT
+(c): rejected carrying ChainNF as a FoldStepInvAt conjunct (same ripple the elder declined for Gap B).
+
+SCALE (Bayesian update, the 4th on boostReady: one-liner → 2 sub-lemmas → path-induction → ChainNF
+sub-expedition): ~20-30 math lemmas + ~30-50 Lean helpers, bounded/elementary/no new machinery — but a
+genuine parallel-theorem CONSTRUCTION. The CRUX = the four-case (case2/case11/case12/rollover) ε
+threshold-transport table (ε_{s',d}(τ')=ε_{s,d}(τ)+#center-entries, δ=1 reset) — NOT derivable from the
+banked ingredients; needs the oracle's real transition rules; Codex (2,2,2) countermodel shows FALSE
+unless the oracle forces the arithmetic.
+
+DELEGATION (operator "elaborate the detail" directive, 2026-07-22): the crux → a NEW pen-and-paper seat
+pnp-transport (elaborate the four-case transport table → certificate; blind-to-Lean, catches the ε-rule
+errors pre-transcription). seat-L4C builds the ChainNF-def + parallel-theorem skeleton IN PARALLEL (reports
+at the gate before grinding), then transcribes pnp-transport's certificate + reconciles against the Lean
+oracle. deg1SupportedOn_boostForm (the shrink-direction last-mile corollary) already banked green by seat-L4C.
+Corrections banked: blockBlowupCoordQuot DEHOMOGENIZES (pivot→1); pivot factors from blockBlowupMap δ=0.
+
+SYNERGY flagged to the elder: ChainNF's ∏ u_{b_d}^{ε} support = the DIVISOR set (birth coords), which is
+exactly the layerCoords-vs-blockCoords cap distinction the elder's Gap-B machine check surfaced — ChainNF
+may subsume Gap B's homogeneity / illuminate the cap. FYI not a dependency (Gap B stays on its own timeline
+for the descent). STATE: L1 baked ✓; A-div done ✓; boostReady = ChainNF construction (seat-L4C + pnp-transport);
+Gap B = elder finalizing cap; descent 1 sorry; L7 fan = last spine call. The wall's heart is bigger than
+framed but bounded + buildable — build it for real.
