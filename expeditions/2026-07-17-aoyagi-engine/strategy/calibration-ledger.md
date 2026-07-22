@@ -899,3 +899,16 @@ end-state a free-field skeleton converges to — reaching it via ten reactive ro
 is the whole delta. Corollary for the gate: a def with a catch-all branch needs a def-level
 EXHAUSTIVENESS check; the sim validates reached cases, never def completeness (canonCenterOf's
 class).
+
+## Entry 30 (2026-07-22 ~18:40, controller tick) — live-cone calibration at the cascade's peak
+
+**Question:** after 4 bakes + 5 stub closures + 3 leaf closures in one day, does my carried
+picture of the live cone match the tool? **Expectation (written first):** census 36 = 11 live
+(MonumentAtlas 8 + LearningCoefficient 1 + Case2Delta0 1 + Case2Wire 1) + 25 fossil.
+**Actual:** LIVE 11 — HIT, exactly, file-by-file. Census tool 36 ✓. (My quick python parser
+reads 37 — its known +1 comment-line bias vs scripts/sorries; the tool stays canonical, the
+parser is for file attribution only.) **What it changes:** nothing — the picture is current.
+The miss-risk zone was Case2Wire's tracked conjB (new today) and the stub closures landing
+faster than the memo updates; both were carried correctly. Confidence in the memo's census
+line: high. Next calibration due after the node-form + Assembly land (the cone shape changes:
+MonumentAtlas 8 → 7 + Assembly primed-driver sources appear).

@@ -12911,3 +12911,14 @@ battery (self-contained-induction question). The wall's dependency picture is no
 bake (hours) → conjunct-2 one-liner; boost-readiness battery → elder form → the deep proof
 (seat-L4, Codex-first, (2,2,2,2) trace) → conjunct-1 case11 → dispatch verbatim → the
 Assembly-consumable Case1Wire leaf.
+
+## 2026-07-22 ~18:45 UTC — TICK: calibration entry 30 (live-cone HIT exact); L5 SPECIFY assigned; memo → endgame cascade
+
+Heartbeat tick. Calibration entry 30: live-cone expectation written first, verified HIT exactly
+(11 live, file-by-file). Memo phase line rewritten (ENDGAME CASCADE, FOUR BAKES IN — the full
+current board). **L5 SPECIFY assigned to seat-L3T2** against the collapse-final FoldRealizes:
+induction skeleton + per-edge-kind obligation map + missing-atoms list (statements, not proofs);
+PROVE waves commission off the map; nav-13 convenes on friction OR success. Task hygiene: #20
+completed (the δ=1 division content banked via case2_conjA/append), #9 deleted (superseded by
+the corrected case11 mechanism — no one-center-two-pivots construction needed), #66 opened (L5
+SPECIFY). Board otherwise: node-form rendering; seat-L6 landing; seat-L4 battery; all lanes owned.

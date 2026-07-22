@@ -12,20 +12,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **PROOF CASCADE, BOTH BAKES IN (2026-07-22 ~14:30).** Redirect BAKED (9c51289f4) AND the
-  pin round BAKED (d309bca48: clause (III) cleared-pivot protection; (★) FORCED by IsRealBranch;
-  elder delta-read OK verbatim; battery clause3_corner_check 2f97f6104 A1-A4). STUBS: 3 of 6
-  CLOSED clean-three (centerPin [L4], descendView+cover [L3T2]); terminal_edgeδ = hpos MICRO-ROUND
-  RUNNING (seat-L3T2 counterexample d0=0; elder CONFIRMED + owns the drop; fix-once = terminal_edgeδ
-  + multiAffine [inferred, drop-if-provable-without]; other 3 stay hpos-free; arch-C charged);
-  shearWithinCarve = last-step projection, provable post-pin; multiAffine = FRONTIER 2nd wave.
-  IN FLIGHT: seat-L6 landing L6 sorry-free off (★) (6-step plan, then REQUEST_SPAWN reviewer);
-  seat-L4 wall δ=1 assembly (Deg1 bridge exists_ignoresCoords_decomp banked fced7889a, merge at
-  next wave; δ=1 case12/case2 chain now clean-three end-to-end since cover closed); seat-L3T2
-  lane 3 (case2 via stepInv_child_delta0 + exists_graded_decomp). QUEUED: L8 swap mini-round
-  (proof-fill, LeafGeometryWire banked 5b6627604); rev-monument reviewer pass post-cascade.
-  seat-L3T handed off CLEAN (dormant); census 38 = 13 live + 25 fossil. ELDER: poll transcript
-  (...d30ba3). E-LANE CLOSED.
+- phase: **ENDGAME CASCADE, FOUR BAKES IN (2026-07-22 ~18:40).** Baked: redirect (9c51289f4), pin
+  (d309bca48, (★) forced), hpos (0f8310b1a), COLLAPSE (790aed4e9: FoldRealizes 3rd conjunct
+  |jacDet gmap| = jacWeight(jac) unit≡1; hcollapse = hreal.2.2; srcBox seam = NAMED L5 obligation).
+  STUBS 5/6 CLOSED clean-three (centerPin/cover/descendView/terminal_edgeδ/shearWithinCarve);
+  LEAVES: terminal_edge PROVED; case2 = conjB-only (Case2Wire, awaits companion); L8 PROVED
+  (banked canonical); WALL STRUCTURE PROVEN (Case1WallStaged eca3fd461 on seat branch: dispatch
+  body sorry-free, sorryAx only via 2 frontiers). RENDER LANE (serial): node-form multiAffine
+  round RENDERING → Assembly 1st increment ((B′) primed drivers, render seat writes, arch-C
+  gates, SUMMIT-RETIRE in owed-register) → boost-readiness stub round (elder part-ruled: SOURCE
+  form, derived-stub default, seat-L4 battery gates carried-vs-derived). IN FLIGHT: seat-L6
+  landing L6 sorry-free (hreal.2.2 one-liner + chart_of_collapse); seat-L4 boost-readiness
+  battery on (2,2,2,2)/(3,3,2,2); seat-L3T2 free → L5 SPECIFY next. Census 36 = 11 live
+  (MonumentAtlas 8 + LC + Case2Delta0 + Case2Wire) + 25 fossil; live-cone calibration HIT exact.
+  ELDER: poll transcript TAIL WINDOW (...d30ba3). E-LANE CLOSED. seat-L3T dormant (clean handoff).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
