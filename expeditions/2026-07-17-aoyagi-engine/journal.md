@@ -11681,3 +11681,35 @@ the SAME re-factoring shape (the leaves are statement-identical in that clause);
 the core builds ONCE in the warm context and case2's conjB becomes a drop-in instantiation; if
 case-specific, a fresh seat spawns on L3T's notes. The hcenter-direction ruling remains the one
 statement item (with the elder; both derivations attached).
+
+## 2026-07-22 (controller, tick ~07:45) — THE UNIFORM RULING: hcover (δ-gated, 3 leaves) + hδ0 (terminal UNREACHABLE at δ=1); small re-bake GO
+
+The elder's uniform ruling (transcript 07:31 + 07:40, fully primary-source-grounded — the
+lemma signature StepInvShearChild:55 hsupp center-indexed; BlockDivision:30 no-division quotient +
+:67 spectator lemma; canonCenterOf :757-762 cleared-shrink; the state machine EngineConstruction
+:180/:190/:198 + rolloverDecision :1946 + the PROVED widthMinUpto_pos O5Realization:344):
+
+(1) **hcover, form (c) refined**: hcenter ⊆ UNTOUCHED; case1/case2/lastLayer_clear ADD
+`hcover : edgeδ d p = true → supportAt d p.conState.layer p.conState.cleared ⊆ ed.center` —
+phrased on supportAt VERBATIM (the set hinv carries; re-index ∑_supportAt → ∑_center with c ≡ 0
+padding, no rewrite). At δ=1: supportAt = blockCoords = canonCenterOf (bounds vacuous at
+cleared=0) — construction-true; jointly with hcenter forces the equality both seats derived. Flat
+equality REJECTED (canonCenterOf strictly shrinks at cleared ≥ 1 — the J-subtlety flag
+load-bearing); L3T's Deg1-on-center REJECTED with the composability reason (the carried support
+must be STATE-determined; ed.center is per-edge free — a node has many edges — and the re-express
+still needs the cover). Each inclusion direction owned by exactly ONE conjunct — conjunct-2
+development untouched.
+
+(2) **the δ=1 terminal is UNREACHABLE** — state-machine-traced: only rollover advances the layer;
+rollover fires only at widthMinUpto ≤ cleared; widthMinUpto_pos ⟹ cleared ≥ 1 ⟹ δ=0. FIX:
+terminal_edge ADDS `hδ0 : edgeδ d p = false`, DISCHARGED by L5 from the rollover guard (map-node
+comment at L5's sorry). L3T's tracked-open δ=1 sorry closes as a DEAD BRANCH. Independent second
+ground: the δ=1-terminal conclusion is structurally unsatisfiable (unit discontinuous at
+u_pivot=0) — the corner MUST be excluded and the construction excludes it.
+
+(3) **the δ-keyed principle**: the cover is a function of edgeδ alone — attaches at exactly the
+three δ=1-capable leaves, hδ0 on terminal, nothing else. Both seats' watches close under ONE
+resolution. All hypothesis-touches, no defs — SMALL RE-BAKE GO to arch-C (with the L5 discharge
+obligation noted for the render); Codex second-model judged unnecessary by the elder (two-seat
+convergence + primary-source grounding), controller concurs. seat-L4 briefed (conjunct-1 unblocks
+at the bake; conjunct-2 proceeds untouched); seat-L3T's items fold into its post-bake wake.
