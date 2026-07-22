@@ -11271,3 +11271,45 @@ fork guidance given (verify the banked C(ℓ,a)=cTheta form before the cardinali
 explicit-dec route stays inside consumed machinery; battery the duality standalone if
 gap-monotonicity gets fiddly). Tasks: #46 (P1–P4) COMPLETE; #47 in progress. E-lane frontier
 unchanged: two core sorries, everything else proved-modulo.
+
+## 2026-07-22 (controller, tick ~04:45) — **THE FAMILY RULING** (elder, consolidated): all five faces REAL; the amendment set; the re-bake cascade fired
+
+Recovered from the elder's transcript (plain final text, 03:51 + 04:01 + 04:05 — the 04:05
+consolidated pass supersedes): 
+
+**The five-face ruling.** Common diagnosis owned: the bake does not encode three construction
+specifics — effective support = the RESIDUAL BLOCK; the SCHUR-FOLD shear; the GENERATOR-SIDE
+terminal clear. The elder OWNED its own Part-1 gap (verified the descend at layer granularity;
+missed the within-layer extent + the free ed/shear/q spaces — "the seats' SPECIFY + decorrelated
+Codex caught them; the verifier hierarchy working"). Per face: (1) REAL — pin `hcenter : ed.center
+⊆ blockCoords(carve layer)`; critically NOT supportAt(parent) (false at δ=0, per L3T's
+δ-finding) and NOT canonCenter; the α-dissolves-face-1 hope REFUTED. (2) REAL — supportAt's VALUE
+tightens to blockCoords = the widthMinUpto-capped block (layerCoords :532 is uncapped;
+canonCenter :725 already caps); descend structure unchanged; "the residual block OF the descended
+layer" — the ledger/geometric reconciliation completed at column level. (3) RESOLVED by 1+2 —
+mechanical window-matching per δ-branch. (4) REAL — `hshear_schur` pins the Schur-fold (Δ=δ−γβ);
+the FIX-RESID adjudication: the prepared invariant was rendered but is insufficient alone under a
+free shear. (5) REAL — hcleared strengthens to the generator-side datum, EMITTED by
+lastLayer_clear (built as units accumulate — false at entry; the LOAD-BEARING induction gate) and
+CONSUMED by terminal_edge (elder amends its "terminal unchanged"); fall-back (b) only if emission
+forces the q-pin. SWEEP: case1/case2 take 1+2+3; lastLayer_clear 1(vacuous)+2+3 + EMITS 5;
+terminal_edge consumes 5.
+
+**Gate-contract expansion (standing):** the bake batteries exercised construction edges and
+MASKED the free-field failures — henceforth batteries SAMPLE THE FREE HYPOTHESIS SPACE (free
+pivot/center, free shear, free ∃q, non-monotone width-DROP cores alongside the depth-diverse
+pair).
+
+**Also in the elder's review:** bake fidelity otherwise PASS (docstrings correct on the
+mechanism); cascade order RIGHT with the L5 watch widened (convene nav-13 the moment L5's
+emission balloons, not only on success); E-lane sound with the taste line "everything on
+bindingSet, never plain Adm" (relayed to seat-E; a plain-Adm phrasing would be FALSE); the
+progress-bar sentence SHARPENED and banked: "The monument's DESIGN is closed … but no §1 object
+is thereby discharged and nothing is proven at the headline … a rendered-honest-skeleton
+milestone — the substrate for the proof phase, not the summit."
+
+**CASCADE FIRED:** arch-C has the 4-item rendering-ready amendment set + the expanded gate
+contract + the emission-gate check (STOP if item 4 forces the q-pin) → re-render → re-gate →
+RE-BAKE to -rung-c → controller verification → proof seats resume. seat-L4 and seat-L3T have
+their per-face adjudications and hold for the corrected signatures. The elder takes the
+decorrelated second read on the re-baked statements.
