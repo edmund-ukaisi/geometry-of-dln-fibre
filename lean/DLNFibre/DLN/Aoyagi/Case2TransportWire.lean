@@ -298,11 +298,67 @@ theorem case2_preserves_stepInv'
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
     (hlayer : ed.nextState.layer + 1 < N)
-    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    (hcenter : ed.center ⊆ blockCoords d p.conState.layer)
+    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hgrade : ShearGrades d e ed) :
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   -- map: B-L3-case2-preserves-stepInv (support DESCENDS parent→child supportAt; Deg1SupportedSlot)
-  sorry
+  classical
+  have hlt : ed.nextState.layer < N := by omega
+  have hnr := foldNR_extend_interior d ed hlt
+  have hguniv : foldRegion d e p = Set.univ := foldRegion_eq_univ e p
+  have hguniv' : foldRegion d e (p.extend ed) = Set.univ := foldRegion_eq_univ e (p.extend ed)
+  obtain ⟨⟨qp, hqp_cont, hqp_S3, hqp_fact⟩, hslot⟩ := hinv
+  refine ⟨?_, ?_⟩
+  · -- CONJUNCT A (divisibility). δ=0 (ruling-independent, pure pullback) proved; δ=1 ruling-gated.
+    by_cases hδ : edgeδ d p
+    · -- δ=1: needs the u_pivot crux (support ⊆ ed.center); gated on the hcenter-direction ruling.
+      -- map: B-L3-case2 conjA δ=1 (crux; hcenter direction — TRACKED-OPEN)
+      sorry
+    · -- δ=0: pure pullback, q' = qp∘stepMap; no crux, no hcenter.
+      refine ⟨fun i j' u ↦ qp i (Fin.cast hnr j') (stepMap d ed u), ?_, ?_, ?_⟩
+      · intro i j'
+        rw [hguniv']
+        exact (hqp_cont i (Fin.cast hnr j')).comp (continuous_stepMap d ed).continuousOn
+          (by rw [hguniv]; exact Set.mapsTo_univ _ _)
+      · intro i
+        have h1 : (coreGen d e i ∘ foldG d e (p.extend ed)) 0
+            = (coreGen d e i ∘ foldG d e p) (stepMap d ed 0) := rfl
+        rw [h1, stepMap_zero]; exact hqp_S3 i
+      · intro u _ i
+        have hLHS : (coreGen d e i ∘ foldG d e (p.extend ed)) u
+            = (coreGen d e i ∘ foldG d e p) (stepMap d ed u) := rfl
+        rw [hLHS, hqp_fact (stepMap d ed u) (by rw [hguniv]; exact Set.mem_univ _) i]
+        -- product identity δ=0: foldB(child)·foldResid(child) j' = (foldB p·foldResid p(cast j'))∘σ
+        have hpid : ∀ j' : Fin (foldNR d (p.extend ed)),
+            foldB d e (p.extend ed) u * foldResid d e (p.extend ed) j' u
+              = foldB d e p (stepMap d ed u)
+                * foldResid d e p (Fin.cast hnr j') (stepMap d ed u) := by
+          intro j'
+          have hnotle : ¬ N ≤ ed.nextState.layer := by omega
+          have hResid : foldResid d e (p.extend ed) j' u
+              = foldResid d e p (Fin.cast hnr j') (stepMap d ed u) := by
+            change (if h : N ≤ ed.nextState.layer then (fun _ ↦ (1 : (Fin (flatDim d) → ℝ) → ℝ))
+                else fun j u ↦ if edgeδ d p then
+                    foldResid d e p (Fin.cast (if_neg h) j)
+                      (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShearRaw d ed.case ed.shearφ u))
+                  else foldResid d e p (Fin.cast (if_neg h) j)
+                      (stepMapRaw d ed.case ed.center ed.pivot ed.shearφ u)) j' u = _
+            rw [dif_neg hnotle, if_neg hδ]; rfl
+          rw [hResid, foldB_extend_eq, if_neg hδ, pow_zero, one_mul]
+        rw [show (∑ j', qp i (Fin.cast hnr j') (stepMap d ed u)
+                  * (foldB d e (p.extend ed) u * foldResid d e (p.extend ed) j' u))
+              = ∑ j', qp i (Fin.cast hnr j') (stepMap d ed u)
+                  * (foldB d e p (stepMap d ed u)
+                    * foldResid d e p (Fin.cast hnr j') (stepMap d ed u)) from
+            Finset.sum_congr rfl (fun j' _ ↦ by rw [hpid j'])]
+        exact (Equiv.sum_comp (finCongr hnr)
+          (fun j ↦ qp i j (stepMap d ed u)
+            * (foldB d e p (stepMap d ed u) * foldResid d e p j (stepMap d ed u)))).symm ▸ rfl
+  · -- CONJUNCT B (Deg1SupportedSlot on supportAt(child)): the ShearGrades re-factoring.
+    -- map: B-L3-case2 conjB (child Deg1SupportedSlot via ShearGrades; δ=0 spectator + δ=1) — TRACKED-OPEN
+    sorry
 
 /-- **Terminal-edge transport** (statement-identical to `MonumentAtlas.terminal_edge_stepInv`; primed).
 δ=0 (the S=L rollover, `p.cleared ≥ 1`) is proved fully: conjunct 1 the pure-pullback Fin-1 unit
