@@ -37,8 +37,8 @@ recommendation — status`.
   `DLN/Aoyagi/ClosedForm.lean` already carries the apparatus (`lambdaCore`, `residueA`, the
   `residueA_mul_sub_eq_qipDelta_abs_mul_sub` bridge) and the proof skeleton is p.23's
   completing-the-square (image-read) — M, strike-able — WAVE-TAIL UNIT recommended. — OPEN, re-priced.
-- **O6** — Object E order ρ — see P6/P7; combinatorial half RE-PRICED DOWN by the foldState spine —
-  deferred-in-reach per charter §1-E. — OPEN, re-priced.
+- **O6** — Object E order ρ — see **P6.1/P6.2** (the split, 2026-07-21 evening) + P7; OPENED by the
+  operator (charter §1-E); P6.1 LANDED, P6.2 statement-shaping. — OPEN/live.
 - **O7** — (a) φ-form Def-1 equivalence (cheap, runway — P8); (b) free-energy identification
   (permanent cite — P11). — OPEN by design.
 - **O8** — deeper-mix chain survival — DISSOLVED under M'=1 (b₁ truncation-stability; subsumed by
@@ -152,13 +152,17 @@ monument-in-plan (pp.14–22 recursion = the 8 leaves).
   `RankNormalForm`/Schur layer (`Core/RankNormalFormDim.lean`, `Core/RingTheory/Determinantal/
   Schur.lean`); the r=0 recursion needs only the pivot-1 case (shear-pin). No action. — **DISCHARGED**
   (pointer recorded).
-- **P6** — **Lemmas 4–5, the combinatorial order θ = a(ℓ−a)+1** — RE-PRICED by the foldState spine:
-  the branch/chart enumeration and the per-leaf ledger data that Lemma 4's two-condition
-  characterisation counts are now first-class (`TreePath`, `FoldProduced.leafOf`, the divExp ledger) —
-  the combinatorial half drops from L to M (ℕ-arithmetic over the tree + the two envelopes,
-  worked.tex §order transcribes both conditions). Still deferred-in-reach per charter §1-E; when the
-  operator re-opens E, START HERE. — wires: `Order.boxedOrder` aggregate + a new tree-count module —
-  M, strike-able — deferred per §1-E, price updated. — OPEN.
+- **P6** — **SPLIT (2026-07-21 evening, elder-authored on the E-opening arc):**
+  - **P6.1 (band arithmetic)** — LANDED both tiers (Tier-1 `bandCount_eq` + `perJCard_eq_paper`;
+    Tier-2 certified-parameter instantiation), batch-gated. The Lemma-4 banded structure as
+    intrinsic arithmetic; the paper's per-j piecewise form anchored at p.26. — **LANDED**.
+  - **P6.2 (count-identification)** — pnp-gate DISCHARGED (threads/41, controller-verified;
+    blind-Codex converged). OBJECT PINNED: ρ = deepest-stratum max-crossing = **max CHAIN of
+    binding minimiser profiles under componentwise ≤** (the antichain speculation corrected by
+    seat-E's battery, 1018 cores; decisive witness [2,2,2,2,2]). STATUS: statement-shaping under
+    the six-check render contract (chainHeight vocabulary; tight lattice by hypothesis; corners;
+    name = chain-height, θ at Tier 2 only; the two-home non-degeneracy fence — abstract Nonempty
+    at Tier 1, `lambdaCore_eq_zero_iff` at Tier 2; carried global target). — **IN SHAPING**.
 - **P7** — **the analytic pole-order identification** (ρ = zeta multiplicity) — unchanged: blocked on
   meromorphic continuation Mathlib lacks; monument-class. — cite/defer (with E). — OPEN by design.
 - **P8** (= O7a) — **Def 1's φ-form and φ-independence** — a bump-function comparison; cheap;
@@ -269,3 +273,25 @@ THE SUMMARY LINE (elder): the genuinely seat-ready parallel set TODAY is small a
 def-drafting, P8, and (post-bake) O4 + the M4/M9 unit; P6 is the one big READY OPTION and it is the
 operator's to open; everything else parallelisable is runway that should not jump the queue. "The
 board's scarcity is not seats — it is the wall, and the wall is correctly not waiting on any of this."
+
+---
+
+## §6 EVENT-UPDATE — 2026-07-21 late evening (elder-authored; the E-arc close + the canonCenter bake)
+
+**§0-guardrail append — WITNESS BANK + THE PRINCIPLE REFINEMENT (authoritative text):**
+- Bank adds: **[2,2,2,2,2]** (incidence-gap exemplar: six binding minimisers, max chain five —
+  attainment must never be provable via minimiser cardinality); **[2,2,5]** (terminal-restriction
+  exemplar: a t̃>0 divisor below minAdm that is NOT an RLCT candidate — the t̃=0 read-off is
+  load-bearing); reclassification: seat-E's six divergent instances were LOOSE-lattice artifacts —
+  the tight lattice is part of every profile statement's hypotheses.
+- Principle refinement: "Audit each free field AND each field's range boundaries — a field
+  constrained everywhere but at its range's endpoint is severed at the endpoint. Axes to date:
+  content, size, path, coordinate, layer-boundary."
+
+**§3-event append — THE K4-TRANSFER VINDICATION CHAIN (the designed example):**
+P6.2 as the K4-transfer exemplar: the pass ruled bandCount_eq honest at its rung and TRANSFERRED
+the equality demand to the count-identification; the pnp pinned the object (max-crossing) with the
+speculation FLAGGED as speculation; the flagged half was corrected cheap (chain, not antichain) by
+the next battery; the equality demand now rests on two named lemmas (chain-height UPPER +
+ATTAINMENT) with kill-sets. Hypothesis → confirmation → refinement-at-flag-cost → named lemma
+pair: K4-transfer working as designed.

@@ -9806,3 +9806,473 @@ incl. the FoldProduced-lock adjudication: the leafOf coupling was deferred OUT o
 lifted without it — is it dead scope or still owed? nav ground-truths; Tier-3's release hangs on
 it); convene carto (bake-integration trigger: cone transitions + L7 banner + the severance
 coordinate row bridge-gated→closed).
+
+## 2026-07-21 (controller) — CANONCENTER ROUND INTEGRATED (controller gates green); the dispatch fan fires
+
+Controller gate re-derivation on the merged d174f1f41: full build GREEN (8989 jobs); the driver +
+terminal_edge_stepInv both on the expected live frontier ([propext, sorryAx, Classical.choice,
+Quot.sound]); cordon both halves OK; MonumentAtlas census = 7 (6 leaves + terminal_edge_stepInv)
+— matches arch-C's authoritative gate exactly. Map updated (my pen): L7 flipped to STATED +
+BRIDGE-FREE (banner lifted, lean anchor added); NEW node b-terminal-edge-stepinv (stated, the
+consumer-contract prop, the permanent regression noted); STATUS regenerated.
+
+**The elder's fence pin (final):** two homes — Tier 1 carries abstract `.Nonempty` (plain data
+hypothesis, no fresh predicate); Tier 2 discharges via the owned lambdaCore_eq_zero_iff. The
+fence is genuine mathematics (minMval = 0 ⟹ ρ = 0 while a(ℓ−a)+1 ≥ 1 — the identity NEEDS it).
+Render-pass checklist final at SIX checks. Elder's record note: pin (a) vindicated empirically
+BEFORE Lean ("the prospective audit is paying at the rate the forensic one used to charge").
+
+**Dispatch fan (on this integration):** seat-L4 rebase-ready signal (assemble + land the wall);
+nav-13 mandatory joint (DLN-lane → canonCenter: FoldProduced-lock adjudication — the leafOf
+coupling was deferred OUT of the round and L7 lifted without it: dead scope or owed? Tier-3's
+release hangs on the verdict; + the post-bake parallel picture); carto-standing bake trigger
+(cone 6→7 transition, L7 banner, severance coordinate row → closed, STATUS already regenerated).
+
+## 2026-07-21 (controller) — the elder's bookkeeping batch APPLIED (register P6-split + §6; compass coda + counsel); landmark item bounced on a set-divergence
+
+Applied and committed (the elder's pen, controller's commit): owed-register — O6 → P6.1/P6.2
+cross-refs; the P6 entry SPLIT (P6.1 LANDED both tiers, batch-gated / P6.2 pnp-gate DISCHARGED,
+object pinned = max CHAIN, statement-shaping under the six-check contract); §6 event-update (the
+witness bank adds [2,2,2,2,2] + [2,2,5] + the loose-vs-tight reclassification; the boundary-value
+principle refinement as authoritative text; the K4-transfer vindication chain as the designed
+example). Compass — the (T-F) CODA appended to the fidelity-ledger entry (the display's truth is
+per-branch; ρ = max chain is its correct form; the global defect stands); the per-field+boundary
+audit counsel line added to Standing counsel. The cartographer's 3a naming pointer is UNBLOCKED
+(binds to the register's P6.2 text).
+
+**Item (5) BOUNCED for one re-proposal round:** the elder's demotion target
+"(2,2,2,2)-clean-telescoping" is not among the map's actual nine landmarks — the compass shortlist
+and the rendered map set have DIVERGED (a drift item: the map header claims to mirror the compass).
+The elder reconciles (which set is authoritative) + re-proposes the demotion; I set the fields then.
+
+**Also this round:** arch-C armed all three gate conditions (the L5 coupling tripwire; the L4
+base-ancestry check with reject-and-rebase; landing-sound serial integration); seat-L3T spawned on
+the {L3 + terminal_edge_stepInv} one-step batch (own worktree, parallel-dev, statement-lock,
+Case1Wire's crux technique referenced); seat-E's Tier-3 released (develop now, integrate
+post-leaf-stabilization); the live cone corrected to 7 per nav's ground truth.
+
+## 2026-07-21 (controller) — THE HARD GATE DISCHARGES: pnp PASS on the chain reading; landmarks reconciled; P6.2 cleared to Lean
+
+**pnp-order's confirmation: PASS** (from-scratch 993-core enumeration, EXIT 0 — controller re-ran
+chain_battery.py independently, EXIT 0; blind Codex convergent; the certificate's speculation
+paragraph amended, verified facts untouched; merged at tip). Confirmed: (A) on EVERY branch the
+binding profiles are pairwise comparable — a chain (0 non-chains/993); (B) ρ = max-chain =
+a(ℓ−a)+1 both directions + ground truths; (C) the antichain reading REFUTED with witnesses
+([2,2,2,2,2]: max-chain 5, max-antichain 2). **The Lean-facing mechanism:** the binding poset has
+unique min/max = the Lemma-4 envelope endpoints and is GRADED BY RANK (every maximal chain has
+length exactly a(ℓ−a)+1) — with THE TRAP flagged by both instruments: the grading is the
+recursive inversion/Young-cell rank, NOT coordinate-sum (counterexamples [1,1,2,1] and [2,2,4,3]
+— covers jump multiple units). seat-E RELEASED to Lean-build under the six-check contract + the
+rank-trap probes as in-file kill-set instances. The mechanism note: on one branch each Case-1
+exponent-accumulation step extends the profile monotonically (tail-writes + running-min head) —
+the tree side of the nesting, Tier-3's eventual content.
+
+**Landmarks reconciled (elder ruling + my field-set):** the compass is the authoritative source;
+BOTH prior sets were stale; the reconciled nine authored into compass § Landmarks (with the
+process line: map mirrors compass, divergence = drift item) and the map's fields set to match —
+OUT: kill-cite (merged into the summit's story), b-leaf2-blowup-atlas (absorbed into Core-leaves);
+IN: b-principalinv (the Core-leaves banked node — the spine's proven end), object-e. Count 9,
+validator clean, STATUS regenerated. Four demotions each with surviving homes named.
+
+## 2026-07-21 (controller) — THE SIXTH SEVERANCE INSTANCE: S=L clears break Deg1 (a DERIVED boundary the guard missed); M9+M4 merged, gating
+
+**seat-L4's second stop-on-suspect (Codex-corroborated, exact battery @ ef95d3548):** the δ=1
+case1(2) SPLIT at the LAST layer (S=L, Lean layer N−1) leaves a BARE-UNIT child entry — the
+strict transform's pivot factor has no deeper layer to land on — so Deg1SupportedOn is FALSE for
+every C′, and fix-(a)'s `layer < N` guard PASSES the branch (N−1 < N). Non-vacuous ((3,3,4) takes
+the edge at S=2=L). L3/case2 breaks identically (fresh-pivot clear); case1(1) merge exempt. Also
+the anchor-(v) correction: at S<L the honest C′ is the DEEPER BLOCK, not center.erase pivot.
+**Taxonomy: instance six — a DERIVED boundary** (the dynamics' last-interior-layer, one step
+inside the type endpoint the fifth fix fenced; the audit principle refines again: range
+boundaries include the boundaries the DYNAMICS distinguish). Routed: elder ruling among three
+fixes (my + seat-L4's structural read = fix (2): interior leaves guarded to layer < N−1; the
+whole last layer — where units are BORN — joins the terminal-transport story, per thread-34's own
+"principality is terminal" split; fix (1)'s narrow guard alone leaves the S=L steps covered by
+nothing, which L5's fold cannot tolerate); arch-C pricing in parallel (the multi-clear S=L fold
+design detail is theirs). seat-L4's conjunct-1 crux is banked clean-three and survives any fix —
+the wall's divisibility half is DONE. seat-L3T: L3 HELD (wrong theorem as stated); proceeds on
+terminal_edge_stepInv only (statement stands under every candidate fix).
+
+**seat-core: M9 LANDED + M4 (a)+ EXECUTED** (merged; controller full-tree gate running): the
+CommSemiring/MulOneClass Gen family in BlockDivision (7 new declarations at strict-weakest
+settings; the 5 ℝ atoms rederived via rfl bridges — the frozen downstream callers are the
+signature-drift detector, rebuilding now) + jacDet_blowupMap_unconditional in BlockBlowup (the
+origin law for ALL D, deriving from the block machinery; the hD:2≤D redundancy now recorded IN
+THE TREE) + two-way doc cross-refs (OriginBlowup prose-only). Task-28's stale blocked-description
+corrected; no seat-api duplication (never dispatched this session). carto: 3a landed + the
+overlay's certificate pointers annotated to read THROUGH the chain correction (accepted
+drift-prevention); its 10th-landmark datum was a mid-flight read — the settled set is 9.
+
+## 2026-07-21 (controller) — ELDER RULES FIX (2): LastLayerInv; the interior/terminal frontier redrawn where the mathematics draws it
+
+The ruling, complete: fix (2) — "the units born by S=L clears are EXACTLY what terminal_bezout
+consumes; Deg1's honest domain was always the interior; we had drawn the frontier at the type's
+endpoint N when the MATHEMATICS draws it at the last layer's first clear." Fix (1) rejected (a
+guard leaving L5's traversal uncovered = fix (2) missing its second half); (3) rejected
+(invasive, no fidelity gain). DESIGN RULED: ONE mixed LastLayerInv (divisibility persisting — the
+banked conjunct-1 crux feeds it — + per-slot disjunction center-linear/unit-form-nonvanishing) +
+ONE preservation lemma as J advances; terminal_bezout UNCHANGED (any unit slot at J ≥ 1 supplies
+its hypothesis verbatim); interior leaves guarded on the CHILD's layer < N−1; ALL layer-(N−1)
+edges routed uniformly (incl. the exempt 1(1) — the mixed form subsumes pure Deg1; a
+sub-case-discriminating guard would be a new free-axis invitation). The C′ pin: at S < L the
+re-factoring target is the DEEPER BLOCK (matching canonCenter's derivation — and exactly why
+Deg1 holds interiorly). LastLayerInv's statement goes to the elder's pass BEFORE render (per-slot
+disjunction = quantified data, full audit). TAXONOMY refined text authored: "audit each free
+field; its range ENDPOINTS; and its DYNAMICS-DISTINGUISHED boundary values — a type-boundary
+guard does not fence a mechanism boundary." Six axes: content, size, path, coordinate,
+layer-endpoint, layer-last-interior. arch-C priced + implementing (cone delta named in advance,
+up to +2); seat-L4 holds (its wall closes against a statement finally true on every admitted
+branch); seat-L3T's transport unchanged, L3 hold continues.
+
+## 2026-07-21 (controller) — integration sweep GREEN (M4+M9+Tier-1e); pnp enrichments confirmed; the LastLayerInv design fork routed for the ruling extension
+
+**All gates green, everything banked:** M4+M9 full-tree build (8989 jobs) + probes (the Gen family,
+the rederived ℝ atoms, jacDet_blowupMap_unconditional — all clean-three; the AxCheck root
+re-confirmed post-docstring); Tier-1e incremental build + probes (atlasOrder /
+boxedOrder_eq_chartOrderAt / chartOrderAt_le_atlasOrder clean-three); the render-contract battery
+re-run from the root: ALL CONTRACT CHECKS PASS (controller execution). carto's landmark refresh
+closed the three-way alignment (compass == claims == cards; kill-cite → summit,
+b-leaf2 → b-principalinv, the four demotions' homes cited) + chain_battery graduated (e-p62 now
+double-guarded, both SURVIVE on run). Tasks: M4/M9/Tier-1e integration complete.
+
+**pnp's enrichments, both CONFIRMED (EXIT 0, folded into its thread):** (1) the b-chain IS the
+per-branch nesting mechanism (thread-31's closed form b_i = ∏u gives b₁|b₂|…; factor-containment
+totally nested by t̃; 22190 nonempty leaves, 0 non-chains) — the (T-F) coda's mechanism verified
+and the CHEAPEST Tier-3 Lean route named: DivChain/b-chain, already banked. (2) The fence
+adjudicated exactly: minMval ≥ 1 is the exact boundary AND automatic on genuine cores ({∏C=0}
+proper ⟹ codim ≥ 1); no further hypothesis on the non-degenerate domain; the degenerate side is
+width-0 configs only. seat-E's UPPER = "the binding poset is graded of height a(ℓ−a)+1";
+grading = inversion/Young-cell rank (NOT coord-sum).
+
+**The design fork (routed to the elder for a ruling extension):** arch-C's pricing flagged that
+fix (2) NECESSARILY touches terminal_edge_stepInv — its Deg1-parent hypothesis is unsatisfiable
+at the real terminal transition (the rollover's S=L parent carries units), so the leaf as stated
+is vacuous where L5 needs it; the OUTPUT (1)∧(2) survives verbatim either way. The fork:
+the elder's exposed LastLayerInv + per-clear preservation + re-parented transport (each step
+NAMED and gated — my read: the elder's own "easy earns a name" cuts against the alternative)
+VS arch-C's segment-widen (transport's parent = the last S<L Deg1 node, all S=L clears crossed
+INTERNALLY — less surface, but the per-clear step becomes a silent internal delegation). Plus two
+render details for the ruling: the guard as `layer + 1 < N` (ℕ-truncation trap) and the N = 1
+degenerate (no interior at all — the whole fold is last-layer + terminal). seat-L3T FULLY held
+(both targets) pending the extension; seat-L4 holds; the wall's divisibility crux unaffected
+throughout.
+
+## 2026-07-22 (controller, just past midnight) — EXTENSION RULED: EXPOSED LastLayerInv; the N=1 degenerate decides the fork
+
+The elder's extension ruling: arch-C's vacuity gap ACCEPTED (terminal_edge_stepInv re-parents on
+LastLayerInv; output (1)∧(2) unchanged — the consumer-fit survives verbatim). THE FORK RULED for
+the EXPOSED design, on two arguments: (1) the segment form's internal induction needs its motive,
+which IS LastLayerInv demoted to an un-gated proof-local have — "after six instances, an un-gated
+motive inside the exact mechanism that produced instance six is not economy, it is the seventh
+instance's hiding place"; (2) DECISIVELY: at N = 1 the segment form's parent hypothesis is
+unsatisfiable (no interior node) — it breaks at the degenerate or grows a special case,
+re-introducing the boundary disease inside the ruling that answered it; the exposed design covers
+N = 1 BY SUBSUMPTION (the root IS a LastLayerInv state with zero cleared slots). Render details:
+the ADDITION-form guard `layer + 1 < N` is now a STANDING ℕ-render rule; the LANDED d12 instance
+(which IS N = 1) joins the round as the degenerate-routing anchor beside (3,3,4)'s S=2=L edge.
+The fold's uniform story: enter (subsumption; root at N=1) → per-clear preservation → transport →
+terminal_bezout — every arrow named. arch-C implements the four-piece round (guards + LastLayerInv
+& preservation [elder pass first] + re-parented transport + the C′ pin). seat-E relayed the two
+render facts (the fence discharges via properness ~free; Tier-3 rides the banked DivChain).
+
+## 2026-07-22 (controller, heartbeat tick) — LastLayerInv draft in; the composition flag (transport: named leaf vs superseded) to the elder's pass
+
+Tick: placement + cron verified; all mail processed. arch-C's LastLayerInv STATEMENT DRAFT
+arrived (composed pre-extension-ruling — crossing; the re-parent is ruled and in its queue):
+the mixed invariant over the banked IgnoresCoords ((D)-divisibility ∧ per-slot center-linear OR
+unit-nonvanishing disjunction over Fin (foldNR)), lastLayer_clear_preserves guarded at
+parent.layer + 1 = N (ALL S=L edges incl. the rollover), FoldStepInvAt → LastLayerInv subsumption
+DEFINITIONAL at zero cleared slots (no bridge leaf), cone delta +1. Routed to the elder's
+per-field pass TOGETHER WITH arch-C's surviving composition flag, sharpened: at the rollover the
+fold's own data collapses the residual (foldNR → 1, resid → const 1 — the first stop-on-suspect's
+branch), so the open content at the M′=1 handoff is the PIVOT EXTRACTION — (a) the re-parented
+transport as its own named leaf (every arrow named; the consumer-fit example survives) vs (b) the
+preservation lemma's rollover branch + terminal_bezout directly (uniform, transport retired as
+true-but-dead). No wrong-theorem risk either way — only seat-L3T's assignment hangs on it. My
+weak preference (a) stated; the elder pins it in the pass; arch-C holds the render for the
+verdict.
+
+## 2026-07-22 (controller) — LastLayerInv PASSES with four pins; the composition ruled (a) via the GUARD SPLIT; render GO
+
+**The elder's pass on arch-C's draft: PASSES.** Audit findings for the record: the per-slot ∨ is
+MUTUALLY EXCLUSIVE on any region containing 0 (no ambiguity axis; docstring note); the C = ∅
+fully-cleared corner rides the disjunction fence-free. FOUR PINS: (1) the left disjunct REUSES
+the banked Deg1SupportedOn (anti-felting — one predicate, one audit surface; per-slot variant
+allowed only tied by a proved lemma); (2) IgnoresCoords as drafted, M14 flag carried; (3) cone +1
+— the FoldStepInvAt→LastLayerInv subsumption lands as a PROVED rfl-class lemma, never a sorried
+entry leaf ("definitional content may not wear a sorry"); (4) guards as drafted, exhaustive split
+confirmed.
+
+**The composition flag RULED (a) — and the audit found (b)'s actual GAP:** the (D)-conjunct's
+existential q has NO nonvanishing clause, so at the rollover the parent's unit-slot information
+is NOT carried by ∃C′-LastLayerInv — the pivot extraction terminal_bezout needs would fall into
+the seam BETWEEN the preservation lemma and terminal_bezout: "the exact silent-delegation shape,
+eighth-instance bait." THE GUARD SPLIT dissolves arch-C's duplicate-content worry:
+lastLayer_clear_preserves covers the S=L CLEAR edges ONLY; the ROLLOVER is excluded and owned
+entirely by the re-parented transport (conclusion (1)∧(2) unchanged; NEW ∃-cleared-slot
+hypothesis supplied by L5 from edge data, never width arithmetic in the leaf). End-to-end the
+composition now reads as the certificate's own sentence — divisibility persists, units are born
+by clears, principality is born at the terminal — a named lemma under each clause.
+
+**Dispatches:** arch-C → render GO with all pins; seat-L3T's transport STANDS (the pinned new
+shape sent — the pivot extraction is the real content; the Fin-1 side rides the fold's collapse
+definitionally); seat-L4's offer accepted (L4 + the preservation lemma post-bake); seat-E's A/B
+fork + the pin-relocation question queued at the elder (the a-subsets identification:
+|bindingMinimisers| = C(ℓ,a), the classic poset, cell-count rank — Option B recommended).
+
+## 2026-07-22 (controller) — OPTION B RULED: the canonical a-subsets poset IS the paper's object; the pins CONCENTRATE at the Tier-3 iso
+
+The elder's second pin, ruled with page verification: Lemma 4's increment condition IS the
+a-subset structure — the canonical (ℓ,a) poset "is not an abstraction CHOICE — it is what the
+paper's object has been all along, and P6.1's banded arithmetic is its rank-generating
+structure." The relocation question answered with its honest name: a CONCENTRATION, not a
+dissolution — all three guards (tight lattice, carried target, binding filter) become explicit
+named DOMAIN hypotheses of the ONE Tier-3 realization iso, "the single most audited statement in
+the E-lane." Two sharpenings the canonical object buys: (1) Tier-1 is TOTAL in (ℓ, a ≤ ℓ) — no
+a-fence (a = 0 gives the singleton poset, chainHeight 1, trivially the formula; totality itself
+is evidence B is right; the paper's 1 ≤ a lives at Tier 2/3); (2) the MATHLIB SURVEY PIN —
+YoungDiagram (Mathlib.Combinatorics.Young.*) + Order.height/chainHeight must be surveyed before
+any hand-rolled poset (the register's own lesson applied prospectively); if absent, build-it
+stands and the chainHeight theorem is expected to be "one of the most citable stand-alone
+theorems this expedition produces." seat-E: render GO (survey → skeleton → six-check → prove);
+Tier-3 scaffold un-held on the fixed vocabulary. Both elder pins of the pass now ruled — the
+E-lane carries the monument's architecture: canonical Core object, one concentrated seam, every
+hypothesis named at the seam.
+
+## 2026-07-22 (controller) — the LastLayerInv render DISPATCHED (all pins); seat-L3T's refutation = the third blind convergence; seat-E's skeleton held for the survey pin
+
+**Render dispatched** (arch-C, five pins applied): the guard split in CHILD form
+(lastLayer_clear_preserves at `ed.nextState.layer + 1 = N` — excludes the rollover
+AUTOMATICALLY, structural not clausal; the rollover owned by the transport); the left disjunct
+reuses the family via Deg1SupportedSlot + a proved family-tie lemma; the transport re-parents +
+gains the L5-supplied hcleared ∃-unit-slot hypothesis; the subsumption a PROVED rfl-class lemma
+(cone 9→10 only); the docstring notes. Contract-9 re-gate armed (discriminator battery + both
+anchors + consumer-fit + write-set) → bake → both proof seats rebase once.
+
+**seat-L3T's stop-on-suspect = the THIRD blind convergence on the ruled design:** it RIGOROUSLY
+refuted terminal_edge_stepInv's conjunct (2) from the OLD hypotheses (divisibility + Deg1 at δ=0
+force every quotient to vanish at 0 — no unit with unit 0 ≠ 0 is derivable; the underivability
+argument is the ∃-cleared-slot hypothesis's sharpest justification, ordered BANKED in its
+thread). But it had processed NONE of my three binding messages (both holds + the new shape) —
+hard re-anchor sent; the ack protocol now binds it as it does seat-E. Salvage: its
+conjunct-(1)-only lemma banks if it survives the re-parent; its L3 δ=1 "proceeding" STOPPED
+(the statement is being revised — assembly against it is the wrong theorem).
+
+**seat-E's OrderChain skeleton landed but HELD before the elder pass:** its ack covered the
+two-render-facts message, not the Option-B ruling — the MANDATORY YoungDiagram/chainHeight
+survey pin went unfulfilled (BoxPart is hand-rolled). Ordered: run the survey, verdict travels
+with the skeleton to the elder's six-check pass; its trap-relocation claim (cell-count =
+coord-sum IN BOX COORDS; the profile-encoding trap → Tier-3 kill-set) flagged for explicit
+adjudication. The proved rank machinery (rankBP_le + strictMono, axiom-clean) stands regardless.
+
+## 2026-07-22 (controller) — PENDING SEVENTH INSTANCE: the coefficient-at-origin field (conjunct B, ANY layer); the bake HELD for it
+
+seat-L3T's second finding (Codex decorrelation in flight): the interior leaves' conjunct (B) has
+the S=L fragility at EVERY layer — the δ=1 child residual's value at 0 = the PARENT's
+pivot-coefficient at 0; child-Deg1 forces it to vanish; Deg1SupportedOn's coefficients are only
+IgnoresCoords-constrained, so c_pivot(0) is a FREE FIELD and an adversarial c_pivot ≡ 1
+manufactures the bare-unit failure at any interior layer. The real fold's coefficients are
+deeper-coordinate PRODUCTS (vanish at 0) — which is exactly why seat-L4's battery witnesses
+passed: they were CONSTRUCTION parents; the free statement admits more. (Its FIRST finding —
+the old transport's conjunct (2) underivable at both δ, with a clean Codex countermodel — is
+MOOT-in-the-right-way: the ruled hcleared hypothesis is the fix, now vindicated a FOURTH time.)
+
+**Disposition:** the render CONTINUES, the BAKE HOLDS for the adjudication (arch-C flagged —
+the preservation/transport/guard designs are unaffected; the candidate amendment is ONE clause
+on the invariant family's Deg1 side: coefficients vanish-at-0, or the sharper deeper-supported
+"pivot-fresh" form, rippling to Deg1SupportedOn/FoldStepInvAt/LastLayerInv's left disjunct —
+cheaper folded into THIS round than an eighth). The elder is pre-adjudicating (three questions
+posed: which clause; the S3-vanishing interaction; seventh AXIS vs the sixth's layer-free
+generalisation). The trigger = seat-L3T's Codex verdict. seat-L3T: banking plan endorsed (the
+conjunct-1 lemma + the unified conjunct-A product identity — honest under every fix); the ack
+protocol made a hard requirement (third reminder — reports against unread holds twice).
+
+## 2026-07-22 (controller) — the seventh pre-adjudicated: ANCHOR-VALUE axis named; the escalation test charged; the round poised to bake once
+
+The elder's pre-adjudication: (a) DEFAULT CLAUSE = vanishing-at-0 on the Deg1 coefficients, with a
+MECHANICAL escalation condition charged to seat-L3T (does vanishing self-propagate through the
+re-factoring child-coefficient algebra? if the induction needs more — S3's own too-weak-to-induct
+genesis — the clause escalates to IDEAL-MEMBERSHIP c ∈ ⟨deeper coords⟩); TRAP caught in my
+candidate framing: "deeper-supported via IgnoresCoords" does NOT close the countermodel (constants
+ignore everything). (b) The S3 hierarchy is STRICT one level down (coefficient-vanishing ⟹
+entry-vanishing, never conversely); S3 stays; a one-line implication lemma prevents duplication;
+"one fact wearing three depths" (pnp interior-Bézout impossibility → S3 → coefficients) goes in
+the docstring. (c) THE SEVENTH AXIS NAMED: **anchor-value** — audit a function-valued field's
+VALUE AT THE DISTINGUISHED POINT, not only its support; instances six and seven are one mechanism
+at construction-level and statement-level; the counsel made precise: "batteries validate
+constructions, never free statements' fields." hcleared vindicated a FOURTH time — "the wave's
+highest-paying single hypothesis."
+
+arch-C: amendment priced surgical (one clause on Deg1SupportedOn + Deg1SupportedSlot, rippling to
+FoldStepInvAt + LastLayerInv's left disjunct; subsumption survives — both sides gain the clause;
+everything else untouched); the render continues shape-unaffected with the clause site PARAMETRIC
+so the ruling lands as a one-line swap; pre-gating in progress; the origin-value countermodel
+(c ≡ 1) becomes the seventh regression witness. ONE bake when the test + Codex verdict land.
+
+## 2026-07-22 (controller) — the Codex verdict: conjunct-B false via TWO mechanisms; the fork (invariant form vs fifth shear field) with the elder; seat-L4's fidelity input requested
+
+seat-L3T's second Codex check CONFIRMS case2's conjunct (B) false-as-stated — and the
+countermodel (D=2, shear u_i ↦ u_i + u_p, LEGAL under all four TreeEdge shear fields; parent
+resid = u_p + u_i, valid Deg1) reveals TWO mechanisms: (1) the ESCALATION TEST resolves AGAINST
+the minimal clause — vanishing-at-0 cannot induct (the strict transform of c_p·u_p is c_p∘σ·1:
+a VALUE condition cannot produce the child's FORM condition; ideal membership c_p ∈ ⟨deeper⟩
+self-propagates under composition, vanishing does not — S3's genesis repeating exactly as
+pre-flagged); (2) SHEAR MIXING is NEW — a legal shear mixes T = center∖{pivot} with the pivot,
+breaking child-Deg1 independent of any coefficient clause. Codex's minimal repair: carry the
+invariant on the STRICT-TRANSFORMED residual on T (Deg1SupportedOn (resid∘quotMap) T —
+invariant-in-prepared-coordinates; C′ = T works at both δ; arguably what the paper's Let-block
+bookkeeping IS). THE FORK with the elder: (A) the form-redesign + the born-terminally pivot
+content as a separate tracked datum (one design closing BOTH leaves' defects, feeding hcleared
+naturally) vs (B) a FIFTH TreeEdge shear field (T-block-preserving) + the ideal clause.
+**seat-L4's decorrelated fidelity input requested**: what do the actual Q̂-shears do on T, per
+the Let-blocks (the (3,3,4) instances passed with REAL shears — name what the real objects
+satisfy). seat-L3T banks the fork-stable halves (the case-BLIND divisibility lemma serving L3
+AND L4's conjunct A via the unified product identity; the terminal unit lemma) — honest,
+reusable, no fabrication. arch-C: the parametric site widens from clause to CONJUNCT (its
+pre-verdict AnchorClause prep covers mechanism 1 only — the queue carries the update); bake
+still held for the elder's fork ruling. Both leaves' defects now have banked countermodels —
+the seventh axis (ANCHOR-VALUE) plus the shear-mixing witness join the regression bank.
+
+## 2026-07-22 (controller) — FORK (A) RULED: the invariant moves to PREPARED COORDINATES; the taxonomy completes at EIGHT axes
+
+**The elder's formal ruling: fork (A)** — the Deg1 conjunct restates on the strict-transformed
+residual over T (G_j := foldResid_p j ∘ quotMap, the banked blockBlowupCoordQuot; Deg1SupportedOn
+G T) with IDEAL-MEMBERSHIP coefficients (the escalation resolved: values cannot induct, only the
+form self-propagates — S3's genesis closed at the right depth); the born-pivot content becomes a
+CARRIED TRACKED DATUM shaped to LastLayerInv's right disjunct — ONE unit-ledger form serving the
+interior clears, the last layer, and the transport's hcleared. **The decisive argument was
+fidelity: the strict-transform invariant IS the paper** — the Let-blocks rename d′→d immediately
+and state every inductive claim in NEW coordinates (pp.16–21 rename lines, image-verified); the
+raw-frame rendering was what mechanism 2 exploited. (B) rejected: a fifth edge field encodes an
+EMERGENT truth as a side condition (a future severance axis + a fidelity burden, and any
+unforeseen legal mixer returns as the next instance) — (A) removes the frame mismatch itself.
+
+**The FOURTH blind convergence:** arch-C's architect lean (composed pre-ruling, in crossing)
+chose (A) independently, arguing from the severance HISTORY — "every one of our seven defects
+has been a free-field severance; a new free shear field is the 8th-instance bait; (A) adds NO
+free field — the shear is ABSORBED, closed structurally, not by a field asserting shears don't
+mix (which the countermodel says they legally CAN)." Two authorities, two argument routes
+(paper-fidelity / severance-structure), one design.
+
+**The taxonomy COMPLETES at eight:** the seventh axis sharpens to ANCHOR-FORM (audit the FORM at
+the anchor, not the value — values cannot induct); mechanism 2 is the EIGHTH: **FRAME** — "in
+WHICH coordinates does the paper state this?" is now a standing audit question for every carried
+invariant; the shear countermodel is its exemplar. Eight axes: content, size, path, coordinate,
+layer-endpoint, mechanism-boundary, anchor-form, frame. Render pins: banked quotMap only; the
+tracked datum audited at birth; the fidelity docstring cites the rename lines; seat-L3T's
+case-blind halves = the round's floor. seat-L4's T-check demoted to consistency datum (proceeds).
+arch-C renders the (A) form → contract-9 with BOTH countermodels as witnesses → the ONE bake.
+Both proof seats then close leaves whose statements their own refutations made true.
+
+## 2026-07-22 (controller) — the (A) render spec relayed; arch-C's SIX pre-bake gate checks on record
+
+arch-C relayed the final (A) spec to its render seat (the strict-transform Deg1 conjunct with
+ideal-membership coefficients subsuming IgnoresCoords; the tracked unit-ledger right disjunct;
+the four pins; everything else untouched) and put its SIX gate re-checks on record — the round's
+acceptance criteria, which my integration re-verifies against the same list: (i) the size-witness
+{0,1,2} dies under the T-form; (ii) the subsumption holds under (A); (iii) quotMap bridge-free/
+data-only (banked); (iv) BOTH countermodels die (c ≡ 1 anchor-form; u_i+u_p frame); (v) the two
+anchors ((3,3,4) S=2=L; d12 N=1 routing); (vi) the consumer-fit re-elaborates with the (A) hinv
+(LastLayerInv-(A) + hcleared → terminal_bezout). Contract-9 once, then the bake — the round's
+final shape. seat-L4's T-check rides as consistency datum, not a gate blocker.
+
+## 2026-07-22 (controller) — THE CHAIN-HEIGHT THEOREM PROVED: chainHeight(BoxPart ℓ a) = a(ℓ−a)+1, UNCONDITIONAL; merged-unwired pending the pass + the owed survey
+
+seat-E FULLY PROVED the P6.2 Tier-1 headline — `chainHeight_boxPart : (BoxPart ℓ a).chainHeight
+(· <  ·) = a(ℓ−a)+1` — Aoyagi's Lemmas-4/5 max-chain identity as a standalone combinatorial
+theorem on Mathlib's Set.chainHeight, UNCONDITIONAL (it found and dropped the a ≤ ℓ hypothesis:
+the a > ℓ singleton box gives both sides 1 — weakest-hypotheses). UPPER via strict-mono rankBP +
+encard injection; ATTAINMENT via the row-major staircase (sum_staircase by row induction).
+**Controller verification: merged; module built (3286 jobs); all three theorems force-elaborated
+clean-three.** HELD UNWIRED (no aggregator, no AxCheck) pending: (1) the elder's six-check pass;
+(2) **the OWED YoungDiagram survey** — the Option-B ruling made the Mathlib survey MANDATORY
+before hand-rolling, and BoxPart is hand-rolled with no survey verdict produced; seat-E ordered
+to produce it now (verdict travels with the pass; if Young's box structure is usable, expect a
+build-on-it or a proved-equivalence requirement). **Discipline note, owned:** seat-E proved ahead
+of the elder pass (the sequence was survey → skeleton → pass → prove) — a gamble that likely
+costs nothing here because the contract was fully pinned, but journaled as a slip; the Tier-2
+θ-corollary + registration wait for the pass.
+
+## 2026-07-22 (controller) — the gate catches a STALE RENDER (report said ready; the file said pre-(A)); seat-L4's datum upgrades the design; the coefficient clause in final refinement
+
+**arch-C's calibration catch:** the render seat reported "fix (2) rendered, 5 pins, ready to
+bake" — arch-C READ THE FILE: LastLayerInv's left disjunct + Deg1SupportedSlot were the RAW
+pre-fork-(A) form (the fork messages had crossed the render); BOTH countermodels survive it
+(c ≡ 1 passes IgnoresCoords; u_i+u_p unabsorbed in the raw frame). Bake HELD; the seat flagged
+to apply the (A) upgrade to the Deg1 conjunct ONLY (guard split / transport+hcleared /
+subsumption / docstrings / C′ / family-tie all correctly rendered and stay). The mechanical gate
+(build/cone=10/cordon) was GREEN on the stale content — "that's the floor; the content is the
+gate." One render detail surfaced: pivot-threading (the (A) form needs the pivot; the invariants
+are C-parameterized — pivot-param vs canonical-from-(C,p), the seat to surface if unpinned).
+
+**seat-L4's fidelity datum (routed):** fork (B) would have been DOUBLY infidelitous — the real
+Schur shears MIX WITHIN T (C22 ↦ C22 − C21·C12, T-triangular, degree-2) so "T-block-preserving"
+excludes the construction; the true discriminator is PIVOT-INDEPENDENCE (thread-33 §3: later
+shears never touch exceptional coordinates). The raw child residual is genuinely degree-2 — Deg1
+is a prepared-coordinate invariant, period; its (3,3,4) battery passes were on the already-
+reduced block (they tested (A)'s form all along). THE CRUX: statement unaffected, proof VERBATIM
+under (A). **One refinement back with the elder — the coefficient clause must simultaneously:**
+(a) induct through composition (mechanism 1); (b) imply IgnoresCoords (the crux's hceq); (c) keep
+the entry center-exact-Deg1 (the over-division guard, d=![1,2,1]). Bare ideal-membership fails
+(b) (c = ∑ u_d·h_d admits center-dependent h). Candidate: c a function of DEEPER coordinates
+only, vanishing at 0 — self-propagation under the pivot-independent T-mixing shears is the
+elder's check. The degree-2 Schur term proposed as the entry-level-weakening regression witness.
+
+## 2026-07-22 (controller) — the survey verdict: YoungDiagram WRONG-SHAPE (build-it confirmed retroactively); the complete pass request to the elder
+
+seat-E ran the mandated survey (banked, threads/41-order-count/mathlib-survey-verdict.md):
+YoungDiagram is the full unbounded lower-set type — no Fintype, no box subtype, no chainHeight
+lemmas, no clean fixed-a rowLens bridge (building on it = strictly more work for the same
+theorem); powersetCard has the wrong ORDER (Boolean ⊆, not dominance); Order.Height's primitives
+ARE the proof's substrate — the reuse level was right, only the minimal OBJECT is hand-rolled.
+The gate-order gamble thus cost nothing (retroactively validated) — the slip stays on the record.
+The COMPLETE pass request routed to the elder: the proved unconditional headline (+ the
+a ≤ ℓ-drop deviation-for-the-better to bless), the survey verdict, the trap-relocation claim
+(cell-count = coord-sum IN BOX COORDS; the trap is a profile-encoding artifact → Tier-3 kill-set
+at the iso) for explicit adjudication. On the pass: OrderChain wires + registers; the Tier-2
+θ-corollary lands; the Tier-3 iso scaffold proceeds (all three relocated pins as named domain
+hypotheses, consuming the banked DivChain nesting).
+
+## 2026-07-22 (controller) — THE CLAUSE RULED: DeeperMultilinear ("weakest-that-INDUCTS beats weakest-that-holds"); the round's design is COMPLETE
+
+The elder's exact clause: **the multilinear form** — DeeperMultilinear c D⁺ := ∃ h, (h d
+D⁺-only) ∧ c = ∑_{d ∈ D⁺} u_d · h_d, with D⁺ an EXPLICIT carried Finset (disjointness
+D⁺ ∩ (T ∪ {pivot}) = ∅ supplied by the fold from the layer partition). The ruling's principle:
+the day's repeated lesson (S3's genesis → mechanism 1 → this) is that the invariant must carry
+the form its induction CONSUMES AND EMITS — the simpler "deeper-only + vanishing" holds at every
+real state but re-derives form from value at each step. The multilinear form is what the
+Let-block child EXHIBITS (her multilinearity restated per step in prepared coordinates); it
+implies both simpler forms (two one-line derivation lemmas rendered for consumers) and excludes
+the center-dependent-cofactor trap verbatim. THE PROPAGATION SUBTLETY named for the prover:
+c∘σ handled by hceq mid-proof; the emitted child witness RE-READ off the Let-block form —
+preservation-by-RE-FACTORING, not by-composition (why the T-mixing Schur is harmless).
+ONE CHECKPOINT flagged-not-pre-ruled: pivot-READING shears (the countermodel reads the pivot;
+the fourth field forbids only writes) — if the preservation proof hits a residual read
+obstruction it returns as a NAMED FINDING; the drawer holds the fidelity-clean fence blueprint
+(pivot-independence, thread-33 §3). "Fix frames, not fences — keep the fence's blueprint in the
+drawer." TAXONOMY: the no-write/no-READ sub-axis recorded (audit what function-fields READ).
+arch-C executes the localized swap → the full gate (six re-checks + three countermodel/witness
+deaths) → THE BAKE. Nothing else is pending anywhere — the round's design is complete after
+seven rulings, four blind convergences, and two proof-seat refutations, every piece named.
+
+## 2026-07-22 (controller) — SIX-CHECK PASS ON ALL SIX: the chain-height theorem WIRES; the OrderIso pin lands on the Tier-3 seam
+
+The elder's pass: PASS on all six. (1) The survey verdict ACCEPTED as the pin's intended outcome
+(the reuse at the right level — Order.Height primitives as substrate, the object minimal;
+"not a defeat of the pin"); the additive a-subsets/YoungDiagram citable bridge TAKEN at
+hygiene-window priority. (2) Tight-lattice correctly absent at Tier 1 (the concentration).
+(3) UNCONDITIONALITY BLESSED after the elder's independent a > ℓ verification, with the one
+docstring line distinguishing the statement's honest truncated subtraction from the guard-form
+trap (rendered at integration). (4) K3 names clean. (5)–(6) fence/target at Tiers 2/3 as ruled.
+**The trap-relocation CONFIRMED with the sharpening pin: the Tier-3 iso must be an OrderIso —
+never a mere monotone bijection** (the relocated kill-set tests order-isomorphy: cover-jumping
+encodings fail in the REVERSE direction; a one-directional embedding would silently break
+chainHeight transport) — the iso's FOURTH named requirement beside the three relocated domain
+pins. The slip closed with proportion (the frozen vocabulary made the gamble cheap).
+
+**Execution (this commit):** OrderChain wired into the aggregator; chainHeight_boxPart REGISTERED
+as a batch-gated root; the blessed docstring line added; full-build gate running. seat-E GO on
+the Tier-2 θ-corollary (K1 gates ride there) then the Tier-3 iso scaffold (three domain pins +
+OrderIso). The elder's register note, verbatim: "P6.2's Tier-1 core LANDED unconditional — the
+expedition's first purely-classical citable combinatorics theorem, born from a paper-fidelity
+investigation. The rising sea, doing what the operator opened E to let it do."

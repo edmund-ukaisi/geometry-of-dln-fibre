@@ -165,6 +165,18 @@ theorem jacDet_blockBlowupMap {S : Finset (Fin D)} {p : Fin D} (hp : p ∈ S) (w
   rw [Matrix.toSquareBlockProp_def, Matrix.of_apply, hMdef, toMatrix'_blockBlowupDeriv,
     haa, hbb, if_pos rfl, if_pos rfl, hab, Matrix.one_apply_eq]
 
+/-- **The origin blow-up Jacobian, UNCONDITIONALLY** `jacDet (blowupMap i) w = (w i)^(D-1)` for ALL
+`D` — the `S = univ` instance of `jacDet_blockBlowupMap` (via `blockBlowupMap_univ`,
+`Finset.card_univ`, `Fintype.card_fin`). This SUBSUMES `OriginBlowup.jacDet_blowupMap`, whose
+`2 ≤ D` hypothesis is REDUNDANT: the block-center determinant is unconditional, and
+`univ.card - 1 = D - 1` gives the correct `(w i)^0 = 1` at `D = 1` (the trivial `d ↦ u` step).
+The `OriginBlowup` form is kept (self-consumed there + an `AxCheck` root); use this one when the
+`2 ≤ D` bound is unavailable. -/
+theorem jacDet_blowupMap_unconditional (i : Fin D) (w : Fin D → ℝ) :
+    jacDet (blowupMap i) w = (w i) ^ (D - 1) := by
+  rw [← blockBlowupMap_univ i, jacDet_blockBlowupMap (Finset.mem_univ i), Finset.card_univ,
+    Fintype.card_fin]
+
 /-- **O9 (seat-w0l3) — block-center a.e.-injectivity** off the pivot hyperplane `{w_p = 0}`. -/
 theorem injOn_blockBlowupMap {S : Finset (Fin D)} {p : Fin D} (hp : p ∈ S) :
     Set.InjOn (blockBlowupMap S p) (Set.univ \ {w : Fin D → ℝ | w p = 0}) := by

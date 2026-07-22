@@ -111,6 +111,7 @@ nodes:
     lean: DLNFibre.DLN.Aoyagi.numTop_d22222_ne_aoyagiPoleOrder
     status: stated
     tier: new
+    landmark: true
     owner: seat-E
     edges:
       - {type: needs, to: e-p61-band-arithmetic}
@@ -232,7 +233,6 @@ nodes:
     status: proven
     tier: new
     owner: "parked: LANDED (mon-geo tide, closed exemplary); universal-in-D ⟹ no cast transport"
-    landmark: true
     evidence: [lean/DLNFibre/Core/Aoyagi/OriginBlowup.lean, lean/DLNFibre/Core/Aoyagi/BlowupResolution.lean]
     notes: "dissolves the opaque-width cast wall BY DESIGN; D=2 cousins …2-renamed (see overlay/naming.md); shared atom for rung-(B) AND the monument's per-step blow-up geometry"
 
@@ -256,6 +256,7 @@ nodes:
     title: "PrincipalInv + StepInv: the path invariants (divisibility along the recursion; principality BORN terminally)"
     status: frozen
     tier: new
+    landmark: true
     owner: seat-core
     lean: DLNFibre.Core.Aoyagi.PrincipalInv
     edges:
@@ -309,13 +310,28 @@ nodes:
 
   - id: b-leaf7-compact-cover
     kind: claim
-    title: "leaf 7: hcover — a.e. compact atlas cover of a ball, BUILD (operator: no cite)"
+    title: "leaf 7: hcover — a.e. compact atlas cover of a ball, BUILD (operator: no cite) — BRIDGE-FREE"
     prop: "∃ ρ > 0, volume (ball 0 ρ \\ ⋃ p, g p '' dom p) = 0 — max-pivot-sector partition"
-    status: conjectured
+    lean: DLNFibre.DLN.Aoyagi.leafPath_compactCover
+    status: stated
     tier: new
-    owner: "parked: skeleton rung (C); Hironaka-properness cite REMOVED as an option (operator 2026-07-21)"
+    owner: "parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41"
+    edges: [{type: conjectured-toward, to: b-ladder}, {type: needs, to: b-terminal-edge-stepinv}]
+    notes: "L7's bridge banner LIFTED (canonCenter pins each branch's coordinate from (S,J,mergeIdx,d) slot bookkeeping — the coordinate-axis witness dies; no card↔sum bridge on the cone). Spectator-bounds bite still pre-flagged."
+
+  - id: b-terminal-edge-stepinv
+    kind: claim
+    title: "terminal_edge_stepInv: the interior→terminal transport (parent FoldStepInvAt ⟹ child literal-Fin-1 unit StepInv + the born-terminally pivot)"
+    prop: |
+      Terminal-reaching edge + parent FoldStepInvAt ⟹ (1) StepInv with the LITERAL fun _ : Fin 1 ↦ 1
+      residual ∧ (2) ∃ i₀ unit, ContinuousOn ∧ unit 0 ≠ 0 ∧ (coreGen i₀ ∘ g) = b·unit — matching
+      TerminalBezout's input verbatim; the chain L3/L4 (interior) → this (last edge) → terminal_bezout.
+    lean: DLNFibre.DLN.Aoyagi.terminal_edge_stepInv
+    status: stated
+    tier: new
+    owner: "parked: proof queue (the elder's rider obligation, born in the canonCenter round; consumer-fit example banked as permanent regression)"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "spectator coords must be bounded (compact doms) — the likely Lean bite, pre-flagged; leaf-2's argmax sector cover is the origin-case precedent"
+    notes: "the elder: 'easy earns a name, not an omission' — expected easy (unit-residual strictly weaker; the quotient absorbs into q′); the consumer-fit example elaborates (verified two decorrelated ways)"
 
   - id: b-leaf8-realizes-exponents
     kind: claim
@@ -349,7 +365,6 @@ nodes:
     status: conjectured
     tier: new
     owner: "parked: until object-b lands (summit clean-three); then consumer audit + deletion"
-    landmark: true
     edges: [{type: needs, to: aoyagi-summit}]
     evidence: [lean/DLNFibre/DLN/RLCT/AoyagiCited.lean]
     notes: "summit already avoids the cite (kill-path verified); deletion = consumer re-home; cited_watanabe_upper_ax = separate proof-target CANDIDATE (charter §3), not settled-external"

@@ -13,6 +13,14 @@ every FREE FIELD on a quantified structure is its own severance axis — the aud
 per-statement.** Each witness below severs one field; a statement passing all axes has no free field
 left un-provenanced.
 
+**ROUND COMPLETE (canonCenter bake `605497e2a`, 2026-07-21).** The taxonomy is COMPLETE: **5 axes,
+5 exemplars, all statement-CLOSED.** content/size/path close by predicate (`FoldStepInvAt` /
+`Deg1SupportedOn` / `FoldRealizes`); **coordinate closes at the canonCenter bake** (`d174f1f41` — L7
+`leafPath_compactCover` is now BRIDGE-FREE); layer/boundary closes by the non-terminal guard + the
+`terminal_edge_stepInv` split. "Closed" = the STATEMENT guards its field (the witness can no longer
+satisfy the hypotheses); the guarded leaves' PROOFS are the separate proof queue ([[banked-families]]
+§ In-flight).
+
 ## The axes (one exemplar each) — where each dies
 
 | axis | witness (what breaks the free form) | dies at (the field's guard) |
@@ -20,7 +28,7 @@ left un-provenanced.
 | **content** | `Σw²` Case-2 residual (spectator support) | kernel-refuted; `FoldStepInvAt` definitional binding |
 | **size** | over-large center `center={0,1,2}` at `d=![1,2,1]` (`u₀u₂` has no center-disjoint center-linear form) | `Deg1SupportedOn` (center-EXACT degree-1) |
 | **path** | all charts on one branch | `FoldRealizes` `leafOf`-surjectivity |
-| **coordinate** | all charts blow up one coordinate (`y`-directions uncovered) | L7 `leafPath_compactCover` — HONEST bridge-gated (the Engine↔Aoyagi coordinate bridge; `canonCenter` follow-round lifts it) |
+| **coordinate** | all charts blow up one coordinate (`y`-directions uncovered) | **CLOSED** — L7 `leafPath_compactCover` now BRIDGE-FREE (canonCenter bake `d174f1f41` pins each branch's coordinate via the `(S,J,mergeIdx,d)` slot bookkeeping → `tupIdxEquiv`; the all-charts-one-x witness can no longer satisfy the hypotheses) |
 | **layer / boundary** (5th, NEW 2026-07-21) | a terminal-reaching branch: `Deg1SupportedOn (const 1)` is FALSE (`terminal_deg1_gap.lean`) | non-terminal guard + the NEW `terminal_edge_stepInv` leaf (canonCenter round) |
 
 ## Pointers (provenance homes)
@@ -41,4 +49,6 @@ left un-provenanced.
 `b-leaf34-case-steps` (`case1_preserves_stepInv` = THE WALL) and `b-leaf5..b-leaf8` — every
 fold-sourced leaf statement is re-checked against this bank before a re-render is trusted. The
 `FoldStepInvAt` / `Deg1SupportedOn` / `FoldRealizes` predicates are the machinery that closes axes
-1–3; L7's coordinate axis stays bridge-gated until `canonCenter` bakes.
+1–3; L7's coordinate axis is now CLOSED (canonCenter bake `d174f1f41` — `leafPath_compactCover`
+bridge-free). All 5 axes statement-closed; the guarded leaves' proofs are the proof queue
+([[banked-families]] § In-flight).
