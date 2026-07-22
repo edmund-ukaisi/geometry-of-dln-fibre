@@ -10343,3 +10343,15 @@ threading through the LEAVES only (a pivot param = a free-field surface + redund
 for reconciliation against the elder's exact text BEFORE the seat renders; if arch-C finds a
 genuine need (the parent-side support formation), it goes to the elder as a named one-liner.
 seat-L4/seat-L3T re-coordination HELD until the shape is single.
+
+## 2026-07-22 (controller) — arch-C SELF-CORRECTS the pivot over-reach before my reconciliation even landed; the queue carries the pin
+
+arch-C retracted its own pivot+D⁺ re-type dispatch ("I jumped to (a)-param before the pin; your
+framing is right") — the self-correction crossed MY reconciliation message in flight, i.e. both
+ends of the hub caught the same over-reach independently. Its hold/render split is exact: GAP 3
+renders now (DeeperMultilinear DLN-side + the layer-decode D⁺ feed + the two derivation lemmas +
+frame-shell + all four docstring items); the invariant WIRING holds for the GAP-2 pin — which is
+ALREADY IN ITS QUEUE (reading (ii): foldResid direct, no double-division, pivot threading
+dissolves, no re-type). On processing: the body renders → the full gate → THE BAKE. The seats'
+re-coordination correctly held on both ends until the shape was single — the hub discipline
+handling a three-way crossing with zero contradictory instructions delivered.
