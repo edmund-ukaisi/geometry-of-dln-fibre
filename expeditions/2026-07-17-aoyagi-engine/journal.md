@@ -11546,3 +11546,21 @@ Also locked same round: ∃c decomposition KEPT (supplies vanishing-on-S′); Sh
 re-flavored; DeeperMultilinear fully REPLACED. The proposal→lock pattern catching the exact
 rendered form for the third time this round — every def-shape now battery-checked on BOTH the
 breaker side and the construction side before baking.
+
+## 2026-07-22 (controller, ~06:40) — **P6.2 TIER-3 CLOSED**: the E-lane wired + registered; the faithful θ-count is THEOREM
+
+The literal combined-load build EXIT 0 (8995 jobs — the AxCheck batch gate elaborated GREEN with
+the two new roots, so the kernel walked the union and found only the clean three); cordon OK;
+census UNCHANGED at 35 — the E-lane's four modules added ZERO sorries. Wiring committed + pushed:
+aggregator carries the OrderRealize family (with the ClosedForm ell = qipM surrogate caveat in
+the import block), AxCheck registers bindingSet_orderIso_boxPart +
+bindingSet_chainHeight_eq_thetaCount (fenced, ρ-seam deferral explicit). **Object E's P6.2 Tier-3
+is CLOSED, fully proven, no citation**: the binding-minimiser poset of the DLN width vector is
+order-isomorphic to the box-partition lattice, and the chain height of the ACTUAL poset equals
+thetaCount = aoyagiTheta = a(ℓ−a)+1 — the faithful count, not a numerical coincidence. Task #34
+COMPLETE (in its faithful form). The lane's arc for the close synthesis: operator's "go build it"
+→ P6.1 bands → P6.2 chainHeight → the cert → the 3-track build (sorted-box via banked
+water-filling; swap-iso via minimiser-endpoints; transport via mclosure) → integration with every
+rfl bridge holding → SURVIVED review → closure. Remaining E-residue: the analytic ρ = pole-order
+seam (monument-deferred, recorded), the Q3 cluster migration + lint nits (post-monument hygiene
+unit). MONUMENT: still one elder confirm (threshold form) from the complete amendment bake.
