@@ -10754,3 +10754,54 @@ battery") — the small-depth shadow's third strike converted to a permanent rul
 seat-L4's three-part deliverable: the convention verdict + the calibrated literal sets +
 supportAt(S, J) explicit. Then: one ruling → the finalize → the gate (re-audited for
 geometric-vs-ledger encoding per reference) → THE BAKE.
+
+## 2026-07-22 (controller) — the window saga's double-reversal: retraction → re-retraction; the ruling packet with the resumed elder; E-lane cert routed
+
+Dense batch, in order:
+
+1. **seat-E de-risk + block**: Tier-3 chainHeight TRANSPORT de-risked (subtype ≃o transports
+   strict-order chainHeight via Set.chainHeight_eq_of_relIso — contract COMPILES, acc5eb832); its
+   lane state: seam lemma minAdm_tight_eq CLOSED sorry-free; admTight = Adm proven (Adm_le_runMin);
+   blocked only on the #42 encoding cert (not on its branch). ROUTED: cert lives on the main
+   expedition branch (6e22580c8) — fetch + git show, path + full content brief sent (the explicit
+   three-stage encoding, the coord-sum reverse-failure hazard, the boundary cases). Told to START
+   THE SPECIFY now; shape ratification + def-site question queued with the elder.
+
+2. **seat-L4 RETRACTION** (the check-order fired): "my battery checked degree-1 on the COEFFICIENT
+   set (deeper) and mislabeled it the support" — swap killed, amended pin apparently confirmed
+   (T′ = prepared-frame un-cleared remainder, D⁺′ = deeper ∪ shed, (d) weakened to cofactor-MEMBER,
+   ±1/shed-slot deferred to elder page authority). **Controller error, owned**: I relayed this to
+   arch-C as a stand-down ("supportAt moot") BEFORE any elder adjudication — a state flip broadcast
+   ahead of the ruling. arch-C absorbed, reversed its supersede-flag, kept the amended-pin render.
+
+3. **The elder office was DEAD**: the send bounced — elder-standing dropped off the live registry at
+   the runtime restart (its team was session-c0fbdfc4; current is session-f444d38c). Found the
+   newest transcript (agent-aelder-standing-3fd49e3017d30ba3, 2026-07-21) and RESUMED it by ID —
+   full 335-message context (the ruling history + the image-verified p.18/21 page authority) intact.
+
+4. **seat-L4 RE-RETRACTION** (battery case1_supportAt.py PASS, banked 1c2bc359a): the calibration
+   verdict = MAP direction (FIX-A, identical frame to its banked crux) — the descend is genuine and
+   the −γβ argument frame-independent. The false retraction's mechanism: mis-applying the ROOT
+   reading ("definitionally degree-1 on current" — true at the root, which has NO −γβ) to the CHILD
+   (which does). Claim: at the child, T=un-cleared FAILS (cleared-pivot term pure-deeper; −γβ
+   degree-2 on un-cleared) — only T=deeper is Deg1. Delivered supportAt(S,J) EXPLICIT, d-definable,
+   NO Engine data (the (a)-road, loudly): layer S if J=0; layer S+1 if J≥1∧S<L; ∅/born-unit if
+   J≥1∧S=L. Depth-diverse calibrated sets: (3,3,4) hides the descend at S=L (third strike of the
+   shadow); (3,3,2,2) exhibits it at S=1,S=2. Reconciliation = the two named functions (canonCenter
+   ledger UNTOUCHED + supportAt geometric), C′ PINNED-computed.
+
+5. **Routings**: the full chronological packet (pin → contradiction → alarm → false retraction →
+   calibrated re-retraction) to the RESUMED elder, charged to adjudicate on ITS OWN page-authority
+   derivation of the child's degree count — decorrelated from the seat's twice-flipped conclusion —
+   plus the E-lane item B (3a shape: {T ∈ Adm : Mval=minAdm} ≃o BoxPart(ℓ,residueA), runMin dropped
+   on Adm_le_runMin; def-site alias-vs-collapse). arch-C FROZEN with the true sequence — both
+   prepped shapes (amended pin AND supportAt sort) kept warm, nothing discarded, nothing re-pointed,
+   one message with the ruling to come. seat-L4 STATEMENT-LOCKED (no further re-derivations; the
+   ruling must be decorrelated given the flip history).
+
+**Process lesson (mine)**: a seat's state flip routes through the elder's ruling BEFORE it reaches
+the render lane — relaying the retraction as a stand-down was the visible-progress instinct in
+process clothing. The hold+no-bake discipline (arch-C's) absorbed both flips at zero cost to the
+tree: nothing stale was ever baked. The witness bank gains a new defect channel when the elder
+rules: over-deference to authority (the false retraction) — caught by the pinned calibration
+check-order, exactly the instrument designed for it.
