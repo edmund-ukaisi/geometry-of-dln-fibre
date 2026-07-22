@@ -11326,3 +11326,16 @@ arch-C: the face-5 generator-side datum renders as ONE NAMED PREDICATE used verb
 sites (lastLayer_clear's conclusion = the emit; terminal_edge's hypothesis = the consume) — the
 consumer-fit lesson applied forward; two hand-copied ∃-shapes drift, one named def cannot.
 "Emit-form = consume-form via the single named predicate" added as an explicit gate check.
+
+## 2026-07-22 (controller) — seat-Eswap milestone (a): the swap-iso's mathematical content is DONE
+
+seat-Eswap landed the de-risking milestone: swapR_le_B_of_min (the adm-preservation crux —
+reflection B<A closes via X=P from ONE neighbour inequality; A≤B needs no minimality at all) and
+swapR_mono_of_min (THE coupled-monotonicity hazard, PROVED via the Codex-corroborated
+asymmetric-collapse route: A≤B ⟹ X′=Q′, B<A ⟹ X=P — no case needs both minimalities), plus the
+value-preservation chain (swapProfile_Mval_eq via swapR_F_invariant), the 2-term Mval split, and
+the minimiser-hypothesis extractor (bindingSet_local_min). Remaining: statement-locked mechanical
+plumbing (M′-side admissibility, involution, minAdm equality, membership, mono lift, k=0, ofHomInv
+assembly). No walls; batteries all EXIT 0. BOTH E-cores are now content-complete with plumbing
+tails: Ecore (S4 duality + assembly) and Eswap (bookkeeping + assembly) — the two-sorry frontier
+is closing from both sides.
