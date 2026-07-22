@@ -673,22 +673,26 @@ noncomputable def cornerToFlat (d : Fin (N + 1) → ℕ) (S J : ℕ) : Option (F
     else none
   else none
 
-/-- **`ShearWithinCarveRaw`** (seat-L4's (B) form, 2026-07-22, ONE site for the carve grade). The RAW
-displacement `shearφ` (not `blockShear shearφ`) on layers `≥ sl := supportLayerOf node`: (I) write-side —
-the displacement is ZERO there (`shearφ u i = 0`); (II) read-side — every displacement coord IGNORES those
-layers. (B) fixes the (A) `(II)`-unsatisfiability (old `blockShear = id` write-side vs unrestricted-`i`
-read-side). Parameterized by `node`/`shearφ` so both `ShearWithinCarve` (last edge) and `IsRealBranch`'s
-per-step shear-pin call it — ONE site for the carve grade. Vacuous at `lastLayer_clear` (`sl` exhausts). -/
+/-- **`ShearWithinCarveRaw`** (seat-L4's (B) form; clauses (I)/(II) RE-BAKED for the faithful `N_p`,
+elder verbatim §2). The RAW displacement `shearφ` (not `blockShear shearφ`) STRICTLY ABOVE
+`sl := supportLayerOf node` (i.e. layers `> sl`, `= S+2` and above): (I) write-side — the displacement is
+ZERO there; (II) read-side — every displacement coord IGNORES those layers. The threshold moved from
+`≥ sl` to `> sl` because the faithful `N_p` WRITES/READS layer `sl = S+1` (the `A_{S+1}·Q₁⁻¹` recoord) —
+the old `≥ sl` write-zero FORBADE the faithful shear; the layer-`(S+1)` recoord value is pinned instead
+by `IsRealBranch`'s L1 value-pin (`shearφ = canonNormalizationOf … pivot`), so clauses (I)/(II) carry
+only the write/read-vanishing above `S+1`. (III) — the cleared-pivot corner clause — carries UNCHANGED
+(`PivotPreservation` reads `.2.2`; untouched). Parameterized by `node`/`shearφ`, one site for the carve
+grade; vacuous at `lastLayer_clear` (`sl` exhausts). -/
 def ShearWithinCarveRaw {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (node : TreePath d) (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) : Prop :=
   let sl := supportLayerOf node.conState
   let V := foldRegion d e node
-  (∀ ℓ : ℕ, sl ≤ ℓ → ∀ i ∈ layerCoords d ℓ, ∀ u ∈ V, shearφ u i = 0) ∧
-    (∀ ℓ : ℕ, sl ≤ ℓ → ∀ i, IgnoresCoords (fun u ↦ shearφ u i) (layerCoords d ℓ) V) ∧
+  (∀ ℓ : ℕ, sl < ℓ → ∀ i ∈ layerCoords d ℓ, ∀ u ∈ V, shearφ u i = 0) ∧
+    (∀ ℓ : ℕ, sl < ℓ → ∀ i, IgnoresCoords (fun u ↦ shearφ u i) (layerCoords d ℓ) V) ∧
     -- (III) CLEARED-PIVOT protection (L6 (★), 2026-07-22): displacement vanishes on every divisor
     -- birth-corner in the node's ledger — a deeper step's shear can't move an earlier pivot, so each
-    -- step's pivot is preserved by all deeper steps. Write-side / corners-only; canonShearOf never
-    -- writes a pivot corner (⟹ emittable); edgeShear = id at case11/rollover, trivial.
+    -- step's pivot is preserved by all deeper steps. Write-side / corners-only; canonNormalizationOf
+    -- never writes a pivot corner (⟹ emittable); edgeShear = id at case11/rollover, trivial.
     (∀ (k : Fin node.conState.numDiv) (i : Fin (flatDim d)),
       cornerToFlat d (node.conState.divBirthCoord k).1 (node.conState.divBirthCoord k).2 = some i →
         ∀ u ∈ V, shearφ u i = 0)
@@ -821,48 +825,96 @@ noncomputable def canonCenterOf (d : Fin (N + 1) → ℕ) (s : ConState N) (sc :
       (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
         (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d)
 
-/-- **The canonical Q/Schur step shear** (raw displacement, seat-L4 M7). Schur-within-carve: at a flat
-coordinate decoding to `(layer, row, col)`, the displacement is the Schur cross-term `−u_γ·u_β` when the
-coord is in the layer-`s.layer` carve INTERIOR (`row, col > s.cleared`) — `γ` at `(layer, row, cleared)`,
-`β` at `(layer, cleared, col)` — and `0` otherwise. Reads only layer-`s.layer` coords; writes only the
-layer-`s.layer` strict interior (never a diagonal/birth corner). Its `blockShear` is the case12/case2
-`edgeShear`. -/
-noncomputable def canonShearOf (d : Fin (N + 1) → ℕ) (s : ConState N) :
+/-- The flat coordinate of the layer-`S` block entry at `(row, col)` — general (`cornerToFlat` is the
+diagonal `(J,J)` special case). `none` off-cone. Lets `canonNormalizationOf` read/write pivot-shifted
+Schur tails and the layer-(S+1) recoord image by NAT indices, sidestepping the dependent-`Fin` cast wall.
+(Moved up from `CanonShear` so `canonNormalizationOf` can use it.) -/
+noncomputable def blockEntryFlat (d : Fin (N + 1) → ℕ) (S row col : ℕ) : Option (Fin (flatDim d)) :=
+  if hS : S < N then
+    let i : Fin N := ⟨S, hS⟩
+    if hr : row < d i.succ then
+      if hc : col < d i.castSucc then some (tupIdxEquiv d ⟨⟨i, ⟨row, hr⟩⟩, ⟨col, hc⟩⟩) else none
+    else none
+  else none
+
+/-- Read the flattened coordinate at layer/row/col given by NAT indices; `0` off-cone (via
+`blockEntryFlat`). This is the nat-indexed read `canonNormalizationOf` uses so the two-support
+displacement carries no dependent-`Fin` casts. -/
+noncomputable def readEntry (d : Fin (N + 1) → ℕ) (u : Fin (flatDim d) → ℝ) (S row col : ℕ) : ℝ :=
+  match blockEntryFlat d S row col with
+  | some fc => u fc
+  | none => 0
+
+/-- **The faithful pivot-parametric normalization `N_p`** (raw displacement; pnp-transport
+`npivot-certificate`, elder verbatim §1). Replaces `canonShearOf`: writes TWO supports (canonShearOf wrote
+only the first), so it is genuinely a different object (name = content).
+
+At chart pivot `p = (a,b)` (decoded via `tupIdxEquiv`, `a = qp.1.2` the pivot row, `b = qp.2` the pivot
+col), the displacement at a flat coord `k` decoding to `(layer, row, col)`:
+
+* **(i) layer-`s.layer` pivot-shifted Schur cross-term** — on the carve residual (`row,col ≥ cleared`) off
+  the pivot cross (`row ≠ a`, `col ≠ b`), the displacement is `−w_{row,b}·w_{a,col}` (Schur residual
+  `w_ij − w_ib·w_aj`, pivoted at `(a,b)`). A CORNER pivot (`a = cleared = b`) recovers `canonShearOf`'s
+  `−u_γ·u_β` cross-term.
+* **(ii) layer-`(s.layer+1)` recoord image** — the deeper factor `A_{S+1} → A_{S+1}·Q₁⁻¹`,
+  `Q₁⁻¹ = I + ∑_{i≠a}(w_ib) e_i e_a^T` (right column-mix). The displacement lands on col `= a` (the pivot
+  row) of layer `S+1`, value `∑_{i≠a} w_{i,b}·A^{(S+1)}_{row,i}` — degree-1 in the layer-`(S+1)` coords,
+  coefficients `w_{i,b}` from layer `S` (per-`(S+1)`-linear, certificate §2). This is the piece
+  `canonShearOf` omitted (the `L1⊥L3`-coupled fix, restoring boost-readiness).
+
+Both components det-1 / unipotent (Aoyagi worked.tex:443–457); that Jacobian-1 fact rides the edge's
+`hshear` field, not this data def. -/
+noncomputable def canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d)) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   fun u k =>
+    let qp := (tupIdxEquiv d).symm p
     let q := (tupIdxEquiv d).symm k
-    if h : (q.1.1 : ℕ) = s.layer ∧ s.cleared < (q.1.2 : ℕ) ∧ s.cleared < (q.2 : ℕ) then
-      (-(u (tupIdxEquiv d ⟨⟨q.1.1, q.1.2⟩,
-              ⟨s.cleared, lt_trans h.2.2 q.2.isLt⟩⟩)))
-        * (u (tupIdxEquiv d ⟨⟨q.1.1, ⟨s.cleared, lt_trans h.2.1 q.1.2.isLt⟩⟩, q.2⟩))
+    if (q.1.1 : ℕ) = s.layer ∧ (q.1.2 : ℕ) ≠ (qp.1.2 : ℕ) ∧ (q.2 : ℕ) ≠ (qp.2 : ℕ) ∧
+        s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) then
+      -- (i) pivot-shifted Schur cross-term `−w_{row,b}·w_{a,col}`.
+      (-(readEntry d u s.layer (q.1.2 : ℕ) (qp.2 : ℕ)))
+        * readEntry d u s.layer (qp.1.2 : ℕ) (q.2 : ℕ)
+    else if (q.1.1 : ℕ) = s.layer + 1 ∧ (q.2 : ℕ) = (qp.1.2 : ℕ) then
+      -- (ii) layer-(S+1) recoord: `(A_{S+1}·Q₁⁻¹ − A_{S+1})` on col `a`, `∑_{i≠a} w_{i,b}·A_{row,i}`.
+      ∑ i ∈ Finset.range (d q.1.1.castSucc),
+        if i = (q.2 : ℕ) then 0
+        else readEntry d u s.layer i (qp.2 : ℕ) * readEntry d u (s.layer + 1) (q.1.2 : ℕ) i
     else 0
 
-/-- **Prepared-form / R_bad-kill (elder-facing candidate for the `CanonicalSchurStep` predicate).**
-`canonShearOf` is SUPPORTED on the layer-`s.layer` carve STRICT interior (`row, col > s.cleared`): a
-nonzero displacement forces the coordinate there. So the shear writes ONLY the Schur cross-term `−γ·β`
-on the interior, never a diagonal/pivot corner nor a bare pivot-column entry — the "γ Schur-cleared"
-structure that EXCLUDES the boost-readiness countermodel `R_bad = Z·B·[[1,β],[γ,u_p]]` (unprepared,
-`γ≠0`, whose center-zeroing leaves `γ·(…)`). This is the write-side content of clauses (I)/(III) and
-the candidate ingredient for the elder's boost-readiness pin (resolution 2). -/
-theorem canonShearOf_support (d : Fin (N + 1) → ℕ) (s : ConState N)
-    (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)) (hk : canonShearOf d s u k ≠ 0) :
-    (((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
-      s.cleared < (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
-        s.cleared < (((tupIdxEquiv d).symm k).2 : ℕ) := by
+/-- **`canonNormalizationOf` two-support ⟨FRONTIER; statement-locked, elder §2⟩.** A nonzero displacement
+forces the coord into EITHER (i) layer `s.layer`, off the pivot cross, on the carve residual, OR (ii)
+layer `s.layer + 1` in the recoord image (col `=` pivot row). Replaces `canonShearOf_support` (which
+proved single-support layer-`S`-only — a TRUE fact about the UNFAITHFUL object, false for `N_p`, so
+re-stated per precision §0-iv). The two disjuncts are exactly the def's two guards. -/
+@[blueprint]
+theorem canonNormalizationOf_support (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d))
+    (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)) (hk : canonNormalizationOf d s p u k ≠ 0) :
+    ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
+        (((tupIdxEquiv d).symm k).1.2 : ℕ) ≠ (((tupIdxEquiv d).symm p).1.2 : ℕ) ∧
+        (((tupIdxEquiv d).symm k).2 : ℕ) ≠ (((tupIdxEquiv d).symm p).2 : ℕ) ∧
+        s.cleared ≤ (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
+        s.cleared ≤ (((tupIdxEquiv d).symm k).2 : ℕ)) ∨
+      ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer + 1 ∧
+        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm p).1.2 : ℕ)) := by
+  -- map: B-canonNormalizationOf-support (two-support; layer-S carve interior ∪ layer-(S+1) recoord image)
   by_contra h
-  exact hk (by simp only [canonShearOf]; exact dif_neg h)
+  rw [not_or] at h
+  exact hk (by simp only [canonNormalizationOf]; rw [if_neg h.1, if_neg h.2])
 
-/-- **`CanonicalSchurStep`** (boost-readiness pin, 2026-07-22; = M7's proven `canonShearOf_support`). The
-shear displacement is supported on the layer-`s` carve STRICT INTERIOR (`row`,`col` both `> cleared`): it
-never writes a pivot corner, the pivot row/col, a cleared coordinate, or another layer. PROVEN for
-`canonShearOf` ⟹ emittable for free. Kills R_bad; with the b-chain (`u_p ∣ b_i ⟺ i > J₁`) it derives
-`realBranch_boostReady`. -/
-def CanonicalSchurStep {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N)
+/-- **`CanonicalSchurStep`** (boost-readiness pin; re-authored to the `N_p` TWO-support form, elder §2
+consolidation). Gains the pivot arg `p`. The shear displacement is supported on the layer-`s` carve
+residual off the pivot cross (i) OR the layer-`(s+1)` recoord image (ii) — the def-form of
+`canonNormalizationOf_support`, kept as the ONE public-canonical two-support predicate. -/
+def CanonicalSchurStep {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d))
     (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) : Prop :=
   ∀ (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)), shearφ u k ≠ 0 →
-    (((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
-      s.cleared < (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
-        s.cleared < (((tupIdxEquiv d).symm k).2 : ℕ)
+    ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
+        (((tupIdxEquiv d).symm k).1.2 : ℕ) ≠ (((tupIdxEquiv d).symm p).1.2 : ℕ) ∧
+        (((tupIdxEquiv d).symm k).2 : ℕ) ≠ (((tupIdxEquiv d).symm p).2 : ℕ) ∧
+        s.cleared ≤ (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
+        s.cleared ≤ (((tupIdxEquiv d).symm k).2 : ℕ)) ∨
+      ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer + 1 ∧
+        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm p).1.2 : ℕ))
 
 /-- **A real root→node branch of `buildTree d (conOracle d) conRoot`** — COMBINATORIAL branch-membership
 PLUS the canonical coordinate PIN. Each step's `(case, nextState)` is one of the oracle's `stepChildren`
@@ -885,7 +937,16 @@ def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
         -- pins. Defeq to `ShearWithinCarve d e ed` at the last edge, so `realBranch_shearWithinCarve`
         -- extracts it (last-step projection).
         ShearWithinCarveRaw d e (TreePath.step p center pivot cse nextState shearφ) shearφ ∧
-        shearφ = canonShearOf d p.conState
+        -- L1 value-pin, RE-BAKED to the faithful pivot-parametric `N_p` (elder verbatim §2/§3): the step
+        -- shear IS `canonNormalizationOf … pivot` at the edge's pivot. The layer-(S+1) recoord is thus
+        -- pinned HERE (the strongest pin), so `ShearWithinCarveRaw` clauses (I)/(II) need only the
+        -- write/read-vanishing STRICTLY ABOVE the support layer (`> sl`), not a second recoord pin.
+        -- FAN-PIN (elder §3, `pivot ∈ canonCenterOf`) is DEFERRED — the FORK-3 split point: the free
+        -- pivot conflicts with `PivotPreservation.stepMapRaw_fixes_parentLedgerCorner` (see the report).
+        -- The equality pin `∀ piv, canonPivotOf = some piv → piv = pivot` STAYS so PivotPreservation is
+        -- untouched; the shear pivot is therefore the canonical (corner) pivot, giving the faithful
+        -- corner-Schur + recoord `N_p`.
+        shearφ = canonNormalizationOf d p.conState pivot
 
 /-- **The path reaches the leaf** — a real branch (now also coordinate-pinned via `canonCenterOf`) whose
 terminal state emits `l`. Ties chart `c`'s fold to the tree leaf its branch reaches; the coordinate pin
@@ -1052,27 +1113,31 @@ theorem realBranch_shearWithinCarve {N : ℕ} {d : Fin (N + 1) → ℕ}
   obtain ⟨-, -, hshear, -⟩ := hbranch
   exact hshear
 
-/-- Derived: the step shear IS the canonical Schur shear (the L1 value-pin). Supplies the γ-clearing
-half of boost-readiness (via `canonShearOf_apply_interior`); the descent δ=1 cofactor is
-shear-INDEPENDENT (multilinear homogeneity, its own lemma) and does NOT ride this. -/
+/-- Derived: the step shear IS the faithful pivot-parametric `N_p` (the RE-BAKED L1 value-pin). A clean
+projection off `IsRealBranch`'s 4th conjunct (the value-pin is definitional), so RE-PROVEN, not sorried
+(elder fork-2: do not sorry a projection). Supplies the boost-readiness γ-clearing (via
+`canonNormalizationOf_apply_interior`) PLUS the layer-(S+1) recoord (the piece `canonShearOf` omitted). -/
 @[blueprint]
-theorem realBranch_canonShear_eq {N : ℕ} {d : Fin (N + 1) → ℕ}
+theorem realBranch_canonNormalization_eq {N : ℕ} {d : Fin (N + 1) → ℕ}
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
-    ed.shearφ = canonShearOf d p.conState := by
+    ed.shearφ = canonNormalizationOf d p.conState ed.pivot := by
+  -- map: B-derived-canonNormalization-eq (L1 value-pin projection; ed.shearφ = N_p at the edge pivot)
   obtain ⟨-, -, -, heq⟩ := hbranch
   exact heq
 
-/-- Derived: the step shear satisfies the `CanonicalSchurStep` boost-readiness pin (4th-conjunct projection). -/
+/-- Derived: the step shear satisfies the `CanonicalSchurStep` two-support pin (4th-conjunct projection +
+`canonNormalizationOf_support`). Gains the pivot arg. -/
 @[blueprint]
 theorem realBranch_canonicalSchurStep {N : ℕ} {d : Fin (N + 1) → ℕ}
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
-    CanonicalSchurStep d p.conState ed.shearφ := by
+    CanonicalSchurStep d p.conState ed.pivot ed.shearφ := by
+  -- map: B-derived-canonicalSchurStep (two-support pin via canonNormalizationOf_support)
   obtain ⟨-, -, -, heq⟩ := hbranch
   rw [heq]
   intro u k h
-  exact canonShearOf_support d p.conState u k h
+  exact canonNormalizationOf_support d p.conState ed.pivot u k h
 
 /-- Derived: a terminal edge does not divide (`δ=0`) — only a rollover advances the layer. -/
 @[blueprint]
@@ -1189,8 +1254,8 @@ The Gap-B redesign splits `Deg1SupportedSlot`'s two conjuncts to their correct m
 * **conjunct-2** (per-layer degree ≤ 1) is HOMOGENEITY, over `layerCoords` (the FULL layer, uncapped),
   supplied by `foldResid_layerHomogeneous` (base `coreGen_layerHomogeneous`). Needs `e` LINEAR.
 * **conjunct-1** (the ∃c support decomposition on the CAPPED block `supportAt`) is the CAP, supplied by
-  `realBranch_appendResidDescent`. It CONSUMES the shear (`canonShearOf`); it is NOT a homogeneity
-  corollary. Homogeneity and the cap are logically INDEPENDENT (Codex Q3, 2026-07-23).
+  `realBranch_appendResidDescent`. It CONSUMES the shear (`canonNormalizationOf`); it is NOT a
+  homogeneity corollary. Homogeneity and the cap are logically INDEPENDENT (Codex Q3, 2026-07-23).
 
 The two together rebuild the child `Deg1SupportedSlot`; seat-L3T2 proves the homogeneity atoms, the cap
 stays a named frontier leaf (the coupled-corank ≥ 2 confinement IS the wall). -/
@@ -1235,17 +1300,18 @@ theorem foldResid_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ)
 
 /-- **Gap-B cap — conjunct-1 descent ⟨FRONTIER LEAF; NOT homogeneity⟩.** The child slot's degree-1
 support decomposition `resid = ∑_{i ∈ supportAt(child)} cᵢ·uᵢ` on the child fold region — the conjunct-1
-of `Deg1SupportedSlot`, descended parent → child. It CONSUMES the shear (`canonShearOf`, via
-`IsRealBranch`'s shear pin): the shear maps the strict transform's over-cap dependence (the `v·y₁` at a
-δ=1 clear) back into the capped block, so in the sheared frame the residual is supported on
-`supportAt(child)`. Whether `canonShearOf` confines at coupled corank ≥ 2 IS the wall (verified only at
-the `d=![1,2,1]` base instance, `r = y′₀`) — a named frontier leaf, NOT strike-able. Consumes the
-parent's full `Deg1SupportedSlot` (`hslot`); `foldResid_layerHomogeneous` supplies conjunct-2 alongside,
-and the two rebuild the child `Deg1SupportedSlot`. This is `realBranch_multiAffine_step`'s conjunct-1 —
-kept SEPARATE (the homogeneity-subsume is retracted). `hpos` (elder ruling this round) — the cap's
-support-tracking uses `widthMinUpto ≥ 1`, which needs `d k ≥ 1`; consistent with the sibling
-`realBranch_multiAffine_step`. (The shear-consuming step re-authors to the faithful pivot-parametric
-normalization in the pending N_pivot round; the statement is `canonShearOf`-phrased for now, e-invariant.) -/
+of `Deg1SupportedSlot`, descended parent → child. It CONSUMES the shear (now the faithful
+`canonNormalizationOf`, via `IsRealBranch`'s L1 value-pin): the shear's layer-(S+1) recoord maps the
+strict transform's over-cap dependence (the `v·y₁` at a δ=1 clear) back into the capped block, so in the
+recoordinatized frame the residual is supported on `supportAt(child)`. Whether `canonNormalizationOf`
+confines at coupled corank ≥ 2 IS the wall (the recoord is the piece that RESTORES this, per the N_pivot
+certificate; verified at the `d=![1,2,1]` base instance, `r = y′₀`) — a named frontier leaf, NOT
+strike-able. Consumes the parent's full `Deg1SupportedSlot` (`hslot`); `foldResid_layerHomogeneous`
+supplies conjunct-2 alongside, and the two rebuild the child `Deg1SupportedSlot`. This is
+`realBranch_multiAffine_step`'s conjunct-1 — kept SEPARATE (the homogeneity-subsume is retracted). `hpos`
+(elder ruling) — the cap's support-tracking uses `widthMinUpto ≥ 1`, which needs `d k ≥ 1`; consistent
+with the sibling `realBranch_multiAffine_step`. (Re-baked to the faithful pivot-parametric normalization
+this round; the statement is e-phrased, consuming `canonNormalizationOf` via the value-pin.) -/
 @[blueprint]
 theorem realBranch_appendResidDescent {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
@@ -1259,7 +1325,7 @@ theorem realBranch_appendResidDescent {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos 
       (∀ u ∈ foldRegion d e (p.extend ed), foldResid d e (p.extend ed) j u
         = ∑ i ∈ supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared,
             c i u * u i) := by
-  -- map: B-L3T-appendResidDescent-cap ⟨FRONTIER LEAF — conjunct-1 descent, canonShearOf-consuming; NOT homogeneity⟩
+  -- map: B-L3T-appendResidDescent-cap ⟨FRONTIER LEAF — conjunct-1 descent, canonNormalizationOf-consuming; NOT homogeneity⟩
   sorry
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime).
