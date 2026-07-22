@@ -12415,3 +12415,16 @@ rev-monument-adapter). That pass stays scheduled, correctly named.
 
 This edit does NOT open a general license to edit policy files — one-time, operator-directed,
 recorded here.
+
+## 2026-07-22 ~11:40 UTC — carto F1 charge CLOSED (verified on origin, 0e0352cdf)
+
+Carto-standing re-derived the census ITSELF from `scripts/sorries` (office contract held — not
+from my summary) and banked the correction (0e0352cdf, single-file overlay scope, validator 0
+errors; verified on origin). **Canonical total = 35** (its "~52" was a raw line-grep artifact —
+docstring + ⛔-banner mentions counted); the tool is now cited as the canonical meter in the
+header, F1, and the frontier line. Split: DLN/Aoyagi 10 on-cone (MonumentAtlas 8 + Case2Delta0 1
++ LearningCoefficient 1) · fossils 25 (Engine 4 — incl. 2 INLINE sorries a naive line-scan
+misses, all ⛔-bannered · Validate 18 · Skeleton 3). Its independent read sharpened both priors:
+carto's grep was +17, my quick parser +1 — the tool stands canonical. Post-bake expected-delta
+(10 → 16) recorded WITHOUT flipping the frontier line; the flip waits on my bake confirmation
+(carto's next trigger = the cone transition). Nothing open on carto's side.
