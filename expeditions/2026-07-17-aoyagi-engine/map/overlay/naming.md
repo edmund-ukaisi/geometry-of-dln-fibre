@@ -85,6 +85,25 @@ to a single "P6 — Lemmas 4–5, θ = a(ℓ−a)+1" now resolve to two entries 
   [2,2,2,2,2]) — read that certificate THROUGH this correction; owed-register §2 P6.2 + compass
   § Paper-fidelity ledger CODA are authoritative.
 
+### supportAt vs canonCenter — TWO named functions (bake `b7fa66841`, 2026-07-22)
+
+The window resolution introduced TWO named functions; do not conflate:
+- **`supportAt`** (`MonumentAtlas.lean`) — the GEOMETRIC support window (Deg1, descends per clear;
+  3-case: layer S if J=0 / layer S+1 if J≥1 ∧ S<L / ∅ born-unit if S=L). WON the descend-window role
+  for the L3/L4/last-layer support field.
+- **`canonCenter` / `ed.center`** — the LEDGER center + division locus (static). UNTOUCHED by the
+  ruling — the wall divides at `ed.center`; the residual is degree-1 on `supportAt`. NOT dead — a
+  separate object with its own role.
+DISCARDED (→ [[dead-routes]]): the two-clock (T/D⁺ deeper-union-shed) shape + shedSlots; the
+`deeperCoords` island (DELETED, false-docstring defect).
+
+### E-lane rename — `adm_eq_admTight` → `adm_runMin_filter_eq` (on branch `-E`, UNMERGED)
+
+After the Q4 collapse (`admTight` found = `Adm`), the set-identity lemma was renamed and the `admTight`
+DEF DELETED — **on `-E` only**. The expedition tree STILL HAS `admTight` live
+(`Foundations/AdmTight.lean:35`); old references resolve there until `-E` merges. Do NOT treat `admTight`
+as deleted, nor `adm_runMin_filter_eq` as present, in the expedition map until the merge lands.
+
 ## ═══ chart-era pointers below (HISTORICAL — read through RETIRED.md) ═══
 
 *Created pass #1; **REFRESHED pass #2 (2026-07-18)**: the council-adopted restructure has LANDED

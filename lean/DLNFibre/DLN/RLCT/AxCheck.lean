@@ -169,6 +169,7 @@ import DLNFibre.Core.Aoyagi.BlowupResolution
 import DLNFibre.Core.Aoyagi.ResolutionInhabited
 import DLNFibre.DLN.Aoyagi.OrderBinding
 import DLNFibre.Core.Aoyagi.OrderChain
+import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
 import Meta.Cordon
 
 /-!
@@ -1370,6 +1371,12 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.Core.Aoyagi.OrderChain.chainHeight_boxPart,
 -- P6 Tier-2 close: the faithful count = the landed θ value (K3: θ enters here only).
   DLNFibre.DLN.Aoyagi.chainHeight_boxPart_eq_aoyagiTheta,
+-- P6.2 Tier-3 (rev-Elane SURVIVED 2026-07-22): the realization iso (binding-minimiser poset ≃o
+-- BoxPart) + THE FAITHFUL COUNT (chainHeight of the ACTUAL poset = thetaCount — not two formulas
+-- agreeing). Meaning rests on ClosedForm's certified ell = qipM surrogate + the thread-42 cert;
+-- the analytic ρ = pole-order identification is DEFERRED (monument seam) and never smuggled here.
+  DLNFibre.DLN.Aoyagi.bindingSet_orderIso_boxPart,
+  DLNFibre.DLN.Aoyagi.bindingSet_chainHeight_eq_thetaCount,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from

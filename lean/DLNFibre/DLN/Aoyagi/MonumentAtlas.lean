@@ -470,72 +470,64 @@ theorem foldB_extend_eq (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ)
     foldB d e (p.extend ed) u
       = (u ed.pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMap d ed u) := rfl
 
-/-! ### The multilinear Deg1 family (fix (2) (A), elder-final) — `DeeperMultilinear` coefficients
+/-! ### The per-layer Deg1 family (family ruling 2026-07-22) — `PerLayerDeg1From` grading
 
-The invariant's degree-1 support conjunct, in the WEAKEST-THAT-INDUCTS form. The double-division scare
-resolved to a spec erratum (the `∘quotMap` was IDENTITY — FIX-RESID already baked the Let-block renaming,
-so `foldResid` IS the prepared object); the load-bearing change is the COEFFICIENT clause: from
-`IgnoresCoords` (weakest-that-HOLDS, which the c≡1 / `u_i+u_p`-frame countermodels defeat) to
-`DeeperMultilinear` (weakest-that-INDUCTS — the shape the Let-block child re-factoring EXHIBITS). Params
-stay `(C, p)`: the support `C = supportAt S J` is the geometric DESCENDING window (elder ruling 2026-07-22;
-see `supportAt`), and `D⁺ := Cᶜ` (the coefficient-multilinearity window = the support's complement, subsuming
-the discarded two-clock `deeper ∪ shed`). `T`/`D⁺`/`C′` are all `supportAt`-computed; the LEDGER center
-`canonCenter`/`ed.center` is a DIFFERENT object and is untouched. No pivot param, no free `D⁺` param —
-signatures unchanged, so `case1`/transport are NOT re-typed. -/
+The invariant's degree-1 support conjunct, in the WEAKEST-THAT-INDUCTS form. The support `C = supportAt S J`
+is the geometric DESCENDING window (elder ruling; see `supportAt`); `Deg1SupportedSlot` is the ∃c
+support-decomposition `resid = ∑_{i∈S} cᵢ·uᵢ` PLUS `PerLayerDeg1From d (resid) (supportLayerOf state)` — the
+residual is per-layer TOTAL-degree ≤ 1 from the support layer up (the parent-h tighten, replacing the retired
+`DeeperMultilinear`/`Dp=Cᶜ` looseness, which admitted a coefficient reading `S′` → child deg-2). The
+`≥ supportLayer` threshold is what INDUCTS (the child is deg-2 in the cleared layer below support). `T`/`C′`
+are `supportAt`-computed; the LEDGER center `canonCenter`/`ed.center` is a DIFFERENT object, untouched.
+`Deg1SupportedSlot` drops `Dp`, gains `d`/`fromLayer` — the leaf shapes carry. -/
 
-/-- **The multilinear coefficient clause** (elder FINAL, fix (2) (A)) — the weakest-that-INDUCTS form: a
-Deg1 coefficient `c` is a `D⁺`-linear combination `c u = ∑ d ∈ D⁺, u d · h d u` whose sub-coefficients
-`h d` read ONLY `D⁺` (`IgnoresCoords (h d) D⁺ᶜ`, factoring through the `D⁺`-projection). This is what the
-Let-block child EXHIBITS, so the induction consumes AND emits the same shape (self-propagates by
-RE-FACTORING); the simpler deeper-only+vanishing form only HOLDS. Kills c≡1 (a constant is not
-`D⁺`-linear) and the center-dependent-cofactor trap (`h d` is `D⁺`-only). -/
-def DeeperMultilinear {D : ℕ} (c : (Fin D → ℝ) → ℝ) (Dp : Finset (Fin D)) (V : Set (Fin D → ℝ)) : Prop :=
-  ∃ h : Fin D → (Fin D → ℝ) → ℝ,
-    (∀ d ∈ Dp, IgnoresCoords (h d) Dpᶜ V) ∧
-    (∀ u ∈ V, c u = ∑ d ∈ Dp, u d * h d u)
-
-/-- **Derivation: `DeeperMultilinear ⟹ c 0 = 0`** (vanishing at the origin — each term has the factor
-`(0 : Fin D → ℝ) d = 0`). -/
-theorem DeeperMultilinear.map_zero {D : ℕ} {c : (Fin D → ℝ) → ℝ} {Dp : Finset (Fin D)}
-    {V : Set (Fin D → ℝ)} (h0 : (0 : Fin D → ℝ) ∈ V) (hc : DeeperMultilinear c Dp V) : c 0 = 0 := by
-  obtain ⟨h, _, hsum⟩ := hc
-  rw [hsum 0 h0]; exact Finset.sum_eq_zero fun d _ => by simp only [Pi.zero_apply, zero_mul]
-
-/-- **Derivation: `DeeperMultilinear ⟹ IgnoresCoords c D⁺ᶜ`** (reads only `D⁺`) — on a `V` closed under
-`D⁺ᶜ`-updates (free on the `foldRegion ≡ univ` setting; the M14 region-lock caveat, `IgnoresCoords`
-docstring). Updating a non-`D⁺` coord leaves every `u d` (`d ∈ D⁺`, `d ≠ m`) and every `h d u` (`h d`
-reads only `D⁺`) fixed, so the sum is unchanged. -/
-theorem DeeperMultilinear.ignoresCoords {D : ℕ} {c : (Fin D → ℝ) → ℝ} {Dp : Finset (Fin D)}
-    {V : Set (Fin D → ℝ)}
-    (hVupd : ∀ w ∈ V, ∀ m ∈ Dpᶜ, ∀ t : ℝ, Function.update w m t ∈ V)
-    (hc : DeeperMultilinear c Dp V) : IgnoresCoords c Dpᶜ V := by
-  obtain ⟨h, hh, hsum⟩ := hc
-  intro w hw m hm t
-  rw [hsum _ (hVupd w hw m hm t), hsum w hw]
-  refine Finset.sum_congr rfl fun d hd => ?_
-  have hdm : d ≠ m := fun h => (Finset.mem_compl.mp hm) (h ▸ hd)
-  rw [Function.update_of_ne hdm, hh d hd w hw m hm t]
-
-/-- **The single-slot degree-1 support predicate** (one `j`-slot; anti-felting: one predicate, one audit
-surface). `resid j = ∑_{i∈S} cᵢ·uᵢ` on `V` with coefficients `cᵢ` continuous AND `DeeperMultilinear`
-over `D⁺` (fix (2) (A): the multilinear coeff clause, replacing the raw `IgnoresCoords`). -/
-def Deg1SupportedSlot {D nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (j : Fin nR)
-    (S : Finset (Fin D)) (Dp : Finset (Fin D)) (V : Set (Fin D → ℝ)) : Prop :=
-  ∃ c : Fin D → (Fin D → ℝ) → ℝ,
-    (∀ i, ContinuousOn (c i) V) ∧
-    (∀ u ∈ V, resid j u = ∑ i ∈ S, c i u * u i) ∧
-    (∀ i, DeeperMultilinear (c i) Dp V)
-
-/-- **Layer coordinates** — the flat coords whose decoded layer is EXACTLY `ℓ` (the `tupIdxEquiv`
-layer-decode; bridge-free, Finset-definable from `d` + `ℓ`; `∅` for `ℓ ≥ N`, out of range). Feeds
-`supportAt`. -/
+/-- **Layer coordinates** — the flat coords whose decoded layer is EXACTLY `ℓ` (uncapped, the full layer;
+`tupIdxEquiv` decode, bridge-free; `∅` for `ℓ ≥ N`). Feeds `PerLayerDeg1From`'s per-layer `AffineOn`
+(distinct from `blockCoords`, which caps the col axis for the `supportAt` support). -/
 noncomputable def layerCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) : Finset (Fin (flatDim d)) :=
   (Finset.univ.filter (fun q : tupIdx d => (q.1.1 : ℕ) = ℓ)).image (tupIdxEquiv d)
 
+/-- **Affine (total degree ≤ 1) on a coordinate block `X`** (family ruling 2026-07-22, parent-h tighten).
+`f` is a constant part `a` (reading no `X`-coord) plus an `X`-linear part `∑_{x∈X} b_x·u_x` with each `b_x`
+also `X`-free — so `f` has TOTAL degree ≤ 1 in the `X` coordinates (kills the degree-2 `de·s1·s2` breaker). -/
+def AffineOn {D : ℕ} (f : (Fin D → ℝ) → ℝ) (X : Finset (Fin D)) (V : Set (Fin D → ℝ)) : Prop :=
+  ∃ (a : (Fin D → ℝ) → ℝ) (b : Fin D → (Fin D → ℝ) → ℝ),
+    IgnoresCoords a X V ∧ (∀ x ∈ X, IgnoresCoords (b x) X V) ∧
+    (∀ u ∈ V, f u = a u + ∑ x ∈ X, b x u * u x)
+
+/-- **Per-layer degree ≤ 1 from `fromLayer`** (elder-verbatim, parent-h ruling 2026-07-22): `f` is `AffineOn`
+each single layer `ℓ ≥ fromLayer`. The `≥ fromLayer` threshold (NOT all `ℓ`) is what INDUCTS — the child is
+degree-2 in the cleared layer BELOW its support, so the grade is asserted only from the support layer up. -/
+def PerLayerDeg1From {N : ℕ} (d : Fin (N + 1) → ℕ) (f : (Fin (flatDim d) → ℝ) → ℝ) (fromLayer : ℕ)
+    (V : Set (Fin (flatDim d) → ℝ)) : Prop :=
+  ∀ ℓ : ℕ, fromLayer ≤ ℓ → AffineOn f (layerCoords d ℓ) V
+
+/-- **The single-slot degree-1 support predicate** (one `j`-slot; anti-felting: one predicate, one audit
+surface). Two conjuncts: the ∃c support-decomposition `resid j = ∑_{i∈S} cᵢ·uᵢ` on `V` (continuous `cᵢ`;
+supplies the vanishing-at-0 the affine bound alone does not), AND `PerLayerDeg1From d (resid j) fromLayer`
+(the residual is per-layer total-degree ≤ 1 from the support layer — the parent-h tighten, replacing the
+former `DeeperMultilinear`/`Dp=Cᶜ` looseness that admitted `h` reading `S′` → child deg-2). -/
+def Deg1SupportedSlot {N : ℕ} (d : Fin (N + 1) → ℕ) {nR : ℕ}
+    (resid : Fin nR → (Fin (flatDim d) → ℝ) → ℝ) (j : Fin nR)
+    (S : Finset (Fin (flatDim d))) (fromLayer : ℕ) (V : Set (Fin (flatDim d) → ℝ)) : Prop :=
+  (∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+    (∀ i, ContinuousOn (c i) V) ∧ (∀ u ∈ V, resid j u = ∑ i ∈ S, c i u * u i)) ∧
+    PerLayerDeg1From d (resid j) fromLayer V
+
+/-- **Block coordinates** — the flat coords at layer `ℓ` CAPPED on the col axis by the running-min block
+width `widthMinUpto d ℓ` (family ruling 2026-07-22, item 1: the residual block is `widthMinUpto`-capped, not
+the whole `d_{ℓ+1}×d_ℓ` layer — matches `canonCenterOf`'s cap :725). NO cleared-shrink — that is
+`canonCenter`'s extra, keeping `supportAt` (full capped block) DISTINCT from `canonCenter` (capped AND
+cleared-shrunk). Bridge-free (Finset-definable from `d`+`ℓ`); `∅` for `ℓ ≥ N`. Feeds `supportAt`. -/
+noncomputable def blockCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) : Finset (Fin (flatDim d)) :=
+  (Finset.univ.filter (fun q : tupIdx d =>
+      (q.1.1 : ℕ) = ℓ ∧ (q.2 : ℕ) < widthMinUpto d ℓ)).image (tupIdxEquiv d)
+
 /-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22 — the WINNER;
 the two-clock deeper∪shed shape is the DISCARD). The Deg1 support DESCENDS per clear: at `J = 0` it is the
-current matrix layer `S`; once a pivot is cleared (`J ≥ 1`) it descends to layer `S+1` — the deeper block the
-`P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads; at the LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS
+current capped block `blockCoords d S` (layer `S`, `widthMinUpto`-capped); once a pivot is cleared (`J ≥ 1`)
+it descends to `blockCoords d (S+1)` — the deeper block the `P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads;
+at the LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS
 to the born-unit `∅` (no `C^{(S+1)}` to absorb into — terminal collapse, p.19/21).
 
 CONVENTION (elder's anti-off-by-one, transcribed): 0-indexed layers, `S ∈ {0..L}`, `L = N − 1` the last
@@ -544,23 +536,29 @@ NO substantive ±1 offset. `supportAt` is the geometric Deg1 SUPPORT and is DIST
 `canonCenter S J` (the static layer-`S` carve = the blow-up locus) — different sets; the two-clock's
 conflation of the two is retired. -/
 noncomputable def supportAt (d : Fin (N + 1) → ℕ) (S J : ℕ) : Finset (Fin (flatDim d)) :=
-  if J = 0 then layerCoords d S
-  else if S + 1 < N then layerCoords d (S + 1)
+  if J = 0 then blockCoords d S
+  else if S + 1 < N then blockCoords d (S + 1)
   else ∅
 
+/-- **The support LAYER of a state** (family ruling 2026-07-22, item 4 — the `fromLayer` threshold, DRY).
+Tracks the layer `supportAt` descends to: `s.layer` before any clear (`cleared = 0`), else `s.layer + 1`
+(the descended layer). Feeds `Deg1SupportedSlot`'s `fromLayer` (per-layer degree ≤ 1 from here up). -/
+def supportLayerOf {N : ℕ} (s : ConState N) : ℕ :=
+  if s.cleared = 0 then s.layer else s.layer + 1
+
 /-- **The foldState step invariant at a path node, PARAMETRIC in the center `C`** (elder re-statement +
-fix (2) (A)). Two conjuncts: (1) a divisibility witness `q` for the accumulated `StepInv`; (2) the
-residual is degree-1 supported on `C` with `DeeperMultilinear` coefficients over `D⁺ := Cᶜ` (the support's
-complement). Conjunct (2) is what the δ=1 strict transform needs; the MULTILINEAR coefficients are what
-self-propagate (kill c≡1 + the shear-frame + degree-2-Schur countermodels). Carried through the fold; the
-support `C` is `supportAt S J` (elder ruling 2026-07-22 — the geometric DESCENDING window, see `supportAt`),
-`D⁺ = Cᶜ`, both computed from the node's state. -/
+fix (2) (A)). Two conjuncts: (1) a divisibility witness `q` for the accumulated `StepInv`; (2) the residual
+is `Deg1SupportedSlot` on `C` — the ∃c support-decomposition PLUS per-layer total-degree ≤ 1 from
+`supportLayerOf p.conState` (`PerLayerDeg1From`, the parent-h tighten). Conjunct (2) is what the δ=1 strict
+transform needs; the per-layer grade self-propagates (kills c≡1 + the shear-frame + the degree-2-Schur
+`de·s1·s2` countermodels). Carried through the fold; the support `C` is `supportAt S J` (elder ruling
+2026-07-22 — the geometric DESCENDING window, see `supportAt`), computed from the node's state. -/
 def FoldStepInvAt {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (C : Finset (Fin (flatDim d))) (p : TreePath d) : Prop :=
   (∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
     StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) ∧
     -- elder ruling 2026-07-22: support `C = supportAt` (geometric, descending); D⁺ = its complement `Cᶜ`
-    (∀ j, Deg1SupportedSlot (foldResid d e p) j C Cᶜ (foldRegion d e p))
+    (∀ j, Deg1SupportedSlot d (foldResid d e p) j C (supportLayerOf p.conState) (foldRegion d e p))
 
 /-- **The foldState step invariant** — `∃ C, FoldStepInvAt C p`. Shape → assumed delivery → stated
 obligation: this is the third and final form of the same content — degree-1 was never optional
@@ -581,8 +579,9 @@ axis) and feeds the re-parented `terminal_edge_stepInv`. -/
 /-- **The last-layer (S=L) mixed invariant.** The accumulated `StepInv` divisibility (D), AND a per-slot
 DISJUNCTION: each residual slot is either degree-1 supported (`Deg1SupportedSlot`, an UNcleared slot) OR a
 unit nonvanishing at `0` (a CLEARED slot). The two disjuncts are MUTUALLY EXCLUSIVE on any region `∋ 0`
-(the left ⟹ `resid 0 = 0` via `DeeperMultilinear.map_zero`; unit ⟹ `resid 0 ≠ 0`), so the fully-cleared
-`C = ∅` corner is the all-unit disjunct, no fence needed. `FoldStepInvAt` subsumes into this (all slots
+(the left ⟹ `resid 0 = 0` via the ∃c support-decomposition — `∑_{i∈S} cᵢ·uᵢ` at `u = 0` is `0`; unit ⟹
+`resid 0 ≠ 0`), so the fully-cleared `C = ∅` corner is the all-unit disjunct, no fence needed. `FoldStepInvAt`
+subsumes into this (all slots
 take the left disjunct — `foldStepInvAt_to_lastLayerInv`); the re-parented `terminal_edge_stepInv`
 consumes it. -/
 def LastLayerInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
@@ -591,7 +590,7 @@ def LastLayerInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
     StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) ∧
     (∀ j : Fin (foldNR d p),
       -- elder ruling 2026-07-22: support `C = supportAt` (geometric, descending); D⁺ = its complement `Cᶜ`
-      Deg1SupportedSlot (foldResid d e p) j C Cᶜ (foldRegion d e p) ∨
+      Deg1SupportedSlot d (foldResid d e p) j C (supportLayerOf p.conState) (foldRegion d e p) ∨
         (∃ unit : (Fin (flatDim d) → ℝ) → ℝ,
           ContinuousOn unit (foldRegion d e p) ∧ unit 0 ≠ 0 ∧
             ∀ u ∈ foldRegion d e p, foldResid d e p j u = unit u))
@@ -604,6 +603,44 @@ theorem foldStepInvAt_to_lastLayerInv {N : ℕ} (d : Fin (N + 1) → ℕ)
     FoldStepInvAt d e C p → LastLayerInv d e C p := by
   rintro ⟨hSI, hDeg1⟩
   exact ⟨hSI, fun j => Or.inl (hDeg1 j)⟩
+
+/-- **`GeneratorCleared`** (family ruling 2026-07-22, item 4 — the coordinator's consumer-fit pin, ONE named
+def so the two hand-copied ∃-shapes cannot drift). The fully-cleared-TERMINAL datum: a `StepInv` divisibility
+witness `q` whose generator-`i₀` combination is NONZERO at the origin — i.e. some generator has become a unit
+(the cleared-pivot datum `terminal_bezout` consumes). FALSE at last-layer ENTRY (the residual still vanishes
+at `0`); it is BUILT by `lastLayer_clear_preserves` at the `S = L` clears (units accumulate via the
+construction's Kronecker-diagonal `q`, alongside the slot-flip), NOT carried from entry. Its `∃ q` is LOCAL to
+this datum (a separate existential from the invariant's `∃ q`), so emitting it at the last layer does NOT pin
+the interior leaves' `q` — the interior `FoldStepInvAt` leaves never carry `GeneratorCleared`. -/
+def GeneratorCleared {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) : Prop :=
+  ∃ (i₀ : Fin (d (Fin.last N) * d 0))
+    (q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ),
+    StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p) ∧
+      ∑ j, q i₀ j 0 * foldResid d e p j 0 ≠ 0
+
+/-- **`ShearGrades`** (family ruling 2026-07-22, item 3 — the LAYER-GRADING shear pin; seat-L4's
+battery-confirmed conjunct-B-coupled predicate on `ed.shearφ`; ONE named def, cited on
+case1/case2/lastLayer_clear). Face 4: the prepared invariant alone does NOT survive a general triangular
+shear (`u_i ↦ u_i + u_p` breaks a prepared residual). `blockShear ed.shearφ` GRADES the child support
+`S′ = supportAt(child)`: (a) each `S′`-image coord is degree-1 on `S′` with `PerLayerDeg1From` (from the
+child support layer) continuous coefficients — the grading that lets the child's Deg1 re-factor; (b)
+LOAD-BEARING (seat-L4): each `S′ᶜ`-coord image IGNORES `S′` — those images become the child's coefficients
+after re-factoring, so reading `S′` would inject a spurious `S′` factor → child deg-2 (the `de ↦ de + s1²`
+breaker satisfies (a) vacuously since `de ∉ S′` but VIOLATES (b)). Pivot-independence is SUBSUMED (not a
+separate clause). At `lastLayer_clear` `S′ = ∅`: (a) vacuous, (b) `IgnoresCoords`-over-∅ trivial — harmless.
+REGION `V = foldRegion d e (p.extend ed)` (CHILD, seat-L4-confirmed: the shear is read at child-region
+points, `foldG(child) = foldG p ∘ stepMap`). -/
+def ShearGrades {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    {p : TreePath d} (ed : TreeEdge d p) : Prop :=
+  let S' := supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
+  ∃ c : Fin (flatDim d) → Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+    (∀ i k, ContinuousOn (c i k) (foldRegion d e (p.extend ed))) ∧
+    (∀ i ∈ S', ∀ u ∈ foldRegion d e (p.extend ed),
+        (blockShear ed.shearφ) u i = ∑ k ∈ S', c i k u * u k) ∧
+    (∀ i k, PerLayerDeg1From d (c i k) (supportLayerOf (p.extend ed).conState)
+        (foldRegion d e (p.extend ed))) ∧
+    (∀ i, i ∉ S' → IgnoresCoords (fun u ↦ (blockShear ed.shearφ) u i) S' (foldRegion d e (p.extend ed)))
 
 /-! ### The fold-realization predicate — combinatorial branch-membership (FIX 2; elder/coordinator (a))
 
@@ -642,8 +679,9 @@ free field on a quantified structure is a severance axis, so the audit is per-FI
   `+ 1 < N` excludes it from L3/L4.
 * ANCHOR-FORM (fix (2) (A), 7th) — a coefficient `c ≡ 1` (constant) satisfies the raw `IgnoresCoords`
   (a constant ignores everything) yet does NOT self-propagate (its Let-block child is not center-linear) —
-  the weakest-that-HOLDS trap. Dies at `DeeperMultilinear`: a constant is not `D⁺`-linear (`c 0 = 0`
-  fails, `DeeperMultilinear.map_zero`). The coefficient clause must be weakest-that-INDUCTS.
+  the weakest-that-HOLDS trap. Dies at `PerLayerDeg1From`: the per-layer total-degree ≤ 1 bound on the
+  RESIDUAL (not the coefficients) is what self-propagates — the retired `DeeperMultilinear`-coefficient
+  form subsumed into it. The support clause must be weakest-that-INDUCTS.
 * FRAME (fix (2) (A), 8th) — a legal shear `u_i ↦ u_i + u_pivot` (permitted by all four `TreeEdge` shear
   fields, which forbid WRITING the pivot coord, not READING it) breaks a raw-center Deg1 independently of
   any coefficient clause. Dies at the `foldResid`-prepared frame (FIX-RESID bakes the Let-block renaming,
@@ -655,10 +693,10 @@ free field on a quantified structure is a severance axis, so the audit is per-FI
   is audited for what it READS, not only what it WRITES.)
 * DEGREE-2 SCHUR (fix (2) (A), 9th regression witness) — the raw child residual carries the `C21·C12`
   cross-term, which is DEGREE-2; a raw / entry-level `SupportedOn` weakening FAILS against it (guards the
-  over-division boundary). The `C21·C12` is a `u_pivot`-carrying residue `DeeperMultilinear` cannot absorb
-  (`u_pivot` is exceptional, NOT deeper), and the Schur complement subtracts EXACTLY it — so the Schur is
-  not bookkeeping, it is the MULTILINEARITY-RESTORATION step (it re-expresses the degree-2 residual in the
-  `D⁺`-multilinear form the invariant carries).
+  over-division boundary). The `C21·C12` is a `u_pivot`-carrying residue a per-layer degree-≤1 bound cannot
+  absorb (`u_pivot` is exceptional, NOT deeper), and the Schur complement subtracts EXACTLY it — so the Schur
+  is not bookkeeping, it is the DEGREE-RESTORATION step (it re-expresses the degree-2 residual in the
+  per-layer degree-≤1 form `PerLayerDeg1From` carries).
 -/
 
 /-- The construction decision at a state terminates emitting leaf `l` (combinatorial leaf-match). -/
@@ -827,7 +865,9 @@ theorem case2_preserves_stepInv
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
     (hlayer : ed.nextState.layer + 1 < N)
-    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    (hcenter : ed.center ⊆ blockCoords d p.conState.layer)
+    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hgrade : ShearGrades d e ed) :
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   -- map: B-L3-case2-preserves-stepInv (foldState; support DESCENDS parent→child supportAt; Deg1 on supportAt)
@@ -863,7 +903,9 @@ theorem case1_preserves_stepInv
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
     (hlayer : ed.nextState.layer + 1 < N)
-    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    (hcenter : ed.center ⊆ blockCoords d p.conState.layer)
+    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hgrade : ShearGrades d e ed) :
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
@@ -881,8 +923,8 @@ with `child + 1 = N` is a clear at `S = L`, so this covers case-2 / case-1(2) / 
 for `J ≥ 1`), matching the unit disjunct that owns the fully-cleared slots. See `supportAt`.
 
 **Conjunct-B obligation = RE-FACTORING, never cancellation (seat-L4 Schur battery).** The prover reads the
-layer-advanced `DeeperMultilinear` OFF the shear-folded form — the Schur folds the `C21·C12` cross-term
-into the cofactor, where those factors are spectators at the next blow-up. There is NO residue-subtraction
+per-layer degree-≤1 grade (`PerLayerDeg1From`) OFF the shear-folded form — the Schur folds the `C21·C12`
+cross-term into the cofactor, where those factors are spectators at the next blow-up. There is NO residue-subtraction
 step: the `γβ` cross-term lives INSIDE the renamed `Δ := δ − γβ` (never a flat term), so under the CARRIED
 invariant no degree-2 entry ever forms. The `u_pivot` residue is the MOTIVATING countermodel ("what would
 happen WITHOUT the advance"), NEVER a proof step. -/
@@ -891,10 +933,13 @@ theorem lastLayer_clear_preserves
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlast : ed.nextState.layer + 1 = N)
-    (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    (hcenter : ed.center ⊆ blockCoords d p.conState.layer)
+    (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hgrade : ShearGrades d e ed) :
     LastLayerInv d e
-      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
-  -- map: B-Llast-clear-preserves (S=L clear flips one slot center-linear→unit; supportAt(child) → born-unit ∅)
+        (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed)
+      ∧ GeneratorCleared d e (p.extend ed) := by
+  -- map: B-Llast-clear-preserves (S=L clear flips center-linear→unit; EMITS GeneratorCleared via Kronecker q)
   sorry
 
 /-- **The terminal-edge transport (elder rider; re-parented to `LastLayerInv`, fix (2)).** The last
@@ -907,9 +952,10 @@ does not PRODUCE it; this leaf produces it, in EXACTLY `Core.Aoyagi.TerminalBezo
   `Deg1SupportedOn` (const 1 is not degree-1 — that omission is the point);
 * (2) the single "born-terminally" generator `i₀`/`unit`: `(coreGen i₀ ∘ foldG) = foldB · unit` on the
   region, with `unit 0 ≠ 0` (rev-core obl. 2, the cleared-pivot datum).
-Parent is `LastLayerInv d e (supportAt(parent)) p` (fix (2) re-parent — a last-layer parent) plus `hcleared`
-(the ∃-cleared-slot; L5 supplies it — the rollover fires at exhaustion, `J ≥ 1` under `hpos`, oracle-known;
-NEVER re-derived as width arithmetic here). L5 feeds (1)+(2) + `isOpen_foldRegion`/`zero_mem_foldRegion`
+Parent is `LastLayerInv d e (supportAt(parent)) p` (fix (2) re-parent — a last-layer parent) plus `hgen`
+(`GeneratorCleared d e p`, family ruling item 4 — the ONE named consumer-fit datum EMITTED by
+`lastLayer_clear_preserves` at the `S = L` clears, NOT carried from entry; replaces the former hand-copied
+∃-cleared-slot shape). L5 feeds (1)+(2) + `isOpen_foldRegion`/`zero_mem_foldRegion`
 into `terminal_bezout` → terminal `PrincipalInv` (the `example` below is the executable wiring regression).
 CASE-BLIND (covers the rollover AND the `N=1` edge that reaches terminal at once). -/
 @[blueprint]
@@ -918,9 +964,7 @@ theorem terminal_edge_stepInv
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
     (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hcleared : ∃ (j : Fin (foldNR d p)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
-      ContinuousOn unit (foldRegion d e p) ∧ unit 0 ≠ 0 ∧
-        ∀ u ∈ foldRegion d e p, foldResid d e p j u = unit u) :
+    (hgen : GeneratorCleared d e p) :
     ∃ (q : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ)
       (i₀ : Fin (d (Fin.last N) * d 0)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
       StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
@@ -942,15 +986,13 @@ example (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
     (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hcleared : ∃ (j : Fin (foldNR d p)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
-      ContinuousOn unit (foldRegion d e p) ∧ unit 0 ≠ 0 ∧
-        ∀ u ∈ foldRegion d e p, foldResid d e p j u = unit u) :
+    (hgen : GeneratorCleared d e p) :
     ∃ (b₁ r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ)
       (V' : Set (Fin (flatDim d) → ℝ)),
       IsOpen V' ∧ (0 : Fin (flatDim d) → ℝ) ∈ V' ∧ V' ⊆ foldRegion d e (p.extend ed) ∧
         PrincipalInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed)) b₁ r V' := by
   obtain ⟨q, i₀, unit, hSI, hcont, hne, heq⟩ :=
-    terminal_edge_stepInv d hN hpos e p ed hterm hinv hcleared
+    terminal_edge_stepInv d hN hpos e p ed hterm hinv hgen
   obtain ⟨V', r, hVopen, hV0, hVsub, hPI⟩ :=
     terminal_bezout (isOpen_foldRegion d e (p.extend ed)) (zero_mem_foldRegion d e (p.extend ed))
       hSI i₀ unit hcont hne heq

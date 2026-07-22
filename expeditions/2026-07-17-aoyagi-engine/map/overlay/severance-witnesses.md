@@ -13,13 +13,15 @@ every FREE FIELD on a quantified structure is its own severance axis — the aud
 per-statement.** Each witness below severs one field; a statement passing all axes has no free field
 left un-provenanced.
 
-**ROUND COMPLETE (canonCenter bake `605497e2a`, 2026-07-21).** The taxonomy is COMPLETE: **5 axes,
-5 exemplars, all statement-CLOSED.** content/size/path close by predicate (`FoldStepInvAt` /
-`Deg1SupportedOn` / `FoldRealizes`); **coordinate closes at the canonCenter bake** (`d174f1f41` — L7
-`leafPath_compactCover` is now BRIDGE-FREE); layer/boundary closes by the non-terminal guard + the
-`terminal_edge_stepInv` split. "Closed" = the STATEMENT guards its field (the witness can no longer
-satisfy the hypotheses); the guarded leaves' PROOFS are the separate proof queue ([[banked-families]]
-§ In-flight).
+**TAXONOMY CLOSED — 8 axes, all statement-closed (supportAt bake `b7fa66841`, 2026-07-22).** The
+elder-ruled `supportAt` window closed the last three free fields on the fold's quantified structure:
+**support** = computed `supportAt` (not a free ∀-branch), **C′** = PINNED-computed (not ∃), **coefficient
+clause** = `DeeperMultilinear` over D⁺ (kills c=1, the center-dependent cofactor, and the degree-2 Schur
+cross-term). The frame axis thereby gained its INDEXING sub-case (support-vs-coefficient indexing; the
+elder's own two-clock pin is the exemplar). Supersedes the canonCenter-bake 5-axis banner (the
+coordinate axis stays closed; `d174f1f41` — L7 bridge-free). "Closed" = the STATEMENT guards its field
+(the witness can no longer satisfy the hypotheses); the guarded leaves' PROOFS are the proof queue
+([[banked-families]] § In-flight).
 
 ## The axes (one exemplar each) — where each dies
 
@@ -29,7 +31,10 @@ satisfy the hypotheses); the guarded leaves' PROOFS are the separate proof queue
 | **size** | over-large center `center={0,1,2}` at `d=![1,2,1]` (`u₀u₂` has no center-disjoint center-linear form) | `Deg1SupportedOn` (center-EXACT degree-1) |
 | **path** | all charts on one branch | `FoldRealizes` `leafOf`-surjectivity |
 | **coordinate** | all charts blow up one coordinate (`y`-directions uncovered) | **CLOSED** — L7 `leafPath_compactCover` now BRIDGE-FREE (canonCenter bake `d174f1f41` pins each branch's coordinate via the `(S,J,mergeIdx,d)` slot bookkeeping → `tupIdxEquiv`; the all-charts-one-x witness can no longer satisfy the hypotheses) |
-| **layer / boundary** (5th, NEW 2026-07-21) | a terminal-reaching branch: `Deg1SupportedOn (const 1)` is FALSE (`terminal_deg1_gap.lean`) | non-terminal guard + the NEW `terminal_edge_stepInv` leaf (canonCenter round) |
+| **layer / boundary** (5th) | a terminal-reaching branch: `Deg1SupportedOn (const 1)` is FALSE (`terminal_deg1_gap.lean`) | non-terminal guard + `terminal_edge_stepInv` (re-parented: LastLayerInv + hcleared) + the NEW `lastLayer_clear_preserves` |
+| **support** (6th — frame/indexing, supportAt bake) | a free ∀-branch window (the discarded two-clock T/D⁺ shed-slot shape) | `supportAt` COMPUTED (geometric Deg1, descends per clear; 3-case: layer S / layer S+1 / ∅ born-unit) |
+| **C′** (7th — frame/indexing) | an existential child window (`∃ C′`) | C′ PINNED-computed `= supportAt(child)` (the ∃ dropped) |
+| **coefficient clause** (8th — frame/indexing) | a free coefficient (c=1; center-dependent cofactor; degree-2 Schur cross-term) | `DeeperMultilinear` over D⁺ (the γβ cross-term re-factored inside the renamed Δ, never flat) |
 
 ## Pointers (provenance homes)
 
@@ -46,9 +51,27 @@ satisfy the hypotheses); the guarded leaves' PROOFS are the separate proof queue
 
 ## Guarded nodes
 
-`b-leaf34-case-steps` (`case1_preserves_stepInv` = THE WALL) and `b-leaf5..b-leaf8` — every
-fold-sourced leaf statement is re-checked against this bank before a re-render is trusted. The
-`FoldStepInvAt` / `Deg1SupportedOn` / `FoldRealizes` predicates are the machinery that closes axes
-1–3; L7's coordinate axis is now CLOSED (canonCenter bake `d174f1f41` — `leafPath_compactCover`
-bridge-free). All 5 axes statement-closed; the guarded leaves' proofs are the proof queue
+`b-leaf34-case-steps` (`case1_preserves_stepInv` = THE WALL), `b-leaf-lastlayer`
+(`lastLayer_clear_preserves`), `b-terminal-edge-stepinv`, and `b-leaf5..b-leaf8` — every fold-sourced
+leaf statement is re-checked against this bank before a re-render is trusted. `FoldStepInvAt` /
+`Deg1SupportedOn` / `FoldRealizes` close axes 1–3; L7's coordinate axis is CLOSED (canonCenter bake
+`d174f1f41`); the `supportAt` window (bake `b7fa66841`) closes the support / C′ / coefficient-clause
+frame axes (6–8). **All 8 axes statement-closed**; the guarded leaves' proofs are the proof queue
 ([[banked-families]] § In-flight).
+
+## Process defects (NOT field-severance — a distinct channel)
+
+- **over-deference / false-retraction** (2026-07-22, the window saga's double-reversal). seat-L4
+  RETRACTED its own CORRECT finding — mis-applying the ROOT degree-1 reading (the root has NO −γβ) to
+  the CHILD (which does). Caught by the pinned-calibration MAP-direction battery (`case1_supportAt.py`
+  PASS @ `1c2bc359a`) + the vanishing-at-T=0 discriminator (child `= c_p·1 + c_d·(δ−γβ)`: `T={un-cleared}`
+  FAILS via the cleared-pivot pure-deeper `c_p·1` term; `T={deeper}` HOLDS = the descend), adjudicated by
+  the elder-DECORRELATED p.18/21 re-derivation. Provenance: journal 2026-07-22 (the double-reversal +
+  dead-inbox recovery); the elder witness text in commit `83f699f32` body. LESSON: a seat's state flip
+  routes through the elder's ruling BEFORE the render lane — the calibration check-order is the instrument.
+
+## Standing gate contract — the depth-diverse witness pin
+
+No window / advance claim rests on an L=2-only battery. `(3,3,4)` HIDES the within-layer descend (L=2,
+the small-depth shadow's third strike); `(3,3,2,2)` EXHIBITS it (L≥3). The gate/battery contract
+requires depth ≥ where the shadow collapses (here L≥3).
