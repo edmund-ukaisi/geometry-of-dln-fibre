@@ -14522,3 +14522,23 @@ countermodel (Lean witness building), the render scopes (Gap B staging survives 
 e-fix = 2 signatures; cap isolated), and the subsidiary queue (firm cover fix / salvage (b) + Core
 block-atom (Q) / Gap B merge independent / hparent 3-sites / hpos note / non-strict pin). Every lane
 holds on the ruling or builds witnesses. The design round decides: the faithful step map + the e form.
+
+## 2026-07-23 ~07:45 UTC — seat-LL draft twin GREEN (LastLayerWire.lean, push held); an hlayer-boundary confirmation + a Gap-B cross-link
+
+seat-LL built the primed twin lastLayer_clear_preserves' GREEN against the corrected (hparent) statement
+— push held for the elder's verbatim, correctly. Module: NEW LastLayerWire.lean (MonumentAtlas +
+Case1Wire + Case2TransportWire; dedicated file — the target is case-agnostic; one family per file).
+Both engine calls unify at the S=L guard case-blind (its (b) analysis confirmed in the typechecker);
+conjA δ=0 (subsequent clear) genuinely CLOSED, no sorry. THREE isolated map-tagged frontier sorries:
+(1) conjA δ=1 Deg1-extract (needs real-branch vanishing foldResid p j 0 = 0 + the case-blind center=
+supportAt split); (2) conjunct-2 at S=L — the descent EXHAUSTS to the born-unit ∅ (case12/case2 ⟹
+child.cleared ≥ 1 ⟹ supportAt(child) = ∅); (3) GeneratorCleared — the born unit (pivot→1 under
+blockBlowupCoordQuot; residual at origin = c_pivot(0); ∃ slot reading the pivot).
+
+TWO integration notes: (i) CORRECTION confirmed — realBranch_multiAffine_step is NOT the conjunct-2
+tool at S=L (its hlayer guard FAILS there BY DESIGN — the hlayer bake handed exactly this boundary to
+its owner, and seat-LL is that owner; the S=L descent-to-∅ is distinct content, honestly its own
+frontier). (ii) CROSS-LINK (mine): seat-LL's sorry #1's "real-branch vanishing" IS HomogeneousDeg1On's
+vanishing clause at u=0 — Gap B's foldResid_layerHomogeneous will discharge it directly. So the Gap B
+bake feeds BOTH the descent lane AND the lastLayer lane; the link rides with the verbatim relay.
+seat-LL holds; the lane is one elder-verbatim away from a push + three named frontiers from sorry-free.
