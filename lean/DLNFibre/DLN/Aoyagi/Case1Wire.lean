@@ -71,4 +71,39 @@ theorem foldResid_stepMap_eq_pivot_mul (d : Fin (N + 1) → ℕ)
       (edgeShear_keeps_pivot d ed) u
   rw [hceq i, hcenter]; ring
 
+/-! ### Child-state reductions (conjunct-2 plumbing, seat-L4)
+
+The `foldResid`/`foldNR` values at a non-terminal child `p.extend ed`, split by `edgeδ`. Consumed
+by `case1_preserves_stepInv`'s conjunct-2 (the descend of `Deg1SupportedSlot`, parent to child). All
+proof-free reductions off the fold defs; `hlt : ¬ N ≤ ed.nextState.layer` comes from `hlayer`. -/
+
+/-- The child residual width is the parent's at a non-terminal step (`foldNR` collapses to `1` only
+at a TERMINAL child). -/
+theorem foldNR_extend_of_lt (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
+    (hlt : ¬ N ≤ ed.nextState.layer) : foldNR d (p.extend ed) = foldNR d p := by
+  change (if N ≤ ed.nextState.layer then 1 else foldNR d p) = foldNR d p
+  rw [if_neg hlt]
+
+/-- **δ=1 child residual = parent's STRICT TRANSFORM** at a non-terminal case edge: the
+pivot-quotiented sheared point (`blockBlowupCoordQuot` removes the blow-up `u_pivot`). -/
+theorem foldResid_extend_delta1 (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
+    (hlt : ¬ N ≤ ed.nextState.layer) (hδ : edgeδ d p = true)
+    (j : Fin (foldNR d (p.extend ed))) (u : Fin (flatDim d) → ℝ) :
+    foldResid d e (p.extend ed) j u
+      = foldResid d e p (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
+          (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u)) := by
+  change foldResid d e (TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ) j u = _
+  rw [foldResid, dif_neg hlt, if_pos hδ]; rfl
+
+/-- **δ=0 child residual = parent's PULLBACK** at a non-terminal case edge (no `u_pivot`). -/
+theorem foldResid_extend_delta0 (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
+    (hlt : ¬ N ≤ ed.nextState.layer) (hδ : edgeδ d p = false)
+    (j : Fin (foldNR d (p.extend ed))) (u : Fin (flatDim d) → ℝ) :
+    foldResid d e (p.extend ed) j u
+      = foldResid d e p (Fin.cast (foldNR_extend_of_lt d ed hlt) j) (stepMap d ed u) := by
+  change foldResid d e (TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ) j u = _
+  rw [foldResid, dif_neg hlt, if_neg (by simp [hδ])]; rfl
+
 end DLNFibre.DLN.Aoyagi

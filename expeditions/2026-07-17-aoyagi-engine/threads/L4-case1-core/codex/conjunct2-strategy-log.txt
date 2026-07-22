@@ -1,0 +1,972 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.145.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f88bd-aeb9-7751-8228-f94fa2ab0f0b
+--------
+user
+<task>
+Lean 4 + Mathlib formalisation. I must prove "conjunct-2" of a theorem (the WALL of the expedition).
+I need a STRATEGY: is it provable as stated, and what is the exact algebraic decomposition? Diagnosis,
+not Lean code (I build in Lean myself).
+
+## The objects (real Lean defs, paraphrased faithfully; D := flatDim d, a fixed dimension)
+
+Coordinates `u : Fin D → ℝ` decode into LAYERS: each coord i belongs to exactly one layer ℓ(i) ∈ {0..N-1}.
+`layerCoords d ℓ` = the coords in layer ℓ. `blockCoords d ℓ` = layer-ℓ coords capped on one axis (⊆ layerCoords d ℓ).
+
+IgnoresCoords c S V  :=  ∀ w∈V, ∀ m∈S, ∀ t, c (update w m t) = c w        -- c does not read S-coords
+AffineOn f X V       :=  ∃ a b, IgnoresCoords a X V ∧ (∀x∈X, IgnoresCoords (b x) X V)
+                                ∧ ∀u∈V, f u = a u + ∑_{x∈X} b x u · u x    -- total degree ≤1 in X
+PerLayerDeg1From d f fromLayer V := ∀ ℓ ≥ fromLayer, AffineOn f (layerCoords d ℓ) V   -- per-layer deg≤1 from a threshold
+Deg1SupportedSlot d resid j S fromLayer V :=
+    (∃ c, (∀i, ContinuousOn (c i) V) ∧ ∀u∈V, resid j u = ∑_{i∈S} c i u · u i)   -- (A) support-decomp on S (⟹ vanishes at 0)
+  ∧ PerLayerDeg1From d (resid j) fromLayer V                                    -- (B) per-layer deg≤1 from fromLayer
+
+The support window (V ≡ univ everywhere, so ignore V):
+  supportAt d S J := if J=0 then blockCoords d S else if S+1<N then blockCoords d (S+1) else ∅
+  supportLayerOf state := if state.cleared=0 then state.layer else state.layer+1
+
+The step map on a coordinate vector, at an edge `ed` (center : Finset, pivot ∈ center, shearφ, case):
+  blockShear φ u          := u + φ u                       -- unipotent, φ 0 = 0, keeps pivot coord: (blockShear φ u) pivot = u pivot
+  edgeShear ed            := id (case11/rollover) | blockShear ed.shearφ (case12/case2)
+  blockBlowupMap S p w j  := if j=p then w p else if j∈S then w p · w j else w j
+  stepMap ed              := blockBlowupMap ed.center ed.pivot ∘ edgeShear ed
+  blockBlowupCoordQuot p j w := if j=p then 1 else w j
+  qm ed u                 := fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear ed u)   -- pivot↦1, else sheared
+
+The fold residual family `foldResid p : Fin (foldNR p) → (Fin D→ℝ) → ℝ`, recursively:
+  root ↦ coreGen (DLN generators: each entry is a CROSS-LAYER PRODUCT, one coord factor per layer, so it
+                  vanishes at any point with only one coord nonzero);
+  a non-terminal step p→child (child = p.extend ed), with δ := [p.conState.cleared = 0]:
+    δ=1 (STRICT TRANSFORM): foldResid child j u = foldResid p (cast j) (qm ed u)
+    δ=0 (PULLBACK):         foldResid child j u = foldResid p (cast j) (stepMap ed u)
+
+## The theorem (interior case-1) — I must prove conjunct-2
+
+Hypotheses (ed is a FREE edge — its fields center/pivot/case/nextState/shearφ are arbitrary subject to):
+  hcase1  : ed.case ∈ {case11, case12}
+  hlayer  : ed.nextState.layer + 1 < N
+  hcenter : ed.center ⊆ blockCoords d p.conState.layer                    -- ⊆ (NOT =); pivot ∈ center ⊆ this
+  hinv-2  : ∀ j, Deg1SupportedSlot d (foldResid p) j
+                    (supportAt d p.conState.layer p.conState.cleared)     -- S_parent
+                    (supportLayerOf p.conState)
+  hgrade  : ShearGrades ed  — on S' := supportAt d ed.nextState.layer ed.nextState.cleared (the CHILD support):
+       ∃ c, (∀i k, ContinuousOn (c i k)) ∧
+         (∀ i∈S', ∀u, (blockShear ed.shearφ) u i = ∑_{k∈S'} c i k u · u k)        -- (a) S'-images graded on S'
+         ∧ (∀ i k, PerLayerDeg1From d (c i k) (supportLayerOf ed.nextState))       -- coeffs per-layer deg≤1
+         ∧ (∀ i∉S', IgnoresCoords (fun u ↦ (blockShear ed.shearφ) u i) S')          -- (b) S'ᶜ-images ignore S'
+
+GOAL (conjunct-2): ∀ j, Deg1SupportedSlot d (foldResid child) j S' (supportLayerOf ed.nextState)
+    where child = p.extend ed, S' = supportAt d ed.nextState.layer ed.nextState.cleared.
+
+## Ground truth I have (sympy batteries, all confirmed)
+- Interior δ=1: child = foldResid_p(qm u). Concrete model: parent slot = de·s1·e (de∈layer S, s1∈layer S+1, e∈layer S+2),
+  shear folds de↦de−be·ga (be,ga∈layer S), giving child = s1·e·(de−be·ga). This VANISHES at 0 (carries s1 factor),
+  is deg-1 on S'={s1} (=layer S+1), and PerLayerDeg1 holds from ≥ S+1 but FAILS at layer S (the be·ga is deg-2 there).
+  So the threshold ADVANCES S→S+1 with the descend; the cleared layer S drops below-threshold.
+- The bare-unit failure (a child entry with a nonzero constant at S'=0) occurs ONLY at S=L (last layer), which
+  hlayer excludes (there nextState.layer = N-1 so nextState.layer+1 = N, not < N).
+
+## The load-bearing question
+ed.nextState is FREE, so S' = supportAt(ed.nextState) and supportLayerOf(ed.nextState) are computed from a free
+state — there is NO hypothesis linking ed.nextState.layer/cleared to p.conState. Yet ShearGrades (hgrade) is
+stated on this specific S'. In the CONSTRUCTION, a case-1 clear gives ed.nextState.layer = p.conState.layer,
+ed.nextState.cleared = p.conState.cleared+1, so S' is the DESCENDED block (layer+1) when δ=1, or same block when δ=0.
+</task>
+
+<output_contract>
+Answer in this order, terse:
+1. VERDICT: Is conjunct-2 provable from (hcase1,hlayer,hcenter,hinv-2,hgrade) ALONE for a FREE ed.nextState?
+   Or does the proof require a hypothesis linking ed.nextState to p.conState (a "descend" relation
+   S' = supportAt(successor of p.conState))? If a link is required, state the WEAKEST link that suffices,
+   as a precise predicate, and say whether hgrade (being stated on the specific S') already smuggles enough.
+2. If provable: give the algebraic decomposition as a chain of named sub-lemmas, δ=1 and δ=0 separately.
+   For each, the exact identity: how foldResid_p(qm u) [or (stepMap u)], with foldResid_p being
+   Deg1SupportedSlot on S_parent, re-expresses as ∑_{i∈S'} c'_i u · u_i (conjunct A) and PerLayerDeg1From
+   S' (conjunct B). Name which hypothesis clause each step consumes (hinv-2's A, hinv-2's B, hgrade (a), hgrade (b)).
+3. The single most likely FAILURE POINT (where a free ed.nextState or the ⊆-not-= hcenter breaks a step), and
+   the cheapest discriminating check (a sympy substitution) to settle it before I invest in Lean.
+</output_contract>
+
+<grounding_rules>
+Distinguish (i) what FOLLOWS from the stated hypotheses vs (ii) what you INFER about the intended construction.
+Flag any step where you assume a state relationship not in the hypotheses. Do not claim a Mathlib lemma exists
+unless you are confident at v4.29; I verify all lemma names myself. If you think the theorem is FALSE as stated
+for a free ed.nextState, say so and give the counterexample shape.
+</grounding_rules>
+
+codex
+I’m checking the actual definitions and transition constraints, because the verdict turns on whether `ShearGrades` can force the missing state relation indirectly. I’ll separate consequences of the hypotheses from facts true only of constructed edges.
+exec
+/bin/bash -lc "sed -n '1,240p' CLAUDE.md && rg -n \"def (supportAt|supportLayerOf|ShearGrades)|structure.*Edge|Deg1SupportedSlot|foldResid|nextState|case11|case12\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ exited 2 in 0ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+exec
+/bin/bash -lc "pwd; rg --files -g 'CLAUDE.md' -g '*.lean' -g 'AGENTS.md' | sed -n '1,160p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+
+exec
+/bin/bash -lc "ls -la; find .. -maxdepth 3 -name CLAUDE.md -o -name '*.lean' | sed -n '1,160p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 0ms:
+total 52
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jul 22 07:32 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jul 22 07:18 ..
+-rw-rw-r-- 1 ubuntu ubuntu 8504 Jul 22 07:32 conjunct2-strategy-log.txt
+-rw-rw-r-- 1 ubuntu ubuntu 6851 Jul 22 07:32 conjunct2-strategy-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 3916 Jul 21 22:12 qhat-design-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 4664 Jul 21 22:12 qhat-design-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 2282 Jul 21 22:12 shear-checkpoint-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 4516 Jul 21 22:12 shear-checkpoint-prompt.md
+../supportedon_gap.lean
+../shear_gap.lean
+../terminal_deg1_gap.lean
+
+exec
+/bin/bash -lc "sed -n '1,260p' conjunct2-strategy-log.txt; sed -n '1,240p' shear-checkpoint-answer.md; sed -n '1,240p' qhat-design-answer.md; sed -n '1,260p' ../shear_gap.lean; sed -n '1,260p' ../supportedon_gap.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 0ms:
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.145.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f88bd-aeb9-7751-8228-f94fa2ab0f0b
+--------
+user
+<task>
+Lean 4 + Mathlib formalisation. I must prove "conjunct-2" of a theorem (the WALL of the expedition).
+I need a STRATEGY: is it provable as stated, and what is the exact algebraic decomposition? Diagnosis,
+not Lean code (I build in Lean myself).
+
+## The objects (real Lean defs, paraphrased faithfully; D := flatDim d, a fixed dimension)
+
+Coordinates `u : Fin D → ℝ` decode into LAYERS: each coord i belongs to exactly one layer ℓ(i) ∈ {0..N-1}.
+`layerCoords d ℓ` = the coords in layer ℓ. `blockCoords d ℓ` = layer-ℓ coords capped on one axis (⊆ layerCoords d ℓ).
+
+IgnoresCoords c S V  :=  ∀ w∈V, ∀ m∈S, ∀ t, c (update w m t) = c w        -- c does not read S-coords
+AffineOn f X V       :=  ∃ a b, IgnoresCoords a X V ∧ (∀x∈X, IgnoresCoords (b x) X V)
+                                ∧ ∀u∈V, f u = a u + ∑_{x∈X} b x u · u x    -- total degree ≤1 in X
+PerLayerDeg1From d f fromLayer V := ∀ ℓ ≥ fromLayer, AffineOn f (layerCoords d ℓ) V   -- per-layer deg≤1 from a threshold
+Deg1SupportedSlot d resid j S fromLayer V :=
+    (∃ c, (∀i, ContinuousOn (c i) V) ∧ ∀u∈V, resid j u = ∑_{i∈S} c i u · u i)   -- (A) support-decomp on S (⟹ vanishes at 0)
+  ∧ PerLayerDeg1From d (resid j) fromLayer V                                    -- (B) per-layer deg≤1 from fromLayer
+
+The support window (V ≡ univ everywhere, so ignore V):
+  supportAt d S J := if J=0 then blockCoords d S else if S+1<N then blockCoords d (S+1) else ∅
+  supportLayerOf state := if state.cleared=0 then state.layer else state.layer+1
+
+The step map on a coordinate vector, at an edge `ed` (center : Finset, pivot ∈ center, shearφ, case):
+  blockShear φ u          := u + φ u                       -- unipotent, φ 0 = 0, keeps pivot coord: (blockShear φ u) pivot = u pivot
+  edgeShear ed            := id (case11/rollover) | blockShear ed.shearφ (case12/case2)
+  blockBlowupMap S p w j  := if j=p then w p else if j∈S then w p · w j else w j
+  stepMap ed              := blockBlowupMap ed.center ed.pivot ∘ edgeShear ed
+  blockBlowupCoordQuot p j w := if j=p then 1 else w j
+  qm ed u                 := fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear ed u)   -- pivot↦1, else sheared
+
+The fold residual family `foldResid p : Fin (foldNR p) → (Fin D→ℝ) → ℝ`, recursively:
+  root ↦ coreGen (DLN generators: each entry is a CROSS-LAYER PRODUCT, one coord factor per layer, so it
+                  vanishes at any point with only one coord nonzero);
+  a non-terminal step p→child (child = p.extend ed), with δ := [p.conState.cleared = 0]:
+    δ=1 (STRICT TRANSFORM): foldResid child j u = foldResid p (cast j) (qm ed u)
+    δ=0 (PULLBACK):         foldResid child j u = foldResid p (cast j) (stepMap ed u)
+
+## The theorem (interior case-1) — I must prove conjunct-2
+
+Hypotheses (ed is a FREE edge — its fields center/pivot/case/nextState/shearφ are arbitrary subject to):
+  hcase1  : ed.case ∈ {case11, case12}
+  hlayer  : ed.nextState.layer + 1 < N
+  hcenter : ed.center ⊆ blockCoords d p.conState.layer                    -- ⊆ (NOT =); pivot ∈ center ⊆ this
+  hinv-2  : ∀ j, Deg1SupportedSlot d (foldResid p) j
+                    (supportAt d p.conState.layer p.conState.cleared)     -- S_parent
+                    (supportLayerOf p.conState)
+  hgrade  : ShearGrades ed  — on S' := supportAt d ed.nextState.layer ed.nextState.cleared (the CHILD support):
+       ∃ c, (∀i k, ContinuousOn (c i k)) ∧
+         (∀ i∈S', ∀u, (blockShear ed.shearφ) u i = ∑_{k∈S'} c i k u · u k)        -- (a) S'-images graded on S'
+         ∧ (∀ i k, PerLayerDeg1From d (c i k) (supportLayerOf ed.nextState))       -- coeffs per-layer deg≤1
+         ∧ (∀ i∉S', IgnoresCoords (fun u ↦ (blockShear ed.shearφ) u i) S')          -- (b) S'ᶜ-images ignore S'
+
+GOAL (conjunct-2): ∀ j, Deg1SupportedSlot d (foldResid child) j S' (supportLayerOf ed.nextState)
+    where child = p.extend ed, S' = supportAt d ed.nextState.layer ed.nextState.cleared.
+
+## Ground truth I have (sympy batteries, all confirmed)
+- Interior δ=1: child = foldResid_p(qm u). Concrete model: parent slot = de·s1·e (de∈layer S, s1∈layer S+1, e∈layer S+2),
+  shear folds de↦de−be·ga (be,ga∈layer S), giving child = s1·e·(de−be·ga). This VANISHES at 0 (carries s1 factor),
+  is deg-1 on S'={s1} (=layer S+1), and PerLayerDeg1 holds from ≥ S+1 but FAILS at layer S (the be·ga is deg-2 there).
+  So the threshold ADVANCES S→S+1 with the descend; the cleared layer S drops below-threshold.
+- The bare-unit failure (a child entry with a nonzero constant at S'=0) occurs ONLY at S=L (last layer), which
+  hlayer excludes (there nextState.layer = N-1 so nextState.layer+1 = N, not < N).
+
+## The load-bearing question
+ed.nextState is FREE, so S' = supportAt(ed.nextState) and supportLayerOf(ed.nextState) are computed from a free
+state — there is NO hypothesis linking ed.nextState.layer/cleared to p.conState. Yet ShearGrades (hgrade) is
+stated on this specific S'. In the CONSTRUCTION, a case-1 clear gives ed.nextState.layer = p.conState.layer,
+ed.nextState.cleared = p.conState.cleared+1, so S' is the DESCENDED block (layer+1) when δ=1, or same block when δ=0.
+</task>
+
+<output_contract>
+Answer in this order, terse:
+1. VERDICT: Is conjunct-2 provable from (hcase1,hlayer,hcenter,hinv-2,hgrade) ALONE for a FREE ed.nextState?
+   Or does the proof require a hypothesis linking ed.nextState to p.conState (a "descend" relation
+   S' = supportAt(successor of p.conState))? If a link is required, state the WEAKEST link that suffices,
+   as a precise predicate, and say whether hgrade (being stated on the specific S') already smuggles enough.
+2. If provable: give the algebraic decomposition as a chain of named sub-lemmas, δ=1 and δ=0 separately.
+   For each, the exact identity: how foldResid_p(qm u) [or (stepMap u)], with foldResid_p being
+   Deg1SupportedSlot on S_parent, re-expresses as ∑_{i∈S'} c'_i u · u_i (conjunct A) and PerLayerDeg1From
+   S' (conjunct B). Name which hypothesis clause each step consumes (hinv-2's A, hinv-2's B, hgrade (a), hgrade (b)).
+3. The single most likely FAILURE POINT (where a free ed.nextState or the ⊆-not-= hcenter breaks a step), and
+   the cheapest discriminating check (a sympy substitution) to settle it before I invest in Lean.
+</output_contract>
+
+<grounding_rules>
+Distinguish (i) what FOLLOWS from the stated hypotheses vs (ii) what you INFER about the intended construction.
+Flag any step where you assume a state relationship not in the hypotheses. Do not claim a Mathlib lemma exists
+unless you are confident at v4.29; I verify all lemma names myself. If you think the theorem is FALSE as stated
+for a free ed.nextState, say so and give the counterexample shape.
+</grounding_rules>
+
+codex
+I’m checking the actual definitions and transition constraints, because the verdict turns on whether `ShearGrades` can force the missing state relation indirectly. I’ll separate consequences of the hypotheses from facts true only of constructed edges.
+exec
+/bin/bash -lc "sed -n '1,240p' CLAUDE.md && rg -n \"def (supportAt|supportLayerOf|ShearGrades)|structure.*Edge|Deg1SupportedSlot|foldResid|nextState|case11|case12\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ exited 2 in 0ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+exec
+/bin/bash -lc "pwd; rg --files -g 'CLAUDE.md' -g '*.lean' -g 'AGENTS.md' | sed -n '1,160p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+
+exec
+/bin/bash -lc "ls -la; find .. -maxdepth 3 -name CLAUDE.md -o -name '*.lean' | sed -n '1,160p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 0ms:
+total 52
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jul 22 07:32 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jul 22 07:18 ..
+-rw-rw-r-- 1 ubuntu ubuntu 8504 Jul 22 07:32 conjunct2-strategy-log.txt
+-rw-rw-r-- 1 ubuntu ubuntu 6851 Jul 22 07:32 conjunct2-strategy-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 3916 Jul 21 22:12 qhat-design-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 4664 Jul 21 22:12 qhat-design-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 2282 Jul 21 22:12 shear-checkpoint-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 4516 Jul 21 22:12 shear-checkpoint-prompt.md
+../supportedon_gap.lean
+../shear_gap.lean
+../terminal_deg1_gap.lean
+
+### 1. CONFIRM
+
+**Definite fact.** Complete the witness with \(b=q=1\) and \((\mathrm{coreGen}\circ g)(v)=\mathrm{resid}(v)=v_1\). The shear has determinant \(1\), and
+
+\[
+\mathrm{stepMap}(u)=(u_0,u_0u_1+u_2,u_2).
+\]
+
+At \(u=(0,0,1)\), the pulled-back left side is \(1\), while every child RHS term contains \(b'(u)=u_0=0\). Hence no \(q'\), continuous or otherwise, exists. Neither determinant \(1\) nor \(\phi(0)=0\) controls the exceptional hyperplane with nonzero spectators.
+
+### 2. REFUTE as a complete fix
+
+**Definite fact.** Your order diagnosis correctly identifies the first obstruction: if the blow-up is outermost and the shear fixes the pivot, then
+
+\[
+(\mathrm{blockBlowupMap}\circ\mathrm{blockShear})(u)_i
+\]
+
+is divisible by \(u_p\) for every center coordinate.
+
+However, this still does **not** prove the stated child invariant. Even with \(\phi=0\), take \(\mathrm{resid}(v)=v_p\), \(b=q=1\). Then the pulled-back left side is \(u_p\), whereas
+
+\[
+b'\,\mathrm{resid}'=u_p\cdot u_p=u_p^2.
+\]
+
+Equality would require \(q'=1/u_p\). Thus your vanishing-locus test misses an order-of-vanishing obstruction caused by retaining the pure pullback residual.
+
+### 3. CONFIRM
+
+**Definite fact.** Your witness is injective on \(u_0\ne0\):
+
+\[
+u_1=\frac{(\mathrm{stepMap}(u))_1-u_2}{u_0}.
+\]
+
+Nevertheless it fails to preserve the center ideal. Injectivity away from the exceptional divisor has no implication for divisibility along that divisor.
+
+### 4. REFUTE: FIX-B is sufficient geometrically, but neither minimal nor sufficient for the stated formula
+
+**Definite fact.** The minimal uniform geometric condition is the pullback-ideal inclusion
+
+\[
+\mathrm{stepMap}^{*}\langle v_i:i\in S\rangle\subseteq\langle u_p\rangle.
+\]
+
+For shear-after-blow-up this is exactly  
+\(\phi_i\circ\mathrm{blockBlowupMap}\in\langle u_p\rangle\) for every \(i\in S\). FIX-B implies this but is stronger than necessary.
+
+To make the invariant honest, one must additionally use the **strict transform**
+
+\[
+\mathrm{resid}_j\circ\mathrm{stepMap}=u_p\,\overline{\mathrm{resid}}_j,
+\qquad
+\mathrm{resid}'_j:=\overline{\mathrm{resid}}_j,
+\]
+
+or else omit the extra \(u_p\) from \(b'\). No constraint on \(\phi\) alone repairs the stated “extra \(u_p\) plus pure pullback residual” formulation.## 1. Is Q̂ genuinely required?
+
+**Inference:** Your worry is correct about the collapsed witness, but not about `Q̂` being logically necessary for every nontrivial `StepInv`.
+
+From exact division one may retain the strict transforms:
+
+```lean
+resid' j := if j = p then 1 else w j
+q' i j := q i j ∘ σ
+```
+
+so that `resid j ∘ σ = w p * resid' j`. This preserves the residual index set without `Q̂`.
+
+The distinction is that `StepInv` as stated does not require `resid'` to be Aoyagi’s next canonical residual block. If the next state specifically expects the Schur-reduced block
+
+\[
+H_{\mathrm{next}}=\operatorname{diag}(1,\delta-\gamma\beta),
+\]
+
+then pullback alone is insufficient: after the source-realizable right operation one still has
+
+\[
+H_{\mathrm{pre}}=Q_1^{-1}H_{\mathrm{next}}.
+\]
+
+The left operation is not a source substitution. Passing from the raw strict transform to `Hnext` therefore requires row recombination—either explicitly as `Q̂`, or disguised by expanding the same coefficients entrywise.
+
+Thus:
+
+- nontrivial residual: no `Q̂` required;
+- canonical next-state residual with genuine recursion progress: `Q̂` or its entrywise equivalent is required.
+
+The invariant should therefore include a predicate identifying `resid` with the state’s prescribed residual block; otherwise the lazy and honest witnesses are indistinguishable.
+
+## 2. Clean abstract statement
+
+Your ratio orientation is correct. I would take the explicit inverse row matrix `R` as input, avoiding both diagonal inversion and Mathlib’s matrix inverse API:
+
+```lean
+def weightedCofactor
+    (c : X → ι → ι → ℝ) (R : X → Matrix ι ι ℝ) :
+    X → Matrix ι ι ℝ :=
+  fun x a d => c x a d * R x a d
+```
+
+The core theorem should be:
+
+```lean
+theorem weightedCofactor_commutes
+    [Fintype ι] [LinearOrder ι]
+    (hlo : ∀ x ∈ V, ∀ a d, a < d → R x a d = 0)
+    (hratio : ∀ x ∈ V, ∀ a d, d ≤ a →
+      b x a = c x a d * b x d) :
+    Set.EqOn
+      (fun x => Matrix.diagonal (b x) * R x)
+      (fun x => weightedCofactor c R x * Matrix.diagonal (b x)) V
+```
+
+Continuity is independent:
+
+```lean
+theorem weightedCofactor_continuousOn
+    (hc : ∀ a d, ContinuousOn (fun x => c x a d) V)
+    (hR : ∀ a d, ContinuousOn (fun x => R x a d) V) :
+    ContinuousOn (weightedCofactor c R) V
+```
+
+For unipotence define a small local predicate:
+
+```lean
+def UnitLower (A : Matrix ι ι ℝ) :=
+  (∀ a, A a a = 1) ∧ ∀ a d, a < d → A a d = 0
+```
+
+`R` unit-lower plus `c x a a = 1` implies `Q̂` unit-lower. The diagonal normalization is essential: `b_a = c_aa b_a` does not imply `c_aa = 1` where `b_a = 0`.
+
+For `Q̂ 0 = I`, it suffices to assume `R 0 = 1` and `c 0 a a = 1`. `Q₁ 0 = I` is only needed to derive `R 0 = I`; it is irrelevant to the commutation identity.
+
+**Verified Mathlib v4.29 facts:** `Matrix.diagonal_mul` and `Matrix.mul_diagonal` are simp lemmas. `BlockTriangular id` means upper-triangular; lower-triangular uses `BlockTriangular OrderDual.toDual`. There is no general matrix `UnitLower` predicate. Determinants and triangular-inverse machinery are unnecessary here.
+
+## 3. Smallest useful decomposition
+
+Ranked by importance:
+
+1. **Canonical Schur identity:** `Hpre = R * Hnext` after the right operation has entered `σ`. This prevents the lazy residual.
+2. **Exact division:** establishes `b'` and the strict-transform residuals.
+3. **Weighted row transport:**
+
+   ```lean
+   diag b' * Hpre = Qhat * (diag b' * Hnext)
+   ```
+
+4. **Entrywise continuity of `Qhat`:** required by `StepInv`.
+5. **`UnitLower` and `Qhat 0 = I`:** needed only by the stronger normal-form invariant.
+6. **`Q₁` inverse, determinant, and general triangular theory:** not load-bearing for divisibility-only `StepInv`.
+
+So the leaf can consume exact division, the explicit Schur identity, and a three-lemma `weightedCofactor` module; no large matrix development is needed.import DLNFibre.Core.Aoyagi.PathAtoms
+
+/-!
+SEAT-L4 — THE WALL checkpoint, kernel witness: a FREE `ed.shearφ` breaks the case12 δ=1 divisibility.
+
+`φbad` writes the SPECTATOR coord `2` into the CENTER coord `1`. It is a LEGAL `ed.shearφ`
+(`jacDet (blockShear φbad) = 1`, `φbad 0 = 0`), yet the center coordinate `1`, pulled back through
+`stepMap = blockShear φbad ∘ blockBlowupMap {0,1} 0` (the render's shear-AFTER-blowup order), is NOT
+divisible by the pivot coordinate `u 0` — it equals the spectator value at `u 0 = 0`. So a
+center-supported residual (`SupportedOn {0,1}`, e.g. `w ↦ w 1`) pulls back OUT of `⟨u_pivot⟩`, and the
+δ=1 child `StepInv` (whose `foldB` carries the extra `u_pivot`) has no witness. STOP-ON-SUSPECT.
+-/
+
+open DLNFibre.Core.Aoyagi Set
+
+/-- The free shear displacement: put the spectator coord `2` into the center coord `1`. -/
+noncomputable def φbad : (Fin 3 → ℝ) → (Fin 3 → ℝ) := fun w ↦ fun i ↦ if i = 1 then w 2 else 0
+
+/-- `φbad` fixes the origin. -/
+example : φbad 0 = 0 := by funext i; simp [φbad]
+
+/-- `blockShear φbad` has Jacobian determinant `1` — so `φbad` is a LEGAL `ed.shearφ` (`hshear`). -/
+example : ∀ u, jacDet (blockShear φbad) u = 1 := by
+  intro u
+  refine jacDet_blockShear φbad (fun i ↦ i ≠ 1) ?_ ?_ ?_ u
+  · refine differentiable_pi.mpr (fun i ↦ ?_)
+    by_cases hi : i = 1
+    · simp only [φbad, hi, if_true]; exact (differentiable_apply 2)
+    · simp only [φbad, hi, if_false]; exact differentiable_const 0
+  · intro u i hi; simp [φbad, hi]
+  · intro u v huv; funext i
+    by_cases hi : i = 1
+    · simp only [φbad, hi, if_true]; exact huv 2 (by decide)
+    · simp [φbad, hi]
+
+/-- `w ↦ w 1` is `SupportedOn {0,1}` (a center coordinate — ideal-membership form). -/
+example : SupportedOn (fun (_ : Fin 1) (w : Fin 3 → ℝ) ↦ w 1) ({0, 1} : Finset (Fin 3)) Set.univ := by
+  refine ⟨fun _ i w ↦ if i = 1 then 1 else 0, fun j i ↦ continuousOn_const, fun j u _ ↦ ?_⟩
+  simp [Finset.sum_pair (show (0 : Fin 3) ≠ 1 by decide)]
+
+/-- **The break, kernel-checked:** the center coord `1` pulled back through the render's
+`stepMap = blockShear φbad ∘ blockBlowupMap {0,1} 0` is NOT divisible by the pivot coord `u 0`
+(no quotient `c`) — it is the spectator value `5` at a point with `u 0 = 0`. -/
+example :
+    ¬ ∃ c : (Fin 3 → ℝ) → ℝ, ∀ u : Fin 3 → ℝ,
+      (blockShear φbad (blockBlowupMap ({0, 1} : Finset (Fin 3)) 0 u)) 1 = u 0 * c u := by
+  rintro ⟨c, hc⟩
+  have h := hc ![0, 7, 5]
+  simp [blockShear, φbad, blockBlowupMap] at h
+import DLNFibre.Core.Aoyagi.PrincipalInv
+
+/-!
+SEAT-L4 — Lean-checked crux of the `SupportedOn` gap in the edge-indexed L3/L4
+(`DLN.Aoyagi.MonumentAtlas.Case1Preservation`).
+
+`SupportedOn resid center V` (resid depends only on center coordinates) is NECESSARY but INSUFFICIENT
+for the δ=1 child divisibility `BlockChild` demands: the residual `resid = fun u ↦ 1 + u 1` is
+`SupportedOn {0,1}` and continuous, yet its pullback through `blockBlowupMap {0,1} 0` is NOT divisible
+by the pivot coordinate `u 0` — it fails to vanish on `{u 0 = 0}` (the SupportedOn docstring's claim
+"residⱼ ∘ blockBlowupMap is divisible by u_p" is false for a general SupportedOn residual). The δ=1
+child then needs `(F∘g∘σ)/(u_p·(b∘σ))` continuous, which this residual denies (order deficit).
+FIX: pin resid to a center-coordinate combination (analytic + vanishing at 0), which is exactly
+`Core.Aoyagi.BlockDivision`'s assumption.
+-/
+
+open DLNFibre.Core.Aoyagi Set
+
+/-- The witness residual is genuinely `SupportedOn {0,1}` (independent of the spectator coord `2`). -/
+example : SupportedOn (fun (_ : Fin 1) (u : Fin 3 → ℝ) ↦ 1 + u 1) ({0, 1} : Finset (Fin 3))
+    Set.univ := by
+  intro j u _ d hd t
+  have hd1 : (1 : Fin 3) ≠ d := by rintro rfl; exact hd (by decide)
+  simp only [Function.update_apply, if_neg hd1]
+
+/-- …and it is continuous. -/
+example : Continuous (fun u : Fin 3 → ℝ ↦ 1 + u 1) := continuous_const.add (continuous_apply 1)
+
+/-- **The crux, kernel-checked:** this `SupportedOn` + continuous residual pulled back through
+`blockBlowupMap {0,1} 0` is NOT divisible by the pivot coordinate `u 0` (no quotient `c`, continuous
+or not) — it equals `1` at a point with `u 0 = 0`, where any `u 0 · c` is `0`. -/
+example :
+    ¬ ∃ c : (Fin 3 → ℝ) → ℝ,
+      ∀ w : Fin 3 → ℝ,
+        (fun u : Fin 3 → ℝ ↦ 1 + u 1) (blockBlowupMap ({0, 1} : Finset (Fin 3)) 0 w) = w 0 * c w := by
+  rintro ⟨c, hc⟩
+  have h := hc ![0, 7, 0]
+  simp [blockBlowupMap] at h
+
+codex
+The first obstruction is decisive: with the identity shear, `ShearGrades` holds for every possible child support, so it cannot encode any transition law. I’m also checking whether adding the intended state transition alone is sufficient for conjunct (B); the stated coefficient grading appears one degree too weak.
+exec
+/bin/bash -lc "sed -n '1,260p' shear-checkpoint-prompt.md; sed -n '1,300p' conjunct2-strategy-prompt.md; sed -n '1,300p' ../terminal_deg1_gap.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 0ms:
+<task>
+Decorrelated soundness check. Lean/Mathlib formalisation of one step of Aoyagi's resolution of
+singularities for deep linear networks. I claim a stated theorem is UNPROVABLE as written because of a
+free "shear" displacement; verify or refute my reasoning independently.
+
+SETUP (all real-valued functions on ℝ^D = (Fin D → ℝ); "the deepest point" is 0; ⟨u_p⟩ = the ideal of
+continuous functions divisible by the pivot coordinate `u ↦ u p`, i.e. functions vanishing on {u_p=0}
+with a continuous quotient):
+
+- A block-center blow-up `blockBlowupMap S p` (center S ⊆ Fin D, pivot p ∈ S): pivot `p ↦ u_p`; other
+  center coords `j ∈ S\{p} ↦ u_p·u_j`; SPECTATORS `j ∉ S ↦ u_j` (fixed). So every CENTER coordinate of
+  `blockBlowupMap S p u` lies in ⟨u_p⟩ (gains a u_p factor); spectators do NOT.
+- A shear `blockShear φ (w) = w + φ(w)`, with φ a FREE displacement constrained only by:
+  jacDet(blockShear φ) = 1 (unipotent) and φ(0) = 0.
+- The per-step coordinate change is `stepMap = blockShear φ ∘ blockBlowupMap S p`, i.e.
+  `stepMap(u) = blockShear φ (blockBlowupMap S p u)` — the shear applied AFTER the blow-up.
+- Residual `resid` satisfies "SupportedOn S": `resid(u) = ∑_{i∈S} c_i(u)·u_i` (c_i continuous) — an
+  IDEAL-MEMBERSHIP form: resid ∈ ⟨center coords⟩, so resid vanishes when all center coords vanish.
+- The parent invariant gives `(coreGen_i ∘ g)(v) = ∑_j q_ij(v)·(b(v)·resid_j(v))`, q continuous.
+- The δ=1 child step sets the child dominant `b'(u) = u_p · b(stepMap u)` (an EXTRA u_p factor) and the
+  child residual `resid'_j(u) = resid_j(stepMap u)` (pure pullback). The child invariant requires
+  `∃ q' continuous, (coreGen_i ∘ g ∘ stepMap)(u) = ∑_j q'_ij(u)·(b'(u)·resid'_j(u))` for all u.
+
+MY CLAIM: for a FREE φ this child invariant is UNPROVABLE. Reason: the RHS carries `b'` which is in
+⟨u_p⟩ (δ=1), so at any u with u_p=0 the RHS = 0, forcing `(coreGen_i ∘ g ∘ stepMap)(u) = 0` there. But
+`(coreGen_i∘g∘stepMap) = ∑_j (q∘stepMap)·(b∘stepMap)·(resid_j∘stepMap)`, and
+`resid_j∘stepMap = ∑_{i∈S} (c_i∘stepMap)·(stepMap u)_i`, where for a CENTER coord i,
+`(stepMap u)_i = (blockBlowupMap u)_i + φ(blockBlowupMap u)_i = u_p·quot_i + φ(blockBlowupMap u)_i`.
+The first term ∈ ⟨u_p⟩; the second, `φ(blockBlowupMap u)_i`, at u_p=0 equals `φ(center=0, spectators)_i`
+which for a free φ (only φ(0)=0, i.e. φ(all coords 0)=0) need NOT vanish when spectators ≠ 0. So
+`resid_j∘stepMap ∉ ⟨u_p⟩`, and `(coreGen∘g∘stepMap)` is nonzero at some u_p=0 point ⟹ no q'.
+
+CONCRETE WITNESS (D=3, S={0,1}, p=0, spectator 2): φ(w) = (0, w_2, 0) (jacDet(blockShear φ)=1, φ(0)=0).
+`stepMap(u) = (u_0, u_0·u_1 + u_2, u_2)`; center coord 1 = u_0·u_1 + u_2, which is u_2 ≠ 0 at u_0=0.
+Take resid = (center coord 1). Then resid∘stepMap = u_0u_1+u_2 ∉ ⟨u_0⟩.
+
+I also claim: re-adding the injectivity condition "CenterCoordAligned" (stepMap injective off {u_p=0})
+does NOT fix it — the witness φ above IS injective off {u_0=0} (inverse u_1=(c_1−u_2)/u_0) yet breaks
+divisibility. And: the fix is either (A) apply the blow-up OUTERMOST (`stepMap = blockBlowupMap ∘
+blockShear φ` with φ keeping the pivot), or (B) constrain φ so its center-coordinate displacements lie
+in ⟨center coords⟩ (so they gain u_p under the blow-up), matching the real Schur shear (a product of
+center coords).
+</task>
+
+<questions>
+1. Is my claim correct that the δ=1 child invariant is unprovable for a free φ (jacDet=1, φ(0)=0)?
+   Independently confirm or refute the concrete witness and the general reason.
+2. Is my diagnosis of the composition ORDER right — that "shear AFTER blow-up" is what admits the break,
+   and "blow-up outermost (shear first), φ keeping the pivot" (FIX-A) avoids it for any such φ?
+3. Is my claim that injectivity (CenterCoordAligned) does NOT suffice correct?
+4. What is the MINIMAL honest constraint on φ (or the composition) that makes it provable? Is FIX-B
+   ("φ's center displacements ∈ ⟨center coords⟩") the tightest, or is there something weaker/cleaner?
+</questions>
+
+<output_contract>
+Four short sections, one per question. State clearly CONFIRM or REFUTE for each of my claims, with the
+sharp reason. If you find a hole in my reasoning (e.g. the child invariant is actually provable via a
+route I missed, or a weaker constraint suffices), say so explicitly. Under ~600 words. Mark inference
+vs. definite fact.
+</output_contract>
+<task>
+Lean 4 + Mathlib formalisation. I must prove "conjunct-2" of a theorem (the WALL of the expedition).
+I need a STRATEGY: is it provable as stated, and what is the exact algebraic decomposition? Diagnosis,
+not Lean code (I build in Lean myself).
+
+## The objects (real Lean defs, paraphrased faithfully; D := flatDim d, a fixed dimension)
+
+Coordinates `u : Fin D → ℝ` decode into LAYERS: each coord i belongs to exactly one layer ℓ(i) ∈ {0..N-1}.
+`layerCoords d ℓ` = the coords in layer ℓ. `blockCoords d ℓ` = layer-ℓ coords capped on one axis (⊆ layerCoords d ℓ).
+
+IgnoresCoords c S V  :=  ∀ w∈V, ∀ m∈S, ∀ t, c (update w m t) = c w        -- c does not read S-coords
+AffineOn f X V       :=  ∃ a b, IgnoresCoords a X V ∧ (∀x∈X, IgnoresCoords (b x) X V)
+                                ∧ ∀u∈V, f u = a u + ∑_{x∈X} b x u · u x    -- total degree ≤1 in X
+PerLayerDeg1From d f fromLayer V := ∀ ℓ ≥ fromLayer, AffineOn f (layerCoords d ℓ) V   -- per-layer deg≤1 from a threshold
+Deg1SupportedSlot d resid j S fromLayer V :=
+    (∃ c, (∀i, ContinuousOn (c i) V) ∧ ∀u∈V, resid j u = ∑_{i∈S} c i u · u i)   -- (A) support-decomp on S (⟹ vanishes at 0)
+  ∧ PerLayerDeg1From d (resid j) fromLayer V                                    -- (B) per-layer deg≤1 from fromLayer
+
+The support window (V ≡ univ everywhere, so ignore V):
+  supportAt d S J := if J=0 then blockCoords d S else if S+1<N then blockCoords d (S+1) else ∅
+  supportLayerOf state := if state.cleared=0 then state.layer else state.layer+1
+
+The step map on a coordinate vector, at an edge `ed` (center : Finset, pivot ∈ center, shearφ, case):
+  blockShear φ u          := u + φ u                       -- unipotent, φ 0 = 0, keeps pivot coord: (blockShear φ u) pivot = u pivot
+  edgeShear ed            := id (case11/rollover) | blockShear ed.shearφ (case12/case2)
+  blockBlowupMap S p w j  := if j=p then w p else if j∈S then w p · w j else w j
+  stepMap ed              := blockBlowupMap ed.center ed.pivot ∘ edgeShear ed
+  blockBlowupCoordQuot p j w := if j=p then 1 else w j
+  qm ed u                 := fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear ed u)   -- pivot↦1, else sheared
+
+The fold residual family `foldResid p : Fin (foldNR p) → (Fin D→ℝ) → ℝ`, recursively:
+  root ↦ coreGen (DLN generators: each entry is a CROSS-LAYER PRODUCT, one coord factor per layer, so it
+                  vanishes at any point with only one coord nonzero);
+  a non-terminal step p→child (child = p.extend ed), with δ := [p.conState.cleared = 0]:
+    δ=1 (STRICT TRANSFORM): foldResid child j u = foldResid p (cast j) (qm ed u)
+    δ=0 (PULLBACK):         foldResid child j u = foldResid p (cast j) (stepMap ed u)
+
+## The theorem (interior case-1) — I must prove conjunct-2
+
+Hypotheses (ed is a FREE edge — its fields center/pivot/case/nextState/shearφ are arbitrary subject to):
+  hcase1  : ed.case ∈ {case11, case12}
+  hlayer  : ed.nextState.layer + 1 < N
+  hcenter : ed.center ⊆ blockCoords d p.conState.layer                    -- ⊆ (NOT =); pivot ∈ center ⊆ this
+  hinv-2  : ∀ j, Deg1SupportedSlot d (foldResid p) j
+                    (supportAt d p.conState.layer p.conState.cleared)     -- S_parent
+                    (supportLayerOf p.conState)
+  hgrade  : ShearGrades ed  — on S' := supportAt d ed.nextState.layer ed.nextState.cleared (the CHILD support):
+       ∃ c, (∀i k, ContinuousOn (c i k)) ∧
+         (∀ i∈S', ∀u, (blockShear ed.shearφ) u i = ∑_{k∈S'} c i k u · u k)        -- (a) S'-images graded on S'
+         ∧ (∀ i k, PerLayerDeg1From d (c i k) (supportLayerOf ed.nextState))       -- coeffs per-layer deg≤1
+         ∧ (∀ i∉S', IgnoresCoords (fun u ↦ (blockShear ed.shearφ) u i) S')          -- (b) S'ᶜ-images ignore S'
+
+GOAL (conjunct-2): ∀ j, Deg1SupportedSlot d (foldResid child) j S' (supportLayerOf ed.nextState)
+    where child = p.extend ed, S' = supportAt d ed.nextState.layer ed.nextState.cleared.
+
+## Ground truth I have (sympy batteries, all confirmed)
+- Interior δ=1: child = foldResid_p(qm u). Concrete model: parent slot = de·s1·e (de∈layer S, s1∈layer S+1, e∈layer S+2),
+  shear folds de↦de−be·ga (be,ga∈layer S), giving child = s1·e·(de−be·ga). This VANISHES at 0 (carries s1 factor),
+  is deg-1 on S'={s1} (=layer S+1), and PerLayerDeg1 holds from ≥ S+1 but FAILS at layer S (the be·ga is deg-2 there).
+  So the threshold ADVANCES S→S+1 with the descend; the cleared layer S drops below-threshold.
+- The bare-unit failure (a child entry with a nonzero constant at S'=0) occurs ONLY at S=L (last layer), which
+  hlayer excludes (there nextState.layer = N-1 so nextState.layer+1 = N, not < N).
+
+## The load-bearing question
+ed.nextState is FREE, so S' = supportAt(ed.nextState) and supportLayerOf(ed.nextState) are computed from a free
+state — there is NO hypothesis linking ed.nextState.layer/cleared to p.conState. Yet ShearGrades (hgrade) is
+stated on this specific S'. In the CONSTRUCTION, a case-1 clear gives ed.nextState.layer = p.conState.layer,
+ed.nextState.cleared = p.conState.cleared+1, so S' is the DESCENDED block (layer+1) when δ=1, or same block when δ=0.
+</task>
+
+<output_contract>
+Answer in this order, terse:
+1. VERDICT: Is conjunct-2 provable from (hcase1,hlayer,hcenter,hinv-2,hgrade) ALONE for a FREE ed.nextState?
+   Or does the proof require a hypothesis linking ed.nextState to p.conState (a "descend" relation
+   S' = supportAt(successor of p.conState))? If a link is required, state the WEAKEST link that suffices,
+   as a precise predicate, and say whether hgrade (being stated on the specific S') already smuggles enough.
+2. If provable: give the algebraic decomposition as a chain of named sub-lemmas, δ=1 and δ=0 separately.
+   For each, the exact identity: how foldResid_p(qm u) [or (stepMap u)], with foldResid_p being
+   Deg1SupportedSlot on S_parent, re-expresses as ∑_{i∈S'} c'_i u · u_i (conjunct A) and PerLayerDeg1From
+   S' (conjunct B). Name which hypothesis clause each step consumes (hinv-2's A, hinv-2's B, hgrade (a), hgrade (b)).
+3. The single most likely FAILURE POINT (where a free ed.nextState or the ⊆-not-= hcenter breaks a step), and
+   the cheapest discriminating check (a sympy substitution) to settle it before I invest in Lean.
+</output_contract>
+
+<grounding_rules>
+Distinguish (i) what FOLLOWS from the stated hypotheses vs (ii) what you INFER about the intended construction.
+Flag any step where you assume a state relationship not in the hypotheses. Do not claim a Mathlib lemma exists
+unless you are confident at v4.29; I verify all lemma names myself. If you think the theorem is FALSE as stated
+for a free ed.nextState, say so and give the counterexample shape.
+</grounding_rules>
+import DLNFibre.Core.Aoyagi.PrincipalInv
+open DLNFibre.Core.Aoyagi Set
+
+-- The terminal-reaching branch sets foldResid = (fun _ ↦ 1) over Fin 1. That residual CANNOT satisfy
+-- Deg1SupportedOn (needed by FoldStepInvAt's conjunct 2): 1 = ∑_{i∈C} c_i·u_i fails at u = 0.
+example (D : ℕ) (C : Finset (Fin D)) :
+    ¬ Deg1SupportedOn (fun (_ : Fin 1) (_ : Fin D → ℝ) ↦ (1 : ℝ)) C (Set.univ) := by
+  intro h
+  obtain ⟨c, _, hrepr, _⟩ := h 0
+  have h0 := hrepr 0 (Set.mem_univ _)
+  simp at h0   -- 1 = ∑_{i∈C} c_i(0)·(0 i) = ∑ c_i(0)·0 = 0
+
+codex
+### 1. VERDICT
+
+**False as stated.** A free `ed.nextState` breaks conjunct (A). `hgrade` does not encode any transition law: with `shearφ = 0`, `blockShear = id` satisfies `ShearGrades` for every choice of \(S'\).
+
+Write
+\[
+\operatorname{Supp}(s)=\operatorname{supportAt}(d,s.layer,s.cleared),\qquad
+\operatorname{Thr}(s)=\operatorname{supportLayerOf}(s).
+\]
+
+The weakest observable state relation needed is
+
+\[
+\operatorname{DescendView}(s,s') :=
+\begin{cases}
+\operatorname{Supp}(s')=\operatorname{blockCoords}(d,s.layer+1)
+\ \land\ \operatorname{Thr}(s')=s.layer+1,
+& s.cleared=0,\\[2mm]
+\operatorname{Supp}(s')=\operatorname{Supp}(s)
+\ \land\ \operatorname{Thr}(s')=\operatorname{Thr}(s),
+& s.cleared\ne0.
+\end{cases}
+\]
+
+The construction’s stronger relation
+\[
+s'.layer=s.layer,\qquad s'.cleared=s.cleared+1
+\]
+implies this.
+
+However, **no state-only link suffices for the full theorem**. Two further functional facts are missing:
+
+- In the \(\delta=1\) branch, \(F=\operatorname{foldResid}_p(j)\) needs a support decomposition on the next block \(S'\), not merely on the parent block.
+- For conjunct (B), `qm`/`stepMap` must preserve layerwise affinity from the new threshold.
+
+The stated `hgrade` does not imply the second fact. For \(s,r\in S'\), the triangular shear
+\[
+\sigma_s(u)=u_s+u_r^2,\qquad \sigma_r(u)=u_r
+\]
+satisfies `hgrade (a)` using \(\gamma_{ss}=1,\gamma_{sr}=u_r\); these coefficients are per-layer degree \(1\), and `hgrade (b)` holds outside \(S'\). Nevertheless \(u_s+u_r^2\) is not affine on that layer.
+
+### 2. Algebraic decomposition after the missing repairs
+
+Let \(F=\operatorname{foldResid}_p(j)\), \(P=\operatorname{Supp}(p.conState)\), \(C=S'\), and \(\sigma=\operatorname{edgeShear}(ed)\).
+
+#### \(\delta=0\)
+
+`DescendView` gives \(C=P\). Since `hcenter` places the center in layer \(L\), while \(C\) lies in layer \(L+1\),
+\[
+i\in C\Longrightarrow \operatorname{stepMap}(u)_i=\sigma(u)_i.
+\]
+Thus `⊆` is sufficient; equality of the center is unnecessary.
+
+From `hinv-2 (A)`,
+\[
+F(v)=\sum_{i\in C}a_i(v)v_i.
+\]
+
+For `case12`, `hgrade (a)` gives
+\[
+\sigma(u)_i=\sum_{k\in C}\gamma_{ik}(u)u_k,
+\]
+hence
+\[
+F(\operatorname{stepMap}u)
+=
+\sum_{k\in C}
+\underbrace{\left(\sum_{i\in C}
+a_i(\operatorname{stepMap}u)\gamma_{ik}(u)\right)}_{c'_k(u)}
+u_k.
+\]
+
+For `case11`,
+\[
+c'_k(u)=a_k(\operatorname{stepMap}u).
+\]
+
+Suggested lemma chain:
+
+1. `childSupport_disjoint_center` — `DescendView`, `hcenter`.
+2. `stepMap_eq_edgeShear_on_childSupport`.
+3. `graded_sum_substitution` — `hinv-2 (A)`, `hgrade (a)`.
+4. `continuous_child_coeff` — continuity witnesses.
+
+For (B), one needs a lemma of the form
+\[
+\operatorname{PerLayerDeg1From}(F,t')
+\land \operatorname{LayerwiseAffineMapFrom}(g,t')
+\Rightarrow
+\operatorname{PerLayerDeg1From}(F\circ g,t'),
+\]
+with \(g=\operatorname{stepMap}\). Here `hinv-2 (B)` supplies the first premise. Current `hgrade (a,b)` does not supply the second.
+
+#### \(\delta=1\)
+
+Here \(P=\operatorname{blockCoords}(d,L)\) and, under `DescendView`,
+\(C=\operatorname{blockCoords}(d,L+1)\).
+
+The parent witness on \(P\) yields only
+\[
+F(qm\,u)
+=
+a_p(qm\,u)+
+\sum_{i\in P\setminus\{p\}}a_i(qm\,u)\sigma(u)_i,
+\]
+because \(qm(u)_p=1\). Neither `hgrade (a)` nor `(b)` puts a \(C\)-factor into this expression.
+
+A separate fold-specific lemma is required:
+\[
+F(v)=\sum_{i\in C}d_i(v)v_i.
+\tag{next-layer support}
+\]
+
+Then, since \(p\notin C\), \(qm(u)_i=\sigma(u)_i\) for \(i\in C\), and
+\[
+F(qm\,u)
+=
+\sum_{k\in C}
+\underbrace{\left(\sum_{i\in C}
+d_i(qm\,u)\gamma_{ik}(u)\right)}_{c'_k(u)}
+u_k
+\]
+in `case12`; in `case11`, \(c'_k=d_k\circ qm\).
+
+For (B), use the same layerwise-composition lemma with \(g=qm\) and threshold \(L+1\). The intended lower-layer shear supplies this property, but the stated `hgrade` does not.
+
+### 3. MOST LIKELY FAILURE POINT
+
+The first failure is the free child support, not `hcenter ⊆`.
+
+Take \(\delta=1\), `case11`, zero shear, center \(\{p\}\), and
+\[
+F(v)=v_pv_sv_e,
+\]
+with \(p\) in layer \(L\) and \(s\) in layer \(L+1\). Choose the free next state to remain \((L,0)\), so \(S'=P\). Then
+\[
+F(qm\,u)=u_su_e.
+\]
+
+Set every \(P\)-coordinate to \(0\), but \(u_s=u_e=1\). The child equals \(1\), while every proposed sum
+\[
+\sum_{i\in S'}c'_i(u)u_i
+\]
+equals \(0\).
+
+That single SymPy substitution settles the state-link obstruction before any Lean work.
+tokens used
+55,128
+### 1. VERDICT
+
+**False as stated.** A free `ed.nextState` breaks conjunct (A). `hgrade` does not encode any transition law: with `shearφ = 0`, `blockShear = id` satisfies `ShearGrades` for every choice of \(S'\).
+
+Write
+\[
+\operatorname{Supp}(s)=\operatorname{supportAt}(d,s.layer,s.cleared),\qquad
+\operatorname{Thr}(s)=\operatorname{supportLayerOf}(s).
+\]
+
+The weakest observable state relation needed is
+
+\[
+\operatorname{DescendView}(s,s') :=
+\begin{cases}
+\operatorname{Supp}(s')=\operatorname{blockCoords}(d,s.layer+1)
+\ \land\ \operatorname{Thr}(s')=s.layer+1,
+& s.cleared=0,\\[2mm]
+\operatorname{Supp}(s')=\operatorname{Supp}(s)
+\ \land\ \operatorname{Thr}(s')=\operatorname{Thr}(s),
+& s.cleared\ne0.
+\end{cases}
+\]
+
+The construction’s stronger relation
+\[
+s'.layer=s.layer,\qquad s'.cleared=s.cleared+1
+\]
+implies this.
+
+However, **no state-only link suffices for the full theorem**. Two further functional facts are missing:
+
+- In the \(\delta=1\) branch, \(F=\operatorname{foldResid}_p(j)\) needs a support decomposition on the next block \(S'\), not merely on the parent block.
+- For conjunct (B), `qm`/`stepMap` must preserve layerwise affinity from the new threshold.
+
+The stated `hgrade` does not imply the second fact. For \(s,r\in S'\), the triangular shear
+\[
+\sigma_s(u)=u_s+u_r^2,\qquad \sigma_r(u)=u_r
+\]
+satisfies `hgrade (a)` using \(\gamma_{ss}=1,\gamma_{sr}=u_r\); these coefficients are per-layer degree \(1\), and `hgrade (b)` holds outside \(S'\). Nevertheless \(u_s+u_r^2\) is not affine on that layer.
+
+### 2. Algebraic decomposition after the missing repairs
+
+Let \(F=\operatorname{foldResid}_p(j)\), \(P=\operatorname{Supp}(p.conState)\), \(C=S'\), and \(\sigma=\operatorname{edgeShear}(ed)\).
+
+#### \(\delta=0\)
+
+`DescendView` gives \(C=P\). Since `hcenter` places the center in layer \(L\), while \(C\) lies in layer \(L+1\),
+\[
+i\in C\Longrightarrow \operatorname{stepMap}(u)_i=\sigma(u)_i.
+\]
+Thus `⊆` is sufficient; equality of the center is unnecessary.
+
+From `hinv-2 (A)`,
+\[
+F(v)=\sum_{i\in C}a_i(v)v_i.
+\]
+
+For `case12`, `hgrade (a)` gives
+\[
+\sigma(u)_i=\sum_{k\in C}\gamma_{ik}(u)u_k,
+\]
+hence
+\[
+F(\operatorname{stepMap}u)
+=
+\sum_{k\in C}
+\underbrace{\left(\sum_{i\in C}
+a_i(\operatorname{stepMap}u)\gamma_{ik}(u)\right)}_{c'_k(u)}
+u_k.
+\]
+
+For `case11`,
+\[
+c'_k(u)=a_k(\operatorname{stepMap}u).
+\]
+
+Suggested lemma chain:
+
+1. `childSupport_disjoint_center` — `DescendView`, `hcenter`.
+2. `stepMap_eq_edgeShear_on_childSupport`.
+3. `graded_sum_substitution` — `hinv-2 (A)`, `hgrade (a)`.
+4. `continuous_child_coeff` — continuity witnesses.
+
+For (B), one needs a lemma of the form
+\[
+\operatorname{PerLayerDeg1From}(F,t')
+\land \operatorname{LayerwiseAffineMapFrom}(g,t')
+\Rightarrow
+\operatorname{PerLayerDeg1From}(F\circ g,t'),
+\]
+with \(g=\operatorname{stepMap}\). Here `hinv-2 (B)` supplies the first premise. Current `hgrade (a,b)` does not supply the second.
+
+#### \(\delta=1\)
+
+Here \(P=\operatorname{blockCoords}(d,L)\) and, under `DescendView`,
+\(C=\operatorname{blockCoords}(d,L+1)\).
+
+The parent witness on \(P\) yields only
+\[
+F(qm\,u)
+=
+a_p(qm\,u)+
+\sum_{i\in P\setminus\{p\}}a_i(qm\,u)\sigma(u)_i,
+\]
+because \(qm(u)_p=1\). Neither `hgrade (a)` nor `(b)` puts a \(C\)-factor into this expression.
+
+A separate fold-specific lemma is required:
+\[
+F(v)=\sum_{i\in C}d_i(v)v_i.
+\tag{next-layer support}
+\]
+
+Then, since \(p\notin C\), \(qm(u)_i=\sigma(u)_i\) for \(i\in C\), and
+\[
+F(qm\,u)
+=
+\sum_{k\in C}
+\underbrace{\left(\sum_{i\in C}
+d_i(qm\,u)\gamma_{ik}(u)\right)}_{c'_k(u)}
+u_k
+\]
+in `case12`; in `case11`, \(c'_k=d_k\circ qm\).
+
+For (B), use the same layerwise-composition lemma with \(g=qm\) and threshold \(L+1\). The intended lower-layer shear supplies this property, but the stated `hgrade` does not.
+
+### 3. MOST LIKELY FAILURE POINT
+
+The first failure is the free child support, not `hcenter ⊆`.
+
+Take \(\delta=1\), `case11`, zero shear, center \(\{p\}\), and
+\[
+F(v)=v_pv_sv_e,
+\]
+with \(p\) in layer \(L\) and \(s\) in layer \(L+1\). Choose the free next state to remain \((L,0)\), so \(S'=P\). Then
+\[
+F(qm\,u)=u_su_e.
+\]
+
+Set every \(P\)-coordinate to \(0\), but \(u_s=u_e=1\). The child equals \(1\), while every proposed sum
+\[
+\sum_{i\in S'}c'_i(u)u_i
+\]
+equals \(0\).
+
+That single SymPy substitution settles the state-link obstruction before any Lean work.
