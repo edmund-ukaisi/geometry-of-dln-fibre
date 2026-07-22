@@ -12984,3 +12984,70 @@ check). M7 pending assignment (nav-13 advises); M6 held (may fall out of the wal
 startability), gates-ran ledger on the day's five bakes, hard-part-avoidance check (M4/M7/
 boost-readiness/multiAffine/L7-coverage all owned?), cone accounting (incl. the Case2Delta0
 retire candidate), distance-to-summit chain. Tasks: #66 closed; #67 (wave 1) + #68 (M4) opened.
+
+## 2026-07-22 ~20:00 UTC — WALL PRIMED on canonical (eca75325d); pnp-boost witness seat spawned
+
+**case1_preserves_stepInv' PRIMED in Case1Wire** (seat-L4, integrated eca75325d): the primed-leaf
+pattern completing the set (case1' + case2' + L6' + L8' all downstream, Assembly-consumable);
+dispatch body clean-three; TWO named frontier holes — realBranch_boostReady_case11 (the
+elder-part-ruled SOURCE form as a placeholder pending the battery + final ruling; in Case1Wire,
+seat-L4's module, cheap to restate if the final form differs) + conjB (→ the node-form
+one-liner). Census 43 (+2 tracked). GATE NOTE: seat-L4's own full build was SIGTERM-killed by
+the harness at ~15 min (a kill, not a compile failure) — MY integration build supplies the
+missing full-closure verification (0-err). Its Codex mechanism artifacts (6.5k-line log) banked
+in threads/L4-case1-core/. Status correction sent: the node-form ALREADY BAKED — conjB is
+closable NOW (one open hole after that: boostReady).
+
+**pnp-boost SPAWNED** (pen-and-paper witness, REQUEST_SPAWN honored — flat-roster spawn rule):
+the boost-readiness battery on (2,2,2,2)/(3,3,2,2) with the QUOTIENT-composition trap named
+(foldResid uses blockBlowupCoordQuot pivot→1, NOT blockBlowupMap), A1/A2/A3 exact checks, and
+THE ELDER'S OPEN QUESTION as the explicit adjudication target: is A1+A2 derivable from the slot
+invariant alone (derived stub closes self-contained) or does it need the b-chain (carried
+conjunct forced)? Deliverables: durable battery + decorrelated Codex + the derivation-attempt
+verdict. Routes: pnp-boost report → me → elder final form → seat-L4 proves.
+
+## 2026-07-22 ~20:20 UTC — M4 SPECIFY: no suspects; the R1/R2 fork RULED R2 (bridge-free)
+
+seat-L6's M4 SPECIFY verdict: the math is SOUND (its own old D=2 counterexample is exactly what
+M4b excludes — the finder of the defect certifying the fix); the contract expands into a 5-atom
+family (A1 blowup fixes pivot/off-center, A2 canonCenterOf ∌ earlier corner [structural: filter
++ cleared-monotone omega], A3 divBirthCoord immutability, A4 clause-III extraction, A5 the
+suffix-glue branch-(★) in the TreePath/foldG frame = the consumer-facing form) — the
+shape-sufficiency lesson applied at SPECIFY, before any consumer misfit.
+
+**THE FORK RULED: R2, bridge-free (controller's call — it PRESERVES the charter stance).** R1
+(reusing Engine/CornerDisjoint via a cornerToFlat↔flatCoordOf bridge) would reintroduce as
+proof-plumbing exactly the coordinate bridge the canonCenter round deliberately killed; the
+elder gate exists for stance-WEAKENING choices, and R2 is the anti-shortcut at the cost of two
+short structural lemmas (A2 omega + an A3 persistence lemma) — detail-at-scale, spent freely.
+Boundary note given: DivBirthReach's ConState-level immutability facts are frame-free and
+directly importable if stated on ConState (consuming those is not a bridge); reading the engine
+proofs for IDEAS is fine. Home approved: PivotPreservation.lean (new companion module).
+Coordination pinned: A5's final form vs L5FoldSpec's M4 contract reconciles THROUGH me if they
+differ (no silent adaptation on either side).
+
+**Addendum (~20:35): the M4 fork DISSOLVED, convergently.** seat-L6's own dig (crossing my R2
+ruling) found DivBirthInv is ConState-NATIVE — clause 3 IS M4b's freshness verbatim, and the
+threading lemmas (conRoot/stepCase11/stepRollover/stepChildren) carry it down every real branch.
+So A3 = import-and-induct off EXISTING lemmas (not a re-prove), A2 = tupIdxEquiv-injectivity +
+omega off clause-3 freshness — NO flatCoordOf, no engine CornerDisjoint. Bridge-free was never
+in tension with reuse: the reusable facts were already frame-free (exactly the ruling's boundary
+note, confirmed independently from the seat's side). Two decorrelated reads, same verdict, the
+cheap version. seat-L6 building PivotPreservation.lean per-atom (reports at A1-A2, then A5);
+A5's final form routes through me for the L5Spec reconciliation.
+
+## 2026-07-22 ~20:50 UTC — THE WALL IS ONE HOLE (conjB closed via the node-form one-liner)
+
+seat-L4 pulled the node-form bake and closed the wall's conjunct-B with the ONE-LINER
+`realBranch_multiAffine hpos e (p.extend ed) hbranch` — exactly the consumption the node-form
+restatement was ruled for. Integrated (bf762c8e3; census 42). **case1_preserves_stepInv' is now
+proven modulo EXACTLY realBranch_boostReady_case11** — conjunct-1 δ=0 ✓, δ=1 case12 ✓, δ=1
+case11 = boost-readiness, conjunct-2 ✓; sorryAx flows through the single stub. The monument's
+four proof-bearing leaves: L6 ✓ L8 ✓ case2 = conjB-only (same node-form one-liner, seat-L3T2's
+module — routing it) case1 = boostReady-only.
+
+Three independent instruments now converge on the ONE remaining wall obligation: pnp-boost
+(battery + derivation-attempt), seat-L4's own pre-spawn Codex xhigh (verdict routes to ME, not
+to pnp-boost — the decorrelation held until both land), and the elder's final form. The day's
+statement architecture has collapsed the coupled-corank wall — "the frontier this project dodged
+for multiple expeditions" — to one exact-algebra-adjudicable lemma about b-chain coefficients.
