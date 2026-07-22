@@ -280,4 +280,28 @@ theorem terminal_edge_unit_stepInv (d : Fin (N + 1) → ℕ)
       simp only [hArg, Finset.sum_mul]
       refine Finset.sum_congr rfl (fun j _ ↦ ?_); ring
 
+/-! ## Post-bake leaves (fork-(A) invariant: `Deg1SupportedSlot` over the descending `supportAt`)
+
+SPECIFY skeletons (statement-identical to `MonumentAtlas`), carrying TRACKED-OPEN sorries while the
+conjunct-B `supportAt`-descent re-factoring is built (coordinated with seat-L4 — same wall). The
+divisibility conjunct rides the banked engine; the geometric fact driving both: the δ discriminator
+ALIGNS with the support layer — J=0 ⟹ δ=1 ⟹ `supportAt` = layer S (the blow-up layer, residual gains
+`u_pivot`); J≥1 ⟹ δ=0 ⟹ `supportAt` = layer S+1 (deeper — SPECTATORS of the layer-S blow-up, residual
+fixed, pure pullback). -/
+
+/-- **L3 — a case-2 edge preserves the foldState invariant** (statement-identical to
+`MonumentAtlas.case2_preserves_stepInv`; primed to avoid the import clash — arch-C swaps the leaf's
+`sorry` to `:= case2_preserves_stepInv' …` at integration). TRACKED-OPEN: the `supportAt`-descent
+conjunct-B re-factoring. -/
+theorem case2_preserves_stepInv'
+    {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
+    (hlayer : ed.nextState.layer + 1 < N)
+    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    FoldStepInvAt d e
+      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
+  -- map: B-L3-case2-preserves-stepInv (support DESCENDS parent→child supportAt; Deg1SupportedSlot)
+  sorry
+
 end DLNFibre.DLN.Aoyagi
