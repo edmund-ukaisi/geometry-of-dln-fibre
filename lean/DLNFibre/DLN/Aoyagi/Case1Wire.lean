@@ -487,6 +487,40 @@ theorem cornerToFlat_notMem_blockCoords {N : ℕ} {d : Fin (N + 1) → ℕ} (s :
   rw [Finset.mem_filter] at hq
   exact hne hq.2.1
 
+/-! ### (A-div) — the ledger b-chain and its u-position divisibility (seat-L4B, L1-invariant)
+
+The `diag(b)` half of the residual normal form `foldResid = diag(b)·D·H`: the row-`i` dominant monomial
+factor is the product of exceptional coordinates of the divisors whose tilde-threshold sits below `i`.
+Stated abstractly over a coordinate map `κ` and threshold `thr` (the ledger supplies
+`κ = cornerToFlat ∘ divBirthCoord`, `thr = divTilde` at the assembly), so it is reusable by the descent's
+δ=1 cofactor and sidesteps the `cornerToFlat` `Option`. This is the pen-and-paper battery's Gap-A
+mechanism `u_p ∣ b_i ⟺ i > J₁`, verified at the factorization level (blow-up/ledger content only — no
+shear input, hence L1-invariant). -/
+
+/-- **The ledger b-chain** `bLedger κ thr u i = ∏_{k : thr k < i} u (κ k)` — row `i`'s dominant-monomial
+factor: the exceptional coordinates of the divisors whose threshold `thr k` is below `i`. -/
+def bLedger {n D : ℕ} (κ : Fin n → Fin D) (thr : Fin n → ℕ) (u : Fin D → ℝ) (i : ℕ) : ℝ :=
+  ∏ k ∈ Finset.univ.filter (fun k => thr k < i), u (κ k)
+
+/-- **u-position factorization (the `i > J₁` half of the Gap-A mechanism).** When divisor `f`'s threshold
+is below row `i` (`thr f < i`, i.e. row `i` sits above the jump `J₁ = thr f`), its exceptional coordinate
+`u (κ f)` factors out of `bLedger`. Verifies `u_p ∣ b_i` for the non-dominant rows. Blow-up/ledger only. -/
+theorem bLedger_factor_of_thr_lt {n D : ℕ} (κ : Fin n → Fin D) (thr : Fin n → ℕ)
+    (u : Fin D → ℝ) (i : ℕ) (f : Fin n) (hf : thr f < i) :
+    bLedger κ thr u i
+      = u (κ f) * ∏ k ∈ (Finset.univ.filter (fun k => thr k < i)).erase f, u (κ k) :=
+  (Finset.mul_prod_erase _ (fun k => u (κ k))
+    (Finset.mem_filter.mpr ⟨Finset.mem_univ f, hf⟩)).symm
+
+/-- **The `i ≤ J₁` half: the dominant rows do not draw `u (κ f)` from the b-chain.** For a row `i` at or
+below the jump (`i ≤ thr f`), divisor `f` is absent from `bLedger`'s product, so — provided `κ` is
+injective (distinct birth corners, from `DivBirthInv`) — `u (κ f)` does not appear as a factor; the
+dominant row's single center factor is a `D`-block coordinate, not `u_p`. Membership form; the
+`κ`-injective non-divisibility is the assembly's step. -/
+theorem bLedger_notMem_index_of_thr_le {n : ℕ} (thr : Fin n → ℕ) (i : ℕ) (f : Fin n) (hf : i ≤ thr f) :
+    f ∉ Finset.univ.filter (fun k => thr k < i) := by
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]; omega
+
 /-! ### The WALL — primed leaf `case1_preserves_stepInv'` (SEAT-L4, primed-leaf pattern)
 
 Statement-identical to `MonumentAtlas.case1_preserves_stepInv`; the controller swaps the MonumentAtlas
