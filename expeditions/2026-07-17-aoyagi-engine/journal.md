@@ -10681,3 +10681,22 @@ restoring the hint); the FINAL gate discriminator set (left-disjunct unreachabil
 under the split window; the frame-witness death; the swap-alarm protocol); the render proceeds
 on the pinned shape; seat-L4's trace scoped to the offset + shed-structure confirmation ONLY.
 "This should be the last window turn."
+
+## 2026-07-22 (controller) — THE SWAP-ALARM FIRES: seat-L4's trace contradicts the amended pin WITH the pre-flagged swap signature; convention check runs FIRST
+
+seat-L4's trace (battery case1_window_semantics.py @ a9d08c053): the support DESCENDS per clear
+(T_child = the DEEPER layer; D⁺_child = the CURRENT layer — cleared AND uncleared — ∪ rest),
+C′ must be PINNED (a free ∃ admits the failing readings unfalsifiably), and a CAVEAT naming the
+possible thrash root: the GEOMETRIC support layer may diverge from the recursion's LEDGER layer S
+across multiple clears (the deferred coordinate-bridge territory). Its battery evidence against
+the amended pin: the standalone γβ term (both factors shed-side) has no T-factor under
+T = uncleared-remainder — Deg1 fails there; under T = deeper the entry is degree-1 with
+current-layer coefficients. **The finding is nearly the exact (T, D⁺) INVERSION of the elder's
+page-amended pin — THE SWAP SIGNATURE THE ELDER PRE-FLAGGED** ("a substitution-vs-map reversal
+produces exactly a swap's signature — the thread-33/34 precedent"). THE PRE-PINNED CHECK-ORDER
+RUNS FIRST: seat-L4 verifies its battery's direction (map/FIX-A vs substitution) against its own
+crux (map-direction by construction) BEFORE the elder rules. Outcomes: substitution artifact →
+re-derive, the pin likely stands; confirmed map-direction → a genuine structure finding, the
+elder re-rules (the ledger-vs-geometric distinction as the likely reconciliation — the pin and
+the trace may describe one object in two layer-indexings). Everything holds: the elder's ruling,
+the render finalize, the bake. The alarm set in advance caught exactly what it was built for.
