@@ -10887,3 +10887,19 @@ the elder's single pass covers outer shape + construction skeleton together (que
 window ruling); proving starts only after the pass, multi-tide. Discipline riders: the 1360-sweep
 graduates to a re-runnable battery (`# guards:` header); module docstring records Codex's-map ≠
 cert's-map, both verified, equivalence NOT needed (any valid iso discharges the Nonempty).
+
+## 2026-07-22 (controller) — E-lane skeleton LANDED + verified; the (a)+(b) bundling fidelity call (Q5); pass-packet complete
+
+seat-E's route-(a) skeleton landed (84e8b8cf1) and controller-verified on the fetched branch:
+exactly FOUR map-tagged frontier sorries (enc-swap (a)+(b), enc-transport (c), enc-ceilingM-bridge
+(d), enc-sorted-box); the headline `bindingSet_orderIso_boxPart` now DISCHARGED compositionally
+(non-sorried — composes transport ∘ sorted-box); kill-battery g-enc-adjacent-swap.py banked with
+`# guards:` matching the map tags (EXIT 0: worked-example pins + all 579 positive-width tuples,
+bijection + order-embedding both directions). NEW FIDELITY CALL surfaced by the seat itself (→
+elder Q5): it BUNDLED "swap preserves bindingSet" + "local monotonicity" into the ONE coupled
+one-swap order-iso, because the atomic "swapR monotone in X" is FALSE by hand-checked
+counterexample (swapR(2,·,0,2,1): X=0,1,2 ↦ 2,0,1) — the domain restriction to binding profiles
+rescues it; the honest statement is the coupled one. WIRING CALL: OrderRealize stays UNWIRED until
+the four close (aggregator = controller single-writer; statements may move at the pass; not
+registered roots, so the cone audit doesn't need it). The elder's pass-packet is now COMPLETE and
+frozen: Q1–Q5 + four skeleton statements + outer shape, one pass, queued behind the window ruling.
