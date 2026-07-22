@@ -907,7 +907,31 @@ theorem realBranch_cover {N : ℕ} {d : Fin (N + 1) → ℕ}
     edgeδ d p = true → (ed.case = StepCase.case12 ∨ ed.case = StepCase.case2) →
       supportAt d p.conState.layer p.conState.cleared ⊆ ed.center := by
   -- map: B-derived-hcover (δ=1 ∧ case12/case2 ⟹ supportAt ⊆ center; case11 excluded)
-  sorry
+  -- At δ=1 the parent has `cleared = 0`, so `supportAt … 0 = blockCoords d layer`; and for a
+  -- case12/case2 edge the pinned center `canonCenterOf` is the SAME `widthMinUpto`-capped block with
+  -- the `cleared ≤ …` guards vacuous (`cleared = 0`) — so the two Finsets coincide (⊇, indeed =).
+  intro hδ hcase
+  obtain ⟨-, ⟨sc, hsc, hecase, -, hcenter, -⟩, -⟩ := hbranch
+  have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
+  have hsce : sc.ecase = StepCase.case12 ∨ sc.ecase = StepCase.case2 := by
+    rcases hcase with h | h
+    · exact Or.inl (hecase.trans h)
+    · exact Or.inr (hecase.trans h)
+  -- the pinned center as an explicit filter-image (case12/case2 give the identical block)
+  have hcc : canonCenterOf d p.conState sc
+      = (Finset.univ.filter (fun q : tupIdx d =>
+          (q.1.1 : ℕ) = p.conState.layer ∧ p.conState.cleared ≤ (q.1.2 : ℕ) ∧
+            p.conState.cleared ≤ (q.2 : ℕ) ∧ (q.2 : ℕ) < widthMinUpto d p.conState.layer)).image
+          (tupIdxEquiv d) := by
+    rcases hsce with h | h <;> simp only [canonCenterOf, h]
+  rw [hcenter, hcc, supportAt, if_pos hcl, blockCoords]
+  intro x hx
+  rw [Finset.mem_image] at hx ⊢
+  obtain ⟨q, hq, rfl⟩ := hx
+  rw [Finset.mem_filter] at hq
+  refine ⟨q, ?_, rfl⟩
+  rw [Finset.mem_filter]
+  exact ⟨Finset.mem_univ q, hq.2.1, hcl ▸ Nat.zero_le _, hcl ▸ Nat.zero_le _, hq.2.2⟩
 
 /-- Derived: the combinatorial descend-view (the edge's `(case, child)` is an oracle step). -/
 @[blueprint]
@@ -916,7 +940,10 @@ theorem realBranch_descendView {N : ℕ} {d : Fin (N + 1) → ℕ}
     (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
     DescendView d p ed := by
   -- map: B-derived-descendview (∃sc ecase/child clause of IsRealBranch step case)
-  sorry
+  -- Projection of IsRealBranch's step middle conjunct: `∃ sc ∈ stepChildren, sc.ecase = ed.case ∧
+  -- sc.child = ed.nextState ∧ …`; DescendView is exactly its first two conjuncts.
+  obtain ⟨-, ⟨sc, hsc, hecase, hchild, -, -⟩, -⟩ := hbranch
+  exact ⟨sc, hsc, hecase, hchild⟩
 
 /-- Derived: the shear stays within the carve (the within-carve grade off the shear pin). -/
 @[blueprint]
