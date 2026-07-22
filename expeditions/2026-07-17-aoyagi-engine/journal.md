@@ -15098,3 +15098,26 @@ COMMITTED as a kill-witness (the Fbad pattern). ONE CAUTION issued: the boundary
 the live cap-escape question (state it either-outcome-safe, or share seat-L3T2's named cap frontier —
 don't assume recoord-confinement unverified). SEQUENCE: fixes + base + boundary now; the heavy transport
 grind GO when green. The wall's endgame is moving.
+
+## 2026-07-23 ~20:45 UTC — the 9TH catch: standalone ChainNF is ∀e-FALSE → ROUTE β (the carried-slot derivation)
+
+seat-L4D's second SUSPECT, the deepest of the guard-class family: chainCompat_holds over ARBITRARY e is
+FALSE — its base re-derives coreGen content FROM THE ROOT, which is canonFlatten-specific (our own Fbad
+kill-witness documents the exact counterexample), and specializing breaks the ∀e swap into the baked
+wall statement. THE ARCHITECTURAL TRUTH it exposed: the wall's baked chain is ∀e-HONEST because hslot is
+CARRIED (unsatisfiable for a scrambling e ⟹ vacuous); the standalone ChainNF packaging imported the
+e-dependence by bypassing the carried slot — violating boostReady's OWN docstring spec ("re-express the
+carried parent slot over the boost center").
+
+ROUTE β CONFIRMED: prove realBranch_boostReady_case11 from hslot + hbranch DIRECTLY — unfold via the
+value-pin (shearφ = canonNormalizationOf), read the case11 b-chain boost split off the deeper recoord
+(cert §4b/§7) → BoostSplit → deg1SupportedOn_boostForm. ∀e-honest, swap-preserving, the hard content
+(the case11 b-chain read) identical under any packaging. RETIRES: chainCompat_holds + the standalone
+ChainNF induction packaging (+ isRealBranch_chainNF's wiring if unconsumed — proven-but-wrong-packaging
+is scaffolding; the census drop is honest). SURVIVES as β's ingredients: BoostSplit +
+deg1SupportedOn_boostForm, the bLedger family + the non-strict variant, a′ geometry. HISTORICAL NOTE
+(one line, in the file): ChainNF was designed PRE-N_p when the recoord wasn't in the defs — the faithful
+value-pin is what makes the local carried-slot derivation possible; the architecture simplifying IS the
+fidelity fix paying off. The cap-escape caution transfers to β's boundary read. No elder gate (carried-
+hypothesis consumption = leaf mandate + my gate); both retirements in the integration report. Guard-class
+catches: NINE, all pre-grind. Checkpoint 817f36fcf (the FIX-1/terminal-guard restatements) banked.
