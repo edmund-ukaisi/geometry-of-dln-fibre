@@ -10715,3 +10715,25 @@ encoding map — NOT a placeholder; the shape confirmation; the loose-lattice cl
 The protocol observation, on the record: tonight's two biggest redundant-work events both trace
 to unread inbox — the drain-before-compose requirement is now the E-lane's single process risk.
 The lane is one scaffold from its final pass.
+
+## 2026-07-22 (controller) — the elder pre-owns its pin's error; arch-C frames the L7-seam question; the (a)-road precedent named
+
+The elder's pre-reading (ruling held for the convention verdict per its OWN protocol, the lean
+declared with ownership): the trace's −γβ algebra is valid, frame-INDEPENDENT (even a
+substitution artifact would not reinstate the pin), and "my amended pin contradicted my own
+GAP-2 blessing" — the reconciliation = the trace's caveat (c): the paper's D_J display is the
+LEDGER layer (static through clears); the invariant's Deg1 support is the GEOMETRIC layer
+(descending per clear) — both true, different objects, conflated. Pre-flags: (1) the
+CENTER/SUPPORT divergence (the support parameter NOT ed.center-derived — the leaf values,
+canonCenter relation, and D⁺ derivation need re-audit for WHICH object they encode); (2) the
+convention check's purpose = coordinate calibration. The small-depth shadow's THIRD strike
+recorded (depth-diverse witnesses mandatory).
+
+**arch-C's input for the re-rule (routed with the controller's precedent note):** the divergence
+is likely the L7 Engine↔Aoyagi seam resurfacing — sub-case (a) bridge-free reindex (reconcile
+in-round) vs (b) genuinely card↔sum-bridge-gated (the window joins L7 as bridge-adjacent, the
+INTERIOR Deg1 conjunct bridge-dependent — a major scope event, controller-gated). The (a)-prior
+is stronger: canonCenter itself is the precedent (L7's seeming bridge-dependence dissolved under
+the paper's slot bookkeeping; the geometric descend is per-clear slot bookkeeping of the same
+species). ALL HOLDS: the verdict + calibrated sets trigger the ruling; no render finalize, no
+bake, on an unverified frame.
