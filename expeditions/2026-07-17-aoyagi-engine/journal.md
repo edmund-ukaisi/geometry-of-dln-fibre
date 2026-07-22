@@ -11242,3 +11242,16 @@ the common diagnosis compressed: the baked hypotheses/invariant do not encode th
 specifics — effective support = residual block; the Schur-fold shear; the generator-side clear.
 Both proof seats hold with zero proof investment wasted; honest halves staged to resume on one
 rebase.
+
+## 2026-07-22 (controller) — (c) DISCHARGED at pre-stage: the E-lane frontier is exactly TWO core sorries
+
+seat-E's pre-stage over-delivered (4a2edbc84, controller-verified): (c) bindingSet_transport_
+sorted is fully DISCHARGED via the submonoid route — transportSubmonoid built axiom-clean; the two
+load-bearing defeqs HELD (swapWidths i M = M∘swap i.castSucc i.succ by rfl; M∘Tuple.sort M =
+sortedWidths M by rfl); mclosure_swap_castSucc_succ closes it; #print axioms: (c) rests ONLY on
+swapBinding_orderIso's sorryAx. THE E-LANE FRONTIER IS NOW EXACTLY TWO seat-owned sorries:
+swapBinding_orderIso (seat-Eswap) + bindingSet_sorted_orderIso_boxPart (seat-Ecore). The seam,
+(d), (c), the headline iso, and the count corollary a(ℓ−a)+1 are all PROVED-MODULO those two —
+on both cores landing, the Tier-3 chain closes AUTOMATICALLY at seat-E's integration (merge, two
+sorries vanish, AxCheck/aggregator handoff to controller). Design-once-build-once is holding:
+zero rework across the three tracks so far.
