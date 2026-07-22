@@ -11105,3 +11105,19 @@ for: the θ-count tide's equality-case machinery, built for the count, now carri
 realization too. Remaining in the module: ONE sorry (sortedBox_orderIso — enc/dec + both-direction
 monotonicity + OrderIso.ofHomInv), stated over general monotone-positive D; seat-E instantiates at
 D = sortedWidths (defeq to primitives by construction). Seat continuing.
+
+## 2026-07-22 (controller) — map refresh: carto's bake pass applied (A = controller pen; B+C = carto atomic)
+
+carto-standing's diff-then-judge pass on the bake: all 10 leaves ground-truthed at their lines;
+deeperCoords/shedSlots grep-clean; ONE load-bearing flag — the E-lane set-identity work is
+UNMERGED (-E only): admTight is STILL LIVE on the expedition tree; the map now says so explicitly
+(no describing branch-work as landed). Applied with the controller pen (A1–A7): b-leaf34 notes
+baked (cone 8→10, supportAt window, :861); NEW node b-leaf-lastlayer (:890, the fix-2 object);
+b-terminal-edge re-parent recorded (:916, LastLayerInv + hcleared); b-leaf7's coordinate story
+corrected canonCenter→supportAt (two-named-function split); b-leaf5/6/8 conjectured→STATED with
+lean pins (:1014/:1049/:1109); object-b notes → the rendered-skeleton reality (drivers proved from
+leaves; final wiring swap deferred note); e-p62 gains the E-lane progress block WITH the
+branch-only caveat. B (overlay: severance witnesses incl. the over-deference/false-retraction
+process witness + depth-diverse pin; banked-families; naming forwarders) + C (dead-routes:
+two-clock/shedSlots discard; deeperCoords deletion) = carto's pen, executing atomically. D: no
+gate-orphans; the E-lane drift is merge-pending, tracked.

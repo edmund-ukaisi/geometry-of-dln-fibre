@@ -70,7 +70,7 @@ nodes:
       - lean/DLNFibre/DLN/Aoyagi/LearningCoefficient.lean
       - expeditions/2026-07-17-aoyagi-engine/threads/31-monument-construction/certificate.md
       - expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md
-    notes: "the ONE library sorry (LearningCoefficient.lean:287); combinatorial half discharged by the adapter — residual is PURELY geometric; multi-tide monument (mon-geo+codex ~5% single-tide)"
+    notes: "the monument is a RENDERED skeleton (MonumentAtlas.lean); cone = 10 (8 sorried leaves + 2 drivers exists_atlasRealizesExponents :1134 / exists_coreResolution_via_monument :1186, both PROVED from the leaves, footprint clean-three+sorryAx). L4=THE WALL. Combinatorial half discharged by the adapter; residual PURELY geometric. The final wiring swap replaces the ONE library sorry (LearningCoefficient.lean:287) after the leaves close."
 
   - id: object-c
     kind: claim
@@ -152,7 +152,7 @@ nodes:
     edges: [{type: discharges, to: object-e}, {type: needs, to: e-p61-band-arithmetic}]
     kill: expeditions/2026-07-17-aoyagi-engine/threads/41-rho-count-object/rho_battery.py
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/41-rho-count-object/certificate.md]
-    notes: "pnp-gate DISCHARGED (993 cores exact, controller re-ran EXIT 0, blind Codex convergent); statement-shaping under the elder's ratified shape; kill-set [2,2,2,2,2]+[2,2,5]+ground truths"
+    notes: "pnp-gate DISCHARGED (993 cores exact, controller re-ran EXIT 0, blind Codex convergent); statement-shaping under the elder's ratified shape; kill-set [2,2,2,2,2]+[2,2,5]+ground truths. E-LANE PROGRESS (on -E/-Ecore/-Eswap, UNMERGED): seam upgraded to the SET IDENTITY (adm_eq_admTight PROVED d07a91caf → after the Q4 collapse renamed adm_runMin_filter_eq, admTight def DELETED — branch-only); 3a scaffold+skeleton landed (headline discharged compositionally; frontier sorries: swap-iso, transport, sorted-box); seat-Ecore: pivotal fact binding_qipT_pair PROVED via banked QIP water-filling (5e1400e71); seat-Eswap: (a)+(b) build. NOTE: admTight is still LIVE on the expedition tree — the deletion/rename land when -E merges."
 
   # ── Object B's landed halves ──────────────────────────────────────────────────────────────
 
@@ -288,25 +288,37 @@ nodes:
     owner: seat-L4
     edges: [{type: conjectured-toward, to: b-ladder}]
     kill: battery/g-coupled-binding-334.py
-    notes: "statement-hardened (5 severance rounds); TERMINAL-branch defect caught by seat-L4's probe (layer-axis) → non-terminal guards + the NEW terminal_edge_stepInv leaf in the canonCenter round (cone 6→7; full 9 when baked). Wall mechanics validated vs the proven StepInvShearChild core; proof in flight (Case1Wire parallel-dev)."
+    notes: "statement-hardened (5 severance rounds); TERMINAL-branch defect caught by seat-L4's probe (layer-axis) → non-terminal guards. BAKED (b7fa66841): cone 8→10, statement at :861 (supportAt geometric-descend window, C′ PINNED-computed, ∃ dropped). L4 = THE WALL, still stated/sorried, seat-L4. The terminal-branch defect is now handled by TWO leaves: the NEW lastLayer_clear_preserves (:890) + the re-parented terminal_edge_stepInv (:916). Severance taxonomy CLOSED — no free field on the quantified structure ([[severance-witnesses]])."
+
+  - id: b-leaf-lastlayer
+    kind: claim
+    title: "leaf L-last: the last-layer clear preserves the fold invariant (supportAt → ∅ born-unit corner) — fix-2 object, NEW at the bake"
+    lean: DLNFibre.DLN.Aoyagi.lastLayer_clear_preserves
+    status: stated
+    tier: new
+    owner: seat-L4
+    edges: [{type: conjectured-toward, to: b-ladder}]
+    notes: "born at the bake (b7fa66841, :890); the S=L born-unit corner where supportAt = ∅; splits the terminal transport cleanly from terminal_edge_stepInv."
 
   - id: b-leaf5-path-fold
     kind: claim
     title: "leaf 5: fold the one-step invariants along a root-to-leaf path"
-    status: conjectured
+    lean: DLNFibre.DLN.Aoyagi.leaf_stepInv_of_path
+    status: stated
     tier: new
     owner: "parked: skeleton rung (C); general-d reasoning over the salvaged tree's WellFounded.fix"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "the second research-grade half of the recalibration (mon-geo): induction over the built tree at general d"
+    notes: "the second research-grade half of the recalibration (mon-geo): induction over the built tree at general d. RENDERED+sorried at the bake (b7fa66841, :1014); the 2 drivers PROVE from the 8 leaves (footprint force-elaborated = [propext, sorryAx, Classical.choice, Quot.sound])."
 
   - id: b-leaf6-chart-geometry
     kind: claim
     title: "leaf 6: path map analytic, origin-fixing, a.e.-injective, ledger Jacobian, squarefree b₁"
-    status: conjectured
+    lean: DLNFibre.DLN.Aoyagi.leafPath_chartGeometry
+    status: stated
     tier: new
     owner: "parked: skeleton rung (C); statements gated by the shear pin (resolved corrected-(a))"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "unit ≡ 1 STANDS (chain rule over det-1 shears ∘ blow-ups); pivot-normalizes-to-1 residual is non-blocking (in-cert)"
+    notes: "unit ≡ 1 STANDS (chain rule over det-1 shears ∘ blow-ups); pivot-normalizes-to-1 residual is non-blocking (in-cert). RENDERED+sorried at the bake (b7fa66841, :1049)."
 
   - id: b-leaf7-compact-cover
     kind: claim
@@ -317,7 +329,7 @@ nodes:
     tier: new
     owner: "parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41"
     edges: [{type: conjectured-toward, to: b-ladder}, {type: needs, to: b-terminal-edge-stepinv}]
-    notes: "L7's bridge banner LIFTED (canonCenter pins each branch's coordinate from (S,J,mergeIdx,d) slot bookkeeping — the coordinate-axis witness dies; no card↔sum bridge on the cone). Spectator-bounds bite still pre-flagged."
+    notes: "L7 BRIDGE-FREE stands (:1088 at the bake); the geometric coordinate is the supportAt window (geometric Deg1, descends per clear); canonCenter/ed.center stays the SEPARATE ledger center + division locus, untouched (the wall divides at ed.center, residual degree-1 on supportAt). Spectator-bounds bite still pre-flagged."
 
   - id: b-terminal-edge-stepinv
     kind: claim
@@ -331,16 +343,17 @@ nodes:
     tier: new
     owner: "parked: proof queue (the elder's rider obligation, born in the canonCenter round; consumer-fit example banked as permanent regression)"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "the elder: 'easy earns a name, not an omission' — expected easy (unit-residual strictly weaker; the quotient absorbs into q′); the consumer-fit example elaborates (verified two decorrelated ways)"
+    notes: "the elder: 'easy earns a name, not an omission' — expected easy (unit-residual strictly weaker; the quotient absorbs into q′); the consumer-fit example elaborates (verified two decorrelated ways). RE-PARENTED at the bake (b7fa66841, :916): now takes LastLayerInv + hcleared (was the canonCenter-round shape); conclusion still verbatim TerminalBezout-input. The chain: L3/L4 interior → lastLayer_clear_preserves → this → terminal_bezout."
 
   - id: b-leaf8-realizes-exponents
     kind: claim
     title: "leaf 8: binding axes ↔ terminal t̃=0 divisors; jac+1 = divExp (the seam clauses)"
-    status: conjectured
+    lean: DLNFibre.DLN.Aoyagi.leafPath_realizesExponents
+    status: stated
     tier: new
     owner: "parked: skeleton rung (C); consumes the salvage adapter's seam shape"
     edges: [{type: conjectured-toward, to: b-ladder}]
-    notes: "bindingAxes = {t̃=0 divisors} exactly implements the paper's read-off restriction (thread-31 fidelity win)"
+    notes: "bindingAxes = {t̃=0 divisors} exactly implements the paper's read-off restriction (thread-31 fidelity win). RENDERED+sorried at the bake (b7fa66841, :1109)."
 
   # ── the reduction + the kill-target ───────────────────────────────────────────────────────
 
