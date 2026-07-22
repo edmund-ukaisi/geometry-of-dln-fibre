@@ -923,7 +923,7 @@ thread, not per-edge construction facts.
 
 STUBS (sorried) — the STATEMENTS are seat-L4-locked (final render 2026-07-22): the `canonCenterOf` case-11
 boost, the `IsRealBranch` shear-clause (via `ShearWithinCarveRaw`), and the `ShearWithinCarve` (B) form have
-all LANDED in the DEFS. `realBranch_multiAffine` is the FRONTIER-LEAF-CANDIDATE (deepest, gates elder Codex
+all LANDED in the DEFS. `realBranch_multiAffine_step` is the FRONTIER-LEAF-CANDIDATE (deepest, gates elder Codex
 C2); the rest close by projection / oracle-reduction. -/
 
 /-- Derived: the edge center IS a canonical slot — the center-pin (retires the false-for-case11
@@ -1082,22 +1082,26 @@ theorem realBranch_terminal_edgeδ {N : ℕ} {d : Fin (N + 1) → ℕ}
               simp only [h, ConState.stepCase11, ConState.stepAppendAdvance]
       omega
 
-/-- Derived (GAP-3, seat-L4 locked) — **FRONTIER-LEAF-CANDIDATE**: the deepest obligation, gates on the
-elder's Codex C2. NODE-form (seat-L4 sufficiency fix): at EVERY real-branch node `p` the residual is
-degree-1 on the node's support (the multi-affine grade). The wall's conjunct-2 and `Case2Wire`'s conjB
-discharge via the CHILD instance `realBranch_multiAffine (p.extend ed) hbranch`; the parent instance is
-`hb` at `p`. Hypothesis is `p.IsRealBranch e` (weakest — `foldResid p` depends only on `p`). The deep
-descent content (residual layer S → degree-1 on S+1 via the case12/case2 δ=1 strict transform) lives
-here; inducts on `p` (node → node). -/
+/-- Derived (GAP-3, seat-L4/L3T2 locked) — the multi-affine slot DESCENDS per-step, `he_lin`-FREE.
+Given the PARENT's `Deg1SupportedSlot` (carried in `hinv`) and the edge's real-branch pins, the CHILD's
+slot follows structurally (`stepInv_child_delta1_append` + `exists_graded_decomp` + the Deg1 bridge). The
+ROOT anchoring (`coreGen` degree-1-per-layer, which needs `e` LINEAR) lives ONLY in L5's base case, where
+`he_lin` is carried by design — not here, not in the leaves (weakest-hypotheses). Replaces the retired
+node-form, whose root case silently required `he_lin` (counterexample `e u = u³` at `d=(1,1)`). The wall's
+conjunct-2 and `Case2Wire`'s conjB consume this with their carried `hinv` (the case11-δ=1 branch of the
+proof draws its center source from boost-readiness — a separate stub, unaffected here). -/
 @[blueprint]
-theorem realBranch_multiAffine {N : ℕ} {d : Fin (N + 1) → ℕ}
+theorem realBranch_multiAffine_step {N : ℕ} {d : Fin (N + 1) → ℕ}
     (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (p : TreePath d) (hb : p.IsRealBranch e) :
-    ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e)
+    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
-      (supportLayerOf p.conState) (foldRegion d e p) := by
-  -- map: B-derived-gap3-FRONTIER (node-form: parent = hb at p; child = _ (p.extend ed) hbranch; induct on p)
+      (supportLayerOf p.conState) (foldRegion d e p)) :
+    ∀ j, Deg1SupportedSlot d (foldResid d e (p.extend ed)) j
+      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared)
+      (supportLayerOf (p.extend ed).conState) (foldRegion d e (p.extend ed)) := by
+  -- map: B-derived-gap3-STEP (parent slot + edge pins → child slot; he_lin-FREE descent; root anchored in L5)
   sorry
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime).
