@@ -11091,3 +11091,17 @@ endpoint lemmas may reduce to banked QIP structure as the sorted-box's pivotal f
 INTEGRATION OWNER + the (c) DESIGN problem (fork + decorrelated Codex + numeric check; DESIGN ONLY
 until a build slot opens on the handoff-profile test). E-lane now 3-track: Ecore (sorted-box),
 Eswap (swap-iso), E (integration + (c) design). Task #44 created.
+
+## 2026-07-22 (controller) — seat-Ecore MILESTONE: the pivotal fact LANDED axiom-clean, by assembly not re-derivation
+
+`binding_qipT_pair` PROVED (5e1400e71, -Ecore branch, new module OrderRealizeSortedBox.lean;
+controller-verified: commit + 1 remaining sorry): a binding profile's increment vector is a
+Gqip-minimiser whose qipT-coordinates over the active prefix are {0, sgn δ}-valued with exactly
+|δ| nonzero — Aoyagi Lemma 4–5's "steps ∈ {C−1,C}" — assembled DIRECTLY from the banked QIP
+water-filling (Mval_eq_Gqip/eOfT/inf'-transport + qipMinimiser_support/sumSq +
+sumSq_eq_abs_characterization + the θ-tide's eOfSupport bijection). The scoped "genuine
+sub-development" collapsed to banked-machinery assembly — the rising sea doing exactly what it is
+for: the θ-count tide's equality-case machinery, built for the count, now carries the ORDER
+realization too. Remaining in the module: ONE sorry (sortedBox_orderIso — enc/dec + both-direction
+monotonicity + OrderIso.ofHomInv), stated over general monotone-positive D; seat-E instantiates at
+D = sortedWidths (defeq to primitives by construction). Seat continuing.
