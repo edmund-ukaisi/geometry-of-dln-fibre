@@ -44,4 +44,14 @@ theorem submult_comp (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i j : Fin
       have hjc : j ≤ p.castSucc := Fin.le_castSucc_iff.mpr hjlt
       rw [submult_succ d A i p (hij.trans hjc), submult_succ d A j p hjc, ih hjc,
         Matrix.mul_assoc]
+
+/-- **Innermost-factor peel.** `mult d A = (A_{N-1} ⋯ A_1) · (A_0) = submult d A 1 (last) · submult d A
+0 1` — the `(0,1,last)` instance of `submult_comp`. The right factor `submult d A 0 1` is the layer-0
+matrix; the layer-0 residual (base-atom) decomposition factors `coreGen` through this split. Takes the
+two order proofs explicitly (`1 ≤ last N` needs `N ≥ 1`, which every DLN with a layer supplies). -/
+theorem mult_split (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
+    (h01 : (0 : Fin (N + 1)) ≤ 1) (h1L : (1 : Fin (N + 1)) ≤ Fin.last N) :
+    mult d A = submult d A 1 (Fin.last N) h1L * submult d A 0 1 h01 := by
+  rw [mult_eq_submult]
+  exact submult_comp d A 0 1 h01 (Fin.last N) h1L
 end DLNFibre.Core
