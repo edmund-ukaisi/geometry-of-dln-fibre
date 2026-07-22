@@ -13944,3 +13944,32 @@ blockCoords restatement. And a mislabel corrected (relayed to seat-L3T2): the Ga
 (new predicate def + standalone lemma), NOT a FoldStepInvAt strengthening. Waiting on: arch-C's L1 hash +
 the elder's refined Gap-B statement (blockCoords + he_lin + threading). The descent is one lemma from
 sorry-free; L1 is one gate from baked.
+
+## 2026-07-22 ~22:10 UTC — ★ L1 BAKED (83d11d8b5) — first coupled-redesign bake; + Gap B design PINNED
+
+L1 (the Gap-A-clearing shear value-pin) is BAKED. Loop completed: elder authored → arch-C rendered
+(52f6b0225, past the verify-before-render canonShearOf cycle-catch → relocation) → elder delta-read OK
+(verbatim match, byte-identical relocation, additive, payoff-isolated) → controller merged + RE-DERIVED
+the gate. My re-derivation: full build green (9005); force #print axioms — realBranch_canonShear_eq +
+realBranch_canonicalSchurStep = [propext, Classical.choice, Quot.sound] (clean-three, sorry-free);
+PAYOFF ISOLATION HELD — aoyagi_learning_coefficient_via_engine + exists_coreResolution_via_monument
+UNCHANGED ([propext, sorryAx, Classical.choice, Quot.sound], no new axiom, no cite); cordon OK; census
+NET-0 (36). IsRealBranch now VALUE-pins the shear (shearφ=canonShearOf), closing the R_bad vacuity;
+CanonicalSchurStep re-derives via canonShearOf_support (additive, consumers insulated). The re-open's
+first statement-fix is on canonical.
+
+GAP B DESIGN PINNED (elder, same round): the hhomog-hypothesis threading ADOPTED (my/the-offered option;
+the elder retracted its "leaves thread he_lin" and confirmed Finding-A's he_lin-at-L5-only stands). Form:
+HomogeneousDeg1On (vanishing strengthening of AffineOn) + foldResid_layerHomogeneous (hpos e he_lin p
+hbranch) : ∀ j ℓ, supportLayerOf ≤ ℓ → HomogeneousDeg1On d (foldResid…) (blockCoords d ℓ) (foldRegion…)
+[over BLOCKCOORDS (concern-1) + HE_LIN (concern-2)]; the step REPLACES hslot with hhomog (subsumes it,
+he_lin-free); L5 discharges hhomog via foldResid_layerHomogeneous hpos e he_lin p hbranch. B-STANDALONE.
+
+THREE PARALLEL LANES STATUS: (A-clear) L1 = BAKED ✓. (A-div) seat-L4B = DONE (bLedger, resolves pnp's
+Gap-A soft spot; boostReady now = A-clear[baked] + A-div[done] + assembly, all L1-gated → seat-L4B
+assembles on L1 [now available]). (B) Gap B = pinned, next bake: elder authors verbatim
+HomogeneousDeg1On + the re-wire → arch-C renders (after L1, done) → seat-L3T2 proves
+foldResid_layerHomogeneous + fills realBranch_cofactorDescent. Descent wall = δ=0+case11 banked + append
+via hhomog. arch-C's render flags: foldResid_layerHomogeneous visibility (the L1-canonShearOf pattern —
+discharge at leaf_stepInv_of_path' downstream, can see it), caller coupling (Case1Wire:444/Case2Wire:113
+hslot→hhomog), character-identity (baked stub vs primed twin re-wire). L3 (fan) = the last open spine call.
