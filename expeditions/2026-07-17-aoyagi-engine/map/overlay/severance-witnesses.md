@@ -69,6 +69,22 @@ frame axes (6–8). **All 8 axes statement-closed**; the guarded leaves' proofs 
   the elder-DECORRELATED p.18/21 re-derivation. Provenance: journal 2026-07-22 (the double-reversal +
   dead-inbox recovery); the elder witness text in commit `83f699f32` body. LESSON: a seat's state flip
   routes through the elder's ruling BEFORE the render lane — the calibration check-order is the instrument.
+- **catch-all mishandling — `canonCenterOf` case11 `| _ =>`** (2026-07-22, redirect round). The
+  catch-all clause silently gave the WRONG center for real case11 boosts (boost center = {reused
+  birth-corner pivot} ∪ run-length-J₁ current-layer sub-block, a CROSS-LAYER center) — breaking `hpivot`
+  and making `hcenter` FALSE. A catch-all that pattern-matches a real case into the default arm is a
+  fidelity defect. Fix: explicit case11 arm, sim-validated on nine instances (seat-L4's reachability work
+  exposed it).
+- **(II) unsatisfiability — `ShearWithinCarve`** (the FOURTH authored-form defect, ~09:10). `(I) ∧ (II)`
+  was unsatisfiable on every non-terminal edge ⟹ `hwc` false ⟹ the interior leaves VACUOUS. Caught at
+  the lock round; resolved by ruling (II) = (B) (raw-displacement; ≡ 0 for boosts, trivially satisfied).
+- **descent-dispute resolved by PROOF, not read** (~09:55). The disputed "case11 descends" claim was
+  settled by a kernel-checked reachability invariant — `DivBirthInv` (`DivBirthReach.lean:54-58`,
+  `DivBirthInv_conOracle_stepChildren`): clause 3 forces birth-col < cleared, IMPOSSIBLE at cleared=0 ⟹
+  every case11 boost divisor's birth layer is strictly earlier ⟹ `canonPivotOf` sits below layer S ⟹
+  pivot↦1 leaves the layer-S support intact ⟹ NO descent (support STAYS; `supportAt`'s (layer,cleared)
+  key already tracks both edge-kinds). A kernel-checked invariant beats an empirical sweep — the
+  instrument for a disputed hand-model; it RESOLVED the over-deference episode above.
 
 ## Standing gate contract — the depth-diverse witness pin
 

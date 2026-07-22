@@ -112,20 +112,23 @@ has its consumer. **Absorbs the former `b-leaf2-blowup-atlas` landmark.**
 **Why a landmark.** The proven end of the spine — the wall (`object-b`) discharges INTO this; the
 consumer is already banked, so the wall's landing is wiring-free.
 
-## 9. `object-e` — analytic order ρ (OPEN, scoped)
+## 9. `object-e` — analytic order ρ (combinatorial half CLOSED; ρ-seam deferred)
 
 **What.** The RLCT / zeta-pole MULTIPLICITY ρ — **NOT** the quiver (C,θ) count. Charter §1-E
 OPENED-SCOPED (operator 2026-07-21). The θ≠ρ distinction is banked
 (`numTop_d22222_ne_aoyagiPoleOrder`: numTop(2,2,2,2,2) = 6 ≠ `aoyagiPoleOrder` = 5).
 
-**True status.** P6.1 (band arithmetic) LANDED sorry-free (`OrderCount.lean`: `bandCount ℓ a = a(ℓ−a)+1`;
-node `e-p61-band-arithmetic`). P6.2 (count-identification) ADJUDICATED, statement-shaping: ρ =
-deepest-stratum max-crossing = **max CHAIN of binding minimisers under componentwise ≤** (chainHeight)
-= `a(ℓ−a)+1` (node `e-p62-count-identification`; guards `battery/rho_battery.py` + `battery/chain_battery.py`).
-The earlier *antichain* reading was CORRECTED ([[naming]], [[banked-families]] § OBJECT D/E).
+**True status.** The COMBINATORIAL HALF is CLOSED. P6.1 (band arithmetic) LANDED sorry-free
+(`OrderCount.lean`: `bandCount ℓ a = a(ℓ−a)+1`; node `e-p61-band-arithmetic`). **P6.2 CLOSED** — the
+faithful count `bindingSet_chainHeight_eq_thetaCount` (`OrderRealizeAssembly.lean:98`) ties the ACTUAL
+poset object to the value: `chainHeight(bindingSet) = thetaCount = aoyagiTheta = a(ℓ−a)+1` (max CHAIN
+under componentwise ≤; the antichain speculation CORRECTED). Wired + AxCheck-rooted at `c9a4003fe`
+(`bindingSet_orderIso_boxPart` + `bindingSet_chainHeight_eq_thetaCount`); node `e-p62-count-identification`;
+guards `battery/rho_battery.py` + `battery/chain_battery.py`.
 
-**Why a landmark.** The one OPEN charter object besides the wall; the analytic zeta-pole seam stays the
-named monument-class deferral (P7 — Mathlib lacks meromorphic continuation).
+**Why a landmark.** The combinatorial ρ-count is now a proven, faithful poset invariant — the one OPEN
+residue is the ANALYTIC zeta-pole seam (P7: combinatorial ρ = zeta-pole multiplicity — monument-class
+deferral, Mathlib lacks meromorphic continuation).
 
 ---
 

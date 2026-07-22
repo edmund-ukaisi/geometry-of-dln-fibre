@@ -90,6 +90,24 @@ A route here is DEAD as a destination; its trail is kept as a battery anchor / l
   it; `supportAt` uses `layerCoords` and the C-complement partition uses `disjoint_compl_right`).
   grep-clean at HEAD (0 matches). Caught at the bake gate.
 
+## Redirect-round supersessions (elder ruling + discriminator PROOF, 2026-07-22)
+
+- **per-field SET (A) forms — SUPERSEDED** (not baked). The seven per-field severance constraints on the
+  monument leaves are replaced by ONE construction hypothesis: the leaves CONDITION ON the repaired
+  `IsRealBranch`; the per-field constraints + the prepared-multi-affine residual become NAMED DERIVED
+  LEMMAS (`hcenter` / `hcover` / `DescendView` / `ShearWithinCarve` / `hδ0` + GAP-3). Elder-ruled,
+  discriminator-confirmed (`DivBirthInv` proof-grade); **STAGED PRE-BAKE** — the leaves still carry the
+  `supportAt`-window per-field forms until the redirect bakes. The construction-conditioned monument is
+  the statement architecture's FINAL form. Trail: journal 2026-07-22 (triple ruling + discriminator verdict).
+- **case-aware `supportAt` / `edgeδ` fallback — VOIDED by the discriminator.** A descent at case11 would
+  have forced a per-edge-kind support window; the `DivBirthInv` proof showed NO descent at case11 boosts,
+  and `supportAt`'s single (layer,cleared) key already tracks both edge-kinds (merge: earlier-layer pivot,
+  no descent, cleared unchanged; append: current-layer, descent, cleared+1). No case-aware fallback is
+  needed — the uniform `supportAt` stands ([[severance-witnesses]] § Process defects).
+- **the bridge-free SHADOW of `IsRealBranch` — now HISTORY.** The five-pin bridge-free-shadow framing
+  (when the coordinate bridge lands, all pins collapse) is superseded by the derived-lemma chain; kept as
+  provenance only.
+
 ## Genesis-era exits (kept: battery anchors)
 
 - **naked-weight route** — REFUTED at genesis (false on legal cuts). Kills fire:
