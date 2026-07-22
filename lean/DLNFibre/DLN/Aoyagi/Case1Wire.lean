@@ -427,9 +427,8 @@ theorem case1_conjA (d : Fin (N + 1) → ℕ)
 /-- **⟨THE WALL — primed⟩** `case1_preserves_stepInv'`, statement-identical to
 `MonumentAtlas.case1_preserves_stepInv`. Conjunct A is `case1_conjA` (dispatched; consumes the
 boost-readiness obligation for the δ=1 case11 sub-branch); conjunct B is the shared child
-`Deg1SupportedSlot` descent — the single tracked `sorry` (closes to the node-form
-`realBranch_multiAffine (p.extend ed) hbranch` when the elder's node-form micro-round bakes; identical
-to `Case2Wire.case2_preserves_stepInv'`'s conjunct B). -/
+`Deg1SupportedSlot` descent — CLOSED via the step-form `realBranch_multiAffine_step` (parent slot from
+`hinv.2` + the child branch `hbranch`), identical to `Case2Wire.case2_preserves_stepInv'`'s conjunct B. -/
 theorem case1_preserves_stepInv'
     (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
@@ -440,8 +439,8 @@ theorem case1_preserves_stepInv'
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   refine ⟨case1_conjA d e p ed hcase1 hlayer hinv hbranch, ?_⟩
-  -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); the node-form
-  -- multi-affine obligation at the child node (`hbranch : (p.extend ed).IsRealBranch e` = its `hb`).
-  exact realBranch_multiAffine hpos e (p.extend ed) hbranch
+  -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); CLOSED via the
+  -- step-form `realBranch_multiAffine_step`: parent slot (`hinv.2`) + child branch (`hbranch`) → child slot.
+  exact realBranch_multiAffine_step hpos e p ed hbranch hinv.2
 
 end DLNFibre.DLN.Aoyagi
