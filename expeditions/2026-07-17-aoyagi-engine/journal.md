@@ -12073,3 +12073,29 @@ footprint stays clean-three+sorryAx) → ONE bake → controller verification �
 on the FINAL statements. seat-L4's retraction was clean and its reachability work is credited in
 the record; the monument's statement architecture converges to the construction-conditioned form
 the mathematics itself forced.
+
+## 2026-07-22 (controller, ~10:15) — operator-prompted audits: THREE parallel convenings (fidelity-forward, parallelisation, owed)
+
+Operator asked whether to re-run paper-fidelity or owed+parallelisation audits. RULING: both,
+shaped forward, fired as three convenings that ride the statement round without touching it:
+
+1. **pnp-elab EXTENDED** (paper-fidelity as the forward instrument, not a re-audit): the
+PATH-LEVEL template — the composed chart map + ledger Jacobian, the a.e.-cover argument, the
+exponent read-off/bindingAxes seam, the fold-to-value assembly (Theorem 3), each with pre-mortem
+assertions. L5–L8 were rendered PRE-template; this is elaborate-then-render applied to the next
+wave before its proofs start. New file threads/elaboration/path-level-template.md.
+
+2. **nav-13 CONVENED** (the endgame's first full navigator pass): parallelisation audit (can
+L6/L8 SPECIFY start now — verify the IsRealBranch re-typing doesn't touch the path-level leaves;
+the hygiene unit's parallelisability; what's serial-by-nature vs serial-by-habit while five seats
+idle), gate-verification vs the day's defect classes, hard-part-avoidance/drift check, the owed
+phase-transition altitude note, and the distance-to-summit position accounting.
+
+3. **carto-standing CONVENED** (owed + map catch-up; its E-closure trigger had fired): the
+owed-register ground-truth sweep (last swept pre-saga — P6 entries flip CLOSED, the hygiene unit
+consolidates, redirect-superseded entries re-point) + map refresh proposals (object-e CLOSED
+rows; the monument rows to the redirect state; severance-witnesses gains the discriminator
+episode; dead-routes gains the voided per-field SET (A) + case-aware supportAt route).
+
+All three read-only or own-pen; none touches the critical path (seat-L4's locks → staged forms →
+elder pre-read → gate → bake proceeds independently).
