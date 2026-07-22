@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.Core.Aoyagi.BlockBlowup
+import DLNFibre.DLN.RLCT.Engine.DivBirthReach
 
 /-!
 # `DLN.Aoyagi.PivotPreservation` — M4: the (★) pivot-preservation core
@@ -105,5 +106,25 @@ theorem cornerToFlat_notMem_rowBlock {d : Fin (N + 1) → ℕ} (s : ConState N) 
   obtain ⟨_, hP1, hP2, hP3, hP4⟩ := hq
   simp only at hP1 hP2 hP3 hP4
   omega
+
+/-! ## A3 — `DivBirthInv` holds along a real branch (supplies A2's freshness) -/
+
+/-- **A3** — every node of a real branch carries `DivBirthInv` (TreePath induction off
+`DivBirthInv_conRoot` + `DivBirthInv_conOracle_stepChildren`; a step's `conState` is its recorded
+`nextState = sc.child`). Gives, at each deeper node, the clause-3 freshness A2 consumes for the
+earlier (persisted, immutable) birth corner. -/
+theorem divBirthInv_of_isRealBranch {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    ∀ p : TreePath d, p.IsRealBranch e → DivBirthInv d p.conState := by
+  intro p
+  induction p with
+  | root => intro _; exact DivBirthInv_conRoot
+  | step p center pivot cse nextState shearφ ih =>
+    intro hbranch
+    obtain ⟨hrec, ⟨sc, hsc_mem, _hecase, hchild, _hcenter, _hpiv⟩, _hshear⟩ := hbranch
+    have hp : DivBirthInv d p.conState := ih hrec
+    have hchildInv := DivBirthInv_conOracle_stepChildren p.conState hp sc hsc_mem
+    show DivBirthInv d nextState
+    exact hchild ▸ hchildInv
 
 end DLNFibre.DLN.Aoyagi.PivotPres
