@@ -12944,3 +12944,20 @@ the day it was named.
 swap exact, conclusion byte-identical, hpos carried, docstring = the elder's text, edge-form
 deleted). On OK: the wall's conjunct-2 + Case2Wire's conjB become one-liner-consumable, then the
 Assembly first increment.
+
+## 2026-07-22 ~19:15 UTC — NODE-FORM BAKED (966959855); Assembly first increment GO
+
+Elder delta-read OK on 5db02550b ("character-for-character"; hypothesis weakest-that-suffices,
+inducts node→node, stays the sorried frontier; conjunct-2/conjB now one-liner-consumable). Its
+closed-loop note banked: the L6 landing consuming hcollapse = hreal.2.2 exactly as authored
+"confirms the collapse ruling was correctly shaped — good signal the clause-vs-lemma call landed
+right." Integration verified + pushed (966959855; build 0-err; cordon OK; census 36).
+
+**ASSEMBLY FIRST INCREMENT GO'd to arch-C** (base 966959855): the wire-leaf API now has THREE
+proved leaves (L8 leafPath_realizesExponents', L6 leafPath_chartGeometry', case2' conjA); primed
+drivers statement-identical (char-for-char anchor-diff = the hard gate item); the
+footprint-SOURCES list (the shrinking set of sorried statements feeding sorryAx) is the
+increment's deliverable metric. Assembly class = arch-C gate + controller verification, no elder
+read (elder standing by for the L6 co-read + boost-readiness only). Remaining sorried sources
+the first increment will name: case1 (wall), lastLayer, L5, L7, multiAffine (+ the case2 stub
+copy pending its swap-equivalent in the Assembly).
