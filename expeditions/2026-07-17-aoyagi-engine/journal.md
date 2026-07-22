@@ -15283,3 +15283,38 @@ repair; the re-bake's blast radius shrinks accordingly.
 Elder inputs 4/5 (remaining: scrambled-e hedge check — decision-weight dropped to b-chain-field
 scoping; L3T2 consumer impact table). pnp-transport proceeds to the hedge check, sized small.
 #41 completed. Gate unchanged. No Lean edits.
+
+## 2026-07-23 — INPUT SET COMPLETE (5/5); the decisive consumer question RESOLVED by cross-reference; the elder can rule
+
+Two deliverables landed in one batch and interlock at the ruling's decisive point:
+
+seat-L4D (three items): (1) def-confirm now BOTH SIDES — the residual side composed-through-shears:
+at d=(2,3,2,2) first clear, blockBlowupCoordQuot (BlockDivision:30-31) passes the raw out-of-cap
+coord q₁₀₂ through (≠ pivot ⟹ pass-through + the recoord displacement ADDS), and coreGen's b=2
+term reads it with coefficient A₂[0][0]·A₀[2][0] = the banked p₀₂₀·r₂₀₀ ≠ 0 ⟹ the ∃c
+decomposition over blockCoords(1) is FALSE at the def (forces vanishing that fails). No heavy
+Lean kill-witness commissioned (def-trace + numeric + L3T2 agreement decisive for
+statement-truth). (2) β SCOPE: boostReady's read/conclusion range over the layer-S slot, the
+layer-S center/partialBlock, and the EARLIER-layer reused pivot — never the descended S+1 slot;
+BUT the field's INTRO obligation rides the reused divisor's earlier DESCENDED clear ⟹ intro
+waits on the ruled shape (shape+field meet exactly there). (3) Capacity for the Lean-side hedge
+check if pnp hands back.
+
+seat-L3T2: the consumer-impact table DELIVERED + banked (threads/L3T/shape-consumer-impact.md,
+7c47467d8 → canonical; 122 lines, full grid). Headlines: SHAPE ⟂ FIELD (independent axes; the
+field needed for case11 regardless of shape); the whole L3T lane + abstract machinery is
+SHAPE-INSENSITIVE (homogeneity reads layerCoords, comp-lemmas block-agnostic); ONE load-bearing
+divergence — does ANY consumer need the S+1 cap (sole candidate: boostReady) — marked UNKNOWN;
+KEY OBSERVATION: foldResid_layerHomogeneous's vanishing clause is the natural PRODUCER of
+field-V, canonFlatten-root-anchored = right for the L5 base discharge (exact-match caveat
+flagged: whole-layer-zero vanishing ≠ per-coefficient birth-pivot vanishing — the elder checks).
+
+THE INTERLOCK (controller integration): L3T2's decisive UNKNOWN is answered by L4D's scope check
+in the same batch ⟹ NO CONSUMER NEEDS THE S+1 CAP ⟹ candidate (a) WIDEN (layerCoords(S+1)) is
+consumer-safe and cheapest — subject to the elder's paper-side lead (operator's paper-first
+directive: her M_{s,k}/frame wins if it disagrees; the consumer table then prices the diff).
+
+Elder told: input set complete, rule when ready (her text FIRST, candidates as transcriptions).
+The scrambled-e hedge check remains a low-weight residual at pnp-transport (L4D = fallback).
+seat-L3T2's read-only charge CLOSED (stand down). Gate unchanged; no Lean edits; payoff isolation
+untouched throughout the whole diagnostic arc (zero Lean commits since the N_p bake).
