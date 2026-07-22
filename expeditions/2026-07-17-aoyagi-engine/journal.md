@@ -10132,3 +10132,34 @@ reusable, no fabrication. arch-C: the parametric site widens from clause to CONJ
 pre-verdict AnchorClause prep covers mechanism 1 only — the queue carries the update); bake
 still held for the elder's fork ruling. Both leaves' defects now have banked countermodels —
 the seventh axis (ANCHOR-VALUE) plus the shear-mixing witness join the regression bank.
+
+## 2026-07-22 (controller) — FORK (A) RULED: the invariant moves to PREPARED COORDINATES; the taxonomy completes at EIGHT axes
+
+**The elder's formal ruling: fork (A)** — the Deg1 conjunct restates on the strict-transformed
+residual over T (G_j := foldResid_p j ∘ quotMap, the banked blockBlowupCoordQuot; Deg1SupportedOn
+G T) with IDEAL-MEMBERSHIP coefficients (the escalation resolved: values cannot induct, only the
+form self-propagates — S3's genesis closed at the right depth); the born-pivot content becomes a
+CARRIED TRACKED DATUM shaped to LastLayerInv's right disjunct — ONE unit-ledger form serving the
+interior clears, the last layer, and the transport's hcleared. **The decisive argument was
+fidelity: the strict-transform invariant IS the paper** — the Let-blocks rename d′→d immediately
+and state every inductive claim in NEW coordinates (pp.16–21 rename lines, image-verified); the
+raw-frame rendering was what mechanism 2 exploited. (B) rejected: a fifth edge field encodes an
+EMERGENT truth as a side condition (a future severance axis + a fidelity burden, and any
+unforeseen legal mixer returns as the next instance) — (A) removes the frame mismatch itself.
+
+**The FOURTH blind convergence:** arch-C's architect lean (composed pre-ruling, in crossing)
+chose (A) independently, arguing from the severance HISTORY — "every one of our seven defects
+has been a free-field severance; a new free shear field is the 8th-instance bait; (A) adds NO
+free field — the shear is ABSORBED, closed structurally, not by a field asserting shears don't
+mix (which the countermodel says they legally CAN)." Two authorities, two argument routes
+(paper-fidelity / severance-structure), one design.
+
+**The taxonomy COMPLETES at eight:** the seventh axis sharpens to ANCHOR-FORM (audit the FORM at
+the anchor, not the value — values cannot induct); mechanism 2 is the EIGHTH: **FRAME** — "in
+WHICH coordinates does the paper state this?" is now a standing audit question for every carried
+invariant; the shear countermodel is its exemplar. Eight axes: content, size, path, coordinate,
+layer-endpoint, mechanism-boundary, anchor-form, frame. Render pins: banked quotMap only; the
+tracked datum audited at birth; the fidelity docstring cites the rename lines; seat-L3T's
+case-blind halves = the round's floor. seat-L4's T-check demoted to consistency datum (proceeds).
+arch-C renders the (A) form → contract-9 with BOTH countermodels as witnesses → the ONE bake.
+Both proof seats then close leaves whose statements their own refutations made true.
