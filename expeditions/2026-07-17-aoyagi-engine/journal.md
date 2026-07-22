@@ -13167,3 +13167,29 @@ now 2-for-2 (L3T→L3T2 lost zero proof lines; L6→M4B starts on a live 4-atom 
 
 Render lane: the Assembly's cosmetic re-wrap done (only the verbatim-inherited :30 long-line
 remains, correctly kept for anchor-diff fidelity); staging next. Step-form round queued behind.
+
+## 2026-07-22 ~23:40 UTC — Assembly INTEGRATED; instruments CONVERGE (CARRIED); a stale-base near-miss caught
+
+**Assembly first increment INTEGRATED (896b60b9b):** MonumentAssembly.lean on canonical +
+aggregator-wired (the definitive full-build clash gate green); both primed drivers verified
+[propext, sorryAx, Classical.choice, Quot.sound] with sorry-SOURCES = the baked set minus
+{L6, L8} — the (B′) machine is live and its shrink is real. Census 35 steady.
+
+**pnp-boost's verdict landed and THE INSTRUMENTS CONVERGE:** TRUE (A1/A2/A3 exact on all 18
+interior boost parents across 8 instances — the probe-certified count matched) and **CARRIED**
+(two exact witnesses satisfying the slot invariant yet violating boost-readiness — the same
+defect class as instrument 1's R_bad from a blind direction; its own decorrelated Codex
+reconstructed the same diag(b)·D·H structure + witnesses, "needs-extra-structure"). The
+structural mechanism: u_p | b_i ⟺ i > J₁ (all interior boosts). The durable battery
+case11_boost_readiness.py MERGED (1ed76d01b), guarding the wall permanently. Its one honest
+caveat — the prepared-form (spectator-free dominant rows) assumption is a SHEAR-PIN obligation —
+points exactly at the elder's provisional (2) lean; the FINAL form+home ruling is CHARGED (both
+instruments cited; pnp-boost's α/β conjunct = the candidate predicate content).
+
+**Stale-base near-miss (the sensor lesson, caught in-lane):** arch-C reported the node-form had
+ZERO call sites ("deleting breaks nothing") — a grep run against its 0d81bb7cf Assembly pin,
+which PREDATES both conjB closes. Current-tip ground truth: TWO live call sites (Case1Wire:445,
+Case2Wire:115). HOLD sent before the render; the corrected plan (rebase first; step-form in +
+node-form out + the two call sites reverted-to-sorry under the scoped waiver, owners re-close
+post-bake; census net +2) is with arch-C. "Independently re-derived" must mean the CURRENT tip —
+the endgame's integration tempo (5+ merges/hour) makes any pinned ref stale in minutes.
