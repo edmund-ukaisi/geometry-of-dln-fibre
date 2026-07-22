@@ -12,20 +12,21 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE AMENDMENT RE-BAKE (2026-07-22 ~04:45).** The five-face family RULED (elder 04:05
-  consolidated, recovered by transcript-poll): supportAt VALUE → blockCoords (widthMinUpto-capped
-  residual block; descend unchanged); + hcenter (ed.center ⊆ carve-layer block — NEVER
-  supportAt(parent), false at δ=0); + hshear_schur (Δ=δ−γβ pin); + hcleared → generator-side datum
-  (lastLayer_clear EMITS [the load-bearing induction gate — STOP if emission forces the q-pin],
-  terminal_edge consumes). arch-C EXECUTING the re-bake (render → EXPANDED gate [free-field battery
-  sampling: free pivot/center/shear/∃q + width-DROP cores] → bake to -rung-c → hash). Proof seats
-  HOLD for corrected signatures; resume shapes staged (L3T: terminal conj-1 + case2 divisibility;
-  L4: wall + lastLayer emission). L5 WATCH: convene nav-13 the moment L5 emission balloons, not
-  only on success (elder flag). E-LANE unaffected (no supportAt ripple — elder-confirmed); taste
-  line standing: bindingSet never plain Adm; frontier = 2 core sorries (Ecore: S4+assembly left;
-  Eswap: 8-step plan, milestone = minimiser-endpoint). Progress register: rendered-honest-skeleton
-  milestone, NOTHING discharged at §1 (elder's sharpened sentence in the journal). ELDER channel:
-  plain final text + transcript-poll after EVERY charge (dead SendMessage inbox).
+- phase: **THE PROOF CASCADE, STATEMENTS FINAL (2026-07-22 ~07:15).** The amendment re-bake is
+  INTEGRATED (e3a449348 = merge -rung-c a8438b1fe; controller-verified 8995 green, drivers
+  clean-three+sorryAx, census 35, cone 10). Statement side COMPLETE: blockCoords supportAt +
+  carve-layer hcenter + ShearGrades (a)+(b) CHILD-region grading + GeneratorCleared (emit=consume
+  one def) + PerLayerDeg1From ≥-support threshold (∀ℓ failed induction — Schur cleared-layer γβ);
+  DeeperMultilinear REMOVED. THREE too-weak-defs closed pre-proof this round. PROOF SEATS LIVE:
+  seat-L4 case1 :901 (WALL) + lastLayer_clear :932 (builds the GeneratorCleared emission);
+  seat-L3T case2 :863 + terminal_edge :962 (order: term-conj1 → case2-div [crux dedupe →
+  Case1Wire canonical] → conjB δ-branches → term-conj2 [consume-fit first]). Elder second read
+  OPEN (verify the 4 witnesses RAN). canonShearOf follow-up = arch-C's background unit (below
+  proof-support, above idle). After the 4: L5 (nav-13 on friction OR success) → L6+L8 → L7 →
+  wiring swap (LearningCoefficient:287) → summit clean-three → cite-deletion WITH operator.
+  **E-LANE CLOSED** (P6.2 Tier-3: faithful count registered c9a4003fe; review SURVIVED; arc
+  narrative banked; residue = ρ-seam deferred + hygiene unit [Q3 migration, lint nits, fossil
+  prune ~25 tokens]). ELDER channel: plain final text + TRANSCRIPT POLL after every charge.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
