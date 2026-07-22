@@ -10217,3 +10217,18 @@ the entry center-exact-Deg1 (the over-division guard, d=![1,2,1]). Bare ideal-me
 (b) (c = ∑ u_d·h_d admits center-dependent h). Candidate: c a function of DEEPER coordinates
 only, vanishing at 0 — self-propagation under the pivot-independent T-mixing shears is the
 elder's check. The degree-2 Schur term proposed as the entry-level-weakening regression witness.
+
+## 2026-07-22 (controller) — the survey verdict: YoungDiagram WRONG-SHAPE (build-it confirmed retroactively); the complete pass request to the elder
+
+seat-E ran the mandated survey (banked, threads/41-order-count/mathlib-survey-verdict.md):
+YoungDiagram is the full unbounded lower-set type — no Fintype, no box subtype, no chainHeight
+lemmas, no clean fixed-a rowLens bridge (building on it = strictly more work for the same
+theorem); powersetCard has the wrong ORDER (Boolean ⊆, not dominance); Order.Height's primitives
+ARE the proof's substrate — the reuse level was right, only the minimal OBJECT is hand-rolled.
+The gate-order gamble thus cost nothing (retroactively validated) — the slip stays on the record.
+The COMPLETE pass request routed to the elder: the proved unconditional headline (+ the
+a ≤ ℓ-drop deviation-for-the-better to bless), the survey verdict, the trap-relocation claim
+(cell-count = coord-sum IN BOX COORDS; the trap is a profile-encoding artifact → Tier-3 kill-set
+at the iso) for explicit adjudication. On the pass: OrderChain wires + registers; the Tier-2
+θ-corollary lands; the Tier-3 iso scaffold proceeds (all three relocated pins as named domain
+hypotheses, consuming the banked DivChain nesting).
