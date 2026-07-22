@@ -14826,3 +14826,26 @@ census +~5 expected from fork 2, exact count reported). MEANWHILE the cascade ad
 has the STEP HELPER PROVEN (task 7 done — homogeneousDeg1On_comp_of_fixing) with the base atom in
 progress. Cron armed. Next integrations: the N_p staging hash (my gate + elder delta-read) +
 seat-L3T2's atoms.
+
+## 2026-07-23 ~14:10 UTC — TWO ATOMS PROVEN (the genuinely-new math); the 7th guard catch (hpos rider); the induction correctly waits
+
+seat-L3T2 LANDED the hard half of Gap B (c8030f6b9 on -L3T2): coreGen_layerHomogeneous' (the base
+atom — the genuinely-new math, via submult-isolation of A_ℓ + a sum_ite_eq reindex, Codex-validated)
++ homogeneousDeg1On_comp_of_fixing (the step helper) — BOTH PROVEN, both N_p-STABLE (coreGen/
+canonFlatten/mult don't change in the re-bake; the elder's swap-safe call confirmed in the building).
+Also reconciled the appendResidDescent name-clash onto the canonical cap (hpos threaded).
+
+FINDING 1 = the guard family's SEVENTH catch: the baked foldResid_layerHomogeneous MISSES hpos while
+both siblings carry it — without it a δ=1 ROLLOVER is reachable (widthMinUpto=0 at some d k=0) where
+the pivot is UNCONSTRAINED, defeating the pivot-below-threshold proof mechanism (trace d=![1,0,1,1]).
+Statement true-but-unprovable-as-intended. Routed: elder bless requested; arch-C folds it into the
+in-flight N_p staging as a one-line rider (not holding the render on it).
+
+FINDING 2 = the right timing call, confirmed: the fold induction's STEP case consumes exactly what the
+N_p render is re-authoring NOW (foldResid δ=1 + the IsRealBranch shear conjuncts + the comp_of_fixing→
+comp_of_linear shift) — building it today is throwaway. The induction builds ONCE, post-N_p-merge.
+Meanwhile seat-L3T2 runs the stable audits (forced axioms on the 2 atoms; cap frontier-naming; module
+paths for my wire — MultiAffineHomogWire.lean is new).
+
+Gap B's score: of its three lemmas, TWO are proven + banked and the third deliberately queued behind
+the same bake it must be written against. No wasted proofs anywhere in the round.
