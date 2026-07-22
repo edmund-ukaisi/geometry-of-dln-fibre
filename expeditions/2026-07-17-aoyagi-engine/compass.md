@@ -166,10 +166,13 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
 ## Standing counsel (rising-sea)
 - **THE PER-FIELD + BOUNDARY AUDIT (refined 2026-07-21, the layer-axis event):** audit each free
   field AND each field's range boundaries — a field constrained everywhere but at its range's
-  endpoint is severed at the endpoint. Axes to date: content, size, path, coordinate,
-  layer-boundary. The witness bank (overlay/severance-witnesses.md; register §6) holds one
-  exemplar per axis; every fold-sourced ∀-statement re-checks against all five before its render
-  freezes.
+  endpoint is severed at the endpoint. Axes to date (8): content, size, path, coordinate,
+  layer-boundary, plus the three frame/indexing axes closed at the `supportAt` bake — support
+  (computed window, not a free ∀-branch), C′ (PINNED = supportAt(child), not ∃), coefficient-clause
+  (re-factored, not free). ⚠ COORDINATE is RE-OPENED (L7 `leafPath_compactCover` false-as-stated;
+  the `canonCenter` "bridge-free" closure was premature — see overlay/severance-witnesses.md). The
+  witness bank (overlay/severance-witnesses.md; register §6) holds one exemplar per axis; every
+  fold-sourced ∀-statement re-checks against all eight before its render freezes.
 - **BUILD THE RIGHT OBJECT — DO NOT MINIMUM-VIABLE IT (operator, 2026-07-20; the elder's own
   recalibration).** The whole α-chart programme tried to reach the lower bound WITHOUT building the
   ideal machinery Mathlib lacks; the category error is the PROOF a chart cannot dodge it. The elder ALSO
