@@ -11,8 +11,9 @@ lines curate the [[banked-families]] / [[landmark-cards]] cards to the whole tre
 
 ## 1. THE CLUSTER MAP
 
-Sizes are `find -maxdepth 1` per dir; sorry = proof-position tokens. **Core is entirely sorry-free
-(41.5k lines) — the bedrock floor.**
+Sizes are `find -maxdepth 1` per dir; **sorry counts are the canonical `cd lean && scripts/sorries`
+meter** (proof-position only — NOT a raw grep, which counts docstring/`⛔ DO NOT FILL` banner mentions).
+Tool total at this pass = **35**. **Core is entirely sorry-free (41.5k lines) — the bedrock floor.**
 
 | cluster | lines / sorry | one-line capability | entry-point results | status |
 |---|---|---|---|---|
@@ -21,8 +22,8 @@ Sizes are `find -maxdepth 1` per dir; sorry = proof-position tokens. **Core is e
 | **DLN/RLCT/Foundations** (41f) | 7869 / **0** | the QIP/λ spine + global-homogeneity | `lambdaCore` (Lambda.lean, ℚ over Fin(L+1)); `admTight`/`admTight_subset_adm`/`clamp_mem_admTight` (AdmTight); `rlctGlobal_comp_homeomorph`/`rlctGlobal_eq_rlctAt_zero_of_homogeneous` (GlobalHomog) | LIVE **bedrock** |
 | **Core/Analysis/RLCT** (16f) | 1865 / **0** | the abstract rlctAt/rlctGlobal/germ machinery | `rlctAt` (Local.lean:55 / Global.lean:99), `rlctGlobal` (Global.lean:116), `rlctPair` (Pair.lean) | LIVE **bedrock** |
 | **Core (codim/dim/orbit/determinantal)** | (in Core's 0-sorry total) | the earlier-expedition geometry feeding Obj D | `cCodim` (CTheta.lean:160), `qipMin` (CThetaQIP.lean:395); Core/Dimension (Codimension/Catenary/Trdeg/…); Core/RingTheory/Determinantal (Schur/rank-normal-form, 7f/2053L); Core/MinimalPrime (TopDimMinPrimes = θ); Core/AlgebraicGeometry/Group/Orbit (orbit dim, 4f) | LIVE **bedrock** (see Finding F6) |
-| **DLN/RLCT/Engine** (43f) | 14138 / **5** | MIXED — live salvaged combinatorics + the RETIRED chart-route parts-bin | LIVE salvage: `DivBirthInv`/`DivBirthInv_conOracle_stepChildren` (DivBirthReach.lean:54), `EngineConstruction` (μ-descent spine), `minAdm_le_terminalExponents`/`o5_core_realized` (the adapter's 4 salvage roots). FOSSIL: ChartBridge*/Geo*/CanonicalResolution/`leafDiagFrob_geoAtlasNorm` (the 5 sorries) | **MIXED** (Finding F4) |
-| **DLN/RLCT/Validate** (493f) | 147223 / **34** | the PREDECESSOR half-built lane (+ the live `minAdm` def) | live: `minAdm` (RouteMLayerSplit.lean:51), `minAdm_le_Mval_toNat` (RouteMState). FOSSIL: the 34 sorries (prune list §Frontier) | mostly **FOSSIL** |
+| **DLN/RLCT/Engine** (43f) | 14138 / **4** | MIXED — live salvaged combinatorics + the RETIRED chart-route parts-bin | LIVE salvage: `DivBirthInv`/`DivBirthInv_conOracle_stepChildren` (DivBirthReach.lean:54), `EngineConstruction` (μ-descent spine), `minAdm_le_terminalExponents`/`o5_core_realized` (the adapter's 4 salvage roots). FOSSIL: ChartBridge*/Geo*/CanonicalResolution/`leafDiagFrob_geoAtlasNorm` (the 5 sorries) | **MIXED** (Finding F4) |
+| **DLN/RLCT/Validate** (493f) | 147223 / **18** | the PREDECESSOR half-built lane (+ the live `minAdm` def) | live: `minAdm` (RouteMLayerSplit.lean:51), `minAdm_le_Mval_toNat` (RouteMState). FOSSIL: the 18 sorries (prune list §Frontier) | mostly **FOSSIL** |
 | **DLN/RLCT** (top, 4f) | 6233 / **3** | Skeleton (legacy stubs) + the cite + the gate | `cited_aoyagi_lower_ax` (AoyagiCited, the kill-target); `AxCheck` (the batch gate); Skeleton.lean (3 legacy stubs = fossil; bare `aoyagi_learning_coefficient` :1685 ≠ summit) | mixed (gate live, Skeleton fossil) |
 | **DLN** (top, 4f) | 931 / **0** | the DLN space + mult map + lossDLN | the `Rep`/`mult`/`lossDLN` definitions | LIVE bedrock |
 
@@ -62,18 +63,25 @@ Sizes are `find -maxdepth 1` per dir; sorry = proof-position tokens. **Core is e
   blow-up atoms, the QIP/codim/determinantal/dimension/orbit geometry, `Core/Analysis/RLCT`; plus
   `Foundations` (the λ spine, 0 sorry) and the closed E-lane roots (`OrderRealizeAssembly`,
   AxCheck-rooted `c9a4003fe`).
-- **FOSSIL / DO-NOT-ENTER** (the ~42-token prune horizon; [[dead-routes]] DO-NOT-ENTER register):
-  `DLN/RLCT/Validate` (34 sorries — densest `RouteMInteriorLDUContract` ×9, `RouteMSJResolution` ×4,
-  `RouteMSJDeeperFlagCore`/`D1ChartProducerL2` ×2, + ~14 ×1); `DLN/RLCT/Engine` RETIRED chart parts
-  (5 sorries — ChartBridge*/Geo*/CanonicalResolution); `DLN/RLCT/Skeleton` (3 legacy stubs). Do not
-  "fix" a fossil. **Caveat: Engine is MIXED — the DivBirth/EngineConstruction/adapter salvage is LIVE
-  (Finding F4); prune by module, not by directory.**
+- **FOSSIL / DO-NOT-ENTER** (`cd lean && scripts/sorries` = the meter; 25 fossil sorries; [[dead-routes]]
+  DO-NOT-ENTER register): `DLN/RLCT/Validate` (18 sorries — densest `RouteMInteriorLDUContract` ×9,
+  `RouteMSJDeeperFlagCore` ×2, + 7 files ×1); `DLN/RLCT/Engine` RETIRED chart parts (4 sorries —
+  GeoAlphaGauge, ClearableReify, CanonicalWitness224, GeoAtlasTransfer, each `⛔ DO NOT FILL`-bannered);
+  `DLN/RLCT/Skeleton` (3 legacy stubs). Do not "fix" a fossil. **Caveat: Engine is MIXED — the
+  DivBirth/EngineConstruction/adapter salvage is LIVE (Finding F4); prune by module, not by directory.**
 
 ## Findings (undocumented cluster / orphaned capability / drift — not just cartography)
 
-- **F1 — sorry census is ~52, not 24.** The [[dead-routes]] "24 tree-wide" line predates the monument
-  render + Validate growth. Current: DLN/Aoyagi 10, DLN/RLCT/Engine 5, DLN/RLCT (Skeleton) 3, Validate 34.
-  A precise ON-CONE vs fossil recount is a navigator gate-verify item (flagged in dead-routes).
+- **F1 — CENSUS CORRECTED to the canonical tool.** The meter is `cd lean && scripts/sorries` = **35**
+  proof-position sorries (my initial "~52" was a raw line-grep artifact — it counted docstring +
+  `⛔ DO NOT FILL` banner mentions; the earlier "24" in dead-routes is also superseded). Tool-verified
+  split: **DLN/Aoyagi 10** (MonumentAtlas 8 + Case2Delta0 1 + LearningCoefficient 1 — the monument
+  skeleton, ON-CONE), **DLN/RLCT/Engine 4** (GeoAlphaGauge, ClearableReify, CanonicalWitness224,
+  GeoAtlasTransfer — all RETIRED chart fossils), **DLN/RLCT/Validate 18**, **DLN/RLCT/Skeleton 3**.
+  **Post-bake expected-delta (NOT yet landed — staging `2080757ea` on `-rung-c`, elder second read in
+  flight):** DLN/Aoyagi 10 → 16 (MonumentAtlas 8 → 14 = 8 leaves + 6 derived-lemma stubs). The frontier
+  line is NOT updated to post-bake state until the controller confirms the bake landed. The on-cone-vs-
+  fossil recount at the M-HYGIENE prune is the navigator's gate-verify (dead-routes).
 - **F2 — `ClosedForm` is in `DLN/Aoyagi`, not `Foundations`.** (Controller-memory correction — the QIP
   spine's brief listed it under Foundations.)
 - **F3 — the QIP/λ spine is SPREAD, not one cluster:** `cCodim` (Core/CTheta), `qipMin` (Core/CThetaQIP),
