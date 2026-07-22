@@ -14924,3 +14924,23 @@ SCOPE kept explicit: this is the case-11 BLOW-UP side (no shear there); the case
 interior-pivot NORMALIZATION is the landed recoord half — orthogonal mechanisms, both needed, both now
 present. THE ELDER's desk is now ONE bundled ruling: the 9abd7cbff delta-read + ratify the case-split
 fan pin + the blessed hpos → arch-C's single follow-up staging COMPLETES the N_p bake.
+
+## 2026-07-23 ~16:45 UTC — ★★★ THE RECOORD IS CANONICAL (8e557fc46): the fidelity fix is in the definitions
+
+The elder's bundled ruling landed (banked: elder-npivot-deltaread-fanrule.md): DELTA-READ OK on
+9abd7cbff — it re-derived the recoord flat-indexing itself against its §6 value lemma (A_{S+1}·Q₁⁻¹ −
+A_{S+1} = [l=a]·∑_{k≠a}A[row,k]w_{kb}, exact match; arch-C's flagged guard CORRECT: i=q.2 ≡ i≠a in the
+firing branch) + the fan-pin RULED (b) (case-11 canonical, fan at fresh clears — "faithful + resolves
+the conflict") + it owned the wrong fork-4 expectation.
+
+MERGED + CONTROLLER-RE-GATED (canonical 8e557fc46): build green; canonNormalizationOf_support +
+realBranch_canonNormalization_eq CLEAN-THREE; payoff roots UNCHANGED (isolation held through the
+biggest spine re-author of the expedition); cordon OK; census 40 (+1 exactly = the M7-emission
+successor frontier). Aoyagi's clearing step — pivot-parametric, row/col-clearing, deeper-factor
+compensated — is now what the Lean definitions SAY, not just what the math intended. canonShearOf is
+gone.
+
+arch-C CHARGED with the COMPLETING staging (one bundle: the (b) fan case-split pin [case-11 equality
+kept, case-12/case-2 membership] + the blessed hpos) → my gate + elder delta-read → merge = THE N_p
+BAKE COMPLETE → the big re-opening (-L3T2 merge + wires, the induction, seat-LL's frontiers, the
+ChainCompat pins, the wall's endgame).
