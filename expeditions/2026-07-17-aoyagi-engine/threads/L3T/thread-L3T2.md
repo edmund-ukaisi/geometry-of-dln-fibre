@@ -40,3 +40,79 @@ The rollover edge `ed` off `p` has `ed.nextState.layer = N ≥ N` (`hterm` ✓) 
 already carries `hpos` (as do the case1/case2/lastLayer leaves), so it passes down — no downstream
 statement change. This is an extraction oversight (every sibling redirect leaf has `hpos`; only this
 one dropped it), the cheapest defect class.
+
+### VALIDATED lane-1 proof body (drop-in once `hpos` is added to the statement)
+
+Validated standalone (axiom-clean `[propext, Classical.choice, Quot.sound]`) against a local `hpos`'d
+copy. Terminal-forced-rollover argument: a terminal-reaching edge advances the layer (`sc.child.layer =
+ed.nextState.layer ≥ N > p.conState.layer`), and only a rollover advances the layer (case1/case2 keep
+it; reduction mirrors `OracleInv_conOracle_stepChildren`), so the rollover guard `widthMinUpto d
+(layer+1) ≤ cleared` holds — `widthMinUpto_pos hpos` then gives `cleared ≥ 1`, i.e. `edgeδ = false`.
+
+    obtain ⟨-, ⟨sc, hsc, -, hchild, -, -⟩, -⟩ := hbranch
+    suffices h : p.conState.cleared ≠ 0 by
+      simp only [edgeδ, decide_eq_false_iff_not]; exact h
+    by_cases h1 : N ≤ p.conState.layer
+    · exfalso
+      have horacle : conOracle d p.conState = oracleTerminal d p.conState := by
+        unfold conOracle; rw [dif_pos h1]
+      rw [horacle] at hsc
+      simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+    · have hchild_adv : p.conState.layer < sc.child.layer := by rw [hchild]; omega
+      by_cases h2 : widthMinUpto d (p.conState.layer + 1) ≤ p.conState.cleared
+      · have hpos' := widthMinUpto_pos hpos (p.conState.layer + 1); omega
+      · exfalso
+        have hlive : p.conState.layer < N := not_le.mp h1
+        have hcap : p.conState.cleared < layerCap d :=
+          lt_of_lt_of_le (not_le.mp h2) (widthMinUpto_le_layerCap d _)
+        have hkeep : sc.child.layer = p.conState.layer := by
+          rcases hmin : ((List.finRange p.conState.numDiv).filterMap (fun k =>
+              if p.conState.cleared + 1 ≤ p.conState.divTilde k ∧
+                  p.conState.divTilde k + 1 ≤ widthMinUpto d p.conState.layer
+              then some (p.conState.divTilde k) else none)).min? with _ | target
+          · have horacle : conOracle d p.conState = case2Decision d p.conState
+                (widthMinUpto d p.conState.layer - p.conState.cleared)
+                (d ⟨p.conState.layer + 1, by omega⟩ - p.conState.cleared) hcap := by
+              unfold conOracle; rw [dif_neg h1, dif_neg h2]
+              split <;> simp_all only [reduceCtorEq]
+            rw [horacle] at hsc
+            simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hsc
+            simp only [hsc, ConState.stepAppendAdvance]
+          · rcases hf : chooseMin p.conState target with _ | f
+            · exfalso
+              have horacle : conOracle d p.conState = oracleTerminal d p.conState := by
+                unfold conOracle; rw [dif_neg h1, dif_neg h2]
+                split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+                all_goals (try subst_vars)
+                all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+              rw [horacle] at hsc
+              simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+            · obtain ⟨hmemtar, hminle⟩ := List.min?_eq_some_iff'.mp hmin
+              rw [List.mem_filterMap] at hmemtar
+              obtain ⟨k0, _, hk0⟩ := hmemtar
+              have htar : p.conState.cleared + 1 ≤ target ∧
+                  target + 1 ≤ widthMinUpto d p.conState.layer := by
+                by_cases hc0 : p.conState.cleared + 1 ≤ p.conState.divTilde k0 ∧
+                    p.conState.divTilde k0 + 1 ≤ widthMinUpto d p.conState.layer
+                · rw [if_pos hc0] at hk0
+                  have hdt : p.conState.divTilde k0 = target := Option.some.inj hk0
+                  omega
+                · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+              have htgt : p.conState.divTilde f = target := (chooseMin_spec p.conState target hf).1
+              have horacle : conOracle d p.conState = case1Decision d p.conState f
+                  (target - p.conState.cleared) (widthMinUpto d p.conState.layer - p.conState.cleared)
+                  (d ⟨p.conState.layer + 1, by omega⟩ - p.conState.cleared)
+                  (not_le.mp h1) (by omega) (by rw [htgt]; omega) hcap := by
+                unfold conOracle; rw [dif_neg h1, dif_neg h2]
+                split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+                all_goals (try subst_vars)
+                all_goals (try (split <;> simp_all only [reduceCtorEq, Option.some.injEq]))
+              rw [horacle] at hsc
+              simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+                List.not_mem_nil, or_false] at hsc
+              rcases hsc with h | h <;>
+                simp only [h, ConState.stepCase11, ConState.stepAppendAdvance]
+        omega
+
+(Opens needed: `DLNFibre.DLN.RLCT DLNFibre.DLN.RLCT.Engine`. `List.min?_eq_some_iff'` is deprecated →
+`List.min?_eq_some_iff` but still works.)
