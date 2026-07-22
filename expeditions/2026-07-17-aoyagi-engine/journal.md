@@ -11138,3 +11138,26 @@ WIRING REVIEW (its declared next joint): (1) decorrelated second read of the bak
 ruling; (2) direction check on the proof-cascade order (L4/L3T → L5 hinge → L6+L8 → L7 → wiring
 swap); (3) E-lane 3-track taste check; (4) the progress-bar gate on "design phase closed, proof
 phase open" — name what it does NOT discharge.
+
+## 2026-07-22 (controller) — SPECIFY catch on the BAKED case1 leaf: the pivot-placement free-field; elder priority ruling requested
+
+seat-L4, running SPECIFY-before-proof on the baked wall leaf, surfaced concrete statement
+pressure: case1_preserves_stepInv quantifies over a FREE ed (center/pivot unpinned — the
+coordinate bridge deliberately deferred), and the failing shape ed.pivot ∈ layerCoords(S+1) =
+supportAt(child) is ADMISSIBLE under the leaf's hypotheses (ed.center = {ed.pivot}, shearφ = 0) —
+there qm sets a CHILD-SUPPORT coord to 1, and since foldResid is multilinear (degree-1 on every
+layer simultaneously), the monomials whose layer-(S+1) factor IS the pivot drop to degree-0 →
+unit-at-origin → conjunct-2's Deg1SupportedSlot FAILS on those slots. Same unit-vs-degree-1
+mechanism as the S=L defect, now interior. The REAL construction always places the pivot in the
+CURRENT block — the leaf is true on construction edges; the free-ed form may over-quantify.
+Conjunct-1 (divisibility) unaffected. ROUTED to the elder as the PRIORITY item of the in-flight
+post-bake review: (1) is there an existing handle (hpivot/hsupp/hinv) the seat missed? (2) if
+real, the weakest-that-INDUCTS pin (pivot-in-parent-support vs center⊆parent-support vs the
+ledger-coupling option — weigh the two-named-function separation); (3) sweep the other three
+woken leaves; (4) amendment text rendering-ready if needed (delta re-gates through arch-C — a
+small re-bake). seat-L4 holding correctly; the flip-flop lesson applied right this time — a
+QUESTION with a concrete checkable shape, decorrelated adjudication requested, no proof
+investment on a suspect statement. If real: NINTH caught statement defect, and the first to
+survive INTO a bake — the SPECIFY-before-proof layer catching what the gate's witnesses did not
+(the gate's depth-diverse batteries exercise construction edges; the free-ed hypothesis space is
+bigger — a gate-contract lesson for arch-C when the ruling lands).
