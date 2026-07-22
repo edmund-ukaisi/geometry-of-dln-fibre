@@ -10991,3 +10991,17 @@ controller AUTHORIZED EXPLICITLY — bake commits to expedition/aoyagi-engine-ru
 branch, push-on-commit standing protocol) with the elder's witness-bank text in the commit body;
 controller then re-verifies from the fetched commit (build + forced footprints + cordon + census)
 and integrates into the expedition branch — the integration boundary stays the controller's.
+
+## 2026-07-22 (controller) — E-lane: clean handoff to seat-Ecore; third brick banked; resourcing (i) confirmed
+
+seat-E executed the handoff (612746aa2): removed its own just-added sorried sStep_mem_binding/
+boxSubset_card from OrderRealize.lean (would name-clash with seat-Ecore's proofs — the sub-seat
+branched @ f004386ad, before they existed); kept the shared data floor + the wiring stub. Third
+brick PROVED: swapWidths_swapWidths (2f538490c, involutivity — the reverse-direction foundation
+for the swap-iso). Resourcing question re-raised on the two remaining cores ((a)+(b) ~100+ LoC,
+(c) ~60+ LoC, both deep): controller CONFIRMED (i) — Codex design-check on swapBinding_orderIso
+first, then seat-E builds (a)+(b) itself; (c) sequential after. Grounds: E-lane already 2-way
+parallel, off the critical path; a third seat = coordination cost near one file family for
+marginal wall-clock; the re-raise trigger is a wall AFTER the design-check. MONUMENT LANE: render
+seat reports the deeperCoords cleanup done (grep-clean, green, bake-ready → arch-C's final
+re-clear + bake).
