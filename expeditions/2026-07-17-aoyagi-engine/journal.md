@@ -13912,3 +13912,35 @@ binder-range) working via the seat, exactly as designed after the earlier guard-
 holds the sub-agent's BUILD for the elder's confirmed statement; case11 (closing) + δ=0 (banked) are
 he_lin/L1/Gap-B-independent, unaffected. The elder's Gap-B lemma refines to: over blockCoords, with
 he_lin, threaded from L5 — then the descent's append discharges from it (still L1-independent).
+
+## 2026-07-22 ~21:30 UTC — case11 CLOSED (wall = 1 sorry, no boostReady flow-through); L1 rendered green; he_lin-threading tension
+
+TWO events + a wiring-stability call.
+
+(1) DESCENT case11 CLOSED (multiaffine-descent, 38b4f4a06 on -L3T2). The wall realBranch_multiAffine_step'
+now has EXACTLY ONE tracked sorry = realBranch_cofactorDescent (the strict transform is
+blockCoords(p.layer+1)-graded; foldResid_layerHomogeneous discharges it). descent_delta1_case11 FULLY
+PROVED axiom-clean (via conOracle_case11_mergeIdx_lt + case11_pivot_decode_lt + deg1_comp_of_fixing) and
+CONFIRMED it does NOT consume realBranch_boostReady_case11 (conjunct-B closes on pivot-separation alone).
+So the code confirms the clean decomposition: the descent and boostReady lanes are fully independent, no
+boostReady flow-through in MultiAffineStepWire. #print axioms sorryAx traces ONLY to realBranch_cofactorDescent.
+
+(2) L1 RENDERED GREEN (foldstate-render → arch-C): relocation clean, census +1/net-0. arch-C is GATING it
+(—rung-c not yet advanced past the hygiene staging) → its staging-hash report to me is imminent → I gate +
+integrate then.
+
+(3) WIRING HELD (my call) + a he_lin-threading tension surfaced. realBranch_cofactorDescent consumes
+foldResid_layerHomogeneous, which NEEDS he_lin (its coreGen root base). But realBranch_multiAffine_step is
+the STEP-FORM, deliberately HE_LIN-FREE (the node-form resolution). So consuming Gap B re-introduces he_lin
+into the step → the he_lin-threading decision (concern-2, elder deciding) may CHANGE the wall's statement. I
+am therefore HOLDING the MultiAffineStepWire aggregator wiring until the statement stabilizes (post the
+elder's threading call + Gap B build) — will not wire an unstable statement. Offered the elder a clean
+resolution: thread foldResid_layerHomogeneous as a HYPOTHESIS on the step (like hslot), L5 discharges it via
+foldResid_layerHomogeneous + he_lin — preserving the step-form's he_lin-freeness. Elder's authoring call.
+
+Also: the sub-agent's blockCoords cap concern is now DOUBLE-corroborated (seat-L3T2 + the sub-agent
+independently) + it confirmed HomogeneousDeg1On (vanishing form) kills F=u_pivot — de-risking the elder's
+blockCoords restatement. And a mislabel corrected (relayed to seat-L3T2): the Gap-B render is B-STANDALONE
+(new predicate def + standalone lemma), NOT a FoldStepInvAt strengthening. Waiting on: arch-C's L1 hash +
+the elder's refined Gap-B statement (blockCoords + he_lin + threading). The descent is one lemma from
+sorry-free; L1 is one gate from baked.
