@@ -12607,3 +12607,27 @@ the construction-conditioning collapse is paying at exactly the predicted rate (
 IsRealBranch, not re-derivations). seat-L3T2 → lane 1 (terminal_edgeδ + the terminal re-wire).
 Remaining stubs: terminal_edgeδ (L3T2 lane 1), shearWithinCarve (HELD for the pin round),
 multiAffine (second wave, frontier).
+
+## 2026-07-22 ~14:00 UTC — STOP-ON-SUSPECT (lane 1): realBranch_terminal_edgeδ missing hpos — COUNTEREXAMPLE-BACKED; micro-round queued
+
+seat-L3T2 refuted the baked stub AS STATED: `realBranch_terminal_edgeδ` lacks
+`hpos : ∀ k, 0 < d k`, and without it the statement is FALSE — concrete counterexample: N ≥ 1
+with d 0 = 0 gives widthMinUpto ≡ 0, the rollover guard fires at every layer, N−1 rollovers
+build a genuine IsRealBranch (center ∅, pivot free, shear id) whose terminal rollover edge has
+edgeδ = true. Positivity is NOT derivable from e (a d₁×0 factor is a point). The route to
+δ = false genuinely needs widthMinUpto_pos ⟸ hpos.
+
+Classification: EXTRACTION OVERSIGHT in the redirect render, not a disputed object — every
+sibling leaf (case1/case2/lastLayer/terminal_edge_stepInv, the stub's SOLE consumer) already
+carries hpos; only this stub dropped it. Fix is wiring-compatible (consumer passes hpos down;
+zero downstream statement changes).
+
+Process held on all sides: seat-L3T2 did NOT edit (statement-lock), escalated with the
+counterexample + fix, and moved to its independent lane 3. Controller routed the hpos addition
+to the elder as a MICRO-ROUND queued BEHIND the in-flight pin delta-read (one concern per read;
+the elder also checks whether the two still-open stubs multiAffine/shearWithinCarve need hpos so
+we fix once). Counterexample goes to the seat's thread.md as the permanent kill-record.
+
+Scoreboard note: the redirect's statement architecture is doing its job even in failure — the
+defect surfaced as ONE missing hypothesis on ONE stub with a 3-line fix, not as a per-leaf
+re-derivation cascade.
