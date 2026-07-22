@@ -11,7 +11,7 @@ FIX-A enabler. Kept in a separate file (not `MonumentAtlas`) during the canonCen
 -/
 
 open MeasureTheory Set Filter Topology RLCT
-open DLNFibre.Core DLNFibre.Core.Aoyagi
+open DLNFibre.Core DLNFibre.Core.Aoyagi DLNFibre.DLN.RLCT DLNFibre.DLN.RLCT.Engine
 
 namespace DLNFibre.DLN.Aoyagi
 
@@ -266,5 +266,20 @@ theorem exists_ignoresCoords_decomp {D : ℕ} (F : (Fin D → ℝ) → ℝ) (S X
       · simp only [hP0, if_pos hk]
       · simp only [hP0, if_neg hk]; exact hagree k fun h ↦ hk (hSX h)
     simp only [hPve, hP0e]
+
+/-- The append-case (case12/case2) canonical center sits within its layer's coords — the `S ⊆ X`
+input the Deg1 bridge needs (`ed.center ⊆ layerCoords(support layer)` at δ=1, via `centerPin`). -/
+theorem canonCenterOf_append_subset_layerCoords {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (sc : StepChild d s) (hcase : sc.ecase = StepCase.case12 ∨ sc.ecase = StepCase.case2) :
+    canonCenterOf d s sc ⊆ layerCoords d s.layer := by
+  have harm : canonCenterOf d s sc = (Finset.univ.filter (fun q : tupIdx d =>
+      (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+        (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d) := by
+    rcases hcase with h | h <;> · unfold canonCenterOf; rw [h]
+  rw [harm, layerCoords]
+  intro x hx
+  rw [Finset.mem_image] at hx ⊢
+  obtain ⟨q, hq, rfl⟩ := hx
+  exact ⟨q, Finset.mem_filter.mpr ⟨Finset.mem_univ q, (Finset.mem_filter.mp hq).2.1⟩, rfl⟩
 
 end DLNFibre.DLN.Aoyagi
