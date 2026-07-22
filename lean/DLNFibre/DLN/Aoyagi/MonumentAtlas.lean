@@ -519,6 +519,16 @@ def AffineOn {D : ℕ} (f : (Fin D → ℝ) → ℝ) (X : Finset (Fin D)) (V : S
     IgnoresCoords a X V ∧ (∀ x ∈ X, IgnoresCoords (b x) X V) ∧
     (∀ u ∈ V, f u = a u + ∑ x ∈ X, b x u * u x)
 
+/-- **Degree-1-homogeneous on a coordinate block `X`** (Gap-B, elder-verbatim 2026-07-23): the
+`AffineOn` degree-≤1 grade PLUS the vanishing strengthening `f u = 0` whenever every `X`-coordinate of
+`u ∈ V` is zero — so `f` has NO constant part reading outside `X`, i.e. it is degree-1-homogeneous in the
+`X` coordinates. Over `X = ∅` the vanishing clause degenerates to `f ≡ 0 on V` (vacuous premise), so this
+is asserted only where `X` is a genuine layer (`layerCoords d ℓ`, `ℓ < N`); the underlying `AffineOn` is
+harmless over `∅`. -/
+def HomogeneousDeg1On {D : ℕ} (f : (Fin D → ℝ) → ℝ) (X : Finset (Fin D))
+    (V : Set (Fin D → ℝ)) : Prop :=
+  AffineOn f X V ∧ ∀ u ∈ V, (∀ x ∈ X, u x = 0) → f u = 0
+
 /-- **Per-layer degree ≤ 1 from `fromLayer`** (elder-verbatim, parent-h ruling 2026-07-22): `f` is `AffineOn`
 each single layer `ℓ ≥ fromLayer`. The `≥ fromLayer` threshold (NOT all `ℓ`) is what INDUCTS — the child is
 degree-2 in the cleared layer BELOW its support, so the grade is asserted only from the support layer up. -/
@@ -1169,6 +1179,78 @@ theorem realBranch_multiAffine_step {N : ℕ} {d : Fin (N + 1) → ℕ}
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared)
       (supportLayerOf (p.extend ed).conState) (foldRegion d e (p.extend ed)) := by
   -- map: B-derived-gap3-STEP (parent slot + edge pins → child slot; he_lin-FREE descent; root anchored in L5)
+  sorry
+
+/-! ### Gap-B atoms — the per-layer homogeneity grade + the cap descent (elder ruling 2026-07-23)
+
+The Gap-B redesign splits `Deg1SupportedSlot`'s two conjuncts to their correct mechanisms (the
+"subsume `hslot` by homogeneity" plan is RETRACTED — `realBranch_multiAffine_step` above is UNCHANGED):
+
+* **conjunct-2** (per-layer degree ≤ 1) is HOMOGENEITY, over `layerCoords` (the FULL layer, uncapped),
+  supplied by `foldResid_layerHomogeneous` (base `coreGen_layerHomogeneous`). Needs `e` LINEAR.
+* **conjunct-1** (the ∃c support decomposition on the CAPPED block `supportAt`) is the CAP, supplied by
+  `realBranch_appendResidDescent`. It CONSUMES the shear (`canonShearOf`); it is NOT a homogeneity
+  corollary. Homogeneity and the cap are logically INDEPENDENT (Codex Q3, 2026-07-23).
+
+The two together rebuild the child `Deg1SupportedSlot`; seat-L3T2 proves the homogeneity atoms, the cap
+stays a named frontier leaf (the coupled-corank ≥ 2 confinement IS the wall). -/
+
+/-- **Gap-B base atom (he_lin).** Each flattened core generator is degree-1-homogeneous on every layer
+`ℓ < N` (`HomogeneousDeg1On` over `layerCoords d ℓ`, on `Set.univ`): a product term of `coreGen` carries
+exactly one factor per layer (multilinearity across layers), so it is `AffineOn` AND vanishes when the
+whole layer is zeroed. Needs `e` LINEAR (`he_lin`) — the root anchoring lives on L5's base case by
+design. Guarded at `ℓ < N` (`layerCoords d ℓ = ∅` for `ℓ ≥ N`, where the vanishing clause degenerates).
+Sympy-verified across six dimension vectors, uniform over all `ℓ < N` (`threads/L3T/verify/gapb_check.py`). -/
+@[blueprint]
+theorem coreGen_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he_lin : IsLinearMap ℝ ⇑e)
+    (i : Fin (d (Fin.last N) * d 0)) (ℓ : ℕ) (hℓ : ℓ < N) :
+    HomogeneousDeg1On (coreGen d e i) (layerCoords d ℓ) Set.univ := by
+  -- map: B-L3T-coreGen-layerHomogeneous (BASE atom; he_lin; multilinear-across-layers; sympy ℓ<N)
+  sorry
+
+/-- **Gap-B step / standalone (conjunct-2 only).** The fold residual is degree-1-homogeneous on every
+layer `ℓ` at or above the support layer (`HomogeneousDeg1On` over `layerCoords d ℓ`), on the fold region.
+This supplies the `PerLayerDeg1From` (conjunct-2) of the child `Deg1SupportedSlot` — it does NOT supply
+the cap (conjunct-1): homogeneity is over `layerCoords` and is INDEPENDENT of the running-min cap.
+Induction on `p`: base = `coreGen_layerHomogeneous`; step = `homogeneousDeg1On_comp_of_fixing` reusing
+the banked step-map fixing/agreement (`u_pivot` is excluded at δ=1 — the constant-1 transform fails the
+vanishing clause). `he_lin` threaded from L5; non-terminal guard `¬ N ≤ p.conState.layer` + `ℓ < N`. -/
+@[blueprint]
+theorem foldResid_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he_lin : IsLinearMap ℝ ⇑e)
+    (p : TreePath d) (hnonterm : ¬ N ≤ p.conState.layer)
+    (hbranch : p.IsRealBranch e)
+    (j : Fin (foldNR d p)) (ℓ : ℕ)
+    (hℓsup : supportLayerOf p.conState ≤ ℓ) (hℓN : ℓ < N) :
+    HomogeneousDeg1On (foldResid d e p j) (layerCoords d ℓ) (foldRegion d e p) := by
+  -- map: B-L3T-foldResid-layerHomogeneous (STEP; conjunct-2 only; induction base = coreGen atom)
+  sorry
+
+/-- **Gap-B cap — conjunct-1 descent ⟨FRONTIER LEAF; NOT homogeneity⟩.** The child slot's degree-1
+support decomposition `resid = ∑_{i ∈ supportAt(child)} cᵢ·uᵢ` on the child fold region — the conjunct-1
+of `Deg1SupportedSlot`, descended parent → child. It CONSUMES the shear (`canonShearOf`, via
+`IsRealBranch`'s shear pin): the shear maps the strict transform's over-cap dependence (the `v·y₁` at a
+δ=1 clear) back into the capped block, so in the sheared frame the residual is supported on
+`supportAt(child)`. Whether `canonShearOf` confines at coupled corank ≥ 2 IS the wall (verified only at
+the `d=![1,2,1]` base instance, `r = y′₀`) — a named frontier leaf, NOT strike-able. Consumes the
+parent's full `Deg1SupportedSlot` (`hslot`); `foldResid_layerHomogeneous` supplies conjunct-2 alongside,
+and the two rebuild the child `Deg1SupportedSlot`. This is `realBranch_multiAffine_step`'s conjunct-1 —
+kept SEPARATE (the homogeneity-subsume is retracted). -/
+@[blueprint]
+theorem realBranch_appendResidDescent {N : ℕ} (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
+    (hbranch : (p.extend ed).IsRealBranch e)
+    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+      (supportAt d p.conState.layer p.conState.cleared)
+      (supportLayerOf p.conState) (foldRegion d e p)) :
+    ∀ j, ∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+      (∀ i, ContinuousOn (c i) (foldRegion d e (p.extend ed))) ∧
+      (∀ u ∈ foldRegion d e (p.extend ed), foldResid d e (p.extend ed) j u
+        = ∑ i ∈ supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared,
+            c i u * u i) := by
+  -- map: B-L3T-appendResidDescent-cap ⟨FRONTIER LEAF — conjunct-1 descent, canonShearOf-consuming; NOT homogeneity⟩
   sorry
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime).
