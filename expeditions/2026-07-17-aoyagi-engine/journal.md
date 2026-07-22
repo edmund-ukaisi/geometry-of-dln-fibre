@@ -10853,3 +10853,13 @@ shape sits uncommitted), and freeze-substance is satisfied: no bake, both preps 
 oscillation loop (relay-of-flips to the render lane, same root as mine) and adopted the
 ruling-gated discipline on its hop. Both hops now ruling-gated; one message carries the
 elder's verdict + literal window form when it lands.
+
+## 2026-07-22 (controller) — render-lane correction: seat backed out to NEUTRAL + self-declared hard freeze; loop gated at all three hops
+
+Supersedes the held-bet note above: a further crossing had the render seat back out to the
+NEUTRAL base on its own and declare a HARD FREEZE (no render/revert until arch-C relays the
+ruling). arch-C endorsed rather than re-directed (a re-direct would have been a sixth
+oscillation). Net state — strictly cleaner than the held bet: tree = neutral base, both preps
+warm (two-clock recorded/re-renderable + supportAt absorbed), no bake, and the oscillation loop
+is now gated at ALL THREE hops (controller→arch-C ruling-gated; arch-C→seat ruling-gated; the
+seat render-frozen). The only live worker on the critical path remains the elder.
