@@ -14395,3 +14395,35 @@ oracle/tree, Objects A-E, payoff isolation. ELDER charged: verify against worked
 finding dies or the shear re-bakes); then the faithful-shear design + one-round sequencing (Gap B + hparent
 + the shear). If confirmed this is the fidelity gate's deepest catch — caught by source-elaboration, the
 one instrument class that CAN catch definition-fidelity (proof-pressure + delta-reads structurally cannot).
+
+## 2026-07-23 ~05:40 UTC — the shear ruling's inputs converge: a design alternative, staging survival, base-safe grind
+
+Four reports landed and were routed to the elder's pending shear ruling:
+1. seat-L3T2's DESIGN ALTERNATIVE (possibly the clean resolution): put the deeper recoordinatization
+   A_{S+1}→A_{S+1}·Q⁻¹ in the STRICT-TRANSFORM/blockBlowupCoordQuot COMPONENT of the step map, not in
+   shearφ — keeping the whole shear-pin family (clauses I-III + canonShearOf + L1) UNCHANGED and
+   dissolving the clause-(I) tension. The re-bake would localize to the foldResid δ=1 fresh-layer branch.
+2. arch-C's Gap B staging (20a9c5e3c) REPORTED + gate green (byte-exact vs the verbatim; census +3;
+   payoff isolation held; the subsume-retraction honored — realBranch_multiAffine_step untouched,
+   additions only) AND its survival analysis: the staged statements are expressed through names INVARIANT
+   under a shear-def change; comp_of_fixing appears in ONE docstring hint line — so "merge as-is + a
+   docstring rider" is viable even under the shear ruling. Its fidelity note for the delta-read:
+   appendResidDescent's verbatim omits hpos (the sibling carries it) — elder rules. Rider recon done:
+   THREE lastLayer consumer sites (it found MonumentAtlas:1557).
+3. pnp-transport GATED its certificate against seat-L4C's consumer spec: BASE sound as-is (conRoot ⟹
+   chainWeight≡1, filter-invariant; widthMinUpto d 0 = d_0); transport/boundary NOT reachable until the
+   shear re-scope (grinding them = a false goal); the strict/non-strict reconciliation UNAMBIGUOUS
+   (extraBlock col ≥ divTilde NON-strict is right; the banked strict _thr_lt stays correct for the
+   dominant b_i; the boundary needs a non-strict _thr_le + chainWeight filter ≤). Codex answer flushed
+   (codex/transport-epsilon-answer.md); the certificate + 3 witness scripts still flushing (re-demanded).
+4. seat-L3T2's survival analysis: the homogeneity INVARIANT survives the recoord (linear, maps
+   layerCoords(S+1) into itself); only comp_of_fixing → comp_of_linear on the shear factor; its banked
+   δ=0/case11 arms consume the shear via the pins only — survival re-verified on the ruling.
+
+ACTED: seat-L4C WOKEN on the BASE-only grind (safe: filter-invariant, obstruction-untouched; with a
+hypothesis-sufficiency check — the u³ class — before grinding, stop-on-suspect) + the non-strict
+bLedger_factor_of_thr_le prep. Transport/boundary explicitly forbidden until the ruling. The elder now
+holds: the shear verification (against Aoyagi/worked.tex), the recoord-HOME design call (strict-transform
+component vs shearφ), the Gap B delta-read (can proceed independent — staging survives), hparent, the
+appendResidDescent-hpos note, and the non-strict pin. pnp-fan's tasks all show complete — certificate
+expected. The machine is fully parallel again with every lane behind a verified statement or a named hold.
