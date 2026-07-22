@@ -30,12 +30,15 @@ composite of THREE order-isos (`OrderIso.ofHomInv` or `toEquiv`+`map_rel_iff'`, 
    (`C=⌈ΣD/ℓ⌉`), a-subset `A={i<ℓ:xᵢ=C}`, box via reversed gaps (`Fin.rev`; see the codex answer).
    Hazard: the reverse `enc T ≤ enc T' ⟹ T ≤ T'` — prove `map_rel_iff` directly.
 
-**NOVELTY + SCOPE FLAG.** The adjacent-swap transport is a NEW derived construction (not in Aoyagi,
-not the cert's Lemma-4-step recipe — an equivalent explicit map Codex found). It is a genuine
-multi-lemma build (~200+ LoC), NOT a one-lemma fill. The four painful new lemmas: (a) the swap
-preserves `bindingSet`; (b) its local monotonicity on binding profiles; (c) bubble-sort transport
-agrees with `shiftedSorted`; (d) the `qip*`→`ceilingM/residueA` bridge. Route decision (cert's
-Lemma-4 map vs Codex's swap map) + the effort are surfaced to the controller before the build.
+**NOVELTY + SCOPE (name-for-content).** This module records Codex's adjacent-swap map, NOT the
+cert's Lemma-4-step recipe. Both were verified (cert via a backtracker; Codex's by hand on the
+worked cores + `g-enc-adjacent-swap.py`); the two are DIFFERENT constructions and their equivalence
+is NOT needed — any valid order-iso discharges the `Nonempty` headline. The thread-42 cert is the
+adjudication record; this module is the construction record. A multi-lemma build (~200+ LoC), not a
+one-lemma fill. Four frontier obligations: (a)+(b) `swapBinding_orderIso` (one swap is an order-iso;
+preserve + coupled monotonicity are bundled, since atomic `swapR`-in-`X` monotonicity is FALSE);
+(c) `bindingSet_transport_sorted`; (d) `residueA_le_ell` + the sorted-box iso. Route (a) = the
+controller's BUILD ruling.
 
 **Elder scaffold-pass questions (carried, per controller):**
 1. RESOLVED by the Codex check: the sorted-`ell`/unsorted-`Adm` coupling is LOAD-BEARING (the
@@ -69,12 +72,61 @@ theorem chainHeight_eq_of_orderIso {α β : Type*} [PartialOrder α] [PartialOrd
   rw [himg] at h
   exact h.symm
 
-/-- **(3a) THE REALIZATION ISO** (SORRIED — frontier): the binding-profile poset is order-isomorphic
-to `BoxPart(ℓ,a)` (`ℓ = ell M 0`, `a = residueA M 0`), via the Birkhoff/box-cell encoding. Stated as
-`Nonempty` — the explicit encoding is the prove-phase content the elder pass ratifies. -/
+/-- Sorted reduced widths: `M` composed with the ascending sort (`shiftedSorted _ 0`, `r = 0` so
+`dminus = M`). The realization iso factors through the sorted widths (elder Q1: the sort is
+load-bearing, carried by the adjacent-swap transport). -/
+noncomputable def sortedWidths (M : Fin (L + 1) → ℕ) : Fin (L + 1) → ℕ := shiftedSorted M 0
+
+/-- Swap two adjacent width entries `k, k+1` of `M`. The bubble-sort transport composes these. -/
+def swapWidths (k : Fin L) (M : Fin (L + 1) → ℕ) : Fin (L + 1) → ℕ :=
+  M ∘ Equiv.swap k.castSucc k.succ
+
+/-- Codex's atomic value-preserving adjacent-swap on the middle profile coordinate (the construction
+witness for `swapBinding_orderIso`): `X ↦ X+(B−A)` (translation) / `X−(A−B)` / `P+Q−X` (reflection),
+minimising `(P−X+A)²+(X−Q+B)²`. NOT monotone in `X` alone — the transport's monotonicity is a
+*coupled* profile property (`P = t⁽ᵏ⁻²⁾`, `X = t⁽ᵏ⁻¹⁾`, `Q = t⁽ᵏ⁾` move together), which is why the
+obligation is bundled as the one-swap order-iso below, not an atomic `swapR`-in-`X` lemma. -/
+def swapR (P X Q A B : ℕ) : ℕ :=
+  if A ≤ B ∧ B - A ≤ P - X then X + (B - A)
+  else if B < A ∧ A - B ≤ X - Q then X - (A - B)
+  else P + Q - X
+
+/-- **(a)+(b) ONE-SWAP ORDER-ISO** (SORRIED — frontier; bundles "swap preserves `bindingSet`" +
+"local coupled monotonicity of `R`"): one adjacent width-swap induces an order-isomorphism of the
+binding poset, via the `swapR` transport. Bundled because the monotonicity couples three profile
+coords, so the honest statement is the iso, not an atomic `swapR`-in-`X` fact (which is false). -/
+theorem swapBinding_orderIso (M : Fin (L + 1) → ℕ) (k : Fin L) (hpos : ∀ s, 0 < M s) :
+    Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (swapWidths k M))) := by
+  sorry -- map: enc-swap (a)+(b)
+
+/-- **(c) THE BUBBLE-SORT TRANSPORT** (SORRIED — frontier): composing the adjacent-swap isos
+transports the binding poset to the sorted-width binding poset (`sortedWidths = shiftedSorted _ 0`;
+"bubble-sort transport agrees with `shiftedSorted`"). -/
+theorem bindingSet_transport_sorted (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
+    Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (sortedWidths M))) := by
+  sorry -- map: enc-transport (c)
+
+/-- **(d) WELL-FORMEDNESS of `(ℓ,a)`** (SORRIED — frontier; the `qip*`→`ceilingM/residueA` bridge):
+`a = residueA ≤ ℓ = ell`, so `BoxPart(ℓ,a)`'s bound `ℓ−a` is meaningful. The fuller ceiling identity
+(`C = ⌈ΣD/ℓ⌉`, `a` = count of `C`-steps) is discharged inside the sorted-box iso. -/
+theorem residueA_le_ell (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
+    (residueA M 0).toNat ≤ ell M 0 := by
+  sorry -- map: enc-ceilingM-bridge (d)
+
+/-- **THE SORTED-CASE BOX ISO** (SORRIED — frontier): on sorted widths, the binding poset is
+order-isomorphic to `BoxPart(ℓ,a)` via the active-step a-subset + reversed-gap encoding (Codex part
+1, step 3). This is where the explicit `enc`/`dec` closed forms live. -/
+theorem bindingSet_sorted_orderIso_boxPart (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
+    Nonempty (↥(bindingSet (sortedWidths M)) ≃o ↥(BoxPart (ell M 0) ((residueA M 0).toNat))) := by
+  sorry -- map: enc-sorted-box
+
+/-- **(3a) THE REALIZATION ISO** — discharged from the transport (c) + the sorted-case box iso, by
+composition. NON-sorried: the frontier is the four obligations above. -/
 theorem bindingSet_orderIso_boxPart (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
     Nonempty (↥(bindingSet M) ≃o ↥(BoxPart (ell M 0) ((residueA M 0).toNat))) := by
-  sorry
+  obtain ⟨e1⟩ := bindingSet_transport_sorted M hpos
+  obtain ⟨e2⟩ := bindingSet_sorted_orderIso_boxPart M hpos
+  exact ⟨e1.trans e2⟩
 
 /-- **The Tier-3 count corollary**: `chainHeight(bindingSet) = a(ℓ−a)+1 = aoyagiTheta`, via the
 realization iso + the banked subtype-`≃o` transport + `chainHeight_boxPart`. Proved MODULO the
