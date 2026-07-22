@@ -6,7 +6,7 @@ import Mathlib.Tactic
 /-!
 # `Core.Aoyagi.OrderChain` — Aoyagi Lemmas 4–5: the binding-minimiser poset is chain-height a(ℓ−a)+1
 
-**SPECIFY skeleton — UPPER/ATTAINMENT `sorry`, awaiting the elder's six-check pass. NOT proved.**
+**PROVED sorry-free (UPPER + ATTAINMENT); the statement awaits the elder's six-check pass.**
 
 P6.2 (pnp-confirmed): Aoyagi's pole order `ρ` is the max **chain** of the binding-minimiser poset
 (NOT antichain — the Dilworth dual), and `= a(ℓ−a)+1`. The poset is the a-subsets of `[ℓ]` ≅
@@ -81,17 +81,88 @@ theorem chainHeight_boxPart_le (ℓ a : ℕ) :
     _ = ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) := by
         rw [Set.encard_coe_eq_coe_finsetCard, Finset.card_range]
 
+/-- The row-major **staircase** partition after `k` cells: row `i` holds `min K (k − i·K)` cells
+(`K = ℓ−a`). Antitone, bounded by `K`, with `∑ = min(k, a·K)`. -/
+def staircase (K : ℕ) (a : ℕ) (k : ℕ) : Fin a → ℕ := fun i => min K (k - (i : ℕ) * K)
+
+/-- The row-major fill sum: `∑ min K (k − i·K) = k` when `k ≤ a·K` (`K` fixed, induct on rows `a`). -/
+theorem sum_staircase (K : ℕ) : ∀ (a k : ℕ), k ≤ a * K →
+    ∑ i : Fin a, min K (k - (i : ℕ) * K) = k := by
+  intro a
+  induction a with
+  | zero => intro k hk; rw [Nat.zero_mul, Nat.le_zero] at hk; subst hk; simp
+  | succ n ih =>
+    intro k hk
+    rw [Fin.sum_univ_succ]
+    simp only [Fin.val_zero, Nat.zero_mul, Nat.sub_zero, Fin.val_succ]
+    have hcast : ∀ i : Fin n, k - ((i : ℕ) + 1) * K = (k - K) - (i : ℕ) * K := by
+      intro i; rw [Nat.add_mul, Nat.one_mul]; omega
+    rw [Finset.sum_congr rfl (fun i _ => by rw [hcast i])]
+    by_cases hKk : K ≤ k
+    · rw [min_eq_left hKk, ih (k - K) (by rw [Nat.succ_mul] at hk; omega)]; omega
+    · rw [not_le] at hKk
+      rw [min_eq_right (le_of_lt hKk)]
+      have hk0 : k - K = 0 := by omega
+      rw [hk0]
+      have hz : ∑ i : Fin n, min K (0 - (i : ℕ) * K) = 0 := by
+        apply Finset.sum_eq_zero; intro i _; simp
+      omega
+
+/-- The staircase lies in `BoxPart`: antitone and bounded by `ℓ−a`. -/
+theorem staircase_mem (ℓ a k : ℕ) : staircase (ℓ - a) a k ∈ BoxPart ℓ a := by
+  refine ⟨fun i => min_le_left _ _, ?_⟩
+  intro i j hij
+  exact min_le_min le_rfl (Nat.sub_le_sub_left (Nat.mul_le_mul_right _ (by exact_mod_cast hij)) k)
+
+/-- `rankBP` of the staircase is `k` (for `k ≤ a(ℓ−a)`), so distinct `k` give distinct partitions. -/
+theorem rankBP_staircase (ℓ a k : ℕ) (hk : k ≤ a * (ℓ - a)) :
+    rankBP a (staircase (ℓ - a) a k) = k := sum_staircase (ℓ - a) a k hk
+
 /-- **ATTAINMENT** (Lemma 5 construction, Aoyagi eq-(1)/(2)): the staircase realises a chain of
-`a(ℓ−a)+1` box partitions, so the chain height is at least `a(ℓ−a)+1` (for `a ≤ ℓ`). -/
-theorem le_chainHeight_boxPart (ℓ a : ℕ) (ha : a ≤ ℓ) :
+`a(ℓ−a)+1` box partitions, so the chain height is at least `a(ℓ−a)+1` (unconditional). -/
+theorem le_chainHeight_boxPart (ℓ a : ℕ) :
     ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) ≤ (BoxPart ℓ a).chainHeight (· < ·) := by
-  sorry
+  -- staircase is strictly monotone in `k` (via `rankBP`), so its image over `Iic (a(ℓ−a))` is a
+  -- chain in `BoxPart` of size `a(ℓ−a)+1`.
+  have hmono : ∀ {k k' : ℕ}, k ≤ a * (ℓ - a) → k' ≤ a * (ℓ - a) → k < k' →
+      staircase (ℓ - a) a k < staircase (ℓ - a) a k' := by
+    intro k k' hk hk' hlt
+    refine lt_of_le_of_ne
+      (Pi.le_def.mpr (fun i => min_le_min le_rfl
+        (Nat.sub_le_sub_right (le_of_lt hlt) ((i : ℕ) * (ℓ - a))))) ?_
+    intro heq
+    have hr := rankBP_staircase ℓ a k hk
+    rw [heq, rankBP_staircase ℓ a k' hk'] at hr
+    omega
+  set C : Set (Fin a → ℕ) := (staircase (ℓ - a) a) '' ↑(Finset.Iic (a * (ℓ - a))) with hC
+  have hCsub : C ⊆ BoxPart ℓ a := by
+    rintro _ ⟨k, _, rfl⟩; exact staircase_mem ℓ a k
+  have hInj : Set.InjOn (staircase (ℓ - a) a) ↑(Finset.Iic (a * (ℓ - a))) := by
+    intro k hk k' hk' heq
+    simp only [Finset.coe_Iic, Set.mem_Iic] at hk hk'
+    by_contra hne
+    rcases lt_or_gt_of_ne hne with h | h
+    · exact absurd heq (ne_of_lt (hmono hk hk' h))
+    · exact absurd heq.symm (ne_of_lt (hmono hk' hk h))
+  have hChain : IsChain (· < ·) C := by
+    rintro _ ⟨k, hk, rfl⟩ _ ⟨k', hk', rfl⟩ hne
+    simp only [Finset.coe_Iic, Set.mem_Iic] at hk hk'
+    have hkk : k ≠ k' := by rintro rfl; exact hne rfl
+    rcases lt_or_gt_of_ne hkk with h | h
+    · exact Or.inl (hmono hk hk' h)
+    · exact Or.inr (hmono hk' hk h)
+  calc ((a * (ℓ - a) + 1 : ℕ) : ℕ∞)
+      = (↑(Finset.Iic (a * (ℓ - a))) : Set ℕ).encard := by
+        rw [Set.encard_coe_eq_coe_finsetCard]; simp [Nat.card_Iic]
+    _ = C.encard := by rw [hC]; exact (hInj.encard_image).symm
+    _ ≤ (BoxPart ℓ a).chainHeight (· < ·) :=
+        Set.encard_le_chainHeight_of_isChain _ _ hCsub hChain
 
 /-- **Tier-1 headline (P6.2)**: the binding-minimiser box poset has `Set.chainHeight = a(ℓ−a)+1`
-(for `a ≤ ℓ`). The count is a CHAIN height, not an antichain/cardinality (pnp-confirmed). -/
-theorem chainHeight_boxPart (ℓ a : ℕ) (ha : a ≤ ℓ) :
+(unconditional in `a`). The count is a CHAIN height, not an antichain/cardinality (pnp-confirmed). -/
+theorem chainHeight_boxPart (ℓ a : ℕ) :
     (BoxPart ℓ a).chainHeight (· < ·) = ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) :=
-  le_antisymm (chainHeight_boxPart_le ℓ a) (le_chainHeight_boxPart ℓ a ha)
+  le_antisymm (chainHeight_boxPart_le ℓ a) (le_chainHeight_boxPart ℓ a)
 
 /-! ## Kill-set ground truths (the headline's values at the K1 + corner `(ℓ, a)`)
 `(2,2,2)→(ℓ,a)=(2,2)→1`; `(2,1,2)→(2,1)→2`; `(2,2,2,2)→(3,2)→3`; ThetaOrderDistinction `(4,2)→5`.
