@@ -184,13 +184,14 @@ theorem chart_of_collapse (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
     hideal_bwd := hbwd }, rfl, rfl, rfl, rfl, rfl⟩
 
 /-- **L6 — the chart geometry** (statement-identical to `MonumentAtlas.leafPath_chartGeometry`;
-primed). Assembles a certified `Chart (coreGen d e) 0` from a fold-produced atlas chart. The whole
-body is `chart_of_collapse`; the single remaining obligation is the Jacobian collapse `hcollapse`
-(`|jacDet (gmap c)| = jacWeight (jac c)`, unit ≡ 1) — the strengthened-shear-pin (★), to be derived
-from the fold once the elder's `FoldRealizes`-clause / derived lemma lands (the L6 signature then gains
-the same `FoldRealizes` conditioning as L7, carried by the driver's existing `hreal`). -/
+primed). Assembles a certified `Chart (coreGen d e) 0` from a fold-produced, fold-realized atlas
+chart. The Jacobian collapse (`|jacDet (gmap c)| = jacWeight (jac c)`, unit ≡ 1) is the third conjunct
+of `FoldRealizes` — the strengthened-shear-pin (★), discharged by L5 — so the whole body is
+`chart_of_collapse` fed that collapse at chart `c`. `hfold` is retained for statement-identity with
+`MonumentAtlas.leafPath_chartGeometry` (the driver supplies both provenance records). -/
 theorem leafPath_chartGeometry' (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (atlas : GeoAtlasData d e) (c : Fin atlas.n) (hfold : FoldProduced d e atlas)
+    (hreal : FoldRealizes d e atlas)
     (hfwd : RegionRepresents (fun i ↦ coreGen d e i ∘ atlas.gmap c)
       (fun _ : Fin 1 ↦ monoOf (atlas.bexp c)) (atlas.region c))
     (hbwd : RegionRepresents (fun _ : Fin 1 ↦ monoOf (atlas.bexp c))
@@ -198,11 +199,8 @@ theorem leafPath_chartGeometry' (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) 
     ∃ chart : Chart (coreGen d e) 0,
       chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
         chart.bexp chart.k₀ = atlas.bexp c ∧ chart.jac = atlas.jac c := by
-  -- The ONLY open obligation: the pure-monomial Jacobian collapse (unit ≡ 1), forced by the
-  -- strengthened shear pin's (★). Incoming as the elder's FoldRealizes-clause / derived lemma; the
-  -- L6 signature then takes `(hreal : FoldRealizes d e atlas)` and derives it here.
-  have hcollapse : ∀ u, |jacDet (atlas.gmap c) u| = jacWeight (atlas.jac c) u := by
-    sorry
-  exact chart_of_collapse d e atlas c hfwd hbwd hcollapse
+  -- The Jacobian collapse (unit ≡ 1) is `FoldRealizes`' third conjunct, at chart `c`.
+  obtain ⟨_pathOf, _leafOf, _hbranch, _hsurj, hcollapse⟩ := hreal
+  exact chart_of_collapse d e atlas c hfwd hbwd (hcollapse c)
 
 end DLNFibre.DLN.Aoyagi
