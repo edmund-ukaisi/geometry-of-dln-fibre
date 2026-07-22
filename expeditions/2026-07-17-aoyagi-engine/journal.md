@@ -12757,3 +12757,29 @@ proposes; the L8 swap mini-round becomes the Assembly's first increment.
 Board: hpos delta-read RUNNING (elder mid-read since 12:06); seat-L3T2 lane-1 proof prepped
 against a local hpos'd copy (instant close on the bake); seat-L4 on case11 (Codex-first);
 seat-L6 at ONE sorry; FoldRealizes ruling queued.
+
+## 2026-07-22 ~16:20 UTC — hpos BAKED (0f8310b1a); FoldRealizes ruling LOCKED (clause, exact text); (B′) adopted; render lane → collapse round
+
+**hpos bake integrated + pushed (0f8310b1a):** elder delta-read OK ("exactly my ruling — a clean
++2"); gate green; census 39 unchanged. seat-L3T2 WOKEN to land its prepped terminal_edgeδ proof
++ the terminal-leaf re-wire (the elder's soundness note relayed: closing with hpos ALONE is the
+validation; anything more = stop-on-suspect again).
+
+**The FoldRealizes ruling was ALREADY LOCKED in two elder texts my last-message polls skipped
+(11:58 + 12:02) — poll-discipline note: scan the tail WINDOW, not the last message.** The
+ruling: **(A) outcome-equation as a THIRD CLAUSE on FoldRealizes**, exact Lean text authored
+(|jacDet (gmap c) u| = jacWeight (jac c) u, EXACT — unit ≡ 1 — ALL u). The taste tension
+resolved head-on: atlas.jac is already geometrically pinned (hjac_tie + jexp = |center|−1), so
+the clause is a PROVABLE EQUATION whose discharge is L5's (★)-telescoping (chain rule + hσ_jac +
+clause-III pivot-preservation + hjac_tie) — the srcBox seam becomes a NAMED L5 OBLIGATION, not a
+hidden gap; (B)'s per-step correspondence stays L5-internal. seat-L6's consumer-agnostic
+chart_of_collapse was cited as DECISIVE for outcome-over-correspondence (the correspondence
+would be dead interface surface). L6's signature gains (hreal : FoldRealizes …) in the same
+round (L7's pattern; the driver already holds it).
+
+**(B′) primed-drivers assembly ADOPTED** (arch-C's architect call, my sign-off): MonumentAssembly
+.lean downstream, primed statement-identical drivers, anchor-diff hard gate, sorryAx sources
+shrink with zero MonumentAtlas edits; renderer = the RENDER SEAT (decorrelation kept strict —
+arch-C endorsed: the render↔gate split caught a defect every round it ran). SUMMIT-RETIRE
+entered in the owed-register (elder-blessed one-shot cleanup; preconditions listed). Render lane
+sequence: collapse round (GO sent with the verbatim clause) → Assembly first increment.
