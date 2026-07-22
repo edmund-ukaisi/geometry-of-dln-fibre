@@ -15004,3 +15004,22 @@ transition patterns (4× the clause-I ≥→> shift; 1× the match-pin shape —
 pattern applies). seat-L3T2 woken: rebase → fix → the induction against the FINAL defs → the audit → I
 re-merge + wire. LESSON: pre-N_p modules need the seat's rebase BEFORE the controller merge —
 merge-order discipline for the remaining branches (-L4C, -LL same path).
+
+## 2026-07-23 ~18:45 UTC — the faithful object's honest reveal: the recoord writes ℓ=sl; cap-confinement = the shared question
+
+seat-L3T2's rebase surfaced the N_p transition's one non-mechanical consequence: canonNormalizationOf's
+component (ii) WRITES layer S+1 = the descent's support layer, so "σ fixes ℓ ≥ sl" (the old hfix) was a
+truth about the UNFAITHFUL shear only. Post-N_p: clause-2 survives via comp_of_LINEAR (the recoord is
+per-(S+1)-linear); clause-1 (the blockCoords-sl cap decomposition) now genuinely depends on WHERE the
+recoord writes — the SAME cap-confinement content as the append frontier (elder-scoped wall-class). Its
+two proven atoms survived; the :429 pin site fixed mechanically (the PivotPreservation pattern).
+
+DISPOSITIONS: (1) comp_of_linear + the induction build NOW (its deliverable is uncapped — N_p-final);
+(2) the slot's clause-1: the CHEAP (a) CHECK first — is the recoord's write-column (the pivot-row index)
+within blockCoords(S+1)'s widthMinUpto cap on real branches (running-min monotonicity + the pivot pin)?
+If yes: `recoord_confines_to_cap`, a small named lemma, clause-1 survives. If no/costly (>1h): ONE named
+cap frontier sorry (honest, mirrors + may SHARE the append frontier). (3) CROSS-LANE: seat-L4D's
+ChainCompat BOUNDARY field has the same shape — flagged as the shared-lemma candidate; the seats
+coordinate directly; if (a) FAILS it's certificate-relevant (to the elder). The "sorryAx = cap only"
+expectation for the slot may honestly become "= the cap family" — the faithful object pricing its own
+support structure, named not hidden.
