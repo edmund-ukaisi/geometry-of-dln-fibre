@@ -12631,3 +12631,45 @@ we fix once). Counterexample goes to the seat's thread.md as the permanent kill-
 Scoreboard note: the redirect's statement architecture is doing its job even in failure — the
 defect surfaced as ONE missing hypothesis on ONE stub with a 3-line fix, not as a per-leaf
 re-derivation cascade.
+
+## 2026-07-22 ~14:15 UTC — THE PIN ROUND IS BAKED (d309bca48): (★) forced; seat-L6 woken for the one-pass landing
+
+**Elder delta-read: OK — 8b4ab0e3e was the bake.** Its verification, all independent: the applied
+clause (III) CHARACTER-IDENTICAL to the authored form (binders, projections, tail); the
+convention check re-derived (.1→S layer, .2→J diagonal via tupIdxEquiv — matches canonPivotOf);
+the relocation body-identical with zero semantic content; the A1-A4 battery cited, with **A3
+explicitly vindicating the child-ledger current-corner-inclusive choice** (the shear preserves
+the current corner too, so including it avoids the off-by-one and stays emittable); no
+regressions (hjac_tie/FoldProduced/supportAt/edgeδ/Deg1SupportedSlot/FoldStepInvAt untouched;
+leaves get a strictly stronger ShearWithinCarve, conclusion-only). **(★) is now FORCED by
+IsRealBranch**: each pivot corner preserved by all deeper steps ⟹ |jacDet gmap| = jacWeight(jac),
+unit ≡ 1, {jacDet g=0} = {jacWeight jac=0} — hjac/hexcep_null/hexcep_meas all close with
+hjac_tie's statement unchanged.
+
+**Controller integration VERIFIED + PUSHED: d309bca48** (clean auto-merge over the two
+stub-proof merges; full build 0-err; forced footprints both drivers = clean+sorryAx; cordon OK;
+census 38 unchanged — the pin adds no sorries). **seat-L6 WOKEN** onto its staged 6-step landing
+plan (rebase → signature match → collapse lemma → excep switch → gate → REQUEST_SPAWN reviewer +
+statement card), with the line-shift caution (cornerToFlat relocation). arch-C's round CLOSED;
+next in its lane: the hpos micro-round (elder ruling pending), then the L8 swap mini-round
+(proof-fill class — LeafGeometryWire banked at 5b6627604).
+
+Round ledger for the pin: authored form → verbatim render (one benign named deviation) →
+sim-battery emittability → re-gate → delta-read → bake, with ZERO statement churn on the leaves
+and the friction (the forward reference) caught and named at the render, not discovered
+downstream. The elaborate-then-render pipeline at its intended cadence.
+
+## 2026-07-22 ~14:30 UTC — TICK: hpos micro-round GO (elder confirmed + owns the drop; fix-once = 2 stubs)
+
+Heartbeat tick (cron armed hourly :17; placement clean). Elder's hpos ruling: **confirmed — and
+it OWNED the drop** (its terminal ruling routed through widthMinUpto_pos, which requires
+positivity; the derived-lemma render dropped the hypothesis). Fix-once scope ruled with the
+degeneracy discriminator (does the conclusion degenerate at d k = 0, where widthMinUpto ≡ 0?):
+- ADD hpos: **terminal_edgeδ** (confirmed; the counterexample) + **multiAffine** (inferred:
+  supportAt = ∅ forces resid ≡ 0 via Deg1SupportedSlot over ∅, not satisfied on the all-rollover
+  branch; caveat carried — drop it if the frontier proof lands without).
+- NO hpos (weakest-that-suffices): centerPin, descendView (pure extractions), shearWithinCarve
+  (projection), cover (∅ ⊆ center vacuous at the degeneracy — already proved hpos-free).
+arch-C CHARGED with the micro-round (render adds the two parity-form hypotheses on a refreshed
+base vs d309bca48; signature-only delta; re-gate; staging hash; elder delta-reads the signature
+change). Memo phase line refreshed to PROOF CASCADE, BOTH BAKES IN.

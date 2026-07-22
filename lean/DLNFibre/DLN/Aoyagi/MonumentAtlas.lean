@@ -628,6 +628,18 @@ coordinate bridge. -/
 def DescendView {N : ℕ} (d : Fin (N + 1) → ℕ) (p : TreePath d) (ed : TreeEdge d p) : Prop :=
   ∃ sc ∈ (conOracle d p.conState).stepChildren, sc.ecase = ed.case ∧ sc.child = ed.nextState
 
+/-- The flat coordinate of the diagonal corner `(S, J, J)` of the layer-`S` block; `none` off-cone
+(`S ≥ N` or `J` out of the block). `Option` handles totality with no nonempty junk. (Moved up from its
+former spot below `canonCenterOf` so the elder's (III) cleared-pivot clause in `ShearWithinCarveRaw`
+can reference it — definitional-order fix; `cornerToFlat` depends only on `flatDim`/`tupIdxEquiv`.) -/
+noncomputable def cornerToFlat (d : Fin (N + 1) → ℕ) (S J : ℕ) : Option (Fin (flatDim d)) :=
+  if hS : S < N then
+    let i : Fin N := ⟨S, hS⟩
+    if hr : J < d i.succ then
+      if hc : J < d i.castSucc then some (tupIdxEquiv d ⟨⟨i, ⟨J, hr⟩⟩, ⟨J, hc⟩⟩) else none
+    else none
+  else none
+
 /-- **`ShearWithinCarveRaw`** (seat-L4's (B) form, 2026-07-22, ONE site for the carve grade). The RAW
 displacement `shearφ` (not `blockShear shearφ`) on layers `≥ sl := supportLayerOf node`: (I) write-side —
 the displacement is ZERO there (`shearφ u i = 0`); (II) read-side — every displacement coord IGNORES those
@@ -639,7 +651,14 @@ def ShearWithinCarveRaw {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d
   let sl := supportLayerOf node.conState
   let V := foldRegion d e node
   (∀ ℓ : ℕ, sl ≤ ℓ → ∀ i ∈ layerCoords d ℓ, ∀ u ∈ V, shearφ u i = 0) ∧
-    (∀ ℓ : ℕ, sl ≤ ℓ → ∀ i, IgnoresCoords (fun u ↦ shearφ u i) (layerCoords d ℓ) V)
+    (∀ ℓ : ℕ, sl ≤ ℓ → ∀ i, IgnoresCoords (fun u ↦ shearφ u i) (layerCoords d ℓ) V) ∧
+    -- (III) CLEARED-PIVOT protection (L6 (★), 2026-07-22): displacement vanishes on every divisor
+    -- birth-corner in the node's ledger — a deeper step's shear can't move an earlier pivot, so each
+    -- step's pivot is preserved by all deeper steps. Write-side / corners-only; canonShearOf never
+    -- writes a pivot corner (⟹ emittable); edgeShear = id at case11/rollover, trivial.
+    (∀ (k : Fin node.conState.numDiv) (i : Fin (flatDim d)),
+      cornerToFlat d (node.conState.divBirthCoord k).1 (node.conState.divBirthCoord k).2 = some i →
+        ∀ u ∈ V, shearφ u i = 0)
 
 /-- **`ShearWithinCarve`** — the last-edge specialization of `ShearWithinCarveRaw` (node = `p.extend ed`,
 displacement = `ed.shearφ`). Region = CHILD `foldRegion d e (p.extend ed)`. -/
@@ -729,16 +748,6 @@ flat ROW is the raw remnant (automatic in `Fin d_{layer+1}`). `|center| = resRow
 `divExp`, so it is consistent with `FoldProduced.hstep_block` (`jexp = |center|−1`); `FoldProduced`'s
 `jac`/`divExp` are UNTOUCHED (the elder's accumulated `{9,8,4}` = birth block-sizes + merge additions;
 the `9,4,1` here are the birth block SIZES, a different quantity, consistent not contradictory). -/
-
-/-- The flat coordinate of the diagonal corner `(S, J, J)` of the layer-`S` block; `none` off-cone
-(`S ≥ N` or `J` out of the block). `Option` handles totality with no nonempty junk. -/
-noncomputable def cornerToFlat (d : Fin (N + 1) → ℕ) (S J : ℕ) : Option (Fin (flatDim d)) :=
-  if hS : S < N then
-    let i : Fin N := ⟨S, hS⟩
-    if hr : J < d i.succ then
-      if hc : J < d i.castSucc then some (tupIdxEquiv d ⟨⟨i, ⟨J, hr⟩⟩, ⟨J, hc⟩⟩) else none
-    else none
-  else none
 
 /-- The canonical pivot of an edge: a case-1(1) MERGE returns the REUSED divisor's IMMUTABLE birth corner
 `s.divBirthCoord mergeIdx` (discharge cond (1)); a case-1(2)/case-2 NEW pivot is the current
