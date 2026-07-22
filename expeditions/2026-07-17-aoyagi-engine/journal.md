@@ -11211,3 +11211,19 @@ re-bake round, still entirely pre-proof statement-level (the system holding). Ga
 lesson queued for arch-C: batteries exercised CONSTRUCTION edges; all five faces live in the FREE
 hypothesis space — the battery contract must sample free fields. Both proof seats hold; L3T
 Codex-checks face 5 as productive hold.
+
+## 2026-07-22 (controller) — seat-Eswap opening: batteries-first de-risk shrinks the swap-iso proof
+
+seat-Eswap up (worktree + branch off -E; charter/role/design ingested) and de-risked BEFORE
+grinding: three new batteries banked under threads/41-order-count/ (swap-endpoint-battery.py EXIT
+0 on 1308 tuples L≤5; swap-reflect-probe; swap-mono-abstract, 0 fails incl. all 150 tie
+sub-cases). Findings that shrink the unit: (1) the Y≤B adm-preservation crux SPLITS — the trans
+branch and the reflect-A≤B branch close by pure omega (NO minimality); only reflect-B<A needs the
+minimiser, and there only the SINGLE neighbour inequality F(X) ≤ F(X+1) (on binding, X = P forces
+Y = Q ≤ B). (2) The hazardous coupled monotonicity is a PURE swapR+minimiser arithmetic fact over
+ordered coordinate tuples — the profile machinery only needs to EXTRACT the minimiser hypothesis
+(∀X′ ∈ [Q, min(P,A)], F(X) ≤ F(X′)); the arithmetic is standalone. Line-counted 8-step plan
+(~530 LoC): range facts → involution → Mval value-preservation → local-min extraction →
+endpoint+preservation → minAdm equality → the mono hazard (Codex consult on the tightest
+competitor set) → ofHomInv assembly. Milestone (a) = steps (4)+(5) landing. E-lane 3-track all
+healthy; monument holds on the elder's five-face ruling.
