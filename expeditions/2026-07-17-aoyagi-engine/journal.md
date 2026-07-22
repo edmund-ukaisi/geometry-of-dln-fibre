@@ -12533,3 +12533,17 @@ pre-render (elder's recommendation, adopted) → render applies verbatim → arc
 labeled staging commit to -rung-c → hash to me → elder delta-read → integrate → wake seat-L6
 (its 6-step landing plan is staged). ONE concern this round: the cleared-pivot shear clause. The
 L8 swap waits for the mini-round after.
+
+## 2026-07-22 ~12:50 UTC — clause (III) sim-validation PASS (controller-run, banked)
+
+The elder's pre-render recommendation executed (arch-C can't reach the expedition-branch
+simulator from its isolated worktree — same pattern as the center-validation): NEW
+`threads/elaboration/verify/clause3_corner_check.py`, EXIT 0. Write-set analysis of the
+certified Schur step reduces clause-(III) emittability to three assertions, all green on the
+NINE standing instances: **A1** no ledger corner sits in the written interior (bl = S, bc > J);
+**A2** no ledger corner at a future layer (covers the certified Q⁻¹-touches-only-the-pivot-row
+write into C^(S+1)); **A3** the pivot corner (J,J) itself is FIXED by Q,P̂ (symbolic, all tail
+sizes p,q ≤ 4 — the blow-up normalises the corner, the shear never writes it, exactly the
+elder's emittability ruling); **A4** boosts never re-birth a corner (asserted in-trace). So
+canonShearOf vanishes on every child-ledger birth corner along the whole fold — clause (III) is
+EMITTABLE. Relayed to arch-C as gate-verdict evidence.
