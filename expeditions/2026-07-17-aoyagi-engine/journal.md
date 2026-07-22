@@ -11615,3 +11615,20 @@ numbers. ELDER's second read OPEN (its target: the four witnesses RAN — eviden
 render + IsRealBranch pin closing the :731 asymmetry → tighten grading → determined form;
 priority below proof-seat support, above idle). The monument is now PURELY proofs: 8 leaves, 4
 actively owned, statements final.
+
+## 2026-07-22 (controller) — proof-time SPECIFY: the hcenter DIRECTION gap (conjunct-1 needs the COVER); elder ruling with the J-subtlety
+
+seat-L4, starting the wall, caught the complement of its own FACE-1 (battery c7512b9c9): the
+hcenter ⊆ pin serves conjunct-2's descend, but conjunct-1's δ=1 divisibility needs the OPPOSITE
+inclusion — residual-support ⊆ ed.center (the blow-up must COVER the support; spectators gain no
+u_pivot; witness: center missing a support coord leaves c_b·u_b·(1−u_pivot) undivided; q′ can't
+absorb — non-continuous at u_pivot = 0). The two conjuncts together force EQUALITY at the carve.
+CONTROLLER FLAG added to the ruling: the construction's center is CLEARED-SHRUNK at J≥1
+(canonCenterOf :725), so a FLAT equality may be construction-FALSE there — while the cover is
+NEEDED only at δ=1 (J=0), where the center IS the full block. Elder weighing: flat equality (iff
+J≥1-construction-truth) vs J-conditional (= at J=0, ⊆ at J≥1) vs a δ=1 cover hypothesis; sweep
+case2 + lastLayer_clear; coordinate with seat-L3T's δ=1-terminal watch for ONE uniform
+resolution. Hypothesis-touch, small re-gate. seat-L4 develops CONJUNCT-2 meanwhile (independent —
+the ⊆ direction survives every candidate). The proof-time SPECIFY layer catching what the
+statement-time family missed: the family audited the hypotheses' TRUTH; this is about their
+SUFFICIENCY for the proof route — a new check class for the gate contract when it stabilizes.
