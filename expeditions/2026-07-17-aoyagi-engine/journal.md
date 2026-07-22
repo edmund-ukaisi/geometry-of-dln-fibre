@@ -10618,3 +10618,29 @@ STRUCTURE") + one structural adjudication flagged precisely: the CONSUMED-slot m
 elder's strictly-beyond-only vs arch-C's ∪-same-layer-consumed hint — the paper's d_{i,k}
 coefficient factors are the test; a structure contradiction returns to the elder as a finding).
 The render holds for the trace; everything else proceeds on the pin.
+
+## 2026-07-22 (controller) — the ENCODING CERT verified+merged (iso GENUINE); the Adm=admTight CORRECTION; the amended window pin routed everywhere
+
+**pnp's five-part cert: PASS, controller re-ran EXIT 0, merged** (threads/42-encoding-map/):
+(3a) is a GENUINE order-isomorphism — the Birkhoff/box-cell encoding explicit, bijectivity
+C(ℓ,a) every core, order-embedding BOTH directions at the full trap kill-set, boundaries clean,
+and the coord-sum encoding's reverse-direction failure witnessed exactly as the OrderIso pin
+predicted. **THE LOAD-BEARING CORRECTION (part v): Lambda's Adm EQUALS admTight AS A SET**
+(weak-decrease + admBound reconstruct runMin by induction; 0/993 inequalities) — seat-E's
+loose-lattice finding-1 reversed (the genuinely-loose lattice was the OVER-loose cap-everywhere
+form, where minAdm collapses ≤ 0 — the negative certificate giving the docstring its citable
+reason); seat-E redirected: Mval_clamp_le → the SET IDENTITY adm_eq_admTight (simpler, makes the
+seam immediate); its scaffold UNFREEZES on the cert. The second finding-reversal by decorrelated
+instrument tonight — the instruments keep correcting each other upward.
+
+**The elder's AMENDED window pin routed** (pre-endorsed from the pages: the P-cofactors literally
+read cleared coordinates — d″-slots inside cofactors, image-verified p.18/21): T′ = the uncleared
+remainder (shrinks per clear); **D⁺′ = the deeper window ∪ THE SHED SLOTS** (grows per clear,
+jumps at rollover) — arch-C's consumed-slot hint RIGHT, the elder's first pin too clean, the
+correction owned; the split partitions the old block, all five constraints co-hold, the γ·β
+mechanism gets its address (one factor support-side, its partner rides the shed slots). ∃C′
+BLESSED-STAYS (the doctrine boundary: hypothesis-side freedom is bait; conclusion-side is the
+prover's burden; the witness = the computed split). The swap-alarm check-order pinned (convention
+vs FIX-A before believing a swap signature — the thread-33/34 precedent). REMAINING: seat-L4's
+trace, scoped to the ±1 OFFSET + structure confirmation; then the one-expression form → the gate
+→ THE BAKE.
