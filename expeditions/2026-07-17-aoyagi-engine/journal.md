@@ -11463,3 +11463,22 @@ Q₂⁻¹ at the ideal level — verified at the follow-up, never asserted). RE-
 (items 1/2/4 already gated green; item 3 renders as the grading form); both proof seats briefed
 (L4: Pin C not discarded — the follow-up target, battery stays the reference; L3T: its δ-finding
 credited as decisive).
+
+## 2026-07-22 (controller) — grading predicate LOCKED ((a)+(b)); ONE pre-bake confirm: the parent-h window (potential 6th face)
+
+seat-L4 locked hshear_grade for arch-C (battery 1fa7a5ac6): arch-C's proposed component form
+(clause a: S′-images preserve degree-1) is INSUFFICIENT alone — clause (b) added (S′ᶜ-coord
+shear-images READ no S′), which kills the de↦de+s1² breaker that satisfies (a) vacuously;
+pivot-independence IMPLIED by (a)+(b); TRUE-under-both-decompositions confirmed. PLUS one
+dependency flag — an INVARIANT-strength question, not the shear: conjunct-B also needs the
+parent's DeeperMultilinear coefficient h to read STRICTLY DEEPER than S′. The subtlety:
+D⁺_parent = S′_parentᶜ CONTAINS the child support (block(S+1) lies in the parent's complement),
+so the bare def permits a parent-h reading block(S+1) → after the step, a child coefficient
+reading the child's OWN support → child degree-2. The construction's multilinear residual gives
+strictly-deeper for free — but does the rendered INVARIANT carry it? FORWARDED to the elder
+myself (seat sends can't reach it): three possible answers — (1) already excluded by a rendered
+clause (name it, bake proceeds); (2) DeeperMultilinear window-tighten (def-touch, folds into THIS
+re-bake); (3) separate invariant clause. **BAKE HOLDS on this one confirm** — "likely fine" is
+not a bake basis; that's this family's whole lesson. Render + item-3 gate PROCEED meanwhile so
+the bake fires the moment the confirm lands. rev-Elane mid-review (batteries + wording items
+already complete; Codex consult in progress).
