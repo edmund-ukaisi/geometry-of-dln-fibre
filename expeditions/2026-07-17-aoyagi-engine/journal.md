@@ -11632,3 +11632,20 @@ resolution. Hypothesis-touch, small re-gate. seat-L4 develops CONJUNCT-2 meanwhi
 the ⊆ direction survives every candidate). The proof-time SPECIFY layer catching what the
 statement-time family missed: the family audited the hypotheses' TRUTH; this is about their
 SUFFICIENCY for the proof route — a new check class for the gate contract when it stabilizes.
+
+## 2026-07-22 (controller) — **FIRST LEAF PROOF LANDED** (terminal_edge δ=0, hgen consumed); the direction gap DOUBLE-DERIVED
+
+seat-L3T landed the monument's FIRST LEAF PROOF (bbcb70d1f, primed statement): terminal_edge's
+δ=0 MAIN branch fully proved — conjunct 1 pure pullback (continuity from LastLayerInv's per-slot
+disjunction), conjunct 2 DIRECTLY from GeneratorCleared via stepMap_zero ("hgen closes exactly
+what my face-5 refutation demanded" — the face-5 design validated in proof by its own author).
+Banked halves stay clean-three. TWO observations, both routed: (1) the δ=1 terminal corner
+SHARPENED (rollover ed.center = ∅ ⟹ σ = id and hgen's sum need not be u_pivot-divisible —
+conjunct-1 fails there UNLESS the corner is VACUOUS; left TRACKED-OPEN sorried; the elder's
+reachability question now leads the uniform ruling). (2) the hcenter DIRECTION gap
+INDEPENDENTLY DERIVED from the case2 side — converging with seat-L4's battery an hour earlier
+(two seats, two routes, one gap), plus the canonCenter note confirming the J-subtlety (J=0 ⟹ no
+shrink ⟹ equality construction-TRUE exactly where the cover is needed) and an alternative fix
+shape (Deg1SupportedSlot on ed.center) for the elder's weighing. ONE uniform ruling pending:
+hcenter direction + the δ=1-terminal corner + the case2/lastLayer sweep. Meanwhile BOTH seats
+work ruling-independent branches (L4: conjunct-2 descend; L3T: case2 empirical + δ=0 pullback).
