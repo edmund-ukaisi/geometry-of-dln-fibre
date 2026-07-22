@@ -1622,3 +1622,7 @@ import DLNFibre.DLN.Aoyagi.L5FoldSpec
 -- PivotPreservation: seat-L6's M4 (★)-producer atoms — the blow-up half (A1 fixed-points, A2
 -- canonCenterOf disjointness, A3 DivBirthInv along real branches, A2-pkg glue). A4/A5 continue.
 import DLNFibre.DLN.Aoyagi.PivotPreservation
+-- MonumentAssembly: the (B') primed drivers (statement-identical to the baked MonumentAtlas
+-- drivers, anchor-diff-gated) consuming the PROVED wire leaves; sorryAx sources shrink per
+-- increment; the summit's final wiring consumes these; SUMMIT-RETIRE ceremony at the end.
+import DLNFibre.DLN.Aoyagi.MonumentAssembly
