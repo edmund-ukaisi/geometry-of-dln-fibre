@@ -10254,3 +10254,25 @@ drawer." TAXONOMY: the no-write/no-READ sub-axis recorded (audit what function-f
 arch-C executes the localized swap → the full gate (six re-checks + three countermodel/witness
 deaths) → THE BAKE. Nothing else is pending anywhere — the round's design is complete after
 seven rulings, four blind convergences, and two proof-seat refutations, every piece named.
+
+## 2026-07-22 (controller) — SIX-CHECK PASS ON ALL SIX: the chain-height theorem WIRES; the OrderIso pin lands on the Tier-3 seam
+
+The elder's pass: PASS on all six. (1) The survey verdict ACCEPTED as the pin's intended outcome
+(the reuse at the right level — Order.Height primitives as substrate, the object minimal;
+"not a defeat of the pin"); the additive a-subsets/YoungDiagram citable bridge TAKEN at
+hygiene-window priority. (2) Tight-lattice correctly absent at Tier 1 (the concentration).
+(3) UNCONDITIONALITY BLESSED after the elder's independent a > ℓ verification, with the one
+docstring line distinguishing the statement's honest truncated subtraction from the guard-form
+trap (rendered at integration). (4) K3 names clean. (5)–(6) fence/target at Tiers 2/3 as ruled.
+**The trap-relocation CONFIRMED with the sharpening pin: the Tier-3 iso must be an OrderIso —
+never a mere monotone bijection** (the relocated kill-set tests order-isomorphy: cover-jumping
+encodings fail in the REVERSE direction; a one-directional embedding would silently break
+chainHeight transport) — the iso's FOURTH named requirement beside the three relocated domain
+pins. The slip closed with proportion (the frozen vocabulary made the gamble cheap).
+
+**Execution (this commit):** OrderChain wired into the aggregator; chainHeight_boxPart REGISTERED
+as a batch-gated root; the blessed docstring line added; full-build gate running. seat-E GO on
+the Tier-2 θ-corollary (K1 gates ride there) then the Tier-3 iso scaffold (three domain pins +
+OrderIso). The elder's register note, verbatim: "P6.2's Tier-1 core LANDED unconditional — the
+expedition's first purely-classical citable combinatorics theorem, born from a paper-fidelity
+investigation. The rising sea, doing what the operator opened E to let it do."

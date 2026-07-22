@@ -168,6 +168,7 @@ import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.Core.Aoyagi.BlowupResolution
 import DLNFibre.Core.Aoyagi.ResolutionInhabited
 import DLNFibre.DLN.Aoyagi.OrderBinding
+import DLNFibre.Core.Aoyagi.OrderChain
 import Meta.Cordon
 
 /-!
@@ -1365,6 +1366,8 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.Core.Aoyagi.OrderCount.bandCount_eq,
   DLNFibre.DLN.Aoyagi.bandCount_eq_aoyagiTheta,
   DLNFibre.DLN.Aoyagi.thetaCount_eq_aoyagiTheta,
+-- P6.2 Tier-1 headline (elder six-check PASSED): the chain-height identity, unconditional.
+  DLNFibre.Core.Aoyagi.OrderChain.chainHeight_boxPart,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from

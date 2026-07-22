@@ -159,7 +159,10 @@ theorem le_chainHeight_boxPart (ℓ a : ℕ) :
         Set.encard_le_chainHeight_of_isChain _ _ hCsub hChain
 
 /-- **Tier-1 headline (P6.2)**: the binding-minimiser box poset has `Set.chainHeight = a(ℓ−a)+1`
-(unconditional in `a`). The count is a CHAIN height, not an antichain/cardinality (pnp-confirmed). -/
+(unconditional in `a`). The count is a CHAIN height, not an antichain/cardinality (pnp-confirmed).
+Unconditionality reading (elder-blessed): at `a > ℓ` the truncated `ℓ − a = 0` gives the singleton
+box and both sides equal `1` — the ℕ-subtraction here is the statement's honest content, NOT the
+guard-form trap (the addition-form rule governs GUARDS; identities may carry truncated values). -/
 theorem chainHeight_boxPart (ℓ a : ℕ) :
     (BoxPart ℓ a).chainHeight (· < ·) = ((a * (ℓ - a) + 1 : ℕ) : ℕ∞) :=
   le_antisymm (chainHeight_boxPart_le ℓ a) (le_chainHeight_boxPart ℓ a)
