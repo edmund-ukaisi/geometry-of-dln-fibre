@@ -47,6 +47,37 @@ noncomputable def sbCeil (D : Fin (L + 1) → ℕ) : ℤ :=
 noncomputable def sbResidueA (D : Fin (L + 1) → ℕ) : ℤ :=
   qipS D - (sbCeil D - 1) * (qipM D : ℤ)
 
+/-- **Sign bridge (ceiling).** `C = qipRound + [δ > 0]`: the active-prefix ceiling is the QIP
+rounding centre, bumped by one exactly when the residue is strictly positive (`⌈S/ℓ⌉` vs the nearest
+integer `⌊S/ℓ + ½⌋`). Confines the `δ`-sign case-split; everything downstream is sign-free. -/
+theorem sbCeil_eq (D : Fin (L + 1) → ℕ) (hN : 1 ≤ L) :
+    sbCeil D = qipRound D + (if 0 < qipDelta D then 1 else 0) := by
+  have hℓ1 : 1 ≤ qipM D := qipM_ge_one D hN
+  rw [sbCeil]
+  set ℓ : ℤ := (qipM D : ℤ) with hℓdef
+  have hℓpos : 0 < ℓ := by rw [hℓdef]; exact_mod_cast hℓ1
+  set q := qipRound D with hq
+  set δ := qipDelta D with hδ
+  have hSeq : qipS D = ℓ * q + δ := by rw [hδ, qipDelta, ← hℓdef, ← hq]; ring
+  have hb := two_qipDelta_bounds D hN
+  rw [← hℓdef, ← hδ] at hb
+  by_cases hpos : 0 < δ
+  · rw [if_pos hpos]
+    exact (Int.ediv_emod_unique hℓpos (r := δ - 1) (q := q + 1)).mpr
+      ⟨by rw [hSeq]; ring, by omega, by omega⟩ |>.1
+  · rw [if_neg hpos, add_zero]
+    exact (Int.ediv_emod_unique hℓpos (r := δ + ℓ - 1) (q := q)).mpr
+      ⟨by rw [hSeq]; ring, by omega, by omega⟩ |>.1
+
+/-- **Sign bridge (residue).** `a = δ + [δ ≤ 0]·ℓ`: `a = δ` when `δ > 0`, `a = δ + ℓ = ℓ − |δ|` when
+`δ ≤ 0`. Hence `1 ≤ a ≤ ℓ`. Follows from `sbCeil_eq` by algebra. -/
+theorem sbResidueA_eq (D : Fin (L + 1) → ℕ) (hN : 1 ≤ L) :
+    sbResidueA D = qipDelta D + (if 0 < qipDelta D then 0 else (qipM D : ℤ)) := by
+  rw [sbResidueA, sbCeil_eq D hN]
+  by_cases hpos : 0 < qipDelta D
+  · rw [if_pos hpos, if_pos hpos, qipDelta]; ring
+  · rw [if_neg hpos, if_neg hpos, qipDelta]; ring
+
 /-! ## Bridge: `eOfT` is the profile's descent-increment vector, and its `qipT` reads the step -/
 
 /-- The **binding-minimiser structure** (the pivotal fact — Aoyagi Lemma 4–5, via the banked QIP
