@@ -13507,3 +13507,22 @@ footprints force-elaborated CLEAN-THREE UNCHANGED — six statement rounds today
 chain never absorbed a single new dependency. Elder delta-read TRIGGERED (its four-point
 checklist + the fourth-file item). On OK: integrate → BOTH deep proofs activate (boostReady:
 seat-L4 w/ drop-test; the descent: seat-L3T2) — and the statement layer is CLOSED.
+
+## 2026-07-23 ~08:40 UTC — rev-M7: SURVIVED 7/7 (Codex corroborating); the producer family fully reviewed
+
+rev-M7's audit of CanonShear: SURVIVED on all seven functions — def fidelity exact against the
+template's certified Schur step (γ/β factors confirmed NOT swapped, independently by Codex);
+emission fidelity on all three clauses with the NON-CIRCULAR producer carrier verified; the
+twins mutually consistent and jointly def-characterizing; the new engine lemma name=content +
+non-vacuous (conRoot's case2 child cited); force-elaborated clean-three on all four targets
+(cold import closure); consumer fit confirmed for BOTH L5's emission site (hshear := rfl at
+construction) and the boost proof's α/β witness. Its one forward note (CanonicalSchurStep not
+yet in the tree; "may need a trivial repackage") RESOLVES AFFIRMATIVELY: the elder's def is
+authored in exactly canonShearOf_support's contrapositive shape — the discharge is
+`fun u k hk => canonShearOf_support …`, direct. Its Codex scope point (ShearWithinCarveRaw's
+≥sl threshold deliberately weaker than the exact-layer fact) judged by-design, correctly; the
+(III)-vacuity worry dissolved by CornerValid (which Codex hadn't seen).
+
+**The producer family's review slate is now COMPLETE: M4 7/7 + M7 7/7 + L6 6/6, all
+Codex-corroborated, all clean-three under independent force-elaboration.** Every producer the
+L5 assembly will consume is proven AND reviewed.
