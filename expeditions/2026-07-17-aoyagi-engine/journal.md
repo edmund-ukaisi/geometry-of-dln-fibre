@@ -11942,3 +11942,24 @@ elder Codex pass) + C1 (seat-L4's reachability lemma).** The elaborate-then-rend
 validated on the monument side in its first application: the blind template and the rendered tree
 AGREE — the first time this expedition has had positive statement-fidelity evidence rather than
 absence-of-caught-defects.
+
+## 2026-07-22 (controller, ~09:05) — **C1 REFUTED**: case1-at-cleared-0 is reachable and pervasive; the case11 reconciliation joins the (B) design round
+
+seat-L4's C1 deliverable is the REFUTING TRACE (b879cc61e): a faithful enumerator of conOracle
+(exact defs) shows case1 fires at cleared=0 on EVERY tested instance (nine) — post-rollover
+layers re-clear the CARRIED divisors first via case1; concrete (3,3,4) trace banked;
+CROSS-VALIDATED against the banked edgespec traversal, which prints the case1(1) merge edges at
+J=0, δ=1 exactly. The elder's lean ("first step of every layer is case2") FALSIFIED by ground
+truth — the third elder-lean corrected by seat computation this expedition; flag-not-assert +
+the concrete decider keep working. THE PRECISE DANGER: the case11 MERGE at cleared=0 — cleared
+unchanged ⟹ supportAt(child) does NOT descend, yet δ=1's strict transform DOES descend the
+residual ⟹ conjunct-2's GAP-1 counterexample is REACHABLE. THE CONSTRAINT the original fallback
+missed (seat-L4, traversal-verified): the construction USES δ=1 at these merges — u_pivot IS
+removed, conjunct-1 needs it — so bare "δ=0 for case11" breaks conjunct-1. RECONCILIATION
+CANDIDATES to the elder: (i) case-aware edgeδ preserving conjunct-1; (ii) case-aware
+supportAt/DescendView (the merge child's support descends with the strict transform) — noting
+supportAt's (layer, cleared) KEY may be structurally unable to express post-merge support (a
+merge child and a non-merged sibling share the state key). INTERACTS with the (B) def-touch —
+ruled to be DESIGNED TOGETHER (one invariant round), against the template's edge-kind-B
+specification, with the template SIMULATOR validating any candidate on all nine instances
+PRE-RENDER. The one bake now awaits the elder's single combined (B)+(reconciliation) design.
