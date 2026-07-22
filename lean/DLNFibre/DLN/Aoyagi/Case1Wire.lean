@@ -172,4 +172,99 @@ theorem stepInv_child_delta0 (d : Fin (N + 1) → ℕ)
     simp only [finCongr_apply]
     rw [hb, foldResid_extend_delta0 d e ed hlt hδ]
 
+/-! ### The Deg1 bridge — support-decomp + AffineOn ⟹ center-IgnoresCoords support-decomp (seat-L4)
+
+The δ=1 append crux consumes `Deg1SupportedOn` (a support-decomposition whose coefficients IGNORE the
+center). `FoldStepInvAt`'s `Deg1SupportedSlot` gives a support-decomposition (∃c) PLUS `AffineOn` on the
+support layer `X ⊇ S`, but the `∃c` need not ignore `S`. This bridge builds the IgnoresCoords form
+(Codex-confirmed, TRUE, no extra hypothesis): the `AffineOn` witness `b` gives `c'ᵢ := bᵢ` (ignores
+`X ⊇ S`); `a ≡ 0` and `b_x ≡ 0` for `x ∈ X∖S` are FORCED by the support-decomp vanishing at the reset
+points; continuity is `c'ᵢ u = F(Pᵢ u) − F(P₀ u)`. Mechanism: fiberwise affine uniqueness in the freely
+variable `X`-coords (NOT polynomial), evaluated at `0` and the unit vectors via `ignoresCoords_univ_iff_agree`. -/
+theorem exists_ignoresCoords_decomp {D : ℕ} (F : (Fin D → ℝ) → ℝ) (S X : Finset (Fin D)) (hSX : S ⊆ X)
+    (c : Fin D → (Fin D → ℝ) → ℝ) (hc : ∀ i, Continuous (c i))
+    (hrepr : ∀ u, F u = ∑ i ∈ S, c i u * u i) (haff : AffineOn F X Set.univ) :
+    ∃ c' : Fin D → (Fin D → ℝ) → ℝ, (∀ i, Continuous (c' i)) ∧
+      (∀ u, F u = ∑ i ∈ S, c' i u * u i) ∧ (∀ i, IgnoresCoords (c' i) S Set.univ) := by
+  classical
+  obtain ⟨a, b, hai, hbi, hdecomp⟩ := haff
+  -- F is continuous (finite sum of continuous · projection)
+  have hF : Continuous F := by
+    have : F = fun u ↦ ∑ i ∈ S, c i u * u i := funext hrepr
+    rw [this]; exact continuous_finset_sum S (fun i _ ↦ (hc i).mul (continuous_apply i))
+  -- reset maps: P₀ sends X-coords to 0; Pᵢ sends X-coords to the unit vector at i
+  set P0 : (Fin D → ℝ) → (Fin D → ℝ) := fun u k ↦ if k ∈ X then 0 else u k with hP0
+  set Pv : Fin D → (Fin D → ℝ) → (Fin D → ℝ) :=
+    fun i u k ↦ if k ∈ X then (if k = i then 1 else 0) else u k with hPv
+  have hP0c : Continuous P0 := by
+    apply continuous_pi; intro k
+    by_cases hk : k ∈ X
+    · simp only [hP0, if_pos hk]; exact continuous_const
+    · simp only [hP0, if_neg hk]; exact continuous_apply k
+  have hPvc : ∀ i, Continuous (Pv i) := by
+    intro i; apply continuous_pi; intro k
+    by_cases hk : k ∈ X
+    · simp only [hPv, if_pos hk]; exact continuous_const
+    · simp only [hPv, if_neg hk]; exact continuous_apply k
+  -- agreement off X (⊇ S) — for the IgnoresCoords/AffineOn evaluations
+  have hai' := (ignoresCoords_univ_iff_agree a X).mp hai
+  have hbi' : ∀ x ∈ X, ∀ u v, (∀ s, s ∉ X → u s = v s) → b x u = b x v :=
+    fun x hx ↦ (ignoresCoords_univ_iff_agree (b x) X).mp (hbi x hx)
+  -- a u = F(P₀ u): AffineOn at P₀ u (X-coords 0), a ignores X
+  have haP0 : ∀ u, F (P0 u) = a u := by
+    intro u
+    rw [hdecomp (P0 u) (Set.mem_univ _)]
+    have h1 : a (P0 u) = a u := hai' _ _ (fun s hs ↦ by simp [hP0, hs])
+    have h2 : ∑ x ∈ X, b x (P0 u) * (P0 u) x = 0 :=
+      Finset.sum_eq_zero fun x hx ↦ by simp only [hP0, if_pos hx, mul_zero]
+    rw [h1, h2, add_zero]
+  -- b x u = F(Pₓ u) − a u
+  have hbPv : ∀ i, i ∈ X → ∀ u, F (Pv i u) = a u + b i u := by
+    intro i hi u
+    rw [hdecomp (Pv i u) (Set.mem_univ _)]
+    have h1 : a (Pv i u) = a u := hai' _ _ (fun s hs ↦ by simp [hPv, hs])
+    have h2 : ∑ x ∈ X, b x (Pv i u) * (Pv i u) x = b i u := by
+      rw [Finset.sum_eq_single_of_mem i hi (fun x hx hxi ↦ by
+        have hv : (Pv i u) x = 0 := by simp [hPv, hx, hxi]
+        rw [hv, mul_zero])]
+      have hbeq : b i (Pv i u) = b i u := hbi' i hi _ _ (fun s hs ↦ by simp [hPv, hs])
+      have hval : (Pv i u) i = 1 := by simp [hPv, hi]
+      rw [hval, mul_one, hbeq]
+    rw [h1, h2]
+  -- a ≡ 0: the support-decomp vanishes at P₀ u (S-coords are 0)
+  have ha0 : ∀ u, a u = 0 := by
+    intro u; rw [← haP0 u, hrepr (P0 u)]
+    exact Finset.sum_eq_zero fun i hi ↦ by simp [hP0, hSX hi]
+  -- b x ≡ 0 for x ∈ X∖S: the support-decomp vanishes at Pₓ u (S-coords are 0 since x ∉ S)
+  have hbXS : ∀ x ∈ X, x ∉ S → ∀ u, b x u = 0 := by
+    intro x hx hxS u
+    have hv := hbPv x hx u
+    rw [ha0, zero_add] at hv
+    rw [← hv, hrepr (Pv x u)]
+    refine Finset.sum_eq_zero fun i hi ↦ ?_
+    have hix : i ≠ x := fun h ↦ hxS (h ▸ hi)
+    have hv0 : (Pv x u) i = 0 := by simp [hPv, hSX hi, hix]
+    rw [hv0, mul_zero]
+  refine ⟨fun i u ↦ F (Pv i u) - F (P0 u), fun i ↦ (hF.comp (hPvc i)).sub (hF.comp hP0c), ?_, ?_⟩
+  · intro u
+    -- F u = a u + ∑_{x∈X} b x·u x = ∑_{i∈S} b i·u i  (a≡0, b_{X∖S}≡0); c'ᵢ u = b i u
+    rw [hdecomp u (Set.mem_univ _), ha0 u, zero_add, ← Finset.sum_sdiff hSX,
+      Finset.sum_eq_zero (fun x hx ↦ by
+        rw [hbXS x (Finset.mem_sdiff.mp hx).1 (Finset.mem_sdiff.mp hx).2, zero_mul]), zero_add]
+    refine Finset.sum_congr rfl fun i hi ↦ ?_
+    show b i u * u i = (F (Pv i u) - F (P0 u)) * u i
+    rw [hbPv i (hSX hi) u, haP0 u]; ring
+  · intro i
+    rw [ignoresCoords_univ_iff_agree]
+    intro u v hagree
+    have hPve : Pv i u = Pv i v := funext fun k ↦ by
+      by_cases hk : k ∈ X
+      · simp only [hPv, if_pos hk]
+      · simp only [hPv, if_neg hk]; exact hagree k fun h ↦ hk (hSX h)
+    have hP0e : P0 u = P0 v := funext fun k ↦ by
+      by_cases hk : k ∈ X
+      · simp only [hP0, if_pos hk]
+      · simp only [hP0, if_neg hk]; exact hagree k fun h ↦ hk (hSX h)
+    simp only [hPve, hP0e]
+
 end DLNFibre.DLN.Aoyagi
