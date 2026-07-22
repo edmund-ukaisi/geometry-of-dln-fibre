@@ -13856,3 +13856,31 @@ alternative). M7B fully merged (0 commits ahead of canonical)/dormant + CanonShe
 → NO M7B coordination needed; the delete collides with nothing. arch-C UNBLOCKED → rendering L1 =
 [relocation] + [3 forms, change-3 canonShearOf_support fallback]; canonShearOf_apply_interior confirmed
 exists (:244). Gate → stage → hash → my gate + elder delta-read. L1 is the additive Gap-A-clearing bake.
+
+## 2026-07-22 ~20:40 UTC — heartbeat tick: Gap B RULED (B-standalone) → the re-open is 3 parallel workstreams
+
+Elder ruled Gap B and it's the clean resolution — append is UNBLOCKED NOW, L1-independent. The fix is a
+STANDALONE lemma foldResid_layerHomogeneous: foldResid p is multilinear homogeneous (deg exactly 1,
+VANISHING when the layer's coords are 0, per layer ≥ supportLayerOf; HomogeneousDeg1On = the vanishing
+strengthening of AffineOn — the vanishing clause is the Gap-B delta over Deg1SupportedSlot, excluding
+F=u_pivot's constant-1 transform). DECISIVE property (pnp): SHEAR- AND PIVOT-INDEPENDENT — depends only
+on IsRealBranch's CENTER pin, stable pre-L1 AND pre-L3 → provable NOW in parallel, blocked on neither
+spine change. (B-standalone) over (B-invariant): standalone is additive (case1/case2_preserves CONSUME it,
+don't re-induct), avoids the FoldStepInvAt ripple, and its L1/L3-independence lets it prove immediately.
+The elder honestly retired its own foldResid_prepared (which had bundled Gap B homogeneity + Gap A
+clearing — the same over-reach as my "L1 covers the descent," one level down). Decorrelation calibrating
+BOTH the controller and the elder.
+
+THE RE-OPEN IS NOW 3 FULLY PARALLEL WORKSTREAMS (no cross-blocking):
+1. (Gap A-clear) L1 = shearφ=canonShearOf value-pin — arch-C RENDERING (past the relocation cycle-catch).
+   Additive Gap-A-clearing bake. → gate → delta-read.
+2. (Gap B) foldResid_layerHomogeneous — seat-L3T2: hslot-subsumption confirm → elder authors the exact
+   HomogeneousDeg1On predicate → arch-C renders it (new spine def, after L1) → seat proves (structural
+   induction on p, off the center pin) + consumes for descent_delta1_append. L1/L3-INDEPENDENT, NOW.
+3. (Gap A-div) b-chain divisibility — seat-L4B (off the ledger; pnp's Gap-A part is battery-MODEL-based,
+   so seat-L4B's fold-derived proof is the verification — watch the i=J₁/u_p-multiplicity boundary).
+boostReady = A-clear(L1) + A-div(seat-L4B). Descent = δ=0(banked) + case11(closing) + append(Gap B) —
+L1-INDEPENDENT, may close BEFORE L1 bakes. L3 (fan) = the last open spine call (elder; reuse the engine
+chart form per seat-L7 finding-2 → bridge definitional). Cron armed (:17). The re-scope has converged
+from "3 findings, statement wrong" to 3 well-scoped parallel builds + 1 open design call — with every
+step decorrelation-checked.

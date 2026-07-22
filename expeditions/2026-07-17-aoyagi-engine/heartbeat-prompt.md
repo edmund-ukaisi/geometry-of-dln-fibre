@@ -12,7 +12,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **⚠ STATEMENT LAYER RE-OPENED (2026-07-22 ~17:20 UTC) — the "closed" claim was PREMATURE.**
+- phase: **RE-OPEN RESOLVED INTO 3 PARALLEL WORKSTREAMS (2026-07-22 ~20:40 UTC).** The re-scope
+  fully decomposed (pnp-coupling + elder), NO cross-blocking: (A-clear) L1 = shearφ=canonShearOf
+  value-pin — arch-C RENDERING (past the canonShearOf relocation cycle-catch; additive Gap-A-clearing
+  bake); (B) foldResid_layerHomogeneous = the descent append fix, SHEAR+PIVOT-INDEPENDENT off the
+  center pin → provable NOW, L1/L3-independent (elder ruled B-standalone, NOT FoldStepInvAt) — seat-L3T2
+  (hslot-subsumption confirm → elder authors HomogeneousDeg1On predicate → prove); (A-div) b-chain
+  divisibility = seat-L4B (off the ledger; pnp's Gap-A part is battery-MODEL-based → seat-L4B's proof is
+  the verification, watch i=J₁/u_p-mult). boostReady = A-clear(L1) + A-div(seat-L4B). Descent =
+  δ=0(banked)+case11(closing)+append(Gap B) — L1-INDEPENDENT, may close before L1 bakes. L3 (fan) =
+  the last open spine call (elder; reuse engine chart form per seat-L7 finding-2 → bridge definitional).
+  Prior phase line (the RE-OPEN detail) retained below for the record. ⚠ STATEMENT LAYER RE-OPENED (2026-07-22 ~17:20 UTC) — the "closed" claim was PREMATURE.**
   Three seats running the PROOFS found THREE grounded holes the seven delta-reads missed, all tracing
   to ONE under-specification of IsRealBranch (spine): it value-pins center/pivot (:840-841) but only
   SUPPORT-pins the shear (CanonicalSchurStep :819-824 vacuous for identity shear), AND over-pins the
