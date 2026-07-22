@@ -10737,3 +10737,20 @@ is stronger: canonCenter itself is the precedent (L7's seeming bridge-dependence
 the paper's slot bookkeeping; the geometric descend is per-clear slot bookkeeping of the same
 species). ALL HOLDS: the verdict + calibrated sets trigger the ruling; no render finalize, no
 bake, on an unverified frame.
+
+## 2026-07-22 (controller) — the reconciliation frame COMPLETE on all ends; the depth-diverse-witness standing pin adopted; all holds on seat-L4's three-part deliverable
+
+The elder's mechanism endorsement of the (a)-road ("no Engine object appears anywhere in the
+invariant's window — this seam lacks the ingredient that made L7's hard"; the frame axis gains
+its INDEXING sub-case, with the elder's own two-clock pin as exemplar) and arch-C's full prep
+are both in: the render seat prepped for the two-named-functions resolution (supportAt geometric
+/ canonCenter ledger untouched; C′ pinned-computed if the descend stands — the third C′ turn,
+"the elder owning its own conflation, not thrash"; likely arity-stable — value + indexing +
+conclusion-form change only); the crux RE-ANCHORS to the geometric support (where Deg1 holds —
+the γβ failure on the ledger remainder IS the descend's point). **The depth-diverse-witness
+standing pin ADOPTED into the gate/battery contract** ("≥ the depth where the shadow collapses —
+here L≥3 to expose within-layer descend; no future window/advance claim rests on an L=2-only
+battery") — the small-depth shadow's third strike converted to a permanent rule. ALL HOLDS on
+seat-L4's three-part deliverable: the convention verdict + the calibrated literal sets +
+supportAt(S, J) explicit. Then: one ruling → the finalize → the gate (re-audited for
+geometric-vs-ledger encoding per reference) → THE BAKE.
