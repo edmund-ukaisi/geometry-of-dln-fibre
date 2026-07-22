@@ -11045,3 +11045,30 @@ guard hlast `+1 = N`, born-unit ∅ at S=L. terminal_edge_stepInv: re-parented t
 hcleared (∃ j unit: ContinuousOn ∧ unit 0 ≠ 0 ∧ foldResid j = unit on region); guard hterm
 `N ≤ ed.nextState.layer`; conclusion = TerminalBezout-input (1)∧(2) with the LITERAL Fin-1 Pi.one
 unit residual (never foldResid).
+
+## 2026-07-22 (controller) — **THE BAKE INTEGRATED** (b7fa66841): controller-verified green; proof seats WOKEN; carto convened
+
+**The monument's design phase is CLOSED and the proof phase is OPEN.** arch-C baked 83f699f32 to
+-rung-c (MonumentAtlas +252/−59: the supportAt geometric-descend window per the elder's
+page-authority ruling; ∃C′ dropped/pinned; two-clock discarded; deeperCoords island deleted; 4
+self-contradictory docstring fragments reconciled — both fidelity defects caught AT THE GATE).
+**Controller's OWN verification, not the seat's reading**: full build 8990 jobs green from this
+tree; BOTH drivers force-elaborated = [propext, sorryAx, Classical.choice, Quot.sound]; cordon OK
+(0 violations, 3 located cites); census 35 = +1 exactly (the new lastLayer_clear_preserves leaf);
+all 10 cone members at their lines (leaves 825/861/890/916/1014/1049/1088/1109, drivers
+1134/1186). MERGED --no-ff to expedition/aoyagi-engine (b7fa66841) and pushed.
+
+**PROOF SEATS WOKEN with the real signatures** (quote-the-territory: line numbers + statement
+shapes from the fetched commit, not prose): seat-L4 → case1 :861 (THE WALL; crux
+foldResid_stepMap_eq_pivot_mul CANONICAL; conjunct-B re-factoring, no subtraction; DeeperMultilinear
+c = ∑ u_d·h_d over D⁺ = supportAtᶜ) + lastLayer_clear :890 (born-unit exhaustion at S=L). seat-L3T
+→ case2 :825 (δ-branches; banked case-blind divisibility = conjunct-A engine) + terminal_edge :916
+(re-parented LastLayerInv + hcleared hypothesis; TerminalBezout-input (1)∧(2) conclusion, literal
+Pi.one). CRUX DEDUPE decided: Case1Wire's PUBLIC-CANONICAL; seat-L3T deletes its
+Case2TransportWire duplicate on consumption (never privatize — the admBound lesson).
+carto-standing CONVENED (its bake-integration trigger): cone transition, window-resolution rows,
+dead-route entries (two-clock/shedSlots/deeperCoords), the false-retraction witness, E-lane rows,
+orphan sweep — proposals to controller pen.
+
+Remaining to the summit: 8 leaf proofs (4 with woken seats, L5–L8 next wave) → final wiring swap of
+exists_coreResolution → clean-three → cite-deletion ceremony WITH the operator.
