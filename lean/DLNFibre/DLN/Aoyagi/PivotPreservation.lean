@@ -369,4 +369,172 @@ theorem pathMap_fixes {D : ℕ} (c₀ : Fin D) :
     change σ (pathMap rest u) c₀ = u c₀
     rw [hσ (pathMap rest u), ih hrest u]
 
+/-- The child (post-step) state of each step along the path, in `stepMapList` order (shallowest
+first). An entry is the state right AFTER a step — where that step's pivot corner is born. -/
+def childStateList {N : ℕ} (d : Fin (N + 1) → ℕ) : TreePath d → List (ConState N)
+  | .root => []
+  | .step p _ _ _ ns _ => childStateList d p ++ [ns]
+
+/-- `childStateList` has the same length as `stepMapList` (one entry per step). -/
+theorem length_childStateList {N : ℕ} (d : Fin (N + 1) → ℕ) (P : TreePath d) :
+    (childStateList d P).length = (TreePath.stepMapList d P).length := by
+  induction P with
+  | root => rfl
+  | step p center pivot cse ns shearφ ih =>
+    simp only [childStateList, TreePath.stepMapList, List.length_append, List.length_cons,
+      List.length_nil, ih]
+
+/-- **Forward persistence to the final state**: a ledger corner of ANY post-step state along a real
+branch persists to the branch's final `conState` (iterate `isLedgerCorner_persists_step`). -/
+theorem isLedgerCorner_childState_persists {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    ∀ (P : TreePath d), P.IsRealBranch e → ∀ (s : ConState N), s ∈ childStateList d P →
+      ∀ (c₀ : Fin (flatDim d)), IsLedgerCorner d s c₀ → IsLedgerCorner d P.conState c₀ := by
+  intro P
+  induction P with
+  | root => intro _ s hs; simp [childStateList] at hs
+  | step p center pivot cse ns shearφ ih =>
+    intro hP s hs c₀ hborn
+    rw [childStateList, List.mem_append, List.mem_singleton] at hs
+    rcases hs with hs | rfl
+    · exact isLedgerCorner_persists_step e p center pivot cse ns shearφ hP c₀
+        (ih hP.1 s hs c₀ hborn)
+    · exact hborn
+
+/-! ## A5 — the branch-level (★): the deeper-suffix composition fixes an earlier pivot corner
+
+Form (A) (controller-reconciled with seat-L3T2, 2026-07-22 — the ledger-corner-restricted coordinate
+(★)): `IsLedgerCorner d (childStateList P)[i] c₀ → pathMap ((stepMapList P).drop (i+1)) u c₀ = u c₀`.
+Rides the single-step (★) `stepMapRaw_fixes_parentLedgerCorner` (each deeper step fixes `c₀`, its
+parent ledger holding `c₀` by forward persistence) + `pathMap_fixes` (the list fold). The consumer's
+`jacWeight` congruence / rollover-`jexp = 0` discharge is seat-L3T2's (B) adapter, not baked here. -/
+
+/-- **A5 (branch (★), form A)** — along a real branch, the composition of the steps STRICTLY DEEPER
+than position `i` (`stepMapList.drop (i+1)`) FIXES a coordinate `c₀` that is a birth-corner of the
+state right after step `i` (`(childStateList P)[i]`). Each deeper step fixes `c₀` (single-step (★),
+its parent ledger holds `c₀` by forward persistence); `pathMap_fixes` folds it over the suffix. -/
+theorem foldSuffix_fixes_ledgerCorner {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
+    ∀ (P : TreePath d), P.IsRealBranch e → ∀ (i : ℕ) (hi : i < (childStateList d P).length)
+      (c₀ : Fin (flatDim d)), IsLedgerCorner d ((childStateList d P)[i]) c₀ →
+      ∀ u, pathMap ((TreePath.stepMapList d P).drop (i + 1)) u c₀ = u c₀ := by
+  intro P
+  induction P with
+  | root => intro _ i hi; simp [childStateList] at hi
+  | step p center pivot cse ns shearφ ih =>
+    intro hP i hi c₀ hborn u
+    have hlen : (childStateList d p).length = (TreePath.stepMapList d p).length :=
+      length_childStateList d p
+    simp only [childStateList] at hborn hi
+    rw [List.length_append, List.length_singleton] at hi
+    simp only [TreePath.stepMapList]
+    rcases Nat.lt_succ_iff_lt_or_eq.mp hi with hlt | heq
+    · -- position `i` is a step of the prefix `p`; the deepest step is in the suffix.
+      rw [List.getElem_append_left hlt] at hborn
+      rw [List.drop_append_of_le_length (by omega : i + 1 ≤ (TreePath.stepMapList d p).length),
+        pathMap_append]
+      have hstep : pathMap [stepMapRaw d cse center pivot shearφ] u
+          = stepMapRaw d cse center pivot shearφ u := rfl
+      change pathMap ((TreePath.stepMapList d p).drop (i + 1))
+        (pathMap [stepMapRaw d cse center pivot shearφ] u) c₀ = u c₀
+      rw [hstep, ih hP.1 i hlt c₀ hborn (stepMapRaw d cse center pivot shearφ u)]
+      exact stepMapRaw_fixes_parentLedgerCorner e p center pivot cse ns shearφ hP c₀
+        (isLedgerCorner_childState_persists e p hP.1 _ (List.getElem_mem hlt) c₀ hborn) u
+    · -- position `i` is the deepest step itself; the suffix is empty.
+      rw [List.drop_eq_nil_of_le (by
+        rw [List.length_append, List.length_singleton]; omega)]
+      rfl
+
+/-! ## A5 sub-fact — the canonical pivot IS a ledger corner of the child state
+
+The companion the (B)-adapter needs (seat-L3T2): at a NON-rollover oracle step, `canonPivotOf`'s value
+is a birth-corner of the CHILD ledger — case-2/case-12 the freshly-`snoc`ed `(layer, cleared)` corner
+(at `Fin.last`); case-11 the reused `divBirthCoord[mergeIdx]` (carried verbatim). Stated taking
+`canonPivotOf … = some p` (the value is a ledger corner WHEN it exists); the "value exists at a
+non-rollover step" side is the consumer's from the construction. Rollover: `canonPivotOf = none`. -/
+
+/-- **The canonical pivot is a ledger corner of the child state** — for `sc` an oracle step-child, if
+`canonPivotOf d s sc = some p` then `p` is a birth-corner of `sc.child`'s ledger (case-2/12 the fresh
+`Fin.last` corner; case-11 the carried `divBirthCoord[mergeIdx]`; rollover has `canonPivotOf = none`). -/
+theorem canonPivotOf_isLedgerCorner_conOracle {N : ℕ} {d : Fin (N + 1) → ℕ} (s : ConState N)
+    (sc : StepChild d s) (hsc : sc ∈ (conOracle d s).stepChildren) (p : Fin (flatDim d))
+    (hp : canonPivotOf d s sc = some p) :
+    IsLedgerCorner d sc.child p := by
+  by_cases h1 : N ≤ s.layer
+  · have horacle : conOracle d s = oracleTerminal d s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hsc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+  · have hlive : s.layer < N := not_le.mp h1
+    by_cases h2 : widthMinUpto d (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle d s = rolloverDecision d s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hsc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hsc
+      subst hsc
+      simp [canonPivotOf] at hp
+    · have hlt : s.cleared < widthMinUpto d (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap d := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap d _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto d s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · -- case-2: pivot = fresh (layer, cleared) corner at `Fin.last`.
+        have horacle : conOracle d s = case2Decision d s
+            (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hsc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hsc
+        subst hsc
+        simp only [canonPivotOf] at hp
+        refine ⟨Fin.last s.numDiv, ?_⟩
+        simp only [ConState.stepAppendAdvance, Fin.snoc_last]
+        exact hp
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle d s = oracleTerminal d s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [horacle] at hsc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+        · -- case-1: merge child (reused corner) or split child (fresh corner).
+          have hgt : s.cleared < target := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                s.divTilde k0 + 1 ≤ widthMinUpto d s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have horacle : conOracle d s = case1Decision d s f (target - s.cleared)
+              (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
+          rw [horacle] at hsc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hsc
+          rcases hsc with rfl | rfl
+          · -- merge (case11): pivot = divBirthCoord[f], carried verbatim.
+            simp only [canonPivotOf, dif_pos f.isLt] at hp
+            exact ⟨⟨f.val, f.isLt⟩, hp⟩
+          · -- split (case12): pivot = fresh (layer, cleared) corner at `Fin.last`.
+            simp only [canonPivotOf] at hp
+            refine ⟨Fin.last s.numDiv, ?_⟩
+            simp only [ConState.stepAppendAdvance, Fin.snoc_last]
+            exact hp
+
 end DLNFibre.DLN.Aoyagi.PivotPres
