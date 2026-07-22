@@ -627,13 +627,17 @@ sorry against a divisibility-level def, which would not induct). The OUTER wirin
 `chainCompat_holds`. -/
 
 /-- The b-chain weight of a flat-coordinate index `idx` at state `s` (Codex `∏_d u_{b_d}^{ε_d}`,
-`ε_d = [divTilde d < idx]`): the product of the birth coordinates of the divisors whose threshold sits
-strictly below `idx`. `Option.elim`-guarded — an invalid birth corner contributes the unit; on a
-`DivBirthInv` state (real branch) every corner is valid, so this is `bLedger (birth∘·) divTilde u idx`.
-[The index convention (`idx` = decoded col, provisional) + the threshold boundary are pnp-pinned.] -/
+`ε_d = [divTilde d ≤ idx]`): the product of the birth coordinates of the divisors whose threshold sits
+at or below `idx`. **NON-STRICT `≤`** (pnp-transport certificate §4b — seat-L4D restatement, controller-
+gated): the reused case11 pivot must appear on the extra block `col ≥ runLen = divTilde(f)`, and the
+boundary column `col = runLen` (where the whole extra block sits at e.g. `(2,2,2,2)`) needs the
+NON-strict threshold; the former strict `< idx` dropped it (off-by-one). `Option.elim`-guarded — an
+invalid birth corner contributes the unit; on a `DivBirthInv` state (real branch) every corner is valid,
+so this is `bLedger (birth∘·) divTilde u (idx+1)` (the `≤ idx ⟺ < idx+1` shift). [The index convention
+(`idx` = decoded col) is pnp-pinned §4a; the threshold boundary is the §4b non-strict pin.] -/
 noncomputable def chainWeight (d : Fin (N + 1) → ℕ) (s : ConState N)
     (u : Fin (flatDim d) → ℝ) (idx : ℕ) : ℝ :=
-  ∏ k ∈ Finset.univ.filter (fun k : Fin s.numDiv => s.divTilde k < idx),
+  ∏ k ∈ Finset.univ.filter (fun k : Fin s.numDiv => s.divTilde k ≤ idx),
     (cornerToFlat d (s.divBirthCoord k).1 (s.divBirthCoord k).2).elim 1 (fun c => u c)
 
 /-- The flat birth coordinates of all active divisors at `s` — the coordinates `ChainNF`'s residual
@@ -647,9 +651,20 @@ noncomputable def birthCoords (d : Fin (N + 1) → ℕ) (s : ConState N) : Finse
 the state's descending support block: `foldResid p j u = ∑_{i ∈ supportAt} chainWeight(colOf i)·rᵢ(u)·uᵢ`,
 each coefficient `rᵢ` continuous and IGNORING the active birth coordinates. The path-monomial structure
 is exposed here; the ε threshold rule that makes it INDUCT (and the boundary that yields the case11
-boost split) live in `ChainCompat`. -/
+boost split) live in `ChainCompat`.
+
+**NON-TERMINAL / non-exhausted GUARD `supportLayerOf p.conState < N →`** (seat-L4D, controller-gated —
+the 8th guard-class catch). ChainNF's degree-1 claim is FALSE exactly where `supportAt = ∅` while
+`foldResid ≠ 0`: (i) a TERMINAL node (`N ≤ layer`, `foldResid = 1`, support `∅` — Lean-confirmed
+`1 = ∑_∅ = 0`), and (ii) a LAST-LAYER-CLEARED node (`layer = N−1, cleared ≥ 1`, residual a nonzero
+UNIT — the `LastLayerInv` regime, support `∅`). Both are `supportAt = ∅ ⟺ supportLayerOf ≥ N`, so the
+guard makes ChainNF VACUOUSLY true there (no false claim). The guard is INDUCTION-transparent
+(`isRealBranch_chainNF` passes it through) and WIRING-transparent (a real case11 δ=1 parent has
+`cleared = 0, layer < N`, so `supportLayerOf = layer < N` — the guard is active where the boost split
+is consumed). -/
 def ChainNF (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) : Prop :=
+  supportLayerOf p.conState < N →
   ∀ j : Fin (foldNR d p), ∃ r : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
     (∀ i, Continuous (r i)) ∧
     (∀ i, IgnoresCoords (r i) (birthCoords d p.conState) Set.univ) ∧
