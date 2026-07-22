@@ -11020,3 +11020,28 @@ Finset.orderEmbOfFin + Fin.rev gaps; dec's binding-ness routed through tOfE + mi
 via OrderIso.ofHomInv (mono both ways + inverse — resolves the reflection hazard structurally).
 ~600–900 LoC multi-tide in the new module; OrderRealize.lean wiring stays seat-E's. Next report at
 the pivotal-fact milestone.
+
+## 2026-07-22 (controller) — pre-bake final: leaf inventory + the supportAt statement deltas (the proof-seats' real targets)
+
+arch-C's final pre-bake report. Gate PASS all hard checks (its own re-run: build 8450; cone=10;
+both drivers' forced footprint = [propext, sorryAx, Classical.choice, Quot.sound]; cordon OK;
+deeperCoords grep-clean). LAST sweep in flight: 4 stale docstring fragments (781/813/838/908)
+still say "ed.center p", contradicting the correct supportAt paragraph in the SAME block —
+docstring-only, seat reconciling to the in-file correct form. THEN: final re-clear → BAKE commit
+to -rung-c (witness-bank text in body) → hash to controller.
+
+**LEAF INVENTORY (MonumentAtlas.lean, 8 sorried + 2 drivers):** case2_preserves_stepInv :824 [L3,
+seat-L3T] · case1_preserves_stepInv :859 [L4 WALL, seat-L4] · lastLayer_clear_preserves :888
+[seat-L4] · terminal_edge_stepInv :914 [seat-L3T conj-2] · leaf_stepInv_of_path :1012 [L5] ·
+leafPath_chartGeometry :1047 [L6] · leafPath_compactCover :1086 [L7] · leafPath_realizesExponents
+:1107 [L8] · exists_atlasRealizesExponents :1132 (driver, proved) · exists_coreResolution_via_
+monument :1184 (headline driver, proved).
+
+**STATEMENT DELTAS (quote THESE in the proof-seat wakes, not stale prose):** case1/case2: hinv
+FoldStepInvAt d e (supportAt d layer cleared) p → concl same at (p.extend ed); ∃C′ DROPPED (C′
+pinned = supportAt(child)); guards hcase + INTERIOR hlayer `ed.nextState.layer + 1 < N`; NO
+he0/he_lin. lastLayer_clear_preserves: NEW (fix-2), LastLayerInv descend supportAt(parent)→(child),
+guard hlast `+1 = N`, born-unit ∅ at S=L. terminal_edge_stepInv: re-parented to LastLayerInv +
+hcleared (∃ j unit: ContinuousOn ∧ unit 0 ≠ 0 ∧ foldResid j = unit on region); guard hterm
+`N ≤ ed.nextState.layer`; conclusion = TerminalBezout-input (1)∧(2) with the LITERAL Fin-1 Pi.one
+unit residual (never foldResid).
