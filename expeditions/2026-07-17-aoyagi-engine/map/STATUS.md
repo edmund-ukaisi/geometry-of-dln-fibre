@@ -24,13 +24,13 @@ updated: 2026-07-22
 ## live frontier — 3 ready, 9 blocked
   ▶ object-e [stated] owner=seat-E
   ▶ b-ladder [adopted] owner=controller
-  ▶ b-boostready [stated] owner=seat-L4 (proof live; drop-test verdict owed to elder: factor from hbranch+CanonicalSchurStep first, hslot only if a base coefficient is consumed)
+  ▶ b-boostready [stated] owner=seat-L4B (proof; sub-lemma (a) started) ← seat-L4 (turnkey handoff + Codex verdict, then stands down)
   · aoyagi-summit [stated] owner=controller
   · object-b [stated] owner=mon-geo-lane
   · b-leaf34-case-steps [stated] owner=seat-L4
   · b-leaf-lastlayer [stated] owner=seat-L4
   · b-leaf5-path-fold [stated] owner=parked: skeleton rung (C); general-d reasoning over the salvaged tree's WellFounded.fix
   · b-leaf6-chart-geometry [stated] owner=parked: skeleton rung (C); statements gated by the shear pin (resolved corrected-(a))
-  · b-leaf7-compact-cover [stated] owner=parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41
+  · b-leaf7-compact-cover [adjudicated] owner=BLOCKED on elder fan re-scope (seat-L7 holds; its bridge lane ready)
   · b-leaf8-realizes-exponents [stated] owner=parked: skeleton rung (C); consumes the salvage adapter's seam shape
   · kill-cite [conjectured] owner=parked: until object-b lands (summit clean-three); then consumer audit + deletion

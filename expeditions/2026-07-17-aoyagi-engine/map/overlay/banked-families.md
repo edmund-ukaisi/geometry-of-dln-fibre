@@ -175,19 +175,31 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
 - **STATEMENT LAYER CLOSED** (ruling-B baked `0ce9c68b9`, 2026-07-22; elder-gated). The b-ladder is
   COMPLETE — 7 statement bakes (redirect → pins → collapse → node-form → ruling-B), payoff footprints
   unchanged throughout; the leaves condition on ONE `IsRealBranch e` hypothesis (`DivBirthInv`
-  discriminator: support STAYS, no case11 descent). The live cone is now **pure PROOF + assembly** (10
-  on-cone): the WALL `realBranch_boostReady_case11` (`Case1Wire.lean:386`, seat-L4); the descent
-  `realBranch_multiAffine_step` (`MonumentAtlas.lean:1116`, seat-L3T2 — reshaped from the SUSPECT
-  node-form, FALSE-without-he_lin at root, to a carried-invariant STEP-form); `lastLayer_clear_preserves`;
-  the L5 assembly (`L5FoldSpec`, the longest link); L7 commissioning (startable); the Assembly increments
-  (`MonumentAssembly`, (B′) primed drivers, arch-C on increment 2). 5/6 `realBranch_*` stubs PROVED
+  discriminator: support STAYS, no case11 descent). The live cone is now **pure PROOF + assembly** (11
+  on-cone: MonumentAtlas 8 + LC 1 + Case1Wire 1 + MonumentAssembly 1). PROOF FRONT (post L1-bake
+  `83d11d8b5`, census 36 net-0):
+  - the **WALL** `realBranch_boostReady_case11` (`Case1Wire.lean:386`, seat-L4B): **A-clear (L1) BAKED**
+    (IsRealBranch shearφ=`canonShearOf` value-pin, closing the R_bad vacuity) + **A-div DONE** (bLedger) ⟹
+    boostReady UNBLOCKED and ASSEMBLING (the wall's last obligation; when it closes `case1_preserves_stepInv'` falls);
+  - the **descent** `realBranch_multiAffine_step` (`MonumentAtlas.lean:1116`, seat-L3T2): δ=0+case11 banked;
+    **Gap B PINNED** (`foldResid_layerHomogeneous`, elder authoring → arch-C renders → seat-L3T2 builds; the
+    tracked sorry `realBranch_cofactorDescent` discharges via Gap B's hhomog — NOT yet on-tree);
+  - `lastLayer_clear_preserves`; the **L5 assembly** (`L5FoldSpec`, longest link); the Assembly increments
+    (`MonumentAssembly`, (B′) drivers, arch-C on increment 2 — the +1 census); **L7 = the last open spine
+    call, RE-OPENED FALSE-AS-STATED** (fan re-scope, `b-leaf7` — see the canonCenter/supportAt bullet below).
+  5/6 `realBranch_*` stubs PROVED
   clean-three; L6+L8 PROVED (L8 external in `LeafGeometryWire`, now on-tree). `Case2Delta0` RETIRED
   (node-form deleted in the step-form bake, [[naming]]). per-field SET (A) SUPERSEDED, case-aware
   `supportAt`/`edgeδ` VOIDED ([[dead-routes]] § Redirect-round).
-- **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). L7
-  (`leafPath_compactCover`, `b-leaf7`) is BRIDGE-FREE (coordinate axis; `tupIdxEquiv`
-  `LearningCoefficient.lean:138` / `divBirthCoord` `EngineConstruction.lean:62`). The L3/L4 SUPPORT
-  window is the ruled `supportAt` (geometric, 3-case: layer S / layer S+1 / ∅ born-unit); `canonCenter`
+- **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). **⚠ L7
+  (`leafPath_compactCover`, `b-leaf7`) is NOT bridge-free — RE-OPENED, FALSE-AS-STATED** (2026-07-22,
+  seat-L7 + Codex, controller-verified `MonumentAtlas:840-841`): the single-`canonPivotOf` pin lets
+  `ε·e_q` (q≠p, non-singleton root center) ESCAPE the cover — the earlier "bridge-free" was a
+  premature-closed confound. FIX = FAN the pivot (all |S| charts/center in `IsRealBranch`/`canonPivotOf`/
+  `FoldRealizes`) + bridge to the Engine's landed `GeoCoverSpec.geoAtlas`; cover TRUE over the fanned
+  atlas ⟹ `b-leaf7` adjudicated (not refuted). Part of the coupled spine redesign ([[severance-witnesses]]
+  coordinate axis). The L3/L4 SUPPORT window is the ruled `supportAt` (geometric, 3-case: layer S / layer
+  S+1 / ∅ born-unit); `canonCenter`
   / `ed.center` stays the SEPARATE ledger center + division locus, UNTOUCHED (the wall divides at
   ed.center; the residual is degree-1 on `supportAt`). DISCARDED at the bake: the two-clock (T/D⁺
   deeper-union-shed) shape + shedSlots (→ [[dead-routes]]); DELETED: the `deeperCoords` island

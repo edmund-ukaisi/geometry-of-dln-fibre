@@ -13,15 +13,18 @@ every FREE FIELD on a quantified structure is its own severance axis — the aud
 per-statement.** Each witness below severs one field; a statement passing all axes has no free field
 left un-provenanced.
 
-**TAXONOMY CLOSED — 8 axes, all statement-closed (supportAt bake `b7fa66841`, 2026-07-22).** The
-elder-ruled `supportAt` window closed the last three free fields on the fold's quantified structure:
-**support** = computed `supportAt` (not a free ∀-branch), **C′** = PINNED-computed (not ∃), **coefficient
-clause** = `DeeperMultilinear` over D⁺ (kills c=1, the center-dependent cofactor, and the degree-2 Schur
-cross-term). The frame axis thereby gained its INDEXING sub-case (support-vs-coefficient indexing; the
-elder's own two-clock pin is the exemplar). Supersedes the canonCenter-bake 5-axis banner (the
-coordinate axis stays closed; `d174f1f41` — L7 bridge-free). "Closed" = the STATEMENT guards its field
-(the witness can no longer satisfy the hypotheses); the guarded leaves' PROOFS are the proof queue
-([[banked-families]] § In-flight).
+**TAXONOMY — 7 of 8 axes statement-closed; the COORDINATE axis RE-OPENED (2026-07-22).** The
+elder-ruled `supportAt` window (bake `b7fa66841`) closed the frame axes — **support** = computed
+`supportAt` (not a free ∀-branch), **C′** = PINNED-computed (not ∃), **coefficient clause** =
+`DeeperMultilinear` over D⁺ (kills c=1, the center-dependent cofactor, the degree-2 Schur cross-term) —
+plus content/size/path/layer (below). The frame axis thereby gained its INDEXING sub-case
+(support-vs-coefficient; the two-clock pin is the exemplar). **⚠ COORDINATE RE-OPENED (was wrongly
+recorded CLOSED here):** the earlier "L7 `leafPath_compactCover` bridge-free (canonCenter `d174f1f41`)"
+closure was a **premature-closed confound** (seat-L7 + Codex, controller-verified `MonumentAtlas:840-841`)
+— L7 is FALSE-AS-STATED: the single-`canonPivotOf` pin lets `ε·e_q` (q≠p in a non-singleton root center)
+ESCAPE the cover; it needs the FANNED |S|-pivot atlas + a bridge to the Engine's landed sorry-free
+`GeoCoverSpec.geoAtlas`. "Closed" = the STATEMENT guards its field; the guarded leaves' PROOFS are the
+proof queue ([[banked-families]] § In-flight).
 
 ## The axes (one exemplar each) — where each dies
 
@@ -30,7 +33,7 @@ coordinate axis stays closed; `d174f1f41` — L7 bridge-free). "Closed" = the ST
 | **content** | `Σw²` Case-2 residual (spectator support) | kernel-refuted; `FoldStepInvAt` definitional binding |
 | **size** | over-large center `center={0,1,2}` at `d=![1,2,1]` (`u₀u₂` has no center-disjoint center-linear form) | `Deg1SupportedOn` (center-EXACT degree-1) |
 | **path** | all charts on one branch | `FoldRealizes` `leafOf`-surjectivity |
-| **coordinate** | all charts blow up one coordinate (`y`-directions uncovered) | **CLOSED** — L7 `leafPath_compactCover` now BRIDGE-FREE (canonCenter bake `d174f1f41` pins each branch's coordinate via the `(S,J,mergeIdx,d)` slot bookkeeping → `tupIdxEquiv`; the all-charts-one-x witness can no longer satisfy the hypotheses) |
+| **coordinate** | all charts blow up one coordinate (`y`-directions uncovered) — AND: single-`canonPivotOf` pin ⟹ `ε·e_q` (q≠p, non-singleton root center) escapes the cover | **⚠ RE-OPENED** — L7 `leafPath_compactCover` is FALSE-AS-STATED (the `canonCenter`/`d174f1f41` "bridge-free" was a premature-closed confound). FIX = FAN the pivot (all |S| charts per center, in `IsRealBranch`/`canonPivotOf`/`FoldRealizes`) + bridge to `Engine.GeoCoverSpec.geoAtlas` (landed, sorry-free). Cover claim TRUE over the fanned atlas ⟹ `b-leaf7` adjudicated, not refuted. |
 | **layer / boundary** (5th) | a terminal-reaching branch: `Deg1SupportedOn (const 1)` is FALSE (`terminal_deg1_gap.lean`) | non-terminal guard + `terminal_edge_stepInv` (re-parented: LastLayerInv + hcleared) + the NEW `lastLayer_clear_preserves` |
 | **support** (6th — frame/indexing, supportAt bake) | a free ∀-branch window (the discarded two-clock T/D⁺ shed-slot shape) | `supportAt` COMPUTED (geometric Deg1, descends per clear; 3-case: layer S / layer S+1 / ∅ born-unit) |
 | **C′** (7th — frame/indexing) | an existential child window (`∃ C′`) | C′ PINNED-computed `= supportAt(child)` (the ∃ dropped) |
@@ -54,10 +57,11 @@ coordinate axis stays closed; `d174f1f41` — L7 bridge-free). "Closed" = the ST
 `b-leaf34-case-steps` (`case1_preserves_stepInv` = THE WALL), `b-leaf-lastlayer`
 (`lastLayer_clear_preserves`), `b-terminal-edge-stepinv`, and `b-leaf5..b-leaf8` — every fold-sourced
 leaf statement is re-checked against this bank before a re-render is trusted. `FoldStepInvAt` /
-`Deg1SupportedOn` / `FoldRealizes` close axes 1–3; L7's coordinate axis is CLOSED (canonCenter bake
-`d174f1f41`); the `supportAt` window (bake `b7fa66841`) closes the support / C′ / coefficient-clause
-frame axes (6–8). **All 8 axes statement-closed**; the guarded leaves' proofs are the proof queue
-([[banked-families]] § In-flight).
+`Deg1SupportedOn` / `FoldRealizes` close axes 1–3; the `supportAt` window (bake `b7fa66841`) closes the
+support / C′ / coefficient-clause frame axes (6–8); the layer axis (5) closes at terminal_edge. **⚠ L7's
+COORDINATE axis (4) RE-OPENED** — the canonCenter "bridge-free" closure was premature (see banner + row);
+it re-closes when the FANNED-pivot atlas + `GeoCoverSpec.geoAtlas` bridge land. **7 of 8 statement-closed**;
+the guarded leaves' proofs are the proof queue ([[banked-families]] § In-flight).
 
 ## Process defects (NOT field-severance — a distinct channel)
 
