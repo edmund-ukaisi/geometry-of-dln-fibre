@@ -183,3 +183,18 @@ architectural lesson: a node-form derived off bare provenance RE-DERIVES the bas
 silently relocating hypotheses that the carried-invariant formulation keeps where they belong
 (the fold's root, L5). Prefer step-form descent off the carried invariant when consumers already
 hold it.
+
+## The guard-domain family (3 instances) → the elder's STANDING RENDER CHECK (2026-07-23)
+
+hpos (terminal_edgeδ), he_lin (the node-form root), hlayer (the step-form boundary) — one
+family: an induction sketch's implicit domain assumption not carried into the statement's type.
+The elder's proposed standing check, now adopted at every stub mint: **every derived stub's
+statement must be true on the FULL quantifier range of its binders, or carry the guard that
+scopes it.** The discriminating question per binder: enumerate the boundary configurations of
+the quantified structure (layer = N, cleared = 0, empty support, rollover-degenerate d) and
+check the conclusion at each — a statement that fails at a reachable boundary either gains the
+guard (if the boundary belongs to another regime's owner: hlayer — cheap, consumers already
+inhabit the domain) or is the wrong shape (if the guard would exclude the intended domain:
+he_lin — reshape instead). seat-L3T2's SPECIFY discipline (refute-before-prove at the
+boundaries) is the enforcement mechanism; three-for-three it caught what the authoring sketch
+glossed.

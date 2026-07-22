@@ -13420,3 +13420,16 @@ source). (3) The pattern fix acknowledged mechanical; its delta-read checks all 
 Relayed to arch-C with HOLD-for-one-more: the hlayer amendment (catch #3) is still queued for
 the elder's next turn — then ONE staging carries everything. seat-L4's proof-input set updated
 (hδ + hc11 + hbranch + hslot; the projection as its pin source; the drop-condition test noted).
+
+## 2026-07-23 ~06:20 UTC — hlayer CONFIRMED (elder owns omission #3); the ONE ruling-B packet FIRED
+
+The elder confirmed the hlayer amendment with the distinction that completes the guard-domain
+taxonomy: hlayer restricts the stub to the domain its consumers ALREADY INHABIT
+(domain-made-explicit — free, consistent scoping) vs he_lin which would have restricted to a
+domain the leaves did not want (false-over-intended-domain — reshape required). Its proposed
+STANDING RENDER CHECK promoted to lessons.md: every derived stub true on the full binder range,
+or carrying the guard that scopes it; boundary-enumeration per binder; seat-L3T2's
+refute-before-prove SPECIFY as the enforcement (3-for-3). arch-C FIRED the one packet: the
+CanonicalSchurStep def + conjunct + pattern fixes + the new projection + boostReady-with-hslot
+(+ docstring refresh) + the hlayer amendment + both call-line pass-throughs. Gate → staging →
+delta-read: THE STAGING THAT CLOSES THE MONUMENT'S STATEMENT LAYER.
