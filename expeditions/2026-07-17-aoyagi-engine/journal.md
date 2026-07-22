@@ -11121,3 +11121,20 @@ branch-only caveat. B (overlay: severance witnesses incl. the over-deference/fal
 process witness + depth-diverse pin; banked-families; naming forwarders) + C (dead-routes:
 two-clock/shedSlots discard; deeperCoords deletion) = carto's pen, executing atomically. D: no
 gate-orphans; the E-lane drift is merge-pending, tracked.
+
+## 2026-07-22 (controller, tick ~03:45) — drift-glance: all five lanes moving; elder channel adapted; post-bake wiring review CHARGED
+
+Tick sweep: carto mid-execution of the B+C atomic overlay commit (severance-witnesses.md modified
+in the shared tree — its pen, untouched). Seat branches: L3T MOVING (8c2baa049 — banked halves
+marked PRE-REVISION for the LastLayerInv re-parent); seat-E's (c) design MOVING (ac9ec0585 —
+numeric check of the inversion-count transport recursion, 579/579); L4wire + Ecore mid-tide (no
+push yet — running, no idle notifications); seat-Eswap still in setup (no branch on origin yet —
+watch next tick). ELDER POLL (the standing transcript-poll): it registered the routing defect and
+SWITCHED CHANNELS — every ruling now arrives as plain final text; affirmed all three routings
+(explicitly the Q3 cluster-migration sequencing: "migrate the cluster, don't force a blocked
+partial move; record intent now"); the compass convention-pin queued for its deliberate compaction
+pass (signals "ready" as plain text; controller commits). CHARGED the elder with the POST-BAKE
+WIRING REVIEW (its declared next joint): (1) decorrelated second read of the baked window vs its
+ruling; (2) direction check on the proof-cascade order (L4/L3T → L5 hinge → L6+L8 → L7 → wiring
+swap); (3) E-lane 3-track taste check; (4) the progress-bar gate on "design phase closed, proof
+phase open" — name what it does NOT discharge.
