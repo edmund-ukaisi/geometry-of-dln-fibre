@@ -14503,3 +14503,22 @@ arch-C notified (render was faithful; expect a one-atom amendment from the delta
 The elder's design round now holds the COMPLETE fidelity picture: the step-map normalization (three-way
 convergence) + the e-abstraction at the base — the two places the encoding under-specified the source.
 One coherent ruling, then one re-bake round.
+
+## 2026-07-23 ~07:20 UTC — e-fix render scope pinned: 2 signatures, the cap ISOLATED; all elder inputs delivered
+
+arch-C's render-scope analysis (forwarded to the elder as render-lane input, not a design vote): the
+e-fix blast radius is exactly the homogeneity PAIR (coreGen_layerHomogeneous gains the constraint;
+foldResid_layerHomogeneous inherits via the induction base) — realBranch_appendResidDescent (the cap)
+takes no he_lin and asserts no homogeneity, so its signature STANDS regardless. All three fix-options
+renderable: (a) pin e at the existing canonical flatten (exists_flatten/paramsEquivFlat) — narrows the
+∀-e statements (a scope change the delta-read must NAME, my added steer); (b) a named block-compat
+hypothesis over layerCoords — arch-C: the bedrock-weakest name=content form (vs the proliferation
+counsel); (c) threading — mechanical after (a)/(b).
+
+THE ELDER'S DESK IS NOW COMPLETE, all inputs delivered and verified: the two certificates (transport
+durable + controller-reproduced @ 1f6e5626a; fan banked on canonical), its own cap finding, the
+three-way convergence frame + the composite-vs-single design question, the e-abstraction catch + the
+countermodel (Lean witness building), the render scopes (Gap B staging survives the shear ruling;
+e-fix = 2 signatures; cap isolated), and the subsidiary queue (firm cover fix / salvage (b) + Core
+block-atom (Q) / Gap B merge independent / hparent 3-sites / hpos note / non-strict pin). Every lane
+holds on the ruling or builds witnesses. The design round decides: the faithful step map + the e form.
