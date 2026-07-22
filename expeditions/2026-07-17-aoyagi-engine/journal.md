@@ -13378,3 +13378,26 @@ whole statement arc existed to make possible. Its own SPECIFY mapped the route (
 transform via the banked exists_graded_decomp/Deg1-bridge/append machinery; δ=0 pullback;
 case11/rollover no-descent), with the boostReady-consumption note for the case11 branch.
 Deep-sub-proof discipline; Codex if the strict-transform step resists.
+
+## 2026-07-23 ~05:30 UTC — M4 COMPLETE (A5 locked + integrated); the hlayer flag (catch #3) bundled into ruling-B
+
+**M4 IS COMPLETE END-TO-END (1faf51a14):** seat-M4B locked A5 in form (A) —
+foldSuffix_fixes_ledgerCorner (the branch-level (★) over childStateList, ledger-corner-
+restricted exactly as reconciled) + IsLedgerCorner/childStateList carriers + the sub-fact
+canonPivotOf_isLedgerCorner_conOracle — all sorry-free clean-three. The (★) chain is now fully
+produced: clause (III) [pin round] → single-step (★) [A4] → branch (★) [A5], across two seats
+with zero loss at the handoff. Consumer side: seat-L3T2 writes the (B) jacWeight adapter at its
+L5Spec site (unblocked now); ONE open follow-up = the "some"-existence question (definitional hp
+vs a lemma — seat-L3T2 answers from its site). Task #68 CLOSED. Statement card commissioned
+from seat-M4B.
+
+**seat-L3T2's THIRD statement catch — the step-form lacks hlayer:** terminal-rollover and
+last-layer edges give supportAt(child) = ∅ with a NONZERO unit residual — the goal is
+undischargeable-not-vacuous from (hpos, hbranch, hslot) (witness: N = 1, the layer-0→1 terminal
+rollover). Fix: the SAME interior guard both consumers already carry (hlayer) — the regime split
+(Deg1SupportedSlot interior / LastLayerInv-units boundary) made explicit; breaks nothing.
+ROUTED to the elder with my CONFIRM lean, BUNDLED as item (iii) of the ruling-B staging (already
+blocked on its two placement answers) — one staging, one delta-read: the pin + placements + the
+hlayer amendment + the two call-line updates. arch-C's packet-prep is otherwise complete
+(insertion points located; projections enumerated; producer-safety verified: NO live
+IsRealBranch constructor on the tip).
