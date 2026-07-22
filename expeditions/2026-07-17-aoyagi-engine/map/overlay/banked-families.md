@@ -172,21 +172,34 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
   `terminal_bezout` (`b-principalinv`). The support window is the elder-ruled `supportAt` (geometric Deg1,
   descends per clear) — support/C′/coefficient frame axes closed ([[severance-witnesses]]). Do NOT read
   a sorried leaf as banked.
-- **REDIRECT — BAKED** (`9c51289f4`, 2026-07-22; elder second read OK). The leaves now CONDITION ON ONE
-  `IsRealBranch e` hypothesis; the per-field SET (A) constraints became the **6 `realBranch_*`
-  derived-lemma stubs** (`realBranch_centerPin` :892 / `_cover` :901 / `_descendView` :911 /
-  `_shearWithinCarve` :920 / `_terminal_edgeδ` :930 / `_multiAffine` :941) — the new cone members
-  (MonumentAtlas census 8→14, DLN/Aoyagi 10→16; footprint clean-three+sorryAx both drivers). Discriminator
-  = the kernel-checked `DivBirthInv` (`Engine/DivBirthReach.lean`): support STAYS, no case11 descent.
-  L8's external geometry proof lives in `LeafGeometryWire` (in-flight seat branch, NOT yet on the
-  expedition tree) awaiting the integration swap. IN-FLIGHT L6-fix round: an elder-authored
-  pin-TIGHTENING on `ShearWithinCarveRaw` (`MonumentAtlas.lean:637`) / `IsRealBranch` — re-renders those
-  two defs + strengthens `realBranch_shearWithinCarve`'s conclusion only (not a census change). per-field
-  SET (A) SUPERSEDED, the case-aware `supportAt`/`edgeδ` fallback VOIDED ([[dead-routes]] § Redirect-round).
-- **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). L7
-  (`leafPath_compactCover`, `b-leaf7`) is BRIDGE-FREE (coordinate axis; `tupIdxEquiv`
-  `LearningCoefficient.lean:138` / `divBirthCoord` `EngineConstruction.lean:62`). The L3/L4 SUPPORT
-  window is the ruled `supportAt` (geometric, 3-case: layer S / layer S+1 / ∅ born-unit); `canonCenter`
+- **STATEMENT LAYER CLOSED** (ruling-B baked `0ce9c68b9`, 2026-07-22; elder-gated). The b-ladder is
+  COMPLETE — 7 statement bakes (redirect → pins → collapse → node-form → ruling-B), payoff footprints
+  unchanged throughout; the leaves condition on ONE `IsRealBranch e` hypothesis (`DivBirthInv`
+  discriminator: support STAYS, no case11 descent). The live cone is now **pure PROOF + assembly** (11
+  on-cone: MonumentAtlas 8 + LC 1 + Case1Wire 1 + MonumentAssembly 1). PROOF FRONT (post L1-bake
+  `83d11d8b5`, census 36 net-0):
+  - the **WALL** `realBranch_boostReady_case11` (`Case1Wire.lean:386`, seat-L4B): **A-clear (L1) BAKED**
+    (IsRealBranch shearφ=`canonShearOf` value-pin, closing the R_bad vacuity) + **A-div DONE** (bLedger) ⟹
+    boostReady UNBLOCKED and ASSEMBLING (the wall's last obligation; when it closes `case1_preserves_stepInv'` falls);
+  - the **descent** `realBranch_multiAffine_step` (`MonumentAtlas.lean:1116`, seat-L3T2): δ=0+case11 banked;
+    **Gap B PINNED** (`foldResid_layerHomogeneous`, elder authoring → arch-C renders → seat-L3T2 builds; the
+    tracked sorry `realBranch_cofactorDescent` discharges via Gap B's hhomog — NOT yet on-tree);
+  - `lastLayer_clear_preserves`; the **L5 assembly** (`L5FoldSpec`, longest link); the Assembly increments
+    (`MonumentAssembly`, (B′) drivers, arch-C on increment 2 — the +1 census); **L7 = the last open spine
+    call, RE-OPENED FALSE-AS-STATED** (fan re-scope, `b-leaf7` — see the canonCenter/supportAt bullet below).
+  5/6 `realBranch_*` stubs PROVED
+  clean-three; L6+L8 PROVED (L8 external in `LeafGeometryWire`, now on-tree). `Case2Delta0` RETIRED
+  (node-form deleted in the step-form bake, [[naming]]). per-field SET (A) SUPERSEDED, case-aware
+  `supportAt`/`edgeδ` VOIDED ([[dead-routes]] § Redirect-round).
+- **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). **⚠ L7
+  (`leafPath_compactCover`, `b-leaf7`) is NOT bridge-free — RE-OPENED, FALSE-AS-STATED** (2026-07-22,
+  seat-L7 + Codex, controller-verified `MonumentAtlas:840-841`): the single-`canonPivotOf` pin lets
+  `ε·e_q` (q≠p, non-singleton root center) ESCAPE the cover — the earlier "bridge-free" was a
+  premature-closed confound. FIX = FAN the pivot (all |S| charts/center in `IsRealBranch`/`canonPivotOf`/
+  `FoldRealizes`) + bridge to the Engine's landed `GeoCoverSpec.geoAtlas`; cover TRUE over the fanned
+  atlas ⟹ `b-leaf7` adjudicated (not refuted). Part of the coupled spine redesign ([[severance-witnesses]]
+  coordinate axis). The L3/L4 SUPPORT window is the ruled `supportAt` (geometric, 3-case: layer S / layer
+  S+1 / ∅ born-unit); `canonCenter`
   / `ed.center` stays the SEPARATE ledger center + division locus, UNTOUCHED (the wall divides at
   ed.center; the residual is degree-1 on `supportAt`). DISCARDED at the bake: the two-clock (T/D⁺
   deeper-union-shed) shape + shedSlots (→ [[dead-routes]]); DELETED: the `deeperCoords` island

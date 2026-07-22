@@ -117,6 +117,15 @@ as deleted, nor `adm_runMin_filter_eq` as present, in the expedition map until t
   kernel-checked reachability invariant that resolved the descent dispute proof-grade (no case11 descent;
   support STAYS). Consumed in `GeoFoldRegroup` / `NodesCNodeWalk`.
 
+### `Case2Delta0` — RETIRED (statement-layer close, `0ce9c68b9`, 2026-07-22)
+
+`DLN/Aoyagi/Case2Delta0.lean` (the L3 δ=0 pure-pullback leaf, node-form) is DELETED — the δ=0 content
+was folded into the STEP-form at the step-form bake (the L3 leaf `case2_preserves_stepInv` /
+`Case2Wire`). Old references to `Case2Delta0` resolve there. Census effect: −1 (part of the 41→35 drop).
+Statement-layer-close also ADDED the proof/assembly wire layer (DLN/Aoyagi 13f→20f): `Case1Wire`
+(boostReady, seat-L4), `Case2Wire`, `CanonShear`, `L5FoldSpec` (seat-L3T2), `LeafChartWire`,
+`LeafGeometryWire` (L8, now on-tree), `PivotPreservation`, `MonumentAssembly` ((B′) drivers, arch-C).
+
 ## ═══ chart-era pointers below (HISTORICAL — read through RETIRED.md) ═══
 
 *Created pass #1; **REFRESHED pass #2 (2026-07-18)**: the council-adopted restructure has LANDED

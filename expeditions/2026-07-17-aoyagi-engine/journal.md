@@ -13526,3 +13526,1227 @@ authored in exactly canonShearOf_support's contrapositive shape — the discharg
 **The producer family's review slate is now COMPLETE: M4 7/7 + M7 7/7 + L6 6/6, all
 Codex-corroborated, all clean-three under independent force-elaboration.** Every producer the
 L5 assembly will consume is proven AND reviewed.
+
+## 2026-07-22 ~15:40 UTC — ★★ THE MONUMENT'S STATEMENT LAYER IS CLOSED ★★ (ruling-B baked, 0ce9c68b9)
+
+(Datestamp correction: the preceding same-day entries from "~05:00" onward carry a +1-day drift —
+they say 2026-07-23 but the actual UTC date is 2026-07-22. Their ORDER and relative times are
+right; this entry and onward use the real clock.)
+
+The elder's closing verdict, quoted for the record: "with it the monument's statement layer
+closes. Every derived-lemma and leaf STATEMENT is now final and elder-verified — the severance
+class fully shut (each TreeEdge/ConState DOF pinned or justified; the four-round
+hpos/he_lin/hlayer guard-family caught and closed), the IsRealBranch provenance strengthened to
+force (★) and boost-readiness, the L6 collapse interface landed, and the payoff untouched."
+
+Its own nesting-check on (b) verified the exact mis-grab the pattern fix prevented; its (a)
+note confirms rev-M7's forward question affirmatively (the pin = the ∀-generalization of
+canonShearOf_support's conclusion — "emittability is proven, not promised"); (c) the boostReady
+docstring's stale line correctly killed ("it now IS derivable"); the blast-radius fix inert.
+THE LOAD-BEARING SAFETY CHECK: seven statement bakes in ~24 h and the baked payoff roots'
+footprints NEVER CHANGED — the strengthening confined to the monument layer (the future
+replacement of the cited Aoyagi axiom), exactly as the architecture requires.
+
+Integration verified (build 0-err, cordon OK, census 35 net-0) + pushed. BOTH PROOF SEATS
+WOKEN on locked statements: seat-L4 → realBranch_boostReady_case11 (the wall's last obligation;
+full ingredient set on canonical; the drop-test verdict owed to the elder); seat-L3T2 → the
+descent (realBranch_multiAffine_step per its own map; boundary configs excluded by its own
+hlayer). The remaining expedition = PROOFS + assembly: boostReady, the descent, lastLayer, L5,
+L7, the Assembly increments, the hygiene window, the summit swap, SUMMIT-RETIRE, cite-deletion
+(operator ceremony).
+
+## 2026-07-22 ~16:10 UTC — the wall's heart RESHAPED: boostReady is proof-side (two sub-lemmas), statement stays closed — DECORRELATED CONVERGENCE
+
+seat-L4 activated on realBranch_boostReady_case11 and, BEFORE its Codex verdict, flagged a sharp
+structural gap: realBranch_canonicalSchurStep gives CanonicalSchurStep of ed.shearφ (the CURRENT
+edge), but boostReady is about foldResid p (the PARENT residual, whose b-chain comes from p's
+EARLIER shears) — is the current ingredient set sufficient, or does it need a new inductive
+sub-lemma? I held seat-L4 from half-integrating (near-limit context) and fired the ELDER as a
+decorrelated second instrument on the sufficiency question — frame in (the ingredient gap),
+hypothesis out (NOT seat-L4's read).
+
+The elder (blind to seat-L4's hypothesis) reached the SAME verdict: **INSUFFICIENT as baked, but
+PROOF-SIDE — the statement layer STAYS CLOSED, no re-bake.** foldResid p is built from p's ANCESTOR
+shears, so the baked projection is a mis-aimed shortcut at the top level; but IsRealBranch's
+recursive .step carries CanonicalSchurStep at EVERY ancestor edge, so boostReady is provable from
+hbranch as it stands via a PATH-INDUCTION over p's ancestors (material present; discharge is an
+induction, not an unfold). The realBranch_canonicalSchurStep projection is PER-EDGE — usable at
+each ancestor inside the induction. hslot IS consumed (drop-test resolved). Weakest honest form =
+two sub-lemmas: (a) combinatorial b-chain divisibility on foldB p (u_p|b_i ⟺ i>J₁, NO shear input,
+separates clean); (b) prepared-form path-induction on foldResid p consuming ancestor
+CanonicalSchurStep (the γ-clearing R_bad violates — the genuinely new content).
+
+Two blind instruments converging on the same gap AND the same fix — the frame-in/hypothesis-out
+decorrelation working as designed (the boost-readiness adjudication's second convergence). The
+full Codex xhigh verdict (bufv05qfv) is still in flight; I'll relay whether it makes it three-way.
+
+ACTIONS: (1) statement layer stays CLOSED — this is proof-side, ruling-B stands, NO re-bake;
+(2) seat-L4B commissioned on sub-lemma (a) (self-contained) NOW, (b) from the consolidated packet;
+(3) seat-L4 writes the turnkey handoff (Codex verdict + R_bad specifics + Case1Wire ingredient
+locations) and stands down; (4) elder's verdict recorded as the boostReady weakest-form entry;
+(5) b-boostready map node reshaped. The wall's heart is now an ancestor induction with two clean
+sub-lemmas — heavier than a one-liner, but honestly scoped and the content is battery-verified.
+
+## 2026-07-22 ~16:35 UTC — heartbeat tick (idle pulse) — elder refinement on the boostReady decomposition
+
+Idle wake: nothing new landed on origin (seats L4B/L7 + L3T2's descent sub-agent spawned minutes
+ago, working; no completions yet). Drift-glance clean. One integration: the elder replied to my
+convergence relay with a refinement + a caveat.
+- REFINEMENT: sub-lemmas (a) [combinatorial foldB b-chain divisibility] and (b) [prepared-form
+  ancestor path-induction] are SEPARABLE — (b) does not depend on (a); both feed boostReady as
+  PARALLEL inputs alongside hslot (b-chain = u-positions, prepared form = the factoring, hslot =
+  base decomposition). (a)-first sequencing endorsed; (b) can be scaffolded in parallel.
+- CAVEAT: Codex bufv05qfv still in flight; two-way convergence makes (a) safe to prove now, but a
+  Codex WRINKLE in the ancestor induction forces the elder to re-check (b)'s decomposition before
+  seat-L4B locks its statement. Risk isolated to (b)'s exact statement.
+Relayed both to seat-L4B (prove (a) now; scaffold (b); do NOT finalize (b)'s statement until the
+packet + Codex). Standing action recorded in the memo: relay the Codex verdict to the elder when
+it lands. The elder also endorsed keeping frame-in/hypothesis-out as the pattern for the remaining
+frontier adjudications (the descent will have its own such moments).
+
+## 2026-07-22 ~16:55 UTC — Assembly increment 2 INTEGRATED (77447a7f5) — the L5 summit-home is live
+
+arch-C staged inc-2 (a49b78571 on -rung-c): MonumentAssembly imports Case1Wire+Case2Wire, adds
+`leaf_stepInv_of_path'` (statement-identical to baked L5 modulo {name, case1'/case2' swaps}, fold
+body sorried), swaps the primed driver's L5 call. Controller RE-DERIVED the gate (not trusting the
+"done"): clean --no-ff merge (docs preserved, lean change only); full `scripts/lb DLNFibre` GREEN
+(9005 jobs, 0 err); cordon OK; census 35→36 (the honest L5' fold-body skeleton — the summit-home
+for the L5 assembly proof).
+
+FORCED #print axioms (fresh scratch, current oleans):
+- exists_atlasRealizesExponents' + exists_coreResolution_via_monument' = [propext, sorryAx,
+  Classical.choice, Quot.sound] — kind unchanged; sorryAx now routes via case1'/case2' onto the
+  boostReady + step-form frontier (was via the baked unprimed case stubs). Statement-identity +
+  wiring, not sorry-freedom (as ruled).
+- PAYOFF ISOLATION: aoyagi_learning_coefficient_via_engine = [propext, sorryAx, Classical.choice,
+  Quot.sound] — UNCHANGED by inc-2 (it consumes the BAKED path, not the primed side inc-2 touched;
+  no cite, no new axiom). CORRECTION to an earlier shorthand: via_engine is NOT "clean-three" at
+  this stage — it carries a TRACKED-OPEN sorryAx from the monument's still-open leaves (the whole
+  point: it is the cite-FREE monument path, so it stays sorried until the leaves close, then goes
+  clean-three at the summit). The isolation invariant is that a monument bake/increment does not
+  CHANGE this footprint (no leak, no new axiom) — which holds. AxCheck batch (payoff roots
+  registered) passed during the build, corroborating.
+
+Summit-readiness ledger (arch-C's flag, carried): leaf_stepInv_of_path' still references UNPRIMED
+lastLayer_clear_preserves / foldStepInvAt_to_lastLayerInv / terminal_edge_stepInv / terminal_bezout
+— future increments once those get primed twins. The L5-fold-body seat targets
+MonumentAssembly.leaf_stepInv_of_path', NOT the baked atlas L5. arch-C next: the hygiene window
+(safe items only).
+
+## 2026-07-22 ~17:20 UTC — ⚠ RETRACTION: the statement layer is NOT closed — three grounded findings re-open the spine
+
+I called the statement layer closed one tick ago. It is not. Three seats, running the actual PROOFS
+(not statement-review), surfaced three holes — all sound, all verified on the def, all tracing to
+ONE under-specification of IsRealBranch. This is the closed loop working: the proofs found what the
+seven delta-reads missed. The confound sat exactly under the confident "closed" headline.
+
+THE ROOT CAUSE: IsRealBranch (MonumentAtlas:833-847) value-pins center = canonCenterOf and pivot
+(canonPivotOf = some → =pivot), but the SHEAR gets only a SUPPORT pin (CanonicalSchurStep :819-824
+= `∀ u k, shearφ u k ≠ 0 → bounds`, vacuously true for shearφ=0; ShearWithinCarveRaw likewise, since
+blockShear 0 = id). Two consequences:
+- **UNDER-pinned shear (value):** the predicate admits identity shears = R_bad, for which boostReady
+  is FALSE. So realBranch_boostReady_case11 is NOT provable from the predicate (Codex DIVERGED from
+  the elder's proof-side verdict and was right — I read the def to confirm). Grounds the descent's
+  δ=1 cofactor gap too (the cofactor structure comes FROM the canonical shear the predicate forgets).
+- **OVER-pinned pivot (single value):** pivot = the single canonPivotOf, but gmap's outermost root
+  blow-up + one pinned pivot ⟹ the cover MISSES ε·e_q (q≠p in the root center). So leafPath_compactCover
+  (L7) is FALSE as stated. The cover needs pivots FANNED (all pivots per center).
+
+THE THREE FINDINGS:
+1. boostReady — statement-side; needs `shearφ = canonShearOf` value-pin. (Codex vs elder; Codex right.)
+2. descent δ=1 case12/case2 — cofactor gap; likely resolved BY the shear value-pin (coupled), else a
+   FoldStepInvAt strengthening or a standalone stub. δ=0 + case11 provable, being landed.
+3. L7 — FALSE as stated; needs the pivot FAN (re-scope IsRealBranch/FoldRealizes/canonPivotOf + L5's
+   atlas emission; bridge to the engine's LANDED sorry-free fanned cover — seat-L7 de-risked).
+
+ACTIONS: charged the ELDER (spine owner) with a COUPLED one-round redesign (shear value-pin + pivot
+fan — different fields, co-design to bake once); the redesign routes through a DECORRELATED
+pen-and-paper/Codex coupling-check before render/bake (the elder's last call misjudged the shear-pin,
+so damp the gain). Froze the contested work: seat-L4B holds (b) (keeps the safe combinatorial (a)),
+seat-L7 holds the fan (its bridge lane is ready), the descent lands only the uncontested arms +
+factors the deep arm as a tagged on-cone obligation. LESSON (for lessons.md + the close synthesis):
+a statement bake reviewed for internal consistency is NOT proven closed until a PROOF has run against
+it — the delta-read gate must be paired with a proof-pressure gate before "closed" is claimed. Census
+36 unchanged (the holes were already open sorries / a false statement, not new tokens).
+
+## 2026-07-22 ~17:45 UTC — the redesign resolves into THREE layers (seat-L4B + seat-L7 SPECIFY/recon)
+
+Two seat inputs sharpened the coupled redesign's scope. Both verified on the def by me before relaying.
+
+seat-L4B (boostReady SPECIFY, another stop-on-suspect): the (a)/(b) b-chain framing I relayed
+presupposed a ledger REPRESENTATION Lean doesn't expose. CONFIRMED on def: foldB is a SCALAR
+(:402, ∏ u_pivot^δ — no b_i vector/J₁/D-H); foldResid is a functional recursion of strict-transforms/
+pullbacks (:443); and foldResid's OWN docstring records "the alternative (A″) — a foldResid
+representation carrying (center-factor, tail) — was NOT taken; no representation redesign." So even
+with the shear-value-pin, boostReady's PROOF must MATERIALIZE the ledger via path-induction over
+hbranch's ancestor CanonicalSchurSteps. There is no self-contained (a) over an existing object;
+seat-L4B reframed to (a′) [case11-δ1 center/support coordinate geometry — pure Finset combinatorics,
+route-independent, PROVING NOW] + (b) [materialize the ledger representation, the heavy new content].
+
+seat-L7 (bridge-shape recon for the fan): (1) the engine cover core is banked 0-sorry (GeoCoverSpec/
+PivotCoverFold/PivotCover/GeoChart/qNodeOf split — salvageable); (2) REPRESENTATION GAP — the engine
+chart (qNodeOf-conjugated pivotChart+flatSwap, fanned tree, Params) is DIFFERENT machinery from the
+monument chart (blockBlowupMap∘blockShear, raw oracle tree), so geoAtlas_imageCover does NOT feed L7
+by rewrite; implication for the elder: define the fanned monument spine to REUSE the engine chart form
+→ bridge DEFINITIONAL; (3) CAUTION — the engine is archived DO-NOT-FILL (charter §3, category-false
+value holes); salvage the pure-cover subgraph ONLY, never the value/Jacobian files.
+
+SYNTHESIS — the redesign has THREE layers to settle (relayed to the elder as design inputs):
+  L1 PREDICATE: the shear VALUE-pin (shearφ = canonShearOf) — closes the R_bad vacuity.
+  L2 INVARIANT: materialize-in-proof vs REVERSE A″ and strengthen FoldStepInvAt/Deg1SupportedSlot to
+     CARRY the ledger (ripples into case1/case2_preserves_stepInv + L5 base). The descent's δ=1
+     cofactor is the SAME ledger → a strengthened invariant closes boostReady AND descent from one
+     place. (pnp-coupling adjudicating the math one-fix-or-two in parallel.)
+  L3 FAN: pivot fan + L5 fanned-atlas emission, possibly reusing the engine chart form (L2b) → the
+     bridge (seat-L7's lane) becomes definitional.
+The elder owns all three (predicate + baked-def invariant + spine fan); pnp-coupling feeds L2; seat-L7
+holds for L3's shape. seat-L4B proves (a′) meanwhile (route-independent). I reconcile pnp-coupling +
+the elder's design before render. This is the round that has to be right — not racing it.
+
+## 2026-07-22 ~18:05 UTC — L2 converges to A′ (shared lemma); the hard induction is ROUTE-INVARIANT
+
+seat-L4B (proceed-on-silence, within-boundary) took route (A′): materialize the ledger in-proof as a
+SHARED reusable lemma, not strengthen FoldStepInvAt. Two grounded reasons: (i) it found the pivot-
+SPECTATOR half of the (b) induction is ALREADY banked in PivotPreservation (foldSuffix_fixes_
+ledgerCorner + family) — so the ONLY irreducible new content is the u_pivot-DIVISIBILITY of the
+extra-block residual coefficients; (ii) (B)'s FoldStepInvAt strengthening ripples into case1/case2 +
+L5 base, a worse blast radius stacked on the spine redesign.
+
+THE LOAD-BEARING INSIGHT: the hard content — the ancestor-CanonicalSchurStep path-induction proving
+the divisibility — is IDENTICAL whether stored as a shared lemma (A′) or a carried invariant field
+(B). Only the HOME differs. So seat-L4B proving that induction NOW is route-invariant / low-waste,
+and L2 reduces to a cheap storage choice. I refined seat-L4B's route to A′-SHARED (not boostReady-
+private) because the descent's δ=1 cofactor is the SAME divisibility — one shared lemma serves both
+boostReady + descent. Relayed to the elder: L2 is converging to A′ (shared lemma); its genuinely-open
+calls narrow to L1 (the shear value-pin form) + L3 (the fan + whether to reuse the engine chart form).
+
+Net: the re-open, one tick in, is DE-RISKING fast — the proof content (the divisibility induction) is
+being proven now regardless of the storage decision, the pivot-spectator half was already banked, and
+the three-layer redesign's hardest architecture layer (L2) is settling. What remains genuinely open:
+the elder's L1 shear-pin form + L3 fan design (+ pnp-coupling's math verdict feeding the reconcile).
+
+## 2026-07-22 ~18:30 UTC — L1 (shear value-pin) TRIPLE-corroborated; boostReady = divisibility(now) + clearing(L1)
+
+seat-L4B's MANDATED fresh Codex (xhigh, no shared context) independently re-derived L1's necessity:
+boostReady's CLEARING half (the −γ·β off-diagonal, A1: center→0 kills the residual) is NOT derivable
+from the support-only shear predicate (shearφ=0 satisfies CanonicalSchurStep + ShearWithinCarveRaw),
+so the exact shear VALUE is required. This is the THIRD decorrelated instrument on L1 (seat-L4's Codex
++ elder's reconciled verdict + seat-L4B's fresh Codex) — the re-open is VINDICATED; the shear-value-pin
+is necessary, not merely plausible.
+
+seat-L4B initially framed this as a CONFLICT with "no re-bake" — but that framing was STALE (my
+retracted pre-re-open relay; my later "proceed on the induction (A′)" messages under-emphasized that the
+induction was only ONE half of boostReady). Clarified: no conflict — seat-L4B CONFIRMED the current plan.
+
+THE CONFIRMED DECOMPOSITION (boostReady): (i) DIVISIBILITY half (u_pivot | extra-block coeffs) rides the
+ALREADY-carried pinned blow-ups (canonCenterOf/canonPivotOf + blockBlowupCoordQuot) — L1-INVARIANT +
+route-invariant → seat-L4B PROVING IT NOW; (ii) CLEARING half needs the exact shear value → a one-liner
+from canonShearOf_apply_interior (M7 α/β, 7/7) ONCE L1 bakes. So L1 only has to supply the clearing; the
+divisibility is carried. Relayed to the elder as a form-tightening input: state L1 so
+canonShearOf_apply_interior discharges the clearing directly.
+
+CONTROLLER SELF-NOTE (calibration): my messaging muddied the two halves — I said "proceed on the
+induction" (divisibility) without re-flagging that the full boostReady waits on L1 (clearing). seat-L4B's
+mandated consult caught the muddle. Lesson reinforced: when a target splits into a provable-now half and a
+re-bake-blocked half, name BOTH halves explicitly in the seat brief, not just the provable one.
+
+## 2026-07-22 ~18:55 UTC — L1 = additive strengthening, 4x-corroborated (incl. M7's own render-note) → push L1-FIRST
+
+seat-L4B surfaced DECISIVE corroboration from our own code — canonShearOf_apply_interior's docstring
+(CanonShear.lean:239-244, verified verbatim): "NOT part of any pin (weakest-that-suffices declined it);
+the α/β witness of the boost-readiness proof may want the explicit coefficients." M7's render EXPLICITLY
+foresaw boost-readiness would need the exact shear value and DELIBERATELY kept IsRealBranch's pin at the
+weakest (support-only) form. So the L1 gap was a documented, deferred design decision now called due —
+"weakest-that-suffices cut one notch too fine for THIS obligation." Four instruments on L1 now: seat-L4
+Codex + elder reconciled verdict + seat-L4B fresh Codex + M7 render-note.
+
+KEY: L1 is ADDITIVE. Pinning shearφ = canonShearOf IMPLIES the old CanonicalSchurStep via the banked
+canonShearOf_support (CanonShear.lean:63) — the realBranch_canonicalSchurStep projection re-derives, so
+NO downstream consumer weakens. It therefore fits the RECORDED one-bake exception (additive strengthening).
+
+DECISION (pushed to the elder, proceed-on-silence sequencing): bake L1 FIRST, separately from L3. It's
+orthogonal to L3 (L1 = shear clause; L3 = pivot-fan clause; canonShearOf is pivot-independent, so L1 is
+not re-touched by L3 → no wasted re-bake) and it UNBLOCKS both boostReady's clearing (one-liner via
+canonShearOf_apply_interior) AND the descent's δ=1 cofactor NOW, vs stalling behind L3's slower fan design.
+The re-bake ledger is now clean: L1 (additive, NOW) + L3 (fan, later); L2 = A′ shared lemma (NON-bake,
+seat-L4B proving the divisibility now). Awaiting the elder's authored L1 form (the pin + realBranch_canonShear_eq
+projection) → arch-C render → gate → delta-read → relay to seat-L4B. seat-L4B keeps banking the L1-invariant
+halves (divisibility + a′) meanwhile.
+
+## 2026-07-22 ~19:20 UTC — descent: δ=0 arm PROVED + infra; case11 closing (L1-indep); append HOLDS (L1/pnp-coupled)
+
+multiaffine-descent (seat-L3T2's sub-agent) completed realBranch_multiAffine_step' (MultiAffineStepWire.lean,
+5aa5f8470 on aoyagi-engine-L3T2; aggregator NOT yet wired — my pen, pending case11 + seat-L3T2's conditions).
+PROVED axiom-clean: descent_delta0 (all 4 edge kinds — the bulk), + reusable infra (deg1_comp_of_fixing =
+the descent core, conOracle_child_transition, canonCenterOf_decode_layer_le, blockCoords_subset_layerCoords).
+Two δ=1 sorries remain — and they split by L1-dependence:
+
+- descent_delta1_case11 — PROVABLE + L1-INDEPENDENT (pivot-separation via canonPivotOf(case11)=some, a
+  ~50-line oracle-unfold from DivBirthInv freshness; no shear value). DISPOSITION: CLOSE NOW. Real banked win.
+- descent_delta1_append (case12/case2, the fidelity blocker) — needs the cross-layer cofactor identity
+  c_i(qm)=∑_{k∈S'} a_ik·u_k. This is the SAME canonical-shear structure as boostReady's clearing half →
+  COUPLED to L1 (shear-pin) + pnp-coupling's one-fix-or-two. DISPOSITION: HOLD as the tagged obligation;
+  do NOT add a 2nd stub or strengthen FoldStepInvAt (the sub-agent's structural decision is SUBSUMED by the
+  pnp-coupling adjudication). If pnp-coupling + L1 confirm the shear-pin discharges the descent cofactor
+  (likely), append is a one-liner via canonShearOf_apply_interior + seat-L4B's shared divisibility lemma.
+
+CONFIRMED (important): the descent's conjunct B does NOT consume realBranch_boostReady_case11 — the sorryAx
+traces to descent_delta1_append, a DISTINCT obligation. So the two live proof-side gaps are (i) boostReady
+(clearing, L1) and (ii) descent-append (cofactor, L1) — BOTH the same shear-pin structure, which is exactly
+why L1-first + pnp-coupling's "one fix" is the lever. The descent is converging: δ=0 done, case11 closing,
+append is the single L1-coupled hold. seat-L3T2 runs anchor-diff + forced #print axioms (sorryAx = append
+only) post-case11, then I wire.
+
+## 2026-07-22 ~19:45 UTC — L1 AUTHORED (elder) → RENDERING (arch-C): the raw shear value-pin
+
+The elder authored L1's form, and its reasoning is the lesson from its own error made structural:
+pin the RAW value `shearφ = canonShearOf d p.conState`, NOT the α/β property — because fragmenting
+the shear into properties (support, within-carve) is exactly what let the vacuous support-pin slip
+through. The raw value-pin is NON-FRAGMENTABLE: every property (clearing via canonShearOf_apply_interior,
+support via canonShearOf_support, α/β value) derives from the one equality. It's symmetric with the
+center/pivot value-pins (three uniform value-pins: center=canonCenterOf, pivot=canonPivotOf,
+shear=canonShearOf) and it's the emission form L5 produces. The elder withdrew its earlier
+pivot-parametrization worry: canonShearOf is pivot-INDEPENDENT → L1 orthogonal to L3's fan, confirmed.
+
+THE FORM (elder-authored verbatim, handed to arch-C): IsRealBranch step-arm 4th conjunct
+CanonicalSchurStep → `shearφ = canonShearOf d p.conState` (ARITY-PRESERVING, so destructures don't
+re-fix); new projection realBranch_canonShear_eq (obtain ⟨-,-,-,heq⟩; exact heq);
+realBranch_canonicalSchurStep RE-DERIVES (rw [heq]; canonShearOf_canonicalSchurStep or inline via
+canonShearOf_support) — statement unchanged, consumers insulated. ADDITIVE (equality ⟹ old
+CanonicalSchurStep via canonShearOf_support), so it fits the recorded one-bake additive exception.
+
+DAMPING NOTE (why render now, not wait for pnp-coupling): L1 is 4x-corroborated AND mechanically
+certain — the clearing discharges from the banked, 7/7-reviewed canonShearOf_apply_interior, which
+pnp-coupling cannot refute (it's a proven lemma). pnp-coupling's remaining value is the DESCENT append
+coupling (one-liner vs needs-more), which is DOWNSTREAM of L1 and doesn't gate it. So L1 renders now;
+pnp-coupling continues in parallel. arch-C rendering → gate → delta-read → I relay the pin +
+realBranch_canonShear_eq to seat-L4B (clearing = one-liner) + seat-L3T2 (descent append discharge).
+L1 is the linchpin; once baked, both clearing-side gaps close.
+
+## 2026-07-22 ~20:20 UTC — pnp-coupling RESHAPE (3 distinct facts) + L1 render cycle-catch → relocation
+
+TWO developments.
+
+(1) pnp-coupling's DECORRELATED verdict (exact-fold of the ACTUAL foldResid, d=(2,2,2,2)/(3,3,3,3)/
+(2,3,2,2), Codex-corroborated) REFUTED the coupling I assumed. NOT one shear-pin fix — THREE separate
+structural facts:
+- Gap B (descent append): MULTILINEAR HOMOGENEITY (foldResid deg exactly 1, vanishing at layer=0, per
+  layer ≥ supportLayerOf) — SHEAR-INDEPENDENT (identical traces canonShearOf vs identity). NOT implied
+  by Deg1SupportedSlot. Fix = standalone foldResid lemma (pnp rec, avoids ripple) vs FoldStepInvAt
+  strengthening (elder's call). L1 does NOT touch it.
+- Gap A-div (boostReady): b-chain divisibility — combinatorial, shear-independent (= seat-L4B's half).
+- Gap A-clear (boostReady): Schur γ-clearing — what L1/canonShearOf buys (R_bad-kill), Gap A only.
+Asymmetry certificate: identity shear BREAKS Gap A (A2 fails) but PRESERVES Gap B. So L1 is CONFIRMED
+necessary+correct but scoped to Gap-A-clear. CAVEAT: pnp's Gap-A part is battery-MODEL-based (not
+folded to a real case11 node) — seat-L4B's fold-derived divisibility is the verification (watch the
+i=J₁/u_p-multiplicity boundary). Gap B's shear-independence is exact-fold-SOLID.
+CALIBRATION: I conflated two "needs-more-than-hslot" gaps (append + boostReady-clearing) as both
+shear-coupled — they need DIFFERENT more (homogeneity vs clearing). The decorrelated instrument caught
+my over-claim BEFORE the descent seat wasted a shear-framed proof. frame-in/hypothesis-out earning its
+keep (the append=one-liner claim would have failed). Corrections propagated: arch-C (docstring scope),
+seat-L3T2 (append=homogeneity, held for elder Gap B), elder (Gap B design need), seat-L4B (its
+divisibility = 1 of 2 Gap-A halves + the b-chain soft-spot to watch).
+
+(2) L1 render: arch-C's verify-before-render caught an IMPORT CYCLE — canonShearOf lives in CanonShear
+(which imports MonumentAtlas), so MonumentAtlas can't reference it in IsRealBranch. FIX (blessed,
+controller): relocate canonShearOf + canonShearOf_support UP into MonumentAtlas (before IsRealBranch) —
+verified cycle-free (deps tupIdxEquiv/ConState/flatDim all in MonumentAtlas; no PivotPreservation/
+blockEntryFlat), a PURE refactor (byte-identical def, rehomed), FORCED by the elder's form (no natural
+alternative). M7B fully merged (0 commits ahead of canonical)/dormant + CanonShear complete on canonical
+→ NO M7B coordination needed; the delete collides with nothing. arch-C UNBLOCKED → rendering L1 =
+[relocation] + [3 forms, change-3 canonShearOf_support fallback]; canonShearOf_apply_interior confirmed
+exists (:244). Gate → stage → hash → my gate + elder delta-read. L1 is the additive Gap-A-clearing bake.
+
+## 2026-07-22 ~20:40 UTC — heartbeat tick: Gap B RULED (B-standalone) → the re-open is 3 parallel workstreams
+
+Elder ruled Gap B and it's the clean resolution — append is UNBLOCKED NOW, L1-independent. The fix is a
+STANDALONE lemma foldResid_layerHomogeneous: foldResid p is multilinear homogeneous (deg exactly 1,
+VANISHING when the layer's coords are 0, per layer ≥ supportLayerOf; HomogeneousDeg1On = the vanishing
+strengthening of AffineOn — the vanishing clause is the Gap-B delta over Deg1SupportedSlot, excluding
+F=u_pivot's constant-1 transform). DECISIVE property (pnp): SHEAR- AND PIVOT-INDEPENDENT — depends only
+on IsRealBranch's CENTER pin, stable pre-L1 AND pre-L3 → provable NOW in parallel, blocked on neither
+spine change. (B-standalone) over (B-invariant): standalone is additive (case1/case2_preserves CONSUME it,
+don't re-induct), avoids the FoldStepInvAt ripple, and its L1/L3-independence lets it prove immediately.
+The elder honestly retired its own foldResid_prepared (which had bundled Gap B homogeneity + Gap A
+clearing — the same over-reach as my "L1 covers the descent," one level down). Decorrelation calibrating
+BOTH the controller and the elder.
+
+THE RE-OPEN IS NOW 3 FULLY PARALLEL WORKSTREAMS (no cross-blocking):
+1. (Gap A-clear) L1 = shearφ=canonShearOf value-pin — arch-C RENDERING (past the relocation cycle-catch).
+   Additive Gap-A-clearing bake. → gate → delta-read.
+2. (Gap B) foldResid_layerHomogeneous — seat-L3T2: hslot-subsumption confirm → elder authors the exact
+   HomogeneousDeg1On predicate → arch-C renders it (new spine def, after L1) → seat proves (structural
+   induction on p, off the center pin) + consumes for descent_delta1_append. L1/L3-INDEPENDENT, NOW.
+3. (Gap A-div) b-chain divisibility — seat-L4B (off the ledger; pnp's Gap-A part is battery-MODEL-based,
+   so seat-L4B's fold-derived proof is the verification — watch the i=J₁/u_p-multiplicity boundary).
+boostReady = A-clear(L1) + A-div(seat-L4B). Descent = δ=0(banked) + case11(closing) + append(Gap B) —
+L1-INDEPENDENT, may close BEFORE L1 bakes. L3 (fan) = the last open spine call (elder; reuse the engine
+chart form per seat-L7 finding-2 → bridge definitional). Cron armed (:17). The re-scope has converged
+from "3 findings, statement wrong" to 3 well-scoped parallel builds + 1 open design call — with every
+step decorrelation-checked.
+
+## 2026-07-22 ~21:05 UTC — Gap B SPECIFY: seat-L3T2 catches 2 defects (blockCoords cap + he_lin) pre-build
+
+seat-L3T2's hslot-subsumption confirm surfaced two statement defects in the elder's authored
+foldResid_layerHomogeneous — BEFORE the sub-agent built it (SPECIFY-first backstop working). Both
+verified sound; routed to the elder for the statement refinement.
+
+1. CAP (blockCoords vs layerCoords). Over layerCoords, the lemma subsumes hslot's clause-2 (qm
+   layer-S-local passes layer-(S+1) through) but NOT clause-1's blockCoords cap: blockCoords ⊊
+   layerCoords ⟹ vanishing on {layerCoords=0} does NOT force vanishing on the larger {blockCoords=0},
+   so the over-block coords aren't capped out of the support. FIX: state over blockCoords d ℓ (the
+   widthMinUpto-capped block) — supplies homogeneity + the cap, hslot fully redundant in append.
+   Provided foldResid is genuinely blockCoords-supported (= hslot's clause-1 + the widthMinUpto cap;
+   the induction carries it).
+
+2. he_lin RE-EMERGES — the guard-domain family (hpos/he_lin/hlayer) recurs. foldResid_layerHomogeneous's
+   induction bottoms at foldResid root = coreGen, and "layers > S = untouched raw coreGen deg-1"
+   PRESUPPOSES coreGen per-layer deg-1 ⟺ e LINEAR. u³ refutation (N=1,d=(1,1),e u=u³): coreGen 0 = u³,
+   HomogeneousDeg1On(u³) FALSE; hbranch=root=True, hpos ✓ — FALSE without he_lin. The center pin does
+   NOT supply e's linearity → "off the center pin only" was incomplete (center pin + he_lin). FIX: add
+   he_lin hypothesis + thread it from L5 to multiAffine_step's append arm (same resolution as the
+   node-form step-form). Still L1- and shear-independent — just not he_lin-free.
+
+Both caught at SPECIFY, not mid-induction — the STANDING RENDER CHECK (derived-stub-true-on-full-
+binder-range) working via the seat, exactly as designed after the earlier guard-domain family. seat-L3T2
+holds the sub-agent's BUILD for the elder's confirmed statement; case11 (closing) + δ=0 (banked) are
+he_lin/L1/Gap-B-independent, unaffected. The elder's Gap-B lemma refines to: over blockCoords, with
+he_lin, threaded from L5 — then the descent's append discharges from it (still L1-independent).
+
+## 2026-07-22 ~21:30 UTC — case11 CLOSED (wall = 1 sorry, no boostReady flow-through); L1 rendered green; he_lin-threading tension
+
+TWO events + a wiring-stability call.
+
+(1) DESCENT case11 CLOSED (multiaffine-descent, 38b4f4a06 on -L3T2). The wall realBranch_multiAffine_step'
+now has EXACTLY ONE tracked sorry = realBranch_cofactorDescent (the strict transform is
+blockCoords(p.layer+1)-graded; foldResid_layerHomogeneous discharges it). descent_delta1_case11 FULLY
+PROVED axiom-clean (via conOracle_case11_mergeIdx_lt + case11_pivot_decode_lt + deg1_comp_of_fixing) and
+CONFIRMED it does NOT consume realBranch_boostReady_case11 (conjunct-B closes on pivot-separation alone).
+So the code confirms the clean decomposition: the descent and boostReady lanes are fully independent, no
+boostReady flow-through in MultiAffineStepWire. #print axioms sorryAx traces ONLY to realBranch_cofactorDescent.
+
+(2) L1 RENDERED GREEN (foldstate-render → arch-C): relocation clean, census +1/net-0. arch-C is GATING it
+(—rung-c not yet advanced past the hygiene staging) → its staging-hash report to me is imminent → I gate +
+integrate then.
+
+(3) WIRING HELD (my call) + a he_lin-threading tension surfaced. realBranch_cofactorDescent consumes
+foldResid_layerHomogeneous, which NEEDS he_lin (its coreGen root base). But realBranch_multiAffine_step is
+the STEP-FORM, deliberately HE_LIN-FREE (the node-form resolution). So consuming Gap B re-introduces he_lin
+into the step → the he_lin-threading decision (concern-2, elder deciding) may CHANGE the wall's statement. I
+am therefore HOLDING the MultiAffineStepWire aggregator wiring until the statement stabilizes (post the
+elder's threading call + Gap B build) — will not wire an unstable statement. Offered the elder a clean
+resolution: thread foldResid_layerHomogeneous as a HYPOTHESIS on the step (like hslot), L5 discharges it via
+foldResid_layerHomogeneous + he_lin — preserving the step-form's he_lin-freeness. Elder's authoring call.
+
+Also: the sub-agent's blockCoords cap concern is now DOUBLE-corroborated (seat-L3T2 + the sub-agent
+independently) + it confirmed HomogeneousDeg1On (vanishing form) kills F=u_pivot — de-risking the elder's
+blockCoords restatement. And a mislabel corrected (relayed to seat-L3T2): the Gap-B render is B-STANDALONE
+(new predicate def + standalone lemma), NOT a FoldStepInvAt strengthening. Waiting on: arch-C's L1 hash +
+the elder's refined Gap-B statement (blockCoords + he_lin + threading). The descent is one lemma from
+sorry-free; L1 is one gate from baked.
+
+## 2026-07-22 ~22:10 UTC — ★ L1 BAKED (83d11d8b5) — first coupled-redesign bake; + Gap B design PINNED
+
+L1 (the Gap-A-clearing shear value-pin) is BAKED. Loop completed: elder authored → arch-C rendered
+(52f6b0225, past the verify-before-render canonShearOf cycle-catch → relocation) → elder delta-read OK
+(verbatim match, byte-identical relocation, additive, payoff-isolated) → controller merged + RE-DERIVED
+the gate. My re-derivation: full build green (9005); force #print axioms — realBranch_canonShear_eq +
+realBranch_canonicalSchurStep = [propext, Classical.choice, Quot.sound] (clean-three, sorry-free);
+PAYOFF ISOLATION HELD — aoyagi_learning_coefficient_via_engine + exists_coreResolution_via_monument
+UNCHANGED ([propext, sorryAx, Classical.choice, Quot.sound], no new axiom, no cite); cordon OK; census
+NET-0 (36). IsRealBranch now VALUE-pins the shear (shearφ=canonShearOf), closing the R_bad vacuity;
+CanonicalSchurStep re-derives via canonShearOf_support (additive, consumers insulated). The re-open's
+first statement-fix is on canonical.
+
+GAP B DESIGN PINNED (elder, same round): the hhomog-hypothesis threading ADOPTED (my/the-offered option;
+the elder retracted its "leaves thread he_lin" and confirmed Finding-A's he_lin-at-L5-only stands). Form:
+HomogeneousDeg1On (vanishing strengthening of AffineOn) + foldResid_layerHomogeneous (hpos e he_lin p
+hbranch) : ∀ j ℓ, supportLayerOf ≤ ℓ → HomogeneousDeg1On d (foldResid…) (blockCoords d ℓ) (foldRegion…)
+[over BLOCKCOORDS (concern-1) + HE_LIN (concern-2)]; the step REPLACES hslot with hhomog (subsumes it,
+he_lin-free); L5 discharges hhomog via foldResid_layerHomogeneous hpos e he_lin p hbranch. B-STANDALONE.
+
+THREE PARALLEL LANES STATUS: (A-clear) L1 = BAKED ✓. (A-div) seat-L4B = DONE (bLedger, resolves pnp's
+Gap-A soft spot; boostReady now = A-clear[baked] + A-div[done] + assembly, all L1-gated → seat-L4B
+assembles on L1 [now available]). (B) Gap B = pinned, next bake: elder authors verbatim
+HomogeneousDeg1On + the re-wire → arch-C renders (after L1, done) → seat-L3T2 proves
+foldResid_layerHomogeneous + fills realBranch_cofactorDescent. Descent wall = δ=0+case11 banked + append
+via hhomog. arch-C's render flags: foldResid_layerHomogeneous visibility (the L1-canonShearOf pattern —
+discharge at leaf_stepInv_of_path' downstream, can see it), caller coupling (Case1Wire:444/Case2Wire:113
+hslot→hhomog), character-identity (baked stub vs primed twin re-wire). L3 (fan) = the last open spine call.
+
+## 2026-07-22 ~22:35 UTC — Gap B induction designed (2 atoms); THIRD guard (non-terminal) caught pre-build; pnp mult-soft-spot RESOLVED
+
+Post-L1-bake, the three lanes advanced:
+
+(A-div) seat-L4B RESOLVED the pnp Gap-A multiplicity soft spot from the banked ledger invariant:
+DivBirthInv's FOURTH clause (Function.Injective divBirthCoord) makes κ=cornerToFlat∘divBirthCoord
+injective ⟹ u_p appears in bLedger with multiplicity EXACTLY 1 — the pnp-flagged i=J₁/mult-≠1 boundary
+does NOT bite; the real r_i matches the model's Gap-A accounting. Gap-A confirmed better than the model,
+non-vacuity established. seat-L4B holds for the L1-relay assembly (my "L1 BAKED, assemble" msg is in its
+inbox).
+
+(B) The descent wall (realBranch_multiAffine_step', MultiAffineStepWire @ ed2fe681a) is green with ONE
+tracked sorry = realBranch_appendResidDescent (re-framed shear-independent, clause-1-direct: ∃c, child
+resid = ∑_{i∈blockCoords(p.layer+1)} c i·u i; cofactor/exists_graded framing DROPPED; label fixed to
+B-standalone). #print axioms sorryAx traces to it ONLY (NOT boostReady — clean decomposition holds).
+The sub-agent DESIGNED the foldResid_layerHomogeneous induction (build HELD for arch-C's render): 2 atoms
+— coreGen_layerHomogeneous [BASE, he_lin; the concern-1 cap crux = coreGen's layer-ℓ dependence confined
+to blockCoords(ℓ)] + homogeneousDeg1On_comp_of_fixing [STEP, uniform, REUSES its banked stepMap/qm
+hfix/hagree + case11_pivot_decode_lt]. u_pivot excluded at the δ=1 descent because it's not
+HomogeneousDeg1On at layer p.layer+1 (the strengthened IH forbids it).
+
+A THIRD GUARD caught pre-build (guard-domain family recurs): at TERMINAL p, foldResid = const 1, NOT
+HomogeneousDeg1On (vanishing fails). foldResid_layerHomogeneous needs a NON-TERMINAL guard
+(¬ N ≤ p.conState.layer) — free (every consumer interior) but must be ON the statement. Relayed to the
+elder to fold into the verbatim (with the block-vs-layer wrapper + the predicate-form ∃b-vs-AffineOn∧vanishing
+input). SPECIFY-first caught it in the induction design, not mid-build — the backstop working (4th such
+catch: hpos/he_lin/hlayer/non-terminal).
+
+STATE: L1 BAKED ✓; A-div DONE ✓ (mult resolved); boostReady ASSEMBLING (seat-L4B, L1 available); Gap B =
+elder finalizing verbatim (blockCoords + he_lin + non-terminal guard) → arch-C renders (flags pre-authorized,
+-rung-c ff'd to 04ef70e6) → seat-L3T2 builds the 2 atoms + swaps realBranch_appendResidDescent. L3 (fan) =
+last spine call. Waiting on: elder's Gap B verbatim + seat-L4B's boostReady assembly.
+
+## 2026-07-22 ~23:00 UTC — boostReady = PATH-INDUCTION (recalibration); seat-L4B → seat-L4C (4th successor handoff)
+
+seat-L4B, post-L1, scoped the boostReady assembly and RECALIBRATED my framing: it is a PATH-INDUCTION
+that MATERIALIZES foldResid p's structure, NOT a mechanical `exact`-combination — there is no banked
+foldResid = diag(b)·D·H representation lemma; A-div (bLedger) / A-clear (canonShearOf) / hslot are the
+INGREDIENTS the induction combines. The pen-and-paper sharp form R_ij = ∑_{c∈partialBlock} α·c +
+u_pv·∑_{c∈extraBlock} β·c IS the Deg1SupportedOn ed.center decomposition (c_pv := ∑β·u_c ignores center
+since extraBlock∩center=∅ + pv∉supportAt — seat-L4B's a′ gives exactly these).
+
+seat-L4B (near context limit) correctly recommended a FRESH-context run for the wall's heart (I set
+"must close clean, no sorryAx" — cramming risks a half wall-heart). Commissioned seat-L4C (4th clean
+successor handoff of the expedition: L3T→L3T2, L6→M4B, seat-L4→seat-L4B, now seat-L4B→seat-L4C).
+Checkpoint VERIFIED before spawn: -L4B tip df2299e60 has L1 (realBranch_canonShear_eq) + a′ + bLedger +
+the Codex answer (boostready-lean-induction-answer.md §1-2 = the P(p) invariant + step discharge, now
+UNBLOCKED by L1). seat-L4C branches off -L4B, executes the induction (base coreGen-deg-1-per-layer via
+hslot; the δ=1 normal-form-transport as the hard step; δ=0 pullback; rollover id; κ injective via
+DivBirthInv 4th clause). seat-L4B stood down (fully banked).
+
+Also confirmed: the pnp Gap-A mult soft-spot is RESOLVED (DivBirthInv's Function.Injective divBirthCoord
+⟹ κ injective ⟹ u_p mult exactly 1). STATE: L1 BAKED ✓; A-div DONE ✓; boostReady = seat-L4C
+(path-induction, wall's heart); Gap B = elder finalizing verbatim (blockCoords+he_lin+non-terminal guard)
+→ arch-C renders → seat-L3T2 builds 2 atoms; L3 (fan) = last spine call.
+
+## 2026-07-22 ~23:30 UTC — CALIBRATION MISS (mine): boostReady invariant NOT banked — seat-L4C ground-truth catch
+
+seat-L4C (fresh, on the wall's heart) surfaced a ground-truth recalibration I VERIFIED: the inductive
+invariant P(p) is NOT banked. The file I cited in its brief —
+threads/L4-case1-core/codex/boostready-lean-induction-answer.md "§1-2 = the exact invariant + step
+discharge" — DOES NOT EXIST (0 lines; not in the codex dir; the dir has boost-readiness-2222 /
+case11-delta1-mechanism / conjunct2-strategy / deg1-bridge / qhat-design / shear-checkpoint). No
+BChainCompatible/Case11BoostReady/normal-form def exists in Lean. seat-L4B banked the INGREDIENTS
+(bLedger, a′, L1 shear-pin, canonShearOf_apply_interior) but NOT the connective tissue (the invariant
++ its induction).
+
+MY MISS (two layers): (1) I passed seat-L4B's reading ("the Codex answer §1-2 give the P(p) invariant")
+through into seat-L4C's brief WITHOUT verifying the CONTENT — a teammate's "the artifact says X" is a
+READING, not ground truth (the exact calibrate-sensors discipline). (2) My existence-check was a
+FALSE-POSITIVE shell-gate: `git show <path> 2>/dev/null | head -3 && echo FOUND` printed FOUND even
+though git show failed — the `&&` keyed off head's exit (0 on empty input), NOT git show's. Same class
+as the memo's "never gate on tail exit" — extend it: never `cmd | head && echo FOUND` (head masks cmd).
+
+WHAT'S UNCHANGED (verified with seat-L4C): the ROUTE is sound — 3 Codex answers converge + agree:
+boostReady is provable via a path-induction on p.IsRealBranch that MATERIALIZES foldResid p's b-chain
+normal form using the exact-shear provenance (L1) pinned at every ancestor edge; within a LEAF's scope
+(P proven fresh from IsRealBranch, does NOT re-open the elder-locked FoldStepInvAt); NOT provable from
+hslot alone (R_bad). Ingredients are real.
+
+SCALE RECALIBRATION (Bayesian update): boostReady is a genuine CONSTRUCTION (invariant DEF + base=coreGen
++ δ=1 normal-form transport [the hard step] + δ=0 + rollover + corollary), the wall's heart — LARGER than
+the "assemble the banked pieces" I'd framed. NOT a route change; a scale update. seat-L4C is building it
+for real: mandatory Codex on the invariant design (running), SPECIFY the invariant+skeleton, PROVE
+incrementally, stop-on-suspect, no laundering. I set a GATE: report the SPECIFY (invariant def + skeleton)
+at the design checkpoint BEFORE the heavy δ=1-transport proof (catch invariant-shape issues early, like
+the guard-domain family). LESSON banked: verify teammate readings of artifact CONTENT, not existence; fix
+the shell-gate habit.
+
+## 2026-07-23 ~00:05 UTC — boostReady RE-SCOPED to a ChainNF parallel-theorem construction (sub-expedition scale)
+
+seat-L4C's design checkpoint (the gate I set) + a decorrelated Codex xhigh materially re-scoped boostReady.
+Its minimal STABLE invariant is NOT "extra coeffs divisible by pivot" (doesn't induct) but a full termwise
+residual-PATH NORMAL FORM:
+  ChainNF: F_{p,j}(u) = ∑_{τ∈Paths_s(j)} q(u)·∏_{d∈D_s} u_{b_d}^{ε_{s,d}(τ)}   (q ignores active birth coords)
+Divisibility (→ boostReady) is only the case11 COROLLARY. Route = a PARALLEL theorem IsRealBranch p →
+ChainNF p, STANDALONE (proven fresh, does NOT reopen the elder-locked FoldStepInvAt). RULED (a)∥(b), NOT
+(c): rejected carrying ChainNF as a FoldStepInvAt conjunct (same ripple the elder declined for Gap B).
+
+SCALE (Bayesian update, the 4th on boostReady: one-liner → 2 sub-lemmas → path-induction → ChainNF
+sub-expedition): ~20-30 math lemmas + ~30-50 Lean helpers, bounded/elementary/no new machinery — but a
+genuine parallel-theorem CONSTRUCTION. The CRUX = the four-case (case2/case11/case12/rollover) ε
+threshold-transport table (ε_{s',d}(τ')=ε_{s,d}(τ)+#center-entries, δ=1 reset) — NOT derivable from the
+banked ingredients; needs the oracle's real transition rules; Codex (2,2,2) countermodel shows FALSE
+unless the oracle forces the arithmetic.
+
+DELEGATION (operator "elaborate the detail" directive, 2026-07-22): the crux → a NEW pen-and-paper seat
+pnp-transport (elaborate the four-case transport table → certificate; blind-to-Lean, catches the ε-rule
+errors pre-transcription). seat-L4C builds the ChainNF-def + parallel-theorem skeleton IN PARALLEL (reports
+at the gate before grinding), then transcribes pnp-transport's certificate + reconciles against the Lean
+oracle. deg1SupportedOn_boostForm (the shrink-direction last-mile corollary) already banked green by seat-L4C.
+Corrections banked: blockBlowupCoordQuot DEHOMOGENIZES (pivot→1); pivot factors from blockBlowupMap δ=0.
+
+SYNERGY flagged to the elder: ChainNF's ∏ u_{b_d}^{ε} support = the DIVISOR set (birth coords), which is
+exactly the layerCoords-vs-blockCoords cap distinction the elder's Gap-B machine check surfaced — ChainNF
+may subsume Gap B's homogeneity / illuminate the cap. FYI not a dependency (Gap B stays on its own timeline
+for the descent). STATE: L1 baked ✓; A-div done ✓; boostReady = ChainNF construction (seat-L4C + pnp-transport);
+Gap B = elder finalizing cap; descent 1 sorry; L7 fan = last spine call. The wall's heart is bigger than
+framed but bounded + buildable — build it for real.
+
+## 2026-07-23 ~00:30 UTC — boostReady split REFINED: ChainNF def not separable from the ε-table → abstract ChainCompat interface
+
+seat-L4C (building the ChainNF skeleton) stop-on-suspect'd a hidden assumption in MY split: the ChainNF
+DEF and pnp-transport's ε-table are NOT separable — the def's INDUCTING clause (the per-monomial exponents)
+IS the four-case threshold-transport rule. A divisibility-level ChainNF is the case11 COROLLARY, not the
+invariant; it does NOT induct (Codex's (x+z)y→(bx+z)y + (2,2,2) F=x+yz countermodels are exactly a form
+missing the ε threshold-crossing rule). So a skeleton sorried against a divisibility-level def would be a
+MISLEADING sorry (the step needs the stronger path-form as its IH) — the spike the gate guards. My split's
+"skeleton ∥ table" assumed separability; refined.
+
+RESOLUTION (confirmed option 2): seat-L4C builds the parallel-theorem skeleton with the ε-content as an
+EXPLICIT ABSTRACT `ChainCompat` predicate — the honest factoring (the ε-rule = a NAMED abstract obligation,
+NOT a spike). Validates the OUTER shape now (support decomp + path-monomial structure + boostReady wiring
+via deg1SupportedOn_boostForm) without committing to a wrong ε-rule; the ε-independent plumbing (κ
+injectivity via divBirthInv clause-4) proceeds. pnp-transport's certificate = the CONTENT that pins
+ChainCompat. The two coordinate the ChainCompat INTERFACE directly so the certificate is a clean slot-in.
+
+THE DECISIVE DETAIL (shape-risk pnp nails): the threshold BOUNDARY off-by-one — extraBlock is col ≥
+divTilde d_*, but the banked bLedger factors u_{b_{d_*}} only for col > divTilde d_* — which strict/non-strict
+choice DECIDES the def. The (2,2,2) acceptance test exercises it. Discipline: abstract-the-uncertain +
+validate-the-rest; elaborate-the-detail before transcribe (operator directive). seat-L4C's gate caught it
+before a wrong def churned. STATE unchanged otherwise: L1 baked, A-div done, Gap B (elder cap), descent
+1 sorry, L7 fan. boostReady = ChainNF (abstract skeleton building ∥ pnp-transport pinning the ε-rule).
+
+## 2026-07-23 ~00:55 UTC — boostReady GATE PASSES: ChainNF outer shape PROVEN; crux = 1 structured obligation
+
+seat-L4C hit the shape-review gate (the checkpoint I set) with the abstract-ChainCompat skeleton BUILT +
+GREEN (Case1Wire, on -L4C). GATE VERDICT: PASSES — this is exactly what the abstract-clause approach should
+produce. The OUTER SHAPE is PROVEN (forced #print axioms, seat-L4C-re-derived):
+- isRealBranch_chainNF (the parallel theorem IsRealBranch p → ChainNF p, by TreePath induction from
+  ChainCompat) = [propext, Classical.choice, Quot.sound] CLEAN — the induction WIRING is genuinely proven.
+- deg1SupportedOn_boostForm = clean-three.
+- realBranch_boostReady_case11 = [propext, sorryAx, Classical.choice, Quot.sound] — rests ONLY on sorryAx
+  via chainCompat_holds; no other axioms. So ChainCompat ⟹ boostReady is PROVEN + clean.
+- The single obligation chainCompat_holds = a STRUCTURED 3-field certificate (base = ChainNF at coreGen;
+  transport = real-edge preserves ChainNF, the four-case ε-rule; boundary = case11-δ1 corollary) — matches
+  the pnp split EXACTLY. Census net-0 (replaces the old bare boostReady sorry) but a structured named
+  obligation, not a spike. Standalone (no FoldStepInvAt reopening).
+
+TASTE STEERS (my gate call): (1) chainWeight's col-vs-row index → DEFER to pnp-transport's certificate;
+it's INSIDE chainWeight, the outer shape is index-independent, the abstraction quarantines the risk. (2)
+boundary interface → OPTION B: boundary yields the RAW α/β boost split; deg1SupportedOn_boostForm stays in
+the wiring (matches what pnp certifies, reuses the banked lemma, name=content/weakest-interface). boostReady
+= deg1SupportedOn_boostForm ∘ boundary ∘ isRealBranch_chainNF.
+
+So boostReady is now: OUTER SHAPE PROVEN + the crux = the single ChainCompat 3-field obligation, which IS
+pnp-transport's certificate (they've synced the interface + the 3 decisive details: index convention,
+threshold-boundary off-by-one, non-fresh-layer transport). seat-L4C: push the green checkpoint to -L4C,
+then pin ChainCompat on pnp's certificate + grind in one pass → boostReady done → the wall falls. The
+abstract-clause discipline worked: outer shape validated NOW, ε-rule elaborated in parallel. STATE
+otherwise unchanged (L1 baked, A-div done, Gap B elder-cap, descent 1 sorry, L7 fan).
+
+## 2026-07-23 ~01:15 UTC — OPERATOR-requested HIGH-LEVEL READ commissioned (elder + cartographer, parallel)
+
+Operator: "time we do a high level read — both the elder and cartographer should get a high-level
+MATHEMATICAL sense of how things are going, what maths are owed, where we might have drift from the
+paper's path and wisdom, whether the expedition-map is still good, and whether there are parallelisations."
+
+Charged both standing offices (parallel, distinct lenses):
+- ELDER (comprehension/compass): (1) fidelity to Lehalleur-Rimányi + Aoyagi's machinery — are buildTree/
+  conOracle/foldResid/the blow-up resolution/ChainNF/the leaves the RIGHT objects, or a divergent
+  re-derivation? Is ChainNF Aoyagi's structure or a Lean-encoding artifact? (2) what maths are owed — the
+  honest ledger; detail-at-scale vs hidden monuments; (3) trajectory vs the rising sea — the re-open + the
+  4× boostReady re-scoping: closed loop working, or mis-scope/over-build/spike-manufacture? more latent
+  statement defects? is the geometric-engine route still right? (4) the ρ-seam runway. Told to be the stern
+  voice — if we've drifted/over-built/need a re-think, say so plainly.
+- CARTOGRAPHER (map/wiring/parallelization): (1) map-vs-territory after the re-open — is claims.yaml + the
+  overlay + the DAG still accurate, or drifted (stale nodes, un-tombstoned refuted routes, pointer rot)?
+  (2) gate-orphans / dead routes / census honesty (36 = 11+25 — is the fossil set genuinely off the NEW
+  ChainNF/Gap-B/fan cone?); (3) the PARALLELIZATION AUDIT (operator's explicit ask) — critical path vs
+  distinct bets; what independent work can run CONCURRENTLY now (L7-fan startable? fan design elaboratable
+  in parallel? lastLayer? L5-assembly pieces? hygiene/fossil-prune?); where we serialize needlessly.
+
+I synthesize both + my controller taste (trajectory/scoping) → surface to the operator. Holding the parallelization
+moves for the carto read (don't pre-empt its audit — the operator asked for the read to INFORM the parallelization).
+State snapshot at read time: L1 baked, A-div done, Gap B (elder cap + this read), boostReady = ChainNF (outer
+shape PROVEN, crux = chainCompat_holds = pnp-transport's certificate), descent 1 sorry, L7 fan = last spine call.
+
+## 2026-07-23 ~01:40 UTC — PROCESS RESTART (operator-accidental) — recovery + placement re-check
+
+The controller process was accidentally stopped and restarted. RECOVERY AUDIT:
+- DISK: nothing lost — the expedition worktree intact on expedition/aoyagi-engine, tip = the
+  high-level-read commission journal, everything pushed. The main checkout untouched (clean, on dev).
+- PLACEMENT: the restart dropped the controller shell into the MAIN checkout (launch dir); operator
+  caught it. Re-pinned (session cwd was in fact preserved; the persistent Bash shell had drifted —
+  explicit-cd discipline continues). NO commits were made from the wrong placement (branch assertion
+  guard held: the first command was a read).
+- AGENTS: all in-flight background agents were killed mid-turn by the restart. Elder had RECEIVED the
+  high-level-read charge and was mid-grounding ("audit the territory, not my memory") — needs a resume
+  wake. Carto's read charge, pnp-transport's ε-elaboration (its Codex artifacts are on disk —
+  transport-epsilon-prompt/log), and seat-L4C's checkpoint-push (branch -L4C NOT yet on origin) were
+  all likely interrupted — resume wakes going out. Holders (seat-L3T2, arch-C, seat-L7) stay dormant
+  (their inputs haven't landed; nothing to resume).
+- BANKED: the orphaned seat artifacts (pnp-transport codex prompt/log, the L4-case1-core verify/ dir,
+  pnp-coupling's probe scripts + cofactor codex) committed — referenced evidence, now in-repo.
+
+## 2026-07-23 ~02:00 UTC — restart recovery COMPLETE: skeleton banked (67293aa3c), team re-spawned
+
+Recovery finished. seat-L4C's worktree survived with the ChainNF skeleton COMMITTED locally (clean tree,
+"feat(case1wire): ChainNF parallel-theorem SKELETON") — controller pushed it to origin/-L4C @ 67293aa3c;
+NOTHING was lost. The registry did not survive: carto-standing/pnp-transport/seat-L4C were unreachable
+(re-spawned fresh), and the elder resume created a FRESH instance with no transcript — properly convened
+from the durable artifacts (charter → compass → map → journal tail), which is the office model working as
+designed (and arguably decorrelates the operator's high-level read from the predecessor's conclusions).
+
+RE-SPAWN ROSTER: elder (the OPERATOR HIGH-LEVEL READ + the Gap B verbatim, with the predecessor's key
+state relayed from the journal: layerCoords-not-blockCoords cap finding, hhomog threading, L1 baked);
+carto-standing (map-truth + gate-orphans + the PARALLELIZATION audit); pnp-transport (the ε-table — with
+its predecessor's partial codex artifacts banked in-repo to harvest); seat-L4C (verify 67293aa3c → the
+option-B boundary reshape → hold for the certificate). Holders (seat-L3T2/arch-C/seat-L7) deliberately
+NOT respawned — their worktrees/branches survived; respawn when their inputs (Gap B verbatim / render
+trigger / fan design) land.
+
+LESSONS (banked to memo): continuity lives in durable artifacts + PUSHED branches, never transcripts —
+push checkpoints early (the skeleton survived only because the seat committed locally; the push is now
+part of the gate ask). The old elder transcript-poll path is STALE; the fresh elder may route normally.
+
+## 2026-07-23 ~02:20 UTC — seat-L4C #2 verified: option-B ALREADY banked in 67293aa3c; holding for the certificate
+
+seat-L4C (fresh #2) verified the -L4C branch state and corrected a stale step in my re-spawn brief: the
+OPTION-B boundary shape was ALREADY embodied in the banked skeleton — the predecessor applied it before
+its final commit. Concretely in 67293aa3c: ChainCompat.boundary returns `BoostSplit (foldResid) ed.center`
+(the RAW α/β payload, Case1Wire:592-601), and the wiring realBranch_boostReady_case11 (:718-732) applies
+deg1SupportedOn_of_boostSplit — i.e. boostReady = deg1SupportedOn_boostForm ∘ boundary ∘
+isRealBranch_chainNF, exactly the gate verdict. Nothing to commit.
+
+Its re-derived footprints MATCH expectation exactly: isRealBranch_chainNF / deg1SupportedOn_boostForm /
+deg1SupportedOn_of_boostSplit clean-three; realBranch_boostReady_case11 + chainCompat_holds carry sorryAx
+ONLY via chainCompat_holds (:701). Build green (8452). So the wall's-heart state is: outer shape proven +
+option-B wired + ONE structured obligation, awaiting pnp-transport's ε-transport certificate. seat-L4C
+holds + preps the grind (reading the fold defs behind base/transport/boundary) for a fast pin+grind.
+
+## 2026-07-23 ~02:35 UTC — grind-prep: consumer-side spec relayed to pnp-transport (the certificate's exact targets)
+
+seat-L4C completed grind-prep with a CONSUMER-SIDE read of the 3 ChainCompat fields — what the certificate
+must pin, from the Lean that consumes it: BASE reduces to coreGen degree-1 on blockCoords d 0 (chainWeight≡1,
+birthCoords=∅ at conRoot; its earlier degree-worry DISSOLVED — no alarm); pins = the col-index convention
+(chainWeight idx = decoded COL) + widthMinUpto d 0 = d_0. TRANSPORT rides banked foldResid_extend_delta0/
+delta1 + foldResid_stepMap_eq_pivot_mul; the ε-rule must be stated as chainWeight(child)-vs-parent per
+StepCase. BOUNDARY pins the partialBlock/extraBlock split matching BoostSplit's exact payload; must
+reconcile the strict/non-strict threshold with bLedger_factor/_ignores' convention (the off-by-one).
+
+Relayed the spec to pnp-transport (actively elaborating) so the certificate slots in cleanly — and it
+doubles as MY gate when the certificate lands (cross-check certificate vs consumption points). seat-L4C
+holds, fast pin+grind ready. Still in flight: elder (high-level read + Gap B verbatim), carto (map +
+parallelization), pnp-transport (the ε-table).
+
+## 2026-07-23 ~03:00 UTC — CARTO's half of the operator read LANDED + ACTED ON: 2 new parallel lanes, map deltas applied
+
+Carto's restart-pass (map-vs-territory + the parallelization audit) is in — the operator read's first half.
+
+CENSUS + MAP: 36 = 11 on-cone + 25 fossil re-derived HONEST (fossils genuinely off the ChainNF/Gap-B/fan
+cones; no gate-orphans; note "Core sorry-free" holds but Core carries the off-path cited_local_zeta_pole
+AXIOM — accounting stays honest). Carto fixed its layer (landmark card 3 de-staled; STATUS object-e).
+I applied its claims.yaml deltas: b-boostready REWRITTEN to the ChainNF state (outer shape proven, crux =
+the ε-certificate; owner seat-L4C + pnp-transport); a b-descent GRANULARITY NODE added (the descent lived
+only in b-ladder notes); object-e title → combinatorial-CLOSED/analytic-DEFERRED. Validator green.
+
+PARALLELIZATION (the operator's ask) — the BOTTLENECK is the elder as the single serial resource for 3
+outputs (the read, Gap B verbatim, L3 fan design) with 2 lanes dormant on it. ACTED:
+- OPENED seat-LL: lastLayer_clear_preserves — unassigned, fully independent step-leaf, zero coordination
+  (SPECIFY-first incl. in-place-vs-primed + stop-on-suspect boundary probe).
+- OPENED pnp-fan: the L7 pivot-fan ELABORATION (fanned spine predicate preserving L1 + per-chart leaves;
+  the argmax cover argument; the Geo* SALVAGE BOUNDARY reconciliation [carto coherence flag: GeoCoverSpec/
+  geoAtlas is sorry-free but Geo* is dead-routed — C1-audited exception vs own-cover vs definitional-reuse];
+  worked (2,2,2) acceptance). The elder RATIFIES the certificate instead of hand-authoring L3 serially.
+- ELDER QUEUE REORDERED: Gap B verbatim FIRST (fully pinned, quick, unblocks descent+render), the read after.
+- DECLINED (my call, contra carto's item 3b): seat-L3T2 pre-building the Gap B atom skeletons NOW — the
+  SPECIFY'd statement carto cites (blockCoords) was REVERSED by the elder's machine check (layerCoords +
+  separate cap), so pre-building against it would churn. seat-L3T2 respawns on the verbatim.
+- NOT added: 3rd seat to ChainNF (2-seat interface split is right); descent (1 sorry behind a statement).
+Carto flags routed to the elder: compass 5→8 axes; the Geo* tension owed before the L7 build. Close-phase
+note banked: L3T2/L4B/L4C carry unmerged work (ahead 3-4, behind 14-47) — a rebase/integration pass owed.
+AWAITING: the elder's math half of the read (+ Gap B verbatim first), pnp-transport's ε-certificate.
+
+## 2026-07-23 ~03:40 UTC — ELDER's read + Gap B FINAL: the cap is SHEAR-DEPENDENT; hhomog-subsume RETRACTED; render lanes re-opened
+
+The elder (fresh convening, re-derived not recalled) delivered BOTH: the Gap B finalization + the
+operator's math half of the high-level read. Banked verbatim at threads/L3T/gapB-verbatim-elder.md
+(+ evidence threads/L3T/verify/gapb_check.py, re-runs exit 0).
+
+GAP B FINAL (changes the render): (a) base over LAYERCOORDS confirmed symbolically over 6 dimension
+vectors (blockCoords fails exactly when widthMinUpto bites; witness d=![1,2,1] layer 1). (b) THE
+DECORRELATED FINDING (Codex, threads/L3T/codex/gapB-cap-answer.md): the CAP is SHEAR-DEPENDENT — at a
+δ=1 clear the strict transform of y₀x₀+y₁x₁ is r = y₀+v·y₁ (reads the OVER-CAP column); the basis
+change restoring capped support is EXACTLY edgeShearRaw/canonShearOf (baked in foldResid:454). And
+homogeneity ⊥ cap (logically independent: f=y₁ vs f=y₀²). So "shear+pivot-independent" was right for
+the HOMOGENEITY only. (c) the cap cannot be dodged (realBranch_cover PROVEN needs capped supportAt).
+RULING: Deg1SupportedSlot already splits the concerns — keep split. foldResid_layerHomogeneous
+(layerCoords/he_lin/non-terminal) discharges conjunct-2 ONLY; the CAP-descent = a SEPARATE
+SHEAR-CONSUMING frontier lemma (part of the WALL's re-factoring content — "whether canonShearOf's
+value confines at coupled corank≥2 IS the wall; do not disguise it"). The hslot→hhomog SUBSUME IS
+RETRACTED — the step consumes BOTH. Verbatim forms (HomogeneousDeg1On + X=∅ guard note, coreGen_
+layerHomogeneous, foldResid_layerHomogeneous, the append restatement) ready for arch-C.
+
+CONVERGENCE NOTE: the cap-descent (append's conjunct-1) and boostReady's ChainNF transport are now
+recognized as the SAME shear-confinement mechanism class — pnp-transport's Aoyagi pp.18-21 elaboration
+(it has been consulting the elder directly: window-discriminator RATIFIED, descend STANDS, Item B 4
+rulings — visible in the elder's send log) serves BOTH frontier obligations. The wall's content is
+now honestly concentrated in ONE mechanism: canonShearOf-confinement at coupled corank≥2.
+
+RE-OPENED LANES: arch-C (fresh #2) rendering the Gap B statement bake from the banked verbatim (NO
+hypothesis-swap — the retraction; visibility/cycle check; payoff isolation; staging → my gate + elder
+delta-read). seat-L3T2 (fresh #2) verifying its banked state + waiting on the bake to prove the
+homogeneity + restate append (cap = named frontier sorry unless the verbatim supplies its statement).
+
+ELDER's READ (math half; carto's landed earlier): NO drift from the paper (objects = Aoyagi's Cases-1&2
+transcribed; typo-ledger = genuine source-tracking; the Gap-B episode = the fidelity gate WORKING).
+Owed ledger honest + small (O2 = the 8 leaves + THE WALL is the only real frontier; no hidden monuments
+beyond the two known cites). Trajectory: the sea rises, BUT the 4 boostReady re-scopes + the cap
+mis-stated twice = OVER-ENGINEERING THE ENCODING signal — recommendation: hold the "one construction
+pin + derived lemmas" line, RESIST PREDICATE PROLIFERATION (adopted as standing controller guidance).
+Payoff caution kept honest: rlct=½·codim stays CITED until the wall lands. ρ-seam faithful + correctly
+deferred. Full read banked in the verbatim file.
+
+## 2026-07-23 ~04:05 UTC — seat-LL SPECIFY: lastLayer guard defect (5th guard-domain catch) — rollover-INTO-N-1
+
+seat-LL's SPECIFY on lastLayer_clear_preserves STOP-ON-SUSPECTED the statement: the guard
+hlast : ed.nextState.layer + 1 = N ADMITS the rollover-INTO-N-1 edge. The transition law (clears keep
+the layer; ONLY stepRollover advances it) means for N ≥ 2 the FIRST edge reaching layer N-1 is a
+rollover from N-2 — hlast holds on it, and there GeneratorCleared is FALSE (rollover ⟹ δ=0 via
+widthMinUpto_pos ⟹ pure pullback; the all-Deg1 parent's residual vanishes at 0). The docstring's
+exclusion argument only covered the rollover OUT of N-1. Fix (seat-LL): add
+hparent : p.conState.layer + 1 = N — forces the edge layer-preserving = a genuine clear; the hard
+content (first δ=1 clear produces the unit slot) survives; both consumer sites can supply hparent.
+
+This is the guard-domain family's FIFTH instance (hpos → he_lin → hlayer → non-terminal → hparent),
+ALL caught at SPECIFY, none mid-build — the standing render check + SPECIFY-first discipline is now
+5-for-5. Routed to the elder (verify against source + author the verbatim); arch-C warned a RIDER may
+join its in-flight Gap B staging (one bake round preferred; Gap B not held indefinitely — it has
+priority). seat-LL meanwhile drafts the primed twin locally (its in-place-vs-primed analysis: PRIMED —
+the conjA transport engines live downstream; the guard fix only excludes the rollover edge, so the
+clear-edge proof content is guard-stable); push held for the verbatim.
+
+## 2026-07-23 ~04:20 UTC — seat-L3T2 #2 READY (banked verified; design internalized); holding for the bake
+
+seat-L3T2 (fresh #2) verified its banked state on re-derived evidence (build green 8457; forced
+#print axioms: sorryAx via realBranch_appendResidDescent ONLY; HomogeneousDeg1On absent = bake not yet
+on its tree — correct) and internalized the elder's correction exactly (homogeneity=conjunct-2 only;
+the cap = shear-consuming frontier leaf = THE WALL; hslot NOT subsumed; will not fake the confinement).
+Induction design ready: BASE coreGen_layerHomogeneous = the only genuine new math (one factor per layer
+⟹ linear+vanishing per layer, he_lin); STEP = comp_of_fixing per δ-case with the pivot always below the
+threshold layer (σ fixes layerCoords ℓ≥threshold ⟹ vanishing survives — exactly what excludes the
+u_pivot→const-1 pathology); threshold arithmetic checked against banked hFLchild/hCSchild. Wakes on my
+relay when arch-C's Gap B bake reaches canonical. The pipeline: arch-C bake → my gate + elder delta-read
+→ merge → relay → seat-L3T2 proves (3 lemmas) + restates append (cap = named frontier sorry) → anchor
+audit → I wire MultiAffineStepWire.
+
+## 2026-07-23 ~04:40 UTC — lastLayer calibration tightened (Codex): hole CERTAIN; a residual ∀-statement subtlety to the elder
+
+seat-LL's decorrelated Codex calibrated its STOP-ON-SUSPECT: the GUARD-HOLE is CERTAIN (arithmetic +
+transition law — rollover-into-N-1 admitted; the docstring excluded only rollover-OUT); the
+GeneratorCleared-false conclusion is certain MODULO the interior invariant (the all-left witness rests
+on the still-sorried interior StepInv) — so "mathematically false as stated," not "Lean-refutable
+today." Fix (hparent) unchanged, Codex-corroborated.
+
+NEW for the elder's authoring (forwarded): under hparent, the δ=0 SUBSEQUENT-clear case (parent at
+N-1, cleared≥1) reproduces the zero-pullback IF an all-left hinv were suppliable there — fine on the
+threaded construction (the real node carries the unit from the first clear), but the ISOLATED
+∀-statement leans on "no unit-free real node at (N-1, cleared≥1)" = the lemma's own inductive content.
+The elder decides: does LastLayerInv's carried disjunction (all-left OR unit-slot) already make the
+∀-statement sound under hparent, or must the disjunction be explicit in hinv? (The 5-guard lesson:
+don't lean on unstated reachability.) seat-LL banks its consult artifacts to its branch (the
+untracked-files-die-with-worktrees lesson applied forward).
+
+## 2026-07-23 ~05:10 UTC — ⚠⚠ THE DEEPEST CATCH YET: canonShearOf may be UNFAITHFUL to Aoyagi's clear (definition-level)
+
+pnp-transport's source-elaboration (the operator's elaborate-the-detail directive doing its deepest work)
+STOP-ON-SUSPECTED the fold's SHEAR DEFINITION: ChainNF/boost-readiness is FALSE for the fold defs AS THEY
+STAND — not because the ε-rule is wrong but because canonShearOf does not realize Aoyagi's clearing step.
+The theorem is TRUE for the faithful clear (its honest_clear script: A1/A2/A3 all pass with B=A₁Q⁻¹).
+
+THE WITNESS (exact, d=(2,2,2,2), smallest real boost branch, oracle-confirmed path): foldResid at the
+boost parent has its extra-block coefficient carrying u₀₁₀ (a layer-0 OFF-DIAGONAL), not the pivot —
+F = x+yz verbatim; Deg1SupportedOn fails; no threshold rescues (no pivot factor anywhere in the entry).
+ROOT CAUSE: canonShearOf writes only the layer-S Schur interior; Aoyagi's clear A₀=Q⁻¹(QA₀U)U⁻¹ ALSO
+recoordinatizes the deeper layer (A_{S+1}→A_{S+1}·Q⁻¹); the repo's OWN worked.tex carries the
+recoordinatized deeper product — the Lean fold has no term producing it. Fixing the pivot alone: still
+FALSE. Codex reproduced every number blind (inline sympy, no repo reads).
+
+THE RECONCILIATION (mine, strengthens it): the ELDER's own Gap-B Codex finding — "the cap-restoring basis
+change y′₀=y₀+v·y₁ is exactly canonShearOf" — involves DESCENDED-LAYER coords, a layer-S+1 basis change
+canonShearOf provably cannot implement (canonShearOf_support pins it to layer S). Two blind elaborations
+CONVERGE: the faithful clear acts on layer S+1; the Lean shear doesn't. The elder's instrument found the
+same gap and mislabeled the fixer.
+
+THE PIN TENSION (mine, for the design): ShearWithinCarveRaw clause-(I) REQUIRES the shear to vanish on
+layers ≥ supportLayer(child)=S+1 — the pin architecture as baked FORBIDS the faithful shear. If confirmed,
+the re-bake re-authors the shear-pin family around the faithful def (canonShearOf + clauses + L1's form).
+
+SENSOR CALIBRATION APPLIED: the cited witness artifacts were NOT on disk (certificate + 3 scripts absent;
+only the stage-traces present, all exit 0) — the phantom-file lesson; pnp-transport ordered to FLUSH before
+the elder's verification proceeds. HOLDS: arch-C's staged Gap B bake (20a9c5e3c) held at my gate (banked,
+no loss; one coherent MonumentAtlas round preferred); seat-L4C effectively held (no certificate to grind);
+seat-L3T2 hold extended with the technical heads-up (homogeneity likely survives — linear deeper recoord
+preserves per-layer degree — but comp_of_fixing → comp_of_linear for the shear factor); pnp-fan continues
+(orthogonal). UNTOUCHED under any outcome: the outer ChainNF architecture, bLedger, a′, the blow-ups, the
+oracle/tree, Objects A-E, payoff isolation. ELDER charged: verify against worked.tex + Aoyagi FIRST (the
+finding dies or the shear re-bakes); then the faithful-shear design + one-round sequencing (Gap B + hparent
++ the shear). If confirmed this is the fidelity gate's deepest catch — caught by source-elaboration, the
+one instrument class that CAN catch definition-fidelity (proof-pressure + delta-reads structurally cannot).
+
+## 2026-07-23 ~05:40 UTC — the shear ruling's inputs converge: a design alternative, staging survival, base-safe grind
+
+Four reports landed and were routed to the elder's pending shear ruling:
+1. seat-L3T2's DESIGN ALTERNATIVE (possibly the clean resolution): put the deeper recoordinatization
+   A_{S+1}→A_{S+1}·Q⁻¹ in the STRICT-TRANSFORM/blockBlowupCoordQuot COMPONENT of the step map, not in
+   shearφ — keeping the whole shear-pin family (clauses I-III + canonShearOf + L1) UNCHANGED and
+   dissolving the clause-(I) tension. The re-bake would localize to the foldResid δ=1 fresh-layer branch.
+2. arch-C's Gap B staging (20a9c5e3c) REPORTED + gate green (byte-exact vs the verbatim; census +3;
+   payoff isolation held; the subsume-retraction honored — realBranch_multiAffine_step untouched,
+   additions only) AND its survival analysis: the staged statements are expressed through names INVARIANT
+   under a shear-def change; comp_of_fixing appears in ONE docstring hint line — so "merge as-is + a
+   docstring rider" is viable even under the shear ruling. Its fidelity note for the delta-read:
+   appendResidDescent's verbatim omits hpos (the sibling carries it) — elder rules. Rider recon done:
+   THREE lastLayer consumer sites (it found MonumentAtlas:1557).
+3. pnp-transport GATED its certificate against seat-L4C's consumer spec: BASE sound as-is (conRoot ⟹
+   chainWeight≡1, filter-invariant; widthMinUpto d 0 = d_0); transport/boundary NOT reachable until the
+   shear re-scope (grinding them = a false goal); the strict/non-strict reconciliation UNAMBIGUOUS
+   (extraBlock col ≥ divTilde NON-strict is right; the banked strict _thr_lt stays correct for the
+   dominant b_i; the boundary needs a non-strict _thr_le + chainWeight filter ≤). Codex answer flushed
+   (codex/transport-epsilon-answer.md); the certificate + 3 witness scripts still flushing (re-demanded).
+4. seat-L3T2's survival analysis: the homogeneity INVARIANT survives the recoord (linear, maps
+   layerCoords(S+1) into itself); only comp_of_fixing → comp_of_linear on the shear factor; its banked
+   δ=0/case11 arms consume the shear via the pins only — survival re-verified on the ruling.
+
+ACTED: seat-L4C WOKEN on the BASE-only grind (safe: filter-invariant, obstruction-untouched; with a
+hypothesis-sufficiency check — the u³ class — before grinding, stop-on-suspect) + the non-strict
+bLedger_factor_of_thr_le prep. Transport/boundary explicitly forbidden until the ruling. The elder now
+holds: the shear verification (against Aoyagi/worked.tex), the recoord-HOME design call (strict-transform
+component vs shearφ), the Gap B delta-read (can proceed independent — staging survives), hparent, the
+appendResidDescent-hpos note, and the non-strict pin. pnp-fan's tasks all show complete — certificate
+expected. The machine is fully parallel again with every lane behind a verified statement or a named hold.
+
+## 2026-07-23 ~06:10 UTC — ⚠⚠ THE THREE-WAY CONVERGENCE: the step map's normalization is under-faithful — ONE design question to the elder
+
+pnp-fan's certificate (threads/L7/fan-design-certificate.md, 35k, + its decorrelated Codex — BANKED,
+verified on disk) completes a three-way convergence of INDEPENDENT elaborations:
+1. The elder's own cap finding (the cap-restoring basis change acts on descended-layer coords).
+2. pnp-transport (canonShearOf misses the deeper recoordinatization; exact 2222 witness; theorem TRUE
+   for the faithful clear).
+3. pnp-fan: the COVER fix is FIRM (fan the pivot: `pivot ∈ canonCenterOf` replacing the value-pin;
+   cover TRUE over the fanned atlas, canonShearOf unchanged FOR THE COVER; leafOf many-to-one fine;
+   thread-35's cover_mechanism.py already verified the fanned tree) — BUT the VALUE leaves need each
+   chart's shear to FIX ITS PIVOT (hshear_pivot), and canonShearOf writes the strict interior ⟹ fanned
+   interior pivots are UNSATISFIABLE with the single shear ⟹ the shear FANS with the pivot: (pivot,
+   pivot-fixing shear) PAIRS, one normalization per affine chart — the standard resolution picture.
+
+⚠ CORRECTION OF RECORD: **L1 and L3 are COUPLED.** The "canonShearOf is pivot-independent ⟹ L1
+orthogonal to L3" call (elder concluded, controller ratified, ~L1-first push) is CORRECTED — the elder's
+ORIGINAL coupled-redesign instinct was right. (L1's bake itself remains additive + payoff-isolated — the
+value-pin FORM survives; what changes is that the pinned OBJECT generalizes to a per-pivot family.)
+
+THE ONE DESIGN QUESTION (elder, charged): the faithful per-edge step structure — SINGLE block blow-up
+(fan the shear per interior pivot) vs COMPOSITE of hypersurface blow-ups (every fan pivot a
+shear-normalized corner; interior-pivot problem dissolves; reconciles per-edge canonCenterOf with the
+engine's per-node dCenterOfNode; the engine proves its cover shear-STRIPPED — cover decoupled from
+value). The composite picture plausibly supplies the deeper recoordinatization TOO — one faithful
+structure resolving all three findings. Verify against Aoyagi/worked.tex (the ∏C^(s) recoordinatized
+product). SUBSIDIARY sequencing in the ruling: the firm cover fix; salvage option (b) (own cover fold,
+Core atoms only, ONE new block-atom lemma (Q); option (a) needs 4 unproven bridges); Gap B merges
+independent; hparent; the non-strict pin.
+
+LANES: seat-L4C grinding the safe base; pnp-fan DONE (certificate banked, dormant); pnp-transport
+re-flushing its witness artifacts; everything shear-touching HOLDS on the ruling. The expedition's
+decisive design round: the faithful step map, once, from the source.
+
+## 2026-07-23 ~06:35 UTC — transport artifacts DURABLE (1f6e5626a) + controller-reproduced; the elder's inputs complete
+
+pnp-transport flushed: committed + pushed on origin/-L4C @ 1f6e5626a (8 files: the certificate + 4
+verify scripts + the Codex triple). Root cause of the earlier absence: written to its (= seat-L4C's)
+worktree WORKING TREE, never committed — and the scripts I'd re-run were the PREDECESSOR's different
+set. Disambiguated. MY REPRODUCTION (from the COMMITTED tree, fresh python3): transport_2222 /
+oracle_trace / honest_clear_2222 all exit 0; the oracle path confirmed programmatically; the honest
+clear yields A1,A2,A3 = True (BOOST-READY) exactly as claimed; the strict-vs-nonstrict chainWeight
+distinction concrete. The finding is as verified as it gets short of the elder's source-derivation.
+
+The elder's ruling inputs are now COMPLETE (both certificates durable + reproduced, the convergence
+frame, the subsidiary queue). Worktree-hygiene flag: pnp-transport committed on seat-L4C's branch while
+it works there (expeditions/-only paths, landed harmless) — seat-L4C told to ff + verify state; noted
+as a near-miss (seats should write in their OWN thread dirs; a lean/-touching collision would have been
+ugly). Everything now waits on ONE thing: the elder's step-map fidelity ruling.
+
+## 2026-07-23 ~07:00 UTC — SIXTH statement-class catch: the base needs REINDEXING-e, not he_lin (staged atom false; L5's own base reached)
+
+seat-L4C STOP-ON-SUSPECTED the base atom with an airtight countermodel: d=(1,1,1), e = the unipotent
+[[1,1],[0,1]] on flat coords — satisfies he_lin + MeasurePreserving + he0 (ALL the chain's abstracted
+e-properties), yet coreGen 0 u = u₀u₁ + u₁² fails HomogeneousDeg1On on layerCoords 0 (the u₁² monomial
+survives zeroing; IgnoresCoords fails either way). The base is TRUE only for e = the canonical
+block-respecting REINDEXING (the flatten). he_lin gives degree-1 per TUPLE layer; only a reindexing
+aligns tuple layers with FLAT coords. CONSEQUENCES: (i) the STAGED coreGen_layerHomogeneous (20a9c5e3c,
+bare he_lin — the elder's authored verbatim, faithfully rendered) is FALSE AS STATED — the e-fix joins
+the elder's delta-read; (ii) the certificate's §5 "base sound via he_lin" + my task-#6 framing carried
+the same false premise; (iii) THE DEEPER REACH: L5's own root base (foldResid(root)=coreGen must be
+Deg1SupportedOn blockCoords 0) fails the SAME countermodel — the monument's ∀-e abstraction (he0 +
+he_lin + MeasurePreserving) may have been one property short SINCE THE BEGINNING, masked because no
+proof had reached the root's slot content.
+
+WEAKEST-HONEST OPTIONS (to the elder, in the design round): pin e CONCRETELY at the canonical flatten
+(the summit needs exactly that one e — the ∀-e was a convenience; may SIMPLIFY the chain, aligned with
+one-construction-pin) vs a block-compat hypothesis (vs predicate-proliferation counsel) vs threading the
+equality. DISPOSITIONS: seat-L4C's base grind HELD (correct stop — 4th seat-stop before a false-goal
+grind); it builds the LEAN countermodel witness (kill-battery class) + skips the thr_le prep (serves the
+superseded boundary — no dead-route work); ownership unchanged (dedup of the base home at the ruling);
+arch-C notified (render was faithful; expect a one-atom amendment from the delta-read, not a re-render).
+
+The elder's design round now holds the COMPLETE fidelity picture: the step-map normalization (three-way
+convergence) + the e-abstraction at the base — the two places the encoding under-specified the source.
+One coherent ruling, then one re-bake round.
+
+## 2026-07-23 ~07:20 UTC — e-fix render scope pinned: 2 signatures, the cap ISOLATED; all elder inputs delivered
+
+arch-C's render-scope analysis (forwarded to the elder as render-lane input, not a design vote): the
+e-fix blast radius is exactly the homogeneity PAIR (coreGen_layerHomogeneous gains the constraint;
+foldResid_layerHomogeneous inherits via the induction base) — realBranch_appendResidDescent (the cap)
+takes no he_lin and asserts no homogeneity, so its signature STANDS regardless. All three fix-options
+renderable: (a) pin e at the existing canonical flatten (exists_flatten/paramsEquivFlat) — narrows the
+∀-e statements (a scope change the delta-read must NAME, my added steer); (b) a named block-compat
+hypothesis over layerCoords — arch-C: the bedrock-weakest name=content form (vs the proliferation
+counsel); (c) threading — mechanical after (a)/(b).
+
+THE ELDER'S DESK IS NOW COMPLETE, all inputs delivered and verified: the two certificates (transport
+durable + controller-reproduced @ 1f6e5626a; fan banked on canonical), its own cap finding, the
+three-way convergence frame + the composite-vs-single design question, the e-abstraction catch + the
+countermodel (Lean witness building), the render scopes (Gap B staging survives the shear ruling;
+e-fix = 2 signatures; cap isolated), and the subsidiary queue (firm cover fix / salvage (b) + Core
+block-atom (Q) / Gap B merge independent / hparent 3-sites / hpos note / non-strict pin). Every lane
+holds on the ruling or builds witnesses. The design round decides: the faithful step map + the e form.
+
+## 2026-07-23 ~07:45 UTC — seat-LL draft twin GREEN (LastLayerWire.lean, push held); an hlayer-boundary confirmation + a Gap-B cross-link
+
+seat-LL built the primed twin lastLayer_clear_preserves' GREEN against the corrected (hparent) statement
+— push held for the elder's verbatim, correctly. Module: NEW LastLayerWire.lean (MonumentAtlas +
+Case1Wire + Case2TransportWire; dedicated file — the target is case-agnostic; one family per file).
+Both engine calls unify at the S=L guard case-blind (its (b) analysis confirmed in the typechecker);
+conjA δ=0 (subsequent clear) genuinely CLOSED, no sorry. THREE isolated map-tagged frontier sorries:
+(1) conjA δ=1 Deg1-extract (needs real-branch vanishing foldResid p j 0 = 0 + the case-blind center=
+supportAt split); (2) conjunct-2 at S=L — the descent EXHAUSTS to the born-unit ∅ (case12/case2 ⟹
+child.cleared ≥ 1 ⟹ supportAt(child) = ∅); (3) GeneratorCleared — the born unit (pivot→1 under
+blockBlowupCoordQuot; residual at origin = c_pivot(0); ∃ slot reading the pivot).
+
+TWO integration notes: (i) CORRECTION confirmed — realBranch_multiAffine_step is NOT the conjunct-2
+tool at S=L (its hlayer guard FAILS there BY DESIGN — the hlayer bake handed exactly this boundary to
+its owner, and seat-LL is that owner; the S=L descent-to-∅ is distinct content, honestly its own
+frontier). (ii) CROSS-LINK (mine): seat-LL's sorry #1's "real-branch vanishing" IS HomogeneousDeg1On's
+vanishing clause at u=0 — Gap B's foldResid_layerHomogeneous will discharge it directly. So the Gap B
+bake feeds BOTH the descent lane AND the lastLayer lane; the link rides with the verbatim relay.
+seat-LL holds; the lane is one elder-verbatim away from a push + three named frontiers from sorry-free.
+
+## 2026-07-23 ~08:05 UTC — seat-L4C GO: countermodel first, then the ruling-INVARIANT core (1b, no wrapper)
+
+seat-L4C (hygiene clean; ff'd to 1f6e5626a, 0 lean/ paths touched, Case1Wire byte-identical) proposed
+and received the GO on the better-than-hold move: (1) land the LEAN COUNTERMODEL first (the unipotent-e
+kill-witness for the e-abstraction class — hardens the elder's delta-read of the staged false atom);
+(2) build the PREDICATE-AGNOSTIC CORE decomposition lemma — coreGen's degree-1 peel (innermost A₀
+factor out of multPrefix/submult right-peel; coefficients = the deeper product, continuous +
+layer-0-ignoring) — under the ABSTRACT REINDEXING HYPOTHESIS (1b: (e u) i row col = u (tupIdxEquiv…)),
+exposing NO wrapper. RULING-INVARIANT: a concrete e-pin discharges (1b) trivially; a block-compat
+predicate implies it; no wrapper ⟹ slots into whichever of ChainNF-root / HomogeneousDeg1On survives
+the redesign. Lane-local lemma with an explicit hypothesis — no spine def, doesn't pre-empt the elder.
+~100-150 lines detail-at-scale (the dependent-matrix reassoc idioms banked in lean/CLAUDE.md apply).
+The elder's preview (exists_flatten = the canonical reindexing) already guarantees (1b) discharges at
+the summit consumption. The abstract-the-uncertain pattern, third use this round.
+
+## 2026-07-23 ~08:40 UTC — ★★ THE DESIGN RULING LANDED + THE RE-OPEN COMMITTED: the faithful N_pivot object
+
+The elder delivered the combined ruling (banked verbatim: threads/design-round-ruling.md + threads/LL/
+elder-lastlayer-verbatim.md). THE FIDELITY VERDICT, verified against worked.tex (:609-627, :443-457,
+:565-567) from its own re-derivation: **Aoyagi's per-step object is a BLOCK blow-up + per-chart regular
+NORMALIZATION — NOT a composite of hypersurface blow-ups.** The faithful step map: per edge =
+blockBlowupMap (fanned pivot ∈ canonCenterOf — KEEP) ∘ N_pivot, a pivot-parametric normalization that
+(i) fixes the chart pivot, (ii) clears the pivot row/col, (iii) recoordinatizes the deeper factor
+A^(S+1) → Q⁻¹-conjugated. canonShearOf = the corner-pivot instance of (i)-(ii) with (iii) MISSING. The
+shear-pin family cannot stay frozen (it encodes the false layer-locality/pivot-independence). My
+composite-lean was corrected (half-right: the recoord is the NORMALIZATION's property; the blow-up is
+BLOCK). The composite = a scoped fallback ONLY (different resolution ⟹ the Object-B↔D bridge would
+re-derive; not faithful; behind a pnp certificate + a further explicit controller call). L1⊥L3 coupling
+RATIFIED (the elder withdrew its orthogonality call; pnp-fan's argument airtight). e-fix BLESSED =
+option (a) pin canonFlatten (the 6th catch confirmed computationally; the summit's exists_flatten IS
+the canonical reindexing — the summit was sound; only sorried ∀-e intermediates were false).
+
+**RE-OPEN COMMITTED (controller executive call, recorded): build the faithful N_pivot.** Path =
+ELABORATE-FIRST: the elder authors a stage-frame brief → pnp-transport elaborates the faithful
+normalization on the (2,2,2,2)+(3,3,4) coupled witnesses at pinned concrete coordinates (acceptance:
+honest_clear reproduces; pnp-fan's escape witness covered AND monomialised) → the elder RATIFIES the
+certificate → authors the Lean verbatim → arch-C renders → one N_pivot bake round. UNTOUCHED: the
+blow-up atom, Objects A/C/D/E, the B↔D bridge, bLedger, payoff isolation, the summit's value soundness.
+
+UNBLOCKED NOW (the ruling's subsidiaries, all dispatched): arch-C's ONE AMENDED STAGING (the canonFlatten
+e-pin on the 2 homogeneity signatures + hpos on the cap [elder: belongs, rides the render] + the
+comp_of_fixing docstring rider + the hparent lastLayer rider — REVISED form: hparent NECESSARY NOT
+SUFFICIENT, carry the conditional GeneratorCleared [seat-LL's Codex subtlety bit] — 3 consumer sites)
+→ my gate → elder delta-read → MERGE (Gap B cleared to merge independent of the shear round). seat-LL
+amending its held twin to the REVISED statement. Cover salvage (b) + Core lemma Q = commissioning next.
+seat-L4C's countermodel + (1b) core proceed. seat-L3T2 builds the homogeneity atoms the moment the
+amended staging merges (the elder confirms stability under N_pivot pending in the brief round).
+
+## 2026-07-23 ~09:00 UTC — seat-Q SPECIFY clean (Core lemma Q); proceeding
+
+seat-Q's SPECIFY on the block-atom cover: home = NEW Core/Aoyagi/BlockBlowupCover.lean importing only
+Core.Aoyagi.BlockBlowup (the brief's DLN-home worry dissolved — blockBlowupMap is Core-native).
+Statement: ball 0 1 ⊆ ⋃_{p∈S} blockBlowupMap S p '' closedBall 0 1 (hS : S.Nonempty; spectators pass
+through by the map's def; S = univ recovers the origin atom — the faithful generalization shape).
+Proof = the landed OriginBlowup argmax routing (argmax over S; x_p=0 vs ≠0 cases; maximality bounds),
+SHEAR-FREE. Scope discipline right: the R=1 atom per pnp-fan's certificate §2.1; the R-parametric fold
++ shear inflation stay with the future L7 fold lane; a cheap general-radius hardening assessed after.
+Signature elaborates green; proceeding to the proof without blocking (within the ratified boundary).
+
+## 2026-07-23 ~09:20 UTC — seat-LL twin amended to the REVISED verbatim; frontiers re-derived (4); δ=0 carry closing in-lane
+
+seat-LL amended LastLayerWire.lean to the elder's REVISED form (hparent + the carried conditional hgen;
+conditional GeneratorCleared output), green, force-pushed WIP-labeled (d8d92380f). Frontiers RE-DERIVED
+against the revised statement (not assumed): (1) conjA δ=1 deg1-extract [Gap-B vanishing cross-link];
+(2) conjunct-2 S=L per-slot disjunction [descent lane]; (3a) the born-unit [the wall's dehomogenisation];
+(3b) the δ=0 GeneratorCleared CARRY — closable in-lane (reindex hgen's nonzero sum through the pullback),
+CLOSING NOW. The carried-conditional shape confirmed clean (conjA unchanged; the vacuous
+case11-at-cleared=0 handled by the conditional output — the elder's payoff exactly). Character-identity
+coordination with arch-C initiated seat-to-seat (binder order hlast/hparent/hinv/hgen/hbranch + the 3
+consumer sites). The lane runs itself; nothing owed from the controller until arch-C's amended staging.
+
+## 2026-07-23 ~09:45 UTC — heartbeat: the N_pivot elaboration LAUNCHED (the central pipeline is live end-to-end)
+
+The elder authored the STAGE-FRAME BRIEF (banked: threads/L4-case1-core/npivot-stage-frame-brief.md)
+and confirmed the Gap B homogeneity statements are STABLE under N_pivot (swap-safe) — so seat-L3T2
+builds its three atoms the moment the amended staging merges, with NO N_pivot wait. pnp-transport
+CHARGED with the central elaboration: the faithful N_pivot on the (2,2,2,2)+(3,3,4) coupled witnesses
+at canonFlatten coordinates, corner + interior pivots, worked.tex-anchored; acceptance = honest_clear
+reproduces + pnp-fan's escape witness covered-and-monomialised + the b-chain/M_{s,k} PRESERVED (the
+Object-B↔D bridge keeps consuming Aoyagi's data) + the ε-table restated (non-strict boundary).
+Certificate → elder ratifies → Lean verbatim → arch-C renders → the ONE N_pivot bake.
+
+Also landed this tick: seat-L4C's LEAN COUNTERMODEL pushed (831b9cbf1 — the Fbad kill-witness making
+the he_lin-insufficiency undeniable for the amended staging's delta-read). Board: arch-C rendering the
+amended staging (task 18); seat-LL closing its δ=0 carry; seat-Q proving the cover atom; the elder's
+remaining queue = ratifications + the delta-read + the Lean-facing verbatims, all gated on external
+landings. Cron armed. The full pipeline to the faithful monument is live at every stage.
+
+## 2026-07-23 ~10:05 UTC — seat-LL: δ=0 carry CLOSED (the revised form vindicated); twin at 3 owned frontiers
+
+seat-LL closed the GeneratorCleared δ=0 carry (5737ba9a8): the child witness reindexes hgen's parent
+sum through foldResid_extend_delta0 + stepMap_zero (Equiv.sum_comp (finCongr hcast)) — the case the
+earlier UNCONDITIONAL form provably couldn't handle, now a mechanical carry under the elder's carried
+conditional. The revised-form design is borne out in the building: the vacuous case11-at-cleared=0
+discharges by the conditional output; genuine clears born the unit (#3); δ=0 carries (closed).
+LastLayerWire at 3 owned frontiers: (1) conjA δ=1 deg1-extract ← the Gap-B merge (the vanishing
+cross-link); (2) conjunct-2 S=L disjunction ← the descent lane; (3) the born-unit ← the wall
+(c_pivot(0) ≠ 0 read-off from the parent's Deg1 decomposition). Holding on arch-C's signature confirm
++ the Gap-B merge. The lane runs itself.
+
+## 2026-07-23 ~10:30 UTC — AMENDED staging a253bf625 at my gate → elder delta-read triggered
+
+arch-C staged the amended round (a253bf625 = the Gap B bake rebased onto canonical + the four
+amendments): (1) canonFlatten def + 3 PROVEN property lemmas in LearningCoefficient + the two
+homogeneity atoms pinned to it (∀-e + he_lin dropped) — SCOPE SPLIT confirmed as intended: only the
+2 standalone atoms pin now; the chain-wide pin rides the N_pivot round (canonFlatten homed upstream
+for exactly that reuse); (2) hpos on the cap; (3) the comp_of_linear docstring rider; (4) the hparent
+lastLayer rider in the elder's REVISED form (byte-exact) + the Case2Wire regression threading it (one
+flagged knowing choice: hcleared hypothesized, not derived — small follow-up). Gate evidence: build
+green 9005; census 39 = canonical+3 (the amendments add ZERO holes — everything new is proven);
+payoff roots UNCHANGED; cordon OK. My static gate passed (base = canonical; 3 declared files; 36 key
+hunks). Elder delta-read triggered; on OK → merge + full re-derived gate + push → seat-L3T2's three
+atoms build (swap-safe) + seat-LL's frontier #1 unblocks. Sequencing note banked: seat-LL's primed
+twin reconciles cross-branch at integration (the seats coordinate signature identity directly).
+
+## 2026-07-23 ~11:00 UTC — ★ lemma Q INTEGRATED (438592df5): the L7 own-cover foundation is on canonical
+
+seat-Q delivered the block-atom cover: Core/Aoyagi/BlockBlowupCover.lean (96 LoC, pure Core, imports
+only BlockBlowup). TWO theorems, both clean-three on MY forced re-derivation (fresh scratch):
+ball_subset_iUnion_blockBlowup_image_radius (the general-radius atom — source box closedBall 0 (max R 1),
+the TRUE tight bound) + ball_subset_iUnion_blockBlowup_image (the certificate's R=1 form, via max_self).
+seat-Q's design call (harden to general radius, keep R=1 as the named corollary) ACCEPTED — additive
+strengthening within its boundary, surfaced properly, maximizes fold-lane reuse. Integrated: merged +
+aggregator wired (controller pen) + full build green (0 err) + cordon OK + census 36 UNCHANGED (the atom
+adds zero holes). Statement card banked (threads/L7/statement-card-Q-block-cover.md). rev-Q spawned
+(fidelity vs the certificate: sup-norm-cube instance, spectator passthrough, the pivot-fan union,
+hypothesis-minimality, the hardening's honesty, vacuity probes, decorrelated Codex).
+
+The L7 salvage-(b) lane now has its foundation ON CANONICAL: the fanned cover fold (post the N_pivot
+round's fan pin) consumes this atom per pnp-fan's certificate §2.3-2.4. Board: elder delta-read on
+a253bf625 pending; pnp-transport mid-elaboration (tasks 20-25); seat-LL at 3 owned frontiers.
+
+## 2026-07-23 ~11:20 UTC — countermodel LANDED (3 clean-three kills); signature confirmed; a case11-center precision catch
+
+seat-L4C's Lean countermodel is pushed on -L4C (831b9cbf1 + fa5f8bf41; BaseCountermodel.lean,
+sorry/axiom-free, all three theorems clean-three on forced axioms): Fbad_not_deg1_singleton (u₀u₁+u₁²
+Deg1 on NO single coordinate — the permanent kill of the e-abstraction class), mult_shearTuple (the
+coreGen-content eval), shearTuple_isLinear (he_lin holds yet the base fails ⟹ he_lin PROVABLY
+insufficient). The ≃ₜ packaging deferred (the mult-level eval IS the content — agreed, marginal gain).
+INTEGRATION NOTE: BaseCountermodel rides the -L4C branch WITH the ChainNF skeleton — integration HELD
+until the N_pivot verbatim lands (the skeleton's crux statement may shift in that round; no reason to
+put a soon-to-reshape sorry on canonical early). seat-L4C now on GO step 2, starting with the reusable
+network-free crux submult_comp (interval composition, absent from Core.Submult — bedrock the peel needs).
+Its dependent-1×1/castSucc HMul idiom banked to lean/CLAUDE.md.
+
+seat-LL: SIGNATURE CONFIRMED with arch-C seat-to-seat (the swap will typecheck; no re-amend either
+side; arch-C's Case2Wire:139 hcleared-derivation follow-up noted). PLUS a precision catch on its hole
+#1: conjA δ=1 is NOT case-blind — at cleared=0, case11's center (the MERGE block: pivot ∪ {col <
+runLen}) ≠ supportAt ({col < widthMinUpto}), so Deg1-on-the-merge-block does NOT follow from hinv.
+The closer (post task-#8, coordinated with the L3T2 machinery) needs a case-split with a merge-block
+Deg1 argument OR a reachability examination (is case11-at-cleared=0 at the LAST layer reachable?).
+seat-LL corrected its file notes + docstring — recorded at the point of use; rides with the hole's owner.
+
+## 2026-07-23 ~11:50 UTC — seat-L4C's standalone work INTEGRATED (cherry-picked); seat released (5th handoff); a git lesson
+
+INTEGRATED onto canonical (69d5b3f6e): BaseCountermodel.lean (Fbad_not_deg1_singleton — the permanent
+e-abstraction kill + mult_shearTuple + shearTuple_isLinear) + Core/SubmultComp.lean (submult_comp, the
+reusable rank-pattern interval composition ABSENT from Core.Submult until now + mult_split, the
+innermost-A₀ peel) — cherry-picked from -L4C, aggregator wired, full build green, BOTH headline
+theorems clean-three on my forced re-derivation, census 36 UNCHANGED. The transport certificate +
+witness scripts also banked onto canonical (copied; the codex answer was already banked). The elder's
+compass.md edit committed (its ownership, controller-committed per the standing rule). ONLY the ChainNF
+skeleton stays on -L4C (its crux statement reshapes in the N_pivot round; integrates then).
+
+GIT LESSON (cost one build cycle): `git cherry-pick A B C D E` with E failing → `--abort` REWINDS THE
+WHOLE SEQUENCE including the four that applied cleanly (the files vanished under an already-edited
+aggregator → phantom build failure). The fix: re-pick the clean ones alone; land conflicting doc
+commits by direct copy. Rule: on a multi-commit pick failure, `--skip`/resolve the FAILING one or
+re-pick the clean subset — never blanket-abort after partial success.
+
+seat-L4C RELEASED with honors (5th clean handoff): the design checkpoint (ChainNF/ε-table
+inseparability), the proven ChainNF outer shape, deg1SupportedOn_boostForm, the 6th statement-class
+catch + its Lean countermodel, submult_comp/mult_split. The remaining Deg1 assembly hands to
+seat-L3T2's task #6 post-merge (its engine = seat-L4C's banked route: the peel + M-ignores-layer-0 +
+reindexing — I relay the scoped route verbatim at the merge). pnp-transport's task board shows the
+N_pivot certificate COMPLETE — the artifact is not yet on canonical disk; gating on its completion
+report + durable commit (the flush discipline is in its brief; no pre-emptive nag).
+
+## 2026-07-23 ~12:15 UTC — ★★ THE N_p CERTIFICATE: RATIFIABLE (all acceptance green; composite NOT forced) + rev-Q SURVIVED
+
+TWO landings.
+
+(1) pnp-transport's FAITHFUL N_p CERTIFICATE is done + durable (fe28912e7 on -L4C; BANKED on canonical
+6f90307b5; I re-ran 3 witness scripts from the committed tree — all exit 0 with the claimed verdicts).
+THE OBJECT: N_p = the block-elim peel Q₁·C·Q₂ = diag(1,Δ) — the (3,3,4) battery's verified unipotent
+peel = seat-L4C's mult_split — FANNED to any pivot via the pivot-centered Schur reduction (residual
+D'_ij = w_ij − w_ib·w_aj), WITH the deeper recoord A_{S+1}→A_{S+1}·Q₁⁻¹ that canonShearOf omits.
+Corner pivot = canonShearOf + recoord; interior = the pivot-shifted peel. ALL ACCEPTANCE TESTS PASS:
+honest_clear reproduces (boost-readiness True under N_p); the escape witness covered AND monomialised
+(EVERY pivot monomialises — the interior kill-condition does NOT fire); b-chain/M_{s,k} PRESERVED
+(det-1 ⟹ the Jacobian is Aoyagi's exactly — THE COMPOSITE FALLBACK IS NOT FORCED); the recoord
+per-layer-linear (Gap-B stability holds). Belt-and-braces (3,3,4) interior-pivot coupled chart run
+(not deferred): exponent 9 pivot-independent ⟹ the minAdm=8 join chart-invariant. The ε-table restated
+under N_p (§7). Honest decorrelation flag: fresh Codex tooling failure — carried by the banked (3,3,4)
+battery (independent same-b-vector); the elder weighs sufficiency. ELDER CHARGED: ratify → author the
+Lean N_p verbatim (the coupled re-bake round). The residual corank-3 stress = the elder's call.
+
+(2) rev-Q: lemma Q SURVIVED (all fidelity points confirmed; sup-norm-cube instance verified; S=univ
+recovers OriginBlowup and (Q) is STRICTLY STRONGER — correct at D=1 vs OriginBlowup's 2≤D; the max R 1
+hardening TRUE + TIGHT for |S|≥2 with both counterexamples; vacuity clean). One report-only nuance
+(the "forced" docstring wording at the vacuous singleton) → the hygiene list. Verdict banked on the
+expedition branch by rev-Q. Lemma Q is now integrated + reviewed — the L7 foundation is bedrock.
+
+The expedition's central question — is the faithful object buildable without re-deriving the bridge —
+is answered YES on the evidence: N_p preserves Aoyagi's combinatorial ledger exactly. Pending: the
+elder's ratification + delta-read (both queued, sequencing suggested: delta-read first to unblock the
+merge cascade).

@@ -12,26 +12,38 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE TWO FINAL STATEMENT ROUNDS + DEEP PROOFS (2026-07-23 ~00:00).** FIVE bakes in
-  (redirect/pin/hpos/collapse/node-form) + Assembly increment 1 INTEGRATED (896b60b9b: primed
-  drivers live, sorry-sources = baked − {L6,L8}). PROVED: L6 (reviewed 6/6) + L8 (primed wires);
-  terminal_edge in place; case2′ conjA + wall′ dispatch clean-three; 5/6 stubs; L5 atoms
-  M1/M2/M3/M5 + M4's blow-up half (PivotPreservation 4 atoms). ROUND A (rendering, arch-C):
-  multiAffine RESHAPE — node-form REFUTED (he_lin root gap, u³); elder ruled (B) STEP-form
-  (verbatim authored; carried-invariant descent; he_lin stays at L5 root); staging = step-form in
-  + node-form out + 2 conjB call-sites (Case1Wire:445/Case2Wire:115) revert-to-sorry under
-  scoped waiver (STALE-BASE near-miss caught: arch-C's zero-callsite grep was on old pin — HOLD
-  sent, corrected plan running). ROUND B (elder ruling charged): boost-readiness FINAL —
-  instruments CONVERGED (both blind: TRUE + CARRIED; R_bad ≡ missing-factor witness; mechanism
-  u_p|b_i ⟺ i>J₁; battery merged 1ed76d01b); elder lean (2) CanonicalSchurStep pin doubly
-  supported (pnp-boost's prepared-form caveat = exactly what the pin discharges; M7 cost sunk).
-  DEEP PROOFS: seat-M4B (A4 persistence-extraction → A5, the L5 interface — A5 form routes via
-  controller for L5Spec reconciliation); seat-L4 M7 (CanonShear.lean authoring; prepared-form =
-  NAMED lemma serving ruling B). Census 35; L6→dormant (2nd clean handoff). ELDER: poll TAIL
-  WINDOW (...d30ba3). Seats dormant: L3T, L6. NEXT COMMISSIONING: L7 (nav-13).
+- phase: **N_PIVOT RE-BUILD, elaborate-first + the amended-staging merge (2026-07-23 ~08:40).** The
+  DESIGN RULING landed + RE-OPEN COMMITTED (banked: threads/design-round-ruling.md + threads/LL/
+  elder-lastlayer-verbatim.md): Aoyagi's step = BLOCK blow-up (fanned pivot ∈ canonCenterOf) ∘
+  N_pivot per-chart normalization (fixes pivot, clears row/col, RECOORDINATIZES the deeper factor) —
+  NOT composite (fallback only, behind pnp cert + controller call); canonShearOf = corner instance
+  missing the recoord; the shear-pin family re-authors in the N_pivot round; L1⊥L3 coupling ratified;
+  e-fix = pin canonFlatten (the summit's exists_flatten IS the canonical reindexing — summit sound,
+  only sorried ∀-e intermediates were false). PIPELINE: elder authoring the STAGE-FRAME BRIEF →
+  pnp-transport elaborates N_pivot on (2,2,2,2)+(3,3,4) coupled witnesses (acceptance: honest_clear
+  reproduces + pnp-fan's escape witness covered-AND-monomialised) → elder RATIFIES cert → authors
+  verbatim → arch-C renders → ONE N_pivot bake. MEANWHILE (unblocked): arch-C's AMENDED STAGING
+  (canonFlatten e-pin on 2 homogeneity sigs + hpos on the cap + comp_of_fixing docstring rider +
+  hparent REVISED rider [hparent + carried conditional GeneratorCleared, 3 consumer sites]) → my
+  gate → elder delta-read → MERGE (Gap B cleared independent); seat-LL amending its twin to the
+  REVISED form; seat-L4C = Lean countermodel + (1b) predicate-agnostic core; seat-Q = Core lemma (Q)
+  (block-atom cover, salvage (b)'s foundation); seat-L3T2 builds homogeneity atoms POST-merge.
+  N_pivot-touching work holds for the ratified cert. Census 36 canonical (+3 staged).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
+- PROCESS-RESTART RECOVERY (2026-07-23 ~01:40): the operator's accidental stop killed all in-flight
+  agents + severed the registry. Disk was INTACT (worktrees + branches survived; seat-L4C's skeleton
+  committed locally → controller pushed 67293aa3c). RE-SPAWNED fresh: elder (convening from durable
+  artifacts — charter/compass/journal; owes the OPERATOR HIGH-LEVEL READ + Gap B verbatim), carto
+  (read + PARALLELIZATION audit), pnp-transport (harvest banked partial codex artifacts first),
+  seat-L4C (verify branch → option-B boundary reshape → hold for certificate). DORMANT holders NOT
+  respawned (seat-L3T2/arch-C/seat-L7/foldstate-render — respawn when their inputs land; their
+  worktrees/branches survived). LESSON: office/seat continuity = durable artifacts + pushed branches,
+  never transcripts; push checkpoints EARLY.
+
+- OPERATOR (2026-07-22): **updates are NOT urgent — finish the task at hand BEFORE answering an update/SVG
+  request.** Reground/report/regenerate-DAG at a clean seam, not mid-integration.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
   EnterWorktree(root) immediately after every worktree creation; placement check catches it.

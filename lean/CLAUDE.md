@@ -403,3 +403,8 @@ Front-loaded verdict (numeric certificate `expeditions/2026-06-20-aoyagi-full/th
   the match (no `let`/`have` wrapping it, else `split` can't reach); (2) discharge branches with
   `simp_all only [reduceCtorEq, Option.some.injEq]` + `subst_vars` in rounds — full `simp_all`
   mangles filterMap guard conditions and breaks metavariable reconciliation.
+- **Dependent 1×1 widths + mixed `succ`/`castSucc` products (countermodel-class files).** For a concrete
+  dimension vector of 1s, `abbrev dCE : Fin _ → ℕ := fun _ ↦ 1` (an ABBREV, reducible) lets instance
+  synthesis collapse all dependent widths `Fin (dCE …)` to `Fin 1` under `HMul`; a `def` blocks it. And
+  keep the two `mult` factors in `multPrefix`-PAIRED (castSucc) form — writing `A₁ * A₀` with mixed
+  succ/castSucc indices fails `HMul` synthesis. (seat-L4C, BaseCountermodel build, 2026-07-23.)

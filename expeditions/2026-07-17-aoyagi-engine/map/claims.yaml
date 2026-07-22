@@ -103,7 +103,7 @@ nodes:
 
   - id: object-e
     kind: claim
-    title: "Object E: analytic order ρ — OPENED-SCOPED (operator 2026-07-21); combinatorial half in build"
+    title: "Object E: analytic order ρ — combinatorial half PROVEN; analytic zeta seam DEFERRED"
     prop: |
       1 ≤ boxedOrder (Order.lean interface) + the θ ≠ ρ distinction: numTop(2,2,2,2,2) = 6 ≠
       aoyagiPoleOrder — the pole MULTIPLICITY is not the quiver count. Content build: P6.1 (band
@@ -222,7 +222,7 @@ nodes:
       - {type: needs, to: b-principalinv}
       - {type: discharges, to: object-b}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md]
-    notes: "FIVE BAKES 2026-07-22 (redirect 9c51289f4; pin d309bca48 clause-III/(★); hpos 0f8310b1a; COLLAPSE 790aed4e9 = FoldRealizes 3rd conjunct |jacDet gmap|=jacWeight(jac) unit≡1, srcBox seam = named L5 obligation; node-form 966959855). Derived stubs 5/6 PROVED clean-three (centerPin/cover/descendView/terminal_edgeδ/shearWithinCarve); multiAffine node-form = SUSPECT (FALSE without he_lin at the ROOT — u³ counterexample, seat-L3T2 SPECIFY; step case he_lin-free; elder reshape ruling pending: he_lin-threading (A) vs carried-invariant STEP-form descent (B, leaned) — the conjB one-liners re-wire either way). Leaves: L6+L8 PROVED (primed wires, L6 REVIEWED 6/6); case2' = conjB one-liner pending; WALL primed = boostReady-only (adjudication: pnp-boost + seat-L4 Codex [TRUE-but-NEEDS-CARRYING, R_bad countermodel] → elder rules form+home). L5: FoldSpec obligation map landed (no suspects; atoms M1-M7; M4 = seat-L6 PivotPreservation; M7 = seat-L4 canonShearOf). (B′) MonumentAssembly adopted (primed drivers; SUMMIT-RETIRE in owed-register); first increment rendering. Case2Delta0 RETIRED (orphan). Cone = 16 live (MonumentAtlas 8 + LC 1 + Case1Wire 2 + L5FoldSpec 5) + 25 fossil = 41."
+    notes: "STATEMENT LAYER CLOSED 2026-07-22 ~15:40 UTC (SEVEN elder-gated bakes: redirect 9c51289f4; pin d309bca48 clause-III/(★); hpos 0f8310b1a; COLLAPSE 790aed4e9; node-form 966959855 [REFUTED next round — u³ root counterexample]; STEP-FORM ea846e125 [node-form deleted, both conjBs closed on realBranch_multiAffine_step]; RULING-B → 0ce9c68b9 = CanonicalSchurStep pin as IsRealBranch 4th conjunct + realBranch_canonicalSchurStep projection + boostReady(hslot) + hlayer). Payoff footprints UNCHANGED through all seven (verified per-bake). Derived stubs 6/6 statements final; 5 proved clean-three + canonicalSchurStep projection; multiAffine_step = seat-L3T2's live DESCENT proof. Leaves: L6+L8 PROVED (L6 REVIEWED 6/6); M4 PivotPreservation REVIEWED 7/7; M7 CanonShear REVIEWED 7/7; case1'/case2' structurally complete — sorryAx flows only through boostReady (seat-L4 live) + the descent. §D.3 telescoping FULLY PROVISIONED. (B′) Assembly increment 1 live (896b60b9b); increment 2 GO'd. Remaining: boostReady, descent, lastLayer, L5 assembly (longest link), L7, summit swap, SUMMIT-RETIRE. Census 35 = ~10 live + 25 fossil."
 
   - id: b-leaf2-blowup-atlas
     kind: claim
@@ -326,11 +326,11 @@ nodes:
     title: "leaf 7: hcover — a.e. compact atlas cover of a ball, BUILD (operator: no cite) — BRIDGE-FREE"
     prop: "∃ ρ > 0, volume (ball 0 ρ \\ ⋃ p, g p '' dom p) = 0 — max-pivot-sector partition"
     lean: DLNFibre.DLN.Aoyagi.leafPath_compactCover
-    status: stated
+    status: adjudicated
     tier: new
-    owner: "parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41"
+    owner: "BLOCKED on elder fan re-scope (seat-L7 holds; its bridge lane ready)"
     edges: [{type: conjectured-toward, to: b-ladder}, {type: needs, to: b-terminal-edge-stepinv}]
-    notes: "L7 BRIDGE-FREE stands; nav-13: STARTABLE NOW (statement-locked, independent of the wall + L5; parked was scheduling, not dependency) — the NEXT COMMISSIONING after M7; research-grade coverage/measure proof, PM-P4 (coverage/termination = build content, not in the paper); highest-variance link with boost. Spectator-bounds bite still pre-flagged."
+    notes: "⚠ FALSE AS STATED (seat-L7 + Codex, 2026-07-22; controller verified on def MonumentAtlas:840-841). The current lean statement pins pivot to the single canonPivotOf; gmap's root blow-up is OUTERMOST, so every real branch shares one root blow-up and ε·e_q (q≠p in the non-singleton root center) ESCAPES every chart. The canonCenter pin does NOT save it — the cover NEEDS pivots FANNED (all |S| pivot charts per center, the argmax cover the pnp-cover cert actually verified). The COVER CLAIM is TRUE over the FANNED atlas (that's why status=adjudicated not refuted). FIX = fan the pivot in IsRealBranch/canonPivotOf/FoldRealizes + L5 emits the fanned atlas + bridge to the engine's LANDED sorry-free fanned cover (Engine.GeoCoverSpec.geoAtlas; seat-L7 de-risked). Part of the COUPLED spine redesign (elder-owned; with the boostReady shear value-pin). The old 'BRIDGE-FREE stands' banner was the premature-closed confound."
 
   - id: b-terminal-edge-stepinv
     kind: claim
@@ -356,24 +356,55 @@ nodes:
     edges: [{type: conjectured-toward, to: b-ladder}]
     notes: "PROVED as the primed twin leafPath_realizesExponents' (LeafGeometryWire, clean-three, first complete leaf; ported to the baked tip by seat-L3T2). The MonumentAtlas anchor stays sorried until the (B′) Assembly swap + SUMMIT-RETIRE. bindingAxes = {t̃=0 divisors} implements the paper's read-off restriction."
 
+  - id: b-descent
+    kind: claim
+    title: "the descent: realBranch_multiAffine_step' — δ=0+case11 PROVEN; append via Gap B"
+    prop: |
+      The step-form descent (MultiAffineStepWire, primed twin of the baked realBranch_multiAffine_step):
+      δ=0 all-4 arms + δ=1 case11 PROVEN axiom-clean (deg1_comp_of_fixing core + case11 pivot-separation
+      via DivBirthInv freshness); δ=1 case12/case2 append = ONE tracked sorry realBranch_appendResidDescent
+      (SHEAR-INDEPENDENT — pnp-coupling exact-fold; the real mechanism is foldResid multilinear
+      HOMOGENEITY, elder-ruled Gap B standalone foldResid_layerHomogeneous over LAYERCOORDS [machine-check
+      reversed blockCoords] + separate cap + he_lin + non-terminal guard + the hhomog threading replacing
+      hslot). NO boostReady flow-through (conjunct-B independent — verified).
+    status: stated
+    tier: new
+    owner: "seat-L3T2 (respawn on the Gap B verbatim; -L3T2 @ ed2fe681a; wire held for the hhomog re-wire)"
+    edges: [{type: conjectured-toward, to: b-ladder}, {type: discharges, to: b-leaf34-case-steps}]
+    evidence:
+      - lean/DLNFibre/DLN/Aoyagi/MultiAffineStepWire.lean
+      - expeditions/2026-07-17-aoyagi-engine/threads/pnp-coupling/fold_shear_probe.py
+    notes: "Granularity node added 2026-07-23 (carto flag: the descent lived only in b-ladder notes). Discharge chain: elder Gap B verbatim → arch-C renders HomogeneousDeg1On + hslot→hhomog re-wire → seat-L3T2 proves foldResid_layerHomogeneous (2 atoms: coreGen base [the cap crux] + comp_of_fixing) → append closes → the wall's conjB fully proven."
+
   - id: b-boostready
     kind: claim
-    title: "boost-readiness: parent foldResid is Deg1SupportedOn the case11 boost center — ADJUDICATING"
+    title: "boost-readiness via ChainNF: the standalone parallel-theorem — OUTER SHAPE PROVEN, crux = the ε-certificate"
     prop: |
-      At a real interior case1(1)-δ=1 edge, Deg1SupportedOn (foldResid p) ed.center (foldRegion p) —
-      the SOURCE form (elder-ruled: feeds the shared crux, case11≡case12 uniformity). TRUE on the
-      fold (instrument 1); form + home (carried invariant vs strengthened shear pin vs derived stub)
-      = the elder's final ruling on both instruments.
-    status: adjudicated
+      At a real interior case1(1)-δ=1 edge, Deg1SupportedOn (foldResid p) ed.center (foldRegion p).
+      RE-SCOPED (2026-07-22, seat-L4C design checkpoint + Codex xhigh; the 4th scale-revision):
+      the minimal STABLE invariant is NOT pivot-divisibility (doesn't induct) but the termwise
+      ChainNF residual-path normal form F_{p,j} = ∑_τ q(u)·∏_{d∈D_s} u_{b_d}^{ε_{s,d}(τ)};
+      divisibility → boostReady is the case11 COROLLARY. Route = STANDALONE parallel theorem
+      IsRealBranch p → ChainNF p (proven fresh; does NOT reopen FoldStepInvAt). STATE on -L4C @
+      67293aa3c: OUTER SHAPE PROVEN — isRealBranch_chainNF (TreePath induction from ChainCompat)
+      + deg1SupportedOn_boostForm/of_boostSplit clean-three; realBranch_boostReady_case11 wired =
+      deg1SupportedOn_boostForm ∘ boundary(α/β BoostSplit) ∘ isRealBranch_chainNF, sorryAx ONLY via
+      chainCompat_holds (the single structured 3-field obligation: base = ChainNF at coreGen;
+      transport = the four-case ε threshold-rule; boundary = case11-δ1 → BoostSplit). The crux =
+      pnp-transport's ε-transport certificate (four cases + the threshold-boundary off-by-one
+      [extraBlock ≥ vs bLedger >] + the col-index convention). L1 (shearφ=canonShearOf, BAKED) +
+      bLedger (A-div, DONE) are the ingredients the transport/boundary fields consume.
+    status: stated
     tier: new
-    owner: "pnp-boost (instrument 2, running) + elder (final form) → seat-L4 (proof)"
+    owner: "seat-L4C (pin ChainCompat + grind on the certificate) + pnp-transport (the ε-table elaboration)"
     kill: expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/case11_boostready_crosscheck.py
     edges:
       - {type: needs, to: b-principalinv}
       - {type: discharges, to: b-leaf34-case-steps}
     evidence:
+      - expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex/boostready-invariant-design-answer.md
       - expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex/boost-readiness-2222-answer.md
-    notes: "instrument 1 (seat-L4 Codex, decorrelated): TRUE on (2,2,2,2) (A1/A2/A3 pass) but NEEDS-CARRYING under the current coarse pins — countermodel R_bad (unprepared shear, γ not Schur-cleared) satisfies full-support Deg1 + scalar foldB + clauses I-III yet is not boost-ready. Resolutions: (1) carry BChainCompatible; (2) CanonicalSchurStep property clause on IsRealBranch (gate-2 partially reinstated with the honest forcing reason; M7's emission cost sunk). Elder HOLDS for instrument 2 (pnp-boost, blind to instrument 1)."
+    notes: "History: support-only CanonicalSchurStep was VACUOUS (R_bad; statement-side re-open) → L1 value-pin BAKED; the (a)/(b) two-sub-lemma framing presupposed an unbanked ledger REPRESENTATION → reframed; the (a′) geometry + bLedger family (seat-L4B) + deg1SupportedOn_boostForm (seat-L4C) are PROVEN ingredients. ChainNF def is NOT separable from the ε-table (the def's inducting clause IS the transport rule) → abstract ChainCompat interface, certificate pins it. Scale: ~20-30 math + ~30-50 Lean lemmas, bounded/elementary. On close: case1_preserves_stepInv' falls (the wall)."
 
   # ── the reduction + the kill-target ───────────────────────────────────────────────────────
 

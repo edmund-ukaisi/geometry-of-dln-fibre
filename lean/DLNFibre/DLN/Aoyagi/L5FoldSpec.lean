@@ -35,7 +35,8 @@ Base: at `conRoot`, `foldG = id`, `foldB = 1`, `foldResid = coreGen`; `FoldStepI
 
 L5 must, at each edge, (i) EMIT `(node.extend ed).IsRealBranch e` (by CONSTRUCTING `ed` with the
 canonical center/pivot/shear), and (ii) CONSUME it through the matching leaf. IsRealBranch's `.step`
-arm is three conjuncts: `[rec] ∧ [∃sc: ecase/child/center=canonCenterOf/pivot-pin] ∧ [ShearWithinCarveRaw]`.
+arm is four conjuncts: `[rec] ∧ [∃sc: ecase/child/center=canonCenterOf/pivot-pin]`
+`∧ [ShearWithinCarveRaw] ∧ [CanonicalSchurStep]`.
 
 | edge kind | EMIT ∃sc conjunct (center/pivot pin)                    | EMIT ShearWithinCarveRaw          | CONSUME (leaf)                    |
 |-----------|---------------------------------------------------------|-----------------------------------|-----------------------------------|
