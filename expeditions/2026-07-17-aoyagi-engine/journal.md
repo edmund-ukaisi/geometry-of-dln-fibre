@@ -10972,3 +10972,22 @@ new seat at verify-before-building both ways: the minimiser structure may be lat
 Adm_le_runMin / the landed P2 closed-form bridge. MONUMENT LANE in parallel: foldstate-render
 reports the supportAt WINNER rendered in one pass (green, 8-sorry) — arch-C's full gate is the
 next event, then THE BAKE.
+
+## 2026-07-22 (controller) — INTERIM GATE: PASS on every hard check; cone = 10 named; one fidelity cleanup; bake commit authorized to -rung-c
+
+arch-C's interim gate verdict on the supportAt render, verified on ground truth (defs read, not
+the seat's report): supportAt (:569) = the elder's literal 3-case VERBATIM with the 0-indexed
+convention transcribed (no ±1); D⁺ = Cᶜ; case1/case2/lastLayer_clear conclusions PINNED (∃
+dropped) = supportAt(child); canonCenter separate & untouched. BUILD green; **CONE = 10
+@[blueprint]** in MonumentAtlas (8 sorried leaves: case1/case2/lastLayer_clear/terminal_edge +
+L5/L6/L7/L8; 2 drivers PROVED from leaves); footprints force-elaborated on both drivers =
+[propext, sorryAx, Classical.choice, Quot.sound] — no unaccounted axiom; cordon OK; partition
+disjoint (disjoint_compl_right); swap-alarm RE-CLEARED (supportAt IS the ruled descend, not an
+inversion); **severance taxonomy CLOSED** — support computed, C′ pinned, coeff DeeperMultilinear;
+no free field left on the quantified structure. ONE CLEANUP in flight (arch-C's catch): the dead
+deeperCoords island carries a FALSE "consumers CITE it" docstring — a fidelity defect; deleted
+before the bake. COMMIT-HANDOFF settled: arch-C surfaced its role boundary (no unilateral commit);
+controller AUTHORIZED EXPLICITLY — bake commits to expedition/aoyagi-engine-rung-c (seat's own
+branch, push-on-commit standing protocol) with the elder's witness-bank text in the commit body;
+controller then re-verifies from the fetched commit (build + forced footprints + cordon + census)
+and integrates into the expedition branch — the integration boundary stays the controller's.
