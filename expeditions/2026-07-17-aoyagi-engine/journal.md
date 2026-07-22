@@ -11072,3 +11072,22 @@ orphan sweep — proposals to controller pen.
 
 Remaining to the summit: 8 leaf proofs (4 with woken seats, L5–L8 next wave) → final wiring swap of
 exists_coreResolution → clean-three → cite-deletion ceremony WITH the operator.
+
+## 2026-07-22 (controller) — E-lane goes 3-track: seat-Eswap spawned for (a)+(b); seat-E → integration + the (c) design problem
+
+seat-E's checkpoint: FOUR bricks proved (residueA_le_ell, sIncr_nonneg, swapWidths_swapWidths,
+swapR_swapR — the round-trip crux), the swap-iso FULLY DESIGNED (Codex xhigh, swap-iso-answer.md
+banked: swapProfile via Function.update; inverse via the two involutivities; Mval-invariance via
+the quadratic translation/reflection symmetry, Adm-only; monotonicity 4-way dispatch;
+OrderIso.ofHomInv assembly), and a LOAD-BEARING FINDING: admissibility preservation genuinely
+NEEDS minimality (counterexample (2,0,0,2,1) escapes Adm) — the minimiser-endpoint lemmas are the
+crux, and the (a)+(b) bundling is thereby re-confirmed from a second direction. (c) scouted:
+Tuple.sort has NO off-the-shelf adjacent-transposition decomposition — a genuine sub-development.
+RESOURCING GRANTED (the handoff-profile test, not the wall test: completed design + proved floor =
+the same state at which the sorted-box parallelization paid): **seat-Eswap** spawned (worktree,
+branch -Eswap, NEW module OrderRealizeSwap.lean, frozen outer statement, milestone = the
+minimiser-endpoint lemmas; pointed at MinAdmCCodim water-filling with verify-before-building — the
+endpoint lemmas may reduce to banked QIP structure as the sorted-box's pivotal fact did). seat-E →
+INTEGRATION OWNER + the (c) DESIGN problem (fork + decorrelated Codex + numeric check; DESIGN ONLY
+until a build slot opens on the handoff-profile test). E-lane now 3-track: Ecore (sorted-box),
+Eswap (swap-iso), E (integration + (c) design). Task #44 created.
