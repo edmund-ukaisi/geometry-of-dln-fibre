@@ -13344,3 +13344,16 @@ its emission proven-for-free."
 With this, EVERY statement question on the monument has a final ruling. The render lane's
 remaining queue: reshape staging (at re-gate) → the CanonicalSchurStep round → [assembly
 increments + the hygiene consolidation]. Everything after is proof.
+
+## 2026-07-23 ~03:15 UTC — reshape STAGED at its best form (a420cc4f9, net-0 sorry-free); delta-read triggered
+
+The reshape staging landed the strictly-better outcome: BOTH conjB call-sites RE-WIRED AND
+CLOSED against the step-form (both owner-authored `… hbranch hinv.2` lines, each build-verified
+first-shot by the render seat — the scoped waiver executed with zero improvisation), the
+refuted node-form deleted with ZERO residue tree-wide, the step-form verbatim-anchored all 21
+lines, baked-driver footprints verified UNCHANGED before/after, full build green 9004 jobs,
+census net-0. Controller raw-diff verification passed; the elder's delta-read TRIGGERED (one
+concern: the step-form reshape — its (B) ruling realized with the consumers landing ON the
+corrected statement in the same commit). One pre-existing doc-staleness nit (Case2Wire:99)
+tracked for the hygiene window. On the OK: integrate → the CanonicalSchurStep round (ruling B,
+packet already with arch-C) opens immediately — the monument's LAST statement round.
