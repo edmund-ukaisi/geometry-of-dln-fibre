@@ -14327,3 +14327,17 @@ join its in-flight Gap B staging (one bake round preferred; Gap B not held indef
 priority). seat-LL meanwhile drafts the primed twin locally (its in-place-vs-primed analysis: PRIMED —
 the conjA transport engines live downstream; the guard fix only excludes the rollover edge, so the
 clear-edge proof content is guard-stable); push held for the verbatim.
+
+## 2026-07-23 ~04:20 UTC — seat-L3T2 #2 READY (banked verified; design internalized); holding for the bake
+
+seat-L3T2 (fresh #2) verified its banked state on re-derived evidence (build green 8457; forced
+#print axioms: sorryAx via realBranch_appendResidDescent ONLY; HomogeneousDeg1On absent = bake not yet
+on its tree — correct) and internalized the elder's correction exactly (homogeneity=conjunct-2 only;
+the cap = shear-consuming frontier leaf = THE WALL; hslot NOT subsumed; will not fake the confinement).
+Induction design ready: BASE coreGen_layerHomogeneous = the only genuine new math (one factor per layer
+⟹ linear+vanishing per layer, he_lin); STEP = comp_of_fixing per δ-case with the pivot always below the
+threshold layer (σ fixes layerCoords ℓ≥threshold ⟹ vanishing survives — exactly what excludes the
+u_pivot→const-1 pathology); threshold arithmetic checked against banked hFLchild/hCSchild. Wakes on my
+relay when arch-C's Gap B bake reaches canonical. The pipeline: arch-C bake → my gate + elder delta-read
+→ merge → relay → seat-L3T2 proves (3 lemmas) + restates append (cap = named frontier sorry) → anchor
+audit → I wire MultiAffineStepWire.
