@@ -13494,3 +13494,16 @@ Housekeeping (long-lines + the mirrored min?_eq_some_iff' deprecation — which 
 DivBirthReach, the mirror source) → M-HYGIENE. seat-M4B fully discharged + dormant (not pinged,
 per the courtesy-resume lesson). The producer family's review slate: M4 REVIEWED; M7 in flight
 (rev-M7); L6 REVIEWED 6/6.
+
+## 2026-07-23 ~08:15 UTC — the RULING-B staging (2fa85058c) at its delta-read: the closing round
+
+The monument's last statement staging is up: 4 files, +41/−16, every elder-locked text
+char-verified (controller raw-diff + arch-C line-by-line). The new realBranch_canonicalSchurStep
+projection is the clean 4-line extractor; boostReady carries hslot with its docstring's stale
+line killed; the hlayer guard + both call-lines landed; the render seat's autonomous
+PivotPreservation arity fix (the 4th file — the conjunct broke the divBirthInv induction's
+destructure) verified semantically inert. THE DEEPEST GATE NUMBER: the baked payoff roots'
+footprints force-elaborated CLEAN-THREE UNCHANGED — six statement rounds today and the payoff
+chain never absorbed a single new dependency. Elder delta-read TRIGGERED (its four-point
+checklist + the fourth-file item). On OK: integrate → BOTH deep proofs activate (boostReady:
+seat-L4 w/ drop-test; the descent: seat-L3T2) — and the statement layer is CLOSED.
