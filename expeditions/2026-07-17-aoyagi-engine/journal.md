@@ -12140,3 +12140,25 @@ refresh queued to the bake; fossil/lint/rename held post-monument). The board no
 concurrent streams: the redirect staging (locks 3/6 done), L6+L8 (seat-L3T), the path-level
 template (pnp-elab), the codebase-shape artifact (carto), the elder's C2 Codex pass, and the two
 proof-seat holds waiting on the bake.
+
+## 2026-07-22 (controller, ~11:00) — the PATH-LEVEL TEMPLATE landed (a1845492a): monomial Jacobian certified; two integral traps; the PM-P4 atlas gap named
+
+pnp-elab's second template (380 lines + path_verify.py PASS + the cover-argument Codex consult):
+(1) THE COMPOSED CHART's Jacobian is a PURE MONOMIAL ∏u^{M−1} — shears det-1, codim-c blow-up
+contributes u^{c−1}, and the LEDGER IS AN INVARIANT (a boost adds J₁(M^{S+1}−J) to exponent AND
+Jacobian power in lockstep; verified c = 2,3,4,6 + four instances); b₁ squarefree ⟹ k = 1 on
+every binding axis — the M6 "unit ≡ 1" claim CONFIRMED with mechanism. (2) COVER + VALUE SEAM:
+λ = MIN over charts, θ = MAX (never a sum); λ = ½·min Mval = ½·cCodim; Theorem-3 split verified
+INCLUDING general r ((5,4,4) r=1 → 8; (4,4,4,4) r=2 → 15/2). (3) TWO INTEGRAL TRAPS (PM-P1/P2/P5):
+the overcounting trap (partition of unity OR a.e.-disjoint max-pivot sectors — never naive
+∫_V = Σ_U over overlapping opens) and the TWO-UNITS distinction (|g′| unit ≡ 1 monomial vs the
+loss's unit-valued FUNCTION U ≢ 1, U(0)=1 — wrong in opposite directions if conflated). (4) **THE
+SHARPEST FINDING (PM-P4, Codex + worked.tex concur): the exhaustive terminal-chart atlas's
+COVERAGE + TERMINATION are NOT in the paper** — p.6 cites Hironaka + asserts the boxed rule;
+pp.14–22 give representative-pivot local algebra only (relabelling unwritten) — this is exactly
+exists_coreResolution + rlctAt_sumSqFam_eq_iInf_charts: a BUILD target, not a citation,
+confirming the charter's hcover-BUILD scoping with page-level precision. The decomposition
+(coverage / termination / pivot-relabelling lemmas) routes to the L5/L7 briefs. (5) Two paper
+pitfalls banked (the p.6 sign typo; k_j > 0 in the boxed min). Template routed to seat-L3T as its
+L6/L8 pre-mortem (the jac cert + the two-units trap load-bearing for its Chart fold); the Q-P1
+integral-API choice (partition-of-unity vs sectors) deferred to the L5/L7 SPECIFY.
