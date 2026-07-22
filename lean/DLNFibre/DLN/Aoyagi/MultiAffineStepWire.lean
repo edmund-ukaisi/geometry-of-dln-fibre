@@ -543,16 +543,23 @@ theorem perLayerDeg1From_comp_of_fixing {N : ℕ} {d : Fin (N + 1) → ℕ}
     refine Finset.sum_congr rfl (fun x hx => ?_)
     rw [hfix ℓ hℓ x hx u]
 
-/-- **THE cofactor / Schur descent obligation (the SINGLE tracked hole of the wall).** At a δ=1
-`case12`/`case2` first-clear append the child residual — the strict transform `foldResid p (cast ·) (qm ·)`
-— is a `blockCoords (p.layer+1)`-GRADED form: each of its terms is a coefficient times a linear form in
-the DEEPER block `S' = blockCoords (p.layer+1)`, exactly the shape `Case1Wire.exists_graded_decomp`
-collapses to the child support-decomposition. This is the genuine Schur/cofactor content — the parent
-coefficient `c_i(qm u)` carries a next-layer-block factor — and is NOT derivable from `hslot` alone
-(counterexample `foldResid p = (u ↦ u_pivot)`: `hslot` holds but the strict transform is the constant `1`,
-not graded over `S'`; Codex xhigh 2026-07-22). It lands when the shear VALUE-pin (`shearφ = canonShearOf`)
-supplies the cofactor structure — the elder's coupled spine decision; the statement-lock stands. -/
-theorem realBranch_cofactorDescent {N : ℕ} {d : Fin (N + 1) → ℕ}
+/-- **The δ=1 append residual DESCENDS to the deeper block (the SINGLE tracked hole of the wall).**
+At a δ=1 `case12`/`case2` first-clear append the child residual — the strict transform
+`foldResid p (cast ·) (qm ·)` — is degree-1 supported on the DEEPER block `S' = blockCoords (p.layer+1)`
+(clause-1 at the descended support). NOT derivable from `hslot` alone: `foldResid p = (u ↦ u_pivot)`
+satisfies `hslot` yet its strict transform is the constant `1`, unsupported on `S'` (fails clause-1 at
+`u = 0`); Codex xhigh 2026-07-22.
+
+**Fix = `foldResid_layerHomogeneous` (elder-ruled Gap B), SHEAR-INDEPENDENT** (pnp-coupling exact-fold
+verdict: the descent fails identically for `canonShearOf` and identity shear — the shear does not bite):
+`foldResid p` is multilinear-homogeneous — degree exactly 1 and VANISHING at the layer's coords `= 0` —
+per layer `≥ supportLayerOf p.conState`. That vanishing strengthening (strictly stronger than
+`Deg1SupportedSlot`, which permits the `u_pivot`-transform's constant part) gives this descent directly.
+The elder is ruling the exact form (standalone lemma by fold-induction, PREFERRED, vs a `FoldStepInvAt`
+strengthening); TWO SPECIFY concerns flagged: (a) state it over the CAPPED `blockCoords ℓ`, not the full
+`layerCoords ℓ`, to match this clause-1 cap; (b) the root base (`foldResid root = coreGen`) needs
+`he_lin : IsLinearMap ℝ ⇑e` (the `u³` refutation). Statement-lock stands; NOT shear-coupled. -/
+theorem realBranch_appendResidDescent {N : ℕ} {d : Fin (N + 1) → ℕ}
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p)
     (hδ1 : edgeδ d p = true) (hcase : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2)
@@ -561,15 +568,14 @@ theorem realBranch_cofactorDescent {N : ℕ} {d : Fin (N + 1) → ℕ}
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p))
     (j : Fin (foldNR d (p.extend ed))) :
-    ∃ (A : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ)
-      (B : Fin (flatDim d) → Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ),
-      (∀ i, ContinuousOn (A i) Set.univ) ∧ (∀ i k, ContinuousOn (B i k) Set.univ) ∧
+    ∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+      (∀ i, ContinuousOn (c i) Set.univ) ∧
       (∀ u ∈ Set.univ, foldResid d e (p.extend ed) j u
-        = ∑ i ∈ blockCoords d (p.conState.layer + 1), A i u
-            * ∑ k ∈ blockCoords d (p.conState.layer + 1), B i k u * u k) := by
-  -- map: B-derived-cofactor-descent (Schur/cofactor: parent coeff c_i(qm) splits over S'=blockCoords(p.layer+1);
-  -- UNPROVABLE from hslot alone — F=u_pivot counterexample, Codex xhigh 2026-07-22; lands with the shear
-  -- value-pin shearφ=canonShearOf — elder's coupled decision, statement-lock stands)
+        = ∑ i ∈ blockCoords d (p.conState.layer + 1), c i u * u i) := by
+  -- map: B-derived-append-descent (child residual degree-1 on the descended blockCoords(p.layer+1);
+  -- UNPROVABLE from hslot alone — F=u_pivot counterexample, Codex xhigh 2026-07-22; fix = the
+  -- SHEAR-INDEPENDENT foldResid_layerHomogeneous — elder ruling pending standalone-vs-strengthening,
+  -- blockCoords-cap + he_lin concerns flagged; statement-lock stands)
   sorry
 
 /-- **The δ=1 case12/case2 arm — THE DEEP CORE (cofactor / Schur descent).** Clause-1 (the support
@@ -663,11 +669,9 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ}
     funext u; exact foldResid_extend_delta1 d e ed hlt hδ1 j u
   rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot]
   refine ⟨?_, ?_⟩
-  · -- clause 1: the cofactor descent, collapsed by `exists_graded_decomp`
-    obtain ⟨A, B, hA, hB, hgraded⟩ := realBranch_cofactorDescent e p ed hδ1 hcase hbranch hslot j
-    exact exists_graded_decomp (blockCoords d (p.conState.layer + 1)) Set.univ
-      (foldResid d e (p.extend ed) j) A B hA hB hgraded
-  · -- clause 2: the per-layer grade survives the strict transform
+  · -- clause 1: the support DESCENT — the single tracked obligation (foldResid homogeneity, elder-pending)
+    exact realBranch_appendResidDescent e p ed hδ1 hcase hbranch hslot j
+  · -- clause 2: the per-layer grade survives the strict transform (PROVED, shear-independent)
     rw [hfun]
     exact perLayerDeg1From_comp_of_fixing _ (p.conState.layer + 1) σ hfix hagree hpar2
 
