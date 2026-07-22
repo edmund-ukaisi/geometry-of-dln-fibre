@@ -2,45 +2,38 @@ import DLNFibre.Core.Aoyagi.OrderChain
 import DLNFibre.DLN.RLCT.Foundations.AdmTight
 import DLNFibre.DLN.Aoyagi.ClosedForm
 import DLNFibre.DLN.Aoyagi.OrderRealizeSortedBox
-import Mathlib.GroupTheory.Perm.Sign
 
 /-!
-# `DLN.Aoyagi.OrderRealize` — P6.2 Tier-3 (3a): the binding poset realises `BoxPart` (SPECIFY)
+# `DLN.Aoyagi.OrderRealize` — P6.2 Tier-3 (3a): the floor + the sorted-box factor
 
-The realization order-isomorphism (pnp thread-42 cert, part (3a), genuine order-iso verified on 993
-cores + trap kill-set): the poset of `Mval`-minimising admissible profiles is order-isomorphic to
-the box-partition lattice `BoxPart(ℓ,a)`, so its `chainHeight` is `a(ℓ−a)+1 = aoyagiTheta` (via the
-LANDED `Core.Aoyagi.OrderChain.chainHeight_boxPart`).
+The floor of the (3a) realization order-isomorphism: the poset of `Mval`-minimising admissible
+profiles (`bindingSet M`) is order-isomorphic to the box-partition lattice `BoxPart(ℓ,a)`, so its
+`chainHeight` is `a(ℓ−a)+1 = aoyagiTheta`. This module holds the shared floor + the **sorted-box
+factor**; the swap factor is `OrderRealizeSwap`, and the transport + headline + count are composed
+in the terminal `OrderRealizeAssembly` (which must be downstream of `OrderRealizeSwap` — the swap
+discharge cannot close here without an import cycle, since `OrderRealizeSwap` imports this floor).
 
-**SPECIFY STATE (frontier, awaiting elder scaffold-pass then prove).**
+**This module (floor + sorted-box factor):**
 * `bindingSet M` — the domain: admissible profiles at the minimum `Mval`. REAL def.
-* `bindingSet_orderIso_boxPart` — the (3a) headline as a `Nonempty` order-iso. Stated as `Nonempty`
-  deliberately: an `≃o` is data (the Birkhoff encoding `enc T = {j ∈ J(P) : j ≤ T}` ≅ `a×(ℓ−a)`-cell
-  ideals — cert part (i)), which the elder pass ratifies before the prove phase constructs it. The
-  `Nonempty` Prop is all the `chainHeight` transport needs. **SORRIED — frontier.**
-* `bindingSet_chainHeight` — the count corollary: `chainHeight(bindingSet) = a(ℓ−a)+1`, via the
-  banked subtype-`≃o` chainHeight transport + `chainHeight_boxPart`. Proved MODULO the headline.
+* `swapWidths`/`swapR`/`swapProfile` (+ `swapR_swapR`, `swapR_F_invariant`) — the shared floor the
+  swap factor (`OrderRealizeSwap`) is built on.
+* `sIncr`/`sStep`/`boxSubset`/`sIncr_nonneg` — the shared floor for the box encoding.
+* `residueA_le_ell` — well-formedness `(residueA M 0).toNat ≤ ell M 0`.
+* `bindingSet_sorted_orderIso_boxPart` — the **sorted-box factor**, DISCHARGED via seat-Ecore's
+  upstream `SortedBox.sortedBox_orderIso` (`OrderRealizeSortedBox`).
+* `chainHeight_eq_of_orderIso` — the subtype-`≃o` chainHeight transport used by the count.
 
-**Prove-phase construction plan (Codex design-check, thread-41/codex/enc-map-answer.md; verified on
-both worked cores M=[1,1,2,1], [2,2,2,2,2] + Codex's own 1360-vector sweep).** The explicit iso is a
-composite of THREE order-isos (`OrderIso.ofHomInv` or `toEquiv`+`map_rel_iff'`, then `.trans`):
-1. `swapBindingOrderIso` — one adjacent width-swap, transporting the profile by the value-preserving
-   map `R_{A,B}(P,X,Q) = X+(B−A)` (translation, `A≤B∧B−A≤P−X`) / `X−(A−B)` (`B<A∧A−B≤X−Q`) / `P+Q−X`
-   (reflection); locally minimises `(P−X+A)²+(X−Q+B)²`.
-2. `sortBindingOrderIso` — compose the bubble-sort swaps until widths are ascending `D₀≤…≤D_L`.
-3. `sortedBindingOrderIsoBoxPart` — on sorted widths: active steps `xᵢ = eᵢ↑+D_{i+1} ∈ {C−1,C}`
-   (`C=⌈ΣD/ℓ⌉`), a-subset `A={i<ℓ:xᵢ=C}`, box via reversed gaps (`Fin.rev`; see the codex answer).
-   Hazard: the reverse `enc T ≤ enc T' ⟹ T ≤ T'` — prove `map_rel_iff` directly.
+**Construction (Codex design-check, thread-41/codex/enc-map-answer.md; verified on both worked cores
+M=[1,1,2,1], [2,2,2,2,2] + Codex's 1360-vector sweep).** The explicit iso is a composite of THREE
+order-isos (`.trans`): (1) one adjacent width-swap transporting the profile by the value-preserving
+`swapR` (`OrderRealizeSwap`); (2) bubble-sort to ascending widths (the submonoid-closure transport,
+`OrderRealizeAssembly`); (3) on sorted widths the box iso (`OrderRealizeSortedBox`).
 
-**NOVELTY + SCOPE (name-for-content).** This module records Codex's adjacent-swap map, NOT the
-cert's Lemma-4-step recipe. Both were verified (cert via a backtracker; Codex's by hand on the
-worked cores + `g-enc-adjacent-swap.py`); the two are DIFFERENT constructions and their equivalence
-is NOT needed — any valid order-iso discharges the `Nonempty` headline. The thread-42 cert is the
-adjudication record; this module is the construction record. A multi-lemma build (~200+ LoC), not a
-one-lemma fill. Four frontier obligations: (a)+(b) `swapBinding_orderIso` (one swap is an order-iso;
-preserve + coupled monotonicity are bundled, since atomic `swapR`-in-`X` monotonicity is FALSE);
-(c) `bindingSet_transport_sorted`; (d) `residueA_le_ell` + the sorted-box iso. Route (a) = the
-controller's BUILD ruling.
+**NOVELTY + SCOPE (name-for-content).** This records Codex's adjacent-swap map, NOT the cert's
+Lemma-4-step recipe. Both were verified (cert via a backtracker; Codex's by hand + the sweeps); they
+are DIFFERENT constructions and their equivalence is NOT needed — any valid order-iso discharges the
+`Nonempty` headline. The thread-42 cert is the adjudication record; this module + its swap/box
+factors are the construction record.
 
 **Elder full-pass rulings (scaffold RATIFIED, statement-honest):**
 1. Coupling: the sorted-`ell`/unsorted-`Adm` coupling is LOAD-BEARING and ratified — keep
@@ -146,46 +139,6 @@ def swapProfile (M : Fin (L + 1) → ℕ) (k : Fin L) (T : Fin L → ℕ) : Fin 
         (T ⟨k.val - 1, by have := k.isLt; omega⟩) (T k) (M k.castSucc) (M k.succ))
   else T
 
-/-- **(a)+(b) ONE-SWAP ORDER-ISO** (SORRIED — frontier; bundles "swap preserves `bindingSet`" +
-"local coupled monotonicity of `R`"): one adjacent width-swap induces an order-isomorphism of the
-binding poset, via the `swapR` transport. Bundled because the monotonicity couples three profile
-coords, so the honest statement is the iso, not an atomic `swapR`-in-`X` fact (which is false). -/
-theorem swapBinding_orderIso (M : Fin (L + 1) → ℕ) (k : Fin L) (hpos : ∀ s, 0 < M s) :
-    Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (swapWidths k M))) := by
-  sorry -- map: enc-swap (a)+(b)
-
-/-- The **transport submonoid**: permutations `σ` of the width indices under which the binding poset
-transports (for every positive `M`). A submonoid via `OrderIso.refl` / `.trans`; the adjacent
-generators come from `swapBinding_orderIso`; the closure is `⊤` (`mclosure_swap_castSucc_succ`), so
-every permutation — in particular `Tuple.sort M` — transports. This is the (c) design (submonoid
-route); see `transport-c-design.md`. -/
-def transportSubmonoid : Submonoid (Equiv.Perm (Fin (L + 1))) where
-  carrier := {σ | ∀ M : Fin (L + 1) → ℕ, (∀ s, 0 < M s) →
-    Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (M ∘ ⇑σ)))}
-  mul_mem' := by
-    intro a b ha hb M hpos
-    obtain ⟨ea⟩ := ha M hpos
-    obtain ⟨eb⟩ := hb (M ∘ ⇑a) (fun s => hpos (a s))
-    have hw : M ∘ ⇑(a * b) = (M ∘ ⇑a) ∘ ⇑b := by rw [Equiv.Perm.coe_mul]; rfl
-    rw [hw]; exact ⟨ea.trans eb⟩
-  one_mem' := by
-    intro M _
-    rw [Equiv.Perm.coe_one, Function.comp_id]; exact ⟨OrderIso.refl _⟩
-
-/-- **(c) THE TRANSPORT** — discharged (modulo (a)+(b)) via the submonoid-closure route: adjacent
-generators (`swapBinding_orderIso`) span `Perm (Fin (L+1))` (`mclosure_swap_castSucc_succ`), so
-`Tuple.sort M ∈ transportSubmonoid`, giving `bindingSet M ≃o bindingSet (M ∘ Tuple.sort M) =
-bindingSet (sortedWidths M)`. Rests only on the sorried `swapBinding_orderIso` (seat-Eswap). -/
-theorem bindingSet_transport_sorted (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
-    Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (sortedWidths M))) := by
-  -- generator membership rests on the sorried swapBinding_orderIso (seat-Eswap); map: enc-swap
-  have hgen : ∀ i : Fin L, Equiv.swap i.castSucc i.succ ∈ transportSubmonoid :=
-    fun i M' hpos' => swapBinding_orderIso M' i hpos'
-  have hsub : (⊤ : Submonoid (Equiv.Perm (Fin (L + 1)))) ≤ transportSubmonoid := by
-    rw [← Equiv.Perm.mclosure_swap_castSucc_succ L]
-    exact Submonoid.closure_le.mpr (by rintro _ ⟨i, rfl⟩; exact hgen i)
-  exact hsub (Submonoid.mem_top _) M hpos
-
 /-- **(d) WELL-FORMEDNESS of `(ℓ,a)`** (PROVED): `a = residueA ≤ ℓ = ell`, so `BoxPart(ℓ,a)`'s bound
 `ℓ−a` is meaningful. Hypothesis is `0 < ell M 0` — the elder's Q2 hpos-check FIRES negative here:
 `hpos` (positive widths) does NOT enter; only `ell > 0` is needed (the ceiling arithmetic divides by
@@ -272,22 +225,5 @@ theorem bindingSet_sorted_orderIso_boxPart (M : Fin (L + 1) → ℕ) (hpos : ∀
     simp only [Function.comp_apply, DLNFibre.Core.dminus, Nat.sub_zero]
     exact hpos _
   exact SortedBox.sortedBox_orderIso (sortedWidths M) hmono hpos'
-
-/-- **(3a) THE REALIZATION ISO** — discharged from the transport (c) + the sorted-case box iso, by
-composition. NON-sorried: the frontier is the four obligations above. -/
-theorem bindingSet_orderIso_boxPart (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
-    Nonempty (↥(bindingSet M) ≃o ↥(BoxPart (ell M 0) ((residueA M 0).toNat))) := by
-  obtain ⟨e1⟩ := bindingSet_transport_sorted M hpos
-  obtain ⟨e2⟩ := bindingSet_sorted_orderIso_boxPart M hpos
-  exact ⟨e1.trans e2⟩
-
-/-- **The Tier-3 count corollary**: `chainHeight(bindingSet) = a(ℓ−a)+1 = aoyagiTheta`, via the
-realization iso + the banked subtype-`≃o` transport + `chainHeight_boxPart`. Proved MODULO the
-headline `bindingSet_orderIso_boxPart`. -/
-theorem bindingSet_chainHeight (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
-    (bindingSet M).chainHeight (· < ·)
-      = ((((residueA M 0).toNat) * (ell M 0 - (residueA M 0).toNat) + 1 : ℕ) : ℕ∞) := by
-  obtain ⟨e⟩ := bindingSet_orderIso_boxPart M hpos
-  rw [chainHeight_eq_of_orderIso _ _ e, chainHeight_boxPart]
 
 end DLNFibre.DLN.Aoyagi
