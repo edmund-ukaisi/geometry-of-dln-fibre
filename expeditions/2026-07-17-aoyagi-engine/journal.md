@@ -12812,3 +12812,19 @@ predicted by the discriminator round, now getting its formal form.
 Render lane: collapse round rendering; multiAffine node-form queued behind it; Assembly first
 increment after. The wall's remaining structure is now FULLY MAPPED: node-form (A) + the
 path-invariant (B) + the dispatch-skeleton closed edit.
+
+## 2026-07-22 ~17:00 UTC — NODE-FORM RULING: full adoption + the deeper point (inductable shape, weakest hypothesis)
+
+The elder ruled Finding A with three checks, all pass: (1) the ∀-node strength is SOUND — the
+node-form is the FoldStepInvAt degree-1 conjunct restricted to reachable (real) nodes, asserting
+nothing at non-real nodes; (2) it KEEPS the per-node supportLayerOf threshold (no reversion to
+the refuted ∀ℓ shape) and is consistent with Codex C2 no-descent (at a case11 boost, degree-1 on
+the non-descending supportAt(S)); (3) — the deeper point — the node-form is the INDUCTABLE shape
+(node → node supports the fold induction; the edge-form's dangling ed did not) AND the weakest
+sufficient hypothesis (foldResid p depends only on p; the edge-form dragged an irrelevant child
+edge). So seat-L4's fix is simultaneously correct-shape, weakest-that-suffices, and inductable.
+hpos carries (the empty-support argument transfers verbatim). The edge-form DELETES in the same
+diff — no tombstone (zero consumers, never wired); the name realBranch_multiAffine stays (sole
+form). Exact Lean text authored; relayed VERBATIM to arch-C for the micro-round after the
+collapse bakes. Render-lane queue confirmed: collapse (rendering) → node-form → Assembly; the
+case11 path-invariant ruling follows seat-L4's Codex.
