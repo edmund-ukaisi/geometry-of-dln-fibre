@@ -10903,3 +10903,39 @@ rescues it; the honest statement is the coupled one. WIRING CALL: OrderRealize s
 the four close (aggregator = controller single-writer; statements may move at the pass; not
 registered roots, so the cone audit doesn't need it). The elder's pass-packet is now COMPLETE and
 frozen: Q1–Q5 + four skeleton statements + outer shape, one pass, queued behind the window ruling.
+
+## 2026-07-22 (controller, tick) — THE RULING RECOVERED FROM A DEAD INBOX: descend STANDS (elder page-authority); BAKE GO; E-lane prove GO
+
+**Sensor-calibration catch of the expedition.** The elder RULED at 01:20 — and its reply (with
+three more rulings, through 01:54) reported "success" into a DEAD inbox: SendMessage's "team-lead"
+resolved inside its OWN team registry (session-c0fbdfc4, dead since the runtime restart). Nothing
+reached me; the heartbeat's liveness probe (transcript mtime frozen at 01:55 with no inbound)
+prompted a transcript read that recovered ALL FOUR verbatim. Workaround standing: the elder also
+ends turns with full plain-text rulings; controller POLLS ITS TRANSCRIPT after each charge.
+
+**THE WINDOW RULING (recovered verbatim, adjudicated from the elder's OWN re-read of preprint
+pp.18–21, decorrelated from the seat's battery as charged): THE DESCEND STANDS.** The amended pin
+(T=un-cleared) is FALSE as the Deg1 support: −γβ = product of two un-cleared entries = degree-2
+on un-cleared; the cleared-pivot E-block "1" (u extracted into b', p.20) = degree-0. The descend
+mechanism on the page: the pivot-row shear absorbs into the NEXT layer (C'^{(S+1)} = Q⁻¹C^{(S+1)},
+p.18). seat-L4's vanishing-at-T=0 discriminator RATIFIED separately (c_p·1 = the killer — exactly
+the term the false retraction dropped). TWO-NAMED-FUNCTION FORM BLESSED; rendering-ready literal:
+T := supportAt S J (three-case: S if J=0; S+1 if J≥1∧S<L; born-unit if J≥1∧S=L — the p.19/21
+terminal exhaustion); D⁺ := complement (subsumes deeper∪shed); C′ := supportAt PINNED-COMPUTED;
+canonCenter (ledger) UNTOUCHED. ±1: NO substantive offset; one CONVENTION PIN for the render
+(explicit 0-indexed layers, S ∈ {0..L}, L = last index). Elder-authored witness-bank text banked
+(the false retraction = over-deference defect, caught by the pinned calibration).
+
+**ITEM B FULL PASS (recovered):** scaffold RATIFIED statement-honest. Q1 coupled form fully
+ratified (sort bridge = content); Q2 hpos weakest on 1,2,4; Q3 home = Core IN PRINCIPLE — but
+import direction (Core never imports DLN; Adm/Mval are DLN-side) blocks the minimal move ⟹ the
+whole cluster migrates in the post-monument upstreaming unit; Q4 COLLAPSE admTight to Adm, negative
+cert RELOCATES to the identity theorem's docstring; Q5 bundling RATIFIED (atomic swapR-monotone
+would be a FALSE lemma). ONE weakest-hyp catch: residueA_le_ell — check hpos fires, drop if unused.
+r=0 scope note: correct core level, record in docstring.
+
+**CASCADE FIRED:** arch-C has THE ONE MESSAGE (ruling + literal window + convention pin + witness
+text): render finalize → full gate → BAKE; on its green, controller integrates + wakes the proof
+seats. seat-E has PROVE-PHASE GO (1,2,4 in its banked order + the hpos check + the Q4 collapse
+first). seat-L4 notified (vindicated; holds for the bake signal). Elder acked with the routing
+workaround + YES on the durable compass convention-pointer (at its next compaction pass).

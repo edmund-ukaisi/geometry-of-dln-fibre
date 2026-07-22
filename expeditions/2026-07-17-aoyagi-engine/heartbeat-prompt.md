@@ -12,19 +12,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE WINDOW ADJUDICATION (2026-07-22).** The monument holds on ONE event: the resumed elder
-  (address: aelder-standing-3fd49e3017d30ba3 — the standing office DIED at the runtime restart, resumed
-  by transcript ID) ruling on the window predicate after seat-L4's DOUBLE-REVERSAL (descend → false
-  retraction [root-reading misapplied to child] → calibrated re-retraction). The discriminator is
-  vanishing-at-T=0: child = c_p·1 + c_d·(δ−γβ), c_p=c_d=deeper ⟹ T=un-cleared fails Deg1 at the child;
-  T=deeper(=supportAt) holds. supportAt(S,J) delivered explicit/d-definable ((a)-road, NO Engine data).
-  ALL render hops FROZEN (controller→arch-C→seat ruling-gated; tree=neutral base, green 8449; both
-  preps warm). On the ruling: one msg to arch-C → finalize → 15-pt gate → BAKE (cone 8→10 named; live
-  census currently 9 = 7 atlas + Case2Delta0 + summit; ~25 fossil tokens await the close prune).
-  E-LANE: route (a) COMMITTED (adjacent-swap construction, multi-tide build) — seat-E skeletons the 4
-  lemmas + composed iso; elder single pass covers outer shape + skeleton (queued behind the ruling);
-  3a scaffold real @ 2b7aa88ff; seam = SET IDENTITY adm_eq_admTight PROVED. Post-bake: L4+L3T prove
-  their leaves (floors banked green) → L5 → L6+L8 → L7 → final wiring swap → summit clean-three.
+- phase: **THE BAKE ROUND (2026-07-22, ~02:50).** The elder RULED (own pp.18-21 page-read): DESCEND
+  STANDS; T=un-cleared FAILS (−γβ deg-2, pivot E-block deg-0 on un-cleared); two-named-function form
+  blessed — T := supportAt(S,J) (S if J=0; S+1 if J≥1∧S<L; born-unit if J≥1∧S=L), D⁺ := complement,
+  C′ := supportAt PINNED, canonCenter (ledger) untouched; NO ±1 offset; render must state 0-indexed
+  convention explicitly. arch-C EXECUTING: relay to render seat → finalize → full gate → BAKE (cone
+  8→10 named); on green: controller integrates, wakes seat-L4 (L4+LastLayerInv, crux verbatim) +
+  seat-L3T (L3 A-form + terminal_edge conjunct-2 via hcleared). Then L5 → L6+L8 → L7 → final wiring
+  swap → summit clean-three → cite-deletion ceremony WITH operator. E-LANE prove-phase GO: seat-E
+  proves 1,2,4 (banked order d→sorted-box→one-swap→transport) + residueA_le_ell hpos check + Q4
+  collapse (admTight→Adm, cert to identity-thm docstring); Q3 cluster migration queued post-monument.
+  ELDER ROUTING DEFECT (standing): its SendMessage "team-lead" hits a DEAD inbox (old team
+  session-c0fbdfc4) — ALWAYS POLL ITS TRANSCRIPT (subagents/agent-aelder-standing-3fd49e3017d30ba3.jsonl)
+  after each charge; it also ends turns with full plain-text rulings. Live census 9 = 7 atlas +
+  Case2Delta0 + summit; ~25 fossils await close prune.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
