@@ -14268,3 +14268,43 @@ outputs (the read, Gap B verbatim, L3 fan design) with 2 lanes dormant on it. AC
 Carto flags routed to the elder: compass 5→8 axes; the Geo* tension owed before the L7 build. Close-phase
 note banked: L3T2/L4B/L4C carry unmerged work (ahead 3-4, behind 14-47) — a rebase/integration pass owed.
 AWAITING: the elder's math half of the read (+ Gap B verbatim first), pnp-transport's ε-certificate.
+
+## 2026-07-23 ~03:40 UTC — ELDER's read + Gap B FINAL: the cap is SHEAR-DEPENDENT; hhomog-subsume RETRACTED; render lanes re-opened
+
+The elder (fresh convening, re-derived not recalled) delivered BOTH: the Gap B finalization + the
+operator's math half of the high-level read. Banked verbatim at threads/L3T/gapB-verbatim-elder.md
+(+ evidence threads/L3T/verify/gapb_check.py, re-runs exit 0).
+
+GAP B FINAL (changes the render): (a) base over LAYERCOORDS confirmed symbolically over 6 dimension
+vectors (blockCoords fails exactly when widthMinUpto bites; witness d=![1,2,1] layer 1). (b) THE
+DECORRELATED FINDING (Codex, threads/L3T/codex/gapB-cap-answer.md): the CAP is SHEAR-DEPENDENT — at a
+δ=1 clear the strict transform of y₀x₀+y₁x₁ is r = y₀+v·y₁ (reads the OVER-CAP column); the basis
+change restoring capped support is EXACTLY edgeShearRaw/canonShearOf (baked in foldResid:454). And
+homogeneity ⊥ cap (logically independent: f=y₁ vs f=y₀²). So "shear+pivot-independent" was right for
+the HOMOGENEITY only. (c) the cap cannot be dodged (realBranch_cover PROVEN needs capped supportAt).
+RULING: Deg1SupportedSlot already splits the concerns — keep split. foldResid_layerHomogeneous
+(layerCoords/he_lin/non-terminal) discharges conjunct-2 ONLY; the CAP-descent = a SEPARATE
+SHEAR-CONSUMING frontier lemma (part of the WALL's re-factoring content — "whether canonShearOf's
+value confines at coupled corank≥2 IS the wall; do not disguise it"). The hslot→hhomog SUBSUME IS
+RETRACTED — the step consumes BOTH. Verbatim forms (HomogeneousDeg1On + X=∅ guard note, coreGen_
+layerHomogeneous, foldResid_layerHomogeneous, the append restatement) ready for arch-C.
+
+CONVERGENCE NOTE: the cap-descent (append's conjunct-1) and boostReady's ChainNF transport are now
+recognized as the SAME shear-confinement mechanism class — pnp-transport's Aoyagi pp.18-21 elaboration
+(it has been consulting the elder directly: window-discriminator RATIFIED, descend STANDS, Item B 4
+rulings — visible in the elder's send log) serves BOTH frontier obligations. The wall's content is
+now honestly concentrated in ONE mechanism: canonShearOf-confinement at coupled corank≥2.
+
+RE-OPENED LANES: arch-C (fresh #2) rendering the Gap B statement bake from the banked verbatim (NO
+hypothesis-swap — the retraction; visibility/cycle check; payoff isolation; staging → my gate + elder
+delta-read). seat-L3T2 (fresh #2) verifying its banked state + waiting on the bake to prove the
+homogeneity + restate append (cap = named frontier sorry unless the verbatim supplies its statement).
+
+ELDER's READ (math half; carto's landed earlier): NO drift from the paper (objects = Aoyagi's Cases-1&2
+transcribed; typo-ledger = genuine source-tracking; the Gap-B episode = the fidelity gate WORKING).
+Owed ledger honest + small (O2 = the 8 leaves + THE WALL is the only real frontier; no hidden monuments
+beyond the two known cites). Trajectory: the sea rises, BUT the 4 boostReady re-scopes + the cap
+mis-stated twice = OVER-ENGINEERING THE ENCODING signal — recommendation: hold the "one construction
+pin + derived lemmas" line, RESIST PREDICATE PROLIFERATION (adopted as standing controller guidance).
+Payoff caution kept honest: rlct=½·codim stays CITED until the wall lands. ρ-seam faithful + correctly
+deferred. Full read banked in the verbatim file.
