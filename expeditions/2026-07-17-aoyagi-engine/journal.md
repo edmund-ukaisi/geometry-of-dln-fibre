@@ -12757,3 +12757,94 @@ proposes; the L8 swap mini-round becomes the Assembly's first increment.
 Board: hpos delta-read RUNNING (elder mid-read since 12:06); seat-L3T2 lane-1 proof prepped
 against a local hpos'd copy (instant close on the bake); seat-L4 on case11 (Codex-first);
 seat-L6 at ONE sorry; FoldRealizes ruling queued.
+
+## 2026-07-22 ~16:20 UTC — hpos BAKED (0f8310b1a); FoldRealizes ruling LOCKED (clause, exact text); (B′) adopted; render lane → collapse round
+
+**hpos bake integrated + pushed (0f8310b1a):** elder delta-read OK ("exactly my ruling — a clean
++2"); gate green; census 39 unchanged. seat-L3T2 WOKEN to land its prepped terminal_edgeδ proof
++ the terminal-leaf re-wire (the elder's soundness note relayed: closing with hpos ALONE is the
+validation; anything more = stop-on-suspect again).
+
+**The FoldRealizes ruling was ALREADY LOCKED in two elder texts my last-message polls skipped
+(11:58 + 12:02) — poll-discipline note: scan the tail WINDOW, not the last message.** The
+ruling: **(A) outcome-equation as a THIRD CLAUSE on FoldRealizes**, exact Lean text authored
+(|jacDet (gmap c) u| = jacWeight (jac c) u, EXACT — unit ≡ 1 — ALL u). The taste tension
+resolved head-on: atlas.jac is already geometrically pinned (hjac_tie + jexp = |center|−1), so
+the clause is a PROVABLE EQUATION whose discharge is L5's (★)-telescoping (chain rule + hσ_jac +
+clause-III pivot-preservation + hjac_tie) — the srcBox seam becomes a NAMED L5 OBLIGATION, not a
+hidden gap; (B)'s per-step correspondence stays L5-internal. seat-L6's consumer-agnostic
+chart_of_collapse was cited as DECISIVE for outcome-over-correspondence (the correspondence
+would be dead interface surface). L6's signature gains (hreal : FoldRealizes …) in the same
+round (L7's pattern; the driver already holds it).
+
+**(B′) primed-drivers assembly ADOPTED** (arch-C's architect call, my sign-off): MonumentAssembly
+.lean downstream, primed statement-identical drivers, anchor-diff hard gate, sorryAx sources
+shrink with zero MonumentAtlas edits; renderer = the RENDER SEAT (decorrelation kept strict —
+arch-C endorsed: the render↔gate split caught a defect every round it ran). SUMMIT-RETIRE
+entered in the owed-register (elder-blessed one-shot cleanup; preconditions listed). Render lane
+sequence: collapse round (GO sent with the verbatim clause) → Assembly first increment.
+
+## 2026-07-22 ~16:40 UTC — seat-L4's two wall findings: multiAffine NODE-form (elder-routed) + case11's true depth (path-invariant)
+
+**FINDING A (sufficiency defect, caught PRE-consumer):** realBranch_multiAffine's EDGE-form can
+only yield the PARENT residual — it can never discharge the wall's conjunct-2 or Case2Wire's
+conjB (both need the CHILD's Deg1SupportedSlot). seat-L4's proposed NODE-form
+(realBranch_multiAffine_node over any p.IsRealBranch) subsumes both as one-liners; zero
+consumers today so the restatement is free. ELDER-ROUTED (its own micro-round after the
+collapse round) with my quantification-strength flag: the node form asserts the slot property
+at EVERY real-branch node — the elder checks it against C2/no-descent + the ∀ℓ-threshold
+lesson. hpos carryover + old-shape retirement + exact text = the elder's. Process held: seat-L4
+asked to mint in MonumentAtlas; corrected — statement changes go through the render lane; the
+proposal WAS the mint.
+
+**FINDING B (the wall's true heart, honestly scoped):** case11-δ=1 conjunct-1 is NOT a wire-up.
+seat-L4 worked the obstruction: the naive witness q' = q∘Bu forces vanishing at u_pivot = 0, but
+Bu only zeroes the PARTIAL center while case11's residual reads the FULL layer block — generically
+nonzero. The only escape is real: foldB ALREADY CARRIES the birth-pivot factor (case11's pivot =
+divBirthCoord[mergeIdx], the corner born at an earlier δ=1 clear) — PATH-HISTORY, reachable via
+the recursive p.IsRealBranch, not the one-step hinv. Needs a genuine inductive path-invariant
+("for a real branch, foldB carries each cleared birth-corner factor" — DivBirthInv at the fold
+level). Decorrelated Codex xhigh consult running; the statement comes to the elder as its own
+ruling. Sub-monument scope named plainly — and FAITHFUL to Aoyagi (the reused exceptional divisor
+IS the earlier blow-up's coordinate). This is the pivot-provides mechanism completing its arc:
+predicted by the discriminator round, now getting its formal form.
+
+Render lane: collapse round rendering; multiAffine node-form queued behind it; Assembly first
+increment after. The wall's remaining structure is now FULLY MAPPED: node-form (A) + the
+path-invariant (B) + the dispatch-skeleton closed edit.
+
+## 2026-07-22 ~17:00 UTC — NODE-FORM RULING: full adoption + the deeper point (inductable shape, weakest hypothesis)
+
+The elder ruled Finding A with three checks, all pass: (1) the ∀-node strength is SOUND — the
+node-form is the FoldStepInvAt degree-1 conjunct restricted to reachable (real) nodes, asserting
+nothing at non-real nodes; (2) it KEEPS the per-node supportLayerOf threshold (no reversion to
+the refuted ∀ℓ shape) and is consistent with Codex C2 no-descent (at a case11 boost, degree-1 on
+the non-descending supportAt(S)); (3) — the deeper point — the node-form is the INDUCTABLE shape
+(node → node supports the fold induction; the edge-form's dangling ed did not) AND the weakest
+sufficient hypothesis (foldResid p depends only on p; the edge-form dragged an irrelevant child
+edge). So seat-L4's fix is simultaneously correct-shape, weakest-that-suffices, and inductable.
+hpos carries (the empty-support argument transfers verbatim). The edge-form DELETES in the same
+diff — no tombstone (zero consumers, never wired); the name realBranch_multiAffine stays (sole
+form). Exact Lean text authored; relayed VERBATIM to arch-C for the micro-round after the
+collapse bakes. Render-lane queue confirmed: collapse (rendering) → node-form → Assembly; the
+case11 path-invariant ruling follows seat-L4's Codex.
+
+## 2026-07-22 ~17:20 UTC — LANE 1 INTEGRATED (terminal chain complete); collapse staging 69c4caaa0 delta-read triggered
+
+**seat-L3T2 lane 1 merged (9e40fbf29):** realBranch_terminal_edgeδ CLOSED **with hpos alone**
+(the elder's soundness criterion satisfied exactly — no hN needed; the proof mirrors
+OracleInv_conOracle_stepChildren for the only-rollover-advances reduction) +
+terminal_edge_stepInv PROVED (δ=1 corner dead via the closed stub; δ=0 main = the predecessor's
+proved body re-homed; the Fin-1 quotient + born-terminally generator from hgen). Both
+force-elaborated CLEAN-THREE; census 39 → 37; the wiring-regression example + L5's reference
+still elaborate. **FOUR of six derived stubs now CLOSED** (centerPin, cover, descendView,
+terminal_edgeδ) + the TERMINAL TRANSPORT CHAIN is complete: lastLayer → terminal_edge →
+terminal_bezout has its middle link, and the elder's rider obligation (canonCenter round, task
+#41) is DISCHARGED. Tasks #41/#64/#65 closed. seat-L3T2 → lane 4 (consume-fit + dedupe), its
+last.
+
+**Collapse staging 69c4caaa0 delta-read TRIGGERED** (controller-verified raw diff: the clause +
+comment character-identical; L6 hreal; the driver call-site — three edits exactly; arch-C
+re-gate PASS, consumers build-confirmed insulated). On OK: integrate → seat-L6's ONE-LINE
+landing. Render-lane queue: collapse (delta-read) → multiAffine node-form (text held ready) →
+Assembly first increment. Poll-discipline fix applied: tail WINDOW, not last message.

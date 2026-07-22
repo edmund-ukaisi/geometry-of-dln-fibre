@@ -323,3 +323,15 @@ speculation FLAGGED as speculation; the flagged half was corrected cheap (chain,
 the next battery; the equality demand now rests on two named lemmas (chain-height UPPER +
 ATTAINMENT) with kill-sets. Hypothesis → confirmation → refinement-at-flag-cost → named lemma
 pair: K4-transfer working as designed.
+
+## SUMMIT-RETIRE (opened 2026-07-22, the (B′) assembly adoption) — elder-blessed cleanup at the final wiring
+
+When LearningCoefficient's final wiring swap consumes the PRIMED MonumentAssembly drivers
+(exists_atlasRealizesExponents' / exists_coreResolution_via_monument'), retire in ONE cleanup:
+MonumentAtlas's sorried leaf-statement copies whose proofs live in the wire modules
+(LeafGeometryWire L8, Case2Wire case2, the future case1/L5/L6/L7 wires) + the unprimed
+MonumentAtlas drivers. Preconditions: (i) the elder BLESSES the retire diff (statement deletions
+= its object layer); (ii) anchor-diff evidence that each primed statement was char-identical to
+its retired twin; (iii) AxCheck roots re-pointed to the primed names IN THE SAME COMMIT; (iv)
+census + cordon + full build green after. Owner: arch-C designs the retire diff, render seat
+applies, controller integrates. DO NOT retire piecemeal — one cleanup, at the summit.
