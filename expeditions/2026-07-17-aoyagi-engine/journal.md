@@ -14210,3 +14210,18 @@ trigger / fan design) land.
 LESSONS (banked to memo): continuity lives in durable artifacts + PUSHED branches, never transcripts —
 push checkpoints early (the skeleton survived only because the seat committed locally; the push is now
 part of the gate ask). The old elder transcript-poll path is STALE; the fresh elder may route normally.
+
+## 2026-07-23 ~02:20 UTC — seat-L4C #2 verified: option-B ALREADY banked in 67293aa3c; holding for the certificate
+
+seat-L4C (fresh #2) verified the -L4C branch state and corrected a stale step in my re-spawn brief: the
+OPTION-B boundary shape was ALREADY embodied in the banked skeleton — the predecessor applied it before
+its final commit. Concretely in 67293aa3c: ChainCompat.boundary returns `BoostSplit (foldResid) ed.center`
+(the RAW α/β payload, Case1Wire:592-601), and the wiring realBranch_boostReady_case11 (:718-732) applies
+deg1SupportedOn_of_boostSplit — i.e. boostReady = deg1SupportedOn_boostForm ∘ boundary ∘
+isRealBranch_chainNF, exactly the gate verdict. Nothing to commit.
+
+Its re-derived footprints MATCH expectation exactly: isRealBranch_chainNF / deg1SupportedOn_boostForm /
+deg1SupportedOn_of_boostSplit clean-three; realBranch_boostReady_case11 + chainCompat_holds carry sorryAx
+ONLY via chainCompat_holds (:701). Build green (8452). So the wall's-heart state is: outer shape proven +
+option-B wired + ONE structured obligation, awaiting pnp-transport's ε-transport certificate. seat-L4C
+holds + preps the grind (reading the fold defs behind base/transport/boundary) for a fast pin+grind.
