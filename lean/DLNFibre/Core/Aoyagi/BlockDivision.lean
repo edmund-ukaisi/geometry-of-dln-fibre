@@ -30,24 +30,97 @@ coordinate `w ↦ w j` on the other center members. Pins the exact division
 def blockBlowupCoordQuot (p : Fin D) (j : Fin D) : (Fin D → ℝ) → ℝ :=
   fun w ↦ if j = p then 1 else w j
 
-/-- **The exact division (center coordinate).** For a center member `j ∈ S`, the pulled-back
-coordinate factors as `w_p · quot`, EXACTLY (polynomial quotient, no localization). -/
-theorem blockBlowupMap_center_eq (S : Finset (Fin D)) (p : Fin D) {j : Fin D} (hj : j ∈ S)
-    (w : Fin D → ℝ) :
-    blockBlowupMap S p w j = w p * blockBlowupCoordQuot p j w := by
-  unfold blockBlowupMap blockBlowupCoordQuot
+/-! ## M9 — the exact-division algebra over a general commutative semiring (upstream-grade)
+
+The exact-division content needs no `ℝ`: the block-center map and its center-coordinate quotient are
+defined over any carrier with `*`/`1`, and the factoring identities hold over the weakest commutative
+setting the arithmetic uses — `MulOneClass` for the pointwise equalities, `CommSemiring` for the
+sum-combination identities. It is EXACT division (a factoring `x = w_p · quot`), so NO inversion is
+used (no `Field`), and NO subtraction (no `CommRing` — `CommSemiring` suffices). The `ℝ` atoms below
+are recovered as the `R := ℝ` specializations by a definitional (`rfl`) bridge: `blockBlowupMapGen`
+and `blockBlowupCoordQuotGen` reduce to `blockBlowupMap`/`blockBlowupCoordQuot` at `R := ℝ`. -/
+
+/-- The block-center blow-up over a general multiplicative carrier `R` (`Mul` suffices): pivot
+`p ↦ w_p`; other center coordinates `j ∈ S ↦ w_p · w_j`; spectators `j ∉ S` fixed. The `ℝ`
+`blockBlowupMap` is the `R := ℝ` instance (`rfl`). -/
+def blockBlowupMapGen {R : Type*} [Mul R] (S : Finset (Fin D)) (p : Fin D) :
+    (Fin D → R) → (Fin D → R) :=
+  fun w j ↦ if j = p then w p else if j ∈ S then w p * w j else w j
+
+/-- The exact center-coordinate quotient over a general carrier `R` (`One` suffices): `1` at the
+pivot, the bare coordinate elsewhere. The `ℝ` `blockBlowupCoordQuot` is the `R := ℝ` instance. -/
+def blockBlowupCoordQuotGen {R : Type*} [One R] (p : Fin D) (j : Fin D) : (Fin D → R) → R :=
+  fun w ↦ if j = p then 1 else w j
+
+/-- **General exact division (center coordinate)** — over any `MulOneClass`: a center member
+`j ∈ S` pulls back with the exact pivot factor `w_p`, no localization. -/
+theorem blockBlowupMapGen_center_eq {R : Type*} [MulOneClass R] (S : Finset (Fin D)) (p : Fin D)
+    {j : Fin D} (hj : j ∈ S) (w : Fin D → R) :
+    blockBlowupMapGen S p w j = w p * blockBlowupCoordQuotGen p j w := by
+  unfold blockBlowupMapGen blockBlowupCoordQuotGen
   by_cases hjp : j = p
   · simp [hjp]
   · simp [hjp, hj]
 
+/-- **General spectator invariance** — over any `Mul` carrier: a non-center coordinate does NOT gain
+the pivot factor, so `{w_p = 0}` is exactly the center-block exceptional locus. -/
+theorem blockBlowupMapGen_spectator_eq {R : Type*} [Mul R] (S : Finset (Fin D)) {p : Fin D}
+    (hp : p ∈ S) {j : Fin D} (hj : j ∉ S) (w : Fin D → R) :
+    blockBlowupMapGen S p w j = w j := by
+  have hjp : j ≠ p := fun h ↦ hj (h ▸ hp)
+  unfold blockBlowupMapGen
+  simp [hjp, hj]
+
+/-- **General witness-law division (center-supported combination)** — over any `CommSemiring`: a
+combination `∑ a, cₐ · (center coord kₐ)` pulls back to `w_p · (∑ a, cₐ · quot(kₐ))`, EXACTLY. -/
+theorem blockBlowupMapGen_center_comb_eq {R : Type*} [CommSemiring R] {n : ℕ} (S : Finset (Fin D))
+    (p : Fin D) (c : Fin n → (Fin D → R) → R) (k : Fin n → Fin D) (hk : ∀ a, k a ∈ S)
+    (w : Fin D → R) :
+    (∑ a, c a (blockBlowupMapGen S p w) * (blockBlowupMapGen S p w) (k a))
+      = w p * ∑ a, c a (blockBlowupMapGen S p w) * blockBlowupCoordQuotGen p (k a) w := by
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun a _ ↦ ?_)
+  rw [blockBlowupMapGen_center_eq S p (hk a)]
+  ring
+
+/-- **General FIX-A center division** — blow-up outermost ∘ a pivot-keeping shear, over
+`MulOneClass`: the pivot factor is structural for ANY `sh` with `sh u p = u p`. -/
+theorem blockBlowupMapGen_shear_center_eq {R : Type*} [MulOneClass R] (S : Finset (Fin D))
+    (p : Fin D) {j : Fin D} (hj : j ∈ S) (sh : (Fin D → R) → (Fin D → R))
+    (hsh_pivot : ∀ u, sh u p = u p) (u : Fin D → R) :
+    blockBlowupMapGen S p (sh u) j = u p * blockBlowupCoordQuotGen p j (sh u) := by
+  rw [blockBlowupMapGen_center_eq S p hj (sh u), hsh_pivot u]
+
+/-- **General FIX-A residual division** (strict transform at the residual level) — over
+`CommSemiring`: the exact `/u_p` division for a center-supported residual, ANY pivot-keeping shear. -/
+theorem blockBlowupMapGen_shear_center_comb_eq {R : Type*} [CommSemiring R] {n : ℕ}
+    (S : Finset (Fin D)) (p : Fin D) (c : Fin n → (Fin D → R) → R) (k : Fin n → Fin D)
+    (hk : ∀ a, k a ∈ S) (sh : (Fin D → R) → (Fin D → R)) (hsh_pivot : ∀ u, sh u p = u p)
+    (u : Fin D → R) :
+    (∑ a, c a (blockBlowupMapGen S p (sh u)) * blockBlowupMapGen S p (sh u) (k a))
+      = u p * ∑ a, c a (blockBlowupMapGen S p (sh u)) * blockBlowupCoordQuotGen p (k a) (sh u) := by
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun a _ ↦ ?_)
+  rw [blockBlowupMapGen_shear_center_eq S p (hk a) sh hsh_pivot]
+  ring
+
+/-! ## The `ℝ` atoms — recovered as `R := ℝ` specializations (statements byte-identical) -/
+
+/-- **The exact division (center coordinate).** For a center member `j ∈ S`, the pulled-back
+coordinate factors as `w_p · quot`, EXACTLY (polynomial quotient, no localization). `R := ℝ`
+instance of `blockBlowupMapGen_center_eq`. -/
+theorem blockBlowupMap_center_eq (S : Finset (Fin D)) (p : Fin D) {j : Fin D} (hj : j ∈ S)
+    (w : Fin D → ℝ) :
+    blockBlowupMap S p w j = w p * blockBlowupCoordQuot p j w :=
+  blockBlowupMapGen_center_eq S p hj w
+
 /-- **Spectators are unchanged** (elder W2): a non-center coordinate does NOT gain the pivot factor,
-so the pivot hyperplane `{w_p = 0}` is exactly the center-block exceptional locus. -/
+so the pivot hyperplane `{w_p = 0}` is exactly the center-block exceptional locus. `R := ℝ` instance
+of `blockBlowupMapGen_spectator_eq`. -/
 theorem blockBlowupMap_spectator_eq (S : Finset (Fin D)) {p : Fin D} (hp : p ∈ S) {j : Fin D}
     (hj : j ∉ S) (w : Fin D → ℝ) :
-    blockBlowupMap S p w j = w j := by
-  have hjp : j ≠ p := fun h ↦ hj (h ▸ hp)
-  unfold blockBlowupMap
-  simp [hjp, hj]
+    blockBlowupMap S p w j = w j :=
+  blockBlowupMapGen_spectator_eq S hp hj w
 
 /-- The exact quotient is continuous. -/
 theorem continuous_blockBlowupCoordQuot (p j : Fin D) :
@@ -80,11 +153,8 @@ division of the witness law, no localization. The quotient `∑ a, (cₐ∘σ)·
 theorem blockBlowup_center_comb_eq {n : ℕ} (S : Finset (Fin D)) (p : Fin D)
     (c : Fin n → (Fin D → ℝ) → ℝ) (k : Fin n → Fin D) (hk : ∀ a, k a ∈ S) (w : Fin D → ℝ) :
     (∑ a, c a (blockBlowupMap S p w) * (blockBlowupMap S p w) (k a))
-      = w p * ∑ a, c a (blockBlowupMap S p w) * blockBlowupCoordQuot p (k a) w := by
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl (fun a _ ↦ ?_)
-  rw [blockBlowupMap_center_eq S p (hk a)]
-  ring
+      = w p * ∑ a, c a (blockBlowupMap S p w) * blockBlowupCoordQuot p (k a) w :=
+  blockBlowupMapGen_center_comb_eq S p c k hk w
 
 /-- **Continuity of the divided-residual quotient** — the child `StepInv` quotient
 `∑ a, (cₐ∘σ)·quot(kₐ)` is `ContinuousOn` the child region when the coefficients `cₐ` are
@@ -115,8 +185,8 @@ enabler of the elder's FIX-A + FIX-RESID: the strict-transform residual `(resid�
 `sh u p = u p`. (The pivot factor is structural — one line from `blockBlowupMap_center_eq`.) -/
 theorem blockBlowupMap_shear_center_eq (S : Finset (Fin D)) (p : Fin D) {j : Fin D} (hj : j ∈ S)
     (sh : (Fin D → ℝ) → (Fin D → ℝ)) (hsh_pivot : ∀ u, sh u p = u p) (u : Fin D → ℝ) :
-    blockBlowupMap S p (sh u) j = u p * blockBlowupCoordQuot p j (sh u) := by
-  rw [blockBlowupMap_center_eq S p hj (sh u), hsh_pivot u]
+    blockBlowupMap S p (sh u) j = u p * blockBlowupCoordQuot p j (sh u) :=
+  blockBlowupMapGen_shear_center_eq S p hj sh hsh_pivot u
 
 /-- **FIX-A residual division** (the strict transform at the residual level) — a center-supported
 residual `∑ a, cₐ·(coord kₐ)` (`kₐ ∈ S`) pulls back through `blockBlowupMap S p ∘ sh` (blow-up
@@ -126,10 +196,7 @@ theorem blockBlowup_shear_center_comb_eq {n : ℕ} (S : Finset (Fin D)) (p : Fin
     (c : Fin n → (Fin D → ℝ) → ℝ) (k : Fin n → Fin D) (hk : ∀ a, k a ∈ S)
     (sh : (Fin D → ℝ) → (Fin D → ℝ)) (hsh_pivot : ∀ u, sh u p = u p) (u : Fin D → ℝ) :
     (∑ a, c a (blockBlowupMap S p (sh u)) * blockBlowupMap S p (sh u) (k a))
-      = u p * ∑ a, c a (blockBlowupMap S p (sh u)) * blockBlowupCoordQuot p (k a) (sh u) := by
-  rw [Finset.mul_sum]
-  refine Finset.sum_congr rfl (fun a _ ↦ ?_)
-  rw [blockBlowupMap_shear_center_eq S p (hk a) sh hsh_pivot]
-  ring
+      = u p * ∑ a, c a (blockBlowupMap S p (sh u)) * blockBlowupCoordQuot p (k a) (sh u) :=
+  blockBlowupMapGen_shear_center_comb_eq S p c k hk sh hsh_pivot u
 
 end DLNFibre.Core.Aoyagi

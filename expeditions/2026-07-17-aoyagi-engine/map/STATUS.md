@@ -8,10 +8,10 @@ updated: 2026-07-21
   ★ object-b [stated] Object B: the product-ideal resolution atlas exists (coupled corank≥2) — THE frontier
   ★ object-c [proven] Object C: monomial-ideal RLCT = min (h+1)/(2k) under DivChain (S2 boxed rule) — PROVEN
   ★ object-d [proven] Object D: codim = minAdm = cCodim = qipMin, θ, perm-invariance — BANKED
+  ★ object-e [stated] Object E: analytic order ρ — OPENED-SCOPED (operator 2026-07-21); combinatorial half in build
   ★ b-value-cov [proven] monument 1: atlas CoV + engine value chain 2·rlctAt = divisorMin = cCodim — PROVEN
-  ★ b-leaf2-blowup-atlas [proven] leaf 2: the universal general-D origin blow-up Resolution — PROVEN (the shared atom)
+  ★ b-principalinv [frozen] PrincipalInv + StepInv: the path invariants (divisibility along the recursion; principality BORN terminally)
   ★ corollary-reduction [proven] the corollary reduction: rlctGlobal(lossDLN) = rlctAt(∑coreGenᵢ²) 0 — PROVEN
-  ★ kill-cite [conjectured] DELETE cited_aoyagi_lower_ax — the charter kill-target (close-phase)
 
 ## roots (6) — 12 open nodes below
   ◦ aoyagi-summit [stated] summit: rlctGlobal(lossDLN d 0) = cCodim/2, via the engine (corollary/test)

@@ -51,7 +51,11 @@ theorem toMatrix'_blowupDeriv (i : Fin D) (w : Fin D → ℝ) (a c : Fin D) :
     simp [blowupDeriv, Pi.single_apply]
   · simp [blowupDeriv, Pi.single_apply, ha]
 
-/-- **The universal Jacobian determinant** `jacDet (blowupMap i) w = (w i)^(D-1)` (`2 ≤ D`). -/
+/-- **The universal Jacobian determinant** `jacDet (blowupMap i) w = (w i)^(D-1)` (`2 ≤ D`). This is
+the `S = univ` instance of the block-center form (`BlockBlowup.jacDet_blockBlowupMap`); the `2 ≤ D`
+hypothesis is REDUNDANT — see `BlockBlowup.jacDet_blowupMap_unconditional`, which proves the same law
+for ALL `D` and supersedes this in generality. Kept here (self-consumed by `blowupChart`; an `AxCheck`
+root) with its signature unchanged. -/
 theorem jacDet_blowupMap (hD : 2 ≤ D) (i : Fin D) (w : Fin D → ℝ) :
     jacDet (blowupMap i) w = (w i) ^ (D - 1) := by
   unfold jacDet

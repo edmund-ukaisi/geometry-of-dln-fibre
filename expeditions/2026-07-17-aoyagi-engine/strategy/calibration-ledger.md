@@ -847,3 +847,24 @@ parent liveness by fold induction) — fix (a) costs the consumer essentially no
 the elder's "dischargeable by construction" and removing the last pricing uncertainty on the
 guards half of the locked round. The guard remains genuinely load-bearing on the FREE TreeEdge
 (the defect was real); it is only its supply that is cheap.
+
+## 2026-07-22 tick — Q: exact live sorry census on the value path?
+
+**Expectation (written first, conf ~70%):** exactly 9 — 8 leaves all inside MonumentAtlas.lean +
+the 1 summit sorry (LearningCoefficient.lean:287); no strays in merged modules; raw census ≈ live
+census.
+
+**Actual (scripts/sorries):** raw census = 34 sorries across 19 files. LIVE cone = 9 ✓ — but
+distributed 7 in MonumentAtlas + 1 in Case2Delta0.lean (the δ=0 leaf lives in its OWN module, task
+#19) + 1 summit. And ~25 FOSSIL tokens I failed to recall: Validate/* 17 (RouteMInteriorLDUContract
+alone 9), Skeleton.lean 3, Engine/{GeoAlphaGauge,ClearableReify} ~2 (+2 comment-only mentions).
+
+**Verdict: HIT on the live total (9), MISS on distribution (Case2Delta0 is a separate cone module,
+not an atlas leaf) and MISS on the fossil load (I conflated "value path" with "the census" — the
+raw number is 3.8× the live number).**
+
+**What it changes:** (1) the close-phase fossil prune is a REAL work item — ~25 tokens / 12 files
+(Validate 17, Skeleton 3, Engine 2+), not "a few stragglers"; queue it explicitly in the close
+checklist. (2) Any "sorry-free" close claim must be cone-aware AND then census-clean after the
+prune — the two numbers converge only at the very end. (3) Post-bake the cone goes 8→10 named;
+the census should read 10+1 live + fossils until the prune.

@@ -470,19 +470,97 @@ theorem foldB_extend_eq (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ)
     foldB d e (p.extend ed) u
       = (u ed.pivot) ^ (if edgeδ d p then 1 else 0) * foldB d e p (stepMap d ed u) := rfl
 
-/-- **The foldState step invariant at a path node, PARAMETRIC in the center `C`** (elder re-statement —
-THE FIX for the fidelity defect). Two conjuncts: (1) a divisibility witness `q` for the accumulated
-`StepInv (coreGen) (foldG p) (foldB p) (foldResid p) q (foldRegion p)`; (2) the residual is CENTER-EXACT
-degree-1 supported on `C` — `Deg1SupportedOn (foldResid p) C (foldRegion p)`. Conjunct (2) is exactly
-what the δ=1 `blockBlowupCoordQuot` strict transform needs (each residual monomial carries EXACTLY one
-center factor) and what the old ideal-membership `hsupp` FAILED to force — `SupportedOn` is monotone in
-the center, so it admitted the over-large `d=![1,2,1]`, `center={0,1,2}` witness where the substitution
-over-divides and the leaf is false. Carried through the fold, not re-established per-node. -/
+/-! ### The multilinear Deg1 family (fix (2) (A), elder-final) — `DeeperMultilinear` coefficients
+
+The invariant's degree-1 support conjunct, in the WEAKEST-THAT-INDUCTS form. The double-division scare
+resolved to a spec erratum (the `∘quotMap` was IDENTITY — FIX-RESID already baked the Let-block renaming,
+so `foldResid` IS the prepared object); the load-bearing change is the COEFFICIENT clause: from
+`IgnoresCoords` (weakest-that-HOLDS, which the c≡1 / `u_i+u_p`-frame countermodels defeat) to
+`DeeperMultilinear` (weakest-that-INDUCTS — the shape the Let-block child re-factoring EXHIBITS). Params
+stay `(C, p)`: the support `C = supportAt S J` is the geometric DESCENDING window (elder ruling 2026-07-22;
+see `supportAt`), and `D⁺ := Cᶜ` (the coefficient-multilinearity window = the support's complement, subsuming
+the discarded two-clock `deeper ∪ shed`). `T`/`D⁺`/`C′` are all `supportAt`-computed; the LEDGER center
+`canonCenter`/`ed.center` is a DIFFERENT object and is untouched. No pivot param, no free `D⁺` param —
+signatures unchanged, so `case1`/transport are NOT re-typed. -/
+
+/-- **The multilinear coefficient clause** (elder FINAL, fix (2) (A)) — the weakest-that-INDUCTS form: a
+Deg1 coefficient `c` is a `D⁺`-linear combination `c u = ∑ d ∈ D⁺, u d · h d u` whose sub-coefficients
+`h d` read ONLY `D⁺` (`IgnoresCoords (h d) D⁺ᶜ`, factoring through the `D⁺`-projection). This is what the
+Let-block child EXHIBITS, so the induction consumes AND emits the same shape (self-propagates by
+RE-FACTORING); the simpler deeper-only+vanishing form only HOLDS. Kills c≡1 (a constant is not
+`D⁺`-linear) and the center-dependent-cofactor trap (`h d` is `D⁺`-only). -/
+def DeeperMultilinear {D : ℕ} (c : (Fin D → ℝ) → ℝ) (Dp : Finset (Fin D)) (V : Set (Fin D → ℝ)) : Prop :=
+  ∃ h : Fin D → (Fin D → ℝ) → ℝ,
+    (∀ d ∈ Dp, IgnoresCoords (h d) Dpᶜ V) ∧
+    (∀ u ∈ V, c u = ∑ d ∈ Dp, u d * h d u)
+
+/-- **Derivation: `DeeperMultilinear ⟹ c 0 = 0`** (vanishing at the origin — each term has the factor
+`(0 : Fin D → ℝ) d = 0`). -/
+theorem DeeperMultilinear.map_zero {D : ℕ} {c : (Fin D → ℝ) → ℝ} {Dp : Finset (Fin D)}
+    {V : Set (Fin D → ℝ)} (h0 : (0 : Fin D → ℝ) ∈ V) (hc : DeeperMultilinear c Dp V) : c 0 = 0 := by
+  obtain ⟨h, _, hsum⟩ := hc
+  rw [hsum 0 h0]; exact Finset.sum_eq_zero fun d _ => by simp only [Pi.zero_apply, zero_mul]
+
+/-- **Derivation: `DeeperMultilinear ⟹ IgnoresCoords c D⁺ᶜ`** (reads only `D⁺`) — on a `V` closed under
+`D⁺ᶜ`-updates (free on the `foldRegion ≡ univ` setting; the M14 region-lock caveat, `IgnoresCoords`
+docstring). Updating a non-`D⁺` coord leaves every `u d` (`d ∈ D⁺`, `d ≠ m`) and every `h d u` (`h d`
+reads only `D⁺`) fixed, so the sum is unchanged. -/
+theorem DeeperMultilinear.ignoresCoords {D : ℕ} {c : (Fin D → ℝ) → ℝ} {Dp : Finset (Fin D)}
+    {V : Set (Fin D → ℝ)}
+    (hVupd : ∀ w ∈ V, ∀ m ∈ Dpᶜ, ∀ t : ℝ, Function.update w m t ∈ V)
+    (hc : DeeperMultilinear c Dp V) : IgnoresCoords c Dpᶜ V := by
+  obtain ⟨h, hh, hsum⟩ := hc
+  intro w hw m hm t
+  rw [hsum _ (hVupd w hw m hm t), hsum w hw]
+  refine Finset.sum_congr rfl fun d hd => ?_
+  have hdm : d ≠ m := fun h => (Finset.mem_compl.mp hm) (h ▸ hd)
+  rw [Function.update_of_ne hdm, hh d hd w hw m hm t]
+
+/-- **The single-slot degree-1 support predicate** (one `j`-slot; anti-felting: one predicate, one audit
+surface). `resid j = ∑_{i∈S} cᵢ·uᵢ` on `V` with coefficients `cᵢ` continuous AND `DeeperMultilinear`
+over `D⁺` (fix (2) (A): the multilinear coeff clause, replacing the raw `IgnoresCoords`). -/
+def Deg1SupportedSlot {D nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (j : Fin nR)
+    (S : Finset (Fin D)) (Dp : Finset (Fin D)) (V : Set (Fin D → ℝ)) : Prop :=
+  ∃ c : Fin D → (Fin D → ℝ) → ℝ,
+    (∀ i, ContinuousOn (c i) V) ∧
+    (∀ u ∈ V, resid j u = ∑ i ∈ S, c i u * u i) ∧
+    (∀ i, DeeperMultilinear (c i) Dp V)
+
+/-- **Layer coordinates** — the flat coords whose decoded layer is EXACTLY `ℓ` (the `tupIdxEquiv`
+layer-decode; bridge-free, Finset-definable from `d` + `ℓ`; `∅` for `ℓ ≥ N`, out of range). Feeds
+`supportAt`. -/
+noncomputable def layerCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) : Finset (Fin (flatDim d)) :=
+  (Finset.univ.filter (fun q : tupIdx d => (q.1.1 : ℕ) = ℓ)).image (tupIdxEquiv d)
+
+/-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22 — the WINNER;
+the two-clock deeper∪shed shape is the DISCARD). The Deg1 support DESCENDS per clear: at `J = 0` it is the
+current matrix layer `S`; once a pivot is cleared (`J ≥ 1`) it descends to layer `S+1` — the deeper block the
+`P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads; at the LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS
+to the born-unit `∅` (no `C^{(S+1)}` to absorb into — terminal collapse, p.19/21).
+
+CONVENTION (elder's anti-off-by-one, transcribed): 0-indexed layers, `S ∈ {0..L}`, `L = N − 1` the last
+matrix-layer index; `S = L ⟺ S + 1 = N` is the born-unit case (0↔1 shift matches the page's 1-indexed `S = L`),
+NO substantive ±1 offset. `supportAt` is the geometric Deg1 SUPPORT and is DISTINCT from the LEDGER center
+`canonCenter S J` (the static layer-`S` carve = the blow-up locus) — different sets; the two-clock's
+conflation of the two is retired. -/
+noncomputable def supportAt (d : Fin (N + 1) → ℕ) (S J : ℕ) : Finset (Fin (flatDim d)) :=
+  if J = 0 then layerCoords d S
+  else if S + 1 < N then layerCoords d (S + 1)
+  else ∅
+
+/-- **The foldState step invariant at a path node, PARAMETRIC in the center `C`** (elder re-statement +
+fix (2) (A)). Two conjuncts: (1) a divisibility witness `q` for the accumulated `StepInv`; (2) the
+residual is degree-1 supported on `C` with `DeeperMultilinear` coefficients over `D⁺ := Cᶜ` (the support's
+complement). Conjunct (2) is what the δ=1 strict transform needs; the MULTILINEAR coefficients are what
+self-propagate (kill c≡1 + the shear-frame + degree-2-Schur countermodels). Carried through the fold; the
+support `C` is `supportAt S J` (elder ruling 2026-07-22 — the geometric DESCENDING window, see `supportAt`),
+`D⁺ = Cᶜ`, both computed from the node's state. -/
 def FoldStepInvAt {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (C : Finset (Fin (flatDim d))) (p : TreePath d) : Prop :=
   (∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
     StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) ∧
-    Deg1SupportedOn (foldResid d e p) C (foldRegion d e p)
+    -- elder ruling 2026-07-22: support `C = supportAt` (geometric, descending); D⁺ = its complement `Cᶜ`
+    (∀ j, Deg1SupportedSlot (foldResid d e p) j C Cᶜ (foldRegion d e p))
 
 /-- **The foldState step invariant** — `∃ C, FoldStepInvAt C p`. Shape → assumed delivery → stated
 obligation: this is the third and final form of the same content — degree-1 was never optional
@@ -491,6 +569,41 @@ the block matrix). -/
 def FoldStepInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) : Prop :=
   ∃ C : Finset (Fin (flatDim d)), FoldStepInvAt d e C p
+
+/-! ### `LastLayerInv` — the last-layer (S=L) mixed invariant (fix (2), elder-final)
+
+At the last layer (`S = L = N − 1`, 0-indexed per the elder's convention), the residual is being CLEARED slot by slot: an uncleared slot is still
+center-linear (`Deg1SupportedSlot`), a cleared slot is a unit (nonvanishing at `0`). `LastLayerInv` is the
+per-slot DISJUNCTION of these two, carried alongside the accumulated `StepInv` divisibility. It admits the
+S=L discriminator that the interior guard `+1 < N` excludes (the 6th, LAYER-terminal-range, severance
+axis) and feeds the re-parented `terminal_edge_stepInv`. -/
+
+/-- **The last-layer (S=L) mixed invariant.** The accumulated `StepInv` divisibility (D), AND a per-slot
+DISJUNCTION: each residual slot is either degree-1 supported (`Deg1SupportedSlot`, an UNcleared slot) OR a
+unit nonvanishing at `0` (a CLEARED slot). The two disjuncts are MUTUALLY EXCLUSIVE on any region `∋ 0`
+(the left ⟹ `resid 0 = 0` via `DeeperMultilinear.map_zero`; unit ⟹ `resid 0 ≠ 0`), so the fully-cleared
+`C = ∅` corner is the all-unit disjunct, no fence needed. `FoldStepInvAt` subsumes into this (all slots
+take the left disjunct — `foldStepInvAt_to_lastLayerInv`); the re-parented `terminal_edge_stepInv`
+consumes it. -/
+def LastLayerInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (C : Finset (Fin (flatDim d))) (p : TreePath d) : Prop :=
+  (∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
+    StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) ∧
+    (∀ j : Fin (foldNR d p),
+      -- elder ruling 2026-07-22: support `C = supportAt` (geometric, descending); D⁺ = its complement `Cᶜ`
+      Deg1SupportedSlot (foldResid d e p) j C Cᶜ (foldRegion d e p) ∨
+        (∃ unit : (Fin (flatDim d) → ℝ) → ℝ,
+          ContinuousOn unit (foldRegion d e p) ∧ unit 0 ≠ 0 ∧
+            ∀ u ∈ foldRegion d e p, foldResid d e p j u = unit u))
+
+/-- **Subsumption (PIN 4 — PROVED rfl-class, never sorried): `FoldStepInvAt ⟹ LastLayerInv`.** Every slot
+takes the degree-1 (left) disjunct; definitional content wears no `sorry` (both consume the same
+`Deg1SupportedSlot` over the derived `D⁺`). -/
+theorem foldStepInvAt_to_lastLayerInv {N : ℕ} (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (C : Finset (Fin (flatDim d))) (p : TreePath d) :
+    FoldStepInvAt d e C p → LastLayerInv d e C p := by
+  rintro ⟨hSI, hDeg1⟩
+  exact ⟨hSI, fun j => Or.inl (hDeg1 j)⟩
 
 /-! ### The fold-realization predicate — combinatorial branch-membership (FIX 2; elder/coordinator (a))
 
@@ -502,7 +615,7 @@ node's state (`ecase`/`child` matched; the child's `esubst` = `runLen`/`mergeIdx
 witness), and the terminal state emits the leaf. It reads NO `center`/`pivot`/`shearφ` — the oracle
 emits none (`ConState` is combinatorial; `StepChild.esubst.localSub = id` placeholder).
 
-**Severance taxonomy — five free-field axes, one exemplar each** (elder guardrail, the L3/L4 note): a
+**Severance taxonomy — nine free-field axes, one exemplar each** (elder guardrail, the L3/L4 note): a
 free field on a quantified structure is a severance axis, so the audit is per-FIELD.
 * CONTENT — the constant / `Σw²` spectator-support residuals — dies by the `foldResid p` pin (no free
   residual to instantiate).
@@ -518,9 +631,34 @@ free field on a quantified structure is a severance axis, so the audit is per-FI
   proof sorried) — see `canonCenterOf` and `leafPath_compactCover`.
 * LAYER — a FREE `ed : TreeEdge` admits `N ≤ ed.nextState.layer` (terminal-reaching), where
   `foldResid (p.extend ed) = fun _ ↦ 1` and `Deg1SupportedOn (const 1) C'` is FALSE, so the L3/L4
-  conclusion is unsatisfiable there (`terminal_deg1_gap`, seat-L4 probe) — dies via fix (a): the
-  guard `ed.nextState.layer < N` on `case1`/`case2_preserves_stepInv` restricts them to the interior
-  step, and `terminal_edge_stepInv` carries the terminal transition (bare unit-residual `StepInv`).
+  conclusion is unsatisfiable there (`terminal_deg1_gap`, seat-L4 probe) — dies via fix (a)/(2): the
+  interior guard `ed.nextState.layer + 1 < N` on `case1`/`case2_preserves_stepInv` restricts them to a
+  strictly-interior step, and `terminal_edge_stepInv` carries the terminal transition (bare unit `StepInv`).
+* LAYER-TERMINAL-RANGE — the S=L discriminator (fix (2), 6th axis): at the LAST layer the case leaves'
+  `Deg1SupportedOn` center-linear residual can no longer hold on a CLEARED slot (the cleared pivot's
+  residual is a unit, nonzero at `0`), so `FoldStepInvAt` is too rigid across the clears — dies via
+  `LastLayerInv`, whose per-slot center-linear ∨ unit disjunction ADMITS the S=L range;
+  `lastLayer_clear_preserves` carries it slot-by-slot (child guard `+ 1 = N`) and the interior guard
+  `+ 1 < N` excludes it from L3/L4.
+* ANCHOR-FORM (fix (2) (A), 7th) — a coefficient `c ≡ 1` (constant) satisfies the raw `IgnoresCoords`
+  (a constant ignores everything) yet does NOT self-propagate (its Let-block child is not center-linear) —
+  the weakest-that-HOLDS trap. Dies at `DeeperMultilinear`: a constant is not `D⁺`-linear (`c 0 = 0`
+  fails, `DeeperMultilinear.map_zero`). The coefficient clause must be weakest-that-INDUCTS.
+* FRAME (fix (2) (A), 8th) — a legal shear `u_i ↦ u_i + u_pivot` (permitted by all four `TreeEdge` shear
+  fields, which forbid WRITING the pivot coord, not READING it) breaks a raw-center Deg1 independently of
+  any coefficient clause. Dies at the `foldResid`-prepared frame (FIX-RESID bakes the Let-block renaming,
+  so `foldResid` is the prepared object) + the `D⁺`-disjointness (`D⁺ = Cᶜ` is disjoint from the support
+  `C` by `disjoint_compl_right`). RENDER CHECKPOINT: whether EVERY pivot-READING shear is absorbed is
+  answered by the preservation proof; a residual pivot-read obstruction returns as a NAMED FINDING (drawer:
+  a pivot-INDEPENDENCE strengthening of the 4th `TreeEdge` field, fidelity-clean per thread-33 §3 — the
+  Schur shears never read exceptional coords). "Fix frames, not fences." (Sub-axis: a function-valued field
+  is audited for what it READS, not only what it WRITES.)
+* DEGREE-2 SCHUR (fix (2) (A), 9th regression witness) — the raw child residual carries the `C21·C12`
+  cross-term, which is DEGREE-2; a raw / entry-level `SupportedOn` weakening FAILS against it (guards the
+  over-division boundary). The `C21·C12` is a `u_pivot`-carrying residue `DeeperMultilinear` cannot absorb
+  (`u_pivot` is exceptional, NOT deeper), and the Schur complement subtracts EXACTLY it — so the Schur is
+  not bookkeeping, it is the MULTILINEARITY-RESTORATION step (it re-expresses the degree-2 residual in the
+  `D⁺`-multilinear form the invariant carries).
 -/
 
 /-- The construction decision at a state terminates emitting leaf `l` (combinatorial leaf-match). -/
@@ -640,9 +778,9 @@ The FOURTH — the CENTER-axis severance — is the one that bit: `ed.center` is
 the leaf `∀`-ranges over ALL centers, and the round-5 `hsupp = SupportedOn` (ideal membership) is
 MONOTONE in the center, admitting over-large ones for which the δ=1 substitution over-divides — the
 CONFIRMED fidelity defect (rev-rungc-fidelity 2026-07-21; machine-checked witness in the L4 docstring).
-It is FIXED by the elder re-statement: the leaves carry `FoldStepInvAt ed.center p`, whose
-`Deg1SupportedOn` conjunct forces the residual center-EXACT degree-1 (each monomial has EXACTLY one
-center factor). That EXCLUDES the bad `{0,1,2}` and admits the construction's layer center, so the δ=1
+It is FIXED by the elder re-statement: the leaves carry `FoldStepInvAt (supportAt(parent)) p`, whose
+`Deg1SupportedSlot` conjunct forces the residual degree-1 on the geometric support (each monomial has EXACTLY
+one support factor). That EXCLUDES the bad `{0,1,2}` and pins the support to `supportAt`, so the δ=1
 `blockBlowupCoordQuot` substitution equals the strict transform. Degree-1 is a CARRIED invariant (a
 `FoldStepInvAt` conjunct each leaf preserves), NOT deferrable proof content — the (A′) "no-obligation"
 framing was falsified and retired.
@@ -663,35 +801,45 @@ a case-1/case-2 edge CAN reach terminal (`isCase1`/`isCase2` do not constrain `n
 `N=1` a case-2 edge is terminal at once) — and THERE `Deg1SupportedOn (fun _ ↦ 1) C'` is FALSE (const 1
 is not degree-1), so the leaf conclusion `∃ C', FoldStepInvAt C' (p.extend ed)` is UNSATISFIABLE. Hence
 the earlier "terminal branch is vacuous" was WRONG (seat-L4 probe, the LAYER-axis severance witness): the
-case leaves REQUIRE the guard `ed.nextState.layer < N`, and the interior→terminal transport is a SEPARATE
-leaf, `terminal_edge_stepInv` (bare unit-residual `StepInv`, then `terminal_bezout` upgrades at L5). The
-earlier `Fin.snoc` case-2 append is subsumed — full-width until the terminal collapse. -/
+case leaves REQUIRE the interior guard `ed.nextState.layer + 1 < N` (fix (2), addition-form; strictly
+interior). The layer partition is EXHAUSTIVE (PIN 1): interior `+ 1 < N` (L3/L4), the S=L clears
+`+ 1 = N` (`lastLayer_clear_preserves`, over `LastLayerInv`), and the terminal transition
+`N ≤ nextState.layer` (`terminal_edge_stepInv` — bare unit-residual `StepInv`, then `terminal_bezout`
+upgrades at L5). The earlier `Fin.snoc` case-2 append is subsumed — full-width until the terminal
+collapse. -/
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). The
 false-as-stated `hsupp` (ideal-membership, monotone in the center) is RETIRED; the fidelity fix is the
-carried `FoldStepInvAt ed.center p` hypothesis — its `Deg1SupportedOn` conjunct forces the residual to
-be center-EXACT degree-1 at the edge's own center, excluding the over-large centers that refuted the
-prior statement. The child re-factors in the child center `C'` (the wall's re-factoring content). WEAKEST
+carried `FoldStepInvAt (supportAt(parent)) p` hypothesis — its `Deg1SupportedSlot` conjunct forces the
+residual degree-1 on the geometric support `supportAt`, excluding the over-large centers that refuted the
+prior statement. The child re-factors on the child support `C′ = supportAt(child)` (the wall's re-factoring
+content); the LEDGER center `ed.center` is a separate division object. WEAKEST
 HYPOTHESES (elder trim): NO `he0`/`he_lin` — the child's S3 vanishing is inherited from `hinv` via
 `stepMap_zero`, the step divisibility is pullback-structural, and the degree-1 support is CONSUMED (not
-proved) from `hinv` (root-anchored linearity stays on L5). -/
+proved) from `hinv` (root-anchored linearity stays on L5). **C′ — PINNED-COMPUTED (elder ruling
+2026-07-22):** the `∃ C'` UPGRADES to the pinned value `C′ = supportAt(child state)` — the descend from the
+parent support `supportAt(parent)` (`hinv`) to the child's, so `D⁺ = C′ᶜ` grows by the block the `P`-cofactor
+`C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads. `T = center∖pivot` is RETIRED as the support (the two-clock is the
+DISCARD); the LEDGER center `ed.center`/`canonCenter` stays a separate object, untouched. See `supportAt`. -/
 @[blueprint]
 theorem case2_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
-    (hlayer : ed.nextState.layer < N)
-    (hinv : FoldStepInvAt d e ed.center p) :
-    ∃ C' : Finset (Fin (flatDim d)), FoldStepInvAt d e C' (p.extend ed) := by
-  -- map: B-L3-case2-preserves-stepInv (foldState; block-center append, δ off the state; Deg1 carries center)
+    (hlayer : ed.nextState.layer + 1 < N)
+    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    FoldStepInvAt d e
+      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
+  -- map: B-L3-case2-preserves-stepInv (foldState; support DESCENDS parent→child supportAt; Deg1 on supportAt)
   sorry
 
 /-- **L4 — a case-1 edge preserves the foldState invariant. ⟨THE WALL⟩** The coupled block-center
 divisibility at corank ≥ 2 with the exact `u_p^δ` factor; seat-L4's `BlockDivision` core (exact
 division; the `2u₀u₂` shear-rescue) supplies the proof. The fidelity fix (elder re-statement): the
-carried `FoldStepInvAt ed.center p` — its `Deg1SupportedOn` conjunct forces the residual center-EXACT
-degree-1, so the δ=1 `blockBlowupCoordQuot` substitution EQUALS the strict transform (each monomial has
-exactly one center factor); the child re-factors in the child center `C'`. ONE center, the merge/split
+carried `FoldStepInvAt (supportAt(parent)) p` — its `Deg1SupportedSlot` conjunct forces the residual
+degree-1 on the support `supportAt`, so the δ=1 `blockBlowupCoordQuot` substitution (dividing at the LEDGER
+center `ed.center`) EQUALS the strict transform (each monomial has exactly one support factor); the child
+re-factors on the child support `C′ = supportAt(child)`. ONE ledger center, the merge/split
 pivots handled inside the fold — no free `∀`-branch, no `p_merge`/`p_split`. NB `CenterCoordAligned` is
 NOT the division mechanism (injectivity ≠ divisibility; seat-L4 `shear_gap.lean`) — it stays a
 geometry/injectivity field for L6/L7. WEAKEST HYPOTHESES: NO `he0`/`he_lin`.
@@ -704,40 +852,75 @@ over-divides (it removes the pivot ONCE, exact only at center-degree-1). Degree-
 HYPOTHESIS, now supplied structurally by `Deg1SupportedOn` in `FoldStepInvAt` — which the layer-1 center
 `{0,1}` satisfies and the bad `{0,1,2}` does not. The prior (A′) "no additional obligation" framing was
 RETRACTED/falsified (a deferrable obligation must be true-but-unproven; that leaf was false). This is the
-honest re-statement; L5 supplies only layer centers, so the composition intent survives. -/
+honest re-statement; L5 supplies only layer centers, so the composition intent survives.
+**C′ — PINNED-COMPUTED (elder ruling 2026-07-22):** the `∃ C'` UPGRADES to `C′ = supportAt(child state)` —
+the descend from the parent support `supportAt(parent)` (`hinv`) to the child's, `D⁺ = C′ᶜ`. `T = center∖pivot`
+is RETIRED as the support (two-clock DISCARD); the LEDGER center `ed.center`/`canonCenter` stays a separate
+object, untouched (seat-L4's `BlockDivision` wall proves the descend). See `supportAt`. -/
 @[blueprint]
 theorem case1_preserves_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
-    (hlayer : ed.nextState.layer < N)
-    (hinv : FoldStepInvAt d e ed.center p) :
-    ∃ C' : Finset (Fin (flatDim d)), FoldStepInvAt d e C' (p.extend ed) := by
+    (hlayer : ed.nextState.layer + 1 < N)
+    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    FoldStepInvAt d e
+      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
   sorry
 
-/-- **The terminal-edge transport (elder rider to fix (a)).** With the `ed.nextState.layer < N` guard,
-L3/L4 EXCLUDE the terminal transition, so the last (terminal-reaching) edge's interior→terminal transport
-is uncovered (`terminal_bezout` CONSUMES the terminal data, it does not PRODUCE it). This leaf produces it
-in EXACTLY `Core.Aoyagi.TerminalBezout`'s input shape (PrincipalInv.lean:289–298): the CONJUNCTION of
-* (1) the bare `StepInv` with the LITERAL `Fin 1` unit residual `fun _ ↦ (1:ℝ)` — NOT `foldResid`/`foldNR`,
-  since `foldNR (p.extend ed) = if N ≤ nextState.layer then 1 else …` does NOT reduce defeq-to-`1` for a
-  free edge, which would BLOCK the `terminal_bezout` wiring (rev-core obligation 1). At a terminal edge the
-  residual IS the M'=1 unit, so the literal form is faithful. No `Deg1SupportedOn` (const 1 is not
-  degree-1 — that omission is the point);
+/-- **L(last)-clear preservation (fix (2), new leaf; cone member 10).** A CLEAR edge at the last layer
+(`ed.nextState.layer + 1 = N` — child-form guard, PIN 1: clears KEEP the layer, so the child sits at
+`N−1`; the rollover ADVANCES, so it is EXCLUDED here and owned by the transport) preserves `LastLayerInv`:
+the newly-cleared slot flips from the center-linear (left) disjunct to the unit (right) disjunct, the
+surviving slots carry over, and the accumulated `StepInv` divisibility transports. Case-agnostic — any edge
+with `child + 1 = N` is a clear at `S = L`, so this covers case-2 / case-1(2) / case-1(1) uniformly.
+
+**C′ — PINNED-COMPUTED (elder ruling 2026-07-22):** as in the interior leaves, the `∃ C'` UPGRADES to
+`C′ = supportAt(child state)`; at `S = L` the descend EXHAUSTS to the born-unit `∅` (`supportAt (N−1) J = ∅`
+for `J ≥ 1`), matching the unit disjunct that owns the fully-cleared slots. See `supportAt`.
+
+**Conjunct-B obligation = RE-FACTORING, never cancellation (seat-L4 Schur battery).** The prover reads the
+layer-advanced `DeeperMultilinear` OFF the shear-folded form — the Schur folds the `C21·C12` cross-term
+into the cofactor, where those factors are spectators at the next blow-up. There is NO residue-subtraction
+step: the `γβ` cross-term lives INSIDE the renamed `Δ := δ − γβ` (never a flat term), so under the CARRIED
+invariant no degree-2 entry ever forms. The `u_pivot` residue is the MOTIVATING countermodel ("what would
+happen WITHOUT the advance"), NEVER a proof step. -/
+@[blueprint]
+theorem lastLayer_clear_preserves
+    {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hlast : ed.nextState.layer + 1 = N)
+    (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p) :
+    LastLayerInv d e
+      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
+  -- map: B-Llast-clear-preserves (S=L clear flips one slot center-linear→unit; supportAt(child) → born-unit ∅)
+  sorry
+
+/-- **The terminal-edge transport (elder rider; re-parented to `LastLayerInv`, fix (2)).** The last
+(terminal-reaching) edge's interior→terminal transport — `terminal_bezout` CONSUMES the terminal data, it
+does not PRODUCE it; this leaf produces it, in EXACTLY `Core.Aoyagi.TerminalBezout`'s input shape
+(PrincipalInv.lean:289–298): the CONJUNCTION of
+* (1) the bare `StepInv` with the LITERAL `Fin 1` unit residual `fun _ ↦ (1 : (Fin _ → ℝ) → ℝ)` (`Pi.one`)
+  — NOT `foldResid`/`foldNR` (which does not reduce defeq-to-`1` for a free edge, blocking the wiring;
+  rev-core obl. 1). At a terminal edge the residual IS the M'=1 unit, so the literal form is faithful. No
+  `Deg1SupportedOn` (const 1 is not degree-1 — that omission is the point);
 * (2) the single "born-terminally" generator `i₀`/`unit`: `(coreGen i₀ ∘ foldG) = foldB · unit` on the
-  region, with `unit 0 ≠ 0` (rev-core obligation 2, the cleared-pivot datum).
-L5 feeds (1)+(2) + `isOpen_foldRegion`/`zero_mem_foldRegion` into `terminal_bezout`, which upgrades to the
-terminal `PrincipalInv`. CASE-BLIND (covers rollover AND the `N=1` case-2 edge that reaches terminal at
-once). Parent interiority is IMPLIED by `FoldStepInvAt ed.center p` (`Deg1SupportedOn` fails on a terminal
-parent). Elder: "easy — the unit residual is strictly weaker, the whole quotient absorbs into `q′`, the
-same strict-transform algebra with the residual collapsed." -/
+  region, with `unit 0 ≠ 0` (rev-core obl. 2, the cleared-pivot datum).
+Parent is `LastLayerInv d e (supportAt(parent)) p` (fix (2) re-parent — a last-layer parent) plus `hcleared`
+(the ∃-cleared-slot; L5 supplies it — the rollover fires at exhaustion, `J ≥ 1` under `hpos`, oracle-known;
+NEVER re-derived as width arithmetic here). L5 feeds (1)+(2) + `isOpen_foldRegion`/`zero_mem_foldRegion`
+into `terminal_bezout` → terminal `PrincipalInv` (the `example` below is the executable wiring regression).
+CASE-BLIND (covers the rollover AND the `N=1` edge that reaches terminal at once). -/
 @[blueprint]
 theorem terminal_edge_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
-    (hinv : FoldStepInvAt d e ed.center p) :
+    (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hcleared : ∃ (j : Fin (foldNR d p)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
+      ContinuousOn unit (foldRegion d e p) ∧ unit 0 ≠ 0 ∧
+        ∀ u ∈ foldRegion d e p, foldResid d e p j u = unit u) :
     ∃ (q : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ)
       (i₀ : Fin (d (Fin.last N) * d 0)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
       StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
@@ -758,12 +941,16 @@ the leaf + `terminal_bezout`, both sorried upstream, so it is a WIRING regressio
 example (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
-    (hinv : FoldStepInvAt d e ed.center p) :
+    (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hcleared : ∃ (j : Fin (foldNR d p)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
+      ContinuousOn unit (foldRegion d e p) ∧ unit 0 ≠ 0 ∧
+        ∀ u ∈ foldRegion d e p, foldResid d e p j u = unit u) :
     ∃ (b₁ r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ)
       (V' : Set (Fin (flatDim d) → ℝ)),
       IsOpen V' ∧ (0 : Fin (flatDim d) → ℝ) ∈ V' ∧ V' ⊆ foldRegion d e (p.extend ed) ∧
         PrincipalInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed)) b₁ r V' := by
-  obtain ⟨q, i₀, unit, hSI, hcont, hne, heq⟩ := terminal_edge_stepInv d hN hpos e p ed hterm hinv
+  obtain ⟨q, i₀, unit, hSI, hcont, hne, heq⟩ :=
+    terminal_edge_stepInv d hN hpos e p ed hterm hinv hcleared
   obtain ⟨V', r, hVopen, hV0, hVsub, hPI⟩ :=
     terminal_bezout (isOpen_foldRegion d e (p.extend ed)) (zero_mem_foldRegion d e (p.extend ed))
       hSI i₀ unit hcont hne heq
@@ -790,19 +977,23 @@ them).** Two Props were originally carried here as `∀ d`-hypotheses ("D3 named
 
 /-- **L5 — the path fold produces the geometric atlas.** Folding the interior `StepInv` from the
 trivial root state (`g = id`, `b = 1`, residual `= coreGen`) down each root→leaf branch of the built
-tree, via the one-step preservations (`case2_preserves_stepInv`, `case1_preserves_stepInv`, each now
-guarded to the INTERIOR by `ed.nextState.layer < N`) at each interior edge, then crossing the final
-terminal-reaching edge via `terminal_edge_stepInv` (the bare unit-residual `StepInv`), reaching the
-terminal state where `terminal_bezout` upgrades divisibility to the terminal `PrincipalInv` (both
-directions). Produces a `GeoAtlasData` that (a) satisfies `FoldProduced` — the
+tree, via the EXHAUSTIVE per-edge partition (fix (2), PIN 1): the STRICTLY-interior preservations
+(`case2_preserves_stepInv`, `case1_preserves_stepInv`, guarded `ed.nextState.layer + 1 < N`, on
+`FoldStepInvAt`) → at the last layer, `foldStepInvAt_to_lastLayerInv` SUBSUMES into `LastLayerInv` and the
+S=L clears carry via `lastLayer_clear_preserves` (child guard `+ 1 = N`, units accumulating) → the final
+terminal-reaching edge crosses via `terminal_edge_stepInv` (bare `Fin 1` unit-residual `StepInv` + the
+born-terminally pivot), reaching the terminal state where `terminal_bezout` upgrades divisibility to the
+terminal `PrincipalInv` (both directions). At `N = 1` the ROOT is directly a last-layer state (subsumption
+enters `LastLayerInv` immediately). Produces a `GeoAtlasData` that (a) satisfies `FoldProduced` — the
 provenance RECORD of its own construction (one chart per tree leaf, exponents read off the ledger,
 pivots = the leaf's `divCoord`, doms nontrivial), cheap since L5 builds exactly that — (a′) satisfies
 `FoldRealizes` (each chart's map is the accumulated `foldG` of its REAL tree branch reaching its leaf —
 combinatorial branch-membership PLUS the canonical coordinate pin `canonCenterOf`/`canonPivotOf`, which
 gives L7 its coverage bridge-free) — and (b) carries the terminal `PrincipalInv` for each chart's map.
 
-Hypotheses = the four one-step obligations (L3/L4/`terminal_edge_stepInv`/`terminal_bezout`) ONLY (the
-two former D3 gaps dissolved — see the section note).
+Hypotheses = the five one-step obligations (L3/L4/`lastLayer_clear_preserves`/`terminal_edge_stepInv`/
+`terminal_bezout`) ONLY (the two former D3 gaps dissolved — see the section note); `LastLayerInv` is
+reached from `FoldStepInvAt` by the PROVED subsumption `foldStepInvAt_to_lastLayerInv` (no obligation).
 
 **Consumer obligations on L5's body (rev-core, its Core-leaf review SURVIVED).** When the fold reaches a
 leaf and hands the terminal edge to `terminal_bezout`: (1) the residual passed MUST be the LITERAL
@@ -832,6 +1023,8 @@ theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hN : 0 < N)
   -- on the monument cone (records them for #audit_blueprint even while the fold body is sorried).
   have _hc2 := case2_preserves_stepInv (d := d)
   have _hc1 := case1_preserves_stepInv (d := d)
+  have _hlastclear := lastLayer_clear_preserves (d := d)
+  have _hsubsume := foldStepInvAt_to_lastLayerInv (d := d)
   have _hterm_edge := terminal_edge_stepInv (d := d)
   have _hterm : TerminalBezout := terminal_bezout
   sorry

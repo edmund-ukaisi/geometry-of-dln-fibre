@@ -198,11 +198,21 @@ cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-conveni
   dev's determinantal RESULTS for D; keep the RLCT-ideal work on the DLN side (the cite lives there).
 
 ## Landmarks (A–E frame; ≤9 — why these)
-- **Object A** (Lemma 1 ideal-RLCT invariance) — the category-NEW workhorse; the missing half of the lower bound. LANDED (wave 1).
-- **Object B** (`⟨∏C⟩=⟨diag(b)⟩`) — the geometric heart; **coupled corank≥2 = the hard part**, holds a lane.
-- **Object C** (monomial-ideal ½·min) — LANDED (guarded S2; `DivChain` boundary honest).
-- **Object D** (codim = minAdm = cCodim, θ, perm-inv) — banked in `Core` (+ dev merge).
-- **`cited_aoyagi_lower_ax`** — the kill-target; the destination made concrete (prove via A+B+C, delete).
+*The map's landmark set MIRRORS this section; divergence is a drift item, not a rendering choice.
+(Reconciled 2026-07-21 late evening — both prior sets were stale; demotions with surviving homes:
+F1 → settled-forks; (2,2,2,2)-clean-telescoping → fork F3; the (3,3,4) anchor → the L4 brief +
+traversal table + witness bank; b-leaf2-blowup-atlas → absorbed into the Core-leaves node.)*
+- **aoyagi-summit / kill-cite** — the destination as one node: `aoyagi_learning_coefficient`
+  cite-free; the summit IS the kill (merged — they were never two things).
+- **Object A** (landed) — the ideal-invariance workhorse every transport rides.
+- **Object B** (LIVE — the monument: the eight leaves, THE WALL at case-1) — where the expedition is.
+- **Object C** (landed) — the guarded boxed rule the wall's output feeds.
+- **Object D** (banked) — the divisorMin → qipMin → cCodim bridge.
+- **b-value-cov** (landed) — the atlas min-over-charts CoV equality: the engine's analytic heart, O1 closed.
+- **corollary-reduction** (landed) — flatten + deepest-point + carrier bridge: the summit's wiring stands ready.
+- **Core-leaves banked node** (landed) — terminal_bezout + L1 + the blow-up atoms (absorbs
+  b-leaf2-blowup-atlas): the spine's PROVEN end — the wall's output already has its consumer.
+- **Object E** (OPEN, scoped) — P6.1 banked; P6.2 = the max-chain identity in statement-shaping.
 - **category-no-go (F1)** — why the ideal route; the retired chart Engine's tombstone (RETIRED.md).
 - **(2,2,2,2)-clean-telescoping** — the verified clean landing (peel identity + structure_v2).
 - **(3,3,4) / (3,3,2,2)** — the coupled frontier probe (minAdm=8 coupled-only).
