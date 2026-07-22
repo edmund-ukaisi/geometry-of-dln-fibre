@@ -104,6 +104,19 @@ DEF DELETED — **on `-E` only**. The expedition tree STILL HAS `admTight` live
 (`Foundations/AdmTight.lean:35`); old references resolve there until `-E` merges. Do NOT treat `admTight`
 as deleted, nor `adm_runMin_filter_eq` as present, in the expedition map until the merge lands.
 
+### Redirect-round functions (2026-07-22, staged pre-bake — a2cf2e7fa)
+
+- **`canonCenterOf` case11 fix** — the catch-all `| _ =>` arm was the defect (WRONG center for real
+  boosts, cross-layer); the fixed boost center = `{birth-corner pivot} ∪ run-length-J₁ sub-block`
+  (sim-validated, nine instances). [[severance-witnesses]] § Process defects.
+- **`canonShearOf`** — NEW: the within-carve shear, with (II) = the ruled raw-displacement form (B);
+  pinned in `IsRealBranch` (the shear-pin closing `:731`).
+- **`IsRealBranch`** (`MonumentAtlas.lean:771`) — EXTENDED to pin the shear; the ONE construction
+  hypothesis the redirect conditions the leaves on (per-field SET (A) → derived lemmas off it, [[dead-routes]]).
+- **`DivBirthInv`** (`Engine/DivBirthReach.lean:54-58`, `DivBirthInv_conOracle_stepChildren`) — the
+  kernel-checked reachability invariant that resolved the descent dispute proof-grade (no case11 descent;
+  support STAYS). Consumed in `GeoFoldRegroup` / `NodesCNodeWalk`.
+
 ## ═══ chart-era pointers below (HISTORICAL — read through RETIRED.md) ═══
 
 *Created pass #1; **REFRESHED pass #2 (2026-07-18)**: the council-adopted restructure has LANDED

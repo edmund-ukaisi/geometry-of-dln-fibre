@@ -11591,3 +11591,530 @@ sufficient). Closing word: "BAKE." RELAYED to arch-C with the witness-evidence b
 requirement. The monument's statement side is COMPLETE on this bake: five-face amendments +
 grading/shear form + threshold coefficient window — conjunct-B self-propagates. Next: the bake
 hash → controller verification → proof-seat wakes → elder second read → canonShearOf follow-up.
+
+## 2026-07-22 (controller, ~07:15) — **THE AMENDMENT RE-BAKE INTEGRATED** (e3a449348): the monument's statement side COMPLETE; PROOF CASCADE OPEN (for real)
+
+arch-C baked a8438b1fe (+138/−96): the five-face amendments (blockCoords supportAt; carve-layer
+hcenter; ShearGrades (a)+(b) on the CHILD region; GeneratorCleared emit=consume) + the
+PerLayerDeg1From threshold coefficient window (elder-verbatim, ≥-support — the ∀ℓ induction
+failure corrected) + supportLayerOf plumbing; DeeperMultilinear + map_zero + ignoresCoords
+REMOVED (grep-clean). Gate verdict evidence-marked: all four elder-certified witnesses RE-DERIVED
+structurally by arch-C + seat-L4's batteries cited by bank-hash. **Controller verification (own
+tree, not readings): build 8995 green; both drivers force-elaborated = [propext, sorryAx,
+Classical.choice, Quot.sound]; cordon OK; census 35 unchanged (statement reshaping, zero new
+sorries); cone 10.** MERGED + PUSHED (e3a449348). THREE too-weak-def instances closed pre-proof
+this round (within-layer extent, free shear, coefficient window — "def looser than the
+construction," all caught by the free-field discipline the round itself created).
+
+**CASCADE FIRED:** seat-L4 → case1 :901 (THE WALL) + lastLayer_clear :932 (with the
+GeneratorCleared emission build); seat-L3T → case2 :863 + terminal_edge :962 (staged order:
+terminal conj-1 → case2 divisibility [crux dedupe to Case1Wire] → conjunct-B δ-branches →
+terminal conj-2 [consume-fit check first]); both quote-the-territory briefs with the real line
+numbers. ELDER's second read OPEN (its target: the four witnesses RAN — evidence relayed).
+**canonShearOf follow-up COMMISSIONED to arch-C** (determine the decomposition against the fold →
+render + IsRealBranch pin closing the :731 asymmetry → tighten grading → determined form;
+priority below proof-seat support, above idle). The monument is now PURELY proofs: 8 leaves, 4
+actively owned, statements final.
+
+## 2026-07-22 (controller) — proof-time SPECIFY: the hcenter DIRECTION gap (conjunct-1 needs the COVER); elder ruling with the J-subtlety
+
+seat-L4, starting the wall, caught the complement of its own FACE-1 (battery c7512b9c9): the
+hcenter ⊆ pin serves conjunct-2's descend, but conjunct-1's δ=1 divisibility needs the OPPOSITE
+inclusion — residual-support ⊆ ed.center (the blow-up must COVER the support; spectators gain no
+u_pivot; witness: center missing a support coord leaves c_b·u_b·(1−u_pivot) undivided; q′ can't
+absorb — non-continuous at u_pivot = 0). The two conjuncts together force EQUALITY at the carve.
+CONTROLLER FLAG added to the ruling: the construction's center is CLEARED-SHRUNK at J≥1
+(canonCenterOf :725), so a FLAT equality may be construction-FALSE there — while the cover is
+NEEDED only at δ=1 (J=0), where the center IS the full block. Elder weighing: flat equality (iff
+J≥1-construction-truth) vs J-conditional (= at J=0, ⊆ at J≥1) vs a δ=1 cover hypothesis; sweep
+case2 + lastLayer_clear; coordinate with seat-L3T's δ=1-terminal watch for ONE uniform
+resolution. Hypothesis-touch, small re-gate. seat-L4 develops CONJUNCT-2 meanwhile (independent —
+the ⊆ direction survives every candidate). The proof-time SPECIFY layer catching what the
+statement-time family missed: the family audited the hypotheses' TRUTH; this is about their
+SUFFICIENCY for the proof route — a new check class for the gate contract when it stabilizes.
+
+## 2026-07-22 (controller) — **FIRST LEAF PROOF LANDED** (terminal_edge δ=0, hgen consumed); the direction gap DOUBLE-DERIVED
+
+seat-L3T landed the monument's FIRST LEAF PROOF (bbcb70d1f, primed statement): terminal_edge's
+δ=0 MAIN branch fully proved — conjunct 1 pure pullback (continuity from LastLayerInv's per-slot
+disjunction), conjunct 2 DIRECTLY from GeneratorCleared via stepMap_zero ("hgen closes exactly
+what my face-5 refutation demanded" — the face-5 design validated in proof by its own author).
+Banked halves stay clean-three. TWO observations, both routed: (1) the δ=1 terminal corner
+SHARPENED (rollover ed.center = ∅ ⟹ σ = id and hgen's sum need not be u_pivot-divisible —
+conjunct-1 fails there UNLESS the corner is VACUOUS; left TRACKED-OPEN sorried; the elder's
+reachability question now leads the uniform ruling). (2) the hcenter DIRECTION gap
+INDEPENDENTLY DERIVED from the case2 side — converging with seat-L4's battery an hour earlier
+(two seats, two routes, one gap), plus the canonCenter note confirming the J-subtlety (J=0 ⟹ no
+shrink ⟹ equality construction-TRUE exactly where the cover is needed) and an alternative fix
+shape (Deg1SupportedSlot on ed.center) for the elder's weighing. ONE uniform ruling pending:
+hcenter direction + the δ=1-terminal corner + the case2/lastLayer sweep. Meanwhile BOTH seats
+work ruling-independent branches (L4: conjunct-2 descend; L3T: case2 empirical + δ=0 pullback).
+
+## 2026-07-22 (controller) — elder SECOND READ on the re-bake: PASS (three decorrelated witness derivations agree)
+
+The elder's decorrelated second read of e3a449348 (transcript 07:12, its declared target — the
+four witnesses VERIFIED not build-green): defs verbatim to every ruling (PerLayerDeg1From :501;
+Deg1SupportedSlot :510 = ∃c ∧ threshold, Dp dropped; blockCoords :522 capped + distinct-from-
+canonCenter note; supportAt :538; supportLayerOf :546); the five-face wiring confirmed per leaf
+(hcenter + hgrade on the interior three; lastLayer EMITS GeneratorCleared, terminal CONSUMES —
+the FACE-5 induction chain rendered); all four witnesses re-derived — THREE decorrelated
+derivations now agree (arch-C structural + seat-L4 batteries-by-hash + the elder's own read).
+Verdict: "the re-bake is sound on the statement side… the proof seats are correctly on a faithful
+statement side." One report-hygiene note (not a defect): arch-C's "grep-clean" was imprecise — 3
+docstring RETIREMENT mentions of DeeperMultilinear remain (accurate history), no live defs; "the
+precise statement is 'no live defs; 3 accurate retirement mentions.'" Scope honestly stated: the
+elder verified statements + witnesses; the build/footprint/cordon remain the controller's sensor.
+NOTE: this read PRECEDES the hcenter-direction question (still in the elder's queue with both
+seats' convergent derivations) — the uniform center-relation ruling is the next elder output.
+
+## 2026-07-22 (controller) — L3T banks two δ=0 branch proofs + clean handoff; the conjunct-B shared-core coordination
+
+seat-L3T landed case2 conjunct-A δ=0 (d23dba366: pure-pullback divisibility, q′ = qp∘stepMap, NO
+crux — the δ=0 support is a blow-up spectator, its own δ↔layer finding in action; finCongr
+reindex) on top of the terminal main branch. Both leaves' δ=0 sides now PROVED. Tracked-open with
+precise map-node handoff notes: (1) case2 conjunct-B (the ShearGrades re-factoring — spec written
+out: c′_k = ∑_i c_i(σu)·c^sh_{ik}, PerLayerDeg1From from (a)/(b)); (2) case2 conjA δ=1
+(ruling-gated); (3) terminal δ=1 N=1 corner (reachability-first). HONEST CAPACITY CALL accepted:
+the seat rests rather than risk a half-finished conjB in a loaded context. RESOURCING: before
+spawning, coordinating the SHARED CORE with seat-L4 — its active case1 conjunct-2 development has
+the SAME re-factoring shape (the leaves are statement-identical in that clause); if case-generic,
+the core builds ONCE in the warm context and case2's conjB becomes a drop-in instantiation; if
+case-specific, a fresh seat spawns on L3T's notes. The hcenter-direction ruling remains the one
+statement item (with the elder; both derivations attached).
+
+## 2026-07-22 (controller, tick ~07:45) — THE UNIFORM RULING: hcover (δ-gated, 3 leaves) + hδ0 (terminal UNREACHABLE at δ=1); small re-bake GO
+
+The elder's uniform ruling (transcript 07:31 + 07:40, fully primary-source-grounded — the
+lemma signature StepInvShearChild:55 hsupp center-indexed; BlockDivision:30 no-division quotient +
+:67 spectator lemma; canonCenterOf :757-762 cleared-shrink; the state machine EngineConstruction
+:180/:190/:198 + rolloverDecision :1946 + the PROVED widthMinUpto_pos O5Realization:344):
+
+(1) **hcover, form (c) refined**: hcenter ⊆ UNTOUCHED; case1/case2/lastLayer_clear ADD
+`hcover : edgeδ d p = true → supportAt d p.conState.layer p.conState.cleared ⊆ ed.center` —
+phrased on supportAt VERBATIM (the set hinv carries; re-index ∑_supportAt → ∑_center with c ≡ 0
+padding, no rewrite). At δ=1: supportAt = blockCoords = canonCenterOf (bounds vacuous at
+cleared=0) — construction-true; jointly with hcenter forces the equality both seats derived. Flat
+equality REJECTED (canonCenterOf strictly shrinks at cleared ≥ 1 — the J-subtlety flag
+load-bearing); L3T's Deg1-on-center REJECTED with the composability reason (the carried support
+must be STATE-determined; ed.center is per-edge free — a node has many edges — and the re-express
+still needs the cover). Each inclusion direction owned by exactly ONE conjunct — conjunct-2
+development untouched.
+
+(2) **the δ=1 terminal is UNREACHABLE** — state-machine-traced: only rollover advances the layer;
+rollover fires only at widthMinUpto ≤ cleared; widthMinUpto_pos ⟹ cleared ≥ 1 ⟹ δ=0. FIX:
+terminal_edge ADDS `hδ0 : edgeδ d p = false`, DISCHARGED by L5 from the rollover guard (map-node
+comment at L5's sorry). L3T's tracked-open δ=1 sorry closes as a DEAD BRANCH. Independent second
+ground: the δ=1-terminal conclusion is structurally unsatisfiable (unit discontinuous at
+u_pivot=0) — the corner MUST be excluded and the construction excludes it.
+
+(3) **the δ-keyed principle**: the cover is a function of edgeδ alone — attaches at exactly the
+three δ=1-capable leaves, hδ0 on terminal, nothing else. Both seats' watches close under ONE
+resolution. All hypothesis-touches, no defs — SMALL RE-BAKE GO to arch-C (with the L5 discharge
+obligation noted for the render); Codex second-model judged unnecessary by the elder (two-seat
+convergence + primary-source grounding), controller concurs. seat-L4 briefed (conjunct-1 unblocks
+at the bake; conjunct-2 proceeds untouched); seat-L3T's items fold into its post-bake wake.
+
+## 2026-07-22 (controller, ~07:55) — GAP-1/2/3: conjunct-2 FALSE under free ed.nextState; THE COMPLETE EDGE-FIELD AUDIT requested; bake held for ONE combined round
+
+seat-L4's conjunct-2 development (child-state reduction lemmas banked clean-three, c435b5dbf)
+produced the round's most decisive finding: **GAP-1 — conjunct-2 is FALSE as stated for a free
+ed.nextState** (Codex xhigh + battery case1_conjunct2_statelink.py). The counterexample defeats
+EVERY hypothesis simultaneously (root cross-layer residual u_p·u_s·u_e; case11 edge with ZERO
+shear — which satisfies ShearGrades for ANY S′; nextState kept = parent ⟹ S′ = blockCoords(0);
+the δ=1 strict transform removes the pivot factor ⟹ child = u_s·u_e, Deg1 on blockCoords(1) not
+S′). Root cause: the strict transform SHIFTS support one layer down, and NOTHING links
+ed.nextState to p.conState — the state transition itself was the un-pinned free field. GAP-2
+(battery-confirmed): ShearGrades (a)+(b) admits a layerwise-DEGREE-2 shear (σ_s = u_s + u_r²; the
+γ-coefficient u_r IS per-layer-deg1) — clause (a) needs c_ik to IGNORE S′. GAP-3: the
+next-layer-support fold fact is missing (parent residual also supported on blockCoords(L+1) —
+plausibly derivable from foldResid's one-factor-per-layer product structure).
+
+ROUTED to the elder with the systematic-close request: **THE COMPLETE EDGE-FIELD AUDIT** —
+enumerate every remaining free TreeEdge/state degree of freedom and rule the full pin set ONCE
+(center ⊆+cover, pivot, shearφ, now nextState have each cost a catch+ruling+re-bake round; close
+the CLASS, not the instance). Rulings asked: the transition-law hypothesis per leaf (DescendView;
+emittability by L5 from the oracle's case-transitions — the elder's own state-machine trace),
+the ShearGrades (a) strengthen, GAP-3 derived-vs-hypothesis, sweep case2/lastLayer. **BAKE HELD**:
+the in-flight hcover/hδ0 render proceeds (folds in), but ONE combined re-bake carries hcover +
+hδ0 + the GAP amendments together — no bake-and-reopen. seat-L4 holds both conjuncts; offered the
+genericity answer + canonShearOf determination as hold work. The reduction lemmas consume
+whatever the fixed statements become — zero proof investment lost, again.
+
+## 2026-07-22 (controller) — genericity = YES, core BANKED (exists_graded_decomp); fresh-seat option retired; all funnels to the audit
+
+seat-L4 answered the conjunct-B coordination: CASE-GENERIC, and the core is already BANKED —
+`exists_graded_decomp` (Case1Wire, 92e14fe19, clean-three): the shear-graded substitution
+re-factors to ∑_{k∈S′}(∑_i a_i·b_ik)·u_k with continuous coefficients — the ∃c conjunct of
+Deg1SupportedSlot, matching L3T's spec verbatim, abstracted over the fold so BOTH cases consume
+it, and RULING-INVARIANT under the pending re-bake. The fresh-seat option for case2's conjB is
+RETIRED; L3T's ∃c-half is a drop-in. Caveats (both already routed): the lemma's hchild input
+needs GAP-1's DescendView (δ=0) + GAP-3's next-layer-support (δ=1), and the PerLayerDeg1From
+conjunct needs a layerwise-affine-composition companion gated on GAP-2's ShearGrades strengthen
+(seat-L4 will build it, case-generic). NET: the ENTIRE remaining monument proof content now
+funnels through the elder's edge-field-audit ruling → the ONE combined re-bake → both seats
+close their conjuncts on banked cores. seat-L4's round ledger: child-state reductions + the ∃c
+core + three batteries + two decisive statement catches — "the wall's proof will be short when
+the statements stop moving, which is the point of making them stop moving now."
+
+## 2026-07-22 (controller, ~08:00) — canonShearOf DETERMINED (within-carve, fold-FORCED); GAP-2 resolves into it; all audit inputs delivered
+
+arch-C's background unit reported its first deliverable early (seat-L4 the fold-ground-truth
+basis, battery a5124597f; arch-C gated it against the defs): **canonShearOf = SCHUR-WITHIN-CARVE**
+— this edge's shearφ is IDENTITY on S′ = blockCoords(L+1) and deeper, folding the γβ = C21·C12
+cross-term WITHIN layer L; the Q₂⁻¹-into-next-layer transfer lives at the IDEAL/COFACTOR level
+(C′^(L+1) = Q⁻¹·C^(L+1), consumed by the NEXT edge). Pin C + the elder's ideal-level lean both
+CONFIRMED — and FORCED, not chosen: blockBlowupCoordQuot (BlockDivision:30-31) sets only the
+pivot slot to 1, every other slot keeps the sheared value, so an S′-writing shear injects u_p
+into a child-support coord and breaks the descend. GAP-2 RESOLVES INTO the determination:
+within-carve ⟹ shear identity on S′ ⟹ the ShearGrades (a) grading is trivially satisfied and
+the σ_s = u_s + u_r² breaker is excluded by construction — arch-C recommends (surfaced, not
+asserted) the GAP-2 fix be the WITHIN-CARVE PIN replacing the now-vacuous S′-grading clause;
+exact form weighs seat-L4's conjunct-B needs; the elder rules the shape in the audit. FORWARDED
+as the audit's final input — the elder now holds: the field enumeration, GAP-1 (transition law),
+GAP-2 (with the determined decomposition), GAP-3, the rendered hcover/hδ0, and the per-field
+sweep. ONE ruling closes the statement side as a class. ALSO this hour: the DAG SVG produced for
+the operator (kept UNCOMMITTED at /tmp per operator instruction; the map-dir commit reverted via
+force-with-lease on the seconds-old tip — the one history rewrite of the expedition, operator-
+directed).
+
+## 2026-07-22 (controller) — GAP-2 pin REFINED (reads matter, not just writes); the carve-only precondition to the elder
+
+seat-L4 + arch-C refined the GAP-2 pin (battery 533089c2f): within-carve (identity on S′) is
+NECESSARY but NOT SUFFICIENT — it constrains the shear's WRITES only. Case B witness: a
+displacement de ↦ de − s1·s1′ with both factors in layer L+1 writes only carve yet makes the
+child DEGREE-3 in L+1 — conjunct-B fails on the READS. Honest pin = **"shearφ SUPPORTED ON the
+carve block (layer L)": reads AND writes only layer-L coords** — delivering identity-on-≥L+1 AND
+γβ-confined-below-threshold in one clause; ShearGrades-on-S′ becomes trivial under it. ONE
+precondition routed to the elder (the last GAP-2 input): is the construction's Schur displacement
+CARVE-ONLY? The elder's own pp.18–21 derivation appears to settle it (γ_i = d′_{i,J+1}, β_j =
+d′_{J+1,j} — BOTH carve-layer d′ entries; "deeper cofactor" = deeper rows/cols WITHIN layer L;
+the only next-layer object is the already-determined ideal-level Q₂⁻¹) — asked as a one-line
+confirm against its banked derivation; pen-and-paper commission held unless the elder finds the
+page ambiguous. The audit packet is now literally complete: field enumeration, GAP-1 transition
+law, GAP-2 (refined pin + confirm), GAP-3, rendered hcover/hδ0, per-field sweep. One ruling → one
+render → one bake.
+
+## 2026-07-22 (controller, ~08:20) — OPERATOR GUIDANCE: pen-and-paper = ELABORATION first; pnp-elab commissioned; the "forced by the fold" two-level answer
+
+**Operator clarification (recorded as standing intent):** pen-and-paper's intended function is to
+**ELABORATE** the mathematics — produce the fully worked template the build renders from, catching
+typos and pre-morteming build issues — NOT to adjudicate whether shortcuts exist around detailed
+work. Role file + CLAUDE.md team-structure line amended accordingly (the elaboration seat is now
+the documented primary use; "when in doubt, elaborate the detail"). The honest retrospective this
+implies: the monument's ~10 statement defects were caught one at a time by SPECIFY/batteries/rulings
+because no elaborated template of the fold recursion existed — each defect was a place where the
+render guessed what the paper's construction does. **pnp-elab COMMISSIONED** (pen-and-paper
+elaboration seat, own branch expedition/aoyagi-engine-elab, BLIND to the Lean for decorrelation):
+the fully worked fold-recursion template from the paper — state/transition laws per edge kind, the
+Q,P clearing steps in block-display form with explicit read/write sets, the residual's
+support+coefficient windows at every state, the terminal, worked instantiations on (3,3,4) AND
+(3,3,2,2), and a pre-mortem list of checkable assertions. On receipt: diff against the baked defs +
+the audit's amendment set — the decorrelated pre-mortem for the combined re-bake and the template
+for the remaining proofs.
+
+**The operator's "forced by the fold" question, answered two-level (for the record):** the
+mathematical CONTENT of the determination is Aoyagi's — the elder's pp.18–21 derivation read the
+decomposition off the page (γ, β both carve-layer d′ entries; C′^(S+1) = Q⁻¹C^(S+1) as a separate
+step), and its page-authority lean PREDICTED Pin C before the fold check. What the paper could not
+predict is the RENDERING question: the paper has no free shearφ — our TreeEdge left it free, so
+"which mechanism owns the Q₂⁻¹" became a question only at the build level, and the
+blockBlowupCoordQuot argument DISCOVERED which reading our machinery had committed to. The fold
+check CONFIRMED the paper (converging evidence), it did not replace it. The genuinely
+formalisation-native discoveries are the free-field severances themselves — the paper never
+quantifies over free edges.
+
+## 2026-07-22 (controller, ~08:35) — PROCESS SELF-AUDIT (operator-prompted): the churn's root is the free-edge leaf design; bloat named
+
+Operator asked: bloated components? isolated components causing the churn / avoiding the hard
+part / the math / the paper's path? HONEST FINDINGS (journal = the record; lessons.md gets these
+at close):
+
+1. **The churn's root: the free-edge leaf design (the deferred coordinate bridge).** The leaves
+quantify over free TreeEdge fields; the paper has no free edges. Every defect round was the same
+event — a free field admits a non-construction instance; a constraint of Aoyagi's recursion gets
+re-derived as a bolted-on hypothesis. The field audit is converging to construction-pinning; the
+generality had no second consumer. This is the nearest thing to "avoiding the paper's path" in
+the process — architectural, not lazy: effort routed into hypothesis engineering instead of the
+recursion itself. FRAMING QUESTION sent to the elder with the audit: complete the per-field pin
+set vs collapse to a construction-conditioned form (one hypothesis, one L5 discharge, no room for
+an eleventh round) — packaging, not math; its call with the churn history in view.
+
+2. **Bloat:** (a) the two-seat render pipeline (arch-C dictates, foldstate-render types) — the
+gate is value, the split amplified crossing-noise; lessons item, not a mid-flight reorg. (b) The
+elder crept from direction into literal statement authorship — two of the defects were in ITS
+rendered sentences; the proposal→lock division (elder rules the object, the proof seat locks the
+form, batteries check both sides) should have been the rule from the start — it is now. (c) Echo
+volume: content-free holds/acks — controller included; stopping.
+
+3. **NOT the problem:** the proof seats did not avoid the hard math (crux, divisibility engine,
+∃c core, two proved branches = the hard math, banked); the gates/cordon/batteries/reviews all
+caught real things; zero proof lines wasted.
+
+4. **The controlled comparison:** the E-lane had the #42 cert (an elaborated template) up front —
+three tracks, zero rework. The monument had no template — ten rounds. The cleanest evidence for
+the operator's pen-and-paper clarification; pnp-elab retrofits the instrument.
+
+## 2026-07-22 (controller, ~08:50) — THE ELABORATION TEMPLATE LANDED (pnp-elab): exact-algebra certified, simulator-decorrelated; the mechanical diff assigned
+
+pnp-elab delivered in ONE run (merged b3016c86c: fold-recursion-template.md 639 lines + 5 verify
+scripts + Codex consult): (1) the clearing step CERTIFIED (unit-pivot Schur; Q clears the row,
+P̂ the column, det 1 each; **Q⁻¹ recoordinatises ONLY the pivot row of C^(S+1)** — independent
+blind confirmation of carve-only); (2) FOUR edge kinds fully specified incl. the Case1(1) BOOST
+with NO J-advance — the exact transition laws GAP-1's pin must express; (3) a full simulator
+implementing the paper's rules LITERALLY reproduces minAdm on (3,3,4)→8, (3,3,2,2)→4, (2,2,2)→3,
+(2,2,2,2)→3 and Mexp per terminal divisor — the whole paper-reading decorrelated end-to-end;
+(4) both standing instances traced with binding-branch provenance (matches g-coupled-334 +
+worked.tex); (5) 14-item PRE-MORTEM + 3 Questions; headline warning PM-3/PM-9: the paper's
+T-label is DEFECTIVE (raw-vs-inherited discrepancy; p.15 totality FALSE — consistent with the
+compass T-E/T-F rulings) — exponents must key off (J₁, M^(S+1), J), NEVER T; any Lean keying off
+a T-label would be wrong (reports consistency with the canonCenter design — arch-C confirms on
+ground truth). Q3 open by design (the δ-mapping is the seat's interpretation — it could not read
+the Lean): settled by THE MECHANICAL DIFF, now ASSIGNED to arch-C (§3.3 vs edgeδ/edgeShear/
+FoldStepInv; the transition laws vs the GAP-1 pin; the Schur cert vs within-carve; the 14 PM
+assertions vs the defs; PM-3/9 vs the record design). Elder pointed at the transition laws +
+Schur cert as audit inputs. The diff + the audit = the last two inputs before the ONE combined
+bake. The operator's elaboration-first correction validated on first use: the template produced
+in hours what ten reactive rounds circled — including one law (the boost's no-advance) nobody had
+asked about yet.
+
+## 2026-07-22 (controller, tick ~08:50) — **THE COMPLETE AUDIT RULING** (four elder texts recovered): sets A/B/C; the class closed as the bridge-free shadow of IsRealBranch
+
+The elder's full ruling (07:59 uniform + 08:00 gate-ready checklist + 08:04 ShearWithinCarve
+revision + 08:11 carve-only paper confirmation):
+
+**SET (A), FINAL (hypothesis-touches):** (1) `DescendView` — the single-predicate
+oracle-transition pin (∃ sc ∈ (conOracle p.conState).stepChildren, sc.ecase = ed.case ∧ sc.child
+= ed.nextState) — with the CRITICAL correction: the case11 MERGE keeps `cleared` UNCHANGED
+(case1Decision emits TWO children :2068-71; stepCase11 :180) — seat-L4's stated law was wrong for
+the merge; case2/case12 increment. The state fragment of IsRealBranch, L5-emittable, bridge-free.
+(2) `ShearWithinCarve` REPLACES ShearGrades entirely (the S′-grading solved a non-problem once
+the shear was determined identity-on-S′): two clauses — (I) WRITE: blockShear identity on every
+layer ≥ supportLayerOf(child); (II) READ: every image IgnoresCoords those layers. BOTH needed —
+the elder's own bilinear argument (a carve-image reading S′ turns a cross-layer term degree-2 in
+S′). Fold-forced = canonShearOf's determined form; vacuous at lastLayer.
+
+**SET (B), a DEF-TOUCH:** GAP-3 is NEITHER derived-lemma nor hypothesis (the dichotomy was a
+false binary) — it is **multi-homogeneity CARRIED in the invariant**: the residual degree-1 in
+EVERY active layer S..L ("the residual IS the block matrix" — Aoyagi's descent engine). Not
+per-edge (a property of foldResid); not derivable over free p (unpinned parent shears). The
+elder: "the invariant's definition-of-done… a separate structural pass with a decorrelated
+check, not swept into a batch." CODEX GO given; (B)'s design pointed at the pnp-elab template's
+residual characterization (the cross-layer product, per-layer profiles — where the two disagree,
+the disagreement is the finding).
+
+**SET (C), gating lemmas:** C1 `case1_fires_only_at_cleared_pos` (OracleInv reachability — can
+case1 fire at cleared=0? Elder's lean: no; root goes numDiv=0→case2; open across ROLLOVERS) —
+ASSIGNED to seat-L4, preempting its hold work (if C1 fails: the edgeδ case-aware fallback
+def-touch folds in). C2 = (B)'s provability under ShearWithinCarve (the Codex pass covers it).
+
+**THE FIELD AUDIT CLOSES THE CLASS** — the gate-ready table: center PINNED (hcenter+hcover),
+pivot JUSTIFIED (hpivot sufficient — conjunct-1 covers any pivot ∈ center; descent rides
+multi-homogeneity not pivot identity), case PINNED (+DescendView reads ed.case), nextState PINNED
+(DescendView), shearφ PINNED (ShearWithinCarve), proof fields SOUND, region JUSTIFIED-free,
+free-p JUSTIFIED-CONTINGENT-ON-(B) ("the audit's 'free p is sound' IS the GAP-3 obligation" —
+the deep link). STRATEGIC ANSWER to the controller's framing question: **the pin set is the
+BRIDGE-FREE SHADOW of IsRealBranch** — when the coordinate bridge lands, all five pins collapse
+into ONE construction pin; the per-field form is the honest shape until then.
+
+**ONE-BAKE DISCIPLINE confirmed as the knowing decision:** (A) does NOT bake ahead — (B)
+re-touches the same leaves ⟹ bake-and-reopen. Sequence: elder's Codex on (B)/(C2) + seat-L4's C1
++ arch-C's template diff → ONE combined bake ((A) + (B) + hcover/hδ0 + diff mismatches) behind
+the full field-audit gate. arch-C pre-renders (A) meanwhile; docstring sentence ordered: the pin
+set as the bridge-free shadow, collapsing at the bridge.
+
+## 2026-07-22 (controller, ~09:00) — TEMPLATE DIFF: ZERO MISMATCHES; SET (A) pre-rendered verbatim; the bake awaits exactly (B) + C1
+
+arch-C's mechanical diff (subagent legwork over the full template 640L + MonumentAtlas 1259L +
+RecursionAdapter + primitives; load-bearing findings VERIFIED by arch-C on ground truth): **all 5
+items + all 14 pre-mortems PASS, zero mismatches.** The verified highlights: (ITEM-2) the
+Case1(1) BOOST is distinctly represented — stepCase11 keeps layer AND cleared AND numDiv (no
+J-advance, no divisor birth) vs stepAppendAdvance's +1/+1; StepCase = 4 distinct constructors;
+DescendView's per-case law expresses all four. (ITEM-5) NO T-label keying anywhere — divProfile/T
+prose-only; StructuralChainResidual retired as outright false; every exponent keyed off
+geometry/ℕ — the paper's T-label defect (PM-3/9) cannot bite. (ITEM-3) the BLIND-instrument
+confirmation banked for the witness evidence: the template's Q⁻¹-touches-only-the-pivot-row
+independently agrees with ShearWithinCarve. SET (A) PRE-RENDER VERIFIED on arch-C's own
+transcription read: DescendView (:627, = IsRealBranch's state fragment), ShearWithinCarve
+(:636-641, elder-VERBATIM — the render seat's typecheck green, no signature friction, lock-rule
+clean), hdesc×3, hwc×3, the bridge-free-shadow docstring, ShearGrades fully removed; sorry 8,
+cone 10. **The one bake now awaits exactly TWO inputs: SET (B) (the multi-homogeneity def-touch —
+elder Codex pass) + C1 (seat-L4's reachability lemma).** The elaborate-then-render lesson
+validated on the monument side in its first application: the blind template and the rendered tree
+AGREE — the first time this expedition has had positive statement-fidelity evidence rather than
+absence-of-caught-defects.
+
+## 2026-07-22 (controller, ~09:05) — **C1 REFUTED**: case1-at-cleared-0 is reachable and pervasive; the case11 reconciliation joins the (B) design round
+
+seat-L4's C1 deliverable is the REFUTING TRACE (b879cc61e): a faithful enumerator of conOracle
+(exact defs) shows case1 fires at cleared=0 on EVERY tested instance (nine) — post-rollover
+layers re-clear the CARRIED divisors first via case1; concrete (3,3,4) trace banked;
+CROSS-VALIDATED against the banked edgespec traversal, which prints the case1(1) merge edges at
+J=0, δ=1 exactly. The elder's lean ("first step of every layer is case2") FALSIFIED by ground
+truth — the third elder-lean corrected by seat computation this expedition; flag-not-assert +
+the concrete decider keep working. THE PRECISE DANGER: the case11 MERGE at cleared=0 — cleared
+unchanged ⟹ supportAt(child) does NOT descend, yet δ=1's strict transform DOES descend the
+residual ⟹ conjunct-2's GAP-1 counterexample is REACHABLE. THE CONSTRAINT the original fallback
+missed (seat-L4, traversal-verified): the construction USES δ=1 at these merges — u_pivot IS
+removed, conjunct-1 needs it — so bare "δ=0 for case11" breaks conjunct-1. RECONCILIATION
+CANDIDATES to the elder: (i) case-aware edgeδ preserving conjunct-1; (ii) case-aware
+supportAt/DescendView (the merge child's support descends with the strict transform) — noting
+supportAt's (layer, cleared) KEY may be structurally unable to express post-merge support (a
+merge child and a non-merged sibling share the state key). INTERACTS with the (B) def-touch —
+ruled to be DESIGNED TOGETHER (one invariant round), against the template's edge-kind-B
+specification, with the template SIMULATOR validating any candidate on all nine instances
+PRE-RENDER. The one bake now awaits the elder's single combined (B)+(reconciliation) design.
+
+## 2026-07-22 (controller, ~09:10) — lock round catches the FOURTH authored-form defect: ShearWithinCarve (II) unsatisfiable; two resolutions to the elder
+
+seat-L4's lock of the elder-verbatim ShearWithinCarve found clause (II) SELF-CONTRADICTORY as
+quantified (arch-C ground-truth-verified): unrestricted i means a high-layer coord i₀ gets
+(I)-forced identity, and (II) then demands "u ↦ u i₀ ignores its own layer" — false by
+definition. (I) ∧ (II) unsatisfiable on every non-terminal edge ⟹ hwc false ⟹ interior leaves
+vacuous. The two-layer LOCK GATE functioned exactly as designed: arch-C confirmed
+transcription-verbatim and DEFERRED satisfiability to the lock owner; the lock caught it; routed
+back, never silently adapted. TWO verified resolutions to the elder: (A) carve-restrict (II)'s i;
+(B) state (II) on the RAW DISPLACEMENT ed.shearφ for all i — (I) forces the displacement ≡ 0 on
+layers ≥ sl, and 0 ignores everything (seat-L4 leans (B); controller concurs — the displacement
+is the honest object, one uniform shape, no carve-out). Folds into the elder's combined
+(B)+(C1-reconciliation) round — no schedule cost. Running tally of authored-form defects caught
+by the lock/battery discipline this round: the ∀ℓ threshold, the parent-supportAt pin direction,
+the region token, now (II)'s quantifier scope — the authorship-division lesson earning its place
+in real time.
+
+## 2026-07-22 (controller, tick ~09:45) — THE ELDER'S TRIPLE RULING: the descent claim DISPUTED (discriminator running); the ROUTE REDIRECT to IsRealBranch-conditioning; (II) ruled (B)
+
+Elder transcript poll recovered three texts (09:05/09:07/09:09) — the round redirects:
+
+**1. THE DESCENT DISPUTE.** The elder + a fresh Codex pass (gap-audit, banked eab2321a0) + the
+template's Edge B all independently read: at a REAL case11 boost, edgeShear = id and canonPivotOf
+= the reused divisor's BIRTH-LAYER corner (immutable divBirthCoord, earlier layer, NOT in the
+layer-S support) ⟹ pivot ↦ 1 leaves the layer-S factors intact ⟹ **the residual does NOT
+descend** — it stays matching supportAt(S,0); the removed u goes into foldB (the exponent boost =
+conjunct-1's content). seat-L4's REACHABILITY stands undisputed; its DESCENT consequence is the
+disputed clause (its counterexample used a current-layer pivot — a free-edge instance excluded
+under canonPivotOf). The controller's "one-bit conflation" framing is thereby contested too — the
+elder shows the two events are already separately encoded and AGREE for real boosts. FALSIFIABLE
+prediction staked; **THE DISCRIMINATOR assigned to arch-C** (the Lean unfold: foldResid(case11) =
+parent(pivot↦1) + birth layer < s.layer; the template simulator: boost-child support extent on
+the nine instances). Run BEFORE anything renders; seat-L4 informed, not testing (disputed party).
+
+**2. THE ROUTE REDIRECT (conditional on the discriminator): per-field SET (A) SUPERSEDED.** The
+real localized defect (elder + Codex): **canonCenterOf's case11 form** — the boost center =
+{reused birth-corner pivot} ∪ (run-length-J₁ current-layer sub-block); current form breaks hpivot
+AND hcenter is FALSE for boosts (CROSS-LAYER center). The ruled one round: canonCenterOf fix +
+canonShearOf render + IsRealBranch extended to pin the shear + **the leaves CONDITIONED ON THE
+REPAIRED IsRealBranch** — per-field constraints + the prepared-multi-affine residual (Codex's
+precise GAP-3 form) become once-proved DERIVED LEMMAS; the GAP-3 def-touch DISSOLVES. The
+construction-conditioning collapse the process audit predicted, now elder-ruled.
+
+**3. (II) RULED (B)** — the raw-displacement form, error owned ("the read constraint belongs only
+where reading is a smuggling risk"); trivially satisfied by boosts (displacement ≡ 0); under the
+redirect it becomes the derived-lemma shape canonShearOf provably satisfies.
+
+Elder artifacts banked (it wrote the Codex files into the shared tree — controller committed per
+protocol). OPERATOR OBSERVATION honored: the whole system was quiescent because every teammate
+idles between messages and the elder's sends dead-end — the hub's poll IS the clock; the
+discriminator now runs. NEXT: arch-C's verdict → either the redirect executes (one round:
+canonCenterOf + canonShearOf + IsRealBranch + conditioned leaves) or the def-touch route revives.
+
+## 2026-07-22 (controller) — seat-L4's calibration note locates the dispute exactly; pre-acceptance on the record
+
+seat-L4's dispute-ack (exemplary — no re-run, no re-litigation, standing by as the disputed
+party): its ENUMERATOR is purely COMBINATORIAL (divProfile/divTilde/layer/cleared only — no
+coordinate or pivot-LAYER data), so the REACHABILITY half (case1-at-cleared-0, undisputed) is
+decorrelated-clean and none of the machinery is entangled with the dispute; the DESCENT
+consequence lived ONLY in the battery's prose verdict, where a hand-model (current-layer pivot)
+was layered on top — precisely the assumption the discriminator tests. Pre-acceptance recorded:
+if the strict transform doesn't descend anywhere, the "case11 breaks conjunct-2" claim retracts
+and no case-aware fallback is needed on that ground. On the redirect: "the IsRealBranch-
+conditioning route is the clean landing my free-field-severance findings were pointing at all
+along… my wall proof consuming ONE construction hypothesis instead of seven is strictly better
+bedrock." All parties now aligned on the route pending the one empirical verdict.
+
+## 2026-07-22 (controller, ~09:55) — **DISCRIMINATOR VERDICT: SUPPORT STAYS (proof-grade)** — the redirect is THE route; the def-touch is void
+
+arch-C's discriminator came back as a PROOF, not a read: the kernel-checked **DivBirthInv**
+reachability invariant (DivBirthReach:54-58, proved at every buildTree node via
+DivBirthInv_conOracle_stepChildren) — clause 3 forces birth-col < cleared for a current-layer
+birth, IMPOSSIBLE at cleared = 0 ⟹ at every case11 δ=1 boost, EVERY divisor's birth layer is
+STRICTLY earlier ⟹ canonPivotOf(case11) = the birth corner sits below layer S ⟹ pivot ↦ 1
+leaves the layer-S support intact ⟹ **no descent**; supportAt's (layer, cleared) key tracks BOTH
+edge-kinds correctly (merge: earlier-layer pivot, no descent, cleared unchanged ✓; append:
+current-layer pivot, descent, cleared+1 ✓). The elder RIGHT; seat-L4's retraction triggered per
+its pre-acceptance (its reachability finding STANDS, credited with exposing the canonCenterOf
+defect + forcing the DivBirthInv-grade analysis); the controller's conflation framing VOID as
+argued. The (b) sim cross-check optional (a kernel-checked invariant beats an empirical sweep).
+
+**THE REDIRECT IS CONFIRMED AS THE ROUTE — GO given to arch-C:** (i) canonCenterOf case11 fix
+(boost center = {birth-corner pivot} ∪ run-length-J₁ sub-block; locks: template Edge B + seat-L4;
+sim-validated on nine instances pre-render); (ii) canonShearOf + (II)=(B) + IsRealBranch extended
+to pin the shear; (iii) THE LEAVES CONDITIONED ON THE REPAIRED IsRealBranch — the per-field set +
+the prepared-multi-affine residual become NAMED DERIVED LEMMAS (map-tagged; the L5 discharge
+chain); per-field SET (A) superseded, not baked. THE ELDER'S SECOND READ runs on the STAGED FORMS
+PRE-BAKE. The proved branches re-target mechanically (conditioned hypothesis ⟹ the old per-field
+forms via the derived lemmas). This is the statement architecture's FINAL form — the
+construction-conditioned monument the process audit predicted, now forced by the mathematics
+itself.
+
+## 2026-07-22 (controller, ~10:05) — the FINAL STATEMENT ROUND staged: the construction-conditioning collapse in motion
+
+arch-C staging coordinated: seat-L4 LOCKS the exact forms — (i) canonCenterOf case11 fix (the
+catch-all `| _ =>` confirmed as the defect mechanism by seat-L4's own pre-verification; the fixed
+boost center = {birth-corner pivot} ∪ run-length-J₁ sub-block, locked against the template Edge B
++ the NINE-INSTANCE SIM VALIDATION added to its lock charge as a banked battery); (ii)
+canonShearOf (within-carve, (II) = the ruled raw-displacement B) + the IsRealBranch shear-pin
+closing :731; (iii) the SIX derived-lemma statements off IsRealBranch (hcenter/hcover/DescendView/
+ShearWithinCarve/hδ0 + the GAP-3 prepared-multi-affine — map-tagged, sorried stubs acceptable
+with statements locked = the L5 discharge chain). foldstate-render stages the structure (leaves
+collapsed to ONE IsRealBranch hypothesis; per-field → stubs; proved branches re-target via
+lemma-application prefix; hcase/hpivot kept per the audit). SEQUENCE: locks → staged statements →
+**the elder's decorrelated second read PRE-BAKE** → arch-C's full gate (cone grows by the stubs;
+footprint stays clean-three+sorryAx) → ONE bake → controller verification → the proof seats wake
+on the FINAL statements. seat-L4's retraction was clean and its reachability work is credited in
+the record; the monument's statement architecture converges to the construction-conditioned form
+the mathematics itself forced.
+
+## 2026-07-22 (controller, ~10:15) — operator-prompted audits: THREE parallel convenings (fidelity-forward, parallelisation, owed)
+
+Operator asked whether to re-run paper-fidelity or owed+parallelisation audits. RULING: both,
+shaped forward, fired as three convenings that ride the statement round without touching it:
+
+1. **pnp-elab EXTENDED** (paper-fidelity as the forward instrument, not a re-audit): the
+PATH-LEVEL template — the composed chart map + ledger Jacobian, the a.e.-cover argument, the
+exponent read-off/bindingAxes seam, the fold-to-value assembly (Theorem 3), each with pre-mortem
+assertions. L5–L8 were rendered PRE-template; this is elaborate-then-render applied to the next
+wave before its proofs start. New file threads/elaboration/path-level-template.md.
+
+2. **nav-13 CONVENED** (the endgame's first full navigator pass): parallelisation audit (can
+L6/L8 SPECIFY start now — verify the IsRealBranch re-typing doesn't touch the path-level leaves;
+the hygiene unit's parallelisability; what's serial-by-nature vs serial-by-habit while five seats
+idle), gate-verification vs the day's defect classes, hard-part-avoidance/drift check, the owed
+phase-transition altitude note, and the distance-to-summit position accounting.
+
+3. **carto-standing CONVENED** (owed + map catch-up; its E-closure trigger had fired): the
+owed-register ground-truth sweep (last swept pre-saga — P6 entries flip CLOSED, the hygiene unit
+consolidates, redirect-superseded entries re-point) + map refresh proposals (object-e CLOSED
+rows; the monument rows to the redirect state; severance-witnesses gains the discriminator
+episode; dead-routes gains the voided per-field SET (A) + case-aware supportAt route).
+
+All three read-only or own-pen; none touches the critical path (seat-L4's locks → staged forms →
+elder pre-read → gate → bake proceeds independently).
+
+## 2026-07-22 (controller, ~10:30) — the staging's paste round: Edge B locus (ROW-restricted), Codex 1b = the baked invariant, predicate-pin confirmed
+
+arch-C's staging hit worktree isolation (the template + Codex artifacts live on the expedition
+branch); controller supplied the pastes: (a) THE EDGE B LOCUS verbatim — with a CORRECTION to
+arch-C's guess: the case11 boost's current-layer sub-block is **ROW-restricted by the run length
+(rows J+1..J+J₁) with the FULL remaining column range**, not col-restricted; the center =
+{u_{s,k}, the reused birth-corner exceptional} ∪ that row-partial block; the residual-width vs
+widthMinUpto identification flagged as a lock TRANSLATION point (verify against tupIdx, don't
+guess), + PM-6 (the T-order tie-break selecting the divisor — canonPivotOf's mergeIdx should
+implement it, a lock check). (b) CODEX 1b verbatim: the GAP-3 derived-lemma target is EXACTLY the
+baked Deg1SupportedSlot (∃c ∧ PerLayerDeg1From) — "a prepared multi-affine residual, not
+literally one-factor-per-active-layer" — the redirect makes the invariant DERIVABLE, not
+different. INTERLOCK-1 RULED: canonShearOf = the PREDICATE-pin (IsRealBranch pins "shearφ
+satisfies ShearWithinCarve" — bridge-free); the concrete displacement def stays the post-monument
+bridge runway (seat-L4's un-defer flag honored). Locked so far: 3/6 (ShearWithinCarve-B,
+DescendView, hδ0); the remaining 3 (canonCenterOf case11 + relaxed hcenter/hcover + GAP-3)
+proceed on the pastes. Sequence unchanged: locks → staged forms → elder pre-read → gate → ONE
+bake. Parallel workstreams (pnp-elab path-level template; nav-13; carto owed+shape) running.

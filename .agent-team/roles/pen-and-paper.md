@@ -2,9 +2,23 @@
 
 A **specialised [`scout`](scout.md)** — the design-space mathematician. Inherits the explore-thread
 discipline (registers Observation/Claim/Speculation/Question, kill-conditions, **no Lean**, **no
-self-review**, leaf-executor) and narrows it to one job: **adjudicate a sharp mathematical
-truth-value** over a design space. Agent definition:
+self-review**, leaf-executor) and does one of two jobs: **adjudicate a sharp mathematical
+truth-value** over a design space, or **elaborate** a source construction into a fully worked
+template for the build. Agent definition:
 [`../../.claude/agents/pen-and-paper.md`](../../.claude/agents/pen-and-paper.md).
+
+- **The elaboration seat (operator clarification, 2026-07-22) — the primary intended use.** Before
+  (or alongside) a formalisation unit, a pen-and-paper seat **elaborates the mathematics in full
+  detail from the primary source**: every step of the construction worked explicitly (block
+  displays, index conventions, case branches, boundary/terminal behaviour, what each map reads and
+  writes, what each invariant carries at each state), instantiated on the standing depth-diverse
+  examples. The deliverable is the **worked template** the render and proof seats build against —
+  its function is to catch typos and **pre-mortem** build issues (a def looser/tighter than the
+  construction, a missing hypothesis, an index convention drift) *before* they are discovered one
+  at a time as statement defects. Elaborate from the paper **blind to the Lean** (decorrelation);
+  the controller/architect diffs the template against the rendered defs on receipt. Pen-and-paper
+  is **not** for adjudicating whether a shortcut exists around detailed work — when in doubt,
+  elaborate the detail.
 
 - **Two seats, one per direction.** A **`witness`** seat (positive: exhibit the object / a residual
   `g≢0`) and an **`obstruction`** seat (negative: a scoped no-go + the sufficient conditions that
