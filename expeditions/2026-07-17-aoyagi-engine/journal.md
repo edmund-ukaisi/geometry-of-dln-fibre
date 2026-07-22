@@ -12214,3 +12214,20 @@ CASE12/CASE2-CONDITIONAL (false for case11 — the pivot-provides mechanism). Th
 elder second read → gate → THE ONE BAKE. Authored-form catch tally this round: five (∀ℓ
 threshold, parent-pin direction, region token, (II) quantifier, the transpose) — every one
 pre-render or pre-bake, none escaped to a proof.
+
+## 2026-07-22 (controller, ~11:45) — ALL 7 FORMS LOCKED; the final render in flight; center-validation closed via the lock battery
+
+The final statement round is FORM-COMPLETE (seat-L4, all typechecked): (1) ShearWithinCarve (B);
+(2) DescendView; (3) hδ0; (4) canonCenterOf case11 (q.2-corrected); (5) GAP-3 = the baked
+Deg1SupportedSlot on real branches; (6) the IsRealBranch shear predicate-pin; (7) the relaxed
+hcenter (center-pin, retiring the layer-S-only ⊆) + hcover case12/case2-CONDITIONAL (case11
+excluded — the pivot-provides mechanism). arch-C relayed the set VERBATIM to the render (post-
+transpose-lesson: no re-derivation), incl. the case-EXPLICIT canonCenterOf (no catch-all), the
+re-scoped stubs, the distinctly-tagged frontier-leaf realBranch_multiAffine, and the docstring
+reconcile. LEDGER CLOSURE: the nine-instance center-validation is DISCHARGED — seat-L4's lock
+battery 7fdfd88a8 (88 edges / 61 boosts across all nine instances: block-size = exponent boost;
+|center| = block+1; S_birth < S) IS that check; cited in the gate verdict. POST-BAKE NOTE
+(wake-item, not bake-item): case11 conjunct-1 needs a NEW pivot-mechanism lemma (u_pivot from
+blockBlowupMap on the center; residual stays) — distinct from the banked append-crux; seat-L4
+builds on wake. SEQUENCE: render green → arch-C verify → **elder's second read on the complete
+staged statements** → the full gate (elder checklist + 3 navigator checks) → THE ONE BAKE.
