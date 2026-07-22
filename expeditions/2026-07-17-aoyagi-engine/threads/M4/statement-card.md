@@ -1,9 +1,22 @@
 # Statement card — M4: the (★) pivot-preservation family (seats L6 + M4B, 2026-07-23)
 
 All refs `lean/DLNFibre/DLN/Aoyagi/PivotPreservation.lean`, namespace
-`DLNFibre.DLN.Aoyagi.PivotPres`, @ 1faf51a14 (canonical). Status: sorry-free; every headline
-force-elaborated `[propext, Classical.choice, Quot.sound]`; cordon OK; fidelity review in flight
-(rev-M4).
+`DLNFibre.DLN.Aoyagi.PivotPres`, @ 1faf51a14 (canonical). Status: sorry-free, **REVIEWED** —
+fidelity review SURVIVED all 7 items (Codex-decorrelated; the reviewer independently
+force-elaborated every root: olean deleted, fresh rebuild — all exactly
+`[propext, Classical.choice, Quot.sound]`).
+
+**Review caveats (folded per the verdict, not defects):** (1) the rollover finding states a
+NECESSITY of restricting beyond the unrestricted form; the ledger-corner restriction is a SOUND,
+GENERAL choice, not the unique one (non-rollover or `jexpᵢ ≠ 0` guards would also work), and the
+literal falsity carries an implicit branch-existence qualification the construction supplies.
+(2) the unconditional `∀u` shear-vanishing (`shearφ_zero_of_ledgerCorner`) rides on
+`foldRegion = univ` (the current stand-in) — if the deferred D2′ region-shrink lands, that lemma
+needs restatement (clause III gives vanishing only on `V`). (3) downstream: these are honest
+PRODUCER atoms consuming `IsRealBranch` as hypothesis; clause-III emittability for the canonical
+shear is PROVEN (`canonShearOf_shearWithinCarve`, CanonShear.lean); L5's emission site remains
+the render checkpoint. Housekeeping (long-lines + the mirrored `List.min?_eq_some_iff'`
+deprecation) → the M-HYGIENE window.
 
 **Claim (the (★)).** Along a real root→leaf branch of `buildTree d (conOracle d) conRoot`, the
 per-step coordinate change `stepMapRaw = blockBlowupMap center pivot ∘ edgeShearRaw` (blow-up

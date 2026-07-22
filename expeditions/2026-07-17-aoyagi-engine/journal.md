@@ -13478,3 +13478,19 @@ non-circular producer carrier; the support/apply twins' consistency + the Canoni
 discharge shape; the new engine lemma; forced axioms; consumer fit (L5 emission + the boost
 proof's α/β witness); decorrelated Codex. seat-L4's boost ingredient set is now FULLY BANKED on
 canonical (support + apply_interior + hslot + the projection [staging] + the b-chain).
+
+## 2026-07-23 ~07:50 UTC — M4 REVIEWED (SURVIVED 7/7); card flipped; seat-M4B dormant
+
+M4's fidelity review SURVIVED all seven items (Codex-decorrelated; the reviewer independently
+force-elaborated every root — olean deleted, fresh rebuild, all clean-three). Card flipped to
+sorry-free + REVIEWED with the two caveats FOLDED IN: (1) the rollover finding restated as
+restriction-NECESSITY with the ledger-corner choice sound-but-not-unique (+ the implicit
+branch-existence qualification); (2) the foldRegion = univ dependency of the unconditional
+shear-vanishing — a FORWARD-LOOKING note: if the deferred D2′ region-shrink lands,
+shearφ_zero_of_ledgerCorner restates (clause III gives vanishing only on V). The downstream
+clause-III emittability flag is already largely discharged (canonShearOf_shearWithinCarve,
+M7 — landed after the review's snapshot); L5's emission site remains the render checkpoint.
+Housekeeping (long-lines + the mirrored min?_eq_some_iff' deprecation — which also lives in
+DivBirthReach, the mirror source) → M-HYGIENE. seat-M4B fully discharged + dormant (not pinged,
+per the courtesy-resume lesson). The producer family's review slate: M4 REVIEWED; M7 in flight
+(rev-M7); L6 REVIEWED 6/6.
