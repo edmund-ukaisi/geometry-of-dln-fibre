@@ -11793,3 +11793,32 @@ confirm against its banked derivation; pen-and-paper commission held unless the 
 page ambiguous. The audit packet is now literally complete: field enumeration, GAP-1 transition
 law, GAP-2 (refined pin + confirm), GAP-3, rendered hcover/hδ0, per-field sweep. One ruling → one
 render → one bake.
+
+## 2026-07-22 (controller, ~08:20) — OPERATOR GUIDANCE: pen-and-paper = ELABORATION first; pnp-elab commissioned; the "forced by the fold" two-level answer
+
+**Operator clarification (recorded as standing intent):** pen-and-paper's intended function is to
+**ELABORATE** the mathematics — produce the fully worked template the build renders from, catching
+typos and pre-morteming build issues — NOT to adjudicate whether shortcuts exist around detailed
+work. Role file + CLAUDE.md team-structure line amended accordingly (the elaboration seat is now
+the documented primary use; "when in doubt, elaborate the detail"). The honest retrospective this
+implies: the monument's ~10 statement defects were caught one at a time by SPECIFY/batteries/rulings
+because no elaborated template of the fold recursion existed — each defect was a place where the
+render guessed what the paper's construction does. **pnp-elab COMMISSIONED** (pen-and-paper
+elaboration seat, own branch expedition/aoyagi-engine-elab, BLIND to the Lean for decorrelation):
+the fully worked fold-recursion template from the paper — state/transition laws per edge kind, the
+Q,P clearing steps in block-display form with explicit read/write sets, the residual's
+support+coefficient windows at every state, the terminal, worked instantiations on (3,3,4) AND
+(3,3,2,2), and a pre-mortem list of checkable assertions. On receipt: diff against the baked defs +
+the audit's amendment set — the decorrelated pre-mortem for the combined re-bake and the template
+for the remaining proofs.
+
+**The operator's "forced by the fold" question, answered two-level (for the record):** the
+mathematical CONTENT of the determination is Aoyagi's — the elder's pp.18–21 derivation read the
+decomposition off the page (γ, β both carve-layer d′ entries; C′^(S+1) = Q⁻¹C^(S+1) as a separate
+step), and its page-authority lean PREDICTED Pin C before the fold check. What the paper could not
+predict is the RENDERING question: the paper has no free shearφ — our TreeEdge left it free, so
+"which mechanism owns the Q₂⁻¹" became a question only at the build level, and the
+blockBlowupCoordQuot argument DISCOVERED which reading our machinery had committed to. The fold
+check CONFIRMED the paper (converging evidence), it did not replace it. The genuinely
+formalisation-native discoveries are the free-field severances themselves — the paper never
+quantifies over free edges.
