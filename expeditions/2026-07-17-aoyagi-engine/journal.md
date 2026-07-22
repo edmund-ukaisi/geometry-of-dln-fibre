@@ -11339,3 +11339,18 @@ plumbing (M′-side admissibility, involution, minAdm equality, membership, mono
 assembly). No walls; batteries all EXIT 0. BOTH E-cores are now content-complete with plumbing
 tails: Ecore (S4 duality + assembly) and Eswap (bookkeeping + assembly) — the two-sorry frontier
 is closing from both sides.
+
+## 2026-07-22 (controller) — arch-C absorbed the ruling (lesson owned, defs ground-truthed); hshear_schur routed to seat-L4
+
+arch-C's absorption: the calibration lesson OWNED ("my gate passed the within-layer-extent gap…
+construction edges masked all five free-field failures"); the expanded free-field battery
+contract now STANDING; ground-truth confirmations — blockCoords = layerCoords ∩ {q.2 <
+widthMinUpto} (col-axis cap matching canonCenter :725, WITHOUT the cleared-shrink — supportAt ⊋
+canonCenter, distinct as ruled); hcenter = parent carve-layer block; GeneratorCleared renders
+cleanly against StepInv/foldResid. Cone stays 10 (new DEFS, not leaves). ONE DEFERRAL routed: the
+exact hshear_schur predicate needs the Q/Schur closed form from seat-L4's BlockDivision/GAP-3
+machinery — seat-L4 WOKEN with the bounded task (checkable condition on ed.shearφ: consistent
+with the generic hshear* pins, weakest-that-inducts, kills the triangular-shear counterexample
+class, one named predicate; FLAG if it can't be pinned against current edge fields — that would
+be a structure finding for the elder). Flag-not-guess discipline explicit on both ends. Flow
+unchanged: render → expanded gate → re-bake → controller verification → elder second read.
