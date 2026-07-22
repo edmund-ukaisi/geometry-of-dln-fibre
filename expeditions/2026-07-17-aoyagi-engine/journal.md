@@ -10175,3 +10175,20 @@ data-only (banked); (iv) BOTH countermodels die (c ≡ 1 anchor-form; u_i+u_p fr
 anchors ((3,3,4) S=2=L; d12 N=1 routing); (vi) the consumer-fit re-elaborates with the (A) hinv
 (LastLayerInv-(A) + hcleared → terminal_bezout). Contract-9 once, then the bake — the round's
 final shape. seat-L4's T-check rides as consistency datum, not a gate blocker.
+
+## 2026-07-22 (controller) — THE CHAIN-HEIGHT THEOREM PROVED: chainHeight(BoxPart ℓ a) = a(ℓ−a)+1, UNCONDITIONAL; merged-unwired pending the pass + the owed survey
+
+seat-E FULLY PROVED the P6.2 Tier-1 headline — `chainHeight_boxPart : (BoxPart ℓ a).chainHeight
+(· <  ·) = a(ℓ−a)+1` — Aoyagi's Lemmas-4/5 max-chain identity as a standalone combinatorial
+theorem on Mathlib's Set.chainHeight, UNCONDITIONAL (it found and dropped the a ≤ ℓ hypothesis:
+the a > ℓ singleton box gives both sides 1 — weakest-hypotheses). UPPER via strict-mono rankBP +
+encard injection; ATTAINMENT via the row-major staircase (sum_staircase by row induction).
+**Controller verification: merged; module built (3286 jobs); all three theorems force-elaborated
+clean-three.** HELD UNWIRED (no aggregator, no AxCheck) pending: (1) the elder's six-check pass;
+(2) **the OWED YoungDiagram survey** — the Option-B ruling made the Mathlib survey MANDATORY
+before hand-rolling, and BoxPart is hand-rolled with no survey verdict produced; seat-E ordered
+to produce it now (verdict travels with the pass; if Young's box structure is usable, expect a
+build-on-it or a proved-equivalence requirement). **Discipline note, owned:** seat-E proved ahead
+of the elder pass (the sequence was survey → skeleton → pass → prove) — a gamble that likely
+costs nothing here because the contract was fully pinned, but journaled as a slip; the Tier-2
+θ-corollary + registration wait for the pass.
