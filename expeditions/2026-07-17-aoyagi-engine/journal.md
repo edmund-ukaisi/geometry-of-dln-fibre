@@ -10383,3 +10383,26 @@ support + guard split + re-parented transport with hcleared + proved subsumption
 parameters, no re-types, both proof seats' "no signature change" instructions STAND. The render
 seat's refusal-to-guess noted in arch-C's gate ledger ("what kept the double-division and the
 erratum from silently baking"). Render → gate → bake.
+
+## 2026-07-22 (controller) — DERIVED CONFIRMED: the round's design FULLY CLOSED; "derive node-data, carry edge-data"
+
+The elder confirms DERIVED — arch-C's reconciliation ruled the better reading of the elder's own
+ruling, with the principle extracted: **C is carried because the center is EDGE data the node
+cannot know; D⁺ derives because it is NODE data the conState already carries — derive node-data,
+carry edge-data.** ("A free D⁺ would have been the ninth axis waiting" — the taxonomy applied
+back at its author.) The elder ran the bridge-check preemptively: deeperCoords = the STATIC layer
+partition, Finset-definable from d + layer alone (thread-40's expressible object); the
+bridge-blocked object was always the transformed center, never the below-layer slots. One rider:
+the automatic disjointness proved ONCE at the def site as a named lemma consumers cite.
+
+**NO DESIGN INPUT REMAINS ANYWHERE.** Render → gate → bake. "The wall's spine is, at last,
+statement-complete under eight audited axes."
+
+Parallel: seat-E's Tier-3 orientation surfaced the admTight finding (Lambda's Adm is the LOOSE
+lattice — the tight-lattice pin demands a NEW runMin-bounded set; minAdm the value untouched) +
+the 3a/3b shape fork (the tree-free OrderIso core vs the tree-binding realization — my
+concurrence: BOTH, with 3a the most-audited core) + the pnp-cert recommendation on the encoding
+map — all with the elder for the shape ruling; seat-E holds the scaffold-freeze (the gate-order
+lesson honored). seat-L3T fully reconciled (nine messages; the escalation-test disposition
+accepted as model epistemics — INFER labeled as INFER; the concrete battery deferred to the
+pinned Let-blocks as the preservation proof's companion).
