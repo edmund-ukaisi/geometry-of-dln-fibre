@@ -13973,3 +13973,36 @@ foldResid_layerHomogeneous + fills realBranch_cofactorDescent. Descent wall = δ
 via hhomog. arch-C's render flags: foldResid_layerHomogeneous visibility (the L1-canonShearOf pattern —
 discharge at leaf_stepInv_of_path' downstream, can see it), caller coupling (Case1Wire:444/Case2Wire:113
 hslot→hhomog), character-identity (baked stub vs primed twin re-wire). L3 (fan) = the last open spine call.
+
+## 2026-07-22 ~22:35 UTC — Gap B induction designed (2 atoms); THIRD guard (non-terminal) caught pre-build; pnp mult-soft-spot RESOLVED
+
+Post-L1-bake, the three lanes advanced:
+
+(A-div) seat-L4B RESOLVED the pnp Gap-A multiplicity soft spot from the banked ledger invariant:
+DivBirthInv's FOURTH clause (Function.Injective divBirthCoord) makes κ=cornerToFlat∘divBirthCoord
+injective ⟹ u_p appears in bLedger with multiplicity EXACTLY 1 — the pnp-flagged i=J₁/mult-≠1 boundary
+does NOT bite; the real r_i matches the model's Gap-A accounting. Gap-A confirmed better than the model,
+non-vacuity established. seat-L4B holds for the L1-relay assembly (my "L1 BAKED, assemble" msg is in its
+inbox).
+
+(B) The descent wall (realBranch_multiAffine_step', MultiAffineStepWire @ ed2fe681a) is green with ONE
+tracked sorry = realBranch_appendResidDescent (re-framed shear-independent, clause-1-direct: ∃c, child
+resid = ∑_{i∈blockCoords(p.layer+1)} c i·u i; cofactor/exists_graded framing DROPPED; label fixed to
+B-standalone). #print axioms sorryAx traces to it ONLY (NOT boostReady — clean decomposition holds).
+The sub-agent DESIGNED the foldResid_layerHomogeneous induction (build HELD for arch-C's render): 2 atoms
+— coreGen_layerHomogeneous [BASE, he_lin; the concern-1 cap crux = coreGen's layer-ℓ dependence confined
+to blockCoords(ℓ)] + homogeneousDeg1On_comp_of_fixing [STEP, uniform, REUSES its banked stepMap/qm
+hfix/hagree + case11_pivot_decode_lt]. u_pivot excluded at the δ=1 descent because it's not
+HomogeneousDeg1On at layer p.layer+1 (the strengthened IH forbids it).
+
+A THIRD GUARD caught pre-build (guard-domain family recurs): at TERMINAL p, foldResid = const 1, NOT
+HomogeneousDeg1On (vanishing fails). foldResid_layerHomogeneous needs a NON-TERMINAL guard
+(¬ N ≤ p.conState.layer) — free (every consumer interior) but must be ON the statement. Relayed to the
+elder to fold into the verbatim (with the block-vs-layer wrapper + the predicate-form ∃b-vs-AffineOn∧vanishing
+input). SPECIFY-first caught it in the induction design, not mid-build — the backstop working (4th such
+catch: hpos/he_lin/hlayer/non-terminal).
+
+STATE: L1 BAKED ✓; A-div DONE ✓ (mult resolved); boostReady ASSEMBLING (seat-L4B, L1 available); Gap B =
+elder finalizing verbatim (blockCoords + he_lin + non-terminal guard) → arch-C renders (flags pre-authorized,
+-rung-c ff'd to 04ef70e6) → seat-L3T2 builds the 2 atoms + swaps realBranch_appendResidDescent. L3 (fan) =
+last spine call. Waiting on: elder's Gap B verbatim + seat-L4B's boostReady assembly.
