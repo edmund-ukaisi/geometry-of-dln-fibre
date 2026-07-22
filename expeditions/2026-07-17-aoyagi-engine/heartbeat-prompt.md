@@ -12,20 +12,23 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **ENDGAME CASCADE, FOUR BAKES IN (2026-07-22 ~18:40).** Baked: redirect (9c51289f4), pin
-  (d309bca48, (★) forced), hpos (0f8310b1a), COLLAPSE (790aed4e9: FoldRealizes 3rd conjunct
-  |jacDet gmap| = jacWeight(jac) unit≡1; hcollapse = hreal.2.2; srcBox seam = NAMED L5 obligation).
-  STUBS 5/6 CLOSED clean-three (centerPin/cover/descendView/terminal_edgeδ/shearWithinCarve);
-  LEAVES: terminal_edge PROVED; case2 = conjB-only (Case2Wire, awaits companion); L8 PROVED
-  (banked canonical); WALL STRUCTURE PROVEN (Case1WallStaged eca3fd461 on seat branch: dispatch
-  body sorry-free, sorryAx only via 2 frontiers). RENDER LANE (serial): node-form multiAffine
-  round RENDERING → Assembly 1st increment ((B′) primed drivers, render seat writes, arch-C
-  gates, SUMMIT-RETIRE in owed-register) → boost-readiness stub round (elder part-ruled: SOURCE
-  form, derived-stub default, seat-L4 battery gates carried-vs-derived). IN FLIGHT: seat-L6
-  landing L6 sorry-free (hreal.2.2 one-liner + chart_of_collapse); seat-L4 boost-readiness
-  battery on (2,2,2,2)/(3,3,2,2); seat-L3T2 free → L5 SPECIFY next. Census 36 = 11 live
-  (MonumentAtlas 8 + LC + Case2Delta0 + Case2Wire) + 25 fossil; live-cone calibration HIT exact.
-  ELDER: poll transcript TAIL WINDOW (...d30ba3). E-LANE CLOSED. seat-L3T dormant (clean handoff).
+- phase: **THE TWO FINAL STATEMENT ROUNDS + DEEP PROOFS (2026-07-23 ~00:00).** FIVE bakes in
+  (redirect/pin/hpos/collapse/node-form) + Assembly increment 1 INTEGRATED (896b60b9b: primed
+  drivers live, sorry-sources = baked − {L6,L8}). PROVED: L6 (reviewed 6/6) + L8 (primed wires);
+  terminal_edge in place; case2′ conjA + wall′ dispatch clean-three; 5/6 stubs; L5 atoms
+  M1/M2/M3/M5 + M4's blow-up half (PivotPreservation 4 atoms). ROUND A (rendering, arch-C):
+  multiAffine RESHAPE — node-form REFUTED (he_lin root gap, u³); elder ruled (B) STEP-form
+  (verbatim authored; carried-invariant descent; he_lin stays at L5 root); staging = step-form in
+  + node-form out + 2 conjB call-sites (Case1Wire:445/Case2Wire:115) revert-to-sorry under
+  scoped waiver (STALE-BASE near-miss caught: arch-C's zero-callsite grep was on old pin — HOLD
+  sent, corrected plan running). ROUND B (elder ruling charged): boost-readiness FINAL —
+  instruments CONVERGED (both blind: TRUE + CARRIED; R_bad ≡ missing-factor witness; mechanism
+  u_p|b_i ⟺ i>J₁; battery merged 1ed76d01b); elder lean (2) CanonicalSchurStep pin doubly
+  supported (pnp-boost's prepared-form caveat = exactly what the pin discharges; M7 cost sunk).
+  DEEP PROOFS: seat-M4B (A4 persistence-extraction → A5, the L5 interface — A5 form routes via
+  controller for L5Spec reconciliation); seat-L4 M7 (CanonShear.lean authoring; prepared-form =
+  NAMED lemma serving ruling B). Census 35; L6→dormant (2nd clean handoff). ELDER: poll TAIL
+  WINDOW (...d30ba3). Seats dormant: L3T, L6. NEXT COMMISSIONING: L7 (nav-13).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
