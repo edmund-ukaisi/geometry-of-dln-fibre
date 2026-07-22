@@ -521,6 +521,20 @@ theorem bLedger_notMem_index_of_thr_le {n : ℕ} (thr : Fin n → ℕ) (i : ℕ)
     f ∉ Finset.univ.filter (fun k => thr k < i) := by
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]; omega
 
+/-- **The dominant rows do not read `u (κ f)`** (the `i ≤ J₁` half, in usable IgnoresCoords form). For a
+row `i` at or below the jump (`i ≤ thr f`) and distinct birth corners (`κ` injective), `bLedger · i`
+IGNORES the coordinate `κ f`: every factor `u (κ k)` in the product has `thr k < i ≤ thr f`, so `k ≠ f`,
+so `κ k ≠ κ f`. This is the pivot-freedom the boost-readiness coefficients need on the partial block. -/
+theorem bLedger_ignores_of_thr_le {n D : ℕ} (κ : Fin n → Fin D) (hκ : Function.Injective κ)
+    (thr : Fin n → ℕ) (i : ℕ) (f : Fin n) (hf : i ≤ thr f) :
+    IgnoresCoords (fun u => bLedger κ thr u i) {κ f} Set.univ := by
+  intro w _ m hm t
+  simp only [Finset.mem_singleton] at hm; subst hm
+  refine Finset.prod_congr rfl (fun k hk => ?_)
+  rw [Finset.mem_filter] at hk
+  have hkf : k ≠ f := by rintro rfl; omega
+  exact Function.update_of_ne (fun h => hkf (hκ h)) t w
+
 /-! ### The WALL — primed leaf `case1_preserves_stepInv'` (SEAT-L4, primed-leaf pattern)
 
 Statement-identical to `MonumentAtlas.case1_preserves_stepInv`; the controller swaps the MonumentAtlas
