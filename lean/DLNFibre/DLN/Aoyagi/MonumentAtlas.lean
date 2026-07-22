@@ -967,6 +967,7 @@ theorem realBranch_shearWithinCarve {N : ℕ} {d : Fin (N + 1) → ℕ}
 /-- Derived: a terminal edge does not divide (`δ=0`) — only a rollover advances the layer. -/
 @[blueprint]
 theorem realBranch_terminal_edgeδ {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
     (hbranch : (p.extend ed).IsRealBranch e) :
@@ -978,6 +979,7 @@ theorem realBranch_terminal_edgeδ {N : ℕ} {d : Fin (N + 1) → ℕ}
 elder's Codex C2. The PARENT residual is degree-1 on the parent support (the multi-affine grade). -/
 @[blueprint]
 theorem realBranch_multiAffine {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
     ∀ j, Deg1SupportedSlot d (foldResid d e p) j

@@ -1610,3 +1610,6 @@ import DLNFibre.DLN.Aoyagi.Case1Wire
 -- LeafGeometryWire: seat-L3T's L8 proof (leafPath_realizesExponents', clean-three) ported to the
 -- baked tip by seat-L3T2; the MonumentAtlas L8 sorry-swap rides the post-pin mini-round.
 import DLNFibre.DLN.Aoyagi.LeafGeometryWire
+-- Case2Wire: seat-L3T2's case2 leaf assembly (case2_conjA clean-three; conjB = the single tracked
+-- sorry consuming seat-L4's case-generic companion). Stub swap mechanism pending (import layering).
+import DLNFibre.DLN.Aoyagi.Case2Wire

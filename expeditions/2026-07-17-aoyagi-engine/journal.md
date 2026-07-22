@@ -12711,3 +12711,49 @@ the obligation lives + the honest-constraint taste question). The L6 lane's shap
 elder's form → one line → gate → reviewer → statement card. Board otherwise unchanged: hpos
 staging in render; FoldRealizes ruling queued behind it; L4 wall wave + L3T2 Case2Wire
 conjunct-A in flight.
+
+## 2026-07-22 ~15:30 UTC — WALL MILESTONE integrated (append conjunct-1 COMPLETE both δ); hpos delta-read triggered
+
+**seat-L4's append-conjunct-1 milestone MERGED (226b0f73b):** deg1SupportedOn_center_of_hslot
+(Slot + cover[L3T2's, proved] + centerPin[its own] → the bridge → Deg1SupportedOn ed.center) +
+stepInv_child_delta1_append (the δ=1 append conjunct-1: q' = q∘stepMap, the crux moves u_pivot
+into foldB — FIRST-TRY GREEN). Both force-elaborated clean-three; census steady 38. With
+stepInv_child_delta0, the append-case (case12/case2) DIVISIBILITY IS DONE END TO END, both δ,
+zero sorryAx — six clean-three lemmas banked by seat-L4 this wake, three of them cross-seat
+(consumed by L3T2's Case2Wire). Remaining on the wall: the case11 PIVOT-MECHANISM (the deepest
+piece — seat-L4 keeps it, fresh-context + Codex-strategy-first per the deep-sub-proof
+discipline; handoff-on-context-limit norm restated) + conjunct-2 (case-generic companion) + the
+one-closed-edit leaf assembly.
+
+**hpos staging 2a53b8436 delta-read TRIGGERED:** parent = canonical 9cf34215c; the raw diff is
++2 lines EXACTLY (the two parity-form hpos binders on the elder-ruled stubs) — controller-eyes
+verified (an earlier empty grep was my own pipe artifact, caught by falling back to the raw
+diff, not trusted). arch-C re-gate PASS signature-only. On the elder's OK: integrate →
+seat-L3T2 closes terminal_edgeδ immediately. Queued behind: the FoldRealizes ruling (L6 at ONE
+sorry) + the L8 swap mini-round.
+
+## 2026-07-22 ~15:55 UTC — Case2Wire integrated (conjA CLEAN-THREE); the STUB-SWAP IMPORT CYCLE surfaced — assembly design with arch-C
+
+**Case2Wire integrated + aggregator-wired (5bff3d79b + 09df059f8):** case2_conjA (divisibility,
+BOTH δ) force-elaborated **CLEAN-THREE — no sorryAx anywhere in the chain** (δ=0 via
+stepInv_child_delta0; δ=1 via case_child_stepInv_divisibility + seat-L4's bridge + the cover
+equality; seat-L3T2's decorrelated Codex check on the bridge banked). case2_preserves_stepInv'
+assembled with ONE tracked sorry (conjB, `-- map: B-L3-case2-conjB`, awaiting seat-L4's
+case-generic companion). Census 39 (+1 tracked, correct). The case2 leaf is now conjB-away from
+done.
+
+**STRUCTURAL FLAG (controller-caught): the "stub swap" has an IMPORT CYCLE.** Every wire/proof
+module imports MonumentAtlas (directly + via Case1Wire/Case2TransportWire), so MonumentAtlas can
+never consume the primed lemmas (`:= case2_preserves_stepInv'` is a cycle) — and textual
+inlining is equally dead (the proofs consume Case1Wire lemmas, which import MonumentAtlas). The
+"L8 pattern" solves the PROVING layering, not the SWAP. Design routed to arch-C (its
+architecture): my lean = variant (B′), a downstream `MonumentAssembly.lean` with PRIMED drivers
+(statement-identical, anchor-checkable) proved from the wire leaves + remaining sorried
+statements — sorryAx shrinks with ZERO MonumentAtlas edits; at the summit the final wiring
+consumes the primed drivers and the MonumentAtlas sorried copies retire in ONE elder-blessed
+cleanup. Alternative (B) = move the drivers downstream now (more churn mid-cascade). arch-C
+proposes; the L8 swap mini-round becomes the Assembly's first increment.
+
+Board: hpos delta-read RUNNING (elder mid-read since 12:06); seat-L3T2 lane-1 proof prepped
+against a local hpos'd copy (instant close on the bake); seat-L4 on case11 (Codex-first);
+seat-L6 at ONE sorry; FoldRealizes ruling queued.
