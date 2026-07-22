@@ -14006,3 +14006,26 @@ STATE: L1 BAKED ✓; A-div DONE ✓ (mult resolved); boostReady ASSEMBLING (seat
 elder finalizing verbatim (blockCoords + he_lin + non-terminal guard) → arch-C renders (flags pre-authorized,
 -rung-c ff'd to 04ef70e6) → seat-L3T2 builds the 2 atoms + swaps realBranch_appendResidDescent. L3 (fan) =
 last spine call. Waiting on: elder's Gap B verbatim + seat-L4B's boostReady assembly.
+
+## 2026-07-22 ~23:00 UTC — boostReady = PATH-INDUCTION (recalibration); seat-L4B → seat-L4C (4th successor handoff)
+
+seat-L4B, post-L1, scoped the boostReady assembly and RECALIBRATED my framing: it is a PATH-INDUCTION
+that MATERIALIZES foldResid p's structure, NOT a mechanical `exact`-combination — there is no banked
+foldResid = diag(b)·D·H representation lemma; A-div (bLedger) / A-clear (canonShearOf) / hslot are the
+INGREDIENTS the induction combines. The pen-and-paper sharp form R_ij = ∑_{c∈partialBlock} α·c +
+u_pv·∑_{c∈extraBlock} β·c IS the Deg1SupportedOn ed.center decomposition (c_pv := ∑β·u_c ignores center
+since extraBlock∩center=∅ + pv∉supportAt — seat-L4B's a′ gives exactly these).
+
+seat-L4B (near context limit) correctly recommended a FRESH-context run for the wall's heart (I set
+"must close clean, no sorryAx" — cramming risks a half wall-heart). Commissioned seat-L4C (4th clean
+successor handoff of the expedition: L3T→L3T2, L6→M4B, seat-L4→seat-L4B, now seat-L4B→seat-L4C).
+Checkpoint VERIFIED before spawn: -L4B tip df2299e60 has L1 (realBranch_canonShear_eq) + a′ + bLedger +
+the Codex answer (boostready-lean-induction-answer.md §1-2 = the P(p) invariant + step discharge, now
+UNBLOCKED by L1). seat-L4C branches off -L4B, executes the induction (base coreGen-deg-1-per-layer via
+hslot; the δ=1 normal-form-transport as the hard step; δ=0 pullback; rollover id; κ injective via
+DivBirthInv 4th clause). seat-L4B stood down (fully banked).
+
+Also confirmed: the pnp Gap-A mult soft-spot is RESOLVED (DivBirthInv's Function.Injective divBirthCoord
+⟹ κ injective ⟹ u_p mult exactly 1). STATE: L1 BAKED ✓; A-div DONE ✓; boostReady = seat-L4C
+(path-induction, wall's heart); Gap B = elder finalizing verbatim (blockCoords+he_lin+non-terminal guard)
+→ arch-C renders → seat-L3T2 builds 2 atoms; L3 (fan) = last spine call.
