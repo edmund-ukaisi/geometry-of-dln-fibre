@@ -11822,3 +11822,34 @@ blockBlowupCoordQuot argument DISCOVERED which reading our machinery had committ
 check CONFIRMED the paper (converging evidence), it did not replace it. The genuinely
 formalisation-native discoveries are the free-field severances themselves — the paper never
 quantifies over free edges.
+
+## 2026-07-22 (controller, ~08:35) — PROCESS SELF-AUDIT (operator-prompted): the churn's root is the free-edge leaf design; bloat named
+
+Operator asked: bloated components? isolated components causing the churn / avoiding the hard
+part / the math / the paper's path? HONEST FINDINGS (journal = the record; lessons.md gets these
+at close):
+
+1. **The churn's root: the free-edge leaf design (the deferred coordinate bridge).** The leaves
+quantify over free TreeEdge fields; the paper has no free edges. Every defect round was the same
+event — a free field admits a non-construction instance; a constraint of Aoyagi's recursion gets
+re-derived as a bolted-on hypothesis. The field audit is converging to construction-pinning; the
+generality had no second consumer. This is the nearest thing to "avoiding the paper's path" in
+the process — architectural, not lazy: effort routed into hypothesis engineering instead of the
+recursion itself. FRAMING QUESTION sent to the elder with the audit: complete the per-field pin
+set vs collapse to a construction-conditioned form (one hypothesis, one L5 discharge, no room for
+an eleventh round) — packaging, not math; its call with the churn history in view.
+
+2. **Bloat:** (a) the two-seat render pipeline (arch-C dictates, foldstate-render types) — the
+gate is value, the split amplified crossing-noise; lessons item, not a mid-flight reorg. (b) The
+elder crept from direction into literal statement authorship — two of the defects were in ITS
+rendered sentences; the proposal→lock division (elder rules the object, the proof seat locks the
+form, batteries check both sides) should have been the rule from the start — it is now. (c) Echo
+volume: content-free holds/acks — controller included; stopping.
+
+3. **NOT the problem:** the proof seats did not avoid the hard math (crux, divisibility engine,
+∃c core, two proved branches = the hard math, banked); the gates/cordon/batteries/reviews all
+caught real things; zero proof lines wasted.
+
+4. **The controlled comparison:** the E-lane had the #42 cert (an elaborated template) up front —
+three tracks, zero rework. The monument had no template — ten rounds. The cleanest evidence for
+the operator's pen-and-paper clarification; pnp-elab retrofits the instrument.
