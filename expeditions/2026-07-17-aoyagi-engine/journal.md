@@ -13051,3 +13051,31 @@ Three independent instruments now converge on the ONE remaining wall obligation:
 to pnp-boost — the decorrelation held until both land), and the elder's final form. The day's
 statement architecture has collapsed the coupled-corank wall — "the frontier this project dodged
 for multiple expeditions" — to one exact-algebra-adjudicable lemma about b-chain coefficients.
+
+## 2026-07-22 ~21:20 UTC — nav-13 dispositions EXECUTED; rev-L6 SURVIVED 6/6; boost instrument 1 of 2 in
+
+**nav-13 (pass #13) — accepted item-by-item, all executed:** (1) M7 UNASSIGNED → assigned to
+seat-L4 (fills its boost-wait; its Schur territory; built so the prepared-form property serves
+EITHER boost resolution). (2) Gates-ran ledger: NO CHANGE — all five bakes two-channel verified
+from git alone. (3) multiAffine's PROOF unowned → named to seat-L3T2 (queued after its wave;
+SPECIFY-first, deep-sub-proof discipline). Assembly-as-busywork: negative. (4) Case2Delta0
+RETIRED (zero consumers re-verified; superseded by the case-generic delta0; EXECUTED 76632574d;
+census 42 → 41 = 16 live + 25 fossil). Stale overlay/claims.yaml census figures → carto trigger
++ my claims.yaml refresh (in progress). (5) Distance-to-summit: L5 = the longest link (the fold
+convergence node), priceable now that M7 + multiAffine have owners; boost + L7 = highest
+variance. nav-14 trigger set (wall closes OR M4/M7 lands OR L5 goes serial >1 tide). nav-13's
+calibration pass banked (a44a796e4; navigator-authored, controller-committed — its worktree was
+off dev where the expedition dir doesn't exist; infra note for the office contract).
+
+**rev-L6: SURVIVED on ALL SIX functions, Codex concurring** — fidelity byte-identical; excep =
+the full critical locus (honest over-inclusion, null + measurable, non-deflating); nbhd = region
+HARD LOCK held; unit ≡ 1 forced by the collapse, not laundered; non-vacuous at M′=1; clean-three
+forced on every lemma (no L5-sorry leak, no cite leak); verbatim-swappable for the B′ consumer.
+Card flipped to REVIEWED. Two non-blocking notes recorded on the card.
+
+**Boost-readiness instrument 1 of 2 (seat-L4's Codex, artifacts 1f656394e): TRUE on the fold but
+NEEDS-CARRYING** — countermodel R_bad (unprepared shear, γ not Schur-cleared) satisfies
+everything the current pins carry yet is not boost-ready. Forwarded to the elder with the
+HOLD-for-pnp-boost instruction + the gate-2 history note (resolution (2) = partially reinstating
+the exact-shear content, property-style, with the honest forcing reason; M7's emission cost
+largely sunk). The elder rules form + home when instrument 2 lands.
