@@ -12,19 +12,21 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **LEAF-PROVING LANE (post rung-C integration, 2026-07-21).** The monument skeleton is
-  statement-hardened + integrated (tip aff7c8399+); cone = 6 MonumentAtlas leaves (L1+terminal_bezout
-  PROVEN, verified, merged). SERIAL MonumentAtlas order (nav pass #14): canonCenter (in flight,
-  arch-C) → L4/WALL (in flight, seat-L4, parallel-dev own worktree) → L3 (pair with L4) → L5 (the
-  assembly hinge) → L6+L8 → L7 (tail; needs canonCenter + L5). GATE-CHECK at canonCenter
-  integration: diff confined to provenance side (canonCenter/reachesLeaf/FoldRealizes/L7), must NOT
-  touch FoldStepInvAt/StepInv/fold*/Deg1SupportedOn/case-leaves. E-LANE (operator-opened 2026-07-21):
-  three tiers; Tier 1 band-arithmetic RATIFIED (seat-E proving); P6.2 count-identification PNP-GATED
-  (elder hypothesis: count-object = max-crossing ρ, worked.tex:182); Tier 3 defer lifts when
-  FoldProduced locks (= the DLN-lane → canonCenter joint, ALSO seat-E Tier-3 release + nav joint).
-  Final wiring swap of exists_coreResolution's fossil sorry AFTER all 8 leaves. STILL operator-gated:
-  PR merge, dev→main, destination/DoD changes. Operator standing instruction 2026-07-21: thorough
-  briefs ALWAYS; resume standing seats with retained context over fresh spawns.
+- phase: **THE (A)-ROUND ENDGAME (2026-07-22 early hours).** The monument's design is CLOSED under
+  EIGHT audited severance axes (…anchor-form, frame) after 7 statement defects, ~10 elder rulings,
+  7 blind convergences — "the mathematics is settled and only the writing remains." Awaiting: the
+  render seat's ONE-EXPRESSION correction (T + D⁺ from one support-WINDOW index off
+  (layer,cleared)/canonCenterOf — NEVER raw conState.layer, which shears the pair: disjointness
+  dies + ∅-collapse at N−1) → arch-C's FIFTEEN-point gate (all checks = found-defect regressions)
+  → ONE BAKE → light rebases (body+value, no re-type) → seat-L4 proves L4+LastLayerInv-preservation
+  (crux verbatim; conjunct-B = re-factoring read off the shear-folded form, NO subtraction step),
+  seat-L3T proves L3+transport (divisibility engine + terminal collapse banked green). Cone after
+  bake = 10 named. E-LANE: P6 combinatorial half COMPLETE+registered (bandCount → chainHeight_boxPart
+  [elder-passed, unconditional] → θ-corollary); remaining: Mval_clamp_le (the seam lemma's one hole,
+  seat-E proving w/ Codex de-risk) → pnp encoding cert (task #42, 5 parts) → 3a OrderIso scaffold →
+  elder pass → prove; Tier-3 = (3a) core + (3b) tree-binding, pins concentrated at the iso. Final
+  wiring swap of exists_coreResolution AFTER all leaves. STILL operator-gated: PR merge, dev→main,
+  destination/DoD. Standing: thorough briefs; resume standing seats; ack-protocol on all seats.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.

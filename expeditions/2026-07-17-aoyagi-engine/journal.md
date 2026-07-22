@@ -10552,3 +10552,16 @@ support-window index off (layer, cleared)/canonCenterOf). The gate gains two che
 disjointness cites cleanly under the windowed D⁺; the last-layer window NON-EMPTY). Third
 occurrence tonight of "the mechanical gate is the floor; the content is the gate." On the
 corrected render → the full gate → THE BAKE — this should be the final hold.
+
+## 2026-07-22 (controller, heartbeat tick) — freshness sweep: two lanes active, one stall-check fired; memo re-phased
+
+Tick: placement + cron verified. Branch freshness: seat-E ACTIVE (42s — a statement fix on
+Mval_clamp_le: a NECESSARY `T ∈ Adm M` hypothesis found and added — the statement-lock discipline
+producing an honest amendment; its report will come); seat-L4 active (9m — the Schur battery
+push, already routed); pnp-order plausibly mid-certificate (its last push predates the charge —
+the 5-part cert is large). THE MONUMENT LANE: rung-c's tip is 86m stale (normal for the
+uncommitted-until-bake worktree pattern) but ~35+ min have passed since the window-index
+correction flag with NO seat report — the idle-stall check fired to arch-C (the wake rule:
+idle + clean + continuing-intent = stalled). The heartbeat memo's phase line re-written to the
+(A)-round endgame state (the one-expression correction → the fifteen-point gate → the bake →
+the proof cascade; the E-lane ladder; cone 10 post-bake).
