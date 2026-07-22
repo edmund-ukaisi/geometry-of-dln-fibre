@@ -811,6 +811,18 @@ noncomputable def canonCenterOf (d : Fin (N + 1) → ℕ) (s : ConState N) (sc :
       (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
         (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d)
 
+/-- **`CanonicalSchurStep`** (boost-readiness pin, 2026-07-22; = M7's proven `canonShearOf_support`). The
+shear displacement is supported on the layer-`s` carve STRICT INTERIOR (`row`,`col` both `> cleared`): it
+never writes a pivot corner, the pivot row/col, a cleared coordinate, or another layer. PROVEN for
+`canonShearOf` ⟹ emittable for free. Kills R_bad; with the b-chain (`u_p ∣ b_i ⟺ i > J₁`) it derives
+`realBranch_boostReady`. -/
+def CanonicalSchurStep {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) : Prop :=
+  ∀ (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)), shearφ u k ≠ 0 →
+    (((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
+      s.cleared < (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
+        s.cleared < (((tupIdxEquiv d).symm k).2 : ℕ)
+
 /-- **A real root→node branch of `buildTree d (conOracle d) conRoot`** — COMBINATORIAL branch-membership
 PLUS the canonical coordinate PIN. Each step's `(case, nextState)` is one of the oracle's `stepChildren`
 at the parent node's state (`ecase`/`child` matched; the matched child's `esubst` = `runLen`/`mergeIdx`
@@ -831,7 +843,8 @@ def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
         -- ShearWithinCarveRaw) — reads the former `_`, symmetric with the canonCenterOf/canonPivotOf
         -- pins. Defeq to `ShearWithinCarve d e ed` at the last edge, so `realBranch_shearWithinCarve`
         -- extracts it (last-step projection).
-        ShearWithinCarveRaw d e (TreePath.step p center pivot cse nextState shearφ) shearφ
+        ShearWithinCarveRaw d e (TreePath.step p center pivot cse nextState shearφ) shearφ ∧
+        CanonicalSchurStep d p.conState shearφ
 
 /-- **The path reaches the leaf** — a real branch (now also coordinate-pinned via `canonCenterOf`) whose
 terminal state emits `l`. Ties chart `c`'s fold to the tree leaf its branch reaches; the coordinate pin
@@ -995,8 +1008,17 @@ theorem realBranch_shearWithinCarve {N : ℕ} {d : Fin (N + 1) → ℕ}
   --      the last edge is defeq ShearWithinCarve d e ed; seat-L4 (B) landed, no (II) defect)
   -- `p.extend ed = .step p ed.center … ed.shearφ`; IsRealBranch's step arm's THIRD conjunct is
   -- `ShearWithinCarveRaw d e (p.extend ed) ed.shearφ`, defeq to `ShearWithinCarve d e ed`.
-  obtain ⟨-, -, hshear⟩ := hbranch
+  obtain ⟨-, -, hshear, -⟩ := hbranch
   exact hshear
+
+/-- Derived: the step shear satisfies the `CanonicalSchurStep` boost-readiness pin (4th-conjunct projection). -/
+@[blueprint]
+theorem realBranch_canonicalSchurStep {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    CanonicalSchurStep d p.conState ed.shearφ := by
+  obtain ⟨-, -, -, hschur⟩ := hbranch
+  exact hschur
 
 /-- Derived: a terminal edge does not divide (`δ=0`) — only a rollover advances the layer. -/
 @[blueprint]
@@ -1094,7 +1116,8 @@ proof draws its center source from boost-readiness — a separate stub, unaffect
 theorem realBranch_multiAffine_step {N : ℕ} {d : Fin (N + 1) → ℕ}
     (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e)
+    (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
+    (hbranch : (p.extend ed).IsRealBranch e)
     (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p)) :
