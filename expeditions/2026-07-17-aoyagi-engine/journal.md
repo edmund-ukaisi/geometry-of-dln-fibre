@@ -11429,3 +11429,37 @@ bindingSet_chainHeight = a(ℓ−a)+1) axiom-clean with #print evidence, AxCheck
 ONE fidelity review (both cards) → controller integration to the expedition branch → **P6.2
 Tier-3 CLOSES**. Tasks #43/#44 complete. Monument lane unchanged: held on the elder's shear
 ruling (poll next wake).
+
+## 2026-07-22 (controller, tick ~05:25) — E-lane INTEGRATED + capstone ratified + review commissioned; THE SHEAR RULING: grading form now, canonShearOf follow-up — re-bake UNBLOCKED
+
+TWO major landings this tick:
+
+**1. THE E-LANE IS INTEGRATED (230909c60 on -E).** seat-E merged both cores; all 3 coercion
+bridges held BY RFL (the defeq claim verified — no bridge lemma); the import cycle resolved by a
+TERMINAL ASSEMBLY module (OrderRealizeAssembly: the canonical swapBinding_orderIso, the (c)
+transport, the headline iso, the count corollary, and THE CAPSTONE). **Capstone RATIFIED:**
+`bindingSet_chainHeight_eq_thetaCount` — chainHeight(bindingSet M) = thetaCount M 0 — the count
+FAITHFUL to the actual poset (the Tier-2 value identity landed on the object, not two formulas
+agreeing). Task #34's headline in its honest form. All five key results force-elaborated
+clean-three on-branch; zero sorries in the 4-file family; comprehensive clash-grep zero; the
+combined-load full-aggregator build in flight (seat-E one-line confirm to come). **rev-Elane
+COMMISSIONED** (fresh reviewer, decorrelated + Codex): both cards' fidelity points + name=content
+on the headline chain + the wiring genuinely-consumes + forced axiom probes + batteries. On
+review-pass + combined green: controller integration (merge -E, wire OrderRealizeAssembly, register
+the two roots in AxCheck) → **P6.2 Tier-3 CLOSES.**
+
+**2. THE SHEAR RULING (elder, 05:14, transcript-polled):** the decomposition is genuinely unfixed
+AND the category ruling does NOT force Pin C (the Q₂⁻¹ is unimodular/chart-valid — Pin B not
+refutable). Evidence leans Pin C decisively at δ=0 (L3T's pure-pullback = THE decisive signal);
+the δ=1 branch (same-edge write vs consumption+exposure with ideal-level Q₂⁻¹) is undetermined.
+RULED: **the SAFE layer-grading form bakes NOW** ("shear image preserves degree-1 on
+supportAt(child), pivot-independent" — holds under either decomposition, supplies conjunct-B
+directly) — the elder REFINING its own five-face amendment ("I will not bake Pin C's
+carve-confinement while the construction leaves shearφ free — the assert-the-unverified failure").
+**canonShearOf = YES, the committed follow-up**: fix the shear IN the construction (closing the
+:731 asymmetry with canonCenterOf/canonPivotOf — a free field with only a leaf-hypothesis pin IS
+the recurring severance trap); then tighten grading → the determined form (elder's lean: Pin C,
+Q₂⁻¹ at the ideal level — verified at the follow-up, never asserted). RE-BAKE GO to arch-C
+(items 1/2/4 already gated green; item 3 renders as the grading form); both proof seats briefed
+(L4: Pin C not discarded — the follow-up target, battery stays the reference; L3T: its δ-finding
+credited as decisive).
