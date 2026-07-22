@@ -14225,3 +14225,18 @@ deg1SupportedOn_of_boostSplit clean-three; realBranch_boostReady_case11 + chainC
 ONLY via chainCompat_holds (:701). Build green (8452). So the wall's-heart state is: outer shape proven +
 option-B wired + ONE structured obligation, awaiting pnp-transport's ε-transport certificate. seat-L4C
 holds + preps the grind (reading the fold defs behind base/transport/boundary) for a fast pin+grind.
+
+## 2026-07-23 ~02:35 UTC — grind-prep: consumer-side spec relayed to pnp-transport (the certificate's exact targets)
+
+seat-L4C completed grind-prep with a CONSUMER-SIDE read of the 3 ChainCompat fields — what the certificate
+must pin, from the Lean that consumes it: BASE reduces to coreGen degree-1 on blockCoords d 0 (chainWeight≡1,
+birthCoords=∅ at conRoot; its earlier degree-worry DISSOLVED — no alarm); pins = the col-index convention
+(chainWeight idx = decoded COL) + widthMinUpto d 0 = d_0. TRANSPORT rides banked foldResid_extend_delta0/
+delta1 + foldResid_stepMap_eq_pivot_mul; the ε-rule must be stated as chainWeight(child)-vs-parent per
+StepCase. BOUNDARY pins the partialBlock/extraBlock split matching BoostSplit's exact payload; must
+reconcile the strict/non-strict threshold with bLedger_factor/_ignores' convention (the off-by-one).
+
+Relayed the spec to pnp-transport (actively elaborating) so the certificate slots in cleanly — and it
+doubles as MY gate when the certificate lands (cross-check certificate vs consumption points). seat-L4C
+holds, fast pin+grind ready. Still in flight: elder (high-level read + Gap B verbatim), carto (map +
+parallelization), pnp-transport (the ε-table).
