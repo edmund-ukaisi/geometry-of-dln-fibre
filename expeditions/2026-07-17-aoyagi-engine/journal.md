@@ -14695,3 +14695,28 @@ runLen}) ≠ supportAt ({col < widthMinUpto}), so Deg1-on-the-merge-block does N
 The closer (post task-#8, coordinated with the L3T2 machinery) needs a case-split with a merge-block
 Deg1 argument OR a reachability examination (is case11-at-cleared=0 at the LAST layer reachable?).
 seat-LL corrected its file notes + docstring — recorded at the point of use; rides with the hole's owner.
+
+## 2026-07-23 ~11:50 UTC — seat-L4C's standalone work INTEGRATED (cherry-picked); seat released (5th handoff); a git lesson
+
+INTEGRATED onto canonical (69d5b3f6e): BaseCountermodel.lean (Fbad_not_deg1_singleton — the permanent
+e-abstraction kill + mult_shearTuple + shearTuple_isLinear) + Core/SubmultComp.lean (submult_comp, the
+reusable rank-pattern interval composition ABSENT from Core.Submult until now + mult_split, the
+innermost-A₀ peel) — cherry-picked from -L4C, aggregator wired, full build green, BOTH headline
+theorems clean-three on my forced re-derivation, census 36 UNCHANGED. The transport certificate +
+witness scripts also banked onto canonical (copied; the codex answer was already banked). The elder's
+compass.md edit committed (its ownership, controller-committed per the standing rule). ONLY the ChainNF
+skeleton stays on -L4C (its crux statement reshapes in the N_pivot round; integrates then).
+
+GIT LESSON (cost one build cycle): `git cherry-pick A B C D E` with E failing → `--abort` REWINDS THE
+WHOLE SEQUENCE including the four that applied cleanly (the files vanished under an already-edited
+aggregator → phantom build failure). The fix: re-pick the clean ones alone; land conflicting doc
+commits by direct copy. Rule: on a multi-commit pick failure, `--skip`/resolve the FAILING one or
+re-pick the clean subset — never blanket-abort after partial success.
+
+seat-L4C RELEASED with honors (5th clean handoff): the design checkpoint (ChainNF/ε-table
+inseparability), the proven ChainNF outer shape, deg1SupportedOn_boostForm, the 6th statement-class
+catch + its Lean countermodel, submult_comp/mult_split. The remaining Deg1 assembly hands to
+seat-L3T2's task #6 post-merge (its engine = seat-L4C's banked route: the peel + M-ignores-layer-0 +
+reindexing — I relay the scoped route verbatim at the merge). pnp-transport's task board shows the
+N_pivot certificate COMPLETE — the artifact is not yet on canonical disk; gating on its completion
+report + durable commit (the flush discipline is in its brief; no pre-emptive nag).
