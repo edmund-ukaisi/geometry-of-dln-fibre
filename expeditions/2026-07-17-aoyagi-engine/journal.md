@@ -12569,3 +12569,28 @@ pivot-provides mechanism) then conjunct-2 (exists_graded_decomp + the layerwise-
 companion), assembling the leaf body in ONE closed edit — the leaf keeps its single tracked
 sorry until fully closed (discipline held). Its conjunct-1 lane is shear-clause-independent
 (insulation confirmed on its side).
+
+## 2026-07-22 ~13:35 UTC — L6-fix staging 8b4ab0e3e: delta-read TRIGGERED; L8 proof BANKED ON CANONICAL
+
+**The cornerToFlat "reorder" resolved BENIGN, with the full suspicion protocol run:** my
+conventions pull (cornerToFlat :735 = layer-first; divBirthCoord .1=layer/.2=col per DivBirthInv)
+showed the elder's authored line already matched — making the flag suspect. arch-C's
+side-by-side: the applied clause-(III) line is CHARACTER-IDENTICAL to the authored form; the
+actual change was a FORWARD REFERENCE — cornerToFlat's def relocated above ShearWithinCarveRaw
+(body byte-identical, controller-diffed; consumers unaffected). Class (a), named in the packet,
+not buried. The transpose-class hazard protocol (anchor-check + stop-if-projection-swap) worked
+as designed and found nothing.
+
+**Staging 8b4ab0e3e** (base 2080757ea, +20/−11, one file) — arch-C re-gate PASS (census
+UNCHANGED 16/14; no new free field; both drivers clean+sorryAx; emittability cited 2f97f6104).
+**Elder DELTA-READ TRIGGERED** with the packet (clause line verbatim-identical; the one named
+deviation; the re-gate verdict; the A1-A4 battery). On OK: 8b4ab0e3e IS the bake → integrate →
+wake seat-L6.
+
+**seat-L3T2 lane 0 DONE + INTEGRATED (tip 5b6627604):** LeafGeometryWire ported file-level onto
+the baked tip (NOT a merge — the old branch's pre-redirect MonumentAtlas edits stayed behind),
+aggregator-wired (my pen), full build 8997/0, forced axioms on leafPath_realizesExponents' =
+CLEAN-THREE, cordon OK, census 40. **The L8 proof is now banked on canonical** — the
+MonumentAtlas L8 sorry-swap rides the post-pin mini-round. seat-L3T2 proceeds lanes 1-4 with
+stepInv_child_delta0 + exists_graded_decomp as its lane-3 conjuncts and the centerPin
+obtain-pattern for descendView.
