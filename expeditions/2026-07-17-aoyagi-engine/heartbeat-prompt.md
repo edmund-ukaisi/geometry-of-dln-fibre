@@ -17,11 +17,13 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   additive, payoff-isolated, census net-0; elder delta-read OK + controller re-derived gate); (A-div)
   seat-L4B **DONE** (bLedger, resolves pnp's Gap-A soft spot); so **boostReady is UNBLOCKED — seat-L4B
   ASSEMBLING now** (A-clear one-liner via realBranch_canonShear_eq + canonShearOf_apply_interior + A-div
-  + hslot → the wall's last obligation; on close, case1_preserves_stepInv' FALLS). (B) Gap B PINNED
-  (hhomog-hypothesis threading, blockCoords + he_lin, B-standalone, he_lin-at-L5-only) — elder authoring
-  the VERBATIM forms (HomogeneousDeg1On def + foldResid_layerHomogeneous sig + hslot→hhomog re-wire) →
-  arch-C renders (2nd coupled-redesign bake, ff to 83d11d8b5 first) → seat-L3T2 builds the induction +
-  fills realBranch_cofactorDescent. Descent wall = δ=0+case11 banked + append via hhomog. L3 (fan) = the
+  + hslot → the wall's last obligation; on close, case1_preserves_stepInv' FALLS). (B) Gap B (hhomog-hypothesis threading,
+  he_lin, B-standalone, he_lin-at-L5-only) — elder RESOLVING the CAP question before locking verbatim:
+  its machine check found homogeneity FAILS over blockCoords (coreGen reads the full layer: zero
+  blockCoords(1) leaves m0_10·m1_01≠0) but HOLDS over LAYERCOORDS — so the lemma is over layerCoords +
+  the blockCoords cap needs a SEPARATE argument (concern-1's naive blockCoords fix REVERSED; Codex read
+  in flight). Verbatim PENDING → arch-C renders (2nd coupled-redesign bake, ff to canonical first) →
+  seat-L3T2 builds (its append obligation realBranch_appendResidDescent may restate blockCoords→layerCoords+cap). Descent wall = δ=0+case11 banked + append via hhomog. L3 (fan) = the
   LAST open spine call (elder; reuse engine chart form per seat-L7 finding-2 → bridge definitional).
   Census 36. ⚠ prior "STATEMENT LAYER RE-OPENED (~17:20)" — the "closed" claim was PREMATURE; the re-open
   found 3 grounded defects (boostReady vacuity / L7-false / descent cofactor), now being fixed on canonical.
