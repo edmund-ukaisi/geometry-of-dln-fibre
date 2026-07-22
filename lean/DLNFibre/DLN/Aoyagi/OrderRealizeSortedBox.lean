@@ -529,6 +529,47 @@ theorem boxOf_boxSubsetOf {a ℓ : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤
   funext i
   simp only [boxOf, ← hemb, posOfBox, Fin.rev_rev, Nat.add_sub_cancel]
 
+/-- **Profile determinacy.** Two binding profiles with the same C-step subset are equal (the profile
+is `D₀ − base − count`, and the base is minimiser-independent). -/
+theorem binding_ext (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T T' : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D))
+    (hT' : T' ∈ Adm D) (hbind' : Mval D T' = (Adm D).inf' (Adm_nonempty D) (Mval D))
+    (hstep : stepA D T = stepA D T') : T = T' := by
+  funext c
+  have h1 := binding_profile_formula D hmono hL hne hT hbind c
+  have h2 := binding_profile_formula D hmono hL hne hT' hbind' c
+  rw [hstep] at h1
+  have : (T c : ℤ) = (T' c : ℤ) := by rw [h1, h2]
+  exact_mod_cast this
+
+/-- The recovered subset lies in the active prefix. -/
+theorem boxSubsetOf_subset_qipLow {a : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ qipM D - a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : boxSubsetOf f hf haℓ hℓL ⊆ qipLow D := by
+  intro x hx
+  rw [boxSubsetOf, Finset.mem_image] at hx
+  obtain ⟨r, -, hr⟩ := hx
+  simp only [qipLow, Finset.mem_filter, Finset.mem_univ, true_and]
+  rw [← hr]
+  simp only [posOfBox]
+  have := hf (Fin.rev r); have := r.isLt; omega
+
+/-- **Subset round-trip.** `boxSubsetOf (boxOf A) = A` for `A` in the active prefix. -/
+theorem boxSubsetOf_boxOf {a : ℕ} {A : Finset (Fin L)} (hcard : A.card = a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L)
+    (hf : ∀ i, boxOf A hcard i ≤ qipM D - a) :
+    boxSubsetOf (boxOf A hcard) hf haℓ hℓL = A := by
+  have hpos : ∀ r, posOfBox (boxOf A hcard) hf haℓ hℓL r = A.orderEmbOfFin hcard r := by
+    intro r
+    apply Fin.ext
+    simp only [posOfBox, boxOf, Fin.rev_rev]
+    have := pos_ge hcard r.val r.isLt
+    simp only [Fin.eta] at this
+    omega
+  rw [boxSubsetOf, show (posOfBox (boxOf A hcard) hf haℓ hℓL) = A.orderEmbOfFin hcard from
+    funext hpos]
+  exact Finset.image_orderEmbOfFin_univ A hcard
+
 /-! ## The order-isomorphism -/
 
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
