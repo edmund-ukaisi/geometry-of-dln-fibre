@@ -10163,3 +10163,15 @@ tracked datum audited at birth; the fidelity docstring cites the rename lines; s
 case-blind halves = the round's floor. seat-L4's T-check demoted to consistency datum (proceeds).
 arch-C renders the (A) form → contract-9 with BOTH countermodels as witnesses → the ONE bake.
 Both proof seats then close leaves whose statements their own refutations made true.
+
+## 2026-07-22 (controller) — the (A) render spec relayed; arch-C's SIX pre-bake gate checks on record
+
+arch-C relayed the final (A) spec to its render seat (the strict-transform Deg1 conjunct with
+ideal-membership coefficients subsuming IgnoresCoords; the tracked unit-ledger right disjunct;
+the four pins; everything else untouched) and put its SIX gate re-checks on record — the round's
+acceptance criteria, which my integration re-verifies against the same list: (i) the size-witness
+{0,1,2} dies under the T-form; (ii) the subsumption holds under (A); (iii) quotMap bridge-free/
+data-only (banked); (iv) BOTH countermodels die (c ≡ 1 anchor-form; u_i+u_p frame); (v) the two
+anchors ((3,3,4) S=2=L; d12 N=1 routing); (vi) the consumer-fit re-elaborates with the (A) hinv
+(LastLayerInv-(A) + hcleared → terminal_bezout). Contract-9 once, then the bake — the round's
+final shape. seat-L4's T-check rides as consistency datum, not a gate blocker.
