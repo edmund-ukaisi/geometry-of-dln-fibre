@@ -1613,3 +1613,6 @@ import DLNFibre.DLN.Aoyagi.LeafGeometryWire
 -- Case2Wire: seat-L3T2's case2 leaf assembly (case2_conjA clean-three; conjB = the single tracked
 -- sorry consuming seat-L4's case-generic companion). Stub swap mechanism pending (import layering).
 import DLNFibre.DLN.Aoyagi.Case2Wire
+-- LeafChartWire: seat-L6's L6 proof (leafPath_chartGeometry' + chart_of_collapse, clean-three; consumes
+-- the FoldRealizes Jacobian collapse). The MonumentAtlas L6 sorry-swap rides the Assembly increments.
+import DLNFibre.DLN.Aoyagi.LeafChartWire
