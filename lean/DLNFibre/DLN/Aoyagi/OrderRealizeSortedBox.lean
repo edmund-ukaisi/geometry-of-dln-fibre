@@ -642,6 +642,60 @@ theorem decProfile_spec {a : ℕ} (D : Fin (L + 1) → ℕ) (hmono : Monotone D)
     _ = (Adm D).inf' (Adm_nonempty D) (Mval D) :=
         (inf'_Adm_Mval_eq_inf'_qipFeasible_Gqip D hmono hL hne).symm
 
+/-- **The C-step set of `decProfile` is the box's subset.** Closes the encode/decode loop. -/
+theorem stepA_decProfile {a : ℕ} (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    {f : Fin a → ℕ} (hf : ∀ i, f i ≤ qipM D - a) (hanti : Antitone f) (haℓ : a ≤ qipM D)
+    (hℓL : qipM D ≤ L) (ha : a = (sbResidueA D).toNat) :
+    stepA D (decProfile D f hf haℓ hℓL) = boxSubsetOf f hf haℓ hℓL := by
+  obtain ⟨-, -, hround⟩ := decProfile_spec D hmono hL hf hanti haℓ hℓL ha
+  have hCe := sbCeil_eq D hL
+  have hbsub := boxSubsetOf_subset_qipLow hf haℓ hℓL
+  ext i
+  simp only [stepA, Finset.mem_filter]
+  rw [hround]
+  by_cases hi : i ∈ qipLow D
+  · have hqt := qipT_eOfSupport D hmono hL (decNz D f hf haℓ hℓL) hi
+    have hqtdef : qipT D (fun j ↦ (eOfSupport D (decNz D f hf haℓ hℓL) j : ℤ)) i
+        = (eOfSupport D (decNz D f hf haℓ hℓL) i : ℤ) + (D i.succ : ℤ) - qipRound D := rfl
+    rw [hqtdef] at hqt
+    have herw : (eOfSupport D (decNz D f hf haℓ hℓL) i : ℤ) + (D i.succ : ℤ)
+        = (if i ∈ decNz D f hf haℓ hℓL then (qipDelta D).sign else 0) + qipRound D := by
+      linarith [hqt]
+    have hdecode : (if i ∈ decNz D f hf haℓ hℓL then (qipDelta D).sign else 0)
+        = (if 0 < qipDelta D then (1 : ℤ) else 0) ↔ i ∈ boxSubsetOf f hf haℓ hℓL := by
+      rw [decNz]
+      by_cases hd : 0 < qipDelta D
+      · rw [if_pos hd, if_pos hd, Int.sign_eq_one_of_pos hd]
+        by_cases hib : i ∈ boxSubsetOf f hf haℓ hℓL <;> simp [hib]
+      · rw [if_neg hd, if_neg hd]
+        by_cases hib : i ∈ boxSubsetOf f hf haℓ hℓL
+        · rw [if_neg (by simp only [Finset.mem_sdiff, not_and, not_not]; exact fun _ ↦ hib)]
+          simp [hib]
+        · rw [if_pos (Finset.mem_sdiff.mpr ⟨hi, hib⟩)]
+          constructor
+          · intro hsgn0
+            exfalso
+            have hδ0 : qipDelta D = 0 := by
+              rcases lt_trichotomy (qipDelta D) 0 with h1 | h1 | h1
+              · rw [Int.sign_eq_neg_one_of_neg h1] at hsgn0; norm_num at hsgn0
+              · exact h1
+              · exact absurd h1 hd
+            have haeq : a = qipM D := by rw [ha, sbResidueA_eq D hL, hδ0]; simp
+            have hbeq : boxSubsetOf f hf haℓ hℓL = qipLow D :=
+              Finset.eq_of_subset_of_card_le hbsub
+                (by rw [boxSubsetOf_card hf hanti haℓ hℓL, qipLow_card]; omega)
+            exact hib (hbeq.symm ▸ hi)
+          · intro hib'; exact absurd hib' hib
+    constructor
+    · rintro ⟨-, heq⟩
+      rw [herw, hCe] at heq
+      exact hdecode.mp (by linarith [heq])
+    · intro hib
+      exact ⟨hi, by rw [herw, hCe]; have := hdecode.mpr hib; linarith [this]⟩
+  · constructor
+    · rintro ⟨hi', -⟩; exact absurd hi' hi
+    · intro hib; exact absurd (hbsub hib) hi
+
 /-! ## The order-isomorphism -/
 
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
