@@ -13884,3 +13884,31 @@ L1-INDEPENDENT, may close BEFORE L1 bakes. L3 (fan) = the last open spine call (
 chart form per seat-L7 finding-2 → bridge definitional). Cron armed (:17). The re-scope has converged
 from "3 findings, statement wrong" to 3 well-scoped parallel builds + 1 open design call — with every
 step decorrelation-checked.
+
+## 2026-07-22 ~21:05 UTC — Gap B SPECIFY: seat-L3T2 catches 2 defects (blockCoords cap + he_lin) pre-build
+
+seat-L3T2's hslot-subsumption confirm surfaced two statement defects in the elder's authored
+foldResid_layerHomogeneous — BEFORE the sub-agent built it (SPECIFY-first backstop working). Both
+verified sound; routed to the elder for the statement refinement.
+
+1. CAP (blockCoords vs layerCoords). Over layerCoords, the lemma subsumes hslot's clause-2 (qm
+   layer-S-local passes layer-(S+1) through) but NOT clause-1's blockCoords cap: blockCoords ⊊
+   layerCoords ⟹ vanishing on {layerCoords=0} does NOT force vanishing on the larger {blockCoords=0},
+   so the over-block coords aren't capped out of the support. FIX: state over blockCoords d ℓ (the
+   widthMinUpto-capped block) — supplies homogeneity + the cap, hslot fully redundant in append.
+   Provided foldResid is genuinely blockCoords-supported (= hslot's clause-1 + the widthMinUpto cap;
+   the induction carries it).
+
+2. he_lin RE-EMERGES — the guard-domain family (hpos/he_lin/hlayer) recurs. foldResid_layerHomogeneous's
+   induction bottoms at foldResid root = coreGen, and "layers > S = untouched raw coreGen deg-1"
+   PRESUPPOSES coreGen per-layer deg-1 ⟺ e LINEAR. u³ refutation (N=1,d=(1,1),e u=u³): coreGen 0 = u³,
+   HomogeneousDeg1On(u³) FALSE; hbranch=root=True, hpos ✓ — FALSE without he_lin. The center pin does
+   NOT supply e's linearity → "off the center pin only" was incomplete (center pin + he_lin). FIX: add
+   he_lin hypothesis + thread it from L5 to multiAffine_step's append arm (same resolution as the
+   node-form step-form). Still L1- and shear-independent — just not he_lin-free.
+
+Both caught at SPECIFY, not mid-induction — the STANDING RENDER CHECK (derived-stub-true-on-full-
+binder-range) working via the seat, exactly as designed after the earlier guard-domain family. seat-L3T2
+holds the sub-agent's BUILD for the elder's confirmed statement; case11 (closing) + δ=0 (banked) are
+he_lin/L1/Gap-B-independent, unaffected. The elder's Gap-B lemma refines to: over blockCoords, with
+he_lin, threaded from L5 — then the descent's append discharges from it (still L1-independent).
