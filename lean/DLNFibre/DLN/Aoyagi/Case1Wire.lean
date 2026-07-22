@@ -535,6 +535,171 @@ theorem bLedger_ignores_of_thr_le {n D : ℕ} (κ : Fin n → Fin D) (hκ : Func
   have hkf : k ≠ f := by rintro rfl; omega
   exact Function.update_of_ne (fun h => hkf (hκ h)) t w
 
+/-! ### (a′-assembly) — boost normal form ⟹ `Deg1SupportedOn` the boost center (seat-L4C)
+
+The SHRINK-direction counterpart of the padding `exists_ignoresCoords_decomp`: the case11 boost
+re-expresses a full-block residual on the SMALLER boost center `{pv} ∪ partialBlock`. Given each entry
+in the boost normal form `resid j = ∑_{i∈partialBlock} αᵢ·uᵢ + u_pv·∑_{i∈extraBlock} βᵢ·uᵢ` (elder a′
+geometry — the untouched extra-block terms carry the pivot factor), with `α`,`β` ignoring the center,
+the residual is `Deg1SupportedOn` that center: the pivot coefficient ABSORBS the extra-block sum
+(`c_pv := ∑_{extraBlock} βᵢ·uᵢ`), which ignores the center because `extraBlock ∩ center = ∅`. The
+induction below supplies the boost normal form; this lemma is its final assembly, shear/fold-agnostic. -/
+theorem deg1SupportedOn_boostForm {D nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ)
+    (pv : Fin D) (partialBlock extraBlock : Finset (Fin D))
+    (hpvP : pv ∉ partialBlock)
+    (hdisj : ∀ i ∈ extraBlock, i ∉ insert pv partialBlock)
+    (α β : Fin nR → Fin D → (Fin D → ℝ) → ℝ)
+    (hαc : ∀ j i, Continuous (α j i)) (hβc : ∀ j i, Continuous (β j i))
+    (hαign : ∀ j i, IgnoresCoords (α j i) (insert pv partialBlock) Set.univ)
+    (hβign : ∀ j i, IgnoresCoords (β j i) (insert pv partialBlock) Set.univ)
+    (hform : ∀ j u, resid j u
+        = (∑ i ∈ partialBlock, α j i u * u i) + u pv * ∑ i ∈ extraBlock, β j i u * u i) :
+    Deg1SupportedOn resid (insert pv partialBlock) Set.univ := by
+  classical
+  intro j
+  set c : Fin D → (Fin D → ℝ) → ℝ :=
+    fun i u ↦ if i = pv then (∑ k ∈ extraBlock, β j k u * u k) else α j i u with hc
+  have hcpv : c pv = fun u ↦ ∑ k ∈ extraBlock, β j k u * u k := by
+    funext u; rw [hc]; exact if_pos rfl
+  have hcne : ∀ i, i ≠ pv → c i = α j i := by
+    intro i hi; funext u; rw [hc]; exact if_neg hi
+  refine ⟨c, ?_, ?_, ?_⟩
+  · -- continuity of each coefficient
+    intro i
+    by_cases hi : i = pv
+    · subst hi; rw [hcpv]
+      exact (continuous_finset_sum extraBlock
+        (fun k _ ↦ (hβc j k).mul (continuous_apply k))).continuousOn
+    · rw [hcne i hi]; exact (hαc j i).continuousOn
+  · -- the boost-center support decomposition
+    intro u _
+    have hpb : (∑ i ∈ partialBlock, c i u * u i) = ∑ i ∈ partialBlock, α j i u * u i :=
+      Finset.sum_congr rfl (fun i hi ↦ by rw [hcne i (fun h ↦ hpvP (h ▸ hi))])
+    rw [hform j u, Finset.sum_insert hpvP, hcpv, hpb, mul_comm (u pv), add_comm]
+  · -- each coefficient ignores the boost center
+    intro i
+    by_cases hi : i = pv
+    · subst hi; rw [hcpv]
+      intro w _ m hm t
+      refine Finset.sum_congr rfl (fun k hk ↦ ?_)
+      rw [Function.update_of_ne (fun h ↦ hdisj k hk (by rw [h]; exact hm)) t w,
+        hβign j k w (Set.mem_univ _) m hm t]
+    · rw [hcne i hi]; exact hαign j i
+
+/-- **The case11 boost split** (the raw α/β form — the exposed content `ChainCompat.boundary` yields and
+`deg1SupportedOn_boostForm` consumes; option-B interface). Names the boost data — pivot, partial/extra
+blocks, and the coefficient families — witnessing that a residual is in boost normal form on `center`. -/
+def BoostSplit {D nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ) (center : Finset (Fin D)) : Prop :=
+  ∃ (pv : Fin D) (partialBlock extraBlock : Finset (Fin D))
+    (α β : Fin nR → Fin D → (Fin D → ℝ) → ℝ),
+    pv ∉ partialBlock ∧ (∀ i ∈ extraBlock, i ∉ insert pv partialBlock) ∧
+    center = insert pv partialBlock ∧
+    (∀ j i, Continuous (α j i)) ∧ (∀ j i, Continuous (β j i)) ∧
+    (∀ j i, IgnoresCoords (α j i) (insert pv partialBlock) Set.univ) ∧
+    (∀ j i, IgnoresCoords (β j i) (insert pv partialBlock) Set.univ) ∧
+    (∀ j u, resid j u
+      = (∑ i ∈ partialBlock, α j i u * u i) + u pv * ∑ i ∈ extraBlock, β j i u * u i)
+
+/-- A residual in boost normal form (`BoostSplit`) on `center` is `Deg1SupportedOn` it — the α/β form
+fed straight to `deg1SupportedOn_boostForm` (option-B wiring: the banked lemma stays in the wiring). -/
+theorem deg1SupportedOn_of_boostSplit {D nR : ℕ} (resid : Fin nR → (Fin D → ℝ) → ℝ)
+    (center : Finset (Fin D)) (h : BoostSplit resid center) :
+    Deg1SupportedOn resid center Set.univ := by
+  obtain ⟨pv, partialBlock, extraBlock, α, β, hpvP, hdisj, hcenter, hαc, hβc, hαign, hβign, hform⟩ := h
+  rw [hcenter]
+  exact deg1SupportedOn_boostForm resid pv partialBlock extraBlock hpvP hdisj α β hαc hβc hαign hβign hform
+
+/-! ### ChainNF — the b-chain residual normal form (parallel-theorem SKELETON, seat-L4C)
+
+Codex PathNF (`.../codex/boostready-invariant-design-answer.md`): the minimal STABLE (inducting)
+invariant is a termwise `diag(b)`/residual-path normal form — each residual entry expands over the
+current block with a b-chain weight per coordinate, coefficients IGNORING the active birth coordinates.
+Divisibility (→ boostReady) is only its case11 COROLLARY. The `chainWeight` below is Codex's
+`∏_d u_{b_d}^{ε_d}` with the threshold-crossing exponent `ε_d = [divTilde d < idx]` (= `bLedger
+(birth∘·) divTilde` on valid corners).
+
+**Factoring (elder/team-lead-blessed):** the four-case ε-transport that PROVES `ChainNF` inducts, its
+base at `coreGen`, and the threshold BOUNDARY that yields the case11 boost split are bundled as the
+abstract `ChainCompat` obligation — the interface pnp-transport's certificate pins (NOT a misleading
+sorry against a divisibility-level def, which would not induct). The OUTER wiring below —
+`isRealBranch_chainNF` (the induction) and `realBranch_boostReady_case11` (the corollary via
+`deg1SupportedOn_boostForm`) — is PROVEN from `ChainCompat`; the single tracked obligation is
+`chainCompat_holds`. -/
+
+/-- The b-chain weight of a flat-coordinate index `idx` at state `s` (Codex `∏_d u_{b_d}^{ε_d}`,
+`ε_d = [divTilde d < idx]`): the product of the birth coordinates of the divisors whose threshold sits
+strictly below `idx`. `Option.elim`-guarded — an invalid birth corner contributes the unit; on a
+`DivBirthInv` state (real branch) every corner is valid, so this is `bLedger (birth∘·) divTilde u idx`.
+[The index convention (`idx` = decoded col, provisional) + the threshold boundary are pnp-pinned.] -/
+noncomputable def chainWeight (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (u : Fin (flatDim d) → ℝ) (idx : ℕ) : ℝ :=
+  ∏ k ∈ Finset.univ.filter (fun k : Fin s.numDiv => s.divTilde k < idx),
+    (cornerToFlat d (s.divBirthCoord k).1 (s.divBirthCoord k).2).elim 1 (fun c => u c)
+
+/-- The flat birth coordinates of all active divisors at `s` — the coordinates `ChainNF`'s residual
+coefficients ignore (Codex: `q_τ` ignores every active birth coordinate). -/
+noncomputable def birthCoords (d : Fin (N + 1) → ℕ) (s : ConState N) : Finset (Fin (flatDim d)) :=
+  Finset.univ.biUnion
+    (fun k : Fin s.numDiv =>
+      (cornerToFlat d (s.divBirthCoord k).1 (s.divBirthCoord k).2).elim ∅ (fun c => {c}))
+
+/-- **ChainNF** (Codex PathNF outer shape). Each residual entry is a b-chain-weighted degree-1 form on
+the state's descending support block: `foldResid p j u = ∑_{i ∈ supportAt} chainWeight(colOf i)·rᵢ(u)·uᵢ`,
+each coefficient `rᵢ` continuous and IGNORING the active birth coordinates. The path-monomial structure
+is exposed here; the ε threshold rule that makes it INDUCT (and the boundary that yields the case11
+boost split) live in `ChainCompat`. -/
+def ChainNF (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) : Prop :=
+  ∀ j : Fin (foldNR d p), ∃ r : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+    (∀ i, Continuous (r i)) ∧
+    (∀ i, IgnoresCoords (r i) (birthCoords d p.conState) Set.univ) ∧
+    (∀ u, foldResid d e p j u
+      = ∑ i ∈ supportAt d p.conState.layer p.conState.cleared,
+          chainWeight d p.conState u (((tupIdxEquiv d).symm i).2 : ℕ) * r i u * u i)
+
+/-- **ChainCompat** — the abstract ε-transport / boundary certificate (pnp-transport's content). Three
+fields, each a NAMED obligation (the honest factoring, not a misleading sorry): `base` — `ChainNF` at
+the root (`coreGen`'s compatible-index expansion); `transport` — a real edge preserves `ChainNF` (the
+four-case ε threshold-transport); `boundary` — at a real case11 δ=1 node the b-chain weight splits the
+support into the boost partial/extra blocks, yielding `Deg1SupportedOn ed.center` (via
+`deg1SupportedOn_boostForm` + the threshold boundary). This is the exact slot pnp-transport's certificate
+fills; keep its shape stable so the pin is a clean slot-in. -/
+structure ChainCompat (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) : Prop where
+  /-- Base: `ChainNF` holds at the root (`foldResid = coreGen`). -/
+  base : ChainNF d e TreePath.root
+  /-- Transport: a real edge preserves `ChainNF` (the four-case ε threshold-transport, pnp certificate). -/
+  transport : ∀ (p : TreePath d) (center : Finset (Fin (flatDim d))) (pivot : Fin (flatDim d))
+    (cse : StepCase) (ns : ConState N) (φ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)),
+    (TreePath.step p center pivot cse ns φ).IsRealBranch e → ChainNF d e p →
+      ChainNF d e (TreePath.step p center pivot cse ns φ)
+  /-- Boundary: at a real case11 δ=1 node, `ChainNF` yields the raw case11 boost split (the α/β form —
+  the threshold boundary; `deg1SupportedOn_boostForm` stays in the wiring, option B). -/
+  boundary : ∀ {p : TreePath d} (ed : TreeEdge d p), edgeδ d p = true →
+    ed.case = StepCase.case11 → (p.extend ed).IsRealBranch e → ChainNF d e p →
+      BoostSplit (foldResid d e p) ed.center
+
+/-- **The parallel theorem** `IsRealBranch p → ChainNF p` — PROVEN from a `ChainCompat` by `TreePath`
+induction (root = `hc.base`; step = `hc.transport`, the parent branch from the recursive `IsRealBranch`).
+This is the standalone route (does NOT reopen `FoldStepInvAt`). -/
+theorem isRealBranch_chainNF {d : Fin (N + 1) → ℕ}
+    {e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d} (hc : ChainCompat d e) :
+    ∀ p : TreePath d, p.IsRealBranch e → ChainNF d e p := by
+  intro p
+  induction p with
+  | root => intro _; exact hc.base
+  | step p center pivot cse ns φ ih =>
+    intro hbranch
+    exact hc.transport p center pivot cse ns φ hbranch (ih hbranch.1)
+
+/-- **The `ChainCompat` certificate** — the single tracked frontier obligation (pnp-transport's
+four-case ε threshold-transport table + base + boundary). Everything else in the boostReady chain is
+proven from this. TRACKED-OPEN; pnp-transport's certificate pins `ChainCompat`'s three fields. -/
+theorem chainCompat_holds {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) : ChainCompat d e := by
+  -- map: B-derived-chaincompat (pnp-transport ε threshold-transport certificate)
+  sorry
+
 /-! ### The WALL — primed leaf `case1_preserves_stepInv'` (SEAT-L4, primed-leaf pattern)
 
 Statement-identical to `MonumentAtlas.case1_preserves_stepInv`; the controller swaps the MonumentAtlas
@@ -558,8 +723,13 @@ theorem realBranch_boostReady_case11 (d : Fin (N + 1) → ℕ)
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p)) :
     Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
-  -- map: B-derived-boostReady-case11 (δ=1 boost-center Deg1 via b-chain; TRACKED-OPEN, elder-pending)
-  sorry
+  -- map: B-derived-boostReady-case11 — WIRED through the ChainNF parallel theorem: `chainCompat_holds`
+  -- (the single TRACKED-OPEN pnp-transport certificate) → `isRealBranch_chainNF` (proven induction) →
+  -- `.boundary` (the case11 boost split, α/β form) → `deg1SupportedOn_of_boostSplit` (option-B wiring).
+  rw [foldRegion_eq_univ]
+  exact deg1SupportedOn_of_boostSplit (foldResid d e p) ed.center
+    ((chainCompat_holds e).boundary ed hδ hc11 hbranch
+      (isRealBranch_chainNF (chainCompat_holds e) p hbranch.1))
 
 /-- **Conjunct A (divisibility ∃q) of the wall — dispatched.** δ=0 → `stepInv_child_delta0`
 (case-generic pullback, BANKED); δ=1 case12 → `stepInv_child_delta1_append` fed
