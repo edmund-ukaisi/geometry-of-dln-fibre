@@ -13150,3 +13150,20 @@ EXPLICITLY-PROVISIONAL lean toward (2) — the CanonicalSchurStep property pin o
 emission cost sunk) over (1) carrying BChainCompatible (grows the invariant surface; the
 prepared form is a shear consequence). FINAL HELD for pnp-boost — decorrelation intact, the
 second instrument weighed on its own terms.
+
+## 2026-07-22 ~23:05 UTC — seat-L6 clean handoff → seat-M4B spawned (A4→A5)
+
+seat-L6 made the honest saturation call (invited, not forced) and handed off A4→A5 with the
+second exemplary registered plan of the day: four sorry-free atoms as the foundation, the
+continuation mapped to the level of "divBirthCoord_persists is NOT standalone-banked — the
+mechanism lives inside DivBirthInv_conOracle_stepChildren's proof; extract it" (a
+day-saving finding for the successor), the A5-reconciliation rule carried, and the branch
+rebased to the integrated tip. seat-M4B SPAWNED with the plan verbatim. seat-L6 → dormant.
+
+Its seat arc, recorded: the hjac stop-on-suspect (→ clause III), the (★) diagnosis,
+chart_of_collapse, L6 landed sorry-free + reviewed 6/6, and M4's blow-up half first-try — the
+finder of the defect built the consumer AND half the producer. The successor-handoff pattern is
+now 2-for-2 (L3T→L3T2 lost zero proof lines; L6→M4B starts on a live 4-atom foundation).
+
+Render lane: the Assembly's cosmetic re-wrap done (only the verbatim-inherited :30 long-line
+remains, correctly kept for anchor-diff fidelity); staging next. Step-form round queued behind.
