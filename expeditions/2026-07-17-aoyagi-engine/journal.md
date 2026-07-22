@@ -10192,3 +10192,28 @@ build-on-it or a proved-equivalence requirement). **Discipline note, owned:** se
 of the elder pass (the sequence was survey → skeleton → pass → prove) — a gamble that likely
 costs nothing here because the contract was fully pinned, but journaled as a slip; the Tier-2
 θ-corollary + registration wait for the pass.
+
+## 2026-07-22 (controller) — the gate catches a STALE RENDER (report said ready; the file said pre-(A)); seat-L4's datum upgrades the design; the coefficient clause in final refinement
+
+**arch-C's calibration catch:** the render seat reported "fix (2) rendered, 5 pins, ready to
+bake" — arch-C READ THE FILE: LastLayerInv's left disjunct + Deg1SupportedSlot were the RAW
+pre-fork-(A) form (the fork messages had crossed the render); BOTH countermodels survive it
+(c ≡ 1 passes IgnoresCoords; u_i+u_p unabsorbed in the raw frame). Bake HELD; the seat flagged
+to apply the (A) upgrade to the Deg1 conjunct ONLY (guard split / transport+hcleared /
+subsumption / docstrings / C′ / family-tie all correctly rendered and stay). The mechanical gate
+(build/cone=10/cordon) was GREEN on the stale content — "that's the floor; the content is the
+gate." One render detail surfaced: pivot-threading (the (A) form needs the pivot; the invariants
+are C-parameterized — pivot-param vs canonical-from-(C,p), the seat to surface if unpinned).
+
+**seat-L4's fidelity datum (routed):** fork (B) would have been DOUBLY infidelitous — the real
+Schur shears MIX WITHIN T (C22 ↦ C22 − C21·C12, T-triangular, degree-2) so "T-block-preserving"
+excludes the construction; the true discriminator is PIVOT-INDEPENDENCE (thread-33 §3: later
+shears never touch exceptional coordinates). The raw child residual is genuinely degree-2 — Deg1
+is a prepared-coordinate invariant, period; its (3,3,4) battery passes were on the already-
+reduced block (they tested (A)'s form all along). THE CRUX: statement unaffected, proof VERBATIM
+under (A). **One refinement back with the elder — the coefficient clause must simultaneously:**
+(a) induct through composition (mechanism 1); (b) imply IgnoresCoords (the crux's hceq); (c) keep
+the entry center-exact-Deg1 (the over-division guard, d=![1,2,1]). Bare ideal-membership fails
+(b) (c = ∑ u_d·h_d admits center-dependent h). Candidate: c a function of DEEPER coordinates
+only, vanishing at 0 — self-propagation under the pivot-independent T-mixing shears is the
+elder's check. The degree-2 Schur term proposed as the entry-level-weakening regression witness.
