@@ -14878,3 +14878,31 @@ unilaterally; the one-time hardener edit precedent was explicitly not a general 
 
 N_p render: still in flight (nothing on rung-c yet — it is the expedition's biggest render: the def +
 39 re-wires + 5 re-statements + the pins + 2 riders). All other lanes holding/banked per plan.
+
+## 2026-07-23 ~15:30 UTC — ★★ THE RECOORD IS STAGED (9abd7cbff, 4/5 PROVEN); the fan-pin hits a REAL conflict (§3⊥fork-4)
+
+arch-C staged the N_p bake's DECISIVE HALF, green + honestly named ("NOT 'N_p bake complete'"):
+- canonShearOf DELETED → canonNormalizationOf d s p: pivot-parametric TWO-support (pivot-shifted Schur
+  on layer S + the A_{S+1}·Q₁⁻¹ recoord on layer S+1 — THE fidelity fix, in the def at last). 39 refs
+  re-wired. The value-pin (shearφ = canonNormalizationOf … pivot) carries the positive recoord pin;
+  ShearWithinCarveRaw I/II re-authored (≥sl → >sl), arity stable ⟹ PivotPreservation UNTOUCHED (0
+  sorries). foldResid δ=1 unchanged (the recoord flows via the value-pin).
+- THE GOOD SURPRISE: 4 of the 5 re-stated lemmas PROVEN (def guards designed to match the support
+  predicate) — only the M7-emission successor frontier-sorried. Census +1, NOT the sanctioned +5 —
+  "do not sorry the provable." Payoff roots UNCHANGED; build green 9008; cordon OK. arch-C re-derived
+  every gate (rendered via a sub-agent under its spec; did not trust its "done").
+
+★ THE SPLIT (a genuine geometric conflict, decorrelated-found): the §3 MEMBERSHIP FAN-PIN contradicts
+fork-4's "PivotPreservation untouched." stepMapRaw_fixes_parentLedgerCorner:345 uses the pivot EQUALITY
+load-bearingly — under a FREE interior fan pivot, an earlier ledger corner c₀ inside a case-11
+canonCenterOf is MOVED by the blow-up. Free-interior-pivot ⊥ blow-up-fixes-earlier-corners. The elder's
+fork-4 expectation ("I don't expect it") was WRONG — found exactly where it said to look. arch-C kept
+the equality pin + staged the green partial (the fork-3 hatch working as designed). ROUTED: the elder
+delta-reads the staging + RULES the fan resolution ((a) ledger-corner-preserving fan vs (b) free at
+case12/case2 + canonical at case11); pnp-fan adjudicates IN PARALLEL the sharp cover question (does the
+cover NEED case11 interior pivots? — its argmax mechanism + a worked boost-node instance decides),
+frame-in/hypothesis-out both ways.
+
+NET: boostReady's side of the fidelity fix is one delta-read from canonical; the cover's side (the fan)
+is one adjudication + one ruling from its final form. The two halves were always separable — the
+staging separates them honestly.
