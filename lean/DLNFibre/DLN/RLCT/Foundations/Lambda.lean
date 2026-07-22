@@ -59,7 +59,8 @@ instance (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Decidable (admPred M T)
 
 /-- The finite admissible cone of exponent vectors `T` (design-spec §4.1). Finite because each
 `t⁽ʲ⁾` ranges over `0..admBound`, so `min_T M(T)` exists unconditionally — making `aoyagiLambda`
-total. -/
+total. (Tight-vs-loose story: `admBound` already implies the running-min bound on `Adm` — see
+`Foundations.AdmTight.adm_runMin_filter_eq` for why no separate "tight cone" is needed.) -/
 def Adm (M : Fin (L + 1) → ℕ) : Finset (Fin L → ℕ) :=
   (Fintype.piFinset (fun j => Finset.range (admBound M j + 1))).filter (admPred M)
 
