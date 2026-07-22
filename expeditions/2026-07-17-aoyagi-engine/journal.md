@@ -11255,3 +11255,19 @@ swapBinding_orderIso (seat-Eswap) + bindingSet_sorted_orderIso_boxPart (seat-Eco
 on both cores landing, the Tier-3 chain closes AUTOMATICALLY at seat-E's integration (merge, two
 sorries vanish, AxCheck/aggregator handoff to controller). Design-once-build-once is holding:
 zero rework across the three tracks so far.
+
+## 2026-07-22 (controller) — sorted-box PROFILE SIDE COMPLETE (the DLN-hard content); one combinatorial sorry remains
+
+seat-Ecore checkpoint (236c15565, all axiom-clean, #print-verified per lemma): the ENTIRE
+profile/QIP side is done — binding_qipT_pair (pivotal), the two δ-sign bridges (sbCeil_eq/
+sbResidueA_eq: ALL sign-casing confined to two lemmas, rest sign-free), prefix_telescope,
+binding_incr_eq (eOfT = wBase + [A]), binding_profile_formula, stepA_card (|A|=a), and the
+reduction theorem **binding_le_iff: the binding-profile order = reverse count-domination on
+C-step subsets**. The bindingSet order is now a pure combinatorial statement. REMAINING: one
+sorry (sortedBox_orderIso) = subset↔box via orderEmbOfFin + the counting↔position duality +
+ofHomInv assembly + the L=0 branch (~200–300 LoC, no new math; plan documented in the sorry
+comment). WOKEN to finish its own unit (warm context; checkpoint-not-grind was the right cut);
+fork guidance given (verify the banked C(ℓ,a)=cTheta form before the cardinality route; the
+explicit-dec route stays inside consumed machinery; battery the duality standalone if
+gap-monotonicity gets fiddly). Tasks: #46 (P1–P4) COMPLETE; #47 in progress. E-lane frontier
+unchanged: two core sorries, everything else proved-modulo.
