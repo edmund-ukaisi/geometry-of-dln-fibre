@@ -12867,3 +12867,29 @@ record in thread-L3T2.md), one dedupe, one regression example. The successor-sea
 a last-step projection of IsRealBranch's shear conjunct (no hpos, elder-ruled); the
 obtain-projection pattern's third outing. On its close the cone thins to: multiAffine (node-form
 rendering) + the leaf assemblies + L5/L6/L7 + the two library sorries.
+
+## 2026-07-22 ~18:10 UTC — COLLAPSE BAKED (790aed4e9); stub 5 closed; boost-readiness part-ruled; three wakes fired
+
+**Stub 5 merged (23c0c01ef):** realBranch_shearWithinCarve — a 2-line last-step projection
+(`obtain ⟨-, -, hshear⟩ := hbranch; exact hshear`; the step arm's third conjunct is defeq to
+ShearWithinCarve). **FIVE OF SIX derived stubs closed.** Census 36.
+
+**THE COLLAPSE IS BAKED (790aed4e9):** elder delta-read OK on 69c4caaa0 — clause + comment
+character-identical; right-associated so hcollapse = hreal.2.2 (the elder confirmed seat-L6's
+one-liner explicitly); L7/L8 insulated; L5 (sole producer) absorbs the telescoping as its NAMED
+obligation. Controller gate: build 0-err, drivers' footprints expected, cordon OK. **seat-L6
+WOKEN for the sorry-free landing** (rebase → hreal.2.2 → chart_of_collapse → gate → reviewer →
+statement card; footprint-verification instruction explicit). **arch-C GO'd on the node-form
+micro-round** (base refresh to 790aed4e9 → verbatim relay → re-gate → staging → delta-read),
+with the Assembly increment behind it.
+
+**Boost-readiness PART-RULED (elder, the consumer-determined principle both ways):** the object
+is the SOURCE (Deg1SupportedOn (foldResid p) (canonCenterOf case11)) — (ii) REJECTED because the
+leaf consumes the source and runs the SAME crux as case12 (pinning the identity would bypass the
+crux and break the uniformity that is the correction's whole value; the collapse ruling exposed
+the outcome because L6 consumed the outcome — same principle, consumer decides). DEFAULT home =
+a DERIVED frontier stub `realBranch_boostReady` (sibling to multiAffine), NOT a carried conjunct
+(invariant-surface economy); the ONE battery-gated question: does the induction close
+self-contained off IsRealBranch, or need a carried strengthening (→ then (i) is FORCED, the
+honest reason to carry). seat-L4's battery re-pointed at exactly that question; its (C) dispatch
+skeleton unblocked meanwhile.
