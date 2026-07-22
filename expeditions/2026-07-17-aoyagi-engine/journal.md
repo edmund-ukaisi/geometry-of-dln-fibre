@@ -12984,3 +12984,24 @@ check). M7 pending assignment (nav-13 advises); M6 held (may fall out of the wal
 startability), gates-ran ledger on the day's five bakes, hard-part-avoidance check (M4/M7/
 boost-readiness/multiAffine/L7-coverage all owned?), cone accounting (incl. the Case2Delta0
 retire candidate), distance-to-summit chain. Tasks: #66 closed; #67 (wave 1) + #68 (M4) opened.
+
+## 2026-07-22 ~20:00 UTC — WALL PRIMED on canonical (eca75325d); pnp-boost witness seat spawned
+
+**case1_preserves_stepInv' PRIMED in Case1Wire** (seat-L4, integrated eca75325d): the primed-leaf
+pattern completing the set (case1' + case2' + L6' + L8' all downstream, Assembly-consumable);
+dispatch body clean-three; TWO named frontier holes — realBranch_boostReady_case11 (the
+elder-part-ruled SOURCE form as a placeholder pending the battery + final ruling; in Case1Wire,
+seat-L4's module, cheap to restate if the final form differs) + conjB (→ the node-form
+one-liner). Census 43 (+2 tracked). GATE NOTE: seat-L4's own full build was SIGTERM-killed by
+the harness at ~15 min (a kill, not a compile failure) — MY integration build supplies the
+missing full-closure verification (0-err). Its Codex mechanism artifacts (6.5k-line log) banked
+in threads/L4-case1-core/. Status correction sent: the node-form ALREADY BAKED — conjB is
+closable NOW (one open hole after that: boostReady).
+
+**pnp-boost SPAWNED** (pen-and-paper witness, REQUEST_SPAWN honored — flat-roster spawn rule):
+the boost-readiness battery on (2,2,2,2)/(3,3,2,2) with the QUOTIENT-composition trap named
+(foldResid uses blockBlowupCoordQuot pivot→1, NOT blockBlowupMap), A1/A2/A3 exact checks, and
+THE ELDER'S OPEN QUESTION as the explicit adjudication target: is A1+A2 derivable from the slot
+invariant alone (derived stub closes self-contained) or does it need the b-chain (carried
+conjunct forced)? Deliverables: durable battery + decorrelated Codex + the derivation-attempt
+verdict. Routes: pnp-boost report → me → elder final form → seat-L4 proves.
