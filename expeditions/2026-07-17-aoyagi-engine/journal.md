@@ -14944,3 +14944,24 @@ arch-C CHARGED with the COMPLETING staging (one bundle: the (b) fan case-split p
 kept, case-12/case-2 membership] + the blessed hpos) → my gate + elder delta-read → merge = THE N_p
 BAKE COMPLETE → the big re-opening (-L3T2 merge + wires, the induction, seat-LL's frontiers, the
 ChainCompat pins, the wall's endgame).
+
+## 2026-07-23 ~17:15 UTC — OPERATOR COMMISSION: the thorough paper-fidelity review (elder) + the completing render is green
+
+(1) OPERATOR COMMISSION dispatched to the ELDER (task #31): the exhaustive paper-fidelity review —
+enumerate ALL objects/intermediates/results/caveats/calculations from BOTH sources (Aoyagi's
+construction incl. worked.tex; Lehalleur–Rimányi 2024, the destination) → cross-check each against the
+codebase (PROVEN/STATED/CITED/MODELED-only/ABSENT, generality mismatches explicit) → JUDGE every gap
+(SHOULD-COVER-NOW → back to me for commissioning / LATER post-summit-vs-next-expedition /
+RIGHTLY-SKIPPED with why / CITED-BY-DESIGN). Deliverable: paper-fidelity-review.md, elder authorized
+to commit that file + threads/fidelity-review/ directly (a scoped exception to the commit rule).
+Subagents authorized + encouraged (operator-explicit). The completing-staging delta-read stays its
+priority interrupt. This is the institutional follow-through on the operator's "the paper surely has
+these worked out" — from a def-fidelity gate to a FULL coverage map.
+
+(2) The COMPLETING RENDER is green (the render seat → arch-C, staging next): the (b) fan case-split
+pin + hpos; census +0; payoff roots unchanged; AND an honest correction — PivotPreservation WAS touched
+(the (b) match-shape broke :345's application exactly as the render traced), fixed sorry-free in ~14
+lines by routing case12/case2 through c₀ ∉ the fresh width-block (pnp-fan's mechanism, now
+Lean-checked via cornerToFlat_notMem_widthBlock). "Trace, don't expect" — the third time this arc the
+trace corrected an expectation, each time cheaply BECAUSE it was traced before commit. Awaiting
+arch-C's staging hash → my gate → the elder delta-read → THE N_p BAKE COMPLETES.
