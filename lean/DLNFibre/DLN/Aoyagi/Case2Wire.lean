@@ -113,4 +113,31 @@ theorem case2_preserves_stepInv'
   --      PerLayerDeg1From companion to Case1Wire.exists_graded_decomp; consumes it when it lands).
   sorry
 
+/-- **Consume-fit regression (lane 4, seat-L3T2).** The `GeneratorCleared` datum EMITTED by
+`lastLayer_clear_preserves` at an `S = L` clear (child `q.extend ed₁`) is EXACTLY the shape
+`terminal_edge_stepInv` CONSUMES as `hgen` at that node — and likewise its `LastLayerInv` output is the
+`hinv` input. The composition elaborates with NO defeq surgery, so the two ∃-shapes cannot drift (the
+point of the single `GeneratorCleared` def, family ruling item 4). A permanent wiring check: statement
+TRUE without proving either leaf (both sorried upstream), so it is a fit regression, not new content. -/
+example {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (q : TreePath d) (ed₁ : TreeEdge d q) (hlast : ed₁.nextState.layer + 1 = N)
+    (hinv : LastLayerInv d e (supportAt d q.conState.layer q.conState.cleared) q)
+    (hbranch₁ : (q.extend ed₁).IsRealBranch e)
+    (ed₂ : TreeEdge d (q.extend ed₁)) (hterm : N ≤ ed₂.nextState.layer)
+    (hbranch₂ : ((q.extend ed₁).extend ed₂).IsRealBranch e) :
+    ∃ (r : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ)
+      (i₀ : Fin (d (Fin.last N) * d 0)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
+      StepInv (coreGen d e) (foldG d e ((q.extend ed₁).extend ed₂))
+          (foldB d e ((q.extend ed₁).extend ed₂))
+          (fun _ : Fin 1 ↦ (1 : (Fin (flatDim d) → ℝ) → ℝ)) r
+          (foldRegion d e ((q.extend ed₁).extend ed₂))
+        ∧ ContinuousOn unit (foldRegion d e ((q.extend ed₁).extend ed₂))
+        ∧ unit 0 ≠ 0
+        ∧ (∀ u ∈ foldRegion d e ((q.extend ed₁).extend ed₂),
+            (coreGen d e i₀ ∘ foldG d e ((q.extend ed₁).extend ed₂)) u
+              = foldB d e ((q.extend ed₁).extend ed₂) u * unit u) := by
+  obtain ⟨hinv₂, hgen₂⟩ := lastLayer_clear_preserves d hN hpos e q ed₁ hlast hinv hbranch₁
+  exact terminal_edge_stepInv d hN hpos e (q.extend ed₁) ed₂ hterm hinv₂ hgen₂ hbranch₂
+
 end DLNFibre.DLN.Aoyagi

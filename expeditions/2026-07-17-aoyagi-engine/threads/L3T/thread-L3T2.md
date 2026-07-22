@@ -4,12 +4,24 @@ Branch `expedition/aoyagi-engine-L3T2`, based on the post-redirect tip. Lanes: 0
 LeafGeometryWire; 1 realBranch_terminal_edgeδ + terminal_edge_stepInv re-wire; 2 realBranch_cover
 + realBranch_descendView; 3 case2_preserves_stepInv; 4 GeneratorCleared consume-fit + Case1Wire dedupe.
 
-## Status
+## Status — PLAN COMPLETE (all 4 lanes landed)
 - Lane 0 DONE — LeafGeometryWire.lean ported file-level, green, axiom-clean; integrated on canonical.
+- Lane 1 DONE — after the STOP-ON-SUSPECT (kill-condition below) the elder rendered `hpos`;
+  realBranch_terminal_edgeδ + terminal_edge_stepInv CLOSED in-place in MonumentAtlas, both
+  `[propext, Classical.choice, Quot.sound]` (terminal_edgeδ closed with hpos ALONE — the soundness
+  criterion). δ=1 terminal is a DEAD branch via realBranch_terminal_edgeδ.
 - Lane 2 DONE — realBranch_descendView (obtain-projection) + realBranch_cover (cleared=0 block
   equality); both `[propext, Classical.choice, Quot.sound]`.
-- Lane 1 BLOCKED (STOP-ON-SUSPECT) — see kill-condition below; hpos fix queued to elder.
-- Lane 3 IN PROGRESS.
+- Lane 3 DONE — Case2Wire.lean: case2_conjA (divisibility ∃q, both δ) axiom-clean; case2_preserves_stepInv'
+  = ⟨case2_conjA, conjB⟩ with conjunct-B the SINGLE tracked on-cone sorry (seat-L4's shared re-factoring
+  wall). δ=1 conjunct-A rides seat-L4's exists_ignoresCoords_decomp bridge (Codex-cross-checked TRUE).
+- Lane 4 DONE — crux dedupe (Case2TransportWire.foldResid_pullback_pivot_factor now delegates to the
+  canonical Case1Wire.foldResid_stepMap_eq_pivot_mul; local edgeShear_keeps_pivot' retired) +
+  GeneratorCleared consume-fit regression example (lastLayer_clear_preserves emit → terminal_edge_stepInv
+  consume, elaborates cleanly). Case2Wire green, cordon OK.
+
+Open (not mine): Case2Wire conjunct-B (seat-L4 companion), realBranch_shearWithinCarve /
+realBranch_multiAffine (held for their rounds), MonumentAtlas case2 stub swap (arch-C Assembly module).
 
 ## KILL-CONDITION (permanent record): realBranch_terminal_edgeδ MUST carry `hpos : ∀ k, 0 < d k`
 
