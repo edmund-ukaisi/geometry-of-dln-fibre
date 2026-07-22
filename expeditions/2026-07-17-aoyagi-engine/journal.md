@@ -11980,3 +11980,39 @@ is the honest object, one uniform shape, no carve-out). Folds into the elder's c
 by the lock/battery discipline this round: the ∀ℓ threshold, the parent-supportAt pin direction,
 the region token, now (II)'s quantifier scope — the authorship-division lesson earning its place
 in real time.
+
+## 2026-07-22 (controller, tick ~09:45) — THE ELDER'S TRIPLE RULING: the descent claim DISPUTED (discriminator running); the ROUTE REDIRECT to IsRealBranch-conditioning; (II) ruled (B)
+
+Elder transcript poll recovered three texts (09:05/09:07/09:09) — the round redirects:
+
+**1. THE DESCENT DISPUTE.** The elder + a fresh Codex pass (gap-audit, banked eab2321a0) + the
+template's Edge B all independently read: at a REAL case11 boost, edgeShear = id and canonPivotOf
+= the reused divisor's BIRTH-LAYER corner (immutable divBirthCoord, earlier layer, NOT in the
+layer-S support) ⟹ pivot ↦ 1 leaves the layer-S factors intact ⟹ **the residual does NOT
+descend** — it stays matching supportAt(S,0); the removed u goes into foldB (the exponent boost =
+conjunct-1's content). seat-L4's REACHABILITY stands undisputed; its DESCENT consequence is the
+disputed clause (its counterexample used a current-layer pivot — a free-edge instance excluded
+under canonPivotOf). The controller's "one-bit conflation" framing is thereby contested too — the
+elder shows the two events are already separately encoded and AGREE for real boosts. FALSIFIABLE
+prediction staked; **THE DISCRIMINATOR assigned to arch-C** (the Lean unfold: foldResid(case11) =
+parent(pivot↦1) + birth layer < s.layer; the template simulator: boost-child support extent on
+the nine instances). Run BEFORE anything renders; seat-L4 informed, not testing (disputed party).
+
+**2. THE ROUTE REDIRECT (conditional on the discriminator): per-field SET (A) SUPERSEDED.** The
+real localized defect (elder + Codex): **canonCenterOf's case11 form** — the boost center =
+{reused birth-corner pivot} ∪ (run-length-J₁ current-layer sub-block); current form breaks hpivot
+AND hcenter is FALSE for boosts (CROSS-LAYER center). The ruled one round: canonCenterOf fix +
+canonShearOf render + IsRealBranch extended to pin the shear + **the leaves CONDITIONED ON THE
+REPAIRED IsRealBranch** — per-field constraints + the prepared-multi-affine residual (Codex's
+precise GAP-3 form) become once-proved DERIVED LEMMAS; the GAP-3 def-touch DISSOLVES. The
+construction-conditioning collapse the process audit predicted, now elder-ruled.
+
+**3. (II) RULED (B)** — the raw-displacement form, error owned ("the read constraint belongs only
+where reading is a smuggling risk"); trivially satisfied by boosts (displacement ≡ 0); under the
+redirect it becomes the derived-lemma shape canonShearOf provably satisfies.
+
+Elder artifacts banked (it wrote the Codex files into the shared tree — controller committed per
+protocol). OPERATOR OBSERVATION honored: the whole system was quiescent because every teammate
+idles between messages and the elder's sends dead-end — the hub's poll IS the clock; the
+discriminator now runs. NEXT: arch-C's verdict → either the redirect executes (one round:
+canonCenterOf + canonShearOf + IsRealBranch + conditioned leaves) or the def-touch route revives.
