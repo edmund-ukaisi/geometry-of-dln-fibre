@@ -19,12 +19,16 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   reworked sorry-free (pnp-fan's mechanism kernel-checked). Payoff isolation held THROUGHOUT. Census
   40. The elder's PAPER-FIDELITY REVIEW delivered (paper-fidelity-review.md: coverage high+honest;
   the monument = the ONE open frontier; Ext-model identification = the caveat to keep honest).
-  LIVE LANES: **seat-L4D** = THE WALL'S ENDGAME (rebase the -L4C ChainNF skeleton onto canonical →
-  SPECIFY the 3-field ChainCompat pin incl. chainWeight strict→NON-strict [cert §4b/§7] → grind
-  chainCompat_holds clean → boostReady closes → case1' falls); **seat-L3T2** = rebase -L3T2 (5
-  known-pattern errors: 4× ≥→> + 1× match-pin; my merge REVERTED, canonical green) → the induction
-  (task #8, hpos, comp-of-linear step for the recoord factor) → the audit → I re-merge + wire BOTH
-  modules; **seat-LL** = rebase -LL + re-verify the twin + frontiers (frontier #1 ← task #8).
+  LIVE LANES: **seat-L4D** = THE WALL'S ENDGAME on ROUTE β (9th catch: standalone ChainNF ∀e-FALSE
+  at its base; β = boostReady from the CARRIED hslot+hbranch via the value-pin; ChainNF packaging
+  retired honestly) + the DEF-LEVEL CONFIRM of the cap-escape on (2,3,2,2); **seat-L3T3** = the
+  induction (X-linearity → δ-dispatch) UNAFFECTED — slot clause-1 SHAPE ON HOLD; **seat-LL** =
+  rebase -LL + twin + frontiers. CAP-ESCAPE VERDICT (pnp-transport, banked + controller re-ran
+  exit-0): the descended support ESCAPES blockCoords(S+1) on WIDE branches (smallest descent
+  witness (2,3,2,2); INHERENT — holds with no recoord, via the wide remnant row) — possible 10TH
+  catch reaching the BAKED descended slot; the ELDER SHAPE RULING GATES all descended-slot
+  consumption (coords-of-record question: raw vs through-the-recoord). Battery canon: every future
+  battery includes a WIDE witness — (3,3,4) is NOT wide on the recoord col axis.
   MERGE-ORDER DISCIPLINE: pre-N_p branches rebase seat-side BEFORE controller merges. Remaining to
   summit: the wall (L4D) → descent append (via the induction + the cap under N_p) → lastLayer
   frontiers → L5 assembly (target = MonumentAssembly.leaf_stepInv_of_path') → L7 own-cover fold

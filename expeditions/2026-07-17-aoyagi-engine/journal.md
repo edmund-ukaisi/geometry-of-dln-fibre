@@ -15121,3 +15121,37 @@ value-pin is what makes the local carried-slot derivation possible; the architec
 fidelity fix paying off. The cap-escape caution transfers to β's boundary read. No elder gate (carried-
 hypothesis consumption = leaf mandate + my gate); both retirements in the integration report. Guard-class
 catches: NINE, all pre-grind. Checkpoint 817f36fcf (the FIX-1/terminal-guard restatements) banked.
+
+## 2026-07-23 — the cap-escape DECISIVE VERDICT: out-of-cap, propagating, INHERENT (possible 10th catch, reaching the BAKED descended slot)
+
+pnp-transport's exact trace landed (d5d345f23 on -L4C; banked on canonical, controller re-ran
+`recoord_cap_escape.py` exit-0). VERDICT: on WIDE branches — deeper factor's col axis exceeding the
+running-min cap; smallest with a descent child d=(2,3,2,2), clear layer 0 — the child residual
+genuinely reads the deeper factor's OUT-OF-CAP column: coeff of q₁₀₂ (∉ blockCoords(1)) in
+resid[0,0] = p₀₂₀·r₂₀₀ ≠ 0, via the WIDE REMNANT ROW (N_p clears only widthMinUpto pivot rows;
+the remnant row stays live and coreGen's cross-term reads the full deeper width). INHERENT: the
+same monomial appears with NO recoord at all — not an artifact of the canonNormalizationOf
+encoding. The true descended support is layerCoords(S+1). Precision correction: (3,3,4) is NOT
+wide on the recoord col axis (d_1 = 3 = widthMinUpto(1)); ALL THREE standard N_p witnesses were
+non-wide — this geometry was never exercised (the def-fidelity-gate lesson again: the battery
+canon now includes a wide witness — (2,3,2) / (2,3,2,2)).
+
+STAKES: if the baked carried slot (Deg1SupportedSlot over supportAt = blockCoords at the descended
+state) asserts cap-confinement in the coordinates the trace falsifies, this is the 10TH
+statement-class catch and the first reaching BAKED territory (FoldStepInvAt's descended clause +
+every step lemma concluding it). The open def-level question: in WHICH coordinates is the slot
+stated (raw u vs composed through the shears — the recoord displacement itself carries the
+out-of-cap coord), vs Aoyagi's per-chart bookkeeping (her capped M_{s,k} may hold in the
+RECOORDINATIZED entries — the coords-of-record question).
+
+ROUTING (all three sent): ELDER — the slot-shape adjudication sharpened to four questions
+(coords-of-record vs worked.tex; does she dispose of the remnant rows before descent; blast radius
+on case11 boost-readiness / route β's boundary statement; the minimal honest re-statement set).
+Its ruling GATES all descended-slot consumption. SEAT-L4D — (1) the def-level confirm on canonical
+tip at (2,3,2,2) (CONFIRMED-AT-DEF vs DODGED-BY-DEF-SHAPE) before consuming the descended slot;
+(2) β scope check: the wall is SAME-LAYER — if the boundary read stays same-layer, β proceeds
+unblocked in parallel. SEAT-L3T3 — induction unaffected (proceed); slot clause-1 cap-confinement
+is KNOWN-FALSE as stated — hold the shape as named-TBD, support-set parameter swappable.
+
+Memo updated (LIVE LANES + the verdict + the battery-canon rule). Owed-register entry = the
+elder's to author with its ruling. Payoff isolation untouched (no Lean edits this tick).
