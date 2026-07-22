@@ -12118,3 +12118,313 @@ bridge runway (seat-L4's un-defer flag honored). Locked so far: 3/6 (ShearWithin
 DescendView, hδ0); the remaining 3 (canonCenterOf case11 + relaxed hcenter/hcover + GAP-3)
 proceed on the pastes. Sequence unchanged: locks → staged forms → elder pre-read → gate → ONE
 bake. Parallel workstreams (pnp-elab path-level template; nav-13; carto owed+shape) running.
+
+## 2026-07-22 (controller, ~10:45) — carto's owed+map pass applied; navigator dispositions executed; the accumulated drift absorbed
+
+Carto's two-part pass: PART 2 (overlay, its pen) executed atomically at fe49afdbe (severance-
+witnesses + dead-routes + banked-families + landmark-cards + naming — the E-closure, the
+discriminator episode, the superseded per-field route, 3 new process-defect entries). PART 1
+applied with the controller pen: **owed-register** — O6 → CLOSED (combinatorial; P7 = the
+deferred analytic residue), P6.2 → CLOSED (the faithful count, incidence content discharged via
+the ≃o + transport), M14/M15/M16 gain SUPERSEDED-SHAPE riders (recast at the redirect bake), the
+**M-HYGIENE consolidated unit** created (M4 residual + M9 lift + Q3 migration + lint + fossil
+prune + naming unify; trigger = the post-bake quiet window; the task-label caveat recorded), the
+2026-07-22 event-log line added; **claims.yaml** — e-p62 → PROVEN with the lean pin
+(bindingSet_chainHeight_eq_thetaCount) and the closed-history note; object-e notes → combinatorial-
+half-CLOSED; b-ladder gains the redirect-confirmed note (per-leaf rows deliberately NOT rewritten
+until the bake — they'd describe unbaked shapes; carto's recommendation, agreed). EARLIER THIS
+HOUR: nav-13's endgame pass adopted in full (seat-L3T → L6+L8 parallel-now, verified; the 3 gate
+checks added to arch-C's contract — catch-all exhaustiveness, post-redirect free-field re-audit,
+derived-lemma SUFFICIENCY; GAP-3 tagged frontier-leaf-candidate gated on Codex C2; STATUS.md
+refresh queued to the bake; fossil/lint/rename held post-monument). The board now runs SEVEN
+concurrent streams: the redirect staging (locks 3/6 done), L6+L8 (seat-L3T), the path-level
+template (pnp-elab), the codebase-shape artifact (carto), the elder's C2 Codex pass, and the two
+proof-seat holds waiting on the bake.
+
+## 2026-07-22 (controller, ~11:00) — the PATH-LEVEL TEMPLATE landed (a1845492a): monomial Jacobian certified; two integral traps; the PM-P4 atlas gap named
+
+pnp-elab's second template (380 lines + path_verify.py PASS + the cover-argument Codex consult):
+(1) THE COMPOSED CHART's Jacobian is a PURE MONOMIAL ∏u^{M−1} — shears det-1, codim-c blow-up
+contributes u^{c−1}, and the LEDGER IS AN INVARIANT (a boost adds J₁(M^{S+1}−J) to exponent AND
+Jacobian power in lockstep; verified c = 2,3,4,6 + four instances); b₁ squarefree ⟹ k = 1 on
+every binding axis — the M6 "unit ≡ 1" claim CONFIRMED with mechanism. (2) COVER + VALUE SEAM:
+λ = MIN over charts, θ = MAX (never a sum); λ = ½·min Mval = ½·cCodim; Theorem-3 split verified
+INCLUDING general r ((5,4,4) r=1 → 8; (4,4,4,4) r=2 → 15/2). (3) TWO INTEGRAL TRAPS (PM-P1/P2/P5):
+the overcounting trap (partition of unity OR a.e.-disjoint max-pivot sectors — never naive
+∫_V = Σ_U over overlapping opens) and the TWO-UNITS distinction (|g′| unit ≡ 1 monomial vs the
+loss's unit-valued FUNCTION U ≢ 1, U(0)=1 — wrong in opposite directions if conflated). (4) **THE
+SHARPEST FINDING (PM-P4, Codex + worked.tex concur): the exhaustive terminal-chart atlas's
+COVERAGE + TERMINATION are NOT in the paper** — p.6 cites Hironaka + asserts the boxed rule;
+pp.14–22 give representative-pivot local algebra only (relabelling unwritten) — this is exactly
+exists_coreResolution + rlctAt_sumSqFam_eq_iInf_charts: a BUILD target, not a citation,
+confirming the charter's hcover-BUILD scoping with page-level precision. The decomposition
+(coverage / termination / pivot-relabelling lemmas) routes to the L5/L7 briefs. (5) Two paper
+pitfalls banked (the p.6 sign typo; k_j > 0 in the boxed min). Template routed to seat-L3T as its
+L6/L8 pre-mortem (the jac cert + the two-units trap load-bearing for its Chart fold); the Q-P1
+integral-API choice (partition-of-unity vs sectors) deferred to the L5/L7 SPECIFY.
+
+## 2026-07-22 (controller, ~11:15) — navigator check-3 catches a FALSE stub pre-bake; the case11 divisibility MECHANISM identified; canonCenterOf case11 LOCKED
+
+The derived-lemma SUFFICIENCY check (nav-13's addition, adopted hours ago) fired on first use:
+realBranch_cover (IsRealBranch → edgeδ → supportAt ⊆ center) is FALSE for case11 real branches —
+the fixed row-restricted boost center cannot contain the full-layer support (generic runLen <
+d_{S+1}). ROOT CAUSE is a mechanism insight completing the discriminator picture: **case11's
+δ=1 divisibility works by PIVOT-PROVIDES-u_pivot** (the earlier-layer birth-corner pivot ↦ 1
+leaves the residual intact — nothing on the residual needs dividing; u_pivot enters via foldB's
+boost), while **case12/case2 use residual-⊆-center** (current-layer pivot, the residual descends
+into the center — hcover holds and is needed exactly there). hcover re-scopes to
+APPEND-CASES-ONLY — the per-case discipline reaching conjunct-1's mechanism. Meanwhile
+**canonCenterOf case11 is LOCKED** (seat-L4, both halves: battery 7fdfd88a8 — 88 case1(1) edges /
+61 cross-layer J=0 boosts across all nine instances, ALL PASS on block-size = exponent-boost,
+|center| = block+1, S_birth < S; + the Lean form typechecked with hpivot PROVED; the col-cap
+correction widthMinUpto → cleared+runLen under the resRows↔flat-col transpose). Check-1
+(exhaustiveness) will force case12/case2 explicit at the render — no catch-all survives. Locked
+so far: ShearWithinCarve(B), canonCenterOf-case11, canonShearOf=predicate-pin, DescendView,
+GAP-3=Deg1SupportedSlot, hδ0; pending: the re-scoped hcover + relaxed hcenter + the 6 derived
+statements. Then: render → elder second read → gate → THE ONE BAKE.
+
+## 2026-07-22 (controller, ~11:30) — **L8 PROVED (the first complete leaf)**; L6 handed off to a fresh seat on the recipe
+
+seat-L3T landed **L8 in full**: `leafPath_realizesExponents'` (primed, statement-identical) in the
+new LeafGeometryWire.lean — sorry-free, clean-three, general-d, generalizing the d12 reference
+(1751c0710; controller-verified zero sorries on the fetched branch). Both AtlasRealizesExponents
+clauses read off FoldProduced (hjac_mem + the banked leaf_divExp_mem_terminalExponents; hsurj +
+hjac_onto) — "the d12 reference made it clean": the template thesis confirmed on a leaf-scale
+proof. arch-C swaps the MonumentAtlas L8 sorry at the redirect integration. **L6 handed off at
+SPECIFY-clean** with the complete 20-field recipe (direct-from-atlas fields; the M′=1
+instantiations; the two REAL-LABOUR items named: the a.e.-injectivity fold + the Jacobian fold —
+new pathMap-geometry, the d12 reference used conjResolution not the fold) — **seat-L6 SPAWNED**
+on the handoff-profile test (third application; paid twice before), with the path-level template
+as its pre-mortem and the unit≡1-truth-vs-unit-allowed distinction flagged (a genuine correction
+term = suspect, not feature). seat-L3T rests with two leaves' branches + one complete leaf + two
+statement catches banked today. Cone accounting note for the bake: L8's landing offsets one
+redirect stub in the census.
+
+## 2026-07-22 (controller) — the FIFTH authored-form catch (arch-C's transpose inversion); locks at 5/6
+
+arch-C owned a transpose inversion caught pre-render by the lock discipline: its "grounded tupIdx
+translation" put the Edge-B run-length cap on flat ROW q.1.2; correct is flat COL q.2 (the
+paper-row ↔ flat-col transpose; battery-decisive — the q.2-partial block equals the exponent
+boost, the q.1.2 form fails at (3,3,4)). Self-extracted lesson: relay the verbatim source and let
+the CONSUMER own the coordinate translation — don't "ground" another seat's transpose. LOCKS 5/6:
+ShearWithinCarve(B), DescendView, hδ0, canonCenterOf-case11 (q.2-corrected, hpivot proved, two
+batteries), GAP-3 (= baked Deg1SupportedSlot on real branches), the shear predicate-pin. PENDING
+1: the relaxed hcenter (case11 consumes `ed.center = canonCenterOf` derived) + hcover
+CASE12/CASE2-CONDITIONAL (false for case11 — the pivot-provides mechanism). Then: full render →
+elder second read → gate → THE ONE BAKE. Authored-form catch tally this round: five (∀ℓ
+threshold, parent-pin direction, region token, (II) quantifier, the transpose) — every one
+pre-render or pre-bake, none escaped to a proof.
+
+## 2026-07-22 (controller, ~11:45) — ALL 7 FORMS LOCKED; the final render in flight; center-validation closed via the lock battery
+
+The final statement round is FORM-COMPLETE (seat-L4, all typechecked): (1) ShearWithinCarve (B);
+(2) DescendView; (3) hδ0; (4) canonCenterOf case11 (q.2-corrected); (5) GAP-3 = the baked
+Deg1SupportedSlot on real branches; (6) the IsRealBranch shear predicate-pin; (7) the relaxed
+hcenter (center-pin, retiring the layer-S-only ⊆) + hcover case12/case2-CONDITIONAL (case11
+excluded — the pivot-provides mechanism). arch-C relayed the set VERBATIM to the render (post-
+transpose-lesson: no re-derivation), incl. the case-EXPLICIT canonCenterOf (no catch-all), the
+re-scoped stubs, the distinctly-tagged frontier-leaf realBranch_multiAffine, and the docstring
+reconcile. LEDGER CLOSURE: the nine-instance center-validation is DISCHARGED — seat-L4's lock
+battery 7fdfd88a8 (88 edges / 61 boosts across all nine instances: block-size = exponent boost;
+|center| = block+1; S_birth < S) IS that check; cited in the gate verdict. POST-BAKE NOTE
+(wake-item, not bake-item): case11 conjunct-1 needs a NEW pivot-mechanism lemma (u_pivot from
+blockBlowupMap on the center; residual stays) — distinct from the banked append-crux; seat-L4
+builds on wake. SEQUENCE: render green → arch-C verify → **elder's second read on the complete
+staged statements** → the full gate (elder checklist + 3 navigator checks) → THE ONE BAKE.
+
+## 2026-07-22 (controller, ~12:00) — the render's two structure improvements; the e-ripple secures GAP-3's derivability
+
+The final render folds two render-seat improvements (arch-C adopted, both within authority):
+(1) **the e-RIPPLE** — the shear-pin lives INSIDE IsRealBranch's recursion (every step's shear
+pinned, not just the last edge), with the e-param threaded through IsRealBranch/reachesLeaf and
+all 10 collapse pins. THE SIGNIFICANCE: the elder's GAP-3 ruling said multi-homogeneity-by-
+induction is derivable only if EVERY parent step's shear is graded — a last-edge-only pin would
+have left parent shears free and made the frontier-leaf realBranch_multiAffine stub UNPROVABLE.
+The render seat's structural read caught it before the elder's second read — the sixth
+significant catch of the round. (2) **ShearWithinCarveRaw** — the (B) clauses factored to ONE
+site (IsRealBranch's step clause has no TreeEdge; inlining would have duplicated (II) across two
+sites); content-preserving, DEFEQ to seat-L4's lock (the lock stands). The elder's second-read
+packet now carries seven flags (the two improvements + the five pre-flagged items incl. the
+M^(S+1) = d_{layer+1} ≠ widthMinUpto translation note). Sequence unchanged: render green →
+arch-C verify → the elder's pre-bake read → the full gate → THE ONE BAKE.
+
+## 2026-07-22 (controller, ~12:15) — seat-L6 stop-on-suspect: hjac's TIE SEMANTICS (ledger vs naive sum); the template holds the key
+
+seat-L6's SPECIFY+build opened strong (every L6 field proven except hjac + the two honest-labour
+hexcep legs) and surfaced a REAL suspect with a decisive counterexample: hjac (|jacDet(gmap)| =
+jacWeight(jac)·|unit|, unit nonvanishing) is NOT derivable from FoldProduced alone — the chain
+rule evaluates per-step weights at INTERMEDIATE points, and rewriting to source coordinates with
+unit ≡ 1 needs (★) pivot-preservation-by-deeper-steps, which FAILS at boosts (D=2 witness: two
+lawful blow-ups with ∑jexp = (1,1) but true |jacDet| = |u0|²|u1| — the unit VANISHES; and boosts
+occur in the real construction). THE RESOLUTION KEY is the blind template's own §1 finding: the
+LEDGER INVARIANT — a boost adds J₁(M^{S+1}−J) to the divisor's exponent AND Jacobian power IN
+LOCKSTEP; under the LEDGER reading of atlas.jac, (★) is unnecessary (the substitution effect IS
+the boost; the per-step jexp at the reused pivot with the just-locked case11 center = |center|−1
+= exactly the boost increment, telescoping to the ledger) and hjac is satisfiable with unit ≡ 1
+via an ACCUMULATION lemma. The counterexample then witnesses that the NAIVE tie is wrong — not
+that hjac is. ROUTED to the elder as an addition to its imminent second read: rule the intended
+hjac_tie semantics (read FoldProduced's defs; if the render pins the naive sum, it needs the
+boost-aware correction — coordinated with the redirect, since case11's jexp = the corrected
+center size); then seat-L6's fix options (FoldRealizes hypothesis / GeoStep accumulation field /
+the ledger reading + lemma). seat-L6 presses the tractable legs meanwhile — nothing blocked but
+hjac itself.
+
+## 2026-07-22 (controller, ~12:30) — the redirect's FULL GATE PASSED; staging for the elder's pre-bake read
+
+arch-C's full gate on the final render: PASS on every check (own build 8450/0; footprints
+clean-three+sorryAx both drivers; cordon OK; census 16 @[blueprint] = 10 + 6 stubs, 14 sorries =
+8 leaves + 6 stubs; transcription faithful on all 7 forms; canonCenterOf 4 EXPLICIT arms — no
+catch-all; ShearWithinCarveRaw one-site; IsRealBranch +e pinning every step; the free-field
+re-audit finds NO residual free field; the sufficiency check's realBranch_cover catch fixed
+in-tree; center-validation cited by battery). CONTROLLER CALLS: (1) edgeShearRaw's pre-existing
+same-class catch-all — FOLD IN now (uniform exhaustiveness; two lines; a re-gate is running
+anyway); (2) the elder's PRE-bake read needs a fetchable tree — arch-C commits + pushes a
+labeled STAGING commit to -rung-c; on the elder's OK that commit IS the bake. The elder's packet:
+arch-C's 8 flagged items + the controller's hjac-semantics addition (the L6 lane, riding the same
+pass). Next: the staging hash → I trigger the elder → the read → bake (or apply-and-re-gate).
+
+## 2026-07-22 ~10:50 UTC — STAGING COMMIT LANDED; ELDER SECOND READ TRIGGERED
+
+**Staging commit `2080757ea`** pushed by arch-C to `origin/expedition/aoyagi-engine-rung-c`
+(base `a8438b1fe`; ONE file, `MonumentAtlas.lean`, +164/−46; labeled "[ELDER 2ND-READ
+PENDING, NOT BAKED]"; tree FROZEN). Controller re-verified fetchability + label + single-file
+scope before triggering.
+
+**arch-C re-gate (with the edgeShearRaw 2-line explicit split folded): PASS** — green
+8450/0-err; footprint `[propext, sorryAx, Classical.choice, Quot.sound]` both drivers; cordon
+OK; ZERO `| _ =>` in the file (canonCenterOf + edgeShearRaw both 4-arm explicit); 16
+@[blueprint] (10 + 6 stubs), 14 sorries (8 leaves + 6 derived-lemma stubs); navigator 3 checks
++ free-field re-audit + derived-lemma sufficiency PASS.
+
+**Elder pre-published its five second-read gates at 09:54** (before the staging landed):
+(1) canonCenterOf(case11) = pivot ∪ run-length-J₁ partial block, case11-specific, hpivot
+provable; (2) the shear pin that makes the def-touch dissolution valid (gate-2); (3) leaves
+conditioned on repaired IsRealBranch + derived-lemma discipline, FoldStepInvAt/Deg1SupportedSlot
+untouched; (4) name=content on the residual multi-homogeneity lemma (support-divisible +
+per-layer deg ≤ 1 FROM THE THRESHOLD, not "one factor per active layer"); (5) cordon +
+universe threading of `leaf_stepInv_of_path`.
+
+**Second read TRIGGERED** on `2080757ea` with: the 5 gates as checklist, arch-C's 8 flagged
+items, and ONE controller-added gate-2 checkpoint — the elder's gate wording says "pin
+shearφ = canonShearOf"; the staged form pins per-step shear via the e-param recursion +
+ShearWithinCarveRaw. The elder rules explicitly whether the staged form satisfies the gate-2
+intent. The hjac_tie semantics ruling (L6 lane; elder verified seat-L6's D=2 counterexample
+arithmetic at 10:40 and is reading GeoStep/FoldProduced) rides the same pass but does NOT
+gate the bake verdict.
+
+**Protocol locked:** OK → `2080757ea` IS the bake (no re-commit) → controller verification
+(fetch + merge --no-ff + full build + forced footprints both drivers + cordon + census) →
+push → proof seats wake on FINAL statements. FLAGGED → render applies → arch-C re-gates →
+new staging hash → elder delta-read.
+
+## 2026-07-22 ~11:10 UTC — OPERATOR-DIRECTED GROUNDING PASS (map + territory + policy re-read) + DAG SVG refresh
+
+Operator asked mid-elder-wait: re-ground in the expedition map, cross-check the territory, re-read
+the policies for an on-track judgment, refresh /tmp/aoyagi-dag-2026-07-22.svg. Done while the elder's
+second read runs (nothing on the bake path blocked on me).
+
+**Territory cross-check (tools, not memory):**
+- `scripts/sorries` = **35** proof-position sorries tree-wide. LIVE cone (pre-bake) = 10:
+  MonumentAtlas 8 + LearningCoefficient:287 + Case2Delta0 1 (L3 δ=1 lane). Fossils = 25 (Engine 4
+  chart-route + Skeleton 3 + Validate ~18). Post-bake the cone reads 16 live (14 + 1 + 1).
+- **Overlay F1 discrepancy caught**: codebase-shape.md's "~52" census disagrees with the tool's 35
+  (raw-grep vs proof-position count). Carto-standing CHARGED to re-derive from `scripts/sorries`
+  itself and cite the tool as the canonical meter (msg 9a293b22).
+- Core invariants re-verified: Core = 0 sorries; **0 files under Core/ import DLN** (the artery
+  invariant holds). AxCheck batch-gate roots present; claims.yaml's staged-vs-baked notes honest
+  (b-ladder note correctly says the per-leaf rows rewrite AT the bake, not before).
+- Contract-5 nit: Case2Delta0's live sorry is only implicitly mapped (under the b-leaf34/L3 lane);
+  fold an explicit pointer into the bake's map refresh.
+- STATUS.md was a day stale → regenerated via `scripts/expedition status` + committed (validator:
+  0 errors; 24 warnings all the benign no-survey class).
+
+**Policy re-read verdict (expedition.md, expedition-map.md, charter, + operational set): ON TRACK,
+with 3 documented deviations, all operator-authorized and journaled:** standing elder/carto seats
+(vs "office, not session" — operator 2026-07-19 endgame exception); priorities.md retired into the
+map (heartbeat documents the forwarding); calibration/altitude cadence current (entry 29 + the
+altitude note committed this pass, 97e5d872b). Charter §0–§3 check: steering by objects holds
+(A/C/D proven, E combinatorial-half closed with the analytic seam scoped-deferred, B = the staged
+monument); the redirect is construction-fidelity work, squarely §0(iv); GAP-3 honestly
+FRONTIER-named per §0(ii).
+
+**One owed convening surfaced by the re-read**: expedition.md § Gates puts an independent
+**hardener** (principles/taste, decorrelated from builder AND controller) at each gate. The redirect
+gate ran navigator checks + elder second read + template diff + batteries — no hardener pass.
+SCHEDULED: a hardener precision/bedrock pass on the BAKED monument statements post-bake (rides the
+same window as the seat wakes; does not gate the bake — the elder read covers the math-rightness
+channel; the hardener covers the taste/overclaim channel).
+
+CLAUDE.md stale-pointer suspicion (docs/policies/claims.md) checked: already fixed in-tree (points
+to expedition-map.md); the stale copy was only my session-start snapshot. Heartbeat memo phase line
+rewritten to ELDER SECOND READ ON STAGING 2080757ea. DAG SVG regenerated at
+/tmp/aoyagi-dag-2026-07-22.svg (UNCOMMITTED per operator standing instruction): redirect staged
+layer + elder gate as the one purple gate, L8 flipped PROVEN, L6 live with the hjac ruling pending,
+DivBirthInv banked as the discriminator, E-lane panel unchanged.
+
+## 2026-07-22 ~11:20 UTC — L6 SPECIFY MILESTONE: the (★) unification; hjac framing RETRACTED-in-part
+
+**seat-L6 landed L6 SPECIFY green** (LeafChartWire.lean on origin/expedition/aoyagi-engine-L6;
+8450 jobs; signature statement-identical to MonumentAtlas.leafPath_chartGeometry). ALL fields
+proven except three — hjac, hexcep_null, hexcep_meas — including hg_inj via a NEW reusable fold
+lemma `injOn_pathMap_off_critical` (pathMap injective off {jacDet=0}; per-step
+{jacWeight jexp=0}={jacDet σ=0} via hσ_jac).
+
+**The find: the three remaining sorries UNIFY.** All reduce to one coherence (★) = each step's
+pivot coordinate is preserved by all deeper steps (the elaboration template's boost-lockstep
+ledger, in coordinate form). With (★): hjac composes in source coordinates (∏ jacWeight collapses,
+unit ≡ 1) and {jacDet g=0} = {jacWeight jac=0} = a source hyperplane union → null via
+MvPolynomial.volume_zeroSet_eq_zero. WITHOUT (★) the nullity is unreachable at this pin (no n-dim
+analytic zero-set nullity in Mathlib v4.29; GeoStep exposes σ analytic, not polynomial).
+
+**Controller framing correction (owned):** my elder trigger said the hjac ruling "does not gate
+the bake verdict (outside the staged diff)". RETRACTED IN PART: if the resolution pins (★) as an
+L6 hypothesis (FoldRealizes) or a GeoStep/GeoAtlasData field, it TOUCHES the staged MonumentAtlas
+— and ONE-BAKE requires any such touch to ride THIS round as an elder-flagged change. ADDENDUM
+sent to the elder mid-read: rule (1) hjac_tie semantics, (2) where (★) lives — including the
+third option that it is already DERIVABLE from the staged IsRealBranch e-param shear-pin (no
+statement touch, all three sorries close), (3) the bake interaction (touch ⟹ flagged change in
+this round: render applies → arch-C re-gates → new hash → delta-read; no-touch ⟹ bake verdict
+independent as originally framed). arch-C heads-up sent (hold the frozen tree; the flagged-change
+packet may now include the (★) edit). seat-L6 held: do NOT add (★) locally; stop-on-suspect
+correctly exercised.
+
+## 2026-07-22 ~11:30 UTC — OPERATOR DIRECTIVE: hardener role removed (harness merge rot, one-time policy edit)
+
+Operator ruled on my grounding-pass finding ("no hardener convened at the redirect gate"): **the
+hardener role is removed — the finding was itself the artifact of harness merge rot**, and the
+operator authorized the policy edit ONE TIME ("do it only this once").
+
+Rot confirmed on ground truth before editing: `.agent-team/roles/hardener.md` does NOT exist (the
+expedition.md § Gates bullet linked a dead file); `CLAUDE.md:159` already records `hardener` as
+**Retired (2026-07-15)** (→ reviewer function + the elder's right-extension channel);
+`.agent-team/roles/reviewer.md:10` already carries the folded function. The single live rot site
+was `docs/policies/expedition.md:337` — the § Gates bullet assigning the bedrock check to "an
+independent `hardener`", which survived a harness merge past the retirement.
+
+THE EDIT (the one authorized): expedition.md § Gates bullet rewritten — the bedrock check is a
+**decorrelated reviewer function** (review.md; retirement noted in-line); right-extension findings
+route to the elder's compass; a critical taste finding still floors a review-to-equilibrium loop.
+Function preserved, dead role removed. NOT touched (deliberately): docs/retro/* (historical
+diagnosis docs — they describe the past), ROADMAP.md:471 "hardener-cleared" (a true historical
+claim about pre-retirement clearing), CLAUDE.md + reviewer.md (already correct).
+
+CORRECTION to my 11:10 grounding entry: the "owed hardener convening" is VOID — no gap existed;
+the post-bake taste/precision pass on the monument statements is a **reviewer** seat
+(rev-monument), which is the already-established practice here (rev-core, rev-Elane,
+rev-monument-adapter). That pass stays scheduled, correctly named.
+
+This edit does NOT open a general license to edit policy files — one-time, operator-directed,
+recorded here.
+
+## 2026-07-22 ~11:40 UTC — carto F1 charge CLOSED (verified on origin, 0e0352cdf)
+
+Carto-standing re-derived the census ITSELF from `scripts/sorries` (office contract held — not
+from my summary) and banked the correction (0e0352cdf, single-file overlay scope, validator 0
+errors; verified on origin). **Canonical total = 35** (its "~52" was a raw line-grep artifact —
+docstring + ⛔-banner mentions counted); the tool is now cited as the canonical meter in the
+header, F1, and the frontier line. Split: DLN/Aoyagi 10 on-cone (MonumentAtlas 8 + Case2Delta0 1
++ LearningCoefficient 1) · fossils 25 (Engine 4 — incl. 2 INLINE sorries a naive line-scan
+misses, all ⛔-bannered · Validate 18 · Skeleton 3). Its independent read sharpened both priors:
+carto's grep was +17, my quick parser +1 — the tool stands canonical. Post-bake expected-delta
+(10 → 16) recorded WITHOUT flipping the frontier line; the flip waits on my bake confirmation
+(carto's next trigger = the cone transition). Nothing open on carto's side.

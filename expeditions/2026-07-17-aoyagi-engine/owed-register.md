@@ -37,8 +37,10 @@ recommendation — status`.
   `DLN/Aoyagi/ClosedForm.lean` already carries the apparatus (`lambdaCore`, `residueA`, the
   `residueA_mul_sub_eq_qipDelta_abs_mul_sub` bridge) and the proof skeleton is p.23's
   completing-the-square (image-read) — M, strike-able — WAVE-TAIL UNIT recommended. — OPEN, re-priced.
-- **O6** — Object E order ρ — see **P6.1/P6.2** (the split, 2026-07-21 evening) + P7; OPENED by the
-  operator (charter §1-E); P6.1 LANDED, P6.2 statement-shaping. — OPEN/live.
+- **O6** — Object E order ρ — P6.1 + P6.2 both CLOSED (the faithful count
+  `bindingSet_chainHeight_eq_thetaCount = a(ℓ−a)+1`, wired + AxCheck-rooted `c9a4003fe`); the
+  ANALYTIC ρ-seam (zeta multiplicity) is the deferred residue = P7. — **CLOSED (combinatorial),
+  P7 deferred by design.**
 - **O7** — (a) φ-form Def-1 equivalence (cheap, runway — P8); (b) free-energy identification
   (permanent cite — P11). — OPEN by design.
 - **O8** — deeper-mix chain survival — DISSOLVED under M'=1 (b₁ truncation-stability; subsumed by
@@ -112,12 +114,36 @@ recommendation — status`.
 - **M14** — `foldRegion ≡ univ` stand-in: acceptable while StepInv rides global polynomial
   identities; the L6 Chart `nbhd` MUST be the terminal-shrunk bounded `V'` (round-5 (d) HARD LOCK,
   in L6's docstring; the gate refuses `nbhd = univ`). — `MonumentAtlas` — staged — carried. — LOCKED.
+  SUPERSEDED-SHAPE: the per-field SET (A) staging is replaced by the redirect's derived-lemma chain
+  (the leaves condition on `IsRealBranch`; per-field → named derived lemmas). Recast at the
+  redirect bake.
 - **M15** — `foldNR` parent-count padding: benign iff the padding slot is the absorbed cleared entry;
   rev-leaves watches the eventual L3 proof for padding exploitation (round-5 (b) tripwire). — staged
-  — carried. — LOCKED.
+  — carried. — LOCKED. SUPERSEDED-SHAPE: recast at the redirect bake (see M14 note).
 - **M16** — `TreeEdge.center/pivot` free fields + the documented derivation spec: sound under the (B)
   `SupportedOn` hypothesis; the fold-determined def-body is bridge-blocked (see P12/runway — the
-  flatDim card↔sum coordinate bridge). — staged — carried. — LOCKED.
+  flatDim card↔sum coordinate bridge). — staged — carried. — LOCKED. SUPERSEDED-SHAPE: the redirect
+  conditions the leaves on `IsRealBranch` directly (center/pivot/shear pinned there; the concrete
+  fold-determined def-bodies remain bridge-blocked = the P12 runway). Recast at the redirect bake.
+
+### M-HYGIENE — the post-redirect-bake upstreaming / quiet-window unit (consolidated 2026-07-22)
+Consolidates: M4 residual (the `2≤D` deprecate-to-corollary; the unconditional
+`jacDet_blowupMap_unconditional` + redundancy-pointer docstring ARE landed, the full corollary
+rewrite is the residue), M9 (`BlockDivision` ℝ→CommSemiring lift — docstring notes CommSemiring
+suffices; defs still ℝ-pinned), Q3 Adm-cluster→Core migration (import-direction-blocked minimal
+move; the whole Adm/Mval/bindingSet cluster migrates together), rev-Elane lint nits, the fossil
+prune (~25 tokens / 12 files, Validate+Skeleton+Engine), the Deg1SupportedOn/Slot naming unify.
+Trigger: the next quiet window after the redirect bake. — OPEN, consolidated. (Task labels #27/#28
+read "completed" = pointer-done/deferred-consolidated, not full-discharge.)
+GUARDRAILS from the codebase-shape findings (carto, 2026-07-22): **prune by MODULE, never by
+directory** — DLN/RLCT/Engine is MIXED (DivBirthReach/DivBirthInv, EngineConstruction,
+O5Realization + the 4 adapter roots are LIVE summit-path, consumed via RecursionAdapter; only the
+chart-route Geo*/ChartBridge* parts are fossil), and `minAdm` is a LIVE def inside
+Validate/RouteMLayerSplit (the fossil zone) — the prune list must be per-module verified against
+codebase-shape.md's frontier line. The naming-unify gains `lambdaCore` (duplicated: Foundations
+M-indexed vs ClosedForm d-indexed — intentional-looking but a shared-name reuse hazard). The
+sorry recount (F1: ~52 by carto's count vs 35 by scripts/sorries — reconcile counting method +
+on-cone-vs-fossil split) is a navigator gate-verify item at the prune.
 
 ---
 
@@ -156,13 +182,12 @@ monument-in-plan (pp.14–22 recursion = the 8 leaves).
   - **P6.1 (band arithmetic)** — LANDED both tiers (Tier-1 `bandCount_eq` + `perJCard_eq_paper`;
     Tier-2 certified-parameter instantiation), batch-gated. The Lemma-4 banded structure as
     intrinsic arithmetic; the paper's per-j piecewise form anchored at p.26. — **LANDED**.
-  - **P6.2 (count-identification)** — pnp-gate DISCHARGED (threads/41, controller-verified;
-    blind-Codex converged). OBJECT PINNED: ρ = deepest-stratum max-crossing = **max CHAIN of
-    binding minimiser profiles under componentwise ≤** (the antichain speculation corrected by
-    seat-E's battery, 1018 cores; decisive witness [2,2,2,2,2]). STATUS: statement-shaping under
-    the six-check render contract (chainHeight vocabulary; tight lattice by hypothesis; corners;
-    name = chain-height, θ at Tier 2 only; the two-home non-degeneracy fence — abstract Nonempty
-    at Tier 1, `lambdaCore_eq_zero_iff` at Tier 2; carried global target). — **IN SHAPING**.
+  - **P6.2 (count-identification)** — **CLOSED.** Faithful count landed (`c9a4003fe`): ρ = max
+    CHAIN of binding minimisers under componentwise ≤ = chainHeight(bindingSet) = thetaCount =
+    aoyagiTheta = a(ℓ−a)+1 — the actual poset object, not just a formula; the antichain
+    speculation corrected (seat-E battery, decisive witness [2,2,2,2,2]). The two incidence
+    lemmas discharged via the box-partition ≃o + chainHeight transport (`OrderRealizeAssembly`).
+    — **CLOSED.**
 - **P7** — **the analytic pole-order identification** (ρ = zeta multiplicity) — unchanged: blocked on
   meromorphic continuation Mathlib lacks; monument-class. — cite/defer (with E). — OPEN by design.
 - **P8** (= O7a) — **Def 1's φ-form and φ-independence** — a bump-function comparison; cheap;
@@ -196,6 +221,9 @@ both cites die together at the monument (re-confirmed; nothing else is owed ther
   O9 landed-in-strike, O5/O6 re-priced; M1–M16, P1–P12 opened. Wave-tail recommendations for the
   briefs: **M1, M2, M8, M3 (API units) + P2/O5 (the printed-form bridge) + P1-at-r=0 (the RRR
   instance)**; M5 flagged fix-at-next-touch.
+- 2026-07-22 — E CLOSED (`c9a4003fe`); the REDIRECT round (elder ruling + `DivBirthInv`
+  discriminator PROOF): per-field SET (A) SUPERSEDED → derived-lemma chain off `IsRealBranch`;
+  `canonCenterOf` catch-all defect fixed; (II) ruled (B). Hygiene items consolidated (M-HYGIENE).
 
 ---
 

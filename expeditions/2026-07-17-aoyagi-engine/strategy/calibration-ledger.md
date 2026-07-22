@@ -868,3 +868,34 @@ raw number is 3.8× the live number).**
 checklist. (2) Any "sorry-free" close claim must be cone-aware AND then census-clean after the
 prune — the two numbers converge only at the very end. (3) Post-bake the cone goes 8→10 named;
 the census should read 10+1 live + fossils until the prune.
+
+## Entry 29 (2026-07-22, navigator — endgame first full pass) — the redirect round: free-field skeletons price at their statement-collapse, and elaborate-then-render is the fix
+
+**The question (position at the phase juncture):** with the monument's statement architecture
+redirecting from 7 per-field hypotheses to 1 IsRealBranch construction-conditioning, what did the
+free-edge leaf design actually cost, and what is the correct pricing meter forward?
+
+**Actual (journal 2026-07-22, ground-truthed):** the monument spent ~10 statement rounds this run,
+each the SAME event — a free TreeEdge field admits a non-construction instance; a constraint of
+Aoyagi's recursion is re-derived as a bolted-on hypothesis. The wall's MATH (StepInvShearChild,
+exists_graded_decomp, BlockDivision) landed in one seat each; the STATEMENTS took the ten rounds.
+Four of the defects were authored-form (∀ℓ over-reach, parent-supportAt direction, region token,
+ShearWithinCarve (II) scope); two were in the elder's own rendered sentences; one was a silent
+catch-all (canonCenterOf `| _ =>` mis-firing case-11 — a NEW defect class). The discriminator that
+ended the descent dispute was a kernel-checked invariant (DivBirthInv), not a battery — a proof beat
+an empirical sweep.
+
+**The controlled comparison (the decisive datum):** the E-lane carried the #42 ELABORATED cert up
+front → three tracks, zero rework, closed clean. The monument had no template → ten reactive rounds.
+pnp-elab retrofitted the template mid-endgame and its mechanical diff found ZERO mismatches — the
+first POSITIVE statement-fidelity evidence of the expedition (vs. absence-of-caught-defects).
+
+**Pricing lesson (extends Entries 25/27):** a free-field skeleton's cost is dominated by its
+statement-collapse rounds, and the correct meter is whether an EXACT-ALGEBRA-CERTIFIED CONSTRUCTION
+TEMPLATE exists before the leaves are typed. Price a leaf-set by that; if the template is absent,
+BUILD IT FIRST (the elaborate-then-render discipline, now operator-standing). The construction-
+conditioning collapse (per-field → derived-lemmas off one IsRealBranch hypothesis) is the structural
+end-state a free-field skeleton converges to — reaching it via ten reactive rounds vs one template
+is the whole delta. Corollary for the gate: a def with a catch-all branch needs a def-level
+EXHAUSTIVENESS check; the sim validates reached cases, never def completeness (canonCenterOf's
+class).

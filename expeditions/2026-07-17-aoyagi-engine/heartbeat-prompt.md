@@ -12,17 +12,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE REDIRECT ROUND (2026-07-22 ~10:00).** Discriminator VERDICT proof-grade (DivBirthInv:
-  birth layers strictly earlier at cleared=0 ⟹ case11 pivot ∉ current support ⟹ NO DESCENT):
-  supportAt/edgeδ def-touch VOID; elder right; seat-L4 retraction per pre-acceptance. THE ROUTE =
-  IsRealBranch-CONDITIONING (arch-C staging, GO given): (i) canonCenterOf case11 fix (boost center =
-  birth-corner ∪ J₁-sub-block; locks = template Edge B + seat-L4; sim-validate 9 instances);
-  (ii) canonShearOf + (II)=(B) + IsRealBranch shear-pin; (iii) leaves conditioned on repaired
-  IsRealBranch — per-field set + prepared-multi-affine residual = NAMED DERIVED LEMMAS (L5 discharge
-  chain); SET (A) superseded. ELDER SECOND-READS THE STAGED FORMS PRE-BAKE → arch-C full gate → ONE
-  bake → controller verify → proof seats wake on FINAL statements (L4 wall: ONE hypothesis; proved
-  branches re-target mechanically). ELDER: poll transcript (dead inbox; ID ends ...d30ba3). E-LANE
-  CLOSED. Template = threads/elaboration/fold-recursion-template.md (diff: ZERO mismatches).
+- phase: **ELDER SECOND READ on STAGING 2080757ea (2026-07-22 ~10:50).** The redirect is STAGED +
+  FROZEN on -rung-c (base a8438b1fe; arch-C re-gate PASS: 8450/0, footprints clean+sorryAx, cordon OK,
+  ZERO `| _ =>`, 14 sorries = 8 leaves + 6 derived stubs). Elder read TRIGGERED (its 5 pre-published
+  gates + arch-C's 8 items + my gate-2 checkpoint: staged e-param shear-pin vs "shearφ = canonShearOf"
+  wording). ON OK: 2080757ea IS the bake → controller verify (fetch, merge --no-ff, full build, forced
+  footprints both drivers, cordon, census) → push → proof seats wake on FINAL statements (L4 wall:
+  ONE IsRealBranch hypothesis; proved branches re-target mechanically). ON FLAGGED: render applies →
+  arch-C re-gates → new staging hash → elder delta-read. ALSO riding the pass (does NOT gate bake):
+  hjac_tie semantics ruling (L6 lane; ledger vs naive sum; elder verified the D=2 counterexample) +
+  Codex C2 (gates GAP-3 strike-ability). ELDER: poll transcript (dead inbox; ID ends ...d30ba3).
+  E-LANE CLOSED. Template diff: ZERO mismatches (threads/elaboration/fold-recursion-template.md).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
