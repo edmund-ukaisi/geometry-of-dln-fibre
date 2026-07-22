@@ -11369,3 +11369,23 @@ where shearφ is populated/consumed in the fold construction (the prior is not e
 + one-line docstring note if clean; route to the elder if the construction is genuinely ambiguous
 about which edge owns the Q2⁻¹. Conjunct-1 pin-agnostic (hshear_pivot suffices) — the render
 proceeds on everything else meanwhile. seat-L4 back on hold.
+
+## 2026-07-22 (controller) — re-render: 1/2/4 GREEN + emission-gate PASSES; item 3 genuinely ambiguous → elder structure ruling
+
+The re-render round converged to ONE open input. arch-C's ground-truth adjudication of the
+Pin-C/Q2⁻¹ flag: **genuinely ambiguous — the fold has never fixed which mechanism owns the
+Q2⁻¹-into-next-layer transfer.** Five evidence points (all defs-read): shearφ = FREE TreeEdge
+field, generic pins only (none constrains WHICH coords φ writes); blockShear writes anything φ
+touches; IsRealBranch EXPLICITLY leaves shearφ unread (:731 — contrast canonCenterOf/canonPivotOf);
+no concrete shearφ assignment or Schur predicate exists (the Q⁻¹C^{(S+1)} references are docstring
+prose); the layer advance is the shear-free ROLLOVER. Routed to the ELDER per the pinned method,
+with the two candidate pins (Pin C vs the safe layer-grading form + tighten-later option) and a
+third sub-question: should IsRealBranch gain a canonShearOf-style pin so the construction fixes
+the decomposition durably. MEANWHILE: items 1/2/4 GATED GREEN on arch-C's own build (blockCoords
+transcription faithful incl. the cap axis; hcenter on all 3 leaves; GeneratorCleared exact at both
+sites, 0 hcleared residual; build 8450/0; footprints clean; cone 10) and **the EMISSION-GATE
+PASSES** — GeneratorCleared's ∃q is a separate existential (interior leaves not over-constrained;
+the datum satisfiable: foldB(0) = 0 at the last layer makes sum ≠ 0 feasible; fall-back (b) NOT
+triggered). BAKE CORRECTLY HELD: baking without the shear pin would bake leaves false-as-stated at
+free shears — the exact face-4 defect. 1/2/4 sit rendered+gated on-branch uncommitted; nothing
+lost by waiting. Conjunct-1 pin-agnostic — proof-seat divisibility prep proceeds.
