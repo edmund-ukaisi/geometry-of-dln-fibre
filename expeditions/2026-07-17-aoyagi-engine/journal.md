@@ -12162,3 +12162,23 @@ confirming the charter's hcover-BUILD scoping with page-level precision. The dec
 pitfalls banked (the p.6 sign typo; k_j > 0 in the boxed min). Template routed to seat-L3T as its
 L6/L8 pre-mortem (the jac cert + the two-units trap load-bearing for its Chart fold); the Q-P1
 integral-API choice (partition-of-unity vs sectors) deferred to the L5/L7 SPECIFY.
+
+## 2026-07-22 (controller, ~11:15) — navigator check-3 catches a FALSE stub pre-bake; the case11 divisibility MECHANISM identified; canonCenterOf case11 LOCKED
+
+The derived-lemma SUFFICIENCY check (nav-13's addition, adopted hours ago) fired on first use:
+realBranch_cover (IsRealBranch → edgeδ → supportAt ⊆ center) is FALSE for case11 real branches —
+the fixed row-restricted boost center cannot contain the full-layer support (generic runLen <
+d_{S+1}). ROOT CAUSE is a mechanism insight completing the discriminator picture: **case11's
+δ=1 divisibility works by PIVOT-PROVIDES-u_pivot** (the earlier-layer birth-corner pivot ↦ 1
+leaves the residual intact — nothing on the residual needs dividing; u_pivot enters via foldB's
+boost), while **case12/case2 use residual-⊆-center** (current-layer pivot, the residual descends
+into the center — hcover holds and is needed exactly there). hcover re-scopes to
+APPEND-CASES-ONLY — the per-case discipline reaching conjunct-1's mechanism. Meanwhile
+**canonCenterOf case11 is LOCKED** (seat-L4, both halves: battery 7fdfd88a8 — 88 case1(1) edges /
+61 cross-layer J=0 boosts across all nine instances, ALL PASS on block-size = exponent-boost,
+|center| = block+1, S_birth < S; + the Lean form typechecked with hpivot PROVED; the col-cap
+correction widthMinUpto → cleared+runLen under the resRows↔flat-col transpose). Check-1
+(exhaustiveness) will force case12/case2 explicit at the render — no catch-all survives. Locked
+so far: ShearWithinCarve(B), canonCenterOf-case11, canonShearOf=predicate-pin, DescendView,
+GAP-3=Deg1SupportedSlot, hδ0; pending: the re-scoped hcover + relaxed hcenter + the 6 derived
+statements. Then: render → elder second read → gate → THE ONE BAKE.
