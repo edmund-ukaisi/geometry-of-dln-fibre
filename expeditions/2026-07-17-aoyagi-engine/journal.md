@@ -13724,3 +13724,28 @@ Net: the re-open, one tick in, is DE-RISKING fast — the proof content (the div
 being proven now regardless of the storage decision, the pivot-spectator half was already banked, and
 the three-layer redesign's hardest architecture layer (L2) is settling. What remains genuinely open:
 the elder's L1 shear-pin form + L3 fan design (+ pnp-coupling's math verdict feeding the reconcile).
+
+## 2026-07-22 ~18:30 UTC — L1 (shear value-pin) TRIPLE-corroborated; boostReady = divisibility(now) + clearing(L1)
+
+seat-L4B's MANDATED fresh Codex (xhigh, no shared context) independently re-derived L1's necessity:
+boostReady's CLEARING half (the −γ·β off-diagonal, A1: center→0 kills the residual) is NOT derivable
+from the support-only shear predicate (shearφ=0 satisfies CanonicalSchurStep + ShearWithinCarveRaw),
+so the exact shear VALUE is required. This is the THIRD decorrelated instrument on L1 (seat-L4's Codex
++ elder's reconciled verdict + seat-L4B's fresh Codex) — the re-open is VINDICATED; the shear-value-pin
+is necessary, not merely plausible.
+
+seat-L4B initially framed this as a CONFLICT with "no re-bake" — but that framing was STALE (my
+retracted pre-re-open relay; my later "proceed on the induction (A′)" messages under-emphasized that the
+induction was only ONE half of boostReady). Clarified: no conflict — seat-L4B CONFIRMED the current plan.
+
+THE CONFIRMED DECOMPOSITION (boostReady): (i) DIVISIBILITY half (u_pivot | extra-block coeffs) rides the
+ALREADY-carried pinned blow-ups (canonCenterOf/canonPivotOf + blockBlowupCoordQuot) — L1-INVARIANT +
+route-invariant → seat-L4B PROVING IT NOW; (ii) CLEARING half needs the exact shear value → a one-liner
+from canonShearOf_apply_interior (M7 α/β, 7/7) ONCE L1 bakes. So L1 only has to supply the clearing; the
+divisibility is carried. Relayed to the elder as a form-tightening input: state L1 so
+canonShearOf_apply_interior discharges the clearing directly.
+
+CONTROLLER SELF-NOTE (calibration): my messaging muddied the two halves — I said "proceed on the
+induction" (divisibility) without re-flagging that the full boostReady waits on L1 (clearing). seat-L4B's
+mandated consult caught the muddle. Lesson reinforced: when a target splits into a provable-now half and a
+re-bake-blocked half, name BOTH halves explicitly in the seat brief, not just the provable one.
