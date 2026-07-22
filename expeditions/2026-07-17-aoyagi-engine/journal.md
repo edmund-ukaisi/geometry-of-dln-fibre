@@ -10939,3 +10939,19 @@ text): render finalize → full gate → BAKE; on its green, controller integrat
 seats. seat-E has PROVE-PHASE GO (1,2,4 in its banked order + the hpos check + the Q4 collapse
 first). seat-L4 notified (vindicated; holds for the bake signal). Elder acked with the routing
 workaround + YES on the durable compass convention-pointer (at its next compaction pass).
+
+## 2026-07-22 (controller) — E-lane prove-phase moving: (d) PROVED with the elder's catch confirmed; Q4 collapse executed; 3 heavy frontiers remain
+
+seat-E executed the pass rulings + first proof (controller-verified on the fetched branch, sorries
+4→3): (1) Q4 COLLAPSE done (6abb3bddb) — admTight def + its three satellites dropped; survivors
+Adm_le_runMin + adm_runMin_filter_eq carry the RELOCATED negative certificate; pointer at Adm's
+def-site (Lambda.lean); docstrings record Q1/Q3/r=0 rulings. (2) Obligation (d) residueA_le_ell
+PROVED (f7c3f0a28, axiom-clean) — and the elder's weakest-hyp catch CONFIRMED EXACTLY: hpos never
+fires; replaced with the weakest sufficient `0 < ell M 0` (verified in the landed signature :123;
+the ceiling arithmetic divides by ℓ, widths never enter; consumer sorted-box supplies it). Earlier
+this round seat-E also banked the optional proof-order note (53997da27: d → sorted-box → one-swap →
+transport, per-lemma Mathlib pins, design fork ready for the sort-transport friction). REMAINING:
+the three heavy frontiers (swapBinding_orderIso, bindingSet_transport_sorted, sorted-box iso),
+~150+ LoC each, multi-tide as scoped — seat proceeding on the sorted-box (the depth) in banked
+order, push-per-lemma. Monument side: bake pipeline executing in the render lane (seat re-pointing
+to supportAt; arch-C gates on the render).
