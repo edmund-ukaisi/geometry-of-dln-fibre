@@ -26,13 +26,15 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   (descended support escapes blockCoords(S+1) on WIDE branches — INHERENT, witness (2,3,2,2),
   banked + re-ran exit-0), that is the 10th+11th catches, BOTH in the carried invariant: support
   TOO TIGHT + form TOO WEAK — FoldStepInvAt under-transcribes Aoyagi's induction hypothesis.
-  ELDER holds the CONSOLIDATED ruling (fork: (A) root-anchor hyp / (B) strengthen the invariant,
-  controller-recommended / (C) canonFlatten-specialize); its ruling GATES all descended-slot
-  consumption + any bake. FEEDING IT: seat-L4D = def-level cap-escape confirm + candidate-field
-  DRAFTS (retire nothing, bake nothing); pnp-transport = the empirical invariant table
-  ((2,2,2,2)+(2,3,2,2), per-node support/factoring/degrees). seat-L3T3 = induction UNAFFECTED,
+  ELDER holds the CONSOLIDATED ruling; its ruling GATES all descended-slot consumption + any
+  bake. STATUS: cap-escape CONFIRMED-AT-DEF (write-side: recoord write-col = pivot ROW, uncapped
+  above; escape ⟺ d_{S+1} > widthMinUpto(S+1)) ⟹ the RE-BAKE IS FORCED independent of the Codex
+  hedge; fork question is now SHAPE not necessity (controller leans (B)+Form-V). Inputs 3/5 in:
+  def-confirm ✓, candidate fields V (value/vanishing, minimal) + S (structural ChainNF-as-carried)
+  ✓, Codex β-infeasibility ✓; IN FLIGHT: pnp-transport empirical invariant table + scrambled-e
+  hedge check; seat-L3T2 consumer impact table (read-only). seat-L3T3 = induction UNAFFECTED,
   clause-1 shape ON HOLD; seat-LL = rebase + twin + frontiers. Battery canon: every battery
-  includes a WIDE witness ((3,3,4) is NOT wide on the recoord col axis).
+  includes a WIDE witness ((3,3,4) is NOT wide — d_1 = widthMinUpto(1)).
   MERGE-ORDER DISCIPLINE: pre-N_p branches rebase seat-side BEFORE controller merges. Remaining to
   summit: the wall (L4D) → descent append (via the induction + the cap under N_p) → lastLayer
   frontiers → L5 assembly (target = MonumentAssembly.leaf_stepInv_of_path') → L7 own-cover fold
