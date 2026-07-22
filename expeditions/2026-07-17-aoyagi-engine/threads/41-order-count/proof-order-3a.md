@@ -50,9 +50,12 @@ Dependency graph of the headline `bindingSet_orderIso_boxPart` (already discharg
    - `shiftedSorted _ 0 = M ∘ Tuple.sort M`; `Tuple.sort` is a single permutation, NOT a sequence of
      adjacent swaps. To reuse `swapBinding_orderIso` (adjacent only) I must decompose `Tuple.sort M`'s
      permutation into adjacent transpositions and compose the isos along that decomposition.
-   - Mathlib leads to pin FIRST (before committing): does v4.29 give "every `Equiv.Perm (Fin n)` is a
-     product of adjacent transpositions" cleanly? Candidates: `Equiv.Perm.swap`-generation lemmas,
-     `List.Sorted` bubble-sort, `Tuple.sort` API (`Tuple.sort_sorted`, `Tuple.self_comp_sort`).
+   - Mathlib SCOUTED (v4.29, `Data/Fin/Tuple/Sort.lean`): `Tuple.sort` API present — `self_comp_sort`,
+     `comp_perm_comp_sort_eq_comp_sort` ((f∘σ)∘sort(f∘σ) = f∘sort f), `sort_eq_refl_iff_monotone`,
+     `monotone_sort`. BUT no off-the-shelf "`Equiv.Perm (Fin n)` = product of ADJACENT transpositions"
+     (`GroupTheory/Perm/Closure.lean` gives cycle+transposition generation, not adjacent-specific). So
+     the adjacent-decomposition needed to reuse `swapBinding_orderIso` is NOT free — it's a genuine
+     sub-development (a bubble-sort-as-adjacent-transpositions induction). Design fork below stands.
    - **DESIGN FORK (for the tide, surface to elder if it walls):** if adjacent-decomposition is
      painful, an ALTERNATIVE (c): prove the transport iso for the WHOLE sort at once via a direct
      bijection using the LANDED permutation-invariance (`(C,θ)` perm-invariance) + `Mval`-value
