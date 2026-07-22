@@ -12387,3 +12387,31 @@ this round: render applies → arch-C re-gates → new hash → delta-read; no-t
 independent as originally framed). arch-C heads-up sent (hold the frozen tree; the flagged-change
 packet may now include the (★) edit). seat-L6 held: do NOT add (★) locally; stop-on-suspect
 correctly exercised.
+
+## 2026-07-22 ~11:30 UTC — OPERATOR DIRECTIVE: hardener role removed (harness merge rot, one-time policy edit)
+
+Operator ruled on my grounding-pass finding ("no hardener convened at the redirect gate"): **the
+hardener role is removed — the finding was itself the artifact of harness merge rot**, and the
+operator authorized the policy edit ONE TIME ("do it only this once").
+
+Rot confirmed on ground truth before editing: `.agent-team/roles/hardener.md` does NOT exist (the
+expedition.md § Gates bullet linked a dead file); `CLAUDE.md:159` already records `hardener` as
+**Retired (2026-07-15)** (→ reviewer function + the elder's right-extension channel);
+`.agent-team/roles/reviewer.md:10` already carries the folded function. The single live rot site
+was `docs/policies/expedition.md:337` — the § Gates bullet assigning the bedrock check to "an
+independent `hardener`", which survived a harness merge past the retirement.
+
+THE EDIT (the one authorized): expedition.md § Gates bullet rewritten — the bedrock check is a
+**decorrelated reviewer function** (review.md; retirement noted in-line); right-extension findings
+route to the elder's compass; a critical taste finding still floors a review-to-equilibrium loop.
+Function preserved, dead role removed. NOT touched (deliberately): docs/retro/* (historical
+diagnosis docs — they describe the past), ROADMAP.md:471 "hardener-cleared" (a true historical
+claim about pre-retirement clearing), CLAUDE.md + reviewer.md (already correct).
+
+CORRECTION to my 11:10 grounding entry: the "owed hardener convening" is VOID — no gap existed;
+the post-bake taste/precision pass on the monument statements is a **reviewer** seat
+(rev-monument), which is the already-established practice here (rev-core, rev-Elane,
+rev-monument-adapter). That pass stays scheduled, correctly named.
+
+This edit does NOT open a general license to edit policy files — one-time, operator-directed,
+recorded here.
