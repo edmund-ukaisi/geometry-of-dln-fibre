@@ -10523,3 +10523,17 @@ expedition's state in one sentence: "NOTHING REMAINS OPEN ON THE MONUMENT'S DESI
 audited, every clause verified against her pages, every convergence multi-instrument... for the
 first time since this expedition began, the mathematics is settled and only the writing remains.
 Render, gate, bake — and then the wall is just work."
+
+## 2026-07-22 (controller) — the admTight def-site lands (5/6 proved; the seam lemma modulo ONE tracked engine lemma)
+
+seat-E's cert-independent half executed (merged + controller-verified): AdmTight.lean —
+admTight as a FILTER of Adm (the inclusion definitional), admTight_subset_adm /
+admTight_nonempty / clamp_mem_admTight all clean-three, and **minAdm_tight_eq (THE SEAM LEMMA)
+proved modulo exactly one tracked-open engine lemma**: Mval_clamp_le (clamping to runMin never
+raises Mval — numerically 1628/1628, statement-locked, marked TRACKED-OPEN in-file, on NO gated
+root). The ge-direction is fully proved; the le-direction = clamp-the-loose-minimiser +
+Mval_clamp_le. DECISIONS: (1) GO on Mval_clamp_le now (cert-independent; closes the seam; ℕ-
+arithmetic engine work in-reach) with the binding sequence SPECIFY → decorrelated Codex on the
+summand-coupling proof shape → prove; (2) the rung-C/3b non-duplication noted correct. AdmTight
+wires at the seam's closure. The E-lane's remaining ladder: the clamp lemma → the cert → the 3a
+scaffold → elder pass → prove.
