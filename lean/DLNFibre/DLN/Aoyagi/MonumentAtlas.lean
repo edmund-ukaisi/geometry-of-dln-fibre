@@ -962,7 +962,10 @@ theorem realBranch_shearWithinCarve {N : ℕ} {d : Fin (N + 1) → ℕ}
     ShearWithinCarve d e ed := by
   -- map: B-derived-shearwithincarve (last-step projection: hbranch's ShearWithinCarveRaw conjunct at
   --      the last edge is defeq ShearWithinCarve d e ed; seat-L4 (B) landed, no (II) defect)
-  sorry
+  -- `p.extend ed = .step p ed.center … ed.shearφ`; IsRealBranch's step arm's THIRD conjunct is
+  -- `ShearWithinCarveRaw d e (p.extend ed) ed.shearφ`, defeq to `ShearWithinCarve d e ed`.
+  obtain ⟨-, -, hshear⟩ := hbranch
+  exact hshear
 
 /-- Derived: a terminal edge does not divide (`δ=0`) — only a rollover advances the layer. -/
 @[blueprint]
