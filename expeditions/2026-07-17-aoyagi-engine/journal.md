@@ -13749,3 +13749,26 @@ CONTROLLER SELF-NOTE (calibration): my messaging muddied the two halves — I sa
 induction" (divisibility) without re-flagging that the full boostReady waits on L1 (clearing). seat-L4B's
 mandated consult caught the muddle. Lesson reinforced: when a target splits into a provable-now half and a
 re-bake-blocked half, name BOTH halves explicitly in the seat brief, not just the provable one.
+
+## 2026-07-22 ~18:55 UTC — L1 = additive strengthening, 4x-corroborated (incl. M7's own render-note) → push L1-FIRST
+
+seat-L4B surfaced DECISIVE corroboration from our own code — canonShearOf_apply_interior's docstring
+(CanonShear.lean:239-244, verified verbatim): "NOT part of any pin (weakest-that-suffices declined it);
+the α/β witness of the boost-readiness proof may want the explicit coefficients." M7's render EXPLICITLY
+foresaw boost-readiness would need the exact shear value and DELIBERATELY kept IsRealBranch's pin at the
+weakest (support-only) form. So the L1 gap was a documented, deferred design decision now called due —
+"weakest-that-suffices cut one notch too fine for THIS obligation." Four instruments on L1 now: seat-L4
+Codex + elder reconciled verdict + seat-L4B fresh Codex + M7 render-note.
+
+KEY: L1 is ADDITIVE. Pinning shearφ = canonShearOf IMPLIES the old CanonicalSchurStep via the banked
+canonShearOf_support (CanonShear.lean:63) — the realBranch_canonicalSchurStep projection re-derives, so
+NO downstream consumer weakens. It therefore fits the RECORDED one-bake exception (additive strengthening).
+
+DECISION (pushed to the elder, proceed-on-silence sequencing): bake L1 FIRST, separately from L3. It's
+orthogonal to L3 (L1 = shear clause; L3 = pivot-fan clause; canonShearOf is pivot-independent, so L1 is
+not re-touched by L3 → no wasted re-bake) and it UNBLOCKS both boostReady's clearing (one-liner via
+canonShearOf_apply_interior) AND the descent's δ=1 cofactor NOW, vs stalling behind L3's slower fan design.
+The re-bake ledger is now clean: L1 (additive, NOW) + L3 (fan, later); L2 = A′ shared lemma (NON-bake,
+seat-L4B proving the divisibility now). Awaiting the elder's authored L1 form (the pin + realBranch_canonShear_eq
+projection) → arch-C render → gate → delta-read → relay to seat-L4B. seat-L4B keeps banking the L1-invariant
+halves (divisibility + a′) meanwhile.
