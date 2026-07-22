@@ -15255,3 +15255,31 @@ the CORRECTED descended support — the two defects are one joint.
 ELDER STATUS: inputs 3/5 (def-confirm ✓, candidates ✓, Codex ✓; in flight: empirical
 table + hedge check, consumer impact table); told to rule when it judges inputs sufficient.
 #32 completed. Gate unchanged: no bakes, no descended-slot consumption. No Lean edits.
+
+## 2026-07-23 — the empirical invariant table banked (input 4/5): both defects node-explicit; the SCHUR-PIVOT datum lands the coords-of-record question as a concrete fork
+
+pnp-transport's table banked (65eec01f9; controller re-ran exit-0, out-of-cap rows verified in
+output). Node-by-node foldResid, (2,2,2,2) + (2,3,2,2). Three findings:
+
+(1) SUPPORT defect node-explicit: from the FIRST descended node onward on (2,3,2,2), every
+slot's layer-1 support includes out-of-cap col 2 ((L1,r0,c2),(L1,r1,c2)); the non-wide reference
+coincides with the cap (why it hid). Net: true descended support = layerCoords(S+1).
+
+(2) THE SCHUR-PIVOT DATUM (new): in the faithful-N_p model the extra-block coefficients vanish
+at the reused divisor's SCHUR-REDUCED exceptional (e₂ = u₍₀,₁,₁₎ − u₍₀,₁,₀₎·u₍₀,₀,₁₎ on
+(2,2,2,2)) — the fold coordinate at the birth-corner slot HOLDS e₂ post-shear; in the OLD
+canonShearOf model they vanish nowhere (the F = x+yz defect, now node-explicit). Consequence:
+Form V's vanishing clause is frame-dependent — correct iff foldResid's argument u is the node's
+RUNNING CHART frame (then birth-corner-slot = 0 and Schur-pivot = 0 name the same locus);
+wrong-locus if u is the root frame. Routed: to the ELDER as the concrete instance of its
+coords-of-record Q1 (the ruling must pin the frame IN the statement); to SEAT-L4D as a
+frame-pinning amendment to the V/S drafts (verify pathMap's composition direction at the def;
+same question per chainWeight factor in Form S).
+
+(3) PerLayerDeg1From SURVIVES node-by-node (the cleared layer below support is genuinely deg-2
+on half the slots — the fromLayer threshold is load-bearing). The degree conjunct needs no
+repair; the re-bake's blast radius shrinks accordingly.
+
+Elder inputs 4/5 (remaining: scrambled-e hedge check — decision-weight dropped to b-chain-field
+scoping; L3T2 consumer impact table). pnp-transport proceeds to the hedge check, sized small.
+#41 completed. Gate unchanged. No Lean edits.
