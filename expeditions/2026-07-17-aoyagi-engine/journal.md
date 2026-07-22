@@ -14171,3 +14171,21 @@ I synthesize both + my controller taste (trajectory/scoping) → surface to the 
 moves for the carto read (don't pre-empt its audit — the operator asked for the read to INFORM the parallelization).
 State snapshot at read time: L1 baked, A-div done, Gap B (elder cap + this read), boostReady = ChainNF (outer
 shape PROVEN, crux = chainCompat_holds = pnp-transport's certificate), descent 1 sorry, L7 fan = last spine call.
+
+## 2026-07-23 ~01:40 UTC — PROCESS RESTART (operator-accidental) — recovery + placement re-check
+
+The controller process was accidentally stopped and restarted. RECOVERY AUDIT:
+- DISK: nothing lost — the expedition worktree intact on expedition/aoyagi-engine, tip = the
+  high-level-read commission journal, everything pushed. The main checkout untouched (clean, on dev).
+- PLACEMENT: the restart dropped the controller shell into the MAIN checkout (launch dir); operator
+  caught it. Re-pinned (session cwd was in fact preserved; the persistent Bash shell had drifted —
+  explicit-cd discipline continues). NO commits were made from the wrong placement (branch assertion
+  guard held: the first command was a read).
+- AGENTS: all in-flight background agents were killed mid-turn by the restart. Elder had RECEIVED the
+  high-level-read charge and was mid-grounding ("audit the territory, not my memory") — needs a resume
+  wake. Carto's read charge, pnp-transport's ε-elaboration (its Codex artifacts are on disk —
+  transport-epsilon-prompt/log), and seat-L4C's checkpoint-push (branch -L4C NOT yet on origin) were
+  all likely interrupted — resume wakes going out. Holders (seat-L3T2, arch-C, seat-L7) stay dormant
+  (their inputs haven't landed; nothing to resume).
+- BANKED: the orphaned seat artifacts (pnp-transport codex prompt/log, the L4-case1-core verify/ dir,
+  pnp-coupling's probe scripts + cofactor codex) committed — referenced evidence, now in-repo.
