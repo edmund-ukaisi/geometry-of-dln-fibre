@@ -304,4 +304,87 @@ theorem case2_preserves_stepInv'
   -- map: B-L3-case2-preserves-stepInv (support DESCENDS parent→child supportAt; Deg1SupportedSlot)
   sorry
 
+/-- **Terminal-edge transport** (statement-identical to `MonumentAtlas.terminal_edge_stepInv`; primed).
+δ=0 (the S=L rollover, `p.cleared ≥ 1`) is proved fully: conjunct 1 the pure-pullback Fin-1 unit
+`StepInv`, conjunct 2 the born-terminally generator from `hgen`. δ=1 (the case-blind N=1 corner) is a
+TRACKED-OPEN sorry — its conjunct-1 divisibility needs the `u_pivot` crux (support ⊆ ed.center), which
+`terminal_edge` lacks an `hcenter` for; flagged to the controller. -/
+theorem terminal_edge_stepInv'
+    {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
+    (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hgen : GeneratorCleared d e p) :
+    ∃ (q : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ)
+      (i₀ : Fin (d (Fin.last N) * d 0)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
+      StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
+          (fun _ : Fin 1 ↦ (1 : (Fin (flatDim d) → ℝ) → ℝ)) q (foldRegion d e (p.extend ed))
+        ∧ ContinuousOn unit (foldRegion d e (p.extend ed))
+        ∧ unit 0 ≠ 0
+        ∧ (∀ u ∈ foldRegion d e (p.extend ed),
+            (coreGen d e i₀ ∘ foldG d e (p.extend ed)) u = foldB d e (p.extend ed) u * unit u) := by
+  classical
+  obtain ⟨i₀, qg, hSIg, hgne⟩ := hgen
+  obtain ⟨hqg_cont, hqg_S3, hqg_fact⟩ := hSIg
+  have hguniv : foldRegion d e p = Set.univ := foldRegion_eq_univ e p
+  have hguniv' : foldRegion d e (p.extend ed) = Set.univ := foldRegion_eq_univ e (p.extend ed)
+  -- each residual slot is continuous (from LastLayerInv's per-slot disjunction).
+  have hresid_cont : ∀ j, Continuous (fun u ↦ foldResid d e p j u) := by
+    intro j
+    rcases hinv.2 j with ⟨⟨c, hc, hrepr⟩, _⟩ | ⟨unitj, hunit_cont, _, hunit_eq⟩
+    · have hEq : (fun u ↦ foldResid d e p j u)
+          = fun u ↦ ∑ i ∈ supportAt d p.conState.layer p.conState.cleared, c i u * u i := by
+        funext u; exact hrepr u (by rw [hguniv]; exact Set.mem_univ _)
+      rw [hEq]
+      refine continuous_finset_sum _ (fun i _ ↦ ?_)
+      exact ((continuousOn_univ.mp (by rw [← hguniv]; exact hc i)).mul (continuous_apply i))
+    · have hEq : (fun u ↦ foldResid d e p j u) = unitj := by
+        funext u; exact hunit_eq u (by rw [hguniv]; exact Set.mem_univ _)
+      rw [hEq]; exact continuousOn_univ.mp (by rw [← hguniv]; exact hunit_cont)
+  by_cases hδ : edgeδ d p
+  · -- δ=1 (case-blind N=1 corner): conjunct-1 divisibility needs the u_pivot crux (no hcenter here).
+    -- map: B-L4t-terminal-edge-stepInv δ=1 corner (support⊆ed.center crux gap; TRACKED-OPEN)
+    sorry
+  · -- δ=0 (the S=L rollover): pure pullback; born-terminally from hgen.
+    refine ⟨fun i _ u ↦ ∑ j, qg i j (stepMap d ed u) * foldResid d e p j (stepMap d ed u), i₀,
+      fun u ↦ ∑ j, qg i₀ j (stepMap d ed u) * foldResid d e p j (stepMap d ed u), ?_, ?_, ?_, ?_⟩
+    · -- conjunct 1: the Fin-1 unit-residual StepInv
+      refine ⟨fun i _ ↦ ?_, fun i ↦ ?_, fun u _ i ↦ ?_⟩
+      · -- continuity of the collapsed quotient
+        rw [hguniv']
+        refine (continuous_finset_sum _ (fun j _ ↦ ?_)).continuousOn
+        exact ((continuousOn_univ.mp (by rw [← hguniv]; exact hqg_cont i j)).comp
+          (continuous_stepMap d ed)).mul ((hresid_cont j).comp (continuous_stepMap d ed))
+      · -- S3
+        have h1 : (coreGen d e i ∘ foldG d e (p.extend ed)) 0
+            = (coreGen d e i ∘ foldG d e p) (stepMap d ed 0) := rfl
+        rw [h1, stepMap_zero]; exact hqg_S3 i
+      · -- factorization: coreGen i∘foldG(child) = (∑ q·resid)∘σ · (foldB(child)·1)
+        rw [Fin.sum_univ_one]
+        show (coreGen d e i ∘ foldG d e (p.extend ed)) u
+            = (∑ j, qg i j (stepMap d ed u) * foldResid d e p j (stepMap d ed u))
+              * (foldB d e (p.extend ed) u * 1)
+        have hLHS : (coreGen d e i ∘ foldG d e (p.extend ed)) u
+            = (coreGen d e i ∘ foldG d e p) (stepMap d ed u) := rfl
+        rw [hLHS, hqg_fact (stepMap d ed u) (by rw [hguniv]; exact Set.mem_univ _) i,
+          foldB_extend_eq, if_neg hδ, pow_zero, one_mul, mul_one, Finset.sum_mul]
+        exact Finset.sum_congr rfl (fun j _ ↦ by ring)
+    · -- ContinuousOn unit
+      rw [hguniv']
+      refine (continuous_finset_sum _ (fun j _ ↦ ?_)).continuousOn
+      exact ((continuousOn_univ.mp (by rw [← hguniv]; exact hqg_cont i₀ j)).comp
+        (continuous_stepMap d ed)).mul ((hresid_cont j).comp (continuous_stepMap d ed))
+    · -- unit 0 ≠ 0 (from hgen, δ=0 collapse at the origin)
+      show (∑ j, qg i₀ j (stepMap d ed 0) * foldResid d e p j (stepMap d ed 0)) ≠ 0
+      rw [stepMap_zero]; exact hgne
+    · -- the born-terminally equation
+      intro u _
+      show (coreGen d e i₀ ∘ foldG d e (p.extend ed)) u
+          = foldB d e (p.extend ed) u * ∑ j, qg i₀ j (stepMap d ed u) * foldResid d e p j (stepMap d ed u)
+      have hLHS : (coreGen d e i₀ ∘ foldG d e (p.extend ed)) u
+          = (coreGen d e i₀ ∘ foldG d e p) (stepMap d ed u) := rfl
+      rw [hLHS, hqg_fact (stepMap d ed u) (by rw [hguniv]; exact Set.mem_univ _) i₀,
+        foldB_extend_eq, if_neg hδ, pow_zero, one_mul, Finset.mul_sum]
+      exact Finset.sum_congr rfl (fun j _ ↦ by ring)
+
 end DLNFibre.DLN.Aoyagi
