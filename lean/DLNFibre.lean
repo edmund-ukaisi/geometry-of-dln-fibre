@@ -1630,3 +1630,7 @@ import DLNFibre.DLN.Aoyagi.MonumentAssembly
 -- CanonicalSchurStep discharge) + the ShearWithinCarveRaw emission (I/II/III proven) + the
 -- conOracle case12/case2 transition lemma. Import AFTER PivotPreservation (consumes it).
 import DLNFibre.DLN.Aoyagi.CanonShear
+-- [expedition aoyagi-engine 2026-07-23] Core block-atom cover (Q): the block-center generalization of
+-- the origin-blowup argmax cover (general-radius + the certificate's R=1 corollary) — the foundation
+-- for the L7 own-cover fold (salvage option (b), elder-ratified). Pure Core (no DLN import).
+import DLNFibre.Core.Aoyagi.BlockBlowupCover
