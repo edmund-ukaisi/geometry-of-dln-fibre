@@ -12,22 +12,24 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **POST-RESTART: 3 re-open lanes converging + the OPERATOR HIGH-LEVEL READ (2026-07-23 ~02:00).**
-  Canonical: L1 BAKED (IsRealBranch shearφ=canonShearOf value-pin, additive, payoff-isolated; census 36 =
-  11 on-cone + 25 fossil). LANES: (A-clear) L1 done ✓. (A-div) bLedger done ✓ (seat-L4B retired). 
-  (boostReady) = ChainNF STANDALONE parallel-theorem — outer shape PROVEN on -L4C @ 67293aa3c
-  (isRealBranch_chainNF clean-three; ChainCompat ⟹ boostReady clean; single sorry = chainCompat_holds,
-  3 fields base/transport/boundary); seat-L4C (fresh #2): option-B boundary reshape (α/β raw; 
-  deg1SupportedOn_boostForm in wiring) → hold for pnp-transport's ε-transport certificate (fresh #2,
-  harvesting banked partial codex; the threshold-boundary off-by-one DECIDES the def; index col-vs-row
-  defers to it). (Gap B) elder finalizing verbatim: foldResid_layerHomogeneous over LAYERCOORDS (its
-  machine-check reversed the blockCoords rec; cap = separate argument) + he_lin + non-terminal guard +
-  hhomog threading (replaces hslot; he_lin at L5 only) → arch-C renders (respawn on trigger) → seat-L3T2
-  builds (respawn; descent = 1 sorry realBranch_appendResidDescent on -L3T2 @ ed2fe681a). (L7/L3 fan) =
-  elder's LAST spine call (FALSE-as-stated; fan + engine-cover bridge; seat-L7 respawn when designed).
-  IN FLIGHT: the OPERATOR HIGH-LEVEL READ — elder (math/fidelity/owed/trajectory, convening fresh) +
-  carto (map-truth/orphans/PARALLELIZATION) in parallel; controller synthesizes → operator. HOLD new
-  parallel lanes until carto's audit lands (operator asked the read to inform parallelization).
+- phase: **THE STEP-MAP FIDELITY ROUND (2026-07-23 ~06:10) — the expedition's decisive design question
+  is with the elder.** THREE independent elaborations CONVERGED: the fold's per-edge normalization is
+  under-faithful to Aoyagi — (1) elder's cap finding (descended-layer basis change), (2) pnp-transport
+  (canonShearOf misses A_{S+1}→A_{S+1}·Q⁻¹; exact 2222 witness; theorem TRUE for the faithful clear;
+  certificate STILL FLUSHING — verify on disk before trusting), (3) pnp-fan (cover fix FIRM: pivot ∈
+  canonCenterOf fan; but VALUE leaves need per-pivot shears — L1/L3 COUPLED, orthogonality call
+  CORRECTED; certificate BANKED threads/L7/fan-design-certificate.md). ELDER RULES: single-block vs
+  COMPOSITE-hypersurface step structure (composite = engine-reconciling, shear-per-corner, plausibly
+  supplies the deeper recoord — one structure resolving all three) + sequencing {firm cover fix; salvage
+  (b) own-cover-fold w/ Core block-atom (Q); Gap B merge (staging 20a9c5e3c gate-green, SURVIVES the
+  ruling — statement-invariant, merge independent); hparent rider (3 consumer sites); appendResidDescent
+  hpos note; non-strict chainWeight/bLedger_thr_le pin}. LANES: seat-L4C = the SAFE base grind (conRoot,
+  filter-invariant) + thr_le prep; seat-LL holds (hparent); seat-L3T2 holds (survival analysis banked:
+  homogeneity survives recoord, comp_of_fixing→comp_of_linear); arch-C holds (staging banked); pnp-fan
+  DONE; pnp-transport flushing. Everything shear-touching WAITS on the ruling. Census 36 canonical
+  (+3 staged). CORRECTION OF RECORD in journal ~06:10: L1-orthogonal-to-L3 was wrong; elder's original
+  coupled instinct right. L1's bake itself survives (additive, payoff-isolated; the pinned OBJECT
+  generalizes to a per-pivot family).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
