@@ -12731,3 +12731,29 @@ verified (an earlier empty grep was my own pipe artifact, caught by falling back
 diff, not trusted). arch-C re-gate PASS signature-only. On the elder's OK: integrate →
 seat-L3T2 closes terminal_edgeδ immediately. Queued behind: the FoldRealizes ruling (L6 at ONE
 sorry) + the L8 swap mini-round.
+
+## 2026-07-22 ~15:55 UTC — Case2Wire integrated (conjA CLEAN-THREE); the STUB-SWAP IMPORT CYCLE surfaced — assembly design with arch-C
+
+**Case2Wire integrated + aggregator-wired (5bff3d79b + 09df059f8):** case2_conjA (divisibility,
+BOTH δ) force-elaborated **CLEAN-THREE — no sorryAx anywhere in the chain** (δ=0 via
+stepInv_child_delta0; δ=1 via case_child_stepInv_divisibility + seat-L4's bridge + the cover
+equality; seat-L3T2's decorrelated Codex check on the bridge banked). case2_preserves_stepInv'
+assembled with ONE tracked sorry (conjB, `-- map: B-L3-case2-conjB`, awaiting seat-L4's
+case-generic companion). Census 39 (+1 tracked, correct). The case2 leaf is now conjB-away from
+done.
+
+**STRUCTURAL FLAG (controller-caught): the "stub swap" has an IMPORT CYCLE.** Every wire/proof
+module imports MonumentAtlas (directly + via Case1Wire/Case2TransportWire), so MonumentAtlas can
+never consume the primed lemmas (`:= case2_preserves_stepInv'` is a cycle) — and textual
+inlining is equally dead (the proofs consume Case1Wire lemmas, which import MonumentAtlas). The
+"L8 pattern" solves the PROVING layering, not the SWAP. Design routed to arch-C (its
+architecture): my lean = variant (B′), a downstream `MonumentAssembly.lean` with PRIMED drivers
+(statement-identical, anchor-checkable) proved from the wire leaves + remaining sorried
+statements — sorryAx shrinks with ZERO MonumentAtlas edits; at the summit the final wiring
+consumes the primed drivers and the MonumentAtlas sorried copies retire in ONE elder-blessed
+cleanup. Alternative (B) = move the drivers downstream now (more churn mid-cascade). arch-C
+proposes; the L8 swap mini-round becomes the Assembly's first increment.
+
+Board: hpos delta-read RUNNING (elder mid-read since 12:06); seat-L3T2 lane-1 proof prepped
+against a local hpos'd copy (instant close on the bake); seat-L4 on case11 (Codex-first);
+seat-L6 at ONE sorry; FoldRealizes ruling queued.
