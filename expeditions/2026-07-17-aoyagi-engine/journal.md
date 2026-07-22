@@ -12658,3 +12658,18 @@ Round ledger for the pin: authored form → verbatim render (one benign named de
 sim-battery emittability → re-gate → delta-read → bake, with ZERO statement churn on the leaves
 and the friction (the forward reference) caught and named at the render, not discovered
 downstream. The elaborate-then-render pipeline at its intended cadence.
+
+## 2026-07-22 ~14:30 UTC — TICK: hpos micro-round GO (elder confirmed + owns the drop; fix-once = 2 stubs)
+
+Heartbeat tick (cron armed hourly :17; placement clean). Elder's hpos ruling: **confirmed — and
+it OWNED the drop** (its terminal ruling routed through widthMinUpto_pos, which requires
+positivity; the derived-lemma render dropped the hypothesis). Fix-once scope ruled with the
+degeneracy discriminator (does the conclusion degenerate at d k = 0, where widthMinUpto ≡ 0?):
+- ADD hpos: **terminal_edgeδ** (confirmed; the counterexample) + **multiAffine** (inferred:
+  supportAt = ∅ forces resid ≡ 0 via Deg1SupportedSlot over ∅, not satisfied on the all-rollover
+  branch; caveat carried — drop it if the frontier proof lands without).
+- NO hpos (weakest-that-suffices): centerPin, descendView (pure extractions), shearWithinCarve
+  (projection), cover (∅ ⊆ center vacuous at the degeneracy — already proved hpos-free).
+arch-C CHARGED with the micro-round (render adds the two parity-form hypotheses on a refreshed
+base vs d309bca48; signature-only delta; re-gate; staging hash; elder delta-reads the signature
+change). Memo phase line refreshed to PROOF CASCADE, BOTH BAKES IN.
