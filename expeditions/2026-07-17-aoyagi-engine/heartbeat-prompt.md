@@ -12,20 +12,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE BAKE ROUND (2026-07-22, ~02:50).** The elder RULED (own pp.18-21 page-read): DESCEND
-  STANDS; T=un-cleared FAILS (−γβ deg-2, pivot E-block deg-0 on un-cleared); two-named-function form
-  blessed — T := supportAt(S,J) (S if J=0; S+1 if J≥1∧S<L; born-unit if J≥1∧S=L), D⁺ := complement,
-  C′ := supportAt PINNED, canonCenter (ledger) untouched; NO ±1 offset; render must state 0-indexed
-  convention explicitly. arch-C EXECUTING: relay to render seat → finalize → full gate → BAKE (cone
-  8→10 named); on green: controller integrates, wakes seat-L4 (L4+LastLayerInv, crux verbatim) +
-  seat-L3T (L3 A-form + terminal_edge conjunct-2 via hcleared). Then L5 → L6+L8 → L7 → final wiring
-  swap → summit clean-three → cite-deletion ceremony WITH operator. E-LANE prove-phase GO: seat-E
-  proves 1,2,4 (banked order d→sorted-box→one-swap→transport) + residueA_le_ell hpos check + Q4
-  collapse (admTight→Adm, cert to identity-thm docstring); Q3 cluster migration queued post-monument.
-  ELDER ROUTING DEFECT (standing): its SendMessage "team-lead" hits a DEAD inbox (old team
-  session-c0fbdfc4) — ALWAYS POLL ITS TRANSCRIPT (subagents/agent-aelder-standing-3fd49e3017d30ba3.jsonl)
-  after each charge; it also ends turns with full plain-text rulings. Live census 9 = 7 atlas +
-  Case2Delta0 + summit; ~25 fossils await close prune.
+- phase: **THE AMENDMENT RE-BAKE (2026-07-22 ~04:45).** The five-face family RULED (elder 04:05
+  consolidated, recovered by transcript-poll): supportAt VALUE → blockCoords (widthMinUpto-capped
+  residual block; descend unchanged); + hcenter (ed.center ⊆ carve-layer block — NEVER
+  supportAt(parent), false at δ=0); + hshear_schur (Δ=δ−γβ pin); + hcleared → generator-side datum
+  (lastLayer_clear EMITS [the load-bearing induction gate — STOP if emission forces the q-pin],
+  terminal_edge consumes). arch-C EXECUTING the re-bake (render → EXPANDED gate [free-field battery
+  sampling: free pivot/center/shear/∃q + width-DROP cores] → bake to -rung-c → hash). Proof seats
+  HOLD for corrected signatures; resume shapes staged (L3T: terminal conj-1 + case2 divisibility;
+  L4: wall + lastLayer emission). L5 WATCH: convene nav-13 the moment L5 emission balloons, not
+  only on success (elder flag). E-LANE unaffected (no supportAt ripple — elder-confirmed); taste
+  line standing: bindingSet never plain Adm; frontier = 2 core sorries (Ecore: S4+assembly left;
+  Eswap: 8-step plan, milestone = minimiser-endpoint). Progress register: rendered-honest-skeleton
+  milestone, NOTHING discharged at §1 (elder's sharpened sentence in the journal). ELDER channel:
+  plain final text + transcript-poll after EVERY charge (dead SendMessage inbox).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.

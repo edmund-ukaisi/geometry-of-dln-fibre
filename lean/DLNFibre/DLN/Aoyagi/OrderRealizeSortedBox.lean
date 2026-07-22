@@ -1,0 +1,769 @@
+import DLNFibre.Core.Aoyagi.OrderChain
+import DLNFibre.DLN.RLCT.Foundations.AdmTight
+import DLNFibre.DLN.Aoyagi.ClosedForm
+import DLNFibre.DLN.RLCT.Validate.MinAdmCCodim
+import DLNFibre.Core.CThetaValue
+
+/-!
+# `DLN.Aoyagi.OrderRealizeSortedBox` — P6.2 Tier-3 (3a) SORTED-BOX CORE
+
+The last factor of the realization order-iso: on **sorted** widths `D` (monotone, positive), the
+poset of `Mval`-minimising admissible profiles is order-isomorphic to the box-partition lattice
+`BoxPart ℓ a`, where `ℓ = qipM D` and `a = sbResidueA D` (Aoyagi's residue on the active prefix).
+
+**Route (reuses the banked QIP water-filling — the pivotal fact is NOT re-derived).**
+For monotone `D` the `MinAdmCCodim.eOfT/tOfE` maps give a value-preserving bijection
+`Adm D ↔ qipFeasible D` with `Mval D T = Gqip D (eOfT D T)`; a *binding* profile's increment vector
+`eOfT D T` is therefore a `Gqip`-minimiser, and `CThetaValue.sumSq_eq_abs_characterization` pins its
+`qipT`-coordinates to `{0, sgn δ}` — the "binding steps are `{C−1, C}`" pivotal fact. The profile
+order transports to the box order via the counting/position duality; the iso is assembled with
+`OrderIso.ofHomInv` (monotone both ways + mutual inverse ⟹ order-iso, so the order-reflection
+"hazard" is discharged for free).
+
+**Upstream of `OrderRealize`.** This module imports only Core/Foundations/ClosedForm + the QIP
+machinery (never `OrderRealize`), so `OrderRealize` can `import` it and discharge its
+`bindingSet_sorted_orderIso_boxPart` sorry. The iso is stated over a general monotone-positive `D`
+via the primitives (`Adm`/`Mval`/`BoxPart`/`qipM`); seat-E instantiates at `D = sortedWidths M`,
+where `bindingSet (sortedWidths M)`, `ell M 0`, `residueA M 0` are defeq to the primitive forms.
+-/
+
+namespace DLNFibre.DLN.Aoyagi.SortedBox
+
+open Finset
+open DLNFibre.DLN.RLCT DLNFibre.Core DLNFibre.Core.Aoyagi.OrderChain
+
+variable {L : ℕ}
+
+/-! ## The active prefix ceiling `C` and residue `a` (matching `ClosedForm.ceilingM`/`residueA` at
+`D = sortedWidths M`, `r = 0`) -/
+
+/-- Aoyagi's ceiling `C = ⌈S/ℓ⌉ = (S + ℓ − 1) / ℓ` on the active prefix (`S = qipS D`,
+`ℓ = qipM D`). Defeq to `ClosedForm.ceilingM M 0` at `D = sortedWidths M`. -/
+noncomputable def sbCeil (D : Fin (L + 1) → ℕ) : ℤ :=
+  (qipS D + (qipM D : ℤ) - 1) / (qipM D : ℤ)
+
+/-- Aoyagi's residue `a = S − (C − 1)·ℓ` on the active prefix. Defeq to `ClosedForm.residueA M 0` at
+`D = sortedWidths M`. -/
+noncomputable def sbResidueA (D : Fin (L + 1) → ℕ) : ℤ :=
+  qipS D - (sbCeil D - 1) * (qipM D : ℤ)
+
+/-- **Sign bridge (ceiling).** `C = qipRound + [δ > 0]`: the active-prefix ceiling is the QIP
+rounding centre, bumped by one exactly when the residue is strictly positive (`⌈S/ℓ⌉` vs the nearest
+integer `⌊S/ℓ + ½⌋`). Confines the `δ`-sign case-split; everything downstream is sign-free. -/
+theorem sbCeil_eq (D : Fin (L + 1) → ℕ) (hN : 1 ≤ L) :
+    sbCeil D = qipRound D + (if 0 < qipDelta D then 1 else 0) := by
+  have hℓ1 : 1 ≤ qipM D := qipM_ge_one D hN
+  rw [sbCeil]
+  set ℓ : ℤ := (qipM D : ℤ) with hℓdef
+  have hℓpos : 0 < ℓ := by rw [hℓdef]; exact_mod_cast hℓ1
+  set q := qipRound D with hq
+  set δ := qipDelta D with hδ
+  have hSeq : qipS D = ℓ * q + δ := by rw [hδ, qipDelta, ← hℓdef, ← hq]; ring
+  have hb := two_qipDelta_bounds D hN
+  rw [← hℓdef, ← hδ] at hb
+  by_cases hpos : 0 < δ
+  · rw [if_pos hpos]
+    exact (Int.ediv_emod_unique hℓpos (r := δ - 1) (q := q + 1)).mpr
+      ⟨by rw [hSeq]; ring, by omega, by omega⟩ |>.1
+  · rw [if_neg hpos, add_zero]
+    exact (Int.ediv_emod_unique hℓpos (r := δ + ℓ - 1) (q := q)).mpr
+      ⟨by rw [hSeq]; ring, by omega, by omega⟩ |>.1
+
+/-- **Sign bridge (residue).** `a = δ + [δ ≤ 0]·ℓ`: `a = δ` when `δ > 0`, `a = δ + ℓ = ℓ − |δ|` when
+`δ ≤ 0`. Hence `1 ≤ a ≤ ℓ`. Follows from `sbCeil_eq` by algebra. -/
+theorem sbResidueA_eq (D : Fin (L + 1) → ℕ) (hN : 1 ≤ L) :
+    sbResidueA D = qipDelta D + (if 0 < qipDelta D then 0 else (qipM D : ℤ)) := by
+  rw [sbResidueA, sbCeil_eq D hN]
+  by_cases hpos : 0 < qipDelta D
+  · rw [if_pos hpos, if_pos hpos, qipDelta]; ring
+  · rw [if_neg hpos, if_neg hpos, qipDelta]; ring
+
+/-! ## Bridge: `eOfT` is the profile's descent-increment vector, and its `qipT` reads the step -/
+
+/-- A binding profile's increment vector `eOfT D T` is feasible and a `Gqip`-minimiser
+(`Gqip = cValue`): `Mval D T = Gqip D (eOfT D T)` (`Mval_eq_Gqip`) meets `minAdm = qipMin = cValue`.
+-/
+theorem binding_minimiser (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) :
+    eOfT D T ∈ qipFeasible D ∧ Gqip D (eOfT D T) = cValue D := by
+  refine ⟨eOfT_mem_qipFeasible D hL hT, ?_⟩
+  calc Gqip D (eOfT D T) = Mval D T := (Mval_eq_Gqip D hmono hT).symm
+    _ = (Adm D).inf' (Adm_nonempty D) (Mval D) := hbind
+    _ = (qipFeasible D).inf' hne (Gqip D) :=
+        inf'_Adm_Mval_eq_inf'_qipFeasible_Gqip D hmono hL hne
+    _ = qipMin D hne := rfl
+    _ = cValue D := qipMin_eq_cValue D hmono hne
+
+/-- A binding profile's increments vanish past the active prefix: `eOfT D T i = 0` for `i ≥ ℓ`
+(the minimiser drops to the `m`-face). -/
+theorem binding_support (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) :
+    ∀ i : Fin L, qipM D ≤ (i : ℕ) → eOfT D T i = 0 := by
+  obtain ⟨hfeas, heq⟩ := binding_minimiser D hmono hL hne hT hbind
+  exact qipMinimiser_support D hmono hfeas heq
+
+/-- The **binding-minimiser structure** (the pivotal fact — Aoyagi Lemma 4–5, via the banked QIP
+water-filling). For monotone `D` (`1 ≤ L`) and a binding profile `T` (admissible, `Mval`-minimal),
+the increment vector `e = eOfT D T` has `qipT`-coordinates over the active prefix `qipLow D` that
+are `{0, sgn δ}`-valued with exactly `|δ|` nonzero — i.e. the active steps take exactly two values. -/
+theorem binding_qipT_pair (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) :
+    (∀ i ∈ qipLow D,
+        qipT D (fun j ↦ (eOfT D T j : ℤ)) i = 0 ∨
+        qipT D (fun j ↦ (eOfT D T j : ℤ)) i = (qipDelta D).sign) ∧
+      ((qipLow D).filter (fun i ↦ qipT D (fun j ↦ (eOfT D T j : ℤ)) i ≠ 0)).card
+        = (qipDelta D).natAbs := by
+  obtain ⟨hfeas, heq⟩ := binding_minimiser D hmono hL hne hT hbind
+  set e := eOfT D T with he
+  have hdrop := qipMinimiser_support D hmono hfeas heq
+  have hfeasE : ∑ i, e i = D 0 := by
+    simpa [qipFeasible, Finset.mem_finAntidiagonal] using hfeas
+  have hsumLow : (∑ i ∈ qipLow D, (e i : ℤ)) = (D 0 : ℤ) := by
+    have htail : (∑ i ∈ (qipLow D)ᶜ, (e i : ℤ)) = 0 := Finset.sum_eq_zero (fun i hi ↦ by
+      simp only [qipLow, Finset.mem_compl, Finset.mem_filter, Finset.mem_univ, true_and,
+        not_lt] at hi
+      simp only [hdrop i hi, Nat.cast_zero])
+    have huniv : (∑ i, (e i : ℤ)) = (D 0 : ℤ) := by rw [← hfeasE]; push_cast; ring
+    rw [← Finset.sum_add_sum_compl (qipLow D) (fun i ↦ (e i : ℤ)), htail, add_zero] at huniv
+    exact huniv
+  have hsumT := sum_qipLow_qipT D (fun j ↦ (e j : ℤ)) hsumLow
+  have hsqT := qipMinimiser_sumSq D hmono hL hfeas heq
+  exact sumSq_eq_abs_characterization (qipLow D) (qipT D (fun j ↦ (e j : ℤ)))
+    (qipDelta D) hsumT hsqT
+
+/-! ## The C-step subset and the profile-counting formula -/
+
+/-- The **C-step subset** `A(T) ⊆ Fin L`: active-prefix indices `i < ℓ` whose step
+`eOfT D T i + D_{i+1}` equals the ceiling `C`. On a binding profile `|A(T)| = a` (`stepA_card`). -/
+noncomputable def stepA (D : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Finset (Fin L) :=
+  (qipLow D).filter (fun i ↦ (eOfT D T i : ℤ) + (D i.succ : ℤ) = sbCeil D)
+
+/-- The minimiser-independent **base increment** `w_j = (C − 1) − D_{j+1}` on the active prefix, `0`
+off it. A binding profile's increment is `eOfT D T j = w_j + [j ∈ A(T)]` (`binding_incr_eq`). -/
+noncomputable def wBase (D : Fin (L + 1) → ℕ) (j : Fin L) : ℤ :=
+  if (j : ℕ) < qipM D then sbCeil D - 1 - (D j.succ : ℤ) else 0
+
+/-- **The active step lies in `{C−1, C}`** on a binding profile (Aoyagi's two-value staircase). -/
+theorem binding_sStep_bounds (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D))
+    {i : Fin L} (hi : i ∈ qipLow D) :
+    sbCeil D - 1 ≤ (eOfT D T i : ℤ) + (D i.succ : ℤ) ∧
+      (eOfT D T i : ℤ) + (D i.succ : ℤ) ≤ sbCeil D := by
+  have hpair := (binding_qipT_pair D hmono hL hne hT hbind).1 i hi
+  have hCe := sbCeil_eq D hL
+  set s : ℤ := (eOfT D T i : ℤ) + (D i.succ : ℤ) with hs
+  have hqt : qipT D (fun j ↦ (eOfT D T j : ℤ)) i = s - qipRound D := by rw [hs]; rfl
+  rw [hqt] at hpair
+  by_cases hd : 0 < qipDelta D
+  · rw [if_pos hd] at hCe
+    rw [Int.sign_eq_one_of_pos hd] at hpair
+    rcases hpair with h | h <;> omega
+  · rw [if_neg hd] at hCe
+    have hsgn : (qipDelta D).sign = -1 ∨ (qipDelta D).sign = 0 := by
+      rcases lt_trichotomy (qipDelta D) 0 with h1 | h1 | h1
+      · exact Or.inl (Int.sign_eq_neg_one_of_neg h1)
+      · exact Or.inr (by rw [h1]; rfl)
+      · exact absurd h1 hd
+    rcases hpair with h | h
+    · omega
+    · rcases hsgn with hs' | hs' <;> rw [hs'] at h <;> omega
+
+/-- **Partial telescoping.** The prefix sum of the descent increments `eOfT D T` over `Iic c`
+recovers the profile: `∑_{j ≤ c} eOfT D T j = D₀ − T_c` (the reverse round-trip of `tOfE`, localised
+to a prefix). Over `ℤ` (honest differences on `Adm`, via `eOfT_cast`). -/
+theorem prefix_telescope (D : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm D) :
+    ∀ (n : ℕ) (hn : n < L),
+      (∑ j ∈ Finset.Iic (⟨n, hn⟩ : Fin L), (eOfT D T j : ℤ)) = (D 0 : ℤ) - (T ⟨n, hn⟩ : ℤ) := by
+  intro n
+  induction n with
+  | zero =>
+    intro hn
+    have hsing : Finset.Iic (⟨0, hn⟩ : Fin L) = {⟨0, hn⟩} := by
+      have hv : (⟨0, hn⟩ : Fin L).val = 0 := rfl
+      ext x
+      simp only [Finset.mem_Iic, Finset.mem_singleton, Fin.le_def, Fin.ext_iff]
+      omega
+    rw [hsing, Finset.sum_singleton, eOfT_cast D hT]
+    have h1 : expSurvivor D T (⟨0, hn⟩ : Fin L).castSucc = D 0 := by
+      rw [show (⟨0, hn⟩ : Fin L).castSucc = (0 : Fin (L + 1)) from Fin.ext (by simp)]
+      exact expSurvivor_zero D T
+    have h2 : expSurvivor D T (⟨0, hn⟩ : Fin L).succ = T ⟨0, hn⟩ := expSurvivor_succ D T _
+    rw [h1, h2]
+  | succ m ih =>
+    intro hn
+    have hm : m < L := by omega
+    have hv1 : (⟨m + 1, hn⟩ : Fin L).val = m + 1 := rfl
+    have hv2 : (⟨m, hm⟩ : Fin L).val = m := rfl
+    have hins : Finset.Iic (⟨m + 1, hn⟩ : Fin L)
+        = insert (⟨m + 1, hn⟩ : Fin L) (Finset.Iic (⟨m, hm⟩ : Fin L)) := by
+      ext x
+      simp only [Finset.mem_Iic, Finset.mem_insert, Fin.le_def, Fin.ext_iff]
+      omega
+    have hnotmem : (⟨m + 1, hn⟩ : Fin L) ∉ Finset.Iic (⟨m, hm⟩ : Fin L) := by
+      simp only [Finset.mem_Iic, Fin.le_def]; omega
+    rw [hins, Finset.sum_insert hnotmem, ih hm, eOfT_cast D hT]
+    have h1 : expSurvivor D T (⟨m + 1, hn⟩ : Fin L).castSucc = T ⟨m, hm⟩ := by
+      rw [show (⟨m + 1, hn⟩ : Fin L).castSucc = (⟨m, hm⟩ : Fin L).succ from Fin.ext (by simp)]
+      exact expSurvivor_succ D T _
+    have h2 : expSurvivor D T (⟨m + 1, hn⟩ : Fin L).succ = T ⟨m + 1, hn⟩ := expSurvivor_succ D T _
+    rw [h1, h2]; ring
+
+/-- Prefix-sum form for a general `c : Fin L`. -/
+theorem prefix_telescope' (D : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm D) (c : Fin L) :
+    (∑ j ∈ Finset.Iic c, (eOfT D T j : ℤ)) = (D 0 : ℤ) - (T c : ℤ) := by
+  have := prefix_telescope D hT c.val c.isLt
+  simpa using this
+
+/-- **Increment decomposition.** On a binding profile, every descent increment splits into the
+minimiser-independent base plus the C-step indicator: `eOfT D T j = wBase D j + [j ∈ A(T)]`. -/
+theorem binding_incr_eq (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) (j : Fin L) :
+    (eOfT D T j : ℤ) = wBase D j + (if j ∈ stepA D T then 1 else 0) := by
+  by_cases hjlow : (j : ℕ) < qipM D
+  · have hjL : j ∈ qipLow D := by simp [qipLow, Finset.mem_filter, hjlow]
+    have hb := binding_sStep_bounds D hmono hL hne hT hbind hjL
+    have hw : wBase D j = sbCeil D - 1 - (D j.succ : ℤ) := by simp only [wBase, if_pos hjlow]
+    by_cases hjA : j ∈ stepA D T
+    · have hC : (eOfT D T j : ℤ) + (D j.succ : ℤ) = sbCeil D := (Finset.mem_filter.mp hjA).2
+      rw [if_pos hjA, hw]; omega
+    · have hCne : (eOfT D T j : ℤ) + (D j.succ : ℤ) ≠ sbCeil D := fun hC ↦
+        hjA (Finset.mem_filter.mpr ⟨hjL, hC⟩)
+      rw [if_neg hjA, hw]; omega
+  · have hw : wBase D j = 0 := by simp only [wBase, if_neg hjlow]
+    have hsupp : eOfT D T j = 0 := binding_support D hmono hL hne hT hbind j (by omega)
+    have hjA : j ∉ stepA D T := fun h ↦ hjlow (by
+      have := (Finset.mem_filter.mp h).1
+      simpa only [qipLow, Finset.mem_filter, Finset.mem_univ, true_and] using this)
+    rw [if_neg hjA, hw, hsupp]; simp
+
+/-- **The profile-counting formula.** On a binding profile, the profile value is the corner `D₀`
+minus the fixed base prefix minus the number of C-steps at or before `c`:
+`T_c = D₀ − ∑_{j ≤ c} wBase j − |A(T) ∩ Iic c|`. Since the base is minimiser-independent, the
+profile order becomes reverse count-domination (`binding_le_iff`). -/
+theorem binding_profile_formula (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) (c : Fin L) :
+    (T c : ℤ) = (D 0 : ℤ) - (∑ j ∈ Finset.Iic c, wBase D j)
+      - ((stepA D T ∩ Finset.Iic c).card : ℤ) := by
+  have htel := prefix_telescope' D hT c
+  have hcount : (∑ j ∈ Finset.Iic c, (if j ∈ stepA D T then (1 : ℤ) else 0))
+      = ((stepA D T ∩ Finset.Iic c).card : ℤ) := by
+    rw [Finset.sum_boole, Finset.filter_mem_eq_inter, Finset.inter_comm]
+  have hsplit : (∑ j ∈ Finset.Iic c, (eOfT D T j : ℤ))
+      = (∑ j ∈ Finset.Iic c, wBase D j) + ((stepA D T ∩ Finset.Iic c).card : ℤ) := by
+    rw [Finset.sum_congr rfl (fun j _ ↦ binding_incr_eq D hmono hL hne hT hbind j),
+      Finset.sum_add_distrib, hcount]
+  linarith [htel, hsplit]
+
+/-- **The C-step count is the residue.** `|A(T)| = a` on a binding profile: the active steps split
+into `a` copies of `C` and `ℓ − a` copies of `C − 1` (via the `{0, sgn δ}` count). -/
+theorem stepA_card (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) :
+    (stepA D T).card = (sbResidueA D).toNat := by
+  obtain ⟨hchar, hcount⟩ := binding_qipT_pair D hmono hL hne hT hbind
+  have hCe := sbCeil_eq D hL
+  have hres := sbResidueA_eq D hL
+  have habs : |qipDelta D| ≤ (qipM D : ℤ) := abs_qipDelta_le_m D hL
+  have hℓcard : (qipLow D).card = qipM D := qipLow_card D
+  -- `stepA = {i ∈ qipLow : qipT i = [δ>0]}`.
+  have hstepA : stepA D T
+      = (qipLow D).filter (fun i ↦ qipT D (fun j ↦ (eOfT D T j : ℤ)) i
+          = (if 0 < qipDelta D then (1 : ℤ) else 0)) := by
+    apply Finset.filter_congr
+    intro i _
+    have hqt : qipT D (fun j ↦ (eOfT D T j : ℤ)) i
+        = ((eOfT D T i : ℤ) + (D i.succ : ℤ)) - qipRound D := rfl
+    rw [hqt, hCe]
+    set k : ℤ := (if 0 < qipDelta D then (1 : ℤ) else 0)
+    constructor <;> intro h <;> omega
+  rw [hstepA]
+  by_cases hd : 0 < qipDelta D
+  · -- `δ > 0`: `{qipT = 1} = {qipT ≠ 0}`, card `= |δ| = a`.
+    simp only [if_pos hd]
+    have hnz : (qipLow D).filter (fun i ↦ qipT D (fun j ↦ (eOfT D T j : ℤ)) i = (1 : ℤ))
+        = (qipLow D).filter (fun i ↦ qipT D (fun j ↦ (eOfT D T j : ℤ)) i ≠ 0) := by
+      apply Finset.filter_congr
+      intro i hi
+      rcases hchar i hi with h | h
+      · omega
+      · rw [Int.sign_eq_one_of_pos hd] at h; omega
+    rw [hnz, hcount]
+    have hsr : sbResidueA D = qipDelta D := by rw [hres, if_pos hd]; ring
+    rw [hsr]; omega
+  · -- `δ ≤ 0`: `{qipT = 0}`, card `= ℓ − |δ| = a`.
+    simp only [if_neg hd]
+    have hpart := Finset.card_filter_add_card_filter_not (s := qipLow D)
+      (p := fun i ↦ qipT D (fun j ↦ (eOfT D T j : ℤ)) i = 0)
+    have heq2 : (qipLow D).filter (fun i ↦ ¬ (qipT D (fun j ↦ (eOfT D T j : ℤ)) i = 0))
+        = (qipLow D).filter (fun i ↦ qipT D (fun j ↦ (eOfT D T j : ℤ)) i ≠ 0) := rfl
+    rw [heq2, hcount, hℓcard] at hpart
+    have hsr : sbResidueA D = qipDelta D + (qipM D : ℤ) := by rw [hres, if_neg hd]
+    omega
+
+/-- **Profile order = reverse count-domination.** On binding profiles `T, T'`, the pointwise order
+`T ≤ T'` holds iff at every prefix `T'` has no more C-steps than `T`
+(`|A(T') ∩ Iic c| ≤ |A(T) ∩ Iic c|`). The base prefix cancels in `binding_profile_formula`. -/
+theorem binding_le_iff (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T T' : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D))
+    (hT' : T' ∈ Adm D) (hbind' : Mval D T' = (Adm D).inf' (Adm_nonempty D) (Mval D)) :
+    (∀ c, T c ≤ T' c) ↔
+      ∀ c, (stepA D T' ∩ Finset.Iic c).card ≤ (stepA D T ∩ Finset.Iic c).card := by
+  constructor
+  · intro h c
+    have hf := binding_profile_formula D hmono hL hne hT hbind c
+    have hf' := binding_profile_formula D hmono hL hne hT' hbind' c
+    have hle : (T c : ℤ) ≤ (T' c : ℤ) := by exact_mod_cast h c
+    have : ((stepA D T' ∩ Finset.Iic c).card : ℤ) ≤ ((stepA D T ∩ Finset.Iic c).card : ℤ) := by
+      linarith
+    exact_mod_cast this
+  · intro h c
+    have hf := binding_profile_formula D hmono hL hne hT hbind c
+    have hf' := binding_profile_formula D hmono hL hne hT' hbind' c
+    have hc : ((stepA D T' ∩ Finset.Iic c).card : ℤ) ≤ ((stepA D T ∩ Finset.Iic c).card : ℤ) := by
+      exact_mod_cast h c
+    have : (T c : ℤ) ≤ (T' c : ℤ) := by linarith
+    exact_mod_cast this
+
+/-! ## The a-subset ↔ box element (Core-pure combinatorics via `orderEmbOfFin`) -/
+
+/-- Positions dominate their index: `k ≤ (orderEmbOfFin A h ⟨k,_⟩).val`. -/
+theorem pos_ge {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) :
+    ∀ (k : ℕ) (hk : k < a), k ≤ (A.orderEmbOfFin h ⟨k, hk⟩ : Fin L).val := by
+  intro k
+  induction k with
+  | zero => intro _; exact Nat.zero_le _
+  | succ m ih =>
+    intro hk
+    have hmk : m < a := by omega
+    have hstep : (A.orderEmbOfFin h ⟨m, hmk⟩ : Fin L).val
+        < (A.orderEmbOfFin h ⟨m + 1, hk⟩ : Fin L).val :=
+      (A.orderEmbOfFin h).strictMono (Fin.mk_lt_mk.mpr (Nat.lt_succ_self m))
+    have := ih hmk; omega
+
+/-- Positions spread at least as much as their indices: `(emb s).val ≥ (emb r).val + (s − r)`. -/
+theorem emb_spread {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) :
+    ∀ (s r : ℕ) (hr : r < a) (hs : s < a), r ≤ s →
+      (A.orderEmbOfFin h ⟨r, hr⟩ : Fin L).val + (s - r)
+        ≤ (A.orderEmbOfFin h ⟨s, hs⟩ : Fin L).val := by
+  intro s
+  induction s with
+  | zero =>
+    intro r hr hs hrs
+    have hr0 : r = 0 := by omega
+    subst hr0; simp only [Nat.sub_self, add_zero]; exact le_refl _
+  | succ m ih =>
+    intro r hr hs hrs
+    rcases Nat.eq_or_lt_of_le hrs with heq | hlt
+    · subst heq; simp only [Nat.sub_self, add_zero]; exact le_refl _
+    · have hrm : r ≤ m := by omega
+      have hmk : m < a := by omega
+      have hstep : (A.orderEmbOfFin h ⟨m, hmk⟩ : Fin L).val
+          < (A.orderEmbOfFin h ⟨m + 1, hs⟩ : Fin L).val :=
+        (A.orderEmbOfFin h).strictMono (Fin.mk_lt_mk.mpr (Nat.lt_succ_self m))
+      have := ih r hr hmk hrm; omega
+
+/-- Gap monotonicity: `(emb r).val − r ≤ (emb s).val − s` for `r ≤ s`. -/
+theorem gap_mono {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) {r s : Fin a} (hrs : r ≤ s) :
+    (A.orderEmbOfFin h r : Fin L).val - (r : ℕ) ≤ (A.orderEmbOfFin h s : Fin L).val - (s : ℕ) := by
+  have hle : (r : ℕ) ≤ (s : ℕ) := hrs
+  have hspread := emb_spread h s.val r.val r.isLt s.isLt hle
+  have hpr := pos_ge h r.val r.isLt
+  have hps := pos_ge h s.val s.isLt
+  simp only [Fin.eta] at hspread hpr hps
+  omega
+
+/-- The **box element** of a size-`a` subset: reversed gaps `p_{a-1-i} − (a-1-i)`. Lands in
+`BoxPart ℓ a` when the subset sits inside the active prefix (`< ℓ`). -/
+noncomputable def boxOf {a : ℕ} (A : Finset (Fin L)) (h : A.card = a) : Fin a → ℕ :=
+  fun i ↦ (A.orderEmbOfFin h (Fin.rev i) : Fin L).val - (Fin.rev i : Fin a).val
+
+/-- `boxOf` lands in `BoxPart ℓ a`: antitone and bounded by `ℓ − a`. -/
+theorem boxOf_mem {ℓ a : ℕ} {A : Finset (Fin L)} (h : A.card = a)
+    (hsub : ∀ x ∈ A, (x : ℕ) < ℓ) : boxOf A h ∈ BoxPart ℓ a := by
+  refine ⟨fun i ↦ ?_, fun i j hij ↦ ?_⟩
+  · -- bounded: `gap (rev i) ≤ gap ⟨a-1⟩ ≤ (ℓ-1) - (a-1) = ℓ - a`.
+    rcases Nat.eq_zero_or_pos a with ha0 | hapos
+    · exact absurd i.isLt (by omega)
+    · set last : Fin a := ⟨a - 1, by omega⟩ with hlast
+      have hle : (Fin.rev i : Fin a) ≤ last := by
+        rw [Fin.le_def, hlast]
+        have h1 := (Fin.rev i).isLt
+        have h2 : ((⟨a - 1, by omega⟩ : Fin a) : ℕ) = a - 1 := rfl
+        omega
+      have hg := gap_mono h hle
+      have hmem : A.orderEmbOfFin h last ∈ A := A.orderEmbOfFin_mem h _
+      have hlt : (A.orderEmbOfFin h last : Fin L).val < ℓ := hsub _ hmem
+      have hpge : (last : ℕ) ≤ (A.orderEmbOfFin h last : Fin L).val := by
+        have := pos_ge h last.val last.isLt; simpa [Fin.eta] using this
+      have hlv : (last : ℕ) = a - 1 := by rw [hlast]
+      simp only [boxOf]
+      omega
+  · -- antitone: `i ≤ j → rev j ≤ rev i → gap (rev j) ≤ gap (rev i)`.
+    simp only [boxOf]
+    have hrev : (Fin.rev j : Fin a) ≤ Fin.rev i := by
+      rw [Fin.le_def, Fin.val_rev, Fin.val_rev]
+      have : (i : ℕ) ≤ (j : ℕ) := hij
+      omega
+    exact gap_mono h hrev
+
+/-- Count of subset elements `≤ c` equals the number of positions below `c`. -/
+theorem countLE_eq {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) (c : Fin L) :
+    (A ∩ Finset.Iic c).card
+      = (Finset.univ.filter (fun r : Fin a ↦ A.orderEmbOfFin h r ≤ c)).card := by
+  rw [← Finset.card_map (A.orderEmbOfFin h).toEmbedding]
+  congr 1
+  ext x
+  simp only [Finset.mem_inter, Finset.mem_Iic, Finset.mem_map, Finset.mem_filter,
+    Finset.mem_univ, true_and, Function.Embedding.coeFn_mk, RelEmbedding.coe_toEmbedding]
+  constructor
+  · rintro ⟨hxA, hxc⟩
+    have hxim : x ∈ Finset.image (A.orderEmbOfFin h) Finset.univ := by
+      rw [Finset.image_orderEmbOfFin_univ A h]; exact hxA
+    obtain ⟨r, -, hr⟩ := Finset.mem_image.mp hxim
+    exact ⟨r, by rw [hr]; exact hxc, hr⟩
+  · rintro ⟨r, hrc, hr⟩
+    exact ⟨by rw [← hr]; exact A.orderEmbOfFin_mem h r, by rw [← hr]; exact hrc⟩
+
+/-- **Position↔count duality.** `A`'s positions are pointwise `≤` `B`'s iff at every threshold `B`
+has no more elements than `A`. The load-bearing combinatorial lemma of the sorted-box iso. -/
+theorem posLE_iff_countDom {a : ℕ} {A B : Finset (Fin L)} (hA : A.card = a) (hB : B.card = a) :
+    (∀ r : Fin a, A.orderEmbOfFin hA r ≤ B.orderEmbOfFin hB r)
+      ↔ (∀ c : Fin L, (B ∩ Finset.Iic c).card ≤ (A ∩ Finset.Iic c).card) := by
+  constructor
+  · intro hpos c
+    rw [countLE_eq hA c, countLE_eq hB c]
+    apply Finset.card_le_card
+    intro r hr
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hr ⊢
+    exact le_trans (hpos r) hr
+  · intro hcount r
+    by_contra hlt
+    rw [not_le] at hlt
+    set c := B.orderEmbOfFin hB r with hc
+    have hBcount : r.val + 1 ≤ (B ∩ Finset.Iic c).card := by
+      rw [countLE_eq hB c]
+      have hsub : Finset.Iic r ⊆ Finset.univ.filter (fun s : Fin a ↦ B.orderEmbOfFin hB s ≤ c) := by
+        intro s hs
+        rw [Finset.mem_Iic] at hs
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and, hc]
+        exact (B.orderEmbOfFin hB).monotone hs
+      calc r.val + 1 = (Finset.Iic r).card := (Fin.card_Iic r).symm
+        _ ≤ _ := Finset.card_le_card hsub
+    have hAcount : (A ∩ Finset.Iic c).card ≤ r.val := by
+      rw [countLE_eq hA c]
+      have hsub : Finset.univ.filter (fun s : Fin a ↦ A.orderEmbOfFin hA s ≤ c)
+          ⊆ Finset.Iio r := by
+        intro s hs
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hs
+        rw [Finset.mem_Iio]
+        have hlt2 : A.orderEmbOfFin hA s < A.orderEmbOfFin hA r :=
+          lt_of_le_of_lt hs (by rw [hc] at hlt; exact hlt)
+        exact (A.orderEmbOfFin hA).lt_iff_lt.mp hlt2
+      calc (Finset.univ.filter (fun s : Fin a ↦ A.orderEmbOfFin hA s ≤ c)).card
+          ≤ (Finset.Iio r).card := Finset.card_le_card hsub
+        _ = r.val := Fin.card_Iio r
+    have := hcount c
+    omega
+
+/-- `boxOf A ≤ boxOf B` (pointwise) iff `A`'s positions dominate `≤` `B`'s. -/
+theorem boxOf_le_iff {a : ℕ} {A B : Finset (Fin L)} (hA : A.card = a) (hB : B.card = a) :
+    boxOf A hA ≤ boxOf B hB ↔ ∀ r : Fin a, A.orderEmbOfFin hA r ≤ B.orderEmbOfFin hB r := by
+  constructor
+  · intro hle r
+    have hthis := Pi.le_def.mp hle (Fin.rev r)
+    simp only [boxOf, Fin.rev_rev] at hthis
+    have hpa := pos_ge hA r.val r.isLt
+    have hpb := pos_ge hB r.val r.isLt
+    simp only [Fin.eta] at hpa hpb
+    rw [Fin.le_def]; omega
+  · intro hpos
+    rw [Pi.le_def]; intro i
+    simp only [boxOf]
+    have hle : (A.orderEmbOfFin hA (Fin.rev i) : Fin L).val
+        ≤ (B.orderEmbOfFin hB (Fin.rev i) : Fin L).val := hpos (Fin.rev i)
+    omega
+
+/-- The `r`-th position of a box element `f`: `f(rev r) + r`, strictly monotone, landing in `Fin L`
+(needs `a ≤ ℓ ≤ L` and `f` bounded by `ℓ − a`). Inverse to `boxOf`'s reversed-gap read. -/
+def posOfBox {a ℓ : ℕ} (f : Fin a → ℕ) (hf : ∀ i, f i ≤ ℓ - a) (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L)
+    (r : Fin a) : Fin L :=
+  ⟨f (Fin.rev r) + r.val, by have := hf (Fin.rev r); have := r.isLt; omega⟩
+
+theorem posOfBox_strictMono {a ℓ : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ ℓ - a)
+    (hanti : Antitone f) (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L) :
+    StrictMono (posOfBox f hf haℓ hℓL) := by
+  intro r r' hrr
+  have hle : (Fin.rev r' : Fin a) ≤ Fin.rev r := by
+    rw [Fin.le_def, Fin.val_rev, Fin.val_rev]; have : (r : ℕ) < r' := hrr; omega
+  have h1 : f (Fin.rev r) ≤ f (Fin.rev r') := hanti hle
+  have h2 : (r : ℕ) < r' := hrr
+  simp only [posOfBox, Fin.lt_def]
+  omega
+
+/-- The C-step subset recovered from a box element. -/
+noncomputable def boxSubsetOf {a ℓ : ℕ} (f : Fin a → ℕ) (hf : ∀ i, f i ≤ ℓ - a) (haℓ : a ≤ ℓ)
+    (hℓL : ℓ ≤ L) : Finset (Fin L) :=
+  Finset.image (posOfBox f hf haℓ hℓL) Finset.univ
+
+theorem boxSubsetOf_card {a ℓ : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ ℓ - a) (hanti : Antitone f)
+    (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L) : (boxSubsetOf f hf haℓ hℓL).card = a := by
+  rw [boxSubsetOf, Finset.card_image_of_injective _ (posOfBox_strictMono hf hanti haℓ hℓL).injective,
+    Finset.card_univ, Fintype.card_fin]
+
+/-- **Box round-trip.** `boxOf (boxSubsetOf f) = f`: the reversed-gap read inverts the position map. -/
+theorem boxOf_boxSubsetOf {a ℓ : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ ℓ - a) (hanti : Antitone f)
+    (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L) :
+    boxOf (boxSubsetOf f hf haℓ hℓL) (boxSubsetOf_card hf hanti haℓ hℓL) = f := by
+  have hemb : posOfBox f hf haℓ hℓL
+      = (boxSubsetOf f hf haℓ hℓL).orderEmbOfFin (boxSubsetOf_card hf hanti haℓ hℓL) :=
+    Finset.orderEmbOfFin_unique _
+      (fun r ↦ Finset.mem_image.mpr ⟨r, Finset.mem_univ r, rfl⟩)
+      (posOfBox_strictMono hf hanti haℓ hℓL)
+  funext i
+  simp only [boxOf, ← hemb, posOfBox, Fin.rev_rev, Nat.add_sub_cancel]
+
+/-- **Profile determinacy.** Two binding profiles with the same C-step subset are equal (the profile
+is `D₀ − base − count`, and the base is minimiser-independent). -/
+theorem binding_ext (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    (hne : (qipFeasible D).Nonempty) {T T' : Fin L → ℕ}
+    (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D))
+    (hT' : T' ∈ Adm D) (hbind' : Mval D T' = (Adm D).inf' (Adm_nonempty D) (Mval D))
+    (hstep : stepA D T = stepA D T') : T = T' := by
+  funext c
+  have h1 := binding_profile_formula D hmono hL hne hT hbind c
+  have h2 := binding_profile_formula D hmono hL hne hT' hbind' c
+  rw [hstep] at h1
+  have : (T c : ℤ) = (T' c : ℤ) := by rw [h1, h2]
+  exact_mod_cast this
+
+/-- The recovered subset lies in the active prefix. -/
+theorem boxSubsetOf_subset_qipLow {a : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ qipM D - a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : boxSubsetOf f hf haℓ hℓL ⊆ qipLow D := by
+  intro x hx
+  rw [boxSubsetOf, Finset.mem_image] at hx
+  obtain ⟨r, -, hr⟩ := hx
+  simp only [qipLow, Finset.mem_filter, Finset.mem_univ, true_and]
+  rw [← hr]
+  simp only [posOfBox]
+  have := hf (Fin.rev r); have := r.isLt; omega
+
+/-- **Subset round-trip.** `boxSubsetOf (boxOf A) = A` for `A` in the active prefix. -/
+theorem boxSubsetOf_boxOf {a : ℕ} {A : Finset (Fin L)} (hcard : A.card = a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L)
+    (hf : ∀ i, boxOf A hcard i ≤ qipM D - a) :
+    boxSubsetOf (boxOf A hcard) hf haℓ hℓL = A := by
+  have hpos : ∀ r, posOfBox (boxOf A hcard) hf haℓ hℓL r = A.orderEmbOfFin hcard r := by
+    intro r
+    apply Fin.ext
+    simp only [posOfBox, boxOf, Fin.rev_rev]
+    have := pos_ge hcard r.val r.isLt
+    simp only [Fin.eta] at this
+    omega
+  rw [boxSubsetOf, show (posOfBox (boxOf A hcard) hf haℓ hℓL) = A.orderEmbOfFin hcard from
+    funext hpos]
+  exact Finset.image_orderEmbOfFin_univ A hcard
+
+/-- `a ≤ ℓ` (the residue fits the active prefix). -/
+theorem sbResidueA_toNat_le (D : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    (sbResidueA D).toNat ≤ qipM D := by
+  have hb : (qipDelta D).natAbs ≤ qipM D := by
+    have h := abs_qipDelta_le_m D hL; rw [Int.abs_eq_natAbs] at h; exact_mod_cast h
+  rw [sbResidueA_eq D hL]
+  by_cases hd : 0 < qipDelta D
+  · rw [if_pos hd]; omega
+  · rw [if_neg hd]; omega
+
+/-- The nonzero support of the QIP vector for a box element: the C-steps if `δ > 0`, else their
+complement in the active prefix. Size `|δ|`, `⊆ qipLow`. -/
+noncomputable def decNz {a : ℕ} (D : Fin (L + 1) → ℕ) (f : Fin a → ℕ) (hf : ∀ i, f i ≤ qipM D - a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : Finset (Fin L) :=
+  if 0 < qipDelta D then boxSubsetOf f hf haℓ hℓL else (qipLow D) \ boxSubsetOf f hf haℓ hℓL
+
+theorem decNz_subset {a : ℕ} (D : Fin (L + 1) → ℕ) (f : Fin a → ℕ) (hf : ∀ i, f i ≤ qipM D - a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : decNz D f hf haℓ hℓL ⊆ qipLow D := by
+  rw [decNz]
+  split
+  · exact boxSubsetOf_subset_qipLow hf haℓ hℓL
+  · exact Finset.sdiff_subset
+
+theorem decNz_card {a : ℕ} (D : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {f : Fin a → ℕ}
+    (hf : ∀ i, f i ≤ qipM D - a) (hanti : Antitone f) (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L)
+    (ha : a = (sbResidueA D).toNat) : (decNz D f hf haℓ hℓL).card = (qipDelta D).natAbs := by
+  have hbcard := boxSubsetOf_card hf hanti haℓ hℓL
+  have hbsub := boxSubsetOf_subset_qipLow hf haℓ hℓL
+  have hℓcard := qipLow_card D
+  have hb : (qipDelta D).natAbs ≤ qipM D := by
+    have h := abs_qipDelta_le_m D hL; rw [Int.abs_eq_natAbs] at h; exact_mod_cast h
+  have hres := sbResidueA_eq D hL
+  rw [decNz]
+  split
+  · next hd =>
+    rw [hbcard, ha, hres, if_pos hd]; omega
+  · next hd =>
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hbsub, hbcard, hℓcard, ha, hres, if_neg hd]
+    omega
+
+/-- The binding profile recovered from a box element: `tOfE` of the QIP witness on `decNz`. -/
+noncomputable def decProfile {a : ℕ} (D : Fin (L + 1) → ℕ) (f : Fin a → ℕ)
+    (hf : ∀ i, f i ≤ qipM D - a) (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : Fin L → ℕ :=
+  tOfE D (eOfSupport D (decNz D f hf haℓ hℓL))
+
+/-- `decProfile` is admissible, `Mval`-minimal (binding), and its increment vector is the QIP
+witness on `decNz`. -/
+theorem decProfile_spec {a : ℕ} (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    {f : Fin a → ℕ} (hf : ∀ i, f i ≤ qipM D - a) (hanti : Antitone f) (haℓ : a ≤ qipM D)
+    (hℓL : qipM D ≤ L) (ha : a = (sbResidueA D).toNat) :
+    decProfile D f hf haℓ hℓL ∈ Adm D ∧
+      Mval D (decProfile D f hf haℓ hℓL) = (Adm D).inf' (Adm_nonempty D) (Mval D) ∧
+      eOfT D (decProfile D f hf haℓ hℓL) = eOfSupport D (decNz D f hf haℓ hℓL) := by
+  have hsub := decNz_subset D f hf haℓ hℓL
+  have hcard := decNz_card D hL hf hanti haℓ hℓL ha
+  have hfeasE : ∑ i, eOfSupport D (decNz D f hf haℓ hℓL) i = D 0 := by
+    have := eOfSupport_feasible D hmono hL hsub hcard
+    rwa [qipFeasible, Finset.mem_finAntidiagonal] at this
+  have hmem : decProfile D f hf haℓ hℓL ∈ Adm D := tOfE_mem D hmono hfeasE
+  have hround : eOfT D (decProfile D f hf haℓ hℓL) = eOfSupport D (decNz D f hf haℓ hℓL) :=
+    eOfT_tOfE D hfeasE
+  have hne : (qipFeasible D).Nonempty := ⟨_, eOfSupport_feasible D hmono hL hsub hcard⟩
+  refine ⟨hmem, ?_, hround⟩
+  calc Mval D (decProfile D f hf haℓ hℓL)
+      = Gqip D (eOfT D (decProfile D f hf haℓ hℓL)) := Mval_eq_Gqip D hmono hmem
+    _ = Gqip D (eOfSupport D (decNz D f hf haℓ hℓL)) := by rw [hround]
+    _ = cValue D := Gqip_eOfSupport D hmono hL hsub hcard
+    _ = qipMin D hne := (qipMin_eq_cValue D hmono hne).symm
+    _ = (qipFeasible D).inf' hne (Gqip D) := rfl
+    _ = (Adm D).inf' (Adm_nonempty D) (Mval D) :=
+        (inf'_Adm_Mval_eq_inf'_qipFeasible_Gqip D hmono hL hne).symm
+
+/-- **The C-step set of `decProfile` is the box's subset.** Closes the encode/decode loop. -/
+theorem stepA_decProfile {a : ℕ} (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    {f : Fin a → ℕ} (hf : ∀ i, f i ≤ qipM D - a) (hanti : Antitone f) (haℓ : a ≤ qipM D)
+    (hℓL : qipM D ≤ L) (ha : a = (sbResidueA D).toNat) :
+    stepA D (decProfile D f hf haℓ hℓL) = boxSubsetOf f hf haℓ hℓL := by
+  obtain ⟨-, -, hround⟩ := decProfile_spec D hmono hL hf hanti haℓ hℓL ha
+  have hCe := sbCeil_eq D hL
+  have hbsub := boxSubsetOf_subset_qipLow hf haℓ hℓL
+  ext i
+  simp only [stepA, Finset.mem_filter]
+  rw [hround]
+  by_cases hi : i ∈ qipLow D
+  · have hqt := qipT_eOfSupport D hmono hL (decNz D f hf haℓ hℓL) hi
+    have hqtdef : qipT D (fun j ↦ (eOfSupport D (decNz D f hf haℓ hℓL) j : ℤ)) i
+        = (eOfSupport D (decNz D f hf haℓ hℓL) i : ℤ) + (D i.succ : ℤ) - qipRound D := rfl
+    rw [hqtdef] at hqt
+    have herw : (eOfSupport D (decNz D f hf haℓ hℓL) i : ℤ) + (D i.succ : ℤ)
+        = (if i ∈ decNz D f hf haℓ hℓL then (qipDelta D).sign else 0) + qipRound D := by
+      linarith [hqt]
+    have hdecode : (if i ∈ decNz D f hf haℓ hℓL then (qipDelta D).sign else 0)
+        = (if 0 < qipDelta D then (1 : ℤ) else 0) ↔ i ∈ boxSubsetOf f hf haℓ hℓL := by
+      rw [decNz]
+      by_cases hd : 0 < qipDelta D
+      · rw [if_pos hd, if_pos hd, Int.sign_eq_one_of_pos hd]
+        by_cases hib : i ∈ boxSubsetOf f hf haℓ hℓL <;> simp [hib]
+      · rw [if_neg hd, if_neg hd]
+        by_cases hib : i ∈ boxSubsetOf f hf haℓ hℓL
+        · rw [if_neg (by simp only [Finset.mem_sdiff, not_and, not_not]; exact fun _ ↦ hib)]
+          simp [hib]
+        · rw [if_pos (Finset.mem_sdiff.mpr ⟨hi, hib⟩)]
+          constructor
+          · intro hsgn0
+            exfalso
+            have hδ0 : qipDelta D = 0 := by
+              rcases lt_trichotomy (qipDelta D) 0 with h1 | h1 | h1
+              · rw [Int.sign_eq_neg_one_of_neg h1] at hsgn0; norm_num at hsgn0
+              · exact h1
+              · exact absurd h1 hd
+            have haeq : a = qipM D := by rw [ha, sbResidueA_eq D hL, hδ0]; simp
+            have hbeq : boxSubsetOf f hf haℓ hℓL = qipLow D :=
+              Finset.eq_of_subset_of_card_le hbsub
+                (by rw [boxSubsetOf_card hf hanti haℓ hℓL, qipLow_card]; omega)
+            exact hib (hbeq.symm ▸ hi)
+          · intro hib'; exact absurd hib' hib
+    constructor
+    · rintro ⟨-, heq⟩
+      rw [herw, hCe] at heq
+      exact hdecode.mp (by linarith [heq])
+    · intro hib
+      exact ⟨hi, by rw [herw, hCe]; have := hdecode.mpr hib; linarith [this]⟩
+  · constructor
+    · rintro ⟨hi', -⟩; exact absurd hi' hi
+    · intro hib; exact absurd (hbsub hib) hi
+
+/-! ## The order-isomorphism -/
+
+/-- `boxOf` respects finset equality (the card proof is irrelevant). -/
+theorem boxOf_congr {a : ℕ} {A B : Finset (Fin L)} (hAB : A = B) (hA : A.card = a)
+    (hB : B.card = a) : boxOf A hA = boxOf B hB := by subst hAB; rfl
+
+/-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
+order-isomorphic to `BoxPart (qipM D) (sbResidueA D).toNat`. Seat-E instantiates at
+`D = sortedWidths M` to discharge `OrderRealize.bindingSet_sorted_orderIso_boxPart` (all three of
+`bindingSet (sortedWidths M)`, `ell M 0`, `residueA M 0` are defeq to the primitive forms here). -/
+theorem sortedBox_orderIso (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hpos : ∀ s, 0 < D s) :
+    Nonempty (↥{T : Fin L → ℕ | T ∈ Adm D ∧ Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)}
+      ≃o ↥(BoxPart (qipM D) ((sbResidueA D).toNat))) := by
+  rcases Nat.eq_zero_or_pos (qipM D) with hℓ0 | hℓpos
+  · -- `qipM D = 0 ⟹ L = 0`: both sides are singletons.
+    have hL0 : L = 0 := by
+      by_contra hLne; have : 1 ≤ qipM D := qipM_ge_one D (by omega); omega
+    subst hL0
+    haveI : Subsingleton (Fin 0 → ℕ) := ⟨fun a b => funext fun i => i.elim0⟩
+    haveI : Subsingleton ↥(BoxPart (qipM D) ((sbResidueA D).toNat)) :=
+      ⟨fun g g' => Subtype.ext (funext fun i => by
+        have h1 := g.2.1 i; have h2 := g'.2.1 i; omega)⟩
+    have hbind : (fun _ => 0 : Fin 0 → ℕ) ∈
+        {T : Fin 0 → ℕ | T ∈ Adm D ∧ Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)} :=
+      ⟨zero_mem_Adm D, le_antisymm
+        (Finset.le_inf' _ _ (fun T _ => le_of_eq (congrArg (Mval D) (Subsingleton.elim _ T))))
+        (Finset.inf'_le _ (zero_mem_Adm D))⟩
+    have hbox : (fun _ => 0 : Fin ((sbResidueA D).toNat) → ℕ) ∈
+        BoxPart (qipM D) ((sbResidueA D).toNat) := ⟨fun _ => Nat.zero_le _, fun _ _ _ => le_refl 0⟩
+    haveI : Subsingleton
+        ↥{T : Fin 0 → ℕ | T ∈ Adm D ∧ Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)} :=
+      ⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩
+    exact ⟨⟨⟨fun _ => ⟨_, hbox⟩, fun _ => ⟨_, hbind⟩,
+        fun _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩,
+      fun {a b} =>
+        ⟨fun _ => le_of_eq (Subsingleton.elim a b), fun _ => le_of_eq (Subsingleton.elim _ _)⟩⟩⟩
+  · -- `qipM D ≥ 1`.
+    have hℓL : qipM D ≤ L := qipM_le D
+    have hL : 1 ≤ L := le_trans hℓpos hℓL
+    have haℓ : (sbResidueA D).toNat ≤ qipM D := sbResidueA_toNat_le D hL
+    have hne : (qipFeasible D).Nonempty :=
+      ⟨eOfT D (fun _ => 0), eOfT_mem_qipFeasible D hL (zero_mem_Adm D)⟩
+    have hstepsub : ∀ (T : Fin L → ℕ) (x : Fin L), x ∈ stepA D T → (x : ℕ) < qipM D := by
+      intro T x hx
+      have hxq := Finset.filter_subset (fun i ↦
+        (eOfT D T i : ℤ) + (D i.succ : ℤ) = sbCeil D) (qipLow D) hx
+      simpa [qipLow, Finset.mem_filter] using hxq
+    exact ⟨⟨
+      ⟨fun T => ⟨boxOf (stepA D T.1) (stepA_card D hmono hL hne T.2.1 T.2.2),
+            boxOf_mem (stepA_card D hmono hL hne T.2.1 T.2.2) (fun x hx => hstepsub T.1 x hx)⟩,
+       fun f => ⟨decProfile D f.1 f.2.1 haℓ hℓL,
+            (decProfile_spec D hmono hL f.2.1 f.2.2 haℓ hℓL rfl).1,
+            (decProfile_spec D hmono hL f.2.1 f.2.2 haℓ hℓL rfl).2.1⟩,
+       fun T => Subtype.ext (by
+           have hbm := boxOf_mem (stepA_card D hmono hL hne T.2.1 T.2.2)
+             (fun x hx => hstepsub T.1 x hx)
+           obtain ⟨hmem, hbindd, -⟩ := decProfile_spec D hmono hL hbm.1 hbm.2 haℓ hℓL rfl
+           exact binding_ext D hmono hL hne hmem hbindd T.2.1 T.2.2
+             ((stepA_decProfile D hmono hL hbm.1 hbm.2 haℓ hℓL rfl).trans
+               (boxSubsetOf_boxOf (stepA_card D hmono hL hne T.2.1 T.2.2) haℓ hℓL hbm.1))),
+       fun f => Subtype.ext
+           ((boxOf_congr (stepA_decProfile D hmono hL f.2.1 f.2.2 haℓ hℓL rfl) _ _).trans
+             (boxOf_boxSubsetOf f.2.1 f.2.2 haℓ hℓL))⟩,
+      by
+        intro T T'
+        simp only [Equiv.coe_fn_mk, Subtype.mk_le_mk]
+        rw [boxOf_le_iff, posLE_iff_countDom,
+          ← binding_le_iff D hmono hL hne T.2.1 T.2.2 T'.2.1 T'.2.2]
+        rfl⟩⟩
+
+end DLNFibre.DLN.Aoyagi.SortedBox
