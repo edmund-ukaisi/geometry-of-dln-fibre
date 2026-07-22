@@ -13772,3 +13772,27 @@ The re-bake ledger is now clean: L1 (additive, NOW) + L3 (fan, later); L2 = A′
 seat-L4B proving the divisibility now). Awaiting the elder's authored L1 form (the pin + realBranch_canonShear_eq
 projection) → arch-C render → gate → delta-read → relay to seat-L4B. seat-L4B keeps banking the L1-invariant
 halves (divisibility + a′) meanwhile.
+
+## 2026-07-22 ~19:20 UTC — descent: δ=0 arm PROVED + infra; case11 closing (L1-indep); append HOLDS (L1/pnp-coupled)
+
+multiaffine-descent (seat-L3T2's sub-agent) completed realBranch_multiAffine_step' (MultiAffineStepWire.lean,
+5aa5f8470 on aoyagi-engine-L3T2; aggregator NOT yet wired — my pen, pending case11 + seat-L3T2's conditions).
+PROVED axiom-clean: descent_delta0 (all 4 edge kinds — the bulk), + reusable infra (deg1_comp_of_fixing =
+the descent core, conOracle_child_transition, canonCenterOf_decode_layer_le, blockCoords_subset_layerCoords).
+Two δ=1 sorries remain — and they split by L1-dependence:
+
+- descent_delta1_case11 — PROVABLE + L1-INDEPENDENT (pivot-separation via canonPivotOf(case11)=some, a
+  ~50-line oracle-unfold from DivBirthInv freshness; no shear value). DISPOSITION: CLOSE NOW. Real banked win.
+- descent_delta1_append (case12/case2, the fidelity blocker) — needs the cross-layer cofactor identity
+  c_i(qm)=∑_{k∈S'} a_ik·u_k. This is the SAME canonical-shear structure as boostReady's clearing half →
+  COUPLED to L1 (shear-pin) + pnp-coupling's one-fix-or-two. DISPOSITION: HOLD as the tagged obligation;
+  do NOT add a 2nd stub or strengthen FoldStepInvAt (the sub-agent's structural decision is SUBSUMED by the
+  pnp-coupling adjudication). If pnp-coupling + L1 confirm the shear-pin discharges the descent cofactor
+  (likely), append is a one-liner via canonShearOf_apply_interior + seat-L4B's shared divisibility lemma.
+
+CONFIRMED (important): the descent's conjunct B does NOT consume realBranch_boostReady_case11 — the sorryAx
+traces to descent_delta1_append, a DISTINCT obligation. So the two live proof-side gaps are (i) boostReady
+(clearing, L1) and (ii) descent-append (cofactor, L1) — BOTH the same shear-pin structure, which is exactly
+why L1-first + pnp-coupling's "one fix" is the lever. The descent is converging: δ=0 done, case11 closing,
+append is the single L1-coupled hold. seat-L3T2 runs anchor-diff + forced #print axioms (sorryAx = append
+only) post-case11, then I wire.
