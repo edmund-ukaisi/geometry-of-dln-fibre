@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.Core.Aoyagi.BlockDivision
+import DLNFibre.DLN.Aoyagi.PivotPreservation
 
 /-!
 # `DLN.Aoyagi.Case1Wire` — the wall's crux, wired to the fold defs (SEAT-L4)
@@ -367,6 +368,124 @@ theorem stepInv_child_delta1_append (d : Fin (N + 1) → ℕ)
     rw [hb, foldResid_extend_delta1 d e ed hlt hδ,
       foldResid_stepMap_eq_pivot_mul d e ed hdeg1 (Fin.cast hcast j') u]
     ring
+
+/-! ### (a′) — case11-δ1 center/support COORDINATE GEOMETRY (seat-L4B, route-invariant)
+
+The Finset facts the boost-readiness assembly rides, independent of the L1 shear-pin redesign: at a
+case11 δ=1 boost the ledger center is `{reused-pivot} ∪ partialBlock`, the partial block sits inside
+the geometric support `supportAt = blockCoords`, and the reused pivot (an earlier-layer birth corner)
+is NOT in the support. Pure `tupIdx`/`canonCenterOf`/`blockCoords` combinatorics + the banked oracle
+reduction (`runLen` fits the running-min width) + `PivotPres` freshness. -/
+
+/-- **Oracle reduction (case11 run bound).** A case11 step-child's run `cleared + runLen` fits strictly
+within the running-min width `widthMinUpto d layer` — the eligibility guard
+`divTilde f + 1 ≤ widthMinUpto` of the divisor the oracle merges, read off the `conOracle` case-1
+dispatch (mirrors `PivotPres.canonPivotOf_isLedgerCorner_conOracle`). Gives `partialBlock ⊆ supportAt`. -/
+theorem case11_stepChild_run_lt_widthMinUpto {N : ℕ} {d : Fin (N + 1) → ℕ} (s : ConState N)
+    (sc : StepChild d s) (hsc : sc ∈ (conOracle d s).stepChildren)
+    (hc11 : sc.ecase = StepCase.case11) :
+    s.cleared + sc.esubst.runLen < widthMinUpto d s.layer := by
+  by_cases h1 : N ≤ s.layer
+  · have horacle : conOracle d s = oracleTerminal d s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hsc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+  · by_cases h2 : widthMinUpto d (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle d s = rolloverDecision d s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hsc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hsc
+      subst hsc; simp at hc11
+    · have hlt : s.cleared < widthMinUpto d (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap d := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap d _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto d s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · have horacle : conOracle d s = case2Decision d s
+            (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hsc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hsc
+        subst hsc; simp at hc11
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle d s = oracleTerminal d s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [horacle] at hsc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+        · -- the eligibility guard of the minimal occupied level `target`
+          have hbound : s.cleared < target ∧ target + 1 ≤ widthMinUpto d s.layer := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                s.divTilde k0 + 1 ≤ widthMinUpto d s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              exact ⟨by omega, by omega⟩
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have horacle : conOracle d s = case1Decision d s f (target - s.cleared)
+              (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
+          rw [horacle] at hsc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hsc
+          rcases hsc with rfl | rfl
+          · -- case11 child: `esubst.runLen = target - cleared`
+            show s.cleared + (target - s.cleared) < widthMinUpto d s.layer
+            omega
+          · -- case12 child: ecase = case12, contradicting hc11
+            simp at hc11
+
+/-- **Center ⊆ {pivot} ∪ support** (case11). Every ledger-center coordinate is either the reused pivot
+or lies in the geometric support `blockCoords d layer` (= `supportAt d layer 0`): the row-block part
+fits the running-min width by `case11_stepChild_run_lt_widthMinUpto`. -/
+theorem case11_center_subset_pivot_union_block {N : ℕ} {d : Fin (N + 1) → ℕ} (s : ConState N)
+    (sc : StepChild d s) (hsc : sc ∈ (conOracle d s).stepChildren)
+    (hc11 : sc.ecase = StepCase.case11) :
+    canonCenterOf d s sc ⊆ (canonPivotOf d s sc).toFinset ∪ blockCoords d s.layer := by
+  have hrun := case11_stepChild_run_lt_widthMinUpto s sc hsc hc11
+  simp only [canonCenterOf, hc11]
+  refine Finset.union_subset_union (Finset.Subset.refl _) ?_
+  intro x hx
+  rw [Finset.mem_image] at hx
+  obtain ⟨q, hq, rfl⟩ := hx
+  rw [Finset.mem_filter] at hq
+  obtain ⟨-, hlay, -, -, hcol⟩ := hq
+  rw [blockCoords, Finset.mem_image]
+  exact ⟨q, Finset.mem_filter.mpr ⟨Finset.mem_univ q, hlay, by omega⟩, rfl⟩
+
+/-- **A birth corner off the current layer is not in the support** — `blockCoords d s.layer` selects
+only decode-layer-`s.layer` coordinates, so an earlier divisor's birth corner (whose layer
+`a ≠ s.layer`, e.g. by `DivBirthInv` freshness at `cleared = 0`) is not in it. The reused case11 pivot
+is such a corner, so it is genuinely EXTRA to the geometric support. -/
+theorem cornerToFlat_notMem_blockCoords {N : ℕ} {d : Fin (N + 1) → ℕ} (s : ConState N) (a b : ℕ)
+    (i : Fin (flatDim d)) (hne : a ≠ s.layer) (hcf : cornerToFlat d a b = some i) :
+    i ∉ blockCoords d s.layer := by
+  simp only [cornerToFlat] at hcf
+  split_ifs at hcf with hS hr hc
+  obtain rfl : tupIdxEquiv d ⟨⟨⟨a, hS⟩, ⟨b, hr⟩⟩, ⟨b, hc⟩⟩ = i := Option.some.injEq _ _ ▸ hcf
+  intro hmem
+  rw [blockCoords, Finset.mem_image] at hmem
+  obtain ⟨q, hq, hqi⟩ := hmem
+  obtain rfl : q = ⟨⟨⟨a, hS⟩, ⟨b, hr⟩⟩, ⟨b, hc⟩⟩ := (tupIdxEquiv d).injective hqi
+  rw [Finset.mem_filter] at hq
+  exact hne hq.2.1
 
 /-! ### The WALL — primed leaf `case1_preserves_stepInv'` (SEAT-L4, primed-leaf pattern)
 
