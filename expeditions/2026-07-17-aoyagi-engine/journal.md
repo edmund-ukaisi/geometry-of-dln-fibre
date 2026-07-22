@@ -12893,3 +12893,21 @@ a DERIVED frontier stub `realBranch_boostReady` (sibling to multiAffine), NOT a 
 self-contained off IsRealBranch, or need a carried strengthening (→ then (i) is FORCED, the
 honest reason to carry). seat-L4's battery re-pointed at exactly that question; its (C) dispatch
 skeleton unblocked meanwhile.
+
+## 2026-07-22 ~18:25 UTC — THE WALL'S STRUCTURE IS PROVEN (staged dispatch, sorry-free body)
+
+seat-L4 staged `Case1WallStaged.lean` on its branch (eca3fd461, deliberately NOT on canonical):
+`case1_preserves_stepInv_staged` proves the FULL wall conclusion (byte-identical signature) by
+dispatch — δ=0 → stepInv_child_delta0; δ=1 case12 → the append lemma + the hslot bridge; δ=1
+case11 → the append lemma + boost-readiness; conjunct-2 → the node-form multiAffine. Forced
+footprint = [propext, sorryAx, Classical.choice, Quot.sound] with **sorryAx flowing ONLY from
+the two named frontier stubs — the DISPATCH BODY IS SORRY-FREE.** The wall = exactly two
+elder-form landings from closed; the closed edit is staged and de-risked.
+
+Held on the seat branch (canonical carries only elder-ruled statements; the staged boostReady
+stub is a placeholder pending the elder's authored form). Status corrections relayed to seat-L4:
+(A) node-form is RULED + RENDERING (not pending); (B) part-ruled, critical path = its OWN
+battery (self-contained-induction question). The wall's dependency picture is now: node-form
+bake (hours) → conjunct-2 one-liner; boost-readiness battery → elder form → the deep proof
+(seat-L4, Codex-first, (2,2,2,2) trace) → conjunct-1 case11 → dispatch verbatim → the
+Assembly-consumable Case1Wire leaf.
