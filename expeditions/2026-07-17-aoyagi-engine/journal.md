@@ -10700,3 +10700,18 @@ re-derive, the pin likely stands; confirmed map-direction → a genuine structur
 elder re-rules (the ledger-vs-geometric distinction as the likely reconciliation — the pin and
 the trace may describe one object in two layer-indexings). Everything holds: the elder's ruling,
 the render finalize, the bake. The alarm set in advance caught exactly what it was built for.
+
+## 2026-07-22 (controller) — seat-E's redundant round: the clash re-resolved independently (117/117 ACTUAL isos — a genuine strengthening); the inbox lapse named
+
+seat-E, with two controller relays unprocessed (no ack line — the protocol lapsed again),
+independently re-derived the full clash resolution: admTight = Adm (its Lean proof), the iso over
+the FULL Adm cone at the traps + sweeps, and the corrected shape ({T ∈ Adm : Mval = minAdm} ≃o
+BoxPart — the runMin clause carries nothing; "the load-bearing tightening is Mval = minAdm, not
+runMin"). REDUNDANT with pnp's cert + my two relays (the skip directive unread) — but the round
+genuinely ADDED: **117/117 ACTUAL poset-isomorphism verification** (stronger than invariant-
+matching) + the Lean-vs-Python minAdm cross-check; both banked. Fourth relay sent with
+everything it asked for (the cert's location on the expedition branch; the explicit part-(i)
+encoding map — NOT a placeholder; the shape confirmation; the loose-lattice clarification).
+The protocol observation, on the record: tonight's two biggest redundant-work events both trace
+to unread inbox — the drain-before-compose requirement is now the E-lane's single process risk.
+The lane is one scaffold from its final pass.
