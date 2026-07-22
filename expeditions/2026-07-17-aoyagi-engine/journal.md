@@ -13668,3 +13668,37 @@ factors the deep arm as a tagged on-cone obligation. LESSON (for lessons.md + th
 a statement bake reviewed for internal consistency is NOT proven closed until a PROOF has run against
 it — the delta-read gate must be paired with a proof-pressure gate before "closed" is claimed. Census
 36 unchanged (the holes were already open sorries / a false statement, not new tokens).
+
+## 2026-07-22 ~17:45 UTC — the redesign resolves into THREE layers (seat-L4B + seat-L7 SPECIFY/recon)
+
+Two seat inputs sharpened the coupled redesign's scope. Both verified on the def by me before relaying.
+
+seat-L4B (boostReady SPECIFY, another stop-on-suspect): the (a)/(b) b-chain framing I relayed
+presupposed a ledger REPRESENTATION Lean doesn't expose. CONFIRMED on def: foldB is a SCALAR
+(:402, ∏ u_pivot^δ — no b_i vector/J₁/D-H); foldResid is a functional recursion of strict-transforms/
+pullbacks (:443); and foldResid's OWN docstring records "the alternative (A″) — a foldResid
+representation carrying (center-factor, tail) — was NOT taken; no representation redesign." So even
+with the shear-value-pin, boostReady's PROOF must MATERIALIZE the ledger via path-induction over
+hbranch's ancestor CanonicalSchurSteps. There is no self-contained (a) over an existing object;
+seat-L4B reframed to (a′) [case11-δ1 center/support coordinate geometry — pure Finset combinatorics,
+route-independent, PROVING NOW] + (b) [materialize the ledger representation, the heavy new content].
+
+seat-L7 (bridge-shape recon for the fan): (1) the engine cover core is banked 0-sorry (GeoCoverSpec/
+PivotCoverFold/PivotCover/GeoChart/qNodeOf split — salvageable); (2) REPRESENTATION GAP — the engine
+chart (qNodeOf-conjugated pivotChart+flatSwap, fanned tree, Params) is DIFFERENT machinery from the
+monument chart (blockBlowupMap∘blockShear, raw oracle tree), so geoAtlas_imageCover does NOT feed L7
+by rewrite; implication for the elder: define the fanned monument spine to REUSE the engine chart form
+→ bridge DEFINITIONAL; (3) CAUTION — the engine is archived DO-NOT-FILL (charter §3, category-false
+value holes); salvage the pure-cover subgraph ONLY, never the value/Jacobian files.
+
+SYNTHESIS — the redesign has THREE layers to settle (relayed to the elder as design inputs):
+  L1 PREDICATE: the shear VALUE-pin (shearφ = canonShearOf) — closes the R_bad vacuity.
+  L2 INVARIANT: materialize-in-proof vs REVERSE A″ and strengthen FoldStepInvAt/Deg1SupportedSlot to
+     CARRY the ledger (ripples into case1/case2_preserves_stepInv + L5 base). The descent's δ=1
+     cofactor is the SAME ledger → a strengthened invariant closes boostReady AND descent from one
+     place. (pnp-coupling adjudicating the math one-fix-or-two in parallel.)
+  L3 FAN: pivot fan + L5 fanned-atlas emission, possibly reusing the engine chart form (L2b) → the
+     bridge (seat-L7's lane) becomes definitional.
+The elder owns all three (predicate + baked-def invariant + spine fan); pnp-coupling feeds L2; seat-L7
+holds for L3's shape. seat-L4B proves (a′) meanwhile (route-independent). I reconcile pnp-coupling +
+the elder's design before render. This is the round that has to be right — not racing it.
