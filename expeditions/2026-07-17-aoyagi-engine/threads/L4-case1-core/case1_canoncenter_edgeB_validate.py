@@ -77,6 +77,17 @@ for M in Ms:
         # (1) block = exponent boost
         check(f"M{M} (S={S},J={J}): Edge-B block J₁·(M^(S+1)−J)={block} = exponent boost {e['expo_boost']}",
               block == e['expo_boost'])
+        # (1b) ORIENTATION DISCRIMINATOR (transpose): the run-length cap goes on the axis mapping to paper
+        # ROWS. Under canonCenterOf's transpose (resRows=widthMinUpto−cleared ↔ flat COL q.2; resCols=
+        # d_{layer+1}−cleared ↔ flat ROW q.1.2), paper ROW ↔ flat COL q.2. So the run-length restriction is
+        # on q.2 (cap widthMinUpto→cleared+runLen), full raw range on q.1.2. Block sizes of the two forms:
+        size_q2partial   = J1 * (MS1 - J)   # q.2∈[cl,cl+runLen) [J₁] × q.1.2∈[cl,d_{ℓ+1}=M^(S+1)) [MS1−J]
+        size_q12partial  = J1 * (MS - J)     # (arch-C's inverted guess) q.1.2 partial × q.2 full [MS−J]
+        check(f"M{M} (S={S},J={J}): q.2-PARTIAL size {size_q2partial} = exponent boost (CORRECT orientation)",
+              size_q2partial == e['expo_boost'])
+        check(f"M{M} (S={S},J={J}): q.1.2-partial size {size_q12partial} = boost ONLY when M(S)=M^(S+1) "
+              f"(MS={MS},MS1={MS1}) — the transpose-inverted form is WRONG when they differ",
+              (size_q12partial == e['expo_boost']) == (MS == MS1))
         # (2) fixed center = block ∪ {pivot}; pivot ∈ center (hpivot)
         check(f"M{M} (S={S},J={J}): FIXED |center| = block+1 = {fixed_center} (pivot ∈ center ⟹ hpivot ✓)",
               fixed_center == block + 1)
