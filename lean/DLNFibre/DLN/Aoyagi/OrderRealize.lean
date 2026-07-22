@@ -115,12 +115,36 @@ theorem bindingSet_transport_sorted (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 <
     Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (sortedWidths M))) := by
   sorry -- map: enc-transport (c)
 
-/-- **(d) WELL-FORMEDNESS of `(ℓ,a)`** (SORRIED — frontier; the `qip*`→`ceilingM/residueA` bridge):
-`a = residueA ≤ ℓ = ell`, so `BoxPart(ℓ,a)`'s bound `ℓ−a` is meaningful. The fuller ceiling identity
-(`C = ⌈ΣD/ℓ⌉`, `a` = count of `C`-steps) is discharged inside the sorted-box iso. -/
-theorem residueA_le_ell (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
+/-- **(d) WELL-FORMEDNESS of `(ℓ,a)`** (PROVED): `a = residueA ≤ ℓ = ell`, so `BoxPart(ℓ,a)`'s bound
+`ℓ−a` is meaningful. Hypothesis is `0 < ell M 0` — the elder's Q2 hpos-check FIRES negative here:
+`hpos` (positive widths) does NOT enter; only `ell > 0` is needed (the ceiling arithmetic divides by
+`ℓ`). Proof: `residueA = S − (⌈S/ℓ⌉−1)·ℓ ∈ {S mod ℓ, ℓ}` (both `≤ ℓ`), reusing the `ClosedForm`
+`hresval` reasoning at `r = 0`; then `Int.toNat_le`. -/
+theorem residueA_le_ell (M : Fin (L + 1) → ℕ) (hℓ : 0 < ell M 0) :
     (residueA M 0).toNat ≤ ell M 0 := by
-  sorry -- map: enc-ceilingM-bridge (d)
+  rw [Int.toNat_le]
+  set ℓ : ℤ := (ell M 0 : ℤ) with hℓdef
+  set S : ℤ := activeSum M 0 with hSdef
+  have hℓpos : 0 < ℓ := by rw [hℓdef]; exact_mod_cast hℓ
+  have hρ0 : 0 ≤ S % ℓ := Int.emod_nonneg S (by omega)
+  have hρlt : S % ℓ < ℓ := Int.emod_lt_of_pos S hℓpos
+  have hdm : ℓ * (S / ℓ) + S % ℓ = S := Int.mul_ediv_add_emod S ℓ
+  have hreseq : residueA M 0 = S - (((S + ℓ - 1) / ℓ) - 1) * ℓ := rfl
+  rcases eq_or_lt_of_le hρ0 with hρeq | hρpos
+  · -- `S % ℓ = 0`: `residueA = ℓ`
+    have hdiv : (S + ℓ - 1) / ℓ = S / ℓ :=
+      (Int.ediv_emod_unique hℓpos (r := ℓ - 1) (q := S / ℓ)).mpr
+        ⟨by linarith [hdm], by omega, by omega⟩ |>.1
+    rw [hreseq, hdiv]
+    have hmul : ℓ * (S / ℓ) = S := by linarith [hdm]
+    nlinarith [hmul]
+  · -- `S % ℓ ≥ 1`: `residueA = S % ℓ < ℓ`
+    have hdiv : (S + ℓ - 1) / ℓ = S / ℓ + 1 :=
+      (Int.ediv_emod_unique hℓpos (r := S % ℓ - 1) (q := S / ℓ + 1)).mpr
+        ⟨by nlinarith [hdm], by omega, by omega⟩ |>.1
+    rw [hreseq, hdiv]
+    have hmul : ℓ * (S / ℓ) = S - S % ℓ := by linarith [hdm]
+    nlinarith [hmul]
 
 /-- **THE SORTED-CASE BOX ISO** (SORRIED — frontier): on sorted widths, the binding poset is
 order-isomorphic to `BoxPart(ℓ,a)` via the active-step a-subset + reversed-gap encoding (Codex part
