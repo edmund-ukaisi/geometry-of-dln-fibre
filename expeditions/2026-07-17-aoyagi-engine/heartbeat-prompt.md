@@ -25,9 +25,12 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   **seat-L3T2** = the DESCENT realBranch_multiAffine_step (primed-twin MultiAffineStepWire, deep
   fill via a sub-agent; case11 consumes boostReady stub — sorryAx flow-through on-cone).
   **seat-L7** = leafPath_compactCover COMMISSIONED (independent, highest-variance; SPECIFY-first,
-  Codex on the tiling). arch-C: Assembly increment 2 LANDED green (foldstate-render; census +1,
-  footprints as expected) — gating+staging → report; SUBSUMPTION parked post-summit (owed-register;
-  baked-statement change, NOT hygiene). carto: map GREEN + current (524fd198e), standing by.
+  Codex on the tiling). arch-C: Assembly increment 2 INTEGRATED (77447a7f5; controller re-gated:
+  build green 9005, cordon OK, census 36, payoff isolation verified — primed drivers sorryAx via
+  case1'/case2', via_engine footprint UNCHANGED, no cite/no new axiom). L5' = the summit-home for
+  the L5 fold-body proof (target MonumentAssembly.leaf_stepInv_of_path', NOT baked atlas L5).
+  arch-C next → hygiene window (safe items). SUBSUMPTION parked post-summit (owed-register;
+  baked-statement change, NOT hygiene). carto: map GREEN + current, standing by.
   DECORRELATION LOG: two blind instruments converged on boostReady (elder frame-only + seat-L4).
   STANDING ACTION: when Codex bufv05qfv verdict lands (via seat-L4), RELAY it to the elder — its
   caveat: a Codex wrinkle in the ancestor induction forces a (b)-statement re-check before
@@ -36,8 +39,8 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   REMAINING TO SUMMIT: boostReady → descent → lastLayer_clear_preserves → L5 assembly (THE
   LONGEST LINK; §D.3 fully provisioned) → L7 commissioning (startable) → summit swap via primed
   drivers → SUMMIT-RETIRE (elder bless + operator ceremony) → cite-deletion (WITH operator).
-  Boost instruments CONVERGED (TRUE+CARRIED, u_p|b_i ⟺ i>J₁; battery banked). Census 35 =
-  ~10 live + 25 fossil. ELDER: poll TAIL WINDOW (...d30ba3). Dormant: L3T, L6, M4B, M7B.
+  Boost instruments CONVERGED (TRUE+CARRIED, u_p|b_i ⟺ i>J₁; battery banked). Census 36 =
+  ~11 live (+L5' skeleton) + 25 fossil. ELDER: poll TAIL WINDOW (...d30ba3). Dormant: L3T, L6, M4B, M7B, seat-L4.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
