@@ -14427,3 +14427,36 @@ holds: the shear verification (against Aoyagi/worked.tex), the recoord-HOME desi
 component vs shearφ), the Gap B delta-read (can proceed independent — staging survives), hparent, the
 appendResidDescent-hpos note, and the non-strict pin. pnp-fan's tasks all show complete — certificate
 expected. The machine is fully parallel again with every lane behind a verified statement or a named hold.
+
+## 2026-07-23 ~06:10 UTC — ⚠⚠ THE THREE-WAY CONVERGENCE: the step map's normalization is under-faithful — ONE design question to the elder
+
+pnp-fan's certificate (threads/L7/fan-design-certificate.md, 35k, + its decorrelated Codex — BANKED,
+verified on disk) completes a three-way convergence of INDEPENDENT elaborations:
+1. The elder's own cap finding (the cap-restoring basis change acts on descended-layer coords).
+2. pnp-transport (canonShearOf misses the deeper recoordinatization; exact 2222 witness; theorem TRUE
+   for the faithful clear).
+3. pnp-fan: the COVER fix is FIRM (fan the pivot: `pivot ∈ canonCenterOf` replacing the value-pin;
+   cover TRUE over the fanned atlas, canonShearOf unchanged FOR THE COVER; leafOf many-to-one fine;
+   thread-35's cover_mechanism.py already verified the fanned tree) — BUT the VALUE leaves need each
+   chart's shear to FIX ITS PIVOT (hshear_pivot), and canonShearOf writes the strict interior ⟹ fanned
+   interior pivots are UNSATISFIABLE with the single shear ⟹ the shear FANS with the pivot: (pivot,
+   pivot-fixing shear) PAIRS, one normalization per affine chart — the standard resolution picture.
+
+⚠ CORRECTION OF RECORD: **L1 and L3 are COUPLED.** The "canonShearOf is pivot-independent ⟹ L1
+orthogonal to L3" call (elder concluded, controller ratified, ~L1-first push) is CORRECTED — the elder's
+ORIGINAL coupled-redesign instinct was right. (L1's bake itself remains additive + payoff-isolated — the
+value-pin FORM survives; what changes is that the pinned OBJECT generalizes to a per-pivot family.)
+
+THE ONE DESIGN QUESTION (elder, charged): the faithful per-edge step structure — SINGLE block blow-up
+(fan the shear per interior pivot) vs COMPOSITE of hypersurface blow-ups (every fan pivot a
+shear-normalized corner; interior-pivot problem dissolves; reconciles per-edge canonCenterOf with the
+engine's per-node dCenterOfNode; the engine proves its cover shear-STRIPPED — cover decoupled from
+value). The composite picture plausibly supplies the deeper recoordinatization TOO — one faithful
+structure resolving all three findings. Verify against Aoyagi/worked.tex (the ∏C^(s) recoordinatized
+product). SUBSIDIARY sequencing in the ruling: the firm cover fix; salvage option (b) (own cover fold,
+Core atoms only, ONE new block-atom lemma (Q); option (a) needs 4 unproven bridges); Gap B merges
+independent; hparent; the non-strict pin.
+
+LANES: seat-L4C grinding the safe base; pnp-fan DONE (certificate banked, dormant); pnp-transport
+re-flushing its witness artifacts; everything shear-touching HOLDS on the ruling. The expedition's
+decisive design round: the faithful step map, once, from the source.
