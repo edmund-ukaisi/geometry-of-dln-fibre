@@ -112,18 +112,24 @@ theorem case2_preserves_stepInv'
   -- step-form `realBranch_multiAffine_step`: parent slot (`hinv.2`) + child branch (`hbranch`) → child slot.
   exact realBranch_multiAffine_step hpos e p ed hlayer hbranch hinv.2
 
-/-- **Consume-fit regression (lane 4, seat-L3T2).** The `GeneratorCleared` datum EMITTED by
-`lastLayer_clear_preserves` at an `S = L` clear (child `q.extend ed₁`) is EXACTLY the shape
-`terminal_edge_stepInv` CONSUMES as `hgen` at that node — and likewise its `LastLayerInv` output is the
-`hinv` input. The composition elaborates with NO defeq surgery, so the two ∃-shapes cannot drift (the
-point of the single `GeneratorCleared` def, family ruling item 4). A permanent wiring check: statement
-TRUE without proving either leaf (both sorried upstream), so it is a fit regression, not new content. -/
+/-- **Consume-fit regression (lane 4, seat-L3T2).** The CONDITIONAL `GeneratorCleared` datum EMITTED by
+`lastLayer_clear_preserves` at an `S = L` clear (child `q.extend ed₁`), once discharged by `hcleared`
+(`child.cleared ≠ 0`, L5-supplied via `widthMinUpto_pos` at the terminal-triggering rollover), is EXACTLY
+the shape `terminal_edge_stepInv` CONSUMES as its unconditional `hgen` — and likewise its `LastLayerInv`
+output is the `hinv` input. The composition elaborates with NO defeq surgery beyond that one modus ponens,
+so the two ∃-shapes cannot drift (the point of the single `GeneratorCleared` def, family ruling item 4).
+The lastLayer REVISED signature (hparent + carried conditional `hgen`) threads here: `hparent`/`hgen`
+supplied, the conditional output `mp`'d by `hcleared`. A permanent wiring check: statement TRUE without
+proving either leaf (both sorried upstream), so it is a fit regression, not new content. -/
 example {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (q : TreePath d) (ed₁ : TreeEdge d q) (hlast : ed₁.nextState.layer + 1 = N)
+    (hparent : q.conState.layer + 1 = N)
     (hinv : LastLayerInv d e (supportAt d q.conState.layer q.conState.cleared) q)
+    (hgen : q.conState.cleared ≠ 0 → GeneratorCleared d e q)
     (hbranch₁ : (q.extend ed₁).IsRealBranch e)
     (ed₂ : TreeEdge d (q.extend ed₁)) (hterm : N ≤ ed₂.nextState.layer)
+    (hcleared : (q.extend ed₁).conState.cleared ≠ 0)
     (hbranch₂ : ((q.extend ed₁).extend ed₂).IsRealBranch e) :
     ∃ (r : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ)
       (i₀ : Fin (d (Fin.last N) * d 0)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
@@ -136,7 +142,11 @@ example {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
         ∧ (∀ u ∈ foldRegion d e ((q.extend ed₁).extend ed₂),
             (coreGen d e i₀ ∘ foldG d e ((q.extend ed₁).extend ed₂)) u
               = foldB d e ((q.extend ed₁).extend ed₂) u * unit u) := by
-  obtain ⟨hinv₂, hgen₂⟩ := lastLayer_clear_preserves d hN hpos e q ed₁ hlast hinv hbranch₁
-  exact terminal_edge_stepInv d hN hpos e (q.extend ed₁) ed₂ hterm hinv₂ hgen₂ hbranch₂
+  obtain ⟨hinv₂, hgen₂⟩ :=
+    lastLayer_clear_preserves d hN hpos e q ed₁ hlast hparent hinv hgen hbranch₁
+  -- conditional output → unconditional `hgen` for `terminal_edge_stepInv`, via `hcleared`
+  -- (L5-supplied: the terminal-triggering rollover fires at `widthMinUpto N ≤ cleared`, and
+  --  `widthMinUpto_pos` gives `cleared ≥ 1` at the parent `q.extend ed₁`).
+  exact terminal_edge_stepInv d hN hpos e (q.extend ed₁) ed₂ hterm hinv₂ (hgen₂ hcleared) hbranch₂
 
 end DLNFibre.DLN.Aoyagi

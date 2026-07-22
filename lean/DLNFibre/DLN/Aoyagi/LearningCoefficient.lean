@@ -206,6 +206,30 @@ theorem exists_flatten (d : Fin (N + 1) → ℕ) :
   · exact (measurePreserving_tupleFlat d).symm _
   · funext i row col; rfl
 
+/-- **The canonical block-respecting flatten** `Rep_d ≃ₜ ℝ^flatDim` — the reindexing `(tupleFlat d).symm`,
+the CONCRETE `e` the summit builds (`exists_flatten`). Each flat layer-`ℓ` coordinate is exactly one entry
+of `A_{ℓ+1}`, so `coreGen` is genuinely per-layer multilinear here. Pinned in the homogeneity atoms in
+place of an abstract `∀ e` + `he_lin`, which the unipotent scrambler on `d = (1,1,1)` refutes (bare
+`he_lin` does not force the block structure: `coreGen 0 u = u₀·(u₀+u₁) = u₀u₁ + u₁²` there, degree-2 in
+layer 0). The abstracted `he0`/`he_lin`/`MeasurePreserving` become PROVED properties of this concrete `e`. -/
+noncomputable def canonFlatten (d : Fin (N + 1) → ℕ) :
+    (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d :=
+  { (tupleFlat d).symm.toEquiv with
+    continuous_toFun := continuous_tupleFlat_symm d
+    continuous_invFun := continuous_tupleFlat d }
+
+/-- `canonFlatten` is linear — a coordinate reindexing (each output coord is one input coord, `rfl`). -/
+theorem isLinearMap_canonFlatten (d : Fin (N + 1) → ℕ) : IsLinearMap ℝ (⇑(canonFlatten d)) :=
+  ⟨fun x y => by funext i row col; rfl, fun c x => by funext i row col; rfl⟩
+
+/-- `canonFlatten` sends the origin (the deepest tuple) to the origin. -/
+theorem canonFlatten_zero (d : Fin (N + 1) → ℕ) : canonFlatten d 0 = 0 := by
+  funext i row col; rfl
+
+/-- `canonFlatten` is measure-preserving (from `tupleFlat`). -/
+theorem measurePreserving_canonFlatten (d : Fin (N + 1) → ℕ) :
+    MeasurePreserving (canonFlatten d) := (measurePreserving_tupleFlat d).symm _
+
 /-- **The deepest-point + flatten reduction.** `rlctGlobal (lossDLN d 0) = rlctAt (∑ (coreGen d e)ᵢ²)
 0`: the global RLCT of the zero-product loss equals the local RLCT of the flattened core
 `∑ (∏C)ᵢⱼ²` at the origin. Route (`GlobalHomog`): pick a CANONICAL **linear** measure-preserving

@@ -1195,36 +1195,42 @@ The Gap-B redesign splits `Deg1SupportedSlot`'s two conjuncts to their correct m
 The two together rebuild the child `Deg1SupportedSlot`; seat-L3T2 proves the homogeneity atoms, the cap
 stays a named frontier leaf (the coupled-corank ≥ 2 confinement IS the wall). -/
 
-/-- **Gap-B base atom (he_lin).** Each flattened core generator is degree-1-homogeneous on every layer
-`ℓ < N` (`HomogeneousDeg1On` over `layerCoords d ℓ`, on `Set.univ`): a product term of `coreGen` carries
-exactly one factor per layer (multilinearity across layers), so it is `AffineOn` AND vanishes when the
-whole layer is zeroed. Needs `e` LINEAR (`he_lin`) — the root anchoring lives on L5's base case by
-design. Guarded at `ℓ < N` (`layerCoords d ℓ = ∅` for `ℓ ≥ N`, where the vanishing clause degenerates).
-Sympy-verified across six dimension vectors, uniform over all `ℓ < N` (`threads/L3T/verify/gapb_check.py`). -/
+/-- **Gap-B base atom (`canonFlatten` pin).** Each flattened core generator at the canonical block-respecting
+flatten `canonFlatten d` is degree-1-homogeneous on every layer `ℓ < N` (`HomogeneousDeg1On` over
+`layerCoords d ℓ`, on `Set.univ`): a product term of `coreGen` carries exactly one factor per layer
+(multilinearity across layers), so it is `AffineOn` AND vanishes when the whole layer is zeroed. The
+`canonFlatten` pin is load-bearing — an abstract `∀ e` + `he_lin` is FALSE-as-stated (the unipotent
+scrambler on `d = (1,1,1)`, `coreGen 0 u = u₀u₁ + u₁²`; `he_lin` alone does not force the per-layer block
+structure). Guarded at `ℓ < N` (`layerCoords d ℓ = ∅` for `ℓ ≥ N`, where the vanishing clause degenerates).
+Sympy-verified for the reindexing case across six dimension vectors, uniform over `ℓ < N`
+(`threads/L3T/verify/gapb_check.py`). -/
 @[blueprint]
 theorem coreGen_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he_lin : IsLinearMap ℝ ⇑e)
     (i : Fin (d (Fin.last N) * d 0)) (ℓ : ℕ) (hℓ : ℓ < N) :
-    HomogeneousDeg1On (coreGen d e i) (layerCoords d ℓ) Set.univ := by
-  -- map: B-L3T-coreGen-layerHomogeneous (BASE atom; he_lin; multilinear-across-layers; sympy ℓ<N)
+    HomogeneousDeg1On (coreGen d (canonFlatten d) i) (layerCoords d ℓ) Set.univ := by
+  -- map: B-L3T-coreGen-layerHomogeneous (BASE atom; canonFlatten pin; multilinear-across-layers; sympy ℓ<N)
   sorry
 
-/-- **Gap-B step / standalone (conjunct-2 only).** The fold residual is degree-1-homogeneous on every
-layer `ℓ` at or above the support layer (`HomogeneousDeg1On` over `layerCoords d ℓ`), on the fold region.
-This supplies the `PerLayerDeg1From` (conjunct-2) of the child `Deg1SupportedSlot` — it does NOT supply
-the cap (conjunct-1): homogeneity is over `layerCoords` and is INDEPENDENT of the running-min cap.
-Induction on `p`: base = `coreGen_layerHomogeneous`; step = `homogeneousDeg1On_comp_of_fixing` reusing
-the banked step-map fixing/agreement (`u_pivot` is excluded at δ=1 — the constant-1 transform fails the
-vanishing clause). `he_lin` threaded from L5; non-terminal guard `¬ N ≤ p.conState.layer` + `ℓ < N`. -/
+/-- **Gap-B step / standalone (conjunct-2 only).** The fold residual (at `canonFlatten d`) is
+degree-1-homogeneous on every layer `ℓ` at or above the support layer (`HomogeneousDeg1On` over
+`layerCoords d ℓ`), on the fold region. This supplies the `PerLayerDeg1From` (conjunct-2) of the child
+`Deg1SupportedSlot` — it does NOT supply the cap (conjunct-1): homogeneity is over `layerCoords` and is
+INDEPENDENT of the running-min cap. Induction on `p`: base = `coreGen_layerHomogeneous` (same
+`canonFlatten` pin). PROOF-DESIGN RIDER (faithful-shear round, pending): the step was scoped as
+`homogeneousDeg1On_comp_of_fixing`, which assumes the step map FIXES layers `≥ S+1`; under the faithful
+pivot-parametric normalization (which recoordinatizes layer `S+1`, `A_{S+1} → A_{S+1}·Q⁻¹`) that
+assumption no longer holds, so the step shifts to a `comp_of_linear` variant (the recoord is linear, so
+per-layer degree is preserved) — a seat-L3T2 proof concern; the statement is unchanged. Non-terminal
+guard `¬ N ≤ p.conState.layer` + `ℓ < N`. -/
 @[blueprint]
 theorem foldResid_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he_lin : IsLinearMap ℝ ⇑e)
     (p : TreePath d) (hnonterm : ¬ N ≤ p.conState.layer)
-    (hbranch : p.IsRealBranch e)
+    (hbranch : p.IsRealBranch (canonFlatten d))
     (j : Fin (foldNR d p)) (ℓ : ℕ)
     (hℓsup : supportLayerOf p.conState ≤ ℓ) (hℓN : ℓ < N) :
-    HomogeneousDeg1On (foldResid d e p j) (layerCoords d ℓ) (foldRegion d e p) := by
-  -- map: B-L3T-foldResid-layerHomogeneous (STEP; conjunct-2 only; induction base = coreGen atom)
+    HomogeneousDeg1On (foldResid d (canonFlatten d) p j) (layerCoords d ℓ)
+      (foldRegion d (canonFlatten d) p) := by
+  -- map: B-L3T-foldResid-layerHomogeneous (STEP; conjunct-2 only; canonFlatten pin; base = coreGen atom)
   sorry
 
 /-- **Gap-B cap — conjunct-1 descent ⟨FRONTIER LEAF; NOT homogeneity⟩.** The child slot's degree-1
@@ -1236,9 +1242,12 @@ of `Deg1SupportedSlot`, descended parent → child. It CONSUMES the shear (`cano
 the `d=![1,2,1]` base instance, `r = y′₀`) — a named frontier leaf, NOT strike-able. Consumes the
 parent's full `Deg1SupportedSlot` (`hslot`); `foldResid_layerHomogeneous` supplies conjunct-2 alongside,
 and the two rebuild the child `Deg1SupportedSlot`. This is `realBranch_multiAffine_step`'s conjunct-1 —
-kept SEPARATE (the homogeneity-subsume is retracted). -/
+kept SEPARATE (the homogeneity-subsume is retracted). `hpos` (elder ruling this round) — the cap's
+support-tracking uses `widthMinUpto ≥ 1`, which needs `d k ≥ 1`; consistent with the sibling
+`realBranch_multiAffine_step`. (The shear-consuming step re-authors to the faithful pivot-parametric
+normalization in the pending N_pivot round; the statement is `canonShearOf`-phrased for now, e-invariant.) -/
 @[blueprint]
-theorem realBranch_appendResidDescent {N : ℕ} (d : Fin (N + 1) → ℕ)
+theorem realBranch_appendResidDescent {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
     (hbranch : (p.extend ed).IsRealBranch e)
@@ -1325,11 +1334,19 @@ theorem case1_preserves_stepInv
 /-- **L(last)-clear preservation (fix (2), new leaf; cone member 10).**
 **COLLAPSE:** one construction pin `(p.extend ed).IsRealBranch e` + dispatch guards + carried `hinv`;
 the center/cover/descend/shear constraints are DERIVED off the pin (`realBranch_*`). A CLEAR edge at the last layer
-(`ed.nextState.layer + 1 = N` — child-form guard, PIN 1: clears KEEP the layer, so the child sits at
-`N−1`; the rollover ADVANCES, so it is EXCLUDED here and owned by the transport) preserves `LastLayerInv`:
-the newly-cleared slot flips from the center-linear (left) disjunct to the unit (right) disjunct, the
-surviving slots carry over, and the accumulated `StepInv` divisibility transports. Case-agnostic — any edge
-with `child + 1 = N` is a clear at `S = L`, so this covers case-2 / case-1(2) / case-1(1) uniformly.
+guarded by BOTH `hlast` (child at `N−1`) AND `hparent` (parent at `N−1`) — together forcing
+`parent.layer = child.layer = N−1`, a layer-PRESERVING clear/merge. This excludes BOTH rollover
+directions: OUT of `N−1` (child at `N`, fails `hlast`) and — the defect the child-form guard alone
+admitted — the δ=0 rollover INTO `N−1` from `N−2` (parent at `N−2`, fails `hparent`), whose pure pullback
+of the vanishing-at-0 interior parent makes `GeneratorCleared` false. The parent guard is load-bearing.
+The output `GeneratorCleared` is CONDITIONAL on `child.cleared ≠ 0` — born at the first genuine clear
+(`cleared → 1`, where the δ=1 strict transform dehomogenises the pivot to a unit), VACUOUS for a
+case-1(1) merge that keeps `cleared = 0`; and the carried conditional `hgen` transports an already-born
+unit through a δ=0 subsequent clear (`cleared ≥ 1`) — the case the bare `LastLayerInv` disjunction does
+not force (it admits all-left even at `cleared ≥ 1`, reproducing the same zero-pullback). Preserves
+`LastLayerInv`: the surviving slots carry over, the accumulated `StepInv` divisibility transports.
+Case-agnostic — any edge with `child + 1 = N` is a clear at `S = L`, covering case-2 / case-1(2) /
+case-1(1) uniformly.
 
 **C′ — PINNED-COMPUTED (elder ruling 2026-07-22):** as in the interior leaves, the `∃ C'` UPGRADES to
 `C′ = supportAt(child state)`; at `S = L` the descend EXHAUSTS to the born-unit `∅` (`supportAt (N−1) J = ∅`
@@ -1346,13 +1363,15 @@ theorem lastLayer_clear_preserves
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlast : ed.nextState.layer + 1 = N)
+    (hparent : p.conState.layer + 1 = N)
     (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hgen : p.conState.cleared ≠ 0 → GeneratorCleared d e p)
     -- COLLAPSE: per-field hcenter/hcover/hdesc/hwc → derived lemmas off this one construction pin
     (hbranch : (p.extend ed).IsRealBranch e) :
     LastLayerInv d e
         (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed)
-      ∧ GeneratorCleared d e (p.extend ed) := by
-  -- map: B-Llast-clear-preserves (S=L clear flips center-linear→unit; EMITS GeneratorCleared via Kronecker q)
+      ∧ ((p.extend ed).conState.cleared ≠ 0 → GeneratorCleared d e (p.extend ed)) := by
+  -- map: B-Llast-clear-preserves (S=L clear flips center-linear→unit; hparent + carried-cond GeneratorCleared)
   sorry
 
 /-- **The terminal-edge transport (elder rider; re-parented to `LastLayerInv`, fix (2)).** The last
