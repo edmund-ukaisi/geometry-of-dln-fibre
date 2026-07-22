@@ -21,8 +21,9 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   value-pin. (2) descent δ=1 case12/case2 — cofactor gap, likely coupled to the shear-pin. (3) L7
   FALSE as stated — single pinned pivot can't cover (ε·e_q escapes); needs pivots FANNED. ELDER
   charged with a COUPLED one-round spine redesign (shear value-pin + pivot fan; co-design to bake
-  once) → routes through a DECORRELATED pen-and-paper/Codex coupling-check before render/bake (damp
-  the gain — elder's last call misjudged the shear-pin). LESSON: a delta-read gate ≠ closed; pair it
+  once). DECORRELATED CHECK LIVE: pnp-coupling seat adjudicating (in PARALLEL with the elder,
+  frame-in/hypothesis-out) whether the shear value-pin supplies BOTH boostReady-(b) γ-clearing AND
+  the descent δ=1 cofactor — i.e. one fix or two; reconcile with the elder's design before render. LESSON: a delta-read gate ≠ closed; pair it
   with a proof-pressure gate before claiming "closed". FROZEN: seat-L4B holds (b) [keeps safe (a)];
   seat-L7 holds the fan [its bridge lane ready, engine cover LANDED]; descent lands uncontested arms
   (δ=0+case11) + factors the deep arm as a tagged on-cone cofactor obligation. seat-L4 stood down
