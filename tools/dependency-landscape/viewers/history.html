@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lean dependency landscape history</title>
+  <link rel="stylesheet" href="landscape.css">
+  <link rel="stylesheet" href="history.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>Lean dependency landscape · Git history</h1>
+    <p>Hourly playback of the expedition's source-resolved declaration DAG, by first-parent integration time.</p>
+  </div>
+  <nav>
+    <a href="landscape.html">Current landscape</a>
+    <a href="declarations.html">Exact declarations</a>
+    <a href="density.html">Density</a>
+    <a href="index.html">Modules</a>
+    <a href="README.md">Method</a>
+  </nav>
+</header>
+<main>
+  <aside>
+    <div class="playback">
+      <button id="back" title="Previous hourly bucket">←</button>
+      <button id="play" title="Play/pause">▶</button>
+      <input id="timeline" type="range" min="0" value="0">
+      <button id="forward" title="Next hourly bucket">→</button>
+    </div>
+
+    <div class="time-readout">
+      <div id="bucket-time"></div>
+      <div id="commit-meta"></div>
+      <div id="commit-subject"></div>
+    </div>
+    <canvas id="spark"></canvas>
+    <div class="spark-legend">
+      <span class="decl">declarations</span><span class="goal">goal cone</span>
+      <span class="debt">sorry</span><span class="work">commits</span>
+    </div>
+    <div class="play-hint">Space: play/pause · ←/→: step · click chart to seek</div>
+
+    <div class="control-grid">
+      <label>Scope
+        <select id="scope">
+          <option value="full" selected>Full codebase</option>
+          <option value="goal">Goal cone</option>
+        </select>
+      </label>
+      <label>Horizontal lanes
+        <select id="lanes">
+          <option value="role" selected>Proof roles</option>
+          <option value="area">Code areas</option>
+        </select>
+      </label>
+      <label>Within each lane
+        <select id="grouping">
+          <option value="strands" selected>Cross-facet strands</option>
+          <option value="total">One population</option>
+        </select>
+      </label>
+      <label>Blur height
+        <select id="blur">
+          <option value="1">Exact layers</option>
+          <option value="2" selected>2-layer bands</option>
+          <option value="4">4-layer bands</option>
+          <option value="8">8-layer bands</option>
+        </select>
+      </label>
+      <label>Ribbon threshold
+        <select id="threshold">
+          <option value="1">All edges</option>
+          <option value="2">At least 2</option>
+          <option value="10" selected>At least 10</option>
+          <option value="50">At least 50</option>
+        </select>
+      </label>
+      <label>Playback speed
+        <select id="speed">
+          <option value="1200">½×</option>
+          <option value="650" selected>1×</option>
+          <option value="320">2×</option>
+          <option value="160">4×</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="kpis" class="panel"></div>
+    <div id="delta" class="panel compact-panel"></div>
+    <div id="activity" class="panel activity-panel"></div>
+    <div id="semantics" class="panel"></div>
+    <div id="hubs" class="panel"></div>
+    <div id="details" class="panel"><em>Select a population node.</em></div>
+    <div id="legend" class="legend"></div>
+
+    <p class="note">Historical dependencies and proof roles are source-derived heuristics, not elaborator facts. Buckets use first-parent committer time: a merged side branch enters atomically when its coherent state reaches this lineage. The goal cone follows the best available headline declaration in each snapshot. Same-height cycles are condensed so every visible ribbon flows upward. No historical commit was checked out or built.</p>
+  </aside>
+  <section id="stage">
+    <canvas id="canvas"></canvas>
+    <div id="top-axis" class="axis top">HIGH LEVEL · TERMINAL RESULTS / UNUSED ROOTS</div>
+    <div class="axis bottom">FOUNDATIONS · SHARED PREREQUISITES</div>
+    <div id="scope-badge"></div>
+    <div id="tooltip"></div>
+  </section>
+</main>
+<script src="history-data.js"></script>
+<script src="history.js"></script>
+</body>
+</html>

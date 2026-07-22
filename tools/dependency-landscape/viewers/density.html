@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lean declaration density by dependency layer</title><link rel="stylesheet" href="density-viewer.css"></head>
+<body><header><div><h1>Lean declaration density by dependency layer</h1><p>A gestalt profile of the dependency forest: high-level roots at the top, shared foundations below.</p></div>
+<nav><a href="index.html">Modules</a><a href="declarations.html">Declarations</a><a href="landscape.html">Landscape</a><a href="history.html">History</a><a href="density.svg">Static SVG</a><a href="README.md">Method</a></nav></header>
+<main><div class="controls">
+<label>Scope<select id="scope"><option value="all">Full declaration forest</option><option value="goal">Goal cone</option><option value="frontier">Sorry-frontier cone</option></select></label>
+<label>Colour by<select id="classification"><option value="kind">Declaration kind</option><option value="area">Code area</option></select></label>
+<label>Band width<select id="scale"><option value="sqrt">Square-root density</option><option value="linear">Linear count</option><option value="percent">Composition only (100%)</option></select></label>
+<div id="summary"></div></div><div id="legend" class="legend"></div>
+<div class="chart"><svg id="density" viewBox="0 0 1200 1140" aria-label="Layered declaration density chart"></svg></div>
+<p class="note">Layer 0 consists of top-level declarations with no project-internal consumers, including genuinely terminal results and dangling/unused declarations. Higher layer numbers move downward toward shared prerequisites. Square-root width preserves the silhouette while keeping lower-population foundational layers visible; segment proportions remain linear within each band.</p>
+</main><div id="tooltip"></div><script src="declaration-data.js"></script><script src="density-viewer.js"></script></body></html>

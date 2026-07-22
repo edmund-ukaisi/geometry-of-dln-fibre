@@ -1,0 +1,59 @@
+{
+  "name": "aoyagi-engine",
+  "title": "aoyagi-engine — live expedition",
+  "leanRoot": "lean",
+  "projectPrefix": "DLNFibre",
+  "bucketHours": 1,
+  "goalLabel": "Aoyagi goal cone",
+  "goalCandidates": [
+    "aoyagi_learning_coefficient",
+    "rlct_lossDLN_zero_eq_half_cCodim_aoyagi",
+    "rlct_lossDLN_eq_half_cCodim_add_shift",
+    "aoyagiLambda"
+  ],
+  "areas": [
+    {"label": "Core", "short": "Core", "color": "#38bdf8",
+     "match": ["^DLNFibre\\.Core"]},
+    {"label": "RLCT validation", "short": "RLCT validation", "color": "#4ade80",
+     "match": ["\\.DLN\\.RLCT\\.Validate"]},
+    {"label": "RLCT engine", "short": "RLCT engine", "color": "#f59e0b",
+     "match": ["\\.DLN\\.RLCT\\.Engine"]},
+    {"label": "RLCT foundations", "short": "RLCT foundations", "color": "#22d3ee",
+     "match": ["\\.DLN\\.RLCT\\.Foundations", "\\.DLN\\.RLCT\\.[A-Za-z0-9]+$", "\\.DLN\\.RLCT$"]},
+    {"label": "other DLN", "short": "other DLN", "color": "#a78bfa",
+     "match": ["^DLNFibre\\.DLN"]},
+    {"label": "other", "short": "other", "color": "#94a3b8", "match": []}
+  ],
+  "areaOrder": [0, 3, 2, 1, 4, 5],
+  "roles": [
+    {"label": "goal / assembly", "short": "goal / assembly", "color": "#fbbf24",
+     "match": ["aoyagi_learning_coefficient", "rlct_lossDLN", "aoyagiLambda",
+               "aoyagiTheta", "Skeleton", "headline", "capstone", "assembl"]},
+    {"label": "recursion / descent", "short": "recursion / descent", "color": "#fb7185",
+     "match": ["descent", "peel", "chain", "telescop", "induct", "recurs",
+               "boost", "deepest", "\\bnf\\b", "normal_?form"]},
+    {"label": "charts / coverage", "short": "charts / coverage", "color": "#2dd4bf",
+     "match": ["chart", "atlas", "cover", "gauge", "glu", "patch", "polar",
+               "bigcell", "pivot"]},
+    {"label": "analysis / integration", "short": "analysis / integration", "color": "#60a5fa",
+     "match": ["integr", "measure", "volume", "continuous", "deriv", "psi",
+               "eps", "\\bnorm", "smooth", "analytic", "asympt", "threshold"]},
+    {"label": "algebra / rank", "short": "algebra / rank", "color": "#c084fc",
+     "match": ["\\bdet", "rank", "schur", "codim", "block", "matrix", "minor",
+               "corank", "flat", "localiz", "ideal", "prime"]},
+    {"label": "contracts / interfaces", "short": "contracts", "color": "#f472b6",
+     "match": ["interface", "cited", "cordon", "axiom", "contract", "\\bspec\\b"]},
+    {"label": "foundations / other", "short": "foundations / other", "color": "#94a3b8",
+     "match": []}
+  ],
+  "roleOrder": [6, 4, 2, 3, 1, 5, 0],
+  "tags": [
+    {"label": "LANDED", "match": "\\bLANDED\\b|\\bland(s|ed)\\b"},
+    {"label": "REFUTED / RETRACTED", "match": "REFUT|RETRACT|\\brevert"},
+    {"label": "RECALIBRATION", "match": "recalibrat|REFINED|re-?scop"},
+    {"label": "AUDIT PASS", "match": "SURVIVED|audit.{0,12}PASS|\\bPASS\\b"},
+    {"label": "BANK / MERGE", "match": "Merge pull request|\\bbank(ed)?\\b"},
+    {"label": "CLOSE", "match": "\\bclose[:d]?\\b|\\bCLOSE\\b"},
+    {"label": "DIRECTIVE", "match": "directive|operator call"}
+  ]
+}

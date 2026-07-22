@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lean declaration dependency forest</title><link rel="stylesheet" href="graph-viewer.css"></head>
+<body><header><div><h1>Lean declaration dependency forest</h1><p>Project declarations; constants used in types and bodies point upward to their consumers.</p></div>
+<nav><a href="index.html">Module graph</a><a href="density.html">Layer density</a><a href="landscape.html">Landscape</a><a href="history.html">History</a><a href="README.md">Method</a></nav></header>
+<main><aside>
+<label>View<select id="view-select"><option value="all">Full dependency forest</option><option value="goal">Goal cone</option><option value="frontier">Sorry-frontier cone</option><option value="roots">Top-level roots only</option><option value="component">Selected component</option></select></label>
+<label>Search<input id="search" placeholder="module or declaration name"></label>
+<div id="search-results"></div><div class="buttons"><button id="fit">Fit view</button><button id="labels">Labels: auto</button></div>
+<div id="stats" class="panel"></div><div id="details" class="panel"><em>Select a node.</em></div>
+<div class="legend"><span class="swatch goal"></span> goal <span class="swatch frontier"></span> current frontier <span class="swatch sorry"></span> contains sorry <span class="swatch active"></span> active-lane-only <span class="swatch cone"></span> goal cone <span class="swatch normal"></span> other</div>
+</aside><section id="graph-wrap"><canvas id="graph"></canvas><div class="axis top">HIGH LEVEL · goals, frontier, unused roots</div><div class="axis bottom">FOUNDATIONS · shared dependencies</div><div id="tooltip"></div></section></main>
+<script src="declaration-data.js"></script><script src="graph-viewer.js"></script></body></html>
