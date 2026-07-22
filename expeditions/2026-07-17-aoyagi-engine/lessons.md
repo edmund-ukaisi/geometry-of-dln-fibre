@@ -161,3 +161,13 @@ one is present in (or derivable from) the stub's stated hypotheses — mechanica
 memory.** The decorrelated proof-seat read remains the backstop; the elder's degeneracy
 discriminator (does the conclusion degenerate at the boundary the dropped hypothesis excludes?)
 is the fix-once scoping tool.
+
+**Extension (same day, second instance — the SHAPE dimension):** the multiAffine edge-form miss.
+The sufficiency check verified the stub TRUE-as-stated but never cross-checked its OUTPUT SHAPE
+(the parent's residual, at the edge) against the consumers' NEED (the child's slot property) —
+so a true, well-hypothesized stub was still undischargeable by every consumer. The rule extends:
+at the stub-mint gate, check BOTH directions — (i) hypotheses: each invoked lemma's premises
+present in the stub (the hpos instance); (ii) shape: the stub's conclusion instantiable to what
+each named consumer actually consumes (node/edge, parent/child, the exact carrier). Where the
+gate-holder cannot verify a consumer's internals, route the shape question to the proof-seat
+consumer BEFORE the mint — the decorrelated proof-seat read caught both instances.
