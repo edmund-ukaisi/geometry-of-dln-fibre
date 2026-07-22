@@ -12360,3 +12360,30 @@ rewritten to ELDER SECOND READ ON STAGING 2080757ea. DAG SVG regenerated at
 /tmp/aoyagi-dag-2026-07-22.svg (UNCOMMITTED per operator standing instruction): redirect staged
 layer + elder gate as the one purple gate, L8 flipped PROVEN, L6 live with the hjac ruling pending,
 DivBirthInv banked as the discriminator, E-lane panel unchanged.
+
+## 2026-07-22 ~11:20 UTC — L6 SPECIFY MILESTONE: the (★) unification; hjac framing RETRACTED-in-part
+
+**seat-L6 landed L6 SPECIFY green** (LeafChartWire.lean on origin/expedition/aoyagi-engine-L6;
+8450 jobs; signature statement-identical to MonumentAtlas.leafPath_chartGeometry). ALL fields
+proven except three — hjac, hexcep_null, hexcep_meas — including hg_inj via a NEW reusable fold
+lemma `injOn_pathMap_off_critical` (pathMap injective off {jacDet=0}; per-step
+{jacWeight jexp=0}={jacDet σ=0} via hσ_jac).
+
+**The find: the three remaining sorries UNIFY.** All reduce to one coherence (★) = each step's
+pivot coordinate is preserved by all deeper steps (the elaboration template's boost-lockstep
+ledger, in coordinate form). With (★): hjac composes in source coordinates (∏ jacWeight collapses,
+unit ≡ 1) and {jacDet g=0} = {jacWeight jac=0} = a source hyperplane union → null via
+MvPolynomial.volume_zeroSet_eq_zero. WITHOUT (★) the nullity is unreachable at this pin (no n-dim
+analytic zero-set nullity in Mathlib v4.29; GeoStep exposes σ analytic, not polynomial).
+
+**Controller framing correction (owned):** my elder trigger said the hjac ruling "does not gate
+the bake verdict (outside the staged diff)". RETRACTED IN PART: if the resolution pins (★) as an
+L6 hypothesis (FoldRealizes) or a GeoStep/GeoAtlasData field, it TOUCHES the staged MonumentAtlas
+— and ONE-BAKE requires any such touch to ride THIS round as an elder-flagged change. ADDENDUM
+sent to the elder mid-read: rule (1) hjac_tie semantics, (2) where (★) lives — including the
+third option that it is already DERIVABLE from the staged IsRealBranch e-param shear-pin (no
+statement touch, all three sorries close), (3) the bake interaction (touch ⟹ flagged change in
+this round: render applies → arch-C re-gates → new hash → delta-read; no-touch ⟹ bake verdict
+independent as originally framed). arch-C heads-up sent (hold the frozen tree; the flagged-change
+packet may now include the (★) edit). seat-L6 held: do NOT add (★) locally; stop-on-suspect
+correctly exercised.
