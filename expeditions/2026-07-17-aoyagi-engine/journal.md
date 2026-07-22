@@ -14093,3 +14093,27 @@ may subsume Gap B's homogeneity / illuminate the cap. FYI not a dependency (Gap 
 for the descent). STATE: L1 baked ✓; A-div done ✓; boostReady = ChainNF construction (seat-L4C + pnp-transport);
 Gap B = elder finalizing cap; descent 1 sorry; L7 fan = last spine call. The wall's heart is bigger than
 framed but bounded + buildable — build it for real.
+
+## 2026-07-23 ~00:30 UTC — boostReady split REFINED: ChainNF def not separable from the ε-table → abstract ChainCompat interface
+
+seat-L4C (building the ChainNF skeleton) stop-on-suspect'd a hidden assumption in MY split: the ChainNF
+DEF and pnp-transport's ε-table are NOT separable — the def's INDUCTING clause (the per-monomial exponents)
+IS the four-case threshold-transport rule. A divisibility-level ChainNF is the case11 COROLLARY, not the
+invariant; it does NOT induct (Codex's (x+z)y→(bx+z)y + (2,2,2) F=x+yz countermodels are exactly a form
+missing the ε threshold-crossing rule). So a skeleton sorried against a divisibility-level def would be a
+MISLEADING sorry (the step needs the stronger path-form as its IH) — the spike the gate guards. My split's
+"skeleton ∥ table" assumed separability; refined.
+
+RESOLUTION (confirmed option 2): seat-L4C builds the parallel-theorem skeleton with the ε-content as an
+EXPLICIT ABSTRACT `ChainCompat` predicate — the honest factoring (the ε-rule = a NAMED abstract obligation,
+NOT a spike). Validates the OUTER shape now (support decomp + path-monomial structure + boostReady wiring
+via deg1SupportedOn_boostForm) without committing to a wrong ε-rule; the ε-independent plumbing (κ
+injectivity via divBirthInv clause-4) proceeds. pnp-transport's certificate = the CONTENT that pins
+ChainCompat. The two coordinate the ChainCompat INTERFACE directly so the certificate is a clean slot-in.
+
+THE DECISIVE DETAIL (shape-risk pnp nails): the threshold BOUNDARY off-by-one — extraBlock is col ≥
+divTilde d_*, but the banked bLedger factors u_{b_{d_*}} only for col > divTilde d_* — which strict/non-strict
+choice DECIDES the def. The (2,2,2) acceptance test exercises it. Discipline: abstract-the-uncertain +
+validate-the-rest; elaborate-the-detail before transcribe (operator directive). seat-L4C's gate caught it
+before a wrong def churned. STATE unchanged otherwise: L1 baked, A-div done, Gap B (elder cap), descent
+1 sorry, L7 fan. boostReady = ChainNF (abstract skeleton building ∥ pnp-transport pinning the ε-rule).
