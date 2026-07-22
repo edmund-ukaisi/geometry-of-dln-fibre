@@ -55,4 +55,55 @@ theorem blockBlowupMap_fixes_of_pivot_or_offCenter {D : ℕ} (S : Finset (Fin D)
   · subst h; exact blockBlowupMap_apply_pivot S c₀ w
   · exact blockBlowupMap_fixes_offCenter S p w c₀ h
 
+/-! ## A2 — the `canonCenterOf` disjointness (freshness ⟹ earlier corner off the width-block) -/
+
+/-- **A2 (width-block disjointness)** — an earlier divisor's diagonal birth corner
+`cornerToFlat d a b` is NOT in the `widthMinUpto` block filter that `canonCenterOf` uses for
+`case2`/`case12`, PROVIDED the `DivBirthInv` clause-3 freshness `a = s.layer → b < s.cleared` holds.
+Pure `omega` on the filter predicate after collapsing the `image` by `tupIdxEquiv` injectivity: the
+corner's `(layer, col) = (a, b)`, and the block demands `a = layer ∧ cleared ≤ b`, contradicting
+freshness (`b < cleared`) when `a = layer`, and failing `q.1.1 = layer` when `a ≠ layer`. -/
+theorem cornerToFlat_notMem_widthBlock {d : Fin (N + 1) → ℕ} (s : ConState N) (a b : ℕ)
+    (i : Fin (flatDim d)) (hfresh : a = s.layer → b < s.cleared)
+    (hcf : cornerToFlat d a b = some i) :
+    i ∉ (Finset.univ.filter (fun q : tupIdx d =>
+        (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+          (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d) := by
+  -- Recover the corner tuple from `cornerToFlat`.
+  simp only [cornerToFlat] at hcf
+  split_ifs at hcf with hS hr hc
+  -- hcf : some (tupIdxEquiv d ⟨⟨⟨a, hS⟩, ⟨b, hr⟩⟩, ⟨b, hc⟩⟩) = some i
+  obtain rfl : tupIdxEquiv d ⟨⟨⟨a, hS⟩, ⟨b, hr⟩⟩, ⟨b, hc⟩⟩ = i := Option.some.injEq _ _ ▸ hcf
+  intro hmem
+  rw [Finset.mem_image] at hmem
+  obtain ⟨q, hq, hqi⟩ := hmem
+  rw [Finset.mem_filter] at hq
+  -- `tupIdxEquiv` injective: `q = ⟨⟨⟨a,_⟩,⟨b,_⟩⟩,⟨b,_⟩⟩`.
+  obtain rfl : q = ⟨⟨⟨a, hS⟩, ⟨b, hr⟩⟩, ⟨b, hc⟩⟩ := (tupIdxEquiv d).injective hqi
+  obtain ⟨_, hP1, hP2, hP3, hP4⟩ := hq
+  simp only at hP1 hP2 hP3 hP4
+  -- hP1 : a = s.layer,  hP3 : s.cleared ≤ b,  freshness contradicts.
+  omega
+
+/-- **A2 (row-block disjointness)** — the `case11` row-block analog: the same freshness `omega`
+excludes the earlier corner from the `[cleared, cleared+runLen)` row-block that `canonCenterOf(case11)`
+adjoins to the reused pivot. -/
+theorem cornerToFlat_notMem_rowBlock {d : Fin (N + 1) → ℕ} (s : ConState N) (runLen a b : ℕ)
+    (i : Fin (flatDim d)) (hfresh : a = s.layer → b < s.cleared)
+    (hcf : cornerToFlat d a b = some i) :
+    i ∉ (Finset.univ.filter (fun q : tupIdx d =>
+        (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+          (q.2 : ℕ) < s.cleared + runLen)).image (tupIdxEquiv d) := by
+  simp only [cornerToFlat] at hcf
+  split_ifs at hcf with hS hr hc
+  obtain rfl : tupIdxEquiv d ⟨⟨⟨a, hS⟩, ⟨b, hr⟩⟩, ⟨b, hc⟩⟩ = i := Option.some.injEq _ _ ▸ hcf
+  intro hmem
+  rw [Finset.mem_image] at hmem
+  obtain ⟨q, hq, hqi⟩ := hmem
+  rw [Finset.mem_filter] at hq
+  obtain rfl : q = ⟨⟨⟨a, hS⟩, ⟨b, hr⟩⟩, ⟨b, hc⟩⟩ := (tupIdxEquiv d).injective hqi
+  obtain ⟨_, hP1, hP2, hP3, hP4⟩ := hq
+  simp only at hP1 hP2 hP3 hP4
+  omega
+
 end DLNFibre.DLN.Aoyagi.PivotPres
