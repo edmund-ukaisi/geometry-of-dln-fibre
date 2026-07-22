@@ -14590,3 +14590,14 @@ SUFFICIENT, carry the conditional GeneratorCleared [seat-LL's Codex subtlety bit
 amending its held twin to the REVISED statement. Cover salvage (b) + Core lemma Q = commissioning next.
 seat-L4C's countermodel + (1b) core proceed. seat-L3T2 builds the homogeneity atoms the moment the
 amended staging merges (the elder confirms stability under N_pivot pending in the brief round).
+
+## 2026-07-23 ~09:00 UTC — seat-Q SPECIFY clean (Core lemma Q); proceeding
+
+seat-Q's SPECIFY on the block-atom cover: home = NEW Core/Aoyagi/BlockBlowupCover.lean importing only
+Core.Aoyagi.BlockBlowup (the brief's DLN-home worry dissolved — blockBlowupMap is Core-native).
+Statement: ball 0 1 ⊆ ⋃_{p∈S} blockBlowupMap S p '' closedBall 0 1 (hS : S.Nonempty; spectators pass
+through by the map's def; S = univ recovers the origin atom — the faithful generalization shape).
+Proof = the landed OriginBlowup argmax routing (argmax over S; x_p=0 vs ≠0 cases; maximality bounds),
+SHEAR-FREE. Scope discipline right: the R=1 atom per pnp-fan's certificate §2.1; the R-parametric fold
++ shear inflation stay with the future L7 fold lane; a cheap general-radius hardening assessed after.
+Signature elaborates green; proceeding to the proof without blocking (within the ratified boundary).
