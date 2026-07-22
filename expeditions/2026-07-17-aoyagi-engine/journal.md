@@ -11406,3 +11406,26 @@ its own foundation. INTEGRATION FIRED: seat-E merges -Ecore, VERIFIES THE DEFEQ 
 STOP if the bridge needs content), wires the discharge → the E-lane frontier drops to ONE sorry
 (swapBinding_orderIso). Statement card: seat-Ecore writing now; fidelity REVIEW commissioned
 after the wiring, against the integrated consumed form. Tasks #43/#47/#48 complete.
+
+## 2026-07-22 (controller) — **BOTH E-CORES LANDED**: the swap-iso complete; integration ruled; P6.2 Tier-3 one merge from closing
+
+seat-Eswap delivered COMPLETE (4272f518c, controller-verified: zero sorries, zero axiom decls,
+swapBinding_orderIso_impl :674 = the frozen statement VERBATIM under a distinct name; statement
+card banked; batteries green): the coupled one-swap order-iso — swapR_le_B_of_min +
+swapR_mono_of_min (the hazard, asymmetric-collapse route), value-preservation, minimiser
+extractor, involution, minAdm equality, k=0 via OrderIso.setCongr. Earlier the same hour:
+seat-Ecore's sorted-box COMPLETE + card banked ahead of the GO (b24fa1bdb — all six elements,
+incl. the defeq as an explicit verify-at-wiring item). **The E-lane's two-sorry frontier is now
+ZERO at the sources** — both cores sorry-free and axiom-clean; only the INTEGRATION remains.
+INTEGRATION RULED to seat-E: the import cycle (OrderRealizeSwap imports OrderRealize) resolves by
+the recommended DEFS-SPLIT (shared defs → upstream module; Swap re-points; OrderRealize = the
+pure assembly file, headline chain in ONE home) — seat-E's design call within constraints (one
+canonical statement, sorried orphan deleted same-commit public-canonical, full-build clash-grep,
+AxCheck/aggregator lines prepared-not-applied). The hpos DROP on the swap statement AUTHORIZED
+(unused in the proof — the elder's residueA_le_ell drop-if-unused precedent; propagates through
+the (c) generator step). Ecore defeq verification in the same merge queue. END STATE asked: -Ecore
++ -Eswap merged, zero sorries family-wide, headline chain (bindingSet_orderIso_boxPart +
+bindingSet_chainHeight = a(ℓ−a)+1) axiom-clean with #print evidence, AxCheck lines prepared. Then:
+ONE fidelity review (both cards) → controller integration to the expedition branch → **P6.2
+Tier-3 CLOSES**. Tasks #43/#44 complete. Monument lane unchanged: held on the elder's shear
+ruling (poll next wake).
