@@ -10805,3 +10805,19 @@ process clothing. The hold+no-bake discipline (arch-C's) absorbed both flips at 
 tree: nothing stale was ever baked. The witness bank gains a new defect channel when the elder
 rules: over-deference to authority (the false retraction) — caught by the pinned calibration
 check-order, exactly the instrument designed for it.
+
+## 2026-07-22 (controller) — crossing flag resolved; the vanishing-at-T=0 discriminator to the elder; arch-C freeze-acked
+
+seat-L4's crossing flag (its re-retraction vs my first ACK) resolved with no damage — the elder
+packet was already the supportAt/descend packet, arch-C already frozen with BOTH shapes warm. New
+substance forwarded to the elder as an ADDENDUM — the discriminator in its cleanest mechanical
+form, the vanishing-at-T=0 test: child = c_p·1 + c_d·(δ−γβ), c_p = c_d = ∑e_k·h_k (deeper). On
+T={un-cleared δ}: child|_{δ=0} = ∑e_k·h_k·(1−γβ) ≠ 0, but a DeeperMultilinear form MUST vanish at
+T=0 ⟹ FAILS (the killer = the cleared-pivot's pure-deeper c_p·1 term — what the false retraction
+missed). On T={deeper e}: child = ∑e_k·(h_k·(1+δ−γβ)), coefficient ignores {e} ⟹ HOLDS = the
+descend. The elder's charge: derive the child expression from ITS OWN p.18/21 page authority and
+check exactly those two vanishing claims; a different child expression names the difference and
+reverses the ruling. arch-C freeze-ACKED: both preps warm, no bake/re-point/render-message; adopted
+the paired lesson — only the RULED form reaches the render seat (it declined to correct its own
+now-stale relay to the seat for the same reason: the seat holds for the pin-relay, not finalizing).
+All lanes now converge on ONE event: the elder's ruling.
