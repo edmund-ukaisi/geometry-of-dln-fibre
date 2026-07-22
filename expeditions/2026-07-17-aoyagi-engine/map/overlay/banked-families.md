@@ -158,18 +158,26 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
 - `DLN/Aoyagi/GeometricAtlasD12.lean` (rung B, node `b-rung-d12`): **now LANDED** — gate-orphan
   RESOLVED, wired + batch-banked (341); `exists_atlasRealizesExponents_d12` + `two_mul_rlctAt_coreGen_d12`
   (the first cite-free LC instance) both clean-three. No longer an in-flight caveat.
-- `DLN/Aoyagi/MonumentAtlas.lean` (rung C, nodes `b-leaf34..b-leaf8` + `b-terminal-edge-stepinv`): the
-  monument skeleton — TYPED, wired, SORRIED (gate = elaboration + battery, NOT sorry-free). Leaf set now
-  **9** (8-leaf skeleton + the NEW `terminal_edge_stepInv`, `:736`). Proven: L1 + `terminal_bezout`.
-  Open PROOF QUEUE: `terminal_edge_stepInv` (`b-terminal-edge-stepinv`, elder rider — expected easy,
-  unit-residual strictly weaker) + L3 + **L4 = THE WALL** (`case1_preserves_stepInv`, `b-leaf34`,
-  seat-L4, wall assembly in flight, rebase signal fired) + L5 fold hinge + L6/L8 + L7 tail. Leaves
-  re-stated per [[severance-witnesses]]. Do NOT read a sorried leaf as banked.
-- **canonCenter round — LANDED** (integrated `605497e2a`, no longer uncommitted). What it bought: L7
-  (`leafPath_compactCover`, `b-leaf7`) is now **BRIDGE-FREE** — the coordinate story is canonCenter's
-  own slot bookkeeping `(S,J,mergeIdx,d)` decoded through `tupIdxEquiv` (`LearningCoefficient.lean:138`)
-  / the engine's `divBirthCoord` (`EngineConstruction.lean:62`), NOT the retired card↔sum bridge; the
-  coordinate-axis severance witness dies ([[severance-witnesses]], `d174f1f41`).
+- `DLN/Aoyagi/MonumentAtlas.lean` (rung C): the monument skeleton — TYPED, wired, SORRIED (gate =
+  elaboration + battery, NOT sorry-free). **BAKED (`b7fa66841`, 2026-07-22): cone = 10** — 8 sorried
+  leaves + 2 drivers (`exists_atlasRealizesExponents` :1134 / `exists_coreResolution_via_monument` :1186,
+  both PROVED from the leaves; footprint force-elaborated = [propext, sorryAx, Classical.choice,
+  Quot.sound]). Leaves: `case2_preserves_stepInv` :825 (L3), `case1_preserves_stepInv` :861 (**L4 = THE
+  WALL**, seat-L4), the NEW `lastLayer_clear_preserves` :890 (`b-leaf-lastlayer`, the fix-2 last-layer
+  clear), `terminal_edge_stepInv` :916 (`b-terminal-edge-stepinv`, RE-PARENTED: LastLayerInv + hcleared →
+  TerminalBezout-input), `leaf_stepInv_of_path` :1014 (L5), `leafPath_chartGeometry` :1049 (L6),
+  `leafPath_compactCover` :1088 (L7), `leafPath_realizesExponents` :1109 (L8). Proven end: L1 +
+  `terminal_bezout` (`b-principalinv`). The support window is the elder-ruled `supportAt` (geometric Deg1,
+  descends per clear) — support/C′/coefficient frame axes closed ([[severance-witnesses]]). Do NOT read
+  a sorried leaf as banked.
+- **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). L7
+  (`leafPath_compactCover`, `b-leaf7`) is BRIDGE-FREE (coordinate axis; `tupIdxEquiv`
+  `LearningCoefficient.lean:138` / `divBirthCoord` `EngineConstruction.lean:62`). The L3/L4 SUPPORT
+  window is the ruled `supportAt` (geometric, 3-case: layer S / layer S+1 / ∅ born-unit); `canonCenter`
+  / `ed.center` stays the SEPARATE ledger center + division locus, UNTOUCHED (the wall divides at
+  ed.center; the residual is degree-1 on `supportAt`). DISCARDED at the bake: the two-clock (T/D⁺
+  deeper-union-shed) shape + shedSlots (→ [[dead-routes]]); DELETED: the `deeperCoords` island
+  (false-docstring defect, → [[dead-routes]]).
 - **leafOf coupling — PENDING-ADJUDICATION** (navigator: dead-scope OR owed; NOT assumed either way):
   L5's `FoldRealizes` carries its own `leafOf`, distinct from `FoldProduced`'s; whether the two must be
   coupled (or the gap is dead-scope) is the nav call. Do not consume the coupling as resolved.
