@@ -11186,3 +11186,28 @@ deeperCoords deletion; forward-refs resolve; ⚠ marker on the stale sorry-censu
 the navigator's lane). Pen protocol settled: carto = the 4 overlay files, controller = claims.yaml.
 (5) seat-Ecore moving through its task ladder (#45 sign bridges DONE, #46 pivotal→profile in
 progress).
+
+## 2026-07-22 (controller) — the family grows to FIVE faces: L3T's Codex-confirmed counterexamples; the ruling is now DEFINITION-touching
+
+seat-L3T escalated to STOP-ON-SUSPECT with decorrelated-Codex-CONFIRMED counterexamples on the
+baked case2 (banked fbc652a47): FACE 2 SHARPENED to refutation — supportAt(parent) =
+layerCoords(S) ⊋ ed.center (residual block, col < widthMinUpto — the RUNNING-MIN window; gap
+columns were cleared by EARLIER layers), and the spectator residual R = u_i·u_a is a valid
+Deg1SupportedSlot instance that gains NO u_pivot ⟹ the δ=1 conjunct-A crux FALSE as stated. Fix
+candidate (α): supportAt = the RESIDUAL BLOCK of the supported layer — the elder's original
+"un-cleared remainder" intuition RETURNING at the WITHIN-LAYER level, composable with the
+page-verified layer-descend, still d-definable (widthMinUpto), still (a)-road; plausibly
+dissolves FACE 1 (the pivot lives in the parent residual block) — elder verifies. FACE 4 (NEW):
+conjunct-B self-propagation FALSE under the GENERAL edge shear (triangular shear u_i ↦ u_i + u_p
+breaks C′-support; coefficient ≡ 1 fails DeeperMultilinear) — the Schur-fold (Δ := δ−γβ)
+identities are NOT in the hypotheses; the free-field-vs-construction-pinned severance shape again;
+resolutions to weigh: weakest-that-INDUCTS shear hypothesis (carry edge-data) vs the invariant
+carrying the prepared residual (derive node-data) — did FIX-RESID's "fold data IS the prepared
+object" promise actually render? FACE 5 (NEW): terminal conjunct-2 — hcleared's residual-side
+unit does not force the generator-side q_p i₀ j₀(0) ≠ 0 from an EXISTENTIAL q (unconstrained at
+the terminal); coupling candidates named. THE RULING IS NOW DEFINITION-TOUCHING: if α lands,
+supportAt's VALUE changes ⟹ invariant + all four leaves re-render through arch-C's gate — a real
+re-bake round, still entirely pre-proof statement-level (the system holding). Gate-contract
+lesson queued for arch-C: batteries exercised CONSTRUCTION edges; all five faces live in the FREE
+hypothesis space — the battery contract must sample free fields. Both proof seats hold; L3T
+Codex-checks face 5 as productive hold.
