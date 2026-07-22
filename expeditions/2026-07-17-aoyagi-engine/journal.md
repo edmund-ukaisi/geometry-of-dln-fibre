@@ -11853,3 +11853,26 @@ caught real things; zero proof lines wasted.
 4. **The controlled comparison:** the E-lane had the #42 cert (an elaborated template) up front —
 three tracks, zero rework. The monument had no template — ten rounds. The cleanest evidence for
 the operator's pen-and-paper clarification; pnp-elab retrofits the instrument.
+
+## 2026-07-22 (controller, ~08:50) — THE ELABORATION TEMPLATE LANDED (pnp-elab): exact-algebra certified, simulator-decorrelated; the mechanical diff assigned
+
+pnp-elab delivered in ONE run (merged b3016c86c: fold-recursion-template.md 639 lines + 5 verify
+scripts + Codex consult): (1) the clearing step CERTIFIED (unit-pivot Schur; Q clears the row,
+P̂ the column, det 1 each; **Q⁻¹ recoordinatises ONLY the pivot row of C^(S+1)** — independent
+blind confirmation of carve-only); (2) FOUR edge kinds fully specified incl. the Case1(1) BOOST
+with NO J-advance — the exact transition laws GAP-1's pin must express; (3) a full simulator
+implementing the paper's rules LITERALLY reproduces minAdm on (3,3,4)→8, (3,3,2,2)→4, (2,2,2)→3,
+(2,2,2,2)→3 and Mexp per terminal divisor — the whole paper-reading decorrelated end-to-end;
+(4) both standing instances traced with binding-branch provenance (matches g-coupled-334 +
+worked.tex); (5) 14-item PRE-MORTEM + 3 Questions; headline warning PM-3/PM-9: the paper's
+T-label is DEFECTIVE (raw-vs-inherited discrepancy; p.15 totality FALSE — consistent with the
+compass T-E/T-F rulings) — exponents must key off (J₁, M^(S+1), J), NEVER T; any Lean keying off
+a T-label would be wrong (reports consistency with the canonCenter design — arch-C confirms on
+ground truth). Q3 open by design (the δ-mapping is the seat's interpretation — it could not read
+the Lean): settled by THE MECHANICAL DIFF, now ASSIGNED to arch-C (§3.3 vs edgeδ/edgeShear/
+FoldStepInv; the transition laws vs the GAP-1 pin; the Schur cert vs within-carve; the 14 PM
+assertions vs the defs; PM-3/9 vs the record design). Elder pointed at the transition laws +
+Schur cert as audit inputs. The diff + the audit = the last two inputs before the ONE combined
+bake. The operator's elaboration-first correction validated on first use: the template produced
+in hours what ten reactive rounds circled — including one law (the boost's no-advance) nobody had
+asked about yet.
