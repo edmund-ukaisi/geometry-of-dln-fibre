@@ -254,3 +254,24 @@ THE RULE (standing, both directions):
 - Kill-batteries and worked models must EXERCISE THE LEAN DEFINITION (via a faithful transcription
   generated FROM the Lean, or a trace harness), never only a hand-built model of the intended math.
   Model-vs-def agreement is itself a check to run, not an assumption.
+
+## Paper-first defect diagnosis — step 1 is "has the paper already resolved this?" (operator, 2026-07-23)
+
+The 10th/11th catches (cap-escape; the missing b-chain in the carried invariant) prove the rule by
+their own record: the b-chain was in the paper (worked.tex:571/616/626), worked out, AND verified
+by our own N_p certificate §3 per-step ("N_p reproduces Aoyagi's b-chain and M_{s,k}") — the
+carried invariant just never transcribed it. The descended-block shape on wide instances is her
+M_{s,k} bookkeeping — readable directly from her recursion. Both defects were transcription gaps
+of PAPER-RESOLVED content; neither was new mathematics. Yet the controller's diagnostic response
+fired empirical traces, candidate-field designs, Codex consults, and consumer tables in parallel,
+with the worked.tex read sitting as one input among five instead of the FIRST.
+
+THE RULE (standing; the defect-time counterpart of the def-fidelity gate): when a statement-class
+defect surfaces, STEP 1 is the source read at the defect's location — what does the paper do here,
+what is HER object, has she already resolved this? Only then commission elaboration (traces,
+candidate designs, decorrelated consults), which then serve as FIDELITY VERIFICATION of her answer
+and as the acceptance battery — never as de novo design of an object the source already has. For a
+formalisation-fidelity project the prior is strong: most statement defects are under-transcription
+of resolved source content, and the source is the cheapest, most decisive instrument. Composition:
+def-fidelity gate (charter §3) governs BAKE time; paper-first diagnosis governs DEFECT time.
+(Charter fold-in is the elder's, flagged 2026-07-23.)
