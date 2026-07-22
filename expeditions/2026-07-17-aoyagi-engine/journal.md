@@ -12118,3 +12118,25 @@ bridge runway (seat-L4's un-defer flag honored). Locked so far: 3/6 (ShearWithin
 DescendView, hδ0); the remaining 3 (canonCenterOf case11 + relaxed hcenter/hcover + GAP-3)
 proceed on the pastes. Sequence unchanged: locks → staged forms → elder pre-read → gate → ONE
 bake. Parallel workstreams (pnp-elab path-level template; nav-13; carto owed+shape) running.
+
+## 2026-07-22 (controller, ~10:45) — carto's owed+map pass applied; navigator dispositions executed; the accumulated drift absorbed
+
+Carto's two-part pass: PART 2 (overlay, its pen) executed atomically at fe49afdbe (severance-
+witnesses + dead-routes + banked-families + landmark-cards + naming — the E-closure, the
+discriminator episode, the superseded per-field route, 3 new process-defect entries). PART 1
+applied with the controller pen: **owed-register** — O6 → CLOSED (combinatorial; P7 = the
+deferred analytic residue), P6.2 → CLOSED (the faithful count, incidence content discharged via
+the ≃o + transport), M14/M15/M16 gain SUPERSEDED-SHAPE riders (recast at the redirect bake), the
+**M-HYGIENE consolidated unit** created (M4 residual + M9 lift + Q3 migration + lint + fossil
+prune + naming unify; trigger = the post-bake quiet window; the task-label caveat recorded), the
+2026-07-22 event-log line added; **claims.yaml** — e-p62 → PROVEN with the lean pin
+(bindingSet_chainHeight_eq_thetaCount) and the closed-history note; object-e notes → combinatorial-
+half-CLOSED; b-ladder gains the redirect-confirmed note (per-leaf rows deliberately NOT rewritten
+until the bake — they'd describe unbaked shapes; carto's recommendation, agreed). EARLIER THIS
+HOUR: nav-13's endgame pass adopted in full (seat-L3T → L6+L8 parallel-now, verified; the 3 gate
+checks added to arch-C's contract — catch-all exhaustiveness, post-redirect free-field re-audit,
+derived-lemma SUFFICIENCY; GAP-3 tagged frontier-leaf-candidate gated on Codex C2; STATUS.md
+refresh queued to the bake; fossil/lint/rename held post-monument). The board now runs SEVEN
+concurrent streams: the redirect staging (locks 3/6 done), L6+L8 (seat-L3T), the path-level
+template (pnp-elab), the codebase-shape artifact (carto), the elder's C2 Codex pass, and the two
+proof-seat holds waiting on the bake.

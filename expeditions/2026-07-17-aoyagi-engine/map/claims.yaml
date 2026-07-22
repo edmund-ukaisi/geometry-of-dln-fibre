@@ -117,7 +117,7 @@ nodes:
       - {type: needs, to: e-p61-band-arithmetic}
       - {type: needs, to: e-p62-count-identification}
     evidence: [lean/DLNFibre/Core/Aoyagi/Order.lean, lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean]
-    notes: "charter §1-E OPENED-SCOPED; the analytic pole identification stays the named monument-class deferral"
+    notes: "the COMBINATORIAL half is CLOSED (P6.1 + P6.2 landed, faithful count c9a4003fe); the only residue is the analytic zeta-pole seam (P7, monument-class, charter §1-E deferral by design)"
 
   - id: e-p61-band-arithmetic
     kind: claim
@@ -140,19 +140,20 @@ nodes:
 
   - id: e-p62-count-identification
     kind: claim
-    title: "P6.2: ρ = deepest-stratum MAX-CROSSING of terminal (t̃=0) global-minAdm divisors = a(ℓ−a)+1"
+    title: "P6.2: the faithful count — chainHeight(bindingSet M) = thetaCount = a(ℓ−a)+1 — CLOSED"
     prop: |
-      ρ = max over charts of #{a ∈ bindingAxes : jac a + 1 = GLOBAL minAdm} (elder pin: global
-      filter, never chart-local). Owes TWO incidence lemmas: UPPER (no chart > a(ℓ−a)+1
-      co-crossing terminal minimisers) + ATTAINMENT (pp.25–26 eq-(1)/(2)). NOT a minimiser
-      cardinality ([2,2,2,2,2]: six tight minimisers, ρ = 5). Analytic pole seam stays deferred.
-    status: adjudicated
+      The faithful count: chainHeight(bindingSet M) = thetaCount = aoyagiTheta = a(ℓ−a)+1 (max
+      CHAIN under componentwise ≤; the ACTUAL poset object, not a numerically-agreeing formula).
+      The UPPER+ATTAINMENT incidence content is discharged via the box-partition ≃o
+      (sortedBox_orderIso) + the chainHeight transport. Analytic pole seam = P7, deferred.
+    lean: DLNFibre.DLN.Aoyagi.bindingSet_chainHeight_eq_thetaCount
+    status: proven
     tier: new
     owner: seat-E
     edges: [{type: discharges, to: object-e}, {type: needs, to: e-p61-band-arithmetic}]
     kill: expeditions/2026-07-17-aoyagi-engine/threads/41-rho-count-object/rho_battery.py
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/41-rho-count-object/certificate.md]
-    notes: "pnp-gate DISCHARGED (993 cores exact, controller re-ran EXIT 0, blind Codex convergent); statement-shaping under the elder's ratified shape; kill-set [2,2,2,2,2]+[2,2,5]+ground truths. E-LANE PROGRESS (on -E/-Ecore/-Eswap, UNMERGED): seam upgraded to the SET IDENTITY (adm_eq_admTight PROVED d07a91caf → after the Q4 collapse renamed adm_runMin_filter_eq, admTight def DELETED — branch-only); 3a scaffold+skeleton landed (headline discharged compositionally; frontier sorries: swap-iso, transport, sorted-box); seat-Ecore: pivotal fact binding_qipT_pair PROVED via banked QIP water-filling (5e1400e71); seat-Eswap: (a)+(b) build. NOTE: admTight is still LIVE on the expedition tree — the deletion/rename land when -E merges."
+    notes: "CLOSED — wired + AxCheck-rooted c9a4003fe (bindingSet_orderIso_boxPart + bindingSet_chainHeight_eq_thetaCount); the Tier-3 encoding cert = the ≃o; rev-Elane review SURVIVED 7/7. History: pnp-gate discharged (993 cores, blind Codex convergent); 3-track build (sorted-box via banked QIP water-filling / swap-iso via minimiser-endpoints / transport via mclosure); every rfl bridge held at integration; the set identity adm_runMin_filter_eq landed with the merge (admTight def collapsed)."
 
   # ── Object B's landed halves ──────────────────────────────────────────────────────────────
 
@@ -221,7 +222,7 @@ nodes:
       - {type: needs, to: b-principalinv}
       - {type: discharges, to: object-b}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md]
-    notes: "controller rungs set post-recalibration (journal 2026-07-21); M'=1 simplification (hchain ⟹ principal): per-entry divisibility + Bézout, NOT full diag(b); leaves 3–5 = the coupled wall, content HELD until skeleton"
+    notes: "controller rungs set post-recalibration (journal 2026-07-21); M'=1 simplification (hchain ⟹ principal): per-entry divisibility + Bézout, NOT full diag(b); leaves 3–5 = the coupled wall, content HELD until skeleton. REDIRECT confirmed THE ROUTE (staged PRE-BAKE, a2cf2e7fa): the leaves will condition on the repaired IsRealBranch; per-field SET (A) SUPERSEDED → named derived lemmas; discriminator = the kernel-checked DivBirthInv (support STAYS, no case11 descent). NOT yet in the leaf statements — b-leaf34/b-leaf5..b-leaf8 still carry the supportAt-window forms; the redirect bake re-conditions them + grows the cone by the derived-lemma stubs."
 
   - id: b-leaf2-blowup-atlas
     kind: claim
