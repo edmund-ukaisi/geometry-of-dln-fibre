@@ -178,6 +178,31 @@ the surviving case11 ∀-pin, mirror PivotPreservation:354). The 4 `sl<ℓ` site
   X-coords to homogeneous-X-linear-with-X-free-coeffs + preserves off-X agreement ⟹ AffineOn (a'=a∘σ,
   b'_j=∑_x b_x(σu)·c_{xj}) + vanishing (all X=0 ⟹ all σu|X=0) survive.
 
+## N_p round progress (2026-07-22, controller GO)
+
+LANDED + pushed (c9a46c1c3): `AoyagiCompLinear.lean` (imports MonumentAtlas only; green) —
+`affineOn_comp_of_linear` + `homogeneousDeg1On_comp_of_linear`: AffineOn/HomogeneousDeg1On survive a
+support-homogeneous-linear σ (hyps: hagree off-X + `hlin : σ u x = ∑_{j∈X} C u x j·u j` + `hC` X-free).
+The shared ℓ=sl machinery.
+
+(a) CONFINEMENT: FAILS — recoord (ii) writes layer S+1, col = pivot-ROW a; blockCoords caps only COL, so
+a bounded by d_{S+1} NOT widthMinUpto(S+1); escapes when a ≥ widthMinUpto(S+1). ⟹ slot clause-1 = fallback
+(b) named frontier (shared candidate w/ append frontier + seat-L4D ChainCompat BOUNDARY). Reported to controller.
+
+REMAINING (the induction + slot green), precise plan:
+- **recoord X-linearity lemma** (the bottleneck): for a case12/case2 edge, at x ∈ layerCoords(S+1),
+  σ u x = blockBlowupCoordQuot pv x (edgeShearRaw u) = u x + canonNormalizationOf(ii) = u x +
+  ∑_{i≠a} readEntry(S,i,pcol)·readEntry(S+1,x_row,i) [x≠pv since pv layer ≤ S < S+1]. So C u x j =
+  [j=x] + (the recoord coeff, layer-S ⟹ X-free). Provide `hlin`/`hC` from the canonNormalizationOf unfold
+  + IsRealBranch L1 value-pin (shearφ = canonNormalizationOf …pivot).
+- **induction dispatch** (foldResid_layerHomogeneous', hpos-carrying): raw TreePath induction; per edge,
+  split ℓ = sl vs ℓ > sl. δ=1 case11 → comp_of_fixing (shear=id, pv below threshold, ALL ℓ≥sl). δ=0/δ=1
+  append → comp_of_fixing for ℓ>sl (shear vanishes, clause-I) + comp_of_linear for ℓ=sl (recoord X-linear).
+  δ=1 rollover → exfalso via hpos+widthMinUpto_pos. hagree at ℓ=sl: component-(i) writes layer S (X-free);
+  blow-up/pivot at layer ≤ S. Base = coreGen_layerHomogeneous'.
+- **slot rework** (descent_delta0/append clause-2): same comp_of_fixing(ℓ>sl)+comp_of_linear(ℓ=sl) split;
+  clause-1 → the (b) frontier sorry. Gets MultiAffineStepWire green.
+
 INDUCTION DESIGN (for whoever finishes it): raw `TreePath` induction (pattern = `foldG_eq_pathMap`),
 region `= univ` via `foldRegion_eq_univ`. Root = `coreGen_layerHomogeneous'`. Step: unfold `foldResid`
 on the raw `.step` (dif_neg non-term; if δ), get `foldResid p' (cast j) ∘ σ`; apply
