@@ -81,7 +81,8 @@ theorem sbResidueA_eq (D : Fin (L + 1) → ℕ) (hN : 1 ≤ L) :
 /-! ## Bridge: `eOfT` is the profile's descent-increment vector, and its `qipT` reads the step -/
 
 /-- A binding profile's increment vector `eOfT D T` is feasible and a `Gqip`-minimiser
-(`Gqip = cValue`): `Mval D T = Gqip D (eOfT D T)` (`Mval_eq_Gqip`) meets `minAdm = qipMin = cValue`. -/
+(`Gqip = cValue`): `Mval D T = Gqip D (eOfT D T)` (`Mval_eq_Gqip`) meets `minAdm = qipMin = cValue`.
+-/
 theorem binding_minimiser (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
     (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
     (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) :
@@ -105,8 +106,8 @@ theorem binding_support (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 �
 
 /-- The **binding-minimiser structure** (the pivotal fact — Aoyagi Lemma 4–5, via the banked QIP
 water-filling). For monotone `D` (`1 ≤ L`) and a binding profile `T` (admissible, `Mval`-minimal),
-the increment vector `e = eOfT D T` has `qipT`-coordinates over the active prefix `qipLow D` that are
-`{0, sgn δ}`-valued with exactly `|δ|` nonzero — i.e. the active steps take exactly two values. -/
+the increment vector `e = eOfT D T` has `qipT`-coordinates over the active prefix `qipLow D` that
+are `{0, sgn δ}`-valued with exactly `|δ|` nonzero — i.e. the active steps take exactly two values. -/
 theorem binding_qipT_pair (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
     (hne : (qipFeasible D).Nonempty) {T : Fin L → ℕ}
     (hT : T ∈ Adm D) (hbind : Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)) :
@@ -329,6 +330,88 @@ theorem binding_le_iff (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 �
       exact_mod_cast h c
     have : (T c : ℤ) ≤ (T' c : ℤ) := by linarith
     exact_mod_cast this
+
+/-! ## The a-subset ↔ box element (Core-pure combinatorics via `orderEmbOfFin`) -/
+
+/-- Positions dominate their index: `k ≤ (orderEmbOfFin A h ⟨k,_⟩).val`. -/
+theorem pos_ge {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) :
+    ∀ (k : ℕ) (hk : k < a), k ≤ (A.orderEmbOfFin h ⟨k, hk⟩ : Fin L).val := by
+  intro k
+  induction k with
+  | zero => intro _; exact Nat.zero_le _
+  | succ m ih =>
+    intro hk
+    have hmk : m < a := by omega
+    have hstep : (A.orderEmbOfFin h ⟨m, hmk⟩ : Fin L).val
+        < (A.orderEmbOfFin h ⟨m + 1, hk⟩ : Fin L).val :=
+      (A.orderEmbOfFin h).strictMono (Fin.mk_lt_mk.mpr (Nat.lt_succ_self m))
+    have := ih hmk; omega
+
+/-- Positions spread at least as much as their indices: `(emb s).val ≥ (emb r).val + (s − r)`. -/
+theorem emb_spread {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) :
+    ∀ (s r : ℕ) (hr : r < a) (hs : s < a), r ≤ s →
+      (A.orderEmbOfFin h ⟨r, hr⟩ : Fin L).val + (s - r)
+        ≤ (A.orderEmbOfFin h ⟨s, hs⟩ : Fin L).val := by
+  intro s
+  induction s with
+  | zero =>
+    intro r hr hs hrs
+    have hr0 : r = 0 := by omega
+    subst hr0; simp only [Nat.sub_self, add_zero]; exact le_refl _
+  | succ m ih =>
+    intro r hr hs hrs
+    rcases Nat.eq_or_lt_of_le hrs with heq | hlt
+    · subst heq; simp only [Nat.sub_self, add_zero]; exact le_refl _
+    · have hrm : r ≤ m := by omega
+      have hmk : m < a := by omega
+      have hstep : (A.orderEmbOfFin h ⟨m, hmk⟩ : Fin L).val
+          < (A.orderEmbOfFin h ⟨m + 1, hs⟩ : Fin L).val :=
+        (A.orderEmbOfFin h).strictMono (Fin.mk_lt_mk.mpr (Nat.lt_succ_self m))
+      have := ih r hr hmk hrm; omega
+
+/-- Gap monotonicity: `(emb r).val − r ≤ (emb s).val − s` for `r ≤ s`. -/
+theorem gap_mono {a : ℕ} {A : Finset (Fin L)} (h : A.card = a) {r s : Fin a} (hrs : r ≤ s) :
+    (A.orderEmbOfFin h r : Fin L).val - (r : ℕ) ≤ (A.orderEmbOfFin h s : Fin L).val - (s : ℕ) := by
+  have hle : (r : ℕ) ≤ (s : ℕ) := hrs
+  have hspread := emb_spread h s.val r.val r.isLt s.isLt hle
+  have hpr := pos_ge h r.val r.isLt
+  have hps := pos_ge h s.val s.isLt
+  simp only [Fin.eta] at hspread hpr hps
+  omega
+
+/-- The **box element** of a size-`a` subset: reversed gaps `p_{a-1-i} − (a-1-i)`. Lands in
+`BoxPart ℓ a` when the subset sits inside the active prefix (`< ℓ`). -/
+noncomputable def boxOf {a : ℕ} (A : Finset (Fin L)) (h : A.card = a) : Fin a → ℕ :=
+  fun i ↦ (A.orderEmbOfFin h (Fin.rev i) : Fin L).val - (Fin.rev i : Fin a).val
+
+/-- `boxOf` lands in `BoxPart ℓ a`: antitone and bounded by `ℓ − a`. -/
+theorem boxOf_mem {ℓ a : ℕ} {A : Finset (Fin L)} (h : A.card = a)
+    (hsub : ∀ x ∈ A, (x : ℕ) < ℓ) : boxOf A h ∈ BoxPart ℓ a := by
+  refine ⟨fun i ↦ ?_, fun i j hij ↦ ?_⟩
+  · -- bounded: `gap (rev i) ≤ gap ⟨a-1⟩ ≤ (ℓ-1) - (a-1) = ℓ - a`.
+    rcases Nat.eq_zero_or_pos a with ha0 | hapos
+    · exact absurd i.isLt (by omega)
+    · set last : Fin a := ⟨a - 1, by omega⟩ with hlast
+      have hle : (Fin.rev i : Fin a) ≤ last := by
+        rw [Fin.le_def, hlast]
+        have h1 := (Fin.rev i).isLt
+        have h2 : ((⟨a - 1, by omega⟩ : Fin a) : ℕ) = a - 1 := rfl
+        omega
+      have hg := gap_mono h hle
+      have hmem : A.orderEmbOfFin h last ∈ A := A.orderEmbOfFin_mem h _
+      have hlt : (A.orderEmbOfFin h last : Fin L).val < ℓ := hsub _ hmem
+      have hpge : (last : ℕ) ≤ (A.orderEmbOfFin h last : Fin L).val := by
+        have := pos_ge h last.val last.isLt; simpa [Fin.eta] using this
+      have hlv : (last : ℕ) = a - 1 := by rw [hlast]
+      simp only [boxOf]
+      omega
+  · -- antitone: `i ≤ j → rev j ≤ rev i → gap (rev j) ≤ gap (rev i)`.
+    simp only [boxOf]
+    have hrev : (Fin.rev j : Fin a) ≤ Fin.rev i := by
+      rw [Fin.le_def, Fin.val_rev, Fin.val_rev]
+      have : (i : ℕ) ≤ (j : ℕ) := hij
+      omega
+    exact gap_mono h hrev
 
 /-! ## The order-isomorphism -/
 
