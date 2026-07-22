@@ -407,6 +407,8 @@ theorem case11_pivot_decode_lt {N : ℕ} {d : Fin (N + 1) → ℕ}
     (hbranch : (p.extend ed).IsRealBranch e) :
     (((tupIdxEquiv d).symm ed.pivot).1.1 : ℕ) < p.conState.layer := by
   obtain ⟨hrec, ⟨sc, hsc, hecase, -, -, hpivpin⟩, -, -⟩ := hbranch
+  -- N_p re-bake: the pivot pin is a `match ed.case`; reduce it to the case11 `∀`-forced branch
+  simp only [hc11] at hpivpin
   have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ1
   have hsce : sc.ecase = StepCase.case11 := hecase.trans hc11
   have hmi : sc.esubst.mergeIdx < p.conState.numDiv :=
