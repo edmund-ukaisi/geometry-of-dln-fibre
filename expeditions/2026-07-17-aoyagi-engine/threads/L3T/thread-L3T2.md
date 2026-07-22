@@ -158,6 +158,26 @@ OPEN — `foldResid_layerHomogeneous'` (induction), pending controller call (see
   comp_of_fixing→comp_of_linear shifts. Building the step now is likely throwaway. RECOMMEND: build
   the induction AFTER N_p lands, with hpos, writing the correct step once.
 
+## N_p rebase (2026-07-22, merged canonical 44889cea0)
+
+Two atoms (base + helper) SURVIVED N_p (consume coreGen/canonFlatten only — verified: no error). The
+merge broke MultiAffineStepWire at 5 sites; :429 (hpivpin) FIXED mechanically (`rw [hc11] at hpivpin` →
+the surviving case11 ∀-pin, mirror PivotPreservation:354). The 4 `sl<ℓ` sites (:357/:370 descent_delta0,
+:612/:624 descent_delta1_append) are NOT mechanical:
+- **Def-level ground truth:** `canonNormalizationOf` (MonumentAtlas:867) component (ii) (:877-882) WRITES
+  layer `s.layer+1 = sl` (the child threshold), degree-1-LINEAR in the layer-(sl) coords. So the
+  re-authored ShearWithinCarveRaw (clause-I now `sl < ℓ`) correctly does NOT promise vanishing at ℓ=sl.
+- **⟹ the SLOT arms' `hfix` ("σ fixes ≥ sl") is FALSE at ℓ=sl.** clause-2 (PerLayerDeg1From) survives via
+  comp_of_LINEAR (recoord per-(sl)-linear). clause-1 (support at blockCoords sl) needs the recoord to
+  CONFINE to the cap — a NEW obligation N_p introduced in the δ=0/append arms (possibly the appendResidDescent
+  wall). descent_delta0's STATEMENT may not even hold post-N_p without the confinement — so do NOT sorry it
+  (would be a possibly-false statement). This is a SLOT (realBranch_multiAffine_step') frontier question,
+  flagged to controller for scope.
+- **MY induction is over `layerCoords` (UNCAPPED)** ⟹ needs only comp_of_linear at ℓ=sl (no cap) ⟹ DOABLE,
+  N_p-final. Blocked only by the broken file (import). comp_of_linear helper (for HomogeneousDeg1On): σ maps
+  X-coords to homogeneous-X-linear-with-X-free-coeffs + preserves off-X agreement ⟹ AffineOn (a'=a∘σ,
+  b'_j=∑_x b_x(σu)·c_{xj}) + vanishing (all X=0 ⟹ all σu|X=0) survive.
+
 INDUCTION DESIGN (for whoever finishes it): raw `TreePath` induction (pattern = `foldG_eq_pathMap`),
 region `= univ` via `foldRegion_eq_univ`. Root = `coreGen_layerHomogeneous'`. Step: unfold `foldResid`
 on the raw `.step` (dif_neg non-term; if δ), get `foldResid p' (cast j) ∘ σ`; apply
