@@ -11739,3 +11739,19 @@ the in-flight hcover/hδ0 render proceeds (folds in), but ONE combined re-bake c
 hδ0 + the GAP amendments together — no bake-and-reopen. seat-L4 holds both conjuncts; offered the
 genericity answer + canonShearOf determination as hold work. The reduction lemmas consume
 whatever the fixed statements become — zero proof investment lost, again.
+
+## 2026-07-22 (controller) — genericity = YES, core BANKED (exists_graded_decomp); fresh-seat option retired; all funnels to the audit
+
+seat-L4 answered the conjunct-B coordination: CASE-GENERIC, and the core is already BANKED —
+`exists_graded_decomp` (Case1Wire, 92e14fe19, clean-three): the shear-graded substitution
+re-factors to ∑_{k∈S′}(∑_i a_i·b_ik)·u_k with continuous coefficients — the ∃c conjunct of
+Deg1SupportedSlot, matching L3T's spec verbatim, abstracted over the fold so BOTH cases consume
+it, and RULING-INVARIANT under the pending re-bake. The fresh-seat option for case2's conjB is
+RETIRED; L3T's ∃c-half is a drop-in. Caveats (both already routed): the lemma's hchild input
+needs GAP-1's DescendView (δ=0) + GAP-3's next-layer-support (δ=1), and the PerLayerDeg1From
+conjunct needs a layerwise-affine-composition companion gated on GAP-2's ShearGrades strengthen
+(seat-L4 will build it, case-generic). NET: the ENTIRE remaining monument proof content now
+funnels through the elder's edge-field-audit ruling → the ONE combined re-bake → both seats
+close their conjuncts on banked cores. seat-L4's round ledger: child-state reductions + the ∃c
+core + three batteries + two decisive statement catches — "the wall's proof will be short when
+the statements stop moving, which is the point of making them stop moving now."
