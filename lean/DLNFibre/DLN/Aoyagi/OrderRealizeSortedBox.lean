@@ -570,6 +570,46 @@ theorem boxSubsetOf_boxOf {a : ℕ} {A : Finset (Fin L)} (hcard : A.card = a)
     funext hpos]
   exact Finset.image_orderEmbOfFin_univ A hcard
 
+/-- `a ≤ ℓ` (the residue fits the active prefix). -/
+theorem sbResidueA_toNat_le (D : Fin (L + 1) → ℕ) (hL : 1 ≤ L) :
+    (sbResidueA D).toNat ≤ qipM D := by
+  have hb : (qipDelta D).natAbs ≤ qipM D := by
+    have h := abs_qipDelta_le_m D hL; rw [Int.abs_eq_natAbs] at h; exact_mod_cast h
+  rw [sbResidueA_eq D hL]
+  by_cases hd : 0 < qipDelta D
+  · rw [if_pos hd]; omega
+  · rw [if_neg hd]; omega
+
+/-- The nonzero support of the QIP vector for a box element: the C-steps if `δ > 0`, else their
+complement in the active prefix. Size `|δ|`, `⊆ qipLow`. -/
+noncomputable def decNz {a : ℕ} (D : Fin (L + 1) → ℕ) (f : Fin a → ℕ) (hf : ∀ i, f i ≤ qipM D - a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : Finset (Fin L) :=
+  if 0 < qipDelta D then boxSubsetOf f hf haℓ hℓL else (qipLow D) \ boxSubsetOf f hf haℓ hℓL
+
+theorem decNz_subset {a : ℕ} (D : Fin (L + 1) → ℕ) (f : Fin a → ℕ) (hf : ∀ i, f i ≤ qipM D - a)
+    (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : decNz D f hf haℓ hℓL ⊆ qipLow D := by
+  rw [decNz]
+  split
+  · exact boxSubsetOf_subset_qipLow hf haℓ hℓL
+  · exact Finset.sdiff_subset
+
+theorem decNz_card {a : ℕ} (D : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {f : Fin a → ℕ}
+    (hf : ∀ i, f i ≤ qipM D - a) (hanti : Antitone f) (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L)
+    (ha : a = (sbResidueA D).toNat) : (decNz D f hf haℓ hℓL).card = (qipDelta D).natAbs := by
+  have hbcard := boxSubsetOf_card hf hanti haℓ hℓL
+  have hbsub := boxSubsetOf_subset_qipLow hf haℓ hℓL
+  have hℓcard := qipLow_card D
+  have hb : (qipDelta D).natAbs ≤ qipM D := by
+    have h := abs_qipDelta_le_m D hL; rw [Int.abs_eq_natAbs] at h; exact_mod_cast h
+  have hres := sbResidueA_eq D hL
+  rw [decNz]
+  split
+  · next hd =>
+    rw [hbcard, ha, hres, if_pos hd]; omega
+  · next hd =>
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hbsub, hbcard, hℓcard, ha, hres, if_neg hd]
+    omega
+
 /-! ## The order-isomorphism -/
 
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
