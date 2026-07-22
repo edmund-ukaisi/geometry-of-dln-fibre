@@ -11591,3 +11591,27 @@ sufficient). Closing word: "BAKE." RELAYED to arch-C with the witness-evidence b
 requirement. The monument's statement side is COMPLETE on this bake: five-face amendments +
 grading/shear form + threshold coefficient window — conjunct-B self-propagates. Next: the bake
 hash → controller verification → proof-seat wakes → elder second read → canonShearOf follow-up.
+
+## 2026-07-22 (controller, ~07:15) — **THE AMENDMENT RE-BAKE INTEGRATED** (e3a449348): the monument's statement side COMPLETE; PROOF CASCADE OPEN (for real)
+
+arch-C baked a8438b1fe (+138/−96): the five-face amendments (blockCoords supportAt; carve-layer
+hcenter; ShearGrades (a)+(b) on the CHILD region; GeneratorCleared emit=consume) + the
+PerLayerDeg1From threshold coefficient window (elder-verbatim, ≥-support — the ∀ℓ induction
+failure corrected) + supportLayerOf plumbing; DeeperMultilinear + map_zero + ignoresCoords
+REMOVED (grep-clean). Gate verdict evidence-marked: all four elder-certified witnesses RE-DERIVED
+structurally by arch-C + seat-L4's batteries cited by bank-hash. **Controller verification (own
+tree, not readings): build 8995 green; both drivers force-elaborated = [propext, sorryAx,
+Classical.choice, Quot.sound]; cordon OK; census 35 unchanged (statement reshaping, zero new
+sorries); cone 10.** MERGED + PUSHED (e3a449348). THREE too-weak-def instances closed pre-proof
+this round (within-layer extent, free shear, coefficient window — "def looser than the
+construction," all caught by the free-field discipline the round itself created).
+
+**CASCADE FIRED:** seat-L4 → case1 :901 (THE WALL) + lastLayer_clear :932 (with the
+GeneratorCleared emission build); seat-L3T → case2 :863 + terminal_edge :962 (staged order:
+terminal conj-1 → case2 divisibility [crux dedupe to Case1Wire] → conjunct-B δ-branches →
+terminal conj-2 [consume-fit check first]); both quote-the-territory briefs with the real line
+numbers. ELDER's second read OPEN (its target: the four witnesses RAN — evidence relayed).
+**canonShearOf follow-up COMMISSIONED to arch-C** (determine the decomposition against the fold →
+render + IsRealBranch pin closing the :731 asymmetry → tighten grading → determined form;
+priority below proof-seat support, above idle). The monument is now PURELY proofs: 8 leaves, 4
+actively owned, statements final.
