@@ -926,3 +926,17 @@ the sorryAx cone is exactly the leaf set). **What it changes:** (i) the summit s
 leaf-closure — no driver work exists, which shortens the endgame model; (ii) L7 is a first-class
 on-cone anchor, corroborating nav-13's "L7 commissioning startable" — it should not wait for L5;
 (iii) the carried live-set is otherwise current. Census 35 ✓, live 10 = 8+1+1 ✓.
+
+## Entry 32 (2026-07-22 ~23:30, controller — a MISS, recorded plainly)
+
+**Prediction:** boostReady's assembly = "execute a banked inductive design" (I cited seat-L4B's Codex
+answer §1-2 as the banked P(p) invariant + step discharge, and briefed seat-L4C to read it).
+**Actual (seat-L4C ground-truth, controller-verified):** the cited file does not exist; NO invariant
+def is banked (only the ingredients). boostReady is a genuine CONSTRUCTION seat-L4C must design.
+**Miss type:** un-verified pass-through of a teammate's artifact-CONTENT reading + a false-positive
+shell existence-check (`git show|head && echo FOUND` keyed off head, not git show).
+**What it changes:** (i) boostReady scale ↑ (invariant design + induction, the wall's heart — not
+assembly); route unchanged (3 Codex converge, within-leaf-scope). (ii) Discipline: verify artifact
+CONTENT before citing it in a brief; never gate existence on a piped `head`/`tail`. (iii) Added a
+SPECIFY-checkpoint gate before seat-L4C's heavy build. Confidence in "banked ingredient" claims: recalibrate
+— check the DEF exists, not just a referenced filename.

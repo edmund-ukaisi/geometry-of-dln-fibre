@@ -14029,3 +14029,36 @@ Also confirmed: the pnp Gap-A mult soft-spot is RESOLVED (DivBirthInv's Function
 ⟹ κ injective ⟹ u_p mult exactly 1). STATE: L1 BAKED ✓; A-div DONE ✓; boostReady = seat-L4C
 (path-induction, wall's heart); Gap B = elder finalizing verbatim (blockCoords+he_lin+non-terminal guard)
 → arch-C renders → seat-L3T2 builds 2 atoms; L3 (fan) = last spine call.
+
+## 2026-07-22 ~23:30 UTC — CALIBRATION MISS (mine): boostReady invariant NOT banked — seat-L4C ground-truth catch
+
+seat-L4C (fresh, on the wall's heart) surfaced a ground-truth recalibration I VERIFIED: the inductive
+invariant P(p) is NOT banked. The file I cited in its brief —
+threads/L4-case1-core/codex/boostready-lean-induction-answer.md "§1-2 = the exact invariant + step
+discharge" — DOES NOT EXIST (0 lines; not in the codex dir; the dir has boost-readiness-2222 /
+case11-delta1-mechanism / conjunct2-strategy / deg1-bridge / qhat-design / shear-checkpoint). No
+BChainCompatible/Case11BoostReady/normal-form def exists in Lean. seat-L4B banked the INGREDIENTS
+(bLedger, a′, L1 shear-pin, canonShearOf_apply_interior) but NOT the connective tissue (the invariant
++ its induction).
+
+MY MISS (two layers): (1) I passed seat-L4B's reading ("the Codex answer §1-2 give the P(p) invariant")
+through into seat-L4C's brief WITHOUT verifying the CONTENT — a teammate's "the artifact says X" is a
+READING, not ground truth (the exact calibrate-sensors discipline). (2) My existence-check was a
+FALSE-POSITIVE shell-gate: `git show <path> 2>/dev/null | head -3 && echo FOUND` printed FOUND even
+though git show failed — the `&&` keyed off head's exit (0 on empty input), NOT git show's. Same class
+as the memo's "never gate on tail exit" — extend it: never `cmd | head && echo FOUND` (head masks cmd).
+
+WHAT'S UNCHANGED (verified with seat-L4C): the ROUTE is sound — 3 Codex answers converge + agree:
+boostReady is provable via a path-induction on p.IsRealBranch that MATERIALIZES foldResid p's b-chain
+normal form using the exact-shear provenance (L1) pinned at every ancestor edge; within a LEAF's scope
+(P proven fresh from IsRealBranch, does NOT re-open the elder-locked FoldStepInvAt); NOT provable from
+hslot alone (R_bad). Ingredients are real.
+
+SCALE RECALIBRATION (Bayesian update): boostReady is a genuine CONSTRUCTION (invariant DEF + base=coreGen
++ δ=1 normal-form transport [the hard step] + δ=0 + rollover + corollary), the wall's heart — LARGER than
+the "assemble the banked pieces" I'd framed. NOT a route change; a scale update. seat-L4C is building it
+for real: mandatory Codex on the invariant design (running), SPECIFY the invariant+skeleton, PROVE
+incrementally, stop-on-suspect, no laundering. I set a GATE: report the SPECIFY (invariant def + skeleton)
+at the design checkpoint BEFORE the heavy δ=1-transport proof (catch invariant-shape issues early, like
+the guard-domain family). LESSON banked: verify teammate readings of artifact CONTENT, not existence; fix
+the shell-gate habit.
