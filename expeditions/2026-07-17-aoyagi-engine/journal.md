@@ -12673,3 +12673,27 @@ degeneracy discriminator (does the conclusion degenerate at d k = 0, where width
 arch-C CHARGED with the micro-round (render adds the two parity-form hypotheses on a refreshed
 base vs d309bca48; signature-only delta; re-gate; staging hash; elder delta-reads the signature
 change). Memo phase line refreshed to PROOF CASCADE, BOTH BAKES IN.
+
+## 2026-07-22 ~14:50 UTC — HUB CATCH: bridge near-duplication stopped; conjunct-B ownership settled; hpos round executing
+
+**The hub earned its keep:** seat-L3T2 surfaced its lane-3 fork BEFORE building (~100-150 line
+Slot→SupportedOn bridge, sketched end-to-end) — and seat-L4 had ALREADY banked exactly that
+lemma (exists_ignoresCoords_decomp, Codex-confirmed). INTEGRATED to canonical (f2b8b93a4, both
+new Case1Wire lemmas clean-three, full gate green, census 38). seat-L3T2 redirected to consume
+it; duplication cost avoided ≈ a full seat-day of delicate point-manipulation.
+
+**Rulings on the fork:** (1) Case2Wire primed-module pattern approved (import layering forces
+it: the wire cores import MonumentAtlas, so the leaf proof lands as case2_preserves_stepInv' +
+stub swap at integration — the L8 pattern). (2) Conjunct-A GO (δ=0 via stepInv_child_delta0;
+δ=1 via case_child_stepInv_divisibility + the bridge + the cover equality). (3) **Conjunct-B =
+seat-L4's conjunct-2** (the shared re-factoring wall: exists_graded_decomp + the
+layerwise-affine companion), with the interface requirement relayed: the companion states
+CASE-GENERICALLY so Case2Wire's single named conjunct-B sorry consumes it. The case-generic
+factoring discipline (stepInv_child_delta0, exists_graded_decomp, the bridge) keeps paying.
+
+**hpos micro-round executing** (arch-C): -rung-c fast-forwarded CLEAN to canonical 9cf34215c
+(no proof-revert artifact; staging diff will be signature-only); hpos relayed to the render on
+exactly the two elder-ruled stubs, both staying sorried. Holding for the staging hash.
+Meanwhile the elder holds the NEXT ruling in queue: the FoldRealizes Jacobian-collapse clause
+(seat-L6's precisely-located GeoStep↔TreePath seam — "FoldRealizes equates composed maps, not
+step decompositions").
