@@ -10485,3 +10485,13 @@ the witness. The elder's advance-confirm + window-index precision ride arch-C's 
 processed on its next round — the (T, D⁺)-one-window index verification joins the render then).
 The full gate now: six re-checks + three witness deaths + Schur-restoration + advance-partition +
 window-index + crux dedupe + mechanical floor + write-set → ONE BAKE. Nothing else moves.
+
+## 2026-07-22 (controller) — the window-index check folded; the gate final at thirteen points; awaiting the aligned render
+
+arch-C relayed the index coherence to the seat (T and D⁺ from ONE support-window index — off
+(layer, cleared)/canonCenter, never raw conState.layer) and gave the gate its operational form:
+the γ·β discriminator must FAIL against a raw-layer D⁺ at a within-layer clear (support advanced,
+depth didn't — the shear the elder named) and PASS under the shared-window derivation. The gate
+is FINAL: six re-checks + three witness deaths + Schur restoration + advance-partition +
+window-coherence + crux dedupe + mechanical floor + write-set → ONE BAKE. Every check traces to
+a found defect. "Done being designed" — awaiting the aligned render.
