@@ -11666,3 +11666,18 @@ precise statement is 'no live defs; 3 accurate retirement mentions.'" Scope hone
 elder verified statements + witnesses; the build/footprint/cordon remain the controller's sensor.
 NOTE: this read PRECEDES the hcenter-direction question (still in the elder's queue with both
 seats' convergent derivations) — the uniform center-relation ruling is the next elder output.
+
+## 2026-07-22 (controller) — L3T banks two δ=0 branch proofs + clean handoff; the conjunct-B shared-core coordination
+
+seat-L3T landed case2 conjunct-A δ=0 (d23dba366: pure-pullback divisibility, q′ = qp∘stepMap, NO
+crux — the δ=0 support is a blow-up spectator, its own δ↔layer finding in action; finCongr
+reindex) on top of the terminal main branch. Both leaves' δ=0 sides now PROVED. Tracked-open with
+precise map-node handoff notes: (1) case2 conjunct-B (the ShearGrades re-factoring — spec written
+out: c′_k = ∑_i c_i(σu)·c^sh_{ik}, PerLayerDeg1From from (a)/(b)); (2) case2 conjA δ=1
+(ruling-gated); (3) terminal δ=1 N=1 corner (reachability-first). HONEST CAPACITY CALL accepted:
+the seat rests rather than risk a half-finished conjB in a loaded context. RESOURCING: before
+spawning, coordinating the SHARED CORE with seat-L4 — its active case1 conjunct-2 development has
+the SAME re-factoring shape (the leaves are statement-identical in that clause); if case-generic,
+the core builds ONCE in the warm context and case2's conjB becomes a drop-in instantiation; if
+case-specific, a fresh seat spawns on L3T's notes. The hcenter-direction ruling remains the one
+statement item (with the elder; both derivations attached).
