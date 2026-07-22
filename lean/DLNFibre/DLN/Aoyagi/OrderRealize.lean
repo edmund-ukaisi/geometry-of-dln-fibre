@@ -107,8 +107,13 @@ theorem swapWidths_swapWidths (k : Fin L) (M : Fin (L + 1) → ℕ) :
   funext i
   simp only [swapWidths, Function.comp_apply, Equiv.swap_apply_self]
 
--- Round-trip target (tracked, pinned when `swapBinding_orderIso` is proved): the atomic `swapR`
--- is a self-inverse on the middle coordinate under the width-swap `A ↔ B`, on the binding range.
+/-- `swapR` is a self-inverse on the middle coordinate under the width-swap `A ↔ B`, on the range
+`Q ≤ X ≤ P` (Codex swap-iso design §1): `swapR P (swapR P X Q A B) Q B A = X`. Pure ℕ; the reverse
+transport reuses this + `swapWidths_swapWidths`. -/
+theorem swapR_swapR (P X Q A B : ℕ) (hQX : Q ≤ X) (hXP : X ≤ P) :
+    swapR P (swapR P X Q A B) Q B A = X := by
+  unfold swapR
+  split_ifs <;> omega
 
 /-- **(a)+(b) ONE-SWAP ORDER-ISO** (SORRIED — frontier; bundles "swap preserves `bindingSet`" +
 "local coupled monotonicity of `R`"): one adjacent width-swap induces an order-isomorphism of the
