@@ -12479,3 +12479,28 @@ the session's second live demonstration that "frame in, hypothesis out" is load-
 
 Map: claims.yaml meta + b-ladder note updated (bake hash, cone 16, L6-fix round in flight);
 STATUS regenerated. Carto TRIGGERED on its named cone-transition (frontier flip + census 10→16).
+
+## 2026-07-22 ~12:20 UTC — seat-L3T clean handoff → seat-L3T2 spawned; seat-L6 sympy convergence banked
+
+**seat-L3T HANDED OFF at context limit — the model handoff.** It pulled the bake, registered the
+re-wire plan for its four lanes (terminal_edgeδ + terminal re-wire; cover [its own earlier
+hcenter-DIRECTION finding now resolved to equality-at-cleared=0 per the elder] + descendView;
+case2 δ=1/conjB; consume-fit + dedupe), declared the context-limit risk honestly, and stopped at
+a GREEN pushed checkpoint (its branch: L8 complete clean-three + terminal δ=0 + case2 conjA δ=0 +
+the divisibility floor). Per the handoff-profile test (fully-designed + proved floor +
+self-contained): **seat-L3T2 spawned fresh** from the registered plan + lane 0 = file-level port
+of LeafGeometryWire onto the baked tip (NOT a git merge — the old branch's MonumentAtlas edits
+predate the bake). Aggregator import waits for its green (controller-only). The L8 sorry-swap in
+MonumentAtlas rides the post-pin mini-round (render seat), keeping the elder's delta-read diff
+clean (pin clause only).
+
+**seat-L6's decorrelated sympy pass banked (pre-ruling, convergent):** NAIVE booking (reused coord
+as non-pivot center member) ⟹ |jacDet| = u0²|u1| ≠ jacWeight(1,1) — mismatch, its counterexample;
+LEDGER/re-pivot booking (same coord re-pivoted, center grows) ⟹ |jacDet| = u0² = jacWeight(2,0)
+EXACT, unit ≡ 1. Consistent with the elder's ruling from the other side: the naive tie mis-books
+the boost; the strengthened pin makes the as-stated tie correct. Its 6-step landing plan is staged
+(collapse lemma from the pin ⟹ (★) ⟹ hjac; excep switch to {jacWeight jac=0} via banked nullity
+helpers; REQUEST_SPAWN reviewer at land). Correctly HOLDING, not touching MonumentAtlas.
+
+Awaiting: the elder's authored pin clause (charge queued); seat-L4's first lane report;
+seat-L3T2's lane-0 green; carto's cone-transition pass.
