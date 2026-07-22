@@ -610,6 +610,38 @@ theorem decNz_card {a : ℕ} (D : Fin (L + 1) → ℕ) (hL : 1 ≤ L) {f : Fin a
     rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hbsub, hbcard, hℓcard, ha, hres, if_neg hd]
     omega
 
+/-- The binding profile recovered from a box element: `tOfE` of the QIP witness on `decNz`. -/
+noncomputable def decProfile {a : ℕ} (D : Fin (L + 1) → ℕ) (f : Fin a → ℕ)
+    (hf : ∀ i, f i ≤ qipM D - a) (haℓ : a ≤ qipM D) (hℓL : qipM D ≤ L) : Fin L → ℕ :=
+  tOfE D (eOfSupport D (decNz D f hf haℓ hℓL))
+
+/-- `decProfile` is admissible, `Mval`-minimal (binding), and its increment vector is the QIP
+witness on `decNz`. -/
+theorem decProfile_spec {a : ℕ} (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1 ≤ L)
+    {f : Fin a → ℕ} (hf : ∀ i, f i ≤ qipM D - a) (hanti : Antitone f) (haℓ : a ≤ qipM D)
+    (hℓL : qipM D ≤ L) (ha : a = (sbResidueA D).toNat) :
+    decProfile D f hf haℓ hℓL ∈ Adm D ∧
+      Mval D (decProfile D f hf haℓ hℓL) = (Adm D).inf' (Adm_nonempty D) (Mval D) ∧
+      eOfT D (decProfile D f hf haℓ hℓL) = eOfSupport D (decNz D f hf haℓ hℓL) := by
+  have hsub := decNz_subset D f hf haℓ hℓL
+  have hcard := decNz_card D hL hf hanti haℓ hℓL ha
+  have hfeasE : ∑ i, eOfSupport D (decNz D f hf haℓ hℓL) i = D 0 := by
+    have := eOfSupport_feasible D hmono hL hsub hcard
+    rwa [qipFeasible, Finset.mem_finAntidiagonal] at this
+  have hmem : decProfile D f hf haℓ hℓL ∈ Adm D := tOfE_mem D hmono hfeasE
+  have hround : eOfT D (decProfile D f hf haℓ hℓL) = eOfSupport D (decNz D f hf haℓ hℓL) :=
+    eOfT_tOfE D hfeasE
+  have hne : (qipFeasible D).Nonempty := ⟨_, eOfSupport_feasible D hmono hL hsub hcard⟩
+  refine ⟨hmem, ?_, hround⟩
+  calc Mval D (decProfile D f hf haℓ hℓL)
+      = Gqip D (eOfT D (decProfile D f hf haℓ hℓL)) := Mval_eq_Gqip D hmono hmem
+    _ = Gqip D (eOfSupport D (decNz D f hf haℓ hℓL)) := by rw [hround]
+    _ = cValue D := Gqip_eOfSupport D hmono hL hsub hcard
+    _ = qipMin D hne := (qipMin_eq_cValue D hmono hne).symm
+    _ = (qipFeasible D).inf' hne (Gqip D) := rfl
+    _ = (Adm D).inf' (Adm_nonempty D) (Mval D) :=
+        (inf'_Adm_Mval_eq_inf'_qipFeasible_Gqip D hmono hL hne).symm
+
 /-! ## The order-isomorphism -/
 
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
