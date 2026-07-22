@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.OrderRealize
 import DLNFibre.DLN.Aoyagi.OrderRealizeSwap
+import DLNFibre.DLN.Aoyagi.OrderBinding
 import Mathlib.GroupTheory.Perm.Sign
 
 /-!
@@ -86,5 +87,17 @@ theorem bindingSet_chainHeight (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s)
       = ((((residueA M 0).toNat) * (ell M 0 - (residueA M 0).toNat) + 1 : ℕ) : ℕ∞) := by
   obtain ⟨e⟩ := bindingSet_orderIso_boxPart M hpos
   rw [chainHeight_eq_of_orderIso _ _ e, chainHeight_boxPart]
+
+/-- **THE FAITHFUL θ-COUNT (Tier-3 capstone).** The `chainHeight` of the genuine binding-minimiser
+poset equals the certified closed-form value `thetaCount M 0` (`= aoyagiTheta (ell M 0) (residueA M 0)`
+`= a(ℓ−a)+1`). Where Tier 2 (`OrderBinding.thetaCount_eq_aoyagiTheta`) is a value identity between two
+formulas, this ties that value to the ACTUAL poset object: the count is faithful, not just a formula
+that happens to agree numerically. (The further interpretive identification with the analytic
+pole-order multiplicity `ρ` stays the deferred monument seam — meromorphic continuation, Mathlib-
+absent — as `OrderBinding` records.) -/
+theorem bindingSet_chainHeight_eq_thetaCount (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
+    (bindingSet M).chainHeight (· < ·) = ((thetaCount M 0 : ℕ) : ℕ∞) := by
+  rw [bindingSet_chainHeight M hpos, thetaCount_eq_aoyagiTheta]
+  simp only [aoyagiTheta]
 
 end DLNFibre.DLN.Aoyagi
