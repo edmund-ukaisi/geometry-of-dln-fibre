@@ -325,4 +325,47 @@ theorem deg1SupportedOn_center_of_hslot {N : ℕ} (d : Fin (N + 1) → ℕ)
     (by have := hpl p.conState.layer (le_of_eq hsl); rwa [foldRegion_eq_univ] at this)
   exact ⟨c', fun i ↦ (hc'cont i).continuousOn, fun u _ ↦ hc'repr u, hc'ign⟩
 
+/-- **Conjunct-1 δ=1 APPEND branch** (case12/case2): the child `StepInv` witness is `q'=q∘stepMap` — the
+`u_pivot` from `foldB`'s `(u pivot)^1` factor is matched by the crux moving it out of the residual
+(`foldResid_p(stepMap) = u_pivot·foldResid_p(qm)`). Consumes `Deg1SupportedOn ed.center`
+(`deg1SupportedOn_center_of_hslot`). -/
+theorem stepInv_child_delta1_append (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
+    (hlt : ¬ N ≤ ed.nextState.layer) (hδ : edgeδ d p = true)
+    (hdeg1 : Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p))
+    (q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ)
+    (hq : StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) :
+    ∃ q' : Fin (d (Fin.last N) * d 0) → Fin (foldNR d (p.extend ed)) → (Fin (flatDim d) → ℝ) → ℝ,
+      StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
+        (foldResid d e (p.extend ed)) q' (foldRegion d e (p.extend ed)) := by
+  classical
+  obtain ⟨hqc, hq0, hqd⟩ := hq
+  have hcast := foldNR_extend_of_lt d ed hlt
+  have hg : foldG d e (p.extend ed) = foldG d e p ∘ stepMap d ed := rfl
+  have hb : ∀ u, foldB d e (p.extend ed) u = u ed.pivot * foldB d e p (stepMap d ed u) := by
+    intro u; rw [foldB_extend_eq, hδ]; simp
+  have hmem : ∀ w : Fin (flatDim d) → ℝ, w ∈ foldRegion d e p := by
+    rw [foldRegion_eq_univ]; exact fun w ↦ Set.mem_univ w
+  refine ⟨fun i j' u ↦ q i (Fin.cast hcast j') (stepMap d ed u), ?_, ?_, ?_⟩
+  · intro i j'
+    have hc : Continuous (q i (Fin.cast hcast j')) :=
+      continuousOn_univ.mp (by rw [← foldRegion_eq_univ e p]; exact hqc i (Fin.cast hcast j'))
+    exact (hc.comp (continuous_stepMap d ed)).continuousOn
+  · intro i
+    show (coreGen d e i ∘ foldG d e (p.extend ed)) 0 = 0
+    rw [hg]; show (coreGen d e i ∘ foldG d e p) (stepMap d ed 0) = 0
+    rw [stepMap_zero]; exact hq0 i
+  · intro u _ i
+    show (coreGen d e i ∘ foldG d e (p.extend ed)) u = _
+    rw [hg]; show (coreGen d e i ∘ foldG d e p) (stepMap d ed u) = _
+    rw [hqd (stepMap d ed u) (hmem _) i]
+    refine (Equiv.sum_comp (finCongr hcast)
+      (fun j ↦ q i j (stepMap d ed u) *
+        (foldB d e p (stepMap d ed u) * foldResid d e p j (stepMap d ed u)))).symm.trans ?_
+    refine Finset.sum_congr rfl (fun j' _ ↦ ?_)
+    simp only [finCongr_apply]
+    rw [hb, foldResid_extend_delta1 d e ed hlt hδ,
+      foldResid_stepMap_eq_pivot_mul d e ed hdeg1 (Fin.cast hcast j') u]
+    ring
+
 end DLNFibre.DLN.Aoyagi
