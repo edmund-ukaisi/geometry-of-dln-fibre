@@ -12594,3 +12594,16 @@ CLEAN-THREE, cordon OK, census 40. **The L8 proof is now banked on canonical** �
 MonumentAtlas L8 sorry-swap rides the post-pin mini-round. seat-L3T2 proceeds lanes 1-4 with
 stepInv_child_delta0 + exists_graded_decomp as its lane-3 conjuncts and the centerPin
 obtain-pattern for descendView.
+
+## 2026-07-22 ~13:50 UTC — stubs 2+3 of 6 CLOSED (L3T2 lane 2 integrated): descendView + cover, clean-three
+
+Merged seat-L3T2's lane 2 (statement-side verified pristine — the diff removes ONLY sorry lines;
+gate: full build 0-err; forced axioms BOTH = [propext, Classical.choice, Quot.sound]; cordon OK;
+census 40 → 38, cone 15 → 13). realBranch_descendView = the centerPin obtain-projection shape
+(the pattern transfer paid); realBranch_cover = the elder's mechanism verbatim: δ=1 ⟹ cleared=0
+⟹ supportAt = blockCoords = canonCenterOf on case12/case2 (equality, guards vacuous), case11
+excluded by scope. THREE of the six derived stubs are now closed within ~2 hours of the bake —
+the construction-conditioning collapse is paying at exactly the predicted rate (projections off
+IsRealBranch, not re-derivations). seat-L3T2 → lane 1 (terminal_edgeδ + the terminal re-wire).
+Remaining stubs: terminal_edgeδ (L3T2 lane 1), shearWithinCarve (HELD for the pin round),
+multiAffine (second wave, frontier).
