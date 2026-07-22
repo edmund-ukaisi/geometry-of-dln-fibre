@@ -13005,3 +13005,23 @@ THE ELDER'S OPEN QUESTION as the explicit adjudication target: is A1+A2 derivabl
 invariant alone (derived stub closes self-contained) or does it need the b-chain (carried
 conjunct forced)? Deliverables: durable battery + decorrelated Codex + the derivation-attempt
 verdict. Routes: pnp-boost report → me → elder final form → seat-L4 proves.
+
+## 2026-07-22 ~20:20 UTC — M4 SPECIFY: no suspects; the R1/R2 fork RULED R2 (bridge-free)
+
+seat-L6's M4 SPECIFY verdict: the math is SOUND (its own old D=2 counterexample is exactly what
+M4b excludes — the finder of the defect certifying the fix); the contract expands into a 5-atom
+family (A1 blowup fixes pivot/off-center, A2 canonCenterOf ∌ earlier corner [structural: filter
++ cleared-monotone omega], A3 divBirthCoord immutability, A4 clause-III extraction, A5 the
+suffix-glue branch-(★) in the TreePath/foldG frame = the consumer-facing form) — the
+shape-sufficiency lesson applied at SPECIFY, before any consumer misfit.
+
+**THE FORK RULED: R2, bridge-free (controller's call — it PRESERVES the charter stance).** R1
+(reusing Engine/CornerDisjoint via a cornerToFlat↔flatCoordOf bridge) would reintroduce as
+proof-plumbing exactly the coordinate bridge the canonCenter round deliberately killed; the
+elder gate exists for stance-WEAKENING choices, and R2 is the anti-shortcut at the cost of two
+short structural lemmas (A2 omega + an A3 persistence lemma) — detail-at-scale, spent freely.
+Boundary note given: DivBirthReach's ConState-level immutability facts are frame-free and
+directly importable if stated on ConState (consuming those is not a bridge); reading the engine
+proofs for IDEAS is fine. Home approved: PivotPreservation.lean (new companion module).
+Coordination pinned: A5's final form vs L5FoldSpec's M4 contract reconciles THROUGH me if they
+differ (no silent adaptation on either side).
