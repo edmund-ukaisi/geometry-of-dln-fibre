@@ -13554,3 +13554,35 @@ descent (realBranch_multiAffine_step per its own map; boundary configs excluded 
 hlayer). The remaining expedition = PROOFS + assembly: boostReady, the descent, lastLayer, L5,
 L7, the Assembly increments, the hygiene window, the summit swap, SUMMIT-RETIRE, cite-deletion
 (operator ceremony).
+
+## 2026-07-22 ~16:10 UTC — the wall's heart RESHAPED: boostReady is proof-side (two sub-lemmas), statement stays closed — DECORRELATED CONVERGENCE
+
+seat-L4 activated on realBranch_boostReady_case11 and, BEFORE its Codex verdict, flagged a sharp
+structural gap: realBranch_canonicalSchurStep gives CanonicalSchurStep of ed.shearφ (the CURRENT
+edge), but boostReady is about foldResid p (the PARENT residual, whose b-chain comes from p's
+EARLIER shears) — is the current ingredient set sufficient, or does it need a new inductive
+sub-lemma? I held seat-L4 from half-integrating (near-limit context) and fired the ELDER as a
+decorrelated second instrument on the sufficiency question — frame in (the ingredient gap),
+hypothesis out (NOT seat-L4's read).
+
+The elder (blind to seat-L4's hypothesis) reached the SAME verdict: **INSUFFICIENT as baked, but
+PROOF-SIDE — the statement layer STAYS CLOSED, no re-bake.** foldResid p is built from p's ANCESTOR
+shears, so the baked projection is a mis-aimed shortcut at the top level; but IsRealBranch's
+recursive .step carries CanonicalSchurStep at EVERY ancestor edge, so boostReady is provable from
+hbranch as it stands via a PATH-INDUCTION over p's ancestors (material present; discharge is an
+induction, not an unfold). The realBranch_canonicalSchurStep projection is PER-EDGE — usable at
+each ancestor inside the induction. hslot IS consumed (drop-test resolved). Weakest honest form =
+two sub-lemmas: (a) combinatorial b-chain divisibility on foldB p (u_p|b_i ⟺ i>J₁, NO shear input,
+separates clean); (b) prepared-form path-induction on foldResid p consuming ancestor
+CanonicalSchurStep (the γ-clearing R_bad violates — the genuinely new content).
+
+Two blind instruments converging on the same gap AND the same fix — the frame-in/hypothesis-out
+decorrelation working as designed (the boost-readiness adjudication's second convergence). The
+full Codex xhigh verdict (bufv05qfv) is still in flight; I'll relay whether it makes it three-way.
+
+ACTIONS: (1) statement layer stays CLOSED — this is proof-side, ruling-B stands, NO re-bake;
+(2) seat-L4B commissioned on sub-lemma (a) (self-contained) NOW, (b) from the consolidated packet;
+(3) seat-L4 writes the turnkey handoff (Codex verdict + R_bad specifics + Case1Wire ingredient
+locations) and stands down; (4) elder's verdict recorded as the boostReady weakest-form entry;
+(5) b-boostready map node reshaped. The wall's heart is now an ancestor induction with two clean
+sub-lemmas — heavier than a one-liner, but honestly scoped and the content is battery-verified.

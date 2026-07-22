@@ -363,10 +363,17 @@ nodes:
       At a real interior case1(1)-δ=1 edge, Deg1SupportedOn (foldResid p) ed.center (foldRegion p) —
       the SOURCE form. RULED + BAKED (0ce9c68b9): home (2) = CanonicalSchurStep property pin on
       IsRealBranch (4th .step conjunct) + boostReady derived stub gains hslot; content =
-      support-form. Now a PROOF obligation: realBranch_boostReady_case11 (Case1Wire).
+      support-form. PROOF obligation: realBranch_boostReady_case11 (Case1Wire). PROOF-SIDE RESHAPE
+      (elder+seat-L4 decorrelated-converged 2026-07-22): NOT a one-liner — foldResid p is built
+      from p's ANCESTOR shears not ed.shearφ, so the realBranch_canonicalSchurStep projection is
+      per-edge-inside-an-induction, not a top-level discharge. Proof = path-induction over p's
+      ancestors (material carried by IsRealBranch.step recursively; no re-bake, statement STAYS
+      CLOSED). Two sub-lemmas: (a) combinatorial b-chain divisibility on foldB p (no shear input,
+      self-contained); (b) prepared-form path-induction on foldResid p consuming ancestor
+      CanonicalSchurStep (the γ-clearing, R_bad-irreducible, genuinely new). hslot IS consumed.
     status: stated
     tier: new
-    owner: "seat-L4 (proof live; drop-test verdict owed to elder: factor from hbranch+CanonicalSchurStep first, hslot only if a base coefficient is consumed)"
+    owner: "seat-L4B (proof; sub-lemma (a) started) ← seat-L4 (turnkey handoff + Codex verdict, then stands down)"
     kill: expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/case11_boostready_crosscheck.py
     edges:
       - {type: needs, to: b-principalinv}
