@@ -13305,3 +13305,16 @@ birthCoord); seat-L3T2 writes the thin (B) adapter at its site once (A) locks; t
 statement routes through me for the L5Spec M4-contract flip. The routed no-silent-adaptation
 exchange worked end to end: producer proposed, the false form was caught at statement time, the
 consumer chose from its actual site, the atom stays clean, the adapter lives with its consumer.
+
+## 2026-07-23 ~02:30 UTC — M7 I/II/III → seat-M7B (third turnkey handoff); seat-L4's context RESERVED for the boost proof
+
+seat-L4 hit its real context limit (its observation: the re-injected CLAUDE.md costs ~half the
+window per turn — surfaced for the operator as a discuss-at-close harness item) and produced the
+day's THIRD handoff-grade registered plan: the full I/II/III proof route through the proven
+canonShearOf_support (setup arithmetic, per-clause tactics, the exact PivotPreservation lemma
+inventory, and ONE flagged open lemma-existence question — the conOracle cleared+1 transition
+fact — with the derive-idiom pointer if absent). RESOURCING: M7's proof → seat-M7B (spawned,
+plan verbatim); seat-L4's REMAINING context reserved for the BOOST-READINESS PROOF (its deepest
+owned piece — the R_bad/b-chain/M7-def context it uniquely holds), activating on ruling B.
+conjB: done-in-staging (its :445 line verified green). The successor pattern is now 3-for-3 on
+clean checkpoints.
