@@ -10292,3 +10292,25 @@ construction, strictly stronger than the bare ideal-membership both instruments 
 crux drops into the preservation lemma with NO frame-move. Convergence count on the clause: the
 elder's ruling, seat-L4's constraint, and the degree-2 clause (X) all independently locate the
 same form. Datum + battery join the round's evidence; seat-L4 holds for the bake.
+
+## 2026-07-22 (controller) — GAP 2 (the double-division): the (A) OBJECT itself needs the pin; jointly charged (elder intent × seat-L4 ground truth)
+
+The render seat surfaced three spec gaps and correctly REFUSED TO GUESS. GAP 3 (the DLN-side
+DeeperMultilinear variant with the layer-decoded D⁺) — arch-C's, standing, updated to the ruled
+clause (its "deeper-only+vanishing" reference predated the DeeperMultilinear relay in its queue).
+GAP 1 (pivot threading) — derive-never-free endorsed (∃-pivot ruled out as choice-field bait);
+resolves downstream of GAP 2 (the leaves' hypotheses are already edge-shaped, so an ed-sourced
+pivot may be signature-free). **GAP 2, THE LOAD-BEARING ONE: foldResid's δ=1 branch ALREADY
+applies blockBlowupCoordQuot** — the strict-transform division is folded into the child's data
+(the crux says it verbatim: foldResid_p(stepMap u) = u_pivot · foldResid_child(u)) — so the
+ruled "(A) = Deg1 on resid∘quotMap" as naive precompose would DOUBLE-DIVIDE. Two candidate
+readings charged jointly to the elder + seat-L4: (i) a raw pre-quotient object with quotMap
+doing the single division (edge-dependent invariant; pivot from the edge); (ii) **foldResid IS
+already the prepared object** — the fold's data already implements the paper's Let-block
+renaming — and the (A) conjunct is Deg1SupportedOn (foldResid) DIRECTLY over T with
+DeeperMultilinear carrying the weight (NOTE: both countermodels' parents have c ≡ 1, which the
+clause excludes — the clause alone may close both; the open algebra is whether the CHILD
+re-emerges multilinear under the T-mixing shear — seat-L4's Gröbner (A1) + degree-2 (X)
+instruments). My weak read: (ii) is the rising-sea shape (read the data as-is; don't re-perform
+the preparation). The render body holds on the pin; the frame-shell + GAP-3 pieces render
+meanwhile. The seat's refusal to guess commended at the gate — guessing re-opens countermodels.
