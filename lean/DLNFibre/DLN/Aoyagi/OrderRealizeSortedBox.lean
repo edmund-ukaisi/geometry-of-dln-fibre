@@ -339,6 +339,13 @@ order-isomorphic to `BoxPart (qipM D) (sbResidueA D).toNat`. Seat-E instantiates
 theorem sortedBox_orderIso (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hpos : ∀ s, 0 < D s) :
     Nonempty (↥{T : Fin L → ℕ | T ∈ Adm D ∧ Mval D T = (Adm D).inf' (Adm_nonempty D) (Mval D)}
       ≃o ↥(BoxPart (qipM D) ((sbResidueA D).toNat))) := by
+  -- REMAINING ASSEMBLY (profile side is DONE — `binding_le_iff` characterises the order):
+  --  L = 0 (ℓ = qipM D = 0): both sides are singletons; the iso is the unique map.
+  --  L ≥ 1: `enc T := boxOf (stepA D T)` (positions via `Finset.orderEmbOfFin`, `stepA_card`
+  --    gives card = a; `Fin.rev` gaps → antitone + bounded box element), `dec f` builds the
+  --    C-step subset from `f`, the QIP vector `= eOfSupport D (nonzero-set)` (`Gqip_eOfSupport`
+  --    ⟹ binding), and `tOfE`. Monotone both ways: chain `binding_le_iff` with the counting↔box
+  --    duality (`∀c |A∩Iic c| ≥ |B∩Iic c| ⟺ boxOf A ≤ boxOf B`); `OrderIso.ofHomInv`.
   sorry -- map: enc-sorted-box (assembly)
 
 end DLNFibre.DLN.Aoyagi.SortedBox
