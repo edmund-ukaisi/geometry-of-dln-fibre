@@ -13526,3 +13526,31 @@ authored in exactly canonShearOf_support's contrapositive shape — the discharg
 **The producer family's review slate is now COMPLETE: M4 7/7 + M7 7/7 + L6 6/6, all
 Codex-corroborated, all clean-three under independent force-elaboration.** Every producer the
 L5 assembly will consume is proven AND reviewed.
+
+## 2026-07-22 ~15:40 UTC — ★★ THE MONUMENT'S STATEMENT LAYER IS CLOSED ★★ (ruling-B baked, 0ce9c68b9)
+
+(Datestamp correction: the preceding same-day entries from "~05:00" onward carry a +1-day drift —
+they say 2026-07-23 but the actual UTC date is 2026-07-22. Their ORDER and relative times are
+right; this entry and onward use the real clock.)
+
+The elder's closing verdict, quoted for the record: "with it the monument's statement layer
+closes. Every derived-lemma and leaf STATEMENT is now final and elder-verified — the severance
+class fully shut (each TreeEdge/ConState DOF pinned or justified; the four-round
+hpos/he_lin/hlayer guard-family caught and closed), the IsRealBranch provenance strengthened to
+force (★) and boost-readiness, the L6 collapse interface landed, and the payoff untouched."
+
+Its own nesting-check on (b) verified the exact mis-grab the pattern fix prevented; its (a)
+note confirms rev-M7's forward question affirmatively (the pin = the ∀-generalization of
+canonShearOf_support's conclusion — "emittability is proven, not promised"); (c) the boostReady
+docstring's stale line correctly killed ("it now IS derivable"); the blast-radius fix inert.
+THE LOAD-BEARING SAFETY CHECK: seven statement bakes in ~24 h and the baked payoff roots'
+footprints NEVER CHANGED — the strengthening confined to the monument layer (the future
+replacement of the cited Aoyagi axiom), exactly as the architecture requires.
+
+Integration verified (build 0-err, cordon OK, census 35 net-0) + pushed. BOTH PROOF SEATS
+WOKEN on locked statements: seat-L4 → realBranch_boostReady_case11 (the wall's last obligation;
+full ingredient set on canonical; the drop-test verdict owed to the elder); seat-L3T2 → the
+descent (realBranch_multiAffine_step per its own map; boundary configs excluded by its own
+hlayer). The remaining expedition = PROOFS + assembly: boostReady, the descent, lastLayer, L5,
+L7, the Assembly increments, the hygiene window, the summit swap, SUMMIT-RETIRE, cite-deletion
+(operator ceremony).
