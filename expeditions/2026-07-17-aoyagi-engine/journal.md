@@ -13702,3 +13702,25 @@ SYNTHESIS — the redesign has THREE layers to settle (relayed to the elder as d
 The elder owns all three (predicate + baked-def invariant + spine fan); pnp-coupling feeds L2; seat-L7
 holds for L3's shape. seat-L4B proves (a′) meanwhile (route-independent). I reconcile pnp-coupling +
 the elder's design before render. This is the round that has to be right — not racing it.
+
+## 2026-07-22 ~18:05 UTC — L2 converges to A′ (shared lemma); the hard induction is ROUTE-INVARIANT
+
+seat-L4B (proceed-on-silence, within-boundary) took route (A′): materialize the ledger in-proof as a
+SHARED reusable lemma, not strengthen FoldStepInvAt. Two grounded reasons: (i) it found the pivot-
+SPECTATOR half of the (b) induction is ALREADY banked in PivotPreservation (foldSuffix_fixes_
+ledgerCorner + family) — so the ONLY irreducible new content is the u_pivot-DIVISIBILITY of the
+extra-block residual coefficients; (ii) (B)'s FoldStepInvAt strengthening ripples into case1/case2 +
+L5 base, a worse blast radius stacked on the spine redesign.
+
+THE LOAD-BEARING INSIGHT: the hard content — the ancestor-CanonicalSchurStep path-induction proving
+the divisibility — is IDENTICAL whether stored as a shared lemma (A′) or a carried invariant field
+(B). Only the HOME differs. So seat-L4B proving that induction NOW is route-invariant / low-waste,
+and L2 reduces to a cheap storage choice. I refined seat-L4B's route to A′-SHARED (not boostReady-
+private) because the descent's δ=1 cofactor is the SAME divisibility — one shared lemma serves both
+boostReady + descent. Relayed to the elder: L2 is converging to A′ (shared lemma); its genuinely-open
+calls narrow to L1 (the shear value-pin form) + L3 (the fan + whether to reuse the engine chart form).
+
+Net: the re-open, one tick in, is DE-RISKING fast — the proof content (the divisibility induction) is
+being proven now regardless of the storage decision, the pivot-spectator half was already banked, and
+the three-layer redesign's hardest architecture layer (L2) is settling. What remains genuinely open:
+the elder's L1 shear-pin form + L3 fan design (+ pnp-coupling's math verdict feeding the reconcile).
