@@ -12504,3 +12504,32 @@ helpers; REQUEST_SPAWN reviewer at land). Correctly HOLDING, not touching Monume
 
 Awaiting: the elder's authored pin clause (charge queued); seat-L4's first lane report;
 seat-L3T2's lane-0 green; carto's cone-transition pass.
+
+## 2026-07-22 ~12:35 UTC — carto cone-transition banked (c7b39f091); ELDER'S AUTHORED CLAUSE (III) relayed — L6-fix round RUNNING
+
+**Carto's cone-transition pass verified + pulled (c7b39f091):** independent census re-derivation
+CONFIRMS 41 = 16 on-cone + 25 fossil; frontier flipped across codebase-shape / banked-families /
+dead-routes; the two caveats carried exactly right (L8's LeafGeometryWire NOT on the tree —
+recorded in-flight, not landed; the L6-fix round NOTED, not pre-applied). Its methodology note
+banked: the tool catches 2 inline `by sorry` a line-scan misses — why 41 (tool) is right and raw
+greps drift both ways.
+
+**The elder delivered the authored form for the L6-fix round** (accepting the follow-up
+sequencing as not-a-reopen, owning the hjac reversal in the same breath). Clause (III) on
+ShearWithinCarveRaw, VERBATIM Lean: the displacement vanishes on every divisor birth-corner in
+the NODE's ledger (`node.conState.divBirthCoord`, decoded by `cornerToFlat`) — read locally, no
+signature change. Three design rulings inside it: (a) the CHILD's ledger deliberately (includes
+the current pivot — avoids the cleared off-by-one; sound since canonShearOf never writes ANY
+pivot corner: the corner is normalised by the blow-up, not the shear); (b) WRITE-side only,
+CORNERS only — (★) needs the pivot VALUE preserved and jacDet σ reads only the corner;
+rows/cols would risk non-emittability; (c) ripple: flows into IsRealBranch's per-step pin (⟹ (★)
+for the whole fold) + ShearWithinCarve/realBranch_shearWithinCarve (held); leaf STATEMENTS
+unchanged; hjac_tie's statement UNCHANGED (the naive sum becomes correct under (★)).
+
+**RELAYED VERBATIM to arch-C** (locked form — no consumer translation) with the round protocol:
+template-simulator validation of clause (III) against canonShearOf on the nine instances
+pre-render (elder's recommendation, adopted) → render applies verbatim → arch-C re-gates
+(pin-tightening: no new free field; sufficiency extension; build/footprint/cordon/census) →
+labeled staging commit to -rung-c → hash to me → elder delta-read → integrate → wake seat-L6
+(its 6-step landing plan is staged). ONE concern this round: the cleared-pivot shear clause. The
+L8 swap waits for the mini-round after.
