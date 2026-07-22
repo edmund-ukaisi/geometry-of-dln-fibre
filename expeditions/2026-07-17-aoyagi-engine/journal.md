@@ -13035,3 +13035,19 @@ in tension with reuse: the reusable facts were already frame-free (exactly the r
 note, confirmed independently from the seat's side). Two decorrelated reads, same verdict, the
 cheap version. seat-L6 building PivotPreservation.lean per-atom (reports at A1-A2, then A5);
 A5's final form routes through me for the L5Spec reconciliation.
+
+## 2026-07-22 ~20:50 UTC — THE WALL IS ONE HOLE (conjB closed via the node-form one-liner)
+
+seat-L4 pulled the node-form bake and closed the wall's conjunct-B with the ONE-LINER
+`realBranch_multiAffine hpos e (p.extend ed) hbranch` — exactly the consumption the node-form
+restatement was ruled for. Integrated (bf762c8e3; census 42). **case1_preserves_stepInv' is now
+proven modulo EXACTLY realBranch_boostReady_case11** — conjunct-1 δ=0 ✓, δ=1 case12 ✓, δ=1
+case11 = boost-readiness, conjunct-2 ✓; sorryAx flows through the single stub. The monument's
+four proof-bearing leaves: L6 ✓ L8 ✓ case2 = conjB-only (same node-form one-liner, seat-L3T2's
+module — routing it) case1 = boostReady-only.
+
+Three independent instruments now converge on the ONE remaining wall obligation: pnp-boost
+(battery + derivation-attempt), seat-L4's own pre-spawn Codex xhigh (verdict routes to ME, not
+to pnp-boost — the decorrelation held until both land), and the elder's final form. The day's
+statement architecture has collapsed the coupled-corank wall — "the frontier this project dodged
+for multiple expeditions" — to one exact-algebra-adjudicable lemma about b-chain coefficients.
