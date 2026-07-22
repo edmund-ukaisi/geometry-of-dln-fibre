@@ -12,23 +12,24 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **N_PIVOT RE-BUILD, elaborate-first + the amended-staging merge (2026-07-23 ~08:40).** The
-  DESIGN RULING landed + RE-OPEN COMMITTED (banked: threads/design-round-ruling.md + threads/LL/
-  elder-lastlayer-verbatim.md): Aoyagi's step = BLOCK blow-up (fanned pivot ∈ canonCenterOf) ∘
-  N_pivot per-chart normalization (fixes pivot, clears row/col, RECOORDINATIZES the deeper factor) —
-  NOT composite (fallback only, behind pnp cert + controller call); canonShearOf = corner instance
-  missing the recoord; the shear-pin family re-authors in the N_pivot round; L1⊥L3 coupling ratified;
-  e-fix = pin canonFlatten (the summit's exists_flatten IS the canonical reindexing — summit sound,
-  only sorried ∀-e intermediates were false). PIPELINE: elder authoring the STAGE-FRAME BRIEF →
-  pnp-transport elaborates N_pivot on (2,2,2,2)+(3,3,4) coupled witnesses (acceptance: honest_clear
-  reproduces + pnp-fan's escape witness covered-AND-monomialised) → elder RATIFIES cert → authors
-  verbatim → arch-C renders → ONE N_pivot bake. MEANWHILE (unblocked): arch-C's AMENDED STAGING
-  (canonFlatten e-pin on 2 homogeneity sigs + hpos on the cap + comp_of_fixing docstring rider +
-  hparent REVISED rider [hparent + carried conditional GeneratorCleared, 3 consumer sites]) → my
-  gate → elder delta-read → MERGE (Gap B cleared independent); seat-LL amending its twin to the
-  REVISED form; seat-L4C = Lean countermodel + (1b) predicate-agnostic core; seat-Q = Core lemma (Q)
-  (block-atom cover, salvage (b)'s foundation); seat-L3T2 builds homogeneity atoms POST-merge.
-  N_pivot-touching work holds for the ratified cert. Census 36 canonical (+3 staged).
+- phase: **THE N_p BAKE IS COMPLETE (44889cea0) → THE WALL'S ENDGAME (2026-07-23 ~18:20).** The
+  fidelity arc is CLOSED in the definitions: canonNormalizationOf (pivot-parametric + the deeper
+  recoord) replaced canonShearOf; IsRealBranch = value-pin + the (b) fan case-split (case12/case2
+  membership, case11 canonical); canonFlatten pinned; ShearWithinCarve I/II >sl; PivotPreservation
+  reworked sorry-free (pnp-fan's mechanism kernel-checked). Payoff isolation held THROUGHOUT. Census
+  40. The elder's PAPER-FIDELITY REVIEW delivered (paper-fidelity-review.md: coverage high+honest;
+  the monument = the ONE open frontier; Ext-model identification = the caveat to keep honest).
+  LIVE LANES: **seat-L4D** = THE WALL'S ENDGAME (rebase the -L4C ChainNF skeleton onto canonical →
+  SPECIFY the 3-field ChainCompat pin incl. chainWeight strict→NON-strict [cert §4b/§7] → grind
+  chainCompat_holds clean → boostReady closes → case1' falls); **seat-L3T2** = rebase -L3T2 (5
+  known-pattern errors: 4× ≥→> + 1× match-pin; my merge REVERTED, canonical green) → the induction
+  (task #8, hpos, comp-of-linear step for the recoord factor) → the audit → I re-merge + wire BOTH
+  modules; **seat-LL** = rebase -LL + re-verify the twin + frontiers (frontier #1 ← task #8).
+  MERGE-ORDER DISCIPLINE: pre-N_p branches rebase seat-side BEFORE controller merges. Remaining to
+  summit: the wall (L4D) → descent append (via the induction + the cap under N_p) → lastLayer
+  frontiers → L5 assembly (target = MonumentAssembly.leaf_stepInv_of_path') → L7 own-cover fold
+  (lemma Q banked, fan baked) → the :287 swap → SUMMIT-RETIRE (elder+operator) → cite-deletion
+  (operator). Elder: reviews done; next = delta-reads on demand.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
