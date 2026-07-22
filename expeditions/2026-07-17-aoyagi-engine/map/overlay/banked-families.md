@@ -172,14 +172,17 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
   `terminal_bezout` (`b-principalinv`). The support window is the elder-ruled `supportAt` (geometric Deg1,
   descends per clear) — support/C′/coefficient frame axes closed ([[severance-witnesses]]). Do NOT read
   a sorried leaf as banked.
-- **REDIRECT — CONFIRMED THE ROUTE, staged PRE-BAKE** (elder ruling + discriminator PROOF, 2026-07-22;
-  a2cf2e7fa). The leaves will CONDITION ON the repaired `IsRealBranch` (ONE construction hypothesis); the
-  per-field SET (A) constraints + the prepared-multi-affine residual become NAMED DERIVED LEMMAS
-  (`hcenter`/`hcover`/`DescendView`/`ShearWithinCarve`/`hδ0` + GAP-3). Discriminator = the kernel-checked
-  `DivBirthInv` (`Engine/DivBirthReach.lean`): support STAYS, no case11 descent. NOT YET IN THE LEAF
-  STATEMENTS — they still carry the `supportAt`-window per-field forms; the redirect bake re-conditions
-  them + grows the cone by the derived-lemma stubs (footprint clean-three+sorryAx). per-field SET (A)
-  SUPERSEDED, the case-aware `supportAt`/`edgeδ` fallback VOIDED ([[dead-routes]] § Redirect-round).
+- **REDIRECT — BAKED** (`9c51289f4`, 2026-07-22; elder second read OK). The leaves now CONDITION ON ONE
+  `IsRealBranch e` hypothesis; the per-field SET (A) constraints became the **6 `realBranch_*`
+  derived-lemma stubs** (`realBranch_centerPin` :892 / `_cover` :901 / `_descendView` :911 /
+  `_shearWithinCarve` :920 / `_terminal_edgeδ` :930 / `_multiAffine` :941) — the new cone members
+  (MonumentAtlas census 8→14, DLN/Aoyagi 10→16; footprint clean-three+sorryAx both drivers). Discriminator
+  = the kernel-checked `DivBirthInv` (`Engine/DivBirthReach.lean`): support STAYS, no case11 descent.
+  L8's external geometry proof lives in `LeafGeometryWire` (in-flight seat branch, NOT yet on the
+  expedition tree) awaiting the integration swap. IN-FLIGHT L6-fix round: an elder-authored
+  pin-TIGHTENING on `ShearWithinCarveRaw` (`MonumentAtlas.lean:637`) / `IsRealBranch` — re-renders those
+  two defs + strengthens `realBranch_shearWithinCarve`'s conclusion only (not a census change). per-field
+  SET (A) SUPERSEDED, the case-aware `supportAt`/`edgeδ` fallback VOIDED ([[dead-routes]] § Redirect-round).
 - **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). L7
   (`leafPath_compactCover`, `b-leaf7`) is BRIDGE-FREE (coordinate axis; `tupIdxEquiv`
   `LearningCoefficient.lean:138` / `divBirthCoord` `EngineConstruction.lean:62`). The L3/L4 SUPPORT
