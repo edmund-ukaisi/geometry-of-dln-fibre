@@ -121,6 +121,52 @@ theorem binding_qipT_pair (D : Fin (L + 1) → ℕ) (hmono : Monotone D) (hL : 1
   exact sumSq_eq_abs_characterization (qipLow D) (qipT D (fun j ↦ (e j : ℤ)))
     (qipDelta D) hsumT hsqT
 
+/-- **Partial telescoping.** The prefix sum of the descent increments `eOfT D T` over `Iic c`
+recovers the profile: `∑_{j ≤ c} eOfT D T j = D₀ − T_c` (the reverse round-trip of `tOfE`, localised
+to a prefix). Over `ℤ` (honest differences on `Adm`, via `eOfT_cast`). -/
+theorem prefix_telescope (D : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm D) :
+    ∀ (n : ℕ) (hn : n < L),
+      (∑ j ∈ Finset.Iic (⟨n, hn⟩ : Fin L), (eOfT D T j : ℤ)) = (D 0 : ℤ) - (T ⟨n, hn⟩ : ℤ) := by
+  intro n
+  induction n with
+  | zero =>
+    intro hn
+    have hsing : Finset.Iic (⟨0, hn⟩ : Fin L) = {⟨0, hn⟩} := by
+      have hv : (⟨0, hn⟩ : Fin L).val = 0 := rfl
+      ext x
+      simp only [Finset.mem_Iic, Finset.mem_singleton, Fin.le_def, Fin.ext_iff]
+      omega
+    rw [hsing, Finset.sum_singleton, eOfT_cast D hT]
+    have h1 : expSurvivor D T (⟨0, hn⟩ : Fin L).castSucc = D 0 := by
+      rw [show (⟨0, hn⟩ : Fin L).castSucc = (0 : Fin (L + 1)) from Fin.ext (by simp)]
+      exact expSurvivor_zero D T
+    have h2 : expSurvivor D T (⟨0, hn⟩ : Fin L).succ = T ⟨0, hn⟩ := expSurvivor_succ D T _
+    rw [h1, h2]
+  | succ m ih =>
+    intro hn
+    have hm : m < L := by omega
+    have hv1 : (⟨m + 1, hn⟩ : Fin L).val = m + 1 := rfl
+    have hv2 : (⟨m, hm⟩ : Fin L).val = m := rfl
+    have hins : Finset.Iic (⟨m + 1, hn⟩ : Fin L)
+        = insert (⟨m + 1, hn⟩ : Fin L) (Finset.Iic (⟨m, hm⟩ : Fin L)) := by
+      ext x
+      simp only [Finset.mem_Iic, Finset.mem_insert, Fin.le_def, Fin.ext_iff]
+      omega
+    have hnotmem : (⟨m + 1, hn⟩ : Fin L) ∉ Finset.Iic (⟨m, hm⟩ : Fin L) := by
+      simp only [Finset.mem_Iic, Fin.le_def]; omega
+    rw [hins, Finset.sum_insert hnotmem, ih hm, eOfT_cast D hT]
+    have h1 : expSurvivor D T (⟨m + 1, hn⟩ : Fin L).castSucc = T ⟨m, hm⟩ := by
+      rw [show (⟨m + 1, hn⟩ : Fin L).castSucc = (⟨m, hm⟩ : Fin L).succ from Fin.ext (by simp)]
+      exact expSurvivor_succ D T _
+    have h2 : expSurvivor D T (⟨m + 1, hn⟩ : Fin L).succ = T ⟨m + 1, hn⟩ := expSurvivor_succ D T _
+    rw [h1, h2]; ring
+
+/-- Prefix-sum form for a general `c : Fin L`. -/
+theorem prefix_telescope' (D : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm D) (c : Fin L) :
+    (∑ j ∈ Finset.Iic c, (eOfT D T j : ℤ)) = (D 0 : ℤ) - (T c : ℤ) := by
+  have := prefix_telescope D hT c.val c.isLt
+  simpa using this
+
 /-! ## The order-isomorphism -/
 
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
