@@ -1,0 +1,573 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.145.0
+--------
+workdir: /tmp
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f8b30-63c8-79a3-870f-9d103a973f8c
+--------
+user
+<task>
+Work ONLY from this prompt. Do NOT read any repository files. Write and run a FRESH self-contained
+sympy script in /tmp and report. Adjudicate one truth-value by exact algebra.
+
+SETUP (2x2 matrices, all entries independent symbols). Three matrices:
+  A0, A1, A2, each 2x2; A_L[r][c] is an independent real symbol; write coords u_(L,r,c).
+Product  M = A2 * A1 * A0  (2x2). coreGen = the 4 entries M[i][j].
+
+A "fold" resolves the product by clearing A0 first. The residual family = coreGen composed with a
+chain of coordinate maps. Per-edge maps (blow-up OUTERMOST):
+  blockBlowupMap(S,p,w)[j]    = w[p] if j==p ; w[p]*w[j] if j in S ; else w[j]
+  blockBlowupCoordQuot(p,w)[j]= 1 if j==p ; else w[j]
+  edgeShear = identity for a "case11"/"rollover" edge; = (u |-> u + phi(u)) for "case2"/"case12",
+  where phi = canonShear(s):  for coord k=(L,r,c),  phi[k] = -u_(L,r,s.cleared)*u_(L,s.cleared,c)
+     if  L==s.layer and s.cleared<r and s.cleared<c,  else 0.
+  stepMap = blockBlowupMap(center,pivot) . edgeShear ;  qm = blockBlowupCoordQuot(pivot) . edgeShear.
+Recursion (delta = [parent.cleared==0]):  foldResid(root)=coreGen ;
+  child(j)(u) = parent(j)(qm(u))  if delta==1 ;  = parent(j)(stepMap(u))  if delta==0.
+So foldResid at depth n = coreGen(map_ed1(map_ed2(...map_edn(u)))), ed1 OUTERMOST (applied last).
+
+THE PATH (verified separately; take as given). Three edges to node p:
+  ed1: case2, delta=1, parent state (layer=0,cleared=0), pivot = coord (0,0,0),
+       shear = canonShear(layer0,cleared0)  [writes only coord (0,1,1) = -u_(0,1,0)*u_(0,0,1)].
+  ed2: case2, delta=0, parent (0,1), pivot=(0,1,1), center={(0,1,1)}, shear=canonShear(0,1)=0.
+  ed3: rollover, delta=0, parent (0,2), center={}, pivot=none.
+At p the resolution does a "case11" boost reusing the divisor born at corner (0,1) [coord (0,1,1)],
+with runLen=1.  Boost data:  pivot = u_(0,1,1);  partial block = layer-1 col<1 = {u_(1,0,0),u_(1,1,0)};
+extra block = layer-1 col 1 = {u_(1,0,1),u_(1,1,1)};  center C = {u_(0,1,1)} ∪ partial.
+
+COMPUTE and REPORT:
+1. foldResid at p (the 4 polynomials). Which of ed1/ed2/ed3 act nontrivially?
+2. Is each residual entry `Deg1SupportedOn C`, i.e. lies in the ideal (C) with every EXTRA-block coord
+   appearing ONLY multiplied by u_pivot=u_(0,1,1)?  Tests: (A1) vanishes when all C=0; (A2) deg<=1 in C;
+   (A3) each extra coord's coefficient vanishes at u_(0,1,1)=0.  Give True/False + breaking monomials.
+3. If it FAILS: what minimal ingredient, ADDED to the maps above, makes it boost-ready? Test explicitly:
+   (i) a fuller clear of A0's pivot with the elementary L,U factors zeroing the pivot ROW and COLUMN
+       (not just the Schur interior cross-term canonShear gives); AND/OR
+   (ii) a recoordinatization of the DEEPER matrix A1 -> A1 * Q^{-1}, Q the pivot-column-clearing factor;
+   AND/OR (iii) taking the boost pivot to be the Schur-reduced coordinate rather than the literal corner.
+   Build the corrected residual and RE-RUN A1/A2/A3.
+4. Is the underlying claim TRUE for a faithful clear of A0 (i.e. is there SOME correct realization on
+   which the layer-1 residual is degree-1 on the boost center)? YES/NO + the construction.
+</task>
+<output_contract>
+Terse, numbered 1-4. For each load-bearing claim, paste the exact sympy and its printed output.
+State the final verdict: is foldResid-at-p (maps EXACTLY as given) boost-ready? and is the underlying
+claim true for a corrected clear? Flag inference vs computed fact.
+</output_contract>
+<grounding_rules>
+Do NOT read repo files; everything you need is above. Compute with sympy, do not hand-wave. If a step
+is ambiguous, try both readings. Do not assume the answer.
+</grounding_rules>
+
+codex
+I’ll build one fresh SymPy script in `/tmp`, encoding the maps literally first, then testing the proposed faithful-clear variants by exact expansion and coefficient checks. I won’t inspect any repository files.
+apply patch
+patch: completed
+/tmp/fold_adjudicate.py
+diff --git a/fold_adjudicate.py b/fold_adjudicate.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d6edbe3eeffc3a49ae5ec562b210692975c499c
+--- /dev/null
++++ b/fold_adjudicate.py
+@@ -0,0 +1,140 @@
++import sympy as sp
++
++# Fresh symbols and matrices.
++u = {(L, r, c): sp.Symbol(f"u_{L}{r}{c}")
++     for L in range(3) for r in range(2) for c in range(2)}
++a, b, c, d = (u[0, 0, 0], u[0, 0, 1], u[0, 1, 0], u[0, 1, 1])
++x, y, z, w = (u[1, 0, 0], u[1, 0, 1], u[1, 1, 0], u[1, 1, 1])
++P, R, T, V = (u[2, 0, 0], u[2, 0, 1], u[2, 1, 0], u[2, 1, 1])
++A1 = sp.Matrix([[x, y], [z, w]])
++A2 = sp.Matrix([[P, R], [T, V]])
++
++def shear(vals, layer, cleared):
++    out = dict(vals)
++    for (L, r, col) in vals:
++        if L == layer and cleared < r and cleared < col:
++            out[L, r, col] = sp.expand(
++                vals[L, r, col] - vals[L, r, cleared] * vals[L, cleared, col])
++    return out
++
++def quotient(vals, pivot):
++    return {k: (sp.Integer(1) if k == pivot else v) for k, v in vals.items()}
++
++def blowup(vals, center, pivot):
++    if pivot is None:
++        return dict(vals)
++    return {k: (vals[pivot] if k == pivot else
++                vals[pivot] * v if k in center else v)
++            for k, v in vals.items()}
++
++def ed1(vals):
++    return quotient(shear(vals, 0, 0), (0, 0, 0))
++
++def ed2(vals):
++    return blowup(shear(vals, 0, 1), {(0, 1, 1)}, (0, 1, 1))
++
++def ed3(vals):
++    return blowup(vals, set(), None)
++
++def changes(edge):
++    image = edge(u)
++    return {str(u[k]): sp.expand(image[k]) for k in u if sp.expand(image[k] - u[k]) != 0}
++
++def entries(mat):
++    return [sp.expand(mat[i, j]) for i in range(2) for j in range(2)]
++
++def term_list(expr):
++    return sp.Add.make_args(sp.expand(expr)) if expr != 0 else ()
++
++def cdegree(term, center):
++    powers = term.as_powers_dict()
++    return sum(int(powers.get(v, 0)) for v in center)
++
++def tests(mat, center, extras, pivot):
++    result = []
++    zero_center = {v: 0 for v in center}
++    for f in entries(mat):
++        a1_break = sp.expand(f.subs(zero_center))
++        a2_terms = [q for q in term_list(f) if cdegree(q, center) > 1]
++        a3_break = {str(e): sp.expand(f.coeff(e).subs(pivot, 0))
++                    for e in extras if sp.expand(f.coeff(e).subs(pivot, 0)) != 0}
++        result.append({
++            "A1": a1_break == 0,
++            "A1_break": a1_break,
++            "A2": not a2_terms,
++            "A2_break": a2_terms,
++            "A3": not a3_break,
++            "A3_break": a3_break,
++        })
++    return result
++
++def print_tests(label, mat, center, extras, pivot):
++    got = tests(mat, center, extras, pivot)
++    print(label)
++    for i, row in enumerate(got):
++        print(f"  m{i}: {row}")
++    print("  OVERALL =", all(r["A1"] and r["A2"] and r["A3"] for r in got))
++
++# Literal recursion: ed1(ed2(ed3(u))).
++mapped = ed1(ed2(ed3(u)))
++A0_literal = sp.Matrix([[mapped[0, 0, 0], mapped[0, 0, 1]],
++                        [mapped[0, 1, 0], mapped[0, 1, 1]]])
++M_literal = A2 * A1 * A0_literal
++print("1 LITERAL MAPS")
++print("ed1 changes =", changes(ed1))
++print("ed2 changes =", changes(ed2))
++print("ed3 changes =", changes(ed3))
++print("A0 image =", A0_literal)
++print("foldResid =", entries(M_literal))
++print_tests("2 LITERAL TESTS; C=(u_011,u_100,u_110), extra=(u_101,u_111)",
++            M_literal, [d, x, z], [y, w], d)
++
++# Ingredient checks.  s is the Schur coordinate of normalized [[1,b],[c,d]].
++# h is the Schur coordinate of the *already literal-mapped* [[1,b],[c,d-b*c]].
++s, h = sp.symbols("s h")
++M_schur_only = sp.expand(M_literal.subs(d, s + b*c))
++print_tests("3a SCHUR PIVOT ONLY on literal residual (d=s+b*c)",
++            M_schur_only, [s, x, z], [y, w], s)
++
++B = sp.Matrix([[x, y], [z, w]])
++upper_literal_corner = sp.Matrix([[1, b], [0, d - 2*b*c]])
++M_column_literal_corner = A2 * B * upper_literal_corner
++print_tests("3b COLUMN CLEAR/DEEPER COORDS, but old literal pivot d",
++            M_column_literal_corner, [d, x, z], [y, w], d)
++
++upper_h = sp.Matrix([[1, b], [0, h]])
++diag_h = sp.diag(1, h)
++M_upper_h = A2 * B * upper_h
++M_diag_h = A2 * B * diag_h
++print("3c corrected-from-given foldResid (h=d-2*b*c) =", entries(M_upper_h))
++print_tests("3c COLUMN CLEAR + DEEPER COORDS + actual Schur pivot h",
++            M_upper_h, [h, x, z], [y, w], h)
++print_tests("3d FULL ROW+COLUMN CLEAR + actual Schur pivot h",
++            M_diag_h, [h, x, z], [y, w], h)
++
++# Faithful Gaussian clear starting from the normalized original A0.
++A0_original = sp.Matrix([[1, b], [c, d]])
++Q = sp.Matrix([[1, 0], [-c, 1]])
++Qinv = Q.inv()
++U = sp.Matrix([[1, -b], [0, 1]])
++Uinv = U.inv()
++S = sp.simplify(Q * A0_original)
++D = sp.simplify(S * U)
++S_s = S.subs(d, s + b*c)
++D_s = D.subs(d, s + b*c)
++A1_old_in_B = B * Q
++M_faithful = A2 * B * S_s
++M_full_clear = A2 * B * D_s
++print("4 FAITHFUL FACTORS")
++print("Q*A0 =", S)
++print("Q*A0*U =", D)
++print("B = A1_old*Qinv check =", sp.simplify(A1_old_in_B * Qinv - B) == sp.zeros(2))
++print("old product = B*(Q*A0) check =",
++      sp.simplify(A2*A1_old_in_B*A0_original.subs(d, s+b*c) - M_faithful) == sp.zeros(2))
++print("row-clear/output-factor check B*S = B*D*Uinv =",
++      sp.simplify(M_faithful - A2*B*D_s*Uinv) == sp.zeros(2))
++print("faithful residual =", entries(M_faithful))
++print_tests("4a FAITHFUL UPPER-TRIANGULAR RESIDUAL; C=(s,x,z)",
++            M_faithful, [s, x, z], [y, w], s)
++print_tests("4b FULLY CLEARED OUTPUT COORDS; C=(s,x,z)",
++            M_full_clear, [s, x, z], [y, w], s)
+
+diff --git a/fold_adjudicate.py b/fold_adjudicate.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d6edbe3eeffc3a49ae5ec562b210692975c499c
+--- /dev/null
++++ b/fold_adjudicate.py
+@@ -0,0 +1,140 @@
++import sympy as sp
++
++# Fresh symbols and matrices.
++u = {(L, r, c): sp.Symbol(f"u_{L}{r}{c}")
++     for L in range(3) for r in range(2) for c in range(2)}
++a, b, c, d = (u[0, 0, 0], u[0, 0, 1], u[0, 1, 0], u[0, 1, 1])
++x, y, z, w = (u[1, 0, 0], u[1, 0, 1], u[1, 1, 0], u[1, 1, 1])
++P, R, T, V = (u[2, 0, 0], u[2, 0, 1], u[2, 1, 0], u[2, 1, 1])
++A1 = sp.Matrix([[x, y], [z, w]])
++A2 = sp.Matrix([[P, R], [T, V]])
++
++def shear(vals, layer, cleared):
++    out = dict(vals)
++    for (L, r, col) in vals:
++        if L == layer and cleared < r and cleared < col:
++            out[L, r, col] = sp.expand(
++                vals[L, r, col] - vals[L, r, cleared] * vals[L, cleared, col])
++    return out
++
++def quotient(vals, pivot):
++    return {k: (sp.Integer(1) if k == pivot else v) for k, v in vals.items()}
++
++def blowup(vals, center, pivot):
++    if pivot is None:
++        return dict(vals)
++    return {k: (vals[pivot] if k == pivot else
++                vals[pivot] * v if k in center else v)
++            for k, v in vals.items()}
++
++def ed1(vals):
++    return quotient(shear(vals, 0, 0), (0, 0, 0))
++
++def ed2(vals):
++    return blowup(shear(vals, 0, 1), {(0, 1, 1)}, (0, 1, 1))
++
++def ed3(vals):
++    return blowup(vals, set(), None)
++
++def changes(edge):
++    image = edge(u)
++    return {str(u[k]): sp.expand(image[k]) for k in u if sp.expand(image[k] - u[k]) != 0}
++
++def entries(mat):
++    return [sp.expand(mat[i, j]) for i in range(2) for j in range(2)]
++
++def term_list(expr):
++    return sp.Add.make_args(sp.expand(expr)) if expr != 0 else ()
++
++def cdegree(term, center):
++    powers = term.as_powers_dict()
++    return sum(int(powers.get(v, 0)) for v in center)
++
++def tests(mat, center, extras, pivot):
++    result = []
++    zero_center = {v: 0 for v in center}
++    for f in entries(mat):
++        a1_break = sp.expand(f.subs(zero_center))
++        a2_terms = [q for q in term_list(f) if cdegree(q, center) > 1]
++        a3_break = {str(e): sp.expand(f.coeff(e).subs(pivot, 0))
++                    for e in extras if sp.expand(f.coeff(e).subs(pivot, 0)) != 0}
++        result.append({
++            "A1": a1_break == 0,
++            "A1_break": a1_break,
++            "A2": not a2_terms,
++            "A2_break": a2_terms,
++            "A3": not a3_break,
++            "A3_break": a3_break,
++        })
++    return result
++
++def print_tests(label, mat, center, extras, pivot):
++    got = tests(mat, center, extras, pivot)
++    print(label)
++    for i, row in enumerate(got):
++        print(f"  m{i}: {row}")
++    print("  OVERALL =", all(r["A1"] and r["A2"] and r["A3"] for r in got))
++
++# Literal recursion: ed1(ed2(ed3(u))).
++mapped = ed1(ed2(ed3(u)))
++A0_literal = sp.Matrix([[mapped[0, 0, 0], mapped[0, 0, 1]],
++                        [mapped[0, 1, 0], mapped[0, 1, 1]]])
++M_literal = A2 * A1 * A0_literal
++print("1 LITERAL MAPS")
++print("ed1 changes =", changes(ed1))
++print("ed2 changes =", changes(ed2))
++print("ed3 changes =", changes(ed3))
++print("A0 image =", A0_literal)
++print("foldResid =", entries(M_literal))
++print_tests("2 LITERAL TESTS; C=(u_011,u_100,u_110), extra=(u_101,u_111)",
++            M_literal, [d, x, z], [y, w], d)
++
++# Ingredient checks.  s is the Schur coordinate of normalized [[1,b],[c,d]].
++# h is the Schur coordinate of the *already literal-mapped* [[1,b],[c,d-b*c]].
++s, h = sp.symbols("s h")
++M_schur_only = sp.expand(M_literal.subs(d, s + b*c))
++print_tests("3a SCHUR PIVOT ONLY on literal residual (d=s+b*c)",
++            M_schur_only, [s, x, z], [y, w], s)
++
++B = sp.Matrix([[x, y], [z, w]])
++upper_literal_corner = sp.Matrix([[1, b], [0, d - 2*b*c]])
++M_column_literal_corner = A2 * B * upper_literal_corner
++print_tests("3b COLUMN CLEAR/DEEPER COORDS, but old literal pivot d",
++            M_column_literal_corner, [d, x, z], [y, w], d)
++
++upper_h = sp.Matrix([[1, b], [0, h]])
++diag_h = sp.diag(1, h)
++M_upper_h = A2 * B * upper_h
++M_diag_h = A2 * B * diag_h
++print("3c corrected-from-given foldResid (h=d-2*b*c) =", entries(M_upper_h))
++print_tests("3c COLUMN CLEAR + DEEPER COORDS + actual Schur pivot h",
++            M_upper_h, [h, x, z], [y, w], h)
++print_tests("3d FULL ROW+COLUMN CLEAR + actual Schur pivot h",
++            M_diag_h, [h, x, z], [y, w], h)
++
++# Faithful Gaussian clear starting from the normalized original A0.
++A0_original = sp.Matrix([[1, b], [c, d]])
++Q = sp.Matrix([[1, 0], [-c, 1]])
++Qinv = Q.inv()
++U = sp.Matrix([[1, -b], [0, 1]])
++Uinv = U.inv()
++S = sp.simplify(Q * A0_original)
++D = sp.simplify(S * U)
++S_s = S.subs(d, s + b*c)
++D_s = D.subs(d, s + b*c)
++A1_old_in_B = B * Q
++M_faithful = A2 * B * S_s
++M_full_clear = A2 * B * D_s
++print("4 FAITHFUL FACTORS")
++print("Q*A0 =", S)
++print("Q*A0*U =", D)
++print("B = A1_old*Qinv check =", sp.simplify(A1_old_in_B * Qinv - B) == sp.zeros(2))
++print("old product = B*(Q*A0) check =",
++      sp.simplify(A2*A1_old_in_B*A0_original.subs(d, s+b*c) - M_faithful) == sp.zeros(2))
++print("row-clear/output-factor check B*S = B*D*Uinv =",
++      sp.simplify(M_faithful - A2*B*D_s*Uinv) == sp.zeros(2))
++print("faithful residual =", entries(M_faithful))
++print_tests("4a FAITHFUL UPPER-TRIANGULAR RESIDUAL; C=(s,x,z)",
++            M_faithful, [s, x, z], [y, w], s)
++print_tests("4b FULLY CLEARED OUTPUT COORDS; C=(s,x,z)",
++            M_full_clear, [s, x, z], [y, w], s)
+
+exec
+/bin/bash -lc 'python /tmp/fold_adjudicate.py' in /tmp
+diff --git a/fold_adjudicate.py b/fold_adjudicate.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d6edbe3eeffc3a49ae5ec562b210692975c499c
+--- /dev/null
++++ b/fold_adjudicate.py
+@@ -0,0 +1,140 @@
++import sympy as sp
++
++# Fresh symbols and matrices.
++u = {(L, r, c): sp.Symbol(f"u_{L}{r}{c}")
++     for L in range(3) for r in range(2) for c in range(2)}
++a, b, c, d = (u[0, 0, 0], u[0, 0, 1], u[0, 1, 0], u[0, 1, 1])
++x, y, z, w = (u[1, 0, 0], u[1, 0, 1], u[1, 1, 0], u[1, 1, 1])
++P, R, T, V = (u[2, 0, 0], u[2, 0, 1], u[2, 1, 0], u[2, 1, 1])
++A1 = sp.Matrix([[x, y], [z, w]])
++A2 = sp.Matrix([[P, R], [T, V]])
++
++def shear(vals, layer, cleared):
++    out = dict(vals)
++    for (L, r, col) in vals:
++        if L == layer and cleared < r and cleared < col:
++            out[L, r, col] = sp.expand(
++                vals[L, r, col] - vals[L, r, cleared] * vals[L, cleared, col])
++    return out
++
++def quotient(vals, pivot):
++    return {k: (sp.Integer(1) if k == pivot else v) for k, v in vals.items()}
++
++def blowup(vals, center, pivot):
++    if pivot is None:
++        return dict(vals)
++    return {k: (vals[pivot] if k == pivot else
++                vals[pivot] * v if k in center else v)
++            for k, v in vals.items()}
++
++def ed1(vals):
++    return quotient(shear(vals, 0, 0), (0, 0, 0))
++
++def ed2(vals):
++    return blowup(shear(vals, 0, 1), {(0, 1, 1)}, (0, 1, 1))
++
++def ed3(vals):
++    return blowup(vals, set(), None)
++
++def changes(edge):
++    image = edge(u)
++    return {str(u[k]): sp.expand(image[k]) for k in u if sp.expand(image[k] - u[k]) != 0}
++
++def entries(mat):
++    return [sp.expand(mat[i, j]) for i in range(2) for j in range(2)]
++
++def term_list(expr):
++    return sp.Add.make_args(sp.expand(expr)) if expr != 0 else ()
++
++def cdegree(term, center):
++    powers = term.as_powers_dict()
++    return sum(int(powers.get(v, 0)) for v in center)
++
++def tests(mat, center, extras, pivot):
++    result = []
++    zero_center = {v: 0 for v in center}
++    for f in entries(mat):
++        a1_break = sp.expand(f.subs(zero_center))
++        a2_terms = [q for q in term_list(f) if cdegree(q, center) > 1]
++        a3_break = {str(e): sp.expand(f.coeff(e).subs(pivot, 0))
++                    for e in extras if sp.expand(f.coeff(e).subs(pivot, 0)) != 0}
++        result.append({
++            "A1": a1_break == 0,
++            "A1_break": a1_break,
++            "A2": not a2_terms,
++            "A2_break": a2_terms,
++            "A3": not a3_break,
++            "A3_break": a3_break,
++        })
++    return result
++
++def print_tests(label, mat, center, extras, pivot):
++    got = tests(mat, center, extras, pivot)
++    print(label)
++    for i, row in enumerate(got):
++        print(f"  m{i}: {row}")
++    print("  OVERALL =", all(r["A1"] and r["A2"] and r["A3"] for r in got))
++
++# Literal recursion: ed1(ed2(ed3(u))).
++mapped = ed1(ed2(ed3(u)))
++A0_literal = sp.Matrix([[mapped[0, 0, 0], mapped[0, 0, 1]],
++                        [mapped[0, 1, 0], mapped[0, 1, 1]]])
++M_literal = A2 * A1 * A0_literal
++print("1 LITERAL MAPS")
++print("ed1 changes =", changes(ed1))
++print("ed2 changes =", changes(ed2))
++print("ed3 changes =", changes(ed3))
++print("A0 image =", A0_literal)
++print("foldResid =", entries(M_literal))
++print_tests("2 LITERAL TESTS; C=(u_011,u_100,u_110), extra=(u_101,u_111)",
++            M_literal, [d, x, z], [y, w], d)
++
++# Ingredient checks.  s is the Schur coordinate of normalized [[1,b],[c,d]].
++# h is the Schur coordinate of the *already literal-mapped* [[1,b],[c,d-b*c]].
++s, h = sp.symbols("s h")
++M_schur_only = sp.expand(M_literal.subs(d, s + b*c))
++print_tests("3a SCHUR PIVOT ONLY on literal residual (d=s+b*c)",
++            M_schur_only, [s, x, z], [y, w], s)
++
++B = sp.Matrix([[x, y], [z, w]])
++upper_literal_corner = sp.Matrix([[1, b], [0, d - 2*b*c]])
++M_column_literal_corner = A2 * B * upper_literal_corner
++print_tests("3b COLUMN CLEAR/DEEPER COORDS, but old literal pivot d",
++            M_column_literal_corner, [d, x, z], [y, w], d)
++
++upper_h = sp.Matrix([[1, b], [0, h]])
++diag_h = sp.diag(1, h)
++M_upper_h = A2 * B * upper_h
++M_diag_h = A2 * B * diag_h
++print("3c corrected-from-given foldResid (h=d-2*b*c) =", entries(M_upper_h))
++print_tests("3c COLUMN CLEAR + DEEPER COORDS + actual Schur pivot h",
++            M_upper_h, [h, x, z], [y, w], h)
++print_tests("3d FULL ROW+COLUMN CLEAR + actual Schur pivot h",
++            M_diag_h, [h, x, z], [y, w], h)
++
++# Faithful Gaussian clear starting from the normalized original A0.
++A0_original = sp.Matrix([[1, b], [c, d]])
++Q = sp.Matrix([[1, 0], [-c, 1]])
++Qinv = Q.inv()
++U = sp.Matrix([[1, -b], [0, 1]])
++Uinv = U.inv()
++S = sp.simplify(Q * A0_original)
++D = sp.simplify(S * U)
++S_s = S.subs(d, s + b*c)
++D_s = D.subs(d, s + b*c)
++A1_old_in_B = B * Q
++M_faithful = A2 * B * S_s
++M_full_clear = A2 * B * D_s
++print("4 FAITHFUL FACTORS")
++print("Q*A0 =", S)
++print("Q*A0*U =", D)
++print("B = A1_old*Qinv check =", sp.simplify(A1_old_in_B * Qinv - B) == sp.zeros(2))
++print("old product = B*(Q*A0) check =",
++      sp.simplify(A2*A1_old_in_B*A0_original.subs(d, s+b*c) - M_faithful) == sp.zeros(2))
++print("row-clear/output-factor check B*S = B*D*Uinv =",
++      sp.simplify(M_faithful - A2*B*D_s*Uinv) == sp.zeros(2))
++print("faithful residual =", entries(M_faithful))
++print_tests("4a FAITHFUL UPPER-TRIANGULAR RESIDUAL; C=(s,x,z)",
++            M_faithful, [s, x, z], [y, w], s)
++print_tests("4b FULLY CLEARED OUTPUT COORDS; C=(s,x,z)",
++            M_full_clear, [s, x, z], [y, w], s)
+
+ succeeded in 907ms:
+1 LITERAL MAPS
+ed1 changes = {'u_000': 1, 'u_011': -u_001*u_010 + u_011}
+ed2 changes = {}
+ed3 changes = {}
+A0 image = Matrix([[1, u_001], [u_010, -u_001*u_010 + u_011]])
+foldResid = [u_010*u_101*u_200 + u_010*u_111*u_201 + u_100*u_200 + u_110*u_201, -u_001*u_010*u_101*u_200 - u_001*u_010*u_111*u_201 + u_001*u_100*u_200 + u_001*u_110*u_201 + u_011*u_101*u_200 + u_011*u_111*u_201, u_010*u_101*u_210 + u_010*u_111*u_211 + u_100*u_210 + u_110*u_211, -u_001*u_010*u_101*u_210 - u_001*u_010*u_111*u_211 + u_001*u_100*u_210 + u_001*u_110*u_211 + u_011*u_101*u_210 + u_011*u_111*u_211]
+2 LITERAL TESTS; C=(u_011,u_100,u_110), extra=(u_101,u_111)
+  m0: {'A1': False, 'A1_break': u_010*u_101*u_200 + u_010*u_111*u_201, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': u_010*u_200, 'u_111': u_010*u_201}}
+  m1: {'A1': False, 'A1_break': -u_001*u_010*u_101*u_200 - u_001*u_010*u_111*u_201, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': -u_001*u_010*u_200, 'u_111': -u_001*u_010*u_201}}
+  m2: {'A1': False, 'A1_break': u_010*u_101*u_210 + u_010*u_111*u_211, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': u_010*u_210, 'u_111': u_010*u_211}}
+  m3: {'A1': False, 'A1_break': -u_001*u_010*u_101*u_210 - u_001*u_010*u_111*u_211, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': -u_001*u_010*u_210, 'u_111': -u_001*u_010*u_211}}
+  OVERALL = False
+3a SCHUR PIVOT ONLY on literal residual (d=s+b*c)
+  m0: {'A1': False, 'A1_break': u_010*u_101*u_200 + u_010*u_111*u_201, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': u_010*u_200, 'u_111': u_010*u_201}}
+  m1: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m2: {'A1': False, 'A1_break': u_010*u_101*u_210 + u_010*u_111*u_211, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': u_010*u_210, 'u_111': u_010*u_211}}
+  m3: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  OVERALL = False
+3b COLUMN CLEAR/DEEPER COORDS, but old literal pivot d
+  m0: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m1: {'A1': False, 'A1_break': -2*u_001*u_010*u_101*u_200 - 2*u_001*u_010*u_111*u_201, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': -2*u_001*u_010*u_200, 'u_111': -2*u_001*u_010*u_201}}
+  m2: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m3: {'A1': False, 'A1_break': -2*u_001*u_010*u_101*u_210 - 2*u_001*u_010*u_111*u_211, 'A2': True, 'A2_break': [], 'A3': False, 'A3_break': {'u_101': -2*u_001*u_010*u_210, 'u_111': -2*u_001*u_010*u_211}}
+  OVERALL = False
+3c corrected-from-given foldResid (h=d-2*b*c) = [u_100*u_200 + u_110*u_201, h*u_101*u_200 + h*u_111*u_201 + u_001*u_100*u_200 + u_001*u_110*u_201, u_100*u_210 + u_110*u_211, h*u_101*u_210 + h*u_111*u_211 + u_001*u_100*u_210 + u_001*u_110*u_211]
+3c COLUMN CLEAR + DEEPER COORDS + actual Schur pivot h
+  m0: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m1: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m2: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m3: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  OVERALL = True
+3d FULL ROW+COLUMN CLEAR + actual Schur pivot h
+  m0: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m1: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m2: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m3: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  OVERALL = True
+4 FAITHFUL FACTORS
+Q*A0 = Matrix([[1, u_001], [0, -u_001*u_010 + u_011]])
+Q*A0*U = Matrix([[1, 0], [0, -u_001*u_010 + u_011]])
+B = A1_old*Qinv check = True
+old product = B*(Q*A0) check = True
+row-clear/output-factor check B*S = B*D*Uinv = True
+faithful residual = [u_100*u_200 + u_110*u_201, s*u_101*u_200 + s*u_111*u_201 + u_001*u_100*u_200 + u_001*u_110*u_201, u_100*u_210 + u_110*u_211, s*u_101*u_210 + s*u_111*u_211 + u_001*u_100*u_210 + u_001*u_110*u_211]
+4a FAITHFUL UPPER-TRIANGULAR RESIDUAL; C=(s,x,z)
+  m0: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m1: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m2: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m3: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  OVERALL = True
+4b FULLY CLEARED OUTPUT COORDS; C=(s,x,z)
+  m0: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m1: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m2: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  m3: {'A1': True, 'A1_break': 0, 'A2': True, 'A2_break': [], 'A3': True, 'A3_break': {}}
+  OVERALL = True
+
