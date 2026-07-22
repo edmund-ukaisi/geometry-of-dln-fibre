@@ -11574,3 +11574,20 @@ file (the better-reasoned call; the recommendation was mine, the improvement the
 three rfl-bridge verifications (all rfl ⟹ plumbing, not fidelity), the faithful-count precision
 story, the 1→3-track resourcing shape with zero rework, and the residue ledger. The E-lane is
 fully quiescent: theorem registered, review survived, narrative banked, seats at WAITING FOR WAKE.
+
+## 2026-07-22 (controller, tick ~06:45) — THRESHOLD RATIFIED (elder owns the ∀ℓ over-reach); THE COMPLETE BAKE IS GO
+
+The elder's two-part confirm (transcript 06:33, both plain final text): (1) "Ratify the threshold
+form… It is the correct object; my ∀ℓ sentence over-reached my own grounds" — the emission gate
+(its OWN load-bearing criterion) fails under ∀ℓ; the threshold passes all three grounds unchanged;
+∃c KEPT (a degree bound gives no vanishing — both required); (2) the literal
+`PerLayerDeg1From d f fromLayer V := ∀ ℓ, fromLayer ≤ ℓ → AffineOn f (layerCoords d ℓ) V` at
+fromLayer = S (J=0) / S+1 (J≥1) confirmed VERBATIM as the ruled object — with the BORN-UNIT check
+(fromLayer = N ⟹ vacuous, consistent with the all-unit terminal, no edge gap) and the four
+re-gate witnesses certified "correct and complete" (de·s1·s2 dies at support; construction child
+satisfies; cleared-layer degree-2 ACCEPTED — the load-bearing permissiveness; true-under-both).
+The elder pre-commits its second read to verifying the four witnesses RAN (green necessary, never
+sufficient). Closing word: "BAKE." RELAYED to arch-C with the witness-evidence banking
+requirement. The monument's statement side is COMPLETE on this bake: five-face amendments +
+grading/shear form + threshold coefficient window — conjunct-B self-propagates. Next: the bake
+hash → controller verification → proof-seat wakes → elder second read → canonShearOf follow-up.
