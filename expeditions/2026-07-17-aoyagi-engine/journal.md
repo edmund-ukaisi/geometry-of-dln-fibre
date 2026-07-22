@@ -12055,3 +12055,21 @@ PRE-BAKE. The proved branches re-target mechanically (conditioned hypothesis ⟹
 forms via the derived lemmas). This is the statement architecture's FINAL form — the
 construction-conditioned monument the process audit predicted, now forced by the mathematics
 itself.
+
+## 2026-07-22 (controller, ~10:05) — the FINAL STATEMENT ROUND staged: the construction-conditioning collapse in motion
+
+arch-C staging coordinated: seat-L4 LOCKS the exact forms — (i) canonCenterOf case11 fix (the
+catch-all `| _ =>` confirmed as the defect mechanism by seat-L4's own pre-verification; the fixed
+boost center = {birth-corner pivot} ∪ run-length-J₁ sub-block, locked against the template Edge B
++ the NINE-INSTANCE SIM VALIDATION added to its lock charge as a banked battery); (ii)
+canonShearOf (within-carve, (II) = the ruled raw-displacement B) + the IsRealBranch shear-pin
+closing :731; (iii) the SIX derived-lemma statements off IsRealBranch (hcenter/hcover/DescendView/
+ShearWithinCarve/hδ0 + the GAP-3 prepared-multi-affine — map-tagged, sorried stubs acceptable
+with statements locked = the L5 discharge chain). foldstate-render stages the structure (leaves
+collapsed to ONE IsRealBranch hypothesis; per-field → stubs; proved branches re-target via
+lemma-application prefix; hcase/hpivot kept per the audit). SEQUENCE: locks → staged statements →
+**the elder's decorrelated second read PRE-BAKE** → arch-C's full gate (cone grows by the stubs;
+footprint stays clean-three+sorryAx) → ONE bake → controller verification → the proof seats wake
+on the FINAL statements. seat-L4's retraction was clean and its reachability work is credited in
+the record; the monument's statement architecture converges to the construction-conditioned form
+the mathematics itself forced.
