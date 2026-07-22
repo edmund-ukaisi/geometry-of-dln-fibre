@@ -115,6 +115,24 @@ theorem swapR_swapR (P X Q A B : ℕ) (hQX : Q ≤ X) (hXP : X ≤ P) :
   unfold swapR
   split_ifs <;> omega
 
+/-- **`Mval`-invariance heart** (Codex swap-iso design §2): the two `Mval` summands that change
+under the swap are equal — `F_{A,B}(P,X,Q) = F_{B,A}(P, swapR P X Q A B, Q)` over `ℤ`, where
+`F_{A,B}(P,X,Q) = (P−X)(A−X) + (X−Q)(B−Q)`. Each `swapR` branch is a genuine polynomial identity
+(translation preserves the two squares of `(P−X+A)²+(X−Q+B)²`, reflection exchanges them); the range
+hyps only interpret the truncated `ℕ` subtractions as `ℤ`. -/
+theorem swapR_F_invariant (P X Q A B : ℕ) (hQX : Q ≤ X) (hXP : X ≤ P) :
+    ((P : ℤ) - X) * ((A : ℤ) - X) + ((X : ℤ) - Q) * ((B : ℤ) - Q)
+      = ((P : ℤ) - swapR P X Q A B) * ((B : ℤ) - swapR P X Q A B)
+        + ((swapR P X Q A B : ℤ) - Q) * ((A : ℤ) - Q) := by
+  unfold swapR
+  split_ifs with h1 h2
+  · have hY : ((X + (B - A) : ℕ) : ℤ) = (X : ℤ) + B - A := by omega
+    rw [hY]; ring
+  · have hY : ((X - (A - B) : ℕ) : ℤ) = (X : ℤ) - A + B := by omega
+    rw [hY]; ring
+  · have hY : ((P + Q - X : ℕ) : ℤ) = (P : ℤ) + Q - X := by omega
+    rw [hY]; ring
+
 /-- The profile transport for one adjacent width-swap at `k` (Codex swap-iso design §1): for `k > 0`
 update the coordinate `k−1` by `swapR P X Q A B` (`P = t⁽ᵏ⁻²⁾` or `M⁰` at `k=1`, `X = t⁽ᵏ⁻¹⁾`,
 `Q = t⁽ᵏ⁾`, `A = M_k`, `B = M_{k+1}`); for `k = 0` the identity (the swapped pair is `M⁰,M¹`, no
