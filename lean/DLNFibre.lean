@@ -1590,3 +1590,7 @@ import DLNFibre.Core.Aoyagi.OrderCount
 -- Object E Tier 2: the θ-attachment (bandCount = aoyagiTheta, unconditional) + the certified-selector
 -- instantiation thetaCount d r (pin (a): paperEll/residueA). ρ-identification stays P6.2-deferred.
 import DLNFibre.DLN.Aoyagi.OrderBinding
+
+-- P6.2 Tier 1 (elder six-check PASSED 2026-07-22): the chain-height headline — chainHeight(BoxPart ℓ a)
+-- = a(ℓ−a)+1, UNCONDITIONAL. The ρ/multiplicity identification waits at the Tier-3 OrderIso seam.
+import DLNFibre.Core.Aoyagi.OrderChain

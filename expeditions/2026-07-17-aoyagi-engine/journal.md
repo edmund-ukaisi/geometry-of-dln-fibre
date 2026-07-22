@@ -9827,3 +9827,1221 @@ nav-13 mandatory joint (DLN-lane → canonCenter: FoldProduced-lock adjudication
 coupling was deferred OUT of the round and L7 lifted without it: dead scope or owed? Tier-3's
 release hangs on the verdict; + the post-bake parallel picture); carto-standing bake trigger
 (cone 6→7 transition, L7 banner, severance coordinate row → closed, STATUS already regenerated).
+
+## 2026-07-21 (controller) — the elder's bookkeeping batch APPLIED (register P6-split + §6; compass coda + counsel); landmark item bounced on a set-divergence
+
+Applied and committed (the elder's pen, controller's commit): owed-register — O6 → P6.1/P6.2
+cross-refs; the P6 entry SPLIT (P6.1 LANDED both tiers, batch-gated / P6.2 pnp-gate DISCHARGED,
+object pinned = max CHAIN, statement-shaping under the six-check contract); §6 event-update (the
+witness bank adds [2,2,2,2,2] + [2,2,5] + the loose-vs-tight reclassification; the boundary-value
+principle refinement as authoritative text; the K4-transfer vindication chain as the designed
+example). Compass — the (T-F) CODA appended to the fidelity-ledger entry (the display's truth is
+per-branch; ρ = max chain is its correct form; the global defect stands); the per-field+boundary
+audit counsel line added to Standing counsel. The cartographer's 3a naming pointer is UNBLOCKED
+(binds to the register's P6.2 text).
+
+**Item (5) BOUNCED for one re-proposal round:** the elder's demotion target
+"(2,2,2,2)-clean-telescoping" is not among the map's actual nine landmarks — the compass shortlist
+and the rendered map set have DIVERGED (a drift item: the map header claims to mirror the compass).
+The elder reconciles (which set is authoritative) + re-proposes the demotion; I set the fields then.
+
+**Also this round:** arch-C armed all three gate conditions (the L5 coupling tripwire; the L4
+base-ancestry check with reject-and-rebase; landing-sound serial integration); seat-L3T spawned on
+the {L3 + terminal_edge_stepInv} one-step batch (own worktree, parallel-dev, statement-lock,
+Case1Wire's crux technique referenced); seat-E's Tier-3 released (develop now, integrate
+post-leaf-stabilization); the live cone corrected to 7 per nav's ground truth.
+
+## 2026-07-21 (controller) — THE HARD GATE DISCHARGES: pnp PASS on the chain reading; landmarks reconciled; P6.2 cleared to Lean
+
+**pnp-order's confirmation: PASS** (from-scratch 993-core enumeration, EXIT 0 — controller re-ran
+chain_battery.py independently, EXIT 0; blind Codex convergent; the certificate's speculation
+paragraph amended, verified facts untouched; merged at tip). Confirmed: (A) on EVERY branch the
+binding profiles are pairwise comparable — a chain (0 non-chains/993); (B) ρ = max-chain =
+a(ℓ−a)+1 both directions + ground truths; (C) the antichain reading REFUTED with witnesses
+([2,2,2,2,2]: max-chain 5, max-antichain 2). **The Lean-facing mechanism:** the binding poset has
+unique min/max = the Lemma-4 envelope endpoints and is GRADED BY RANK (every maximal chain has
+length exactly a(ℓ−a)+1) — with THE TRAP flagged by both instruments: the grading is the
+recursive inversion/Young-cell rank, NOT coordinate-sum (counterexamples [1,1,2,1] and [2,2,4,3]
+— covers jump multiple units). seat-E RELEASED to Lean-build under the six-check contract + the
+rank-trap probes as in-file kill-set instances. The mechanism note: on one branch each Case-1
+exponent-accumulation step extends the profile monotonically (tail-writes + running-min head) —
+the tree side of the nesting, Tier-3's eventual content.
+
+**Landmarks reconciled (elder ruling + my field-set):** the compass is the authoritative source;
+BOTH prior sets were stale; the reconciled nine authored into compass § Landmarks (with the
+process line: map mirrors compass, divergence = drift item) and the map's fields set to match —
+OUT: kill-cite (merged into the summit's story), b-leaf2-blowup-atlas (absorbed into Core-leaves);
+IN: b-principalinv (the Core-leaves banked node — the spine's proven end), object-e. Count 9,
+validator clean, STATUS regenerated. Four demotions each with surviving homes named.
+
+## 2026-07-21 (controller) — THE SIXTH SEVERANCE INSTANCE: S=L clears break Deg1 (a DERIVED boundary the guard missed); M9+M4 merged, gating
+
+**seat-L4's second stop-on-suspect (Codex-corroborated, exact battery @ ef95d3548):** the δ=1
+case1(2) SPLIT at the LAST layer (S=L, Lean layer N−1) leaves a BARE-UNIT child entry — the
+strict transform's pivot factor has no deeper layer to land on — so Deg1SupportedOn is FALSE for
+every C′, and fix-(a)'s `layer < N` guard PASSES the branch (N−1 < N). Non-vacuous ((3,3,4) takes
+the edge at S=2=L). L3/case2 breaks identically (fresh-pivot clear); case1(1) merge exempt. Also
+the anchor-(v) correction: at S<L the honest C′ is the DEEPER BLOCK, not center.erase pivot.
+**Taxonomy: instance six — a DERIVED boundary** (the dynamics' last-interior-layer, one step
+inside the type endpoint the fifth fix fenced; the audit principle refines again: range
+boundaries include the boundaries the DYNAMICS distinguish). Routed: elder ruling among three
+fixes (my + seat-L4's structural read = fix (2): interior leaves guarded to layer < N−1; the
+whole last layer — where units are BORN — joins the terminal-transport story, per thread-34's own
+"principality is terminal" split; fix (1)'s narrow guard alone leaves the S=L steps covered by
+nothing, which L5's fold cannot tolerate); arch-C pricing in parallel (the multi-clear S=L fold
+design detail is theirs). seat-L4's conjunct-1 crux is banked clean-three and survives any fix —
+the wall's divisibility half is DONE. seat-L3T: L3 HELD (wrong theorem as stated); proceeds on
+terminal_edge_stepInv only (statement stands under every candidate fix).
+
+**seat-core: M9 LANDED + M4 (a)+ EXECUTED** (merged; controller full-tree gate running): the
+CommSemiring/MulOneClass Gen family in BlockDivision (7 new declarations at strict-weakest
+settings; the 5 ℝ atoms rederived via rfl bridges — the frozen downstream callers are the
+signature-drift detector, rebuilding now) + jacDet_blowupMap_unconditional in BlockBlowup (the
+origin law for ALL D, deriving from the block machinery; the hD:2≤D redundancy now recorded IN
+THE TREE) + two-way doc cross-refs (OriginBlowup prose-only). Task-28's stale blocked-description
+corrected; no seat-api duplication (never dispatched this session). carto: 3a landed + the
+overlay's certificate pointers annotated to read THROUGH the chain correction (accepted
+drift-prevention); its 10th-landmark datum was a mid-flight read — the settled set is 9.
+
+## 2026-07-21 (controller) — ELDER RULES FIX (2): LastLayerInv; the interior/terminal frontier redrawn where the mathematics draws it
+
+The ruling, complete: fix (2) — "the units born by S=L clears are EXACTLY what terminal_bezout
+consumes; Deg1's honest domain was always the interior; we had drawn the frontier at the type's
+endpoint N when the MATHEMATICS draws it at the last layer's first clear." Fix (1) rejected (a
+guard leaving L5's traversal uncovered = fix (2) missing its second half); (3) rejected
+(invasive, no fidelity gain). DESIGN RULED: ONE mixed LastLayerInv (divisibility persisting — the
+banked conjunct-1 crux feeds it — + per-slot disjunction center-linear/unit-form-nonvanishing) +
+ONE preservation lemma as J advances; terminal_bezout UNCHANGED (any unit slot at J ≥ 1 supplies
+its hypothesis verbatim); interior leaves guarded on the CHILD's layer < N−1; ALL layer-(N−1)
+edges routed uniformly (incl. the exempt 1(1) — the mixed form subsumes pure Deg1; a
+sub-case-discriminating guard would be a new free-axis invitation). The C′ pin: at S < L the
+re-factoring target is the DEEPER BLOCK (matching canonCenter's derivation — and exactly why
+Deg1 holds interiorly). LastLayerInv's statement goes to the elder's pass BEFORE render (per-slot
+disjunction = quantified data, full audit). TAXONOMY refined text authored: "audit each free
+field; its range ENDPOINTS; and its DYNAMICS-DISTINGUISHED boundary values — a type-boundary
+guard does not fence a mechanism boundary." Six axes: content, size, path, coordinate,
+layer-endpoint, layer-last-interior. arch-C priced + implementing (cone delta named in advance,
+up to +2); seat-L4 holds (its wall closes against a statement finally true on every admitted
+branch); seat-L3T's transport unchanged, L3 hold continues.
+
+## 2026-07-21 (controller) — integration sweep GREEN (M4+M9+Tier-1e); pnp enrichments confirmed; the LastLayerInv design fork routed for the ruling extension
+
+**All gates green, everything banked:** M4+M9 full-tree build (8989 jobs) + probes (the Gen family,
+the rederived ℝ atoms, jacDet_blowupMap_unconditional — all clean-three; the AxCheck root
+re-confirmed post-docstring); Tier-1e incremental build + probes (atlasOrder /
+boxedOrder_eq_chartOrderAt / chartOrderAt_le_atlasOrder clean-three); the render-contract battery
+re-run from the root: ALL CONTRACT CHECKS PASS (controller execution). carto's landmark refresh
+closed the three-way alignment (compass == claims == cards; kill-cite → summit,
+b-leaf2 → b-principalinv, the four demotions' homes cited) + chain_battery graduated (e-p62 now
+double-guarded, both SURVIVE on run). Tasks: M4/M9/Tier-1e integration complete.
+
+**pnp's enrichments, both CONFIRMED (EXIT 0, folded into its thread):** (1) the b-chain IS the
+per-branch nesting mechanism (thread-31's closed form b_i = ∏u gives b₁|b₂|…; factor-containment
+totally nested by t̃; 22190 nonempty leaves, 0 non-chains) — the (T-F) coda's mechanism verified
+and the CHEAPEST Tier-3 Lean route named: DivChain/b-chain, already banked. (2) The fence
+adjudicated exactly: minMval ≥ 1 is the exact boundary AND automatic on genuine cores ({∏C=0}
+proper ⟹ codim ≥ 1); no further hypothesis on the non-degenerate domain; the degenerate side is
+width-0 configs only. seat-E's UPPER = "the binding poset is graded of height a(ℓ−a)+1";
+grading = inversion/Young-cell rank (NOT coord-sum).
+
+**The design fork (routed to the elder for a ruling extension):** arch-C's pricing flagged that
+fix (2) NECESSARILY touches terminal_edge_stepInv — its Deg1-parent hypothesis is unsatisfiable
+at the real terminal transition (the rollover's S=L parent carries units), so the leaf as stated
+is vacuous where L5 needs it; the OUTPUT (1)∧(2) survives verbatim either way. The fork:
+the elder's exposed LastLayerInv + per-clear preservation + re-parented transport (each step
+NAMED and gated — my read: the elder's own "easy earns a name" cuts against the alternative)
+VS arch-C's segment-widen (transport's parent = the last S<L Deg1 node, all S=L clears crossed
+INTERNALLY — less surface, but the per-clear step becomes a silent internal delegation). Plus two
+render details for the ruling: the guard as `layer + 1 < N` (ℕ-truncation trap) and the N = 1
+degenerate (no interior at all — the whole fold is last-layer + terminal). seat-L3T FULLY held
+(both targets) pending the extension; seat-L4 holds; the wall's divisibility crux unaffected
+throughout.
+
+## 2026-07-22 (controller, just past midnight) — EXTENSION RULED: EXPOSED LastLayerInv; the N=1 degenerate decides the fork
+
+The elder's extension ruling: arch-C's vacuity gap ACCEPTED (terminal_edge_stepInv re-parents on
+LastLayerInv; output (1)∧(2) unchanged — the consumer-fit survives verbatim). THE FORK RULED for
+the EXPOSED design, on two arguments: (1) the segment form's internal induction needs its motive,
+which IS LastLayerInv demoted to an un-gated proof-local have — "after six instances, an un-gated
+motive inside the exact mechanism that produced instance six is not economy, it is the seventh
+instance's hiding place"; (2) DECISIVELY: at N = 1 the segment form's parent hypothesis is
+unsatisfiable (no interior node) — it breaks at the degenerate or grows a special case,
+re-introducing the boundary disease inside the ruling that answered it; the exposed design covers
+N = 1 BY SUBSUMPTION (the root IS a LastLayerInv state with zero cleared slots). Render details:
+the ADDITION-form guard `layer + 1 < N` is now a STANDING ℕ-render rule; the LANDED d12 instance
+(which IS N = 1) joins the round as the degenerate-routing anchor beside (3,3,4)'s S=2=L edge.
+The fold's uniform story: enter (subsumption; root at N=1) → per-clear preservation → transport →
+terminal_bezout — every arrow named. arch-C implements the four-piece round (guards + LastLayerInv
+& preservation [elder pass first] + re-parented transport + the C′ pin). seat-E relayed the two
+render facts (the fence discharges via properness ~free; Tier-3 rides the banked DivChain).
+
+## 2026-07-22 (controller, heartbeat tick) — LastLayerInv draft in; the composition flag (transport: named leaf vs superseded) to the elder's pass
+
+Tick: placement + cron verified; all mail processed. arch-C's LastLayerInv STATEMENT DRAFT
+arrived (composed pre-extension-ruling — crossing; the re-parent is ruled and in its queue):
+the mixed invariant over the banked IgnoresCoords ((D)-divisibility ∧ per-slot center-linear OR
+unit-nonvanishing disjunction over Fin (foldNR)), lastLayer_clear_preserves guarded at
+parent.layer + 1 = N (ALL S=L edges incl. the rollover), FoldStepInvAt → LastLayerInv subsumption
+DEFINITIONAL at zero cleared slots (no bridge leaf), cone delta +1. Routed to the elder's
+per-field pass TOGETHER WITH arch-C's surviving composition flag, sharpened: at the rollover the
+fold's own data collapses the residual (foldNR → 1, resid → const 1 — the first stop-on-suspect's
+branch), so the open content at the M′=1 handoff is the PIVOT EXTRACTION — (a) the re-parented
+transport as its own named leaf (every arrow named; the consumer-fit example survives) vs (b) the
+preservation lemma's rollover branch + terminal_bezout directly (uniform, transport retired as
+true-but-dead). No wrong-theorem risk either way — only seat-L3T's assignment hangs on it. My
+weak preference (a) stated; the elder pins it in the pass; arch-C holds the render for the
+verdict.
+
+## 2026-07-22 (controller) — LastLayerInv PASSES with four pins; the composition ruled (a) via the GUARD SPLIT; render GO
+
+**The elder's pass on arch-C's draft: PASSES.** Audit findings for the record: the per-slot ∨ is
+MUTUALLY EXCLUSIVE on any region containing 0 (no ambiguity axis; docstring note); the C = ∅
+fully-cleared corner rides the disjunction fence-free. FOUR PINS: (1) the left disjunct REUSES
+the banked Deg1SupportedOn (anti-felting — one predicate, one audit surface; per-slot variant
+allowed only tied by a proved lemma); (2) IgnoresCoords as drafted, M14 flag carried; (3) cone +1
+— the FoldStepInvAt→LastLayerInv subsumption lands as a PROVED rfl-class lemma, never a sorried
+entry leaf ("definitional content may not wear a sorry"); (4) guards as drafted, exhaustive split
+confirmed.
+
+**The composition flag RULED (a) — and the audit found (b)'s actual GAP:** the (D)-conjunct's
+existential q has NO nonvanishing clause, so at the rollover the parent's unit-slot information
+is NOT carried by ∃C′-LastLayerInv — the pivot extraction terminal_bezout needs would fall into
+the seam BETWEEN the preservation lemma and terminal_bezout: "the exact silent-delegation shape,
+eighth-instance bait." THE GUARD SPLIT dissolves arch-C's duplicate-content worry:
+lastLayer_clear_preserves covers the S=L CLEAR edges ONLY; the ROLLOVER is excluded and owned
+entirely by the re-parented transport (conclusion (1)∧(2) unchanged; NEW ∃-cleared-slot
+hypothesis supplied by L5 from edge data, never width arithmetic in the leaf). End-to-end the
+composition now reads as the certificate's own sentence — divisibility persists, units are born
+by clears, principality is born at the terminal — a named lemma under each clause.
+
+**Dispatches:** arch-C → render GO with all pins; seat-L3T's transport STANDS (the pinned new
+shape sent — the pivot extraction is the real content; the Fin-1 side rides the fold's collapse
+definitionally); seat-L4's offer accepted (L4 + the preservation lemma post-bake); seat-E's A/B
+fork + the pin-relocation question queued at the elder (the a-subsets identification:
+|bindingMinimisers| = C(ℓ,a), the classic poset, cell-count rank — Option B recommended).
+
+## 2026-07-22 (controller) — OPTION B RULED: the canonical a-subsets poset IS the paper's object; the pins CONCENTRATE at the Tier-3 iso
+
+The elder's second pin, ruled with page verification: Lemma 4's increment condition IS the
+a-subset structure — the canonical (ℓ,a) poset "is not an abstraction CHOICE — it is what the
+paper's object has been all along, and P6.1's banded arithmetic is its rank-generating
+structure." The relocation question answered with its honest name: a CONCENTRATION, not a
+dissolution — all three guards (tight lattice, carried target, binding filter) become explicit
+named DOMAIN hypotheses of the ONE Tier-3 realization iso, "the single most audited statement in
+the E-lane." Two sharpenings the canonical object buys: (1) Tier-1 is TOTAL in (ℓ, a ≤ ℓ) — no
+a-fence (a = 0 gives the singleton poset, chainHeight 1, trivially the formula; totality itself
+is evidence B is right; the paper's 1 ≤ a lives at Tier 2/3); (2) the MATHLIB SURVEY PIN —
+YoungDiagram (Mathlib.Combinatorics.Young.*) + Order.height/chainHeight must be surveyed before
+any hand-rolled poset (the register's own lesson applied prospectively); if absent, build-it
+stands and the chainHeight theorem is expected to be "one of the most citable stand-alone
+theorems this expedition produces." seat-E: render GO (survey → skeleton → six-check → prove);
+Tier-3 scaffold un-held on the fixed vocabulary. Both elder pins of the pass now ruled — the
+E-lane carries the monument's architecture: canonical Core object, one concentrated seam, every
+hypothesis named at the seam.
+
+## 2026-07-22 (controller) — the LastLayerInv render DISPATCHED (all pins); seat-L3T's refutation = the third blind convergence; seat-E's skeleton held for the survey pin
+
+**Render dispatched** (arch-C, five pins applied): the guard split in CHILD form
+(lastLayer_clear_preserves at `ed.nextState.layer + 1 = N` — excludes the rollover
+AUTOMATICALLY, structural not clausal; the rollover owned by the transport); the left disjunct
+reuses the family via Deg1SupportedSlot + a proved family-tie lemma; the transport re-parents +
+gains the L5-supplied hcleared ∃-unit-slot hypothesis; the subsumption a PROVED rfl-class lemma
+(cone 9→10 only); the docstring notes. Contract-9 re-gate armed (discriminator battery + both
+anchors + consumer-fit + write-set) → bake → both proof seats rebase once.
+
+**seat-L3T's stop-on-suspect = the THIRD blind convergence on the ruled design:** it RIGOROUSLY
+refuted terminal_edge_stepInv's conjunct (2) from the OLD hypotheses (divisibility + Deg1 at δ=0
+force every quotient to vanish at 0 — no unit with unit 0 ≠ 0 is derivable; the underivability
+argument is the ∃-cleared-slot hypothesis's sharpest justification, ordered BANKED in its
+thread). But it had processed NONE of my three binding messages (both holds + the new shape) —
+hard re-anchor sent; the ack protocol now binds it as it does seat-E. Salvage: its
+conjunct-(1)-only lemma banks if it survives the re-parent; its L3 δ=1 "proceeding" STOPPED
+(the statement is being revised — assembly against it is the wrong theorem).
+
+**seat-E's OrderChain skeleton landed but HELD before the elder pass:** its ack covered the
+two-render-facts message, not the Option-B ruling — the MANDATORY YoungDiagram/chainHeight
+survey pin went unfulfilled (BoxPart is hand-rolled). Ordered: run the survey, verdict travels
+with the skeleton to the elder's six-check pass; its trap-relocation claim (cell-count =
+coord-sum IN BOX COORDS; the profile-encoding trap → Tier-3 kill-set) flagged for explicit
+adjudication. The proved rank machinery (rankBP_le + strictMono, axiom-clean) stands regardless.
+
+## 2026-07-22 (controller) — PENDING SEVENTH INSTANCE: the coefficient-at-origin field (conjunct B, ANY layer); the bake HELD for it
+
+seat-L3T's second finding (Codex decorrelation in flight): the interior leaves' conjunct (B) has
+the S=L fragility at EVERY layer — the δ=1 child residual's value at 0 = the PARENT's
+pivot-coefficient at 0; child-Deg1 forces it to vanish; Deg1SupportedOn's coefficients are only
+IgnoresCoords-constrained, so c_pivot(0) is a FREE FIELD and an adversarial c_pivot ≡ 1
+manufactures the bare-unit failure at any interior layer. The real fold's coefficients are
+deeper-coordinate PRODUCTS (vanish at 0) — which is exactly why seat-L4's battery witnesses
+passed: they were CONSTRUCTION parents; the free statement admits more. (Its FIRST finding —
+the old transport's conjunct (2) underivable at both δ, with a clean Codex countermodel — is
+MOOT-in-the-right-way: the ruled hcleared hypothesis is the fix, now vindicated a FOURTH time.)
+
+**Disposition:** the render CONTINUES, the BAKE HOLDS for the adjudication (arch-C flagged —
+the preservation/transport/guard designs are unaffected; the candidate amendment is ONE clause
+on the invariant family's Deg1 side: coefficients vanish-at-0, or the sharper deeper-supported
+"pivot-fresh" form, rippling to Deg1SupportedOn/FoldStepInvAt/LastLayerInv's left disjunct —
+cheaper folded into THIS round than an eighth). The elder is pre-adjudicating (three questions
+posed: which clause; the S3-vanishing interaction; seventh AXIS vs the sixth's layer-free
+generalisation). The trigger = seat-L3T's Codex verdict. seat-L3T: banking plan endorsed (the
+conjunct-1 lemma + the unified conjunct-A product identity — honest under every fix); the ack
+protocol made a hard requirement (third reminder — reports against unread holds twice).
+
+## 2026-07-22 (controller) — the seventh pre-adjudicated: ANCHOR-VALUE axis named; the escalation test charged; the round poised to bake once
+
+The elder's pre-adjudication: (a) DEFAULT CLAUSE = vanishing-at-0 on the Deg1 coefficients, with a
+MECHANICAL escalation condition charged to seat-L3T (does vanishing self-propagate through the
+re-factoring child-coefficient algebra? if the induction needs more — S3's own too-weak-to-induct
+genesis — the clause escalates to IDEAL-MEMBERSHIP c ∈ ⟨deeper coords⟩); TRAP caught in my
+candidate framing: "deeper-supported via IgnoresCoords" does NOT close the countermodel (constants
+ignore everything). (b) The S3 hierarchy is STRICT one level down (coefficient-vanishing ⟹
+entry-vanishing, never conversely); S3 stays; a one-line implication lemma prevents duplication;
+"one fact wearing three depths" (pnp interior-Bézout impossibility → S3 → coefficients) goes in
+the docstring. (c) THE SEVENTH AXIS NAMED: **anchor-value** — audit a function-valued field's
+VALUE AT THE DISTINGUISHED POINT, not only its support; instances six and seven are one mechanism
+at construction-level and statement-level; the counsel made precise: "batteries validate
+constructions, never free statements' fields." hcleared vindicated a FOURTH time — "the wave's
+highest-paying single hypothesis."
+
+arch-C: amendment priced surgical (one clause on Deg1SupportedOn + Deg1SupportedSlot, rippling to
+FoldStepInvAt + LastLayerInv's left disjunct; subsumption survives — both sides gain the clause;
+everything else untouched); the render continues shape-unaffected with the clause site PARAMETRIC
+so the ruling lands as a one-line swap; pre-gating in progress; the origin-value countermodel
+(c ≡ 1) becomes the seventh regression witness. ONE bake when the test + Codex verdict land.
+
+## 2026-07-22 (controller) — the Codex verdict: conjunct-B false via TWO mechanisms; the fork (invariant form vs fifth shear field) with the elder; seat-L4's fidelity input requested
+
+seat-L3T's second Codex check CONFIRMS case2's conjunct (B) false-as-stated — and the
+countermodel (D=2, shear u_i ↦ u_i + u_p, LEGAL under all four TreeEdge shear fields; parent
+resid = u_p + u_i, valid Deg1) reveals TWO mechanisms: (1) the ESCALATION TEST resolves AGAINST
+the minimal clause — vanishing-at-0 cannot induct (the strict transform of c_p·u_p is c_p∘σ·1:
+a VALUE condition cannot produce the child's FORM condition; ideal membership c_p ∈ ⟨deeper⟩
+self-propagates under composition, vanishing does not — S3's genesis repeating exactly as
+pre-flagged); (2) SHEAR MIXING is NEW — a legal shear mixes T = center∖{pivot} with the pivot,
+breaking child-Deg1 independent of any coefficient clause. Codex's minimal repair: carry the
+invariant on the STRICT-TRANSFORMED residual on T (Deg1SupportedOn (resid∘quotMap) T —
+invariant-in-prepared-coordinates; C′ = T works at both δ; arguably what the paper's Let-block
+bookkeeping IS). THE FORK with the elder: (A) the form-redesign + the born-terminally pivot
+content as a separate tracked datum (one design closing BOTH leaves' defects, feeding hcleared
+naturally) vs (B) a FIFTH TreeEdge shear field (T-block-preserving) + the ideal clause.
+**seat-L4's decorrelated fidelity input requested**: what do the actual Q̂-shears do on T, per
+the Let-blocks (the (3,3,4) instances passed with REAL shears — name what the real objects
+satisfy). seat-L3T banks the fork-stable halves (the case-BLIND divisibility lemma serving L3
+AND L4's conjunct A via the unified product identity; the terminal unit lemma) — honest,
+reusable, no fabrication. arch-C: the parametric site widens from clause to CONJUNCT (its
+pre-verdict AnchorClause prep covers mechanism 1 only — the queue carries the update); bake
+still held for the elder's fork ruling. Both leaves' defects now have banked countermodels —
+the seventh axis (ANCHOR-VALUE) plus the shear-mixing witness join the regression bank.
+
+## 2026-07-22 (controller) — FORK (A) RULED: the invariant moves to PREPARED COORDINATES; the taxonomy completes at EIGHT axes
+
+**The elder's formal ruling: fork (A)** — the Deg1 conjunct restates on the strict-transformed
+residual over T (G_j := foldResid_p j ∘ quotMap, the banked blockBlowupCoordQuot; Deg1SupportedOn
+G T) with IDEAL-MEMBERSHIP coefficients (the escalation resolved: values cannot induct, only the
+form self-propagates — S3's genesis closed at the right depth); the born-pivot content becomes a
+CARRIED TRACKED DATUM shaped to LastLayerInv's right disjunct — ONE unit-ledger form serving the
+interior clears, the last layer, and the transport's hcleared. **The decisive argument was
+fidelity: the strict-transform invariant IS the paper** — the Let-blocks rename d′→d immediately
+and state every inductive claim in NEW coordinates (pp.16–21 rename lines, image-verified); the
+raw-frame rendering was what mechanism 2 exploited. (B) rejected: a fifth edge field encodes an
+EMERGENT truth as a side condition (a future severance axis + a fidelity burden, and any
+unforeseen legal mixer returns as the next instance) — (A) removes the frame mismatch itself.
+
+**The FOURTH blind convergence:** arch-C's architect lean (composed pre-ruling, in crossing)
+chose (A) independently, arguing from the severance HISTORY — "every one of our seven defects
+has been a free-field severance; a new free shear field is the 8th-instance bait; (A) adds NO
+free field — the shear is ABSORBED, closed structurally, not by a field asserting shears don't
+mix (which the countermodel says they legally CAN)." Two authorities, two argument routes
+(paper-fidelity / severance-structure), one design.
+
+**The taxonomy COMPLETES at eight:** the seventh axis sharpens to ANCHOR-FORM (audit the FORM at
+the anchor, not the value — values cannot induct); mechanism 2 is the EIGHTH: **FRAME** — "in
+WHICH coordinates does the paper state this?" is now a standing audit question for every carried
+invariant; the shear countermodel is its exemplar. Eight axes: content, size, path, coordinate,
+layer-endpoint, mechanism-boundary, anchor-form, frame. Render pins: banked quotMap only; the
+tracked datum audited at birth; the fidelity docstring cites the rename lines; seat-L3T's
+case-blind halves = the round's floor. seat-L4's T-check demoted to consistency datum (proceeds).
+arch-C renders the (A) form → contract-9 with BOTH countermodels as witnesses → the ONE bake.
+Both proof seats then close leaves whose statements their own refutations made true.
+
+## 2026-07-22 (controller) — the (A) render spec relayed; arch-C's SIX pre-bake gate checks on record
+
+arch-C relayed the final (A) spec to its render seat (the strict-transform Deg1 conjunct with
+ideal-membership coefficients subsuming IgnoresCoords; the tracked unit-ledger right disjunct;
+the four pins; everything else untouched) and put its SIX gate re-checks on record — the round's
+acceptance criteria, which my integration re-verifies against the same list: (i) the size-witness
+{0,1,2} dies under the T-form; (ii) the subsumption holds under (A); (iii) quotMap bridge-free/
+data-only (banked); (iv) BOTH countermodels die (c ≡ 1 anchor-form; u_i+u_p frame); (v) the two
+anchors ((3,3,4) S=2=L; d12 N=1 routing); (vi) the consumer-fit re-elaborates with the (A) hinv
+(LastLayerInv-(A) + hcleared → terminal_bezout). Contract-9 once, then the bake — the round's
+final shape. seat-L4's T-check rides as consistency datum, not a gate blocker.
+
+## 2026-07-22 (controller) — THE CHAIN-HEIGHT THEOREM PROVED: chainHeight(BoxPart ℓ a) = a(ℓ−a)+1, UNCONDITIONAL; merged-unwired pending the pass + the owed survey
+
+seat-E FULLY PROVED the P6.2 Tier-1 headline — `chainHeight_boxPart : (BoxPart ℓ a).chainHeight
+(· <  ·) = a(ℓ−a)+1` — Aoyagi's Lemmas-4/5 max-chain identity as a standalone combinatorial
+theorem on Mathlib's Set.chainHeight, UNCONDITIONAL (it found and dropped the a ≤ ℓ hypothesis:
+the a > ℓ singleton box gives both sides 1 — weakest-hypotheses). UPPER via strict-mono rankBP +
+encard injection; ATTAINMENT via the row-major staircase (sum_staircase by row induction).
+**Controller verification: merged; module built (3286 jobs); all three theorems force-elaborated
+clean-three.** HELD UNWIRED (no aggregator, no AxCheck) pending: (1) the elder's six-check pass;
+(2) **the OWED YoungDiagram survey** — the Option-B ruling made the Mathlib survey MANDATORY
+before hand-rolling, and BoxPart is hand-rolled with no survey verdict produced; seat-E ordered
+to produce it now (verdict travels with the pass; if Young's box structure is usable, expect a
+build-on-it or a proved-equivalence requirement). **Discipline note, owned:** seat-E proved ahead
+of the elder pass (the sequence was survey → skeleton → pass → prove) — a gamble that likely
+costs nothing here because the contract was fully pinned, but journaled as a slip; the Tier-2
+θ-corollary + registration wait for the pass.
+
+## 2026-07-22 (controller) — the gate catches a STALE RENDER (report said ready; the file said pre-(A)); seat-L4's datum upgrades the design; the coefficient clause in final refinement
+
+**arch-C's calibration catch:** the render seat reported "fix (2) rendered, 5 pins, ready to
+bake" — arch-C READ THE FILE: LastLayerInv's left disjunct + Deg1SupportedSlot were the RAW
+pre-fork-(A) form (the fork messages had crossed the render); BOTH countermodels survive it
+(c ≡ 1 passes IgnoresCoords; u_i+u_p unabsorbed in the raw frame). Bake HELD; the seat flagged
+to apply the (A) upgrade to the Deg1 conjunct ONLY (guard split / transport+hcleared /
+subsumption / docstrings / C′ / family-tie all correctly rendered and stay). The mechanical gate
+(build/cone=10/cordon) was GREEN on the stale content — "that's the floor; the content is the
+gate." One render detail surfaced: pivot-threading (the (A) form needs the pivot; the invariants
+are C-parameterized — pivot-param vs canonical-from-(C,p), the seat to surface if unpinned).
+
+**seat-L4's fidelity datum (routed):** fork (B) would have been DOUBLY infidelitous — the real
+Schur shears MIX WITHIN T (C22 ↦ C22 − C21·C12, T-triangular, degree-2) so "T-block-preserving"
+excludes the construction; the true discriminator is PIVOT-INDEPENDENCE (thread-33 §3: later
+shears never touch exceptional coordinates). The raw child residual is genuinely degree-2 — Deg1
+is a prepared-coordinate invariant, period; its (3,3,4) battery passes were on the already-
+reduced block (they tested (A)'s form all along). THE CRUX: statement unaffected, proof VERBATIM
+under (A). **One refinement back with the elder — the coefficient clause must simultaneously:**
+(a) induct through composition (mechanism 1); (b) imply IgnoresCoords (the crux's hceq); (c) keep
+the entry center-exact-Deg1 (the over-division guard, d=![1,2,1]). Bare ideal-membership fails
+(b) (c = ∑ u_d·h_d admits center-dependent h). Candidate: c a function of DEEPER coordinates
+only, vanishing at 0 — self-propagation under the pivot-independent T-mixing shears is the
+elder's check. The degree-2 Schur term proposed as the entry-level-weakening regression witness.
+
+## 2026-07-22 (controller) — the survey verdict: YoungDiagram WRONG-SHAPE (build-it confirmed retroactively); the complete pass request to the elder
+
+seat-E ran the mandated survey (banked, threads/41-order-count/mathlib-survey-verdict.md):
+YoungDiagram is the full unbounded lower-set type — no Fintype, no box subtype, no chainHeight
+lemmas, no clean fixed-a rowLens bridge (building on it = strictly more work for the same
+theorem); powersetCard has the wrong ORDER (Boolean ⊆, not dominance); Order.Height's primitives
+ARE the proof's substrate — the reuse level was right, only the minimal OBJECT is hand-rolled.
+The gate-order gamble thus cost nothing (retroactively validated) — the slip stays on the record.
+The COMPLETE pass request routed to the elder: the proved unconditional headline (+ the
+a ≤ ℓ-drop deviation-for-the-better to bless), the survey verdict, the trap-relocation claim
+(cell-count = coord-sum IN BOX COORDS; the trap is a profile-encoding artifact → Tier-3 kill-set
+at the iso) for explicit adjudication. On the pass: OrderChain wires + registers; the Tier-2
+θ-corollary lands; the Tier-3 iso scaffold proceeds (all three relocated pins as named domain
+hypotheses, consuming the banked DivChain nesting).
+
+## 2026-07-22 (controller) — THE CLAUSE RULED: DeeperMultilinear ("weakest-that-INDUCTS beats weakest-that-holds"); the round's design is COMPLETE
+
+The elder's exact clause: **the multilinear form** — DeeperMultilinear c D⁺ := ∃ h, (h d
+D⁺-only) ∧ c = ∑_{d ∈ D⁺} u_d · h_d, with D⁺ an EXPLICIT carried Finset (disjointness
+D⁺ ∩ (T ∪ {pivot}) = ∅ supplied by the fold from the layer partition). The ruling's principle:
+the day's repeated lesson (S3's genesis → mechanism 1 → this) is that the invariant must carry
+the form its induction CONSUMES AND EMITS — the simpler "deeper-only + vanishing" holds at every
+real state but re-derives form from value at each step. The multilinear form is what the
+Let-block child EXHIBITS (her multilinearity restated per step in prepared coordinates); it
+implies both simpler forms (two one-line derivation lemmas rendered for consumers) and excludes
+the center-dependent-cofactor trap verbatim. THE PROPAGATION SUBTLETY named for the prover:
+c∘σ handled by hceq mid-proof; the emitted child witness RE-READ off the Let-block form —
+preservation-by-RE-FACTORING, not by-composition (why the T-mixing Schur is harmless).
+ONE CHECKPOINT flagged-not-pre-ruled: pivot-READING shears (the countermodel reads the pivot;
+the fourth field forbids only writes) — if the preservation proof hits a residual read
+obstruction it returns as a NAMED FINDING; the drawer holds the fidelity-clean fence blueprint
+(pivot-independence, thread-33 §3). "Fix frames, not fences — keep the fence's blueprint in the
+drawer." TAXONOMY: the no-write/no-READ sub-axis recorded (audit what function-fields READ).
+arch-C executes the localized swap → the full gate (six re-checks + three countermodel/witness
+deaths) → THE BAKE. Nothing else is pending anywhere — the round's design is complete after
+seven rulings, four blind convergences, and two proof-seat refutations, every piece named.
+
+## 2026-07-22 (controller) — SIX-CHECK PASS ON ALL SIX: the chain-height theorem WIRES; the OrderIso pin lands on the Tier-3 seam
+
+The elder's pass: PASS on all six. (1) The survey verdict ACCEPTED as the pin's intended outcome
+(the reuse at the right level — Order.Height primitives as substrate, the object minimal;
+"not a defeat of the pin"); the additive a-subsets/YoungDiagram citable bridge TAKEN at
+hygiene-window priority. (2) Tight-lattice correctly absent at Tier 1 (the concentration).
+(3) UNCONDITIONALITY BLESSED after the elder's independent a > ℓ verification, with the one
+docstring line distinguishing the statement's honest truncated subtraction from the guard-form
+trap (rendered at integration). (4) K3 names clean. (5)–(6) fence/target at Tiers 2/3 as ruled.
+**The trap-relocation CONFIRMED with the sharpening pin: the Tier-3 iso must be an OrderIso —
+never a mere monotone bijection** (the relocated kill-set tests order-isomorphy: cover-jumping
+encodings fail in the REVERSE direction; a one-directional embedding would silently break
+chainHeight transport) — the iso's FOURTH named requirement beside the three relocated domain
+pins. The slip closed with proportion (the frozen vocabulary made the gamble cheap).
+
+**Execution (this commit):** OrderChain wired into the aggregator; chainHeight_boxPart REGISTERED
+as a batch-gated root; the blessed docstring line added; full-build gate running. seat-E GO on
+the Tier-2 θ-corollary (K1 gates ride there) then the Tier-3 iso scaffold (three domain pins +
+OrderIso). The elder's register note, verbatim: "P6.2's Tier-1 core LANDED unconditional — the
+expedition's first purely-classical citable combinatorics theorem, born from a paper-fidelity
+investigation. The rising sea, doing what the operator opened E to let it do."
+
+## 2026-07-22 (controller) — seat-L4's consistency datum PASSES: fork (A) mechanical on the real objects; its rendering constraint = the ruled clause (crossing)
+
+seat-L4's battery (case1_forkA_consistency.py @ c664a87ce): (S) the real Schur shear is
+PIVOT-INDEPENDENT (excludes the countermodel by the right property — not "T-untouched", which the
+real shear violates); (A1) ideal-membership over T is CLOSED under the real shear + strict
+transform (Gröbner-verified) — fork (A)'s conjunct-B is MECHANICAL on the real objects; (A2) the
+cleared-pivot slot births the unit (blockBlowupCoordQuot pivot pivot = 1) = the right disjunct's
+exemplar. CRUX confirmed form-independent in its CONCLUSION, with one rendering constraint: the
+left disjunct's coefficients must be center-disjoint in the PREPARED frame (raw SupportedOn would
+break the crux's hceq) — **which the elder's DeeperMultilinear ruling ALREADY delivers** (the
+crossing): D⁺-only cofactors + the disjointness hypothesis = the prepared-frame disjoint form by
+construction, strictly stronger than the bare ideal-membership both instruments rejected. The
+crux drops into the preservation lemma with NO frame-move. Convergence count on the clause: the
+elder's ruling, seat-L4's constraint, and the degree-2 clause (X) all independently locate the
+same form. Datum + battery join the round's evidence; seat-L4 holds for the bake.
+
+## 2026-07-22 (controller) — GAP 2 (the double-division): the (A) OBJECT itself needs the pin; jointly charged (elder intent × seat-L4 ground truth)
+
+The render seat surfaced three spec gaps and correctly REFUSED TO GUESS. GAP 3 (the DLN-side
+DeeperMultilinear variant with the layer-decoded D⁺) — arch-C's, standing, updated to the ruled
+clause (its "deeper-only+vanishing" reference predated the DeeperMultilinear relay in its queue).
+GAP 1 (pivot threading) — derive-never-free endorsed (∃-pivot ruled out as choice-field bait);
+resolves downstream of GAP 2 (the leaves' hypotheses are already edge-shaped, so an ed-sourced
+pivot may be signature-free). **GAP 2, THE LOAD-BEARING ONE: foldResid's δ=1 branch ALREADY
+applies blockBlowupCoordQuot** — the strict-transform division is folded into the child's data
+(the crux says it verbatim: foldResid_p(stepMap u) = u_pivot · foldResid_child(u)) — so the
+ruled "(A) = Deg1 on resid∘quotMap" as naive precompose would DOUBLE-DIVIDE. Two candidate
+readings charged jointly to the elder + seat-L4: (i) a raw pre-quotient object with quotMap
+doing the single division (edge-dependent invariant; pivot from the edge); (ii) **foldResid IS
+already the prepared object** — the fold's data already implements the paper's Let-block
+renaming — and the (A) conjunct is Deg1SupportedOn (foldResid) DIRECTLY over T with
+DeeperMultilinear carrying the weight (NOTE: both countermodels' parents have c ≡ 1, which the
+clause excludes — the clause alone may close both; the open algebra is whether the CHILD
+re-emerges multilinear under the T-mixing shear — seat-L4's Gröbner (A1) + degree-2 (X)
+instruments). My weak read: (ii) is the rising-sea shape (read the data as-is; don't re-perform
+the preparation). The render body holds on the pin; the frame-shell + GAP-3 pieces render
+meanwhile. The seat's refusal to guess commended at the gate — guessing re-opens countermodels.
+
+## 2026-07-22 (controller) — GAP 2 pinned READING (ii) ("the spec erratum"); P6 COMBINATORIAL HALF COMPLETE; one signature reconciliation held open
+
+**GAP 2, the elder's pin: reading (ii)** — the fold's data IS the prepared object (FIX-RESID
+baked the Let-block renaming in rounds ago; the crux identity is the ground truth); the (A)
+conjunct reads `Deg1SupportedOn (foldResid p) T` DIRECTLY; "∘ quotMap" was a SPEC ERRATUM
+(corrected to identity, not a design change). (i) rejected twice over (double-division; a node
+invariant reading the outgoing edge's pivot breaks node/edge separation). **The verification
+target named for seat-L4's algebra: the Schur is the MULTILINEARITY-RESTORATION step** — it
+subtracts exactly the u_pivot-carrying C21·C12 residue DeeperMultilinear cannot absorb; an
+unabsorbed residue = a finding against the CLAUSE (escalates), the reading stands either way.
+The docstring line that earns it: FIX-RESID and the frame ruling, made rounds apart, composing
+into "read the data as-is" — the architecture finally the paper's.
+
+**P6 COMBINATORIAL HALF COMPLETE END-TO-END** (seat-E, merged + gating): value (bandCount) →
+faithful count (chainHeight_boxPart, elder-passed) → θ-attachment (chainHeight_boxPart_eq_
+aoyagiTheta @ 0e0c69a96, registered in the batch this commit). Tier-3 = the OrderIso realization
+(four named requirements), scaffold-now-integrate-later CONFIRMED (FoldProduced locked; the iso
+reads the ledger, not the invariants under redesign). seat-L3T's case-blind DIVISIBILITY module
+merged (Case2TransportWire — the crux DUPLICATE with Case1Wire flagged for public-canonical
+dedupe at bake integration); its remaining work correctly gated on the redesign, which is now
+fully pinned — it resumes on the bake.
+
+**ONE RECONCILIATION HELD OPEN (crossing):** arch-C dispatched a pivot+D⁺ PARAMETER shape for
+FoldStepInvAt/LastLayerInv before the reading-(ii) pin reached it; the pin's text has the pivot
+threading through the LEAVES only (a pivot param = a free-field surface + redundant). Sent back
+for reconciliation against the elder's exact text BEFORE the seat renders; if arch-C finds a
+genuine need (the parent-side support formation), it goes to the elder as a named one-liner.
+seat-L4/seat-L3T re-coordination HELD until the shape is single.
+
+## 2026-07-22 (controller) — arch-C SELF-CORRECTS the pivot over-reach before my reconciliation even landed; the queue carries the pin
+
+arch-C retracted its own pivot+D⁺ re-type dispatch ("I jumped to (a)-param before the pin; your
+framing is right") — the self-correction crossed MY reconciliation message in flight, i.e. both
+ends of the hub caught the same over-reach independently. Its hold/render split is exact: GAP 3
+renders now (DeeperMultilinear DLN-side + the layer-decode D⁺ feed + the two derivation lemmas +
+frame-shell + all four docstring items); the invariant WIRING holds for the GAP-2 pin — which is
+ALREADY IN ITS QUEUE (reading (ii): foldResid direct, no double-division, pivot threading
+dissolves, no re-type). On processing: the body renders → the full gate → THE BAKE. The seats'
+re-coordination correctly held on both ends until the shape was single — the hub discipline
+handling a three-way crossing with zero contradictory instructions delivered.
+
+## 2026-07-22 (controller) — seat-L3T's second landing: BOTH honest halves banked green (the fork-stable floor is complete)
+
+Second landing merged + controller-verified (terminal_edge_unit_stepInv clean-three; module
+green): the fork-stable floor of the whole S=L arc is now COMPLETE — (1) the case-blind interior
+DIVISIBILITY (both leaves, both δ), (2) the terminal unit-residual StepInv (the transport's
+conjunct 1). What remains on its batch is exactly the two conjuncts whose statements the
+rendering round corrects — its framing was two messages stale (compose-before-drain again; the
+ack protocol made non-negotiable), but its WORK was exactly right: it banked precisely the
+pieces that survive every pin. On the bake: it finishes conjunct B (divisibility engine + the
+(ii)-form Deg1 re-factoring) and wires hcleared into the transport — "fast; the machinery is
+now green."
+
+## 2026-07-22 (controller) — arch-C reconciles the D⁺ question to DERIVED; the round is SINGLE-SHAPED end to end
+
+arch-C caught a genuine tension between two controller relays (D⁺ "explicit carried parameter"
+vs "the layer-decode supplies it") and reconciled to **DERIVED**: D⁺ := deeperCoords d
+p.conState.layer — four grounds: it IS the elder's "fold supplies it"; the disjointness becomes
+an AUTOMATIC lemma from the layer partition (not a carried hypothesis); a free D⁺ is
+caller-instantiable inconsistency (the same anti-free-field ground that killed the free pivot);
+zero signature change anywhere. The pivot dissolves entirely under reading (ii): T is carved IN
+THE LEAVES (ed.center.erase ed.pivot passed as the support VALUE). One-line elder confirm
+requested (render proceeds under DERIVED meanwhile). **The round is now single-shaped end to
+end**: reading-(ii) direct conjunct + DeeperMultilinear over derived deeperCoords + leaf-carved
+support + guard split + re-parented transport with hcleared + proved subsumption — no new
+parameters, no re-types, both proof seats' "no signature change" instructions STAND. The render
+seat's refusal-to-guess noted in arch-C's gate ledger ("what kept the double-division and the
+erratum from silently baking"). Render → gate → bake.
+
+## 2026-07-22 (controller) — DERIVED CONFIRMED: the round's design FULLY CLOSED; "derive node-data, carry edge-data"
+
+The elder confirms DERIVED — arch-C's reconciliation ruled the better reading of the elder's own
+ruling, with the principle extracted: **C is carried because the center is EDGE data the node
+cannot know; D⁺ derives because it is NODE data the conState already carries — derive node-data,
+carry edge-data.** ("A free D⁺ would have been the ninth axis waiting" — the taxonomy applied
+back at its author.) The elder ran the bridge-check preemptively: deeperCoords = the STATIC layer
+partition, Finset-definable from d + layer alone (thread-40's expressible object); the
+bridge-blocked object was always the transformed center, never the below-layer slots. One rider:
+the automatic disjointness proved ONCE at the def site as a named lemma consumers cite.
+
+**NO DESIGN INPUT REMAINS ANYWHERE.** Render → gate → bake. "The wall's spine is, at last,
+statement-complete under eight audited axes."
+
+Parallel: seat-E's Tier-3 orientation surfaced the admTight finding (Lambda's Adm is the LOOSE
+lattice — the tight-lattice pin demands a NEW runMin-bounded set; minAdm the value untouched) +
+the 3a/3b shape fork (the tree-free OrderIso core vs the tree-binding realization — my
+concurrence: BOTH, with 3a the most-audited core) + the pnp-cert recommendation on the encoding
+map — all with the elder for the shape ruling; seat-E holds the scaffold-freeze (the gate-order
+lesson honored). seat-L3T fully reconciled (nine messages; the escalation-test disposition
+accepted as model epistemics — INFER labeled as INFER; the concrete battery deferred to the
+pinned Let-blocks as the preservation proof's companion).
+
+## 2026-07-22 (controller) — Tier-3 shape ruled (pin homes + admTight seam lemmas); the encoding-map cert charged; BOTH lanes fully specified
+
+The elder's Tier-3 shape ruling: admTight CONFIRMED with TWO def-site lemmas (admTight_subset_adm;
+**minAdm_tight_eq = THE SEAM LEMMA** keeping every banked loose-minAdm D-bridge consumable
+tight-side without re-proving — "it may not live as folklore or an inline have"); the 3a/3b split
+RULED AS PROPOSED with each pin's formal home (tight-lattice lives TWICE: (3a)'s LHS domain AND
+(3b)'s discharge obligation `tree_profiles_tight` — proved from the banked running-min/t̃-nesting
+certificates, never assumed; global target in both filters pinned to one constant through the
+seam lemma; t̃=0 in (3b) only; OrderIso-both-ways = (3a)'s form) — "the audit surface splits
+along the proof surface, which is the point." The PNP CERT charged, five parts (explicit
+construction; bijectivity on the tight domain; strictMono BOTH ways pointwise on the full trap
+kill-set; the ℓ=1/a=ℓ boundary; and the NEGATIVE certificate — which direction fails on the
+LOOSE lattice, so the docstring CITES the reason admTight is load-bearing). seat-E: def-sites
+prep-able now; scaffold unfreezes on the cert. "After the encoding map, the lane is engineering
+all the way down."
+
+arch-C: the round confirmed FULLY CLOSED on its end too — the gate plan final (six re-checks +
+three witness deaths + the Schur-restoration + the crux dedupe + the mechanical floor + write-set
+→ ONE bake); "derive node-data, carry edge-data" recorded as the saga's crisp reusable rule.
+BOTH LANES ARE NOW FULLY SPECIFIED with no open design input anywhere — the monument waits on
+one render, the E-lane on one certificate; everything after is proving.
+
+## 2026-07-22 (controller) — seat-L4's GAP-2 battery: the ADVANCE pin (T'_child = D⁺_parent) — render-critical, routed
+
+seat-L4's GAP-2 answer (battery @ 6e2fd6665, PASS) converged with the elder's reading-(ii) pin
+independently AND made the round's one implicit requirement EXPLICIT AND DECISIVE: **the child
+clause must LAYER-ADVANCE the partition** — T'_child = D⁺_parent (the parent's deeper set becomes
+the child's support), D⁺'_child ⊇ the consumed old-center block. The battery's teeth: in the OLD
+frame the Schur γ·β term is degree-2 and DeeperMultilinear FAILS; in the ADVANCED frame it lands
+in the child COEFFICIENT (cofactors carry any degree in D⁺' harmlessly) and both countermodels
+close. A render naming the child support as old-center or center.erase(pivot) would break at its
+own gate on γ·β. Also battery-confirmed: the double-division (child∘quotMap ≠ child); the
+crux-fit at the child under the advance (hceq fires verbatim); the pivot-slot disjunction
+matching LastLayerInv's two disjuncts. seat-L4 identifies the advance as the C′-deeper-block pin
+made precise — and the DERIVED deeperCoords (rolling with p.conState.layer) may implement it
+automatically (the elder's one-line check requested). Routed render-critical to arch-C (render
+WITH the advance; the battery = the ADVANCE regression witness) + the elder confirm. The sixth
+independent convergence of the night: the battery, the crux, the elder's pin, and the C′
+discriminator all naming one design.
+
+## 2026-07-22 (controller) — the ADVANCE CONFIRMED + the WINDOW-INDEX precision: (T, D⁺) as ONE window, derived from the SUPPORT's layer
+
+The elder confirms the layer-advance as the child clause's form — and answers the automatic-
+implementation check with a "yes-IF" that is itself a caught-in-time defect: the derived D⁺
+rolls automatically ONLY if indexed off the SUPPORT'S WINDOW — a within-layer clear advances
+the support to the deeper block while conState.layer stays fixed, so `deeperCoords d
+p.conState.layer` as literally rendered would NOT roll at clears and the (T′, D⁺′) pair would
+shear apart ("a mismatched (support, depth) pair is ninth-axis bait of the first order"). THE
+COHERENT FORM: derive BOTH T and D⁺ from ONE window index (the support's layer) so the
+advancement is a single motion — two fields that cannot disagree. arch-C verifies which index
+its render uses (support-side = zero-cost; raw-layer = a one-expression correction), aligns,
+and BAKES. "The sixth independent convergence of the night is the design telling us it is done
+being designed."
+
+## 2026-07-22 (controller) — the render's four shapes confirmed; the re-coordination scoped to the PLANNED light rebase
+
+arch-C confirmed the seat's four reconstructed shapes (the seat landed the DeeperMultilinear core
+green FIRST, then surfaced the shapes — the discipline holding at the render level too): raw
+foldResid with quotMap DROPPED from the statement (the erratum resolution — the multilinear
+coefficient carries the degree-2 term); support = ed.center∖{pivot}; Core untouched (the slot is
+DLN-side DeeperMultilinear; anti-felting via the two derivation lemmas); the disjointness as the
+elder's PROVED NAMED LEMMA (a partition theorem), cited never carried. arch-C also corrected its
+own re-coordination scope: the proof seats' rebase IS needed but is the PLANNED light one —
+invariant BODY (Deg1 slot → DeeperMultilinear slot) + support VALUE (center → center.erase pivot)
+— no parameter/arity re-type anywhere. Both proof seats pre-notified with exact expectations.
+The window-index check rides arch-C's queue. Render (one-pass ripple) → the full gate → BAKE —
+"design fully closed; this is the mechanical finish."
+
+## 2026-07-22 (controller) — the advance folded into the render pre-freeze; the gate gains its advance-partition check
+
+arch-C relayed the advance to the render seat BEFORE the body froze (C' = D⁺_parent in the
+preservation conclusion, the roll explicit; center.erase-pivot would break at the gate on γ·β)
+and added the ADVANCE-PARTITION CHECK to its gate: the γ·β discriminator must FAIL against a
+center.erase-pivot child support and PASS under the advance — seat-L4's battery @ 6e2fd6665 as
+the witness. The elder's advance-confirm + window-index precision ride arch-C's queue (delivered;
+processed on its next round — the (T, D⁺)-one-window index verification joins the render then).
+The full gate now: six re-checks + three witness deaths + Schur-restoration + advance-partition +
+window-index + crux dedupe + mechanical floor + write-set → ONE BAKE. Nothing else moves.
+
+## 2026-07-22 (controller) — the window-index check folded; the gate final at thirteen points; awaiting the aligned render
+
+arch-C relayed the index coherence to the seat (T and D⁺ from ONE support-window index — off
+(layer, cleared)/canonCenter, never raw conState.layer) and gave the gate its operational form:
+the γ·β discriminator must FAIL against a raw-layer D⁺ at a within-layer clear (support advanced,
+depth didn't — the shear the elder named) and PASS under the shared-window derivation. The gate
+is FINAL: six re-checks + three witness deaths + Schur restoration + advance-partition +
+window-coherence + crux dedupe + mechanical floor + write-set → ONE BAKE. Every check traces to
+a found defect. "Done being designed" — awaiting the aligned render.
+
+## 2026-07-22 (controller) — the Schur verification CLOSES the elder's GAP-2 target: preservation-by-coefficient-FOLDING (the seventh convergence)
+
+seat-L4's battery (case1_schur_multilinearity.py @ 3f6f56db3, PASS): the elder's danger CONFIRMED
+REAL — the degree-2 C21·C12 term leaves the un-absorbable u_pivot residue under blow-up + single
+division, exactly as predicted from the pages — with ONE mechanism precision that shapes the
+preservation proof: **the Schur does not subtract a formed residue post-hoc; under the carried
+invariant no degree-2 entry ever FORMS** — the Schur keeps degree-1 by FOLDING C21·C12 into the
+deeper cofactor (the layer advance), where the factors become spectators and never gain u_pivot.
+The residue is the failure mode the design AVERTS — the motivating counterexample for the
+docstring — never a proof step. Conjunct-B's obligation = the layer-advanced re-factoring read
+off the shear-folded form; no cancellation step exists to discharge. Clause STANDS; no
+escalation; the SEVENTH independent convergence. Routed: the elder (target closed) + arch-C (the
+docstring phrasing so the prover reads re-factoring, not cancellation; the battery joins the
+round's evidence). **The monument's design has NOTHING open — the index-aligned render is the
+only pending event.**
+
+## 2026-07-22 (controller) — the elder blesses the precision, corrects its own framing: PREVENTION, not removal; "the mathematics is settled"
+
+The elder's close on GAP-2: its own "the Schur exists to REMOVE the quadratic" corrected to the
+verified mechanics — "the Schur exists so the quadratic never FORMS" — with the docstring spec
+fixed at two lines, ROLE (multilinearity-restoration) then MECHANISM (the seat's
+folding-via-advance text verbatim; the u_pivot residue as the motivating counterexample, never a
+proof step). Relayed to arch-C for the preservation leaf. The elder's record line, and the
+expedition's state in one sentence: "NOTHING REMAINS OPEN ON THE MONUMENT'S DESIGN — every axis
+audited, every clause verified against her pages, every convergence multi-instrument... for the
+first time since this expedition began, the mathematics is settled and only the writing remains.
+Render, gate, bake — and then the wall is just work."
+
+## 2026-07-22 (controller) — the admTight def-site lands (5/6 proved; the seam lemma modulo ONE tracked engine lemma)
+
+seat-E's cert-independent half executed (merged + controller-verified): AdmTight.lean —
+admTight as a FILTER of Adm (the inclusion definitional), admTight_subset_adm /
+admTight_nonempty / clamp_mem_admTight all clean-three, and **minAdm_tight_eq (THE SEAM LEMMA)
+proved modulo exactly one tracked-open engine lemma**: Mval_clamp_le (clamping to runMin never
+raises Mval — numerically 1628/1628, statement-locked, marked TRACKED-OPEN in-file, on NO gated
+root). The ge-direction is fully proved; the le-direction = clamp-the-loose-minimiser +
+Mval_clamp_le. DECISIONS: (1) GO on Mval_clamp_le now (cert-independent; closes the seam; ℕ-
+arithmetic engine work in-reach) with the binding sequence SPECIFY → decorrelated Codex on the
+summand-coupling proof shape → prove; (2) the rung-C/3b non-duplication noted correct. AdmTight
+wires at the seam's closure. The E-lane's remaining ladder: the clamp lemma → the cert → the 3a
+scaffold → elder pass → prove.
+
+## 2026-07-22 (controller) — the gate catches the RAW-LAYER D⁺ (the elder's predicted shear, concrete): held, corrected, one expression
+
+arch-C's gate read the rendered DEFS (green with 8 sorries masking both defects): the render used
+`deeperCoords d p.conState.layer` — RAW layer, the exact shear the elder's window-index ruling
+predicted (the ruling crossed the render). TWO CONCRETE BREAKAGES, dispositive: (1)
+deeper-of-deeper ⊆ deeper ⟹ C' = D⁺_parent and D⁺_child are NEVER disjoint under raw-layer
+derivation — the re-factoring cannot cite the disjointness lemma; (2) at N−1,
+deeperCoords = ∅ ⟹ DeeperMultilinear c ∅ ⟹ c ≡ 0 — the left disjunct forces the residual to 0
+exactly where LastLayerInv lives. CONFIRMED: the window-index is required (elder-ruled + both
+breakages independent proofs); the correction is the ruled one-expression fix (T + D⁺ from ONE
+support-window index off (layer, cleared)/canonCenterOf). The gate gains two checks (advance
+disjointness cites cleanly under the windowed D⁺; the last-layer window NON-EMPTY). Third
+occurrence tonight of "the mechanical gate is the floor; the content is the gate." On the
+corrected render → the full gate → THE BAKE — this should be the final hold.
+
+## 2026-07-22 (controller, heartbeat tick) — freshness sweep: two lanes active, one stall-check fired; memo re-phased
+
+Tick: placement + cron verified. Branch freshness: seat-E ACTIVE (42s — a statement fix on
+Mval_clamp_le: a NECESSARY `T ∈ Adm M` hypothesis found and added — the statement-lock discipline
+producing an honest amendment; its report will come); seat-L4 active (9m — the Schur battery
+push, already routed); pnp-order plausibly mid-certificate (its last push predates the charge —
+the 5-part cert is large). THE MONUMENT LANE: rung-c's tip is 86m stale (normal for the
+uncommitted-until-bake worktree pattern) but ~35+ min have passed since the window-index
+correction flag with NO seat report — the idle-stall check fired to arch-C (the wake rule:
+idle + clean + continuing-intent = stalled). The heartbeat memo's phase line re-written to the
+(A)-round endgame state (the one-expression correction → the fifteen-point gate → the bake →
+the proof cascade; the E-lane ladder; cone 10 post-bake).
+
+## 2026-07-22 (controller) — the window predicate: the LAST unpinned object; the trace charge sharpened by arch-C's honest contradiction
+
+The render seat's thrash-stop (3 contradictory window readings — stop-rather-than-guess again)
++ arch-C's routing (converged with my preemptive joint charge) reduce the monument's entire
+remaining design surface to ONE object: **the exact deeperCoords d layer cleared membership
+predicate.** arch-C resolved the roll half (∃C' STAYS — the child support is next-edge data,
+honest existential; the advance is the PROOF's witness) and honestly flagged its own structural
+read CONTRADICTS the advance (support = the SHRINKING un-cleared sub-block vs C' = D⁺_parent
+GROWING — "either my sub-block read is wrong or D⁺_parent is smaller than I think"). The
+discriminating instrument: seat-L4's literal (3,3,4) trace — T and D⁺ as coordinate sets at each
+(S, J) state through two clears and a rollover — with three candidate reconciliations named
+(within-layer shrink + boundary advance / per-clear advance / smaller per-clear D⁺). The elder
+holds the intent half. arch-C's structure hint: strictly-deeper layers ∪ same-layer consumed,
+(layer, cleared)-derived. Everything else renders meanwhile; the bake follows the pin + the
+one-index swap + the full gate. "The exact window predicate is the last unpinned thing."
+
+## 2026-07-22 (controller) — the window contradiction made EXACT (5 constraints, cannot co-hold); the candidate fix: the γβ SPLIT
+
+The stall-check resolved (the render seat thrash-stopped correctly — a genuine unresolved-
+constraint escalation, not idle). arch-C enumerated the exact contradiction: the five relayed
+constraints ((a) within-node disjointness; (b) T'_child = D⁺_parent; (c) consecutive-D⁺
+disjointness; (d) D⁺'_child ⊇ the WHOLE old block; (e) last-layer nonempty) CANNOT CO-HOLD for
+any monotone or single-block D⁺ — and located the likely mis-relay in its own chain: (d) too
+strong. THE DIAGNOSIS (battery-checkable): the Schur γ·β term needs one factor support-side, one
+cofactor-side — **T′ and D⁺′ SPLIT the old block**, so (d) weakens to "⊇ the cofactor member";
+the window is a SPLITTING block, not a single advancing one — potentially reconciling the
+elder's advance with arch-C's shrinking-sub-block reading in one stroke (shed the cofactor part,
+absorb the deeper part — shrink and advance as two views of the split). seat-L4's trace charge
+sharpened to a three-part decision-grade deliverable (literal state sets; per-constraint
+holds/mis-stated verdicts; the split confirmed/refuted + the corrected (b)); the elder rules on
+it, with the suspicious (T, D⁺)-swap candidate flagged for extra scrutiny. arch-C's roll
+resolution (∃C' stays; the advance = the proof's witness) to the elder for blessing with the
+window ruling. Everything window-independent renders meanwhile.
+
+## 2026-07-22 (controller) — THE WINDOW PIN: TWO CLOCKS (T per clear, D⁺ per rollover); the ∃C′ deleted; one trace-owned question remains
+
+The elder's pin dissolves the five-constraint contradiction: **the window is a PAIR with two
+clocks** — T(S,J) = the carved block's slots (> J), shrinking per clear, leaf-carved; D⁺(S) =
+all slots strictly beyond the block's layer, constant across clears, jumping at rollover. BOTH
+prior readings were correct views (arch-C's shrink within-layer; the advance at the boundary:
+T′ ⊆ D⁺_parent at rollover); the battery's T′=D⁺ was the small-depth shadow (L=2: every clear
+rollover-adjacent). The ∅-collapse constraint DISSOLVES (Deg1 already fenced out of S=L — a
+constraint on a clause that never applies); D⁺'s layer-indexing REHABILITATED (it genuinely
+doesn't roll at clears); **the free ∃C′ DELETED — the preservation conclusions name the computed
+pair** ("the anti-free-field doctrine's natural endpoint, reached"), REVERSING arch-C's roll
+resolution. Gate corrections relayed (the last-layer check reshapes to left-disjunct-
+unreachability). REMAINING: seat-L4's literal trace pins the ±1 offset (explicitly delegated —
+"the trace's coordinate sets are the authority for the index arithmetic; my pin fixes the
+STRUCTURE") + one structural adjudication flagged precisely: the CONSUMED-slot membership (the
+elder's strictly-beyond-only vs arch-C's ∪-same-layer-consumed hint — the paper's d_{i,k}
+coefficient factors are the test; a structure contradiction returns to the elder as a finding).
+The render holds for the trace; everything else proceeds on the pin.
+
+## 2026-07-22 (controller) — the ENCODING CERT verified+merged (iso GENUINE); the Adm=admTight CORRECTION; the amended window pin routed everywhere
+
+**pnp's five-part cert: PASS, controller re-ran EXIT 0, merged** (threads/42-encoding-map/):
+(3a) is a GENUINE order-isomorphism — the Birkhoff/box-cell encoding explicit, bijectivity
+C(ℓ,a) every core, order-embedding BOTH directions at the full trap kill-set, boundaries clean,
+and the coord-sum encoding's reverse-direction failure witnessed exactly as the OrderIso pin
+predicted. **THE LOAD-BEARING CORRECTION (part v): Lambda's Adm EQUALS admTight AS A SET**
+(weak-decrease + admBound reconstruct runMin by induction; 0/993 inequalities) — seat-E's
+loose-lattice finding-1 reversed (the genuinely-loose lattice was the OVER-loose cap-everywhere
+form, where minAdm collapses ≤ 0 — the negative certificate giving the docstring its citable
+reason); seat-E redirected: Mval_clamp_le → the SET IDENTITY adm_eq_admTight (simpler, makes the
+seam immediate); its scaffold UNFREEZES on the cert. The second finding-reversal by decorrelated
+instrument tonight — the instruments keep correcting each other upward.
+
+**The elder's AMENDED window pin routed** (pre-endorsed from the pages: the P-cofactors literally
+read cleared coordinates — d″-slots inside cofactors, image-verified p.18/21): T′ = the uncleared
+remainder (shrinks per clear); **D⁺′ = the deeper window ∪ THE SHED SLOTS** (grows per clear,
+jumps at rollover) — arch-C's consumed-slot hint RIGHT, the elder's first pin too clean, the
+correction owned; the split partitions the old block, all five constraints co-hold, the γ·β
+mechanism gets its address (one factor support-side, its partner rides the shed slots). ∃C′
+BLESSED-STAYS (the doctrine boundary: hypothesis-side freedom is bait; conclusion-side is the
+prover's burden; the witness = the computed split). The swap-alarm check-order pinned (convention
+vs FIX-A before believing a swap signature — the thread-33/34 precedent). REMAINING: seat-L4's
+trace, scoped to the ±1 OFFSET + structure confirmation; then the one-expression form → the gate
+→ THE BAKE.
+
+## 2026-07-22 (controller) — a double crossing collapsed: arch-C's corrections (1) and (3) superseded by the elder's amendment (in its queue)
+
+arch-C's reconciliation (owning its one-clock misdiagnosis — the halt right, the mechanism off)
+crossed the elder's shed-slots AMENDMENT: its relayed correction (3) "raw-layer D⁺ kept" is
+STALE (D⁺ = layer-part ∪ SHED slots — grows per clear; arch-C's own consumed-hint was right,
+settled from the pages) and its correction (1) "delete ∃C′" REVERSED back (the elder's final
+word: BLESSED-STAYS, conclusion-side existentials are the prover's burden, witness = the
+computed split). Both collapses relayed in one message with the pointer to the two elder texts
+in its queue. NET FINAL RENDER FORM: ∃C′ stays (gate-checked witness); D⁺ = deeperCoords ∪
+shedSlots; T = edge-carved shrinking remainder; the S=L left-disjunct-unreachable check. The
+consumed-slot question is CLOSED (not trace-owned); seat-L4's trace = the ±1 offset + structure
+confirmation ONLY. Then: finalize → gate → BAKE. Notable for the retro: the pages settled a
+three-way disagreement (arch-C's shear-diagnosis, the elder's too-clean first pin, and the
+original relay) in which each instrument was partially right — the halt, the hint, and the
+structure respectively.
+
+## 2026-07-22 (controller) — THE SEAM CLOSED SORRY-FREE; the "clash" = a THREE-WAY CONVERGENCE (Adm = admTight, thrice-derived)
+
+seat-E closed the seam (merged + verified: AdmTight.lean sorry-free, all six results clean-three)
+— and its route there was the finding pnp's cert part (v) states: **Adm_le_runMin PROVED** (every
+admissible profile already satisfies the runMin bound; the clamp is the identity on Adm;
+admTight = Adm as Finsets; the committed Mval_clamp_le was even FALSE unconditionally —
+11199/81375 counterexamples — until the necessary T ∈ Adm hypothesis was added, then dissolved
+entirely). Its reported "CLASH with #42" dissolves as a crossing: pnp's part (v) IS the same
+finding by the same induction; the negative cert's "genuinely-loose lattice" is the OVER-loose
+cap-everywhere object (also the source of seat-E's own six abstract exceptions) — three
+instruments, one truth, zero contradiction. The iso is SAFE over Adm (the cert's domain is the
+same set; both directions verified at the traps); seat-E's planned redundant poset check
+SKIPPED; it scaffolds 3a on the cert's Birkhoff encoding now, carrying one small def-site
+question (admTight as named def vs collapse to Adm) to the elder's scaffold pass.
+
+arch-C: fully reconciled on the window (the loop: its hint → its over-correction → the pages
+restoring the hint); the FINAL gate discriminator set (left-disjunct unreachability; disjointness
+under the split window; the frame-witness death; the swap-alarm protocol); the render proceeds
+on the pinned shape; seat-L4's trace scoped to the offset + shed-structure confirmation ONLY.
+"This should be the last window turn."
+
+## 2026-07-22 (controller) — THE SWAP-ALARM FIRES: seat-L4's trace contradicts the amended pin WITH the pre-flagged swap signature; convention check runs FIRST
+
+seat-L4's trace (battery case1_window_semantics.py @ a9d08c053): the support DESCENDS per clear
+(T_child = the DEEPER layer; D⁺_child = the CURRENT layer — cleared AND uncleared — ∪ rest),
+C′ must be PINNED (a free ∃ admits the failing readings unfalsifiably), and a CAVEAT naming the
+possible thrash root: the GEOMETRIC support layer may diverge from the recursion's LEDGER layer S
+across multiple clears (the deferred coordinate-bridge territory). Its battery evidence against
+the amended pin: the standalone γβ term (both factors shed-side) has no T-factor under
+T = uncleared-remainder — Deg1 fails there; under T = deeper the entry is degree-1 with
+current-layer coefficients. **The finding is nearly the exact (T, D⁺) INVERSION of the elder's
+page-amended pin — THE SWAP SIGNATURE THE ELDER PRE-FLAGGED** ("a substitution-vs-map reversal
+produces exactly a swap's signature — the thread-33/34 precedent"). THE PRE-PINNED CHECK-ORDER
+RUNS FIRST: seat-L4 verifies its battery's direction (map/FIX-A vs substitution) against its own
+crux (map-direction by construction) BEFORE the elder rules. Outcomes: substitution artifact →
+re-derive, the pin likely stands; confirmed map-direction → a genuine structure finding, the
+elder re-rules (the ledger-vs-geometric distinction as the likely reconciliation — the pin and
+the trace may describe one object in two layer-indexings). Everything holds: the elder's ruling,
+the render finalize, the bake. The alarm set in advance caught exactly what it was built for.
+
+## 2026-07-22 (controller) — seat-E's redundant round: the clash re-resolved independently (117/117 ACTUAL isos — a genuine strengthening); the inbox lapse named
+
+seat-E, with two controller relays unprocessed (no ack line — the protocol lapsed again),
+independently re-derived the full clash resolution: admTight = Adm (its Lean proof), the iso over
+the FULL Adm cone at the traps + sweeps, and the corrected shape ({T ∈ Adm : Mval = minAdm} ≃o
+BoxPart — the runMin clause carries nothing; "the load-bearing tightening is Mval = minAdm, not
+runMin"). REDUNDANT with pnp's cert + my two relays (the skip directive unread) — but the round
+genuinely ADDED: **117/117 ACTUAL poset-isomorphism verification** (stronger than invariant-
+matching) + the Lean-vs-Python minAdm cross-check; both banked. Fourth relay sent with
+everything it asked for (the cert's location on the expedition branch; the explicit part-(i)
+encoding map — NOT a placeholder; the shape confirmation; the loose-lattice clarification).
+The protocol observation, on the record: tonight's two biggest redundant-work events both trace
+to unread inbox — the drain-before-compose requirement is now the E-lane's single process risk.
+The lane is one scaffold from its final pass.
+
+## 2026-07-22 (controller) — the elder pre-owns its pin's error; arch-C frames the L7-seam question; the (a)-road precedent named
+
+The elder's pre-reading (ruling held for the convention verdict per its OWN protocol, the lean
+declared with ownership): the trace's −γβ algebra is valid, frame-INDEPENDENT (even a
+substitution artifact would not reinstate the pin), and "my amended pin contradicted my own
+GAP-2 blessing" — the reconciliation = the trace's caveat (c): the paper's D_J display is the
+LEDGER layer (static through clears); the invariant's Deg1 support is the GEOMETRIC layer
+(descending per clear) — both true, different objects, conflated. Pre-flags: (1) the
+CENTER/SUPPORT divergence (the support parameter NOT ed.center-derived — the leaf values,
+canonCenter relation, and D⁺ derivation need re-audit for WHICH object they encode); (2) the
+convention check's purpose = coordinate calibration. The small-depth shadow's THIRD strike
+recorded (depth-diverse witnesses mandatory).
+
+**arch-C's input for the re-rule (routed with the controller's precedent note):** the divergence
+is likely the L7 Engine↔Aoyagi seam resurfacing — sub-case (a) bridge-free reindex (reconcile
+in-round) vs (b) genuinely card↔sum-bridge-gated (the window joins L7 as bridge-adjacent, the
+INTERIOR Deg1 conjunct bridge-dependent — a major scope event, controller-gated). The (a)-prior
+is stronger: canonCenter itself is the precedent (L7's seeming bridge-dependence dissolved under
+the paper's slot bookkeeping; the geometric descend is per-clear slot bookkeeping of the same
+species). ALL HOLDS: the verdict + calibrated sets trigger the ruling; no render finalize, no
+bake, on an unverified frame.
+
+## 2026-07-22 (controller) — the reconciliation frame COMPLETE on all ends; the depth-diverse-witness standing pin adopted; all holds on seat-L4's three-part deliverable
+
+The elder's mechanism endorsement of the (a)-road ("no Engine object appears anywhere in the
+invariant's window — this seam lacks the ingredient that made L7's hard"; the frame axis gains
+its INDEXING sub-case, with the elder's own two-clock pin as exemplar) and arch-C's full prep
+are both in: the render seat prepped for the two-named-functions resolution (supportAt geometric
+/ canonCenter ledger untouched; C′ pinned-computed if the descend stands — the third C′ turn,
+"the elder owning its own conflation, not thrash"; likely arity-stable — value + indexing +
+conclusion-form change only); the crux RE-ANCHORS to the geometric support (where Deg1 holds —
+the γβ failure on the ledger remainder IS the descend's point). **The depth-diverse-witness
+standing pin ADOPTED into the gate/battery contract** ("≥ the depth where the shadow collapses —
+here L≥3 to expose within-layer descend; no future window/advance claim rests on an L=2-only
+battery") — the small-depth shadow's third strike converted to a permanent rule. ALL HOLDS on
+seat-L4's three-part deliverable: the convention verdict + the calibrated literal sets +
+supportAt(S, J) explicit. Then: one ruling → the finalize → the gate (re-audited for
+geometric-vs-ledger encoding per reference) → THE BAKE.
+
+## 2026-07-22 (controller) — the window saga's double-reversal: retraction → re-retraction; the ruling packet with the resumed elder; E-lane cert routed
+
+Dense batch, in order:
+
+1. **seat-E de-risk + block**: Tier-3 chainHeight TRANSPORT de-risked (subtype ≃o transports
+   strict-order chainHeight via Set.chainHeight_eq_of_relIso — contract COMPILES, acc5eb832); its
+   lane state: seam lemma minAdm_tight_eq CLOSED sorry-free; admTight = Adm proven (Adm_le_runMin);
+   blocked only on the #42 encoding cert (not on its branch). ROUTED: cert lives on the main
+   expedition branch (6e22580c8) — fetch + git show, path + full content brief sent (the explicit
+   three-stage encoding, the coord-sum reverse-failure hazard, the boundary cases). Told to START
+   THE SPECIFY now; shape ratification + def-site question queued with the elder.
+
+2. **seat-L4 RETRACTION** (the check-order fired): "my battery checked degree-1 on the COEFFICIENT
+   set (deeper) and mislabeled it the support" — swap killed, amended pin apparently confirmed
+   (T′ = prepared-frame un-cleared remainder, D⁺′ = deeper ∪ shed, (d) weakened to cofactor-MEMBER,
+   ±1/shed-slot deferred to elder page authority). **Controller error, owned**: I relayed this to
+   arch-C as a stand-down ("supportAt moot") BEFORE any elder adjudication — a state flip broadcast
+   ahead of the ruling. arch-C absorbed, reversed its supersede-flag, kept the amended-pin render.
+
+3. **The elder office was DEAD**: the send bounced — elder-standing dropped off the live registry at
+   the runtime restart (its team was session-c0fbdfc4; current is session-f444d38c). Found the
+   newest transcript (agent-aelder-standing-3fd49e3017d30ba3, 2026-07-21) and RESUMED it by ID —
+   full 335-message context (the ruling history + the image-verified p.18/21 page authority) intact.
+
+4. **seat-L4 RE-RETRACTION** (battery case1_supportAt.py PASS, banked 1c2bc359a): the calibration
+   verdict = MAP direction (FIX-A, identical frame to its banked crux) — the descend is genuine and
+   the −γβ argument frame-independent. The false retraction's mechanism: mis-applying the ROOT
+   reading ("definitionally degree-1 on current" — true at the root, which has NO −γβ) to the CHILD
+   (which does). Claim: at the child, T=un-cleared FAILS (cleared-pivot term pure-deeper; −γβ
+   degree-2 on un-cleared) — only T=deeper is Deg1. Delivered supportAt(S,J) EXPLICIT, d-definable,
+   NO Engine data (the (a)-road, loudly): layer S if J=0; layer S+1 if J≥1∧S<L; ∅/born-unit if
+   J≥1∧S=L. Depth-diverse calibrated sets: (3,3,4) hides the descend at S=L (third strike of the
+   shadow); (3,3,2,2) exhibits it at S=1,S=2. Reconciliation = the two named functions (canonCenter
+   ledger UNTOUCHED + supportAt geometric), C′ PINNED-computed.
+
+5. **Routings**: the full chronological packet (pin → contradiction → alarm → false retraction →
+   calibrated re-retraction) to the RESUMED elder, charged to adjudicate on ITS OWN page-authority
+   derivation of the child's degree count — decorrelated from the seat's twice-flipped conclusion —
+   plus the E-lane item B (3a shape: {T ∈ Adm : Mval=minAdm} ≃o BoxPart(ℓ,residueA), runMin dropped
+   on Adm_le_runMin; def-site alias-vs-collapse). arch-C FROZEN with the true sequence — both
+   prepped shapes (amended pin AND supportAt sort) kept warm, nothing discarded, nothing re-pointed,
+   one message with the ruling to come. seat-L4 STATEMENT-LOCKED (no further re-derivations; the
+   ruling must be decorrelated given the flip history).
+
+**Process lesson (mine)**: a seat's state flip routes through the elder's ruling BEFORE it reaches
+the render lane — relaying the retraction as a stand-down was the visible-progress instinct in
+process clothing. The hold+no-bake discipline (arch-C's) absorbed both flips at zero cost to the
+tree: nothing stale was ever baked. The witness bank gains a new defect channel when the elder
+rules: over-deference to authority (the false retraction) — caught by the pinned calibration
+check-order, exactly the instrument designed for it.
+
+## 2026-07-22 (controller) — crossing flag resolved; the vanishing-at-T=0 discriminator to the elder; arch-C freeze-acked
+
+seat-L4's crossing flag (its re-retraction vs my first ACK) resolved with no damage — the elder
+packet was already the supportAt/descend packet, arch-C already frozen with BOTH shapes warm. New
+substance forwarded to the elder as an ADDENDUM — the discriminator in its cleanest mechanical
+form, the vanishing-at-T=0 test: child = c_p·1 + c_d·(δ−γβ), c_p = c_d = ∑e_k·h_k (deeper). On
+T={un-cleared δ}: child|_{δ=0} = ∑e_k·h_k·(1−γβ) ≠ 0, but a DeeperMultilinear form MUST vanish at
+T=0 ⟹ FAILS (the killer = the cleared-pivot's pure-deeper c_p·1 term — what the false retraction
+missed). On T={deeper e}: child = ∑e_k·(h_k·(1+δ−γβ)), coefficient ignores {e} ⟹ HOLDS = the
+descend. The elder's charge: derive the child expression from ITS OWN p.18/21 page authority and
+check exactly those two vanishing claims; a different child expression names the difference and
+reverses the ruling. arch-C freeze-ACKED: both preps warm, no bake/re-point/render-message; adopted
+the paired lesson — only the RULED form reaches the render seat (it declined to correct its own
+now-stale relay to the seat for the same reason: the seat holds for the pin-relay, not finalizing).
+All lanes now converge on ONE event: the elder's ruling.
+
+## 2026-07-22 (controller) — E-lane: seam upgraded to the SET IDENTITY; 3a scaffold LANDED (one frontier sorry); pass questions to the elder
+
+seat-E's round, controller-verified on the fetched branch (commits present; OrderRealize.lean =
+exactly one sorry; signatures match): (1) the seam REDIRECTED to the set identity —
+`adm_eq_admTight : admTight M = Adm M` PROVED (d07a91caf, via Adm_le_runMin, the cert part-(v)
+induction); minAdm_tight_eq now a one-line corollary; docstring premise corrected to the cert's
+story (Adm EQUALS admTight; the over-loose min(M0,M1)-everywhere lattice is the negative
+certificate); dead clamp scaffolding dropped; all axiom-clean, zero sorry. (2) orientation doc's
+finding-1 corrected-not-deleted (8b96ada03). (3) the Tier-3 **3a scaffold LANDED** (2b7aa88ff,
+DLN/Aoyagi/OrderRealize.lean): `bindingSet` real def; `chainHeight_eq_of_orderIso` PROVED (the
+banked transport contract, now a lemma); `bindingSet_orderIso_boxPart` = THE one frontier sorry,
+deliberately `Nonempty` (the explicit Birkhoff encoding is prove-phase data — the outer signature
+stays real without prematurely fixing a possibly-wrong encoding def); `bindingSet_chainHeight`
+= a(ℓ−a)+1 PROVED modulo the headline (exactly one sorryAx). Unwired — controller integrates at
+closure. ROUTED to the elder (queued BEHIND the window ruling): the four pass questions — the
+(ℓ,a) sorted/unsorted COUPLING (ell sorts M, Adm doesn't — the pass's substantive
+statement-fidelity question), hpos weakness, Core-vs-DLN home, def-site (seat-E leans keep-alias).
+AUTHORIZED now: the Codex design-check on the increments→a-subset→Young encoding (the cert used a
+generic backtracker, not a closed form) — prove-phase HELD until the elder's pass.
+
+## 2026-07-22 (controller) — render-lane note: two-clock render stands as the held (uncommitted) base; no back-out
+
+A crossing left the render seat's two-clock (amended-pin) render re-applied in the tree —
+uncommitted, a held bet on the outcome the calibration now leans AGAINST. arch-C asked:
+back out to strict-neutral, or hold? CONTROLLER CALL: hold, no back-out — a back-out is a
+fourth oscillation purchasing nothing (the ruling decides the baked form regardless of which
+shape sits uncommitted), and freeze-substance is satisfied: no bake, both preps warm
+(two-clock rendered + supportAt sort absorbed, one-pass re-pointable). arch-C owned the
+oscillation loop (relay-of-flips to the render lane, same root as mine) and adopted the
+ruling-gated discipline on its hop. Both hops now ruling-gated; one message carries the
+elder's verdict + literal window form when it lands.
+
+## 2026-07-22 (controller) — render-lane correction: seat backed out to NEUTRAL + self-declared hard freeze; loop gated at all three hops
+
+Supersedes the held-bet note above: a further crossing had the render seat back out to the
+NEUTRAL base on its own and declare a HARD FREEZE (no render/revert until arch-C relays the
+ruling). arch-C endorsed rather than re-directed (a re-direct would have been a sixth
+oscillation). Net state — strictly cleaner than the held bet: tree = neutral base, both preps
+warm (two-clock recorded/re-renderable + supportAt absorbed), no bake, and the oscillation loop
+is now gated at ALL THREE hops (controller→arch-C ruling-gated; arch-C→seat ruling-gated; the
+seat render-frozen). The only live worker on the critical path remains the elder.
+
+## 2026-07-22 (controller) — E-lane ROUTE CALL: build the adjacent-swap construction (route a); Q1 resolves LOAD-BEARING
+
+seat-E's Codex design-check (banked 75476080e) changed the 3a picture: the Lean-tractable
+encoding is NOT the cert's Lemma-4-step recipe but a different explicit construction — transport
+the profile through the bubble-sort of the widths via a value-preserving adjacent-swap OrderIso
+(translation/reflection minimising (P−X+A)²+(X−Q+B)²), then on sorted widths the active steps /
+a-subset / reversed-gap box. Verified by TWO decorrelated instruments (seat-E's hand check on both
+worked cores + Codex's 1360-vector sweep); the adjacent-swap OrderIso theorem itself is genuine
+new math — numerically verified, unproven. Elder-Q1 thereby resolves LOAD-BEARING: the
+sorted-ell/unsorted-Adm coupling cannot be dropped — the swap transport IS the sort bridge.
+
+**CONTROLLER ROUTE CALL (build-vs-cite, executive): route (a) — BUILD.** Detail-at-scale, not
+monument: patient decomposable combinatorics, closed formulas, double-verified, off the critical
+path (the monument waits on the elder, not the E-lane). Route (c) ruled out on substance
+(card-bijection lacks order-reflection; the chainHeight transport needs the order iso — Codex's
+warning taken, no tide spent rediscovering it in Lean). Route (b) no advantage (also heavy, no
+closed form). SEQUENCING: skeleton-before-proof — seat-E extends the scaffold NOW with the four
+sorried real-signature lemmas (swap preserves bindingSet; local monotonicity on binding profiles;
+bubble-sort transport = shiftedSorted; qip*→ceilingM/residueA bridge) + the composed-iso skeleton;
+the elder's single pass covers outer shape + construction skeleton together (queued behind the
+window ruling); proving starts only after the pass, multi-tide. Discipline riders: the 1360-sweep
+graduates to a re-runnable battery (`# guards:` header); module docstring records Codex's-map ≠
+cert's-map, both verified, equivalence NOT needed (any valid iso discharges the Nonempty).
+
+## 2026-07-22 (controller) — E-lane skeleton LANDED + verified; the (a)+(b) bundling fidelity call (Q5); pass-packet complete
+
+seat-E's route-(a) skeleton landed (84e8b8cf1) and controller-verified on the fetched branch:
+exactly FOUR map-tagged frontier sorries (enc-swap (a)+(b), enc-transport (c), enc-ceilingM-bridge
+(d), enc-sorted-box); the headline `bindingSet_orderIso_boxPart` now DISCHARGED compositionally
+(non-sorried — composes transport ∘ sorted-box); kill-battery g-enc-adjacent-swap.py banked with
+`# guards:` matching the map tags (EXIT 0: worked-example pins + all 579 positive-width tuples,
+bijection + order-embedding both directions). NEW FIDELITY CALL surfaced by the seat itself (→
+elder Q5): it BUNDLED "swap preserves bindingSet" + "local monotonicity" into the ONE coupled
+one-swap order-iso, because the atomic "swapR monotone in X" is FALSE by hand-checked
+counterexample (swapR(2,·,0,2,1): X=0,1,2 ↦ 2,0,1) — the domain restriction to binding profiles
+rescues it; the honest statement is the coupled one. WIRING CALL: OrderRealize stays UNWIRED until
+the four close (aggregator = controller single-writer; statements may move at the pass; not
+registered roots, so the cone audit doesn't need it). The elder's pass-packet is now COMPLETE and
+frozen: Q1–Q5 + four skeleton statements + outer shape, one pass, queued behind the window ruling.
+
+## 2026-07-22 (controller, tick) — THE RULING RECOVERED FROM A DEAD INBOX: descend STANDS (elder page-authority); BAKE GO; E-lane prove GO
+
+**Sensor-calibration catch of the expedition.** The elder RULED at 01:20 — and its reply (with
+three more rulings, through 01:54) reported "success" into a DEAD inbox: SendMessage's "team-lead"
+resolved inside its OWN team registry (session-c0fbdfc4, dead since the runtime restart). Nothing
+reached me; the heartbeat's liveness probe (transcript mtime frozen at 01:55 with no inbound)
+prompted a transcript read that recovered ALL FOUR verbatim. Workaround standing: the elder also
+ends turns with full plain-text rulings; controller POLLS ITS TRANSCRIPT after each charge.
+
+**THE WINDOW RULING (recovered verbatim, adjudicated from the elder's OWN re-read of preprint
+pp.18–21, decorrelated from the seat's battery as charged): THE DESCEND STANDS.** The amended pin
+(T=un-cleared) is FALSE as the Deg1 support: −γβ = product of two un-cleared entries = degree-2
+on un-cleared; the cleared-pivot E-block "1" (u extracted into b', p.20) = degree-0. The descend
+mechanism on the page: the pivot-row shear absorbs into the NEXT layer (C'^{(S+1)} = Q⁻¹C^{(S+1)},
+p.18). seat-L4's vanishing-at-T=0 discriminator RATIFIED separately (c_p·1 = the killer — exactly
+the term the false retraction dropped). TWO-NAMED-FUNCTION FORM BLESSED; rendering-ready literal:
+T := supportAt S J (three-case: S if J=0; S+1 if J≥1∧S<L; born-unit if J≥1∧S=L — the p.19/21
+terminal exhaustion); D⁺ := complement (subsumes deeper∪shed); C′ := supportAt PINNED-COMPUTED;
+canonCenter (ledger) UNTOUCHED. ±1: NO substantive offset; one CONVENTION PIN for the render
+(explicit 0-indexed layers, S ∈ {0..L}, L = last index). Elder-authored witness-bank text banked
+(the false retraction = over-deference defect, caught by the pinned calibration).
+
+**ITEM B FULL PASS (recovered):** scaffold RATIFIED statement-honest. Q1 coupled form fully
+ratified (sort bridge = content); Q2 hpos weakest on 1,2,4; Q3 home = Core IN PRINCIPLE — but
+import direction (Core never imports DLN; Adm/Mval are DLN-side) blocks the minimal move ⟹ the
+whole cluster migrates in the post-monument upstreaming unit; Q4 COLLAPSE admTight to Adm, negative
+cert RELOCATES to the identity theorem's docstring; Q5 bundling RATIFIED (atomic swapR-monotone
+would be a FALSE lemma). ONE weakest-hyp catch: residueA_le_ell — check hpos fires, drop if unused.
+r=0 scope note: correct core level, record in docstring.
+
+**CASCADE FIRED:** arch-C has THE ONE MESSAGE (ruling + literal window + convention pin + witness
+text): render finalize → full gate → BAKE; on its green, controller integrates + wakes the proof
+seats. seat-E has PROVE-PHASE GO (1,2,4 in its banked order + the hpos check + the Q4 collapse
+first). seat-L4 notified (vindicated; holds for the bake signal). Elder acked with the routing
+workaround + YES on the durable compass convention-pointer (at its next compaction pass).
+
+## 2026-07-22 (controller) — E-lane prove-phase moving: (d) PROVED with the elder's catch confirmed; Q4 collapse executed; 3 heavy frontiers remain
+
+seat-E executed the pass rulings + first proof (controller-verified on the fetched branch, sorries
+4→3): (1) Q4 COLLAPSE done (6abb3bddb) — admTight def + its three satellites dropped; survivors
+Adm_le_runMin + adm_runMin_filter_eq carry the RELOCATED negative certificate; pointer at Adm's
+def-site (Lambda.lean); docstrings record Q1/Q3/r=0 rulings. (2) Obligation (d) residueA_le_ell
+PROVED (f7c3f0a28, axiom-clean) — and the elder's weakest-hyp catch CONFIRMED EXACTLY: hpos never
+fires; replaced with the weakest sufficient `0 < ell M 0` (verified in the landed signature :123;
+the ceiling arithmetic divides by ℓ, widths never enter; consumer sorted-box supplies it). Earlier
+this round seat-E also banked the optional proof-order note (53997da27: d → sorted-box → one-swap →
+transport, per-lemma Mathlib pins, design fork ready for the sort-transport friction). REMAINING:
+the three heavy frontiers (swapBinding_orderIso, bindingSet_transport_sorted, sorted-box iso),
+~150+ LoC each, multi-tide as scoped — seat proceeding on the sorted-box (the depth) in banked
+order, push-per-lemma. Monument side: bake pipeline executing in the render lane (seat re-pointing
+to supportAt; arch-C gates on the render).
+
+## 2026-07-22 (controller) — E-lane resourcing: seat-Ecore spawned for the sorted-box CORE; render lane at gate
+
+seat-E's cycle: sIncr_nonneg PROVED + the sorted-box data laid (sIncr/sStep/boxSubset, 9ad71b94d +
+f004386ad) — then an honest-depth surfacing: the pivotal fact `sStep ∈ {C−1,C}` on a BINDING
+profile needs the MINIMISER structure (Aoyagi Lemma 4–5 content — why a codim-minimiser's steps
+are exactly large-or-small), a genuine sub-development, not a tactic brick; and the seat flagged
+its own context depletion. RESOURCING CALL (ii) GRANTED: **seat-Ecore** spawned (lean-formaliser,
+own worktree, branch expedition/aoyagi-engine-Ecore off the E-branch @ f004386ad, NEW module
+OrderRealizeSortedBox.lean) for the sorted-box core only — pivotal fact → boxSubset_card → enc/dec
+→ ≃o assembly → both-direction map_rel_iff → discharge. Outer statement FROZEN (elder-passed);
+stop-on-suspect routes through controller. seat-E = owner/integrator + obligations (c) transport
+and (a)+(b) swap-iso, disjoint lemmas/files, no merge pain until integration. Brief pointed the
+new seat at verify-before-building both ways: the minimiser structure may be latent in
+Adm_le_runMin / the landed P2 closed-form bridge. MONUMENT LANE in parallel: foldstate-render
+reports the supportAt WINNER rendered in one pass (green, 8-sorry) — arch-C's full gate is the
+next event, then THE BAKE.
+
+## 2026-07-22 (controller) — INTERIM GATE: PASS on every hard check; cone = 10 named; one fidelity cleanup; bake commit authorized to -rung-c
+
+arch-C's interim gate verdict on the supportAt render, verified on ground truth (defs read, not
+the seat's report): supportAt (:569) = the elder's literal 3-case VERBATIM with the 0-indexed
+convention transcribed (no ±1); D⁺ = Cᶜ; case1/case2/lastLayer_clear conclusions PINNED (∃
+dropped) = supportAt(child); canonCenter separate & untouched. BUILD green; **CONE = 10
+@[blueprint]** in MonumentAtlas (8 sorried leaves: case1/case2/lastLayer_clear/terminal_edge +
+L5/L6/L7/L8; 2 drivers PROVED from leaves); footprints force-elaborated on both drivers =
+[propext, sorryAx, Classical.choice, Quot.sound] — no unaccounted axiom; cordon OK; partition
+disjoint (disjoint_compl_right); swap-alarm RE-CLEARED (supportAt IS the ruled descend, not an
+inversion); **severance taxonomy CLOSED** — support computed, C′ pinned, coeff DeeperMultilinear;
+no free field left on the quantified structure. ONE CLEANUP in flight (arch-C's catch): the dead
+deeperCoords island carries a FALSE "consumers CITE it" docstring — a fidelity defect; deleted
+before the bake. COMMIT-HANDOFF settled: arch-C surfaced its role boundary (no unilateral commit);
+controller AUTHORIZED EXPLICITLY — bake commits to expedition/aoyagi-engine-rung-c (seat's own
+branch, push-on-commit standing protocol) with the elder's witness-bank text in the commit body;
+controller then re-verifies from the fetched commit (build + forced footprints + cordon + census)
+and integrates into the expedition branch — the integration boundary stays the controller's.
+
+## 2026-07-22 (controller) — E-lane: clean handoff to seat-Ecore; third brick banked; resourcing (i) confirmed
+
+seat-E executed the handoff (612746aa2): removed its own just-added sorried sStep_mem_binding/
+boxSubset_card from OrderRealize.lean (would name-clash with seat-Ecore's proofs — the sub-seat
+branched @ f004386ad, before they existed); kept the shared data floor + the wiring stub. Third
+brick PROVED: swapWidths_swapWidths (2f538490c, involutivity — the reverse-direction foundation
+for the swap-iso). Resourcing question re-raised on the two remaining cores ((a)+(b) ~100+ LoC,
+(c) ~60+ LoC, both deep): controller CONFIRMED (i) — Codex design-check on swapBinding_orderIso
+first, then seat-E builds (a)+(b) itself; (c) sequential after. Grounds: E-lane already 2-way
+parallel, off the critical path; a third seat = coordination cost near one file family for
+marginal wall-clock; the re-raise trigger is a wall AFTER the design-check. MONUMENT LANE: render
+seat reports the deeperCoords cleanup done (grep-clean, green, bake-ready → arch-C's final
+re-clear + bake).
+
+## 2026-07-22 (controller) — seat-Ecore SPECIFY: the pivotal fact is BANKED math (QIP water-filling transport), not a new sub-development
+
+seat-Ecore's opening report — verify-before-building paid immediately: the pivotal fact
+`sStep ∈ {C−1,C}` on binding profiles is NOT new math. On D = sortedWidths, the banked
+MinAdmCCodim.eOfT/tOfE give a value-preserving bijection Adm D ↔ qipFeasible D with
+Mval = Gqip ∘ eOfT and eOfT = sIncr; the bridge sStep = qipT + qipRound transports
+qipMinimiser_support/sumSq's {0, sgn δ} structure to the staircase — exactly `a` steps equal C.
+The exchange argument is REUSED, never re-proved. Own kill-battery banked FIRST
+(g-sorted-box-iso.py, EXIT 0: 259 + 456-core sweep, cardinalities + pivotal fact + enc-in-box +
+bijection + BOTH order-reflection directions). Plan: L=0 trivial branch split; enc/dec via
+Finset.orderEmbOfFin + Fin.rev gaps; dec's binding-ness routed through tOfE + minimiser; assembly
+via OrderIso.ofHomInv (mono both ways + inverse — resolves the reflection hazard structurally).
+~600–900 LoC multi-tide in the new module; OrderRealize.lean wiring stays seat-E's. Next report at
+the pivotal-fact milestone.
+
+## 2026-07-22 (controller) — pre-bake final: leaf inventory + the supportAt statement deltas (the proof-seats' real targets)
+
+arch-C's final pre-bake report. Gate PASS all hard checks (its own re-run: build 8450; cone=10;
+both drivers' forced footprint = [propext, sorryAx, Classical.choice, Quot.sound]; cordon OK;
+deeperCoords grep-clean). LAST sweep in flight: 4 stale docstring fragments (781/813/838/908)
+still say "ed.center p", contradicting the correct supportAt paragraph in the SAME block —
+docstring-only, seat reconciling to the in-file correct form. THEN: final re-clear → BAKE commit
+to -rung-c (witness-bank text in body) → hash to controller.
+
+**LEAF INVENTORY (MonumentAtlas.lean, 8 sorried + 2 drivers):** case2_preserves_stepInv :824 [L3,
+seat-L3T] · case1_preserves_stepInv :859 [L4 WALL, seat-L4] · lastLayer_clear_preserves :888
+[seat-L4] · terminal_edge_stepInv :914 [seat-L3T conj-2] · leaf_stepInv_of_path :1012 [L5] ·
+leafPath_chartGeometry :1047 [L6] · leafPath_compactCover :1086 [L7] · leafPath_realizesExponents
+:1107 [L8] · exists_atlasRealizesExponents :1132 (driver, proved) · exists_coreResolution_via_
+monument :1184 (headline driver, proved).
+
+**STATEMENT DELTAS (quote THESE in the proof-seat wakes, not stale prose):** case1/case2: hinv
+FoldStepInvAt d e (supportAt d layer cleared) p → concl same at (p.extend ed); ∃C′ DROPPED (C′
+pinned = supportAt(child)); guards hcase + INTERIOR hlayer `ed.nextState.layer + 1 < N`; NO
+he0/he_lin. lastLayer_clear_preserves: NEW (fix-2), LastLayerInv descend supportAt(parent)→(child),
+guard hlast `+1 = N`, born-unit ∅ at S=L. terminal_edge_stepInv: re-parented to LastLayerInv +
+hcleared (∃ j unit: ContinuousOn ∧ unit 0 ≠ 0 ∧ foldResid j = unit on region); guard hterm
+`N ≤ ed.nextState.layer`; conclusion = TerminalBezout-input (1)∧(2) with the LITERAL Fin-1 Pi.one
+unit residual (never foldResid).

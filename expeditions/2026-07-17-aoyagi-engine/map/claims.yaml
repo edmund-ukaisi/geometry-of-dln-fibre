@@ -111,6 +111,7 @@ nodes:
     lean: DLNFibre.DLN.Aoyagi.numTop_d22222_ne_aoyagiPoleOrder
     status: stated
     tier: new
+    landmark: true
     owner: seat-E
     edges:
       - {type: needs, to: e-p61-band-arithmetic}
@@ -232,7 +233,6 @@ nodes:
     status: proven
     tier: new
     owner: "parked: LANDED (mon-geo tide, closed exemplary); universal-in-D ⟹ no cast transport"
-    landmark: true
     evidence: [lean/DLNFibre/Core/Aoyagi/OriginBlowup.lean, lean/DLNFibre/Core/Aoyagi/BlowupResolution.lean]
     notes: "dissolves the opaque-width cast wall BY DESIGN; D=2 cousins …2-renamed (see overlay/naming.md); shared atom for rung-(B) AND the monument's per-step blow-up geometry"
 
@@ -256,6 +256,7 @@ nodes:
     title: "PrincipalInv + StepInv: the path invariants (divisibility along the recursion; principality BORN terminally)"
     status: frozen
     tier: new
+    landmark: true
     owner: seat-core
     lean: DLNFibre.Core.Aoyagi.PrincipalInv
     edges:
@@ -364,7 +365,6 @@ nodes:
     status: conjectured
     tier: new
     owner: "parked: until object-b lands (summit clean-three); then consumer audit + deletion"
-    landmark: true
     edges: [{type: needs, to: aoyagi-summit}]
     evidence: [lean/DLNFibre/DLN/RLCT/AoyagiCited.lean]
     notes: "summit already avoids the cite (kill-path verified); deletion = consumer re-home; cited_watanabe_upper_ax = separate proof-target CANDIDATE (charter §3), not settled-external"

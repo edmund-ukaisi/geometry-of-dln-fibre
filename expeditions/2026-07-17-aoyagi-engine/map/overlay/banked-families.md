@@ -145,8 +145,11 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
   `perJCard_eq_paper`, `envHi_sub_envLo`, `bandWidth_sum` — band arithmetic `a(ℓ−a)+1`; node
   `e-p61-band-arithmetic`, card [../../threads/41-order-count/statement-card-tier1.md]). **P6.2
   ADJUDICATED** (pnp, node `e-p62-count-identification`): ρ = deepest-stratum MAX-CROSSING of terminal
-  (t̃=0) global-minAdm divisors = `a(ℓ−a)+1` — NOT the naive minimiser count ([2,2,2,2,2]: six tight
-  minimisers, ρ=5; card [../../threads/41-rho-count-object/certificate.md]). Guard:
+  (t̃=0) global-minAdm divisors = **max CHAIN of binding minimisers under componentwise ≤** (chainHeight)
+  = `a(ℓ−a)+1` — NOT the naive minimiser count ([2,2,2,2,2]: six tight minimisers, ρ=5). ⚠ the
+  certificate's *antichain* speculation was CORRECTED to a max-CHAIN (elder register `ab106f1a4`; seat-E
+  battery 1018 cores) — read the card [../../threads/41-rho-count-object/certificate.md] through that
+  correction. Guard:
   `battery/rho_battery.py` (guards BOTH E nodes; `_edgespec_traversal_334.py` is its runner-skipped
   helper). The analytic zeta-pole seam stays the named monument-class deferral.
 
