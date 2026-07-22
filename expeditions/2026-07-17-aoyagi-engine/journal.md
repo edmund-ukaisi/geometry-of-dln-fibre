@@ -12828,3 +12828,23 @@ diff — no tombstone (zero consumers, never wired); the name realBranch_multiAf
 form). Exact Lean text authored; relayed VERBATIM to arch-C for the micro-round after the
 collapse bakes. Render-lane queue confirmed: collapse (rendering) → node-form → Assembly; the
 case11 path-invariant ruling follows seat-L4's Codex.
+
+## 2026-07-22 ~17:20 UTC — LANE 1 INTEGRATED (terminal chain complete); collapse staging 69c4caaa0 delta-read triggered
+
+**seat-L3T2 lane 1 merged (9e40fbf29):** realBranch_terminal_edgeδ CLOSED **with hpos alone**
+(the elder's soundness criterion satisfied exactly — no hN needed; the proof mirrors
+OracleInv_conOracle_stepChildren for the only-rollover-advances reduction) +
+terminal_edge_stepInv PROVED (δ=1 corner dead via the closed stub; δ=0 main = the predecessor's
+proved body re-homed; the Fin-1 quotient + born-terminally generator from hgen). Both
+force-elaborated CLEAN-THREE; census 39 → 37; the wiring-regression example + L5's reference
+still elaborate. **FOUR of six derived stubs now CLOSED** (centerPin, cover, descendView,
+terminal_edgeδ) + the TERMINAL TRANSPORT CHAIN is complete: lastLayer → terminal_edge →
+terminal_bezout has its middle link, and the elder's rider obligation (canonCenter round, task
+#41) is DISCHARGED. Tasks #41/#64/#65 closed. seat-L3T2 → lane 4 (consume-fit + dedupe), its
+last.
+
+**Collapse staging 69c4caaa0 delta-read TRIGGERED** (controller-verified raw diff: the clause +
+comment character-identical; L6 hreal; the driver call-site — three edits exactly; arch-C
+re-gate PASS, consumers build-confirmed insulated). On OK: integrate → seat-L6's ONE-LINE
+landing. Render-lane queue: collapse (delta-read) → multiAffine node-form (text held ready) →
+Assembly first increment. Poll-discipline fix applied: tail WINDOW, not last message.
