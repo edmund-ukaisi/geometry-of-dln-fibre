@@ -62,6 +62,8 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
+- OPERATOR (2026-07-22): **updates are NOT urgent — finish the task at hand BEFORE answering an update/SVG
+  request.** Reground/report/regenerate-DAG at a clean seam, not mid-integration.
 - Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
 - `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
   EnterWorktree(root) immediately after every worktree creation; placement check catches it.
