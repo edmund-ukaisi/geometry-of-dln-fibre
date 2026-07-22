@@ -12316,3 +12316,47 @@ gate the bake verdict.
 (fetch + merge --no-ff + full build + forced footprints both drivers + cordon + census) →
 push → proof seats wake on FINAL statements. FLAGGED → render applies → arch-C re-gates →
 new staging hash → elder delta-read.
+
+## 2026-07-22 ~11:10 UTC — OPERATOR-DIRECTED GROUNDING PASS (map + territory + policy re-read) + DAG SVG refresh
+
+Operator asked mid-elder-wait: re-ground in the expedition map, cross-check the territory, re-read
+the policies for an on-track judgment, refresh /tmp/aoyagi-dag-2026-07-22.svg. Done while the elder's
+second read runs (nothing on the bake path blocked on me).
+
+**Territory cross-check (tools, not memory):**
+- `scripts/sorries` = **35** proof-position sorries tree-wide. LIVE cone (pre-bake) = 10:
+  MonumentAtlas 8 + LearningCoefficient:287 + Case2Delta0 1 (L3 δ=1 lane). Fossils = 25 (Engine 4
+  chart-route + Skeleton 3 + Validate ~18). Post-bake the cone reads 16 live (14 + 1 + 1).
+- **Overlay F1 discrepancy caught**: codebase-shape.md's "~52" census disagrees with the tool's 35
+  (raw-grep vs proof-position count). Carto-standing CHARGED to re-derive from `scripts/sorries`
+  itself and cite the tool as the canonical meter (msg 9a293b22).
+- Core invariants re-verified: Core = 0 sorries; **0 files under Core/ import DLN** (the artery
+  invariant holds). AxCheck batch-gate roots present; claims.yaml's staged-vs-baked notes honest
+  (b-ladder note correctly says the per-leaf rows rewrite AT the bake, not before).
+- Contract-5 nit: Case2Delta0's live sorry is only implicitly mapped (under the b-leaf34/L3 lane);
+  fold an explicit pointer into the bake's map refresh.
+- STATUS.md was a day stale → regenerated via `scripts/expedition status` + committed (validator:
+  0 errors; 24 warnings all the benign no-survey class).
+
+**Policy re-read verdict (expedition.md, expedition-map.md, charter, + operational set): ON TRACK,
+with 3 documented deviations, all operator-authorized and journaled:** standing elder/carto seats
+(vs "office, not session" — operator 2026-07-19 endgame exception); priorities.md retired into the
+map (heartbeat documents the forwarding); calibration/altitude cadence current (entry 29 + the
+altitude note committed this pass, 97e5d872b). Charter §0–§3 check: steering by objects holds
+(A/C/D proven, E combinatorial-half closed with the analytic seam scoped-deferred, B = the staged
+monument); the redirect is construction-fidelity work, squarely §0(iv); GAP-3 honestly
+FRONTIER-named per §0(ii).
+
+**One owed convening surfaced by the re-read**: expedition.md § Gates puts an independent
+**hardener** (principles/taste, decorrelated from builder AND controller) at each gate. The redirect
+gate ran navigator checks + elder second read + template diff + batteries — no hardener pass.
+SCHEDULED: a hardener precision/bedrock pass on the BAKED monument statements post-bake (rides the
+same window as the seat wakes; does not gate the bake — the elder read covers the math-rightness
+channel; the hardener covers the taste/overclaim channel).
+
+CLAUDE.md stale-pointer suspicion (docs/policies/claims.md) checked: already fixed in-tree (points
+to expedition-map.md); the stale copy was only my session-start snapshot. Heartbeat memo phase line
+rewritten to ELDER SECOND READ ON STAGING 2080757ea. DAG SVG regenerated at
+/tmp/aoyagi-dag-2026-07-22.svg (UNCOMMITTED per operator standing instruction): redirect staged
+layer + elder gate as the one purple gate, L8 flipped PROVEN, L6 live with the hjac ruling pending,
+DivBirthInv banked as the discriminator, E-lane panel unchanged.
