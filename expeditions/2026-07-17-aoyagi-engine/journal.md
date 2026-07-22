@@ -14906,3 +14906,21 @@ frame-in/hypothesis-out both ways.
 NET: boostReady's side of the fidelity fix is one delta-read from canonical; the cover's side (the fan)
 is one adjudication + one ruling from its final form. The two halves were always separable — the
 staging separates them honestly.
+
+## 2026-07-23 ~16:10 UTC — the fan conflict RESOLVED: covered-under-(b), (a)≡(b), three structures agree
+
+pnp-fan's adjudication (banked 3cc7851d9; machine-checked exact-rationals witness, controller-re-run
+PASS incl. the exact break (H) + the sibling-recovery (B)): the cover does NOT need case-11 interior
+fan pivots. THE MECHANISM: the oracle emits the case-1(1) merge + case-1(2) split SIBLINGS at the same
+node; the merge center {c₀}∪B has B inside the sibling's fresh center where c₀ is a FIXED spectator —
+so the argmax routing sends c₀-dominant points to the case-11 canonical chart and B-dominant points to
+the SIBLING's fan charts. The case-11 interior fan is UNNECESSARY (sibling covers) and HARMFUL (moves
+c₀). AND: the elder's principled candidate (a) (ledger-corner-preservation) ≡ the restricted fan (b) —
+at case-11 it forces pivot = c₀; at case-12/case-2 the fan is free. AND it equals the partition the
+ENGINE's sorry-free cover already proves (dCenterOfNode_edgeSum: case-11 edge owns exactly c₀). Three
+independent structures agree; the geometric conflict dissolves into the correct case-split pin.
+
+SCOPE kept explicit: this is the case-11 BLOW-UP side (no shear there); the case-12/case-2
+interior-pivot NORMALIZATION is the landed recoord half — orthogonal mechanisms, both needed, both now
+present. THE ELDER's desk is now ONE bundled ruling: the 9abd7cbff delta-read + ratify the case-split
+fan pin + the blessed hpos → arch-C's single follow-up staging COMPLETES the N_p bake.
