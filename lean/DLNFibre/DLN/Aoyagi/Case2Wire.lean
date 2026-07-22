@@ -108,10 +108,11 @@ theorem case2_preserves_stepInv'
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   refine ⟨case2_conjA d hpos e p ed hcase2 hlayer hinv hbranch, ?_⟩
-  -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block).
-  -- map: B-L3-case2-conjB (child re-factoring via seat-L4's case-generic graded-decomposition +
-  --      PerLayerDeg1From companion to Case1Wire.exists_graded_decomp; consumes it when it lands).
-  sorry
+  -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block). CLOSED via
+  -- seat-L4's node-form realBranch_multiAffine at the CHILD node (the one-liner that closed the case1
+  -- wall's conjunct-B): the child path is a real branch, so its residual is `Deg1SupportedSlot` at the
+  -- child's own `supportAt`/`supportLayerOf` — exactly this goal.
+  exact realBranch_multiAffine hpos e (p.extend ed) hbranch
 
 /-- **Consume-fit regression (lane 4, seat-L3T2).** The `GeneratorCleared` datum EMITTED by
 `lastLayer_clear_preserves` at an `S = L` clear (child `q.extend ed₁`) is EXACTLY the shape
