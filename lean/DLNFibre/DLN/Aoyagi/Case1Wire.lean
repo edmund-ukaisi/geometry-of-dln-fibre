@@ -106,4 +106,28 @@ theorem foldResid_extend_delta0 (d : Fin (N + 1) → ℕ)
   change foldResid d e (TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ) j u = _
   rw [foldResid, dif_neg hlt, if_neg (by simp [hδ])]; rfl
 
+/-! ### The case-generic re-factoring core (conjunct-2, ∃c half) — seat-L4
+
+The shear-graded substitution re-factors into a DIRECT `S'`-support decomposition. CASE-GENERIC:
+both `case1` and `case2` conjunct-2 reduce their child residual (parent supported on `S'`, evaluated
+through the step map, each `S'`-image `S'`-graded by `ShearGrades (a)`) to this shape, so this ONE
+lemma supplies the `∃c` (first) conjunct of `Deg1SupportedSlot` for both. It is the double-sum swap
+`∑_{i∈S'} a i·(∑_{k∈S'} b i k·u k) = ∑_{k∈S'} (∑_{i∈S'} a i·b i k)·u k` plus continuity — abstract
+over the fold, so ruling-invariant (it consumes the graded form as `hchild`, whatever the fixed
+`DescendView`/`ShearGrades` shape delivers). It does NOT supply the `PerLayerDeg1From` (second)
+conjunct — that needs the layerwise-affine strengthening of `ShearGrades (a)` (the `c i k` must ignore
+`S'`, else `σ_s = u_s + u_r²` slips through degree-2). -/
+theorem exists_graded_decomp {D : ℕ} (S' : Finset (Fin D)) (V : Set (Fin D → ℝ))
+    (child : (Fin D → ℝ) → ℝ) (a : Fin D → (Fin D → ℝ) → ℝ) (b : Fin D → Fin D → (Fin D → ℝ) → ℝ)
+    (ha : ∀ i, ContinuousOn (a i) V) (hb : ∀ i k, ContinuousOn (b i k) V)
+    (hchild : ∀ u ∈ V, child u = ∑ i ∈ S', a i u * ∑ k ∈ S', b i k u * u k) :
+    ∃ c : Fin D → (Fin D → ℝ) → ℝ,
+      (∀ k, ContinuousOn (c k) V) ∧ (∀ u ∈ V, child u = ∑ k ∈ S', c k u * u k) := by
+  refine ⟨fun k u ↦ ∑ i ∈ S', a i u * b i k u, fun k ↦ ?_, fun u hu ↦ ?_⟩
+  · exact continuousOn_finset_sum _ (fun i _ ↦ (ha i).mul (hb i k))
+  · rw [hchild u hu]
+    simp only [Finset.mul_sum, Finset.sum_mul]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl (fun k _ ↦ Finset.sum_congr rfl (fun i _ ↦ by ring))
+
 end DLNFibre.DLN.Aoyagi
