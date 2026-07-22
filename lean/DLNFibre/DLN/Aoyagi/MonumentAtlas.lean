@@ -840,6 +840,14 @@ def FoldRealizes {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
       atlas.gmap c = foldG d e (pathOf c) ∧ (pathOf c).reachesLeaf e (leafOf c)) ∧
     (∀ l ∈ ResolutionTree.leaves (buildTree d (conOracle d) (conRoot : ConState N)),
       ∃ c, leafOf c = l)
+    ∧
+    -- L6 JACOBIAN-COLLAPSE (srcBox seam, 2026-07-22): the composed chart Jacobian IS the pure block
+    -- monomial jacWeight(atlas.jac), unit ≡ 1. Discharged by L5 from the per-step decomposition
+    -- (atlas.steps = the branch's stepMaps) + GeoStep.hσ_jac + the (★) pivot-preservation forced by
+    -- ShearWithinCarveRaw clause (III): ∏ᵢ jacWeight(jexpᵢ)(partialᵢ u) = ∏ᵢ jacWeight(jexpᵢ)(u)
+    -- = jacWeight(∑ jexpᵢ)(u) = jacWeight(atlas.jac c)(u) (hjac_tie). Feeds L6's hjac directly.
+    (∀ (c : Fin atlas.n) (u : Fin (flatDim d) → ℝ),
+        |jacDet (atlas.gmap c) u| = jacWeight (atlas.jac c) u)
 
 /-! ## L3 / L4 — the foldState one-step preservations (DLN-side; elder-locked round-5)
 
@@ -1390,6 +1398,7 @@ shrunk region, not univ.) -/
 @[blueprint]
 theorem leafPath_chartGeometry (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (atlas : GeoAtlasData d e) (c : Fin atlas.n) (hfold : FoldProduced d e atlas)
+    (hreal : FoldRealizes d e atlas)
     (hfwd : RegionRepresents (fun i ↦ coreGen d e i ∘ atlas.gmap c)
       (fun _ : Fin 1 ↦ monoOf (atlas.bexp c)) (atlas.region c))
     (hbwd : RegionRepresents (fun _ : Fin 1 ↦ monoOf (atlas.bexp c))
@@ -1488,7 +1497,7 @@ theorem exists_atlasRealizesExponents (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     obtain ⟨hfwd, hbwd⟩ :=
       principalInv_regionRepresents (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r
         (atlas.region c) hpt
-    exact leafPath_chartGeometry d e atlas c hfold hfwd hbwd
+    exact leafPath_chartGeometry d e atlas c hfold hreal hfwd hbwd
   choose charts hg hdom _hnbhd hbexp hjac using hchart
   -- L7: the full cover of a ball by the charts' domain images (rides FoldProduced + FoldRealizes;
   --      the coordinate coverage is now bridge-free via the canonCenter pin — see the L7 banner).
