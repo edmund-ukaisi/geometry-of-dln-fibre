@@ -10511,3 +10511,15 @@ escalation; the SEVENTH independent convergence. Routed: the elder (target close
 docstring phrasing so the prover reads re-factoring, not cancellation; the battery joins the
 round's evidence). **The monument's design has NOTHING open — the index-aligned render is the
 only pending event.**
+
+## 2026-07-22 (controller) — the elder blesses the precision, corrects its own framing: PREVENTION, not removal; "the mathematics is settled"
+
+The elder's close on GAP-2: its own "the Schur exists to REMOVE the quadratic" corrected to the
+verified mechanics — "the Schur exists so the quadratic never FORMS" — with the docstring spec
+fixed at two lines, ROLE (multilinearity-restoration) then MECHANISM (the seat's
+folding-via-advance text verbatim; the u_pivot residue as the motivating counterexample, never a
+proof step). Relayed to arch-C for the preservation leaf. The elder's record line, and the
+expedition's state in one sentence: "NOTHING REMAINS OPEN ON THE MONUMENT'S DESIGN — every axis
+audited, every clause verified against her pages, every convergence multi-instrument... for the
+first time since this expedition began, the mathematics is settled and only the writing remains.
+Render, gate, bake — and then the wall is just work."
