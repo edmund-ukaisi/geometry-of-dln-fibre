@@ -12016,3 +12016,17 @@ protocol). OPERATOR OBSERVATION honored: the whole system was quiescent because 
 idles between messages and the elder's sends dead-end — the hub's poll IS the clock; the
 discriminator now runs. NEXT: arch-C's verdict → either the redirect executes (one round:
 canonCenterOf + canonShearOf + IsRealBranch + conditioned leaves) or the def-touch route revives.
+
+## 2026-07-22 (controller) — seat-L4's calibration note locates the dispute exactly; pre-acceptance on the record
+
+seat-L4's dispute-ack (exemplary — no re-run, no re-litigation, standing by as the disputed
+party): its ENUMERATOR is purely COMBINATORIAL (divProfile/divTilde/layer/cleared only — no
+coordinate or pivot-LAYER data), so the REACHABILITY half (case1-at-cleared-0, undisputed) is
+decorrelated-clean and none of the machinery is entangled with the dispute; the DESCENT
+consequence lived ONLY in the battery's prose verdict, where a hand-model (current-layer pivot)
+was layered on top — precisely the assumption the discriminator tests. Pre-acceptance recorded:
+if the strict transform doesn't descend anywhere, the "case11 breaks conjunct-2" claim retracts
+and no case-aware fallback is needed on that ground. On the redirect: "the IsRealBranch-
+conditioning route is the clean landing my free-field-severance findings were pointing at all
+along… my wall proof consuming ONE construction hypothesis instead of seven is strictly better
+bedrock." All parties now aligned on the route pending the one empirical verdict.
