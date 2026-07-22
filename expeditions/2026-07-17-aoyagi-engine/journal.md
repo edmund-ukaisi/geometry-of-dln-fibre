@@ -10581,3 +10581,21 @@ discriminating instrument: seat-L4's literal (3,3,4) trace — T and D⁺ as coo
 holds the intent half. arch-C's structure hint: strictly-deeper layers ∪ same-layer consumed,
 (layer, cleared)-derived. Everything else renders meanwhile; the bake follows the pin + the
 one-index swap + the full gate. "The exact window predicate is the last unpinned thing."
+
+## 2026-07-22 (controller) — the window contradiction made EXACT (5 constraints, cannot co-hold); the candidate fix: the γβ SPLIT
+
+The stall-check resolved (the render seat thrash-stopped correctly — a genuine unresolved-
+constraint escalation, not idle). arch-C enumerated the exact contradiction: the five relayed
+constraints ((a) within-node disjointness; (b) T'_child = D⁺_parent; (c) consecutive-D⁺
+disjointness; (d) D⁺'_child ⊇ the WHOLE old block; (e) last-layer nonempty) CANNOT CO-HOLD for
+any monotone or single-block D⁺ — and located the likely mis-relay in its own chain: (d) too
+strong. THE DIAGNOSIS (battery-checkable): the Schur γ·β term needs one factor support-side, one
+cofactor-side — **T′ and D⁺′ SPLIT the old block**, so (d) weakens to "⊇ the cofactor member";
+the window is a SPLITTING block, not a single advancing one — potentially reconciling the
+elder's advance with arch-C's shrinking-sub-block reading in one stroke (shed the cofactor part,
+absorb the deeper part — shrink and advance as two views of the split). seat-L4's trace charge
+sharpened to a three-part decision-grade deliverable (literal state sets; per-constraint
+holds/mis-stated verdicts; the split confirmed/refuted + the corrected (b)); the elder rules on
+it, with the suspicious (T, D⁺)-swap candidate flagged for extra scrutiny. arch-C's roll
+resolution (∃C' stays; the advance = the proof's witness) to the elder for blessing with the
+window ruling. Everything window-independent renders meanwhile.
