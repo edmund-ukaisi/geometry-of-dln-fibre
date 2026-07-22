@@ -305,7 +305,8 @@ def edgeShearRaw (d : Fin (N + 1) → ℕ) (cse : StepCase)
   match cse with
   | StepCase.case11 => id
   | StepCase.rollover => id
-  | _ => blockShear shearφ
+  | StepCase.case12 => blockShear shearφ
+  | StepCase.case2 => blockShear shearφ
 
 /-- `edgeShearRaw` fixes the origin when the displacement does (`id 0 = 0` / `blockShear_zero`). -/
 theorem edgeShearRaw_zero (d : Fin (N + 1) → ℕ) (cse : StepCase)
@@ -619,28 +620,32 @@ def GeneratorCleared {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) �
     StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p) ∧
       ∑ j, q i₀ j 0 * foldResid d e p j 0 ≠ 0
 
-/-- **`ShearGrades`** (family ruling 2026-07-22, item 3 — the LAYER-GRADING shear pin; seat-L4's
-battery-confirmed conjunct-B-coupled predicate on `ed.shearφ`; ONE named def, cited on
-case1/case2/lastLayer_clear). Face 4: the prepared invariant alone does NOT survive a general triangular
-shear (`u_i ↦ u_i + u_p` breaks a prepared residual). `blockShear ed.shearφ` GRADES the child support
-`S′ = supportAt(child)`: (a) each `S′`-image coord is degree-1 on `S′` with `PerLayerDeg1From` (from the
-child support layer) continuous coefficients — the grading that lets the child's Deg1 re-factor; (b)
-LOAD-BEARING (seat-L4): each `S′ᶜ`-coord image IGNORES `S′` — those images become the child's coefficients
-after re-factoring, so reading `S′` would inject a spurious `S′` factor → child deg-2 (the `de ↦ de + s1²`
-breaker satisfies (a) vacuously since `de ∉ S′` but VIOLATES (b)). Pivot-independence is SUBSUMED (not a
-separate clause). At `lastLayer_clear` `S′ = ∅`: (a) vacuous, (b) `IgnoresCoords`-over-∅ trivial — harmless.
-REGION `V = foldRegion d e (p.extend ed)` (CHILD, seat-L4-confirmed: the shear is read at child-region
-points, `foldG(child) = foldG p ∘ stepMap`). -/
-def ShearGrades {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+/-- **`DescendView`** (audit ruling 2026-07-22, A1 — the transition-law pin for the free `ed.nextState`).
+The STATE FRAGMENT of `IsRealBranch` (:775): `(ed.case, ed.nextState)` is a real oracle child of
+`p.conState` — the per-case transition law (case11 KEEPS `cleared`, case2/case12 `cleared+1`) is encoded in
+the oracle's `stepChildren`, NOT re-derived. Pins the strict transform's layer-descent; L5-emittable, no
+coordinate bridge. -/
+def DescendView {N : ℕ} (d : Fin (N + 1) → ℕ) (p : TreePath d) (ed : TreeEdge d p) : Prop :=
+  ∃ sc ∈ (conOracle d p.conState).stepChildren, sc.ecase = ed.case ∧ sc.child = ed.nextState
+
+/-- **`ShearWithinCarveRaw`** (seat-L4's (B) form, 2026-07-22, ONE site for the carve grade). The RAW
+displacement `shearφ` (not `blockShear shearφ`) on layers `≥ sl := supportLayerOf node`: (I) write-side —
+the displacement is ZERO there (`shearφ u i = 0`); (II) read-side — every displacement coord IGNORES those
+layers. (B) fixes the (A) `(II)`-unsatisfiability (old `blockShear = id` write-side vs unrestricted-`i`
+read-side). Parameterized by `node`/`shearφ` so both `ShearWithinCarve` (last edge) and `IsRealBranch`'s
+per-step shear-pin call it — ONE site for the carve grade. Vacuous at `lastLayer_clear` (`sl` exhausts). -/
+def ShearWithinCarveRaw {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (node : TreePath d) (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) : Prop :=
+  let sl := supportLayerOf node.conState
+  let V := foldRegion d e node
+  (∀ ℓ : ℕ, sl ≤ ℓ → ∀ i ∈ layerCoords d ℓ, ∀ u ∈ V, shearφ u i = 0) ∧
+    (∀ ℓ : ℕ, sl ≤ ℓ → ∀ i, IgnoresCoords (fun u ↦ shearφ u i) (layerCoords d ℓ) V)
+
+/-- **`ShearWithinCarve`** — the last-edge specialization of `ShearWithinCarveRaw` (node = `p.extend ed`,
+displacement = `ed.shearφ`). Region = CHILD `foldRegion d e (p.extend ed)`. -/
+def ShearWithinCarve {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     {p : TreePath d} (ed : TreeEdge d p) : Prop :=
-  let S' := supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
-  ∃ c : Fin (flatDim d) → Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
-    (∀ i k, ContinuousOn (c i k) (foldRegion d e (p.extend ed))) ∧
-    (∀ i ∈ S', ∀ u ∈ foldRegion d e (p.extend ed),
-        (blockShear ed.shearφ) u i = ∑ k ∈ S', c i k u * u k) ∧
-    (∀ i k, PerLayerDeg1From d (c i k) (supportLayerOf (p.extend ed).conState)
-        (foldRegion d e (p.extend ed))) ∧
-    (∀ i, i ∉ S' → IgnoresCoords (fun u ↦ (blockShear ed.shearφ) u i) S' (foldRegion d e (p.extend ed)))
+  ShearWithinCarveRaw d e (p.extend ed) ed.shearφ
 
 /-! ### The fold-realization predicate — combinatorial branch-membership (FIX 2; elder/coordinator (a))
 
@@ -758,7 +763,19 @@ noncomputable def canonCenterOf (d : Fin (N + 1) → ℕ) (s : ConState N) (sc :
     Finset (Fin (flatDim d)) :=
   match sc.ecase with
   | StepCase.rollover => ∅
-  | _ => (Finset.univ.filter (fun q : tupIdx d =>
+  -- case11 (seat-L4 (B), b873bced8): {reused birth-corner pivot} ∪ ROW-partial block — flat COL q.2
+  -- capped by run-length (`< cleared + runLen`), flat row q.1.2 the full raw remnant (no upper cap).
+  -- Gives the J₁·(M^(S+1)−J) exponent boost; hpivot proved (pivot ∈ center via the `∪ toFinset`).
+  | StepCase.case11 => (canonPivotOf d s sc).toFinset ∪
+      (Finset.univ.filter (fun q : tupIdx d =>
+        (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+          (q.2 : ℕ) < s.cleared + sc.esubst.runLen)).image (tupIdxEquiv d)
+  -- case12 — the current-layer widthMinUpto block.
+  | StepCase.case12 => (Finset.univ.filter (fun q : tupIdx d =>
+      (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+        (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d)
+  -- case2 — the current-layer widthMinUpto block.
+  | StepCase.case2 => (Finset.univ.filter (fun q : tupIdx d =>
       (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
         (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d)
 
@@ -766,22 +783,30 @@ noncomputable def canonCenterOf (d : Fin (N + 1) → ℕ) (s : ConState N) (sc :
 PLUS the canonical coordinate PIN. Each step's `(case, nextState)` is one of the oracle's `stepChildren`
 at the parent node's state (`ecase`/`child` matched; the matched child's `esubst` = `runLen`/`mergeIdx`
 is the witness), AND the step's stored `center`/`pivot` equal the canonical slots (`canonCenterOf` /
-`canonPivotOf` of that edge — the coordinate pin that lifts L7 bridge-free; the shear `shearφ` is unread,
-a rollover leaves `pivot` unconstrained via `canonPivotOf = none`). -/
-def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ} : TreePath d → Prop
+`canonPivotOf` of that edge — the coordinate pin that lifts L7 bridge-free; the shear `shearφ` is
+pinned within-carve (interlock-1 predicate-pin, closing the former unread `_`); a rollover leaves
+`pivot` unconstrained via `canonPivotOf = none`). Carries `e` for the shear-pin's `foldRegion`. -/
+def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) : TreePath d → Prop
   | .root => True
-  | .step p center pivot cse nextState _ =>
-      p.IsRealBranch ∧
-        ∃ sc ∈ (conOracle d p.conState).stepChildren,
+  | .step p center pivot cse nextState shearφ =>
+      p.IsRealBranch e ∧
+        (∃ sc ∈ (conOracle d p.conState).stepChildren,
           sc.ecase = cse ∧ sc.child = nextState ∧
             center = canonCenterOf d p.conState sc ∧
-            (∀ piv, canonPivotOf d p.conState sc = some piv → piv = pivot)
+            (∀ piv, canonPivotOf d p.conState sc = some piv → piv = pivot)) ∧
+        -- SHEAR-PIN (interlock-1 predicate-pin): shearφ within-carve on THIS step node (seat-L4 (B) via
+        -- ShearWithinCarveRaw) — reads the former `_`, symmetric with the canonCenterOf/canonPivotOf
+        -- pins. Defeq to `ShearWithinCarve d e ed` at the last edge, so `realBranch_shearWithinCarve`
+        -- extracts it (last-step projection).
+        ShearWithinCarveRaw d e (TreePath.step p center pivot cse nextState shearφ) shearφ
 
 /-- **The path reaches the leaf** — a real branch (now also coordinate-pinned via `canonCenterOf`) whose
 terminal state emits `l`. Ties chart `c`'s fold to the tree leaf its branch reaches; the coordinate pin
 in `IsRealBranch` gives L7 the distinct-blocks-per-branch coverage bridge-free. -/
-def TreePath.reachesLeaf {N : ℕ} {d : Fin (N + 1) → ℕ} (p : TreePath d) (l : LeafData d) : Prop :=
-  p.IsRealBranch ∧ decisionEmitsLeaf (conOracle d p.conState) l
+def TreePath.reachesLeaf {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (p : TreePath d) (l : LeafData d) : Prop :=
+  p.IsRealBranch e ∧ decisionEmitsLeaf (conOracle d p.conState) l
 
 /-- **The fold-realization provenance** (L5's second record, beside `FoldProduced`): each chart's map is
 the accumulated `foldG` of a real tree branch (`reachesLeaf`) reaching a leaf, and every tree leaf is
@@ -803,7 +828,7 @@ def FoldRealizes {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
     (atlas : GeoAtlasData d e) : Prop :=
   ∃ (pathOf : Fin atlas.n → TreePath d) (leafOf : Fin atlas.n → LeafData d),
     (∀ c : Fin atlas.n,
-      atlas.gmap c = foldG d e (pathOf c) ∧ (pathOf c).reachesLeaf (leafOf c)) ∧
+      atlas.gmap c = foldG d e (pathOf c) ∧ (pathOf c).reachesLeaf e (leafOf c)) ∧
     (∀ l ∈ ResolutionTree.leaves (buildTree d (conOracle d) (conRoot : ConState N)),
       ∃ c, leafOf c = l)
 
@@ -846,7 +871,85 @@ interior). The layer partition is EXHAUSTIVE (PIN 1): interior `+ 1 < N` (L3/L4)
 upgrades at L5). The earlier `Fin.snoc` case-2 append is subsumed — full-width until the terminal
 collapse. -/
 
-/-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime). The
+/-! ### Construction-conditioning COLLAPSE — derived lemmas off `IsRealBranch`
+
+**Final statement round (arch-C, 2026-07-22).** The one-step leaves below take a SINGLE construction
+hypothesis — the child path is a real oracle branch, `(p.extend ed).IsRealBranch e` — in place of the
+former per-field set (`hcenter`/`hcover`/`hdesc`/`hwc`/`hδ0`). Those per-field constraints are RE-DERIVED
+here as named lemmas OFF `IsRealBranch`, so the construction pin is the single source of truth and each
+constraint is a consequence, not a free input. The dispatch guards (`hcase1`/`hcase2`/`hlayer`/`hlast`/
+`hterm`) and the CARRIED invariant (`hinv`, and `hgen` at the terminal) stay — they are the induction's
+thread, not per-edge construction facts.
+
+STUBS (sorried) — the STATEMENTS are seat-L4-locked (final render 2026-07-22): the `canonCenterOf` case-11
+boost, the `IsRealBranch` shear-clause (via `ShearWithinCarveRaw`), and the `ShearWithinCarve` (B) form have
+all LANDED in the DEFS. `realBranch_multiAffine` is the FRONTIER-LEAF-CANDIDATE (deepest, gates elder Codex
+C2); the rest close by projection / oracle-reduction. -/
+
+/-- Derived: the edge center IS a canonical slot — the center-pin (retires the false-for-case11
+`⊆ blockCoords`; case11's boost includes the cross-layer birth-corner pivot). -/
+@[blueprint]
+theorem realBranch_centerPin {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    ∃ sc ∈ (conOracle d p.conState).stepChildren, ed.center = canonCenterOf d p.conState sc := by
+  -- map: B-derived-centerpin (ed.center = canonCenterOf, the IsRealBranch center pin)
+  sorry
+
+/-- Derived: the δ=1 support-cover, case12/case2 ONLY (case11's pivot-mechanism excludes it). -/
+@[blueprint]
+theorem realBranch_cover {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    edgeδ d p = true → (ed.case = StepCase.case12 ∨ ed.case = StepCase.case2) →
+      supportAt d p.conState.layer p.conState.cleared ⊆ ed.center := by
+  -- map: B-derived-hcover (δ=1 ∧ case12/case2 ⟹ supportAt ⊆ center; case11 excluded)
+  sorry
+
+/-- Derived: the combinatorial descend-view (the edge's `(case, child)` is an oracle step). -/
+@[blueprint]
+theorem realBranch_descendView {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    DescendView d p ed := by
+  -- map: B-derived-descendview (∃sc ecase/child clause of IsRealBranch step case)
+  sorry
+
+/-- Derived: the shear stays within the carve (the within-carve grade off the shear pin). -/
+@[blueprint]
+theorem realBranch_shearWithinCarve {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    ShearWithinCarve d e ed := by
+  -- map: B-derived-shearwithincarve (last-step projection: hbranch's ShearWithinCarveRaw conjunct at
+  --      the last edge is defeq ShearWithinCarve d e ed; seat-L4 (B) landed, no (II) defect)
+  sorry
+
+/-- Derived: a terminal edge does not divide (`δ=0`) — only a rollover advances the layer. -/
+@[blueprint]
+theorem realBranch_terminal_edgeδ {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
+    (hbranch : (p.extend ed).IsRealBranch e) :
+    edgeδ d p = false := by
+  -- map: B-derived-hδ0 (terminal ⟹ rollover-only advance ⟹ edgeδ=false; widthMinUpto_pos)
+  sorry
+
+/-- Derived (GAP-3, seat-L4 locked) — **FRONTIER-LEAF-CANDIDATE**: the deepest obligation, gates on the
+elder's Codex C2. The PARENT residual is degree-1 on the parent support (the multi-affine grade). -/
+@[blueprint]
+theorem realBranch_multiAffine {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+      (supportAt d p.conState.layer p.conState.cleared)
+      (supportLayerOf p.conState) (foldRegion d e p) := by
+  -- map: B-derived-gap3-FRONTIER (parent residual degree-1 on parent support; gates elder Codex C2)
+  sorry
+
+/-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime).
+**COLLAPSE:** one construction pin `(p.extend ed).IsRealBranch e` + dispatch guards + carried `hinv`;
+the center/cover/descend/shear constraints are DERIVED off the pin (`realBranch_*`). The
 false-as-stated `hsupp` (ideal-membership, monotone in the center) is RETIRED; the fidelity fix is the
 carried `FoldStepInvAt (supportAt(parent)) p` hypothesis — its `Deg1SupportedSlot` conjunct forces the
 residual degree-1 on the geometric support `supportAt`, excluding the over-large centers that refuted the
@@ -865,15 +968,17 @@ theorem case2_preserves_stepInv
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
     (hlayer : ed.nextState.layer + 1 < N)
-    (hcenter : ed.center ⊆ blockCoords d p.conState.layer)
     (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hgrade : ShearGrades d e ed) :
+    -- COLLAPSE: per-field hcenter/hcover/hdesc/hwc → derived lemmas off this one construction pin
+    (hbranch : (p.extend ed).IsRealBranch e) :
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   -- map: B-L3-case2-preserves-stepInv (foldState; support DESCENDS parent→child supportAt; Deg1 on supportAt)
   sorry
 
-/-- **L4 — a case-1 edge preserves the foldState invariant. ⟨THE WALL⟩** The coupled block-center
+/-- **L4 — a case-1 edge preserves the foldState invariant. ⟨THE WALL⟩**
+**COLLAPSE:** one construction pin `(p.extend ed).IsRealBranch e` + dispatch guards + carried `hinv`;
+the center/cover/descend/shear constraints are DERIVED off the pin (`realBranch_*`). The coupled block-center
 divisibility at corank ≥ 2 with the exact `u_p^δ` factor; seat-L4's `BlockDivision` core (exact
 division; the `2u₀u₂` shear-rescue) supplies the proof. The fidelity fix (elder re-statement): the
 carried `FoldStepInvAt (supportAt(parent)) p` — its `Deg1SupportedSlot` conjunct forces the residual
@@ -903,15 +1008,17 @@ theorem case1_preserves_stepInv
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
     (hlayer : ed.nextState.layer + 1 < N)
-    (hcenter : ed.center ⊆ blockCoords d p.conState.layer)
     (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hgrade : ShearGrades d e ed) :
+    -- COLLAPSE: per-field hcenter/hcover/hdesc/hwc → derived lemmas off this one construction pin
+    (hbranch : (p.extend ed).IsRealBranch e) :
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   -- map: B-L4-case1-coupled-preserves-stepInv ⟨THE WALL — coupled block-center divisibility, seat-L4⟩
   sorry
 
-/-- **L(last)-clear preservation (fix (2), new leaf; cone member 10).** A CLEAR edge at the last layer
+/-- **L(last)-clear preservation (fix (2), new leaf; cone member 10).**
+**COLLAPSE:** one construction pin `(p.extend ed).IsRealBranch e` + dispatch guards + carried `hinv`;
+the center/cover/descend/shear constraints are DERIVED off the pin (`realBranch_*`). A CLEAR edge at the last layer
 (`ed.nextState.layer + 1 = N` — child-form guard, PIN 1: clears KEEP the layer, so the child sits at
 `N−1`; the rollover ADVANCES, so it is EXCLUDED here and owned by the transport) preserves `LastLayerInv`:
 the newly-cleared slot flips from the center-linear (left) disjunct to the unit (right) disjunct, the
@@ -933,9 +1040,9 @@ theorem lastLayer_clear_preserves
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlast : ed.nextState.layer + 1 = N)
-    (hcenter : ed.center ⊆ blockCoords d p.conState.layer)
     (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hgrade : ShearGrades d e ed) :
+    -- COLLAPSE: per-field hcenter/hcover/hdesc/hwc → derived lemmas off this one construction pin
+    (hbranch : (p.extend ed).IsRealBranch e) :
     LastLayerInv d e
         (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed)
       ∧ GeneratorCleared d e (p.extend ed) := by
@@ -957,14 +1064,21 @@ Parent is `LastLayerInv d e (supportAt(parent)) p` (fix (2) re-parent — a last
 `lastLayer_clear_preserves` at the `S = L` clears, NOT carried from entry; replaces the former hand-copied
 ∃-cleared-slot shape). L5 feeds (1)+(2) + `isOpen_foldRegion`/`zero_mem_foldRegion`
 into `terminal_bezout` → terminal `PrincipalInv` (the `example` below is the executable wiring regression).
-CASE-BLIND (covers the rollover AND the `N=1` edge that reaches terminal at once). -/
+CASE-BLIND (covers the rollover AND the `N=1` edge that reaches terminal at once). COLLAPSE: `edgeδ d p =
+false` is now DERIVED off the construction pin (`realBranch_terminal_edgeδ`), not a leaf input — the δ=1
+terminal is UNREACHABLE: only rollover advances the layer (EngineConstruction:198; case11/12/case2 keep it
+:180/:190), and rollover fires only at `widthMinUpto d (layer+1) ≤ cleared` (rolloverDecision:1946), so the
+PROVED `widthMinUpto_pos` (O5Realization:344) gives `cleared ≥ 1 ⟹ edgeδ = false`. (Independent: at a δ=1
+terminal the born-generator `unit = (unit_p∘σ)/u_pivot` is discontinuous, structurally unsatisfiable.) -/
 @[blueprint]
 theorem terminal_edge_stepInv
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
     (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hgen : GeneratorCleared d e p) :
+    (hgen : GeneratorCleared d e p)
+    -- COLLAPSE: hδ0 → derived lemma realBranch_terminal_edgeδ off this one construction pin
+    (hbranch : (p.extend ed).IsRealBranch e) :
     ∃ (q : Fin (d (Fin.last N) * d 0) → Fin 1 → (Fin (flatDim d) → ℝ) → ℝ)
       (i₀ : Fin (d (Fin.last N) * d 0)) (unit : (Fin (flatDim d) → ℝ) → ℝ),
       StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
@@ -986,13 +1100,14 @@ example (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hterm : N ≤ ed.nextState.layer)
     (hinv : LastLayerInv d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hgen : GeneratorCleared d e p) :
+    (hgen : GeneratorCleared d e p)
+    (hbranch : (p.extend ed).IsRealBranch e) :
     ∃ (b₁ r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ)
       (V' : Set (Fin (flatDim d) → ℝ)),
       IsOpen V' ∧ (0 : Fin (flatDim d) → ℝ) ∈ V' ∧ V' ⊆ foldRegion d e (p.extend ed) ∧
         PrincipalInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed)) b₁ r V' := by
   obtain ⟨q, i₀, unit, hSI, hcont, hne, heq⟩ :=
-    terminal_edge_stepInv d hN hpos e p ed hterm hinv hgen
+    terminal_edge_stepInv d hN hpos e p ed hterm hinv hgen hbranch
   obtain ⟨V', r, hVopen, hV0, hVsub, hPI⟩ :=
     terminal_bezout (isOpen_foldRegion d e (p.extend ed)) (zero_mem_foldRegion d e (p.extend ed))
       hSI i₀ unit hcont hne heq
@@ -1061,6 +1176,9 @@ theorem leaf_stepInv_of_path (d : Fin (N + 1) → ℕ) (hN : 0 < N)
         PrincipalInv (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r (atlas.region c) := by
   -- map: B-L5-path-fold (fold FoldStepInv via the foldState leaves along tree branches;
   --      terminal_bezout at each leaf; emits the FoldProduced provenance record of the construction)
+  --      COLLAPSE: L5 supplies each leaf's ONE construction pin `(p.extend ed).IsRealBranch e`; the
+  --      ex-per-field constraints (hδ0/hcover/…) are DERIVED off it (realBranch_terminal_edgeδ etc.).
+  --      seat-L3T's δ=1 sorry then closes as a dead branch (realBranch_terminal_edgeδ ⟹ edgeδ=false).
   -- Reference the foldState one-step leaves + terminal_bezout: the fold consumes these, so they sit
   -- on the monument cone (records them for #audit_blueprint even while the fold body is sorried).
   have _hc2 := case2_preserves_stepInv (d := d)
