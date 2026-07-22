@@ -14117,3 +14117,31 @@ choice DECIDES the def. The (2,2,2) acceptance test exercises it. Discipline: ab
 validate-the-rest; elaborate-the-detail before transcribe (operator directive). seat-L4C's gate caught it
 before a wrong def churned. STATE unchanged otherwise: L1 baked, A-div done, Gap B (elder cap), descent
 1 sorry, L7 fan. boostReady = ChainNF (abstract skeleton building ∥ pnp-transport pinning the ε-rule).
+
+## 2026-07-23 ~00:55 UTC — boostReady GATE PASSES: ChainNF outer shape PROVEN; crux = 1 structured obligation
+
+seat-L4C hit the shape-review gate (the checkpoint I set) with the abstract-ChainCompat skeleton BUILT +
+GREEN (Case1Wire, on -L4C). GATE VERDICT: PASSES — this is exactly what the abstract-clause approach should
+produce. The OUTER SHAPE is PROVEN (forced #print axioms, seat-L4C-re-derived):
+- isRealBranch_chainNF (the parallel theorem IsRealBranch p → ChainNF p, by TreePath induction from
+  ChainCompat) = [propext, Classical.choice, Quot.sound] CLEAN — the induction WIRING is genuinely proven.
+- deg1SupportedOn_boostForm = clean-three.
+- realBranch_boostReady_case11 = [propext, sorryAx, Classical.choice, Quot.sound] — rests ONLY on sorryAx
+  via chainCompat_holds; no other axioms. So ChainCompat ⟹ boostReady is PROVEN + clean.
+- The single obligation chainCompat_holds = a STRUCTURED 3-field certificate (base = ChainNF at coreGen;
+  transport = real-edge preserves ChainNF, the four-case ε-rule; boundary = case11-δ1 corollary) — matches
+  the pnp split EXACTLY. Census net-0 (replaces the old bare boostReady sorry) but a structured named
+  obligation, not a spike. Standalone (no FoldStepInvAt reopening).
+
+TASTE STEERS (my gate call): (1) chainWeight's col-vs-row index → DEFER to pnp-transport's certificate;
+it's INSIDE chainWeight, the outer shape is index-independent, the abstraction quarantines the risk. (2)
+boundary interface → OPTION B: boundary yields the RAW α/β boost split; deg1SupportedOn_boostForm stays in
+the wiring (matches what pnp certifies, reuses the banked lemma, name=content/weakest-interface). boostReady
+= deg1SupportedOn_boostForm ∘ boundary ∘ isRealBranch_chainNF.
+
+So boostReady is now: OUTER SHAPE PROVEN + the crux = the single ChainCompat 3-field obligation, which IS
+pnp-transport's certificate (they've synced the interface + the 3 decisive details: index convention,
+threshold-boundary off-by-one, non-fresh-layer transport). seat-L4C: push the green checkpoint to -L4C,
+then pin ChainCompat on pnp's certificate + grind in one pass → boostReady done → the wall falls. The
+abstract-clause discipline worked: outer shape validated NOW, ε-rule elaborated in parallel. STATE
+otherwise unchanged (L1 baked, A-div done, Gap B elder-cap, descent 1 sorry, L7 fan).
