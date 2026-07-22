@@ -490,6 +490,45 @@ theorem boxOf_le_iff {a : ℕ} {A B : Finset (Fin L)} (hA : A.card = a) (hB : B.
         ≤ (B.orderEmbOfFin hB (Fin.rev i) : Fin L).val := hpos (Fin.rev i)
     omega
 
+/-- The `r`-th position of a box element `f`: `f(rev r) + r`, strictly monotone, landing in `Fin L`
+(needs `a ≤ ℓ ≤ L` and `f` bounded by `ℓ − a`). Inverse to `boxOf`'s reversed-gap read. -/
+def posOfBox {a ℓ : ℕ} (f : Fin a → ℕ) (hf : ∀ i, f i ≤ ℓ - a) (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L)
+    (r : Fin a) : Fin L :=
+  ⟨f (Fin.rev r) + r.val, by have := hf (Fin.rev r); have := r.isLt; omega⟩
+
+theorem posOfBox_strictMono {a ℓ : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ ℓ - a)
+    (hanti : Antitone f) (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L) :
+    StrictMono (posOfBox f hf haℓ hℓL) := by
+  intro r r' hrr
+  have hle : (Fin.rev r' : Fin a) ≤ Fin.rev r := by
+    rw [Fin.le_def, Fin.val_rev, Fin.val_rev]; have : (r : ℕ) < r' := hrr; omega
+  have h1 : f (Fin.rev r) ≤ f (Fin.rev r') := hanti hle
+  have h2 : (r : ℕ) < r' := hrr
+  simp only [posOfBox, Fin.lt_def]
+  omega
+
+/-- The C-step subset recovered from a box element. -/
+noncomputable def boxSubsetOf {a ℓ : ℕ} (f : Fin a → ℕ) (hf : ∀ i, f i ≤ ℓ - a) (haℓ : a ≤ ℓ)
+    (hℓL : ℓ ≤ L) : Finset (Fin L) :=
+  Finset.image (posOfBox f hf haℓ hℓL) Finset.univ
+
+theorem boxSubsetOf_card {a ℓ : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ ℓ - a) (hanti : Antitone f)
+    (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L) : (boxSubsetOf f hf haℓ hℓL).card = a := by
+  rw [boxSubsetOf, Finset.card_image_of_injective _ (posOfBox_strictMono hf hanti haℓ hℓL).injective,
+    Finset.card_univ, Fintype.card_fin]
+
+/-- **Box round-trip.** `boxOf (boxSubsetOf f) = f`: the reversed-gap read inverts the position map. -/
+theorem boxOf_boxSubsetOf {a ℓ : ℕ} {f : Fin a → ℕ} (hf : ∀ i, f i ≤ ℓ - a) (hanti : Antitone f)
+    (haℓ : a ≤ ℓ) (hℓL : ℓ ≤ L) :
+    boxOf (boxSubsetOf f hf haℓ hℓL) (boxSubsetOf_card hf hanti haℓ hℓL) = f := by
+  have hemb : posOfBox f hf haℓ hℓL
+      = (boxSubsetOf f hf haℓ hℓL).orderEmbOfFin (boxSubsetOf_card hf hanti haℓ hℓL) :=
+    Finset.orderEmbOfFin_unique _
+      (fun r ↦ Finset.mem_image.mpr ⟨r, Finset.mem_univ r, rfl⟩)
+      (posOfBox_strictMono hf hanti haℓ hℓL)
+  funext i
+  simp only [boxOf, ← hemb, posOfBox, Fin.rev_rev, Nat.add_sub_cancel]
+
 /-! ## The order-isomorphism -/
 
 /-- **THE SORTED-BOX ORDER-ISO** (general monotone-positive `D`). The binding-minimiser poset is
