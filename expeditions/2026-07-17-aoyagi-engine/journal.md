@@ -10474,3 +10474,14 @@ invariant BODY (Deg1 slot → DeeperMultilinear slot) + support VALUE (center �
 — no parameter/arity re-type anywhere. Both proof seats pre-notified with exact expectations.
 The window-index check rides arch-C's queue. Render (one-pass ripple) → the full gate → BAKE —
 "design fully closed; this is the mechanical finish."
+
+## 2026-07-22 (controller) — the advance folded into the render pre-freeze; the gate gains its advance-partition check
+
+arch-C relayed the advance to the render seat BEFORE the body froze (C' = D⁺_parent in the
+preservation conclusion, the roll explicit; center.erase-pivot would break at the gate on γ·β)
+and added the ADVANCE-PARTITION CHECK to its gate: the γ·β discriminator must FAIL against a
+center.erase-pivot child support and PASS under the advance — seat-L4's battery @ 6e2fd6665 as
+the witness. The elder's advance-confirm + window-index precision ride arch-C's queue (delivered;
+processed on its next round — the (T, D⁺)-one-window index verification joins the render then).
+The full gate now: six re-checks + three witness deaths + Schur-restoration + advance-partition +
+window-index + crux dedupe + mechanical floor + write-set → ONE BAKE. Nothing else moves.
