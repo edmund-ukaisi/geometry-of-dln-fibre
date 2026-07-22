@@ -333,7 +333,7 @@ theorem stepMapRaw_fixes_parentLedgerCorner {d : Fin (N + 1) → ℕ}
     (hQ : (TreePath.step R c piv cse ns φ).IsRealBranch e)
     (c₀ : Fin (flatDim d)) (hc0 : IsLedgerCorner d R.conState c₀) (w : Fin (flatDim d) → ℝ) :
     stepMapRaw d cse c piv φ w c₀ = w c₀ := by
-  obtain ⟨hR, ⟨sc, hsc_mem, _, hchild, hcenter, hpiv⟩, hwc⟩ := hQ
+  obtain ⟨hR, ⟨sc, hsc_mem, _, hchild, hcenter, hpiv⟩, hwc, -⟩ := hQ
   subst hchild
   obtain ⟨k, hk⟩ := hc0
   obtain ⟨_, _, hfresh, _⟩ := divBirthInv_of_isRealBranch e R hR

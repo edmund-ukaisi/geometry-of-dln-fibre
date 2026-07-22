@@ -110,7 +110,7 @@ theorem case2_preserves_stepInv'
   refine ⟨case2_conjA d hpos e p ed hcase2 hlayer hinv hbranch, ?_⟩
   -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); CLOSED via the
   -- step-form `realBranch_multiAffine_step`: parent slot (`hinv.2`) + child branch (`hbranch`) → child slot.
-  exact realBranch_multiAffine_step hpos e p ed hbranch hinv.2
+  exact realBranch_multiAffine_step hpos e p ed hlayer hbranch hinv.2
 
 /-- **Consume-fit regression (lane 4, seat-L3T2).** The `GeneratorCleared` datum EMITTED by
 `lastLayer_clear_preserves` at an `S = L` clear (child `q.extend ed₁`) is EXACTLY the shape

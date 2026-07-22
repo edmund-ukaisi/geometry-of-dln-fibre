@@ -376,18 +376,20 @@ Statement-identical to `MonumentAtlas.case1_preserves_stepInv`; the controller s
 because the divisibility engine it consumes lives downstream of `MonumentAtlas`. The dispatch is
 verified correct; the two frontier obligations are named holes (elder-ruling-pending). -/
 
-/-- **FRONTIER OBLIGATION — case11 δ=1 BOOST-READINESS** (Codex xhigh 2026-07-22, elder-ruling-pending).
-For a real case1(1) edge at δ=1, the parent residual is `Deg1SupportedOn` the LEDGER (boost) center
-`ed.center = {pivot} ∪ partial-block` — even though its GEOMETRIC support `supportAt` is the larger
-full layer block: the untouched (`support ∖ center`) terms carry `u_pivot` in their non-dominant
-b-chain coefficient `b_i/b_1`. NOT derivable from `hinv`'s `supportAt`-`Deg1SupportedSlot` nor from
-`IsRealBranch` as pinned (Codex); the honest home (new carried-invariant conjunct / stronger
-`IsRealBranch` shear pin / this stub) is the elder's call, gated on the boost-readiness battery on
-(2,2,2,2)/(3,3,2,2). Feeds `stepInv_child_delta1_append` exactly like the case12 cover route. -/
+/-- **FRONTIER OBLIGATION — case11 δ=1 BOOST-READINESS** (Codex xhigh 2026-07-22; RULING B — statement
+blessed, proof TRACKED-OPEN). For a real case1(1) edge at δ=1, the parent residual is `Deg1SupportedOn`
+the LEDGER (boost) center `ed.center = {pivot} ∪ partial-block` — even though its GEOMETRIC support
+`supportAt` is the larger full layer block: the untouched (`support ∖ center`) terms carry `u_pivot` in
+their non-dominant b-chain coefficient `b_i/b_1`. Blessed in place; derives from the `CanonicalSchurStep`
+conjunct (via `realBranch_canonicalSchurStep`) + the b-chain, re-expressing the carried parent slot
+(`hslot`) over the boost center. Feeds `stepInv_child_delta1_append` exactly like the case12 cover route. -/
 theorem realBranch_boostReady_case11 (d : Fin (N + 1) → ℕ)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
-    (hbranch : (p.extend ed).IsRealBranch e) :
+    (hbranch : (p.extend ed).IsRealBranch e)
+    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+      (supportAt d p.conState.layer p.conState.cleared)
+      (supportLayerOf p.conState) (foldRegion d e p)) :
     Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
   -- map: B-derived-boostReady-case11 (δ=1 boost-center Deg1 via b-chain; TRACKED-OPEN, elder-pending)
   sorry
@@ -413,7 +415,7 @@ theorem case1_conjA (d : Fin (N + 1) → ℕ)
   · rcases hcase1 with hc11 | hc12
     · -- δ=1 case11: boost-readiness → append crux
       exact stepInv_child_delta1_append d e ed hlt hδ
-        (realBranch_boostReady_case11 d e ed hδ hc11 hbranch) q hq
+        (realBranch_boostReady_case11 d e ed hδ hc11 hbranch hinv.2) q hq
     · -- δ=1 case12: cover route → append crux
       exact stepInv_child_delta1_append d e ed hlt hδ
         (deg1SupportedOn_center_of_hslot d e ed hδ (Or.inl hc12) hbranch hinv.2) q hq
@@ -441,6 +443,6 @@ theorem case1_preserves_stepInv'
   refine ⟨case1_conjA d e p ed hcase1 hlayer hinv hbranch, ?_⟩
   -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); CLOSED via the
   -- step-form `realBranch_multiAffine_step`: parent slot (`hinv.2`) + child branch (`hbranch`) → child slot.
-  exact realBranch_multiAffine_step hpos e p ed hbranch hinv.2
+  exact realBranch_multiAffine_step hpos e p ed hlayer hbranch hinv.2
 
 end DLNFibre.DLN.Aoyagi
