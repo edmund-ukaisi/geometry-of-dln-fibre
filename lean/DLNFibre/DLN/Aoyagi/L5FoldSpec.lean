@@ -36,13 +36,13 @@ Base: at `conRoot`, `foldG = id`, `foldB = 1`, `foldResid = coreGen`; `FoldStepI
 L5 must, at each edge, (i) EMIT `(node.extend ed).IsRealBranch e` (by CONSTRUCTING `ed` with the
 canonical center/pivot/shear), and (ii) CONSUME it through the matching leaf. IsRealBranch's `.step`
 arm is four conjuncts: `[rec] ∧ [∃sc: ecase/child/center=canonCenterOf/pivot-pin]`
-`∧ [ShearWithinCarveRaw] ∧ [CanonicalSchurStep]`.
+`∧ [ShearWithinCarveRaw] ∧ [shearφ = canonNormalizationOf … pivot]` (the L1 value-pin, N_p re-bake).
 
 | edge kind | EMIT ∃sc conjunct (center/pivot pin)                    | EMIT ShearWithinCarveRaw          | CONSUME (leaf)                    |
 |-----------|---------------------------------------------------------|-----------------------------------|-----------------------------------|
 | case11    | center := canonCenterOf(case11) = {birth-corner pivot}∪row-block; pivot := divBirthCoord[mergeIdx] corner | edgeShear = id (localSub=id) — clauses I/II/III trivial | case1_preserves_stepInv [seat-L4 WALL] |
-| case12    | center := canonCenterOf(case12) = widthMinUpto block; pivot := (layer,cleared) corner | blockShear canonShearOf — clauses I/II/III from canonShearOf within-carve | case1_preserves_stepInv [seat-L4 WALL] |
-| case2     | center := canonCenterOf(case2) = widthMinUpto block; pivot := (layer,cleared) corner | blockShear canonShearOf — clauses I/II/III | case2_preserves_stepInv [conjA DONE (Case2Wire); conjB seat-L4 WALL] |
+| case12    | center := canonCenterOf(case12) = widthMinUpto block; pivot := (layer,cleared) corner | blockShear canonNormalizationOf — clauses I/II/III from N_p within-carve (FRONTIER) | case1_preserves_stepInv [seat-L4 WALL] |
+| case2     | center := canonCenterOf(case2) = widthMinUpto block; pivot := (layer,cleared) corner | blockShear canonNormalizationOf — clauses I/II/III (FRONTIER) | case2_preserves_stepInv [conjA DONE (Case2Wire); conjB seat-L4 WALL] |
 | rollover  | center := ∅; canonPivotOf = none ⟹ pivot-pin VACUOUS   | edgeShear = id — clauses trivial  | (layer advance; no divisibility) |
 | terminal  | (the last edge; reaches `N ≤ child.layer`)              | vacuous (`sl` exhausts)           | terminal_edge_stepInv [DONE] → terminal_bezout → PrincipalInv |
 
@@ -86,9 +86,10 @@ M4 **(★) pivot-preservation — THE DEEP ATOM.** A deeper step's σ fixes an e
 M5 `gmap_eq_foldG` — the atlas gmap is the branch's foldG. Definitional-adjacent (the steps ARE the stepMaps).
 M6 buildTree leaf-enumeration: the atlas has one chart per leaf; `leafOf` surjective; branch↔leaf. Engine
    machinery (`buildTree_leaf*` may partly bank it).
-M7 `canonShearOf` construction + within-carve emission: DEFINE the per-step Q/Schur shear and PROVE it
-   satisfies `ShearWithinCarveRaw` (I/II/III) — elder: emittable, "Schur fold writes no pivot corner"
-   (clause III is write-side/corners-only). Substantial; L5-internal or a companion module.
+M7 `canonNormalizationOf` (N_p) construction + within-carve emission: DEFINE the per-step faithful
+   normalization (pivot-shifted Schur + layer-(S+1) recoord) and PROVE it satisfies the re-authored
+   `ShearWithinCarveRaw` (I/II vanish strictly above S+1; III corners) — FRONTIER
+   (`canonNormalizationOf_shearWithinCarve`). Substantial; L5-internal or a companion module.
 
 ## F. Dependencies / not-suspect flags
 
@@ -96,7 +97,7 @@ The Jacobian collapse is FORCED by IsRealBranch (elder bake d309bca48) — no su
 per-chart clause depends on `case1_preserves_stepInv` (seat-L4 wall) and `case2_preserves_stepInv`
 conjunct-B (seat-L4 companion) — OPEN walls, not suspects. No STOP-ON-SUSPECT: every clause is a
 provable equation/obligation given the banked leaves + M1–M7; the labour is M4 (the (★) core) and M7
-(canonShearOf), both detail-at-scale on the construction side.
+(canonNormalizationOf / N_p), both detail-at-scale on the construction side.
 -/
 
 open MeasureTheory Set Filter Topology RLCT
