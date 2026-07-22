@@ -14750,3 +14750,29 @@ The expedition's central question — is the faithful object buildable without r
 is answered YES on the evidence: N_p preserves Aoyagi's combinatorial ledger exactly. Pending: the
 elder's ratification + delta-read (both queued, sequencing suggested: delta-read first to unblock the
 merge cascade).
+
+## 2026-07-23 ~12:45 UTC — ★★★ DOUBLE VERDICT: the amended bake MERGED (72e96304f) + N_p RATIFIED (elder re-derived, corank-3 incl.)
+
+The elder delivered BOTH queued verdicts in one pass:
+(1) DELTA-READ OK → the amended Gap B bake MERGED (72e96304f): HomogeneousDeg1On + the two homogeneity
+atoms (canonFlatten-pinned) + the cap (hpos) + the hparent lastLayer REVISED form. My re-derived gate:
+build green; payoff roots UNCHANGED; cordon OK; census 39 = 36 + exactly the 3 staged atoms. THE MERGE
+CASCADE IS LIVE: seat-L3T2 woken to build the three atoms (its engine = seat-L4C's banked mult_split
+peel route, handed verbatim; the Fbad countermodel as the negative control; canonFlatten IS the
+discharged reindexing hypothesis).
+(2) N_p RATIFIED — and NOT on the "RATIFIABLE" label: the elder RE-DERIVED the decisive checks with
+its own peel construction (det-1 at EVERY pivot for 2×2/3×3/4×4/2×3 — it RAN the corank-3 stress
+itself, discharging the residual), confirmed the M-preservation core (det-1 ⟹ Aoyagi's exponents +
+the B↔D bridge unchanged), the interior-pivot kill does NOT fire, and the transpose-dual fidelity
+reconciliation (the Lean right-mult recoord IS Aoyagi's left-mult — reversed product order). On the
+missing fresh-Codex: it judged decorrelation HONESTLY satisfied (it IS the decorrelated instrument —
+own route, extended coverage; + the banked thread-27 Codex independently confirmed the coupled peel
+b-vector); a re-fired Codex offered as non-gating belt-and-braces. THE LEAN-FACING VERBATIM AUTHORED +
+BANKED (threads/L4-case1-core/elder-npivot-verbatim.md) → arch-C CHARGED with THE N_p BAKE (the
+coupled re-bake: the N_p def + the shear-pin re-author + the pivot fan; verify-before-render; the
+payoff-isolation check matters most this round).
+
+OPERATOR NOTE (asked "no running teammates?"): the seats are IDLE-BY-DESIGN between message bursts
+(WAITING FOR WAKE → resume on delivery); transcript mtimes showed the fleet active until minutes before
+the question — the elder's double verdict was being written AS the operator asked. The architecture is
+burst-processing, not continuous.
