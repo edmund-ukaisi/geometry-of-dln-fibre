@@ -11755,3 +11755,24 @@ funnels through the elder's edge-field-audit ruling → the ONE combined re-bake
 close their conjuncts on banked cores. seat-L4's round ledger: child-state reductions + the ∃c
 core + three batteries + two decisive statement catches — "the wall's proof will be short when
 the statements stop moving, which is the point of making them stop moving now."
+
+## 2026-07-22 (controller, ~08:00) — canonShearOf DETERMINED (within-carve, fold-FORCED); GAP-2 resolves into it; all audit inputs delivered
+
+arch-C's background unit reported its first deliverable early (seat-L4 the fold-ground-truth
+basis, battery a5124597f; arch-C gated it against the defs): **canonShearOf = SCHUR-WITHIN-CARVE**
+— this edge's shearφ is IDENTITY on S′ = blockCoords(L+1) and deeper, folding the γβ = C21·C12
+cross-term WITHIN layer L; the Q₂⁻¹-into-next-layer transfer lives at the IDEAL/COFACTOR level
+(C′^(L+1) = Q⁻¹·C^(L+1), consumed by the NEXT edge). Pin C + the elder's ideal-level lean both
+CONFIRMED — and FORCED, not chosen: blockBlowupCoordQuot (BlockDivision:30-31) sets only the
+pivot slot to 1, every other slot keeps the sheared value, so an S′-writing shear injects u_p
+into a child-support coord and breaks the descend. GAP-2 RESOLVES INTO the determination:
+within-carve ⟹ shear identity on S′ ⟹ the ShearGrades (a) grading is trivially satisfied and
+the σ_s = u_s + u_r² breaker is excluded by construction — arch-C recommends (surfaced, not
+asserted) the GAP-2 fix be the WITHIN-CARVE PIN replacing the now-vacuous S′-grading clause;
+exact form weighs seat-L4's conjunct-B needs; the elder rules the shape in the audit. FORWARDED
+as the audit's final input — the elder now holds: the field enumeration, GAP-1 (transition law),
+GAP-2 (with the determined decomposition), GAP-3, the rendered hcover/hδ0, and the per-field
+sweep. ONE ruling closes the statement side as a class. ALSO this hour: the DAG SVG produced for
+the operator (kept UNCOMMITTED at /tmp per operator instruction; the map-dir commit reverted via
+force-with-lease on the seconds-old tip — the one history rewrite of the expedition, operator-
+directed).
