@@ -226,3 +226,31 @@ delta-read is necessary, not sufficient. (Corollary: the frame-in/hypothesis-out
 strong but not immune — the elder + seat-L4's pre-Codex flag CONVERGED on a proof-side reading and
 BOTH missed the vacuity; the third, refutation-tasked instrument (Codex) caught it. Keep a
 refutation-minded instrument in the loop, not only convergence-seeking ones.)
+
+## Definitions need SOURCE-FIDELITY gates, not just consistency gates — and batteries must consume the LEAN DEF (operator-caught, 2026-07-23)
+
+The unfaithful-shear episode was NOT undiscoverable: the paper's construction — the per-chart Q,P
+normalization WITH the deeper-factor compensation A^(S+1)→Q⁻¹-conjugated — was worked out in the
+source AND in the repo's own worked.tex (:443-457, :565-567, the recoordinatized ∏C^(s)) the whole
+time. Two process holes let the divergence live for weeks:
+
+1. DEFINITIONS WERE NEVER SOURCE-DIFFED. The gate structure reviewed STATEMENTS hard (delta-reads,
+   guard probes — 6 catches) but treated spine DEFINITIONS (foldResid, canonShearOf, IsRealBranch)
+   as data needing only internal consistency. The available check — transcribe the source step on a
+   witness, trace the Lean def on the same witness, DIFF — was never run at def-bake time. It is
+   exactly what pnp-transport ran post-hoc (oracle_trace + honest_clear vs the fold), which caught it.
+2. THE KILL-BATTERY TRACED A HAND MODEL, NOT THE DEF. case11_boost_readiness.py verified the math on
+   the model Z·B·diag(1,Δ)·Q⁻¹ — WHICH INCLUDED the Q⁻¹ (the model was faithful to the paper). The
+   Lean fold lacked it. The battery consumed the model, so the decorrelated instrument green-lit the
+   right MATH while the definition diverged from it. A battery that does not consume the actual
+   definition is a rigorous check of the wrong object.
+
+THE RULE (standing, both directions):
+- Every SPINE-DEFINITION bake carries a SOURCE-FIDELITY CERTIFICATE: a pen-and-paper elaboration of
+  the source construction on ≥1 concrete witness + an exact trace of the LEAN definition on the same
+  witness, diffed term-by-term. (The N_p round now does this by construction; the rule makes it
+  permanent.) Fingerprints like "representation NOT taken; no redesign" in a def's docstring are
+  DEFERRED-DECISION MARKERS — each one needs an owner and a re-open trigger, not just a note.
+- Kill-batteries and worked models must EXERCISE THE LEAN DEFINITION (via a faithful transcription
+  generated FROM the Lean, or a trace harness), never only a hand-built model of the intended math.
+  Model-vs-def agreement is itself a check to run, not an assumption.
