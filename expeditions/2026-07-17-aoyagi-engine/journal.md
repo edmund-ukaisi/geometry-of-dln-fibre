@@ -10367,3 +10367,19 @@ ack protocol made non-negotiable), but its WORK was exactly right: it banked pre
 pieces that survive every pin. On the bake: it finishes conjunct B (divisibility engine + the
 (ii)-form Deg1 re-factoring) and wires hcleared into the transport — "fast; the machinery is
 now green."
+
+## 2026-07-22 (controller) — arch-C reconciles the D⁺ question to DERIVED; the round is SINGLE-SHAPED end to end
+
+arch-C caught a genuine tension between two controller relays (D⁺ "explicit carried parameter"
+vs "the layer-decode supplies it") and reconciled to **DERIVED**: D⁺ := deeperCoords d
+p.conState.layer — four grounds: it IS the elder's "fold supplies it"; the disjointness becomes
+an AUTOMATIC lemma from the layer partition (not a carried hypothesis); a free D⁺ is
+caller-instantiable inconsistency (the same anti-free-field ground that killed the free pivot);
+zero signature change anywhere. The pivot dissolves entirely under reading (ii): T is carved IN
+THE LEAVES (ed.center.erase ed.pivot passed as the support VALUE). One-line elder confirm
+requested (render proceeds under DERIVED meanwhile). **The round is now single-shaped end to
+end**: reading-(ii) direct conjunct + DeeperMultilinear over derived deeperCoords + leaf-carved
+support + guard split + re-parented transport with hcleared + proved subsumption — no new
+parameters, no re-types, both proof seats' "no signature change" instructions STAND. The render
+seat's refusal-to-guess noted in arch-C's gate ledger ("what kept the double-division and the
+erratum from silently baking"). Render → gate → bake.
