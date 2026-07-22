@@ -1607,3 +1607,6 @@ import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
 -- Case1Wire: seat-L4's case-generic wall cores (crux, child-state reductions, exists_graded_decomp,
 -- stepInv_child_delta0 — the δ=0 pullback serving BOTH case1/case2). Consumed by the leaf assemblies.
 import DLNFibre.DLN.Aoyagi.Case1Wire
+-- LeafGeometryWire: seat-L3T's L8 proof (leafPath_realizesExponents', clean-three) ported to the
+-- baked tip by seat-L3T2; the MonumentAtlas L8 sorry-swap rides the post-pin mini-round.
+import DLNFibre.DLN.Aoyagi.LeafGeometryWire
