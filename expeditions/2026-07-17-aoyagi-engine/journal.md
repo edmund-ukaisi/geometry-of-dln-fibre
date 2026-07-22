@@ -13099,3 +13099,169 @@ carried-invariant STEP-form descent (parent hinv slot + edge pins → child slot
 node-form retires; the linearity burden stays at L5's root where it lives). Third instance of
 the invoked-premise family — now at an induction BASE; lessons.md sharpened ("inductable" =
 enumerate cases incl. base, diff premises). Boost-readiness adjudication UNDISTURBED (separate).
+
+## 2026-07-22 ~22:30 UTC — M4 blow-up half BANKED (4/5 atoms, clean-three); M7 GO; Assembly gate PASS
+
+**M4 (the (★) producer, seat-L6): the BLOW-UP HALF IS COMPLETE** — integrated + wired
+(4d58c38f5 + d0f9193f4): A1 blockBlowupMap fixed-point atoms (+ the pivot-∨-off-center
+criterion); A2 the canonCenterOf disjointness omega cores (width + row block — pure omega off
+DivBirthInv clause-3 freshness via tupIdxEquiv.injective; NO flatCoordOf, the fork stayed
+dissolved); A3 divBirthInv_of_isRealBranch (the TreePath induction — freshness at every deeper
+node); A2-package (the sc.ecase glue: i ∉ canonCenterOf ∨ canonPivotOf = some i). All FIRST-TRY
+sorry-free; spot-forced clean-three. Remaining: A4 (clause-III shear extraction — consumes the
+clause ABSTRACTLY from IsRealBranch, does not wait on M7; the persistence lemma checks
+DivBirthReach's threading first) + A5 (the branch-(★) in the foldG frame — the L5-consumer
+interface, form routes through me for the L5Spec reconciliation). seat-L6 woken; the
+checkpoint-vs-successor call left honestly with it.
+
+**M7 (canonShearOf, seat-L4): SPECIFY ACCEPTED, GO** — Schur-within-carve def (Pin C, two
+batteries behind it); all three ShearWithinCarveRaw clauses emittable (the sl = S+1 arithmetic);
+the boost-interaction built in: "γ Schur-cleared ⟹ boost-ready" (the R_bad kill) becomes a NAMED
+lemma about the def — serving both outcomes of ruling ①. Home: CanonShear.lean.
+
+**Assembly first increment: arch-C's gate ALL HARD ITEMS PASS** (anchor-diff char-exact modulo
+the 5 intended primes; module green 8453; clash-grep clean; footprints TRIANGULATED — the primed
+drivers' sorryAx sources = the baked minus {L6, L8}, the shrink the increment exists to
+produce; census 0 new; cordon +2 blueprint). One cosmetic docstring re-wrap with the render
+seat; then the labeled staging commit + hash. Its boundary note held exactly right: it stages
+the module UNWIRED — the aggregator is the controller's pen, and the full-build clash gate runs
+at MY integration.
+
+## 2026-07-22 ~22:50 UTC — ELDER RULED (B): the step-form descent; node-form retires; boost pre-positioned
+
+**The multiAffine reshape ruling landed — (B), with the elder owning the defect** ("my node-form
+ruling's induction sketch said 'root = coreGen, one factor per layer' — which silently assumed e
+linear, and I did not carry he_lin; the third invoked-premise instance, at an induction BASE my
+sketch glossed. The node-form was the wrong shape."). The ruling's structural core: the slot is
+ALREADY the carried invariant (FoldStepInvAt conjunct-2), so the child's slot descends PER-STEP
+from the parent's (held by every consumer via hinv) — he_lin-FREE; (A) would have both broken
+the leaves' weakest-hypotheses design AND mislocated the linearity burden. The exact step-form
+Lean text AUTHORED (realBranch_multiAffine_step: hpos [safe parity, prover may drop] + e + edge
++ hbranch + hslot → child slot; root anchoring = L5's base case, its sole he_lin use by design).
+Node-form DELETES same-round, no tombstone. RELAYED to arch-C with the call-site plan (the two
+conjB one-liners revert to sorry IN the staging so it builds green; seats re-close immediately
+post-bake — both confirmed ready for exactly this re-wire).
+
+**Boost-readiness pre-positioned (not ruled):** the elder ACCEPTS R_bad as refuting its
+derived-stub-off-current-pins default ("boost-readiness is strictly stronger than multiAffine +
+foldB + ShearWithinCarveRaw — a pin-coarseness gap, not a falsity") and records a WEAK,
+EXPLICITLY-PROVISIONAL lean toward (2) — the CanonicalSchurStep property pin on IsRealBranch
+(the honest gate-2 reinstatement, property-style; preserves the derived-stub architecture; M7's
+emission cost sunk) over (1) carrying BChainCompatible (grows the invariant surface; the
+prepared form is a shear consequence). FINAL HELD for pnp-boost — decorrelation intact, the
+second instrument weighed on its own terms.
+
+## 2026-07-22 ~23:05 UTC — seat-L6 clean handoff → seat-M4B spawned (A4→A5)
+
+seat-L6 made the honest saturation call (invited, not forced) and handed off A4→A5 with the
+second exemplary registered plan of the day: four sorry-free atoms as the foundation, the
+continuation mapped to the level of "divBirthCoord_persists is NOT standalone-banked — the
+mechanism lives inside DivBirthInv_conOracle_stepChildren's proof; extract it" (a
+day-saving finding for the successor), the A5-reconciliation rule carried, and the branch
+rebased to the integrated tip. seat-M4B SPAWNED with the plan verbatim. seat-L6 → dormant.
+
+Its seat arc, recorded: the hjac stop-on-suspect (→ clause III), the (★) diagnosis,
+chart_of_collapse, L6 landed sorry-free + reviewed 6/6, and M4's blow-up half first-try — the
+finder of the defect built the consumer AND half the producer. The successor-handoff pattern is
+now 2-for-2 (L3T→L3T2 lost zero proof lines; L6→M4B starts on a live 4-atom foundation).
+
+Render lane: the Assembly's cosmetic re-wrap done (only the verbatim-inherited :30 long-line
+remains, correctly kept for anchor-diff fidelity); staging next. Step-form round queued behind.
+
+## 2026-07-22 ~23:40 UTC — Assembly INTEGRATED; instruments CONVERGE (CARRIED); a stale-base near-miss caught
+
+**Assembly first increment INTEGRATED (896b60b9b):** MonumentAssembly.lean on canonical +
+aggregator-wired (the definitive full-build clash gate green); both primed drivers verified
+[propext, sorryAx, Classical.choice, Quot.sound] with sorry-SOURCES = the baked set minus
+{L6, L8} — the (B′) machine is live and its shrink is real. Census 35 steady.
+
+**pnp-boost's verdict landed and THE INSTRUMENTS CONVERGE:** TRUE (A1/A2/A3 exact on all 18
+interior boost parents across 8 instances — the probe-certified count matched) and **CARRIED**
+(two exact witnesses satisfying the slot invariant yet violating boost-readiness — the same
+defect class as instrument 1's R_bad from a blind direction; its own decorrelated Codex
+reconstructed the same diag(b)·D·H structure + witnesses, "needs-extra-structure"). The
+structural mechanism: u_p | b_i ⟺ i > J₁ (all interior boosts). The durable battery
+case11_boost_readiness.py MERGED (1ed76d01b), guarding the wall permanently. Its one honest
+caveat — the prepared-form (spectator-free dominant rows) assumption is a SHEAR-PIN obligation —
+points exactly at the elder's provisional (2) lean; the FINAL form+home ruling is CHARGED (both
+instruments cited; pnp-boost's α/β conjunct = the candidate predicate content).
+
+**Stale-base near-miss (the sensor lesson, caught in-lane):** arch-C reported the node-form had
+ZERO call sites ("deleting breaks nothing") — a grep run against its 0d81bb7cf Assembly pin,
+which PREDATES both conjB closes. Current-tip ground truth: TWO live call sites (Case1Wire:445,
+Case2Wire:115). HOLD sent before the render; the corrected plan (rebase first; step-form in +
+node-form out + the two call sites reverted-to-sorry under the scoped waiver, owners re-close
+post-bake; census net +2) is with arch-C. "Independently re-derived" must mean the CURRENT tip —
+the endgame's integration tempo (5+ merges/hour) makes any pinned ref stale in minutes.
+
+## 2026-07-23 ~00:05 UTC — TICK: memo → the two final statement rounds; all lanes verified mid-flight
+
+Heartbeat tick (placement clean; cron armed). Drift-glance: -rung-c still at the Assembly
+staging (arch-C re-working the reshape on the corrected current-tip base after the stale-base
+HOLD); the elder's boost final-ruling charge queued behind its (B) text; seat-M4B on A4;
+seat-L4 authoring M7; no stalls (every idle seat is dormant-by-handoff or hold-by-design).
+Memo phase line rewritten: THE TWO FINAL STATEMENT ROUNDS (A: the multiAffine step-form reshape,
+rendering; B: boost-readiness final, charged with converged instruments) + the two deep proofs
+(M4-A4/A5, M7). Task #68 re-subjected to the M4B continuation. After rounds A+B bake, the
+monument's statement layer is CLOSED-CLOSED (no open statement questions anywhere) and the
+remaining work is pure proof: boostReady (L4), step-form descent (L3T2), A4/A5 (M4B), M7 (L4),
+lastLayer (L4), L5 assembly, L7 (commissioning next per nav-13).
+
+## 2026-07-23 ~00:20 UTC — M7 statements-validate ✓ (design review GO); the prepared-form lemma pulled FORWARD
+
+seat-L4's M7 checkpoint: canonShearOf ELABORATES (the raw-displacement Schur-within-carve on
+flat coords via tupIdxEquiv — bridge-free; dependent-Fin bounds closed by durable lt_trans terms
+where omega choked on the atom match) + the emission lemma typechecks with ONE tracked sorry
+(the I/II/III PROVE). Design review: GO — the def is the template's certified Schur step in flat
+coordinates, exactly.
+
+Two coordination calls: (a) the PREPARED-FORM lemma (γ Schur-cleared / the R_bad kill) is pulled
+FORWARD — statement NOW, proof after I/II/III — because the elder's ruling-B authoring should
+see it side by side with pnp-boost's α/β conjunct as candidate predicate content; the statement
+may become the CanonicalSchurStep definition itself, collapsing ruling B's emission cost into
+M7's existing lane. (b) conjB :445 — seat-L4 holds OFF its branch (the reshape staging reverts
+both call-sites under the scoped waiver; touching it now would conflict); post-bake it re-closes
+with the declared step-form re-wire.
+
+## 2026-07-23 ~00:40 UTC — stale-base loop CLOSED (arch-C owned + retracted); prepared-form PROVEN → elder
+
+arch-C owned the stale-base finding ("my ff-before-the-round discipline didn't run before the
+grep — a pin current one round ago is stale the next"; lesson banked its side), DISCARDED the
+render seat's wrong-base reshape edit (contained to MonumentAtlas, never staged), ff'd -rung-c
+properly to the CURRENT tip (87127dcb1, confirmed == origin), re-verified the two call sites
+exactly as my grep found, RETRACTED the net-0 accounting, and is running the original corrected
+plan (step-form in + node-form delete + 2 reverts with map tags; census net +2; driver
+footprints VERIFIED-not-assumed at re-gate). The endgame-tempo lesson is now banked on both
+sides of the gate.
+
+Meanwhile seat-L4's prepared-form lemma landed PROVEN (canonShearOf_support: the displacement is
+supported on the strict carve interior — never a corner, never a bare pivot-column entry — the
+R_bad kill as a def-characterized property of the actual construction), forwarded to the elder
+as ruling-B candidate content beside pnp-boost's α/β form, with the positive-value twin on
+offer. The ruling-B menu now has a PROVEN emission-side workhorse — the pin would assert the
+support property of ed.shearφ (emittable for free by this lemma), and boost-readiness derives
+from support-property + the verified b-chain mechanism.
+
+## 2026-07-23 ~01:00 UTC — M7 emission: a PRODUCER-side circularity caught at SPECIFY
+
+seat-L4's hbranch refinement of canonShearOf_shearWithinCarve was content-right (clause I needs
+cleared ≠ 0; clause III needs the freshness) but carrier-WRONG: the emission lemma is what L5
+uses to CONSTRUCT IsRealBranch — whose step arm contains the very conjunct the lemma proves.
+Requiring the CHILD's hbranch = needing the product to build the product. The realBranch_*
+pattern (consumers deriving FROM a held branch) does not transfer to the emission side. HOLD
+sent with the non-circular carrier: hpar : p.IsRealBranch e (the PARENT — held bottom-up) + the
+edge's oracle data (the DescendView fields + hcase + hshear); clause I's cleared ≠ 0 comes from
+the ORACLE's transition law at sc, clause III's freshness from divBirthInv_of_isRealBranch at
+the parent + the step-threading to the child. The proof plan survives verbatim — none of its
+steps uses child-branch-hood. Stop-on-suspect invited if L5's construction site contradicts
+this reading. The shape-sufficiency lesson's first PRODUCER-side instance: the consumer of an
+emission lemma is the constructor, and the constructor's available data is the hypothesis budget.
+
+**Addendum (~01:15): the M7 circularity FIXED, construction-site-verified.** seat-L4 checked
+the exact thing asked: IsRealBranch is a PLAIN bottom-up recursive def (the .step arm =
+parent-branch ∧ ∃sc ∧ ShearWithinCarveRaw), NOT mutual — so at extension time L5 holds the
+parent and PROVES the shear conjunct via the emission lemma. Parent-held carrier confirmed
+correct; re-validated as hpar + hdesc (+ hcase + hshear), banked ee333b2ca, builds green; the
+I/II/III plan survives verbatim (I: the oracle transition fact cleared+1 ⟹ sl = S+1; III:
+divBirthInv at the parent + step-threading ⟹ child freshness ⟹ the strict-interior guard fails;
+II: read-disjointness). Heads-down on the proof. No suspect.
