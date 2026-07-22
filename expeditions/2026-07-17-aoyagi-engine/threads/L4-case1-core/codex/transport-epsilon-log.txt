@@ -6240,3 +6240,735 @@ Matrix([[a01*b10 + a02*b20 + 1, -a01*b01*b10 + a01*b11*w - a02*b01*b20 + a02*b11
 factored
 Matrix([[a01*b10 + a02*b20 + 1, -a01*b01*b10 + a01*b11*w - a02*b01*b20 + a02*b11*b21 + b01], [-a01*a10*b10 - a02*a10*b20 + a10 + a11*a12*b20 + a11*b10, a01*a10*b01*b10 - a01*a10*b11*w + a02*a10*b01*b20 - a02*a10*b11*b21 + a10*b01 - a11*a12*b01*b20 + a11*a12*b11*b21 - a11*b01*b10 + a11*b11*w], [-a01*a20*b10 - a02*a20*b20 - a11*a12*a21*b20 + a11*a21*b10 + a11*b20*w + a20, a01*a20*b01*b10 - a01*a20*b11*w + a02*a20*b01*b20 - a02*a20*b11*b21 + a11*a12*a21*b01*b20 - a11*a12*a21*b11*b21 - a11*a21*b01*b10 + a11*a21*b11*w - a11*b01*b20*w + a11*b11*b21*w + a20*b01]])
 
+exec
+/bin/bash -lc "python - <<'PY'
+import sympy as sp
+
+def syms(prefix, rows, cols):
+    return sp.Matrix(rows, cols, sp.symbols(
+        ' '.join(f'{prefix}{i}{j}' for i in range(rows) for j in range(cols))))
+
+def apply(M, subst):
+    return M.applyfunc(lambda f: sp.expand(f.subs(subst, simultaneous=True)))
+
+def schur_edge(coords, M, J, center, pivot, delta):
+    \"\"\"old coordinates as functions of new: B_center,pivot o blockShear_J.\"\"\"
+    sh = {x:x for x in coords}
+    for i in range(M.rows):
+        for j in range(M.cols):
+            if i > J and j > J:
+                sh[M[i,j]] = M[i,j] - M[i,J]*M[J,j]
+    out = {}
+    for x in coords:
+        if delta == 1:
+            out[x] = sp.Integer(1) if x == pivot else sh[x]
+        elif x == pivot:
+            out[x] = sh[x]
+        elif x in center:
+            out[x] = sp.expand(pivot*sh[x])
+        else:
+            out[x] = sh[x]
+    return out
+
+def case11_edge(coords, center, pivot):
+    return {x: (x if x == pivot else pivot*x if x in center else x)
+            for x in coords}
+
+def audit(R, center, pivot, allvars):
+    entries = list(map(sp.expand, R))
+    zero = {x:0 for x in center}
+    a1 = all(sp.expand(f.subs(zero, simultaneous=True)) == 0 for f in entries)
+    def center_degree(f):
+        return max((sum(m) for m in sp.Poly(f, *center).monoms()), default=0)
+    a2 = all(center_degree(f) <= 1 for f in entries)
+    pull = {x:pivot*x for x in center if x "'!= pivot} # exact block map: pivot stays
+    pulled = [sp.expand(f.subs(pull, simultaneous=True)) for f in entries]
+    a3 = all(sp.expand(g.subs(pivot, 0)) == 0 and
+             bool(sp.cancel(g/pivot).is_polynomial(*allvars)) for g in pulled)
+    maxpivot = max(sp.Poly(f, pivot).degree() for f in entries)
+    pivot2 = [(k,t) for k,f in enumerate(entries)
+              for t in sp.Add.make_args(f)
+              if t.as_powers_dict().get(pivot, 0) >= 2]
+    return a1, a2, a3, maxpivot, pivot2, [center_degree(f) for f in entries]
+
+# SINGLE: C1*C2*C3, all 2x2, center {w} union col 0 of C2.
+A = syms('"'a',2,2); B = syms('b',2,2); Z = syms('z',2,2)
+w = sp.Symbol('w')
+A = A.subs(A[1,1], w)
+coords = set(A)|set(B)|set(Z)
+Astar = apply(A, schur_edge(coords,A,0,set(A),A[0,0],1))
+Astar = apply(Astar, schur_edge(coords,A,1,{w},w,0))
+R1 = (Astar*B*Z).applyfunc(sp.expand)
+C1 = (w,B[0,0],B[1,0])
+V1 = tuple(sorted(set().union(*(f.free_symbols for f in R1)), key=str))
+print('SINGLE A* ='); print(Astar)
+print('SINGLE R ='); print(R1)
+print('SINGLE audit (A1,A2,A3,max_w,w2_count,degrees) =',
+      (*audit(R1,C1,w,V1)[:4],len(audit(R1,C1,w,V1)[4]),audit(R1,C1,w,V1)[5]))
+print('SINGLE A1 witness R00|center=0 =',
+      sp.expand(R1[0,0].subs({x:0 for x in C1}, simultaneous=True)))
+
+# DOUBLE: C1(3x3)*C2(3x2)*C3(2x2).
+A = syms('a',3,3); B = syms('b',3,2); Z = syms('z',2,2)
+w = sp.Symbol('w')
+A = A.subs(A[2,2], w)
+coords = set(A)|set(B)|set(Z)
+Astar=A
+for J,delta in ((0,1),(1,0),(2,0)):
+    center={A[i,j] for i in range(J,3) for j in range(J,3)}
+    Astar=apply(Astar,schur_edge(coords,A,J,center,A[J,J],delta))
+# At (2,0), the coupled branch uses case12 (delta=1) to reach J=1.
+Bstar=apply(B,schur_edge(coords,B,0,set(B),B[0,0],1))
+# Boost #1, case11 delta=0, center={w,b11}.
+Bstar=apply(Bstar,case11_edge(coords,{w,B[1,1]},w))
+# Since case11 leaves J=1, the forced case2 clear at (2,1) precedes rollover.
+center_clear={B[i,j] for i in range(1,3) for j in range(1,2)}
+Bstar=apply(Bstar,schur_edge(coords,B,1,center_clear,B[1,1],0))
+K=(Astar*Bstar).applyfunc(sp.expand)
+R2=(K*Z).applyfunc(sp.expand)
+# With the stated M"'^s x M''^(s+1) convention, the partial layer-3 block is row 0.
+C2=(w,Z[0,0],Z[0,1])
+V2=tuple(sorted(set().union(*(f.free_symbols for f in R2)),key=str))
+out=audit(R2,C2,w,V2)
+print('"'DOUBLE A* ='); print(Astar)
+print('DOUBLE B* ='); print(Bstar)
+print('DOUBLE K=A*B* ='); print(K)
+print('DOUBLE exact residual: R = K * Matrix([[z00,z01],[z10,z11]])')
+print('DOUBLE audit (A1,A2,A3,max_w,w2_count,degrees) =',
+      (out[0],out[1],out[2],out[3],len(out[4]),out[5]))
+print('DOUBLE A1 witness R00|center=0 =',
+      sp.expand(R2[0,0].subs({x:0 for x in C2}, simultaneous=True)))
+print('DOUBLE A2 witness coefficient of w*z00 in R20 =',
+      sp.expand(R2[2,0]).coeff(w,1).coeff(Z[0,0],1))
+assert audit(R1,C1,w,V1)[:4] == (False,False,False,1)
+assert out[:4] == (False,False,False,1)
+assert not out[4]
+print('ALL EXACT ASSERTIONS PASSED')
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/root/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 919ms:
+SINGLE A* =
+Matrix([[1, a01], [a10, -a01*a10 + w]])
+SINGLE R =
+Matrix([[a01*b10*z00 + a01*b11*z10 + b00*z00 + b01*z10, a01*b10*z01 + a01*b11*z11 + b00*z01 + b01*z11], [-a01*a10*b10*z00 - a01*a10*b11*z10 + a10*b00*z00 + a10*b01*z10 + b10*w*z00 + b11*w*z10, -a01*a10*b10*z01 - a01*a10*b11*z11 + a10*b00*z01 + a10*b01*z11 + b10*w*z01 + b11*w*z11]])
+SINGLE audit (A1,A2,A3,max_w,w2_count,degrees) = (False, False, False, 1, 0, [1, 1, 2, 2])
+SINGLE A1 witness R00|center=0 = a01*b11*z10 + b01*z10
+DOUBLE A* =
+Matrix([[1, a01, a02], [a10, -a01*a10 + a11, -a02*a10 + a11*a12], [a20, -a01*a20 + a11*a21, -a02*a20 - a11*a12*a21 + a11*w]])
+DOUBLE B* =
+Matrix([[1, b01], [b10, -b01*b10 + b11*w], [b20, -b01*b20 + b11*b21]])
+DOUBLE K=A*B* =
+Matrix([[a01*b10 + a02*b20 + 1, -a01*b01*b10 + a01*b11*w - a02*b01*b20 + a02*b11*b21 + b01], [-a01*a10*b10 - a02*a10*b20 + a10 + a11*a12*b20 + a11*b10, a01*a10*b01*b10 - a01*a10*b11*w + a02*a10*b01*b20 - a02*a10*b11*b21 + a10*b01 - a11*a12*b01*b20 + a11*a12*b11*b21 - a11*b01*b10 + a11*b11*w], [-a01*a20*b10 - a02*a20*b20 - a11*a12*a21*b20 + a11*a21*b10 + a11*b20*w + a20, a01*a20*b01*b10 - a01*a20*b11*w + a02*a20*b01*b20 - a02*a20*b11*b21 + a11*a12*a21*b01*b20 - a11*a12*a21*b11*b21 - a11*a21*b01*b10 + a11*a21*b11*w - a11*b01*b20*w + a11*b11*b21*w + a20*b01]])
+DOUBLE exact residual: R = K * Matrix([[z00,z01],[z10,z11]])
+DOUBLE audit (A1,A2,A3,max_w,w2_count,degrees) = (False, False, False, 1, 0, [1, 1, 1, 1, 2, 2])
+DOUBLE A1 witness R00|center=0 = -a01*b01*b10*z10 - a02*b01*b20*z10 + a02*b11*b21*z10 + b01*z10
+DOUBLE A2 witness coefficient of w*z00 in R20 = a11*b20
+ALL EXACT ASSERTIONS PASSED
+
+codex
+The exact run has finished. Under the literal coordinate-recursive residual and the canonical Schur shear, the single case is already not boost-ready; the double case also fails, but the suspected \(w^2\) mechanism does not occur: the exact maximum \(w\)-exponent is \(1\). I’m separating that result from the ideal-equivalent triangular residual used in earlier calculations, since those are different polynomial families.
+Exact symbolic substitutions and audits completed for the literal foldResid. The missing path edges and canonical shear were made explicit; design invariant analyzed against the resulting counterexamples.
+  ✓ Read repository instructions and locate the exact fold/blow-up definitions or prior path data
+  ✓ Build and run the exact (2,2,2,2) single-boost calculation
+  ✓ Build and run the exact (3,3,2,2) double-boost calculation, or a stated faithful model if underdetermined
+  ✓ Audit A1/A2/A3 and formulate the minimal inductive invariant
+codex
+## Verdict
+
+[MODELING] I used the dimensions and multiplication order stated in the question:
+
+\[
+C^{(1)}C^{(2)}C^{(3)},
+\]
+
+and the canonical Schur shear \(c_{ij}\mapsto c_{ij}-c_{iJ}c_{Jj}\) for \(i,j>J\). The double path necessarily also contains:
+
+\[
+(2,0)\xrightarrow{\mathrm{case12}}(2,1)
+\xrightarrow{\mathrm{case11}}(2,1)
+\xrightarrow{\mathrm{case2}}(2,2)
+\xrightarrow{\mathrm{rollover}}(3,0).
+\]
+
+The case2 edge after boost #1 is required because case11 does not advance `cleared`.
+
+### 1. Single boost: `(2,2,2,2)`
+
+[OBSERVED—SymPy] After the two layer-1 edges, with \(w=u_{12}\),
+
+\[
+A_*=
+\begin{pmatrix}
+1&a\\
+g&w-ag
+\end{pmatrix}.
+\]
+
+Thus the literal coordinate-recursive residual is
+
+\[
+R_1=A_*BZ,
+\]
+
+where
+
+\[
+B=\begin{pmatrix}b_{00}&b_{01}\\b_{10}&b_{11}\end{pmatrix},
+\qquad
+Z=\begin{pmatrix}z_{00}&z_{01}\\z_{10}&z_{11}\end{pmatrix}.
+\]
+
+Equivalently, putting
+
+\[
+P=b_{00}+ab_{10},\quad Q=b_{01}+ab_{11},\quad
+U=gb_{00}+(w-ag)b_{10},\quad V=gb_{01}+(w-ag)b_{11},
+\]
+
+we obtain
+
+\[
+R_1=
+\begin{pmatrix}
+Pz_{00}+Qz_{10}&Pz_{01}+Qz_{11}\\
+Uz_{00}+Vz_{10}&Uz_{01}+Vz_{11}
+\end{pmatrix}.
+\]
+
+For \(C=\{w,b_{00},b_{10}\}\):
+
+| Part | Verdict | Exact witness |
+|---|---|---|
+| A1 | **FALSE** | \(R_{00}|_{C=0}=(b_{01}+ab_{11})z_{10}\neq0\) |
+| A2 | **FALSE** | \(R_{10}\) contains \(w\,b_{10}z_{00}\), of center degree \(2\) |
+| A3 | **FALSE** | After \(b_{00},b_{10}\mapsto wb_{00},wb_{10}\), the A1 witness remains non-divisible by \(w\) |
+
+[OBSERVED—SymPy] The maximum exponent of \(w\) is \(1\); no \(w^2\) occurs.
+
+[INFERENCE] The previously used triangular form
+
+\[
+ZB\begin{pmatrix}1&a\\0&w\end{pmatrix}
+\]
+
+is not this `foldResid`: it also performs a generator-side row/column preparation and reverses the factor convention. Those ideal-preserving operations are absent from the stated “core generators followed only by coordinate substitutions” definition.
+
+### 2. Double boost: `(3,3,2,2)`
+
+[OBSERVED—SymPy] Immediately before the second boost,
+
+\[
+R_2=A_*B_*Z,
+\]
+
+with
+
+\[
+A_*=
+\begin{pmatrix}
+1&a_{01}&a_{02}\\
+a_{10}&a_{11}-a_{01}a_{10}&a_{11}a_{12}-a_{02}a_{10}\\
+a_{20}&a_{11}a_{21}-a_{01}a_{20}&
+a_{11}w-a_{02}a_{20}-a_{11}a_{12}a_{21}
+\end{pmatrix},
+\]
+
+and
+
+\[
+B_*=
+\begin{pmatrix}
+1&b_{01}\\
+b_{10}&wb_{11}-b_{01}b_{10}\\
+b_{20}&b_{11}b_{21}-b_{01}b_{20}
+\end{pmatrix}.
+\]
+
+Here \(w=u_{13}\). With the stated \(M^{(s)}\times M^{(s+1)}\) orientation, the second center is
+
+\[
+C_2=\{w,z_{00},z_{01}\}.
+\]
+
+| Part | Verdict | Exact witness |
+|---|---|---|
+| A1 | **FALSE** | \(R_{00}|_{C_2=0}=\bigl[b_{01}-a_{01}b_{01}b_{10}-a_{02}b_{01}b_{20}+a_{02}b_{11}b_{21}\bigr]z_{10}\) |
+| A2 | **FALSE** | \(R_{20}\) contains \(a_{11}b_{20}wz_{00}\), of center degree \(2\) |
+| A3 | **FALSE** | The A1 witness survives the boost substitution and is not divisible by \(w\) |
+
+[OBSERVED—SymPy] The exact maximum exponent of \(w\) is
+
+\[
+\boxed{1}.
+\]
+
+There is no \(w^2\) monomial. A2 nevertheless fails because of mixed center monomials such as \(wz_{00}\).
+
+[OBSERVED—SymPy] Using the transposed partial block \(\{w,z_{00},z_{10}\}\) gives the same double verdict `(FALSE,FALSE,FALSE)`, maximum \(w\)-exponent \(1\), and no \(w^2\).
+
+[INFERENCE] The suspected “old b-chain \(w\) times new boost \(w\)” does not occur because the boost block lies before the old suffix carrying \(w\). In the exact matrix contraction, the two potential \(w\)-sources occupy different intermediate indices.
+
+## 3. Design answer
+
+[INFERENCE] The proposed accumulating transport
+
+\[
+\epsilon_w\mathrel{+}=\#\{\text{center entries read}\}
+\]
+
+is not the right invariant. It predicts possible accumulation that the exact double computation does not exhibit. The b-chain exponent is instead binary:
+
+\[
+\epsilon_d(i)=\mathbf 1_{\{\widetilde t_d<i\}}\in\{0,1\}.
+\]
+
+A per-layer degree bound alone is also insufficient: it does not force support outside the boost center to carry \(w\).
+
+[INFERENCE] For a prepared residual, the smallest useful carried form for a prospective boost center \(C=\{w\}\cup P\) is
+
+\[
+r=\sum_{x\in P}a_xx
+  +w\sum_{y\in X\setminus P}b_yy,
+\]
+
+where the coefficients ignore \(C\). This records precisely:
+
+- terms using the partial block \(P\) do not already contain \(w\);
+- terms using support outside \(P\) contain exactly one \(w\).
+
+For all future divisors, this can be carried as the binary incidence law \(\epsilon_d(i)=\mathbf1_{\widetilde t_d<i}\), together with one-current-layer-coordinate-per-term. A full arbitrary exponent vector per monomial is stronger than necessary.
+
+[INFERENCE] The δ=1 boost consumes only the local decomposition
+
+\[
+r=\sum_{c\in C}q_c\,c,\qquad q_c\text{ independent of }C,
+\]
+
+which yields
+
+\[
+r(\operatorname{blockBlowupMap}_C)=
+w\,r(\operatorname{blockBlowupCoordQuot}_w).
+\]
+
+The induction must carry the stronger future-facing routing law and the Schur-prepared form.
+
+[INFERENCE] For the literal `foldResid` checked above, that prepared form is false already in the single case. Therefore no ε invariant can prove the stated boost-readiness without changing the residual object to include the regular generator-side \(P,Q\) preparation.
+
+## SymPy run
+
+```python
+import sympy as sp
+
+def syms(prefix, rows, cols):
+    return sp.Matrix(rows, cols, sp.symbols(
+        ' '.join(f'{prefix}{i}{j}'
+                 for i in range(rows) for j in range(cols))))
+
+def apply(M, subst):
+    return M.applyfunc(
+        lambda f: sp.expand(f.subs(subst, simultaneous=True)))
+
+def schur_edge(coords, M, J, center, pivot, delta):
+    sh = {x: x for x in coords}
+    for i in range(M.rows):
+        for j in range(M.cols):
+            if i > J and j > J:
+                sh[M[i,j]] = M[i,j] - M[i,J]*M[J,j]
+
+    out = {}
+    for x in coords:
+        if delta:
+            out[x] = 1 if x == pivot else sh[x]
+        elif x == pivot:
+            out[x] = sh[x]
+        elif x in center:
+            out[x] = sp.expand(pivot*sh[x])
+        else:
+            out[x] = sh[x]
+    return out
+
+def case11_edge(coords, center, pivot):
+    return {
+        x: x if x == pivot else pivot*x if x in center else x
+        for x in coords
+    }
+
+def audit(R, center, pivot, allvars):
+    entries = list(map(sp.expand, R))
+    zero = {x: 0 for x in center}
+
+    a1 = all(f.subs(zero, simultaneous=True).expand() == 0
+             for f in entries)
+
+    def degree(f):
+        return max((sum(m) for m in sp.Poly(f, *center).monoms()),
+                   default=0)
+
+    a2 = all(degree(f) <= 1 for f in entries)
+
+    pull = {x: pivot*x for x in center if x != pivot}
+    pulled = [f.subs(pull, simultaneous=True).expand()
+              for f in entries]
+    a3 = all(
+        g.subs(pivot, 0).expand() == 0
+        and sp.cancel(g/pivot).is_polynomial(*allvars)
+        for g in pulled
+    )
+
+    max_w = max(sp.Poly(f, pivot).degree() for f in entries)
+    w2 = [
+        term for f in entries for term in sp.Add.make_args(f)
+        if term.as_powers_dict().get(pivot, 0) >= 2
+    ]
+    return a1, a2, a3, max_w, w2
+
+# Single
+A, B, Z = syms('a',2,2), syms('b',2,2), syms('z',2,2)
+w = sp.Symbol('w')
+A = A.subs(A[1,1], w)
+coords = set(A) | set(B) | set(Z)
+
+Astar = apply(A, schur_edge(coords, A, 0, set(A), A[0,0], 1))
+Astar = apply(Astar, schur_edge(coords, A, 1, {w}, w, 0))
+R1 = (Astar*B*Z).applyfunc(sp.expand)
+
+C1 = (w, B[0,0], B[1,0])
+V1 = tuple(sorted(set().union(*(f.free_symbols for f in R1)),
+                  key=str))
+assert audit(R1, C1, w, V1)[:4] == (False, False, False, 1)
+
+# Double
+A, B, Z = syms('a',3,3), syms('b',3,2), syms('z',2,2)
+A = A.subs(A[2,2], w)
+coords = set(A) | set(B) | set(Z)
+
+Astar = A
+for J, delta in ((0,1), (1,0), (2,0)):
+    center = {A[i,j] for i in range(J,3) for j in range(J,3)}
+    Astar = apply(
+        Astar, schur_edge(coords, A, J, center, A[J,J], delta))
+
+# case12 at (2,0)
+Bstar = apply(B, schur_edge(coords, B, 0, set(B), B[0,0], 1))
+# boost #1 at (2,1)
+Bstar = apply(Bstar, case11_edge(coords, {w, B[1,1]}, w))
+# required case2 clear before rollover
+center_clear = {B[i,j] for i in range(1,3) for j in range(1,2)}
+Bstar = apply(
+    Bstar,
+    schur_edge(coords, B, 1, center_clear, B[1,1], 0))
+
+R2 = (Astar*Bstar*Z).applyfunc(sp.expand)
+C2 = (w, Z[0,0], Z[0,1])
+V2 = tuple(sorted(set().union(*(f.free_symbols for f in R2)),
+                  key=str))
+
+out = audit(R2, C2, w, V2)
+assert out[:4] == (False, False, False, 1)
+assert not out[4]  # no w^2 term
+
+print(Astar)
+print(Bstar)
+print(out[:4])
+```
+tokens used
+190,247
+## Verdict
+
+[MODELING] I used the dimensions and multiplication order stated in the question:
+
+\[
+C^{(1)}C^{(2)}C^{(3)},
+\]
+
+and the canonical Schur shear \(c_{ij}\mapsto c_{ij}-c_{iJ}c_{Jj}\) for \(i,j>J\). The double path necessarily also contains:
+
+\[
+(2,0)\xrightarrow{\mathrm{case12}}(2,1)
+\xrightarrow{\mathrm{case11}}(2,1)
+\xrightarrow{\mathrm{case2}}(2,2)
+\xrightarrow{\mathrm{rollover}}(3,0).
+\]
+
+The case2 edge after boost #1 is required because case11 does not advance `cleared`.
+
+### 1. Single boost: `(2,2,2,2)`
+
+[OBSERVED—SymPy] After the two layer-1 edges, with \(w=u_{12}\),
+
+\[
+A_*=
+\begin{pmatrix}
+1&a\\
+g&w-ag
+\end{pmatrix}.
+\]
+
+Thus the literal coordinate-recursive residual is
+
+\[
+R_1=A_*BZ,
+\]
+
+where
+
+\[
+B=\begin{pmatrix}b_{00}&b_{01}\\b_{10}&b_{11}\end{pmatrix},
+\qquad
+Z=\begin{pmatrix}z_{00}&z_{01}\\z_{10}&z_{11}\end{pmatrix}.
+\]
+
+Equivalently, putting
+
+\[
+P=b_{00}+ab_{10},\quad Q=b_{01}+ab_{11},\quad
+U=gb_{00}+(w-ag)b_{10},\quad V=gb_{01}+(w-ag)b_{11},
+\]
+
+we obtain
+
+\[
+R_1=
+\begin{pmatrix}
+Pz_{00}+Qz_{10}&Pz_{01}+Qz_{11}\\
+Uz_{00}+Vz_{10}&Uz_{01}+Vz_{11}
+\end{pmatrix}.
+\]
+
+For \(C=\{w,b_{00},b_{10}\}\):
+
+| Part | Verdict | Exact witness |
+|---|---|---|
+| A1 | **FALSE** | \(R_{00}|_{C=0}=(b_{01}+ab_{11})z_{10}\neq0\) |
+| A2 | **FALSE** | \(R_{10}\) contains \(w\,b_{10}z_{00}\), of center degree \(2\) |
+| A3 | **FALSE** | After \(b_{00},b_{10}\mapsto wb_{00},wb_{10}\), the A1 witness remains non-divisible by \(w\) |
+
+[OBSERVED—SymPy] The maximum exponent of \(w\) is \(1\); no \(w^2\) occurs.
+
+[INFERENCE] The previously used triangular form
+
+\[
+ZB\begin{pmatrix}1&a\\0&w\end{pmatrix}
+\]
+
+is not this `foldResid`: it also performs a generator-side row/column preparation and reverses the factor convention. Those ideal-preserving operations are absent from the stated “core generators followed only by coordinate substitutions” definition.
+
+### 2. Double boost: `(3,3,2,2)`
+
+[OBSERVED—SymPy] Immediately before the second boost,
+
+\[
+R_2=A_*B_*Z,
+\]
+
+with
+
+\[
+A_*=
+\begin{pmatrix}
+1&a_{01}&a_{02}\\
+a_{10}&a_{11}-a_{01}a_{10}&a_{11}a_{12}-a_{02}a_{10}\\
+a_{20}&a_{11}a_{21}-a_{01}a_{20}&
+a_{11}w-a_{02}a_{20}-a_{11}a_{12}a_{21}
+\end{pmatrix},
+\]
+
+and
+
+\[
+B_*=
+\begin{pmatrix}
+1&b_{01}\\
+b_{10}&wb_{11}-b_{01}b_{10}\\
+b_{20}&b_{11}b_{21}-b_{01}b_{20}
+\end{pmatrix}.
+\]
+
+Here \(w=u_{13}\). With the stated \(M^{(s)}\times M^{(s+1)}\) orientation, the second center is
+
+\[
+C_2=\{w,z_{00},z_{01}\}.
+\]
+
+| Part | Verdict | Exact witness |
+|---|---|---|
+| A1 | **FALSE** | \(R_{00}|_{C_2=0}=\bigl[b_{01}-a_{01}b_{01}b_{10}-a_{02}b_{01}b_{20}+a_{02}b_{11}b_{21}\bigr]z_{10}\) |
+| A2 | **FALSE** | \(R_{20}\) contains \(a_{11}b_{20}wz_{00}\), of center degree \(2\) |
+| A3 | **FALSE** | The A1 witness survives the boost substitution and is not divisible by \(w\) |
+
+[OBSERVED—SymPy] The exact maximum exponent of \(w\) is
+
+\[
+\boxed{1}.
+\]
+
+There is no \(w^2\) monomial. A2 nevertheless fails because of mixed center monomials such as \(wz_{00}\).
+
+[OBSERVED—SymPy] Using the transposed partial block \(\{w,z_{00},z_{10}\}\) gives the same double verdict `(FALSE,FALSE,FALSE)`, maximum \(w\)-exponent \(1\), and no \(w^2\).
+
+[INFERENCE] The suspected “old b-chain \(w\) times new boost \(w\)” does not occur because the boost block lies before the old suffix carrying \(w\). In the exact matrix contraction, the two potential \(w\)-sources occupy different intermediate indices.
+
+## 3. Design answer
+
+[INFERENCE] The proposed accumulating transport
+
+\[
+\epsilon_w\mathrel{+}=\#\{\text{center entries read}\}
+\]
+
+is not the right invariant. It predicts possible accumulation that the exact double computation does not exhibit. The b-chain exponent is instead binary:
+
+\[
+\epsilon_d(i)=\mathbf 1_{\{\widetilde t_d<i\}}\in\{0,1\}.
+\]
+
+A per-layer degree bound alone is also insufficient: it does not force support outside the boost center to carry \(w\).
+
+[INFERENCE] For a prepared residual, the smallest useful carried form for a prospective boost center \(C=\{w\}\cup P\) is
+
+\[
+r=\sum_{x\in P}a_xx
+  +w\sum_{y\in X\setminus P}b_yy,
+\]
+
+where the coefficients ignore \(C\). This records precisely:
+
+- terms using the partial block \(P\) do not already contain \(w\);
+- terms using support outside \(P\) contain exactly one \(w\).
+
+For all future divisors, this can be carried as the binary incidence law \(\epsilon_d(i)=\mathbf1_{\widetilde t_d<i}\), together with one-current-layer-coordinate-per-term. A full arbitrary exponent vector per monomial is stronger than necessary.
+
+[INFERENCE] The δ=1 boost consumes only the local decomposition
+
+\[
+r=\sum_{c\in C}q_c\,c,\qquad q_c\text{ independent of }C,
+\]
+
+which yields
+
+\[
+r(\operatorname{blockBlowupMap}_C)=
+w\,r(\operatorname{blockBlowupCoordQuot}_w).
+\]
+
+The induction must carry the stronger future-facing routing law and the Schur-prepared form.
+
+[INFERENCE] For the literal `foldResid` checked above, that prepared form is false already in the single case. Therefore no ε invariant can prove the stated boost-readiness without changing the residual object to include the regular generator-side \(P,Q\) preparation.
+
+## SymPy run
+
+```python
+import sympy as sp
+
+def syms(prefix, rows, cols):
+    return sp.Matrix(rows, cols, sp.symbols(
+        ' '.join(f'{prefix}{i}{j}'
+                 for i in range(rows) for j in range(cols))))
+
+def apply(M, subst):
+    return M.applyfunc(
+        lambda f: sp.expand(f.subs(subst, simultaneous=True)))
+
+def schur_edge(coords, M, J, center, pivot, delta):
+    sh = {x: x for x in coords}
+    for i in range(M.rows):
+        for j in range(M.cols):
+            if i > J and j > J:
+                sh[M[i,j]] = M[i,j] - M[i,J]*M[J,j]
+
+    out = {}
+    for x in coords:
+        if delta:
+            out[x] = 1 if x == pivot else sh[x]
+        elif x == pivot:
+            out[x] = sh[x]
+        elif x in center:
+            out[x] = sp.expand(pivot*sh[x])
+        else:
+            out[x] = sh[x]
+    return out
+
+def case11_edge(coords, center, pivot):
+    return {
+        x: x if x == pivot else pivot*x if x in center else x
+        for x in coords
+    }
+
+def audit(R, center, pivot, allvars):
+    entries = list(map(sp.expand, R))
+    zero = {x: 0 for x in center}
+
+    a1 = all(f.subs(zero, simultaneous=True).expand() == 0
+             for f in entries)
+
+    def degree(f):
+        return max((sum(m) for m in sp.Poly(f, *center).monoms()),
+                   default=0)
+
+    a2 = all(degree(f) <= 1 for f in entries)
+
+    pull = {x: pivot*x for x in center if x != pivot}
+    pulled = [f.subs(pull, simultaneous=True).expand()
+              for f in entries]
+    a3 = all(
+        g.subs(pivot, 0).expand() == 0
+        and sp.cancel(g/pivot).is_polynomial(*allvars)
+        for g in pulled
+    )
+
+    max_w = max(sp.Poly(f, pivot).degree() for f in entries)
+    w2 = [
+        term for f in entries for term in sp.Add.make_args(f)
+        if term.as_powers_dict().get(pivot, 0) >= 2
+    ]
+    return a1, a2, a3, max_w, w2
+
+# Single
+A, B, Z = syms('a',2,2), syms('b',2,2), syms('z',2,2)
+w = sp.Symbol('w')
+A = A.subs(A[1,1], w)
+coords = set(A) | set(B) | set(Z)
+
+Astar = apply(A, schur_edge(coords, A, 0, set(A), A[0,0], 1))
+Astar = apply(Astar, schur_edge(coords, A, 1, {w}, w, 0))
+R1 = (Astar*B*Z).applyfunc(sp.expand)
+
+C1 = (w, B[0,0], B[1,0])
+V1 = tuple(sorted(set().union(*(f.free_symbols for f in R1)),
+                  key=str))
+assert audit(R1, C1, w, V1)[:4] == (False, False, False, 1)
+
+# Double
+A, B, Z = syms('a',3,3), syms('b',3,2), syms('z',2,2)
+A = A.subs(A[2,2], w)
+coords = set(A) | set(B) | set(Z)
+
+Astar = A
+for J, delta in ((0,1), (1,0), (2,0)):
+    center = {A[i,j] for i in range(J,3) for j in range(J,3)}
+    Astar = apply(
+        Astar, schur_edge(coords, A, J, center, A[J,J], delta))
+
+# case12 at (2,0)
+Bstar = apply(B, schur_edge(coords, B, 0, set(B), B[0,0], 1))
+# boost #1 at (2,1)
+Bstar = apply(Bstar, case11_edge(coords, {w, B[1,1]}, w))
+# required case2 clear before rollover
+center_clear = {B[i,j] for i in range(1,3) for j in range(1,2)}
+Bstar = apply(
+    Bstar,
+    schur_edge(coords, B, 1, center_clear, B[1,1], 0))
+
+R2 = (Astar*Bstar*Z).applyfunc(sp.expand)
+C2 = (w, Z[0,0], Z[0,1])
+V2 = tuple(sorted(set().union(*(f.free_symbols for f in R2)),
+                  key=str))
+
+out = audit(R2, C2, w, V2)
+assert out[:4] == (False, False, False, 1)
+assert not out[4]  # no w^2 term
+
+print(Astar)
+print(Bstar)
+print(out[:4])
+```
