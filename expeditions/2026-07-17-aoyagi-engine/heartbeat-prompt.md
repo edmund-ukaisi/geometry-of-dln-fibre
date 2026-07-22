@@ -12,21 +12,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE PROOF CASCADE, STATEMENTS FINAL (2026-07-22 ~07:15).** The amendment re-bake is
-  INTEGRATED (e3a449348 = merge -rung-c a8438b1fe; controller-verified 8995 green, drivers
-  clean-three+sorryAx, census 35, cone 10). Statement side COMPLETE: blockCoords supportAt +
-  carve-layer hcenter + ShearGrades (a)+(b) CHILD-region grading + GeneratorCleared (emit=consume
-  one def) + PerLayerDeg1From ≥-support threshold (∀ℓ failed induction — Schur cleared-layer γβ);
-  DeeperMultilinear REMOVED. THREE too-weak-defs closed pre-proof this round. PROOF SEATS LIVE:
-  seat-L4 case1 :901 (WALL) + lastLayer_clear :932 (builds the GeneratorCleared emission);
-  seat-L3T case2 :863 + terminal_edge :962 (order: term-conj1 → case2-div [crux dedupe →
-  Case1Wire canonical] → conjB δ-branches → term-conj2 [consume-fit first]). Elder second read
-  OPEN (verify the 4 witnesses RAN). canonShearOf follow-up = arch-C's background unit (below
-  proof-support, above idle). After the 4: L5 (nav-13 on friction OR success) → L6+L8 → L7 →
-  wiring swap (LearningCoefficient:287) → summit clean-three → cite-deletion WITH operator.
-  **E-LANE CLOSED** (P6.2 Tier-3: faithful count registered c9a4003fe; review SURVIVED; arc
-  narrative banked; residue = ρ-seam deferred + hygiene unit [Q3 migration, lint nits, fossil
-  prune ~25 tokens]). ELDER channel: plain final text + TRANSCRIPT POLL after every charge.
+- phase: **ELDER SECOND READ on STAGING 2080757ea (2026-07-22 ~10:50).** The redirect is STAGED +
+  FROZEN on -rung-c (base a8438b1fe; arch-C re-gate PASS: 8450/0, footprints clean+sorryAx, cordon OK,
+  ZERO `| _ =>`, 14 sorries = 8 leaves + 6 derived stubs). Elder read TRIGGERED (its 5 pre-published
+  gates + arch-C's 8 items + my gate-2 checkpoint: staged e-param shear-pin vs "shearφ = canonShearOf"
+  wording). ON OK: 2080757ea IS the bake → controller verify (fetch, merge --no-ff, full build, forced
+  footprints both drivers, cordon, census) → push → proof seats wake on FINAL statements (L4 wall:
+  ONE IsRealBranch hypothesis; proved branches re-target mechanically). ON FLAGGED: render applies →
+  arch-C re-gates → new staging hash → elder delta-read. ALSO riding the pass (does NOT gate bake):
+  hjac_tie semantics ruling (L6 lane; ledger vs naive sum; elder verified the D=2 counterexample) +
+  Codex C2 (gates GAP-3 strike-ability). ELDER: poll transcript (dead inbox; ID ends ...d30ba3).
+  E-LANE CLOSED. Template diff: ZERO mismatches (threads/elaboration/fold-recursion-template.md).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.

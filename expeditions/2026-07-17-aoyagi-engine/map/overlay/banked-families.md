@@ -143,15 +143,17 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
   `numTop_d22222_ne_aoyagiPoleOrder` (`DLN/Aoyagi/ThetaOrderDistinction.lean:195`; `aoyagiPoleOrder`
   def `:53`). **P6.1 LANDED** (`Core/Aoyagi/OrderCount.lean`, sorry-free: `bandCount_eq`,
   `perJCard_eq_paper`, `envHi_sub_envLo`, `bandWidth_sum` — band arithmetic `a(ℓ−a)+1`; node
-  `e-p61-band-arithmetic`, card [../../threads/41-order-count/statement-card-tier1.md]). **P6.2
-  ADJUDICATED** (pnp, node `e-p62-count-identification`): ρ = deepest-stratum MAX-CROSSING of terminal
-  (t̃=0) global-minAdm divisors = **max CHAIN of binding minimisers under componentwise ≤** (chainHeight)
-  = `a(ℓ−a)+1` — NOT the naive minimiser count ([2,2,2,2,2]: six tight minimisers, ρ=5). ⚠ the
-  certificate's *antichain* speculation was CORRECTED to a max-CHAIN (elder register `ab106f1a4`; seat-E
-  battery 1018 cores) — read the card [../../threads/41-rho-count-object/certificate.md] through that
-  correction. Guard:
-  `battery/rho_battery.py` (guards BOTH E nodes; `_edgespec_traversal_334.py` is its runner-skipped
-  helper). The analytic zeta-pole seam stays the named monument-class deferral.
+  `e-p61-band-arithmetic`, card [../../threads/41-order-count/statement-card-tier1.md]). **P6.2 CLOSED**
+  (node `e-p62-count-identification`): the FAITHFUL count landed — `bindingSet_chainHeight_eq_thetaCount`
+  (`DLN/Aoyagi/OrderRealizeAssembly.lean:98`) ties the ACTUAL poset object to the value:
+  `chainHeight(bindingSet M) = thetaCount = aoyagiTheta = a(ℓ−a)+1` (max CHAIN of binding minimisers under
+  componentwise ≤, NOT the naive count). Wired + AxCheck-rooted at `c9a4003fe`
+  (`bindingSet_orderIso_boxPart` + `bindingSet_chainHeight_eq_thetaCount`); Tier-3 encoding cert = the
+  ≃o (`sortedBox_orderIso`). ⚠ the thread-41 certificate's *antichain* speculation was CORRECTED to a
+  max-CHAIN (elder register `ab106f1a4`; seat-E battery 1018 cores) — read the card
+  [../../threads/41-rho-count-object/certificate.md] through that correction. Guard: `battery/rho_battery.py`
+  + `battery/chain_battery.py`. **The only E residue is the analytic zeta-pole seam** (ρ = pole
+  multiplicity — P7, monument-class deferral: Mathlib lacks meromorphic continuation).
 
 ## In-flight (NOT banked — do not consume as substrate)
 
@@ -170,6 +172,14 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
   `terminal_bezout` (`b-principalinv`). The support window is the elder-ruled `supportAt` (geometric Deg1,
   descends per clear) — support/C′/coefficient frame axes closed ([[severance-witnesses]]). Do NOT read
   a sorried leaf as banked.
+- **REDIRECT — CONFIRMED THE ROUTE, staged PRE-BAKE** (elder ruling + discriminator PROOF, 2026-07-22;
+  a2cf2e7fa). The leaves will CONDITION ON the repaired `IsRealBranch` (ONE construction hypothesis); the
+  per-field SET (A) constraints + the prepared-multi-affine residual become NAMED DERIVED LEMMAS
+  (`hcenter`/`hcover`/`DescendView`/`ShearWithinCarve`/`hδ0` + GAP-3). Discriminator = the kernel-checked
+  `DivBirthInv` (`Engine/DivBirthReach.lean`): support STAYS, no case11 descent. NOT YET IN THE LEAF
+  STATEMENTS — they still carry the `supportAt`-window per-field forms; the redirect bake re-conditions
+  them + grows the cone by the derived-lemma stubs (footprint clean-three+sorryAx). per-field SET (A)
+  SUPERSEDED, the case-aware `supportAt`/`edgeδ` fallback VOIDED ([[dead-routes]] § Redirect-round).
 - **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). L7
   (`leafPath_compactCover`, `b-leaf7`) is BRIDGE-FREE (coordinate axis; `tupIdxEquiv`
   `LearningCoefficient.lean:138` / `divBirthCoord` `EngineConstruction.lean:62`). The L3/L4 SUPPORT
