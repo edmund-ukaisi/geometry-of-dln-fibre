@@ -13099,3 +13099,30 @@ carried-invariant STEP-form descent (parent hinv slot + edge pins → child slot
 node-form retires; the linearity burden stays at L5's root where it lives). Third instance of
 the invoked-premise family — now at an induction BASE; lessons.md sharpened ("inductable" =
 enumerate cases incl. base, diff premises). Boost-readiness adjudication UNDISTURBED (separate).
+
+## 2026-07-22 ~22:30 UTC — M4 blow-up half BANKED (4/5 atoms, clean-three); M7 GO; Assembly gate PASS
+
+**M4 (the (★) producer, seat-L6): the BLOW-UP HALF IS COMPLETE** — integrated + wired
+(4d58c38f5 + d0f9193f4): A1 blockBlowupMap fixed-point atoms (+ the pivot-∨-off-center
+criterion); A2 the canonCenterOf disjointness omega cores (width + row block — pure omega off
+DivBirthInv clause-3 freshness via tupIdxEquiv.injective; NO flatCoordOf, the fork stayed
+dissolved); A3 divBirthInv_of_isRealBranch (the TreePath induction — freshness at every deeper
+node); A2-package (the sc.ecase glue: i ∉ canonCenterOf ∨ canonPivotOf = some i). All FIRST-TRY
+sorry-free; spot-forced clean-three. Remaining: A4 (clause-III shear extraction — consumes the
+clause ABSTRACTLY from IsRealBranch, does not wait on M7; the persistence lemma checks
+DivBirthReach's threading first) + A5 (the branch-(★) in the foldG frame — the L5-consumer
+interface, form routes through me for the L5Spec reconciliation). seat-L6 woken; the
+checkpoint-vs-successor call left honestly with it.
+
+**M7 (canonShearOf, seat-L4): SPECIFY ACCEPTED, GO** — Schur-within-carve def (Pin C, two
+batteries behind it); all three ShearWithinCarveRaw clauses emittable (the sl = S+1 arithmetic);
+the boost-interaction built in: "γ Schur-cleared ⟹ boost-ready" (the R_bad kill) becomes a NAMED
+lemma about the def — serving both outcomes of ruling ①. Home: CanonShear.lean.
+
+**Assembly first increment: arch-C's gate ALL HARD ITEMS PASS** (anchor-diff char-exact modulo
+the 5 intended primes; module green 8453; clash-grep clean; footprints TRIANGULATED — the primed
+drivers' sorryAx sources = the baked minus {L6, L8}, the shrink the increment exists to
+produce; census 0 new; cordon +2 blueprint). One cosmetic docstring re-wrap with the render
+seat; then the labeled staging commit + hash. Its boundary note held exactly right: it stages
+the module UNWIRED — the aggregator is the controller's pen, and the full-build clash gate runs
+at MY integration.
