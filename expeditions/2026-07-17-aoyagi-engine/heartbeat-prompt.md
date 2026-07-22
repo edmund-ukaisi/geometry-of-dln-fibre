@@ -12,55 +12,22 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **RE-OPEN CLOSING — L1 BAKED, 2 lanes done, Gap B next (2026-07-22 ~22:10 UTC).** The 3-lane
-  re-scope is landing: (A-clear) **L1 BAKED** (83d11d8b5 — IsRealBranch shearφ=canonShearOf value-pin,
-  additive, payoff-isolated, census net-0; elder delta-read OK + controller re-derived gate); (A-div)
-  seat-L4B **DONE** (bLedger, resolves pnp's Gap-A soft spot); so **boostReady is UNBLOCKED — seat-L4B
-  ASSEMBLING now** (A-clear one-liner via realBranch_canonShear_eq + canonShearOf_apply_interior + A-div
-  + hslot → the wall's last obligation; on close, case1_preserves_stepInv' FALLS). (B) Gap B (hhomog-hypothesis threading,
-  he_lin, B-standalone, he_lin-at-L5-only) — elder RESOLVING the CAP question before locking verbatim:
-  its machine check found homogeneity FAILS over blockCoords (coreGen reads the full layer: zero
-  blockCoords(1) leaves m0_10·m1_01≠0) but HOLDS over LAYERCOORDS — so the lemma is over layerCoords +
-  the blockCoords cap needs a SEPARATE argument (concern-1's naive blockCoords fix REVERSED; Codex read
-  in flight). Verbatim PENDING → arch-C renders (2nd coupled-redesign bake, ff to canonical first) →
-  seat-L3T2 builds (its append obligation realBranch_appendResidDescent may restate blockCoords→layerCoords+cap). Descent wall = δ=0+case11 banked + append via hhomog. L3 (fan) = the
-  LAST open spine call (elder; reuse engine chart form per seat-L7 finding-2 → bridge definitional).
-  Census 36. ⚠ prior "STATEMENT LAYER RE-OPENED (~17:20)" — the "closed" claim was PREMATURE; the re-open
-  found 3 grounded defects (boostReady vacuity / L7-false / descent cofactor), now being fixed on canonical.
-  Three seats running the PROOFS found THREE grounded holes the seven delta-reads missed, all tracing
-  to ONE under-specification of IsRealBranch (spine): it value-pins center/pivot (:840-841) but only
-  SUPPORT-pins the shear (CanonicalSchurStep :819-824 vacuous for identity shear), AND over-pins the
-  pivot to a single canonPivotOf. (1) boostReady STATEMENT-side — Codex DIVERGED from elder's
-  proof-side verdict + was RIGHT (predicate admits R_bad identity shear); fix = shearφ=canonShearOf
-  value-pin. (2) descent δ=1 case12/case2 — cofactor gap, likely coupled to the shear-pin. (3) L7
-  FALSE as stated — single pinned pivot can't cover (ε·e_q escapes); needs pivots FANNED. ELDER
-  charged with a COUPLED one-round spine redesign (shear value-pin + pivot fan; co-design to bake
-  once). DECORRELATED CHECK LIVE: pnp-coupling seat adjudicating (in PARALLEL with the elder,
-  frame-in/hypothesis-out) whether the shear value-pin supplies BOTH boostReady-(b) γ-clearing AND
-  the descent δ=1 cofactor — i.e. one fix or two; reconcile with the elder's design before render. LESSON: a delta-read gate ≠ closed; pair it
-  with a proof-pressure gate before claiming "closed". FROZEN: seat-L4B holds (b) [keeps safe (a)];
-  seat-L7 holds the fan [its bridge lane ready, engine cover LANDED]; descent lands uncontested arms
-  (δ=0+case11) + factors the deep arm as a tagged on-cone cofactor obligation. seat-L4 stood down
-  (Codex verdict delivered; handoff note banked).
-  **seat-L3T2** = the DESCENT realBranch_multiAffine_step (primed-twin MultiAffineStepWire, deep
-  fill via a sub-agent; case11 consumes boostReady stub — sorryAx flow-through on-cone).
-  **seat-L7** = leafPath_compactCover COMMISSIONED (independent, highest-variance; SPECIFY-first,
-  Codex on the tiling). arch-C: Assembly increment 2 INTEGRATED (77447a7f5; controller re-gated:
-  build green 9005, cordon OK, census 36, payoff isolation verified — primed drivers sorryAx via
-  case1'/case2', via_engine footprint UNCHANGED, no cite/no new axiom). L5' = the summit-home for
-  the L5 fold-body proof (target MonumentAssembly.leaf_stepInv_of_path', NOT baked atlas L5).
-  arch-C next → hygiene window (safe items). SUBSUMPTION parked post-summit (owed-register;
-  baked-statement change, NOT hygiene). carto: map GREEN + current, standing by.
-  DECORRELATION LOG: two blind instruments converged on boostReady (elder frame-only + seat-L4).
-  STANDING ACTION: when Codex bufv05qfv verdict lands (via seat-L4), RELAY it to the elder — its
-  caveat: a Codex wrinkle in the ancestor induction forces a (b)-statement re-check before
-  seat-L4B locks it; (a) is safe either way. Elder refinement banked: (a)/(b) are SEPARABLE
-  parallel inputs to boostReady (b-chain=u-positions, prepared-form=factoring, hslot=base).
-  REMAINING TO SUMMIT: boostReady → descent → lastLayer_clear_preserves → L5 assembly (THE
-  LONGEST LINK; §D.3 fully provisioned) → L7 commissioning (startable) → summit swap via primed
-  drivers → SUMMIT-RETIRE (elder bless + operator ceremony) → cite-deletion (WITH operator).
-  Boost instruments CONVERGED (TRUE+CARRIED, u_p|b_i ⟺ i>J₁; battery banked). Census 36 =
-  ~11 live (+L5' skeleton) + 25 fossil. ELDER: FRESH instance post-restart (2026-07-23) — in-process teammate; old transcript-poll path STALE; it may reply via normal routing now (verify on first reply). Dormant: L3T, L6, M4B, M7B, seat-L4.
+- phase: **POST-RESTART: 3 re-open lanes converging + the OPERATOR HIGH-LEVEL READ (2026-07-23 ~02:00).**
+  Canonical: L1 BAKED (IsRealBranch shearφ=canonShearOf value-pin, additive, payoff-isolated; census 36 =
+  11 on-cone + 25 fossil). LANES: (A-clear) L1 done ✓. (A-div) bLedger done ✓ (seat-L4B retired). 
+  (boostReady) = ChainNF STANDALONE parallel-theorem — outer shape PROVEN on -L4C @ 67293aa3c
+  (isRealBranch_chainNF clean-three; ChainCompat ⟹ boostReady clean; single sorry = chainCompat_holds,
+  3 fields base/transport/boundary); seat-L4C (fresh #2): option-B boundary reshape (α/β raw; 
+  deg1SupportedOn_boostForm in wiring) → hold for pnp-transport's ε-transport certificate (fresh #2,
+  harvesting banked partial codex; the threshold-boundary off-by-one DECIDES the def; index col-vs-row
+  defers to it). (Gap B) elder finalizing verbatim: foldResid_layerHomogeneous over LAYERCOORDS (its
+  machine-check reversed the blockCoords rec; cap = separate argument) + he_lin + non-terminal guard +
+  hhomog threading (replaces hslot; he_lin at L5 only) → arch-C renders (respawn on trigger) → seat-L3T2
+  builds (respawn; descent = 1 sorry realBranch_appendResidDescent on -L3T2 @ ed2fe681a). (L7/L3 fan) =
+  elder's LAST spine call (FALSE-as-stated; fan + engine-cover bridge; seat-L7 respawn when designed).
+  IN FLIGHT: the OPERATOR HIGH-LEVEL READ — elder (math/fidelity/owed/trajectory, convening fresh) +
+  carto (map-truth/orphans/PARALLELIZATION) in parallel; controller synthesizes → operator. HOLD new
+  parallel lanes until carto's audit lands (operator asked the read to inform parallelization).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
