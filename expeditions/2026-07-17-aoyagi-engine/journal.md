@@ -13586,3 +13586,20 @@ ACTIONS: (1) statement layer stays CLOSED — this is proof-side, ruling-B stand
 locations) and stands down; (4) elder's verdict recorded as the boostReady weakest-form entry;
 (5) b-boostready map node reshaped. The wall's heart is now an ancestor induction with two clean
 sub-lemmas — heavier than a one-liner, but honestly scoped and the content is battery-verified.
+
+## 2026-07-22 ~16:35 UTC — heartbeat tick (idle pulse) — elder refinement on the boostReady decomposition
+
+Idle wake: nothing new landed on origin (seats L4B/L7 + L3T2's descent sub-agent spawned minutes
+ago, working; no completions yet). Drift-glance clean. One integration: the elder replied to my
+convergence relay with a refinement + a caveat.
+- REFINEMENT: sub-lemmas (a) [combinatorial foldB b-chain divisibility] and (b) [prepared-form
+  ancestor path-induction] are SEPARABLE — (b) does not depend on (a); both feed boostReady as
+  PARALLEL inputs alongside hslot (b-chain = u-positions, prepared form = the factoring, hslot =
+  base decomposition). (a)-first sequencing endorsed; (b) can be scaffolded in parallel.
+- CAVEAT: Codex bufv05qfv still in flight; two-way convergence makes (a) safe to prove now, but a
+  Codex WRINKLE in the ancestor induction forces the elder to re-check (b)'s decomposition before
+  seat-L4B locks its statement. Risk isolated to (b)'s exact statement.
+Relayed both to seat-L4B (prove (a) now; scaffold (b); do NOT finalize (b)'s statement until the
+packet + Codex). Standing action recorded in the memo: relay the Codex verdict to the elder when
+it lands. The elder also endorsed keeping frame-in/hypothesis-out as the pattern for the remaining
+frontier adjudications (the descent will have its own such moments).

@@ -29,6 +29,10 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   footprints as expected) — gating+staging → report; SUBSUMPTION parked post-summit (owed-register;
   baked-statement change, NOT hygiene). carto: map GREEN + current (524fd198e), standing by.
   DECORRELATION LOG: two blind instruments converged on boostReady (elder frame-only + seat-L4).
+  STANDING ACTION: when Codex bufv05qfv verdict lands (via seat-L4), RELAY it to the elder — its
+  caveat: a Codex wrinkle in the ancestor induction forces a (b)-statement re-check before
+  seat-L4B locks it; (a) is safe either way. Elder refinement banked: (a)/(b) are SEPARABLE
+  parallel inputs to boostReady (b-chain=u-positions, prepared-form=factoring, hslot=base).
   REMAINING TO SUMMIT: boostReady → descent → lastLayer_clear_preserves → L5 assembly (THE
   LONGEST LINK; §D.3 fully provisioned) → L7 commissioning (startable) → summit swap via primed
   drivers → SUMMIT-RETIRE (elder bless + operator ceremony) → cite-deletion (WITH operator).
