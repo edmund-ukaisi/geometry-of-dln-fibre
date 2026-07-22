@@ -333,16 +333,35 @@ theorem stepMapRaw_fixes_parentLedgerCorner {d : Fin (N + 1) → ℕ}
     (hQ : (TreePath.step R c piv cse ns φ).IsRealBranch e)
     (c₀ : Fin (flatDim d)) (hc0 : IsLedgerCorner d R.conState c₀) (w : Fin (flatDim d) → ℝ) :
     stepMapRaw d cse c piv φ w c₀ = w c₀ := by
-  obtain ⟨hR, ⟨sc, hsc_mem, _, hchild, hcenter, hpiv⟩, hwc, -⟩ := hQ
+  obtain ⟨hR, ⟨sc, hsc_mem, hecase, hchild, hcenter, hpiv⟩, hwc, -⟩ := hQ
   subst hchild
   obtain ⟨k, hk⟩ := hc0
   obtain ⟨_, _, hfresh, _⟩ := divBirthInv_of_isRealBranch e R hR
   -- blow-up half: `c₀ = piv` or `c₀ ∉ c` (= the pinned canonCenterOf).
+  -- FAN-PIN rule (b) REWORK (fan-case11-adjudication + trace-don't-expect): the pivot pin is a
+  -- `match cse`, so `hpiv` is NOT a ∀ at case12/case2. Case-split on `sc.ecase`: a MERGE (case11) /
+  -- ROLLOVER keeps the `∀`-pin, so `hpiv c₀ hpivot` gives `c₀ = piv`; a FRESH clear (case12/case2)
+  -- has `canonCenterOf` = the current-layer `widthMinUpto` block, off which the earlier ledger corner
+  -- `c₀` sits by A2 freshness (`cornerToFlat_notMem_widthBlock`) — so `c₀ ∉ c` directly, no pivot pin
+  -- needed. This is exactly pnp-fan's "the case-11 canonical pivot IS the merge corner (fixed); the
+  -- fresh-clear fan moves nothing earlier because the fresh block holds no earlier corner."
   have hblow : c₀ = piv ∨ c₀ ∉ c := by
     rcases canonCenterOf_disjoint_or_pivot R.conState sc (R.conState.divBirthCoord k).1
         (R.conState.divBirthCoord k).2 c₀ (hfresh k) hk with hoff | hpivot
     · right; rw [hcenter]; exact hoff
-    · left; exact hpiv c₀ hpivot
+    · rcases hsce : sc.ecase with _ | _ | _ | _
+      · -- case11 (merge): the pivot pin is `∀`-forced.
+        left; rw [hecase.symm.trans hsce] at hpiv; exact hpiv c₀ hpivot
+      · -- case12 (fresh split): `c₀` off the current-layer widthMinUpto block (A2).
+        right; rw [hcenter]; simp only [canonCenterOf, hsce]
+        exact cornerToFlat_notMem_widthBlock R.conState (R.conState.divBirthCoord k).1
+          (R.conState.divBirthCoord k).2 c₀ (hfresh k) hk
+      · -- case2 (fresh append): same current-layer widthMinUpto block.
+        right; rw [hcenter]; simp only [canonCenterOf, hsce]
+        exact cornerToFlat_notMem_widthBlock R.conState (R.conState.divBirthCoord k).1
+          (R.conState.divBirthCoord k).2 c₀ (hfresh k) hk
+      · -- rollover: `canonPivotOf = none`, the `∀`-pin is vacuous but still gives `c₀ = piv`.
+        left; rw [hecase.symm.trans hsce] at hpiv; exact hpiv c₀ hpivot
   -- shear half: `c₀` persists into the child ledger, so clause (III) fixes it.
   have hshear : edgeShearRaw d cse φ w c₀ = w c₀ := by
     obtain ⟨k', hk'⟩ := divBirthCoord_persists_conOracle R.conState sc hsc_mem k

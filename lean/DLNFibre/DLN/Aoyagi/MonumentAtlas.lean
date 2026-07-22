@@ -919,10 +919,10 @@ def CanonicalSchurStep {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N) (p :
 /-- **A real root→node branch of `buildTree d (conOracle d) conRoot`** — COMBINATORIAL branch-membership
 PLUS the canonical coordinate PIN. Each step's `(case, nextState)` is one of the oracle's `stepChildren`
 at the parent node's state (`ecase`/`child` matched; the matched child's `esubst` = `runLen`/`mergeIdx`
-is the witness), AND the step's stored `center`/`pivot` equal the canonical slots (`canonCenterOf` /
-`canonPivotOf` of that edge — the coordinate pin that lifts L7 bridge-free; the shear `shearφ` is
-pinned within-carve (interlock-1 predicate-pin, closing the former unread `_`); a rollover leaves
-`pivot` unconstrained via `canonPivotOf = none`). Carries `e` for the shear-pin's `foldRegion`. -/
+is the witness), AND the step's stored `center = canonCenterOf` and `pivot` meets the FAN-PIN rule (b):
+`canonPivotOf`-forced at a merge (case11) / vacuous at a rollover, FREE within the center at a fresh clear
+(case12/case2). The coordinate pin lifts L7 bridge-free; the shear `shearφ` is pinned to `N_p` at that
+pivot (the L1 value-pin). Carries `e` for the shear-pin's `foldRegion`. -/
 def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) : TreePath d → Prop
   | .root => True
@@ -931,7 +931,17 @@ def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
         (∃ sc ∈ (conOracle d p.conState).stepChildren,
           sc.ecase = cse ∧ sc.child = nextState ∧
             center = canonCenterOf d p.conState sc ∧
-            (∀ piv, canonPivotOf d p.conState sc = some piv → piv = pivot)) ∧
+            -- FAN-PIN, RULE (b) (elder `elder-npivot-deltaread-fanrule.md` + pnp-fan
+            -- `fan-case11-adjudication.md`): the pivot is CANONICAL (`canonPivotOf`-forced) at a MERGE
+            -- (case11) and a ROLLOVER (`canonPivotOf = none`, vacuous), but a FREE fan choice within the
+            -- center at a FRESH clear (case12/case2). This is the FAITHFUL structure (Aoyagi Case 1's
+            -- determined merge pivot `u_{s,k}` vs the fresh-corner freedom) AND resolves the pivot-
+            -- preservation conflict: case11's canonical pivot IS the earlier ledger corner it merges into
+            -- (blow-up fixes it), while case12/case2 fresh corners lie in NO earlier ledger (free pivots
+            -- move nothing earlier). pnp-fan confirmed (b) covers (case-1(2) sibling covers the block).
+            (match cse with
+              | StepCase.case12 | StepCase.case2 => pivot ∈ canonCenterOf d p.conState sc
+              | _ => ∀ piv, canonPivotOf d p.conState sc = some piv → piv = pivot)) ∧
         -- SHEAR-PIN (interlock-1 predicate-pin): shearφ within-carve on THIS step node (seat-L4 (B) via
         -- ShearWithinCarveRaw) — reads the former `_`, symmetric with the canonCenterOf/canonPivotOf
         -- pins. Defeq to `ShearWithinCarve d e ed` at the last edge, so `realBranch_shearWithinCarve`
@@ -940,12 +950,8 @@ def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
         -- L1 value-pin, RE-BAKED to the faithful pivot-parametric `N_p` (elder verbatim §2/§3): the step
         -- shear IS `canonNormalizationOf … pivot` at the edge's pivot. The layer-(S+1) recoord is thus
         -- pinned HERE (the strongest pin), so `ShearWithinCarveRaw` clauses (I)/(II) need only the
-        -- write/read-vanishing STRICTLY ABOVE the support layer (`> sl`), not a second recoord pin.
-        -- FAN-PIN (elder §3, `pivot ∈ canonCenterOf`) is DEFERRED — the FORK-3 split point: the free
-        -- pivot conflicts with `PivotPreservation.stepMapRaw_fixes_parentLedgerCorner` (see the report).
-        -- The equality pin `∀ piv, canonPivotOf = some piv → piv = pivot` STAYS so PivotPreservation is
-        -- untouched; the shear pivot is therefore the canonical (corner) pivot, giving the faithful
-        -- corner-Schur + recoord `N_p`.
+        -- write/read-vanishing STRICTLY ABOVE the support layer (`> sl`), not a second recoord pin. The
+        -- fan pivot (case12/case2 free within the center, rule (b) above) is the pivot `N_p` is centered at.
         shearφ = canonNormalizationOf d p.conState pivot
 
 /-- **The path reaches the leaf** — a real branch (now also coordinate-pinned via `canonCenterOf`) whose
@@ -1286,9 +1292,11 @@ INDEPENDENT of the running-min cap. Induction on `p`: base = `coreGen_layerHomog
 pivot-parametric normalization (which recoordinatizes layer `S+1`, `A_{S+1} → A_{S+1}·Q⁻¹`) that
 assumption no longer holds, so the step shifts to a `comp_of_linear` variant (the recoord is linear, so
 per-layer degree is preserved) — a seat-L3T2 proof concern; the statement is unchanged. Non-terminal
-guard `¬ N ≤ p.conState.layer` + `ℓ < N`. -/
+guard `¬ N ≤ p.conState.layer` + `ℓ < N`. `hpos` (elder rider, sibling-consistent with
+`realBranch_multiAffine_step` / `realBranch_appendResidDescent`): the recoord's per-layer degree bound uses
+the pivot-below-threshold mechanism, which a zero-dim layer (`d=![1,0,1,1]`) defeats — needs `d k ≥ 1`. -/
 @[blueprint]
-theorem foldResid_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ)
+theorem foldResid_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (p : TreePath d) (hnonterm : ¬ N ≤ p.conState.layer)
     (hbranch : p.IsRealBranch (canonFlatten d))
     (j : Fin (foldNR d p)) (ℓ : ℕ)
