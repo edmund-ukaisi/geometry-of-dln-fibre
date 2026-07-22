@@ -37,37 +37,6 @@ noncomputable def blockEntryFlat (d : Fin (N + 1) → ℕ) (S row col : ℕ) : O
     else none
   else none
 
-/-- **The canonical Q/Schur step shear** (raw displacement, seat-L4 M7). Schur-within-carve: at a flat
-coordinate decoding to `(layer, row, col)`, the displacement is the Schur cross-term `−u_γ·u_β` when the
-coord is in the layer-`s.layer` carve INTERIOR (`row, col > s.cleared`) — `γ` at `(layer, row, cleared)`,
-`β` at `(layer, cleared, col)` — and `0` otherwise. Reads only layer-`s.layer` coords; writes only the
-layer-`s.layer` strict interior (never a diagonal/birth corner). Its `blockShear` is the case12/case2
-`edgeShear`. -/
-noncomputable def canonShearOf (d : Fin (N + 1) → ℕ) (s : ConState N) :
-    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
-  fun u k =>
-    let q := (tupIdxEquiv d).symm k
-    if h : (q.1.1 : ℕ) = s.layer ∧ s.cleared < (q.1.2 : ℕ) ∧ s.cleared < (q.2 : ℕ) then
-      (-(u (tupIdxEquiv d ⟨⟨q.1.1, q.1.2⟩,
-              ⟨s.cleared, lt_trans h.2.2 q.2.isLt⟩⟩)))
-        * (u (tupIdxEquiv d ⟨⟨q.1.1, ⟨s.cleared, lt_trans h.2.1 q.1.2.isLt⟩⟩, q.2⟩))
-    else 0
-
-/-- **Prepared-form / R_bad-kill (elder-facing candidate for the `CanonicalSchurStep` predicate).**
-`canonShearOf` is SUPPORTED on the layer-`s.layer` carve STRICT interior (`row, col > s.cleared`): a
-nonzero displacement forces the coordinate there. So the shear writes ONLY the Schur cross-term `−γ·β`
-on the interior, never a diagonal/pivot corner nor a bare pivot-column entry — the "γ Schur-cleared"
-structure that EXCLUDES the boost-readiness countermodel `R_bad = Z·B·[[1,β],[γ,u_p]]` (unprepared,
-`γ≠0`, whose center-zeroing leaves `γ·(…)`). This is the write-side content of clauses (I)/(III) and
-the candidate ingredient for the elder's boost-readiness pin (resolution 2). -/
-theorem canonShearOf_support (d : Fin (N + 1) → ℕ) (s : ConState N)
-    (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)) (hk : canonShearOf d s u k ≠ 0) :
-    (((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
-      s.cleared < (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
-        s.cleared < (((tupIdxEquiv d).symm k).2 : ℕ) := by
-  by_contra h
-  exact hk (by simp only [canonShearOf]; exact dif_neg h)
-
 /-- A flat coordinate in `layerCoords d ℓ` decodes (via `tupIdxEquiv`) to layer exactly `ℓ`. -/
 theorem decode_layer_of_mem_layerCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) (i : Fin (flatDim d))
     (hi : i ∈ layerCoords d ℓ) : (((tupIdxEquiv d).symm i).1.1 : ℕ) = ℓ := by

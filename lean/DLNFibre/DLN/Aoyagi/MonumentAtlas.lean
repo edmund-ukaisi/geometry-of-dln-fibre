@@ -811,6 +811,37 @@ noncomputable def canonCenterOf (d : Fin (N + 1) → ℕ) (s : ConState N) (sc :
       (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
         (q.2 : ℕ) < widthMinUpto d s.layer)).image (tupIdxEquiv d)
 
+/-- **The canonical Q/Schur step shear** (raw displacement, seat-L4 M7). Schur-within-carve: at a flat
+coordinate decoding to `(layer, row, col)`, the displacement is the Schur cross-term `−u_γ·u_β` when the
+coord is in the layer-`s.layer` carve INTERIOR (`row, col > s.cleared`) — `γ` at `(layer, row, cleared)`,
+`β` at `(layer, cleared, col)` — and `0` otherwise. Reads only layer-`s.layer` coords; writes only the
+layer-`s.layer` strict interior (never a diagonal/birth corner). Its `blockShear` is the case12/case2
+`edgeShear`. -/
+noncomputable def canonShearOf (d : Fin (N + 1) → ℕ) (s : ConState N) :
+    (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
+  fun u k =>
+    let q := (tupIdxEquiv d).symm k
+    if h : (q.1.1 : ℕ) = s.layer ∧ s.cleared < (q.1.2 : ℕ) ∧ s.cleared < (q.2 : ℕ) then
+      (-(u (tupIdxEquiv d ⟨⟨q.1.1, q.1.2⟩,
+              ⟨s.cleared, lt_trans h.2.2 q.2.isLt⟩⟩)))
+        * (u (tupIdxEquiv d ⟨⟨q.1.1, ⟨s.cleared, lt_trans h.2.1 q.1.2.isLt⟩⟩, q.2⟩))
+    else 0
+
+/-- **Prepared-form / R_bad-kill (elder-facing candidate for the `CanonicalSchurStep` predicate).**
+`canonShearOf` is SUPPORTED on the layer-`s.layer` carve STRICT interior (`row, col > s.cleared`): a
+nonzero displacement forces the coordinate there. So the shear writes ONLY the Schur cross-term `−γ·β`
+on the interior, never a diagonal/pivot corner nor a bare pivot-column entry — the "γ Schur-cleared"
+structure that EXCLUDES the boost-readiness countermodel `R_bad = Z·B·[[1,β],[γ,u_p]]` (unprepared,
+`γ≠0`, whose center-zeroing leaves `γ·(…)`). This is the write-side content of clauses (I)/(III) and
+the candidate ingredient for the elder's boost-readiness pin (resolution 2). -/
+theorem canonShearOf_support (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)) (hk : canonShearOf d s u k ≠ 0) :
+    (((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
+      s.cleared < (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
+        s.cleared < (((tupIdxEquiv d).symm k).2 : ℕ) := by
+  by_contra h
+  exact hk (by simp only [canonShearOf]; exact dif_neg h)
+
 /-- **`CanonicalSchurStep`** (boost-readiness pin, 2026-07-22; = M7's proven `canonShearOf_support`). The
 shear displacement is supported on the layer-`s` carve STRICT INTERIOR (`row`,`col` both `> cleared`): it
 never writes a pivot corner, the pivot row/col, a cleared coordinate, or another layer. PROVEN for
@@ -844,7 +875,7 @@ def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
         -- pins. Defeq to `ShearWithinCarve d e ed` at the last edge, so `realBranch_shearWithinCarve`
         -- extracts it (last-step projection).
         ShearWithinCarveRaw d e (TreePath.step p center pivot cse nextState shearφ) shearφ ∧
-        CanonicalSchurStep d p.conState shearφ
+        shearφ = canonShearOf d p.conState
 
 /-- **The path reaches the leaf** — a real branch (now also coordinate-pinned via `canonCenterOf`) whose
 terminal state emits `l`. Ties chart `c`'s fold to the tree leaf its branch reaches; the coordinate pin
@@ -1011,14 +1042,27 @@ theorem realBranch_shearWithinCarve {N : ℕ} {d : Fin (N + 1) → ℕ}
   obtain ⟨-, -, hshear, -⟩ := hbranch
   exact hshear
 
+/-- Derived: the step shear IS the canonical Schur shear (the L1 value-pin). Supplies the γ-clearing
+half of boost-readiness (via `canonShearOf_apply_interior`); the descent δ=1 cofactor is
+shear-INDEPENDENT (multilinear homogeneity, its own lemma) and does NOT ride this. -/
+@[blueprint]
+theorem realBranch_canonShear_eq {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
+    ed.shearφ = canonShearOf d p.conState := by
+  obtain ⟨-, -, -, heq⟩ := hbranch
+  exact heq
+
 /-- Derived: the step shear satisfies the `CanonicalSchurStep` boost-readiness pin (4th-conjunct projection). -/
 @[blueprint]
 theorem realBranch_canonicalSchurStep {N : ℕ} {d : Fin (N + 1) → ℕ}
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hbranch : (p.extend ed).IsRealBranch e) :
     CanonicalSchurStep d p.conState ed.shearφ := by
-  obtain ⟨-, -, -, hschur⟩ := hbranch
-  exact hschur
+  obtain ⟨-, -, -, heq⟩ := hbranch
+  rw [heq]
+  intro u k h
+  exact canonShearOf_support d p.conState u k h
 
 /-- Derived: a terminal edge does not divide (`δ=0`) — only a rollover advances the layer. -/
 @[blueprint]
