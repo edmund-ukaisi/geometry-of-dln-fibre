@@ -10314,3 +10314,32 @@ re-emerges multilinear under the T-mixing shear — seat-L4's Gröbner (A1) + de
 instruments). My weak read: (ii) is the rising-sea shape (read the data as-is; don't re-perform
 the preparation). The render body holds on the pin; the frame-shell + GAP-3 pieces render
 meanwhile. The seat's refusal to guess commended at the gate — guessing re-opens countermodels.
+
+## 2026-07-22 (controller) — GAP 2 pinned READING (ii) ("the spec erratum"); P6 COMBINATORIAL HALF COMPLETE; one signature reconciliation held open
+
+**GAP 2, the elder's pin: reading (ii)** — the fold's data IS the prepared object (FIX-RESID
+baked the Let-block renaming in rounds ago; the crux identity is the ground truth); the (A)
+conjunct reads `Deg1SupportedOn (foldResid p) T` DIRECTLY; "∘ quotMap" was a SPEC ERRATUM
+(corrected to identity, not a design change). (i) rejected twice over (double-division; a node
+invariant reading the outgoing edge's pivot breaks node/edge separation). **The verification
+target named for seat-L4's algebra: the Schur is the MULTILINEARITY-RESTORATION step** — it
+subtracts exactly the u_pivot-carrying C21·C12 residue DeeperMultilinear cannot absorb; an
+unabsorbed residue = a finding against the CLAUSE (escalates), the reading stands either way.
+The docstring line that earns it: FIX-RESID and the frame ruling, made rounds apart, composing
+into "read the data as-is" — the architecture finally the paper's.
+
+**P6 COMBINATORIAL HALF COMPLETE END-TO-END** (seat-E, merged + gating): value (bandCount) →
+faithful count (chainHeight_boxPart, elder-passed) → θ-attachment (chainHeight_boxPart_eq_
+aoyagiTheta @ 0e0c69a96, registered in the batch this commit). Tier-3 = the OrderIso realization
+(four named requirements), scaffold-now-integrate-later CONFIRMED (FoldProduced locked; the iso
+reads the ledger, not the invariants under redesign). seat-L3T's case-blind DIVISIBILITY module
+merged (Case2TransportWire — the crux DUPLICATE with Case1Wire flagged for public-canonical
+dedupe at bake integration); its remaining work correctly gated on the redesign, which is now
+fully pinned — it resumes on the bake.
+
+**ONE RECONCILIATION HELD OPEN (crossing):** arch-C dispatched a pivot+D⁺ PARAMETER shape for
+FoldStepInvAt/LastLayerInv before the reading-(ii) pin reached it; the pin's text has the pivot
+threading through the LEAVES only (a pivot param = a free-field surface + redundant). Sent back
+for reconciliation against the elder's exact text BEFORE the seat renders; if arch-C finds a
+genuine need (the parent-side support formation), it goes to the elder as a named one-liner.
+seat-L4/seat-L3T re-coordination HELD until the shape is single.
