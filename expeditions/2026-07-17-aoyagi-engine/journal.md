@@ -14542,3 +14542,18 @@ frontier). (ii) CROSS-LINK (mine): seat-LL's sorry #1's "real-branch vanishing" 
 vanishing clause at u=0 — Gap B's foldResid_layerHomogeneous will discharge it directly. So the Gap B
 bake feeds BOTH the descent lane AND the lastLayer lane; the link rides with the verbatim relay.
 seat-LL holds; the lane is one elder-verbatim away from a push + three named frontiers from sorry-free.
+
+## 2026-07-23 ~08:05 UTC — seat-L4C GO: countermodel first, then the ruling-INVARIANT core (1b, no wrapper)
+
+seat-L4C (hygiene clean; ff'd to 1f6e5626a, 0 lean/ paths touched, Case1Wire byte-identical) proposed
+and received the GO on the better-than-hold move: (1) land the LEAN COUNTERMODEL first (the unipotent-e
+kill-witness for the e-abstraction class — hardens the elder's delta-read of the staged false atom);
+(2) build the PREDICATE-AGNOSTIC CORE decomposition lemma — coreGen's degree-1 peel (innermost A₀
+factor out of multPrefix/submult right-peel; coefficients = the deeper product, continuous +
+layer-0-ignoring) — under the ABSTRACT REINDEXING HYPOTHESIS (1b: (e u) i row col = u (tupIdxEquiv…)),
+exposing NO wrapper. RULING-INVARIANT: a concrete e-pin discharges (1b) trivially; a block-compat
+predicate implies it; no wrapper ⟹ slots into whichever of ChainNF-root / HomogeneousDeg1On survives
+the redesign. Lane-local lemma with an explicit hypothesis — no spine def, doesn't pre-empt the elder.
+~100-150 lines detail-at-scale (the dependent-matrix reassoc idioms banked in lean/CLAUDE.md apply).
+The elder's preview (exists_flatten = the canonical reindexing) already guarantees (1b) discharges at
+the summit consumption. The abstract-the-uncertain pattern, third use this round.
