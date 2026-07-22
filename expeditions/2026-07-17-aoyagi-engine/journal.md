@@ -11313,3 +11313,16 @@ contract + the emission-gate check (STOP if item 4 forces the q-pin) → re-rend
 RE-BAKE to -rung-c → controller verification → proof seats resume. seat-L4 and seat-L3T have
 their per-face adjudications and hold for the corrected signatures. The elder takes the
 decorrelated second read on the re-baked statements.
+
+## 2026-07-22 (controller) — both proof seats calibrated to the ruling; the face-5 interface pin added to the render
+
+Both seats internalized the family ruling with correct resume plans (L3T: blockCoords
+window-match makes "support ⊆ ed.center" hold by construction; reads hshear_schur off the edge;
+terminal conjunct-2 = q(i₀,·)-collapse with the datum supplying unit 0 ≠ 0. L4: accepted the
+carve-layer correction of its own pin proposal; registered that the lastLayer emission is BUILT
+at the S=L clears via the Kronecker-diagonal q — a construction, not a pass-through — alongside
+the LastLayerInv slot-flip). NEW RENDER PIN from L3T's coordination flag, endorsed + relayed to
+arch-C: the face-5 generator-side datum renders as ONE NAMED PREDICATE used verbatim at BOTH
+sites (lastLayer_clear's conclusion = the emit; terminal_edge's hypothesis = the consume) — the
+consumer-fit lesson applied forward; two hand-copied ∃-shapes drift, one named def cannot.
+"Emit-form = consume-form via the single named predicate" added as an explicit gate check.
