@@ -21,6 +21,10 @@ jacWeight_eq_abs_monoOf, continuous_jacWeight, volume_jacWeight_zeroSet, chart_o
 the seat's gate AND the controller's integration gate). L5's sorried producer does NOT leak: L6
 only assumes `hreal`.
 
-**Status.** sorry-free, integrated; `reviewed` pending the fidelity pass (rev-L6, spawned
-2026-07-22: excep-honesty / nbhd-=-region-not-univ / unit-≡-1-not-laundered + consumer fit at
-the Assembly swap).
+**Status.** sorry-free, integrated, **REVIEWED** — rev-L6 SURVIVED on all six functions
+(fidelity byte-identical to the baked statement; excep honest [the full critical locus, null +
+measurable, non-deflating]; nbhd = region HARD LOCK held with no univ laundering; unit ≡ 1
+forced by the collapse; non-vacuous at M′=1; clean-three forced; verbatim-swappable for the B′
+consumer), decorrelated Codex CONCURRING (2026-07-22). Non-blocking notes: the unused-hfold
+warning is intentional (statement-identity); the header docstring's "swap at integration" prose
+means the B′ primed driver, not an in-place edit.
