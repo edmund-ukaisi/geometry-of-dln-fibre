@@ -15023,3 +15023,18 @@ ChainCompat BOUNDARY field has the same shape — flagged as the shared-lemma ca
 coordinate directly; if (a) FAILS it's certificate-relevant (to the elder). The "sorryAx = cap only"
 expectation for the slot may honestly become "= the cap family" — the faithful object pricing its own
 support structure, named not hidden.
+
+## 2026-07-23 ~19:05 UTC — seat-LL rebased CLEAN (shear-def-agnostic arms); born-unit mechanism confirmed under N_p
+
+seat-LL rebased -LL onto canonical: green, no friction, 3 frontiers unchanged (c5139a21e). The no-friction
+REASON stated precisely (so the deferral isn't a surprise): its CLOSED arms consume the fold machinery
+(stepMap/foldResid/stepInv_child_delta0/…) — never the shear def, the pivot conjunct, or
+ShearWithinCarveRaw — so the two transition patterns land only when the SORRIED arms close and start
+consuming hbranch/hwc. Deferred, not dodged — the honest framing.
+
+Frontier re-verification vs the faithful defs: #3 born-unit CONFIRMED UNCHANGED (blockBlowupCoordQuot
+pivot pivot = 1 on the origin-fixing sheared point ⟹ foldResid(child) j 0 = c_pivot(0) — independent of
+the canonShearOf→canonNormalizationOf rename; pivot ∈ ed.center in all cases); #1 + the case11-merge-block
+refinement intact (canonCenterOf untouched by the bake); #2 descent-lane framing intact. Holds for task
+#8 (the induction, in progress at seat-L3T2). The three post-N_p rebases: LL clean; L3T2 two-pattern
+friction (in rework); L4D in flight.
