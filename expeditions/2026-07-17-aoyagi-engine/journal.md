@@ -14308,3 +14308,22 @@ mis-stated twice = OVER-ENGINEERING THE ENCODING signal — recommendation: hold
 pin + derived lemmas" line, RESIST PREDICATE PROLIFERATION (adopted as standing controller guidance).
 Payoff caution kept honest: rlct=½·codim stays CITED until the wall lands. ρ-seam faithful + correctly
 deferred. Full read banked in the verbatim file.
+
+## 2026-07-23 ~04:05 UTC — seat-LL SPECIFY: lastLayer guard defect (5th guard-domain catch) — rollover-INTO-N-1
+
+seat-LL's SPECIFY on lastLayer_clear_preserves STOP-ON-SUSPECTED the statement: the guard
+hlast : ed.nextState.layer + 1 = N ADMITS the rollover-INTO-N-1 edge. The transition law (clears keep
+the layer; ONLY stepRollover advances it) means for N ≥ 2 the FIRST edge reaching layer N-1 is a
+rollover from N-2 — hlast holds on it, and there GeneratorCleared is FALSE (rollover ⟹ δ=0 via
+widthMinUpto_pos ⟹ pure pullback; the all-Deg1 parent's residual vanishes at 0). The docstring's
+exclusion argument only covered the rollover OUT of N-1. Fix (seat-LL): add
+hparent : p.conState.layer + 1 = N — forces the edge layer-preserving = a genuine clear; the hard
+content (first δ=1 clear produces the unit slot) survives; both consumer sites can supply hparent.
+
+This is the guard-domain family's FIFTH instance (hpos → he_lin → hlayer → non-terminal → hparent),
+ALL caught at SPECIFY, none mid-build — the standing render check + SPECIFY-first discipline is now
+5-for-5. Routed to the elder (verify against source + author the verbatim); arch-C warned a RIDER may
+join its in-flight Gap B staging (one bake round preferred; Gap B not held indefinitely — it has
+priority). seat-LL meanwhile drafts the primed twin locally (its in-place-vs-primed analysis: PRIMED —
+the conjA transport engines live downstream; the guard fix only excludes the rollover edge, so the
+clear-edge proof content is guard-stable); push held for the verbatim.
