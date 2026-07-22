@@ -7,7 +7,7 @@
 meta:
   expedition: 2026-07-17-aoyagi-engine
   roots: [aoyagi-summit, object-a, object-b, object-c, object-d, object-e]
-  updated: 2026-07-21
+  updated: 2026-07-22
 
 nodes:
 
@@ -222,7 +222,7 @@ nodes:
       - {type: needs, to: b-principalinv}
       - {type: discharges, to: object-b}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md]
-    notes: "controller rungs set post-recalibration (journal 2026-07-21); M'=1 simplification (hchain ⟹ principal): per-entry divisibility + Bézout, NOT full diag(b); leaves 3–5 = the coupled wall, content HELD until skeleton. REDIRECT confirmed THE ROUTE (staged PRE-BAKE, a2cf2e7fa): the leaves will condition on the repaired IsRealBranch; per-field SET (A) SUPERSEDED → named derived lemmas; discriminator = the kernel-checked DivBirthInv (support STAYS, no case11 descent). NOT yet in the leaf statements — b-leaf34/b-leaf5..b-leaf8 still carry the supportAt-window forms; the redirect bake re-conditions them + grows the cone by the derived-lemma stubs."
+    notes: "controller rungs set post-recalibration (journal 2026-07-21); M'=1 simplification (hchain ⟹ principal): per-entry divisibility + Bézout, NOT full diag(b). REDIRECT BAKED (9c51289f4, elder second read OK on staging 2080757ea): the 4 step-leaves take ONE hypothesis (p.extend ed).IsRealBranch e; per-field SET (A) SUPERSEDED → 6 named derived lemmas (realBranch_centerPin/cover/descendView/shearWithinCarve/terminal_edgeδ/multiAffine[FRONTIER]); canonCenterOf case11 fixed (birth-corner pivot ∪ J₁ q.2 sub-block, 4 explicit arms); discriminator = kernel-checked DivBirthInv. Cone = 16 live (MonumentAtlas 14 + LC:287 + Case2Delta0). IN FLIGHT: the L6-fix round (elder-authored strengthened shear pin — displacement ≡0 on earlier-cleared pivots; restores (★); additive, leaf-consumers insulated; realBranch_shearWithinCarve held for it)."
 
   - id: b-leaf2-blowup-atlas
     kind: claim

@@ -12428,3 +12428,54 @@ misses, all ⛔-bannered · Validate 18 · Skeleton 3). Its independent read sha
 carto's grep was +17, my quick parser +1 — the tool stands canonical. Post-bake expected-delta
 (10 → 16) recorded WITHOUT flipping the frontier line; the flip waits on my bake confirmation
 (carto's next trigger = the cone transition). Nothing open on carto's side.
+
+## 2026-07-22 ~12:00 UTC — THE REDIRECT IS BAKED (9c51289f4); elder hjac REVERSAL; seats woken; L6-fix round opened
+
+**THE SPLIT VERDICT (elder, one final text, cleanly separated):**
+1. **SECOND READ = CLEAN OK — 2080757ea is the bake.** All 5 gates PASS; all 8 arch-C flags
+   resolved (flag 1: blockShear additivity ⟹ (I)-on-displacement ≡ image form; flag 3 q.2
+   transpose CORRECT; flag 5 auto-cap structural; flag 7 cover re-scope CORRECT — case12/case2
+   center = blockCoords(layer) = supportAt at δ=1/cleared=0, equality). **Gate-2 checkpoint
+   resolved in the STAGED form's favour**: the per-step property-pin is the correct WEAKEST form;
+   the elder's "shearφ = canonShearOf" wording was over-specified — the canonShearOf term-render
+   gate is REMOVED. realBranch_multiAffine ruled name=content-honest and WELL-POSED.
+2. **The hjac ruling REVERSED — the elder owned its error.** Codex counterexample #5 (real,
+   d=(2,2)): a deeper det-1 shear sends u_p ↦ u_p + u_q on an EARLIER pivot at layer < sl —
+   ShearWithinCarveRaw only protects ℓ ≥ sl — giving |jacDet g| = |u_p+u_q|³, non-monomial; no
+   unit reconciles. FoldProduced.hjac_tie's naive per-step sum is DEFECTIVE as rendered; the
+   accumulation lemma is NOT derivable from the current pins. seat-L6's stop-on-suspect and its
+   (★) diagnosis both VINDICATED.
+
+**CONTROLLER VERIFICATION (own ground truth, then push):** merge --no-ff 2080757ea →
+**9c51289f4**; `scripts/lb DLNFibre` exit 0, 8995 jobs, 0 errors; forced #print axioms both
+drivers = [propext, sorryAx, Classical.choice, Quot.sound]; cordon OK (0 violations, 3 located
+cites, 35 blueprint sites of which 16 MonumentAtlas); census 41 = 35 − 8 + 14 EXACTLY as
+predicted (MonumentAtlas 14 = 8 leaves + 6 stubs). Pushed.
+
+**SEQUENCING DECISION (knowing, recorded):** the L6 fix (strengthen the shear pin — displacement
+≡ 0 on earlier-CLEARED pivot coordinates, restoring (★)) touches the shared
+ShearWithinCarveRaw/IsRealBranch and runs as a FOLLOW-UP round per the elder's lean, adopted.
+This is NOT bake-and-reopen: the strengthening is ADDITIVE (leaf consumers take IsRealBranch as
+hypothesis via the derived lemmas — their proofs stay valid verbatim under a strengthened
+hypothesis; the emit-side obligation grows one clause, discharged by canonShearOf which never
+writes cleared pivots — elder-certified emittable). realBranch_shearWithinCarve is HELD out of
+the proof wave (its target def strengthens). ONE-BAKE's substance (never invalidate baked work)
+is preserved; its letter (no post-bake def edit) is knowingly excepted on the elder's ruling +
+insulation argument. Surfaced to the operator in-channel.
+
+**WAKES + PIPELINE:** seat-L4 (centerPin stub → THE WALL under one hbranch → NEW case11
+pivot-provides-u_pivot lemma → lastLayer+GeneratorCleared emission); seat-L3T (cover/descendView/
+terminal_edgeδ stubs → case2 δ=1/conjB via exists_graded_decomp → terminal δ=1 dead-branch →
+consume-fit + crux dedupe); multiAffine = second wave. L6-FIX ROUND: elder CHARGED to author the
+exact clause (carrier for "earlier-cleared pivots" named locally at the one-site Raw; third-clause
+lean; emittability note; (★)-restoration statement) → render applies verbatim (locked form) →
+arch-C re-gates (pin-tightening; no new free field) → elder delta-read → integrate → wake seat-L6
+(then L6 lands sorry-free, excep switched to {jacWeight jac = 0}).
+
+**arch-C OWNED its wrong (★)-derivability lean** (missed the threshold DIRECTION — ≥sl leaves
+earlier layers free): the decorrelation call (lean logged, NOT forwarded mid-read) is VINDICATED
+concretely — forwarding it would have laundered the read toward a wrong "derivable". Banked as
+the session's second live demonstration that "frame in, hypothesis out" is load-bearing.
+
+Map: claims.yaml meta + b-ladder note updated (bake hash, cone 16, L6-fix round in flight);
+STATUS regenerated. Carto TRIGGERED on its named cone-transition (frontier flip + census 10→16).
