@@ -13025,3 +13025,13 @@ directly importable if stated on ConState (consuming those is not a bridge); rea
 proofs for IDEAS is fine. Home approved: PivotPreservation.lean (new companion module).
 Coordination pinned: A5's final form vs L5FoldSpec's M4 contract reconciles THROUGH me if they
 differ (no silent adaptation on either side).
+
+**Addendum (~20:35): the M4 fork DISSOLVED, convergently.** seat-L6's own dig (crossing my R2
+ruling) found DivBirthInv is ConState-NATIVE — clause 3 IS M4b's freshness verbatim, and the
+threading lemmas (conRoot/stepCase11/stepRollover/stepChildren) carry it down every real branch.
+So A3 = import-and-induct off EXISTING lemmas (not a re-prove), A2 = tupIdxEquiv-injectivity +
+omega off clause-3 freshness — NO flatCoordOf, no engine CornerDisjoint. Bridge-free was never
+in tension with reuse: the reusable facts were already frame-free (exactly the ruling's boundary
+note, confirmed independently from the seat's side). Two decorrelated reads, same verdict, the
+cheap version. seat-L6 building PivotPreservation.lean per-atom (reports at A1-A2, then A5);
+A5's final form routes through me for the L5Spec reconciliation.
