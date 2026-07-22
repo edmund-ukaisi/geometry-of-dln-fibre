@@ -1,4 +1,5 @@
 import DLNFibre.Core.Aoyagi.OrderCount
+import DLNFibre.Core.Aoyagi.OrderChain
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 import DLNFibre.DLN.Aoyagi.ClosedForm
 
@@ -25,7 +26,7 @@ to P6.2 (pnp-gated) and, for the analytic pole order, is monument-class (needs m
 continuation Mathlib lacks). This module claims only: `thetaCount = aoyagiTheta`, a value identity.
 -/
 
-open DLNFibre.Core.Aoyagi.OrderCount DLNFibre.DLN.RLCT
+open DLNFibre.Core.Aoyagi.OrderCount DLNFibre.Core.Aoyagi.OrderChain DLNFibre.DLN.RLCT
 
 namespace DLNFibre.DLN.Aoyagi
 
@@ -34,6 +35,16 @@ namespace DLNFibre.DLN.Aoyagi
 (Tier 1 stays name-neutral). -/
 theorem bandCount_eq_aoyagiTheta (ℓ a : ℕ) : bandCount ℓ a = aoyagiTheta ℓ a := by
   simp only [bandCount_eq, aoyagiTheta]
+
+/-- **The θ-attachment for the FAITHFUL count (P6.2).** The `Set.chainHeight` of the
+binding-minimiser box poset (the pnp-confirmed max-chain object, `Core.Aoyagi.OrderChain`) equals
+the landed `aoyagiTheta` value — both `a(ℓ−a)+1`, unconditionally. Ties the chain-height count to θ;
+the
+interpretive identification with the analytic pole multiplicity `ρ` remains the deferred monument
+seam (meromorphic continuation, Mathlib-absent). -/
+theorem chainHeight_boxPart_eq_aoyagiTheta (ℓ a : ℕ) :
+    (BoxPart ℓ a).chainHeight (· < ·) = ((aoyagiTheta ℓ a : ℕ) : ℕ∞) := by
+  rw [chainHeight_boxPart]; simp only [aoyagiTheta]
 
 variable {N : ℕ}
 
