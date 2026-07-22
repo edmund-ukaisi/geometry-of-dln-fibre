@@ -135,6 +135,15 @@ move; the whole Adm/Mval/bindingSet cluster migrates together), rev-Elane lint n
 prune (~25 tokens / 12 files, Validate+Skeleton+Engine), the Deg1SupportedOn/Slot naming unify.
 Trigger: the next quiet window after the redirect bake. — OPEN, consolidated. (Task labels #27/#28
 read "completed" = pointer-done/deferred-consolidated, not full-discharge.)
+GUARDRAILS from the codebase-shape findings (carto, 2026-07-22): **prune by MODULE, never by
+directory** — DLN/RLCT/Engine is MIXED (DivBirthReach/DivBirthInv, EngineConstruction,
+O5Realization + the 4 adapter roots are LIVE summit-path, consumed via RecursionAdapter; only the
+chart-route Geo*/ChartBridge* parts are fossil), and `minAdm` is a LIVE def inside
+Validate/RouteMLayerSplit (the fossil zone) — the prune list must be per-module verified against
+codebase-shape.md's frontier line. The naming-unify gains `lambdaCore` (duplicated: Foundations
+M-indexed vs ClosedForm d-indexed — intentional-looking but a shared-name reuse hazard). The
+sorry recount (F1: ~52 by carto's count vs 35 by scripts/sorries — reconcile counting method +
+on-cone-vs-fossil split) is a navigator gate-verify item at the prune.
 
 ---
 
