@@ -358,13 +358,13 @@ nodes:
 
   - id: b-boostready
     kind: claim
-    title: "boost-readiness: parent foldResid is Deg1SupportedOn the case11 boost center — ADJUDICATING"
+    title: "boost-readiness: parent foldResid is Deg1SupportedOn the case11 boost center — BAKED, proof live"
     prop: |
       At a real interior case1(1)-δ=1 edge, Deg1SupportedOn (foldResid p) ed.center (foldRegion p) —
       the SOURCE form. RULED + BAKED (0ce9c68b9): home (2) = CanonicalSchurStep property pin on
       IsRealBranch (4th .step conjunct) + boostReady derived stub gains hslot; content =
       support-form. Now a PROOF obligation: realBranch_boostReady_case11 (Case1Wire).
-    status: statement-locked
+    status: stated
     tier: new
     owner: "seat-L4 (proof live; drop-test verdict owed to elder: factor from hbranch+CanonicalSchurStep first, hslot only if a base coefficient is consumed)"
     kill: expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/case11_boostready_crosscheck.py
