@@ -29,6 +29,15 @@ the trap does not bite Tier 1; it is handled at the Tier-3 profile↔box iso (th
 Tier-3 kill-set instances). ATTAINMENT is the explicit staircase chain (Aoyagi's eq-(1)/(2)).
 
 Name discipline (K3): this file's names say **chain-height** — never order/multiplicity/θ.
+
+**Mathlib survey (elder pin, verdict `threads/41-order-count/mathlib-survey-verdict.md`):
+build-it CONFIRMED.** `YoungDiagram` (`Combinatorics.Young`) is the full/unbounded lower-set type —
+no `Fintype`, no box-restriction, no `chainHeight` lemmas (`rowLens` positive/variable-length ⟹ no
+clean fixed-`a` tuple bridge); `Finset.powersetCard` gives a-subsets but under the Boolean `⊆`, not
+the dominance order. So the box tuple `BoxPart` is hand-rolled, but the render is BUILT ON the
+`Order.Height` primitives (`chainHeight_eq_iSup`, `encard_le_chainHeight_of_isChain`,
+`InjOn.encard_image`, `Nat.card_Iic`). A `YoungDiagram`/a-subset citable-framing corollary is
+additive, not blocking.
 -/
 
 namespace DLNFibre.Core.Aoyagi.OrderChain
