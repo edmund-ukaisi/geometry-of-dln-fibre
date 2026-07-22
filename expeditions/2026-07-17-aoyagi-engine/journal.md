@@ -14776,3 +14776,28 @@ OPERATOR NOTE (asked "no running teammates?"): the seats are IDLE-BY-DESIGN betw
 (WAITING FOR WAKE → resume on delivery); transcript mtimes showed the fleet active until minutes before
 the question — the elder's double verdict was being written AS the operator asked. The architecture is
 burst-processing, not continuous.
+
+## 2026-07-23 ~13:10 UTC — N_p bake forks: 1+2 to the elder (sorry-the-invalidated-proven = a knowing proven-set shrink)
+
+arch-C's verify-before-render recon at full spine scale (39 canonShearOf refs; ~11 realBranch_* +
+5 leaves + the wires on IsRealBranch) surfaced 4 design forks; the substantive two routed to the elder
+WITH my concurrence:
+- FORK 1: REPLACE canonShearOf with the pivot-parametric canonNormalizationOf (delete, not alias) —
+  name=content; a name whose content changed underneath is the exact confusion class the fidelity arc
+  just paid for.
+- FORK 2 (the knowing decision, operator-surfaced here): the faithful re-author makes FIVE PROVEN
+  lemmas FALSE-as-stated (canonShearOf_support / _shearWithinCarve / _apply_interior /
+  realBranch_canonShear_eq / realBranch_shearWithinCarve — all assert the shear does not write layer
+  S+1; the faithful N_p DOES). The honest disposition: re-STATE to the faithful object + FRONTIER-SORRY
+  the bodies (statement-locked, map-tagged) — the PROVEN-SET SHRINKS (census +~5) because the old
+  proofs proved the UNFAITHFUL object. Precision principle: a false-as-stated "proven" lemma is worse
+  than an honest sorry. Payoff isolation unaffected (verified in the gate). The elder's explicit
+  sanction requested (its objects; definition-of-done-adjacent); ⚠ OPERATOR: this is the honest COST
+  of the fidelity fix — the proven-front retreats ~5 lemmas to advance on true ground. Surfaced as a
+  knowing recalibration per the standing preference.
+- FORKS 3+4 released on arch-C's recommendation: one staging (2-stage escape hatch); PivotPreservation
+  assessed-and-re-sorried-if-broken (the elder may preserve the ∃sc pin shape — asked). arch-C designs
+  the N_p flat-coord displacement (its encoding call; the elder's §6 value lemma pins it at delta-read).
+  A decorrelated Codex on the staging strategy sanctioned.
+MEANWHILE the cascade runs: seat-L3T2 is ON the base atom (task 6 in_progress). Holding the render for
+the fork-1+2 ruling.
