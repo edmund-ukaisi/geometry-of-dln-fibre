@@ -13256,3 +13256,12 @@ the parent + the step-threading to the child. The proof plan survives verbatim �
 steps uses child-branch-hood. Stop-on-suspect invited if L5's construction site contradicts
 this reading. The shape-sufficiency lesson's first PRODUCER-side instance: the consumer of an
 emission lemma is the constructor, and the constructor's available data is the hypothesis budget.
+
+**Addendum (~01:15): the M7 circularity FIXED, construction-site-verified.** seat-L4 checked
+the exact thing asked: IsRealBranch is a PLAIN bottom-up recursive def (the .step arm =
+parent-branch ∧ ∃sc ∧ ShearWithinCarveRaw), NOT mutual — so at extension time L5 holds the
+parent and PROVES the shear conjunct via the emission lemma. Parent-held carrier confirmed
+correct; re-validated as hpar + hdesc (+ hcase + hshear), banked ee333b2ca, builds green; the
+I/II/III plan survives verbatim (I: the oracle transition fact cleared+1 ⟹ sl = S+1; III:
+divBirthInv at the parent + step-threading ⟹ child freshness ⟹ the strict-interior guard fails;
+II: read-disjointness). Heads-down on the proof. No suspect.
