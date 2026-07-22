@@ -10841,3 +10841,15 @@ closure. ROUTED to the elder (queued BEHIND the window ruling): the four pass qu
 statement-fidelity question), hpos weakness, Core-vs-DLN home, def-site (seat-E leans keep-alias).
 AUTHORIZED now: the Codex design-check on the increments→a-subset→Young encoding (the cert used a
 generic backtracker, not a closed form) — prove-phase HELD until the elder's pass.
+
+## 2026-07-22 (controller) — render-lane note: two-clock render stands as the held (uncommitted) base; no back-out
+
+A crossing left the render seat's two-clock (amended-pin) render re-applied in the tree —
+uncommitted, a held bet on the outcome the calibration now leans AGAINST. arch-C asked:
+back out to strict-neutral, or hold? CONTROLLER CALL: hold, no back-out — a back-out is a
+fourth oscillation purchasing nothing (the ruling decides the baked form regardless of which
+shape sits uncommitted), and freeze-substance is satisfied: no bake, both preps warm
+(two-clock rendered + supportAt sort absorbed, one-pass re-pointable). arch-C owned the
+oscillation loop (relay-of-flips to the render lane, same root as mine) and adopted the
+ruling-gated discipline on its hop. Both hops now ruling-gated; one message carries the
+elder's verdict + literal window form when it lands.
