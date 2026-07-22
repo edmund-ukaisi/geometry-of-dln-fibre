@@ -10460,3 +10460,17 @@ advancement is a single motion — two fields that cannot disagree. arch-C verif
 its render uses (support-side = zero-cost; raw-layer = a one-expression correction), aligns,
 and BAKES. "The sixth independent convergence of the night is the design telling us it is done
 being designed."
+
+## 2026-07-22 (controller) — the render's four shapes confirmed; the re-coordination scoped to the PLANNED light rebase
+
+arch-C confirmed the seat's four reconstructed shapes (the seat landed the DeeperMultilinear core
+green FIRST, then surfaced the shapes — the discipline holding at the render level too): raw
+foldResid with quotMap DROPPED from the statement (the erratum resolution — the multilinear
+coefficient carries the degree-2 term); support = ed.center∖{pivot}; Core untouched (the slot is
+DLN-side DeeperMultilinear; anti-felting via the two derivation lemmas); the disjointness as the
+elder's PROVED NAMED LEMMA (a partition theorem), cited never carried. arch-C also corrected its
+own re-coordination scope: the proof seats' rebase IS needed but is the PLANNED light one —
+invariant BODY (Deg1 slot → DeeperMultilinear slot) + support VALUE (center → center.erase pivot)
+— no parameter/arity re-type anywhere. Both proof seats pre-notified with exact expectations.
+The window-index check rides arch-C's queue. Render (one-pass ripple) → the full gate → BAKE —
+"design fully closed; this is the mechanical finish."
