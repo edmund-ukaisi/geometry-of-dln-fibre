@@ -12199,3 +12199,18 @@ as its pre-mortem and the unit≡1-truth-vs-unit-allowed distinction flagged (a 
 term = suspect, not feature). seat-L3T rests with two leaves' branches + one complete leaf + two
 statement catches banked today. Cone accounting note for the bake: L8's landing offsets one
 redirect stub in the census.
+
+## 2026-07-22 (controller) — the FIFTH authored-form catch (arch-C's transpose inversion); locks at 5/6
+
+arch-C owned a transpose inversion caught pre-render by the lock discipline: its "grounded tupIdx
+translation" put the Edge-B run-length cap on flat ROW q.1.2; correct is flat COL q.2 (the
+paper-row ↔ flat-col transpose; battery-decisive — the q.2-partial block equals the exponent
+boost, the q.1.2 form fails at (3,3,4)). Self-extracted lesson: relay the verbatim source and let
+the CONSUMER own the coordinate translation — don't "ground" another seat's transpose. LOCKS 5/6:
+ShearWithinCarve(B), DescendView, hδ0, canonCenterOf-case11 (q.2-corrected, hpivot proved, two
+batteries), GAP-3 (= baked Deg1SupportedSlot on real branches), the shear predicate-pin. PENDING
+1: the relaxed hcenter (case11 consumes `ed.center = canonCenterOf` derived) + hcover
+CASE12/CASE2-CONDITIONAL (false for case11 — the pivot-provides mechanism). Then: full render →
+elder second read → gate → THE ONE BAKE. Authored-form catch tally this round: five (∀ℓ
+threshold, parent-pin direction, region token, (II) quantifier, the transpose) — every one
+pre-render or pre-bake, none escaped to a proof.
