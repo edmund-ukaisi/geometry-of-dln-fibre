@@ -11963,3 +11963,20 @@ merge child and a non-merged sibling share the state key). INTERACTS with the (B
 ruled to be DESIGNED TOGETHER (one invariant round), against the template's edge-kind-B
 specification, with the template SIMULATOR validating any candidate on all nine instances
 PRE-RENDER. The one bake now awaits the elder's single combined (B)+(reconciliation) design.
+
+## 2026-07-22 (controller, ~09:10) — lock round catches the FOURTH authored-form defect: ShearWithinCarve (II) unsatisfiable; two resolutions to the elder
+
+seat-L4's lock of the elder-verbatim ShearWithinCarve found clause (II) SELF-CONTRADICTORY as
+quantified (arch-C ground-truth-verified): unrestricted i means a high-layer coord i₀ gets
+(I)-forced identity, and (II) then demands "u ↦ u i₀ ignores its own layer" — false by
+definition. (I) ∧ (II) unsatisfiable on every non-terminal edge ⟹ hwc false ⟹ interior leaves
+vacuous. The two-layer LOCK GATE functioned exactly as designed: arch-C confirmed
+transcription-verbatim and DEFERRED satisfiability to the lock owner; the lock caught it; routed
+back, never silently adapted. TWO verified resolutions to the elder: (A) carve-restrict (II)'s i;
+(B) state (II) on the RAW DISPLACEMENT ed.shearφ for all i — (I) forces the displacement ≡ 0 on
+layers ≥ sl, and 0 ignores everything (seat-L4 leans (B); controller concurs — the displacement
+is the honest object, one uniform shape, no carve-out). Folds into the elder's combined
+(B)+(C1-reconciliation) round — no schedule cost. Running tally of authored-form defects caught
+by the lock/battery discipline this round: the ∀ℓ threshold, the parent-supportAt pin direction,
+the region token, now (II)'s quantifier scope — the authorship-division lesson earning its place
+in real time.
