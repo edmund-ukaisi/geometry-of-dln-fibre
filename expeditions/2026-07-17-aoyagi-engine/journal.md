@@ -10232,3 +10232,25 @@ a ≤ ℓ-drop deviation-for-the-better to bless), the survey verdict, the trap-
 at the iso) for explicit adjudication. On the pass: OrderChain wires + registers; the Tier-2
 θ-corollary lands; the Tier-3 iso scaffold proceeds (all three relocated pins as named domain
 hypotheses, consuming the banked DivChain nesting).
+
+## 2026-07-22 (controller) — THE CLAUSE RULED: DeeperMultilinear ("weakest-that-INDUCTS beats weakest-that-holds"); the round's design is COMPLETE
+
+The elder's exact clause: **the multilinear form** — DeeperMultilinear c D⁺ := ∃ h, (h d
+D⁺-only) ∧ c = ∑_{d ∈ D⁺} u_d · h_d, with D⁺ an EXPLICIT carried Finset (disjointness
+D⁺ ∩ (T ∪ {pivot}) = ∅ supplied by the fold from the layer partition). The ruling's principle:
+the day's repeated lesson (S3's genesis → mechanism 1 → this) is that the invariant must carry
+the form its induction CONSUMES AND EMITS — the simpler "deeper-only + vanishing" holds at every
+real state but re-derives form from value at each step. The multilinear form is what the
+Let-block child EXHIBITS (her multilinearity restated per step in prepared coordinates); it
+implies both simpler forms (two one-line derivation lemmas rendered for consumers) and excludes
+the center-dependent-cofactor trap verbatim. THE PROPAGATION SUBTLETY named for the prover:
+c∘σ handled by hceq mid-proof; the emitted child witness RE-READ off the Let-block form —
+preservation-by-RE-FACTORING, not by-composition (why the T-mixing Schur is harmless).
+ONE CHECKPOINT flagged-not-pre-ruled: pivot-READING shears (the countermodel reads the pivot;
+the fourth field forbids only writes) — if the preservation proof hits a residual read
+obstruction it returns as a NAMED FINDING; the drawer holds the fidelity-clean fence blueprint
+(pivot-independence, thread-33 §3). "Fix frames, not fences — keep the fence's blueprint in the
+drawer." TAXONOMY: the no-write/no-READ sub-axis recorded (audit what function-fields READ).
+arch-C executes the localized swap → the full gate (six re-checks + three countermodel/witness
+deaths) → THE BAKE. Nothing else is pending anywhere — the round's design is complete after
+seven rulings, four blind convergences, and two proof-seat refutations, every piece named.
