@@ -45,16 +45,48 @@ theorem admTight_nonempty (M : Fin (L + 1) → ℕ) : (admTight M).Nonempty := b
   rw [admTight, mem_filter]
   exact ⟨zero_mem_Adm M, fun j => Nat.zero_le _⟩
 
-/-- **Clamp does not raise `Mval`** (on the admissible cone): clamping an `Adm` profile down to
-the running-min bound coordinatewise never increases `Mval`. TRACKED-OPEN — the seam lemma's
-engine (the coupled `Mval`-summand analysis under a simultaneous coordinate clamp). The
-`T ∈ Adm M` hypothesis is NECESSARY: unconditionally the inequality is FALSE (e.g. `M=(0,2)`,
-`T=(1)`: `Mval T = −1` but `Mval (clamp) = 0`); it holds exactly on the weak-decreasing/last-zero
-cone — verified 2540/2540 over `Adm` (L≤3, widths 0..4, T 0..4), 11199/81375 fails without
-admissibility. `minAdm_tight_eq` is proved modulo this one lemma. -/
+/-- **The running-min bound is automatic on the admissible cone**: every `Adm` profile already
+satisfies `T⁽ʲ⁾ ≤ runMin M j = min(M⁰,…,M⁽ʲ⁺¹⁾)`. Reason: weak-decrease plus the per-coordinate
+`admBound` (`T⁽ʲ⁾ ≤ admBound M j ≤ M⁽ʲ⁺¹⁾`, and `T⁰ ≤ min(M⁰,M¹)`) force `T⁽ʲ⁾ ≤ M⁽ⁱ⁾` for every
+`i ≤ j+1`. Verified exhaustively (0/61014 admissible profiles violate it, L≤4, widths 0..5). This
+makes the `runMin`-tightening `admTight` **vacuous** (`admTight M = Adm M`); see `Mval_clamp_le`. -/
+theorem Adm_le_runMin (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) (j : Fin L) :
+    T j ≤ runMin M j := by
+  rw [Adm, mem_filter] at hT
+  obtain ⟨-, hbound, hdec, -⟩ := hT
+  unfold runMin
+  apply Finset.le_inf'
+  intro i hi
+  rw [Finset.mem_Iic] at hi
+  have hiv : i.val ≤ j.val + 1 := by rw [Fin.le_def, Fin.val_succ] at hi; exact hi
+  rcases Nat.eq_zero_or_pos i.val with hi0 | hipos
+  · -- `i = 0`: `T j ≤ T⁰ ≤ min(M⁰,M¹) ≤ M⁰ = M i`
+    have hi_eq : i = (0 : Fin (L + 1)) := Fin.ext (by rw [Fin.val_zero]; exact hi0)
+    set z : Fin L := ⟨0, by have := j.isLt; omega⟩ with hz
+    have hb0 := hbound z
+    unfold admBound at hb0
+    rw [if_pos rfl] at hb0
+    rw [hi_eq]
+    calc T j ≤ T z := hdec z j (by rw [Fin.le_def]; exact Nat.zero_le _)
+      _ ≤ min (M 0) (M 1) := hb0
+      _ ≤ M 0 := min_le_left _ _
+  · -- `i ≥ 1`: `T j ≤ T⁽ⁱ⁻¹⁾ ≤ admBound ≤ M⁽ⁱ⁾`
+    set i' : Fin L := ⟨i.val - 1, by have := j.isLt; omega⟩ with hi'
+    have hi'succ : i'.succ = i :=
+      Fin.ext (by rw [Fin.val_succ]; show (i.val - 1) + 1 = i.val; omega)
+    calc T j ≤ T i' := hdec i' j (by rw [Fin.le_def]; show i.val - 1 ≤ j.val; omega)
+      _ ≤ admBound M i' := hbound i'
+      _ ≤ M i'.succ := admBound_le_Msucc M i'
+      _ = M i := by rw [hi'succ]
+
+/-- **Clamp does not raise `Mval`** (on the admissible cone): clamping an `Adm` profile down to the
+running-min bound coordinatewise never increases `Mval`. In fact the clamp is the **identity** on
+`Adm` — every admissible profile already satisfies `T⁽ʲ⁾ ≤ runMin M j` (`Adm_le_runMin`), so
+`min (T j) (runMin M j) = T j` and `Mval` is unchanged. (The `T ∈ Adm M` hypothesis is necessary:
+unconditionally the inequality is FALSE, e.g. `M=(0,2)`, `T=(1)` gives `Mval T = −1 < 0`.) -/
 theorem Mval_clamp_le (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) :
-    Mval M (fun j => min (T j) (runMin M j)) ≤ Mval M T := by
-  sorry
+    Mval M (fun j => min (T j) (runMin M j)) ≤ Mval M T :=
+  le_of_eq (congrArg (Mval M) (funext fun j => min_eq_left (Adm_le_runMin M hT j)))
 
 /-- The clamp of a profile lands in `admTight` (running-min bound + weak-decrease + last `= 0`). -/
 theorem clamp_mem_admTight (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) :
