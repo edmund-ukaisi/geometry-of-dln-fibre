@@ -11649,3 +11649,20 @@ shrink ⟹ equality construction-TRUE exactly where the cover is needed) and an 
 shape (Deg1SupportedSlot on ed.center) for the elder's weighing. ONE uniform ruling pending:
 hcenter direction + the δ=1-terminal corner + the case2/lastLayer sweep. Meanwhile BOTH seats
 work ruling-independent branches (L4: conjunct-2 descend; L3T: case2 empirical + δ=0 pullback).
+
+## 2026-07-22 (controller) — elder SECOND READ on the re-bake: PASS (three decorrelated witness derivations agree)
+
+The elder's decorrelated second read of e3a449348 (transcript 07:12, its declared target — the
+four witnesses VERIFIED not build-green): defs verbatim to every ruling (PerLayerDeg1From :501;
+Deg1SupportedSlot :510 = ∃c ∧ threshold, Dp dropped; blockCoords :522 capped + distinct-from-
+canonCenter note; supportAt :538; supportLayerOf :546); the five-face wiring confirmed per leaf
+(hcenter + hgrade on the interior three; lastLayer EMITS GeneratorCleared, terminal CONSUMES —
+the FACE-5 induction chain rendered); all four witnesses re-derived — THREE decorrelated
+derivations now agree (arch-C structural + seat-L4 batteries-by-hash + the elder's own read).
+Verdict: "the re-bake is sound on the statement side… the proof seats are correctly on a faithful
+statement side." One report-hygiene note (not a defect): arch-C's "grep-clean" was imprecise — 3
+docstring RETIREMENT mentions of DeeperMultilinear remain (accurate history), no live defs; "the
+precise statement is 'no live defs; 3 accurate retirement mentions.'" Scope honestly stated: the
+elder verified statements + witnesses; the build/footprint/cordon remain the controller's sensor.
+NOTE: this read PRECEDES the hcenter-direction question (still in the elder's queue with both
+seats' convergent derivations) — the uniform center-relation ruling is the next elder output.
