@@ -14613,3 +14613,20 @@ CLOSING NOW. The carried-conditional shape confirmed clean (conjA unchanged; the
 case11-at-cleared=0 handled by the conditional output — the elder's payoff exactly). Character-identity
 coordination with arch-C initiated seat-to-seat (binder order hlast/hparent/hinv/hgen/hbranch + the 3
 consumer sites). The lane runs itself; nothing owed from the controller until arch-C's amended staging.
+
+## 2026-07-23 ~09:45 UTC — heartbeat: the N_pivot elaboration LAUNCHED (the central pipeline is live end-to-end)
+
+The elder authored the STAGE-FRAME BRIEF (banked: threads/L4-case1-core/npivot-stage-frame-brief.md)
+and confirmed the Gap B homogeneity statements are STABLE under N_pivot (swap-safe) — so seat-L3T2
+builds its three atoms the moment the amended staging merges, with NO N_pivot wait. pnp-transport
+CHARGED with the central elaboration: the faithful N_pivot on the (2,2,2,2)+(3,3,4) coupled witnesses
+at canonFlatten coordinates, corner + interior pivots, worked.tex-anchored; acceptance = honest_clear
+reproduces + pnp-fan's escape witness covered-and-monomialised + the b-chain/M_{s,k} PRESERVED (the
+Object-B↔D bridge keeps consuming Aoyagi's data) + the ε-table restated (non-strict boundary).
+Certificate → elder ratifies → Lean verbatim → arch-C renders → the ONE N_pivot bake.
+
+Also landed this tick: seat-L4C's LEAN COUNTERMODEL pushed (831b9cbf1 — the Fbad kill-witness making
+the he_lin-insufficiency undeniable for the amended staging's delta-read). Board: arch-C rendering the
+amended staging (task 18); seat-LL closing its δ=0 carry; seat-Q proving the cover atom; the elder's
+remaining queue = ratifications + the delta-read + the Lean-facing verbatims, all gated on external
+landings. Cron armed. The full pipeline to the faithful monument is live at every stage.
