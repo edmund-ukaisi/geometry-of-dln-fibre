@@ -12231,3 +12231,19 @@ battery 7fdfd88a8 (88 edges / 61 boosts across all nine instances: block-size = 
 blockBlowupMap on the center; residual stays) — distinct from the banked append-crux; seat-L4
 builds on wake. SEQUENCE: render green → arch-C verify → **elder's second read on the complete
 staged statements** → the full gate (elder checklist + 3 navigator checks) → THE ONE BAKE.
+
+## 2026-07-22 (controller, ~12:00) — the render's two structure improvements; the e-ripple secures GAP-3's derivability
+
+The final render folds two render-seat improvements (arch-C adopted, both within authority):
+(1) **the e-RIPPLE** — the shear-pin lives INSIDE IsRealBranch's recursion (every step's shear
+pinned, not just the last edge), with the e-param threaded through IsRealBranch/reachesLeaf and
+all 10 collapse pins. THE SIGNIFICANCE: the elder's GAP-3 ruling said multi-homogeneity-by-
+induction is derivable only if EVERY parent step's shear is graded — a last-edge-only pin would
+have left parent shears free and made the frontier-leaf realBranch_multiAffine stub UNPROVABLE.
+The render seat's structural read caught it before the elder's second read — the sixth
+significant catch of the round. (2) **ShearWithinCarveRaw** — the (B) clauses factored to ONE
+site (IsRealBranch's step clause has no TreeEdge; inlining would have duplicated (II) across two
+sites); content-preserving, DEFEQ to seat-L4's lock (the lock stands). The elder's second-read
+packet now carries seven flags (the two improvements + the five pre-flagged items incl. the
+M^(S+1) = d_{layer+1} ≠ widthMinUpto translation note). Sequence unchanged: render green →
+arch-C verify → the elder's pre-bake read → the full gate → THE ONE BAKE.
