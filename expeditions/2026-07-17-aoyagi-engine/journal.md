@@ -10276,3 +10276,19 @@ the Tier-2 θ-corollary (K1 gates ride there) then the Tier-3 iso scaffold (thre
 OrderIso). The elder's register note, verbatim: "P6.2's Tier-1 core LANDED unconditional — the
 expedition's first purely-classical citable combinatorics theorem, born from a paper-fidelity
 investigation. The rising sea, doing what the operator opened E to let it do."
+
+## 2026-07-22 (controller) — seat-L4's consistency datum PASSES: fork (A) mechanical on the real objects; its rendering constraint = the ruled clause (crossing)
+
+seat-L4's battery (case1_forkA_consistency.py @ c664a87ce): (S) the real Schur shear is
+PIVOT-INDEPENDENT (excludes the countermodel by the right property — not "T-untouched", which the
+real shear violates); (A1) ideal-membership over T is CLOSED under the real shear + strict
+transform (Gröbner-verified) — fork (A)'s conjunct-B is MECHANICAL on the real objects; (A2) the
+cleared-pivot slot births the unit (blockBlowupCoordQuot pivot pivot = 1) = the right disjunct's
+exemplar. CRUX confirmed form-independent in its CONCLUSION, with one rendering constraint: the
+left disjunct's coefficients must be center-disjoint in the PREPARED frame (raw SupportedOn would
+break the crux's hceq) — **which the elder's DeeperMultilinear ruling ALREADY delivers** (the
+crossing): D⁺-only cofactors + the disjointness hypothesis = the prepared-frame disjoint form by
+construction, strictly stronger than the bare ideal-membership both instruments rejected. The
+crux drops into the preservation lemma with NO frame-move. Convergence count on the clause: the
+elder's ruling, seat-L4's constraint, and the degree-2 clause (X) all independently locate the
+same form. Datum + battery join the round's evidence; seat-L4 holds for the bake.
