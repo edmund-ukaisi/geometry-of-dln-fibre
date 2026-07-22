@@ -31,6 +31,11 @@ A route here is DEAD as a destination; its trail is kept as a battery anchor / l
 **24 proof-position sorries tree-wide; 23 are FOSSILS, 1 is THE frontier**
 (`LearningCoefficient.lean:287`). Do not "fix" a fossil.
 
+> ⚠ The "1 frontier" line predates the supportAt bake (`b7fa66841`, 2026-07-22): the monument is now a
+> 10-leaf RENDERED skeleton — ~8 ON-CONE sorried leaves in `MonumentAtlas.lean` (the proof queue, NOT
+> fossils; [[banked-families]] § In-flight). The `Validate/`/`Skeleton` fossil zones below still stand.
+> A precise tree-wide recount is a navigator gate-verify item, not done here.
+
 - **Predecessor `Validate/` fossils (18):** `RouteMInteriorLDUContract` ×9 (the densest
   half-built lane), `RouteMSJDeeperFlagCore` ×2, `DeepestGaugeChart:357`, `RouteMLayerCoverGE:133`,
   `RouteMRecursion:257`, `RouteMSJDecoratedPeelStep:86`, `RouteMSJResolution:803`,
@@ -73,6 +78,17 @@ A route here is DEAD as a destination; its trail is kept as a battery anchor / l
 - **Whole-tree rebuild of the salvageable combinatorics — REJECTED (elder).** "Rebuilding 4000
   kernel-checked lines to avoid a retired NAMESPACE is timidity-disguised-as-rigor." Salvage
   under C1/C2/C3.
+
+## Bake-era discards (the supportAt window ruling, `b7fa66841`, 2026-07-22)
+
+- **two-clock (T/D⁺ deeper-union-shed) shape + shedSlots — DISCARDED.** The elder-ruled `supportAt`
+  window replaces it: the `T ∪ D⁺` partition is disjoint via `disjoint_compl_right` (no shed slots, no
+  ±1 offset). Trail: the swap-alarm fired on the two-clock's near-inversion → the phantom-retraction
+  cycle (the over-deference / false-retraction witness, [[severance-witnesses]] § Process defects).
+- **`deeperCoords` island (`deeperCoords` + `deeperCoords_disjoint_atOrBelow`) — DELETED** (false-docstring
+  fidelity defect: its "consumers CITE it, never re-derive" docstring was false-as-stated — nothing cited
+  it; `supportAt` uses `layerCoords` and the C-complement partition uses `disjoint_compl_right`).
+  grep-clean at HEAD (0 matches). Caught at the bake gate.
 
 ## Genesis-era exits (kept: battery anchors)
 
