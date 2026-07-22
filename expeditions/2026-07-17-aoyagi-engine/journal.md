@@ -12697,3 +12697,17 @@ exactly the two elder-ruled stubs, both staying sorried. Holding for the staging
 Meanwhile the elder holds the NEXT ruling in queue: the FoldRealizes Jacobian-collapse clause
 (seat-L6's precisely-located GeoStep↔TreePath seam — "FoldRealizes equates composed maps, not
 step decompositions").
+
+## 2026-07-22 ~15:05 UTC — seat-L6 prep: chart_of_collapse SORRY-FREE; L6 reduced to ONE sorry (the collapse)
+
+seat-L6 banked `chart_of_collapse` sorry-free (its branch c843c0eeb, green): from the single
+hypothesis `hcollapse : ∀ u, |jacDet (atlas.gmap c) u| = jacWeight (atlas.jac c) u` it
+constructs the ENTIRE certified 28-field Chart — excep = {jacWeight jac = 0} (closed via
+continuous_jacWeight, null via volume_jacWeight_zeroSet), hg_inj via injOn_pathMap_off_critical
++ the zero-set coincidence, hjac = the collapse itself. `leafPath_chartGeometry'` is now THIN:
+one sorry = hcollapse; both candidate FoldRealizes forms land as a ONE-LINE replacement.
+Relayed to the elder as an addendum (consumer now form-agnostic — the ruling is purely where
+the obligation lives + the honest-constraint taste question). The L6 lane's shape is now: the
+elder's form → one line → gate → reviewer → statement card. Board otherwise unchanged: hpos
+staging in render; FoldRealizes ruling queued behind it; L4 wall wave + L3T2 Case2Wire
+conjunct-A in flight.
