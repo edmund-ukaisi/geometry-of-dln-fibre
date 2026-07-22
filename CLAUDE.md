@@ -137,7 +137,11 @@ hourly loop/heartbeat with the operator away) these are load-bearing, not option
 Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
 - `controller` — this lead session: meta-planning, delegation, integration.
 - `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
-- `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
+- `pen-and-paper` — a specialised `scout`: **elaborates** the source mathematics into a fully worked
+  template for the build (the primary use — catch typos, pre-mortem build issues, blind to the Lean),
+  or adjudicates a truth-value (`witness` / `obstruction` seats); exact algebra, decorrelated Codex;
+  hands a certificate/template to the formaliser. No Lean. Not for adjudicating shortcuts around
+  detailed work — when in doubt, elaborate the detail (operator, 2026-07-22).
 - `formaliser` — formalisation (tide) threads.
 - `architect` — a specialised `formaliser`: top-down blueprint development (settled decisions reified
   as typed, sorried, wired skeletons; gate = elaboration + battery, not sorry-free).
