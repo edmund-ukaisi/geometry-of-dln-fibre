@@ -94,6 +94,16 @@ category before reporting progress; the elder gates every route and every progre
   elementary" clean headlines about an unbuilt object are UNVERIFIED until probed with decorrelated
   exact-algebra at the KNOWN failure cases (coupled corank≥2). The tractability probe is a CHECK on a
   committed build, never a gate that scopes the object down.
+- **The def-fidelity gate (fidelity arc, 2026-07-23 — the deepest drift; ~2 days + 4 escalations).** A
+  spine DEFINITION bakes only behind a source-fidelity certificate: the source construction and the Lean
+  def, traced on the SAME concrete witness, then DIFFED. Statement gates never catch a wrong def — both
+  wrong objects here (the shear missing Aoyagi's deeper recoord `A_{S+1}·Q₁⁻¹`, worked.tex:445, in-repo
+  the whole time; the `∀-e` flatten admitting a layer-scrambler) were def-level, invisible to every
+  statement gate. A battery must exercise the LEAN def, never only a hand model of the intended math: the
+  kill-battery here traced the faithful HAND MODEL (with the `Q₁⁻¹`) while the Lean def diverged, so the
+  decorrelated instrument green-lit the right MATH over a wrong ENCODING — the worst failure, the gate
+  confirming the INTENT not the OBJECT. A "representation not taken" docstring note is a DEFERRED decision
+  needing an owner + a re-open trigger, never a silent choice.
 
 ## §4  Durability
 Read first, every cycle, by every role. Elder is sole author (holds the abstract-object frame; gates

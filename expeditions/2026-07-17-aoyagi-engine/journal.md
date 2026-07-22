@@ -14750,3 +14750,231 @@ The expedition's central question — is the faithful object buildable without r
 is answered YES on the evidence: N_p preserves Aoyagi's combinatorial ledger exactly. Pending: the
 elder's ratification + delta-read (both queued, sequencing suggested: delta-read first to unblock the
 merge cascade).
+
+## 2026-07-23 ~12:45 UTC — ★★★ DOUBLE VERDICT: the amended bake MERGED (72e96304f) + N_p RATIFIED (elder re-derived, corank-3 incl.)
+
+The elder delivered BOTH queued verdicts in one pass:
+(1) DELTA-READ OK → the amended Gap B bake MERGED (72e96304f): HomogeneousDeg1On + the two homogeneity
+atoms (canonFlatten-pinned) + the cap (hpos) + the hparent lastLayer REVISED form. My re-derived gate:
+build green; payoff roots UNCHANGED; cordon OK; census 39 = 36 + exactly the 3 staged atoms. THE MERGE
+CASCADE IS LIVE: seat-L3T2 woken to build the three atoms (its engine = seat-L4C's banked mult_split
+peel route, handed verbatim; the Fbad countermodel as the negative control; canonFlatten IS the
+discharged reindexing hypothesis).
+(2) N_p RATIFIED — and NOT on the "RATIFIABLE" label: the elder RE-DERIVED the decisive checks with
+its own peel construction (det-1 at EVERY pivot for 2×2/3×3/4×4/2×3 — it RAN the corank-3 stress
+itself, discharging the residual), confirmed the M-preservation core (det-1 ⟹ Aoyagi's exponents +
+the B↔D bridge unchanged), the interior-pivot kill does NOT fire, and the transpose-dual fidelity
+reconciliation (the Lean right-mult recoord IS Aoyagi's left-mult — reversed product order). On the
+missing fresh-Codex: it judged decorrelation HONESTLY satisfied (it IS the decorrelated instrument —
+own route, extended coverage; + the banked thread-27 Codex independently confirmed the coupled peel
+b-vector); a re-fired Codex offered as non-gating belt-and-braces. THE LEAN-FACING VERBATIM AUTHORED +
+BANKED (threads/L4-case1-core/elder-npivot-verbatim.md) → arch-C CHARGED with THE N_p BAKE (the
+coupled re-bake: the N_p def + the shear-pin re-author + the pivot fan; verify-before-render; the
+payoff-isolation check matters most this round).
+
+OPERATOR NOTE (asked "no running teammates?"): the seats are IDLE-BY-DESIGN between message bursts
+(WAITING FOR WAKE → resume on delivery); transcript mtimes showed the fleet active until minutes before
+the question — the elder's double verdict was being written AS the operator asked. The architecture is
+burst-processing, not continuous.
+
+## 2026-07-23 ~13:10 UTC — N_p bake forks: 1+2 to the elder (sorry-the-invalidated-proven = a knowing proven-set shrink)
+
+arch-C's verify-before-render recon at full spine scale (39 canonShearOf refs; ~11 realBranch_* +
+5 leaves + the wires on IsRealBranch) surfaced 4 design forks; the substantive two routed to the elder
+WITH my concurrence:
+- FORK 1: REPLACE canonShearOf with the pivot-parametric canonNormalizationOf (delete, not alias) —
+  name=content; a name whose content changed underneath is the exact confusion class the fidelity arc
+  just paid for.
+- FORK 2 (the knowing decision, operator-surfaced here): the faithful re-author makes FIVE PROVEN
+  lemmas FALSE-as-stated (canonShearOf_support / _shearWithinCarve / _apply_interior /
+  realBranch_canonShear_eq / realBranch_shearWithinCarve — all assert the shear does not write layer
+  S+1; the faithful N_p DOES). The honest disposition: re-STATE to the faithful object + FRONTIER-SORRY
+  the bodies (statement-locked, map-tagged) — the PROVEN-SET SHRINKS (census +~5) because the old
+  proofs proved the UNFAITHFUL object. Precision principle: a false-as-stated "proven" lemma is worse
+  than an honest sorry. Payoff isolation unaffected (verified in the gate). The elder's explicit
+  sanction requested (its objects; definition-of-done-adjacent); ⚠ OPERATOR: this is the honest COST
+  of the fidelity fix — the proven-front retreats ~5 lemmas to advance on true ground. Surfaced as a
+  knowing recalibration per the standing preference.
+- FORKS 3+4 released on arch-C's recommendation: one staging (2-stage escape hatch); PivotPreservation
+  assessed-and-re-sorried-if-broken (the elder may preserve the ∃sc pin shape — asked). arch-C designs
+  the N_p flat-coord displacement (its encoding call; the elder's §6 value lemma pins it at delta-read).
+  A decorrelated Codex on the staging strategy sanctioned.
+MEANWHILE the cascade runs: seat-L3T2 is ON the base atom (task 6 in_progress). Holding the render for
+the fork-1+2 ruling.
+
+## 2026-07-23 ~13:40 UTC — heartbeat: FORKS RULED → THE N_p RENDER IS GO
+
+The elder ruled all four forks (banked: threads/L4-case1-core/elder-npivot-fork-ruling.md):
+1. REPLACE canonShearOf → canonNormalizationOf (delete not alias; corner-vs-interior INSIDE the
+   pivot-parametric def) — name=content, "an alias whose content changed underneath is exactly the
+   confusion class the fidelity arc just cost two days to surface."
+2. SANCTIONED: re-state + frontier-sorry the 5 invalidated lemmas — "honest-ledger accounting... the
+   old proofs proved the WRONG object; removing them is correcting the ledger, not regressing it."
+   WITHIN expedition-mode (tracked live-frontier, statement-locked), NOT a definition-of-done change.
+   + a consolidation rider: where two re-stated facts collapse into ONE two-support form, keep one
+   public-canonical form (render-level judgment).
+3. Staging escape hatch + the flat-coord displacement design + the staging Codex: on arch-C's
+   recommendations; the elder delta-reads the layer-(S+1) recoord indexing against its §6 value lemma.
+4. THE GOOD SURPRISE: the fan-pin is INTENDED to preserve the ∃sc state/center-pin shape —
+   PivotPreservation SHOULD SURVIVE UNTOUCHED (the fan relaxes only pivot-equality → membership;
+   DivBirthInv reads state/birth structure UPSTREAM of the chart-pivot choice). Re-sorry only if a
+   proof load-bearingly reads the single pivot VALUE (not expected). That saves the M4 7/7-reviewed
+   family from the re-author — a materially smaller blast radius than feared.
+
+arch-C: RENDER GO (the decisive staging; gate at full weight — payoff isolation matters most here;
+census +~5 expected from fork 2, exact count reported). MEANWHILE the cascade advances: seat-L3T2
+has the STEP HELPER PROVEN (task 7 done — homogeneousDeg1On_comp_of_fixing) with the base atom in
+progress. Cron armed. Next integrations: the N_p staging hash (my gate + elder delta-read) +
+seat-L3T2's atoms.
+
+## 2026-07-23 ~14:10 UTC — TWO ATOMS PROVEN (the genuinely-new math); the 7th guard catch (hpos rider); the induction correctly waits
+
+seat-L3T2 LANDED the hard half of Gap B (c8030f6b9 on -L3T2): coreGen_layerHomogeneous' (the base
+atom — the genuinely-new math, via submult-isolation of A_ℓ + a sum_ite_eq reindex, Codex-validated)
++ homogeneousDeg1On_comp_of_fixing (the step helper) — BOTH PROVEN, both N_p-STABLE (coreGen/
+canonFlatten/mult don't change in the re-bake; the elder's swap-safe call confirmed in the building).
+Also reconciled the appendResidDescent name-clash onto the canonical cap (hpos threaded).
+
+FINDING 1 = the guard family's SEVENTH catch: the baked foldResid_layerHomogeneous MISSES hpos while
+both siblings carry it — without it a δ=1 ROLLOVER is reachable (widthMinUpto=0 at some d k=0) where
+the pivot is UNCONSTRAINED, defeating the pivot-below-threshold proof mechanism (trace d=![1,0,1,1]).
+Statement true-but-unprovable-as-intended. Routed: elder bless requested; arch-C folds it into the
+in-flight N_p staging as a one-line rider (not holding the render on it).
+
+FINDING 2 = the right timing call, confirmed: the fold induction's STEP case consumes exactly what the
+N_p render is re-authoring NOW (foldResid δ=1 + the IsRealBranch shear conjuncts + the comp_of_fixing→
+comp_of_linear shift) — building it today is throwaway. The induction builds ONCE, post-N_p-merge.
+Meanwhile seat-L3T2 runs the stable audits (forced axioms on the 2 atoms; cap frontier-naming; module
+paths for my wire — MultiAffineHomogWire.lean is new).
+
+Gap B's score: of its three lemmas, TWO are proven + banked and the third deliberately queued behind
+the same bake it must be written against. No wasted proofs anywhere in the round.
+
+## 2026-07-23 ~14:30 UTC — L3T2 audit clean; the wire SEQUENCED behind the N_p merge (risk arithmetic)
+
+seat-L3T2's audit (8291871f9): coreGen_layerHomogeneous' + homogeneousDeg1On_comp_of_fixing +
+submult_congr + canonFlatten_apply ALL clean-three on forced re-derivation; realBranch_multiAffine_step'
+carries sorryAx SOLELY via the canonical cap (the clash-reconcile sound). Module for the wire:
+MultiAffineHomogWire.lean (+ the never-yet-wired MultiAffineStepWire). Tasks #6/#7/#9 DONE; #8 held.
+
+CONTROLLER SEQUENCING CALL: the -L3T2 merge + both wires WAIT for the N_p merge — one integration round
+after it. (a) Nothing consumes the atoms pre-N_p (the induction + seat-LL's frontier both queue behind
+the bake); (b) merging into canonical mid-decisive-render churns arch-C's base for zero urgency — bad
+risk arithmetic on THE critical path. Sequence: N_p merges → -L3T2 merge + wires → atom #3 against the
+final defs → the full audit → the primed-twin swap map onto the SUMMIT-RETIRE ledger.
+
+## 2026-07-23 ~15:00 UTC — hpos BLESSED; the def-fidelity gate is IN THE CHARTER; N_p render continues
+
+The elder blessed the hpos rider (the 7th guard catch — arch-C folds it into the N_p staging) AND
+authored the CHARTER §3 def-fidelity gate (committed on its signal, controller pen): a spine DEF bakes
+only behind a source-fidelity certificate (source construction + Lean def traced on the SAME witness,
+DIFFED); batteries must exercise the LEAN def, never only a hand model — "the worst failure, the gate
+confirming the INTENT not the OBJECT"; a 'representation not taken' note = a deferred decision needing
+an owner + re-open trigger. The operator's paper-check question is now a per-cycle-loaded invariant.
+
+The elder also SUGGESTS graduating the gate to docs/policies/ for cross-expedition permanence —
+harness-level, so it's the OPERATOR's call, surfaced in my report (I will not create a policy file
+unilaterally; the one-time hardener edit precedent was explicitly not a general license).
+
+N_p render: still in flight (nothing on rung-c yet — it is the expedition's biggest render: the def +
+39 re-wires + 5 re-statements + the pins + 2 riders). All other lanes holding/banked per plan.
+
+## 2026-07-23 ~15:30 UTC — ★★ THE RECOORD IS STAGED (9abd7cbff, 4/5 PROVEN); the fan-pin hits a REAL conflict (§3⊥fork-4)
+
+arch-C staged the N_p bake's DECISIVE HALF, green + honestly named ("NOT 'N_p bake complete'"):
+- canonShearOf DELETED → canonNormalizationOf d s p: pivot-parametric TWO-support (pivot-shifted Schur
+  on layer S + the A_{S+1}·Q₁⁻¹ recoord on layer S+1 — THE fidelity fix, in the def at last). 39 refs
+  re-wired. The value-pin (shearφ = canonNormalizationOf … pivot) carries the positive recoord pin;
+  ShearWithinCarveRaw I/II re-authored (≥sl → >sl), arity stable ⟹ PivotPreservation UNTOUCHED (0
+  sorries). foldResid δ=1 unchanged (the recoord flows via the value-pin).
+- THE GOOD SURPRISE: 4 of the 5 re-stated lemmas PROVEN (def guards designed to match the support
+  predicate) — only the M7-emission successor frontier-sorried. Census +1, NOT the sanctioned +5 —
+  "do not sorry the provable." Payoff roots UNCHANGED; build green 9008; cordon OK. arch-C re-derived
+  every gate (rendered via a sub-agent under its spec; did not trust its "done").
+
+★ THE SPLIT (a genuine geometric conflict, decorrelated-found): the §3 MEMBERSHIP FAN-PIN contradicts
+fork-4's "PivotPreservation untouched." stepMapRaw_fixes_parentLedgerCorner:345 uses the pivot EQUALITY
+load-bearingly — under a FREE interior fan pivot, an earlier ledger corner c₀ inside a case-11
+canonCenterOf is MOVED by the blow-up. Free-interior-pivot ⊥ blow-up-fixes-earlier-corners. The elder's
+fork-4 expectation ("I don't expect it") was WRONG — found exactly where it said to look. arch-C kept
+the equality pin + staged the green partial (the fork-3 hatch working as designed). ROUTED: the elder
+delta-reads the staging + RULES the fan resolution ((a) ledger-corner-preserving fan vs (b) free at
+case12/case2 + canonical at case11); pnp-fan adjudicates IN PARALLEL the sharp cover question (does the
+cover NEED case11 interior pivots? — its argmax mechanism + a worked boost-node instance decides),
+frame-in/hypothesis-out both ways.
+
+NET: boostReady's side of the fidelity fix is one delta-read from canonical; the cover's side (the fan)
+is one adjudication + one ruling from its final form. The two halves were always separable — the
+staging separates them honestly.
+
+## 2026-07-23 ~16:10 UTC — the fan conflict RESOLVED: covered-under-(b), (a)≡(b), three structures agree
+
+pnp-fan's adjudication (banked 3cc7851d9; machine-checked exact-rationals witness, controller-re-run
+PASS incl. the exact break (H) + the sibling-recovery (B)): the cover does NOT need case-11 interior
+fan pivots. THE MECHANISM: the oracle emits the case-1(1) merge + case-1(2) split SIBLINGS at the same
+node; the merge center {c₀}∪B has B inside the sibling's fresh center where c₀ is a FIXED spectator —
+so the argmax routing sends c₀-dominant points to the case-11 canonical chart and B-dominant points to
+the SIBLING's fan charts. The case-11 interior fan is UNNECESSARY (sibling covers) and HARMFUL (moves
+c₀). AND: the elder's principled candidate (a) (ledger-corner-preservation) ≡ the restricted fan (b) —
+at case-11 it forces pivot = c₀; at case-12/case-2 the fan is free. AND it equals the partition the
+ENGINE's sorry-free cover already proves (dCenterOfNode_edgeSum: case-11 edge owns exactly c₀). Three
+independent structures agree; the geometric conflict dissolves into the correct case-split pin.
+
+SCOPE kept explicit: this is the case-11 BLOW-UP side (no shear there); the case-12/case-2
+interior-pivot NORMALIZATION is the landed recoord half — orthogonal mechanisms, both needed, both now
+present. THE ELDER's desk is now ONE bundled ruling: the 9abd7cbff delta-read + ratify the case-split
+fan pin + the blessed hpos → arch-C's single follow-up staging COMPLETES the N_p bake.
+
+## 2026-07-23 ~16:45 UTC — ★★★ THE RECOORD IS CANONICAL (8e557fc46): the fidelity fix is in the definitions
+
+The elder's bundled ruling landed (banked: elder-npivot-deltaread-fanrule.md): DELTA-READ OK on
+9abd7cbff — it re-derived the recoord flat-indexing itself against its §6 value lemma (A_{S+1}·Q₁⁻¹ −
+A_{S+1} = [l=a]·∑_{k≠a}A[row,k]w_{kb}, exact match; arch-C's flagged guard CORRECT: i=q.2 ≡ i≠a in the
+firing branch) + the fan-pin RULED (b) (case-11 canonical, fan at fresh clears — "faithful + resolves
+the conflict") + it owned the wrong fork-4 expectation.
+
+MERGED + CONTROLLER-RE-GATED (canonical 8e557fc46): build green; canonNormalizationOf_support +
+realBranch_canonNormalization_eq CLEAN-THREE; payoff roots UNCHANGED (isolation held through the
+biggest spine re-author of the expedition); cordon OK; census 40 (+1 exactly = the M7-emission
+successor frontier). Aoyagi's clearing step — pivot-parametric, row/col-clearing, deeper-factor
+compensated — is now what the Lean definitions SAY, not just what the math intended. canonShearOf is
+gone.
+
+arch-C CHARGED with the COMPLETING staging (one bundle: the (b) fan case-split pin [case-11 equality
+kept, case-12/case-2 membership] + the blessed hpos) → my gate + elder delta-read → merge = THE N_p
+BAKE COMPLETE → the big re-opening (-L3T2 merge + wires, the induction, seat-LL's frontiers, the
+ChainCompat pins, the wall's endgame).
+
+## 2026-07-23 ~17:15 UTC — OPERATOR COMMISSION: the thorough paper-fidelity review (elder) + the completing render is green
+
+(1) OPERATOR COMMISSION dispatched to the ELDER (task #31): the exhaustive paper-fidelity review —
+enumerate ALL objects/intermediates/results/caveats/calculations from BOTH sources (Aoyagi's
+construction incl. worked.tex; Lehalleur–Rimányi 2024, the destination) → cross-check each against the
+codebase (PROVEN/STATED/CITED/MODELED-only/ABSENT, generality mismatches explicit) → JUDGE every gap
+(SHOULD-COVER-NOW → back to me for commissioning / LATER post-summit-vs-next-expedition /
+RIGHTLY-SKIPPED with why / CITED-BY-DESIGN). Deliverable: paper-fidelity-review.md, elder authorized
+to commit that file + threads/fidelity-review/ directly (a scoped exception to the commit rule).
+Subagents authorized + encouraged (operator-explicit). The completing-staging delta-read stays its
+priority interrupt. This is the institutional follow-through on the operator's "the paper surely has
+these worked out" — from a def-fidelity gate to a FULL coverage map.
+
+(2) The COMPLETING RENDER is green (the render seat → arch-C, staging next): the (b) fan case-split
+pin + hpos; census +0; payoff roots unchanged; AND an honest correction — PivotPreservation WAS touched
+(the (b) match-shape broke :345's application exactly as the render traced), fixed sorry-free in ~14
+lines by routing case12/case2 through c₀ ∉ the fresh width-block (pnp-fan's mechanism, now
+Lean-checked via cornerToFlat_notMem_widthBlock). "Trace, don't expect" — the third time this arc the
+trace corrected an expectation, each time cheaply BECAUSE it was traced before commit. Awaiting
+arch-C's staging hash → my gate → the elder delta-read → THE N_p BAKE COMPLETES.
+
+## 2026-07-23 ~17:40 UTC — the COMPLETING staging at my gate (99a1eb5b0) → elder delta-read (priority interrupt)
+
+arch-C staged the N_p bake's completing half: the (b) fan-pin as a `match cse` case-split (case12/case2
+free fan; case11 canonical-forced; rollover vacuous) + hpos + THE PIVOTPRESERVATION REWORK — the second
+trace-correction of the round: :345's application failed under (b) exactly as traced ("the match-pin is
+not a ∀"); fixed sorry-free in ~14 lines by routing case12/case2 through c₀ ∉ the fresh widthMinUpto
+block (cornerToFlat_notMem_widthBlock:67) — pnp-fan's mechanism KERNEL-CHECKED. The elder's "untouched"
+expectation wrong twice-over, each time caught by the trace before commit, each fix minimal BECAUSE
+traced. Gate (arch-C re-derived): build green 9008; census 40 (+0!); payoff roots unchanged through the
+WHOLE bake; cordon OK; destructure sweep clean. My static gate passed (2 declared files, key hunks).
+Elder delta-read triggered as its priority interrupt (the review resumes after). On OK: merge = THE
+N_p BAKE COMPLETE → the big re-opening.
