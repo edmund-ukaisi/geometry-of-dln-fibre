@@ -10565,3 +10565,19 @@ correction flag with NO seat report — the idle-stall check fired to arch-C (th
 idle + clean + continuing-intent = stalled). The heartbeat memo's phase line re-written to the
 (A)-round endgame state (the one-expression correction → the fifteen-point gate → the bake →
 the proof cascade; the E-lane ladder; cone 10 post-bake).
+
+## 2026-07-22 (controller) — the window predicate: the LAST unpinned object; the trace charge sharpened by arch-C's honest contradiction
+
+The render seat's thrash-stop (3 contradictory window readings — stop-rather-than-guess again)
++ arch-C's routing (converged with my preemptive joint charge) reduce the monument's entire
+remaining design surface to ONE object: **the exact deeperCoords d layer cleared membership
+predicate.** arch-C resolved the roll half (∃C' STAYS — the child support is next-edge data,
+honest existential; the advance is the PROOF's witness) and honestly flagged its own structural
+read CONTRADICTS the advance (support = the SHRINKING un-cleared sub-block vs C' = D⁺_parent
+GROWING — "either my sub-block read is wrong or D⁺_parent is smaller than I think"). The
+discriminating instrument: seat-L4's literal (3,3,4) trace — T and D⁺ as coordinate sets at each
+(S, J) state through two clears and a rollover — with three candidate reconciliations named
+(within-layer shrink + boundary advance / per-clear advance / smaller per-clear D⁺). The elder
+holds the intent half. arch-C's structure hint: strictly-deeper layers ∪ same-layer consumed,
+(layer, cleared)-derived. Everything else renders meanwhile; the bake follows the pin + the
+one-index swap + the full gate. "The exact window predicate is the last unpinned thing."
