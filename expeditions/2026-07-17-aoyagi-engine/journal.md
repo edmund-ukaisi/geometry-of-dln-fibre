@@ -10599,3 +10599,22 @@ holds/mis-stated verdicts; the split confirmed/refuted + the corrected (b)); the
 it, with the suspicious (T, D⁺)-swap candidate flagged for extra scrutiny. arch-C's roll
 resolution (∃C' stays; the advance = the proof's witness) to the elder for blessing with the
 window ruling. Everything window-independent renders meanwhile.
+
+## 2026-07-22 (controller) — THE WINDOW PIN: TWO CLOCKS (T per clear, D⁺ per rollover); the ∃C′ deleted; one trace-owned question remains
+
+The elder's pin dissolves the five-constraint contradiction: **the window is a PAIR with two
+clocks** — T(S,J) = the carved block's slots (> J), shrinking per clear, leaf-carved; D⁺(S) =
+all slots strictly beyond the block's layer, constant across clears, jumping at rollover. BOTH
+prior readings were correct views (arch-C's shrink within-layer; the advance at the boundary:
+T′ ⊆ D⁺_parent at rollover); the battery's T′=D⁺ was the small-depth shadow (L=2: every clear
+rollover-adjacent). The ∅-collapse constraint DISSOLVES (Deg1 already fenced out of S=L — a
+constraint on a clause that never applies); D⁺'s layer-indexing REHABILITATED (it genuinely
+doesn't roll at clears); **the free ∃C′ DELETED — the preservation conclusions name the computed
+pair** ("the anti-free-field doctrine's natural endpoint, reached"), REVERSING arch-C's roll
+resolution. Gate corrections relayed (the last-layer check reshapes to left-disjunct-
+unreachability). REMAINING: seat-L4's literal trace pins the ±1 offset (explicitly delegated —
+"the trace's coordinate sets are the authority for the index arithmetic; my pin fixes the
+STRUCTURE") + one structural adjudication flagged precisely: the CONSUMED-slot membership (the
+elder's strictly-beyond-only vs arch-C's ∪-same-layer-consumed hint — the paper's d_{i,k}
+coefficient factors are the test; a structure contradiction returns to the elder as a finding).
+The render holds for the trace; everything else proceeds on the pin.
