@@ -92,13 +92,13 @@ A route here is DEAD as a destination; its trail is kept as a battery anchor / l
 
 ## Redirect-round supersessions (elder ruling + discriminator PROOF, 2026-07-22)
 
-- **per-field SET (A) forms — SUPERSEDED** (not baked). The seven per-field severance constraints on the
-  monument leaves are replaced by ONE construction hypothesis: the leaves CONDITION ON the repaired
-  `IsRealBranch`; the per-field constraints + the prepared-multi-affine residual become NAMED DERIVED
-  LEMMAS (`hcenter` / `hcover` / `DescendView` / `ShearWithinCarve` / `hδ0` + GAP-3). Elder-ruled,
-  discriminator-confirmed (`DivBirthInv` proof-grade); **STAGED PRE-BAKE** — the leaves still carry the
-  `supportAt`-window per-field forms until the redirect bakes. The construction-conditioned monument is
-  the statement architecture's FINAL form. Trail: journal 2026-07-22 (triple ruling + discriminator verdict).
+- **per-field SET (A) forms — SUPERSEDED, now BAKED** (`9c51289f4`, 2026-07-22). The seven per-field
+  severance constraints on the monument leaves are replaced by ONE construction hypothesis: the leaves
+  CONDITION ON the repaired `IsRealBranch`; the per-field constraints + the prepared-multi-affine residual
+  became the **6 `realBranch_*` derived-lemma stubs** (centerPin/cover/descendView/shearWithinCarve/
+  terminal_edgeδ/multiAffine). Elder-ruled, discriminator-confirmed (`DivBirthInv` proof-grade), elder
+  second read OK. The construction-conditioned monument is the statement architecture's FINAL form. Trail:
+  journal 2026-07-22 (triple ruling + discriminator verdict + the bake).
 - **case-aware `supportAt` / `edgeδ` fallback — VOIDED by the discriminator.** A descent at case11 would
   have forced a per-edge-kind support window; the `DivBirthInv` proof showed NO descent at case11 boosts,
   and `supportAt`'s single (layer,cleared) key already tracks both edge-kinds (merge: earlier-layer pivot,

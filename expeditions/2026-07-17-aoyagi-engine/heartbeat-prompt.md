@@ -12,17 +12,19 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **ELDER SECOND READ on STAGING 2080757ea (2026-07-22 ~10:50).** The redirect is STAGED +
-  FROZEN on -rung-c (base a8438b1fe; arch-C re-gate PASS: 8450/0, footprints clean+sorryAx, cordon OK,
-  ZERO `| _ =>`, 14 sorries = 8 leaves + 6 derived stubs). Elder read TRIGGERED (its 5 pre-published
-  gates + arch-C's 8 items + my gate-2 checkpoint: staged e-param shear-pin vs "shearφ = canonShearOf"
-  wording). ON OK: 2080757ea IS the bake → controller verify (fetch, merge --no-ff, full build, forced
-  footprints both drivers, cordon, census) → push → proof seats wake on FINAL statements (L4 wall:
-  ONE IsRealBranch hypothesis; proved branches re-target mechanically). ON FLAGGED: render applies →
-  arch-C re-gates → new staging hash → elder delta-read. ALSO riding the pass (does NOT gate bake):
-  hjac_tie semantics ruling (L6 lane; ledger vs naive sum; elder verified the D=2 counterexample) +
-  Codex C2 (gates GAP-3 strike-ability). ELDER: poll transcript (dead inbox; ID ends ...d30ba3).
-  E-LANE CLOSED. Template diff: ZERO mismatches (threads/elaboration/fold-recursion-template.md).
+- phase: **POST-BAKE PROOF CASCADE + L6-FIX ROUND (2026-07-22 ~12:00).** THE REDIRECT IS BAKED:
+  elder second read CLEAN OK on 2080757ea → merged 9c51289f4 (controller-verified: 8995/0, forced
+  footprints clean+sorryAx both drivers, cordon OK, census 41 = MonumentAtlas 14 + LC + Case2Delta0
+  + 25 fossils). Gate-2: predicate-pin = correct weakest form; canonShearOf term-render gate REMOVED.
+  SEATS WOKEN on FINAL statements: seat-L4 (centerPin stub → wall → case11 pivot-mechanism lemma →
+  lastLayer), seat-L3T (cover/descendView/terminal_edgeδ stubs → case2 δ=1/conjB → terminal δ=1).
+  multiAffine = second wave. L6-FIX ROUND in flight: elder REVERSED its hjac lean (Codex
+  counterexample: deeper shear moves EARLIER pivot at ℓ<sl → non-monomial jacDet); fix = strengthened
+  shear pin (displacement ≡0 on earlier-CLEARED pivots; restores seat-L6's (★); closes all 3 L6
+  sorries). Elder AUTHORING the exact clause → render applies → arch-C re-gates (pin-tightening, no
+  new free field) → elder delta-read → integrate → wake seat-L6. realBranch_shearWithinCarve stub
+  HELD for that round. Leaf consumers INSULATED (derived lemmas). ELDER: poll transcript
+  (...d30ba3). E-LANE CLOSED. arch-C's wrong (★)-derivability lean OWNED — decorrelation vindicated.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.

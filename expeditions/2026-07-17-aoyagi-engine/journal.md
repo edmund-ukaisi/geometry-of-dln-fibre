@@ -12428,3 +12428,206 @@ misses, all ⛔-bannered · Validate 18 · Skeleton 3). Its independent read sha
 carto's grep was +17, my quick parser +1 — the tool stands canonical. Post-bake expected-delta
 (10 → 16) recorded WITHOUT flipping the frontier line; the flip waits on my bake confirmation
 (carto's next trigger = the cone transition). Nothing open on carto's side.
+
+## 2026-07-22 ~12:00 UTC — THE REDIRECT IS BAKED (9c51289f4); elder hjac REVERSAL; seats woken; L6-fix round opened
+
+**THE SPLIT VERDICT (elder, one final text, cleanly separated):**
+1. **SECOND READ = CLEAN OK — 2080757ea is the bake.** All 5 gates PASS; all 8 arch-C flags
+   resolved (flag 1: blockShear additivity ⟹ (I)-on-displacement ≡ image form; flag 3 q.2
+   transpose CORRECT; flag 5 auto-cap structural; flag 7 cover re-scope CORRECT — case12/case2
+   center = blockCoords(layer) = supportAt at δ=1/cleared=0, equality). **Gate-2 checkpoint
+   resolved in the STAGED form's favour**: the per-step property-pin is the correct WEAKEST form;
+   the elder's "shearφ = canonShearOf" wording was over-specified — the canonShearOf term-render
+   gate is REMOVED. realBranch_multiAffine ruled name=content-honest and WELL-POSED.
+2. **The hjac ruling REVERSED — the elder owned its error.** Codex counterexample #5 (real,
+   d=(2,2)): a deeper det-1 shear sends u_p ↦ u_p + u_q on an EARLIER pivot at layer < sl —
+   ShearWithinCarveRaw only protects ℓ ≥ sl — giving |jacDet g| = |u_p+u_q|³, non-monomial; no
+   unit reconciles. FoldProduced.hjac_tie's naive per-step sum is DEFECTIVE as rendered; the
+   accumulation lemma is NOT derivable from the current pins. seat-L6's stop-on-suspect and its
+   (★) diagnosis both VINDICATED.
+
+**CONTROLLER VERIFICATION (own ground truth, then push):** merge --no-ff 2080757ea →
+**9c51289f4**; `scripts/lb DLNFibre` exit 0, 8995 jobs, 0 errors; forced #print axioms both
+drivers = [propext, sorryAx, Classical.choice, Quot.sound]; cordon OK (0 violations, 3 located
+cites, 35 blueprint sites of which 16 MonumentAtlas); census 41 = 35 − 8 + 14 EXACTLY as
+predicted (MonumentAtlas 14 = 8 leaves + 6 stubs). Pushed.
+
+**SEQUENCING DECISION (knowing, recorded):** the L6 fix (strengthen the shear pin — displacement
+≡ 0 on earlier-CLEARED pivot coordinates, restoring (★)) touches the shared
+ShearWithinCarveRaw/IsRealBranch and runs as a FOLLOW-UP round per the elder's lean, adopted.
+This is NOT bake-and-reopen: the strengthening is ADDITIVE (leaf consumers take IsRealBranch as
+hypothesis via the derived lemmas — their proofs stay valid verbatim under a strengthened
+hypothesis; the emit-side obligation grows one clause, discharged by canonShearOf which never
+writes cleared pivots — elder-certified emittable). realBranch_shearWithinCarve is HELD out of
+the proof wave (its target def strengthens). ONE-BAKE's substance (never invalidate baked work)
+is preserved; its letter (no post-bake def edit) is knowingly excepted on the elder's ruling +
+insulation argument. Surfaced to the operator in-channel.
+
+**WAKES + PIPELINE:** seat-L4 (centerPin stub → THE WALL under one hbranch → NEW case11
+pivot-provides-u_pivot lemma → lastLayer+GeneratorCleared emission); seat-L3T (cover/descendView/
+terminal_edgeδ stubs → case2 δ=1/conjB via exists_graded_decomp → terminal δ=1 dead-branch →
+consume-fit + crux dedupe); multiAffine = second wave. L6-FIX ROUND: elder CHARGED to author the
+exact clause (carrier for "earlier-cleared pivots" named locally at the one-site Raw; third-clause
+lean; emittability note; (★)-restoration statement) → render applies verbatim (locked form) →
+arch-C re-gates (pin-tightening; no new free field) → elder delta-read → integrate → wake seat-L6
+(then L6 lands sorry-free, excep switched to {jacWeight jac = 0}).
+
+**arch-C OWNED its wrong (★)-derivability lean** (missed the threshold DIRECTION — ≥sl leaves
+earlier layers free): the decorrelation call (lean logged, NOT forwarded mid-read) is VINDICATED
+concretely — forwarding it would have laundered the read toward a wrong "derivable". Banked as
+the session's second live demonstration that "frame in, hypothesis out" is load-bearing.
+
+Map: claims.yaml meta + b-ladder note updated (bake hash, cone 16, L6-fix round in flight);
+STATUS regenerated. Carto TRIGGERED on its named cone-transition (frontier flip + census 10→16).
+
+## 2026-07-22 ~12:20 UTC — seat-L3T clean handoff → seat-L3T2 spawned; seat-L6 sympy convergence banked
+
+**seat-L3T HANDED OFF at context limit — the model handoff.** It pulled the bake, registered the
+re-wire plan for its four lanes (terminal_edgeδ + terminal re-wire; cover [its own earlier
+hcenter-DIRECTION finding now resolved to equality-at-cleared=0 per the elder] + descendView;
+case2 δ=1/conjB; consume-fit + dedupe), declared the context-limit risk honestly, and stopped at
+a GREEN pushed checkpoint (its branch: L8 complete clean-three + terminal δ=0 + case2 conjA δ=0 +
+the divisibility floor). Per the handoff-profile test (fully-designed + proved floor +
+self-contained): **seat-L3T2 spawned fresh** from the registered plan + lane 0 = file-level port
+of LeafGeometryWire onto the baked tip (NOT a git merge — the old branch's MonumentAtlas edits
+predate the bake). Aggregator import waits for its green (controller-only). The L8 sorry-swap in
+MonumentAtlas rides the post-pin mini-round (render seat), keeping the elder's delta-read diff
+clean (pin clause only).
+
+**seat-L6's decorrelated sympy pass banked (pre-ruling, convergent):** NAIVE booking (reused coord
+as non-pivot center member) ⟹ |jacDet| = u0²|u1| ≠ jacWeight(1,1) — mismatch, its counterexample;
+LEDGER/re-pivot booking (same coord re-pivoted, center grows) ⟹ |jacDet| = u0² = jacWeight(2,0)
+EXACT, unit ≡ 1. Consistent with the elder's ruling from the other side: the naive tie mis-books
+the boost; the strengthened pin makes the as-stated tie correct. Its 6-step landing plan is staged
+(collapse lemma from the pin ⟹ (★) ⟹ hjac; excep switch to {jacWeight jac=0} via banked nullity
+helpers; REQUEST_SPAWN reviewer at land). Correctly HOLDING, not touching MonumentAtlas.
+
+Awaiting: the elder's authored pin clause (charge queued); seat-L4's first lane report;
+seat-L3T2's lane-0 green; carto's cone-transition pass.
+
+## 2026-07-22 ~12:35 UTC — carto cone-transition banked (c7b39f091); ELDER'S AUTHORED CLAUSE (III) relayed — L6-fix round RUNNING
+
+**Carto's cone-transition pass verified + pulled (c7b39f091):** independent census re-derivation
+CONFIRMS 41 = 16 on-cone + 25 fossil; frontier flipped across codebase-shape / banked-families /
+dead-routes; the two caveats carried exactly right (L8's LeafGeometryWire NOT on the tree —
+recorded in-flight, not landed; the L6-fix round NOTED, not pre-applied). Its methodology note
+banked: the tool catches 2 inline `by sorry` a line-scan misses — why 41 (tool) is right and raw
+greps drift both ways.
+
+**The elder delivered the authored form for the L6-fix round** (accepting the follow-up
+sequencing as not-a-reopen, owning the hjac reversal in the same breath). Clause (III) on
+ShearWithinCarveRaw, VERBATIM Lean: the displacement vanishes on every divisor birth-corner in
+the NODE's ledger (`node.conState.divBirthCoord`, decoded by `cornerToFlat`) — read locally, no
+signature change. Three design rulings inside it: (a) the CHILD's ledger deliberately (includes
+the current pivot — avoids the cleared off-by-one; sound since canonShearOf never writes ANY
+pivot corner: the corner is normalised by the blow-up, not the shear); (b) WRITE-side only,
+CORNERS only — (★) needs the pivot VALUE preserved and jacDet σ reads only the corner;
+rows/cols would risk non-emittability; (c) ripple: flows into IsRealBranch's per-step pin (⟹ (★)
+for the whole fold) + ShearWithinCarve/realBranch_shearWithinCarve (held); leaf STATEMENTS
+unchanged; hjac_tie's statement UNCHANGED (the naive sum becomes correct under (★)).
+
+**RELAYED VERBATIM to arch-C** (locked form — no consumer translation) with the round protocol:
+template-simulator validation of clause (III) against canonShearOf on the nine instances
+pre-render (elder's recommendation, adopted) → render applies verbatim → arch-C re-gates
+(pin-tightening: no new free field; sufficiency extension; build/footprint/cordon/census) →
+labeled staging commit to -rung-c → hash to me → elder delta-read → integrate → wake seat-L6
+(its 6-step landing plan is staged). ONE concern this round: the cleared-pivot shear clause. The
+L8 swap waits for the mini-round after.
+
+## 2026-07-22 ~12:50 UTC — clause (III) sim-validation PASS (controller-run, banked)
+
+The elder's pre-render recommendation executed (arch-C can't reach the expedition-branch
+simulator from its isolated worktree — same pattern as the center-validation): NEW
+`threads/elaboration/verify/clause3_corner_check.py`, EXIT 0. Write-set analysis of the
+certified Schur step reduces clause-(III) emittability to three assertions, all green on the
+NINE standing instances: **A1** no ledger corner sits in the written interior (bl = S, bc > J);
+**A2** no ledger corner at a future layer (covers the certified Q⁻¹-touches-only-the-pivot-row
+write into C^(S+1)); **A3** the pivot corner (J,J) itself is FIXED by Q,P̂ (symbolic, all tail
+sizes p,q ≤ 4 — the blow-up normalises the corner, the shear never writes it, exactly the
+elder's emittability ruling); **A4** boosts never re-birth a corner (asserted in-trace). So
+canonShearOf vanishes on every child-ledger birth corner along the whole fold — clause (III) is
+EMITTABLE. Relayed to arch-C as gate-verdict evidence.
+
+## 2026-07-22 ~13:10 UTC — seat-L4 wave 1 INTEGRATED: first derived stub CLOSED (clean-three) + case-generic δ=0 core
+
+**Merged origin/expedition/aoyagi-engine-L4wire** (green-gated: full build 8996/0 AFTER wiring
+Case1Wire into the aggregator — the merge's build alone was 8995 jobs and did NOT compile the
+new un-imported module, the lb-import-closure trap caught in-gate; clash-grep on Case1Wire's 8
+top-level names = clean). Verified on ground truth:
+- **realBranch_centerPin PROVED, CLEAN-THREE** ([propext, Classical.choice, Quot.sound] — no
+  sorryAx): a 3-line projection of IsRealBranch's step arm. The MonumentAtlas diff is a pure
+  proof-body swap (statement pristine — checked before merging). FIRST OF THE 6 DERIVED STUBS
+  CLOSED. Census 41 → 40; cone 16 → 15.
+- **stepInv_child_delta0 PROVED, CLEAN-THREE** (Case1Wire, now on canonical + aggregator-wired):
+  the δ=0 pullback conjunct-1 — q' = q∘stepMap, foldB gains no u_pivot, three clauses discharged
+  (continuity/S3-vanishing/divisibility via parent-at-stepMap + reindex + foldResid_extend_delta0).
+  **CASE-GENERIC: serves case1 AND case2 δ=0** — relayed to seat-L3T2 for its lane 3.
+- Plus seat-L4's 16 decorrelated probe batteries + the Codex conjunct-2 strategy artifacts
+  (threads/L4-case1-core/).
+seat-L4 continues: wall δ=1 branches (case12/case2 via the banked crux; case11 via the NEW
+pivot-provides mechanism) then conjunct-2 (exists_graded_decomp + the layerwise-affine
+companion), assembling the leaf body in ONE closed edit — the leaf keeps its single tracked
+sorry until fully closed (discipline held). Its conjunct-1 lane is shear-clause-independent
+(insulation confirmed on its side).
+
+## 2026-07-22 ~13:35 UTC — L6-fix staging 8b4ab0e3e: delta-read TRIGGERED; L8 proof BANKED ON CANONICAL
+
+**The cornerToFlat "reorder" resolved BENIGN, with the full suspicion protocol run:** my
+conventions pull (cornerToFlat :735 = layer-first; divBirthCoord .1=layer/.2=col per DivBirthInv)
+showed the elder's authored line already matched — making the flag suspect. arch-C's
+side-by-side: the applied clause-(III) line is CHARACTER-IDENTICAL to the authored form; the
+actual change was a FORWARD REFERENCE — cornerToFlat's def relocated above ShearWithinCarveRaw
+(body byte-identical, controller-diffed; consumers unaffected). Class (a), named in the packet,
+not buried. The transpose-class hazard protocol (anchor-check + stop-if-projection-swap) worked
+as designed and found nothing.
+
+**Staging 8b4ab0e3e** (base 2080757ea, +20/−11, one file) — arch-C re-gate PASS (census
+UNCHANGED 16/14; no new free field; both drivers clean+sorryAx; emittability cited 2f97f6104).
+**Elder DELTA-READ TRIGGERED** with the packet (clause line verbatim-identical; the one named
+deviation; the re-gate verdict; the A1-A4 battery). On OK: 8b4ab0e3e IS the bake → integrate →
+wake seat-L6.
+
+**seat-L3T2 lane 0 DONE + INTEGRATED (tip 5b6627604):** LeafGeometryWire ported file-level onto
+the baked tip (NOT a merge — the old branch's pre-redirect MonumentAtlas edits stayed behind),
+aggregator-wired (my pen), full build 8997/0, forced axioms on leafPath_realizesExponents' =
+CLEAN-THREE, cordon OK, census 40. **The L8 proof is now banked on canonical** — the
+MonumentAtlas L8 sorry-swap rides the post-pin mini-round. seat-L3T2 proceeds lanes 1-4 with
+stepInv_child_delta0 + exists_graded_decomp as its lane-3 conjuncts and the centerPin
+obtain-pattern for descendView.
+
+## 2026-07-22 ~13:50 UTC — stubs 2+3 of 6 CLOSED (L3T2 lane 2 integrated): descendView + cover, clean-three
+
+Merged seat-L3T2's lane 2 (statement-side verified pristine — the diff removes ONLY sorry lines;
+gate: full build 0-err; forced axioms BOTH = [propext, Classical.choice, Quot.sound]; cordon OK;
+census 40 → 38, cone 15 → 13). realBranch_descendView = the centerPin obtain-projection shape
+(the pattern transfer paid); realBranch_cover = the elder's mechanism verbatim: δ=1 ⟹ cleared=0
+⟹ supportAt = blockCoords = canonCenterOf on case12/case2 (equality, guards vacuous), case11
+excluded by scope. THREE of the six derived stubs are now closed within ~2 hours of the bake —
+the construction-conditioning collapse is paying at exactly the predicted rate (projections off
+IsRealBranch, not re-derivations). seat-L3T2 → lane 1 (terminal_edgeδ + the terminal re-wire).
+Remaining stubs: terminal_edgeδ (L3T2 lane 1), shearWithinCarve (HELD for the pin round),
+multiAffine (second wave, frontier).
+
+## 2026-07-22 ~14:00 UTC — STOP-ON-SUSPECT (lane 1): realBranch_terminal_edgeδ missing hpos — COUNTEREXAMPLE-BACKED; micro-round queued
+
+seat-L3T2 refuted the baked stub AS STATED: `realBranch_terminal_edgeδ` lacks
+`hpos : ∀ k, 0 < d k`, and without it the statement is FALSE — concrete counterexample: N ≥ 1
+with d 0 = 0 gives widthMinUpto ≡ 0, the rollover guard fires at every layer, N−1 rollovers
+build a genuine IsRealBranch (center ∅, pivot free, shear id) whose terminal rollover edge has
+edgeδ = true. Positivity is NOT derivable from e (a d₁×0 factor is a point). The route to
+δ = false genuinely needs widthMinUpto_pos ⟸ hpos.
+
+Classification: EXTRACTION OVERSIGHT in the redirect render, not a disputed object — every
+sibling leaf (case1/case2/lastLayer/terminal_edge_stepInv, the stub's SOLE consumer) already
+carries hpos; only this stub dropped it. Fix is wiring-compatible (consumer passes hpos down;
+zero downstream statement changes).
+
+Process held on all sides: seat-L3T2 did NOT edit (statement-lock), escalated with the
+counterexample + fix, and moved to its independent lane 3. Controller routed the hpos addition
+to the elder as a MICRO-ROUND queued BEHIND the in-flight pin delta-read (one concern per read;
+the elder also checks whether the two still-open stubs multiAffine/shearWithinCarve need hpos so
+we fix once). Counterexample goes to the seat's thread.md as the permanent kill-record.
+
+Scoreboard note: the redirect's statement architecture is doing its job even in failure — the
+defect surfaced as ONE missing hypothesis on ONE stub with a 3-line fix, not as a per-leaf
+re-derivation cascade.

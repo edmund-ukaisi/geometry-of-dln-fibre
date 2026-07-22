@@ -1,6 +1,6 @@
 # STATUS — 2026-07-17-aoyagi-engine
 
-updated: 2026-07-21
+updated: 2026-07-22
 
 ## landmarks
   ★ aoyagi-summit [stated] summit: rlctGlobal(lossDLN d 0) = cCodim/2, via the engine (corollary/test)
