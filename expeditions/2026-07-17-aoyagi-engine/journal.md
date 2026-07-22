@@ -14978,3 +14978,29 @@ traced. Gate (arch-C re-derived): build green 9008; census 40 (+0!); payoff root
 WHOLE bake; cordon OK; destructure sweep clean. My static gate passed (2 declared files, key hunks).
 Elder delta-read triggered as its priority interrupt (the review resumes after). On OK: merge = THE
 N_p BAKE COMPLETE → the big re-opening.
+
+## 2026-07-23 ~18:00 UTC — ★★★★ THE N_p BAKE IS COMPLETE (44889cea0) + the fidelity review DELIVERED
+
+THE BAKE: elder delta-read OK on 99a1eb5b0 (fan-pin byte-exact; the PivotPreservation rework proves the
+SAME statement via the A2 route) → merged + controller-re-gated (build green; cordon OK; census 40
+stable; payoff roots carrying exactly the tracked sorryAx — isolation held through the ENTIRE fidelity
+arc) → pushed 44889cea0. The monument's definitions now SAY Aoyagi's construction: the pivot-parametric
+normalization with the deeper-factor compensation, the faithful fan (free at fresh clears, canonical at
+merges), the canonical flatten pinned. canonShearOf no longer exists.
+
+THE REVIEW (elder, operator-commissioned; committed 3fa2cf328, paper-fidelity-review.md, 20.8k): the
+summary verdict — (1) the destination's math is largely PROVEN and often MORE than the paper (the repo
+proves what the paper cites in three places); (2) the RLCT equality is CITED at full generality BY
+DESIGN with the codimension side fully proven — this expedition's monument is precisely the in-flight
+kill of cited_aoyagi_lower_ax; (3) the ONE open frontier in the staked boundary is the monument
+(Object B), in-flight — no other unowned hole; (4) three modeled-vs-categorical gaps + one analytic
+seam, ALL self-disclaiming (the Ext cochain model the one to keep honest). "Coverage high and honest...
+no silent overclaim."
+
+THE RE-OPENING, first step stumbled + recovered: my -L3T2 merge BROKE the build (5 errors — the proofs
+predate the N_p defs) → REVERTED (canonical stays green; the classifier also correctly stopped a
+miscounted HEAD~2 reset — only the unpushed failed merge needed undoing). The 5 errors are the two KNOWN
+transition patterns (4× the clause-I ≥→> shift; 1× the match-pin shape — arch-C's PivotPreservation fix
+pattern applies). seat-L3T2 woken: rebase → fix → the induction against the FINAL defs → the audit → I
+re-merge + wire. LESSON: pre-N_p modules need the seat's rebase BEFORE the controller merge —
+merge-order discipline for the remaining branches (-L4C, -LL same path).
