@@ -11530,3 +11530,19 @@ aggregator wired (4 imports + the Tier-3 block with the surrogate caveat); AxChe
 two roots (bindingSet_orderIso_boxPart + bindingSet_chainHeight_eq_thetaCount, fenced, ρ-seam
 deferral explicit). The full-aggregator verification build (the literal combined-load) running in
 background; on green: commit + push closes P6.2 Tier-3.
+
+## 2026-07-22 (controller) — the tighten's lock round: ∀ℓ FAILS INDUCTION (Schur γβ is degree-2 in the CLEARED layer); threshold form to the elder
+
+seat-L4's lock of the per-layer tighten found the battery-backed correction (674a1d4c7): the
+universal `∀ ℓ` form fails the EMISSION side — the Schur fold deposits γβ into the child's
+CLEARED carve layer at degree-2 (witness child = −be·e·ga·s1), so the flat child violates ∀ℓ; the
+elder's own load-bearing induction gate catches its own rendered sentence. CORRECTED FORM
+(threshold): degree ≤ 1 in every layer ≥ the SUPPORT layer; cleared/cofactor layers below allowed
+degree-2 (where γβ lands). Inducts (threshold advances with the descend); still kills de·s1·s2;
+still closes self-propagation; matches the elder's OWN grounds (ii)/(iii) — the ∀ℓ sentence
+over-generalized the ruling's content. Routed to the elder for the one confirm (with the note:
+the re-gate's witness checks now include BOTH de·s1·s2 dying AND the Schur-fold child passing).
+Also locked same round: ∃c decomposition KEPT (supplies vanishing-on-S′); ShearGrades (a)
+re-flavored; DeeperMultilinear fully REPLACED. The proposal→lock pattern catching the exact
+rendered form for the third time this round — every def-shape now battery-checked on BOTH the
+breaker side and the construction side before baking.
