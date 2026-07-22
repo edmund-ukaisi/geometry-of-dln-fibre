@@ -10644,3 +10644,19 @@ prover's burden; the witness = the computed split). The swap-alarm check-order p
 vs FIX-A before believing a swap signature — the thread-33/34 precedent). REMAINING: seat-L4's
 trace, scoped to the ±1 OFFSET + structure confirmation; then the one-expression form → the gate
 → THE BAKE.
+
+## 2026-07-22 (controller) — a double crossing collapsed: arch-C's corrections (1) and (3) superseded by the elder's amendment (in its queue)
+
+arch-C's reconciliation (owning its one-clock misdiagnosis — the halt right, the mechanism off)
+crossed the elder's shed-slots AMENDMENT: its relayed correction (3) "raw-layer D⁺ kept" is
+STALE (D⁺ = layer-part ∪ SHED slots — grows per clear; arch-C's own consumed-hint was right,
+settled from the pages) and its correction (1) "delete ∃C′" REVERSED back (the elder's final
+word: BLESSED-STAYS, conclusion-side existentials are the prover's burden, witness = the
+computed split). Both collapses relayed in one message with the pointer to the two elder texts
+in its queue. NET FINAL RENDER FORM: ∃C′ stays (gate-checked witness); D⁺ = deeperCoords ∪
+shedSlots; T = edge-carved shrinking remainder; the S=L left-disjunct-unreachable check. The
+consumed-slot question is CLOSED (not trace-owned); seat-L4's trace = the ±1 offset + structure
+confirmation ONLY. Then: finalize → gate → BAKE. Notable for the retro: the pages settled a
+three-way disagreement (arch-C's shear-diagnosis, the elder's too-clean first pin, and the
+original relay) in which each instrument was partially right — the halt, the hint, and the
+structure respectively.
