@@ -182,27 +182,13 @@ casts; `boxSubset_card` pins `|A| = a`. -/
 noncomputable def boxSubset (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) : Finset (Fin L) :=
   Finset.univ.filter (fun i => i.val < ell M 0 ∧ sStep (sortedWidths M) T i = ceilingM M 0)
 
-/-- **PIVOTAL binding-structure lemma** (SORRIED — the sorted-box CORE; Aoyagi Lemma 4-5 content):
-on a *binding* (`Mval`-minimising) profile, every active step `xᵢ` (`i < ℓ`) equals `C` or `C−1`
-(`C = ceilingM`). This is NOT admissibility-only — it needs the minimiser structure (why a
-codim-minimiser has the staircase step-pattern). Everything in the sorted-box iso rides on it. -/
-theorem sStep_mem_binding (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) {T : Fin L → ℕ}
-    (hT : T ∈ bindingSet (sortedWidths M)) {i : Fin L} (hi : i.val < ell M 0) :
-    sStep (sortedWidths M) T i = ceilingM M 0 - 1 ∨ sStep (sortedWidths M) T i = ceilingM M 0 := by
-  sorry -- map: enc-sorted-box (pivotal: binding step-structure, Aoyagi Lemma 4-5)
-
-/-- **The a-subset has exactly `a` elements** (SORRIED — sorted-box CORE): `|A(T)| = residueA` on a
-binding profile — the `a` M-steps among the `ℓ` active steps (from `sStep_mem_binding` + the sum
-`∑ xᵢ = ∑ Dᵢ₊₁ + M¹` forcing exactly `a = ΣD − (C−1)ℓ` of them to be `C`). Feeds `orderEmbOfFin`. -/
-theorem boxSubset_card (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) {T : Fin L → ℕ}
-    (hT : T ∈ bindingSet (sortedWidths M)) :
-    (boxSubset M T).card = (residueA M 0).toNat := by
-  sorry -- map: enc-sorted-box (a-subset size)
-
-/-- **THE SORTED-CASE BOX ISO** (SORRIED — frontier; sub-skeleton below): on sorted widths, the
+/-- **THE SORTED-CASE BOX ISO** (SORRIED — frontier; OWNED BY seat-Ecore, branch
+`expedition/aoyagi-engine-Ecore`, module `OrderRealizeSortedBox.lean`): on sorted widths, the
 binding poset is order-isomorphic to `BoxPart(ℓ,a)` via the active-step a-subset + reversed-gap
-encoding (Codex part 1, step 3). The explicit `enc`/`dec` closed forms + both-direction
-`map_rel_iff` land across the next tides; `sIncr`/`sStep`/`boxSubset` are the construction data. -/
+encoding (Codex part 1, step 3). The pivotal sub-lemmas (`sStep ∈ {C−1,C}` on binding profiles
+[Aoyagi Lemma 4-5], `|A| = residueA`, enc/dec, both-direction `map_rel_iff`) are seat-Ecore's; the
+controller wires the discharge at integration. `sIncr`/`sStep`/`boxSubset`/`sIncr_nonneg` here are
+its shared floor. -/
 theorem bindingSet_sorted_orderIso_boxPart (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
     Nonempty (↥(bindingSet (sortedWidths M)) ≃o ↥(BoxPart (ell M 0) ((residueA M 0).toNat))) := by
   sorry -- map: enc-sorted-box
