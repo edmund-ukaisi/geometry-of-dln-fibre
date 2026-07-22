@@ -128,3 +128,41 @@ it; reduction mirrors `OracleInv_conOracle_stepChildren`), so the rollover guard
 
 (Opens needed: `DLNFibre.DLN.RLCT DLNFibre.DLN.RLCT.Engine`. `List.min?_eq_some_iff'` is deprecated →
 `List.min?_eq_some_iff` but still works.)
+
+## Gap-B homogeneity round (2026-07-22, post-WAKE; branch merged canonical 72e96304f)
+
+LANDED + PUSHED (`MultiAffineHomogWire.lean`, axiom-clean `[propext, Classical.choice, Quot.sound]`):
+- `homogeneousDeg1On_comp_of_fixing` (step helper) — support-fixing σ preserves `HomogeneousDeg1On`;
+  AffineOn half mirrors `deg1_comp_of_fixing`, vanishing half rides `hfix`.
+- `coreGen_layerHomogeneous'` (BASE atom, the genuinely-new math) — isolate `A_ℓ` in `mult` via a
+  double `Core.submult_comp` (`mult = M·A_ℓ·R`, M/R via `submult_congr` read layers ≠ ℓ), so `coreGen`
+  is a linear form `∑ coeff·(A_ℓ entry)`; reindex the layer-ℓ double sum onto `layerCoords` with a
+  `bcoeff x u := ∑ p, if enc p = x then coeff p u else 0` + `Finset.sum_ite_eq`/`sum_comm` (needs only
+  `enc` maps INTO layerCoords — no bijection). Helpers: `canonFlatten_apply` (rfl), `submult_congr`
+  (interval congruence, Fin.induction), `agree_on_layerCoords_of_agree_off`. Codex xhigh validated the
+  route (`codex/coreGen-homog-{prompt,answer}.md`).
+- Clash reconcile: retired the old in-file `realBranch_appendResidDescent`; `descent_delta1_append`
+  + `realBranch_multiAffine_step'` (both hpos-threaded) consume the canonical cap; `step'` still routes
+  its sole `sorryAx` through the frontier cap. `MultiAffineStepWire` green.
+
+OPEN — `foldResid_layerHomogeneous'` (induction), pending controller call (see the two findings I sent):
+- **FINDING 1 (hpos gap).** Baked `foldResid_layerHomogeneous` LACKS `hpos`, unlike siblings
+  `realBranch_multiAffine_step`/`realBranch_appendResidDescent`. Without it, δ=1 rollover is reachable
+  (`widthMinUpto=0` needs some `d k=0`; `widthMinUpto_pos` requires hpos) and rollover's pivot is
+  UNCONSTRAINED (`canonPivotOf=none`), so the δ=1 step map `blockBlowupCoordQuot pv` can set a
+  layer-ℓ coord to 1, defeating the pivot-below-threshold mechanism. Statement still TRUE (zero-width
+  ⟹ `mult≡0` ⟹ `foldResid≡0`), but the intended proof needs hpos (kills δ=1 rollover, as
+  `realBranch_multiAffine_step'` does). RECOMMEND adding hpos. Trace: `d=![1,0,1,1]`.
+- **FINDING 2 (N_p timing).** The induction STEP consumes `foldResid` δ=1 + `IsRealBranch` shear
+  conjuncts — exactly what the N_p re-bake (tasks #27-30) is re-authoring now, and where
+  comp_of_fixing→comp_of_linear shifts. Building the step now is likely throwaway. RECOMMEND: build
+  the induction AFTER N_p lands, with hpos, writing the correct step once.
+
+INDUCTION DESIGN (for whoever finishes it): raw `TreePath` induction (pattern = `foldG_eq_pathMap`),
+region `= univ` via `foldRegion_eq_univ`. Root = `coreGen_layerHomogeneous'`. Step: unfold `foldResid`
+on the raw `.step` (dif_neg non-term; if δ), get `foldResid p' (cast j) ∘ σ`; apply
+`homogeneousDeg1On_comp_of_fixing` with IH (thresholds: `supportLayerOf(parent) ≤ supportLayerOf(child)
+≤ ℓ`, all σ-moved coords at layers ≤ p'.layer < ℓ). δ=0/case11/append derive hfix/hagree from the raw
+`IsRealBranch` conjuncts (ShearWithinCarveRaw is the 3rd conjunct; center pin via
+`canonCenterOf_decode_layer_le`; case11 pivot via `case11_pivot_decode_lt`). δ=1 rollover: kill via hpos
+(`widthMinUpto_pos`) OR zero-width `mult≡0`.
