@@ -127,4 +127,27 @@ theorem divBirthInv_of_isRealBranch {d : Fin (N + 1) → ℕ}
     show DivBirthInv d nextState
     exact hchild ▸ hchildInv
 
+/-! ## A2-package — `canonCenterOf` is disjoint from an earlier corner, or that corner is the pivot -/
+
+/-- **A2-package** — for any step child `sc`, an earlier divisor's birth corner `i = cornerToFlat d a b`
+is EITHER off `canonCenterOf d s sc` OR is the canonical pivot, given clause-3 freshness. The
+`sc.ecase` case-split: `case2`/`case12` use the width-block disjointness (never the pivot); `case11`
+either `i` is the reused pivot (right) or off both the pivot slot and the row-block (left); `rollover`
+has empty center. Fed to A1's criterion, this makes a deeper block blow-up FIX the earlier corner. -/
+theorem canonCenterOf_disjoint_or_pivot {d : Fin (N + 1) → ℕ} (s : ConState N) (sc : StepChild d s)
+    (a b : ℕ) (i : Fin (flatDim d)) (hfresh : a = s.layer → b < s.cleared)
+    (hcf : cornerToFlat d a b = some i) :
+    i ∉ canonCenterOf d s sc ∨ canonPivotOf d s sc = some i := by
+  by_cases hpiv : canonPivotOf d s sc = some i
+  · exact Or.inr hpiv
+  · refine Or.inl ?_
+    rcases hc : sc.ecase with _ | _ | _ | _ <;> simp only [canonCenterOf, hc]
+    · -- case11: (canonPivotOf).toFinset ∪ row-block
+      rw [Finset.mem_union, not_or]
+      refine ⟨fun hmem => hpiv ?_, cornerToFlat_notMem_rowBlock s _ a b i hfresh hcf⟩
+      rwa [Option.mem_toFinset, Option.mem_def] at hmem
+    · exact cornerToFlat_notMem_widthBlock s a b i hfresh hcf
+    · exact cornerToFlat_notMem_widthBlock s a b i hfresh hcf
+    · simp
+
 end DLNFibre.DLN.Aoyagi.PivotPres
