@@ -13451,3 +13451,21 @@ amendment with both call-lines. arch-C's re-gate expects census UNCHANGED + blue
 Staging → hash → the elder's four-point delta-read → the bake THAT CLOSES THE STATEMENT LAYER.
 Held for the hash. Remaining proofs after: descent (L3T2, held for hlayer), boostReady (L4,
 prepped w/ drop-test), M7 I/II/III (M7B), lastLayer, L5 assembly, L7.
+
+## 2026-07-23 ~07:15 UTC — M7 COMPLETE (emission I/II/III PROVEN); CanonShear on canonical
+
+**seat-M7B closed M7** — canonShearOf_shearWithinCarve PROVEN (all three clauses through the
+banked canonShearOf_support, per seat-L4's turnkey plan), PLUS: the flagged open lemma DERIVED
+as a reusable engine fact (conOracle_child_layer_cleared_of_case12_case2 — the stepAppendAdvance
+transition, dispatch mirroring the persists idiom), the decode helper, and the elder-sanctioned
+positive twin canonShearOf_apply_interior. Clause (III) landed CLEANER than the plan (the child
+DivBirthInv freshness negates the guard uniformly — no new-vs-inherited split). Integrated +
+aggregator-wired (import ordered AFTER PivotPreservation as required); full gate green; all
+roots clean-three; census 35 steady. Task #70 CLOSED. seat-L4's authored M7 arc (def +
+prepared-form + statement) + seat-M7B's proof = the module complete; fidelity folds into the
+post-cascade rev-monument pass (the statement was elder-adjacent-locked + consumer-validated).
+
+**Consequence for ruling B (staging in flight):** the elder's "emission proven-for-free" gate
+expectation is now LITERALLY on canonical — CanonicalSchurStep's discharge (canonShearOf_support)
+AND the ShearWithinCarveRaw emission are both proven facts of the concrete construction. L5's
+emission side is fully paved: every IsRealBranch conjunct now has its producer lemma banked.
