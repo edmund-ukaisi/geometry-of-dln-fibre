@@ -83,3 +83,18 @@ Banking gap closed (+5 atom entries → 341 batch); card states fixed (the `git 
 
 ### Next trigger
 Navigator pass #12: the (C)→wave transition, BEFORE the first wave commissioning (mandatory, no-skip); event-triggered earlier if L4 goes serial >1 tide without a banked sub-leaf, or on any pnp-case1/pnp-cover verdict that reshapes leaf statements.
+
+## L5-SPECIFY success (rung-C PROVE-wave opening; 2026-07-22) — nav-13 (pass #13)
+
+| node / event | prediction (source) | actual (git @ 0f6d6192e) | delta / lesson |
+|---|---|---|---|
+| census at convening | brief anchor "41 = 16 live + 25 fossil" | scripts/sorries = 43 = 18 live + 25 fossil; controller already corrected 41→43 (1c535e164) | brief anchor was the stale overlay figure; +2 live = Case1Wire (wall' + boostReady). Overlay/claims.yaml census notes (41/MonumentAtlas 14/cone 10) STALE — refresh at next overlay trigger |
+| five-bake gate discipline | staging→elder→controller each | ALL FIVE two-channel confirmed (staging commits exist + bake msg "elder OK on <staging>" + journal verify); hpos defect caught POST-bake (gate working) | NO CHANGE — commendable; legible from git alone |
+| M4 (the ★ core) | construction labour, own lane | SPECIFY clean; R1/R2 fork ruled R2 then DISSOLVED (DivBirthInv ConState-native) — cheap version, seat-L6 building | de-risked; two decorrelated reads converged on the bridge-free path |
+| M7 (canonShearOf) | "pending assignment (nav-13 advises)" | UNASSIGNED — substantial, on L5 critical path, decorrelated, risk-free | START NOW, SPECIFY-first (shear pin resolved) — the one idle-capacity-vs-open-gate gap |
+| realBranch_multiAffine | node-form baked (966959855) | STATEMENT baked; PROOF ("the deepest obligation") UNOWNED; conjB/conjunct-2 delegate to it | statement-baked-reads-as-progress; name a prover before pricing L5 |
+| Case2Delta0 | retire candidate (brief) | CONFIRMED orphan — zero consumers tree-wide; superseded by case-generic stepInv_child_delta0 | retire → live 18→17 (EXECUTED 76632574d) |
+| distance-to-summit | 8 leaves close ⟹ exists_coreResolution clean-three | verified (summit + drivers + adapter proved-from-leaves); L5 (leaf_stepInv_of_path) = longest link (fold convergence); boost + L7 = highest variance | price L5 only once M7 + multiAffine have owners |
+
+### Next trigger
+Navigator pass #14: wall closing (case1 sorry-free) OR M4/M7 landing OR L5-assembly going serial >1 tide; else assistants cadence.
