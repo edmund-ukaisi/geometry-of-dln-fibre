@@ -74,9 +74,15 @@ step, so `node.conState = ed.nextState`, `cleared ≥ 1`, `sl = layer+1`), the r
 theorem canonShearOf_shearWithinCarve (d : Fin (N + 1) → ℕ)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (p : TreePath d) (ed : TreeEdge d p)
     (hcase : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2)
+    (hbranch : (p.extend ed).IsRealBranch e)
     (hshear : ed.shearφ = canonShearOf d p.conState) :
     ShearWithinCarveRaw d e (p.extend ed) ed.shearφ := by
-  -- map: M7-emission (canonShearOf satisfies ShearWithinCarveRaw I/II/III at case12/case2)
+  -- map: M7-emission (canonShearOf satisfies ShearWithinCarveRaw I/II/III at case12/case2).
+  -- Needs `hbranch`: (I) sl = (p.extend ed).conState = ed.nextState has cleared = p.conState.cleared+1
+  --   (stepAppendAdvance) ⟹ sl = layer+1 > carve layer S, so the layer-S-supported shear is 0 on ℓ≥sl
+  --   (via `canonShearOf_support`); (II) the shear reads only layer-S coords, disjoint from ℓ≥sl;
+  --   (III) `divBirthInv_of_isRealBranch` freshness (a=layer→b<cleared) ⟹ each birth corner fails the
+  --   strict-interior guard (`canonShearOf_support`), so the shear vanishes there.
   sorry
 
 end DLNFibre.DLN.Aoyagi
