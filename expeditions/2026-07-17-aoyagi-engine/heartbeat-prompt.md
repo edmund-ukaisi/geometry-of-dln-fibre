@@ -12,21 +12,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE PROOF CASCADE, STATEMENTS FINAL (2026-07-22 ~07:15).** The amendment re-bake is
-  INTEGRATED (e3a449348 = merge -rung-c a8438b1fe; controller-verified 8995 green, drivers
-  clean-three+sorryAx, census 35, cone 10). Statement side COMPLETE: blockCoords supportAt +
-  carve-layer hcenter + ShearGrades (a)+(b) CHILD-region grading + GeneratorCleared (emit=consume
-  one def) + PerLayerDeg1From ≥-support threshold (∀ℓ failed induction — Schur cleared-layer γβ);
-  DeeperMultilinear REMOVED. THREE too-weak-defs closed pre-proof this round. PROOF SEATS LIVE:
-  seat-L4 case1 :901 (WALL) + lastLayer_clear :932 (builds the GeneratorCleared emission);
-  seat-L3T case2 :863 + terminal_edge :962 (order: term-conj1 → case2-div [crux dedupe →
-  Case1Wire canonical] → conjB δ-branches → term-conj2 [consume-fit first]). Elder second read
-  OPEN (verify the 4 witnesses RAN). canonShearOf follow-up = arch-C's background unit (below
-  proof-support, above idle). After the 4: L5 (nav-13 on friction OR success) → L6+L8 → L7 →
-  wiring swap (LearningCoefficient:287) → summit clean-three → cite-deletion WITH operator.
-  **E-LANE CLOSED** (P6.2 Tier-3: faithful count registered c9a4003fe; review SURVIVED; arc
-  narrative banked; residue = ρ-seam deferred + hygiene unit [Q3 migration, lint nits, fossil
-  prune ~25 tokens]). ELDER channel: plain final text + TRANSCRIPT POLL after every charge.
+- phase: **THE AUDIT ENDGAME (2026-07-22 ~08:50).** The COMPLETE edge-field audit RULED (elder,
+  4 texts; poll its TRANSCRIPT — dead inbox): SET A final (DescendView single-predicate oracle pin,
+  case11-merge KEEPS cleared; ShearWithinCarve replaces ShearGrades — write-identity + read-ignores
+  on layers ≥ child support). SET B = DEF-TOUCH: multi-homogeneity CARRIED (residual deg-1 in every
+  active layer; "residual IS the block matrix"); elder Codex-decorrelating its final form vs the
+  pnp-elab template. SET C gating: C1 case1_fires_only_at_cleared_pos → seat-L4 (OracleInv; fallback
+  = edgeδ case-aware def-touch); C2 = B's provability. FIELD AUDIT CLOSED: pins = the BRIDGE-FREE
+  SHADOW of IsRealBranch (collapse to ONE pin when the bridge lands). **ONE-BAKE DISCIPLINE**:
+  nothing bakes until B-form + C1 + arch-C's template diff land → ONE combined bake (A+B+hcover/hδ0
+  +mismatches) → controller verify → proof seats resume (L4 wall: conj1 via hcover+crux, conj2 via
+  banked ∃c core + ShearWithinCarve + multi-homog; L3T: case2 δ=1 + conjB drop-ins). THE TEMPLATE
+  (threads/elaboration/fold-recursion-template.md, blind-built, sim-verified 4 instances) = the
+  standing reference; arch-C diffing it vs defs. E-LANE CLOSED. Elder-authorship lesson standing:
+  proposal→lock (elder rules objects, proof seats lock forms, batteries check both sides).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.

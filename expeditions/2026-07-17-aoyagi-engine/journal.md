@@ -11876,3 +11876,48 @@ Schur cert as audit inputs. The diff + the audit = the last two inputs before th
 bake. The operator's elaboration-first correction validated on first use: the template produced
 in hours what ten reactive rounds circled — including one law (the boost's no-advance) nobody had
 asked about yet.
+
+## 2026-07-22 (controller, tick ~08:50) — **THE COMPLETE AUDIT RULING** (four elder texts recovered): sets A/B/C; the class closed as the bridge-free shadow of IsRealBranch
+
+The elder's full ruling (07:59 uniform + 08:00 gate-ready checklist + 08:04 ShearWithinCarve
+revision + 08:11 carve-only paper confirmation):
+
+**SET (A), FINAL (hypothesis-touches):** (1) `DescendView` — the single-predicate
+oracle-transition pin (∃ sc ∈ (conOracle p.conState).stepChildren, sc.ecase = ed.case ∧ sc.child
+= ed.nextState) — with the CRITICAL correction: the case11 MERGE keeps `cleared` UNCHANGED
+(case1Decision emits TWO children :2068-71; stepCase11 :180) — seat-L4's stated law was wrong for
+the merge; case2/case12 increment. The state fragment of IsRealBranch, L5-emittable, bridge-free.
+(2) `ShearWithinCarve` REPLACES ShearGrades entirely (the S′-grading solved a non-problem once
+the shear was determined identity-on-S′): two clauses — (I) WRITE: blockShear identity on every
+layer ≥ supportLayerOf(child); (II) READ: every image IgnoresCoords those layers. BOTH needed —
+the elder's own bilinear argument (a carve-image reading S′ turns a cross-layer term degree-2 in
+S′). Fold-forced = canonShearOf's determined form; vacuous at lastLayer.
+
+**SET (B), a DEF-TOUCH:** GAP-3 is NEITHER derived-lemma nor hypothesis (the dichotomy was a
+false binary) — it is **multi-homogeneity CARRIED in the invariant**: the residual degree-1 in
+EVERY active layer S..L ("the residual IS the block matrix" — Aoyagi's descent engine). Not
+per-edge (a property of foldResid); not derivable over free p (unpinned parent shears). The
+elder: "the invariant's definition-of-done… a separate structural pass with a decorrelated
+check, not swept into a batch." CODEX GO given; (B)'s design pointed at the pnp-elab template's
+residual characterization (the cross-layer product, per-layer profiles — where the two disagree,
+the disagreement is the finding).
+
+**SET (C), gating lemmas:** C1 `case1_fires_only_at_cleared_pos` (OracleInv reachability — can
+case1 fire at cleared=0? Elder's lean: no; root goes numDiv=0→case2; open across ROLLOVERS) —
+ASSIGNED to seat-L4, preempting its hold work (if C1 fails: the edgeδ case-aware fallback
+def-touch folds in). C2 = (B)'s provability under ShearWithinCarve (the Codex pass covers it).
+
+**THE FIELD AUDIT CLOSES THE CLASS** — the gate-ready table: center PINNED (hcenter+hcover),
+pivot JUSTIFIED (hpivot sufficient — conjunct-1 covers any pivot ∈ center; descent rides
+multi-homogeneity not pivot identity), case PINNED (+DescendView reads ed.case), nextState PINNED
+(DescendView), shearφ PINNED (ShearWithinCarve), proof fields SOUND, region JUSTIFIED-free,
+free-p JUSTIFIED-CONTINGENT-ON-(B) ("the audit's 'free p is sound' IS the GAP-3 obligation" —
+the deep link). STRATEGIC ANSWER to the controller's framing question: **the pin set is the
+BRIDGE-FREE SHADOW of IsRealBranch** — when the coordinate bridge lands, all five pins collapse
+into ONE construction pin; the per-field form is the honest shape until then.
+
+**ONE-BAKE DISCIPLINE confirmed as the knowing decision:** (A) does NOT bake ahead — (B)
+re-touches the same leaves ⟹ bake-and-reopen. Sequence: elder's Codex on (B)/(C2) + seat-L4's C1
++ arch-C's template diff → ONE combined bake ((A) + (B) + hcover/hδ0 + diff mismatches) behind
+the full field-audit gate. arch-C pre-renders (A) meanwhile; docstring sentence ordered: the pin
+set as the bridge-free shadow, collapsing at the bridge.
