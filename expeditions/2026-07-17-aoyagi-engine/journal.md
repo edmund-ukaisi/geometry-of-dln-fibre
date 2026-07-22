@@ -12182,3 +12182,20 @@ correction widthMinUpto → cleared+runLen under the resRows↔flat-col transpos
 so far: ShearWithinCarve(B), canonCenterOf-case11, canonShearOf=predicate-pin, DescendView,
 GAP-3=Deg1SupportedSlot, hδ0; pending: the re-scoped hcover + relaxed hcenter + the 6 derived
 statements. Then: render → elder second read → gate → THE ONE BAKE.
+
+## 2026-07-22 (controller, ~11:30) — **L8 PROVED (the first complete leaf)**; L6 handed off to a fresh seat on the recipe
+
+seat-L3T landed **L8 in full**: `leafPath_realizesExponents'` (primed, statement-identical) in the
+new LeafGeometryWire.lean — sorry-free, clean-three, general-d, generalizing the d12 reference
+(1751c0710; controller-verified zero sorries on the fetched branch). Both AtlasRealizesExponents
+clauses read off FoldProduced (hjac_mem + the banked leaf_divExp_mem_terminalExponents; hsurj +
+hjac_onto) — "the d12 reference made it clean": the template thesis confirmed on a leaf-scale
+proof. arch-C swaps the MonumentAtlas L8 sorry at the redirect integration. **L6 handed off at
+SPECIFY-clean** with the complete 20-field recipe (direct-from-atlas fields; the M′=1
+instantiations; the two REAL-LABOUR items named: the a.e.-injectivity fold + the Jacobian fold —
+new pathMap-geometry, the d12 reference used conjResolution not the fold) — **seat-L6 SPAWNED**
+on the handoff-profile test (third application; paid twice before), with the path-level template
+as its pre-mortem and the unit≡1-truth-vs-unit-allowed distinction flagged (a genuine correction
+term = suspect, not feature). seat-L3T rests with two leaves' branches + one complete leaf + two
+statement catches banked today. Cone accounting note for the bake: L8's landing offsets one
+redirect stub in the census.
