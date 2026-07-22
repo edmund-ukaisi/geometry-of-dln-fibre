@@ -12961,3 +12961,26 @@ increment's deliverable metric. Assembly class = arch-C gate + controller verifi
 read (elder standing by for the L6 co-read + boost-readiness only). Remaining sorried sources
 the first increment will name: case1 (wall), lastLayer, L5, L7, multiAffine (+ the case2 stub
 copy pending its swap-equivalent in the Assembly).
+
+## 2026-07-22 ~19:40 UTC — L5 SPECIFY INTEGRATED (stop-on-suspect: NONE); PROVE waves commissioned; nav-13 CONVENED on the success trigger
+
+**The L5 obligation map is on canonical (d28f3c87f + 4e2c127b6):** the fold spine
+(FoldStepInvAt → LastLayerInv → terminal → PrincipalInv per branch, base = conRoot with the SOLE
+he0/he_lin use); the per-edge-kind emission table (IsRealBranch's ∃sc conjunct is rfl-class BY
+CONSTRUCTION — L5 sets the fields; ShearWithinCarveRaw = id at case11/rollover, canonShearOf at
+case12/case2); the (★)-telescoping decomposition of the collapse clause; and SEVEN missing
+atoms — M1/M2/M3/M5 easy + independent, M4 (the (★) core) + M7 (canonShearOf) the construction
+labour, M6 engine machinery. **STOP-ON-SUSPECT SCAN: NONE** — every clause provable given the
+banked leaves + atoms; the only open leaf dependencies are seat-L4's walls, which the map
+CONSUMES. Census 41 = 36 + the 5 tracked SPECIFY contracts (live cone, correctly flagged by the
+seat for the census — the roots-registry discipline working).
+
+**PROVE waves commissioned:** wave 1 (M1/M2/M3/M5, final-homes + thin delegations — the lane-4
+dedupe pattern) → seat-L3T2; **M4 → seat-L6** (its (★) domain end to end: it found the
+coherence, built the consumer, now builds the producer; SPECIFY-first with the shape-sufficiency
+check). M7 pending assignment (nav-13 advises); M6 held (may fall out of the wall/L7).
+
+**nav-13 CONVENED** (the standing success trigger): parallelisation audit (M7 now-vs-later; L7
+startability), gates-ran ledger on the day's five bakes, hard-part-avoidance check (M4/M7/
+boost-readiness/multiAffine/L7-coverage all owned?), cone accounting (incl. the Case2Delta0
+retire candidate), distance-to-summit chain. Tasks: #66 closed; #67 (wave 1) + #68 (M4) opened.
