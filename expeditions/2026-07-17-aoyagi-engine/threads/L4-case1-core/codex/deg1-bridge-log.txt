@@ -1,0 +1,436 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.145.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f8994-ab4f-7722-8840-84456b150fc2
+--------
+user
+<task>
+Lean 4 + Mathlib. I need a STRATEGY (not code) for a bridge lemma in a resolution-of-singularities
+formalisation. Coordinates u : Fin D → ℝ. A fixed finite S : Finset (Fin D) (a "center"/support block),
+all contained in one "layer" — there is a fixed X : Finset (Fin D) with S ⊆ X (X = the layer's coords).
+
+Definitions (paraphrased faithfully; V = univ throughout, so ignore V):
+  IgnoresCoords c S  :=  ∀ w, ∀ m ∈ S, ∀ t, c (Function.update w m t) = c w   -- c does not read S-coords
+  AffineOn f X       :=  ∃ a b, IgnoresCoords a X ∧ (∀ x∈X, IgnoresCoords (b x) X)
+                                ∧ ∀ u, f u = a u + ∑_{x∈X} b x u · u x         -- total degree ≤1 in X
+
+I have a fixed function F : (Fin D → ℝ) → ℝ satisfying BOTH:
+  (H1) SUPPORT-DECOMP on S:  ∃ c, (∀ i, Continuous (c i)) ∧ ∀ u, F u = ∑_{i∈S} c i u · u i.
+       [note: nothing says c i ignores S — the c may itself read S-coords.]
+  (H2) AffineOn F X   (with S ⊆ X).
+
+I WANT (the "bridge"): a NEW support-decomposition on S whose coefficients IGNORE S:
+  (GOAL) ∃ c', (∀ i, Continuous (c' i)) ∧ (∀ u, F u = ∑_{i∈S} c' i u · u i) ∧ (∀ i, IgnoresCoords (c' i) S).
+
+Why I need it: a downstream "crux" lemma consumes exactly (GOAL) (the IgnoresCoords-S coefficients let it
+show c' i (σ u) = c' i (τ u) for two maps σ,τ that AGREE off S). H1's raw c does not suffice.
+
+Context facts that may or may not help:
+  - From (H1) at u=0: F 0 = 0.
+  - S ⊆ X, and AffineOn's a, b_x ignore X ⊇ S, hence ignore S.
+  - The two decompositions (H1's ∑_{i∈S} c_i u_i and H2's a + ∑_{x∈X} b_x u_x) are the SAME F.
+  - X ∖ S may be nonempty (X is the uncapped layer, S the capped block).
+</task>
+
+<output_contract>
+Terse, in this order:
+1. VERDICT: Is (GOAL) DERIVABLE from (H1)+(H2)? TRUE / FALSE / TRUE-with-extra-hypothesis. If it needs an
+   extra hypothesis, state the WEAKEST one (e.g. "F reads no X∖S coord", or "a ≡ 0", or a uniqueness
+   condition), and whether that extra hypothesis is itself derivable from (H1)+(H2).
+2. If TRUE: the construction of c' + the key steps, naming the mechanism (uniqueness of the affine
+   decomposition over independent coords? a substitution/partial-derivative extraction? restricting the
+   AffineOn b_x to S and showing the X∖S part + a cancel?). Which of H1/H2 each step consumes.
+3. If FALSE (or needs the extra hyp): the counterexample shape (a concrete F satisfying H1+H2 but where NO
+   IgnoresCoords-S decomposition exists), OR why the extra hyp is unavoidable.
+4. ALTERNATIVE: instead of the bridge, is it cleaner to RE-PROVE the crux (F(σu)=u_p·F(τu) for center-coord
+   maps σ,τ agreeing off S) directly from (H2)'s AffineOn (using a,b_x ignore S) rather than routing through
+   an IgnoresCoords-S support-decomp? Sketch which is less Lean-friction.
+</output_contract>
+
+<grounding_rules>
+Distinguish what FOLLOWS from (H1)+(H2) vs what you ASSUME. If a step needs coords to behave as independent
+polynomial variables (they are just real functions here — F is an arbitrary function, not a polynomial),
+FLAG it — that is the crux of whether "uniqueness of decomposition" is available. Do not claim a Mathlib
+lemma exists at v4.29 unless confident; I verify names.
+</grounding_rules>
+
+codex
+I’ll check the workspace’s mathematical/research instructions, then test the claimed bridge pointwise—without assuming polynomial uniqueness for arbitrary coefficient functions.
+exec
+/bin/bash -lc "sed -n '1,240p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ exited 2 in 0ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+exec
+/bin/bash -lc "pwd && rg --files -g 'CLAUDE.md' -g 'AGENTS.md' .. ../.. ../../.. ../../../.. ../../../../.. ../../../../../.. 2>/dev/null | head -80" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 273ms:
+../../../../../../core/CLAUDE.md
+../../../../../../core/lean/CLAUDE.md
+../../../../../../core/AGENTS.md
+../../../../../lean/CLAUDE.md
+../../../../../AGENTS.md
+../../../../../CLAUDE.md
+../../../../../../api/AGENTS.md
+../../../../../../api/CLAUDE.md
+../../../../../../thread37/AGENTS.md
+../../../../../../thread37/CLAUDE.md
+../../../../../../thread37/lean/CLAUDE.md
+../../../../../../L4wire/lean/CLAUDE.md
+../../../../../../L4wire/AGENTS.md
+../../../../../../E/AGENTS.md
+../../../../../../L4wire/CLAUDE.md
+../../../../../../E/CLAUDE.md
+../../../../../../E/lean/CLAUDE.md
+../../../../../../api/lean/CLAUDE.md
+../../../../../../root/lean/CLAUDE.md
+../../../../../../root/AGENTS.md
+../../../../../../root/CLAUDE.md
+../../../../../../core2/CLAUDE.md
+../../../../../../w0l3/AGENTS.md
+../../../../../../w0l3/CLAUDE.md
+../../../../../../L4/AGENTS.md
+../../../../../../L4/CLAUDE.md
+../../../../../../L3T/lean/CLAUDE.md
+../../../../../../L3T/AGENTS.md
+../../../../../../L3T/CLAUDE.md
+../../../../../../p2/lean/CLAUDE.md
+../../../../../../p2/AGENTS.md
+../../../../../../p2/CLAUDE.md
+../../../../../../w0l3-o9/AGENTS.md
+../../../../../../w0l3-o9/CLAUDE.md
+../../../../../../core2/AGENTS.md
+../../../../../../core2/lean/CLAUDE.md
+../../../../../../w0l3-o9/lean/CLAUDE.md
+../../../../../../w0l3/lean/CLAUDE.md
+../../../../../../L4/lean/CLAUDE.md
+
+exec
+/bin/bash -lc "realpath ../../../../../CLAUDE.md; sed -n '1,280p' ../../../../../CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/codex
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/L4wire/CLAUDE.md
+# geometry-of-dln-fibre
+
+AI-assisted math-research + Lean-formalisation harness for **digesting and formalising** the paper
+*"Geometry of the fibers of the multiplication map of deep linear neural networks"* (Simon Pepin
+Lehalleur & Richárd Rimányi, 2024; `paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/`).
+Orientation is in [`README.md`](README.md); this file is the disposition and the working discipline.
+The process harness (disposition + policies + roles + skills + the markdown→Lean pipeline) is ported
+from the `ai-research-assistant` harness and is **domain-agnostic** — see [`TEMPLATE.md`](TEMPLATE.md)
+to instantiate it for another paper.
+
+## Disposition
+
+The work here is research. Not coding, not ticking off a support ticket, not shipping a product. 
+The stance: 
+- careful, conscientious, objective as a scientist.
+- meticulous in calculation as Euler, bold as Grothendieck. 
+- methodical as Sherlock Holmes. Observe before theorising. Distinguish data from interpretation. 
+- update like a Bayesian; do not collapse to the mode. 
+
+
+- **Resist the move-fast-and-ship-it instinct.** Stackable, solid progress is the goal; the trap is
+  *visible* progress raced ahead of it — a clean doc or confident headline that travels far while leaving
+  holes behind. When you reach for a confident headline, that is the moment to look for the confound. Each
+  layer should be solid and hole-free before the next stands on it.
+- **Fill the layer — completion is your strength.** *The sea rises inexorably, but not in spikes*
+  ([`docs/policies/bedrock.md`](docs/policies/bedrock.md)): within a boundary already staked, close the holes
+  — the generality a statement promised, the cases it already claims, fidelity to the definition and the
+  underlying spirit it invokes — rather than defer them. Such hardening is high-value, and it is where your
+  **comparative advantage** lies: your bottleneck is scoping, taste, and direction, not the patient completion
+  of well-scoped work — so do not treat that completion capacity, which is *abundant*, as if it were *scarce*.
+  **Just do it!** Don't file it as a "chore" (an *unprobed* difficulty claim, not a defer). Surface to move the
+  *boundary* — but an **earned** taste-judgment that a gap is the *right* extension is itself direction:
+  **Just Do It** if within reach, else **roadmap** it; only a *bare, unargued* extension waits for the operator.
+- **Build the buildable — Mathlib-absence is not a wall.** The team's strength is getting *well-established
+  mathematics* done and hardened *at scale*: the labour is *abundant*, so the scarce thing is the
+  **discrimination** — *detail-at-scale* (standard material whose proof is patient and decomposable: **build
+  it**, as a clean reusable Mathlib-grade library, letting the sea rise over a whole foundation) versus
+  *genuine monument* (a single deep insight that is itself a research achievement — resolution of
+  singularities, the analytic SLT core: **cite it**). The discriminator is detail-at-scale vs monument, never
+  in-Mathlib-vs-not; the failure mode is **timidity disguised as rigor** ("not in Mathlib, therefore risky").
+  The guardrail is the rest of this disposition — name results for what they are, separate Proved/Cited, cite
+  the monuments: bold to build the buildable, humble before the genuine mountain. Committing the team to a
+  build is the **controller's** executive call ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md));
+  the build-vs-cite test and the Mathlib-grade API discipline live in
+  [`docs/policies/library-building.md`](docs/policies/library-building.md).
+- **Name results for what they are.** A result's name and statement denote exactly what is proven — no more;
+  reaching for an impressive name (or "done") is the visible-progress instinct in disguise. Separate Proved /
+  Assumed / Cited / Deferred. See [`docs/policies/precision.md`](docs/policies/precision.md). (Here the
+  recurring trap: a `rlct_…`-named result that in fact proves only a *codimension* — the `rlct = ½·codim`
+  reading needs the cited Aoyagi equality.)
+- **Build to bedrock.** A sorry-free build defeats *technical* slop; it never defeats *conceptual* slop —
+  "technically correct but subtly wrong, not The Way." **Bedrock is the rock the rising sea rises over**: build
+  the theory so the next result can stand on it without re-opening it. Where short feedback loops fail, **beauty
+  is the instrument** — a vacuous, mis-scoped, or overclaiming result is *ugly*, and the ugliness is
+  information. The **controller holds this taste and judges against it**; a green build is necessary, never
+  sufficient. See [`docs/policies/bedrock.md`](docs/policies/bedrock.md).
+- **Caveats live next to claims, not in footnotes.** An assumed hypothesis or a cited interface goes in the
+  same paragraph as any claim that depends on it.
+- **Write to figure out the truth, not to persuade.** Concise and fact-based.
+- **Elementary, precisely.** Build explanations up from precise but simple well-chunked objects, established locally in the
+  document. "Elementary" does not mean imprecise or dumbed-down or toy analogies: every step stays
+  mathematically precise. Introduce the objects you use before you use them, localise context; prefer a chain of small exact
+  statements over one dense one. Resist over-naming things to do chunking. Reach for an analogy only when it is exact and load-bearing. See
+  [`docs/policies/writing-style.md`](docs/policies/writing-style.md). This may be a good meta-cognitive skill to have when you are thinking precisely as well. 
+
+## Writing and communication discipline (object-level focus)
+In writing or in communication, focus on object-level. Resist meta-level pull. 
+Remove authorial self-reassurance: `honestly`, `fundamentally`, `this is the whole point`, `this is loadbearing`, `of course`, `simply`, `just`, and selling phrasing.
+The full list and the review function that enforces it are in [`docs/policies/review.md`](docs/policies/review.md).
+
+## Controller operation — the cognitive adaptive controller (lead session only)
+
+> **Teammates: skip this section.** It is the controller (lead-session) operating discipline; your
+> role file (`.agent-team/roles/<role>.md`) and every section *other* than this one are your context.
+> (It lives here, not only in `controller.md`, because the lead session reliably loads `CLAUDE.md` but
+> not always its role file.)
+
+You run this project as the **controller** ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md)):
+hold the vision, set the pace, urge the team to the goal, and adapt. During autonomous stretches (the
+hourly loop/heartbeat with the operator away) these are load-bearing, not optional:
+
+- **You are a cognitive adaptive controller, not an open-loop planner.** Hold the vision and the plan, but
+  run **closed-loop**: every tick is feedback — teammate reports, build state, reviews, the counterexample
+  hunt — against the rising-sea reference. *Update like a Bayesian.* When feedback says a layer is a spike,
+  the Mathlib map is wrong, or a step is harder than scoped, **re-plan** — adjust the ladder, re-rank
+  `priorities.md`, re-scope — rather than push a failing setpoint.
+- **Calibrate your sensors on ground truth.** A teammate's "done" and a green exit code are *readings*, not
+  the truth — re-run the build, `#print axioms`, re-run cited scripts, and commission the decorrelated
+  review/hunt before you believe them (there is no operator watching for a miscalibrated sensor). This is
+  the L5/DA-lesson wisdom generalised: gate integration on evidence you re-derived, not on a "done".
+- **Ambition is governed by bedrock — gain needs damping.** The easier it is to build well-established
+  mathematics at scale, the faster you can manufacture *spikes* (broad-named results with holes behind
+  them). The same controller that builds inexorably fills the layer before it climbs: the precision/bedrock
+  check (name = content; weakest hypotheses; base audited hardest; the hunt precedes trust) is the negative
+  feedback that makes high ambition *stable*. Build hard; damp harder.
+- **Stay out of the grind; spend your context on direction.** Your scarce resource is scoping, taste, and
+  integration — not lemma-proving, which is abundant and delegable. Do not rabbit-hole into a proof in your
+  own context ([`docs/policies/expedition.md`](docs/policies/expedition.md) § anti-patterns). Periodically
+  **step back and self-audit** your trajectory against the vision — under autonomy you hold the taste
+  channel the operator would otherwise supply.
+- **The autonomy operating rule — adapt the ladder, never the setpoint.** Re-scoping the *ladder* (which
+  rung first, which Mathlib API to build on, splitting a layer) is the closed loop working — do it freely.
+  Re-scoping the *destination* ([The destination, plainly](#the-destination-plainly)) or the *definition of
+  done* (sorry-free; `#print axioms` = `[propext, Classical.choice, Quot.sound]`; each layer characterized
+  at the weakest hypotheses that suffice; reusable `Core` authored upstream-ready) is **not** yours to do
+  silently. Two decision classes:
+  - **proceed-on-silence** (the default) — anything within the staked boundary: surface the call in prose,
+    keep working what is unblocked, take the recommended option if no reply, and record that you did.
+    Silence = consent. Surface **async and non-blocking** — never a blocking `AskUserQuestion` in a loop (it
+    freezes the inbox and stalls the team; reserve it for a genuine fork you cannot resolve from the code or
+    sensible defaults).
+  - **wait-for-explicit-go** (the few) — the close-phase PR **merge**, the `dev → main` promotion, and
+    **any change to the destination or the definition of done.** These never proceed on silence.
+
+## How research runs here
+
+- **Expeditions** ([`docs/policies/expedition.md`](docs/policies/expedition.md)) are the unit: a central
+  question, a controller delegating to thread teammates (explore / formalisation / infra), reviewers, and a
+  synthesis at close. Run on the Agent Teams substrate (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`); launch with
+  cwd = this repo root.
+- **Pipeline: markdown → Lean.** Theory develops in markdown (`theory/`, expedition notes). A stable claim is
+  formalised in Lean (`lean/`, library `DLNFibre`). The reader-facing digest/expositions live in
+  `docs/expositions/`.
+  - *Scholium* is a **viewer** (renders these markdown docs with KaTeX + callouts), not an editor; write to its
+    conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
+    recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
+    (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
+    subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
+    indented code block (8-space indent) there; top-level fenced code is fine.
+- **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
+  source ([`docs/policies/expedition-map.md`](docs/policies/expedition-map.md) — kill-conditions live as executable battery witnesses).
+- **Codex** is the independent second model for strategy and review
+  ([`docs/policies/codex-consultation.md`](docs/policies/codex-consultation.md)).
+
+## Team structure
+
+Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
+- `controller` — this lead session: meta-planning, delegation, integration.
+- `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
+- `pen-and-paper` — a specialised `scout`: **elaborates** the source mathematics into a fully worked
+  template for the build (the primary use — catch typos, pre-mortem build issues, blind to the Lean),
+  or adjudicates a truth-value (`witness` / `obstruction` seats); exact algebra, decorrelated Codex;
+  hands a certificate/template to the formaliser. No Lean. Not for adjudicating shortcuts around
+  detailed work — when in doubt, elaborate the detail (operator, 2026-07-22).
+- `formaliser` — formalisation (tide) threads.
+- `architect` — a specialised `formaliser`: top-down blueprint development (settled decisions reified
+  as typed, sorried, wired skeletons; gate = elaboration + battery, not sorry-free).
+- `reviewer` — controller-spawned independent audit (soundness / fidelity / bedrock-taste).
+- **Offices (controller assistants)** — read-only advisory seats convened fresh from durable
+  artifacts (an office, not a session); propose-never-act, scale-gated, cadence + mandatory joints
+  ([`docs/policies/expedition.md`](docs/policies/expedition.md) § Controller assistants):
+  - `cartographer` — memory: the map's overlay + index (banked-family cards, dead-route registry,
+    naming forwarding-pointers); the diff-then-judge pass.
+  - `navigator` — position + planning: where we came from / are / are going (critical-path vs
+    distinct-bet vs infra placement), the parallelisation audit, gate verification,
+    hard-part-avoidance + drift checks; calibration ledger.
+  - `elder` — comprehension/direction: keeper of `compass.md` (the question, settled forks + whys,
+    standing rising-sea counsel); convened at every route adoption; the stern voice.
+- Retired (2026-07-15): `self-recon` (→ the generated brief's epistemic sections), `hardener`
+  (→ reviewer function + the elder's right-extension channel), `lookahead`/`librarian` (renamed →
+  `navigator`/`cartographer`).
+
+If dispatched into a role, read its role file and agent definition first.
+
+## Branch discipline
+
+- **One remote: `origin = git@github.com:edmund-ukaisi/geometry-of-dln-fibre.git`.** All work lives here.
+- **`dev` is the integration branch.** Feature and expedition branches branch off `dev` and PR back into
+  `dev`. `main` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
+  to directly.
+- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `main` directly. One
+  expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
+- **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
+  2026-06-12) — push freely to bank and share work. **Opening a PR and posting PR review comments/replies
+  via `gh` is controller-authorized** (operator standing instruction, 2026-07-01) — but **auto-open at most
+  ONE PR per expedition** unless the operator authorises more; fold everything (including close-out docs)
+  into that one PR before signalling merge (see the expedition's `lessons.md`/DA6). **Merging PRs and the
+  `dev → main` promotion remain operator-gated** (wait-for-explicit-go); the operator performs those.
+  Always confirm the push target is `origin`, never a non-`origin` remote.
+
+## Memory
+
+Persistent context lives **in-repo**: this file, the policies in `docs/policies/`, the expedition docs
+(`synthesis.md` / statement cards / `thread.md`), `ROADMAP.md`, and `lean/CLAUDE.md`. Save conventions and
+decisions there.
+
+**Charter (the invariant core — read it first).** An active expedition keeps its *fixed* invariants in
+`<exp>/charter.md`: the goals (the mathematical objects being built, stated at full generality), the
+objects list, **the bar for calling something progress**, and the standing math-warnings (the named
+drifts / dead routes for *this* problem). Every role — controller, elder, navigator, cartographer, and
+every dispatched seat — reads it FIRST and gates against it. The journal and compass are *history* and
+decay as they grow; the charter is edit-in-place, never-append, ≤1 page, and is what compaction distills
+*to*. It exists because passive warnings buried in growing logs decay and the same dead-end gets re-entered
+(twice, here) — so the invariants get their own small file that is loaded every cycle, not read once.
+
+**Do NOT write to global Claude memory (`~/.claude/**/memory/`).** It pollutes other workspaces and is
+invisible to collaborators reading the repo. This binds the controller **and every teammate** — the harness
+may prompt you to save a memory there; do not. If a teammate writes one, the controller deletes it and
+re-homes the content in-repo. (Agent-Teams *runtime* state under `~/.claude/teams/` and `~/.claude/tasks/` is
+fine — that's the substrate, not persistent context.)
+
+## The destination, plainly
+
+We want, in honest Lean, the paper's results about the **fibres of matrix multiplication** for deep linear
+networks:
+
+- the space $\operatorname{Rep}_{\underline d}$ of composable matrix tuples, the multiplication map
+  $\operatorname{mult}$, the zero-product / rank-$r$ loci, and the fibres $\operatorname{mult}^{-1}(B)$;
+- via the **type-A quiver** translation (orbits ↔ Kostant partitions ↔ rank patterns, Gabriel, orbit-closure
+  order, the `Ext` codimension): the codimension $C$ and the number $\theta$ of top-dimensional components,
+  in the paper's three forms (Poincaré series, a quadratic integer program, an explicit formula), and the
+  surprising **permutation invariance** of $(C,\theta)$;
+- the payoff: the real log-canonical threshold of the square-Frobenius loss is $C/2$ — DLNs are "mildly
+  singular". The geometric codimension is the new content; the Aoyagi `rlct = ½·codim` **equality** is
+  **Cited** (Watanabe's universal `rlct ≤ ½·codim` + Aoyagi's exact DLN computation — the formal
+  `RlctInterface.cited_aoyagi_dln` is the equality, which the payoff needs).
+
+The reusable **engine** (everything before "the payoff") is network-free and lives in `DLNFibre.Core`; the
+DLN/RLCT **application** lives in `DLNFibre.DLN`. See [`ROADMAP.md`](ROADMAP.md) for the formalisation ladder.
+
+## Pointers
+
+- [`README.md`](README.md) — orientation, how to launch an expedition, Lean build.
+- [`ROADMAP.md`](ROADMAP.md) — the result-map + the Core/DLN formalisation-target ladder.
+- [`docs/policies/`](docs/policies/) — principles (P1–P9), expedition, expedition-map, review, precision, bedrock, codex-consultation, statement-cards, writing-style, worktree-branch-hygiene (+ the reader-facing exposition trio).
+- [`docs/expositions/`](docs/expositions/) — the curated reader-facing digest (starts with `paper-digest/high-level-overview.md`).
+- [`.claude/skills/`](.claude/skills/) — lean-formalisation, local-codex-consult.
+- [`lean/CLAUDE.md`](lean/CLAUDE.md) — Lean build + Mathlib conventions; the Core/DLN split.
+- [`theory/`](theory/) — markdown theory workspace.
+- [`TEMPLATE.md`](TEMPLATE.md) — how to instantiate this harness for a new paper.
+
+codex
+1. **VERDICT: TRUE.** No extra hypothesis is needed.
+
+2. **Construction and mechanism.** Choose H2 witnesses \(a,b\), and define
+\[
+c'_i :=
+\begin{cases}
+b_i,& i\in S,\\
+0,& i\notin S.
+\end{cases}
+\]
+
+Let \(P_0u\) reset every \(X\)-coordinate to \(0\), and \(P_i u\) reset \(X\) to the \(i\)-th unit vector.
+
+- H1 implies \(F(P_0u)=0\), since every \(S\)-coordinate vanishes.
+- H2 and invariance under \(X\) give \(F(P_0u)=a(u)\), hence \(a\equiv0\).
+- For \(x\in X\setminus S\), H1 gives \(F(P_xu)=0\), while H2 gives \(F(P_xu)=b_x(u)\). Hence \(b_x\equiv0\).
+- Therefore H2 reduces to
+  \[
+  F(u)=\sum_{i\in S}b_i(u)u_i.
+  \]
+- For \(i\in S\), H2 already gives that \(b_i\) ignores \(X\), hence ignores \(S\).
+- H1 makes \(F\) continuous. Moreover,
+  \[
+  b_i(u)=F(P_i u)-F(P_0u),
+  \]
+  so \(b_i\) is continuous because \(P_i,P_0\) are continuous.
+
+The mechanism is **fiberwise uniqueness of an affine function in freely variable \(X\)-coordinates**. It does not require \(F\) to be polynomial: fixing coordinates outside \(X\), one evaluates the affine expression at \(0\) and the coordinate unit vectors.
+
+3. **Counterexample:** not applicable. The extra vanishing needed for the intercept and \(X\setminus S\) slopes is already forced by H1.
+
+4. **ALTERNATIVE.** Re-proving the crux directly is probably less Lean friction if this bridge is used only once. First derive
+\[
+F(v)=\sum_{i\in S}b_i(v)v_i
+\]
+as above, without proving continuity. Since \(b_i\) ignores \(X\), and \(\sigma u,\tau u\) agree off \(S\), their \(b_i\)-values agree. Then use the center-map relation
+\[
+(\sigma u)_i=u_p(\tau u)_i\qquad(i\in S)
+\]
+and factor \(u_p\) through the finite sum.
+
+H2 alone is insufficient: H1 is still needed to kill \(a\) and the \(X\setminus S\) terms.
+tokens used
+21,513
+1. **VERDICT: TRUE.** No extra hypothesis is needed.
+
+2. **Construction and mechanism.** Choose H2 witnesses \(a,b\), and define
+\[
+c'_i :=
+\begin{cases}
+b_i,& i\in S,\\
+0,& i\notin S.
+\end{cases}
+\]
+
+Let \(P_0u\) reset every \(X\)-coordinate to \(0\), and \(P_i u\) reset \(X\) to the \(i\)-th unit vector.
+
+- H1 implies \(F(P_0u)=0\), since every \(S\)-coordinate vanishes.
+- H2 and invariance under \(X\) give \(F(P_0u)=a(u)\), hence \(a\equiv0\).
+- For \(x\in X\setminus S\), H1 gives \(F(P_xu)=0\), while H2 gives \(F(P_xu)=b_x(u)\). Hence \(b_x\equiv0\).
+- Therefore H2 reduces to
+  \[
+  F(u)=\sum_{i\in S}b_i(u)u_i.
+  \]
+- For \(i\in S\), H2 already gives that \(b_i\) ignores \(X\), hence ignores \(S\).
+- H1 makes \(F\) continuous. Moreover,
+  \[
+  b_i(u)=F(P_i u)-F(P_0u),
+  \]
+  so \(b_i\) is continuous because \(P_i,P_0\) are continuous.
+
+The mechanism is **fiberwise uniqueness of an affine function in freely variable \(X\)-coordinates**. It does not require \(F\) to be polynomial: fixing coordinates outside \(X\), one evaluates the affine expression at \(0\) and the coordinate unit vectors.
+
+3. **Counterexample:** not applicable. The extra vanishing needed for the intercept and \(X\setminus S\) slopes is already forced by H1.
+
+4. **ALTERNATIVE.** Re-proving the crux directly is probably less Lean friction if this bridge is used only once. First derive
+\[
+F(v)=\sum_{i\in S}b_i(v)v_i
+\]
+as above, without proving continuity. Since \(b_i\) ignores \(X\), and \(\sigma u,\tau u\) agree off \(S\), their \(b_i\)-values agree. Then use the center-map relation
+\[
+(\sigma u)_i=u_p(\tau u)_i\qquad(i\in S)
+\]
+and factor \(u_p\) through the finite sum.
+
+H2 alone is insufficient: H1 is still needed to kill \(a\) and the \(X\setminus S\) terms.
