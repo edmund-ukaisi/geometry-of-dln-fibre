@@ -335,3 +335,24 @@ MonumentAtlas drivers. Preconditions: (i) the elder BLESSES the retire diff (sta
 its retired twin; (iii) AxCheck roots re-pointed to the primed names IN THE SAME COMMIT; (iv)
 census + cordon + full build green after. Owner: arch-C designs the retire diff, render seat
 applies, controller integrates. DO NOT retire piecemeal — one cleanup, at the summit.
+
+## SUBSUMPTION INCREMENT (opened 2026-07-22, arch-C check-only finding) — leaner IsRealBranch, POST-summit / elder-gated
+
+arch-C's read-only check (statement layer close): `CanonicalSchurStep` SUBSUMES
+`ShearWithinCarveRaw` clauses (I)+(III) — REAL but NON-SYNTACTIC and CROSS-STATE, so NOT a
+hygiene drop. CanonicalSchurStep is over the PARENT state (`p.conState`: shearφ≠0 ⟹ row=p.layer
+∧ both coords > p.cleared); (I)+(III) are over the CHILD node. The subsumption holds modulo a
+LINKING LEMMA: `CanonicalSchurStep p.conState ∧ step-advance-layer-invariant ∧ DivBirthInv ⟹
+ShearWithinCarveRaw (I)∧(III) on the child`. (I) needs `supportLayerOf(child) = p.layer+1` (the
+step-advance invariant — clear ⟹ child.cleared>0 ⟹ layer+1; rollover ⟹ layer=p.layer+1); (III)
+follows from DivBirthInv clause 3 (birth layer=layer ⟹ birth col<cleared), already PROVEN
+(PivotPreservation). Dropping (I)+(III) RESTATES the baked IsRealBranch — a baked-statement change.
+
+DISPOSITION: PARKED as its own scoped increment, POST-summit (the redundancy is harmless; it is a
+beauty/leanness improvement, not a completeness hole, and it competes with the critical-path proof
+cascade + reopens a just-baked statement + would draw the elder's attention off the boostReady
+sufficiency read). Preconditions when taken: (i) pen-and-paper adjudicates the linking lemma
+(chiefly the step-advance layer invariant); (ii) elder delta-read on the leaner IsRealBranch (its
+object layer); (iii) the render + re-gate + payoff-footprint check as any statement bake. Owner
+when opened: controller scopes; pen-and-paper certifies the linking lemma; arch-C renders.
+DO NOT fold into the hygiene window.
