@@ -14642,3 +14642,18 @@ LastLayerWire at 3 owned frontiers: (1) conjA δ=1 deg1-extract ← the Gap-B me
 cross-link); (2) conjunct-2 S=L disjunction ← the descent lane; (3) the born-unit ← the wall
 (c_pivot(0) ≠ 0 read-off from the parent's Deg1 decomposition). Holding on arch-C's signature confirm
 + the Gap-B merge. The lane runs itself.
+
+## 2026-07-23 ~10:30 UTC — AMENDED staging a253bf625 at my gate → elder delta-read triggered
+
+arch-C staged the amended round (a253bf625 = the Gap B bake rebased onto canonical + the four
+amendments): (1) canonFlatten def + 3 PROVEN property lemmas in LearningCoefficient + the two
+homogeneity atoms pinned to it (∀-e + he_lin dropped) — SCOPE SPLIT confirmed as intended: only the
+2 standalone atoms pin now; the chain-wide pin rides the N_pivot round (canonFlatten homed upstream
+for exactly that reuse); (2) hpos on the cap; (3) the comp_of_linear docstring rider; (4) the hparent
+lastLayer rider in the elder's REVISED form (byte-exact) + the Case2Wire regression threading it (one
+flagged knowing choice: hcleared hypothesized, not derived — small follow-up). Gate evidence: build
+green 9005; census 39 = canonical+3 (the amendments add ZERO holes — everything new is proven);
+payoff roots UNCHANGED; cordon OK. My static gate passed (base = canonical; 3 declared files; 36 key
+hunks). Elder delta-read triggered; on OK → merge + full re-derived gate + push → seat-L3T2's three
+atoms build (swap-safe) + seat-LL's frontier #1 unblocks. Sequencing note banked: seat-LL's primed
+twin reconciles cross-branch at integration (the seats coordinate signature identity directly).
