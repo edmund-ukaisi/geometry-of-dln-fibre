@@ -440,8 +440,8 @@ theorem case1_preserves_stepInv'
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   refine ⟨case1_conjA d e p ed hcase1 hlayer hinv hbranch, ?_⟩
-  -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); shared with
-  -- case2. map: B-L4-case1-conjB (node-form realBranch_multiAffine (p.extend ed) hbranch when baked).
-  sorry
+  -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); the node-form
+  -- multi-affine obligation at the child node (`hbranch : (p.extend ed).IsRealBranch e` = its `hb`).
+  exact realBranch_multiAffine hpos e (p.extend ed) hbranch
 
 end DLNFibre.DLN.Aoyagi
