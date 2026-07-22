@@ -104,18 +104,25 @@ theorem volume_jacWeight_zeroSet {D : ℕ} (h : Fin D → ℕ) :
 
 /-! ## L6 — the chart geometry -/
 
-/-- **L6 — the chart geometry** (statement-identical to `MonumentAtlas.leafPath_chartGeometry`;
-primed). Assembles a certified `Chart (coreGen d e) 0` from a fold-produced atlas chart. -/
-theorem leafPath_chartGeometry' (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (atlas : GeoAtlasData d e) (c : Fin atlas.n) (hfold : FoldProduced d e atlas)
+/-- **The collapse-consuming chain.** GIVEN the pure-monomial Jacobian collapse `hcollapse`
+(`|jacDet (gmap c) u| = jacWeight (jac c) u`, i.e. unit ≡ 1), assemble the certified `Chart`. Every
+field is proven: the composed-map geometry (analytic/cont/origin-fixing/a.e.-injective) folds the
+per-step `GeoStep` certificates; the source exceptional locus `{jacWeight (jac c) = 0}` is null
+(`volume_jacWeight_zeroSet`) and closed (`continuous_jacWeight`), and coincides with the critical set
+`{jacDet (gmap c) = 0}` via `hcollapse`, so `injOn_pathMap_off_critical` gives a.e.-injectivity; `hjac`
+is `hcollapse` with `|unit| = |1| = 1`. The ONLY remaining obligation for `leafPath_chartGeometry'` is
+to derive `hcollapse` from the fold — the strengthened shear pin's (★) — so the landing is
+verbatim-ready once the elder's `FoldRealizes`-clause / derived lemma lands. -/
+theorem chart_of_collapse (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (atlas : GeoAtlasData d e) (c : Fin atlas.n)
     (hfwd : RegionRepresents (fun i ↦ coreGen d e i ∘ atlas.gmap c)
       (fun _ : Fin 1 ↦ monoOf (atlas.bexp c)) (atlas.region c))
     (hbwd : RegionRepresents (fun _ : Fin 1 ↦ monoOf (atlas.bexp c))
-      (fun i ↦ coreGen d e i ∘ atlas.gmap c) (atlas.region c)) :
+      (fun i ↦ coreGen d e i ∘ atlas.gmap c) (atlas.region c))
+    (hcollapse : ∀ u, |jacDet (atlas.gmap c) u| = jacWeight (atlas.jac c) u) :
     ∃ chart : Chart (coreGen d e) 0,
       chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
         chart.bexp chart.k₀ = atlas.bexp c ∧ chart.jac = atlas.jac c := by
-  obtain ⟨leafOf, hmem, hsurj, hjac_mem, hjac_onto, hdom_ball, hstep, hjac_tie, hcard⟩ := hfold
   -- The step-map list and its per-step certificates.
   set σs := (atlas.steps c).map GeoStep.σ with hσs
   have hgmap : atlas.gmap c = pathMap σs := rfl
@@ -140,6 +147,10 @@ theorem leafPath_chartGeometry' (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) 
   have hinj : Set.InjOn (atlas.gmap c)
       (Set.univ \ {u | jacDet (atlas.gmap c) u = 0}) := by
     rw [hgmap]; exact injOn_pathMap_off_critical σs hstep_diff hstep_inj
+  -- the source exceptional locus = the critical set (via the collapse).
+  have hexcep_eq : {u : Fin (flatDim d) → ℝ | jacWeight (atlas.jac c) u = 0}
+      = {u | jacDet (atlas.gmap c) u = 0} := by
+    ext u; simp only [Set.mem_setOf_eq, ← hcollapse u, abs_eq_zero]
   refine ⟨{
     g := atlas.gmap c
     hg0 := hg_zero
@@ -152,10 +163,12 @@ theorem leafPath_chartGeometry' (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) 
     nbhd := atlas.region c
     hnbhd_open := atlas.hregion_open c
     hdom_sub := atlas.hdom_sub c
-    excep := {u | jacDet (atlas.gmap c) u = 0}
-    hexcep_meas := ?_
-    hexcep_null := ?_
-    hg_inj := hinj.mono (Set.diff_subset_diff_left (Set.subset_univ _))
+    excep := {u | jacWeight (atlas.jac c) u = 0}
+    hexcep_meas :=
+      (isClosed_eq (continuous_jacWeight (atlas.jac c)) continuous_const).measurableSet
+    hexcep_null := volume_jacWeight_zeroSet (atlas.jac c)
+    hg_inj := by
+      rw [hexcep_eq]; exact hinj.mono (Set.diff_subset_diff_left (Set.subset_univ _))
     M' := 1
     bexp := fun _ : Fin 1 ↦ atlas.bexp c
     k₀ := 0
@@ -166,17 +179,30 @@ theorem leafPath_chartGeometry' (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) 
     unit := fun _ ↦ 1
     hunit_cont := continuousOn_const
     hunit_ne := fun _ _ ↦ one_ne_zero
-    hjac := ?_
+    hjac := fun u _ ↦ by rw [hcollapse u, abs_one, mul_one]
     hideal_fwd := hfwd
     hideal_bwd := hbwd }, rfl, rfl, rfl, rfl, rfl⟩
-  · -- hexcep_meas : {jacDet (gmap c) = 0} measurable — LIVE-frontier (REAL LABOUR #1, nullity leg).
+
+/-- **L6 — the chart geometry** (statement-identical to `MonumentAtlas.leafPath_chartGeometry`;
+primed). Assembles a certified `Chart (coreGen d e) 0` from a fold-produced atlas chart. The whole
+body is `chart_of_collapse`; the single remaining obligation is the Jacobian collapse `hcollapse`
+(`|jacDet (gmap c)| = jacWeight (jac c)`, unit ≡ 1) — the strengthened-shear-pin (★), to be derived
+from the fold once the elder's `FoldRealizes`-clause / derived lemma lands (the L6 signature then gains
+the same `FoldRealizes` conditioning as L7, carried by the driver's existing `hreal`). -/
+theorem leafPath_chartGeometry' (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (atlas : GeoAtlasData d e) (c : Fin atlas.n) (hfold : FoldProduced d e atlas)
+    (hfwd : RegionRepresents (fun i ↦ coreGen d e i ∘ atlas.gmap c)
+      (fun _ : Fin 1 ↦ monoOf (atlas.bexp c)) (atlas.region c))
+    (hbwd : RegionRepresents (fun _ : Fin 1 ↦ monoOf (atlas.bexp c))
+      (fun i ↦ coreGen d e i ∘ atlas.gmap c) (atlas.region c)) :
+    ∃ chart : Chart (coreGen d e) 0,
+      chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
+        chart.bexp chart.k₀ = atlas.bexp c ∧ chart.jac = atlas.jac c := by
+  -- The ONLY open obligation: the pure-monomial Jacobian collapse (unit ≡ 1), forced by the
+  -- strengthened shear pin's (★). Incoming as the elder's FoldRealizes-clause / derived lemma; the
+  -- L6 signature then takes `(hreal : FoldRealizes d e atlas)` and derives it here.
+  have hcollapse : ∀ u, |jacDet (atlas.gmap c) u| = jacWeight (atlas.jac c) u := by
     sorry
-  · -- hexcep_null : volume {jacDet (gmap c) = 0} = 0 — LIVE-frontier (REAL LABOUR #1, nullity leg).
-    sorry
-  · -- hjac : |jacDet (gmap c) u| = jacWeight (jac c) u * |1| on region c — REAL LABOUR #2.
-    -- SUSPECT (PM-P1): the collapse to jacWeight (∑ jexp) with unit ≡ 1 holds iff each step's pivot
-    -- coordinate is preserved by all deeper steps; that alignment is NOT among FoldProduced's
-    -- (numeric) clauses. Escalated to team-lead.
-    sorry
+  exact chart_of_collapse d e atlas c hfwd hbwd hcollapse
 
 end DLNFibre.DLN.Aoyagi
