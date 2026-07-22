@@ -13241,3 +13241,18 @@ as ruling-B candidate content beside pnp-boost's α/β form, with the positive-v
 offer. The ruling-B menu now has a PROVEN emission-side workhorse — the pin would assert the
 support property of ed.shearφ (emittable for free by this lemma), and boost-readiness derives
 from support-property + the verified b-chain mechanism.
+
+## 2026-07-23 ~01:00 UTC — M7 emission: a PRODUCER-side circularity caught at SPECIFY
+
+seat-L4's hbranch refinement of canonShearOf_shearWithinCarve was content-right (clause I needs
+cleared ≠ 0; clause III needs the freshness) but carrier-WRONG: the emission lemma is what L5
+uses to CONSTRUCT IsRealBranch — whose step arm contains the very conjunct the lemma proves.
+Requiring the CHILD's hbranch = needing the product to build the product. The realBranch_*
+pattern (consumers deriving FROM a held branch) does not transfer to the emission side. HOLD
+sent with the non-circular carrier: hpar : p.IsRealBranch e (the PARENT — held bottom-up) + the
+edge's oracle data (the DescendView fields + hcase + hshear); clause I's cleared ≠ 0 comes from
+the ORACLE's transition law at sc, clause III's freshness from divBirthInv_of_isRealBranch at
+the parent + the step-threading to the child. The proof plan survives verbatim — none of its
+steps uses child-branch-hood. Stop-on-suspect invited if L5's construction site contradicts
+this reading. The shape-sufficiency lesson's first PRODUCER-side instance: the consumer of an
+emission lemma is the constructor, and the constructor's available data is the hypothesis budget.
