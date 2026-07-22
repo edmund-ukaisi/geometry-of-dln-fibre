@@ -13632,3 +13632,39 @@ lastLayer_clear_preserves / foldStepInvAt_to_lastLayerInv / terminal_edge_stepIn
 — future increments once those get primed twins. The L5-fold-body seat targets
 MonumentAssembly.leaf_stepInv_of_path', NOT the baked atlas L5. arch-C next: the hygiene window
 (safe items only).
+
+## 2026-07-22 ~17:20 UTC — ⚠ RETRACTION: the statement layer is NOT closed — three grounded findings re-open the spine
+
+I called the statement layer closed one tick ago. It is not. Three seats, running the actual PROOFS
+(not statement-review), surfaced three holes — all sound, all verified on the def, all tracing to
+ONE under-specification of IsRealBranch. This is the closed loop working: the proofs found what the
+seven delta-reads missed. The confound sat exactly under the confident "closed" headline.
+
+THE ROOT CAUSE: IsRealBranch (MonumentAtlas:833-847) value-pins center = canonCenterOf and pivot
+(canonPivotOf = some → =pivot), but the SHEAR gets only a SUPPORT pin (CanonicalSchurStep :819-824
+= `∀ u k, shearφ u k ≠ 0 → bounds`, vacuously true for shearφ=0; ShearWithinCarveRaw likewise, since
+blockShear 0 = id). Two consequences:
+- **UNDER-pinned shear (value):** the predicate admits identity shears = R_bad, for which boostReady
+  is FALSE. So realBranch_boostReady_case11 is NOT provable from the predicate (Codex DIVERGED from
+  the elder's proof-side verdict and was right — I read the def to confirm). Grounds the descent's
+  δ=1 cofactor gap too (the cofactor structure comes FROM the canonical shear the predicate forgets).
+- **OVER-pinned pivot (single value):** pivot = the single canonPivotOf, but gmap's outermost root
+  blow-up + one pinned pivot ⟹ the cover MISSES ε·e_q (q≠p in the root center). So leafPath_compactCover
+  (L7) is FALSE as stated. The cover needs pivots FANNED (all pivots per center).
+
+THE THREE FINDINGS:
+1. boostReady — statement-side; needs `shearφ = canonShearOf` value-pin. (Codex vs elder; Codex right.)
+2. descent δ=1 case12/case2 — cofactor gap; likely resolved BY the shear value-pin (coupled), else a
+   FoldStepInvAt strengthening or a standalone stub. δ=0 + case11 provable, being landed.
+3. L7 — FALSE as stated; needs the pivot FAN (re-scope IsRealBranch/FoldRealizes/canonPivotOf + L5's
+   atlas emission; bridge to the engine's LANDED sorry-free fanned cover — seat-L7 de-risked).
+
+ACTIONS: charged the ELDER (spine owner) with a COUPLED one-round redesign (shear value-pin + pivot
+fan — different fields, co-design to bake once); the redesign routes through a DECORRELATED
+pen-and-paper/Codex coupling-check before render/bake (the elder's last call misjudged the shear-pin,
+so damp the gain). Froze the contested work: seat-L4B holds (b) (keeps the safe combinatorial (a)),
+seat-L7 holds the fan (its bridge lane is ready), the descent lands only the uncontested arms +
+factors the deep arm as a tagged on-cone obligation. LESSON (for lessons.md + the close synthesis):
+a statement bake reviewed for internal consistency is NOT proven closed until a PROOF has run against
+it — the delta-read gate must be paired with a proof-pressure gate before "closed" is claimed. Census
+36 unchanged (the holes were already open sorries / a false statement, not new tokens).
