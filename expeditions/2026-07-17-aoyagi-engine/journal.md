@@ -11005,3 +11005,18 @@ parallel, off the critical path; a third seat = coordination cost near one file 
 marginal wall-clock; the re-raise trigger is a wall AFTER the design-check. MONUMENT LANE: render
 seat reports the deeperCoords cleanup done (grep-clean, green, bake-ready → arch-C's final
 re-clear + bake).
+
+## 2026-07-22 (controller) — seat-Ecore SPECIFY: the pivotal fact is BANKED math (QIP water-filling transport), not a new sub-development
+
+seat-Ecore's opening report — verify-before-building paid immediately: the pivotal fact
+`sStep ∈ {C−1,C}` on binding profiles is NOT new math. On D = sortedWidths, the banked
+MinAdmCCodim.eOfT/tOfE give a value-preserving bijection Adm D ↔ qipFeasible D with
+Mval = Gqip ∘ eOfT and eOfT = sIncr; the bridge sStep = qipT + qipRound transports
+qipMinimiser_support/sumSq's {0, sgn δ} structure to the staircase — exactly `a` steps equal C.
+The exchange argument is REUSED, never re-proved. Own kill-battery banked FIRST
+(g-sorted-box-iso.py, EXIT 0: 259 + 456-core sweep, cardinalities + pivotal fact + enc-in-box +
+bijection + BOTH order-reflection directions). Plan: L=0 trivial branch split; enc/dec via
+Finset.orderEmbOfFin + Fin.rev gaps; dec's binding-ness routed through tOfE + minimiser; assembly
+via OrderIso.ofHomInv (mono both ways + inverse — resolves the reflection hazard structurally).
+~600–900 LoC multi-tide in the new module; OrderRealize.lean wiring stays seat-E's. Next report at
+the pivotal-fact milestone.
