@@ -12783,3 +12783,32 @@ shrink with zero MonumentAtlas edits; renderer = the RENDER SEAT (decorrelation 
 arch-C endorsed: the render↔gate split caught a defect every round it ran). SUMMIT-RETIRE
 entered in the owed-register (elder-blessed one-shot cleanup; preconditions listed). Render lane
 sequence: collapse round (GO sent with the verbatim clause) → Assembly first increment.
+
+## 2026-07-22 ~16:40 UTC — seat-L4's two wall findings: multiAffine NODE-form (elder-routed) + case11's true depth (path-invariant)
+
+**FINDING A (sufficiency defect, caught PRE-consumer):** realBranch_multiAffine's EDGE-form can
+only yield the PARENT residual — it can never discharge the wall's conjunct-2 or Case2Wire's
+conjB (both need the CHILD's Deg1SupportedSlot). seat-L4's proposed NODE-form
+(realBranch_multiAffine_node over any p.IsRealBranch) subsumes both as one-liners; zero
+consumers today so the restatement is free. ELDER-ROUTED (its own micro-round after the
+collapse round) with my quantification-strength flag: the node form asserts the slot property
+at EVERY real-branch node — the elder checks it against C2/no-descent + the ∀ℓ-threshold
+lesson. hpos carryover + old-shape retirement + exact text = the elder's. Process held: seat-L4
+asked to mint in MonumentAtlas; corrected — statement changes go through the render lane; the
+proposal WAS the mint.
+
+**FINDING B (the wall's true heart, honestly scoped):** case11-δ=1 conjunct-1 is NOT a wire-up.
+seat-L4 worked the obstruction: the naive witness q' = q∘Bu forces vanishing at u_pivot = 0, but
+Bu only zeroes the PARTIAL center while case11's residual reads the FULL layer block — generically
+nonzero. The only escape is real: foldB ALREADY CARRIES the birth-pivot factor (case11's pivot =
+divBirthCoord[mergeIdx], the corner born at an earlier δ=1 clear) — PATH-HISTORY, reachable via
+the recursive p.IsRealBranch, not the one-step hinv. Needs a genuine inductive path-invariant
+("for a real branch, foldB carries each cleared birth-corner factor" — DivBirthInv at the fold
+level). Decorrelated Codex xhigh consult running; the statement comes to the elder as its own
+ruling. Sub-monument scope named plainly — and FAITHFUL to Aoyagi (the reused exceptional divisor
+IS the earlier blow-up's coordinate). This is the pivot-provides mechanism completing its arc:
+predicted by the discriminator round, now getting its formal form.
+
+Render lane: collapse round rendering; multiAffine node-form queued behind it; Assembly first
+increment after. The wall's remaining structure is now FULLY MAPPED: node-form (A) + the
+path-invariant (B) + the dispatch-skeleton closed edit.
