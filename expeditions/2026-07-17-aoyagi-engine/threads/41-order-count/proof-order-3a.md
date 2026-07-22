@@ -13,12 +13,11 @@ Dependency graph of the headline `bindingSet_orderIso_boxPart` (already discharg
 
 ## Recommended proof-order (easiest/standalone → hardest/composed)
 
-1. **`residueA_le_ell` (d)** — FIRST. Pure arithmetic, independent of every iso. `a ≤ ℓ` where
-   `ℓ = ell M 0 = qipM (sortedWidths)`, `a = residueA = activeSum − (ceilingM−1)·ℓ`. Warm-up; low risk.
-   Needs: `ClosedForm` API (`residueA`, `ceilingM`, `activeSum`, `ell`), `qipM_ge_one`, and the
-   ceiling bound `activeSum ≤ ceilingM·ℓ` ⟹ `residueA ≤ ℓ`. Likely `omega` once the `ceilingM`
-   div/ceil facts are unfolded. **Watch:** `residueA` is `ℤ`, the statement `.toNat`; carry
-   `0 ≤ residueA` (from `activeSum ≥ (ceilingM−1)·ℓ`, the ceiling lower bound) to move `toNat` cleanly.
+1. **`residueA_le_ell` (d)** — ✅ DONE (commit f7c3f0a28), axiom-clean. Hyp is `0 < ell M 0` (NOT
+   `hpos` — the elder's hpos-check fired negative; positive widths never enter the ceiling arithmetic).
+   Proof: reuse `ClosedForm`'s `hresval` reasoning at `r = 0` (`residueA = S − (⌈S/ℓ⌉−1)·ℓ ∈
+   {S mod ℓ, ℓ}`, both `≤ ℓ`, via `Int.ediv_emod_unique` + `nlinarith`), then `Int.toNat_le` reduces
+   `.toNat ≤ ell` to `residueA ≤ (ell : ℤ)` directly (no separate `0 ≤ residueA` needed).
 
 2. **`bindingSet_sorted_orderIso_boxPart`** — SECOND (the mathematical heart; tackle while fresh).
    The actual enc/dec on sorted widths. Sub-structure:
@@ -27,7 +26,10 @@ Dependency graph of the headline `bindingSet_orderIso_boxPart` (already discharg
    - `decSorted` — the inverse (Codex part 2): `eᵢ↑ = C − D_{i+1}` (i∈A) / `C−1−D_{i+1}` (else),
      `Uc = D₀ − Σ_{i≤c} eᵢ↑`. Real def.
    - The **a-subset ↔ box** step is standard: `A = {p₀<…<p_{a−1}}`, box `enc i = p_{a−1−i} − (a−1−i)`.
-     Mathlib: `Finset.orderEmbOfFin` / `Finset.orderIsoOfFin` (a-subset of `Fin ℓ` ↔ `Fin a` monotone),
+     ✅ API CONFIRMED (v4.29, `Data/Finset/Sort.lean`): `Finset.orderEmbOfFin (s) (h : s.card = a) :
+     Fin a ↪o α` with `orderEmbOfFin_apply : s.orderEmbOfFin h i = s.sort[i]` gives `pᵢ` (the i-th
+     element of `A` in order); `orderIsoOfFin : Fin a ≃o s`. Build `A : Finset (Fin ℓ)` via
+     `Finset.filter (xᵢ = C)`, discharge `A.card = a` from `residueA_le_ell` + the active-step count.
      `Fin.rev`. This is where I'd first pin an `example` block against `orderIsoOfFin`.
    - Assemble via `OrderIso.ofHomInv` (fwd `encSorted`, inv `decSorted`, two round-trips) OR `toEquiv`
      + `map_rel_iff'`. **Reverse `map_rel_iff` is the hazard** (order-reflection; coord-sum fails it).
