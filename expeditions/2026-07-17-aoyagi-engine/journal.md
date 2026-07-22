@@ -10537,3 +10537,18 @@ arithmetic engine work in-reach) with the binding sequence SPECIFY → decorrela
 summand-coupling proof shape → prove; (2) the rung-C/3b non-duplication noted correct. AdmTight
 wires at the seam's closure. The E-lane's remaining ladder: the clamp lemma → the cert → the 3a
 scaffold → elder pass → prove.
+
+## 2026-07-22 (controller) — the gate catches the RAW-LAYER D⁺ (the elder's predicted shear, concrete): held, corrected, one expression
+
+arch-C's gate read the rendered DEFS (green with 8 sorries masking both defects): the render used
+`deeperCoords d p.conState.layer` — RAW layer, the exact shear the elder's window-index ruling
+predicted (the ruling crossed the render). TWO CONCRETE BREAKAGES, dispositive: (1)
+deeper-of-deeper ⊆ deeper ⟹ C' = D⁺_parent and D⁺_child are NEVER disjoint under raw-layer
+derivation — the re-factoring cannot cite the disjointness lemma; (2) at N−1,
+deeperCoords = ∅ ⟹ DeeperMultilinear c ∅ ⟹ c ≡ 0 — the left disjunct forces the residual to 0
+exactly where LastLayerInv lives. CONFIRMED: the window-index is required (elder-ruled + both
+breakages independent proofs); the correction is the ruled one-expression fix (T + D⁺ from ONE
+support-window index off (layer, cleared)/canonCenterOf). The gate gains two checks (advance
+disjointness cites cleanly under the windowed D⁺; the last-layer window NON-EMPTY). Third
+occurrence tonight of "the mechanical gate is the floor; the content is the gate." On the
+corrected render → the full gate → THE BAKE — this should be the final hold.
