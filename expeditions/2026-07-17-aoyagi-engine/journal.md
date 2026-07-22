@@ -15223,3 +15223,35 @@ the check routes to seat-L4D Lean-side; do NOT approximate e).
 
 seat-L4D proceeds on its holding orders (cap-escape def-confirm → candidate drafts; retire
 nothing, bake nothing). Task #42 (dupe of #41) deleted. No Lean edits; payoff isolation untouched.
+
+## 2026-07-23 — cap-escape CONFIRMED-AT-DEF (write-side mechanism); the RE-BAKE IS FORCED; candidate invariant fields V/S delivered
+
+seat-L4D's #32 deliverable (accepted; being banked as thread files on -L4D):
+
+PART 1 — CONFIRMED-AT-DEF on (2,3,2,2), with the WRITE-SIDE mechanism: canonNormalizationOf
+component (ii)'s write-column = the PIVOT'S ROW (:877-882); canonCenterOf bounds the pivot row
+only BELOW (cleared ≤ row; only the col axis carries the widthMinUpto cap); blockCoords(S+1)
+caps col. Escape ⟺ the pivot row ≥ widthMinUpto(S+1), reachable ⟺ d_{S+1} > widthMinUpto(S+1)
+(wide CURRENT layer). Composes with pnp-transport's read-side (inherent remnant-row) mechanism:
+two mechanisms, ONE def-level condition, consistent witness lists ((3,3,4) not wide: d_1 = 3 =
+widthMinUpto(1)). Third-source corroboration also on record: seat-L3T2 (the original slot
+author) independently confirmed mechanism + witness "match exactly".
+
+THE SHARPENED STAKE: Deg1SupportedSlot conjunct-1 over supportAt(child) is FALSE for the
+faithful fold at descended states on wide branches — INDEPENDENT of the b-chain question. The
+carried-invariant re-bake is therefore FORCED regardless of the Codex hedge; the hedge
+(scrambled-e check, in flight) scopes only whether the b-chain field rides the same wave. The
+fork's live question is now SHAPE, not necessity.
+
+PART 2 — candidate fields (elder input, NOT baked): FORM V (value/vanishing, seat-recommended
+minimal): ∃c strengthened with c_i vanishing wherever the relevant divisor's birth-corner
+coordinate is 0 (for coords with col ≥ divTilde k); boost split falls out at center→0; INTRO at
+the birth clear; PRESERVE lighter than exact weights. FORM S (structural): c_i = chainWeight·r_i
+(non-strict product of birth coords) — ChainNF re-homed as a CARRIED hypothesis; heavier
+(ε-transport preservation) but yields the explicit M_{s,k} ledger. Both ∀e-honest (vacuous/false
+for scrambling e), discharged at L5's canonFlatten base. COUPLING: either form's support set =
+the CORRECTED descended support — the two defects are one joint.
+
+ELDER STATUS: inputs 3/5 (def-confirm ✓, candidates ✓, Codex ✓; in flight: empirical
+table + hedge check, consumer impact table); told to rule when it judges inputs sufficient.
+#32 completed. Gate unchanged: no bakes, no descended-slot consumption. No Lean edits.
