@@ -1,6 +1,7 @@
 import DLNFibre.Core.Aoyagi.OrderChain
 import DLNFibre.DLN.RLCT.Foundations.AdmTight
 import DLNFibre.DLN.Aoyagi.ClosedForm
+import Mathlib.GroupTheory.Perm.Sign
 
 /-!
 # `DLN.Aoyagi.OrderRealize` — P6.2 Tier-3 (3a): the binding poset realises `BoxPart` (SPECIFY)
@@ -152,12 +153,37 @@ theorem swapBinding_orderIso (M : Fin (L + 1) → ℕ) (k : Fin L) (hpos : ∀ s
     Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (swapWidths k M))) := by
   sorry -- map: enc-swap (a)+(b)
 
-/-- **(c) THE BUBBLE-SORT TRANSPORT** (SORRIED — frontier): composing the adjacent-swap isos
-transports the binding poset to the sorted-width binding poset (`sortedWidths = shiftedSorted _ 0`;
-"bubble-sort transport agrees with `shiftedSorted`"). -/
+/-- The **transport submonoid**: permutations `σ` of the width indices under which the binding poset
+transports (for every positive `M`). A submonoid via `OrderIso.refl` / `.trans`; the adjacent
+generators come from `swapBinding_orderIso`; the closure is `⊤` (`mclosure_swap_castSucc_succ`), so
+every permutation — in particular `Tuple.sort M` — transports. This is the (c) design (submonoid
+route); see `transport-c-design.md`. -/
+def transportSubmonoid : Submonoid (Equiv.Perm (Fin (L + 1))) where
+  carrier := {σ | ∀ M : Fin (L + 1) → ℕ, (∀ s, 0 < M s) →
+    Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (M ∘ ⇑σ)))}
+  mul_mem' := by
+    intro a b ha hb M hpos
+    obtain ⟨ea⟩ := ha M hpos
+    obtain ⟨eb⟩ := hb (M ∘ ⇑a) (fun s => hpos (a s))
+    have hw : M ∘ ⇑(a * b) = (M ∘ ⇑a) ∘ ⇑b := by rw [Equiv.Perm.coe_mul]; rfl
+    rw [hw]; exact ⟨ea.trans eb⟩
+  one_mem' := by
+    intro M _
+    rw [Equiv.Perm.coe_one, Function.comp_id]; exact ⟨OrderIso.refl _⟩
+
+/-- **(c) THE TRANSPORT** — discharged (modulo (a)+(b)) via the submonoid-closure route: adjacent
+generators (`swapBinding_orderIso`) span `Perm (Fin (L+1))` (`mclosure_swap_castSucc_succ`), so
+`Tuple.sort M ∈ transportSubmonoid`, giving `bindingSet M ≃o bindingSet (M ∘ Tuple.sort M) =
+bindingSet (sortedWidths M)`. Rests only on the sorried `swapBinding_orderIso` (seat-Eswap). -/
 theorem bindingSet_transport_sorted (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 0 < M s) :
     Nonempty (↥(bindingSet M) ≃o ↥(bindingSet (sortedWidths M))) := by
-  sorry -- map: enc-transport (c)
+  -- generator membership rests on the sorried swapBinding_orderIso (seat-Eswap); map: enc-swap
+  have hgen : ∀ i : Fin L, Equiv.swap i.castSucc i.succ ∈ transportSubmonoid :=
+    fun i M' hpos' => swapBinding_orderIso M' i hpos'
+  have hsub : (⊤ : Submonoid (Equiv.Perm (Fin (L + 1)))) ≤ transportSubmonoid := by
+    rw [← Equiv.Perm.mclosure_swap_castSucc_succ L]
+    exact Submonoid.closure_le.mpr (by rintro _ ⟨i, rfl⟩; exact hgen i)
+  exact hsub (Submonoid.mem_top _) M hpos
 
 /-- **(d) WELL-FORMEDNESS of `(ℓ,a)`** (PROVED): `a = residueA ≤ ℓ = ell`, so `BoxPart(ℓ,a)`'s bound
 `ℓ−a` is meaningful. Hypothesis is `0 < ell M 0` — the elder's Q2 hpos-check FIRES negative here:
