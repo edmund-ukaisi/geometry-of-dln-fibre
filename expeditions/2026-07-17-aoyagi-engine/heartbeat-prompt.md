@@ -12,24 +12,23 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE STEP-MAP FIDELITY ROUND (2026-07-23 ~06:10) — the expedition's decisive design question
-  is with the elder.** THREE independent elaborations CONVERGED: the fold's per-edge normalization is
-  under-faithful to Aoyagi — (1) elder's cap finding (descended-layer basis change), (2) pnp-transport
-  (canonShearOf misses A_{S+1}→A_{S+1}·Q⁻¹; exact 2222 witness; theorem TRUE for the faithful clear;
-  certificate STILL FLUSHING — verify on disk before trusting), (3) pnp-fan (cover fix FIRM: pivot ∈
-  canonCenterOf fan; but VALUE leaves need per-pivot shears — L1/L3 COUPLED, orthogonality call
-  CORRECTED; certificate BANKED threads/L7/fan-design-certificate.md). ELDER RULES: single-block vs
-  COMPOSITE-hypersurface step structure (composite = engine-reconciling, shear-per-corner, plausibly
-  supplies the deeper recoord — one structure resolving all three) + sequencing {firm cover fix; salvage
-  (b) own-cover-fold w/ Core block-atom (Q); Gap B merge (staging 20a9c5e3c gate-green, SURVIVES the
-  ruling — statement-invariant, merge independent); hparent rider (3 consumer sites); appendResidDescent
-  hpos note; non-strict chainWeight/bLedger_thr_le pin}. LANES: seat-L4C = the SAFE base grind (conRoot,
-  filter-invariant) + thr_le prep; seat-LL holds (hparent); seat-L3T2 holds (survival analysis banked:
-  homogeneity survives recoord, comp_of_fixing→comp_of_linear); arch-C holds (staging banked); pnp-fan
-  DONE; pnp-transport flushing. Everything shear-touching WAITS on the ruling. Census 36 canonical
-  (+3 staged). CORRECTION OF RECORD in journal ~06:10: L1-orthogonal-to-L3 was wrong; elder's original
-  coupled instinct right. L1's bake itself survives (additive, payoff-isolated; the pinned OBJECT
-  generalizes to a per-pivot family).
+- phase: **N_PIVOT RE-BUILD, elaborate-first + the amended-staging merge (2026-07-23 ~08:40).** The
+  DESIGN RULING landed + RE-OPEN COMMITTED (banked: threads/design-round-ruling.md + threads/LL/
+  elder-lastlayer-verbatim.md): Aoyagi's step = BLOCK blow-up (fanned pivot ∈ canonCenterOf) ∘
+  N_pivot per-chart normalization (fixes pivot, clears row/col, RECOORDINATIZES the deeper factor) —
+  NOT composite (fallback only, behind pnp cert + controller call); canonShearOf = corner instance
+  missing the recoord; the shear-pin family re-authors in the N_pivot round; L1⊥L3 coupling ratified;
+  e-fix = pin canonFlatten (the summit's exists_flatten IS the canonical reindexing — summit sound,
+  only sorried ∀-e intermediates were false). PIPELINE: elder authoring the STAGE-FRAME BRIEF →
+  pnp-transport elaborates N_pivot on (2,2,2,2)+(3,3,4) coupled witnesses (acceptance: honest_clear
+  reproduces + pnp-fan's escape witness covered-AND-monomialised) → elder RATIFIES cert → authors
+  verbatim → arch-C renders → ONE N_pivot bake. MEANWHILE (unblocked): arch-C's AMENDED STAGING
+  (canonFlatten e-pin on 2 homogeneity sigs + hpos on the cap + comp_of_fixing docstring rider +
+  hparent REVISED rider [hparent + carried conditional GeneratorCleared, 3 consumer sites]) → my
+  gate → elder delta-read → MERGE (Gap B cleared independent); seat-LL amending its twin to the
+  REVISED form; seat-L4C = Lean countermodel + (1b) predicate-agnostic core; seat-Q = Core lemma (Q)
+  (block-atom cover, salvage (b)'s foundation); seat-L3T2 builds homogeneity atoms POST-merge.
+  N_pivot-touching work holds for the ratified cert. Census 36 canonical (+3 staged).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
