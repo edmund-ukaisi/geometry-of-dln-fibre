@@ -14358,3 +14358,40 @@ The elder decides: does LastLayerInv's carried disjunction (all-left OR unit-slo
 ∀-statement sound under hparent, or must the disjunction be explicit in hinv? (The 5-guard lesson:
 don't lean on unstated reachability.) seat-LL banks its consult artifacts to its branch (the
 untracked-files-die-with-worktrees lesson applied forward).
+
+## 2026-07-23 ~05:10 UTC — ⚠⚠ THE DEEPEST CATCH YET: canonShearOf may be UNFAITHFUL to Aoyagi's clear (definition-level)
+
+pnp-transport's source-elaboration (the operator's elaborate-the-detail directive doing its deepest work)
+STOP-ON-SUSPECTED the fold's SHEAR DEFINITION: ChainNF/boost-readiness is FALSE for the fold defs AS THEY
+STAND — not because the ε-rule is wrong but because canonShearOf does not realize Aoyagi's clearing step.
+The theorem is TRUE for the faithful clear (its honest_clear script: A1/A2/A3 all pass with B=A₁Q⁻¹).
+
+THE WITNESS (exact, d=(2,2,2,2), smallest real boost branch, oracle-confirmed path): foldResid at the
+boost parent has its extra-block coefficient carrying u₀₁₀ (a layer-0 OFF-DIAGONAL), not the pivot —
+F = x+yz verbatim; Deg1SupportedOn fails; no threshold rescues (no pivot factor anywhere in the entry).
+ROOT CAUSE: canonShearOf writes only the layer-S Schur interior; Aoyagi's clear A₀=Q⁻¹(QA₀U)U⁻¹ ALSO
+recoordinatizes the deeper layer (A_{S+1}→A_{S+1}·Q⁻¹); the repo's OWN worked.tex carries the
+recoordinatized deeper product — the Lean fold has no term producing it. Fixing the pivot alone: still
+FALSE. Codex reproduced every number blind (inline sympy, no repo reads).
+
+THE RECONCILIATION (mine, strengthens it): the ELDER's own Gap-B Codex finding — "the cap-restoring basis
+change y′₀=y₀+v·y₁ is exactly canonShearOf" — involves DESCENDED-LAYER coords, a layer-S+1 basis change
+canonShearOf provably cannot implement (canonShearOf_support pins it to layer S). Two blind elaborations
+CONVERGE: the faithful clear acts on layer S+1; the Lean shear doesn't. The elder's instrument found the
+same gap and mislabeled the fixer.
+
+THE PIN TENSION (mine, for the design): ShearWithinCarveRaw clause-(I) REQUIRES the shear to vanish on
+layers ≥ supportLayer(child)=S+1 — the pin architecture as baked FORBIDS the faithful shear. If confirmed,
+the re-bake re-authors the shear-pin family around the faithful def (canonShearOf + clauses + L1's form).
+
+SENSOR CALIBRATION APPLIED: the cited witness artifacts were NOT on disk (certificate + 3 scripts absent;
+only the stage-traces present, all exit 0) — the phantom-file lesson; pnp-transport ordered to FLUSH before
+the elder's verification proceeds. HOLDS: arch-C's staged Gap B bake (20a9c5e3c) held at my gate (banked,
+no loss; one coherent MonumentAtlas round preferred); seat-L4C effectively held (no certificate to grind);
+seat-L3T2 hold extended with the technical heads-up (homogeneity likely survives — linear deeper recoord
+preserves per-layer degree — but comp_of_fixing → comp_of_linear for the shear factor); pnp-fan continues
+(orthogonal). UNTOUCHED under any outcome: the outer ChainNF architecture, bLedger, a′, the blow-ups, the
+oracle/tree, Objects A-E, payoff isolation. ELDER charged: verify against worked.tex + Aoyagi FIRST (the
+finding dies or the shear re-bakes); then the faithful-shear design + one-round sequencing (Gap B + hparent
++ the shear). If confirmed this is the fidelity gate's deepest catch — caught by source-elaboration, the
+one instrument class that CAN catch definition-fidelity (proof-pressure + delta-reads structurally cannot).
