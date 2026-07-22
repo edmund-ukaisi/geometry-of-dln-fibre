@@ -11227,3 +11227,18 @@ ordered coordinate tuples — the profile machinery only needs to EXTRACT the mi
 endpoint+preservation → minAdm equality → the mono hazard (Codex consult on the tightest
 competitor set) → ofHomInv assembly. Milestone (a) = steps (4)+(5) landing. E-lane 3-track all
 healthy; monument holds on the elder's five-face ruling.
+
+## 2026-07-22 (controller) — face 5 CONFIRMED (scalar countermodel); the family COMPLETE before the elder
+
+L3T's authorized Codex check landed (80fb50ba5): terminal conjunct (2) NOT-DERIVABLE — scalar
+countermodel D=M=1: q(0,0)=x satisfies StepInv, any valid unit = x, unit 0 = 0. Gap: hcleared is
+RESIDUAL-side (slot j₀); conjunct (2) needs a GENERATOR-side i₀ with ∑_j q(i₀,j)(0)·resid j(0) ≠ 0,
+not forced by the ∃q of forward divisibility. Minimal fixes: generator-side hcleared datum (must
+then be EMITTABLE by lastLayer_clear upstream — the weakest-that-INDUCTS check runs on the CHAIN)
+or pin q to the Kronecker pullback (touches the invariant's ∃q, bigger reach). Refinement:
+multi-slot cancellation possible, conclusion unchanged. THE FAMILY IS NOW COMPLETE before the
+elder (5 faces; 2/4/5 Codex-confirmed with countermodels; fourth-and-final addendum sent), with
+the common diagnosis compressed: the baked hypotheses/invariant do not encode three construction
+specifics — effective support = residual block; the Schur-fold shear; the generator-side clear.
+Both proof seats hold with zero proof investment wasted; honest halves staged to resume on one
+rebase.
