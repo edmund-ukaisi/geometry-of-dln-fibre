@@ -13401,3 +13401,22 @@ blocked on its two placement answers) — one staging, one delta-read: the pin +
 hlayer amendment + the two call-line updates. arch-C's packet-prep is otherwise complete
 (insertion points located; projections enumerated; producer-safety verified: NO live
 IsRealBranch constructor on the tip).
+
+## 2026-07-23 ~06:00 UTC — M4 card banked; the elder's placement answers (with a self-correction); one answer to go
+
+**The M4 statement card banked** (threads/M4/statement-card.md — seat-M4B's content verbatim:
+the 9-atom inventory, the honest P/A/C/D split incl. the three NAMED deferrals, the key
+finding [unrestricted (★) false at rollovers], the route). rev-M4 spawn pending the reviewer
+queue; the card marks review-in-flight.
+
+**The elder's placement answers landed, with its own over-specification corrected:** (1)
+boostReady BLESSED IN PLACE — and the placeholder's Deg1SupportedOn conclusion is RIGHT ("my
+final-ruling Deg1SupportedSlot conclusion was over-specified; the crux consumes ∃c — good catch
+by the placeholder"); the stub GAINS hslot per the Finding-A lesson (re-expression needs the
+base; R_bad witnesses the joint need), with the explicit non-recurrence argument (∃c-factoring
+is he_lin-robust — u³ still factors) and a seat-confirmable drop condition. (2) YES to the
+realBranch_canonicalSchurStep projection (load-bearing: the boost proof's CanonicalSchurStep
+source). (3) The pattern fix acknowledged mechanical; its delta-read checks all six projections.
+Relayed to arch-C with HOLD-for-one-more: the hlayer amendment (catch #3) is still queued for
+the elder's next turn — then ONE staging carries everything. seat-L4's proof-input set updated
+(hδ + hc11 + hbranch + hslot; the projection as its pin source; the drop-condition test noted).
