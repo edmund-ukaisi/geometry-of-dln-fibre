@@ -11482,3 +11482,18 @@ re-bake); (3) separate invariant clause. **BAKE HOLDS on this one confirm** — 
 not a bake basis; that's this family's whole lesson. Render + item-3 gate PROCEED meanwhile so
 the bake fires the moment the confirm lands. rev-Elane mid-review (batteries + wording items
 already complete; Codex consult in progress).
+
+## 2026-07-22 (controller) — parent-h CONFIRMED real (the third too-weak-def instance); elder rules the tighten; bake holds correctly
+
+arch-C ground-truth-CONFIRMED seat-L4's parent-h flag (no longer "likely"): DeeperMultilinear's
+h_d reads ALL of Dp = S_pᶜ, and at the FIRST-CLEAR descend S′ = blockCoords(S+1) ⊆ S_pᶜ — the
+de·s1·s2 witness (h reading S′ degree-2) is ADMITTED by the def → child degree-2 on its own
+support under a PERFECT shear. Localized: specific to J=0→1 (at J≥1 parent/child supports
+coincide — no issue). THE THIRD too-weak-def instance of the family (extent, shear, now the
+coefficient window) — all surfaced by the free-field discipline, all pre-proof. Elder addendum
+sent: option (1) off the table; rule (2) window/degree tighten (arch-C's unasserted guess:
+per-layer multilinearity, degree ≤ 1 per layer — the construction's residual satisfies it free)
+vs (3) separate clause — with the weakest-that-INDUCTS check on the EMISSION side (conjunct-B
+must produce the tightened h at the child; same chain discipline as GeneratorCleared). arch-C's
+sequencing exemplary: grading renders + gates NOW; the bake fires only when BOTH the grading form
+AND the parent-h resolution are in — never bake-and-reopen.
