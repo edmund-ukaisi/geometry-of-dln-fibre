@@ -15078,3 +15078,23 @@ bottleneck); (2) the induction (δ-dispatch: case11 fixing / δ=0+append fixing[
 rollover exfalso-hpos); (3) the slot rework (clause-1 = the named cap frontier, fallback (b) — NOT
 waiting on the in-flight trace/adjudication); (4) green + the full audit → my re-merge + wires.
 On its completion seat-LL's frontier #1 unblocks. Handoffs now 6-for-6.
+
+## 2026-07-23 ~20:20 UTC — seat-L4D SPECIFY: the 8TH guard catch (terminal/last-layer, Lean-confirmed); shape gate PASSED
+
+seat-L4D's SPECIFY (rebase clean; the skeleton green; single sorry = chainCompat_holds): STOP-ON-SUSPECT
+— ChainNF as stated is FALSE at TWO node classes, shared mechanism supportAt = ∅ while foldResid ≠ 0:
+(1) TERMINAL (const-1 vs the empty sum — CONFIRMED IN LEAN, a scratch refutation builds green);
+(2) LAST-LAYER-CLEARED (the residual is the nonzero UNIT that LastLayerInv tracks). The transport field
+was unprovable as written. THE 8TH GUARD-CLASS CATCH — all eight pre-grind.
+
+PIN PLAN, shape-GATED PASSED (both defs SEAT-lane, controller gate suffices; flagged for the elder's
+next read): FIX 1 = chainWeight strict→NON-strict (the certificate §4b mandate; root filter-invariant);
+FIX 2 = the ChainNF `supportLayerOf < N` guard — the PRECEDENTED shape (the elder's non-terminal guard
+on foldResid_layerHomogeneous, the 4th catch, same class), with the induction-compatibility argument
+(supportLayerOf non-decreasing ⟹ child-needs ⟹ parent-gives; the case11 consumer's guard active).
+Boundary probes all resolved (terminal/last-layer/rollover/i=J₁); one open probe (rollover-at-cleared-0
+under hpos) carries a surface-before-threading commitment. The terminal refutation scratch ordered
+COMMITTED as a kill-witness (the Fbad pattern). ONE CAUTION issued: the boundary field must be ROBUST to
+the live cap-escape question (state it either-outcome-safe, or share seat-L3T2's named cap frontier —
+don't assume recoord-confinement unverified). SEQUENCE: fixes + base + boundary now; the heavy transport
+grind GO when green. The wall's endgame is moving.
