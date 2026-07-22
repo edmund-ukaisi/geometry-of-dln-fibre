@@ -10495,3 +10495,19 @@ depth didn't — the shear the elder named) and PASS under the shared-window der
 is FINAL: six re-checks + three witness deaths + Schur restoration + advance-partition +
 window-coherence + crux dedupe + mechanical floor + write-set → ONE BAKE. Every check traces to
 a found defect. "Done being designed" — awaiting the aligned render.
+
+## 2026-07-22 (controller) — the Schur verification CLOSES the elder's GAP-2 target: preservation-by-coefficient-FOLDING (the seventh convergence)
+
+seat-L4's battery (case1_schur_multilinearity.py @ 3f6f56db3, PASS): the elder's danger CONFIRMED
+REAL — the degree-2 C21·C12 term leaves the un-absorbable u_pivot residue under blow-up + single
+division, exactly as predicted from the pages — with ONE mechanism precision that shapes the
+preservation proof: **the Schur does not subtract a formed residue post-hoc; under the carried
+invariant no degree-2 entry ever FORMS** — the Schur keeps degree-1 by FOLDING C21·C12 into the
+deeper cofactor (the layer advance), where the factors become spectators and never gain u_pivot.
+The residue is the failure mode the design AVERTS — the motivating counterexample for the
+docstring — never a proof step. Conjunct-B's obligation = the layer-advanced re-factoring read
+off the shear-folded form; no cancellation step exists to discharge. Clause STANDS; no
+escalation; the SEVENTH independent convergence. Routed: the elder (target closed) + arch-C (the
+docstring phrasing so the prover reads re-factoring, not cancellation; the battery joins the
+round's evidence). **The monument's design has NOTHING open — the index-aligned render is the
+only pending event.**
