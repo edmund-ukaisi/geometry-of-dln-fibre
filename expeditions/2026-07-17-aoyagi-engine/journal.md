@@ -14674,3 +14674,24 @@ hypothesis-minimality, the hardening's honesty, vacuity probes, decorrelated Cod
 The L7 salvage-(b) lane now has its foundation ON CANONICAL: the fanned cover fold (post the N_pivot
 round's fan pin) consumes this atom per pnp-fan's certificate §2.3-2.4. Board: elder delta-read on
 a253bf625 pending; pnp-transport mid-elaboration (tasks 20-25); seat-LL at 3 owned frontiers.
+
+## 2026-07-23 ~11:20 UTC — countermodel LANDED (3 clean-three kills); signature confirmed; a case11-center precision catch
+
+seat-L4C's Lean countermodel is pushed on -L4C (831b9cbf1 + fa5f8bf41; BaseCountermodel.lean,
+sorry/axiom-free, all three theorems clean-three on forced axioms): Fbad_not_deg1_singleton (u₀u₁+u₁²
+Deg1 on NO single coordinate — the permanent kill of the e-abstraction class), mult_shearTuple (the
+coreGen-content eval), shearTuple_isLinear (he_lin holds yet the base fails ⟹ he_lin PROVABLY
+insufficient). The ≃ₜ packaging deferred (the mult-level eval IS the content — agreed, marginal gain).
+INTEGRATION NOTE: BaseCountermodel rides the -L4C branch WITH the ChainNF skeleton — integration HELD
+until the N_pivot verbatim lands (the skeleton's crux statement may shift in that round; no reason to
+put a soon-to-reshape sorry on canonical early). seat-L4C now on GO step 2, starting with the reusable
+network-free crux submult_comp (interval composition, absent from Core.Submult — bedrock the peel needs).
+Its dependent-1×1/castSucc HMul idiom banked to lean/CLAUDE.md.
+
+seat-LL: SIGNATURE CONFIRMED with arch-C seat-to-seat (the swap will typecheck; no re-amend either
+side; arch-C's Case2Wire:139 hcleared-derivation follow-up noted). PLUS a precision catch on its hole
+#1: conjA δ=1 is NOT case-blind — at cleared=0, case11's center (the MERGE block: pivot ∪ {col <
+runLen}) ≠ supportAt ({col < widthMinUpto}), so Deg1-on-the-merge-block does NOT follow from hinv.
+The closer (post task-#8, coordinated with the L3T2 machinery) needs a case-split with a merge-block
+Deg1 argument OR a reachability examination (is case11-at-cleared=0 at the LAST layer reachable?).
+seat-LL corrected its file notes + docstring — recorded at the point of use; rides with the hole's owner.
