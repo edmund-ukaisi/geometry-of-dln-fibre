@@ -15199,3 +15199,27 @@ nothing bakes, until the elder's ruling.
 Process note: the guard-class discipline is now 11-for-11 pre-grind; β lived less than one tick
 because the seat verified feasibility before churning — the cheapest possible price for an
 architectural discovery. Payoff isolation untouched (no Lean edits).
+
+## 2026-07-23 — Codex verdict banked (β infeasibility decorrelated-confirmed); the HEDGE isolated + commissioned
+
+seat-L4D's decorrelated Codex xhigh verdict banked (39d9ae12f; controller read the artifact —
+content genuine). Confirms the 11th catch: hslot cannot yield the case11 boost split
+(counterexample F(u)=u_q on extraBlock; "canonicality alone is not a divisibility theorem").
+Three refinements relayed to the elder's consolidated ruling:
+
+(1) NO-NEEDS-INDUCTION ≠ NO-NEEDS-BASE: the statement stays ∀e-VALID with the b-chain CARRIED
+("for unsuitable e, the stronger hypothesis may simply be false") — the precise sense in which
+option (B) preserves the ∀e-honest carried-hypothesis architecture; canonFlatten is needed only
+to DERIVE the invariant at the root = exactly L5's base.
+(2) The (B) candidate field is largely PRE-BUILT: Codex's minimal ingredient is verbatim the
+banked BoostSplit payload (Case1Wire :592-601) with deg1SupportedOn_boostForm already
+clean-three; the genuinely new obligations = birth-introduction + per-step preservation + L5 base.
+(3) THE HEDGE (the one open branch): whether the FULLY-UNFOLDED concrete theorem is false for
+some non-canonical e is UNVERIFIED — if the concrete unfolding forces the b-chain without the
+root base, the wall is TRUE AS FRAMED and no re-bake is needed. Commissioned pnp-transport:
+scrambled-e fold on (2,2,2,2) (Fbad-style e), evaluate the case11 boost split at the leaf —
+SURVIVES-∀e vs KILLED-BY-e; explicit feasibility caveat (if its model can't carry e honestly,
+the check routes to seat-L4D Lean-side; do NOT approximate e).
+
+seat-L4D proceeds on its holding orders (cap-escape def-confirm → candidate drafts; retire
+nothing, bake nothing). Task #42 (dupe of #41) deleted. No Lean edits; payoff isolation untouched.
