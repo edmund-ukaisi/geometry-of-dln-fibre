@@ -11497,3 +11497,36 @@ vs (3) separate clause — with the weakest-that-INDUCTS check on the EMISSION s
 must produce the tightened h at the child; same chain discipline as GeneratorCleared). arch-C's
 sequencing exemplary: grading renders + gates NOW; the bake fires only when BOTH the grading form
 AND the parent-h resolution are in — never bake-and-reopen.
+
+## 2026-07-22 (controller, ~06:15) — PARENT-H RULED: per-layer multilinearity (the elder retiring two lesser forms); THE BAKE FULLY UNBLOCKED; E-lane integration in flight
+
+Dense convergence batch:
+
+**MONUMENT — the last open RESOLVED.** The elder's two-part ruling (transcript, 06:00 + 06:04):
+first CONFIRMED the concern real on the render (Deg1SupportedSlot passes bare Cᶜ; no clause
+constrains h below it — "refines my own D⁺ := Cᶜ ruling: right as 'not the support,' too loose —
+it must exclude FUTURE supports"), then RULED (2): **PER-LAYER MULTILINEARITY** (degree ≤ 1 per
+layer, rendered against the tupIdx layer-decode) — adopting arch-C's guess and RETIRING both its
+own resolved-coords formulation and seat-L4's directional "strictly deeper" ("direction-committed
+and likely inverted… per-layer is direction-AGNOSTIC — it sidesteps the deeper-vs-shed confusion
+that has dogged this whole family"). Grounds: honest structural fact (residual = block-coord ×
+b-monomial, per-layer degree ≤ 1 for FREE); kills de·s1·s2 directly; closes self-propagation
+(support coefficient must be degree-0 in the child layer); INDUCTS by preservation (easier than
+GeneratorCleared); uniform over J (no case split). THE THIRD too-weak-def of the family CLOSED at
+statement level. Earlier in the batch: item-3 gate PASS (ShearGrades = the locked (a)+(b), DRY,
+cited on all three interior leaves); the region open RESOLVED CHILD (seat-L4's case-independent
+reasoning — the shear is stepMap's inner map; locked, vacuous-for-build, bundled); and a
+discipline note for the record: **arch-C explicitly declined to treat a peer's "bake" as bake
+authority while that peer's own flag was unresolved.** RELAYED the ruling: one fold-in pass
+{CHILD swap + per-layer tighten} → re-gate (witness checks: de·s1·s2 dies; construction residual
+satisfies the predicate) → **BAKE the complete set** → hash → elder second read → canonShearOf.
+
+**E-LANE — INTEGRATION IN FLIGHT.** rev-Elane verdict: **SURVIVED, integration-clear** (all 7
+items PASS; forced axiom prints clean on all five results; batteries re-run; Codex corroborates;
+finding #1 = the ClosedForm ell = qipM SURROGATE caveat, carried into the aggregator+AxCheck
+comments verbatim; #2 scoped-evidence note; #3 lint nits → hygiene queue). Controller integration
+EXECUTED: merged -E (dc257854e, 30 files +3919 — the four modules + the AdmTight collapse);
+aggregator wired (4 imports + the Tier-3 block with the surrogate caveat); AxCheck registered the
+two roots (bindingSet_orderIso_boxPart + bindingSet_chainHeight_eq_thetaCount, fenced, ρ-seam
+deferral explicit). The full-aggregator verification build (the literal combined-load) running in
+background; on green: commit + push closes P6.2 Tier-3.
