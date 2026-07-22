@@ -48,12 +48,10 @@
   ],
   "roleOrder": [6, 4, 2, 3, 1, 5, 0],
   "tags": [
-    {"label": "LANDED", "match": "\\bLANDED\\b|\\bland(s|ed)\\b"},
     {"label": "REFUTED / RETRACTED", "match": "REFUT|RETRACT|\\brevert"},
-    {"label": "RECALIBRATION", "match": "recalibrat|REFINED|re-?scop"},
-    {"label": "AUDIT PASS", "match": "SURVIVED|audit.{0,12}PASS|\\bPASS\\b"},
-    {"label": "BANK / MERGE", "match": "Merge pull request|\\bbank(ed)?\\b"},
-    {"label": "CLOSE", "match": "\\bclose[:d]?\\b|\\bCLOSE\\b"},
+    {"label": "RECALIBRATION", "match": "\\bRECALIBRAT|\\bREFRAME", "caseSensitive": true},
+    {"label": "SURVIVED", "match": "\\bSURVIVED\\b", "caseSensitive": true},
+    {"label": "CLOSE-OUT", "match": "close[- ]?out|expedition close"},
     {"label": "DIRECTIVE", "match": "directive|operator call"}
   ]
 }

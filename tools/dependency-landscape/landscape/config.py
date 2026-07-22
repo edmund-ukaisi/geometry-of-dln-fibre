@@ -36,7 +36,9 @@ class Profile:
         self.role_order = data.get("roleOrder", list(range(len(self.roles))))
 
         self._tags = [
-            (t["label"], re.compile(t["match"], re.I)) for t in data.get("tags", [])
+            (t["label"],
+             re.compile(t["match"], 0 if t.get("caseSensitive") else re.I))
+            for t in data.get("tags", [])
         ]
         self._area_cache = {}
 
