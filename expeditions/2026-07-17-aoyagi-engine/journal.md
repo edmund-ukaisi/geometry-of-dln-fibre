@@ -14862,3 +14862,19 @@ after it. (a) Nothing consumes the atoms pre-N_p (the induction + seat-LL's fron
 the bake); (b) merging into canonical mid-decisive-render churns arch-C's base for zero urgency — bad
 risk arithmetic on THE critical path. Sequence: N_p merges → -L3T2 merge + wires → atom #3 against the
 final defs → the full audit → the primed-twin swap map onto the SUMMIT-RETIRE ledger.
+
+## 2026-07-23 ~15:00 UTC — hpos BLESSED; the def-fidelity gate is IN THE CHARTER; N_p render continues
+
+The elder blessed the hpos rider (the 7th guard catch — arch-C folds it into the N_p staging) AND
+authored the CHARTER §3 def-fidelity gate (committed on its signal, controller pen): a spine DEF bakes
+only behind a source-fidelity certificate (source construction + Lean def traced on the SAME witness,
+DIFFED); batteries must exercise the LEAN def, never only a hand model — "the worst failure, the gate
+confirming the INTENT not the OBJECT"; a 'representation not taken' note = a deferred decision needing
+an owner + re-open trigger. The operator's paper-check question is now a per-cycle-loaded invariant.
+
+The elder also SUGGESTS graduating the gate to docs/policies/ for cross-expedition permanence —
+harness-level, so it's the OPERATOR's call, surfaced in my report (I will not create a policy file
+unilaterally; the one-time hardener edit precedent was explicitly not a general license).
+
+N_p render: still in flight (nothing on rung-c yet — it is the expedition's biggest render: the def +
+39 re-wires + 5 re-statements + the pins + 2 riders). All other lanes holding/banked per plan.
