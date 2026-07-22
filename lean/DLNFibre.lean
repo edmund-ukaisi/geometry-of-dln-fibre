@@ -1616,3 +1616,6 @@ import DLNFibre.DLN.Aoyagi.Case2Wire
 -- LeafChartWire: seat-L6's L6 proof (leafPath_chartGeometry' + chart_of_collapse, clean-three; consumes
 -- the FoldRealizes Jacobian collapse). The MonumentAtlas L6 sorry-swap rides the Assembly increments.
 import DLNFibre.DLN.Aoyagi.LeafChartWire
+-- L5FoldSpec: seat-L3T2's L5 SPECIFY — the fold-induction obligation map + the missing-atom
+-- contracts (M1-M7, sorried SPECIFY proposals, LIVE cone). PROVE waves commission off this map.
+import DLNFibre.DLN.Aoyagi.L5FoldSpec
