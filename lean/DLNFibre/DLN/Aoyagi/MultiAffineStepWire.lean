@@ -543,48 +543,17 @@ theorem perLayerDeg1From_comp_of_fixing {N : ℕ} {d : Fin (N + 1) → ℕ}
     refine Finset.sum_congr rfl (fun x hx => ?_)
     rw [hfix ℓ hℓ x hx u]
 
-/-- **The δ=1 append residual DESCENDS to the deeper block (the SINGLE tracked hole of the wall).**
-At a δ=1 `case12`/`case2` first-clear append the child residual — the strict transform
-`foldResid p (cast ·) (qm ·)` — is degree-1 supported on the DEEPER block `S' = blockCoords (p.layer+1)`
-(clause-1 at the descended support). NOT derivable from `hslot` alone: `foldResid p = (u ↦ u_pivot)`
-satisfies `hslot` yet its strict transform is the constant `1`, unsupported on `S'` (fails clause-1 at
-`u = 0`); Codex xhigh 2026-07-22.
-
-**Fix = `foldResid_layerHomogeneous` (elder-ruled Gap B), SHEAR-INDEPENDENT** (pnp-coupling exact-fold
-verdict: the descent fails identically for `canonShearOf` and identity shear — the shear does not bite):
-`foldResid p` is multilinear-homogeneous — degree exactly 1 and VANISHING at the layer's coords `= 0` —
-per layer `≥ supportLayerOf p.conState`. That vanishing strengthening (strictly stronger than
-`Deg1SupportedSlot`, which permits the `u_pivot`-transform's constant part) gives this descent directly.
-Elder RULED **B-standalone**: the fix is a NEW predicate `HomogeneousDeg1On` + a STANDALONE lemma
-`foldResid_layerHomogeneous` (by fold-induction) — `FoldStepInvAt` is UNTOUCHED (no case1/case2/L5
-ripple). TWO SPECIFY concerns pending the elder's pin: (a) state it over the CAPPED `blockCoords ℓ`, not
-the full `layerCoords ℓ`, to match this clause-1 cap; (b) the root base (`foldResid root = coreGen`) needs
-`he_lin : IsLinearMap ℝ ⇑e` (the `u³` refutation). Statement-lock stands; NOT shear-coupled. -/
-theorem realBranch_appendResidDescent {N : ℕ} {d : Fin (N + 1) → ℕ}
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
-    (p : TreePath d) (ed : TreeEdge d p)
-    (hδ1 : edgeδ d p = true) (hcase : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2)
-    (hbranch : (p.extend ed).IsRealBranch e)
-    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
-      (supportAt d p.conState.layer p.conState.cleared)
-      (supportLayerOf p.conState) (foldRegion d e p))
-    (j : Fin (foldNR d (p.extend ed))) :
-    ∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
-      (∀ i, ContinuousOn (c i) Set.univ) ∧
-      (∀ u ∈ Set.univ, foldResid d e (p.extend ed) j u
-        = ∑ i ∈ blockCoords d (p.conState.layer + 1), c i u * u i) := by
-  -- map: B-derived-append-descent (child residual degree-1 on the descended blockCoords(p.layer+1);
-  -- UNPROVABLE from hslot alone — F=u_pivot counterexample, Codex xhigh 2026-07-22; fix = the
-  -- SHEAR-INDEPENDENT foldResid_layerHomogeneous — elder ruling pending standalone-vs-strengthening,
-  -- blockCoords-cap + he_lin concerns flagged; statement-lock stands)
-  sorry
+-- `realBranch_appendResidDescent` (the δ=1 append CAP / conjunct-1 descent) now lives on canonical in
+-- `MonumentAtlas` (Gap-B AMENDED bake, `hpos`-added, `supportAt(child)` form) as the named FRONTIER LEAF
+-- (`canonShearOf`-consuming; the coupled-corank ≥ 2 confinement is the wall). `descent_delta1_append`
+-- below consumes it from there; the old in-file copy is retired to avoid the name clash.
 
 /-- **The δ=1 case12/case2 arm — THE DEEP CORE (cofactor / Schur descent).** Clause-1 (the support
 DESCENT `blockCoords (p.layer) → blockCoords (p.layer+1)`) consumes `realBranch_cofactorDescent` through
 `exists_graded_decomp` — the SINGLE tracked hole. Clause-2 (per-layer grade from `p.layer+1`) is PROVED
 here: the strict-transform map `qm` fixes layers `≥ p.layer+1` and preserves off-`layerCoords ℓ`
 agreement (spectator centre bound + `ShearWithinCarve` I/II), so the parent grade survives. -/
-theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ}
+theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
     (hδ1 : edgeδ d p = true) (hcase : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2)
@@ -670,8 +639,9 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ}
     funext u; exact foldResid_extend_delta1 d e ed hlt hδ1 j u
   rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot]
   refine ⟨?_, ?_⟩
-  · -- clause 1: the support DESCENT — the single tracked obligation (foldResid homogeneity, elder-pending)
-    exact realBranch_appendResidDescent e p ed hδ1 hcase hbranch hslot j
+  · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry; canonShearOf-consuming)
+    have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
+    rwa [hCSchild, hguniv] at happend
   · -- clause 2: the per-layer grade survives the strict transform (PROVED, shear-independent)
     rw [hfun]
     exact perLayerDeg1From_comp_of_fixing _ (p.conState.layer + 1) σ hfix hagree hpar2
@@ -696,9 +666,9 @@ theorem realBranch_multiAffine_step' {N : ℕ} {d : Fin (N + 1) → ℕ}
   · by_cases h11 : ed.case = StepCase.case11
     · exact descent_delta1_case11 e p ed hlayer hδ h11 hbranch hslot
     · by_cases h12 : ed.case = StepCase.case12
-      · exact descent_delta1_append e p ed hlayer hδ (Or.inl h12) hbranch hslot
+      · exact descent_delta1_append hpos e p ed hlayer hδ (Or.inl h12) hbranch hslot
       · by_cases h2 : ed.case = StepCase.case2
-        · exact descent_delta1_append e p ed hlayer hδ (Or.inr h2) hbranch hslot
+        · exact descent_delta1_append hpos e p ed hlayer hδ (Or.inr h2) hbranch hslot
         · -- ed.case = rollover: unreachable at δ=1 (rollover needs cleared ≥ widthMinUpto > 0)
           exfalso
           obtain ⟨sc, hsc, hecase, -⟩ := realBranch_descendView e p ed hbranch
