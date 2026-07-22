@@ -24,7 +24,7 @@ updated: 2026-07-22
 ## live frontier — 3 ready, 9 blocked
   ▶ object-e [stated] owner=seat-E
   ▶ b-ladder [adopted] owner=controller
-  ▶ b-boostready [adjudicated] owner=pnp-boost (instrument 2, running) + elder (final form) → seat-L4 (proof)
+  ▶ b-boostready [stated] owner=seat-L4 (proof live; drop-test verdict owed to elder: factor from hbranch+CanonicalSchurStep first, hslot only if a base coefficient is consumed)
   · aoyagi-summit [stated] owner=controller
   · object-b [stated] owner=mon-geo-lane
   · b-leaf34-case-steps [stated] owner=seat-L4
