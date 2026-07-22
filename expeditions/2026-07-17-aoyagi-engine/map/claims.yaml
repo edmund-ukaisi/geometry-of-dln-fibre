@@ -326,11 +326,11 @@ nodes:
     title: "leaf 7: hcover — a.e. compact atlas cover of a ball, BUILD (operator: no cite) — BRIDGE-FREE"
     prop: "∃ ρ > 0, volume (ball 0 ρ \\ ⋃ p, g p '' dom p) = 0 — max-pivot-sector partition"
     lean: DLNFibre.DLN.Aoyagi.leafPath_compactCover
-    status: stated
+    status: adjudicated
     tier: new
-    owner: "parked: proof queue (post-L4/L5); statement BRIDGE-FREE as of the canonCenter bake d174f1f41"
+    owner: "BLOCKED on elder fan re-scope (seat-L7 holds; its bridge lane ready)"
     edges: [{type: conjectured-toward, to: b-ladder}, {type: needs, to: b-terminal-edge-stepinv}]
-    notes: "L7 BRIDGE-FREE stands; nav-13: STARTABLE NOW (statement-locked, independent of the wall + L5; parked was scheduling, not dependency) — the NEXT COMMISSIONING after M7; research-grade coverage/measure proof, PM-P4 (coverage/termination = build content, not in the paper); highest-variance link with boost. Spectator-bounds bite still pre-flagged."
+    notes: "⚠ FALSE AS STATED (seat-L7 + Codex, 2026-07-22; controller verified on def MonumentAtlas:840-841). The current lean statement pins pivot to the single canonPivotOf; gmap's root blow-up is OUTERMOST, so every real branch shares one root blow-up and ε·e_q (q≠p in the non-singleton root center) ESCAPES every chart. The canonCenter pin does NOT save it — the cover NEEDS pivots FANNED (all |S| pivot charts per center, the argmax cover the pnp-cover cert actually verified). The COVER CLAIM is TRUE over the FANNED atlas (that's why status=adjudicated not refuted). FIX = fan the pivot in IsRealBranch/canonPivotOf/FoldRealizes + L5 emits the fanned atlas + bridge to the engine's LANDED sorry-free fanned cover (Engine.GeoCoverSpec.geoAtlas; seat-L7 de-risked). Part of the COUPLED spine redesign (elder-owned; with the boostReady shear value-pin). The old 'BRIDGE-FREE stands' banner was the premature-closed confound."
 
   - id: b-terminal-edge-stepinv
     kind: claim
@@ -365,12 +365,16 @@ nodes:
       IsRealBranch (4th .step conjunct) + boostReady derived stub gains hslot; content =
       support-form. PROOF obligation: realBranch_boostReady_case11 (Case1Wire). PROOF-SIDE RESHAPE
       (elder+seat-L4 decorrelated-converged 2026-07-22): NOT a one-liner — foldResid p is built
-      from p's ANCESTOR shears not ed.shearφ, so the realBranch_canonicalSchurStep projection is
-      per-edge-inside-an-induction, not a top-level discharge. Proof = path-induction over p's
-      ancestors (material carried by IsRealBranch.step recursively; no re-bake, statement STAYS
-      CLOSED). Two sub-lemmas: (a) combinatorial b-chain divisibility on foldB p (no shear input,
-      self-contained); (b) prepared-form path-induction on foldResid p consuming ancestor
-      CanonicalSchurStep (the γ-clearing, R_bad-irreducible, genuinely new). hslot IS consumed.
+      from p's ANCESTOR shears not ed.shearφ. ⚠ STATEMENT-SIDE RE-OPEN (Codex DIVERGED from the
+      elder's proof-side verdict + was RIGHT; controller verified on def MonumentAtlas:819-824):
+      CanonicalSchurStep is SUPPORT-ONLY (∀ u k, shearφ u k ≠ 0 → bounds), VACUOUS for identity
+      shear — so IsRealBranch does NOT pin shearφ=canonShearOf (value unpinned; center/pivot ARE
+      value-pinned at :840-841). The predicate ADMITS R_bad, for which boostReady is FALSE, so it is
+      NOT provable from IsRealBranch as baked. FIX = add shearφ=canonShearOf value-pin conjunct to
+      IsRealBranch step-arm (COUPLED spine redesign, elder-owned, with the L7 pivot fan). Two
+      sub-lemmas once re-baked: (a) combinatorial b-chain divisibility on foldB p (no shear input,
+      SAFE under any spine design — seat-L4B proving now); (b) prepared-form path-induction consuming
+      the now-pinned canonShearOf (the γ-clearing; blocked on the shear-pin re-bake). hslot IS consumed.
     status: stated
     tier: new
     owner: "seat-L4B (proof; sub-lemma (a) started) ← seat-L4 (turnkey handoff + Codex verdict, then stands down)"

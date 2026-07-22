@@ -12,16 +12,21 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **STATEMENT LAYER CLOSED → THE PROOF CASCADE (2026-07-22 ~15:40 UTC; journal carried a
-  +1-day datestamp drift before this).** SEVEN bakes total, all elder-gated, payoff footprints
-  UNCHANGED throughout; ruling-B baked at canonical 0ce9c68b9 (CanonicalSchurStep pin + IsRealBranch
-  4th conjunct + boostReady hslot + hlayer; elder: "the monument's statement layer closes").
-  NO further statement bakes expected — any statement change now needs an elder delta-read.
-  LIVE PROOFS: **seat-L4B** = realBranch_boostReady_case11 — RESHAPED to PROOF-SIDE two-sub-lemma
-  path-induction (elder+seat-L4 decorrelated-converged: foldResid p from ANCESTOR shears, not
-  ed.shearφ; statement STAYS CLOSED, no re-bake): (a) combinatorial foldB divisibility
-  self-contained STARTED; (b) prepared-form ancestor path-induction from seat-L4's handoff.
-  seat-L4 now handoff-only (Codex bufv05qfv verdict + turnkey note), then stands down.
+- phase: **⚠ STATEMENT LAYER RE-OPENED (2026-07-22 ~17:20 UTC) — the "closed" claim was PREMATURE.**
+  Three seats running the PROOFS found THREE grounded holes the seven delta-reads missed, all tracing
+  to ONE under-specification of IsRealBranch (spine): it value-pins center/pivot (:840-841) but only
+  SUPPORT-pins the shear (CanonicalSchurStep :819-824 vacuous for identity shear), AND over-pins the
+  pivot to a single canonPivotOf. (1) boostReady STATEMENT-side — Codex DIVERGED from elder's
+  proof-side verdict + was RIGHT (predicate admits R_bad identity shear); fix = shearφ=canonShearOf
+  value-pin. (2) descent δ=1 case12/case2 — cofactor gap, likely coupled to the shear-pin. (3) L7
+  FALSE as stated — single pinned pivot can't cover (ε·e_q escapes); needs pivots FANNED. ELDER
+  charged with a COUPLED one-round spine redesign (shear value-pin + pivot fan; co-design to bake
+  once) → routes through a DECORRELATED pen-and-paper/Codex coupling-check before render/bake (damp
+  the gain — elder's last call misjudged the shear-pin). LESSON: a delta-read gate ≠ closed; pair it
+  with a proof-pressure gate before claiming "closed". FROZEN: seat-L4B holds (b) [keeps safe (a)];
+  seat-L7 holds the fan [its bridge lane ready, engine cover LANDED]; descent lands uncontested arms
+  (δ=0+case11) + factors the deep arm as a tagged on-cone cofactor obligation. seat-L4 stood down
+  (Codex verdict delivered; handoff note banked).
   **seat-L3T2** = the DESCENT realBranch_multiAffine_step (primed-twin MultiAffineStepWire, deep
   fill via a sub-agent; case11 consumes boostReady stub — sorryAx flow-through on-cone).
   **seat-L7** = leafPath_compactCover COMMISSIONED (independent, highest-variance; SPECIFY-first,
