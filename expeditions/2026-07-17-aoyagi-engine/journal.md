@@ -12547,3 +12547,25 @@ sizes p,q ≤ 4 — the blow-up normalises the corner, the shear never writes it
 elder's emittability ruling); **A4** boosts never re-birth a corner (asserted in-trace). So
 canonShearOf vanishes on every child-ledger birth corner along the whole fold — clause (III) is
 EMITTABLE. Relayed to arch-C as gate-verdict evidence.
+
+## 2026-07-22 ~13:10 UTC — seat-L4 wave 1 INTEGRATED: first derived stub CLOSED (clean-three) + case-generic δ=0 core
+
+**Merged origin/expedition/aoyagi-engine-L4wire** (green-gated: full build 8996/0 AFTER wiring
+Case1Wire into the aggregator — the merge's build alone was 8995 jobs and did NOT compile the
+new un-imported module, the lb-import-closure trap caught in-gate; clash-grep on Case1Wire's 8
+top-level names = clean). Verified on ground truth:
+- **realBranch_centerPin PROVED, CLEAN-THREE** ([propext, Classical.choice, Quot.sound] — no
+  sorryAx): a 3-line projection of IsRealBranch's step arm. The MonumentAtlas diff is a pure
+  proof-body swap (statement pristine — checked before merging). FIRST OF THE 6 DERIVED STUBS
+  CLOSED. Census 41 → 40; cone 16 → 15.
+- **stepInv_child_delta0 PROVED, CLEAN-THREE** (Case1Wire, now on canonical + aggregator-wired):
+  the δ=0 pullback conjunct-1 — q' = q∘stepMap, foldB gains no u_pivot, three clauses discharged
+  (continuity/S3-vanishing/divisibility via parent-at-stepMap + reindex + foldResid_extend_delta0).
+  **CASE-GENERIC: serves case1 AND case2 δ=0** — relayed to seat-L3T2 for its lane 3.
+- Plus seat-L4's 16 decorrelated probe batteries + the Codex conjunct-2 strategy artifacts
+  (threads/L4-case1-core/).
+seat-L4 continues: wall δ=1 branches (case12/case2 via the banked crux; case11 via the NEW
+pivot-provides mechanism) then conjunct-2 (exists_graded_decomp + the layerwise-affine
+companion), assembling the leaf body in ONE closed edit — the leaf keeps its single tracked
+sorry until fully closed (discipline held). Its conjunct-1 lane is shear-clause-independent
+(insulation confirmed on its side).

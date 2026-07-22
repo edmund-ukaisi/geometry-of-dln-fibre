@@ -1604,3 +1604,6 @@ import DLNFibre.DLN.Aoyagi.OrderRealizeSortedBox
 import DLNFibre.DLN.Aoyagi.OrderRealize
 import DLNFibre.DLN.Aoyagi.OrderRealizeSwap
 import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
+-- Case1Wire: seat-L4's case-generic wall cores (crux, child-state reductions, exists_graded_decomp,
+-- stepInv_child_delta0 — the δ=0 pullback serving BOTH case1/case2). Consumed by the leaf assemblies.
+import DLNFibre.DLN.Aoyagi.Case1Wire
