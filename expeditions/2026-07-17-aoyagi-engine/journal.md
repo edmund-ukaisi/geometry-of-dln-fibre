@@ -10428,3 +10428,21 @@ three witness deaths + the Schur-restoration + the crux dedupe + the mechanical 
 → ONE bake); "derive node-data, carry edge-data" recorded as the saga's crisp reusable rule.
 BOTH LANES ARE NOW FULLY SPECIFIED with no open design input anywhere — the monument waits on
 one render, the E-lane on one certificate; everything after is proving.
+
+## 2026-07-22 (controller) — seat-L4's GAP-2 battery: the ADVANCE pin (T'_child = D⁺_parent) — render-critical, routed
+
+seat-L4's GAP-2 answer (battery @ 6e2fd6665, PASS) converged with the elder's reading-(ii) pin
+independently AND made the round's one implicit requirement EXPLICIT AND DECISIVE: **the child
+clause must LAYER-ADVANCE the partition** — T'_child = D⁺_parent (the parent's deeper set becomes
+the child's support), D⁺'_child ⊇ the consumed old-center block. The battery's teeth: in the OLD
+frame the Schur γ·β term is degree-2 and DeeperMultilinear FAILS; in the ADVANCED frame it lands
+in the child COEFFICIENT (cofactors carry any degree in D⁺' harmlessly) and both countermodels
+close. A render naming the child support as old-center or center.erase(pivot) would break at its
+own gate on γ·β. Also battery-confirmed: the double-division (child∘quotMap ≠ child); the
+crux-fit at the child under the advance (hceq fires verbatim); the pivot-slot disjunction
+matching LastLayerInv's two disjuncts. seat-L4 identifies the advance as the C′-deeper-block pin
+made precise — and the DERIVED deeperCoords (rolling with p.conState.layer) may implement it
+automatically (the elder's one-line check requested). Routed render-critical to arch-C (render
+WITH the advance; the battery = the ADVANCE regression witness) + the elder confirm. The sixth
+independent convergence of the night: the battery, the crux, the elder's pin, and the C′
+discriminator all naming one design.
