@@ -14240,3 +14240,31 @@ Relayed the spec to pnp-transport (actively elaborating) so the certificate slot
 doubles as MY gate when the certificate lands (cross-check certificate vs consumption points). seat-L4C
 holds, fast pin+grind ready. Still in flight: elder (high-level read + Gap B verbatim), carto (map +
 parallelization), pnp-transport (the ε-table).
+
+## 2026-07-23 ~03:00 UTC — CARTO's half of the operator read LANDED + ACTED ON: 2 new parallel lanes, map deltas applied
+
+Carto's restart-pass (map-vs-territory + the parallelization audit) is in — the operator read's first half.
+
+CENSUS + MAP: 36 = 11 on-cone + 25 fossil re-derived HONEST (fossils genuinely off the ChainNF/Gap-B/fan
+cones; no gate-orphans; note "Core sorry-free" holds but Core carries the off-path cited_local_zeta_pole
+AXIOM — accounting stays honest). Carto fixed its layer (landmark card 3 de-staled; STATUS object-e).
+I applied its claims.yaml deltas: b-boostready REWRITTEN to the ChainNF state (outer shape proven, crux =
+the ε-certificate; owner seat-L4C + pnp-transport); a b-descent GRANULARITY NODE added (the descent lived
+only in b-ladder notes); object-e title → combinatorial-CLOSED/analytic-DEFERRED. Validator green.
+
+PARALLELIZATION (the operator's ask) — the BOTTLENECK is the elder as the single serial resource for 3
+outputs (the read, Gap B verbatim, L3 fan design) with 2 lanes dormant on it. ACTED:
+- OPENED seat-LL: lastLayer_clear_preserves — unassigned, fully independent step-leaf, zero coordination
+  (SPECIFY-first incl. in-place-vs-primed + stop-on-suspect boundary probe).
+- OPENED pnp-fan: the L7 pivot-fan ELABORATION (fanned spine predicate preserving L1 + per-chart leaves;
+  the argmax cover argument; the Geo* SALVAGE BOUNDARY reconciliation [carto coherence flag: GeoCoverSpec/
+  geoAtlas is sorry-free but Geo* is dead-routed — C1-audited exception vs own-cover vs definitional-reuse];
+  worked (2,2,2) acceptance). The elder RATIFIES the certificate instead of hand-authoring L3 serially.
+- ELDER QUEUE REORDERED: Gap B verbatim FIRST (fully pinned, quick, unblocks descent+render), the read after.
+- DECLINED (my call, contra carto's item 3b): seat-L3T2 pre-building the Gap B atom skeletons NOW — the
+  SPECIFY'd statement carto cites (blockCoords) was REVERSED by the elder's machine check (layerCoords +
+  separate cap), so pre-building against it would churn. seat-L3T2 respawns on the verbatim.
+- NOT added: 3rd seat to ChainNF (2-seat interface split is right); descent (1 sorry behind a statement).
+Carto flags routed to the elder: compass 5→8 axes; the Geo* tension owed before the L7 build. Close-phase
+note banked: L3T2/L4B/L4C carry unmerged work (ahead 3-4, behind 14-47) — a rebase/integration pass owed.
+AWAITING: the elder's math half of the read (+ Gap B verbatim first), pnp-transport's ε-certificate.
