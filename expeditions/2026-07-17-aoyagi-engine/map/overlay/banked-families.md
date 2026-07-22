@@ -172,17 +172,18 @@ only-the-minimizer; `AtlasRealizesExponents` rename). Batch-gated: `hlb_hattain_
   `terminal_bezout` (`b-principalinv`). The support window is the elder-ruled `supportAt` (geometric Deg1,
   descends per clear) — support/C′/coefficient frame axes closed ([[severance-witnesses]]). Do NOT read
   a sorried leaf as banked.
-- **REDIRECT — BAKED** (`9c51289f4`, 2026-07-22; elder second read OK). The leaves now CONDITION ON ONE
-  `IsRealBranch e` hypothesis; the per-field SET (A) constraints became the **6 `realBranch_*`
-  derived-lemma stubs** (`realBranch_centerPin` :892 / `_cover` :901 / `_descendView` :911 /
-  `_shearWithinCarve` :920 / `_terminal_edgeδ` :930 / `_multiAffine` :941) — the new cone members
-  (MonumentAtlas census 8→14, DLN/Aoyagi 10→16; footprint clean-three+sorryAx both drivers). Discriminator
-  = the kernel-checked `DivBirthInv` (`Engine/DivBirthReach.lean`): support STAYS, no case11 descent.
-  L8's external geometry proof lives in `LeafGeometryWire` (in-flight seat branch, NOT yet on the
-  expedition tree) awaiting the integration swap. IN-FLIGHT L6-fix round: an elder-authored
-  pin-TIGHTENING on `ShearWithinCarveRaw` (`MonumentAtlas.lean:637`) / `IsRealBranch` — re-renders those
-  two defs + strengthens `realBranch_shearWithinCarve`'s conclusion only (not a census change). per-field
-  SET (A) SUPERSEDED, the case-aware `supportAt`/`edgeδ` fallback VOIDED ([[dead-routes]] § Redirect-round).
+- **STATEMENT LAYER CLOSED** (ruling-B baked `0ce9c68b9`, 2026-07-22; elder-gated). The b-ladder is
+  COMPLETE — 7 statement bakes (redirect → pins → collapse → node-form → ruling-B), payoff footprints
+  unchanged throughout; the leaves condition on ONE `IsRealBranch e` hypothesis (`DivBirthInv`
+  discriminator: support STAYS, no case11 descent). The live cone is now **pure PROOF + assembly** (10
+  on-cone): the WALL `realBranch_boostReady_case11` (`Case1Wire.lean:386`, seat-L4); the descent
+  `realBranch_multiAffine_step` (`MonumentAtlas.lean:1116`, seat-L3T2 — reshaped from the SUSPECT
+  node-form, FALSE-without-he_lin at root, to a carried-invariant STEP-form); `lastLayer_clear_preserves`;
+  the L5 assembly (`L5FoldSpec`, the longest link); L7 commissioning (startable); the Assembly increments
+  (`MonumentAssembly`, (B′) primed drivers, arch-C on increment 2). 5/6 `realBranch_*` stubs PROVED
+  clean-three; L6+L8 PROVED (L8 external in `LeafGeometryWire`, now on-tree). `Case2Delta0` RETIRED
+  (node-form deleted in the step-form bake, [[naming]]). per-field SET (A) SUPERSEDED, case-aware
+  `supportAt`/`edgeδ` VOIDED ([[dead-routes]] § Redirect-round).
 - **canonCenter round + supportAt bake — LANDED** (`605497e2a` then `b7fa66841`). L7
   (`leafPath_compactCover`, `b-leaf7`) is BRIDGE-FREE (coordinate axis; `tupIdxEquiv`
   `LearningCoefficient.lean:138` / `divBirthCoord` `EngineConstruction.lean:62`). The L3/L4 SUPPORT
