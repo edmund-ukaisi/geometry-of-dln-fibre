@@ -17,13 +17,18 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   UNCHANGED throughout; ruling-B baked at canonical 0ce9c68b9 (CanonicalSchurStep pin + IsRealBranch
   4th conjunct + boostReady hslot + hlayer; elder: "the monument's statement layer closes").
   NO further statement bakes expected — any statement change now needs an elder delta-read.
-  LIVE PROOFS: seat-L4 = realBranch_boostReady_case11 (the wall's LAST obligation; drop-test
-  verdict owed to elder: factor from hbranch+CanonicalSchurStep first, hslot only if consumed);
-  seat-L3T2 = the DESCENT realBranch_multiAffine_step (deepest derived obligation; case11
-  consumes boostReady — sorryAx flow-through expected until L4 lands). arch-C GO'd: Assembly
-  increment 2 (case1'/case2' swaps) then hygiene window (SchurStep-subsumption is CHECK-ONLY —
-  touches a baked statement, needs elder if real; safe items foldable). carto: diff-then-judge
-  pass charged (STATUS regen, claims.yaml b-ladder→LANDED cross-check, forwarding pointers).
+  LIVE PROOFS: **seat-L4B** = realBranch_boostReady_case11 — RESHAPED to PROOF-SIDE two-sub-lemma
+  path-induction (elder+seat-L4 decorrelated-converged: foldResid p from ANCESTOR shears, not
+  ed.shearφ; statement STAYS CLOSED, no re-bake): (a) combinatorial foldB divisibility
+  self-contained STARTED; (b) prepared-form ancestor path-induction from seat-L4's handoff.
+  seat-L4 now handoff-only (Codex bufv05qfv verdict + turnkey note), then stands down.
+  **seat-L3T2** = the DESCENT realBranch_multiAffine_step (primed-twin MultiAffineStepWire, deep
+  fill via a sub-agent; case11 consumes boostReady stub — sorryAx flow-through on-cone).
+  **seat-L7** = leafPath_compactCover COMMISSIONED (independent, highest-variance; SPECIFY-first,
+  Codex on the tiling). arch-C: Assembly increment 2 LANDED green (foldstate-render; census +1,
+  footprints as expected) — gating+staging → report; SUBSUMPTION parked post-summit (owed-register;
+  baked-statement change, NOT hygiene). carto: map GREEN + current (524fd198e), standing by.
+  DECORRELATION LOG: two blind instruments converged on boostReady (elder frame-only + seat-L4).
   REMAINING TO SUMMIT: boostReady → descent → lastLayer_clear_preserves → L5 assembly (THE
   LONGEST LINK; §D.3 fully provisioned) → L7 commissioning (startable) → summit swap via primed
   drivers → SUMMIT-RETIRE (elder bless + operator ceremony) → cite-deletion (WITH operator).
