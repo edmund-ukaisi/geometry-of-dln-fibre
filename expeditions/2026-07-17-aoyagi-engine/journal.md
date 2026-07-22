@@ -12030,3 +12030,28 @@ and no case-aware fallback is needed on that ground. On the redirect: "the IsRea
 conditioning route is the clean landing my free-field-severance findings were pointing at all
 along… my wall proof consuming ONE construction hypothesis instead of seven is strictly better
 bedrock." All parties now aligned on the route pending the one empirical verdict.
+
+## 2026-07-22 (controller, ~09:55) — **DISCRIMINATOR VERDICT: SUPPORT STAYS (proof-grade)** — the redirect is THE route; the def-touch is void
+
+arch-C's discriminator came back as a PROOF, not a read: the kernel-checked **DivBirthInv**
+reachability invariant (DivBirthReach:54-58, proved at every buildTree node via
+DivBirthInv_conOracle_stepChildren) — clause 3 forces birth-col < cleared for a current-layer
+birth, IMPOSSIBLE at cleared = 0 ⟹ at every case11 δ=1 boost, EVERY divisor's birth layer is
+STRICTLY earlier ⟹ canonPivotOf(case11) = the birth corner sits below layer S ⟹ pivot ↦ 1
+leaves the layer-S support intact ⟹ **no descent**; supportAt's (layer, cleared) key tracks BOTH
+edge-kinds correctly (merge: earlier-layer pivot, no descent, cleared unchanged ✓; append:
+current-layer pivot, descent, cleared+1 ✓). The elder RIGHT; seat-L4's retraction triggered per
+its pre-acceptance (its reachability finding STANDS, credited with exposing the canonCenterOf
+defect + forcing the DivBirthInv-grade analysis); the controller's conflation framing VOID as
+argued. The (b) sim cross-check optional (a kernel-checked invariant beats an empirical sweep).
+
+**THE REDIRECT IS CONFIRMED AS THE ROUTE — GO given to arch-C:** (i) canonCenterOf case11 fix
+(boost center = {birth-corner pivot} ∪ run-length-J₁ sub-block; locks: template Edge B + seat-L4;
+sim-validated on nine instances pre-render); (ii) canonShearOf + (II)=(B) + IsRealBranch extended
+to pin the shear; (iii) THE LEAVES CONDITIONED ON THE REPAIRED IsRealBranch — the per-field set +
+the prepared-multi-affine residual become NAMED DERIVED LEMMAS (map-tagged; the L5 discharge
+chain); per-field SET (A) superseded, not baked. THE ELDER'S SECOND READ runs on the STAGED FORMS
+PRE-BAKE. The proved branches re-target mechanically (conditioned hypothesis ⟹ the old per-field
+forms via the derived lemmas). This is the statement architecture's FINAL form — the
+construction-conditioned monument the process audit predicted, now forced by the mathematics
+itself.

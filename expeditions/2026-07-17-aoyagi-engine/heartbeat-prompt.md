@@ -12,20 +12,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE AUDIT ENDGAME (2026-07-22 ~08:50).** The COMPLETE edge-field audit RULED (elder,
-  4 texts; poll its TRANSCRIPT — dead inbox): SET A final (DescendView single-predicate oracle pin,
-  case11-merge KEEPS cleared; ShearWithinCarve replaces ShearGrades — write-identity + read-ignores
-  on layers ≥ child support). SET B = DEF-TOUCH: multi-homogeneity CARRIED (residual deg-1 in every
-  active layer; "residual IS the block matrix"); elder Codex-decorrelating its final form vs the
-  pnp-elab template. SET C gating: C1 case1_fires_only_at_cleared_pos → seat-L4 (OracleInv; fallback
-  = edgeδ case-aware def-touch); C2 = B's provability. FIELD AUDIT CLOSED: pins = the BRIDGE-FREE
-  SHADOW of IsRealBranch (collapse to ONE pin when the bridge lands). **ONE-BAKE DISCIPLINE**:
-  nothing bakes until B-form + C1 + arch-C's template diff land → ONE combined bake (A+B+hcover/hδ0
-  +mismatches) → controller verify → proof seats resume (L4 wall: conj1 via hcover+crux, conj2 via
-  banked ∃c core + ShearWithinCarve + multi-homog; L3T: case2 δ=1 + conjB drop-ins). THE TEMPLATE
-  (threads/elaboration/fold-recursion-template.md, blind-built, sim-verified 4 instances) = the
-  standing reference; arch-C diffing it vs defs. E-LANE CLOSED. Elder-authorship lesson standing:
-  proposal→lock (elder rules objects, proof seats lock forms, batteries check both sides).
+- phase: **THE REDIRECT ROUND (2026-07-22 ~10:00).** Discriminator VERDICT proof-grade (DivBirthInv:
+  birth layers strictly earlier at cleared=0 ⟹ case11 pivot ∉ current support ⟹ NO DESCENT):
+  supportAt/edgeδ def-touch VOID; elder right; seat-L4 retraction per pre-acceptance. THE ROUTE =
+  IsRealBranch-CONDITIONING (arch-C staging, GO given): (i) canonCenterOf case11 fix (boost center =
+  birth-corner ∪ J₁-sub-block; locks = template Edge B + seat-L4; sim-validate 9 instances);
+  (ii) canonShearOf + (II)=(B) + IsRealBranch shear-pin; (iii) leaves conditioned on repaired
+  IsRealBranch — per-field set + prepared-multi-affine residual = NAMED DERIVED LEMMAS (L5 discharge
+  chain); SET (A) superseded. ELDER SECOND-READS THE STAGED FORMS PRE-BAKE → arch-C full gate → ONE
+  bake → controller verify → proof seats wake on FINAL statements (L4 wall: ONE hypothesis; proved
+  branches re-target mechanically). ELDER: poll transcript (dead inbox; ID ends ...d30ba3). E-LANE
+  CLOSED. Template = threads/elaboration/fold-recursion-template.md (diff: ZERO mismatches).
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
