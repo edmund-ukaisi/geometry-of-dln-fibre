@@ -6,6 +6,25 @@ as explicit DOMAIN hypotheses + the OrderIso BOTH-directions form. Consumes the 
 b-chain nesting. Kill-set: [1,1,2,1], [2,2,4,3] (the order-isomorphy / cover-jump test).
 
 ## Orientation finding 1 — Lambda's `Adm` is the LOOSE lattice, NOT the tight one (load-bearing)
+
+> **CORRECTION (2026-07-22, seat-E — proven in Lean + pnp #42 cert + numerics, three-way).** The
+> diagnosis below is WRONG in one respect: Lambda's `Adm` does NOT admit degenerate profiles — it
+> **EQUALS** the run-min lattice `admTight` **as a set** (`Foundations/AdmTight.lean:adm_eq_admTight`,
+> axiom-clean; 0/61014 admissible profiles violate the run-min bound). Weak-decrease plus the
+> per-coordinate `admBound` reconstruct the running min by induction (`Adm_le_runMin`): `t⁽ʲ⁾ ≤ t¹ ≤
+> min(M¹,M²)` and `t⁽ⁱ⁾ ≤ M⁽ⁱ⁺¹⁾` give `t⁽ʲ⁾ ≤ runMin j`. So the run-min tightening is FREE on `Adm`
+> and the Tier-3 iso holds over `Adm` itself (117/117 poset-iso sweep + all trap cores).
+>
+> The genuinely-loose object — where my 6 naive-divergence instances live — is the **OVER-loose**
+> lattice: cap `min(M0,M1)` at EVERY coordinate, dropping the `M⁽ʲ⁺¹⁾` cap. There `t⁽ʲ⁾` can exceed
+> `M⁽ʲ⁺¹⁾`, the factor `(M⁽ʲ⁺¹⁾ − t⁽ʲ⁾)` goes negative, `minAdm` collapses ≤ 0 (`[4,4,1,1]→0`,
+> `[5,5,1,1]→−1`), and the `C(ℓ,a)` count breaks. **This over-loose lattice STAYS as the negative
+> certificate**: the `M⁽ʲ⁺¹⁾`/run-min cap is load-bearing vs *it*, and Lambda's `admBound` already
+> supplies that cap — which is why `Adm` is safe. The `[1,1,2,1]/[2,2,4,3]` cover-jump trap is real
+> but it is the *coord-sum-encoding* trap (rank by box/Young-cell rank, never `∑t⁽ʲ⁾`), NOT an
+> `Adm`-vs-`admTight` distinction. `admTight` is kept as the honestly-named domain (= `Adm`).
+
+*(Original diagnosis, retained as history — corrected above.)*
 `Foundations.Lambda.admBound M j = if j=0 then min (M 0) (M 1) else M j.succ` — the LOOSE cap. `Adm`
 (built on `admBound`) is therefore the loose lattice, which admits the degenerate profiles that
 OVER-count (my 6 naive-divergence instances, e.g. [3,3,1,1]). The **tight** (running-min) lattice —
