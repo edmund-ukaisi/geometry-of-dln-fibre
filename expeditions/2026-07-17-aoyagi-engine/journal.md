@@ -14801,3 +14801,28 @@ WITH my concurrence:
   A decorrelated Codex on the staging strategy sanctioned.
 MEANWHILE the cascade runs: seat-L3T2 is ON the base atom (task 6 in_progress). Holding the render for
 the fork-1+2 ruling.
+
+## 2026-07-23 ~13:40 UTC — heartbeat: FORKS RULED → THE N_p RENDER IS GO
+
+The elder ruled all four forks (banked: threads/L4-case1-core/elder-npivot-fork-ruling.md):
+1. REPLACE canonShearOf → canonNormalizationOf (delete not alias; corner-vs-interior INSIDE the
+   pivot-parametric def) — name=content, "an alias whose content changed underneath is exactly the
+   confusion class the fidelity arc just cost two days to surface."
+2. SANCTIONED: re-state + frontier-sorry the 5 invalidated lemmas — "honest-ledger accounting... the
+   old proofs proved the WRONG object; removing them is correcting the ledger, not regressing it."
+   WITHIN expedition-mode (tracked live-frontier, statement-locked), NOT a definition-of-done change.
+   + a consolidation rider: where two re-stated facts collapse into ONE two-support form, keep one
+   public-canonical form (render-level judgment).
+3. Staging escape hatch + the flat-coord displacement design + the staging Codex: on arch-C's
+   recommendations; the elder delta-reads the layer-(S+1) recoord indexing against its §6 value lemma.
+4. THE GOOD SURPRISE: the fan-pin is INTENDED to preserve the ∃sc state/center-pin shape —
+   PivotPreservation SHOULD SURVIVE UNTOUCHED (the fan relaxes only pivot-equality → membership;
+   DivBirthInv reads state/birth structure UPSTREAM of the chart-pivot choice). Re-sorry only if a
+   proof load-bearingly reads the single pivot VALUE (not expected). That saves the M4 7/7-reviewed
+   family from the re-author — a materially smaller blast radius than feared.
+
+arch-C: RENDER GO (the decisive staging; gate at full weight — payoff isolation matters most here;
+census +~5 expected from fork 2, exact count reported). MEANWHILE the cascade advances: seat-L3T2
+has the STEP HELPER PROVEN (task 7 done — homogeneousDeg1On_comp_of_fixing) with the base atom in
+progress. Cron armed. Next integrations: the N_p staging hash (my gate + elder delta-read) +
+seat-L3T2's atoms.
