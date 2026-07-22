@@ -11713,3 +11713,29 @@ resolution. All hypothesis-touches, no defs — SMALL RE-BAKE GO to arch-C (with
 obligation noted for the render); Codex second-model judged unnecessary by the elder (two-seat
 convergence + primary-source grounding), controller concurs. seat-L4 briefed (conjunct-1 unblocks
 at the bake; conjunct-2 proceeds untouched); seat-L3T's items fold into its post-bake wake.
+
+## 2026-07-22 (controller, ~07:55) — GAP-1/2/3: conjunct-2 FALSE under free ed.nextState; THE COMPLETE EDGE-FIELD AUDIT requested; bake held for ONE combined round
+
+seat-L4's conjunct-2 development (child-state reduction lemmas banked clean-three, c435b5dbf)
+produced the round's most decisive finding: **GAP-1 — conjunct-2 is FALSE as stated for a free
+ed.nextState** (Codex xhigh + battery case1_conjunct2_statelink.py). The counterexample defeats
+EVERY hypothesis simultaneously (root cross-layer residual u_p·u_s·u_e; case11 edge with ZERO
+shear — which satisfies ShearGrades for ANY S′; nextState kept = parent ⟹ S′ = blockCoords(0);
+the δ=1 strict transform removes the pivot factor ⟹ child = u_s·u_e, Deg1 on blockCoords(1) not
+S′). Root cause: the strict transform SHIFTS support one layer down, and NOTHING links
+ed.nextState to p.conState — the state transition itself was the un-pinned free field. GAP-2
+(battery-confirmed): ShearGrades (a)+(b) admits a layerwise-DEGREE-2 shear (σ_s = u_s + u_r²; the
+γ-coefficient u_r IS per-layer-deg1) — clause (a) needs c_ik to IGNORE S′. GAP-3: the
+next-layer-support fold fact is missing (parent residual also supported on blockCoords(L+1) —
+plausibly derivable from foldResid's one-factor-per-layer product structure).
+
+ROUTED to the elder with the systematic-close request: **THE COMPLETE EDGE-FIELD AUDIT** —
+enumerate every remaining free TreeEdge/state degree of freedom and rule the full pin set ONCE
+(center ⊆+cover, pivot, shearφ, now nextState have each cost a catch+ruling+re-bake round; close
+the CLASS, not the instance). Rulings asked: the transition-law hypothesis per leaf (DescendView;
+emittability by L5 from the oracle's case-transitions — the elder's own state-machine trace),
+the ShearGrades (a) strengthen, GAP-3 derived-vs-hypothesis, sweep case2/lastLayer. **BAKE HELD**:
+the in-flight hcover/hδ0 render proceeds (folds in), but ONE combined re-bake carries hcover +
+hδ0 + the GAP amendments together — no bake-and-reopen. seat-L4 holds both conjuncts; offered the
+genericity answer + canonShearOf determination as hold work. The reduction lemmas consume
+whatever the fixed statements become — zero proof investment lost, again.
