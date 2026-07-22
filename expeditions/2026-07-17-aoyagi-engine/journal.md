@@ -12247,3 +12247,24 @@ sites); content-preserving, DEFEQ to seat-L4's lock (the lock stands). The elder
 packet now carries seven flags (the two improvements + the five pre-flagged items incl. the
 M^(S+1) = d_{layer+1} ≠ widthMinUpto translation note). Sequence unchanged: render green →
 arch-C verify → the elder's pre-bake read → the full gate → THE ONE BAKE.
+
+## 2026-07-22 (controller, ~12:15) — seat-L6 stop-on-suspect: hjac's TIE SEMANTICS (ledger vs naive sum); the template holds the key
+
+seat-L6's SPECIFY+build opened strong (every L6 field proven except hjac + the two honest-labour
+hexcep legs) and surfaced a REAL suspect with a decisive counterexample: hjac (|jacDet(gmap)| =
+jacWeight(jac)·|unit|, unit nonvanishing) is NOT derivable from FoldProduced alone — the chain
+rule evaluates per-step weights at INTERMEDIATE points, and rewriting to source coordinates with
+unit ≡ 1 needs (★) pivot-preservation-by-deeper-steps, which FAILS at boosts (D=2 witness: two
+lawful blow-ups with ∑jexp = (1,1) but true |jacDet| = |u0|²|u1| — the unit VANISHES; and boosts
+occur in the real construction). THE RESOLUTION KEY is the blind template's own §1 finding: the
+LEDGER INVARIANT — a boost adds J₁(M^{S+1}−J) to the divisor's exponent AND Jacobian power IN
+LOCKSTEP; under the LEDGER reading of atlas.jac, (★) is unnecessary (the substitution effect IS
+the boost; the per-step jexp at the reused pivot with the just-locked case11 center = |center|−1
+= exactly the boost increment, telescoping to the ledger) and hjac is satisfiable with unit ≡ 1
+via an ACCUMULATION lemma. The counterexample then witnesses that the NAIVE tie is wrong — not
+that hjac is. ROUTED to the elder as an addition to its imminent second read: rule the intended
+hjac_tie semantics (read FoldProduced's defs; if the render pins the naive sum, it needs the
+boost-aware correction — coordinated with the redirect, since case11's jexp = the corrected
+center size); then seat-L6's fix options (FoldRealizes hypothesis / GeoStep accumulation field /
+the ledger reading + lemma). seat-L6 presses the tractable legs meanwhile — nothing blocked but
+hjac itself.
