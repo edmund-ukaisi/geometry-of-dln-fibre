@@ -10863,3 +10863,27 @@ oscillation). Net state — strictly cleaner than the held bet: tree = neutral b
 warm (two-clock recorded/re-renderable + supportAt absorbed), no bake, and the oscillation loop
 is now gated at ALL THREE hops (controller→arch-C ruling-gated; arch-C→seat ruling-gated; the
 seat render-frozen). The only live worker on the critical path remains the elder.
+
+## 2026-07-22 (controller) — E-lane ROUTE CALL: build the adjacent-swap construction (route a); Q1 resolves LOAD-BEARING
+
+seat-E's Codex design-check (banked 75476080e) changed the 3a picture: the Lean-tractable
+encoding is NOT the cert's Lemma-4-step recipe but a different explicit construction — transport
+the profile through the bubble-sort of the widths via a value-preserving adjacent-swap OrderIso
+(translation/reflection minimising (P−X+A)²+(X−Q+B)²), then on sorted widths the active steps /
+a-subset / reversed-gap box. Verified by TWO decorrelated instruments (seat-E's hand check on both
+worked cores + Codex's 1360-vector sweep); the adjacent-swap OrderIso theorem itself is genuine
+new math — numerically verified, unproven. Elder-Q1 thereby resolves LOAD-BEARING: the
+sorted-ell/unsorted-Adm coupling cannot be dropped — the swap transport IS the sort bridge.
+
+**CONTROLLER ROUTE CALL (build-vs-cite, executive): route (a) — BUILD.** Detail-at-scale, not
+monument: patient decomposable combinatorics, closed formulas, double-verified, off the critical
+path (the monument waits on the elder, not the E-lane). Route (c) ruled out on substance
+(card-bijection lacks order-reflection; the chainHeight transport needs the order iso — Codex's
+warning taken, no tide spent rediscovering it in Lean). Route (b) no advantage (also heavy, no
+closed form). SEQUENCING: skeleton-before-proof — seat-E extends the scaffold NOW with the four
+sorried real-signature lemmas (swap preserves bindingSet; local monotonicity on binding profiles;
+bubble-sort transport = shiftedSorted; qip*→ceilingM/residueA bridge) + the composed-iso skeleton;
+the elder's single pass covers outer shape + construction skeleton together (queued behind the
+window ruling); proving starts only after the pass, multi-tide. Discipline riders: the 1360-sweep
+graduates to a re-runnable battery (`# guards:` header); module docstring records Codex's-map ≠
+cert's-map, both verified, equivalence NOT needed (any valid iso discharges the Nonempty).
