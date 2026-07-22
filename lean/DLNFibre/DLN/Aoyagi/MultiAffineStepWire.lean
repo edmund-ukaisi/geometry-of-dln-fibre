@@ -555,9 +555,10 @@ verdict: the descent fails identically for `canonShearOf` and identity shear —
 `foldResid p` is multilinear-homogeneous — degree exactly 1 and VANISHING at the layer's coords `= 0` —
 per layer `≥ supportLayerOf p.conState`. That vanishing strengthening (strictly stronger than
 `Deg1SupportedSlot`, which permits the `u_pivot`-transform's constant part) gives this descent directly.
-The elder is ruling the exact form (standalone lemma by fold-induction, PREFERRED, vs a `FoldStepInvAt`
-strengthening); TWO SPECIFY concerns flagged: (a) state it over the CAPPED `blockCoords ℓ`, not the full
-`layerCoords ℓ`, to match this clause-1 cap; (b) the root base (`foldResid root = coreGen`) needs
+Elder RULED **B-standalone**: the fix is a NEW predicate `HomogeneousDeg1On` + a STANDALONE lemma
+`foldResid_layerHomogeneous` (by fold-induction) — `FoldStepInvAt` is UNTOUCHED (no case1/case2/L5
+ripple). TWO SPECIFY concerns pending the elder's pin: (a) state it over the CAPPED `blockCoords ℓ`, not
+the full `layerCoords ℓ`, to match this clause-1 cap; (b) the root base (`foldResid root = coreGen`) needs
 `he_lin : IsLinearMap ℝ ⇑e` (the `u³` refutation). Statement-lock stands; NOT shear-coupled. -/
 theorem realBranch_appendResidDescent {N : ℕ} {d : Fin (N + 1) → ℕ}
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
