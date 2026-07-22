@@ -19,16 +19,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   reworked sorry-free (pnp-fan's mechanism kernel-checked). Payoff isolation held THROUGHOUT. Census
   40. The elder's PAPER-FIDELITY REVIEW delivered (paper-fidelity-review.md: coverage high+honest;
   the monument = the ONE open frontier; Ext-model identification = the caveat to keep honest).
-  LIVE LANES: **seat-L4D** = THE WALL'S ENDGAME on ROUTE β (9th catch: standalone ChainNF ∀e-FALSE
-  at its base; β = boostReady from the CARRIED hslot+hbranch via the value-pin; ChainNF packaging
-  retired honestly) + the DEF-LEVEL CONFIRM of the cap-escape on (2,3,2,2); **seat-L3T3** = the
-  induction (X-linearity → δ-dispatch) UNAFFECTED — slot clause-1 SHAPE ON HOLD; **seat-LL** =
-  rebase -LL + twin + frontiers. CAP-ESCAPE VERDICT (pnp-transport, banked + controller re-ran
-  exit-0): the descended support ESCAPES blockCoords(S+1) on WIDE branches (smallest descent
-  witness (2,3,2,2); INHERENT — holds with no recoord, via the wide remnant row) — possible 10TH
-  catch reaching the BAKED descended slot; the ELDER SHAPE RULING GATES all descended-slot
-  consumption (coords-of-record question: raw vs through-the-recoord). Battery canon: every future
-  battery includes a WIDE witness — (3,3,4) is NOT wide on the recoord col axis.
+  THE WALL'S TRUE KNOT (2026-07-23): ROUTE β is DEAD (seat-L4D, controller def-verified at
+  Deg1SupportedSlot :547-548 — the ∃c coefficients are CONTINUITY-ONLY; the case11 boost split
+  needs the b-chain (extra-block c_i vanish at u_pivot=0), which is path-inductive data anchored
+  at the canonFlatten root, withheld from ∀e leaves by design :1235). With the CAP-ESCAPE verdict
+  (descended support escapes blockCoords(S+1) on WIDE branches — INHERENT, witness (2,3,2,2),
+  banked + re-ran exit-0), that is the 10th+11th catches, BOTH in the carried invariant: support
+  TOO TIGHT + form TOO WEAK — FoldStepInvAt under-transcribes Aoyagi's induction hypothesis.
+  ELDER holds the CONSOLIDATED ruling (fork: (A) root-anchor hyp / (B) strengthen the invariant,
+  controller-recommended / (C) canonFlatten-specialize); its ruling GATES all descended-slot
+  consumption + any bake. FEEDING IT: seat-L4D = def-level cap-escape confirm + candidate-field
+  DRAFTS (retire nothing, bake nothing); pnp-transport = the empirical invariant table
+  ((2,2,2,2)+(2,3,2,2), per-node support/factoring/degrees). seat-L3T3 = induction UNAFFECTED,
+  clause-1 shape ON HOLD; seat-LL = rebase + twin + frontiers. Battery canon: every battery
+  includes a WIDE witness ((3,3,4) is NOT wide on the recoord col axis).
   MERGE-ORDER DISCIPLINE: pre-N_p branches rebase seat-side BEFORE controller merges. Remaining to
   summit: the wall (L4D) → descent append (via the induction + the cap under N_p) → lastLayer
   frontiers → L5 assembly (target = MonumentAssembly.leaf_stepInv_of_path') → L7 own-cover fold

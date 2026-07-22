@@ -15155,3 +15155,47 @@ is KNOWN-FALSE as stated — hold the shape as named-TBD, support-set parameter 
 
 Memo updated (LIVE LANES + the verdict + the battery-canon rule). Owed-register entry = the
 elder's to author with its ruling. Payoff isolation untouched (no Lean edits this tick).
+
+## 2026-07-23 — ROUTE β IS DEAD; the 11th catch: the carried invariant carries NO b-chain — THE WALL'S TRUE KNOT (elder consolidated ruling commissioned)
+
+seat-L4D's β-feasibility guard (fired BEFORE any retirement — the non-destructive discipline held)
+returned the decisive negative, controller-verified at the def: `Deg1SupportedSlot` :547-548's ∃c
+conjunct constrains the coefficients by CONTINUITY ONLY. The case11 δ=1 boost split (the wall's
+conclusion, `Deg1SupportedOn ed.center`) requires extra-block coefficients to VANISH at
+u_pivot = 0 — the b-chain (cert §4b). That factoring is NOT in the carried hslot and NOT
+stage-locally derivable at an ∀e leaf: it is path-inductive data anchored at the canonFlatten
+root (coreGen degree-1 on block-0 — the same canonFlatten-specific base the 9th catch identified),
+which the leaf framing deliberately withholds (design note :1235: root anchoring lives only in
+L5's base). So realBranch_boostReady_case11 cannot route through hslot (β dead) NOR through a
+standalone ∀e chain (the 9th catch). The wall's case11 δ=1 sub-case is UNPROVABLE AS FRAMED.
+
+THE CONSOLIDATION: with the same-day cap-escape verdict, the 10th and 11th statement-class
+defects both live in the SAME baked object — the carried invariant (MonumentAtlas :497-566):
+(i) support TOO TIGHT (supportAt's descended blockCoords(S+1) falsified on wide branches);
+(ii) form TOO WEAK (no b-chain field). Diagnosis, plainly: FoldStepInvAt UNDER-TRANSCRIBES
+Aoyagi's induction hypothesis — her recursion carries the b-chain/M_{s,k} normal form as its
+induction data (the N_p certificate matched them per-step; we under-carried the invariant that
+threads them). Fill the layer once, not patch twice.
+
+THE FORK (seat-L4D's framing; controller call behind the ELDER gate — a ladder adaptation, NOT
+operator-gated; surfaced async): (A) root-anchor hypothesis threaded into the leaf, L5
+discharges at instantiation; (B) STRENGTHEN THE CARRIED INVARIANT (b-chain field + the support
+fix, ONE coordinated re-bake) — controller recommendation 0.6 (matches her induction data;
+preserves the carried-hypothesis architecture that made the baked chain ∀e-honest; one wave
+fixes both defects); (C) canonFlatten-specialize the primed chain (abandons ∀e; last resort).
+Elder commissioned with the consolidated question set: what her induction carries (worked.tex,
+wide instance; factoring path-inductive vs stage-local; coords-of-record for M_{s,k}); the fork
+with prices; if (B) the field's statement form (value vs structural) at weakest-that-inducts;
+the minimal re-statement set + the wide-witness battery.
+
+FEEDING THE RULING (all commissioned): seat-L4D — def-level cap-escape confirm + candidate
+invariant-field DRAFTS (value form vs structural form, with birth-introduction + per-step
+preservation obligations; input to the elder, NOT baked; retire nothing, bake nothing);
+pnp-transport — the EMPIRICAL INVARIANT TABLE (foldResid at every real-branch node,
+(2,2,2,2) + (2,3,2,2): exact support, factoring structure incl. WHICH pivot, per-layer degrees;
+record what IS true, not what candidates want). GATE: nothing consumes the descended slot,
+nothing bakes, until the elder's ruling.
+
+Process note: the guard-class discipline is now 11-for-11 pre-grind; β lived less than one tick
+because the seat verified feasibility before churning — the cheapest possible price for an
+architectural discovery. Payoff isolation untouched (no Lean edits).
