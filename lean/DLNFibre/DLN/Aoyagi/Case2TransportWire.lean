@@ -30,6 +30,15 @@ branch rides seat-L4's `foldResid_stepMap_eq_pivot_mul` crux, re-proved here as
 `foldResid_pullback_pivot_factor` to keep this file standalone during parallel-dev — DEDUPE with
 `Case1Wire.foldResid_stepMap_eq_pivot_mul` at integration). It feeds whatever repaired invariant the
 elder/controller adopts.
+
+**HYPOTHESIS SHAPE — PRE-REVISION (controller round, fork (A) ruled 2026-07-22).** The elder ruled
+fork (A): the interior leaf's Deg1 conjunct restates on the STRICT-TRANSFORMED residual over
+`ed.center \ {ed.pivot}` with IDEAL-MEMBERSHIP coefficients, and the born-terminally pivot content
+becomes a tracked datum (`LastLayerInv`'s unit disjunct, feeding the transport's `hcleared`). The two
+lemmas here are stated against the CURRENT `FoldStepInvAt`/Deg1-on-center hypotheses; under fork (A)
+those inputs are supplied by `LastLayerInv` (its divisibility + ideal conjuncts). The lemmas'
+CONCLUSIONS and the divisibility CONTENT are unchanged — they are the round's confirmed FLOOR
+(elder pin 4). Re-check the hypothesis wiring at the arch-C rebase that pins `LastLayerInv`.
 -/
 
 open MeasureTheory Set Filter Topology RLCT
