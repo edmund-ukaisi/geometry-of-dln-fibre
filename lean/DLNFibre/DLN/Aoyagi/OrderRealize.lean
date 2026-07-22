@@ -40,14 +40,22 @@ preserve + coupled monotonicity are bundled, since atomic `swapR`-in-`X` monoton
 (c) `bindingSet_transport_sorted`; (d) `residueA_le_ell` + the sorted-box iso. Route (a) = the
 controller's BUILD ruling.
 
-**Elder scaffold-pass questions (carried, per controller):**
-1. RESOLVED by the Codex check: the sorted-`ell`/unsorted-`Adm` coupling is LOAD-BEARING (the
-   adjacent-swap transport is exactly what bridges it) — it cannot be dropped. Ratify keeping
-   `ℓ := ell M 0`, `a := (residueA M 0).toNat`, with the transport carrying the sort.
-2. Domain hypotheses: `hpos : ∀ s, 0 < M s` (non-degenerate, `minMval ≥ 1`; the DLN destination
-   supplies it). Confirm this is the weakest sufficient form.
-3. Whether `bindingSet` belongs in `Core` (network-free combinatorics) or stays `DLN` (uses `ell`).
--/
+**Elder full-pass rulings (scaffold RATIFIED, statement-honest):**
+1. Coupling: the sorted-`ell`/unsorted-`Adm` coupling is LOAD-BEARING and ratified — keep
+   `ℓ := ell M 0`, `a := (residueA M 0).toNat`; the adjacent-swap transport carries the sort (it IS
+   permutation-invariance made explicit). Do NOT restate over a fixed `(ℓ,a)`.
+2. Domain hyp `hpos : ∀ s, 0 < M s` is weakest-sufficient on statements 1, 2, 4 (`BoxPart` is
+   ill-defined at zero width). For `residueA_le_ell` (statement 3), `hpos` may not fire (`a ≤ ℓ` may
+   be definitional / need only `ell > 0`) — DROP it there if the proof does not use it.
+3. Home: `bindingSet` + the iso are general combinatorics that belong in `Core` — BUT the import
+   direction blocks the move now (`Core` must never import `DLN`, and this consumes `Adm`/`Mval`
+   which live `DLN`-side). The whole `Adm`/`Mval`/`bindingSet` cluster migrates together in the
+   post-monument upstreaming unit (controller-scheduled with M4/M9); stays `DLN` until then.
+
+**`r = 0` scope (statement 2, elder-noted CORRECT).** `ell M 0` / `residueA M 0` use `r = 0`: `M` is
+the *reduced core* width vector, on which the Def-3 selectors are read directly. This is NOT lost
+generality — general-`r` arrives upstream via the R0/R1 rank reduction (`M^(s) = H^(s) − r`); the
+reduced core is the object the count is stated on. -/
 
 namespace DLNFibre.DLN.Aoyagi
 
@@ -56,7 +64,8 @@ open DLNFibre.DLN.RLCT DLNFibre.Core.Aoyagi.OrderChain
 variable {L : ℕ}
 
 /-- **The binding-profile domain**: admissible profiles achieving the `Mval`-minimum `minAdm`, i.e.
-`{T ∈ Adm M : Mval M T = minAdm M}` (= the same set over `admTight`, by `adm_eq_admTight`). -/
+`{T ∈ Adm M : Mval M T = minAdm M}`. (`Adm` already carries the run-min bound — `Adm_le_runMin` —
+so no separate "tight cone" is needed; the former `admTight` collapsed to `Adm`.) -/
 def bindingSet (M : Fin (L + 1) → ℕ) : Set (Fin L → ℕ) :=
   {T | T ∈ Adm M ∧ Mval M T = (Adm M).inf' (Adm_nonempty M) (Mval M)}
 

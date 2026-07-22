@@ -1,31 +1,16 @@
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 
 /-!
-# `DLN.RLCT.Foundations.AdmTight` — the run-min admissible cone equals `Adm` (Object E / P6.2)
+# `DLN.RLCT.Foundations.AdmTight` — the run-min bound is free on `Adm` (Object E / P6.2)
 
-The rank-bounded admissible lattice named for the P6.2 realization iso: `Adm`
-(`Foundations.Lambda`) with each `t⁽ʲ⁾` additionally bounded by the **running minimum**
-`runMin M j = min(M⁰,…,M⁽ʲ⁺¹⁾)`. The headline result is that this run-min bound is **already
-implied** on `Adm`, so `admTight = Adm` **as a set** (`adm_eq_admTight`) — a stronger seam than the
-value-only minimum-equality the elder asked for.
-
-Why the run-min cap matters even though it is free here: it is the load-bearing constraint that
-separates `Adm` from the **over-loose** lattice (`admBound = min(M⁰,M¹)` at *every* coordinate,
-dropping the `M⁽ʲ⁺¹⁾` cap). On that over-loose lattice `t⁽ʲ⁾` can exceed `M⁽ʲ⁺¹⁾`, the factor
-`(M⁽ʲ⁺¹⁾ − t⁽ʲ⁾)` goes negative, and `minAdm` collapses ≤ 0 (e.g. `M=[4,4,1,1]→0`, `[5,5,1,1]→−1`)
-— destroying the `C(ℓ,a)` element count of the P6.2 realization iso. Lambda's `admBound` supplies
-the cap (via `admBound M j ≤ M⁽ʲ⁺¹⁾`), which is why `Adm` is safe and the over-loose one is not
-(the negative certificate, pnp thread-42). So `Adm` never admits the spurious binding profiles; the
-run-min tightening changes nothing on it.
-
-**The def-site lemmas (named once, cited forever):**
-* `admTight_subset_adm` — the inclusion (`Finset.filter_subset`).
-* `Adm_le_runMin` — the run-min bound is automatic on `Adm` (weak-decrease + `admBound` reconstruct
-  the running min by induction).
-* `adm_eq_admTight` — **THE SEAM (set identity)**: `admTight M = Adm M`. Makes `minAdm_tight_eq`
-  immediate and keeps every banked loose-`minAdm` fact (`minAdm_le_terminalExponents`,
-  `o5_core_realized`, the `RecursionAdapter` chain) consumable against the tight-named domain.
-* `minAdm_tight_eq` — the tight/loose `Mval`-minimum equality, a corollary of the set identity.
+The "tight" (running-min-bounded) admissible cone the P6.2 realization iso appeared to need turns
+out NOT to be a distinct object: every `Adm` profile (`Foundations.Lambda`) **already** satisfies
+the running-min bound `t⁽ʲ⁾ ≤ runMin M j = min(M⁰,…,M⁽ʲ⁺¹⁾)` (`Adm_le_runMin`). So filtering `Adm`
+by it changes nothing (`adm_runMin_filter_eq`) — the run-min tightening is vacuous, and the elder's
+Q4 ruling collapsed the former `admTight` def into `Adm` (two names for one proven-equal set is the
+over-naming `name = content` forbids). What survives is the *theorem* `adm_runMin_filter_eq`, which
+carries the tight-vs-loose story (the negative certificate); a one-line pointer sits at `Adm`'s
+def-site (`Lambda.lean`).
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -34,27 +19,10 @@ open Finset
 
 variable {L : ℕ}
 
-/-- The **tight admissible cone**: `Adm` profiles additionally bounded by the running minimum
-`runMin M j` at each coordinate. Equivalently `{t⁽¹⁾ ≥ … ≥ t⁽ᴸ⁾ = 0 : ∀ j, t⁽ʲ⁾ ≤ runMin M j}`.
-The added bound is free on `Adm` (`adm_eq_admTight`); it names the load-bearing run-min cap. -/
-def admTight (M : Fin (L + 1) → ℕ) : Finset (Fin L → ℕ) :=
-  (Adm M).filter (fun T => ∀ j, T j ≤ runMin M j)
-
-/-- The tight cone is included in the loose one (definitional — it is a filter of `Adm`). -/
-theorem admTight_subset_adm (M : Fin (L + 1) → ℕ) : admTight M ⊆ Adm M :=
-  Finset.filter_subset _ _
-
-/-- The all-zeros profile is tight-admissible, so `admTight` is nonempty. -/
-theorem admTight_nonempty (M : Fin (L + 1) → ℕ) : (admTight M).Nonempty := by
-  refine ⟨fun _ => 0, ?_⟩
-  rw [admTight, mem_filter]
-  exact ⟨zero_mem_Adm M, fun j => Nat.zero_le _⟩
-
 /-- **The running-min bound is automatic on the admissible cone**: every `Adm` profile already
 satisfies `T⁽ʲ⁾ ≤ runMin M j = min(M⁰,…,M⁽ʲ⁺¹⁾)`. Reason: weak-decrease plus the per-coordinate
 `admBound` (`T⁽ʲ⁾ ≤ admBound M j ≤ M⁽ʲ⁺¹⁾`, and `T⁰ ≤ min(M⁰,M¹)`) force `T⁽ʲ⁾ ≤ M⁽ⁱ⁾` for every
-`i ≤ j+1`. Verified exhaustively (0/61014 admissible profiles violate it, L≤4, widths 0..5). This
-is why `admTight M = Adm M` (`adm_eq_admTight`). -/
+`i ≤ j+1`. Verified exhaustively (0/61014 admissible profiles violate it, L≤4, widths 0..5). -/
 theorem Adm_le_runMin (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) (j : Fin L) :
     T j ≤ runMin M j := by
   rw [Adm, mem_filter] at hT
@@ -84,19 +52,21 @@ theorem Adm_le_runMin (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ 
       _ ≤ M i'.succ := admBound_le_Msucc M i'
       _ = M i := by rw [hi'succ]
 
-/-- **THE SEAM (set identity)**: `admTight M = Adm M`. The run-min bound of `admTight` is implied
-by admissibility (`Adm_le_runMin`), so the filter is total on `Adm`. Stronger than the value-only
-minimum-equality: the two lattices are the *same set*. -/
-theorem adm_eq_admTight (M : Fin (L + 1) → ℕ) : admTight M = Adm M := by
-  refine Finset.Subset.antisymm (admTight_subset_adm M) (fun T hT => ?_)
-  rw [admTight, mem_filter]
-  exact ⟨hT, fun j => Adm_le_runMin M hT j⟩
+/-- **The run-min tightening is vacuous on `Adm`** (formerly `adm_eq_admTight`; the `admTight` def
+collapsed to `Adm` per the elder's Q4 ruling — `admTight` was a *theorem* about `Adm`, not a
+distinct object): filtering `Adm` by the running-min bound is the identity. This theorem *is* the
+tight-vs-loose story.
 
-/-- The tight cone's `Mval`-minimum equals the loose `Adm` minimum (hence `minAdm`) — a corollary
-of the set identity `adm_eq_admTight`. -/
-theorem minAdm_tight_eq (M : Fin (L + 1) → ℕ) :
-    (admTight M).inf' (admTight_nonempty M) (Mval M)
-      = (Adm M).inf' (Adm_nonempty M) (Mval M) :=
-  Finset.inf'_congr (admTight_nonempty M) (adm_eq_admTight M) (fun _ _ => rfl)
+**Negative certificate (why the `M⁽ʲ⁺¹⁾`/run-min cap matters even though it is free here).** `Adm`
+is NOT loose: `admBound M j ≤ M⁽ʲ⁺¹⁾` already caps each `t⁽ʲ⁾`, and weak-decrease reconstructs the
+running min (`Adm_le_runMin`), so no spurious binding profile arises. The genuinely-loose object is
+the **over-loose** lattice — cap `min(M⁰,M¹)` at *every* coordinate, dropping the `M⁽ʲ⁺¹⁾` cap.
+There `t⁽ʲ⁾` can exceed `M⁽ʲ⁺¹⁾`, the factor `(M⁽ʲ⁺¹⁾ − t⁽ʲ⁾)` goes negative, and `minAdm` collapses
+≤ 0 (`M=[4,4,1,1]→0`, `[5,5,1,1]→−1`), destroying the `C(ℓ,a)` count of the P6.2 realization iso.
+The `M⁽ʲ⁺¹⁾`/run-min cap is load-bearing vs that object; Lambda's `admBound` supplies it, so `Adm`
+is safe (pnp thread-42 negative cert). -/
+theorem adm_runMin_filter_eq (M : Fin (L + 1) → ℕ) :
+    (Adm M).filter (fun T => ∀ j, T j ≤ runMin M j) = Adm M :=
+  Finset.filter_true_of_mem (fun _ hT j => Adm_le_runMin M hT j)
 
 end DLNFibre.DLN.RLCT
