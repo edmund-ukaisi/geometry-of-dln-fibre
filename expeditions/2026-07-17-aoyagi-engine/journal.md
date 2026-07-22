@@ -11354,3 +11354,18 @@ with the generic hshear* pins, weakest-that-inducts, kills the triangular-shear 
 class, one named predicate; FLAG if it can't be pinned against current edge fields — that would
 be a structure finding for the elder). Flag-not-guess discipline explicit on both ends. Flow
 unchanged: render → expanded gate → re-bake → controller verification → elder second read.
+
+## 2026-07-22 (controller) — hshear_schur delivered (Pin C + the Q2⁻¹ flag); adjudication method pinned
+
+seat-L4 delivered the shear pin to arch-C (battery 47c5645bb): pivot-independence alone is
+INSUFFICIENT (admits the support-injection breaker dl ↦ dl + s1²); recommended Pin C — φ WRITES
+only carve-block coords (⊆ blockCoords(carve), via hcenter) AND READS only carve∖pivot — kills
+both breaker classes, admits the Schur fold, render-ready as two clauses. ONE FLAG (flagged, not
+asserted): Pin C is correct iff ed.shearφ is purely the Schur-within-carve residual shear; if it
+also carries the Q2⁻¹-into-next-layer transfer, Pin C is too strong (Q2⁻¹ doesn't break
+conjunct-B) and the honest pin becomes layer-grading preservation. seat-L4's prior: Q2⁻¹ belongs
+to the NEXT edge. CONTROLLER pinned the adjudication method to arch-C: a GROUND-TRUTH read of
+where shearφ is populated/consumed in the fold construction (the prior is not evidence); resolve
++ one-line docstring note if clean; route to the elder if the construction is genuinely ambiguous
+about which edge owns the Q2⁻¹. Conjunct-1 pin-agnostic (hshear_pivot suffices) — the render
+proceeds on everything else meanwhile. seat-L4 back on hold.
