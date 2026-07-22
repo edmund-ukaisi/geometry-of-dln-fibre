@@ -13126,3 +13126,27 @@ produce; census 0 new; cordon +2 blueprint). One cosmetic docstring re-wrap with
 seat; then the labeled staging commit + hash. Its boundary note held exactly right: it stages
 the module UNWIRED — the aggregator is the controller's pen, and the full-build clash gate runs
 at MY integration.
+
+## 2026-07-22 ~22:50 UTC — ELDER RULED (B): the step-form descent; node-form retires; boost pre-positioned
+
+**The multiAffine reshape ruling landed — (B), with the elder owning the defect** ("my node-form
+ruling's induction sketch said 'root = coreGen, one factor per layer' — which silently assumed e
+linear, and I did not carry he_lin; the third invoked-premise instance, at an induction BASE my
+sketch glossed. The node-form was the wrong shape."). The ruling's structural core: the slot is
+ALREADY the carried invariant (FoldStepInvAt conjunct-2), so the child's slot descends PER-STEP
+from the parent's (held by every consumer via hinv) — he_lin-FREE; (A) would have both broken
+the leaves' weakest-hypotheses design AND mislocated the linearity burden. The exact step-form
+Lean text AUTHORED (realBranch_multiAffine_step: hpos [safe parity, prover may drop] + e + edge
++ hbranch + hslot → child slot; root anchoring = L5's base case, its sole he_lin use by design).
+Node-form DELETES same-round, no tombstone. RELAYED to arch-C with the call-site plan (the two
+conjB one-liners revert to sorry IN the staging so it builds green; seats re-close immediately
+post-bake — both confirmed ready for exactly this re-wire).
+
+**Boost-readiness pre-positioned (not ruled):** the elder ACCEPTS R_bad as refuting its
+derived-stub-off-current-pins default ("boost-readiness is strictly stronger than multiAffine +
+foldB + ShearWithinCarveRaw — a pin-coarseness gap, not a falsity") and records a WEAK,
+EXPLICITLY-PROVISIONAL lean toward (2) — the CanonicalSchurStep property pin on IsRealBranch
+(the honest gate-2 reinstatement, property-style; preserves the derived-stub architecture; M7's
+emission cost sunk) over (1) carrying BChainCompatible (grows the invariant surface; the
+prepared form is a shear consequence). FINAL HELD for pnp-boost — decorrelation intact, the
+second instrument weighed on its own terms.
