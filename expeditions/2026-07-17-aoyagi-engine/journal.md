@@ -12268,3 +12268,17 @@ boost-aware correction — coordinated with the redirect, since case11's jexp = 
 center size); then seat-L6's fix options (FoldRealizes hypothesis / GeoStep accumulation field /
 the ledger reading + lemma). seat-L6 presses the tractable legs meanwhile — nothing blocked but
 hjac itself.
+
+## 2026-07-22 (controller, ~12:30) — the redirect's FULL GATE PASSED; staging for the elder's pre-bake read
+
+arch-C's full gate on the final render: PASS on every check (own build 8450/0; footprints
+clean-three+sorryAx both drivers; cordon OK; census 16 @[blueprint] = 10 + 6 stubs, 14 sorries =
+8 leaves + 6 stubs; transcription faithful on all 7 forms; canonCenterOf 4 EXPLICIT arms — no
+catch-all; ShearWithinCarveRaw one-site; IsRealBranch +e pinning every step; the free-field
+re-audit finds NO residual free field; the sufficiency check's realBranch_cover catch fixed
+in-tree; center-validation cited by battery). CONTROLLER CALLS: (1) edgeShearRaw's pre-existing
+same-class catch-all — FOLD IN now (uniform exhaustiveness; two lines; a re-gate is running
+anyway); (2) the elder's PRE-bake read needs a fetchable tree — arch-C commits + pushes a
+labeled STAGING commit to -rung-c; on the elder's OK that commit IS the bake. The elder's packet:
+arch-C's 8 flagged items + the controller's hjac-semantics addition (the L6 lane, riding the same
+pass). Next: the staging hash → I trigger the elder → the read → bake (or apply-and-re-gate).
