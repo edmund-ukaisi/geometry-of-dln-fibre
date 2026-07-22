@@ -13603,3 +13603,32 @@ Relayed both to seat-L4B (prove (a) now; scaffold (b); do NOT finalize (b)'s sta
 packet + Codex). Standing action recorded in the memo: relay the Codex verdict to the elder when
 it lands. The elder also endorsed keeping frame-in/hypothesis-out as the pattern for the remaining
 frontier adjudications (the descent will have its own such moments).
+
+## 2026-07-22 ~16:55 UTC — Assembly increment 2 INTEGRATED (77447a7f5) — the L5 summit-home is live
+
+arch-C staged inc-2 (a49b78571 on -rung-c): MonumentAssembly imports Case1Wire+Case2Wire, adds
+`leaf_stepInv_of_path'` (statement-identical to baked L5 modulo {name, case1'/case2' swaps}, fold
+body sorried), swaps the primed driver's L5 call. Controller RE-DERIVED the gate (not trusting the
+"done"): clean --no-ff merge (docs preserved, lean change only); full `scripts/lb DLNFibre` GREEN
+(9005 jobs, 0 err); cordon OK; census 35→36 (the honest L5' fold-body skeleton — the summit-home
+for the L5 assembly proof).
+
+FORCED #print axioms (fresh scratch, current oleans):
+- exists_atlasRealizesExponents' + exists_coreResolution_via_monument' = [propext, sorryAx,
+  Classical.choice, Quot.sound] — kind unchanged; sorryAx now routes via case1'/case2' onto the
+  boostReady + step-form frontier (was via the baked unprimed case stubs). Statement-identity +
+  wiring, not sorry-freedom (as ruled).
+- PAYOFF ISOLATION: aoyagi_learning_coefficient_via_engine = [propext, sorryAx, Classical.choice,
+  Quot.sound] — UNCHANGED by inc-2 (it consumes the BAKED path, not the primed side inc-2 touched;
+  no cite, no new axiom). CORRECTION to an earlier shorthand: via_engine is NOT "clean-three" at
+  this stage — it carries a TRACKED-OPEN sorryAx from the monument's still-open leaves (the whole
+  point: it is the cite-FREE monument path, so it stays sorried until the leaves close, then goes
+  clean-three at the summit). The isolation invariant is that a monument bake/increment does not
+  CHANGE this footprint (no leak, no new axiom) — which holds. AxCheck batch (payoff roots
+  registered) passed during the build, corroborating.
+
+Summit-readiness ledger (arch-C's flag, carried): leaf_stepInv_of_path' still references UNPRIMED
+lastLayer_clear_preserves / foldStepInvAt_to_lastLayerInv / terminal_edge_stepInv / terminal_bezout
+— future increments once those get primed twins. The L5-fold-body seat targets
+MonumentAssembly.leaf_stepInv_of_path', NOT the baked atlas L5. arch-C next: the hygiene window
+(safe items only).
