@@ -10406,3 +10406,25 @@ map — all with the elder for the shape ruling; seat-E holds the scaffold-freez
 lesson honored). seat-L3T fully reconciled (nine messages; the escalation-test disposition
 accepted as model epistemics — INFER labeled as INFER; the concrete battery deferred to the
 pinned Let-blocks as the preservation proof's companion).
+
+## 2026-07-22 (controller) — Tier-3 shape ruled (pin homes + admTight seam lemmas); the encoding-map cert charged; BOTH lanes fully specified
+
+The elder's Tier-3 shape ruling: admTight CONFIRMED with TWO def-site lemmas (admTight_subset_adm;
+**minAdm_tight_eq = THE SEAM LEMMA** keeping every banked loose-minAdm D-bridge consumable
+tight-side without re-proving — "it may not live as folklore or an inline have"); the 3a/3b split
+RULED AS PROPOSED with each pin's formal home (tight-lattice lives TWICE: (3a)'s LHS domain AND
+(3b)'s discharge obligation `tree_profiles_tight` — proved from the banked running-min/t̃-nesting
+certificates, never assumed; global target in both filters pinned to one constant through the
+seam lemma; t̃=0 in (3b) only; OrderIso-both-ways = (3a)'s form) — "the audit surface splits
+along the proof surface, which is the point." The PNP CERT charged, five parts (explicit
+construction; bijectivity on the tight domain; strictMono BOTH ways pointwise on the full trap
+kill-set; the ℓ=1/a=ℓ boundary; and the NEGATIVE certificate — which direction fails on the
+LOOSE lattice, so the docstring CITES the reason admTight is load-bearing). seat-E: def-sites
+prep-able now; scaffold unfreezes on the cert. "After the encoding map, the lane is engineering
+all the way down."
+
+arch-C: the round confirmed FULLY CLOSED on its end too — the gate plan final (six re-checks +
+three witness deaths + the Schur-restoration + the crux dedupe + the mechanical floor + write-set
+→ ONE bake); "derive node-data, carry edge-data" recorded as the saga's crisp reusable rule.
+BOTH LANES ARE NOW FULLY SPECIFIED with no open design input anywhere — the monument waits on
+one render, the E-lane on one certificate; everything after is proving.
