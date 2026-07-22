@@ -14849,3 +14849,16 @@ paths for my wire — MultiAffineHomogWire.lean is new).
 
 Gap B's score: of its three lemmas, TWO are proven + banked and the third deliberately queued behind
 the same bake it must be written against. No wasted proofs anywhere in the round.
+
+## 2026-07-23 ~14:30 UTC — L3T2 audit clean; the wire SEQUENCED behind the N_p merge (risk arithmetic)
+
+seat-L3T2's audit (8291871f9): coreGen_layerHomogeneous' + homogeneousDeg1On_comp_of_fixing +
+submult_congr + canonFlatten_apply ALL clean-three on forced re-derivation; realBranch_multiAffine_step'
+carries sorryAx SOLELY via the canonical cap (the clash-reconcile sound). Module for the wire:
+MultiAffineHomogWire.lean (+ the never-yet-wired MultiAffineStepWire). Tasks #6/#7/#9 DONE; #8 held.
+
+CONTROLLER SEQUENCING CALL: the -L3T2 merge + both wires WAIT for the N_p merge — one integration round
+after it. (a) Nothing consumes the atoms pre-N_p (the induction + seat-LL's frontier both queue behind
+the bake); (b) merging into canonical mid-decisive-render churns arch-C's base for zero urgency — bad
+risk arithmetic on THE critical path. Sequence: N_p merges → -L3T2 merge + wires → atom #3 against the
+final defs → the full audit → the primed-twin swap map onto the SUMMIT-RETIRE ledger.
