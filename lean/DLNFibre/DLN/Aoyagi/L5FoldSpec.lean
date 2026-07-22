@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.DLN.Aoyagi.Case2Wire
+import DLNFibre.DLN.Aoyagi.PivotPreservation
 import DLNFibre.Core.Aoyagi.PathAtoms
 
 /-!
@@ -146,5 +147,36 @@ theorem abs_jacDet_pathMap_prod {D : ℕ} (l : List ((Fin D → ℝ) → (Fin D 
   -- map: M2 — LANDED in Core.Aoyagi.PathAtoms (abs_jacDet_pathMap_prod, off jacDet_pathMap_eq_prod);
   -- this contract delegates.
   DLNFibre.Core.Aoyagi.abs_jacDet_pathMap_prod l hdiff u
+
+open DLNFibre.DLN.Aoyagi.PivotPres in
+/-- **(B) adapter core — jacWeight congruence on its support** (the M4-slot plug-in helper). `jacWeight
+jexp` reads only the coords where `jexp ≠ 0`; if `w'` agrees with `w` there, the weights agree. -/
+theorem jacWeight_congr_of_fixed {D : ℕ} (jexp : Fin D → ℕ) (w w' : Fin D → ℝ)
+    (h : ∀ a, jexp a ≠ 0 → w' a = w a) : jacWeight jexp w' = jacWeight jexp w := by
+  simp only [jacWeight]
+  refine Finset.prod_congr rfl (fun a _ => ?_)
+  rcases Nat.eq_zero_or_pos (jexp a) with h0 | hpos
+  · rw [h0, pow_zero, pow_zero]
+  · rw [h a hpos.ne']
+
+open DLNFibre.DLN.Aoyagi.PivotPres in
+/-- **(B) adapter — the M4-slot jacWeight congruence, per NON-ROLLOVER step** (A5-locked). For a real
+branch, the suffix `pathMap` after step `i` fixes step `i`'s pivot corner
+(`foldSuffix_fixes_ledgerCorner`), and `jexp` is supported on that pivot (`hstep_block`), so the step's
+jacWeight factor is suffix-invariant — exactly the M4-slot form §D.3's telescoping consumes. Rollover
+steps (`jexp = 0`) use `jacWeight_congr_of_fixed` directly (vacuous support). Consumes `IsLedgerCorner`
+(L5 supplies it via `canonPivotOf_isLedgerCorner_conOracle`); NO `canonPivotOf` at this site. -/
+theorem jacWeight_suffix_invariant {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (P : TreePath d) (hb : P.IsRealBranch e)
+    (i : ℕ) (hi : i < (childStateList d P).length)
+    (jexp : Fin (flatDim d) → ℕ) (piv : Fin (flatDim d))
+    (hsupp : ∀ a, jexp a ≠ 0 → a = piv)
+    (hledger : IsLedgerCorner d ((childStateList d P)[i]) piv)
+    (u : Fin (flatDim d) → ℝ) :
+    jacWeight jexp (pathMap ((TreePath.stepMapList d P).drop (i + 1)) u) = jacWeight jexp u := by
+  refine jacWeight_congr_of_fixed jexp u _ (fun a ha => ?_)
+  have haeq : a = piv := hsupp a ha
+  subst haeq
+  exact foldSuffix_fixes_ledgerCorner e P hb i hi a hledger u
 
 end DLNFibre.DLN.Aoyagi.L5Spec
