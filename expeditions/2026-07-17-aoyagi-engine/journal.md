@@ -11389,3 +11389,20 @@ the datum satisfiable: foldB(0) = 0 at the last layer makes sum ≠ 0 feasible; 
 triggered). BAKE CORRECTLY HELD: baking without the shear pin would bake leaves false-as-stated at
 free shears — the exact face-4 defect. 1/2/4 sit rendered+gated on-branch uncommitted; nothing
 lost by waiting. Conjunct-1 pin-agnostic — proof-seat divisibility prep proceeds.
+
+## 2026-07-22 (controller) — **THE SORTED-BOX CORE LANDED**: sortedBox_orderIso discharged, zero sorries, axiom-clean
+
+seat-Ecore's unit is COMPLETE (d0e24afc7, controller-verified on the fetched commit: zero real
+sorries — the one grep hit is docstring prose — zero axiom decls, 769 LoC, theorem :709):
+`sortedBox_orderIso : Nonempty ({T ∈ Adm D | Mval D T = minAdm} ≃o BoxPart (qipM D)
+(sbResidueA D).toNat)` at GENERAL monotone-positive D. Route as planned end-to-end: pivotal fact
+via banked water-filling; binding_le_iff (profile order = reverse count-domination); subset↔box
+via orderEmbOfFin + Fin.rev + posLE_iff_countDom; dec via eOfSupport/tOfE (route (a), stayed
+inside consumed machinery); explicit ≃o with map_rel_iff′; L=0 singleton branch. Kill-battery
+green throughout. The scoped "genuine sub-development" DISSOLVED into banked-machinery assembly —
+the θ-count tide's equality-case machinery carrying the order realization: the rising sea over
+its own foundation. INTEGRATION FIRED: seat-E merges -Ecore, VERIFIES THE DEFEQ CLAIM
+(sbResidueA/qipM at sortedWidths vs the scaffold's ell/residueA — thin named bridge if not rfl;
+STOP if the bridge needs content), wires the discharge → the E-lane frontier drops to ONE sorry
+(swapBinding_orderIso). Statement card: seat-Ecore writing now; fidelity REVIEW commissioned
+after the wiring, against the integrated consumed form. Tasks #43/#47/#48 complete.
