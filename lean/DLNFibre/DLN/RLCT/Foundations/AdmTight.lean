@@ -1,26 +1,31 @@
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 
 /-!
-# `DLN.RLCT.Foundations.AdmTight` — the TIGHT (running-min) admissible cone (Object E / P6.2 Tier-3)
+# `DLN.RLCT.Foundations.AdmTight` — the run-min admissible cone equals `Adm` (Object E / P6.2)
 
-The correct rank-bounded admissible lattice for the P6.2 realization iso: like `Adm`
-(`Foundations.Lambda`) but with each `t⁽ʲ⁾` bounded by the **running minimum** `runMin M j =
-min{M⁽¹⁾,…,M⁽ʲ⁺¹⁾}` rather than the loose `admBound = min(M⁰,M¹)`. The loose `Adm` admits degenerate
-profiles (`t⁽ʲ⁾ > M⁽ʲ⁺¹⁾`) that spuriously tie the minimum and over-count; `admTight` removes them
-(P6.2 finding, elder-ratified). Defined as `Adm` filtered by the running-min bound, so the inclusion
-is definitional.
+The rank-bounded admissible lattice named for the P6.2 realization iso: `Adm`
+(`Foundations.Lambda`) with each `t⁽ʲ⁾` additionally bounded by the **running minimum**
+`runMin M j = min(M⁰,…,M⁽ʲ⁺¹⁾)`. The headline result is that this run-min bound is **already
+implied** on `Adm`, so `admTight = Adm` **as a set** (`adm_eq_admTight`) — a stronger seam than the
+value-only minimum-equality the elder asked for.
 
-Def-site + inclusion + nonemptiness + the clamp-membership are PROVED; `minAdm_tight_eq` is proved
-modulo the one engine lemma `Mval_clamp_le` (TRACKED-OPEN, admissible-cone clamp monotonicity).
+Why the run-min cap matters even though it is free here: it is the load-bearing constraint that
+separates `Adm` from the **over-loose** lattice (`admBound = min(M⁰,M¹)` at *every* coordinate,
+dropping the `M⁽ʲ⁺¹⁾` cap). On that over-loose lattice `t⁽ʲ⁾` can exceed `M⁽ʲ⁺¹⁾`, the factor
+`(M⁽ʲ⁺¹⁾ − t⁽ʲ⁾)` goes negative, and `minAdm` collapses ≤ 0 (e.g. `M=[4,4,1,1]→0`, `[5,5,1,1]→−1`)
+— destroying the `C(ℓ,a)` element count of the P6.2 realization iso. Lambda's `admBound` supplies
+the cap (via `admBound M j ≤ M⁽ʲ⁺¹⁾`), which is why `Adm` is safe and the over-loose one is not
+(the negative certificate, pnp thread-42). So `Adm` never admits the spurious binding profiles; the
+run-min tightening changes nothing on it.
 
-**The two def-site lemmas (named once, cited forever — elder pin):**
+**The def-site lemmas (named once, cited forever):**
 * `admTight_subset_adm` — the inclusion (`Finset.filter_subset`).
-* `minAdm_tight_eq` — **THE SEAM LEMMA**: the tight lattice's `Mval`-minimum equals the loose
-  `Adm` minimum (hence `minAdm`). This keeps every banked loose-`minAdm` fact
-  (`minAdm_le_terminalExponents`, `o5_core_realized`, the `RecursionAdapter` chain) consumable
-  against tight-side objects without re-proving. Proof: the loose min lower-bounds the tight min
-  (`inf'_mono`, subset), and clamping any `Adm` profile down to `runMin` never raises `Mval`
-  (`Mval_clamp_le`) and lands in `admTight`, so the tight min ≤ the loose min.
+* `Adm_le_runMin` — the run-min bound is automatic on `Adm` (weak-decrease + `admBound` reconstruct
+  the running min by induction).
+* `adm_eq_admTight` — **THE SEAM (set identity)**: `admTight M = Adm M`. Makes `minAdm_tight_eq`
+  immediate and keeps every banked loose-`minAdm` fact (`minAdm_le_terminalExponents`,
+  `o5_core_realized`, the `RecursionAdapter` chain) consumable against the tight-named domain.
+* `minAdm_tight_eq` — the tight/loose `Mval`-minimum equality, a corollary of the set identity.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -30,8 +35,8 @@ open Finset
 variable {L : ℕ}
 
 /-- The **tight admissible cone**: `Adm` profiles additionally bounded by the running minimum
-`runMin M j` at each coordinate. Equivalently `{t⁽¹⁾ ≥ … ≥ t⁽ᴸ⁾ = 0 : ∀ j, t⁽ʲ⁾ ≤ runMin M j}`
-(the loose `admBound` bound is implied since `runMin ≤ admBound`). -/
+`runMin M j` at each coordinate. Equivalently `{t⁽¹⁾ ≥ … ≥ t⁽ᴸ⁾ = 0 : ∀ j, t⁽ʲ⁾ ≤ runMin M j}`.
+The added bound is free on `Adm` (`adm_eq_admTight`); it names the load-bearing run-min cap. -/
 def admTight (M : Fin (L + 1) → ℕ) : Finset (Fin L → ℕ) :=
   (Adm M).filter (fun T => ∀ j, T j ≤ runMin M j)
 
@@ -49,7 +54,7 @@ theorem admTight_nonempty (M : Fin (L + 1) → ℕ) : (admTight M).Nonempty := b
 satisfies `T⁽ʲ⁾ ≤ runMin M j = min(M⁰,…,M⁽ʲ⁺¹⁾)`. Reason: weak-decrease plus the per-coordinate
 `admBound` (`T⁽ʲ⁾ ≤ admBound M j ≤ M⁽ʲ⁺¹⁾`, and `T⁰ ≤ min(M⁰,M¹)`) force `T⁽ʲ⁾ ≤ M⁽ⁱ⁾` for every
 `i ≤ j+1`. Verified exhaustively (0/61014 admissible profiles violate it, L≤4, widths 0..5). This
-makes the `runMin`-tightening `admTight` **vacuous** (`admTight M = Adm M`); see `Mval_clamp_le`. -/
+is why `admTight M = Adm M` (`adm_eq_admTight`). -/
 theorem Adm_le_runMin (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) (j : Fin L) :
     T j ≤ runMin M j := by
   rw [Adm, mem_filter] at hT
@@ -79,45 +84,19 @@ theorem Adm_le_runMin (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ 
       _ ≤ M i'.succ := admBound_le_Msucc M i'
       _ = M i := by rw [hi'succ]
 
-/-- **Clamp does not raise `Mval`** (on the admissible cone): clamping an `Adm` profile down to the
-running-min bound coordinatewise never increases `Mval`. In fact the clamp is the **identity** on
-`Adm` — every admissible profile already satisfies `T⁽ʲ⁾ ≤ runMin M j` (`Adm_le_runMin`), so
-`min (T j) (runMin M j) = T j` and `Mval` is unchanged. (The `T ∈ Adm M` hypothesis is necessary:
-unconditionally the inequality is FALSE, e.g. `M=(0,2)`, `T=(1)` gives `Mval T = −1 < 0`.) -/
-theorem Mval_clamp_le (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) :
-    Mval M (fun j => min (T j) (runMin M j)) ≤ Mval M T :=
-  le_of_eq (congrArg (Mval M) (funext fun j => min_eq_left (Adm_le_runMin M hT j)))
-
-/-- The clamp of a profile lands in `admTight` (running-min bound + weak-decrease + last `= 0`). -/
-theorem clamp_mem_admTight (M : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm M) :
-    (fun j => min (T j) (runMin M j)) ∈ admTight M := by
-  rw [Adm, mem_filter] at hT
-  obtain ⟨-, -, hdec, hlast⟩ := hT
+/-- **THE SEAM (set identity)**: `admTight M = Adm M`. The run-min bound of `admTight` is implied
+by admissibility (`Adm_le_runMin`), so the filter is total on `Adm`. Stronger than the value-only
+minimum-equality: the two lattices are the *same set*. -/
+theorem adm_eq_admTight (M : Fin (L + 1) → ℕ) : admTight M = Adm M := by
+  refine Finset.Subset.antisymm (admTight_subset_adm M) (fun T hT => ?_)
   rw [admTight, mem_filter]
-  refine ⟨?_, fun j => min_le_right _ _⟩
-  rw [Adm, mem_filter]
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [Fintype.mem_piFinset]; intro j; rw [mem_range]
-    exact Nat.lt_succ_of_le (le_trans (min_le_right _ _) (runMin_le_admBound M j))
-  · intro j; exact le_trans (min_le_right _ _) (runMin_le_admBound M j)
-  · intro i j hij; exact min_le_min (hdec i j hij) (runMin_anti M hij)
-  · intro j hj; simp only [hlast j hj, Nat.zero_min]
+  exact ⟨hT, fun j => Adm_le_runMin M hT j⟩
 
-/-- **THE SEAM LEMMA**: the tight cone's `Mval`-minimum equals the loose `Adm` minimum. -/
+/-- The tight cone's `Mval`-minimum equals the loose `Adm` minimum (hence `minAdm`) — a corollary
+of the set identity `adm_eq_admTight`. -/
 theorem minAdm_tight_eq (M : Fin (L + 1) → ℕ) :
     (admTight M).inf' (admTight_nonempty M) (Mval M)
-      = (Adm M).inf' (Adm_nonempty M) (Mval M) := by
-  apply le_antisymm
-  · -- tight ≤ loose: clamp the loose minimiser into the tight cone, Mval not raised
-    obtain ⟨T, hT, hTeq⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
-    rw [hTeq]
-    calc (admTight M).inf' (admTight_nonempty M) (Mval M)
-        ≤ Mval M (fun j => min (T j) (runMin M j)) :=
-          Finset.inf'_le _ (clamp_mem_admTight M hT)
-      _ ≤ Mval M T := Mval_clamp_le M hT
-  · -- loose ≤ tight: fewer profiles ⟹ larger inf (every tight profile is in `Adm`)
-    apply Finset.le_inf'
-    intro b hb
-    exact Finset.inf'_le _ (admTight_subset_adm M hb)
+      = (Adm M).inf' (Adm_nonempty M) (Mval M) :=
+  Finset.inf'_congr (admTight_nonempty M) (adm_eq_admTight M) (fun _ _ => rfl)
 
 end DLNFibre.DLN.RLCT
