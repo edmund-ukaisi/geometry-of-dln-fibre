@@ -10660,3 +10660,24 @@ confirmation ONLY. Then: finalize → gate → BAKE. Notable for the retro: the 
 three-way disagreement (arch-C's shear-diagnosis, the elder's too-clean first pin, and the
 original relay) in which each instrument was partially right — the halt, the hint, and the
 structure respectively.
+
+## 2026-07-22 (controller) — THE SEAM CLOSED SORRY-FREE; the "clash" = a THREE-WAY CONVERGENCE (Adm = admTight, thrice-derived)
+
+seat-E closed the seam (merged + verified: AdmTight.lean sorry-free, all six results clean-three)
+— and its route there was the finding pnp's cert part (v) states: **Adm_le_runMin PROVED** (every
+admissible profile already satisfies the runMin bound; the clamp is the identity on Adm;
+admTight = Adm as Finsets; the committed Mval_clamp_le was even FALSE unconditionally —
+11199/81375 counterexamples — until the necessary T ∈ Adm hypothesis was added, then dissolved
+entirely). Its reported "CLASH with #42" dissolves as a crossing: pnp's part (v) IS the same
+finding by the same induction; the negative cert's "genuinely-loose lattice" is the OVER-loose
+cap-everywhere object (also the source of seat-E's own six abstract exceptions) — three
+instruments, one truth, zero contradiction. The iso is SAFE over Adm (the cert's domain is the
+same set; both directions verified at the traps); seat-E's planned redundant poset check
+SKIPPED; it scaffolds 3a on the cert's Birkhoff encoding now, carrying one small def-site
+question (admTight as named def vs collapse to Adm) to the elder's scaffold pass.
+
+arch-C: fully reconciled on the window (the loop: its hint → its over-correction → the pages
+restoring the hint); the FINAL gate discriminator set (left-disjunct unreachability; disjointness
+under the split window; the frame-witness death; the swap-alarm protocol); the render proceeds
+on the pinned shape; seat-L4's trace scoped to the offset + shed-structure confirmation ONLY.
+"This should be the last window turn."
