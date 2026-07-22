@@ -14630,3 +14630,15 @@ the he_lin-insufficiency undeniable for the amended staging's delta-read). Board
 amended staging (task 18); seat-LL closing its δ=0 carry; seat-Q proving the cover atom; the elder's
 remaining queue = ratifications + the delta-read + the Lean-facing verbatims, all gated on external
 landings. Cron armed. The full pipeline to the faithful monument is live at every stage.
+
+## 2026-07-23 ~10:05 UTC — seat-LL: δ=0 carry CLOSED (the revised form vindicated); twin at 3 owned frontiers
+
+seat-LL closed the GeneratorCleared δ=0 carry (5737ba9a8): the child witness reindexes hgen's parent
+sum through foldResid_extend_delta0 + stepMap_zero (Equiv.sum_comp (finCongr hcast)) — the case the
+earlier UNCONDITIONAL form provably couldn't handle, now a mechanical carry under the elder's carried
+conditional. The revised-form design is borne out in the building: the vacuous case11-at-cleared=0
+discharges by the conditional output; genuine clears born the unit (#3); δ=0 carries (closed).
+LastLayerWire at 3 owned frontiers: (1) conjA δ=1 deg1-extract ← the Gap-B merge (the vanishing
+cross-link); (2) conjunct-2 S=L disjunction ← the descent lane; (3) the born-unit ← the wall
+(c_pivot(0) ≠ 0 read-off from the parent's Deg1 decomposition). Holding on arch-C's signature confirm
++ the Gap-B merge. The lane runs itself.
