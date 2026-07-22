@@ -389,4 +389,14 @@ example (p : Fin D) (u : Fin D → ℝ) :
   jacDet_pathMap_eq_prod [blowupMap p, blowupMap p]
     (fun σ hσ ↦ by fin_cases hσ <;> exact differentiable_blowupMap p) u
 
+/-- **The absolute list-product Jacobian along a branch** (L5 (★) atom M2). The `|·|` of the composed
+Jacobian is the `List.ofFn`-product of the per-step `|jacDet|` at the running partial points — the
+`abs` companion of `jacDet_pathMap_eq_prod`, in the `List.prod` shape L5's telescoping consumes. -/
+theorem abs_jacDet_pathMap_prod (l : List ((Fin D → ℝ) → (Fin D → ℝ)))
+    (hdiff : ∀ σ ∈ l, Differentiable ℝ σ) (u : Fin D → ℝ) :
+    |jacDet (pathMap l) u|
+      = (List.ofFn (fun i : Fin l.length =>
+          |jacDet (l.get i) (pathMap (l.drop (i.1 + 1)) u)|)).prod := by
+  rw [jacDet_pathMap_eq_prod l hdiff u, List.prod_ofFn, Finset.abs_prod]
+
 end DLNFibre.Core.Aoyagi

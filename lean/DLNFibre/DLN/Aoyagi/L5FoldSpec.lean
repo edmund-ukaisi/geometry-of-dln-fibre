@@ -107,22 +107,22 @@ variable {N : ℕ}
 /-- **M1 (proposed)** — `jacWeight` turns exponent-addition into a product. Detail-at-scale
 (`Finset.prod_mul_distrib` + `pow_add`). Feeds the (★) sum-collapse. -/
 theorem jacWeight_add {D : ℕ} (h₁ h₂ : Fin D → ℕ) (u : Fin D → ℝ) :
-    jacWeight (h₁ + h₂) u = jacWeight h₁ u * jacWeight h₂ u := by
-  -- map: M1 (jacWeight product-to-sum)
-  sorry
+    jacWeight (h₁ + h₂) u = jacWeight h₁ u * jacWeight h₂ u :=
+  -- map: M1 — LANDED in Core.Aoyagi.MonomialRLCT (jacWeight_add); this contract delegates.
+  DLNFibre.Core.Aoyagi.jacWeight_add h₁ h₂ u
 
 /-- **M1′ (proposed)** — the list-sum form the branch telescoping lands on. -/
 theorem jacWeight_listSum {D : ℕ} (l : List (Fin D → ℕ)) (u : Fin D → ℝ) :
-    jacWeight (l.foldr (· + ·) 0) u = (l.map (fun h => jacWeight h u)).prod := by
-  -- map: M1′ (jacWeight list-sum)
-  sorry
+    jacWeight (l.foldr (· + ·) 0) u = (l.map (fun h => jacWeight h u)).prod :=
+  -- map: M1′ — LANDED in Core.Aoyagi.MonomialRLCT (jacWeight_listSum); this contract delegates.
+  DLNFibre.Core.Aoyagi.jacWeight_listSum l u
 
 /-- **M3 (proposed)** — the block blow-up fixes the pivot coordinate (`blockBlowupMap S p w p = w p`),
 directly from the def's first branch. The spectator case is banked (`blockBlowupMap_spectator_eq`). -/
 theorem blockBlowupMap_apply_pivot {D : ℕ} (S : Finset (Fin D)) (p : Fin D) (w : Fin D → ℝ) :
-    blockBlowupMap S p w p = w p := by
-  -- map: M3 (blowup fixes pivot)
-  sorry
+    blockBlowupMap S p w p = w p :=
+  -- map: M3 — LANDED in Core.Aoyagi.BlockBlowup (blockBlowupMap_apply_pivot); this contract delegates.
+  DLNFibre.Core.Aoyagi.blockBlowupMap_apply_pivot S p w
 
 /-- **M4 (proposed) — THE (★) pivot-preservation core (deep).** Along a real branch, the block
 blow-up of a DEEPER step fixes an EARLIER step's pivot corner `c₀`, PROVIDED `c₀` is not a non-pivot
@@ -130,9 +130,10 @@ center coordinate of the deeper step (`c₀ ∉ deeperCenter ∖ {deeperPivot}`)
 disjointness (M4b). The shear-side (M4a) is `ShearWithinCarveRaw` clause (III). Stated here for the
 blow-up half against the raw def; the branch-level (★) glues M4a+M4b along `pathMap` of the suffix. -/
 theorem blockBlowupMap_fixes_offCenter {D : ℕ} (S : Finset (Fin D)) (p : Fin D) (w : Fin D → ℝ)
-    (c₀ : Fin D) (h : c₀ ∉ S) : blockBlowupMap S p w c₀ = w c₀ := by
-  -- map: M4b (blowup fixes coords off its center — canonCenter disjointness feeds `c₀ ∉ S`)
-  sorry
+    (c₀ : Fin D) (h : c₀ ∉ S) : blockBlowupMap S p w c₀ = w c₀ :=
+  -- map: M3 spectator — LANDED in Core.Aoyagi.BlockBlowup (blockBlowupMap_offCenter_eq); delegates.
+  -- (The DEEP M4b is `c₀ ∉ deeperCenter` — the canonCenter disjointness — which is seat-L6's, not this.)
+  DLNFibre.Core.Aoyagi.blockBlowupMap_offCenter_eq S p w h
 
 /-- **M2 (proposed)** — the composed `|jacDet|` telescopes over the σ-list into the product of the
 per-step `|jacDet|` at the running partial points (iterate the banked `abs_jacDet_pathMap_cons`). The
@@ -141,8 +142,9 @@ theorem abs_jacDet_pathMap_prod {D : ℕ} (l : List ((Fin D → ℝ) → (Fin D 
     (hdiff : ∀ σ ∈ l, Differentiable ℝ σ) (u : Fin D → ℝ) :
     |jacDet (pathMap l) u|
       = (List.ofFn (fun i : Fin l.length =>
-          |jacDet (l.get i) (pathMap (l.drop (i.1 + 1)) u)|)).prod := by
-  -- map: M2 (pathMap |jacDet| telescoped product)
-  sorry
+          |jacDet (l.get i) (pathMap (l.drop (i.1 + 1)) u)|)).prod :=
+  -- map: M2 — LANDED in Core.Aoyagi.PathAtoms (abs_jacDet_pathMap_prod, off jacDet_pathMap_eq_prod);
+  -- this contract delegates.
+  DLNFibre.Core.Aoyagi.abs_jacDet_pathMap_prod l hdiff u
 
 end DLNFibre.DLN.Aoyagi.L5Spec

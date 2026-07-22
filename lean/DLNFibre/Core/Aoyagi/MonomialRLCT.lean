@@ -91,6 +91,22 @@ measure theory (mirroring the `DLN`-side `RouteMSJMonomialLower`/`Case222Cover` 
 cannot import); the only new ingredient here is the *symmetric* interval `(−ε, ε)`, since a
 neighbourhood of `0` must contain negative coordinates. -/
 
+/-- **`jacWeight` turns exponent-addition into a product** (L5 (★) sum-collapse atom, M1). -/
+theorem jacWeight_add {D : ℕ} (h₁ h₂ : Fin D → ℕ) (u : Fin D → ℝ) :
+    jacWeight (h₁ + h₂) u = jacWeight h₁ u * jacWeight h₂ u := by
+  simp only [jacWeight]
+  rw [← Finset.prod_mul_distrib]
+  exact Finset.prod_congr rfl (fun d _ => by rw [Pi.add_apply, pow_add])
+
+/-- **`jacWeight` of a list-sum of exponents is the product of the per-term weights** (L5 (★)
+telescoping atom, M1′; the branch's `∑ steps jexp` lands on `foldr (·+·) 0`). -/
+theorem jacWeight_listSum {D : ℕ} (l : List (Fin D → ℕ)) (u : Fin D → ℝ) :
+    jacWeight (l.foldr (· + ·) 0) u = (l.map (fun h => jacWeight h u)).prod := by
+  induction l with
+  | nil => simp [jacWeight]
+  | cons a rest ih =>
+    simp only [List.foldr_cons, List.map_cons, List.prod_cons, jacWeight_add, ih]
+
 open scoped ENNReal
 
 namespace MonomialBox

@@ -194,4 +194,20 @@ theorem injOn_blockBlowupMap {S : Finset (Fin D)} {p : Fin D} (hp : p ∈ S) :
       exact mul_left_cancel₀ (hpp ▸ hwp) hprod
     · have := congrFun heq j; simpa [blockBlowupMap, hj, hjS] using this
 
+/-- **The block blow-up fixes the pivot coordinate** (`blockBlowupMap S p w p = w p`), directly from
+the def's first branch (L5 (★) atom M3). -/
+theorem blockBlowupMap_apply_pivot (S : Finset (Fin D)) (p : Fin D) (w : Fin D → ℝ) :
+    blockBlowupMap S p w p = w p := by
+  simp only [blockBlowupMap, if_true]
+
+/-- **The block blow-up fixes every coordinate off its center** (`c₀ ∉ S ⟹ blockBlowupMap S p w c₀ =
+w c₀`; L5 (★) atom M3 spectator, generalising `blockBlowupMap_spectator_eq` off the `p ∈ S` need). If
+`c₀ = p` the value is `w p = w c₀`; else the `∈ S` branch is skipped. -/
+theorem blockBlowupMap_offCenter_eq (S : Finset (Fin D)) (p : Fin D) (w : Fin D → ℝ) {c₀ : Fin D}
+    (h : c₀ ∉ S) : blockBlowupMap S p w c₀ = w c₀ := by
+  simp only [blockBlowupMap]
+  by_cases hp : c₀ = p
+  · rw [if_pos hp, hp]
+  · rw [if_neg hp, if_neg h]
+
 end DLNFibre.Core.Aoyagi

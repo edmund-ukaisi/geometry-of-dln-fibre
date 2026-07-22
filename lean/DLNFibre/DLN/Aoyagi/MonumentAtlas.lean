@@ -375,6 +375,29 @@ def foldG (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple 
   | .root => id
   | .step p center pivot cse _ shearφ => foldG d e p ∘ stepMapRaw d cse center pivot shearφ
 
+/-- **The branch step-map list** (root-first / outermost-first): the `stepMapRaw`s along a path in
+the order `pathMap` composes them. The atlas's `gmap` is `pathMap` of these (once L5's construction
+pins `steps.map σ = stepMapList`), so FoldRealizes clause 1 (`gmap c = foldG (pathOf c)`) reduces to
+`foldG_eq_pathMap` (L5 (★) atom M5). -/
+def TreePath.stepMapList (d : Fin (N + 1) → ℕ) :
+    TreePath d → List ((Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ))
+  | .root => []
+  | .step p center pivot cse _ shearφ =>
+      TreePath.stepMapList d p ++ [stepMapRaw d cse center pivot shearφ]
+
+/-- **`foldG` IS `pathMap` of the branch step-map list** (M5 bridge). The accumulated coordinate change
+along a path is the `pathMap` composition of its per-step `stepMapRaw`s — the definitional link the
+atlas's `gmap` (`pathMap (steps.map σ)`) rides to `foldG (pathOf c)`. -/
+theorem foldG_eq_pathMap (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) : foldG d e p = pathMap (TreePath.stepMapList d p) := by
+  induction p with
+  | root => rfl
+  | step p center pivot cse ns shearφ ih =>
+    show foldG d e p ∘ stepMapRaw d cse center pivot shearφ
+        = pathMap (TreePath.stepMapList d p ++ [stepMapRaw d cse center pivot shearφ])
+    rw [pathMap_append, ih]
+    simp only [pathMap_cons, pathMap_nil, Function.comp_id]
+
 /-- The accumulated dominant monomial along a path (`root ↦ 1`; step ↦ `u_pivot^δ ·` the pullback). -/
 def foldB (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) :
     TreePath d → ((Fin (flatDim d) → ℝ) → ℝ)
