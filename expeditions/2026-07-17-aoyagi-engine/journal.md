@@ -11776,3 +11776,20 @@ sweep. ONE ruling closes the statement side as a class. ALSO this hour: the DAG 
 the operator (kept UNCOMMITTED at /tmp per operator instruction; the map-dir commit reverted via
 force-with-lease on the seconds-old tip — the one history rewrite of the expedition, operator-
 directed).
+
+## 2026-07-22 (controller) — GAP-2 pin REFINED (reads matter, not just writes); the carve-only precondition to the elder
+
+seat-L4 + arch-C refined the GAP-2 pin (battery 533089c2f): within-carve (identity on S′) is
+NECESSARY but NOT SUFFICIENT — it constrains the shear's WRITES only. Case B witness: a
+displacement de ↦ de − s1·s1′ with both factors in layer L+1 writes only carve yet makes the
+child DEGREE-3 in L+1 — conjunct-B fails on the READS. Honest pin = **"shearφ SUPPORTED ON the
+carve block (layer L)": reads AND writes only layer-L coords** — delivering identity-on-≥L+1 AND
+γβ-confined-below-threshold in one clause; ShearGrades-on-S′ becomes trivial under it. ONE
+precondition routed to the elder (the last GAP-2 input): is the construction's Schur displacement
+CARVE-ONLY? The elder's own pp.18–21 derivation appears to settle it (γ_i = d′_{i,J+1}, β_j =
+d′_{J+1,j} — BOTH carve-layer d′ entries; "deeper cofactor" = deeper rows/cols WITHIN layer L;
+the only next-layer object is the already-determined ideal-level Q₂⁻¹) — asked as a one-line
+confirm against its banked derivation; pen-and-paper commission held unless the elder finds the
+page ambiguous. The audit packet is now literally complete: field enumeration, GAP-1 transition
+law, GAP-2 (refined pin + confirm), GAP-3, rendered hcover/hδ0, per-field sweep. One ruling → one
+render → one bake.
