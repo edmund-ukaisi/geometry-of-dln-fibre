@@ -46,15 +46,32 @@ same class); `LocallyNullZeros` is the junk-0 guard — do not weaken.
 ideal-route atlas: analytic `g`, two-sided dom-wide `⟨∏C⟩=⟨diag(b)⟩`, Jacobian certificate, hcover
 BUILD (operator: cite off the table). The charter's named mountain (§1.B: never scoped out).
 
-**True status.** The monument is a RENDERED skeleton (`MonumentAtlas.lean`; gate = elaboration +
-battery, not sorry-free). Proven: L1 + `terminal_bezout` (`b-principalinv`), leaf-2 blow-up, rung-(B)
-d12 (the first cite-free LC instance), and L7 now **BRIDGE-FREE** (canonCenter). Open queue: **L4 = THE
-WALL** (`case1_preserves_stepInv`, coupled Case-1, seat-L4) + L3 + L5 fold + L6/L8 + `terminal_edge_stepInv`
-([[banked-families]] § In-flight). The combinatorial half is discharged by the salvage adapter — the
-residual is PURELY geometric. Multi-tide monument (~5% single-tide).
+**True status (refreshed carto restart-pass, 2026-07-23).** The monument is a RENDERED skeleton
+(`MonumentAtlas.lean`; gate = elaboration + battery, not sorry-free). **STATEMENT LAYER CLOSED** (ruling-B
+`0ce9c68b9`) then **RE-OPENED with 3 proof-pressure defects** (boostReady vacuity / L7 pivot-over-pin /
+δ=1 cofactor) — the live cone is now pure PROOF + assembly. Landed on the expedition tree: **L1 BAKED**
+(`83d11d8b5`; `IsRealBranch` now VALUE-pins the shear `shearφ = canonShearOf`, `MonumentAtlas:878`,
+projection `realBranch_canonShear_eq:1052` — closes the R_bad vacuity), + `terminal_bezout`/L1
+(`b-principalinv`), leaf-2 blow-up, rung-(B) d12 (first cite-free LC instance). PROOF FRONT (3 parallel
+lanes, on SEPARATE branches not yet merged):
+- **boostReady** (`realBranch_boostReady_case11`, `Case1Wire`) — RE-SCOPED to a **ChainNF standalone
+  parallel-theorem** (seat-L4C, branch `-L4C` @ `67293aa3c`): OUTER SHAPE PROVEN (`isRealBranch_chainNF`
+  + `deg1SupportedOn_boostForm` clean-three; boostReady wired through), crux = the single
+  `chainCompat_holds` 3-field obligation = pnp-transport's ε-certificate (census net-0).
+- **descent** (`realBranch_appendResidDescent`, `-L3T2` @ `ed2fe681a`) = 1 tracked sorry; discharges via
+  Gap B `foldResid_layerHomogeneous` (elder authoring over blockCoords + he_lin + non-terminal guard —
+  **NOT yet on-tree**). The expedition tree still holds the pre-ChainNF `realBranch_multiAffine_step:1160`.
+- `lastLayer_clear_preserves` (`MonumentAtlas:1263`) — an independent step-leaf; **L5 assembly**
+  (`L5FoldSpec`, longest link); the Assembly increments (`MonumentAssembly`).
+- **⚠ L7 = FALSE-AS-STATED, RE-OPENED** (`leafPath_compactCover:1538`, `b-leaf7`): the single-pivot pin
+  lets `ε·e_q` escape the cover; FIX = FAN the pivot + bridge to `Engine.GeoCoverSpec.geoAtlas` (sorry-free)
+  — but note that bridge target sits in a `Geo*` module ([[dead-routes]] "never Geo*"): a salvage-boundary
+  reconciliation is OWED (see the drift-risk report).
+The combinatorial half is discharged by the salvage adapter — the residual is PURELY geometric.
 
 **Witnesses.** `g-coupled-binding-334` (coupling real), `g-delta-flatten` (flatten breaks); thread-31
-certificate (the MATH playbook); [[severance-witnesses]] (the 5-axis statement-hardening bank, all closed).
+certificate (the MATH playbook); [[severance-witnesses]] (the severance bank — **8 axes, 7 statement-closed;
+the COORDINATE axis RE-OPENED** by L7's false-as-stated finding, was wrongly recorded closed).
 
 ## 4. `object-c` — the guarded S2 boxed rule (PROVEN)
 
