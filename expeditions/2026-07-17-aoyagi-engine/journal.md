@@ -12099,3 +12099,22 @@ episode; dead-routes gains the voided per-field SET (A) + case-aware supportAt r
 
 All three read-only or own-pen; none touches the critical path (seat-L4's locks → staged forms →
 elder pre-read → gate → bake proceeds independently).
+
+## 2026-07-22 (controller, ~10:30) — the staging's paste round: Edge B locus (ROW-restricted), Codex 1b = the baked invariant, predicate-pin confirmed
+
+arch-C's staging hit worktree isolation (the template + Codex artifacts live on the expedition
+branch); controller supplied the pastes: (a) THE EDGE B LOCUS verbatim — with a CORRECTION to
+arch-C's guess: the case11 boost's current-layer sub-block is **ROW-restricted by the run length
+(rows J+1..J+J₁) with the FULL remaining column range**, not col-restricted; the center =
+{u_{s,k}, the reused birth-corner exceptional} ∪ that row-partial block; the residual-width vs
+widthMinUpto identification flagged as a lock TRANSLATION point (verify against tupIdx, don't
+guess), + PM-6 (the T-order tie-break selecting the divisor — canonPivotOf's mergeIdx should
+implement it, a lock check). (b) CODEX 1b verbatim: the GAP-3 derived-lemma target is EXACTLY the
+baked Deg1SupportedSlot (∃c ∧ PerLayerDeg1From) — "a prepared multi-affine residual, not
+literally one-factor-per-active-layer" — the redirect makes the invariant DERIVABLE, not
+different. INTERLOCK-1 RULED: canonShearOf = the PREDICATE-pin (IsRealBranch pins "shearφ
+satisfies ShearWithinCarve" — bridge-free); the concrete displacement def stays the post-monument
+bridge runway (seat-L4's un-defer flag honored). Locked so far: 3/6 (ShearWithinCarve-B,
+DescendView, hδ0); the remaining 3 (canonCenterOf case11 + relaxed hcenter/hcover + GAP-3)
+proceed on the pastes. Sequence unchanged: locks → staged forms → elder pre-read → gate → ONE
+bake. Parallel workstreams (pnp-elab path-level template; nav-13; carto owed+shape) running.
