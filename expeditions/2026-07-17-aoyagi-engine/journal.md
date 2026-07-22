@@ -14341,3 +14341,20 @@ u_pivot→const-1 pathology); threshold arithmetic checked against banked hFLchi
 relay when arch-C's Gap B bake reaches canonical. The pipeline: arch-C bake → my gate + elder delta-read
 → merge → relay → seat-L3T2 proves (3 lemmas) + restates append (cap = named frontier sorry) → anchor
 audit → I wire MultiAffineStepWire.
+
+## 2026-07-23 ~04:40 UTC — lastLayer calibration tightened (Codex): hole CERTAIN; a residual ∀-statement subtlety to the elder
+
+seat-LL's decorrelated Codex calibrated its STOP-ON-SUSPECT: the GUARD-HOLE is CERTAIN (arithmetic +
+transition law — rollover-into-N-1 admitted; the docstring excluded only rollover-OUT); the
+GeneratorCleared-false conclusion is certain MODULO the interior invariant (the all-left witness rests
+on the still-sorried interior StepInv) — so "mathematically false as stated," not "Lean-refutable
+today." Fix (hparent) unchanged, Codex-corroborated.
+
+NEW for the elder's authoring (forwarded): under hparent, the δ=0 SUBSEQUENT-clear case (parent at
+N-1, cleared≥1) reproduces the zero-pullback IF an all-left hinv were suppliable there — fine on the
+threaded construction (the real node carries the unit from the first clear), but the ISOLATED
+∀-statement leans on "no unit-free real node at (N-1, cleared≥1)" = the lemma's own inductive content.
+The elder decides: does LastLayerInv's carried disjunction (all-left OR unit-slot) already make the
+∀-statement sound under hparent, or must the disjunction be explicit in hinv? (The 5-guard lesson:
+don't lean on unstated reachability.) seat-LL banks its consult artifacts to its branch (the
+untracked-files-die-with-worktrees lesson applied forward).
