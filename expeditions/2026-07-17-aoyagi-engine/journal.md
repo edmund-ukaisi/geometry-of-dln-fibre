@@ -13357,3 +13357,24 @@ concern: the step-form reshape — its (B) ruling realized with the consumers la
 corrected statement in the same commit). One pre-existing doc-staleness nit (Case2Wire:99)
 tracked for the hygiene window. On the OK: integrate → the CanonicalSchurStep round (ruling B,
 packet already with arch-C) opens immediately — the monument's LAST statement round.
+
+## 2026-07-23 ~03:45 UTC — STEP-FORM BAKED (ea846e125); ruling-B round GO; the descent proof commissioned
+
+**The step-form reshape is BAKED** — elder delta-read OK on a420cc4f9 ("realizes my (B) ruling
+exactly... the strictly-better outcome"), with the empirical closed-loop note worth keeping:
+both owners' first-shot line landings VALIDATE the (B) shape — the step-form is mechanically
+consumable by any leaf holding the carried invariant, which is precisely why the descent
+re-route beat he_lin-threading. Controller gate: build 0-err, cordon OK, census 35 NET-0 as
+ruled (the refuted node-form's sorry replaced by the step-form's; both conjBs CLOSED). Pushed.
+
+**RULING-B ROUND GO'd** (the monument's LAST statement round): CanonicalSchurStep def +
+IsRealBranch conjunct + the boostReady stub; arch-C's own de-risk framing adopted (the def
+elaborates self-contained; canonShearOf_support's proven-for-free is a GATE EXPECTATION for
+L5's eventual discharge, not an elaboration dependency).
+
+**The DESCENT PROOF commissioned to seat-L3T2** (scope confirmed against the baked statement):
+realBranch_multiAffine_step — the deepest remaining derived obligation, the proof the day's
+whole statement arc existed to make possible. Its own SPECIFY mapped the route (δ=1 strict
+transform via the banked exists_graded_decomp/Deg1-bridge/append machinery; δ=0 pullback;
+case11/rollover no-descent), with the boostReady-consumption note for the case11 branch.
+Deep-sub-proof discipline; Codex if the strict-transform step resists.
