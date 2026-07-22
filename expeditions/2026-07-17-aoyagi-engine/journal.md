@@ -14657,3 +14657,20 @@ payoff roots UNCHANGED; cordon OK. My static gate passed (base = canonical; 3 de
 hunks). Elder delta-read triggered; on OK → merge + full re-derived gate + push → seat-L3T2's three
 atoms build (swap-safe) + seat-LL's frontier #1 unblocks. Sequencing note banked: seat-LL's primed
 twin reconciles cross-branch at integration (the seats coordinate signature identity directly).
+
+## 2026-07-23 ~11:00 UTC — ★ lemma Q INTEGRATED (438592df5): the L7 own-cover foundation is on canonical
+
+seat-Q delivered the block-atom cover: Core/Aoyagi/BlockBlowupCover.lean (96 LoC, pure Core, imports
+only BlockBlowup). TWO theorems, both clean-three on MY forced re-derivation (fresh scratch):
+ball_subset_iUnion_blockBlowup_image_radius (the general-radius atom — source box closedBall 0 (max R 1),
+the TRUE tight bound) + ball_subset_iUnion_blockBlowup_image (the certificate's R=1 form, via max_self).
+seat-Q's design call (harden to general radius, keep R=1 as the named corollary) ACCEPTED — additive
+strengthening within its boundary, surfaced properly, maximizes fold-lane reuse. Integrated: merged +
+aggregator wired (controller pen) + full build green (0 err) + cordon OK + census 36 UNCHANGED (the atom
+adds zero holes). Statement card banked (threads/L7/statement-card-Q-block-cover.md). rev-Q spawned
+(fidelity vs the certificate: sup-norm-cube instance, spectator passthrough, the pivot-fan union,
+hypothesis-minimality, the hardening's honesty, vacuity probes, decorrelated Codex).
+
+The L7 salvage-(b) lane now has its foundation ON CANONICAL: the fanned cover fold (post the N_pivot
+round's fan pin) consumes this atom per pnp-fan's certificate §2.3-2.4. Board: elder delta-read on
+a253bf625 pending; pnp-transport mid-elaboration (tasks 20-25); seat-LL at 3 owned frontiers.
