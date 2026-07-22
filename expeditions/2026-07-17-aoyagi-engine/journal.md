@@ -14965,3 +14965,16 @@ lines by routing case12/case2 through c₀ ∉ the fresh width-block (pnp-fan's 
 Lean-checked via cornerToFlat_notMem_widthBlock). "Trace, don't expect" — the third time this arc the
 trace corrected an expectation, each time cheaply BECAUSE it was traced before commit. Awaiting
 arch-C's staging hash → my gate → the elder delta-read → THE N_p BAKE COMPLETES.
+
+## 2026-07-23 ~17:40 UTC — the COMPLETING staging at my gate (99a1eb5b0) → elder delta-read (priority interrupt)
+
+arch-C staged the N_p bake's completing half: the (b) fan-pin as a `match cse` case-split (case12/case2
+free fan; case11 canonical-forced; rollover vacuous) + hpos + THE PIVOTPRESERVATION REWORK — the second
+trace-correction of the round: :345's application failed under (b) exactly as traced ("the match-pin is
+not a ∀"); fixed sorry-free in ~14 lines by routing case12/case2 through c₀ ∉ the fresh widthMinUpto
+block (cornerToFlat_notMem_widthBlock:67) — pnp-fan's mechanism KERNEL-CHECKED. The elder's "untouched"
+expectation wrong twice-over, each time caught by the trace before commit, each fix minimal BECAUSE
+traced. Gate (arch-C re-derived): build green 9008; census 40 (+0!); payoff roots unchanged through the
+WHOLE bake; cordon OK; destructure sweep clean. My static gate passed (2 declared files, key hunks).
+Elder delta-read triggered as its priority interrupt (the review resumes after). On OK: merge = THE
+N_p BAKE COMPLETE → the big re-opening.
