@@ -11921,3 +11921,24 @@ re-touches the same leaves ⟹ bake-and-reopen. Sequence: elder's Codex on (B)/(
 + arch-C's template diff → ONE combined bake ((A) + (B) + hcover/hδ0 + diff mismatches) behind
 the full field-audit gate. arch-C pre-renders (A) meanwhile; docstring sentence ordered: the pin
 set as the bridge-free shadow, collapsing at the bridge.
+
+## 2026-07-22 (controller, ~09:00) — TEMPLATE DIFF: ZERO MISMATCHES; SET (A) pre-rendered verbatim; the bake awaits exactly (B) + C1
+
+arch-C's mechanical diff (subagent legwork over the full template 640L + MonumentAtlas 1259L +
+RecursionAdapter + primitives; load-bearing findings VERIFIED by arch-C on ground truth): **all 5
+items + all 14 pre-mortems PASS, zero mismatches.** The verified highlights: (ITEM-2) the
+Case1(1) BOOST is distinctly represented — stepCase11 keeps layer AND cleared AND numDiv (no
+J-advance, no divisor birth) vs stepAppendAdvance's +1/+1; StepCase = 4 distinct constructors;
+DescendView's per-case law expresses all four. (ITEM-5) NO T-label keying anywhere — divProfile/T
+prose-only; StructuralChainResidual retired as outright false; every exponent keyed off
+geometry/ℕ — the paper's T-label defect (PM-3/9) cannot bite. (ITEM-3) the BLIND-instrument
+confirmation banked for the witness evidence: the template's Q⁻¹-touches-only-the-pivot-row
+independently agrees with ShearWithinCarve. SET (A) PRE-RENDER VERIFIED on arch-C's own
+transcription read: DescendView (:627, = IsRealBranch's state fragment), ShearWithinCarve
+(:636-641, elder-VERBATIM — the render seat's typecheck green, no signature friction, lock-rule
+clean), hdesc×3, hwc×3, the bridge-free-shadow docstring, ShearGrades fully removed; sorry 8,
+cone 10. **The one bake now awaits exactly TWO inputs: SET (B) (the multi-homogeneity def-touch —
+elder Codex pass) + C1 (seat-L4's reachability lemma).** The elaborate-then-render lesson
+validated on the monument side in its first application: the blind template and the rendered tree
+AGREE — the first time this expedition has had positive statement-fidelity evidence rather than
+absence-of-caught-defects.
