@@ -12,23 +12,23 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
   the goal frame — the charter is.
-- phase: **THE TWO FINAL STATEMENT ROUNDS + DEEP PROOFS (2026-07-23 ~00:00).** FIVE bakes in
-  (redirect/pin/hpos/collapse/node-form) + Assembly increment 1 INTEGRATED (896b60b9b: primed
-  drivers live, sorry-sources = baked − {L6,L8}). PROVED: L6 (reviewed 6/6) + L8 (primed wires);
-  terminal_edge in place; case2′ conjA + wall′ dispatch clean-three; 5/6 stubs; L5 atoms
-  M1/M2/M3/M5 + M4's blow-up half (PivotPreservation 4 atoms). ROUND A (rendering, arch-C):
-  multiAffine RESHAPE — node-form REFUTED (he_lin root gap, u³); elder ruled (B) STEP-form
-  (verbatim authored; carried-invariant descent; he_lin stays at L5 root); staging = step-form in
-  + node-form out + 2 conjB call-sites (Case1Wire:445/Case2Wire:115) revert-to-sorry under
-  scoped waiver (STALE-BASE near-miss caught: arch-C's zero-callsite grep was on old pin — HOLD
-  sent, corrected plan running). ROUND B (elder ruling charged): boost-readiness FINAL —
-  instruments CONVERGED (both blind: TRUE + CARRIED; R_bad ≡ missing-factor witness; mechanism
-  u_p|b_i ⟺ i>J₁; battery merged 1ed76d01b); elder lean (2) CanonicalSchurStep pin doubly
-  supported (pnp-boost's prepared-form caveat = exactly what the pin discharges; M7 cost sunk).
-  DEEP PROOFS: seat-M4B (A4 persistence-extraction → A5, the L5 interface — A5 form routes via
-  controller for L5Spec reconciliation); seat-L4 M7 (CanonShear.lean authoring; prepared-form =
-  NAMED lemma serving ruling B). Census 35; L6→dormant (2nd clean handoff). ELDER: poll TAIL
-  WINDOW (...d30ba3). Seats dormant: L3T, L6. NEXT COMMISSIONING: L7 (nav-13).
+- phase: **STATEMENT LAYER CLOSED → THE PROOF CASCADE (2026-07-22 ~15:40 UTC; journal carried a
+  +1-day datestamp drift before this).** SEVEN bakes total, all elder-gated, payoff footprints
+  UNCHANGED throughout; ruling-B baked at canonical 0ce9c68b9 (CanonicalSchurStep pin + IsRealBranch
+  4th conjunct + boostReady hslot + hlayer; elder: "the monument's statement layer closes").
+  NO further statement bakes expected — any statement change now needs an elder delta-read.
+  LIVE PROOFS: seat-L4 = realBranch_boostReady_case11 (the wall's LAST obligation; drop-test
+  verdict owed to elder: factor from hbranch+CanonicalSchurStep first, hslot only if consumed);
+  seat-L3T2 = the DESCENT realBranch_multiAffine_step (deepest derived obligation; case11
+  consumes boostReady — sorryAx flow-through expected until L4 lands). arch-C GO'd: Assembly
+  increment 2 (case1'/case2' swaps) then hygiene window (SchurStep-subsumption is CHECK-ONLY —
+  touches a baked statement, needs elder if real; safe items foldable). carto: diff-then-judge
+  pass charged (STATUS regen, claims.yaml b-ladder→LANDED cross-check, forwarding pointers).
+  REMAINING TO SUMMIT: boostReady → descent → lastLayer_clear_preserves → L5 assembly (THE
+  LONGEST LINK; §D.3 fully provisioned) → L7 commissioning (startable) → summit swap via primed
+  drivers → SUMMIT-RETIRE (elder bless + operator ceremony) → cite-deletion (WITH operator).
+  Boost instruments CONVERGED (TRUE+CARRIED, u_p|b_i ⟺ i>J₁; battery banked). Census 35 =
+  ~10 live + 25 fossil. ELDER: poll TAIL WINDOW (...d30ba3). Dormant: L3T, L6, M4B, M7B.
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.

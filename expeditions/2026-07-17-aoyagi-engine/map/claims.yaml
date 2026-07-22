@@ -222,7 +222,7 @@ nodes:
       - {type: needs, to: b-principalinv}
       - {type: discharges, to: object-b}
     evidence: [expeditions/2026-07-17-aoyagi-engine/threads/32-monument-formalise/codex/strategy-answer.md]
-    notes: "FIVE BAKES 2026-07-22 (redirect 9c51289f4; pin d309bca48 clause-III/(★); hpos 0f8310b1a; COLLAPSE 790aed4e9 = FoldRealizes 3rd conjunct |jacDet gmap|=jacWeight(jac) unit≡1, srcBox seam = named L5 obligation; node-form 966959855). Derived stubs 5/6 PROVED clean-three (centerPin/cover/descendView/terminal_edgeδ/shearWithinCarve); multiAffine node-form = SUSPECT (FALSE without he_lin at the ROOT — u³ counterexample, seat-L3T2 SPECIFY; step case he_lin-free; elder reshape ruling pending: he_lin-threading (A) vs carried-invariant STEP-form descent (B, leaned) — the conjB one-liners re-wire either way). Leaves: L6+L8 PROVED (primed wires, L6 REVIEWED 6/6); case2' = conjB one-liner pending; WALL primed = boostReady-only (adjudication: pnp-boost + seat-L4 Codex [TRUE-but-NEEDS-CARRYING, R_bad countermodel] → elder rules form+home). L5: FoldSpec obligation map landed (no suspects; atoms M1-M7; M4 = seat-L6 PivotPreservation; M7 = seat-L4 canonShearOf). (B′) MonumentAssembly adopted (primed drivers; SUMMIT-RETIRE in owed-register); first increment rendering. Case2Delta0 RETIRED (orphan). Cone = 16 live (MonumentAtlas 8 + LC 1 + Case1Wire 2 + L5FoldSpec 5) + 25 fossil = 41."
+    notes: "STATEMENT LAYER CLOSED 2026-07-22 ~15:40 UTC (SEVEN elder-gated bakes: redirect 9c51289f4; pin d309bca48 clause-III/(★); hpos 0f8310b1a; COLLAPSE 790aed4e9; node-form 966959855 [REFUTED next round — u³ root counterexample]; STEP-FORM ea846e125 [node-form deleted, both conjBs closed on realBranch_multiAffine_step]; RULING-B → 0ce9c68b9 = CanonicalSchurStep pin as IsRealBranch 4th conjunct + realBranch_canonicalSchurStep projection + boostReady(hslot) + hlayer). Payoff footprints UNCHANGED through all seven (verified per-bake). Derived stubs 6/6 statements final; 5 proved clean-three + canonicalSchurStep projection; multiAffine_step = seat-L3T2's live DESCENT proof. Leaves: L6+L8 PROVED (L6 REVIEWED 6/6); M4 PivotPreservation REVIEWED 7/7; M7 CanonShear REVIEWED 7/7; case1'/case2' structurally complete — sorryAx flows only through boostReady (seat-L4 live) + the descent. §D.3 telescoping FULLY PROVISIONED. (B′) Assembly increment 1 live (896b60b9b); increment 2 GO'd. Remaining: boostReady, descent, lastLayer, L5 assembly (longest link), L7, summit swap, SUMMIT-RETIRE. Census 35 = ~10 live + 25 fossil."
 
   - id: b-leaf2-blowup-atlas
     kind: claim
@@ -361,12 +361,12 @@ nodes:
     title: "boost-readiness: parent foldResid is Deg1SupportedOn the case11 boost center — ADJUDICATING"
     prop: |
       At a real interior case1(1)-δ=1 edge, Deg1SupportedOn (foldResid p) ed.center (foldRegion p) —
-      the SOURCE form (elder-ruled: feeds the shared crux, case11≡case12 uniformity). TRUE on the
-      fold (instrument 1); form + home (carried invariant vs strengthened shear pin vs derived stub)
-      = the elder's final ruling on both instruments.
-    status: adjudicated
+      the SOURCE form. RULED + BAKED (0ce9c68b9): home (2) = CanonicalSchurStep property pin on
+      IsRealBranch (4th .step conjunct) + boostReady derived stub gains hslot; content =
+      support-form. Now a PROOF obligation: realBranch_boostReady_case11 (Case1Wire).
+    status: statement-locked
     tier: new
-    owner: "pnp-boost (instrument 2, running) + elder (final form) → seat-L4 (proof)"
+    owner: "seat-L4 (proof live; drop-test verdict owed to elder: factor from hbranch+CanonicalSchurStep first, hslot only if a base coefficient is consumed)"
     kill: expeditions/2026-07-17-aoyagi-engine/threads/L4-case1-core/case11_boostready_crosscheck.py
     edges:
       - {type: needs, to: b-principalinv}
