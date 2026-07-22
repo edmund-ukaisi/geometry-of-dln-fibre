@@ -97,7 +97,7 @@ theorem case2_conjA
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (primed; statement-identical to
 `MonumentAtlas.case2_preserves_stepInv`). Conjunct A is `case2_conjA` (closed, axiom-clean); conjunct B
-is seat-L4's shared re-factoring wall (the single tracked `sorry`). -/
+is CLOSED via the step-form `realBranch_multiAffine_step` (RULING B, re-wired sorry-free). -/
 theorem case2_preserves_stepInv'
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
