@@ -155,6 +155,27 @@ def sIncr (D : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : Fin L) : ℤ :=
 def sStep (D : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (i : Fin L) : ℤ :=
   sIncr D T i + (D i.succ : ℤ)
 
+/-- Each descent increment is nonnegative on an admissible profile: `e₀ = D₀ − T₀ ≥ 0`
+(`T₀ ≤ admBound = min(D₀,D₁) ≤ D₀`) and `eᵢ = Tᵢ₋₁ − Tᵢ ≥ 0` (weak-decrease). -/
+theorem sIncr_nonneg (D : Fin (L + 1) → ℕ) {T : Fin L → ℕ} (hT : T ∈ Adm D) (i : Fin L) :
+    0 ≤ sIncr D T i := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨-, hbound, hdec, -⟩ := hT
+  unfold sIncr
+  split
+  · next h =>
+    rw [sub_nonneg]
+    have hb := hbound i
+    unfold admBound at hb
+    rw [if_pos h] at hb
+    exact_mod_cast le_trans hb (min_le_left _ _)
+  · next h =>
+    rw [sub_nonneg]
+    have hidx : i.val - 1 < L := by have := i.isLt; omega
+    have hle : T i ≤ T ⟨i.val - 1, hidx⟩ :=
+      hdec ⟨i.val - 1, hidx⟩ i (Fin.le_def.mpr (show i.val - 1 ≤ i.val by omega))
+    exact_mod_cast hle
+
 /-- The a-subset `A(T) ⊆ [ℓ]`: profile indices `i < ℓ` whose active step equals `C = ceilingM`
 (the "M-steps", Codex step 3). Kept as a `Finset (Fin L)` (filtered by `i < ℓ`) to avoid `Fin ℓ`
 casts; `boxSubset_card` pins `|A| = a`. -/
