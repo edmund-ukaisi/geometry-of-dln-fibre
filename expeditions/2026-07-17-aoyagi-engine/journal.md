@@ -10955,3 +10955,20 @@ the three heavy frontiers (swapBinding_orderIso, bindingSet_transport_sorted, so
 ~150+ LoC each, multi-tide as scoped — seat proceeding on the sorted-box (the depth) in banked
 order, push-per-lemma. Monument side: bake pipeline executing in the render lane (seat re-pointing
 to supportAt; arch-C gates on the render).
+
+## 2026-07-22 (controller) — E-lane resourcing: seat-Ecore spawned for the sorted-box CORE; render lane at gate
+
+seat-E's cycle: sIncr_nonneg PROVED + the sorted-box data laid (sIncr/sStep/boxSubset, 9ad71b94d +
+f004386ad) — then an honest-depth surfacing: the pivotal fact `sStep ∈ {C−1,C}` on a BINDING
+profile needs the MINIMISER structure (Aoyagi Lemma 4–5 content — why a codim-minimiser's steps
+are exactly large-or-small), a genuine sub-development, not a tactic brick; and the seat flagged
+its own context depletion. RESOURCING CALL (ii) GRANTED: **seat-Ecore** spawned (lean-formaliser,
+own worktree, branch expedition/aoyagi-engine-Ecore off the E-branch @ f004386ad, NEW module
+OrderRealizeSortedBox.lean) for the sorted-box core only — pivotal fact → boxSubset_card → enc/dec
+→ ≃o assembly → both-direction map_rel_iff → discharge. Outer statement FROZEN (elder-passed);
+stop-on-suspect routes through controller. seat-E = owner/integrator + obligations (c) transport
+and (a)+(b) swap-iso, disjoint lemmas/files, no merge pain until integration. Brief pointed the
+new seat at verify-before-building both ways: the minimiser structure may be latent in
+Adm_le_runMin / the landed P2 closed-form bridge. MONUMENT LANE in parallel: foldstate-render
+reports the supportAt WINNER rendered in one pass (green, 8-sorry) — arch-C's full gate is the
+next event, then THE BAKE.
