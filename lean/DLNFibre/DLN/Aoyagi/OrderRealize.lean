@@ -115,6 +115,17 @@ theorem swapR_swapR (P X Q A B : ℕ) (hQX : Q ≤ X) (hXP : X ≤ P) :
   unfold swapR
   split_ifs <;> omega
 
+/-- The profile transport for one adjacent width-swap at `k` (Codex swap-iso design §1): for `k > 0`
+update the coordinate `k−1` by `swapR P X Q A B` (`P = t⁽ᵏ⁻²⁾` or `M⁰` at `k=1`, `X = t⁽ᵏ⁻¹⁾`,
+`Q = t⁽ᵏ⁾`, `A = M_k`, `B = M_{k+1}`); for `k = 0` the identity (the swapped pair is `M⁰,M¹`, no
+profile coordinate moves). -/
+def swapProfile (M : Fin (L + 1) → ℕ) (k : Fin L) (T : Fin L → ℕ) : Fin L → ℕ :=
+  if _ : 0 < k.val then
+    Function.update T ⟨k.val - 1, by have := k.isLt; omega⟩
+      (swapR (if k.val = 1 then M 0 else T ⟨k.val - 2, by have := k.isLt; omega⟩)
+        (T ⟨k.val - 1, by have := k.isLt; omega⟩) (T k) (M k.castSucc) (M k.succ))
+  else T
+
 /-- **(a)+(b) ONE-SWAP ORDER-ISO** (SORRIED — frontier; bundles "swap preserves `bindingSet`" +
 "local coupled monotonicity of `R`"): one adjacent width-swap induces an order-isomorphism of the
 binding poset, via the `swapR` transport. Bundled because the monotonicity couples three profile
