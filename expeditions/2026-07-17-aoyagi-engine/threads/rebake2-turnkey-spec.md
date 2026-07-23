@@ -109,8 +109,18 @@ not a census line, a stated re-opening.
 ## If §7 fires (branch-ii does NOT absorb — the current lean)
 
 The sound R4 is NOT pure-pivot-cross-zero. It is Aoyagi's Lemma-2 `Q₂` acting as a **neighbour-absorption**:
-the cross entries `β,γ` are redistributed onto the remaining block (the `A₂/A₃ ↦ F₂/F₃` re-coordinatization),
-not zeroed. That changes what the residual reads in a way that (per seat-L4D) touches the fold — a
-**skeleton/fold-order revision**, elder-gated (§8(l)/§7), NOT within this re-bake. In that case `r4Clear` (as
-committed, staged) is a placeholder to be replaced, DEF-EDIT-3(a) is re-ruled, and (a)–(d) above are rewritten
-against the absorption mechanism before execution.
+the cross entries `β,γ` are redistributed onto the remaining block (the `A₂/A₃ ↦ F₂/F₃` re-coordinatization,
+`F₂ = −A₁⁻¹A₂ = −A₂` at the normalized pivot), NOT zeroed. Zeroing changes the ideal (the Gröbner failure);
+absorbing PRESERVES it. The elder leans **CONTAINED** (same class as the recoord itself — a bounded det-±1
+coordinate map — so likely a recoord-branch refinement, not a fold redesign; seat-L4D's def-feasibility read
+confirms). In that case `r4Clear` (as committed, staged) is a placeholder to be replaced by an `r4Absorb`
+form (or the recoord branch extended), DEF-EDIT-3(a) is re-ruled, and (a)–(d) are revised before execution.
+
+**The cheerful sub-case (seat-L4D def-feasibility lean, forward pointer):** under F₂-absorption the M-bridge
+(c) likely **DISSOLVES** rather than needing a frontier. Because absorption is an INVERTIBLE (det-1)
+re-parametrization with neighbour-compensation, it PRESERVES the product, so the StepInv close becomes an
+**EQUALITY** via the det-1 recoord (`child = parent ∘ σ`, exactly the pre-R4 shape) — NOT an
+ideal-`RegionRepresents`-membership. So the +1 core would close at **census 0** by the residual reading
+through the det-1 recoord (no unimodular→`RegionRepresents` constructor needed on that path — consistent with
+the grep, which found none: none is needed). Confirmed only if pnp says SURVIVES; then the full (a)–(d) +
+seat-L4D's Gröbner verification land against the F₂ form.

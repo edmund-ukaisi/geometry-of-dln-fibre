@@ -414,6 +414,37 @@ def foldNR (d : Fin (N + 1) → ℕ) : TreePath d → ℕ
   | .root => d (Fin.last N) * d 0
   | .step p _ _ _ nextState _ => if N ≤ nextState.layer then 1 else foldNR d p
 
+/-- **The pivot-cross clear — the `boostReady` FORM device (Aoyagi Lemma 2's `Q₁·A_S·Q₂ = diag(1, e₂)`;
+§9 PROPERTY-HOME ruling).** Zeroes the layer-`s.layer` carve pivot-CROSS: the pivot ROW (`row = a`,
+`col ≠ b`) and pivot COLUMN (`row ≠ a`, `col = b`), on the carve `cleared ≤ row, col`, EXCLUDING the pivot
+corner `(a,b)`. Together with `canonNormalizationOf` branch-(i)'s interior Schur (`−w_{r,b}·w_{a,c}`, making
+the interior `= e₂`) it realises Aoyagi's `Q₁·A_S·Q₂ = diag(1, e₂)` (worked.tex:400-420): branch-(i) writes
+the disjoint INTERIOR, this clears the disjoint pivot-CROSS — no overlap, no double-count.
+
+**§9 THREE-HOME SEPARATION — this is NOT a fold object.** It reads its OWN coordinate (`↦ 0`), so it is
+det-0, NOT a `blockShear`, and it is **NOT** spliced into `foldResid`/`foldG`/`stepMap`/`hshear`: the fold
+RECURSION is the IDEAL, closed by the product-preserving unimodular compensator shears
+(`canonNormalizationOf` (i)/(ii)/(iii)) by EQUALITY — census 0, recursion untouched (a splice would break
+that equality close — the compensated residual genuinely depends on the pivot cross, verified). This clear
+is the FORM: it appears ONLY inside `boostReady_case11`'s proof (the WALL, `Case1Wire`), as the
+e₂-decomposition frame witnessing that the residual is `Deg1SupportedOn ed.center` — the property
+`stepInv_child_delta1_append` consumes as `hdeg1`. Its ideal-neutrality rides Lemma 1 (`g1_unimodularity`),
+so the property read-off changes no value (RECURSION = the ideal; BOOSTREADY = the form). CASE-CONDITIONED
+to case12/case2 (a fresh clear); IDENTITY at case11 (merge) / rollover, matching pnp's model (`w = u`
+there). Kept as a `def` (not folded into a doc-comment) so the wall's proof has the concrete frame object;
+name retained (`r4Clear`, the team's handle) with the role re-homed here. -/
+noncomputable def r4Clear (d : Fin (N + 1) → ℕ) (s : ConState N) (cse : StepCase)
+    (p : Fin (flatDim d)) (k : Fin (flatDim d)) (w : Fin (flatDim d) → ℝ) : ℝ :=
+  match cse with
+  | StepCase.case12 | StepCase.case2 =>
+      let qp := (tupIdxEquiv d).symm p
+      let q := (tupIdxEquiv d).symm k
+      if (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+          (((q.1.2 : ℕ) = (qp.1.2 : ℕ) ∧ (q.2 : ℕ) ≠ (qp.2 : ℕ)) ∨
+           ((q.1.2 : ℕ) ≠ (qp.1.2 : ℕ) ∧ (q.2 : ℕ) = (qp.2 : ℕ))) then 0
+      else w k
+  | _ => w k
+
 /-- The residual family along a path (rev-leaves check-#2 EXACT-CLEAR + FIX-RESID δ=1 strict transform).
 `root ↦ coreGen d e`; a TERMINAL-reaching step (`N ≤ nextState.layer`) collapses to the M'=1 unit
 `fun _ ↦ 1`. A NON-terminal step: at **δ=0** (`¬ edgeδ`) the pure pullback `foldResid p ∘ stepMap`
@@ -549,20 +580,34 @@ def Deg1SupportedSlot {N : ℕ} (d : Fin (N + 1) → ℕ) {nR : ℕ}
     PerLayerDeg1From d (resid j) fromLayer V
 
 /-- **Block coordinates** — the flat coords at layer `ℓ` CAPPED on the col axis by the running-min block
-width `widthMinUpto d ℓ` (family ruling 2026-07-22, item 1: the residual block is `widthMinUpto`-capped, not
-the whole `d_{ℓ+1}×d_ℓ` layer — matches `canonCenterOf`'s cap :725). NO cleared-shrink — that is
-`canonCenter`'s extra, keeping `supportAt` (full capped block) DISTINCT from `canonCenter` (capped AND
-cleared-shrunk). Bridge-free (Finset-definable from `d`+`ℓ`); `∅` for `ℓ ≥ N`. Feeds `supportAt`. -/
+width `widthMinUpto d ℓ`. This is the blow-up CENTER's cap: it matches `canonCenterOf`'s running-min axis
+(:725) — Aoyagi's `D_J` center has one axis at `M(S)` (running min) and one at raw `M^{(S+1)}`, and
+`canonCenterOf` caps the one axis and leaves the other raw, faithfully. NO cleared-shrink — that is
+`canonCenter`'s extra, keeping `blockCoords` (full capped block) DISTINCT from `canonCenter` (capped AND
+cleared-shrunk). **Feeds `supportAt` ONLY at the `J = 0` root branch** (where the residual's support IS the
+block being blown up = the center, so the cap is faithful); the DESCENDED (`J ≥ 1`) residual support is the
+raw `layerCoords d (S+1)`, NOT `blockCoords` (consolidated ruling §1, 2026-07-23 — the running-min cap is
+the CENTER's, and the descended residual block `D_J` has a raw column axis; conflating the two under-tight
+capped the descended support, the tenth catch). Bridge-free (Finset-definable from `d`+`ℓ`); `∅` for
+`ℓ ≥ N`. -/
 noncomputable def blockCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) : Finset (Fin (flatDim d)) :=
   (Finset.univ.filter (fun q : tupIdx d =>
       (q.1.1 : ℕ) = ℓ ∧ (q.2 : ℕ) < widthMinUpto d ℓ)).image (tupIdxEquiv d)
 
-/-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22 — the WINNER;
-the two-clock deeper∪shed shape is the DISCARD). The Deg1 support DESCENDS per clear: at `J = 0` it is the
-current capped block `blockCoords d S` (layer `S`, `widthMinUpto`-capped); once a pivot is cleared (`J ≥ 1`)
-it descends to `blockCoords d (S+1)` — the deeper block the `P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads;
-at the LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS
-to the born-unit `∅` (no `C^{(S+1)}` to absorb into — terminal collapse, p.19/21).
+/-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22; descended
+branch RE-BAKED to Aoyagi's raw residual block, consolidated ruling §1, 2026-07-23). The Deg1 support
+DESCENDS per clear: at `J = 0` it is the current capped block `blockCoords d S` (layer `S`,
+`widthMinUpto`-capped); once a pivot is cleared (`J ≥ 1`) it descends to `layerCoords d (S+1)` — the deeper
+block the `P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads — the WHOLE next layer, NOT the running-min-capped
+sub-block. This is Aoyagi's `D_J` residual block (worked.tex:562–577, esp. :569): `D_J` is
+`(M(S)−J) × (M^{(S+1)}−J)`, so the running min `M(S)` governs only the ROW / cleared-prefix axis while the
+COLUMN axis is the **raw** next-layer width `M^{(S+1)}−J`. On a WIDE branch (`d_{S+1} > min(d_0..d_S)`) the
+running-min cap is strictly tighter than her block and the residual genuinely reads the out-of-cap columns
+(the inherent remnant-row read, recoord-independent; `empirical_invariant_table.py`, `(2,3,2,2)`) — so the
+capped `blockCoords d (S+1)` UNDER-transcribes the residual and the honest shape is `layerCoords`. At the
+LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS to the born-unit `∅` (no `C^{(S+1)}` to absorb into —
+terminal collapse, p.19/21). The `J = 0` branch stays `blockCoords d S` — there the residual's support IS
+the block being blown up (the CENTER's cap is faithful), and `realBranch_cover` depends on it.
 
 CONVENTION (elder's anti-off-by-one, transcribed): 0-indexed layers, `S ∈ {0..L}`, `L = N − 1` the last
 matrix-layer index; `S = L ⟺ S + 1 = N` is the born-unit case (0↔1 shift matches the page's 1-indexed `S = L`),
@@ -571,7 +616,7 @@ NO substantive ±1 offset. `supportAt` is the geometric Deg1 SUPPORT and is DIST
 conflation of the two is retired. -/
 noncomputable def supportAt (d : Fin (N + 1) → ℕ) (S J : ℕ) : Finset (Fin (flatDim d)) :=
   if J = 0 then blockCoords d S
-  else if S + 1 < N then blockCoords d (S + 1)
+  else if S + 1 < N then layerCoords d (S + 1)
   else ∅
 
 /-- **The support LAYER of a state** (family ruling 2026-07-22, item 4 — the `fromLayer` threshold, DRY).
@@ -846,8 +891,8 @@ noncomputable def readEntry (d : Fin (N + 1) → ℕ) (u : Fin (flatDim d) → �
   | none => 0
 
 /-- **The faithful pivot-parametric normalization `N_p`** (raw displacement; pnp-transport
-`npivot-certificate`, elder verbatim §1). Replaces `canonShearOf`: writes TWO supports (canonShearOf wrote
-only the first), so it is genuinely a different object (name = content).
+`npivot-certificate`, elder verbatim §1). Replaces `canonShearOf`: writes THREE supports (canonShearOf
+wrote only the first), so it is genuinely a different object (name = content).
 
 At chart pivot `p = (a,b)` (decoded via `tupIdxEquiv`, `a = qp.1.2` the pivot row, `b = qp.2` the pivot
 col), the displacement at a flat coord `k` decoding to `(layer, row, col)`:
@@ -856,14 +901,41 @@ col), the displacement at a flat coord `k` decoding to `(layer, row, col)`:
   the pivot cross (`row ≠ a`, `col ≠ b`), the displacement is `−w_{row,b}·w_{a,col}` (Schur residual
   `w_ij − w_ib·w_aj`, pivoted at `(a,b)`). A CORNER pivot (`a = cleared = b`) recovers `canonShearOf`'s
   `−u_γ·u_β` cross-term.
-* **(ii) layer-`(s.layer+1)` recoord image** — the deeper factor `A_{S+1} → A_{S+1}·Q₁⁻¹`,
-  `Q₁⁻¹ = I + ∑_{i≠a}(w_ib) e_i e_a^T` (right column-mix). The displacement lands on col `= a` (the pivot
-  row) of layer `S+1`, value `∑_{i≠a} w_{i,b}·A^{(S+1)}_{row,i}` — degree-1 in the layer-`(S+1)` coords,
-  coefficients `w_{i,b}` from layer `S` (per-`(S+1)`-linear, certificate §2). This is the piece
-  `canonShearOf` omitted (the `L1⊥L3`-coupled fix, restoring boost-readiness).
+* **(ii) layer-`(s.layer+1)` recoord image** — the deeper factor `A_{S+1} → A_{S+1}·Q₁⁻¹`, the `+γ`
+  DIRECTION `Q₁⁻¹ = I + ∑_{i≠a}(w_ib) e_i e_a^T` (right column-mix; Aoyagi Lemma 2's compensator,
+  worked.tex:442-445, the certificate's ORIGINAL direction). §9 FINAL RULING: the error was the UNPAIRING,
+  never the direction — `−γ` was the best UNPAIRED-regime approximation; the exact Gröbner on the PAIRED
+  composition (rows A/D) restores `+γ` (product-preserving). The displacement lands on col `= a` (the pivot
+  row) of layer `S+1`, value `+∑_{cleared ≤ i, i≠a} w_{i,b}·A^{(S+1)}_{row,i}` — degree-1 in the
+  layer-`(S+1)` coords, coefficients `w_{i,b}` from layer `S` (per-`(S+1)`-linear, certificate §2), SCOPED
+  to the remaining block `cleared ≤ i` (§8(m): already-cleared outer rows read as `0`, her accumulated
+  `Q₂'⁻¹` current-chart semantics — this keeps `E_J` col-0 free of the pivot-row coord `u₀₀₁`, the
+  faithful clean cleared column; unscoped, col-0 acquires a `u₀₀₁·u₀₁₀` leak linear in `u₀₀₁`). The
+  scope is a FIDELITY choice, not a degree-necessity: on this shears-only fold `foldResid` is degree-≤1
+  in `u₀₀₁` both scoped and unscoped (pnp all-rows battery); the `u₀₀₁²` that first motivated it is a
+  CLEAR-MODEL fact (the fold with the pivot-cross clear spliced in), which the shears-only recursion
+  does not produce. This
+  is a piece `canonShearOf` omitted.
+* **(iii) layer-`(s.layer−1)` INPUT recoord image** — the MIRROR of (ii): the input-side factor
+  `A_{S−1} → Q₂⁻¹·A_{S−1}` (Aoyagi Lemma 2's second compensator; the paired `Q₁·A₀·Q₂` conjugation supplies
+  BOTH — (ii) the output neighbor `Q₁⁻¹`, (iii) the input neighbor `Q₂⁻¹`, worked.tex:442). Lands on row
+  `= b` (the pivot col) of layer `S−1`, value `+∑_{cleared ≤ k, k≠b} w_{a,k}·A^{(S−1)}_{k,col}` — degree-1
+  in the layer-`(S−1)` coords, SCOPED `cleared ≤ k`. GUARDED `S ≥ 1`: VACUOUS at the corner `s.layer = 0`
+  BY DESIGN — there the input side IS the network input, i.e. the global `GL_{d₀}` end-factor gauge `P₁`,
+  absorbed ONCE via Lemma 1 (§9 three-home ruling; worked.tex:426-428,437), never a per-fibre op. Her
+  once-global Lemma-1 absorption is realized PER-CHART in the fold's cover (each chart's `GL_{d₀}`,
+  resolution-normal, baseChange-covered).
 
-Both components det-1 / unipotent (Aoyagi worked.tex:443–457); that Jacobian-1 fact rides the edge's
-`hshear` field, not this data def. -/
+All three branches read OTHER coordinates (branch (i) reads the pivot row/col to shift the interior;
+branch (ii) reads layers `S`, `S+1` off the target col; branch (iii) reads layers `S`, `S−1` off the target
+row — all write/read-disjoint), so `blockShear φ = u + φ(u)` is det-1 / unipotent (Aoyagi worked.tex:442–457);
+that Jacobian-1 fact rides the edge's `hshear` field, not this data def. **THE THREE-HOME SEPARATION (§9
+PROPERTY-HOME ruling).** These three unimodular shears are the compensators; the fold RECURSION is closed by
+them, by EQUALITY (they are product-preserving — Aoyagi's ideal-preserving Lemma 1), census 0 — the recursion
+IS the ideal. The pivot-cross CLEARING (Lemma 2's `Q₁·A₀·Q₂ = diag(1, e₂)`) is NOT here and is NOT spliced
+into the recursion: it reads its own coord (det-0, not a det-1 shear), so it lives ONLY in `boostReady`'s
+proof as the FORM device (`r4Clear`, the e₂-decomposition frame) — the property that the residual is
+`Deg1SupportedOn ed.center`. RECURSION = the ideal (these shears); BOOSTREADY = the form (the clear). -/
 noncomputable def canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d)) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   fun u k =>
@@ -875,17 +947,48 @@ noncomputable def canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N
       (-(readEntry d u s.layer (q.1.2 : ℕ) (qp.2 : ℕ)))
         * readEntry d u s.layer (qp.1.2 : ℕ) (q.2 : ℕ)
     else if (q.1.1 : ℕ) = s.layer + 1 ∧ (q.2 : ℕ) = (qp.1.2 : ℕ) then
-      -- (ii) layer-(S+1) recoord: `(A_{S+1}·Q₁⁻¹ − A_{S+1})` on col `a`, `∑_{i≠a} w_{i,b}·A_{row,i}`.
-      ∑ i ∈ Finset.range (d q.1.1.castSucc),
-        if i = (q.2 : ℕ) then 0
-        else readEntry d u s.layer i (qp.2 : ℕ) * readEntry d u (s.layer + 1) (q.1.2 : ℕ) i
+      -- (ii) layer-(S+1) recoord `A_{S+1}·Q₁⁻¹` — the `+γ` DIRECTION (Aoyagi Lemma 2's compensator
+      -- `Q₁⁻¹ = I + ∑_{i≠a} w_{i,b} e_i e_a^T`, worked.tex:442-445, the certificate's ORIGINAL direction).
+      -- §9 FINAL RULING: the error was the UNPAIRING, never the direction — `−γ` was the best
+      -- UNPAIRED-regime approximation; the exact Gröbner on the PAIRED composition (rows A/D) restores
+      -- `+γ` (`Q₁⁻¹`, product-preserving). On col `= a` (the pivot row) of layer `S+1`, SCOPED to the
+      -- remaining block `cleared ≤ i` (§8(m), fold-order 8e7c66ed7: already-cleared outer-pivot rows read
+      -- as `0` by NOT being summed = her accumulated `Q₂'⁻¹` current-chart semantics). The scope is
+      -- a FIDELITY choice, not a degree-necessity: on this shears-only fold `foldResid` is degree-≤1
+      -- in `u₀₀₁` both scoped and unscoped (pnp all-rows battery); NOT summing the already-cleared rows
+      -- keeps `E_J` col-0 free of the pivot-row coord `u₀₀₁` (the faithful clean cleared column;
+      -- unscoped, col-0 acquires a `u₀₀₁·u₀₁₀` leak linear in `u₀₀₁`). The `u₀₀₁²` is a CLEAR-MODEL
+      -- fact (the fold with the pivot-cross clear inline), not produced by the shears-only recursion.
+      -- Two independent axes, both kept: the `+γ`-pairing acts INTRA-edge (its step's ideal close), the
+      -- `cleared ≤ i` scope tracks the INTER-edge accumulated clearing state (`s.cleared`).
+      (∑ i ∈ Finset.range (d q.1.1.castSucc),
+        if i = (q.2 : ℕ) ∨ i < s.cleared then 0
+        else readEntry d u s.layer i (qp.2 : ℕ) * readEntry d u (s.layer + 1) (q.1.2 : ℕ) i)
+    else if (q.1.1 : ℕ) + 1 = s.layer ∧ (q.1.2 : ℕ) = (qp.2 : ℕ) then
+      -- (iii) layer-`(S−1)` INPUT recoord `Q₂⁻¹·A_{S−1}` — Aoyagi Lemma 2's INPUT-side compensator, the
+      -- MIRROR of (ii): (ii) recoords the OUTPUT neighbor `A_{S+1}·Q₁⁻¹`, (iii) the INPUT neighbor
+      -- `Q₂⁻¹·A_{S−1}` (worked.tex:442, the paired `Q₁·A₀·Q₂` conjugation's two compensators). GUARDED
+      -- `S ≥ 1`: the `+1 = s.layer` guard is FALSE at the corner `s.layer = 0` (no `x : ℕ` with
+      -- `x + 1 = 0`), so (iii) is VACUOUS at the corner BY DESIGN — there the input side IS the network
+      -- input, i.e. the global `GL_{d₀}` end-factor gauge `P₁`, absorbed ONCE via Lemma 1, never a
+      -- per-fibre op (§9 three-home ruling; worked.tex:426-428,437) — her once-global Lemma-1 absorption
+      -- is realized PER-CHART in the fold's cover (each chart's `GL_{d₀}`, resolution-normal,
+      -- baseChange-covered). On row `= b` (the pivot col) of
+      -- layer `S−1`, value `+∑_{cleared ≤ k, k≠b} w_{a,k}·A^{(S−1)}_{k,col}` — degree-1 in the layer-`(S−1)`
+      -- coords, SCOPED `cleared ≤ k` (the input-side mirror of (ii)'s scope). det-1: writes row `b`, reads
+      -- rows `k≠b` (write/read-disjoint). Verified product-preserving at the normalized pivot (wide
+      -- interior witness `d=(3,2,2,2)`, f2_branchiii_fidelity).
+      (∑ k ∈ Finset.range (d q.1.1.succ),
+        if k = (qp.2 : ℕ) ∨ k < s.cleared then 0
+        else readEntry d u s.layer (qp.1.2 : ℕ) k * readEntry d u (q.1.1 : ℕ) k (q.2 : ℕ))
     else 0
 
-/-- **`canonNormalizationOf` two-support ⟨FRONTIER; statement-locked, elder §2⟩.** A nonzero displacement
-forces the coord into EITHER (i) layer `s.layer`, off the pivot cross, on the carve residual, OR (ii)
-layer `s.layer + 1` in the recoord image (col `=` pivot row). Replaces `canonShearOf_support` (which
-proved single-support layer-`S`-only — a TRUE fact about the UNFAITHFUL object, false for `N_p`, so
-re-stated per precision §0-iv). The two disjuncts are exactly the def's two guards. -/
+/-- **`canonNormalizationOf` three-support ⟨statement-locked, elder §2 / §9 three-home⟩.** A nonzero
+displacement forces the coord into one of (i) layer `s.layer`, off the pivot cross, on the carve residual;
+(ii) layer `s.layer + 1` in the OUTPUT recoord image (col `=` pivot row); (iii) layer `s.layer − 1` in the
+INPUT recoord image (row `=` pivot col, `S ≥ 1`). Replaces `canonShearOf_support` (which proved
+single-support layer-`S`-only — a TRUE fact about the UNFAITHFUL object, false for `N_p`, so re-stated per
+precision §0-iv). The three disjuncts are exactly the def's three guards. -/
 @[blueprint]
 theorem canonNormalizationOf_support (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d))
     (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)) (hk : canonNormalizationOf d s p u k ≠ 0) :
@@ -895,16 +998,20 @@ theorem canonNormalizationOf_support (d : Fin (N + 1) → ℕ) (s : ConState N) 
         s.cleared ≤ (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
         s.cleared ≤ (((tupIdxEquiv d).symm k).2 : ℕ)) ∨
       ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer + 1 ∧
-        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm p).1.2 : ℕ)) := by
-  -- map: B-canonNormalizationOf-support (two-support; layer-S carve interior ∪ layer-(S+1) recoord image)
+        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm p).1.2 : ℕ)) ∨
+      ((((tupIdxEquiv d).symm k).1.1 : ℕ) + 1 = s.layer ∧
+        (((tupIdxEquiv d).symm k).1.2 : ℕ) = (((tupIdxEquiv d).symm p).2 : ℕ)) := by
+  -- map: B-canonNormalizationOf-support (three-support; layer-S carve interior ∪ layer-(S+1) OUTPUT
+  -- recoord image ∪ layer-(S−1) INPUT recoord image)
   by_contra h
-  rw [not_or] at h
-  exact hk (by simp only [canonNormalizationOf]; rw [if_neg h.1, if_neg h.2])
+  rw [not_or, not_or] at h
+  exact hk (by simp only [canonNormalizationOf]; rw [if_neg h.1, if_neg h.2.1, if_neg h.2.2])
 
-/-- **`CanonicalSchurStep`** (boost-readiness pin; re-authored to the `N_p` TWO-support form, elder §2
-consolidation). Gains the pivot arg `p`. The shear displacement is supported on the layer-`s` carve
-residual off the pivot cross (i) OR the layer-`(s+1)` recoord image (ii) — the def-form of
-`canonNormalizationOf_support`, kept as the ONE public-canonical two-support predicate. -/
+/-- **`CanonicalSchurStep`** (boost-readiness pin; re-authored to the `N_p` THREE-support form, elder §2 /
+§9 three-home). Gains the pivot arg `p`. The shear displacement is supported on the layer-`s` carve residual
+off the pivot cross (i), the layer-`(s+1)` OUTPUT recoord image (ii), OR the layer-`(s−1)` INPUT recoord
+image (iii) — the def-form of `canonNormalizationOf_support`, kept as the ONE public-canonical three-support
+predicate. -/
 def CanonicalSchurStep {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d))
     (shearφ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) : Prop :=
   ∀ (u : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)), shearφ u k ≠ 0 →
@@ -914,7 +1021,9 @@ def CanonicalSchurStep {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N) (p :
         s.cleared ≤ (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧
         s.cleared ≤ (((tupIdxEquiv d).symm k).2 : ℕ)) ∨
       ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer + 1 ∧
-        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm p).1.2 : ℕ))
+        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm p).1.2 : ℕ)) ∨
+      ((((tupIdxEquiv d).symm k).1.1 : ℕ) + 1 = s.layer ∧
+        (((tupIdxEquiv d).symm k).1.2 : ℕ) = (((tupIdxEquiv d).symm p).2 : ℕ))
 
 /-- **A real root→node branch of `buildTree d (conOracle d) conRoot`** — COMBINATORIAL branch-membership
 PLUS the canonical coordinate PIN. Each step's `(case, nextState)` is one of the oracle's `stepChildren`
