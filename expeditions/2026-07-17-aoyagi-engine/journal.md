@@ -19510,3 +19510,42 @@ it REFUSED to render spine defs off a summary (charter-§3 def-fidelity reflex �
 bodies instead), which is precisely the reflex that would have caught the crossing even without
 the countermand. INV now blocked only on CAPR's spec + #85; suggested safe pre-draft: the root
 ASSEMBLY proof shape modulo the hypothesis.
+
+## 2026-07-23 (~17:35 UTC) — #85 RULED (§9.5): (1) = the fidelity END-STATE; (2′) acceptable ONLY
+behind a PROVEN L7 redundancy; CONTROLLER TIMING CALL: (2′)-now with the gate honored, (1)
+roadmapped. CAPR's CanonicalPivots spec in — the threading ESCAPES to GM/summit (cross-lane
+event), discharge at L5
+
+THE ELDER'S #85 (both legs grounded — her cleared column is GONE :619-620/:628-629; our
+canonCenterOf is a COUNTER not an exclusion :853-871): the phantom is real, and the DEEP
+INTERACTION is the ruling's core — #85(1) is a PREREQUISITE for #84's transport (a phantom
+re-clear has NO canonical source; the blow-up-permutation transport is well-defined only on a
+phantom-free tree; on legitimate branches stored-vs-diagonal divergence is a genuine permutation,
+transportable). RULED: (1) the fan-faithful oracle (column-exclusion canonCenterOf) = the
+FIDELITY END-STATE, unconditionally sound, HEAVY (full bake discipline — baked spine def);
+(2′) canonical-pin near-term ACCEPTABLE ONLY IF the L7 phantom-cover-redundancy is PROVEN (an
+unproven "probably redundant" is a §0(iv) hole; not-quickly-establishable ⟹ (1) FORCED); (2)
+dominated; (3) off the table. GM's (b) + append stay AS-STATED on the (1)/(2′) track.
+
+CONTROLLER EXECUTIVE CALL (delegated by the elder, exercised now): (2′)-NOW, (1)-ROADMAPPED —
+rationale: a mid-render baked-spine def-edit (canonCenterOf + per CAPR's double-carry finding
+likely divBirthCoord too — TWO spine edits) would stall three grinding lanes and re-target GM's
+proofs, while (2′) folds the phantom into the SAME cover-layer debt canonical-pin already owns;
+the elder's gate is HONORED by commissioning the redundancy check IMMEDIATELY (combined with the
+§9.4 equivariance check as ONE pnp/L7 commission, queued behind the kill consult) — the
+commission IS the decider: redundancy not quickly provable ⟹ (1) forced, per the ruling. (1)
+enters the roadmap as the B-object's bedrock target (close-phase or successor expedition).
+
+CAPR's CanonicalPivots SPEC: the predicate pins fan-free δ=1 births to the diagonal counter
+corner (one INV-check: if a reused divisor can be δ=0-born, drop the edgeδ guard); threading —
+sourceClearedInv_holds GAINS hcanon; the read-off carries; THE CAPSTONE CONTENT LEMMA MUST CARRY
+IT (IsRealBranch's fan arm pins ∈ canonCenterOf, NOT = canonPivotOf — cannot derive hcanon; a
+statement change to an elder-green lemma → re-bless via the folded pass). THE CROSS-LANE EVENT
+(CAPR explicit): the carrier propagates wall' → Case1Wire δ=1 append → GM's ClearedFold chain →
+the summit haves, DISCHARGED at the L5 atlas-provenance layer (where real charts are canonical
+and fan charts ride the equivariance transport). CONTROLLER ARCHITECTURE CALL: THREADING (not
+IsRealBranch strengthening — that would kill the fan cover and contradict §9.4/§9.5's kept-fan
+architecture). GM threads the carrier through its append-dependent chain (enumerating touched
+statements for the elder's folded pass); the (b)-independent S2/locus grind is carrier-free and
+continues. The L5 debt now = transport equivariance + phantom redundancy + carrier discharge —
+one unit's opening obligations (#81-adjacent).

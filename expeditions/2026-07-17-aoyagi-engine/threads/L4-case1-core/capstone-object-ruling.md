@@ -682,3 +682,73 @@ Success confirms; failure refutes the clean transport → re-open to FAN-CARRIED
 #81 provenance) — state it explicitly, owner = the L5/cover unit, re-open trigger = the equivariance check
 failing. SCOPE couples to #85 (phantom branches): the transport need only cover the GENUINE (non-phantom)
 fan-free charts; #85's resolution fixes that scope. `hN` (§9.2 b) unaffected. GM unaffected.
+
+### §9.5 #85 — the PHANTOM-BRANCH adjudication (23rd catch); RULING: (1) fan-faithful, gated on L4D
+
+**The phantom is confirmed on BOTH legs.** PAPER: her `D_J → [[1,O],[O,D_{J+1}]]` permanently removes each
+cleared column from the residual block (worked.tex:619-620/628-629) — a cleared column is GONE, never
+re-clearable. DEF (I read `canonCenterOf`, MonumentAtlas:853-871): eligibility is the COUNTER range
+`s.cleared ≤ q.2 < widthMinUpto` — a *count* of cleared columns, NOT an exclusion of the *actual* cleared
+set. On the fan (off-diagonal cleared columns) the range readmits an already-cleared column: pnp's (3,3,3,3)
+[c2,c1,FORCED c2] — `couplingClear` zeroes the re-forced pivot, `foldB_cleared` VANISHES, S1 breaks. The
+counter is canonical-frame-faithful and diverges from her column-exclusion exactly on the fan (same
+phenomenon as #82/#84, now at the ORACLE level).
+
+**RULING: resolution (1) (fan-faithful `canonCenterOf` — exclude actual cleared COLUMNS), as the honest end
+state, executed under the FULL BAKE DISCIPLINE.** Not a quick patch: `canonCenterOf` is a baked spine def
+(N_p bake, source-fidelity-certificated on canonical witnesses), so (1) requires a source trace on a
+WIDE+FAN witness → diff → elder bless (the team-lead's §3 warning is decisive on process). (3) is OFF the
+table (pnp's witness: neither pure keying serves both roles on the phantom; and moot under §9.4). (2)
+(scope the cleared statements to non-phantom branches) is a coherent TEMPORARY stopgap IF (1)'s re-bake is
+too heavy mid-render — but it carries the charter §0(iv) wince (an over-admitting oracle left in place) AND
+does not save work (see the interaction: phantoms would still need excluding at the atlas/cover layer).
+
+**THE DEEP INTERACTION (rule together): (1) is a PREREQUISITE for #84 canonical-pin's transport, not a
+parallel fix.** Canonical-pin states the INV on the canonical (diagonal) representatives and transports the
+genuine fan charts by the blow-up chart PERMUTATION (§9.4). A phantom (re-clear of a GONE column) is NOT a
+permutation of any canonical chart — it is geometrically spurious, with no canonical source to transport
+from. So canonical-pin's transport is well-defined ONLY on a tree with no phantoms: (1) is exactly what
+makes every legitimate fan chart a genuine permutation of a canonical chart. Without (1), the cover contains
+a chart canonical-pin cannot source → the summit breaks. So (1) ⟹ the §9.4 transport is well-posed.
+
+**INTERACTION (i) — does (1) moot the §9.3 split?** The split was ALREADY moot under §9.4 (canonical-pin).
+(1) is complementary + prerequisite (fixes the oracle/tree; canonical-pin fixes the INV frame). On
+legitimate branches stored CAN still diverge from diagonal (a legitimate branch may clear disjoint columns
+off-diagonal) — that divergence is a genuine PERMUTATION handled by canonical-pin's transport, NOT the INV.
+(1)'s role: ensure the divergence is a transportable permutation, never a non-transportable phantom re-clear.
+pnp's ON-HOLD witness is RESHAPED to the §9.4 equivariance check on POST-(1) legitimate fan charts (disjoint
+cleared columns) — where it should hold cleanly.
+
+**INTERACTION (ii) — GM's (b) final shape.** Under (1): TRUE as-stated (phantoms gone) — preferred. Under
+(2)-temp: (b) carries an explicit non-phantom hypothesis (name=content; the atlas branches satisfy it).
+The blockCoords support is unchanged either way; only the branch-admissibility hypothesis differs.
+
+**GATE: L4D's admissibility confirm (does the oracle actually ADMIT the (3,3,3,3) phantom?).** Paper+def
+say the branch re-clears a gone column; L4D corroborates whether `IsRealBranch` genuinely generates it. If
+ADMITTED → (1) roadmapped under bake discipline / (2) stopgap as above. If L4D finds it EXCLUDED by another
+gate → no phantom, no fix, canonical-pin's transport is already clean on the fan. Ruling finalizes on L4D.
+
+**§9.5 FINALIZED (L4D admissibility confirm IN — phantom is a genuine oracle-admitted `IsRealBranch`;
+option (2′) added).** The gate is satisfied: the phantom is real, so a resolution IS needed. Three live:
+- **(1) fan-faithful oracle re-bake** — the BEDROCK-FAITHFUL END-STATE (the tree = her genuine charts; her
+  column-exclusion is textual; UNCONDITIONALLY sound — no phantoms exist). Heavy: a baked spine def-edit
+  under full bake discipline (source trace on a WIDE+FAN witness → diff → elder bless).
+- **(2′) canonical-pin on the CHAIN (§9.4-coherent)** — state the cleared chain on the canonical sub-family
+  (which §9.4 ALREADY does), so phantoms are outside the chain's regime; fold the phantom charts into the
+  cover-layer debt canonical-pin already owns (transport for legitimate off-canonical charts + REDUNDANCY
+  for phantoms). Cheapest, no spine re-bake, no threaded hypothesis. **BUT sound ONLY IF the
+  phantom-charts-are-cover-redundant fact is ESTABLISHED at L7** (the summit does not need the phantom
+  chart's leaf fact) — an unproven "probably redundant" is the visible-progress hole (charter §0(iv)); the
+  phantom breaks S1 on its chart, so it is harmless ONLY if the cover genuinely doesn't need it.
+- **(2) non-phantom hypothesis** — a threaded scoping; dominated by (2′) under canonical-pin (no separate
+  hypothesis needed once the chain is canonical-pinned).
+
+**RULING.** FIDELITY END-STATE = **(1)**: the faithful object has NO phantoms (they are purely our
+counter's artifact; Aoyagi never re-clears), so the bedrock-faithful oracle excludes actual cleared columns.
+Recommended target. **Near-term = (2′) is acceptable IFF the L7 phantom-cover-redundancy is PROVEN** (owned
++ re-open trigger); if that redundancy is not quickly establishable, (1) is FORCED — do not ship an
+unproven-redundancy hole. The (1)-now-vs-(2′)-now TIMING is the controller's executive call (render-load /
+build-vs-defer); the elder bar for (2′) is a PROVEN redundancy, not a plausible one. (3) off the table
+(moot under §9.4 + pnp's witness). GM's (b) + δ=1-append shape: under (1)/(2′) TRUE as-stated (phantoms
+outside the regime); under (2) gains the hypothesis. The transport equivariance (§9.4) + the phantom
+disposition are ONE cover-layer debt — commission them together with pnp/L7.
