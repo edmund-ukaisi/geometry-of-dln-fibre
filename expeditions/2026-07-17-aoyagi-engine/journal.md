@@ -19856,3 +19856,30 @@ the exit-gate protocol) and retires to unit-consult; a FINISHER SEAT spawns on t
 folded pass gains: the as-proven S2 shape + the δ-agnostic re-bless evaluation. The board's
 remaining execution: the finisher's cascade + INV's read-off + CAPF's ladder + pnp's #87 cert —
 then the merges.
+
+## 2026-07-23 (~16:45 UTC) — #87's certificate IN (re-ran exit 0): the SPECIFY collapses to a
+canonCenterOf-only BIRTH-RESTRICTION, no oracle edit, row-half not load-bearing; elder bless
+requested (one taste call). INV record CORRECTED (the "delivery loss" was a crossing)
+
+THE CERT (4a6f5bb01, all four bless items): (1) column-exclusion is the faithful D₁ edit; (2)
+NO-UNDER-ADMISSION, the design-space-collapsing surprise — EVERY off-diagonal-COLUMN birth IS a
+phantom (the counter necessarily returns to that column, forcing the re-clear), so the
+restriction {col = cleared} drops EXACTLY the phantom family, no legitimate chart lost; (3) THE
+CLEAN EDIT = the BIRTH-RESTRICTION in canonCenterOf alone (col pinned to the counter, ROW FAN
+kept) — centers stay nonempty, IsRealBranch always has a pivot, the ORACLE NEEDS NO EDIT (the
+later-exclude alternative would need a second def surface + leave a real-branch-less node —
+rejected); (4) the ROW half is NOT load-bearing (foldB collisions are column-indexed; row-reuse
+never collides; row-off-diagonal births benign + σ-transportable, the re-run shows the benign
+row-birth's nonzero foldB explicitly). ELDER BLESS requested with ONE TASTE CALL: col-pinned
+row-fan (fewer transported charts) vs the full diagonal pin (a canonical tree, more transport) —
+correctness identical, both orbits transport; plus pnp's open cover question (row-fan + σ covers?
+— pnp-fan cert = arbiter) flagged for the RENDER SPECIFY, not the bless. pnp's queue CLEAR —
+rested with the day's tally acknowledged (O2, clear-location, THE WITNESS, locus verify, 2 GM
+certs, kill-route, #86 A/B/C, #87 — every artifact re-runnable, every honest negative carried).
+
+RECORD CORRECTION: the earlier "delivery loss" diagnosis on INV was WRONG — the spec was never
+lost; INV was mid-render when its blocked-message was composed, and my resend crossed its banked
+work (63cb69600). The wait-list cross-check discipline stands (it is cheap and correct on true
+losses), but the diagnosis bar gains a step: check the teammate's LANE for the work before
+declaring a loss. INV now: wiring the root arm (the induction skeleton, step arm = the named
+transport sorry) + grinding the read-off per its 5-step map.
