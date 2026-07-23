@@ -18371,3 +18371,20 @@ her capped D_J IS the normal form's). The widened-raw route (§12 as first ruled
 conflict the cleared route avoids. If the elder concurs, §12(1)'s widen is superseded, supportAt
 is UNCHANGED, and CAPR's SPECIFY unfreezes against the def it already drafted with. Both routes
 provable; one conflict-free.
+
+## 2026-07-24 (~19:35) — §12.1 THE ROLE-SPLIT banked: supportAt's two conflated roles separate;
+the decisive case12/2-extent check to pnp; CAPR's case11 core unfrozen
+
+The elder confirmed the realBranch_cover conflict AT THE CODE and resolved it finer than my
+either/or recommendation: supportAt was playing TWO roles — Role 1 (the raw fold's carried
+function-support: FoldStepInvAt, obligation (b)) WIDENS per §12 (the raw fold genuinely reads
+out-of-cap — name=content); Role 2 (the ed.center-containment feeding case12/2 boostReady through
+realBranch_cover + deg1SupportedOn_center_of_hslot) re-points to the CLEARED object/canonCenterOf
+— §7's architecture EXTENDS beyond case11 (the key upshot: ALL boostReady reads the cleared
+object), pending pnp's decisive extent-check (does case12/2's raw residual exceed ⟨ed.center⟩ on
+wide d like case11's — plausible either way: case12/2 clears its OWN pivot at the current edge vs
+case11's ancestor-reuse; the witness decides full-extension vs the lighter re-point-only world).
+DISPATCHED: pnp (the check; its 0cb53731d data may already answer); CAPR (case11 core UNFROZEN —
+finalize against the ruled shapes incl. the Role-1-widened partition; case12/2-touching items
+held); my def batch (the widen + realBranch_cover re-point + frontier docstrings) lands ATOMIC
+after pnp's verdict. The 17th catch is now two rulings deep and still zero wasted renders.
