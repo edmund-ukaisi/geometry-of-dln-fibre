@@ -17146,3 +17146,20 @@ The pattern-note: at every level of this arc, the fix has moved OUT of the recur
 properties/gauges/presentations — the fold's coordinate core has needed only the sign, the
 scope, and the compensator branches. The recursion may end this arc untouched beyond the
 shear def itself.
+
+## 2026-07-23 (~13:50) — the corner arc COMPLETE (compute side): per-chart gauge (bounded) + the unifying interior detail
+
+pnp's follow-ons (banked db155bc1e, re-ran exit-0): (1) THE REALIZATION CONDITION answered —
+PER-CHART input gauge (Q₂ per-branch; one global CoV closes only its own branch); bounded,
+resolution-normal (charts local + independent for the RLCT read-off) — the elder's either-way
+staging lands on the bounded arm; §9's narrative line gains "per-chart". (2) THE INTERIOR
+WITNESS closes per-edge, census 0, block monomialised — with THE UNIFYING DETAIL: at interior
+pivots the row-clear is compensated by the SHALLOWER INTERNAL factor (layer S−1) — "input
+side" is RELATIVE; branch-(iii)'s S≥1 guard is the single rule "compensate on your input
+side" applied uniformly; the corner is where the input side IS the network input (hence the
+gauge). Offered to the elder as the three-home paragraph's principle line.
+
+REMAINING: the cross-clear home ruling (property vs splice — the elder's one open item),
+arch-C-4's render (#58 in progress), then the authoritative battery (all rows enumerated:
+bridge + block-form + chart-frame + scope + on-frame polynomiality + corner-A + interior) +
+slot-confirm + delta-read → merge.
