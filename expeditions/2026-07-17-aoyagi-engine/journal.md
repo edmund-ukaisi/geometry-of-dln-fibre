@@ -17207,3 +17207,14 @@ all committed. The remaining path is PURE EXECUTION: arch-C-4's render (#58/#59/
 property-home + (A)/per-chart) → pnp's all-rows battery → seat-L4D's def-confirms → the
 elder's split-checklist delta-read → merge → the two-line L3T3 rebase → THE WALL (provable,
 on the property already proven at the model level).
+
+## 2026-07-23 (~14:55, heartbeat tick) — placement/cron green; the render's full-build gate genuinely grinding (not a stall)
+
+Placement ✓, cron ✓. arch-C-4's transcript quiet 32 min at "waiting for the full build" —
+the liveness check confirms NOT a stall: a live `lake build DLNFibre` process (5 lean workers)
+grinding the full fresh-worktree recompile under the shared-store contention cap; the
+background task wakes the seat on completion for the remaining gates (census/cordon/forced
+axioms) + the commit-coherent push + the render report. Tasks #57/#58/#59 completed on the
+board; #60 (the gates) is the live item. All reviewers posted and idle by design. The board:
+one build from the render report; the report fires the three-reviewer apparatus; the merge
+follows their green.
