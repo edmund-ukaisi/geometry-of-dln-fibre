@@ -1060,3 +1060,79 @@ lesson is that canonical-witness verification cannot certify a fan-general state
 CFF's exit re-scoped to full-green-WITH-named-frontiers ((b)/δ=1 held for #73 integration; conjB
 CAPF-gated). Folded-pass trigger now waits on: BAKE's landing, CFF's cert-(i)+δ=0+re-points, CAPF's ladder,
 INV's hcanon-drop commit.
+
+### §9.11 #95 — the 29th catch (corrects §9.9 row-not-load-bearing); RULING: (i) hcanon-thread, NOT (ii) re-open
+
+**§9.9 CORRECTION owned.** My §9.9 "row-fan not load-bearing" was verified FOR foldB/codim (which DO
+transport on the row-fan, #86C) — but the KILL / cap-support (`sourceClearedResid` confined to blockCoords)
+is a SEPARATE property, and the ROW IS load-bearing for IT. Same error class: verified one consumer
+(foldB/codim), missed another (the cap-support). Contained (the KILL is a still-open sorry; nothing false on
+canonical). Mechanism (verified at the def): `belowPivotCol pivot = {same layer, same col, row strictly
+below}` is ∅ exactly when the pivot is at the LAST ROW; a last-row pivot ⟹ couplingCoords misses that
+column ⟹ `couplingClear` doesn't clear it ⟹ `sourceClearedResid` reads the escaped column (KILL false). The
+col-pin (#87) leaves the row free, so it admits last-row pivots ((2,3,3,3) `(0,2,0),(0,2,1)` — row 2 last).
+
+**PAPER-FIRST: row-repeats are PHANTOMS (mirror of the col-phantom).** Lemma 2 (worked.tex:404-457):
+`Q₁AQ₂ = [[A₁,O],[O,C₄]]`, `C₄` the Schur complement on the `(h₁−r)×(h₂−r)` complement — removing r ROWS
+AND r COLUMNS. So `D_J` excludes the pivot's ROW and column; a cleared row is GONE. Re-using a gone row (a
+row-repeat) is a phantom, exactly mirroring the col-repeat (§9.5/§9.8). Coverage rider UNCHANGED (row-repeats
+aren't cover charts — they strand); the roadmapped (1)-full oracle fix EXCLUDES row-repeats at close (NB: it
+excludes REPEATS / re-use of a gone row, NOT all row-off-diagonal — the genuine NON-repeat row-fans are real
+cover charts).
+
+**RULING: (i) hcanon-thread — the cap-support is claimed on the CANONICAL (full-diagonal) sub-family;
+#87 UNTOUCHED. (ii) REJECTED; (iii) is already the §9.4 mechanism.**
+- (i) is consistent with §9.4 AND mechanically sound: on the canonical sub-family (`CanonicalPivots` is
+  already FULL-diagonal, row+col=cleared — SourceClearedResid:414-415) `belowPivotCol` is nonempty at every
+  non-terminal clear (row=cleared < last until the terminal clear, where the residual is the `M'=1` unit and
+  the cap-support is vacuous), so the KILL holds. The `CanonicalPivots` carrier threads onto
+  `sourceClearedResid_capped` + the KILL + `realBranch_appendResidDescent` — the SAME carrier the chain
+  already uses (§9.10).
+- **(ii) #87 re-open to a tree-level row=cleared pin is REJECTED — it would kill GENUINE cover charts.**
+  Unlike the col (every off-diagonal-col is a phantom, §9.8), the ROW admits GENUINE non-repeat row-fans
+  (distinct rows, off-diagonal — a valid resolution: each clear removes a distinct row+col, reaches a leaf;
+  they transport via σ = the row permutation, #86B). Tree-pinning row=cleared kills these genuine charts —
+  the EXACT #85 error (IsRealBranch-strengthening killing the fan cover the charter keeps). So the row
+  stays free at the tree level; the cap-support is chain-scoped (hcanon), the genuine row-fans transport.
+- (iii) transport IS the §9.4 mechanism for the genuine (non-repeat) row-fans — not a new option.
+
+**THE CROSS-CHECK (load-bearing, with CAPF/CX): does the hcanon thread reach the summit through
+`MultiAffineStepWire`?** I verified `realBranch_appendResidDescent` is consumed in MultiAffineStepWire
+(:446/:508/:794) taking `hbranch` (IsRealBranch), with NO `CanonicalPivots`/`hcanon` currently. So the thread
+is NOT yet there — the carrier-threading must ADD `hcanon` to obligation-b/#6 + MultiAffineStepWire's descent
+and propagate UP to the summit's canonical scope (§9.4 scopes the summit canonical, so it SHOULD terminate
+there). (i) is clean + #87 untouched IFF the thread reaches; if a for-all-IsRealBranch consumer between
+obligation-b and the summit blocks it, escalate — but the escalation is NOT (ii)-row-pin (which kills genuine
+charts); it would be finding where the chain fails to be canonical-scoped and fixing THAT. seat-KILL's
+diagonal-scoped (hcanon) KILL render is correct under (i) — GO.
+
+### §9.11 ADDENDUM — the crux resolved: cap-descent is DIAGONAL-scoped per §9.4; confinement is a diagonal-only intermediate
+
+Controller re-derived (INV blob, not recollection): CanonicalPivots IS full-diagonal (SourceClearedResid:409
+def; :414-415 both case12/case2 pin `cornerToFlat(layer,cleared) = some pivot`; :88 `= (layer,cleared,cleared)`
+⟹ a=b=cleared) — confirms §9.11. AND option (i) has SAME-FILE PRECEDENT: SourceClearedResid:738 already
+carries `(hbranch) (hcanon : CanonicalPivots d p)` on an INV read-off (:734 docstring "hcanon (§9.4
+canonical-pin) pins the fan pivots to the diagonal so stored = ledger"). So the hcanon-thread is an
+established same-file pattern, #87 untouched — (i) is not novel.
+
+**THE CRUX RESOLVED (does the cap-descent visit off-diagonal nodes?).** Per the §9.4 architecture I ruled
+and the controller ratified: the chain (INCLUDING the cap-descent / conjunct-1) is an induction over the
+CANONICAL (diagonal, hcanon) sub-family; the off-diagonal genuine row-fans are NOT in the chain's induction
+— they get their per-chart LEAF facts via σ-transport (§9.4 L5). So the cap-descent's induction visits ONLY
+CanonicalPivots-holding (diagonal) nodes, where hcanon holds by construction. So (i) is the clean thread.
+KEY clarification (why (i) needs NO new transport obligation on the cap-support): the confinement
+(Deg1SupportedSlot) is a diagonal-only INTERMEDIATE that PRODUCES the diagonal leaf FORM; the off-diagonal
+leaf forms are σ-IMAGES of the diagonal leaf forms (labeled-jac preserved, #86B/C) — the confinement itself
+does NOT transport, only the leaf FORM does. So no new "transport the confinement" obligation; #86B/C already
+covers the leaf-form transport.
+
+**THE CROSS-CHECK (CAPF/CX + the summit-builder, the one lane-spanning open):** confirm the cap-descent /
+conjunct-1 chain CAN be structured as an induction over the canonical (diagonal) sub-family — i.e.
+`leaf_stepInv_of_path'` consumes conjunct-1 on the diagonal sub-family + the off-diagonal charts via
+σ-transport, NOT for-all-IsRealBranch. Currently `realBranch_appendResidDescent` is consumed for-all
+(hbranch, no hcanon, MultiAffineStepWire:446/508/794), so the re-scoping is the carrier-threading work (the
+INV:738 precedent shows it lands). IF the summit genuinely needs conjunct-1 for-all (off-diagonal nodes
+directly, not via leaf-transport) → the fallback is NOT the #87 row-pin (kills genuine row-fans, §9.11) but
+extending the σ-transport to carry the confinement — a bigger obligation to flag, not the default. MY CALL:
+structure the cap-descent as the diagonal-scoped induction (§9.4); the confinement is diagonal-only; (i) is
+clean. seat-KILL's diagonal-scoped render is exactly this — GO.
