@@ -17751,3 +17751,14 @@ the memo's summit ladder: the UNPRIMED MonumentAtlas chain (case1_preserves_step
 leaf_stepInv_of_path → the REGISTERED summit) carries no he — the retire-swap needs the pin
 threaded through the unprimed side first, else statement-identity fails; case2's swap is clean.
 Remaining pre-merge gate: the elder's shape-conformance delta + 7th-site bless.
+
+## 2026-07-24 (~05:00) — THE PINNED SPINE IS ON CANONICAL (1dffee025 + wire); gates green; census
+40→42 (the wall's 2 tracked frontiers now gate-visible)
+
+Merged on double-green (elder 7/7 + site-7 blessed; L3T3 diff-level PASS incl. the partial-
+application robustness detail). Controller gates on the merged tree: build 9014 exit-0 (+1 = the
+newly-wired MergeBoostSplit); cordon-all both halves; payoff roots clean-three; census 42 = 40 +
+exactly the 2 MergeBoostSplit frontiers (assembly + content capstone) — wired deliberately so the
+wall's open mathematics is gate-visible rather than sitting in an unwired file. NEXT: LL's
+one-argument rebase (its conjA case11 call passes he to the now-pinned wall) → LL's lane merge.
+L4D on the capstone throughout.
