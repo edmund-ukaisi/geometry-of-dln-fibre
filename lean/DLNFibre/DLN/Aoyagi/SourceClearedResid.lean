@@ -142,6 +142,7 @@ J≥1 cleared child, `layerCoords(S+1)`) is a SEPARATE raw-fold fact via the hom
 -- map: B-L3T-appendResidDescent-fresh-sourceCleared ⟨FRONTIER LEAF — §12.2 (b)-restatement⟩
 theorem realBranch_appendResidDescent_fresh_sourceCleared (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     {p : TreePath d} (ed : TreeEdge d p)
+    (hroll : ed.case = StepCase.rollover)
     (hfresh : (p.extend ed).conState.cleared = 0)
     (hlayer : (p.extend ed).conState.layer + 1 < N)
     (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
