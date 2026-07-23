@@ -20333,3 +20333,23 @@ KILL now (Codex on the inductive-invariant shape, artifact-first); its route: KI
 column coefficient b_e vanishes on coupling-cleared inputs (factors through ancestor couplings),
 needs a whole-path invariant (doesn't telescope on its own statement). CX's #87 rebase registered
 for #73. The KILL is now the expedition's single deepest open lemma — cleanly isolated.
+
+## 2026-07-23 (~18:45 UTC) — CFF cert (i) CLOSED (c148f4e88, cherry-picked the #87 pin clean);
+re-points GO'd with the CLOSURE-vs-full-DLNFibre gate clarified
+
+CFF closed the public canonNormalizationOf_vanishes_on_couplingCoords (hbranch+hcase → hpivC from
+the #87 col-pin + hpivL from canonCenterOf⊆layerCoords + hgrow → the PROVEN core); the ONLY cert-i
+hole is hlayerbd = CAPF's proven couplingCoords_decode_layer_le, held as a #73-consumable (not on
+CFF's base). Also banked conOracle_stepChild_layer_mono (the upstream step-monotonicity; #73-dedup
+candidate with CAPF's coupling-layer bound). CFF census: 6 sorries (cert-i hlayerbd #73 / (b) #73 /
+δ=1 #73 / conjA×2 #73 / conjB CAPF). RE-POINTS RULED + GO'd (CFF's (A+) scope per GM's handoff
+§4.7 + inherited per-file go): (a) case1/2_preserves_stepInv'' raw→cleared type change consuming
+ClearedFold.case1/2_preserves_cleared; (b) import ClearedFold→CaseStepAssembly (GM's designed
+direction, no cycle); (c) LastLayerWire :139/:145 — un-breaks the by-design red from GM's Case1Wire
+deletion; #73-STABLE (consume-by-name of sourceClearedResid, INV's version same signature at #73).
+THE GATE CLARIFICATION (CFF's real question): CFF's exit = CLOSURE-green-modulo-named-frontiers,
+NOT full-DLNFibre-green — CFF CANNOT produce the latter (its base lacks INV's spine + CAPF's cap;
+that assembly is the #73 controller merge). So CFF renders + verifies its import closure green
+modulo its named frontiers + reports the frontier list for #73. Board: BAKE integrated (#87 on
+canonical, green); CFF cert-i closed + re-points in flight; CX cap-crux → the ONE KILL lemma;
+INV resting; #73 assembles all onto the pinned canonical.
