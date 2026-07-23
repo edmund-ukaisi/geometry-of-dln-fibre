@@ -998,3 +998,40 @@ ALL boostReady (case11 AND case12/case2) live on the cleared object / `canonCent
 object-move, now seen to be all-cases). `realBranch_cover` re-points to the center cap. The naive-widen's
 `realBranch_cover` break is the signal that Role 2 belongs on the cleared object — not a wall. pnp's
 width-increasing witness settles the case12/case2 extent.
+
+### §12.2 — ADDENDUM: SUPERSEDE §12(1)'s widen — the CLEARED-OBJECT route (no widen; supportAt UNCHANGED)
+
+**The widen is WITHDRAWN. Ruling: the cleared-object route.** team-lead demonstrated (MonumentAtlas:1174–1200)
+that §12(1)'s widen does not merely break a proof — it **FALSIFIES `realBranch_cover`'s proven statement**
+(`supportAt(J=0) ⊆ ed.center` becomes `layerCoords ⊆ ed.center`, false on width-increasing `d`). And pnp-cap's
+proof template is **ruling-agnostic**: obligation (b) is provable under EITHER shape (same two ingredients,
+only the target ideal differs) — so this is purely a statement-architecture choice, and the cleared-object
+route is **conflict-free**. I concur; §12(1)/§12.1's "Role-1 widen" is superseded. (Owned: my §12(1) widen
+under-weighted the `realBranch_cover` falsification pnp-cap flagged twice — the third object-error this arc,
+again caught by the decorrelated gate before it rendered; and the fix is my own §7 architecture, generalized.)
+
+**THE RULING (cleared-object route):**
+- **`supportAt` / `blockCoords` — UNCHANGED.** The running-min cap stays; it is FAITHFUL for the cleared
+  object (Aoyagi's capped `D_J` IS the normal form's — the paper-first reading). No codim re-check;
+  `MergeBoostSplit`'s `part`/`extra` partition stands as drafted.
+- **`realBranch_appendResidDescent` obligation (b) — RE-STATED of `sourceClearedResid`** (the cleared object,
+  confined to `blockCoords` — pnp-transport verified on three cap-bite witnesses). This is the §7 (D)-object
+  move applied to the support side: on the cleared object the residual IS confined to the cap, so
+  `Deg1SupportedSlot` over `blockCoords` HOLDS. The raw fold's out-of-cap reading is the §9 artifact, not the
+  object.
+- **`realBranch_cover` — UNTOUCHED** (its proven `supportAt=blockCoords ⊆ ed.center` stays true; no
+  re-statement, no falsification). The case12/case2 δ=1 boostReady (`deg1SupportedOn_center_of_hslot`) also
+  reads the cleared object (§7 all-cases), where `blockCoords ⊆ ed.center` gives center-Deg1 directly.
+- **Obligation (a) — HOMOGENEITY route (pnp-cap a0ead56e3; corrects §12(2)):** proves via `(H)` the PROVEN
+  primed twin `foldResid_layerHomogeneous'` (its first load-bearing consumer, clean-three) + `(L)` step-map
+  preservation of `⟨layerCoords(S+1)⟩` (a bounded new lemma), composed — needs NEITHER `hslot` NOR the
+  b-ledger (the pivot term that killed the `hslot` route never arises; the layer-`(S+1)` decomposition
+  excludes the layer-`S` pivot). The b-ledger stays the CAPSTONE's machinery (property (D), the center-split).
+- **CROSS-IMPACT (shrunk):** just the frontier's obligation-(b) restatement (on `sourceClearedResid`) + the
+  docstring corrections (derive-class, obligation-(a)-via-homogeneity). `supportAt`/`blockCoords`/`canonCenterOf`/
+  the codim/`MergeBoostSplit` part-extra — ALL UNCHANGED. `λ`/payoff safe.
+
+**CAPR:** SPECIFY unfreezes against **UNCHANGED `supportAt`** — the `part`/`extra` partition stands; obligation
+(b) is stated of `sourceClearedResid` (the §7 architecture it already carries for the wall). This is strictly
+less churn than the widen and creates no new conflict. §12(1)/§12.1's widen framing is history; §12.2 is the
+operative ruling.
