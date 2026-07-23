@@ -19206,3 +19206,26 @@ for both + HOLD RELAXED on the containment: ledgerTarget = accumulatedPivots ∪
 NO couplingCoords, so after the redefine renders, the containment proof (leg-1 immediate by
 construction; leg-2 runLen ≤ widthMinUpto) can proceed WITHOUT waiting for #82; the δ=1/δ=0
 transports stay held on #82.
+
+## 2026-07-23 (~15:35 actual) — INV's #3 (import-DAG cutoff) ruled (A′): a new upstream helper
+module; the transport-shape review scheduled post-#82; elder's folded pass sequenced
+
+INV's structural assessment (crossed with the GO — #1/#2 already blessed): NEW #3 — the
+induction's home (SourceClearedResid) is the MOST-UPSTREAM capstone module, but its routes cite
+downstream-proven machinery (MultiAffineHomogWire helpers, Case1Wire δ-reductions, a
+MultiAffineStepWire oracle lemma), cycle-blocked via MergeBoostSplit → SourceClearedResid.
+RULED (A′), between INV's options: a NEW INV-owned module UPSTREAM of SourceClearedResid
+(SourceClearedHelpers.lean) holds the cycle-forced re-derivations — STATEMENT-IDENTICAL to the
+downstream originals where possible + a dedup-debt docstring per lemma ("import-cycle-forced;
+dedup at integration #73") — isolation without polluting the GM-consumed substrate file, no
+MonumentAtlas edit, the debt explicit for the close sweep. INV's strategic reframe accepted: its
+δ-transport core rides the same commutation class as GM's false-at-growth laws (the μ step law's
+"foldB's complement" intuition references exactly a false one-step law) — a COORDINATED
+transport-shape review for INV's δ-leaves is scheduled post-#82 with GM's locus core as the
+template; any statement moves go through the same bless cycle. INV's unblocked order confirmed:
+redefine+hN batch → containment → ROOT(c) → helper module + ROOT(b). continuous_submult banked
+@ ec6b60f2c (axiom-clean, INV's first bank). Elder crossing note: blessing already delivered;
+its folded confirming pass deliberately sequenced behind THREE events (#82 verdict, GM's case2
+twin addendum, pnp's locus-core verify) to read the FINAL settled def once — flag it when all
+three land. Elder's case2-twin note: the raw case2 StepInv likely holds (no merge coupling), so
+the cleared twin is a clean precompose transport — GM's easy case as expected.
