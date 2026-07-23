@@ -64,7 +64,7 @@ noncomputable def recoordCoeff (d : Fin (N + 1) → ℕ) (s : ConState N) (pv : 
     if (((tupIdxEquiv d).symm x).2 : ℕ) = (((tupIdxEquiv d).symm pv).1.2 : ℕ) then
       ∑ i ∈ Finset.range (d (⟨s.layer + 1, hSN⟩ : Fin N).castSucc),
         if blockEntryFlat d (s.layer + 1) (((tupIdxEquiv d).symm x).1.2 : ℕ) i = some j
-            ∧ i ≠ (((tupIdxEquiv d).symm x).2 : ℕ)
+            ∧ i ≠ (((tupIdxEquiv d).symm x).2 : ℕ) ∧ s.cleared ≤ i
         then readEntry d u s.layer i (((tupIdxEquiv d).symm pv).2 : ℕ) else 0
     else 0
 
@@ -114,26 +114,39 @@ theorem canonNorm_blockShear_linear_on_succLayer (d : Fin (N + 1) → ℕ) (s : 
     have hfiber : (∑ j ∈ layerCoords d (s.layer + 1),
         (∑ i ∈ Finset.range (d (⟨s.layer + 1, hSN⟩ : Fin N).castSucc),
           if blockEntryFlat d (s.layer + 1) (((tupIdxEquiv d).symm x).1.2 : ℕ) i = some j
-              ∧ i ≠ (((tupIdxEquiv d).symm x).2 : ℕ)
+              ∧ i ≠ (((tupIdxEquiv d).symm x).2 : ℕ) ∧ s.cleared ≤ i
           then readEntry d u s.layer i (((tupIdxEquiv d).symm pv).2 : ℕ) else 0) * u j) =
         ∑ i ∈ Finset.range (d (⟨s.layer + 1, hSN⟩ : Fin N).castSucc),
-          if i = (((tupIdxEquiv d).symm x).2 : ℕ) then 0 else
+          if i = (((tupIdxEquiv d).symm x).2 : ℕ) ∨ i < s.cleared then 0 else
             readEntry d u s.layer i (((tupIdxEquiv d).symm pv).2 : ℕ)
               * readEntry d u (s.layer + 1) (((tupIdxEquiv d).symm x).1.2 : ℕ) i := by
       rw [Finset.sum_congr rfl (fun j _ => Finset.sum_mul _ _ _), Finset.sum_comm]
       refine Finset.sum_congr rfl (fun i hi => ?_)
-      by_cases hic : i = (((tupIdxEquiv d).symm x).2 : ℕ)
-      · simp only [hic, ne_eq, not_true_eq_false, and_false, if_false, if_true, zero_mul,
-          Finset.sum_const_zero]
-      · rw [if_neg hic]
+      by_cases hicond : i = (((tupIdxEquiv d).symm x).2 : ℕ) ∨ i < s.cleared
+      · rw [if_pos hicond]
+        refine Finset.sum_eq_zero (fun j _ => ?_)
+        have hnc : ¬ (blockEntryFlat d (s.layer + 1) (((tupIdxEquiv d).symm x).1.2 : ℕ) i = some j
+            ∧ i ≠ (((tupIdxEquiv d).symm x).2 : ℕ) ∧ s.cleared ≤ i) := by
+          rintro ⟨_, hne, hle⟩; rcases hicond with h | h
+          · exact hne h
+          · omega
+        rw [if_neg hnc, zero_mul]
+      · rw [if_neg hicond]
         obtain ⟨fc, hB, hmem, hread⟩ := hentry i hi
-        simp only [hB, Option.some.injEq, hic, ne_eq, not_false_eq_true, and_true, ite_mul, zero_mul]
+        push_neg at hicond
+        simp only [hB, Option.some.injEq,
+          and_iff_left (⟨hicond.1, hicond.2⟩ :
+            i ≠ (((tupIdxEquiv d).symm x).2 : ℕ) ∧ s.cleared ≤ i), ite_mul, zero_mul]
         rw [Finset.sum_ite_eq, if_pos hmem, hread]
     -- `canonNormalizationOf` at the layer-`(s.layer+1)` coord `x`: guard-1 dead, guard-2 = the recoord sum
+    -- guard-(iii) (layer `S−1` input recoord) is dead at layer `S+1` (`S+2 ≠ S`)
+    have hthird : ¬ ((((tupIdxEquiv d).symm x).1.1 : ℕ) + 1 = s.layer ∧
+        (((tupIdxEquiv d).symm x).1.2 : ℕ) = (((tupIdxEquiv d).symm pv).2 : ℕ)) := by
+      intro h; have := h.1; omega
     have hcanon : canonNormalizationOf d s pv u x
         = if (((tupIdxEquiv d).symm x).2 : ℕ) = (((tupIdxEquiv d).symm pv).1.2 : ℕ)
           then ∑ i ∈ Finset.range (d (⟨s.layer + 1, hSN⟩ : Fin N).castSucc),
-            if i = (((tupIdxEquiv d).symm x).2 : ℕ) then 0
+            if i = (((tupIdxEquiv d).symm x).2 : ℕ) ∨ i < s.cleared then 0
             else readEntry d u s.layer i (((tupIdxEquiv d).symm pv).2 : ℕ)
               * readEntry d u (s.layer + 1) (((tupIdxEquiv d).symm x).1.2 : ℕ) i
           else 0 := by
@@ -141,12 +154,12 @@ theorem canonNorm_blockShear_linear_on_succLayer (d : Fin (N + 1) → ℕ) (s : 
       rw [if_neg hfirst]
       by_cases hg : (((tupIdxEquiv d).symm x).2 : ℕ) = (((tupIdxEquiv d).symm pv).1.2 : ℕ)
       · rw [if_pos ⟨hlayNat, hg⟩, if_pos hg]; simp only [hlay]
-      · rw [if_neg (fun h => hg h.2), if_neg hg]
+      · rw [if_neg (fun h => hg h.2), if_neg hthird, if_neg hg]
     -- the recoord coefficient sum matches, via the diagonal `hdelta` + fiber `hfiber`
     have hRHS : (∑ j ∈ layerCoords d (s.layer + 1), recoordCoeff d s pv hSN u x j * u j)
         = u x + (if (((tupIdxEquiv d).symm x).2 : ℕ) = (((tupIdxEquiv d).symm pv).1.2 : ℕ)
           then ∑ i ∈ Finset.range (d (⟨s.layer + 1, hSN⟩ : Fin N).castSucc),
-            if i = (((tupIdxEquiv d).symm x).2 : ℕ) then 0
+            if i = (((tupIdxEquiv d).symm x).2 : ℕ) ∨ i < s.cleared then 0
             else readEntry d u s.layer i (((tupIdxEquiv d).symm pv).2 : ℕ)
               * readEntry d u (s.layer + 1) (((tupIdxEquiv d).symm x).1.2 : ℕ) i
           else 0) := by
@@ -168,7 +181,7 @@ theorem canonNorm_blockShear_linear_on_succLayer (d : Fin (N + 1) → ℕ) (s : 
     · rw [if_pos hguard, if_pos hguard]
       refine congrArg _ (Finset.sum_congr rfl (fun i _ => ?_))
       by_cases hcond : blockEntryFlat d (s.layer + 1) (((tupIdxEquiv d).symm x).1.2 : ℕ) i = some j
-          ∧ i ≠ (((tupIdxEquiv d).symm x).2 : ℕ)
+          ∧ i ≠ (((tupIdxEquiv d).symm x).2 : ℕ) ∧ s.cleared ≤ i
       · rw [if_pos hcond, if_pos hcond]
         exact readEntry_eq_of_agree_off d s.layer (s.layer + 1) i
           (((tupIdxEquiv d).symm pv).2 : ℕ) (by omega) u v hag
@@ -195,15 +208,29 @@ theorem canonNormalizationOf_agree_off_succLayer (d : Fin (N + 1) → ℕ) (s : 
   have hlayne : (((tupIdxEquiv d).symm k).1.1 : ℕ) ≠ s.layer + 1 :=
     fun h => hk (mem_layerCoords_of_decode d _ k h)
   simp only [canonNormalizationOf]
+  have hg2 : ¬ ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer + 1 ∧
+      (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm pv).1.2 : ℕ)) := fun h => hlayne h.1
   by_cases hg1 : (((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer ∧
       (((tupIdxEquiv d).symm k).1.2 : ℕ) ≠ (((tupIdxEquiv d).symm pv).1.2 : ℕ) ∧
       (((tupIdxEquiv d).symm k).2 : ℕ) ≠ (((tupIdxEquiv d).symm pv).2 : ℕ) ∧
       s.cleared ≤ (((tupIdxEquiv d).symm k).1.2 : ℕ) ∧ s.cleared ≤ (((tupIdxEquiv d).symm k).2 : ℕ)
-  · rw [if_pos hg1, if_pos hg1,
+  · -- guard-(i): the layer-`s.layer` Schur cross-term reads layer `s.layer` (off `s.layer+1`)
+    rw [if_pos hg1, if_pos hg1,
       readEntry_eq_of_agree_off d s.layer (s.layer + 1) _ _ (by omega) u v hag,
       readEntry_eq_of_agree_off d s.layer (s.layer + 1) _ _ (by omega) u v hag]
-  · have hg2 : ¬ ((((tupIdxEquiv d).symm k).1.1 : ℕ) = s.layer + 1 ∧
-        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm pv).1.2 : ℕ)) := fun h => hlayne h.1
+  · -- guard-(ii) dead (k off layer `s.layer+1`); dispatch guard-(iii) (layer `s.layer−1` input recoord)
     rw [if_neg hg1, if_neg hg1, if_neg hg2, if_neg hg2]
+    by_cases hg3 : (((tupIdxEquiv d).symm k).1.1 : ℕ) + 1 = s.layer ∧
+        (((tupIdxEquiv d).symm k).1.2 : ℕ) = (((tupIdxEquiv d).symm pv).2 : ℕ)
+    · -- branch-(iii): reads layer `s.layer` and layer `(decode k).1.1 = s.layer−1`, both off `s.layer+1`
+      rw [if_pos hg3, if_pos hg3]
+      refine Finset.sum_congr rfl (fun k' _ => ?_)
+      by_cases hk'cond : k' = (((tupIdxEquiv d).symm pv).2 : ℕ) ∨ k' < s.cleared
+      · rw [if_pos hk'cond, if_pos hk'cond]
+      · rw [if_neg hk'cond, if_neg hk'cond,
+          readEntry_eq_of_agree_off d s.layer (s.layer + 1) _ _ (by omega) u v hag,
+          readEntry_eq_of_agree_off d (((tupIdxEquiv d).symm k).1.1 : ℕ) (s.layer + 1) _ _
+            (by have := hg3.1; omega) u v hag]
+    · rw [if_neg hg3, if_neg hg3]
 
 end DLNFibre.DLN.Aoyagi
