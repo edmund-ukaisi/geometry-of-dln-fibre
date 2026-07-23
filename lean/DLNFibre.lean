@@ -1622,6 +1622,11 @@ import DLNFibre.DLN.Aoyagi.MultiAffineStepWire
 -- the assembly (MergeBoostSplit.deg1SupportedOn) + the content capstone
 -- (foldResid_case11_mergeBoostSplit_canon, canonFlatten-stated per the idiom ruling).
 import DLNFibre.DLN.Aoyagi.MergeBoostSplit
+-- lastLayer lane (LL, pinned family per the idiom ruling): conjA FULLY WIRED (case12/2 =
+-- pin + origin-vanishing kills the unit disjunct; case11 consumes the wall at S=L, he by rfl;
+-- rollover excluded). ONE tracked frontier lemma (lastLayer_clear_preserves': the conjunct-2
+-- S=L slot-flip + the born-unit — both consume the capstone's split per the banked contract).
+import DLNFibre.DLN.Aoyagi.LastLayerWire
 -- LeafGeometryWire: seat-L3T's L8 proof (leafPath_realizesExponents', clean-three) ported to the
 -- baked tip by seat-L3T2; the MonumentAtlas L8 sorry-swap rides the post-pin mini-round.
 import DLNFibre.DLN.Aoyagi.LeafGeometryWire
