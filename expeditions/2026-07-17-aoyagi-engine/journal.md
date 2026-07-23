@@ -15546,3 +15546,21 @@ gate applied REFLEXIVELY to the adjudicator; convergence ≠ verification (the e
 and the wrong reading agreed; the mechanical def-trace broke the tie). Paired with the
 controller's artifact-first/brief-second rule: provenance and propagation, two halves of one
 failure class, both now standing.
+
+## 2026-07-23 (~00:50) — elder pins the ROUTING (ideal-preservation failure = route-adoption event, to the elder directly) + the ACCEPTANCE BAR for the completed def
+
+Two elder additions, relayed to all three consumers:
+(1) ROUTING: pnp-transport's flag-up on a baked-def IDEAL-PRESERVATION failure goes to the ELDER
+directly AND the controller, simultaneously — such a failure is a route-adoption-level event
+(the N_p bake would have monomialised a step map that does not preserve ⟨∏C⟩, reopening the
+monument's own ratification, charter §1-B; may pull in the operator — definition-of-done for
+Object B). Monomialisation-only = narrower, still to both. Both-hold + boost-form-only broken =
+the clean def-edit-3 lane, normal delta-read.
+(2) ACCEPTANCE BAR (on record for every arm of the verdict): a completed def-edit-3 must make
+the BAKED foldResid carry the e₂-factoring matching honest_clear — COEFF-0 leftover in the
+running frame — on BOTH wide witnesses, traced on the baked def; any residual leftover (coeff 1
+or 2) = still unpaired = field still false. Same bar under SKELETON-REVISION; only the mechanism
+differs. seat-L4D's candidate spec must predict the leftover→0; pnp's completed-candidate rows
+confirm; arch-C's row-(i)-turns-GREEN is the render-side confirmation.
+
+Board unchanged; everything gates on the L4D branch verdict.
