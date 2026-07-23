@@ -21407,3 +21407,31 @@ discharge stay MINE at wire. Recorded #101.
 banked). seat-descent on the KILL step (hredEB + growth V3, consuming CFF blocks). Controller-owned
 wire work queued: σ-cover-bridge + fan-completeness (L7) + the #73 cleared-chain integration.
 Awaiting: seat-descent hredEB green, seat-L7cover tree-fold green.
+
+## 2026-07-24 (~02:40 UTC) — seat-descent checkpoint: FP + all structural machinery GREEN (KILLSTEP 83816043e, 1068 LoC); remaining (1)-(4) precisely scoped; resourcing AFFIRMED solo + pnp-cap carrier in parallel
+
+seat-descent banked a checkpoint (KILLSTEP 83816043e, all green, pushed, one live sorry = the whole
+step): the FP fully done — canonNormalizationOf_vanishes_on_couplings (the hardest algebra: the
+recoord shear vanishes on ancestor couplings on a cleared input; branch (i) current-pivot
+below-column, (ii) can't-fire, (iii) diagonal-ancestor sibling) — plus 10 reusable structural lemmas
+(cornerToFlat_decode, couplingCoords_row_gt_col, couplingCoords_mem_belowPivotCol,
+readEntry_couplingClear_eq_zero, ignoresCoords_comp, couplingClear_agree_of_agree, …). The outer
+statement + terminal + 3-arm dispatch + escapedBelow transitions all proven.
+
+REMAINING (precisely scoped, mechanism resolved): (1) AT completeness invariant
+couplingCoords_covers_cleared (~70 lines; KEY fact — case11 does NOT advance `cleared`, so the wmu(S)
+clears reaching rollover are ALL case2/case12, each adding its belowPivotCol → completeness holds
+despite case11 merges); (2) Sat via (1) + the wmu-dichotomy (~60); (3) hredEB wiring FP+AT+IH per δ
+(~40) → finishes #97; (4) growth-V3 coreGen ∏A layer-descent (~150, needs pnp-cap's carrier) → #98.
+
+RESOURCING AFFIRMED (seat-descent asked): continue SOLO on (1)-(3) — it owns CapDescent + full
+context; a 2nd seat only conflicts on the same file, no parallelism gain (sequential-ish). seat-KILL
+already answered the (1) consume question (crossed the checkpoint: completeness lemma NOT banked in
+CFF → build fresh, matches seat-descent's plan). The ONE genuinely-parallel piece = (4)'s carrier from
+pnp-cap (direct-loop authorized: seat-descent↔pnp-cap for the coreGen ∏A descent carrier) — delivered
+in parallel so it's ready when seat-descent reaches (4) after (1)-(3).
+
+**Status.** KILL step: FP + machinery green; (1)-(3) solo (finishes #97), (4) with pnp-cap's carrier
+(#98). seat-L7cover rendering the full-fan cover under (A) (fan-lift banked). Wall (a) both sides,
+#99 closed. Awaiting: seat-descent hredEB green (#97), seat-L7cover tree-fold green, pnp-cap growth
+carrier.
