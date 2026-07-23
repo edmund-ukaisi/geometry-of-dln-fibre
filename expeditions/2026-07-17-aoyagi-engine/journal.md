@@ -21535,3 +21535,35 @@ unreviewed engine into the summit — the hunt precedes trust).
 mine, gated on the review. KILL step: hard algebra done, (A)+(B) mechanical (seat-descent continuing
 → #97), (C) growth-V3 carrier commissioned (pnp-cap, #104). Wall (a) both sides. Awaiting: rev-L7cover
 verdict, seat-descent #97 green, pnp-cap growth carrier.
+
+## 2026-07-24 (~04:25 UTC) — GROWTH-V3 CARRIER delivered (pnp-cap #104, Codex-hardened + stress-tested); core CONTROLLER-VERIFIED (descent lemma exit 0, incl. the d0>wmu(1) coverage); the (C)/#98 gate is unblocked
+
+pnp-cap delivered the growth-V3 descent carrier (#104, cap-growth-carrier.md @ f890f2ad4), handed to
+seat-descent (I cc'd). The carrier: the escaped-col coeff at the last clear = [left, layers≥S+2] ×
+[row e of prefix product P_S]; the DESCENT LEMMA "row r≥wmu(L+1) of P_L ∈ ⟨accumulated
+couplingCoords(0..L)⟩" discharges it, by downward induction on the layer index (multPrefix peel
+P_L=A_L·P_{L-1}, per-layer split j<wmu(L+1)[coupling]/j≥wmu(L+1)[recurse], bottleneck-terminating).
+Scope: diagonal/hcanon (#95).
+
+CORE CONTROLLER-VERIFIED: re-ran cap_growth_descent_lemma.py from f890f2ad4 (exit 0) — the descent
+lemma holds on ALL witnesses, INCLUDING the d0>wmu(1) cases (d=(3,4,4,4,4)/(3,2,4,4,4): survivors=0,
+bottleneck-terminating) that pnp-transport's all-d0=2 multilayer witnesses did NOT exercise. So the
+coverage gap is genuinely closed; the carrier is robust (not a statement-class gap). The heavier
+battery (cap_growth_carrier_battery.py, N=4-depth-3) timed out my 2-min window (compute-heavy);
+re-running in background (bre2ggamg) for full confirmation.
+
+TWO decorrelated catches (the discipline done right):
+1. pnp-cap's STRESS-TEST exercised d0>wmu(1) + interior-wmu-drop + N=4-depth-3 — beyond pnp-transport's
+   d0=2 witnesses — confirming robustness where the earlier witnesses didn't reach.
+2. CODEX red-team caught pnp-cap's OWN first-draft FALSE justification ("case (ii) non-empty ⟹
+   wmu(L+1)=wmu(L)" — FALSE, (5,5,3) L=1) and hardened the proof ORDER: vacuity-split FIRST; the
+   wmu-equality comes from the remnant-row EXISTENCE (wmu(L+1)≤r<d_{L+1}), NOT from case (ii). This is
+   load-bearing for the render; seat-descent has it explicitly (relayed the flag).
+
+Handed to seat-descent for (C)/#98 (queued after (A)+(B); direct pnp-cap consult authorized for a
+per-level witness trace).
+
+**Status.** KILL step: hard algebra done; (A)+(B) mechanical (seat-descent → #97); (C) growth-V3
+carrier DELIVERED + core-verified (render after (A)+(B)). L7 cover: engine done (M2), under review
+(rev-L7cover); wire mine, gated. Wall (a) both sides. Awaiting: rev-L7cover verdict, seat-descent #97,
+the (C) render, the battery bg-confirm.
