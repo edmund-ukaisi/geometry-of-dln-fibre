@@ -17593,3 +17593,15 @@ cordon, forced axioms) but never git-added — the pushed canonical lacked it un
 Consequence window: origin's builds would not compile the 4 new modules (local truth ≠ pushed
 truth). Lesson: the commit-coherence check belongs in the merge checklist — `git status` must be
 CLEAN after a merge-integration push, not just gates-green.
+
+## 2026-07-24 (~00:45) — wall SPECIFY banked (MergeBoostSplit skeleton @ 833c38bcf on -L4D-wall);
+CaseStepAssembly merge gates running
+
+L4D's SPECIFY: MergeBoostSplit predicate + 2 tracked sorries (assembly :39 — reachable, proving
+now; content :52 — the capstone). Codex route re-homed to threads/. Wiring ruled: rides the wall
+lane's merge (post-idiom-ruling, assembly proved) — wiring a skeleton whose outer statements are
+known-to-move is churn. Steer sent on the Disjoint hypothesis (state it as the set-difference fact,
+not a free hyp). Meanwhile on canonical: CaseStepAssembly merged (0dc89dc4d) + 3 fossil hunks
+applied (MonumentAtlas ×2, Case2Wire ×1; Case1Wire's HELD for #38) + case1''/case2'' added as
+gated AxCheck roots with documented expected footprints; full build in flight, then cordon + push.
+Still gating: THE IDIOM RULING (elder queue).
