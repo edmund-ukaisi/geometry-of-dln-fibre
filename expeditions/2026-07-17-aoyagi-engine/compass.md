@@ -70,15 +70,25 @@ tight): her residual block `D_J` is `(M(S)−J)×(M^(S+1)−J)` — running min 
 axis, the COLUMN axis is the RAW next-layer width `M^(S+1)`; the Lean `supportAt` capped it at
 `widthMinUpto` (docstring :551–555 conflated the blow-up CENTER, correctly capped, with the descended
 RESIDUAL support, raw). FIX = `(a)` widen the descended branch to `layerCoords(S+1)`; `J=0`/`blockCoords`
-unchanged. **FORM** (too weak): the case-11 reuse is her `d`-block `= u_{s,k}·d'` factoring; the Lean
-`Deg1SupportedSlot` carried continuity-only `∃c`. FIX = a COHERENT PRODUCT factoring conjunct
-`c_i = (∏ active Schur exceptionals) · β_i` = her `diag(b)` — NOT pure value-vanishing (Codex 2a: no
-continuous quotient) NOR a per-divisor vanishing conjunction (Codex 2b: does not compose for continuous
-coeffs). **FRAME** (coords-of-record, the ambiguity class that hid the cap-escape): `foldResid`'s argument
-is the node frame PRE-shear (`foldG_eq_pathMap`), so the exceptional is a CONTINUOUS COMBINATION `e₂(u)`,
-not a coordinate; ruled F-value (native frame, matching the `(a)`-support) over F-frame (recoord — would
-drag support to the rejected `(c)` / a two-frame slot). Both defects meet at the reused divisor's earlier
-descended clear (the field's INTRO obligation) ⟹ one joint re-bake (fork B; A/C rejected). Hedge CLOSED —
+unchanged. **FORM** (initially mis-ruled, then RETRACTED — the instructive arc, §8 of the ruling): the wall seemed
+to need a carried field, FIRST ruled a coherent-product factoring conjunct. WRONG — fitted to a BROKEN
+def. The 12th catch: `canonNormalizationOf` branch (ii) had the wrong recoord inverse (`A_{S+1}·Q₁⁻¹`,
+`+γ`, DOUBLES the uncleared cross-term — the def faithfully rendered a certificate §1 DIRECTION error).
+FIX = **R3**, the single-branch sign flip to `A_{S+1}·Q₁` (`−γ`), CANCELS it clean, unipotent (Codex Q1
+confirmed the direction vs worked.tex:445 — the certificate's inverse was an old-to-new/new-to-old
+confusion). CRISIS BOUNDED: the baked fold is a globally-invertible automorphism, so the RLCT VALUE was
+never at risk and the resolution is VALID; only MONOMIALISATION (the `M_{s,k}` reading-off vehicle)
+failed — no monument reopening, no operator escalation (both instruments concur). With R3 the residual is
+CLEAN = Aoyagi's `[[1,O],[O,D_{J+1}]]` (worked.tex:619-629); the exceptionals live in the EXTERNAL
+b-ledger (`foldB`), NOT inside `D_J` (Codex Q2 FACT, "not genuinely ambiguous"; her Case-1(1) `d=u_{s,k}d'`
+is TRANSIENT). So the FIELD is RETRACTED entirely (both my additive form and the product form): READING B
+(`foldResid` = clean residual, not the b-scaled product); boost-readiness DIRECT from clean `D_J` +
+existing `foldB` (partial rows → center coord; complementary rows → reused exceptional from external
+`b_i`); the 11th "form too weak" catch DISSOLVES; DEF EDIT 2 UNNEEDED or minimal. R4 (generator transform)
+stood down (R3 smaller); pnp's R5 (restate to non-diag block) REJECTED unfaithful (she clears each step,
+worked.tex:619-629). The re-bake shrinks to SHAPE-widen + R3. LESSON: the field (mine + the confirming
+Codex read) was downstream of the broken def — an analysis fitted to a symptom; the def-fidelity §5 harness
+(transcribe the baked def) caught it. Hedge CLOSED —
 KILLED-BY-e: a scrambling `e` gives degree-2 in a base-`coreGen` extra coord, so the `∀e` wall is FALSE not
 just unprovable ⟹ the `canonFlatten` base pin and the b-chain field are NECESSARY, no escape. `PerLayerDeg1From`
 UNTOUCHED; numeric `M_{s,k}` ledger stays in Objects C/D. RETIRED predecessor flags: fix-β (row-cap the fan)
