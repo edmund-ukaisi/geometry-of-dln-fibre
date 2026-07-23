@@ -19978,3 +19978,27 @@ The elder's new discipline: every def-edit bless runs against a known-tripwire c
 blessing. The day's mutual-catch symmetry noted: its instruments caught my exemption error; my
 gate caught its form-bless — both pre-render, the decorrelation architecture working as built.
 The #87 render seat spawns on pnp's surface confirm.
+
+## 2026-07-23 (~17:30 UTC) — pnp CONFIRMS (α) + CORRECTS its own reason (COMPLETENESS, not
+foldB-phantom); seat-BAKE SPAWNED (the #87 pivot-pin, mini-SPECIFY-gated); CFF's contract doc
+supersession relayed; GM's final handoff banked at the requested path
+
+pnp's confirm: (α) — the rule-(b) column condition pivot.col = s.cleared — recommended as
+STATE-EXPRESSIBLE (a pure state condition, no new def); it independently verified the 26th
+catch at the def (a column center fails realBranch_cover's containment). ITS HONEST
+SELF-CORRECTION (the reason, not the conclusion): "every off-diagonal-col birth is a
+foldB-phantom" was FALSE (own counterexample (3,3,3) with foldB ≠ 0); THE LOAD-BEARING
+CRITERION IS COMPLETENESS — a legitimate branch clears each wMU column exactly once, the
+counter forces col_k ≥ k, so completeness forces col_k = k; every off-diagonal-col branch
+STRANDS a column (no valid leaf) — enumeration-verified on (3,3,3) + (3,4,2,2). Same exact-drop
+conclusion, sharper reason; §9.9's record re-anchoring requested. The coverage rider sharpened:
+leafPath_compactCover (L7 — a SORRIED frontier, so future-provability not broken-build) uses
+row-fan charts only; the col-orbit = the #86(B) transport image; pnp-fan #11-14 arbiter at the
+L7/L5 SPECIFY. SEAT-BAKE spawned on a canonical-based lane: mini-SPECIFY gate (the exact Lean
+form + THE CONSUMER SWEEP — IsRealBranch strengthens, so hypothesis-side verbatim-safe modulo
+destructure patterns, and every witness-CONSTRUCTION site gains the col-condition obligation,
+each discharge named) → my ack (+ elder parallel ack) → the surgical edit → gates incl.
+realBranch_cover re-verified clean (THE tripwire theorem, checked explicitly). GM's final
+handoff banked at the requested path (gm-clearedfold-handoff.md @ 3ed42a3d4, superseding the
+earlier doc — CFF notified to fetch the newer version, one commit past its base). GM retired to
+unit-consult with the unit's full arc acknowledged.
