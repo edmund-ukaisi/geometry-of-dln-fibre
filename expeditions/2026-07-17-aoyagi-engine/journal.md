@@ -20218,3 +20218,24 @@ construction, confirmed in the recount. The sweep is now internally consistent f
 BAKE at the build gate (throttled behind concurrent seat builds); report with the axiom diff +
 printouts follows on green — then the merge-order (0): BAKE lands first per #73's derived
 topology.
+
+## 2026-07-23 (~17:45 UTC) — THE 28th CATCH (seat-CX, pre-proof): sourceClearedResid_capped FALSE
+at last-layer J≥1 nodes; fix-shape (guard-add vs LastLayerInv-disjunction) → CAPF+pnp
+
+CX stress-tested the FROZEN crux statement BEFORE proving and found it false at last-layer clear
+nodes (q.layer=N-1, cleared≥1): supportAt = ∅ (the def's 3rd arm, S+1=N not <N), so
+Deg1SupportedSlot forces sourceClearedResid≡0, but a cleared last-layer slot is a UNIT — the
+incompatibility the design's own LastLayerInv (:650-675, the per-slot DISJUNCTION) documents.
+CONTROLLER-CONFIRMED at ground truth (the supportAt def + the helper's only-hnonterm guard + the
+consumer's hfresh+hlayer). Reachable at (2,2,2) node (layer 1, cleared 1). This is the SECOND
+frozen-statement falsity a fresh render seat caught pre-proof in the cap/cleared arc (27th =
+cert (i); 28th = the capped helper) — both the canonical-vs-general gap (pnp verified rollover/
+cleared=0 nodes; the last-layer J≥1 clear was out of scope). CONTAINMENT: the only SORRIED
+frozen CapDescent statement is this crux; its siblings are PROVEN (Lean-checked, can't harbor
+this), so the catch is contained to the one open lemma. FIX-SHAPE routed to CAPF (induction
+designer) + pnp (mechanism): the decider is whether the path induction to the cleared=0 fresh
+child VISITS last-layer J≥1 nodes — NO ⟹ a one-hypothesis-add (hlayer, which the sole consumer
+already carries, or the narrower cleared=0); YES ⟹ re-state to LastLayerInv's disjunction at
+those nodes. Bounded, known-shape either way; the elder ratifies the frozen-statement change.
+CX grinds the guard-INDEPENDENT core (couplingClear-composition + the J=0 escaped-column kill,
+the genuine crux) meanwhile. 28/28 pre-render.
