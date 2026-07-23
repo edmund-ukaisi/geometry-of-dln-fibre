@@ -877,9 +877,10 @@ render-object battery now RESOLVES §8(m)'s CONTESTED-but-MOOT: on the render's 
 
 **THE CORRECT GROUNDING (what the docstring and §9 should say).** The scope `cleared ≤ i` is kept
 because not summing the already-cleared outer-pivot rows is her accumulated-`Q₂'⁻¹` current-chart
-semantics, which keeps `E_J`'s col-0 free of the pivot-row coord — faithful to her normalized `D_J`.
-Unscoped, branch-(ii) would re-inject `w_{i,b}` terms from rows her `Q₂'⁻¹` has already zeroed: a
-FIDELITY defect (the residual block no longer matches `D_J`), even though the degree bound survives.
+semantics, which keeps `E_J`'s col-0 free of the pivot-row coord `u₀₀₁` — the faithful clean cleared
+column. Unscoped, col-0 acquires a `u₀₀₁·u₀₁₀` leak (linear in `u₀₀₁`; pnp row 3,
+`f2-render-battery-note.md`): re-injected `w_{i,b}` terms from rows her `Q₂'⁻¹` has already zeroed —
+a FIDELITY defect, even though the degree bound (≤1 in `u₀₀₁`) survives either way.
 
 **THE TWO-AXIS PICTURE SURVIVES — structurally, not by degree.** I still endorse it: the `+γ`-pairing
 is a within-step (INTRA-edge) ideal-close choice; the `cleared ≤ i` scope is keyed to `s.cleared`,
