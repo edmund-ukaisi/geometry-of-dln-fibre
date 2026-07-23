@@ -44,19 +44,26 @@ rollover `→(S+1,0)`; a real rollover pins `center=∅`, `shear=id`, and is alw
     supportAt(S,0) → layerCoords(S) for S≥1 (`cap_frontier_fixcheck.py`, exit 0).
 
 So: obligation (a) → **docstring correction** (proof route in §2); obligation (b) → **statement fix**
-(supportAt) THEN the same §2 route. Neither re-opens downstream math; the render cost rises (open the
-recursion) but the recursion, StepInv on `supportAt`, and the RLCT value are untouched.
+(supportAt) THEN the same §2 route. Neither re-opens downstream math; the recursion-opening is already
+DONE (the proven primed twin `foldResid_layerHomogeneous'` supplies (H)), so the cap render only adds the
+bounded (L) lemma; the recursion, StepInv on `supportAt`, and the RLCT value are untouched.
 
 ## 2. THE PROOF ROUTE — descent = homogeneity + Φ-ideal-preservation (renderable, `hslot`-free)
 
 The support-decomposition comes from the parent's **homogeneity**, not `hslot`. Two ingredients:
 
-**(H) Parent homogeneity** (from `foldResid_layerHomogeneous`, the sibling conjunct-2 the target already
-names). `HomogeneousDeg1On (foldResid p j) (layerCoords d (S+1)) V` at `S+1 ≥ supportLayerOf(p.conState)`
-(true for every interior edge: parent supportLayer is `S` at δ=1 and `S+1` at δ=0, both `≤ S+1`). Its
-vanishing clause is exactly `foldResid p j ∈ ⟨layerCoords(S+1)⟩`, and its `AffineOn` part gives the
-explicit decomposition
+**(H) Parent homogeneity — PROVEN, not contingent.** `foldResid_layerHomogeneous'`
+(`MultiAffineHomogWire:221`, sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`, already a
+live consumer in `LastLayerWire`): for `supportLayerOf(p.conState) ≤ ℓ < N`,
+`HomogeneousDeg1On (foldResid d (canonFlatten d) p j) (layerCoords d ℓ) (foldRegion …)`. Take `ℓ = S+1`
+(`≥ supportLayerOf` for every interior edge: parent supportLayer is `S` at δ=1 and `S+1` at δ=0, both
+`≤ S+1`). Its vanishing clause is exactly `foldResid p j ∈ ⟨layerCoords(S+1)⟩`, and its `AffineOn` part
+gives the explicit decomposition
     foldResid p j (w) = ∑_{k ∈ layerCoords(S+1)} b_k(w)·w_k,   b_k continuous.
+(The unprimed `foldResid_layerHomogeneous` at `MonumentAtlas`, task #8, is the SUPERSEDED sorried fossil —
+NOT consumed.) **`foldResid_layerHomogeneous'` is `canonFlatten`-specific** (base
+`coreGen_layerHomogeneous'` is per-layer multilinear only at `e = canonFlatten d`; KILLED-BY-e for a
+scrambler), so this route — and hence obligation (a)'s proof — is `canonFlatten`-specific; see §5 note.
 
 **(L) Φ preserves the ideal** ⟨layerCoords(S+1)⟩ (the load-bearing NEW lemma; `cap_frontier_homog_route.py`,
 exit 0, all four edge types + wide rollover). For every `k ∈ layerCoords(S+1)`, `Φ u [k]` is a continuous
@@ -91,9 +98,10 @@ only per-edge content is the `edgeShearRaw`/`blockBlowupMap` reduction inside (L
   readEntry(u,S+1,row,i)` on the col-`=a` coords — layer-S coefficient × layer-(S+1) coord. `Ã` picks up
   those layer-(S+1) coords.
 
-`foldResid_layerHomogeneous` supplies (H) for the parent; the target consumes IT (and `hbranch` for the
-shear pin), NOT `hslot`. `hslot` may be dropped from the hypotheses, or retained as the conjunct-1 the
-FoldStepInv carries (harmless, unused by this proof).
+`foldResid_layerHomogeneous'` (PROVEN, `MultiAffineHomogWire:221`) supplies (H) for the parent; the target
+consumes IT (and `hbranch` for the shear pin), NOT `hslot`. `hslot` may be dropped from the hypotheses, or
+retained as the conjunct-1 the FoldStepInv carries (harmless, unused by this proof). Obligation (a) then
+consumes ONLY proven machinery + the bounded new (L) lemma — no live-frontier dependency.
 
 ## 4. Docstring correction to flag (controller's single-writer file)
 
@@ -116,15 +124,22 @@ must be re-checked under the widening. Cross-impact: `FoldStepInvAt` / capstone 
 so re-run the capstone battery on a width-INCREASING witness after the fix (the tested witnesses were all
 non-increasing — coverage gap).
 
+**Third statement-shape point (the e-pin).** The proven (H) `foldResid_layerHomogeneous'` is
+`canonFlatten`-specific (KILLED-BY-e), so obligation (a)'s proof is `canonFlatten`-specific. The target
+(`MonumentAtlas:1442`) currently has a FREE `e`; to consume (H) it must be pinned to `e = canonFlatten d`
+(consistent with the arc's e-PIN and the capstone's §6 KILLED-BY-e). A free-`e` form is not provable by
+this route (and is false for a scrambler). Flag alongside the docstring/supportAt fixes.
+
 ## 6. Kill-conditions
 
 - **(L)**: if `Φ u [k]` for some `k∈layerCoords(S+1)` failed to vanish at `layerCoords(S+1)=0` — checked
   FALSE (all edge types, `cap_frontier_homog_route.py`). Depends only on: pivot ∈ layer S, center ⊆ layer S,
   and canonNormalizationOf branch (ii) reading only layer-S/layer-(S+1). If a future `canonNormalizationOf`
   edit made branch (ii) write a layer-(S+1) coord a term reading layer ≥ S+2, (L) could break — re-check.
-- **(H)**: if `foldResid_layerHomogeneous` is NOT ℓ=(S+1)-homogeneous at some interior parent — it is
-  stated for ℓ ≥ supportLayer ⊇ {S+1}; but it is itself a live-frontier sorry (task #8), so this route is
-  contingent on it landing. It is TRUE on the real object (`empirical-invariant-table` §2 degrees; Part B).
+- **(H)**: PROVEN (not contingent) — `foldResid_layerHomogeneous'` (`MultiAffineHomogWire:221`) is
+  sorry-free/axiom-clean and stated for ℓ ≥ supportLayer ⊇ {S+1}, `canonFlatten`-specific. (The earlier
+  contingency on task #8's unprimed fossil DISSOLVES: the primed twin, L3T3's lane, is the load-bearing
+  consumer here.) Also cross-confirmed TRUE on the real object (`empirical-invariant-table` §2; Part B).
 - **Route soundness**: if the composed `c'_{k'}` were discontinuous — impossible (finite sums/products of
   continuous maps + continuous `Φ`).
 
