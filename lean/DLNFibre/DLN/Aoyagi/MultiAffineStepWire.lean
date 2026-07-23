@@ -351,23 +351,18 @@ theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d 
   -- parent support and threshold = `blockCoords (layer+1)`, `layer+1`
   have hFLpar : supportLayerOf p.conState = p.conState.layer + 1 := by
     rw [supportLayerOf, if_neg hcl]
+  -- parent support widened to `layerCoords (S+1)` (the J≥1 branch; arch-C §8(i) supportAt re-bake).
   have hCSpar : supportAt d p.conState.layer p.conState.cleared
-      = blockCoords d (p.conState.layer + 1) := by
+      = layerCoords d (p.conState.layer + 1) := by
     rw [supportAt, if_neg hcl, if_pos hN1]
-  -- child support and threshold coincide with the parent's (all subcases)
+  -- child support-LAYER coincides with the parent's (`S+1`, all subcases); the child support SET does
+  -- NOT (rollover drops to `blockCoords`, J=0 fresh layer) — computed per-branch below.
   have hFLchild : supportLayerOf (p.extend ed).conState = p.conState.layer + 1 := by
     rw [hcs]
     rcases htrans with ⟨_, _, hL, hC⟩ | ⟨_, hL, hC⟩ | ⟨_, hL, hC⟩
     · rw [supportLayerOf, hC, if_pos rfl, hL]
     · rw [supportLayerOf, hC, if_neg (by omega : ¬ p.conState.cleared + 1 = 0), hL]
     · rw [supportLayerOf, hC, if_neg hcl, hL]
-  have hCSchild : supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
-      = blockCoords d (p.conState.layer + 1) := by
-    rw [hcs]
-    rcases htrans with ⟨_, _, hL, hC⟩ | ⟨_, hL, hC⟩ | ⟨_, hL, hC⟩
-    · rw [hL, hC, supportAt, if_pos rfl]
-    · rw [hL, hC, supportAt, if_neg (by omega : ¬ p.conState.cleared + 1 = 0), if_pos hN1]
-    · rw [hL, hC, supportAt, if_neg hcl, if_pos hN1]
   -- centre-layer bound (spectator): every centre coord decodes to layer ≤ p.layer
   obtain ⟨sc', hmem', hEq'⟩ := realBranch_centerPin e p ed hbranch
   have hpInv : DivBirthInv d p.conState := PivotPres.divBirthInv_of_isRealBranch e p hbranch.1
@@ -384,7 +379,7 @@ theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d 
   have hfun : foldResid d e (p.extend ed) j
       = fun u => foldResid d e p (Fin.cast (foldNR_extend_of_lt d ed hlt) j) (stepMap d ed u) := by
     funext u; exact foldResid_extend_delta0 d e ed hlt hδ0 j u
-  rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot]
+  rw [hFLchild, hguniv, Deg1SupportedSlot]
   have hpar := hslot (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
   rw [Deg1SupportedSlot, hCSpar, hFLpar, foldRegion_eq_univ e p] at hpar
   by_cases hcase12 : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2
@@ -445,16 +440,17 @@ theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d 
         rcases hcase12 with h | h <;> rw [h] <;> rfl
       rw [hσx, hlin_bs u x hx]
     refine ⟨?_, ?_⟩
-    · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry)
-      -- map: B-L3T-appendResidDescent-cap (the ONE canonical cap; recoord confinement to blockCoords(S+1) is the coupled corank ≥ 2 wall)
+    · -- clause 1: the support DESCENT to `supportAt(child) = layerCoords (S+1)` — the canonical frontier.
+      -- map: B-L3T-appendResidDescent-cap (the ONE canonical cap; frontier is generic over `ed`, so it
+      -- concludes about `supportAt(child)` directly — no support rewrite needed here).
       have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
-      rwa [hCSchild, hguniv] at happend
+      rwa [hguniv] at happend
     · -- clause 2: per-layer grade via the recoord ℓ-split
       rw [hfun]
       exact perLayerDeg1From_stepMap_split p.conState.layer (stepMap d ed)
         (recoordCoeff d p.conState ed.pivot hN1) hfix_gt hagree hlin_eq hC _ hpar.2
-  · -- SHEAR-ID (case11/rollover): `edgeShear = id`, so `stepMap` FIXES every layer `≥ S+1`; both clauses
-    -- discharge cleanly by `deg1_comp_of_fixing` (no cap frontier needed — the support is fixed).
+  · -- SHEAR-ID (case11/rollover): `edgeShear = id`, so `stepMap` FIXES every layer `≥ S+1`. The shared
+    -- `hfix`/`hagree` machinery is built once; the support shape then splits case11 vs rollover.
     have hedge : edgeShearRaw d ed.case ed.shearφ = id := by
       rcases hc : ed.case with _ | _ | _ | _
       · rfl
@@ -489,10 +485,32 @@ theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d 
       · by_cases hsc2 : s ∈ ed.center
         · rw [if_neg hsp, if_pos hsc2, if_neg hsp, if_pos hsc2, hES ed.pivot hpivc, hES s hs]
         · rw [if_neg hsp, if_neg hsc2, if_neg hsp, if_neg hsc2, hES s hs]
-    rw [hfun]
-    exact deg1_comp_of_fixing _ (blockCoords d (p.conState.layer + 1)) (p.conState.layer + 1)
-      (stepMap d ed) (continuous_stepMap d ed)
-      (blockCoords_subset_layerCoords d (p.conState.layer + 1)) hfix hagree hpar.1 hpar.2
+    by_cases hc11 : ed.case = StepCase.case11
+    · -- case11: child support = `layerCoords (S+1)` (J≥1, cleared preserved); parent support matches,
+      -- so `deg1_comp_of_fixing` closes BOTH clauses directly (support fixed, no confinement).
+      have hsce : sc.ecase = StepCase.case11 := hecase.trans hc11
+      have hCSchild : supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
+          = layerCoords d (p.conState.layer + 1) := by
+        rw [hcs]
+        rcases htrans with ⟨he, _, _, _⟩ | ⟨he, _, _⟩ | ⟨_, hL, hC⟩
+        · exact absurd (he.symm.trans hsce) (by decide)
+        · rcases he with he | he <;> exact absurd (he.symm.trans hsce) (by decide)
+        · rw [hL, hC, supportAt, if_neg hcl, if_pos hN1]
+      rw [hfun, hCSchild]
+      exact deg1_comp_of_fixing _ (layerCoords d (p.conState.layer + 1)) (p.conState.layer + 1)
+        (stepMap d ed) (continuous_stepMap d ed)
+        (Finset.Subset.refl _) hfix hagree hpar.1 hpar.2
+    · -- rollover: child support DROPS to `blockCoords (S+1)` (J=0, fresh layer) while the parent sits on
+      -- `layerCoords (S+1)`. Clause-1 (the `layerCoords → blockCoords` cap-confinement) is the canonical
+      -- frontier's debt; clause-2 (per-layer grade) is support-independent, so `deg1_comp_of_fixing.2`.
+      -- map: B-L3T-appendResidDescent-cap (rollover rides the SAME frontier; supportAt(child)=blockCoords).
+      refine ⟨?_, ?_⟩
+      · have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
+        rwa [hguniv] at happend
+      · rw [hfun]
+        exact (deg1_comp_of_fixing _ (layerCoords d (p.conState.layer + 1)) (p.conState.layer + 1)
+          (stepMap d ed) (continuous_stepMap d ed)
+          (Finset.Subset.refl _) hfix hagree hpar.1 hpar.2).2
 
 /-- **The case11 pivot is born below the current layer** (`decode-layer < p.layer` at δ=1). The reused
 pivot is pinned to `canonPivotOf = cornerToFlat` of the merge target's ledger birth corner (valid via
@@ -686,8 +704,9 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k,
     have := hchildLC.1; omega
   have hFLchild : supportLayerOf (p.extend ed).conState = p.conState.layer + 1 := by
     rw [hcs, supportLayerOf, hchildLC.2, if_neg (by omega : ¬ (1 : ℕ) = 0), hchildLC.1]
+  -- child cleared `= 1` (J≥1) ⟹ support widened to `layerCoords (S+1)` (arch-C §8(i) supportAt re-bake).
   have hCSchild : supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
-      = blockCoords d (p.conState.layer + 1) := by
+      = layerCoords d (p.conState.layer + 1) := by
     rw [hcs, hchildLC.1, hchildLC.2, supportAt, if_neg (by omega : ¬ (1 : ℕ) = 0), if_pos hN1]
   have hFLpar : supportLayerOf p.conState = p.conState.layer := by rw [supportLayerOf, if_pos hcl]
   have hCSpar : supportAt d p.conState.layer p.conState.cleared = blockCoords d p.conState.layer := by
@@ -769,8 +788,9 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k,
     funext u; exact foldResid_extend_delta1 d e ed hlt hδ1 j u
   rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot]
   refine ⟨?_, ?_⟩
-  · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry)
-    -- map: B-L3T-appendResidDescent-cap (the ONE canonical cap; recoord confinement to blockCoords(S+1) is the coupled corank ≥ 2 wall)
+  · -- clause 1: the support DESCENT to `supportAt(child) = layerCoords (S+1)` — the canonical frontier.
+    -- map: B-L3T-appendResidDescent-cap (the ONE canonical cap; recoord confinement to the descended
+    -- support is the frontier's debt).
     have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
     rwa [hCSchild, hguniv] at happend
   · -- clause 2: the per-layer grade survives via the recoord ℓ-split (comp_of_linear at S+1, fixing above)
