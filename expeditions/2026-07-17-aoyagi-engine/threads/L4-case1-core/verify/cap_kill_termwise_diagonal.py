@@ -26,24 +26,28 @@ def cc(d, S, J):
     cap = widthMinUpto(d, S)
     return {(L, r, c) for (L, r, c) in make(d)[1] if L == S and J <= r and J <= c and c < cap}
 
-def run(d, show_termwise=False):
+def run(d, l0_pivots=((0, 0, 0), (0, 1, 1)), show_termwise=False, label=""):
     N, u = make(d)
+    # couplingClear keys on the STORED fan pivot (#82 / capstone-cert §0): each clear of pivot (a,b) at
+    # layer L zeroes u_(L,r,b) for r>a. Diagonal pivot (a=b=cl) ⟹ below-diagonal; row-repeat ⟹ maybe ∅.
     edges = [
-        ("case2", 0, 0, (0, 0, 0), cc(d, 0, 0), 1),   # (0,0)->(0,1)
-        ("case2", 0, 1, (0, 1, 1), cc(d, 0, 1), 0),   # (0,1)->(0,2)
-        ("rollover", 0, 2, (1, 0, 0), set(), 0),      # (0,2)->(1,0)
-        ("case2", 1, 0, (1, 0, 0), cc(d, 1, 0), 1),   # (1,0)->(1,1)  δ=1
-        ("case2", 1, 1, (1, 1, 1), cc(d, 1, 1), 0),   # (1,1)->(1,2)  δ=0  LAST CLEAR of layer 1
+        ("case2", 0, 0, l0_pivots[0], cc(d, 0, 0), 1),   # (0,0)->(0,1)
+        ("case2", 0, 1, l0_pivots[1], cc(d, 0, 1), 0),   # (0,1)->(0,2)
+        ("rollover", 0, 2, (1, 0, 0), set(), 0),         # (0,2)->(1,0)
+        ("case2", 1, 0, (1, 0, 0), cc(d, 1, 0), 1),      # (1,0)->(1,1)  δ=1
+        ("case2", 1, 1, (1, 1, 1), cc(d, 1, 1), 0),      # (1,1)->(1,2)  δ=0  LAST CLEAR of layer 1
     ]
     resid = real_foldResid(u, d, edges)   # at (1,2)
+    clear_pivots = [l0_pivots[0], l0_pivots[1], (1, 0, 0), (1, 1, 1)]   # the 4 case2 clears
+    couplingCoords = set()
+    for (pL, pa, pb) in clear_pivots:
+        couplingCoords |= {(pL, r, pb) for r in range(d[pL + 1]) if r > pa}
     cleared_cols = {0: {0, 1}, 1: {0, 1}}
-    couplingCoords = {(L, r, c) for (L, r, c) in u
-                      if L in cleared_cols and c in cleared_cols[L] and r > c}
     uncleared_L1 = sorted(k for k in u if k[0] == 1 and k[2] not in cleared_cols[1])
     wmu2 = widthMinUpto(d, 2)
     escaped = sorted(k for k in u if k[0] == 2 and k[2] >= wmu2)
     zero_cpl = {u[k]: 0 for k in couplingCoords}
-    print(f"\n=== d={d}, node (1,2), {len(resid)} slots ===")
+    print(f"\n=== d={d} {label}, node (1,2), {len(resid)} slots; couplingCoords={sorted(couplingCoords)} ===")
     print(f"  UNCLEARED L1 (not zeroed): {uncleared_L1};  escaped L2 (col>=wmu(2)={wmu2}): {escaped}")
     all_killed = True; reads_uncl_somewhere = False
     for j, f in enumerate(resid):
@@ -72,8 +76,13 @@ def run(d, show_termwise=False):
                 break
     return all_killed
 
-ok1 = run((2, 3, 3, 3), show_termwise=True)
-ok2 = run((2, 4, 4, 2))
-print(f"\nV3 termwise-on-diagonal holds on both witnesses? {ok1 and ok2}")
-assert ok1 and ok2, "V3 FAILS on some witness — escaped col survives couplingClear; seat-KILL must NOT render termwise"
-print("OK: the escaped-col coefficient ∈ ⟨couplingCoords⟩ MONOMIAL-WISE — V3 is literally termwise.")
+print("### DIAGONAL fan (seat-KILL's hcanon scope) — expect V3 termwise TRUE")
+ok1 = run((2, 3, 3, 3), show_termwise=True, label="[diagonal]")
+ok2 = run((2, 4, 4, 2), label="[diagonal]")
+print("\n### ROW-REPEAT fan (the #95 row-phantom, pivots at row 2) — expect V3 FALSE (boundary)")
+okrp = run((2, 3, 3, 3), l0_pivots=((0, 2, 0), (0, 2, 1)), label="[row-repeat (0,2,0)+(0,2,1)]")
+print(f"\nDIAGONAL V3 termwise holds? {ok1 and ok2}   ROW-REPEAT V3 holds? {okrp} (expected False = #95)")
+assert ok1 and ok2, "V3 FAILS on a DIAGONAL witness — escaped col survives; seat-KILL must NOT render termwise"
+assert not okrp, "row-repeat did NOT fail — #95 boundary not reproduced; re-examine couplingClear keying"
+print("OK: DIAGONAL-scoped ⟹ escaped coeff ∈ ⟨couplingCoords⟩ MONOMIAL-WISE (termwise). ROW-REPEAT escapes"
+      " (couplingClear keys on the stored pivot row; belowPivotCol=∅) — exactly why hcanon/diagonal is needed.")
