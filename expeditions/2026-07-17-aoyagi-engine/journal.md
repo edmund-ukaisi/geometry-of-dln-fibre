@@ -16912,3 +16912,23 @@ with the complete contract when pnp's re-check lands. Re-verification order pinn
 → battery + cheerful script + slot-confirm on the FINAL form → elder delta-read → merge →
 L3T3 rebase → THE WALL. seat-L4D posted; the board is one re-check + one render from the
 merge.
+
+## 2026-07-23 (~11:05) — THE CONTRACT COMPLETE; arch-C-4 convened on THE FINAL F₂ RENDER
+
+pnp's last verification (banked 8e7c66ed7, re-ran exit-0) completed the contract: (a) ideal
+close/census 0 settled (rows A/D); (b) boostReady/clean block HOLDS under +γ-paired,
+SIGN-ROBUST; (c) THE SCOPE IS KEPT — the elder's subsumption lean FALSIFIED with a clean
+mechanism (the fold-order composes the outer clearing OUTERMOST, so deeper edges read
+pre-clear entries regardless of the pairing; unscoped +γ-paired still yields u₀₀₁²; the
+i≥cleared bound IS the read-cleared-as-zero mechanism). §9 amendment noted to the elder
+(scope line: KEPT-verified, not per-re-check).
+
+ARCH-C-4 CONVENED on the one complete contract (restate-gated): §9 + the VERIFIED MODEL
+(f2_census0_confirm.py + f2_paired_boostready.py — the render transcribes THOSE, certificate-
+fidelity). The render: branch-(ii) sign back to +γ KEEPING the scope; r4Clear DISCARDED →
+the paired Q₁·A₀·Q₂ clearing + Q₂⁻¹ compensator as det-1 shear branches (decomposition = the
+seat's architecture call, double-count witness must pass); StepInv re-closes by the ORIGINAL
+EQUALITY witness (no bridge — if it doesn't close, STOP: the render diverges from the model);
+census delta 0 expected. Inherits REBAKE2's green partial (DEF-EDIT-1 keeps). Then: the
+battery on verbatim formulas → cheerful re-run + slot-confirm → elder delta-read → merge →
+L3T3 rebase → THE WALL. seat-L4D's queue locked and holding; every reviewer posted.
