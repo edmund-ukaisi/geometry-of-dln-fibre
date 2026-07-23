@@ -1607,6 +1607,16 @@ import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
 -- Case1Wire: seat-L4's case-generic wall cores (crux, child-state reductions, exists_graded_decomp,
 -- stepInv_child_delta0 — the δ=0 pullback serving BOTH case1/case2). Consumed by the leaf assemblies.
 import DLNFibre.DLN.Aoyagi.Case1Wire
+-- L3T3 lane (merged 2026-07-23, rebased on the F₂ render): recoord X-linearity (AoyagiRecoordLinear,
+-- 3-branch canonNormalizationOf unfolds live here) + composition linearity (AoyagiCompLinear) +
+-- foldResid_layerHomogeneous' (HomogWire, the primed Gap-B homogeneity twin) + the descent slot
+-- (StepWire: realBranch_multiAffine_step', 3-way δ0 dispatch — case11 clean; case12/case2 AND the
+-- rollover cap-confinement both consume the single realBranch_appendResidDescent frontier).
+-- descent_delta1_case11 is CLEAN THREE; the others are single-frontier sorryAx by construction.
+import DLNFibre.DLN.Aoyagi.AoyagiCompLinear
+import DLNFibre.DLN.Aoyagi.AoyagiRecoordLinear
+import DLNFibre.DLN.Aoyagi.MultiAffineHomogWire
+import DLNFibre.DLN.Aoyagi.MultiAffineStepWire
 -- LeafGeometryWire: seat-L3T's L8 proof (leafPath_realizesExponents', clean-three) ported to the
 -- baked tip by seat-L3T2; the MonumentAtlas L8 sorry-swap rides the post-pin mini-round.
 import DLNFibre.DLN.Aoyagi.LeafGeometryWire
