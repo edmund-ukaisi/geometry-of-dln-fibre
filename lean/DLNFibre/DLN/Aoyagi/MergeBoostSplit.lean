@@ -111,7 +111,87 @@ theorem mergeBoostSplit_of_sourceClearedInv (d : Fin (N + 1) → ℕ)
       MergeBoostSplit d (sourceClearedResid d p) e₂ part extra ed.center
         (foldRegion d (canonFlatten d) p) := by
   -- map: B-wall-mergeBoostSplit-of-sourceClearedInv
-  sorry
+  classical
+  have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
+  have hpivmem : ed.pivot ∈ accumulatedPivots d p := case11_pivot_mem_accumulatedPivots d ed hc11 hbranch
+  have he2notS : ed.pivot ∉ supportAt d p.conState.layer p.conState.cleared :=
+    accumulatedPivots_notMem_supportAt d p hbranch.1 hcl ed.pivot hpivmem
+  have hcsub := case11_center_subset_pivot_union_supportAt d ed hδ hc11 hbranch
+  have hcenter_led := case11_center_subset_ledgerTarget d ed hδ hc11 hbranch
+  refine ⟨ed.pivot, ed.hpivot,
+    supportAt d p.conState.layer p.conState.cleared ∩ ed.center,
+    supportAt d p.conState.layer p.conState.cleared \ ed.center,
+    Finset.inter_subset_right,
+    fun h => he2notS (Finset.mem_inter.mp h).1,
+    fun k hk => (Finset.mem_sdiff.mp hk).2, ?_⟩
+  intro j
+  obtain ⟨μ, q, hqcont, hqign, hμsupp, hboost, hrepr⟩ := hinv j
+  have hb := hboost ed hc11 hbranch
+  have hμ0_part : ∀ i ∈ supportAt d p.conState.layer p.conState.cleared ∩ ed.center,
+      ∀ x ∈ ed.center, μ i x = 0 := by
+    intro i hi x hxc
+    rcases hcsub x hxc with hxp | hxS
+    · rw [hxp]; exact (hb i (Finset.mem_inter.mp hi).1).1 (Finset.mem_inter.mp hi).2
+    · by_contra hne
+      exact accumulatedPivots_notMem_supportAt d p hbranch.1 hcl x
+        (hμsupp i (Finsupp.mem_support_iff.mpr hne)) hxS
+  refine ⟨fun i u => if i ∈ supportAt d p.conState.layer p.conState.cleared ∩ ed.center
+            then bMon (μ i) u * q i u else 0,
+          fun i u => if i ∈ supportAt d p.conState.layer p.conState.cleared \ ed.center
+            then bMon ((μ i).erase ed.pivot) u * q i u else 0, ?_, ?_, ?_, ?_, ?_⟩
+  · intro i
+    by_cases hi : i ∈ supportAt d p.conState.layer p.conState.cleared ∩ ed.center
+    · simp only [if_pos hi]; exact ((continuous_bMon (μ i)).continuousOn).mul (hqcont i)
+    · simp only [if_neg hi]; exact continuousOn_const
+  · intro i
+    by_cases hi : i ∈ supportAt d p.conState.layer p.conState.cleared \ ed.center
+    · simp only [if_pos hi]; exact ((continuous_bMon _).continuousOn).mul (hqcont i)
+    · simp only [if_neg hi]; exact continuousOn_const
+  · intro i
+    by_cases hi : i ∈ supportAt d p.conState.layer p.conState.cleared ∩ ed.center
+    · simp only [if_pos hi]
+      intro w hw x hx t
+      show bMon (μ i) (Function.update w x t) * q i (Function.update w x t)
+        = bMon (μ i) w * q i w
+      rw [bMon_ignoresCoords (μ i) ed.center _ (hμ0_part i hi) w hw x hx t,
+        (ignoresCoords_of_subset (hqign i) hcenter_led) w hw x hx t]
+    · simp only [if_neg hi]; intro w _ x _ t; rfl
+  · intro i
+    by_cases hi : i ∈ supportAt d p.conState.layer p.conState.cleared \ ed.center
+    · simp only [if_pos hi]
+      have hμe0 : ∀ x ∈ ed.center, (μ i).erase ed.pivot x = 0 := by
+        intro x hxc
+        rcases hcsub x hxc with hxp | hxS
+        · rw [hxp, Finsupp.erase_same]
+        · have hxne : x ≠ ed.pivot := fun heq => he2notS (heq ▸ hxS)
+          rw [Finsupp.erase_ne hxne]
+          by_contra hne
+          exact accumulatedPivots_notMem_supportAt d p hbranch.1 hcl x
+            (hμsupp i (Finsupp.mem_support_iff.mpr hne)) hxS
+      intro w hw x hx t
+      show bMon ((μ i).erase ed.pivot) (Function.update w x t) * q i (Function.update w x t)
+        = bMon ((μ i).erase ed.pivot) w * q i w
+      rw [bMon_ignoresCoords ((μ i).erase ed.pivot) ed.center _ hμe0 w hw x hx t,
+        (ignoresCoords_of_subset (hqign i) hcenter_led) w hw x hx t]
+    · simp only [if_neg hi]; intro w _ x _ t; rfl
+  · intro u hu
+    rw [hrepr u hu,
+      ← Finset.sum_inter_add_sum_diff (supportAt d p.conState.layer p.conState.cleared) ed.center
+        (fun i => bMon (μ i) u * q i u * u i)]
+    congr 1
+    · refine Finset.sum_congr rfl (fun i hi => ?_)
+      simp only [if_pos hi]
+    · rw [Finset.mul_sum]
+      refine Finset.sum_congr rfl (fun i hi => ?_)
+      have hi1 : (μ i) ed.pivot = 1 :=
+        (hb i (Finset.mem_sdiff.mp hi).1).2 (Finset.mem_sdiff.mp hi).2
+      have hfac : bMon (μ i) u = u ed.pivot * bMon ((μ i).erase ed.pivot) u := by
+        have hy : ed.pivot ∈ (μ i).support :=
+          Finsupp.mem_support_iff.mpr (by rw [hi1]; exact one_ne_zero)
+        have hmp := Finsupp.mul_prod_erase (μ i) ed.pivot (fun k e => (u k) ^ e) hy
+        simp only [hi1, pow_one] at hmp
+        exact hmp.symm
+      simp only [if_pos hi]; rw [hfac]; ring
 
 /-- **The content lemma** (LIVE frontier, the capstone) — the SOURCE-CLEARED chart residual
 `sourceClearedResid d p` at a real case-1(1) merge branch satisfies `MergeBoostSplit` with

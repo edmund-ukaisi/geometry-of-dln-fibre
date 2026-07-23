@@ -660,6 +660,35 @@ theorem case11_pivot_mem_accumulatedPivots (d : Fin (N + 1) → ℕ)
   rw [mem_accumulatedPivots]
   exact ⟨⟨sc.esubst.mergeIdx, hmi⟩, by rw [hpiv]; exact hcf⟩
 
+/-- **A case11 center coord is either the reused pivot or in the support block** —
+`ed.center ⊆ {ed.pivot} ∪ supportAt` (leg-1 of the containment sharpened to `= ed.pivot`; leg-2 the
+run-block ⊆ blockCoords). Feeds the read-off's `bMon`-ignores-`ed.center`: a non-pivot center coord is in
+`supportAt`, disjoint from `accumulatedPivots` (the crux), so `μ` (supported on `accumulatedPivots`)
+vanishes there. -/
+theorem case11_center_subset_pivot_union_supportAt (d : Fin (N + 1) → ℕ)
+    {p : TreePath d} (ed : TreeEdge d p)
+    (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    ∀ x ∈ ed.center, x = ed.pivot ∨ x ∈ supportAt d p.conState.layer p.conState.cleared := by
+  obtain ⟨hrec, ⟨sc, hsc, hecase, _hchild, hcenter, hpivpin⟩, _hwc, _hvpin⟩ := hbranch
+  have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
+  have hsce : sc.ecase = StepCase.case11 := hecase.trans hc11
+  simp only [hc11] at hpivpin
+  intro x hx
+  rw [hcenter] at hx
+  simp only [canonCenterOf, hsce, Finset.mem_union] at hx
+  rcases hx with hpiv | hrow
+  · rw [Option.mem_toFinset, Option.mem_def] at hpiv
+    exact Or.inl (hpivpin x hpiv)
+  · right
+    rw [Finset.mem_image] at hrow
+    obtain ⟨q, hq, rfl⟩ := hrow
+    rw [Finset.mem_filter] at hq
+    obtain ⟨-, hlayer, -, -, hqrun⟩ := hq
+    have hbound := (conOracle_case11_data d p.conState sc hsc hsce).2
+    rw [supportAt, if_pos hcl, blockCoords, Finset.mem_image]
+    exact ⟨q, by rw [Finset.mem_filter]; exact ⟨Finset.mem_univ _, hlayer, by omega⟩, rfl⟩
+
 /-- **ROOT base of the b-ledger invariant** (§4 (i), the induction's root case, factored standalone).
 At `.root` there are no exceptionals: `μ = 0` (`bMon 0 = 1`), `accumulatedPivots = ∅` so conjunct-3 is
 `∅ ⊆ ∅`, the boost conjunct is VACUOUS (`conOracle_conRoot_no_case11` — no case11 child off the root),
