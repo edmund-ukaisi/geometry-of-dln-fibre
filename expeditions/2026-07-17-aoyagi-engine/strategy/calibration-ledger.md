@@ -981,3 +981,53 @@ on the provenance layer, elder delta rules it) — converts a likely mid-grind s
 into a SPECIFY-time decision. The 25%-surprise branch fired, but at the layer BELOW where I
 placed it (provenance predicates, not the payoff consumption). Miss recorded plainly: I modeled
 the summit as invariant-parametric; it is invariant-silent.
+
+## 2026-07-23 ~17:26 — Q: will the four render lanes COMPOSE at the #73 integration merge?
+
+EXPECTATION (written before the git read): four lanes touch overlapping capstone files, and
+#73 must merge them build-green. My model of the per-file ownership + conflict surface:
+- INV lane (-INV): SourceClearedResid.lean + MergeBoostSplit.lean (12 commits). Owns the INV
+  spine + the read-off + CanonicalPivots.
+- GM/CFF lane (-CFF off -GM): ClearedFold.lean (new) + Case1Wire deletion + CaseStepAssembly/
+  LastLayerWire/MonumentAssembly re-points.
+- CAPF/CX lane (-CX off -CAPF): CapDescent.lean (new) + the shared continuous_canonNormalizationOf.
+- BAKE lane (-BAKE off canonical): MonumentAtlas.lean IsRealBranch one-clause pin.
+EXPECTED CONFLICT SURFACE, ranked: (1) BAKE's IsRealBranch pin is the RISKIEST — it strengthens
+a def that INV's proofs destructure AND CFF's fix-lemma destructures AND CAPF's #4/#3 consume;
+every lane needs a rebase-onto-BAKE + re-verify (INV flagged this; CFF cherry-picks it; CAPF's
+#4 built pre-pin). (2) the shared continuous_canonNormalizationOf will exist in BOTH CAPF's
+CapDescent and (if CFF needed it) CFF's module — a dedup at merge. (3) ClearedFold consumes
+INV's sourceClearedResid_stepMap_eq_pivot_mul + CanonicalPivots BY NAME — a cross-lane
+name-resolution that only works once both are on canonical. (4) SourceClearedResid.lean:242's
+sorry gets swapped to CX's #6-twin := — a controller edit at merge. Confidence: 60% the merge
+is "rebase-all-onto-BAKE-first, then topological-order the lane merges (BAKE → INV → CAPF/CX →
+CFF), then the 2 sorry-swaps + the aggregator wire, all build-green in one pass"; 30% one lane
+needs a non-trivial re-verify after the BAKE rebase (a destructure pattern or an import cycle);
+10% a genuine statement-level surprise (some consumed name's signature moved under a lane).
+
+READ (git topology): merge-bases — INV∩GM = 1388f6192, INV∩CAPF = bbb3f924d, GM∩CAPF = 1388f6192
+(all a common CAPR prefix). DECISIVE FACT: GM's commits past the base touching
+SourceClearedResid/MergeBoostSplit = ZERO; CAPF's = only CAPR's OWN inherited commits (585f75fb9
+ROOT(a), 1ebce70ce skeleton, the 2 docstring fixes) — NOT independent edits; INV's = 16 (the full
+spine + read-off + CanonicalPivots). So the "+202 / +270" diffs in GM's/CAPF's shared files are
+INHERITED CAPR-prefix, not divergence.
+
+HIT / MISS: HIT — BAKE's IsRealBranch pin IS the real #1 (the only genuinely cross-cutting edit;
+every lane rebases onto it). MISS-THAT-RESOLVED-FAVORABLY — I feared a three-way reconciliation
+of the shared substrate files; it DISSOLVES because the single-writer discipline HELD: GM and
+CAPF consumed sourceClearedResid_*/CanonicalPivots BY NAME and never edited INV's two files. The
+discipline I enforced all window is exactly what makes #73 tractable — the integration topology
+is the dividend of the ownership rule.
+
+WHAT IT CHANGES: the #73 merge plan is now DERIVED (baked into the task), not to be re-discovered
+at merge time. TOPOLOGY: (0) BAKE lands first (MonumentAtlas pin) → becomes the rebase base for
+all; (1) INV's lane defines SourceClearedResid.lean + MergeBoostSplit.lean (single lineage, NO
+reconciliation) — merge it onto BAKE, re-verify INV's destructures against the strengthened
+IsRealBranch; (2) CAPF/CX's CapDescent.lean = additive new file (+ the shared
+continuous_canonNormalizationOf: dedup vs any other copy) — merge, rebase-verify; (3) GM/CFF's
+ClearedFold.lean (additive new) + the Case1Wire DELETION (CAPF cherry-picked the SAME commit
+104d701d1 → patch-id-equal, trivial dedup) + the CaseStepAssembly/LastLayerWire/MonumentAssembly
+re-points — merge last (it consumes INV's names, which must be on canonical first); (4) the 2
+sorry-swaps (SourceClearedResid:242 ← CX's #6-twin; the wall ← the content lemma) + the aggregator
+wire + the (b)/δ=1 named-frontier closes that CFF held. Residual risk lives ONLY at (1)/(3)'s
+rebase-onto-BAKE re-verify (destructure patterns), which BAKE's consumer sweep already enumerated.

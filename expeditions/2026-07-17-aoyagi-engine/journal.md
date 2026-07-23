@@ -20186,3 +20186,21 @@ fully axiom-clean and #73 swaps SourceClearedResid.lean:242's sorry. THE BOARD'S
 NOW THREE NAMED LEMMAS/UNITS: seat-CX's crux, seat-CFF's cert-(i)+cascade (on BAKE's SHA), and
 INV's δ-transport step arm (on GM's-successor core + #87) — plus BAKE's in-progress pivot-pin
 render. Every one has its design closed and its proof route documented.
+
+## 2026-07-23 (~17:30 UTC, heartbeat) — calibration tick: the #73 merge topology DERIVED (the
+single-writer discipline dissolves the shared-file fear); plan baked into #73
+
+Quiet pulse (3 seats grinding, nothing to integrate) → calibration on the highest-value
+undelegated question: do the four render lanes COMPOSE at #73? EXPECTATION feared a three-way
+reconciliation of the shared substrate files (SourceClearedResid/MergeBoostSplit — three lanes
+show large diffs there). GIT READ resolved it FAVORABLY: those diffs are INHERITED CAPR-prefix,
+not divergence — GM made ZERO own edits to those files, CAPF only carries CAPR's own commits,
+INV is the single definitive lineage (16 commits). The single-writer rule HELD: GM/CFF and
+CAPF/CX consumed sourceClearedResid_*/CanonicalPivots BY NAME. So #73 is a topological merge, not
+a reconciliation — the ownership discipline enforced all window IS the integration dividend. HIT:
+BAKE's pin = the real #1 cross-cutting edit (rebase base for all). Derived merge order banked into
+#73's description (BAKE first → INV → CAPF/CX → GM/CFF → the 2 sorry-swaps + aggregator + the
+held named-frontiers; residual risk = only the rebase-onto-BAKE destructure re-verify, which
+BAKE's own consumer sweep enumerated). Placement/cron/liveness all green (CX/BAKE/CFF < 2 min).
+No teammate action — the finding is favorable and forward (a merge-time de-risk, not a live
+blocker).
