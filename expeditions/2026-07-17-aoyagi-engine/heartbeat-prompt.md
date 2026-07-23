@@ -54,7 +54,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-24 ~03:30): THE WALL'S CONTENT LEMMA SINGLE-THREADS THE PHASE.
+- CURRENT WAIT-STATE (2026-07-24 ~06:30): THE FRONTIER IS ONE LEMMA + the re-shape is in flight.
+  Since ~03:30: the LL lane MERGED (LastLayerWire wired; conjA fully wired; census 44); L4D's
+  session-2 landed — the assembly lemma PROVEN clean-three, the content statement hardened
+  (case11-only + case12/2 sibling ratified), realBranch_boostReady_case11' PROVEN via
+  content∘assembly (sorryAx via the content lemma ONLY; hslot unused) — THE WALL = 
+  foldResid_case11_mergeBoostSplit_canon ALONE. THE TRIPWIRE FIRED (as designed): the capstone
+  needs a foldResid-induction whose invariant is the research content; RE-SHAPED: pnp-transport
+  elaborates capstone-invariant-certificate.md (root/δ=1/δ=0/read-off on the CONCRETE recursion,
+  canonFlatten-specific, consumer facts) → a FRESH FORMALISER renders → L4D executes the turn-key
+  swap + pushes + RESTS (large context). Elder's C9 gains the MergeBoostSplit predicate-fidelity
+  check (3 questions: single-e₂ generality; center-ignoring vs her b-monomials; the E_J/D_J
+  disjunction). IN FLIGHT: L4D's swap push; pnp's certificate; elder's C9+fidelity report.
+  ON pnp's certificate: spawn the fresh formaliser (lean-formaliser agent, self-contained brief:
+  the certificate + the turn-key frame + the banked contract). (Old state for context:)
   The idiom ruling LANDED (threads/idiom-ruling.md: PIN where born + the invoking spine;
   transports general-e; he-after-e convention ratified) and everything downstream is dispatched:
   L4D renders the atomic pinned spine (Case1Wire #1-3 + case1'' threading + MonumentAssembly

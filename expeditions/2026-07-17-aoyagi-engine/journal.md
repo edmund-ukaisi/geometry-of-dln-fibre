@@ -17796,3 +17796,11 @@ hygiene — the wedge lesson applied prospectively). The predicate-fidelity chec
 un-reviewed piece) folded into the elder's C9 walk (perfect overlap: C9 IS the recursion chunk;
 3 sharp questions: single-e₂ generality, center-ignoring vs her b-monomials, the E_J/D_J
 disjunction delivery).
+
+## 2026-07-24 (~06:30, heartbeat tick) — all three live lanes active; memo refreshed to the
+one-lemma-frontier position
+
+pnp (the invariant certificate), elder (C9 + predicate-fidelity), L4D (the turn-key swap, push
+pending) all active within two minutes. LL/L3T3 parked as designed. Nothing owed; next events:
+L4D's swap push (→ my merge, then its stand-down), pnp's certificate (→ spawn the fresh
+formaliser), elder's C9 report.
