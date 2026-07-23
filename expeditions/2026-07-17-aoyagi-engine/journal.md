@@ -20353,3 +20353,25 @@ that assembly is the #73 controller merge). So CFF renders + verifies its import
 modulo its named frontiers + reports the frontier list for #73. Board: BAKE integrated (#87 on
 canonical, green); CFF cert-i closed + re-points in flight; CX cap-crux → the ONE KILL lemma;
 INV resting; #73 assembles all onto the pinned canonical.
+
+## 2026-07-23 (~19:00 UTC) — THE KILL escalated to a sub-unit (#92): pnp designs+verifies the
+telescoping invariant (L3T3 pattern) → render sub-unit; CX's unit DONE + released
+
+CX escalated per pre-authorization, having done the escalation RIGHT: tractable core banked green
+(sourceClearedResid_capped_guarded + 5 helpers), the KILL isolated to ONE statement
+(sourceClearedResid_ignoresEscaped), and a full de-risking analysis (the reduction to
+foldResid-at-P_e(couplingClear u)=0; rollover-free; the recoord-(ii) mechanism; the accumulated-
+couplingCoords depth; the Z(p) invariant-design point). Sized ≥ foldResid_layerHomogeneous'
+(L3T3-thread) + a new dimension (the within-layer col-cap). ROUTED as the L3T3 PATTERN — the
+discipline that caught 28 statement-class events forbids rendering against an unverified
+invariant: PHASE 1 = pnp DESIGNS+VERIFIES the telescoping Z(p) invariant (its mechanism-ownership
++ exact-algebra instrument; CX's analysis + the running Codex xhigh sketch as inputs; verify it
+telescopes on (2,3,3,3)/wide/(2,2,2)-last-layer; certificate + script); PHASE 2 = a fresh
+formaliser render sub-unit on pnp's certificate + CX's banked foundation, folding in the
+layer+1<N guard-add wiring. #92 opened. CX's unit DONE, released to rebase-and-hold (#73 rebase;
+forwards the Codex answer). CRITICAL FRAMING: the KILL is the expedition's DEEPEST open lemma and
+the ETA long-pole, BUT it is a NAMED FRONTIER on cap obligation-b — it does NOT block #73's
+structural merge (the lanes assemble; obligation-b's :242 sorry-swap waits on the KILL, as a
+named frontier the payoff tolerates unless the L5/summit wiring puts it on L1's clean-three cone,
+a downstream question). Board: BAKE integrated; CFF cert-i closed + re-points in flight; INV
+resting; #92 the deep long-pole in pnp's design phase.
