@@ -37,6 +37,16 @@ open DLNFibre.Core DLNFibre.Core.Aoyagi DLNFibre.DLN.RLCT DLNFibre.DLN.RLCT.Engi
 
 variable {N : ℕ}
 
+/-- **`IgnoresCoords` is antitone in the ignored set** — ignoring a bigger set is a stronger property, so
+it descends to any subset. The read-off's `IgnoresCoords`-target step rides this: the invariant carries
+`IgnoresCoords … T` for the edge-independent target `T`, and `ed.center ⊆ T` (the hard containment)
+specializes it to `IgnoresCoords … ed.center` by antitonicity. General; a candidate Core-lift (a plain local name here to
+avoid a `DLNFibre.Core.Aoyagi.IgnoresCoords.mono` cross-namespace clash until a second consumer). -/
+theorem ignoresCoords_of_subset {D : ℕ} {c : (Fin D → ℝ) → ℝ} {S S' : Finset (Fin D)}
+    {V : Set (Fin D → ℝ)} (h : IgnoresCoords c S V) (hsub : S' ⊆ S) :
+    IgnoresCoords c S' V :=
+  fun w hw m hm t => h w hw m (hsub hm) t
+
 /-- **The below-pivot entries of a case2/case12 cleared column** (the ancestor coupling coords of one
 edge). Decoding `pivot` to `(layer, a, b)` via `tupIdxEquiv`, this is the flat block
 `{(layer, r, b) : a < r}` — the entries of the cleared column `b` strictly below the pivot row `a`
