@@ -17019,3 +17019,22 @@ per-edge, diag after the end-factor.
 pnp's checks: (A) equality close restored at corners under the global+col-only split;
 (B) center-support under triangular. arch-C-4 holds #58/#59 on the ruling; interior rendering
 unblocked either way. The pre-grind catch count: four for arch-C-4's gate alone.
+
+## 2026-07-23 (~12:10) — treatment (A) VERIFIED FEASIBLE: the corner closes by equality under col-only; the complete per-edge picture assembled
+
+arch-C-4's addendum: (A) upgraded lean → VERIFIED FEASIBLE. At the corner, the per-edge
+col-only clear (branch-(ii) +γ compensating) is PRODUCT-PRESERVING at the normalized pivot —
+the equality close HOLDS per-edge at the corner, no bridge. THE COMPLETE (A) ARCHITECTURE:
+per-edge shears = interior Schur + pivot-COL compensator (everywhere) + pivot-ROW compensator
+(INTERIOR only, branch-(iii) guarded S≥1, vacuous at the corner); the read-side cross-clear
+zeros col everywhere + row at interior only; EVERY per-edge composite product-preserving ⟹
+equality close, census 0, all blockShears det-1. The corner block per-edge = upper-triangular
+[[1,u₀₀₁],[0,e₂]]; u₀₀₁ = the GL_{d₀} input-basis freedom; diag-completed GLOBALLY by the
+banked end-factor. THE CHECKLIST NUANCE pre-drafted: diag per-edge at interior; triangular
+per-edge at the corner (diag after the end-factor); boostReady needs only multilinearity
+(held either way; pnp's (B) check = the decorrelated confirm of exactly this).
+
+The elder's ruling now selects between a verified-feasible (A) and the fallbacks; the
+paper-first question stands (does HER corner step spend the input gauge?); the possible §9
+line on the end-factor's entry into the fold story is the elder's wording call. arch-C-4
+holds #58/#59; on ratification it proceeds immediately.
