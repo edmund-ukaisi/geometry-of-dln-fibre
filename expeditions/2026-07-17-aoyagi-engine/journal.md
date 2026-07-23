@@ -16223,3 +16223,21 @@ coupling sits outside the wall-consumed slots, the flag weakens). Timing note fo
 synthesis: the battery instrument caught this PRE-RENDER — the third pre-lock catch of the
 §8 arc (field lock, scope non-conformance, now the composition semantics), each converting a
 would-be re-open into a cheap design input.
+
+## 2026-07-23 (~04:10) — the inter-edge coupling FIX PINNED: recoord scope i ≥ cleared (one summation bound); the render target is COMPLETE
+
+pnp upgraded the flag to mechanism-confirmed + PRECISE VERIFIED FIX (banked 64b5eecbe →
+canonical, re-ran exit-0; decorrelated Codex confirmed independently): the u₀₀₁² comes from
+branch-(ii)'s recoord summing over ALL i ≠ a — including already-cleared OUTER-pivot rows;
+restricting the sum to the REMAINING BLOCK (i ≥ cleared) dissolves it (max deg_u₀₀₁ 2 → 1,
+both witnesses). The scope bound IS Lemma 2's current-chart semantics implemented inside the
+raw-read fold — cleared rows read as zero by NOT BEING READ; no chart-tower machinery needed.
+Codex: outer clears can't retroactively fix inner reads [necessity]; the minimal fix = reading
+the cleared 0 = exactly i ≥ cleared; the R3 sign changes the coefficient not the degree.
+
+RENDER SPEC ADDENDUM (relayed to arch-C, folded into its restate gate): DEF-EDIT-3(b) = the
+direction flip AND the i≥cleared scope bound; R4's own reads checked for the same
+prior-clear-awareness. THE MERGE GATE IS CRISP: all-i≠a → u₀₀₁² → re-open; i≥cleared → the
+multilinear clean block. The elder offered the precise §8 clarification wording. THE RENDER
+TARGET IS COMPLETE — frozen spec §8(i) + the scope bound; nothing else open on the design
+side. Waiting: arch-C's restate + rework (the only moving piece).
