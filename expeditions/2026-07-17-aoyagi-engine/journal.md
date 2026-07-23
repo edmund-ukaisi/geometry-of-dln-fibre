@@ -15636,3 +15636,32 @@ The elder's response completes the R0 adjudication frame:
 
 seat-L4D's Codex prompt now carries the elder's skeptic arguments as the position to
 attack/defend — the decorrelation is real. Board otherwise unchanged.
+
+## 2026-07-23 (~01:10) — the Gröbner triple: BLAST RADIUS CONTAINED (value path safe; monomialisation-only fails); controller synthesis R4 (generator rewrite, not coordinate shear)
+
+pnp-transport's compute half banked (93c0f9215 → canonical, controller re-ran exit-0). The
+SAFE/FAILS split, routed per the elder's monomialisation-only lane (NOT the ideal-preservation
+escalation):
+- SAFE: the baked shear is UNIPOTENT (det Jacobian ≡ 1, both witnesses) — an invertible
+  coordinate change; the step PRESERVES THE VARIETY of ⟨∏C⟩; StepInv/resolution validity/
+  RLCT-value intact. M_{s,k} safe (det-1 adds nothing to the blow-up Jacobian). NO monument
+  reopening; the payoff-value path is safe.
+- FAILS: monomialisation (baked cleared block [[1,β],[γ,e₂]], not diag(1,e₂)) + the field —
+  BOTH from the one missing A₀ pivot-cross clearing. Gröbner ideal-equality (compass F4):
+  ⟨baked⟩ ≠ ⟨honest⟩ both inclusions — a GENERATOR-FRAME difference of the same variety.
+
+CONTROLLER SYNTHESIS — R4, handed to the council (not adopted): the two seats' findings
+reconcile because they concern DIFFERENT operations. seat-L4D's jacDet obstruction rules out
+the clear as a COORDINATE shear; Aoyagi's Q₁·(residual)·Q₂ is a row/col operation ON THE
+GENERATOR MATRIX — a presentation change of the same ideal, no Jacobian constraint, hshear
+inapplicable, exactly her Let-block bookkeeping. R4 = the fold step gains a generator-
+transformation component (foldResid picks up the invertible Q-multiplications alongside the
+unipotent shear + quotient): the clean block and the field become true BY PRESENTATION; the
+obstruction stands (it killed the shear-form fix) and is bypassed; pnp's same-variety Gröbner
+finding is the direct evidence the missing operation is presentation-level. Open for the
+council: R4's faithfulness (controller reading: it IS her account), its Lean blast radius
+(which statements consume foldResid's FORM vs its ideal), whether it subsumes R2, and the slot
+under R4 (the carried invariant asserts the PRESENTED generators' form = her Let-block
+invariant). R0 remains FIRST at seat-L4D; R4 joins R1/R2/R3 in its Codex round and the elder's
+council. pnp's completed-candidate prediction (clean diag(1,e₂) + ideal-equal-to-honest +
+field holds) = the acceptance test under any arm. #47 completed.
