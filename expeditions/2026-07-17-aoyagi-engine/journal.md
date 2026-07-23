@@ -15770,3 +15770,37 @@ with the note to the elder that its worked.tex read may already settle the invar
 the confirmation battery rather than the decision input — the paper-first ordering.
 seat-L4D holds correctly for the council; its post-ruling queue = flip verification + case11
 boundary + INTRO/PRESERVE — the wall's endgame on the corrected foundation.
+
+## 2026-07-23 (~01:35) — elder interim: R3 accepted w/ paper-check; §2 declared PROVISIONAL; the CERTIFICATE itself carried the error (lesson candidate)
+
+The elder's interim adjudication (its Codex council re-fired in background, worked.tex-leading):
+
+(1) R0=NO acknowledged — resolved on the discriminator, "the MATH, not deflation."
+
+(2) R3 ACCEPTED as direction (R4 stands down if R3 verifies), with two acceptance conditions:
+(a) FULL verification (single entries can go clean by coincidence); (b) THE PAPER-FIRST
+DIRECTION CHECK — the sign settled by worked.tex:445 (A'^(S+1) = Q'₂⁻¹·A^(S+1), HER order)
+transposed into the Lean fold's reversed product order, NOT by "coeff 0". LESSON CANDIDATE
+(bank at resolution): the N_p CERTIFICATE §1 itself carried Q₁⁻¹ — the def faithfully rendered
+the CERTIFICATE'S error, so the def-fidelity gate (def-vs-certificate) passed while the object
+was wrong. CERTIFICATE-FIDELITY ≠ SOURCE-FIDELITY: the gate chain must reach the paper;
+certificates need their own paper-first check. Erratum to npivot-certificate §1 owed
+(pnp authorship) once the direction is settled.
+
+(3) THE INVARIANT-SHAPE QUESTION engaged head-on, INCLUDING against its own §2 (owned: the
+m_k·β field "may have been fitted to the broken def's symptom"; §2 status = PROVISIONAL, "I
+will simplify or retract it if Reading B holds — plainly, no attachment"). The frame:
+READING B (paper-first prior, to test not foreclose) — worked.tex:565-567 carries the b's
+OUTSIDE the block; D_J is CLEAN; :615's "d = u_{s,k}·d'" is a TRANSIENT blow-up factoring, not
+carried; boostReady follows DIRECTLY from the clean block; DEF EDIT 2 collapses to her literal
+form; the 11th catch was a broken-recoord artifact. READING A (the subtlety preserving §2):
+the actual product diag(b)·[block] has b-SCALED rows. THE DECISIVE DEF QUESTION (seat-L4D):
+does foldResid compute the b-scaled PRODUCT or the CLEAN block? Plus the reconciliation:
+which OBJECT does honest_clear compute (did the certificate's hand model inherit the direction
+error, or do honest_clear and R3-flip compute DIFFERENT objects?). pnp's reuse-node forms now
+labeled BY OBJECT.
+
+RIGOR BAR for the big deflation (the elder: "the biggest deflation yet gets the hardest gate"):
+five conditions, ALL must cohere — full R3 verification; paper says clean block is the carried
+object; def-fact foldResid computes it; honest_clear reconciled; the field's prior necessity
+shown entirely broken-def-premised. Any one failing keeps §2 live. Nothing bakes; G1/G2 stand.
