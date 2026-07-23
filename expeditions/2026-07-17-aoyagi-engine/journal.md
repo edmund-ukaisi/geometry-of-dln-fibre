@@ -19956,3 +19956,25 @@ mechanical → conjB left CAPF-gated → the re-points → the FULL-GREEN EXIT G
 axioms + census + cordon). GM at rest, unit-consult. GM's session arc banked for the
 calibration ledger: spawn → 5/5 restate → four SPECIFY gate rounds → a sibling-lane unblock →
 13 proofs incl. an in-session catch-and-fix → the keystone → a turn-key handoff.
+
+## 2026-07-23 (~17:20 UTC) — the 26th catch RESOLVED: the elder re-blesses the PIVOT-PIN
+(canonCenterOf untouched, consumer-check run); the tripwire goes CHARTER-LEVEL; seat spawns on
+pnp's surface confirm
+
+The elder owned its §9.9 form-miss (blessed the center-edit without running canonCenterOf's
+realBranch_cover consumer — a KNOWN wire, third firing) and re-blessed the PIVOT-PIN with the
+missed check now run: IsRealBranch pins center and pivot SEPARATELY (:771/:1031/:1084/:1166), so
+the pivot-pin touches only the pivot surface — realBranch_cover, the Deg1 bounds, and the wall's
+center-conclusions ALL preserved. THE KEY DISTINCTION drawn: (α) restricting rule-(b) is
+ADMISSIBLE here, unlike #85's rejected IsRealBranch-strengthening — there the strengthening
+would have killed the genuine fan cover; here the column-fan is ENTIRELY phantom (cert result 2),
+so the restriction kills no genuine chart. The SEMANTIC bless stands; the PRINCIPLE (restrict
+the pivot choice) is blessed; the SURFACE ((α) in-pin condition vs (β) filtered canonPivotSetOf)
+= pnp's confirm (re-bless only if materially different); nonemptiness transfers to the pivot
+set. CHARTER-LEVEL: the elder flags the tripwire for charter.md §3 (canonCenterOf's full-block
+shape is load-bearing via the exact coincidence — never edit the center's shape; fan edits go to
+the pivot surface) — the elder AUTHORS per the ownership rule, controller commits; requested.
+The elder's new discipline: every def-edit bless runs against a known-tripwire checklist before
+blessing. The day's mutual-catch symmetry noted: its instruments caught my exemption error; my
+gate caught its form-bless — both pre-render, the decorrelation architecture working as built.
+The #87 render seat spawns on pnp's surface confirm.

@@ -962,3 +962,39 @@ smaller/cleaner than feared — a SINGLE def-surface edit, NO oracle edit:
 
 Render seat may take the lane. The CanonicalPivots INV sub-family (full diagonal, row+col) is a subset of
 both options, so the INV/chain is unaffected by the taste call.
+
+### §9.9 AMENDMENT (26th catch) — the CENTER-edit falsifies realBranch_cover; RE-BLESS the PIVOT-PIN
+
+**Owned miss.** My §9.9 blessed the IMPLEMENTATION FORM as a `canonCenterOf` center-edit
+(`→ {(S,r,cleared)}`). That FALSIFIES the proven `realBranch_cover` — I verified at the def
+(MonumentAtlas:1174-1200): its proof shows `supportAt ⊆ ed.center` BY `ed.center = canonCenterOf = the full
+widthMinUpto-capped block = blockCoords = supportAt` at δ=1 case12/case2 (`simp only [canonCenterOf, h]` →
+identical block). Shrinking `canonCenterOf` to a column breaks `canonCenterOf = blockCoords`, so
+`supportAt ⊆ ed.center` fails for width > 1. This is the SAME tripwire as the §12 widen (16th catch) and the
+P2 root-widen — THIRD firing. I did not check `canonCenterOf`'s `realBranch_cover` consumer / did not apply
+the KNOWN tripwire. The SEMANTICS I blessed were right; the FORM tripped the wire. The controller's gate
+caught it pre-render.
+
+**RE-BLESS: the PIVOT-PIN, not the center-edit.** The cert's semantics are PIVOT-level ("the phantom is
+never born" = a chart-CHOICE fact), so the faithful implementation restricts the PIVOT CHOICE, leaving
+`canonCenterOf` (the center block) UNTOUCHED. Consumer-check (which I MISSED last time, now run):
+`IsRealBranch` pins `center = canonCenterOf` AND `pivot = canonPivotOf` SEPARATELY (rule-(b), the fan-pin;
+MonumentAtlas:771/1031/1084/1166). The pivot-pin touches only the pivot surface → `canonCenterOf` stays =
+the full block → `realBranch_cover`, the Deg1 bounds, and the wall's center-conclusions are ALL preserved.
+The def-edit shrinks to the fan pin alone (smaller than the blessed center-edit). The SEMANTIC bless STANDS
+(D₁-faithful, exact phantom drop, no oracle edit, row-fan); the IMPLEMENTATION is now the pivot-pin.
+
+- **(α) IsRealBranch rule-(b) gains the column condition** — ADMISSIBLE here (unlike #85's rejected
+  IsRealBranch-strengthening) precisely because the column-fan is ENTIRELY phantom (result 2): restricting
+  it kills NO genuine chart (the row-fan cover is untouched). vs **(β) a filtered `canonPivotSetOf`** with the
+  pin re-pointed. Both realize the pivot-pin; the SURFACE choice is pnp's confirm (which single surface
+  keeps termination/exhaustion/nonemptiness cleanest). I bless the PRINCIPLE; re-bless the surface on pnp's
+  confirm only if it materially differs. Nonemptiness carries (the pivot set `{(S,r,cleared): r ≥ cleared}`
+  is nonempty at non-exhausted states). Coverage rider + render gates carry verbatim.
+
+**STANDING TRIPWIRE (charter-level — fired 3×: 16th §12-widen / P2 root-widen / 26th center-edit).**
+`canonCenterOf`'s FULL-BLOCK shape is LOAD-BEARING via `realBranch_cover` (`supportAt = canonCenterOf =
+blockCoords` at δ=1 case12/case2). NEVER edit `canonCenterOf`'s shape. Chart-choice / fan edits go to the
+PIVOT (rule-(b) / `canonPivotOf`), NOT the center. My tightened discipline: run every def-edit bless against
+the known-tripwire checklist (this coincidence is item #1) BEFORE blessing — a green SPECIFY framing is not
+sufficient.
