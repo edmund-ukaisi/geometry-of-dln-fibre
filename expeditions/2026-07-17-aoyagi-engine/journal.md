@@ -21567,3 +21567,41 @@ per-level witness trace).
 carrier DELIVERED + core-verified (render after (A)+(B)). L7 cover: engine done (M2), under review
 (rev-L7cover); wire mine, gated. Wall (a) both sides. Awaiting: rev-L7cover verdict, seat-descent #97,
 the (C) render, the battery bg-confirm.
+
+## 2026-07-24 (~04:55 UTC) — rev-L7cover CATCH (box-inflation broken-for-nonlinear → repair A routed, wire HELD); KILL RE-RESOURCED (seat-descent stopped turnkey, fresh seat-killfin spawned for corner-in-block+hredEB+growth-V3); growth carrier verified
+
+TWO controller decisions this tick + a review catch that the gate exists for.
+
+**rev-L7cover VERDICT (the review gate paid off).** The L7 engine (LeafCoverTiling @ c069de133)
+SURVIVED soundness — covers_subset is a correct axiom-clean implication; Covers is NON-VACUOUS
+(S.Nonempty forced) + NON-CIRCULAR (the local-to-σ form, references only σ p + two boxes, never
+child.leafImages — confirmed the non-circular one) + coherent (leafImages node = stepMap,
+root-outermost = foldG). BUT the box-inflation brick (Milestone 2's purpose) is
+BROKEN-FOR-NONLINEAR: the constant-K threading (R↦K·max R 1) is UNDISCHARGEABLE for the monument's
+QUADRATIC canonShearOf at depth ≥ 2 (constraint K ≥ 1+K^ℓ, no solution; the engine silently assumes a
+linear-inverse shear). Codex converged independently (Q3). Had I wired it as-is, it would have failed
+at every case-1(2)/case-2 quadratic edge — a late, expensive wire failure. Holding the wire on the
+review caught it first (hunt-precedes-trust). REPAIR (A, rev-recommended + required): replace
+constant-K with an R-DEPENDENT inflation (r↦r·(1+r), cert §2.4-faithful R·(1+R)^m) — re-render
+Covers/covers_subset; drop the R·(1+R)^m overclaim + revisit the max-R-1 floor. Routed to
+seat-L7cover; the L7 WIRE IS HELD until the repaired engine + a re-review. (Keep the FanTree + sound
+fold; strengthen only the inflation.)
+
+**KILL RE-RESOURCED.** seat-descent (KILLSTEP @ 2324f0c00, ~800 green lines this session) finished ALL
+the KILL step's research content — Sfp (hardest FP) + case11_pivot_diag + Sat + couplingCoords_covers_
+cleared + the machinery + a MATERIAL FINDING correcting my "mechanical" read: the case11-δ0-AT needs
+"case11 birth col < wmu(birth layer+1)" ("corner-in-block") — REAL CONTENT (~40-50 line
+oracle-divBirthCoord path-induction, NOT banked; DivBirthInv only gives < d[.1]; seat-KILL confirmed).
+seat-descent at high context, leaned handoff (b). ACCEPTED: seat-descent STOPPED cleanly (turnkey,
+rest-as-consult); spawned fresh full-budget seat-killfin (branch KILLFIN off 2324f0c00) for
+{corner-in-block + hredEB wiring + growth-V3 (C)} from the precise spec + the green foundation + the
+#104 carrier. seat-descent = foundation-author consult.
+
+**GROWTH CARRIER verified** (prior in-turn): pnp-cap's #104 carrier core re-ran exit 0 (descent lemma,
+incl. d0>wmu(1) coverage); battery bg-confirming. Codex-hardened proof-order (vacuity-split first;
+wmu-eq from remnant-row existence, NOT case (ii)) relayed to the KILL-finish seat.
+
+**Status.** KILL step: research content DONE; seat-killfin renders {corner-in-block[real] + hredEB[mech]
++ growth-V3[carrier-ready]} → #97/#98. L7 cover: engine sound but box-inflation UNDER REPAIR (A,
+seat-L7cover); wire HELD. Wall (a) both sides. Awaiting: seat-killfin mini-restate + #97, seat-L7cover
+repaired engine + re-review, the battery bg-confirm.
