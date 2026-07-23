@@ -19078,3 +19078,24 @@ untouched). ROUTED: CAPR intent-confirm → elder frozen-statement blessing → 
 grinds ROOT meanwhile (unaffected, μ=0 vacuous). The charter-§3 pattern again: a def-level
 divergence invisible to every statement gate, caught by a fresh read at the leaf — 19/19
 pre-render.
+
+## 2026-07-23 (~16:05) — THE 20th CATCH (O2, pnp pointed re-check): GM's three per-edge one-step
+laws FALSE at growth edges; the induction re-routes via the cleared locus + S2; revision round opened
+
+The pointed O2 follow-up (after pnp's first answer addressed a different question) found real
+falsity: couplingClear_stepMap_comm / clearedFoldG_extend_eq / clearedFoldB_extend_eq are FALSE
+at case2/case12 δ=1 — clear(child) zeroes the edge's fresh belowPivotCol that clear(parent) does
+not, and coreGen reads it (controller re-ran 20bc71f1d exit 0; per-node rows unambiguous: (M)
+false at every growth edge / true at case11; (S2) the residual commutation TRUE everywhere).
+pnp also closed the escape hatch: couplingClear cannot be case11-targeted (the raw obstruction
+propagates to case2 descendants of case11 ancestors) — the growth is unavoidable. WHAT STANDS:
+the defs (core-passed), FoldStepInvAt_cleared's statement (S1 per-node — the raw identity on the
+cleared locus, obstruction terms coupling-divisible so vanish), S2, the append route, the
+disjointness, case11-stability. REQUIRED: GM's delta-SPECIFY — the three laws demoted to
+case11-only (true there; what the append's case11 arm needs) or removed (no unqualified false
+statement survives, §0(iv)), plus the STATED cleared-locus induction shape (L_child ⊆ L_parent
+at growth edges; parent identity restricts free; step transport on the locus via the TRUE raw
+laws + S2). Elder delta HELD for the revised list (+1 item: demotion honesty, scope in
+name/hypotheses). pnp verifies the restatements; one script nit flagged (a stray summary line
+contradicting its own rows — honesty fix requested). 20/20 statement-class events caught
+pre-render; this one INSIDE the gate sequence, exactly where it was designed to fire.
