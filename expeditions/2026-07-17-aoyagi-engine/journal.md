@@ -20312,3 +20312,24 @@ shortcut (skip the redundant rebuild of an identical tree; confirm identity + sp
 #87 pin is integrated, canonical green at 42 sorries (unchanged). Merge gate CLOSED. Board
 unchanged: CFF closing cert (i)'s wrapper on the pin, CX on the guard+KILL long-pole, INV resting
 (pin-rebase at #73). Next events: CFF's cert (i) closure, CX's crux progress.
+
+## 2026-07-23 (~18:35 UTC) — CX MILESTONE: the cap crux REDUCED to ONE isolated lemma (the
+escaped-column KILL); the guard fix-shape EMPIRICALLY confirmed (guarded statement builds green)
+
+CX banked (cb860d7d1 + ff1bb2804): 5 guard-independent helpers + sourceClearedResid_capped_guarded
+PROVEN modulo the single crux — so the entire capped statement now reduces to ONE clean lemma:
+IgnoresCoords (sourceClearedResid d q j) (layerCoords d S ∖ blockCoords d S) univ at a fresh
+(cleared=0) node. Everything else (conjunct-2, J≥1-interior conjunct-1) closed off
+foldResid_layerHomogeneous' + the helpers + the L2 bridge. TWO consequences: (a) THE ISOLATION IS
+THE DE-RISK — even at foldResid_layerHomogeneous'-scale, the KILL is now ONE named statement a
+fresh sub-unit could take turn-key, so the cap crux CANNOT wedge the endgame; escalation
+PRE-AUTHORIZED (isolated-statement handoff → sub-unit seat or pnp mechanism-consult, the L3T3
+pattern). (b) THE GUARD FIX-SHAPE IS NOW EMPIRICALLY CONFIRMED — the interior-guarded statement
+BUILDS GREEN modulo the KILL, demonstrating (not just reasoning) that layer+1<N closes everything
+but the KILL and no last-layer J≥1 node is visited (CX uses foldResid_layerHomogeneous' as a black
+box, no path-induction on the capped statement). The frozen sourceClearedResid_capped becomes
+`:= sourceClearedResid_capped_guarded … hlayer` (sole consumer carries hlayer). CX attacking the
+KILL now (Codex on the inductive-invariant shape, artifact-first); its route: KILL ⟺ the escaped-
+column coefficient b_e vanishes on coupling-cleared inputs (factors through ancestor couplings),
+needs a whole-path invariant (doesn't telescope on its own statement). CX's #87 rebase registered
+for #73. The KILL is now the expedition's single deepest open lemma — cleanly isolated.
