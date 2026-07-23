@@ -18022,3 +18022,20 @@ contract beats a staged half + a rebase. L4D stays stood down as the NAMED consu
 hard-wiring, the composition, the bridge shape — routed through me). Its destination-flag
 supersession noted: §7's "recursion untouched / raw only inside ⟨·⟩" holds the RLCT computation
 on the untouched object — the destination was never at risk.
+
+## 2026-07-24 (~12:00) — (iii) KILL-CONDITION TRIGGERED: both algebraic bridges CLOSED on exact
+algebra (9bdbb29e3); the bridge is gauge/cover-theoretic or nothing; §7.5 is the decider
+
+pnp's closing verdict: (ii) ideal-equality FALSE (both inclusions, all witnesses; even ⟨coreGen⟩
+not preserved — the clear changes the PRODUCT); L4D's decomposition (b) FALSE (the remainder is
+not pivot-divisible — the strict-transform discharge fails); and the DIMENSION argument closes
+the det-1 class permanently (raw depends essentially on u₀₁₀; cleared doesn't; no det-1 CoV
+bridges across an essential-coordinate drop — the relation is INHERENTLY a restriction). The
+remaining candidate: GAUGE/COVER — is the RLCT invariant under fixing u₀₁₀? Relayed to the elder
+with the three landing shapes: (a) cover-membership (the case11 chart = one chart of HER per-chart
+recursion; coupling≠0 = another branch; the payoff takes min — the banked fan machinery is the
+asset), (b) a genuine RLCT-gauge-invariance lemma (real-analysis content; build-vs-cite applies),
+(c) a closer pp.15-18 read. pnp's exact-algebra role on the bridge is COMPLETE; everything now
+converges on §7.5. Controller self-audit: the arc deepens but every step is verified-then-designed
+(zero wasted renders in 4 rounds of catch); the destination is untouched; the deepening is the
+mathematics being real, not the process failing.
