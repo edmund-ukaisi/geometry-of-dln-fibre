@@ -20440,3 +20440,29 @@ decorrelated (V3) consult on demand. On green: #6 (obligation-b twin) axiom-clea
 SourceClearedResid:242. THE EXPEDITION'S DEEPEST DESIGN COMMISSION IS CLOSED — what remains on the
 KILL is downstream render execution of a certified induction. Meanwhile: the navigator's
 complete-open-set audit (the untracked-Skeleton-rung question) is in flight.
+
+## 2026-07-23 (~18:50 UTC) — NAVIGATOR gate-completeness audit: a TWO-THEOREM CONFLATION found
+(the calibration's gap, confirmed) — definition-of-done surfaced to operator + elder; frontiers
+UNAFFECTED
+
+The navigator (2-channel, code+ledger) confirmed the calibration's hypothesis and sharpened it:
+NOT untracked math on the engine headline, but a CONFLATION of two distinct Lean theorems.
+(B) via_engine (this expedition's route) — ONLY sorry = exists_coreResolution = my cap/KILL/
+transport/wall frontiers; "close frontiers → theorem" is EXACTLY complete + cite-dodged. (A) the
+literally-named aoyagi_learning_coefficient (Skeleton:1680) — a DIFFERENT object, 2 legacy bare
+sorries (L2 1094 + D1≥ 1140), never touches exists_coreResolution; its close = the pre-staged
+#108 re-point (RouteMSJMint) + hbox (DecoratedDescent, aoyagi-full's (□) mountain) + L=1 fold-in
+— a SEPARATE programme, NOT my frontiers. A1 PROVEN. Cite genuinely dodged on both. THE
+DECISION IS THE DESTINATION-THEOREM IDENTITY (definition-of-done, wait-for-explicit-go — NOT
+mine to pick silently): if via_engine = destination, the endgame is complete-as-modeled; if the
+literal Skeleton theorem = destination, the #108 re-point + hbox is also owed. The heartbeat
+frame ("path B replaces the cite; hbox = adapter A default; ditch the hole if B prices shorter")
+reads as B-substantive + fold-into-headline-via-re-point, but that's the operator's call.
+ROUTED: elder for the charter/compass reading of the agreed destination-theorem identity (the
+route/close joint); operator SURFACED (this response's prose + here) for the definition-of-done
+fork. #108 (the re-point) + hbox registered as a TRACKED-CONTINGENT item (was untracked) so it's
+not silently assumed done when the frontiers land. CRITICALLY: NOTHING BLOCKS — via_engine's
+frontiers (seat-KILL, INV's transport arm, the wall, the cap) + #73 proceed unaffected; the
+engine headline goes clean-three when they land regardless of the destination declaration. The
+calibration + navigator did exactly their job: caught the one thing a controller can miss (an
+identity conflation of the headline) BEFORE declaring the endgame done.

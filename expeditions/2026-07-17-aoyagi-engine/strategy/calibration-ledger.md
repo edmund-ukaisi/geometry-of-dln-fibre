@@ -1074,3 +1074,26 @@ not VERIFIED. WHAT IT CHANGES: convene the navigator (phase-transition-mandatory
 COMPLETE open-dependency set of the general theorem — is {the frontiers via R1} the WHOLE
 remaining open set, or are L2/D1/A1 also open? Steering the endgame as "just close the frontiers"
 is only right if L2/D1/A1 are proven; the navigator confirms or finds the untracked rung.
+
+NAVIGATOR VERDICT (the gap CONFIRMED — a two-theorem conflation, not untracked math on MY headline):
+- CITE-DODGE: YES, genuinely — cited_aoyagi_lower_ax invoked ONLY in the RlctInterface struct
+  (AoyagiCited:80), absent from BOTH via_engine's cone AND the Skeleton route; cordon = CITED. The
+  charter's "delete the cite" hard half is achieved on both routes.
+- TWO DISTINCT LEAN THEOREMS: (B) aoyagi_learning_coefficient_via_engine (LearningCoefficient:323,
+  THIS expedition's Objects-A/B/C/D route) — ONLY sorry = exists_coreResolution = my cap/KILL/
+  transport/wall frontiers; "close frontiers → theorem" EXACTLY complete for it. (A) the LITERALLY-
+  named aoyagi_learning_coefficient (Skeleton:1680) — a DIFFERENT object, cone = 2 legacy bare
+  sorries (L2 product_reduction's normal-form 1094 + D1≥ 1140), NEVER references
+  exists_coreResolution; its close = the pre-staged #108 re-point (RouteMSJMint) + hbox
+  (=DecoratedDescent, the aoyagi-full (□) box-finiteness mountain) + L=1 fold-in — a SEPARATE
+  programme, NOT closable by my frontiers. A1 (lambdaCore_eq_clean) PROVEN.
+- HIT/MISS: the calibration's gap-hypothesis (untracked Skeleton rungs) CONFIRMED REAL — L2/D1≥ are
+  open bare sorries, untracked in aoyagi-engine's list — BUT they belong to the OTHER theorem/
+  programme, so it's a DESTINATION-IDENTITY question, not missing work on the engine headline.
+- WHAT IT CHANGES: the endgame is COMPLETE-as-modeled IFF the destination = via_engine (path B).
+  IFF the destination = the literal Skeleton theorem (path A / unconditional _gen), a further
+  re-point (#108) + hbox disposition is ALSO owed — surfaced to the operator (definition-of-done,
+  wait-for-explicit-go) + the elder (charter/compass reading). The heartbeat frame ("path B
+  replaces the cite; hbox=adapter path A default; DITCH the hole if B prices shorter") suggests B
+  is the substantive goal + the re-point folds it into the headline — but that's the operator's
+  definition-of-done to confirm, not silently assumed.
