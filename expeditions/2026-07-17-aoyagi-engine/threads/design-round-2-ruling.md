@@ -370,3 +370,72 @@ directions incl. harness mis-transcription):**
 def-edit (1) (SHAPE widen) is INDEPENDENT of this verdict (the support-set widen does not touch the
 recoord) — arch-C proceeds on it. def-edit (2) (FIELD) + the INTRO/PRESERVE/BASE frontiers HOLD until
 the recoord verdict lands (the field is not true until the pairing is in the fold). Correct sequencing.
+
+---
+
+## 8. FINALIZATION — the verdict landed; §2's FIELD is RETRACTED; §7 resolved by R3 (recoord direction)
+
+The council-of-two (elder + Codex xhigh, `codex/invariant-shape-council-answer.md`) has convened and
+CONVERGES with worked.tex and both instruments (pnp-transport, seat-L4D). The crisis resolves cleaner
+and smaller than §7 feared. Supersedes §2's FIELD and §7's staging.
+
+**(a) The recoord DIRECTION (R3) — the whole fix, faithful.** The baked `canonNormalizationOf`
+branch (ii) had the WRONG inverse: `A_{S+1}·Q₁⁻¹` (`+γ`) DOUBLES the uncleared cross-term; the
+correct `A_{S+1}·Q₁` (`−γ`) CANCELS it, clean, unipotent. Codex Q1 CONFIRMED the direction against
+worked.tex:445: Aoyagi's `A'=R⁻¹A` is old-to-new; the chart substitution is `A=RA'` (new-to-old);
+reversing/transposing the product turns her left-mult into a right-mult, giving `Ã=Ã'·Q₁` — the
+apparent inverse in the N_p certificate §1 was an old-to-new/new-to-old confusion, NOT a real inverse.
+So R3 is a single-branch sign flip, manifestly unipotent, and it is the FAITHFUL realization of
+Aoyagi's clearing (achieved ideal-level on the deeper factor, F1-consistent — no rank-reducing
+coordinate clear). **R4 (generator-transform component) STANDS DOWN** — R3 achieves the clean form
+directly and is far smaller.
+
+**(b) The invariant SHAPE — Reading B (CLEAN), §2's FIELD RETRACTED.** Codex Q2 (FACT, "not genuinely
+ambiguous"): the invariant `diag(b)·[[E_J|D_J]]` keeps the exceptional monomials in the EXTERNAL
+row-weight ledger, NOT inside `D_J`; Case-1(1)'s `d=u_{s,k}d'` is the transient blow-up-chart
+substitution, absorbed into the b-chain before the invariant is carried onward — not a divisibility
+condition on the normalized residual. worked.tex:619-620/628-629 confirms: the regular `Q,P` reduce
+each step to `[[1,O],[O,D_{J+1}]]` (the clean block). So `foldResid` = the CLEAN residual `D_J`;
+`foldB` = the external b-ledger (already carries the exceptionals, incl. the reused divisor's). **§2's
+FIELD conjunct — in BOTH the additive `∃c`-factoring form I first ruled AND the `m_k·β` product — is
+RETRACTED.** It was fitted to the broken def's coeff-2 additive symptom; the exceptional the wall needs
+lives in `foldB`, not inside the residual. My earlier Codex read (`carried-invariant-fidelity-answer`
+§2a/2b) confirmed a factoring premised on the residual carrying extras — that premise was the broken
+def; with R3 the residual is clean and the premise dissolves.
+
+**(c) BOOST-READINESS is DIRECT — no internal field.** Codex Q2 (INFERENCE): boost-readiness follows
+from the separated normal form — partial-block rows contribute a center coordinate from the clean
+`D_J`; complementary rows acquire the reused exceptional from their EXTERNAL `b_i` (in `foldB`). No
+hypothesis that extra-block coefficients INSIDE `D_J` factor by the exceptional. So the 11th "form too
+weak" catch DISSOLVES: `realBranch_boostReady_case11` is proved from the clean residual + the existing
+`StepInv`/`foldB` ledger, not a new carried field. **DEF EDIT 2 is NOT a field conjunct** — it is
+`Deg1SupportedSlot` over the CLEAN (Reading-B) residual, the b-chain staying in `foldB` where it
+already is. Simpler than V or S; her literal normal form.
+
+**(d) The crisis is BOUNDED — no monument reopening, no operator escalation.** Both instruments concur
+(pnp `recoord-ideal-matched-note.md`; seat-L4D): the baked fold is a globally invertible polynomial
+automorphism (det-1, structurally triangular) ∘ proper blow-ups, so the RLCT VALUE was NEVER at risk
+and the resolution is VALID ("valid-but-different presentation"); `⟨baked⟩≠⟨faithful⟩` as ideals but
+by an INVERTIBLE change, RLCT-preserving. What genuinely FAILS is MONOMIALISATION (the baked residual
+is `[[1,β],[γ,e₂]]`, not `diag(1,e₂)`) — and the fix is required for the PROOF VEHICLE (the `M_{s,k}`
+ledger reads the value off the monomialised block), NOT for soundness. So §7's escalation-to-operator
+branch does NOT fire; R3 is a contained def sign-flip within the re-bake.
+
+**(e) pnp's R5 (restate to the non-diagonal unit-det block, prove termination without clearing) —
+REJECTED as UNFAITHFUL.** worked.tex:619-629 shows Aoyagi REDUCES to the clean `[[1,O],[O,D_{J+1}]]`
+each step (via the regular `Q,P`); she does NOT carry a non-diagonal block. R3 reproduces her clean
+reduction via the invertible recoord; R5 would carry a block she never carries. Her open-fact (non-diag
+termination) is MOOT for the faithful route. (F5: Aoyagi is the touchstone — reproduce her choice.)
+
+**(f) honest_clear vs R3-flip — likely NO real disagreement.** honest_clear's "extras carry e₂" is
+`e₂`-as-a-COORDINATE-of-the-clean-block `D_{J+1}` (the Schur coordinate), not `e₂`-as-the-defect; R3-flip
+removes the DEFECT leftover `u₀₁₀·u₁₀₁`. Both give the clean block. The object-labeled reuse-node forms
+confirm this reconciliation.
+
+**Status: FINALIZED, one confirmation battery outstanding (paper-first ordering).** The paper + council
++ both instruments have RULED (Reading B, R3, field retracted, bounded). The object-labeled reuse-node
+forms (pnp, both wide witnesses, R3-flip: confirm the residual is the clean `D_J` at the ACTUAL reuse
+node) + seat-L4D's def-side direction cross-check are the CONFIRMATION, not the decision. If the
+reuse-node residual is NOT clean under R3, re-open — but all evidence converges. §1 SHAPE (widen) STANDS
+untouched; §2 FRAME/coords-of-record is MOOT (no factoring). DEF EDIT 2 = clean-residual `Deg1SupportedSlot`,
+b-chain in `foldB`. The gate LIFTS for the R3 + clean-shape re-bake conforming to (a)-(f).
