@@ -17262,3 +17262,13 @@ of her once-global absorption) — dispatched to arch-C-4 with the elder's froze
 docstring-only, zero-code-token diff required; I commit/push on its report). The per-chart-gauge
 flag RULED: faithful + bounded, not a re-open. Merge now waits on pnp (all-rows battery) + L4D
 (slot-confirm) only.
+
+## 2026-07-23 (~16:50) — seat-L4D SLOT-CONFIRM: ALL 11 PASS (gate 2/3); cheerful re-run exit-0
+
+L4D read the rendered text at 1a113e4db: all 11 items PASS, including the fine-grained ones — the
+`d q.1.1.succ` vs `castSucc` range check (Q₂⁻¹ row-mix vs Q₁⁻¹ col-mix, both correct), the write/read
+self-exclusion on all three branches (det-1: each branch's guard excludes its own write index), and
+the code-untouched sweep of foldResid/stepMap/stepMapRaw/foldG/foldB/edgeShear (docstring prose only —
+no splice). Cheerful re-run (f2_census0_confirm.py) exit-0: the rendered 3-compensator form preserves
+the product identically; pure-zero fails. Wall-readiness declared (post-merge, on GO).
+MERGE GATES: elder ✓, L4D ✓; remaining = pnp all-rows battery + arch-C-4's item-9 docstring commit.
