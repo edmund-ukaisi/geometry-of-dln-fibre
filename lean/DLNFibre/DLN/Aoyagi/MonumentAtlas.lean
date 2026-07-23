@@ -414,6 +414,30 @@ def foldNR (d : Fin (N + 1) → ℕ) : TreePath d → ℕ
   | .root => d (Fin.last N) * d 0
   | .step p _ _ _ nextState _ => if N ≤ nextState.layer then 1 else foldNR d p
 
+/-- **R4 — the pivot-cross clearing (Aoyagi Lemma 2's `F₂/F₃`, generator-level; consolidated ruling
+§8(i)/(k)).** The residual-side coordinate-vector normalization that ZEROES the layer-`s.layer` carve
+pivot-CROSS: the pivot ROW (`row = a`, `col ≠ b`) and pivot COLUMN (`row ≠ a`, `col = b`), on the carve
+`cleared ≤ row, col`, EXCLUDING the pivot corner `(a,b)`. Together with `canonNormalizationOf` branch-(i)'s
+interior Schur (`−w_{r,b}·w_{a,c}`, making the interior `= e₂`, det-1) it realises Aoyagi's
+`Q₁·A_S·Q₂ = diag(1, e₂)` (worked.tex:400-420): branch-(i) writes the disjoint INTERIOR, R4 clears the
+disjoint pivot-CROSS — no overlap, no double-count. Unlike the shear it reads its OWN coordinate (`↦ 0`),
+so it is NOT a det-1 `blockShear`; it lives on the residual-READ side (like `blockBlowupCoordQuot`), NEVER in
+`foldG`/`stepMap`/`hshear` (the coordinate Jacobian is untouched; R4's unit Jacobian rides Lemma-1
+ideal-invariance, §8(h), `g1_unimodularity`). CASE-CONDITIONED to case12/case2 (a fresh clear); at case11
+(merge) / rollover it is the IDENTITY — matching `edgeShearRaw` (`id` there) and pnp's model (the clear is
+applied only at a fresh clear, `w = u` at case11/rollover). -/
+noncomputable def r4Clear (d : Fin (N + 1) → ℕ) (s : ConState N) (cse : StepCase)
+    (p : Fin (flatDim d)) (k : Fin (flatDim d)) (w : Fin (flatDim d) → ℝ) : ℝ :=
+  match cse with
+  | StepCase.case12 | StepCase.case2 =>
+      let qp := (tupIdxEquiv d).symm p
+      let q := (tupIdxEquiv d).symm k
+      if (q.1.1 : ℕ) = s.layer ∧ s.cleared ≤ (q.1.2 : ℕ) ∧ s.cleared ≤ (q.2 : ℕ) ∧
+          (((q.1.2 : ℕ) = (qp.1.2 : ℕ) ∧ (q.2 : ℕ) ≠ (qp.2 : ℕ)) ∨
+           ((q.1.2 : ℕ) ≠ (qp.1.2 : ℕ) ∧ (q.2 : ℕ) = (qp.2 : ℕ))) then 0
+      else w k
+  | _ => w k
+
 /-- The residual family along a path (rev-leaves check-#2 EXACT-CLEAR + FIX-RESID δ=1 strict transform).
 `root ↦ coreGen d e`; a TERMINAL-reaching step (`N ≤ nextState.layer`) collapses to the M'=1 unit
 `fun _ ↦ 1`. A NON-terminal step: at **δ=0** (`¬ edgeδ`) the pure pullback `foldResid p ∘ stepMap`
@@ -549,20 +573,34 @@ def Deg1SupportedSlot {N : ℕ} (d : Fin (N + 1) → ℕ) {nR : ℕ}
     PerLayerDeg1From d (resid j) fromLayer V
 
 /-- **Block coordinates** — the flat coords at layer `ℓ` CAPPED on the col axis by the running-min block
-width `widthMinUpto d ℓ` (family ruling 2026-07-22, item 1: the residual block is `widthMinUpto`-capped, not
-the whole `d_{ℓ+1}×d_ℓ` layer — matches `canonCenterOf`'s cap :725). NO cleared-shrink — that is
-`canonCenter`'s extra, keeping `supportAt` (full capped block) DISTINCT from `canonCenter` (capped AND
-cleared-shrunk). Bridge-free (Finset-definable from `d`+`ℓ`); `∅` for `ℓ ≥ N`. Feeds `supportAt`. -/
+width `widthMinUpto d ℓ`. This is the blow-up CENTER's cap: it matches `canonCenterOf`'s running-min axis
+(:725) — Aoyagi's `D_J` center has one axis at `M(S)` (running min) and one at raw `M^{(S+1)}`, and
+`canonCenterOf` caps the one axis and leaves the other raw, faithfully. NO cleared-shrink — that is
+`canonCenter`'s extra, keeping `blockCoords` (full capped block) DISTINCT from `canonCenter` (capped AND
+cleared-shrunk). **Feeds `supportAt` ONLY at the `J = 0` root branch** (where the residual's support IS the
+block being blown up = the center, so the cap is faithful); the DESCENDED (`J ≥ 1`) residual support is the
+raw `layerCoords d (S+1)`, NOT `blockCoords` (consolidated ruling §1, 2026-07-23 — the running-min cap is
+the CENTER's, and the descended residual block `D_J` has a raw column axis; conflating the two under-tight
+capped the descended support, the tenth catch). Bridge-free (Finset-definable from `d`+`ℓ`); `∅` for
+`ℓ ≥ N`. -/
 noncomputable def blockCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) : Finset (Fin (flatDim d)) :=
   (Finset.univ.filter (fun q : tupIdx d =>
       (q.1.1 : ℕ) = ℓ ∧ (q.2 : ℕ) < widthMinUpto d ℓ)).image (tupIdxEquiv d)
 
-/-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22 — the WINNER;
-the two-clock deeper∪shed shape is the DISCARD). The Deg1 support DESCENDS per clear: at `J = 0` it is the
-current capped block `blockCoords d S` (layer `S`, `widthMinUpto`-capped); once a pivot is cleared (`J ≥ 1`)
-it descends to `blockCoords d (S+1)` — the deeper block the `P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads;
-at the LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS
-to the born-unit `∅` (no `C^{(S+1)}` to absorb into — terminal collapse, p.19/21).
+/-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22; descended
+branch RE-BAKED to Aoyagi's raw residual block, consolidated ruling §1, 2026-07-23). The Deg1 support
+DESCENDS per clear: at `J = 0` it is the current capped block `blockCoords d S` (layer `S`,
+`widthMinUpto`-capped); once a pivot is cleared (`J ≥ 1`) it descends to `layerCoords d (S+1)` — the deeper
+block the `P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads — the WHOLE next layer, NOT the running-min-capped
+sub-block. This is Aoyagi's `D_J` residual block (worked.tex:562–577, esp. :569): `D_J` is
+`(M(S)−J) × (M^{(S+1)}−J)`, so the running min `M(S)` governs only the ROW / cleared-prefix axis while the
+COLUMN axis is the **raw** next-layer width `M^{(S+1)}−J`. On a WIDE branch (`d_{S+1} > min(d_0..d_S)`) the
+running-min cap is strictly tighter than her block and the residual genuinely reads the out-of-cap columns
+(the inherent remnant-row read, recoord-independent; `empirical_invariant_table.py`, `(2,3,2,2)`) — so the
+capped `blockCoords d (S+1)` UNDER-transcribes the residual and the honest shape is `layerCoords`. At the
+LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS to the born-unit `∅` (no `C^{(S+1)}` to absorb into —
+terminal collapse, p.19/21). The `J = 0` branch stays `blockCoords d S` — there the residual's support IS
+the block being blown up (the CENTER's cap is faithful), and `realBranch_cover` depends on it.
 
 CONVENTION (elder's anti-off-by-one, transcribed): 0-indexed layers, `S ∈ {0..L}`, `L = N − 1` the last
 matrix-layer index; `S = L ⟺ S + 1 = N` is the born-unit case (0↔1 shift matches the page's 1-indexed `S = L`),
@@ -571,7 +609,7 @@ NO substantive ±1 offset. `supportAt` is the geometric Deg1 SUPPORT and is DIST
 conflation of the two is retired. -/
 noncomputable def supportAt (d : Fin (N + 1) → ℕ) (S J : ℕ) : Finset (Fin (flatDim d)) :=
   if J = 0 then blockCoords d S
-  else if S + 1 < N then blockCoords d (S + 1)
+  else if S + 1 < N then layerCoords d (S + 1)
   else ∅
 
 /-- **The support LAYER of a state** (family ruling 2026-07-22, item 4 — the `fromLayer` threshold, DRY).
@@ -856,14 +894,19 @@ col), the displacement at a flat coord `k` decoding to `(layer, row, col)`:
   the pivot cross (`row ≠ a`, `col ≠ b`), the displacement is `−w_{row,b}·w_{a,col}` (Schur residual
   `w_ij − w_ib·w_aj`, pivoted at `(a,b)`). A CORNER pivot (`a = cleared = b`) recovers `canonShearOf`'s
   `−u_γ·u_β` cross-term.
-* **(ii) layer-`(s.layer+1)` recoord image** — the deeper factor `A_{S+1} → A_{S+1}·Q₁⁻¹`,
-  `Q₁⁻¹ = I + ∑_{i≠a}(w_ib) e_i e_a^T` (right column-mix). The displacement lands on col `= a` (the pivot
-  row) of layer `S+1`, value `∑_{i≠a} w_{i,b}·A^{(S+1)}_{row,i}` — degree-1 in the layer-`(S+1)` coords,
-  coefficients `w_{i,b}` from layer `S` (per-`(S+1)`-linear, certificate §2). This is the piece
-  `canonShearOf` omitted (the `L1⊥L3`-coupled fix, restoring boost-readiness).
+* **(ii) layer-`(s.layer+1)` recoord image** — the deeper factor `A_{S+1} → A_{S+1}·Q₁`, the `−γ`
+  DIRECTION `Q₁ = I − ∑_{i≠a}(w_ib) e_i e_a^T` (right column-mix; consolidated ruling §8(a), worked.tex:445
+  — the earlier `Q₁⁻¹`/`+γ` was an old↔new-chart confusion, doubling the cross-term). The displacement
+  lands on col `= a` (the pivot row) of layer `S+1`, value `−∑_{cleared ≤ i, i≠a} w_{i,b}·A^{(S+1)}_{row,i}`
+  — degree-1 in the layer-`(S+1)` coords, coefficients `w_{i,b}` from layer `S` (per-`(S+1)`-linear,
+  certificate §2), SCOPED to the remaining block `cleared ≤ i` (§8(m): cleared outer rows read as `0`, her
+  accumulated `Q₂'⁻¹` semantics — removes the inter-edge `u₀₀₁²`). This is the piece `canonShearOf` omitted.
 
-Both components det-1 / unipotent (Aoyagi worked.tex:443–457); that Jacobian-1 fact rides the edge's
-`hshear` field, not this data def. -/
+Both branches read OTHER coordinates (branch (i) reads the pivot row/col to shift the interior; branch (ii)
+reads layers `S`, `S+1` off the target col), so `blockShear φ = u + φ(u)` is det-1 / unipotent (Aoyagi
+worked.tex:443–457); that Jacobian-1 fact rides the edge's `hshear` field, not this data def. The pivot-cross
+CLEARING (Lemma 2's `F₂/F₃`) is NOT here — it reads its own coord, so it is not a det-1 shear; it is R4, a
+generator-level residual normalization (worked.tex:400-420, unit Jacobian via Lemma 1), placed separately. -/
 noncomputable def canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d)) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   fun u k =>
@@ -875,10 +918,15 @@ noncomputable def canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N
       (-(readEntry d u s.layer (q.1.2 : ℕ) (qp.2 : ℕ)))
         * readEntry d u s.layer (qp.1.2 : ℕ) (q.2 : ℕ)
     else if (q.1.1 : ℕ) = s.layer + 1 ∧ (q.2 : ℕ) = (qp.1.2 : ℕ) then
-      -- (ii) layer-(S+1) recoord: `(A_{S+1}·Q₁⁻¹ − A_{S+1})` on col `a`, `∑_{i≠a} w_{i,b}·A_{row,i}`.
-      ∑ i ∈ Finset.range (d q.1.1.castSucc),
-        if i = (q.2 : ℕ) then 0
-        else readEntry d u s.layer i (qp.2 : ℕ) * readEntry d u (s.layer + 1) (q.1.2 : ℕ) i
+      -- (ii) layer-(S+1) recoord `A_{S+1}·Q₁` — the `−γ` DIRECTION (`Q₁ = I − ∑_{i≠a} w_{i,b} e_i e_a^T`,
+      -- worked.tex:445; council Q1: `A' = R⁻¹A` old-to-new ⟹ chart substitution `A = RA'` transposes to
+      -- right-mult, the apparent `Q₁⁻¹` was an old↔new confusion), on col `= a` (the pivot row) of layer
+      -- `S+1`, SCOPED to the remaining block `cleared ≤ i` (§8(m): already-cleared outer-pivot rows read
+      -- as `0` by NOT being summed = her accumulated `Q₂'⁻¹` current-chart semantics; the unbounded
+      -- `∀ i≠a` sum reads an outer pivot row and produces the inter-edge `u₀₀₁²`, which the scope removes).
+      -(∑ i ∈ Finset.range (d q.1.1.castSucc),
+        if i = (q.2 : ℕ) ∨ i < s.cleared then 0
+        else readEntry d u s.layer i (qp.2 : ℕ) * readEntry d u (s.layer + 1) (q.1.2 : ℕ) i)
     else 0
 
 /-- **`canonNormalizationOf` two-support ⟨FRONTIER; statement-locked, elder §2⟩.** A nonzero displacement
