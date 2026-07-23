@@ -8,6 +8,13 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
+- **⚠ REGROUNDING IN PROGRESS (2026-07-23 ~23:00) — the phase/LANES text BELOW is STALE (pre-regrounding
+  geometric-fold framing; do NOT act on it).** Current truth = `regrounding-2026-07-23.md`: treadmill
+  confirmed; suspected LOCAL-MIN at the encoding level; PIVOTAL FORK #106 (ideal-identity Schur-clearing
+  vs geometric-substitution fold) tilting RE-ARCHITECT, pending pnp-ideal's corank≥2 exact-algebra check
+  + elder's final ruling. Value chain (Objects A/C/D) verified sorry-free + ideal-level; the open frontier
+  = proving the charts' ideal identity. All geometric-fold render (#92/#95/#98) HELD behind #106. This
+  memo gets rewritten once the fork is decided.
 - **READ `charter.md` FIRST, every wake** — it is the fixed invariant core (goals = Aoyagi's machinery
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
