@@ -15318,3 +15318,35 @@ Elder told: input set complete, rule when ready (her text FIRST, candidates as t
 The scrambled-e hedge check remains a low-weight residual at pnp-transport (L4D = fallback).
 seat-L3T2's read-only charge CLOSED (stand down). Gate unchanged; no Lean edits; payoff isolation
 untouched throughout the whole diagnostic arc (zero Lean commits since the N_p bake).
+
+## 2026-07-23 (~00:05) — ELDER INCIDENT: delivery-lost adjudication RECOVERED; wedged seat stopped; fresh office convened
+
+The drift-glance liveness check on the critical path found a DOUBLE infrastructure failure:
+(1) OUTBOUND LOSS — the elder DID adjudicate the cap-escape at 23:05 (msg bf182c0a) and the
+message NEVER reached the controller's conversation. Recovered verbatim from its transcript and
+banked with a provenance header: threads/L4-case1-core/elder-capescape-interim-adjudication.md
+(a139d93c4). Content: def-level mechanism CONFIRM (independent, pre-trace); ownership of the
+ratification gap (value/Jacobian side verified, child-support cap never checked — "a chart can
+monomialise while its residual's support escapes the cap"); fix candidates β (row-cap the fan to
+the live square, PREFERRED) and γ (recoord-image subspace support, fallback); the fan/slot
+COUPLING observation; a pnp-fan live-square cover sub-question; a §7 ε-table col-a flag. By its
+own terms INTERIM ("I consume the trace and rule the exact slot shape then") — and the trace's
+INHERENT arm (remnant-row READ, no recoord, any pivot) SUPERSEDES fix-β (write-side only).
+(2) WAKE FAILURE — six consecutive messages did not wake the seat (transcript frozen 23:05 →
+00:00 while all four other seats responded normally); 10.8MB transcript ⟹ probable context
+exhaustion. STOPPED the wedged incarnation cleanly (zombie-wake hazard: a later wake processing
+its 6-message queue could emit a conflicting second ruling) and CONVENED a fresh elder-standing
+office from durable artifacts (the office doctrine + the process-restart precedent; the
+operator's "never respawn while they live" read honestly — six failed wakes is not living).
+The fresh convening brief: the full banked input set + the recovered interim adjudication + the
+paper-first directive + the predecessor's live flags (fan/slot coupling, live-square
+sub-question, ε-table col-a) to integrate or retire explicitly.
+
+CONTROLLER CORRECTION on the record: my earlier "input set complete, elder can rule" report was
+made while the elder was already wedged — the sensor (message sent = message processing) was
+miscalibrated. LESSON (standing): teammate→controller MESSAGE LOSS IS REAL and an office's
+silence on a critical-path wait is a READING, not a state — poll the transcript tail (mtime +
+last-entry) whenever a ruling is the gate, and treat "sent five messages, heard nothing" as an
+incident trigger, not patience. The recovered adjudication also shows the elder's independent
+def-confirm CONVERGED with seat-L4D's (write-side mechanism, same line cites) before either saw
+the other — good decorrelation evidence for the mechanism.
