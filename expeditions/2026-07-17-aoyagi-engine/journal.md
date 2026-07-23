@@ -16687,3 +16687,27 @@ ordered into a durable file — threads/rebake2-turnkey-spec.md):
   seat, per arch-C-3's own recommendation + its context weight); SURVIVES ⟹ the §7 tripwire.
 - SEQUENCING: green partial banks NOW (gated on nothing); the wiring+bridge waits on pnp;
   the elder's delta-read sequenced after the battery per its own ordering.
+
+## 2026-07-23 (~08:30) — the absorption hypothesis FALSIFIED in the simple model; §7 is the LEAN; the elder's pre-frame becomes the likely ruling
+
+The cross-tension consolidated (banked cda8f431e, controller re-ran exit-0):
+- seat-L4D's three decorrelated Gröbner checks ALL fail on E_J col-0: naive; WITH branch-(ii)
+  (BOTH signs — the "branch-ii absorbs the γ-side" hypothesis, which was both seat-L4D's caveat
+  AND the elder's pre-frame ABSORBED arm, is FALSIFIED in the simplified model); b-weighted
+  (fails harder — needs u_pivot divisibility col-0 lacks). Def-read: col-0 IS a genuine
+  foldResid entry (coreGen full-width; foldB is a SCALAR — no column/ledger absorption exists).
+- The elder's paper-frame explains the data exactly: LEMMA 2 ABSORBS, IT DOES NOT ZERO — her
+  Q₂ re-parametrizes the cross into new coordinates (F₂ = −A₁⁻¹A₂); the pure-zero r4Clear is a
+  TRUNCATION of her mechanism; the failing remainder is the dropped F₂ content. boostReady
+  never needed the ideal-preservation; the StepInv close does.
+- §7 IS NOW THE LEAN. pnp's faithful check tests only the remaining outs (the REAL
+  foldB/ledger structure — the primary out; the exact rendered composition; wide witnesses).
+- THE PRE-STAGED §7 DISPOSITION (the elder's, ready): the fold-touch = the FAITHFUL
+  realization of F₂'s absorption — her mechanism, unit-Jacobian class; CONTAINED if a
+  foldResid-value composition; operator-escalated only if it forces a StepInv-semantics
+  redesign. Controller's preparatory note: at the normalized pivot (→1), F₂ = −A₂ — the
+  absorption may reduce to a SIGN re-parametrization of the cross entries, smelling bounded.
+- THE HOLD DISCIPLINE VINDICATED TWICE: the M-bridge as spec'd in the turn-key is
+  likely-false if §7 fires — and it is NOT in the tree; the green partial excluded it.
+
+One datum (pnp's faithful check) decides; the elder rules the moment it lands.
