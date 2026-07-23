@@ -20992,3 +20992,34 @@ wrong.
 **Status.** #95(i) target-confirm pending the elder (proceed-on-silence). seat-descent grinding the
 step (non-growth unblocked; growth via the direct seat-KILL/pnp-cap consult). The thread-reaches
 question is now sharply posed (sourceCleared cap), not deferred-vague.
+
+## 2026-07-23 (~23:00 UTC) — elder RATIFIED the defer; I reconciled a CROSS — the named #73 gate must re-target from the raw 3-sites to the sourceCleared cap (two-cap finding)
+
+The elder ratified deferring the thread-reaches probe to #73 (no early standalone probe): the
+base-scoped "wall" is a FALSE NEGATIVE (CX-derived base predates the INV summit restructure); the
+CLEAN evidence is strong (INV:738 hcanon-read-off precedent + diagonal-by-construction ADDENDUM);
+#73's rebase-onto-canonical is the natural definitive site; (a)/(b) bounds the risk. ACCEPTED.
+
+BUT the elder's ratification CROSSED my two-cap target-confirm message (it reasons only about
+base-staleness, doesn't mention raw-vs-sourceCleared), and its named-gate caveat ("the three summit
+sites :805/:39/:53/:35 hcanon-scoped + compiler-green") targets EXACTLY the sites seat-KILL
+compiler-verified are the RAW VALUE cap's consumers — which MUST stay IsRealBranch-GENERAL (hcanon
+there is ill-typed [CanonicalPivots downstream of MonumentAtlas] + wrong-in-principle [all-branches
+value chain incl. genuine off-diagonal row-fans]). So banking that caveat verbatim would set a WRONG
+#73 gate. Caveat-next-to-claim: I surfaced the cross to the elder rather than silently reinterpret —
+RE-TARGET the named gate to the SOURCECLEARED cap chain (SourceClearedResid:242 → the RLCT read-off,
+where hcanon belongs + the #6 twin already carries it); the raw 3-sites keep their own gate
+(correctly general). Recorded the re-targeted gate in #73's description; elder confirming the target
++ the gate.
+
+**Why this is the right target (grounding):** sourceClearedResid IS the RLCT carrier (the read-off
+runs on ∑C², the Q₁-lift bridges ∑F²↔∑C²). So the RLCT-relevant summit consumer reads the
+SOURCECLEARED cap; the raw value cap is the value side (F), correctly IsRealBranch-general. The
+two-cap Lean structure is the §9.4/§9.11-ADDENDUM architecture concretized.
+
+**Status.** Defer accepted; #73 carries the re-targeted thread-reaches named gate (sourceCleared cap
+hcanon-scoped + green; raw sites general + green); #95 = structurally clean (INV:738 +
+diagonal-by-construction), compiler-confirmed at #73's correctly-targeted gate; elder's (a)/(b)
+armed for a #73 wall. seat-descent grinding the step (non-growth unblocked; growth via the direct
+seat-KILL/pnp-cap consult); seat-KILL holding the INV probe (unneeded under the defer) + consult +
+#6/#73.
