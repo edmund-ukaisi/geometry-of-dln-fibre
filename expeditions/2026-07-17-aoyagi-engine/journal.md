@@ -20801,3 +20801,38 @@ Reconcile #79/#88/#74 ownership once CFF reports its exact remaining set.
 
 Critical path unchanged: seat-KILL (KILL long-pole, V3 = multi-layer descent) + seat-CFF (GM
 ClearedFold finisher, cert (i) core done) grinding in PARALLEL → both feed #73. Idle-re-sleep.
+
+## 2026-07-23 (~21:35 UTC) — KILL DE-RISKED to ONE step (seat-KILL, dae6f3534); accepted the clean-handoff → spawned seat-descent for the multi-layer descent grind; seat-KILL retained on the probe + #6/#73 + consult
+
+seat-KILL banked a milestone (dae6f3534, CapDescent closure green except ONE sorry): the KILL is now
+down to the single induction STEP. Everything else GREEN — capped re-wire, KILL-as-read-off, #95
+hcanon threaded through the whole chain (diagonal-scoped, TRUE), invariant root + suffices/skeleton,
+and the step FOUNDATION (escapedBelow V2 transitions, couplingClear fixed-point, couplingCoords
+monotonicity). seat-KILL also ran its OWN diagnostic confirming the multi-layer shape (escaped(S+1)
+becomes ignored EXACTLY at the last clear c=widthMinUpto(S+1), never at earlier layer-S nodes → pnp's
+Z is tight, the last-clear step CREATES the ignorance via its new below-diagonal coupling, riding the
+accumulated all-layer couplings) — a THIRD independent confirmation (after pnp-cap 8975e003b +
+pnp-transport 31be65e54).
+
+**DECISION — accepted seat-KILL's clean-handoff offer; spawned seat-descent.** seat-KILL flagged the
+step as a large grind (≈ a full L3T3 thread) "best done with a full context budget" and offered it as
+a clean handoff point (fully scoped, foundation green, mirror = foldResid_layerHomogeneous'). I spawned
+seat-descent (fresh lean-formaliser, branch expedition/aoyagi-engine-KILLSTEP off dae6f3534) for the
+step-grind. Rationale (charter): abundant well-scoped completion labour is the render seat's job, not
+the controller's scarce scoping capacity; a large grind on a constrained budget risks a mid-proof
+degradation (bedrock risk), a fresh full-budget seat eliminates it; the designer (seat-KILL) stays as
+consult so no context is lost. This is the design-then-render / turn-key pattern.
+
+seat-KILL RETAINED (parallelizes with the grind): (a) the thread-reaches probe — hcanon is already
+threaded through its chain, so the probe is independent of the step (add hcanon to
+realBranch_appendResidDescent → propagate up MultiAffineStepWire → summit; reaches = (i) clean, walls
+= capture (1)/(2)/(3) → elder (a)/(b)); (b) #6 axiom-clean + guard-add + #73 rebase; (c) seat-descent's
+primary consult. Re-confirmed the verbatim CanonicalPivots to seat-KILL (integration shape-identity;
+likely crossed its milestone).
+
+The elder accepted the render-cost calibration (owned its "cost win" amplification; no doc changed).
+pnp-transport idle/resting. seat-CFF ping (GM ClearedFold finisher liveness) still outstanding.
+
+**Board.** #92 → de-risked to the ONE step, seat-descent spawned. Critical path now: seat-descent
+(the KILL step, L3T3-scale descent) + seat-CFF (GM ClearedFold sorries) + seat-KILL (probe) grinding
+in PARALLEL → all feed #73. The KILL long-pole is now a single scoped step on a green foundation.
