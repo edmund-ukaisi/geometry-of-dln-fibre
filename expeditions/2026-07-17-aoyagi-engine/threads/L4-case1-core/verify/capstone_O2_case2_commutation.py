@@ -58,5 +58,11 @@ if __name__ == "__main__":
     for d in [(2, 2, 2, 2), (2, 3, 2, 2), (3, 3, 2, 2), (2, 2, 2, 2, 2)]:
         run(d)
     print("=" * 88)
-    print("O2: the case2/case12 δ=1 commutation uses the CHILD's GROWN couplingClear on the left, and it")
-    print("  holds exactly (M) — closing O2's risk (couplingCoords growth is compatible with the commutation).")
+    print("O2 verdict (matches the per-node rows above):")
+    print("  (S2) RESIDUAL commutation `sourceClearedResid_extend_delta1` (child C = parent C ∘ quot, with the")
+    print("       CHILD's GROWN couplingClear on the left): TRUE at every δ=1 edge incl. case2/case12 — holds by")
+    print("       the Φ recursion, robust to couplingCoords growth. O2 (the append's consumed shape) CLOSES.")
+    print("  (M) MAP commutation `couplingClear_stepMap_comm` (stepMap∘clear(child)=clear(parent)∘stepMap):")
+    print("       FALSE at case2/case12 growth edges, TRUE at case11 — so the foldG/foldB one-step laws")
+    print("       (clearedFoldG/B_extend_eq) are FALSE at growth edges; demote to case11-only and route the")
+    print("       StepInv induction via the cleared-locus S1 + the residual S2, NOT the map commutation.")
