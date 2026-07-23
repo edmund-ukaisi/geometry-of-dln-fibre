@@ -17365,3 +17365,16 @@ minute — the GOs took (L3T3's crossed idle notification resolved as predicted)
 The stray remote branch genm-sj5-wallfin checked and ruled out: operator's 2026-07-14 pre-expedition
 work (a different "wall"), untouched. Nothing owed this tick; next: L3T3's rebased push (→ controller
 merge + wiring) and L4D's restate-gate reply on the wall route.
+
+## 2026-07-23 (~19:10) — L3T3 restate gate FIRED correctly: surface = 2 one-liners + a contained ~40-70-line AoyagiRecoordLinear rework; GO with two guards
+
+The rebase replayed clean (14 commits, no conflicts), and the seat's restate caught the real
+surface: the 2 hCSchild sites are one-liners as predicted (and don't consume the support lemma,
+so the 3rd disjunct doesn't touch them), but AoyagiRecoordLinear genuinely reworks — it unfolds
+canonNormalizationOf, which is now 3-branch with the scoped (ii)-exclusion (recoordCoeff carries
+cleared ≤ i; hcanon if-chain; agree-off gains a branch-(iii) case). The seat also corrected my
+GO-brief's framing on two points (branch-(i) retained; +γ kept) — 5-for-5 for the restate gate.
+Interface consumed downstream (hlin/hC/recoordCoeff signature) unchanged ⟹ rework contained to
+its own file. GO sent with two guards: (1) consumer-grep agree_off_succLayer BEFORE restating
+(its old statement is FALSE for S≥1 under branch-(iii) — any consumer of the 2-layer shape =
+stop-and-report); (2) name=content if the statement shape moves (rename + 3-branch docstring).
