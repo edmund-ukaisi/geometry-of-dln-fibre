@@ -18324,3 +18324,19 @@ case11 reading survives unchanged (the fresh-J=0 and descended-J≥1 branches ar
 consumers). No certificate revision needed — a §4 note pins the supportAt version. The 17th
 catch's resolution is converging the same way the 16th's did: the object-split, verified from
 both directions before the ruling freezes.
+
+## 2026-07-24 (~18:40) — §12 RULED but the RENDER HELD AT MY GATE: the realBranch_cover conflict
+(flagged twice, absent from the ruling's scope list) — addendum commissioned
+
+The §12 ruling (supportAt J=0 → layerCoords; hbranch derive-class; cross-impact scoped) landed —
+but my pre-render check of the twice-flagged caveat found it REAL: realBranch_cover
+(MonumentAtlas:1174, PROVEN) states supportAt(·,0) ⊆ ed.center at δ=1 case12/2; under the widen
+its statement is FALSE on wide d (layerCoords ⊄ the capped center). Deeper: the theorem's consumer
+purpose (the δ=1 cover+pad route feeding center-Deg1/hdeg1 for case12/2) fails on the RAW fold at
+wide fresh layers anyway — the SAME (D)-class object issue case11 had, one more site; pnp's bonus
+shows the cleared object IS confined. Addendum commissioned: realBranch_cover's re-statement (its
+true content = a center-equals-capped-block fact, supportAt-independent; name=content), the
+case12/2 δ=1 route's object-attribution at wide nodes (extend the §7 architecture vs a paper-first
+alternative), and the corrected full consumer scope. CAPR's freeze STAYS HELD (overriding §12's
+lift — the def edit cannot land first). The controller gate-before-render discipline catching a
+ruling's scope gap: the sensors work on rulings too.
