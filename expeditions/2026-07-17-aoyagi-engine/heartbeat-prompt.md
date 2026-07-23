@@ -54,17 +54,22 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~09:30): the GREEN PARTIAL is pushed (REBAKE2 c46aaf78b =
-  DEF-EDIT-1 widen + 3(b) flip+scope + r4Clear def STAGED-not-wired; 8243842df = the turn-key
-  spec file; census 0; both banked to canonical). THE ONE OPEN GATE: pnp's exact-composition
-  Gröbner on the bridge (uncleared ∈ ⟨r4Clear'd⟩ with real foldB + verbatim forms) — the
-  pure-zero r4Clear is SUSPECT-UNSOUND for the StepInv ideal close (3 L4D checks fail E_J
-  col-0 incl. WITH branch-(ii) both signs; §7 IS THE LEAN). BOTH OUTCOMES PRE-STAGED:
-  ABSORBED ⟹ wire + bake the M-bridge (+1 frontier) per the turn-key; SURVIVES ⟹ §7 fires,
-  elder's pre-staged ruling = the F₂ ABSORPTION (do-not-zero-but-absorb; her Q₂, = −A₂ at the
-  normalized pivot, the recoord's class; lean CONTAINED pending L4D def-feasibility — 4
-  questions pre-sent; under F₂ the ideal close becomes TRUE ⟹ the bridge may be PROVABLE,
-  census back to 0). arch-C-3 holds; nothing false is in any tree.
+- CURRENT WAIT-STATE (2026-07-23 ~12:30): §7 FIRED and was RULED — §9 FINAL (F₂ = her full
+  paired Lemma-2 conjugation) + the PATH-A amendment (compensators = det-1 SHEAR branches:
+  interior Schur + +γ recoord w/ i≥cleared scope KEPT + Q₂⁻¹ input recoord at INTERIOR pivots;
+  the cross-clear = det-0 READ-SIDE, r4Clear RETAINED as the COMPENSATED clear,
+  blockBlowupCoordQuot-homed; composite = product-preserving ⟹ EQUALITY close, census 0, NO
+  bridge). The sign loop closed: +γ = the certificate's ORIGINAL direction; the error was
+  always THE UNPAIRING. arch-C-4 renders on REBAKE2 (its restate gate = 4-for-4 pre-grind
+  catches; +γ flip banked, task #57). THE ONE OPEN RULING: the CORNER treatment — the corner
+  pivot-ROW's compensator is the INPUT CoV (per-edge inexpressible; branch-(iii) vacuous at
+  S=0); treatment (A) VERIFIED FEASIBLE (corner col-only closes by equality; the row freedom
+  = the GL_{d₀} END-FACTOR gauge, banked machinery; corner block triangular per-edge, diag
+  after the global end-factor) vs (B) triangular-tolerated vs (C) explicit recombination.
+  Elder rules paper-first (does HER corner step spend the input gauge?); pnp's corner checks
+  in flight; arch-C-4 holds #58/#59 (branch-(iii) S≥1 guard, support 3-disjunct, cross-clear
+  wiring, StepInv equality re-close) on the ruling. Then: gates → battery + slot-confirm →
+  elder split-checklist delta-read → merge → L3T3 rebase (2 lines) → THE WALL.
   seat-L3T3: finish step-2, push, rebase post-merge. Battery canon: WIDE witness + EXACT
   rendered form, always.
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
