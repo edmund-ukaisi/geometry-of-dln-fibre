@@ -19820,3 +19820,15 @@ divBirthCoord). NET: the canonical-pin architecture is FULLY VINDICATED (transpo
 codim-preserving, both sub-species); the #84/#85/#86 family is closed and mutually consistent;
 the elder holds for exactly two triggers (the #87 cert → bake-bless; the renders settling →
 the folded pass). The deepest object arc of the expedition is design-complete.
+
+## 2026-07-23 (~16:30 UTC, heartbeat) — idle pulse: memo rewritten to the design-complete board;
+all seats live (< 90 s at the sweep); cron armed
+
+The wait-state block rewritten from the stale #82-pivot picture to the settled state: the
+fan-artifact arc closed (§9→§9.8, mutually consistent), the architecture fixed (canonical-pin +
+child-path carrier + the sound σ-transport + divBirthCoord-as-target + the one forced #87
+def-edit with its 4-item cert in production), 25/25 catches, the three grinding lanes' exact
+sequences, the elder's two triggers, and the merge order through SUMMIT-RETIRE. The
+delivery-loss discipline (2 incidents today) added as a standing memo line. No calibration
+entry this pulse (the board is mid-grind with reports incoming; the last entry's pre-flag
+already paid out through §9.4-§9.8).

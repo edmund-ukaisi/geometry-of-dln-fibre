@@ -54,28 +54,35 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~15:30 UTC): **EVERYTHING SERIALIZES THROUGH #82 (pnp's
-  CLEAR-LOCATION adjudication — stored fan pivot (i) vs Aoyagi's diagonal cleared-column (ii)
-  in couplingCoords; coincide on canonical witnesses, diverge fan-free; elder EXPECTS diagonal
-  co-resolution, prior NOT relayed to pnp — decorrelated).** Catches 19-21 all landed+routed
-  this window (19: accumulatedPivots stored-vs-ledger-corner, INV, blessed redefine §9.2;
-  20: GM's 3 one-step laws FALSE at growth edges, O2 pointed re-check → removed, cleared-locus
-  route = elder-ruled FIDELITY WIN §9.1 = her block shrinkage; 21: hN at N=0, blessed).
-  SEATS: seat-GM delta-SPECIFY COMPLETE-COMPLETE @ be2225c1a (locus core + LastLayerInv_cleared
-  + no-twin simplification #83 + case2 twins; statements def-independent under #82) — HOLDS for
-  #82 + pnp locus-core verify (target = couplingClear_parent_fixes_stepMap_child) + elder folded
-  pass (trigger 2/3: needs #82 + locus verify). seat-INV (fresh, took CAPR's leaves via banked
-  handoff bbb3f924d): RENDER GO on the blessed redefine+hN batch → containment (UNBLOCKED — no
-  couplingCoords dep) → ROOT(c) → helper module (A′ ruling: SourceClearedHelpers.lean,
-  cycle-forced re-derivations statement-identical + dedup-debt docstrings) → ROOT(b); transports
-  HELD on #82 (+ coordinated transport-shape review w/ GM's locus template after). seat-CAPF
-  (cap render #80, unlocked by #78 TRANSPORTS): reading→SPECIFY; raw-side GO, KILL/(b)-twin held
-  on #82. pnp: ON #82 NOW, then GM locus-core verify. Elder: folded pass armed (2/3), then CAPF
-  SPECIFY delta; contested-#82 = its adjudication w/ pnp certificate. CAPR+L4D consult-on-call.
-  ON #82 VERDICT: pnp locus verify → elder folded pass → INV transport review → CAPF kill go →
-  GM grinds interior+lastLayer+case2 (#79). MERGE ORDER: GM proofs → #73 (CAPR/INV lane + GM
-  branch + CAPF lane + aggregator, one controller merge) → L5 fold body (provenance sub-unit
-  #81 at its SPECIFY) → L7 → swaps → SUMMIT-RETIRE. Catches 21/21 pre-render.
+- CURRENT WAIT-STATE (2026-07-23 ~16:30 UTC): **DESIGN-COMPLETE; THREE LANES GRINDING; the
+  fan-artifact arc (#82/#84/#85/#86, rulings §9→§9.8) CLOSED and mutually consistent.**
+  THE SETTLED ARCHITECTURE: canonical-pin (her ledger is a canonical-frame object; the fan is
+  our cover artifact); the INV + chain carry the CanonicalPivots hypothesis (CHILD-path form on
+  appends/conjA, CAPR-confirmed); the per-step σ transport SOUND (coreGen σ-invariant via the
+  DLN gauge; clear σ-equivariant; labeled-jac exponent MULTISETS preserved both birth
+  sub-species — the codim is transport-invariant); divBirthCoord = the her-frame transport
+  TARGET (untouched; a "fix" would be anti-faithful); THE ONE FORCED DEF-EDIT = #87
+  canonCenterOf column-exclusion ((1)-ALONE; the phantom re-clear = the single genuine defect;
+  the gate fired — redundancy not-quick, the hole does not ship), full bake discipline: pnp's
+  4-item source-fidelity cert IN PRODUCTION (D₁ trace + no-under-admission + oracle-guard
+  interplay + the row-exclusion half) → elder bake-bless → render seat on a lane; BEFORE L5/L7,
+  current grinds unaffected (canonical-pin-scoped). CATCHES 25/25 pre-render (22 conjunct-role
+  split; 23 phantom; 24 CAPF#1 false-as-stated + controller exemption error owned; 25 GM S2
+  raw-u transcription divergence — corrected child-cleared-input form verified).
+  LANES: GM (unit FULLY DETERMINED): fix S2 pair → thread hcanon (child-path) on INV's def push
+  → keystone (a) via cert (i)'s write pattern → S2 → appends/conjA mechanical → conjB on CAPF →
+  re-points → full-green+forced-axioms gate. INV: rendering CanonicalPivots + threading + THE
+  READ-OFF (crux dissolved in-regime); root assembly BANKED (sourceClearedInv_root,
+  hypothesis-free); then only the 2 transport arms remain (GM's core + the L5 equivariance
+  frame). CAPF: analyticOnNhd_canonNormalizationOf (~150 lines, critical path for #1+#4) → #3 →
+  #4 → #5 KILL via route (a) PATH INDUCTION ((b) refuted on (2,3,3,3)) → #6. ELDER: 2 triggers —
+  bake-bless (#87 cert) + THE FOLDED PASS (scope: O2-revised list + case2 twins + carrier deltas
+  + #83 + corrected CAPF#1 + analyticity sub-lemma + corrected S2 pair + the hcanon re-bless).
+  pnp: the #87 cert, then clear. CAPR/L4D consult-on-call. MERGE ORDER: GM full-green → #73
+  (INV lane + GM branch + CAPF lane + aggregator, one controller merge) → #87 render lands →
+  L5 fold body (w/ #81 + the σ-transport discharge at its SPECIFY) → L7 → swaps → SUMMIT-RETIRE.
+  DELIVERY-LOSS discipline: cross-check wait-lists against the sent log; resend verbatim
+  (2 incidents caught today).
   NOTE: the session cwd was moved to the CAPR worktree by the harness — the
   transcript dir is now ...worktrees-aoyagi-engine-root/3a77f09d.../subagents (liveness polling there);
   ALWAYS cd to root explicitly in commands. (Old:) The obstruction arc FULLY CLOSED (§7-§7.8 + pnp's discharges: the Q₁-lift
