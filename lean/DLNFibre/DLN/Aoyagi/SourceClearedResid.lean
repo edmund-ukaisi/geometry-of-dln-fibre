@@ -6,8 +6,10 @@ import DLNFibre.DLN.Aoyagi.MonumentAtlas
 The wall's boost-center property `Deg1SupportedOn … ed.center` (property **(D)**, slots `∈ ⟨ed.center⟩`)
 is **FALSE** on the raw shears-only `foldResid` (the (2,2,2,2) obstruction: an ancestor below-pivot input
 coupling `u₀₁₀` survives, degree-1 (property **(B)**) but outside `⟨ed.center⟩`; (B) ⊬ (D)). It is **TRUE**
-of the *source-cleared* chart residual — Aoyagi's Case-1(1) local coordinate, where that coupling is fixed
-by the chart's `E_J = identity` structure. This file defines that object and the two facts it carries:
+of the *source-cleared* chart residual — the RLCT-equivalent rendering of Aoyagi's Case-1(1) local
+coordinate (coordinate-form differs by our shear-frame; RLCT-equivalent via the source-clear per her
+Lemma 1, NOT coordinate-identical to her literal Q,P image), where that coupling is fixed by the
+`E_J = identity` cleared-column structure. This file defines that object and the two facts it carries:
 
 * `sourceClearedResid d p` — `foldResid d (canonFlatten d) p` with the **ancestor coupling coordinates**
   zeroed (the below-pivot entries of every ancestor case2/case12 cleared column). This is the elder ruling
