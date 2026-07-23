@@ -19011,3 +19011,19 @@ elder statement-delta before the grind. GM informed: its descent-sites SPECIFY p
 #78/§6 — its unit neither deletes nor re-points those sites. The board now runs FOUR parallel
 fronts: GM (gates) ∥ INV (leaves) ∥ CAPF (cap) ∥ pnp (def-fidelity), with the elder serially
 gating GM's delta + CAPF's statement-delta + the P2 one-liner.
+
+## 2026-07-23 (~15:40) — pnp def-fidelity CORE PASSES (re-ran 7a3f3bafd exit 0); O2 caught as
+UNANSWERED (pnp answered a different question) — pointed follow-up sent
+
+pnp's gate verdict: GM's ClearedFold defs FAITHFUL to the verified natural precompose on every
+element (G/B/resid/StepInv-shape/the §4 commutations/provenance citations), PLUS a structural
+disjointness verification (ed.pivot ∉ couplingCoords, all clear edges, 5 witnesses: the pivot is
+a DIAGONAL corner, couplingCoords strictly-below-diagonal — so GM's clean-monomial B-side and the
+case11 commutation are validated; ownership ruled GM-proves-now/controller-relocates-at-merge,
+consistent with O1). CONTROLLER CATCH at the gate: pnp read "O2" as the disjointness — but GM's
+O2 is the GROWN-SET commutation at case12/case2 δ=1 (the child's couplingClear includes the new
+belowPivotCol; does clearing the newly-added coords commute through the step map?). The
+7a3f3bafd script has no child-set commutation check (grepped at re-run); whether 816f5de19's S2
+rows exercised it is the open question. Pointed follow-up sent: cite the line or run the specific
+variant (case2/case12 δ=1, child-set left, parent∘stepMap right, two witnesses). The pnp gate is
+CORE-PASSED, O2-OPEN; GM keeps holding (elder delta also outstanding).
