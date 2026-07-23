@@ -20492,3 +20492,25 @@ calibration caught the ambiguity, the navigator nailed the Lean facts, the elder
 the charter. BOARD MODEL (corrected): via_engine's frontiers (seat-KILL + INV transport + wall +
 cap) + #73 = THE work, charter-faithful, unblocked, = DONE for the expedition; #108/hbox =
 aoyagi-full's, off-board; the literal-name naming = the operator's narrow residual, close-phase.
+
+## 2026-07-23 (~19:10 UTC) — seat-KILL up + a sharp (V3) route-read: the escaped-coeff KILL is a
+CANCELLATION modulo the coupling ideal ((a)-direct-noncoupling + (b)-recoord-coupling), i.e.
+Aoyagi's Q₁⁻¹ compensator — routed to pnp (structural-identity vs ideal-membership); re-wire
+confirmed; scaffolding GO
+
+seat-KILL re-verified pnp's certificate itself (V1/V2/V3 pass, 4 witnesses — sensor-calibrated)
+and read (V3) precisely: the escaped layer-(S+1) column is read by TWO paths — (a) directly by
+the parent fold/coreGen with a NON-coupling coefficient, (b) via the recoord-(ii) shear with a
+COUPLING coefficient; couplingClear kills (b) but NOT (a), so (V3) is a genuine CANCELLATION
+between (a)+(b) modulo the coupling ideal — seat-KILL identifies it as Aoyagi's Q₁⁻¹ compensator
+(the SAME mechanism as pnp's thread-15 ψ/Q₁-lift). This is the load-bearing render-difficulty
+question: STRUCTURAL absorption IDENTITY (a Lean rewrite — clean) vs genuine IDEAL-MEMBERSHIP
+(the Gröbner witness as an explicit combination — brutal). ROUTED to pnp (pre-authorized (V3)
+consult; pnp verified V3 by Gröbner AND owns the Q₁-lift — uniquely positioned): does it render
+structural (point at the identity/thread-15 machinery) or ideal-only (hand the explicit
+combination, or flag a design escalation)? CONFIRMED to seat-KILL: the capped re-wire (hlayer
+guard-add := guarded … hlayer, #6 supplies it) is the GO'd guard-add. seat-KILL PROCEEDS on the
+route-independent scaffolding (re-wire + easy KILL lemmas + the Z Finset def + δ/rollover
+set-bookkeeping + base case) and HOLDS the (V3) cancellation render for pnp's route-read + its own
+decorrelated Codex (CX's Codex forward still pending). The KILL's difficulty is now precisely
+localized to the (a)+(b) cancellation's render form — everything else is scaffolding.
