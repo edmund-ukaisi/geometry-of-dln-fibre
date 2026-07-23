@@ -17819,3 +17819,16 @@ as the certificate steer: the invariant carries the exact ledger so the case11 i
 a CALCULATION. The capstone target's shape is now validated end-to-end BEFORE the render — the
 wrong-statement risk on the last hard lemma is retired. C9 remaining: Case 2 (pp.19-22) + the
 M_{s,k} read-off.
+
+## 2026-07-24 (~07:05) — pnp's frame finding: the split factors through the CHART e₂ (the Schur
+exceptional at slot (0,1,1)), NOT the raw coordinate; L4D's signature paragraph reprioritized
+
+pnp framed the full invariant structure (root/δ=1 clear-vs-merge/δ=0 transport/read-off) + banked
+its first witness (d31c29774), then hit the recurring FRAME theme precisely where expected: raw
+u(0,1,1) does NOT divide the extra coefficients — the fold's branch-(i) WRITES the Schur
+exceptional into that slot, and the split factors through the chart value. The exact coordinate
+identifications (what `u e₂` reads in foldResid's arg frame; canonPivotOf; partial/extra in fold
+coords; the reuse node) are Lean-def-dependent = L4D's promised paragraph, now the single
+critical-path blocker. L4D nudged with pnp's four def-exact questions; the paragraph relays
+verbatim on arrival. Everything else holds: the witness harness is staged to run the exact-frame
+read-off + consumer facts (wide + double-boost) the moment the frame pins.
