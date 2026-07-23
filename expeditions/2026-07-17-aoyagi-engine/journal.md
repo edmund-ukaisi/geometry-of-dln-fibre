@@ -20689,3 +20689,44 @@ last-clear V3 as a stated sub-lemma, HOLDING V3 for pnp (good call not improvisi
 **Also.** elder owns the co-author calibration lesson too (will signal "ADDENDUM incoming — hold
 the commit" or land-then-ping); pnp's row-split corroboration (distinct-row (1,2)/(0,2) RESCUED,
 row-repeat (2,2) failed) banks verified backing for the close-phase (1)-full spec.
+
+## 2026-07-23 (~20:45 UTC) — V3 mechanism RESOLVED to (A) trivial-termwise (pnp-cap 8975e003b, controller RE-RAN exit 0): the full-diagonal pin is exact-algebra LOAD-BEARING for the termwise KILL. #92 render stays a simp chain (no strict-transform); the V3 re-open closes GOOD.
+
+pnp-cap (the cap-fidelity seat, reached by seat-KILL directly) answered seat-KILL's V3 concern
+and I re-ran its script from the exact blob (8975e003b:verify/cap_kill_termwise_diagonal.py, on
+expedition/aoyagi-engine-CAP; extracted the script + its cap_frontier_sufficiency dep, ran exit 0).
+The re-run reproduced every claim:
+
+- **DIAGONAL fan (hcanon scope), (2,3,3,3) + (2,4,4,2): V3 TERMWISE HOLDS.** seat-KILL's Q1 worry
+  is REAL — the escaped-col coeff c_m DOES read uncleared L1 cols (couplingClear doesn't zero
+  those) — BUT every monomial ALSO carries a below-PIVOT cleared coupling factor, so couplingClear
+  (keyed on the stored pivot, #82) kills it monomial-wise. The script prints the explicit
+  per-monomial witness (slot0 coeff of u_(2,0,2): 2·u_120→[(1,2,0)], 2·u_020·u_122→[(0,2,0)],
+  2·u_110·u_121→[(1,2,1),(1,1,0)], … — every monomial has a couplingCoords factor).
+- **ROW-REPEAT fan (2,3,3,3) (0,2,0)+(0,2,1): V3 FALSE.** The escaped coeff SURVIVES couplingClear
+  (slot0→u_122, slot1→u_021·u_122, …) — the #95 phantom, reproduced exactly.
+
+**Verdict: V3 is (A) TRIVIAL TERMWISE, NOT (B) strict-transform/ideal-membership.** For a
+polynomial, coeff|_{couplingCoords=0}=0 ⟺ every monomial carries a couplingCoords factor (zeroing
+vars can't cancel) — so the membership is literally monomial-wise; no Gröbner combination. The
+KILL render stays a termwise/simp chain consuming hcanon — NO difficulty bump to #92 (the long-pole
+does not get worse). MECHANISM (for seat-KILL's sub-lemma): escaped col ↔ layer-S remnant row ↔
+below-diagonal cleared entry (post-blow-up the cleared diagonal is a UNIT, so the only path to the
+remnant row is a below-pivot coupling).
+
+**This is exact-algebra confirmation of the (i) hcanon-thread ruling** — the full-diagonal pin is
+LOAD-BEARING for the termwise KILL (diagonal ⟹ termwise-holds, row-repeat ⟹ escapes), independently
+of the elder's §9.11 reasoning. Not a change to the ruling; harder ground under it.
+
+**Calibration (banked GOOD).** seat-KILL (a fresh render seat) challenged pnp-transport's earlier
+"trivial termwise" Part-1 answer with a concrete gap (the uncleared-cols read); I did NOT collapse
+to pnp's earlier mode, routed for a decorrelated re-derivation, and pnp-cap's exact-algebra answer
+CONFIRMED the conclusion while VALIDATING seat-KILL's worry as real (the coeff does read uncleared
+cols; the rescue is the below-pivot factor, not the absence of the read). The render seat's
+skepticism sharpened the mechanism from a hand-wave to an explicit per-monomial witness. Two pnp
+seats now live: pnp-transport (green, my routing) + pnp-cap (red, cap-fidelity, seat-KILL's direct
+consult) — I stood pnp-transport down to avoid duplication; the decorrelation value is captured.
+
+**Status.** V3 re-open CLOSED (A). #92 render = termwise chain consuming hcanon (seat-KILL,
+unblocked, no strict-transform). The ONE open cross-check remains the thread-reaches probe
+(expected clean; elder armed for (a)/(b)). #92 subject corrected (V3 ≠ deep-ideal-membership).
