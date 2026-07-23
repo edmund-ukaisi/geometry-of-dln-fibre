@@ -29,11 +29,15 @@ Pieces (this module, all additive — touches no existing file):
 * `realBranch_appendResidDescent_fresh_layerCoords` — the raw UNCAPPED descent: `Deg1SupportedSlot` of the
   raw fold over the FULL descended layer `layerCoords` (NOT `blockCoords` — capped is false wide), from
   `foldResid_layerHomogeneous'` (H) + continuity.
-* `sourceClearedResid_ignoresEscaped` — the KILL: the source-cleared residual ignores the escaped
-  out-of-cap columns (the genuinely new content).
+* `sourceClearedResid_capped` ⟨THE CRUX⟩ — the route-(a) path induction: the source-cleared residual is
+  `Deg1SupportedSlot` over `supportAt` at EVERY real-branch node (base via `blockCoords_zero_eq_layerCoords`;
+  step = `couplingClear` absorbs the escaped-col dependence into the cap, carrying multi-ancestor coupling
+  depth — the genuinely new content, its full design in the lemma docstring).
 * `realBranch_appendResidDescent_fresh_sourceCleared'` — the primed (b)-twin (statement byte-identical to
-  `SourceClearedResid.lean`'s), assembled from the raw uncapped descent ∘ `couplingClear` + the KILL +
-  the separation.
+  `SourceClearedResid.lean`'s), DERIVED from `sourceClearedResid_capped` at the fresh child
+  (`supportAt` at cleared=0 = `blockCoords`). (The earlier standalone `sourceClearedResid_ignoresEscaped`
+  KILL lemma was DROPPED — SUPERSEDED-BY this helper→twin route + un-consumed; its mechanism prose survives
+  in the helper docstring.)
 
 Cross-ref honesty: `sourceClearedResid` is RLCT-equivalent to Aoyagi's `D_J` via the source-clear
 rendering (coordinate-form differs by our shear-frame), NOT coordinate-identical.
@@ -304,7 +308,11 @@ is `Deg1SupportedSlot` over the geometric support `supportAt` at EVERY real-bran
 `supportAt(root) = blockCoords 0 = layerCoords 0` (`blockCoords_zero_eq_layerCoords` — layer 0 has NO escape,
 `widthMinUpto 0 = d 0`), so it holds from `coreGen`'s homogeneity + continuity, the couplings being empty.
 Step (per δ=1 ancestor clear): the recoord writes the next layer and `couplingClear` absorbs the escaped-col
-dependence into the cap. **ROUTE-(a) DEPTH (load-bearing, pnp 81ba59d2b):** the layer-S escaped dependence
+dependence into the cap. THE KILL MECHANISM (certificate-grade, survives here from the dropped
+`sourceClearedResid_ignoresEscaped`): the raw fold reads an escaped column ONLY through monomials that also
+carry an ancestor coupling coordinate, so `couplingClear` — zeroing those couplings — makes the escaped
+columns unread; this is a FUNCTION-level kill (the escaped coords themselves are NOT in `couplingCoords`, so
+it is never a set-level containment — `capstone_cap_transport.py`/#78). **ROUTE-(a) DEPTH (load-bearing, pnp 81ba59d2b):** the layer-S escaped dependence
 factors through the couplings of MULTIPLE ancestor layers via the composed shears (kill-route discriminator
 refuted single-recoord localization on `(2,3,3,3)` — clearing only the S−1 couplings leaves it alive until
 layer-0's are cleared); the step's absorption must NOT collapse to the immediately-preceding recoord — each
@@ -320,25 +328,6 @@ theorem sourceClearedResid_capped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d
       (supportLayerOf q.conState)
       (foldRegion d (canonFlatten d) q) := by
   -- map: B-CAPF-sourceClearedResid-capped ⟨CRUX — route (a) path induction; step = absorb-into-cap w/ depth⟩
-  sorry
-
-/-- **The KILL — the source-cleared residual ignores the escaped out-of-cap columns** ⟨GENUINELY NEW⟩.
-The escaped columns `layerCoords ∖ blockCoords` (col `≥ widthMinUpto`) are read by the raw fold ONLY through
-the layer-(S)-clear recoord's column mixing, whose coefficients factor through the ancestor coupling
-coordinates; `couplingClear` zeroes those, so `sourceClearedResid = foldResid ∘ couplingClear` does not read
-them (the FUNCTION-level kill — the escaped coords themselves are NOT in `couplingCoords`, so this is not a
-set-level containment). -/
-theorem sourceClearedResid_ignoresEscaped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
-    {p : TreePath d} (ed : TreeEdge d p)
-    (hroll : ed.case = StepCase.rollover)
-    (hfresh : (p.extend ed).conState.cleared = 0)
-    (hlayer : (p.extend ed).conState.layer + 1 < N)
-    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d))
-    (j : Fin (foldNR d (p.extend ed))) :
-    IgnoresCoords (sourceClearedResid d (p.extend ed) j)
-      (layerCoords d (p.extend ed).conState.layer \ blockCoords d (p.extend ed).conState.layer)
-      Set.univ := by
-  -- map: B-CAPF-kill-escaped ⟨GENUINELY NEW — escaped coeffs factor through ancestor couplings⟩
   sorry
 
 /-- **Cap-frontier obligation (b), source-cleared — PRIMED TWIN.** Statement byte-identical to
