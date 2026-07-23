@@ -88,6 +88,40 @@ right pivot once the input coupling is cleared). The column-clear ALONE (C1) suf
 clear (C2) is not needed for the split. So option 1 is CONSTRUCTIVE: the content lemma is TRUE on the
 source-column-cleared residual — the fresh formaliser CAN render an induction for that object.
 
+## DEFINITIVE ADJUDICATION (def-owners' kill-condition, `verify/capstone_adjudication.py`, exit 0)
+L4D + team-lead's binary gate: with `Φ_p` computed DEF-EXACT (`coreGen ∘` per-edge argument
+transforms; split edges apply `edgeShearRaw = blockShear canonNormalizationOf` = the F₂ 3-branch
+recoord AS MERGED, NOT a naive shear; `case11`/`rollover` id-shear; the reused-divisor BIRTH edge's
+recoord IS inside `Φ_p`), does the extra block factor through RAW `u_{e₂}`?
+
+Corrected oracle: `case11` KEEPS `cleared` (`DescendView`), so a double-boost is stacked merges at
+the SAME node. Tested at EVERY case11 node (incl. the stacked second merges runLen=2), SCOPED AND
+UNSCOPED, on **(2,2,2,2)** minimal, **(3,3,3,2)** wide-interior (3×3 layer-0 Schur), **(3,3,2,2)**
+double-boost:
+
+| property | result (every node, every scope) |
+|---|---|
+| (A) raw-`u_{e₂}` split | **FALSE** |
+| (B) degree ≤ 1 in every coord (no `u_{e₂}²`) — the design "multilinear-clean" / battery claim | **TRUE** |
+| (D) each slot ∈ ⟨ed.center⟩ (`Deg1SupportedOn ed.center`) | **FALSE** |
+
+**VERDICT: CHART-ONLY.** The raw-split is FALSE on all real case11 nodes even with the F₂ recoord
+def-exactly applied. The chart value `(Φ_p u)_{e₂} = u₀₁₁ − u₀₀₁·u₀₁₀` (the birth Schur exceptional);
+the extra factors through ITS constituent `u₀₁₀` (and output-layer coords), never raw `u_{e₂}`.
+
+**The evidence tension, resolved (no contradiction).** The batteries #48–56 / `r3r4_chartframe_boostready`
+proved property **(B)** — "u₀₀₁² RESOLVED" = degree ≤ 1 — which my re-run CONFIRMS. The wall needs
+property **(D)** — membership in the SUB-ideal ⟨ed.center⟩. **(B) does not imply (D).** The F₂ recoord
+does exactly its job (degree ≤ 1, product-preserving `StepInv` closure) but cannot deliver (D): the
+shears-only fold retains the input-layer coupling `u₀₁₀`, which is degree-1 (so (B) holds) yet lies
+outside ⟨ed.center⟩ (so (D) fails). The instruments were degree/chart-frame checks; they never tested
+(D). Decorrelated Codex (`codex/capstone-split-frame-answer.md`, 3-branch recoord in the prompt)
+independently reached "raw-split impossible" and diagnosed the branch-(ii) double-count.
+
+Per team-lead's kill-condition: CHART-ONLY ⟹ STOP, do not certificate around it, escalate as a
+statement-soundness re-shape (task #69). The FIX-object (source-column-cleared residual, below) is the
+constructive target for the re-shape.
+
 ## Kill-condition for THIS obstruction
 If a real canonical case11 branch is exhibited on which `Deg1SupportedOn (foldResid p) ed.center`
 HOLDS (each slot in ⟨ed.center⟩ on the center's zero-variety), the obstruction is refuted for that
