@@ -20771,3 +20771,33 @@ settled.
 couplingCoords. #92 render = layer-descent induction (original scale), seat-KILL unblocked with the
 correct shape. #92 subject + elder + seat-KILL corrected. The ONE open cross-check remains the
 thread-reaches probe (elder armed (a)/(b)).
+
+## 2026-07-23 (~21:20 UTC) — heartbeat idle-pulse: placement/cron OK; drift-glance on the GM lane (CFF is the active finisher — cert (i) core PROVEN; liveness ping sent)
+
+Idle cron pulse (no new teammate message). Protocol-0: placement OK (root, expedition/aoyagi-engine);
+heartbeat cron armed (512bfff9, hourly :17). seat-KILL active (tip c1f258464, 8 min) + holds my V3
+multi-layer correction — not stalled.
+
+Drift-glance focus: seat-GM's tip is 3h old and is a DOCS commit (the 5-part finisher handoff,
+gm-clearedfold-handoff.md), which read at first like a possibly-parked lane (#79 "grind the cleared
+chain" in_progress vs #77 "GM unit complete-and-handed-off"). Read the handoff: GM's unit IS done
+(13 proven incl. keystone (a) modulo cert (i)); it handed off 7 GM-internal sorries to a FINISHER
+(canonNormalizationOf_vanishes, pivot_notMem, stepInv_child_delta0/delta1_append, multiAffine_step,
+case1/case2_conjA) — these are NOT the cross-lane frontiers, they need a finisher to render. RESOLVED
+the parked-lane worry by checking ClearedFold.lean commit activity: seat-CFF is the ACTIVE finisher —
+tip c148f4e88 (2h): "close cert (i) public wrapper (modulo the #73 layer-bound)", preceded by
+4b64bfc23 "cert (i) CORE proved (canonNormalizationOf_vanishes_core)". So CFF closed the HEAVIEST of
+the 7 sorries ("the classic fresh-context piece") — the lane is progressing, not parked.
+
+The ONE open item: CFF's liveness (2h quiet on a critical-path lane) + the remaining-sorry count +
+whether "the #73 layer-bound" its wrapper is modulo is genuinely #73-gated (correct pause) or
+unblockable now. Sent CFF a bounded status ping (IDLE-STALL GUARD) with the #95/CanonicalPivots-
+δ-agnostic + KILL-V3-multi-layer context (its stepInv_child_delta1_append_cleared may ride the same
+accumulated all-layer couplingCoords). Not digging further — staying out of the grind.
+
+BOARD-HYGIENE note (defer to CFF's reply): #79 (owner seat-GM) + #88 (CFF unit complete @ c4380af55)
+are both stale vs reality — CFF continued past c4380af55 onto the GM ClearedFold sorries (c148f4e88).
+Reconcile #79/#88/#74 ownership once CFF reports its exact remaining set.
+
+Critical path unchanged: seat-KILL (KILL long-pole, V3 = multi-layer descent) + seat-CFF (GM
+ClearedFold finisher, cert (i) core done) grinding in PARALLEL → both feed #73. Idle-re-sleep.
