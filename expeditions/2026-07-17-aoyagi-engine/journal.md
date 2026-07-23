@@ -19615,3 +19615,35 @@ case under any threading). CAPF: (b) answered — NO reuse (INV's continuity fac
 submult-side); builds continuous_canonNormalizationOf in CapDescent (~150 lines, upstream-ready).
 #86's (2′)-gate now = THREE proven components: phantom-cover-redundancy + per-step equivariance +
 labeled-jac preservation — one pnp commission, queued behind the kill consult.
+
+## 2026-07-23 (~18:20 UTC) — kill-route: (a) PATH INDUCTION required ((b) refuted on (2,3,3,3),
+re-ran exit 0); GM's mechanical tier banked + the 2-certificate decomposition; the elder's
+amendment OVER-corrected (the case-split re-asserted with pnp's own edge0 as the witness)
+
+KILL-ROUTE (pnp 81ba59d2b): route (b)'s single-recoord localization is NOT exact — on (2,3,3,3)
+the escaped col-S' factors through layer-(S'−1) couplings that themselves factor through layers
+S'−2…0 via composed branch-ii shears; exact only when intermediate layers are narrow. CAPF
+carries route (a) (the whole-path induction, base = INV's blockCoords_zero_eq_layerCoords).
+
+GM's CHECKPOINT (@ 9f55fd1ed): banked — the trivial trio + region/continuity trio + the cover
+route (deg1SupportedOn_center_of_hslot_cleared PROVEN) + both preserves compiling. The 9-sorry
+map traces the core to TWO pnp-verified-but-unstated structural facts: (i) the
+shear-write-cleared-factor (canonNormalizationOf's write pattern) and (ii) the S2
+foldResid-agreement on the two step-composed args (NOT near-rfl — the arg-functions differ;
+agreement rides foldResid's support structure). DECISION: GM's option (A) with GM continuing —
+pnp commissioned to emit the two certificates as STATED Lean-consumable lemma forms (queued FIRST,
+ahead of #86; fast — the verifications exist, only the statement forms are new); appends/conjA
+fall mechanically after. The hcanon carrier threading REMINDED as owed before the
+certificate-consumption grind (it changes the signatures being proven into).
+
+THE ELDER'S AMENDMENT OVER-CORRECTED (crossing: it processed the witness-relay, not yet the
+reconciliation): "fan births are cleared≥1 ⟹ δ=0" is false — a layer's FIRST clear (cleared=0,
+δ=1) has the full-block center and admits off-diagonal fan pivots; the standing witness is pnp's
+OWN phantom construction edge0 (case2 piv (0,0,2) at cleared=0). Re-asserted: THE CASE-SPLIT is
+the settled record (δ=1-born: foldB fan factor + double-carry at the merge; δ=0-born:
+scaling-only mismatch) — both sub-species break raw S1, both die under canonical-pin, both
+covered by the labeled-jac obligation; §9.6 record-settlement requested (no ruling moves). The
+elder separately owned its two def-read misses (foldB-frame δ-guard + CAPF#1's shear sub-term)
+with the enumerate-every-sub-term-and-guard discipline logged — its miss-ownership pattern and
+mine (exemption falsity-scan) named as the same lesson from two sides. pnp's queue: the 2
+certificates → #86 (with the case-split framing for component C).
