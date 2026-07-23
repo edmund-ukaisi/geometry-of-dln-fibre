@@ -18308,3 +18308,19 @@ axis). F1 independent of the fix (the hypothesis-shape ruling needed regardless)
 the witness-axis rule (name the axis each witness exercises; check the guards for uncrossed axes —
 "wide" is not an axis). Holding: elder's supportAt ruling; CAPR freeze-hold; pnp-transport's
 width-axis re-run of the capstone checks.
+
+## 2026-07-24 (~18:15) — the support object-split VERIFIED ON BOTH SIDES (capstone survives the
+wide axis + the bonus); the elder's ruling input complete
+
+pnp-transport's width-axis run (0cb53731d; three cap-bite witnesses, verified-not-expected): the
+capstone's §4 checks ALL SURVIVE on sourceClearedResid — and the bonus fact completes the ruling
+picture: the RAW fold escapes the cap at J=0 (consistent with pnp-cap's F2, two independent
+checks agreeing) while sourceClearedResid is CONFINED within the capped blockCoords (the escaped
+columns enter only through the ancestor coupling the clear removes). THE CAP IS A PROPERTY OF THE
+CLEARED OBJECT — her normal form — exactly the §7-§7.8 object-split at the support level. Both
+relays out (elder: ruling input complete, (ii)-flavored fix strengthened, the realBranch_cover
+consumption check remains; pnp-cap: F2 cross-confirmed, hold for the ruled shapes). The capstone's
+case11 reading survives unchanged (the fresh-J=0 and descended-J≥1 branches are distinct
+consumers). No certificate revision needed — a §4 note pins the supportAt version. The 17th
+catch's resolution is converging the same way the 16th's did: the object-split, verified from
+both directions before the ruling freezes.
