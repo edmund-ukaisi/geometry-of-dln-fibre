@@ -465,3 +465,35 @@ the block axis is about the FORMAL normal-crossings read-off, not soundness — 
 §1 SHAPE (widen) STANDS untouched; §2 FRAME/coords-of-record MOOT. DEF EDIT 2 = clean-residual
 `Deg1SupportedSlot`, b-chain in `foldB`. The gate LIFTS for the product axis; the block axis's final
 mechanism (R3 alone vs R3+R4) I rule when the block-form data lands.
+
+**(h) The DIRECTION SUBTLETY (ii) — CRITERION ruled, mechanism gated on #49.** seat-L4D's battery
+DEF-CONFIRMED Reading B: `foldB` (MonumentAtlas:402-406) carries the b's SEPARATELY, `StepInv` factors
+as `∑ q·(b·resid)`, so `foldResid` IS the clean-block slot — my §2 retraction is now DEF-grounded (the
+field put the b-factor in the WRONG SLOT, `foldResid` instead of `foldB`). The TWO-SIGN finding
+vindicated the "not just `ed1[0][0]`" bar: flipping branch-(ii) alone leaves a defect at `[0][1]`;
+DEF-EDIT-3 is TWO sign flips (branch-(i) Schur AND branch-(ii) recoord). The one OPEN question,
+seat-L4D honestly deferred to me: is Aoyagi's clean-`D_J` mechanism the PRODUCT-PRESERVING recoord
+(`Q'₂⁻¹` = recoord + paired column-clear, R4-like, = `honest_clear`) or the two-sign-flip (RLCT-safe
+but possibly NOT product-preserving)?
+
+**PAPER-FIRST RULING on the CRITERION (decisive, not ambiguous):** Aoyagi's invariant is an IDEAL
+EQUALITY — `⟨∏C⟩ = ⟨diag(b)·[[E_J|D_J]]·∏C⟩` maintained EVERY step (worked.tex:565-567) — and the
+`M_{s,k}` ledger reads off HER `diag(b)` (worked.tex:668-676). So her mechanism is necessarily
+PRODUCT-PRESERVING (it maintains the ideal). The FAITHFUL criterion is therefore
+**`⟨fold output⟩ = ⟨faithful⟩` as IDEALS** (Gröbner ideal-equality to her `diag(b)·[clean block]`
+presentation) — NOT merely "the `ed1` entries are clean" (which a non-product-preserving sign-fiddle
+achieves too, RLCT-safe via invertibility but the WRONG presentation, so the block does not monomialise
+to her `diag(b)`). The council's Q1 gave the correct recoord DIRECTION (`A_{S+1}·Q₁`); product-preservation
+requires it PAIRED with the column-clear (`Q₁⁻¹·A_S`) = the R4-like generator transform. R3-alone (recoord
+only, no paired clear) is NOT her mechanism.
+
+**THE DECISIVE TEST = #49** (Gröbner triple on the R3-flipped def): does `⟨R3-flipped⟩ = ⟨faithful⟩` as
+ideals? IF YES → the two-sign-flip IS product-preserving = faithful; the block monomialises to her
+`diag(b)`; DEF-EDIT-3 (two sign flips) is the whole block fix, R4 not separately needed. IF NO → the
+two-sign-flip is RLCT-safe but not product-preserving; **R4 (the explicit paired column-clear, the
+product-preserving generator transform) is the faithful block mechanism.** Either way CONTAINED +
+G1-clean (no escalation); the RLCT VALUE is safe throughout. pnp's reuse-node forms (#50) confirm at the
+reuse node (against the product-preservation criterion, NOT entry-cleanliness); the both-flipped block
+corner `u₀₁₁ + γβ` (not the classical Schur) is read against the `e₂`/ledger bookkeeping. The deflation
+(Reading B, field dissolved, boost-readiness direct) STANDS regardless — def-confirmed; only the block
+MECHANISM is open, and its criterion (product-preservation) is now ruled.
