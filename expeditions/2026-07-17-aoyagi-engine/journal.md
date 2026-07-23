@@ -15564,3 +15564,32 @@ differs. seat-L4D's candidate spec must predict the leftover→0; pnp's complete
 confirm; arch-C's row-(i)-turns-GREEN is the render-side confirmation.
 
 Board unchanged; everything gates on the L4D branch verdict.
+
+## 2026-07-23 (~00:55) — THE VERDICT: 12th catch CONFIRMED, and the fix is NOT shear-representable — the §7 SKELETON-REVISION arm; controller adds R0 (does her invariant require the clear at all?)
+
+seat-L4D's adjudication (accepted; durable doc being banked): (1) CALIBRATION — pnp's
+transcription correct against :867-882 (branch (i)'s guard genuinely excludes the pivot column;
+the layer-S pivot column is in NO write-set). (2) ALGEBRA — independent re-derivation: baked
+coeff 2, canonShearOf coeff 1, full clear coeff 0 (w-frame); the unpaired recoord DOUBLES.
+(3) THE OBSTRUCTION (the load-bearing new finding): the pivot-column clear CANNOT be a unipotent
+shear — the self-read form has jacDet 0; extending branch (i) to col=b gives jacDet 1−u₀₀₀;
+either breaks hshear (Jacobian-1), the pin the monument rides. Any coordinate-clearing shear is
+rank-reducing. So within the fold's unipotent-shear + pivot→1-slice model, Aoyagi's paired
+clear is NOT representable as a def edit — the §7 fork resolves to SKELETON-REVISION-candidate:
+a fold-MODEL question (R1 drop-the-recoord + re-source boost-readiness / R2 the blow-up handling
+is a slice where the strict transform reparametrizes the whole center / R3 an unseen unipotent
+realization). Elder convening per §7; operator-touching if it moves the definition of done.
+
+CONTROLLER ADDITION — R0, ORDERED FIRST (paper-first applied to the crisis): her invariant
+(worked.tex:562-577) does NOT zero the residual — it factors the residual's ROWS by the
+b-monomials (diag(b)·[E_J|D_J]). The condemned leftover u₀₁₀·u₁₀₁ carries u₀₁₀ — possibly
+exactly the row's b-factor under the correct divisor assignment. If R0=YES: the baked def may
+SATISFY the ruled field with the right m_k; the honest_clear coeff-0 acceptance bar was
+calibrated to the FULL-CLEAR model, not her invariant; no model change needed; the crisis
+deflates to a battery mis-specification. If R0=NO: the model round proceeds on the obstruction
+as stated. seat-L4D works R0 concretely on ed1 (active divisors, t̃, exceptionals raw-vs-Schur,
+row index, the coeff-2 provenance) BEFORE the R1/R2/R3 fork; Codex consult authorized with R0
+first. The elder's convening gates on the R0 verdict (invited to overrule the sequencing).
+pnp-transport's Gröbner ideal-preservation on the baked def is now the PIVOTAL datum either way
+(preserves ⟹ valid-but-different resolution, restate the invariant; fails ⟹ escalate).
+Battery row-(i)'s reference may move if R0=YES (flagged to pnp; no rebuild yet).
