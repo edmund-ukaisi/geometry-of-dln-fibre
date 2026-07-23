@@ -20021,3 +20021,20 @@ of the errors + the reality of the cross-checks — "green build necessary, neve
 holding under a fast autonomous cadence; the charter tripwire + the known-tripwire checklist are
 the two catches converted into a standing guard. All #87 inputs now final; seat-BAKE's
 mini-SPECIFY is the next event on that thread.
+
+## 2026-07-23 (~17:50 UTC) — §9.9.1 banked: the reason re-anchored (phantom = STRANDING, not
+re-clear) across §9.5–§9.9; the coverage rider sharpens to ~trivial; (α) confirmed within
+principle (seat already spawned, aligned)
+
+The elder's §9.9.1: pnp's completeness self-correction accepted into the record — "phantom =
+re-clear/foldB" is SUPERSEDED by "phantom = stranding (an incomplete branch reaching no valid
+leaf)"; complete ⟺ col=cleared by the permutation-with-col_k≥k forcing; all conclusions
+(canonical-pin, (1)-ALONE, pivot-pin) unchanged. THE NICE CONSEQUENCE recorded: stranded
+branches reach NO leaf, so they were never in leafPath_compactCover's leaf set — dropping them
+is a NO-OP for the leaf cover, and the coverage rider resolves ~trivially (still a
+future-provability confirm at the L7/render SPECIFY vs pnp-fan #11-14, not a broken build).
+The elder's mini-SPECIFY fast-ack checklist matches seat-BAKE's brief exactly ((a) the exact pin
+edit; (b) the COMPLETE construction-site sweep; (c) each col-obligation DISCHARGEABLE — the
+tree/oracle builds diagonal-col branches; + realBranch_cover explicitly green post-edit).
+Crossing closed: the charter tripwire line was ALREADY committed (3cf3e4b6a, verified verbatim)
+— confirmed to the elder. The #87 thread's next event: seat-BAKE's mini-SPECIFY.

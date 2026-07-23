@@ -933,10 +933,9 @@ smaller/cleaner than feared — a SINGLE def-surface edit, NO oracle edit:
 
 - **(1) D₁ trace:** column-exclusion is the faithful edit (her `D_J` removes the pivot's COLUMN each step,
   :400-457/:613-629; our counter re-admits it — the phantom). ✓
-- **(2) no-under-admission (the key soundness point):** EVERY off-diagonal-COLUMN birth IS a phantom (the
-  counter necessarily returns to that column before rollover, forcing the re-clear), so `{col = cleared}`
-  drops EXACTLY the phantom family — no legitimate chart lost. Clean structural argument, per-witness
-  verified. ✓
+- **(2) no-under-admission (the key soundness point):** `{col = cleared}` drops EXACTLY the illegitimate
+  family — no legitimate chart lost. [REASON RE-ANCHORED — see §9.9.1: the correct criterion is
+  COMPLETENESS/STRANDING, not the "re-clear/foldB-phantom" reason first certified.] ✓
 - **(3) oracle-guard interplay:** the edit is the birth-restriction in `canonCenterOf` ALONE (pin the pivot
   COLUMN to the counter at case2/case12, keep the row fan); centers stay nonempty at every non-exhausted
   state, IsRealBranch always has a pivot, ORACLE NEEDS NO EDIT (one surface; the later-exclude alternative =
@@ -998,3 +997,32 @@ blockCoords` at δ=1 case12/case2). NEVER edit `canonCenterOf`'s shape. Chart-ch
 PIVOT (rule-(b) / `canonPivotOf`), NOT the center. My tightened discipline: run every def-edit bless against
 the known-tripwire checklist (this coincidence is item #1) BEFORE blessing — a green SPECIFY framing is not
 sufficient.
+
+### §9.9.1 no-under-admission REASON re-anchored (pnp self-correction) + (α) surface confirmed
+
+pnp's honest self-correction (the REASON, not the conclusion): the cert's "every off-diagonal-col birth is a
+foldB-phantom / re-clear" is FALSE (counterexample (3,3,3) `[(0,2,1),(0,1,2),(0,2,2)]` has `foldB ≠ 0`).
+The LOAD-BEARING criterion is **COMPLETENESS**: a legitimate branch clears each of the `wMU` columns exactly
+once (reaches a leaf); the counter center forces `pivot.col_k ≥ k`, so a complete branch's columns are a
+permutation with `col_k ≥ k` ⟹ `col_k = k`. Hence **COMPLETE ⟺ col = cleared (diagonal)**; every
+off-diagonal-col branch STRANDS a column (no valid leaf) — enumeration-verified on (3,3,3) + (3,4,2,2). Same
+conclusion (the pin drops exactly the illegitimate family, nothing genuine lost); correct reason
+(stranding/incompleteness, NOT re-clear). This RE-ANCHORS the "phantom" framing across §9.5–§9.9: an
+off-diagonal-col branch is illegitimate because it STRANDS (reaches no leaf), not because it re-clears a gone
+column. Conclusions (canonical-pin, (1)-ALONE, the pivot-pin) UNCHANGED.
+
+**Coverage rider SHARPENED (a consequence).** Stranded branches reach NO leaf, so they are NOT in
+`leafPath_compactCover`'s leaf set at all (it is over leaves) — dropping them is a no-op for the leaf-cover.
+So the rider resolves ~trivially (L7 uses only the row-fan charts, which are COMPLETE — col = cleared, row
+free; the col-orbit is the #86(B) transport image). `leafPath_compactCover` is still a sorried L7 frontier,
+so this is a future-provability confirm (pnp-fan #11-14 the arbiter at the L7/render SPECIFY), not a broken
+build.
+
+**(α) CONFIRMED as the surface.** pnp recommends (α) — rule-(b) gains `pivot.col = s.cleared` — over (β)
+because it is STATE-EXPRESSIBLE (a pure state condition on the pin, no new def, no path-dependence);
+`canonCenterOf` untouched; it verified the 26th catch at the def (realBranch_cover's containment fails under
+a column center). (α) is one of the two surfaces I named — WITHIN my §9.9-AMENDMENT pivot-pin principle, NOT
+materially different — so per my re-bless terms the seat spawns; NO further bless needed. AWAITING the bake
+seat's mini-SPECIFY (the exact Lean pin edit + the consumer sweep) for a fast ack: IsRealBranch STRENGTHENS,
+so hypothesis-side consumers are safe verbatim; every IsRealBranch-CONSTRUCTION site gains the col-condition
+obligation — my ack checks the sweep is complete AND each construction-site obligation is dischargeable.
