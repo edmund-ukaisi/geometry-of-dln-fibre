@@ -17073,3 +17073,20 @@ rides the render's def-feasibility + pnp's check.
 
 GO issued: arch-C-4 renders #58/#59 per the three-home spec; pnp's checks gain the two rows.
 Then: gates → battery → the corner-clause delta-read → merge → rebase → THE WALL.
+
+## 2026-07-23 (~13:00) — the corner checks land as the DECORRELATED CONFIRM of the (A) ruling (crossed in transit); two verification rows remain
+
+pnp's corner-treatment checks (banked 90d627175, re-ran exit-0; crossed the elder's ruling):
+(A) the equality close RESTORED at the corner — per-edge col-only + the global input-CoV
+gauge; composite == original·Q₂ identically; ⟨composite⟩ = ⟨original⟩ (GL_{d₀} on the input
+is ideal-preserving); census 0, no bridge; the block splits exactly as ruled (upper-tri
+per-edge, diag after the gauge). Its model had implemented (A)'s structure all along — the
+check isolates and confirms it. (B) the triangular-block boostReady HOLDS (multilinear,
+center-supported) — the record that the fallback was viable and rejected on FIDELITY, not
+feasibility. Both routed as the decorrelated confirmation of the paper-first ruling.
+
+REMAINING verification rows (pnp): the per-branch realization condition (one-global vs
+per-chart input basis — bounded either way) + the INTERIOR-pivot witness (the wide witnesses'
+layer-1 edges; (2,2,2,2) is all-corner). arch-C-4 renders #58/#59 under the three-home GO.
+The corner was the LAST ruling of the arc — everything from here is verification + mechanics:
+gates → battery → the corner-clause delta-read → merge → rebase → THE WALL.
