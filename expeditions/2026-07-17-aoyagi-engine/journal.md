@@ -20239,3 +20239,20 @@ already carries, or the narrower cleared=0); YES ⟹ re-state to LastLayerInv's 
 those nodes. Bounded, known-shape either way; the elder ratifies the frozen-statement change.
 CX grinds the guard-INDEPENDENT core (couplingClear-composition + the J=0 escaped-column kill,
 the genuine crux) meanwhile. 28/28 pre-render.
+
+## 2026-07-23 (~17:55 UTC) — 28th catch FIX RULED (CAPF (a): hlayer guard-add) + controller-GO'd;
+CX renders the guard + the crux
+
+CAPF's def-owner ruling: (a) add hlayer : q.layer+1 < N — NOT the LastLayerInv disjunction, NOT
+cleared=0. The induction is CLOSED under the layer guard: the helper is proven at the fresh child
+(S'≤N-2) by structural recursion DOWN its ancestor chain, every ancestor at layer ≤ S' < N-1, so
+the induction never visits a last-layer node (where plain Deg1SupportedSlot is false); the guard
+is preserved to the IH by layer monotonicity; cleared=0 breaks it (the rollover-fresh child's IH
+is at its cleared≥1 parent). CONTROLLER GO within authority (the hbranch/S2 pattern — a
+strictly-narrowing, sole-consumer-safe guard-add; ground-truth confirmed the SOLE consumer is
+#6's :351 invocation, already carrying hlayer; lane-only, nowhere on canonical; elder-frozen #6
+untouched), elder folded-pass = the verification backstop (no synchronous gate; CX doesn't wait).
+CX renders: the guard-add as a small first commit (statement TRUE before the proof) + the :351
+one-arg update + the crux grind. The board's four lanes: BAKE (build gate), CX (guard+crux),
+CFF (scratch + BAKE's SHA), INV (resting gated). All design questions closed; the guard-add is
+the last statement-shape adjustment.
