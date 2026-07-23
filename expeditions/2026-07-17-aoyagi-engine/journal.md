@@ -19387,3 +19387,30 @@ proofs-hold untouched (an edit, not a proof) — still on the locus verify. Boar
 verify → witness → CAPF kill consult), elder (CAPF's 6-statement delta next), CAPR (split
 realization draft), INV (independents + awaiting the realization batch), CAPF (#2 grind +
 cherry-pick).
+
+## 2026-07-23 (~16:45 UTC) — THE 23rd CATCH (pnp locus verify, re-ran exit 0): canonCenterOf's
+counter OVER-ADMITS PHANTOM branches; (a) fan-robust structurally; #85 opened (absorbs #84's
+witness question); INV banked 4 more (containment PROVEN as #84-pending backup)
+
+pnp's locus verify: CANONICAL 3/3 PASS (all three GM targets, every node/case, 3 witnesses); (a)
+the load-bearing fixpoint additionally FAN-ROBUST structurally (the branch-(i) Schur write =
+-read(row,b)·read(a,col) always carries a cleared-coupling factor — an argument that survives
+def churn). (b) pivot_notMem FALSE on the fan: (3,3,3,3) pivots [c2,c1,FORCED c2] — the
+counter-based canonCenterOf (cleared ≤ col) forces the third pivot onto edge0's coupling column;
+couplingClear zeroes it, foldB_cleared VANISHES, S1 breaks on that chart. THE ROOT (23rd catch,
+deeper than #84): the branch is a PHANTOM — her D₁ excludes a cleared pivot's ROW AND COLUMN
+(never re-clearable); the counter diverges from her column-exclusion exactly on off-diagonal fan
+pivots. Neither pure keying serves both roles ON THE PHANTOM (stored kills the pivot factor;
+diagonal clears the wrong column per #82) — the phantom should not exist. #85 OPENED: L4D
+admissibility confirm (does any pin exclude the forced pivot?) + elder ruling on pnp's three
+resolutions ((1) fan-faithful canonCenterOf column-exclusion def-edit — honest, kills phantoms,
+retires the #82 debt, likely moots §9.3's split question, but FULL BAKE DISCIPLINE (baked spine
+def, wide+fan source trace); (2) non-phantom hypothesis — cheap/temporary, oracle stays
+over-admitting; (3) split-alone — insufficient on phantoms). The #84 WITNESS commission ON HOLD
+(may be mooted). GM: PARTIAL GO — grind the (b)-independent complement; enumerate the
+(b)-consumers (held for #85). CAPF's kill consult = pnp's next (phantom-independent). INV's
+tick: 4 banks (continuous_submult; the redefine+hN batch; the CONTAINMENT PROVEN census 5→4 —
+committed as #84-pending BACKUP with the correct transfer analysis; conOracle_case11_data +
+ROOT(c) vacuity, both shape-independent) — all axiom-clean verbatim; its crossing conduct
+(bank-as-backup + flag + not treating the shape as final) exactly right. Catches 23/23
+pre-render — and this one was caught BY the gate the 20th catch installed (the locus verify).
