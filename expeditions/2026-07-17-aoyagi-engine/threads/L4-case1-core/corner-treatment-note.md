@@ -35,3 +35,28 @@ So the corner is not a blocker either way. The paper-first choice (does HER corn
 gauge, treatment A? or carry the triangular block, B?) is the elder's ruling; the compute side confirms
 both close. (A) is the cleaner match to her Lemma-2 mechanism if the corner step is read as the end-factor
 `GL_{d₀}` gauge; (B) is the fallback that needs no input-side op at all.
+
+## RULED (A) — two follow-on rows (`verify/corner_followons.py`, exit 0)
+The elder RULED (A) paper-first (her regular end-transforms `P₁/P₂` absorbed globally via Lemma 1; the
+corner row = her input-basis gauge; (B)/(C) rejected on fidelity — (B) drops the diagonalization the
+`M_{s,k}`/`diag(b)` read-off wants). Two charged follow-ons:
+
+- **(1) REALIZATION CONDITION — PER-CHART input basis (bounded, not a re-open).** The corner pivot-ROW
+  clear `Q₂` is PER-BRANCH (it clears the branch pivot's row): `Q₂^α = [[1,−u₀₀₁],[0,1]]` (clears row 0)
+  vs `Q₂^β = [[1,−u₀₁₁],[0,1]]` (clears row 1) — DIFFERENT. So ONE fixed global input-CoV closes only its
+  own branch; each chart uses ITS OWN `GL_{d₀}` end-factor gauge. VERDICT: per-chart input basis. Bounded —
+  the charts are local and computed independently for the RLCT read-off, so a per-chart gauge is
+  resolution-normal (a bounded extension of the end-factor, not a re-open). "One-global" would need all
+  branches to share a pivot row; they don't.
+- **(2) INTERIOR-PIVOT WITNESS — the interior path closes per-edge (no input gauge).** `(2,2,2,2)` is
+  all-corner (every pivot at `(cleared,cleared)`), so it validates (A)'s corner path but NOT the interior
+  path. At a strictly-interior LAYER-1 (`S=1`) pivot `(1,1)` of a `3×3` `A₁`: the full row+col clear —
+  col-clear `Q₁` compensated by `A₂` (deeper), row-clear `Q₂` compensated by `A₀` (SHALLOWER, internal —
+  NOT the input) — gives `cleared == uncleared` identically (`⟨cleared⟩=⟨uncleared⟩`, census 0) with the
+  block monomialised (pivot row+col zeroed, interior Schur). So the INTERIOR path closes PER-EDGE, both
+  compensators internal, no input gauge — distinct from the corner (`S=0`) path which spends the global
+  input gauge (A). Confirms the full three-branch shear + row-and-col clear + equality close at an interior
+  pivot, the per-fibre path `(2,2,2,2)` did not exercise.
+
+Net: corner RULED (A), realization = per-chart (bounded), interior path closes per-edge. The corner arc is
+complete from the compute side; only the authoritative battery on arch-C-4's rendered formulas remains.
