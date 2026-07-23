@@ -16179,3 +16179,21 @@ seat-L3T3's preliminary def-sensitivity read: (a) survives (sign in recoordCoeff
 architecture question arch-C's rework report must answer (§8(k)'s math points to
 generator-side/off-blockShear = L3T3's favorable case). Remaining: arch-C's scope-restate +
 §8(i)-conformant rework → the block-form battery → the elder's delta-read → merge.
+
+## 2026-07-23 (~03:50) — the churn lesson authored (two halves at the frozen spec); the wall pre-verified at the model level; waiting on arch-C's restate
+
+Consolidation tick: (1) seat-L4D's boost_center_case11.py banked (089f9ad36 → canonical,
+re-ran exit-0): center(case11) = {w = e₂} ∪ partialBlock; under R4 the D_J corner IS w ⟹
+Deg1SupportedOn{w} BY IDENTITY — the wall's endgame pre-verified at the model level on the
+frozen def; R3-alone's uncleaned row is what squared (pnp's u₀₀₁²), R4's Q₂ removes it. Its
+r3 script carries the SUPERSEDED annotation; task #46 closed. (2) THE CHURN LESSON authored
+in lessons.md (both halves, elder-commissioned): elder-side — PROVISIONAL until all gating
+data is in, pending data named, ONE numbered frozen section as the only actionable artifact;
+seat-side — render only the frozen spec, ack-and-restate per re-scope. Four data-forced
+corrections were convergence; the premature FINALIZED labels were the defect. (3) The elder
+affirms the frozen-spec-as-contract + gate; its delta-read checklist now includes
+"the retracted field is ABSENT" and has the banked boost-center witness to read against.
+
+WAITING ON: arch-C's 5-line scope-restate (not yet received) → its §8(i)-conformant rework →
+pnp's block-form battery (#51) → the elder's delta-read → merge. Everything else is holding
+by design.
