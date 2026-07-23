@@ -18430,3 +18430,19 @@ split; the conditionality = documentation). Bookkeeping: the (2)-result IS the r
 (done); pnp's remaining queue = the no-widen confirm one-liner + B1-wide. The elder notified (no
 re-open). Board: CAPR finalizing the SPECIFY; pnp two small checks from an empty queue; the 17th
 catch closed and now doubly-verified.
+
+## 2026-07-24 (~20:55) — CAPR's SPECIFY DELIVERED (b4e990a44): the case11 core verbatim, module
+green, the (A)-anchor PROVEN by rfl; elder delta-read dispatched; the integration unit defined
+
+The SPECIFY set: the clear machinery (belowPivotCol/couplingCoords path-recursion/couplingClear,
+per pnp's script:lines); sourceClearedResid ((A)-primary) with sourceClearedResid_root +
+_eq_restrict PROVED clean-three (the fidelity anchor is rfl — the Lean object IS the certificate's,
+definitionally); the content lemma restated on the cleared object (∃-form partition, supportAt-
+symbolic); the Q₁-lift bridge + L4D's append-analog state-only tracked; the wall re-pointed
+(sorryAx via the content lemma only); the old lemma fossiled with the banner retained. Census
++3 net-new tracked, all named. THE INTEGRATION UNIT (one build-green merge): CAPR's lane + 3
+downstream re-points (L4D: the unprimed wall + the append; LL: LastLayerWire:145) + the aggregator
+wire + the docstring/e-pin batch — NO def edit (§12.2 = zero def churn; the "supportAt batch" is
+history). Sequence: elder delta → L4D/LL stage re-points → the merge → STEP-3 GO (CAPR pre-stages
+the induction skeleton meanwhile). The expedition's last hard proof is one delta-read from its
+grind.
