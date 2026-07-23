@@ -20650,3 +20650,42 @@ calibration ledger.
 **Status.** #95 stands at (i) hcanon-thread, crux resolved, ONE compiler-decidable cross-check
 open (expected clean), escalation criterion armed. seat-KILL owns the diagonal KILL (GO) + the
 probe. No design question remains open on the row-phantom.
+
+## 2026-07-23 (~20:25 UTC) — seat-KILL's two asks: (1) verbatim CanonicalPivots forwarded (integration shape-identity) + :242-hcanon reframed as the probe itself; (2) the V3 "trivial termwise" reading RE-OPENED — seat-KILL's concrete uncleared-cols gap is well-founded, routed to pnp for the definitive mechanism
+
+seat-KILL ack'd #95, banked its scaffolding on expedition/aoyagi-engine-KILL (KILL now proven as a
+read-off from the ONE invariant sourceClearedResid_ignoresEscapedBelow; full CapDescent green, 8465
+jobs), and raised two asks.
+
+**Ask 1 (integration-critical) — RESOLVED.** seat-KILL needs the IDENTICAL CanonicalPivots
+predicate or #73 breaks. Forwarded the VERBATIM INV def (SourceClearedResid.lean:409, δ-agnostic:
+case12 AND case2 pinned to cornerToFlat(layer,cleared), root/rollover/case11 = True); ruled:
+define it LOCALLY textually-identical, I dedup to the single INV/CAPR-owned def at #73. Its flagged
+integration consequence — threading hcanon means the #73-swap target (SourceClearedResid:242,
+realBranch_appendResidDescent_fresh_sourceCleared') ALSO gains hcanon — is REFRAMED: that is NOT
+"discharged by the canonical-cover" (the canonical-cover "every real branch is CanonicalPivots" is
+FALSE — genuine off-diagonal row-fans are real branches; that's why #87-row-pin was rejected). It
+is discharged by the summit using hcanon DIAGONALLY + σ-transporting off-diagonal leaf forms
+(§9.4 L5 / the ADDENDUM), which IS the thread-reaches probe. So: thread, probe, report.
+
+**Ask 2 (V3 mechanism) — the "trivial termwise" reading is RE-OPENED (calibration update).**
+seat-KILL, rendering the diagonal KILL, exposed a concrete gap in pnp's earlier "trivial termwise"
+Part-1 answer: at the last clear of layer S (diagonal pivot (S,c',c')), the escaped col
+m=(S+1,i≥wmu) is read by foldResid p' DIRECTLY with coefficient c_m reading row-i of A_S;
+couplingClear zeroes below-diagonal A_S(r,col) r>col col≤c' — hitting A_S(i,0..c') but NOT
+A_S(i,col≥wmu) (the UNCLEARED cols). So a c_m monomial reading only uncleared entries would
+survive, breaking the KILL even on the diagonal — UNLESS a subtler mechanism reshapes c_m. I do
+NOT collapse to pnp's earlier mode: the concern is well-founded. NOTE the KILL-on-diagonal is
+still TRUE (Gröbner-proven by pnp + capstone_kill_rowfan re-ran exit 0 — the Gröbner membership
+proves the general symbolic case, closing any witness-coverage gap); the OPEN question is the
+render MECHANISM: (A) genuinely trivial termwise (exhibit the coupling factor in each c_m monomial)
+vs (B) needs the δ=1 strict-transform + recoord (σ) reshaping (seat-KILL's hypothesis; the
+ideal-membership / Q₁⁻¹-adjacent mechanism, NOT a bare simp). Routed to pnp-transport (owns Z(p) +
+the Gröbner witness) for the definitive termwise mechanism at the last-clear diagonal node. If (B),
+the KILL render upgrades from a simp chain to the strict-transform argument — a difficulty update
+under #92, not a truth problem. seat-KILL proceeds on scaffolding + root/rollover/case11 + isolates
+last-clear V3 as a stated sub-lemma, HOLDING V3 for pnp (good call not improvising).
+
+**Also.** elder owns the co-author calibration lesson too (will signal "ADDENDUM incoming — hold
+the commit" or land-then-ping); pnp's row-split corroboration (distinct-row (1,2)/(0,2) RESCUED,
+row-repeat (2,2) failed) banks verified backing for the close-phase (1)-full spec.
