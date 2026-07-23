@@ -18563,3 +18563,15 @@ worktree; polling path updated in the memo): CAPR 13:32 (the induction + the lan
 per the fork), elder 13:22 (resting post-rulings), pnp-cap 13:06 (resting, commission complete).
 Memo wait-state refreshed to the 18th-event position. Nothing owed; next event: pnp's ∃q verdict
 (the single input to the remaining integration design).
+
+## 2026-07-24 (~23:45) — L4D's INV-shape consult relayed: the HARD ⊇-constraint (monotonicity),
+the candidate T = exceptionals ∪ block, the ∃-representation
+
+The consult's spine: IgnoresCoords is monotone, so the carried target must CONTAIN every case11
+center — ruling out supportAt-alone (the birth-corner e₂ escapes the current block; the
+obstruction's own coordinate) and the complement (backwards). Candidate T = accumulated
+exceptionals ∪ the descending block (transport-stable both ways; specializes by monotonicity;
+continuity via b-ratios in the free coords). Representation: the ∃-form (explicit exponent data
+mangles under transport; the ∃ carries continuity by construction). CAPR bakes on the agreement
+of L4D + Codex + certificate §4 (the cert is ground truth; disagreement = pnp clarification).
+Still gating everything on F: pnp's ∃q verdict.
