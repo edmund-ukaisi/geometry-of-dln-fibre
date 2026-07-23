@@ -77,6 +77,27 @@ The rejected `SupportedOn` history (MonumentAtlas:1518-1526) does NOT refute thi
 ideal-membership AFTER the substitution, not the paper's matrix-level identity. It sharpens the
 suspicion (the substitution encoding is the source of the pain).
 
+## 2b. UPDATE (same day) — foundation VERIFIED, fork tilts re-architect
+
+Controller-verified against the kernel (census-absence + AxCheck registration) + own read:
+- **Object A LANDED & verified** = `IdealInvariance.rlctAt_sumSqFam_eq_of_germ_eq` (:289, sorry-free,
+  two-sided). It IS exactly the comparability foundation I predicted in-head: germ-ideals coincide
+  (`GermRepresents` both ways) ⟹ `∑G² ≤ C·∑F²` near x (cofactor-boundedness) ⟹ equal `rlctAt`. The
+  weighted `wrlctAt` (Jacobian weight) version carries the per-chart CoV. **The foundation gap I flagged
+  is CLOSED.**
+- **Object C LANDED** = `MonomialRLCT` (weighted monomial-ideal RLCT, `2·wrlctAt = min`, incl. the
+  b-chain). **Object D LANDED** (`divisorMin_eq_cCodim`). The whole value chain A→C→(Object B CoV)→D,
+  from a `Resolution` with ideal-identity charts to `cCodim`, is sorry-free and ideal-level.
+- **Elder Q1 (history): the matrix-ideal route was ADOPTED (forks F1/F2), never rejected.** The current
+  fold is a DRIFT from it; the refuted `SupportedOn` was the post-substitution coordinate form, a
+  different object. Elder interim Q3 leans COMMISSION RE-ARCHITECTURE (against the path it served).
+- So the fork is confirmed localized: **the entire open frontier = proving the charts' ideal identity
+  (`hideal_fwd`/`hideal_bwd` = `GermRepresents` both ways). The value engine is done.** The ONE open
+  exact-algebra question: can Schur-clearing maintain the ideal identity step-wise at coupled corank≥2
+  with cofactors BOUNDED on the chart nbhd (what `GermRepresents` needs)? → pnp-ideal.
+- DECISION TILT: **re-architect**, pending (a) pnp-ideal's corank≥2 cofactor-boundedness check and
+  (b) elder's final ruling (its Codex read). Not finalized until both land.
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
