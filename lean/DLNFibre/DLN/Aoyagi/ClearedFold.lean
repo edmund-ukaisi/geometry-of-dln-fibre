@@ -291,6 +291,79 @@ theorem mem_couplingCoords_belowPivotCol (d : Fin (N + 1) → ℕ) :
             = couplingCoords d p ∪ ∅ from rfl, Finset.union_empty] at hk ⊢
       exact ih hk
 
+/-- **Oracle step children never lower the layer** (a general oracle fact; #87-independent, upstream-ready
+— future consumers beyond cert (i)). Every step child of `conOracle d s` has `s.layer ≤ child.layer`: a
+rollover advances the layer by one, and case-2 / case-1(1) / case-1(2) all preserve it. Dispatch mirrors
+`CanonShear.conOracle_child_layer_cleared_of_case12_case2` (per-branch `conOracle`-reduction), extended to
+the rollover + case-1(1) children the case-hypothesis there excluded. -/
+theorem conOracle_stepChild_layer_mono {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L)
+    (c : StepChild M s) (hc : c ∈ (conOracle M s).stepChildren) : s.layer ≤ c.child.layer := by
+  by_cases h1 : L ≤ s.layer
+  · have horacle : conOracle M s = oracleTerminal M s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+  · have hlive : s.layer < L := not_le.mp h1
+    by_cases h2 : widthMinUpto M (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle M s = rolloverDecision M s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
+      subst hc
+      exact Nat.le_succ _
+    · have hlt : s.cleared < widthMinUpto M (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap M := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap M _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto M s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · have horacle : conOracle M s = case2Decision M s
+            (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hc
+        subst hc
+        exact le_refl _
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle M s = oracleTerminal M s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [horacle] at hc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+        · have hgt : s.cleared < target := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                s.divTilde k0 + 1 ≤ widthMinUpto M s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have horacle : conOracle M s = case1Decision M s f (target - s.cleared)
+              (widthMinUpto M s.layer - s.cleared) (M ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
+          rw [horacle] at hc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hc
+          rcases hc with rfl | rfl
+          · exact le_refl _
+          · exact le_refl _
+
 /-- **`blockEntryFlat` decodes back to its nat indices** (round-trip; #87-independent). When the flat
 coord `fc` names the layer-`S` `(row, col)` block entry, its `tupIdxEquiv`-decode reads back `(S, row, col)`. -/
 theorem blockEntryFlat_decode (d : Fin (N + 1) → ℕ) (S row col : ℕ) {fc : Fin (flatDim d)}
