@@ -830,6 +830,96 @@ theorem canonNormalizationOf_vanishes_on_couplings {N : ℕ} {d : Fin (N + 1) �
       rw [h0, mul_zero]
   · rfl
 
+/-- **`couplingCoords` COVERS every cleared column** — a below-diagonal coordinate in a cleared column
+of the CURRENT layer (`col < cleared`) or a COMPLETED layer (`layer < S`, `col < widthMinUpto (layer+1)`)
+is a coupling. Induction along the real branch: case2/case12 adds the just-cleared column's below-column
+(pivot `= cornerToFlat(layer, cleared)`, diagonal); case11 keeps `cleared` (adds nothing, but changes
+nothing to cover); rollover graduates the current layer's cleared columns (`< widthMinUpto(layer+1) ≤
+cleared` by the rollover threshold) to completed. The AT branch-(iii) rides this: the escaped read's sibling
+`(S−1, k', jc)` sits in a completed cleared column, hence is a coupling `couplingClear` zeroes. -/
+theorem couplingCoords_covers_cleared {N : ℕ} {d : Fin (N + 1) → ℕ} :
+    ∀ (p : TreePath d), p.IsRealBranch (canonFlatten d) → CanonicalPivots d p →
+      ∀ {y : Fin (flatDim d)},
+        (((tupIdxEquiv d).symm y).2 : ℕ) < (((tupIdxEquiv d).symm y).1.2 : ℕ) →
+        ((((tupIdxEquiv d).symm y).1.1 : ℕ) < p.conState.layer ∧
+            (((tupIdxEquiv d).symm y).2 : ℕ)
+              < widthMinUpto d ((((tupIdxEquiv d).symm y).1.1 : ℕ) + 1)
+          ∨ (((tupIdxEquiv d).symm y).1.1 : ℕ) = p.conState.layer ∧
+            (((tupIdxEquiv d).symm y).2 : ℕ) < p.conState.cleared) →
+        y ∈ couplingCoords d p := by
+  intro p
+  induction p with
+  | root =>
+    intro _ _ y _ hcov
+    have h0l : (TreePath.root : TreePath d).conState.layer = 0 := rfl
+    have h0c : (TreePath.root : TreePath d).conState.cleared = 0 := rfl
+    rcases hcov with ⟨h, _⟩ | ⟨_, h⟩ <;> omega
+  | step p' c pv cse ns φ ih =>
+    intro hbr hcanon y hbd hcov
+    obtain ⟨hrec, ⟨sc, hsc, hecase, hchild, hcenter, hpivpin⟩, hwcRaw, hvpin⟩ := hbr
+    obtain ⟨hcanonP, hcanonPiv⟩ := hcanon
+    have htrans := conOracle_child_transition p'.conState sc hsc
+    simp only [show (TreePath.step p' c pv cse ns φ).conState = ns from rfl] at hcov
+    cases cse with
+    | case11 =>
+      rcases htrans with ⟨he, _, _, _⟩ | ⟨he, _, _⟩ | ⟨_, hLc, hCc⟩
+      · exact absurd (he.symm.trans hecase) (by decide)
+      · rcases he with he | he <;> exact absurd (he.symm.trans hecase) (by decide)
+      · have hnsL : ns.layer = p'.conState.layer := hchild ▸ hLc
+        have hnsC : ns.cleared = p'.conState.cleared := hchild ▸ hCc
+        rw [hnsL, hnsC] at hcov
+        have hcc : couplingCoords d (TreePath.step p' c pv StepCase.case11 ns φ)
+            = couplingCoords d p' := Finset.union_empty _
+        rw [hcc]; exact ih hrec hcanonP hbd hcov
+    | rollover =>
+      rcases htrans with ⟨_, hthr, hLc, hCc⟩ | ⟨he, _, _⟩ | ⟨he, _, _⟩
+      · have hnsL : ns.layer = p'.conState.layer + 1 := hchild ▸ hLc
+        have hnsC : ns.cleared = 0 := hchild ▸ hCc
+        rw [hnsL, hnsC] at hcov
+        have hcc : couplingCoords d (TreePath.step p' c pv StepCase.rollover ns φ)
+            = couplingCoords d p' := Finset.union_empty _
+        rw [hcc]
+        rcases hcov with ⟨hlt, hwmu⟩ | ⟨_, h0⟩
+        · rcases Nat.lt_succ_iff_lt_or_eq.mp hlt with hlt2 | heqc
+          · exact ih hrec hcanonP hbd (Or.inl ⟨hlt2, hwmu⟩)
+          · refine ih hrec hcanonP hbd (Or.inr ⟨heqc, ?_⟩)
+            rw [heqc] at hwmu; omega
+        · omega
+      · rcases he with he | he <;> exact absurd (he.symm.trans hecase) (by decide)
+      · exact absurd (he.symm.trans hecase) (by decide)
+    | case12 =>
+      rcases htrans with ⟨he, _, _, _⟩ | ⟨_, hLc, hCc⟩ | ⟨he, _, _⟩
+      · exact absurd (he.symm.trans hecase) (by decide)
+      · have hnsL : ns.layer = p'.conState.layer := hchild ▸ hLc
+        have hnsC : ns.cleared = p'.conState.cleared + 1 := hchild ▸ hCc
+        rw [hnsL, hnsC] at hcov
+        rw [couplingCoords]
+        rcases hcov with ⟨hlt, hwmu⟩ | ⟨heq, hcl⟩
+        · exact Finset.mem_union.mpr (Or.inl (ih hrec hcanonP hbd (Or.inl ⟨hlt, hwmu⟩)))
+        · rcases Nat.lt_succ_iff_lt_or_eq.mp hcl with hlt2 | heqc
+          · exact Finset.mem_union.mpr (Or.inl (ih hrec hcanonP hbd (Or.inr ⟨heq, hlt2⟩)))
+          · refine Finset.mem_union.mpr (Or.inr ?_)
+            obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+            exact mem_belowPivotCol_of_decode pv y (by rw [heq, hpl])
+              (by rw [heqc, hpc]) (by rw [hpr]; omega)
+      · exact absurd (he.symm.trans hecase) (by decide)
+    | case2 =>
+      rcases htrans with ⟨he, _, _, _⟩ | ⟨_, hLc, hCc⟩ | ⟨he, _, _⟩
+      · exact absurd (he.symm.trans hecase) (by decide)
+      · have hnsL : ns.layer = p'.conState.layer := hchild ▸ hLc
+        have hnsC : ns.cleared = p'.conState.cleared + 1 := hchild ▸ hCc
+        rw [hnsL, hnsC] at hcov
+        rw [couplingCoords]
+        rcases hcov with ⟨hlt, hwmu⟩ | ⟨heq, hcl⟩
+        · exact Finset.mem_union.mpr (Or.inl (ih hrec hcanonP hbd (Or.inl ⟨hlt, hwmu⟩)))
+        · rcases Nat.lt_succ_iff_lt_or_eq.mp hcl with hlt2 | heqc
+          · exact Finset.mem_union.mpr (Or.inl (ih hrec hcanonP hbd (Or.inr ⟨heq, hlt2⟩)))
+          · refine Finset.mem_union.mpr (Or.inr ?_)
+            obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+            exact mem_belowPivotCol_of_decode pv y (by rw [heq, hpl])
+              (by rw [heqc, hpc]) (by rw [hpr]; omega)
+      · exact absurd (he.symm.trans hecase) (by decide)
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
