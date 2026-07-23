@@ -18823,3 +18823,22 @@ cross-referencing worked.tex states "RLCT-equivalent via the source-clear render
 name-the-equivalence-at-its-real-strength discipline as the #31 Ext-model caveat). Propagated to
 seat-GM (named gate), seat-CAPR (apply in passing during the grind), pnp (stand down + review
 §10). Still pending from the elder: the one-line POINT-2 def-level confirm.
+
+## 2026-07-23 (later-7) — GM mini-restate PASSED (gate 0); Q1/Q2 ruled; SPECIFY underway
+
+seat-GM's own-words restate: 5/5 faithful (boundary / precompose def-shape / per-case append split
+/ both controller deltas / gate order), zero transplant loss, plus a value-add the frame lacked:
+couplingClear(p.extend ed) = couplingClear(p) at case11 (no belowPivotCol added) — promoted to a
+STATED lemma requirement in SPECIFY (the transports lean on it). Its foldRegion=univ note makes
+the region delta trivial-but-stated, the right treatment. TWO RULINGS: Q1 — CAPR's existing
+rlctGlobal_sumSqFam_foldResid_eq_sourceCleared IS the (iv) landing; GM consumes, never re-declares
+(adapter in GM's module if the payoff wiring needs one; a PROVE ruling at SPECIFY would land as a
+primed twin in GM's module, := swap at integration). Q2 — ruled (A+): GM authors ALL consumer
+re-points THROUGH the summit + payoff-bridge wiring and gates on a FULL lake-build green + forced
+payoff axioms IN ITS OWN WORKTREE (the compose-the-chain step is where the banked universe-mismatch
+lesson bit); the CANONICAL merge (GM branch + CAPR's moving lane + aggregator) stays controller
+(#73) — branch = validation, merge = integration. Guardrails: GM does NOT merge CAPR's newer lane
+commits (statement-lock makes consuming the capstone statement stable across CAPR's 1ebce70ce
+decomposition; controller reconciles); a NON-mechanical summit re-point (statement-level redesign)
+is a STOP-and-surface, not a silent absorb. SPECIFY now underway (#77); next gates: pnp
+def-fidelity + elder delta + controller per-file go on the in-place edit list.
