@@ -15924,3 +15924,33 @@ escalation. R5 stays rejected. Re-open triggers pinned PER AXIS (product: reuse-
 under R3; block: not diagonalisable by R3+R4 within the fold). The single deciding datum =
 seat-L4D's block-form-under-R3 column (prioritized in its reporting order); arch-C keeps the
 render MODULAR for a possible def-edit 4 (R4 component). §8(g) + compass committed 138cc5a31.
+
+## 2026-07-23 (~02:10) — the confirmation battery: READING B DEF-CONFIRMED; the fix is TWO sign flips (controller re-derived after a red re-run); the mechanism question is the one remaining open item
+
+seat-L4D's battery vs the elder's 5-point bar (banked c77392480):
+- (iii) DEF-FACT CONFIRMS READING B: foldB (MonumentAtlas:402-406) carries the b's SEPARATELY;
+  StepInv = ∑q·(b·resid) — foldResid IS the clean-block slot. The A-vs-B discriminator answered
+  at the def.
+- (v) CONFIRMED: §2's field put the b-factor INTO foldResid's coefficients — contradicting the
+  def's own architecture (b's belong in foldB); the field was the symptom of the leftover
+  sitting in the WRONG SLOT. The retraction is now def-grounded.
+- (i) THE TWO-SIGN FINDING + A SENSOR-CALIBRATION CATCH: the banked script FAILED the
+  controller re-run (exit 1) — diagnosis: a LABEL SWAP (schur_sign multiplies (−γβ), so +1
+  keeps/−1 flips, inverted from the comments; P_ii_only/P_both hold each other's contents; the
+  assert sat on the wrong variable). THE FINDING SURVIVES, RE-DERIVED BY HAND by the controller:
+  P[0][1] = b·u₁₀₀ + u₀₁₁·u₁₀₁ + (r−s)·γβ·u₁₀₁ ⟹ recoord-flip alone leaves −2γβ·u₁₀₁;
+  flipping BOTH (Schur → +γβ, recoord → −γ) cleans all four ed1 entries. DEF-EDIT-3 = TWO sign
+  flips. Artifact fix requested (re-push, re-bank). Lesson: artifact-first applies to verify
+  scripts — the committed version is the one that counts; the seat's local exit-0 differed.
+  FLAG riding it: the both-flipped block corner = u₀₁₁ + γβ, NOT the classical Schur
+  complement −γβ — the e₂/ledger convention must be read against it.
+- (ii)/(iv) HONESTLY DEFERRED (the seat declining to over-assert after its flip-flops): the
+  DIRECTION SUBTLETY — worked.tex:445's Q'₂⁻¹ reads as the PRODUCT-PRESERVING recoord
+  (Q₁⁻¹+column-clear, R4-like = what honest_clear and the certificate compute — why §2 was
+  fitted to it), vs ruled-R3 (Q₁, no clear) = a DIFFERENT unipotent operation yielding the
+  clean block directly. Both RLCT-safe, different blocks; the paper alone (per the seat) does
+  not decide which is her clean-D_J mechanism. The elder's full-paper read + pnp's
+  object-labeled reuse-node forms (#49/#50) decide. Per-axis re-open gates stand.
+
+NET: the deflation is def-confirmed; ONE open question (the mechanism); the wall's final form
+unchanged (boostReady from clean-D_J + foldB) whichever mechanism is faithful.
