@@ -1026,3 +1026,37 @@ materially different — so per my re-bless terms the seat spawns; NO further bl
 seat's mini-SPECIFY (the exact Lean pin edit + the consumer sweep) for a fast ack: IsRealBranch STRENGTHENS,
 so hypothesis-side consumers are safe verbatim; every IsRealBranch-CONSTRUCTION site gains the col-condition
 obligation — my ack checks the sweep is complete AND each construction-site obligation is dischargeable.
+
+### §9.10 The 27th catch = a CONVERGENCE (independent vindication of the #87 pin) + folded-pass deltas
+
+**The strongest coherence signal of the arc.** seat-CFF's stop-and-report found cert (i)
+(`canonNormalizationOf_vanishes_on_couplingCoords`) FALSE as stated, and its fix is TWO parts: (a) an
+`hcase` case-restriction (an unconditional case11 counterexample — branch (iii) fires; the consumer only
+calls at case2/case12, so the restriction is faithful), and (b) at case2/case12 it requires
+`pivot.col = s.cleared` — EXACTLY the #87 pin. So TWO INDEPENDENT adjudication lines — my
+phantom/completeness arc (#84–#87, from the cover/oracle side) and GM's keystone verification (cert (i),
+from the fold-vanishing side) — force the SAME def-strengthening. Independent derivations converging on the
+same object is the opposite of an over-fitted patch: it is strong evidence the pin is RIGHT. Gap-class of the
+miss: pnp's cert (i) was verified on CANONICAL witnesses (col=cleared there), so witness-true /
+fan-general-false — the same masking class as the 22nd (double-carry) and 23rd (phantom); the recurring
+lesson is that canonical-witness verification cannot certify a fan-general statement.
+
+**Folded-pass deltas (three), all consistent with the rulings:**
+1. **cert (i) restated** (`hcase` + the pin from the strengthened `hbranch`). My pass verifies: the
+   restatement is TRUE exactly where consumed (case2/case12 with the pin; case11 excluded by `hcase`), and
+   the banked counterexample is genuine (unconditional case11, branch (iii)).
+2. **`hbranch` added to `stepInv_child_delta0/delta1_append_cleared`** — the fix-lemma requires it, the conjA
+   callers carry it (consumer-supplied weakest form, 24th-catch class). My pass: weakest-form + every caller
+   supplies it.
+3. **`hcanon` DROPPED from `mergeBoostSplit_of_sourceClearedInv`** — the DEEP coherence: the #87 pin baked
+   into `IsRealBranch` (rule-(b) col-condition) now supplies the col-restriction that arm needs, so a
+   SEPARATE `hcanon` is redundant THERE; the read-off arm is PROVEN without it → weakest-hypothesis drops it.
+   `hcanon` STAYS on `sourceClearedInv_holds` + the content lemma where load-bearing (the FULL diagonal, not
+   just the col-pin `hbranch` provides). My pass: confirm the drop site is genuinely PROVEN hcanon-free (not
+   an implicit reliance) and hcanon retained exactly where used. (This SHARPENS my hcanon re-bless criterion
+   (a): the re-bless now targets the RETENTION sites, and the drop is the weakest-hypothesis consequence of
+   the #87 pin subsuming the col-restriction into `IsRealBranch`.)
+
+CFF's exit re-scoped to full-green-WITH-named-frontiers ((b)/δ=1 held for #73 integration; conjB
+CAPF-gated). Folded-pass trigger now waits on: BAKE's landing, CFF's cert-(i)+δ=0+re-points, CAPF's ladder,
+INV's hcanon-drop commit.

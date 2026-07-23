@@ -20117,3 +20117,21 @@ IsRealBranch discipline endorsed; (b)/(c) crossing answers re-stated. INV's cros
 (the read-off predated the route-doc plan — moot; the hcanon-DROP answer re-pointed). The
 whole board now waits on TWO in-flight artifacts: seat-BAKE's pivot-pin landing (unblocks CFF's
 cert (i) + cascade) and pnp's capped-invariant confirm (unblocks CAPF's crux).
+
+## 2026-07-23 (~18:55 UTC) — §9.10 banked (the 27th catch recorded as a CONVERGENCE); the
+hcanon-drop soundness sharpened; INV's lane FINAL (12 commits, resting)
+
+The elder's §9.10: the 27th catch is recorded as a CONVERGENCE, not just a catch — two
+INDEPENDENT adjudication lines (the phantom/completeness arc from the cover/oracle side; GM's
+keystone verification from the fold-vanishing side) force the SAME #87 pin; independent
+derivations landing on one object is the opposite of an over-fitted patch. The gap-class lesson
+re-anchored (canonical-witness verification cannot certify a fan-general statement — the
+22nd/23rd/27th's shared masking). THE SHARPENED SOUNDNESS CHECK on the hcanon drop (the subtle
+one, now explicit): the drop is sound BECAUSE the #87 pin subsumes the col-restriction into
+IsRealBranch — not merely because the proof doesn't mention it; the pass verifies the drop site
+is proven hcanon-free AND the RETENTION sites (sourceClearedInv_holds + the content lemma) keep
+it where the FULL diagonal (more than the col-pin) is load-bearing — the hcanon re-bless now
+targets the retention sites. The full folded-pass scope enumerated (eleven items). INV's lane
+FINAL: the hcanon drop banked (f8ccab333), 12 commits all axiom-clean, done-until-gated,
+resting on its two wake conditions. The board's two in-flight artifacts unchanged: BAKE's
+landing + pnp's capped-invariant confirm.
