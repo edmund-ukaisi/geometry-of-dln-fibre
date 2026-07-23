@@ -15350,3 +15350,37 @@ last-entry) whenever a ruling is the gate, and treat "sent five messages, heard 
 incident trigger, not patience. The recovered adjudication also shows the elder's independent
 def-confirm CONVERGED with seat-L4D's (write-side mechanism, same line cites) before either saw
 the other — good decorrelation evidence for the mechanism.
+
+## 2026-07-23 (~00:10) — the HEDGE closes KILLED-BY-e (the ∀e statement is FALSE; the pin NECESSARY); the frame pin resolves to a COMBINATION; L3T3 step 1 green + reorder approved
+
+Batch integration (all banked 89e32dd48, hedge re-ran exit-0):
+
+(1) HEDGE CLOSED — KILLED-BY-e (pnp-transport, 4092c027e → canonical). The model carries a
+non-canonical linear flatten EXACTLY (validated first on the Fbad (1,1,1) witness). Kill-witness
+on (2,2,2,2): scrambling e (u₍₀,₁,₀₎ += u₍₁,₀,₁₎) puts u₂₀₀·u₁₀₁² — degree 2 in a SINGLE
+extra-block coord — into the BASE coreGen_e, UPSTREAM of any shear (decision-grade independent
+of the recoord encoding). BoostSplit needs layer-1-degree-1 extras and the recoord is
+layer-1-linear ⟹ irreparable. So the ∀e wall statement is FALSE (not merely unprovable), the
+canonFlatten pin is NECESSARY, the b-chain field STRICTLY necessary (no unfolding route). All
+three pnp instruments (cap-escape, table, hedge) converge on the re-bake.
+
+(2) FRAME PIN RESOLVED with a statement-level consequence (seat-L4D durable docs, 50060a2ae →
+canonical: capescape-def-confirm.md §1/§2 both sides; invariant-candidates-VS.md with the
+amendment folded). Verified via foldG_eq_pathMap/pathMap_append: foldResid's argument = the
+deepest node's chart frame PRE-shear ⟹ the b-chain vanishing locus is the SCHUR COMBINATION
+e₂(u), NOT a bare coordinate. Consequences relayed to the elder: Form V quantifies over a
+combination's zero set; the banked deg1SupportedOn_boostForm needs its COORDINATE pivot factor
+generalised to a continuous e₂(u) — or the field stated in the frame where e₂ IS a coordinate
+(the through-the-recoord option resurfacing at the FIELD level; her per-chart frames make her
+b's coordinates — the coords-of-record ruling now decides between carrying her FRAME vs her
+VALUE, with both prices visible).
+
+(3) L3T3: step 1 GREEN (AoyagiRecoordLinear.lean — X-linearity + hagree helpers, axiom-clean);
+ground-truthed the 5 broken StepWire sites; LADDER REORDER approved (step 3 before 2 —
+HomogWire imports StepWire); clause-1 stays swappable pending #40; :429 fixed.
+
+pnp-transport: charge complete, idle-by-design; pre-stage offered = the LEAN-def trace harness
+(ruling-independent); next commission = the re-bake acceptance battery (must exercise the LEAN
+defs + wide witness + a scrambled-e VACUITY row — the field being false under kill-e is itself
+a battery row now). The elder's input set is complete in the strong sense: every fork branch
+closed or priced by an exact instrument. All holds stand.
