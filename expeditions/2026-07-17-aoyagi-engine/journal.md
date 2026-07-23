@@ -19119,3 +19119,42 @@ candidate) meanwhile. INFRA: the subagents transcript dir moved AGAIN with the E
 re-pin — now ...worktrees-aoyagi-engine-root/3a77f09d.../subagents (all seats verified alive
 there, elder touched seconds before the check; the "elder missing" scare was the path, not the
 seat). Catches: 21/21 pre-render.
+
+## 2026-07-23 (~15:15 actual) — THE BIG JOINT: elder delta = PASS+additions (§9 banked); CAPR
+confirms the redefine AND flags couplingCoords (the 22nd-candidate, biggest stakes); last-layer
+gap found (1-bis); P2 formally closed
+
+ELDER DELTA (recorded at capstone-object-ruling.md §9, elder-authored, controller-committing now):
+GM's SPECIFY PASSES the standing checklist on all six items. DELTA 1: the provenance deferral
+RATIFIED with paper-first substance — her atlas is natively cleared via INVERTIBLE Q,P; our
+couplingClear is a PROJECTION, so a cleared atlas is NOT a valid Resolution (#81's gating
+question answered NO by inference, L5-adjudicated); the cleared invariant reaches the raw
+per-chart PrincipalInv via the det-1 ψ transport = L5's obligation. SHARPENED RE-OPEN TRIGGER
+(added to #81): the banked (iv) is a GLOBAL-residual identity; the summit consumes PER-CHART
+PrincipalInv on raw gmap — possibly a DIFFERENT bridge; L5 SPECIFY must confirm the shape
+(pnp/Codex); per-chart transport = new content = re-open. DELTA 1-bis (NEW GAP): LastLayerWire
+:139/:144 route through Case2TransportWire.case_child_stepInv_divisibility — foldResid-PINNED,
+NO cleared twin exists — so the ":145 one-line re-point" is a TYPE MISMATCH as scoped; the
+last-layer case11 needs the cleared path (same §8 falsity); OWNER = GM's unit (new required
+delta-SPECIFY item: a cleared twin or re-route through stepInv_child_delta1_append_cleared).
+DELTA 2: DELETION FORCED (a type error cannot fossilize; a fossil must typecheck-with-sorry;
+manufacturing a known-false sorried theorem is precision-forbidden); consumer safety confirmed;
+single fossil-of-record stays MergeBoostSplit's banner. DELTA 3: (iv) named-sorry-in-CAPR
+RATIFIED — closes (iv) for GM's unit; standing expectation PROVEN at the L5/payoff unit (det-1
+CoV machinery landed — detail-at-scale). DELTA 4: keep-name ratified with the first-sentence
+cleared-content docstring; _cleared suffix recommended-not-mandated. P2 FORMALLY CONFIRMED.
+
+CAPR's INTENT-CONFIRM: the accumulatedPivots redefine APPROVED as its intended object (the
+stored-pivot impl was an under-transcription — divisor identity = birth corner = LEDGER data);
+no diagonal-pinning invariant exists (the fan freedom is deliberate) so the redefine is
+NECESSARY, not convenient. AND THE BIG FLAG: the SAME root cause plausibly reaches
+couplingCoords/belowPivotCol — they key on the STORED pivot; certificate §0 is ambiguous between
+clear-at-stored-pivot (i) vs clear-at-diagonal-cleared-column (ii); Aoyagi's Lemma-2 clear is
+the J-th cleared column (ii); stored = diagonal COINCIDE on all canonical witnesses (why every
+verification passed) but DIVERGE on fan-free branches — and sourceClearedResid (GM's consumed
+primitive) shifts value if (ii) is faithful. ROUTED to pnp as the CLEAR-LOCATION adjudication
+(paper-first + fan-free witness under both defs) — HIGHEST priority: gates GM's proofs start,
+INV's containment, CAPF's kill-lemma grind. All witness-level verifications remain valid under
+both defs (they coincide there); the fork is about the fan-general statements.
+
+pnp: the O2 script summary nit FIXED (0db719b0d, honest verdict, rows unchanged).

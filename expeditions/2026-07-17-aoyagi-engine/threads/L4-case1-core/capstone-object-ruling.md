@@ -474,3 +474,60 @@ REAL (cleared) recursion, not a side-object. Everything CAPR builds is already o
 
 **Gates before ANY render:** this §8 ruling + pnp's cleared-recursion soundness check (cleared
 `foldG`/`foldB` constructed; cleared `StepInv` closes on witnesses). Both must land.
+
+## §9 seat-GM SPECIFY delta-read (`ClearedFold.lean` @ `52fed0330`) — VERDICT: PASS w/ required additions
+
+The module is a **faithful cleared mirror** of the §8 boundary. `FoldStepInvAt_cleared` is byte-faithful
+to raw `FoldStepInvAt` (abstract `e` → pinned `canonFlatten d`; raw trio → cleared trio; `q`-type
+identical `Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → …`). The whole `StepInv` chain (append δ0/δ1,
+cover route, conjB descent, conjA dispatch, `case1_preserves_cleared`) is restated on `C`; survivors
+untouched (purely additive, imports only); cross-ref honesty verbatim my §7 wording. `#print axioms`
+footprint of the clean-three headline is untouched — the summit/LastLayer are dirty-cone, off the L1
+value path.
+
+**Two zones are NOT covered by GM's chain and need owners (both DOWNSTREAM of the chain, needed for the
+DLN summit `aoyagi_learning_coefficient_via_engine`, NOT for the clean-three headline):**
+
+1. **The atlas-provenance layer** (`GeoAtlasData`/`FoldProduced`/`FoldRealizes`/leaf `PrincipalInv`).
+   Paper-first: Aoyagi's atlas is *natively cleared* — she carries `D_J` via **invertible** `Q,P`
+   (worked.tex:619-620/628-629), so her charts are genuine CoV. Our `couplingClear` is a **projection**,
+   so the cleared chain proves `PrincipalInv` on `clearedFoldG = foldG ∘ couplingClear` (a
+   projection-precompose), NOT on the raw atlas `gmap` (= the bare blow-up path). **Ruling (INFERENCE,
+   L5-adjudicated):** the atlas SURVIVES RAW (`gmap` = raw blow-up path, matching `FoldProduced`'s tree
+   provenance — a non-invertible-chart atlas is NOT a valid `Resolution`, answering task #81's gating Q);
+   the cleared invariant reaches the raw per-chart `PrincipalInv` via the **det-1 `ψ` transport** (our
+   `Q,P`-analogue, §7.7). This link lives in `leaf_stepInv_of_path'` (L5 fold body), NOT GM's chain —
+   deferral **RATIFIED** (task #81), owner = L5 sub-unit, elder+L4D adjudicate at L5 SPECIFY. **Re-open
+   trigger:** the banked Q₁-lift is a *global-residual* identity (`rlctGlobal (sumSqFam foldResid) =
+   rlctGlobal (sumSqFam sourceClearedResid)`, `SourceClearedResid:142`); the summit consumes *per-chart
+   `PrincipalInv` on the raw `gmap`* — these may not be the same bridge. L5 SPECIFY must confirm the shape
+   (pnp/Codex cross-check) or re-open the atlas-on-C decision.
+
+2. **The LAST-LAYER case11 cleared path — NEW GAP, not in GM's statement list nor anticipated by the
+   "LastLayerWire :145 = one-line re-point" framing.** `LastLayerWire:139` (case12) and `:144` (case11)
+   both route through `Case2TransportWire.case_child_stepInv_divisibility`, which is **foldResid-PINNED**
+   (`hdeg1`/`hSI`/conclusion all raw trio) and has **no cleared twin anywhere**. Re-pointing `:144` to the
+   cleared boostReady (now returns `sourceClearedResid`) is a TYPE MISMATCH — impossible as a one-liner.
+   The last-layer case11 has the SAME raw-`StepInv` falsity (§8) and needs `C`. **Owner needed:** either a
+   cleared `case_child_stepInv_divisibility` twin, or re-route the last-layer δ=1 through GM's
+   `stepInv_child_delta1_append_cleared`. Flagged to controller.
+
+**Deletion (delta 2) — DELETION, forced not optional.** The three raw lemmas (`realBranch_boostReady_case11`
+:390, `case1_conjA` :413, `case1_preserves_stepInv'` :445) are (a) REFUTED content (§8 ∃q necessity +
+(2,2,2,2) `u₀₁₀`) AND (b) currently **type-erroring** (:390 delegates to a primed variant re-pointed to
+`sourceClearedResid`, mismatching its raw conclusion) — a type-error CANNOT be fossilized; keeping it would
+manufacture a known-false sorried theorem (precision-forbidden). Consumer safety confirmed: `stepInv'`
+(raw) has zero code consumers; `case1_conjA`'s only external consumer is `CaseStepAssembly:42`; boostReady's
+is `LastLayerWire:144` (→ zone 2). Riders: retain the reusable per-edge transports; the SINGLE
+fossil-of-record is `MergeBoostSplit.foldResid_case11_mergeBoostSplit_canon` (already REFUTED-AS-STATED
+banner) — no new fossils; commit + one-line pointer cross-refs §8.
+
+**(iv) landing (delta 3):** RATIFY named-sorry-in-CAPR; do NOT twin into GM's module (the Q₁-lift's object
+is `sourceClearedResid`, its home is `SourceClearedResid.lean`; GM correctly does not re-declare). Closes
+(iv) FOR GM's unit. Standing: lands PROVEN (det-1 CoV machinery is landed — detail-at-scale, not a
+monument), coupled to zone-1's shape re-open trigger.
+
+**Name-precision (delta 4):** RATIFY `case1_preserves_stepInv''` keep-name ONLY IF its docstring's first
+sentence names the cleared output (`returns FoldStepInvAt_cleared … NOT the raw FoldStepInvAt`); a
+`_cleared` suffix is strictly clearer and RECOMMENDED if the batch touches it. Verified at integration
+(edit not in `52fed0330`).
