@@ -16263,3 +16263,18 @@ single-step-vs-inter-edge gap in boost_center; remains THE criterion if entangle
 elsewhere). Escalation map: rendered all-i≠a → re-open; scoped-but-dirty → the fold-order
 branch (immediate flag); scoped + both rows clean → merge. Elder's §8 chart-frame edit
 committed (8639475d1); its criterion-text reconciliation pending.
+
+## 2026-07-23 (~04:30) — §8(l) confirmed already-committed; the center handoff arranged; the gate's final two-row form settled
+
+Bookkeeping tick: the elder's §8(l) (chart-frame criterion + the R4-dissolves retraction) had
+already landed in the tree and gone out in commit 8639475d1 — verified in-file (:573);
+confirmed to the elder, nothing pending on the artifact. The battery's final form is settled
+across the crossings: ROW 1 (criterion of record, §8(l)) = the CHART-FRAME inter-edge
+boostReady — pnp's reuse-node trace evaluated against seat-L4D's EXACT chart center (the
+handoff arranged: seat-L4D sends its boost_center expression to pnp directly — the
+certificate-fidelity rule applied to centers); ROW 2 (stricter mechanical check) = the raw
+block-form on the SCOPED (i≥cleared) formulas. Escalation: unscoped render → re-open; scoped
++ dirty → the fold-order branch (immediate elder flag); scoped + both rows clean → merge.
+The elder expects PASS ("a genuine test, not a rubber-stamp"). Still waiting on: arch-C's
+restate + rework — the single moving piece for several ticks now; if its transcript stalls
+or the restate doesn't arrive by next tick, it gets the liveness treatment.
