@@ -705,14 +705,21 @@ UNSOUND for the all-entries ideal close; §7 formally FIRES.**
   the error at every layer was the same — the UNPAIRING (the def dropped `Q₂⁻¹`+the clearing), never the
   direction (the certificate's +γ was right all along).** −γ was the best UNPAIRED-regime approximation;
   the exact Gröbner on the real composition (over the transpose hand-reasoning that gave −γ) is the arbiter.
-- **TWO RE-CHECKS on the FINAL form (not blockers — the ideal close is TRUE by equality):** (c) boostReady/
-  block-form under +γ-paired (passed under −γ; re-verify on the +γ form — expected to hold, F₂ = the
-  faithful clean block, but re-run); (b) SCOPE status — `i≥cleared` likely SUBSUMED by the `Q₁·A₀` clearing
-  under pairing (verify vs the inter-edge reads before dropping). pnp's two-row battery + seat-L4D's
-  cheerful script re-run on the FINAL form.
-- **ORDER:** arch-C-3 renders the F₂ spec fresh → battery + scope determination on the final form → elder
-  delta-read (+γ paired in-shear, census 0/no bridge, boostReady holds, scope resolved, retracted field
-  absent, block=`diag(1,e₂-classical)`) → merge.
+- **THE TWO RE-CHECKS — RESOLVED (pnp `f2_paired_boostready.py`, all wide witnesses, exit-0):** (c)
+  boostReady/block-form under +γ-paired HOLDS, SIGN-ROBUST (the −γ→+γ flip does not disturb the clean
+  multilinear block). (b) SCOPE — the `i≥cleared` bound is STILL NEEDED, NOT subsumed (this CORRECTS my
+  "likely subsumed" lean): the fold composition order applies ed1's clearing OUTERMOST, so ed2 reads ed1's
+  PRE-clear pivot-row entry regardless — the pairing acts INTRA-edge (its own step's ideal close), the scope
+  acts INTER-edge (makes ed2 read the cleared outer row as 0 = the accumulated-`Q₂'⁻¹` semantics). Unscoped
+  +γ-paired STILL gives `u₀₀₁²`. So KEEP the scope explicitly. **TWO-AXIS FINAL PICTURE:** +γ-PAIRING = the
+  intra-edge ideal close (F₂ absorption, census 0); `i≥cleared` SCOPE = the inter-edge outer-row read. Both
+  faithful (her Lemma 2 + her accumulated recoord), both kept.
+- **THE COMPLETE, FULLY-DETERMINED F₂ SPEC:** DEF-EDIT-1 (support widen) + DEF-EDIT-3 (recoord +γ (`Q₁⁻¹`) +
+  `Q₂⁻¹` input + paired `Q₁·A₀·Q₂` clearing, det-1 shear branches, r4Clear DISCARDED, KEEP `i≥cleared`);
+  DEF-EDIT-2 none. All three criteria decorrelated-verified (ideal-close census 0 / boostReady / clean block).
+- **ORDER:** arch-C renders the (now complete) F₂ spec ONCE → battery + cheerful script + slot-confirm on
+  the FINAL form → elder delta-read (+γ paired in-shear, `Q₂⁻¹`+paired clearing present, `i≥cleared` KEPT,
+  census 0/no bridge, boostReady holds, retracted field absent, block=`diag(1,e₂-classical)`) → merge.
 
 The whole 12th-catch arc — support-widen + the recoord fix — closes on Aoyagi's own Lemma 2, restored in
 full (both compensators): the most faithful object and, because F₂ closes by equality, the most contained
