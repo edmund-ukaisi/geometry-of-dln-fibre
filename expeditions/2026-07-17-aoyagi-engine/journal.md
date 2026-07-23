@@ -20094,3 +20094,26 @@ frontiers. INV: the READ-OFF PROVEN (0cc4c1075, census 6→5) — the capstone c
 stands proven modulo the SINGLE step-transport arm; 11 commits, lane DONE-UNTIL-GATED; the
 weakest-hypothesis rule applied (hcanon dropped from the read-off where unused, kept where
 load-bearing); the post-#87 rebase flagged for #73. Catches 27/27 pre-render.
+
+## 2026-07-23 (~18:45 UTC) — CAPF 5/6 BANKED (census 6→2, incl. continuous_canonNormalizationOf);
+its #5 capped-homogeneity refinement → pnp confirm; CFF's cost refinement accepted (+ the missing
+layer-monotonicity lemma); the INV crossings closed
+
+CAPF's bank: B1 + the shear-continuity sub-unit (continuous_readEntry +
+continuous_canonNormalizationOf — the shared #73-dedup lemma, now EXISTS) + the bridge + the
+corrected #1 + the raw UNCAPPED descent (#4!) + the separation pair (#3) — all axiom-clean with
+forced printouts; only the KILL (#5) + the twin (#6) remain. ITS #5 REFINEMENT (a genuine
+base-case catch): the naive "cleared fold ignores escaped everywhere" is FALSE AT THE ROOT
+(coreGen reads the col-range before any coupling exists); the correct inducting invariant = the
+CAPPED HOMOGENEITY of sourceClearedResid (Deg1 on blockCoords(supportLayer) per node; base =
+blockCoords 0 = layerCoords 0; step = couplingClear absorbs the recoord escape into the cap);
+at the fresh child the invariant IS #6 and #5 is a corollary. RULED: the private inducting
+helper APPROVED (#5/#6 statements frozen — no statement-class event); the is-this-pnp's-verified-
+invariant question routed to pnp (one-liner; CAPF holds the crux on it). CFF's cost refinement
+ACCEPTED: cert (i) ≈ 120-200 lines incl. two missing supporting lemmas — the membership
+characterizations + PATH-LAYER MONOTONICITY (conState.layer non-decreasing — a general oracle
+fact the tree lacks; sited in CFF's module upstream-ready); its holding-against-the-moving-
+IsRealBranch discipline endorsed; (b)/(c) crossing answers re-stated. INV's crossings closed
+(the read-off predated the route-doc plan — moot; the hcanon-DROP answer re-pointed). The
+whole board now waits on TWO in-flight artifacts: seat-BAKE's pivot-pin landing (unblocks CFF's
+cert (i) + cascade) and pnp's capped-invariant confirm (unblocks CAPF's crux).
