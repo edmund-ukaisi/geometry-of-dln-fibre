@@ -184,12 +184,28 @@ Jacobian weight, one must additionally check the fibre-marginal after ψ has the
 (det-1 alone does not preserve an independently-specified vanishing weight) — a check for the
 formaliser/elder on the accumulated chart measure.
 
-**Open generalization:** ψ is verified on (2,2,2,2) (single coupling `u₀₁₀`). Wider/deeper witnesses have
-MORE coupling coords ((3,3,3,2): {(0,1,0),(0,2,0),(0,2,1)}); the full straightening is the composition of
-per-coupling det-1 flat-field flows (each an accumulated unipotent `Q₁` row-clear, product-preserving).
-Establishing that composite ψ_gen (F∘ψ_gen = C, det 1) in general IS the B2 chart-faithfulness lemma —
-the concrete target for §7.5. Matrix-level, each `Q₁` is unipotent/product-preserving, so I expect ψ_gen
-to exist generally; the explicit multi-coupling form is the next verification.
+**ψ_gen build outcome (`verify/capstone_psi_gen_build.py`, exit 0) — single-coupling clean, multi-coupling
+rides the cover.** Constructing ψ_gen as the composite of per-coupling flat-field straightenings:
+- **VERIFIED** (F∘ψ_gen=C, det 1, RLCT-equivalence): (2,2,2,2) archetype; **(2,2,2,2,2) deep single-reuse
+  (layer-1)** — the clean B2 witness for single-coupling (layer-0-reuse) nodes.
+- **NOT constructed** for the MULTI-coupling nodes — (2,2,2,2,2) layer-2 intermediate ({(0,1,0),(1,1,0)})
+  and (3,3,3,2) wide ({(0,1,0),(0,2,0),(0,2,1)}). Reason (exact): `F` is degree-1 in each coupling, but no
+  constant-coefficient flat field moves them and no per-coupling flat field exists up to degree 3 — the
+  couplings INTERACT (the intermediate extra coeff `2·u₃₀₀·(u₀₁₀·u₁₁₁ + u₁₁₀)` mixes couplings `u₀₁₀`,
+  `u₁₁₀`). A single det-1 ψ_gen for these may need a joint (non-per-coupling) construction, or may not exist
+  as one map.
+
+**This is NOT a re-open trigger and NOT load-bearing (§7.7).** For the multi-coupling nodes:
+- **B2 chart-faithfulness HOLDS via the direct argument** (verified): the coupling coords are the below-pivot
+  entries of ANCESTOR-cleared columns (the `E_J = identity` structure), and clearing them makes the extra
+  block VANISH — so `sourceClearedResid` IS the genuine Case-1(1) chart residual, not an arbitrary
+  hyperplane. At the (2,2,2,2,2) layer-2 intermediate the couplings are `(0,1,0)` (layer-0) and `(1,1,0)`
+  (layer-1), BOTH ancestor E_J coords — NEITHER an uncovered output coord (the layer-3 factor `u₃₀₀` is the
+  shared output row, present in every coeff). Re-open trigger DISARMED, confirming §7.7.
+- **RLCT reads on C via min-over-charts (B3, the landed atlas)**, not via a single ψ. So the multi-coupling
+  RLCT-soundness rides the cover (B1 completeness + B2 faithfulness + B3 min-tie), with ψ_gen as the
+  belt-and-braces working lemma where it constructs (single-coupling). This matches team-lead's framing
+  ("ψ slots in as the B2 witness INSIDE min-over-charts; the cover is the fidelity narrative").
 
 ## Kill-condition for THIS obstruction
 If a real canonical case11 branch is exhibited on which `Deg1SupportedOn (foldResid p) ed.center`
