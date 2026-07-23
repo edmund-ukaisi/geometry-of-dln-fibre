@@ -17192,3 +17192,18 @@ ruling, same tick):
 The render's every line is now determined for the second time — and this time the recursion
 itself needs NOTHING new: the F₂ render = branch-(iii) + the support lemma + docstrings +
 gates. The wall fires post-merge on a property already proven true at the model level.
+
+## 2026-07-23 (~14:20) — §9 CLOSES COMPLETE: the unifying principle recorded; ALL RULINGS OF THE ARC RESOLVED (confirmed both directions)
+
+The elder's final recordings committed (0155fe1cc): (1) the per-chart gauge on the bounded
+arm, narrative amended; (2) THE UNIFYING PRINCIPLE elevated to the synthesis's architecture
+statement — "COMPENSATE THE ROW-CLEAR ON YOUR INPUT SIDE": interior pivots → the shallower
+internal factor (per-fibre); the corner → the input side IS the source (the per-chart GL_{d₀}
+gauge). One uniform rule with the corner as its boundary instance = Aoyagi's uniform
+block-elimination — "one rule, not three cases." (3) The home-question confirmed already-
+ruled (property-home; the crossing resolved). ALL RULINGS OF THE ARC ARE RESOLVED, stated by
+the elder and confirmed by the controller's board: §8(a)-(n) + §9 with every amendment + F6,
+all committed. The remaining path is PURE EXECUTION: arch-C-4's render (#58/#59/#60 under
+property-home + (A)/per-chart) → pnp's all-rows battery → seat-L4D's def-confirms → the
+elder's split-checklist delta-read → merge → the two-line L3T3 rebase → THE WALL (provable,
+on the property already proven at the model level).
