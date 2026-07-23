@@ -263,3 +263,33 @@ raw residual is already `⊆ ed.center` (`capstone_case2_extent.py`: `case2(1,0)
 cleared-object architecture makes the statements width-agnostic; the raw route is not "saved" where it
 happens to work. (case11 escapes for two reasons — the small reused-corner center AND the wide-layer cap;
 case12/2 escapes for one — the cap, on wide layers only. Both fixed by the same `ancestor-column-clear`.)
+
+---
+
+## 10. Fidelity reading (elder-blessed, 2026-07-23) — RLCT-equivalence, not coordinate-identity
+
+Context: her literal per-step order (blow-up THEN regular Q,P) ≠ the precompose in our
+shear-coordinates at every node (#75, `verify/capstone_herorder_vs_precompose.py`, 0577aa9c7,
+controller re-ran exit 0) — decisively because our `canonNormalizationOf` shear reads the raw
+coupling, so a post-blow-up clear arrives too late. The elder's blessed reading (verbatim):
+
+> sourceClearedResid is Aoyagi's cleared residual block D_J rendered in our fold's
+> shear-coordinates via the source-clear precompose — identical to her D_J as an RLCT object (the
+> cleared StepInv at all nodes + the ⟨∏C⟩ = ½·min M_{s,k} read-off, certificate §7.7), the
+> coordinate-form differing only by the frame our canonNormalizationOf shears impose;
+> coordinate-identity to her literal Q,P image is a right-extension, not a fidelity gate, since
+> Aoyagi's own Lemma 1 treats RLCT-equivalent representatives as the same object.
+
+The reasoning: RLCT-equivalence is Aoyagi's NATIVE equivalence relation — her Lemma 1 (RLCT
+depends only on the ideal) is the engine of the whole method, so coordinate-identity would be more
+rigid than her own framework. Her per-step Q,P are the block-elimination MECHANISM (Lemma 2),
+already rendered faithfully by the canonNormalizationOf/F₂ shears (§8/§9 — ideal-preserving
+compensators differing from her Q,P only by frame). No Q,P coordinate-identity render is
+commissioned.
+
+**THE ONE ATTACHED GATE — cross-ref honesty (binding on every module touching
+sourceClearedResid):** wherever a docstring cross-references `aoyagi-2023-worked.tex` (e.g. "= her
+D_J, :562-577"), it must state the relationship at this precision — "RLCT-equivalent via the
+source-clear rendering (coordinate-form differs by our shear-frame)" — and never imply
+bit-identity. A wording precision, not a proof obligation; the elder verifies it at seat-GM's
+SPECIFY delta-read.

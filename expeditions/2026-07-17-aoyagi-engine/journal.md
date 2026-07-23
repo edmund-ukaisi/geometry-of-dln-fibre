@@ -18805,3 +18805,21 @@ dissolution self-correcting). Elder: one-line confirm requested; fidelity-readin
 as queue item 2. Calibration ledger: elder 1 owned mis-scope (its §12 self-correction) + 1 wrong
 premise caught by artifact cross-reference; the discipline that caught it = gate-before-relay
 (controller re-derives the def before dispatching the discriminator).
+
+## 2026-07-23 (later-6) — fidelity reading BLESSED: RLCT-equivalence is the Lemma-1-native notion;
+one attached gate = cross-ref honesty wording; Q,P render NOT commissioned
+
+The elder blessed the RLCT-equivalence reading with a reason stronger than the controller's
+recommendation: Aoyagi's OWN Lemma 1 (RLCT depends only on the ideal) makes RLCT-equivalent
+representatives THE SAME OBJECT — her native equivalence relation, the engine of her method — so
+demanding coordinate-identity to her literal Q,P image would be MORE rigid than her own framework.
+Her per-step Q,P = the block-elimination mechanism (Lemma 2), already rendered by the
+canonNormalizationOf/F₂ shears up to frame. Q,P coordinate-identity = right-extension; pnp's
+offered render NOT commissioned (elder: not needed even non-blocking). Banked: certificate §10
+(the verbatim one-sentence reading + reasoning + the gate), frame §7 updated to RESOLVED. THE ONE
+ATTACHED GATE (binding, elder verifies at GM's SPECIFY): cross-ref honesty — every docstring
+cross-referencing worked.tex states "RLCT-equivalent via the source-clear rendering
+(coordinate-form differs by our shear-frame)", never bit-identity (the same
+name-the-equivalence-at-its-real-strength discipline as the #31 Ext-model caveat). Propagated to
+seat-GM (named gate), seat-CAPR (apply in passing during the grind), pnp (stand down + review
+§10). Still pending from the elder: the one-line POINT-2 def-level confirm.
