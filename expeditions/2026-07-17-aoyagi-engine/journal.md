@@ -16407,3 +16407,19 @@ point); the justification rests on faithfulness. Its calibration note on seat-L4
 self-correction ("the refutation-minded instrument self-corrected against the faithful
 reference — the discipline working") recorded. Block axis CLOSED on both instruments + the
 paper. BOARD: arch-C-3 renders; battery + delta-read + merge staged behind it.
+
+## 2026-07-23 (~05:40) — the reconciliation durable (a09bcbea2); seat-L4D's recon supplies the one-line DEF-READ GATE; the board's guards all point at REBAKE2
+
+Light consolidation: (1) pnp pinned the reconciliation DURABLY in r3r4-blockform-note.md
+(banked): seat-L4D's monomial reading = the GUARDRAIL question (a bare u₀₀₁² would violate);
+pnp's decomposition reading = the OPERATIVE question (e₂·(w col1), center × center-ignoring
+coefficient); both correct on their question; the §8(m) scope = the belt keeping u₀₀₁ in the
+benign coefficient position. Elder + both seats explicitly concur — the instrument
+disagreement is closed on the record, not silently. (2) seat-L4D's read-only recon of REBAKE
+independently confirmed the non-conformance (branch-(ii) UNSCOPED at :940-942 — the exact
+all-i≠a form producing the inter-edge u₀₀₁²; HEAD carries the retracted field) and supplied
+THE ONE-LINE DEF-READ GATE for the merge: the recoord def's sum range carries `cleared ≤ i` ⟹
+green; all-i≠a ⟹ re-open. Added to the memo's merge checklist. (3) Task board tightened:
+#44 re-pointed at REBAKE2 (never REBAKE); #53 in_progress (arch-C-3 rendering under its
+verified restate). Every guard now points at the same target; the render is the only moving
+piece.

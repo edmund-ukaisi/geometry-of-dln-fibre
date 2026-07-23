@@ -50,7 +50,11 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   = classical e₂ (−γβ), D_J degree ≤ 1 per pivot-row/col coord — NO u₀₀₁²; u₀₀₁² RESOLVED as
   R3-alone's row-half residue validating R4; RE-OPEN if the multilinear clean block is not
   reached) + seat-L4D joint slot-confirm + elder delta-read → controller merges → seat-L4D
-  takes THE WALL (boostReady from clean block + foldB — no field, no ChainNF).
+  takes THE WALL (boostReady from clean block + foldB — no field, no ChainNF). MERGE CHECKLIST
+  one-liners: the recoord def's sum range carries `cleared ≤ i` (the L4D def-read gate — on
+  REBAKE it was the unscoped all-i≠a at :940-942 = the re-open form); the retracted field is
+  ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2 (restate VERIFIED, GO given);
+  REBAKE @ 55a5d258f = the dead pre-freeze render, never battery/merge against it.
   seat-L3T3: finish step-2, push, rebase post-merge. Battery canon: WIDE witness + EXACT
   rendered form, always.
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
