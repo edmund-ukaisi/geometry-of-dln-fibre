@@ -21065,3 +21065,31 @@ render-vs-target-vs-precedent distinction are the same lesson: precision on WHIC
 defer stands; #73 gate corrected + recorded. seat-descent grinding (non-growth unblocked; growth via
 the direct seat-KILL/pnp-cap consult); seat-KILL consult + #6/#73. The thread-reaches question is
 fully disentangled + correctly posed.
+
+## 2026-07-23 (~23:35 UTC) — #95/#73 gate arc CLOSED (elder confirmed both re-targets, owned the mis-aim, corrected the §9.11 doc); direct seat-KILL↔seat-descent consult loop FIRING
+
+The elder confirmed both target re-targets, explicitly OWNED that its defer-ratification crossed my
+two-cap message + banked a mis-aimed gate, and CORRECTED the §9.11 doc (the cross-check note now
+points to the re-targeted gate; the two-cap refinement holds the substance). The #95/#73 architecture
+arc is CLOSED — design-settled:
+- TWO NAMED #73 GATES: (a) the sourceCleared cap chain (realBranch_appendResidDescent_fresh_sourceCleared
+  [stable NAME; :242/:457 line-drifts across lanes, reconcile at the swap] → the RLCT read-off summit
+  consumer) hcanon-scoped + compiler-green — #95's gate, satisfied when seat-KILL's hcanon-carrying
+  KILL render swaps in for the general sorry + its consumers accept it; (b) the raw value cap chain
+  (MonumentAtlas:1442 → :805 → :39/:53 → :35) IsRealBranch-general + green — its own gate, NOT
+  hcanon-scoped. A wall on (a) → the elder's (a)/(b) escalation, never a row-pin.
+- The two caps flow to DIFFERENT summit consumers (sourceCleared → RLCT read-off [the payoff's value
+  path]; raw → the resolution/leaf-form chain [all-branches, σ off-diagonal]) = §9.4/ADDENDUM in the
+  Lean. Anchor discipline: reference the NAME, not the line (moving file).
+- #95(i) = structurally clean (two-cap split + :738 precedent + diagonal-by-construction),
+  compiler-confirmed at #73's re-targeted (a)-gate. Defer stands.
+
+The direct seat-KILL↔seat-descent consult loop is FIRING (seat-KILL answered seat-descent's sharpened
+Q2 a/b/c + Q1 branch-iii directly, with a fidelity-encoding note — within the authorized mechanics
+loop; a genuine fidelity CATCH would be surfaced to me per discipline). Controller stays out of the
+mechanics; ready for the next material signal (seat-descent's non-growth skeleton landing / a catch /
+the cap render).
+
+**Phase note.** #95 is DESIGN-SETTLED — the remaining KILL work is pure RENDER (seat-descent's step +
+seat-KILL's hcanon-carrying cap render), landing at #73's named gates. Do not re-open the #95/two-cap
+architecture; the next escalation trigger is a compiler wall at #73's (a)-gate → elder (a)/(b).
