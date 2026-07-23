@@ -19027,3 +19027,22 @@ belowPivotCol; does clearing the newly-added coords commute through the step map
 rows exercised it is the open question. Pointed follow-up sent: cite the line or run the specific
 variant (case2/case12 δ=1, child-set left, parent∘stepMap right, two witnesses). The pnp gate is
 CORE-PASSED, O2-OPEN; GM keeps holding (elder delta also outstanding).
+
+## 2026-07-23 (~15:45) — GM's provenance position: ARGUED survive-raw, accepted + registered (#81);
+riders restated; the board holds at two gate items
+
+GM's addendum (@ 17707da90, + the couplingCoords_case11_stable lemma added as flagged): the
+provenance layer SURVIVES RAW in this unit, with a three-point tension argument for why
+re-state-on-C is not the mechanical reading of §8's spirit — (1) couplingClear is non-invertible,
+so a cleared "atlas" has non-proper chart maps and is likely not a valid Resolution atlas at all;
+(2) the (iv) lift is rlctGlobal-level, so the natural hand-back is the PAYOFF, not per-chart;
+(3) the no-per-node-bridge finding. The coherent architecture: RAW atlas (the geometric object) +
+the cleared invariant as the divisibility SCAFFOLD + (iv) reconciling values at the payoff. This
+UPDATES the controller's prior (I had leaned re-state-on-C; tension (1) is decisive-leaning).
+The re-state alternative is addressed and its gating question named; the deferral is REGISTERED
+as task #81 (owner = the L5 SPECIFY author; re-open trigger = L5 SPECIFY; L4D+elder adjudicate) —
+the charter-§3 owned-deferral form, not a silent choice. Elder ratifies as delta item 1 (material
+relayed). GM's descent-sites position taken via #78 (the raw sites survive as the F-side source;
+CAPF discharges their frontier). Riders restated (REFUTED-raw deletion documentation;
+case1'''s cleared-content docstring). GATE STATE: pnp core-passed + O2 open (grown-set
+commutation confirm) + elder delta outstanding — GM starts proofs the moment both close.
