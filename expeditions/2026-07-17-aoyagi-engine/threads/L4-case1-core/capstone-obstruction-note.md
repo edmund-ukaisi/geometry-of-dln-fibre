@@ -207,6 +207,30 @@ rides the cover.** Constructing ψ_gen as the composite of per-coupling flat-fie
   belt-and-braces working lemma where it constructs (single-coupling). This matches team-lead's framing
   ("ψ slots in as the B2 witness INSIDE min-over-charts; the cover is the fidelity narrative").
 
+## THE LIFT CERTIFICATE + FULL ψ_gen (§7.8 items 1+2, UNIFIED, all witnesses) — `verify/capstone_lift_certificate.py` exit 0
+The fold-coordinate ψ_gen fails for multi-coupling nodes, but that is a CHART-NORMALIZATION ARTIFACT.
+At the MATRIX / PARAMETER level the bridge is the composite of per-ancestor-edge unipotent `Q₁` row-clears
+(`A_L → Q₁·A_L`, `A_{L+1} → A_{L+1}·Q₁⁻¹`), and each `Q₁` is INDEPENDENTLY unipotent — so multi-coupling
+dissolves. Verified on **(2,2,2,2)**, **(2,2,2,2,2) both nodes (incl. the layer-2 intermediate crux)**,
+**(3,3,3,2) wide** — every check TRUE:
+- **(A)** each `Q₁` is unipotent **det-1 with the pivot FREE** (degenerates to det-0 ONLY in-chart where
+  the δ=1 quotient sets pivot=1 — team-lead's map-(iii)), and clears its column;
+- **(B)** the paired gauge **PRESERVES `∏A`** (coreGen invariant) ⟹ the loss `∑‖∏A‖²` is gauge-INVARIANT
+  ⟹ RLCT literally preserved, **rlctGlobal-intrinsic, NO resolution-chart Jacobian weight transported**;
+- **(C)** the in-chart (pivot→1) `Q₁` zeros exactly the couplings ⟹ reproduces `C` (the split-carrier).
+
+**Both §7.8 obligations discharged (all witnesses, no structural-expectation gaps):**
+- **item 2 (LIFT):** ψ_gen lifts to the parameter-space `Q₁` conjugation — det-1 on RAW parameters,
+  product-preserving. The elder's RE-OPEN trigger (ψ post-resolution-only ⟹ transported-weight check) is
+  DISARMED: it lifts (det-1 upstairs), and being product-preserving the loss is literally unchanged, so no
+  weighted integral is ever transported (dovetails with §7.7 read-on-C).
+- **item 1 (FULL ψ_gen):** the explicit multi-coupling ψ_gen IS this matrix-level `Q₁`-gauge composite,
+  verified on the wide and intermediate witnesses (not merely structurally expected).
+
+Codex's measure caveat is thereby RESOLVED, not merely flagged: the bridge is a product-preserving
+parameter-space gauge, so the loss is invariant and there is no in-chart weight to transport. (Retained as
+an explicit certificate line for the elder/render-reviewer per §7.8(4), now discharged by (B).)
+
 ## Kill-condition for THIS obstruction
 If a real canonical case11 branch is exhibited on which `Deg1SupportedOn (foldResid p) ed.center`
 HOLDS (each slot in ⟨ed.center⟩ on the center's zero-variety), the obstruction is refuted for that
