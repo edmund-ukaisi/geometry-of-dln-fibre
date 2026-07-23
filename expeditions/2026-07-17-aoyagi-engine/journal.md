@@ -17492,3 +17492,21 @@ already produces exactly this per chunk, so the correction is cheap: matrix rebu
 chunks as the headline; L&R demoted to a context appendix. Tier-1 items survive (Aoyagi-lane).
 Process note for the routing-around ledger: the drift here was the AUDITOR broadening the axis to
 a second source — same lesson, dual form: pin the SOURCE as tightly as the question.
+
+## 2026-07-23 (~22:20) — GAP-B SWAP RE-SCOPED: the planned re-point discharges NOTHING (L3T3's DAG
+investigation); Option A (CaseStepAssembly) GO'd
+
+L3T3's read-only investigation (8-for-8 for stop-before-grind): the proved twins
+(realBranch_multiAffine_step' / foldResid_layerHomogeneous') are a consumer-less LEAF SIDE-BRANCH —
+MultiAffineStepWire sits DOWNSTREAM of Case1Wire/Case2Wire (genuinely uses their fold-extend
+primitives), so the step's consumers (case1'/case2'_preserves_stepInv, upstream) cannot call the
+twins (cycle), and MonumentAssembly imports neither twin module. The summit therefore STILL rides
+the unprimed sorries (:1350/:1408); the planned "3-site swap" would have cycled or discharged
+nothing. :1438 (appendResidDescent) correctly stays THE frontier — no twin, no swap.
+RULED: OPTION A — additive CaseStepAssembly downstream of the twins re-proving case1''/case2''
+(identical-modulo-twin-calls), re-point MonumentAssembly; the unprimed pair + case1'/case2' become
+SUPERSEDED-BY fossils off the summit cone. Rationale: B (fold-extend relocation surgery) cuts
+through Case1Wire = the LIVE wall file; B goes to the post-summit ledger. Five conditions in the
+GO (identical-modulo-twins restate trip; wall compatibility; summit-cone axiom set = the metric;
+fossil-docstring hunks routed through my single-writer files, Case1Wire's AFTER #38 lands; naming
+name=content). L3T3 prototypes on its lane.
