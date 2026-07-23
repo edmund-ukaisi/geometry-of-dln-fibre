@@ -20398,3 +20398,25 @@ accepted; unit COMPLETE, released to unit-consult. BOARD: BAKE integrated (canon
 global move summit-done + L1 clean-three; the cap crux = the one deep KILL (#92, pnp designing);
 INV resting; #73 assembles all onto the pinned canonical. The payoff is axiom-clean NOW; #73
 delivers full-DLNFibre-green.
+
+## 2026-07-23 (~18:30 UTC, heartbeat) — phase-transition calibration: the destination model
+CORRECTED (cite DODGED, L1=L=1 done) + a GAP surfaced (untracked Skeleton rungs); navigator
+convened to verify the complete open-dependency set
+
+Quiet pulse (pnp grinding #92; all else resting/complete) at the global-move→endgame phase
+transition → calibration on the destination status (don't steer by an unverified "L1
+clean-three" headline). CORRECTED MODEL (verified in AxCheck + Skeleton): (1) L1 = the genuine
+L=1 single-layer endpoint (clean-three, off the frontier cone), NOT a codim scaffold — my guess
+missed. (2) THE CITE IS DODGED — cited_aoyagi_lower_ax EXPLICITLY "NOT invoked (the kill-path)";
+the engine summit carries only exists_coreResolution — so the charter's hard half of
+"delete-the-cite" (payoff not depending on it) is structurally ACHIEVED, physical deletion = a
+close-phase operator ceremony. My "full payoff still cites" = MISS, favorably. (3) the frontiers
+I track = the leaves of exists_coreResolution = R1 resolution_charts. THE GAP (the product):
+AxCheck:191 — the general aoyagi_learning_coefficient is gated on 5 Skeleton rungs (L2
+product_reduction, D1 deepest_point-≥, R1 resolution_charts, A1×2); I've tracked ONLY R1. L2/D1/
+A1×2's status UNVERIFIED (charter §1 SUGGESTS R0/R1 reductions BUILT + A/C LANDED, so likely
+L2/D1 proven + A1-Karamata the one to check — but SUGGESTS ≠ VERIFIED). NAVIGATOR CONVENED
+(phase-transition-mandatory) with the sharp charge: verify the COMPLETE open-dependency set —
+is {the frontiers via R1} the WHOLE remaining open set, or is L2/D1/A1 also open (an untracked
+rung)? Gate-completeness audit — the one thing a controller can miss is an untracked headline
+dependency. pnp alive on #92; CX holds for the Codex forward; placement/cron green.

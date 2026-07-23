@@ -1031,3 +1031,46 @@ re-points — merge last (it consumes INV's names, which must be on canonical fi
 sorry-swaps (SourceClearedResid:242 ← CX's #6-twin; the wall ← the content lemma) + the aggregator
 wire + the (b)/δ=1 named-frontier closes that CFF held. Residual risk lives ONLY at (1)/(3)'s
 rebase-onto-BAKE re-verify (destructure patterns), which BAKE's consumer sweep already enumerated.
+
+## 2026-07-23 ~18:26 (phase transition: global-move-render → cap+integration endgame) —
+Q: what does L1-clean-three MEAN for the destination? (don't steer by an unverified headline)
+
+EXPECTATION (before the read): aoyagi_learning_coefficient_L1 is a NAMED INTERMEDIATE, not the
+full charter endpoint. My model: (1) L1's statement is the learning-coefficient value along the
+"L1" route (likely the codim-side or a chart-level piece), NOT the full λ=C/2 headline. (2) L1
+clean-three [propext, Classical.choice, Quot.sound] means L1 does NOT route through
+cited_aoyagi_lower_ax — but I EXPECT the FULL payoff (the charter's "aoyagi_learning_coefficient
+with NO Aoyagi axiom") is a DIFFERENT root that still cites, OR L1 IS cite-free by avoiding the
+lower-bound (only the upper/smooth-locus half, per the RLCT-runway memory: "smooth locus only
+gives an upper bound; the kill-condition = a singular-locus LOWER bound"). (3) The named
+frontiers (the KILL, the δ-transport arm, the wall content lemma) gate FULL-DLNFibre-green +ONE
+of the cited-axiom's deletion, NOT L1's current clean-three (which is already off their cone —
+CFF verified). Confidence: 55% L1 is a cite-free intermediate that does NOT by itself discharge
+the charter's DELETE-the-cite endpoint / 30% L1 IS closer to the endpoint than I think / 15% I've
+mis-mapped which root is the payoff. THE RISK I'm probing: treating "L1 clean-three" as "the
+payoff is axiom-clean" when L1 might be a scaffold that's clean precisely because it doesn't yet
+carry the lower-bound content the cite supplies.
+
+READ (AxCheck:191 + the kill-path comment:1391 + Skeleton:1680/1105): the destination model,
+corrected. (1) L1 = the genuine L=1 SINGLE-LAYER endpoint (unconditional, clean-three, off the
+frontier cone) — NOT a codim scaffold. My "codim-piece" guess = MISS (it's the honest depth-1
+theorem). (2) THE CITE IS DODGED — cited_aoyagi_lower_ax is EXPLICITLY "NOT invoked (the
+kill-path)"; the engine summit (aoyagi_learning_coefficient_via_engine) carries sorryAx from
+EXACTLY ONE monument (exists_coreResolution), never the cite. My expectation #2 ("full payoff
+still cites") = MISS, FAVORABLY: the charter's hard half of "delete the cite" (payoff not
+depending on it) is ACHIEVED structurally; only the physical axiom-decl deletion remains
+(close-phase operator ceremony). (3) HIT: the frontiers I track (KILL/wall/transport/cap) are
+the leaves of exists_coreResolution = R1 resolution_charts.
+
+THE GAP THE CALIBRATION SURFACED (the real product): AxCheck:191 says the GENERAL
+aoyagi_learning_coefficient carries sorryAx "until the 5 Skeleton rungs (L2 product_reduction,
+D1 deepest_point_reduction-≥, R1 resolution_charts, A1 ×2) are proven." I have been tracking
+ONLY R1 (the engine/frontier leaves). The status of L2 / D1 / A1×2 (the Karamata closed-form +
+the two reduction-bookkeeping rungs) I have NOT been tracking — if any is OPEN, there is
+remaining headline-gating work OUTSIDE the cleared-chain/cap frontiers, an ETA/scope MISS. The
+charter §1 says "R0/R1 reductions BUILT (bookkeeping)" + Objects A/C LANDED, which SUGGESTS
+L2/D1 are proven and A1 (lambdaCore_eq_clean Karamata) may be the one to check — but SUGGESTS is
+not VERIFIED. WHAT IT CHANGES: convene the navigator (phase-transition-mandatory) to verify the
+COMPLETE open-dependency set of the general theorem — is {the frontiers via R1} the WHOLE
+remaining open set, or are L2/D1/A1 also open? Steering the endgame as "just close the frontiers"
+is only right if L2/D1/A1 are proven; the navigator confirms or finds the untracked rung.
