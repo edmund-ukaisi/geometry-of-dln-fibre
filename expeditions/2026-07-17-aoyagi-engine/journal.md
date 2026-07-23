@@ -17762,3 +17762,15 @@ exactly the 2 MergeBoostSplit frontiers (assembly + content capstone) — wired 
 wall's open mathematics is gate-visible rather than sitting in an unwired file. NEXT: LL's
 one-argument rebase (its conjA case11 call passes he to the now-pinned wall) → LL's lane merge.
 L4D on the capstone throughout.
+
+## 2026-07-24 (~05:40) — THE LL LANE IS ON CANONICAL (5a70c32d5 + wire): the lastLayer family
+pinned + conjA fully wired; census 42→44 (the 2 capstone-riding holes gate-visible)
+
+Merged per the pinned order; gates controller-re-derived on the merged tree: build 9015 exit-0
+(+1 = LastLayerWire), cordon-all both halves, payoff roots clean-three, clean-status push. The
+sorry-token discrepancy in LL's report resolved pre-wire (3 grep hits = 1 docstring mention + the
+2 expected hole bodies :176/:184 — "the single remaining sorry" = one sorried LEMMA, two branch
+holes). he-by-rfl at LL's call site (post-subst) — the pin discharging exactly as designed.
+CANONICAL NOW CARRIES the complete pinned architecture end-to-end: every statement the idiom
+ruling touched, both consumers of the wall wired, all remaining debt named and riding exactly
+{the capstone, the cap frontier, the L5 fold body}.
