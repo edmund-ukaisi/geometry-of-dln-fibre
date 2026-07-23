@@ -784,17 +784,17 @@ running-min block) ⟹ `∉ escapedBelow d S c`. The escaped set collects, per l
 `≥ widthMinUpto d M`; a layer-`S` coordinate can only match the `M = S` slice, where the block cap
 `col < widthMinUpto d S` excludes it. Powers `pv ∉ escapedBelow` (the fresh-clear pivot sits in the block:
 `col = cleared < widthMinUpto d (S+1) ≤ widthMinUpto d S`). -/
-theorem notMem_escapedBelow_of_col_lt_wmu {N : ℕ} {d : Fin (N + 1) → ℕ} {S c : ℕ}
-    {x : Fin (flatDim d)} (hlay : (((tupIdxEquiv d).symm x).1.1 : ℕ) = S)
-    (hcol : (((tupIdxEquiv d).symm x).2 : ℕ) < widthMinUpto d S) :
+theorem notMem_escapedBelow_of_col_lt_wmu {N : ℕ} {d : Fin (N + 1) → ℕ} {S c M : ℕ}
+    {x : Fin (flatDim d)} (hMS : M ≤ S) (hlay : (((tupIdxEquiv d).symm x).1.1 : ℕ) = M)
+    (hcol : (((tupIdxEquiv d).symm x).2 : ℕ) < widthMinUpto d M) :
     x ∉ escapedBelow d S c := by
   rw [escapedBelow]
   intro hx
   rcases Finset.mem_union.mp hx with hbi | hcond
-  · obtain ⟨M, hM, hxM⟩ := Finset.mem_biUnion.mp hbi
+  · obtain ⟨M', hM', hxM⟩ := Finset.mem_biUnion.mp hbi
     rw [escapedCol, Finset.mem_sdiff] at hxM
-    have hMS : M = S := by rw [← decode_layer_of_mem_layerCoords d M x hxM.1]; exact hlay
-    subst hMS
+    have hMM' : M' = M := by rw [← decode_layer_of_mem_layerCoords d M' x hxM.1]; exact hlay
+    subst hMM'
     exact hxM.2 (Finset.mem_image.mpr ⟨(tupIdxEquiv d).symm x,
       Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlay, hcol⟩, (tupIdxEquiv d).apply_symm_apply x⟩)
   · split_ifs at hcond with hcnd
@@ -965,6 +965,101 @@ theorem couplingCoords_covers_cleared {N : ℕ} {d : Fin (N + 1) → ℕ} :
             exact mem_belowPivotCol_of_decode pv y (by rw [heq, hpl])
               (by rw [heqc, hpc]) (by rw [hpr]; omega)
       · exact absurd (he.symm.trans hecase) (by decide)
+
+/-- **The recoord shear AGREES off `escapedBelow`, on coupling-cleared inputs (Sat).** For a diagonal
+fresh-clear pivot and two cleared inputs agreeing off `escapedBelow(parent)`, the displacement agrees at any
+`j ∉ escapedBelow(parent)`. Branch (i): both reads sit at col `< wmu(S)` (in-block) → `∉EB` → agree. Branch
+(ii): first factor reads col `= cl < wmu(S)` (`∉EB`), second reads layer `S+1` (`∉EB`, `c < wmu(S+1)`) →
+agree. Branch (iii): per-`k'` split — `k' < wmu(S)` both reads `∉EB` agree; `k' ≥ wmu(S)` the second factor
+`(S−1,k',jc)` is a coupling (via `widthMinUpto_succ`: `k'≥wmu(S) ⟹ jc<wmu(S) ⟹` cleared col, `couplingCoords
+_covers_cleared`) → `0` both. This is the AT's shear half. -/
+theorem canonNormalizationOf_agree_on_cleared {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (p' q : TreePath d) (hcanonP : CanonicalPivots d p') (hrec : p'.IsRealBranch (canonFlatten d))
+    (pv : Fin (flatDim d)) (hlayerN : p'.conState.layer < N)
+    (hbpv : belowPivotCol d pv ⊆ couplingCoords d q)
+    (hccp : couplingCoords d p' ⊆ couplingCoords d q)
+    (hpvrow : (((tupIdxEquiv d).symm pv).1.2 : ℕ) = p'.conState.cleared)
+    (hpvcol : (((tupIdxEquiv d).symm pv).2 : ℕ) = p'.conState.cleared)
+    (hclt : p'.conState.cleared < widthMinUpto d (p'.conState.layer + 1))
+    (u v : Fin (flatDim d) → ℝ)
+    (hag : ∀ z, z ∉ escapedBelow d p'.conState.layer p'.conState.cleared →
+             couplingClear d q u z = couplingClear d q v z)
+    {j : Fin (flatDim d)}
+    (hjEB : j ∉ escapedBelow d p'.conState.layer p'.conState.cleared) :
+    canonNormalizationOf d p'.conState pv (couplingClear d q u) j
+      = canonNormalizationOf d p'.conState pv (couplingClear d q v) j := by
+  have hclSwmu : p'.conState.cleared < widthMinUpto d p'.conState.layer :=
+    lt_of_lt_of_le hclt (widthMinUpto_mono d (Nat.le_succ _))
+  -- reads at layer S, col < wmu S agree (both cells ∉ EB)
+  have hrdS : ∀ row col, col < widthMinUpto d p'.conState.layer →
+      readEntry d (couplingClear d q u) p'.conState.layer row col
+        = readEntry d (couplingClear d q v) p'.conState.layer row col := by
+    intro row col hcw
+    refine readEntry_congr _ _ _ _ _ (fun fc hfc => hag fc ?_)
+    obtain ⟨hl, _, hc⟩ := blockEntryFlat_decode hfc
+    exact notMem_escapedBelow_of_col_lt_wmu (le_refl _) hl (by rw [hc]; exact hcw)
+  simp only [canonNormalizationOf]
+  split_ifs with hb1 hb2 hb3
+  · obtain ⟨hbl, _, _, _, _⟩ := hb1
+    rw [hrdS _ _ (by rw [hpvcol]; exact hclSwmu),
+        hrdS _ _ (col_lt_wmu_of_notMem_escapedBelow hbl (le_refl _) hjEB)]
+  · refine Finset.sum_congr rfl (fun i _ => ?_)
+    split_ifs with hg
+    · rfl
+    · obtain ⟨hbl2, _⟩ := hb2
+      have hB : readEntry d (couplingClear d q u) (p'.conState.layer + 1)
+            (((tupIdxEquiv d).symm j).1.2) i
+          = readEntry d (couplingClear d q v) (p'.conState.layer + 1)
+            (((tupIdxEquiv d).symm j).1.2) i := by
+        refine readEntry_congr _ _ _ _ _ (fun fc hfc => hag fc ?_)
+        obtain ⟨hl, _, _⟩ := blockEntryFlat_decode hfc
+        exact notMem_escapedBelow_of_layer_gt (by rw [hl]; omega) hclt
+      rw [hrdS _ _ (by rw [hpvcol]; exact hclSwmu), hB]
+  · obtain ⟨hbl3, hbcol3⟩ := hb3
+    refine Finset.sum_congr rfl (fun k' hk' => ?_)
+    split_ifs with hg
+    · rfl
+    · push_neg at hg
+      by_cases hk'w : k' < widthMinUpto d p'.conState.layer
+      · -- both reads ∉ EB → agree
+        have hB : readEntry d (couplingClear d q u) (((tupIdxEquiv d).symm j).1.1) k'
+              (((tupIdxEquiv d).symm j).2)
+            = readEntry d (couplingClear d q v) (((tupIdxEquiv d).symm j).1.1) k'
+              (((tupIdxEquiv d).symm j).2) := by
+          refine readEntry_congr _ _ _ _ _ (fun fc hfc => hag fc ?_)
+          obtain ⟨hl, _, hc⟩ := blockEntryFlat_decode hfc
+          refine notMem_escapedBelow_of_col_lt_wmu (by omega) hl ?_
+          rw [hc]
+          exact col_lt_wmu_of_notMem_escapedBelow rfl (by omega) hjEB
+        rw [hrdS _ _ hk'w, hB]
+      · -- k' ≥ wmu(S): second factor (S−1,k',jc) is a coupling → 0 both
+        push_neg at hk'w
+        have hjcw : (((tupIdxEquiv d).symm j).2 : ℕ) < widthMinUpto d p'.conState.layer := by
+          by_contra hh
+          push_neg at hh
+          have hjcL := col_lt_wmu_of_notMem_escapedBelow (d := d)
+            (y := j) (S := p'.conState.layer) (c := p'.conState.cleared)
+            (M := (((tupIdxEquiv d).symm j).1.1 : ℕ)) rfl (by omega) hjEB
+          have H : (((tupIdxEquiv d).symm j).1.1 : ℕ) + 1 < N + 1 := by omega
+          have hsucc := widthMinUpto_succ d (n := (((tupIdxEquiv d).symm j).1.1 : ℕ)) H
+          have hkd : k' < d (((tupIdxEquiv d).symm j).1.1).succ := Finset.mem_range.mp hk'
+          have hkd' : k' < d ⟨(((tupIdxEquiv d).symm j).1.1 : ℕ) + 1, H⟩ := hkd
+          rw [← hbl3] at hh hk'w
+          omega
+        have hB0 : ∀ w : Fin (flatDim d) → ℝ,
+            readEntry d (couplingClear d q w) (((tupIdxEquiv d).symm j).1.1) k'
+              (((tupIdxEquiv d).symm j).2) = 0 := by
+          intro w
+          refine readEntry_couplingClear_eq_zero q w _ _ _ (fun fc hfc => ?_)
+          refine hccp (couplingCoords_covers_cleared p' hrec hcanonP ?_ (Or.inl ⟨?_, ?_⟩))
+          · obtain ⟨_, hr, hc⟩ := blockEntryFlat_decode hfc
+            rw [hc, hr]; omega
+          · obtain ⟨hl, _, _⟩ := blockEntryFlat_decode hfc
+            rw [hl]; omega
+          · obtain ⟨hl, _, hc⟩ := blockEntryFlat_decode hfc
+            rw [hc, hl, hbl3]; exact hjcw
+        rw [hB0 u, hB0 v]; ring
+  · rfl
 
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
