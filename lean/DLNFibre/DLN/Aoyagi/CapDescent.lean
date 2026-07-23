@@ -479,6 +479,67 @@ theorem ignoresCoords_union {D : ℕ} {c : (Fin D → ℝ) → ℝ} {A B : Finse
   · exact hA w hw m h t
   · exact hB w hw m h t
 
+/-! ### `escapedBelow` state-transition set-equalities + the `couplingClear` fixed-point (the step's
+foundation — the pnp certificate's `telescoping_check` (V2), rendered as Finset facts). -/
+
+/-- Peel the top layer off the `escapedBelow` biUnion: `⋃_{M<S+2} escapedCol M = escapedCol (S+1) ∪
+⋃_{M<S+1} escapedCol M`. -/
+theorem escapedCol_biUnion_range_succ (d : Fin (N + 1) → ℕ) (S : ℕ) :
+    (Finset.range (S + 2)).biUnion (escapedCol d)
+      = escapedCol d (S + 1) ∪ (Finset.range (S + 1)).biUnion (escapedCol d) := by
+  rw [show S + 2 = (S + 1) + 1 from rfl, Finset.range_add_one, Finset.biUnion_insert]
+
+/-- **Rollover transition** (V2): `escapedBelow (S+1, 0) = escapedBelow (S, c)` once `c` has reached the
+rollover threshold `widthMinUpto d (S+1)` (the layer-`S` clears are exhausted, `conOracle_child_transition`
+rollover arm). The escaped part is UNCHANGED — layer-`(S+1)`'s columns entered at the last clear. -/
+theorem escapedBelow_rollover_eq (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k) (S c : ℕ)
+    (h : widthMinUpto d (S + 1) ≤ c) :
+    escapedBelow d (S + 1) 0 = escapedBelow d S c := by
+  have hchild : ¬ (widthMinUpto d (S + 1 + 1) ≤ 0) := by
+    have := widthMinUpto_pos hpos (S + 1 + 1); omega
+  simp only [escapedBelow, if_neg hchild, if_pos h, Finset.union_empty]
+  rw [escapedCol_biUnion_range_succ, Finset.union_comm]
+
+/-- **Non-last clear transition** (V2): `escapedBelow (S, c+1) = escapedBelow (S, c)` when `c+1 <
+widthMinUpto d (S+1)` (layer `S` not yet exhausted) — no escaped columns enter. -/
+theorem escapedBelow_clear_notlast (d : Fin (N + 1) → ℕ) (S c : ℕ)
+    (h : c + 1 < widthMinUpto d (S + 1)) :
+    escapedBelow d S (c + 1) = escapedBelow d S c := by
+  have h1 : ¬ (widthMinUpto d (S + 1) ≤ c + 1) := by omega
+  have h2 : ¬ (widthMinUpto d (S + 1) ≤ c) := by omega
+  simp only [escapedBelow, if_neg h1, if_neg h2]
+
+/-- **Last clear transition** (V2, the LOAD-BEARING growth): `escapedBelow (S, c+1) = escapedBelow (S, c) ∪
+escapedCol (S+1)` when `c+1 = widthMinUpto d (S+1)` — layer-`(S+1)`'s escaped columns ENTER here (V3). -/
+theorem escapedBelow_clear_last (d : Fin (N + 1) → ℕ) (S c : ℕ)
+    (h : c + 1 = widthMinUpto d (S + 1)) :
+    escapedBelow d S (c + 1) = escapedBelow d S c ∪ escapedCol d (S + 1) := by
+  have h1 : widthMinUpto d (S + 1) ≤ c + 1 := by omega
+  have h2 : ¬ (widthMinUpto d (S + 1) ≤ c) := by omega
+  simp only [escapedBelow, if_pos h1, if_neg h2, Finset.union_empty]
+
+/-- **`couplingCoords` is monotone along a step** — the parent's couplings are among the child's (a step
+UNIONS in the below-pivot column). -/
+theorem couplingCoords_subset_step (d : Fin (N + 1) → ℕ) (p : TreePath d)
+    (c : Finset (Fin (flatDim d))) (pv : Fin (flatDim d)) (cse : StepCase) (ns : ConState N)
+    (φ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)) :
+    couplingCoords d p ⊆ couplingCoords d (TreePath.step p c pv cse ns φ) := by
+  intro x hx; exact Finset.mem_union.mpr (Or.inl hx)
+
+/-- **`couplingClear p` FIXES a `couplingClear q`-cleared point** when `couplingCoords p ⊆ couplingCoords q`
+— the (smaller) parent clear is subsumed by the (larger) child clear. This is the fixed-point that lets the
+induction feed a child-cleared input to the parent's `sourceClearedResid` (`= foldResid ∘ couplingClear p`). -/
+theorem couplingClear_couplingClear_of_subset (d : Fin (N + 1) → ℕ) {p q : TreePath d}
+    (h : couplingCoords d p ⊆ couplingCoords d q) (u : Fin (flatDim d) → ℝ) :
+    couplingClear d p (couplingClear d q u) = couplingClear d q u := by
+  funext k
+  show (if k ∈ couplingCoords d p then (0 : ℝ) else couplingClear d q u k) = couplingClear d q u k
+  by_cases hk : k ∈ couplingCoords d p
+  · rw [if_pos hk]
+    show (0 : ℝ) = if k ∈ couplingCoords d q then 0 else u k
+    rw [if_pos (h hk)]
+  · rw [if_neg hk]
+
 /-- **Canonical (full-diagonal) pivots along a path** (#95 — the row-phantom scope). Every fresh-clear
 (case2/case12) edge's pivot is the DIAGONAL corner `cornerToFlat d layer cleared = (layer, cleared, cleared)`
 (`= canonPivotOf`), not a free fan pivot. Case11 pivots are canonical already (forced by `IsRealBranch`'s
@@ -526,7 +587,7 @@ theorem sourceClearedResid_ignoresEscapedBelow (d : Fin (N + 1) → ℕ) (hpos :
       have h0 : escapedCol d 0 = (∅ : Finset (Fin (flatDim d))) := by
         rw [escapedCol, blockCoords_zero_eq_layerCoords]; exact Finset.sdiff_self _
       have hwmu : ¬ (widthMinUpto d 1 ≤ 0) := by have := widthMinUpto_pos hpos 1; omega
-      rw [escapedBelow, if_neg hwmu, Finset.union_empty, Finset.eq_empty_iff_forall_not_mem]
+      rw [escapedBelow, if_neg hwmu, Finset.union_empty, Finset.eq_empty_iff_forall_notMem]
       intro x hx
       obtain ⟨M, hM, hxM⟩ := Finset.mem_biUnion.mp hx
       rw [Finset.mem_range, Nat.lt_one_iff] at hM
