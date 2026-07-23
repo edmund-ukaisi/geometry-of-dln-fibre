@@ -15697,3 +15697,36 @@ consult is the math-side second view, the seat's covers def-feasibility); arch-C
 branch) + an invitation to report def-edit-1 as its own unit when done. Operator-escalation
 likelihood DROPPED with the blast-radius containment (the elder notes the monument is NOT
 reopened). Queue: R0 verdict → (if NO) R4 council + def-feasibility → rendered statements.
+
+## 2026-07-23 (~01:20) — R0 = NO; the head verdict REVERSES: DEF-EDIT-3 via the R3 SIGN FLIP (the baked recoord had the WRONG INVERSE); the invariant-shape question reopens
+
+seat-L4D's R0 + correction (its Codex caught its own over-hasty SKELETON call — the correction
+discipline working):
+
+R0 = NO, the elder's skeptic prior CONFIRMED with the discriminator answered: 2·u₀₁₀ divisible
+by neither active exceptional (explicit counterexample evaluations); bare u₀₁₀ = a clearing
+ratio, not an exceptional/b-factor; coeff 2 = the SAME uncleared contribution added twice, not
+a b-step. The field is NOT satisfied on the baked def; the fork proceeds.
+
+HEAD VERDICT CORRECTED: SKELETON-REVISION → DEF-EDIT-3-REPRESENTABLE, via Codex R3 (verified
+ed1 [0][0], sympy exit-0): do NOT clear the column — REVERSE the recoord direction. Branch (ii)
+should apply Q₁ (−γ), not the baked Q₁⁻¹ (+γ): baked +γ → coeff 2 (doubles the inherent term);
+flip −γ → CLEAN (coeff 0); jacDet 1 both ways — the flip is a genuine unipotent shear, hshear
+preserved. The jacDet obstruction STANDS (the column-clear form remains dead); R3 wins by not
+clearing at all. R1 ruled out; R2 = R3∘blow-up per Codex. If the flip verifies fully, R3
+SUPERSEDES the controller's R4 (a sign flip beats a fold-step component) and the skeleton lane
+closes without the operator.
+
+CAVEATS (fix NOT confirmed): (1) verified on ONE entry of ONE witness — full verification
+running (all entries, both wide witnesses, interior pivot, the branch-(i) Schur sign needs a
+sensitive entry); pnp runs ideal-equality/monomialisation/M on the flipped candidate (G1-class).
+(2) THE INVARIANT-SHAPE QUESTION REOPENS (elevated to the elder's council, now triggered):
+honest_clear and R3-flip DISAGREE at the reuse node — honest_clear's extras CARRY e₂ (the
+empirical-table finding the ruled m_k·β FIELD was built on); R3-flip's extras are CLEAN
+(coeff 0). Both unipotent, both boost-ready, different presentations. If worked.tex's own
+reuse-step block is CLEAN (her diag(b)·[E_J|D_J] literally, b's OUTSIDE in the ledger), the
+ruled field was fitted to the BROKEN def's symptom and DEF EDIT 2's shape changes to her
+literal block form (simpler). The elder's council consult re-primed: R3-vs-R4 + the branch-(i)
+sign + the invariant shape, worked.tex leading; G1/G2 unchanged. NOTHING BAKES until the
+council rules. seat-L4D banks the Codex artifact + sign-test script (bank to canonical when
+the ref arrives).
