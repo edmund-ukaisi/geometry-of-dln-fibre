@@ -20420,3 +20420,23 @@ L2/D1 proven + A1-Karamata the one to check — but SUGGESTS ≠ VERIFIED). NAVI
 is {the frontiers via R1} the WHOLE remaining open set, or is L2/D1/A1 also open (an untracked
 rung)? Gate-completeness audit — the one thing a controller can miss is an untracked headline
 dependency. pnp alive on #92; CX holds for the Codex forward; placement/cron green.
+
+## 2026-07-23 (~18:40 UTC) — #92 KILL invariant CERTIFIED (pnp a24726b18, re-ran exit 0) → render
+sub-unit (seat-KILL) spawned; the deepest lemma's DESIGN is closed clean
+
+pnp certified the telescoping invariant Z(p) := couplingCoords d p ∪ escapedBelow(p) (escapedBelow
+accumulates escaped(M) over M≤S + escaped(S+1) once c ≥ widthMinUpto(S+1)); statement Z:
+sourceClearedResid ignores Z(p) per node; the KILL falls out at a fresh node (escaped(S) ⊆
+escapedBelow ⊆ Z ⊆ ignored). VERIFIED V1 (Z⊆ignored + KILL) / V2 (root/δ/rollover telescoping) /
+V3 (the deep step: escaped-coeff ∈ ⟨couplingCoords⟩ at last-clear nodes, Gröbner ideal-membership)
+across (2,3,3,3)[single-recoord fails]/(2,3,2,2)/(2,4,3,3)[wide]/(2,2,2)[last-layer boundary,
+vacuous — 28th-catch clean]. CLEAN TELESCOPING FORM, NO DESIGN EVENT — the whole-path multi-layer
+depth is baked into escapedBelow's accumulation; the render needs no different decomposition.
+Controller re-ran the script (exit 0, all TRUE). SEAT-KILL spawned (off CX's foundation): render
+Z-by-induction (root/δ=1-δ=0-with-V3/rollover) consuming CX's continuous_decomp + foldResid_
+layerHomogeneous'; V3 = the deep last-clear step (recoord-(ii)-writes-through-couplings, whole-path);
+then the KILL read-off + wire the guard-add (sourceClearedResid_capped := guarded … hlayer). pnp =
+decorrelated (V3) consult on demand. On green: #6 (obligation-b twin) axiom-clean → #73 swaps
+SourceClearedResid:242. THE EXPEDITION'S DEEPEST DESIGN COMMISSION IS CLOSED — what remains on the
+KILL is downstream render execution of a certified induction. Meanwhile: the navigator's
+complete-open-set audit (the untracked-Skeleton-rung question) is in flight.
