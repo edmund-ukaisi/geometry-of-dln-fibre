@@ -16570,3 +16570,25 @@ object; the faithful def re-opens them honestly. The elder's delta-read checks t
 STATEMENT hardest (a new statement-locked frontier = the twelve-catch class). The §7 tripwire
 stands. State: DEF-EDIT-1 + 3(b) + the staged r4Clear all green; only the StepInv re-thread
 holds for seat-L4D's bridge-shape confirm.
+
+## 2026-07-23 (~07:15) — the elder's bridge ruling: DERIVABLE⟹PROVE-don't-sorry; the 4-check statement gate; the render target final in every detail
+
+The elder's full ruling on the R4-faithfulness bridge (relayed to both seats): (1) SANCTIONED,
+shape confirmed exact (the Case1Wire:36 consumption precedent; rides Lemma 1 ideal-invariance
++ G1); the honest proven-under-broken → conditional-on-bridge framing REQUIRED per charter §3,
+at the claim site. (2) THE PRECISION WITH TEETH: if the bridge is DERIVABLE from the banked
+machinery, it must be PROVEN in the render — "a named frontier is only for genuinely-open
+proof-engineering; leaving a derivable bridge as a sorry is scaffolding"; census 0 if
+derivable, +1 only if genuinely open. seat-L4D's shape-check now decides PROVE-vs-FRONTIER
+(deliverable sharpened: statement shape at the weakest generality BOTH consumers need +
+the derivability verdict with proof sketch or open kernel + the δ=1 commutation question).
+(3) THE 4-CHECK GATE on the bridge statement (the delta-read's hardest item, gated as a
+def-fidelity OBJECT): correctly states ideal-faithfulness; rides G1+Lemma 1 soundly; weakest
+generality for BOTH consumers; matches pnp's validated r4Clear model EXACTLY — "the
+kill-battery must exercise the rendered bridge, not a hand model of it" (the original
+catastrophe's trap, explicitly named). (4) §7 tripwire stands.
+
+The render target is now final in every detail: DEF-EDIT-1 + 3(b) (green) + r4Clear (staged,
+matches the validated model) + the bridge (proven-or-honestly-frontier per the shape-check) +
+the two consumer re-threads. The delta-read checklist = the three decomposition conditions +
+the bridge 4-check + the standing items. Nothing left to rule; the render completes.
