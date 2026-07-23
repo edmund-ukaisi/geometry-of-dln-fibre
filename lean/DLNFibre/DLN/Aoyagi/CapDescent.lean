@@ -210,6 +210,17 @@ theorem continuous_decomp_of_homogeneousDeg1On {D : ℕ}
       · simp only [hP0, if_neg hk]; exact hagree k hk
     simp only [hPve, hP0e]
 
+/-- **`belowPivotCol` sits at the pivot's layer** — every coordinate of the below-pivot column decodes to
+the pivot's decoded layer (the filter fixes the layer index). -/
+theorem belowPivotCol_decode_layer (d : Fin (N + 1) → ℕ) (pivot : Fin (flatDim d))
+    {y : Fin (flatDim d)} (hy : y ∈ belowPivotCol d pivot) :
+    (((tupIdxEquiv d).symm y).1.1 : ℕ) = (((tupIdxEquiv d).symm pivot).1.1 : ℕ) := by
+  unfold belowPivotCol at hy
+  rw [Finset.mem_image] at hy
+  obtain ⟨q, hq, rfl⟩ := hy
+  rw [Equiv.symm_apply_apply]
+  exact (Finset.mem_filter.mp hq).2.1
+
 /-- **(L1) Coupling / layer separation.** Every ancestor coupling coordinate of a real branch `p` decodes
 to a layer `≤ p.conState.layer` (a case2/case12 clear's below-pivot column sits at the clearing layer, and
 layers are non-decreasing along the branch). At a fresh rollover child the layer strictly advances, so
@@ -218,8 +229,30 @@ theorem couplingCoords_decode_layer_le (d : Fin (N + 1) → ℕ) (p : TreePath d
     (hbranch : p.IsRealBranch (canonFlatten d))
     {y : Fin (flatDim d)} (hy : y ∈ couplingCoords d p) :
     (((tupIdxEquiv d).symm y).1.1 : ℕ) ≤ p.conState.layer := by
-  -- map: B-CAPF-couplingCoords-decode-layer-le (path induction; belowPivotCol at pivot layer, layer mono)
-  sorry
+  suffices H : ∀ (q : TreePath d), q.IsRealBranch (canonFlatten d) →
+      ∀ {z : Fin (flatDim d)}, z ∈ couplingCoords d q →
+      (((tupIdxEquiv d).symm z).1.1 : ℕ) ≤ q.conState.layer by
+    exact H p hbranch hy
+  intro q
+  induction q with
+  | root => intro _ z hz; exact absurd hz (by simp [couplingCoords])
+  | step p' c pv cse ns φ ih =>
+    intro hbr z hz
+    obtain ⟨hrec, ⟨sc, hsc, hecase, hchild, hcenter, hpivpin⟩, -, -⟩ := hbr
+    have hpInv : DivBirthInv d p'.conState :=
+      PivotPres.divBirthInv_of_isRealBranch (canonFlatten d) p' hrec
+    have htrans := conOracle_child_transition p'.conState sc hsc
+    have hmono : p'.conState.layer ≤ ns.layer := by
+      rw [← hchild]
+      rcases htrans with ⟨_, _, hL, _⟩ | ⟨_, hL, _⟩ | ⟨_, hL, _⟩ <;> omega
+    show (((tupIdxEquiv d).symm z).1.1 : ℕ) ≤ ns.layer
+    rcases cse with _ | _ | _ | _ <;>
+      rcases Finset.mem_union.mp hz with hz1 | hz2 <;>
+      first
+      | exact le_trans (ih hrec hz1) hmono
+      | exact absurd hz2 (Finset.notMem_empty z)
+      | (rw [belowPivotCol_decode_layer d pv hz2];
+         exact le_trans (canonCenterOf_decode_layer_le p'.conState sc hpInv pv hpivpin) hmono)
 
 /-- **The raw UNCAPPED descent** (NOT `blockCoords` — the capped raw form is FALSE on wide branches, the
 cap-escape). At a fresh rollover child the raw fold residual is `Deg1SupportedSlot` over the FULL descended
