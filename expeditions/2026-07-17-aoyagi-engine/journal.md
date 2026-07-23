@@ -19883,3 +19883,17 @@ work (63cb69600). The wait-list cross-check discipline stands (it is cheap and c
 losses), but the diagnosis bar gains a step: check the teammate's LANE for the work before
 declaring a loss. INV now: wiring the root arm (the induction skeleton, step arm = the named
 transport sorry) + grinding the read-off per its 5-step map.
+
+## 2026-07-23 (~16:50 UTC) — the elder's EARLY READ: δ-agnostic is FORCED by its own §9.6
+case-split (a δ=1-only guard would under-restrict); the bake-bless trigger flagged (crossing)
+
+The elder's early direction-read on the δ-agnostic CanonicalPivots: RIGHT FORM, and not merely
+CAPR's contingency — §9.6's case-split established BOTH off-diagonal-birth sub-species break raw
+S1, so the canonical sub-family must exclude both, and the carrier must pin births REGARDLESS of
+δ; a δ=1-only guard would leave the δ=0-born sub-species inside the sub-family exactly where
+variant B breaks it. INV grinds with confidence; the binding re-bless (exact def + threading +
+name=content) stays in the folded pass. The as-proven S2 scan items scoped. CROSSING HANDLED:
+the elder's message predates my bake-bless request — the trigger flagged with headlines (the
+birth-restriction SPECIFY + the taste call). The folded-pass scope is final-form-approaching;
+the expedition's remaining pre-merge events: the elder's bake-bless → the #87 render seat; GM's
+handoff doc → the finisher seat; INV's read-off bank; CAPF's sub-lemma ladder.
