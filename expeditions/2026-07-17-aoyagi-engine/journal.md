@@ -18591,3 +18591,18 @@ structure, the author answers, CAPR doesn't design. Wait-for-pnp approved (spine
 expensive kind); target-robust leaf drafts may pre-stage. The convergence of three independent
 sources (Codex, L4D, the certificate) on the ledger design — with the one divergence caught and
 routed — is the render-design loop at full function.
+
+## 2026-07-25 (~00:25) — the INV design: TARGET CONVERGED (bankable now); the REPRESENTATION
+disagreement folded into pnp's Q2 (one thread); CAPR's hybrid = the flagged candidate
+
+CAPR's three-way fold per the rule: T = accumulatedPivots ∪ supportAt CONVERGED (Codex's inference
+corrected — e₂ the birth corner ∈ accumulated exceptionals by construction; the hard ⊇-ed.center
+containment holds) — banking GO'd (a small recursive def + the containment lemma, zero churn
+risk). THE REPRESENTATION genuinely disagrees: Codex explicit-Finsupp-μ (the δ=1 cancellation
+needs exact exponents) vs L4D ∃-factoring (explicit defs mangle under transport) vs CAPR's HYBRID
+(the ∃-BOUND multiset — exact exponent data, per-step construction in the transport proof, no
+brittle path-indexed def). Ruled: rides pnp's existing Q2 (the μ step laws + now the carrier
+question — does the ∃-bound multiset thread the MULTI-STEP accumulation the double-boost witness
+exhibits?); the elder blesses the final shape at the skeleton delta. The discipline note: CAPR
+surfaced rather than baked a disagreement-class call — the rule held under temptation (its own
+hybrid was the likely winner).
