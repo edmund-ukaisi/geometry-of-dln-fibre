@@ -44,6 +44,27 @@ target (#72); this module CONSUMES it via `realBranch_boostReady_case11'`. The c
 `Case1Wire`/`CaseStepAssembly`/`LastLayerWire`/`MonumentAssembly` are listed in the SPECIFY message (in-place
 edits, per-file go); the aggregator wire is the controller's integration unit (#73).
 
+**THE PROVENANCE LAYER — DEFERRED (written, not silent; charter-§3).** `GeoAtlasData` / `FoldProduced` /
+`FoldRealizes` (which pins `atlas.gmap c = foldG d e (pathOf c)`) / the leaf shape
+`PrincipalInv (coreGen d e) (atlas.gmap c) …` — whether these SURVIVE raw or RE-STATE on `C` — is NOT
+decided by this unit. This unit leaves the provenance layer RAW and UNTOUCHED at the statement level: the
+summit `leaf_stepInv_of_path'` is invariant-free with a sorried body, so the cleared invariant enters only
+through its cone-registration `have`s, and re-pointing them keeps the summit type-stable and the build green
+(the payoff `aoyagi_learning_coefficient_L1` avoids the summit and stays clean-three). §8's "summit consumes
+the cleared invariant" is satisfied at the PROOF-SCAFFOLD layer (the `have`s); the OUTPUT-ATLAS layer is a
+separate question with a genuine tension (`couplingClear` is non-invertible, so a cleared atlas may not be a
+valid resolution atlas; the (iv) Q₁-lift is an rlctGlobal-level bridge, not a per-chart CoV; L4D found no
+per-node bridge). OWNER of the survive-vs-restate decision: the **L5 fold-body SPECIFY author**. RE-OPEN
+TRIGGER: **L5 fold-body SPECIFY time**. Elder-ratified at this unit's SPECIFY delta-read.
+
+**THE RAW `realBranch_appendResidDescent` SITES — OUTSIDE this unit.** The conjunct-B descent frontier
+(`MonumentAtlas.realBranch_appendResidDescent` + its `MultiAffineStepWire` consumers) resolves via the
+cap-transport hinge (verdict TRANSPORTS, `cap-frontier-certificate.md` §6 / #78: cleared-(b) = the raw
+UNCAPPED descent ∘ `couplingClear`, a function-level kill). A parallel seat (seat-CAPF) renders the raw
+uncapped descent + kill lemma + a primed (b)-twin; the swap lands at integration. This unit neither deletes
+nor re-points the raw descent sites; the cleared conjunct-B step here (`realBranch_multiAffine_step_cleared`)
+is a frontier that CONSUMES the cleared descent (seat-CAPF's twin) at integration.
+
 STATUS: SPECIFY skeleton — signatures validated, proofs are the PROOFS phase. Every substantive body is a
 tracked `-- map:` frontier (`B-globalmove-*`); the trivial region/continuity/root facts are marked
 `SPECIFY-trivial`. -/
