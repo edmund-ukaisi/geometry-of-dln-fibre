@@ -54,8 +54,23 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-24 ~15:30): THE RENDER PHASE — two seats grinding the last two
-  elaborated objects. The obstruction arc FULLY CLOSED (§7-§7.8 + pnp's discharges: the Q₁-lift
+- CURRENT WAIT-STATE (2026-07-24 ~23:30): THE 18th EVENT gates the integration; the induction
+  grinds fork-immune. Since ~15:30: CAPR's SPECIFY passed the elder 6/6 (the rfl fidelity
+  anchor; the (b)-statement added + shape-ruled: FULL slot + ROLLOVER-pinned selector, landed
+  0589eeb32); STEP-3 GO'd (the certificate-§4 b-ledger induction — CAPR pins the INV against
+  cert §4, Codex de-risk + L4D INV-shape consult in flight; ambiguity → pnp clarification, NOT
+  free design). THE 18th EVENT (L4D's pre-grind surface): the C→F bridge doesn't exist at the
+  POINTWISE level (couplingClear non-invertible; the shared δ=1 append's case11/case12 feeds
+  diverge — the append SPLITS per-case in every world); L4D OWNED the route-vs-content
+  correction (the ∃q StepInv content may hold via WHOLE-PRODUCT divisibility even where
+  per-slot fails). THE MASTER GATE: pnp's ∃q-STRUCTURE check (does the raw case11 child
+  StepInv hold route-independently; if yes, mechanism (a) product-divisibility/Deg1-free —
+  the wall feeds only the descended-slot conjunct — vs (b) a C-Deg1 per-node bridge). Verdict
+  → elder's fork ruling → L4D renders the per-case append split → LL's :145 (outcome-mapped,
+  one edit) → THE INTEGRATION UNIT #73 merges. L4D's (i)-(iv) = the ∃q-fails re-architecture
+  scope, banked. NOTE: the session cwd was moved to the CAPR worktree by the harness — the
+  transcript dir is now ...aoyagi-engine-CAPR/3a77f09d.../subagents (liveness polling there);
+  ALWAYS cd to root explicitly in commands. (Old:) The obstruction arc FULLY CLOSED (§7-§7.8 + pnp's discharges: the Q₁-lift
   verified ALL witnesses — the multi-coupling difficulty was a chart artifact, dissolves at the
   matrix level; loss literally gauge-invariant; measure caveat RESOLVED not flagged; B1 = cited
   to the fan cert, the genuine cover debt lives at L7). THE CERTIFICATE banked @ 0cf748516

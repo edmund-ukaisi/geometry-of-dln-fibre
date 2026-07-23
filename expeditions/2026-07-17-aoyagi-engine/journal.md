@@ -18553,3 +18553,13 @@ approved (its :145 arm = the exact crux lemma's consumer; outcome-mapped, one ed
 CAPR grinds the induction with the INV pinned against certificate §4 (its crux CONFIRMS the
 cert's b-ledger design; ambiguity → pnp clarification, not free design; L4D's bounded INV-shape
 consult routed). Everything on C is fork-immune; everything on F waits on one Gröbner check.
+
+## 2026-07-24 (~23:30, heartbeat tick) — all six live seats active within minutes; the rollover-pin
+landed on CAPR's lane; the transcript dir relocated (session-cwd shift) and re-found
+
+Liveness (at the RELOCATED transcript dir — the harness moved the session cwd to the CAPR
+worktree; polling path updated in the memo): CAPR 13:32 (the induction + the landed rollover-pin
+0589eeb32), pnp-transport 13:32 (the ∃q-structure check — the master gate), L4D/LL 13:30 (holding
+per the fork), elder 13:22 (resting post-rulings), pnp-cap 13:06 (resting, commission complete).
+Memo wait-state refreshed to the 18th-event position. Nothing owed; next event: pnp's ∃q verdict
+(the single input to the remaining integration design).
