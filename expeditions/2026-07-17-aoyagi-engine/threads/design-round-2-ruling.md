@@ -569,3 +569,29 @@ ISOMORPHISM (UNIT JACOBIAN).
   faithful Lemma 2 restored in the fold.
 Block mechanism RULED: **R3 (branch-ii recoord direction) + R4 (Lemma 2 `Q₁·A_S·Q₂`, replaces branch-i).**
 Last datum before merge: the R3+R4 block-form re-run reaches her multilinear clean block.
+
+**(l) CRITERION CORRECTION — block-form is CHART-frame, not raw-frame; and "R4 dissolves the u₀₀₁²"
+was WRONG (5th self-correction).** pnp's pre-render trace (r3r4-blockform-note) + my def-check of the
+composition order (foldResid_extend_delta0, Case1Wire:100-107: `foldResid(p.extend ed) u =
+foldResid(p)(stepMap ed u)` ⟹ the DEEPER edge's stepMap hits RAW `u` FIRST, ed1 OUTERMOST) show:
+- The `u₀₀₁²` in R3+R4's `D_J` is INTER-EDGE (ed2's recoord reads ed1's UNCLEARED pivot-row `u₀₀₁`; ed1's
+  clear is a different block, doesn't reach ed2's `D_J`). Per-edge R4 clears its OWN pivot cross, NOT an
+  earlier edge's row — so **R4 does NOT dissolve the `u₀₀₁²`** ((j)/(k)'s claim retracted).
+- BUT the criterion is **CHART-FRAME**, which I mis-stated as raw-frame degree in (j)/(k)/(i): boostReady =
+  `Deg1SupportedOn` the boost CENTER in the CHART frame (`{w = e₂}∪partialBlock`), and `u₀₀₁` is ENTANGLED
+  inside `e₂ = u₀₁₁ − u₀₁₀·u₀₀₁` (pnp caveat-2). A raw-frame degree-2 can be chart-frame degree-1. So the
+  raw `u₀₀₁²` may be a BENIGN frame artifact — the same raw-vs-chart frame issue as the field ruling, now
+  at the block criterion. seat-L4D's `boost_center_case11` (`D_J` corner = `w = e₂` ⟹ `Deg1SupportedOn` by
+  identity) is chart-frame evidence it is benign.
+- THE MERGE GATE ELEVATES: from "R3+R4 raw block-form re-run" to **"R3+R4 CHART-FRAME INTER-EDGE
+  boostReady"** — pnp's inter-edge reuse-node `D_J` expressed in seat-L4D's exact chart center (`e₂/w`)
+  satisfies `Deg1SupportedOn` (the raw `u₀₀₁²` collapses to chart-degree-1 via `e₂`). The raw-coord degree
+  test is NOT the verdict.
+  - YES ⟹ benign frame artifact; R3+R4 passes; merge.
+  - NO (chart-frame `D_J` genuinely degree-2 even accounting for `e₂`) ⟹ RE-OPEN: the fold's raw-reading
+    deeper recoord diverges from Aoyagi's ACCUMULATED `Q_2'⁻¹` (worked.tex:445 — her recoord reads the
+    CLEARED outer state; the fold reads raw), a fold-order/composition issue bigger than R4.
+- 5TH CORRECTION on the record: the arc's corrections were field→frame→criterion(ideal-eq)→
+  block-mechanism→now block-criterion(raw vs chart). Each data-forced; each the same disease (an analysis
+  fitted to the wrong frame/object), each caught by transcribing the actual def or her text. The RLCT
+  value stays safe throughout (invertibility); this is the FORMAL read-off criterion, still bounded.
