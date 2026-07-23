@@ -188,6 +188,7 @@ if __name__ == "__main__":
     allres += run((2, 2, 2, 2), "MINIMAL")
     allres += run((3, 3, 3, 2), "WIDE-INTERIOR")
     allres += run((3, 3, 2, 2), "DOUBLE-BOOST")
+    allres += run((2, 2, 2, 2, 2), "DEEP-INTERMEDIATE-REUSE")  # case11 at layer 2 reusing a LAYER-1 divisor
     print("=" * 90)
     anyA = any(r["A"] for r in allres)
     allB = all(r["B"] for r in allres)

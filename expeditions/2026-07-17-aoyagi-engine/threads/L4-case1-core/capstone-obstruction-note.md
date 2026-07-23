@@ -78,15 +78,30 @@ product-preserving) to close StepInv; boostReady needs the SOURCE input-clear (d
 Option 1 (source-clear composed into what the split is about) matches Codex's "split-carrying object"
 and is the least destabilising; the exact wiring is L4D's call.
 
-## FIX-CERTIFICATE — the source-cleared residual satisfies the FULL split (verified)
-`verify/capstone_split_sourcecleared.py` (exit 0). On BOTH real witnesses (2,2,2,2) and (3,3,2,2),
-ALL slots: applying the SOURCE column-clear — for each ancestor case2/case12 clear at `(L, J)`, zero
-the cleared column's below-pivot input entries `(L, r, J)` for `r > J`, BEFORE that edge's shear —
-makes the single-`e₂` `MergeBoostSplit` HOLD (each slot ∈ ⟨ed.center⟩; every extra coeff divisible
-by `u_{e₂}`; α/β center-ignoring), with `e₂ = canonPivotOf = (0,1,1)` (the diagonal corner IS the
-right pivot once the input coupling is cleared). The column-clear ALONE (C1) suffices; the pivot-row
-clear (C2) is not needed for the split. So option 1 is CONSTRUCTIVE: the content lemma is TRUE on the
-source-column-cleared residual — the fresh formaliser CAN render an induction for that object.
+## FIX object — the source-cleared residual satisfies the split, but is a RESTRICTION (RLCT caveat)
+`verify/capstone_split_sourcecleared.py` (exit 0). On both witnesses (2,2,2,2)/(3,3,2,2), ALL slots:
+the SOURCE column-clear — for each ancestor clear at `(L,J)`, zero the cleared column's below-pivot
+entries `(L,r,J)` for `r>J` BEFORE that edge's shear — makes the single-`e₂` `MergeBoostSplit` HOLD
+(each slot ∈ ⟨ed.center⟩, extra coeff ÷ `u_{e₂}`, α/β center-ignoring), `e₂=canonPivotOf=(0,1,1)`.
+Column-clear alone suffices.
+
+**BUT it is not a free swap — the cleared↔raw bridge is genuine design content (exact datum).**
+`⟨src slots⟩ ≠ ⟨raw slots⟩` (Gröbner, neither contains the other) and `src = raw|_{u₀₁₀=0}`: the
+fix-object is the raw fold RESTRICTED to the hyperplane `{coupling=0}`, NOT related to the raw fold by
+a product-preserving/det-1 CoV. A hyperplane restriction can change the RLCT, so re-stating boostReady
+on it is only sound where the coupling coord is a GAUGE coordinate the resolution legitimately fixes:
+- **layer-0 reuse** (all of (2,2,2,2)/(3,3,3,2)/(3,3,2,2)): the coupling `u₀₁₀` is a layer-0 INPUT
+  coord = the global `GL_{d₀}` end-factor gauge `P₁` (corner ruling #61/#62, worked.tex:426-428,437),
+  absorbed once via Lemma 1 — so clearing it is gauge-fixing, plausibly RLCT-preserving.
+- **intermediate-layer reuse EXISTS** (e.g. (2,2,2,2,2): case11 at layer 2 reusing a layer-1 divisor):
+  the obstruction still holds, but manifests through OUTPUT-layer coords — the `GL_{d₀}` gauge argument
+  does NOT obviously transfer, and RLCT-soundness of the source-clear there is OPEN.
+
+So Option 1 is CONSTRUCTIVE for the split but its RLCT-soundness is the pnp+elder+controller design
+gate (the cleared↔raw bridge). The POSITIVE (L4D def-owner read): the `MergeBoostSplit` PREDICATE and
+`MergeBoostSplit.deg1SupportedOn` ASSEMBLY survive unchanged on the cleared object — only the content
+lemma's OBJECT changes. The fresh formaliser can render an induction for the ratified object once the
+bridge is settled.
 
 ## DEFINITIVE ADJUDICATION (def-owners' kill-condition, `verify/capstone_adjudication.py`, exit 0)
 L4D + team-lead's binary gate: with `Φ_p` computed DEF-EXACT (`coreGen ∘` per-edge argument
