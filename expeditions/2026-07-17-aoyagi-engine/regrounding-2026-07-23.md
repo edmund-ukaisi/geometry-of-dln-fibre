@@ -135,6 +135,17 @@ the re-architecture BLUEPRINT (charter/compass reframe + new L3/L4/L5 SPEC state
 prototype-green + operator-go. REMAINING GATES: (i) corank-2 prototype [pnp-ideal certificate → formaliser,
 in pipeline]; (iii) operator blessing [surfaced].
 
+**UPDATE (2026-07-23 ~23:50): gate (i) math-side GREEN + prototype IN FLIGHT.** pnp-ideal delivered the
+exact (3,3,4) t=(1,0) corank-2 minimiser certificate (`threads/L4-case1-core/corank2-cert/`,
+committed 5cee9d8a8); controller re-ran `cert_334_corank2.py` (exit 0): both RegionRepresents directions
+exact w/ polynomial cofactors, ⟨P⟩=⟨peeled⟩ Gröbner ideal-equality, pivot strict-transform ≡1, rlct=4=Mval/2.
+The "minimiser not fully run" residual is CLOSED. The ONLY open question is now the LEAN CAST TAX ([ML]:
+dependent-dim block products over changing widths). Commissioned proto-corank2 (fresh lean-formaliser,
+branch expedition/aoyagi-engine-PROTO) to render the ONE step on the certificate contract + REPORT the LoC
++ #dependent-dim frictions — that number is the decision datum. GREEN-enough tax → commit the swap (+
+operator blessing). Heavy hidden Mathlib ideal tax → reconsider "lighter IN LEAN". pnp-ideal on-call for
+any math (not plumbing) question. Everything else HELD; nothing retired until the prototype measures green.
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
