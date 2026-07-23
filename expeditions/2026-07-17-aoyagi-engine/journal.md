@@ -15470,3 +15470,32 @@ EDIT 2); arch-C-2 on DEF EDIT 1; elder post-ruling (compass entry owed); pnp-tra
 by (harness = the regression row if the 12th catch confirms); seat-L3T3 on the step-2 induction;
 seat-LL on the twin (transcript last active 22:49 — NOT stalled-with-intent, its last report was
 frontier work; leave until the re-bake merges, then rebase-wake it with the ruled shape).
+
+## 2026-07-23 (~00:35) — the ruling RE-COMMITTED with the frame correction (the elder's first §2 was BACKWARDS); compass F6 landed; the brief-propagation near-miss owned
+
+The elder caught that the COMMITTED ruling (fe254b967) was its PRE-amendment draft: §2's frame
+paragraph said "post-shear / the birth-corner coordinate is frame-correct" — BACKWARDS. The
+corrected version (in the working tree, now committed a6585d188, verified by grep before
+committing): foldResid's argument is the node frame PRE the path's shears (seat-L4D's
+foldG_eq_pathMap), so the field factor m_k = the product of the active divisors' Schur
+exceptionals AS NATIVE-FRAME CONTINUOUS COMBINATIONS e₂ₖ(u) — the bare birth-corner coordinate
+is the WRONG locus. Also newly committed in §2: the coords-of-record RULING (F-value/native
+over F-frame/recoord — no two-frame slot; deg1SupportedOn_boostForm's coordinate pivot
+generalises to the continuous e₂ or pre-expands) and the §0 hedge-closed note. Compass F6 (the
+settled-fork entry incl. the delivery-loss provenance + the formal fix-β retraction) committed
+in the same batch.
+
+THE NEAR-MISS, owned: my arch-C spawn brief QUOTED the pre-amendment §2 verbatim — the
+backwards frame semantics had propagated to the render seat. Saved by compounding holds: DEF
+EDIT 2 (the only edit the frame touches) was already HELD on the recoord-pairing adjudication,
+so no field wording locked under the wrong version. Mitigations: explicit CORRECTION message to
+arch-C (re-read committed §2; confirm before drafting field wording; the elder's render flag on
+the superseded "Form V" label in seat-L4D's draft relayed verbatim); the elder's delta-read
+checks frame-pin + product-factoring hardest. NEW RULE (controller): commit elder-authored
+amendments BEFORE any brief quotes the artifact — artifact-first, brief-second. (The elder's
+report of a stale HEAD hash dbf35eb33 on its side noted; the grep evidence was decisive
+regardless.)
+
+seat-L4D: ruling internalized (will NOT build the rejected pure-vanishing form); battery plan
+approved with the combination-e₂ amendment; its priority remains the recoord-pairing
+adjudication (gates DEF EDIT 2). Board unchanged otherwise.
