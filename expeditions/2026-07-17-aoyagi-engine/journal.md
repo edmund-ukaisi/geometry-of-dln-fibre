@@ -16477,3 +16477,15 @@ arch-C-3 fully unblocked (relay sent: placement accepted, conditions known in ad
 standing). The §8(k) precision fix lands in-file on the elder's next clean read (tree
 currently clean — commit when it appears). Board: the render is the only moving piece;
 everything downstream staged.
+
+## 2026-07-23 (~06:25, heartbeat tick) — §8(k) precision fix committed; calibration HIT at the phase transition; the placement collaboration is live
+
+Placement ✓, cron ✓. The elder's §8(k) precision fix committed + pushed (unipotent matrices
+vs unit-Jacobian CoV; the placement theorem; the corrected M_{s,k} justification). Liveness:
+arch-C-3 + seat-L4D writing within the same second (the placement-pinning collaboration
+live); elder active; REBAKE2 not yet pushed (design phase). CALIBRATION ENTRY (the ~5-tick /
+phase-transition discipline, recorded in strategy/calibration-ledger.md): the render-target
+def read against the written expectation — HIT at 0.95 (canonical branch-(ii) is exactly the
+unscoped Q₁⁻¹ form every instrument modeled; the docstring even names A_{S+1}·Q₁⁻¹, the
+diagnosed conversion error). The map is faithful at the fix site; the render's two changes
+land on exactly the modeled lines.
