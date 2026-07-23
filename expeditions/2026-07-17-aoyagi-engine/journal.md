@@ -18943,3 +18943,21 @@ the raw uncapped fact risks orphaning if INDEPENDENT; one cheap decisive check b
 speculative render (the timidity/boldness line runs through the hinge, not around it). GM's
 SPECIFY position on the three raw descent sites (already required) will be cross-read against
 pnp's verdict.
+
+## 2026-07-23 (~15:10) — CAPR handoff banked + verified (bbb3f924d); seat-INV spawned on it;
+CAPR → def-owner consult
+
+CAPR's last acts complete: the 134-line handoff doc banked at
+threads/L4-case1-core/capr-leaf-grind-handoff.md (controller-verified at ground truth: file-by-file
+proven-vs-sorried lane state; the §4 invariant + step law; per-leaf routes — ROOT (b)'s
+continuous_submult ← Nat.leRec chain reusing the bcoeff structure, ROOT (c)'s oracle vacuity with
+the match-hmin warning, the transports' commutation route, the read-off's raw-c_i trap, the
+containment's birth-edge + runLen≤widthMinUpto route; inherited constraints; the stacked-(3,3,2,2)
+battery spec). SEAT-INV spawned (lean-formaliser, branch -INV off the CAPR lane tip): the leaf
+grind with the handoff as contract, statement-lock hard (GM's three primitives immovable),
+sawtooth bank-per-leaf, 3-iteration-then-Codex protocol, artifact-first consults, explicit
+WAITING-FOR-WAKE turn discipline. Single-writer on SourceClearedResid.lean + MergeBoostSplit.lean
+TRANSFERRED to seat-INV; CAPR stands down to def-owner consult (routes: sourceClearedResid shape,
+ledgerTarget semantics, boost-conjunct intent, couplingClear frame). The board's live renders:
+seat-INV (leaves) ∥ seat-GM (SPECIFY) ∥ pnp (the cap hinge #78); elder owes the P2 one-liner +
+GM's SPECIFY delta.
