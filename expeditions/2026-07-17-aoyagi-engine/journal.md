@@ -18575,3 +18575,19 @@ continuity via b-ratios in the free coords). Representation: the ∃-form (expli
 mangles under transport; the ∃ carries continuity by construction). CAPR bakes on the agreement
 of L4D + Codex + certificate §4 (the cert is ground truth; disagreement = pnp clarification).
 Still gating everything on F: pnp's ∃q verdict.
+
+## 2026-07-25 (~00:05) — CAPR's Codex de-risk converges with L4D's structure; the Q1 target
+tension flagged REAL and dispatched to pnp (queue item 2 behind the ∃q gate); no provisional
+spine bake
+
+Codex confirms the certificate's b-ledger design with a buildable rendering (the explicit per-row
+exponent ledger μ + the restriction laws at the read-off + the raw-c_i trap named: c_i = u_{e₂}·β_i
+cannot itself ignore the center — only β and the clean q do; bare divisibility too weak). The LIVE
+TENSION: Codex infers ledgerCenter = supportAt ∪ couplingCoords, but e₂ is a BIRTH CORNER (a
+pivot, not a coupling coord, at an earlier layer) — so Codex's target plausibly FAILS L4D's hard
+⊇-ed.center containment while L4D's exceptionals ∪ block contains it by construction. pnp settles
+on witnesses (Q1) + confirms the μ step laws (Q2) + the restriction laws (Q3) — certificate-
+structure, the author answers, CAPR doesn't design. Wait-for-pnp approved (spine-def churn is the
+expensive kind); target-robust leaf drafts may pre-stage. The convergence of three independent
+sources (Codex, L4D, the certificate) on the ledger design — with the one divergence caught and
+routed — is the render-design loop at full function.
