@@ -18862,3 +18862,18 @@ stability on the three GM-load-bearing primitives (couplingClear / sourceCleared
 sourceClearedResid_stepMap_eq_pivot_mul), changes routed through the controller. Board: CAPR
 sawtooth-grinding; GM in SPECIFY; pnp resting until the GM def-fidelity cross-check; elder owes
 the P2 one-liner; LL folded into GM's unit.
+
+## 2026-07-23 (~14:35, heartbeat) — calibration entry (summit is INVARIANT-SILENT — miss recorded);
+GM pre-flagged on the provenance layer; navigator convened; memo refreshed
+
+Quiet-pulse protocol at the design→render seam: placement/cron/liveness all green (all 4 active
+seats' transcripts < 5 min old — no stalls). CALIBRATION (ledger): expected the summit to be a
+path induction OVER FoldStepInvAt (re-point = swap names); the read shows the summit STATEMENT is
+invariant-free — the chain is L5-fold-body scaffold, and the REAL re-point question is the
+atlas-provenance layer (GeoAtlasData/FoldProduced/FoldRealizes/leaf PrincipalInv), which sits in
+NEITHER §8 list. Pre-flagged to GM as a mandatory SPECIFY position (elder delta rules it) —
+a mid-grind stop-and-surface converted to a SPECIFY-time decision. Reassuring anchor:
+sourceClearedResid_root = coreGen (rfl) keeps Resolution (coreGen d e) type-stable either way.
+NAVIGATOR convened (phase-transition mandatory): gate-orphan walk, parallelisation audit (cap
+render / L3T2 staleness / L5 pre-work), L5 hard-part-avoidance check, ETA calibration. Memo
+wait-state rewritten to the render-phase board.

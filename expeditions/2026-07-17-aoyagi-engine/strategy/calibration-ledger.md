@@ -951,3 +951,33 @@ ACTUAL (read :875-885): exact match, including the docstring's "(ii) layer-(S+1)
 conversion error. VERDICT: HIT. WHAT IT CHANGES: nothing — and that is the point at a phase
 transition: the instruments' shared model of the render-target site is faithful to the
 territory; the render's two changes (direction + scope) land on exactly the modeled lines.
+
+## 2026-07-23 ~14:30 — Q: is the summit re-point (#74/GM's Q2 surface) mechanical?
+
+**EXPECTATION (written before the read):** the summit `leaf_stepInv_of_path'` does a path
+induction OVER FoldStepInvAt (base = root invariant, step = case1''/case2''), so the re-point =
+swap the invariant + the two case-lemma names; risk sites = the root base case (dissolves — the
+cleared root = raw root by sourceClearedResid_root rfl), the payoff read-off (one (iv)-bridge
+rewrite), hidden he-pins. Confidence: 65% mechanical-with-known-risks / 25% one statement-level
+surprise (most likely where the payoff consumes the summit) / 10% worse.
+
+**READ (MonumentAssembly.lean:27-80, MonumentAtlas.lean:1753+):** PARTIAL MISS, informative.
+(1) The summit STATEMENT is INVARIANT-FREE — FoldStepInvAt appears nowhere in
+`leaf_stepInv_of_path'`'s type; its conclusion is `∃ atlas : GeoAtlasData, FoldProduced ∧
+FoldRealizes ∧ ∀ c, PrincipalInv (coreGen d e) (atlas.gmap c) …`. The invariant chain is the
+PROOF SCAFFOLD of the still-sorried L5 fold body; the case-lemma `have _hc1/_hc2` lines are
+cone-registration devices, not consumption. So "swap the invariant in the summit" was the wrong
+mental model — the summit re-point is (a) trivial cone-reference swaps + (b) the REAL question:
+does the ATLAS-PROVENANCE layer (GeoAtlasData / FoldProduced / FoldRealizes / the leaf
+PrincipalInv shape) survive raw or re-state on C? That layer is in NEITHER of §8's lists — an
+unclaimed zone between the survive-set and the re-state-set. (2) REASSURING:
+sourceClearedResid_root = coreGen (rfl, CAPR's file) ⟹ the resolved function is unchanged —
+`Resolution (coreGen d e)` stays type-stable under any answer; the divergence is confined to
+chart-map provenance, not the resolution target. (3) The full-build cascade GM gates on is
+CHEAPER than feared: the summit type doesn't change, the known red is the wall type-error alone.
+
+**WHAT IT CHANGES:** pre-flagged to seat-GM as a mandatory SPECIFY position (survive-vs-restate
+on the provenance layer, elder delta rules it) — converts a likely mid-grind stop-and-surface
+into a SPECIFY-time decision. The 25%-surprise branch fired, but at the layer BELOW where I
+placed it (provenance predicates, not the payoff consumption). Miss recorded plainly: I modeled
+the summit as invariant-parametric; it is invariant-silent.
