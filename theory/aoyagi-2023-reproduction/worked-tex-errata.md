@@ -21,8 +21,8 @@ severity (MATH ERROR / omission / presentational) · downstream blast radius.
 | C3 | 6–7 | Thm 1 (RRR, L=2) + M-set (L=2) | §2.1 | ✅ done | ✅ done |
 | C4 | 8 | Def 3 (general-L M-set) | §2.2 | ✅ done | ✅ done |
 | C5 | 9 | Thm 2 (general-L λ, 3 forms) + order + equal-width example | §2.2 | ✅ done | ✅ done |
-| C6 | 10–11 | Lemma 2 (block elimination) | §3.1 | ✅ done | ☐ re-touch (highest blast: wall #38) |
-| C7 | 11–13 | Thm 3 (product reduction) | §3.2 | ✅ done | ☐ TODO |
+| C6 | 10–11 | Lemma 2 (block elimination) | §3.1 | ✅ done | ✅ done — faithful (see note) |
+| C7 | 11–13 | Thm 3 (product reduction) | §3.2 | ✅ done | ✅ done — faithful (see note) |
 | C8 | 14 | Thm 4 (deepest point) + inductive setup + Def 4 | §4 open | ✅ done | ☐ TODO |
 | C9 | 15–22 | recursion: inductive invariant + `b_i` + Jacobian + Cases 1&2 + `M_{s,k}` | §4.recursion | prior pass | ☐ re-touch (highest blast: wall #38) |
 | C10 | 23 | `M_{s,k}` completion-of-squares | §4.candidates | prior pass | ☐ TODO |
@@ -56,4 +56,16 @@ anchors to Lemma-2/merge-step semantics) and is next.
   numbers (anchors held). Landed by the controller at commit **e02610619**. Item retained here for the
   record; status CLOSED.
 
-*(No other discrepancy found in the front-matter chunks C0–C8, C13. C6/C9 prose-intent re-touch pending.)*
+*(No other discrepancy found in the front-matter chunks C0–C8, C13.)*
+
+### Prose-intent notes (no discrepancy — faithful)
+
+- **C6 (Lemma 2) + C7 (Thm 3) — FAITHFUL, including the load-bearing intent.** worked.tex §3.1–3.2 carries
+  Lemma 2's key point (Q₁,Q₂ *unipotent* ⟹ RLCT-preserving via Lemma 1, unit-Jacobian local iso; fnote
+  :416–421) and Thm 3's induction. **Wall-relevant (highest-blast):** the accumulated recoord
+  `A'^{(S+1)} = Q₂'⁻¹ A^{(S+1)}` (worked.tex:445) — the accumulated-`Q₂'⁻¹` current-chart semantics that
+  this expedition's F₂ ruling (branch-(iii) input compensator + the §8(m) scope) is built on — is
+  faithfully transcribed from source pp.11–13. No omission; nothing the wall #38 anchors to is dropped.
+- **C9 (the recursion, pp.15–22) prose-intent re-touch — PENDING** (next chunk-batch). Formulas were
+  image-verified by the prior owed-math-audit (Cases-1/2 exponents, the `M_{s,k}` read-off, the (T-C)/(T-E)/(T-F)
+  ledger); the remaining work is re-reading her prose on *why/when* each case applies against §4 of worked.tex.
