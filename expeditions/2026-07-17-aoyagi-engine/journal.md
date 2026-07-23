@@ -20903,8 +20903,7 @@ CapDescent.lean:603 (the STEP case of the induction; hbr/hcanonStep/ih in place;
 all green in-file). Corrected seat-descent's brief to b8fec5647 + :603.
 
 **Attribution (pnp-cap correction, banked):** pnp-TRANSPORT owns the Z-telescoping cert (#92/#93,
-a24616b18/a24616b18→a24616b18... = a24616... actually a24616b18? recorded a24616b18? the certificate
-is a24616... = pnp-transport's a24616...); pnp-cap did the V3 termwise mechanism only. My records
+a24616b18); pnp-cap did the V3 termwise mechanism only. My records
 already credit pnp-transport for Z; flagged the fix to seat-KILL. Q2 (SET vs function-level
 "telescopes cleanly"): pnp-cap's read confirmed — V2 was the SET escapedBelow monotone telescoping
 (structurally the :446 def), distinct from the function-level accumulated-couplings step
