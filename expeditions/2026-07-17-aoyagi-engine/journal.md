@@ -21677,3 +21677,28 @@ push to KILLFIN; report at #97 green then #98.
 foundation + carrier + spec all in hand. L7: repaired engine (free-f) under re-review (rev-L7cover,
 f-feasibility crux); wire held. Wall (a) both sides. Awaiting: seat-killfin #97 green, rev-L7cover
 re-verdict, battery bg-confirm.
+
+## 2026-07-24 (~06:20 UTC) — seat-L7cover MET rev's repair acceptance criteria (52db6e438) with a PROVEN-in-Lean witness; rev re-review re-targeted; wire pending its pass
+
+seat-L7cover met rev-L7cover's (A)-repair acceptance criteria — and PROVED the genuine-fix in Lean
+(not asserted), pushed 52db6e438:
+- `qshear`/`qinv`: a concrete GENUINE quadratic Schur shear (Fin 3, coord 2 ↦ v₂−v₀·v₁; unipotent
+  det-1; quadratic inverse; qshear_qinv = right-inverse).
+- `qshear_covers`: `closedBall 0 r ⊆ qshear '' closedBall 0 (r+r²)` at EVERY r (box-corner bound
+  x₀·x₁ ∈ [−r²,r²]) — the r² is exactly what constant-K can't absorb, the R-dependent f=r+r² does.
+- `qtree` (DEPTH-2, |S|=2, non-identity qshear both levels) + `covers_qtree : Covers (r↦r+r²) qtree 1`
+  — the quadratic shear nested TWICE CLOSES under the R-dependent inflation (leaf closedBall 0 6),
+  axiom-clean. THE genuine-fix demonstration rev's criterion (1) demanded, proven not asserted.
+
+So the free-f repair is a GENUINE fix (not a punt): a concrete feasible f discharges the quadratic
+shear at depth≥2, in Lean. UPDATED rev-L7cover's re-review target 605cff3ed → 52db6e438 (the witness
+tip) — verify witness fidelity (genuine quadratic / genuine depth-2 |S|=2 / real non-circular Covers /
+name=content / hygiene). Pending rev's PASS, the L7 engine is DONE.
+
+THE WIRE (mine, once rev passes): instantiate f:=r+C·r² (C from canonNormalizationOf's degree-2 bound)
++ prove the REAL shear's box-containment (the monument-shear analog of qshear_covers) + buildTree→
+FanTree + atlas-chart bridge + σ-bridge + leaf boxes ≥ f^[depth] 1. qshear_covers is the template.
+
+**Status.** L7: repaired engine + PROVEN quadratic-depth-2 witness (52db6e438) under final re-review;
+wire pending the pass. KILL: seat-killfin rendering (1)→(2)→(3) (consulting seat-descent). Wall (a)
+both sides. Awaiting: rev-L7cover PASS/FAIL on 52db6e438, seat-killfin #97 green, battery bg-confirm.
