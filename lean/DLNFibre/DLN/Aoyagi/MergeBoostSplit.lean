@@ -152,8 +152,8 @@ wires DIRECTLY into `MergeBoostSplit.deg1SupportedOn` (which needs that disjoint
 -- survives the shears-only recursion (slot0|_{center=0} ≠ 0 on (2,2,2,2)); Deg1SupportedOn is
 -- STRICTLY STRONGER than the ideal-equality F₂ closed. TRUE on the SOURCE-COLUMN-CLEARED residual
 -- (each ancestor clear's below-pivot input entries zeroed BEFORE that edge's shear). Do NOT
--- attempt this proof as stated — the OBJECT re-shape ruling is #69 (elder, in flight); the
--- predicate + the assembly implication above SURVIVE the re-shape unchanged.
+-- attempt this proof as stated — #69 RULED (sourceClearedResid = the (D)-carrier); the global move
+-- (§8/#74) is rendered by seat-GM. The predicate + the assembly implication above SURVIVE the re-shape.
 theorem foldResid_case11_mergeBoostSplit_canon (d : Fin (N + 1) → ℕ)
     {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
