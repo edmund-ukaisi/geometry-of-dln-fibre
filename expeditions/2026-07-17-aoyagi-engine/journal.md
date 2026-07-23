@@ -17049,3 +17049,27 @@ unpairing); arch-C-4's restate gate 4-for-4; THE ONE OPEN RULING = the corner tr
 ((A) verified feasible — the row freedom = the end-factor gauge — vs (B)/(C)); then gates →
 battery → delta-read → merge → rebase → THE WALL. A fresh context landing on the memo now
 reads the true position in one block.
+
+## 2026-07-23 (~12:45) — THE CORNER RULED (A), paper-first: her global Lemma-1 absorption of the end-transforms; THE THREE-HOME STRUCTURE final; GO issued on #58/#59
+
+The elder's corner ruling (its §9 fold-in commits on sight): (A) ADOPTED, decisive at the
+source — worked.tex:426-428 + :437: Theorem 3's REGULAR END TRANSFORMS P₁ (input-side) / P₂
+are absorbed GLOBALLY via Lemma 1, not per-fibre. The corner pivot-row freedom IS her
+input-basis gauge P₁; arch-C-4's branch-(iii)-vacuous-at-corner finding is CORRECT
+ARCHITECTURE (a global gauge cannot be a per-fibre op) — the catch diagnosed a MIS-PLACEMENT,
+and (A) homes the freedom where her paper puts it, in the banked GL_{d₀} end-factor
+(baseChange + height_comap codim-invariance).
+
+THE THREE-HOME STRUCTURE (the final architecture, all faithful to Lemma 2 + Lemma-1
+absorption): (i) per-fibre det-1 SHEARS = the compensators (interior Schur + +γ recoord
+scoped + Q₂⁻¹ input recoord at S≥1); (ii) per-fibre det-0 READ-SIDE clear (col everywhere,
+row interior-only; corner col-only = the verified product-preserving form); (iii) the GLOBAL
+end-factor = the corner row. Every part of her mechanism in its faithful home. (B) rejected
+(drops her input-basis diagonalization; the M_{s,k}/diag(b) read-off wants diag); (C)
+rejected (wrong index). Checklist gains the CORNER CLAUSE (per-edge triangular; diag
+post-end-factor); the battery gains the INTERIOR-PIVOT witness requirement ((2,2,2,2) is
+all-corner); the ONE bounded realization condition (one-global vs per-chart input basis)
+rides the render's def-feasibility + pnp's check.
+
+GO issued: arch-C-4 renders #58/#59 per the three-home spec; pnp's checks gain the two rows.
+Then: gates → battery → the corner-clause delta-read → merge → rebase → THE WALL.
