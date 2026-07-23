@@ -19099,3 +19099,23 @@ laws + S2). Elder delta HELD for the revised list (+1 item: demotion honesty, sc
 name/hypotheses). pnp verifies the restatements; one script nit flagged (a stray summary line
 contradicting its own rows — honesty fix requested). 20/20 statement-class events caught
 pre-render; this one INSIDE the gate sequence, exactly where it was designed to fire.
+
+## 2026-07-23 (~15:10 actual) — O2 RECONCILED (residual TRUE at the grown set, definitionally);
+THE 21st CATCH (hN at N=0, INV); transcript dir moved a third time (now root-based)
+
+O2 reconciliation: pnp's 20bc71f1d script DID compute the case2/case12 δ=1 left side with the
+CHILD's grown couplingClear — the residual commutation (S2) is TRUE there, definitionally
+(Φ_child = Φ_parent ∘ quot, so the grown input-clear commutes through robustly). So O2-as-framed
+CLOSES TRUE; the three false map/extend laws stand as the SEPARATE finding (the 20th catch,
+revision required, unchanged). pnp's side of GM's gate = FULLY CLOSED; GM's remaining gates =
+its own delta-SPECIFY + the elder delta on the revised list. THE 21st CATCH (seat-INV):
+sourceClearedInv_holds FALSE at N=0 — coreGen = the empty-product identity (entry 1) while
+supportAt(0,0) = ∅ (tupIdx empty), so conjunct-5 claims 1=0; root cause = coreGen_layerHomogeneous'
+requires ℓ < N, the invariant carries no hN. Fix (+ hN : 0 < N) consumer-safe (the case11 edge
+forces a live step ⟹ 0<N at the sole invoke site). Controller-verified by def-arithmetic (no
+script needed); BATCHED with the accumulatedPivots redefine to CAPR (intent) → elder (one
+blessing round, two frozen-statement adjustments). INV grinds continuous_submult (Core-lift
+candidate) meanwhile. INFRA: the subagents transcript dir moved AGAIN with the EnterWorktree
+re-pin — now ...worktrees-aoyagi-engine-root/3a77f09d.../subagents (all seats verified alive
+there, elder touched seconds before the check; the "elder missing" scare was the path, not the
+seat). Catches: 21/21 pre-render.

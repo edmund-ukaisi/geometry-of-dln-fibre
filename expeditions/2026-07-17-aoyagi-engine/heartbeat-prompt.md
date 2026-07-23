@@ -78,7 +78,7 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   MERGE ORDER: GM SPECIFY gates → GM proofs → #73 (CAPR lane + GM branch + aggregator, one
   controller merge) → cap render → L5 fold body → L7 → swaps → SUMMIT-RETIRE.
   NOTE: the session cwd was moved to the CAPR worktree by the harness — the
-  transcript dir is now ...aoyagi-engine-CAPR/3a77f09d.../subagents (liveness polling there);
+  transcript dir is now ...worktrees-aoyagi-engine-root/3a77f09d.../subagents (liveness polling there);
   ALWAYS cd to root explicitly in commands. (Old:) The obstruction arc FULLY CLOSED (§7-§7.8 + pnp's discharges: the Q₁-lift
   verified ALL witnesses — the multi-coupling difficulty was a chart artifact, dissolves at the
   matrix level; loss literally gauge-invariant; measure caveat RESOLVED not flagged; B1 = cited
