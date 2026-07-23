@@ -15754,3 +15754,19 @@ m_k·β field was fitted to the broken def's symptom. MISSING DATUM: the reuse-n
 (deeper than ed1) on the wide witnesses — pnp's harness producing them side-by-side. The
 elder's council rules when they land: invariant shape (= DEF EDIT 2's final form), the R3/R4
 choice it implies, the branch-(i) sign.
+
+## 2026-07-23 (~01:30) — G1 CONFIRMED at the def (general pivot): the council's inputs are nearly complete
+
+seat-L4D's addendum: G1 (unimodularity) holds analytically AT THE DEF for the GENERAL/interior
+pivot — in the fold's pivot-normalized frame the clearing ratios are the UN-DIVIDED polynomial
+entries A_S[i][b] (the same form branch (ii) already uses; the 1/pivot concern is moot), so the
+generator-transform Q's are elementary unipotent, det 1 over ℝ[u] at any pivot/block size ⟹
+⟨R4-rewritten⟩ = ⟨original⟩ as IDEALS. Both elder guards now stand for R4 (G1 confirmed; G2 =
+statement-hygiene pin); R3 already manifestly unipotent — BOTH candidates contained AND
+G1-clean. Durability: the G1 script requested for push + banking. The council's remaining
+inputs: pnp's flipped-def triple + the reuse-node raw forms (the caveat-1 decisive datum) —
+with the note to the elder that its worked.tex read may already settle the invariant shape
+(the literal diag(b)·[E_J|D_J] clean-block reading), in which case the empirical forms become
+the confirmation battery rather than the decision input — the paper-first ordering.
+seat-L4D holds correctly for the council; its post-ruling queue = flip verification + case11
+boundary + INTRO/PRESERVE — the wall's endgame on the corrected foundation.
