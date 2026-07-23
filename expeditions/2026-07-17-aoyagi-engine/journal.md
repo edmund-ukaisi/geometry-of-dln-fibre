@@ -21093,3 +21093,32 @@ the cap render).
 **Phase note.** #95 is DESIGN-SETTLED — the remaining KILL work is pure RENDER (seat-descent's step +
 seat-KILL's hcanon-carrying cap render), landing at #73's named gates. Do not re-open the #95/two-cap
 architecture; the next escalation trigger is a compiler wall at #73's (a)-gate → elder (a)/(b).
+
+## 2026-07-23 (~23:55 UTC) — seat-descent progressing (base green, non-growth route validated); phase-transition NAVIGATOR pass convened (#73-producer parallelization audit) after spotting an idle #73 producer
+
+seat-descent (cc): baseline on b8fec5647 GREEN (8465 jobs, FF from dae6f3534 done), and its OWN
+decorrelated sympy check (verify/descent_reduction_route.py, 7 witnesses incl. wmu-dropping
+(3,2,2,2)/(3,3,2,2)/(3,2,3,2)) VALIDATES the FP+AT+IH non-growth route — its earlier branch-(iii) AT
+worry dissolved (escaped-first-factor and non-coupling-second-factor mutually exclusive via a wmu
+dichotomy). Building the non-growth reduction, then the growth-arm V3 with seat-KILL/pnp-cap. No
+scope/statement issues; outer statement untouched. (I did NOT re-run its route-check — a low-risk
+intermediate design-validation the seat self-checked; I re-derive the LEAN at its green milestone.)
+
+PHASE-TRANSITION DRIFT-GLANCE (a forward-looking #73-producer check): I spot-checked whether all
+#73 producers are accounted-for or if any is idle-but-parallelizable while the KILL grinds. Found:
+sourceClearedResid_stepMap_eq_pivot_mul (INV/CAPR SourceClearedResid.lean) is a TRACKED SORRY,
+feeds GM's δ=1 append frontier, currently NO active owner (INV resting, CAPR consult-on-call) —
+an IDLE #73 producer. (The L5 σ-transport arm, by contrast, is correctly L5-scoped per the merge
+order, NOT #73.) Finding idle producers PIECEMEAL (transport arm, now pivot-mul) is the signal for
+a systematic pass — and the cadence mandates a NAVIGATOR at a phase transition (#95 design-settled
+→ pure render IS one). CONVENED navigator3 (read-only): the #73-producer parallelization +
+critical-path audit — enumerate ALL producers + status, which idle ones are parallelizable-now vs
+deferred, confirm the critical path (KILL → #73) + ETA, flag drift/hard-part-avoidance. I'll act on
+its complete recommendation in ONE coordinated move (rather than commission the pivot-mul in
+isolation) — avoids piecemeal spawns.
+
+**Status.** seat-descent grinding (non-growth route validated, building); navigator3 auditing the
+#73 producer set; elder/pnp seats/CFF holding. Awaiting: the navigator report (→ parallelization
+actions), seat-descent's green milestones (→ I re-derive the Lean), the direct seat-KILL/pnp-cap
+growth-arm consult. Critical path = the KILL render; the navigator confirms whether any idle
+producer is secretly co-critical.
