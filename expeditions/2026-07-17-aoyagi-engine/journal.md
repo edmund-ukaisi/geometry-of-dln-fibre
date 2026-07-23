@@ -17774,3 +17774,25 @@ holes). he-by-rfl at LL's call site (post-subst) — the pin discharging exactly
 CANONICAL NOW CARRIES the complete pinned architecture end-to-end: every statement the idiom
 ruling touched, both consumers of the wall wired, all remaining debt named and riding exactly
 {the capstone, the cap frontier, the L5 fold body}.
+
+## 2026-07-24 (~06:10) — GRIND-SESSION 2: THE WALL IS PROVEN MODULO ONE NAMED LEMMA; the tripwire
+fired as designed; the capstone re-shaped to pnp-certificate → fresh-formaliser
+
+L4D's session landed: (1) the assembly lemma PROVEN clean-three (the generic split→Deg1 bridge is
+bedrock); (2) the content statement HARDENED (+hex conjunct wiring into the assembly) with the
+SHAPING DECISION ratified — case11-only + a separate case12/2 sibling (one name per situation);
+(3) realBranch_boostReady_case11' PROVEN via content∘assembly, sorryAx via the content lemma ONLY
+(hslot unused — case11 derives from the concrete generator, exactly the property-home/idiom
+architecture); (4) the turn-key swap staged. THE FRONTIER IS NOW PRECISE: the wall =
+foldResid_case11_mergeBoostSplit_canon alone.
+THE TRIPWIRE: L4D's calibrated verdict — the capstone needs a foldResid-INDUCTION whose carried
+invariant (the b-chain factoring per edge: birth/transport/threshold) IS the research content;
+the pnp math exists abstractly (npivot #22-24) but not as a recursion invariant; searching for it
+while rendering with a large context = wrong-invariant thrash risk. RE-SHAPED as designed:
+pnp-transport commissioned (capstone-invariant-certificate.md — root/δ=1/δ=0/read-off on the
+CONCRETE recursion, canonFlatten-specific per KILLED-BY-e, consumer facts included); a FRESH
+formaliser renders when it lands; L4D executes the turn-key swap + pushes + RESTS (context
+hygiene — the wedge lesson applied prospectively). The predicate-fidelity check (the one
+un-reviewed piece) folded into the elder's C9 walk (perfect overlap: C9 IS the recursion chunk;
+3 sharp questions: single-e₂ generality, center-ignoring vs her b-monomials, the E_J/D_J
+disjunction delivery).
