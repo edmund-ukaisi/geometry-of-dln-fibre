@@ -98,6 +98,34 @@ Controller-verified against the kernel (census-absence + AxCheck registration) +
 - DECISION TILT: **re-architect**, pending (a) pnp-ideal's corank≥2 cofactor-boundedness check and
   (b) elder's final ruling (its Codex read). Not finalized until both land.
 
+## 2c. VERDICT IN + DECISION (2026-07-23 ~23:35) — RE-ARCHITECT (gated)
+
+pnp-ideal (fresh, obstruction-leaning, exact-algebra + own Codex) verdict: **matrix-ideal Schur-clearing
+route is GENUINELY LIGHTER; the obstruction target failed to find a wall.** Controller-CROSS-CHECKED:
+re-ran all three scripts myself (disc_check / schur_check / multilayer, all exit 0):
+- Discriminator confirmed: the refuted `SupportedOn` was the POST-substitution coordinate form; the
+  paper's matrix strict transform is true at the correct center. The substitution IS the fragility.
+- **The RE-ARCHITECT gate (§2b/§3) PASSES:** after blow-up the pivot normalizes to a CONSTANT unit ≡1,
+  so Q,P are unipotent with POLYNOMIAL inverses, ⟨QAP⟩=⟨A⟩ with polynomial cofactors — no unit
+  inversion, no degeneration on the nbhd, corank-2 included. Coupling lives in the RESIDUAL matrix →
+  the #95 row-repeat/escaped-coupling class has NO representative. Object A (foundation) landed, no gap.
+- RETIRES (Route-A artifacts, the ~29-catch source): Deg1SupportedSlot/supportAt/couplingClear/the KILL
+  /#95/#98/the WALL corank≥2 shear-rescue. SHARED (mostly landed): chart map g, Jacobian, cover,
+  exponent match, Object A/C/D + value engine. Route B's ONLY real Lean tax = a dependent-dim residual
+  MATRIX at the Schur step + multi-layer product reassociation ("deterministic proof engineering",
+  1-2 cycles/pattern per the pin history).
+
+**DECISION: RE-ARCHITECT to the matrix-ideal route.** Well-founded (5 decorrelated sources + my
+cross-check). GATES before the full commit (retire the geometric monument + redirect all seats):
+  (i) ONE corank-2 Lean PROTOTYPE — the (3,3,4) t=(1,0) minimiser step (a width that broke Route A):
+      both RegionRepresents directions + fixed-ambient g + the polynomial Schur cofactors, MEASURING the
+      cast tax (the math is settled). pnp-ideal produces the exact certificate (closing its own "not
+      fully-run minimiser" residual) → a fresh formaliser renders it.
+  (ii) elder-standing's FINAL ruling (relayed pnp; finalizing on its Codex).
+  (iii) OPERATOR blessing — surfaced as a knowing call (it redirects the team; objective UNCHANGED, so
+      not wait-for-explicit-go, but big enough to surface + proceed-on-silence).
+Held meanwhile: all geometric-fold render (#92/#95/#98). Nothing retired until the prototype is green.
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
