@@ -17294,3 +17294,14 @@ the scope's true ground is her Q₂'⁻¹ semantics / E_J-col-0 fidelity. Scope 
 way; def untouched. Routed to elder for a frozen replacement sentence (item-9 pattern) + a possible
 §9 one-line erratum. ALL THREE GATES GREEN (elder/L4D/pnp); merge target REBAKE2 @ 8b0c33476;
 merging right after the row-3 sentence lands.
+
+## 2026-07-23 (~17:20) — L4D slot-confirm COMPLETE (11/11 + (b) interior trace); controller re-ran the committed script exit-0
+
+L4D's (b) trace @ 5bdc3d9f1 (controller re-ran: exit 0): interior S=1 pivot, d=(3,2,2,2), chosen
+precisely to EXERCISE branch-(iii) — A₁ → diag(1,e₂) in the F₂ new vars; the triple product
+preserved via BOTH compensators (ii output A₂·Q₁⁻¹ + iii input Q₂⁻¹·A₀, both active, (iii)
+non-trivial). Lemma-2 diagonal-block-through-F₂ confirmed OFF-corner — decorrelated corroboration
+of pnp's battery. L4D also self-corrected its item-2 RATIONALE to pnp's reading (scope =
+clean-cleared-column fidelity, not u₀₀₁²-removal; check itself unchanged) — independent convergence
+on the row-3 nuance. ALL REVIEW HALVES CLOSED. The merge waits ONLY on the elder's row-3 frozen
+sentence; then: merge 8b0c33476+sentence → GO L4D on THE WALL → L3T3 rebase.
