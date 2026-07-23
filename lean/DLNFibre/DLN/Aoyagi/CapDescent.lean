@@ -299,6 +299,29 @@ theorem realBranch_appendResidDescent_fresh_layerCoords (d : Fin (N + 1) → ℕ
         fun x hx ↦ absurd hx (Finset.notMem_empty x),
         fun u _ ↦ by rw [Finset.sum_empty, add_zero]⟩
 
+/-- **The capped-homogeneity induction ⟨THE CRUX; route (a) path induction⟩** — the source-cleared residual
+is `Deg1SupportedSlot` over the geometric support `supportAt` at EVERY real-branch node. Base (root):
+`supportAt(root) = blockCoords 0 = layerCoords 0` (`blockCoords_zero_eq_layerCoords` — layer 0 has NO escape,
+`widthMinUpto 0 = d 0`), so it holds from `coreGen`'s homogeneity + continuity, the couplings being empty.
+Step (per δ=1 ancestor clear): the recoord writes the next layer and `couplingClear` absorbs the escaped-col
+dependence into the cap. **ROUTE-(a) DEPTH (load-bearing, pnp 81ba59d2b):** the layer-S escaped dependence
+factors through the couplings of MULTIPLE ancestor layers via the composed shears (kill-route discriminator
+refuted single-recoord localization on `(2,3,3,3)` — clearing only the S−1 couplings leaves it alive until
+layer-0's are cleared); the step's absorption must NOT collapse to the immediately-preceding recoord — each
+δ=1 ancestor clear contributes its coupling factor. Every-node UNIVERSALITY is carried by this induction
+(base + step); pnp verified the base, the mechanism, and the wide/rollover nodes. At a fresh child this IS
+the `(b)`-twin (`supportAt = blockCoords`); the escaped-ignore is a corollary. RLCT-equivalent to Aoyagi's
+`D_J` confinement via the source-clear rendering (coordinate-form differs by our shear-frame). -/
+theorem sourceClearedResid_capped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer)
+    (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    Deg1SupportedSlot d (sourceClearedResid d q) j
+      (supportAt d q.conState.layer q.conState.cleared)
+      (supportLayerOf q.conState)
+      (foldRegion d (canonFlatten d) q) := by
+  -- map: B-CAPF-sourceClearedResid-capped ⟨CRUX — route (a) path induction; step = absorb-into-cap w/ depth⟩
+  sorry
+
 /-- **The KILL — the source-cleared residual ignores the escaped out-of-cap columns** ⟨GENUINELY NEW⟩.
 The escaped columns `layerCoords ∖ blockCoords` (col `≥ widthMinUpto`) are read by the raw fold ONLY through
 the layer-(S)-clear recoord's column mixing, whose coefficients factor through the ancestor coupling
@@ -334,7 +357,12 @@ theorem realBranch_appendResidDescent_fresh_sourceCleared' (d : Fin (N + 1) → 
       (blockCoords d (p.extend ed).conState.layer)
       (supportLayerOf (p.extend ed).conState)
       (foldRegion d (canonFlatten d) (p.extend ed)) := by
-  -- map: B-CAPF-fresh-sourceCleared-twin (raw uncapped descent ∘ couplingClear + KILL + separation)
-  sorry
+  intro j
+  have hnonterm : ¬ N ≤ (p.extend ed).conState.layer := by omega
+  have hcap := sourceClearedResid_capped d hpos (p.extend ed) hnonterm hbranch j
+  have hsa : supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
+      = blockCoords d (p.extend ed).conState.layer := by
+    unfold supportAt; rw [if_pos hfresh]
+  rwa [hsa] at hcap
 
 end DLNFibre.DLN.Aoyagi
