@@ -18654,3 +18654,22 @@ couplingClear/quot commute, letting q'=q∘stepMap close on C as it did on F). R
 soundness check's success criterion = the cleared StepInv holds on witnesses AND both shapes
 exhibited (they become the render spec verbatim). All holds correct; the elder's direction ruling
 is the remaining open dispatch of the 18th event.
+
+## 2026-07-25 (~02:00) — §8 RULED: THE GLOBAL MOVE confirmed (faithful + forced); the scope
+boundary drawn; §7.8 owned-superseded as a FIDELITY WIN; the one gate = pnp's soundness check
+
+The elder's §8 (banked b26d8165f): (1) the whole FoldStepInvAt/StepInv chain moves to C —
+FAITHFUL not costly (her carried object IS the cleared representative, :562-577; the raw fold was
+our §9 artifact; the object-split arc's convergent endpoint, serving the operator's
+built-fully-faithfully goal); LADDER not destination (payoff character-unchanged; no operator
+gate for the direction; surfaced async as a scope event per the elder's note). (2) The render
+gate CONCURRED: pnp's cleared-foldG/foldB construction + cleared-StepInv verification (in
+flight, with L4D's two consumer shapes as the success criterion). (3) The scope boundary: the
+shear DATA (canonNormalizationOf/F₂), the tree/oracle, termination, and combinatorial exhaustion
+SURVIVE (e-parametric data the cleared fold reuses); the fold trio + the invariant chain + the
+transports + case12/δ=0 + the lift wiring RE-STATE on C; consumers re-point uniformly; the
+append splits per-case. (4) §7.8's "recursion untouched" OWNED-SUPERSEDED with the arc's most
+honest self-assessment: three object-moves (§7 → §12.2 → §8), each correct-in-direction, each
+under-scoping the SAME E_J obstruction's reach by one layer, each caught by pnp's instruments
+BEFORE render. CAPR's INV is now the invariant of the REAL recursion. All render gates:
+§8 (landed) + pnp's check (running).
