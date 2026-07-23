@@ -536,33 +536,104 @@ def PerLayerDeg1From {N : ℕ} (d : Fin (N + 1) → ℕ) (f : (Fin (flatDim d) �
     (V : Set (Fin (flatDim d) → ℝ)) : Prop :=
   ∀ ℓ : ℕ, fromLayer ≤ ℓ → AffineOn f (layerCoords d ℓ) V
 
+/-- The flat coordinate of the diagonal corner `(S, J, J)` of the layer-`S` block; `none` off-cone
+(`S ≥ N` or `J` out of the block). `Option` handles totality with no nonempty junk. (Positioned before
+`Deg1SupportedSlot` so its `BChainFactoredSlot` frame-pin can name a divisor's birth-corner slot; also read
+by the elder's (III) cleared-pivot clause in `ShearWithinCarveRaw` below. `cornerToFlat` depends only on
+`flatDim`/`tupIdxEquiv`.) -/
+noncomputable def cornerToFlat (d : Fin (N + 1) → ℕ) (S J : ℕ) : Option (Fin (flatDim d)) :=
+  if hS : S < N then
+    let i : Fin N := ⟨S, hS⟩
+    if hr : J < d i.succ then
+      if hc : J < d i.castSucc then some (tupIdxEquiv d ⟨⟨i, ⟨J, hr⟩⟩, ⟨J, hc⟩⟩) else none
+    else none
+  else none
+
+/-- **The column index of a flat coordinate** — the `col` of the decoded `tupIdx` (`⟨⟨layer, row⟩, col⟩`);
+the layer-`(S+1)` column axis the b-chain grades over. Bridge-free (`tupIdxEquiv.symm`). -/
+noncomputable def flatColOf (d : Fin (N + 1) → ℕ) (i : Fin (flatDim d)) : ℕ :=
+  (((tupIdxEquiv d).symm i).2 : ℕ)
+
+/-- **The coherent b-chain product factoring on the support coefficients** (consolidated ruling §2,
+2026-07-23 — Aoyagi's `diag(b)`, worked.tex:570–571). Records that the support-decomposition coefficients
+`c` factor coherently through the running-frame exceptional coordinates, i.e. Aoyagi's `d`-block `= u_{s,k}·d'`
+carried as the whole `diag(b)` product structure: there is a family `exc k` of continuous "exceptional"
+functions — one per active divisor `k` of the state `s` — such that each support coefficient `c i` is the
+b-chain monomial `∏_{k : t̃_k ≤ col(i)} exc k` (Aoyagi's `b_{col} = ∏_{t̃ ≤ col} u_{s,k}`, non-strict `≤`,
+the pinned boundary; `npivot-certificate.md` §7) times a continuous quotient `β`.
+
+**FRAME PIN (mandatory, running/post-Schur chart — the ambiguity class that caused two def drifts).** The
+factor `exc k` is divisor `k`'s exceptional AS IT FUNCTIONS ON `foldResid`'s ARGUMENT — the value that
+argument holds in the node's running chart frame — NOT a root-frame single coordinate. Concretely on the
+real branch `exc k` is a Schur combination (e.g. `(2,2,2,2)`: `e₂(u) = u_(0,1,1) − u_(0,1,0)·u_(0,0,1)`,
+`honest_clear_2222.py`), a CONTINUOUS FUNCTION, not the raw slot `u_(0,1,1)`. The pin ANCHORS `exc k` to
+divisor `k`'s birth-corner slot `i₀ = cornerToFlat (divBirthCoord k)` in the argument frame by requiring
+`exc k` to AGREE with the birth-slot coordinate on that slot's axis (`u j = 0` for `j ≠ i₀` ⟹ `exc k u = u i₀`);
+a root-frame reading names a different slot and FAILS this pin (so a §5 FIELD+FRAME battery can fail on the
+frame error). This anchors the slot without over-pinning the function — the actual residual + the factoring
+force the combination (`c_i / u i₀` is not continuous, `c_i / e₂` is), so `exc k` cannot collapse to the raw
+slot on the real branch. `exc k` vanishing at the origin follows from the pin + continuity (⟹ the b-chain
+monomial vanishes at `0` when a divisor qualifies — genuine content, excludes `exc ≡ 1`). The numeric
+`M_{s,k}` exponent ledger is NOT carried here (combinatorial, in Objects C/D; ruling §2). -/
+def BChainFactoredSlot (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ)
+    (S : Finset (Fin (flatDim d))) (V : Set (Fin (flatDim d) → ℝ)) : Prop :=
+  ∃ exc : Fin s.numDiv → (Fin (flatDim d) → ℝ) → ℝ,
+    (∀ k, ContinuousOn (exc k) V) ∧
+    (∀ (k : Fin s.numDiv) (i₀ : Fin (flatDim d)),
+      cornerToFlat d (s.divBirthCoord k).1 (s.divBirthCoord k).2 = some i₀ →
+        ∀ u ∈ V, (∀ j, j ≠ i₀ → u j = 0) → exc k u = u i₀) ∧
+    (∀ i ∈ S, ∃ β : (Fin (flatDim d) → ℝ) → ℝ, ContinuousOn β V ∧
+      ∀ u ∈ V, c i u
+        = (∏ k ∈ Finset.univ.filter (fun k => s.divTilde k ≤ flatColOf d i), exc k u) * β u)
+
 /-- **The single-slot degree-1 support predicate** (one `j`-slot; anti-felting: one predicate, one audit
-surface). Two conjuncts: the ∃c support-decomposition `resid j = ∑_{i∈S} cᵢ·uᵢ` on `V` (continuous `cᵢ`;
-supplies the vanishing-at-0 the affine bound alone does not), AND `PerLayerDeg1From d (resid j) fromLayer`
-(the residual is per-layer total-degree ≤ 1 from the support layer — the parent-h tighten, replacing the
-former `DeeperMultilinear`/`Dp=Cᶜ` looseness that admitted `h` reading `S′` → child deg-2). -/
-def Deg1SupportedSlot {N : ℕ} (d : Fin (N + 1) → ℕ) {nR : ℕ}
+surface). THREE clauses, the third being the RE-BAKED field (consolidated ruling §2, 2026-07-23): the ∃c
+support-decomposition `resid j = ∑_{i∈S} cᵢ·uᵢ` on `V` (continuous `cᵢ`; supplies the vanishing-at-0 the
+affine bound alone does not) AND the coherent b-chain product factoring `BChainFactoredSlot` of THOSE `cᵢ`
+(the `∃c` is where the field lives — same coefficients, so the case-1(1) boost split consumes it from
+`hslot`; a `FoldStepInvAt`-sibling field would not reach the wall through `hslot`), AND `PerLayerDeg1From d
+(resid j) fromLayer` (the residual is per-layer total-degree ≤ 1 from the support layer — the parent-h
+tighten, replacing the former `DeeperMultilinear`/`Dp=Cᶜ` looseness that admitted `h` reading `S′` → child
+deg-2). Gains `s : ConState N` for the field's divisor ledger (`numDiv`/`divTilde`/`divBirthCoord`),
+supplied at each site by the node's `p.conState`. -/
+def Deg1SupportedSlot {N : ℕ} (d : Fin (N + 1) → ℕ) (s : ConState N) {nR : ℕ}
     (resid : Fin nR → (Fin (flatDim d) → ℝ) → ℝ) (j : Fin nR)
     (S : Finset (Fin (flatDim d))) (fromLayer : ℕ) (V : Set (Fin (flatDim d) → ℝ)) : Prop :=
   (∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
-    (∀ i, ContinuousOn (c i) V) ∧ (∀ u ∈ V, resid j u = ∑ i ∈ S, c i u * u i)) ∧
+    (∀ i, ContinuousOn (c i) V) ∧ (∀ u ∈ V, resid j u = ∑ i ∈ S, c i u * u i) ∧
+    BChainFactoredSlot d s c S V) ∧
     PerLayerDeg1From d (resid j) fromLayer V
 
 /-- **Block coordinates** — the flat coords at layer `ℓ` CAPPED on the col axis by the running-min block
-width `widthMinUpto d ℓ` (family ruling 2026-07-22, item 1: the residual block is `widthMinUpto`-capped, not
-the whole `d_{ℓ+1}×d_ℓ` layer — matches `canonCenterOf`'s cap :725). NO cleared-shrink — that is
-`canonCenter`'s extra, keeping `supportAt` (full capped block) DISTINCT from `canonCenter` (capped AND
-cleared-shrunk). Bridge-free (Finset-definable from `d`+`ℓ`); `∅` for `ℓ ≥ N`. Feeds `supportAt`. -/
+width `widthMinUpto d ℓ`. This is the blow-up CENTER's cap: it matches `canonCenterOf`'s running-min axis
+(:725) — Aoyagi's `D_J` center has one axis at `M(S)` (running min) and one at raw `M^{(S+1)}`, and
+`canonCenterOf` caps the one axis and leaves the other raw, faithfully. NO cleared-shrink — that is
+`canonCenter`'s extra, keeping `blockCoords` (full capped block) DISTINCT from `canonCenter` (capped AND
+cleared-shrunk). **Feeds `supportAt` ONLY at the `J = 0` root branch** (where the residual's support IS the
+block being blown up = the center, so the cap is faithful); the DESCENDED (`J ≥ 1`) residual support is the
+raw `layerCoords d (S+1)`, NOT `blockCoords` (consolidated ruling §1, 2026-07-23 — the running-min cap is
+the CENTER's, and the descended residual block `D_J` has a raw column axis; conflating the two under-tight
+capped the descended support, the tenth catch). Bridge-free (Finset-definable from `d`+`ℓ`); `∅` for
+`ℓ ≥ N`. -/
 noncomputable def blockCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) : Finset (Fin (flatDim d)) :=
   (Finset.univ.filter (fun q : tupIdx d =>
       (q.1.1 : ℕ) = ℓ ∧ (q.2 : ℕ) < widthMinUpto d ℓ)).image (tupIdxEquiv d)
 
-/-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22 — the WINNER;
-the two-clock deeper∪shed shape is the DISCARD). The Deg1 support DESCENDS per clear: at `J = 0` it is the
-current capped block `blockCoords d S` (layer `S`, `widthMinUpto`-capped); once a pivot is cleared (`J ≥ 1`)
-it descends to `blockCoords d (S+1)` — the deeper block the `P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads;
-at the LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS
-to the born-unit `∅` (no `C^{(S+1)}` to absorb into — terminal collapse, p.19/21).
+/-- **The geometric descending support `supportAt S J`** (elder ruling pp.18–21, 2026-07-22; descended
+branch RE-BAKED to Aoyagi's raw residual block, consolidated ruling §1, 2026-07-23). The Deg1 support
+DESCENDS per clear: at `J = 0` it is the current capped block `blockCoords d S` (layer `S`,
+`widthMinUpto`-capped); once a pivot is cleared (`J ≥ 1`) it descends to `layerCoords d (S+1)` — the deeper
+block the `P`-cofactor `C'^{(S+1)} = Q⁻¹·C^{(S+1)}` reads — the WHOLE next layer, NOT the running-min-capped
+sub-block. This is Aoyagi's `D_J` residual block (worked.tex:562–577, esp. :569): `D_J` is
+`(M(S)−J) × (M^{(S+1)}−J)`, so the running min `M(S)` governs only the ROW / cleared-prefix axis while the
+COLUMN axis is the **raw** next-layer width `M^{(S+1)}−J`. On a WIDE branch (`d_{S+1} > min(d_0..d_S)`) the
+running-min cap is strictly tighter than her block and the residual genuinely reads the out-of-cap columns
+(the inherent remnant-row read, recoord-independent; `empirical_invariant_table.py`, `(2,3,2,2)`) — so the
+capped `blockCoords d (S+1)` UNDER-transcribes the residual and the honest shape is `layerCoords`. At the
+LAST layer `S = L` (`S + 1 = N`) the descent EXHAUSTS to the born-unit `∅` (no `C^{(S+1)}` to absorb into —
+terminal collapse, p.19/21). The `J = 0` branch stays `blockCoords d S` — there the residual's support IS
+the block being blown up (the CENTER's cap is faithful), and `realBranch_cover` depends on it.
 
 CONVENTION (elder's anti-off-by-one, transcribed): 0-indexed layers, `S ∈ {0..L}`, `L = N − 1` the last
 matrix-layer index; `S = L ⟺ S + 1 = N` is the born-unit case (0↔1 shift matches the page's 1-indexed `S = L`),
@@ -571,7 +642,7 @@ NO substantive ±1 offset. `supportAt` is the geometric Deg1 SUPPORT and is DIST
 conflation of the two is retired. -/
 noncomputable def supportAt (d : Fin (N + 1) → ℕ) (S J : ℕ) : Finset (Fin (flatDim d)) :=
   if J = 0 then blockCoords d S
-  else if S + 1 < N then blockCoords d (S + 1)
+  else if S + 1 < N then layerCoords d (S + 1)
   else ∅
 
 /-- **The support LAYER of a state** (family ruling 2026-07-22, item 4 — the `fromLayer` threshold, DRY).
@@ -592,7 +663,8 @@ def FoldStepInvAt {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → 
   (∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
     StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) ∧
     -- elder ruling 2026-07-22: support `C = supportAt` (geometric, descending); D⁺ = its complement `Cᶜ`
-    (∀ j, Deg1SupportedSlot d (foldResid d e p) j C (supportLayerOf p.conState) (foldRegion d e p))
+    (∀ j, Deg1SupportedSlot d p.conState (foldResid d e p) j C (supportLayerOf p.conState)
+      (foldRegion d e p))
 
 /-- **The foldState step invariant** — `∃ C, FoldStepInvAt C p`. Shape → assumed delivery → stated
 obligation: this is the third and final form of the same content — degree-1 was never optional
@@ -624,7 +696,8 @@ def LastLayerInv {N : ℕ} (d : Fin (N + 1) → ℕ) (e : (Fin (flatDim d) → �
     StepInv (coreGen d e) (foldG d e p) (foldB d e p) (foldResid d e p) q (foldRegion d e p)) ∧
     (∀ j : Fin (foldNR d p),
       -- elder ruling 2026-07-22: support `C = supportAt` (geometric, descending); D⁺ = its complement `Cᶜ`
-      Deg1SupportedSlot d (foldResid d e p) j C (supportLayerOf p.conState) (foldRegion d e p) ∨
+      Deg1SupportedSlot d p.conState (foldResid d e p) j C (supportLayerOf p.conState)
+          (foldRegion d e p) ∨
         (∃ unit : (Fin (flatDim d) → ℝ) → ℝ,
           ContinuousOn unit (foldRegion d e p) ∧ unit 0 ≠ 0 ∧
             ∀ u ∈ foldRegion d e p, foldResid d e p j u = unit u))
@@ -660,18 +733,6 @@ the oracle's `stepChildren`, NOT re-derived. Pins the strict transform's layer-d
 coordinate bridge. -/
 def DescendView {N : ℕ} (d : Fin (N + 1) → ℕ) (p : TreePath d) (ed : TreeEdge d p) : Prop :=
   ∃ sc ∈ (conOracle d p.conState).stepChildren, sc.ecase = ed.case ∧ sc.child = ed.nextState
-
-/-- The flat coordinate of the diagonal corner `(S, J, J)` of the layer-`S` block; `none` off-cone
-(`S ≥ N` or `J` out of the block). `Option` handles totality with no nonempty junk. (Moved up from its
-former spot below `canonCenterOf` so the elder's (III) cleared-pivot clause in `ShearWithinCarveRaw`
-can reference it — definitional-order fix; `cornerToFlat` depends only on `flatDim`/`tupIdxEquiv`.) -/
-noncomputable def cornerToFlat (d : Fin (N + 1) → ℕ) (S J : ℕ) : Option (Fin (flatDim d)) :=
-  if hS : S < N then
-    let i : Fin N := ⟨S, hS⟩
-    if hr : J < d i.succ then
-      if hc : J < d i.castSucc then some (tupIdxEquiv d ⟨⟨i, ⟨J, hr⟩⟩, ⟨J, hc⟩⟩) else none
-    else none
-  else none
 
 /-- **`ShearWithinCarveRaw`** (seat-L4's (B) form; clauses (I)/(II) RE-BAKED for the faithful `N_p`,
 elder verbatim §2). The RAW displacement `shearφ` (not `blockShear shearφ`) STRICTLY ABOVE
@@ -1243,13 +1304,15 @@ theorem realBranch_multiAffine_step {N : ℕ} {d : Fin (N + 1) → ℕ}
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
     (hbranch : (p.extend ed).IsRealBranch e)
-    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+    (hslot : ∀ j, Deg1SupportedSlot d p.conState (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p)) :
-    ∀ j, Deg1SupportedSlot d (foldResid d e (p.extend ed)) j
+    ∀ j, Deg1SupportedSlot d (p.extend ed).conState (foldResid d e (p.extend ed)) j
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared)
       (supportLayerOf (p.extend ed).conState) (foldRegion d e (p.extend ed)) := by
   -- map: B-derived-gap3-STEP (parent slot + edge pins → child slot; he_lin-FREE descent; root anchored in L5)
+  -- FIELD (ruling §2): the child `BChainFactoredSlot` conjunct threads via the INTRO/PRESERVE obligations
+  -- (`field_intro_at_birth`, `field_preserve_step`); the shape widens the descended support to `layerCoords`.
   sorry
 
 /-! ### Gap-B atoms — the per-layer homogeneity grade + the cap descent (elder ruling 2026-07-23)
@@ -1325,15 +1388,96 @@ theorem realBranch_appendResidDescent {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos 
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
     (hbranch : (p.extend ed).IsRealBranch e)
-    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+    (hslot : ∀ j, Deg1SupportedSlot d p.conState (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p)) :
     ∀ j, ∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
       (∀ i, ContinuousOn (c i) (foldRegion d e (p.extend ed))) ∧
       (∀ u ∈ foldRegion d e (p.extend ed), foldResid d e (p.extend ed) j u
         = ∑ i ∈ supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared,
-            c i u * u i) := by
-  -- map: B-L3T-appendResidDescent-cap ⟨FRONTIER LEAF — conjunct-1 descent, canonNormalizationOf-consuming; NOT homogeneity⟩
+            c i u * u i) ∧
+      -- FIELD (ruling §4 FIELD-thread): the SAME `c` carries the coherent b-chain product factoring
+      -- (`BChainFactoredSlot`, child state) — co-produced with the descended support decomposition.
+      BChainFactoredSlot d (p.extend ed).conState c
+        (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared)
+        (foldRegion d e (p.extend ed)) := by
+  -- map: B-L3T-appendResidDescent-cap ⟨FRONTIER LEAF — conjunct-1 descent + b-chain field, canonNormalizationOf-consuming; NOT homogeneity⟩
+  -- FIELD decomposition: the `BChainFactoredSlot` conjunct is discharged by edge dispatch —
+  -- `field_intro_at_birth` (case12/case2), `field_preserve_step` (case11/rollover + recoord),
+  -- with `field_base_root` the L5 base. (Not wired here; the composition is proof-seat work.)
+  sorry
+
+/-! ### The b-chain FIELD's new proof obligations (INTRO / PRESERVE / BASE) — statement-locked frontiers
+(consolidated ruling §4, 2026-07-23). The re-baked `Deg1SupportedSlot` carries the coherent b-chain field
+`BChainFactoredSlot` (Aoyagi's `diag(b)`, worked.tex:570–571). Producing the field along the fold decomposes
+into three obligations — each Aoyagi's own induction datum, STATEMENT-LOCKED here, proof TRACKED-OPEN (the
+proof seats take them; do NOT strike). They compose (BASE at the root, PRESERVE across steps, INTRO at each
+birth) to discharge the field conjunct of `realBranch_appendResidDescent` / `realBranch_multiAffine_step`. -/
+
+/-- **FRONTIER — FIELD BASE (root, `canonFlatten`).** At the fold root the b-chain field is vacuous: with no
+divisors in scope (`numDiv = 0`) the b-chain monomial `∏_{t̃_k ≤ col} exc k` is the empty product `1`, so any
+continuous support-decomposition satisfies `BChainFactoredSlot` (Aoyagi's `b_0 = 1`, worked.tex:570;
+seat-L4D root `chainWeight ≡ 1`). Stated at `canonFlatten d` (the L5 base pin): the field is `∀e`-HONEST — a
+layer-scrambling `e` would break it once divisors are born, so it is claimed at `canonFlatten`, not `∀ e`
+(the base is where that restriction enters). TRACKED-OPEN per the re-bake skeleton discipline (the discharge
+is the `numDiv = 0` vacuity; the proof seat confirms + pins `canonFlatten`). -/
+@[blueprint]
+theorem field_base_root {N : ℕ} (d : Fin (N + 1) → ℕ) (p : TreePath d) (hroot : p.conState.numDiv = 0)
+    (c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ) (S : Finset (Fin (flatDim d)))
+    (hc : ∀ i, ContinuousOn (c i) (foldRegion d (canonFlatten d) p)) :
+    BChainFactoredSlot d p.conState c S (foldRegion d (canonFlatten d) p) := by
+  -- map: B-field-BASE (root canonFlatten; numDiv=0 ⟹ empty b-chain product ≡ 1; ∀e-honest; TRACKED-OPEN)
+  sorry
+
+/-- **FRONTIER — FIELD INTRO at a divisor's birth** (case12/case2 edge; Aoyagi's `d`-block `= u_{s,k}·d'`,
+worked.tex:571; ε-transport §7 case2/case12). At a birth edge a NEW divisor is born at the freshly-cleared
+corner (`divTilde = birth cleared`), and `blockBlowupMap` multiplies the just-cleared extra-block coords by
+the birth pivot `u_pivot`. So the child's support coefficients gain the new divisor's exceptional as a factor
+on the extra block (`col ≥ divTilde(new)`): the child residual's descended support decomposition (on the
+WIDENED `layerCoords(S+1)`) satisfies `BChainFactoredSlot` with `exc(new) = ` the running-frame pivot
+coordinate (δ=0: directly from `blockBlowupMap`; δ=1: the same increment via `N_p`'s deeper recoord +
+Schur pivot). Rides the child's WIDENED descended support (shape ⟂ field meet, ruling §3). TRACKED-OPEN. -/
+@[blueprint]
+theorem field_intro_at_birth {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
+    (hbirth : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2)
+    (hbranch : (p.extend ed).IsRealBranch e)
+    (hslot : ∀ j, Deg1SupportedSlot d p.conState (foldResid d e p) j
+      (supportAt d p.conState.layer p.conState.cleared) (supportLayerOf p.conState) (foldRegion d e p)) :
+    ∀ j, ∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+      (∀ i, ContinuousOn (c i) (foldRegion d e (p.extend ed))) ∧
+      (∀ u ∈ foldRegion d e (p.extend ed), foldResid d e (p.extend ed) j u
+        = ∑ i ∈ supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared, c i u * u i) ∧
+      BChainFactoredSlot d (p.extend ed).conState c
+        (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared)
+        (foldRegion d e (p.extend ed)) := by
+  -- map: B-field-INTRO (birth blockBlowupMap ⟹ new divisor exc = pivot on extra block; worked.tex:571; TRACKED-OPEN)
+  sorry
+
+/-- **FRONTIER — FIELD PRESERVE across a step** (case11 reuse / rollover, and the recoord at any δ=1 step;
+Aoyagi's b-chain maintenance, worked.tex:570–571; ε-transport §7 case11/rollover). At a non-birth edge the
+divisor SET is unchanged (case11 lowers the reused divisor's `t̃` but adds none; rollover relabels), and the
+step map `blockBlowupMap ∘ N_p` transports the coherent factoring: `N_p` is det-1 and per-`(S+1)`-linear
+(`npivot-certificate.md` §2/§3), so the existing exceptionals survive as running-frame combinations and the
+b-chain monomials carry across. Given the parent's field-carrying slot, the child's descended support
+decomposition satisfies `BChainFactoredSlot` with the transported `exc` family. TRACKED-OPEN. -/
+@[blueprint]
+theorem field_preserve_step {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
+    (hstep : ed.case = StepCase.case11 ∨ ed.case = StepCase.rollover)
+    (hbranch : (p.extend ed).IsRealBranch e)
+    (hslot : ∀ j, Deg1SupportedSlot d p.conState (foldResid d e p) j
+      (supportAt d p.conState.layer p.conState.cleared) (supportLayerOf p.conState) (foldRegion d e p)) :
+    ∀ j, ∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+      (∀ i, ContinuousOn (c i) (foldRegion d e (p.extend ed))) ∧
+      (∀ u ∈ foldRegion d e (p.extend ed), foldResid d e (p.extend ed) j u
+        = ∑ i ∈ supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared, c i u * u i) ∧
+      BChainFactoredSlot d (p.extend ed).conState c
+        (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared)
+        (foldRegion d e (p.extend ed)) := by
+  -- map: B-field-PRESERVE (non-birth step; N_p det-1 + per-(S+1)-linear transports the factoring; §2/§3; TRACKED-OPEN)
   sorry
 
 /-- **L3 — a case-2 edge preserves the foldState invariant** (full-block append regime).
@@ -1498,7 +1642,7 @@ theorem terminal_edge_stepInv
   -- each residual slot is continuous (from LastLayerInv's per-slot disjunction).
   have hresid_cont : ∀ j, Continuous (fun u ↦ foldResid d e p j u) := by
     intro j
-    rcases hinv.2 j with ⟨⟨c, hc, hrepr⟩, _⟩ | ⟨unitj, hunit_cont, _, hunit_eq⟩
+    rcases hinv.2 j with ⟨⟨c, hc, hrepr, _⟩, _⟩ | ⟨unitj, hunit_cont, _, hunit_eq⟩
     · have hEq : (fun u ↦ foldResid d e p j u)
           = fun u ↦ ∑ i ∈ supportAt d p.conState.layer p.conState.cleared, c i u * u i := by
         funext u; exact hrepr u (by rw [hguniv]; exact Set.mem_univ _)

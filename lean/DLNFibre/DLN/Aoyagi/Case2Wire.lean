@@ -76,7 +76,7 @@ theorem case2_conjA
     have hdeg1 : Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
       rw [hce, hguniv]
       intro j
-      obtain ⟨⟨c, hc_cont, hc_repr⟩, hperlayer⟩ := hinv.2 j
+      obtain ⟨⟨c, hc_cont, hc_repr, _hfield⟩, hperlayer⟩ := hinv.2 j
       have haff : AffineOn (foldResid d e p j) (layerCoords d p.conState.layer) Set.univ := by
         have h := hperlayer p.conState.layer (by rw [hsl])
         rwa [hguniv] at h

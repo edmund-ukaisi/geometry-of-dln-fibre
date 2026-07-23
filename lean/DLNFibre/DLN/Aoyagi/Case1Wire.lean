@@ -293,7 +293,7 @@ theorem deg1SupportedOn_center_of_hslot {N : ℕ} (d : Fin (N + 1) → ℕ)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hcase : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2)
     (hbranch : (p.extend ed).IsRealBranch e)
-    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+    (hslot : ∀ j, Deg1SupportedSlot d p.conState (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared) (supportLayerOf p.conState) (foldRegion d e p)) :
     Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
   classical
@@ -308,7 +308,9 @@ theorem deg1SupportedOn_center_of_hslot {N : ℕ} (d : Fin (N + 1) → ℕ)
     exact canonCenterOf_append_subset_layerCoords d p.conState sc (by rw [hecase]; exact hcase)
   intro j
   rw [foldRegion_eq_univ e p]
-  obtain ⟨⟨c, hc, hcrepr⟩, hpl⟩ := hslot j
+  obtain ⟨⟨c, hc, hcrepr, _hfield⟩, hpl⟩ := hslot j
+  -- (the b-chain FIELD `_hfield` is not needed on the case12/case2 COVER route — `support ⊆ center`, so the
+  -- decomposition pads UP; the field serves only the case11 CONTRACTING boost split, ruling §2)
   -- pad the supportAt-decomposition to the (larger) ledger center ed.center, then apply the bridge
   obtain ⟨c', hc'cont, hc'repr, hc'ign⟩ := exists_ignoresCoords_decomp (foldResid d e p j) ed.center
     (layerCoords d p.conState.layer) hXsub
@@ -377,21 +379,24 @@ because the divisibility engine it consumes lives downstream of `MonumentAtlas`.
 verified correct; the two frontier obligations are named holes (elder-ruling-pending). -/
 
 /-- **FRONTIER OBLIGATION — case11 δ=1 BOOST-READINESS** (Codex xhigh 2026-07-22; RULING B — statement
-blessed, proof TRACKED-OPEN). For a real case1(1) edge at δ=1, the parent residual is `Deg1SupportedOn`
-the LEDGER (boost) center `ed.center = {pivot} ∪ partial-block` — even though its GEOMETRIC support
-`supportAt` is the larger full layer block: the untouched (`support ∖ center`) terms carry `u_pivot` in
-their non-dominant b-chain coefficient `b_i/b_1`. Blessed in place; derives from the `CanonicalSchurStep`
-conjunct (via `realBranch_canonicalSchurStep`) + the b-chain, re-expressing the carried parent slot
-(`hslot`) over the boost center. Feeds `stepInv_child_delta1_append` exactly like the case12 cover route. -/
+blessed, proof TRACKED-OPEN; now CONSUMES the b-chain FIELD, consolidated ruling §4, 2026-07-23). For a
+real case1(1) edge at δ=1, the parent residual is `Deg1SupportedOn` the LEDGER (boost) center
+`ed.center = {pivot} ∪ partial-block` — even though its GEOMETRIC support `supportAt` is the larger full
+layer block. The mechanism is now IN the carried `hslot`: its `BChainFactoredSlot` conjunct gives, for each
+extra-block coord `i` (`col(i) ≥ divTilde(reused f) = runLen`), `c_i = (∏_{t̃_k ≤ col} exc k)·β_i` with the
+reused divisor's exceptional `exc f` a factor — the boost split `∑_{partial} α·u_i + exc f·∑_{extra} β·u_i`.
+Re-expressing `foldResid` over `ed.center` then needs the recoord to write `exc f` (a running-frame Schur
+combination — `honest_clear_2222`'s `e₂`) onto the pivot slot ∈ `ed.center`: THAT recoord step is the wall
+(`canonNormalizationOf`, corank ≥ 2). Feeds `stepInv_child_delta1_append` exactly like the case12 cover route. -/
 theorem realBranch_boostReady_case11 (d : Fin (N + 1) → ℕ)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
     (hbranch : (p.extend ed).IsRealBranch e)
-    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+    (hslot : ∀ j, Deg1SupportedSlot d p.conState (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p)) :
     Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
-  -- map: B-derived-boostReady-case11 (δ=1 boost-center Deg1 via b-chain; TRACKED-OPEN, elder-pending)
+  -- map: B-derived-boostReady-case11 (δ=1 boost-center Deg1 via the b-chain FIELD + recoord; TRACKED-OPEN)
   sorry
 
 /-- **Conjunct A (divisibility ∃q) of the wall — dispatched.** δ=0 → `stepInv_child_delta0`
