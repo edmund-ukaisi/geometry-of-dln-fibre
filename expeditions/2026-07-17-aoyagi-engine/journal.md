@@ -17333,3 +17333,14 @@ verbatim-block comparison against the elder's final (the reflexive def-fidelity 
 keep on prose too). NOT committed; precise two-edit delta sent (the `u₀₀₁·u₀₁₀`-leak clauses).
 Lesson instance: verbatim-report-vs-frozen-spec comparison is the catch mechanism for message
 races — state-confirmation asks alone don't help when the report crosses the supersede.
+
+## 2026-07-23 (~18:10) — THE MERGE EXECUTED (local): REBAKE2 @ e2b466976 → canonical @ a5295bcb8; gates running
+
+Erratum landed on REBAKE2 (e2b466976; controller verified: leak clause both sites, NO code tokens
+in changed lines, word-for-word = elder final). Merge committed locally (--no-ff a5295bcb8) with
+one anticipated add/add conflict on rebake2-turnkey-spec.md — resolved to the REBAKE2 side (arch-
+C-3's later sharpened version, whose F₂-absorption/equality-close content §9 subsequently ratified).
+Merged-tree spot checks: census 18/2/1 = baseline; erratum clauses present; branch-(iii) at def +
+support + CanonicalSchurStep. Merge-time gates: full build running (background); then cordon-all +
+forced payoff axioms; PUSH ONLY AFTER GATES. Then: GO seat-L4D on THE WALL (#38) + L3T3 rebase
+directive (#52, 2 one-line hCSchild sites at MultiAffineStepWire :364-365/:689-690).
