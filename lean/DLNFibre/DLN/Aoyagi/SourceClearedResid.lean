@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
+import DLNFibre.Core.SubmultComp
 
 /-!
 # `DLNFibre.DLN.Aoyagi.SourceClearedResid` — the Case-1(1) chart residual (the capstone object)
@@ -94,6 +95,156 @@ theorem continuous_submult (d : Fin (N + 1) → ℕ) (i : Fin (N + 1)) :
         funext A; exact submult_succ d A i p hic
       rw [hfun]
       exact (continuous_apply p).matrix_mul (ih hic)
+
+/-! ### ROOT (b) — the CONTINUOUS layer decomposition of `coreGen`
+
+`coreGen_layerHomogeneous'` (MultiAffineHomogWire, import-downstream) gives the layer decomposition but
+only an `AffineOn` witness — no continuity of the coefficients. The ROOT base of `sourceClearedInv_holds`
+needs continuous coefficients. We re-derive the decomposition here, tracking continuity via
+`continuous_submult`. The small `canonFlatten`/`submult` congruence helpers also live downstream, so they
+are re-derived as `private` locals (distinct names — no full-build clash). -/
+
+private theorem canonFlatten_entry (d : Fin (N + 1) → ℕ) (u : Fin (flatDim d) → ℝ)
+    (i : Fin N) (row : Fin (d i.succ)) (col : Fin (d i.castSucc)) :
+    (canonFlatten d u) i row col = u (tupIdxEquiv d ⟨⟨i, row⟩, col⟩) := rfl
+
+private theorem submult_interval_congr (d : Fin (N + 1) → ℕ) (A B : Tuple (k := ℝ) d)
+    (i : Fin (N + 1)) :
+    ∀ (j : Fin (N + 1)) (hij : i ≤ j)
+      (h : ∀ p : Fin N, i ≤ p.castSucc → p.succ ≤ j → A p = B p),
+      submult d A i j hij = submult d B i j hij := by
+  intro j
+  induction j using Fin.induction with
+  | zero =>
+    intro hij _
+    obtain rfl : i = 0 := le_antisymm hij (Fin.zero_le _)
+    rw [submult_self, submult_self]
+  | succ p ih =>
+    intro hij h
+    rcases eq_or_lt_of_le hij with hie | hilt
+    · subst hie; rw [submult_self, submult_self]
+    · have hic : i ≤ p.castSucc := Fin.le_castSucc_iff.mpr hilt
+      rw [submult_succ d A i p hic, submult_succ d B i p hic,
+        ih hic (fun q hq1 hq2 => h q hq1 (hq2.trans (Fin.castSucc_le_succ p))), h p hic le_rfl]
+
+private theorem canonFlatten_layer_congr (d : Fin (N + 1) → ℕ) (p : Fin N)
+    {u v : Fin (flatDim d) → ℝ} (h : ∀ x ∈ layerCoords d p, u x = v x) :
+    (canonFlatten d u) p = (canonFlatten d v) p := by
+  funext row col
+  rw [canonFlatten_entry, canonFlatten_entry]
+  refine h _ ?_
+  simp only [layerCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
+  exact ⟨⟨⟨p, row⟩, col⟩, rfl, rfl⟩
+
+private theorem decode_layer_mem (d : Fin (N + 1) → ℕ) (ℓ : ℕ) (i : Fin (flatDim d))
+    (hi : i ∈ layerCoords d ℓ) : (((tupIdxEquiv d).symm i).1.1 : ℕ) = ℓ := by
+  simp only [layerCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hi
+  obtain ⟨q, hq, hqi⟩ := hi
+  rw [← hqi, Equiv.symm_apply_apply]
+  exact hq
+
+private theorem agree_layer_of_off (d : Fin (N + 1) → ℕ) (ℓ : ℕ) (p : Fin N)
+    (hp : (p : ℕ) ≠ ℓ) {u v : Fin (flatDim d) → ℝ}
+    (h : ∀ s, s ∉ layerCoords d ℓ → u s = v s) : ∀ x ∈ layerCoords d p, u x = v x := by
+  intro x hx
+  refine h x (fun hxℓ => hp ?_)
+  rw [← decode_layer_mem d p x hx, decode_layer_mem d ℓ x hxℓ]
+
+/-- **Continuous layer decomposition of `coreGen`** (ROOT (b)): each flat core generator at
+`canonFlatten d` decomposes over `layerCoords d ℓ` with CONTINUOUS coefficients that IGNORE that layer.
+The continuity (which `coreGen_layerHomogeneous'`'s `AffineOn` witness lacks) rides `continuous_submult`.
+Consumed by the ROOT base of `sourceClearedInv_holds` at `ℓ = 0` (`supportAt d 0 0 = blockCoords d 0 =
+layerCoords d 0`, `hN : 0 < N`). -/
+theorem coreGen_layer_continuous_decomp (d : Fin (N + 1) → ℕ)
+    (i : Fin (d (Fin.last N) * d 0)) (ℓ : ℕ) (hℓ : ℓ < N) :
+    ∃ c : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ,
+      (∀ x, Continuous (c x)) ∧
+      (∀ x, IgnoresCoords (c x) (layerCoords d ℓ) Set.univ) ∧
+      (∀ u, coreGen d (canonFlatten d) i u = ∑ x ∈ layerCoords d ℓ, c x u * u x) := by
+  classical
+  set ℓ' : Fin N := ⟨ℓ, hℓ⟩ with hℓ'
+  have hℓ'v : (ℓ' : ℕ) = ℓ := rfl
+  set a := (finProdFinEquiv.symm i).1 with ha
+  set b := (finProdFinEquiv.symm i).2 with hb
+  have hsuccL : ℓ'.succ ≤ Fin.last N := by
+    rw [Fin.le_def, Fin.val_succ, Fin.val_last]; exact hℓ
+  have h0cast : (0 : Fin (N + 1)) ≤ ℓ'.castSucc := Fin.zero_le _
+  have h0succ : (0 : Fin (N + 1)) ≤ ℓ'.succ := Fin.zero_le _
+  have hcastsucc : ℓ'.castSucc ≤ ℓ'.succ := Fin.castSucc_le_succ ℓ'
+  set M : (Fin (flatDim d) → ℝ) → Matrix (Fin (d (Fin.last N))) (Fin (d ℓ'.succ)) ℝ :=
+    fun u => submult d (canonFlatten d u) ℓ'.succ (Fin.last N) hsuccL with hM
+  set R : (Fin (flatDim d) → ℝ) → Matrix (Fin (d ℓ'.castSucc)) (Fin (d 0)) ℝ :=
+    fun u => submult d (canonFlatten d u) 0 ℓ'.castSucc h0cast with hR
+  set coeff : (Fin (d ℓ'.succ) × Fin (d ℓ'.castSucc)) → (Fin (flatDim d) → ℝ) → ℝ :=
+    fun p u => M u a p.1 * R u p.2 b with hcoeff
+  set enc : (Fin (d ℓ'.succ) × Fin (d ℓ'.castSucc)) → Fin (flatDim d) :=
+    fun p => tupIdxEquiv d ⟨⟨ℓ', p.1⟩, p.2⟩ with henc
+  set bcoeff : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ :=
+    fun x u => ∑ p, if enc p = x then coeff p u else 0 with hbcoeff
+  have hencMem : ∀ p, enc p ∈ layerCoords d ℓ := by
+    intro p
+    simp only [henc, layerCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨⟨⟨ℓ', p.1⟩, p.2⟩, rfl, rfl⟩
+  have honelayer : ∀ u, submult d (canonFlatten d u) ℓ'.castSucc ℓ'.succ hcastsucc
+      = (canonFlatten d u) ℓ' := by
+    intro u
+    rw [submult_succ d (canonFlatten d u) ℓ'.castSucc ℓ' le_rfl, submult_self, Matrix.mul_one]
+  have hrepr : ∀ u, coreGen d (canonFlatten d) i u = ∑ p, coeff p u * u (enc p) := by
+    intro u
+    show (mult d (canonFlatten d u)) a b = _
+    rw [mult_eq_submult, submult_comp d (canonFlatten d u) 0 ℓ'.succ h0succ (Fin.last N) hsuccL,
+      submult_comp d (canonFlatten d u) 0 ℓ'.castSucc h0cast ℓ'.succ hcastsucc, honelayer u,
+      Matrix.mul_apply, Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl (fun c1 _ => ?_)
+    rw [Matrix.mul_apply, Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun c2 _ => ?_)
+    rw [canonFlatten_entry]
+    show M u a c1 * ((canonFlatten d u) ℓ' c1 c2 * R u c2 b) = M u a c1 * R u c2 b * _
+    rw [canonFlatten_entry]; ring
+  have hcoeff_ign : ∀ p, ∀ u v : Fin (flatDim d) → ℝ,
+      (∀ s, s ∉ layerCoords d ℓ → u s = v s) → coeff p u = coeff p v := by
+    intro p u v hag
+    have hMe : M u = M v := by
+      refine submult_interval_congr d _ _ _ _ _ (fun q hq1 _ => ?_)
+      refine canonFlatten_layer_congr d q (agree_layer_of_off d ℓ q ?_ hag)
+      rw [Fin.le_def, Fin.val_succ, Fin.coe_castSucc] at hq1; omega
+    have hRe : R u = R v := by
+      refine submult_interval_congr d _ _ _ _ _ (fun q _ hq2 => ?_)
+      refine canonFlatten_layer_congr d q (agree_layer_of_off d ℓ q ?_ hag)
+      rw [Fin.le_def, Fin.val_succ, Fin.coe_castSucc] at hq2; omega
+    simp only [hcoeff, hMe, hRe]
+  have hcanon_cont : Continuous (canonFlatten d) := (canonFlatten d).continuous
+  have hcoeff_cont : ∀ p, Continuous (coeff p) := by
+    intro p
+    have hMc : Continuous (fun u => M u a p.1) :=
+      ((continuous_submult d ℓ'.succ (Fin.last N) hsuccL).comp hcanon_cont).matrix_elem a p.1
+    have hRc : Continuous (fun u => R u p.2 b) :=
+      ((continuous_submult d 0 ℓ'.castSucc h0cast).comp hcanon_cont).matrix_elem p.2 b
+    exact hMc.mul hRc
+  refine ⟨bcoeff, ?_, ?_, ?_⟩
+  · intro x
+    simp only [hbcoeff]
+    refine continuous_finset_sum _ (fun p _ => ?_)
+    by_cases hpx : enc p = x
+    · simp only [if_pos hpx]; exact hcoeff_cont p
+    · simp only [if_neg hpx]; exact continuous_const
+  · intro x
+    refine (ignoresCoords_univ_iff_agree _ _).mpr (fun u v hag => ?_)
+    simp only [hbcoeff]
+    exact Finset.sum_congr rfl (fun p _ => by rw [hcoeff_ign p u v hag])
+  · intro u
+    rw [hrepr u]
+    symm
+    calc ∑ x ∈ layerCoords d ℓ, bcoeff x u * u x
+        = ∑ x ∈ layerCoords d ℓ, ∑ p, (if enc p = x then coeff p u * u x else 0) := by
+          refine Finset.sum_congr rfl (fun x _ => ?_)
+          simp only [hbcoeff, Finset.sum_mul]
+          exact Finset.sum_congr rfl (fun p _ => by split_ifs <;> ring)
+      _ = ∑ p, ∑ x ∈ layerCoords d ℓ, (if enc p = x then coeff p u * u x else 0) := Finset.sum_comm
+      _ = ∑ p, coeff p u * u (enc p) := by
+          refine Finset.sum_congr rfl (fun p _ => ?_)
+          rw [Finset.sum_ite_eq (layerCoords d ℓ) (enc p) (fun x => coeff p u * u x),
+            if_pos (hencMem p)]
 
 /-- **The below-pivot entries of a case2/case12 cleared column** (the ancestor coupling coords of one
 edge). Decoding `pivot` to `(layer, a, b)` via `tupIdxEquiv`, this is the flat block
