@@ -54,24 +54,24 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~12:30): §7 FIRED and was RULED — §9 FINAL (F₂ = her full
-  paired Lemma-2 conjugation) + the PATH-A amendment (compensators = det-1 SHEAR branches:
-  interior Schur + +γ recoord w/ i≥cleared scope KEPT + Q₂⁻¹ input recoord at INTERIOR pivots;
-  the cross-clear = det-0 READ-SIDE, r4Clear RETAINED as the COMPENSATED clear,
-  blockBlowupCoordQuot-homed; composite = product-preserving ⟹ EQUALITY close, census 0, NO
-  bridge). The sign loop closed: +γ = the certificate's ORIGINAL direction; the error was
-  always THE UNPAIRING. arch-C-4 renders on REBAKE2 (its restate gate = 4-for-4 pre-grind
-  catches; +γ flip banked, task #57). THE ONE OPEN RULING: the CORNER treatment — the corner
-  pivot-ROW's compensator is the INPUT CoV (per-edge inexpressible; branch-(iii) vacuous at
-  S=0); treatment (A) VERIFIED FEASIBLE (corner col-only closes by equality; the row freedom
-  = the GL_{d₀} END-FACTOR gauge, banked machinery; corner block triangular per-edge, diag
-  after the global end-factor) vs (B) triangular-tolerated vs (C) explicit recombination.
-  Elder rules paper-first (does HER corner step spend the input gauge?); pnp's corner checks
-  in flight; arch-C-4 holds #58/#59 (branch-(iii) S≥1 guard, support 3-disjunct, cross-clear
-  wiring, StepInv equality re-close) on the ruling. Then: gates → battery + slot-confirm →
-  elder split-checklist delta-read → merge → L3T3 rebase (2 lines) → THE WALL.
-  seat-L3T3: finish step-2, push, rebase post-merge. Battery canon: WIDE witness + EXACT
-  rendered form, always.
+- CURRENT WAIT-STATE (2026-07-23 ~16:30): THE F₂ RENDER IS LANDED — REBAKE2 @ 1a113e4db
+  (MonumentAtlas.lean only, +97/−49; arch-C-4's gates all green; controller RE-DERIVED: full
+  build exit-0 (9008 jobs), census 18/2/1 delta-0, ENTIRE diff read = conforms to §9 on all
+  five spot-checks: (ii) +γ flip w/ scope verbatim-kept; (iii) NEW S≥1-vacuous-by-ℕ-guard
+  input recoord, range `d q.1.1.succ` sound; 3-disjunct support + CanonicalSchurStep mirror;
+  r4Clear def UNCHANGED — docstring re-home only, recursion untouched, stepInv closes by the
+  original witness). All §9 rulings RESOLVED (corner = (A) global GL_{d₀} end-factor,
+  per-chart; clear = boostReady FORM device; recursion = compensator shears by EQUALITY).
+  THREE REVIEWERS FIRED on 1a113e4db (~16:20): pnp all-rows battery (6 rows incl NEW
+  interior-pivot row — branch-(iii) UNEXERCISED by corner-only witnesses, needs an
+  independent wide interior witness); seat-L4D 11-item slot-confirm + `cleared ≤ i` def-read;
+  elder 9-item delta-read + the PER-CHART-GAUGE adjudication (arch-C-4's flag: per-branch Q₂
+  vs one global end-factor for multi-corner-pivot folds — bounded either way, docstring-line
+  question, NOT a re-open). ON TRIPLE GREEN → controller merges REBAKE2 into canonical (own
+  re-derived gates again at merge) → L3T3 rebase (#52, 2 one-line hCSchild sites) → THE WALL
+  (#38, provable per pnp's chart-frame pass). seat-L3T3 branch @ 69f8bf3ac complete, waiting
+  on merge. Battery canon: WIDE witness + EXACT rendered form, always. If a reviewer is
+  silent ≥2 polls, check transcript mtime (lost-wake hazard, 2 incidents already).
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
   failed wakes) AND its 23:05 adjudication was DELIVERY-LOST (recovered from transcript, banked:
   threads/L4-case1-core/elder-capescape-interim-adjudication.md — its fix-β superseded by the
