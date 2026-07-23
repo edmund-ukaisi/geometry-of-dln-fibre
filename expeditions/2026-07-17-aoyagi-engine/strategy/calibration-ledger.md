@@ -940,3 +940,14 @@ assembly); route unchanged (3 Codex converge, within-leaf-scope). (ii) Disciplin
 CONTENT before citing it in a brief; never gate existence on a piped `head`/`tail`. (iii) Added a
 SPECIFY-checkpoint gate before seat-L4C's heavy build. Confidence in "banked ingredient" claims: recalibrate
 — check the DEF exists, not just a referenced filename.
+
+## 2026-07-23 (~06:25, phase transition: diagnostic arc → render/merge) — the render-target def
+Q: Does canonical MonumentAtlas branch-(ii) carry the UNSCOPED all-i≠col sum in the Q₁⁻¹ (+γ)
+direction — the exact pre-fix form every instrument modeled (and REBAKE inherited at :940-942)?
+EXPECTATION (written first, confidence 0.95): YES — `∑ i ∈ range (d castSucc), if i = q.2 then 0
+else readEntry(S,i,b)·readEntry(S+1,row,i)`, no cleared-bound, comment naming A_{S+1}·Q₁⁻¹.
+ACTUAL (read :875-885): exact match, including the docstring's "(ii) layer-(S+1) recoord:
+`(A_{S+1}·Q₁⁻¹ − A_{S+1})`" — the def names the very direction the arc diagnosed as the
+conversion error. VERDICT: HIT. WHAT IT CHANGES: nothing — and that is the point at a phase
+transition: the instruments' shared model of the render-target site is faithful to the
+territory; the render's two changes (direction + scope) land on exactly the modeled lines.
