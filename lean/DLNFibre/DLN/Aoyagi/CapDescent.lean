@@ -235,8 +235,36 @@ theorem realBranch_appendResidDescent_fresh_layerCoords (d : Fin (N + 1) → ℕ
       (layerCoords d (p.extend ed).conState.layer)
       (supportLayerOf (p.extend ed).conState)
       (foldRegion d (canonFlatten d) (p.extend ed)) := by
-  -- map: B-CAPF-raw-uncapped-descent (H conjunct-2 + continuous_foldResid + L2 bridge over layerCoords)
-  sorry
+  intro j
+  have hguniv : foldRegion d (canonFlatten d) (p.extend ed) = Set.univ := foldRegion_eq_univ _ _
+  have hnonterm : ¬ N ≤ (p.extend ed).conState.layer := by omega
+  have hsl : supportLayerOf (p.extend ed).conState = (p.extend ed).conState.layer := by
+    unfold supportLayerOf; rw [if_pos hfresh]
+  refine ⟨?_, ?_⟩
+  · -- conjunct 1: the continuous support decomposition over the FULL descended layer.
+    have hH : HomogeneousDeg1On (foldResid d (canonFlatten d) (p.extend ed) j)
+        (layerCoords d (p.extend ed).conState.layer) Set.univ := by
+      have := foldResid_layerHomogeneous' d hpos (p.extend ed) hnonterm hbranch j
+        (p.extend ed).conState.layer hsl.le (by omega)
+      rwa [hguniv] at this
+    obtain ⟨c, hc_cont, hc_repr, _⟩ := continuous_decomp_of_homogeneousDeg1On _ _
+      (continuous_foldResid d (p.extend ed) hbranch j) hH
+    exact ⟨c, fun i ↦ (hc_cont i).continuousOn, fun u _ ↦ hc_repr u⟩
+  · -- conjunct 2: per-layer degree ≤ 1 from the support layer up (H's homogeneity; ∅ above N).
+    intro ℓ hℓ
+    by_cases hℓN : ℓ < N
+    · exact (foldResid_layerHomogeneous' d hpos (p.extend ed) hnonterm hbranch j ℓ hℓ hℓN).1
+    · have hemp : layerCoords d ℓ = ∅ := by
+        unfold layerCoords
+        rw [Finset.image_eq_empty, Finset.filter_eq_empty_iff]
+        intro q _
+        have := q.1.1.isLt
+        omega
+      rw [hemp]
+      exact ⟨foldResid d (canonFlatten d) (p.extend ed) j, fun _ _ ↦ 0,
+        fun w _ m hm _ ↦ absurd hm (Finset.notMem_empty m),
+        fun x hx ↦ absurd hx (Finset.notMem_empty x),
+        fun u _ ↦ by rw [Finset.sum_empty, add_zero]⟩
 
 /-- **The KILL — the source-cleared residual ignores the escaped out-of-cap columns** ⟨GENUINELY NEW⟩.
 The escaped columns `layerCoords ∖ blockCoords` (col `≥ widthMinUpto`) are read by the raw fold ONLY through
