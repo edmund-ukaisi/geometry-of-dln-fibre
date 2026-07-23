@@ -45,12 +45,16 @@ namespace DLNFibre.DLN.Aoyagi
 
 variable {N : ℕ}
 
-/-- **Continuity of the fold residual.** `coreGen` (continuous) composed with the per-edge step maps
-(`stepMap`/strict-transform `blockBlowupCoordQuot`, all continuous — the strict transform is the projection
-`if k = pivot then 1 else ·`, NOT a division). Path induction. -/
-theorem continuous_foldResid (d : Fin (N + 1) → ℕ) (p : TreePath d) (j : Fin (foldNR d p)) :
+/-- **Continuity of the fold residual (on a real branch).** `coreGen` (continuous) composed with the
+per-edge step maps (strict-transform `blockBlowupCoordQuot` is the projection `if k = pivot then 1 else ·`,
+NOT a division; the blow-up `blockBlowupMap` is continuous). The `IsRealBranch` hypothesis is REQUIRED:
+`TreePath.step` carries an ARBITRARY `shearφ` with no analyticity, so `foldResid` is not continuous for an
+arbitrary path — the branch value-pins each shear to `canonNormalizationOf` (`SEAT-CAPF finding: this needs
+a `canonNormalizationOf`-continuity sub-lemma, not yet in the tree). Path induction descending `hbranch`. -/
+theorem continuous_foldResid (d : Fin (N + 1) → ℕ) (p : TreePath d)
+    (hbranch : p.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d p)) :
     Continuous (foldResid d (canonFlatten d) p j) := by
-  -- map: B-CAPF-continuous-foldResid (path induction; coreGen base, continuous_stepMap step)
+  -- map: B-CAPF-continuous-foldResid (path induction; coreGen base; step needs canonNormalizationOf continuity)
   sorry
 
 /-- **(L2) The continuous support-decomposition bridge.** A continuous `F` that is
