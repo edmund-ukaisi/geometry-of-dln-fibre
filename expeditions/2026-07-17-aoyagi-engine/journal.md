@@ -16760,3 +16760,16 @@ MonumentAtlas :928 carries `if i = (q.2 : ℕ) ∨ i < s.cleared then 0` — the
 EXACTLY as specified; the def-read gate passes ahead of the formal battery. Memo updated to
 the wait-state (the one open gate + both pre-staged outcomes). Everything else unchanged:
 pnp computes; the elder's ruling fires on the datum; arch-C-3 rests at green.
+
+## 2026-07-23 (~09:40) — arch-C-3's handoff complete and RESTING; the spec carries a status-gate header + an if-§7 section; the board is one datum from motion
+
+arch-C-3's closing confirmation: directives executed in full — the green partial + turn-key
+spec on origin (verified last tick), with the spec carrying a prominent DO-NOT-EXECUTE-YET
+status gate AND an "if §7 fires" section (better than asked). Its summary of its own two
+correct holds stands as the render seat's record: no bridge baked, no possibly-unsound
+mechanism wired into the core fold; the committed r4Clear is a staged, non-asserting
+placeholder the re-ruling can revise. RESTING at heavy context; re-invoke FRESH when the
+decider lands and the wiring/re-ruling is cleared. seat-L4D directed pnp to run the decider
+on arch-C-3's VERBATIM composition (superseding its own reconstructions — certificate-
+fidelity to the end). The board: one datum (pnp's faithful full-structure Gröbner) from
+motion, both playbooks staged, every hold correct, nothing false anywhere.
