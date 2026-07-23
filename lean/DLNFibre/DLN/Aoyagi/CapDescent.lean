@@ -422,6 +422,92 @@ theorem homogeneousDeg1On_of_subset_ignores {D : ℕ} (G : (Fin D → ℝ) → �
   · have : x ∈ X \ Y := Finset.mem_sdiff.mpr ⟨hx, hxY⟩
     simp only [hu0, if_pos this]
 
+/-- **THE KILL ⟨CRUX — route (a) whole-path coupling factorization⟩ — the source-cleared residual ignores
+the escaped out-of-cap columns.** At a fresh node (`cleared = 0`, layer `S`) the layer-`S` columns beyond
+the running-min cap (`layerCoords d S ∖ blockCoords d S`, i.e. col `≥ widthMinUpto d S`) are read by the raw
+fold ONLY through monomials that also carry an ancestor coupling coordinate (the wide remnant-row entry of
+an ancestor case2/case12 clear — cap-escape trace `d=(2,3,2,2)`: coeff of the escaped `u_(1,0,2)` is
+`u_(0,2,0)·u_(2,0,0)` with `u_(0,2,0)` a layer-0 coupling). `couplingClear` zeroes those couplings, so
+`sourceClearedResid = foldResid ∘ couplingClear` does not depend on the escaped columns. FUNCTION-level kill
+(the escaped coords are NOT in `couplingCoords`; the disjointness is `col ≥ widthMinUpto` vs
+coupling-`col < widthMinUpto`). The dependence factors through the couplings of MULTIPLE ancestor layers via
+the composed shears (single-recoord refuted on `(2,3,3,3)`, pnp 81ba59d2b) — a whole-path property. -/
+theorem sourceClearedResid_ignoresEscaped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer) (hcl : q.conState.cleared = 0)
+    (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    IgnoresCoords (sourceClearedResid d q j)
+      (layerCoords d q.conState.layer \ blockCoords d q.conState.layer) Set.univ := by
+  -- map: B-CAPF-kill-escaped ⟨GENUINELY NEW — escaped coeffs factor through ancestor couplings⟩
+  sorry
+
+/-- **The capped statement under the interior guard `layer + 1 < N`** (seat-CX; the guard excludes the
+last-layer born-unit arm where `supportAt = ∅` but cleared slots are units — the 28th catch, fix pending).
+Assembled from the guard-independent core: conjunct 2 + the J≥1-interior conjunct 1 ride
+`foldResid_layerHomogeneous'` composed through `couplingClear` (the `…_comp_coordZero` helpers + the L2
+bridge); the J=0 conjunct 1 (the CAP) rides the KILL (`sourceClearedResid_ignoresEscaped`) via the
+`X ⊇ Y`-restriction upgrade. Once CAPF/pnp bless the guard-shape, the frozen `sourceClearedResid_capped`
+routes here. -/
+theorem sourceClearedResid_capped_guarded (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer)
+    (hlayer : q.conState.layer + 1 < N)
+    (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    Deg1SupportedSlot d (sourceClearedResid d q) j
+      (supportAt d q.conState.layer q.conState.cleared)
+      (supportLayerOf q.conState)
+      (foldRegion d (canonFlatten d) q) := by
+  classical
+  rw [foldRegion_eq_univ]
+  have hcont : Continuous (sourceClearedResid d q j) :=
+    (continuous_foldResid d q hbranch j).comp (continuous_couplingClear d q)
+  have hhomL : ∀ ℓ : ℕ, supportLayerOf q.conState ≤ ℓ → ℓ < N →
+      HomogeneousDeg1On (sourceClearedResid d q j) (layerCoords d ℓ) Set.univ := by
+    intro ℓ hℓ hℓN
+    have hraw := foldResid_layerHomogeneous' d hpos q hnonterm hbranch j ℓ hℓ hℓN
+    rw [foldRegion_eq_univ] at hraw
+    exact homogeneousDeg1On_comp_coordZero (foldResid d (canonFlatten d) q j)
+      (layerCoords d ℓ) (couplingCoords d q) hraw
+  refine ⟨?_, ?_⟩
+  · by_cases hcl : q.conState.cleared = 0
+    · rw [supportAt, if_pos hcl]
+      have hsl : supportLayerOf q.conState = q.conState.layer := by
+        unfold supportLayerOf; rw [if_pos hcl]
+      have hhomS : HomogeneousDeg1On (sourceClearedResid d q j)
+          (layerCoords d q.conState.layer) Set.univ :=
+        hhomL q.conState.layer (le_of_eq hsl) (by omega)
+      have hkill := sourceClearedResid_ignoresEscaped d hpos q hnonterm hcl hbranch j
+      have hhomB : HomogeneousDeg1On (sourceClearedResid d q j)
+          (blockCoords d q.conState.layer) Set.univ :=
+        homogeneousDeg1On_of_subset_ignores (sourceClearedResid d q j)
+          (blockCoords_subset_layerCoords d q.conState.layer) hhomS hkill
+      obtain ⟨c, hc_cont, hc_repr, -⟩ :=
+        continuous_decomp_of_homogeneousDeg1On (sourceClearedResid d q j)
+          (blockCoords d q.conState.layer) hcont hhomB
+      exact ⟨c, fun i ↦ (hc_cont i).continuousOn, fun u _ ↦ hc_repr u⟩
+    · rw [supportAt, if_neg hcl, if_pos hlayer]
+      have hsl : supportLayerOf q.conState = q.conState.layer + 1 := by
+        unfold supportLayerOf; rw [if_neg hcl]
+      have hhomS1 : HomogeneousDeg1On (sourceClearedResid d q j)
+          (layerCoords d (q.conState.layer + 1)) Set.univ :=
+        hhomL (q.conState.layer + 1) (le_of_eq hsl) hlayer
+      obtain ⟨c, hc_cont, hc_repr, -⟩ :=
+        continuous_decomp_of_homogeneousDeg1On (sourceClearedResid d q j)
+          (layerCoords d (q.conState.layer + 1)) hcont hhomS1
+      exact ⟨c, fun i ↦ (hc_cont i).continuousOn, fun u _ ↦ hc_repr u⟩
+  · intro ℓ hℓ
+    by_cases hℓN : ℓ < N
+    · exact (hhomL ℓ hℓ hℓN).1
+    · have hemp : layerCoords d ℓ = ∅ := by
+        unfold layerCoords
+        rw [Finset.image_eq_empty, Finset.filter_eq_empty_iff]
+        intro qq _
+        have := qq.1.1.isLt
+        omega
+      rw [hemp]
+      exact ⟨sourceClearedResid d q j, fun _ _ ↦ 0,
+        fun w _ m hm _ ↦ absurd hm (Finset.notMem_empty m),
+        fun x hx ↦ absurd hx (Finset.notMem_empty x),
+        fun u _ ↦ by rw [Finset.sum_empty, add_zero]⟩
+
 /-- **The capped-homogeneity induction ⟨THE CRUX; route (a) path induction⟩** — the source-cleared residual
 is `Deg1SupportedSlot` over the geometric support `supportAt` at EVERY real-branch node. Base (root):
 `supportAt(root) = blockCoords 0 = layerCoords 0` (`blockCoords_zero_eq_layerCoords` — layer 0 has NO escape,
