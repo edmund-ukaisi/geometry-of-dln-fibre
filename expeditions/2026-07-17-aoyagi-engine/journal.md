@@ -17832,3 +17832,19 @@ coords; the reuse node) are Lean-def-dependent = L4D's promised paragraph, now t
 critical-path blocker. L4D nudged with pnp's four def-exact questions; the paragraph relays
 verbatim on arrival. Everything else holds: the witness harness is staged to run the exact-frame
 read-off + consumer facts (wide + double-boost) the moment the frame pins.
+
+## 2026-07-24 (~07:30) — THE WALL IS ON CANONICAL, PROVEN MODULO ONE LEMMA (merge 2731dbea7);
+census 44→42 (the wall swap + the assembly proof); L4D released with honors
+
+Gates controller-re-derived: build 9015 exit-0; cordon-all both halves; payoff roots clean-three;
+census 42 = 44 − the wall's swapped sorry − the proven assembly. Canonical now carries: Case1Wire's
+wall := realBranch_boostReady_case11' (the import flip breaking the cycle — MergeBoostSplit
+depends on MonumentAtlas only); the assembly lemma clean-three; the hardened content statement.
+THE KERNEL-VISIBLE FACT: every sorry on the case1/boostReady path flows through
+foldResid_case11_mergeBoostSplit_canon alone. L4D's def-exact recursion-signature paragraph
+relayed to pnp verbatim (its blocker resolved; the chart-e₂ reading confirmed: `u e₂` = slot
+canonPivotOf in the fold's arg frame, carrying branch-(i)'s Schur value). L4D RELEASED WITH
+HONORS — session tally: the pinned spine (7 sites, axiom-free), the assembly clean-three, the
+hardened statement, the wall proven modulo one named lemma, the turn-key swap, the def-exact
+brief, and a correctly-called tripwire. Remaining open mathematics: the content capstone (pnp
+certificate in flight → fresh formaliser), the cap frontier, the L5 fold body.
