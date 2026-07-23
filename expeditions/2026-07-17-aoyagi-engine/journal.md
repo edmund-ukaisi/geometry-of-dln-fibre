@@ -18251,3 +18251,14 @@ CAPR drafts the SPECIFY against a PENDING-ENCODING provisional meanwhile — no 
 location resolved cleanly (new SourceClearedResid.lean between MonumentAtlas and MergeBoostSplit;
 aggregator wire = mine at merge). The def-design loop working as built: the seat surfaces the
 tension, the def-owner rules, the elaborator grounds — nobody renders ambiguity.
+
+## 2026-07-24 (~17:00) — Decision 2 CONFIRMED at script:line (pnp): couplings = leaf/argument
+coords; couplingClear = one map, bridge-free; relayed to CAPR
+
+The frame question closed with the exactness the render needs: u IS foldResid p's argument
+(split_oracle:69, Phi_p adjudication:74); couplingClear = closing_ii:20-29 verbatim (per ancestor
+case2/case12 pivot (L,a,b): zero leaf coords (L,r,b), r>a — for these cases the pivot is the
+diagonal corner so a=b=cleared, i.e. the strictly-below-diagonal entries of each cleared column).
+CAPR's Finset-of-flat-coords def is exactly right and now cites the fixing lines. The (A)-primary
+object is fully pinned on the object side; only L4D's encoding confirm remains before CAPR's
+SPECIFY finalizes.
