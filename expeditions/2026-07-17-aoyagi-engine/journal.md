@@ -18205,3 +18205,18 @@ kill-conditions each tied to falsifier + script — a tripwire checklist the ren
 mechanically. Canonical's copy synced same-tick (the stale-copy hazard caught before CAPR
 rendered against the old text); CAPR instructed to re-pull + re-derive its restate if in
 progress. pnp's arc formally complete; it holds as the exact-algebra consult.
+
+## 2026-07-24 (~16:05) — pnp-cap restate PASS (the four edge-type table exact) + the δ=1
+pivot-quotient concern pre-routed via the Q1/Q2 distinction
+
+pnp-cap's restate: the frontier = one append-edge preservation of the support decomposition
+(conjunct-1 only), four edge-types with the support relations exact (δ=0 spectator cases;
+the δ=1 one-layer descent; the rollover cap-narrowing where the wide witness bites). Its sharp
+pre-algebra catch: at δ=1 the pivot quotient (pivot→1) makes the black-box implication
+(hslot ⟹ child slot) suspect — a u_pivot adversary's strict transform is the constant 1.
+STEERED with the Q1/Q2 distinction BEFORE the verdict: Q1 (black-box false — likely, the wall's
+hslot-insufficiency cousin, consistent with the idiom ruling's derive-class) is SEPARATE from
+Q2 (the statement's truth — it carries hbranch, so it can be true via opening the concrete
+recursion; the real c_pivot is her E_J-unit/b-ledger structure, not the adversary). Consequence
+tree pre-routed: Q1y+Q2y = docstring/proof-route correction only (no re-open); Q1y+Q2n =
+statement-class STOP→elder; Q1n = proceed. The restate discipline: 11-for-11.
