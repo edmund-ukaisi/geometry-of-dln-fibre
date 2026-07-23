@@ -17930,3 +17930,23 @@ chart e₂-value = the birth Schur exceptional; the extra factors through its CO
 the language for the re-shaped statements: (B) stays a raw fact; (D) re-states of the cleared
 object; the cleared↔raw bridge = the one open design item. #68 adjudication CLOSED; the positive
 certificate + fresh formaliser + LL's renders all queue behind #69.
+
+## 2026-07-24 (~09:40) — #69 RULED: the boostReady object = the CLEARED residual; the STRONG PRIOR
+= one more unpairing (branch-(ii) carries only the compensator half); the det-character question
+decides render-fix vs Option-1-proper
+
+The elder's ruling (capstone-object-ruling.md, banked b533532e6, amends §9): obstruction ACCEPTED
+with an owned self-correction (§8(i)(c)'s "foldResid at case11 = clean D_J" was false — the
+predicate-fidelity verdict validated the SHAPE against her cleared D_J; the raw foldResid is not
+that object). THE RECURSION AND F₂ ARE UNAFFECTED (StepInv-on-supportAt stands; the obstruction is
+the strictly stronger center-sub-ideal property F₂ never claimed). Options 2 (enlarge center —
+unfaithful) and 3 (splice det-0 into the recursion — breaks F₂) REJECTED. THE FORK: the elder's
+strong prior reads the missing source-clear as the DROPPED PAIRED HALF of branch-(ii) — the full
+conjugation (A₁·Q₁⁻¹)·(Q₁·A₀) is det-1 and product-preserving; the render kept A₁·Q₁⁻¹ and dropped
+Q₁·A₀ (her unipotent below-pivot clear). If pnp confirms DET-1: a render COMPLETION of
+canonNormalizationOf (a new bake round: render → full F₂ battery re-run → delta-read → merge) after
+which foldResid IS the cleared residual and the tension dissolves — no statement change, no
+consumer re-wire. If DET-0: Option 1 proper (separate object + append-crux re-wire + bridge).
+CAUTION relayed to pnp: judge the det AS COMPOSED IN THE FOLD (post pivot→1 quotient, where an
+own-coordinate read against the normalized pivot can silently lose rank). The arc's theme holds to
+the last: at every layer, the error was the unpairing.
