@@ -908,8 +908,13 @@ col), the displacement at a flat coord `k` decoding to `(layer, row, col)`:
   composition (rows A/D) restores `+γ` (product-preserving). The displacement lands on col `= a` (the pivot
   row) of layer `S+1`, value `+∑_{cleared ≤ i, i≠a} w_{i,b}·A^{(S+1)}_{row,i}` — degree-1 in the
   layer-`(S+1)` coords, coefficients `w_{i,b}` from layer `S` (per-`(S+1)`-linear, certificate §2), SCOPED
-  to the remaining block `cleared ≤ i` (§8(m): cleared outer rows read as `0`, her accumulated `Q₂'⁻¹`
-  semantics — the UNSCOPED `+γ`-paired sum STILL gives the inter-edge `u₀₀₁²`, so the scope is KEPT). This
+  to the remaining block `cleared ≤ i` (§8(m): already-cleared outer rows read as `0`, her accumulated
+  `Q₂'⁻¹` current-chart semantics — this keeps `E_J` col-0 free of the pivot-row coord `u₀₀₁`, the
+  faithful clean cleared column; unscoped, col-0 acquires a `u₀₀₁·u₀₁₀` leak linear in `u₀₀₁`). The
+  scope is a FIDELITY choice, not a degree-necessity: on this shears-only fold `foldResid` is degree-≤1
+  in `u₀₀₁` both scoped and unscoped (pnp all-rows battery); the `u₀₀₁²` that first motivated it is a
+  CLEAR-MODEL fact (the fold with the pivot-cross clear spliced in), which the shears-only recursion
+  does not produce. This
   is a piece `canonShearOf` omitted.
 * **(iii) layer-`(s.layer−1)` INPUT recoord image** — the MIRROR of (ii): the input-side factor
   `A_{S−1} → Q₂⁻¹·A_{S−1}` (Aoyagi Lemma 2's second compensator; the paired `Q₁·A₀·Q₂` conjugation supplies
@@ -948,10 +953,14 @@ noncomputable def canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N
       -- UNPAIRED-regime approximation; the exact Gröbner on the PAIRED composition (rows A/D) restores
       -- `+γ` (`Q₁⁻¹`, product-preserving). On col `= a` (the pivot row) of layer `S+1`, SCOPED to the
       -- remaining block `cleared ≤ i` (§8(m), fold-order 8e7c66ed7: already-cleared outer-pivot rows read
-      -- as `0` by NOT being summed = her accumulated `Q₂'⁻¹` current-chart semantics). The scope is KEPT
-      -- under `+γ`-paired: the UNSCOPED paired sum STILL reads an outer pivot row and produces the
-      -- inter-edge `u₀₀₁²` (f2_paired_boostready, all witnesses) — the pairing acts INTRA-edge (its own
-      -- step's ideal close), the scope INTER-edge (the outer-row read), both faithful, both kept.
+      -- as `0` by NOT being summed = her accumulated `Q₂'⁻¹` current-chart semantics). The scope is
+      -- a FIDELITY choice, not a degree-necessity: on this shears-only fold `foldResid` is degree-≤1
+      -- in `u₀₀₁` both scoped and unscoped (pnp all-rows battery); NOT summing the already-cleared rows
+      -- keeps `E_J` col-0 free of the pivot-row coord `u₀₀₁` (the faithful clean cleared column;
+      -- unscoped, col-0 acquires a `u₀₀₁·u₀₁₀` leak linear in `u₀₀₁`). The `u₀₀₁²` is a CLEAR-MODEL
+      -- fact (the fold with the pivot-cross clear inline), not produced by the shears-only recursion.
+      -- Two independent axes, both kept: the `+γ`-pairing acts INTRA-edge (its step's ideal close), the
+      -- `cleared ≤ i` scope tracks the INTER-edge accumulated clearing state (`s.cleared`).
       (∑ i ∈ Finset.range (d q.1.1.castSucc),
         if i = (q.2 : ℕ) ∨ i < s.cleared then 0
         else readEntry d u s.layer i (qp.2 : ℕ) * readEntry d u (s.layer + 1) (q.1.2 : ℕ) i)
