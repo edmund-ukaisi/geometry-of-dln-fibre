@@ -19435,3 +19435,38 @@ helper-class precedent (same class as INV's continuous_submult; the elder delta 
 frontier statements) — banking now. CAPR on-call as pnp's oracle-semantics consult. Board: three
 lanes grinding (GM's (b)-independent complement; INV's def-render + ROOT(b); CAPF's #1) while
 the two adjudications (L4D admissibility → elder #85) and pnp's kill consult run.
+
+## 2026-07-23 (~17:05 UTC) — §9.4: CANONICAL-PIN ruled (paper-decisive + Codex xhigh); the
+split/union DISSOLVES and INV's banked work is RESTORED; CAPF delta PASSES 6/6; L4D confirms the
+phantom is a GENUINE IsRealBranch — #85 fully teed
+
+THE #84 ENDGAME (§9.4, superseding §9.3): the elder read the source at the defect — her Thm 3
+opens with the WLOG to canonical [[E_r,O],[O,O]] (:436-438); the b-ledger indexes EVERY divisor
+by the canonical (S,J+1) diagonal; the per-step Q,P reindex to canonical (:619-620/:628-629) —
+her ledger is a CANONICAL-FRAME object; she never carries a stored-vs-diagonal split; the fan is
+OUR cover artifact. FAN-CARRIED would enlarge her invariant for an implementation device.
+Decorrelated Codex (xhigh): CANONICAL-PIN, high confidence (banked). CONSEQUENCE: the INV is
+stated on the CANONICAL-PIVOT SUB-FAMILY, where stored = diagonal = ledger corners — §9.2's
+pure-diagonal accumulatedPivots is CORRECT for all conjuncts + the read-off; the split/union
+question was the symptom of stating the INV off the canonical frame. INV countermanded MID-FLIGHT
+(the split render stopped before landing); its banked redefine + containment RESTORED as
+correct; the one remaining statement change = the sub-family hypothesis (CAPR specing the
+predicate + threading, incl. whether it escapes into GM's statement list — a cross-lane event if
+so). THE TRANSPORT = A NAMED OBLIGATION, NOT FREE (Codex's load-bearing caveat, preserved as
+inference): fan charts get per-chart PrincipalInv via the blow-up chart permutation, but her Q,P
+are RLCT-equivalent NOT necessarily equal to it — an independent blow-up-chart-EQUIVARIANCE
+lemma is owed; the discriminating check (coreGen∘chart_fan = (coreGen∘chart_can)∘σ up to a unit)
+goes to pnp (queued behind the kill consult); owner = L5/cover unit; re-open trigger = the check
+failing; scope couples to #85 (only genuine non-phantom charts need transport).
+
+CAPF's SPECIFY delta: PASS 6/6 (the elder diffed the byte-identity claim itself; #6 stable under
+§9.4 — obligation (b) references no ledger set). CAPF: #3 GO; #4 on its cherry-pick; #5 on pnp;
+#6 last. GM enumerated its (b)-consumers cleanly (the δ=1 pivot-factor chain) and grinds the
+complement against its now-green closure. L4D's ADMISSIBILITY CONFIRM (from code line-reads):
+the phantom IS a genuine IsRealBranch — the oracle append guard is PURELY COUNTER-BASED
+(cleared < widthMinUpto, no column history), the fan pin admits the forced singleton, the
+shear/value pins constrain shearφ not admissibility; one judged-not-read residual
+(ShearWithinCarveRaw satisfiability, confidently non-excluding). #85 fully teed for the elder:
+a real defect in the frozen oracle boundary, with §9.4 adding a possible resolution (2′) — the
+canonical-pin hypothesis on the CHAIN as well, converging the whole cleared architecture on the
+canonical sub-family + the L5 transport.

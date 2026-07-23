@@ -621,6 +621,9 @@ case2/case12 births the two pull opposite ways: pure-diagonal breaks conjunct-3,
 leg-1-as-written. Neither pure set works. Recurring error class (partial-consumer check); tightened
 discipline: a redefine blessing enumerates ALL consumers of the symbol and checks EACH direction.
 
+> **SUPERSEDED by §9.4 (CAPR's def-owner re-frame): BOTH split and union patch symptoms and miss the
+> read-off boost law. The real fork is CANONICAL-PIN vs FAN-CARRIED — an object ruling, not a set-shape.**
+
 **SHAPE RULING — (b) SPLIT is the faithful default; (a) union rejected; pure-stored is the contingent
 simplification.** conjunct-3 references the fold's actual stored δ=1 pivots (`storedPivots`); leg-1/conjunct-4
 reference the canonical reused-divisor corners (`ledgerCorners`); `ledgerTarget = storedPivots ∪
@@ -634,3 +637,48 @@ fan-free witness shows the merge does NOT realign, simplify to pure-stored. Rout
 through CAPR's def-owner read + that witness. Paper-first anchor endorsed: her single `b_i`/`M_{s,k}` ledger
 (worked.tex:562-577) is one set in her reindexed frame; our fan structure separates it into two roles —
 serve both precisely, never paper over the artifact with a loose union.
+
+### §9.4 #84 RE-FRAME — the object fork: CANONICAL-PIN (paper-decisive; Codex-confirmed high)
+
+CAPR's def-owner read correctly shows §9.3's split/union both PATCH SYMPTOMS: they fix conjunct-3/leg-1
+but not the read-off BOOST LAW (conjunct-4). On a fan-free branch `μ` (the fold's actual exponents) lives
+at the STORED birth pivots, so `μ i (e₂) = 0` at `e₂ = canonPivotOf = the DIAGONAL` — the boost exponent
+sits at the wrong coordinate under ANY `accumulatedPivots` set choice. The real fork is object-level: does
+the b-ledger INV HOLD on fan-free branches (FAN-CARRIED), or is the fan a COVER device the canonical ledger
+need not honor (CANONICAL-PIN)?
+
+**RULING: CANONICAL-PIN. Paper-decisive.** Grounded in her text (read at the defect location):
+- Thm 3 proof opens with an explicit WLOG normalization to the canonical `[[E_r,O],[O,O]]`
+  (worked.tex:436-438); the induction carries a regular top-left block in the canonical frame.
+- The b-ledger indexes every divisor by the canonical `(S,J+1)` diagonal coordinate (Case 1(2): `u_{S,J+1}`;
+  Case 2: `M'_{S,J+1}=(M(S)-J)(M^{(S+1)}-J)`), and after each blow-up "regular `Q,P` reduce `D_J'' →
+  [[1,O],[O,D_{J+1}]]`" — reindexing to canonical each step (worked.tex:619-620/628-629).
+- Lemma 2's `Q,P` are units (local analytic isomorphisms, unit Jacobian, RLCT-preserving).
+So Aoyagi's ledger is a CANONICAL-frame object; she never carries a per-branch stored-vs-diagonal
+distinction — the fan is OUR cover artifact. FAN-CARRIED would enlarge her invariant to accommodate an
+implementation device — paper-unfaithful and materially more work. Decorrelated Codex (xhigh,
+`codex/canonical-pin-vs-fan-carried-answer.md`): CANONICAL-PIN, **high confidence**, same textual grounds.
+
+**CONSEQUENCE.** On the canonical sub-family stored = diagonal, so all three sets (μ-factors / stored / divisor
+identities) coincide; §9.2's pure-diagonal `accumulatedPivots` is then correct for ALL conjuncts + the
+read-off, and the §9.3 split/union question DISSOLVES (it was a symptom of stating the INV off the canonical
+frame). The INV is stated on the canonical-pivot sub-family (pin the birth pivot = diagonal for the INV's
+regime). `couplingCoords` still keys STORED (#82 — `couplingClear` mirrors the fold's actual per-branch
+clear on ALL branches); no tension, different regimes coincide on the INV's.
+
+**THE TRANSPORT — a NAMED obligation, NOT free (Codex's sharpening, preserved as inference).** The fan-free
+charts (needed for the geometric cover) get their per-chart leaf `PrincipalInv` by transport from the
+canonical chart via the blow-up chart permutation (= her `Q,P` WLOG; pnp #82 line-2's permutation). FACT:
+canonical-pin is the faithful direction. INFERENCE (NOT established): that this transport is clean. Codex
+flags the real risk — Aoyagi's `Q,P` are parameter-dependent unipotent block-eliminations, which Lemma 2
+proves RLCT-equivalent but NOT necessarily equal to the chart permutation, and RLCT-equivalence does NOT by
+itself give the LABELED monomial-exponent preservation the summit reads. So the transport needs an
+independent blow-up-chart-equivariance lemma. THE DISCRIMINATING CHECK (Codex's, route to pnp): smallest
+fresh-clear state with two eligible below-diagonal columns; verify `coreGen∘chart_fan =
+(coreGen∘chart_can)∘σ` up to a unit, `σ` carrying the exceptional coordinate + all prior-cleared data.
+Success confirms; failure refutes the clean transport → re-open to FAN-CARRIED.
+
+**OWNER / TRIGGER.** Transport obligation lands at the ATLAS/L5-L7 layer (same debt-location discipline as
+#81 provenance) — state it explicitly, owner = the L5/cover unit, re-open trigger = the equivariance check
+failing. SCOPE couples to #85 (phantom branches): the transport need only cover the GENUINE (non-phantom)
+fan-free charts; #85's resolution fixes that scope. `hN` (§9.2 b) unaffected. GM unaffected.
