@@ -645,14 +645,27 @@ cleared value 0 = exactly this scope bound.
   the chart-frame `boostReady` test passes).
 
 **(n) R4's placement is a THEOREM (Jacobian precision); + the arch-C-3 decomposition ruling.**
-- **PLACEMENT THEOREM (arch-C-3 prep, sharpening (k)):** distinguish the MATRICES from the CoV. Lemma 2's
-  `Q₁,Q₂` are UNIPOTENT MATRICES (det exactly 1), but the induced VARIABLE CHANGE
-  (`A₂↦−A₁⁻¹A₂, A₃↦−A₃A₁⁻¹, A₄↦C₄`) has Jacobian `det = det(A₁⁻¹)²` — a nonzero UNIT, NOT det-1. So R4
-  structurally CANNOT be a `blockShear` (`u↦u+φ`, det EXACTLY 1 = `hshear`): "R4 not in blockShear" is
-  FORCED by her math, a placement THEOREM, not a checklist choice. RLCT-safe (a unit Jacobian suffices —
-  Lemma 1 + the unit-Jacobian local iso); `M_{s,k}`-preserving (a UNIT vanishes on no exceptional divisor
-  ⟹ adds zero exceptional-coordinate power — the correct justification for a unit, superseding the loose
-  "det-1 adds nothing"). (Fixes (k)'s "unipotent (unit Jacobian)" conflation.)
+- **PLACEMENT THEOREM — FRAME-AWARE (arch-C-3 prep + seat-L4D refinement; sharpening (k)).** Distinguish
+  the MATRICES from the CoV, and the OFF-FRAME CoV from the NORMALIZED-pivot CoV. Lemma 2's `Q₁,Q₂` are
+  UNIPOTENT MATRICES (det 1); the induced VARIABLE CHANGE (`A₂↦−A₁⁻¹A₂, A₃↦−A₃A₁⁻¹, A₄↦C₄`) has Jacobian
+  `det(A₁⁻¹)^{rows+cols}` — a nonzero UNIT-NOT-1 OFF-FRAME (so the full CoV cannot be a `blockShear` there),
+  BUT at the NORMALIZED PIVOT (`A₁→1`, det=1 — where the fold READS, per pivot-normalization) it is DET-1
+  and IS a legitimate `blockShear` branch. So the correct theorem is: **"the full Lemma-2 CoV can't be a
+  shear OFF-FRAME; at the normalized frame its det-1 pieces (the `F₂` absorption, `= −A₂` there) ARE shear
+  branches."** (This CORRECTS the earlier "R4 not in blockShear / generator-level" — that was the off-frame
+  statement; the fold's normalized-frame read makes the pieces shear-legitimate.) RLCT-safe either way
+  (unit Jacobian suffices — Lemma 1 + local iso); `M_{s,k}`-preserving (a unit vanishes on no exceptional
+  divisor ⟹ zero exceptional power). THE WRINKLE (gate): `F₂ = −A₁⁻¹A₂` is polynomial/det-1 ONLY at the
+  normalized pivot; off-frame it carries `1/det(A₁)` (a division ⟹ regularity concern). seat-L4D confirms
+  the fold reads at the normalized pivot (its (b) ed1 trace); the cheerful-check gates it.
+- **LIKELY OUTCOME — the CHEERFUL close (pends pnp's faithful verdict + the cheerful-check):** absorption
+  preserves the product (invertible, compensated into the neighbor) ⟹ the StepInv close reverts to the
+  ORIGINAL pre-R4 EQUALITY (`child = parent∘σ`, `σ` a det-1 recoord) — NOT ideal-membership ⟹ NO M-bridge,
+  the (§8-render) +1 frontier CLOSES (census 0), r4Clear DISCARDED, `foldResid` UNTOUCHED. The whole fix
+  then lives in `canonNormalizationOf` as DET-1 SHEAR BRANCHES (direction + `i≥cleared` scope + `F₂`
+  absorption) — the most contained ending, which I rule CONTAINED (no fold-touch, no bridge, no
+  generator-level object, no escalation). If instead the off-frame regularity bites (fold reads off the
+  normalized pivot), that is a narrower regularity concern for my closer look, not a fold-order redesign.
 - **arch-C-3's DECOMPOSITION candidate — ACCEPTABLE IN PRINCIPLE (delta-read rules on the render report).**
   It keeps the interior Schur cross-term in the SHEAR (det-1, faithful for `C₄`'s interior, off the pivot
   cross) and has R4 add ONLY the pivot-row/col clearing (`F₂/F₃`, the unit-Jacobian part) at the generator
