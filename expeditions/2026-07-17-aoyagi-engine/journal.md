@@ -18626,3 +18626,18 @@ her step; divergence = a flag. The elder rules direction-now/render-gated (the s
 untouched" supersession text). CAPR unaffected — its INV becomes the invariant of the REAL
 recursion. Board: #74 created (supersedes #73's shape). ETA impact honest: the re-architecture
 adds ~1-3 days to the median; the payoff statement remains untouched throughout.
+
+## 2026-07-25 (~01:15) — the ∃q STRUCTURE completes the master gate (the SMALL-CENTER mechanism —
+one cause, three manifestations); CAPR's converged target BANKED (1388f6192)
+
+pnp's structural WHY: L4D's whole-product caution refuted at case11 specifically — the case11
+blow-up center is the SMALL run-block (not the whole layer), so the pivot factor is injected only
+into center-reading terms, never the coupling·extra monomials (exhibited: slot0 at pivot=0 = the
+coupling terms). The SAME small-center broke boostReady and the support cap — ONE mechanism, THREE
+manifestations (Deg1 / the cap / StepInv divisibility). Neither Deg1-free product-divisibility nor
+a raw per-node bridge exists; the global move is confirmed with its why. pnp turns to Q1-Q3 (the
+spine-bake gate). CAPR banked the converged target (accumulatedPivots + ledgerTarget + the
+containment as a tracked leaf + the proven specialization lemma) — representation-independent,
+zero churn, exactly as ruled; 5 named LIVE leaves on its lane, all statement-locked. L4D briefed
+with the structural spec (its re-points fold into the (i)-(iv) unit). Waiting: the elder's
+direction ruling + pnp's cleared-fold construction (the render gate) + Q1-Q3 (the bake gate).
