@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
+import DLNFibre.DLN.Aoyagi.MergeBoostSplit
 import DLNFibre.Core.Aoyagi.BlockDivision
 
 /-!
@@ -376,8 +377,9 @@ Statement-identical to `MonumentAtlas.case1_preserves_stepInv`; the controller s
 because the divisibility engine it consumes lives downstream of `MonumentAtlas`. The dispatch is
 verified correct; the two frontier obligations are named holes (elder-ruling-pending). -/
 
-/-- **FRONTIER OBLIGATION — case11 δ=1 BOOST-READINESS** (Codex xhigh 2026-07-22; RULING B — statement
-blessed, proof TRACKED-OPEN). For a real case1(1) edge at δ=1, the parent residual is `Deg1SupportedOn`
+/-- **case11 δ=1 BOOST-READINESS** (Codex xhigh 2026-07-22; RULING B — statement blessed). DELEGATED to
+`realBranch_boostReady_case11'` (MergeBoostSplit) — proven via the content lemma + the algebraic assembly;
+the wall's ONLY remaining debt is `foldResid_case11_mergeBoostSplit_canon`. For a real case1(1) edge at δ=1, the parent residual is `Deg1SupportedOn`
 the LEDGER (boost) center `ed.center = {pivot} ∪ partial-block` — even though its GEOMETRIC support
 `supportAt` is the larger full layer block: the untouched (`support ∖ center`) terms carry `u_pivot` in
 their non-dominant b-chain coefficient `b_i/b_1`. Blessed in place; derives from the `CanonicalSchurStep`
@@ -393,9 +395,10 @@ theorem realBranch_boostReady_case11 (d : Fin (N + 1) → ℕ)
     (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p)) :
-    Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
-  -- map: B-derived-boostReady-case11 (δ=1 boost-center Deg1 via b-chain; TRACKED-OPEN, elder-pending)
-  sorry
+    Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) :=
+  -- DELEGATED to the proven primed variant (MergeBoostSplit): the wall's ONLY remaining debt is the
+  -- content lemma `foldResid_case11_mergeBoostSplit_canon` (the assembly + the reduction are kernel-proven).
+  realBranch_boostReady_case11' d e he ed hδ hc11 hbranch hslot
 
 /-- **Conjunct A (divisibility ∃q) of the wall — dispatched.** δ=0 → `stepInv_child_delta0`
 (case-generic pullback, BANKED); δ=1 case12 → `stepInv_child_delta1_append` fed

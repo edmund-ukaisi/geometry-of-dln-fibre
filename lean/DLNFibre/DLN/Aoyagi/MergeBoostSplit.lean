@@ -1,4 +1,4 @@
-import DLNFibre.DLN.Aoyagi.Case1Wire
+import DLNFibre.DLN.Aoyagi.MonumentAtlas
 
 /-!
 # `DLNFibre.DLN.Aoyagi.MergeBoostSplit` — the case-1(1) merge boost-split (WALL #38, L2)
