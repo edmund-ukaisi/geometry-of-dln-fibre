@@ -86,19 +86,39 @@ def run():
     row_exclusion_question(d)
 
 def no_under_admission():
-    """The col-restriction {col=cleared} drops EXACTLY the phantom (off-diagonal-col) charts — NO legitimate
-    chart lost. Claim: EVERY off-diagonal-col birth (col b>cleared, b<wMU) eventually RE-CLEARS col b (the
-    counter reaches cleared=b before the layer rolls over at wMU, forcing a pivot at col b again) ⟹ every
-    off-diagonal-col birth is a phantom ⟹ dropping them is not under-admission."""
+    """CORRECTED (foldB-phantom was too narrow — some off-diagonal-col branches have foldB≠0, e.g.
+    (3,3,3) [(0,2,1),(0,1,2),(0,2,2)]). The LOAD-BEARING criterion is COMPLETENESS: a legitimate resolution
+    branch clears each of the wMU columns EXACTLY ONCE (the block is fully reduced ⟹ a valid leaf). The
+    counter center at step k requires pivot col ≥ k; a complete branch's pivot-cols are a permutation of
+    {0..wMU-1} with col_k ≥ k, which FORCES col_k = k (the diagonal-col, row-fan). So COMPLETE ⟺ col=cleared;
+    every off-diagonal-col branch STRANDS a column (incomplete, no valid leaf). Hence {col=cleared} drops
+    EXACTLY the incomplete branches — NO legitimate (complete) chart lost."""
+    import itertools
+    from capstone_locus_core import center_case2
     print("─" * 88)
-    print("NO-UNDER-ADMISSION: every off-diagonal-COL birth (col b>cleared, b<wMU) re-clears col b later:")
-    for d in [(3, 3, 3, 3), (3, 4, 2, 2)]:
-        S = 0; W = wmu(d, S)
-        print(f"  d={d}, layer {S}, wMU={W}: for a birth at col b>cleared, the counter reaches cleared=b<{W}")
-        for b in range(1, W):
-            print(f"    birth col b={b} at cleared<{b}: counter advances to cleared={b} (< wMU {W}, before rollover)")
-            print(f"      ⟹ the forced center at cleared={b} offers col {b} again ⟹ RE-CLEAR ⟹ phantom.")
-        print(f"    ⟹ ALL off-diagonal-col births at layer {S} are phantoms; {{col=cleared}} drops only phantoms.")
+    print("NO-UNDER-ADMISSION (completeness criterion): legitimate = clears each column once (valid leaf).")
+    ok = True
+    for d in [(3, 3, 3), (3, 4, 2, 2)]:
+        N, u = dims_coords(d); W = wmu(d, 0)
+        centers = [sorted({c for (_, r, c) in center_case2(d, 0, j)}) for j in range(W)]
+        n_complete = n_off = 0; complete_eq_coldiag = True; off_all_strand = True
+        for cols in itertools.product(*centers):
+            complete = (sorted(cols) == list(range(W)))
+            coldiag = all(cols[k] == k for k in range(W))
+            if complete:
+                n_complete += 1
+                if not coldiag: complete_eq_coldiag = False
+            if not coldiag:
+                n_off += 1
+                if complete: off_all_strand = False
+        ok &= complete_eq_coldiag and off_all_strand
+        print(f"  d={d}, wMU={W}: {n_complete} COMPLETE col-sequences, {n_off} off-diagonal-col ones")
+        print(f"    COMPLETE ⟺ col=cleared (row-fan): {complete_eq_coldiag};  "
+              f"every off-diagonal-col branch STRANDS a col (incomplete): {off_all_strand}")
+    print("  ⟹ {col=cleared} drops EXACTLY the incomplete (stranded) branches; NO legitimate chart lost.")
+    print("    (off-diagonal-col births are NOT legitimate cover charts — they never reach a valid leaf;")
+    print("     the column-orbit is recovered by the #86B σ-transport, not by explicit charts.)")
+    assert ok, "COMPLETE must equal col=cleared, and every off-diagonal-col branch must strand a column"
 
 def row_exclusion_question(d):
     """Aoyagi D_J excludes the pivot ROW too. Does the (1) edit need ROW-exclusion? Test: an off-diagonal-ROW
