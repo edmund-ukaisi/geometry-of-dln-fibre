@@ -17982,3 +17982,21 @@ pre-stages the SPECIFY (defs + re-stated chain + bridge statement, sorried, stat
 the tripwire lesson) with proofs GATED on pnp's (iii) + an elder statement-delta; the fresh
 formaliser targets the new content lemma on pnp's certificate. LL's two renders re-target the
 cleared-(D) contract when the chain lands. Payoff/destination unchanged throughout.
+
+## 2026-07-24 (~10:50) — CROSSING: pnp's correction (5aa7dadad) REFUTES §7's bridge premise;
+amendment round commissioned; the SPECIFY split into stable/held halves
+
+pnp's exact Gröbner (nearly-oversold self-correction, owned): ⟨sourceClearedResid⟩ ≠ ⟨foldResid⟩ —
+the fix-object is the raw fold RESTRICTED to {coupling=0}, a hyperplane restriction, NOT regular,
+NOT Lemma-1-neutral. §7's item-4 bridge (ideal-equality) is refuted as drafted; my closing-contract
+item (ii) would have simply failed. THE REAL OPEN ITEM: RLCT-soundness of the restriction —
+layer-0 reuse is covered (coupling = the GL_{d₀} gauge, corner ruling #61/#62); INTERMEDIATE-layer
+reuse ((2,2,2,2,2): layer-2 case11 reusing a layer-1 divisor) is OPEN — the gauge argument doesn't
+obviously transfer. AMENDMENT COMMISSIONED (elder §7.5, paper-first): what justifies HER
+intermediate-layer clear — (a) inside Lemma 1 (then our render of "the clear" differs from hers —
+find the delta), (b) CHART/COVER structure (the case11 chart eliminates the coupling because other
+branches of the fan handle coupling≠0 — then the bridge is COVER-MEMBERSHIP, and the banked
+pnp-fan machinery is the relevant asset), or (c) a misread at pp.15-18. L4D's SPECIFY split:
+stage the stable half (the object + (D)-statements + assembly wiring); HOLD the bridge + append
+re-point + LL contract. pnp holds. The positive bound stands: predicate + assembly reusable; only
+the bridge's shape is open.
