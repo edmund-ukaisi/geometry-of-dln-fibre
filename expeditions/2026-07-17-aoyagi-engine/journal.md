@@ -17728,3 +17728,16 @@ GeoInvVal/GeoAtlasTransfer ← ChartBridgeFaithful ← EngineObligations ← Eng
 + the R1 hypothesis-lift mechanism as the fallback if the wholesale prune hits an unexpected
 consumer. Crossing-hygiene note to seats: assignments older than ~30 min get a "still current?"
 ping before plan-design (2nd crossing on this lane today).
+
+## 2026-07-24 (~04:15) — THE PINNED SPINE LANDED (L4D atomic unit @ 5f742948e); two pre-merge
+reviews fired; L4D resumes the content-lemma grind
+
+The idiom ruling rendered: 7 statements pinned (the ruling's 6 + exists_coreResolution_via_monument'
+— L4D's proceed-on-silence extension with exact footprint: it carried (he0,he_lin), calls site 6,
+no callers of its own; the REGISTERED payoff untouched). Gates green on the lane (9013 exit-0;
+cordon; forced-axiom SETS IDENTICAL pre/post-pin — the pin is proof-theoretically free, exactly as
+a ladder-restate should be). Transports untouched. he-after-e throughout. Reviews fired in
+parallel: L3T3 (its module's case1'' hunk, diff-level) + elder (shape conformance + bless/amend
+the 7th site). ON BOTH GREEN: controller merges the spine (own gates) → LL's lane merges next
+(order as pinned) → the wall-wiring + content lemma continue on the same L4D lane. L4D back on
+the capstone grind; the shaping fork (case11-only+sibling vs unified extra=∅) is its in-grind call.
