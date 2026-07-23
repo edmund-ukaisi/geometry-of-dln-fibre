@@ -20730,3 +20730,44 @@ consult) — I stood pnp-transport down to avoid duplication; the decorrelation 
 **Status.** V3 re-open CLOSED (A). #92 render = termwise chain consuming hcanon (seat-KILL,
 unblocked, no strict-transform). The ONE open cross-check remains the thread-reaches probe
 (expected clean; elder armed for (a)/(b)). #92 subject corrected (V3 ≠ deep-ideal-membership).
+
+## 2026-07-23 (~21:10 UTC) — V3 render-shape REFINED (pnp-transport decorrelated, controller re-ran 31be65e54 exit 0): (A) termwise but MULTI-LAYER product-chain descent, NOT the single-layer simp I claimed. Ruling unchanged; my "simp chain" over-simplification corrected.
+
+pnp-transport did an INDEPENDENT decorrelated re-derivation (capstone_kill_multilayer.py on
+expedition/aoyagi-engine-L4C @ 31be65e54; controller extracted + re-ran, exit 0) and refined the V3
+answer materially:
+
+- V3 is (A) trivial-termwise (NO strict-transform, NO Q₁⁻¹, NO ideal-witness combination) — BUT
+  **MULTI-LAYER**. seat-KILL's Q1 gap is real and NOT vacuous on a WIDE pairing layer: couplingClear
+  zeroes below-diagonal A_S(c,col<wmu(S+1)) but NOT the UNCLEARED cols A_S(c,col≥wmu(S)), so a c_m
+  monomial reading only uncleared A_S cols would survive a SINGLE-LAYER argument.
+- The rescue: the uncleared A_S col pairs DEEPER in coreGen=∏A (A_S(c,col≥wmu(S)) multiplies
+  A_{S−1}'s row [that col] = a below-diagonal coupling at layer S−1; telescopes down, terminating
+  before layer 0 since wmu(0)=d[0] ⟹ no uncleared cols at layer 0). So every c_m monomial carries a
+  couplingCoords factor at SOME layer L≤S. Re-run: coupling layers used = {0,1} on
+  (2,3,3,3)/(2,4,4,4)/(2,4,3,3) (genuinely multi-layer).
+- RENDER SHAPE: the last-clear V3 sub-lemma is NOT "foldResid reads only the cleared sub-block at
+  layer S" (single-layer, FALSE on wide layers). It IS "the escaped-col coeff, read through ∏A, has
+  every monomial carrying an ACCUMULATED all-layer couplingCoords factor" — a PRODUCT-CHAIN / LAYER
+  DESCENT induction (matches foldResid_layerHomogeneous'). GUARD (pnp-transport): clear the
+  ACCUMULATED all-layer couplingCoords, NOT the current layer alone. seat-KILL's Z(p)/escapedBelow
+  ALREADY accumulates over all layers ≤ S_p — structure correct; only the last-clear step needed the
+  multi-layer framing. Relayed to seat-KILL (timed before it renders the V3 step — it was HOLDING).
+
+**CALIBRATION (banked — controller over-optimism, twice, decorrelated-corrected).** I twice
+under-specified the KILL render difficulty: first echoing pnp's "trivial termwise", then
+"simp chain, no difficulty bump." seat-KILL (fresh render seat) flagged the concrete uncleared-cols
+gap; I routed a decorrelated re-derivation (did NOT collapse to the earlier mode — that instinct was
+right); pnp-cap confirmed (A)-termwise and pnp-transport refined it to MULTI-LAYER, correcting my
+"simp chain" to the honest product-chain-descent shape — which is back at #92's ORIGINAL
+≥foldResid_layerHomogeneous' scale (my "no difficulty bump" was the deviation, not the estimate).
+LESSON: a controller "this render is cheap" headline is the visible-progress instinct applied to
+difficulty; the corrective is the render seat's skepticism + a decorrelated re-derivation + re-running
+BOTH scripts (8975e003b + 31be65e54). The (i) ruling is unchanged and REINFORCED (full-diagonal
+exact-algebra load-bearing); only my render-cost framing was wrong. Both pnp seats now agree; math
+settled.
+
+**Status.** V3 SETTLED: (A) termwise, multi-layer, product-chain descent, accumulated all-layer
+couplingCoords. #92 render = layer-descent induction (original scale), seat-KILL unblocked with the
+correct shape. #92 subject + elder + seat-KILL corrected. The ONE open cross-check remains the
+thread-reaches probe (elder armed (a)/(b)).

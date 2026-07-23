@@ -1106,3 +1106,15 @@ verification read BEFORE `git add` can miss content the co-author appends betwee
 the commit provenance was mis-stated. FIX: when committing a doc a live co-author may still be editing,
 verify with `git diff --cached` AFTER staging (or full `git diff`, not truncated), and let the commit
 message name what's actually staged.
+
+## 2026-07-23 — controller over-optimism on render difficulty ("simp chain"), decorrelated-corrected
+I twice under-specified the #92 KILL V3 render: "trivial termwise" then "stays a simp chain, no
+difficulty bump." A fresh render seat (seat-KILL) flagged a concrete gap (escaped coeff reads uncleared
+cols couplingClear misses); I routed a decorrelated re-derivation rather than collapse to the earlier
+answer (correct instinct). pnp-cap confirmed (A)-termwise; pnp-transport's independent re-derivation
+(31be65e54, re-ran exit 0) refined it to MULTI-LAYER product-chain descent (single-layer kill FALSE on
+wide pairing layers) — back at #92's original ≥foldResid_layerHomogeneous' scale. The math conclusion
+never changed (KILL Gröbner-true, full-diagonal load-bearing); only my render-COST framing was wrong.
+LESSON: "this render is cheap" is the visible-progress instinct applied to difficulty; a difficulty
+downgrade is a claim to verify (render-seat skepticism + decorrelated re-derivation + re-run the
+scripts), not a headline to bank. Damp render-optimism the way we damp result-optimism.
