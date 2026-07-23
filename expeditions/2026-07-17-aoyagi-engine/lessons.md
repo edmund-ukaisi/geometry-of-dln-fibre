@@ -275,3 +275,19 @@ formalisation-fidelity project the prior is strong: most statement defects are u
 of resolved source content, and the source is the cheapest, most decisive instrument. Composition:
 def-fidelity gate (charter §3) governs BAKE time; paper-first diagnosis governs DEFECT time.
 (Charter fold-in is the elder's, flagged 2026-07-23.)
+
+## Def-facts in rulings carry a def-verification or an "unchecked inference" flag — the reflexive def-fidelity lesson (elder-authored root cause, 2026-07-23)
+
+The ruling's first §2 stated the frame mechanism BACKWARDS ("foldResid's argument is post-shear;
+the birth-corner coordinate is frame-correct"). Root cause, in the elder's own words: the ruling
+asserted a DEF-LEVEL fact from the elder's model of the fold (it composes through pathMap), NOT
+from a def-verification; seat-L4D's foldG_eq_pathMap check showed PRE-shear (a combination, not
+a coordinate). The charter §3 def-fidelity gate applies REFLEXIVELY to the adjudicator: a ruling
+that asserts a def-level fact must cite the def-check, or explicitly flag the assertion as
+INFERENCE-TO-BE-CHECKED. Convergence is not verification — the elder's intuition and the
+post-shear reading agreed with each other; only the third, MECHANICAL instrument (the def-trace)
+broke the tie. Same family: the controller pairing lesson (artifact-first, brief-second —
+commit amendments BEFORE briefs quote the artifact), which governs the propagation timing; this
+one governs the assertion's provenance. The ruling's CONCLUSIONS survived (F-value/combination
+was independently right); only the stated mechanism was backwards — caught before any statement
+locked, by the compounding holds.
