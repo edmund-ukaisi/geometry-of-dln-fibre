@@ -16795,3 +16795,26 @@ If the lean survives the verdict + trace, the arc's ending is remarkable: three 
 catches, and the total Lean diff = one def's branches re-authored (sign, scope, one new
 det-1 branch) + one support set widened — census unchanged, no new machinery, her Lemma 2
 carried entirely by the shear architecture the fold always had.
+
+## 2026-07-23 (~10:00) — THE VERDICT: SURVIVES (pending the D_J-only fork); F₂ CONFIRMED by direct contrast; THE SIGN WRINKLE closes the arc's deepest loop
+
+pnp's decisive Gröbner (banked 9f4e7efc0, controller re-ran exit-0; Codex corroborated):
+- SURVIVES: uncleared ∈ ⟨r4Clear'd⟩ FAILS on E_J col-0 through branch-(ii) — both signs,
+  scoped AND unscoped, all three witnesses (D_J passes everywhere). The pure-zero truncation
+  confirmed unsound for an all-entries ideal close — the elder's do-not-zero-but-absorb
+  diagnosis exact.
+- F₂ CONFIRMED by the four-way contrast: (A) full faithful = uncleared IDENTICALLY (TRUE);
+  (B) render-as-is FALSE; (C) −γ + Q₂⁻¹ FALSE; (D) +γ + Q₂⁻¹ TRUE. The faithful form = the
+  +γ recoord PAIRED with the Q₂⁻¹ input compensator.
+- THE SIGN WRINKLE (to the elder's ruling): the bridge regime needs +γ — THE ORIGINAL BAKED
+  DIRECTION, now properly paired — while §8(m)'s −γ was the right fix for the UNPAIRED regime
+  (it cancels the inherent term when no compensator exists). The deep loop closes: the
+  original def's error was never the direction alone — it was the UNPAIRING; the certificate's
+  (A₁·Q₁⁻¹)·(Q₁·A₀) conjugation was her mechanism all along. The elder's final-def ruling
+  pins: sign (+γ paired), the scope bound's status in the paired regime, and the paired
+  form's block-form/boostReady re-verification.
+- THE FORK (urgent, at seat-L4D): if StepInv is D_J-ONLY (E_J via foldB), the failing entries
+  are outside its claim ⟹ pure-zero SOUND as rendered, bake as-is — total deflation. If
+  ALL-ENTRIES ⟹ §7 fires + the F₂ ruling proceeds. One def-read decides.
+
+#54 completed. The elder rules on seat-L4D's read; every disposition remains pre-staged.
