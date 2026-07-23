@@ -354,3 +354,62 @@ lemma B2, det-1, multiple couplings, wide+deep). L4D — render `sourceClearedRe
 measure-compatibility dissolves under read-on-`C`; the merged recursion (F, StepInv ideal) untouched. This
 is the cleanest form yet — a genuine det-1 CoV, RLCT-preserving, = Aoyagi's chart transition — and it closes
 the bridge question modulo pnp's `ψ_gen` construction.
+
+---
+
+## §7.8 CONFIRMATION — Option 2 (spine on `C`); the append shape; the measure-compat assignment (render-brief freeze)
+
+**(1) THE WIRING FORK — RULE Option 2′ (the controller's cleaner resolution): FOLD DEF UNCHANGED, the
+READ-OFF runs on `C`.** The fork's Option-2 economy (reuse the `Deg1SupportedOn`/`MergeBoostSplit`/clean-three
+machinery on the cleared object) is obtained WITHOUT superseding "recursion untouched": the fold/recursion
+def stays on the raw `F` (merged, census-0, untouched); only the RLCT **read-off** (boostReady / `M_{s,k}`)
+runs on `C = sourceClearedResid`, with `ψ` the proven det-1 RLCT-bridge `F ↔ C`. Both economy AND
+recursion-untouched are satisfied (controller-confirmed; no operator escalation needed). It is **MORE
+faithful**, not a shortcut: §7.6/§7.7 established HER read-off is on the cleared local coordinate
+(`C = diag(b)·[E_J|D_J]`, p.22), so reading on `C` IS reading what Aoyagi reads; the raw `F` was the §9 Lean
+artifact. Option 1 (raw spine + conjugated polynomial center) is both more expensive and LESS faithful.
+Ruling: **Option 2′**, subject to the three provisos (payoff character unchanged; `ψ`-bridge PROVEN via the
+landed det-1-CoV machinery, never cited; fidelity her own p.15/p.22) — all three hold.
+
+**(2) THE APPEND SHAPE — `C` over the ORIGINAL center, NOT the conjugated-center transport.** Under Option
+2 the append (`stepInv_child_delta1_append` / `foldResid_stepMap_eq_pivot_mul`) consumes `Deg1SupportedOn`
+over the ORIGINAL coordinate center on `C` — the existing hard constraint is met verbatim. The
+conjugated-center transport (`ψ` moves `I ↦ ψ(I)`, append consumes the transported edge) is **Option 1's**
+shape and is NOT taken. So: the center-conjugation is NOT blessed as the append re-wire; Option 2's
+original-center-on-`C` is.
+
+**(3) THE `ψ`-BRIDGE STATEMENT + B2 content.** The bridge lemma: `rlctGlobal(∑F²) = rlctGlobal(∑C²)` via the
+det-1 CoV `ψ` (`F∘ψ = C`, `det Dψ = 1`), by the landed
+`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul` machinery. Its CONTENT is exactly pnp's `ψ_gen`
+(B2): the existence of the det-1 straightening for every real case11 branch (single + multi-coupling). So
+**B2/`ψ_gen` suffices as the bridge's content**; the RLCT-preservation is then the landed det-1-CoV fact,
+not new analysis.
+
+**(4) THE MEASURE-COMPATIBILITY CAVEAT — REAL, and its disposition ASSIGNED.** Yes, it is a real potential
+obligation: our blow-up charts DO carry exceptional-divisor (accumulated-Jacobian) weights, and `ψ` shifts
+an exceptional coordinate (`z = e₂ ↦ z + 2xy`), so a *post-resolution* `ψ` applied to a weighted in-chart
+integral would transform the weight (`W ↦ W∘ψ⁻¹`, non-normal-crossing) and need a singular-order check. **It
+DISSOLVES iff `ψ` lifts to a PARAMETER-SPACE (pre-resolution) det-1 CoV** — which it does on pnp's own
+framing: `ψ` = the unipotent `Q₁` matrix conjugation on the `A_i`, a det-1 operation on the *parameters*,
+so it bridges `rlctGlobal` of the LOSS **intrinsically** (before any chart weight), and the accumulated
+weight stays internal to `C`'s own resolution (Aoyagi's `M_{s,k}`, p.22) — no weighted-transport is invoked.
+**ASSIGNMENT:** pnp owes a certificate item — confirm `ψ_gen` lifts to a parameter-space det-1 CoV (the `Q₁`
+conjugation on the `A_i`), so the bridge is `rlctGlobal(loss)`-level (det-1 CoV of the loss), NOT an in-chart
+weighted transport. The render seat consumes that as the det-1-CoV-of-`rlctGlobal` bridge lemma (landed
+machinery). **Strong prior: it lifts** (`ψ` IS the `Q₁` matrix conjugation). **RE-OPEN trigger:** if pnp
+finds `ψ_gen` does NOT lift to the parameter space (genuinely post-resolution only), the transported-weight
+singular-order check becomes a real pnp/render obligation and I fire a decorrelated Codex on it. This is the
+one item the render brief must carry as a named certificate obligation (not silently assumed).
+
+**(5) "RECURSION UNTOUCHED" (§7.3) — PRESERVED LITERALLY (controller's Option-2′), not superseded.** The
+fold/recursion def stays on the raw `F` (merged, `StepInv`, census-0 — untouched); the `F₂` work stands. Only
+the RLCT **read-off** runs on `C`, bridged by the det-1 `ψ` (`rlctGlobal(F) = rlctGlobal(C)`). So the earlier
+"the spine computes `C` / recursion-untouched superseded" phrasing is withdrawn — the controller's cleaner
+split keeps the fold def unchanged and moves only the read-off to `C`. Both the Option-2 economy (machinery
+reused on `C`) and recursion-untouched hold; the operator escalation the fork seemed to need is not required.
+
+**Net (render-brief freeze):** Option 2; append on `C` over the original center; the `ψ`-bridge =
+`rlctGlobal(∑F²)=rlctGlobal(∑C²)` with `ψ_gen` (B2) as content; the measure-compat caveat is a NAMED pnp
+certificate obligation (confirm `ψ_gen` lifts to a parameter-space det-1 CoV — expected — else re-open +
+Codex); "recursion untouched" → the spine computes `C`, honestly superseded. Gates before render: this §7.8
++ pnp's full `ψ_gen` (in flight).
