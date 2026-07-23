@@ -288,17 +288,20 @@ theorem realBranch_appendResidDescent_fresh_sourceCleared (d : Fin (N + 1) → �
       (foldRegion d (canonFlatten d) (p.extend ed)) := by
   sorry
 
-/-- **The case11 child's run-length is capped by the layer's running-min width**
-`s.cleared + sc.esubst.runLen ≤ widthMinUpto d s.layer`. From the oracle's case-1 eligibility: the merge
-target `τ = s.divTilde f` satisfies `s.cleared + 1 ≤ τ` and `τ + 1 ≤ widthMinUpto d s.layer` (the filterMap
-guard), and `runLen = τ − s.cleared`, so `s.cleared + runLen = τ < widthMinUpto d s.layer`. Dispatches the
-`conOracle` decision (terminal / rollover / case2 give `sc.ecase ≠ case11`; case1's merge child carries the
-bound). Mirrors `MultiAffineStepWire.conOracle_case11_mergeIdx_lt`'s dispatch (re-derived here — that lemma
-is import-downstream of this module). -/
-theorem conOracle_case11_runLen_bound (d : Fin (N + 1) → ℕ) (s : ConState N)
+/-- **A case11 oracle child carries its merge-index bound and run-length cap.**
+`sc.esubst.mergeIdx < s.numDiv` (the reused divisor exists) AND
+`s.cleared + sc.esubst.runLen ≤ widthMinUpto d s.layer` (the run fits the layer's running-min block).
+From the oracle's case-1 eligibility: the merge target `τ = s.divTilde f` satisfies `s.cleared + 1 ≤ τ`
+and `τ + 1 ≤ widthMinUpto d s.layer` (the filterMap guard), `mergeIdx = f`, and `runLen = τ − s.cleared`,
+so `s.cleared + runLen = τ < widthMinUpto d s.layer`. Dispatches the `conOracle` decision (terminal /
+rollover / case2 give `sc.ecase ≠ case11`; case1's merge child carries both). Feeds the containment's leg-2
+(the run-block ⊆ blockCoords) and ROOT's boost-vacuity (`conRoot.numDiv = 0` refutes a case11 child).
+Mirrors `MultiAffineStepWire.conOracle_case11_mergeIdx_lt`'s dispatch (re-derived — that lemma is
+import-downstream of this module). -/
+theorem conOracle_case11_data (d : Fin (N + 1) → ℕ) (s : ConState N)
     (sc : StepChild d s) (hsc : sc ∈ (conOracle d s).stepChildren)
     (hc11 : sc.ecase = StepCase.case11) :
-    s.cleared + sc.esubst.runLen ≤ widthMinUpto d s.layer := by
+    sc.esubst.mergeIdx < s.numDiv ∧ s.cleared + sc.esubst.runLen ≤ widthMinUpto d s.layer := by
   by_cases h1 : N ≤ s.layer
   · have horacle : conOracle d s = oracleTerminal d s := by unfold conOracle; rw [dif_pos h1]
     rw [horacle] at hsc
@@ -360,9 +363,21 @@ theorem conOracle_case11_runLen_bound (d : Fin (N + 1) → ℕ) (s : ConState N)
           simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
             List.not_mem_nil, or_false] at hsc
           rcases hsc with rfl | rfl
-          · show s.cleared + (target - s.cleared) ≤ widthMinUpto d s.layer
-            omega
+          · exact ⟨f.isLt, by show s.cleared + (target - s.cleared) ≤ widthMinUpto d s.layer; omega⟩
           · exact absurd hc11 (by simp)
+
+/-- **The root emits no case11 child** (ROOT boost-vacuity): `conRoot.numDiv = 0`, so a case11 oracle
+child would need `mergeIdx < 0` (`conOracle_case11_data`) — impossible. Powers the ROOT base of
+`sourceClearedInv_holds`: the boost-ledger conjunct quantifies over real case11 extensions of the root,
+of which there are none, so it is vacuous (at `μ = 0`). -/
+theorem conOracle_conRoot_no_case11 (d : Fin (N + 1) → ℕ) (sc : StepChild d (conRoot : ConState N))
+    (hsc : sc ∈ (conOracle d (conRoot : ConState N)).stepChildren) :
+    sc.ecase ≠ StepCase.case11 := by
+  intro hc11
+  have hlt := (conOracle_case11_data d conRoot sc hsc hc11).1
+  have h0 : (conRoot : ConState N).numDiv = 0 := rfl
+  rw [h0] at hlt
+  exact absurd hlt (Nat.not_lt_zero _)
 
 /-- **The hard containment `ed.center ⊆ ledgerTarget`** (§12 / L4D's hard constraint — the piece that lets
 IgnoresCoords-`ledgerTarget` specialize to IgnoresCoords-`ed.center` at the read-off). At a case11 edge the
@@ -399,7 +414,7 @@ theorem case11_center_subset_ledgerTarget (d : Fin (N + 1) → ℕ)
     obtain ⟨q, hq, rfl⟩ := hrow
     rw [Finset.mem_filter] at hq
     obtain ⟨-, hlayer, -, -, hqrun⟩ := hq
-    have hbound := conOracle_case11_runLen_bound d p.conState sc hsc hsce
+    have hbound := (conOracle_case11_data d p.conState sc hsc hsce).2
     rw [supportAt, if_pos hcl, blockCoords, Finset.mem_image]
     exact ⟨q, by rw [Finset.mem_filter]; exact ⟨Finset.mem_univ _, hlayer, by omega⟩, rfl⟩
 
