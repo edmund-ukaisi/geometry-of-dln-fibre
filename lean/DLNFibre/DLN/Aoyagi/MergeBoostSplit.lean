@@ -1,18 +1,24 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
+import DLNFibre.DLN.Aoyagi.SourceClearedResid
 
 /-!
 # `DLNFibre.DLN.Aoyagi.MergeBoostSplit` — the case-1(1) merge boost-split (WALL #38, L2)
 
-The wall `realBranch_boostReady_case11` produces `Deg1SupportedOn (foldResid p) ed.center`. At a merge
+The wall `realBranch_boostReady_case11` produces `Deg1SupportedOn … ed.center` (property (D)). At a merge
 the center is `{reused pivot e₂} ∪ partialBlock`, and the residual's dependence on the *extra* block
 (supportAt ∖ center) factors through the single reused-pivot coordinate `e₂` — the b-ledger content, in
 the render carried by the concrete residual (Codex route (b), `codex/l2-mergeboostsplit-route.md`).
 
+OBJECT RE-SHAPE (elder ruling §7/§7.8, Option 2′): property (D) is FALSE on the raw shears-only
+`foldResid` and TRUE on the **source-cleared** chart residual `sourceClearedResid` (`SourceClearedResid.lean`).
+So the content lemma + the wall now target `sourceClearedResid`; the recursion `foldResid` is UNCHANGED.
+
 Split into two: `MergeBoostSplit` (the predicate) + `MergeBoostSplit.deg1SupportedOn` (the purely
-algebraic assembly, PROVEN here) + the concrete content lemma `foldResid_case11_mergeBoostSplit_canon`
-(the canonFlatten boost-split — the capstone, LIVE frontier). The content lemma is canonFlatten-stated
+algebraic assembly, PROVEN here, REUSABLE UNCHANGED on any residual) + the concrete content lemma
+`foldResid_case11_mergeBoostSplit_sourceCleared` (the canonFlatten boost-split OF `sourceClearedResid` —
+the capstone, LIVE frontier; certificate §4 b-ledger induction). The content lemma is canonFlatten-stated
 (idiom-independent): the ∀e form is FALSE (route-β / KILLED-BY-e); it consumes the concrete `coreGen`
-at `e = n d`, not `hslot`. -/
+at `e = canonFlatten d`, not `hslot`. -/
 
 namespace DLNFibre.DLN.Aoyagi
 
@@ -86,7 +92,30 @@ theorem MergeBoostSplit.deg1SupportedOn {nR : ℕ} (d : Fin (N + 1) → ℕ)
       · simp only [if_neg hie, if_pos hip]; exact hαi i w hw m hm t
       · simp only [if_neg hie, if_neg hip]
 
-/-- **The content lemma** (LIVE frontier, the capstone) — the actual `foldResid` at `e = canonFlatten d`,
+/-- **The content lemma** (LIVE frontier, the capstone) — the SOURCE-CLEARED chart residual
+`sourceClearedResid d p` at a real case-1(1) merge branch satisfies `MergeBoostSplit` with
+`e₂ = canonPivotOf` (the reused divisor's birth corner), `part = supportAt ∩ ed.center`,
+`extra = supportAt ∖ ed.center`. Certificate §4 b-ledger induction on the concrete `foldResid` recursion
+carried on `sourceClearedResid`: ROOT = `coreGen` (`∏A` entries, `coreGen_layerHomogeneous'`), δ=1
+strict-transform transport (a fresh exceptional born), δ=0 pullback transport, case11 read-off. NOT from
+`hslot`, NOT ∀e (canonFlatten-pinned). Property (D) is FALSE on the raw `foldResid` (the (2,2,2,2) `u₀₁₀`
+obstruction) and TRUE here — the ancestor coupling is cleared, so the `extra` block factors through the
+single `e₂`. Wires DIRECTLY into `MergeBoostSplit.deg1SupportedOn` (`∀ k ∈ extra, k ∉ ed.center`
+automatic). case11-only (the case12/case2 born-unit is a sibling fact, Consumer 4). -/
+theorem foldResid_case11_mergeBoostSplit_sourceCleared (d : Fin (N + 1) → ℕ)
+    {p : TreePath d} (ed : TreeEdge d p)
+    (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    ∃ e₂ ∈ ed.center, ∃ part extra : Finset (Fin (flatDim d)),
+      part ⊆ ed.center ∧ e₂ ∉ part ∧ (∀ k ∈ extra, k ∉ ed.center) ∧
+      MergeBoostSplit d (sourceClearedResid d p) e₂ part extra ed.center
+        (foldRegion d (canonFlatten d) p) := by
+  -- map: B-wall-mergeboostsplit-content-sourceCleared (certificate §4 b-ledger induction)
+  sorry
+
+/-- **[FOSSIL — SUPERSEDED-BY `foldResid_case11_mergeBoostSplit_sourceCleared`; retained for statement
+provenance]** The OLD raw-object content lemma (REFUTED-AS-STATED — see the banner below; consumer-less
+after the wall re-point). Was: the actual `foldResid` at `e = canonFlatten d`,
 a real case-1(1) merge branch, satisfies `MergeBoostSplit` with `e₂ = canonPivotOf`,
 `part = supportAt ∩ ed.center`, `extra = supportAt ∖ ed.center`. Concrete `coreGen`-at-merge induction
 (birth introduces e₂ / suffix transport preserves / threshold split); NOT from `hslot`, NOT ∀e.
@@ -115,12 +144,14 @@ theorem foldResid_case11_mergeBoostSplit_canon (d : Fin (N + 1) → ℕ)
   -- map: B-wall-mergeboostsplit-content (concrete canonFlatten coreGen-at-merge; the capstone)
   sorry
 
-/-- **The wall, wired (primed variant).** `= Case1Wire.realBranch_boostReady_case11` (statement-identical,
-same pinned signature), PROVEN via the content lemma + the algebraic assembly. Lives here (downstream of
-`Case1Wire`) because it consumes `MergeBoostSplit`; the controller swaps `Case1Wire`'s wall `sorry` to
-`:= realBranch_boostReady_case11' …` at integration (the primed-leaf pattern, cf. `case1_preserves_stepInv'`).
-Its ONLY remaining frontier is `foldResid_case11_mergeBoostSplit_canon` — the assembly + the reduction
-are closed. `hslot` is unused: the case11 route derives from the concrete generator, not the carried slot. -/
+/-- **The wall, wired (primed variant) — RE-POINTED to `sourceClearedResid` (Option 2′, ruling §7.8).**
+Concludes `Deg1SupportedOn (sourceClearedResid d p) ed.center` (property (D) on the source-cleared chart
+residual — FALSE on the raw `foldResid`), PROVEN via the new content lemma + the algebraic assembly. The
+signature is otherwise the OLD primed's (`hslot` retained, unused). COUPLED INTEGRATION: `Case1Wire`'s
+unprimed `realBranch_boostReady_case11` + the δ=1 append (`stepInv_child_delta1_append`) [L4D] and
+`LastLayerWire`'s use [LL] migrate their consumed object from `foldResid` to `sourceClearedResid` to match;
+the controller sequences the three re-points together (the full build is red until they land — this
+module's own import closure is green). -/
 theorem realBranch_boostReady_case11' (d : Fin (N + 1) → ℕ)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d) {p : TreePath d}
     (ed : TreeEdge d p)
@@ -129,11 +160,11 @@ theorem realBranch_boostReady_case11' (d : Fin (N + 1) → ℕ)
     (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
       (supportAt d p.conState.layer p.conState.cleared)
       (supportLayerOf p.conState) (foldRegion d e p)) :
-    Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
+    Deg1SupportedOn (sourceClearedResid d p) ed.center (foldRegion d e p) := by
   subst he
   obtain ⟨e₂, he₂, part, extra, hpart, hep, hex, hsplit⟩ :=
-    foldResid_case11_mergeBoostSplit_canon d ed hδ hc11 hbranch
-  exact MergeBoostSplit.deg1SupportedOn d (foldResid d (canonFlatten d) p) e₂ part extra ed.center
+    foldResid_case11_mergeBoostSplit_sourceCleared d ed hδ hc11 hbranch
+  exact MergeBoostSplit.deg1SupportedOn d (sourceClearedResid d p) e₂ part extra ed.center
     (foldRegion d (canonFlatten d) p) he₂ hpart hep hex hsplit
 
 end DLNFibre.DLN.Aoyagi
