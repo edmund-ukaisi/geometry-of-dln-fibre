@@ -15447,3 +15447,26 @@ the elder notified (§4 may gain the third edit — its gate; shape/field ruling
 PROCESS NOTE for the synthesis: the §5 battery contract ("must exercise the LEAN def") caught
 this BEFORE the field statement locked — at bake-time cost instead of grind-time cost. The
 charter §3 gate, operating as written, on its first live application.
+
+## 2026-07-23 (~00:30, heartbeat tick) — zombie-wake incident #2: the DORMANT pre-restart arch-C woke on the name collision; stopped clean
+
+Placement ✓, cron armed ✓ (512bfff9). Liveness sweep found TWO active arch-C transcripts: the
+render seat arch-C-2 (mine, working) AND the pre-restart DORMANT arch-C (still in the roster;
+my successor spawn under the colliding name "arch-C" got deduped to "arch-C-2" and the collision
+woke the old holder). The old incarnation behaved well — read-only reconnaissance in its own
+worktree, correctly noticed arch-C-2 + the REBAKE branch + the ruling before acting — but its
+context is pre-restart (Gap-B era) and a stale-context actor on the live re-bake is the same
+hazard class as the wedged-elder zombie queue. STOPPED it mid-recon (no pushes, no writes;
+verified read-only command tail). arch-C-2 unaffected, rendering.
+
+LESSON (standing, pairs with the elder incident): before spawning a successor under a role name,
+CHECK THE ROSTER and STOP the old holder FIRST (done deliberately for the elder; missed for
+arch-C because the dormant holder's registration survived the process restart invisibly). A
+dormant agent + a name collision = an un-commanded wake with stale context. Roster hygiene is
+part of the spawn checklist now.
+
+Lane state at tick: seat-L4D on the URGENT recoord-pairing adjudication (gates arch-C-2's DEF
+EDIT 2); arch-C-2 on DEF EDIT 1; elder post-ruling (compass entry owed); pnp-transport standing
+by (harness = the regression row if the 12th catch confirms); seat-L3T3 on the step-2 induction;
+seat-LL on the twin (transcript last active 22:49 — NOT stalled-with-intent, its last report was
+frontier work; leave until the re-bake merges, then rebase-wake it with the ruled shape).
