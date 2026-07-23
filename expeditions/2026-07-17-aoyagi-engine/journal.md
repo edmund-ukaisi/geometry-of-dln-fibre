@@ -17866,3 +17866,24 @@ incl. the double-boost reuse case; verdict RAW-SPLIT-TRUE (→ certificate) vs C
 escalate, statement re-shape — render-around forbidden). Canonical sound either way meanwhile
 (the questionable statement is a tracked sorry; the wall's proof is conditional). This is the
 15th statement-class question of the expedition — caught, again, BEFORE a render.
+
+## 2026-07-24 (~08:10) — THE KILL-CONDITION FIRED: the content lemma (and the wall's raw
+conclusion) is FALSE-AS-STATED (pnp OBSTRUCTION, exact + Codex-decorrelated); elder re-shape
+ruling commissioned (#69); the pipeline correctly stopped BEFORE the render
+
+pnp's adjudication (b31a3cc8c: obstruction note + 3 exit-0 scripts + Codex record): on the
+smallest real case11 branches ((2,2,2,2), (3,3,2,2)), slot0's value on the center's zero-variety
+is ≠ 0 — no continuous ∑c·u decomposition exists; the extra factors through DIFFERENT coords per
+output column (no single e₂). CAUSE (structural): branch-(ii) compensates a pivot-column clear the
+recursion never performs (correct per §9 — the clear is det-0), so the E_J col-0 coupling survives
+(col0 = b₀+2x·b₁, the §11 leak's stronger cousin). Deg1SupportedOn is STRICTLY STRONGER than the
+ideal-equality F₂ closed — F₂ never claimed it; the raw-object statement over-claimed. Codex FACT:
+the split HOLDS on the source-cleared residual F|_{u₀₁₀=0} (cleared BEFORE the shear; after fails).
+THE TENSION: recursion needs shears-only (det-1, closed, untouched); boostReady needs the cleared
+object (det-0) — not the same foldResid. PAPER-FIRST reading (for the elder to verify): her carried
+invariant IS the normal form diag(b)·[E_J|D_J] — the boost-readiness belongs to the CLEARED
+representative; the raw statement rendered the property of the wrong object. Elder rules the
+re-shaped chain (#69; option 1 = re-state on the source-cleared residual + ideal-equality bridge
+to the consumers). Canonical is SOUND meanwhile (the false statements are sorry-gated conditionals,
+not axioms). PROCESS: the adjudication-before-render decision earned its cost — the fresh
+formaliser would have ground against a false lemma; 16 statement-class catches, all pre-render.
