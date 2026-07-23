@@ -17741,3 +17741,13 @@ parallel: L3T3 (its module's case1'' hunk, diff-level) + elder (shape conformanc
 the 7th site). ON BOTH GREEN: controller merges the spine (own gates) → LL's lane merges next
 (order as pinned) → the wall-wiring + content lemma continue on the same L4D lane. L4D back on
 the capstone grind; the shaping fork (case11-only+sibling vs unified extra=∅) is its in-grind call.
+
+## 2026-07-24 (~04:35) — L3T3 review PASS (1/2); the summit-retire he-precondition flagged + banked
+in the memo
+
+L3T3 approved L4D's case1'' hunk at the diff (exact +he thread, binder order matches the pinned
+conjA, conjunct B/case2'' untouched, docstring names the pin — no drift). FORWARD FLAG banked in
+the memo's summit ladder: the UNPRIMED MonumentAtlas chain (case1_preserves_stepInv :1513 +
+leaf_stepInv_of_path → the REGISTERED summit) carries no he — the retire-swap needs the pin
+threaded through the unprimed side first, else statement-identity fails; case2's swap is clean.
+Remaining pre-merge gate: the elder's shape-conformance delta + 7th-site bless.

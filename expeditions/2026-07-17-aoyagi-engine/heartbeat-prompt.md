@@ -97,6 +97,11 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   512dde71e4294b02.jsonl (mtime 00:03 = alive). LESSON (standing): teammate→controller message
   loss is REAL; on a critical-path wait, poll the transcript tail (mtime + last entry) — silence
   after ≥2 unanswered sends = incident, not patience.
+  SUMMIT-RETIRE PRECONDITION (L3T3 flag, 2026-07-24): the UNPRIMED MonumentAtlas leaf
+  case1_preserves_stepInv (:1513) + its consumer, the UNPRIMED leaf_stepInv_of_path (feeding the
+  REGISTERED summit), carry NO `he` — before the retire-swap to case1'' the pin must be threaded
+  through the unprimed chain (replace he0/he_lin as done on the primed side) or the swap fails
+  statement-identity. case2's swap is CLEAN (both sides he-free).
   MERGE-ORDER DISCIPLINE: pre-N_p branches rebase seat-side BEFORE controller merges. Remaining to
   summit: the wall (L4D) → descent append (via the induction + the cap under N_p) → lastLayer
   frontiers → L5 assembly (target = MonumentAssembly.leaf_stepInv_of_path') → L7 own-cover fold
