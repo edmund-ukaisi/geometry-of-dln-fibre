@@ -155,14 +155,17 @@ theorem couplingClear_mapsTo_foldRegion (d : Fin (N + 1) → ℕ) (p : TreePath 
 SPECIFY-trivial (`couplingCoords .root = ∅`, so `couplingClear .root = id`). -/
 theorem clearedFoldG_root (d : Fin (N + 1) → ℕ) :
     clearedFoldG d (.root : TreePath d) = id := by
-  -- SPECIFY-trivial (proven in PROOFS phase)
-  sorry
+  funext u
+  have hcc : couplingClear d (.root : TreePath d) u = u := by
+    funext k; simp [couplingClear, show couplingCoords d (.root : TreePath d) = ∅ from rfl]
+  show foldG d (canonFlatten d) (.root : TreePath d) (couplingClear d .root u) = id u
+  rw [hcc]; simp only [foldG, id_eq]
 
 /-- Root reduction for `clearedFoldB`. SPECIFY-trivial. -/
 theorem clearedFoldB_root (d : Fin (N + 1) → ℕ) :
     clearedFoldB d (.root : TreePath d) = fun _ => 1 := by
-  -- SPECIFY-trivial (proven in PROOFS phase)
-  sorry
+  funext u
+  rfl
 
 /-! ### §4 The cleared-locus commutation core (REVISED — O2 finding 20bc71f1d)
 
@@ -200,16 +203,20 @@ SPECIFY-trivial (the `couplingCoords` step arm's case11 match is `∅`, `S ∪ �
 theorem couplingCoords_case11_stable (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (hc11 : ed.case = StepCase.case11) :
     couplingCoords d (p.extend ed) = couplingCoords d p := by
-  -- map: B-globalmove-couplingCoords-case11-stable  ⟨SPECIFY-trivial: case11 arm of couplingCoords = ∅⟩
-  sorry
+  show couplingCoords d (TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ)
+      = couplingCoords d p
+  rw [hc11]
+  show couplingCoords d p ∪ ∅ = couplingCoords d p
+  exact Finset.union_empty _
 
 /-- **couplingCoords is monotone under extension** — `couplingCoords d p ⊆ couplingCoords d (p.extend ed)`
 (the step arm is `couplingCoords d p ∪ …`). Gives `L_child ⊆ L_parent` — the parent identity restricts to
 the child locus for free. SPECIFY-trivial. -/
 theorem couplingCoords_mono_extend (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
     couplingCoords d p ⊆ couplingCoords d (p.extend ed) := by
-  -- map: B-globalmove-couplingCoords-mono-extend  ⟨SPECIFY-trivial: step arm = parent ∪ …⟩
-  sorry
+  intro x hx
+  show x ∈ couplingCoords d (TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ)
+  exact Finset.mem_union_left _ hx
 
 /-- **The edge pivot is not an ancestor coupling coordinate (ALL cases)** — the pivot is a diagonal corner
 (`canonPivotOf` at case11, `∈ canonCenterOf` diagonal at case12/case2, both via `IsRealBranch`), and
