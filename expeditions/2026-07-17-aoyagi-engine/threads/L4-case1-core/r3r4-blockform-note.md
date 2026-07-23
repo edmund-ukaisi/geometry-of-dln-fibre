@@ -45,6 +45,25 @@ Does the exact rendered branch-(ii) recoord at a case2 edge read the PRIOR edge'
 `u₀₀₁²` and the gate re-opens; if the render reads only cleared/own-block entries, it passes. This is the one
 load-bearing def detail; I can re-run the battery on arch-C's exact formulas the moment its render lands.
 
+## THE PRECISE FIX (verified) — the recoord must be REMAINING-BLOCK-scoped (`i ≥ cleared`)
+`verify/r3r4_recoord_scope.py` (exit 0). The current `canonNormalizationOf` branch-(ii) sums
+`Σ_{i≠a} readEntry(S,i,b)·readEntry(S+1,r,i)` over ALL rows `i≠a`, which INCLUDES row `0` (an
+already-cleared OUTER-pivot row) — that `i=0` term reads `u₀₀₁` and produces the `u₀₀₁²`. Restricting the
+sum to the REMAINING block `i ≥ cleared` (excluding already-cleared rows) DISSOLVES it: max `deg_u₀₀₁` drops
+`2 → 1` on both `(2,2,2,2)` and `(2,3,2,2)`. So the fix is a small, precise bound on the recoord sum, NOT a
+route change. Decorrelated Codex (xhigh, hypothesis withheld) independently confirmed: (1) ed1's outermost
+clear cannot retroactively fix ed2's read [logical necessity]; (2) it is an inter-edge coupling with no
+per-edge own-pivot removal [logical necessity]; (3) the minimal fix = make ed2 "prior-clear-aware", i.e.
+read ed1's CLEARED value `0` for row 0 — EXACTLY the `i ≥ cleared` restriction; (4) the sign-flip changes the
+coefficient's sign, not its degree. So: `u₀₀₁²` is real for the all-`i` recoord; the remaining-block recoord
+reaches the multilinear clean block.
+
+## Bottom-line for the merge gate (upgraded from "potential" to "mechanism confirmed + fix")
+- IF arch-C's rendered branch-(ii) sums ALL `i≠a` (current formula) → `u₀₀₁²` → NOT the multilinear clean
+  block → RE-OPEN condition fires.
+- IF it sums only `i ≥ cleared` (remaining block, prior-clear-aware) → clean multilinear block → PASSES.
+The recommendation to arch-C: render branch-(ii) remaining-block-scoped. I re-run on the exact formulas.
+
 ## Slot-to-D_J caveat
 `foldResid` is a vector of slots ("foldResid IS the block-slot", §8 scalar-foldB def-fact); I read the
 `u₀₀₁²` in the col-1 (D_J) slots of the coreGen product. The exact foldResid-slot ↔ D_J-block mapping is
