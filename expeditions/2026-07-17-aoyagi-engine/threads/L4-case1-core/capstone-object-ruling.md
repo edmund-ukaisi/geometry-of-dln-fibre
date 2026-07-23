@@ -898,3 +898,29 @@ not before the canonical-pin-scoped current proofs — no lane stalls. My bake-b
 source-fidelity certificate (canonCenterOf column-exclusion vs her D₁ on WIDE+FAN witnesses + the
 oracle-guard interplay: does the empty center kill the phantom at the IsRealBranch level, or does the oracle
 need the exclusion too).
+
+### §9.8 SCOPE RULING FINALIZED — (1)-ALONE LOCKS (#86(C) 557670c45, controller re-ran exit 0)
+
+pnp's labeled-jac decider is in and meets my §9.7 proven-not-plausible bar: the jac exponent MULTISETS are
+PRESERVED under the per-step σ for BOTH birth sub-species —
+- **δ=1-born (fan-factor):** `{8,3}` realigns col 2 → col 0;
+- **δ=0-born (scaling):** `{8,3}` realigns row 2 → row 1;
+both land EXACTLY on the canonical exponents. The exponent VALUES (what the codim read-off consumes over
+binding axes) are preserved; only the coordinate LABELS realign to the canonical frame — NO double-COUNT
+(the multiset stays `{8,3}`, not doubled). So the transport reconciles the codim on both sub-species, (2′)
+does NOT fail at the codim, and my §9.6-reframe + §9.7 are CONFIRMED.
+
+**(1)-ALONE LOCKS.** `canonCenterOf` (the counter that admits phantom re-clears) is the SINGLE genuine
+defect; the fix is its column-exclusion (kill the phantom). `divBirthCoord`'s counter/diagonal recording is
+CONFIRMED as the HER-FRAME TRANSPORT TARGET — the σ realigns the fan coord TO it — so touching it (a fan-coord
+"fix") would be ANTI-faithful. My earlier §9.6 "(1)-full = both counter-site def-edits" is DEFINITIVELY
+SUPERSEDED: the divBirthCoord fix is neither forced nor faithful. Roadmap carries ONLY the `canonCenterOf`
+oracle-fidelity def-edit (#87).
+
+**Bake-bless scope (awaiting pnp's #87 cert).** The three deliverables are the right input; ONE open
+sub-question I flag for the bless: her D₁ removes ROW AND COLUMN. `canonCenterOf` column-exclusion handles
+the COLUMN half; the bless must confirm the ROW half — either our row structure already excludes cleared
+rows (`widthMinUpto` row bound) so column-exclusion alone suffices, or the def-edit gains a row component.
+Either way this is WITHIN (1)-ALONE (the `canonCenterOf`/oracle fix), NOT the divBirthCoord fix. I bake-bless
+on the cert's landing (column-exclusion trace vs her D₁ + no-under-admission + oracle-guard interplay +
+row-exclusion).

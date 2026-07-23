@@ -19802,3 +19802,21 @@ render seat takes the lane after. STATE: this was the last commissioned DESIGN i
 other open thread on the expedition is now pure grinding (GM's determined unit; INV's render
 batch + read-off; CAPF's sub-lemma + route-(a) kill) or pre-triggered review (the folded pass;
 the bake-bless).
+
+## 2026-07-23 (~19:50 UTC) — §9.8 banked: the scope ruling FINALIZED — (1)-ALONE locks; the
+#84/#85/#86 ruling family CLOSED and consistent
+
+The elder's §9.8: the (C) decider meets the proven-not-plausible bar cleanly — the jac exponent
+MULTISETS are σ-preserved for both sub-species, and the precision that matters: the exponent
+VALUES (what the codim read-off consumes) are preserved, only the coordinate LABELS realign to
+canonical — no double-COUNT. (1)-ALONE: canonCenterOf is the SINGLE genuine defect;
+divBirthCoord CONFIRMED as the her-frame transport TARGET (σ realigns the fan coord TO it) —
+"(1)-full" definitively superseded; the roadmap carries only the canonCenterOf oracle-fidelity
+def-edit. BAKE-BLESS checklist set at FOUR items (all already in pnp's dispatched commission):
+the column-exclusion trace vs her D₁ + the no-under-admission check + the oracle-guard interplay
++ THE ROW-EXCLUSION HALF (her D₁ removes row AND column; either our widthMinUpto row bound
+already covers it or the def-edit gains a row component — WITHIN (1)-ALONE either way, never
+divBirthCoord). NET: the canonical-pin architecture is FULLY VINDICATED (transport sound,
+codim-preserving, both sub-species); the #84/#85/#86 family is closed and mutually consistent;
+the elder holds for exactly two triggers (the #87 cert → bake-bless; the renders settling →
+the folded pass). The deepest object arc of the expedition is design-complete.
