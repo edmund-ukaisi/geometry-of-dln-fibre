@@ -40,6 +40,15 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   low-weight residual at pnp (L4D = fallback). seat-L3T3 induction UNAFFECTED (its vanishing
   clause = natural field-V producer, exact-match check = elder's); clause-1 ON HOLD; seat-LL =
   rebase + twin. Battery canon: every battery includes a WIDE witness.
+- ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
+  failed wakes) AND its 23:05 adjudication was DELIVERY-LOST (recovered from transcript, banked:
+  threads/L4-case1-core/elder-capescape-interim-adjudication.md — its fix-β superseded by the
+  INHERENT arm; its fan/slot-coupling + live-square + ε-table-col-a flags live). Wedged seat
+  STOPPED (zombie-wake hazard); FRESH elder-standing convened from durable artifacts with the
+  full #40 brief (paper-first). NEW transcript poll path: subagents/agent-aelder-standing-
+  512dde71e4294b02.jsonl (mtime 00:03 = alive). LESSON (standing): teammate→controller message
+  loss is REAL; on a critical-path wait, poll the transcript tail (mtime + last entry) — silence
+  after ≥2 unanswered sends = incident, not patience.
   MERGE-ORDER DISCIPLINE: pre-N_p branches rebase seat-side BEFORE controller merges. Remaining to
   summit: the wall (L4D) → descent append (via the induction + the cap under N_p) → lastLayer
   frontiers → L5 assembly (target = MonumentAssembly.leaf_stepInv_of_path') → L7 own-cover fold
