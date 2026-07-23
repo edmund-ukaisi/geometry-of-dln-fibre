@@ -104,6 +104,25 @@ inter-edge, on both witnesses.** R3+R4 reaches her multilinear clean block. **NO
 Escalation map (team-lead): rendered all-`i≠a` → re-open; rendered scoped but battery dirty → elder's
 fold-order branch; **scoped + both rows clean → merge** (← this is where we are, pending the exact render).
 
+## Reconciliation — my chart-frame PASS vs seat-L4D's "u₀₀₁² not center-degree-1" (record-clean)
+No contradiction; two DIFFERENT questions, both answered correctly (elder + seat-L4D concur):
+- **seat-L4D's question — standalone monomial degree.** As a bare monomial, `u₀₀₁²` is degree 2, and it is
+  NOT expressible as an affine combination of the center coords `{e₂, partialBlock}` (since
+  `e₂ = u₀₁₁ − u₀₀₁·u₀₁₀` carries the DIFFERENT monomial `u₀₀₁·u₀₁₀`). TRUE — and the correct warning that a
+  BARE `u₀₀₁²` term in the residual WOULD violate `Deg1SupportedOn center`.
+- **My question — the `Deg1SupportedOn center` DECOMPOSITION (the operative boostReady test).** The residual's
+  `u₀₀₁²`-carrying term appears ONLY as `e₂·(w col1)·(A₂ coeff)` — i.e. `(center coord e₂)^1 × (non-center
+  coefficient)`. So the RESIDUAL is degree ≤1 in the center (the `e₂` slot, with `w col1` in the
+  coefficient); the `u₀₀₁²` lives in the coefficient, not as a bare center-degree-2 term. Verified
+  `raw == chart`, so the `u₀₀₁²` is exactly the expansion of that `e₂·(w col1)` product. `Deg1SupportedOn
+  center` HOLDS.
+The operative test for `boostReady_case11` is `Deg1SupportedOn center` (my decomposition), which passes.
+seat-L4D's degree observation is the guardrail it clears — the `u₀₀₁²` never appears bare; it is always
+attached to the center coord `e₂`. The §8(m) `i ≥ cleared` scope is the belt that guarantees `u₀₀₁` stays in
+that benign coefficient position (never escaping to a bare square in a wider/deeper config) — adopted as
+stricter + faithful (her accumulated-`Q₂'⁻¹` semantics), though not strictly necessary for the chart-frame
+pass (elder's §8(m) over-claim correction).
+
 ## Two independent resolutions concur
 1. Chart frame (unscoped recoord): the raw `u₀₀₁²` collapses to chart-degree-1 via `e₂`'s entanglement —
    boostReady holds as-is.
