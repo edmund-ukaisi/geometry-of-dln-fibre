@@ -16549,3 +16549,24 @@ crossed its report in transit; controller confirmation sent from the second chan
 host = the coreGen-read-argument slot :453-454; blockBlowupCoordQuot the precedent; Q₂ moot;
 tripwire stands). arch-C-3 proceeds: R4 in the read-arg host → gates → commit-coherent →
 push → the report with verbatim formulas → the battery.
+
+## 2026-07-23 (~07:05) — the render's scope finding: the R4-FAITHFULNESS BRIDGE (+1 named frontier); the proven→conditional trade named as the fidelity fix's true price
+
+arch-C-3's pre-investment surface (closed-loop): R4-in-foldResid changes foldResid's VALUE ⟹
+the extend lemmas restate mechanically, BUT the two PROVEN stepInv_child lemmas
+(delta0 Case1Wire:173, delta1_append :367) BREAK — their witnesses need the product to factor
+through the CLEARED residual = R4's ideal-faithfulness (the §8(h)/G1 ground). SANCTIONED:
+ONE named statement-locked frontier bridge (foldResid_r4Clear_*), both lemmas re-consume it —
+the direct analog of the strict-transform crux (foldResid_stepMap_eq_pivot_mul consuming
+Deg1SupportedOn, :36). Census +1 listed (possibly 0 if seat-L4D's shape-check finds it
+provable from G1 + banked machinery, in flight). NOT the retracted field's class: this is the
+honest re-homing of the R4-faithfulness obligation, which was always going to exist somewhere
+(INTRO/PRESERVE under the dead plan; ONE bridge under the clean-block architecture).
+
+THE FRAMING REQUIREMENT (relayed to both arch-C-3 and the elder): the trade's DIRECTION named
+explicitly in the render report — two lemmas proven under the BROKEN def become conditional
+on one frontier under the FAITHFUL def; the broken def's proofs were proofs about the wrong
+object; the faithful def re-opens them honestly. The elder's delta-read checks the bridge
+STATEMENT hardest (a new statement-locked frontier = the twelve-catch class). The §7 tripwire
+stands. State: DEF-EDIT-1 + 3(b) + the staged r4Clear all green; only the StepInv re-thread
+holds for seat-L4D's bridge-shape confirm.
