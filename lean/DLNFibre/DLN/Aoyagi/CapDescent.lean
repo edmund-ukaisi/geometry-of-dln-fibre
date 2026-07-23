@@ -1,10 +1,5 @@
 import DLNFibre.DLN.Aoyagi.SourceClearedResid
--- SIGNATURE-VALIDATION NOTE (seat-CAPF): the proof phase also needs
--- `DLNFibre.DLN.Aoyagi.MultiAffineHomogWire` (foldResid_layerHomogeneous' + homogeneousDeg1On_comp_of_fixing),
--- but its closure pulls in Case1Wire, which is PRE-EXISTING-BROKEN on the CAPR base
--- (Case1Wire.lean:401 type mismatch: realBranch_boostReady_case11' now yields the sourceClearedResid form,
--- consumer still expects foldResid — the boost-ready→sourceClearedResid consumer re-point, GM/integration).
--- Statements below reference ONLY SourceClearedResid's closure (MonumentAtlas), so signatures validate here.
+import DLNFibre.DLN.Aoyagi.MultiAffineHomogWire
 
 /-!
 # `DLN.Aoyagi.CapDescent` — the cap-frontier render (SEAT-CAPF)
