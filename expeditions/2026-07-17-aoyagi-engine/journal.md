@@ -18126,3 +18126,18 @@ economy) — the proceed-on-silence item to the operator closes harmlessly. Rema
 phase of the deepest catch of the expedition is COMPLETE — five rulings, four retractions (two
 per side), zero wasted renders, the learning coefficient never at risk, and the final shape is
 the paper's own.
+
+## 2026-07-24 (~14:00) — §7.8: the render brief FROZEN (Option 2′); measure-compat converted to a
+DECIDABLE named obligation (the lift); pnp holds the last two stones
+
+§7.8 (banked 20f8b02a8): (1) Option 2′ confirmed — fold unchanged, read-off on C, no operator
+escalation, MORE faithful (her read-off is on the cleared local coordinate; raw-F was the §9
+artifact); (2) the append consumes C over the ORIGINAL coordinate center (the conjugated-center
+transport is Option 1's shape and is NOT taken — L4D's earlier transport sketch explicitly
+un-blessed); (3) the ψ-bridge = rlctGlobal equality via the LANDED det-1-CoV machinery, ψ_gen as
+its content — no new analysis; (4) measure-compat = REAL potential obligation, NAMED + ASSIGNED:
+it dissolves iff ψ_gen LIFTS to the parameter-space Q₁ conjugation (pre-resolution, on the A_i
+themselves — pnp's own framing; strong prior it lifts); re-open trigger defined; (5) "recursion
+untouched" PRESERVED LITERALLY, the elder's "superseded" phrasing withdrawn (its 3rd owned
+correction of the arc). Contract consolidated to pnp: full ψ_gen + the lift certificate → the
+positive certificate → the fresh render seat. All other seats resting in place.
