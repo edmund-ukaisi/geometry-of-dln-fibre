@@ -20038,3 +20038,21 @@ edit; (b) the COMPLETE construction-site sweep; (c) each col-obligation DISCHARG
 tree/oracle builds diagonal-col branches; + realBranch_cover explicitly green post-edit).
 Crossing closed: the charter tripwire line was ALREADY committed (3cf3e4b6a, verified verbatim)
 — confirmed to the elder. The #87 thread's next event: seat-BAKE's mini-SPECIFY.
+
+## 2026-07-23 (~18:00 UTC) — BAKE's mini-SPECIFY PASSED my gate (GO given; elder fast-ack
+parallel): the inline conjunct + a 12-site sweep with realBranch_cover verbatim-by-construction
++ ONE .1 fix + zero committed construction sites
+
+The mini-SPECIFY's quality: the exact inline form with the decode CHECKED (tupIdx .2 = the flat
+column; satisfiability rides cleared < widthMinUpto ≤ d(layer), consistent with pnp's
+nonemptiness chain); the named-predicate alternative REJECTED with reasons (no-new-def, single
+consumer); the consumer sweep in three classes — 11 discard-sites verbatim (realBranch_cover
+:1184 among them: it DISCARDS the pin and reads canonCenterOf directly, so the tripwire is
+preserved BY CONSTRUCTION, not by luck), 4 reduce-to-other-arm sites verbatim, ONE fix
+(MultiAffineHomogWire:297: `simpa using this` → `this.1`, both legs); ZERO committed
+construction sites (IsRealBranch is hypothesis-only today; L5's future construction discharges
+via the diagonal). Census expectation: zero sorry movement. GO given; the elder's fast-ack runs
+parallel with its flag window before the merge gate; BAKE renders the surgical edit + the
+docstring (completeness one-liner, D₁ cite w/ honesty wording, §9.9+AMENDMENT + charter-§3
+pointers, the coverage-rider deferral) + the gates (build green; forced axioms on L1 AND on
+realBranch_cover — the named tripwire check; census; cordon).
