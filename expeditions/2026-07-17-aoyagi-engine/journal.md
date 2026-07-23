@@ -18009,3 +18009,16 @@ all active within the minute. LL parked. Memo wait-state refreshed to the full o
 position (obstruction → ruling → bridge refutation → amendment; canonical sound throughout, all
 questionable statements sorry-gated + fenced). Nothing owed this tick; next event = the elder's
 §7.5 (the bridge's true shape decides the corrected closing contract).
+
+## 2026-07-24 (~11:45) — render ownership settled: a FRESH seat post-amendment; L4D = named
+def-owner consult; the stable-half staging CANCELLED (churn avoidance)
+
+L4D's honest self-assessment accepted in full (large context; the render is substantial and
+gated anyway): the ENTIRE render — sourceClearedResid def, the 7.4 chain re-statement, the bridge
+lemma, the append + LL re-points — goes to a fresh render seat spawned AFTER the §7.5 amendment +
+pnp's certification freeze the contract. Even the "stable half" waits: with the bridge's shape
+open (ideal-equality refuted; cover-membership candidate), one render against the amended
+contract beats a staged half + a rebase. L4D stays stood down as the NAMED consult (append-crux
+hard-wiring, the composition, the bridge shape — routed through me). Its destination-flag
+supersession noted: §7's "recursion untouched / raw only inside ⟨·⟩" holds the RLCT computation
+on the untouched object — the destination was never at risk.
