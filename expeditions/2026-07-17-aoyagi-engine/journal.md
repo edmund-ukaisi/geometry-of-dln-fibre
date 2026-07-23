@@ -17419,3 +17419,13 @@ RULED: 3-way dispatch (case12/case2 → frontier; case11 → clean; rollover →
 OPENLY with old/new verbatim; (2) frontier docstring enumerates BOTH debts (descended-layer support
 + fresh-layer cap-confinement); (3) forced-axiom audit still shows the single frontier root.
 Restate-gate tally: 7-for-7 (the silent alternative was a quietly weakened rollover case).
+
+## 2026-07-23 (~20:20) — OPERATOR COMMISSION: paper-coverage + functional-fidelity audit (task #63, elder)
+
+Operator: "what in Aoyagi paper have we not constructed and for those that we have do they cover
+all intended mathematical function?" — the completeness twin of #31 (fidelity of what we built vs
+coverage of what we planned). Elder commissioned: paper-side inventory (worked.tex end-to-end:
+setup, Lemma 1+2, the invariant + ledger, case tree + rollover + boost, termination, pole
+extraction, λ=C/2, θ) × classification (CONSTRUCTED-with-full-function / PARTIAL / FRONTIER-OWNED /
+NOT-CONSTRUCTED-planned-vs-UNPLANNED / CITED) → threads/paper-coverage-audit.md, ranked gaps,
+unplanned loudest. Runs PARALLEL to the lanes; live-lane-touching finds flag immediately.
