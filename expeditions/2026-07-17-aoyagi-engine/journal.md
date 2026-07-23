@@ -16058,3 +16058,26 @@ second, independent kill that only the product-preservation criterion caught alo
 first. Battery row added for the rendered def: block corner = classical −γβ. Relayed to the
 elder as corroboration (F6/synthesis line), to seat-L4D as resolution. Board unchanged: waiting
 on arch-C's §8(i) render.
+
+## 2026-07-23 (~03:00) — §8(j): the merge gate CORRECTED to the BLOCK-FORM test (3rd elder self-correction); u₀₀₁² RESOLVED as R4-validation
+
+The elder's §8(j) (committed 76a1404fe), adjudicating the r3flip-gate battery:
+- CONTEXT PINNED: the battery ran R3-ALONE — so it confirms R3's column-half (E_J clean ✓,
+  baked polluted) and reveals R3-alone's ROW-half residue: the u₀₀₁² term. worked.tex:454's
+  Schur complement is BILINEAR (degree-1 per blow-up coord) ⟹ u₀₀₁² deviates from her D_J ⟹
+  the flag VALIDATES R4 (whose Q₂ clears the row half) — resolved, NOT a re-open.
+- THE CORRECTION (the elder's 3rd this ruling, owned plainly): (h)'s "product-preservation =
+  Gröbner entry-ideal-equality" was MIS-FRAMED — a two-sided unimodular Q·M·P does not preserve
+  the ideal-of-entries between charts and NEEDN'T (RLCT is preserved by the invertible
+  coordinate CoV, §7(1)); pnp's three-way ⟨R3⟩≠⟨honest⟩≠⟨baked⟩ was EXPECTED (pnp's original
+  framing was right; the criterion was wrong). THE CORRECT DISCRIMINATOR = THE BLOCK FORM:
+  R3+R4 reaches Aoyagi's clean [[1,O],[O,D_{J+1}]] — E_J clean, corner = classical e₂, D_J =
+  her MULTILINEAR Schur complement (degree ≤ 1 per pivot-row/col coord; exceptional coords
+  inside D_J fine). RE-OPEN only if the multilinear clean block is not reached.
+- THE ONE REMAINING MERGE DATUM: the block-form run on the R3+R4 def (both wide witnesses),
+  against arch-C's EXACT rendered formulas. Simpler than the Gröbner run.
+
+Gate relays done (pnp re-specced; seat-L4D FYI'd); memo gate corrected as the elder requested.
+Note the criterion's trajectory across the arc — entry-cleanliness → ideal-equality →
+BLOCK-FORM — each correction moving the test closer to what her invariant actually asserts;
+the synthesis should record the trajectory, not just the endpoint.

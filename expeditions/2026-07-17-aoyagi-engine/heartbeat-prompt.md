@@ -38,11 +38,16 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   ideal-equality, never entry-cleanliness. Full circle: honest_clear/the certificate's MATH was
   product-preserving all along — only its rendering as an unpaired coordinate shear was wrong.
   §2 field RETRACTED (symptom-fitted); 11th catch dissolves; RLCT value never at risk; no
-  operator escalation. MERGE GATES: arch-C renders §8(i) (awaiting-confirmation flag; FORCED
-  payoff axioms load-bearing) → pnp battery on the EXACT rendered formulas (#49 on R3+R4 not
-  R3-alone: ⟨R3+R4⟩ = ⟨faithful⟩; #50 clean-block-at-reuse-node; u₀₀₁² flag re-check; RE-OPEN
-  if either fails) + seat-L4D joint slot-confirm + elder delta-read → controller merges →
-  seat-L4D takes THE WALL (boostReady from clean block + foldB — no field, no ChainNF).
+  operator escalation. MERGE GATES (§8(j) CORRECTED the test — 3rd elder self-correction:
+  entry-ideal-equality between charts is NOT preserved by two-sided unimodular Q·M·P and
+  needn't be; RLCT rides the CoV): arch-C renders §8(i) (awaiting-confirmation flag; FORCED
+  payoff axioms load-bearing; its FIRST checkpoint carries PRE-FREEZE scope incl. the retracted
+  field conjunct — merge only an explicitly §8(i)-conformant branch) → pnp BLOCK-FORM battery
+  on the EXACT rendered formulas (R3+R4 reaches her MULTILINEAR clean block: E_J clean, corner
+  = classical e₂ (−γβ), D_J degree ≤ 1 per pivot-row/col coord — NO u₀₀₁²; u₀₀₁² RESOLVED as
+  R3-alone's row-half residue validating R4; RE-OPEN if the multilinear clean block is not
+  reached) + seat-L4D joint slot-confirm + elder delta-read → controller merges → seat-L4D
+  takes THE WALL (boostReady from clean block + foldB — no field, no ChainNF).
   seat-L3T3: finish step-2, push, rebase post-merge. Battery canon: WIDE witness + EXACT
   rendered form, always.
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
