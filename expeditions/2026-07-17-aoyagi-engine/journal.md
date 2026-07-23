@@ -18641,3 +18641,16 @@ containment as a tracked leaf + the proven specialization lemma) — representat
 zero churn, exactly as ruled; 5 named LIVE leaves on its lane, all statement-locked. L4D briefed
 with the structural spec (its re-points fold into the (i)-(iv) unit). Waiting: the elder's
 direction ruling + pnp's cleared-fold construction (the render gate) + Q1-Q3 (the bake gate).
+
+## 2026-07-25 (~01:35) — the construction's interface spec relayed (L4D's two consumer shapes);
+the success criterion for the soundness check is now sharp
+
+L4D owned the correction-to-its-correction (BLOCKER 2's conclusion stands, reasoning upgraded;
+the small-center unification registered) and handed the interface spec its (i)-(iv) render needs
+from pnp's construction: (1) the cleared StepInv shape (coreGen∘clearedFoldG = ∑q·clearedFoldB·
+sourceClearedResid, the pivot factor IN clearedFoldB — the raw failure mode becomes the design
+constraint) and (2) the child↔parent commutation (sourceClearedResid_extend_delta1 — the
+couplingClear/quot commute, letting q'=q∘stepMap close on C as it did on F). Relayed to pnp: the
+soundness check's success criterion = the cleared StepInv holds on witnesses AND both shapes
+exhibited (they become the render spec verbatim). All holds correct; the elder's direction ruling
+is the remaining open dispatch of the 18th event.
