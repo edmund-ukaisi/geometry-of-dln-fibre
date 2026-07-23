@@ -126,6 +126,18 @@ where `b_i = ∏_{t̃_{s,k} < i} u_{s,k}` (worked.tex:562-577; `b_0=1`, `b_i = (
 is the accumulated exceptional monomial, and the `clean D_J entry` is a single support coordinate (the
 `v_j/1` degree-1 regime). This carries the per-layer degree ≤ 1 grade (`PerLayerDeg1From`).
 
+**`supportAt` version + the width-INCREASING (cap-bite) axis (`capstone_coverage_wide.py`, exit 0).** Since
+`hδ ⟹ cleared = 0`, `supportAt(p) = blockCoords d S` — the running-min-CAPPED col axis (`col < widthMinUpto d S`,
+`MonumentAtlas:617` J=0 branch, the current elder-ruled def). On a WIDE layer (`d_{S} > widthMinUpto d S`) the
+cap excludes the raw-remnant columns `col ≥ widthMinUpto`. VERIFIED on the width-increasing witnesses
+`(2,3,2,2)`, `(2,3,3,2)`, `(2,4,2,2)` (all with a case11 node): the RAW fold DOES read the cap-escaped
+columns (cap too tight for the RAW object), but the SOURCE-CLEAR REMOVES that dependence — those columns
+enter only through the ancestor input coupling — so `sourceClearedResid`'s support lies WITHIN the capped
+`blockCoords`, and `INV`, the single-`e₂` read-off, and the `Q₁`-lift all HOLD. So the capped `supportAt`
+at J=0 is FAITHFUL for `sourceClearedResid` (a bonus: the source-clear resolves the J=0 cap-escape too).
+[Distinct from the DESCENDED (J≥1) support, which is `layerCoords d (S+1)` (raw, uncapped) per the
+consolidated ruling — a separate branch not exercised by the case11 read-off.]
+
 ### (i) ROOT base case  (`MonumentAtlas:476`)
 `sourceClearedResid d .root = coreGen d (canonFlatten d)` (the ancestor-clear is empty at root).
 `coreGen d e k u = (mult d (e u))[decode k]` = the entries of `∏A = A_{N-1}···A_0`
