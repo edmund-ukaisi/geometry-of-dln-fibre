@@ -19647,3 +19647,23 @@ elder separately owned its two def-read misses (foldB-frame δ-guard + CAPF#1's 
 with the enumerate-every-sub-term-and-guard discipline logged — its miss-ownership pattern and
 mine (exemption falsity-scan) named as the same lesson from two sides. pnp's queue: the 2
 certificates → #86 (with the case-split framing for component C).
+
+## 2026-07-23 (~18:30 UTC) — §9.6 RECONCILIATION converged (both sides independently, crossing):
+the case-split is the settled record with a concrete witness per sub-species; a new meta-lesson
+
+The elder's RECONCILIATION and my correction crossed and CONVERGE exactly: the record settles on
+the case-split (δ=1-born, cleared=0, full-block center: foldB factors AT THE FAN coord — the
+double-carry; δ=0-born, cleared≥1: scaling-only), verified at the edgeδ guard (foldB factor =
+(u pivot)^{edgeδ}, MonumentAtlas:406), NEITHER always-fan NOR always-canonical. The elder added
+concrete-before-abstract anchors: the δ=1 witness = pnp's phantom edge0 (case2 (0,0,2) at
+cleared=0); the δ=0 witness = variant B. Both sub-species break raw S1, die under canonical-pin,
+ride the labeled-jac obligation. THE ELDER'S NEW META-LESSON (logged, distinct from the
+incomplete-scan class): when two def-reads appear to contradict, CHECK FOR DISJOINT CASES (the
+splitting guard) before retracting either — over-correction under contradicting evidence is the
+mirror error of the incomplete scan. Its "witness MOOT" slip withdrawn (the witness's
+non-moot content stands: (2)-insufficient + per-step transport). My matching relay over-reach
+("canonical-frame THROUGHOUT") corrected on both records. ALL RULINGS STAND: §9.4 load-bearing
+canonical-pin; §9.5 (1)/(2′)-only; §9.6 codim-load-bearing + the three-component #86 gate,
+ratified. The board grinds: pnp on GM's 2 certificates → #86; GM threading the carrier + awaiting
+them; INV on the root assembly + awaiting the sub-family spec render; CAPF on the analyticity
+sub-lemma with route (a) for its kill.

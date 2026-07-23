@@ -826,3 +826,35 @@ def-read — I check the salient sub-term and miss a guard/condition or a siblin
 discipline: a soundness/mechanism verdict enumerates EVERY sub-term AND every guard (δ value, `hbranch`,
 shear/analyticity fields), not just the flagged one. The decorrelated instruments (pnp's witness, CAPF's
 catch) caught both — the process worked; my finer claims need the fuller scan.
+
+### §9.6 RECONCILIATION (supersedes the WITNESS-REFINEMENT over-correction) — TWO disjoint sub-species
+
+My WITNESS-REFINEMENT retraction of "foldB@fan" was itself an OVER-CORRECTION. My def-read and pnp's
+witness do NOT contradict — they are right on DISJOINT cases, split by `edgeδ d p = decide(cleared = 0)`
+(verified: foldB's factor is `(u pivot)^{edgeδ d p}`, MonumentAtlas:406):
+- **δ=1 sub-species (cleared=0, a layer's FIRST clear — MY def-read, CORRECT):** `canonCenterOf` is the
+  whole capped block (the diagonal corner is `(layer,0,0)` but the fan admits ANY block pivot), so the fan
+  pivot CAN be off-diagonal, and `(u pivot)^1` puts a foldB factor AT THE FAN COORDINATE → the foldB
+  double-carry at the later merge (foldB@fan vs ledger@diagonal). CONCRETE WITNESS: pnp's phantom
+  construction (a8a956809) edge0 = case2, pivot `(0,0,2)`, at cleared=0 — δ=1, off-diagonal, `foldB` gains
+  `u_{(0,0,2)}`.
+- **δ=0 sub-species (cleared≥1, a subsequent clear — pnp's witness, CORRECT):** `(u pivot)^0 = 1`, NO foldB
+  factor; the fan pivot enters via `blockBlowupMap` SCALING → a scaling-vs-quotient mismatch.
+Both are sub-species of the off-diagonal-birth pathology; **both break raw S1**; **both die under
+canonical-pin**; the L5 per-step transport must reconcile BOTH (the labeled-jac condition covers the
+ledger/jac side of each). So `foldB` is canonical-frame ONLY for δ=0-born divisors — NOT throughout.
+
+**CORRECTION to my WITNESS-REFINEMENT slip:** "the parked witness is MOOT" is WRONG. The witness delivered
+NON-moot, load-bearing content that STANDS: (a) option (2) is outright INSUFFICIENT (non-phantom variant B
+fails raw S1); (b) the transport is PER-STEP (conjugacy by a single global permutation FAILS — pnp checked).
+
+**Rulings unchanged.** §9.4 canonical-pin load-bearing; §9.5 (1)/(2′)-only; §9.6 codim-load-bearing +
+labeled-jac decisive check — ALL STAND, incorporated into #86. (2′)'s gate now has THREE proven-not-plausible
+components (ONE pnp commission): phantom-cover-redundancy + per-step equivariance + labeled-jac preservation;
+the check decides (2′)-holds vs (1)-FULL-forced (both counter-site def-edits).
+
+**Meta-lesson (distinct from the incomplete-def-read one):** when two def-reads appear to contradict, CHECK
+FOR DISJOINT CASES (a guard that splits them — here `edgeδ`) BEFORE retracting either. I retracted a correct
+δ=1 claim on seeing pnp's δ=0 witness, instead of case-splitting on the guard I had already read. Over-
+correction under contradicting evidence is the mirror of the incomplete scan — both are "didn't hold the
+full case structure."
