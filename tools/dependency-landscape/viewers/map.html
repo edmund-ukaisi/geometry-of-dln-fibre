@@ -25,6 +25,18 @@
 </header>
 <main>
   <aside>
+    <div class="playback">
+      <button id="back" title="Previous map commit">←</button>
+      <button id="play" title="Play/pause">▶</button>
+      <input id="timeline" type="range" min="0" value="0">
+      <button id="forward" title="Next map commit">→</button>
+    </div>
+    <div class="time-readout">
+      <div id="step-time"></div>
+      <div id="step-meta"></div>
+      <div id="step-subject"></div>
+    </div>
+    <div class="play-hint">Space: play/pause · ←/→: step map commits · end = live tip</div>
     <div class="control-grid">
       <label>View
         <select id="mode">

@@ -129,6 +129,14 @@ def mine(repo, base, tip, map_path, tip_graph):
             "ownerChanges": owner_changes,
             "counts": dict(Counter(r["status"] for r in cur.values())),
             "total": len(cur),
+            "roots": list(snap["meta"].get("roots") or []),
+            # full snapshot — the playable-timeline frame (the map is small)
+            "snapshot": [
+                {"id": nid, "kind": rec.get("kind"), "title": rec.get("title"),
+                 "status": rec.get("status"), "owner": rec.get("owner"),
+                 "landmark": bool(rec.get("landmark")), "edges": rec.get("edges", [])}
+                for nid, rec in cur.items()
+            ],
         })
         prev = cur
 

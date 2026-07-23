@@ -9,6 +9,8 @@
   const modeEl = document.getElementById("mode");
   const edgeModeEl = document.getElementById("edgemode");
   const detailsEl = document.getElementById("details");
+  const timelineEl = document.getElementById("timeline");
+  const playEl = document.getElementById("play");
 
   if (!meta.mapPath) {
     document.getElementById("summary").innerHTML =
@@ -19,6 +21,7 @@
   const nodes = data.nodes;
   const live = nodes.filter(n => n.live);
   const byId = new Map(nodes.map(n => [n.id, n]));
+  const events = data.events;
   const now = Math.floor(Date.now() / 1000);
 
   const STATUS_COLORS = {
@@ -61,25 +64,34 @@
     (BANKED.has(n.status) && n.territory.exists && n.territory.coneSorries > 0) ||
     (n.territory.exists === false));
 
+  // -------------------------------------------------------------- playback state
+  let current = events.length - 1;
   let selected = null;
+  let playing = false;
+  let timer = null;
+  const atTip = () => current === events.length - 1;
+  // At the tip render the enriched registry nodes (territory, battery); at a
+  // historical step render that commit's authored snapshot verbatim.
+  const frameNodes = () => atTip() ? live : (events[current].snapshot || []);
+  const frameRoots = () => atTip() ? (meta.roots || []) : (events[current].roots || []);
 
   // ---------------------------------------------------------------- structure
-  function structureLayout() {
+  function structureLayout(list, roots) {
+    const here = new Map(list.map(n => [n.id, n]));
     const depth = new Map();
-    for (const r of meta.roots || []) if (byId.has(r) && byId.get(r).live) depth.set(r, 0);
-    if (!depth.size && live.length) depth.set(live[0].id, 0);
+    for (const r of roots) if (here.has(r)) depth.set(r, 0);
+    if (!depth.size && list.length) depth.set(list[0].id, 0);
     const wanted = edgeModeEl.value;
     const followed = wanted === "needs" ? ["needs"]
       : wanted === "hard" ? ["needs", "discharges"] : ["needs", "discharges", "conjectured-toward"];
-    for (let i = 0; i <= live.length; i++) {
+    for (let i = 0; i <= list.length; i++) {
       let changed = false;
-      for (const n of live) {
+      for (const n of list) {
         const dn = depth.get(n.id);
         if (dn === undefined) continue;
         for (const e of n.edges) {
           if (!followed.includes(e.type)) continue;
-          const m = byId.get(e.to);
-          if (!m || !m.live || (meta.roots || []).includes(e.to)) continue;
+          if (!here.has(e.to) || roots.includes(e.to)) continue;
           const cand = dn + 1;
           if ((depth.get(e.to) ?? -1) < cand) { depth.set(e.to, cand); changed = true; }
         }
@@ -87,33 +99,37 @@
       if (!changed) break;
     }
     let maxD = Math.max(0, ...depth.values());
-    for (const n of live) if (!depth.has(n.id)) depth.set(n.id, maxD + 1);
+    for (const n of list) if (!depth.has(n.id)) depth.set(n.id, maxD + 1);
     maxD = Math.max(0, ...depth.values());
 
     const rows = Array.from({ length: maxD + 1 }, () => []);
-    for (const n of live) rows[depth.get(n.id)].push(n);
+    for (const n of list) rows[depth.get(n.id)].push(n);
     const slot = new Map();
     rows.forEach(row => row.sort((a, b) => a.id.localeCompare(b.id))
       .forEach((n, i) => slot.set(n.id, i)));
+    function bary(n) {
+      const ns = [];
+      for (const e of n.edges) if (slot.has(e.to)) ns.push(slot.get(e.to));
+      for (const m of list) for (const e of m.edges)
+        if (e.to === n.id && slot.has(m.id)) ns.push(slot.get(m.id));
+      return ns.length ? ns.reduce((a, b) => a + b, 0) / ns.length : slot.get(n.id);
+    }
     for (let pass = 0; pass < 3; pass++) {
       for (const row of rows) {
         row.sort((a, b) => bary(a) - bary(b));
         row.forEach((n, i) => slot.set(n.id, i));
       }
     }
-    function bary(n) {
-      const ns = [];
-      for (const e of n.edges) if (slot.has(e.to)) ns.push(slot.get(e.to));
-      for (const m of live) for (const e of m.edges)
-        if (e.to === n.id && slot.has(m.id)) ns.push(slot.get(m.id));
-      return ns.length ? ns.reduce((a, b) => a + b, 0) / ns.length : slot.get(n.id);
-    }
-    return { rows, depth };
+    return { rows };
   }
 
   function renderStructure() {
     svg.replaceChildren();
-    const { rows } = structureLayout();
+    const list = frameNodes();
+    const ev = events[current];
+    const born = new Set(atTip() ? [] : ev.births);
+    const moved = new Map(atTip() ? [] : ev.transitions.map(t => [t[0], t]));
+    const { rows } = structureLayout(list, frameRoots());
     const stageW = stage.clientWidth;
     const NW = 208, NH = 42, GX = 26, GY = 46;
     const rowW = rows.map(r => r.length * (NW + GX));
@@ -124,13 +140,10 @@
     svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
     const defs = make("defs");
-    for (const [id, color] of [["arr-needs", "rgba(148,163,184,.7)"],
-                               ["arr-hot", "#e2e8f0"]]) {
-      const m = make("marker", { id, viewBox: "0 0 8 8", refX: 7, refY: 4,
-                                 markerWidth: 6, markerHeight: 6, orient: "auto" });
-      m.appendChild(make("path", { d: "M0,0 L8,4 L0,8 z", fill: color }));
-      defs.appendChild(m);
-    }
+    const m = make("marker", { id: "arr-needs", viewBox: "0 0 8 8", refX: 7, refY: 4,
+                               markerWidth: 6, markerHeight: 6, orient: "auto" });
+    m.appendChild(make("path", { d: "M0,0 L8,4 L0,8 z", fill: "rgba(148,163,184,.7)" }));
+    defs.appendChild(m);
     svg.appendChild(defs);
 
     const pos = new Map();
@@ -148,13 +161,12 @@
     const edgeLayer = make("g");
     svg.appendChild(edgeLayer);
     const edgeEls = [];
-    for (const n of live) {
+    for (const n of list) {
       for (const e of n.edges) {
         if (wanted === "needs" && e.type !== "needs") continue;
         if (wanted === "hard" && !["needs", "discharges"].includes(e.type)) continue;
         const a = pos.get(e.to), b = pos.get(n.id);
         if (!a || !b) continue;
-        // prerequisite below → consumer above for needs; other types node → to
         const [from, to] = e.type === "needs" ? [a, b] : [b, a];
         const bend = Math.min(70, Math.abs(from.y - to.y) * .45);
         const p = make("path", {
@@ -170,32 +182,47 @@
       }
     }
 
-    for (const n of live) {
+    for (const n of list) {
       const { x, y } = pos.get(n.id);
-      const g = make("g", { class: `map-node${n.landmark ? " landmark" : ""}${selected === n.id ? " selected" : ""}`,
+      const cls = ["map-node"];
+      if (n.landmark) cls.push("landmark");
+      if (selected === n.id) cls.push("selected");
+      const g = make("g", { class: cls.join(" "),
                             transform: `translate(${x - NW / 2},${y - NH / 2})` });
-      const t = terr(n);
+      if (born.has(n.id) || moved.has(n.id)) {
+        g.appendChild(make("rect", { x: -3, y: -3, width: NW + 6, height: NH + 6, rx: 7,
+          fill: "none", stroke: born.has(n.id) ? "#f8fafc" : "#67e8f9",
+          "stroke-width": 1.6, "stroke-dasharray": born.has(n.id) ? "3 3" : "" }));
+      }
       g.appendChild(make("rect", { width: NW, height: NH, rx: 5, stroke: statusColor(n.status) }));
       g.appendChild(make("text", { x: 8, y: 15, class: "nid" },
         `${KIND_GLYPH[n.kind] || "○"} ${n.id.slice(0, 26)}`));
       if (n.landmark) g.appendChild(make("text", { x: NW - 26, y: 15, class: "nmark" }, "★"));
-      if (disagrees(n)) g.appendChild(make("text", { x: NW - 13, y: 15, class: "nflag" }, "!"));
-      g.appendChild(make("circle", { cx: NW - 34, cy: 11, r: 3.4, fill: t.color }));
+      if (atTip() && disagrees(n)) g.appendChild(make("text", { x: NW - 13, y: 15, class: "nflag" }, "!"));
+      if (atTip()) {
+        const t = terr(n);
+        g.appendChild(make("circle", { cx: NW - 34, cy: 11, r: 3.4, fill: t.color }));
+      }
       g.appendChild(make("text", { x: 8, y: 30, class: "nstatus", fill: statusColor(n.status) },
         n.status || "?"));
       const owner = (n.owner || "").split(/[:(]/)[0].trim();
       g.appendChild(make("text", { x: 8 + 7 * Math.min(16, (n.status || "?").length) + 8, y: 30,
                                    class: "nowner" }, owner.slice(0, 22)));
-      const chips = n.battery ? `${n.battery.guards.length}g${n.battery.kills.length ? "/" + n.battery.kills.length + "k" : ""}` : "";
+      const chips = atTip() && n.battery
+        ? `${n.battery.guards.length}g${n.battery.kills.length ? "/" + n.battery.kills.length + "k" : ""}` : "";
       if (chips) g.appendChild(make("text", { x: NW - 32, y: 30, class: "nowner" }, chips));
-      g.addEventListener("mousemove", ev => {
+      g.addEventListener("mousemove", ev2 => {
         for (const p of edgeEls) {
           const inc = p.dataset.a === n.id || p.dataset.b === n.id;
           p.classList.toggle("hot", inc);
           p.classList.toggle("dim", !inc);
         }
-        showTip(ev, `<strong>${esc(n.id)}</strong> ${n.landmark ? "★" : ""}<br>${esc(n.title || "")}` +
-          `<br>${esc(n.status)} · ${esc(n.kind)} · ${esc(owner)}<br>${esc(t.text)}`);
+        const move = moved.get(n.id);
+        showTip(ev2, `<strong>${esc(n.id)}</strong> ${n.landmark ? "★" : ""}<br>${esc(n.title || "")}` +
+          `<br>${esc(n.status)} · ${esc(n.kind)} · ${esc(owner)}` +
+          (move ? `<br>this step: ${esc(move[1])} → ${esc(move[2])}` : "") +
+          (born.has(n.id) ? "<br>born this step" : "") +
+          (atTip() ? `<br>${esc(terr(n).text)}` : ""));
       });
       g.addEventListener("mouseleave", () => {
         edgeEls.forEach(p => p.classList.remove("hot", "dim"));
@@ -204,7 +231,8 @@
       g.addEventListener("click", () => select(n.id));
       svg.appendChild(g);
     }
-    document.getElementById("top-axis").textContent = "ROOTS · the goal objects (meta.roots)";
+    document.getElementById("top-axis").textContent =
+      `ROOTS · the goal objects${atTip() ? " (tip)" : " as of " + stamp(ev.ts)}`;
     document.getElementById("bottom-axis").textContent = "DEEP PREREQUISITES · longest-path depth below the roots";
   }
 
@@ -227,7 +255,7 @@
       svg.appendChild(make("text", { x: X(d) + 2, y: height - 14, class: "life-day" }, day(d)));
     }
     const perDay = {};
-    for (const e of data.events) perDay[Math.floor(e.ts / 86400)] = (perDay[Math.floor(e.ts / 86400)] || 0) + 1;
+    for (const e of events) perDay[Math.floor(e.ts / 86400)] = (perDay[Math.floor(e.ts / 86400)] || 0) + 1;
     const maxDay = Math.max(1, ...Object.values(perDay));
     for (const [dk, c] of Object.entries(perDay)) {
       const x = X(Number(dk) * 86400);
@@ -236,7 +264,19 @@
                                      height: h, class: "life-commit-bar" }));
     }
     svg.appendChild(make("text", { x: GUT, y: 12, class: "life-day" },
-      `map commits per day (${data.events.length} total)`));
+      `map commits per day (${events.length} total) — click a bar to seek`));
+    for (const [dk] of Object.entries(perDay)) {
+      const x = X(Number(dk) * 86400);
+      const hit = make("rect", { x, y: 0, width: Math.max(4, X(86400) - X(0)), height: TOP - 8,
+                                 fill: "transparent", style: "cursor:pointer" });
+      hit.addEventListener("click", () => {
+        const target = Number(dk) * 86400 + 86399;
+        let idx = 0;
+        for (let i = 0; i < events.length; i++) if (events[i].ts <= target) idx = i;
+        setStep(idx, false);
+      });
+      svg.appendChild(hit);
+    }
 
     for (const ep of data.epochs) {
       svg.appendChild(make("line", { x1: X(ep.ts), y1: TOP - 24, x2: X(ep.ts), y2: height - 26, class: "life-epoch" }));
@@ -271,8 +311,13 @@
       if (n.death) svg.appendChild(make("text", { x: X(n.death) + 2, y: y + 10,
         class: "life-day" }, "†"));
     });
+
+    // the playback cursor
+    const cx = X(atTip() ? t1 : events[current].ts);
+    svg.appendChild(make("line", { x1: cx, y1: TOP - 24, x2: cx, y2: height - 26,
+                                   stroke: "#f8fafc", "stroke-width": 1.2, opacity: .9 }));
     document.getElementById("top-axis").textContent = "STATUS LIFELINES · every node id ever authored, birth-ordered";
-    document.getElementById("bottom-axis").textContent = "white ticks = owner changes · † = archived at re-root · amber = re-root";
+    document.getElementById("bottom-axis").textContent = "white ticks = owner changes · † = archived at re-root · amber = re-root · white line = playback cursor";
   }
 
   // ---------------------------------------------------------------- panels
@@ -299,11 +344,13 @@
   }
 
   function renderLadder() {
-    const counts = {};
-    for (const n of live) counts[n.status] = (counts[n.status] || 0) + 1;
+    const counts = atTip()
+      ? live.reduce((a, n) => (a[n.status] = (a[n.status] || 0) + 1, a), {})
+      : events[current].counts;
     const order = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
     const max = Math.max(1, ...Object.values(counts));
-    document.getElementById("ladder").innerHTML = `<h2>Maturity (live nodes, asserted)</h2>` +
+    document.getElementById("ladder").innerHTML =
+      `<h2>Maturity · ${atTip() ? "tip (asserted)" : "as of " + stamp(events[current].ts)}</h2>` +
       order.map(s => `<div class="role-row"><span class="role-label">${esc(s)}</span>
         <span class="role-track"><i class="role-fill" style="width:${100 * counts[s] / max}%;background:${statusColor(s)}"></i></span>
         <span class="role-value">${counts[s]}</span></div>`).join("");
@@ -314,7 +361,7 @@
     const found = anchored.filter(n => n.territory.exists);
     const clean = found.filter(n => n.territory.coneSorries === 0);
     const bad = live.filter(disagrees);
-    document.getElementById("territory").innerHTML = `<h2>Plan ⇄ territory (source scan)</h2>
+    document.getElementById("territory").innerHTML = `<h2>Plan ⇄ territory (source scan, tip)</h2>
       <div class="kpi-grid">
         <div class="kpi"><b>${anchored.length}/${live.length}</b><span>lean-anchored</span></div>
         <div class="kpi"><b>${found.length}</b><span>anchors found in source</span></div>
@@ -340,7 +387,7 @@
       items.push(`<li><code>${esc(n.id)}</code> landmark on exit status</li>`);
     for (const n of live.filter(n => n.titleChanges >= 3))
       items.push(`<li><code>${esc(n.id)}</code> title churn ×${n.titleChanges}</li>`);
-    document.getElementById("alarms").innerHTML = `<h2>Flags (viewer-side, wall clock)</h2>` +
+    document.getElementById("alarms").innerHTML = `<h2>Flags (viewer-side, wall clock, tip)</h2>` +
       (items.length ? `<ul class="mini-list">${items.join("")}</ul>`
                     : `<div class="legend-note">nothing firing</div>`);
   }
@@ -385,14 +432,58 @@
     document.getElementById("legend").innerHTML =
       `<strong>Status (asserted)</strong><br>` +
       shown.map(s => `<span><i style="background:${statusColor(s)};color:${statusColor(s)}"></i>${esc(s)}</span>`).join("") +
-      `<br><strong>Territory dot</strong><br>
+      `<br><strong>Territory dot (tip only)</strong><br>
        <span><i style="background:#4ade80;color:#4ade80"></i>anchor found, cone source-clean</span>
        <span><i style="background:#fbbf24;color:#fbbf24"></i>sorries in cone</span>
        <span><i style="background:#fb7185;color:#fb7185"></i>anchor missing</span>
        <span><i style="background:#475569;color:#475569"></i>no anchor</span>
        <br><strong>Edges</strong><br>
        <span>— needs (upward)</span> <span>┄ discharges</span> <span>· · conjectured-toward</span>
+       <br><strong>Playback</strong> white dashed ring = born this map commit · cyan ring = status changed
        <br><strong>Kind</strong> ● claim ◆ notion ➤ route · ★ landmark · ! banked-but-sorried`;
+  }
+
+  // ---------------------------------------------------------------- playback
+  function renderStep() {
+    const ev = events[current];
+    document.getElementById("step-time").textContent =
+      `${stamp(ev.ts)} UTC · map commit ${current + 1}/${events.length}${atTip() ? " · TIP" : ""}`;
+    document.getElementById("step-meta").textContent =
+      `${ev.sha} · ${ev.total} nodes · +${ev.births.length} born / −${ev.deaths.length} archived / ${ev.transitions.length} transition(s)`;
+    const subj = document.getElementById("step-subject");
+    subj.textContent = ev.subject;
+    subj.title = ev.subject +
+      (ev.transitions.length ? "\n" + ev.transitions.map(t => `${t[0]}: ${t[1]} → ${t[2]}`).join("\n") : "");
+  }
+
+  function setStep(index, keepPlaying = true) {
+    current = Math.max(0, Math.min(events.length - 1, index));
+    timelineEl.value = current;
+    renderStep();
+    renderLadder();
+    render();
+    if (!keepPlaying) stop();
+  }
+
+  function stop() {
+    playing = false;
+    playEl.textContent = "▶";
+    if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  function playTick() {
+    if (!playing) return;
+    if (current >= events.length - 1) { stop(); return; }
+    setStep(current + 1);
+    timer = setTimeout(playTick, 650);
+  }
+
+  function togglePlay() {
+    if (playing) { stop(); return; }
+    if (current >= events.length - 1) setStep(0);
+    playing = true;
+    playEl.textContent = "❚❚";
+    timer = setTimeout(playTick, 650);
   }
 
   function showTip(ev, html) {
@@ -417,16 +508,26 @@
   document.getElementById("subtitle").textContent =
     `${meta.mapPath} @ ${meta.head} — ${meta.commitCount} first-parent map commits; ` +
     `statuses are authored assertions, mined from git and checked against the source scan.`;
+  timelineEl.max = events.length - 1;
+  timelineEl.addEventListener("input", () => setStep(Number(timelineEl.value), false));
+  playEl.addEventListener("click", togglePlay);
+  document.getElementById("back").addEventListener("click", () => setStep(current - 1, false));
+  document.getElementById("forward").addEventListener("click", () => setStep(current + 1, false));
+  window.addEventListener("keydown", ev => {
+    if (ev.target.tagName === "SELECT" || ev.target.tagName === "INPUT") return;
+    if (ev.code === "Space") { ev.preventDefault(); togglePlay(); }
+    else if (ev.code === "ArrowLeft") setStep(current - 1, false);
+    else if (ev.code === "ArrowRight") setStep(current + 1, false);
+  });
   modeEl.addEventListener("change", render);
   edgeModeEl.addEventListener("change", render);
   window.addEventListener("resize", render);
   stage.style.overflow = "auto";
 
   renderSummary();
-  renderLadder();
   renderTerritory();
   renderAlarms();
   renderLegend();
   renderDetails();
-  render();
+  setStep(events.length - 1, false);
 })();
