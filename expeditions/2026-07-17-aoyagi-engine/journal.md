@@ -17324,3 +17324,12 @@ acquires u₀₀₁·u₀₁₀, LINEAR in u₀₀₁ — so the fidelity defect
 §11 + both docstring sites, declaring it final. Handled by the churn protocol: committed the §11
 edit FIRST (artifact-first), then sent arch-C-4 a SUPERSEDE brief with the state-confirmation ask
 (not-started / mid-render / done-with-old). Merge executes on its report.
+
+## 2026-07-23 (~17:55) — crossing caught: arch-C-4 rendered the SUPERSEDED text; delta dispatched
+
+arch-C-4's report crossed my supersede message (it was mid-render when the refinement arrived):
+its verbatim blocks = the FIRST frozen text, missing the leak clause at both sites. Caught by
+verbatim-block comparison against the elder's final (the reflexive def-fidelity gate earning its
+keep on prose too). NOT committed; precise two-edit delta sent (the `u₀₀₁·u₀₁₀`-leak clauses).
+Lesson instance: verbatim-report-vs-frozen-spec comparison is the catch mechanism for message
+races — state-confirmation asks alone don't help when the report crosses the supersede.
