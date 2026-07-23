@@ -341,3 +341,14 @@ properties feel interchangeable in prose ("multilinear-clean" read as "supported
 ideal, the degree bound, the membership — not an adjective); when a consumer needs property P,
 check the instrument history for P ITSELF, not for its neighbors; a verification claim without its
 formula is treated as unverified.
+
+## Witnesses are chosen by the AXIS they exercise, not by size (pnp-cap, 2026-07-24)
+
+The width-cap defect survived every prior battery because all witnesses were width-NON-increasing
+— the cap bites only when d[ℓ] > min(d₀..d_{ℓ−1}), and (3,2,2,2), though "wide", never trips it;
+(2,3,2,2) is the minimal witness that does. A witness that cannot falsify the claim is a spurious
+PASS generator. **Why:** each def guard/case corresponds to an axis of the input space; a battery
+covers a claim only if some witness crosses each axis the claim's guards read. **How to apply:**
+when mandating witnesses, name the AXIS each one exercises (width-increase, depth, multi-coupling,
+interior-vs-corner pivot, …) and check the claim's guards for axes with no crossing witness; "wide"
+or "big" is not an axis.

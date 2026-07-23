@@ -18296,3 +18296,15 @@ continues; nothing quantifying supportAt freezes); pnp-transport re-runs the cap
 width-increasing witness (verify-don't-expect). The λ untouched (wider raw support = the harmless
 direction). The ETA's predicted obstruction site fired ON SCHEDULE and pre-render — the
 parallelized elaboration earning its spawn.
+
+## 2026-07-24 (~17:55) — pnp-cap's findings banked (33ffa3599) + the ruling extras relayed; the
+witness-axis lesson banked
+
+Extras to the elder: the widen-fix VERIFIED viable on three width-increasing witnesses, with the
+one caveat pnp-cap honestly can't clear (supportAt's docstring names a realBranch_cover dependency
+on blockCoords@J=0 — the elder checks the actual consumption before ruling widen-vs-cap-on-center);
+the witness-shape precision ((3,2,2,2) would spuriously pass — width-INCREASE is the discriminating
+axis). F1 independent of the fix (the hypothesis-shape ruling needed regardless). Lessons.md gains
+the witness-axis rule (name the axis each witness exercises; check the guards for uncrossed axes —
+"wide" is not an axis). Holding: elder's supportAt ruling; CAPR freeze-hold; pnp-transport's
+width-axis re-run of the capstone checks.
