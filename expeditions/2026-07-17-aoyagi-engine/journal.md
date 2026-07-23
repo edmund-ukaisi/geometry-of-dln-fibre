@@ -20135,3 +20135,20 @@ targets the retention sites. The full folded-pass scope enumerated (eleven items
 FINAL: the hcanon drop banked (f8ccab333), 12 commits all axiom-clean, done-until-gated,
 resting on its two wake conditions. The board's two in-flight artifacts unchanged: BAKE's
 landing + pnp's capped-invariant confirm.
+
+## 2026-07-23 (~19:05 UTC) — pnp confirms CAPF's invariant (YES + the DEPTH sharpening); the
+CAPF crux grind is GO — the board's last design-confirm is done
+
+pnp: the capped-homogeneity invariant = exactly the union of its verified facts (#78's
+fresh-rollover cap-confinement + the wide-coverage run + L3T3's Deg1); CAPF's root observation
+matches its raw/cleared split (the confinement is EARNED by the clears). THE SHARPENING
+(load-bearing, relayed in bold): the step's absorption must carry ROUTE-(a) DEPTH — the escaped
+dependence factors through MULTIPLE ancestor layers' couplings via composed shears (the
+single-recoord collapse was refuted on (2,3,3,3)); inducting over the full path makes this
+structurally available, and the flag is not to let the step argument collapse to the
+immediately-preceding recoord. pnp's honest scope preserved for the docstring: base + mechanism
++ key nodes verified directly; the every-node universality is what the induction itself carries
+— the induction's job. CAPF's crux grind is GO. With this, EVERY design question and
+design-confirm on the expedition is closed; the remaining work is exactly: BAKE's render (in
+progress), CFF's cascade (on BAKE's SHA), CAPF's crux (now grinding), the elder's folded pass
+(trigger assembling), and the merges.
