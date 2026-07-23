@@ -21660,3 +21660,20 @@ ln] + hredEB + growth-V3} on it.
 **Status.** KILL: seat-killfin rendering (fresh). L7: repaired engine (free-f) under re-review
 (rev-L7cover, f-feasibility crux); wire held. Wall (a) both sides. Awaiting: rev-L7cover re-verdict,
 seat-killfin mini-restate + #97, battery bg-confirm.
+
+## 2026-07-24 (~06:00 UTC) — seat-killfin MINI-RESTATE PASSED (gate 1); rendering the KILL finish (1)→(2)→(3)
+
+seat-killfin (fresh KILL-finish seat, branch KILLFIN off KILLSTEP @ 2324f0c00) passed its mini-restate
+gate — accurate on all counts: the inherited FP+AT foundation, the two live sorries (CapDescent:1151
+hredEB / :1165 growth), the 3 targets, and critically the transplant-loss checks: (i) corner-in-block
+correctly named as REAL CONTENT (an unbanked strengthening of DivBirthInv — which gives only bc.2 <
+d[.1], not < wmu), NOT wiring; (ii) the growth-V3 CODEX-HARDENED order (vacuity-split first, wmu-eq
+from remnant-row existence, NOT the false "case (ii) non-empty"). No statement expected to change.
+Confirmed the ln-companion refinement for (1) (mirror DivBirthReach's ln_stepAppendAdvance, birth guard
+already threaded, ~40 lines — not a from-scratch induction; seat-descent consults). GO on (1)→(2)→(3);
+push to KILLFIN; report at #97 green then #98.
+
+**Status.** KILL: seat-killfin rendering {corner-in-block(1) → hredEB(2) → #97; growth-V3(3) → #98},
+foundation + carrier + spec all in hand. L7: repaired engine (free-f) under re-review (rev-L7cover,
+f-feasibility crux); wire held. Wall (a) both sides. Awaiting: seat-killfin #97 green, rev-L7cover
+re-verdict, battery bg-confirm.
