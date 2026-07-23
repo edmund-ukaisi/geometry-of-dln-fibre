@@ -118,3 +118,26 @@ path). seat-GM's def must be the precompose — or, if a per-step recursion form
 Lean wiring, it must follow Aoyagi's literal order (blow-up THEN clear), and whether *that* order
 equals the precompose is a pending pnp check (commissioned 2026-07-23). Until that check returns,
 SPECIFY on the precompose form only.
+
+## §7 The her-order verdict (#75, 2026-07-23, commit 0577aa9c7; controller re-ran: exit 0) —
+precompose is now UNCONDITIONAL; the per-step door is CLOSED
+
+Her literal order (blow-up THEN clear — `aoyagi-2023-worked.tex:613-629`: blow-up at :613/:622,
+regular transforms Q,P reduce D_J″ → [[1,O],[O,D_{J+1}]] at :619-620/:628-629; citations
+controller-verified) does **not** equal the precompose either — DIFFERENT at every node, all
+three witnesses, per coreGen∘foldG. The reason is decisive, not a proxy artifact: our fold's
+shear (`canonNormalizationOf`) reads the RAW coupling — a clear applied after the blow-up/shear
+arrives too late, because the shear has already baked the coupling into its output (Codex Q3's
+"the clear must be before the shear"). Aoyagi's recursion carries the cleared object D_J
+self-consistently *in her coordinates*; the faithful rendering of that cleared recursion *in our
+shear-coordinates* is exactly the source-precompose.
+
+**Design (settled, binding):** seat-GM SPECIFIES on the PRECOMPOSE form, unconditionally. No
+per-step recursion variant — neither clear-first (§6) nor her-order (this section) matches the
+precompose in our coordinates.
+
+**Fidelity (elder's call, does not block the render):** sourceClearedResid = her D_J rendered in
+our fold's coordinates via the source-clear — verified equivalent as RLCT objects (StepInv all
+nodes; ⟨C⟩ = ½·min M per §7.7 of the certificate); coordinate-identity to her literal D_J (the
+full Q,P image) is NOT proven and would need the full Q,P regular-transform rendering (pnp offers
+it; intricate; not needed for the render). The elder blesses the reading or demands the identity.

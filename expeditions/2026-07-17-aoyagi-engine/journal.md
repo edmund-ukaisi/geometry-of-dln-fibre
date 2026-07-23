@@ -18767,3 +18767,18 @@ Also :277-289 (coherence, same ruling): the "likely mechanism = arithmetic slip"
 holds a different invariant; no +1-hunt, no correspondence; distinction recorded). All math facts
 (three invariants, |δ|-agreement threshold, the 6/5/4 witness, definition-vs-formula contradiction,
 Lean insulation) unchanged.
+
+## 2026-07-23 (later-4) — #75 her-order verdict: precompose UNCONDITIONAL (0577aa9c7, controller re-ran exit 0 + source citations verified)
+
+Her literal order (blow-up THEN clear, worked.tex:613-629) ≠ precompose at every node, all three
+witnesses. The reason decisive: our shear (canonNormalizationOf) reads the RAW coupling — a
+post-blow-up clear arrives too late (Codex Q3's clear-before-shear, now with the her-order case
+closed too). Her recursion carries the cleared D_J self-consistently IN HER coordinates; the
+faithful rendering in OUR shear-coordinates is exactly the source-precompose. DESIGN SETTLED:
+seat-GM specifies the precompose form unconditionally — the per-step-recursion door (both orders)
+is CLOSED; frame §7 banked. FIDELITY (elder's call, non-blocking): sourceClearedResid = her D_J in
+our coordinates — RLCT-equivalence verified (StepInv all nodes + ⟨C⟩ = ½·min M); coordinate-identity
+to her literal Q,P image NOT proven (pnp offers the full Q,P render if demanded). Dispatched to the
+elder as a second queue item BEHIND the CAPR blessing (which gates a grinding seat); controller
+recommendation: the RLCT-equivalence reading suffices for the destination (the payoff is an RLCT
+statement); coordinate-identity is a right-extension, not a blocker.
