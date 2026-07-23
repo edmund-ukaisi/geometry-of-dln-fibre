@@ -19667,3 +19667,18 @@ canonical-pin; §9.5 (1)/(2′)-only; §9.6 codim-load-bearing + the three-compo
 ratified. The board grinds: pnp on GM's 2 certificates → #86; GM threading the carrier + awaiting
 them; INV on the root assembly + awaiting the sub-family spec render; CAPF on the analyticity
 sub-lemma with route (a) for its kill.
+
+## 2026-07-23 (~18:40 UTC) — GM's carrier enumeration delivered (6 gain hcanon, carrier-free list
+matches); ONE def-shape question routed (child-path carrier, forced by the case2 δ=1 route)
+
+GM's enumeration: the hcanon chain = (b) [ancestor part carried, fresh part self-provable — the
+right granularity] → the δ=1 append → both conjA → both preserves → (at integration) the
+lastLayer pair; carrier-free = (a)/S2/mono/stability/roots/region-trio/cover/δ=0-append/conjB —
+exactly matching the controller list. THE ONE REAL QUESTION (GM's step-direction note): the
+case2 δ=1 append needs the CURRENT edge's diagonal pin — which IsRealBranch does NOT give for
+fresh births — so the carrier form is forced toward CanonicalPivots of the CHILD path (its step
+arm carries the current pin; the recursion recovers ancestors) vs parent+explicit-pin. Routed to
+CAPR for the 30-second def-owner confirm; controller lean = child-path (one hypothesis, not two).
+GM's blocked-on list confirmed correct: (i) INV's CanonicalPivots render (in flight; SHA relayed
+on landing), (ii) pnp's 2 certificates (current job). The board's convergence points: INV's def
+push + pnp's cert delivery — both trigger GM's final grind phase.
