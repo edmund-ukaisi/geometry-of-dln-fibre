@@ -4,6 +4,7 @@ import DLNFibre.DLN.Aoyagi.Case2Wire
 import DLNFibre.DLN.Aoyagi.PivotPreservation
 import DLNFibre.DLN.Aoyagi.L5FoldSpec
 import DLNFibre.DLN.Aoyagi.CanonShear
+import DLNFibre.DLN.Aoyagi.AoyagiRecoordLinear
 
 /-!
 # `DLN.Aoyagi.MultiAffineStepWire` — the per-step multi-affine slot DESCENT (SEAT-L3T2)
@@ -277,6 +278,36 @@ theorem deg1_comp_of_fixing {N : ℕ} {d : Fin (N + 1) → ℕ}
       refine Finset.sum_congr rfl (fun x hx => ?_)
       rw [hfix ℓ hℓ x hx u]
 
+/-- **Clause-2 (`PerLayerDeg1From`) across a step map whose shear WRITES the support layer `S+1`**
+(the faithful `N_p` recoord — where the pre-`N_p` `…_comp_of_fixing` no longer applies at `ℓ = S+1`).
+Split by layer: at `ℓ = S+1` the map is `X`-linear (coefficient `C` from the caller — `recoordCoeff` for
+a shear-active edge); at `ℓ > S+1` the shear vanishes (`ShearWithinCarveRaw`'s `sl < ℓ`) so the map FIXES
+`layerCoords d ℓ` (the identity linear form). Both discharge via `affineOn_comp_of_linear`. -/
+theorem perLayerDeg1From_stepMap_split {N : ℕ} {d : Fin (N + 1) → ℕ} (S : ℕ)
+    (σ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ))
+    (C : (Fin (flatDim d) → ℝ) → Fin (flatDim d) → Fin (flatDim d) → ℝ)
+    (hfix_gt : ∀ ℓ, S + 1 < ℓ → ∀ x ∈ layerCoords d ℓ, ∀ u, σ u x = u x)
+    (hagree : ∀ ℓ, S + 1 ≤ ℓ → ∀ u v : Fin (flatDim d) → ℝ,
+        (∀ t, t ∉ layerCoords d ℓ → u t = v t) → ∀ t, t ∉ layerCoords d ℓ → σ u t = σ v t)
+    (hlin_eq : ∀ u, ∀ x ∈ layerCoords d (S + 1),
+        σ u x = ∑ j ∈ layerCoords d (S + 1), C u x j * u j)
+    (hC : ∀ x ∈ layerCoords d (S + 1), ∀ j ∈ layerCoords d (S + 1),
+        IgnoresCoords (fun u => C u x j) (layerCoords d (S + 1)) Set.univ)
+    (g : (Fin (flatDim d) → ℝ) → ℝ)
+    (hpl : PerLayerDeg1From d g (S + 1) Set.univ) :
+    PerLayerDeg1From d (fun u => g (σ u)) (S + 1) Set.univ := by
+  intro ℓ hℓ
+  rcases hℓ.lt_or_eq with hℓgt | hℓeq
+  · refine affineOn_comp_of_linear g (layerCoords d ℓ) σ (fun _ x j => if j = x then 1 else 0)
+      (hagree ℓ hℓgt.le) (fun u x hx => ?_)
+      (fun x _ j _ => (ignoresCoords_univ_iff_agree _ _).mpr (fun _ _ _ => rfl)) (hpl ℓ hℓgt.le)
+    rw [hfix_gt ℓ hℓgt x hx u]
+    simp only [ite_mul, one_mul, zero_mul]
+    rw [Finset.sum_ite_eq', if_pos hx]
+  · subst hℓeq
+    exact affineOn_comp_of_linear g (layerCoords d (S + 1)) σ C (hagree (S + 1) le_rfl) hlin_eq hC
+      (hpl (S + 1) le_rfl)
+
 /-! ### The δ=0 arm — the pure PULLBACK (all four edge kinds)
 
 At a δ=0 edge (`p.conState.cleared ≠ 0`) the child support and threshold EQUAL the parent's
@@ -293,7 +324,7 @@ theorem blockCoords_subset_layerCoords (d : Fin (N + 1) → ℕ) (ℓ : ℕ) :
   simp only [layerCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
   exact ⟨q, hq1, rfl⟩
 
-theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ}
+theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
     (hδ0 : edgeδ d p = false)
@@ -347,53 +378,121 @@ theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ}
   rw [ShearWithinCarve, ShearWithinCarveRaw] at hwc
   obtain ⟨hwc1, hwc2, _⟩ := hwc
   have hguniv : foldRegion d e (p.extend ed) = Set.univ := foldRegion_eq_univ e (p.extend ed)
-  -- `stepMap` fixes every coord at layers ≥ p.layer+1
-  have hfix : ∀ ℓ, p.conState.layer + 1 ≤ ℓ → ∀ x ∈ layerCoords d ℓ, ∀ u,
-      stepMap d ed u x = u x := by
-    intro ℓ hℓ x hx u
-    have hxℓ : (((tupIdxEquiv d).symm x).1.1 : ℕ) = ℓ := decode_layer_of_mem_layerCoords d ℓ x hx
-    have hxc : x ∉ ed.center := fun h => by have := hcb x h; omega
-    have hφ0 : ed.shearφ u x = 0 :=
-      hwc1 ℓ (by rw [hFLchild]; exact hℓ) x hx u (by rw [hguniv]; exact Set.mem_univ _)
-    show blockBlowupMap ed.center ed.pivot (edgeShear d ed u) x = u x
-    rw [Core.Aoyagi.blockBlowupMap_offCenter_eq ed.center ed.pivot (edgeShear d ed u) hxc]
-    exact PivotPres.edgeShearRaw_fixes_of_displacement_zero ed.case ed.shearφ u x hφ0
-  -- `stepMap` preserves off-`layerCoords ℓ` agreement at layers ≥ p.layer+1
-  have hagree : ∀ ℓ, p.conState.layer + 1 ≤ ℓ → ∀ u v : Fin (flatDim d) → ℝ,
-      (∀ s, s ∉ layerCoords d ℓ → u s = v s) →
-      ∀ s, s ∉ layerCoords d ℓ → stepMap d ed u s = stepMap d ed v s := by
-    intro ℓ hℓ u v hag s hs
-    have hES : ∀ w, w ∉ layerCoords d ℓ → edgeShear d ed u w = edgeShear d ed v w := by
-      intro w hw
-      have hφw : ed.shearφ u w = ed.shearφ v w :=
-        (ignoresCoords_univ_iff_agree (fun z => ed.shearφ z w) (layerCoords d ℓ)).mp
-          (by have := hwc2 ℓ (by rw [hFLchild]; exact hℓ) w; rwa [hguniv] at this) u v hag
-      have huw : u w = v w := hag w hw
-      show edgeShearRaw d ed.case ed.shearφ u w = edgeShearRaw d ed.case ed.shearφ v w
-      cases ed.case <;> simp only [edgeShearRaw, id_eq, blockShear, Pi.add_apply, huw, hφw]
-    have hpivc : ed.pivot ∉ layerCoords d ℓ := by
-      intro h
-      have hp := hcb ed.pivot ed.hpivot
-      have := decode_layer_of_mem_layerCoords d ℓ ed.pivot h
-      omega
-    show blockBlowupMap ed.center ed.pivot (edgeShear d ed u) s
-      = blockBlowupMap ed.center ed.pivot (edgeShear d ed v) s
-    unfold blockBlowupMap
-    by_cases hsp : s = ed.pivot
-    · rw [if_pos hsp, if_pos hsp]; exact hES ed.pivot hpivc
-    · by_cases hsc2 : s ∈ ed.center
-      · rw [if_neg hsp, if_pos hsc2, if_neg hsp, if_pos hsc2, hES ed.pivot hpivc, hES s hs]
-      · rw [if_neg hsp, if_neg hsc2, if_neg hsp, if_neg hsc2, hES s hs]
+  have hvpin : ed.shearφ = canonNormalizationOf d p.conState ed.pivot :=
+    realBranch_canonNormalization_eq e p ed hbranch
   -- child residual = parent (cast) pullback ∘ stepMap
   have hfun : foldResid d e (p.extend ed) j
       = fun u => foldResid d e p (Fin.cast (foldNR_extend_of_lt d ed hlt) j) (stepMap d ed u) := by
     funext u; exact foldResid_extend_delta0 d e ed hlt hδ0 j u
-  rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot, hfun]
+  rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot]
   have hpar := hslot (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
   rw [Deg1SupportedSlot, hCSpar, hFLpar, foldRegion_eq_univ e p] at hpar
-  exact deg1_comp_of_fixing _ (blockCoords d (p.conState.layer + 1)) (p.conState.layer + 1)
-    (stepMap d ed) (continuous_stepMap d ed)
-    (blockCoords_subset_layerCoords d (p.conState.layer + 1)) hfix hagree hpar.1 hpar.2
+  by_cases hcase12 : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2
+  · -- SHEAR-ACTIVE (case12/case2): the recoord WRITES layer `S+1`. Clause-1 = the canonical cap frontier;
+    -- clause-2 = the recoord ℓ-split.
+    -- STRICTLY above `S+1` the shear vanishes, so `stepMap` FIXES the layer.
+    have hfix_gt : ∀ ℓ, p.conState.layer + 1 < ℓ → ∀ x ∈ layerCoords d ℓ, ∀ u,
+        stepMap d ed u x = u x := by
+      intro ℓ hℓ x hx u
+      have hxc : x ∉ ed.center := by
+        intro h; have := hcb x h; have := decode_layer_of_mem_layerCoords d ℓ x hx; omega
+      have hφ0 : ed.shearφ u x = 0 :=
+        hwc1 ℓ (by rw [hFLchild]; exact hℓ) x hx u (by rw [hguniv]; exact Set.mem_univ _)
+      show blockBlowupMap ed.center ed.pivot (edgeShear d ed u) x = u x
+      rw [Core.Aoyagi.blockBlowupMap_offCenter_eq ed.center ed.pivot (edgeShear d ed u) hxc]
+      exact PivotPres.edgeShearRaw_fixes_of_displacement_zero ed.case ed.shearφ u x hφ0
+    have hagree : ∀ ℓ, p.conState.layer + 1 ≤ ℓ → ∀ u v : Fin (flatDim d) → ℝ,
+        (∀ s, s ∉ layerCoords d ℓ → u s = v s) →
+        ∀ s, s ∉ layerCoords d ℓ → stepMap d ed u s = stepMap d ed v s := by
+      intro ℓ hℓ u v hag s hs
+      have hES : ∀ w, w ∉ layerCoords d ℓ → edgeShear d ed u w = edgeShear d ed v w := by
+        intro w hw
+        have hφw : ed.shearφ u w = ed.shearφ v w := by
+          rcases hℓ.lt_or_eq with hgt | heq
+          · exact (ignoresCoords_univ_iff_agree (fun z => ed.shearφ z w) (layerCoords d ℓ)).mp
+              (by have := hwc2 ℓ (by rw [hFLchild]; exact hgt) w; rwa [hguniv] at this) u v hag
+          · subst heq
+            rw [hvpin]
+            exact canonNormalizationOf_agree_off_succLayer d p.conState ed.pivot u v hag w hw
+        have huw : u w = v w := hag w hw
+        show edgeShearRaw d ed.case ed.shearφ u w = edgeShearRaw d ed.case ed.shearφ v w
+        cases ed.case <;> simp only [edgeShearRaw, id_eq, blockShear, Pi.add_apply, huw, hφw]
+      have hpivc : ed.pivot ∉ layerCoords d ℓ := by
+        intro h; have hp := hcb ed.pivot ed.hpivot
+        have := decode_layer_of_mem_layerCoords d ℓ ed.pivot h; omega
+      show blockBlowupMap ed.center ed.pivot (edgeShear d ed u) s
+        = blockBlowupMap ed.center ed.pivot (edgeShear d ed v) s
+      unfold blockBlowupMap
+      by_cases hsp : s = ed.pivot
+      · rw [if_pos hsp, if_pos hsp]; exact hES ed.pivot hpivc
+      · by_cases hsc2 : s ∈ ed.center
+        · rw [if_neg hsp, if_pos hsc2, if_neg hsp, if_pos hsc2, hES ed.pivot hpivc, hES s hs]
+        · rw [if_neg hsp, if_neg hsc2, if_neg hsp, if_neg hsc2, hES s hs]
+      -- AT `S+1` the map is the recoord X-linear form
+    obtain ⟨hlin_bs, hC⟩ := canonNorm_blockShear_linear_on_succLayer d p.conState ed.pivot hN1
+    have hlin_eq : ∀ u, ∀ x ∈ layerCoords d (p.conState.layer + 1),
+        stepMap d ed u x = ∑ j ∈ layerCoords d (p.conState.layer + 1),
+          recoordCoeff d p.conState ed.pivot hN1 u x j * u j := by
+      intro u x hx
+      have hxc : x ∉ ed.center := by
+        intro h; have := hcb x h
+        have := decode_layer_of_mem_layerCoords d (p.conState.layer + 1) x hx; omega
+      have hσx : stepMap d ed u x = blockShear (canonNormalizationOf d p.conState ed.pivot) u x := by
+        show blockBlowupMap ed.center ed.pivot (edgeShear d ed u) x = _
+        rw [Core.Aoyagi.blockBlowupMap_offCenter_eq ed.center ed.pivot (edgeShear d ed u) hxc]
+        show edgeShearRaw d ed.case ed.shearφ u x = _
+        rw [hvpin]
+        rcases hcase12 with h | h <;> rw [h] <;> rfl
+      rw [hσx, hlin_bs u x hx]
+    refine ⟨?_, ?_⟩
+    · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry)
+      -- map: B-recoord-cap-frontier (recoord confinement to blockCoords(S+1) — coupled corank ≥ 2 wall)
+      have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
+      rwa [hCSchild, hguniv] at happend
+    · -- clause 2: per-layer grade via the recoord ℓ-split
+      rw [hfun]
+      exact perLayerDeg1From_stepMap_split p.conState.layer (stepMap d ed)
+        (recoordCoeff d p.conState ed.pivot hN1) hfix_gt hagree hlin_eq hC _ hpar.2
+  · -- SHEAR-ID (case11/rollover): `edgeShear = id`, so `stepMap` FIXES every layer `≥ S+1`; both clauses
+    -- discharge cleanly by `deg1_comp_of_fixing` (no cap frontier needed — the support is fixed).
+    have hedge : edgeShearRaw d ed.case ed.shearφ = id := by
+      rcases hc : ed.case with _ | _ | _ | _
+      · rfl
+      · exact absurd (Or.inl hc) hcase12
+      · exact absurd (Or.inr hc) hcase12
+      · rfl
+    have hfix : ∀ ℓ, p.conState.layer + 1 ≤ ℓ → ∀ x ∈ layerCoords d ℓ, ∀ u,
+        stepMap d ed u x = u x := by
+      intro ℓ hℓ x hx u
+      have hxc : x ∉ ed.center := by
+        intro h; have := hcb x h; have := decode_layer_of_mem_layerCoords d ℓ x hx; omega
+      show blockBlowupMap ed.center ed.pivot (edgeShear d ed u) x = u x
+      rw [Core.Aoyagi.blockBlowupMap_offCenter_eq ed.center ed.pivot (edgeShear d ed u) hxc]
+      show edgeShearRaw d ed.case ed.shearφ u x = u x
+      simp only [hedge, id_eq]
+    have hagree : ∀ ℓ, p.conState.layer + 1 ≤ ℓ → ∀ u v : Fin (flatDim d) → ℝ,
+        (∀ s, s ∉ layerCoords d ℓ → u s = v s) →
+        ∀ s, s ∉ layerCoords d ℓ → stepMap d ed u s = stepMap d ed v s := by
+      intro ℓ hℓ u v hag s hs
+      have hES : ∀ w, w ∉ layerCoords d ℓ → edgeShear d ed u w = edgeShear d ed v w := by
+        intro w hw
+        show edgeShearRaw d ed.case ed.shearφ u w = edgeShearRaw d ed.case ed.shearφ v w
+        rw [hedge]; exact hag w hw
+      have hpivc : ed.pivot ∉ layerCoords d ℓ := by
+        intro h; have hp := hcb ed.pivot ed.hpivot
+        have := decode_layer_of_mem_layerCoords d ℓ ed.pivot h; omega
+      show blockBlowupMap ed.center ed.pivot (edgeShear d ed u) s
+        = blockBlowupMap ed.center ed.pivot (edgeShear d ed v) s
+      unfold blockBlowupMap
+      by_cases hsp : s = ed.pivot
+      · rw [if_pos hsp, if_pos hsp]; exact hES ed.pivot hpivc
+      · by_cases hsc2 : s ∈ ed.center
+        · rw [if_neg hsp, if_pos hsc2, if_neg hsp, if_pos hsc2, hES ed.pivot hpivc, hES s hs]
+        · rw [if_neg hsp, if_neg hsc2, if_neg hsp, if_neg hsc2, hES s hs]
+    rw [hfun]
+    exact deg1_comp_of_fixing _ (blockCoords d (p.conState.layer + 1)) (p.conState.layer + 1)
+      (stepMap d ed) (continuous_stepMap d ed)
+      (blockCoords_subset_layerCoords d (p.conState.layer + 1)) hfix hagree hpar.1 hpar.2
 
 /-- **The case11 pivot is born below the current layer** (`decode-layer < p.layer` at δ=1). The reused
 pivot is pinned to `canonPivotOf = cornerToFlat` of the merge target's ledger birth corner (valid via
@@ -601,9 +700,13 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k,
   rw [ShearWithinCarve, ShearWithinCarveRaw] at hwc
   obtain ⟨hwc1, hwc2, _⟩ := hwc
   have hguniv : foldRegion d e (p.extend ed) = Set.univ := foldRegion_eq_univ e (p.extend ed)
+  -- N_p value-pin: the raw shear IS `canonNormalizationOf …`, so its layer-(S+1) recoord is available
+  have hvpin : ed.shearφ = canonNormalizationOf d p.conState ed.pivot :=
+    realBranch_canonNormalization_eq e p ed hbranch
   set σ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
     fun u k => blockBlowupCoordQuot ed.pivot k (edgeShear d ed u) with hσ
-  have hfix : ∀ ℓ, p.conState.layer + 1 ≤ ℓ → ∀ x ∈ layerCoords d ℓ, ∀ u, σ u x = u x := by
+  -- STRICTLY above the support layer the shear vanishes (`hwc1`, `sl < ℓ`), so `σ` FIXES layer `ℓ`
+  have hfix_gt : ∀ ℓ, p.conState.layer + 1 < ℓ → ∀ x ∈ layerCoords d ℓ, ∀ u, σ u x = u x := by
     intro ℓ hℓ x hx u
     have hxℓ := decode_layer_of_mem_layerCoords d ℓ x hx
     have hxp : x ≠ ed.pivot := by
@@ -613,15 +716,21 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k,
     show blockBlowupCoordQuot ed.pivot x (edgeShear d ed u) = u x
     rw [blockBlowupCoordQuot, if_neg hxp]
     exact PivotPres.edgeShearRaw_fixes_of_displacement_zero ed.case ed.shearφ u x hφ0
+  -- off-`layerCoords ℓ` agreement survives at every `ℓ ≥ S+1`: strictly above via `hwc2`, AT `S+1` via
+  -- `canonNormalizationOf_agree_off_succLayer` (the recoord reads layer `S` off the block there).
   have hagree : ∀ ℓ, p.conState.layer + 1 ≤ ℓ → ∀ u v : Fin (flatDim d) → ℝ,
       (∀ s, s ∉ layerCoords d ℓ → u s = v s) →
       ∀ s, s ∉ layerCoords d ℓ → σ u s = σ v s := by
     intro ℓ hℓ u v hag s hs
     have hES : ∀ w, w ∉ layerCoords d ℓ → edgeShear d ed u w = edgeShear d ed v w := by
       intro w hw
-      have hφw : ed.shearφ u w = ed.shearφ v w :=
-        (ignoresCoords_univ_iff_agree (fun z => ed.shearφ z w) (layerCoords d ℓ)).mp
-          (by have := hwc2 ℓ (by rw [hFLchild]; exact hℓ) w; rwa [hguniv] at this) u v hag
+      have hφw : ed.shearφ u w = ed.shearφ v w := by
+        rcases hℓ.lt_or_eq with hgt | heq
+        · exact (ignoresCoords_univ_iff_agree (fun z => ed.shearφ z w) (layerCoords d ℓ)).mp
+            (by have := hwc2 ℓ (by rw [hFLchild]; exact hgt) w; rwa [hguniv] at this) u v hag
+        · subst heq
+          rw [hvpin]
+          exact canonNormalizationOf_agree_off_succLayer d p.conState ed.pivot u v hag w hw
       have huw : u w = v w := hag w hw
       show edgeShearRaw d ed.case ed.shearφ u w = edgeShearRaw d ed.case ed.shearφ v w
       cases ed.case <;> simp only [edgeShearRaw, id_eq, blockShear, Pi.add_apply, huw, hφw]
@@ -631,6 +740,24 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k,
     by_cases hsp : s = ed.pivot
     · rw [if_pos hsp, if_pos hsp]
     · rw [if_neg hsp, if_neg hsp]; exact hES s hs
+  -- at `ℓ = S+1` the map is `X`-linear (the recoord), coefficient `recoordCoeff`
+  obtain ⟨hlin_bs, hC⟩ := canonNorm_blockShear_linear_on_succLayer d p.conState ed.pivot hN1
+  have hlin_eq : ∀ u, ∀ x ∈ layerCoords d (p.conState.layer + 1),
+      σ u x = ∑ j ∈ layerCoords d (p.conState.layer + 1),
+        recoordCoeff d p.conState ed.pivot hN1 u x j * u j := by
+    intro u x hx
+    have hxp : x ≠ ed.pivot := by
+      intro h
+      have := decode_layer_of_mem_layerCoords d (p.conState.layer + 1) x hx
+      have hpl := hcb ed.pivot ed.hpivot
+      rw [h] at this; omega
+    have hσx : σ u x = blockShear (canonNormalizationOf d p.conState ed.pivot) u x := by
+      show blockBlowupCoordQuot ed.pivot x (edgeShear d ed u) = _
+      rw [blockBlowupCoordQuot, if_neg hxp]
+      show edgeShearRaw d ed.case ed.shearφ u x = _
+      rw [hvpin]
+      rcases hcase with h | h <;> rw [h] <;> rfl
+    rw [hσx, hlin_bs u x hx]
   -- parent per-layer grade, weakened to threshold p.layer + 1
   have hpar := hslot (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
   rw [hCSpar, hFLpar, foldRegion_eq_univ e p] at hpar
@@ -641,12 +768,14 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k,
     funext u; exact foldResid_extend_delta1 d e ed hlt hδ1 j u
   rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot]
   refine ⟨?_, ?_⟩
-  · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry; canonShearOf-consuming)
+  · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry)
+    -- map: B-recoord-cap-frontier (recoord confinement to blockCoords(S+1) — the coupled corank ≥ 2 wall)
     have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
     rwa [hCSchild, hguniv] at happend
-  · -- clause 2: the per-layer grade survives the strict transform (PROVED, shear-independent)
+  · -- clause 2: the per-layer grade survives via the recoord ℓ-split (comp_of_linear at S+1, fixing above)
     rw [hfun]
-    exact perLayerDeg1From_comp_of_fixing _ (p.conState.layer + 1) σ hfix hagree hpar2
+    exact perLayerDeg1From_stepMap_split p.conState.layer σ
+      (recoordCoeff d p.conState ed.pivot hN1) hfix_gt hagree hlin_eq hC _ hpar2
 
 /-- **The per-step multi-affine slot DESCENT (primed leaf; statement-identical to
 `MonumentAtlas.realBranch_multiAffine_step`).** Dispatches: δ=0 pullback (`descent_delta0`, PROVED);
@@ -686,6 +815,6 @@ theorem realBranch_multiAffine_step' {N : ℕ} {d : Fin (N + 1) → ℕ}
       cases h : edgeδ d p with
       | false => rfl
       | true => exact absurd h hδ
-    exact descent_delta0 e p ed hlayer hδ0 hbranch hslot
+    exact descent_delta0 hpos e p ed hlayer hδ0 hbranch hslot
 
 end DLNFibre.DLN.Aoyagi
