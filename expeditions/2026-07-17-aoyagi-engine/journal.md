@@ -20256,3 +20256,24 @@ CX renders: the guard-add as a small first commit (statement TRUE before the pro
 one-arg update + the crux grind. The board's four lanes: BAKE (build gate), CX (guard+crux),
 CFF (scratch + BAKE's SHA), INV (resting gated). All design questions closed; the guard-add is
 the last statement-shape adjustment.
+
+## 2026-07-23 (~18:05 UTC) — CFF cert-(i) CORE proved (biggest cap risk retired); a DEDUP catch
+(the layer-bound already exists as CAPF #3); the fix-shape TRIPLE-confirmed; the KILL registered
+as the long-pole
+
+CFF: cert (i) CORE (canonNormalizationOf_vanishes_core, the deep 3-branch render from explicit
+hyps) PROVED @ 4b64bfc23 — the biggest cap-lane risk retired, ~70 lines + 5 helpers, on estimate;
+δ=0 closed (4da59c951); the counterexample script banked (e939396dd, re-run at CFF's exit gate).
+CX: reduction mapped (4 general helpers + conjunct-2/J≥1-interior from foldResid_layerHomogeneous'
++ conjunct-1/J=0 = the escaped-column KILL); its interior-guard recommendation INDEPENDENTLY
+matches CAPF's ruling. FIX-SHAPE NOW TRIPLE-CONFIRMED (CAPF def-owner + CX reduction + CFF cost
+analysis all land on the interior guard, no disjunction) — strengthens the elder's folded-pass
+confidence on the guard-add (informational). DEDUP CATCH: both CFF and CX need a couplingCoords
+layer-bound; CAPF ALREADY PROVED it (couplingCoords_decode_layer_le, #3 a24808def) — CX inherits
+it (base off CAPF: consume, don't rebuild), CFF lacks it (off GM) but its wrapper is
+BAKE+#73-gated so it holds rather than building a throwaway dup. Prevented a duplicate build of a
+proven lemma across two lanes. THE KILL registered as the board's LONG-POLE (CX's honest read:
+comparable to foldResid_layerHomogeneous', a full L3T3-thread-scale induction — the whole-path
+coupling-factorization invariant, pnp's depth); CX's plan endorsed (scaffold-isolate-Codex-then-
+escalate-to-pnp if past the bound, the L3T3 support pattern). ETA note: the cap crux (CX's KILL)
+is now the longest single remaining grind; everything else is mechanical/gated.
