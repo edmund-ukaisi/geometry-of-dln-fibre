@@ -307,8 +307,33 @@ theorem deg1SupportedOn_center_of_hslot_cleared (d : Fin (N + 1) → ℕ) {p : T
       (supportAt d p.conState.layer p.conState.cleared) (supportLayerOf p.conState)
       (foldRegion d (canonFlatten d) p)) :
     Deg1SupportedOn (sourceClearedResid d p) ed.center (foldRegion d (canonFlatten d) p) := by
-  -- map: B-globalmove-deg1SupportedOn-center-cleared (mirror Case1Wire.deg1SupportedOn_center_of_hslot on cleared)
-  sorry
+  -- mirror of Case1Wire.deg1SupportedOn_center_of_hslot, residual-agnostic (foldResid → sourceClearedResid)
+  classical
+  have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
+  have hsl : supportLayerOf p.conState = p.conState.layer := by simp [supportLayerOf, hcl]
+  have hcov : supportAt d p.conState.layer p.conState.cleared ⊆ ed.center :=
+    realBranch_cover (canonFlatten d) p ed hbranch hδ hcase
+  obtain ⟨-, ⟨sc, _, hecase, -, hcenterEq, -⟩, -⟩ := hbranch
+  have hXsub : ed.center ⊆ layerCoords d p.conState.layer := by
+    rw [hcenterEq]
+    exact canonCenterOf_append_subset_layerCoords d p.conState sc (by rw [hecase]; exact hcase)
+  intro j
+  rw [foldRegion_eq_univ (canonFlatten d) p]
+  obtain ⟨⟨c, hc, hcrepr⟩, hpl⟩ := hslot j
+  obtain ⟨c', hc'cont, hc'repr, hc'ign⟩ := exists_ignoresCoords_decomp
+    (sourceClearedResid d p j) ed.center (layerCoords d p.conState.layer) hXsub
+    (fun i u ↦ if i ∈ supportAt d p.conState.layer p.conState.cleared then c i u else 0)
+    (fun i ↦ by
+      by_cases hi : i ∈ supportAt d p.conState.layer p.conState.cleared
+      · simp only [hi, if_true]
+        exact continuousOn_univ.mp (by rw [← foldRegion_eq_univ (canonFlatten d) p]; exact hc i)
+      · simp only [hi, if_false]; exact continuous_const)
+    (fun u ↦ by
+      rw [hcrepr u (by rw [foldRegion_eq_univ]; exact Set.mem_univ _),
+        ← Finset.sum_subset hcov (fun i _ hi ↦ by simp [hi])]
+      exact Finset.sum_congr rfl (fun i hi ↦ by simp [hi]))
+    (by have := hpl p.conState.layer (le_of_eq hsl); rwa [foldRegion_eq_univ] at this)
+  exact ⟨c', fun i ↦ (hc'cont i).continuousOn, fun u _ ↦ hc'repr u, hc'ign⟩
 
 /-- **Cleared conjunct-B step** — the `sourceClearedResid` analogue of
 `MonumentAtlas.realBranch_multiAffine_step` (the child `Deg1SupportedSlot` descent on the cleared residual,
