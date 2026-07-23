@@ -21385,3 +21385,25 @@ subjected to value-witness + cover-SPECIFY, both surviving, no confound.
 **Status.** Summit path fully priced + owned: #73 (KILL step in motion — seat-descent + producers) +
 L7 (seat-L7cover rendering the full-fan cover under (A); σ-bridge + fan-completeness = my wire work) +
 L1/L6/L8 wiring. Awaiting: seat-descent hredEB green, seat-L7cover full-fan-cover green.
+
+## 2026-07-24 (~02:20 UTC) — seat-L7cover banked ruling-independent scaffolding (LeafCoverTiling fan-lift, green, pushed); its message crossed my (A)-relay → confirmed unblocked, on-track
+
+seat-L7cover took the optional ruling-independent scaffolding + banked/pushed it
+(origin/expedition/aoyagi-engine-L7cover): new module LeafCoverTiling.lean, ONE theorem
+`ball_subset_iUnion_blockBlowup_comp` — the pnp-fan cover-fold's one-step FAN-LIFT (shear-free),
+consuming seat-Q's sorry-free atom BlockBlowupCover.ball_subset_iUnion_blockBlowup_image_radius. Its
+`hcov` hypothesis IS exactly the (A) fan-completeness (per-pivot charts cover the source box) —
+controller-discharged from buildTree. Gates reported green (lb ✔, 0 sorries, forced axioms clean,
+cordon 0). NOT wired into the aggregator (controller-only). I re-derive its gates at #73-wire
+(mid-render scaffolding, trusted now; the gate is integration).
+
+Its message CROSSED my relay of the elder's (A) ruling (it said "still holding" — pre-relay).
+Confirmed to it: unblocked under (A); its banked fan-lift is exactly the right foundation (hcov =
+the controller-discharged fan-completeness hypothesis); proceed to the sheared one-step + tree-fold +
+box-inflation → the standalone full-fan-cover top-lemma. The σ-cover-bridge + fan-completeness
+discharge stay MINE at wire. Recorded #101.
+
+**Status.** Wall (a) both sides, #99 closed. seat-L7cover rendering under (A) (fan-lift scaffolding
+banked). seat-descent on the KILL step (hredEB + growth V3, consuming CFF blocks). Controller-owned
+wire work queued: σ-cover-bridge + fan-completeness (L7) + the #73 cleared-chain integration.
+Awaiting: seat-descent hredEB green, seat-L7cover tree-fold green.
