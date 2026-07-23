@@ -314,3 +314,18 @@ Both halves are the same antidote: ruling-churn must terminate at ONE named cont
 any seat spends a turn on it. Related: artifact-first/brief-second (propagation timing) and
 def-facts-with-def-checks (assertion provenance) — the three together cover authoring,
 propagating, and consuming a fast-moving ruling.
+
+## Briefs name their sources by exact path — "the paper" is ambiguous here (operator, 2026-07-23)
+
+This repo carries TWO source papers: L&R 2024 (CLAUDE.md's headline, the *fibre-geometry* paper) and
+Aoyagi 2023 (this expedition's subject, the *resolution/RLCT* paper). A brief that says "the paper"
+resolves differently per reader — the #63 audit drifted to an L&R sweep exactly this way. **The
+brief-giver owns the ambiguity, not the reader**: every commission/brief that references a source
+names it by exact file path (paper-sources/..., theory/aoyagi-2023-reproduction/...) and, where the
+risk exists, names what is OUT of scope. Applies to every paper reference in every brief.
+
+**Record correction (operator, same date):** the elder's "L&R printed-rlcm off-by-one" finding is
+WITHDRAWN as an erratum candidate — L&R's θ is the count of top-dimensional fibre components, NOT
+the rlcm (pole multiplicity, Aoyagi's a(ℓ−a)+1); two different quantities, no discrepancy, no
+authors' correspondence. Conflating quantities that share a formula's neighborhood is the same
+class of error as the source ambiguity above: name the OBJECT, not just the formula.
