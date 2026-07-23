@@ -18357,3 +18357,17 @@ COMPLETE pending the addendum; the elder gets the simpler-route appendix (the b-
 CAPSTONE's tool; the two properties keep separate, simpler machinery). The cap frontier — the
 ETA's tail-risk item — is now: certificate done, route simpler than scoped, one def-ruling from
 render-ready.
+
+## 2026-07-24 (~19:15) — the addendum's decision fully conditioned: pnp-cap's template is
+RULING-AGNOSTIC; the discriminator favors the cleared-object route
+
+pnp-cap: the same two ingredients (homogeneity + Φ-ideal-preservation) close obligation (b)
+under EITHER fix — only the target ideal differs — so the elder's addendum is pure statement
+architecture. The discriminator (relayed with my recommendation): the CLEARED-OBJECT route keeps
+supportAt/blockCoords as-is, keeps realBranch_cover's proven statement TRUE (no falsification, no
+codim re-check), consumes pnp-transport's verified confinement directly, and is the SAME §7-§7.8
+object-split — the support-cap as one more property of the normal form (the paper-first reading:
+her capped D_J IS the normal form's). The widened-raw route (§12 as first ruled) creates every
+conflict the cleared route avoids. If the elder concurs, §12(1)'s widen is superseded, supportAt
+is UNCHANGED, and CAPR's SPECIFY unfreezes against the def it already drafted with. Both routes
+provable; one conflict-free.
