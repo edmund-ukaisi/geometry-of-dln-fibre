@@ -620,11 +620,26 @@ cleared value 0 = exactly this scope bound.
   open def detail; the render target (DEF-EDIT-1 widen; DEF-EDIT-3 = branch-i→R4, branch-ii flip + `i≥cleared`
   scope) is COMPLETE. The correction chain converged onto the faithful fix — the scope bound is her
   current-chart reading, found by chasing the `u₀₀₁²` the fifth correction surfaced.
-- **CLOSING COROBORATION (seat-L4D, decorrelated from pnp's flat model):** the inter-edge mechanism is
-  confirmed AT THE DEF via the full composition chain (`canonNormalizationOf` raw layer-`s` reads +
-  `foldResid` deeper-edge-first + `pathMap` root-outermost). AND the last hypothetical escape is CLOSED:
-  seat-L4D's center-degree check finds the unscoped `u₀₀₁²` is NOT center-degree-1 either — so the (l)
-  chart-frame benign-artifact HYPOTHESIS FAILS for the UNSCOPED formula (raw-deg-2 does NOT collapse to
-  chart-deg-1 via `e₂` for the unscoped sum). Consequence: the `i ≥ cleared` scope bound is NECESSARY, not
-  merely the stricter option — unscoped, BOTH battery rows fail. §8(m) intact (with the scope, both pass);
-  the criterion trajectory (raw → chart-frame → scope) landed on the ONLY sound point, decorrelated-confirmed.
+- **DEF-LEVEL MECHANISM — decorrelated-confirmed (seat-L4D, independent of pnp's flat model):** the
+  inter-edge coupling is confirmed AT THE DEF via the full composition chain (`canonNormalizationOf` raw
+  layer-`s` reads + `foldResid` deeper-edge-first + `pathMap` root-outermost). Both instruments agree on
+  the mechanism.
+- **NO RE-OPEN — chart-frame `boostReady` PASSES inter-edge, both witnesses (pnp, `verify/`
+  `r3r4_chartframe_boostready.py`, exit-0; verified raw==chart under `(e₂,w):=raw`).** The R3+R4 reuse-node
+  residual is `Deg1SupportedOn` the center on every slot: `col-1 = e₂·A₂·(w col1)` — the raw `u₀₀₁²` is
+  EXACTLY the expansion of `e₂·(w col1)`, i.e. a CENTER coord (`e₂`) times a NON-center coord (`w col1`),
+  which IS center-supported (the `e₂` slot, coefficient `w col1` ignoring center). The OPERATIVE test —
+  `Deg1SupportedOn` of the residual slots, the form `boostReady_case11` actually consumes — PASSES.
+  seat-L4D withdrew its re-open framing (caught its own confound via the honest_clear fidelity cross-check;
+  confirmed the faithful reference never squares `u₀₀₁`).
+- **The UNSCOPED formula's chart-frame degree-status is CONTESTED-but-MOOT (bookkeeping, not action):** the
+  two instruments answered subtly different questions — seat-L4D's "`u₀₀₁²` not center-degree-1" is a
+  standalone-MONOMIAL degree count; pnp's is `Deg1SupportedOn` of the residual with `e₂` atomic. I did not
+  personally re-derive which is decisive on the UNSCOPED sum, and it is GATE-MOOT (we render the SCOPED
+  formula). So the record does NOT declare a winner on the unscoped point.
+- **CORRECTION to the earlier "scope NECESSARY" note:** §8(m)'s justification rests on FAITHFULNESS
+  (uncontested — the `i ≥ cleared` scope IS her accumulated-`Q₂'⁻¹` current-chart semantics), NOT on a
+  necessity claim (contested between instruments, moot). The scope is ADOPTED (her semantics + it cleans the
+  RAW frame). MERGE UNAFFECTED (we render the scoped formula; both battery rows clean). The block axis is
+  CLOSED — both instruments concur on the operative question (no re-open; scoped/faithful reference clean;
+  the chart-frame `boostReady` test passes).
