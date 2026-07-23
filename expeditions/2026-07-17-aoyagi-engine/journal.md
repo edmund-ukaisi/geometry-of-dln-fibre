@@ -15849,3 +15849,33 @@ CARRY the non-diag block with the ledger adjusted is coords-of-record at the blo
 DATA IN FLIGHT (the council's final inputs): seat-L4D's full R3 verification + the BLOCK-form
 column + the paper-first direction check; pnp's flipped-def matched-node run + the
 object-labeled reuse-node forms. Nothing bakes. #48 completed (the matched-node verdict).
+
+## 2026-07-23 (~01:50) — THE ELDER RETRACTS §2's FIELD FORM (wrong under BOTH readings); the council backs Reading B + R3-from-text; two inputs to finalization
+
+THE RETRACTION (the elder, owned plainly): §2's field was an ADDITIVE ∃c coefficient-factoring
+form; Aoyagi's invariant is a MULTIPLICATIVE row-scaling diag(b)·[clean block] — the additive
+form is wrong under BOTH readings and "was fitted to the broken def's coeff-2 ADDITIVE symptom;
+with the additive symptom gone under R3, the additive-factoring form has nothing to describe."
+The elder notes its confirming Codex read (carried-invariant-fidelity §2a/2b) was downstream of
+the same broken-def premise — the sharpest symptom-fitting instance yet (synthesis anchor).
+Live DEF EDIT 2 candidates: (B) her literal CLEAN-BLOCK form (extras clean, boost-readiness
+DIRECT, no field) vs (A) a diag(b) ROW-SCALING conjunct (multiplicative). §1 shape-widen STANDS
+(paper-anchored, independent). §2 frame/coords-of-record MOOT under B. R3 PREFERRED; R4 stands
+down. The 11th catch may DISSOLVE under B (a broken-def artifact, not a statement defect) —
+catch-count bookkeeping revised honestly at finalization.
+
+THE COUNCIL ANSWER (banked 399cfe72c the moment it appeared): Q1 — direction CONFIRMED
+A_{S+1}·Q₁ from her text, WITH the error's origin: A' = R⁻¹A is her old-to-new formula; the
+chart substitution needs the reverse map A = RA'; transposed into the Lean product order,
+left-mult → right-mult ⟹ A_{S+1}·Q₁; the baked Q₁⁻¹ was the old-to-new/new-to-old CONVERSION
+ERROR (which is also how the certificate inherited it). Q2 — READING B FAITHFUL, "the text is
+not genuinely ambiguous": the b's are the EXTERNAL row-weight ledger; :615's d = u_{s,k}·d' is
+transient blow-up factoring absorbed by the t̃/M updates; boost-readiness follows DIRECTLY from
+the separated normal form — partial rows give center coords from clean D_J, complementary rows
+acquire the reused exceptional from their EXTERNAL b_i. No field hypothesis needed.
+
+REMAINING INPUTS to the elder's finalization of DEF EDIT 2: (1) seat-L4D's foldB DEF-FACT (the
+A-vs-B discriminator: does foldB carry the ACCUMULATED b-monomial — foldResid then = the clean
+post-factoring block, Reading B — or only the current pivot?); (2) pnp's reuse-node raw forms,
+relabeled CLEAN-BLOCK vs b-SCALED (the m_k·β column retired everywhere). Both charged. Nothing
+bakes.
