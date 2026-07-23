@@ -21267,3 +21267,29 @@ gets the ground-truth hunt), non-blocking. No definition-of-done change.
 — seat-descent KILL step + producers) + seat-L7cover (the L7 long-pole, parallel) + L1/L6/L8 wiring.
 Awaiting: pnp's (3,3,4) hardening witness, seat-L7cover mini-restate, seat-descent green milestone.
 Parallelization wave (P2/P3/#73-rebase) still queued.
+
+## 2026-07-24 (~01:10 UTC) — seat-descent milestone: KILL-step ARCHITECTURE + FP structural helpers GREEN (KILLSTEP pushed 5fde86cce); consume-vs-reprove RULED (consume CFF's building blocks; dedup at #73 = my job)
+
+seat-descent banked a milestone (KILLSTEP @ 5fde86cce, all green, CapDescent 930 LoC — the
+push-nudge worked, branch now on origin): the KILL-step ARCHITECTURE (terminal + 3-arm dispatch +
+escapedBelow transitions + growth ignoresCoords_union wiring) + the FP structural helpers
+(ignoresCoords_comp, couplingClear_agree_of_agree, conOracle_case2or12_cleared_lt, cornerToFlat_decode,
+couplingCoords_row_gt_col [couplings strictly below-diagonal], belowPivotCol_decode,
+notMem_escapedBelow_of_col_lt_wmu). Route decorrelated-validated. TWO internal sorries remain: hredEB
+(the FP+AT non-growth reduction, #97 — ~7 sub-cases, ~300 lines like the mirror) + the growth-arm V3
+multi-layer descent (#98, with seat-KILL+pnp-cap). Outer statement frozen, no scope issues.
+
+CONSUME-VS-REPROVE RULED (a #73-dedup question = my integration call): CONSUME. seat-descent's FP-δ0
+= seat-CFF's `couplingClear_parent_fixes_stepMap_child` (banked green on ClearedFold). Ruling: COPY
+CFF's building blocks (that + mem_couplingCoords_belowPivotCol + conOracle_stepChild_layer_mono) into
+KILLSTEP with a `-- from CFF ClearedFold, dedup at #73` marker; do NOT reprove banked-green math; I
+reconcile the single-source at #73. Saves ~150 lines. CONSULT ROUTING corrected: the building-blocks
+consult is seat-CFF (the AUTHOR, resting-as-unit-consult), NOT seat-KILL (built the KILL foundation,
+not ClearedFold) — extended the direct-loop authorization to seat-descent↔seat-CFF for the
+portability call. seat-KILL stays consult for the KILL-specific mechanics (AT + δ=1 FP + growth V3).
+This is the earlier building-blocks FYI landing: seat-descent is now reusing CFF's banked machinery
+rather than re-deriving — the producer/consumer topology working intra-lane.
+
+**Status.** KILL step: architecture+FP-helpers green, 2 sorries left (hredEB + growth V3). seat-descent
+grinds the mine-regardless pieces + consumes CFF's on the port confirm. Wall (a) decorrelated-priced,
+(3,3,4) hardening witness in flight (pnp). seat-L7cover on the L7 long-pole. Summit path healthy.
