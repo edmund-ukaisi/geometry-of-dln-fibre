@@ -63,6 +63,40 @@ Cases 1&2 (read from the paper images; worked.tex references them): transcribe H
 claimed monomialisation — not our invention. At each route/statement ask "within Aoyagi's scope?" and
 cite the page; a deviation is a DOCUMENTED typo-fix, never a silent Lean-convenience.
 
+**F6. The carried invariant `FoldStepInvAt` UNDER-transcribed Aoyagi's induction hypothesis — the
+10th+11th catches, ONE re-bake (elder-ruled 2026-07-23; SOUND, paper-first + Codex-decorrelated).**
+Her ONE "inductive invariant" display (worked.tex:562–577) held both answers. **SHAPE** (support too
+tight): her residual block `D_J` is `(M(S)−J)×(M^(S+1)−J)` — running min governs the row/cleared-prefix
+axis, the COLUMN axis is the RAW next-layer width `M^(S+1)`; the Lean `supportAt` capped it at
+`widthMinUpto` (docstring :551–555 conflated the blow-up CENTER, correctly capped, with the descended
+RESIDUAL support, raw). FIX = `(a)` widen the descended branch to `layerCoords(S+1)`; `J=0`/`blockCoords`
+unchanged. **FORM** (too weak): the case-11 reuse is her `d`-block `= u_{s,k}·d'` factoring; the Lean
+`Deg1SupportedSlot` carried continuity-only `∃c`. FIX = a COHERENT PRODUCT factoring conjunct
+`c_i = (∏ active Schur exceptionals) · β_i` = her `diag(b)` — NOT pure value-vanishing (Codex 2a: no
+continuous quotient) NOR a per-divisor vanishing conjunction (Codex 2b: does not compose for continuous
+coeffs). **FRAME** (coords-of-record, the ambiguity class that hid the cap-escape): `foldResid`'s argument
+is the node frame PRE-shear (`foldG_eq_pathMap`), so the exceptional is a CONTINUOUS COMBINATION `e₂(u)`,
+not a coordinate; ruled F-value (native frame, matching the `(a)`-support) over F-frame (recoord — would
+drag support to the rejected `(c)` / a two-frame slot). Both defects meet at the reused divisor's earlier
+descended clear (the field's INTRO obligation) ⟹ one joint re-bake (fork B; A/C rejected). Hedge CLOSED —
+KILLED-BY-e: a scrambling `e` gives degree-2 in a base-`coreGen` extra coord, so the `∀e` wall is FALSE not
+just unprovable ⟹ the `canonFlatten` base pin and the b-chain field are NECESSARY, no escape. `PerLayerDeg1From`
+UNTOUCHED; numeric `M_{s,k}` ledger stays in Objects C/D. RETIRED predecessor flags: fix-β (row-cap the fan)
++ fix-γ (recoord-image subspace) — superseded by the INHERENT read-side arm (remnant-row read escapes with
+no recoord, any pivot) AND by paper-first (there is no cap to preserve; her `D_J` column IS raw); the
+fan/slot-coupling escape-diagnosis (the escape is inherent, not a fan artefact); the pnp-fan live-square
+cover sub-question (moot once the support widens regardless — interior pivots monomialise, settled). These
+lived in the predecessor's INTERIM cap-escape adjudication (`elder-capescape-interim-adjudication.md`), which
+was DELIVERY-LOST (sent 23:05, never reached the controller; recovered verbatim from the wedged seat's
+transcript during a liveness poll) and INTERIM by its own terms — its fix-β preference is formally retracted
+here. Witnesses: `threads/design-round-2-ruling.md`
+(the ruling); `threads/L4-case1-core/{recoord-cap-escape,empirical-invariant-table,invariant-candidates-VS,
+capescape-def-confirm,scrambled-e-hedge}-note.md` + `verify/{recoord_cap_escape,empirical_invariant_table,
+scrambled_e_hedge}.py` (exit-0); `codex/carried-invariant-fidelity-answer.md` (xhigh, all four sub-claims).
+Skeleton anchor: `FoldStepInvAt`/`supportAt`/`Deg1SupportedSlot` (MonumentAtlas:544–595); consumer
+`realBranch_boostReady_case11` (Case1Wire:386) becomes PROVABLE. WIDE-witness battery `(2,3,2,2)` — NOT
+`(3,3,4)` (not wide on the recoord/col axis).
+
 ## Paper-fidelity ledger (documented Aoyagi typos; the mechanism stands)
 - **Def-3 broken** (verified typo) — use the geometric `½·min_t Mval(t)`. Witness `battery/g-def3-broken.py`.
 - **Lemma 1 direction**: worked.tex:156 prints `≥`; the correct/used direction is `≤` (`rlctAt_mono`) —

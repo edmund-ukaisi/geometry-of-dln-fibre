@@ -32,6 +32,17 @@ fixes both**, at the faithful (weakest-that-inducts) shapes below. (A) patches t
 form and leaves the construction under-transcribed; (C) abandons `∀e`-honesty. Neither is faithful;
 (B) is Aoyagi's own induction data, transcribed.
 
+**The hedge is CLOSED — (B) is forced with no escape branch (banked after this ruling opened;
+confirms, does not reopen).** pnp-transport modeled a scrambling `e` exactly (validated against the
+`Fbad` kill-witness): on `(2,2,2,2)` it produces at the boost parent the monomial `u₂₀₀·u₁₀₁²` —
+degree 2 in a single extra-block coordinate, **in the base `coreGen_e`** (upstream of any shear, so
+recoord-encoding-independent). BoostSplit needs degree-1 in the layer-1 extras and the recoord is
+layer-1-linear, so this is irreparable: the `∀e` wall statement is **FALSE, not merely unprovable**;
+the `canonFlatten` base pin is NECESSARY and the b-chain field is STRICTLY necessary (no unfolding
+route exists). This resolves in the negative the one open branch (Codex's §4 "plausible but
+unverified", the predecessor's hedge). The re-bake stands with no escape;
+`threads/L4-case1-core/scrambled-e-hedge-note.md` + `verify/scrambled_e_hedge.py` (exit-0).
+
 ---
 
 ## 1. SHAPE — the descended support is her raw residual block `layerCoords(S+1)`
@@ -149,14 +160,46 @@ NOT carried in the slot (it is combinatorial, lives in the already-banked Object
 So the ruled field = Form S's product STRUCTURE, minus the ε-transport numeric ledger. This is the
 weakest form that inducts.
 
-**Frame (mandatory, stated IN the field).** The divisor coordinate whose factor the field names is
-the exceptional coordinate in the node's RUNNING (post-Schur) chart frame — the value `foldResid`'s
-argument actually holds after the shears — NOT the literal root-frame birth corner. On `(2,2,2,2)`
-this is the Schur-reduced `e_2 = u_{011} − u_{010}·u_{001}` read at the birth-corner slot, not
-`u_{011}`. Because `foldResid` composes through `pathMap`, its argument is already in the running
-frame, so naming "the coordinate at divisor `k`'s birth-corner slot, in `foldResid`'s argument"
-is frame-correct — but the STATEMENT must pin this (it is the exact ambiguity class that hid the
-cap-escape and the earlier unfaithful-shear). A field stated in the root frame names the wrong locus.
+**Frame (mandatory, stated IN the field) — AMENDED after seat-L4D's def-verification.** seat-L4D
+verified at the def (`foldG_eq_pathMap` + `pathMap_append`, MonumentAtlas:391–399): `foldResid`'s
+argument `u` is the DEEPEST / node-`p` chart frame, **PRE the path's shears** — the shears are
+applied on the way DOWN to `coreGen` (the root frame). So the reused divisor's Schur exceptional,
+in `foldResid`'s argument frame, is a **CONTINUOUS COMBINATION** `e₂ₖ(u)` — on `(2,2,2,2)`,
+`e₂ = u_{011} − u_{010}·u_{001}` — **NOT the bare birth-corner coordinate** `u_{011}` (which is the
+root-frame single-coordinate reading, the WRONG locus in the node frame). The factor `m_k` in the
+field is therefore the product of the active divisors' Schur exceptionals **as native-frame
+combinations**. This MUST be pinned in the statement — it is the exact ambiguity class that hid the
+cap-escape and the unfaithful shear; a field stated with a raw birth-corner coordinate names the
+wrong locus. (This corrects a "post-shear" mis-statement in the pre-verification draft of this §.)
+
+**Precision — the factoring supersedes the per-divisor vanishing conjunction.** seat-L4D's
+recommended "Form V" is a per-divisor VALUE-VANISHING (`∀u, e₂ₖ(u)=0 → c_i u = 0`) conjoined over
+active divisors. That is NOT the ruled form: (a) pure value-vanishing gives no continuous quotient
+(Codex 2a); (b) a conjunction of per-divisor vanishings does not compose for continuous coefficients
+— a coordinate that is "extra" for two divisors `f,g` would need `c_i` divisible by both `e₂_f` and
+`e₂_g`, and two continuous factorings `c_i=e₂_f·β_f=e₂_g·β_g` do NOT yield `c_i=e₂_f·e₂_g·β` (Codex
+2b). The invariant must therefore carry the COHERENT PRODUCT directly:
+`c_i = (∏_{active k: t̃_k ≤ col(i)} e₂ₖ) · β_i` — Aoyagi's `diag(b)` monomial, transcribed. For
+polynomial coefficients this equals the per-divisor vanishing (each `e₂ₖ` is irreducible ⟹ prime),
+but the carried object is the product, not the vanishing family.
+
+**Coords-of-record ruling — F-value (native frame), NOT F-frame (recoord).** The exceptional is a
+coordinate in Aoyagi's per-chart recoordinatized frame (her `b`'s ARE coordinates because she changes
+coordinates). Two faithful options, both priced by seat-L4D:
+- **F-value (RULED):** state the field in `foldResid`'s native (pre-shear) frame, factor = the
+  combination `e₂ₖ(u)`. COHERENT with the `(a)`-widen support (same frame, native coords); it is the
+  VALUE-faithful transcription (the vanishing locus is frame-independent by Lemma 1 — Aoyagi's
+  coordinate-frame is her representational choice, not a constraint on ours). PRICE: the banked
+  `deg1SupportedOn_boostForm` carries a bare-coordinate pivot; its factor generalises to the
+  combination `e₂ₖ` (or the boost split pre-expands `e₂ₖ` onto its center-constituent coordinates —
+  validated on the witness, where boost-readiness is `(True,True,True)`). The seat picks the render.
+- **F-frame (REJECTED):** state the field in the recoord frame where `e₂ₖ` is a coordinate. This
+  forces `foldResid` through the recoord, which drags the SUPPORT clause into the recoord image =
+  option `(c)` — the one I rejected (the escape is inherent; the recoord does not confine). Keeping
+  the support native `(a)` while the field is recoord is a TWO-FRAME slot — the ambiguity-class
+  hazard the def-fidelity gate exists to refuse. So F-frame is incoherent with the support ruling.
+The field lives in ONE frame, `foldResid`'s native pre-shear frame, matching `(a)`-widen. Documented
+as the coords-of-record decision (not a silent choice; compass F5).
 
 ### Evidence
 - Codex xhigh, CLAIM 2a: **CONFIRMED (FACT)** — "`d=u_{s,k}d'` is genuine factorization in the local
