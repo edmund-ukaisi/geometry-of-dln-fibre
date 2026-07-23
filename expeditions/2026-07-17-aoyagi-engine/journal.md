@@ -16127,3 +16127,28 @@ BOARD: every lane is now either holding-on-the-render or rendering. The single m
 arch-C's §8(i)-conformance confirmation + render report. Post-render sequence pinned:
 block-form battery (pnp) + slot-confirm (L4D+arch-C) + shape battery half (L4D) → elder
 delta-read → merge → L3T3 rebase (2 sites) → THE WALL (route pre-staged).
+
+## 2026-07-23 (~03:30) — RENDER NON-CONFORMANCE CAUGHT: arch-C rendered the RETRACTED field (anchor-on-launch-brief); STOP + keeps/drops/missing directive + a restate gate
+
+arch-C's render report landed: careful, detailed — and on the WRONG SPEC. It rendered the
+ORIGINAL §4: DEF EDIT 1 (shape widen — per-spec, KEEPS) + a full FIELD conjunct
+(BChainFactoredSlot = the retracted m_k·β coefficient-factoring, with a well-designed
+sign-agnostic frame pin that would have been good work under the DEAD ruling) + the three
+RETIRED field frontiers + the state-param threading — and did NOT render DEF EDIT 3 (R4 + the
+flip), reading §8(i)/§8(j) as "shear-side council business orthogonal to my render."
+
+ROOT CAUSE: anchor-on-launch-brief through a fast-moving ruling sequence — five re-scope
+messages delivered to its queue; the original brief won. Same failure CLASS as the
+pre-amendment brief propagation (controller-side then, seat-side now). CONTAINED: its branch
+only; canonical + aggregator untouched; the field frontiers unwired; the async full-build moot.
+
+RESPONSE: STOP + a precise keeps/drops/missing directive (keeps: DEF EDIT 1 + its useful
+boostForm intel — MY brief's Case1Wire:592-601 BoostSplit refs were stale, seat-L4D-branch
+context, not canonical; drops: the entire field render — branch history preserves it for the
+record; missing: DEF EDIT 3 = branch-(i)→R4 [its architecture call, G2 + hshear-untouched the
+constraints] + branch-(ii) flip + the joint clean-block slot-confirm). NEW GATE: arch-C must
+reply with a 5-LINE RESTATE of the frozen scope in its own words BEFORE reworking — rework
+gated on the restate. Elder notified (delta-read HOLDS; do not spend a read on the retracted
+text). LESSON (queued for lessons.md at the seam): long-turn seats + fast-moving rulings need
+an ACK-AND-RESTATE gate per re-scope — message delivery is not scope adoption; the anchor wins
+unless the seat is made to re-derive the scope in its own words.
