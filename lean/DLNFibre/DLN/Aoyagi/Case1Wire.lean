@@ -382,9 +382,12 @@ the LEDGER (boost) center `ed.center = {pivot} ∪ partial-block` — even thoug
 `supportAt` is the larger full layer block: the untouched (`support ∖ center`) terms carry `u_pivot` in
 their non-dominant b-chain coefficient `b_i/b_1`. Blessed in place; derives from the `CanonicalSchurStep`
 conjunct (via `realBranch_canonicalSchurStep`) + the b-chain, re-expressing the carried parent slot
-(`hslot`) over the boost center. Feeds `stepInv_child_delta1_append` exactly like the case12 cover route. -/
+(`hslot`) over the boost center. Feeds `stepInv_child_delta1_append` exactly like the case12 cover route.
+PIN `he : e = canonFlatten d` (idiom ruling): the b-chain factoring is a `canonFlatten`-alignment fact,
+false at general/linear `e`; born here. -/
 theorem realBranch_boostReady_case11 (d : Fin (N + 1) → ℕ)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) {p : TreePath d} (ed : TreeEdge d p)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d) {p : TreePath d}
+    (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
     (hbranch : (p.extend ed).IsRealBranch e)
     (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
@@ -398,9 +401,14 @@ theorem realBranch_boostReady_case11 (d : Fin (N + 1) → ℕ)
 (case-generic pullback, BANKED); δ=1 case12 → `stepInv_child_delta1_append` fed
 `deg1SupportedOn_center_of_hslot` (cover route, BANKED); δ=1 case11 → `stepInv_child_delta1_append` fed
 `realBranch_boostReady_case11` (the boost-center Deg1 obligation). The SAME append lemma closes both δ=1
-sub-cases — only the `Deg1SupportedOn ed.center` source differs. -/
+sub-cases — only the `Deg1SupportedOn ed.center` source differs.
+
+PIN (idiom ruling 2026-07-23): the case11 derivation carries `he : e = canonFlatten d` (the concrete
+flatten aligns the flat coords so the reused-pivot coordinate factors cleanly — false at general/linear
+`e`, the `(1,1,1)` unipotent-scrambler countermodel). `case1_conjA` supplies it to the wall for the
+case11 branch (δ=0 / δ=1-case12 branches ignore it). -/
 theorem case1_conjA (d : Fin (N + 1) → ℕ)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
     (hlayer : ed.nextState.layer + 1 < N)
     (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
@@ -415,7 +423,7 @@ theorem case1_conjA (d : Fin (N + 1) → ℕ)
   · rcases hcase1 with hc11 | hc12
     · -- δ=1 case11: boost-readiness → append crux
       exact stepInv_child_delta1_append d e ed hlt hδ
-        (realBranch_boostReady_case11 d e ed hδ hc11 hbranch hinv.2) q hq
+        (realBranch_boostReady_case11 d e he ed hδ hc11 hbranch hinv.2) q hq
     · -- δ=1 case12: cover route → append crux
       exact stepInv_child_delta1_append d e ed hlt hδ
         (deg1SupportedOn_center_of_hslot d e ed hδ (Or.inl hc12) hbranch hinv.2) q hq
@@ -433,14 +441,14 @@ boost-readiness obligation for the δ=1 case11 sub-branch); conjunct B is the sh
 `hinv.2` + the child branch `hbranch`), identical to `Case2Wire.case2_preserves_stepInv'`'s conjunct B. -/
 theorem case1_preserves_stepInv'
     (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
     (hlayer : ed.nextState.layer + 1 < N)
     (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
     (hbranch : (p.extend ed).IsRealBranch e) :
     FoldStepInvAt d e
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
-  refine ⟨case1_conjA d e p ed hcase1 hlayer hinv hbranch, ?_⟩
+  refine ⟨case1_conjA d e he p ed hcase1 hlayer hinv hbranch, ?_⟩
   -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); CLOSED via the
   -- step-form `realBranch_multiAffine_step`: parent slot (`hinv.2`) + child branch (`hbranch`) → child slot.
   exact realBranch_multiAffine_step hpos e p ed hlayer hbranch hinv.2

@@ -25,12 +25,16 @@ namespace DLNFibre.DLN.Aoyagi
 variable {N : ℕ}
 
 /-- Primed L5: statement-identical to `MonumentAtlas.leaf_stepInv_of_path`, with the case-leaf
-cone-references swapped to `case1_preserves_stepInv'` / `case2_preserves_stepInv'` (shifts the sorryAx
-source onto the actively-proved frontier — boostReady + the step-form). Fold body stays sorried. -/
+cone-references swapped to `case1_preserves_stepInv''` / `case2_preserves_stepInv''` (shifts the sorryAx
+source onto the actively-proved frontier — boostReady + the step-form). Fold body stays sorried.
+PIN (idiom ruling): the abstract `(he0 : e 0 = 0, he_lin : IsLinearMap ℝ ⇑e)` is REPLACED by the single
+`he : e = canonFlatten d` — it implies both (`canonFlatten_zero`, `isLinearMap_canonFlatten`) and fixes the
+insufficient `he_lin` (the case11 derivation is a `canonFlatten`-alignment fact, false at general linear `e`);
+it discharges by `rfl` at the payoff (`e = canonFlatten d` there). -/
 @[blueprint]
 theorem leaf_stepInv_of_path' (d : Fin (N + 1) → ℕ) (hN : 0 < N)
-    (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0)
-    (he_lin : IsLinearMap ℝ ⇑e) :
+    (hpos : ∀ k, 0 < d k) (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (he : e = canonFlatten d) :
     ∃ atlas : GeoAtlasData d e, FoldProduced d e atlas ∧ FoldRealizes d e atlas ∧
       ∀ c : Fin atlas.n, ∃ q r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ,
         PrincipalInv (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r (atlas.region c) := by
@@ -49,10 +53,10 @@ footprint-sources shrink by L6 + L8 vs the baked twin. -/
 @[blueprint]
 theorem exists_atlasRealizesExponents' (d : Fin (N + 1) → ℕ) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e) :
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d) :
     ∃ res : Resolution (coreGen d e) 0, AtlasRealizesExponents d res := by
   -- L5: the geometric atlas + its FoldProduced + FoldRealizes provenance + per-chart terminal PrincipalInv.
-  obtain ⟨atlas, hfold, hreal, hprin⟩ := leaf_stepInv_of_path' d hN hpos e he0 he_lin
+  obtain ⟨atlas, hfold, hreal, hprin⟩ := leaf_stepInv_of_path' d hN hpos e he
   -- Per chart: L1 (ideal) then L6 (assemble the certified Chart), matching the atlas's data.
   have hchart : ∀ c : Fin atlas.n, ∃ chart : Chart (coreGen d e) 0,
       chart.g = atlas.gmap c ∧ chart.dom = atlas.dom c ∧ chart.nbhd = atlas.region c ∧
@@ -98,7 +102,7 @@ theorem exists_atlasRealizesExponents' (d : Fin (N + 1) → ℕ) (hN : 0 < N)
 @[blueprint]
 theorem exists_coreResolution_via_monument' (d : Fin (N + 1) → ℕ) (hd : Monotone d) (hN : 0 < N)
     (hpos : ∀ k, 0 < d k) (hne : (qipFeasible d).Nonempty)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he0 : e 0 = 0) (he_lin : IsLinearMap ℝ ⇑e) :
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d) :
     ∃ res : Resolution (coreGen d e) 0,
       (∀ (c : Fin res.numCharts) (a : Fin (flatDim d)),
         a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) →
@@ -107,6 +111,6 @@ theorem exists_coreResolution_via_monument' (d : Fin (N + 1) → ℕ) (hd : Mono
         a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) ∧
         ((res.charts c).jac a + 1 : ℤ) = qipMin d hne) := by
   refine exists_hlb_hattain_of_exists_atlasRealizesExponents d hd hN hpos hne ?_
-  exact exists_atlasRealizesExponents' d hN hpos e he0 he_lin
+  exact exists_atlasRealizesExponents' d hN hpos e he
 
 end DLNFibre.DLN.Aoyagi
