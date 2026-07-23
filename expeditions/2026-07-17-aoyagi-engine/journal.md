@@ -16975,3 +16975,22 @@ architecture phrasing (held, no files touched):
 
 The restate gate is now 3-for-3 pre-grind on its deployments. arch-C-4 holds for the elder's
 word; the render follows the amendment.
+
+## 2026-07-23 (~11:45) — PATH A RULED; the shear-vs-read-side distinction pinned FINAL; the render GO issued
+
+The elder's ruling (the §9 amendment lands in-file on its next clean write; committed on
+sight): PATH A ADOPTED — the phrasing error OWNED ("the det-1-shear-branches phrasing
+over-extended the compensator lean to the composite; the det-0 obstruction was the ORIGINAL
+obstruction, real all along — this is the shear-vs-read-side distinction I circled all arc,
+now pinned exactly"). THE CORRECTED ARCHITECTURE: compensators (interior Schur + +γ recoord
+scoped + Q₂⁻¹ input recoord) = det-1 SHEAR branches; the cross-clear = det-0 READ-SIDE
+(r4Clear RETAINED, role changed to the COMPENSATED clear — sound because the compensators
+make the composite product-preserving); composite = F₂ ⟹ equality close, census 0, no
+bridge. The checklist SPLIT (in-shear det-1 = compensator branches; diag = the composite
+read). Paper anchor: her Lemma 2 is BOTH — unimodular Q,P AND the Schur reduction zeroing
+the cross (worked.tex:442). (B)/(C) rejected on the record.
+
+GO relayed to arch-C-4 with the amendment verbatim + the split checklist + the equality-
+witness tripwire. The render runs; battery + slot-confirm + the split-checklist delta-read +
+the merge follow. The elder's closing line for the process record: "the restate gate catching
+this pre-grind on all three deployments is the churn discipline earning out."
