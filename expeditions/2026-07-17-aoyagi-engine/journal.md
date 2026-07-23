@@ -15804,3 +15804,23 @@ RIGOR BAR for the big deflation (the elder: "the biggest deflation yet gets the 
 five conditions, ALL must cohere — full R3 verification; paper says clean block is the carried
 object; def-fact foldResid computes it; honest_clear reconciled; the field's prior necessity
 shown entirely broken-def-premised. Any one failing keeps §2 live. Nothing bakes; G1/G2 stand.
+
+## 2026-07-23 (~01:40) — G1 durably banked (all pivot classes, both directions); the PROOF-VEHICLE framing consolidates the stakes
+
+G1 script banked (83964f653 → canonical, controller re-ran exit-0): det-1 for corner/interior/
+fanned pivots + wide-remnant blocks, BOTH candidate directions (R4 = Q₁, baked/R3 = Q₁⁻¹) —
+⟨rewritten⟩ = ⟨original⟩ as ideals at the def, whichever candidate the council picks. Guard G1
+CLOSED.
+
+THE PROOF-VEHICLE FRAMING (seat-L4D reconciling pnp's matched-node read — the two instruments
+AGREE and the agreement sharpens): the baked fold is an invertible polynomial automorphism ⟹
+the RLCT VALUE was never at risk; the resolution is VALID ("valid-but-different presentation");
+no monument reopening; NO branch is skeleton — confirmed both ways (def-feasibility +
+invertibility). BUT monomialisation genuinely fails on the baked residual, and invertibility
+does NOT rescue it: the M_{s,k}/b-chain exponent ledger — THE PROOF VEHICLE by which the RLCT
+value is read off — reads from the MONOMIALISED block. So the fix is required for the PROOF'S
+reading-off mechanism, not for soundness: fix-the-resid (make it monomialise), riding the
+re-bake, whichever candidate wins. The council's ONLY open decision = the invariant SHAPE
+(R3 clean-extras vs R4 m_k·β), worked.tex-ruled. Remaining inputs: the paper-first direction
+check (worked.tex:445 transposed into the Lean product order — seat-L4D) + the object-labeled
+reuse-node forms (pnp). Relayed to the elder; rule when they land.
