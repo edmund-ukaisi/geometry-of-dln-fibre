@@ -707,6 +707,45 @@ theorem couplingCoords_mem_belowPivotCol {N : ℕ} {d : Fin (N + 1) → ℕ} :
         exact ⟨q, hq1, hq2.trans Finset.subset_union_left⟩
       · exact ⟨pv, h2, Finset.subset_union_right⟩
 
+/-- **`blockEntryFlat` decodes to its `(S, row, col)`** — the flat coord of a matrix entry has exactly
+that layer/row/col. Mirror of `cornerToFlat_decode`. -/
+theorem blockEntryFlat_decode {N : ℕ} {d : Fin (N + 1) → ℕ} {S row col : ℕ} {fc : Fin (flatDim d)}
+    (h : blockEntryFlat d S row col = some fc) :
+    (((tupIdxEquiv d).symm fc).1.1 : ℕ) = S ∧ (((tupIdxEquiv d).symm fc).1.2 : ℕ) = row ∧
+      (((tupIdxEquiv d).symm fc).2 : ℕ) = col := by
+  simp only [blockEntryFlat] at h
+  split_ifs at h with hS hr hc <;> simp only [reduceCtorEq, Option.some.injEq] at h
+  have hd : (tupIdxEquiv d).symm fc = ⟨⟨⟨S, hS⟩, ⟨row, hr⟩⟩, ⟨col, hc⟩⟩ := by
+    rw [← h, Equiv.symm_apply_apply]
+  rw [hd]; exact ⟨rfl, rfl, rfl⟩
+
+/-- **Membership in `belowPivotCol` from a decoded coordinate** — same layer/col as the pivot, strictly
+below its row. -/
+theorem mem_belowPivotCol_of_decode {N : ℕ} {d : Fin (N + 1) → ℕ} (pivot y : Fin (flatDim d))
+    (hl : (((tupIdxEquiv d).symm y).1.1 : ℕ) = (((tupIdxEquiv d).symm pivot).1.1 : ℕ))
+    (hc : (((tupIdxEquiv d).symm y).2 : ℕ) = (((tupIdxEquiv d).symm pivot).2 : ℕ))
+    (hr : (((tupIdxEquiv d).symm pivot).1.2 : ℕ) < (((tupIdxEquiv d).symm y).1.2 : ℕ)) :
+    y ∈ belowPivotCol d pivot := by
+  unfold belowPivotCol
+  rw [Finset.mem_image]
+  exact ⟨(tupIdxEquiv d).symm y, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hl, hc, hr⟩,
+    (tupIdxEquiv d).apply_symm_apply y⟩
+
+/-- **`readEntry` on a coupling-cleared input is `0`** when the read coordinate is a coupling — the
+`couplingClear` zeroes it (or the entry is off-cone, `0`). The bridge from a shear `readEntry` to the
+coupling-vanishing the FP/AT need. -/
+theorem readEntry_couplingClear_eq_zero {N : ℕ} {d : Fin (N + 1) → ℕ} (q : TreePath d)
+    (u : Fin (flatDim d) → ℝ) (S row col : ℕ)
+    (h : ∀ fc, blockEntryFlat d S row col = some fc → fc ∈ couplingCoords d q) :
+    readEntry d (couplingClear d q u) S row col = 0 := by
+  show (match blockEntryFlat d S row col with
+    | some fc => couplingClear d q u fc | none => (0 : ℝ)) = 0
+  cases hb : blockEntryFlat d S row col with
+  | none => rfl
+  | some fc =>
+    show (if fc ∈ couplingCoords d q then (0 : ℝ) else u fc) = 0
+    rw [if_pos (h fc hb)]
+
 /-- **A within-block coordinate is NOT escaped-below** — layer `S`, col `< widthMinUpto d S` (in the
 running-min block) ⟹ `∉ escapedBelow d S c`. The escaped set collects, per layer `M ≤ S`, the columns
 `≥ widthMinUpto d M`; a layer-`S` coordinate can only match the `M = S` slice, where the block cap
