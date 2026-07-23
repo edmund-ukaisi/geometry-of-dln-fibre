@@ -308,3 +308,49 @@ output coord) — then I fire decorrelated Codex + re-adjudicate.
 **My role ends here** (the bridge is stated precisely + paper-grounded); the certification is pnp's
 RLCT/cover-level work, and L4D renders `sourceClearedResid` + the cover-structured append on pnp's positive
 certificate.
+
+---
+
+## §7.7 THE BRIDGE — CONVERGED to a det-1 automorphism ψ (pnp bb411f1b6; supersedes §7.6's dimension arg)
+
+pnp found + verified (Codex-corroborated) a **det-1 polynomial automorphism** `ψ` with `F∘ψ = C`,
+`det Dψ = 1`: `ψ : b₀↦b₀−2x·b₁, d₀↦d₀−2x·d₁, z↦z+2xy` (`x=u₀₁₀`=coupling, `z=u₀₁₁`=e₂). This **RETRACTS
+pnp's own dimension argument** (which §7.6 leaned on): raw `F` has a flat direction, and `ψ` straightens it
+to the source-cleared `C`. The bridge is therefore:
+
+- **A det-1 IDEAL-EQUIVALENCE `ψ*⟨F⟩ = ⟨C⟩` (not ideal-equality, not a restriction), RLCT-PRESERVING**
+  (`ψ` volume-preserving ⟹ `RLCT(∑F²) = RLCT(∑C²)`). This is the concrete form of the "Lemma-1-internal /
+  chart" reading: `ψ` = the unipotent `Q₁` conjugation that MOVES the pivot to the cleared chart
+  (`ψ` conjugates the center `I ↦ ψ(I)`). It **unifies** the det-1 and cover readings — `ψ` is the chart
+  transition map. (It also vindicates the Round-1 det-1 instinct §5 withdrew; the withdrawal tracked pnp's
+  since-retracted dimension argument, not an independent error.)
+
+- **THE VALUE CHAIN (clean, read on `C`):** `RLCT(loss) = RLCT(∏C)` [def] `= RLCT via ⟨C⟩` [Aoyagi's
+  invariant `⟨∏C⟩ = ⟨C⟩`, Lemma 1, p.15] `= ½·min M_{s,k}` read on `C` [Aoyagi p.22; `(D)` on `C` gives the
+  monomial form]. `ψ` (det-1) separately certifies `RLCT(F) = RLCT(C)` — i.e. the Lean raw fold is
+  RLCT-faithful to the cleared object. So the read-off is on `C = sourceClearedResid`; `ψ` and Lemma 1 are
+  the two (consistent) bridges.
+
+- **MEASURE-COMPATIBILITY (pnp's Codex caveat, my lane) — DISSOLVES under read-on-`C`.** pnp flagged: an
+  independent accumulated-resolution Jacobian weight need not be preserved by a det-1 CoV that touches the
+  exceptional (`ψ` shifts `z=e₂`: `z↦z+2xy`). **Resolution:** the faithful read is on `C` DIRECTLY (Aoyagi's
+  `M_{s,k}`, p.22, which already accounts for `C`'s resolution Jacobian); `ψ` is used only for the
+  **ideal-equivalence** `F ~ C` (the value), NOT to transport a *weighted integral* from `F` to `C`. So no
+  `ψ`-transform of the accumulated weight is invoked — the weighted threshold is `C`'s own, read via `(D)`.
+  **FALLBACK:** if the Lean architecture forces reading on `F` and transporting the weighted threshold via
+  `ψ` (rather than reading on `C`), then the transformed-weight check IS needed (`ψ`'s `z`-shift) and I fire
+  decorrelated Codex. The faithful read-on-`C` shape (this ruling) avoids it.
+
+- **OPEN — the chart-faithfulness lemma (B2), pnp constructs:** `ψ` is verified for `(2,2,2,2)`
+  single-coupling; wide/deep have MULTIPLE couplings (`(3,3,3,2)`: 3), and `ψ_gen` = the composite of
+  per-coupling unipotent `Q₁` row-clears. Each `Q₁` is unipotent/product-preserving, so `ψ_gen` is expected
+  to exist generally; constructing/verifying it explicitly on wide+deep witnesses IS the chart-faithfulness
+  lemma. Layer-0 reuse: `ψ` realizes the `GL_{d₀}` gauge per-chart (corner #61/#62); intermediate reuse:
+  `ψ` is the internal-layer unipotent conjugation.
+
+**UPDATED CLOSING CONTRACT (supersedes §7.6's):** pnp — construct/verify `ψ_gen` (the chart-faithfulness
+lemma B2, det-1, multiple couplings, wide+deep). L4D — render `sourceClearedResid = C`; the RLCT read-off ON
+`C` (via `(D)` + the boxed rule); the `F ~ C` bridge as the det-1 `ψ` (or Lemma-1 ideal-equivalence). The
+measure-compatibility dissolves under read-on-`C`; the merged recursion (F, StepInv ideal) untouched. This
+is the cleanest form yet — a genuine det-1 CoV, RLCT-preserving, = Aoyagi's chart transition — and it closes
+the bridge question modulo pnp's `ψ_gen` construction.
