@@ -54,24 +54,25 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~18:40): THE MERGE IS DONE AND PUSHED — canonical
-  expedition/aoyagi-engine @ a5295bcb8 carries the F₂ PROPERTY-HOME render (3-branch
-  compensator canonNormalizationOf; 3-disjunct support + CanonicalSchurStep; r4Clear =
-  boostReady FORM device, recursion untouched; DEF-EDIT-1 supportAt widen; §11 scope-fidelity
-  erratum + item-9 per-chart line). ALL review gates were green AND controller-re-derived
-  (elder delta-read 8/9+DEF-EDIT-1 → ruling §10; L4D 11/11 + interior trace, script re-run
-  exit-0; pnp all-rows battery 5 rows PASS, script re-run exit-0). Merge gates re-derived ON
-  THE MERGED TREE: build 9008 jobs exit-0; census 18/2/1; cordon-all; payoff roots CLEAN
-  THREE, engine roots tracked-sorryAx. REBAKE2 tip e2b466976 = merged, branch retired
-  (history). TWO LANES NOW LIVE (GO sent ~18:40): (1) seat-L4D → THE WALL #38
-  (realBranch_boostReady_case11 on a fresh lane branch off a5295bcb8; clear/e₂-decomposition
-  as the proof device; restate gate first); (2) seat-L3T3 → the rebase #52 (2 one-line
-  hCSchild sites at MultiAffineStepWire ~:364-365/:689-690; NOTE the support shape is now 3
-  disjuncts — a third case may appear; stop-and-report if surface > 2 one-liners). On L3T3's
-  rebased push → controller merge + wiring (3 Gap-B sorry swaps to primed twins +
-  AoyagiRecoordLinear wire). Then: descent/lastLayer/L5 assembly per the summit ladder below.
-  If a seat is silent ≥2 polls, check transcript mtime (lost-wake hazard, 3 incidents:
-  elder wedge, arch-C-4 build wake, the bnvcxc130 background-task kill).
+- CURRENT WAIT-STATE (2026-07-23 ~23:30): THE IDIOM RULING GATES THREE LANES. Since the F₂
+  merge (a5295bcb8): the L3T3 lane MERGED + aggregator-wired (8c2b5253e; descent slot +
+  primed twins on canonical; build 9012); the Gap-B "swap" re-scoped (the twins were
+  CONSUMER-LESS — L3T3's DAG catch; Option A CaseStepAssembly GO'd, step-only, case2'' now /
+  case1'' held); the full-paper image class CLOSED (worked.tex Lemma-1 ≥→≤ typo fixed
+  e02610619, anchors held); the coverage audit banked (NO unplanned gap) with the operator's
+  TWO scope corrections banked in lessons.md (Aoyagi-only axis — L&R was drift; θ ≠ rlcm —
+  erratum WITHDRAWN; briefs name sources by exact path). THE LIVE FORK: two seats hit the
+  ∀e/canonFlatten boundary independently (L4D: the wall chain ∀e is UNPROVABLE, the ruled
+  pin was never rendered — the 13th catch; LL: lastLayer conjA-δ=1 needs all-Deg1,
+  canonFlatten-only — the 14th). TWO IDIOMS in play: pin-hypothesis (he : e = canonFlatten d)
+  vs consume-structure (general-e + Deg1 hypothesis + L5 anchoring = the step twin's shape).
+  ELDER rules ONE idiom (priority, before its audit queue: θ-reassess + Aoyagi-axis matrix
+  restructure). MEANWHILE: L4D grinds the MergeBoostSplit content lemma (canonFlatten-stated
+  under either idiom; Codex route banked @ e9bfd363d on -L4D-wall) + reports the summit
+  e-instantiation sites; L3T3 builds CaseStepAssembly + case2''; LL holds (3 holes gated).
+  ON THE RULING: L4D renders the wall side, LL the lastLayer side, L3T3 finishes case1'';
+  then MonumentAssembly re-point → summit-cone axiom audit → descent/L5 ladder. If a seat is
+  silent ≥2 polls, check transcript mtime (lost-wake hazard, 4 incidents now).
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
   failed wakes) AND its 23:05 adjudication was DELIVERY-LOST (recovered from transcript, banked:
   threads/L4-case1-core/elder-capescape-interim-adjudication.md — its fix-β superseded by the

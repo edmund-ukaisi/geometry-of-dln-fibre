@@ -17553,3 +17553,10 @@ ELDER commissioned PRIORITY (before the audit queue): one idiom, applied concret
 touched statements. RESEQUENCED: L4D holds the threading draft, grinds the content lemma
 (canonFlatten-stated under either idiom) + reports the summit e-instantiation call sites; L3T3
 builds the module + case2'' now, holds case1'' for the ruling; LL holds for the ruling.
+
+## 2026-07-23 (~23:30, heartbeat tick) — all four lanes alive; memo wait-state refreshed to the idiom-fork position
+
+Liveness: elder/L4D/L3T3/LL all active within the minute — the priority idiom commission, the
+content-lemma grind, the CaseStepAssembly build, and LL's hold are all in motion. L4D banked its
+Codex L2-route verdict on -L4D-wall (e9bfd363d — /tmp re-homed as instructed). Nothing owed this
+tick beyond the memo refresh (done). Next expected: the elder's idiom ruling (gates 3 lanes).
