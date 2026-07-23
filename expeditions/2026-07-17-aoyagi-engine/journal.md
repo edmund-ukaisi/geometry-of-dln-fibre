@@ -19325,3 +19325,24 @@ consult queued with pnp BEHIND the locus verify, with the sharp discriminator fr
 the immediately-preceding layer's recoord write the escaped columns (CAPF's route (b) exact) or
 do deeper ancestors compose in (route (a) induction)? Elder queue now: #84 → CAPF's 6-statement
 delta. CAPF's close-phase reviewer request approved-in-principle (spawn via controller).
+
+## 2026-07-23 (~16:10 UTC) — #84 RE-FRAMED (CAPR's read): the set-shapes patch symptoms; the real
+fork = CANONICAL-PIN vs FAN-CARRIED (an object ruling); INV's read-off joins the hold
+
+CAPR's def-owner read went deeper than the set question: BOTH union/split candidates leave the
+read-off's boost law broken on fan-free branches — μ's exponents live at the STORED birth pivots
+(the fold's actual factors) while e₂ = the DIAGONAL divisor identity, so μ i (e₂) = 0 under any
+accumulatedPivots choice. The three sets (μ-factors / stored pivots / divisor identities)
+coincide in HER reindexed frame and on every canonical witness — CAPR designed the INV under
+that coincidence; the fan artifact is where they split. THE FORK for the elder: (CANONICAL-PIN)
+state the INV over the canonical-pivot sub-family — everything coincides, the §9.2 redefine
+serves all conjuncts + the read-off, and the reindexing debt moves to the atlas layer as a
+per-chart permutation transport (Aoyagi-natural: her WLOG chart choice; pnp's #82 line-2
+identified the exact permutation); (FAN-CARRIED) μ tracks her identities + an explicit
+stored↔diagonal reindexing bridge inside conjunct-5 (materially more; CAPR offers the shape).
+CONTROLLER SCAN attached: the bridge lives SOMEWHERE regardless — the cover needs all charts
+(pnp-fan cert; L7 consumes the fan), so fan-free charts' per-chart facts come either from the
+INV on their branches or from an atlas-level transport; the fork is WHERE the debt sits and
+which is smaller/faithful. INV's READ-OFF added to the #84 hold (it is now explicitly
+implicated); its independent leaves proceed. CAPF answered: hold on bbb3f924d, the deletion
+cherry-pick comes to it, no rebase; #2 bridge = its GO item meanwhile.
