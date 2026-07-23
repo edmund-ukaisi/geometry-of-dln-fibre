@@ -475,18 +475,41 @@ private theorem canonNormalizationOf_vanishes_core (d : Fin (N + 1) → ℕ) {p 
   · rfl
 
 /-- **cert (i) — `canonNormalizationOf` writes zero at ancestor couplings on the child-cleared locus.**
-For `k ∈ couplingCoords d p`, the current-edge shear `canonNormalizationOf d p.conState ed.pivot` applied to
-the child-cleared input vanishes at `k`. Each of the shear's 3 branches writes a `readEntry` product one of
-whose factors is a cleared coupling coordinate (`r > a_cur` ⟹ the current pivot's coupling; `r < a_cur` ⟹
-`a_cur > r > a_anc` ⟹ the ancestor's), so it vanishes on `{couplings = 0}`. VERIFIED all edges, 3 witnesses
-(pnp cert (i), 3ec969d8f). NAMED FRONTIER: the deep 3-branch write-index arithmetic (cert (i) supplies the
-per-arm pattern; the render fills it — RLCT-equivalent via the source-clear rendering per §10). -/
+For a case12/case2 real-branch edge and `k ∈ couplingCoords d p`, the current-edge shear
+`canonNormalizationOf d p.conState ed.pivot` applied to the child-cleared input vanishes at `k`. RESTATED
+(27th catch, CFF): the general (any-edge) form is FALSE (case11 + off-diagonal fan counterexamples,
+`verify/cert_i_counterexample.py`); the pins come from the strengthened `IsRealBranch` rule-(b) (#87,
+`pivot.col = s.cleared`) at case12/case2, and the deep 3-branch vanishing is
+`canonNormalizationOf_vanishes_core`. The couplingCoords layer bound (`hlayerbd`) is CAPF's proven
+`couplingCoords_decode_layer_le` — held here as a #73-INTEGRATION consumable (not on this base).
+RLCT-equivalent via the source-clear rendering per §10. -/
 theorem canonNormalizationOf_vanishes_on_couplingCoords (d : Fin (N + 1) → ℕ) {p : TreePath d}
     (ed : TreeEdge d p) (u : Fin (flatDim d) → ℝ) {k : Fin (flatDim d)}
-    (hk : k ∈ couplingCoords d p) :
+    (hk : k ∈ couplingCoords d p)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d))
+    (hcase : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2) :
     canonNormalizationOf d p.conState ed.pivot (couplingClear d (p.extend ed) u) k = 0 := by
-  -- map: B-globalmove-canonNormalizationOf-vanishes ⟨FRONTIER: cert (i) 3ec969d8f — 3-branch write-carries-cleared-factor⟩
-  sorry
+  classical
+  obtain ⟨-, ⟨sc, -, hecase, -, -, hrule⟩, -, -⟩ := hbranch
+  -- the col-pin (hpivC) + pivot ∈ canonCenterOf (→ hpivL) from rule-(b) at case12/case2.
+  have hpair : ed.pivot ∈ canonCenterOf d p.conState sc ∧
+      (((tupIdxEquiv d).symm ed.pivot).2 : ℕ) = p.conState.cleared := by
+    rcases hcase with hc | hc <;> · rw [hc] at hrule; exact hrule
+  obtain ⟨hpiv_mem, hpivC⟩ := hpair
+  have hpivL : (((tupIdxEquiv d).symm ed.pivot).1.1 : ℕ) = p.conState.layer := by
+    have hmem : ed.pivot ∈ layerCoords d p.conState.layer :=
+      canonCenterOf_append_subset_layerCoords d p.conState sc (by rw [hecase]; exact hcase) hpiv_mem
+    simp only [layerCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+    obtain ⟨q, hq, hqi⟩ := hmem
+    rw [← hqi, Equiv.symm_apply_apply]; exact hq
+  have hgrow : belowPivotCol d ed.pivot ⊆ couplingCoords d (p.extend ed) :=
+    belowPivotCol_subset_couplingCoords_extend d ed hcase
+  have hlayerbd : ∀ z ∈ couplingCoords d p, (((tupIdxEquiv d).symm z).1.1 : ℕ) ≤ p.conState.layer := by
+    -- #73: consume CAPF `couplingCoords_decode_layer_le` (CapDescent.lean, proven axiom-clean; not on this
+    -- base). The oracle piece is the sited `conOracle_stepChild_layer_mono`; the induction glues it with the
+    -- rule-(b) pivot-layer pin (both in-view here).
+    sorry
+  exact canonNormalizationOf_vanishes_core d ed u hk hpivL hpivC hgrow hlayerbd
 
 /-- **THE LOCUS CONTAINMENT (load-bearing; replaces the false M-level commutation).** `stepMap d ed` sends
 `L_child` into `L_parent`: after clearing the child's couplings and applying the step, the ancestor
@@ -500,7 +523,7 @@ theorem couplingClear_parent_fixes_stepMap_child (d : Fin (N + 1) → ℕ) {p : 
       = stepMap d ed (couplingClear d (p.extend ed) u) := by
   classical
   set v := couplingClear d (p.extend ed) u with hv
-  obtain ⟨-, -, -, hpin⟩ := hbranch
+  have hpin := hbranch.2.2.2
   -- `v` vanishes on `couplingCoords d p` (⊆ `couplingCoords d (p.extend ed)`, cleared).
   have hvzero : ∀ k ∈ couplingCoords d p, v k = 0 := by
     intro k hk
@@ -512,15 +535,17 @@ theorem couplingClear_parent_fixes_stepMap_child (d : Fin (N + 1) → ℕ) {p : 
     have hkc : ∀ φ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ), blockShear φ v k = φ v k := by
       intro φ; show (v + φ v) k = φ v k; rw [Pi.add_apply, hvzero k hk, zero_add]
     show edgeShearRaw d ed.case ed.shearφ v k = 0
-    cases ed.case with
+    cases hce : ed.case with
     | case11 => exact hvzero k hk
     | rollover => exact hvzero k hk
     | case12 =>
       show blockShear ed.shearφ v k = 0
-      rw [hkc ed.shearφ, hpin]; exact canonNormalizationOf_vanishes_on_couplingCoords d ed u hk
+      rw [hkc ed.shearφ, hpin]
+      exact canonNormalizationOf_vanishes_on_couplingCoords d ed u hk hbranch (Or.inl hce)
     | case2 =>
       show blockShear ed.shearφ v k = 0
-      rw [hkc ed.shearφ, hpin]; exact canonNormalizationOf_vanishes_on_couplingCoords d ed u hk
+      rw [hkc ed.shearφ, hpin]
+      exact canonNormalizationOf_vanishes_on_couplingCoords d ed u hk hbranch (Or.inr hce)
   -- assemble: the parent clear is a no-op on the stepped point (each `couplingCoords d p` coord is 0 there).
   funext k
   show (if k ∈ couplingCoords d p then (0 : ℝ) else stepMap d ed v k) = stepMap d ed v k
