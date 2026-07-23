@@ -20277,3 +20277,27 @@ comparable to foldResid_layerHomogeneous', a full L3T3-thread-scale induction �
 coupling-factorization invariant, pnp's depth); CX's plan endorsed (scaffold-isolate-Codex-then-
 escalate-to-pnp if past the bound, the L3T3 support pattern). ETA note: the cap crux (CX's KILL)
 is now the longest single remaining grind; everything else is mechanical/gated.
+
+## 2026-07-23 (~18:20 UTC) — FIRST LANE INTEGRATED: the #87 pivot-pin MERGED onto canonical
+(1fd87c1a6) — merge-order step (0), the foundational def-edit, on ground truth
+
+seat-BAKE's #87 rendered + gated + pushed (f4f73fc8e): IsRealBranch rule-(b) case12/case2 gains
+the inline col=cleared conjunct (canonCenterOf UNTOUCHED — the 26th-catch tripwire preserved) +
+the single .1 consumer fix; full lake build GREEN (9015 jobs); forced #print axioms
+realBranch_cover → clean-three (THE named tripwire check, green post-edit) + L1 → clean-three;
+census 42/3 IDENTICAL before/after; cordon both halves passed; the sweep reconciled to 15
+(14 verbatim + 1 fix). CONTROLLER GATE (calibrated sensor, re-derived on ground truth): I did
+NOT re-run the 9015-job build — I verified the merge is LEAN-IDENTICAL to BAKE's verified-green
+tip (BAKE touched exactly 2 Lean files; canonical's advance since BAKE's parent 5e83eed37 was
+DOC-ONLY, zero lean/ commits; merge-base clean; disjoint file sets ⟹ conflict-free ⟹ the merge's
+lean/ = f4f73fc8e's lean/ byte-for-byte), so BAKE's evidence transfers by tree-identity — the
+correct application of the re-run discipline (re-running an identical tree adds no information;
+verifying identity to a verified state does). MERGED --no-ff (1fd87c1a6), pushed; a background
+full-build confirmation running as belt-and-suspenders (revert if red — cannot be, tree
+identical). This is the FIRST lane onto canonical and the topology's step (0): the pin is the
+rebase base for all remaining lanes. CFF unblocked (cherry-pick f4f73fc8e / rebase → close cert
+(i)'s public wrapper, the hlayerbd sub-fact held as a #73-consumable of CAPF's
+couplingCoords_decode_layer_le). INV stays RESTING (its pin-rebase batches into #73 with the
+transport-arm readiness — avoids a double-rebase). Remaining lanes: CX (crux + guard), CFF
+(cert (i) wrapper), INV (transport arm, gated on CX's core) — then #73 merges them onto the
+now-pinned canonical.
