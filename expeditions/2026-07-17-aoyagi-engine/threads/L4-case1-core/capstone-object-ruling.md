@@ -572,3 +572,27 @@ disguised equality.
 consumes a UNIFORM `FoldStepInvAt_cleared`, every case (incl. case2) must produce it, but GM's module has
 only `case1_preserves_cleared`. Confirm where the case2 cleared preservation lives (a Case2Wire cleared
 twin, not GM's module) — same class as the last-layer gap (§9). Controller to resolve at integration.
+
+### §9.2 INV frozen-statement blessing round (SourceClearedResid.lean @ CAPR)
+
+**(a) `accumulatedPivots` redefine to state-based diagonal birth corners (`cornerToFlat ∘ divBirthCoord`) —
+BLESSED (19th catch).** Paper-first: Aoyagi's exceptional-divisor ledger (worked.tex:562-577, the `b_i` /
+`M_{s,k}` recursion) accumulates the DIAGONAL birth corner of each block blow-up — the corner `(S; J, J)`
+fixed by the STATE `(layer S, cleared J)`, not by any stored choice. `cornerToFlat d S J` computes exactly
+that diagonal corner (`tupIdxEquiv ⟨⟨i,⟨J,·⟩⟩,⟨J,·⟩⟩`, row=col=J; state-based), and `canonPivotOf` already
+equals it. The current stored-`pivot`-field accumulator is a Lean artifact: under IsRealBranch fan freedom
+the same geometric branch admits different stored pivots, so `{stored pivots}` is not her fan-invariant
+object. DECISIVE necessity check: `case11_center_subset_ledgerTarget` needs `e₂ = canonPivotOf` (diagonal,
+state-based) `∈ accumulatedPivots`; under stored-pivot this fails on fan-free branches, under diagonal it
+holds by construction. Faithful + necessary + consumer-improving. COHERENCE FLAG: `couplingCoords`
+(via `belowPivotCol`) has the SAME stored-vs-diagonal root cause (pnp's #82) — blessing (a) expects #82 to
+rule diagonal too, so the two ledger objects align; a stored-`couplingCoords` outcome would need explicit
+justification of the asymmetry. (a) stands on its own merits either way (the `e₂ ∈` necessity is
+independent of `couplingCoords`).
+
+**(b) `+ (hN : 0 < N)` on `sourceClearedInv_holds` — BLESSED (21st catch).** FALSE at N=0 (empty-product
+identity vs empty support: `∑_{i ∈ ∅} … = 0 ≠ coreGen`). `0 < N` is the weakest structural hypothesis
+excluding exactly the degenerate no-live-step case, and matches the payoff's standing `hN`. Consumer-safe:
+the ONLY consumer is `MergeBoostSplit:134` inside the case11 content lemma (`hc11` + real extension), which
+structurally forces a live layer ⟹ `0 < N` (derive there or thread from the content lemma's signature;
+either fine — the payoff supplies `hN`). Not a gratuitous strengthening — the statement is false without it.

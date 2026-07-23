@@ -19185,3 +19185,24 @@ spectators of the current step; GM's named single verification for pnp). S1/S2/a
 unchanged; proofs re-routed through the locus. SEQUENCING: pnp resolves #82 (clear-location)
 FIRST, then verifies the locus core under the winning def; the elder's fast confirming pass runs
 against its own bar. GM holds for both.
+
+## 2026-07-23 (~15:30 actual) — BLESSING ROUND COMPLETE (§9.2): both INV fixes BLESSED; INV render GO
+
+The elder blessed both frozen-statement adjustments with its own verification, not a
+rubber-stamp: (a) the accumulatedPivots redefine to state-based diagonal birth corners — BLESSED
+as faithful AND necessary; the elder ran the decisive check itself (under stored-pivot the
+containment FAILS on fan-free branches; under diagonal it holds by construction) and grounded it
+paper-first (her b_i/M_{s,k} ledger accumulates the state-fixed diagonal corner (S;J,J),
+worked.tex:562-577; the stored accumulator is a Lean artifact — not fan-invariant). Technical
+note: divBirthCoord is not yet a def in the tree; the blessed DIRECTION is state-based diagonal
+birth corners, embodied by the existing cornerToFlat/canonPivotOf machinery — INV shapes the
+exact Lean def within that direction. COHERENCE FLAG attached to #82: the elder expects
+couplingCoords to co-resolve to diagonal (an asymmetric outcome needs explicit justification);
+(a) stands on its own merits regardless. The elder's diagonal PRIOR on #82 is deliberately NOT
+relayed to pnp — the adjudication stays decorrelated. (b) the hN guard — BLESSED; weakest
+structural hypothesis (the statement is false without it), consumer-safe grep-confirmed (sole
+consumer MergeBoostSplit:134 inside the case11 content lemma, live layer forced). INV RENDER GO
+for both + HOLD RELAXED on the containment: ledgerTarget = accumulatedPivots ∪ supportAt touches
+NO couplingCoords, so after the redefine renders, the containment proof (leg-1 immediate by
+construction; leg-2 runLen ≤ widthMinUpto) can proceed WITHOUT waiting for #82; the δ=1/δ=0
+transports stay held on #82.
