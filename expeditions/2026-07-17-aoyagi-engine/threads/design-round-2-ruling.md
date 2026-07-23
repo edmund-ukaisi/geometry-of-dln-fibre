@@ -784,3 +784,43 @@ realization of her global Lemma-1 absorption. The per-edge fibre-shear's inabili
   `height_comap`). A global CoV entering an otherwise-per-fibre resolution is named, because it must be
   visible. This is her Theorem 3 structure exactly: per-factor block-elimination + the global regular-end
   absorption. All rulings of the arc are now resolved and ratified; arch-C-4 renders (A) (#58/#59).
+
+**§9-PROPERTY-HOME (5th restate-gate catch, arch-C-4; RULED — re-corrects the clear's home; SIMPLIFYING,
+scrutinized).** The δ=1 crux `foldResid_stepMap_eq_pivot_mul` closes only PIVOT-COMPENSATED read-side
+transforms (`blockBlowupCoordQuot`: agrees off-center, on-center = extractable `u_pivot`). The cross-clear
+is NOT so compensated — it zeros center coords `coreGen` genuinely depends on ⟹ splicing it into
+`foldResid`'s read-arg BREAKS the equality close (needs a new crux the model CONTRADICTS). Correct stop.
+RULING: the cross-clear / diag block is NOT a transform in the foldResid RECURSION — it is the
+frame/witness DEVICE inside the boostReady/Deg1 PROPERTY lemma (`boostReady_case11`). **The recursion
+closes by EQUALITY with the compensator shears ALONE (branches i+ii+iii = the current green build, census
+0).** This RE-CORRECTS §9's/path-A's "r4Clear read-side clear IN THE FOLD" — the clear lives in the property
+proof, not the recursion. CLEAN SEPARATION (at last): recursion = the IDEAL (`StepInv`, product-preserving
+unimodular shears, census 0 — a NON-vacuous green, discharges the ideal identity); boostReady = the FORM
+(`Deg1SupportedOn ed.center`, the diag-block property, consumed by `delta1_append`'s `hdeg1`).
+- SCRUTINY (highest-suspicion — a fold simplification; PASSES all four): (1) SOUND — splice breaks the
+  equality close; property-home's shears-only green discharges `StepInv` via the unimodular shears (not
+  vacuous); (2) FAITHFUL — Aoyagi's diag(b) IS the normal-form property; Lemma-1 preservation IS the
+  recursion — an exact match to Theorem 3; (3) DOES NOT ELIMINATE THE WALL — `boostReady_case11` remains
+  (seat-L4D #38); pnp PROVED the property TRUE on the UNCLEARED shears-only residual (`e₂` atomic, raw
+  `u₀₀₁² = e₂·coeff`), so it is PROVABLE (the residual's real form, NOT the dead β-route's continuity-only
+  `∃c`), the clear/`e₂`-decomposition being its proof device; (4) EVIDENCE-FIT — every banked row.
+- CONDITION: seat-L4D def-confirm that `delta1_append`'s `hdeg1` consumption fits the property-home. Reject
+  splice-home (breaks the equality close). Delta-read: the clear appears ONLY in the boostReady lemma's
+  proof, NEVER in `foldResid`; the recursion is shears-only / equality / census 0.
+
+**§9-CORNER FOLLOW-ONS (pnp, both banked exit-0) — my two flags resolved + a UNIFYING principle.**
+1. REALIZATION = PER-CHART (my either-way flag → resolved to the bounded arm): `Q₂` is per-branch
+   (`Q₂^α` clears branch-α's pivot row, `Q₂^β` branch-β's — different matrices), so one global input-CoV
+   closes only its own branch; each chart carries its OWN GL_{d₀} end-factor gauge. Charts are local +
+   computed independently for the RLCT read-off ⟹ per-chart is RESOLUTION-NORMAL (a bounded end-factor
+   extension, NOT a re-open). §9-corner narrative amended: "the corner input-basis freedom is disposed of
+   PER-CHART via the GL_{d₀} end-factor gauge."
+2. THE UNIFYING PRINCIPLE (turns branch-(iii)'s `S≥1` guard from a boundary condition into THE rule):
+   "input side" is RELATIVE. The single uniform rule is **"compensate the row-clear on your INPUT SIDE"**;
+   at an INTERIOR pivot the input side is the SHALLOWER factor (layer `S−1`, internal ⟹ per-fibre, both
+   compensators internal, census 0 — pnp's strictly-interior 3×3 witness confirms); at the CORNER (`S=0`)
+   the input side IS the network input `x` (the SOURCE) ⟹ the global GL_{d₀} gauge. So the three-home
+   structure is ONE principle with the corner as its boundary instance — exactly Aoyagi's uniform
+   block-elimination, where the corner's "input" is the network input. The `S≥1` guard is not a special
+   case; it is where "input side" crosses from internal factor to source. (The HOME-question — property vs
+   splice — is already RULED property-home above; the controller's re-flag crossed that ruling.)
