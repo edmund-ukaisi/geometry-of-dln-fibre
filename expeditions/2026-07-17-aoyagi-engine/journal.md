@@ -18673,3 +18673,18 @@ honest self-assessment: three object-moves (§7 → §12.2 → §8), each correc
 under-scoping the SAME E_J obstruction's reach by one layer, each caught by pnp's instruments
 BEFORE render. CAPR's INV is now the invariant of the REAL recursion. All render gates:
 §8 (landed) + pnp's check (running).
+
+## 2026-07-25 (~02:25) — Q1-Q3 answered (c830237af): the spine-bake gate OPENS; the
+complementarity note; pnp to the soundness check
+
+Q1: L4D's T confirmed at every case11 node (Codex's target fails the containment — e₂ in neither
+component); CAPR's banked ledgerTarget stands. Q2: the μ step law verified against GROUND TRUTH —
+foldB's own recursion (foldB_child = u_pivot^δ · foldB_parent∘stepMapRaw); the residual-side μ is
+its COMPLEMENT (two sides of the strict-transform division — foldB gains what the residual
+loses); CAPR's hybrid (∃-bound multiset) faithful-and-sufficient PROVIDED the transport proofs
+construct per the verified law (δ=1 subtract / δ=0 add); μ(root)=0. Q3: the restriction laws
+exact (part e₂-free; extra = u_{e₂}·rest — the β-structure falls out). ONE honest caveat carried:
+stacked-exceptional slots unsampled (constructively guaranteed; the transport battery gains a
+double-boost witness — the axis named). CAPR bakes: INV + 5 leaves wired + ROOT → the elder's
+skeleton blessing → the transports. pnp to #74's soundness check (the cleared foldG/foldB — it
+flags if the def-choice is load-bearing). Both remaining gates have runners.
