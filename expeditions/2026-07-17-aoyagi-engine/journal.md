@@ -18734,3 +18734,22 @@ precompose = the one remaining paper-fidelity check, commissioned to pnp now (it
 GM's per-step-recursion freedom AND the concrete reading of §8's "her carried object IS the
 cleared representative"). Frame §6 banked; seat-GM flagged: SPECIFY on the precompose form only
 until pnp returns.
+
+## 2026-07-23 (later-2) — CAPR spine BAKED @ 1ebce70ce: the capstone content lemma DECOMPOSED
+(proven modulo named leaves); elder blessing dispatched (3 points)
+
+CAPR's §4 INV skeleton landed: bMon (Finsupp.prod exceptional b-monomial, axiom-clean) +
+SourceClearedInv (the hybrid ∃-bound multiset b-ledger: resid_j = ∑_{supportAt} bMon(μ i)·q i·u i,
+q continuous + IgnoresCoords ledgerTarget, μ-support ⊆ accumulatedPivots, + the boost-ledger
+conjunct). The capstone foldResid_case11_mergeBoostSplit_sourceCleared is now PROVEN :=
+read-off ∘ INV-holds (MergeBoostSplit.lean:125-134) — the monolith sorry GONE, replaced by named
+leaves. Controller verified structure at ground truth from the lane (commit + line refs match the
+report); build-green is CAPR's reading, re-derived at integration per standing discipline. Elder
+blessing dispatched on CAPR's own three flags: (1) the boost-ledger conjunct FORM (real-extension
+TreeEdge guard + ed.pivot vs StepChild/canonPivotOf vs run-relation; free-edge-lesson adjacency
+flagged); (2) ROOT bookkeeping — blockCoords(0)-cap faithfulness vs coreGen reading all of A_0
+(§12.2 supportAt-unchanged, confirmed at root specifically); (3) the vacuous-at-root boost
+conjunct (numDiv=0 ⟹ no case11 extension, μ=0). CAPR holds; on blessing it grinds root/δ=1/δ=0
+under statement-lock. Witness-axis carry (stacked-exceptional slot) named for the transport
+battery. CAPR briefed on the parallel GM lane (ownership: CAPR keeps single-writer on
+SourceClearedResid.lean + MergeBoostSplit.lean; GM in its own module off 1388f6192).
