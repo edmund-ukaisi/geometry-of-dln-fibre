@@ -20072,3 +20072,25 @@ BUILD is the exhaustiveness backstop (any unhandled destructure of the strengthe
 is a TYPE ERROR; a missed site cannot slip past), and realBranch_cover's explicit post-edit
 green is the named tripwire check. GO stands; BAKE renders with the reconciliation item added
 to its report requirements.
+
+## 2026-07-23 (~18:30 UTC) — THE 27th CATCH (CFF: cert (i) FALSE as stated; TRUE ⟺ the #87 pin —
+the day's strongest coherence signal) + INV's READ-OFF CLOSED (the content lemma proven modulo
+ONE arm); CFF's sequencing ruled
+
+CFF's stop-and-report (numeric, 6 witnesses, def-read-matched; the counterexample script to be
+banked at its gate): cert (i) canonNormalizationOf_vanishes_on_couplingCoords is FALSE as stated
+— (1) unconditional case11 counterexample (branch (iii) fires; case11 adds no belowPivotCol;
+fixable by the case-restriction its sole consumer already implies); (2) at case2/case12 it
+REQUIRES pivot.col = s.cleared — EXACTLY the #87 pivot-pin. THE CONVERGENCE BANKED: the
+phantom/completeness adjudication and GM's keystone verification — fully independent lines —
+force the SAME def strengthening; the architecture agrees with itself. Reconciliation: pnp's
+cert ran on canonical witnesses (col=cleared holds there) — witness-true, fan-general-false,
+the 22nd/23rd gap-class. ALSO caught: the δ leaves' missing hbranch (statement gap, blessed —
+the 24th-catch class) and the CanonicalPivots cross-base need (ruled: HOLD (b)/δ=1 for #73 —
+INV's threading commit conflicts with CFF's older base; named frontiers at CFF's exit).
+SEQUENCING: CFF scratch-validates now, cherry-picks BAKE's pure commit on landing, renders
+cert (i) restated + δ=0 + the hbranch call-site updates + re-points → full-green-with-named-
+frontiers. INV: the READ-OFF PROVEN (0cc4c1075, census 6→5) — the capstone content lemma now
+stands proven modulo the SINGLE step-transport arm; 11 commits, lane DONE-UNTIL-GATED; the
+weakest-hypothesis rule applied (hcanon dropped from the read-off where unused, kept where
+load-bearing); the post-#87 rebase flagged for #73. Catches 27/27 pre-render.
