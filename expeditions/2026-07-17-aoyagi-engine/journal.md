@@ -16994,3 +16994,28 @@ GO relayed to arch-C-4 with the amendment verbatim + the split checklist + the e
 witness tripwire. The render runs; battery + slot-confirm + the split-checklist delta-read +
 the merge follow. The elder's closing line for the process record: "the restate gate catching
 this pre-grind on all three deployments is the churn discipline earning out."
+
+## 2026-07-23 (~12:00) — the 4th pre-grind catch: THE CORNER — the pivot-row's compensator is the INPUT CoV (inexpressible per-edge); three treatments to the elder
+
+arch-C-4's catch (verified at the NORMALIZED frame in the model before any grind; its +γ flip
+banked green, task #57): PATH A's equality close HOLDS at INTERIOR pivots (composite ==
+original IDENTICALLY) but FAILS at the CORNER (S=0): the pivot-ROW clearing is the Q₂ right-op
+on A₀'s INPUT columns; its compensator Q₂⁻¹ acts on the network input x — the SOURCE — which
+no per-edge fibre shear can express (branch-(iii) vacuous at the corner; no layer −1). The
+residual diff = exactly the orphaned pivot-row term. Operative, not edge-case: the (2,2,2,2)
+witness's edges are ALL corner-layer. The honest model-reading: f2_census0_confirm achieved
+corner preservation ONLY by applying Q₂⁻¹ to the input — the model was right; its realization
+needs the input-CoV homed globally.
+
+THE TREATMENTS (elder rules, paper-first; pnp charged with the model checks):
+(A) arch-C-4's lean, and the beautiful identification: THE CORNER PIVOT-ROW FREEDOM IS THE
+GL_{d₀} INPUT-BASIS GAUGE — home the corner row-clear in the END-FACTOR (global input CoV,
+once; the ALREADY-BANKED Core.BaseChange machinery: inner-units-1, submult_smul, height_comap
+codim-invariance). Per-edge clears only the pivot COL at the corner; corner block triangular
+per-edge, diag after the end-factor.
+(B) col-only per-edge; accept the triangular corner block; verify boostReady tolerates
+(multilinearity holds either way per the probe).
+(C) an explicit det-1 col-recombination at the corner.
+pnp's checks: (A) equality close restored at corners under the global+col-only split;
+(B) center-support under triangular. arch-C-4 holds #58/#59 on the ruling; interior rendering
+unblocked either way. The pre-grind catch count: four for arch-C-4's gate alone.
