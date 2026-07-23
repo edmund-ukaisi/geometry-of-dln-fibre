@@ -51,10 +51,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   R3-alone's row-half residue validating R4; RE-OPEN if the multilinear clean block is not
   reached) + seat-L4D joint slot-confirm + elder delta-read → controller merges → seat-L4D
   takes THE WALL (boostReady from clean block + foldB — no field, no ChainNF). MERGE CHECKLIST
-  one-liners: the recoord def's sum range carries `cleared ≤ i` (the L4D def-read gate — on
-  REBAKE it was the unscoped all-i≠a at :940-942 = the re-open form); the retracted field is
-  ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2 (restate VERIFIED, GO given);
-  REBAKE @ 55a5d258f = the dead pre-freeze render, never battery/merge against it.
+  one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
+  ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
+  REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
+- CURRENT WAIT-STATE (2026-07-23 ~09:30): the GREEN PARTIAL is pushed (REBAKE2 c46aaf78b =
+  DEF-EDIT-1 widen + 3(b) flip+scope + r4Clear def STAGED-not-wired; 8243842df = the turn-key
+  spec file; census 0; both banked to canonical). THE ONE OPEN GATE: pnp's exact-composition
+  Gröbner on the bridge (uncleared ∈ ⟨r4Clear'd⟩ with real foldB + verbatim forms) — the
+  pure-zero r4Clear is SUSPECT-UNSOUND for the StepInv ideal close (3 L4D checks fail E_J
+  col-0 incl. WITH branch-(ii) both signs; §7 IS THE LEAN). BOTH OUTCOMES PRE-STAGED:
+  ABSORBED ⟹ wire + bake the M-bridge (+1 frontier) per the turn-key; SURVIVES ⟹ §7 fires,
+  elder's pre-staged ruling = the F₂ ABSORPTION (do-not-zero-but-absorb; her Q₂, = −A₂ at the
+  normalized pivot, the recoord's class; lean CONTAINED pending L4D def-feasibility — 4
+  questions pre-sent; under F₂ the ideal close becomes TRUE ⟹ the bridge may be PROVABLE,
+  census back to 0). arch-C-3 holds; nothing false is in any tree.
   seat-L3T3: finish step-2, push, rebase post-merge. Battery canon: WIDE witness + EXACT
   rendered form, always.
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6

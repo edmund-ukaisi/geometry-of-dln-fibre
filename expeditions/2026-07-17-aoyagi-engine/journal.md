@@ -16749,3 +16749,14 @@ Gröbner verify); arch-C-3 (the likely worst case = a spec revision of r4Clear�
 more render pass on the clear/bridge pieces only; the green partial untouched under EVERY
 branch). Both outcomes of pnp's verdict now have complete, pre-agreed playbooks. Nothing
 moves until the datum; nothing will need improvising after it.
+
+## 2026-07-23 (~09:30, heartbeat tick) — the green partial ON ORIGIN (def-read gate pre-verified :928 ✓); the turn-key spec banked; the board waits on the one Gröbner
+
+Placement ✓, cron ✓, all four seats live within 2 minutes. REBAKE2 carries both ordered
+commits: c46aaf78b (the green partial — DEF-EDIT-1 widen + 3(b) flip+scope + r4Clear def
+staged-not-wired, census 0) and 8243842df (the turn-key spec file — banked to canonical,
+116 lines). CONTROLLER PRE-VERIFICATION of the merge checklist's decisive one-liner: REBAKE2's
+MonumentAtlas :928 carries `if i = (q.2 : ℕ) ∨ i < s.cleared then 0` — the §8(m) scope guard
+EXACTLY as specified; the def-read gate passes ahead of the formal battery. Memo updated to
+the wait-state (the one open gate + both pre-staged outcomes). Everything else unchanged:
+pnp computes; the elder's ruling fires on the datum; arch-C-3 rests at green.
