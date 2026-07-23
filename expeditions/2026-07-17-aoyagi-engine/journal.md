@@ -18158,3 +18158,15 @@ cover-nodes: no weighted transport exists by construction); notation fixed in th
 (∏C the product vs C = sourceClearedResid — the overload would bite the render). Elder asked for
 a one-paragraph confirm (its re-engage trigger); then: B1 + the certificate draft → the fresh
 render seat.
+
+## 2026-07-24 (~14:55) — pnp-cap SPAWNED: the cap-frontier elaboration parallelized (open item #2
+scoped while #1's certificate drafts)
+
+Per the ETA plan's parallelization move: a second pen-and-paper seat (pnp-cap, lane
+expedition/aoyagi-engine-CAP) commissioned for realBranch_appendResidDescent — the two-obligation
+support-descent certificate ((a) cleared-child layerCoords; (b) fresh-child width-CAPPED
+blockCoords — the wide witness mandatory since the cap only bites when widths vary), stated
+against the exact rendered defs (foldResid/supportAt/the 3-branch shear), anchored at :562-577's
+D_J dimension bound, canonFlatten-pinned, with the restate gate + a statement-false STOP rule
+(no certificate-around; elder territory). Independent of pnp-transport's capstone certificate —
+the two critical-path elaborations now run in parallel. Elder's ψ_gen-split confirm still queued.
