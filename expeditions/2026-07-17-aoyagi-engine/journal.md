@@ -18485,3 +18485,13 @@ the crux — its pivot-crux context); LL wakes for LastLayerWire:145 (signature-
 surface if the bridge bites). Board: #72 in progress (the last hard induction), #73 the
 integration unit. The pipeline end-state: the induction + the unit merge together, then the wall's
 debt truly = one lemma being actively proven with everything around it kernel-checked.
+
+## 2026-07-24 (~21:55) — elder crossing (the delta already acted on); its consistency note banked
+
+New content in the crossing: the elder verified checks (2) and (3) are internally CONSISTENT via
+the coordinates-vs-dependence distinction — the remnant cols are spectator COORDINATES (⟹ B1's
+cover width-invariance) while the residual's DEPENDENCE on them is coupling·remnant PRODUCTS
+(⟹ zeroing the coupling confines) — both hold, no tension. L7's honest scope echoed (the fan
+transfers; completeness stays the named Tier-1 frontier). The carried obligation restated
+identically by both of us: the C→F bridge. All lanes grinding: CAPR (#72 the induction), L4D
+(2 re-points + the bridge), LL (1 re-point).
