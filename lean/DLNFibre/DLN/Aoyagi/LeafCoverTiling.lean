@@ -133,64 +133,99 @@ theorem closedBall_one_subset_iUnion_blockBlowup_image {S : Finset (Fin D)} (hS 
   have h := closedBall_subset_iUnion_blockBlowup_image_radius hS (zero_le_one)
   rwa [max_self] at h
 
-/-! ## The abstract fan-cover tree (shear-free core; MILESTONE 1)
+/-! ## The abstract fan-cover tree (with per-node shears + box inflation; MILESTONE 2)
 
-The pnp-fan cover fold (`fan-design-certificate.md` §2.3) as an abstract, monument-free recursion
-over the FULL pivot fan. A `node` carries a NONEMPTY center `S` and one child subtree per pivot
-(`child p` for every `p ∈ S` — the full fan, matching the elder's (A) ruling: pivots range over ALL
-of `S`, NOT the col-pinned ledger). Rollovers are `pass` (identity passthrough). SHEAR-FREE: the
-per-step shear (case-1(2)/case-2), when present, is absorbed by an `R·(1+R)^m` box inflation into
-the child region — a separate brick, held with the top-statement (elder L7 SPECIFY). The controller
-instantiates this tree from `buildTree` and maps its leaf-charts onto the atlas (fan-completeness
-discharge + the `#86(B)` col→full σ-bridge, both controller-owned). -/
+The pnp-fan cover fold (`fan-design-certificate.md` §2.3–2.4) as an abstract, monument-free
+recursion
+over the FULL pivot fan. A `node` carries a NONEMPTY center `S`, a per-pivot shear `σ p`, and one
+child subtree per pivot (`child p` for every `p ∈ S` — the full fan, matching elder ruling (A):
+pivots range over ALL of `S`, NOT the col-pinned ledger). Rollovers are `pass` (identity
+passthrough). A `leaf` carries its source box (the atlas `dom`, compact).
 
-/-- An abstract **fan-cover tree** over `Fin D → ℝ`: `leaf` (source box = the closed unit cube),
-`pass` (rollover / identity passthrough, single child), or `node S hS child` (a full pivot fan over
-a nonempty center `S`, one child per pivot). -/
+The per-node step is `blockBlowupMap S p ∘ σ p` (block blow-up OUTERMOST; the shear inner) — exactly
+the monument's `stepMap`. The shear (case-1(2)/case-2 `edgeShear`) is a global bijection that can
+INFLATE a box by a bounded factor; the fold absorbs it by the `R·(1+R)^m` box inflation
+(`fan-design-certificate.md` §2.4): the cover radius stays `≥ 1` (the atom's `max R 1` source),
+grows by the inflation factor `K` per shear level, so the LEAVES cover a `K^depth` box and the ROOT
+covers the unit ball. That inflation is threaded by `Covers K t R` below — the LOCAL per-node shear
+fact `closedBall 0 (max R 1) ⊆ σ p '' closedBall 0 (K·max R 1)` (the shear maps a `K·`-box over the
+source box, i.e. `σ⁻¹` is `K`-bounded there) plus the child covering the inflated radius. The
+concrete `K` for the monument's `canonNormalizationOf`, the fan-completeness (`buildTree` realises
+every pivot), and the `#86(B)` col→full σ-bridge are all discharged at the WIRE (controller-owned;
+this module cannot import `MonumentAtlas`, which imports it). -/
+
+/-- An abstract **fan-cover tree** over `Fin D → ℝ`: `leaf box` (a compact source box), `pass`
+(rollover / identity passthrough, single child), or `node S hS σ child` (a full pivot fan over a
+nonempty center `S`, with per-pivot shear `σ p` and one child per pivot). -/
 inductive FanTree (D : ℕ) : Type
-  | leaf : FanTree D
+  | leaf : Set (Fin D → ℝ) → FanTree D
   | pass : FanTree D → FanTree D
-  | node : (S : Finset (Fin D)) → S.Nonempty → (Fin D → FanTree D) → FanTree D
+  | node : (S : Finset (Fin D)) → S.Nonempty →
+      (Fin D → (Fin D → ℝ) → (Fin D → ℝ)) → (Fin D → FanTree D) → FanTree D
 
 namespace FanTree
 
-/-- The accumulated union of leaf-chart images from a node, root-outermost. A `leaf` contributes its
-source box `closedBall 0 1`; a `pass` passes its child through; a `node S` fans the block blow-up
-over `S`. Equals `⋃ leaf-paths, (root-outermost composition) '' (leaf box)`. -/
+/-- The accumulated union of leaf-chart images from a node, root-outermost. A `leaf box` contributes
+`box`; a `pass` passes its child through; a `node S σ` fans the step `blockBlowupMap S p ∘ σ p` over
+`S`. Equals `⋃ leaf-paths, (root-outermost composition) '' (leaf box)`. -/
 def leafImages : FanTree D → Set (Fin D → ℝ)
-  | .leaf => closedBall 0 1
+  | .leaf box => box
   | .pass child => child.leafImages
-  | .node S _ child => ⋃ p ∈ S, (blockBlowupMap S p) '' (child p).leafImages
+  | .node S _ σ child => ⋃ p ∈ S, (blockBlowupMap S p ∘ σ p) '' (child p).leafImages
 
-@[simp] theorem leafImages_leaf : (FanTree.leaf : FanTree D).leafImages = closedBall 0 1 := rfl
+@[simp] theorem leafImages_leaf (box : Set (Fin D → ℝ)) :
+    (FanTree.leaf box).leafImages = box := rfl
 
 @[simp] theorem leafImages_pass (child : FanTree D) :
     (FanTree.pass child).leafImages = child.leafImages := rfl
 
-@[simp] theorem leafImages_node (S : Finset (Fin D)) (hS : S.Nonempty) (child : Fin D → FanTree D) :
-    (FanTree.node S hS child).leafImages = ⋃ p ∈ S, (blockBlowupMap S p) '' (child p).leafImages :=
-  rfl
+@[simp] theorem leafImages_node (S : Finset (Fin D)) (hS : S.Nonempty)
+    (σ : Fin D → (Fin D → ℝ) → (Fin D → ℝ)) (child : Fin D → FanTree D) :
+    (FanTree.node S hS σ child).leafImages =
+      ⋃ p ∈ S, (blockBlowupMap S p ∘ σ p) '' (child p).leafImages := rfl
 
-/-- **The abstract fan cover (shear-free).** The closed unit cube is covered by the leaf images
-of any fan-cover tree — the pnp-fan tree fold, by structural induction on the tree, each `node`
-discharged by the closed block-atom at radius 1 (`closedBall_one_subset_iUnion_blockBlowup_image`)
-composed with the child IH. -/
-theorem closedBall_one_subset_leafImages (t : FanTree D) :
-    closedBall (0 : Fin D → ℝ) 1 ⊆ t.leafImages := by
+/-- **The fold cover condition** (inflation factor `K`, target radius `R`). At a `leaf box` the box
+covers `closedBall 0 R`; at a `pass` the child covers `R`; at a `node S σ` each pivot's shear maps a
+`K·(max R 1)`-box over the source box `closedBall 0 (max R 1)` (the LOCAL shear fact — `σ⁻¹` is
+`K`-bounded there), AND each child covers the inflated radius `K·(max R 1)`. Threads the `R·(1+R)^m`
+inflation structurally; NON-vacuous (each clause is a local containment, never the global cover). -/
+def Covers (K : ℝ) : FanTree D → ℝ → Prop
+  | .leaf box, R => closedBall 0 R ⊆ box
+  | .pass child, R => Covers K child R
+  | .node S _ σ child, R =>
+      (∀ p ∈ S, closedBall 0 (max R 1) ⊆ (σ p) '' closedBall 0 (K * max R 1)) ∧
+        (∀ p ∈ S, Covers K (child p) (K * max R 1))
+
+/-- **The abstract fan cover (with shears).** If `Covers K t R` holds, the closed ball of radius `R`
+is covered by the tree's leaf-chart images — the pnp-fan tree fold with box inflation, by structural
+induction: each `node` is discharged by the closed block-atom `(Q)` at radius `R`, the local shear
+fact, and the child IH at the inflated radius. -/
+theorem covers_subset {K : ℝ} : ∀ (t : FanTree D) {R : ℝ}, Covers K t R →
+    closedBall (0 : Fin D → ℝ) R ⊆ t.leafImages := by
+  intro t
   induction t with
-  | leaf => simp
-  | pass child ih => simpa using ih
-  | node S hS child ih =>
-      rw [leafImages_node]
-      intro x hx
-      obtain ⟨p, hpS, w, hw, hwx⟩ :=
-        Set.mem_iUnion₂.mp (closedBall_one_subset_iUnion_blockBlowup_image hS hx)
-      exact Set.mem_iUnion₂.mpr ⟨p, hpS, w, ih p hw, hwx⟩
+  | leaf box => intro R h; exact h
+  | pass child ih => intro R h; exact ih h
+  | node S hS σ child ih =>
+      intro R h
+      obtain ⟨hshear, hchild⟩ := h
+      by_cases hR : 0 ≤ R
+      · rw [leafImages_node]
+        intro x hx
+        obtain ⟨p, hpS, w, hw, hwx⟩ :=
+          Set.mem_iUnion₂.mp (closedBall_subset_iUnion_blockBlowup_image_radius hS hR hx)
+        obtain ⟨z, hz, hzw⟩ := hshear p hpS hw
+        refine Set.mem_iUnion₂.mpr ⟨p, hpS, z, ih p (hchild p hpS) hz, ?_⟩
+        simp only [Function.comp_apply]
+        rw [hzw]; exact hwx
+      · rw [Metric.closedBall_eq_empty.mpr (not_le.mp hR)]; exact Set.empty_subset _
 
-/-- **The open-ball corollary** (`∃ ρ > 0`) — the shape `leafPath_compactCover` consumes. -/
-theorem exists_ball_subset_leafImages (t : FanTree D) :
+/-- **The open-ball corollary** (`∃ ρ > 0`) — the shape `leafPath_compactCover` consumes. From
+`Covers K t 1` (the controller's wire discharges it: leaf boxes `≥ K^depth`, the shear facts from
+`canonNormalizationOf`, the fan-completeness from `buildTree`). -/
+theorem exists_ball_subset_leafImages {K : ℝ} (t : FanTree D) (h : Covers K t 1) :
     ∃ ρ : ℝ, 0 < ρ ∧ ball (0 : Fin D → ℝ) ρ ⊆ t.leafImages :=
-  ⟨1, one_pos, Metric.ball_subset_closedBall.trans t.closedBall_one_subset_leafImages⟩
+  ⟨1, one_pos, Metric.ball_subset_closedBall.trans (covers_subset t h)⟩
 
 end FanTree
 
