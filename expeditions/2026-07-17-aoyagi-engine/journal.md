@@ -15824,3 +15824,28 @@ re-bake, whichever candidate wins. The council's ONLY open decision = the invari
 (R3 clean-extras vs R4 m_k·β), worked.tex-ruled. Remaining inputs: the paper-first direction
 check (worked.tex:445 transposed into the Lean product order — seat-L4D) + the object-labeled
 reuse-node forms (pnp). Relayed to the elder; rule when they land.
+
+## 2026-07-23 (~01:45) — §7(1) matched-node verdict banked; the BLOCK QUESTION isolated (R3 may fix the residual but not the block)
+
+pnp's final §7(1) datum banked (405cfda1b → canonical; both scripts re-ran exit-0; its earlier
+node-mismatched comparison self-corrected and superseded — credited): on THREE witnesses,
+⟨baked⟩ ≠ ⟨faithful⟩ as ideals AND radicals (difference = exactly the uncleared pivot-column
+coord in col-0 entries), BUT the baked path is GLOBALLY INVERTIBLE (det-1 + structurally
+triangular) ⟹ the RLCT of ⟨mult⟩ is PRESERVED — the proof-vehicle framing confirmed by the
+third instrument. Its "skeleton-revision" route call is STALE (crossed the R3 news; the
+containment verdicts stand).
+
+THE NEWLY ISOLATED QUESTION (possibly the council's last): the baked BLOCK [[1,β],[γ,e₂]] has
+γ on the A_S side; R3's flip acts on the A_{S+1} side — so the flip may clean the PRODUCT
+residual's extras while the BLOCK stays NON-DIAGONAL. If so, R3 gives boost-readiness but not
+diag(1,e₂), and pnp's open fact becomes decisive: does the recursion terminate to normal
+crossings on the non-diag unit-det block WITHOUT the clearing? The council's arms then:
+(a) restate the invariant to the non-diag block + termination proof; (b) move the clearing
+into the blow-up (model surgery); (c) R3 + a non-diag-tolerant ledger. Flagged to the elder:
+the Reading A/B question and the block question may be ONE question in two guises — her
+diag(b)·[E_J|D_J] IS the diagonalised presentation; whether the Lean fold must REACH it or may
+CARRY the non-diag block with the ledger adjusted is coords-of-record at the block level.
+
+DATA IN FLIGHT (the council's final inputs): seat-L4D's full R3 verification + the BLOCK-form
+column + the paper-first direction check; pnp's flipped-def matched-node run + the
+object-labeled reuse-node forms. Nothing bakes. #48 completed (the matched-node verdict).
