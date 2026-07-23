@@ -16711,3 +16711,19 @@ The cross-tension consolidated (banked cda8f431e, controller re-ran exit-0):
   likely-false if §7 fires — and it is NOT in the tree; the green partial excluded it.
 
 One datum (pnp's faithful check) decides; the elder rules the moment it lands.
+
+## 2026-07-23 (~08:45) — full board coherence on the hold; arch-C-3's stale caveat corrected; everyone waits on ONE Gröbner
+
+arch-C-3's update (crossed seat-L4D's second round): its hold at the green state is vindicated
+and reaffirmed — DEF-EDIT-1 + 3(b) + r4Clear def staged NOT wired, bridge NOT baked, no
+possibly-unsound mechanism committed, no possibly-false statement sorried. Its own honest
+self-correction on the record: "my M = Q₁/Q₂-inverse premise is confirmed wrong — pure-zero
+r4Clear is NOT invertible (drops β,γ)." Its stale caveat (branch-(ii) plausibly absorbs)
+corrected from my channel: already tested and falsified in the simple model (cda8f431e);
+remaining outs = real foldB structure / exact forms / wide witnesses only.
+
+BOARD STATE: complete coherence — arch-C-3 holds (resumes strictly on the verdict); seat-L4D
+holds (its STOP honored everywhere); the elder holds with the §7 disposition pre-staged;
+pnp runs THE ONE GRÖBNER (the exact composition: branch-(i) + scoped branch-(ii) + r4Clear +
+blow-up + real foldB) that decides wire-and-bake-bridge vs §7-escalate. The green partial is
+on origin. Nothing false is in the tree; nothing moves until the datum.
