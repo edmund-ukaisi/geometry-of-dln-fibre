@@ -130,4 +130,25 @@ theorem sourceClearedResid_stepMap_eq_pivot_mul (d : Fin (N + 1) → ℕ)
         * sourceClearedResid d p j (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u)) := by
   sorry
 
+/-- **Cap-frontier obligation (b), re-stated of `sourceClearedResid`** (§12.2 CLEARED-OBJECT route,
+db7b8e123; pnp-cap verified on three cap-bite witnesses). At a FRESH child (`cleared = 0`, the J=0
+descent) the source-cleared residual is `Deg1SupportedSlot` over the running-min-capped `blockCoords`
+of the child layer (`= supportAt(child)` there). The raw fold's out-of-cap reading is the §9 artifact;
+on the cleared object the residual IS confined to the cap. This is the §7 (D)-object move on the SUPPORT
+side. STATE-ONLY here (tracked LIVE-frontier); the descent-slot rollover consumer (MultiAffineStepWire)
+re-points to it — L4D / later-wiring territory, this statement is made consumable. Obligation (a) (the
+J≥1 cleared child, `layerCoords(S+1)`) is a SEPARATE raw-fold fact via the homogeneity route
+(`foldResid_layerHomogeneous'` + a bounded step-map lemma), NOT here. -/
+-- map: B-L3T-appendResidDescent-fresh-sourceCleared ⟨FRONTIER LEAF — §12.2 (b)-restatement⟩
+theorem realBranch_appendResidDescent_fresh_sourceCleared (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    {p : TreePath d} (ed : TreeEdge d p)
+    (hfresh : (p.extend ed).conState.cleared = 0)
+    (hlayer : (p.extend ed).conState.layer + 1 < N)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    ∀ j, Deg1SupportedSlot d (sourceClearedResid d (p.extend ed)) j
+      (blockCoords d (p.extend ed).conState.layer)
+      (supportLayerOf (p.extend ed).conState)
+      (foldRegion d (canonFlatten d) (p.extend ed)) := by
+  sorry
+
 end DLNFibre.DLN.Aoyagi
