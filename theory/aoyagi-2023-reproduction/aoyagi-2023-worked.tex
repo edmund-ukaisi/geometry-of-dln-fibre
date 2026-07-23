@@ -163,7 +163,7 @@ analytically harder second deliverable.}
 \begin{lemma}[RLCT depends only on the ideal; Aoyagi Lemma 1, after {[30,31,32]}]\label{lem:ideal}
 Let $J=\ideal{F_1,\dots,F_n}$ on a neighbourhood of $w^\ast$ and let $G_1,\dots,G_m$
 be analytic. If $G_1,\dots,G_m\in J$ then
-$\rlct_{w^\ast}(G_1^2+\cdots+G_m^2)\ge\rlct_{w^\ast}(F_1^2+\cdots+F_n^2)$.
+$\rlct_{w^\ast}(G_1^2+\cdots+G_m^2)\le\rlct_{w^\ast}(F_1^2+\cdots+F_n^2)$.
 In particular if $J=\ideal{G_1,\dots,G_m}$ as well, the two RLCTs are equal.
 \end{lemma}
 
@@ -1025,6 +1025,17 @@ API. The RRR regimes above are the cross-check ground truth, not the data model.
 \section*{Running ledger of typos / underspecifications (to collect)}
 % =====================================================================
 \begin{enumerate}
+\item[(R-1)] \textbf{Lemma 1 direction --- reproduction typo, corrected 2026-07-23 (front-matter
+image pass).} The reproduction printed $\rlct(\sum G^2)\ge\rlct(\sum F^2)$ for $G\in J$; the source
+(Aoyagi Lemma~1, p.5) and the correct direction are $\le$ (pointwise $\sum G^2\le c\sum F^2$
+$\Rightarrow$ the more-singular $G$-side has the \emph{smaller} threshold; e.g.\
+$\rlct(x^4)=\tfrac14\le\rlct(x^2)=\tfrac12$). The Lean object was already correct
+(\texttt{rlctAt\_sumSqFam\_le\_of\_germRepresents}); only the reproduction statement line (166) was
+flipped, and its own fnote (line 174) already carried the correct domination. \emph{Status note
+(supersedes a header edit --- anchor-freeze):} with this front-matter pass (Def~1 / Lemma~1
+(corrected) / Def~2 / monomial rule / Thm~1 / Def~3 / Thm~2 / Lemma~2 / Thm~3 / Thm~4, pp.5--14,
+2026-07-23) the \textbf{full paper pp.1--31 is image-cross-checked}; the prior passes covered
+pp.8, 14--22, 24--26.
 \item[(T-D)] \textbf{Definition 3 condition (iii) sign --- a genuine paper typo}
 (image-verified p.08; \texttt{verify-def3} 2nd pass corrected the extracted-text and our
 first transcription, which both had ``$\ge$''). The paper \emph{prints}
