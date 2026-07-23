@@ -19579,3 +19579,39 @@ statement, not just a class label. NEW SHARED SUB-LEMMA: analyticOnNhd_canonNorm
 (nothing in the tree transfers TreeEdge's hshear_analytic to path shears; the value-pin carries
 value only) — CAPF builds it in-unit, upstream-ready, dedup at #73; it is CAPF's critical path
 for #1+#4. Catches 24/24 pre-render (23 by the process, 1 catching the process's own shortcut).
+
+## 2026-07-23 (~18:05 UTC) — §9.6 banked (the codim-load-bearing sharpening) + THE CASE-SPLIT
+RECONCILIATION (elder's def-read ∧ pnp's witness both right, disjoint cases); controller relay
+error owned (2nd edition); #86's gate now three proven components
+
+§9.6 (the elder, def-verified): the double-carry confirmed at the def level; TWO counter sites ⟹
+(1)-canonCenterOf-alone INSUFFICIENT (the full oracle fix = TWO baked-spine def-edits); (2′) more
+clearly favoured; AND THE SHARPENING THAT RAISES THE STAKES — the transport gate is
+CODIM-LOAD-BEARING: atlas.jac ties to the ledger, so a mis-recorded fan-chart jac could corrupt
+qipMin/bindingAxes → the PAYOFF; the transport must provably preserve the LABELED jac exponent
+(Codex's §9.4 risk made concrete). The decisive #86 check: transported fan-chart labeled jac =
+canonical-under-σ on the smallest off-diagonal-birth witness; corruption ⟹ (2′) fails at the
+codim and (1)-FULL (both def-edits) is FORCED.
+
+THE RECONCILIATION (controller-caught crossing): §9.6's "foldB factors at the STORED pivot"
+(def-read) vs the witness's "foldB is canonical-frame" (02e0ee507) BOTH verified — and both are
+right on DISJOINT CASES: δ=1 fan births (a layer's first clear, cleared=0, off-diagonal pivot
+admitted by the block-wide center) put foldB's factor AT THE FAN COORD (the elder's leg = CAPR's
+double-carry); δ=0 fan births (cleared≥1, the witness's configuration) contribute only
+blockBlowupMap SCALING (pnp's leg). TWO SUB-SPECIES, both breaking raw S1, both dying under
+canonical-pin, both covered by the labeled-jac transport obligation. The witness is NOT moot —
+it delivered option-(2)-INSUFFICIENT (non-phantom variant B fails) + the PER-STEP transport
+shape; §9.6 amendment requested (the case-split + the moot-correction). CONTROLLER RELAY ERROR
+OWNED (2nd of the day): my CAPR message said "foldB canonical-frame THROUGHOUT" — true only
+δ=0-born; corrected to CAPR with the full case-split. LESSON: witness-scoped facts relay WITH
+their scope.
+
+ELDER RATIFICATIONS: both delegated calls consistent ("adapt the ladder" accepted with the
+timing risk named and the gate protecting it); the carrier-threading = the faithful canonical-pin
+realization; the folded pass gains the hcanon re-bless (two criteria: faithful sub-family capture
++ name=content scope). INV: countermand acked clean (nothing rendered — rg-verified); drafting
+the root assembly (hypothesis-free at root: no pivots ⟹ canonical trivially — the turn-key root
+case under any threading). CAPF: (b) answered — NO reuse (INV's continuity facts are
+submult-side); builds continuous_canonNormalizationOf in CapDescent (~150 lines, upstream-ready).
+#86's (2′)-gate now = THREE proven components: phantom-cover-redundancy + per-step equivariance +
+labeled-jac preservation — one pnp commission, queued behind the kill consult.

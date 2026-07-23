@@ -752,3 +752,77 @@ build-vs-defer); the elder bar for (2′) is a PROVEN redundancy, not a plausibl
 (moot under §9.4 + pnp's witness). GM's (b) + δ=1-append shape: under (1)/(2′) TRUE as-stated (phantoms
 outside the regime); under (2) gains the hypothesis. The transport equivariance (§9.4) + the phantom
 disposition are ONE cover-layer debt — commission them together with pnp/L7.
+
+### §9.6 #85 UPDATE — CAPR's double-carry: a SECOND counter site; balance → (2′), transport gate now codim-load-bearing
+
+CAPR's decorrelated oracle-semantics read (cited to sites) surfaces a SECOND, deeper fan-pathology species,
+which I confirmed at the def level (read-the-def):
+- `foldB` factors the divisor at the STORED `pivot` (`(u pivot)^δ`, MonumentAtlas foldB def) = the FAN
+  coordinate on a fan branch.
+- `divBirthCoord` records the birth at the COUNTER corner (`DivBirthInv`: `.1 = s.layer → .2 < s.cleared`,
+  DivBirthReach:56-57; `canonPivotOf = cornerToFlat(divBirthCoord)` = diagonal).
+- So on an off-diagonal fan birth the ONE divisor is carried on TWO coordinates (foldB@fan vs ledger@diagonal)
+  — an unfaithful **DOUBLE-CARRY**; the case11 merge pin (diagonal) mismatches foldB's fan factor. §9.3's
+  realigns-vs-reuses disambiguator RESOLVES AS **NEITHER** (double-carry) → the parked pnp witness on it is
+  MOOT (superseded by this def-level read). Live on non-phantom fan branches too (no reuse-trigger guard
+  prevents a case11 reusing a fan-born divisor — the `divTilde/occ` guard is worth a check).
+
+**CONSEQUENCES (this refines §9.5; §9.4/§9.5 rulings STAND):**
+1. There are TWO counter-vs-column sites: `canonCenterOf` (phantom, §9.5) AND `divBirthCoord` (double-carry).
+   So **(1) canonCenterOf-alone is INSUFFICIENT** — it kills the phantom species but NOT the double-carry;
+   the full oracle-fidelity fix is TWO baked-spine def-edits (`canonCenterOf` + `divBirthCoord`), heavier
+   than §9.5 assumed.
+2. **(2′) canonical-pin kills BOTH species a fortiori** (no off-diagonal births in the regime) with ONE
+   hypothesis, and BYPASSES the raw fan construction (fan-chart leaf facts come from the L5 transport, not
+   the mis-recorded raw ledger). So the balance shifts toward (2′) as the near-term; the full
+   construction-fidelity fix (both counter sites) is the ROADMAPPED honest oracle fix (close-phase / next
+   expedition), now motivated by the construction gap (CAPR's converged lean), not just INV taste.
+3. **BUT the double-carry makes the §9.4 transport gate CODIM-LOAD-BEARING, not just cover-redundancy.** The
+   atlas jac ties to the step ledger (`divBirthCoord`/`canonPivotOf`); a mis-recorded fan-chart jac could
+   double-count / mis-place a divisor exponent → corrupt the codim read-off (qipMin/bindingAxes) → the
+   PAYOFF. Under (2′) the fan charts' leaf facts (jac included) MUST come from the L5 transport delivering
+   the CORRECT single-coord canonical data, reconciling the two-coord double-carry — this is Codex's §9.4
+   labeled-exponent risk made CONCRETE and REALIZED. So (2′)'s gate is now TWO cover-layer facts, ONE debt:
+   (a) phantom-cover-redundancy AND (b) transport-equivariance that reconciles the double-carry (delivers
+   correct labeled jac, not merely RLCT-equivalence). BOTH must be PROVEN — the double-carry can corrupt the
+   codim, so an unproven transport is a PAYOFF-level hole, not a cosmetic one.
+
+**UPDATED RULING.** §9.4 canonical-pin STANDS and is REINFORCED (the raw fan construction is doubly
+unfaithful; pinning to canonical avoids both). Near-term = (2′), now more clearly favoured (since (1) is two
+def-edits), BEHIND the sharpened gate: the L5 transport must PROVABLY reconcile the double-carry (correct
+labeled jac on fan charts) AND the phantom-cover-redundancy must hold — one cover-layer debt, commissioned
+with pnp/L7, both proven. Full fidelity end-state = both counter-site def-edits, ROADMAPPED. Controller owns
+the timing; the elder bar is a PROVEN codim-preserving transport, not a plausible one.
+
+### §9.6 WITNESS REFINEMENT (pnp 02e0ee507, controller re-ran exit 0) — rulings STRENGTHENED, two mechanism-claims corrected
+
+The S1 witness landed (crossed the hold) and is decisive. **The rulings STAND and STRENGTHEN:**
+- **Canonical-pin is now LOAD-BEARING, not merely faithful-preferred:** the #82 parked debt closes
+  NEGATIVELY — NO raw fan multi-edge S1 exists (S1 variants: diagonal birth TRUE; row-off-diagonal
+  non-phantom FALSE; col-off-diagonal phantom FALSE). There is no fan-general INV; the INV MUST be
+  canonical-pinned. (Reinforces §9.4.)
+- **Option (2) [non-phantom hypothesis] is OUTRIGHT INSUFFICIENT** (not just dominated): a non-phantom
+  ROW-off-diagonal birth breaks raw S1 too. Only (1) or (2′) work. (Strengthens §9.5's domination + §9.6.)
+- **The transport (#86-B) is PER-STEP:** variant B is NOT conjugate to the canonical by a single global
+  row-swap — the birth/merge mismatch is intrinsic; only the per-step `Q,P` reindex chain fixes it (exactly
+  Aoyagi's per-step Q,P structure). CORRECTION to my §9.4/§9.6 framing: the equivariance check is a PER-STEP
+  σ composition, NOT one global permutation. Heavier, but her actual structure.
+
+**Two mechanism-claims I made from incomplete def-reads, CORRECTED (owned):**
+1. §9.6 "foldB factors the divisor at the STORED/fan pivot (double-carry in foldB)" is WRONG. The witness:
+   fresh fan births at `cleared ≥ 1` are δ=0, so `foldB`'s `(u pivot)^δ = (u pivot)^0 = 1` — NO foldB
+   factor; the fan pivot enters via `blockBlowupMap` SCALING, not a foldB monomial. So **`foldB` IS
+   canonical-frame**; the birth-vs-merge mismatch is SCALING-vs-QUOTIENT at different coords (more benign
+   than a foldB double-carry). I read `foldB = (u pivot)^δ` and assumed δ=1 at the fan births — I missed
+   that fan births are `cleared ≥ 1` ⟹ δ=0. The RULING conclusions are unaffected (they depend only on
+   "off-diagonal births break raw S1," which the witness confirms).
+2. My CAPF-delta verdict called #1 `continuous_foldResid` SOUND — it was FALSE AS STATED (arbitrary `shearφ`
+   is not continuous without `hbranch`). I checked `blockBlowupCoordQuot` (projection) but NOT the shear's
+   continuity. CAPF caught it (24th catch), corrected @ 9e49243fe (+ a new upstream-ready sub-lemma
+   `analyticOnNhd_canonNormalizationOf`).
+
+**Error class (mine, recurring — leg-1-only §9.2 / projection-not-shear CAPF#1 / δ-value §9.6): incomplete
+def-read — I check the salient sub-term and miss a guard/condition or a sibling sub-term.** Tightened
+discipline: a soundness/mechanism verdict enumerates EVERY sub-term AND every guard (δ value, `hbranch`,
+shear/analyticity fields), not just the flagged one. The decorrelated instruments (pnp's witness, CAPF's
+catch) caught both — the process worked; my finer claims need the fuller scan.
