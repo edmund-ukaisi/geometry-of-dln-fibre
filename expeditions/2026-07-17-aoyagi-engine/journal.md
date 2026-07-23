@@ -16489,3 +16489,26 @@ def read against the written expectation — HIT at 0.95 (canonical branch-(ii) 
 unscoped Q₁⁻¹ form every instrument modeled; the docstring even names A_{S+1}·Q₁⁻¹, the
 diagnosed conversion error). The map is faithful at the fix site; the render's two changes
 land on exactly the modeled lines.
+
+## 2026-07-23 (~06:35) — the placement question settled by PRECEDENT: foldResid already hosts a rank-reducing normalization (blockBlowupCoordQuot); BOUNDED re-bake, not §7
+
+seat-L4D's def-read answer to arch-C-3 (seat-to-seat, cc controller): the R4 host ALREADY
+EXISTS in the def — blockBlowupCoordQuot (BlockDivision:30, pivot↦constant-1, rank-reducing)
+is ALREADY composed into foldResid's read at δ=1 (MonumentAtlas:453-454) with foldG/stepMap/
+blockShear/hshear untouched. So foldResid can host R4 as a block-normalization WITHOUT a
+fold-order redesign — the structure question is settled by existing precedent, not new design.
+Verdict: BOUNDED re-bake; arch-C-3 cleared on the def-read.
+
+TWO PLACEMENT VARIANTS now on arch-C-3's desk (its architecture call, the render report
+justifies, the elder's delta-read rules): (A) its own decomposition (branch-(i) keeps the
+det-1 interior; R4 adds only the F₂/F₃ clearing) — elder-accepted-in-principle w/ 3
+conditions; (B) seat-L4D's (branch-(i) REMOVED; R4 = the full block normalization → diag(1,e₂)
+hosted in foldResid à la blockBlowupCoordQuot) — closer to §8(i)'s literal "replace". Note
+also seat-L4D's simplification: the Q₂/pivot-row side is MOOT for boostReady (honest_clear
+passes with AND without U⁻¹). Either variant must hit the same conditions (diag(1,e₂-classical)
+exactly once; Lemma-2-faithful justification; scoped reads).
+
+THE §7 TRIPWIRE named precisely: if the Q₂/row-clear genuinely needs a threaded left-factor
+touching stepMap/foldG, THAT is the §7 obstruction — report, never improvise (seat-L4D's read:
+it won't hit). Gates unchanged: the render report → pnp two-row + L4D def-read battery →
+elder delta-read → merge.
