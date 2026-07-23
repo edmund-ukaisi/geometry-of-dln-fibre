@@ -16,7 +16,7 @@ at `e = n d`, not `hslot`. -/
 
 namespace DLNFibre.DLN.Aoyagi
 
-open DLNFibre.Core.Aoyagi DLNFibre.DLN.RLCT.Engine
+open DLNFibre.Core DLNFibre.Core.Aoyagi DLNFibre.DLN.RLCT DLNFibre.DLN.RLCT.Engine
 
 variable {N : ℕ}
 
@@ -107,5 +107,26 @@ theorem foldResid_case11_mergeBoostSplit_canon (d : Fin (N + 1) → ℕ)
       MergeBoostSplit d (foldResid d (canonFlatten d) p) e₂ part extra ed.center (foldRegion d (canonFlatten d) p) := by
   -- map: B-wall-mergeboostsplit-content (concrete canonFlatten coreGen-at-merge; the capstone)
   sorry
+
+/-- **The wall, wired (primed variant).** `= Case1Wire.realBranch_boostReady_case11` (statement-identical,
+same pinned signature), PROVEN via the content lemma + the algebraic assembly. Lives here (downstream of
+`Case1Wire`) because it consumes `MergeBoostSplit`; the controller swaps `Case1Wire`'s wall `sorry` to
+`:= realBranch_boostReady_case11' …` at integration (the primed-leaf pattern, cf. `case1_preserves_stepInv'`).
+Its ONLY remaining frontier is `foldResid_case11_mergeBoostSplit_canon` — the assembly + the reduction
+are closed. `hslot` is unused: the case11 route derives from the concrete generator, not the carried slot. -/
+theorem realBranch_boostReady_case11' (d : Fin (N + 1) → ℕ)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d) {p : TreePath d}
+    (ed : TreeEdge d p)
+    (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
+    (hbranch : (p.extend ed).IsRealBranch e)
+    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
+      (supportAt d p.conState.layer p.conState.cleared)
+      (supportLayerOf p.conState) (foldRegion d e p)) :
+    Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
+  subst he
+  obtain ⟨e₂, he₂, part, extra, hpart, hep, hex, hsplit⟩ :=
+    foldResid_case11_mergeBoostSplit_canon d ed hδ hc11 hbranch
+  exact MergeBoostSplit.deg1SupportedOn d (foldResid d (canonFlatten d) p) e₂ part extra ed.center
+    (foldRegion d (canonFlatten d) p) he₂ hpart hep hex hsplit
 
 end DLNFibre.DLN.Aoyagi
