@@ -18753,3 +18753,17 @@ conjunct (numDiv=0 ⟹ no case11 extension, μ=0). CAPR holds; on blessing it gr
 under statement-lock. Witness-axis carry (stacked-exceptional slot) named for the transport
 battery. CAPR briefed on the parallel GM lane (ownership: CAPR keeps single-writer on
 SourceClearedResid.lean + MergeBoostSplit.lean; GM in its own module off 1388f6192).
+
+## 2026-07-23 (later-3) — #67 precision pass DONE: θ-framing reconciled with the operator's ruling
+
+Both scoped sites + one coherence site fixed on canonical. ROADMAP.md:144-150: the three invariants
+now named by category (component count = LR's θ / the rlcm = Aoyagi's order / the log-log
+coefficient = the expression LR print in the rlcm slot); the erratum/correspondence recommendation
+REMOVED (operator withdrew it 2026-07-22); the θ-overloading in "(= θ−1)" resolved to "rlcm − 1".
+theta-invariants-distinction.md:28-35: the intro now carries the categorical root (a θ-type
+component count is not a pole multiplicity — section 5) instead of the error-attribution headline.
+Also :277-289 (coherence, same ruling): the "likely mechanism = arithmetic slip" speculation + the
+"open sub-question / confirm by correspondence" channel REPLACED by the ruling's account (the slot
+holds a different invariant; no +1-hunt, no correspondence; distinction recorded). All math facts
+(three invariants, |δ|-agreement threshold, the 6/5/4 witness, definition-vs-formula contradiction,
+Lean insulation) unchanged.

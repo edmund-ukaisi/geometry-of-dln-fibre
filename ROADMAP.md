@@ -142,11 +142,12 @@ unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
   quotient-equiv + radical-insensitivity — `reducedFibre_baseChangeHomogeneous` is morally the same
   homogeneity but is not the literal proof dependency. Generality added in PR #11 review round 1.)
 - **θ-formula finding (precision):** three distinct invariants — the component count `C(m,|δ|)` (Lean
-  `cTheta`), Aoyagi's SLT pole order `a(ℓ−a)+1`, and LR's *printed* rlcm `a(ℓ−a)` (= θ−1, **off by one** vs
-  LR's own definition; correct rlcm = Aoyagi's). Agree iff `|δ| ≤ 1`, diverge for `|δ| ≥ 2` (witness
-  `(2,2,2,2,2)` r=0: 6/5/4). The `rlct = C/2` story is unaffected. Written up:
-  `docs/expositions/theta-invariants-distinction.md`. **An off-by-one in LR's printed rlcm — operator may
-  wish to raise an erratum/correspondence.**
+  `cTheta`; LR's θ), Aoyagi's SLT pole order (the rlcm) `a(ℓ−a)+1`, and the log-log coefficient
+  `a(ℓ−a)` (= rlcm − 1; the expression LR print in the rlcm slot). Agree iff `|δ| ≤ 1`, diverge for
+  `|δ| ≥ 2` (witness `(2,2,2,2,2)` r=0: 6/5/4). Root of the discrepancy (operator ruling 2026-07-22):
+  a θ-type component count is not a pole multiplicity — the quantity in that slot is not an rlcm, so
+  no erratum/correspondence is pursued; the distinction is recorded, not litigated. The `rlct = C/2`
+  story is unaffected. Written up: `docs/expositions/theta-invariants-distinction.md`.
 - **Generic smoothness of the fibre — FULLY UNCONDITIONAL** (`Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent`,
   `[IsAlgClosed k]`): a fibre top component is an fp domain over an alg-closed field, hence generically
   smooth (`IsSmoothAt k ⊥`); lifted via the C1 localization-recovers-component bridge. The OrbitSmooth/orbit-iso

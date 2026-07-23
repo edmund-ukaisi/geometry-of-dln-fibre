@@ -27,10 +27,12 @@ the component count is $6$, the rlcm is $5$, and the log-log coefficient is $4$.
 
 The reason to separate them carefully is that the literature reads more unified than it is. The
 component count is Lehalleur–Rimányi's $\theta$ (their $k$); the rlcm is Aoyagi's order, which Aoyagi
-also writes $\theta$; and Lehalleur–Rimányi's *printed* rlcm formula is in fact the third quantity,
-the log-log coefficient — it is off by one from the rlcm as those authors themselves define it. The
-codimension and the $\operatorname{rlct} = \tfrac12\operatorname{codim}$ result are not touched by any
-of this; the discrepancy lives entirely in the secondary multiplicity.
+also writes $\theta$; and the expression Lehalleur–Rimányi print in the rlcm slot is in fact the third
+quantity, the log-log coefficient (the rlcm minus one). The root is categorical, not arithmetic: a
+$\theta$-type component count is not a pole multiplicity, and a formula built for the one does not
+measure the other (section 5). The codimension and the
+$\operatorname{rlct} = \tfrac12\operatorname{codim}$ result are not touched by any of this; the
+discrepancy lives entirely in the secondary multiplicity.
 
 The story is short:
 
@@ -274,19 +276,15 @@ $\lvert\delta\rvert = 0$ (for instance any balanced constant-width network), whi
 never be. So the printed formula is not the rlcm as defined; it is the rlcm minus one — the log-log
 coefficient $a(\ell-a)$.
 
-The likely mechanism is an arithmetic slip in assembling the formula, not a mathematical error in the
-underlying computation. The relevant rule is the additivity of the rlcm under sums of non-negative
-functions,
-
-$$
-\operatorname{rlcm}(F+G) = \operatorname{rlcm}(F) + \operatorname{rlcm}(G) - 1
-$$
-
-(Lehalleur–Rimányi, `:1847`), whose trailing $-1$ keeps a sum of $\ell+1$ unit-order pieces at order
-$a(\ell-a)+1$ rather than $a(\ell-a)$. Dropping that $+1$ at the end of the assembly produces the
-printed expression. Pinpointing the exact step where the $+1$ is lost (or confirming by
-correspondence) is the one open sub-question; the conclusion that the printed formula is off by one
-is settled by the definition-versus-formula contradiction alone.
+The settled part is the conclusion itself: by the definition-versus-formula contradiction above, the
+printed expression is not the rlcm as defined — it is the log-log coefficient, the rlcm minus one.
+On the mechanism, the operator's ruling (2026-07-22) is that the quantity occupying the rlcm slot is
+a different invariant, not a mis-assembled rlcm — the general lesson is the categorical one of
+section 5: a $\theta$-type component count is not a pole multiplicity, and a formula built for the
+one does not measure the other. No erratum or correspondence is pursued, and we do not hunt the
+assembly for a dropped $+1$; the distinction is recorded and left there. The Lean development is
+insulated either way: it formalises the component count and cites Aoyagi's order, asserting no rlcm
+formula.
 
 !!! info "Scope of the discrepancy"
     The codimension formula and the equality $\operatorname{rlct} = \tfrac12\operatorname{codim}$ —
