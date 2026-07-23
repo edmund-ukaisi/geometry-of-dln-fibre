@@ -1420,7 +1420,12 @@ support decomposition `resid = ∑_{i ∈ supportAt(child)} cᵢ·uᵢ` on the c
 of `Deg1SupportedSlot`, descended parent → child. It CONSUMES the shear (now the faithful
 `canonNormalizationOf`, via `IsRealBranch`'s L1 value-pin): the shear's layer-(S+1) recoord maps the
 strict transform's over-cap dependence (the `v·y₁` at a δ=1 clear) back into the capped block, so in the
-recoordinatized frame the residual is supported on `supportAt(child)`. Whether `canonNormalizationOf`
+recoordinatized frame the residual is supported on `supportAt(child)`. Because `supportAt(child)` is a
+CASE definition, this frontier owes TWO confinements (both discharged here): **(a) a cleared child (J≥1)**
+— `supportAt(child) = layerCoords(S+1)`, the full descended layer, covering the δ=0 case11/case12/case2
+children and the δ=1 `case12`/`case2` append child (`cleared = 1`); **(b) a fresh child (J=0, δ=0
+`rollover`)** — `supportAt(child) = blockCoords(S+1)`, the width-capped block, the genuine `layerCoords →
+blockCoords` cap-confinement at the fresh layer. Whether `canonNormalizationOf`
 confines at coupled corank ≥ 2 IS the wall (the recoord is the piece that RESTORES this, per the N_pivot
 certificate; verified at the `d=![1,2,1]` base instance, `r = y′₀`) — a named frontier leaf, NOT
 strike-able. Consumes the parent's full `Deg1SupportedSlot` (`hslot`); `foldResid_layerHomogeneous`
