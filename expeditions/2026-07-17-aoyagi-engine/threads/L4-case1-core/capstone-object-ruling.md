@@ -413,3 +413,64 @@ reused on `C`) and recursion-untouched hold; the operator escalation the fork se
 certificate obligation (confirm `ψ_gen` lifts to a parameter-space det-1 CoV — expected — else re-open +
 Codex); "recursion untouched" → the spine computes `C`, honestly superseded. Gates before render: this §7.8
 + pnp's full `ψ_gen` (in flight).
+
+---
+
+## §8 THE GLOBAL MOVE — the WHOLE recursion invariant lives on `C` (18th event; pnp ∃q afa901662/d6924b708)
+
+**The C→F bridge I flagged does NOT exist — pnp's ∃q necessity argument (Codex-confirmed, two witnesses):**
+the raw case11 child `StepInv` FAILS route-independently at the continuous level. `foldB` is a product of
+coordinates, so `StepInv` forces `foldB | coreGen∘foldG`; that is FALSE at the E_J slots (the SAME slots as
+the boostReady obstruction). The V-restriction escape is illegitimate for an RLCT claim; L4D's whole-product
+hope fails; the `∃` absorbs nothing. So there is no raw-`F` `StepInv` at case11 to bridge *to* — the raw
+invariant itself is false there. **The per-node C→F bridge cannot exist; the GLOBAL MOVE is forced:
+`FoldStepInvAt` + the entire `StepInv` chain live wholesale on the CLEARED object `C`.**
+
+### RULING (direction; render GATED on pnp's soundness check)
+
+**(1) CONFIRM the global move — and it is FAITHFUL, not costly (paper-first).** Aoyagi recurses on the
+CLEARED normal form `diag(b)·[E_J|D_J]` (worked.tex:562–577 — the carried object IS the cleared
+representative); she never runs on a raw shears-only fold. The raw `F` fold was OUR §9 artifact (the clear
+kept out of the recursion). So moving the whole recursion invariant to `C` is **the render finally matching
+the paper's own object** — the culmination of the object-split arc (§7 boostReady → §12.2 obligation-(b) →
+now the whole invariant). Not scope-creep: it directly serves the expedition's goal ("her mechanism built
+FULLY, faithfully"). It is a **ladder re-architecture** (the recursion's object), NOT a destination/
+definition-of-done change — the payoff `rlct=C/2` is character-unchanged; so it proceeds on this ruling +
+pnp's check (no operator gate for the direction; the controller may surface it async as a scope event given
+its size, non-blocking).
+
+**(2) THE RENDER GATE = pnp's cleared-recursion soundness check (I concur the gate).** pnp's honest flag: the
+raw route's FAILURE is verified; the global move's SUCCESS is NOT yet — a naive residual-swap (foldResid→C,
+keeping `foldG`/`foldB` raw) fails IDENTICALLY, because `StepInv` needs the cleared `foldG`/`foldB` too. So
+`foldG`/`foldB` must re-architect to the cleared object, and the cleared `StepInv` must be verified to CLOSE
+on witnesses. pnp constructs the cleared `foldG`/`foldB` + verifies the cleared `StepInv` (GO'd, in flight).
+**No render before this ruling + pnp's soundness check both land.**
+
+**(3) SCOPE BOUNDARY (what survives vs re-states):**
+- **SURVIVES (data / geometry):** the shear DATA (`canonNormalizationOf` and the F₂ compensators — the
+  coordinate-change functions), the tree/oracle structure (`buildTree`, `conOracle`), **termination**
+  (`conMeasure`/`conRel_wf`), and the combinatorial exhaustion (`OracleInv`). These are `e`-parametric data
+  the cleared fold reuses (applied to the cleared coords).
+- **RE-STATES ON `C`:** `foldG`/`foldB`/`foldResid` (→ cleared `sourceCleared*`), `FoldStepInvAt`, the entire
+  `StepInv` chain, the cleared transport laws (`sourceClearedResid_extend_delta1/delta0` — the `couplingClear`
+  commutations, L4D (ii)), case12's route + δ=0 re-derived on `C` (L4D (iii)), and the Q₁-lift wired from
+  `rlctGlobal` down (L4D (iv) — the §7.7/§7.8 `ψ`-bridge, now connecting the payoff to the fully-cleared
+  recursion). Plus BLOCKER 1 (the append splits per-case) in every world.
+- **CONSUMERS re-point** to the cleared invariant (the census/consumer map updates uniformly).
+
+**(4) §7.8's "recursion untouched" — OWNED SUPERSESSION.** §7.8 Option 2′ ("fold def unchanged on `F`;
+read-off on `C`") is SUPERSEDED: pnp's ∃q necessity shows the raw-`F` `StepInv` itself is false at case11, so
+there was never a sound raw-`F` recursion to keep "untouched." The fold def MOVES to `C`. Owned: §7.8 was a
+partial object-move (read-off only) that under-estimated how deep the E_J obstruction cuts (it hits the
+`StepInv` divisibility, not just the boostReady support); the full move is forced. The paper-first
+justification makes the supersession a fidelity WIN, not a cost — the render now IS her recursion. (My
+successive object-moves — §7 → §12.2 → §8 — were each correct-in-direction and each under-scoped the reach
+of the same E_J obstruction by one layer; pnp's exact-Gröbner/∃q instruments caught each under-scope before
+render. The convergent endpoint: the cleared representative carries the ENTIRE resolution invariant, exactly
+as Aoyagi's paper does.)
+
+**CAPR's STEP-3 induction is UNAFFECTED — and now MORE central:** its `INV` becomes the invariant of the
+REAL (cleared) recursion, not a side-object. Everything CAPR builds is already on `C`.
+
+**Gates before ANY render:** this §8 ruling + pnp's cleared-recursion soundness check (cleared
+`foldG`/`foldB` constructed; cleared `StepInv` closes on witnesses). Both must land.
