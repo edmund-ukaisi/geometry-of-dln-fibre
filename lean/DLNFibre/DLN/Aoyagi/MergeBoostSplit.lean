@@ -104,13 +104,14 @@ theorem mergeBoostSplit_of_sourceClearedInv (d : Fin (N + 1) → ℕ)
     {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
     (hbranch : (p.extend ed).IsRealBranch (canonFlatten d))
-    (hcanon : CanonicalPivots d p)
     (hinv : SourceClearedInv d p) :
     ∃ e₂ ∈ ed.center, ∃ part extra : Finset (Fin (flatDim d)),
       part ⊆ ed.center ∧ e₂ ∉ part ∧ (∀ k ∈ extra, k ∉ ed.center) ∧
       MergeBoostSplit d (sourceClearedResid d p) e₂ part extra ed.center
         (foldRegion d (canonFlatten d) p) := by
   -- map: B-wall-mergeBoostSplit-of-sourceClearedInv
+  -- (Weakest-hypothesis: no `CanonicalPivots` hypothesis — the read-off consumes the fully-formed
+  -- `hinv : SourceClearedInv`, which already encodes the canonical structure; §9.4.)
   classical
   have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
   have hpivmem : ed.pivot ∈ accumulatedPivots d p := case11_pivot_mem_accumulatedPivots d ed hc11 hbranch
@@ -224,7 +225,7 @@ theorem foldResid_case11_mergeBoostSplit_sourceCleared (d : Fin (N + 1) → ℕ)
       rw [hterm] at hsc
       simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
     exact lt_of_le_of_lt (Nat.zero_le _) (not_le.mp hlive)
-  exact mergeBoostSplit_of_sourceClearedInv d ed hδ hc11 hbranch hcanon
+  exact mergeBoostSplit_of_sourceClearedInv d ed hδ hc11 hbranch
     (sourceClearedInv_holds d hN p hbranch.1 hcanon)
 
 /-- **[FOSSIL — SUPERSEDED-BY `foldResid_case11_mergeBoostSplit_sourceCleared`; retained for statement
