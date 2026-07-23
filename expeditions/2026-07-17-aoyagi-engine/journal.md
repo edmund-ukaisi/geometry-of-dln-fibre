@@ -18998,3 +18998,16 @@ resolved GO); the unit = the (L) lemma + the raw uncapped descent + the KILL lem
 transport assembly, in a NEW module on a lane off the CAPR tip, with the (b)-sorry swap at
 integration (no contention with seat-INV's file). pnp turns to the GM def-fidelity gate (its
 named next, critical path).
+
+## 2026-07-23 (~15:30) — seat-CAPF spawned (the cap-frontier render, parallel lane #80)
+
+Fresh formaliser on expedition/aoyagi-engine-CAPF off the CAPR tip: the certificated unit in a NEW
+module (CapDescent.lean, zero file contention) — the (L) step-map ideal-preservation lemma, the
+raw UNCAPPED descent from the proven (H) + (L) (e-pinned per the idiom ruling; the CAPPED raw form
+is FALSE on wide, never stated), the KILL lemma (the one new proof content — escaped coefficients
+∘ couplingClear = 0, route consult via pnp if the induction shape is unclear), and the primed
+(b)-twin byte-identical to SourceClearedResid.lean:222 (the := swap at #73). SPECIFY-gated with an
+elder statement-delta before the grind. GM informed: its descent-sites SPECIFY paragraph cites
+#78/§6 — its unit neither deletes nor re-points those sites. The board now runs FOUR parallel
+fronts: GM (gates) ∥ INV (leaves) ∥ CAPF (cap) ∥ pnp (def-fidelity), with the elder serially
+gating GM's delta + CAPF's statement-delta + the P2 one-liner.
