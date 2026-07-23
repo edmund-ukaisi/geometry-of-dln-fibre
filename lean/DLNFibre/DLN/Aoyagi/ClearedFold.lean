@@ -233,7 +233,10 @@ theorem couplingClear_parent_fixes_stepMap_child (d : Fin (N + 1) → ℕ) {p : 
   sorry
 
 /-- **δ=1 cleared child residual = parent's STRICT TRANSFORM** — the `sourceClearedResid` analogue of
-`Case1Wire.foldResid_extend_delta1`. Rides the couplingClear/strict-transform commutation. -/
+`Case1Wire.foldResid_extend_delta1` (S2). **TRUE at every node, including case2/case12 δ=1 with the
+child's GROWN `couplingClear` on the left** — pnp reconciled (20bc71f1d) that the reason is DEFINITIONAL:
+`Φ_child = Φ_parent ∘ quot` (the fold recursion), so the grown source-clear on the input commutes through
+robustly (unlike the M-level `couplingClear_stepMap_comm`, which was over-stated and is FALSE at growth). -/
 theorem sourceClearedResid_extend_delta1 (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (hlt : ¬ N ≤ ed.nextState.layer) (hδ : edgeδ d p = true)
     (j : Fin (foldNR d (p.extend ed))) (u : Fin (flatDim d) → ℝ) :
@@ -344,6 +347,37 @@ theorem case1_preserves_cleared (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : �
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
   -- map: B-globalmove-case1-preserves-cleared (⟨case1_conjA_cleared, realBranch_multiAffine_step_cleared⟩)
   refine ⟨case1_conjA_cleared d p ed hcase1 hlayer hinv hbranch, ?_⟩
+  exact realBranch_multiAffine_step_cleared d hpos p ed hlayer hbranch hinv.2
+
+/-- **Cleared conjunct A of the case2 wall — dispatched.** The case2 twin of `case1_conjA_cleared`, the
+EASY case (no merge obstruction, no boostReady arm): δ=1 → `stepInv_child_delta1_append_cleared` fed the
+cover route `deg1SupportedOn_center_of_hslot_cleared` (`Or.inr` case2); δ=0 → `stepInv_child_delta0_cleared`.
+Mirrors `Case2Wire.case2_conjA` (which carries `hpos`) on the cleared trio. -/
+theorem case2_conjA_cleared (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
+    (hlayer : ed.nextState.layer + 1 < N)
+    (hinv : FoldStepInvAt_cleared d (supportAt d p.conState.layer p.conState.cleared) p)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    ∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d (p.extend ed)) → (Fin (flatDim d) → ℝ) → ℝ,
+      StepInv (coreGen d (canonFlatten d)) (clearedFoldG d (p.extend ed)) (clearedFoldB d (p.extend ed))
+        (sourceClearedResid d (p.extend ed)) q (foldRegion d (canonFlatten d) (p.extend ed)) := by
+  -- map: B-globalmove-case2-conjA-cleared (dispatch: delta0 pullback / delta1 case2 cover route)
+  sorry
+
+/-- **⟨THE CLEARED WALL, case2 twin⟩ `case2_preserves_cleared`** (elder coverage addition — the L5 fold body
+needs the UNIFORM cleared invariant across BOTH case families; case2 is the easy case, same locus route,
+S1/S2 already verified at case2 nodes). The cleared analogue of `Case2Wire.case2_preserves_stepInv'`:
+conjunct A is `case2_conjA_cleared`, conjunct B the shared `realBranch_multiAffine_step_cleared`. Re-pointed
+consumer: `CaseStepAssembly.case2_preserves_stepInv''` (per-file go). -/
+theorem case2_preserves_cleared (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
+    (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
+    (hlayer : ed.nextState.layer + 1 < N)
+    (hinv : FoldStepInvAt_cleared d (supportAt d p.conState.layer p.conState.cleared) p)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    FoldStepInvAt_cleared d
+      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
+  -- map: B-globalmove-case2-preserves-cleared (⟨case2_conjA_cleared, realBranch_multiAffine_step_cleared⟩)
+  refine ⟨case2_conjA_cleared d hpos p ed hcase2 hlayer hinv hbranch, ?_⟩
   exact realBranch_multiAffine_step_cleared d hpos p ed hlayer hbranch hinv.2
 
 end DLNFibre.DLN.Aoyagi
