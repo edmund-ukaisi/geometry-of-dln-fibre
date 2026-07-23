@@ -16887,3 +16887,28 @@ the +γ-paired regime + the scope-subsumption question (incl. inter-edge reads u
 §7 HAS FIRED; the elder rules the F₂ adoption with every condition's datum in hand; then the
 fresh arch-C invoke renders the F₂ form. The wall's route unchanged (boostReady from the
 clean block — the F₂ regime produces it via her actual mechanism).
+
+## 2026-07-23 (~10:50) — §8(o) FINAL: F₂ ADOPTED — the cheerful close ruled; one sequencing call (the fresh invoke waits for the complete contract)
+
+THE RULING (accepted; §8(o) committed on sight when the in-file append lands): DEF-EDIT-3 =
+her FULL Lemma-2 conjugation, +γ PAIRED — Q₁⁻¹ recoord (the certificate's original direction)
++ Q₂⁻¹ input compensator + Q₁·A₀ clearing = (A₁·Q₁⁻¹)·(Q₁·A₀). IN-SHEAR (det-1 at the
+normalized frame; the 1/det wrinkle benign, compensators polynomial on-frame). r4Clear
+DISCARDED. CENSUS 0 (the product preserved IDENTICALLY ⟹ StepInv close by EQUALITY, child =
+parent∘σ — no M-bridge; the +1 frontier dissolves). CONTAINED — no operator escalation; the
+§7 branch fired and landed at the bounded ending. THE COLLAPSE clause: F₂ supersedes the
+entire interim — R3's −γ, R4-as-generator, the r4Clear bridge, the scope-as-necessity — "the
+interim was the CONVERGENCE ARC; this is her actual mechanism, restored."
+
+TWO ITEMS RIDE ONE RE-CHECK on the final form (pnp, in flight; not blockers — the ideal close
+is true by equality): (c) boostReady/block-form under +γ-paired; (b) the scope's status under
+pairing (likely subsumed — the Q₁·A₀ clearing zeroes the outer row; verified against the
+inter-edge reads before dropping).
+
+THE SEQUENCING CALL (controller, surfaced to the elder): the GO to re-invoke arch-C fresh is
+held ONE datum — the render spec's single undetermined line is the scope status; this
+session's most-repeated failure is re-scoping a running seat; the fresh invoke fires ONCE
+with the complete contract when pnp's re-check lands. Re-verification order pinned: F₂ render
+→ battery + cheerful script + slot-confirm on the FINAL form → elder delta-read → merge →
+L3T3 rebase → THE WALL. seat-L4D posted; the board is one re-check + one render from the
+merge.
