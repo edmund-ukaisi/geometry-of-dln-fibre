@@ -17465,3 +17465,18 @@ descent_delta1_append / realBranch_multiAffine_step' = single-frontier sorryAx;
 foldResid_layerHomogeneous' (the primed homogeneity twin) = CLEAN THREE. All match the seat's
 readings. Pushed. Remaining on #65: the Gap-B swap per seat-L3T3's spec (requested — the
 import-layering constraint forbids the literal in-place swap); seat-LL unblock notification out.
+
+## 2026-07-23 (~21:45) — COVERAGE AUDIT DELIVERED (elder, #63 part 2): NO UNPLANNED GAP; banked
+
+Headline (elder re-derived the two load-bearing facts, not from reports): the paper's GEOMETRY is
+fully constructed sorry-free axiom-clean at arbitrary d (all of L&R §§2–7); the payoff rlct=C/2 =
+theorem with zero-cite geometric half + exactly TWO cited axioms on the analytic half (Watanabe
+upper, Aoyagi lower) — faithful to L&R §8's own structure; all 41 sorries confined to the two
+cite-replacement build lanes (monument 16, engine 25), Core zero. All four named traps: proved or
+named-frontier, never silent. Tier-1: (1) fibre-EXHAUSTION = named frontier (leafPath_compactCover
+L7 :1821 + L5 :1763) — confirmation not gap, on the ladder; (2) GeoAlphaGauge:675 sorry under a
+REFUTED-AS-STATED statement — retire/restate (board #66); (3) MonumentAtlas :1475/:1515 baked
+case-preserves superseded by the Wire twins — prune/mark historical (folds into the Gap-B fossil
+disposition, #65). For the operator: L&R PRINTED rlcm formula off-by-one (a(ℓ−a) vs a(ℓ−a)+1,
+§2.3) — authors'-erratum candidate, operator's call on correspondence. Elder proceeds to part 1
+(the worked.tex-vs-PDF uplift, pp.1–13 extension of the prior image-verified pp.8,14–22,24–26).
