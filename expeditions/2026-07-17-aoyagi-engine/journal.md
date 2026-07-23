@@ -18039,3 +18039,20 @@ asset), (b) a genuine RLCT-gauge-invariance lemma (real-analysis content; build-
 converges on §7.5. Controller self-audit: the arc deepens but every step is verified-then-designed
 (zero wasted renders in 4 rounds of catch); the destination is untouched; the deepening is the
 mathematics being real, not the process failing.
+
+## 2026-07-24 (~12:20) — §7.5 LANDED: the bridge = COVER-MEMBERSHIP (source-explicit); the fan
+machinery is the asset; the corrected contract dispatched
+
+The amendment (banked c56a612de; the elder's 2nd owned retraction this arc — "regular ⟹
+ideal-neutral" was wrong, pnp's Gröbner right): Case 1(1) IS a blow-up chart (p.15 "Construct the
+blow-up along {d=0, u_{s,k}=0}"; the cases ARE the charts; RLCT = min over charts). So
+sourceClearedResid = the Case-1(1) CHART residual; (D) holds ON the chart; RLCT-soundness = the
+boxed min-over-charts rule; the {coupling=0} is the chart's coordinate structure (E_J=identity from
+ancestor regular clears). The banked pnp-fan machinery (#11-14) is the bridge's asset — the
+expedition's early cover work anticipated exactly this. Intermediate-layer reuse EXPECTED uniform
+(the chart structure is uniform over S); the pointed verification (pnp, corrected contract):
+(ii') sourceClearedResid = the chart residual at layer-0 AND (2,2,2,2,2) (chart-legitimate vs
+uncovered coupling = the RE-OPEN trigger); (iii') min-over-charts tied to the fan cover cert. The
+old ∃q-ideal-transport linchpin RE-CAST as a cover/leaf obligation. On pnp's green: the positive
+certificate + the fresh render seat with the frozen contract. The recursion, census-0, payoff all
+untouched through the whole arc.
