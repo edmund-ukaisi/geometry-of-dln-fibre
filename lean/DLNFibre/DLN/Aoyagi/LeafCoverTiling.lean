@@ -133,26 +133,30 @@ theorem closedBall_one_subset_iUnion_blockBlowup_image {S : Finset (Fin D)} (hS 
   have h := closedBall_subset_iUnion_blockBlowup_image_radius hS (zero_le_one)
   rwa [max_self] at h
 
-/-! ## The abstract fan-cover tree (with per-node shears + box inflation; MILESTONE 2)
+/-! ## The abstract fan-cover tree (per-node shears + `R`-dependent box inflation; MILESTONE 2)
 
 The pnp-fan cover fold (`fan-design-certificate.md` §2.3–2.4) as an abstract, monument-free
 recursion
 over the FULL pivot fan. A `node` carries a NONEMPTY center `S`, a per-pivot shear `σ p`, and one
-child subtree per pivot (`child p` for every `p ∈ S` — the full fan, matching elder ruling (A):
-pivots range over ALL of `S`, NOT the col-pinned ledger). Rollovers are `pass` (identity
-passthrough). A `leaf` carries its source box (the atlas `dom`, compact).
+child subtree per pivot (`child p` for every `p ∈ S` — the full fan, elder ruling (A): pivots range
+over ALL of `S`, NOT the col-pinned ledger). Rollovers are `pass`; a `leaf` carries its source box
+(the atlas `dom`, compact).
 
-The per-node step is `blockBlowupMap S p ∘ σ p` (block blow-up OUTERMOST; the shear inner) — exactly
-the monument's `stepMap`. The shear (case-1(2)/case-2 `edgeShear`) is a global bijection that can
-INFLATE a box by a bounded factor; the fold absorbs it by the `R·(1+R)^m` box inflation
-(`fan-design-certificate.md` §2.4): the cover radius stays `≥ 1` (the atom's `max R 1` source),
-grows by the inflation factor `K` per shear level, so the LEAVES cover a `K^depth` box and the ROOT
-covers the unit ball. That inflation is threaded by `Covers K t R` below — the LOCAL per-node shear
-fact `closedBall 0 (max R 1) ⊆ σ p '' closedBall 0 (K·max R 1)` (the shear maps a `K·`-box over the
-source box, i.e. `σ⁻¹` is `K`-bounded there) plus the child covering the inflated radius. The
-concrete `K` for the monument's `canonNormalizationOf`, the fan-completeness (`buildTree` realises
-every pivot), and the `#86(B)` col→full σ-bridge are all discharged at the WIRE (controller-owned;
-this module cannot import `MonumentAtlas`, which imports it). -/
+The per-node step is `blockBlowupMap S p ∘ σ p` (block blow-up OUTERMOST, shear inner) — the
+monument's `stepMap`. The shear (case-1(2)/case-2 `edgeShear`) is a bijection that can INFLATE a
+box;
+the fold absorbs it by an **`R`-dependent** inflation `f : ℝ → ℝ` (`Covers f t R` below), NOT a
+constant factor: the monument's `canonNormalizationOf` is QUADRATIC (`σ⁻¹ ~ r + C·r²` on a
+radius-`r`
+box), so a constant multiplier `K` is UNDISCHARGEABLE at depth ≥ 2 (`K ≥ 1 + K^ℓ` has no solution) —
+rev-L7cover's finding. A super-geometric `f` (e.g. `r ↦ r·(1+r)`) closes each per-node shear clause,
+and a finite-depth tree gives finite (large) leaf boxes `f^[depth] 1` = cert §2.4's `R·(1+R)^m`. The
+`max R 1` floor is the atom's (the ratio slots need radius `≥ 1`), so the strategy is DUAL to §2.4's
+small-`ρ`: keep the covered ball at radius 1 and INFLATE the leaf boxes to `f^[depth] 1` (the atlas
+`dom` sized accordingly at the wire), rather than shrink `ρ`. The concrete `f` for
+`canonNormalizationOf`, the fan-completeness (`buildTree` realises every pivot), and the `#86(B)`
+col→full σ-bridge are discharged at the WIRE (controller-owned; this module cannot import
+`MonumentAtlas`, which imports it). -/
 
 /-- An abstract **fan-cover tree** over `Fin D → ℝ`: `leaf box` (a compact source box), `pass`
 (rollover / identity passthrough, single child), or `node S hS σ child` (a full pivot fan over a
@@ -184,23 +188,27 @@ def leafImages : FanTree D → Set (Fin D → ℝ)
     (FanTree.node S hS σ child).leafImages =
       ⋃ p ∈ S, (blockBlowupMap S p ∘ σ p) '' (child p).leafImages := rfl
 
-/-- **The fold cover condition** (inflation factor `K`, target radius `R`). At a `leaf box` the box
-covers `closedBall 0 R`; at a `pass` the child covers `R`; at a `node S σ` each pivot's shear maps a
-`K·(max R 1)`-box over the source box `closedBall 0 (max R 1)` (the LOCAL shear fact — `σ⁻¹` is
-`K`-bounded there), AND each child covers the inflated radius `K·(max R 1)`. Threads the `R·(1+R)^m`
-inflation structurally; NON-vacuous (each clause is a local containment, never the global cover). -/
-def Covers (K : ℝ) : FanTree D → ℝ → Prop
+/-- **The fold cover condition** (`R`-dependent inflation `f`, target radius `R`). At a `leaf box`
+the box covers `closedBall 0 R`; at a `pass` the child covers `R`; at a `node S σ` each pivot
+shear
+maps an `f (max R 1)`-box over the source box `closedBall 0 (max R 1)` (the LOCAL shear fact — `σ⁻¹`
+maps the source box into the `f`-inflated box), AND each child covers the inflated radius
+`f (max R 1)`. A super-geometric `f` (e.g. `r ↦ r·(1+r)`) absorbs the monument's QUADRATIC shear
+over
+finite depth (a constant multiplier cannot — rev-L7cover); NON-vacuous (each clause is a local
+containment on explicit boxes, never the global cover). -/
+def Covers (f : ℝ → ℝ) : FanTree D → ℝ → Prop
   | .leaf box, R => closedBall 0 R ⊆ box
-  | .pass child, R => Covers K child R
+  | .pass child, R => Covers f child R
   | .node S _ σ child, R =>
-      (∀ p ∈ S, closedBall 0 (max R 1) ⊆ (σ p) '' closedBall 0 (K * max R 1)) ∧
-        (∀ p ∈ S, Covers K (child p) (K * max R 1))
+      (∀ p ∈ S, closedBall 0 (max R 1) ⊆ (σ p) '' closedBall 0 (f (max R 1))) ∧
+        (∀ p ∈ S, Covers f (child p) (f (max R 1)))
 
-/-- **The abstract fan cover (with shears).** If `Covers K t R` holds, the closed ball of radius `R`
-is covered by the tree's leaf-chart images — the pnp-fan tree fold with box inflation, by structural
-induction: each `node` is discharged by the closed block-atom `(Q)` at radius `R`, the local shear
-fact, and the child IH at the inflated radius. -/
-theorem covers_subset {K : ℝ} : ∀ (t : FanTree D) {R : ℝ}, Covers K t R →
+/-- **The abstract fan cover (with shears).** If `Covers f t R` holds, the closed ball of radius `R`
+is covered by the tree's leaf-chart images — the pnp-fan tree fold with `R`-dependent box inflation,
+by structural induction: each `node` is discharged by the closed block-atom `(Q)` at radius `R`, the
+local shear fact, and the child IH at the inflated radius `f (max R 1)`. -/
+theorem covers_subset {f : ℝ → ℝ} : ∀ (t : FanTree D) {R : ℝ}, Covers f t R →
     closedBall (0 : Fin D → ℝ) R ⊆ t.leafImages := by
   intro t
   induction t with
@@ -221,17 +229,18 @@ theorem covers_subset {K : ℝ} : ∀ (t : FanTree D) {R : ℝ}, Covers K t R �
       · rw [Metric.closedBall_eq_empty.mpr (not_le.mp hR)]; exact Set.empty_subset _
 
 /-- **The open-ball corollary** (`∃ ρ > 0`) — the shape `leafPath_compactCover` consumes. From
-`Covers K t 1` (the controller's wire discharges it: leaf boxes `≥ K^depth`, the shear facts from
-`canonNormalizationOf`, the fan-completeness from `buildTree`). -/
-theorem exists_ball_subset_leafImages {K : ℝ} (t : FanTree D) (h : Covers K t 1) :
+`Covers f t 1` (the controller's wire discharges it: leaf boxes `≥ f^[depth] 1`, the shear facts
+from `canonNormalizationOf`'s quadratic bound against the `f`-box, the fan-completeness from
+`buildTree`). -/
+theorem exists_ball_subset_leafImages {f : ℝ → ℝ} (t : FanTree D) (h : Covers f t 1) :
     ∃ ρ : ℝ, 0 < ρ ∧ ball (0 : Fin D → ℝ) ρ ⊆ t.leafImages :=
   ⟨1, one_pos, Metric.ball_subset_closedBall.trans (covers_subset t h)⟩
 
 /-- **Non-vacuity witness** — a one-node fan tree (singleton center, identity shear, unit-box leaf)
-satisfies `Covers 1 · 1`, so `covers_subset` / `exists_ball_subset_leafImages` fire non-trivially on
-a genuine fanned node (not just a bare leaf). -/
+satisfies `Covers id · 1` (the linear/no-inflation instance `f = id`), so `covers_subset` /
+`exists_ball_subset_leafImages` fire non-trivially on a genuine fanned node (not a bare leaf). -/
 theorem covers_one_node (p : Fin D) :
-    Covers 1 (FanTree.node {p} ⟨p, Finset.mem_singleton_self p⟩ (fun _ ↦ id)
+    Covers id (FanTree.node {p} ⟨p, Finset.mem_singleton_self p⟩ (fun _ ↦ id)
       (fun _ ↦ FanTree.leaf (closedBall 0 1))) 1 :=
   ⟨fun _ _ ↦ by simp [Set.image_id], fun _ _ ↦ by simp [Covers]⟩
 
