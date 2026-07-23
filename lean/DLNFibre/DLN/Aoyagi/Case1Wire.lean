@@ -369,91 +369,25 @@ theorem stepInv_child_delta1_append (d : Fin (N + 1) → ℕ)
       foldResid_stepMap_eq_pivot_mul d e ed hdeg1 (Fin.cast hcast j') u]
     ring
 
-/-! ### The WALL — primed leaf `case1_preserves_stepInv'` (SEAT-L4, primed-leaf pattern)
+/-! ### The WALL — REMOVED (elder-FORCED deletion, ruling §9 DELTA 2; REFUTED-raw)
 
-Statement-identical to `MonumentAtlas.case1_preserves_stepInv`; the controller swaps the MonumentAtlas
-`sorry` to `:= case1_preserves_stepInv' …` at the summit cleanup (same pattern as `Case2Wire`'s
-`case2_preserves_stepInv'` / L8's `leafPath_realizesExponents'`). Lands HERE (not `MonumentAtlas`)
-because the divisibility engine it consumes lives downstream of `MonumentAtlas`. The dispatch is
-verified correct; the two frontier obligations are named holes (elder-ruling-pending). -/
+`realBranch_boostReady_case11`, `case1_conjA`, and `case1_preserves_stepInv'` (the raw case-1(1) invariant
+chain) are DELETED — **REFUTED-raw**: the raw `Deg1SupportedOn (foldResid d e p) ed.center` (property (D))
+is FALSE at case11 children (the (2,2,2,2) `u₀₁₀` obstruction — `capstone-object-ruling.md` §1, pnp master
+gate), so the raw child `∃q, StepInv` those lemmas assembled cannot hold. A type error cannot fossilize.
+**SUPERSEDED-BY** the source-cleared chain (Option 2′, ruling §7-§9):
 
-/-- **case11 δ=1 BOOST-READINESS** (Codex xhigh 2026-07-22; RULING B — statement blessed). DELEGATED to
-`realBranch_boostReady_case11'` (MergeBoostSplit) — proven via the content lemma + the algebraic assembly;
-the wall's ONLY remaining debt is `foldResid_case11_mergeBoostSplit_canon`. For a real case1(1) edge at δ=1, the parent residual is `Deg1SupportedOn`
-the LEDGER (boost) center `ed.center = {pivot} ∪ partial-block` — even though its GEOMETRIC support
-`supportAt` is the larger full layer block: the untouched (`support ∖ center`) terms carry `u_pivot` in
-their non-dominant b-chain coefficient `b_i/b_1`. Blessed in place; derives from the `CanonicalSchurStep`
-conjunct (via `realBranch_canonicalSchurStep`) + the b-chain, re-expressing the carried parent slot
-(`hslot`) over the boost center. Feeds `stepInv_child_delta1_append` exactly like the case12 cover route.
-PIN `he : e = canonFlatten d` (idiom ruling): the b-chain factoring is a `canonFlatten`-alignment fact,
-false at general/linear `e`; born here. -/
-theorem realBranch_boostReady_case11 (d : Fin (N + 1) → ℕ)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d) {p : TreePath d}
-    (ed : TreeEdge d p)
-    (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
-    (hbranch : (p.extend ed).IsRealBranch e)
-    (hslot : ∀ j, Deg1SupportedSlot d (foldResid d e p) j
-      (supportAt d p.conState.layer p.conState.cleared)
-      (supportLayerOf p.conState) (foldRegion d e p)) :
-    Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) :=
-  -- DELEGATED to the proven primed variant (MergeBoostSplit): the wall's ONLY remaining debt is the
-  -- content lemma `foldResid_case11_mergeBoostSplit_canon` (the assembly + the reduction are kernel-proven).
-  realBranch_boostReady_case11' d e he ed hδ hc11 hbranch hslot
+* `realBranch_boostReady_case11`  →  `MergeBoostSplit.realBranch_boostReady_case11'` (concludes `(D)` on
+  `sourceClearedResid`, the object it actually holds of);
+* `case1_conjA`                   →  `ClearedFold.case1_conjA_cleared`;
+* `case1_preserves_stepInv'`      →  `ClearedFold.case1_preserves_cleared`.
 
-/-- **Conjunct A (divisibility ∃q) of the wall — dispatched.** δ=0 → `stepInv_child_delta0`
-(case-generic pullback, BANKED); δ=1 case12 → `stepInv_child_delta1_append` fed
-`deg1SupportedOn_center_of_hslot` (cover route, BANKED); δ=1 case11 → `stepInv_child_delta1_append` fed
-`realBranch_boostReady_case11` (the boost-center Deg1 obligation). The SAME append lemma closes both δ=1
-sub-cases — only the `Deg1SupportedOn ed.center` source differs.
-
-PIN (idiom ruling 2026-07-23): the case11 derivation carries `he : e = canonFlatten d` (the concrete
-flatten aligns the flat coords so the reused-pivot coordinate factors cleanly — false at general/linear
-`e`, the `(1,1,1)` unipotent-scrambler countermodel). `case1_conjA` supplies it to the wall for the
-case11 branch (δ=0 / δ=1-case12 branches ignore it). -/
-theorem case1_conjA (d : Fin (N + 1) → ℕ)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d)
-    (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
-    (hlayer : ed.nextState.layer + 1 < N)
-    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hbranch : (p.extend ed).IsRealBranch e) :
-    ∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d (p.extend ed)) → (Fin (flatDim d) → ℝ) → ℝ,
-      StepInv (coreGen d e) (foldG d e (p.extend ed)) (foldB d e (p.extend ed))
-        (foldResid d e (p.extend ed)) q (foldRegion d e (p.extend ed)) := by
-  classical
-  have hlt : ¬ N ≤ ed.nextState.layer := Nat.not_le.mpr (by omega)
-  obtain ⟨q, hq⟩ := hinv.1
-  by_cases hδ : edgeδ d p = true
-  · rcases hcase1 with hc11 | hc12
-    · -- δ=1 case11: boost-readiness → append crux
-      exact stepInv_child_delta1_append d e ed hlt hδ
-        (realBranch_boostReady_case11 d e he ed hδ hc11 hbranch hinv.2) q hq
-    · -- δ=1 case12: cover route → append crux
-      exact stepInv_child_delta1_append d e ed hlt hδ
-        (deg1SupportedOn_center_of_hslot d e ed hδ (Or.inl hc12) hbranch hinv.2) q hq
-  · -- δ=0: pure pullback (case-generic)
-    have hδ0 : edgeδ d p = false := by
-      cases h : edgeδ d p with
-      | false => rfl
-      | true => exact absurd h hδ
-    exact stepInv_child_delta0 d e ed hlt hδ0 q hq
-
-/-- **⟨THE WALL — primed⟩** `case1_preserves_stepInv'`, statement-identical to
-`MonumentAtlas.case1_preserves_stepInv`. Conjunct A is `case1_conjA` (dispatched; consumes the
-boost-readiness obligation for the δ=1 case11 sub-branch); conjunct B is the shared child
-`Deg1SupportedSlot` descent — CLOSED via the step-form `realBranch_multiAffine_step` (parent slot from
-`hinv.2` + the child branch `hbranch`), identical to `Case2Wire.case2_preserves_stepInv'`'s conjunct B. -/
-theorem case1_preserves_stepInv'
-    (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d)
-    (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
-    (hlayer : ed.nextState.layer + 1 < N)
-    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
-    (hbranch : (p.extend ed).IsRealBranch e) :
-    FoldStepInvAt d e
-      (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
-  refine ⟨case1_conjA d e he p ed hcase1 hlayer hinv hbranch, ?_⟩
-  -- CONJUNCT B — child `Deg1SupportedSlot` on `supportAt(child)` (the descended block); CLOSED via the
-  -- step-form `realBranch_multiAffine_step`: parent slot (`hinv.2`) + child branch (`hbranch`) → child slot.
-  exact realBranch_multiAffine_step hpos e p ed hlayer hbranch hinv.2
+The single fossil-of-record for the refuted raw content lemma stays its banner in `MergeBoostSplit`
+(`foldResid_case11_mergeBoostSplit_canon`); no fossil is re-created here. The reusable per-edge lemmas ABOVE
+(`foldResid_stepMap_eq_pivot_mul`, `stepInv_child_delta0`, `stepInv_child_delta1_append`,
+`foldResid_extend_delta0`/`_delta1`, `foldNR_extend_of_lt`, `exists_ignoresCoords_decomp`,
+`deg1SupportedOn_center_of_hslot`, `exists_graded_decomp`, `edgeShear_keeps_pivot`,
+`canonCenterOf_append_subset_layerCoords`) STAY — object-agnostic, consumed by the cleared chain.
+Cross-ref: elder ruling §7-§9 + `capstone-invariant-certificate.md`. -/
 
 end DLNFibre.DLN.Aoyagi
