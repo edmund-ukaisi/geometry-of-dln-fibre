@@ -16949,3 +16949,29 @@ rule applied correctly."
 The arc's last execution step runs: arch-C-4 (restate-gated) renders the final F₂ form with
 the equality-witness tripwire built in; the battery + cheerful re-run + slot-confirm + the
 elder's 7-item delta-read + the merge follow in the pinned order.
+
+## 2026-07-23 (~11:30) — THE RESTATE GATE CATCHES A THIRD TIME: "diag as det-1 shears" unsatisfiable; PATH A = §9's math with the corrected architecture; the elder rules the amendment
+
+arch-C-4's restate: all five §9 points CORRECT, plus a pre-grind statement-class catch on the
+architecture phrasing (held, no files touched):
+- THE CATCH (verified — sympy + the jacDet_blockShear def-read): "Q₁·A₀·Q₂ = diag(1,e₂)
+  rendered as det-1 shear branches" is NOT simultaneously satisfiable. Zeroing the pivot cross
+  reads the entry it zeros: the joint F₂ map's detJ = (u₀₀₀−1)² → 0 at the normalized pivot;
+  jacDet_blockShear needs a read/write keep-partition the cross coord violates; no det-1
+  composition reaches det-0. Empirically: det-1 shears alone → the multilinear-not-diag block
+  [[1,β],[γ,e₂]]; zeroing → diag but det-0. The "det-1 shear branches" phrasing crept in from
+  the preliminary lean about the COMPENSATOR pieces (correct for them) over-extended to the
+  composite-with-clear.
+- PATH A (arch-C-4's recommendation, controller-concurred — it IS the verified model's own
+  decomposition): det-1 shear branches = THE COMPENSATORS (interior Schur + +γ recoord +
+  Q₂⁻¹-style input recoord) in canonNormalizationOf; a READ-SIDE pivot-cross clear (det-0,
+  homed per the blockBlowupCoordQuot precedent, never in blockShear/hshear). THE COMPOSITE =
+  F₂ = product-preserving (rows A/D verified exactly this) ⟹ close by EQUALITY, census 0, no
+  bridge — the clear's ROLE changes from "unsound pure-zero needing a bridge" to "COMPENSATED
+  read-side clear closing by equality." Fidelity (diag composite read) AND soundness (every
+  blockShear det-1) both achieved. Deviation from §9's literal "r4Clear DISCARDED" → RETAINED
+  with the changed role; the elder rules the small phrasing amendment (math unchanged).
+- Alternatives (B) multilinear-not-diag (weaker fidelity) and (C) re-rule noted; A recommended.
+
+The restate gate is now 3-for-3 pre-grind on its deployments. arch-C-4 holds for the elder's
+word; the render follows the amendment.
