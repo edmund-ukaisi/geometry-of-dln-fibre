@@ -54,24 +54,24 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~16:30): THE F₂ RENDER IS LANDED — REBAKE2 @ 1a113e4db
-  (MonumentAtlas.lean only, +97/−49; arch-C-4's gates all green; controller RE-DERIVED: full
-  build exit-0 (9008 jobs), census 18/2/1 delta-0, ENTIRE diff read = conforms to §9 on all
-  five spot-checks: (ii) +γ flip w/ scope verbatim-kept; (iii) NEW S≥1-vacuous-by-ℕ-guard
-  input recoord, range `d q.1.1.succ` sound; 3-disjunct support + CanonicalSchurStep mirror;
-  r4Clear def UNCHANGED — docstring re-home only, recursion untouched, stepInv closes by the
-  original witness). All §9 rulings RESOLVED (corner = (A) global GL_{d₀} end-factor,
-  per-chart; clear = boostReady FORM device; recursion = compensator shears by EQUALITY).
-  THREE REVIEWERS FIRED on 1a113e4db (~16:20): pnp all-rows battery (6 rows incl NEW
-  interior-pivot row — branch-(iii) UNEXERCISED by corner-only witnesses, needs an
-  independent wide interior witness); seat-L4D 11-item slot-confirm + `cleared ≤ i` def-read;
-  elder 9-item delta-read + the PER-CHART-GAUGE adjudication (arch-C-4's flag: per-branch Q₂
-  vs one global end-factor for multi-corner-pivot folds — bounded either way, docstring-line
-  question, NOT a re-open). ON TRIPLE GREEN → controller merges REBAKE2 into canonical (own
-  re-derived gates again at merge) → L3T3 rebase (#52, 2 one-line hCSchild sites) → THE WALL
-  (#38, provable per pnp's chart-frame pass). seat-L3T3 branch @ 69f8bf3ac complete, waiting
-  on merge. Battery canon: WIDE witness + EXACT rendered form, always. If a reviewer is
-  silent ≥2 polls, check transcript mtime (lost-wake hazard, 2 incidents already).
+- CURRENT WAIT-STATE (2026-07-23 ~18:40): THE MERGE IS DONE AND PUSHED — canonical
+  expedition/aoyagi-engine @ a5295bcb8 carries the F₂ PROPERTY-HOME render (3-branch
+  compensator canonNormalizationOf; 3-disjunct support + CanonicalSchurStep; r4Clear =
+  boostReady FORM device, recursion untouched; DEF-EDIT-1 supportAt widen; §11 scope-fidelity
+  erratum + item-9 per-chart line). ALL review gates were green AND controller-re-derived
+  (elder delta-read 8/9+DEF-EDIT-1 → ruling §10; L4D 11/11 + interior trace, script re-run
+  exit-0; pnp all-rows battery 5 rows PASS, script re-run exit-0). Merge gates re-derived ON
+  THE MERGED TREE: build 9008 jobs exit-0; census 18/2/1; cordon-all; payoff roots CLEAN
+  THREE, engine roots tracked-sorryAx. REBAKE2 tip e2b466976 = merged, branch retired
+  (history). TWO LANES NOW LIVE (GO sent ~18:40): (1) seat-L4D → THE WALL #38
+  (realBranch_boostReady_case11 on a fresh lane branch off a5295bcb8; clear/e₂-decomposition
+  as the proof device; restate gate first); (2) seat-L3T3 → the rebase #52 (2 one-line
+  hCSchild sites at MultiAffineStepWire ~:364-365/:689-690; NOTE the support shape is now 3
+  disjuncts — a third case may appear; stop-and-report if surface > 2 one-liners). On L3T3's
+  rebased push → controller merge + wiring (3 Gap-B sorry swaps to primed twins +
+  AoyagiRecoordLinear wire). Then: descent/lastLayer/L5 assembly per the summit ladder below.
+  If a seat is silent ≥2 polls, check transcript mtime (lost-wake hazard, 3 incidents:
+  elder wedge, arch-C-4 build wake, the bnvcxc130 background-task kill).
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
   failed wakes) AND its 23:05 adjudication was DELIVERY-LOST (recovered from transcript, banked:
   threads/L4-case1-core/elder-capescape-interim-adjudication.md — its fix-β superseded by the
