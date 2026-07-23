@@ -55,6 +55,15 @@ python3 generate.py --profile profiles/aoyagi-engine.json \
   frontier came from hand-authored planning overlays.
 - **Proof roles / code areas / milestone tags** are regex heuristics from the
   profile, not elaborator facts.
+- **The plan layer** (`map.html`): when the tip carries an expedition-map
+  (`expeditions/*/map/claims.yaml`), its full git history is mined into per-node
+  lifecycles — births, status transitions, owner changes, deaths, re-root epochs
+  (mass id replacement) — rendered as a structure DAG and status lifelines.
+  Statuses are the controller's *asserted* values; the page independently checks
+  each `lean:` anchor against the source scan (anchor found, sorries in its
+  dependency cone) and lists disagreements. The history playback gains a per-state
+  plan panel + cyan transition ticks; plan-anchored declarations get violet halos
+  in `declarations.html` (deep-linkable via `declarations.html#q=<name>`).
 
 ## Profiles
 

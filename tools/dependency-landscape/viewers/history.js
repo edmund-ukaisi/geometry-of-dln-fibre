@@ -45,6 +45,7 @@
   const deltaEl = $("delta");
   const activityEl = $("activity");
   const semanticsEl = $("semantics");
+  const planEl = $("plan");
   const hubsEl = $("hubs");
   const detailsEl = $("details");
   const legendEl = $("legend");
@@ -507,6 +508,19 @@
     }).join("")}<div class="legend-note">Cyan inset = portion feeding the current headline.</div>`;
   }
 
+  function renderPlan(state) {
+    if (!planEl) return;
+    const plan = state.plan;
+    if (!plan) { planEl.style.display = "none"; return; }
+    planEl.style.display = "";
+    const counts = Object.entries(plan.c).sort((a, b) => b[1] - a[1]);
+    planEl.innerHTML = `<h2>Plan layer · ${fmt(plan.n)} mapped nodes</h2>
+      <div class="chips">${counts.map(([name, count]) => `<span class="chip">${esc(name)} ${count}</span>`).join("")}</div>
+      ${plan.t.length ? `<div class="subhead">Status transitions since prior state</div><ul class="mini-list">${plan.t.map(([id, from, to]) => `<li><code>${esc(id)}</code> ${esc(from)} → ${esc(to)}</li>`).join("")}</ul>` : ""}
+      ${(plan.b || plan.d) ? `<div class="legend-note">${fmt(plan.b)} node(s) born · ${fmt(plan.d)} archived</div>` : ""}
+      <div class="legend-note">asserted statuses from claims.yaml · <a href="map.html" style="color:#67e8f9">open the plan map</a></div>`;
+  }
+
   function renderHubs(state) {
     const hubs = state.topHubs.slice(0, 6);
     hubsEl.innerHTML = `<h2>Dependency hubs · direct consumers</h2><div class="subhead">Target</div><div title="${esc(state.goalTarget || "No headline yet")}">${esc(basename(state.goalTarget || "No headline yet"))}</div><ul class="mini-list hub-list">${hubs.map(([name, moduleName, consumers, inGoal]) =>
@@ -541,6 +555,7 @@
     renderDelta(frame);
     renderActivity(frame, state);
     renderSemantics(state);
+    renderPlan(state);
     renderHubs(state);
     renderDetails();
     renderLegend();
@@ -588,6 +603,16 @@
       if (!frame.activity.tags.length) return;
       sparkCtx.fillStyle = "rgba(251,191,36,.65)";
       sparkCtx.fillRect(x(index), 3, 1, 5);
+    });
+    const firstFrameOfState = new Map();
+    frames.forEach((frame, index) => {
+      if (!firstFrameOfState.has(frame.state)) firstFrameOfState.set(frame.state, index);
+    });
+    frames.forEach((frame, index) => {
+      const plan = history.states[frame.state].plan;
+      if (firstFrameOfState.get(frame.state) !== index || !plan || !plan.t.length) return;
+      sparkCtx.fillStyle = "rgba(103,232,249,.8)";
+      sparkCtx.fillRect(x(index), 9, 1, 4);
     });
 
     function line(values, y, color, lineWidth) {

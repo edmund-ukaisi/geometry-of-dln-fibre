@@ -230,9 +230,14 @@ def tip_state(repo, head, profile, blobs):
     return StateGraph(decls, module_of, profile), module_of
 
 
-def build_declaration_graph(repo, branch, head, profile, blobs, tip):
+def build_declaration_graph(repo, branch, head, profile, blobs, tip, plan=None):
     graph, module_of = tip
     n = graph.n
+    map_of_decl = {}
+    for pn in (plan or {}).get("nodes", []):
+        t = pn.get("territory")
+        if pn.get("live") and t and t.get("exists") and "declId" in t:
+            map_of_decl[t["declId"]] = {"id": pn["id"], "status": pn["status"]}
     deps, consumers = graph.dependencies, graph.consumers
     both = [deps[i] + consumers[i] for i in range(n)]
     comp, sizes = _components(n, both)
@@ -246,7 +251,9 @@ def build_declaration_graph(repo, branch, head, profile, blobs, tip):
     nodes = []
     for i in range(n):
         decl = graph.decls[i]
+        extra = {"mapNode": map_of_decl[i]} if i in map_of_decl else {}
         nodes.append({
+            **extra,
             "name": decl.name, "label": decl.name.rsplit(".", 1)[-1],
             "module": module_of[i],
             "kind": KINDS[graph.kind[i]],

@@ -117,6 +117,7 @@
     else if (node.hasSorry || node.sorryCount) { fill = "#fecaca"; stroke = "#b91c1c"; line = 1.8; }
     else if (node.active) { fill = "#ede9fe"; stroke = "#7c3aed"; line = 1.5; }
     else if (node.goalCone) { stroke = "#d97706"; line = 1.1; }
+    if (node.mapNode) { stroke = "#c084fc"; line = Math.max(line, 2.2); }
     if (searchMatches.has(node.id)) { stroke = "#0ea5e9"; line = 2.5; }
     if (selected === node.id) { stroke = "#111827"; line = 3; }
     return { fill, stroke, line };
@@ -236,6 +237,7 @@
     details.innerHTML = `<h2>${escapeHtml(node.label)}</h2><code>${escapeHtml(node.name)}</code>
       <dl>
         <dt>module</dt><dd>${escapeHtml(node.module || node.name)}</dd>
+        ${node.mapNode ? `<dt>plan node</dt><dd><code>${escapeHtml(node.mapNode.id)}</code> [${escapeHtml(node.mapNode.status)}] · <a href="map.html" style="color:#0369a1">plan map</a></dd>` : ""}
         <dt>kind</dt><dd>${escapeHtml(node.kind || node.category || "module")}</dd>
         <dt>height</dt><dd>${node.height} (0 = top-level root)</dd>
         <dt>component</dt><dd>${node.component} (${node.componentSize} nodes)</dd>
@@ -358,5 +360,13 @@
 
   resize();
   updateStats();
-  requestAnimationFrame(() => fit());
+  requestAnimationFrame(() => {
+    if (location.hash.startsWith("#q=")) {
+      search.value = decodeURIComponent(location.hash.slice(3));
+      updateSearch();
+      const first = searchMatches.values().next().value;
+      if (first != null) { centerNode(first, 1.2); return; }
+    }
+    fit();
+  });
 })();

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Expedition plan map</title>
+  <link rel="stylesheet" href="landscape.css">
+  <link rel="stylesheet" href="history.css">
+  <link rel="stylesheet" href="map.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>Expedition plan map</h1>
+    <p id="subtitle">The authored plan layer (claims.yaml) — structure, lifecycle, and its joins to the Lean territory.</p>
+  </div>
+  <nav>
+    <a href="history.html">History</a>
+    <a href="landscape.html">Current landscape</a>
+    <a href="declarations.html">Exact declarations</a>
+    <a href="density.html">Density</a>
+    <a href="index.html">Modules</a>
+    <a href="README.md">Method</a>
+  </nav>
+</header>
+<main>
+  <aside>
+    <div class="control-grid">
+      <label>View
+        <select id="mode">
+          <option value="structure" selected>Structure — the plan DAG</option>
+          <option value="lifelines">Lifecycle — status lifelines</option>
+        </select>
+      </label>
+      <label>Edges
+        <select id="edgemode">
+          <option value="all" selected>All edge types</option>
+          <option value="needs">needs only</option>
+          <option value="hard">needs + discharges</option>
+        </select>
+      </label>
+    </div>
+    <div id="summary" class="panel"></div>
+    <div id="ladder" class="panel"></div>
+    <div id="territory" class="panel"></div>
+    <div id="alarms" class="panel"></div>
+    <div id="details" class="panel"><em>Select a node.</em></div>
+    <div id="legend" class="legend"></div>
+    <p class="note">The plan layer is authored (single writer: the controller) and mined from git —
+      every status shown is an <em>asserted</em> value; the territory dot is this tool's independent
+      source-scan check (anchor found, sorries in its dependency cone). Statuses outside the
+      spec's maturity ladders render magenta. Lifelines include re-rooted (archived) node ids;
+      the amber line marks a re-root.</p>
+  </aside>
+  <section id="stage">
+    <svg id="canvas"></svg>
+    <div class="axis top" id="top-axis">ROOTS · the goal objects</div>
+    <div class="axis bottom" id="bottom-axis">DEEP PREREQUISITES · what everything above needs</div>
+    <div id="tooltip"></div>
+  </section>
+</main>
+<script src="map-data.js"></script>
+<script src="map-viewer.js"></script>
+</body>
+</html>

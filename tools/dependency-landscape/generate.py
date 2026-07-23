@@ -25,7 +25,7 @@ sys.path.insert(0, str(TOOL))
 from landscape.config import Profile
 from landscape.gitio import Repo
 from landscape.history import BlobCache, build_history
-from landscape import current
+from landscape import current, planmap
 
 
 def emit_js(path: Path, var: str, payload: dict):
@@ -48,7 +48,9 @@ against `{hist_meta['branch']}` at `{hist_meta['head'][:10]}` (read-only: no che
 - `landscape.html` — multiscale quotient DAG with weighted dependency ribbons.
 - `history.html` — hourly playback: {hist_meta['timelineFrameCount']} frames,
   {hist_meta['uniqueStateCount']} distinct code states, goal-cone scope, proof-role lanes,
-  proof debt, churn, hubs, structural deltas.
+  proof debt, churn, hubs, structural deltas{", plan-layer panel" if hist_meta.get('planAvailable') else ""}.
+- `map.html` — the expedition plan map (claims.yaml mined over its git history):
+  structure DAG + status lifelines, battery attachments, plan⇄territory join.
 
 ## Method, honestly
 
@@ -86,6 +88,8 @@ def main():
                     help="history base rev (default: merge-base with origin/dev)")
     ap.add_argument("--out", required=True)
     ap.add_argument("--bucket-hours", type=int, default=None)
+    ap.add_argument("--map-path", default=None,
+                    help="expedition map claims.yaml (default: newest at tip)")
     ap.add_argument("--no-history", action="store_true")
     ap.add_argument("--max-states", type=int, default=None,
                     help="smoke-test cap on distinct history states")
@@ -108,18 +112,35 @@ def main():
     print(f"[tip] {tip[0].n} declarations, {tip[0].edge_count} refs, "
           f"max height {tip[0].max_height}, goal = {tip[0].goal_target}")
 
+    map_path = args.map_path or planmap.find_map_path(repo, head)
+    plan = planmap.mine(repo, base, head, map_path, tip[0]) if map_path else None
+    if plan:
+        plan["meta"]["branch"] = args.rev
+        plan["meta"]["head"] = head[:10]
+        emit_js(out / "map-data.js", "MAP_DATA", plan)
+        print(f"[plan] {map_path}: {plan['meta']['liveCount']} live nodes "
+              f"(+{plan['meta']['archivedCount']} archived), "
+              f"{plan['meta']['commitCount']} map commits, "
+              f"{len(plan['epochs'])} re-root(s)")
+    else:
+        emit_js(out / "map-data.js", "MAP_DATA", {"meta": {"mapPath": None}, "nodes": [],
+                                                  "events": [], "epochs": [], "battery": []})
+        print("[plan] no expeditions/*/map/claims.yaml at tip — plan layer empty")
+
     mod = current.build_module_graph(repo, args.rev, head, profile, blobs, tip)
     emit_js(out / "module-data.js", "GRAPH_DATA", mod)
-    dec = current.build_declaration_graph(repo, args.rev, head, profile, blobs, tip)
+    dec = current.build_declaration_graph(repo, args.rev, head, profile, blobs, tip, plan)
     emit_js(out / "declaration-data.js", "GRAPH_DATA", dec)
 
     hist = None
     if not args.no_history:
         hist = build_history(repo, base, head, profile,
                              progress=lambda s: print(f"\r[history] {s}", end="", flush=True),
-                             max_states=args.max_states)
+                             max_states=args.max_states,
+                             plan_clock=planmap.PlanClock(plan) if plan else None)
         print()
         hist["meta"]["branch"] = args.rev
+        hist["meta"]["planAvailable"] = bool(plan)
         emit_js(out / "history-data.js", "HISTORY_DATA", hist)
 
     for asset in (TOOL / "viewers").iterdir():

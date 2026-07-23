@@ -1,0 +1,45 @@
+#canvas { width: 100%; height: 100%; display: block; }
+
+.map-node rect {
+  fill: #10182b; stroke-width: 1.1; rx: 5;
+  filter: drop-shadow(0 0 6px rgba(15, 23, 42, .8));
+}
+.map-node.landmark rect { stroke-width: 1.8; }
+.map-node.selected rect { stroke: #fff !important; stroke-width: 2.4; }
+.map-node text { pointer-events: none; }
+.map-node .nid { font: 600 10px ui-monospace, SFMono-Regular, Menlo, monospace; fill: #e2e8f0; }
+.map-node .ntitle { font: 9px ui-sans-serif, system-ui; fill: #94a3b8; }
+.map-node .nstatus { font: 600 8px ui-sans-serif, system-ui; }
+.map-node .nowner { font: 8px ui-sans-serif, system-ui; fill: #64748b; }
+.map-node .nmark { font: 10px ui-sans-serif, system-ui; fill: #fbbf24; }
+.map-node .nflag { font: 700 10px ui-sans-serif, system-ui; fill: #fb7185; }
+
+.map-edge { fill: none; }
+.map-edge.needs { stroke: rgba(148, 163, 184, .38); }
+.map-edge.discharges { stroke: rgba(45, 212, 191, .55); stroke-dasharray: 5 3; }
+.map-edge.conjectured-toward { stroke: rgba(148, 163, 184, .18); stroke-dasharray: 2 4; }
+.map-edge.refutes { stroke: rgba(251, 113, 133, .6); stroke-dasharray: 7 3; }
+.map-edge.other { stroke: rgba(192, 132, 252, .35); stroke-dasharray: 2 2; }
+.map-edge.dim { opacity: .18; }
+.map-edge.hot { stroke-width: 2.2 !important; opacity: 1 !important; }
+
+.life-row-label { font: 9px ui-monospace, Menlo, monospace; fill: #cbd5e1; cursor: pointer; }
+.life-row-label.dead { fill: #475569; }
+.life-seg { cursor: pointer; }
+.life-tick { stroke: #f8fafc; stroke-width: 1; opacity: .85; }
+.life-grid { stroke: rgba(148, 163, 184, .10); }
+.life-day { font: 8px ui-sans-serif, system-ui; fill: rgba(148, 163, 184, .7); }
+.life-epoch { stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 4 3; }
+.life-epoch-label { font: 600 9px ui-sans-serif; fill: #fbbf24; }
+.life-commit-bar { fill: rgba(100, 116, 139, .45); }
+
+.pill { display: inline-block; padding: 0 6px; border-radius: 8px;
+        font: 600 9px ui-sans-serif, system-ui; color: #0f172a; margin-right: 4px; }
+.dl-compact dt { color: #64748b; }
+.dl-compact dd { margin: 0 0 4px 0; }
+.trans-list li { font: 10px ui-monospace, Menlo, monospace; }
+.prop-box { white-space: pre-wrap; font: 10px ui-monospace, Menlo, monospace;
+            color: #94a3b8; background: #0b1120; border: 1px solid #1e293b;
+            border-radius: 5px; padding: 6px; max-height: 130px; overflow-y: auto; }
+.xlink { color: #67e8f9; text-decoration: none; }
+.xlink:hover { text-decoration: underline; }

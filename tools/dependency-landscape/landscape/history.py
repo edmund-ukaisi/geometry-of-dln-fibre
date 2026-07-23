@@ -82,7 +82,7 @@ def _relative(path: str, profile) -> str:
 
 
 def build_history(repo, base, tip, profile, progress=lambda s: None,
-                  max_states=None):
+                  max_states=None, plan_clock=None):
     lineage = repo.first_parent_lineage(base, tip)
     if not lineage:
         raise SystemExit("empty lineage — nothing to play back")
@@ -178,6 +178,10 @@ def build_history(repo, base, tip, profile, progress=lambda s: None,
                     "goalDelta": record["goalDeclarationCount"] - pr["goalDeclarationCount"],
                 }
             record["change"] = change
+            if plan_clock is not None:
+                record["plan"] = plan_clock.summary_between(
+                    prev_state_record["timestamp"] if prev_state_record else None,
+                    tail.committer_time)
             state_index_of[tail.sha] = len(states)
             states.append(record)
             prev_summary = (modules, declnames)
