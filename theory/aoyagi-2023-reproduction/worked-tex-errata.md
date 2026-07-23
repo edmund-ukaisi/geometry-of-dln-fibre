@@ -66,6 +66,39 @@ anchors to Lemma-2/merge-step semantics) and is next.
   `A'^{(S+1)} = Q₂'⁻¹ A^{(S+1)}` (worked.tex:445) — the accumulated-`Q₂'⁻¹` current-chart semantics that
   this expedition's F₂ ruling (branch-(iii) input compensator + the §8(m) scope) is built on — is
   faithfully transcribed from source pp.11–13. No omission; nothing the wall #38 anchors to is dropped.
-- **C9 (the recursion, pp.15–22) prose-intent re-touch — PENDING** (next chunk-batch). Formulas were
-  image-verified by the prior owed-math-audit (Cases-1/2 exponents, the `M_{s,k}` read-off, the (T-C)/(T-E)/(T-F)
-  ledger); the remaining work is re-reading her prose on *why/when* each case applies against §4 of worked.tex.
+- **C9 (the recursion, pp.15–22) prose-intent re-touch — PARTIAL** (the merge region pp.15–18 done for the
+  MergeBoostSplit check below; the rest — Case 2 pp.19–22, the `M_{s,k}` read-off — pending). Formulas were
+  image-verified by the prior owed-math-audit (Cases-1/2 exponents, the (T-C)/(T-E)/(T-F) ledger).
+
+### C9 finding — `MergeBoostSplit` predicate fidelity (folded from team-lead; on the wall's path, gates capstone review)
+
+Checked the Lean predicate `MergeBoostSplit` (`lean/DLNFibre/DLN/Aoyagi/MergeBoostSplit.lean`) against
+Aoyagi's separated normal form at the merge (source pp.15–18, image-read: the invariant
+`diag(b)·[E_J|D_J]`, `b_i = (∏_{t̃_{s,k}=i−1} u_{s,k})·b_{i−1}`; Case 1(1), p.16). **VERDICT: FAITHFUL on
+(a)/(b)/(c).**
+
+- **(a) single reused pivot `e₂` — FAITHFUL.** Case 1(1) (p.16) factors the ENTIRE `J₁`-row equal-run block
+  through a SINGLE exceptional `u_{s,k}` (`block = u_{s,k}·[d']`); the boost is `b'_i = u_{s,k}·b_i` on each
+  run row, and one exceptional is absorbed per step (`#{u | t̃=J+J₁}` drops by one). The "multiple carried
+  exceptionals" is the ACCUMULATED ledger `b_i = ∏u` (history across steps), NOT the per-step reuse — a
+  case11 STEP reuses exactly one. `e₂ = canonPivotOf` (single) is the right generality for the case11 edge.
+- **(b) center-ignoring coefficients — FAITHFUL.** After factoring `u_{s,k}=e₂` once, the residual quotients
+  `d'_{ij}` are clean (do NOT re-carry `e₂`); the lower-exceptional monomials `b_i` and the clean `D_J`
+  entries live in coordinates that are NEITHER `e₂` NOR the current partial block — so a `β` = (b-ratio
+  `b_i/b_1`)·(clean `d'`) is continuous and center-ignoring, exactly the wall's "non-dominant b-chain
+  coefficient" content. The `hex` guard (extra ∩ center = ∅; "e₂·(e₂+uᵢ) would fail IgnoresCoords") is the
+  necessary and matching condition — Aoyagi's single-factoring respects it.
+- **(c) per-slot pivot-XOR-free (no `e₂²`) — FAITHFUL.** The E_J/D_J separation puts the pivot in exactly one
+  place: the boosted `b'_i = u_{s,k}·b_i` carries `e₂` to the FIRST power; the residual `d'` is clean of it;
+  and `e₂ ∉ part`, `extra ∩ center = ∅` keep both summands `e₂`-degree ≤ 1. So each slot is degree-1 in `e₂`,
+  no square — precisely the disjunction the consumers want.
+
+**HONEST CHARACTERIZATION (not a defect):** the predicate is the *continuous-coefficient* consumer interface
+(α/β continuous + center-ignoring), sufficient for the `Deg1SupportedOn` consumer; the *exact-monomial*
+b-ledger is not asserted by the predicate — it is derived by the concrete content lemma
+`foldResid_case11_mergeBoostSplit_canon` (LIVE frontier, canonFlatten-stated). So `MergeBoostSplit` faithfully
+renders Aoyagi's normal form AT THE CONSUMER INTERFACE; the exact-monomial fidelity is deferred into the
+content lemma (correctly — that is where the concrete `coreGen`-at-`canonFlatten` lives). The
+`part = supportAt ∩ center` / `extra = supportAt ∖ center` partition matches her run-vs-rest `D_J` split. No
+fidelity gap; the guards (`e₂ ∈ center`, `part ⊆ center`, `e₂ ∉ part`, `extra ∩ center = ∅`) are load-bearing
+and all match her construction.
