@@ -16386,3 +16386,24 @@ status staleness is now on the hygiene list.
 route stands; the D_J slot-mapping row stays on the joint confirm.
 
 BOARD: one render from the merge. arch-C-3's restate is the next expected event.
+
+## 2026-07-23 (~05:30) — arch-C-3's RESTATE VERIFIED CORRECT (all five points); GO issued; §8(m) trimmed to the agnostic phrasing
+
+The restate gate worked exactly as designed: arch-C-3 delivered a five-point restate that is
+CORRECT on every item — the widen (with the docstring-conflation fix and standalone status),
+DEF-EDIT-2 none/confirm-only ("never improvise a conjunct"), DEF-EDIT-3 complete (R4 replaces
+branch-(i) per Lemma 2, generator-level, no stacking, placement its call; branch-(ii) flip +
+i≥cleared scope; R4 reads prior-clear-aware), the FIELD retracted WITH the def-fact grounding
+("if I believe otherwise I must stop — I do NOT"), and the merge test = block-form +
+chart-frame with the exact three-way decision map. It grounded on the baked defs and read the
+full ruling. GO issued with two enrichments (the StepInv-consumes-ideal fact + the banked G1/
+double-count scripts to cite; the verbatim-formula requirement so pnp's battery consumes the
+exact render). Contrast with the recycled seat is the lesson made vivid: one self-contained
+contract + one forced re-derivation beats five queued corrections into an anchored context.
+
+The elder's §8(m) trim committed + pushed (6612b10a5): the unscoped-formula degree status
+stays CONTESTED (agnostic — the elder didn't personally re-derive a winner on a gate-moot
+point); the justification rests on faithfulness. Its calibration note on seat-L4D's
+self-correction ("the refutation-minded instrument self-corrected against the faithful
+reference — the discipline working") recorded. Block axis CLOSED on both instruments + the
+paper. BOARD: arch-C-3 renders; battery + delta-read + merge staged behind it.
