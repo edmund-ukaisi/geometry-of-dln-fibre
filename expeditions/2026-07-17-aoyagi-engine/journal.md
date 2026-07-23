@@ -19724,3 +19724,24 @@ confirm). pnp's queue: GM's 2 certificates FIRST, then the #87 certificate + (C)
 threading choice (wait for INV's def-in-view push) accepted — sound build-validation reasoning;
 its 4-step sequence confirmed. The expedition's architecture questions are now ALL either
 resolved or reduced to named checks with named deciders.
+
+## 2026-07-23 (~19:10 UTC) — §9.7 banked: the gate outcome + sequencing CONFIRMED; the scope
+reframe — divBirthCoord is HER FRAME (the transport target), not a defect; (1)-ALONE forced
+
+The elder's §9.7: (1) the gate fired as designed and (B) vindicates §9.4 (the DLN-permutation-
+gauge mechanism; the L5 transport dischargeable; #81's trigger quiet). (2) The #87 sequencing IS
+the §9.5 bake discipline (its bake-bless awaits pnp's cert, which must cover the oracle-guard
+interplay — already in the commission). (3) THE SCOPE REFRAME (correcting its own §9.6): under
+canonical-pin, divBirthCoord-records-diagonal is HER CANONICAL FRAME — the transport TARGET, not
+a source mis-record; the fan foldB factor is our shear-frame SOURCE; the per-step σ carries
+source to target (exactly (B)(ii)). The "double-carry" is a FRAME DIFFERENCE the transport
+reconciles, not a ledger error — a divBirthCoord "fix" recording the fan coord would DIVERGE
+from her frame, ANTI-faithful. So §9.6's "(1)-full = both counter sites" is SUPERSEDED:
+canonCenterOf is the ONLY genuine defect; (1)-ALONE is forced and likely sufficient. FINAL
+DECIDER (pnp's labeled-jac/(C) confirm, already commissioned): the σ-carried fan exponent EQUALS
+the canonical/ledger exponent (frame-difference, no double-COUNT) ⟹ (1)-alone locks; only a
+genuine double-count would force a fold↔ledger reconciliation (and even then the diagonal target
+stays). Nothing new to dispatch — pnp's queue already carries both deciders (the (C) confirm +
+the #87 cert with the oracle-guard interplay); the elder finalizes scope + bake-bless on their
+landing. The ruling chain §9→§9.7 is now a complete, self-correcting record of the deepest
+object question the expedition has faced.

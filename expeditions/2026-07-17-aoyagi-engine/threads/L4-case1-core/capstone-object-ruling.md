@@ -858,3 +858,43 @@ FOR DISJOINT CASES (a guard that splits them — here `edgeδ`) BEFORE retractin
 δ=1 claim on seeing pnp's δ=0 witness, instead of case-splitting on the guard I had already read. Over-
 correction under contradicting evidence is the mirror of the incomplete scan — both are "didn't hold the
 full case structure."
+
+### §9.7 #86 GATE FIRED → (1) FORCED; scope ruling (1)-ALONE vs (1)-FULL; §9.6 "mis-record" REFRAMED
+
+#86 resolved (a04c3ab6a, both scripts controller-re-ran exit 0), gate fired as designed:
+- **(B) EQUIVARIANCE HOLDS** — the per-step σ transport is SOUND on the non-phantom fan family: (i) coreGen
+  is σ-INVARIANT (the DLN gauge symmetry restricted to permutations: `A_{k-1}→P·A_{k-1}`, `A_k→A_k·P⁻¹`);
+  (ii) the clear is σ-equivariant and σ carries the exceptional coordinate to the diagonal. So canonical-pin's
+  L5 transport is dischargeable — **§9.4 VINDICATED**, no FAN-CARRIED re-open, #81's trigger did NOT fire.
+- **(A) PHANTOM REDUNDANCY NOT QUICK** — the phantom chart has a NONZERO raw Jacobian (a genuine blow-up
+  chart, no degeneracy dismissal); dropping it entangles fan-cover geometry with #81. Per my §9.5/§9.6 bar,
+  **(1) the fan-faithful def-edit is FORCED** (controller honoring the gate; the hole does not ship).
+
+**§9.6 "mis-record" REFRAMED (from (B)(ii)).** I called `divBirthCoord`-records-diagonal a MIS-record
+(ledger ≠ fold on fan births). Under canonical-pin that framing is wrong: `divBirthCoord`-diagonal is HER
+CANONICAL FRAME — it is the TRANSPORT TARGET, not a source defect. The fan foldB factor is our shear-frame
+SOURCE; the per-step σ (B(ii)) carries it to the diagonal, matching the ledger. So the "double-carry" is a
+source(fan)-vs-target(diagonal) FRAME DIFFERENCE the transport reconciles, NOT a ledger error. A
+`divBirthCoord` "fix" to record the fan coord would DIVERGE from her diagonal frame — anti-faithful.
+
+**SCOPE RULING (framework; finalizes on pnp's labeled-jac / (C) confirm):**
+- **(1)-ALONE (canonCenterOf column-exclusion) is the forced + likely-sufficient fix.** The phantom is a
+  GENUINE defect (a re-clear of a gone column — no her-frame target exists for it; spurious). canonCenterOf
+  must exclude actual cleared columns.
+- **`divBirthCoord` fix is NOT forced and NOT the faithful end-state** — PROVIDED pnp PROVES the labeled-jac
+  exponent equality (the per-step σ carries the fan foldB exponent to the diagonal = the canonical/ledger
+  exponent, so NO double-count; the codim read-off is correct on the canonical atlas). (B)(ii) strongly
+  suggests this; the explicit exponent equality is pnp's confirm.
+- **ONLY IF the labeled-jac equality FAILS** (the double-carry genuinely double-COUNTS the codim, not just
+  frame-differs) is a source reconciliation forced — and even then the faithful fix is to reconcile
+  fold↔ledger, keeping the diagonal target, NOT to make the ledger record the fan.
+- Bar = PROVEN, codim-load-bearing (§9.6). So my §9.6 "(1)-full = both counter-site def-edits" is
+  SUPERSEDED: only `canonCenterOf` is a genuine defect; `divBirthCoord`-diagonal is her-frame-faithful and
+  transport-reconciled (pending the labeled-jac confirm).
+
+**Sequencing (controller's #87) CONFIRMED consistent:** the parallel bake (pnp source-fidelity certificate →
+elder bake-bless → render seat) IS the full bake discipline I required (§9.5); (1) sequences before L5/L7,
+not before the canonical-pin-scoped current proofs — no lane stalls. My bake-bless gate awaits pnp's #87
+source-fidelity certificate (canonCenterOf column-exclusion vs her D₁ on WIDE+FAN witnesses + the
+oracle-guard interplay: does the empty center kill the phantom at the IsRealBranch level, or does the oracle
+need the exclusion too).
