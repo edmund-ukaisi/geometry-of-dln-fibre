@@ -19414,3 +19414,24 @@ committed as #84-pending BACKUP with the correct transfer analysis; conOracle_ca
 ROOT(c) vacuity, both shape-independent) — all axiom-clean verbatim; its crossing conduct
 (bank-as-backup + flag + not treating the shape as final) exactly right. Catches 23/23
 pre-render — and this one was caught BY the gate the 20th catch installed (the locus verify).
+
+## 2026-07-23 (~16:55 UTC) — CAPR's split realization delivered (δ-filter correction + the
+proof-crux separation); INV PARTIALLY UNPAUSED (defs + conjunct-3 + leg-1); CAPF's #1 exempted
+
+CAPR's spec (turn-key for INV): storedPivotsOf with the guard CORRECTED from the case-filter to
+the δ-FILTER — making it foldB's support EXACTLY (name=content); ledgerCornersOf as the
+state-based biUnion over the divisor ledger (leg-1 immediate via mergeIdx < numDiv);
+ledgerTarget = the triple union; accumulatedPivots retires. THE PROOF-CRUX (CAPR's flag, the
+right separation): the boost law μ i e₂ = 1 at a ledger-corner e₂ reconciles with conjunct-3's
+⊆ storedPivotsOf ONLY under merge-REALIGNS — so conjunct-4/read-off PROOFS are witness-gated,
+while the DEFS + conjunct-3 + leg-1 are witness-independent. INV UNPAUSED on exactly that set
+(render the 3 defs + re-points + the containment's split re-point — its backup transfers per
+its own analysis; verify divBirthCoord's actual embodiment first, STOP-and-report if the ledger
+data isn't accessible — that would be a statement-class event). The pure-stored collapse stays
+factored for mechanical execution. #85's phantom ruling touches none of these defs. CAPF: #2
+banked axiom-clean (c0f239ca7, census 6→5); its re-sequencing catch accepted (#1 is
+cherry-pick-independent via LeafChartWire) and #1 EXEMPTED from the elder delta on the
+helper-class precedent (same class as INV's continuous_submult; the elder delta is for the
+frontier statements) — banking now. CAPR on-call as pnp's oracle-semantics consult. Board: three
+lanes grinding (GM's (b)-independent complement; INV's def-render + ROOT(b); CAPF's #1) while
+the two adjudications (L4D admissibility → elder #85) and pnp's kill consult run.
