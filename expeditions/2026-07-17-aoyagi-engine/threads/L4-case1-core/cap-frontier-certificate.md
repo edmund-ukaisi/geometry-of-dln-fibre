@@ -149,3 +149,19 @@ this route (and is false for a scrambler). Flag alongside the docstring/supportA
 - `verify/cap_frontier_fixcheck.py` — layerCoords fix viable; F1 support-fix-independent.
 - `verify/cap_frontier_homog_route.py` — (L) Φ-ideal-preservation + generic-homogeneous-parent descent, all edges.
 - `codex/cap-frontier-{prompt,answer}.md` — decorrelated corroboration.
+
+---
+
+## 6. The transport verdict (#78, 2026-07-23, f3d6fcbb4; controller re-ran exit 0) — the render is PARALLEL
+
+Obligation-(b) (`realBranch_appendResidDescent_fresh_sourceCleared`) is a TRANSPORT, not independent
+content: **(b) = the raw UNCAPPED descent ∘ couplingClear.** On (2,3,2,2) + (2,3,3,2) at the
+rollover-fresh interior wide node: the raw foldResid reads the escaped cols {(1,r,2)};
+sourceClearedResid reads NONE of them. The mechanism: the escaped-column COEFFICIENTS factor
+through the ancestor couplings, so the source-clear zeroes those terms — even though the escaped
+coordinates themselves are NOT in couplingCoords (L4D's sufficient set-containment FAILS; the kill
+is function-level). Render consequence: the cap unit = (L) the step-map ⟨layerCoords(S+1)⟩-
+preservation lemma + the raw uncapped descent [(H) is the proven `foldResid_layerHomogeneous'`] +
+the KILL lemma (escaped coefficients ∘ couplingClear = 0) + the (b)-transport assembly — runs
+PARALLEL to the global-move unit (consumes only the raw fold + couplingClear, both available);
+the (b)-sorry swap in `SourceClearedResid.lean` happens at integration (primed-leaf pattern).

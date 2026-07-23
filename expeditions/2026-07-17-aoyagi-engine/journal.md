@@ -18984,3 +18984,17 @@ can't cross-consume pre-integration; relocation to the substrate at the merge; s
 instructed to ping before its transports leaf, no re-derivation). Per-file go GRANTED (4 files)
 with riders: deletions documented as REFUTED-raw + SUPERSEDED-BY; case1'''s docstring carries
 the cleared content. GM holds for both gates; proofs phase not started.
+
+## 2026-07-23 (~15:25) — #78 verdict: TRANSPORTS (controller re-ran f3d6fcbb4 exit 0);
+the cap render UNLOCKED for parallel execution
+
+pnp's two-level check came back exactly as the controller sharpening predicted: level 1 (L4D's
+sufficient set-containment escaped ⊆ couplingCoords) FALSE — escaped coords live at the child
+layer, coupling at ancestor layers; level 2 (the function-level kill) TRUE — the raw fold reads
+the escaped cols only through coefficients that FACTOR THROUGH the ancestor couplings, so the
+precompose zeroes them. Obligation-(b) = raw-uncapped-descent ∘ couplingClear. Certificate §6
+banked. CONSEQUENCE: the cap-frontier render runs PARALLEL to GM's unit (navigator proposal 2
+resolved GO); the unit = the (L) lemma + the raw uncapped descent + the KILL lemma + the
+transport assembly, in a NEW module on a lane off the CAPR tip, with the (b)-sorry swap at
+integration (no contention with seat-INV's file). pnp turns to the GM def-fidelity gate (its
+named next, critical path).
