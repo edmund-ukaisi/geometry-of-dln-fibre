@@ -20056,3 +20056,19 @@ parallel with its flag window before the merge gate; BAKE renders the surgical e
 docstring (completeness one-liner, D₁ cite w/ honesty wording, §9.9+AMENDMENT + charter-§3
 pointers, the coverage-rider deferral) + the gates (build green; forced axioms on L1 AND on
 realBranch_cover — the named tripwire check; census; cordon).
+
+## 2026-07-23 (~18:15 UTC) — elder fast-ack on BAKE's mini-SPECIFY: (a)✓ (c)✓ independently
+verified; (b) count-flag (12 vs 16) — record reconciliation, green-build backstop
+
+The fast-ack's independent verifications: (a) the decode checked AT THE TYPE (.2 = the column
+Fin(d i.castSucc); the row = .1.2; the conjunct touches only .2 — canonCenterOf's row bound
+untouched, the row-fan preserved by type structure); (c) an independent constructor grep found
+ZERO IsRealBranch constructions (agreeing with BAKE); the existing top-level hbranch.1 accesses
+verified unaffected by an inner conjunct. THE FLAG: BAKE's sweep header said 12 sites; its
+enumeration sums to 16 (11 discard + 4 reduce + 1 fix) — a count inconsistency in BAKE's OWN
+message (not the relay); reconciliation required in the report for the record. The elder's
+framing of the real gate is right and banked: the count is a sanity cross-check — the GREEN
+BUILD is the exhaustiveness backstop (any unhandled destructure of the strengthened conjunction
+is a TYPE ERROR; a missed site cannot slip past), and realBranch_cover's explicit post-edit
+green is the named tripwire check. GO stands; BAKE renders with the reconciliation item added
+to its report requirements.
