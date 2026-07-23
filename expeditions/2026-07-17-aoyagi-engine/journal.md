@@ -16455,3 +16455,25 @@ render report EXPLICITLY as deviation-with-justification — the elder's delta-r
 seat itself: if reaching diag(1,e₂) crosses into a foldResid/fold-order redesign →
 STOP-ON-OBSTRUCTION → the elder's §8(l) branch. It is pinning the insertion point with
 seat-L4D (design prep, no edits). GO confirmed (the original GO crossed its prep report).
+
+## 2026-07-23 (~06:10) — the elder accepts the decomposition IN PRINCIPLE (6th precision correction: unipotent matrices ≠ unit-Jacobian CoV); arch-C-3 fully unblocked
+
+The elder's ruling on the prep: (1) the Jacobian sharpening ACCEPTED — and it corrected §8(k)'s
+own precision slip (unipotent MATRICES det-1 vs the induced CoV's UNIT Jacobian det(A₁⁻¹)²,
+conflated; now separated in-file). "R4-not-in-blockShear" upgraded to a PLACEMENT THEOREM.
+The M_{s,k} justification corrected: a UNIT vanishes on no exceptional divisor ⟹ adds zero
+exceptional power (replacing the imprecise "det-1 adds nothing"). RLCT-safety restated on the
+correct ground (Lemma 1 + unit-Jacobian local iso). (2) The DECOMPOSITION accepted in
+principle: §8(i)'s "replace" was means-to-intent; branch-(i)-keeps-interior + R4-adds-only-
+pivot-cross is a different means, disjoint ⟹ no double-count, "arguably cleaner." Three
+sign-off conditions pinned in advance (diag(1,e₂-classical) EXACTLY ONCE with corner −γβ;
+explicit Lemma-2-faithful justification as deviation-with-justification; i≥cleared on both
+components); the delta-read rules definitively on the render report. (3) The honest fork
+endorsed. Elder's own words on the process: "the restate gate + this paper-first prep finding
+a real constraint-sharpening BEFORE rendering (rather than a defect after) is the churn
+lesson working."
+
+arch-C-3 fully unblocked (relay sent: placement accepted, conditions known in advance, GO
+standing). The §8(k) precision fix lands in-file on the elder's next clean read (tree
+currently clean — commit when it appears). Board: the render is the only moving piece;
+everything downstream staged.
