@@ -15607,3 +15607,32 @@ possibly the operator's. Messages crossed in transit: sequencing re-confirmed to
 (the diag(b)-row-factoring consistency check) is the CURRENT item, Codex GO covers R0 then
 R1/R2/R3; the elder's convening gates on R0; pnp's Gröbner triple runs in parallel as the
 pivotal datum.
+
+## 2026-07-23 (~01:05) — the elder endorses R0 as prior, CONCEDES the bar over-spec, and stakes the skeptic position (R0=NO, strong) with the doubling discriminator
+
+The elder's response completes the R0 adjudication frame:
+- ENDORSED: R0 is prior; the skeleton round does not convene before it (paper-first applied to
+  the crisis; its delta-read queue re-headed to the R0 verdict).
+- CONCEDED (the controller catch): the acceptance bar was over-specified — honest_clear's
+  coeff-0 is the FULL-CLEAR behavior; her invariant carries D_J and factors ROWS by b-monomials.
+  REFINED BAR: the baked foldResid satisfies THE RULED FIELD (extra-block coeff = m_k·β);
+  coeff-0 = the trivial-b special case. Relayed to pnp (row-(i) re-spec expected post-R0; no
+  rebuild yet).
+- THE SKEPTIC POSITION (staked deliberately so deflation has an opponent): prior R0 = NO,
+  strong. Two arguments the R0 trace must answer SPECIFICALLY: (1) the pinned test — R0=YES iff
+  u₀₁₀ is an ACTIVE divisor's Schur exceptional e₂ₖ in the ruled m_k; the constituent analysis
+  says u₀₁₀ is the uncleared pivot-column entry, the cross-CONSTITUENT of e₂, not the
+  exceptional (so m_k ≠ u₀₁₀); (2) THE DOUBLING DISCRIMINATOR — the 0/1/2 triangle on the same
+  term: were the term field-legal, canonShearOf's coeff-1 would also have been field-legal, but
+  canonShearOf was replaced for failing boost-readiness — so coeff-2 reads as the missing-pairing
+  signature. (Controller note in the relay: the one escape for R0=YES is showing #22's
+  boost-readiness was ALSO measured against the full-clear reference — the same over-spec class
+  as the bar. The trace decides.)
+- CONVENING (staged): R0=YES → re-examine field-satisfiability on the baked def with the
+  correct m_k, both wide witnesses, corrected bar recorded. R0=NO → council-of-two model round
+  (elder + decorrelated Codex) on R1/R2/R3 with the jacDet obstruction as stated; early lean R2
+  (the clear may live post-quotient / in the strict transform — the fold applies the shear
+  BEFORE the quotient normalises the pivot); operator per §7 if Object B's realization moves.
+
+seat-L4D's Codex prompt now carries the elder's skeptic arguments as the position to
+attack/defend — the decorrelation is real. Board otherwise unchanged.
