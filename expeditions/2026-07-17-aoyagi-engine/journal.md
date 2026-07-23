@@ -17965,3 +17965,20 @@ the edge's quotient, det-1 there — producing the verified cleared object at th
 YES → the elder's render-completion path (tension dissolves); NO → #69 part 2 chooses between
 L4D's (a)/(b) with the pointwise-vs-ideal crux as the cost function. The (B)≠(D) lesson banked
 (instruments certify the property they compute; name properties as formulas, not adjectives).
+
+## 2026-07-24 (~10:30) — #69 FINAL RULING BANKED + the closing contract dispatched; the design
+phase of the obstruction arc is CLOSED
+
+The ruling (§7, 6c3ba2981): sourceClearedResid := foldResid ∘ ancestor-column-clear = the NAMED
+(D)-carrier (making §9's "BOOSTREADY = form" object-level); (D) re-states of it; the merged
+recursion/StepInv/census-0/(B) stay raw and untouched; the bridge = the ideal-equality
+(Lemma-1-neutral clear) with the ∃q absorbing the specific-witness change — CONFIRMED at the
+source as her own accumulation (p.15: the invariant IS the ideal equality; the raw product
+appears only inside ⟨·⟩; the cleared normal form is what recurses). Elder OWNED the withdrawal
+of its det-1-render-bug prior (the repair is a derived object, not a recursion branch). Options
+2/3 rejected. DISPATCHED: pnp certifies (ii) the ideal-equality + (iii) THE LINCHPIN (the ∃q
+StepInv transport — kill-condition armed; failure → part-2 design, L4D's (b) fallback); L4D
+pre-stages the SPECIFY (defs + re-stated chain + bridge statement, sorried, statements-first per
+the tripwire lesson) with proofs GATED on pnp's (iii) + an elder statement-delta; the fresh
+formaliser targets the new content lemma on pnp's certificate. LL's two renders re-target the
+cleared-(D) contract when the chain lands. Payoff/destination unchanged throughout.
