@@ -16338,3 +16338,24 @@ Optional low-priority reconciliation note offered to the two seats (only if idle
 
 BOARD: every analytical thread of the §8 arc is now closed or footnoted; pnp's authorship of
 the scope fix is on the record; arch-C's conformant render remains the single gate.
+
+## 2026-07-23 (~05:10) — arch-C-2 RECYCLED (third stale-scope repetition); arch-C-3 convened on a SELF-CONTAINED brief against the complete frozen spec
+
+arch-C-2's follow-up report: ALL GATES GREEN on the WRONG-SCOPE render — full build 9008 jobs
+green, census +3 (the retracted field's frontiers), cordon green, payoff isolation held
+(clean-three untouched; engine roots' footprint unchanged). USEFUL despite the scope error:
+the render MECHANICS are proven sound (the shape edit builds; the isolation methodology
+works; no name clashes). But its closing paragraph repeated the stale reading a THIRD time
+("council commits are shear-side; my render is the orthogonal invariant half"), re-asking the
+question the STOP directive had answered twice. The anchor beat three correction rounds.
+DECISION: recycled the seat (stopped clean; its branch REBAKE @ 55a5d258f preserved as the
+record — DEF-EDIT-1 content reusable, field content dead). CONVENED arch-C-3 on a
+SELF-CONTAINED brief: the contract = ONE document (§8(i)+(m), the whole ruling for context,
+conflicts superseded by the frozen sections); the restate is the MANDATORY FIRST DELIVERABLE
+(with hints that make a wrong restate cheap to catch: DEF-EDIT-2 "none", field "retracted",
+merge test "block-form + chart-frame"); the R4 placement = its architecture decision with the
+constraint set (generator-level, not blockShear; G2; StepInv consumes the ideal); branch-(ii)
+= flip + i≥cleared scope; consumer re-statements expected and listed for the delta-read;
+census delta ≈ 0 (NO field frontiers); the gates unchanged. New branch REBAKE2 (the old
+branch frozen as history; no reset of another seat's pushed work). The churn lesson applied:
+one contract, one restate gate, no interim-message dependencies.
