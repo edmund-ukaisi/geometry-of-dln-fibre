@@ -19346,3 +19346,28 @@ INV on their branches or from an atlas-level transport; the fork is WHERE the de
 which is smaller/faithful. INV's READ-OFF added to the #84 hold (it is now explicitly
 implicated); its independent leaves proceed. CAPF answered: hold on bbb3f924d, the deletion
 cherry-pick comes to it, no rebase; #2 bridge = its GO item meanwhile.
+
+## 2026-07-23 (~16:20 UTC) — #84 RULED (§9.3): (i) REQUIRED (not just faithful); the elder owns
+the §9.2 partial-consumer miss; SPLIT default with pure-stored contingent on THE WITNESS — which
+is now the load-bearing disambiguator
+
+THE RULING, three parts: (1) (i)-STANDS ACCEPTED with the mechanism upgraded to REQUIRED —
+couplingClear must zero exactly the columns whose non-vanishing IS the obstruction (the fold's
+own clear target = the stored pivot); keyed diagonal it would zero a different column, leave the
+real E_J obstruction alive, and property (D) would FAIL on sourceClearedResid — the capstone
+breaks. Her-frame diagonal = our stored pivot (the same frame distinction as the RLCT-equivalence
+reading). (2) The elder OWNS the §9.2(a) miss (necessity-checked leg-1 only, not conjunct-3);
+discipline logged: a redefine blessing enumerates ALL consumers and checks EACH direction.
+(3) SHAPE: (b) SPLIT is the faithful default (conjunct-3 ⊆ storedPivots — the fold's actual δ=1
+factors; leg-1/conjunct-4 ∈ ledgerCorners; ledgerTarget = both ∪ supportAt); (a) union REJECTED
+(weakens conjunct-3 below clearedFoldB's factorization + enlarges the IgnoresCoords target,
+risking q's conjunct); PURE-STORED is the contingent simplification. THE DISAMBIGUATOR (elevates
+pnp's parked #82 debt to load-bearing): does the case11 merge REALIGN the reused divisor to the
+diagonal, or reuse it at its STORED birth column? No-realignment ⟹ e₂ re-reads as the stored
+birth pivot ⟹ pure-stored collapses ALL roles — AND implicates canonPivotOf/IsRealBranch's
+case11 pin itself on fan-free branches (a MonumentAtlas-level question). Realignment ⟹ the split
+stands. One construction (the coherent fan-free multi-edge branch) settles the (i) debt +
+split-vs-pure-stored + the realignment question. hN STANDS independent (GO); GM unaffected
+throughout. OPERATIONAL: the witness commission goes to pnp (behind the locus verify) with CAPR
+as oracle-semantics consult; CAPR drafts the split realization NOW so the render is turn-key
+under either outcome; INV's ledger-touching leaves stay paused on the witness.

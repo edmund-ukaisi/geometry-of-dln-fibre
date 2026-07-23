@@ -575,6 +575,9 @@ twin, not GM's module) — same class as the last-layer gap (§9). Controller to
 
 ### §9.2 INV frozen-statement blessing round (SourceClearedResid.lean @ CAPR)
 
+> **AMENDED by §9.3 (22nd catch, contested-#82 return): the PURE-DIAGONAL blessing below is SUPERSEDED.**
+> My necessity check covered leg-1 only; conjunct-3 pulls the opposite way. See §9.3.
+
 **(a) `accumulatedPivots` redefine to state-based diagonal birth corners (`cornerToFlat ∘ divBirthCoord`) —
 BLESSED (19th catch).** Paper-first: Aoyagi's exceptional-divisor ledger (worked.tex:562-577, the `b_i` /
 `M_{s,k}` recursion) accumulates the DIAGONAL birth corner of each block blow-up — the corner `(S; J, J)`
@@ -596,3 +599,38 @@ excluding exactly the degenerate no-live-step case, and matches the payoff's sta
 the ONLY consumer is `MergeBoostSplit:134` inside the case11 content lemma (`hc11` + real extension), which
 structurally forces a live layer ⟹ `0 < N` (derive there or thread from the content lemma's signature;
 either fine — the payoff supplies `hN`). Not a gratuitous strengthening — the statement is false without it.
+STANDS (independent of §9.3).
+
+### §9.3 #84 — the conjunct-role asymmetry (22nd catch); (i)-STANDS accepted + §9.2(a) amended
+
+**(i)-STANDS ACCEPTED for `couplingCoords` (stored fan pivot).** The mechanism forces it: `sourceClearedResid
+= foldResid ∘ couplingClear` is the (D)-carrier ONLY if `couplingClear` zeroes the exact columns whose
+non-vanishing IS the obstruction — and the obstruction (E_J coupling surviving the shears) lives at the
+column the fold's OWN clear targets = the fan-free STORED pivot (the `canonNormalizationOf` value-pin).
+Keying diagonal would zero a different column, leave the real obstruction alive, and property (D) would FAIL
+on `sourceClearedResid`. So (i) is not merely faithful — it is required for the object to carry (D). Paper
+leg accepted: Lemma-2's "top-left" is diagonal in her REINDEXED frame = our stored pivot (same frame
+distinction as the RLCT-equivalence reading). I RETRACT my §9.2 diagonal-for-`couplingCoords` coherence
+expectation. Named debt (no off-diagonal multi-edge S1 witness) NOTED — the def+paper+single-edge
+triangulation is decisive for the direction; the witness is confirmation to produce, not a blocker.
+
+**§9.2(a) OWNED miss.** My necessity check covered leg-1 (`e₂ = canonPivotOf ∈ accumulatedPivots` — needs
+the diagonal corner) but NOT conjunct-3 (`(μ i).support ⊆ accumulatedPivots`, `μ` tracks `clearedFoldB =
+∏(δ=1 pivots)` at STORED pivots — `clearedFoldB_extend_eq`'s factor is `u ed.pivot`). On fan-free
+case2/case12 births the two pull opposite ways: pure-diagonal breaks conjunct-3, pure-stored breaks
+leg-1-as-written. Neither pure set works. Recurring error class (partial-consumer check); tightened
+discipline: a redefine blessing enumerates ALL consumers of the symbol and checks EACH direction.
+
+**SHAPE RULING — (b) SPLIT is the faithful default; (a) union rejected; pure-stored is the contingent
+simplification.** conjunct-3 references the fold's actual stored δ=1 pivots (`storedPivots`); leg-1/conjunct-4
+reference the canonical reused-divisor corners (`ledgerCorners`); `ledgerTarget = storedPivots ∪
+ledgerCorners ∪ supportAt`. Rationale: name=content / weakest-per-conjunct — each containment at its faithful
+tight object. (a) UNION weakens conjunct-3's `μ`-support below `clearedFoldB`'s actual factorization and
+enlarges the IgnoresCoords target (`q` must ignore MORE — risks that conjunct). THE DISAMBIGUATOR (ties to
+pnp's #82 named debt): whether the case11 merge REALIGNS the reused divisor to the diagonal (→ `e₂` genuinely
+diagonal → split needed) or reuses it at its STORED birth column (→ `e₂` should be re-read stored → a
+pure-`storedPivots` set collapses ALL roles, cleaner than the split). Default (b) split; if pnp's multi-edge
+fan-free witness shows the merge does NOT realign, simplify to pure-stored. Route the final split-vs-stored
+through CAPR's def-owner read + that witness. Paper-first anchor endorsed: her single `b_i`/`M_{s,k}` ledger
+(worked.tex:562-577) is one set in her reindexed frame; our fan structure separates it into two roles —
+serve both precisely, never paper over the artifact with a loose union.
