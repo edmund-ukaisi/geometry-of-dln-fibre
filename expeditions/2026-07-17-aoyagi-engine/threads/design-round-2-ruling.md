@@ -522,3 +522,28 @@ is the clean block at the ACTUAL reuse node, both wide witnesses) + #49 (Gröbne
 the product-preservation (h)-criterion — NB the test is on the R3+R4 def, not R3-alone). RE-OPEN: the
 reuse-node `foldResid` not the clean block, OR `⟨R3+R4⟩ ≠ ⟨faithful⟩`. This is the frozen render spec for
 DEF-EDIT-3; seat-L4D reconciles the render against it.
+
+**(j) The #49/#50 battery adjudicated + a CRITERION CORRECTION to (h).** The `r3flip-gate-note` battery
+ran R3-ALONE (branch-(ii) flip only), NOT the frozen R3+R4. Findings + my read:
+- **`E_J` (cleared column) CLEAN under R3** — confirmed (recoord cancellation drives the col-0 leakage to
+  0; baked polluted). The product/boost-readiness axis holds.
+- **The `u₀₀₁²` flag in R3's `D_J`** (degree-2 in the pivot-ROW coord, vs Aoyagi's degree-1) is
+  R3-ALONE's ROW-half residue: R3 cleans the pivot COLUMN (recoord) but leaves the pivot ROW, and the
+  uncleared row squares `u₀₀₁`. worked.tex:454's Schur complement `C^{(S+1)}=−A'_3A'_1⁻¹A'_2+A'_4` is
+  BILINEAR in the off-pivot entries (degree-1 per blow-up coord), so `u₀₀₁²` IS a deviation from her `D_J`.
+  This CONFIRMS R3-alone is insufficient and **R4 (which clears the pivot ROW via `Q₂`, giving the
+  multilinear `e₂`) is required** — it VALIDATES the R3+R4 spec, it is NOT a re-open. R4 → `diag(1,e₂)`,
+  `D_J = e₂` degree-1 in `u₀₀₁`, no square.
+- **CRITERION CORRECTION to (h): the discriminator is the BLOCK FORM, NOT ideal-equality.** The battery
+  found `⟨R3⟩ ≠ ⟨honest⟩ ≠ ⟨baked⟩` (all three unipotent charts differ) — and that is EXPECTED and NOT a
+  defect: the ideal-of-ENTRIES is not preserved by a two-sided unimodular `Q·M·P`, and it need not be —
+  RLCT is preserved by the invertible coordinate CoV (§7(1)), not by entry-ideal-equality. So (h)'s
+  "`⟨fold⟩ = ⟨faithful⟩` as ideals" was MIS-FRAMED (my third self-correction this ruling). The faithful
+  criterion is that R3+R4 reaches Aoyagi's CLEAN BLOCK `[[1,O],[O,D_{J+1}]]` with `D_{J+1}` = her
+  multilinear Schur complement (clean `E_J`; `D_J` degree-1 per blow-up coord; exceptional coords INSIDE
+  `D_J`, e.g. `e₂`, are fine — Codex confirmed). NOT Gröbner ideal-equality between charts.
+- **THE FINAL CONFIRMATION (replaces the #49 ideal-equality gate):** re-run the block-form test on the
+  R3+R4 def (both wide witnesses) — R3+R4 reaches `diag(1,e₂)`, `D_J` degree-1 in each pivot-row/col coord
+  (no `u₀₀₁²`), `E_J` clean. RE-OPEN only if R3+R4 does NOT reach the multilinear clean block. The
+  RLCT VALUE stays safe throughout (invertibility); no escalation. The block axis's mechanism (R3+R4) and
+  criterion (block-form) are now ruled; the R3+R4 block-form re-run is the last datum before merge.
