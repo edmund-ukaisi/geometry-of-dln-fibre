@@ -40,9 +40,20 @@ theorem MergeBoostSplit.deg1SupportedOn {nR : ℕ} (d : Fin (N + 1) → ℕ)
     (resid : Fin nR → (Fin (flatDim d) → ℝ) → ℝ) (e₂ : Fin (flatDim d))
     (part extra center : Finset (Fin (flatDim d))) (V : Set (Fin (flatDim d) → ℝ))
     (he₂ : e₂ ∈ center) (hpart : part ⊆ center) (hep : e₂ ∉ part)
+    (hex : ∀ k ∈ extra, k ∉ center)
     (h : MergeBoostSplit d resid e₂ part extra center V) :
     Deg1SupportedOn resid center V := by
-  -- map: B-wall-mergeboostsplit-assembly (algebraic; the c-witness = α on part, ∑β·u at e₂)
+  -- map: B-wall-mergeboostsplit-assembly (algebraic; c-witness = α on part, ∑_{extra} β·u at e₂, 0 else)
+  -- ROUTE (structure verified; Finset-mechanics grind, next cycle): per `j`, obtain `α β … hrepr` from
+  -- `h j`; the Deg1SupportedOn witness is `c i u := if i = e₂ then ∑_{k∈extra} β k u·u k else
+  -- if i ∈ part then α i u else 0`. (1) CONTINUITY: e₂-branch = `continuousOn_finset_sum` of
+  -- `(hβc k).mul (continuous_apply k).continuousOn`; part = `hαc i`; else `continuousOn_const`.
+  -- (2) SUM: `rw [hrepr, ← Finset.insert_erase he₂, Finset.sum_insert (not_mem_erase …)]`; the erase-sum
+  -- collapses to `∑_{part} α·u` (part ⊆ center.erase e₂ via hep+hpart; off-part terms `zero_mul`, i≠e₂ on
+  -- the erase); then `mul_comm (u e₂)` + `add_comm` matches hrepr. (3) IGNORESCOORDS center: e₂-branch —
+  -- `hβi k` (β ignores center) AND `u k` unchanged since `hex k hk : k ∉ center ⟹ k ≠ m` (use
+  -- `Function.update_of_ne`); part = `hαi i`; else const. `hex` (extra ∩ center = ∅) is Codex's
+  -- necessary disjointness — a `literal e₂-factor is not enough` guard (e₂·(e₂+u_i) would fail IgnoresCoords).
   sorry
 
 /-- **The content lemma** (LIVE frontier, the capstone) — the actual `foldResid` at `e = n d`
