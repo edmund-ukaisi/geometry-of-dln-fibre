@@ -19700,3 +19700,27 @@ INV frontier after this batch: the two transport step arms alone (GM's commutati
 LESSON REINFORCED: on any teammate wait-list, cross-check each wait item against MY sent log —
 a "waiting for X" where X was sent = a delivery incident, resend verbatim (don't point at the
 inbox).
+
+## 2026-07-23 (~19:00 UTC) — #86 RESOLVED (both re-ran exit 0): THE GATE FIRED — (1) FORCED;
+the equivariance HOLDS (no fan-carried); #87 opened (the forced bake, sequenced before L5/L7)
+
+(B) EQUIVARIANCE — HOLDS, with a mechanism worth the eventual docstring verbatim: the per-step σ
+is an intermediate-basis permutation under which coreGen is INVARIANT (the DLN gauge symmetry
+A_{k-1}→PA_{k-1}, A_k→A_kP⁻¹ restricted to permutations) and the clear is σ-EQUIVARIANT with the
+exceptional coordinate carried to the diagonal — so the non-phantom fan branch IS the canonical
+branch after per-step σ; sourceClearedResid and S1 transport; NO fan-carried re-open; #81's
+trigger did not fire; the L5 transport obligation is DISCHARGEABLE. (A) PHANTOM REDUNDANCY — NOT
+QUICK: the phantom chart carries a NONZERO raw Jacobian (a genuine blow-up chart; no degeneracy
+dismissal); dropping it needs fan-cover containment entangled with #81's validity question. THE
+PRE-COMMITTED GATE FIRED: (1) the fan-faithful canonCenterOf def-edit is FORCED — the hole does
+not ship. #87 OPENED: full bake discipline (pnp source-fidelity certificate on WIDE+FAN
+witnesses + the ORACLE-GUARD INTERPLAY design input → elder bless → render seat on a lane;
+MonumentAtlas single-writer preserved via lane+merge); SEQUENCED BEFORE L5/L7 — the current
+grinds are UNAFFECTED (the chain is canonical-pin-scoped; phantoms need off-diagonal ancestors,
+outside the regime). SCOPE PENDING: (1)-alone vs (1)-full(+divBirthCoord), decided by pnp's (C)
+labeled-jac exponent confirm (the (B)(ii) exceptional-carriage suggests the transport reconciles
+the ledger mis-recording, making the divBirthCoord fix roadmap-optional — elder rules on the
+confirm). pnp's queue: GM's 2 certificates FIRST, then the #87 certificate + (C)-confirm. GM's
+threading choice (wait for INV's def-in-view push) accepted — sound build-validation reasoning;
+its 4-step sequence confirmed. The expedition's architecture questions are now ALL either
+resolved or reduced to named checks with named deciders.
