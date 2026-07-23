@@ -243,3 +243,23 @@ ed.center` on the ORIGINAL center (Option 2′). L4D owns the exact append re-po
 - **§6 KILLED-BY-e** — if the split held for a generic scrambler `e`, the canonFlatten-specificity (and
   the whole route-β-is-dead ruling) would be wrong. (Checked: scrambler BREAKS it,
   `capstone_split_chartframe.py`.)
+
+---
+
+## 9. Architecture note (§12.2) — the cleared-object route is UNIFORM (all cases, all widths)
+
+The cleared-object route is ruled for ALL cases (§12.2), not case11-only: `supportAt` UNCHANGED, and
+case12/case2 δ=1 boostReady ALSO reads `sourceClearedResid` (verified center-Deg1 directly — the cleared
+object confined to `blockCoords ⊆ ed.center`, `capstone_12_2_checks.py` check 3; and the born-unit sibling
+§5). The uniform shape is deliberate: `sourceClearedResid ∈ ⟨ed.center⟩` EVERYWHERE, so no width hypothesis
+is threaded through the statements.
+
+**Mechanism refinement (the honest sharpening for the record).** Whether a case12/case2's RAW residual
+exceeds `⟨ed.center⟩` is a WIDTH phenomenon, NOT a reuse-vs-fresh one: on a WIDE layer
+(`d_S > widthMinUpto d S`) the ancestor coupling reaches the wide layer's cap-escaped remnant columns
+(outside the capped center) EVEN THOUGH case12/case2 clears a FRESH current pivot; on non-wide layers the
+raw residual is already `⊆ ed.center` (`capstone_case2_extent.py`: `case2(1,0)` escapes on wide (2,3,2,2)/
+(2,3,2,2,2), does NOT on non-wide (2,2,3,2)). This width-conditionality is DOCUMENTATION only — the uniform
+cleared-object architecture makes the statements width-agnostic; the raw route is not "saved" where it
+happens to work. (case11 escapes for two reasons — the small reused-corner center AND the wide-layer cap;
+case12/2 escapes for one — the cap, on wide layers only. Both fixed by the same `ancestor-column-clear`.)
