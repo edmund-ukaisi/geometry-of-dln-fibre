@@ -15418,3 +15418,32 @@ checkpoint; arch-C owns the clause-1 restatement; rebase after merge). Charter �
 the composed source-fidelity discipline (bake-time + defect-time). Compass settled-fork entry:
 elder authoring, controller commits on signal. #38 unblocks post-merge as INTRO/PRESERVE/BASE +
 the case11 boundary consumption — the wall's endgame on the ruled, paper-faithful architecture.
+
+## 2026-07-23 (~00:25) — the faithful harness flags a possible 12TH catch: the baked recoord may be UNPAIRED (missing the Q₁·A_S pivot-column clear); field lock HELD
+
+pnp-transport's pre-staged §5 harness — the FIRST instrument transcribing the ACTUAL baked
+canonNormalizationOf (:832-882), built per the battery contract — surfaced two results (banked,
+controller re-ran exit-0: faithful-harness-note.md + verify/faithful_lean_harness.py):
+
+(1) The recoord DIRECTION is CONFIRMED against the def (closes its standing hand-model caveat —
+the cap-escape, hedge, and empirical-table findings all stand against the real def).
+
+(2) FLAG (not yet a declared bug): the def applies the deeper recoord (ii) UNPAIRED — branch
+(i)'s guard (row≠a ∧ col≠b) EXCLUDES the layer-S pivot-column entries, so the paired Q₁·A_S
+clearing (worked.tex:453 Q''₁; npivot-certificate §1's Q₁·C·Q₂ = diag(1,Δ)) appears MISSING.
+The conjugation identity A₁·A₀ = (A₁·Q₁⁻¹)·(Q₁·A₀) then fails to cancel: on (2,2,2,2) ed1 the
+defect DOUBLES (coeff 2 vs canonShearOf's 1), and — the decision-relevant part — the leftover
+u₀₁₀·u₁₀₁ SURVIVES THE RUNNING FRAME (baked residual = w₁₀₀ + u₀₁₀·u₁₀₁ vs the full clear's
+clean w₁₀₀; the extra-block coord carrying a NON-pivot factor — the F = x+yz shape re-appearing
+as a residue of incomplete transcription). If real: the ruled FIELD conjunct is FALSE on the
+current def and INTRO unprovable — the recoord def needs COMPLETION (a third def edit, fidelity
+restoration to the certificate, riding the same re-bake).
+
+ROUTED: seat-L4D adjudicates at the def (term-by-term vs cert §1, BOTH directions — incl.
+checking the harness's own transcription; speed matters, statement-truth first); arch-C
+PROCEEDS on DEF EDIT 1 (shape — independent) and HOLDS DEF EDIT 2 + the frontier statements;
+the elder notified (§4 may gain the third edit — its gate; shape/field rulings untouched).
+
+PROCESS NOTE for the synthesis: the §5 battery contract ("must exercise the LEAN def") caught
+this BEFORE the field statement locked — at bake-time cost instead of grind-time cost. The
+charter §3 gate, operating as written, on its first live application.
