@@ -17357,3 +17357,11 @@ compensator canonNormalizationOf, the 3-disjunct support + CanonicalSchurStep, r
 boostReady FORM device (recursion untouched), DEF-EDIT-1 supportAt widen, the §11 scope-fidelity
 erratum, item-9 per-chart line. #44/#51 CLOSED. NEXT (dispatched this tick): seat-L4D → THE WALL
 (#38, realBranch_boostReady_case11); seat-L3T3 → the rebase (#52, 2 one-line hCSchild sites).
+
+## 2026-07-23 (~18:57, heartbeat tick) — both post-merge lanes alive and grinding
+
+Liveness: seat-L3T3 (rebase #52) and seat-L4D (THE WALL #38) transcripts both active within the
+minute — the GOs took (L3T3's crossed idle notification resolved as predicted). No lake contention.
+The stray remote branch genm-sj5-wallfin checked and ruled out: operator's 2026-07-14 pre-expedition
+work (a different "wall"), untouched. Nothing owed this tick; next: L3T3's rebased push (→ controller
+merge + wiring) and L4D's restate-gate reply on the wall route.
