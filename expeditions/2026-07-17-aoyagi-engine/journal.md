@@ -21731,3 +21731,20 @@ f=id); rests as unit-consult.
 (pnp-cap) + the #73 bridges (buildTree→FanTree + atlas-chart + σ + leaf-box sizing + discharge). KILL:
 seat-killfin rendering (1)→(2)→(3). Wall (a) both sides. Awaiting: pnp-cap uniform-C, seat-killfin #97,
 battery bg-confirm.
+
+## 2026-07-24 (~07:00 UTC) — L7-review loop CLOSED: rev-L7cover's witness-tip (52db6e438) re-review PASS (all 5 gates) — engine DOUBLE-confirmed done + regression-guarded
+
+rev-L7cover completed the witness-tip re-review (52db6e438, the tip I re-targeted it to after the
+initial 605cff3ed PASS): PASS on all five gates — (a) qshear genuinely quadratic (distinct-coord
+v₂−v₀·v₁, quadratic inverse, r² load-bearing), (b) qtree genuinely depth-2/|S|=2/non-identity (leaf
+radius 6 FORCED, not short-circuited), (c) consumes the REAL non-circular Covers (byte-identical
+purely-additive diff), (d) name=content, (e) hygiene re-derived (exit 0, all 6 axiom-clean, cordon).
+So the L7 engine is DOUBLE-confirmed: seat-L7cover's qtree + rev's OWN blockShear-φ witness (Codex's
+exact counterexample), both genuine quadratic depth-2, both PASS, both axiom-clean. The
+genuine-fix-vs-punt question is closed; the module is regression-guarded. rev skipped a third Codex
+(reflex not signal — (a) manifest, (c) byte-identical diff) — sound judgment. L7-review loop CLOSED.
+
+**Status.** L7 cover engine DONE + review-closed + regression-guarded; the wire is mine, gated only on
+the uniform-C de-risk (pnp-cap, in flight) + the #73 bridges (buildTree→FanTree + atlas-chart + σ +
+leaf-box sizing + discharge). KILL: seat-killfin rendering (1)→(2)→(3). Wall (a) both sides. Awaiting:
+pnp-cap uniform-C, seat-killfin #97, battery bg. No new decision — the L7 engine arc is complete.
