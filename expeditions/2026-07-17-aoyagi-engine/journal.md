@@ -21605,3 +21605,26 @@ wmu-eq from remnant-row existence, NOT case (ii)) relayed to the KILL-finish sea
 + growth-V3[carrier-ready]} → #97/#98. L7 cover: engine sound but box-inflation UNDER REPAIR (A,
 seat-L7cover); wire HELD. Wall (a) both sides. Awaiting: seat-killfin mini-restate + #97, seat-L7cover
 repaired engine + re-review, the battery bg-confirm.
+
+## 2026-07-24 (~05:15 UTC) — refined specs propagated: seat-KILL's ln-companion corner-in-block plan → seat-killfin; rev's repair acceptance-gate → seat-L7cover; seat-descent (b)-crossed → rest-as-consult
+
+Two teammate messages crossed the prior tick's decisions (KILL re-resource + L7 repair, both already actioned); each carried a refinement I propagated:
+
+- CORNER-IN-BLOCK sharpened (seat-KILL + seat-descent consult) → relayed to seat-killfin: don't build
+  a fresh path-induction — MIRROR DivBirthReach's `ln_stepAppendAdvance`. The birth guard `cleared <
+  widthMinUpto(layer+1)` is ALREADY threaded (the `dif_neg h2` branch); `widthMinUpto_mono
+  (Nat.le_succ _)` closes it to `< wmu(birthLayer)`. `ln`/`ln_stepAppendAdvance`/
+  `ln_conOracle_stepChildren` are in DivBirthReach.lean (transitively imported). So target (1) is ~40
+  lines mirroring existing ln machinery, NOT from-scratch. seat-descent consults on the ln pattern.
+- rev-L7cover's REPAIR ACCEPTANCE GATE (for the (A) R-dependent-inflation repair) → relayed to
+  seat-L7cover: (1) the repaired shear clause must DISCHARGE for a genuine quadratic σ =
+  blockShear(canonShearOf) nested DEPTH≥2, with a FRESH |S|≥2 depth≥2 non-identity-quadratic witness
+  (the case old covers_one_node missed); (2) name=content (docstring inflation = threaded recursion,
+  no residual R·(1+R)^m over a non-matching body); + hygiene. rev holds for the re-review.
+- seat-descent's (b) recommendation CROSSED my acceptance — confirmed it's stopped/turnkey, rest as
+  foundation-author consult; seat-killfin (KILLFIN off 2324f0c00) is the fresh renderer.
+
+**Status.** KILL step: seat-killfin (fresh) rendering {corner-in-block[mirror ln, ~40] + hredEB[mech]
++ growth-V3[#104 carrier]} → #97/#98; seat-descent consult. L7 cover: seat-L7cover repairing the
+box-inflation (A, R-dependent) to rev's gate; wire HELD. Wall (a) both sides. Awaiting: seat-killfin
+mini-restate + #97, seat-L7cover repaired engine + re-review, the battery bg-confirm.
