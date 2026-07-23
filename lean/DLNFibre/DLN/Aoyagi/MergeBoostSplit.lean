@@ -86,16 +86,24 @@ theorem MergeBoostSplit.deg1SupportedOn {nR : ℕ} (d : Fin (N + 1) → ℕ)
       · simp only [if_neg hie, if_pos hip]; exact hαi i w hw m hm t
       · simp only [if_neg hie, if_neg hip]
 
-/-- **The content lemma** (LIVE frontier, the capstone) — the actual `foldResid` at `e = n d`
-(canonFlatten), a real case-1(1) merge branch, satisfies `MergeBoostSplit` with `e₂ = canonPivotOf`,
+/-- **The content lemma** (LIVE frontier, the capstone) — the actual `foldResid` at `e = canonFlatten d`,
+a real case-1(1) merge branch, satisfies `MergeBoostSplit` with `e₂ = canonPivotOf`,
 `part = supportAt ∩ ed.center`, `extra = supportAt ∖ ed.center`. Concrete `coreGen`-at-merge induction
-(birth introduces e₂ / suffix transport preserves / threshold split); NOT from `hslot`, NOT ∀e. -/
+(birth introduces e₂ / suffix transport preserves / threshold split); NOT from `hslot`, NOT ∀e.
+
+SHAPING (L4D's call, ruling contract split-consumers-needed-facts.md): **case11-only**. Consumers 1,2
+(case1_conjA + LL case11 S=L) route through the wall, which is case11-specific — so the content lemma is
+scoped to match. The case12/case2 born-unit (Consumer 4, child.cleared=1) is a DIFFERENT fact
+(pivot-coeff `∃ j, c_{e₂}(j) 0 ≠ 0`, supportAt(child)=∅) and gets its own sibling — folding it in as a
+degenerate `extra=∅` split would mix two distinct situations under one name (anti-bedrock). The
+conclusion carries `∀ k ∈ extra, k ∉ ed.center` (automatic since `extra = supportAt ∖ ed.center`) so it
+wires DIRECTLY into `MergeBoostSplit.deg1SupportedOn` (which needs that disjointness `hex`). -/
 theorem foldResid_case11_mergeBoostSplit_canon (d : Fin (N + 1) → ℕ)
     {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
     (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
     ∃ e₂ ∈ ed.center, ∃ part extra : Finset (Fin (flatDim d)),
-      part ⊆ ed.center ∧ e₂ ∉ part ∧
+      part ⊆ ed.center ∧ e₂ ∉ part ∧ (∀ k ∈ extra, k ∉ ed.center) ∧
       MergeBoostSplit d (foldResid d (canonFlatten d) p) e₂ part extra ed.center (foldRegion d (canonFlatten d) p) := by
   -- map: B-wall-mergeboostsplit-content (concrete canonFlatten coreGen-at-merge; the capstone)
   sorry
