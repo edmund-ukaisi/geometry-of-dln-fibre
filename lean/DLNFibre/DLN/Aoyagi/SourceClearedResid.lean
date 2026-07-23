@@ -378,13 +378,37 @@ def SourceClearedInv (d : Fin (N + 1) → ℕ) (p : TreePath d) : Prop :=
       (∀ u ∈ foldRegion d (canonFlatten d) p, sourceClearedResid d p j u
         = ∑ i ∈ supportAt d p.conState.layer p.conState.cleared, bMon (μ i) u * q i u * u i)
 
-/-- **The invariant holds on every real branch** (certificate §4 induction: ROOT = `coreGen` at `μ=0`;
-δ=1 strict-transform subtracts the pivot exponent; δ=0 pullback adds it). STATE-ONLY here (tracked
-LIVE-frontier — the expedition's last hard proof, decomposed into root/δ=1/δ=0 in the fill). ⟨hpos may be
-needed by the cap; reconcile with the content lemma's hyps at the delta⟩. -/
+/-- **The canonical-pivot sub-family** (CAPR §9.4 spec; elder canonical-pin ruling). Along the path every
+fan-free birth (`case12`/`case2`) stores the DIAGONAL counter corner `cornerToFlat (layer, cleared)` as its
+pivot — Aoyagi's ledger is a canonical-frame object (Thm-3 WLOG + per-step Q,P reindex), and the fan is our
+cover artifact. On this sub-family stored = diagonal = ledger corner, so all conjuncts + the read-off
+coincide (the split/witness question dissolves). `case11`/`rollover` contribute nothing here (case11's pivot
+is already `IsRealBranch`-pinned to `canonPivotOf`; rollover has no blow-up).
+
+DEF-CHECK (CAPR-flagged, seat-INV resolved): the guard is δ-AGNOSTIC (NOT `edgeδ d p = true → …`). Rationale:
+`foldB = ∏ u_pivot^(edgeδ)` so δ=0 steps add no `foldB` factor, BUT a divisor CAN be born at a δ=0 step (a
+`case12`/`case2` fresh clear at `cleared > 0`), and the residual's b-ledger step law adds the pivot exponent
+at δ=0 too (certificate §4, "δ=0 adds") — so a δ=0-born divisor's stored pivot enters `μ` and must be the
+diagonal for `μ.support ⊆ accumulatedPivots` (ledger corners). Per CAPR's rule (δ=0-born possible ⟹ drop the
+guard) the stronger δ-agnostic form is rendered; still satisfied by the canonical construction. -/
+def CanonicalPivots {N : ℕ} (d : Fin (N + 1) → ℕ) : TreePath d → Prop
+  | .root => True
+  | .step p _center pivot cse _ns _φ =>
+      CanonicalPivots d p ∧
+        (match cse with
+         | StepCase.case12 => cornerToFlat d p.conState.layer p.conState.cleared = some pivot
+         | StepCase.case2 => cornerToFlat d p.conState.layer p.conState.cleared = some pivot
+         | _ => True)
+
+/-- **The invariant holds on every real branch of the canonical sub-family** (certificate §4 induction:
+ROOT = `coreGen` at `μ=0` (`sourceClearedInv_root`, banked); δ=1 strict-transform subtracts the pivot
+exponent; δ=0 pullback adds it). The `hcanon : CanonicalPivots d p` hypothesis (§9.4 canonical-pin) pins the
+fan pivots to the diagonal so stored = ledger corner. STATE-ONLY here (tracked LIVE-frontier — the root arm
+is `sourceClearedInv_root d hN`; the δ=1/δ=0 step arms are the L5-layer transport obligation consuming GM's
+commutation core, wired at the full induction assembly). -/
 -- map: B-wall-sourceClearedInv-holds (the §4 b-ledger induction)
 theorem sourceClearedInv_holds (d : Fin (N + 1) → ℕ) (hN : 0 < N) (p : TreePath d)
-    (hbranch : p.IsRealBranch (canonFlatten d)) :
+    (hbranch : p.IsRealBranch (canonFlatten d)) (hcanon : CanonicalPivots d p) :
     SourceClearedInv d p := by
   sorry
 
