@@ -17714,3 +17714,17 @@ Liveness: L4D + LL active within the minute; L4D's lane shows the assembly-state
 (+hex : extra = supportAt ∖ center — the set-difference form per the steer) and a live lake build.
 L3T3 parked-quiet. Elder 41 min quiet on C9 (pp.15-22 image reads = long turns; not yet the 2-poll
 threshold). Memo wait-state refreshed to the single-threaded-wall position. No actions owed.
+
+## 2026-07-24 (~03:50) — #66 resolution STANDS (crossing); LL's R1 plan banked as the close-sweep
+annex
+
+LL's deeper trace (crossed my resolution): the chart-value chain is self-contained, terminating at
+retired EngineDriver, and ISOLATION-GATEABLE (scripts/lb EngineDriver) — retracting the earlier
+ungateable concern. Still ruled R3/stand: R1 (delete the false theorem; lift its conclusion to an
+explicit hypothesis in leafPullback; terminate the ripple at EngineDriver as an honest fossil)
+costs a multi-file dead-code edit + isolation gate + elder read, off the critical path, for a
+hazard already honestly fenced. BANKED AS THE CLOSE-SWEEP ANNEX: the trace (GeoAlphaGauge ←
+GeoInvVal/GeoAtlasTransfer ← ChartBridgeFaithful ← EngineObligations ← EngineDriver, none live)
++ the R1 hypothesis-lift mechanism as the fallback if the wholesale prune hits an unexpected
+consumer. Crossing-hygiene note to seats: assignments older than ~30 min get a "still current?"
+ping before plan-design (2nd crossing on this lane today).
