@@ -17229,3 +17229,27 @@ the elder wedge — the liveness-polling lesson, now 2-for-2 on catching it). Se
 the evidence + the remaining ladder: self-confirm build (fast no-op re-run, trust exit code not my
 timestamp) → census/cordon/forced payoff axioms → commit-coherent push → render report with verbatim
 formulas. Reviewers (pnp all-rows battery, seat-L4D slot-confirm, elder delta-read) fire on the report.
+
+## 2026-07-23 (~16:20) — F₂ RENDER LANDED @ 1a113e4db; three-reviewer apparatus fired
+
+arch-C-4's render report arrived (all gates green: full build 9008 jobs exit-0; census 18/2/1
+delta-0; cordon-all both halves; forced payoff axioms clean-three, engine roots unchanged).
+Controller re-derivation before integrating (calibration rule): re-ran the full build in its
+worktree (exit-0), re-counted the census trio (18/2/1 = baseline), and read the ENTIRE diff
+(+97/−49, one file) against the §9 ruling — conforms on all five spot-checks: (ii) +γ flip with
+scope verbatim-kept; (iii) new, S≥1-vacuous by the ℕ guard, input-side scope + `d q.1.1.succ`
+range sound; 3-disjunct support + CanonicalSchurStep mirror; r4Clear def UNCHANGED (docstring
+re-home only, no fold splice — recursion untouched, stepInv closes by the original witness).
+Committed + pushed on the seat's behalf (role boundary): REBAKE2 @ 1a113e4db.
+
+Fired the three reviewers in parallel: pnp (authoritative all-rows battery, 6 rows incl. the NEW
+interior-pivot row — arch-C-4 flags branch-(iii) UNEXERCISED by corner-only witnesses; independent
+re-derivation, not its /tmp script), seat-L4D (11-item slot-confirm + the `cleared ≤ i` def-read
+gate), elder (9-item delta-read + the per-chart-gauge adjudication arch-C-4 flagged: per-branch Q₂
+vs one global GL_{d₀} end-factor for multi-corner-pivot folds — bounded either way, docstring-line
+question not a re-open). Merge executes on triple green. Board: #56/#60 CLOSED; #44 live (the
+review gate); then merge → #52 L3T3 rebase → #38 THE WALL.
+
+(Process nit, self-caught: a heredoc inside an `&&` chain unguards everything after `EOF` — the
+first attempt ran `git add` from the seat's worktree cwd; it failed harmlessly on pathspec, nothing
+staged/contaminated. Rule: `cd` + guard as separate statements BEFORE any heredoc block.)
