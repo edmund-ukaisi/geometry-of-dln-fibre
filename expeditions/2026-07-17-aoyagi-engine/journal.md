@@ -18688,3 +18688,18 @@ stacked-exceptional slots unsampled (constructively guaranteed; the transport ba
 double-boost witness — the axis named). CAPR bakes: INV + 5 leaves wired + ROOT → the elder's
 skeleton blessing → the transports. pnp to #74's soundness check (the cleared foldG/foldB — it
 flags if the def-choice is load-bearing). Both remaining gates have runners.
+
+## 2026-07-25 (~02:50) — #74 RENDER GO: the cleared StepInv HOLDS on all witnesses (ee527be2c);
+raw-fails/cleared-sound both verified; L4D commissioned (restate-gated) with the complete spec
+
+pnp's render gate GREEN: foldB_cleared | coreGen∘foldG_cleared at ALL slots (raw failed at 0,2)
+on the archetype + wide + double-boost; module-membership ∃q holds (polynomial ⟹ continuous);
+deepest-point vanish true. THE MECHANISM def-agnostic: the source-clear removes exactly the
+un-injected coupling terms — any faithful cleared-fold inherits the divisibility restoration.
+The def-choice flag honest (pnp used the natural precompose; L4D's exact per-step form gets the
+quick cross-check when it lands). THE COMPLETE PICTURE: raw FAILS by necessity + cleared HOLDS by
+construction — §8's move is forced AND sound, nothing rendered before both. L4D's render
+commissioned with the full spec (pnp's construction + §8's scope boundary + its own consumer
+shapes + CAPR's primitives as the shared substrate + the per-case append split), restate-gated,
+SPECIFY → elder delta → proofs → the pnp cross-check. The expedition's remaining render work:
+the (i)-(iv) re-architecture + CAPR's induction + the cap render + the mechanical tail.
