@@ -17532,3 +17532,24 @@ expected; a genuinely-∀e summit = stop + operator visibility); elder gets the 
 for a focused delta-read (gates the lane merge, not the grind); Codex route (b) MergeBoostSplit
 (concrete inductive unfolding, NOT from hslot) proceeds meanwhile; L3T3 warned (case1'' copies the
 pinned signature; L4D owns the shape).
+
+## 2026-07-23 (~23:05) — THE IDIOM FORK: two seats hit the ∀e/canonFlatten boundary independently;
+elder ruling ONE idiom (priority); lanes resequenced
+
+Restate catches #9 (L3T3) and #10 (LL) within the hour:
+(9) L3T3 at the twin bodies: the Gap-B swap is STEP-ONLY (one token per case — conjunct B's
+realBranch_multiAffine_step → step'); NO homogeneity pull exists in the code (the step twin gets
+conjunct-2 inductively from the parent slot); site 2 (:1408) is a PRE-EXISTING zero-consumer
+fossil, orthogonal — and the homogeneity TWIN is also currently unconsumed (banked; note: LL's
+lane may become its first consumer). Confirmed; corrected fossil set approved.
+(10) LL at lastLayer: conjA δ=1 (cleared=0) needs ALL-Deg1 slots; general-e LastLayerInv admits
+unit slots; the only feeder is the canonFlatten-specific L3T3 homogeneity lane (∀e+he_lin
+FALSE-as-stated, :1382's scrambler witness). Gates all three LL holes.
+THE FORK: (10) = the SAME boundary as L4D's wall pin (catch #13… recte the 13th was L4D's; LL's
+is the 14th) — and two idioms are now in play: PIN-HYPOTHESIS (he : e = canonFlatten d, L4D's
+GO'd draft) vs CONSUME-STRUCTURE (general-e + Deg1 hypothesis + L5 anchoring — the step twin's
+existing shape, LL's lean). Idiom mixing across one chain is the ugliness-is-information signal.
+ELDER commissioned PRIORITY (before the audit queue): one idiom, applied concretely to the four
+touched statements. RESEQUENCED: L4D holds the threading draft, grinds the content lemma
+(canonFlatten-stated under either idiom) + reports the summit e-instantiation call sites; L3T3
+builds the module + case2'' now, holds case1'' for the ruling; LL holds for the ruling.
