@@ -917,7 +917,9 @@ col), the displacement at a flat coord `k` decoding to `(layer, row, col)`:
   `= b` (the pivot col) of layer `S−1`, value `+∑_{cleared ≤ k, k≠b} w_{a,k}·A^{(S−1)}_{k,col}` — degree-1
   in the layer-`(S−1)` coords, SCOPED `cleared ≤ k`. GUARDED `S ≥ 1`: VACUOUS at the corner `s.layer = 0`
   BY DESIGN — there the input side IS the network input, i.e. the global `GL_{d₀}` end-factor gauge `P₁`,
-  absorbed ONCE via Lemma 1 (§9 three-home ruling; worked.tex:426-428,437), never a per-fibre op.
+  absorbed ONCE via Lemma 1 (§9 three-home ruling; worked.tex:426-428,437), never a per-fibre op. Her
+  once-global Lemma-1 absorption is realized PER-CHART in the fold's cover (each chart's `GL_{d₀}`,
+  resolution-normal, baseChange-covered).
 
 All three branches read OTHER coordinates (branch (i) reads the pivot row/col to shift the interior;
 branch (ii) reads layers `S`, `S+1` off the target col; branch (iii) reads layers `S`, `S−1` off the target
@@ -960,7 +962,9 @@ noncomputable def canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N
       -- `S ≥ 1`: the `+1 = s.layer` guard is FALSE at the corner `s.layer = 0` (no `x : ℕ` with
       -- `x + 1 = 0`), so (iii) is VACUOUS at the corner BY DESIGN — there the input side IS the network
       -- input, i.e. the global `GL_{d₀}` end-factor gauge `P₁`, absorbed ONCE via Lemma 1, never a
-      -- per-fibre op (§9 three-home ruling; worked.tex:426-428,437). On row `= b` (the pivot col) of
+      -- per-fibre op (§9 three-home ruling; worked.tex:426-428,437) — her once-global Lemma-1 absorption
+      -- is realized PER-CHART in the fold's cover (each chart's `GL_{d₀}`, resolution-normal,
+      -- baseChange-covered). On row `= b` (the pivot col) of
       -- layer `S−1`, value `+∑_{cleared ≤ k, k≠b} w_{a,k}·A^{(S−1)}_{k,col}` — degree-1 in the layer-`(S−1)`
       -- coords, SCOPED `cleared ≤ k` (the input-side mirror of (ii)'s scope). det-1: writes row `b`, reads
       -- rows `k≠b` (write/read-disjoint). Verified product-preserving at the normalized pivot (wide
