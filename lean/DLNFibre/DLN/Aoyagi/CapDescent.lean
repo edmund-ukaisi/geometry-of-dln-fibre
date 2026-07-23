@@ -553,8 +553,10 @@ def CanonicalPivots (d : Fin (N + 1) → ℕ) : TreePath d → Prop
   | .root => True
   | .step p _center pivot cse _ns _φ =>
       CanonicalPivots d p ∧
-        (cse = StepCase.case12 ∨ cse = StepCase.case2 →
-          cornerToFlat d p.conState.layer p.conState.cleared = some pivot)
+        (match cse with
+         | StepCase.case12 => cornerToFlat d p.conState.layer p.conState.cleared = some pivot
+         | StepCase.case2 => cornerToFlat d p.conState.layer p.conState.cleared = some pivot
+         | _ => True)
 
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
