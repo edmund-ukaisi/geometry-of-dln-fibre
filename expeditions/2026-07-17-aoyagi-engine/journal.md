@@ -16359,3 +16359,30 @@ constraint set (generator-level, not blockShear; G2; StepInv consumes the ideal)
 census delta ≈ 0 (NO field frontiers); the gates unchanged. New branch REBAKE2 (the old
 branch frozen as history; no reset of another seat's pushed work). The churn lesson applied:
 one contract, one restate gate, no interim-message dependencies.
+
+## 2026-07-23 (~05:20) — the instrument disagreement RECONCILED (different questions, no conflict); the harmonized battery pre-stage GREEN both rows; a stale-task near-miss caught
+
+Convergence tick, four arrivals:
+(1) THE RECONCILIATION (elder): seat-L4D's "not center-degree-1" tested the STANDALONE-MONOMIAL
+degree (true, but not what boostReady consumes); pnp's chart-frame pass tested the
+Deg1SupportedOn DECOMPOSITION (u₀₀₁² = e₂·(w col1), center-coord times center-ignoring
+coefficient — the RIGHT test). No real conflict; §8(m)'s "NECESSARY" softens to "ADOPTED (her
+accumulated-Q₂'⁻¹ semantics + cleans the raw frame) — not strictly necessary for chart-frame
+boostReady." The elder explicitly refused to paper over the decorrelated-instrument
+disagreement; seat-L4D asked to state its concurrence on record (its seat-to-seat closure
+with pnp suggests already done informally).
+(2) THE HARMONIZED BATTERY pre-stage: BOTH ROWS PASS on the reconstruction (banked, re-ran
+exit-0) — scoped raw block-form reaches the multilinear clean block on ALL THREE witnesses
+(u₀₀₁² dissolved; the scope drops exactly the outer-cleared-row term); chart-frame passes even
+unscoped. Per the escalation map this is merge-green ON THE SPEC; the authoritative run
+consumes the exact render.
+(3) THE NEAR-MISS: pnp, seeing task #43 "completed," asked whether arch-C's render was ready
+for its authoritative run — it would have aimed at the DEAD branch (REBAKE = the
+non-conformant field render). Corrected: #43 re-labeled NON-CONFORMANT/superseded; #53 opened
+for arch-C-3/REBAKE2; pnp holds for my relay of the conformant render report. The
+certificate-fidelity rule (run only on the exact authoritative artifact) caught it — task-
+status staleness is now on the hygiene list.
+(4) seat-L4D: the center handoff was already complete (pnp ran in its exact frame); wall
+route stands; the D_J slot-mapping row stays on the joint confirm.
+
+BOARD: one render from the merge. arch-C-3's restate is the next expected event.
