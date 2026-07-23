@@ -19371,3 +19371,19 @@ split-vs-pure-stored + the realignment question. hN STANDS independent (GO); GM 
 throughout. OPERATIONAL: the witness commission goes to pnp (behind the locus verify) with CAPR
 as oracle-semantics consult; CAPR drafts the split realization NOW so the render is turn-key
 under either outcome; INV's ledger-touching leaves stay paused on the witness.
+
+## 2026-07-23 (~16:30 UTC) — GM's pure deletion landed (2e9d81755, controller-verified) →
+cherry-pick relayed to CAPF; the knowingly-red site is GONE from the shared closure
+
+GM applied the elder-FORCED Case1Wire deletion as a standalone PURE commit (verified: single
+file, 17+/83−; the tombstone carries REFUTED-raw + the master-gate reason + per-deletion
+SUPERSEDED-BY pointers + the no-fossil rationale + §-cross-refs — riders met verbatim). GM
+pre-verified the unblock: Case1Wire AND MultiAffineStepWire build green after it; the full
+DLNFibre red is now confined BY DESIGN to the three re-point sites that land with GM's cleared
+chain (CaseStepAssembly/MonumentAssembly/LastLayerWire). CAPF instructed to cherry-pick in its
+own worktree (fetch + cherry-pick + verify MultiAffineHomogWire green + push; conflict =
+stop-and-report; the duplicate-commit reconciliation at #73 noted as controller concern). GM's
+proofs-hold untouched (an edit, not a proof) — still on the locus verify. Board: pnp (locus
+verify → witness → CAPF kill consult), elder (CAPF's 6-statement delta next), CAPR (split
+realization draft), INV (independents + awaiting the realization batch), CAPF (#2 grind +
+cherry-pick).
