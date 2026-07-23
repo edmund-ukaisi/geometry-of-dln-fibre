@@ -18276,3 +18276,23 @@ couplingClear-vs-stepMap/quot COMMUTATION + the cert's Deg1 — the commutation 
 render's real new content. CAPR finalizes the SPECIFY; elder delta-read next. Every def-level
 question on the capstone is now closed BEFORE a line of the SPECIFY freezes — the full
 consult loop (seat→controller→def-owner+elaborator→seat) ran in under two hours.
+
+## 2026-07-24 (~17:40) — THE 17th STATEMENT-CLASS CATCH (pnp-cap): supportAt(S,0) under-tight —
+the cap frontier's obligation (b) FALSE on width-increasing d; elder ruling + SPECIFY hold +
+witness-axis order dispatched
+
+pnp-cap's verified pair (exact-def + Codex xhigh; lane -CAP): (F2) on d=(2,3,2,2) the fresh
+rollover child's residual = the parent's EXACTLY (rollover step map = identity), reading FULL
+layerCoords — supportAt(S,0)=blockCoords(S) is under-tight for S≥1, the DEF-EDIT-1 class with the
+J=0 branch never fixed; her CAPPED D_J dims belong to the NORMAL FORM (the cleared object /
+canonCenterOf), not the raw fold — the capstone arc's (B)/(D) object-lesson replayed at the
+support level. (F1) hslot insufficient for both obligations (the pre-routed Q1, now verified) —
+the frontier proves by OPENING the recursion; obligation (a) TRUE on the real object
+(under-hypothesized, not false). CROSS-IMPACT: FoldStepInvAt/INV(p) quantify supportAt; ALL
+capstone witnesses were width-non-increasing — the cap-bite axis untested. DISPATCHED: elder
+rules (the J=0 fix: widen-to-layerCoords vs cap-moves-to-the-cleared-object — the latter dovetails
+§7-§7.8; + the hypothesis shape + the cross-impact scope); CAPR's SPECIFY freeze HELD (drafting
+continues; nothing quantifying supportAt freezes); pnp-transport re-runs the capstone checks on a
+width-increasing witness (verify-don't-expect). The λ untouched (wider raw support = the harmless
+direction). The ETA's predicted obstruction site fired ON SCHEDULE and pre-render — the
+parallelized elaboration earning its spawn.
