@@ -19470,3 +19470,26 @@ shear/value pins constrain shearφ not admissibility; one judged-not-read residu
 a real defect in the frozen oracle boundary, with §9.4 adding a possible resolution (2′) — the
 canonical-pin hypothesis on the CHAIN as well, converging the whole cleared architecture on the
 canonical sub-family + the L5 transport.
+
+## 2026-07-23 (~17:15 UTC) — CAPR's oracle read: merge-realigns is FALSE (the DOUBLE-CARRY);
+divBirthCoord is the SECOND counter site; #85's option space sharpened mid-ruling
+
+CAPR's decorrelated oracle-semantics read (site-cited, routed to the elder mid-#85-ruling + pnp):
+(1) NO REALIGNMENT — foldB factors at ed.pivot per edge; the within-carve shears never permute
+the exceptional's column; so an off-diagonal fan birth + its case11 merge (pinned to the
+diagonal via the ledger) DOUBLE-CARRIES one divisor on two coordinates — §9.3's
+realigns-vs-reuses disambiguator resolves as NEITHER; the fan's column-freedom at births is
+itself the unfaithfulness. (2) THE SECOND COUNTER SITE: divBirthCoord := Fin.snoc …
+(s.layer, s.cleared) (DivBirthReach:128) — the ledger MIS-RECORDS fan births (diagonal recorded,
+fan column factored). So the construction carries TWO counter-vs-column divergences from her D₁
+semantics: canonCenterOf (phantom re-clears) + divBirthCoord (double-carry merges). (3)
+Reachable per design intent (one caveat: the divTilde/occ reuse-trigger guard — pnp to check if
+relevant). CONSEQUENCE relayed to the elder: resolution (1) alone (canonCenterOf column-exclusion)
+kills only the phantom species — the double-carry species needs the divBirthCoord fix too (a
+SECOND baked-spine def-edit); resolution (2′) (canonical-pin on chain + INV) kills BOTH species
+with one hypothesis, the construction gap becoming the honest ROADMAPPED fix. CAPR's own
+synthesis converges on canonical-pin, now motivated by the construction gap. pnp's held witness
+stays moot under (2′); its queue unchanged (CAPF kill consult → the equivariance check, now
+framed knowing fan-born divisors are two-coord in the raw chart). The elder rules #85 with the
+complete picture: L4D's admissibility confirm + pnp's phantom witness + CAPR's double-carry read
+— three decorrelated instruments, one converging diagnosis.
