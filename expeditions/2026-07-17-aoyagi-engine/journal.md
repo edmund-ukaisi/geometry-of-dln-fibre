@@ -17108,3 +17108,16 @@ ALL RULINGS OF THE ARC ARE NOW RESOLVED AND RATIFIED. What remains is purely mec
 arch-C-4's #58/#59 render (GO standing) → gates → the battery (+ the realization-condition
 and interior-pivot rows) + slot-confirm → the split-checklist delta-read → merge → the
 two-line L3T3 rebase → THE WALL.
+
+## 2026-07-23 (~13:20) — the corner crossing closed; the reconciliation note: (A) = (B)-per-edge + the-gauge-globally
+
+seat-L4D's containment lean (B more contained) crossed the ruling; its own precedence
+framework resolved it (paper primary → the paper answered → the tie-breaker never fired).
+THE RECONCILIATION worth the record: the ruling (A) PRESERVES the containment concern —
+the per-edge structure under (A) is exactly (B)'s shape (col-only clear at the corner,
+triangular block, nothing global threaded through the fold), with the gauge disposal
+happening OUTSIDE the fold (a narrative line + checklist clause, banked machinery, not new
+fold structure). (A) = (B)-per-edge + the-gauge-globally: the fidelity instinct and the
+containment instinct were both right about their own layer. seat-L4D's slot-confirm corner
+fork re-targeted to (A) (triangular per-edge block, S≥1-guarded branch-(iii), the end-factor
+line present). Board unchanged: arch-C-4 renders; everything else holds.
