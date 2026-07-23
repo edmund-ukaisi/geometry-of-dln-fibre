@@ -1,4 +1,5 @@
 import DLNFibre.Core.Aoyagi.BlockBlowupCover
+import DLNFibre.Core.Aoyagi.PathAtoms
 
 /-!
 # `DLNFibre.DLN.Aoyagi.LeafCoverTiling` — the general-`d` fan cover-tiling (L7, ruling-indep. core)
@@ -256,7 +257,7 @@ def qshear (v : Fin 3 → ℝ) : Fin 3 → ℝ := fun i ↦ if i = 2 then v 2 - 
 def qinv (x : Fin 3 → ℝ) : Fin 3 → ℝ := fun i ↦ if i = 2 then x 2 + x 0 * x 1 else x i
 
 theorem qshear_qinv (x : Fin 3 → ℝ) : qshear (qinv x) = x := by
-  funext i; fin_cases i <;> simp [qshear, qinv] <;> ring
+  funext i; fin_cases i <;> simp [qshear, qinv]
 
 /-- **The load-bearing discharge**: for the quadratic shear `qshear`, `σ⁻¹` maps the radius-`r` box
 into the radius-`(r + r²)` box, so `closedBall 0 r ⊆ qshear '' closedBall 0 (r + r²)` at EVERY `r`.
@@ -277,7 +278,7 @@ theorem qshear_covers {r : ℝ} (hr : 0 ≤ r) :
   obtain ⟨h2l, h2r⟩ := abs_le.mp h2
   by_cases hi : i = 2
   · subst hi
-    show |x 2 + x 0 * x 1| ≤ r + r ^ 2
+    change |x 2 + x 0 * x 1| ≤ r + r ^ 2
     have p1 : (0 : ℝ) ≤ (r - x 0) * (r + x 1) := mul_nonneg (by linarith) (by linarith)
     have p2 : (0 : ℝ) ≤ (r + x 0) * (r - x 1) := mul_nonneg (by linarith) (by linarith)
     have p3 : (0 : ℝ) ≤ (r - x 0) * (r - x 1) := mul_nonneg (by linarith) (by linarith)
@@ -303,6 +304,57 @@ which the constant-`K` form provably could not. -/
 theorem covers_qtree : Covers (fun r ↦ r + r ^ 2) qtree 1 :=
   ⟨fun _ _ ↦ qshear_covers (zero_le_one.trans (le_max_right _ 1)),
     fun _ _ ↦ ⟨fun _ _ ↦ qshear_covers (zero_le_one.trans (le_max_right _ 1)),
+      fun _ _ ↦ Metric.closedBall_subset_closedBall (by norm_num)⟩⟩
+
+/-! ### Regression witness (rev-L7cover): the EXACT old counterexample shear `σ(x,y) = (x, y + x²)`
+— `blockShear cexPhi`, `cexPhi u = (0, (u 0)²)`, Codex's value-leaf counterexample from the
+fan-design cert — CLOSES the cover under `f = r ↦ r + r²`, depth 2, `|S| = 2`. Banked as a
+regression against the exact `σ` that broke the value leaves under a frozen shear (the cover, unlike
+the value leaves, transfers: a bijective shear omits no target point). Uses the REAL `blockShear`,
+complementing the bespoke `qshear` above. -/
+
+/-- The counterexample displacement `φ u = (0, (u 0)²)`, so `blockShear cexPhi` is Codex's shear
+`σ(x,y) = (x, y + x²)`. -/
+def cexPhi (u : Fin 2 → ℝ) : Fin 2 → ℝ := fun i ↦ if i = 1 then (u 0) ^ 2 else 0
+
+/-- The counterexample shear closes the cover under `f = r ↦ r + r²` (its inverse
+`x ↦ (x₀, x₁ − x₀²)` maps the radius-`r` box into the radius-`(r + r²)` box). -/
+theorem cexShear_covers {r : ℝ} (hr : 0 ≤ r) :
+    closedBall (0 : Fin 2 → ℝ) r ⊆ blockShear cexPhi '' closedBall 0 (r + r ^ 2) := by
+  have hrr : (0 : ℝ) ≤ r + r ^ 2 := by positivity
+  intro x hx
+  rw [Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg hr] at hx
+  have h0 := hx 0; have h1 := hx 1
+  rw [Real.norm_eq_abs] at h0 h1
+  obtain ⟨h0l, h0r⟩ := abs_le.mp h0
+  obtain ⟨h1l, h1r⟩ := abs_le.mp h1
+  refine ⟨blockShearInv cexPhi x, ?_, ?_⟩
+  · rw [Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg hrr]
+    intro i
+    rw [Real.norm_eq_abs]
+    by_cases hi : i = 1
+    · subst hi
+      change |x 1 - (x 0) ^ 2| ≤ r + r ^ 2
+      have hsq : (x 0) ^ 2 ≤ r ^ 2 := by nlinarith [h0l, h0r]
+      rw [abs_le]
+      exact ⟨by nlinarith [h1l, sq_nonneg (x 0)], by nlinarith [h1r, hsq]⟩
+    · have hval : blockShearInv cexPhi x i = x i := by simp [blockShearInv, cexPhi, if_neg hi]
+      rw [hval]
+      have hxi : |x i| ≤ r := by rw [← Real.norm_eq_abs]; exact hx i
+      nlinarith [sq_nonneg r]
+  · funext i; fin_cases i <;> simp [blockShear, blockShearInv, cexPhi]
+
+/-- A depth-2 fan tree with `|S| = 2` and the exact counterexample shear at BOTH levels. -/
+def cexTree : FanTree 2 :=
+  FanTree.node {0, 1} ⟨0, by decide⟩ (fun _ ↦ blockShear cexPhi)
+    (fun _ ↦ FanTree.node {0, 1} ⟨0, by decide⟩ (fun _ ↦ blockShear cexPhi)
+      (fun _ ↦ FanTree.leaf (closedBall 0 6)))
+
+/-- **Regression witness (rev-L7cover)** — the counterexample-shear tree closes under
+`f = r ↦ r + r²`: `Covers (r ↦ r + r²) cexTree 1`, the exact `σ(x,y)=(x,y+x²)` nested twice. -/
+theorem covers_cexTree : Covers (fun r ↦ r + r ^ 2) cexTree 1 :=
+  ⟨fun _ _ ↦ cexShear_covers (zero_le_one.trans (le_max_right _ 1)),
+    fun _ _ ↦ ⟨fun _ _ ↦ cexShear_covers (zero_le_one.trans (le_max_right _ 1)),
       fun _ _ ↦ Metric.closedBall_subset_closedBall (by norm_num)⟩⟩
 
 end FanTree
