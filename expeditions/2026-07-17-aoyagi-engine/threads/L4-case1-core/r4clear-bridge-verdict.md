@@ -65,6 +65,24 @@ The render report's branch-(ii) (`−γ`, SCOPED `i ≥ cleared`, excl. pivot-co
 So all three OUTS seat-L4D/team-lead named (branch-(ii) both signs; real foldB; δ=1) are closed: **SURVIVES**
 on the verbatim render, modulo only the structural D_J-only fork below.
 
+## F₂ +γ-PAIRED regime — the arc's last verification (elder condition (c); `verify/f2_paired_boostready.py`, exit 0)
+§7 fired ⟹ F₂ adopted (+γ recoord `Q₁⁻¹` + `Q₂⁻¹` input + paired `Q₁·A₀·Q₂` clearing). Re-verified, on the
+FINAL +γ-paired object, the two criteria previously checked only under §8(m)'s `−γ`:
+- **(a) ideal-close / census 0:** rows A/D (+γ + `Q₂⁻¹`), product-preserving ⟹ `⟨cleared⟩=⟨uncleared⟩`. Settled.
+- **(b) boostReady / clean multilinear block:** HOLDS under +γ-paired (SCOPED), all three witnesses —
+  `L0` = clean cleared block (pivot row/col zeroed, diag-shaped), residual multilinear (`deg_u₀₀₁=1`,
+  `deg_u₀₁₀=1`). Sign-robust (the `−γ`→`+γ` flip does not disturb the form). ✓
+- **(c) SCOPE — the `i≥cleared` bound is STILL NEEDED, NOT subsumed by the pairing.** Unscoped +γ-paired
+  STILL gives `u₀₀₁²` (deg 2), all three witnesses. Reason: the inter-edge fold-order (ed1's clearing is
+  applied OUTERMOST) means ed2's branch-(ii) recoord reads ed1's PRE-clear pivot-row entry regardless of the
+  paired clearing — so the paired `Q₁·A₀` clearing does NOT make ed2 read the outer row as 0. The `i≥cleared`
+  scope IS that "read the cleared outer row as 0" mechanism, and it must be KEPT on branch-(ii) under F₂.
+
+**COMPLETE F₂ RENDER SPEC (all three criteria verified on the +γ-paired object):** keep the §8(m)
+`i≥cleared` scope (c); recoord `+γ` (`Q₁⁻¹`, product-preserving) + `Q₂⁻¹` input + paired `Q₁·A₀·Q₂`
+clearing (a,b). Under this the bridge is provable (census 0), boostReady holds, and the block is the clean
+multilinear form.
+
 ## Bottom line for the merge gate
 - **If StepInv is all-entries:** pure-zero r4Clear is UNSOUND (E_J fails, survives branch-(ii)) ⟹ §7 fires
   ⟹ adopt the elder's F₂ absorption (full faithful `Q₁·A₀·Q₂`, `+γ` recoord + `Q₂⁻¹` input) ⟹ bridge PROVABLE.
