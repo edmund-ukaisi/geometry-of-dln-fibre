@@ -17510,3 +17510,25 @@ through Case1Wire = the LIVE wall file; B goes to the post-summit ledger. Five c
 GO (identical-modulo-twins restate trip; wall compatibility; summit-cone axiom set = the metric;
 fossil-docstring hunks routed through my single-writer files, Case1Wire's AFTER #38 lands; naming
 name=content). L3T3 prototypes on its lane.
+
+## 2026-07-23 (~22:45) — TWO LANDINGS: the full-paper image class CLOSED (one reproduction typo,
+fixed); the 13th statement-class catch (the unrendered canonFlatten pin) — GO'd as ruling-render
+
+(1) ELDER PART-1 UPLIFT DONE: source PDF pp.1–31 now fully image-cross-checked (the prior passes
+covered pp.8/14–22/24–26; this closed the front matter pp.5–14). ONE genuine defect: worked.tex:166
+printed Lemma 1 with ≥; source p.5 + the doc's own fnote + rlct(x⁴)=¼ ≤ rlct(x²)=½ all give ≤. The
+Lean object was already correct (rlctAt_sumSqFam_le_of_germRepresents) — nothing downstream
+corrupted. Applied under ANCHOR-FREEZE: :166 in-place (no shift); (R-1) ledger entry inserted at
+:1027 (after every load-bearing anchor; :562/:577 verified unmoved); the header edit REJECTED
+(would shift all anchors) — status folded into (R-1). Committed e02610619.
+
+(2) L4D's BLOCKER (Codex-confirmed; the 4th lost wake, harvested from the output file): the wall
+chain (Case1Wire:386 + case1_conjA + case1_preserves_stepInv' + FoldStepInvAt) is ∀e and UNPROVABLE
+as-stated — the canonFlatten pin that KILLED-BY-e proved NECESSARY and the design ruling PINNED was
+never rendered into the statements. Statement/ruling mismatch = the F₂ failure shape again (ruled
+fact absent from the rendered artifact). GO'd as EXECUTING THE EXISTING RULING: he : e =
+canonFlatten d threaded minimally; the seat verifies where the summit instantiates e (rfl-discharge
+expected; a genuinely-∀e summit = stop + operator visibility); elder gets the old/new statements
+for a focused delta-read (gates the lane merge, not the grind); Codex route (b) MergeBoostSplit
+(concrete inductive unfolding, NOT from hslot) proceeds meanwhile; L3T3 warned (case1'' copies the
+pinned signature; L4D owns the shape).
