@@ -24,7 +24,7 @@ This lives DOWNSTREAM of `MonumentAtlas` (the induction consumes `MultiAffineSte
 -/
 
 open MeasureTheory Set Filter Topology
-open DLNFibre.Core DLNFibre.Core.Aoyagi
+open DLNFibre.Core DLNFibre.Core.Aoyagi DLNFibre.DLN.RLCT DLNFibre.DLN.RLCT.Engine
 
 namespace DLNFibre.DLN.Aoyagi
 
@@ -218,13 +218,368 @@ theorem coreGen_layerHomogeneous' (d : Fin (N + 1) → ℕ)
 
 /-- **Fold induction (primed twin).** The fold residual at `canonFlatten d` is degree-1-homogeneous on
 every layer `ℓ ≥ supportLayerOf p.conState` (`ℓ < N`). See `MonumentAtlas.foldResid_layerHomogeneous`. -/
-theorem foldResid_layerHomogeneous' (d : Fin (N + 1) → ℕ)
+theorem foldResid_layerHomogeneous' (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (p : TreePath d) (hnonterm : ¬ N ≤ p.conState.layer)
     (hbranch : p.IsRealBranch (canonFlatten d))
     (j : Fin (foldNR d p)) (ℓ : ℕ)
     (hℓsup : supportLayerOf p.conState ≤ ℓ) (hℓN : ℓ < N) :
     HomogeneousDeg1On (foldResid d (canonFlatten d) p j) (layerCoords d ℓ)
       (foldRegion d (canonFlatten d) p) := by
-  sorry
+  classical
+  suffices H : ∀ (q : TreePath d), ¬ N ≤ q.conState.layer → q.IsRealBranch (canonFlatten d) →
+      supportLayerOf q.conState ≤ ℓ → ∀ (i : Fin (foldNR d q)),
+      HomogeneousDeg1On (foldResid d (canonFlatten d) q i) (layerCoords d ℓ)
+        (foldRegion d (canonFlatten d) q) by
+    exact H p hnonterm hbranch hℓsup j
+  intro q
+  induction q with
+  | root =>
+    intro _ _ _ i
+    exact coreGen_layerHomogeneous' d i ℓ hℓN
+  | step p' c pv cse ns φ ih =>
+    intro hnonterm hbranch hℓsup j
+    obtain ⟨hrec, ⟨sc, hsc, hecase, hchild, hcenter, hpivpin⟩, hwcRaw, hvpin⟩ := hbranch
+    obtain ⟨hwc1, hwc2, _⟩ := hwcRaw
+    have hnt : ¬ N ≤ ns.layer := hnonterm
+    replace hℓsup : supportLayerOf ns ≤ ℓ := hℓsup
+    have htrans := conOracle_child_transition p'.conState sc hsc
+    have hpnt : ¬ N ≤ p'.conState.layer := by
+      rcases htrans with ⟨_, _, hL, _⟩ | ⟨_, hL, _⟩ | ⟨_, hL, _⟩ <;> · rw [hchild] at hL; omega
+    have hslmono : supportLayerOf p'.conState ≤ supportLayerOf ns := by
+      have key : supportLayerOf p'.conState ≤ p'.conState.layer + 1 := by
+        unfold supportLayerOf; split_ifs <;> omega
+      rcases htrans with ⟨_, _, hL, hC⟩ | ⟨_, hL, hC⟩ | ⟨_, hL, hC⟩ <;> rw [hchild] at hL hC
+      · have hns : supportLayerOf ns = p'.conState.layer + 1 := by unfold supportLayerOf; rw [hC, hL]; simp
+        omega
+      · have hns : supportLayerOf ns = p'.conState.layer + 1 := by unfold supportLayerOf; rw [hC, hL]; simp
+        omega
+      · have hns : supportLayerOf ns = supportLayerOf p'.conState := by unfold supportLayerOf; rw [hC, hL]
+        omega
+    have hslP : supportLayerOf p'.conState ≤ ℓ := le_trans hslmono hℓsup
+    have hNReq : foldNR d (TreePath.step p' c pv cse ns φ) = foldNR d p' := by
+      show (if N ≤ ns.layer then 1 else foldNR d p') = foldNR d p'; rw [if_neg hnt]
+    set g := foldResid d (canonFlatten d) p' (Fin.cast hNReq j) with hg_def
+    have hIH : HomogeneousDeg1On g (layerCoords d ℓ) Set.univ := by
+      have := ih hpnt hrec hslP (Fin.cast hNReq j)
+      rwa [foldRegion_eq_univ] at this
+    have hpInv : DivBirthInv d p'.conState :=
+      PivotPres.divBirthInv_of_isRealBranch (canonFlatten d) p' hrec
+    have hcb : ∀ y ∈ c, (((tupIdxEquiv d).symm y).1.1 : ℕ) ≤ p'.conState.layer := fun y hy =>
+      canonCenterOf_decode_layer_le p'.conState sc hpInv y (hcenter ▸ hy)
+    have hguniv : foldRegion d (canonFlatten d) (TreePath.step p' c pv cse ns φ) = Set.univ :=
+      foldRegion_eq_univ _ _
+    rw [hguniv]
+    -- The child support layer is `supportLayerOf ns`; the shear write/read-vanishing (`hwc1`/`hwc2`)
+    -- is STRICTLY above it. Compose `g` (IH) with the step map `σ` via the fixing / recoord atoms.
+    by_cases hactive : cse = StepCase.case12 ∨ cse = StepCase.case2
+    · -- SHEAR-ACTIVE (case12/case2): `edgeShearRaw = blockShear φ`, `φ = canonNormalizationOf` (value-pin).
+      -- The child support layer is `p'.layer + 1` here (cleared → 1 at δ1, or unchanged ≠ 0 at δ0).
+      have hedgeBS : edgeShearRaw d cse φ = blockShear φ := by
+        rcases hactive with h | h <;> rw [h] <;> rfl
+      have hcsl : supportLayerOf ns = p'.conState.layer + 1 := by
+        by_cases hδ : edgeδ d p' = true
+        · have hcl : p'.conState.cleared = 0 := of_decide_eq_true hδ
+          rcases htrans with ⟨_, _, hL, hC⟩ | ⟨_, hL, hC⟩ | ⟨he, _, _⟩
+          · rcases hactive with h | h <;> exact absurd (h.symm.trans (hecase.symm.trans (by assumption))) (by simp)
+          · rw [hchild] at hL hC; rw [supportLayerOf, hC, hcl, if_neg (by omega), hL]
+          · rcases hactive with h | h <;> exact absurd (hecase.trans h) (by rw [he]; simp)
+        · have hcl : p'.conState.cleared ≠ 0 := fun h => hδ (by simp [edgeδ, h])
+          rcases htrans with ⟨_, _, hL, hC⟩ | ⟨_, hL, hC⟩ | ⟨_, hL, hC⟩ <;> rw [hchild] at hL hC
+          · rw [supportLayerOf, hC, if_pos rfl, hL]
+          · rw [supportLayerOf, hC, if_neg (by omega), hL]
+          · rw [supportLayerOf, hC, if_neg hcl, hL]
+      have hN1 : p'.conState.layer + 1 < N := by have := hℓsup; rw [hcsl] at this; omega
+      -- pivot is inside the (layer-`≤ p'.layer`) center, so it sits strictly below layer `ℓ`
+      have hpvle : (((tupIdxEquiv d).symm pv).1.1 : ℕ) ≤ p'.conState.layer := by
+        refine hcb pv ?_
+        have : pv ∈ canonCenterOf d p'.conState sc := by
+          have := hpivpin
+          rcases hactive with h | h <;> · rw [h] at this; simpa using this
+        rw [hcenter]; exact this
+      -- `σ` (the δ-dependent step map) equals `blockShear φ` at layer-`ℓ` coords (off pivot/center)
+      -- and equals it via the value-pin. Split ℓ = child_sl (recoord) vs ℓ > child_sl (fixing).
+      rcases hℓsup.lt_or_eq with hℓgt | hℓeq
+      · -- ℓ > child_sl = p'.layer + 1: the shear VANISHES at layer ℓ, so `σ` FIXES it → comp_of_fixing
+        have hshv : ∀ x ∈ layerCoords d ℓ, ∀ u, φ u x = 0 := fun x hx u =>
+          hwc1 ℓ hℓgt x hx u (by rw [hguniv]; exact Set.mem_univ _)
+        have hxne : ∀ x ∈ layerCoords d ℓ, x ≠ pv ∧ x ∉ c := by
+          intro x hx
+          have hxℓ := decode_layer_of_mem_layerCoords d ℓ x hx
+          refine ⟨fun h => ?_, fun h => ?_⟩
+          · rw [h] at hxℓ; rw [hcsl] at hℓgt; omega
+          · have := hcb x h; rw [hcsl] at hℓgt; omega
+        by_cases hδ : edgeδ d p' = true
+        · have hfun : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j
+              = fun u => g (fun k => blockBlowupCoordQuot pv k (edgeShearRaw d cse φ u)) := by
+            funext u
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j u = _
+            rw [foldResid, dif_neg hnt, if_pos hδ]; rfl
+          rw [hfun]
+          refine homogeneousDeg1On_comp_of_fixing g (layerCoords d ℓ)
+            (fun u k => blockBlowupCoordQuot pv k (edgeShearRaw d cse φ u)) (fun x hx u => ?_)
+            (fun u v hag s hs => ?_) hIH
+          · show blockBlowupCoordQuot pv x (edgeShearRaw d cse φ u) = u x
+            rw [blockBlowupCoordQuot, if_neg (hxne x hx).1, hedgeBS]
+            exact PivotPres.blockShear_fixes_of_displacement_zero φ u x (hshv x hx u)
+          · show blockBlowupCoordQuot pv s (edgeShearRaw d cse φ u)
+                = blockBlowupCoordQuot pv s (edgeShearRaw d cse φ v)
+            rw [blockBlowupCoordQuot, blockBlowupCoordQuot]
+            by_cases hsp : s = pv
+            · rw [if_pos hsp, if_pos hsp]
+            · rw [if_neg hsp, if_neg hsp, hedgeBS]
+              show blockShear φ u s = blockShear φ v s
+              have hφs : φ u s = φ v s :=
+                (ignoresCoords_univ_iff_agree (fun z => φ z s) (layerCoords d ℓ)).mp
+                  (by have := hwc2 ℓ hℓgt s; rwa [hguniv] at this) u v hag
+              simp only [blockShear, Pi.add_apply, hag s hs, hφs]
+        · have hδ0 : edgeδ d p' = false := by
+            cases h : edgeδ d p' with | false => rfl | true => exact absurd h hδ
+          have hfun : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j
+              = fun u => g (stepMapRaw d cse c pv φ u) := by
+            funext u
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j u = _
+            rw [foldResid, dif_neg hnt, if_neg (by simp [hδ0])]; rfl
+          rw [hfun]
+          refine homogeneousDeg1On_comp_of_fixing g (layerCoords d ℓ) (stepMapRaw d cse c pv φ)
+            (fun x hx u => ?_) (fun u v hag s hs => ?_) hIH
+          · show blockBlowupMap c pv (edgeShearRaw d cse φ u) x = u x
+            rw [Core.Aoyagi.blockBlowupMap_offCenter_eq c pv (edgeShearRaw d cse φ u) (hxne x hx).2,
+              hedgeBS]
+            exact PivotPres.blockShear_fixes_of_displacement_zero φ u x (hshv x hx u)
+          · have hES : ∀ w, w ∉ layerCoords d ℓ → edgeShearRaw d cse φ u w = edgeShearRaw d cse φ v w := by
+              intro w hw
+              have hφw : φ u w = φ v w :=
+                (ignoresCoords_univ_iff_agree (fun z => φ z w) (layerCoords d ℓ)).mp
+                  (by have := hwc2 ℓ hℓgt w; rwa [hguniv] at this) u v hag
+              rw [hedgeBS]; show blockShear φ u w = blockShear φ v w
+              simp only [blockShear, Pi.add_apply, hag w hw, hφw]
+            have hpivc : pv ∉ layerCoords d ℓ := by
+              intro h; have := decode_layer_of_mem_layerCoords d ℓ pv h; rw [hcsl] at hℓgt; omega
+            show blockBlowupMap c pv (edgeShearRaw d cse φ u) s
+              = blockBlowupMap c pv (edgeShearRaw d cse φ v) s
+            unfold blockBlowupMap
+            by_cases hsp : s = pv
+            · rw [if_pos hsp, if_pos hsp]; exact hES pv hpivc
+            · by_cases hsc2 : s ∈ c
+              · rw [if_neg hsp, if_pos hsc2, if_neg hsp, if_pos hsc2, hES pv hpivc, hES s hs]
+              · rw [if_neg hsp, if_neg hsc2, if_neg hsp, if_neg hsc2, hES s hs]
+      · -- ℓ = child_sl = p'.layer + 1: the shear is the recoord X-linear form → comp_of_linear
+        have hℓpv1 : ℓ = p'.conState.layer + 1 := hℓeq.symm.trans hcsl
+        obtain ⟨hlin_bs, hC⟩ := canonNorm_blockShear_linear_on_succLayer d p'.conState pv hN1
+        have hxne : ∀ x ∈ layerCoords d ℓ, x ≠ pv ∧ x ∉ c := by
+          intro x hx
+          have hxℓ := decode_layer_of_mem_layerCoords d ℓ x hx
+          refine ⟨fun h => ?_, fun h => ?_⟩
+          · rw [h] at hxℓ; rw [hℓpv1] at hxℓ; omega
+          · have := hcb x h; rw [hℓpv1] at hxℓ; omega
+        subst hℓpv1
+        by_cases hδ : edgeδ d p' = true
+        · have hfun : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j
+              = fun u => g (fun k => blockBlowupCoordQuot pv k (edgeShearRaw d cse φ u)) := by
+            funext u
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j u = _
+            rw [foldResid, dif_neg hnt, if_pos hδ]; rfl
+          rw [hfun]
+          refine homogeneousDeg1On_comp_of_linear g (layerCoords d (p'.conState.layer + 1))
+            (fun u k => blockBlowupCoordQuot pv k (edgeShearRaw d cse φ u))
+            (recoordCoeff d p'.conState pv hN1) (fun u v hag s hs => ?_) (fun u x hx => ?_) hC hIH
+          · show blockBlowupCoordQuot pv s (edgeShearRaw d cse φ u)
+                = blockBlowupCoordQuot pv s (edgeShearRaw d cse φ v)
+            rw [blockBlowupCoordQuot, blockBlowupCoordQuot]
+            by_cases hsp : s = pv
+            · rw [if_pos hsp, if_pos hsp]
+            · rw [if_neg hsp, if_neg hsp, hedgeBS]
+              show blockShear φ u s = blockShear φ v s
+              have hφs : φ u s = φ v s := by
+                rw [hvpin]; exact canonNormalizationOf_agree_off_succLayer d p'.conState pv u v hag s hs
+              simp only [blockShear, Pi.add_apply, hag s hs, hφs]
+          · show blockBlowupCoordQuot pv x (edgeShearRaw d cse φ u)
+                = ∑ jj ∈ layerCoords d (p'.conState.layer + 1), recoordCoeff d p'.conState pv hN1 u x jj * u jj
+            rw [blockBlowupCoordQuot, if_neg (hxne x hx).1, hedgeBS, hvpin, hlin_bs u x hx]
+        · have hδ0 : edgeδ d p' = false := by
+            cases h : edgeδ d p' with | false => rfl | true => exact absurd h hδ
+          have hfun : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j
+              = fun u => g (stepMapRaw d cse c pv φ u) := by
+            funext u
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j u = _
+            rw [foldResid, dif_neg hnt, if_neg (by simp [hδ0])]; rfl
+          rw [hfun]
+          refine homogeneousDeg1On_comp_of_linear g (layerCoords d (p'.conState.layer + 1))
+            (stepMapRaw d cse c pv φ) (recoordCoeff d p'.conState pv hN1)
+            (fun u v hag s hs => ?_) (fun u x hx => ?_) hC hIH
+          · have hES : ∀ w, w ∉ layerCoords d (p'.conState.layer + 1) →
+                edgeShearRaw d cse φ u w = edgeShearRaw d cse φ v w := by
+              intro w hw
+              rw [hedgeBS]; show blockShear φ u w = blockShear φ v w
+              have hφw : φ u w = φ v w := by
+                rw [hvpin]; exact canonNormalizationOf_agree_off_succLayer d p'.conState pv u v hag w hw
+              simp only [blockShear, Pi.add_apply, hag w hw, hφw]
+            have hpivc : pv ∉ layerCoords d (p'.conState.layer + 1) := by
+              intro h; have := decode_layer_of_mem_layerCoords d (p'.conState.layer + 1) pv h; omega
+            show blockBlowupMap c pv (edgeShearRaw d cse φ u) s
+              = blockBlowupMap c pv (edgeShearRaw d cse φ v) s
+            unfold blockBlowupMap
+            by_cases hsp : s = pv
+            · rw [if_pos hsp, if_pos hsp]; exact hES pv hpivc
+            · by_cases hsc2 : s ∈ c
+              · rw [if_neg hsp, if_pos hsc2, if_neg hsp, if_pos hsc2, hES pv hpivc, hES s hs]
+              · rw [if_neg hsp, if_neg hsc2, if_neg hsp, if_neg hsc2, hES s hs]
+          · show blockBlowupMap c pv (edgeShearRaw d cse φ u) x = _
+            rw [Core.Aoyagi.blockBlowupMap_offCenter_eq c pv (edgeShearRaw d cse φ u) (hxne x hx).2,
+              hedgeBS, hvpin, hlin_bs u x hx]
+    · -- SHEAR-ID (case11/rollover): `edgeShearRaw = id`, so `σ` FIXES every layer `≥ child_sl` → comp_of_fixing.
+      have hedgeId : edgeShearRaw d cse φ = id := by
+        rcases hc : cse with _ | _ | _ | _
+        · rfl
+        · exact absurd (Or.inl hc) hactive
+        · exact absurd (Or.inr hc) hactive
+        · rfl
+      -- pivot below layer `ℓ`: case11 pivot is a below-layer ledger corner; rollover has `c = ∅` (σ = id)
+      by_cases hδ : edgeδ d p' = true
+      · -- δ = 1
+        have hcl : p'.conState.cleared = 0 := of_decide_eq_true hδ
+        by_cases hc11 : cse = StepCase.case11
+        · -- δ1 case11: child_sl = p'.layer; pivot born strictly below p'.layer
+          simp only [hc11] at hpivpin
+          have hsce : sc.ecase = StepCase.case11 := hecase.trans hc11
+          have hmi : sc.esubst.mergeIdx < p'.conState.numDiv :=
+            conOracle_case11_mergeIdx_lt p'.conState sc hsc hsce
+          obtain ⟨hval, hlayerLE, hfresh, -⟩ := hpInv
+          have hcv := hval ⟨sc.esubst.mergeIdx, hmi⟩
+          have hS : (p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1 < N := hcv.1
+          have hrr : (p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).2
+              < d (⟨(p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1, hS⟩ : Fin N).succ :=
+            hcv.2.2 _ rfl
+          have hcc : (p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).2
+              < d (⟨(p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1, hS⟩ : Fin N).castSucc :=
+            hcv.2.1 _ rfl
+          have hcpsome : canonPivotOf d p'.conState sc
+              = some (tupIdxEquiv d ⟨⟨⟨_, hS⟩, ⟨_, hrr⟩⟩, ⟨_, hcc⟩⟩) := by
+            simp only [canonPivotOf, hsce]; rw [dif_pos hmi]
+            simp only [cornerToFlat]; rw [dif_pos hS, dif_pos hrr, dif_pos hcc]
+          have hpiv : pv = tupIdxEquiv d ⟨⟨⟨_, hS⟩, ⟨_, hrr⟩⟩, ⟨_, hcc⟩⟩ := (hpivpin _ hcpsome).symm
+          have hpvlt : (((tupIdxEquiv d).symm pv).1.1 : ℕ) < p'.conState.layer := by
+            rw [hpiv, Equiv.symm_apply_apply]
+            rcases eq_or_lt_of_le (hlayerLE ⟨sc.esubst.mergeIdx, hmi⟩) with heq | hlt
+            · exact absurd (hfresh ⟨sc.esubst.mergeIdx, hmi⟩ heq)
+                (by rw [hcl]; exact Nat.not_lt_zero _)
+            · exact hlt
+          have hcsl : supportLayerOf ns = p'.conState.layer := by
+            rcases htrans with ⟨he, _, _, _⟩ | ⟨he, _, _⟩ | ⟨_, hL, hC⟩
+            · exact absurd (hsce.symm.trans he) (by simp)
+            · rcases he with he | he <;> exact absurd (hsce.symm.trans he) (by simp)
+            · rw [hchild] at hL hC; rw [supportLayerOf, hC, hcl, if_pos rfl, hL]
+          have hfun : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j
+              = fun u => g (fun k => blockBlowupCoordQuot pv k (edgeShearRaw d cse φ u)) := by
+            funext u
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j u = _
+            rw [foldResid, dif_neg hnt, if_pos hδ]; rfl
+          rw [hfun]
+          have hxne : ∀ x ∈ layerCoords d ℓ, x ≠ pv := by
+            intro x hx h
+            have hxℓ := decode_layer_of_mem_layerCoords d ℓ x hx
+            rw [h] at hxℓ; have hle := hℓsup; rw [hcsl] at hle; omega
+          refine homogeneousDeg1On_comp_of_fixing g (layerCoords d ℓ)
+            (fun u k => blockBlowupCoordQuot pv k (edgeShearRaw d cse φ u)) (fun x hx u => ?_)
+            (fun u v hag s hs => ?_) hIH
+          · show blockBlowupCoordQuot pv x (edgeShearRaw d cse φ u) = u x
+            rw [hedgeId, blockBlowupCoordQuot, if_neg (hxne x hx), id_eq]
+          · show blockBlowupCoordQuot pv s (edgeShearRaw d cse φ u)
+                = blockBlowupCoordQuot pv s (edgeShearRaw d cse φ v)
+            rw [hedgeId, blockBlowupCoordQuot, blockBlowupCoordQuot]
+            by_cases hsp : s = pv
+            · rw [if_pos hsp, if_pos hsp]
+            · rw [if_neg hsp, if_neg hsp]; exact hag s hs
+        · -- δ1 rollover: unreachable (rollover needs cleared ≥ widthMinUpto > 0)
+          exfalso
+          rcases htrans with ⟨_, hge, _, _⟩ | ⟨he, _, _⟩ | ⟨he, _, _⟩
+          · have := widthMinUpto_pos hpos (p'.conState.layer + 1); rw [hcl] at hge; omega
+          · exact hactive (Or.symm (hecase ▸ he))
+          · exact hc11 (hecase.symm.trans he)
+      · -- δ = 0: child_sl = p'.layer + 1; σ fixes all layers ≥ p'.layer+1 (blow-up off center, edgeShear id)
+        have hδ0 : edgeδ d p' = false := by
+          cases h : edgeδ d p' with | false => rfl | true => exact absurd h hδ
+        have hcl : p'.conState.cleared ≠ 0 := fun h => by simp [edgeδ, h] at hδ0
+        have hcsl : supportLayerOf ns = p'.conState.layer + 1 := by
+          rcases htrans with ⟨_, _, hL, hC⟩ | ⟨_, hL, hC⟩ | ⟨_, hL, hC⟩ <;> rw [hchild] at hL hC
+          · rw [supportLayerOf, hC, if_pos rfl, hL]
+          · rw [supportLayerOf, hC, if_neg (by omega), hL]
+          · rw [supportLayerOf, hC, if_neg hcl, hL]
+        have hfun : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j
+            = fun u => g (stepMapRaw d cse c pv φ u) := by
+          funext u
+          show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) j u = _
+          rw [foldResid, dif_neg hnt, if_neg (by simp [hδ0])]; rfl
+        rw [hfun]
+        have hxc : ∀ x ∈ layerCoords d ℓ, x ∉ c := by
+          intro x hx h
+          have hxℓ := decode_layer_of_mem_layerCoords d ℓ x hx
+          have := hcb x h; have hle := hℓsup; rw [hcsl] at hle; omega
+        by_cases hc11 : cse = StepCase.case11
+        · -- case11: the reused pivot sits inside `c`, hence strictly below layer `ℓ`
+          simp only [hc11] at hpivpin
+          have hsce : sc.ecase = StepCase.case11 := hecase.trans hc11
+          have hmi : sc.esubst.mergeIdx < p'.conState.numDiv :=
+            conOracle_case11_mergeIdx_lt p'.conState sc hsc hsce
+          obtain ⟨hval, hlayerLE, -, -⟩ := hpInv
+          have hcv := hval ⟨sc.esubst.mergeIdx, hmi⟩
+          have hS : (p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1 < N := hcv.1
+          have hrr : (p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).2
+              < d (⟨(p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1, hS⟩ : Fin N).succ :=
+            hcv.2.2 _ rfl
+          have hcc : (p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).2
+              < d (⟨(p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1, hS⟩ : Fin N).castSucc :=
+            hcv.2.1 _ rfl
+          have hcpsome : canonPivotOf d p'.conState sc
+              = some (tupIdxEquiv d ⟨⟨⟨_, hS⟩, ⟨_, hrr⟩⟩, ⟨_, hcc⟩⟩) := by
+            simp only [canonPivotOf, hsce]; rw [dif_pos hmi]
+            simp only [cornerToFlat]; rw [dif_pos hS, dif_pos hrr, dif_pos hcc]
+          have hcpsomePv : canonPivotOf d p'.conState sc = some pv := by
+            rw [hcpsome, ← (hpivpin _ hcpsome)]
+          have hpvc : pv ∈ c := by
+            rw [hcenter]
+            simp only [canonCenterOf, hsce, Finset.mem_union, Option.mem_toFinset, Option.mem_def]
+            exact Or.inl hcpsomePv
+          have hpivc : pv ∉ layerCoords d ℓ := by
+            intro h
+            have := decode_layer_of_mem_layerCoords d ℓ pv h
+            have := hcb pv hpvc; have hle := hℓsup; rw [hcsl] at hle; omega
+          refine homogeneousDeg1On_comp_of_fixing g (layerCoords d ℓ) (stepMapRaw d cse c pv φ)
+            (fun x hx u => ?_) (fun u v hag s hs => ?_) hIH
+          · show blockBlowupMap c pv (edgeShearRaw d cse φ u) x = u x
+            rw [Core.Aoyagi.blockBlowupMap_offCenter_eq c pv (edgeShearRaw d cse φ u) (hxc x hx),
+              hedgeId, id_eq]
+          · show blockBlowupMap c pv (edgeShearRaw d cse φ u) s
+              = blockBlowupMap c pv (edgeShearRaw d cse φ v) s
+            have hES : ∀ w, w ∉ layerCoords d ℓ → edgeShearRaw d cse φ u w = edgeShearRaw d cse φ v w := by
+              intro w hw; rw [hedgeId]; exact hag w hw
+            unfold blockBlowupMap
+            by_cases hsp : s = pv
+            · rw [if_pos hsp, if_pos hsp]; exact hES pv hpivc
+            · by_cases hsc2 : s ∈ c
+              · rw [if_neg hsp, if_pos hsc2, if_neg hsp, if_pos hsc2, hES pv hpivc, hES s hs]
+              · rw [if_neg hsp, if_neg hsc2, if_neg hsp, if_neg hsc2, hES s hs]
+        · -- rollover: `c = ∅`, so the blow-up is the identity — `σ = id`, fixing everything
+          have hcroll : cse = StepCase.rollover := by
+            rcases hc : cse with _ | _ | _ | _
+            · exact absurd hc hc11
+            · exact absurd (Or.inl hc) hactive
+            · exact absurd (Or.inr hc) hactive
+            · rfl
+          have hc0 : c = (∅ : Finset (Fin (flatDim d))) := by
+            rw [hcenter]; simp only [canonCenterOf, hecase.trans hcroll]
+          have hemp : ∀ z : Fin (flatDim d), z ∉ (∅ : Finset (Fin (flatDim d))) := fun z => by simp
+          refine homogeneousDeg1On_comp_of_fixing g (layerCoords d ℓ) (stepMapRaw d cse c pv φ)
+            (fun x hx u => ?_) (fun u v hag s hs => ?_) hIH
+          · show blockBlowupMap c pv (edgeShearRaw d cse φ u) x = u x
+            rw [hc0, Core.Aoyagi.blockBlowupMap_offCenter_eq ∅ pv (edgeShearRaw d cse φ u)
+              (hemp x), hedgeId, id_eq]
+          · show blockBlowupMap c pv (edgeShearRaw d cse φ u) s
+              = blockBlowupMap c pv (edgeShearRaw d cse φ v) s
+            rw [hc0, Core.Aoyagi.blockBlowupMap_offCenter_eq ∅ pv (edgeShearRaw d cse φ u)
+              (hemp s),
+              Core.Aoyagi.blockBlowupMap_offCenter_eq ∅ pv (edgeShearRaw d cse φ v)
+              (hemp s), hedgeId]
+            exact hag s hs
 
 end DLNFibre.DLN.Aoyagi
