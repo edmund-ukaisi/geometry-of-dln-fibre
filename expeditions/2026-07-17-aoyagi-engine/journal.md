@@ -18220,3 +18220,19 @@ Q2 (the statement's truth — it carries hbranch, so it can be true via opening 
 recursion; the real c_pivot is her E_J-unit/b-ledger structure, not the adversary). Consequence
 tree pre-routed: Q1y+Q2y = docstring/proof-route correction only (no re-open); Q1y+Q2n =
 statement-class STOP→elder; Q1n = proceed. The restate discipline: 11-for-11.
+
+## 2026-07-24 (~16:25) — seat-CAPR restate PASS (12-for-12); GO'd with the (B)-def + (A)-lemma
+pattern and bridge-state-only scoping
+
+CAPR's restate faithful on all four points (object/statement/induction-plan/don't-touch), with
+two well-spotted flags, both answered: (1) the def-shape fork RESOLVED as def+characterization —
+DEFINE sourceClearedResid by its own structural recursion ((B): the clear inserted at
+case2/case12 births, transport laws definitional — what the §4 induction wants) and PROVE the
+restriction characterization as a lemma ((A): sourceClearedResid_eq_restrict — NOT hygiene but
+the FIDELITY ANCHOR tying the Lean object to the certificate's verified facts, which are stated
+against the restriction); exact (B)-form settles with L4D at SPECIFY. (2) the Q₁-lift bridge:
+STATE in the SPECIFY, proof NOT in step-3 scope (a tracked frontier; its render = a separate
+small follow-on consuming the landed det-1-CoV machinery + ψ_gen) — the induction grind stays
+single-focus. Census expectations set. Worktree plan correct (no controller-root git-ops).
+Meanwhile pnp-cap verifies its Q1/Q2 pair on the cap frontier. Both critical-path lanes now past
+their restate gates.
