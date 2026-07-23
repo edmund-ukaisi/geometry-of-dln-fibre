@@ -17560,3 +17560,18 @@ Liveness: elder/L4D/L3T3/LL all active within the minute — the priority idiom 
 content-lemma grind, the CaseStepAssembly build, and LL's hold are all in motion. L4D banked its
 Codex L2-route verdict on -L4D-wall (e9bfd363d — /tmp re-homed as instructed). Nothing owed this
 tick beyond the memo refresh (done). Next expected: the elder's idiom ruling (gates 3 lanes).
+
+## 2026-07-23 (~23:50) — summit e-sites verified (L4D): the chain is ∀-LINEAR-e to the payoff; the
+pin cannot rfl at L5; relayed to the elder with the per-node subtlety
+
+L4D's step-2 finding: leaf_stepInv_of_path' + exists_atlasRealizesExponents' abstract e to
+(he0, he_lin) and call the case1 chain with abstract e; canonFlatten enters ONLY at the payoff.
+So (1) the pin idiom must thread THROUGH the assembly statements to the payoff (ladder-restating —
+the payoff statement itself is unchanged, already at canonFlatten; destination untouched);
+(2) IsLinearMap is INSUFFICIENT for the wall's conclusion (linear e mixes flat coords, breaking
+the e₂ split) — the current ∀-linear-e assembly statements always needed this amendment;
+(3) AGAINST consume: the Deg1 fact is consumed PER CASE11 NODE mid-induction — consume-style
+either adds a carried component whose case11-preservation IS the wall (need relocates, not
+dissolves) or quantifies per-node (the pin in disguise). All relayed to the elder; the touch set
+now includes the two assembly statements. L4D grinds the content lemma (idiom-independent);
+LL/L3T3-case1'' still gated on the ruling.
