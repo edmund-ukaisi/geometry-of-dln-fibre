@@ -132,6 +132,52 @@ theorem sourceClearedResid_eq_restrict (d : Fin (N + 1) → ℕ) (p : TreePath d
       = foldResid d (canonFlatten d) p j (fun k ↦ if k ∈ couplingCoords d p then 0 else u k) :=
   rfl
 
+/-- **The exceptional b-monomial** `∏_k (u k)^(m k)` of an exponent ledger `m` (Finsupp.prod). The
+accumulated exceptional divisor factor `b_i` of certificate §4 is `bMon (μ i)`. -/
+noncomputable def bMon {D : ℕ} (m : Fin D →₀ ℕ) (u : Fin D → ℝ) : ℝ :=
+  m.prod (fun k e ↦ (u k) ^ e)
+
+/-- **`bMon 0 = 1`** (empty ledger — the root has no exceptionals). -/
+@[simp] theorem bMon_zero {D : ℕ} (u : Fin D → ℝ) : bMon (0 : Fin D →₀ ℕ) u = 1 := by
+  simp [bMon]
+
+/-- **The b-ledger invariant `SourceClearedInv`** (certificate §4; hybrid ∃-bound multiset, pnp Q2-confirmed
++ elder-delta will bless the boost conjunct's shape). Per slot: an exponent ledger `μ` (per support coord)
+and clean coefficients `q`, with the source-cleared residual `= ∑_{i∈supportAt} bMon(μ i)·q i·u i`, where
+(1) `q` is continuous, (2) `q` ignores the edge-independent target `ledgerTarget p`, (3) each `μ i` reads only
+accumulated exceptionals, (4) THE BOOST LEDGER — at every real case11 extension the run-block coords carry
+`e₂`-exponent 0 and the extension coords carry exactly 1 (certificate §4 iv / Q3 restriction laws; the
+`u_{e₂}`-divisibility of the extra block). The step law (δ=1 subtracts / δ=0 adds the pivot exponent, the
+complement of `foldB`'s recursion) is the transport proofs' constructive content.
+
+⟨ELDER-DELTA FLAG⟩ conjunct (4) (the boost ledger) is the one design point: rendered here over real case11
+extensions using `ed.pivot` (= `canonPivotOf` for a case11 real branch); the elder blesses this vs a
+`StepChild`/`canonPivotOf` form vs a combinatorial run-relation. Conjuncts (1)-(3) + the decomposition are
+the Codex+L4D+cert-converged core. -/
+def SourceClearedInv (d : Fin (N + 1) → ℕ) (p : TreePath d) : Prop :=
+  ∀ j : Fin (foldNR d p),
+    ∃ (μ : Fin (flatDim d) → (Fin (flatDim d) →₀ ℕ))
+      (q : Fin (flatDim d) → (Fin (flatDim d) → ℝ) → ℝ),
+      (∀ i, ContinuousOn (q i) (foldRegion d (canonFlatten d) p)) ∧
+      (∀ i, IgnoresCoords (q i) (ledgerTarget d p) (foldRegion d (canonFlatten d) p)) ∧
+      (∀ i, ((μ i).support : Finset (Fin (flatDim d))) ⊆ accumulatedPivots d p) ∧
+      (∀ ed : TreeEdge d p, ed.case = StepCase.case11 →
+        (p.extend ed).IsRealBranch (canonFlatten d) →
+        ∀ i ∈ supportAt d p.conState.layer p.conState.cleared,
+          (i ∈ ed.center → (μ i) ed.pivot = 0) ∧ (i ∉ ed.center → (μ i) ed.pivot = 1)) ∧
+      (∀ u ∈ foldRegion d (canonFlatten d) p, sourceClearedResid d p j u
+        = ∑ i ∈ supportAt d p.conState.layer p.conState.cleared, bMon (μ i) u * q i u * u i)
+
+/-- **The invariant holds on every real branch** (certificate §4 induction: ROOT = `coreGen` at `μ=0`;
+δ=1 strict-transform subtracts the pivot exponent; δ=0 pullback adds it). STATE-ONLY here (tracked
+LIVE-frontier — the expedition's last hard proof, decomposed into root/δ=1/δ=0 in the fill). ⟨hpos may be
+needed by the cap; reconcile with the content lemma's hyps at the delta⟩. -/
+-- map: B-wall-sourceClearedInv-holds (the §4 b-ledger induction)
+theorem sourceClearedInv_holds (d : Fin (N + 1) → ℕ) (p : TreePath d)
+    (hbranch : p.IsRealBranch (canonFlatten d)) :
+    SourceClearedInv d p := by
+  sorry
+
 /-- **The Q₁-lift bridge** (certificate §2 — STATE-ONLY, tracked LIVE-frontier). The raw fold and the
 source-cleared residual are related by the parameter-space unipotent `Q₁` gauge (`A_L → Q₁·A_L`,
 `A_{L+1} → A_{L+1}·Q₁⁻¹`), which is det-1 and product-preserving, so the square-Frobenius loss `∑F²` is

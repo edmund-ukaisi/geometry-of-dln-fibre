@@ -92,6 +92,26 @@ theorem MergeBoostSplit.deg1SupportedOn {nR : ℕ} (d : Fin (N + 1) → ℕ)
       · simp only [if_neg hie, if_pos hip]; exact hαi i w hw m hm t
       · simp only [if_neg hie, if_neg hip]
 
+/-- **The case11 read-off** (certificate §4 iv) — `SourceClearedInv p` + a real case11 extension ⟹ the
+`MergeBoostSplit` of `sourceClearedResid d p` over `ed.center`. Witnesses: `e₂ = ed.pivot` (= `canonPivotOf`
+for a case11 real branch, `IsRealBranch`-pinned), `part = supportAt ∩ ed.center`, `extra = supportAt ∖
+ed.center`. The INV's boost conjunct gives the `u_{e₂}`-divisibility of the extra block; the target
+containment `case11_center_subset_ledgerTarget` + `ignoresCoords_of_subset` give IgnoresCoords-`ed.center`
+(the raw-c_i trap: `c_i = u_{e₂}·β_i` does NOT ignore `ed.center`, only `β_i` + the clean `q` do). STATE-ONLY
+(tracked LIVE-frontier). -/
+-- map: B-wall-mergeBoostSplit-of-sourceClearedInv (the §4 iv read-off assembly)
+theorem mergeBoostSplit_of_sourceClearedInv (d : Fin (N + 1) → ℕ)
+    {p : TreePath d} (ed : TreeEdge d p)
+    (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d))
+    (hinv : SourceClearedInv d p) :
+    ∃ e₂ ∈ ed.center, ∃ part extra : Finset (Fin (flatDim d)),
+      part ⊆ ed.center ∧ e₂ ∉ part ∧ (∀ k ∈ extra, k ∉ ed.center) ∧
+      MergeBoostSplit d (sourceClearedResid d p) e₂ part extra ed.center
+        (foldRegion d (canonFlatten d) p) := by
+  -- map: B-wall-mergeBoostSplit-of-sourceClearedInv
+  sorry
+
 /-- **The content lemma** (LIVE frontier, the capstone) — the SOURCE-CLEARED chart residual
 `sourceClearedResid d p` at a real case-1(1) merge branch satisfies `MergeBoostSplit` with
 `e₂ = canonPivotOf` (the reused divisor's birth corner), `part = supportAt ∩ ed.center`,
@@ -110,8 +130,8 @@ theorem foldResid_case11_mergeBoostSplit_sourceCleared (d : Fin (N + 1) → ℕ)
       part ⊆ ed.center ∧ e₂ ∉ part ∧ (∀ k ∈ extra, k ∉ ed.center) ∧
       MergeBoostSplit d (sourceClearedResid d p) e₂ part extra ed.center
         (foldRegion d (canonFlatten d) p) := by
-  -- map: B-wall-mergeboostsplit-content-sourceCleared (certificate §4 b-ledger induction)
-  sorry
+  -- map: B-wall-mergeboostsplit-content-sourceCleared — the §4 decomposition: read-off ∘ INV-holds
+  exact mergeBoostSplit_of_sourceClearedInv d ed hδ hc11 hbranch (sourceClearedInv_holds d p hbranch.1)
 
 /-- **[FOSSIL — SUPERSEDED-BY `foldResid_case11_mergeBoostSplit_sourceCleared`; retained for statement
 provenance]** The OLD raw-object content lemma (REFUTED-AS-STATED — see the banner below; consumer-less
