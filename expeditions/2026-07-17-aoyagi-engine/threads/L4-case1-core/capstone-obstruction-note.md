@@ -137,6 +137,35 @@ Per team-lead's kill-condition: CHART-ONLY ⟹ STOP, do not certificate around i
 statement-soundness re-shape (task #69). The FIX-object (source-column-cleared residual, below) is the
 constructive target for the re-shape.
 
+## CLOSING-CONTRACT (ii)/(iii) on the ruled `sourceClearedResid` — BOTH named bridges FAIL (exact)
+`verify/capstone_closing_ii.py` (exit 0), ruled object `sourceClearedResid := foldResid ∘
+(ancestor-column-clear)`, three witnesses (2,2,2,2)/(3,3,2,2)/(3,3,3,2):
+
+- **(ii) ideal-equality `⟨sourceClearedResid⟩ = ⟨foldResid⟩`: FALSE** (both inclusions fail, every
+  witness). The "column-clear is regular / Lemma-1-neutral" expectation does NOT hold at the slot-ideal
+  level. Also `⟨coreGen⟩` (the ∏C product) is NOT preserved by the clear — the clear genuinely changes
+  the product, so it is not a product-preserving CoV.
+- **L4D's decomposition route (b) also FAILS as sketched:** the coupling remainder `r_j = foldResid_j −
+  sourceCleared_j` (= `2·u₀₁₀·(…)` on (2,2,2,2)) is in NONE of `⟨sourceCleared⟩`, `⟨ed.center⟩`,
+  `⟨pivot⟩` — in particular it is NOT `u_{pivot}`-divisible, so the δ=1 strict-transform discharge of the
+  remainder does not go through.
+- **(iii) StepInv `∃q` transport — cannot go via either named bridge.** The append crux
+  `foldResid_stepMap_eq_pivot_mul` needs the parent residual ∈ `⟨ed.center⟩` for a continuous `q`; on the
+  RAW object that is FALSE (the whole obstruction), and neither (ii) (ideal-equality) nor (b)
+  (pivot-divisible remainder) supplies a route to re-derive it for the cleared object. **Kill-condition
+  (team-lead's (iii)) is TRIGGERED.**
+
+**INFERENCE (not slot-ideal fact):** `sourceClearedResid = raw|_{u₀₁₀=0}` genuinely DROPS the raw fold's
+dependence on `u₀₁₀`, and `raw` does depend on it. No det-1 CoV of the full space can bridge a function
+to one with strictly fewer essential coordinates, so the cleared↔raw relation is inherently a RESTRICTION,
+not a CoV — the det-1 render-fix is dead for a dimension reason (not only the chart-degeneration of
+team-lead's map (iii)). RLCT-neutrality, IF it holds, must therefore be a GAUGE / cover-membership
+argument on `u₀₁₀` (whether the loss's RLCT is invariant under fixing this coordinate) — NOT an ideal
+equality. That is exactly the elder's §7.5 (paper-first: is the intermediate clear Lemma-1-internal / a
+CHART/COVER structure / a misread). The exact-algebra verdict here: the ideal-equality and
+pivot-divisible-decomposition bridges are both closed; the bridge must be the gauge/cover one or the
+object/statement re-shape must go further.
+
 ## Kill-condition for THIS obstruction
 If a real canonical case11 branch is exhibited on which `Deg1SupportedOn (foldResid p) ed.center`
 HOLDS (each slot in ⟨ed.center⟩ on the center's zero-variety), the obstruction is refuted for that
