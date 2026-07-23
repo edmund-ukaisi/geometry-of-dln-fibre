@@ -17429,3 +17429,15 @@ setup, Lemma 1+2, the invariant + ledger, case tree + rollover + boost, terminat
 extraction, λ=C/2, θ) × classification (CONSTRUCTED-with-full-function / PARTIAL / FRONTIER-OWNED /
 NOT-CONSTRUCTED-planned-vs-UNPLANNED / CITED) → threads/paper-coverage-audit.md, ranked gaps,
 unplanned loudest. Runs PARALLEL to the lanes; live-lane-touching finds flag immediately.
+
+## 2026-07-23 (~20:40) — commission #63 AMENDED (operator): the worked.tex UPLIFT — chunk-by-chunk vs the source PDF as images
+
+Operator's escalation of the audit, closing the routing-around loop one level deeper: worked.tex is
+itself a digest, and every ruling anchors to its line numbers — a transcription gap there is the
+certificate-§1 failure class at the reference layer. Elder now runs a FUSED pass per source chunk:
+(i) uplift-verify the reproduction against the PDF read AS IMAGES (not the extracted text — that is
+itself a lossy digest); (ii) coverage-tag against Lean. Rules: ANCHOR-FREEZE (no line-shifting
+worked.tex edits; errata to a sibling doc with severity + blast radius per item); IMMEDIATE-FLAG
+for discrepancies anchoring banked rulings or the live lanes; INCREMENTAL BANKING per chunk-batch
+(wedge-proof). First deliverable: the elder's chunk map. Source PDF confirmed in-repo:
+paper-sources/aoyagi-2023-consideration-of-learning-efficiency-of-dln/aoyagi-2023-neural-networks-preprint.pdf.
