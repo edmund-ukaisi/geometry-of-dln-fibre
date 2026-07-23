@@ -569,4 +569,41 @@ theorem case11_center_subset_ledgerTarget (d : Fin (N + 1) → ℕ)
     rw [supportAt, if_pos hcl, blockCoords, Finset.mem_image]
     exact ⟨q, by rw [Finset.mem_filter]; exact ⟨Finset.mem_univ _, hlayer, by omega⟩, rfl⟩
 
+/-- **ROOT base of the b-ledger invariant** (§4 (i), the induction's root case, factored standalone).
+At `.root` there are no exceptionals: `μ = 0` (`bMon 0 = 1`), `accumulatedPivots = ∅` so conjunct-3 is
+`∅ ⊆ ∅`, the boost conjunct is VACUOUS (`conOracle_conRoot_no_case11` — no case11 child off the root),
+and `sourceClearedResid .root = coreGen` decomposes over `supportAt d 0 0 = blockCoords d 0 =
+layerCoords d 0` with the CONTINUOUS `ledgerTarget`-ignoring coefficients of
+`coreGen_layer_continuous_decomp` (needs `hN : 0 < N`, the ℓ=0 layer). Pivot-hypothesis-free (the root has
+no pivots ⟹ the canonical-pivot sub-family is trivially met) — the turn-key root case of
+`sourceClearedInv_holds` under §9.4. -/
+theorem sourceClearedInv_root (d : Fin (N + 1) → ℕ) (hN : 0 < N) :
+    SourceClearedInv d (.root : TreePath d) := by
+  classical
+  have hlayer0 : (TreePath.root : TreePath d).conState.layer = 0 := rfl
+  have hcl : (TreePath.root : TreePath d).conState.cleared = 0 := rfl
+  have hsupp : supportAt d (TreePath.root : TreePath d).conState.layer
+      (TreePath.root : TreePath d).conState.cleared = layerCoords d 0 := by
+    rw [supportAt, if_pos hcl, hlayer0, blockCoords_zero_eq_layerCoords]
+  have haccum : accumulatedPivots d (TreePath.root : TreePath d) = ∅ := by
+    haveI hIE : IsEmpty (Fin (TreePath.root : TreePath d).conState.numDiv) :=
+      ⟨fun k => absurd k.2 (Nat.not_lt_zero _)⟩
+    rw [accumulatedPivots, Finset.univ_eq_empty, Finset.biUnion_empty]
+  have hlt : ledgerTarget d (TreePath.root : TreePath d) = layerCoords d 0 := by
+    rw [ledgerTarget, haccum, Finset.empty_union, hsupp]
+  intro j
+  obtain ⟨c, hc_cont, hc_ign, hc_repr⟩ := coreGen_layer_continuous_decomp d j 0 hN
+  refine ⟨fun _ => 0, c, ?_, ?_, ?_, ?_, ?_⟩
+  · intro i; exact (hc_cont i).continuousOn
+  · intro i; rw [hlt, foldRegion_eq_univ (canonFlatten d) TreePath.root]; exact hc_ign i
+  · intro i; rw [haccum]; simp
+  · intro ed hc11 hreal
+    exfalso
+    obtain ⟨sc, hsc, hecase, -⟩ := hreal.2.1
+    exact conOracle_conRoot_no_case11 d sc hsc (hecase.trans hc11)
+  · intro u _hu
+    rw [sourceClearedResid_root, hsupp, hc_repr u]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    simp only [bMon_zero, one_mul]
+
 end DLNFibre.DLN.Aoyagi
