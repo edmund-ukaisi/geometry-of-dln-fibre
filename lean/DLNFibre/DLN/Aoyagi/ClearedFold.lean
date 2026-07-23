@@ -335,6 +335,72 @@ theorem pivot_notMem_couplingCoords_extend (d : Fin (N + 1) → ℕ) {p : TreePa
   -- map: B-globalmove-pivot-notMem-couplingCoords (pnp: pivot=diagonal corner ∉ strictly-below-diag)
   sorry
 
+/-- **cert (i) CORE — the 3-branch vanishing from explicit geometric hypotheses** (#87-robust; the deep
+render). Given the edge pivot is the layer-`S` corner on column `= cleared` (`hpivL`/`hpivC` — the #87 pin,
+`pivot.col = s.cleared`, row free), the current below-column enters the child couplingCoords (`hgrow`, from
+case2/case12), and every ancestor coupling lives at layer `≤ S` (`hlayerbd`), `canonNormalizationOf` writes
+zero at every ancestor coupling on the child-cleared locus. Mechanism (pnp cert (i), 3ec969d8f): branch (i)
+interior `−readEntry(row,cleared)·readEntry(a_cur,col)` — ONE factor is a cleared coupling by the
+`row ≶ a_cur` dichotomy (current pivot's column when `row > a_cur`, the ancestor's when `row < a_cur`);
+branch (ii) writes layer `S+1`, where no ancestor coupling lives (vacuous by `hlayerbd`); branch (iii)'s
+sum vanishes termwise (the layer-`(S−1)` factor reads the ancestor's below-column). The public cert (i)
+derives `hpivL`/`hpivC`/`hgrow`/`hlayerbd` from `IsRealBranch` + the case (post-#87). -/
+private theorem canonNormalizationOf_vanishes_core (d : Fin (N + 1) → ℕ) {p : TreePath d}
+    (ed : TreeEdge d p) (u : Fin (flatDim d) → ℝ) {k : Fin (flatDim d)}
+    (hk : k ∈ couplingCoords d p)
+    (hpivL : (((tupIdxEquiv d).symm ed.pivot).1.1 : ℕ) = p.conState.layer)
+    (hpivC : (((tupIdxEquiv d).symm ed.pivot).2 : ℕ) = p.conState.cleared)
+    (hgrow : belowPivotCol d ed.pivot ⊆ couplingCoords d (p.extend ed))
+    (hlayerbd : ∀ z ∈ couplingCoords d p, (((tupIdxEquiv d).symm z).1.1 : ℕ) ≤ p.conState.layer) :
+    canonNormalizationOf d p.conState ed.pivot (couplingClear d (p.extend ed) u) k = 0 := by
+  classical
+  -- A read matching some (ancestor or current) pivot's below-column, on the cleared input, is zero.
+  have readzero : ∀ (L R C : ℕ) (piv : Fin (flatDim d)),
+      (((tupIdxEquiv d).symm piv).1.1 : ℕ) = L → (((tupIdxEquiv d).symm piv).2 : ℕ) = C →
+        (((tupIdxEquiv d).symm piv).1.2 : ℕ) < R →
+        belowPivotCol d piv ⊆ couplingCoords d (p.extend ed) →
+        readEntry d (couplingClear d (p.extend ed) u) L R C = 0 := by
+    intro L R C piv hL hC hlt hsub
+    cases hbf : blockEntryFlat d L R C with
+    | none => simp [readEntry, hbf]
+    | some fc =>
+      obtain ⟨hfcL, hfcR, hfcC⟩ := blockEntryFlat_decode d L R C hbf
+      refine readEntry_couplingClear_eq_zero d (p.extend ed) u L R C hbf (hsub ?_)
+      rw [mem_belowPivotCol]
+      exact ⟨hfcL.trans hL.symm, hfcC.trans hC.symm, by rw [hfcR]; exact hlt⟩
+  obtain ⟨pa, hka, hsuba⟩ := mem_couplingCoords_belowPivotCol d p hk
+  rw [mem_belowPivotCol] at hka
+  have hsuba' : belowPivotCol d pa ⊆ couplingCoords d (p.extend ed) :=
+    hsuba.trans (couplingCoords_mono_extend d ed)
+  simp only [canonNormalizationOf]
+  split_ifs with h1 h2 h3
+  · -- branch (i): the row_k vs pivot-row dichotomy
+    rcases lt_or_gt_of_ne h1.2.1 with hlt | hgt
+    · -- row_k < pivot row: factor 2 (the ancestor read) vanishes
+      rw [readzero p.conState.layer (((tupIdxEquiv d).symm ed.pivot).1.2 : ℕ)
+          (((tupIdxEquiv d).symm k).2 : ℕ) pa (hka.1.symm.trans h1.1) hka.2.1.symm
+          (lt_trans hka.2.2 hlt) hsuba', mul_zero]
+    · -- row_k > pivot row: factor 1 (the current pivot's column read) vanishes
+      rw [readzero p.conState.layer (((tupIdxEquiv d).symm k).1.2 : ℕ)
+          (((tupIdxEquiv d).symm ed.pivot).2 : ℕ) ed.pivot hpivL rfl hgt hgrow, neg_zero, zero_mul]
+  · -- branch (ii): vacuous — no ancestor coupling lives at layer S+1
+    exfalso; have hle := hlayerbd k hk; rw [h2.1] at hle; omega
+  · -- branch (iii): the sum vanishes termwise via the ancestor read
+    refine Finset.sum_eq_zero (fun k' _ => ?_)
+    split_ifs with hcond
+    · rfl
+    · push_neg at hcond
+      have hlt' : (((tupIdxEquiv d).symm pa).1.2 : ℕ) < k' := by
+        have hrow : (((tupIdxEquiv d).symm k).1.2 : ℕ) = p.conState.cleared := by
+          rw [h3.2, hpivC]
+        have := hka.2.2
+        rw [hrow] at this
+        have hne : k' ≠ p.conState.cleared := by rw [← hpivC]; exact hcond.1
+        omega
+      rw [readzero (((tupIdxEquiv d).symm k).1.1 : ℕ) k' (((tupIdxEquiv d).symm k).2 : ℕ) pa
+          hka.1.symm hka.2.1.symm hlt' hsuba', mul_zero]
+  · rfl
+
 /-- **cert (i) — `canonNormalizationOf` writes zero at ancestor couplings on the child-cleared locus.**
 For `k ∈ couplingCoords d p`, the current-edge shear `canonNormalizationOf d p.conState ed.pivot` applied to
 the child-cleared input vanishes at `k`. Each of the shear's 3 branches writes a `readEntry` product one of
