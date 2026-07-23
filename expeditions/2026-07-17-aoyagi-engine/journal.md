@@ -16635,3 +16635,29 @@ RegionRepresents (the R4 cofactor lemma — well-scoped detail-at-scale, a proof
 discharge; the Lean-side det-1/cofactor substrate partially exists in Core's WeightedCofactor/
 Schur machinery) + the canonical appendResidDescent cap. arch-C-3 has everything; the render
 completes as the single green-modulo-bridge transaction next.
+
+## 2026-07-23 (~08:00) — STOP-ON-SUSPECT on the bridge itself: the StepInv ideal close is Gröbner-suspect; the §7 branch LIVE again; the decisive check at pnp
+
+seat-L4D's suspect + self-correction (banked f392084fd, controller re-ran exit-0), the
+discipline firing on the FIX's own correctness lemma BEFORE the bake:
+- THE FINDING: the bridge the child StepInv close needs — uncleared foldResid ∈ ⟨cleared
+  foldResid⟩ (continuous cofactors) — is GRÖBNER-FALSE in the naive model on the E_J/pivot-
+  column entries (remainder γ·(A₂A₁)_{·,1}, not rescued by the b factor); D_J passes.
+- THE SELF-CORRECTION (owned): its earlier "Q₂/row-side moot" was about BOOSTREADY
+  (Deg1SupportedOn — honest_clear passes both ways); the STEPINV IDEAL close is a DIFFERENT
+  obligation that may require the Q₂⁻¹ neighbor-absorption the pure-zero r4Clear drops. The
+  boostReady-passes ⟹ StepInv-closes conflation is corrected; earlier journal entries
+  recording "Q₂ moot" as settled are hereby amended by this entry.
+- THE CAVEAT (suspect, not kill): the naive model omitted branch-(ii)'s scoped recoord — the
+  γ-column handler — and the failing remainder is exactly a γ-column term; absorption
+  plausible. THE DECISIVE CHECK (exact composition WITH branch-(ii) + b-ledger) at pnp,
+  priority confirmed, verdict vocabulary pinned: ABSORBED (bridge sound, +1 frontier
+  legitimate, bounded stands) vs SURVIVES (pure-zero r4Clear breaks the StepInv ideal; sound
+  R4 needs the Q₂⁻¹ fold-absorption = the §7 TRIPWIRE fires, elder's call).
+- arch-C-3 holds the bridge bake (structure rendered green; no claimed-correct close). The
+  elder alerted: the §7 branch is LIVE again — not fired; the next datum decides.
+
+Thirteenth-catch-candidate bookkeeping: if SURVIVES, this is the 13th statement-class catch
+(a would-have-been-false correctness lemma stopped pre-bake); if ABSORBED, it is the
+suspect-discipline working as designed with no defect. Either way: nothing false entered the
+tree.
