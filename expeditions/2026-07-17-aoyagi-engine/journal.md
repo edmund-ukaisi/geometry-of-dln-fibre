@@ -19493,3 +19493,20 @@ stays moot under (2′); its queue unchanged (CAPF kill consult → the equivari
 framed knowing fan-born divisors are two-coord in the raw chart). The elder rules #85 with the
 complete picture: L4D's admissibility confirm + pnp's phantom witness + CAPR's double-carry read
 — three decorrelated instruments, one converging diagnosis.
+
+## 2026-07-23 (~17:25 UTC) — INV's ROOT(b) banked (the last shape-independent leaf); the split
+countermand crossing caught + resolved; stale task text owned
+
+INV banked coreGen_layer_continuous_decomp (cea854477, axiom-clean, +5 private cycle-forced
+helpers + Core.SubmultComp import) — ALL shape-independent #72 work is now banked; the
+SourceClearedResid frontier is down to sourceClearedInv_holds + the three state-only
+GM/CAPF-facing statements. CROSSING: INV requested the split-spec bodies, quoting task #72's
+STALE text (my update lag — owned in the reply); the countermand re-asserted: the split is DEAD
+under §9.4, INV's banked defs ARE the final shape, the one incoming change is the CanonicalPivots
+sub-family predicate (CAPR specing). INV's leg-1 question answered: the double-carry concern
+lives on fan branches; on the canonical sub-family the ledger records match the fold factors and
+the containment is exactly right, gaining only the threaded hypothesis. INV's discipline note:
+it REFUSED to render spine defs off a summary (charter-§3 def-fidelity reflex — asked for exact
+bodies instead), which is precisely the reflex that would have caught the crossing even without
+the countermand. INV now blocked only on CAPR's spec + #85; suggested safe pre-draft: the root
+ASSEMBLY proof shape modulo the hypothesis.
