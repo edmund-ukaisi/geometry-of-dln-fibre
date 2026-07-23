@@ -21178,3 +21178,49 @@ for many ticks — good depth, but the navigator's step-back caught that I was u
 wall (the 4th via_engine frontier). Correcting NOW by pricing it before pouring more into the bottom.
 This is the autonomy taste-channel working: the decorrelated navigator supplied the "are we avoiding
 the hard part?" check the operator would otherwise hold.
+
+## 2026-07-24 (~00:35 UTC) — WALL PRICED (a): #73 IS the coupled monument; summit-after-#73 = wiring + the L7 detail-at-scale tiling → spawned seat-L7cover; convergence gate open (await pnp)
+
+The elder priced the wall — verdict (a), decisively (compass-recorded). Once #73 lands,
+exists_atlasRealizesExponents at coupled corank≥2 is BOOKKEEPING-over-cleared-leaves + the L7
+cover-tiling, NOT (b) a further coupled Hironaka construction. THE REASON: the coupled monument
+lives ENTIRELY in L5's proof-content = the leaf-invariant = #73 (cap+KILL+transport → per-leaf
+StepInv → PrincipalInv); the atlas assembly is coupling-AGNOSTIC (the coupling was resolved in
+L5/#73). Evidence: exists_atlasRealizesExponents's docstring folds the coupled difficulty into L5;
+L7's docstring "Nothing about L7 blocks the wall/L3/L5/L6/L8"; L6 = Chart packaging (bookkeeping),
+L8 = jac read-off (bookkeeping), L1 = LANDED. Paper-first: Aoyagi's coupling is in the RESOLUTION
+(Cases 1&2, regular Q,P, the b-ledger); the atlas is generic resolution-of-singularities packaging.
+
+So the navigator's hard-part-avoidance flag RESOLVES to the GOOD side: NOT a hidden un-owned coupled
+monster. The summit-clean path is #73 (in motion) + L7 (buildable) + L1/L6/L8 wiring.
+
+THE ONE CAVEAT: L7 leafPath_compactCover (MonumentAtlas:1850, b-leaf7) is NOT bookkeeping — a real
+combinatorial cover-tiling. But it's DETAIL-AT-SCALE (pnp-fan mechanism #11-14 + (2,2,2) instance;
+coupled = a bigger fanned tiling, SAME argument-kind, no single deep insight), INDEPENDENT of
+L4/L3/L5. This is exactly the charter's "build the buildable / detail-at-scale" — a render seat, not
+a cited monument.
+
+ACTIONS:
+- SPAWNED seat-L7cover (the b-leaf7 unblock): the elder confirmed b-leaf7 is a GATE-ORPHAN, not
+  blocked — the fan re-scope it waited on is SETTLED (#87 col-pin merged; row-repeat phantoms
+  excluded by STRANDING §9.11). L7 is over the RAW value cap's col-pinned charts (NOT sourceCleared),
+  general-d via the pnp-fan mechanism (threads/35-cover-cert), as a STANDALONE lemma (MonumentAtlas is
+  controller-single-writer → I wire it in at integration). INDEPENDENT of #73/KILL, so it
+  parallelizes cleanly — potentially co-critical, hence starting it NOW (don't serialize it after
+  #73). Addresses the navigator's "un-owned summit-after-#73 long-pole" flag directly.
+- CONVERGENCE GATE OPEN: verdict (a) is ONE paper-first read (elder). I commissioned pnp-transport's
+  decorrelated paper-first build-requirement read; the elder expects convergence on (a). I hold the
+  (a)-vs-(b) SETTLEMENT until pnp returns — provisional (a) now, decorrelated-confirmed on pnp
+  convergence. (L7 is needed under BOTH verdicts, so spawning seat-L7cover is safe regardless.)
+- TERMINOLOGY PINNED (elder, compass): "the case-1 wall" (L4/#38/#73) vs "the atlas monument"
+  (L6/L7/L8); "the INV step-transport" (P5/#73) vs "the σ-chart transport" (#81). Unqualified
+  "the wall"/"L5 transport" = the collision.
+
+**Operator-facing update (revises my prior flag):** the wall trajectory-uncertainty I surfaced last
+tick is RESOLVED to the good side (a) — no hidden coupled monument; the summit-after-#73 is buildable
+detail-at-scale (the L7 tiling, now owned by seat-L7cover) + wiring. Pending pnp's decorrelated
+convergence to fully settle (a)-vs-(b).
+
+**Status.** #73 (in motion: seat-descent KILL step + producers) + seat-L7cover (the L7 long-pole, now
+owned + parallel) + L1/L6/L8 wiring = the summit path. Awaiting: pnp wall-convergence, seat-L7cover
+mini-restate, seat-descent green milestone. Parallelization wave (P2/P3/#73-rebase) still queued.
