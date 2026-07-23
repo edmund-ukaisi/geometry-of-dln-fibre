@@ -15665,3 +15665,35 @@ under R4 (the carried invariant asserts the PRESENTED generators' form = her Let
 invariant). R0 remains FIRST at seat-L4D; R4 joins R1/R2/R3 in its Codex round and the elder's
 council. pnp's completed-candidate prediction (clean diag(1,e₂) + ideal-equal-to-honest +
 field holds) = the acceptance test under any arm. #47 completed.
+
+## 2026-07-23 (~01:15) — the elder blesses R4's DIRECTION: "F1 recurring at the step level"; criterion + two guards pinned; council discipline set
+
+The elder's R4 adjudication (gated on R0, unchanged first):
+- FAITHFUL, strongly: R4 = compass F1 at the step level. Her Q₁·(residual)·Q₂
+  (worked.tex:451-458) are UNIMODULAR generator transforms, Lemma-1-valid (:437) — ideal-level,
+  not coordinate ops. The N_p bake realized her clearing as a COORDINATE shear — the F1
+  category error (a coordinate map cannot perform an ideal operation) — and seat-L4D's jacDet
+  obstruction IS that error surfacing. R4 is the correction; it RESOLVES the obstruction rather
+  than fighting it. R2 disfavored (same rank-drop). Blessed on the merits, not as deflation.
+- CONTAINED-vs-SKELETON criterion (council-of-two, not the elder alone): ADDITIVE Q·(·)·Q'
+  component with StepInv/hshear/value-path/axiom-footprint UNCHANGED ⟹ CONTAINED (blessed
+  within the re-bake); re-basing the fold ideal-level or changing what StepInv MEANS ⟹
+  SKELETON (operator). The def-feasibility determination = seat-L4D + arch-C's, judged against
+  this criterion.
+- TWO MANDATORY GUARDS: (G1) UNIMODULARITY — ⟨rewritten⟩ = ⟨original⟩ as IDEALS (F2), not
+  same-variety: RLCT is an IDEAL invariant; a variety-only fix silently breaks it (pnp's
+  ⟨baked⟩≠⟨honest⟩ is why the guard exists). (G2) ONE PRESENTATION — the field is
+  generator-specific; field-proved = field-consumed on the SAME R4-rewritten presentation
+  (the coords-of-record hazard, presentation edition).
+- COUNCIL DISCIPLINE: R4's attractiveness (deflates the skeleton crisis) is itself the
+  visible-progress trap ⟹ the decorrelated Codex council fires BEFORE the bless — held until
+  R0=NO (not spent if R0 deflates); primed question drafted (inference-vs-fact flagged, judging
+  Aoyagi's math + standard commutative algebra, not our encoding).
+
+Controller relays: seat-L4D gets the criterion + guards as its post-R0 deliverable frame, with
+Codex sequencing tightened (R0 consult NOW; fork consult HELD until R0 — the elder's council
+consult is the math-side second view, the seat's covers def-feasibility); arch-C gets the FYI
+(the prospective third render item is likely the fold-step component, not a canonNormalizationOf
+branch) + an invitation to report def-edit-1 as its own unit when done. Operator-escalation
+likelihood DROPPED with the blast-radius containment (the elder notes the monument is NOT
+reopened). Queue: R0 verdict → (if NO) R4 council + def-feasibility → rendered statements.
