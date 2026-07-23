@@ -218,6 +218,38 @@ theorem couplingCoords_mono_extend (d : Fin (N + 1) → ℕ) {p : TreePath d} (e
   show x ∈ couplingCoords d (TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ)
   exact Finset.mem_union_left _ hx
 
+/-- **`belowPivotCol` membership** (index-arithmetic characterization; carrier-free, #87-independent). A
+flat coord `k` is a below-pivot entry iff its decoded layer/col match the pivot's and its decoded row is
+strictly below the pivot's row. Handles the opaque `tupIdxEquiv` (an abstract `Fintype.equivFin`) purely by
+the equiv round-trip — no nat arithmetic on `k`. -/
+theorem mem_belowPivotCol (d : Fin (N + 1) → ℕ) (pivot k : Fin (flatDim d)) :
+    k ∈ belowPivotCol d pivot ↔
+      (((tupIdxEquiv d).symm k).1.1 : ℕ) = (((tupIdxEquiv d).symm pivot).1.1 : ℕ) ∧
+        (((tupIdxEquiv d).symm k).2 : ℕ) = (((tupIdxEquiv d).symm pivot).2 : ℕ) ∧
+        (((tupIdxEquiv d).symm pivot).1.2 : ℕ) < (((tupIdxEquiv d).symm k).1.2 : ℕ) := by
+  unfold belowPivotCol
+  rw [Finset.mem_image]
+  constructor
+  · rintro ⟨qi, hqi, rfl⟩
+    have hrt : (tupIdxEquiv d).symm ((tupIdxEquiv d) qi) = qi := Equiv.symm_apply_apply _ _
+    rw [hrt]
+    exact (Finset.mem_filter.mp hqi).2
+  · intro h
+    exact ⟨(tupIdxEquiv d).symm k, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩,
+      Equiv.apply_symm_apply _ _⟩
+
+/-- **The current below-pivot column enters the child couplingCoords** (case2/case12; carrier-free,
+#87-independent). The step arm of `couplingCoords` unions in `belowPivotCol d ed.pivot` at a fresh clear. -/
+theorem belowPivotCol_subset_couplingCoords_extend (d : Fin (N + 1) → ℕ) {p : TreePath d}
+    (ed : TreeEdge d p) (hcase : ed.case = StepCase.case12 ∨ ed.case = StepCase.case2) :
+    belowPivotCol d ed.pivot ⊆ couplingCoords d (p.extend ed) := by
+  intro x hx
+  have hcc : couplingCoords d (p.extend ed) = couplingCoords d p ∪ belowPivotCol d ed.pivot := by
+    show couplingCoords d (TreePath.step p ed.center ed.pivot ed.case ed.nextState ed.shearφ) = _
+    rcases hcase with h | h <;> rw [h] <;> rfl
+  rw [hcc]
+  exact Finset.mem_union_right _ hx
+
 /-- **The edge pivot is not an ancestor coupling coordinate (ALL cases)** — the pivot is a diagonal corner
 (`canonPivotOf` at case11, `∈ canonCenterOf` diagonal at case12/case2, both via `IsRealBranch`), and
 `couplingCoords` are strictly-below-diagonal `belowPivotCol` entries; pnp-verified structurally. Hence
