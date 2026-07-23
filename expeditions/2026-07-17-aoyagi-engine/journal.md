@@ -19779,3 +19779,26 @@ no-current-edge statements. Relayed to GM. GM's remaining unit is now FULLY DETE
 open questions: fix the S2 pair (cert (ii)'s corrected form) → thread the carrier (on INV's def
 push) → keystone (a) via cert (i) → S2 proofs → appends → conjA → CAPF-dependent conjB →
 re-points → the full-green worktree gate. Every ingredient is delivered, verified, and specified.
+
+## 2026-07-23 (~19:40 UTC) — #86 FULLY CLOSED: (C) labeled-jac PRESERVED both sub-species
+(re-ran exit 0) ⟹ (1)-ALONE locks; the #87 bake certificate dispatched — the expedition's LAST
+commissioned design item
+
+(C): the codim data is transport-invariant — the exponent MULTISETS are σ-preserved for both
+birth sub-species (δ=1-born fan-factor {8,3} realigning col 2→0; δ=0-born scaling {8,3}
+realigning row 2→1 — both landing exactly on the canonical exponents). (2′) does not fail at
+the codim; per §9.7's framework (1)-ALONE locks; divBirthCoord confirmed as the her-frame
+TARGET. THE WHOLE OFF-CANONICAL DISPOSITION IS SETTLED: one def-edit (canonCenterOf
+column-exclusion), everything else transports. The elder's 25th-catch division-of-labor note
+banked (the MATH claim held — the transcription check was pnp's designed instrument, which
+fired in role; both instruments earning their keep) + the folded-pass scope grew two explicit
+scan items (the child-cleared input argument; the no-op-coincidence docstring honesty). #87's
+SOURCE-FIDELITY CERTIFICATE dispatched to pnp with three deliverables: the column-exclusion
+trace vs her D₁ (phantom family + a second wide+fan witness, WITH the no-under-admission check
+— legitimate fan births stay admissible, they are the cover), the ORACLE-GUARD INTERPLAY design
+input (IsRealBranch-level kill vs oracle-guard exclusion, termination/exhaustion implications),
+and the ROW-EXCLUSION question (her D₁ removes row AND column). Elder bake-blesses on it; a
+render seat takes the lane after. STATE: this was the last commissioned DESIGN item — every
+other open thread on the expedition is now pure grinding (GM's determined unit; INV's render
+batch + read-off; CAPF's sub-lemma + route-(a) kill) or pre-triggered review (the folded pass;
+the bake-bless).
