@@ -18703,3 +18703,20 @@ commissioned with the full spec (pnp's construction + §8's scope boundary + its
 shapes + CAPR's primitives as the shared substrate + the per-case append split), restate-gated,
 SPECIFY → elder delta → proofs → the pnp cross-check. The expedition's remaining render work:
 the (i)-(iv) re-architecture + CAPR's induction + the cap render + the mechanical tail.
+
+## 2026-07-23 — #74 restate gate PASSED (2 deltas) + executor decision: fresh render seat (seat-GM); frame banked
+
+L4D's (i)-(iv) restate delivered and PASSED my gate: the §8 boundary exact (raw trio SURVIVES as
+the F-side of the lift), the cleared trio = raw∘couplingClear on CAPR's primitives (no
+duplication), FoldStepInvAt_cleared in-lane (single-writer respected), the per-case append split
+consuming CAPR's stepMap lemma + the NEW (ii) transports, consumers re-pointed. Two controller
+deltas added (not corrections): (1) the REGION obligation — couplingClear-into-foldRegion must be
+a STATED lemma at SPECIFY, never implicit (same for the continuity transport); (2) the Q₁-lift
+(iv) landing shape (proven vs named frontier) is a SPECIFY+elder decision, not a mid-grind
+discovery. EXECUTOR: accepted L4D's own honest recommendation — its context is very large; the
+restate is the high-value distillate; a FRESH seat renders from the banked frame at higher
+quality (the arch-C-4 pattern). seat-GM spawns off origin/expedition/aoyagi-engine-CAPR
+@ 1388f6192 (verified: canonical has NO Lean commits the lane lacks); L4D = def-owner consult.
+The elder's faithfulness note folded in: the def-fidelity anchor = pnp's cross-check of the exact
+def vs the natural precompose, a NAMED gate at post-SPECIFY def-stabilization. Frame banked at
+threads/L4-case1-core/global-move-render-frame.md (restate verbatim + deltas + gates + substrate).
