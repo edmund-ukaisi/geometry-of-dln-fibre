@@ -21122,3 +21122,59 @@ isolation) — avoids piecemeal spawns.
 actions), seat-descent's green milestones (→ I re-derive the Lean), the direct seat-KILL/pnp-cap
 growth-arm consult. Critical path = the KILL render; the navigator confirms whether any idle
 producer is secretly co-critical.
+
+## 2026-07-24 (~00:15 UTC) — NAVIGATOR PASS #3 (#73-producer parallelization audit): headline = the geometric-atlas "WALL" is parked/unpriced/partly-blocked while the team grinds the cleared bottom → commissioned the wall-pricing (elder+pnp, #99) + surfaced to operator; parallelization wave queued
+
+navigator3 delivered the #73-producer parallelization + critical-path audit (propose-only,
+lane-Lean-verified). Two payoffs: a clean producer map (parallelization) + a load-bearing
+trajectory flag (the wall).
+
+**#73 PRODUCER MAP (verified):** P1 KILL step (IN-FLIGHT, seat-descent, the long-pole); P2
+sourceClearedResid_stepMap_eq_pivot_mul (IDLE, cert-backed, PARALLELIZABLE); P3 Q₁-lift bridge
+rlctGlobal_sumSqFam_foldResid_eq_sourceCleared (IDLE, cert-backed, PARALLELIZABLE, independent of
+KILL+cleared-chain); P4 sourceCleared cap (=KILL landing); P5 INV transport arm sourceClearedInv_holds
+step (root proven, #87-gated-DONE, via-rebase sorry-prop); P6 GM's 5 cleared frontiers (HELD, correct
+KEEP-HOLD); P6′ canonNormalizationOf_vanishes (closed MODULO #73 hlayerbd = a WIRING sorry,
+parallelizable via rebase); P7 LastLayerWire cleared restatement (downstream); P8
+case11_center_subset_ledgerTarget (minor idle, likely parallelizable); P9 aggregator/summit wire
+(controller). Parallelizable-now = P2/P3/P6′/P8; correctly-deferred = P4/P6/P7.
+
+**THE HEADLINE (Q3/Q4 — hard-part-avoidance flag):** the KILL→#73 framing is the BOTTOM of the
+summit dependency, not the whole path. via_engine's sole open dep = exists_coreResolution's ONE
+geometric sorry (LearningCoefficient:319) = {cap, KILL, transport, WALL}. #73 = cap+KILL+transport
+(the bottom). "THE WALL" = the coupled-B geometric ATLAS monument (MonumentAtlas ~18 sorries), owner=
+PARKED, b-leaf7 BLOCKED on the elder fan re-scope (gate-orphan), compass = coupled atlas DON'T-HAVE/
+unbuilt at corank≥2. So the whole active team grinds the tractable BOTTOM while the genuine monument
+(the wall — a via_engine frontier per #94, "THE frontier, NOT OPTIONAL" per the charter) sits
+un-owned + partly-blocked + UNPRICED. Whether the wall is (a) bookkeeping-over-cleared-leaves-once-#73
+or (b) a further coupled Hironaka construction is the single biggest uncertainty on the true path to
+summit-clean. This is the "bold to build the buildable, humble before the mountain — but don't grind
+the buildable to AVOID the mountain" discipline; the navigator caught a genuine trajectory risk.
+Also: the 7 capstone lanes are NOT git-descended from #87 (common base cba5c8cc1, 11-30 commits
+ahead, overlapping edits) — #73's "one build-green merge" is a real multi-lane integration,
+currently back-loaded behind the KILL.
+
+**CONTROLLER ACTIONS this tick:**
+1. COMMISSIONED THE WALL-PRICING (#99) — the priority. Elder (comprehension/F7: is exists_atlasRealizesExponents
+   at corank≥2 bookkeeping or a further construction? + unblock b-leaf7 + disambiguate the "wall" /
+   "L5-transport" name collisions) + pnp-transport (paper-first build-requirement: does the coupled-B
+   atlas at corank≥2 assemble from the cleared leaves+fan, or need a new construction? a worked
+   corank-2 witness). The answer reprioritizes the endgame allocation.
+2. SURFACED TO THE OPERATOR (this response + here): the trajectory flag — the wall is parked/unpriced
+   while the team grinds the bottom; I'm pricing it; will report. Knowing-decision-class, non-blocking.
+3. QUEUED the parallelization wave (navigator Rec 1+2): start the #73 rebase/co-location early
+   (incremental assembly, surfaces the #95(a) gate + CanonicalPivots dedup EARLY instead of
+   back-loading) + render the idle producers (P2/P3/P6′/P8). DEFERRED to next tick — launch as a
+   coherent wave informed by the wall-pricing (which sets whether to also start staffing the wall).
+   These are risk-free (needed under any outcome), off the KILL critical path, so a one-tick
+   sequencing costs nothing.
+
+**Flags banked:** terminology collisions ("the wall" #38-vs-atlas; "L5-transport" P5-vs-#81) →
+elder to pin. Gate-orphan b-leaf7 → elder to unblock. navigator NEXT-TRIGGER: the KILL growth-arm
+landing OR the first #73 rebase build.
+
+**Assessment (controller self-audit):** I have been steering hard on the cleared-chain/#95-gate arc
+for many ticks — good depth, but the navigator's step-back caught that I was under-attending the
+wall (the 4th via_engine frontier). Correcting NOW by pricing it before pouring more into the bottom.
+This is the autonomy taste-channel working: the decorrelated navigator supplied the "are we avoiding
+the hard part?" check the operator would otherwise hold.
