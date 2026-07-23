@@ -291,6 +291,40 @@ theorem mem_couplingCoords_belowPivotCol (d : Fin (N + 1) → ℕ) :
             = couplingCoords d p ∪ ∅ from rfl, Finset.union_empty] at hk ⊢
       exact ih hk
 
+/-- **`blockEntryFlat` decodes back to its nat indices** (round-trip; #87-independent). When the flat
+coord `fc` names the layer-`S` `(row, col)` block entry, its `tupIdxEquiv`-decode reads back `(S, row, col)`. -/
+theorem blockEntryFlat_decode (d : Fin (N + 1) → ℕ) (S row col : ℕ) {fc : Fin (flatDim d)}
+    (hfc : blockEntryFlat d S row col = some fc) :
+    (((tupIdxEquiv d).symm fc).1.1 : ℕ) = S ∧
+      (((tupIdxEquiv d).symm fc).1.2 : ℕ) = row ∧
+      (((tupIdxEquiv d).symm fc).2 : ℕ) = col := by
+  classical
+  simp only [blockEntryFlat] at hfc
+  split at hfc
+  · rename_i hS
+    split at hfc
+    · rename_i hr
+      split at hfc
+      · rename_i hc
+        obtain rfl := Option.some.inj hfc
+        rw [Equiv.symm_apply_apply]
+        exact ⟨rfl, rfl, rfl⟩
+      · simp at hfc
+    · simp at hfc
+  · simp at hfc
+
+/-- **A `readEntry` on a cleared input vanishes when it reads a coupling coordinate** (#87-independent).
+The bridge cert (i)'s branch analysis uses: each `canonNormalizationOf` factor reads a `belowPivotCol`
+entry, which lies in the child couplingCoords, so `couplingClear` zeros it. -/
+theorem readEntry_couplingClear_eq_zero (d : Fin (N + 1) → ℕ) (p : TreePath d)
+    (u : Fin (flatDim d) → ℝ) (S row col : ℕ) {fc : Fin (flatDim d)}
+    (hfc : blockEntryFlat d S row col = some fc) (hmem : fc ∈ couplingCoords d p) :
+    readEntry d (couplingClear d p u) S row col = 0 := by
+  unfold readEntry
+  rw [hfc]
+  show couplingClear d p u fc = 0
+  simp only [couplingClear, if_pos hmem]
+
 /-- **The edge pivot is not an ancestor coupling coordinate (ALL cases)** — the pivot is a diagonal corner
 (`canonPivotOf` at case11, `∈ canonCenterOf` diagonal at case12/case2, both via `IsRealBranch`), and
 `couplingCoords` are strictly-below-diagonal `belowPivotCol` entries; pnp-verified structurally. Hence
