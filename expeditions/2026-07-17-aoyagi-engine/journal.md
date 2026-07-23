@@ -16104,3 +16104,26 @@ agree-off lemma may SIMPLIFY with branch-(i) gone; the induction may survive if 
 outside blockShear — read arch-C's render report). Task #52 opened; seat-LL's frontier-#1
 unblock rides the L3T3 merge, one cycle behind. Board: still waiting on arch-C's
 §8(i)-conformance confirmation.
+
+## 2026-07-23 (~03:20) — pre-render consolidation: the wall's proof route pre-staged (3 steps, no field); L3T3's rebase burden = 2 one-line sites; u₀₀₁² resolved def-side too
+
+seat-L4D: (1) pnp's u₀₀₁² flag resolved at the def independently of (and matching) §8(j) —
+R4's Q₂ clears the pivot ROW; verified R4 block = diag(1, u₀₁₁−u₀₀₁·u₀₁₀) = the classical e₂,
+u₀₀₁-degree 1 — the §8(j) block-form test passing at SPEC level (pnp's run on the rendered
+formulas remains the binding gate). (2) Caveat-2 closed in the record. (3) THE WALL'S PROOF
+ROUTE pre-staged: foldResid p (case11) = the clean D_J ⟹ entries degree-1 on the block coords
+⟹ block coords ⊆ ed.center (partialBlock direct; the extras carry e₂ = the reused exceptional
+∈ center) ⟹ Deg1SupportedOn ed.center DIRECT. No b-chain field, no ChainNF, no induction —
+a support-inclusion + clean-block degree-1; lemma names pinned at the joint slot-confirm.
+
+seat-L3T3: reconciliation map vs the ruling — UNAFFECTED verified (0 supportAt/blockCoords
+refs in the induction, the X-linearity, clause-2, case11; J=0 sites unchanged by design);
+REBASE-TOUCH = exactly TWO one-line hCSchild sites (:364-365, :689-690 — the J≥1 equations
+whose RHS moves blockCoords→layerCoords; the clause-1 delegation is shape-agnostic). The
+swappable-parameter instruction paying off exactly as designed. Standing down until the
+REBAKE merge.
+
+BOARD: every lane is now either holding-on-the-render or rendering. The single moving target:
+arch-C's §8(i)-conformance confirmation + render report. Post-render sequence pinned:
+block-form battery (pnp) + slot-confirm (L4D+arch-C) + shape battery half (L4D) → elder
+delta-read → merge → L3T3 rebase (2 sites) → THE WALL (route pre-staged).
