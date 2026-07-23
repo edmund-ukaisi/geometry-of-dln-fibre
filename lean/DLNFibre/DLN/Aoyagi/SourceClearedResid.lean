@@ -69,6 +69,32 @@ theorem blockCoords_zero_eq_layerCoords (d : Fin (N + 1) → ℕ) :
   have hcast : d q.1.1.castSucc = d 0 := congrArg d (Fin.ext (by rw [Fin.coe_castSucc]; exact h1))
   exact lt_of_lt_of_le (hcast ▸ q.2.isLt) hge
 
+/-- **`submult` is continuous in the tuple** (Core-lift candidate — a general `Core.Submult` fact,
+kept local until a second consumer). By `Fin.induction` on the upper index through `submult_self`
+(base) / `submult_succ` (step, `Continuous.matrix_mul`), mirroring `Core.submult_congr`'s recursion.
+Feeds the ROOT `coreGen`-decomposition's continuity (the `bcoeff` are entrywise products of `submult`
+factors, `continuous_multPrefix`'s analogue for a variable lower index). -/
+theorem continuous_submult (d : Fin (N + 1) → ℕ) (i : Fin (N + 1)) :
+    ∀ (j : Fin (N + 1)) (hij : i ≤ j),
+      Continuous (fun A : Tuple (k := ℝ) d => submult d A i j hij) := by
+  intro j
+  induction j using Fin.induction with
+  | zero =>
+    intro hij
+    obtain rfl : i = 0 := le_antisymm hij (Fin.zero_le _)
+    simpa only [submult_self] using continuous_const
+  | succ p ih =>
+    intro hij
+    rcases eq_or_lt_of_le hij with hie | hilt
+    · subst hie
+      simpa only [submult_self] using continuous_const
+    · have hic : i ≤ p.castSucc := Fin.le_castSucc_iff.mpr hilt
+      have hfun : (fun A : Tuple (k := ℝ) d => submult d A i p.succ hij)
+          = (fun A : Tuple (k := ℝ) d => A p * submult d A i p.castSucc hic) := by
+        funext A; exact submult_succ d A i p hic
+      rw [hfun]
+      exact (continuous_apply p).matrix_mul (ih hic)
+
 /-- **The below-pivot entries of a case2/case12 cleared column** (the ancestor coupling coords of one
 edge). Decoding `pivot` to `(layer, a, b)` via `tupIdxEquiv`, this is the flat block
 `{(layer, r, b) : a < r}` — the entries of the cleared column `b` strictly below the pivot row `a`
