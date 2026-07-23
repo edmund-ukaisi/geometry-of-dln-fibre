@@ -18470,3 +18470,18 @@ deliverable set, all exit-0-scripted on its lane and synced to canonical: the co
 certificate §0-§9, the Q₁-lift, the width-axis coverage, the §12.2 checks, the §12.1 diagnostic.
 It holds as the render-phase exact-algebra consult (tripwire/re-engage/further checks). The live
 render = CAPR's #72; the one gate = the elder's SPECIFY delta.
+
+## 2026-07-24 (~21:40) — ELDER GREEN 6/6 on the SPECIFY; STEP-3 GO'd; the integration unit staged
+across three seats; THE C↔F BRIDGE named as the last soundness crux
+
+The delta-read survived all six items (the rfl-anchor confirmed genuinely definitional; the fossil
+banner correct; the §7/§12.2 conformance verified at the def). THE FLAG (not a SPECIFY defect —
+the knowingly-red build's source): the unprimed wall's conclusion must migrate to sourceClearedResid
+(currently a type error), and stepInv_child_delta1_append consumes Deg1-on-C while PRODUCING
+StepInv-on-F — with ⟨C⟩ ≠ ⟨F⟩, the reconciliation rides the append-analog + couplingClear and must
+be PROVEN, never assumed (§7.8's read-off-on-C vs recursion-on-F made concrete). DISPATCHED:
+CAPR STEP-3 GO (the bridge added to its tripwire list); L4D wakes for its two re-points (it owns
+the crux — its pivot-crux context); LL wakes for LastLayerWire:145 (signature-only expected;
+surface if the bridge bites). Board: #72 in progress (the last hard induction), #73 the
+integration unit. The pipeline end-state: the induction + the unit merge together, then the wall's
+debt truly = one lemma being actively proven with everything around it kernel-checked.
