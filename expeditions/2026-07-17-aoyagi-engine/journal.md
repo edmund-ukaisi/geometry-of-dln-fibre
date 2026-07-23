@@ -17121,3 +17121,28 @@ fold structure). (A) = (B)-per-edge + the-gauge-globally: the fidelity instinct 
 containment instinct were both right about their own layer. seat-L4D's slot-confirm corner
 fork re-targeted to (A) (triangular per-edge block, S≥1-guarded branch-(iii), the end-factor
 line present). Board unchanged: arch-C-4 renders; everything else holds.
+
+## 2026-07-23 (~13:35) — the cross-clear's HOME question: PROPERTY not recursion-transform (arch-C-4's trace + tripwire stop); routed for the elder's re-wording
+
+arch-C-4's finest-grained trace of the render (stopped correctly at the tripwire on #59):
+- WHY THE SPLICE FAILS: the δ=1 crux closes blockBlowupCoordQuot because that map is
+  PIVOT-COMPENSATED (agrees with stepMap off-center; extractable u_pivot factor on-center;
+  IgnoresCoords coeffs). The cross-clear zeros center coords the compensated residual
+  GENUINELY depends on at the coreGen level — the original equality witness does NOT re-close
+  over a spliced clear; a new crux would be needed and its model contradicts it.
+- THE PROPOSED HOME (matches all verified evidence): the clear = the boostReady PROPERTY.
+  The recursion closes by equality with the compensator shears ALONE (= the CURRENT GREEN
+  BUILD, rfl, census 0, no clear wired). The diag/triangular block = the Deg1SupportedOn
+  ed.center LEMMA (from the compensator structure, consumed by delta1_append's hdeg1); the
+  clear = the frame device inside that lemma's proof. Evidence fit: pnp's chart-frame
+  boostReady pass proved center-support OF THE UNCLEARED residual (e₂ atomic) — the
+  property-home is how the verified fact actually works. MORE contained than the splice
+  (recursion untouched entirely).
+- ROUTED: the elder rules the home (re-wording §9's clear-homing — likely simplifying);
+  seat-L4D def-confirms the hdeg1 consumption fit + the wall route's identity under the
+  property-home. arch-C-4 proceeds on #58 (ruling-independent); #59's wiring holds.
+
+The pattern-note: at every level of this arc, the fix has moved OUT of the recursion and INTO
+properties/gauges/presentations — the fold's coordinate core has needed only the sign, the
+scope, and the compensator branches. The recursion may end this arc untouched beyond the
+shear def itself.
