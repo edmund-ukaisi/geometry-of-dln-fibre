@@ -15384,3 +15384,37 @@ pnp-transport: charge complete, idle-by-design; pre-stage offered = the LEAN-def
 defs + wide witness + a scrambled-e VACUITY row — the field being false under kill-e is itself
 a battery row now). The elder's input set is complete in the strong sense: every fork branch
 closed or priced by an exact instrument. All holds stand.
+
+## 2026-07-23 (~00:15) — THE RULING LANDS; THE GATE LIFTS; THE RE-BAKE IS COMMISSIONED
+
+The fresh elder delivered the #40 consolidated ruling ~10 minutes after convening
+(threads/design-round-2-ruling.md + Codex fidelity artifacts + the charter §3 rewrite, all
+committed fe254b967). CONTROLLER VERIFICATION before acceptance: re-derived the load-bearing
+cite at source — worked.tex:562-577 (theory/aoyagi-2023-reproduction/aoyagi-2023-worked.tex in
+HEAD) is literally headed "The inductive invariant": diag(b₁..b_{M(S)})·[E_J|D_J]·∏C^(s), with
+D_J the (M(S)−J)×(M^{(S+1)}−J) residual block (RAW column axis — the shape ruling verifies) and
+b_i = monomials in the exceptional coordinates u_{s,k} (the product factoring, running frame —
+the field ruling verifies). BOTH defects were transcription gaps of this ONE display.
+
+THE RULING: fork (B), ONE coordinated re-bake. SHAPE = (a) widen the descended (J≥1) supportAt
+branch to layerCoords(S+1); blockCoords + J=0 UNCHANGED (center cap ≠ residual support — the
+:551-555 docstring conflation named as the root cause). FIELD = the coherent product FACTORING
+c_i = m_k·β_i (her diag(b)), running-frame-pinned IN-STATEMENT; naive value-vanishing REJECTED
+(Codex 2a/2b: no continuous quotient; per-divisor vanishings don't compose — dividing one factor
+breaks the others); the numeric M_{s,k} ledger stays OUT of the slot (banked in Objects C/D).
+PerLayerDeg1From UNTOUCHED. (A)/(C) rejected on mathematical necessity. Predecessor flags
+retired with reasons (fix-β/γ, live-square sub-question, §7 col-a). PAYOFF: realBranch_
+boostReady_case11 becomes PROVABLE from the field — the factoring IS the boost split. New
+obligations INTRO/PRESERVE/BASE = the honest new work.
+
+EXECUTION COMMISSIONED: arch-C respawned (branch expedition/aoyagi-engine-REBAKE, own worktree)
+rendering §4 exactly — two def edits + field conjunct + consumer threading + the three named
+statement-locked frontiers; gates = full build + census + cordon + forced payoff axioms;
+stop-on-obstruction, no improvised shapes (the 11-catch lesson in the brief). MERGE ORDER:
+render report → §5 battery ON THE BRANCH (pnp-transport = FIELD+FRAME half incl. the
+must-fail-on-frame-error row + the scrambled-e VACUITY row; seat-L4D = SHAPE def-trace half) →
+elder delta-read on the rendered statements → controller merges. seat-L3T3 coordinated (push
+checkpoint; arch-C owns the clause-1 restatement; rebase after merge). Charter §3 now carries
+the composed source-fidelity discipline (bake-time + defect-time). Compass settled-fork entry:
+elder authoring, controller commits on signal. #38 unblocks post-merge as INTRO/PRESERVE/BASE +
+the case11 boundary consumption — the wall's endgame on the ruled, paper-faithful architecture.
