@@ -18073,3 +18073,22 @@ AND: reading pp.19-22 for the bridge CLOSED the C9 audit tail — Case 2 + the M
 match worked.tex ((T-C) confirmed at p.20). #63 COMPLETE, both parts: the Aoyagi-axis coverage
 matrix (NO unplanned gap) + the full-paper image class C0-C13 (ONE erratum total, E-1, fixed).
 The operator's commissioned audit is done.
+
+## 2026-07-24 (~13:00) — THE STRAIGHTENING ψ: raw↔cleared IS det-1-equivalent (pnp retracts its
+own dimension argument; Codex found ψ, pnp verified exactly); RLCT PRESERVED — Option 1 is
+RLCT-SOUND and the learning coefficient was never at risk
+
+pnp bb411f1b6: ψ (b₀↦b₀−2x·b₁, d₀↦d₀−2x·d₁, z↦z+2xy) is a det-1 polynomial automorphism with
+F∘ψ = C exactly — the raw fold has a FLAT DIRECTION and ψ straightens it. Volume-preserving ⟹
+RLCT(∑F²) = RLCT(∑C²) (verified). The corrected test: ideal-EQUIVALENCE ψ*⟨F⟩=⟨C⟩ (holds), not
+ideal-equality (false — the right result of the wrong test). The structural caveat: ψ necessarily
+MOVES the center (center-preserving would force F∈⟨I⟩) — the append transports to the conjugated
+edge = exactly B2 chart-faithfulness; ψ is B2's concrete witness. The elder's original det-1
+instinct vindicated at the right locus (an ambient automorphism, not a recursion branch) — the
+correction loop ran in BOTH directions and the truth won twice. DISPATCHED: pnp builds ψ_gen
+(multi-coupling composite of unipotent row-clears; (3,3,3,2) + the intermediate (2,2,2,2,2) =
+B2-at-the-crux) + the conjugated-edge transport data + B1/B3 kept (belt-and-braces: ψ = the
+working bridge, the cover = her-framing fidelity) + Codex's Jacobian-weight caveat carried
+VISIBLY (assigned via the elder's §7.7: do our blow-up charts carry independent vanishing
+weights, and who owes the check). Elder confirms §7.7; then the certificate; then the fresh
+render seat. The learning coefficient is safe; the remaining work is construction, not rescue.
