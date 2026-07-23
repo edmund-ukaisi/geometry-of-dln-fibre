@@ -20514,3 +20514,60 @@ route-independent scaffolding (re-wire + easy KILL lemmas + the Z Finset def + �
 set-bookkeeping + base case) and HOLDS the (V3) cancellation render for pnp's route-read + its own
 decorrelated Codex (CX's Codex forward still pending). The KILL's difficulty is now precisely
 localized to the (a)+(b) cancellation's render form — everything else is scaffolding.
+
+## 2026-07-23 (~19:40 UTC) — the 29th statement-class catch: pnp's (V3) reply RESOLVES the route-read (TRIVIAL termwise, NO ideal-membership) AND surfaces a KILL-BREAKER on post-#87 ROW-FAN branches → #95, routed to elder; seat-KILL renders diagonal-scoped under hcanon
+
+pnp's decorrelated (V3) consult returned (7f305c305, controller re-ran capstone_kill_rowfan.py
+exit 0), and it did two things — one relief, one catch.
+
+**PART 1 — the (V3) route-read RESOLVES to the CLEAN side.** Last tick seat-KILL had flagged the
+escaped-coeff KILL as possibly a genuine ideal-MEMBERSHIP (the Q₁⁻¹ compensator, brutal render).
+pnp's answer: on the DIAGONAL branches it is TRIVIAL termwise — every escaped-coefficient monomial
+already carries a coupling factor, so couplingClear zeroes it directly; no Q₁⁻¹ cancellation, no
+Gröbner-witness combination. pnp's mechanism_check had proven the stronger ideal-membership form,
+but the termwise form is all seat-KILL needs → the render is a simp chain, not ideal machinery.
+The ~19:10 ideal-membership scare was over-cautious; the route-read is now RESOLVED clean.
+
+**PART 2 — the 29th statement-class catch (a KILL-BREAKER, caught pre-render).** The KILL
+(sourceClearedResid_ignoresEscaped) is FALSE on ROW-REPEAT branches. Mechanism: a pivot in row 2
+(e.g. (2,3,3,3) with fan pivots (0,2,0) and (0,2,1) BOTH row 2) has belowPivotCol = ∅, so
+couplingCoords = ∅, so couplingClear = id, so sourceClearedResid reads the escaped column with a
+COUPLING-FREE coefficient (u_(2,0,0)) — the escaped coord is NOT ignored. #87 pinned the fan pivot
+col = cleared but left the ROW FREE (the §9.9 "row-fan bless" — verified there that foldB/codim DO
+transport on the row-fan #86C). The catch: the ROW is ALSO load-bearing, for a DIFFERENT property
+— the KILL/cap-invariant support — which §9.9 did not check. So #87's col-only pin is insufficient
+FOR THE KILL. capstone_kill_rowfan.py confirms: the row-phantom (2,2) KILL fails under every
+variant; the diagonal KILL holds.
+
+**The fix (controller ground-truth, routed to elder for adjudication).** CanonicalPivots
+(SourceClearedResid.lean:414-415, INV's cleared-chain hypothesis) is ALREADY FULL-DIAGONAL —
+`cornerToFlat d p.conState.layer p.conState.cleared = some pivot` pins BOTH row and col to
+`cleared`. The cleared chain is CanonicalPivots-scoped (§9.4). So the row-phantom is ALREADY
+excluded from the chain's regime by hypothesis. ⟹ the clean fix is likely to THREAD
+`hcanon : CanonicalPivots d q` onto the KILL + capped statements (chain-level; #87's merged
+IsRealBranch pin UNCHANGED, canonCenterOf UNTOUCHED — the tripwire stays), NOT re-open the merged
+#87 (tree-level). Registered as #95. ELDER adjudicates the three options:
+  (i) hcanon-thread [controller lean — clean IF the cap descent is canonical-scoped where the KILL
+      feeds it; cross-check w/ CAPF/CX that hcanon is available at the capped call sites];
+  (ii) #87 re-open to full-diagonal [tree-level — heavier, re-touches the merged def];
+  (iii) transport [treat the row-fan as a genuine orbit needing a transport lemma].
+PLUS the paper-first disambiguator routed to pnp: does Aoyagi's D_J exclude the pivot's ROW
+PERMANENTLY (so a row-repeat re-uses a gone row = a PHANTOM, mirroring the col-phantom → NOT a
+cover chart, coverage unchanged, the roadmapped (1)-full row-pins absorb it at close)? pnp's
+paper-read on the D_J row-exclusion decides phantom-vs-genuine-orbit.
+
+**Containment.** The KILL is a still-open sorry (sourceClearedResid_ignoresEscaped); NOTHING false
+sits on canonical — the row-phantom is a not-yet-hypothesis-scoped statement, caught before its
+render. seat-KILL RENDERS the diagonal-scoped KILL under hcanon NOW (needed under any of the three
+rulings; Part 1's termwise vanishing is the diagonal proof); the row-fan DISPOSITION is the
+elder's parallel design call and does NOT block the diagonal render.
+
+**Catch discipline (banked).** 29th statement-class event this expedition, ALL pre-render. This
+one is the sharpest kind: it corrects a MERGED def-edit's SUFFICIENCY (not a fresh statement) —
+#87 was correct for what §9.9 checked (foldB/codim transport) and insufficient for what it did NOT
+(the KILL support). The (V3) decorrelated consult surfaced it precisely because pnp re-derived on
+explicit row-repeat witnesses rather than trusting the merged pin's scope. The lesson generalizes
+the calibrated-sensor rule to MERGED artifacts: a merged def-edit's sufficiency is scoped to the
+properties checked at merge; a NEW consumer (the KILL) re-opens the sufficiency question for ITS
+property. Verified via capstone_kill_rowfan.py (7f305c305, re-ran exit 0) + the CanonicalPivots
+full-diagonal read (SourceClearedResid.lean:414-415).
