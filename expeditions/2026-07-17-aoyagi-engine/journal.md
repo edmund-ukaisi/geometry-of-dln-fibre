@@ -18092,3 +18092,20 @@ working bridge, the cover = her-framing fidelity) + Codex's Jacobian-weight cave
 VISIBLY (assigned via the elder's §7.7: do our blow-up charts carry independent vanishing
 weights, and who owes the check). Elder confirms §7.7; then the certificate; then the fresh
 render seat. The learning coefficient is safe; the remaining work is construction, not rescue.
+
+## 2026-07-24 (~13:20) — the wiring fork surfaced (Option 2 = spine-on-C + proven ψ-bridge,
+recommended; PROCEED-ON-SILENCE to the operator); B2 verified at the crux; full ψ_gen ordered
+
+L4D's consult: the append-crux consumes Deg1 over the COORDINATE center (hard constraint) — so
+OPTION 2 (the resolution spine runs on C = sourceClearedResid; every coordinate-based machine
+reused verbatim; ψ enters once as a PROVEN RLCT-bridge at the payoff) is dramatically cheaper
+than OPTION 1 (polynomial-generator centers — new machinery). Option 2 supersedes §7.3's
+"recursion untouched" — framed to the elder + operator as LADDER-not-destination PROVIDED the
+payoff statement is character-unchanged + the ψ-bridge proven-not-cited; and per §7.6 arguably
+MORE faithful (HER recursion runs on the cleared local coordinate — Option 2 computes what she
+computes). Elder's §7.7 rules: the option, the ψ-bridge statement, the measure-compat check
+(det-1 vs vanishing Jacobian weight — real for our blow-up charts?), and the honest supersession
+text. pnp: B2 verified at the ARCHETYPE + the DEEP-intermediate crux (the re-open trigger
+DISARMED — the case we feared is det-1-sound); the wide case = higher-degree ψ_gen, ordered FULL
+before the certificate ((B)≠(D): no structural-expectation gaps). OPERATOR SURFACE: Option 2
+recommended, proceeding on silence per the autonomy rule.
