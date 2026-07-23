@@ -16530,3 +16530,22 @@ coordinate-vector normalization → report).
 Every design decision is now closed: ONE placement, elder-conditioned (diag(1,e₂-classical)
 exactly once; Lemma-2-faithful justification; scoped reads on both components), precedent-
 hosted, tripwired. arch-C-3 renders; the battery + delta-read + merge follow.
+
+## 2026-07-23 (~06:55) — render 2/3 GREEN (DEF-EDIT-1 + 3(b)); the R4 block resolved by crossing-confirmation; the cleanest architecture statement yet
+
+arch-C-3's progress: DEF-EDIT-1 (supportAt widen, docstrings fixed, NO field content — kept
+the clean Deg1SupportedSlot) and DEF-EDIT-3(b) (branch-(ii): sign negated to −γ AND scoped —
+the guard `i = q.2 ∨ i < s.cleared → 0`, exactly pnp's passing script parameters) both landed
+GREEN with build-after-each discipline (MonumentAtlas closure 8449 jobs, 0 errors). Its
+consumer analysis: canonNormalizationOf_support projects the GUARDS (body-independent,
+unchanged); apply_interior projects branch-(i) (unchanged); no branch-(ii) value-projection
+lemma exists. THE CLEANEST ARCHITECTURE STATEMENT of the whole arc (going in the render
+report verbatim): both surviving branches read OTHER coords ⟹ genuinely unipotent, hshear
+untouched; ONLY the pivot-cross clearing reads its own coord ⟹ not a shear ⟹ that is R4,
+separate.
+
+Its R4 block (waiting on seat-L4D's placement verdict) was ALREADY RESOLVED — the verdict
+crossed its report in transit; controller confirmation sent from the second channel (BOUNDED;
+host = the coreGen-read-argument slot :453-454; blockBlowupCoordQuot the precedent; Q₂ moot;
+tripwire stands). arch-C-3 proceeds: R4 in the read-arg host → gates → commit-coherent →
+push → the report with verbatim formulas → the battery.
