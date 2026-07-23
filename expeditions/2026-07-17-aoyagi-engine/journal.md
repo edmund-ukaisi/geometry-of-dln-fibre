@@ -18388,3 +18388,14 @@ DISPATCHED: pnp (the check; its 0cb53731d data may already answer); CAPR (case11
 finalize against the ruled shapes incl. the Role-1-widened partition; case12/2-touching items
 held); my def batch (the widen + realBranch_cover re-point + frontier docstrings) lands ATOMIC
 after pnp's verdict. The 17th catch is now two rulings deep and still zero wasted renders.
+
+## 2026-07-24 (~19:50) — cap cert synced (primed-twin citation); the e-pin joins the atomic batch
+
+pnp-cap's update: (H) cites the proven twin (no live-frontier dependency; contingency dissolved in
+§2/§3/§6) + the direct consequence flagged: the frontier's FREE e must PIN to canonFlatten (the
+route consumes the e-pinned twin — the idiom ruling's derive-class, one more instance). MY ATOMIC
+MonumentAtlas BATCH now has FOUR items, landing together after pnp-transport's extent verdict:
+(1) supportAt J=0 widen (Role 1); (2) realBranch_cover's containment re-point (Role 2, shape per
+the verdict); (3) the frontier docstring correction (hslot → the homogeneity route); (4) the
+frontier's e-pin (+he, he-after-e). pnp-cap resting; wake-conditions noted (a §5 reshape or the
+Lean-skeleton ask).
