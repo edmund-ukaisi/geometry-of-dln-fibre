@@ -16040,3 +16040,21 @@ joint slot-confirm + its battery half + THE WALL post-merge (boostReady from the
 ARC NOTE for the synthesis: from the cap-escape surfacing to the frozen spec — 12 catches
 adjudicated, 2 elder self-retractions, 3 exact instruments, ~40 banked artifacts, every fork
 paper-ruled, zero Lean bakes under uncertainty, payoff isolation intact throughout.
+
+## 2026-07-23 (~02:50) — the fixed artifact re-banked; CAVEAT-2 resolved BY the frozen spec and STRENGTHENS it (the two-sign flip was also a wrong-DIVISOR fix)
+
+seat-L4D's crossing message (pre-§8(i)): (1) the label-swap artifact FIXED (explicit booleans;
+controller re-ran the COMMITTED file exit-0; finding unchanged, now historical under §8(i));
+(2) its pnp-alignment note = §8(i) verbatim (clear-by-R4-generator, never coordinate shear);
+(3) CAVEAT-2 SHARPENED: the both-flip corner u₀₁₁+γβ is NOT a unit multiple of the classical
+e₂ = u₀₁₁−γβ — different hypersurfaces.
+
+RESOLUTION BY THE FROZEN SPEC: under §8(i) no branch-(i)-as-shear exists (R4 replaces it,
+yielding the CLASSICAL e₂), the +γβ corner arose only from the SUPERSEDED two-sign flip, and
+the product form is explicitly not chased — no sign interaction remains. AND the finding
+STRENGTHENS the ruling: the two-sign flip would have (a) cleaned the wrong OBJECT (the §8(i)
+kill) and (b) changed the exceptional's IDENTITY, corrupting the M_{s,k}/e₂ read-off — a
+second, independent kill that only the product-preservation criterion caught along with the
+first. Battery row added for the rendered def: block corner = classical −γβ. Relayed to the
+elder as corroboration (F6/synthesis line), to seat-L4D as resolution. Board unchanged: waiting
+on arch-C's §8(i) render.
