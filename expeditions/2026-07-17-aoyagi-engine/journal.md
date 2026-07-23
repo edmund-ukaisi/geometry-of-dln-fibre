@@ -19897,3 +19897,27 @@ the elder's message predates my bake-bless request — the trigger flagged with 
 birth-restriction SPECIFY + the taste call). The folded-pass scope is final-form-approaching;
 the expedition's remaining pre-merge events: the elder's bake-bless → the #87 render seat; GM's
 handoff doc → the finisher seat; INV's read-off bank; CAPF's sub-lemma ladder.
+
+## 2026-07-23 (~16:55 UTC) — #87 BLESSED (§9.9, row-fan) — AND THE 26th CATCH at the spawn gate:
+the SPECIFY sentence would falsify realBranch_cover; the implementation re-routes to the
+PIVOT-PIN; spawn HELD
+
+The elder blessed the #87 SPECIFY on all four items with the row-fan taste call (the minimal
+faithful edit: drop exactly the artifact, keep the genuine row-fan native, minimize the
+codim-load-bearing transport surface; the coverage rider deferred to the render SPECIFY with the
+expectation it resolves YES — phantom re-clears re-blow-up an already-resolved direction and
+cover nothing new). CONTROLLER GATE CATCH (the 26th, pre-render): the SPECIFY's literal sentence
+— "edit canonCenterOf case2/case12 → {(S,r,cleared)}" — would FALSIFY the proven realBranch_cover
+(its proof makes supportAt(layer,0) = canonCenterOf coincide EXACTLY at δ=1 case12/case2, both
+the capped block; a column center breaks the containment for width > 1 and takes the live cover
+route with it). The cert's SEMANTICS are pivot-level throughout ("the phantom is never BORN" is
+a chart-choice fact; her Case 2 blows up the WHOLE block — the center is the geometric object);
+the SPECIFY sentence conflated the center with the pivot-admissible set. THE SAFE IMPLEMENTATION
+routed to pnp for confirm: the PIVOT-PIN — (α) IsRealBranch rule-(b) gains the column condition,
+or (β) a filtered canonPivotSetOf def with the pin re-pointed — canonCenterOf and every center
+consumer untouched; the def-edit shrinks further (the fan pin alone); the nonemptiness argument
+transfers to the pivot set. The elder's semantic bless STANDS; the implementation form gets its
+quick re-bless on pnp's confirm; the render seat spawns then. THE TRIPWIRE SCORE: realBranch_
+cover has now caught three center/support re-shapes pre-render (the §12 widen, the root-widen
+counterfactual, this center-shrink) — the single most valuable proven theorem in the gate stack.
+Catches 26/26 pre-render.

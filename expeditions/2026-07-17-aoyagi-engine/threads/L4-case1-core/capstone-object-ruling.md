@@ -924,3 +924,41 @@ rows (`widthMinUpto` row bound) so column-exclusion alone suffices, or the def-e
 Either way this is WITHIN (1)-ALONE (the `canonCenterOf`/oracle fix), NOT the divBirthCoord fix. I bake-bless
 on the cert's landing (column-exclusion trace vs her D₁ + no-under-admission + oracle-guard interplay +
 row-exclusion).
+
+### §9.9 #87 BAKE-BLESS — BLESSED (col-pinned ROW-FAN); taste call = row-fan over full-diagonal-pin
+
+pnp's #87 source-fidelity certificate (4a6f5bb01, controller re-ran exit 0) answers all four bless-items and
+satisfies the full bake discipline (§9.5: D₁ source trace + wide+fan witnesses + the diff). The SPECIFY is
+smaller/cleaner than feared — a SINGLE def-surface edit, NO oracle edit:
+
+- **(1) D₁ trace:** column-exclusion is the faithful edit (her `D_J` removes the pivot's COLUMN each step,
+  :400-457/:613-629; our counter re-admits it — the phantom). ✓
+- **(2) no-under-admission (the key soundness point):** EVERY off-diagonal-COLUMN birth IS a phantom (the
+  counter necessarily returns to that column before rollover, forcing the re-clear), so `{col = cleared}`
+  drops EXACTLY the phantom family — no legitimate chart lost. Clean structural argument, per-witness
+  verified. ✓
+- **(3) oracle-guard interplay:** the edit is the birth-restriction in `canonCenterOf` ALONE (pin the pivot
+  COLUMN to the counter at case2/case12, keep the row fan); centers stay nonempty at every non-exhausted
+  state, IsRealBranch always has a pivot, ORACLE NEEDS NO EDIT (one surface; the later-exclude alternative =
+  a second surface + real-branch-less mismatch, rejected). ✓
+- **(4) row-exclusion NOT load-bearing:** foldB collisions are COLUMN-indexed; row-reuse never collides;
+  off-diagonal-ROW births are benign + σ-transportable (#86B verified that sub-species). ✓
+
+**BLESSED: `canonCenterOf` case2/case12 → `{(S, r, cleared) : r ≥ cleared}` (col-pinned ROW-FAN).**
+
+**TASTE CALL — row-fan over the full-diagonal-pin alternative.** Both transport, correctness identical
+(pnp); the choice is fidelity + cost:
+- Row-fan is the MINIMAL faithful edit — it drops EXACTLY the artifact (phantom column-fan) and keeps the
+  genuine row-fan cover charts NATIVE in the tree. The tree stays = her genuine chart cover minus our
+  counter's artifact. A resolution-by-charts IS its fan of genuine charts; removing the genuine row-fan
+  (full-pin) and reconstructing its coverage via σ-images is a more transport-heavy, less-direct rendering.
+- LESS load-bearing transport: the transport is codim-load-bearing (§9.6), so minimizing its surface is a
+  real gain; the full-pin manufactures more transport debt for a uniformity that is convenience, not fidelity.
+- **Coverage rider (pnp's one open, deferred to the render SPECIFY, NOT a bake blocker):** does row-fan + σ
+  cover the blow-up without the dropped col-fan charts? It SHOULD resolve YES — the dropped column-fan births
+  are all PHANTOM re-clears (result 2), which re-blow-up an already-resolved direction and cover nothing new,
+  so dropping them loses no coverage. Confirm at the render SPECIFY against the pnp-fan cover cert (#11-14);
+  if it somehow fails, re-open the row shape (the one thing that flips to full-pin).
+
+Render seat may take the lane. The CanonicalPivots INV sub-family (full diagonal, row+col) is a subset of
+both options, so the INV/chain is unaffected by the taste call.
