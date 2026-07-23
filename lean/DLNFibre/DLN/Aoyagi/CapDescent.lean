@@ -1249,6 +1249,74 @@ theorem case11_pivot_notMem_escapedBelow {N : ℕ} {d : Fin (N + 1) → ℕ}
   have hlay : bc.1 ≤ p'.conState.layer := hlayerLE ⟨sc.esubst.mergeIdx, hmi⟩
   exact notMem_escapedBelow_of_col_lt_wmu hlay hpvlay (by rw [hpvcol]; exact hcol)
 
+/-- **The prefix-product remnant-row descent (pnp-cap growth carrier #104, §2 — the pure-`∏A` core of
+the last-clear growth arm).** For a tuple whose below-diagonal cleared entries all vanish (`hclear`:
+`A m r c = 0` whenever `m ≤ S`, the column `c` is a cleared column of layer `m` — `c < widthMinUpto d
+(m+1)` — and `c < r`), every REMNANT ROW `r` (`widthMinUpto d (L+1) ≤ r`, forced `< d_{L+1}` by the `Fin`
+type) of the prefix product `submult d A 0 ⟨L+1⟩ = A_L·⋯·A_0` is zero, for every layer `L ≤ S`. The
+carrier's ideal statement (`P_L[r,·] ∈ ⟨couplingCoords⟩`) in the function form the KILL consumes: on a
+`couplingClear`-cleared tuple the remnant rows vanish. Weak downward `ℕ`-induction on `L` via the
+`submult_succ` peel `P_{L+1} = A_{L+1}·P_L`; per contraction-index `j`: a cleared col (`j < widthMinUpto
+(L+2)`) makes `A_{L+1}[r,j]` a below-diagonal cleared entry (`= 0`, since `r ≥ widthMinUpto (L+2) > j`);
+an uncleared col recurses (the KEY FACT `widthMinUpto (L+2) = widthMinUpto (L+1)`, from the remnant row's
+EXISTENCE `widthMinUpto (L+2) ≤ r < d_{L+2}` via `widthMinUpto_succ`, makes `j` a valid remnant row of
+`P_L`, so the IH fires). Base `L = 0`: `r`'s existence forces `widthMinUpto 1 = d_0`, so every output col
+`k < d_0 = widthMinUpto 1 ≤ r` is a below-diagonal cleared entry. Vacuity handled by the remnant-row
+hypothesis; termination is subsumed by the `ℕ`-induction (Codex-hardened, `cap-growth-carrier.md` §4). -/
+theorem submult_prefix_remnant_vanish (d : Fin (N + 1) → ℕ) (A : Tuple (k := ℝ) d) (S : ℕ)
+    (hclear : ∀ (m : Fin N) (r : Fin (d m.succ)) (c : Fin (d m.castSucc)),
+        (m : ℕ) ≤ S → (c : ℕ) < widthMinUpto d ((m : ℕ) + 1) → (c : ℕ) < (r : ℕ) → A m r c = 0) :
+    ∀ (L : ℕ), L ≤ S → ∀ (hLN : L < N) (r : Fin (d (⟨L, hLN⟩ : Fin N).succ)),
+      widthMinUpto d (L + 1) ≤ (r : ℕ) → ∀ (k : Fin (d 0)),
+      submult d A 0 (⟨L, hLN⟩ : Fin N).succ (Fin.zero_le _) r k = 0 := by
+  intro L
+  induction L with
+  | zero =>
+      intro _ hLN r hr k
+      have hpeel : submult d A 0 (⟨0, hLN⟩ : Fin N).succ (Fin.zero_le _)
+          = A ⟨0, hLN⟩ * submult d A 0 (⟨0, hLN⟩ : Fin N).castSucc (Fin.zero_le _) :=
+        submult_succ d A 0 ⟨0, hLN⟩ (Fin.zero_le _)
+      rw [hpeel, Matrix.mul_apply]
+      -- `wmu (0+1) = d 0` from `r`'s existence (`wmu (0+1) ≤ r < d ⟨1⟩`), atoms matched to `r.isLt`.
+      have hmin : widthMinUpto d (0 + 1)
+          = min (widthMinUpto d 0) (d (⟨0, hLN⟩ : Fin N).succ) := widthMinUpto_succ d (by omega)
+      rw [widthMinUpto_zero] at hmin
+      have hrlt : (r : ℕ) < d (⟨0, hLN⟩ : Fin N).succ := r.isLt
+      have hw1 : widthMinUpto d (0 + 1) = d 0 := by omega
+      refine Finset.sum_eq_zero (fun j _ => ?_)
+      -- every output col `j < d 0 = wmu (0+1) ≤ r` is a below-diagonal cleared entry of `A_0`.
+      have hjd : (j : ℕ) < d 0 := j.isLt
+      have h2 : (j : ℕ) < widthMinUpto d ((⟨0, hLN⟩ : Fin N).val + 1) := by
+        rw [show ((⟨0, hLN⟩ : Fin N).val + 1) = 0 + 1 from rfl, hw1]; exact hjd
+      have h3 : (j : ℕ) < (r : ℕ) := by omega
+      rw [hclear ⟨0, hLN⟩ r j (by omega) h2 h3, zero_mul]
+  | succ L ih =>
+      intro hLS hLN r hr k
+      have hLN' : L < N := by omega
+      have hpeel : submult d A 0 (⟨L + 1, hLN⟩ : Fin N).succ (Fin.zero_le _)
+          = A ⟨L + 1, hLN⟩ * submult d A 0 (⟨L + 1, hLN⟩ : Fin N).castSucc (Fin.zero_le _) :=
+        submult_succ d A 0 ⟨L + 1, hLN⟩ (Fin.zero_le _)
+      rw [hpeel, Matrix.mul_apply]
+      -- KEY FACT: `wmu (L+1+1) = wmu (L+1)` from the remnant row `r`'s existence (atoms matched).
+      have hmin : widthMinUpto d (L + 1 + 1)
+          = min (widthMinUpto d (L + 1)) (d (⟨L + 1, hLN⟩ : Fin N).succ) :=
+        widthMinUpto_succ d (by omega)
+      have hrlt : (r : ℕ) < d (⟨L + 1, hLN⟩ : Fin N).succ := r.isLt
+      have hkey : widthMinUpto d (L + 1 + 1) = widthMinUpto d (L + 1) := by omega
+      refine Finset.sum_eq_zero (fun j _ => ?_)
+      by_cases hjc : (j : ℕ) < widthMinUpto d (L + 1 + 1)
+      · -- cleared col: `A_{L+1}[r,j]` is a below-diagonal cleared entry.
+        have h2 : (j : ℕ) < widthMinUpto d ((⟨L + 1, hLN⟩ : Fin N).val + 1) := by
+          rw [show ((⟨L + 1, hLN⟩ : Fin N).val + 1) = L + 1 + 1 from rfl]; exact hjc
+        have h3 : (j : ℕ) < (r : ℕ) := by omega
+        rw [hclear ⟨L + 1, hLN⟩ r j (by omega) h2 h3, zero_mul]
+      · -- uncleared col: `j` is a remnant row of `P_L`, recurse via the IH.
+        push_neg at hjc
+        have hjrem : widthMinUpto d (L + 1) ≤ (j : ℕ) := by omega
+        have h0 : submult d A 0 (⟨L + 1, hLN⟩ : Fin N).castSucc (Fin.zero_le _) j k = 0 :=
+          ih (by omega) hLN' j hjrem k
+        rw [h0, mul_zero]
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
