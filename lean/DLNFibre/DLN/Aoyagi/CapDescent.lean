@@ -1061,6 +1061,34 @@ theorem canonNormalizationOf_agree_on_cleared {N : ℕ} {d : Fin (N + 1) → ℕ
         rw [hB0 u, hB0 v]; ring
   · rfl
 
+/-- **A case11 (merge) pivot is the DIAGONAL birth corner** — `pv = cornerToFlat(bc.1, bc.2)` for the
+reused divisor's birth coord `bc`, so its decoded row `=` col `= bc.2`. Gives `pv ∉ couplingCoords` (a
+coupling has `col < row`; a diagonal coord has `col = row`). Extracted via `canonPivotOf`'s case11 branch
+(`= cornerToFlat bc`) + the `IsRealBranch` fan-pin, mirroring `case11_pivot_decode_lt`. -/
+theorem case11_pivot_diag {N : ℕ} {d : Fin (N + 1) → ℕ}
+    {p' : TreePath d} {c : Finset (Fin (flatDim d))} {pv : Fin (flatDim d)}
+    {ns : ConState N} {φ : (Fin (flatDim d) → ℝ) → Fin (flatDim d) → ℝ}
+    (hbr : (TreePath.step p' c pv StepCase.case11 ns φ).IsRealBranch (canonFlatten d)) :
+    (((tupIdxEquiv d).symm pv).1.2 : ℕ) = (((tupIdxEquiv d).symm pv).2 : ℕ) := by
+  obtain ⟨hrec, ⟨sc, hsc, hecase, -, -, hpivpin⟩, -, -⟩ := hbr
+  have hsce : sc.ecase = StepCase.case11 := hecase
+  have hmi : sc.esubst.mergeIdx < p'.conState.numDiv :=
+    conOracle_case11_mergeIdx_lt p'.conState sc hsc hsce
+  obtain ⟨hval, -, -, -⟩ := PivotPres.divBirthInv_of_isRealBranch (canonFlatten d) p' hrec
+  set bc := p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩ with hbc
+  have hcv := hval ⟨sc.esubst.mergeIdx, hmi⟩
+  have hS : bc.1 < N := hcv.1
+  have hrr : bc.2 < d (⟨bc.1, hS⟩ : Fin N).succ := hcv.2.2 _ rfl
+  have hcc : bc.2 < d (⟨bc.1, hS⟩ : Fin N).castSucc := hcv.2.1 _ rfl
+  have hcp1 : canonPivotOf d p'.conState sc = cornerToFlat d bc.1 bc.2 := by
+    simp only [canonPivotOf, hsce]; rw [dif_pos hmi, ← hbc]
+  have hcp2 : cornerToFlat d bc.1 bc.2
+      = some (tupIdxEquiv d ⟨⟨⟨bc.1, hS⟩, ⟨bc.2, hrr⟩⟩, ⟨bc.2, hcc⟩⟩) := by
+    simp only [cornerToFlat]; rw [dif_pos hS, dif_pos hrr, dif_pos hcc]
+  have hpiv : pv = tupIdxEquiv d ⟨⟨⟨bc.1, hS⟩, ⟨bc.2, hrr⟩⟩, ⟨bc.2, hcc⟩⟩ :=
+    (hpivpin _ (hcp1.trans hcp2)).symm
+  rw [hpiv, Equiv.symm_apply_apply]
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
