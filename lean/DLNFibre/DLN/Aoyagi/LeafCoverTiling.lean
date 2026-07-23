@@ -227,6 +227,14 @@ theorem exists_ball_subset_leafImages {K : ℝ} (t : FanTree D) (h : Covers K t 
     ∃ ρ : ℝ, 0 < ρ ∧ ball (0 : Fin D → ℝ) ρ ⊆ t.leafImages :=
   ⟨1, one_pos, Metric.ball_subset_closedBall.trans (covers_subset t h)⟩
 
+/-- **Non-vacuity witness** — a one-node fan tree (singleton center, identity shear, unit-box leaf)
+satisfies `Covers 1 · 1`, so `covers_subset` / `exists_ball_subset_leafImages` fire non-trivially on
+a genuine fanned node (not just a bare leaf). -/
+theorem covers_one_node (p : Fin D) :
+    Covers 1 (FanTree.node {p} ⟨p, Finset.mem_singleton_self p⟩ (fun _ ↦ id)
+      (fun _ ↦ FanTree.leaf (closedBall 0 1))) 1 :=
+  ⟨fun _ _ ↦ by simp [Set.image_id], fun _ _ ↦ by simp [Covers]⟩
+
 end FanTree
 
 end DLNFibre.DLN.Aoyagi.LeafCoverTiling
