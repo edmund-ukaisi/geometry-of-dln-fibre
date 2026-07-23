@@ -1042,14 +1042,33 @@ def TreePath.IsRealBranch {N : ℕ} {d : Fin (N + 1) → ℕ}
             center = canonCenterOf d p.conState sc ∧
             -- FAN-PIN, RULE (b) (elder `elder-npivot-deltaread-fanrule.md` + pnp-fan
             -- `fan-case11-adjudication.md`): the pivot is CANONICAL (`canonPivotOf`-forced) at a MERGE
-            -- (case11) and a ROLLOVER (`canonPivotOf = none`, vacuous), but a FREE fan choice within the
-            -- center at a FRESH clear (case12/case2). This is the FAITHFUL structure (Aoyagi Case 1's
-            -- determined merge pivot `u_{s,k}` vs the fresh-corner freedom) AND resolves the pivot-
+            -- (case11) and a ROLLOVER (`canonPivotOf = none`, vacuous), but a COLUMN-PINNED ROW-FAN choice
+            -- within the center at a FRESH clear (case12/case2). This is the FAITHFUL structure (Aoyagi
+            -- Case 1's determined merge pivot `u_{s,k}` vs the fresh-corner freedom) AND resolves the pivot-
             -- preservation conflict: case11's canonical pivot IS the earlier ledger corner it merges into
             -- (blow-up fixes it), while case12/case2 fresh corners lie in NO earlier ledger (free pivots
             -- move nothing earlier). pnp-fan confirmed (b) covers (case-1(2) sibling covers the block).
+            -- COLUMN-PIN (#87, §9.9+AMENDMENT / charter §3): the fresh-clear pivot's flat COLUMN (`.2`) is
+            -- pinned to the cleared counter `s.cleared`. COMPLETENESS is the reason: the center forces
+            -- pivot-col ≥ cleared, and a complete branch clears each `widthMinUpto` column exactly once, so
+            -- col = cleared at each step — an off-diagonal-column pivot (col > cleared) re-clears a column
+            -- that is cleared elsewhere in the branch (a phantom the counter admits). Pinning col = cleared
+            -- drops EXACTLY the phantom column-fan; the genuine ROW-fan (row ≥ cleared, with benign
+            -- row-reuse) is untouched, and the diagonal pivot `(s.layer, cleared, cleared)` is always in the
+            -- pinned set (not-exhausted ⟹ cleared < widthMinUpto(layer+1); widthMinUpto is non-increasing
+            -- and ≤ d(layer+1), so cleared < d(layer+1) [row = cleared in range] AND cleared <
+            -- widthMinUpto(layer) [col = cleared in range]). Faithful to Aoyagi's `D_J`, which removes the
+            -- pivot's COLUMN each step (Lemma 2, worked.tex:400-457, order :613-629) — RLCT-equivalent via
+            -- the source-clear rendering; the coordinate-form differs by our shear-frame. `canonCenterOf`
+            -- is UNTOUCHED (the center is the blow-up's geometric object; `realBranch_cover` forces
+            -- supportAt = canonCenterOf at δ=1 case12/case2, so editing the center falsifies the cover —
+            -- charter §3 standing tripwire). COVERAGE RIDER (leafPath_compactCover / L7, a sorried
+            -- frontier): the cover uses ROW-fan charts only; the column-orbit is the #86(B) per-step-σ
+            -- transport image, adjudicated at the L7/L5 SPECIFY, NOT here.
             (match cse with
-              | StepCase.case12 | StepCase.case2 => pivot ∈ canonCenterOf d p.conState sc
+              | StepCase.case12 | StepCase.case2 =>
+                  pivot ∈ canonCenterOf d p.conState sc ∧
+                    (((tupIdxEquiv d).symm pivot).2 : ℕ) = p.conState.cleared
               | _ => ∀ piv, canonPivotOf d p.conState sc = some piv → piv = pivot)) ∧
         -- SHEAR-PIN (interlock-1 predicate-pin): shearφ within-carve on THIS step node (seat-L4 (B) via
         -- ShearWithinCarveRaw) — reads the former `_`, symmetric with the canonCenterOf/canonPivotOf
