@@ -16315,3 +16315,26 @@ raw-on-scoped-primary) landed on the only sound point.
 Wall route: STANDS unchanged under the scoped def (the block form is reached). Board: arch-C
 remains the single moving piece; every analytical question of the §8 arc is now closed with
 multi-instrument agreement.
+
+## 2026-07-23 (~05:00) — the u₀₀₁² flag CLOSED by both instruments (no re-open); one honest footnote: the unscoped chart-frame status is CONTESTED (gate-moot)
+
+CLOSURE (banked, both scripts re-ran exit-0): (1) pnp — the elder's decisive chart-frame
+inter-edge test PASSES both witnesses (the R3+R4 layer-0 block = the clean cleared block; the
+residual Deg1SupportedOn the chart center on every slot; the raw u₀₀₁² = the benign expansion
+of e₂·(chart coord)); its block-form pre-stage is GREEN with the §8(m) scope in place.
+(2) seat-L4D — WITHDREW its re-open framing (pre-§8(m) confound, caught via its own
+honest_clear fidelity cross-check — the correction discipline again); grounded the scope fix
+at the source (interedge_scope_8m.py: UNSCOPED reads the cleared row, SCOPED drops it);
+honest_clear confirms the faithful reference NEVER squares u₀₀₁. The wall route stands.
+
+THE HONEST FOOTNOTE (relayed to the elder; not silently reconciled): the two instruments
+DISAGREE about the UNSCOPED formula's chart-frame status — seat-L4D's center-degree check said
+NOT center-degree-1 (my earlier "the scope is NECESSARY" relay rode on it); pnp's fuller
+chart-frame test says it IS chart-degree-1 (e₂ atomic). Likely different precise questions
+(monomial-degree-against-center vs Deg1SupportedOn-with-e₂-atomic). GATE-MOOT: §8(m)'s
+justification rests on FAITHFULNESS (her accumulated-Q₂'⁻¹ semantics — uncontested), not on
+the contested necessity claim; under the adopted scope both battery rows pass regardless.
+Optional low-priority reconciliation note offered to the two seats (only if idle).
+
+BOARD: every analytical thread of the §8 arc is now closed or footnoted; pnp's authorship of
+the scope fix is on the record; arch-C's conformant render remains the single gate.
