@@ -17887,3 +17887,16 @@ re-shaped chain (#69; option 1 = re-state on the source-cleared residual + ideal
 to the consumers). Canonical is SOUND meanwhile (the false statements are sorry-gated conditionals,
 not axioms). PROCESS: the adjudication-before-render decision earned its cost — the fresh
 formaliser would have ground against a false lemma; 16 statement-class catches, all pre-render.
+
+## 2026-07-24 (~08:30) — THE REPAIR IS VERIFIED (pnp, 672007eb8): the source COLUMN-clear makes
+the single-e₂ split TRUE on both witnesses; option 1 is constructive-fact-backed
+
+The fork is well-conditioned: FALSE on the raw object, TRUE on the source-column-cleared residual
+(each ancestor clear's below-pivot input entries zeroed BEFORE that edge's shear; the column-clear
+ALONE suffices — the row-clear is not needed; e₂ = the diagonal corner is right once the coupling
+clears). All slots, both real witnesses, exit-0. Relayed to the elder as ruling input with the
+wiring constraint: the recursion stays shears-only — the natural shape is an explicit DERIVED
+OBJECT (sourceClearedResid) with boostReady stated OF it and consumers bridging by ideal-equality;
+§9's "BOOSTREADY = the form" becomes object-level. Elder's paper-first ruling (#69) decides the
+faithful wiring; pnp stands ready to write the positive certificate for the ruled object; the
+fresh formaliser spawns after both.
