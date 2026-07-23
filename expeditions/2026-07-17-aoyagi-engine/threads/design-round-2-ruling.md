@@ -691,10 +691,13 @@ of pnp's rows A/D); (iv) sign +γ-paired concurred by both instruments. **The pu
 UNSOUND for the all-entries ideal close; §7 formally FIRES.**
 
 **THE RULING — F₂ ADOPTED, and it is the CHEERFUL CLOSE (most faithful AND most contained):**
-- **DEF-EDIT-3 = Aoyagi's FULL Lemma-2 conjugation, +γ PAIRED:** `Q₁⁻¹` recoord (+γ, the certificate's
-  ORIGINAL direction) + `Q₂⁻¹` neighbor + `Q₁·A₀` clearing = `(A₁·Q₁⁻¹)·(Q₁·A₀)`. Rendered as det-1 SHEAR
-  branches (the placement theorem's normalized-frame arm; the `1/det` wrinkle BENIGN — compensators
-  polynomial on-frame). `r4Clear` DISCARDED.
+- **DEF-EDIT-3 = Aoyagi's FULL Lemma-2 conjugation, +γ PAIRED (architecture AMENDED — path A, §9-amendment
+  below):** `Q₁⁻¹` recoord (+γ, the certificate's ORIGINAL direction) + `Q₂⁻¹` neighbor + `Q₁·A₀` clearing =
+  `(A₁·Q₁⁻¹)·(Q₁·A₀)`. It DECOMPOSES into: (i) the COMPENSATORS (interior Schur + +γ recoord + `Q₂⁻¹` input)
+  = det-1 SHEAR branches (blockShear; `1/det` wrinkle BENIGN, polynomial on-frame); (ii) the pivot-cross
+  CLEAR = a det-0 READ-SIDE clear (`r4Clear`-shaped, homed per the `blockBlowupCoordQuot` precedent, NEVER
+  in blockShear — zeroing the cross reads the entry it zeros, so it is genuinely rank-reducing). **`r4Clear`
+  is RETAINED as this compensated read-side clear** (NOT discarded — corrected below).
 - **CENSUS 0:** F₂ preserves the product IDENTICALLY ⟹ the StepInv close is by EQUALITY (`child=parent∘σ`),
   NO M-bridge, the +1 frontier DISSOLVES. The fidelity fix's Lean price is ZERO, not +1.
 - **CONTAINED:** det-1 shear branches, her mechanism, no `StepInv`-semantics / `foldResid`/`foldG` redesign
@@ -714,12 +717,30 @@ UNSOUND for the all-entries ideal close; §7 formally FIRES.**
   +γ-paired STILL gives `u₀₀₁²`. So KEEP the scope explicitly. **TWO-AXIS FINAL PICTURE:** +γ-PAIRING = the
   intra-edge ideal close (F₂ absorption, census 0); `i≥cleared` SCOPE = the inter-edge outer-row read. Both
   faithful (her Lemma 2 + her accumulated recoord), both kept.
-- **THE COMPLETE, FULLY-DETERMINED F₂ SPEC:** DEF-EDIT-1 (support widen) + DEF-EDIT-3 (recoord +γ (`Q₁⁻¹`) +
-  `Q₂⁻¹` input + paired `Q₁·A₀·Q₂` clearing, det-1 shear branches, r4Clear DISCARDED, KEEP `i≥cleared`);
-  DEF-EDIT-2 none. All three criteria decorrelated-verified (ideal-close census 0 / boostReady / clean block).
+- **THE COMPLETE, FULLY-DETERMINED F₂ SPEC:** DEF-EDIT-1 (support widen) + DEF-EDIT-3 (COMPENSATORS =
+  det-1 shear branches [interior Schur + +γ `Q₁⁻¹` recoord + `Q₂⁻¹` input]; CROSS-CLEAR = `r4Clear` RETAINED
+  as a det-0 read-side clear [homed per `blockBlowupCoordQuot`]; KEEP `i≥cleared`); DEF-EDIT-2 none. The
+  COMPOSITE (compensators + clear) = F₂ = product-preserving. All three criteria decorrelated-verified
+  (ideal-close census 0 / boostReady / clean block).
 - **ORDER:** arch-C renders the (now complete) F₂ spec ONCE → battery + cheerful script + slot-confirm on
-  the FINAL form → elder delta-read (+γ paired in-shear, `Q₂⁻¹`+paired clearing present, `i≥cleared` KEPT,
-  census 0/no bridge, boostReady holds, retracted field absent, block=`diag(1,e₂-classical)`) → merge.
+  the FINAL form → elder delta-read [SPLIT checklist: (i) every blockShear COMPENSATOR branch is det-1;
+  (ii) `r4Clear` present as the det-0 read-side clear (NOT flagged as a shear-violation); (iii) COMPOSITE
+  block = `diag(1,e₂-classical)`; +γ recoord + `Q₂⁻¹` present; `i≥cleared` KEPT; census 0/no bridge;
+  boostReady holds; retracted field absent] → merge.
+
+**§9-AMENDMENT (path A — restate-gate catch, arch-C-4; my phrasing error owned).** "`Q₁·A₀·Q₂ = diag(1,e₂)`
+rendered as det-1 shear branches" is NOT simultaneously satisfiable: the det-1 shears alone give the
+MULTILINEAR-not-diag block `[[1,β],[γ,e₂]]`; zeroing the cross to reach `diag` is DET-0 (reads the entry it
+zeros — the original obstruction, real). My "det-1 shear branches / r4Clear DISCARDED" over-extended the
+preliminary lean, which was correct for the F₂ COMPENSATOR PIECES (recoord + `Q₂⁻¹`, genuinely det-1) but
+over-reached to the composite-that-includes-the-det-0-clear. CORRECTED: the compensators are the det-1
+SHEARS; the cross-clear is a det-0 READ-SIDE clear (`r4Clear` RETAINED, homed per `blockBlowupCoordQuot`);
+the COMPOSITE = F₂ = product-preserving (rows A/D: WITH the compensators, cleared = uncleared IDENTICALLY)
+⟹ closes by EQUALITY, census STILL 0, no bridge. The clear's ROLE changed: from "unsound pure-zero needing
+a bridge" to "COMPENSATED read-side clear closing by equality." This is exactly worked.tex:442 Lemma 2 —
+`Q₁,Q₂` unimodular (the shears) AND the Schur reduction sets the cross to 0 (the read-side clear), BOTH.
+Math + all three criteria (census 0 / boostReady / scope) UNCHANGED. Rejected: (B) det-1-only
+multilinear-not-diag (drops the diag, weaker fidelity); (C) re-rule (unnecessary — the math is verified).
 
 The whole 12th-catch arc — support-widen + the recoord fix — closes on Aoyagi's own Lemma 2, restored in
 full (both compensators): the most faithful object and, because F₂ closes by equality, the most contained
