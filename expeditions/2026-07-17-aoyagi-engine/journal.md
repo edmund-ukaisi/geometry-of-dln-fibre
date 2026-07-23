@@ -21224,3 +21224,46 @@ convergence to fully settle (a)-vs-(b).
 **Status.** #73 (in motion: seat-descent KILL step + producers) + seat-L7cover (the L7 long-pole, now
 owned + parallel) + L1/L6/L8 wiring = the summit path. Awaiting: pnp wall-convergence, seat-L7cover
 mini-restate, seat-descent green milestone. Parallelization wave (P2/P3/#73-rebase) still queued.
+
+## 2026-07-24 (~00:55 UTC) — WALL (a) DECORRELATED-CONFIRMED (pnp+Codex converge with elder); belt-and-braces (3,3,4) coupled-core witness COMMISSIONED (hunt-precedes-trust) — hardens (a) + covers the KILL corank-2 blind-spot
+
+pnp-transport's decorrelated paper-first read returned (a) BOOKKEEPING — CONVERGING with the elder's
+(a) + Codex (xhigh). Convergence gate SATISFIED. Reasons (paper worked.tex): (1) iterated
+SINGLE-CENTER recursion, UNIFORM in corank; corank≥2 coupling captured by the Case-1(1) MERGE (shared
+deep factor reused as ONE divisor, not split) + carried diag(b) — no multi-center blow-up; (2) value
+rlct=½·min M certified all branch types by ideal-preservation + b-ledger verified on the coupled
+corank-2 (3,3,4) instance (#24) ⟹ L8 exponent-realization is bookkeeping; (3) the corank≥2 obstruction
+(⟨δx,δy⟩ ½ vs ⟨δ₁x,δ₂y⟩ 1) is a bookkeeping-FIDELITY gap (carry the symbolic diag(b) support), NOT a
+construction gap — and #73's symbolic cleared chain already carries that fidelity. So the remaining
+L6/L7/L8 build = LEAF-LEVEL ASSEMBLY of the SAME single-center leaves, corank-uniform. Structural
+additional geometric content beyond single-boost: NONE.
+
+**THE HONEST CAVEAT → belt-and-braces.** pnp flagged it could NOT freshly exhibit a genuine corank-2
+coupled LEAF witness — its fold mirror doesn't reach a corank-2 case11-merge (oracle_edges((3,3,4))
+gives only case2+rollover; the case11 merges appeared only in corank-1-scalar deeper witnesses). So
+(a) rests on paper-mechanism + #24 value-verification + Codex, NOT a corank-2 ground-truth witness.
+This is the charter's "look for the confound at the confident FAVORABLE headline; the hunt precedes
+trust; don't collapse to the convergent mode." The stakes are high (a hidden corank-2 monument = the
+worst outcome, the navigator's flag materialized), and the seat that produced (a) named the gap. So I
+COMMISSIONED pnp's offered decisive witness: a DIRECT (3,3,4) coupled-core resolution at genuine
+corank-2 (outside the fold mirror). Kill-condition: does the coupled leaf monomialize via the
+shared-divisor/diag(b) data (F=u²·unit, shared exponent, from the cleared leaves+fan) ⟹ (a); or need
+a construction the cleared chain lacks ⟹ (b), re-open. NON-BLOCKING (endgame proceeds on (a),
+risk-LOW); hardens (a) to bedrock. Build hard, damp harder.
+
+**TWO-FOR-ONE**: the same witness covers a blind-spot pnp exposed — the KILL/multi-layer-descent
+invariant (seat-descent's grind) was witness-validated WITHOUT a genuine corank-2 case11-merge (the
+induction PROOF gates it via the compiler, so not a silent hole, but the mechanism wasn't
+witness-confirmed at corank-2). The (3,3,4) coupled-core witness exercises exactly that merge —
+hardening BOTH the wall-pricing (a) AND the KILL's corank-2 coverage. If it surfaces a problem, that's
+a KILL statement-class flag routed to me.
+
+**Operator-facing:** the wall is now DECORRELATED-priced (a) (elder + pnp + Codex) — no hidden coupled
+monument; summit-after-#73 = wiring + the L7 detail-at-scale tiling (owned by seat-L7cover). I've
+commissioned the belt-and-braces corank-2 witness to harden (a) to bedrock (the favorable headline
+gets the ground-truth hunt), non-blocking. No definition-of-done change.
+
+**Status.** Summit path (uncertainty substantially lowered, hardening-witness in flight): #73 (motion
+— seat-descent KILL step + producers) + seat-L7cover (the L7 long-pole, parallel) + L1/L6/L8 wiring.
+Awaiting: pnp's (3,3,4) hardening witness, seat-L7cover mini-restate, seat-descent green milestone.
+Parallelization wave (P2/P3/#73-rebase) still queued.
