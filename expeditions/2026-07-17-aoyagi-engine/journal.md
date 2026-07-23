@@ -16932,3 +16932,20 @@ EQUALITY witness (no bridge — if it doesn't close, STOP: the render diverges f
 census delta 0 expected. Inherits REBAKE2's green partial (DEF-EDIT-1 keeps). Then: the
 battery on verbatim formulas → cheerful re-run + slot-confirm → elder delta-read → merge →
 L3T3 rebase → THE WALL. seat-L4D's queue locked and holding; every reviewer posted.
+
+## 2026-07-23 (~11:15) — the GO and the invoke crossed (already aligned); §9 conditions resolved in-file; THE TWO-AXIS PICTURE on the record
+
+The elder's messages crossed my arch-C-4 invoke in transit — full alignment confirmed both
+directions: the invoke fired with exactly the elder's determined contract (its GO's content =
+my brief's content, independently). §9's condition-resolutions committed (eef64d668):
+(b) SCOPE KEPT — the elder's subsumed-lean corrected on pnp's composition-order mechanism;
+(c) boostReady sign-robust. THE TWO-AXIS PICTURE (the elder's final formulation, the
+synthesis anchor): the +γ-PAIRING is the INTRA-EDGE ideal close (F₂ absorption, Lemma 2);
+the i≥cleared SCOPE is the INTER-EDGE outer-row read (the accumulated-Q₂'⁻¹ semantics).
+Different axes, both needed, both faithful — "this is her exact mechanism." The elder's
+sequencing endorsement also on the record: wait-for-complete-contract was "the churn lesson's
+rule applied correctly."
+
+The arc's last execution step runs: arch-C-4 (restate-gated) renders the final F₂ form with
+the equality-witness tripwire built in; the battery + cheerful re-run + slot-confirm + the
+elder's 7-item delta-read + the merge follow in the pinned order.
