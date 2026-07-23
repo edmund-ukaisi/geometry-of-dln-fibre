@@ -668,6 +668,30 @@ theorem couplingCoords_row_gt_col {N : ℕ} {d : Fin (N + 1) → ℕ} :
         obtain ⟨_, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
         omega
 
+/-- **A within-block coordinate is NOT escaped-below** — layer `S`, col `< widthMinUpto d S` (in the
+running-min block) ⟹ `∉ escapedBelow d S c`. The escaped set collects, per layer `M ≤ S`, the columns
+`≥ widthMinUpto d M`; a layer-`S` coordinate can only match the `M = S` slice, where the block cap
+`col < widthMinUpto d S` excludes it. Powers `pv ∉ escapedBelow` (the fresh-clear pivot sits in the block:
+`col = cleared < widthMinUpto d (S+1) ≤ widthMinUpto d S`). -/
+theorem notMem_escapedBelow_of_col_lt_wmu {N : ℕ} {d : Fin (N + 1) → ℕ} {S c : ℕ}
+    {x : Fin (flatDim d)} (hlay : (((tupIdxEquiv d).symm x).1.1 : ℕ) = S)
+    (hcol : (((tupIdxEquiv d).symm x).2 : ℕ) < widthMinUpto d S) :
+    x ∉ escapedBelow d S c := by
+  rw [escapedBelow]
+  intro hx
+  rcases Finset.mem_union.mp hx with hbi | hcond
+  · obtain ⟨M, hM, hxM⟩ := Finset.mem_biUnion.mp hbi
+    rw [escapedCol, Finset.mem_sdiff] at hxM
+    have hMS : M = S := by rw [← decode_layer_of_mem_layerCoords d M x hxM.1]; exact hlay
+    subst hMS
+    exact hxM.2 (Finset.mem_image.mpr ⟨(tupIdxEquiv d).symm x,
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlay, hcol⟩, (tupIdxEquiv d).apply_symm_apply x⟩)
+  · split_ifs at hcond with hcnd
+    · rw [escapedCol, Finset.mem_sdiff] at hcond
+      have := decode_layer_of_mem_layerCoords d (S + 1) x hcond.1
+      rw [hlay] at this; omega
+    · exact absurd hcond (by simp)
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
