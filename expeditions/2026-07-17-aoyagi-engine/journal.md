@@ -17480,3 +17480,15 @@ case-preserves superseded by the Wire twins — prune/mark historical (folds int
 disposition, #65). For the operator: L&R PRINTED rlcm formula off-by-one (a(ℓ−a) vs a(ℓ−a)+1,
 §2.3) — authors'-erratum candidate, operator's call on correspondence. Elder proceeds to part 1
 (the worked.tex-vs-PDF uplift, pp.1–13 extension of the prior image-verified pp.8,14–22,24–26).
+
+## 2026-07-23 (~22:00) — SCOPE CORRECTION (operator): the #63 audit axis = AOYAGI ONLY; L&R sweep was drift
+
+Operator: "we meant to do Aoyagi paper only! L&R is a distraction!" The part-2 doc inventoried both
+source papers; the L&R half re-confirmed what prior expeditions already established — motion, not
+the commissioned question. Elder redirected: the coverage matrix's axis = Aoyagi 2023's own
+definitions/lemmas/theorems/PROOF STEPS (setup, Lemma 1, Lemma 2, recursion+invariant, case tree,
+termination, pole extraction, Thm 3/4, θ) → Lean home → classification. The part-1 fused walk
+already produces exactly this per chunk, so the correction is cheap: matrix rebuilt on the Aoyagi
+chunks as the headline; L&R demoted to a context appendix. Tier-1 items survive (Aoyagi-lane).
+Process note for the routing-around ledger: the drift here was the AUDITOR broadening the axis to
+a second source — same lesson, dual form: pin the SOURCE as tightly as the question.
