@@ -18782,3 +18782,26 @@ to her literal Q,P image NOT proven (pnp offers the full Q,P render if demanded)
 elder as a second queue item BEHIND the CAPR blessing (which gates a grinding seat); controller
 recommendation: the RLCT-equivalence reading suffices for the destination (the payoff is an RLCT
 statement); coordinate-identity is a right-extension, not a blocker.
+
+## 2026-07-23 (later-5) — CAPR blessing landed; POINT 2 DISSOLVED at the def level (controller catch:
+two artifacts contradicted; the def adjudicated); FULL grind GO
+
+The elder's blessing: P1 the boost-ledger conjunct RULED canonPivotOf-anchored ((b) StepChild-direct
+preferred for edge-independent transport; (a) acceptable via the IsRealBranch pivot-pin guard; (c)
+combinatorial REJECTED — loses the e₂-exponent pin bMon needs). P3 vacuous-at-root CONFIRMED. P2 the
+elder CORRECTED its own §12 root-cap-trivial claim and leaned "root needs layerCoords(0)" with a
+coreGen-support discriminator. CONTROLLER RESOLUTION, one level above the discriminator: the elder's
+new premise CONTRADICTED cap-frontier-findings.md:44 ("no gap at root") — and the def adjudicates
+for the findings. tupIdx (LearningCoefficient.lean:128-131): layer i has col : Fin d_i — at layer 0
+every coord has col < d(0) BY TYPE, so blockCoords(0)'s widthMinUpto filter is VACUOUS:
+blockCoords(0) = layerCoords(0) definitionally, all d. The elder's premise mistook the root's own
+col axis for the DESCENDED next-width (tenth-catch territory, where it is right). No supportAt
+change anywhere; the root INV leaf = coreGen's multilinearity decomposition on the existing def.
+Also verified + banked the counterfactual danger: realBranch_cover's proof makes supportAt(layer,0)
+= the pinned center EXACTLY at δ=1 case2/case12, and the root takes δ=1 case2 edges — a root widen
+would have falsified the proven theorem exactly on width-increasing witnesses (the 16th-catch
+pattern, caught again at the gate). CAPR: FULL grind GO (root unblocked; statement-lock makes the
+dissolution self-correcting). Elder: one-line confirm requested; fidelity-reading commission stands
+as queue item 2. Calibration ledger: elder 1 owned mis-scope (its §12 self-correction) + 1 wrong
+premise caught by artifact cross-reference; the discipline that caught it = gate-before-relay
+(controller re-derives the def before dispatching the discriminator).
