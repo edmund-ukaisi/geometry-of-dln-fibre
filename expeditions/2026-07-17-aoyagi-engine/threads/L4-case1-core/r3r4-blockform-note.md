@@ -59,10 +59,34 @@ coefficient's sign, not its degree. So: `u₀₀₁²` is real for the all-`i` r
 reaches the multilinear clean block.
 
 ## Bottom-line for the merge gate (upgraded from "potential" to "mechanism confirmed + fix")
-- IF arch-C's rendered branch-(ii) sums ALL `i≠a` (current formula) → `u₀₀₁²` → NOT the multilinear clean
-  block → RE-OPEN condition fires.
-- IF it sums only `i ≥ cleared` (remaining block, prior-clear-aware) → clean multilinear block → PASSES.
-The recommendation to arch-C: render branch-(ii) remaining-block-scoped. I re-run on the exact formulas.
+- IF arch-C's rendered branch-(ii) sums ALL `i≠a` (current formula) → raw `u₀₀₁²` → NOT the raw-frame
+  multilinear block.
+- IF it sums only `i ≥ cleared` (remaining block, prior-clear-aware) → clean multilinear block in the RAW
+  frame → PASSES.
+The recommendation to arch-C: render branch-(ii) remaining-block-scoped. **UPDATE: §8(m) (heartbeat memo)
+ADOPTED exactly this** — branch-(ii) is now scoped to `i ≥ cleared` in the frozen spec, attributed to
+"her accumulated-`Q₂'⁻¹` semantics — cleared outer rows read as 0 by not being summed." My flag + fix are in.
+
+## RESOLVED — the decisive inter-edge CHART-FRAME test PASSES (elder's one gap closed)
+`verify/r3r4_chartframe_boostready.py` (exit 0). boostReady is `Deg1SupportedOn` the CHART center
+(`{e₂}∪partialBlock`, `e₂` atomic), NOT raw-frame degree. Computed:
+- The transformed layer-0 block `L0` under R3+R4 is the CLEAN cleared block on BOTH witnesses: `(2,2,2,2)`
+  `L0 = diag(1,e₂)`; `(2,3,2,2)` `L0 = [[1,0],[0,e₂],[0,−u₀₀₁·u₀₂₀]]` — every entry degree ≤1 in `u₀₀₁`
+  (multilinear). R4's `Q₁·A_S·Q₂` clears the pivot row AND column, so the CLEARED BLOCK is clean regardless
+  of the recoord scope (the scope is a layer-1 matter).
+- The residual `= A₂·L1·L0`, in the chart coords (`e₂` and `L1 = w` atomic), is `Deg1SupportedOn` the center
+  on every slot (col-0 `= A₂·(w col0)` center-deg 1; col-1 `= e₂·A₂·(w col1)` center-deg 1, extra `w col1`),
+  and vanishes at center `= 0`. Verified `raw residual == chart residual` under `(e₂,w):=raw`, so the raw
+  `u₀₀₁²` is EXACTLY the expansion of the product `e₂·(w col1)` — a chart-frame degree-1 term.
+So the raw `u₀₀₁²` is a BENIGN frame artifact (the elder's caveat-2): **chart-frame boostReady holds
+inter-edge, on both witnesses.** R3+R4 reaches her multilinear clean block. **NO re-open.**
+
+## Two independent resolutions concur
+1. Chart frame (unscoped recoord): the raw `u₀₀₁²` collapses to chart-degree-1 via `e₂`'s entanglement —
+   boostReady holds as-is.
+2. Raw frame (§8(m) scope, adopted): bounding the recoord to `i ≥ cleared` removes the raw `u₀₀₁²` entirely.
+Either alone suffices; the frozen spec has both. My §7/§8 `u₀₀₁²` flag was the row-half residue that
+VALIDATED R4's necessity (R3-alone leaves it) and PINNED the recoord scope; now closed.
 
 ## Slot-to-D_J caveat
 `foldResid` is a vector of slots ("foldResid IS the block-slot", §8 scalar-foldB def-fact); I read the
