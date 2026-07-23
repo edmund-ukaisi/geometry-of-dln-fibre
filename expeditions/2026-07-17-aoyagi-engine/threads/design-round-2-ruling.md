@@ -595,3 +595,28 @@ foldResid(p)(stepMap ed u)` ⟹ the DEEPER edge's stepMap hits RAW `u` FIRST, ed
   block-mechanism→now block-criterion(raw vs chart). Each data-forced; each the same disease (an analysis
   fitted to the wrong frame/object), each caught by transcribing the actual def or her text. The RLCT
   value stays safe throughout (invertibility); this is the FORMAL read-off criterion, still bounded.
+
+**(m) RESOLVED — the inter-edge coupling is a SCOPE BOUND (`i ≥ cleared`), and it is Aoyagi's semantics;
+NO fold-order re-open.** pnp's upgrade + Codex (both witnesses, `verify/r3r4_recoord_scope.py`, exit-0):
+the `u₀₀₁²` arises because branch-(ii)'s recoord sums over ALL `i≠a`, INCLUDING the already-cleared
+outer-pivot row. **Restricting the sum to the REMAINING BLOCK `i ≥ cleared` DISSOLVES it** (deg `u₀₀₁`
+2→1). This is not fold-order surgery — it IS Aoyagi's current-chart / accumulated-`Q₂'⁻¹` semantics
+(her recoord reads the CLEARED outer state = 0 on cleared rows) implemented in the raw-read fold by simply
+NOT SUMMING the cleared rows. So the raw-read fold CAN be faithful to her accumulation; the fold-order
+re-open branch of (l) is DISSOLVED (it fires only if the render keeps the unbounded `all-i≠a` sum).
+Codex: R3's sign alone never fixes the degree (coefficient, not degree); the minimal fix = reading the
+cleared value 0 = exactly this scope bound.
+- **DEF-EDIT-3(b) UPDATED:** the branch-(ii) recoord = direction flip (`A_{S+1}·Q₁`, `−γ`) **AND** the
+  scope bound `i ≥ cleared` (remaining block); R4's own reads checked for the same prior-clear-awareness.
+- **CRITERION (harmonized, accepted):** PRIMARY = the RAW block-form test ON THE SCOPED (`i ≥ cleared`)
+  formula — with the bound, raw-multilinear-clean is achievable and is the stricter mechanical test
+  (clean raw ⟹ clean chart). SECONDARY / cross-check = the (l) CHART-FRAME inter-edge `boostReady`
+  (belt-and-suspenders; closes the `boost_center` single-step-vs-inter-edge gap; and remains THE criterion
+  if any residual entanglement appears elsewhere). The (l) chart-frame reframe stays independently valuable
+  (frame-correctness for the record, the same frame discipline as the field).
+- **THE MERGE GATE, CRISP:** rendered `all-i≠a` ⟹ `u₀₀₁²` ⟹ RE-OPEN; rendered `i ≥ cleared` + battery
+  clean (raw block-form AND the chart-frame cross-check row) ⟹ the multilinear clean block is reached ⟹
+  MERGE; rendered `i ≥ cleared` but battery still dirty ⟹ the (l) fold-order branch. This was the last
+  open def detail; the render target (DEF-EDIT-1 widen; DEF-EDIT-3 = branch-i→R4, branch-ii flip + `i≥cleared`
+  scope) is COMPLETE. The correction chain converged onto the faithful fix — the scope bound is her
+  current-chart reading, found by chasing the `u₀₀₁²` the fifth correction surfaced.
