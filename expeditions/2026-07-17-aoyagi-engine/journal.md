@@ -17316,3 +17316,11 @@ u₀₀₁² RE-SCOPED as a quarantined clear-model fact (not deleted — guards
 Elder authored §11 in the ruling file itself (its office write); controller verified content + committed.
 Frozen two-site replacement dispatched to arch-C-4 (docstring-only, clean boundaries). ON ITS
 LANDING: the controller merge executes — all three review gates green, all controller-re-derived.
+
+## 2026-07-23 (~17:40) — elder refined the frozen text post-dispatch (churn instance, handled): §11 sharpened @ 7c6db9abb, arch-C-4 superseded
+
+One refinement round on the row-3 text: the elder folded pnp's concrete leak (unscoped, E_J col-0
+acquires u₀₀₁·u₀₁₀, LINEAR in u₀₀₁ — so the fidelity defect is exhibited, not just asserted) into
+§11 + both docstring sites, declaring it final. Handled by the churn protocol: committed the §11
+edit FIRST (artifact-first), then sent arch-C-4 a SUPERSEDE brief with the state-confirmation ask
+(not-started / mid-render / done-with-old). Merge executes on its report.
