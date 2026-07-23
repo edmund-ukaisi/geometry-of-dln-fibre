@@ -18236,3 +18236,18 @@ small follow-on consuming the landed det-1-CoV machinery + ψ_gen) — the induc
 single-focus. Census expectations set. Worktree plan correct (no controller-root git-ops).
 Meanwhile pnp-cap verifies its Q1/Q2 pair on the cap frontier. Both critical-path lanes now past
 their restate gates.
+
+## 2026-07-24 (~16:45) — CAPR's encoding consult routed (L4D + pnp); my (B)-def steer superseded
+by CAPR's analysis — endorsed (A)-primary
+
+CAPR's genuine catch: certificate §4's transport laws ARE foldResid's own recursion equations, so
+a structural (B)-mirror collapses to foldResid — the clear's insertion point is exactly the
+ambiguity a def must not carry. (A)-PRIMARY endorsed (define = foldResid ∘ couplingClear, the
+certificate's object verbatim; transport = proved commutation lemmas — bounded honest
+obligations); L4D rules as def-owner (or dictates the canonical insertion if it knows one — noting
+even pnp's clear-before-shear ordering would need the commutation proof anyway). Decision 2
+(couplings = LEAF/argument coords) routed to pnp for ground truth (its scripts fix the frame).
+CAPR drafts the SPECIFY against a PENDING-ENCODING provisional meanwhile — no stall. File
+location resolved cleanly (new SourceClearedResid.lean between MonumentAtlas and MergeBoostSplit;
+aggregator wire = mine at merge). The def-design loop working as built: the seat surfaces the
+tension, the def-owner rules, the elaborator grounds — nobody renders ambiguity.
