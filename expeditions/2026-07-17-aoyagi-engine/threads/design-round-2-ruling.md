@@ -961,3 +961,40 @@ route** (consistent with §7.7/§7.8 — the derivation lives at `canonFlatten`,
 **MERGE POSTURE:** sound and paper-faithful (the raw support IS `layerCoords`; the cap is the center's).
 CAPR's SPECIFY freeze lifts on this ruling; pnp adds the `(2,3,2,2)` width-increasing witness (capstone
 `extra` + B1). Nothing about `λ` is at risk.
+
+### §12.1 — the `realBranch_cover` caveat: CONFIRMED real; the widen is COUPLED to the object-split (pnp-cap 33ffa3599)
+
+pnp-cap's honest caveat is **confirmed at the code**, and it means the naive widen is NOT free:
+`realBranch_cover` (`MonumentAtlas:1174`, δ=1 case12/case2) proves `supportAt(J=0) = blockCoords ⊆ ed.center`
+(both `widthMinUpto`-capped, coincident at `cleared=0`); its consumer `deg1SupportedOn_center_of_hslot`
+(`Case1Wire:294`, the δ=1 case12/case2 boostReady) restricts `hslot` (over `supportAt`) to `ed.center`
+**through that containment**. **A naive widen `supportAt(J=0) → layerCoords` breaks BOTH** — on
+width-increasing `d`, `layerCoords ⊄ ed.center` (the capped center), so `realBranch_cover`'s conclusion is
+false and the case12/case2 boostReady bridge cannot restrict `hslot` to `ed.center`.
+
+**This is not a blocker — it is the object-split (pnp-transport verified) telling us two conflated roles must
+separate.** `supportAt(J=0) = blockCoords` currently serves BOTH: (Role 1) the RAW fold's carried function-
+support (`FoldStepInvAt` / obligation (b)) — which on wide `d` reads out-of-cap and needs `layerCoords`; and
+(Role 2) the `ed.center`-containment feeding the case12/case2 boostReady — which needs the CAP, but that cap
+is the CLEARED object's confined support (`canonCenterOf`), NOT the raw fold's. **RULING (couples §12 to §7):**
+- **Role 1** (`FoldStepInvAt`, obligation (b)) — widen to `layerCoords` (§12(1)). ✓
+- **Role 2** (`realBranch_cover` + `deg1SupportedOn_center_of_hslot`, the case12/case2 boostReady) — the SAME
+  §7 treatment as case11: the boostReady reads the CLEARED object (`sourceClearedResid`), where the support is
+  confined to `blockCoords ⊆ ed.center` (pnp-transport verified: the escaped columns enter only through the
+  ancestor coupling the source-clear removes). Re-point `realBranch_cover`'s containment to the center cap
+  (`canonCenterOf` / the cleared support), NOT the widened `supportAt`. **So §7's cleared-object read-off is
+  NOT case11-specific — it extends to case12/case2** (their raw residual exceeds `ed.center` on wide `d` the
+  same way case11's does; the same fix — the cleared object — applies).
+- **DECISIVE CHECK (pnp + CAPR/L4D, before the SPECIFY freezes on the case12/case2 wiring):** confirm on a
+  width-increasing witness that the case12/case2 raw residual exceeds `⟨ed.center⟩` on wide `d` exactly as
+  case11 does (so they need the cleared object), and that on `sourceClearedResid` the case12/case2 support is
+  confined to `blockCoords ⊆ ed.center` (so `realBranch_cover`-on-`canonCenterOf` + the cleared boostReady
+  hold). Expected (it is the same coupling mechanism); if case12/case2's raw residual is ALREADY `⊆ ed.center`
+  on wide `d` (unlike case11), then only Role 1 widens and `realBranch_cover` merely re-points to the cap
+  (lighter) — pnp's check decides which.
+
+**Net (§12 + §12.1):** the fold-level `supportAt` widens (Role 1, raw fold); the `ed.center`-containment and
+ALL boostReady (case11 AND case12/case2) live on the cleared object / `canonCenterOf` (Role 2, the §7
+object-move, now seen to be all-cases). `realBranch_cover` re-points to the center cap. The naive-widen's
+`realBranch_cover` break is the signal that Role 2 belongs on the cleared object — not a wall. pnp's
+width-increasing witness settles the case12/case2 extent.
