@@ -17575,3 +17575,21 @@ either adds a carried component whose case11-preservation IS the wall (need relo
 dissolves) or quantifies per-node (the pin in disguise). All relayed to the elder; the touch set
 now includes the two assembly statements. L4D grinds the content lemma (idiom-independent);
 LL/L3T3-case1'' still gated on the ruling.
+
+## 2026-07-24 (~00:15) — elder batch banked (θ withdrawal + Aoyagi-axis restructure + chunk map);
+sequencing = idiom ruling FIRST; one self-caught process miss (the unstaged aggregator wire)
+
+Elder's #63 batch committed (f0be2f073): §2.3 erratum WITHDRAWN with the clean statement (Aoyagi's
+θ = ORDER = rlcm = a(ℓ−a)+1 = aoyagiPoleOrder; L&R's θ = component count; coincide iff
+min(a,ℓ−a) ≤ 1, witness (2,2,2,2,2): 6 ≠ 5); Lean names CLEAN (ThetaOrderDistinction.lean is the
+guard); the audit now leads with the Aoyagi-axis C0–C13 matrix, L&R demoted to Appendix A; the
+chunk map = worked-tex-errata.md; E-1 recorded CLOSED. Two stale θ-framing prose sites boarded
+(#67, controller precision pass). Sequencing fork answered: IDIOM RULING FIRST (the priority
+commission + summit-sites input crossed its batch); the C6/C9 prose-intent walk follows — with
+the synergy note that C6 (Lemma 2) + C9 (recursion) IS the ruling's paper-side region.
+
+SELF-CAUGHT MISS: the aggregator wire (4 imports) was fully GATED at merge time (build 9012,
+cordon, forced axioms) but never git-added — the pushed canonical lacked it until 2e65658d1.
+Consequence window: origin's builds would not compile the 4 new modules (local truth ≠ pushed
+truth). Lesson: the commit-coherence check belongs in the merge checklist — `git status` must be
+CLEAN after a merge-integration push, not just gates-green.
