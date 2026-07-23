@@ -531,3 +531,44 @@ monument), coupled to zone-1's shape re-open trigger.
 sentence names the cleared output (`returns FoldStepInvAt_cleared … NOT the raw FoldStepInvAt`); a
 `_cleared` suffix is strictly clearer and RECOMMENDED if the batch touches it. Verified at integration
 (edit not in `52fed0330`).
+
+### §9.1 O2 catch (20th statement-class catch) + provenance ratification (@ `e33ab0607`)
+
+**Provenance (delta 1) — RATIFIED as written.** GM's addendum @ `e33ab0607` writes the survive-raw position
+with the three-point tension (non-invertible `couplingClear` ⟹ a cleared atlas is likely not a valid
+Resolution; the (iv) lift is rlctGlobal-level so reconciliation is at the payoff; no per-node bridge). This
+CONVERGES with my §9 delta-1 reasoning independently. My ratification answer to "settle-before vs
+owned-deferral": **owned-deferral is the §8-faithful reading** — the charter's caveat-next-to-claim is
+satisfied by the WRITTEN paragraph + task #81 (owner = L5 fold-body SPECIFY author; re-open trigger = L5
+SPECIFY time). Do NOT gate GM's chain proofs on the provenance decision. Keep my sharpened trigger: the
+banked Q₁-lift is a GLOBAL-residual identity; the summit consumes PER-CHART PrincipalInv on the raw gmap —
+L5 SPECIFY must confirm the bridge shape.
+
+**O2 — three one-step laws FALSE at growth edges (pnp `20bc71f1d`, controller re-ran exit 0).**
+`couplingClear_stepMap_comm` / `clearedFoldG_extend_eq` / `clearedFoldB_extend_eq` are stated UNQUALIFIED
+(∀ ed) and are FALSE at case2/case12 δ=1 **growth** edges: `couplingCoords` grows by `belowPivotCol`, so
+`couplingClear(child)` zeroes the fresh column that `couplingClear(parent)` does not; the naive
+EQUALITY-commutation breaks. FoldStepInvAt_cleared's STATEMENT, S2 (`sourceClearedResid_extend_δ1/0`), the
+append, and the defs STAND (the cleared StepInv is the raw identity evaluated at `couplingClear u`, holding
+where the projection kills the obstruction — pnp-verified).
+
+**Fidelity ruling — the cleared-locus induction is SOUND and a FIDELITY WIN.** The false equality weakens to
+the true MAPS-INTO: `stepMap` carries the child cleared-locus `L_child = {couplingClear_child = id}` into the
+parent's `L_parent`, and `L_child ⊂ L_parent` (the locus SHRINKS as coupling coords grow), so the parent's
+cleared identity RESTRICTS to the child. Paper-first: this shrinking cleared locus IS Aoyagi's
+`D_J → [[1,O],[O,D_{J+1}]]` block shrinkage (the residual block lives on fewer coordinates each step). The
+naive uniform-precompose-commutation over-stated the transport; the shrinking-locus restriction is the
+faithful rendering. Same class as §8 — a catch that tightens the render toward her recursion, pre-render.
+
+**Honesty criterion for the demotion (added delta item):** (1) NO unqualified `∀ ed` false statement may
+survive — not even sorried (a sorried known-false ∀-statement is the same precision violation as the §9
+deletion targets). (2) A case11-only restatement carries its scope in the HYPOTHESES (`hc11 : ed.case =
+case11`, preferred) or the NAME (`_case11` suffix) — a docstring-only caveat is INSUFFICIENT (name=content
+binds the statement, not the prose). `couplingCoords_case11_stable` is the honest enabler. (3) The
+conjunct-1 transport lemma must state the shrinking-locus MAPS-INTO / restriction honestly, never a
+disguised equality.
+
+**Coverage QUESTION (verify, not asserted-gap): the case2 preservation cleared twin.** If the summit
+consumes a UNIFORM `FoldStepInvAt_cleared`, every case (incl. case2) must produce it, but GM's module has
+only `case1_preserves_cleared`. Confirm where the case2 cleared preservation lives (a Case2Wire cleared
+twin, not GM's module) — same class as the last-layer gap (§9). Controller to resolve at integration.

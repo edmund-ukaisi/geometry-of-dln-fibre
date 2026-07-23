@@ -19158,3 +19158,30 @@ INV's containment, CAPF's kill-lemma grind. All witness-level verifications rema
 both defs (they coincide there); the fork is about the fan-general statements.
 
 pnp: the O2 script summary nit FIXED (0db719b0d, honest verdict, rows unchanged).
+
+## 2026-07-23 (~15:25 actual) — the revision round converges: elder §9.1 (provenance RATIFIED;
+cleared-locus = a FIDELITY WIN; the honesty bar); CAPR's hN confirm (blessing material complete);
+GM's delta-SPECIFY @ 414862c64 (3 false laws REMOVED; the locus core stated)
+
+ELDER §9.1 (banked): provenance ratified as written — owned-deferral IS the §8-faithful reading;
+GM's chain proofs do NOT gate on the provenance decision. O2 fidelity ruling: the cleared-locus
+induction is SOUND and a FIDELITY WIN — paper-first, the shrinking cleared locus IS Aoyagi's
+D_J → [[1,O],[O,D_{J+1}]] block shrinkage (worked.tex:619-620; her residual lives on FEWER
+coordinates each step); the naive uniform precompose OVER-stated the transport. The honesty bar
+for the revision (3 criteria): no unqualified false ∀-statement survives even sorried; scope in
+HYPOTHESES or NAME, docstring-only insufficient; the transport lemma states the maps-into
+honestly, never a disguised equality. NEW COVERAGE QUESTION: case2's cleared preservation twin is
+absent from GM's module — controller RESOLVES: state case2_preserves_cleared NOW in GM's unit
+(fill the layer; the easy case — no merge obstruction; L5 needs the uniform invariant set).
+CAPR: hN CONFIRMED (guard-domain family; N=0 outside the recursion's domain; consumer-safe via
+the case11 live-merge forcing N≥1; the hygiene note — sourceClearedInv_holds is the ONLY leaf
+hitting this degeneracy). Blessing round now fully material (2 items, both CAPR-confirmed).
+GM's DELTA-SPECIFY @ 414862c64: the 3 false laws REMOVED (not demoted — the locus containment
+subsumes the case11 arm; dead scaffolding avoided; elder criterion 1 satisfied trivially); ADDED
+the locus core — couplingCoords_mono_extend (L_child ⊆ L_parent), pivot_notMem_couplingCoords_
+extend (all cases, generalizing the verified disjointness), couplingClear_parent_fixes_stepMap_
+child (THE load-bearing fixpoint formulation of the maps-into — ancestor couplings are
+spectators of the current step; GM's named single verification for pnp). S1/S2/append statements
+unchanged; proofs re-routed through the locus. SEQUENCING: pnp resolves #82 (clear-location)
+FIRST, then verifies the locus core under the winning def; the elder's fast confirming pass runs
+against its own bar. GM holds for both.
