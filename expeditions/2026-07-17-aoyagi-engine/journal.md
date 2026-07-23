@@ -15907,3 +15907,20 @@ def-fact, joint no-slot-change confirm); pnp = #49 Gröbner triple on the flippe
 reuse-node forms (re-open trigger: reuse node NOT clean under R3), running the EXACT rendered
 form (the certificate-fidelity lesson applied to batteries). Merge gates: battery green +
 elder delta-read. Memo updated to the finalized state.
+
+## 2026-07-23 (~02:00) — §8(g): the elder separates the TWO AXES (its second same-session self-correction); R4 un-stood-down for the block axis
+
+The elder corrected its own finalization (the same discipline as the §2 retraction — "I
+over-claimed by conflating the two axes"): PRODUCT/boost-readiness (foldResid supported on
+center) = FINALIZED via R3, Reading B, field retracted — holds. BLOCK/monomialisation
+(D_J → diag(1,e₂), the M_{s,k} normal-crossings read-off) = OPEN: boost-ready ≠ block-diagonal;
+R3 acts on A_{S+1}, γ sits on A_S — the block may stay non-diag under R3 (the controller's
+earlier isolation, now structural in the ruling). THE DISSOLUTION of the rank-reducing scare:
+her :619-629 block-diagonalisation is via invertible regular Q,P = unipotent Gaussian
+elimination ON THE ENTRY — a GENERATOR transform (seat-L4D's jacDet-0 obstruction was about
+clearing a COORDINATE and stands). So R4 is UN-STOOD-DOWN as the block-axis mechanism if
+needed; both R3-alone and R3+R4 are contained + G1-clean — EITHER outcome rides the re-bake, no
+escalation. R5 stays rejected. Re-open triggers pinned PER AXIS (product: reuse-node not clean
+under R3; block: not diagonalisable by R3+R4 within the fold). The single deciding datum =
+seat-L4D's block-form-under-R3 column (prioritized in its reporting order); arch-C keeps the
+render MODULAR for a possible def-edit 4 (R4 component). §8(g) + compass committed 138cc5a31.
