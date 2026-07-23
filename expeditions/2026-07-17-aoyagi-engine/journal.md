@@ -21748,3 +21748,48 @@ genuine-fix-vs-punt question is closed; the module is regression-guarded. rev sk
 the uniform-C de-risk (pnp-cap, in flight) + the #73 bridges (buildTree→FanTree + atlas-chart + σ +
 leaf-box sizing + discharge). KILL: seat-killfin rendering (1)→(2)→(3). Wall (a) both sides. Awaiting:
 pnp-cap uniform-C, seat-killfin #97, battery bg. No new decision — the L7 engine arc is complete.
+
+---
+
+## Tick — operator RE-GROUNDING request: fresh cartographer, treadmill/local-min suspicion (2026-07-23)
+
+**Uniform-C CLEARED (landed pre-operator-msg).** pnp-cap (027cc56f4) + I re-ran cap_l7_quadbound.py
+(exit 0): canonNormalizationOf is purely quadratic, per-coord monomial count ≤ max_ℓ d_ℓ, LAYER-LOCAL
+with NO depth-accumulation (per-layer breakdown = the d[s±1] width bounds). So a uniform
+C = √(flatDim)·max_ℓ d_ℓ exists; f = r↦r+C·r² discharges the per-node σ-clause. Framing matches: the
+bound is on the PER-EDGE shear = the FanTree per-node σ, so it lands exactly where the engine consumes
+it; rev's depth-accumulation caveat provably does not bite. L7 = detail-at-scale. Acked pnp-cap + rev.
+
+**Operator (2026-07-23):** "I feel … it is warranted at this stage to spawn a fresh cartographer, with
+fresh eyes, tracing through current frontier but ALSO fan out and survey multiple aspect of the code
+base because I think we are in a treadmill or a local min again … They should also reason at the
+mathematics level and use that reason to guide the code understanding and search … cross check and use
+to re-ground your understanding of the state and what to do to close out."
+
+**Controller baseline dig (factual, handed to the cartographer as a model to TEST, not gospel).**
+- ROOTS: `aoyagi_learning_coefficient_via_engine` (LearningCoefficient:323) → `exists_coreResolution`
+  (:292) — the latter has a BARE sorry at :311.
+- WIRE GAP: `MonumentAtlas.exists_coreResolution_via_monument` (:1947) re-proves the IDENTICAL statement
+  via the monument leaves (L5/L6/L7/L8), but via_engine does NOT consume it — :311 is standalone. An
+  unbuilt "swap :311 → via_monument" wire (signatures appear to match; to confirm).
+- CENSUS: raw scripts/sorries = 42 sorry / 3 axiom on the integration branch. RouteM* (prior aoyagi-full
+  Schur/Morse route) carries ~7 of them and the Aoyagi monument references NO RouteM ⟹ likely OFF-CONE
+  FOSSILS inflating the count. True LIVE-frontier count TBD by the cartographer.
+- OFF-BRANCH: CapDescent / SourceClearedResid / LeafCoverTiling / DivBirthReach are ABSENT from the
+  integration branch — the KILL render, L7 engine, CAPR/INV all banked on ~30 seat branches.
+- TREND: integration-branch sorry-lines ~660 FLAT across the last 30 commits — the trunk is FROZEN while
+  seats accumulate. ~30 seat branches (fragmentation outrunning integration).
+- KEYSTONE HYPOTHESIS: #73 (merge all lanes onto canonical + sorry-swaps + the via_engine→monument wire
+  + aggregator) is the bottleneck everything is queued behind, marked `pending`. The treadmill = a frozen
+  trunk behind a deferred keystone while peripheral de-risks/review-loops consume ticks.
+
+**Action.** Spawned `carto-fresh` (scout, background, read-only) with a math-first, challenge-my-model
+brief (task #105): reconstruct what the resolution-RLCT proof must BUILD from the paper, check the code
+encodes it faithfully, trace the TRUE via_engine cone (integration-branch vs seat-branch), inventory
+fossils, deliver a treadmill/local-min VERDICT with quantitative evidence, and a ranked close-out
+sequence naming the hard parts + what the controller should STOP doing. Controller will CROSS-CHECK
+(re-run cited commands, verify against code) and re-ground the close-out plan before the next structural
+move. Holding my own peripheral coordination pending the re-grounding; seats continue rendering.
+
+**Status.** Awaiting carto-fresh (the re-grounding). Uniform-C cleared. KILL rendering (seat-killfin).
+No structural move until the cartographer reports and I cross-check.

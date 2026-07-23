@@ -1136,3 +1136,50 @@ directly, not via leaf-transport) → the fallback is NOT the #87 row-pin (kills
 extending the σ-transport to carry the confinement — a bigger obligation to flag, not the default. MY CALL:
 structure the cap-descent as the diagonal-scoped induction (§9.4); the confinement is diagonal-only; (i) is
 clean. seat-KILL's diagonal-scoped render is exactly this — GO.
+
+### §9.11 cross-check RESOLUTION — structurally clean now, compiler-confirmed at #73 (named gate)
+
+The thread-reaches probe: seat-KILL ran it at the READ level, but its base (b8fec5647, CX-derived) PREDATES
+the INV summit restructure, so a base-scoped probe shows a for-all-IsRealBranch "wall" at the three summit
+sites (realBranch_multiAffine_step' :805, case1/case2_preserves_stepInv'' :39/:53, leaf_stepInv_of_path'
+:35) — a BASE-STALENESS ARTIFACT, not the integration answer. The INV base HAS the hcanon summit threading
+(INV:738 pattern) + the §9.4 diagonal-scoped fold, matching this ADDENDUM (summit diagonal-scoped by
+construction), so the STRUCTURAL answer is CLEAN. RESOLUTION (elder-ratified defer): the compiler-definitive
+probe lands at #73's rebase-onto-canonical (the natural site where hcanon meets the INV summit); NOT a
+separate confirmatory-only INV worktree (would fragment seat-KILL off the higher-value KILL-step consult).
+CAVEAT (caveat-next-to-claim): #73 MUST carry the thread-reaches probe as a NAMED gate. [GATE RE-TARGETED —
+see the TWO-CAP refinement below: the "three summit sites hcanon-scoped" written here was MIS-AIMED (those
+sites are the RAW VALUE cap, which MUST stay IsRealBranch-general). The correct #73 gate is the SOURCECLEARED
+cap chain hcanon-scoped + compiler-green; the raw three sites keep their OWN gate, correctly general.] A wall
+on the sourceCleared cap is the trigger for the (a)/(b) escalation (never a row-pin). #95 = structurally
+clean, #73-compiler-confirmed on the RE-TARGETED gate.
+
+### §9.11 TWO-CAP refinement — the thread-reaches resolves via the cap SPLIT (confirms ADDENDUM; corrects the cross-check target)
+
+seat-KILL's probe found TWO distinct caps to DIFFERENT summit consumers (verified at the def, INV lane):
+- **RAW VALUE cap** `realBranch_appendResidDescent` (MonumentAtlas:1442): on `foldResid`, e-general,
+  `hbranch : IsRealBranch e` (NO hcanon), producing the `supportAt` decomposition for ALL branches; flows
+  descent → `realBranch_multiAffine_step'`(:805) → `case_preserves_stepInv''` → `leaf_stepInv_of_path'`.
+  This is the all-branches VALUE/leaf-form chain — CORRECTLY IsRealBranch-general (real branches include the
+  genuine off-diagonal non-repeat row-fans, off-diagonal leaf forms via σ/#86B/C — the #87-row-pin rejection
+  reason). Threading hcanon here is ill-typed (CanonicalPivots is downstream of MonumentAtlas) AND
+  wrong-in-principle. STAYS GENERAL.
+- **SOURCECLEARED cap** `realBranch_appendResidDescent_fresh_sourceCleared` (SourceClearedResid:457): on
+  `sourceClearedResid`, the confinement/KILL — this is where the §9.11 (i) hcanon lives.
+
+This is my §9.4/ADDENDUM architecture made concrete: raw value cap = the all-branches leaf-form chain
+(general, off-diagonal via σ); sourceCleared cap = the diagonal-only confinement (hcanon). The earlier
+base-scoped "wall" (at :805/:39/:53/:35) was a MIS-TARGETED probe — it threaded hcanon onto the RAW VALUE
+cap chain, which is correctly general — NOT a base-staleness artifact per se; the hcanon belongs on the
+SEPARATE sourceCleared cap. This CORRECTS my earlier cross-check framing ("hcanon through MultiAffineStepWire
+to the summit"): MultiAffineStepWire carries the RAW VALUE cap (correctly general); the hcanon lives on the
+sourceCleared cap alone — no propagation-through-MultiAffineStepWire is needed.
+
+**PRECISION (read-the-def): the sourceCleared cap does NOT YET carry hcanon.** SourceClearedResid:457 (the
+#73 swap TARGET / obligation-b sorry) is `IsRealBranch`-general — NO hcanon; the only hcanon-carrying
+statement on the file is the READ-OFF (:738, a different statement, the §9.4 precedent). So "the #6 twin
+already carries hcanon" is accurate ONLY for the KILL RENDER (seat-KILL/CX's `sourceClearedResid_capped`
+variant, per §9.11 (i)), which is on the CX lane and REPLACES the :457 sorry at #73 — NOT for the :457
+swap-target statement itself. So #95(i) is: the hcanon-carrying KILL render (seat-KILL, in progress) SWAPS IN
+at #73, replacing the general :457 sorry. NOT already-done on the swap target. The read-off (:738) carrying
+hcanon is the PRECEDENT that the thread type-checks, not the cap itself.

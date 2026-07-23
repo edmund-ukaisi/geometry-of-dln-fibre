@@ -227,6 +227,58 @@ literal-name re-point if available; hbox/DecoratedDescent NOT required and stays
 - The coupled case is Aoyagi's ACTUAL content and the historical dodge-point. BUILD it; do not route around
   it, do not pre-declare it tractable. This gap is the thing the compaction must keep unmissable.
 
+## The wall decomposition + pricing (elder, 2026-07-24, #73-producer audit) — the coupled monument IS #73
+
+**Pricing verdict: exists_atlasRealizesExponents at coupled corank≥2 is (a) BOOKKEEPING-over-the-cleared-
+leaves + the L7 cover-tiling — NOT (b) a further coupled Hironaka construction.** The coupled corank≥2
+monument (Object B — the b_i-share-divisors resolution, the wall/case1, boost-split, cap, KILL) lives
+ENTIRELY in L5's proof-content = the leaf-invariant = **#73** (the cleared chain: cap+KILL+transport →
+per-leaf StepInv → PrincipalInv). Once #73 lands, the per-leaf principal forms are supplied and the atlas
+ASSEMBLY is generic (coupled-agnostic): L1 (`principalInv_regionRepresents`) LANDED; L6 (`leafPath_chartGeometry`)
+= package each PrincipalInv+RegionRepresents as a certified Chart (bookkeeping; the HARD-LOCK is only the
+shrunk-nbhd soundness constraint); L8 (`leafPath_realizesExponents`) = the exponent read-off `jac a+1 ∈ leafOf
+divExp` via `FoldProduced`'s provenance (bookkeeping; Object D's cCodim bridge). Evidence: `exists_
+atlasRealizesExponents`'s own docstring folds the coupled difficulty into L5 (L3/L4); L7's docstring states
+"Nothing about L7 blocks the wall (L4), L3, L5's proof-content, L6, or L8." Paper-first: Aoyagi's coupling is
+in the RESOLUTION (Cases 1&2, the regular Q,P, the b-ledger) — the atlas is generic resolution-of-
+singularities packaging (charts cover; exponents read off the jacobians; Lemma 4-5 pole-order = read-off).
+
+**THE ONE non-bookkeeping piece: L7 `leafPath_compactCover` (the cover-tiling)** — a combinatorial coverage
+computation over the canonical block assignment (`canonCenterOf`/`canonPivotOf` slots), riding
+`FoldProduced`/`FoldRealizes` (the built tree), INDEPENDENT of L4/L3/L5. It is DETAIL-AT-SCALE (patient,
+decomposable; pnp-fan's fanned-cover cert #11-14 is the mechanism), NOT a coupled monument (no single deep
+insight). Coupled just means a BIGGER (fanned) tiling, same kind of argument. Residual: the general-`d` fan
+tiling is sorried (pnp-fan has the (2,2,2) instance + mechanism); generalizing is detail-at-scale. So
+"#73 lands → the summit is wiring (L1/L6/L8) + the L7 cover-tiling seat" — nearly done, with L7 the one
+buildable long-pole, NOT an un-owned coupled frontier.
+
+**b-leaf7 / the L7 cover architecture (CORRECTED by seat-L7cover's (2,2,2) escape — the deferred L7 SPECIFY).**
+My earlier "L7 is over the col-pinned row-fan" was WRONG — it conflated the LEDGER-fan (diagonal leaves,
+col-pin, carries the leaf-invariant) with the COVER-fan (ALL coordinate charts). The escape: over the LITERAL
+col-pinned atlas, `leafPath_compactCover` is FALSE — target `x = ε·e_{(0,0,1)}` (col=1) is uncovered (every
+col-pinned chart forces its pivot-slot=0; blow-up is outermost, no repair), and x is ε from 0 so no ρ works.
+The FULL-fan `(0,0,1)`-pivot chart (col=1, DROPPED by the col-pin) covers it — the #86(B) COLUMN-ORBIT.
+RULING (fork A): L7 = the ABSTRACT full-fan cover (pnp-fan mechanism, pivots over all of S), and the
+col-pinned→full-fan BRIDGE = the #86(B) column-orbit σ-transport (the column charts are σ-IMAGES of the
+diagonal leaves under the DLN coordinate-permutation gauge — verified a coordinate permutation:
+`EndpointNormalization:129`, `FibreChartConjugation.pivotGauge`/`gaugeEquiv`; σ permutes chart domains
+cleanly + commutes with the blow-up per #86(B)'s clear-equivariance). So the cover-bridge is DETAIL-AT-SCALE
+(a permutation-covers-permuted-directions argument on established gauge machinery), NOT a frontier / NOT a
+#87 re-open (the col-pin stays for the LEDGER, never the cover — as #87 flagged). (B) [literal col-pinned
+atlas covers] is FALSE-as-stated (the escape); its "column-orbit as real added charts" IS (A)'s σ-transport.
+FAN-COMPLETENESS (the 2nd gap): `FoldRealizes` gives only leaf-SURJECTIVITY, but the cover needs every
+admissible-pivot branch continue — DERIVABLE from L5's `buildTree` (which enumerates all admissible-pivot
+branches by construction), NOT a frontier; expose it (a `FoldRealizes` def-edit, controller single-writer,
+or an L5 lemma), don't leave it a bare threaded hypothesis. So L7-cover = full-fan tiling + σ-cover-bridge +
+completeness — ALL detail-at-scale; (a)-pricing HOLDS on the cover side (refined: full fan via σ, NOT
+col-pinned-leaves). The row-repeat phantoms (§9.11) are a LEDGER-side exclusion, orthogonal to the cover.
+
+**Terminology (pin — two collisions):** (1) "the wall" splits into **the case-1 wall** (L4, #38/#73's
+leaf-invariant boost-split — the coupled monument) vs **the atlas monument** (L6/L7/L8, the geometric
+assembly — bookkeeping + the L7 tiling). (2) "L5-layer transport" splits into **the INV step-transport**
+(P5's `sourceClearedInv_holds` induction step, #73) vs **the σ-chart transport** (#81's canonical→fan
+chart-permutation, the genuine-L5 provenance). Use these; do not say "the wall" or "L5 transport" unqualified.
+
 ## Standing counsel (rising-sea)
 - **THE PER-FIELD + BOUNDARY AUDIT (refined 2026-07-21, the layer-axis event):** audit each free
   field AND each field's range boundaries — a field constrained everywhere but at its range's
