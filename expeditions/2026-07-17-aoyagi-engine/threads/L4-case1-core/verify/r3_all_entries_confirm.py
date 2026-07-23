@@ -1,5 +1,11 @@
 """seat-L4D confirmation battery (condition a+b), ed1-level all-entries, (2,2,2,2) corner pivot a=b=0.
 
+SUPERSEDED by §8(i) (384ac17dc): this tests the two-sign COORDINATE flip on the ed1 PRODUCT — the WRONG
+object. foldResid IS the block-slot (scalar-foldB def-fact), so the fix is DEF-EDIT-3 = branch-(i) REPLACED
+by the R4 generator transform Q₁·A_S·Q₂ → diag(1,e₂) (classical −γβ) + branch-(ii) flip; NOT the two-sign
+flip. Kept for the record: its live residue is the condition-(b)-load-bearing fact about the (moot) product
+object, and the CAVEAT-2 discrepancy below is exactly what surfaced the wrong-object catch.
+
 FINDING (solid, model-independent, controller re-derived): the branch-(i) Schur sign is LOAD-BEARING.
 Baked = recoord +γ (Q₁⁻¹), Schur corner −γβ (= e₂). Controller-verified identity:
     (A₁·A₀)[0][1] = β·u₁₀₀ + u₀₁₁·u₁₀₁ + (r − s)·γβ·u₁₀₁,   r = recoord sign (−1 flipped),
