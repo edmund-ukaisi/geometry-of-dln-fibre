@@ -239,29 +239,37 @@ theorem couplingClear_parent_fixes_stepMap_child (d : Fin (N + 1) → ℕ) {p : 
   -- map: B-globalmove-couplingClear-parent-fixes-stepMap-child (locus containment; ancestor coords spectators)
   sorry
 
-/-- **δ=1 cleared child residual = parent's STRICT TRANSFORM** — the `sourceClearedResid` analogue of
-`Case1Wire.foldResid_extend_delta1` (S2). **TRUE at every node, including case2/case12 δ=1 with the
-child's GROWN `couplingClear` on the left** — pnp reconciled (20bc71f1d) that the reason is DEFINITIONAL:
-`Φ_child = Φ_parent ∘ quot` (the fold recursion), so the grown source-clear on the input commutes through
-robustly (unlike the M-level `couplingClear_stepMap_comm`, which was over-stated and is FALSE at growth). -/
+/-- **δ=1 cleared child residual = parent fold at the STRICT TRANSFORM of the CHILD-CLEARED input** (S2).
+25th-CATCH CORRECTED (pnp cert (ii), 3ec969d8f): the δ-transform is applied to `couplingClear d (p.extend
+ed) u` (the CHILD-cleared input), NOT raw `u` — the raw-`u` form is FALSE at case2/case12 fresh clears (the
+fresh shear reads the freshly-added `belowPivotCol`, which the parent-clear never zeroes). Carrier-FREE, by
+PURE `foldResid_extend_delta1` unfolding (`Φ_child = Φ_parent ∘ quot`). (The `sourceClearedResid d p`-headed
+RHS coincides via cert (i)'s parent-clear-no-op on this argument; the appends do that reconciliation,
+carrier-threaded — kept here in the direct `foldResid`-parent form so S2 stays carrier-free.) -/
 theorem sourceClearedResid_extend_delta1 (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (hlt : ¬ N ≤ ed.nextState.layer) (hδ : edgeδ d p = true)
     (j : Fin (foldNR d (p.extend ed))) (u : Fin (flatDim d) → ℝ) :
     sourceClearedResid d (p.extend ed) j u
-      = sourceClearedResid d p (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
-          (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed u)) := by
-  -- map: B-globalmove-sourceClearedResid-extend-delta1 ((ii) transport; couplingClear/strict-transform comm)
-  sorry
+      = foldResid d (canonFlatten d) p (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
+          (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed (couplingClear d (p.extend ed) u))) := by
+  show foldResid d (canonFlatten d) (p.extend ed) j (couplingClear d (p.extend ed) u)
+      = foldResid d (canonFlatten d) p (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
+          (fun k ↦ blockBlowupCoordQuot ed.pivot k (edgeShear d ed (couplingClear d (p.extend ed) u)))
+  exact foldResid_extend_delta1 d (canonFlatten d) ed hlt hδ j (couplingClear d (p.extend ed) u)
 
-/-- **δ=0 cleared child residual = parent's PULLBACK** — the `sourceClearedResid` analogue of
-`Case1Wire.foldResid_extend_delta0`. Rides the couplingClear/step-map commutation. -/
+/-- **δ=0 cleared child residual = parent fold at the PULLBACK of the CHILD-CLEARED input** (S2).
+25th-CATCH CORRECTED (pnp cert (ii)): pullback of `couplingClear d (p.extend ed) u`, not raw `u`.
+Carrier-FREE, by PURE `foldResid_extend_delta0` unfolding. -/
 theorem sourceClearedResid_extend_delta0 (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (hlt : ¬ N ≤ ed.nextState.layer) (hδ : edgeδ d p = false)
     (j : Fin (foldNR d (p.extend ed))) (u : Fin (flatDim d) → ℝ) :
     sourceClearedResid d (p.extend ed) j u
-      = sourceClearedResid d p (Fin.cast (foldNR_extend_of_lt d ed hlt) j) (stepMap d ed u) := by
-  -- map: B-globalmove-sourceClearedResid-extend-delta0 ((ii) transport; couplingClear/step-map comm)
-  sorry
+      = foldResid d (canonFlatten d) p (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
+          (stepMap d ed (couplingClear d (p.extend ed) u)) := by
+  show foldResid d (canonFlatten d) (p.extend ed) j (couplingClear d (p.extend ed) u)
+      = foldResid d (canonFlatten d) p (Fin.cast (foldNR_extend_of_lt d ed hlt) j)
+          (stepMap d ed (couplingClear d (p.extend ed) u))
+  exact foldResid_extend_delta0 d (canonFlatten d) ed hlt hδ j (couplingClear d (p.extend ed) u)
 
 /-! ### §5 The cleared append (iii) — conjunct A (divisibility ∃q) per-case -/
 
