@@ -81,6 +81,27 @@ noncomputable def couplingClear (d : Fin (N + 1) → ℕ) (p : TreePath d) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   fun u k => if k ∈ couplingCoords d p then 0 else u k
 
+/-- **The accumulated blow-up pivots along a path** — the recorded pivot of every ancestor BLOW-UP step
+(case11/case12/case2; a rollover has no blow-up, `canonPivotOf = none`, so its unconstrained pivot field is
+excluded). Recursive, sibling to `couplingCoords`. These are the exceptional divisor coordinates; a case11
+edge's reused-divisor birth corner `e₂ = canonPivotOf` is one of them (born at an earlier blow-up step). -/
+noncomputable def accumulatedPivots (d : Fin (N + 1) → ℕ) : TreePath d → Finset (Fin (flatDim d))
+  | .root => ∅
+  | .step p _center pivot cse _ns _φ =>
+      (match cse with | StepCase.rollover => (∅ : Finset (Fin (flatDim d))) | _ => {pivot})
+        ∪ accumulatedPivots d p
+
+/-- **The invariant's edge-independent `IgnoresCoords` target** (§12/§7-family; L4D + Codex + cert §4
+converged, controller-ruled): the accumulated blow-up exceptionals `∪` the current descending support
+block. The invariant's clean coefficients ignore THIS set; every case11 `ed.center = {e₂} ∪ partial-block
+⊆ ledgerTarget` (the HARD containment `case11_center_subset_ledgerTarget`), so IgnoresCoords-ledgerTarget
+specializes to IgnoresCoords-ed.center at the read-off (via `ignoresCoords_of_subset`). Edge-INDEPENDENT:
+`ed.center` changes per edge, this does not. The exact INV shape that carries it (the b-ledger
+representation — explicit exponents vs an ∃-bound multiset) awaits pnp's Q2; the target itself is ruled
++ bankable now. -/
+noncomputable def ledgerTarget (d : Fin (N + 1) → ℕ) (p : TreePath d) : Finset (Fin (flatDim d)) :=
+  accumulatedPivots d p ∪ supportAt d p.conState.layer p.conState.cleared
+
 /-- **The source-cleared Case-1(1) chart residual** (elder ruling §7's `sourceClearedResid`) — the raw fold
 residual read on the ancestor-cleared input. The (D)-carrier: `Deg1SupportedOn … ed.center` holds on THIS,
 not the raw fold. Recursion `foldResid` UNCHANGED (Option 2′). (A)-primary encoding (L4D def-owner
@@ -160,6 +181,22 @@ theorem realBranch_appendResidDescent_fresh_sourceCleared (d : Fin (N + 1) → �
       (blockCoords d (p.extend ed).conState.layer)
       (supportLayerOf (p.extend ed).conState)
       (foldRegion d (canonFlatten d) (p.extend ed)) := by
+  sorry
+
+/-- **The hard containment `ed.center ⊆ ledgerTarget`** (§12 / L4D's hard constraint — the piece that lets
+IgnoresCoords-`ledgerTarget` specialize to IgnoresCoords-`ed.center` at the read-off). At a case11 edge the
+center `{e₂} ∪ (layer-S partial block)` sits inside `(accumulated pivots) ∪ (support block)`: `e₂ =
+canonPivotOf` is a recorded ancestor blow-up pivot (the reused divisor's birth corner), and the layer-S
+partial block sits in `supportAt(p) = blockCoords(S)` (`cleared = 0` via `hδ`). STATE-ONLY (tracked
+LIVE-frontier): the `e₂ ∈ accumulatedPivots` step rides the construction structure (the reused divisor was
+born at an ancestor blow-up edge, via `IsRealBranch`/`DescendView`); the partial-block ⊆ block bound rides
+`runLen ≤ widthMinUpto`. Representation-independent (no INV reference) — banked ahead of the INV. -/
+-- map: B-wall-case11-center-subset-ledgerTarget (the ed.center ⊆ T containment)
+theorem case11_center_subset_ledgerTarget (d : Fin (N + 1) → ℕ)
+    {p : TreePath d} (ed : TreeEdge d p)
+    (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    ed.center ⊆ ledgerTarget d p := by
   sorry
 
 end DLNFibre.DLN.Aoyagi
