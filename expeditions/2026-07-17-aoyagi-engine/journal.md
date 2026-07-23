@@ -21628,3 +21628,35 @@ Two teammate messages crossed the prior tick's decisions (KILL re-resource + L7 
 + growth-V3[#104 carrier]} → #97/#98; seat-descent consult. L7 cover: seat-L7cover repairing the
 box-inflation (A, R-dependent) to rev's gate; wire HELD. Wall (a) both sides. Awaiting: seat-killfin
 mini-restate + #97, seat-L7cover repaired engine + re-review, the battery bg-confirm.
+
+## 2026-07-24 (~05:40 UTC) — seat-L7cover REPAIR (A) DONE (605cff3ed, free-f) — the (2a)-consistent fix; re-review dispatched to rev-L7cover (crux: genuine fix vs punt — is a concrete f dischargeable for the quadratic σ at depth≥2?); seat-descent STOP confirmed
+
+seat-L7cover repaired the box-inflation (rev's constant-K-undischargeable finding): constant K:ℝ →
+a FREE parameter f:ℝ→ℝ. Covers f t R node clause = (∀p∈S, closedBall 0 (max R 1) ⊆ σ p '' closedBall
+0 (f(max R 1))) ∧ (∀p∈S, Covers f (child p) (f(max R 1))); covers_subset's proof body UNCHANGED (uses
+no property of f — the hypotheses carry the content); covers_one_node = the f=id instance; docstrings
+fixed (dropped the R·(1+R)^m overclaim, documented the max-R-1 floor as a design choice). Gates green +
+axiom-clean + cordon-clean (605cff3ed).
+
+ASSESSMENT: this is the RIGHT response, not a hollow one — it realizes the (2a) division exactly. The
+shear-containment (and now the choice of inflation f) is the CONTROLLER's wire obligation ("a named
+hypothesis I discharge"). Constant-K was too rigid (no valid constant for the quadratic shear);
+free-f admits the super-geometric f=r+C·r² that DOES discharge. BUT the free-f move SHIFTS rev's
+criterion (1) [demonstrate the quadratic dischargeability] to the wire — covers_one_node (f=id) does
+NOT exercise the quadratic case. So the re-review's crux is GENUINE-FIX vs PUNT: does a CONCRETE f
+(r+C·r²) actually discharge the per-node quadratic σ = blockShear(canonShearOf) clause at DEPTH≥2
+(finite-depth → finite f^[depth] boxes = cert §2.4 R·(1+R)^m)? Expected PASS (σ⁻¹ radius ≤ r+C·r²,
+finite-depth finite) but rev + Codex verify with a |S|≥2 depth≥2 quadratic witness.
+
+RE-REVIEW dispatched to rev-L7cover (its pinned criteria + the sharpened f-feasibility crux). The L7
+WIRE stays HELD until rev passes the repaired engine. My wire obligation is now precise: instantiate
+f:=r+C·r² (C from canonNormalizationOf's degree-2 bound) + discharge the per-node shear clause for the
+quadratic σ + size leaf boxes ≥ f^[depth] 1 + buildTree→FanTree + atlas bridge + σ-bridge.
+
+seat-descent STOP confirmed (checkpoint verified clean @ 2324f0c00, 0/0 with origin; resting as
+foundation-author consult with the precise 3-item spec). seat-killfin renders {corner-in-block[mirror
+ln] + hredEB + growth-V3} on it.
+
+**Status.** KILL: seat-killfin rendering (fresh). L7: repaired engine (free-f) under re-review
+(rev-L7cover, f-feasibility crux); wire held. Wall (a) both sides. Awaiting: rev-L7cover re-verdict,
+seat-killfin mini-restate + #97, battery bg-confirm.
