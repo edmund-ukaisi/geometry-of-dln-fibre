@@ -1,6 +1,7 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.DLN.Aoyagi.Case1Wire
 import DLNFibre.DLN.Aoyagi.Case2TransportWire
+import DLNFibre.DLN.Aoyagi.MultiAffineHomogWire
 
 /-!
 # `DLN.Aoyagi.LastLayerWire` — L(last)-clear preservation, primed twin (SEAT-LL)
@@ -78,16 +79,68 @@ theorem lastLayer_conjA
   classical
   have hlt : ¬ N ≤ ed.nextState.layer := by omega
   by_cases hδ : edgeδ d p = true
-  · -- δ=1 (parent.cleared = 0, the first clear at S=L): the u_pivot crux. `Deg1SupportedOn
-    -- (foldResid p) ed.center` is derived from `hinv` — all slots take the LEFT disjunct at
-    -- cleared=0 (needs `foldResid p j 0 = 0`, Gap-B vanishing) + the Deg1 decomp on `ed.center`.
-    -- NOT plain case-blind: case12/2 give `ed.center = supportAt` (decomp direct, as case2_conjA);
-    -- case11 (merge) gives a merge-block center ≠ supportAt — needs Deg1 on THAT (sub-subtlety).
-    have hdeg1 : Deg1SupportedOn (foldResid d e p) ed.center (foldRegion d e p) := by
-      -- map: B-Llast-conjA-delta1-deg1extract (all-left at cleared=0; center = supportAt for
-      --      case12/2, merge-block for case11 — the case11 center is the open sub-subtlety)
+  · -- δ=1 (parent.cleared = 0, first step at S=L): the u_pivot crux. Pin `e = canonFlatten d`, then
+    -- the homogeneity feeder gives `foldResid p j 0 = 0`, which rules out the unit disjunct
+    -- (all-left), and the Deg1 decomp on `ed.center` follows (case12/2: center = supportAt; case11:
+    -- merge-block, the open sub-subtlety; rollover: excluded by hparent + hlast).
+    subst he
+    have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
+    obtain ⟨hpbr, ⟨sc, hsc, hecase, hchild, hcenter, -⟩, -⟩ := hbranch
+    have hpnt : ¬ N ≤ p.conState.layer := by omega
+    have hsl : supportLayerOf p.conState = p.conState.layer := by
+      unfold supportLayerOf; rw [if_pos hcl]
+    have hguniv : foldRegion d (canonFlatten d) p = Set.univ :=
+      foldRegion_eq_univ (canonFlatten d) p
+    -- the born-at-canonFlatten vanishing: `foldResid p j 0 = 0` (homogeneity clause at the origin).
+    have hvanish : ∀ j, foldResid d (canonFlatten d) p j 0 = 0 := by
+      intro j
+      have hhom := foldResid_layerHomogeneous' d hpos p hpnt hpbr j p.conState.layer
+        (le_of_eq hsl) (by omega)
+      exact hhom.2 0 (zero_mem_foldRegion d (canonFlatten d) p) (fun x _ => rfl)
+    -- so every slot takes the LEFT (Deg1SupportedSlot) disjunct (unit dies at cleared=0).
+    have hslot : ∀ j, Deg1SupportedSlot d (foldResid d (canonFlatten d) p) j
+        (supportAt d p.conState.layer p.conState.cleared) (supportLayerOf p.conState)
+        (foldRegion d (canonFlatten d) p) := by
+      intro j
+      rcases hinv.2 j with hd | ⟨unit, _, hne0, hunit⟩
+      · exact hd
+      · refine absurd ?_ hne0
+        rw [← hunit 0 (by rw [hguniv]; exact Set.mem_univ _)]; exact hvanish j
+    have htrans := conOracle_child_transition p.conState sc hsc
+    rcases htrans with ⟨-, -, hL, -⟩ | ⟨hc12or2, -, -⟩ | ⟨-, -, -⟩
+    · -- rollover: child.layer = parent.layer + 1 = N, contradicting hlast (child.layer = N-1).
+      exfalso; rw [hchild] at hL; omega
+    · -- case12/case2: ed.center = supportAt, then extract Deg1SupportedOn (mirrors case2_conjA).
+      have hce : ed.center = supportAt d p.conState.layer p.conState.cleared := by
+        rw [hcenter, supportAt, if_pos hcl, blockCoords]
+        rcases hc12or2 with h | h <;>
+          · simp only [canonCenterOf, h]; congr 1; ext q
+            simp only [Finset.mem_filter, Finset.mem_univ, true_and, hcl, Nat.zero_le, true_and]
+      have hSX : supportAt d p.conState.layer p.conState.cleared
+          ⊆ layerCoords d p.conState.layer := by
+        rw [← hce, hcenter]
+        exact canonCenterOf_append_subset_layerCoords d p.conState sc hc12or2.symm
+      have hdeg1 : Deg1SupportedOn (foldResid d (canonFlatten d) p) ed.center
+          (foldRegion d (canonFlatten d) p) := by
+        rw [hce, hguniv]
+        intro j
+        obtain ⟨⟨c, hc_cont, hc_repr⟩, hperlayer⟩ := hslot j
+        have haff : AffineOn (foldResid d (canonFlatten d) p j)
+            (layerCoords d p.conState.layer) Set.univ := by
+          have h := hperlayer p.conState.layer (by rw [hsl])
+          rwa [hguniv] at h
+        obtain ⟨c', hc'_cont, hc'_repr, hc'_ign⟩ := exists_ignoresCoords_decomp
+          (foldResid d (canonFlatten d) p j) (supportAt d p.conState.layer p.conState.cleared)
+          (layerCoords d p.conState.layer) hSX c
+          (fun i => continuousOn_univ.mp (by rw [← hguniv]; exact hc_cont i))
+          (fun u => hc_repr u (by rw [hguniv]; exact Set.mem_univ u)) haff
+        exact ⟨c', fun i => (hc'_cont i).continuousOn, fun u _ => hc'_repr u, hc'_ign⟩
+      exact case_child_stepInv_divisibility d (canonFlatten d) p ed (by omega) hdeg1 hinv.1
+    · -- case11 (MERGE): `ed.center = canonCenterOf` is the merge-block (pivot ∪ `col < runLen`),
+      -- NOT `supportAt` (`col < widthMinUpto`). Needs Deg1 on that merge-block — the parent's Deg1
+      -- on `supportAt` (from `hslot`) is on a DIFFERENT (larger) set — a genuine sub-hole.
+      -- map: B-Llast-conjA-delta1-case11 (merge-block Deg1; open sub-subtlety)
       sorry
-    exact case_child_stepInv_divisibility d e p ed (by omega) hdeg1 hinv.1
   · -- δ=0 (subsequent clear, parent.cleared ≥ 1): pure pullback — CLOSED, case-blind, from hinv.1.
     have hδ0 : edgeδ d p = false := by
       cases h : edgeδ d p with
