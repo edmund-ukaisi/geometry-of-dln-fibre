@@ -250,3 +250,61 @@ names what settles it.
 (Case 1(1) = blow-up chart, uniform over `S`). The one open verification is pnp's chart-legitimacy of the
 intermediate coupling — expected to hold (uniform chart structure), which would close the arc via the banked
 `pnp-fan` cover asset.
+
+---
+
+## §7.6 THE PRECISE BRIDGE (for pnp certification) — grounded in Aoyagi p.22's explicit min-over-charts
+
+The algebraic design space is CLOSED (pnp 9bdbb29e3): ideal-equality FALSE, decomposition FALSE, and the
+**dimension argument** (`sourceClearedResid = raw|_{u₀₁₀=0}` has strictly fewer essential coordinates than
+raw — no det-1 CoV bridges a function to one with fewer essential coords) **permanently kills the det-1
+render-fix class**. So the bridge is neither ideal nor CoV; it is **cover-membership**, and it is Aoyagi's
+OWN framework:
+
+**PAPER GROUND (p.22, verbatim intent):** "Candidates for the log canonical threshold of `‖∏C‖²` **on this
+local coordinate** are `½·min{M_{s,k} : t̃_{s,k}=0}`." Her recursion produces **local coordinates (charts)** —
+the leaves of the resolution tree (Case 1(1)/1(2) split a partial run, Case 2 splits a full run; each
+"consider instances in which …" is a chart); the RLCT is `½·min over charts` of the candidate `M_{s,k}`. This
+IS the boxed rule, and the Lean side has it: `rlctAt_sumSqFam_eq_iInf_charts` (LANDED).
+
+**THE BRIDGE, precise:**
+1. The case11 chart is ONE local coordinate (leaf-subtree) of the cover. Its residual is the cleared
+   representative `diag(b)·[E_J|D_J]` with `E_J = identity` — the coupling `u₀₁₀` fixed BY the chart's
+   coordinate structure (the ancestor regular `Q`,`P` clears that build `E_J`, pp.17–18/20–21). This chart
+   residual **is** `sourceClearedResid`; `(D)` holds on it.
+2. The coupling `u₀₁₀ ≠ 0` locus is covered by SIBLING charts (Case 1(2) / Case 2 / the complementary
+   blow-up chart), each with its own candidate `M_{s,k}`.
+3. `RLCT = ½·min over ALL charts`. The case11 chart contributes its `(D)`-based candidate; the siblings
+   contribute theirs. So `(D)` on `sourceClearedResid` is RLCT-legitimate **because the chart is one member
+   of a complete cover and the RLCT is the min** — NOT because fixing `u₀₁₀` is RLCT-neutral (it is not; the
+   dimension argument shows raw genuinely depends on `u₀₁₀`, and a lone restriction WOULD change the RLCT —
+   but the sibling charts restore the missing locus).
+
+**CERTIFICATION OBLIGATIONS (pnp — RLCT/cover-level, not slot-Gröbner; the `pnp-fan` cover asset + a
+Jacobian/`M_{s,k}` argument):**
+- **(B1) cover completeness** — the charts cover; the `u₀₁₀ ≠ 0` locus lies in sibling charts. Verify at the
+  intermediate witness `(2,2,2,2,2)` (the fan certificate #11–14 + Aoyagi's "consider instances" splits).
+- **(B2) chart faithfulness** — `sourceClearedResid = foldResid|_{u₀₁₀=0}` IS the case11 chart's residual
+  (the `{u₀₁₀=0}` is the ancestor `E_J=identity` chart-coordinate fixing, NOT an arbitrary hyperplane), at
+  layer-0 AND intermediate. This is the crux at intermediate reuse: is the coupling coord a genuine ancestor
+  chart coordinate, or an uncovered output coord?
+- **(B3) min-over-charts** — `RLCT = ½·min over charts` (Aoyagi p.22; Lean `rlctAt_sumSqFam_eq_iInf_charts`
+  LANDED). The case11 chart's `M_{s,k}` (read via `sourceClearedResid`, where `(D)` gives the monomial form)
+  is a legitimate term.
+
+**THE ONE HONEST WORRY to certify (the Lean/paper reconciliation):** the Lean recursion's per-branch object
+is the shears-only `foldResid` (coupling surviving); Aoyagi's local coordinate is the cleared chart residual
+(coupling fixed). They are ideal-DIFFERENT (pnp). The bridge's soundness is that the RLCT **read-off** uses
+`sourceClearedResid` (the faithful chart, `(D)` holds, `M_{s,k}` read), while the recursion's `foldResid`
+supplies the ideal-equality to `∏C` for the VALUE — and the two reconcile in the min-over-charts because
+`sourceClearedResid` IS Aoyagi's local coordinate for that leaf. pnp certifies that `sourceClearedResid`'s
+`M_{s,k}` is the true chart candidate and the min over charts is the RLCT.
+
+**Layer-0** stays covered by the corner/gauge ruling (#61/#62; `u₀₁₀` = the `GL_{d₀}` input gauge, P₁
+absorbed once). **Intermediate** ((2,2,2,2,2)) rides B1/B2 — expected to hold (uniform chart structure), the
+`pnp-fan` asset carrying it. **RE-OPEN** only if B2 fails at intermediate (the coupling is an uncovered
+output coord) — then I fire decorrelated Codex + re-adjudicate.
+
+**My role ends here** (the bridge is stated precisely + paper-grounded); the certification is pnp's
+RLCT/cover-level work, and L4D renders `sourceClearedResid` + the cover-structured append on pnp's positive
+certificate.

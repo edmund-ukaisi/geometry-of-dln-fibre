@@ -24,10 +24,10 @@ severity (MATH ERROR / omission / presentational) · downstream blast radius.
 | C6 | 10–11 | Lemma 2 (block elimination) | §3.1 | ✅ done | ✅ done — faithful (see note) |
 | C7 | 11–13 | Thm 3 (product reduction) | §3.2 | ✅ done | ✅ done — faithful (see note) |
 | C8 | 14 | Thm 4 (deepest point) + inductive setup + Def 4 | §4 open | ✅ done | ☐ TODO |
-| C9 | 15–22 | recursion: inductive invariant + `b_i` + Jacobian + Cases 1&2 + `M_{s,k}` | §4.recursion | prior pass | ☐ re-touch (highest blast: wall #38) |
-| C10 | 23 | `M_{s,k}` completion-of-squares | §4.candidates | prior pass | ☐ TODO |
+| C9 | 15–22 | recursion: inductive invariant + `b_i` + Jacobian + Cases 1&2 + `M_{s,k}` | §4.recursion | prior pass | ✅ done — faithful (merge C6/C7; Case-2 pp.19–22 + read-off p.22 confirmed) |
+| C10 | 23 | `M_{s,k}` completion-of-squares | §4.candidates | prior pass | ✅ done — faithful |
 | C11 | 24 | Lemma 3 (within-set balance) | §4.lemma3 | prior pass | ☐ TODO |
-| C12 | 25–27 | Lemmas 4–5 (order θ) + `t_{s,k}` construction | §4.order | prior pass | ☐ TODO |
+| C12 | 25–27 | Lemmas 4–5 (order θ) + `t_{s,k}` construction | §4.order | prior pass | ✅ done — faithful |
 | C13 | 27–31 | Conclusions + references | §6 | ✅ done | ✅ done |
 
 Legend: ✅ done this pass (2026-07-23) · prior pass = image-verified by the earlier owed-math-audit
