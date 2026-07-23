@@ -16727,3 +16727,25 @@ holds (its STOP honored everywhere); the elder holds with the §7 disposition pr
 pnp runs THE ONE GRÖBNER (the exact composition: branch-(i) + scoped branch-(ii) + r4Clear +
 blow-up + real foldB) that decides wire-and-bake-bridge vs §7-escalate. The green partial is
 on origin. Nothing false is in the tree; nothing moves until the datum.
+
+## 2026-07-23 (~09:00) — BOTH §7 outcomes now fully pre-staged; the do-not-zero-but-absorb diagnosis on the record
+
+The elder's completed pre-frame (relayed to both technical seats as their pre-stage): THE
+DIAGNOSIS — zeroing A₂ CHANGES the ideal (⟨cleared, A₂-dropped⟩ ≠ ⟨uncleared⟩ — why pure-zero
+fails); her Q₂ ABSORBS (A₂ ↦ F₂ = −A₁⁻¹A₂, kept + re-parametrized — a linear re-param
+preserves ⟨·⟩ — why Lemma 2 is ideal-preserving). At the normalized pivot F₂ = −A₂: bounded,
+det ±1, THE RECOORD'S OWN CLASS. The elder leans CONTAINED (a step-map recoord addition;
+foldResid's value changes, StepInv's MEANING doesn't), operator-escalation only if the
+def-feasibility finds a StepInv-semantics redesign forced — "the def-feasibility read is the
+confirmer, not my armchair."
+
+THE CHEERFUL UPSIDE staged with it: under the F₂ form the ideal close becomes TRUE
+(re-parametrization ⟹ ⟨·⟩ equal), so the M-bridge becomes PROVABLE and the +1 frontier may
+CLOSE — census potentially 0 at the render's end despite everything.
+
+PRE-STAGES SENT: seat-L4D (4 questions: how F₂/F₃ renders; does the read-through-the-chart
+produce the diagonal; the placement-theorem check for F₂'s ±unit Jacobian; the cheerful
+Gröbner verify); arch-C-3 (the likely worst case = a spec revision of r4Clear→r4Absorb + one
+more render pass on the clear/bridge pieces only; the green partial untouched under EVERY
+branch). Both outcomes of pnp's verdict now have complete, pre-agreed playbooks. Nothing
+moves until the datum; nothing will need improvising after it.
