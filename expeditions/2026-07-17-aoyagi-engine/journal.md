@@ -16278,3 +16278,20 @@ block-form on the SCOPED (i≥cleared) formulas. Escalation: unscoped render →
 The elder expects PASS ("a genuine test, not a rubber-stamp"). Still waiting on: arch-C's
 restate + rework — the single moving piece for several ticks now; if its transcript stalls
 or the restate doesn't arrive by next tick, it gets the liveness treatment.
+
+## 2026-07-23 (~04:40) — §8(m): the harmonization ACCEPTED; the fold-order worry DISSOLVED (the scope bound IS her semantics); the render target is FINAL
+
+The elder's §8(m) (committed d067e4aa6): the two-row battery accepted verbatim (primary =
+raw block-form on the SCOPED formula; cross-check = the chart-frame inter-edge boostReady,
+criterion-of-record for the frame); DEF-EDIT-3(b) recorded as flip + i≥cleared scope; the
+crisp three-way merge gate recorded. THE KEY ELDER POINT for the record: the scope bound is
+NOT a patch — it IS Aoyagi's semantics (her recoord reads the CLEARED outer state, worked.tex
+:445 accumulated Q₂'⁻¹, which on cleared rows is 0; i≥cleared implements exactly that in the
+raw-read fold). Consequence: the §8(l) fold-order re-open worry is DISSOLVED — the raw-read
+fold CAN be faithful to her accumulation; the fold order was never the problem, only the
+recoord's scope. The correction chain's convergence noted by the elder itself: the 5th
+correction surfaced the u₀₀₁² → the chart-frame reframe located it → pnp+Codex pinned it to
+her current-chart reading. RENDER TARGET FINAL: DEF-EDIT-1 + DEF-EDIT-3 (branch-i→R4 Lemma 2;
+branch-ii flip + i≥cleared) + DEF-EDIT-2 none; memo updated with the scope bound in the spec
+line. Ruling = §8(a)-(m), complete. Waiting: arch-C's restate + conformant render (the single
+moving piece), then the battery, then the delta-read, then merge.

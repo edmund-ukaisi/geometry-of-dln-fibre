@@ -30,7 +30,10 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   flip, which cleaned the WRONG OBJECT = the ed1 product; foldResid IS the block-slot per the
   scalar-foldB def-fact): DEF-EDIT-1 = supportAt widen (unchanged). DEF-EDIT-3 = (a) branch-(i)
   REPLACED by R4, the generator transform Q₁·A_S·Q₂ on the RAW A_S → diag(1,e₂) (SUBSUMES
-  branch-(i); stacking double-counts); (b) branch-(ii) FLIPPED to A_{S+1}·Q₁ (−γ, council Q1);
+  branch-(i); stacking double-counts); (b) branch-(ii) FLIPPED to A_{S+1}·Q₁ (−γ, council Q1)
+  AND SCOPED to i ≥ cleared (§8(m): the scope IS her accumulated-Q₂'⁻¹ semantics — cleared
+  outer rows read as 0 by not being summed; the all-i≠a formula reads pre-clear values ⟹ the
+  inter-edge u₀₀₁²; R4's own reads likewise prior-clear-aware);
   (c) foldResid at case11 = the CLEAN BLOCK D_J — boostReady consumes THIS (e₂ ∈ center,
   Deg1SupportedOn ed.center DIRECT). DEF-EDIT-2 = NO new conjunct (existing slot confirmed
   against the R4-rendered residuals, joint arch-C+L4D). §8(h) criterion: faithful =
