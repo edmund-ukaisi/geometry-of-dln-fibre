@@ -17624,3 +17624,15 @@ ownership to L4D; LL renders the lastLayer family pin (option (a), stub re-bake 
 reviews L4D's CaseStepAssembly hunk (its lane otherwise closed — 3 load-bearing catches today).
 CROSSING RESOLVED: canonical keeps the both-case CaseStepAssembly (my merge predates L3T3's
 case2''-only re-push; 65e14acf2 = dead tip). Elder → C9 prose-intent (the last audit chunk).
+
+## 2026-07-24 (~01:40) — LL family pin rendered + green (2f913a97b); he-after-e convention RATIFIED
+by controller fiat; LL grinding conjA δ=1 without the round-trip
+
+LL rendered the lastLayer family pin per the ruling (verbatim reported before the deep grind — the
+report-before-grind discipline holding), then correctly flagged the shared-signature coordination
+risk. Resolved by fiat: `(he : e = canonFlatten d)` immediately after the `e` binder,
+character-identical across the spine (LL's built-green placement = the canon); L4D instructed to
+adopt. LL unblocked to grind conjA δ=1 NOW (close plan: he → homogeneity twin at canonFlatten →
+vanishing kills the unit disjunct → decomp → divisibility; the case11 merge-block sub-subtlety
+flagged as the early-warning point). Merge order pinned: L4D's atomic spine unit first (touches
+MonumentAssembly), LL's lane second (no shared files).
