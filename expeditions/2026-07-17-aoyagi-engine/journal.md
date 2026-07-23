@@ -19936,3 +19936,23 @@ witnesses); (2) grind h1-h4 as four SEPARATE small banks (fatigue-compatible bit
 assembly as the fifth; (3) the finisher escape hatch PRE-ARMED — any stall ⟹ stop at the last
 green bank, a finisher spawns on the route doc within the hour. Board: the elder holds for pnp's
 pivot-pin confirm (the #87 implementation re-route); GM's handoff doc pending; CAPF grinding.
+
+## 2026-07-23 (~17:10 UTC) — GM's finale: the KEYSTONE ASSEMBLED before handoff (cert (i)'s depth
+isolated into ONE named sub-lemma); the handoff doc banked + verified; seat-CFF SPAWNED
+
+GM exceeded the handoff request: keystone (a) couplingClear_parent_fixes_stepMap_child is
+ASSEMBLED (bd7ce11d5 — proven modulo the single isolated sub-lemma
+canonNormalizationOf_vanishes_on_couplingCoords, which now carries ALL of cert (i)'s depth; the
+assembly = the child-cleared vanish + the shear-vanish dispatch + the blockBlowupMap 3-case
+split). Final GM tally: 13 proven declarations; 7 sorries at CLEAN boundaries (1 deep render + 1
+carrier-free mechanical + 4 carrier-threaded + 1 CAPF-gated). The handoff doc
+(clearedfold-finisher-handoff.md @ 674a07c8a, 88 lines, controller-verified) is turn-key:
+per-sorry plans, the threading spec, the re-point riders, the exit gate incl. the
+L1-footprint-unaffected claim for the finisher to VERIFY not assume. SEAT-CFF spawned
+(lean-formaliser, branch -CFF off GM's tip): δ=0 append first → the cert-(i) sub-lemma render
+(pnp's pattern inlined; stop-and-report on any resisting arm) → the carrier threading
+(child-path; INV's δ-agnostic def by name-or-cherry-pick per the doc) → (b)/δ=1-append/conjA
+mechanical → conjB left CAPF-gated → the re-points → the FULL-GREEN EXIT GATE (forced payoff
+axioms + census + cordon). GM at rest, unit-consult. GM's session arc banked for the
+calibration ledger: spawn → 5/5 restate → four SPECIFY gate rounds → a sibling-lane unblock →
+13 proofs incl. an in-session catch-and-fix → the keystone → a turn-key handoff.
