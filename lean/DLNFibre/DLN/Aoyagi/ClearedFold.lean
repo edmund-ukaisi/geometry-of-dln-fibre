@@ -143,49 +143,72 @@ theorem clearedFoldB_root (d : Fin (N + 1) → ℕ) :
   -- SPECIFY-trivial (proven in PROOFS phase)
   sorry
 
-/-! ### §4 The cleared transports (ii) — the couplingClear/(strict-transform, step-map) commutations
+/-! ### §4 The cleared-locus commutation core (REVISED — O2 finding 20bc71f1d)
 
-The child↔parent commutation (frame §6 shape (S2), pnp-verified at every node). These are the
-load-bearing NEW content of the append re-point; the case11 form needs `ed.pivot ∉ couplingCoords d p`
-(the reused-divisor birth corner is a diagonal accumulated pivot, disjoint from the strictly-below-diagonal
-ancestor coupling coords), the case12/case2 form additionally tracks the freshly-added `belowPivotCol`.
-OWNERSHIP FLAG (SPECIFY): `couplingCoords`/`accumulatedPivots` are CAPR's primitives; whether the
-`pivot ∉ couplingCoords` disjointness + the case12/case2 commutation are mine to prove or CAPR-provided is
-a SPECIFY question (see the message). -/
+**O2 CLOSED WITH A STATEMENT-CLASS FINDING (removed here).** Three naive cleared-trio one-step laws are
+FALSE at case2/case12 δ=1 GROWTH edges, where `couplingCoords` grows by the fresh `belowPivotCol` and hence
+`couplingClear (p.extend ed) ≠ couplingClear p`: the M-level commutation
+`stepMap ∘ couplingClear(child) = couplingClear(parent) ∘ stepMap`, the law
+`clearedFoldG(child) = clearedFoldG(parent) ∘ stepMap`, and
+`clearedFoldB(child) u = u_pivot^δ · clearedFoldB(parent)(stepMap u)`. They hold at case11 (no growth) and
+fail at growth (pnp per-node). REMOVED (a sorry with a wrong statement misleads); the correct route is the
+cleared-locus argument.
 
-/-- **couplingCoords stability under a case11 extension** (controller SPECIFY note; the transports lean
-on it) — a case11 step adds no `belowPivotCol` (it is a MERGE into an existing exceptional, not a fresh
-clear), so `couplingCoords d (p.extend ed) = couplingCoords d p`. Hence at case11 the child clear map
-equals the parent's, which is what makes the case11 step-map commutation clean. SPECIFY-trivial (the
-`couplingCoords` step arm's case11 match is `∅`, and `S ∪ ∅ = S`). -/
+**THE CLEARED-LOCUS ROUTE (controller-prescribed, pnp-standby-verified).** `FoldStepInvAt_cleared` (S1) is
+the RAW StepInv identity restricted to the locus `L_p = {u | ∀ k ∈ couplingCoords d p, u k = 0}` (the
+fixed-set of `couplingClear d p`), where the raw obstruction terms carry coupling factors and VANISH — so
+S1 holds at every node. The preservation `S1(parent) → S1(child)` runs ON the locus, via:
+* `couplingCoords_mono_extend` — `couplingCoords d p ⊆ couplingCoords d (p.extend ed)`, i.e. `L_child ⊆
+  L_parent` (the parent's identity restricts to the child's locus FOR FREE at growth edges);
+* the RAW one-step laws (`foldG (p.extend ed) = foldG p ∘ stepMap` definitionally, `foldB_extend_eq`,
+  `foldResid_extend_delta1/0`) — TRUE, in `MonumentAtlas`/`Case1Wire`, unchanged;
+* `couplingClear_parent_fixes_stepMap_child` — `stepMap (couplingClear(child) u) ∈ L_parent` (the ancestor
+  couplings are spectators of the current step's shear+blow-up), so the parent's cleared `G`/`B` read it
+  unchanged (the load-bearing LOCUS CONTAINMENT that replaces the false commutation);
+* `pivot_notMem_couplingCoords_extend` — `ed.pivot ∉ couplingCoords d (p.extend ed)` (pivot is a diagonal
+  corner, couplingCoords are strictly below-diagonal), so `(couplingClear(child) u) ed.pivot = u ed.pivot`
+  (the `foldB_extend_eq` pivot factor survives the clear — the clean-monomial B-side);
+* `sourceClearedResid_extend_delta1/delta0` (S2, below) — TRUE at every node, the residual side.
+
+pnp stands by to verify `couplingClear_parent_fixes_stepMap_child` (the load-bearing containment) + this
+induction shape. OWNERSHIP (O1): mine to state AND prove; relocated to the substrate at integration. -/
+
+/-- **couplingCoords stability under a case11 extension** — a case11 step adds no `belowPivotCol` (a MERGE
+into an existing exceptional, not a fresh clear), so `couplingCoords d (p.extend ed) = couplingCoords d p`.
+SPECIFY-trivial (the `couplingCoords` step arm's case11 match is `∅`, `S ∪ ∅ = S`). -/
 theorem couplingCoords_case11_stable (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (hc11 : ed.case = StepCase.case11) :
     couplingCoords d (p.extend ed) = couplingCoords d p := by
   -- map: B-globalmove-couplingCoords-case11-stable  ⟨SPECIFY-trivial: case11 arm of couplingCoords = ∅⟩
   sorry
 
-/-- **The couplingClear/step-map commutation** — `stepMap d ed ∘ couplingClear d (p.extend ed) =
-couplingClear d p ∘ stepMap d ed`. Frame §6 (S2). -/
-theorem couplingClear_stepMap_comm (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
-    (stepMap d ed) ∘ (couplingClear d (p.extend ed)) = (couplingClear d p) ∘ (stepMap d ed) := by
-  -- map: B-globalmove-couplingClear-stepMap-comm (frame §6 S2; case11 needs pivot∉couplingCoords)
+/-- **couplingCoords is monotone under extension** — `couplingCoords d p ⊆ couplingCoords d (p.extend ed)`
+(the step arm is `couplingCoords d p ∪ …`). Gives `L_child ⊆ L_parent` — the parent identity restricts to
+the child locus for free. SPECIFY-trivial. -/
+theorem couplingCoords_mono_extend (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
+    couplingCoords d p ⊆ couplingCoords d (p.extend ed) := by
+  -- map: B-globalmove-couplingCoords-mono-extend  ⟨SPECIFY-trivial: step arm = parent ∪ …⟩
   sorry
 
-/-- **`clearedFoldG` one-step law** — `clearedFoldG (p.extend ed) = clearedFoldG p ∘ stepMap d ed` (rides
-the step-map commutation). -/
-theorem clearedFoldG_extend_eq (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
-    clearedFoldG d (p.extend ed) = clearedFoldG d p ∘ stepMap d ed := by
-  -- map: B-globalmove-clearedFoldG-extend (via couplingClear_stepMap_comm + foldG one-step)
+/-- **The edge pivot is not an ancestor coupling coordinate (ALL cases)** — the pivot is a diagonal corner
+(`canonPivotOf` at case11, `∈ canonCenterOf` diagonal at case12/case2, both via `IsRealBranch`), and
+`couplingCoords` are strictly-below-diagonal `belowPivotCol` entries; pnp-verified structurally. Hence
+`(couplingClear d (p.extend ed) u) ed.pivot = u ed.pivot` — the `foldB` pivot factor survives the clear. -/
+theorem pivot_notMem_couplingCoords_extend (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    ed.pivot ∉ couplingCoords d (p.extend ed) := by
+  -- map: B-globalmove-pivot-notMem-couplingCoords (pnp: pivot=diagonal corner ∉ strictly-below-diag)
   sorry
 
-/-- **`clearedFoldB` one-step ratio** — `clearedFoldB (p.extend ed) u = u_pivot^δ · clearedFoldB p
-(stepMap d ed u)`, `δ = edgeδ d p`. The pivot factor is `u ed.pivot` (NOT `(couplingClear u) ed.pivot`)
-because the pivot is disjoint from the coupling coords. The clean-monomial fact (frame §6). -/
-theorem clearedFoldB_extend_eq (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
-    (u : Fin (flatDim d) → ℝ) :
-    clearedFoldB d (p.extend ed) u
-      = (u ed.pivot) ^ (if edgeδ d p then 1 else 0) * clearedFoldB d p (stepMap d ed u) := by
-  -- map: B-globalmove-clearedFoldB-extend (foldB one-step + couplingClear_stepMap_comm + pivot∉couplingCoords)
+/-- **THE LOCUS CONTAINMENT (load-bearing; replaces the false M-level commutation).** `stepMap d ed` sends
+`L_child` into `L_parent`: after clearing the child's couplings and applying the step, the ancestor
+couplings (`couplingCoords d p`) are still zero — they are spectators of the current step's shear+blow-up.
+Stated in directly-usable no-op form: the parent clear fixes the child-cleared, stepped point. pnp-verify. -/
+theorem couplingClear_parent_fixes_stepMap_child (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) (u : Fin (flatDim d) → ℝ) :
+    couplingClear d p (stepMap d ed (couplingClear d (p.extend ed) u))
+      = stepMap d ed (couplingClear d (p.extend ed) u) := by
+  -- map: B-globalmove-couplingClear-parent-fixes-stepMap-child (locus containment; ancestor coords spectators)
   sorry
 
 /-- **δ=1 cleared child residual = parent's STRICT TRANSFORM** — the `sourceClearedResid` analogue of
