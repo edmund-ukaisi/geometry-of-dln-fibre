@@ -17647,3 +17647,18 @@ nothing policy-adjacent). TaskStopped (t4dplxh9u). Standing note: the zombie-wak
 FAILURE mode beyond stale double-work — a dead seat can burn its wake on an API error; keep
 stopping retired holders promptly. If a usage-policy refusal ever hits a LIVE seat, surface to the
 operator immediately rather than retrying.
+
+## 2026-07-24 (~02:05) — conjA δ=1 case12/case2 CLOSED (LL, cc1dc2561); case11 routed to THE WALL
+(no duplicate lemma); the wall now carries TWO consumers
+
+LL's close: subst the pin → homogeneity twin's origin-vanishing kills the unit disjunct → decomp →
+divisibility; rollover excluded via child-transition + hparent/hlast. The case11 residual's
+"merge-block support fact" identified AS the wall's conclusion — ruled: no second merge-block
+lemma; LL's case11 consumes realBranch_boostReady_case11, PENDING a cheap oracle reachability read
+(can case11 fire at cleared=0 ∧ layer=N−1? structurally-excluded ⟹ exfalso instead). L4D asked to
+pin the wall at the WEAKEST hypotheses (no interior-layer restriction unless the MergeBoostSplit
+content genuinely consumes it — the second consumer at N−1 is the argument; bedrock discipline:
+each layer characterized at the weakest hypotheses that suffice). LL's board: case11 (wall or
+exfalso) + born-unit (wall) + conjunct-2 S=L (descent — its next grind if case11 waits). THE WALL
+IS NOW UNAMBIGUOUSLY THE CRITICAL PATH: 2 of LL's 3 holes + case1_conjA + the primed driver's
+footprint all ride it.
