@@ -19273,3 +19273,37 @@ declared hold). The memo's wait-state block rewritten: the board now serializes 
 pass 2/3-armed → INV transport review → CAPF kill go → GM grinds #79). Task #16 (seat-LL's
 lastLayer twin) closed as superseded-into-GM (the cleared re-points are #83-resolved GM scope).
 No calibration entry this pulse (the last one ran this window). Next event: pnp's #82 verdict.
+
+## 2026-07-23 (~15:55 UTC) — #82 VERDICT: (i)-STANDS (couplingCoords keys on the STORED fan pivot;
+controller re-ran 8c091e9d5 exit 0) — AND THE 22nd CATCH: the verdict × the §9.2 blessing create
+a fan-free incoherence in accumulatedPivots' conjunct roles
+
+THE VERDICT (triangulated, all (i)): (1) DEF-decisive — IsRealBranch's fan-pin rule (b) makes the
+case2/case12 pivot a free fan choice, and the value-pin sets the shear AT that pivot, so the
+fold's OWN δ=1 clear acts at the stored pivot's column; couplingClear must MIRROR the fold (the
+cleared-identity mechanism requires it) — keying on the diagonal would clear a DIFFERENT column
+than the fold and collapse the fan cover. (2) PAPER (decorrelated Codex): Lemma 2's "top-left"
+clear is in NORMALIZED/reindexed coordinates; undoing the blow-up chart's permutation, the
+eliminated column is the chart pivot's column b, not invariably the diagonal J — CAPR's (ii) read
+conflated reindexed top-left with original-coordinate diagonal. (3) COMPUTATION (re-ran exit 0):
+the fold's normalized entry + shear-read column TRACK the fan pivot. HONESTY carried: the
+multi-edge fan-free S1 witness was NOT obtained (a coherent off-diagonal branch needs the whole
+downstream reindexed — oracle reconstruction, L4D/CAPR territory) — banked as a NAMED
+VERIFICATION DEBT; (i) rests on def+paper+single-edge. Prior verifications all remain valid
+(canonical branches: (i)=(ii) coincide).
+
+THE 22nd CATCH (controller, cross-examining the verdict against the blessing): under
+(i)-couplingCoords + the §9.2 DIAGONAL accumulatedPivots redefine, the INV's conjunct roles
+split incoherently on fan-free branches — conjunct-3 ((μ i).support ⊆ accumulatedPivots) tracks
+the fold's ACTUAL δ=1 exceptional factors, which are the STORED pivots at fan-free births (foldB
+= ∏ u_{ed.pivot}; GM's clean-monomial finding), NOT diagonal corners; while leg-1/conjunct-4
+need e₂ = the DIAGONAL ledger corner (the elder's necessity check). The original stored def had
+conjunct-3 right and leg-1 wrong; the blessed diagonal redefine has leg-1 right and conjunct-3
+wrong — SAME branches. Candidate shapes: accumulatedPivots = stored ∪ ledger-corners (union), or
+SPLIT references (μ-support ⊆ storedPivots; e₂ ∈ ledgerCorners; ledgerTarget = union ∪
+supportAt). ROUTED: the elder's pre-committed contested-#82 adjudication now covers BOTH the
+(i)-asymmetry justification AND the accumulatedPivots re-shape (with CAPR's def-owner read on
+what μ actually accumulates); INV's redefine+containment render PAUSED (hN/ROOT(c)/helpers
+proceed); GM fully unblocked under (i) (statements def-independent; last gate = pnp's locus-core
+verify, GO'd — pnp did not know the revision was complete); CAPF's kill unblocked under (i)
+post-SPECIFY. 22/22 pre-render.
