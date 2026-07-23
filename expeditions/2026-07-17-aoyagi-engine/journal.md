@@ -16841,3 +16841,27 @@ The elder's crossed message integrated with the landed verdict:
 The board: two focused def-reads from the final ruling; every disposition staged; the arc's
 retro-arc visible — each "wrong" turn was the right fix for its regime, and the endpoint is
 her mechanism in the fold's own architecture.
+
+## 2026-07-23 (~10:20) — THE SIGN RECONCILED: +γ PAIRED is faithful; the council's −γ judged a transpose-reasoning artifact; F₂ ruling conditions staged; all gates on the fork
+
+The elder's reconciliation (accepted verdict; the direction loop closed):
+- +γ (Q₁⁻¹) PAIRED with Q₂⁻¹ is THE FAITHFUL FORM (Gröbner row D TRUE; row C −γ+Q₂⁻¹ FALSE).
+  The certificate's ORIGINAL +γ was the right direction all along; the defect was NEVER the
+  direction — it was the UNPAIRING (the def dropped the Q₂⁻¹ input compensator + the Q₁·A₀
+  clearing). §8(m)/council-Q1's −γ = the best UNPAIRED approximation — and, the elder now
+  judges, a TRANSPOSE-REASONING ARTIFACT: the hand new-to-old derivation mis-fired twice
+  (calling the certificate's +γ an error; blessing −γ). THE HIERARCHY APPLIED TO ITS OWN
+  COUNCIL: the exact instrument on the real composition outranks the hand-transpose. Under
+  F₂: render +γ PAIRED = her full Lemma-2 conjugation (A₁·Q₁⁻¹)·(Q₁·A₀). Supersedes §8(m)'s
+  −γ — folded into §8 only AFTER the fork resolves (recording the FINAL direction, not an
+  interim: the churn lesson practiced).
+- F₂ RULING CONDITIONS (if the fork says all-entries): (a) +γ paired; (b) the i≥cleared scope
+  LIKELY SUBSUMED in the paired regime (the Q₁·A₀ clearing already zeroes the outer row) —
+  verified against the inter-edge reads BEFORE dropping; (c) the paired form re-verified
+  against boostReady + block-form on the FINAL object (cheerful-check + pnp battery re-run).
+- THE FORK still gates everything: D_J-only ⟹ bake as-is (no §7, no F₂; the rendered form
+  stands on the boostReady/block-form criteria); ALL-ENTRIES ⟹ F₂ fires as above.
+
+The record's meta-line: the def-fidelity hierarchy is now fully internalized at every level —
+exact-instrument-on-the-real-object > hand-derivation > intuition — applied by the elder to
+its OWN council consult without flinching. seat-L4D's StepInv-scope read is the last gate.
