@@ -94,16 +94,24 @@ category before reporting progress; the elder gates every route and every progre
   elementary" clean headlines about an unbuilt object are UNVERIFIED until probed with decorrelated
   exact-algebra at the KNOWN failure cases (coupled corank≥2). The tractability probe is a CHECK on a
   committed build, never a gate that scopes the object down.
-- **The def-fidelity gate (fidelity arc, 2026-07-23 — the deepest drift; ~2 days + 4 escalations).** A
-  spine DEFINITION bakes only behind a source-fidelity certificate: the source construction and the Lean
-  def, traced on the SAME concrete witness, then DIFFED. Statement gates never catch a wrong def — both
-  wrong objects here (the shear missing Aoyagi's deeper recoord `A_{S+1}·Q₁⁻¹`, worked.tex:445, in-repo
-  the whole time; the `∀-e` flatten admitting a layer-scrambler) were def-level, invisible to every
-  statement gate. A battery must exercise the LEAN def, never only a hand model of the intended math: the
-  kill-battery here traced the faithful HAND MODEL (with the `Q₁⁻¹`) while the Lean def diverged, so the
-  decorrelated instrument green-lit the right MATH over a wrong ENCODING — the worst failure, the gate
-  confirming the INTENT not the OBJECT. A "representation not taken" docstring note is a DEFERRED decision
-  needing an owner + a re-open trigger, never a silent choice.
+- **The source-fidelity discipline (fidelity arc, 2026-07-23 — the deepest drift; ~2 days + 4
+  escalations). Two composed gates: def-fidelity at BAKE time, paper-first at DEFECT time.**
+  *BAKE:* a spine DEFINITION bakes only behind a source-fidelity certificate — the source construction and
+  the Lean def, traced on the SAME concrete witness (incl. a WIDE witness where widths diverge), then
+  DIFFED. Statement gates never catch a wrong def — every wrong object here was def-level, invisible to
+  every statement gate (the shear missing Aoyagi's deeper recoord `A_{S+1}·Q₁⁻¹`, worked.tex:445, in-repo
+  the whole time; the `∀-e` flatten admitting a layer-scrambler; `supportAt` capping the residual's raw
+  column at the running min; `Deg1SupportedSlot` continuity-only where the paper factors). A battery must
+  exercise the LEAN def, never only a hand model of the intended math — the kill-battery traced the
+  faithful HAND MODEL while the Lean def diverged, green-lighting the right MATH over a wrong ENCODING
+  (the worst failure: confirming the INTENT, not the OBJECT). A "representation not taken" docstring note
+  is a DEFERRED decision needing an owner + a re-open trigger, never a silent choice.
+  *DEFECT:* when a statement-class defect surfaces, STEP 1 is the source read at the defect's location —
+  what is HER object here, has she already resolved this? For a fidelity project the prior is strong: most
+  defects are under-transcription of paper-resolved content (the cap-escape = her raw `D_J` column; the
+  missing b-chain = her `diag(b)`), and the source is the cheapest, most decisive instrument. Only then
+  commission elaboration (traces, candidate designs, decorrelated consults) — which then VERIFY her answer
+  and serve as the acceptance battery, never as de-novo design of an object the source already has.
 
 ## §4  Durability
 Read first, every cycle, by every role. Elder is sole author (holds the abstract-object frame; gates
