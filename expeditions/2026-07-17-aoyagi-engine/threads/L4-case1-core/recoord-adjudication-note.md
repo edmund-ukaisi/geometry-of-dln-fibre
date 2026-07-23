@@ -8,6 +8,14 @@ Witnesses: `(2,2,2,2)` ed1 (isolated) + `(2,3,2,2)` (wide).
 The RLCT-value/variety and `M_{s,k}` are SAFE; the field boost-readiness and the clean-block monomialisation
 FAIL — both from the SAME missing `A_0` pivot-column clearing (def-edit-3). One fix restores both.
 
+> **CORRECTION (see `recoord-ideal-matched-note.md`).** The `(1b)` Gröbner comparison below is
+> NODE-MISMATCHED (baked = 3 edges vs `honest_residual` = 1 edge), so its "both inclusions FALSE" is
+> not clean. The matched-node comparison (same node, common ring, `verify/recoord_ideal_matched.py`)
+> supersedes it: `⟨baked⟩ ≠ ⟨faithful⟩` holds cleanly (difference = the `u₀₁₀` pivot-column leakage), AND
+> the radicals differ — but the baked step still PRESERVES the RLCT of the original (every shear is
+> globally invertible, not merely det-1), so it is VALID-BUT-DIFFERENT, not broken. `(1a)`, `(2)`, `(3)`
+> below stand.
+
 ## (1) IDEAL-PRESERVATION — HOLDS at the variety level; the ratified generator-ideal differs (frame)
 - **(1a) The baked shear `ψ = u + canonNormalizationOf` is UNIPOTENT** — `det Jacobian ≡ 1`, `J(0) = I`,
   verified on `(2,2,2,2)` and `(2,3,2,2)`. So the step is an INVERTIBLE coordinate change (composed with the
