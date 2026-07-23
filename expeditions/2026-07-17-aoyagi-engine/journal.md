@@ -20170,3 +20170,19 @@ context-flag, taken on the proven pattern (fresh eyes on fidelity-critical conte
 which Lean does not check). CAPF's last acts: verify the helper docstring carries the COMPLETE
 standalone design (invariant/base/step-with-depth-in-bold/#6-derivation/pnp's honest scope) →
 the #5 drop → push → unit-consult. The crux seat spawns on its report.
+
+## 2026-07-23 (~19:30 UTC) — CAPF's last-acts VERIFIED (025693eac clean); seat-CX spawned on the
+ONE crux; CAPF → unit-consult
+
+The wake landed CAPF's uncommitted batch: #5 DROPPED (025693eac, 13+/24−, SUPERSEDED-BY +
+un-consumed; the kill-mechanism prose preserved in the helper docstring — verified at ground
+truth); the crux docstring carries route-(a) depth in bold at the lemma site; #6 derives from
+the helper at the fresh child (:351). CAPF's cap unit (#80) is COMPLETE-MODULO-THE-ONE-CRUX,
+all else axiom-clean; CAPF retired to unit-consult. SEAT-CX spawned off 025693eac to prove
+sourceClearedResid_capped from its standalone docstring — the route-(a) path induction with the
+whole-path coupling-depth discipline (not single-recoord), pnp-confirmed, 3-attempt-then-Codex
+with a STOP-and-report on any resisting fidelity sub-goal (→ pnp/CAPF). On green: #6 becomes
+fully axiom-clean and #73 swaps SourceClearedResid.lean:242's sorry. THE BOARD'S OPEN GRINDS ARE
+NOW THREE NAMED LEMMAS/UNITS: seat-CX's crux, seat-CFF's cert-(i)+cascade (on BAKE's SHA), and
+INV's δ-transport step arm (on GM's-successor core + #87) — plus BAKE's in-progress pivot-pin
+render. Every one has its design closed and its proof route documented.
