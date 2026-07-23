@@ -16661,3 +16661,29 @@ Thirteenth-catch-candidate bookkeeping: if SURVIVES, this is the 13th statement-
 (a would-have-been-false correctness lemma stopped pre-bake); if ABSORBED, it is the
 suspect-discipline working as designed with no defect. Either way: nothing false entered the
 tree.
+
+## 2026-07-23 (~08:15) — THE RENDER REPORT: green partial complete (census 0); the turn-key spec; the suspect and the refinement CONVERGE on one question
+
+arch-C-3's render report (accepted; green partial ordered committed+pushed; the turn-key spec
+ordered into a durable file — threads/rebake2-turnkey-spec.md):
+- GREEN (census 0, +71/−23 MonumentAtlas): DEF-EDIT-1 (widen + docstrings, retracted field
+  ABSENT), DEF-EDIT-3(b) (−γ + i≥cleared scope, consumers safe), r4Clear def (case12/case2-
+  conditioned pivot-cross clear, identity elsewhere — matches pnp's validated model exactly).
+  The checklist items all ✓. Verbatim formulas delivered — pnp's battery + decisive bridge
+  check UNBLOCKED on the exact rendered forms.
+- THE TURN-KEY (a)-(d), held at heavy context per its own honest call: the read-arg wiring
+  (extend equations re-prove by rfl, ground-truthed); the commutation lemma (r4Clear commutes
+  with both blowups — provable, clean); the M-BRIDGE foldResid_r4Clear_repr (+1 frontier,
+  4-check-annotated, with the load-bearing refinement: NOT an equality — the pivot-COLUMN part
+  of the cross lies IN ed.center, so foldResid genuinely changes; the claim is the continuous-M
+  re-expression = R4's ideal-faithfulness); the witness-rewrite of the two StepInv helpers
+  (q' = ∑ q∘stepMap·M — the substantial part). Honest framing at the claim site included.
+  Derivability: genuinely-open (G1 is a script, not a Lean lemma) ⟹ legit +1.
+- THE CONVERGENCE (controller integration): arch-C-3's not-an-equality refinement and
+  seat-L4D's E_J col-0 Gröbner failure are likely the SAME FACT seen twice — the pivot-column
+  entries genuinely change under r4Clear; whether a CONTINUOUS M exists on the full composition
+  (with branch-(ii) absorbing the γ-side) is the ONE question, and pnp's exact-composition
+  check on the verbatim formulas decides it. ABSORBED ⟹ the turn-key executes (fresh focused
+  seat, per arch-C-3's own recommendation + its context weight); SURVIVES ⟹ the §7 tripwire.
+- SEQUENCING: green partial banks NOW (gated on nothing); the wiring+bridge waits on pnp;
+  the elder's delta-read sequenced after the battery per its own ordering.
