@@ -15879,3 +15879,31 @@ A-vs-B discriminator: does foldB carry the ACCUMULATED b-monomial — foldResid 
 post-factoring block, Reading B — or only the current pivot?); (2) pnp's reuse-node raw forms,
 relabeled CLEAN-BLOCK vs b-SCALED (the m_k·β column retired everywhere). Both charged. Nothing
 bakes.
+
+## 2026-07-23 (~01:55) — §8 FINALIZED: THE CRISIS RESOLVES TO A SIGN FLIP + HER CLEAN BLOCK; the re-bake SHRINKS; the gate lifts
+
+The elder's finalization (§8 committed 62bfa334d; council-of-two converged with worked.tex +
+both instruments): (a) R3 IS THE WHOLE FIX — A_{S+1}·Q₁ (−γ), direction from her text (the
+certificate's Q₁⁻¹ = an old-to-new/new-to-old conversion confusion, "not a real inverse");
+single-branch sign flip, unipotent, F1-consistent; R4 stands down. (b) READING B — foldResid =
+the clean D_J, foldB = the external b-ledger (worked.tex:619-629: she clears to the clean block
+each step); §2's field RETRACTED (additive AND m_k·β — symptom-fitted; the confirming Codex
+read premised on the broken residual). (c) BOOST-READINESS DIRECT from clean-D_J + existing
+foldB — the 11th catch DISSOLVES. (d) BOUNDED — RLCT value never at risk; the fix is for the
+PROOF VEHICLE; §7's escalation branch does not fire. (e) pnp's R5 REJECTED as unfaithful; the
+non-diag termination open-fact MOOT. (f) honest_clear-vs-R3 likely reconciled (e₂ as a
+clean-block coordinate, not the defect).
+
+THE RE-BAKE SHRINKS: def-edit 1 (shape widen) + def-edit 3 (the sign flip); DEF EDIT 2 likely
+UNNEEDED (existing Deg1SupportedSlot expected to hold on the clean block — arch-C + seat-L4D
+confirm at the def, report-don't-improvise). The old INTRO/PRESERVE/BASE frontiers RETIRED
+(served the retracted field). The wall's final form: realBranch_boostReady_case11 from the
+clean residual + existing StepInv/foldB.
+
+EXECUTION: arch-C re-scoped (render the flip flagged awaiting-confirmation; payoff forced-
+axioms check now load-bearing — the flip touches the payoff cone); seat-L4D's run = THE
+CONFIRMATION BATTERY (direction cross-check, full flip verification incl. block form, foldB
+def-fact, joint no-slot-change confirm); pnp = #49 Gröbner triple on the flipped def + #50
+reuse-node forms (re-open trigger: reuse node NOT clean under R3), running the EXACT rendered
+form (the certificate-fidelity lesson applied to batteries). Merge gates: battery green +
+elder delta-read. Memo updated to the finalized state.
