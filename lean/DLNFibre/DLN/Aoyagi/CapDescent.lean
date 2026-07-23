@@ -750,6 +750,35 @@ theorem readEntry_couplingClear_eq_zero {N : ℕ} {d : Fin (N + 1) → ℕ} (q :
     show (if fc ∈ couplingCoords d q then (0 : ℝ) else u fc) = 0
     rw [if_pos (h fc hb)]
 
+/-- **`readEntry` respects a pointwise agreement of the read cell** — if the two inputs agree at whatever
+flat coordinate `blockEntryFlat` selects, the reads agree (or both are off-cone `0`). -/
+theorem readEntry_congr {N : ℕ} {d : Fin (N + 1) → ℕ} (wu wv : Fin (flatDim d) → ℝ) (S row col : ℕ)
+    (h : ∀ fc, blockEntryFlat d S row col = some fc → wu fc = wv fc) :
+    readEntry d wu S row col = readEntry d wv S row col := by
+  unfold readEntry
+  cases hb : blockEntryFlat d S row col with
+  | none => rfl
+  | some fc => exact h fc hb
+
+/-- **Not escaped-below, at a `≤ S` layer ⟹ within that layer's block** — the converse read of
+`notMem_escapedBelow_of_col_lt_wmu`: a coord at layer `M ≤ S` outside `escapedBelow d S c` has
+`col < widthMinUpto d M` (it sits in `blockCoords d M`, since `escapedCol d M ⊆ escapedBelow d S c`). -/
+theorem col_lt_wmu_of_notMem_escapedBelow {N : ℕ} {d : Fin (N + 1) → ℕ} {S c M : ℕ}
+    {y : Fin (flatDim d)} (hlay : (((tupIdxEquiv d).symm y).1.1 : ℕ) = M) (hMS : M ≤ S)
+    (hy : y ∉ escapedBelow d S c) : (((tupIdxEquiv d).symm y).2 : ℕ) < widthMinUpto d M := by
+  by_contra hge
+  push_neg at hge
+  refine hy (Finset.mem_union.mpr (Or.inl (Finset.mem_biUnion.mpr
+    ⟨M, Finset.mem_range.mpr (by omega), ?_⟩)))
+  rw [escapedCol, Finset.mem_sdiff]
+  refine ⟨mem_layerCoords_of_decode d M y hlay, ?_⟩
+  intro hblk
+  unfold blockCoords at hblk
+  rw [Finset.mem_image] at hblk
+  obtain ⟨w, hw, hwy⟩ := hblk
+  rw [← hwy, Equiv.symm_apply_apply] at hlay hge
+  exact absurd (Finset.mem_filter.mp hw).2.2 (by omega)
+
 /-- **A within-block coordinate is NOT escaped-below** — layer `S`, col `< widthMinUpto d S` (in the
 running-min block) ⟹ `∉ escapedBelow d S c`. The escaped set collects, per layer `M ≤ S`, the columns
 `≥ widthMinUpto d M`; a layer-`S` coordinate can only match the `M = S` slice, where the block cap
@@ -773,6 +802,23 @@ theorem notMem_escapedBelow_of_col_lt_wmu {N : ℕ} {d : Fin (N + 1) → ℕ} {S
       have := decode_layer_of_mem_layerCoords d (S + 1) x hcond.1
       rw [hlay] at this; omega
     · exact absurd hcond (by simp)
+
+/-- **A layer-`>S` coordinate is NOT escaped-below** when the layer-`(S+1)` escape hasn't entered yet
+(`c < widthMinUpto d (S+1)`). `escapedBelow d S c` collects escaped columns of layers `≤ S` only (the
+conditional `escapedCol (S+1)` is gated off by `c < widthMinUpto (S+1)`), so nothing above layer `S` is in
+it. Powers the branch-(ii)/(iii) reads at layers `S+1` / off-block. -/
+theorem notMem_escapedBelow_of_layer_gt {N : ℕ} {d : Fin (N + 1) → ℕ} {S c : ℕ}
+    {x : Fin (flatDim d)} (hlay : S < (((tupIdxEquiv d).symm x).1.1 : ℕ))
+    (hc : c < widthMinUpto d (S + 1)) : x ∉ escapedBelow d S c := by
+  rw [escapedBelow]
+  intro hx
+  rcases Finset.mem_union.mp hx with hbi | hcond
+  · obtain ⟨M, hM, hxM⟩ := Finset.mem_biUnion.mp hbi
+    rw [escapedCol, Finset.mem_sdiff] at hxM
+    have := decode_layer_of_mem_layerCoords d M x hxM.1
+    rw [Finset.mem_range] at hM; omega
+  · rw [if_neg (by omega)] at hcond
+    exact absurd hcond (by simp)
 
 /-- **The recoord shear VANISHES on the ancestor couplings, on a coupling-cleared input (Sfp).** For a
 DIAGONAL fresh-clear pivot `pv = (S, cl, cl)` and any coupling coordinate `k ∈ couplingCoords p'`, the
