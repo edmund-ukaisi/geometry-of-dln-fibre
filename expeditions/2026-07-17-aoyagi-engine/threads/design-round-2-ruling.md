@@ -746,3 +746,41 @@ The whole 12th-catch arc — support-widen + the recoord fix — closes on Aoyag
 full (both compensators): the most faithful object and, because F₂ closes by equality, the most contained
 render (census 0). RLCT value never at risk throughout; the entire crisis was the formal read-off being
 made faithful before the bake, the def-fidelity gate binding the elder as hard as the seats.
+
+**§9-CORNER (4th restate-gate catch, arch-C-4; RULED (A), paper-first).** Path A's equality close holds at
+INTERIOR pivots (composite == original identically) but FAILS at the CORNER (S=0): the pivot-ROW clear's
+compensator is the INPUT change-of-variables (`Q₂⁻¹` on the network input `x`), which a per-edge fibre
+shear cannot express (branch-(iii) vacuous at the corner — no layer −1; `x` is the SOURCE). RULING = (A),
+and it is decisively HER mechanism: worked.tex:426-428 has the REGULAR END TRANSFORMS `P₁` (input-side),
+`P₂` (output-side), and worked.tex:437 absorbs them GLOBALLY via Lemma 1 ("absorbing the regular part") —
+NOT per-fibre. So **the corner pivot-row freedom IS the GL_{d₀} INPUT-BASIS gauge**, homed in the banked
+GL_{d₀} END-FACTOR (`Core.BaseChange.baseChange`, RLCT/codim-invariant via `height_comap`) — the Lean
+realization of her global Lemma-1 absorption. The per-edge fibre-shear's inability to express it is CORRECT
+(it is a global gauge, not a fibre op); the catch found a mis-placement, (A) homes it where it belongs.
+- **THE THREE-HOME STRUCTURE (the full faithful fix):** (i) interior compensators = per-fibre det-1 SHEARS;
+  (ii) interior pivot-cross clear = per-fibre det-0 READ-SIDE clear; (iii) CORNER pivot-row = GLOBAL GL_{d₀}
+  END-FACTOR. All three are her Lemma 2 (unimodular transforms + Schur clear + regular-end-transforms-via-
+  Lemma-1). Per-edge corner block UPPER-TRIANGULAR `[[1,u₀₀₁],[0,e₂]]`; DIAG after the global end-factor.
+- **ONE REALIZATION CONDITION (def-feasibility, NOT a re-open):** the corner clear is per-BRANCH; does ONE
+  global GL_{d₀} suffice (the Thm-4 deepest-point reading) or a per-CHART input basis? Either stays the
+  input-basis gauge (RLCT-invariant); a per-chart need = a BOUNDED extension of the banked end-factor. pnp's
+  corner model check + arch-C-4's def-feasibility settle it.
+- **(B)** (col-only, triangular corner) REJECTED — weaker fidelity (drops her input-basis diagonalization +
+  the `M_{s,k}`/`diag(b)` read-off); **(C)** (output-index recombination) REJECTED — wrong index (the
+  compensator is INPUT-side). Delta-read's `block=diag` gains a CORNER CLAUSE (per-edge triangular; diag
+  post-end-factor). `(2,2,2,2)` is all-corner ⟹ validates (A); add an interior-pivot witness for the fibre path.
+- **(A) RATIFIED — VERIFIED FEASIBLE + her mechanism (arch-C-4 addendum, model-checked at the normalized
+  pivot):** the corner per-edge clear of ONLY the pivot-COL (branch-(ii) +γ compensating) is
+  PRODUCT-PRESERVING — `coreGen(colclear∘compShear) == coreGen(orig)` IDENTICALLY — so the per-edge equality
+  close HOLDS at the corner, census 0, no bridge. The `u₀₀₁` triangular entry IS the GL_{d₀} input-basis
+  freedom, diag-completed globally by the banked end-factor. boostReady/Deg1 need only multilinearity, which
+  the triangular block HAS (pnp's (B) probe confirmed the property decorrelated). Paper-first question
+  ANSWERED YES (worked.tex:426-428/:437): her corner step DOES spend the input-basis gauge (the regular end
+  transforms absorbed globally via Lemma 1) — the end-factor disposal is her mechanism.
+- **THE WHOLE-FOLD STORY (honest global element — a §9/synthesis narrative line, NOT buried):** the fibre
+  resolution is PER-BRANCH (the fan of charts, each a composite of unimodular shears + the Schur read-side
+  clear, product-preserving per edge); the corner INPUT-BASIS freedom is disposed of ONCE, GLOBALLY, via the
+  GL_{d₀} end-factor (Aoyagi's regular-end-transform / Lemma-1 absorption, banked, codim-invariant via
+  `height_comap`). A global CoV entering an otherwise-per-fibre resolution is named, because it must be
+  visible. This is her Theorem 3 structure exactly: per-factor block-elimination + the global regular-end
+  absorption. All rulings of the arc are now resolved and ratified; arch-C-4 renders (A) (#58/#59).
