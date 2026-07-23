@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.SourceClearedResid
 import DLNFibre.DLN.Aoyagi.MultiAffineHomogWire
+import DLNFibre.DLN.Aoyagi.LeafChartWire
 
 /-!
 # `DLN.Aoyagi.CapDescent` — the cap-frontier render (SEAT-CAPF)
@@ -79,6 +80,13 @@ theorem continuous_canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState 
         exact (continuous_readEntry d _ _ _).mul (continuous_readEntry d _ _ _)
       · exact continuous_const
 
+/-- **`edgeShearRaw` is continuous** given a continuous displacement — `id` at merge/rollover,
+`blockShear φ = id + φ` at case12/case2. -/
+theorem continuous_edgeShearRaw (d : Fin (N + 1) → ℕ) (cse : StepCase)
+    {φ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ)} (hφ : Continuous φ) :
+    Continuous (edgeShearRaw d cse φ) := by
+  cases cse <;> first | exact continuous_id | exact continuous_id.add hφ
+
 /-- **Continuity of the fold residual (on a real branch).** `coreGen` (continuous) composed with the
 per-edge step maps (strict-transform `blockBlowupCoordQuot` is the projection `if k = pivot then 1 else ·`,
 NOT a division; the blow-up `blockBlowupMap` is continuous). The `IsRealBranch` hypothesis is REQUIRED:
@@ -88,8 +96,47 @@ a `canonNormalizationOf`-continuity sub-lemma, not yet in the tree). Path induct
 theorem continuous_foldResid (d : Fin (N + 1) → ℕ) (p : TreePath d)
     (hbranch : p.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d p)) :
     Continuous (foldResid d (canonFlatten d) p j) := by
-  -- map: B-CAPF-continuous-foldResid (path induction; coreGen base; step needs canonNormalizationOf continuity)
-  sorry
+  suffices H : ∀ (q : TreePath d), q.IsRealBranch (canonFlatten d) →
+      ∀ (i : Fin (foldNR d q)), Continuous (foldResid d (canonFlatten d) q i) by
+    exact H p hbranch j
+  intro q
+  induction q with
+  | root => intro _ i; exact continuous_coreGen d (canonFlatten d) i
+  | step p' c pv cse ns φ ih =>
+    intro hbr i
+    obtain ⟨hrec, -, -, hvpin⟩ := hbr
+    by_cases hnt : N ≤ ns.layer
+    · have h1 : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i = fun _ ↦ (1 : ℝ) := by
+        funext u
+        show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i u = _
+        rw [foldResid, dif_pos hnt]; rfl
+      rw [h1]; exact continuous_const
+    · have hNReq : foldNR d (TreePath.step p' c pv cse ns φ) = foldNR d p' := by
+        show (if N ≤ ns.layer then 1 else foldNR d p') = foldNR d p'; rw [if_neg hnt]
+      have hg : Continuous (foldResid d (canonFlatten d) p' (Fin.cast hNReq i)) := ih hrec _
+      have hφ : Continuous φ := hvpin ▸ continuous_canonNormalizationOf d p'.conState pv
+      have hshear : Continuous (edgeShearRaw d cse φ) := continuous_edgeShearRaw d cse hφ
+      by_cases hδ : edgeδ d p' = true
+      · have h1 : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i
+            = fun u ↦ foldResid d (canonFlatten d) p' (Fin.cast hNReq i)
+                (fun k ↦ blockBlowupCoordQuot pv k (edgeShearRaw d cse φ u)) := by
+          funext u
+          show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i u = _
+          rw [foldResid, dif_neg hnt, if_pos hδ]; rfl
+        rw [h1]
+        exact hg.comp (continuous_pi (fun k ↦ (continuous_blockBlowupCoordQuot pv k).comp hshear))
+      · have hδ0 : edgeδ d p' = false := by
+          cases h : edgeδ d p' with
+          | false => rfl
+          | true => exact absurd h hδ
+        have h1 : foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i
+            = fun u ↦ foldResid d (canonFlatten d) p' (Fin.cast hNReq i)
+                (stepMapRaw d cse c pv φ u) := by
+          funext u
+          show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i u = _
+          rw [foldResid, dif_neg hnt, if_neg (by simp [hδ0])]; rfl
+        rw [h1]
+        exact hg.comp ((continuous_blockBlowupMap c pv).comp hshear)
 
 /-- **(L2) The continuous support-decomposition bridge.** A continuous `F` that is
 `HomogeneousDeg1On X` decomposes as `∑_{i∈X} cᵢ·uᵢ` with each `cᵢ` continuous AND ignoring `X`. Mirrors
