@@ -678,3 +678,43 @@ cleared value 0 = exactly this scope bound.
   pivot-cross) — deviation-WITH-justification (def-fidelity gate); (c) BOTH components scoped/prior-clear-aware
   (`i ≥ cleared`). All three ⟹ satisfies §8(i)'s intent, sign off. arch-C-3's honest fork (STOP + report if
   reaching `diag(1,e₂)` needs a `foldResid`/fold-order redesign) = the §8(l) branch, endorsed not waved.
+
+## 9. FINAL RULING — §7 FIRES; F₂ (her full paired Lemma-2 conjugation) ADOPTED; the interim COLLAPSES
+
+Both gates resolved, all decorrelated: (i) the fork = ALL-ENTRIES, airtight (StepInv sums over all resid
+`j`, PrincipalInv:82-87; `foldNR` full-width `d_N·d_0` at every non-terminal step — the docstring's
+"absorbed into foldB" is the SCALAR accumulating, not the width shrinking; `case1_conjA` consumes
+full-width `foldResid`) — the D_J-only escape is DEAD; (ii) SURVIVES authoritative on the VERBATIM
+formulas, three outs closed (branch-(ii) both signs; `foldB` membership-neutral `b·x∈⟨b·G⟩⟺x∈⟨G⟩`;
+`E_J` col-0 not `u_pivot`-divisible); (iii) F₂ census-0 confirmed (seat-L4D's cheerful script, independent
+of pnp's rows A/D); (iv) sign +γ-paired concurred by both instruments. **The pure-zero `r4Clear` is
+UNSOUND for the all-entries ideal close; §7 formally FIRES.**
+
+**THE RULING — F₂ ADOPTED, and it is the CHEERFUL CLOSE (most faithful AND most contained):**
+- **DEF-EDIT-3 = Aoyagi's FULL Lemma-2 conjugation, +γ PAIRED:** `Q₁⁻¹` recoord (+γ, the certificate's
+  ORIGINAL direction) + `Q₂⁻¹` neighbor + `Q₁·A₀` clearing = `(A₁·Q₁⁻¹)·(Q₁·A₀)`. Rendered as det-1 SHEAR
+  branches (the placement theorem's normalized-frame arm; the `1/det` wrinkle BENIGN — compensators
+  polynomial on-frame). `r4Clear` DISCARDED.
+- **CENSUS 0:** F₂ preserves the product IDENTICALLY ⟹ the StepInv close is by EQUALITY (`child=parent∘σ`),
+  NO M-bridge, the +1 frontier DISSOLVES. The fidelity fix's Lean price is ZERO, not +1.
+- **CONTAINED:** det-1 shear branches, her mechanism, no `StepInv`-semantics / `foldResid`/`foldG` redesign
+  ⟹ NO operator-escalation. §7 fires but lands at the bounded ending.
+- **THE COLLAPSE:** F₂ SUPERSEDES the entire interim — R3 (−γ, §8(a)/(m)/council-Q1), R4-as-generator
+  (§8(g)-(n)), the r4Clear bridge (§8-render), the `i≥cleared`-as-necessity (§8(m)). The faithful fix is
+  simply her full paired conjugation as det-1 shear branches. **The whole interim was the CONVERGENCE ARC;
+  the error at every layer was the same — the UNPAIRING (the def dropped `Q₂⁻¹`+the clearing), never the
+  direction (the certificate's +γ was right all along).** −γ was the best UNPAIRED-regime approximation;
+  the exact Gröbner on the real composition (over the transpose hand-reasoning that gave −γ) is the arbiter.
+- **TWO RE-CHECKS on the FINAL form (not blockers — the ideal close is TRUE by equality):** (c) boostReady/
+  block-form under +γ-paired (passed under −γ; re-verify on the +γ form — expected to hold, F₂ = the
+  faithful clean block, but re-run); (b) SCOPE status — `i≥cleared` likely SUBSUMED by the `Q₁·A₀` clearing
+  under pairing (verify vs the inter-edge reads before dropping). pnp's two-row battery + seat-L4D's
+  cheerful script re-run on the FINAL form.
+- **ORDER:** arch-C-3 renders the F₂ spec fresh → battery + scope determination on the final form → elder
+  delta-read (+γ paired in-shear, census 0/no bridge, boostReady holds, scope resolved, retracted field
+  absent, block=`diag(1,e₂-classical)`) → merge.
+
+The whole 12th-catch arc — support-widen + the recoord fix — closes on Aoyagi's own Lemma 2, restored in
+full (both compensators): the most faithful object and, because F₂ closes by equality, the most contained
+render (census 0). RLCT value never at risk throughout; the entire crisis was the formal read-off being
+made faithful before the bake, the def-fidelity gate binding the elder as hard as the seats.
