@@ -16295,3 +16295,23 @@ her current-chart reading. RENDER TARGET FINAL: DEF-EDIT-1 + DEF-EDIT-3 (branch-
 branch-ii flip + i≥cleared) + DEF-EDIT-2 none; memo updated with the scope bound in the spec
 line. Ruling = §8(a)-(m), complete. Waiting: arch-C's restate + conformant render (the single
 moving piece), then the battery, then the delta-read, then merge.
+
+## 2026-07-23 (~04:50) — the closing corroboration: the scope bound is NECESSARY (the chart-frame escape fails for the unscoped formula); seat-L4D's fork resolved in transit
+
+seat-L4D's stop-on-suspect crossed the §8(m) resolution in transit (its fork (A)/(B)/(C) was
+already ruled: (A)'s intent realized cheaply by the i≥cleared scope — deeper edges read
+cleared-as-zero by not summing; no non-local shear, no order reversal). ITS TWO ADDITIONS,
+credited and load-bearing:
+(1) The DEF-SIDE decorrelated confirmation of the inter-edge mechanism (canonNormalizationOf
+:877-881 raw layer-s reads; foldResid :446-457 deeper-edge-first; pathMap root-outermost) —
+pnp's flat model and the Lean composition now agree from independent readings.
+(2) THE REFINEMENT: the u₀₀₁² is NOT degree-1 in the case11 center {w=e₂} ∪ partialBlock
+either — the §8(l) benign-hypothesis (raw-deg-2 → chart-deg-1 via e₂ entanglement) FAILS for
+the UNSCOPED formula. Consequence: the scope bound is NECESSARY, not merely stricter — under
+all-i≠a BOTH battery rows would fail, and boostReady_case11 would genuinely be false on the
+unscoped def. The criterion trajectory (entry-clean → ideal-equality → chart-frame →
+raw-on-scoped-primary) landed on the only sound point.
+
+Wall route: STANDS unchanged under the scoped def (the block form is reached). Board: arch-C
+remains the single moving piece; every analytical question of the §8 arc is now closed with
+multi-instrument agreement.
