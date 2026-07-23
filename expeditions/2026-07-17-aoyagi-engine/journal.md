@@ -20952,3 +20952,43 @@ bottlenecking a technical consult on my context.
 active sub-tasks. Critical path: seat-descent grinding the step (non-growth unblocked now, growth via
 the direct consult) + seat-KILL consult/#6/#73 + INV/CAPR producers → #73 assembly (where the probe
 is also definitively tested).
+
+## 2026-07-23 (~22:45 UTC) — seat-KILL's probe: the TWO-CAP clarification (#95 thread-reaches is the sourceCleared cap, NOT the raw value cap) → routed target-confirm to elder; my probe-target was mis-specified
+
+seat-KILL ran the thread-reaches probe (scratch, reverted, base clean) and returned a
+compiler-verified + read-definitive structural clarification that DE-AMBIGUATES #95's thread-reaches
+— it's a TARGET disambiguation, not merely base-staleness.
+
+**TWO DISTINCT CAPS, DIFFERENT summit consumers:**
+- RAW VALUE cap `realBranch_appendResidDescent` (MonumentAtlas:1442): IsRealBranch-GENERAL; flows
+  descent → realBranch_multiAffine_step'(:805) → case_preserves_stepInv''(:39/:53) →
+  leaf_stepInv_of_path'(:35). Threading hcanon here is (i) ILL-TYPED — CanonicalPivots is DOWNSTREAM
+  of MonumentAtlas (CapDescent on KILL base / SourceClearedResid:409 on INV, both import
+  MonumentAtlas) — and (ii) WRONG-IN-PRINCIPLE: real branches include the genuine off-diagonal
+  row-fans (the reason #87-row-pin was REJECTED), so this chain MUST stay general.
+- SOURCECLEARED RLCT cap `realBranch_appendResidDescent_fresh_sourceCleared` (SourceClearedResid:242):
+  downstream of CanonicalPivots; the #6 twin ALREADY carries hcanon; it is the #73 swap target.
+
+**Consequence (my read, routed to the elder for the ruling-meaning confirm):** #95's thread-reaches
+is about the SOURCECLEARED cap, NOT the raw value cap. hcanon lives on the sourceCleared/confinement
+chain (already carried, #6 twin); the raw value chain never needed it. The earlier "wall" was a
+MIS-TARGETED probe at the raw cap. This maps exactly onto the elder's §9.11 ADDENDUM: raw value cap
+= the all-branches value chain (produces leaf forms for every branch — diagonal directly, off-diagonal
+via σ-transport #86B/C); sourceCleared cap = the diagonal-only confinement intermediate carrying
+hcanon. The two-cap Lean structure IS the §9.4/ADDENDUM architecture made concrete. If the elder
+confirms (both: sourceCleared is the target + raw stays general), #95(i) is structurally resolved on
+the right target; I then make the scoping call (INV-scoped sourceCleared probe now vs #73). seat-KILL
+HOLDS the INV worktree pending the elder's target-confirm.
+
+**CALIBRATION (banked, controller):** my probe spec ("thread hcanon onto realBranch_appendResidDescent")
+targeted the RAW cap without recognizing the raw/sourceCleared two-cap split — the seat's
+compiler-check caught the ill-typedness and the wrong-in-principle. LESSON: specify a probe target
+against the ACTUAL object graph (which named lemma, on which import layer), not an abstracted "the
+cap" — the abstraction hid a load-bearing raw-vs-sourceCleared distinction. The decorrelated
+compiler-check (the seat's job) is the corrective; the controller frames the question, the seat
+finds it's the wrong object. Good outcome: the probe FOUND the right target + proved the wrong one
+wrong.
+
+**Status.** #95(i) target-confirm pending the elder (proceed-on-silence). seat-descent grinding the
+step (non-growth unblocked; growth via the direct seat-KILL/pnp-cap consult). The thread-reaches
+question is now sharply posed (sourceCleared cap), not deferred-vague.
