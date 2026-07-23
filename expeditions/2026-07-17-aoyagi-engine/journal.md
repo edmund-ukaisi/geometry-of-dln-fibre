@@ -17218,3 +17218,14 @@ axioms) + the commit-coherent push + the render report. Tasks #57/#58/#59 comple
 board; #60 (the gates) is the live item. All reviewers posted and idle by design. The board:
 one build from the render report; the report fires the three-reviewer apparatus; the merge
 follows their green.
+
+## 2026-07-23 (~15:55, heartbeat tick) — lost build-completion wake; arch-C-4 nudged (the known hazard, caught by the liveness rule)
+
+The condition flagged last tick fired: zero lake processes alive, arch-C-4 transcript frozen 91 min
+at "waiting for the full build". Worktree evidence: the build DID complete — root `DLNFibre.olean`
+(the aggregator, compiled last) written 05:29:21; the render edit sits uncommitted in
+MonumentAtlas.lean. Diagnosis: the background-task completion notification was lost (same class as
+the elder wedge — the liveness-polling lesson, now 2-for-2 on catching it). Sent the wake-nudge with
+the evidence + the remaining ladder: self-confirm build (fast no-op re-run, trust exit code not my
+timestamp) → census/cordon/forced payoff axioms → commit-coherent push → render report with verbatim
+formulas. Reviewers (pnp all-rows battery, seat-L4D slot-confirm, elder delta-read) fire on the report.
